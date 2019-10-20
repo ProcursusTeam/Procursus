@@ -1,4 +1,5 @@
 *.tar.xz
+*.tar.gz
 *.sig
 *.deb
 
@@ -7,5 +8,13 @@ build_base/
 dist/
 
 coreutils/
+bash/
+coreutils/
+diffutils/
+findutils/
+grep/
+readline/
+sed/
+tar/
 
 !.gitkeep
