@@ -1,0 +1,11 @@
+*.tar.xz
+*.sig
+*.deb
+
+fakeroot_persist
+build_base/
+dist/
+
+coreutils/
+
+!.gitkeep
