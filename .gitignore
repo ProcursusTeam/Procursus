@@ -3,17 +3,21 @@ build_base/
 dist/
 source/
 
-coreutils/
+apt/
 bash/
+coreutils/
 coreutils/
 diffutils/
 findutils/
 grep/
-readline/
+lz4/
+nano/
 ncurses/
+pcre/
+readline/
 sed/
 tar/
-pcre/
+xz/
 zsh/
 
 !.gitkeep

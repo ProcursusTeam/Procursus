@@ -12,7 +12,7 @@ DEB_MAINTAINER := checkra1n
 
 CFLAGS   := -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isystem $(PWD)/build_base/include -I$(PWD)/dist/usr/include
 CXXFLAGS := -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isystem $(PWD)/build_base/include -I$(PWD)/dist/usr/include
-LDFLAGS  := -L$(PWD)/build_base/lib -L$(PWD)/dist/usr/lib
+LDFLAGS  := -L$(PWD)/build_base/lib -L$(PWD)/dist/usr/lib -L$(PWD)/dist/usr/local/lib
 DESTDIR  := $(PWD)/dist
 
 export CFLAGS CXXFLAGS LDFLAGS DESTDIR
@@ -100,9 +100,15 @@ MAKEFLAGS += -j$(shell $(GET_LOGICAL_CORES)) -Otarget
 endif
 
 all: clean setup \
-	coreutils sed grep findutils diffutils
+	coreutils sed grep findutils diffutils tar readline ncurses bash \
+	lz4 xz \
+	pcre zsh \
+	nano \
+	apt \
+	after-all
 
 setup:
+	@# TODO: lz4 no signature
 	wget -nc -P $(SOURCEDIR) \
 		https://ftp.gnu.org/gnu/coreutils/coreutils-8.31.tar.xz{,.sig} \
 		https://ftp.gnu.org/gnu/sed/sed-4.7.tar.xz{,.sig} \
@@ -116,8 +122,11 @@ setup:
 		https://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-00{1..9}{,.sig} \
 		https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-0{10..11}{,.sig} \
+		https://github.com/lz4/lz4/archive/v1.9.2.tar.gz \
+		https://tukaani.org/xz/xz-5.2.4.tar.xz{,.sig} \
 		https://ftp.pcre.org/pub/pcre/pcre-8.43.tar.bz2{,.sig} \
-		https://www.zsh.org/pub/zsh-5.7.1.tar.xz{,.asc}
+		https://www.zsh.org/pub/zsh-5.7.1.tar.xz{,.asc} \
+		https://ftp.gnu.org/gnu/nano/nano-4.5.tar.xz{,.sig}
 
 	$(call PGP_VERIFY,source/coreutils-8.31.tar.xz)
 	$(call PGP_VERIFY,source/sed-4.7.tar.xz)
@@ -140,8 +149,11 @@ setup:
 	$(call PGP_VERIFY,source/bash50-009)
 	$(call PGP_VERIFY,source/bash50-010)
 	$(call PGP_VERIFY,source/bash50-011)
+	# $(call PGP_VERIFY,source/v1.9.2.tar.gz)
+	$(call PGP_VERIFY,source/xz-5.2.4.tar.xz)
 	$(call PGP_VERIFY,source/pcre-8.43.tar.bz2)
 	$(call PGP_VERIFY,source/zsh-5.7.1.tar.xz,asc)
+	$(call PGP_VERIFY,source/nano-4.5.tar.xz)
 
 	$(call EXTRACT_TAR,source/coreutils-8.31.tar.xz,coreutils-8.31,coreutils)
 	$(call EXTRACT_TAR,source/sed-4.7.tar.xz,sed-4.7,sed)
@@ -152,8 +164,11 @@ setup:
 	$(call EXTRACT_TAR,source/readline-8.0.tar.gz,readline-8.0,readline)
 	$(call EXTRACT_TAR,source/ncurses-6.1.tar.gz,ncurses-6.1,ncurses)
 	$(call EXTRACT_TAR,source/bash-5.0.tar.gz,bash-5.0,bash)
+	$(call EXTRACT_TAR,source/v1.9.2.tar.gz,lz4-1.9.2,lz4)
+	$(call EXTRACT_TAR,source/xz-5.2.4.tar.xz,xz-5.2.4,xz)
 	$(call EXTRACT_TAR,source/pcre-8.43.tar.bz2,pcre-8.43,pcre)
 	$(call EXTRACT_TAR,source/zsh-5.7.1.tar.xz,zsh-5.7.1,zsh)
+	$(call EXTRACT_TAR,source/nano-4.5.tar.xz,nano-4.5,nano)
 
 	patch -p0 -d readline < source/readline80-001
 	patch -p0 -d bash < source/bash50-001
@@ -191,15 +206,19 @@ include tar.mk
 include readline.mk
 include ncurses.mk
 include bash.mk
+include lz4.mk
+include xz.mk
 include pcre.mk
 include zsh.mk
+include nano.mk
+include apt.mk
 
 after-all::
-	find $(DESTDIR) -type f -exec $(LDID) -S {} \;
+	find $(DESTDIR) -type f -exec $(LDID) -S {} \; 2>&1 | grep -v '_assert(false); errno=0'
 
 clean::
 	rm -rf dist fakeroot_persist
 	rm -rf build_base/include/sys/ttydev.h build_base/include/stdlib.h build_base/include/time.h
-	rm -rf coreutils sed grep findutils diffutils tar readline ncurses bash pcre zsh
+	rm -rf coreutils sed grep findutils diffutils tar readline ncurses bash lz4 xz pcre zsh nano apt
 
 .PHONY: setup clean

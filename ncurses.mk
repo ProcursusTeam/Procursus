@@ -15,6 +15,7 @@ ncurses:
 		./configure \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
+		--libdir=/usr/local/lib \
 		--with-build-cc=clang \
 		--enable-pc-files \
 		--enable-sigwinch \
