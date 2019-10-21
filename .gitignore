@@ -1,11 +1,7 @@
-*.tar.xz
-*.tar.gz
-*.sig
-*.deb
-
 fakeroot_persist
 build_base/
 dist/
+source/
 
 coreutils/
 bash/
@@ -14,7 +10,10 @@ diffutils/
 findutils/
 grep/
 readline/
+ncurses/
 sed/
 tar/
+pcre/
+zsh/
 
 !.gitkeep
