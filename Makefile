@@ -21,7 +21,7 @@ HAS_COMMAND = $(shell type $(1) >/dev/null 2>&1 && echo 1)
 PGP_VERIFY  = gpg --verify $(1).$(if $(2),$(2),sig) $(1) 2>&1 | grep -q 'Good signature'
 
 EXTRACT_TAR = if [ ! -d $(3) ]; then \
-		tar -xf $(1) && \
+		$(TAR) -xf $(1) && \
 		mv $(2) $(3); \
 	fi
 
@@ -70,6 +70,14 @@ ifneq ($(call HAS_COMMAND,cmake),1)
 $(error Install cmake)
 endif
 
+ifeq ($(call HAS_COMMAND,gpatch),1)
+PATCH := gpatch
+else ifeq ($(shell patch --version | grep -q 'GNU patch' && echo 1),1)
+PATCH := patch
+else
+$(error Install GNU patch)
+endif
+
 ifeq ($(call HAS_COMMAND,fakeroot),1)
 $(shell touch fakeroot_persist)
 # FAKEROOT := fakeroot -i $(PWD)/fakeroot_persist -s $(PWD)/fakeroot_persist --
@@ -84,6 +92,14 @@ else ifeq ($(call HAS_COMMAND,dm.pl),1)
 DPKG_DEB := dm.pl -Zlzma -z9
 else
 $(error Install dpkg-deb)
+endif
+
+ifneq ($(call HAS_COMMAND,autopoint),1)
+ifeq ($(call HAS_COMMAND,$(shell brew --prefix)/opt/gettext/bin/autopoint),1)
+PATH += :$(shell brew --prefix)/opt/gettext/bin
+else
+$(error Install gettext)
+endif
 endif
 
 SOURCEDIR := $(PWD)/source
@@ -104,11 +120,14 @@ all: clean setup \
 	lz4 xz \
 	pcre zsh \
 	nano \
-	apt \
+	apt dpkg \
+	uikittools darwintools \
 	after-all
 
 setup:
-	@# TODO: lz4 no signature
+	git submodule update --init --recursive
+
+	@# TODO: lz4 no signature check
 	wget -nc -P $(SOURCEDIR) \
 		https://ftp.gnu.org/gnu/coreutils/coreutils-8.31.tar.xz{,.sig} \
 		https://ftp.gnu.org/gnu/sed/sed-4.7.tar.xz{,.sig} \
@@ -122,6 +141,8 @@ setup:
 		https://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-00{1..9}{,.sig} \
 		https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-0{10..11}{,.sig} \
+		https://zlib.net/zlib-1.2.11.tar.xz{,.asc} \
+		https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz{,.sig} \
 		https://github.com/lz4/lz4/archive/v1.9.2.tar.gz \
 		https://tukaani.org/xz/xz-5.2.4.tar.xz{,.sig} \
 		https://ftp.pcre.org/pub/pcre/pcre-8.43.tar.bz2{,.sig} \
@@ -149,6 +170,8 @@ setup:
 	$(call PGP_VERIFY,source/bash50-009)
 	$(call PGP_VERIFY,source/bash50-010)
 	$(call PGP_VERIFY,source/bash50-011)
+	$(call PGP_VERIFY,source/zlib-1.2.11.tar.xz,asc)
+	$(call PGP_VERIFY,source/bzip2-1.0.8.tar.gz)
 	# $(call PGP_VERIFY,source/v1.9.2.tar.gz)
 	$(call PGP_VERIFY,source/xz-5.2.4.tar.xz)
 	$(call PGP_VERIFY,source/pcre-8.43.tar.bz2)
@@ -164,28 +187,31 @@ setup:
 	$(call EXTRACT_TAR,source/readline-8.0.tar.gz,readline-8.0,readline)
 	$(call EXTRACT_TAR,source/ncurses-6.1.tar.gz,ncurses-6.1,ncurses)
 	$(call EXTRACT_TAR,source/bash-5.0.tar.gz,bash-5.0,bash)
+	$(call EXTRACT_TAR,source/zlib-1.2.11.tar.xz,zlib-1.2.11,zlib)
+	$(call EXTRACT_TAR,source/bzip2-1.0.8.tar.gz,bzip2-1.0.8,bzip2)
 	$(call EXTRACT_TAR,source/v1.9.2.tar.gz,lz4-1.9.2,lz4)
 	$(call EXTRACT_TAR,source/xz-5.2.4.tar.xz,xz-5.2.4,xz)
 	$(call EXTRACT_TAR,source/pcre-8.43.tar.bz2,pcre-8.43,pcre)
 	$(call EXTRACT_TAR,source/zsh-5.7.1.tar.xz,zsh-5.7.1,zsh)
 	$(call EXTRACT_TAR,source/nano-4.5.tar.xz,nano-4.5,nano)
 
-	patch -p0 -d readline < source/readline80-001
-	patch -p0 -d bash < source/bash50-001
-	patch -p0 -d bash < source/bash50-002
-	patch -p0 -d bash < source/bash50-003
-	patch -p0 -d bash < source/bash50-004
-	patch -p0 -d bash < source/bash50-005
-	patch -p0 -d bash < source/bash50-006
-	patch -p0 -d bash < source/bash50-007
-	patch -p0 -d bash < source/bash50-008
-	patch -p0 -d bash < source/bash50-009
-	patch -p0 -d bash < source/bash50-010
-	patch -p0 -d bash < source/bash50-011
+	$(PATCH) -p0 -d readline < source/readline80-001
+	$(PATCH) -p0 -d bash < source/bash50-001
+	$(PATCH) -p0 -d bash < source/bash50-002
+	$(PATCH) -p0 -d bash < source/bash50-003
+	$(PATCH) -p0 -d bash < source/bash50-004
+	$(PATCH) -p0 -d bash < source/bash50-005
+	$(PATCH) -p0 -d bash < source/bash50-006
+	$(PATCH) -p0 -d bash < source/bash50-007
+	$(PATCH) -p0 -d bash < source/bash50-008
+	$(PATCH) -p0 -d bash < source/bash50-009
+	$(PATCH) -p0 -d bash < source/bash50-010
+	$(PATCH) -p0 -d bash < source/bash50-011
 
 	@# Copy headers from MacOSX.sdk
 	mkdir -p build_base/include/sys/
 	cp $(MACOSX_SYSROOT)/usr/include/sys/ttydev.h build_base/include/sys/
+	cp $(MACOSX_SYSROOT)/usr/include/ar.h build_base/include/
 
 	@# Patch headers from iPhoneOS.sdk
 	cp $(SYSROOT)/usr/include/stdlib.h build_base/include/
@@ -206,19 +232,28 @@ include tar.mk
 include readline.mk
 include ncurses.mk
 include bash.mk
+include zlib.mk
+include bzip2.mk
 include lz4.mk
 include xz.mk
 include pcre.mk
 include zsh.mk
 include nano.mk
 include apt.mk
+include dpkg.mk
+include uikittools.mk
+include darwintools.mk
 
 after-all::
 	find $(DESTDIR) -type f -exec $(LDID) -S {} \; 2>&1 | grep -v '_assert(false); errno=0'
 
 clean::
 	rm -rf dist fakeroot_persist
-	rm -rf build_base/include/sys/ttydev.h build_base/include/stdlib.h build_base/include/time.h
-	rm -rf coreutils sed grep findutils diffutils tar readline ncurses bash lz4 xz pcre zsh nano apt
+	rm -rf build_base/include/sys/ttydev.h build_base/include/ar.h build_base/include/stdlib.h build_base/include/time.h
+	rm -rf coreutils sed grep findutils diffutils tar readline ncurses bash zlib bzip2 lz4 xz pcre zsh nano
+	-$(MAKE) -C apt clean
+	-$(MAKE) -C dpkg clean
+	-$(MAKE) -C uikittools clean
+	-$(MAKE) -C darwintools clean
 
 .PHONY: setup clean

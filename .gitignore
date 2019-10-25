@@ -5,6 +5,7 @@ source/
 
 apt/
 bash/
+bzip2/
 coreutils/
 coreutils/
 diffutils/
@@ -18,6 +19,7 @@ readline/
 sed/
 tar/
 xz/
+zlib/
 zsh/
 
 !.gitkeep
