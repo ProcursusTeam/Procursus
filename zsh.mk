@@ -2,7 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-zsh: setup
+zsh: setup ncurses pcre
 	cd $(BUILD_WORK)/zsh && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

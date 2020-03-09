@@ -13,8 +13,8 @@ ncurses: setup
 	else \
 		:; \
 	fi
-	INSTALL="/usr/bin/install -c --strip-program=$(TRIPLE)strip" \
-	cd $(BUILD_WORK)/ncurses && ./configure -C \
+	cd $(BUILD_WORK)/ncurses && INSTALL="/usr/bin/install -c --strip-program=$(TRIPLE)strip" \
+		./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--with-build-cc=clang \

@@ -4,7 +4,7 @@ endif
 
 # TODO: Check if we can use --enable-jit
 
-pcre: setup
+pcre: setup bzip2 zlib
 	cd $(BUILD_WORK)/pcre && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

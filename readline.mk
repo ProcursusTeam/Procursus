@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 readline: setup
-	cd $(BUILD_WORK)/readline && ./configure -C \\
+	cd $(BUILD_WORK)/readline && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		ac_cv_type_sig_atomic_t=no
