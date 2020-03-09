@@ -5,7 +5,7 @@ endif
 # TODO: Check if we can use --enable-jit
 
 pcre: setup
-	cd pcre && ./configure \
+	cd $(BUILD_WORK)/pcre && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-dependency-tracking \
@@ -16,7 +16,10 @@ pcre: setup
 		--enable-unicode-properties \
 		--enable-pcregrep-libz \
 		--enable-pcregrep-libbz2
-	$(MAKE) -C pcre
-	$(FAKEROOT) $(MAKE) -C pcre install DESTDIR="$(DESTDIR)"
+	$(MAKE) -C $(BUILD_WORK)/pcre
+	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/pcre install \
+		DESTDIR=$(BUILD_STAGE)/pcre
+	$(MAKE) -C $(BUILD_WORK)/pcre install \
+		DESTDIR=$(BUILD_BASE)
 
 .PHONY: pcre

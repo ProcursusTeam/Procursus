@@ -4,9 +4,14 @@ endif
 
 lz4: setup
 	TARGET_OS=Darwin \
-		$(MAKE) -C lz4 install \
+		$(MAKE) -C $(BUILD_WORK)/lz4 install \
 		PREFIX=/usr \
-		DESTDIR="$(DESTDIR)" \
+		DESTDIR=$(BUILD_STAGE)/lz4 \
+		CFLAGS="$(CFLAGS)"
+	TARGET_OS=Darwin \
+		$(MAKE) -C $(BUILD_WORK)/lz4 install \
+		PREFIX=/usr \
+		DESTDIR=$(BUILD_BASE) \
 		CFLAGS="$(CFLAGS)"
 
 .PHONY: lz4

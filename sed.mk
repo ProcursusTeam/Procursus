@@ -7,12 +7,13 @@ endif
 # TODO: Remove when GNU fixes this issue
 
 sed: setup
-	cd sed && ./configure \
+	cd $(BUILD_WORK)/sed && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-dependency-tracking \
 		gl_cv_func_ftello_works=yes
-	$(MAKE) -C sed
-	$(FAKEROOT) $(MAKE) -C sed install
+	$(MAKE) -C $(BUILD_WORK)/sed
+	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/sed install \
+		DESTDIR=$(BUILD_STAGE)/sed
 
 .PHONY: sed

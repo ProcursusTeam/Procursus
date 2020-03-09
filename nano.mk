@@ -3,17 +3,17 @@ $(error Use the main Makefile)
 endif
 
 nano: setup
-	cd nano && ./configure \
+	cd $(BUILD_WORK)/nano && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
-		--disable-debug
+		--disable-debug \
 		--disable-dependency-tracking \
 		--enable-color \
 		--enable-extra \
 		--enable-multibuffer \
-		--enable-nanorc \
-		--enable-utf8
-	$(MAKE) -C nano DESTDIR="$(DESTDIR)"
-	$(FAKEROOT) $(MAKE) -C nano install DESTDIR="$(DESTDIR)"
+		--enable-nanorc
+	$(MAKE) -C $(BUILD_WORK)/nano
+	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/nano install \
+		DESTDIR=$(BUILD_STAGE)/nano
 
 .PHONY: nano

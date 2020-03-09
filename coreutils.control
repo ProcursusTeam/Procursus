@@ -4,9 +4,7 @@ Architecture: $ARCH
 Priority: required
 Essential: yes
 Section: Utilities
-Origin: $ORIGIN
 Maintainer: $MAINTAINER
-Original-Maintainer: Michael Stone <mstone@debian.org>
 Homepage: http://gnu.org/software/coreutils
 Description: GNU core utilities
  This package contains the basic file, shell and text manipulation

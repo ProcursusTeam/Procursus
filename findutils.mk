@@ -7,13 +7,14 @@ endif
 # TODO: Remove when GNU fixes this issue
 
 findutils: setup
-	cd findutils && ./configure \
+	cd $(BUILD_WORK)/findutils && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-dependency-tracking \
 		--disable-debug \
 		gl_cv_func_ftello_works=yes
-	$(MAKE) -C findutils
-	$(FAKEROOT) $(MAKE) -C findutils install
+	$(MAKE) -C $(BUILD_WORK)/findutils
+	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/findutils install \
+		DESTDIR=$(BUILD_STAGE)/findutils
 
 .PHONY: findutils

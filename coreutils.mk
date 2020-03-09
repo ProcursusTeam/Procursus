@@ -7,12 +7,13 @@ endif
 # TODO: Remove when GNU fixes this issue
 
 coreutils: setup
-	cd coreutils && ./configure \
+	cd $(BUILD_WORK)/coreutils && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--without-gmp \
 		gl_cv_func_ftello_works=yes
-	$(MAKE) -C coreutils
-	$(FAKEROOT) $(MAKE) -C coreutils install
+	$(MAKE) -C $(BUILD_WORK)/coreutils
+	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/coreutils install \
+		DESTDIR=$(BUILD_STAGE)/coreutils
 
 .PHONY: coreutils

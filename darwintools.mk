@@ -4,7 +4,7 @@ endif
 
 darwintools: setup
 	cd darwintools && make
-	$(FAKEROOT) mkdir -p $(DESTDIR)/usr/bin
-	$(FAKEROOT) cp darwintools/sw_vers $(DESTDIR)/usr/bin
+	$(FAKEROOT) mkdir -p $(BUILD_STAGE)/darwintools/usr/bin
+	$(FAKEROOT) cp darwintools/sw_vers $(BUILD_STAGE)/darwintools/usr/bin
 
 .PHONY: darwintools

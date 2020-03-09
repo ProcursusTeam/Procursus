@@ -3,9 +3,9 @@ $(error Use the main Makefile)
 endif
 
 zlib: setup
-	cd zlib && ./configure \
+	cd $(BUILD_WORK)/zlib && ./configure -C \
 		--prefix=/usr
-	$(MAKE) -C zlib
-	$(FAKEROOT) $(MAKE) -C zlib install
+	$(MAKE) -C $(BUILD_WORK)/zlib
+	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/zlib install
 
 .PHONY: zlib
