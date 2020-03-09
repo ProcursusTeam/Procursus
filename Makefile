@@ -274,7 +274,7 @@ clean::
 	rm -rf dist fakeroot_persist
 	rm -rf build_base/include/sys/ttydev.h build_base/include/ar.h build_base/include/stdlib.h build_base/include/time.h
 	rm -rf coreutils sed grep findutils diffutils tar readline ncurses bash zlib bzip2 lz4 xz pcre zsh nano
-	-$(MAKE) -C apt clean
+	-$(MAKE) -C apt-build clean
 	-$(MAKE) -C dpkg clean
 	-$(MAKE) -C uikittools clean
 	-$(MAKE) -C darwintools clean
