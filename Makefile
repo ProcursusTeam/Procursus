@@ -1,3 +1,5 @@
+# On MacOS the make used here needs to be from brew for some reason.
+
 SHELL           := /bin/bash
 UNAME           := $(shell uname -s)
 SUBPROJECTS     := \
@@ -16,6 +18,15 @@ $(warning Building on Linux)
 TRIPLE          ?= arm-apple-darwin17-
 SYSROOT         ?= $(HOME)/cctools/SDK/iPhoneOS13.2.sdk
 MACOSX_SYSROOT  ?= $(HOME)/cctools/SDK/MacOSX.sdk
+
+CC       := $(TRIPLE)clang
+CXX      := $(TRIPLE)clang++
+AR       := $(TRIPLE)ar
+RANLIB   := $(TRIPLE)ranlib
+STRIP    := $(TRIPLE)strip
+
+export CC CXX AR RANLIB STRIP
+
 else ifeq ($(UNAME),Darwin)
 $(warning Building on MacOS)
 TRIPLE          ?=
@@ -46,12 +57,6 @@ BUILD_STAGE    := $(PWD)/build_stage
 # Final output
 BUILD_DIST     := $(PWD)/build_dist
 
-CC       := $(TRIPLE)clang
-CXX      := $(TRIPLE)clang++
-AR       := $(TRIPLE)ar
-RANLIB   := $(TRIPLE)ranlib
-STRIP    := $(TRIPLE)strip
-
 CFLAGS   := -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include
 CXXFLAGS := $(CFLAGS)
 LDFLAGS  := -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib
@@ -59,7 +64,6 @@ LDFLAGS  := -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib
 export PLATFORM ARCH TRIPLE SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE
 export BUILD_BASE BUILD_WORK BUILD_STAGE BUILD_DIST
 export DEB_ARCH DEB_ORIGIN DEB_MAINTAINER
-export CC CXX AR RANLIB STRIP
 export CFLAGS CXXFLAGS LDFLAGS
 
 HAS_COMMAND = $(shell type $(1) >/dev/null 2>&1 && echo 1)
