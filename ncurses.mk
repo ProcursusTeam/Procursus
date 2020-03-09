@@ -5,25 +5,31 @@ endif
 # Needs DESTDIR in make -j8 to not attempt to build test files (which fail to link)
 # May need the make clean in between to keep out artifacts from the old DESTDIR
 
+# TODO: Apple vendors ncurses 5.4 but without terminfo. Can we safely upgrade to ncurses 6.x?
+
 ncurses:
-	if [ -f ncurses/Makefile ]; then \
-		$(MAKE) -C ncurses clean; \
+	if [ -f $(BUILD_WORK)/ncurses/Makefile ]; then \
+		$(MAKE) -C $(BUILD_WORK)/ncurses clean; \
 	else \
 		:; \
 	fi
-	cd ncurses && LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
-		./configure \
+	cd $(BUILD_WORK)/ncurses && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
-		--libdir=/usr/local/lib \
 		--with-build-cc=clang \
-		--enable-pc-files \
-		--enable-sigwinch \
-		--enable-symlinks \
-		--enable-widec \
 		--with-shared \
-		--with-gpm=no
-	$(MAKE) -C ncurses DESTDIR="$(DESTDIR)"
-	$(FAKEROOT) $(MAKE) -C ncurses install DESTDIR="$(DESTDIR)"
+		--without-normal \
+		--without-debug \
+		--enable-sigwinch \
+		--disable-mixed-case \
+		--enable-termcap \
+		--enable-pc-files \
+		LDFLAGS="$(CFLAGS) $(LDFLAGS)"
+	$(MAKE) -C $(BUILD_WORK)/ncurses \
+		DESTDIR="$(BUILD_STAGE)/ncurses"
+	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/ncurses install \
+		DESTDIR="$(BUILD_STAGE)/ncurses"
+	$(MAKE) -C $(BUILD_WORK)/ncurses install \
+		DESTDIR="$(BUILD_BASE)"
 
 .PHONY: ncurses

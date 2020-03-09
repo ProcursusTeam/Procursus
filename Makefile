@@ -1,3 +1,11 @@
+SUBPROJECTS := \
+	coreutils sed grep findutils diffutils tar readline ncurses bash \
+	bzip2 lz4 xz \
+	pcre zsh \
+	less nano \
+	apt dpkg \
+	uikittools darwintools
+
 PLATFORM        ?= iphoneos
 ARCH            ?= arm64
 SYSROOT         ?= $(THEOS)/sdks/iPhoneOS12.2.sdk
@@ -6,23 +14,44 @@ GNU_HOST_TRIPLE ?= aarch64-apple-darwin
 
 iphoneos_VERSION_MIN := -miphoneos-version-min=11.0
 
-DEB_ARCH       := iphoneos-arm64-thin
+DEB_ARCH       := iphoneos-arm
 DEB_ORIGIN     := checkra1n
 DEB_MAINTAINER := checkra1n
 
-CFLAGS   := -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isystem $(PWD)/build_base/include -I$(PWD)/dist/usr/include
-CXXFLAGS := -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isystem $(PWD)/build_base/include -I$(PWD)/dist/usr/include
-LDFLAGS  := -L$(PWD)/build_base/lib -L$(PWD)/dist/usr/lib -L$(PWD)/dist/usr/local/lib
-DESTDIR  := $(PWD)/dist
+# Root
+BUILD_ROOT     := $(PWD)
+# Downloaded source files
+BUILD_SOURCE   := $(PWD)/build_source
+# Base headers/libs (e.g. patched from SDK)
+BUILD_BASE     := $(PWD)/build_base
+# Extracted source working directory
+BUILD_WORK     := $(PWD)/build_work
+# Bootstrap working area
+BUILD_STAGE    := $(PWD)/build_stage
+# Final output
+BUILD_DIST     := $(PWD)/build_dist
 
-export CFLAGS CXXFLAGS LDFLAGS DESTDIR
+CFLAGS   := -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include
+CXXFLAGS := $(CFLAGS)
+LDFLAGS  := -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib
+
+export PLATFORM ARCH SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE
+export BUILD_BASE BUILD_WORK BUILD_STAGE BUILD_DIST
+export DEB_ARCH DEB_ORIGIN DEB_MAINTAINER
+export CFLAGS CXXFLAGS LDFLAGS
 
 HAS_COMMAND = $(shell type $(1) >/dev/null 2>&1 && echo 1)
-PGP_VERIFY  = gpg --verify $(1).$(if $(2),$(2),sig) $(1) 2>&1 | grep -q 'Good signature'
+PGP_VERIFY  = gpg --verify $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) $(BUILD_SOURCE)/$(1) 2>&1 | grep -q 'Good signature'
 
-EXTRACT_TAR = if [ ! -d $(3) ]; then \
-		$(TAR) -xf $(1) && \
+EXTRACT_TAR = if [ ! -d $(BUILD_WORK)/$(3) ]; then \
+		cd $(BUILD_WORK) && \
+		$(TAR) -xf $(BUILD_SOURCE)/$(1) && \
 		mv $(2) $(3); \
+	fi
+
+DO_PATCH    = if [ ! -f $(BUILD_WORK)/$(2)/$(notdir $(1)).done ]; then \
+		$(PATCH) -sN -d $(BUILD_WORK)/$(2) $(3) < $(BUILD_SOURCE)/$(1); \
+		touch $(BUILD_WORK)/$(2)/$(notdir $(1)).done; \
 	fi
 
 ifeq ($(call HAS_COMMAND,shasum),1)
@@ -102,8 +131,6 @@ $(error Install gettext)
 endif
 endif
 
-SOURCEDIR := $(PWD)/source
-
 MAKEFLAGS += --no-print-directory
 
 ifeq ($(findstring --jobserver-auth=,$(MAKEFLAGS)),)
@@ -115,20 +142,27 @@ endif
 MAKEFLAGS += -j$(shell $(GET_LOGICAL_CORES)) -Otarget
 endif
 
-all: clean setup \
-	coreutils sed grep findutils diffutils tar readline ncurses bash \
-	lz4 xz \
-	pcre zsh \
-	nano \
-	apt dpkg \
-	uikittools darwintools \
-	after-all
+all:: setup $(SUBPROJECTS) package
+package:: $(SUBPROJECTS:%=%-package)
+
+CHECKRA1N_MEMO := 1
+
+$(foreach proj,$(SUBPROJECTS),$(eval include $(proj).mk))
+
+%-package: %-stage
+	@echo TODO $@ $<
+
+.PHONY: $(SUBPROJECTS)
 
 setup:
+	mkdir -p \
+		$(BUILD_BASE) $(BUILD_BASE)/usr/{include,lib} \
+		$(BUILD_WORK) $(BUILD_STAGE) $(BUILD_DIST)
+
 	git submodule update --init --recursive
 
-	@# TODO: lz4 no signature check
-	wget -nc -P $(SOURCEDIR) \
+	@# TODO: lz4 has no signature check
+	wget -nc -P $(BUILD_SOURCE) \
 		https://ftp.gnu.org/gnu/coreutils/coreutils-8.31.tar.xz{,.sig} \
 		https://ftp.gnu.org/gnu/sed/sed-4.7.tar.xz{,.sig} \
 		https://ftp.gnu.org/gnu/grep/grep-3.3.tar.xz{,.sig} \
@@ -137,7 +171,7 @@ setup:
 		https://ftp.gnu.org/gnu/tar/tar-1.32.tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/readline/readline-8.0.tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/readline/readline-8.0-patches/readline80-001{,.sig} \
-		https://ftp.gnu.org/gnu/ncurses/ncurses-6.1.tar.gz{,.sig} \
+		https://ftp.gnu.org/gnu/ncurses/ncurses-6.0.tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-00{1..9}{,.sig} \
 		https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-0{10..11}{,.sig} \
@@ -147,113 +181,85 @@ setup:
 		https://tukaani.org/xz/xz-5.2.4.tar.xz{,.sig} \
 		https://ftp.pcre.org/pub/pcre/pcre-8.43.tar.bz2{,.sig} \
 		https://www.zsh.org/pub/zsh-5.7.1.tar.xz{,.asc} \
+		https://ftp.gnu.org/gnu/less/less-530.tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/nano/nano-4.5.tar.xz{,.sig}
 
-	$(call PGP_VERIFY,source/coreutils-8.31.tar.xz)
-	$(call PGP_VERIFY,source/sed-4.7.tar.xz)
-	$(call PGP_VERIFY,source/grep-3.3.tar.xz)
-	$(call PGP_VERIFY,source/findutils-4.7.0.tar.xz)
-	$(call PGP_VERIFY,source/diffutils-3.7.tar.xz)
-	$(call PGP_VERIFY,source/tar-1.32.tar.gz)
-	$(call PGP_VERIFY,source/readline-8.0.tar.gz)
-	$(call PGP_VERIFY,source/readline80-001)
-	$(call PGP_VERIFY,source/ncurses-6.1.tar.gz)
-	$(call PGP_VERIFY,source/bash-5.0.tar.gz)
-	$(call PGP_VERIFY,source/bash50-001)
-	$(call PGP_VERIFY,source/bash50-002)
-	$(call PGP_VERIFY,source/bash50-003)
-	$(call PGP_VERIFY,source/bash50-004)
-	$(call PGP_VERIFY,source/bash50-005)
-	$(call PGP_VERIFY,source/bash50-006)
-	$(call PGP_VERIFY,source/bash50-007)
-	$(call PGP_VERIFY,source/bash50-008)
-	$(call PGP_VERIFY,source/bash50-009)
-	$(call PGP_VERIFY,source/bash50-010)
-	$(call PGP_VERIFY,source/bash50-011)
-	$(call PGP_VERIFY,source/zlib-1.2.11.tar.xz,asc)
-	$(call PGP_VERIFY,source/bzip2-1.0.8.tar.gz)
-	# $(call PGP_VERIFY,source/v1.9.2.tar.gz)
-	$(call PGP_VERIFY,source/xz-5.2.4.tar.xz)
-	$(call PGP_VERIFY,source/pcre-8.43.tar.bz2)
-	$(call PGP_VERIFY,source/zsh-5.7.1.tar.xz,asc)
-	$(call PGP_VERIFY,source/nano-4.5.tar.xz)
+	$(call PGP_VERIFY,coreutils-8.31.tar.xz)
+	$(call PGP_VERIFY,sed-4.7.tar.xz)
+	$(call PGP_VERIFY,grep-3.3.tar.xz)
+	$(call PGP_VERIFY,findutils-4.7.0.tar.xz)
+	$(call PGP_VERIFY,diffutils-3.7.tar.xz)
+	$(call PGP_VERIFY,tar-1.32.tar.gz)
+	$(call PGP_VERIFY,readline-8.0.tar.gz)
+	$(call PGP_VERIFY,readline80-001)
+	$(call PGP_VERIFY,ncurses-6.1.tar.gz)
+	$(call PGP_VERIFY,bash-5.0.tar.gz)
+	$(call PGP_VERIFY,bash50-001)
+	$(call PGP_VERIFY,bash50-002)
+	$(call PGP_VERIFY,bash50-003)
+	$(call PGP_VERIFY,bash50-004)
+	$(call PGP_VERIFY,bash50-005)
+	$(call PGP_VERIFY,bash50-006)
+	$(call PGP_VERIFY,bash50-007)
+	$(call PGP_VERIFY,bash50-008)
+	$(call PGP_VERIFY,bash50-009)
+	$(call PGP_VERIFY,bash50-010)
+	$(call PGP_VERIFY,bash50-011)
+	$(call PGP_VERIFY,zlib-1.2.11.tar.xz,asc)
+	$(call PGP_VERIFY,bzip2-1.0.8.tar.gz)
+	# $(call PGP_VERIFY,v1.9.2.tar.gz)
+	$(call PGP_VERIFY,xz-5.2.4.tar.xz)
+	$(call PGP_VERIFY,pcre-8.43.tar.bz2)
+	$(call PGP_VERIFY,zsh-5.7.1.tar.xz,asc)
+	$(call PGP_VERIFY,less-530.tar.gz)
+	$(call PGP_VERIFY,nano-4.5.tar.xz)
 
-	$(call EXTRACT_TAR,source/coreutils-8.31.tar.xz,coreutils-8.31,coreutils)
-	$(call EXTRACT_TAR,source/sed-4.7.tar.xz,sed-4.7,sed)
-	$(call EXTRACT_TAR,source/grep-3.3.tar.xz,grep-3.3,grep)
-	$(call EXTRACT_TAR,source/findutils-4.7.0.tar.xz,findutils-4.7.0,findutils)
-	$(call EXTRACT_TAR,source/diffutils-3.7.tar.xz,diffutils-3.7,diffutils)
-	$(call EXTRACT_TAR,source/tar-1.32.tar.gz,tar-1.32,tar)
-	$(call EXTRACT_TAR,source/readline-8.0.tar.gz,readline-8.0,readline)
-	$(call EXTRACT_TAR,source/ncurses-6.1.tar.gz,ncurses-6.1,ncurses)
-	$(call EXTRACT_TAR,source/bash-5.0.tar.gz,bash-5.0,bash)
-	$(call EXTRACT_TAR,source/zlib-1.2.11.tar.xz,zlib-1.2.11,zlib)
-	$(call EXTRACT_TAR,source/bzip2-1.0.8.tar.gz,bzip2-1.0.8,bzip2)
-	$(call EXTRACT_TAR,source/v1.9.2.tar.gz,lz4-1.9.2,lz4)
-	$(call EXTRACT_TAR,source/xz-5.2.4.tar.xz,xz-5.2.4,xz)
-	$(call EXTRACT_TAR,source/pcre-8.43.tar.bz2,pcre-8.43,pcre)
-	$(call EXTRACT_TAR,source/zsh-5.7.1.tar.xz,zsh-5.7.1,zsh)
-	$(call EXTRACT_TAR,source/nano-4.5.tar.xz,nano-4.5,nano)
+	$(call EXTRACT_TAR,coreutils-8.31.tar.xz,coreutils-8.31,coreutils)
+	$(call EXTRACT_TAR,sed-4.7.tar.xz,sed-4.7,sed)
+	$(call EXTRACT_TAR,grep-3.3.tar.xz,grep-3.3,grep)
+	$(call EXTRACT_TAR,findutils-4.7.0.tar.xz,findutils-4.7.0,findutils)
+	$(call EXTRACT_TAR,diffutils-3.7.tar.xz,diffutils-3.7,diffutils)
+	$(call EXTRACT_TAR,tar-1.32.tar.gz,tar-1.32,tar)
+	$(call EXTRACT_TAR,readline-8.0.tar.gz,readline-8.0,readline)
+	$(call EXTRACT_TAR,ncurses-6.1.tar.gz,ncurses-6.1,ncurses)
+	$(call EXTRACT_TAR,bash-5.0.tar.gz,bash-5.0,bash)
+	$(call EXTRACT_TAR,zlib-1.2.11.tar.xz,zlib-1.2.11,zlib)
+	$(call EXTRACT_TAR,bzip2-1.0.8.tar.gz,bzip2-1.0.8,bzip2)
+	$(call EXTRACT_TAR,v1.9.2.tar.gz,lz4-1.9.2,lz4)
+	$(call EXTRACT_TAR,xz-5.2.4.tar.xz,xz-5.2.4,xz)
+	$(call EXTRACT_TAR,pcre-8.43.tar.bz2,pcre-8.43,pcre)
+	$(call EXTRACT_TAR,zsh-5.7.1.tar.xz,zsh-5.7.1,zsh)
+	$(call EXTRACT_TAR,less-530.tar.gz,less-530,less)
+	$(call EXTRACT_TAR,nano-4.5.tar.xz,nano-4.5,nano)
 
-	$(PATCH) -p0 -d readline < source/readline80-001
-	$(PATCH) -p0 -d bash < source/bash50-001
-	$(PATCH) -p0 -d bash < source/bash50-002
-	$(PATCH) -p0 -d bash < source/bash50-003
-	$(PATCH) -p0 -d bash < source/bash50-004
-	$(PATCH) -p0 -d bash < source/bash50-005
-	$(PATCH) -p0 -d bash < source/bash50-006
-	$(PATCH) -p0 -d bash < source/bash50-007
-	$(PATCH) -p0 -d bash < source/bash50-008
-	$(PATCH) -p0 -d bash < source/bash50-009
-	$(PATCH) -p0 -d bash < source/bash50-010
-	$(PATCH) -p0 -d bash < source/bash50-011
+	$(call DO_PATCH,readline80-001,readline,-p0)
+	$(call DO_PATCH,bash50-001,bash,-p0)
+	$(call DO_PATCH,bash50-002,bash,-p0)
+	$(call DO_PATCH,bash50-003,bash,-p0)
+	$(call DO_PATCH,bash50-004,bash,-p0)
+	$(call DO_PATCH,bash50-005,bash,-p0)
+	$(call DO_PATCH,bash50-006,bash,-p0)
+	$(call DO_PATCH,bash50-007,bash,-p0)
+	$(call DO_PATCH,bash50-008,bash,-p0)
+	$(call DO_PATCH,bash50-009,bash,-p0)
+	$(call DO_PATCH,bash50-010,bash,-p0)
+	$(call DO_PATCH,bash50-011,bash,-p0)
 
 	@# Copy headers from MacOSX.sdk
-	mkdir -p build_base/include/sys/
-	cp $(MACOSX_SYSROOT)/usr/include/sys/ttydev.h build_base/include/sys/
-	cp $(MACOSX_SYSROOT)/usr/include/ar.h build_base/include/
+	mkdir -p $(BUILD_BASE)/usr/include/sys/
+	cp -f $(MACOSX_SYSROOT)/usr/include/sys/ttydev.h $(BUILD_BASE)/usr/include/sys/
+	cp -f $(MACOSX_SYSROOT)/usr/include/ar.h $(BUILD_BASE)/usr/include/
 
 	@# Patch headers from iPhoneOS.sdk
-	cp $(SYSROOT)/usr/include/stdlib.h build_base/include/
-	$(SED) -Ei s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g build_base/include/stdlib.h
-
-	@# Note: iOS 10+ specific API
-	cp $(SYSROOT)/usr/include/time.h build_base/include/
-	$(SED) -Ei s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g build_base/include/time.h
-
-export CHECKRA1N_MEMO := 1
-
-include coreutils.mk
-include sed.mk
-include grep.mk
-include findutils.mk
-include diffutils.mk
-include tar.mk
-include readline.mk
-include ncurses.mk
-include bash.mk
-include zlib.mk
-include bzip2.mk
-include lz4.mk
-include xz.mk
-include pcre.mk
-include zsh.mk
-include nano.mk
-include apt.mk
-include dpkg.mk
-include uikittools.mk
-include darwintools.mk
+	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/stdlib.h > $(BUILD_BASE)/usr/include/stdlib.h
+	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/time.h > $(BUILD_BASE)/usr/include/time.h
 
 after-all::
-	find $(DESTDIR) -type f -exec $(LDID) -S {} \; 2>&1 | grep -v '_assert(false); errno=0'
+	# find $(DESTDIR) -type f -exec $(LDID) -S {} \; 2>&1 | grep -v '_assert(false); errno=0'
 
 clean::
-	rm -rf dist fakeroot_persist
-	rm -rf build_base/include/sys/ttydev.h build_base/include/ar.h build_base/include/stdlib.h build_base/include/time.h
-	rm -rf coreutils sed grep findutils diffutils tar readline ncurses bash zlib bzip2 lz4 xz pcre zsh nano
-	-$(MAKE) -C apt clean
-	-$(MAKE) -C dpkg clean
-	-$(MAKE) -C uikittools clean
-	-$(MAKE) -C darwintools clean
+	rm -rf $(BUILD_BASE) $(BUILD_WORK) $(BUILD_STAGE) $(BUILD_DIST)
+	$(MAKE) -C uikittools clean
+	$(MAKE) -C darwintools clean
 
 .PHONY: setup clean

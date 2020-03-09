@@ -3,11 +3,12 @@ $(error Use the main Makefile)
 endif
 
 diffutils:
-	cd diffutils && ./configure \
+	cd $(BUILD_WORK)/diffutils && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-dependency-tracking
-	$(MAKE) -C diffutils
-	$(FAKEROOT) $(MAKE) -C diffutils install
+	$(MAKE) -C $(BUILD_WORK)/diffutils
+	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/diffutils install \
+		DESTDIR=$(BUILD_STAGE)/diffutils
 
-.PHONY: diffutils
+.PHONY: diffutils diffutils-stage

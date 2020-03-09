@@ -4,7 +4,7 @@ endif
 
 uikittools:
 	cd uikittools && make
-	$(FAKEROOT) mkdir -p $(DESTDIR)/usr/bin
-	$(FAKEROOT) cp uikittools/{cfversion,sbdidlaunch,sbreload,uicache,uiduid,uiopen} $(DESTDIR)/usr/bin
+	$(FAKEROOT) mkdir -p $(BUILD_STAGE)/uikittools/usr/bin
+	$(FAKEROOT) cp uikittools/{cfversion,sbdidlaunch,sbreload,uicache,uiduid,uiopen} $(BUILD_STAGE)/uikittools/usr/bin
 
 .PHONY: uikittools

@@ -3,13 +3,16 @@ $(error Use the main Makefile)
 endif
 
 xz:
-	cd xz && ./configure \
+	cd $(BUILD_WORK)/xz && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/usr/local \
 		--disable-debug \
 		--disable-dependency-tracking \
 		--disable-silent-rules
-	$(MAKE) -C xz
-	$(FAKEROOT) $(MAKE) -C xz install DESTDIR="$(DESTDIR)"
+	$(MAKE) -C $(BUILD_WORK)/xz
+	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/xz install \
+		DESTDIR=$(BUILD_STAGE)/xz
+	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/xz install \
+		DESTDIR=$(BUILD_BASE)
 
 .PHONY: xz

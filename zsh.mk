@@ -3,8 +3,7 @@ $(error Use the main Makefile)
 endif
 
 zsh:
-	cd zsh && LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
-		./configure \
+	cd $(BUILD_WORK)/zsh && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--enable-cap \
@@ -14,9 +13,11 @@ zsh:
 		--enable-unicode9 \
 		--enable-pcre \
 		--with-tcsetpgrp \
+		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
 		DL_EXT=bundle \
 		zsh_cv_rlimit_rss_is_as=yes
-	$(MAKE) -C zsh
-	$(FAKEROOT) $(MAKE) -C zsh install install.info DESTDIR="$(DESTDIR)"
+	$(MAKE) -C $(BUILD_WORK)/zsh
+	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/zsh install install.info \
+		DESTDIR="$(BUILD_STAGE)/zsh"
 
 .PHONY: zsh
