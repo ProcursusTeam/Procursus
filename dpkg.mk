@@ -20,7 +20,8 @@ dpkg: setup bash bzip2 zlib coreutils diffutils findutils ncurses tar xz
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
 		USE_NLS=no \
 		PERL_LIBDIR='$$(prefix)/lib' \
-		LZMA_LIBS="$(BUILD_BASE)/usr/local/lib/liblzma.a" \
+		LZMA_LIBS="$(BUILD_BASE)/usr/lib/liblzma.a" \
+		ZLIB_LIBS="$(BUILD_STAGE)/zlib/usr/lib/libz.a" \
 		TAR=tar
 	sed -i s/'#define ARCHITECTURE "darwin-arm64"'/'#define ARCHITECTURE "$(DEB_ARCH)"'/ $(BUILD_WORK)/dpkg/config.h
 	sed -i s/'#define ARCHITECTURE_OS "darwin"'/'#define ARCHITECTURE_OS "$(PLATFORM)"'/ $(BUILD_WORK)/dpkg/config.h

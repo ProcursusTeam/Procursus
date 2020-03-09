@@ -23,7 +23,7 @@ apt: setup dpkg berkeleydb gnupg
 		-DLZ4_INCLUDE_DIRS=$(BUILD_BASE)/include \
 		-DLZ4_LIBRARIES=$(BUILD_BASE)/usr/lib/liblz4.dylib \
 		-DLZMA_INCLUDE_DIRS=$(BUILD_BASE)/include \
-		-DLZMA_LIBRARIES=$(BUILD_BASE)/usr/local/lib/liblzma.dylib \
+		-DLZMA_LIBRARIES=$(BUILD_BASE)/usr/lib/liblzma.dylib \
 		-DCURRENT_VENDOR=debian \
 		-DCOMMON_ARCH=$(DEB_ARCH) \
 		-DUSE_NLS=0 \
