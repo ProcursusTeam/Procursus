@@ -3,12 +3,13 @@ build_base/
 dist/
 source/
 
-apt/
+apt-build/
 bash/
 bzip2/
 coreutils/
 coreutils/
 diffutils/
+dpkg/
 findutils/
 grep/
 lz4/

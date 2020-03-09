@@ -9,13 +9,14 @@ endif
 # things (e.g. git+ssh) will break if the user sets their default shell to
 # Homebrew's bash instead of /bin/bash.
 
-bash:
+bash: setup grep ncurses readline sed
 	@# TODO: This is kinda messy, clean up
 	sed -i s/'#undef HAVE_SYS_SIGLIST'/'#define HAVE_SYS_SIGLIST 1'/ bash/config.h.in
 	cd bash && CFLAGS="$(CFLAGS) -DSSH_SOURCE_BASHRC" \
 		./configure \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
+		--disable-nls \
 		--with-installed-readline \
 		bash_cv_dev_fd=absent \
 		bash_cv_sys_named_pipes=present \

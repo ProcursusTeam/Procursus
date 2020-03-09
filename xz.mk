@@ -2,7 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-xz:
+xz: setup
 	cd xz && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

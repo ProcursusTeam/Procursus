@@ -4,7 +4,7 @@ endif
 
 # TODO: Check if we can use --enable-jit
 
-pcre:
+pcre: setup
 	cd pcre && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

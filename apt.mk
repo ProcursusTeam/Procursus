@@ -2,7 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-apt:
+apt: setup dpkg
 	mkdir -p apt/build
 	cd apt/build && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
 		-DSTATE_DIR=/var/lib/apt \

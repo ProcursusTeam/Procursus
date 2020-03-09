@@ -6,7 +6,7 @@ endif
 # iOS 13, borrowed from Homebrew formula for coreutils
 # TODO: Remove when GNU fixes this issue
 
-sed:
+sed: setup
 	cd sed && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

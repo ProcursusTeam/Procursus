@@ -6,7 +6,7 @@ endif
 # iOS 13, borrowed from Homebrew formula for coreutils
 # TODO: Remove when GNU fixes this issue
 
-coreutils:
+coreutils: setup
 	cd coreutils && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

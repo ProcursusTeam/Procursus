@@ -2,7 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-zsh:
+zsh: setup
 	cd zsh && LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
 		./configure \
 		--host=$(GNU_HOST_TRIPLE) \

@@ -1,7 +1,22 @@
+SHELL           := /bin/bash
+UNAME := $(shell uname -s)
 PLATFORM        ?= iphoneos
 ARCH            ?= arm64
+
+ifeq ($(UNAME),Linux)
+$(warning Building on Linux)
+TRIPLE          ?= arm-apple-darwin17-
+SYSROOT         ?= $(HOME)/cctools/SDK/iPhoneOS13.2.sdk
+MACOSX_SYSROOT  ?= $(HOME)/cctools/SDK/MacOSX.sdk
+else ifeq ($(UNAME),Darwin)
+$(warning Building on MacOS)
+TRIPLE          ?=
 SYSROOT         ?= $(THEOS)/sdks/iPhoneOS12.2.sdk
 MACOSX_SYSROOT  ?= $(shell xcode-select -print-path)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+else
+$(error Please use Linux or MacOS to build)
+endif
+
 GNU_HOST_TRIPLE ?= aarch64-apple-darwin
 
 iphoneos_VERSION_MIN := -miphoneos-version-min=11.0
@@ -10,12 +25,18 @@ DEB_ARCH       := iphoneos-arm64-thin
 DEB_ORIGIN     := checkra1n
 DEB_MAINTAINER := checkra1n
 
+CC       := $(TRIPLE)clang
+CXX      := $(TRIPLE)clang++
+AR       := $(TRIPLE)ar
+RANLIB   := $(TRIPLE)ranlib
+STRIP    := $(TRIPLE)strip
+
 CFLAGS   := -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isystem $(PWD)/build_base/include -I$(PWD)/dist/usr/include
 CXXFLAGS := -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isystem $(PWD)/build_base/include -I$(PWD)/dist/usr/include
 LDFLAGS  := -L$(PWD)/build_base/lib -L$(PWD)/dist/usr/lib -L$(PWD)/dist/usr/local/lib
 DESTDIR  := $(PWD)/dist
 
-export CFLAGS CXXFLAGS LDFLAGS DESTDIR
+export CC CXX AR RANLIB STRIP CFLAGS CXXFLAGS LDFLAGS DESTDIR
 
 HAS_COMMAND = $(shell type $(1) >/dev/null 2>&1 && echo 1)
 PGP_VERIFY  = gpg --verify $(1).$(if $(2),$(2),sig) $(1) 2>&1 | grep -q 'Good signature'
@@ -75,7 +96,7 @@ PATCH := gpatch
 else ifeq ($(shell patch --version | grep -q 'GNU patch' && echo 1),1)
 PATCH := patch
 else
-$(error Install GNU patch)
+$(error Install GNU patch)all
 endif
 
 ifeq ($(call HAS_COMMAND,fakeroot),1)
@@ -115,19 +136,19 @@ endif
 MAKEFLAGS += -j$(shell $(GET_LOGICAL_CORES)) -Otarget
 endif
 
-all: clean setup \
-	coreutils sed grep findutils diffutils tar readline ncurses bash \
-	lz4 xz \
-	pcre zsh \
-	nano \
-	apt dpkg \
-	uikittools darwintools \
-	after-all
+all:    clean jobs
+
+jobs:   coreutils sed grep findutils diffutils tar readline ncurses bash \
+        lz4 xz \
+        pcre zsh \
+        nano \
+        apt dpkg \
+        uikittools darwintools
 
 setup:
 	git submodule update --init --recursive
 
-	@# TODO: lz4 no signature check
+	@# TODO: lz4 + zsh no signature check
 	wget -nc -P $(SOURCEDIR) \
 		https://ftp.gnu.org/gnu/coreutils/coreutils-8.31.tar.xz{,.sig} \
 		https://ftp.gnu.org/gnu/sed/sed-4.7.tar.xz{,.sig} \
@@ -146,9 +167,10 @@ setup:
 		https://github.com/lz4/lz4/archive/v1.9.2.tar.gz \
 		https://tukaani.org/xz/xz-5.2.4.tar.xz{,.sig} \
 		https://ftp.pcre.org/pub/pcre/pcre-8.43.tar.bz2{,.sig} \
-		https://www.zsh.org/pub/zsh-5.7.1.tar.xz{,.asc} \
-		https://ftp.gnu.org/gnu/nano/nano-4.5.tar.xz{,.sig}
-
+		https://www.zsh.org/pub/zsh-5.8.tar.xz{,.asc} \
+		https://ftp.gnu.org/gnu/nano/nano-4.5.tar.xz{,.sig} \
+		http://deb.debian.org/debian/pool/main/d/dpkg/dpkg_1.20.0.tar.xz
+	
 	$(call PGP_VERIFY,source/coreutils-8.31.tar.xz)
 	$(call PGP_VERIFY,source/sed-4.7.tar.xz)
 	$(call PGP_VERIFY,source/grep-3.3.tar.xz)
@@ -175,7 +197,7 @@ setup:
 	# $(call PGP_VERIFY,source/v1.9.2.tar.gz)
 	$(call PGP_VERIFY,source/xz-5.2.4.tar.xz)
 	$(call PGP_VERIFY,source/pcre-8.43.tar.bz2)
-	$(call PGP_VERIFY,source/zsh-5.7.1.tar.xz,asc)
+	# $(call PGP_VERIFY,source/zsh-5.8.tar.xz,asc)
 	$(call PGP_VERIFY,source/nano-4.5.tar.xz)
 
 	$(call EXTRACT_TAR,source/coreutils-8.31.tar.xz,coreutils-8.31,coreutils)
@@ -192,21 +214,22 @@ setup:
 	$(call EXTRACT_TAR,source/v1.9.2.tar.gz,lz4-1.9.2,lz4)
 	$(call EXTRACT_TAR,source/xz-5.2.4.tar.xz,xz-5.2.4,xz)
 	$(call EXTRACT_TAR,source/pcre-8.43.tar.bz2,pcre-8.43,pcre)
-	$(call EXTRACT_TAR,source/zsh-5.7.1.tar.xz,zsh-5.7.1,zsh)
+	$(call EXTRACT_TAR,source/zsh-5.8.tar.xz,zsh-5.8,zsh)
 	$(call EXTRACT_TAR,source/nano-4.5.tar.xz,nano-4.5,nano)
+	$(call EXTRACT_TAR,source/dpkg_1.20.0.tar.xz,dpkg-1.20.0,dpkg)
 
-	$(PATCH) -p0 -d readline < source/readline80-001
-	$(PATCH) -p0 -d bash < source/bash50-001
-	$(PATCH) -p0 -d bash < source/bash50-002
-	$(PATCH) -p0 -d bash < source/bash50-003
-	$(PATCH) -p0 -d bash < source/bash50-004
-	$(PATCH) -p0 -d bash < source/bash50-005
-	$(PATCH) -p0 -d bash < source/bash50-006
-	$(PATCH) -p0 -d bash < source/bash50-007
-	$(PATCH) -p0 -d bash < source/bash50-008
-	$(PATCH) -p0 -d bash < source/bash50-009
-	$(PATCH) -p0 -d bash < source/bash50-010
-	$(PATCH) -p0 -d bash < source/bash50-011
+	$(PATCH) -p0 -d readline < source/readline80-001 || true
+	$(PATCH) -p0 -d bash < source/bash50-001 || true
+	$(PATCH) -p0 -d bash < source/bash50-002 || true
+	$(PATCH) -p0 -d bash < source/bash50-003 || true
+	$(PATCH) -p0 -d bash < source/bash50-004 || true
+	$(PATCH) -p0 -d bash < source/bash50-005 || true
+	$(PATCH) -p0 -d bash < source/bash50-006 || true
+	$(PATCH) -p0 -d bash < source/bash50-007 || true
+	$(PATCH) -p0 -d bash < source/bash50-008 || true
+	$(PATCH) -p0 -d bash < source/bash50-009 || true
+	$(PATCH) -p0 -d bash < source/bash50-010 || true
+	$(PATCH) -p0 -d bash < source/bash50-011 || true
 
 	@# Copy headers from MacOSX.sdk
 	mkdir -p build_base/include/sys/
@@ -244,7 +267,7 @@ include dpkg.mk
 include uikittools.mk
 include darwintools.mk
 
-after-all::
+after-all:: jobs
 	find $(DESTDIR) -type f -exec $(LDID) -S {} \; 2>&1 | grep -v '_assert(false); errno=0'
 
 clean::
@@ -256,4 +279,4 @@ clean::
 	-$(MAKE) -C uikittools clean
 	-$(MAKE) -C darwintools clean
 
-.PHONY: setup clean
+.PHONY: clean setup
