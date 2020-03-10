@@ -186,6 +186,19 @@ setup:
 		$(BUILD_WORK) $(BUILD_STAGE) $(BUILD_DIST)
 
 	git submodule update --init --recursive
+	
+	@# Update commit whenever dpkg update is needed.
+	if [ ! -d $(BUILD_WORK)/dpkg ] ; then \
+		cd $(BUILD_WORK) ; \
+		git clone https://github.com/Diatrus/dpkg && cd dpkg ; \
+		git checkout 69f4d070a694b92f6807d3239c8afd870017352f ; \
+		cd ../.. ; \
+	else \
+		cd $(BUILD_WORK)/dpkg ; \
+		git pull origin master ; \
+		git checkout 69f4d070a694b92f6807d3239c8afd870017352f ; \
+		cd ../.. ; \
+	fi
 
 	@# TODO: lz4 + zsh no signature check
 	wget -nc -P $(BUILD_SOURCE) \
@@ -208,7 +221,6 @@ setup:
 		https://www.zsh.org/pub/zsh-5.8.tar.xz{,.asc} \
 		https://ftp.gnu.org/gnu/less/less-530.tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/nano/nano-4.5.tar.xz{,.sig} \
-		http://deb.debian.org/debian/pool/main/d/dpkg/dpkg_1.20.0.tar.xz \
 		https://fossies.org/linux/misc/db-18.1.32.tar.gz #Requires registration on Oracle's website, so this is a mirror.
 	
 	$(call PGP_VERIFY,coreutils-8.31.tar.xz)
@@ -256,7 +268,6 @@ setup:
 	$(call EXTRACT_TAR,zsh-5.8.tar.xz,zsh-5.8,zsh)
 	$(call EXTRACT_TAR,less-530.tar.gz,less-530,less)
 	$(call EXTRACT_TAR,nano-4.5.tar.xz,nano-4.5,nano)
-	$(call EXTRACT_TAR,dpkg_1.20.0.tar.xz,dpkg-1.20.0,dpkg)
 	$(call EXTRACT_TAR,db-18.1.32.tar.gz,db-18.1.32,berkeleydb)
 
 	$(call DO_PATCH,readline80-001,readline,-p0)

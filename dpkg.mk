@@ -4,7 +4,7 @@ endif
 
 # TODO: we shouldn’t need to patch the config output to make dpkg use the right architecture params
 
-dpkg: setup bash bzip2 zlib coreutils diffutils findutils ncurses tar xz
+dpkg: setup bash bzip2 coreutils diffutils findutils ncurses tar xz
 	if ! [ -f dpkg/configure ]; then \
 		cd $(BUILD_WORK)/dpkg && ./autogen; \
 	fi
