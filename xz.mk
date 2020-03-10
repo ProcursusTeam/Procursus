@@ -5,7 +5,7 @@ endif
 xz: setup
 	cd $(BUILD_WORK)/xz && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/usr/local \
 		--disable-debug \
 		--disable-dependency-tracking \
 		--disable-silent-rules

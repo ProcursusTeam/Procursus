@@ -3,8 +3,8 @@
 SHELL           := /bin/bash
 UNAME           := $(shell uname -s)
 SUBPROJECTS     := \
-	coreutils sed grep findutils diffutils tar readline ncurses bash \
-	bzip2 lz4 xz zlib \
+	coreutils sed grep findutils diffutils tar readline ncurses bash berkeleydb \
+	bzip2 lz4 xz \
 	pcre zsh \
 	less nano \
 	apt dpkg \
@@ -201,7 +201,6 @@ setup:
 		https://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-00{1..9}{,.sig} \
 		https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-0{10..11}{,.sig} \
-		https://zlib.net/zlib-1.2.11.tar.xz{,.asc} \
 		https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz{,.sig} \
 		https://github.com/lz4/lz4/archive/v1.9.2.tar.gz \
 		https://tukaani.org/xz/xz-5.2.4.tar.xz{,.sig} \
@@ -209,7 +208,8 @@ setup:
 		https://www.zsh.org/pub/zsh-5.8.tar.xz{,.asc} \
 		https://ftp.gnu.org/gnu/less/less-530.tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/nano/nano-4.5.tar.xz{,.sig} \
-		http://deb.debian.org/debian/pool/main/d/dpkg/dpkg_1.20.0.tar.xz
+		http://deb.debian.org/debian/pool/main/d/dpkg/dpkg_1.20.0.tar.xz \
+		https://fossies.org/linux/misc/db-18.1.32.tar.gz #Requires registration on Oracle's website, so this is a mirror.
 	
 	$(call PGP_VERIFY,coreutils-8.31.tar.xz)
 	$(call PGP_VERIFY,sed-4.7.tar.xz)
@@ -232,7 +232,6 @@ setup:
 	$(call PGP_VERIFY,bash50-009)
 	$(call PGP_VERIFY,bash50-010)
 	$(call PGP_VERIFY,bash50-011)
-	$(call PGP_VERIFY,zlib-1.2.11.tar.xz,asc)
 	$(call PGP_VERIFY,bzip2-1.0.8.tar.gz)
 	# $(call PGP_VERIFY,v1.9.2.tar.gz)
 	$(call PGP_VERIFY,xz-5.2.4.tar.xz)
@@ -250,7 +249,6 @@ setup:
 	$(call EXTRACT_TAR,readline-8.0.tar.gz,readline-8.0,readline)
 	$(call EXTRACT_TAR,ncurses-6.1.tar.gz,ncurses-6.1,ncurses)
 	$(call EXTRACT_TAR,bash-5.0.tar.gz,bash-5.0,bash)
-	$(call EXTRACT_TAR,zlib-1.2.11.tar.xz,zlib-1.2.11,zlib)
 	$(call EXTRACT_TAR,bzip2-1.0.8.tar.gz,bzip2-1.0.8,bzip2)
 	$(call EXTRACT_TAR,v1.9.2.tar.gz,lz4-1.9.2,lz4)
 	$(call EXTRACT_TAR,xz-5.2.4.tar.xz,xz-5.2.4,xz)
@@ -259,6 +257,7 @@ setup:
 	$(call EXTRACT_TAR,less-530.tar.gz,less-530,less)
 	$(call EXTRACT_TAR,nano-4.5.tar.xz,nano-4.5,nano)
 	$(call EXTRACT_TAR,dpkg_1.20.0.tar.xz,dpkg-1.20.0,dpkg)
+	$(call EXTRACT_TAR,db-18.1.32.tar.gz,db-18.1.32,berkeleydb)
 
 	$(call DO_PATCH,readline80-001,readline,-p0)
 	$(call DO_PATCH,bash50-001,bash,-p0)
