@@ -3,9 +3,9 @@ $(error Use the main Makefile)
 endif
 
 ifeq ($(UNAME),Linux)
-INSTALL := /usr/bin/install -c --strip-program=$(TRIPLE)strip
+EXTRA := INSTALL="/usr/bin/install -c --strip-program=$(TRIPLE)strip"
 else
-INSTALL :=
+EXTRA :=
 endif
 
 # Needs DESTDIR in make -j8 to not attempt to build test files (which fail to link)
@@ -19,7 +19,7 @@ ncurses: setup
 	else \
 		:; \
 	fi
-	cd $(BUILD_WORK)/ncurses && $(INSTALL) \
+	cd $(BUILD_WORK)/ncurses && $(EXTRA) \
 		./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
