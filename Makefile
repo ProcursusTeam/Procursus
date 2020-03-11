@@ -1,4 +1,6 @@
-# On MacOS the make used here needs to be from brew for some reason.
+ifeq ($(firstword $(subst ., ,$(MAKE_VERSION))),3)
+$(error Install latest make from Homebrew - brew install make)
+endif
 
 SHELL           := /bin/bash
 UNAME           := $(shell uname -s)
@@ -15,15 +17,15 @@ ARCH            ?= arm64
 
 ifeq ($(UNAME),Linux)
 $(warning Building on Linux)
-TRIPLE          ?= arm-apple-darwin17-
+TRIPLE          ?= arm-apple-darwin17
 SYSROOT         ?= $(HOME)/cctools/SDK/iPhoneOS13.2.sdk
 MACOSX_SYSROOT  ?= $(HOME)/cctools/SDK/MacOSX.sdk
 
-CC       := $(TRIPLE)clang
-CXX      := $(TRIPLE)clang++
-AR       := $(TRIPLE)ar
-RANLIB   := $(TRIPLE)ranlib
-STRIP    := $(TRIPLE)strip
+CC       := $(TRIPLE)-clang
+CXX      := $(TRIPLE)-clang++
+AR       := $(TRIPLE)-ar
+RANLIB   := $(TRIPLE)-ranlib
+STRIP    := $(TRIPLE)-strip
 
 export CC CXX AR RANLIB STRIP
 
@@ -130,7 +132,7 @@ PATCH := gpatch
 else ifeq ($(shell patch --version | grep -q 'GNU patch' && echo 1),1)
 PATCH := patch
 else
-$(error Install GNU patch)all
+$(error Install GNU patch)
 endif
 
 ifeq ($(call HAS_COMMAND,fakeroot),1)
@@ -186,19 +188,6 @@ setup:
 		$(BUILD_WORK) $(BUILD_STAGE) $(BUILD_DIST)
 
 	git submodule update --init --recursive
-	
-	@# Update commit whenever dpkg update is needed.
-	if [ ! -d $(BUILD_WORK)/dpkg ] ; then \
-		cd $(BUILD_WORK) ; \
-		git clone https://github.com/Diatrus/dpkg && cd dpkg ; \
-		git checkout 69f4d070a694b92f6807d3239c8afd870017352f ; \
-		cd ../.. ; \
-	else \
-		cd $(BUILD_WORK)/dpkg ; \
-		git pull origin master ; \
-		git checkout 69f4d070a694b92f6807d3239c8afd870017352f ; \
-		cd ../.. ; \
-	fi
 
 	@# TODO: lz4 + zsh no signature check
 	wget -nc -P $(BUILD_SOURCE) \
@@ -297,6 +286,7 @@ after-all::
 
 clean::
 	rm -rf $(BUILD_BASE) $(BUILD_WORK) $(BUILD_STAGE) $(BUILD_DIST)
+	$(MAKE) -C dpkg clean
 	$(MAKE) -C uikittools clean
 	$(MAKE) -C darwintools clean
 

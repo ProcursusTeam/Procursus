@@ -9,15 +9,15 @@ else
 bzip2: setup
 	$(MAKE) -C $(BUILD_WORK)/bzip2 install \
 		PREFIX=$(BUILD_STAGE)/bzip2/usr \
-		CC=$(TRIPLE)clang \
-		AR=$(TRIPLE)ar \
-		RANLIB=$(TRIPLE)ranlib \
+		CC=$(CC) \
+		AR=$(AR) \
+		RANLIB=$(RANLIB) \
 		CFLAGS="$(CFLAGS)"
 	$(MAKE) -C $(BUILD_WORK)/bzip2 install \
 		PREFIX=$(BUILD_BASE)/usr \
-		CC=$(TRIPLE)clang \
-		AR=$(TRIPLE)ar \
-		RANLIB=$(TRIPLE)ranlib \
+		CC=$(CC) \
+		AR=$(AR) \
+		RANLIB=$(RANLIB) \
 		CFLAGS="$(CFLAGS)"
 	touch $(BUILD_WORK)/bzip2/.build_complete
 endif
