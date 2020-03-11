@@ -4,14 +4,14 @@ endif
 
 APT_DIR := $(PWD)/apt
 
-ifneq ($(wildcard $(BUILD_WORK)/apt/.build_complete),)
+ifneq ($(wildcard $(APT_DIR)/build/.build_complete),)
 apt:
 	@echo "Using previously built apt."
 else
 apt: 
-	mkdir -p $(BUILD_WORK)/apt
-	cd $(BUILD_WORK)/apt && echo -e "set(CMAKE_SYSTEM_NAME Darwin)  # Tell CMake we're cross-compiling\nset(CMAKE_CROSSCOMPILING true)\n#include(CMakeForceCompiler)\nset(CMAKE_SYSTEM_PROCESSOR $(ARCH))\nset(triple $(GNU_HOST_TRIPLE))\nset(CMAKE_FIND_ROOT_PATH /)\nset(CMAKE_LIBRARY_PATH )\nset(CMAKE_INCLUDE_PATH )\nset(CMAKE_C_COMPILER $(TRIPLE)clang)\nset(CMAKE_CXX_COMPILER $(TRIPLE)clang++)\nset(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)\nset(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)\nset(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)\n">> iphoneos_toolchain.cmake
-	cd $(BUILD_WORK)/apt && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	mkdir -p $(APT_DIR)/build
+	cd $(APT_DIR)/build && echo -e "set(CMAKE_SYSTEM_NAME Darwin)  # Tell CMake we're cross-compiling\nset(CMAKE_CROSSCOMPILING true)\n#include(CMakeForceCompiler)\nset(CMAKE_SYSTEM_PROCESSOR $(ARCH))\nset(triple $(GNU_HOST_TRIPLE))\nset(CMAKE_FIND_ROOT_PATH /)\nset(CMAKE_LIBRARY_PATH )\nset(CMAKE_INCLUDE_PATH )\nset(CMAKE_C_COMPILER $(CC))\nset(CMAKE_CXX_COMPILER $(CXX))\nset(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)\nset(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)\nset(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)\n">> iphoneos_toolchain.cmake
+	cd $(APT_DIR)/build && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
 		-DCMAKE_TOOLCHAIN_FILE=iphoneos_toolchain.cmake \
 		-DSTATE_DIR=/var/lib/apt \
 		-DCACHE_DIR=/var/cache/apt \
@@ -37,10 +37,10 @@ apt:
 		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
 		-DDPKG_DATADIR=/usr/share/dpkg \
 		$(APT_DIR)
-	$(MAKE) -C $(BUILD_WORK)/apt/build
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/apt/build install \
+	$(MAKE) -C $(APT_DIR)/build
+	$(FAKEROOT) $(MAKE) -C $(APT_DIR)/build install \
 		DESTDIR="$(BUILD_STAGE)/apt"
-	touch $(BUILD_WORK)/apt/.build_complete
+	touch $(APT_DIR)/build/.build_complete
 endif
 
 .PHONY: apt apt-stage

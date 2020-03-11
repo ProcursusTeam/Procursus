@@ -14,6 +14,7 @@ SUBPROJECTS     := \
 
 PLATFORM        ?= iphoneos
 ARCH            ?= arm64
+GNU_HOST_TRIPLE ?= arm-apple-darwin17
 
 ifeq ($(UNAME),Linux)
 $(warning Building on Linux)
@@ -21,11 +22,11 @@ TRIPLE          ?= arm-apple-darwin17
 SYSROOT         ?= $(HOME)/cctools/SDK/iPhoneOS13.2.sdk
 MACOSX_SYSROOT  ?= $(HOME)/cctools/SDK/MacOSX.sdk
 
-CC       := $(TRIPLE)-clang
-CXX      := $(TRIPLE)-clang++
-AR       := $(TRIPLE)-ar
-RANLIB   := $(TRIPLE)-ranlib
-STRIP    := $(TRIPLE)-strip
+CC       := $(GNU_HOST_TRIPLE)-clang
+CXX      := $(GNU_HOST_TRIPLE)-clang++
+AR       := $(GNU_HOST_TRIPLE)-ar
+RANLIB   := $(GNU_HOST_TRIPLE)-ranlib
+STRIP    := $(GNU_HOST_TRIPLE)-strip
 
 export CC CXX AR RANLIB STRIP
 
@@ -37,8 +38,6 @@ MACOSX_SYSROOT  ?= $(shell xcode-select -print-path)/Platforms/MacOSX.platform/D
 else
 $(error Please use Linux or MacOS to build)
 endif
-
-GNU_HOST_TRIPLE ?= aarch64-apple-darwin
 
 iphoneos_VERSION_MIN := -miphoneos-version-min=11.0
 
@@ -286,6 +285,7 @@ after-all::
 
 clean::
 	rm -rf $(BUILD_BASE) $(BUILD_WORK) $(BUILD_STAGE) $(BUILD_DIST)
+	@# When using 'make clean' in submodules, there is still an issue with the subproject changing when committing. This fixes that.
 	git submodule foreach --recursive git clean -xfd
 	git submodule foreach --recursive git reset --hard
 	$(MAKE) -C darwintools clean
