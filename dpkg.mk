@@ -8,7 +8,7 @@ ifneq ("$(wildcard $(BUILD_WORK)/dpkg/.build_complete)","")
 dpkg:
 	@echo "Using previously built dpkg."
 else
-dpkg: setup bash bzip2 coreutils diffutils findutils ncurses tar xz
+dpkg: setup bzip2 xz
 	if ! [ -f dpkg/configure ]; then \
 		cd $(BUILD_WORK)/dpkg && ./autogen; \
 	fi
@@ -29,9 +29,9 @@ dpkg: setup bash bzip2 coreutils diffutils findutils ncurses tar xz
 		TAR=$(TAR)
 	$(SED) -i s/'#define ARCHITECTURE "darwin-arm64"'/'#define ARCHITECTURE "$(DEB_ARCH)"'/ $(BUILD_WORK)/dpkg/config.h
 	$(SED) -i s/'#define ARCHITECTURE_OS "darwin"'/'#define ARCHITECTURE_OS "$(PLATFORM)"'/ $(BUILD_WORK)/dpkg/config.h
-	$(SED) -i s/'$(TAR)'/'tar'/ $(BUILD_WORK)/dpkg/config.h
 	$(SED) -i '/#include <config.h>/i #include <string.h>\n#include <xlocale.h>' $(BUILD_WORK)/dpkg/lib/dpkg/i18n.c
-	$(SED) -i '/update_dyld_shared_cache/d' $(BUILD_WORK)/dpkg/src/help.c
+	$(SED) -i s/'update_dyld_shared_cache'/'launchctl'/ $(BUILD_WORK)/dpkg/src/help.c
+	$(SED) -i s/'$(TAR)'/'tar'/ $(BUILD_WORK)/dpkg/config.h
 	$(MAKE) -C $(BUILD_WORK)/dpkg
 	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/dpkg install \
 		DESTDIR="$(BUILD_STAGE)/dpkg"
