@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 ifeq ($(UNAME),Linux)
-EXTRA := INSTALL="/usr/bin/install -c --strip-program=$(TRIPLE)strip"
+EXTRA := INSTALL="/usr/bin/install -c --strip-program=$(STRIP)"
 else
 EXTRA :=
 endif
