@@ -14,7 +14,7 @@ SUBPROJECTS     := \
 
 PLATFORM        ?= iphoneos
 ARCH            ?= arm64
-GNU_HOST_TRIPLE ?= arm-apple-darwin17
+GNU_HOST_TRIPLE ?= aarch64-apple-darwin
 
 ifeq ($(UNAME),Linux)
 $(warning Building on Linux)
