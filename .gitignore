@@ -1,4 +1,5 @@
 fakeroot_persist
+.build_complete
 build_base/
 build_source/
 build_stage/

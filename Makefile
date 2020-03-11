@@ -290,6 +290,7 @@ clean::
 	@# When using 'make clean' in submodules, there is still an issue with the subproject changing when committing. This fixes that.
 	git submodule foreach --recursive git clean -xfd
 	git submodule foreach --recursive git reset --hard
+	rm -f darwintools/.build_complete
 	$(MAKE) -C darwintools clean
 
 .PHONY: clean setup
