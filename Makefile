@@ -1,5 +1,11 @@
-SUBPROJECTS := \
-	coreutils sed grep findutils diffutils tar readline ncurses bash \
+ifeq ($(firstword $(subst ., ,$(MAKE_VERSION))),3)
+$(error Install latest make from Homebrew - brew install make)
+endif
+
+SHELL           := /bin/bash
+UNAME           := $(shell uname -s)
+SUBPROJECTS     := \
+	coreutils sed grep findutils diffutils tar readline ncurses bash berkeleydb \
 	bzip2 lz4 xz \
 	pcre zsh \
 	less nano \
@@ -8,8 +14,30 @@ SUBPROJECTS := \
 
 PLATFORM        ?= iphoneos
 ARCH            ?= arm64
+
+ifeq ($(UNAME),Linux)
+$(warning Building on Linux)
+TRIPLE          ?= arm-apple-darwin17
+SYSROOT         ?= $(HOME)/cctools/SDK/iPhoneOS13.2.sdk
+MACOSX_SYSROOT  ?= $(HOME)/cctools/SDK/MacOSX.sdk
+
+CC       := $(TRIPLE)-clang
+CXX      := $(TRIPLE)-clang++
+AR       := $(TRIPLE)-ar
+RANLIB   := $(TRIPLE)-ranlib
+STRIP    := $(TRIPLE)-strip
+
+export CC CXX AR RANLIB STRIP
+
+else ifeq ($(UNAME),Darwin)
+$(warning Building on MacOS)
+TRIPLE          ?=
 SYSROOT         ?= $(THEOS)/sdks/iPhoneOS12.2.sdk
 MACOSX_SYSROOT  ?= $(shell xcode-select -print-path)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+else
+$(error Please use Linux or MacOS to build)
+endif
+
 GNU_HOST_TRIPLE ?= aarch64-apple-darwin
 
 iphoneos_VERSION_MIN := -miphoneos-version-min=11.0
@@ -35,7 +63,7 @@ CFLAGS   := -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isyst
 CXXFLAGS := $(CFLAGS)
 LDFLAGS  := -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib
 
-export PLATFORM ARCH SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE
+export PLATFORM ARCH TRIPLE SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE
 export BUILD_BASE BUILD_WORK BUILD_STAGE BUILD_DIST
 export DEB_ARCH DEB_ORIGIN DEB_MAINTAINER
 export CFLAGS CXXFLAGS LDFLAGS
@@ -161,7 +189,7 @@ setup:
 
 	git submodule update --init --recursive
 
-	@# TODO: lz4 has no signature check
+	@# TODO: lz4 + zsh no signature check
 	wget -nc -P $(BUILD_SOURCE) \
 		https://ftp.gnu.org/gnu/coreutils/coreutils-8.31.tar.xz{,.sig} \
 		https://ftp.gnu.org/gnu/sed/sed-4.7.tar.xz{,.sig} \
@@ -171,19 +199,19 @@ setup:
 		https://ftp.gnu.org/gnu/tar/tar-1.32.tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/readline/readline-8.0.tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/readline/readline-8.0-patches/readline80-001{,.sig} \
-		https://ftp.gnu.org/gnu/ncurses/ncurses-6.0.tar.gz{,.sig} \
+		https://ftp.gnu.org/gnu/ncurses/ncurses-6.1.tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-00{1..9}{,.sig} \
 		https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-0{10..11}{,.sig} \
-		https://zlib.net/zlib-1.2.11.tar.xz{,.asc} \
 		https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz{,.sig} \
 		https://github.com/lz4/lz4/archive/v1.9.2.tar.gz \
 		https://tukaani.org/xz/xz-5.2.4.tar.xz{,.sig} \
 		https://ftp.pcre.org/pub/pcre/pcre-8.43.tar.bz2{,.sig} \
-		https://www.zsh.org/pub/zsh-5.7.1.tar.xz{,.asc} \
+		https://www.zsh.org/pub/zsh-5.8.tar.xz{,.asc} \
 		https://ftp.gnu.org/gnu/less/less-530.tar.gz{,.sig} \
-		https://ftp.gnu.org/gnu/nano/nano-4.5.tar.xz{,.sig}
-
+		https://ftp.gnu.org/gnu/nano/nano-4.5.tar.xz{,.sig} \
+		https://fossies.org/linux/misc/db-18.1.32.tar.gz #Requires registration on Oracle's website, so this is a mirror.
+	
 	$(call PGP_VERIFY,coreutils-8.31.tar.xz)
 	$(call PGP_VERIFY,sed-4.7.tar.xz)
 	$(call PGP_VERIFY,grep-3.3.tar.xz)
@@ -205,12 +233,11 @@ setup:
 	$(call PGP_VERIFY,bash50-009)
 	$(call PGP_VERIFY,bash50-010)
 	$(call PGP_VERIFY,bash50-011)
-	$(call PGP_VERIFY,zlib-1.2.11.tar.xz,asc)
 	$(call PGP_VERIFY,bzip2-1.0.8.tar.gz)
 	# $(call PGP_VERIFY,v1.9.2.tar.gz)
 	$(call PGP_VERIFY,xz-5.2.4.tar.xz)
 	$(call PGP_VERIFY,pcre-8.43.tar.bz2)
-	$(call PGP_VERIFY,zsh-5.7.1.tar.xz,asc)
+	# $(call PGP_VERIFY,zsh-5.8.tar.xz,asc)
 	$(call PGP_VERIFY,less-530.tar.gz)
 	$(call PGP_VERIFY,nano-4.5.tar.xz)
 
@@ -223,14 +250,14 @@ setup:
 	$(call EXTRACT_TAR,readline-8.0.tar.gz,readline-8.0,readline)
 	$(call EXTRACT_TAR,ncurses-6.1.tar.gz,ncurses-6.1,ncurses)
 	$(call EXTRACT_TAR,bash-5.0.tar.gz,bash-5.0,bash)
-	$(call EXTRACT_TAR,zlib-1.2.11.tar.xz,zlib-1.2.11,zlib)
 	$(call EXTRACT_TAR,bzip2-1.0.8.tar.gz,bzip2-1.0.8,bzip2)
 	$(call EXTRACT_TAR,v1.9.2.tar.gz,lz4-1.9.2,lz4)
 	$(call EXTRACT_TAR,xz-5.2.4.tar.xz,xz-5.2.4,xz)
 	$(call EXTRACT_TAR,pcre-8.43.tar.bz2,pcre-8.43,pcre)
-	$(call EXTRACT_TAR,zsh-5.7.1.tar.xz,zsh-5.7.1,zsh)
+	$(call EXTRACT_TAR,zsh-5.8.tar.xz,zsh-5.8,zsh)
 	$(call EXTRACT_TAR,less-530.tar.gz,less-530,less)
 	$(call EXTRACT_TAR,nano-4.5.tar.xz,nano-4.5,nano)
+	$(call EXTRACT_TAR,db-18.1.32.tar.gz,db-18.1.32,berkeleydb)
 
 	$(call DO_PATCH,readline80-001,readline,-p0)
 	$(call DO_PATCH,bash50-001,bash,-p0)
@@ -259,7 +286,8 @@ after-all::
 
 clean::
 	rm -rf $(BUILD_BASE) $(BUILD_WORK) $(BUILD_STAGE) $(BUILD_DIST)
+	$(MAKE) -C dpkg clean
 	$(MAKE) -C uikittools clean
 	$(MAKE) -C darwintools clean
 
-.PHONY: setup clean
+.PHONY: clean setup

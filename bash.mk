@@ -9,11 +9,16 @@ endif
 # things (e.g. git+ssh) will break if the user sets their default shell to
 # Homebrew's bash instead of /bin/bash.
 
+ifneq ($(wildcard $(BUILD_WORK)/bash/.build_complete),)
 bash:
+	@echo "Using previously built bash."
+else
+bash: setup grep ncurses readline sed
 	@# TODO: This is kinda messy, clean up
 	cd $(BUILD_WORK)/bash && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
+		--disable-nls \
 		--with-installed-readline \
 		CFLAGS="$(CFLAGS) -DSSH_SOURCE_BASHRC" \
 		ac_cv_c_stack_direction=-1 \
@@ -37,5 +42,7 @@ bash:
 	$(MAKE) -C $(BUILD_WORK)/bash
 	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/bash install \
 		DESTDIR="$(BUILD_STAGE)/bash"
+	touch $(BUILD_WORK)/bash/.build_complete
+endif
 
 .PHONY: bash

@@ -1,3 +1,9 @@
 [submodule "uikittools"]
 	path = uikittools
 	url = https://github.com/coolstar/uikittools-ng.git
+[submodule "apt"]
+	path = apt
+	url = https://github.com/Diatrus/apt
+[submodule "dpkg"]
+	path = dpkg
+	url = https://github.com/Diatrus/dpkg.git
