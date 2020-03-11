@@ -2,7 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-ifneq ("$(wildcard $(BUILD_WORK)/diffutils/.build_complete)","")
+ifneq ($(wildcard $(BUILD_WORK)/diffutils/.build_complete),)
 diffutils:
 	@echo "Using previously built diffutils."
 else

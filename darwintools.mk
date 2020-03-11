@@ -2,7 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-ifneq ("$(wildcard darwintools/.build_complete)","")
+ifneq ($(wildcard darwintools/.build_complete),)
 darwintools:
 	@echo "Using previously built darwintools."
 else

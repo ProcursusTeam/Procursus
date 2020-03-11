@@ -6,7 +6,7 @@ endif
 # iOS 13, borrowed from Homebrew formula for coreutils
 # TODO: Remove when GNU fixes this issue
 
-ifneq ("$(wildcard $(BUILD_WORK)/findutils/.build_complete)","")
+ifneq ($(wildcard $(BUILD_WORK)/findutils/.build_complete),)
 findutils:
 	@echo "Using previously built findutils."
 else

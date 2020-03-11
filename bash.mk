@@ -9,7 +9,7 @@ endif
 # things (e.g. git+ssh) will break if the user sets their default shell to
 # Homebrew's bash instead of /bin/bash.
 
-ifneq ("$(wildcard $(BUILD_WORK)/bash/.build_complete)","")
+ifneq ($(wildcard $(BUILD_WORK)/bash/.build_complete),)
 bash:
 	@echo "Using previously built bash."
 else

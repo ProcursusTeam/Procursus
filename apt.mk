@@ -4,7 +4,7 @@ endif
 
 APT_DIR := $(PWD)/apt
 
-ifneq ("$(wildcard $(BUILD_WORK)/apt/.build_complete)","")
+ifneq ($(wildcard $(BUILD_WORK)/apt/.build_complete),)
 apt:
 	@echo "Using previously built apt."
 else

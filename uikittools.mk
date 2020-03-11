@@ -2,7 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-ifneq ("$(wildcard uikittools/.build_complete)","")
+ifneq ($(wildcard uikittools/.build_complete),)
 uikittools:
 	@echo "Using previously built uikittools."
 else

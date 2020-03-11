@@ -4,7 +4,7 @@ endif
 
 # TODO: Check if we can use --enable-jit
 
-ifneq ("$(wildcard $(BUILD_WORK)/pcre/.build_complete)","")
+ifneq ($(wildcard $(BUILD_WORK)/pcre/.build_complete),)
 pcre:
 	@echo "Using previously built pcre."
 else

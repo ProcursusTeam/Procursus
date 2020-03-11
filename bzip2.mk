@@ -2,7 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-ifneq ("$(wildcard $(BUILD_WORK)/bzip2/.build_complete)","")
+ifneq ($(wildcard $(BUILD_WORK)/bzip2/.build_complete),)
 bzip2:
 	@echo "Using previously built bzip2."
 else

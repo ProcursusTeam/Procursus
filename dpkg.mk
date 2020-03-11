@@ -4,7 +4,7 @@ endif
 
 # TODO: we shouldn’t need to patch the config output to make dpkg use the right architecture params
 
-ifneq ("$(wildcard $(BUILD_WORK)/dpkg/.build_complete)","")
+ifneq ($(wildcard dpkg/.build_complete),)
 dpkg:
 	@echo "Using previously built dpkg."
 else

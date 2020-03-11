@@ -13,7 +13,7 @@ endif
 
 # TODO: Apple vendors ncurses 5.4 but without terminfo. Can we safely upgrade to ncurses 6.x?
 
-ifneq ("$(wildcard $(BUILD_WORK)/ncurses/.build_complete)","")
+ifneq ($(wildcard $(BUILD_WORK)/ncurses/.build_complete),)
 ncurses:
 	@echo "Using previously built ncurses."
 else

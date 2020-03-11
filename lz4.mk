@@ -2,7 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-ifneq ("$(wildcard $(BUILD_WORK)/lz4/.build_complete)","")
+ifneq ($(wildcard $(BUILD_WORK)/lz4/.build_complete),)
 lz4:
 	@echo "Using previously built lz4."
 else

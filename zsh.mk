@@ -2,7 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-ifneq ("$(wildcard $(BUILD_WORK)/zsh/.build_complete)","")
+ifneq ($(wildcard $(BUILD_WORK)/zsh/.build_complete),)
 zsh:
 	@echo "Using previously built zsh."
 else
