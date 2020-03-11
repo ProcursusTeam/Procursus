@@ -4,6 +4,10 @@ endif
 
 # TODO: Check if we can use --enable-jit
 
+ifneq ("$(wildcard $(BUILD_WORK)/pcre/.build_complete)","")
+pcre:
+	@echo "Using previously built pcre."
+else
 pcre: setup bzip2 zlib
 	cd $(BUILD_WORK)/pcre && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
@@ -21,5 +25,7 @@ pcre: setup bzip2 zlib
 		DESTDIR=$(BUILD_STAGE)/pcre
 	$(MAKE) -C $(BUILD_WORK)/pcre install \
 		DESTDIR=$(BUILD_BASE)
+	touch $(BUILD_WORK)/pcre/.build_complete
+endif
 
 .PHONY: pcre

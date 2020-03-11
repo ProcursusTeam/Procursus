@@ -13,6 +13,10 @@ endif
 
 # TODO: Apple vendors ncurses 5.4 but without terminfo. Can we safely upgrade to ncurses 6.x?
 
+ifneq ("$(wildcard $(BUILD_WORK)/ncurses/.build_complete)","")
+ncurses:
+	@echo "Using previously built ncurses."
+else
 ncurses: setup
 	if [ -f $(BUILD_WORK)/ncurses/Makefile ]; then \
 		$(MAKE) -C $(BUILD_WORK)/ncurses clean; \
@@ -38,5 +42,7 @@ ncurses: setup
 		DESTDIR="$(BUILD_STAGE)/ncurses"
 	$(MAKE) -C $(BUILD_WORK)/ncurses install \
 		DESTDIR="$(BUILD_BASE)"
+	touch $(BUILD_WORK)/ncurses/.build_complete
+endif
 
 .PHONY: ncurses

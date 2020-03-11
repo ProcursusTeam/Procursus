@@ -4,6 +4,10 @@ endif
 
 # TODO: we shouldn’t need to patch the config output to make dpkg use the right architecture params
 
+ifneq ("$(wildcard $(BUILD_WORK)/dpkg/.build_complete)","")
+dpkg:
+	@echo "Using previously built dpkg."
+else
 dpkg: setup bash bzip2 coreutils diffutils findutils ncurses tar xz
 	if ! [ -f dpkg/configure ]; then \
 		cd $(BUILD_WORK)/dpkg && ./autogen; \
@@ -15,6 +19,7 @@ dpkg: setup bash bzip2 coreutils diffutils findutils ncurses tar xz
 		--localstatedir=/var \
 		--sysconfdir=/etc \
 		--with-admindir=/Library/dpkg \
+		--with-logdir=/var/log/dpkg \
 		--disable-start-stop-daemon \
 		--disable-dselect \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
@@ -31,6 +36,8 @@ dpkg: setup bash bzip2 coreutils diffutils findutils ncurses tar xz
 		DESTDIR="$(BUILD_STAGE)/dpkg"
 	$(FAKEROOT) mkdir -p $(BUILD_STAGE)/dpkg/var/lib
 	$(FAKEROOT) ln -s /Library/dpkg $(BUILD_STAGE)/dpkg/var/lib/dpkg
+	touch $(BUILD_WORK)/dpkg/.build_complete
+endif
 
 .PHONY: dpkg
 

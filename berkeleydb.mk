@@ -2,6 +2,10 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+ifneq ("$(wildcard $(BUILD_WORK)/berkeleydb/.build_complete)","")
+berkeleydb:
+	@echo "Using previously built berkeleydb."
+else
 berkeleydb: setup
 	cd $(BUILD_WORK)/berkeleydb/dist && ./s_config
 	cd $(BUILD_WORK)/berkeleydb/build_unix && ../dist/configure \
@@ -15,5 +19,7 @@ berkeleydb: setup
 		DESTDIR=$(BUILD_STAGE)/berkeleydb
 	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/berkeleydb/build_unix install \
 		DESTDIR=$(BUILD_BASE)
+	touch $(BUILD_WORK)/berkeleydb/.build_complete
+endif
 
 .PHONY: berkeleydb
