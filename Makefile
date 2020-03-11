@@ -286,8 +286,8 @@ after-all::
 
 clean::
 	rm -rf $(BUILD_BASE) $(BUILD_WORK) $(BUILD_STAGE) $(BUILD_DIST)
-	$(MAKE) -C dpkg clean
-	$(MAKE) -C uikittools clean
+	git submodule foreach --recursive git clean -xfd
+	git submodule foreach --recursive git reset --hard
 	$(MAKE) -C darwintools clean
 
 .PHONY: clean setup
