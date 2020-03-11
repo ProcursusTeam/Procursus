@@ -7,7 +7,10 @@ uikittools:
 	@echo "Using previously built uikittools."
 else
 uikittools: setup
-	cd uikittools && make
+	cd uikittools && make \
+		CC=$(CC) \
+		STRIP=$(STRIP) \
+		CFLAGS="$(CFLAGS)"
 	$(FAKEROOT) mkdir -p $(BUILD_STAGE)/uikittools/usr/bin
 	$(FAKEROOT) cp uikittools/{cfversion,sbdidlaunch,sbreload,uicache,uiduid,uiopen} $(BUILD_STAGE)/uikittools/usr/bin
 	touch uikittools/.build_complete
