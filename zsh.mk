@@ -6,11 +6,12 @@ ifneq ($(wildcard $(BUILD_WORK)/zsh/.build_complete),)
 zsh:
 	@echo "Using previously built zsh."
 else
-zsh: setup ncurses
+zsh: setup pcre ncurses
 	cd $(BUILD_WORK)/zsh && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--enable-cap \
+		--enable-pcre \
 		--enable-maildir-support \
 		--enable-multibyte \
 		--enable-zsh-secure-free \
