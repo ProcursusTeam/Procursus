@@ -17,7 +17,7 @@ zsh: setup pcre ncurses
 		--enable-zsh-secure-free \
 		--enable-unicode9 \
 		--with-tcsetpgrp \
-		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
+		LDFLAGS="$(CFLAGS) -lpcre $(LDFLAGS)" \
 		DL_EXT=bundle \
 		zsh_cv_rlimit_rss_is_as=yes
 	$(MAKE) -C $(BUILD_WORK)/zsh
