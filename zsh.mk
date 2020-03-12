@@ -6,7 +6,7 @@ ifneq ($(wildcard $(BUILD_WORK)/zsh/.build_complete),)
 zsh:
 	@echo "Using previously built zsh."
 else
-zsh: setup ncurses pcre
+zsh: setup ncurses
 	cd $(BUILD_WORK)/zsh && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
@@ -15,7 +15,6 @@ zsh: setup ncurses pcre
 		--enable-multibyte \
 		--enable-zsh-secure-free \
 		--enable-unicode9 \
-		--enable-pcre \
 		--with-tcsetpgrp \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
 		DL_EXT=bundle \

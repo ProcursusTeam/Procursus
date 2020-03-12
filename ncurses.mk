@@ -13,6 +13,8 @@ endif
 
 # TODO: Apple vendors ncurses 5.4 but without terminfo. Can we safely upgrade to ncurses 6.x?
 
+# TODO: Is it ok to not include the regular ncurses libraries and instead use ncursesw exclusively?
+
 ifneq ($(wildcard $(BUILD_WORK)/ncurses/.build_complete),)
 ncurses:
 	@echo "Using previously built ncurses."
@@ -35,6 +37,7 @@ ncurses: setup
 		--disable-mixed-case \
 		--enable-termcap \
 		--enable-pc-files \
+		--enable-widec \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)"
 	$(MAKE) -C $(BUILD_WORK)/ncurses \
 		DESTDIR="$(BUILD_STAGE)/ncurses"

@@ -2,13 +2,11 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-# TODO: Check if we can use --enable-jit
-
 ifneq ($(wildcard $(BUILD_WORK)/pcre/.build_complete),)
 pcre:
 	@echo "Using previously built pcre."
 else
-pcre: setup bzip2 zlib
+pcre: setup bzip2
 	cd $(BUILD_WORK)/pcre && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
@@ -17,6 +15,7 @@ pcre: setup bzip2 zlib
 		--enable-pcre8 \
 		--enable-pcre16 \
 		--enable-pcre32 \
+		--enable-jit \
 		--enable-unicode-properties \
 		--enable-pcregrep-libz \
 		--enable-pcregrep-libbz2

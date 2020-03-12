@@ -15,7 +15,8 @@ nano: setup ncurses
 		--enable-color \
 		--enable-extra \
 		--enable-multibuffer \
-		--enable-nanorc
+		--enable-nanorc \
+		NCURSESW_LIBS=$(BUILD_BASE)/usr/lib/libncursesw.dylib
 	$(MAKE) -C $(BUILD_WORK)/nano
 	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/nano install \
 		DESTDIR=$(BUILD_STAGE)/nano
