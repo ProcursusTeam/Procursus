@@ -6,7 +6,7 @@ ifneq ($(wildcard $(BUILD_WORK)/less/.build_complete),)
 less:
 	@echo "Using previously built less."
 else
-less: setup
+less: setup ncurses pcre
 	cd $(BUILD_WORK)/less && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

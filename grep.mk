@@ -6,7 +6,7 @@ ifneq ($(wildcard $(BUILD_WORK)/grep/.build_complete),)
 grep:
 	@echo "Using previously built grep."
 else
-grep: setup
+grep: setup pcre
 	cd $(BUILD_WORK)/grep && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
