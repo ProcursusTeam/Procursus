@@ -37,7 +37,9 @@ ncurses: setup
 		--disable-mixed-case \
 		--enable-termcap \
 		--enable-pc-files \
+		--with-pkg-config-libdir=/usr/lib/pkgconfig \
 		--enable-widec \
+		--disable-overwrite \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)"
 	$(MAKE) -C $(BUILD_WORK)/ncurses \
 		DESTDIR="$(BUILD_STAGE)/ncurses"
@@ -45,6 +47,23 @@ ncurses: setup
 		DESTDIR="$(BUILD_STAGE)/ncurses"
 	$(MAKE) -C $(BUILD_WORK)/ncurses install \
 		DESTDIR="$(BUILD_BASE)"
+		
+	rm $(BUILD_STAGE)/ncurses/usr/bin/tabs
+		
+	for ti in $(BUILD_STAGE)/ncurses/usr/share/terminfo/*/*; do \
+		if [[ $$ti == */@(?(pc)ansi|cons25|cygwin|dumb|linux|mach|rxvt|screen|sun|vt@(52|100|102|220)|swvt25?(m)|[Exe]term|putty|konsole|gnome|apple|Apple_Terminal|unknown)?([-+.]*) ]]; then \
+			echo "keeping terminfo: $$ti" ; \
+		else \
+			rm -f "$$ti" ; \
+		fi \
+	done
+
+	$(RMDIR) --ignore-fail-on-non-empty $(BUILD_STAGE)/ncurses/usr/share/terminfo/*
+
+	for ti in $(BUILD_STAGE)/ncurses/usr/share/terminfo/*; do \
+	    $(LN) -Tsf "$${ti##*/}" $(BUILD_STAGE)/ncurses/usr/share/terminfo/"$$(printf "%02x" "'$${ti##*/}")" ; \
+	done
+
 	touch $(BUILD_WORK)/ncurses/.build_complete
 endif
 

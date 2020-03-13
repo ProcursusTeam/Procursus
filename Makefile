@@ -2,7 +2,7 @@ ifeq ($(firstword $(subst ., ,$(MAKE_VERSION))),3)
 $(error Install latest make from Homebrew - brew install make)
 endif
 
-SHELL           := /bin/bash
+SHELL           := /usr/bin/env bash
 UNAME           := $(shell uname -s)
 SUBPROJECTS     := \
 	coreutils sed grep findutils diffutils tar readline ncurses bash berkeleydb \
@@ -133,6 +133,22 @@ else ifeq ($(shell patch --version | grep -q 'GNU patch' && echo 1),1)
 PATCH := patch
 else
 $(error Install GNU patch)
+endif
+
+ifeq ($(call HAS_COMMAND,grmdir),1)
+RMDIR := grmdir
+else ifeq ($(shell rmdir --version | grep -q 'GNU coreutils' && echo 1),1)
+RMDIR := rmdir
+else
+$(error Install GNU coreutils)
+endif
+
+ifeq ($(call HAS_COMMAND,gln),1)
+LN := gln
+else ifeq ($(shell ln --version | grep -q 'GNU coreutils' && echo 1),1)
+LN := ln
+else
+$(error Install GNU coreutils)
 endif
 
 ifeq ($(call HAS_COMMAND,fakeroot),1)
