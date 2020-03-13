@@ -5,7 +5,7 @@ endif
 SHELL           := /bin/bash
 UNAME           := $(shell uname -s)
 SUBPROJECTS     := \
-	coreutils sed grep findutils diffutils tar readline ncurses bash berkeleydb \
+	coreutils sed grep findutils diffutils tar readline ncurses bash berkeleydb libressl \
 	bzip2 lz4 xz \
 	pcre zsh \
 	less nano \
@@ -189,6 +189,7 @@ setup:
 	git submodule update --init --recursive
 
 	@# TODO: lz4 + zsh no signature check
+	@# Berkeleydb requires registration on Oracle's website, so this is a mirror.
 	wget -nc -P $(BUILD_SOURCE) \
 		https://ftp.gnu.org/gnu/coreutils/coreutils-8.31.tar.xz{,.sig} \
 		https://ftp.gnu.org/gnu/sed/sed-4.7.tar.xz{,.sig} \
@@ -209,7 +210,8 @@ setup:
 		https://www.zsh.org/pub/zsh-5.8.tar.xz{,.asc} \
 		https://ftp.gnu.org/gnu/less/less-530.tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/nano/nano-4.5.tar.xz{,.sig} \
-		https://fossies.org/linux/misc/db-18.1.32.tar.gz #Requires registration on Oracle's website, so this is a mirror.
+		https://fossies.org/linux/misc/db-18.1.32.tar.gz \
+		https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.0.2.tar.gz{,.asc}
 	
 	$(call PGP_VERIFY,coreutils-8.31.tar.xz)
 	$(call PGP_VERIFY,sed-4.7.tar.xz)
@@ -239,6 +241,7 @@ setup:
 	# $(call PGP_VERIFY,zsh-5.8.tar.xz,asc)
 	$(call PGP_VERIFY,less-530.tar.gz)
 	$(call PGP_VERIFY,nano-4.5.tar.xz)
+	$(call PGP_VERIFY,libressl-3.0.2.tar.gz,asc)
 
 	$(call EXTRACT_TAR,coreutils-8.31.tar.xz,coreutils-8.31,coreutils)
 	$(call EXTRACT_TAR,sed-4.7.tar.xz,sed-4.7,sed)
@@ -257,6 +260,7 @@ setup:
 	$(call EXTRACT_TAR,less-530.tar.gz,less-530,less)
 	$(call EXTRACT_TAR,nano-4.5.tar.xz,nano-4.5,nano)
 	$(call EXTRACT_TAR,db-18.1.32.tar.gz,db-18.1.32,berkeleydb)
+	$(call EXTRACT_TAR,libressl-3.0.2.tar.gz,libressl-3.0.2,libressl)
 
 	$(call DO_PATCH,readline80-001,readline,-p0)
 	$(call DO_PATCH,bash50-001,bash,-p0)
