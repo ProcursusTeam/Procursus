@@ -5,7 +5,8 @@ endif
 SHELL           := /bin/bash
 UNAME           := $(shell uname -s)
 SUBPROJECTS     := \
-	coreutils sed grep findutils diffutils tar readline ncurses bash berkeleydb libressl \
+	coreutils sed grep findutils diffutils tar readline ncurses bash berkeleydb \
+	libressl openssh \
 	bzip2 lz4 xz \
 	pcre zsh \
 	less nano \
