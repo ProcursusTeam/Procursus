@@ -20,8 +20,7 @@ openssh: setup libressl
 		./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
-		UsePrivilegeSeparation=no \
-		PermitRootLogin=yes
+		--sysconfdir=/etc/ssh
 	$(MAKE) -C openssh
 	$(FAKEROOT) $(MAKE) -C openssh install \
 		DESTDIR="$(BUILD_STAGE)/openssh"
