@@ -39,7 +39,6 @@ ncurses: setup
 		--enable-pc-files \
 		--with-pkg-config-libdir=/usr/lib/pkgconfig \
 		--enable-widec \
-		--disable-overwrite \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)"
 	$(MAKE) -C $(BUILD_WORK)/ncurses \
 		DESTDIR="$(BUILD_STAGE)/ncurses"
@@ -61,7 +60,15 @@ ncurses: setup
 	$(RMDIR) --ignore-fail-on-non-empty $(BUILD_STAGE)/ncurses/usr/share/terminfo/*
 
 	for ti in $(BUILD_STAGE)/ncurses/usr/share/terminfo/*; do \
-	    $(LN) -Tsf "$${ti##*/}" $(BUILD_STAGE)/ncurses/usr/share/terminfo/"$$(printf "%02x" "'$${ti##*/}")" ; \
+		$(LN) -Tsf "$${ti##*/}" $(BUILD_STAGE)/ncurses/usr/share/terminfo/"$$(printf "%02x" "'$${ti##*/}")" ; \
+	done
+	
+	mkdir -p $(BUILD_STAGE)/ncurses/usr/include/ncursesw
+	
+	for h in $(BUILD_STAGE)/ncurses/usr/include/*; do \
+		if [[ ! -d $$h ]]; then \
+			$(LN) -srf $$h $(BUILD_STAGE)/ncurses/usr/include/ncursesw ; \
+		fi \
 	done
 
 	touch $(BUILD_WORK)/ncurses/.build_complete
