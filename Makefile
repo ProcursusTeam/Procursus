@@ -11,7 +11,7 @@ SUBPROJECTS     := \
 	pcre zsh \
 	less nano \
 	apt dpkg \
-	uikittools darwintools system-cmds
+	uikittools darwintools system-cmds launchd
 
 PLATFORM        ?= iphoneos
 ARCH            ?= arm64
@@ -236,7 +236,8 @@ setup:
 		https://ftp.gnu.org/gnu/less/less-530.tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/nano/nano-4.5.tar.xz{,.sig} \
 		https://fossies.org/linux/misc/db-18.1.32.tar.gz \
-		https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.0.2.tar.gz{,.asc}
+		https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.0.2.tar.gz{,.asc} \
+		https://opensource.apple.com/tarballs/launchd/launchd-842.92.1.tar.gz
 	
 	$(call PGP_VERIFY,coreutils-8.31.tar.xz)
 	$(call PGP_VERIFY,sed-4.7.tar.xz)
@@ -286,6 +287,7 @@ setup:
 	$(call EXTRACT_TAR,nano-4.5.tar.xz,nano-4.5,nano)
 	$(call EXTRACT_TAR,db-18.1.32.tar.gz,db-18.1.32,berkeleydb)
 	$(call EXTRACT_TAR,libressl-3.0.2.tar.gz,libressl-3.0.2,libressl)
+	$(call EXTRACT_TAR,launchd-842.92.1.tar.gz,launchd-842.92.1,launchd)
 
 	$(call DO_PATCH,readline80-001,readline,-p0)
 	$(call DO_PATCH,bash50-001,bash,-p0)
@@ -302,7 +304,9 @@ setup:
 
 	@# Copy headers from MacOSX.sdk
 	mkdir -p $(BUILD_BASE)/usr/include/sys/
-	mkdir -p $(BUILD_BASE)/usr/include/IOKit
+	mkdir -p $(BUILD_BASE)/usr/include/IOKit/
+	mkdir -p $(BUILD_BASE)/usr/include/CoreFoundation/
+	mkdir -p $(BUILD_BASE)/usr/include/os/
 	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/ttydev.h $(BUILD_BASE)/usr/include/sys/
 	cp -rf $(MACOSX_SYSROOT)/usr/include/ar.h $(BUILD_BASE)/usr/include/
 	cp -rf $(MACOSX_SYSROOT)/usr/include/xpc $(BUILD_BASE)/usr/include/
@@ -312,19 +316,42 @@ setup:
 	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/proc*.h $(BUILD_BASE)/usr/include/sys
 	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/kern_control.h $(BUILD_BASE)/usr/include/sys
 	cp -rf $(MACOSX_SYSROOT)/usr/include/net $(BUILD_BASE)/usr/include/net
+	cp -rf $(MACOSX_SYSROOT)/usr/include/netinet $(BUILD_BASE)/usr/include/netinet
+	cp -rf $(MACOSX_SYSROOT)/usr/include/netinet6 $(BUILD_BASE)/usr/include/netinet6
 	cp -rf $(MACOSX_SYSROOT)/usr/include/servers $(BUILD_BASE)/usr/include/servers
 	cp -rf $(MACOSX_SYSROOT)/usr/include/bootstrap*.h $(BUILD_BASE)/usr/include
 	cp -rf $(MACOSX_SYSROOT)/usr/include/NSSystemDirectories.h $(BUILD_BASE)/usr/include/NSSystemDirectories.h
 	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/reboot.h $(BUILD_BASE)/usr/include/sys
+	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/kern_event.h $(BUILD_BASE)/usr/include/sys
+	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/sys_domain.h $(BUILD_BASE)/usr/include/sys
 	cp -rf $(MACOSX_SYSROOT)/usr/include/tzfile.h $(BUILD_BASE)/usr/include
 	cp -rf $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_BASE)/usr/include/IOKit
 	cp -rf $(MACOSX_SYSROOT)/usr/include/libkern $(BUILD_BASE)/usr/include/libkern
+	ln -sfn $(BUILD_BASE)/usr/include/CFPriv.h $(BUILD_BASE)/usr/include/CoreFoundation/CFPriv.h
+	ln -sfn $(BUILD_BASE)/usr/include/CFBundlePriv.h $(BUILD_BASE)/usr/include/CoreFoundation/CFBundlePriv.h
+	ln -sfn $(BUILD_BASE)/usr/include/CFLogUtilities.h $(BUILD_BASE)/usr/include/CoreFoundation/CFLogUtilities.h
+	ln -sfn $(BUILD_BASE)/usr/include/assumes.h $(BUILD_BASE)/usr/include/os/assumes.h
+	ln -sfn $(BUILD_BASE)/usr/include/base_private.h $(BUILD_BASE)/usr/include/os/base_private.h
+	ln -sfn $(BUILD_BASE)/usr/include/kern_memorystatus.h $(BUILD_BASE)/usr/include/sys/kern_memorystatus.h
+	ln -sfn $(BUILD_BASE)/usr/include/socket.h $(BUILD_BASE)/usr/include/sys/socket.h
 	
 	@# Download extra headers that aren't included in MacOSX.sdk
 
 	wget -nc -P $(BUILD_BASE)/usr/include \
-		https://opensource.apple.com/source/launchd/launchd-328/launchd/src/bootstrap_priv.h \
-		https://opensource.apple.com/source/launchd/launchd-328/launchd/src/reboot2.h
+		https://opensource.apple.com/source/CF/CF-1153.18/CFPriv.h \
+		https://opensource.apple.com/source/CF/CF-1153.18/CFBundlePriv.h \
+		https://opensource.apple.com/source/CF/CF-1153.18/CFLogUtilities.h \
+		https://opensource.apple.com/source/Libinfo/Libinfo-538/lookup.subproj/libinfo.h \
+		https://opensource.apple.com/source/Libinfo/Libinfo-538/lookup.subproj/si_module.h \
+		https://opensource.apple.com/source/Libinfo/Libinfo-538/lookup.subproj/aliasdb.h \
+		https://opensource.apple.com/source/Libinfo/Libinfo-538/lookup.subproj/si_data.h \
+		https://opensource.apple.com/source/Libinfo/Libinfo-538/lookup.subproj/ils.h \
+		https://opensource.apple.com/source/IOKitUser/IOKitUser-1726.11.1/kext.subproj/bootfiles.h \
+		https://opensource.apple.com/source/Libc/Libc-1353.11.2/os/assumes.h \
+		https://opensource.apple.com/source/Libc/Libc-825.40.1/gen/_simple.h \
+		https://opensource.apple.com/source/libplatform/libplatform-126.50.8/include/os/base_private.h \
+		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/kern_memorystatus.h \
+		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/socket.h
 
 	@# Patch headers from iPhoneOS.sdk
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/stdlib.h > $(BUILD_BASE)/usr/include/stdlib.h

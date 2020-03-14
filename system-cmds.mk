@@ -27,7 +27,7 @@ system-cmds: setup
 			system-cmds/pwd_mkdb) CFLAGS="-D_PW_NAME_LEN=MAXLOGNAME -D_PW_YPTOKEN=\"__YP!\"";; \
 		esac ; \
 		echo "$$tproj" ; \
-		$(CC) -o $$tproj $$tproj.tproj/*.c -I. -D'__FBSDID(x)=' -DTARGET_OS_EMBEDDED -framework CoreFoundation -framework IOKit $(CFLAGS) $$CFLAGS ; \
+		cd system-cmds && $(CC) -o $$tproj $$tproj.tproj/*.c -I. -D'__FBSDID(x)=' -DTARGET_OS_EMBEDDED -framework CoreFoundation -framework IOKit $(CFLAGS) $$CFLAGS ; \
 	done
 
 	chmod u+s system-cmds/{passwd,login}
