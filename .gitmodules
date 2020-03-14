@@ -10,3 +10,6 @@
 [submodule "openssh"]
 	path = openssh
 	url = https://github.com/Diatrus/openssh-portable.git
+[submodule "system-cmds"]
+	path = system-cmds
+	url = https://github.com/Diatrus/system-cmds

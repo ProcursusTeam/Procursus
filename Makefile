@@ -11,7 +11,7 @@ SUBPROJECTS     := \
 	pcre zsh \
 	less nano \
 	apt dpkg \
-	uikittools darwintools
+	uikittools darwintools system-cmds
 
 PLATFORM        ?= iphoneos
 ARCH            ?= arm64
@@ -141,6 +141,14 @@ else ifeq ($(shell rmdir --version | grep -q 'GNU coreutils' && echo 1),1)
 RMDIR := rmdir
 else
 $(error Install GNU coreutils)
+endif
+
+ifeq ($(call HAS_COMMAND,gawk),1)
+AWK := gawk
+else ifeq ($(shell awk -W version | grep -q 'mawk' && echo 1),1)
+AWK := awk
+else
+$(error Install GNU awk)
 endif
 
 ifeq ($(call HAS_COMMAND,gln),1)
@@ -294,10 +302,29 @@ setup:
 
 	@# Copy headers from MacOSX.sdk
 	mkdir -p $(BUILD_BASE)/usr/include/sys/
-	cp -f $(MACOSX_SYSROOT)/usr/include/sys/ttydev.h $(BUILD_BASE)/usr/include/sys/
-	cp -f $(MACOSX_SYSROOT)/usr/include/ar.h $(BUILD_BASE)/usr/include/
+	mkdir -p $(BUILD_BASE)/usr/include/IOKit
+	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/ttydev.h $(BUILD_BASE)/usr/include/sys/
+	cp -rf $(MACOSX_SYSROOT)/usr/include/ar.h $(BUILD_BASE)/usr/include/
 	cp -rf $(MACOSX_SYSROOT)/usr/include/xpc $(BUILD_BASE)/usr/include/
 	cp -rf $(MACOSX_SYSROOT)/usr/include/launch.h $(BUILD_BASE)/usr/include/
+	cp -rf $(MACOSX_SYSROOT)/usr/include/libc.h $(BUILD_BASE)/usr/include/
+	cp -rf $(MACOSX_SYSROOT)/usr/include/libproc.h $(BUILD_BASE)/usr/include/
+	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/proc*.h $(BUILD_BASE)/usr/include/sys
+	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/kern_control.h $(BUILD_BASE)/usr/include/sys
+	cp -rf $(MACOSX_SYSROOT)/usr/include/net $(BUILD_BASE)/usr/include/net
+	cp -rf $(MACOSX_SYSROOT)/usr/include/servers $(BUILD_BASE)/usr/include/servers
+	cp -rf $(MACOSX_SYSROOT)/usr/include/bootstrap*.h $(BUILD_BASE)/usr/include
+	cp -rf $(MACOSX_SYSROOT)/usr/include/NSSystemDirectories.h $(BUILD_BASE)/usr/include/NSSystemDirectories.h
+	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/reboot.h $(BUILD_BASE)/usr/include/sys
+	cp -rf $(MACOSX_SYSROOT)/usr/include/tzfile.h $(BUILD_BASE)/usr/include
+	cp -rf $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_BASE)/usr/include/IOKit
+	cp -rf $(MACOSX_SYSROOT)/usr/include/libkern $(BUILD_BASE)/usr/include/libkern
+	
+	@# Download extra headers that aren't included in MacOSX.sdk
+
+	wget -nc -P $(BUILD_BASE)/usr/include \
+		https://opensource.apple.com/source/launchd/launchd-328/launchd/src/bootstrap_priv.h \
+		https://opensource.apple.com/source/launchd/launchd-328/launchd/src/reboot2.h
 
 	@# Patch headers from iPhoneOS.sdk
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/stdlib.h > $(BUILD_BASE)/usr/include/stdlib.h
