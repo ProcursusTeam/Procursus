@@ -10,7 +10,7 @@ system-cmds:
 else
 system-cmds: setup
 	for gperf in system-cmds/getconf.tproj/*.gperf; do \
-	    LC_ALL=C $(AWK) -f system-cmds/getconf.tproj/fake-gperf.awk < $$gperf > system-cmds/getconf.tproj/"$$(basename $$gperf .gperf).c" ; \
+	    LC_ALL=C awk -f system-cmds/getconf.tproj/fake-gperf.awk < $$gperf > system-cmds/getconf.tproj/"$$(basename $$gperf .gperf).c" ; \
 	done
 	
 	rm -f system-cmds/passwd.tproj/od_passwd.c

@@ -59,7 +59,7 @@ BUILD_STAGE    := $(PWD)/build_stage
 # Final output
 BUILD_DIST     := $(PWD)/build_dist
 
-CFLAGS   := -O2 --target=$(GNU_HOST_TRIPLE) -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include
+CFLAGS   := -O2 -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include
 CXXFLAGS := $(CFLAGS)
 LDFLAGS  := -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib
 
@@ -141,14 +141,6 @@ else ifeq ($(shell rmdir --version | grep -q 'GNU coreutils' && echo 1),1)
 RMDIR := rmdir
 else
 $(error Install GNU coreutils)
-endif
-
-ifeq ($(call HAS_COMMAND,gawk),1)
-AWK := gawk
-else ifeq ($(shell awk -W version | grep -q 'mawk' && echo 1),1)
-AWK := awk
-else
-$(error Install GNU awk)
 endif
 
 ifeq ($(call HAS_COMMAND,gln),1)
