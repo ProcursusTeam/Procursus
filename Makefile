@@ -5,7 +5,7 @@ endif
 SHELL           := /usr/bin/env bash
 UNAME           := $(shell uname -s)
 SUBPROJECTS     := \
-	coreutils sed grep findutils diffutils tar readline ncurses bash berkeleydb \
+	coreutils sed grep findutils diffutils tar readline ncurses bash berkeleydb libgpg-error\
 	libressl openssh \
 	bzip2 lz4 xz \
 	pcre zsh \
@@ -59,7 +59,7 @@ BUILD_STAGE    := $(PWD)/build_stage
 # Final output
 BUILD_DIST     := $(PWD)/build_dist
 
-CFLAGS   := -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include
+CFLAGS   := -O2 --target=$(GNU_HOST_TRIPLE) -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include
 CXXFLAGS := $(CFLAGS)
 LDFLAGS  := -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib
 
@@ -236,7 +236,8 @@ setup:
 		https://ftp.gnu.org/gnu/less/less-530.tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/nano/nano-4.5.tar.xz{,.sig} \
 		https://fossies.org/linux/misc/db-18.1.32.tar.gz \
-		https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.0.2.tar.gz{,.asc}
+		https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.0.2.tar.gz{,.asc} \
+		https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-1.37.tar.bz2{,.sig}
 	
 	$(call PGP_VERIFY,coreutils-8.31.tar.xz)
 	$(call PGP_VERIFY,sed-4.7.tar.xz)
@@ -267,6 +268,7 @@ setup:
 	$(call PGP_VERIFY,less-530.tar.gz)
 	$(call PGP_VERIFY,nano-4.5.tar.xz)
 	$(call PGP_VERIFY,libressl-3.0.2.tar.gz,asc)
+	$(call PGP_VERIFY,libgpg-error-1.37.tar.bz2)
 
 	$(call EXTRACT_TAR,coreutils-8.31.tar.xz,coreutils-8.31,coreutils)
 	$(call EXTRACT_TAR,sed-4.7.tar.xz,sed-4.7,sed)
@@ -286,6 +288,7 @@ setup:
 	$(call EXTRACT_TAR,nano-4.5.tar.xz,nano-4.5,nano)
 	$(call EXTRACT_TAR,db-18.1.32.tar.gz,db-18.1.32,berkeleydb)
 	$(call EXTRACT_TAR,libressl-3.0.2.tar.gz,libressl-3.0.2,libressl)
+	$(call EXTRACT_TAR,libgpg-error-1.37.tar.bz2,libgpg-error-1.37,libgpg-error)
 
 	$(call DO_PATCH,readline80-001,readline,-p0)
 	$(call DO_PATCH,bash50-001,bash,-p0)

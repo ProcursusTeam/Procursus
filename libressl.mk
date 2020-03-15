@@ -14,7 +14,7 @@ libressl: setup
 		--sysconfdir=/etc
 	$(MAKE) -C $(BUILD_WORK)/libressl
 	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/libressl install \
-		DESTDIR="$(BUILD_STAGE)/libressl"
+		DESTDIR=$(BUILD_STAGE)/libressl
 	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/libressl install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libressl/.build_complete
