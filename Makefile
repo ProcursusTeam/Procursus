@@ -313,7 +313,7 @@ setup:
 	$(call EXTRACT_TAR,libtasn1-4.16.0.tar.gz,libtasn1-4.16.0,libtasn1)
 	$(call EXTRACT_TAR,p11-kit-0.23.20.tar.xz,p11-kit-0.23.20,p11-kit)
 	$(call EXTRACT_TAR,gmp-6.2.0.tar.xz,gmp-6.2.0,libgmp10)
-	$(call EXTRACT_TAR,nettle-3.5.tar.gz,nettle-3.5,nettle)
+	$(call EXTRACT_TAR,nettle-3.5.1.tar.gz,nettle-3.5.1,nettle)
 	$(call EXTRACT_TAR,libidn2-2.3.0.tar.gz,libidn2-2.3.0,libidn2)
 	$(call EXTRACT_TAR,libunistring-0.9.10.tar.gz,libunistring-0.9.10,libunistring)
 	$(call EXTRACT_TAR,gnutls-3.6.12.tar.xz,gnutls-3.6.12,gnutls)
