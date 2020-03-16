@@ -5,7 +5,7 @@ endif
 SHELL           := /usr/bin/env bash
 UNAME           := $(shell uname -s)
 SUBPROJECTS     := \
-	coreutils sed grep findutils diffutils tar readline ncurses bash berkeleydb libgpg-error libtasn1 libgmp10 libidn2 libunistring \
+	coreutils sed grep findutils diffutils tar readline ncurses bash berkeleydb libgpg-error libtasn1 libgmp10 libidn2 libunistring npth \
 	libressl openssh libgcrypt gettext p11-kit nettle libksba \
 	bzip2 lz4 xz gnutls \
 	pcre zsh \
@@ -240,7 +240,8 @@ setup:
 		https://ftp.gnu.org/gnu/libidn/libidn2-2.3.0.tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/libunistring/libunistring-0.9.10.tar.gz{,.sig} \
 		https://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/gnutls-3.6.12.tar.xz{,.sig} \
-		https://gnupg.org/ftp/gcrypt/libksba/libksba-1.3.5.tar.bz2{,.sig}
+		https://gnupg.org/ftp/gcrypt/libksba/libksba-1.3.5.tar.bz2{,.sig} \
+		https://gnupg.org/ftp/gcrypt/npth/npth-1.6.tar.bz2{,.sig}
 	
 	$(call PGP_VERIFY,coreutils-8.31.tar.xz)
 	$(call PGP_VERIFY,sed-4.7.tar.xz)
@@ -282,6 +283,7 @@ setup:
 	$(call PGP_VERIFY,libunistring-0.9.10.tar.gz)
 	$(call PGP_VERIFY,gnutls-3.6.12.tar.xz)
 	$(call PGP_VERIFY,libksba-1.3.5.tar.bz2)
+	$(call PGP_VERIFY,npth-1.6.tar.bz2)
 
 	$(call EXTRACT_TAR,coreutils-8.31.tar.xz,coreutils-8.31,coreutils)
 	$(call EXTRACT_TAR,sed-4.7.tar.xz,sed-4.7,sed)
@@ -312,6 +314,7 @@ setup:
 	$(call EXTRACT_TAR,libunistring-0.9.10.tar.gz,libunistring-0.9.10,libunistring)
 	$(call EXTRACT_TAR,gnutls-3.6.12.tar.xz,gnutls-3.6.12,gnutls)
 	$(call EXTRACT_TAR,libksba-1.3.5.tar.bz2,libksba-1.3.5,libksba)
+	$(call EXTRACT_TAR,npth-1.6.tar.bz2,npth-1.6,npth)
 
 	$(call DO_PATCH,readline80-001,readline,-p0)
 	$(call DO_PATCH,bash50-001,bash,-p0)
