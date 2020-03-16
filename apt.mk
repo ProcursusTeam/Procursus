@@ -8,7 +8,7 @@ ifneq ($(wildcard $(APT_DIR)/build/.build_complete),)
 apt:
 	@echo "Using previously built apt."
 else
-apt: 
+apt: setup berkeleydb bzip2 dpkg gnutls lz4 xz
 	mkdir -p $(APT_DIR)/build
 	cd $(APT_DIR)/build && echo -e "set(CMAKE_SYSTEM_NAME Darwin)  # Tell CMake we're cross-compiling\nset(CMAKE_CROSSCOMPILING true)\n#include(CMakeForceCompiler)\nset(CMAKE_SYSTEM_PROCESSOR $(ARCH))\nset(triple $(GNU_HOST_TRIPLE))\nset(CMAKE_FIND_ROOT_PATH /)\nset(CMAKE_LIBRARY_PATH )\nset(CMAKE_INCLUDE_PATH )\nset(CMAKE_C_COMPILER $(CC))\nset(CMAKE_CXX_COMPILER $(CXX))\nset(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)\nset(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)\nset(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)\n">> iphoneos_toolchain.cmake
 	cd $(APT_DIR)/build && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
@@ -28,8 +28,12 @@ apt:
 		-DLZ4_LIBRARIES=$(BUILD_BASE)/usr/lib/liblz4.dylib \
 		-DLZMA_INCLUDE_DIRS=$(BUILD_BASE)/include \
 		-DLZMA_LIBRARIES=$(BUILD_BASE)/usr/local/lib/liblzma.dylib \
-		-DBERKELEY_DB_LIBRARIES=$(BUILD_BASE)/usr/lib/libdb.dylib \
 		-DBERKELEY_DB_INCLUDE_DIRS=$(BUILD_BASE)/usr/include \
+		-DBERKELEY_DB_LIBRARIES=$(BUILD_BASE)/usr/lib/libdb.dylib \
+		-DGNUTLS_INCLUDE_DIR=$(BUILD_BASE)/usr/include \
+		-DGNUTLS_LIBRARY=$(BUILD_BASE)/usr/lib/libgnutls.dylib \
+		-DGCRYPT_INCLUDE_DIRS=$(BUILD_BASE)/usr/include \
+		-DGCRYPT_LIBRARIES=$(BUILD_BASE)/usr/lib/libgcrypt.dylib \
 		-DCURRENT_VENDOR=debian \
 		-DCOMMON_ARCH=$(DEB_ARCH) \
 		-DUSE_NLS=0 \
