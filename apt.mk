@@ -10,7 +10,8 @@ apt:
 else
 apt: setup berkeleydb bzip2 dpkg gnutls lz4 xz
 	mkdir -p $(APT_DIR)/build
-	cd $(APT_DIR)/build && echo -e "set(CMAKE_SYSTEM_NAME Darwin)  # Tell CMake we're cross-compiling\nset(CMAKE_CROSSCOMPILING true)\n#include(CMakeForceCompiler)\nset(CMAKE_SYSTEM_PROCESSOR $(ARCH))\nset(triple $(GNU_HOST_TRIPLE))\nset(CMAKE_FIND_ROOT_PATH /)\nset(CMAKE_LIBRARY_PATH )\nset(CMAKE_INCLUDE_PATH )\nset(CMAKE_C_COMPILER $(CC))\nset(CMAKE_CXX_COMPILER $(CXX))\nset(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)\nset(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)\nset(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)\n">> iphoneos_toolchain.cmake
+	rm -f $(APT_DIR)/build/iphoneos_toolchain.cmake
+	cd $(APT_DIR)/build && echo -e "set(CMAKE_SYSTEM_NAME Darwin)  # Tell CMake we're cross-compiling\nset(CMAKE_CROSSCOMPILING true)\n#include(CMakeForceCompiler)\nset(CMAKE_SYSTEM_PROCESSOR $(ARCH))\nset(triple $(GNU_HOST_TRIPLE))\nset(CMAKE_FIND_ROOT_PATH $(BUILD_BASE) $(SYSROOT))\nset(CMAKE_LIBRARY_PATH $(BUILD_BASE)/lib)\nset(CMAKE_INCLUDE_PATH $(BUILD_BASE)/include $(SYSROOT)/include)\nset(CMAKE_C_COMPILER $(CC))\nset(CMAKE_CXX_COMPILER $(CXX))\nset(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)\nset(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)\nset(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)\nset(DPKG_DATADIR /usr/share/dpkg)\nset(CMAKE_C_FLAGS_RELEASE "-O2 -DNDEBUG ")\nset(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG ")\n">> iphoneos_toolchain.cmake
 	cd $(APT_DIR)/build && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
 		-DCMAKE_TOOLCHAIN_FILE=iphoneos_toolchain.cmake \
 		-DSTATE_DIR=/var/lib/apt \
