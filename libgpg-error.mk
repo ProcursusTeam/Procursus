@@ -4,7 +4,7 @@ endif
 
 ifneq ($(wildcard $(BUILD_WORK)/libgpg-error/.build_complete),)
 libgpg-error:
-	@echo "Using previously built tar."
+	@echo "Using previously built libgpg-error."
 else
 libgpg-error: setup
 	# This hack makes me extremely sad. System-cmds won't build without these libkern headers, but they interfere with iOS headers in this case.

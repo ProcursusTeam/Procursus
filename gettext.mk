@@ -1,0 +1,26 @@
+ifneq ($(CHECKRA1N_MEMO),1)
+$(error Use the main Makefile)
+endif
+
+ifneq ($(wildcard $(BUILD_WORK)/gettext/.build_complete),)
+gettext:
+	@echo "Using previously built gettext."
+else
+gettext: setup ncurses
+	cd $(BUILD_WORK)/gettext && ./configure -C \
+		--host=$(GNU_HOST_TRIPLE) \
+		--prefix=/usr \
+		--disable-java \
+		--disable-csharp \
+		--without-libintl-prefix
+	$(MAKE) -C $(BUILD_WORK)/gettext \
+		LIBTERMINFO=-lncursesw \
+		LTLIBTERMINFO=-lncursesw
+	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/gettext install \
+		DESTDIR=$(BUILD_STAGE)/gettext
+	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/gettext install \
+		DESTDIR=$(BUILD_BASE)
+	touch $(BUILD_WORK)/gettext/.build_complete
+endif
+
+.PHONY: gettext

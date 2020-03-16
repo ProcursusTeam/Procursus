@@ -4,7 +4,7 @@ endif
 
 ifneq ($(wildcard $(BUILD_WORK)/libgcrypt/.build_complete),)
 libgcrypt:
-	@echo "Using previously built tar."
+	@echo "Using previously built libgcrypt."
 else
 libgcrypt: setup libgpg-error
 	cd $(BUILD_WORK)/libgcrypt && ./configure -C \
