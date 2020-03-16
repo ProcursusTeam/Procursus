@@ -5,7 +5,7 @@ endif
 SHELL           := /usr/bin/env bash
 UNAME           := $(shell uname -s)
 SUBPROJECTS     := \
-	coreutils sed grep findutils diffutils tar readline ncurses bash berkeleydb libgpg-error\
+	coreutils sed grep findutils diffutils tar readline ncurses bash berkeleydb libgpg-error libtasn1\
 	libressl openssh libgcrypt gettext \
 	bzip2 lz4 xz \
 	pcre zsh \
@@ -231,7 +231,8 @@ setup:
 		https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.0.2.tar.gz{,.asc} \
 		https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-1.37.tar.bz2{,.sig} \
 		https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.8.5.tar.bz2{,.sig} \
-		https://ftp.gnu.org/pub/gnu/gettext/gettext-0.20.1.tar.xz{,.sig}
+		https://ftp.gnu.org/pub/gnu/gettext/gettext-0.20.1.tar.xz{,.sig} \
+		https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.16.0.tar.gz{,.sig}
 	
 	$(call PGP_VERIFY,coreutils-8.31.tar.xz)
 	$(call PGP_VERIFY,sed-4.7.tar.xz)
@@ -265,6 +266,7 @@ setup:
 	$(call PGP_VERIFY,libgpg-error-1.37.tar.bz2)
 	$(call PGP_VERIFY,libgcrypt-1.8.5.tar.bz2)
 	$(call PGP_VERIFY,gettext-0.20.1.tar.xz)
+	$(call PGP_VERIFY,libtasn1-4.16.0.tar.gz)
 
 	$(call EXTRACT_TAR,coreutils-8.31.tar.xz,coreutils-8.31,coreutils)
 	$(call EXTRACT_TAR,sed-4.7.tar.xz,sed-4.7,sed)
@@ -287,6 +289,7 @@ setup:
 	$(call EXTRACT_TAR,libgpg-error-1.37.tar.bz2,libgpg-error-1.37,libgpg-error)
 	$(call EXTRACT_TAR,libgcrypt-1.8.5.tar.bz2,libgcrypt-1.8.5,libgcrypt)
 	$(call EXTRACT_TAR,gettext-0.20.1.tar.xz,gettext-0.20.1,gettext)
+	$(call EXTRACT_TAR,libtasn1-4.16.0.tar.gz,libtasn1-4.16.0,libtasn1)
 
 	$(call DO_PATCH,readline80-001,readline,-p0)
 	$(call DO_PATCH,bash50-001,bash,-p0)
