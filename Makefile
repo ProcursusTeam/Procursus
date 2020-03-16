@@ -7,7 +7,7 @@ UNAME           := $(shell uname -s)
 SUBPROJECTS     := \
 	coreutils sed grep findutils diffutils tar readline ncurses bash berkeleydb libgpg-error libtasn1 libgmp10 libidn2 libunistring \
 	libressl openssh libgcrypt gettext p11-kit nettle \
-	bzip2 lz4 xz \
+	bzip2 lz4 xz gnutls \
 	pcre zsh \
 	less nano \
 	apt dpkg \
@@ -238,7 +238,8 @@ setup:
 		https://gmplib.org/download/gmp/gmp-6.2.0.tar.xz{,.sig} \
 		https://ftp.gnu.org/gnu/nettle/nettle-3.5.1.tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/libidn/libidn2-2.3.0.tar.gz{,.sig} \
-		https://ftp.gnu.org/gnu/libunistring/libunistring-0.9.10.tar.gz{,.sig}
+		https://ftp.gnu.org/gnu/libunistring/libunistring-0.9.10.tar.gz{,.sig} \
+		https://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/gnutls-3.6.12.tar.xz{,.sig}
 	
 	$(call PGP_VERIFY,coreutils-8.31.tar.xz)
 	$(call PGP_VERIFY,sed-4.7.tar.xz)
@@ -278,6 +279,7 @@ setup:
 	$(call PGP_VERIFY,nettle-3.5.tar.gz)
 	$(call PGP_VERIFY,libidn2-2.3.0.tar.gz)
 	$(call PGP_VERIFY,libunistring-0.9.10.tar.gz)
+	$(call PGP_VERIFY,gnutls-3.6.12.tar.xz)
 
 	$(call EXTRACT_TAR,coreutils-8.31.tar.xz,coreutils-8.31,coreutils)
 	$(call EXTRACT_TAR,sed-4.7.tar.xz,sed-4.7,sed)
@@ -306,6 +308,7 @@ setup:
 	$(call EXTRACT_TAR,nettle-3.5.tar.gz,nettle-3.5,nettle)
 	$(call EXTRACT_TAR,libidn2-2.3.0.tar.gz,libidn2-2.3.0,libidn2)
 	$(call EXTRACT_TAR,libunistring-0.9.10.tar.gz,libunistring-0.9.10,libunistring)
+	$(call EXTRACT_TAR,gnutls-3.6.12.tar.xz,gnutls-3.6.12,gnutls)
 
 	$(call DO_PATCH,readline80-001,readline,-p0)
 	$(call DO_PATCH,bash50-001,bash,-p0)
@@ -338,7 +341,7 @@ setup:
 	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/reboot.h $(BUILD_BASE)/usr/include/sys
 	cp -rf $(MACOSX_SYSROOT)/usr/include/tzfile.h $(BUILD_BASE)/usr/include
 	cp -rf $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_BASE)/usr/include/IOKit
-	cp -rf $(MACOSX_SYSROOT)/usr/include/libkern $(BUILD_BASE)/usr/include/libkern
+	cp -rf $(MACOSX_SYSROOT)/usr/include/libkern $(BUILD_BASE)/usr/include/libkern.bad
 	
 	@# Download extra headers that aren't included in MacOSX.sdk
 

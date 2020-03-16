@@ -9,6 +9,8 @@ system-cmds:
 	@echo "Using previously built system-cmds."
 else
 system-cmds: setup
+	# This hack makes me extremely sad. System-cmds won't build without these libkern headers, but they interfere with iOS headers usually.
+	mv $(BUILD_BASE)/usr/include/libkern.bad $(BUILD_BASE)/usr/include/libkern
 	for gperf in system-cmds/getconf.tproj/*.gperf; do \
 	    LC_ALL=C awk -f system-cmds/getconf.tproj/fake-gperf.awk < $$gperf > system-cmds/getconf.tproj/"$$(basename $$gperf .gperf).c" ; \
 	done
@@ -46,6 +48,7 @@ system-cmds: setup
 	$(LN) -s chpass $(BUILD_STAGE)/system-cmds/usr/bin/chsh
 	cp -a system-cmds/{ac,accton,iostat,mkfile,pwd_mkdb,sysctl,vifs,vipw,zdump,zic} $(BUILD_STAGE)/system-cmds/usr/sbin
 	
+	mv $(BUILD_BASE)/usr/include/libkern $(BUILD_BASE)/usr/include/libkern.bad
 	touch system-cmds/.build_complete
 endif
 
