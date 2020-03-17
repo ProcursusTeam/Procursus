@@ -31,7 +31,7 @@ I_N_T    := $(GNU_HOST_TRIPLE)-install_name_tool
 export CC CXX AR RANLIB STRIP
 
 else ifeq ($(UNAME),Darwin)
-$(warning Building on MacOS
+$(warning Building on MacOS)
 SYSROOT         ?= $(THEOS)/sdks/iPhoneOS12.2.sdk
 MACOSX_SYSROOT  ?= $(shell xcode-select -print-path)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
