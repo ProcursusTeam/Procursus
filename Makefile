@@ -19,7 +19,6 @@ GNU_HOST_TRIPLE ?= aarch64-apple-darwin
 
 ifeq ($(UNAME),Linux)
 $(warning Building on Linux)
-TRIPLE          ?= arm-apple-darwin17
 SYSROOT         ?= $(HOME)/cctools/SDK/iPhoneOS13.2.sdk
 MACOSX_SYSROOT  ?= $(HOME)/cctools/SDK/MacOSX.sdk
 
@@ -28,14 +27,15 @@ CXX      := $(GNU_HOST_TRIPLE)-clang++
 AR       := $(GNU_HOST_TRIPLE)-ar
 RANLIB   := $(GNU_HOST_TRIPLE)-ranlib
 STRIP    := $(GNU_HOST_TRIPLE)-strip
-
+I_N_T    := $(GNU_HOST_TRIPLE)-install_name_tool
 export CC CXX AR RANLIB STRIP
 
 else ifeq ($(UNAME),Darwin)
-$(warning Building on MacOS)
-TRIPLE          ?=
+$(warning Building on MacOS
 SYSROOT         ?= $(THEOS)/sdks/iPhoneOS12.2.sdk
 MACOSX_SYSROOT  ?= $(shell xcode-select -print-path)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+
+I_N_T           := install_name_tool
 else
 $(error Please use Linux or MacOS to build)
 endif
@@ -64,7 +64,7 @@ CXXFLAGS        := $(CFLAGS)
 LDFLAGS         := -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib
 PKG_CONFIG_PATH := $(BUILD_BASE)/usr/lib/pkgconfig
 
-export PLATFORM ARCH TRIPLE SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE
+export PLATFORM ARCH SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE I_N_T
 export BUILD_BASE BUILD_WORK BUILD_STAGE BUILD_DIST
 export DEB_ARCH DEB_ORIGIN DEB_MAINTAINER
 export CFLAGS CXXFLAGS LDFLAGS PKG_CONFIG_PATH
