@@ -280,7 +280,7 @@ setup:
 	$(call PGP_VERIFY,libtasn1-4.16.0.tar.gz)
 	$(call PGP_VERIFY,p11-kit-0.23.20.tar.xz)
 	$(call PGP_VERIFY,gmp-6.2.0.tar.xz)
-	$(call PGP_VERIFY,nettle-3.5.tar.gz)
+	$(call PGP_VERIFY,nettle-3.5.1.tar.gz)
 	$(call PGP_VERIFY,libidn2-2.3.0.tar.gz)
 	$(call PGP_VERIFY,libunistring-0.9.10.tar.gz)
 	$(call PGP_VERIFY,gnutls-3.6.12.tar.xz)
