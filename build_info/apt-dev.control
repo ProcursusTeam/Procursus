@@ -1,0 +1,10 @@
+Package: apt-dev
+Priority: standard
+Section: Packaging
+Maintainer: $DEB_MAINTAINER
+Architecture: $DEB_ARCH
+Version: $APT_VERSION
+Pre-Depends: dpkg (>= 1.14.25-8)
+Conflicts: apt7 (<<1:0), apt1.4 (<<1:0)
+Description: Advanced Packaging Tool (APT) Development Files
+Name: APT

@@ -34,7 +34,6 @@ else ifeq ($(UNAME),Darwin)
 $(warning Building on MacOS)
 SYSROOT         ?= $(THEOS)/sdks/iPhoneOS12.2.sdk
 MACOSX_SYSROOT  ?= $(shell xcode-select -print-path)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
-
 I_N_T           := install_name_tool
 else
 $(error Please use Linux or MacOS to build)
@@ -52,6 +51,8 @@ BUILD_ROOT     := $(PWD)
 BUILD_SOURCE   := $(PWD)/build_source
 # Base headers/libs (e.g. patched from SDK)
 BUILD_BASE     := $(PWD)/build_base
+# Dpkg info storage area
+BUILD_INFO    := $(PWD)/build_info
 # Extracted source working directory
 BUILD_WORK     := $(PWD)/build_work
 # Bootstrap working area
@@ -65,7 +66,7 @@ LDFLAGS         := -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib
 PKG_CONFIG_PATH := $(BUILD_BASE)/usr/lib/pkgconfig
 
 export PLATFORM ARCH SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE I_N_T
-export BUILD_BASE BUILD_WORK BUILD_STAGE BUILD_DIST
+export BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST
 export DEB_ARCH DEB_ORIGIN DEB_MAINTAINER
 export CFLAGS CXXFLAGS LDFLAGS PKG_CONFIG_PATH
 
@@ -369,7 +370,7 @@ after-all::
 	# find $(DESTDIR) -type f -exec $(LDID) -S {} \; 2>&1 | grep -v '_assert(false); errno=0'
 
 clean::
-	rm -rf $(BUILD_BASE) $(BUILD_WORK) $(BUILD_STAGE) $(BUILD_DIST)
+	rm -rf $(BUILD_BASE) $(BUILD_WORK) $(BUILD_STAGE)
 	@# When using 'make clean' in submodules, there is still an issue with the subproject changing when committing. This fixes that.
 	git submodule foreach --recursive git clean -xfd
 	git submodule foreach --recursive git reset --hard

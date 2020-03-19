@@ -1,0 +1,12 @@
+Package: apt
+Priority: standard
+Section: Packaging
+Maintainer: $DEB_MAINTAINER
+Architecture: $DEB_ARCH
+Version: $APT_VERSION
+Pre-Depends: dpkg (>= 1.14.25-8)
+Replaces: apt1.8, apt1.4
+Conflicts: apt7 (<<1:0), apt1.4 (<<1:0), apt1.8
+Provides: apt1.8 (=$APT_VERSION), apt-lib (=$APT_VERSION), apt(=$APT_VERSION)
+Description: Advanced Packaging Tool (APT)
+Name: APT
