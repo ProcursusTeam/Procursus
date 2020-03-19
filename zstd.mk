@@ -22,4 +22,27 @@ zstd: setup lz4 xz
 	touch $(BUILD_WORK)/zstd/.build_complete
 endif
 
-.PHONY: zstd
+zstd-stage: zstd
+	# zstd.mk Package Structure
+	rm -rf $(BUILD_DIST)/zstd
+	mkdir -p $(BUILD_DIST)/zstd
+	
+	# zstd.mk Prep zstd
+	cp -ar $(BUILD_STAGE)/zstd/usr $(BUILD_DIST)/zstd
+	
+	# zstd.mk Sign
+	find $(BUILD_DIST)/zstd -type f -exec $(LDID) -S$(BUILD_INFO)/general.xml {} \; &> /dev/null
+	find $(BUILD_DIST)/zstd -name .ldid* -exec rm -f {} \; &> /dev/null
+	
+	# zstd.mk Make .debs
+	mkdir -p $(BUILD_DIST)/zstd/DEBIAN
+	cp $(BUILD_INFO)/zstd.control $(BUILD_DIST)/zstd/DEBIAN/control
+	$(SED) -i ':a; s/$$ZSTD_VERSION/$(ZSTD_VERSION)/g; ta' $(BUILD_DIST)/zstd/DEBIAN/control
+	$(SED) -i ':a; s/$$DEB_MAINTAINER/$(DEB_MAINTAINER)/g; ta' $(BUILD_DIST)/zstd/DEBIAN/control
+	$(SED) -i ':a; s/$$DEB_ARCH/$(DEB_ARCH)/g; ta' $(BUILD_DIST)/zstd/DEBIAN/control
+	$(DPKG_DEB) -b $(BUILD_DIST)/zstd $(BUILD_DIST)/zstd_$(ZSTD_VERSION)_$(DEB_ARCH).deb
+	
+	# zstd.mk Build cleanup
+	rm -rf $(BUILD_DIST)/zstd
+
+.PHONY: zstd zstd-stage

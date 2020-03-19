@@ -41,7 +41,6 @@ apt: setup libgcrypt berkeleydb lz4 xz zstd
 endif
 
 apt-stage: apt
-	@# TODO Need to ldid this stuff... I'll do it in the morning.
 	# apt.mk Package Structure
 	rm -rf $(BUILD_DIST)/apt{,-utils,-dev}
 	mkdir -p $(BUILD_DIST)/apt/usr/{bin,lib,libexec/apt/{planners,solvers}}
@@ -65,6 +64,10 @@ apt-stage: apt
 	# apt.mk Prep APT-Dev
 	cp -ar $(BUILD_STAGE)/apt/usr/lib/pkgconfig $(BUILD_DIST)/apt-dev/usr/lib
 	cp -ar $(BUILD_STAGE)/apt/usr/include $(BUILD_DIST)/apt-dev/usr
+	
+	#apt.mk Sign
+	find $(BUILD_DIST)/apt $(BUILD_DIST)/apt-utils -type f -exec $(LDID) -S$(BUILD_INFO)/general.xml {} \; &> /dev/null
+	find $(BUILD_DIST)/zstd -name .ldid* -exec rm -f {} \; &> /dev/null
 	
 	# apt.mk Make .debs
 	mkdir -p $(BUILD_DIST)/apt{,-dev,-utils}/DEBIAN
