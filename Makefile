@@ -222,7 +222,7 @@ setup:
 		https://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-00{1..9}{,.sig} \
 		https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-0{10..11}{,.sig} \
-		https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz{,.sig} \
+		https://sourceware.org/pub/bzip2/bzip2-$(BZIP2_VERSION).tar.gz{,.sig} \
 		https://github.com/lz4/lz4/archive/v1.9.2.tar.gz \
 		https://tukaani.org/xz/xz-5.2.4.tar.xz{,.sig} \
 		https://ftp.pcre.org/pub/pcre/pcre-8.43.tar.bz2{,.sig} \
@@ -267,7 +267,7 @@ setup:
 	$(call PGP_VERIFY,bash50-009)
 	$(call PGP_VERIFY,bash50-010)
 	$(call PGP_VERIFY,bash50-011)
-	$(call PGP_VERIFY,bzip2-1.0.8.tar.gz)
+	$(call PGP_VERIFY,bzip2-$(BZIP2_VERSION).tar.gz)
 	# $(call PGP_VERIFY,v1.9.2.tar.gz)
 	$(call PGP_VERIFY,xz-5.2.4.tar.xz)
 	$(call PGP_VERIFY,pcre-8.43.tar.bz2)
@@ -299,7 +299,7 @@ setup:
 	$(call EXTRACT_TAR,readline-8.0.tar.gz,readline-8.0,readline)
 	$(call EXTRACT_TAR,ncurses-6.1.tar.gz,ncurses-6.1,ncurses)
 	$(call EXTRACT_TAR,bash-5.0.tar.gz,bash-5.0,bash)
-	$(call EXTRACT_TAR,bzip2-1.0.8.tar.gz,bzip2-1.0.8,bzip2)
+	$(call EXTRACT_TAR,bzip2-$(BZIP2_VERSION).tar.gz,bzip2-$(BZIP2_VERSION),bzip2)
 	$(call EXTRACT_TAR,v1.9.2.tar.gz,lz4-1.9.2,lz4)
 	$(call EXTRACT_TAR,xz-5.2.4.tar.xz,xz-5.2.4,xz)
 	$(call EXTRACT_TAR,pcre-8.43.tar.bz2,pcre-8.43,pcre)

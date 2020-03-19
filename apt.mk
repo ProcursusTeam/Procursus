@@ -9,7 +9,7 @@ ifneq ($(wildcard $(APT_DIR)/build/.build_complete),)
 apt:
 	@echo "Using previously built apt."
 else
-apt: setup libgcrypt berkeleydb bzip2 lz4 xz
+apt: setup libgcrypt berkeleydb lz4 xz
 	mkdir -p $(APT_DIR)/build
 	cd $(APT_DIR)/build && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
 		-DCMAKE_BUILD_TYPE=Release \
