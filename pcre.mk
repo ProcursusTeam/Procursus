@@ -6,7 +6,7 @@ ifneq ($(wildcard $(BUILD_WORK)/pcre/.build_complete),)
 pcre:
 	@echo "Using previously built pcre."
 else
-pcre: setup bzip2
+pcre: setup
 	cd $(BUILD_WORK)/pcre && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

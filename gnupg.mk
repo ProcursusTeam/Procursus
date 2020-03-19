@@ -6,7 +6,7 @@ ifneq ($(wildcard $(BUILD_WORK)/gnupg/.build_complete),)
 gnupg:
 	@echo "Using previously built libassuan."
 else
-gnupg: setup readline libgpg-error libgcrypt libassuan libksba npth bzip2
+gnupg: setup readline libgpg-error libgcrypt libassuan libksba npth
 	cd $(BUILD_WORK)/gnupg && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
@@ -15,7 +15,7 @@ gnupg: setup readline libgpg-error libgcrypt libassuan libksba npth bzip2
 		--with-npth-prefix=$(BUILD_BASE)/usr \
 		--with-libgcrypt-prefix=$(BUILD_BASE)/usr \
 		--with-ksba-prefix=$(BUILD_BASE)/usr \
-		--with-bzip2=$(BUILD_BASE)/usr
+		--with-bzip2
 	$(MAKE) -C $(BUILD_WORK)/gnupg
 	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/gnupg install \
 		DESTDIR=$(BUILD_STAGE)/gnupg
