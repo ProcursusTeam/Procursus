@@ -11,11 +11,14 @@ else
 zstd: setup lz4 xz
 	$(SED) -i s/'($$(shell uname), Darwin)'/'($$(shell test -n),)'/ $(BUILD_WORK)/zstd/lib/Makefile
 	$(MAKE) -C $(BUILD_WORK)/zstd install \
-		PREFIX=$(BUILD_STAGE)/zstd/usr
+		PREFIX=/usr \
+		DESTDIR=$(BUILD_STAGE)/zstd
 	$(MAKE) -C $(BUILD_WORK)/zstd install \
-		PREFIX=$(BUILD_BASE)/usr
+		PREFIX=/usr \
+		DESTDIR=$(BUILD_BASE)
 	$(MAKE) -C $(BUILD_WORK)/zstd/contrib/pzstd install \
-		PREFIX=$(BUILD_STAGE)/zstd/usr
+		PREFIX=/usr \
+		DESTDIR=$(BUILD_STAGE)/zstd
 	touch $(BUILD_WORK)/zstd/.build_complete
 endif
 
