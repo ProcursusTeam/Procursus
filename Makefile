@@ -5,7 +5,7 @@ endif
 SHELL           := /usr/bin/env bash
 UNAME           := $(shell uname -s)
 SUBPROJECTS     := \
-	coreutils sed grep findutils diffutils tar readline ncurses bash berkeleydb libgpg-error libtasn1 libgmp10 libidn2 libunistring npth \
+	coreutils sed grep findutils diffutils tar readline ncurses bash berkeleydb libgpg-error libtasn1 libgmp10 libidn2 libunistring npth zstd \
 	libressl openssh libgcrypt gettext p11-kit nettle libksba libassuan \
 	bzip2 lz4 xz gnutls gnupg \
 	pcre zsh \
@@ -207,7 +207,7 @@ setup:
 
 	git submodule update --init --recursive
 
-	@# TODO: lz4 + zsh no signature check
+	@# TODO: lz4 + zstd + zsh no signature check
 	@# Berkeleydb requires registration on Oracle's website, so this is a mirror.
 	wget -nc -P $(BUILD_SOURCE) \
 		https://ftp.gnu.org/gnu/coreutils/coreutils-8.31.tar.xz{,.sig} \
@@ -244,7 +244,8 @@ setup:
 		https://gnupg.org/ftp/gcrypt/libksba/libksba-1.3.5.tar.bz2{,.sig} \
 		https://gnupg.org/ftp/gcrypt/npth/npth-1.6.tar.bz2{,.sig} \
 		https://gnupg.org/ftp/gcrypt/libassuan/libassuan-2.5.3.tar.bz2{,.sig} \
-		https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.2.19.tar.bz2{,.sig}
+		https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.2.19.tar.bz2{,.sig} \
+		https://github.com/facebook/zstd/archive/v$(ZSTD_VERSION).tar.gz
 	
 	$(call PGP_VERIFY,coreutils-8.31.tar.xz)
 	$(call PGP_VERIFY,sed-4.7.tar.xz)
@@ -322,6 +323,7 @@ setup:
 	$(call EXTRACT_TAR,npth-1.6.tar.bz2,npth-1.6,npth)
 	$(call EXTRACT_TAR,libassuan-2.5.3.tar.bz2,libassuan-2.5.3,libassuan)
 	$(call EXTRACT_TAR,gnupg-2.2.19.tar.bz2,gnupg-2.2.19,gnupg)
+	$(call EXTRACT_TAR,v$(ZSTD_VERSION).tar.gz,zstd-$(ZSTD_VERSION),zstd)
 
 	$(call DO_PATCH,readline80-001,readline,-p0)
 	$(call DO_PATCH,bash50-001,bash,-p0)
