@@ -67,7 +67,7 @@ apt-stage: apt
 	
 	#apt.mk Sign
 	find $(BUILD_DIST)/apt $(BUILD_DIST)/apt-utils -type f -exec $(LDID) -S$(BUILD_INFO)/general.xml {} \; &> /dev/null
-	find $(BUILD_DIST)/zstd -name .ldid* -exec rm -f {} \; &> /dev/null
+	find $(BUILD_DIST)/apt $(BUILD_DIST)/apt-utils -name .ldid* -exec rm -f {} \; &> /dev/null
 	
 	# apt.mk Make .debs
 	mkdir -p $(BUILD_DIST)/apt{,-dev,-utils}/DEBIAN
