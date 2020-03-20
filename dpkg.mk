@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+DPKG_VERSION := 1.20.0
+
 # TODO: we shouldn’t need to patch the config output to make dpkg use the right architecture params
 
 ifneq ($(wildcard dpkg/.build_complete),)

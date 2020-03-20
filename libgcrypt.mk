@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+LIBGCRYPT_VERSION := 1.8.5
+
 ifneq ($(wildcard $(BUILD_WORK)/libgcrypt/.build_complete),)
 libgcrypt:
 	@echo "Using previously built libgcrypt."

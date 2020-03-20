@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+GREP_VERSION := 3.3
+
 ifneq ($(wildcard $(BUILD_WORK)/grep/.build_complete),)
 grep:
 	@echo "Using previously built grep."

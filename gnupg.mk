@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+GNUPG_VERSION := 2.2.19
+
 ifneq ($(wildcard $(BUILD_WORK)/gnupg/.build_complete),)
 gnupg:
 	@echo "Using previously built libassuan."

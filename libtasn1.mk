@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+LIBTASN1_VERSION := 4.16.0
+
 ifneq ($(wildcard $(BUILD_WORK)/libtasn1/.build_complete),)
 libtasn1:
 	@echo "Using previously built libtasn1."

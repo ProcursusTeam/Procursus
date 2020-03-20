@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+DARWINTOOLS_VERSION := 1
+
 ifneq ($(wildcard darwintools/.build_complete),)
 darwintools:
 	@echo "Using previously built darwintools."

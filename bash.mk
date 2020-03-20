@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+BASH_VERSION := 5.0
+
 # When built with SSH_SOURCE_BASHRC, bash will source ~/.bashrc when
 # it's non-interactively from sshd.  This allows the user to set
 # environment variables prior to running the command (e.g. PATH).  The

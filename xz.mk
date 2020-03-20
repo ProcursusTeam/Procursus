@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+XZ_VERSION := 5.2.4
+
 ifneq ($(wildcard $(BUILD_WORK)/xz/.build_complete),)
 xz:
 	@echo "Using previously built xz."

@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+IDN2_VERSION := 2.3.0
+
 ifneq ($(wildcard $(BUILD_WORK)/libidn2/.build_complete),)
 libidn2:
 	@echo "Using previously built libidn2."

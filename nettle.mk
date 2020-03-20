@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+NETTLE_VERSION := 3.5.1
+
 ifneq ($(wildcard $(BUILD_WORK)/nettle/.build_complete),)
 nettle:
 	@echo "Using previously built nettle."

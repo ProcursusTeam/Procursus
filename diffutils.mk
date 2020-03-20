@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+DIFFUTILS_VERSION := 3.7
+
 ifneq ($(wildcard $(BUILD_WORK)/diffutils/.build_complete),)
 diffutils:
 	@echo "Using previously built diffutils."

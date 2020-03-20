@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+OPENSSH_VERSION := 8.2
+
 ifeq ($(UNAME),Linux)
 EXTRA := INSTALL="/usr/bin/install -c --strip-program=$(STRIP)"
 else

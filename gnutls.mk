@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+GNUTLS_VERSION := 3.6.12
+
 ifneq ($(wildcard $(BUILD_WORK)/gnutls/.build_complete),)
 gnutls:
 	@echo "Using previously built gnutls."

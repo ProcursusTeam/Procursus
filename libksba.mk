@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+KSBA_VERSION := 1.3.5
+
 ifneq ($(wildcard $(BUILD_WORK)/libksba/.build_complete),)
 libksba:
 	@echo "Using previously built libksba."

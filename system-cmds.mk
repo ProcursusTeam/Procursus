@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+SYSTEM-CMDS_VERSION := 854.11.2 
+
 # For system-cmds, there is a required libc.h header not included in sdks. Simply
 
 ifneq ($(wildcard system-cmds/.build_complete),)

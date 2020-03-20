@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+LESS_VERSION := 530
+
 ifneq ($(wildcard $(BUILD_WORK)/less/.build_complete),)
 less:
 	@echo "Using previously built less."

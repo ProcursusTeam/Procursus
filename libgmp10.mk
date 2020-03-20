@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+GMP_VERSION := 6.2.0
+
 ifneq ($(wildcard $(BUILD_WORK)/libgmp10/.build_complete),)
 libgmp10:
 	@echo "Using previously built libgmp10."

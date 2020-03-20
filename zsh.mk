@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+ZSH_VERSION := 5.8
+
 ifneq ($(wildcard $(BUILD_WORK)/zsh/.build_complete),)
 zsh:
 	@echo "Using previously built zsh."

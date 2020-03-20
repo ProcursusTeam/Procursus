@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+PCRE_VERSION := 8.43
+
 ifneq ($(wildcard $(BUILD_WORK)/pcre/.build_complete),)
 pcre:
 	@echo "Using previously built pcre."

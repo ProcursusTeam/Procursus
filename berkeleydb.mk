@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+BDB_VERSION := 18.1.32
+
 ifneq ($(wildcard $(BUILD_WORK)/berkeleydb/.build_complete),)
 berkeleydb:
 	@echo "Using previously built berkeleydb."

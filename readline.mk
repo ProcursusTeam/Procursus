@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+READLINE_VERSION := 8.0
+
 ifneq ($(wildcard $(BUILD_WORK)/readline/.build_complete),)
 readline:
 	@echo "Using previously built readline."

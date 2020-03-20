@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+P11_VERSION := 0.23.20
+
 ifneq ($(wildcard $(BUILD_WORK)/p11-kit/.build_complete),)
 p11-kit:
 	@echo "Using previously built p11-kit."

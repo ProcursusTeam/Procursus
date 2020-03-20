@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+UNISTRING_VERSION := 0.9.10
+
 ifneq ($(wildcard $(BUILD_WORK)/libunistring/.build_complete),)
 libunistring:
 	@echo "Using previously built libunistring."

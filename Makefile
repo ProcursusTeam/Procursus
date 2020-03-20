@@ -210,56 +210,56 @@ setup:
 	@# TODO: lz4 + zstd + zsh no signature check
 	@# Berkeleydb requires registration on Oracle's website, so this is a mirror.
 	wget -nc -P $(BUILD_SOURCE) \
-		https://ftp.gnu.org/gnu/coreutils/coreutils-8.31.tar.xz{,.sig} \
-		https://ftp.gnu.org/gnu/sed/sed-4.7.tar.xz{,.sig} \
-		https://ftp.gnu.org/gnu/grep/grep-3.3.tar.xz{,.sig} \
-		https://ftp.gnu.org/gnu/findutils/findutils-4.7.0.tar.xz{,.sig} \
-		https://ftp.gnu.org/gnu/diffutils/diffutils-3.7.tar.xz{,.sig} \
-		https://ftp.gnu.org/gnu/tar/tar-1.32.tar.gz{,.sig} \
-		https://ftp.gnu.org/gnu/readline/readline-8.0.tar.gz{,.sig} \
-		https://ftp.gnu.org/gnu/readline/readline-8.0-patches/readline80-00{1..4}{,.sig} \
-		https://ftp.gnu.org/gnu/ncurses/ncurses-6.1.tar.gz{,.sig} \
-		https://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz{,.sig} \
-		https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-00{1..9}{,.sig} \
-		https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-0{10..16}{,.sig} \
+		https://ftp.gnu.org/gnu/coreutils/coreutils-$(COREUTILS_VERSION).tar.xz{,.sig} \
+		https://ftp.gnu.org/gnu/sed/sed-$(SED_VERSION).tar.xz{,.sig} \
+		https://ftp.gnu.org/gnu/grep/grep-$(GREP_VERSION).tar.xz{,.sig} \
+		https://ftp.gnu.org/gnu/findutils/findutils-$(FINDUTILS_VERSION).tar.xz{,.sig} \
+		https://ftp.gnu.org/gnu/diffutils/diffutils-$(DIFFUTILS_VERSION).tar.xz{,.sig} \
+		https://ftp.gnu.org/gnu/tar/tar-$(TAR_VERSION).tar.gz{,.sig} \
+		https://ftp.gnu.org/gnu/readline/readline-$(READLINE_VERSION).tar.gz{,.sig} \
+		https://ftp.gnu.org/gnu/readline/readline-$(READLINE_VERSION)-patches/readline80-00{1..4}{,.sig} \
+		https://ftp.gnu.org/gnu/ncurses/ncurses-$(NCURSES_VERSION).tar.gz{,.sig} \
+		https://ftp.gnu.org/gnu/bash/bash-$(BASH_VERSION).tar.gz{,.sig} \
+		https://ftp.gnu.org/gnu/bash/bash-$(BASH_VERSION)-patches/bash50-00{1..9}{,.sig} \
+		https://ftp.gnu.org/gnu/bash/bash-$(BASH_VERSION)-patches/bash50-0{10..16}{,.sig} \
 		https://sourceware.org/pub/bzip2/bzip2-$(BZIP2_VERSION).tar.gz{,.sig} \
-		https://github.com/lz4/lz4/archive/v1.9.2.tar.gz \
-		https://tukaani.org/xz/xz-5.2.4.tar.xz{,.sig} \
-		https://ftp.pcre.org/pub/pcre/pcre-8.43.tar.bz2{,.sig} \
-		https://www.zsh.org/pub/zsh-5.8.tar.xz{,.asc} \
-		https://ftp.gnu.org/gnu/less/less-530.tar.gz{,.sig} \
-		https://ftp.gnu.org/gnu/nano/nano-4.5.tar.xz{,.sig} \
-		https://fossies.org/linux/misc/db-18.1.32.tar.gz \
-		https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.0.2.tar.gz{,.asc} \
-		https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-1.37.tar.bz2{,.sig} \
-		https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.8.5.tar.bz2{,.sig} \
-		https://ftp.gnu.org/pub/gnu/gettext/gettext-0.20.1.tar.xz{,.sig} \
-		https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.16.0.tar.gz{,.sig} \
-		https://github.com/p11-glue/p11-kit/releases/download/0.23.20/p11-kit-0.23.20.tar.xz{,.sig} \
-		https://gmplib.org/download/gmp/gmp-6.2.0.tar.xz{,.sig} \
-		https://ftp.gnu.org/gnu/nettle/nettle-3.5.1.tar.gz{,.sig} \
-		https://ftp.gnu.org/gnu/libidn/libidn2-2.3.0.tar.gz{,.sig} \
-		https://ftp.gnu.org/gnu/libunistring/libunistring-0.9.10.tar.gz{,.sig} \
-		https://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/gnutls-3.6.12.tar.xz{,.sig} \
-		https://gnupg.org/ftp/gcrypt/libksba/libksba-1.3.5.tar.bz2{,.sig} \
-		https://gnupg.org/ftp/gcrypt/npth/npth-1.6.tar.bz2{,.sig} \
-		https://gnupg.org/ftp/gcrypt/libassuan/libassuan-2.5.3.tar.bz2{,.sig} \
-		https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.2.19.tar.bz2{,.sig} \
+		https://github.com/lz4/lz4/archive/v$(LZ4_VERSION).tar.gz \
+		https://tukaani.org/xz/xz-$(XZ_VERSION).tar.xz{,.sig} \
+		https://ftp.pcre.org/pub/pcre/pcre-$(PCRE_VERSION).tar.bz2{,.sig} \
+		https://www.zsh.org/pub/zsh-$(ZSH_VERSION).tar.xz{,.asc} \
+		https://ftp.gnu.org/gnu/less/less-$(LESS_VERSION).tar.gz{,.sig} \
+		https://ftp.gnu.org/gnu/nano/nano-$(NANO_VERSION).tar.xz{,.sig} \
+		https://fossies.org/linux/misc/db-$(BDB_VERSION).tar.gz \
+		https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-$(LIBRESSL_VERSION).tar.gz{,.asc} \
+		https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-$(LIBGPG-ERROR_VERSION).tar.bz2{,.sig} \
+		https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-$(LIBGCRYPT_VERSION).tar.bz2{,.sig} \
+		https://ftp.gnu.org/pub/gnu/gettext/gettext-$(GETTEXT_VERSION).tar.xz{,.sig} \
+		https://ftp.gnu.org/gnu/libtasn1/libtasn1-$(LIBTASN1_VERSION).tar.gz{,.sig} \
+		https://github.com/p11-glue/p11-kit/releases/download/$(P11_VERSION)/p11-kit-$(P11_VERSION).tar.xz{,.sig} \
+		https://gmplib.org/download/gmp/gmp-$(GMP_VERSION).tar.xz{,.sig} \
+		https://ftp.gnu.org/gnu/nettle/nettle-$(NETTLE_VERSION).tar.gz{,.sig} \
+		https://ftp.gnu.org/gnu/libidn/libidn2-$(IDN2_VERSION).tar.gz{,.sig} \
+		https://ftp.gnu.org/gnu/libunistring/libunistring-$(UNISTRING_VERSION).tar.gz{,.sig} \
+		https://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/gnutls-$(GNUTLS_VERSION).tar.xz{,.sig} \
+		https://gnupg.org/ftp/gcrypt/libksba/libksba-$(KSBA_VERSION).tar.bz2{,.sig} \
+		https://gnupg.org/ftp/gcrypt/npth/npth-$(NPTH_VERSION).tar.bz2{,.sig} \
+		https://gnupg.org/ftp/gcrypt/libassuan/libassuan-$(LIBASSUAN_VERSION).tar.bz2{,.sig} \
+		https://gnupg.org/ftp/gcrypt/gnupg/gnupg-$(GNUPG_VERSION).tar.bz2{,.sig} \
 		https://github.com/facebook/zstd/archive/v$(ZSTD_VERSION).tar.gz
 	
-	$(call PGP_VERIFY,coreutils-8.31.tar.xz)
-	$(call PGP_VERIFY,sed-4.7.tar.xz)
-	$(call PGP_VERIFY,grep-3.3.tar.xz)
-	$(call PGP_VERIFY,findutils-4.7.0.tar.xz)
-	$(call PGP_VERIFY,diffutils-3.7.tar.xz)
-	$(call PGP_VERIFY,tar-1.32.tar.gz)
-	$(call PGP_VERIFY,readline-8.0.tar.gz)
+	$(call PGP_VERIFY,coreutils-$(COREUTILS_VERSION).tar.xz)
+	$(call PGP_VERIFY,sed-$(SED_VERSION).tar.xz)
+	$(call PGP_VERIFY,grep-$(GREP_VERSION).tar.xz)
+	$(call PGP_VERIFY,findutils-$(FINDUTILS_VERSION).tar.xz)
+	$(call PGP_VERIFY,diffutils-$(DIFFUTILS_VERSION).tar.xz)
+	$(call PGP_VERIFY,tar-$(TAR_VERSION).tar.gz)
+	$(call PGP_VERIFY,readline-$(READLINE_VERSION).tar.gz)
 	$(call PGP_VERIFY,readline80-001)
 	$(call PGP_VERIFY,readline80-002)
 	$(call PGP_VERIFY,readline80-003)
 	$(call PGP_VERIFY,readline80-004)
-	$(call PGP_VERIFY,ncurses-6.1.tar.gz)
-	$(call PGP_VERIFY,bash-5.0.tar.gz)
+	$(call PGP_VERIFY,ncurses-$(NCURSES_VERSION).tar.gz)
+	$(call PGP_VERIFY,bash-$(BASH_VERSION).tar.gz)
 	$(call PGP_VERIFY,bash50-001)
 	$(call PGP_VERIFY,bash50-002)
 	$(call PGP_VERIFY,bash50-003)
@@ -278,62 +278,65 @@ setup:
 	$(call PGP_VERIFY,bash50-016)
 	$(call PGP_VERIFY,bzip2-$(BZIP2_VERSION).tar.gz)
 	# $(call PGP_VERIFY,v1.9.2.tar.gz)
-	$(call PGP_VERIFY,xz-5.2.4.tar.xz)
-	$(call PGP_VERIFY,pcre-8.43.tar.bz2)
+	$(call PGP_VERIFY,xz-$(XZ_VERSION).tar.xz)
+	$(call PGP_VERIFY,pcre-$(PCRE_VERSION).tar.bz2)
 	# $(call PGP_VERIFY,zsh-5.8.tar.xz,asc)
-	$(call PGP_VERIFY,less-530.tar.gz)
-	$(call PGP_VERIFY,nano-4.5.tar.xz)
-	$(call PGP_VERIFY,libressl-3.0.2.tar.gz,asc)
-	$(call PGP_VERIFY,libgpg-error-1.37.tar.bz2)
-	$(call PGP_VERIFY,libgcrypt-1.8.5.tar.bz2)
-	$(call PGP_VERIFY,gettext-0.20.1.tar.xz)
-	$(call PGP_VERIFY,libtasn1-4.16.0.tar.gz)
-	$(call PGP_VERIFY,p11-kit-0.23.20.tar.xz)
-	$(call PGP_VERIFY,gmp-6.2.0.tar.xz)
-	$(call PGP_VERIFY,nettle-3.5.1.tar.gz)
-	$(call PGP_VERIFY,libidn2-2.3.0.tar.gz)
-	$(call PGP_VERIFY,libunistring-0.9.10.tar.gz)
-	$(call PGP_VERIFY,gnutls-3.6.12.tar.xz)
-	$(call PGP_VERIFY,libksba-1.3.5.tar.bz2)
-	$(call PGP_VERIFY,npth-1.6.tar.bz2)
-	$(call PGP_VERIFY,libassuan-2.5.3.tar.bz2)
-	$(call PGP_VERIFY,gnupg-2.2.19.tar.bz2)
+	$(call PGP_VERIFY,less-$(LESS_VERSION).tar.gz)
+	$(call PGP_VERIFY,nano-$(NANO_VERSION).tar.xz)
+	$(call PGP_VERIFY,libressl-$(LIBRESSL_VERSION).tar.gz,asc)
+	$(call PGP_VERIFY,libgpg-error-$(LIBGPG-ERROR_VERSION).tar.bz2)
+	$(call PGP_VERIFY,libgcrypt-$(LIBGCRYPT_VERSION).tar.bz2)
+	$(call PGP_VERIFY,gettext-$(GETTEXT_VERSION).tar.xz)
+	$(call PGP_VERIFY,libtasn1-$(LIBTASN1_VERSION).tar.gz)
+	$(call PGP_VERIFY,p11-kit-$(P11_VERSION).tar.xz)
+	$(call PGP_VERIFY,gmp-$(GMP_VERSION).tar.xz)
+	$(call PGP_VERIFY,nettle-$(NETTLE_VERSION).tar.gz)
+	$(call PGP_VERIFY,libidn2-$(IDN2_VERSION).tar.gz)
+	$(call PGP_VERIFY,libunistring-$(UNISTRING_VERSION).tar.gz)
+	$(call PGP_VERIFY,gnutls-$(GNUTLS_VERSION).tar.xz)
+	$(call PGP_VERIFY,libksba-$(KSBA_VERSION).tar.bz2)
+	$(call PGP_VERIFY,npth-$(NPTH_VERSION).tar.bz2)
+	$(call PGP_VERIFY,libassuan-$(LIBASSUAN_VERSION).tar.bz2)
+	$(call PGP_VERIFY,gnupg-$(GNUPG_VERSION).tar.bz2)
 
-	$(call EXTRACT_TAR,coreutils-8.31.tar.xz,coreutils-8.31,coreutils)
-	$(call EXTRACT_TAR,sed-4.7.tar.xz,sed-4.7,sed)
-	$(call EXTRACT_TAR,grep-3.3.tar.xz,grep-3.3,grep)
-	$(call EXTRACT_TAR,findutils-4.7.0.tar.xz,findutils-4.7.0,findutils)
-	$(call EXTRACT_TAR,diffutils-3.7.tar.xz,diffutils-3.7,diffutils)
-	$(call EXTRACT_TAR,tar-1.32.tar.gz,tar-1.32,tar)
-	$(call EXTRACT_TAR,readline-8.0.tar.gz,readline-8.0,readline)
-	$(call EXTRACT_TAR,ncurses-6.1.tar.gz,ncurses-6.1,ncurses)
-	$(call EXTRACT_TAR,bash-5.0.tar.gz,bash-5.0,bash)
+	$(call EXTRACT_TAR,coreutils-$(COREUTILS_VERSION).tar.xz,coreutils-$(COREUTILS_VERSION),coreutils)
+	$(call EXTRACT_TAR,sed-$(SED_VERSION).tar.xz,sed-$(SED_VERSION),sed)
+	$(call EXTRACT_TAR,grep-$(GREP_VERSION).tar.xz,grep-$(GREP_VERSION),grep)
+	$(call EXTRACT_TAR,findutils-$(FINDUTILS_VERSION).tar.xz,findutils-$(FINDUTILS_VERSION),findutils)
+	$(call EXTRACT_TAR,diffutils-$(DIFFUTILS_VERSION).tar.xz,diffutils-$(DIFFUTILS_VERSION),diffutils)
+	$(call EXTRACT_TAR,tar-$(TAR_VERSION).tar.gz,tar-$(TAR_VERSION),tar)
+	$(call EXTRACT_TAR,readline-$(READLINE_VERSION).tar.gz,readline-$(READLINE_VERSION),readline)
+	$(call EXTRACT_TAR,ncurses-$(NCURSES_VERSION).tar.gz,ncurses-$(NCURSES_VERSION),ncurses)
+	$(call EXTRACT_TAR,bash-$(BASH_VERSION).tar.gz,bash-$(BASH_VERSION),bash)
 	$(call EXTRACT_TAR,bzip2-$(BZIP2_VERSION).tar.gz,bzip2-$(BZIP2_VERSION),bzip2)
-	$(call EXTRACT_TAR,v1.9.2.tar.gz,lz4-1.9.2,lz4)
-	$(call EXTRACT_TAR,xz-5.2.4.tar.xz,xz-5.2.4,xz)
-	$(call EXTRACT_TAR,pcre-8.43.tar.bz2,pcre-8.43,pcre)
-	$(call EXTRACT_TAR,zsh-5.8.tar.xz,zsh-5.8,zsh)
-	$(call EXTRACT_TAR,less-530.tar.gz,less-530,less)
-	$(call EXTRACT_TAR,nano-4.5.tar.xz,nano-4.5,nano)
-	$(call EXTRACT_TAR,db-18.1.32.tar.gz,db-18.1.32,berkeleydb)
-	$(call EXTRACT_TAR,libressl-3.0.2.tar.gz,libressl-3.0.2,libressl)
-	$(call EXTRACT_TAR,libgpg-error-1.37.tar.bz2,libgpg-error-1.37,libgpg-error)
-	$(call EXTRACT_TAR,libgcrypt-1.8.5.tar.bz2,libgcrypt-1.8.5,libgcrypt)
-	$(call EXTRACT_TAR,gettext-0.20.1.tar.xz,gettext-0.20.1,gettext)
-	$(call EXTRACT_TAR,libtasn1-4.16.0.tar.gz,libtasn1-4.16.0,libtasn1)
-	$(call EXTRACT_TAR,p11-kit-0.23.20.tar.xz,p11-kit-0.23.20,p11-kit)
-	$(call EXTRACT_TAR,gmp-6.2.0.tar.xz,gmp-6.2.0,libgmp10)
-	$(call EXTRACT_TAR,nettle-3.5.1.tar.gz,nettle-3.5.1,nettle)
-	$(call EXTRACT_TAR,libidn2-2.3.0.tar.gz,libidn2-2.3.0,libidn2)
-	$(call EXTRACT_TAR,libunistring-0.9.10.tar.gz,libunistring-0.9.10,libunistring)
-	$(call EXTRACT_TAR,gnutls-3.6.12.tar.xz,gnutls-3.6.12,gnutls)
-	$(call EXTRACT_TAR,libksba-1.3.5.tar.bz2,libksba-1.3.5,libksba)
-	$(call EXTRACT_TAR,npth-1.6.tar.bz2,npth-1.6,npth)
-	$(call EXTRACT_TAR,libassuan-2.5.3.tar.bz2,libassuan-2.5.3,libassuan)
-	$(call EXTRACT_TAR,gnupg-2.2.19.tar.bz2,gnupg-2.2.19,gnupg)
+	$(call EXTRACT_TAR,v$(LZ4_VERSION).tar.gz,lz4-$(LZ4_VERSION),lz4)
+	$(call EXTRACT_TAR,xz-$(XZ_VERSION).tar.xz,xz-$(XZ_VERSION),xz)
+	$(call EXTRACT_TAR,pcre-$(PCRE_VERSION).tar.bz2,pcre-$(PCRE_VERSION),pcre)
+	$(call EXTRACT_TAR,zsh-$(ZSH_VERSION).tar.xz,zsh-$(ZSH_VERSION),zsh)
+	$(call EXTRACT_TAR,less-$(LESS_VERSION).tar.gz,less-$(LESS_VERSION),less)
+	$(call EXTRACT_TAR,nano-$(NANO_VERSION).tar.xz,nano-$(NANO_VERSION),nano)
+	$(call EXTRACT_TAR,db-$(BDB_VERSION).tar.gz,db-$(BDB_VERSION),berkeleydb)
+	$(call EXTRACT_TAR,libressl-$(LIBRESSL_VERSION).tar.gz,libressl-$(LIBRESSL_VERSION),libressl)
+	$(call EXTRACT_TAR,libgpg-error-$(LIBGPG-ERROR_VERSION).tar.bz2,libgpg-error-$(LIBGPG-ERROR_VERSION),libgpg-error)
+	$(call EXTRACT_TAR,libgcrypt-$(LIBGCRYPT_VERSION).tar.bz2,libgcrypt-$(LIBGCRYPT_VERSION),libgcrypt)
+	$(call EXTRACT_TAR,gettext-$(GETTEXT_VERSION).tar.xz,gettext-$(GETTEXT_VERSION),gettext)
+	$(call EXTRACT_TAR,libtasn1-$(LIBTASN1_VERSION).tar.gz,libtasn1-$(LIBTASN1_VERSION),libtasn1)
+	$(call EXTRACT_TAR,p11-kit-$(P11_VERSION).tar.xz,p11-kit-$(P11_VERSION),p11-kit)
+	$(call EXTRACT_TAR,gmp-$(GMP_VERSION).tar.xz,gmp-$(GMP_VERSION),libgmp10)
+	$(call EXTRACT_TAR,nettle-$(NETTLE_VERSION).tar.gz,nettle-$(NETTLE_VERSION),nettle)
+	$(call EXTRACT_TAR,libidn2-$(IDN2_VERSION).tar.gz,libidn2-$(IDN2_VERSION),libidn2)
+	$(call EXTRACT_TAR,libunistring-$(UNISTRING_VERSION).tar.gz,libunistring-$(UNISTRING_VERSION),libunistring)
+	$(call EXTRACT_TAR,gnutls-$(GNUTLS_VERSION).tar.xz,gnutls-$(GNUTLS_VERSION),gnutls)
+	$(call EXTRACT_TAR,libksba-$(KSBA_VERSION).tar.bz2,libksba-$(KSBA_VERSION),libksba)
+	$(call EXTRACT_TAR,npth-$(NPTH_VERSION).tar.bz2,npth-$(NPTH_VERSION),npth)
+	$(call EXTRACT_TAR,libassuan-$(LIBASSUAN_VERSION).tar.bz2,libassuan-$(LIBASSUAN_VERSION),libassuan)
+	$(call EXTRACT_TAR,gnupg-$(GNUPG_VERSION).tar.bz2,gnupg-$(GNUPG_VERSION),gnupg)
 	$(call EXTRACT_TAR,v$(ZSTD_VERSION).tar.gz,zstd-$(ZSTD_VERSION),zstd)
 
 	$(call DO_PATCH,readline80-001,readline,-p0)
+	$(call DO_PATCH,readline80-002,readline,-p0)
+	$(call DO_PATCH,readline80-003,readline,-p0)
+	$(call DO_PATCH,readline80-004,readline,-p0)
 	$(call DO_PATCH,bash50-001,bash,-p0)
 	$(call DO_PATCH,bash50-002,bash,-p0)
 	$(call DO_PATCH,bash50-003,bash,-p0)
@@ -345,6 +348,11 @@ setup:
 	$(call DO_PATCH,bash50-009,bash,-p0)
 	$(call DO_PATCH,bash50-010,bash,-p0)
 	$(call DO_PATCH,bash50-011,bash,-p0)
+	$(call DO_PATCH,bash50-012,bash,-p0)
+	$(call DO_PATCH,bash50-013,bash,-p0)
+	$(call DO_PATCH,bash50-014,bash,-p0)
+	$(call DO_PATCH,bash50-015,bash,-p0)
+	$(call DO_PATCH,bash50-016,bash,-p0)
 
 	@# Copy headers from MacOSX.sdk
 	mkdir -p $(BUILD_BASE)/usr/include/sys/

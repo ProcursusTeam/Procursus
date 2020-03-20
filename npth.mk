@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+NPTH_VERSION := 1.6
+
 ifneq ($(wildcard $(BUILD_WORK)/npth/.build_complete),)
 npth:
 	@echo "Using previously built npth."

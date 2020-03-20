@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+NANO_VERSION := 4.5
+
 ifneq ($(wildcard $(BUILD_WORK)/nano/.build_complete),)
 nano:
 	@echo "Using previously built nano."

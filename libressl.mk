@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+LIBRESSL_VERSION := 3.0.2
+
 ifneq ($(wildcard $(BUILD_WORK)/libressl/.build_complete),)
 libressl:
 	@echo "Using previously built libressl."

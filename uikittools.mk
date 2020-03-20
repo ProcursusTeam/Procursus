@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+UIKITTOOLS_VERSION := 2.0.2
+
 ifneq ($(wildcard uikittools/.build_complete),)
 uikittools:
 	@echo "Using previously built uikittools."

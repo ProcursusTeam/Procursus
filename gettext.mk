@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+GETTEXT_VERSION := 0.20.1
+
 ifneq ($(wildcard $(BUILD_WORK)/gettext/.build_complete),)
 gettext:
 	@echo "Using previously built gettext."

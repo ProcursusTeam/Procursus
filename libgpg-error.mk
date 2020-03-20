@@ -2,6 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+LIBGPG-ERROR_VERSION := 1.37
+
 ifneq ($(wildcard $(BUILD_WORK)/libgpg-error/.build_complete),)
 libgpg-error:
 	@echo "Using previously built libgpg-error."
