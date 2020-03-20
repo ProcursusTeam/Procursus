@@ -217,11 +217,11 @@ setup:
 		https://ftp.gnu.org/gnu/diffutils/diffutils-3.7.tar.xz{,.sig} \
 		https://ftp.gnu.org/gnu/tar/tar-1.32.tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/readline/readline-8.0.tar.gz{,.sig} \
-		https://ftp.gnu.org/gnu/readline/readline-8.0-patches/readline80-001{,.sig} \
+		https://ftp.gnu.org/gnu/readline/readline-8.0-patches/readline80-00{1..4}{,.sig} \
 		https://ftp.gnu.org/gnu/ncurses/ncurses-6.1.tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-00{1..9}{,.sig} \
-		https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-0{10..11}{,.sig} \
+		https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-0{10..16}{,.sig} \
 		https://sourceware.org/pub/bzip2/bzip2-$(BZIP2_VERSION).tar.gz{,.sig} \
 		https://github.com/lz4/lz4/archive/v1.9.2.tar.gz \
 		https://tukaani.org/xz/xz-5.2.4.tar.xz{,.sig} \
@@ -255,6 +255,9 @@ setup:
 	$(call PGP_VERIFY,tar-1.32.tar.gz)
 	$(call PGP_VERIFY,readline-8.0.tar.gz)
 	$(call PGP_VERIFY,readline80-001)
+	$(call PGP_VERIFY,readline80-002)
+	$(call PGP_VERIFY,readline80-003)
+	$(call PGP_VERIFY,readline80-004)
 	$(call PGP_VERIFY,ncurses-6.1.tar.gz)
 	$(call PGP_VERIFY,bash-5.0.tar.gz)
 	$(call PGP_VERIFY,bash50-001)
@@ -268,6 +271,11 @@ setup:
 	$(call PGP_VERIFY,bash50-009)
 	$(call PGP_VERIFY,bash50-010)
 	$(call PGP_VERIFY,bash50-011)
+	$(call PGP_VERIFY,bash50-012)
+	$(call PGP_VERIFY,bash50-013)
+	$(call PGP_VERIFY,bash50-014)
+	$(call PGP_VERIFY,bash50-015)
+	$(call PGP_VERIFY,bash50-016)
 	$(call PGP_VERIFY,bzip2-$(BZIP2_VERSION).tar.gz)
 	# $(call PGP_VERIFY,v1.9.2.tar.gz)
 	$(call PGP_VERIFY,xz-5.2.4.tar.xz)
