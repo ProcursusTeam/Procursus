@@ -23,4 +23,21 @@ xz: setup
 	touch $(BUILD_WORK)/xz/.build_complete
 endif
 
-.PHONY: xz
+xz-stage: xz
+	# xz.mk Package Structure
+	rm -rf $(BUILD_DIST)/xz-utils
+	mkdir -p $(BUILD_DIST)/xz-utils
+	
+	# xz.mk Prep xz-utils
+	cp -ar $(BUILD_STAGE)/xz/usr $(BUILD_DIST)/xz-utils
+	
+	# xz.mk Sign
+	$(call SIGN,xz-utils,general.xml)
+	
+	# xz.mk Make .debs
+	$(call PACK,xz-utils,XZ_VERSION)
+	
+	# xz.mk Build cleanup
+	rm -rf $(BUILD_DIST)/xz-utils
+
+.PHONY: xz xz-stage

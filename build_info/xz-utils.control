@@ -1,0 +1,10 @@
+Package: xz-utils
+Version: $XZ_VERSION
+Architecture: $DEB_ARCH
+Maintainer: $DEB_MAINTAINER
+Depends: grep, sed
+Section: Archiving
+Priority: important
+Homepage: https://tukaani.org/xz/
+Description: slower, but better, compression algorithm
+Name: XZ Utils
