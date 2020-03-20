@@ -66,20 +66,13 @@ apt-stage: apt
 	cp -ar $(BUILD_STAGE)/apt/usr/include $(BUILD_DIST)/apt-dev/usr
 	
 	#apt.mk Sign
-	find $(BUILD_DIST)/apt $(BUILD_DIST)/apt-utils -type f -exec $(LDID) -S$(BUILD_INFO)/general.xml {} \; &> /dev/null
-	find $(BUILD_DIST)/apt $(BUILD_DIST)/apt-utils -name .ldid* -exec rm -f {} \; &> /dev/null
+	$(call SIGN,apt,general.xml)
+	$(call SIGN,apt-utils,general.xml)
 	
 	# apt.mk Make .debs
-	mkdir -p $(BUILD_DIST)/apt{,-dev,-utils}/DEBIAN
-	cp $(BUILD_INFO)/apt.control $(BUILD_DIST)/apt/DEBIAN/control
-	cp $(BUILD_INFO)/apt-utils.control $(BUILD_DIST)/apt-utils/DEBIAN/control
-	cp $(BUILD_INFO)/apt-dev.control $(BUILD_DIST)/apt-dev/DEBIAN/control
-	$(SED) -i ':a; s/$$APT_VERSION/$(APT_VERSION)/g; ta' $(BUILD_DIST)/apt{,-dev,-utils}/DEBIAN/control
-	$(SED) -i ':a; s/$$DEB_MAINTAINER/$(DEB_MAINTAINER)/g; ta' $(BUILD_DIST)/apt{,-dev,-utils}/DEBIAN/control
-	$(SED) -i ':a; s/$$DEB_ARCH/$(DEB_ARCH)/g; ta' $(BUILD_DIST)/apt{,-dev,-utils}/DEBIAN/control
-	$(DPKG_DEB) -b $(BUILD_DIST)/apt $(BUILD_DIST)/apt_$(APT_VERSION)_$(DEB_ARCH).deb
-	$(DPKG_DEB) -b $(BUILD_DIST)/apt-utils $(BUILD_DIST)/apt-utils_$(APT_VERSION)_$(DEB_ARCH).deb
-	$(DPKG_DEB) -b $(BUILD_DIST)/apt-dev $(BUILD_DIST)/apt-dev_$(APT_VERSION)_$(DEB_ARCH).deb
+	$(call PACK,apt,APT_VERSION)
+	$(call PACK,apt-utils,APT_VERSION)
+	$(call PACK,apt-dev,APT_VERSION)
 	
 	# apt.mk Build cleanup
 	rm -rf $(BUILD_DIST)/apt{,-utils,-dev}

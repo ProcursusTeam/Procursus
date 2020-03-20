@@ -84,6 +84,17 @@ DO_PATCH    = if [ ! -f $(BUILD_WORK)/$(2)/$(notdir $(1)).done ]; then \
 		touch $(BUILD_WORK)/$(2)/$(notdir $(1)).done; \
 	fi
 
+SIGN =  find $(BUILD_DIST)/$(1) -name '*.la' -type f -delete ; \
+		find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \; &> /dev/null ; \
+		find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete ;
+		
+PACK =  mkdir -p $(BUILD_DIST)/$(1)/DEBIAN ; \
+		cp $(BUILD_INFO)/$(1).control $(BUILD_DIST)/$(1)/DEBIAN/control ; \
+		$(SED) -i ':a; s/$$$(2)/$($(2))/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control ; \
+		$(SED) -i ':a; s/$$DEB_MAINTAINER/$(DEB_MAINTAINER)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control ; \
+		$(SED) -i ':a; s/$$DEB_ARCH/$(DEB_ARCH)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control ; \
+		$(DPKG_DEB) -b $(BUILD_DIST)/$(1) $(BUILD_DIST)/$(1)_$($(2))_$(DEB_ARCH).deb ;
+
 ifeq ($(call HAS_COMMAND,shasum),1)
 GET_SHA1   = shasum -a 1 $(1) | cut -c1-40
 GET_SHA256 = shasum -a 256 $(1) | cut -c1-64
@@ -196,7 +207,7 @@ CHECKRA1N_MEMO := 1
 $(foreach proj,$(SUBPROJECTS),$(eval include $(proj).mk))
 
 %-package: %-stage
-	@echo TODO $@ $<
+	@echo DONE $@
 
 .PHONY: $(SUBPROJECTS)
 
