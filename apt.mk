@@ -76,6 +76,6 @@ apt-stage: apt
 	$(call PACK,apt-dev,DEB_APT_V)
 	
 	# apt.mk Build cleanup
-	#rm -rf $(BUILD_DIST)/apt{,-utils,-dev}
+	rm -rf $(BUILD_DIST)/apt{,-utils,-dev}
 
 .PHONY: apt apt-stage

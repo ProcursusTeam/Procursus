@@ -88,7 +88,8 @@ SIGN =  find $(BUILD_DIST)/$(1) -name '*.la' -type f -delete ; \
 		find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \; &> /dev/null ; \
 		find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete ;
 		
-PACK =  mkdir -p $(BUILD_DIST)/$(1)/DEBIAN ; \
+PACK =  find $(BUILD_DIST)/$(1) -name '*.la' -type f -delete ; \
+		mkdir -p $(BUILD_DIST)/$(1)/DEBIAN ; \
 		cp $(BUILD_INFO)/$(1).control $(BUILD_DIST)/$(1)/DEBIAN/control ; \
 		$(SED) -i ':a; s/$$$(2)/$($(2))/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control ; \
 		$(SED) -i ':a; s/$$DEB_MAINTAINER/$(DEB_MAINTAINER)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control ; \
