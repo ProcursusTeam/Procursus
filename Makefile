@@ -91,6 +91,12 @@ SIGN =  find $(BUILD_DIST)/$(1) -name '*.la' -type f -delete ; \
 PACK =  find $(BUILD_DIST)/$(1) -name '*.la' -type f -delete ; \
 		mkdir -p $(BUILD_DIST)/$(1)/DEBIAN ; \
 		cp $(BUILD_INFO)/$(1).control $(BUILD_DIST)/$(1)/DEBIAN/control ; \
+		cp $(BUILD_INFO)/$(1).postinst $(BUILD_DIST)/$(1)/DEBIAN/postinst 2>/dev/null || : ; \
+		cp $(BUILD_INFO)/$(1).preinst $(BUILD_DIST)/$(1)/DEBIAN/preinst 2>/dev/null || : ; \
+		cp $(BUILD_INFO)/$(1).postrm $(BUILD_DIST)/$(1)/DEBIAN/postrm 2>/dev/null || : ; \
+		cp $(BUILD_INFO)/$(1).prerm $(BUILD_DIST)/$(1)/DEBIAN/prerm 2>/dev/null || : ; \
+		cp $(BUILD_INFO)/$(1).extrainst_ $(BUILD_DIST)/$(1)/DEBIAN/extrainst_ 2>/dev/null || : ; \
+		chmod 0755 $(BUILD_DIST)/$(1)/DEBIAN/* ; \
 		$(SED) -i ':a; s/$$$(2)/$($(2))/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control ; \
 		$(SED) -i ':a; s/$$DEB_MAINTAINER/$(DEB_MAINTAINER)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control ; \
 		$(SED) -i ':a; s/$$DEB_ARCH/$(DEB_ARCH)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control ; \
