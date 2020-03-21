@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 DPKG_VERSION := 1.20.0
+DEB_DPKG_V   ?= $(DPKG_VERSION)
 
 # TODO: we shouldn’t need to patch the config output to make dpkg use the right architecture params
 
@@ -10,7 +11,7 @@ ifneq ($(wildcard dpkg/.build_complete),)
 dpkg:
 	@echo "Using previously built dpkg."
 else
-dpkg: setup bzip2 xz
+dpkg: setup xz
 	if ! [ -f dpkg/configure ]; then \
 		cd dpkg && ./autogen; \
 	fi
@@ -27,7 +28,6 @@ dpkg: setup bzip2 xz
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
 		USE_NLS=no \
 		PERL_LIBDIR='$$(prefix)/lib' \
-		LZMA_LIBS="$(BUILD_BASE)/usr/local/lib/liblzma.a" \
 		TAR=$(TAR)
 	$(SED) -i s/'#define ARCHITECTURE "darwin-arm64"'/'#define ARCHITECTURE "$(DEB_ARCH)"'/ dpkg/config.h
 	$(SED) -i s/'#define ARCHITECTURE_OS "darwin"'/'#define ARCHITECTURE_OS "$(PLATFORM)"'/ dpkg/config.h

@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 GNUPG_VERSION := 2.2.19
+DEB_GNUPG_V   ?= $(GNUPG_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/gnupg/.build_complete),)
 gnupg:

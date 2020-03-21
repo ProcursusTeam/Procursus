@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 BASH_VERSION := 5.0
+DEB_BASH_V   ?= $(BASH_VERSION)
 
 # When built with SSH_SOURCE_BASHRC, bash will source ~/.bashrc when
 # it's non-interactively from sshd.  This allows the user to set

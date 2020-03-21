@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 LZ4_VERSION := 1.9.2
+DEB_LZ4_V   ?= $(LZ4_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/lz4/.build_complete),)
 lz4:

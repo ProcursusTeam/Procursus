@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 NPTH_VERSION := 1.6
+DEB_NPTH_V   ?= $(NPTH_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/npth/.build_complete),)
 npth:

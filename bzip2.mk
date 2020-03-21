@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 BZIP2_VERSION := 1.0.8
+DEB_BZIP2_V   ?= $(BZIP2_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/bzip2/.build_complete),)
 bzip2:

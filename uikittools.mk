@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 UIKITTOOLS_VERSION := 2.0.2
+DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)
 
 ifneq ($(wildcard uikittools/.build_complete),)
 uikittools:

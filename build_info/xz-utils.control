@@ -1,5 +1,5 @@
 Package: xz-utils
-Version: $XZ_VERSION
+Version: $DEB_XZ_V
 Architecture: $DEB_ARCH
 Maintainer: $DEB_MAINTAINER
 Depends: grep, sed

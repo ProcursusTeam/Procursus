@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 DIFFUTILS_VERSION := 3.7
+DEB_DIFFUTILS_V   ?= $(DIFFUTILS_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/diffutils/.build_complete),)
 diffutils:

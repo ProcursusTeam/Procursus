@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 IDN2_VERSION := 2.3.0
+DEB_IDN2_V   ?= $(IDN2_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/libidn2/.build_complete),)
 libidn2:

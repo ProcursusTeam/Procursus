@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SED_VERSION := 4.7
+DEB_SED_V   ?= $(SED_VERSION)
 
 # `gl_cv_func_ftello_works=yes` workaround for gnulib issue on macOS Catalina, presumably also
 # iOS 13, borrowed from Homebrew formula for coreutils

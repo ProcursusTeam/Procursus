@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 LIBRESSL_VERSION := 3.0.2
+DEB_LIBRESSL_V   ?= $(LIBRESSL_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/libressl/.build_complete),)
 libressl:

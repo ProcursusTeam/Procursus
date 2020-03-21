@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 TAR_VERSION := 1.32
+DEB_TAR_V   ?= $(TAR_VERSION)
 
 # `gl_cv_func_ftello_works=yes` workaround for gnulib issue on macOS Catalina, presumably also
 # iOS 13, borrowed from Homebrew formula for coreutils

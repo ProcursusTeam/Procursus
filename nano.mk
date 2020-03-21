@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 NANO_VERSION := 4.5
+DEB_NANO_V   ?= $(NANO_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/nano/.build_complete),)
 nano:

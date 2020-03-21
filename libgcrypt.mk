@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 LIBGCRYPT_VERSION := 1.8.5
+DEB_LIBGCRYPT_V   ?= $(LIBGCRYPT_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/libgcrypt/.build_complete),)
 libgcrypt:

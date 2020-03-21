@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 P11_VERSION := 0.23.20
+DEB_P11_V   ?= $(P11_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/p11-kit/.build_complete),)
 p11-kit:

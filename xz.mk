@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 XZ_VERSION := 5.2.4
+DEB_XZ_V   ?= $(XZ_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/xz/.build_complete),)
 xz:
@@ -35,7 +36,7 @@ xz-stage: xz
 	$(call SIGN,xz-utils,general.xml)
 	
 	# xz.mk Make .debs
-	$(call PACK,xz-utils,XZ_VERSION)
+	$(call PACK,xz-utils,DEB_XZ_V)
 	
 	# xz.mk Build cleanup
 	rm -rf $(BUILD_DIST)/xz-utils

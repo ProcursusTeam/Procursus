@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 NETTLE_VERSION := 3.5.1
+DEB_NETTLE_V   ?= $(NETTLE_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/nettle/.build_complete),)
 nettle:

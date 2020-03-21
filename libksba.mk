@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 KSBA_VERSION := 1.3.5
+DEB_KSBA_V   ?= $(KSBA_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/libksba/.build_complete),)
 libksba:

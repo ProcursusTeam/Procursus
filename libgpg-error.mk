@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 LIBGPG-ERROR_VERSION := 1.37
+DEB_LIBGPG-ERROR_V   ?= $(LIBGPG-ERROR_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/libgpg-error/.build_complete),)
 libgpg-error:

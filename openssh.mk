@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 OPENSSH_VERSION := 8.2
+DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)
 
 ifeq ($(UNAME),Linux)
 EXTRA := INSTALL="/usr/bin/install -c --strip-program=$(STRIP)"

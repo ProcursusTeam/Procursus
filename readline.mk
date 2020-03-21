@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 READLINE_VERSION := 8.0
+DEB_READLINE_V   ?= $(READLINE_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/readline/.build_complete),)
 readline:

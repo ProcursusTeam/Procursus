@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 BDB_VERSION := 18.1.32
+DEB_BDB_V   ?= $(BDB_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/berkeleydb/.build_complete),)
 berkeleydb:

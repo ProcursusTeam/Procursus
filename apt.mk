@@ -4,6 +4,7 @@ endif
 
 APT_DIR     := $(BUILD_ROOT)/apt
 APT_VERSION := 2.0.0
+DEB_APT_V   ?= $(APT_VERSION)
 
 ifneq ($(wildcard $(APT_DIR)/build/.build_complete),)
 apt:
@@ -70,9 +71,9 @@ apt-stage: apt
 	$(call SIGN,apt-utils,general.xml)
 	
 	# apt.mk Make .debs
-	$(call PACK,apt,APT_VERSION)
-	$(call PACK,apt-utils,APT_VERSION)
-	$(call PACK,apt-dev,APT_VERSION)
+	$(call PACK,apt,DEB_APT_V)
+	$(call PACK,apt-utils,DEB_APT_V)
+	$(call PACK,apt-dev,DEB_APT_V)
 	
 	# apt.mk Build cleanup
 	rm -rf $(BUILD_DIST)/apt{,-utils,-dev}

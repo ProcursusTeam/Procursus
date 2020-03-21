@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 GREP_VERSION := 3.3
+DEB_GREP_V   ?= $(GREP_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/grep/.build_complete),)
 grep:

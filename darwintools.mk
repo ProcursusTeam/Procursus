@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 DARWINTOOLS_VERSION := 1
+DEB_DARWINTOOLS_V   ?= $(DARWINTOOLS_VERSION)
 
 ifneq ($(wildcard darwintools/.build_complete),)
 darwintools:

@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 PCRE_VERSION := 8.43
+DEB_PCRE_V   ?= $(PCRE_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/pcre/.build_complete),)
 pcre:

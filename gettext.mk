@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 GETTEXT_VERSION := 0.20.1
+DEB_GETTEXT_V   ?= $(GETTEXT_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/gettext/.build_complete),)
 gettext:

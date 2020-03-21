@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 ZSTD_VERSION := 1.4.4
+DEB_ZSTD_V   ?= $(ZSTD_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/zstd/.build_complete),)
 zstd:
@@ -34,7 +35,7 @@ zstd-stage: zstd
 	$(call SIGN,zstd,general.xml)
 	
 	# zstd.mk Make .debs
-	$(call PACK,zstd,ZSTD_VERSION)
+	$(call PACK,zstd,DEB_ZSTD_V)
 	
 	# zstd.mk Build cleanup
 	rm -rf $(BUILD_DIST)/zstd

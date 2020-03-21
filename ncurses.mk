@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 NCURSES_VERSION := 6.1
+DEB_NCURSES_V   ?= $(NCURSES_VERSION)
 
 ifeq ($(UNAME),Linux)
 EXTRA := INSTALL="/usr/bin/install -c --strip-program=$(STRIP)"

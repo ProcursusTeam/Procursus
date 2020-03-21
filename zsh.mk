@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 ZSH_VERSION := 5.8
+DEB_ZSH_V   ?= $(ZSH_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/zsh/.build_complete),)
 zsh:

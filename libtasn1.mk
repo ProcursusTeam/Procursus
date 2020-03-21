@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 LIBTASN1_VERSION := 4.16.0
+DEB_LIBTASN1_V   ?= $(LIBTASN1_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/libtasn1/.build_complete),)
 libtasn1:

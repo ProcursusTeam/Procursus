@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 GMP_VERSION := 6.2.0
+DEB_GMP_V   ?= $(GMP_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/libgmp10/.build_complete),)
 libgmp10:

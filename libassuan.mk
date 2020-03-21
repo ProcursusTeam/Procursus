@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 LIBASSUAN_VERSION := 2.5.3
+DEB_LIBASSUAN_V   ?= $(LIBASSUAN_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/libassuan/.build_complete),)
 libassuan:

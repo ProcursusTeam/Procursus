@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 UNISTRING_VERSION := 0.9.10
+DEB_UNISTRING_V   ?= $(UNISTRING_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/libunistring/.build_complete),)
 libunistring:

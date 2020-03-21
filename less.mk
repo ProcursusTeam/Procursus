@@ -3,6 +3,7 @@ $(error Use the main Makefile)
 endif
 
 LESS_VERSION := 530
+DEB_LESS_V   ?= $(LESS_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/less/.build_complete),)
 less:
