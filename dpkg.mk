@@ -26,7 +26,8 @@ dpkg: setup xz
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
 		USE_NLS=no \
 		PERL_LIBDIR='$$(prefix)/lib' \
-		TAR=$(TAR)
+		TAR=$(TAR) \
+		LZMA_LIBS=$(BUILD_BASE)/usr/local/lib/liblzma.5.dylib
 	$(MAKE) -C dpkg \
 		ARCHITECTURE=$(DEB_ARCH) \
 		ARCHITECTURE_OS=$(PLATFORM) \
