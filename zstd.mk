@@ -29,7 +29,7 @@ zstd-stage: zstd
 	mkdir -p $(BUILD_DIST)/zstd
 	
 	# zstd.mk Prep zstd
-	cp -ar $(BUILD_STAGE)/zstd/usr $(BUILD_DIST)/zstd
+	cp -a $(BUILD_STAGE)/zstd/usr $(BUILD_DIST)/zstd
 	
 	# zstd.mk Sign
 	$(call SIGN,zstd,general.xml)

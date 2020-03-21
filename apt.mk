@@ -49,22 +49,22 @@ apt-stage: apt
 	mkdir -p $(BUILD_DIST)/apt-dev/usr/lib
 	
 	# apt.mk Prep APT
-	cp -ar $(BUILD_STAGE)/apt/usr/bin/apt{,-cache,-cdrom,-config,-get,-key,-mark} $(BUILD_DIST)/apt/usr/bin
-	cp -ar $(BUILD_STAGE)/apt/usr/lib/*dylib $(BUILD_DIST)/apt/usr/lib
-	cp -ar $(BUILD_STAGE)/apt/usr/libexec/dpkg $(BUILD_DIST)/apt/usr/libexec
-	cp -ar $(BUILD_STAGE)/apt/usr/libexec/apt/{methods,apt-helper} $(BUILD_DIST)/apt/usr/libexec/apt
-	cp -ar $(BUILD_STAGE)/apt/usr/libexec/apt/planners/dump $(BUILD_DIST)/apt/usr/libexec/apt/planners
-	cp -ar $(BUILD_STAGE)/apt/usr/libexec/apt/solvers/dump $(BUILD_DIST)/apt/usr/libexec/apt/solvers
-	cp -ar $(BUILD_STAGE)/apt/usr/share $(BUILD_DIST)/apt/usr
+	cp -a $(BUILD_STAGE)/apt/usr/bin/apt{,-cache,-cdrom,-config,-get,-key,-mark} $(BUILD_DIST)/apt/usr/bin
+	cp -a $(BUILD_STAGE)/apt/usr/lib/*dylib $(BUILD_DIST)/apt/usr/lib
+	cp -a $(BUILD_STAGE)/apt/usr/libexec/dpkg $(BUILD_DIST)/apt/usr/libexec
+	cp -a $(BUILD_STAGE)/apt/usr/libexec/apt/{methods,apt-helper} $(BUILD_DIST)/apt/usr/libexec/apt
+	cp -a $(BUILD_STAGE)/apt/usr/libexec/apt/planners/dump $(BUILD_DIST)/apt/usr/libexec/apt/planners
+	cp -a $(BUILD_STAGE)/apt/usr/libexec/apt/solvers/dump $(BUILD_DIST)/apt/usr/libexec/apt/solvers
+	cp -a $(BUILD_STAGE)/apt/usr/share $(BUILD_DIST)/apt/usr
 	
 	# apt.mk Prep APT-Utils
-	cp -ar $(BUILD_STAGE)/apt/usr/bin/apt-{extracttemplates,ftparchive,sortpkgs} $(BUILD_DIST)/apt-utils/usr/bin
-	cp -ar $(BUILD_STAGE)/apt/usr/libexec/apt/planners/apt $(BUILD_DIST)/apt-utils/usr/libexec/apt/planners
-	cp -ar $(BUILD_STAGE)/apt/usr/libexec/apt/solvers/apt $(BUILD_DIST)/apt-utils/usr/libexec/apt/solvers
+	cp -a $(BUILD_STAGE)/apt/usr/bin/apt-{extracttemplates,ftparchive,sortpkgs} $(BUILD_DIST)/apt-utils/usr/bin
+	cp -a $(BUILD_STAGE)/apt/usr/libexec/apt/planners/apt $(BUILD_DIST)/apt-utils/usr/libexec/apt/planners
+	cp -a $(BUILD_STAGE)/apt/usr/libexec/apt/solvers/apt $(BUILD_DIST)/apt-utils/usr/libexec/apt/solvers
 	
 	# apt.mk Prep APT-Dev
-	cp -ar $(BUILD_STAGE)/apt/usr/lib/pkgconfig $(BUILD_DIST)/apt-dev/usr/lib
-	cp -ar $(BUILD_STAGE)/apt/usr/include $(BUILD_DIST)/apt-dev/usr
+	cp -a $(BUILD_STAGE)/apt/usr/lib/pkgconfig $(BUILD_DIST)/apt-dev/usr/lib
+	cp -a $(BUILD_STAGE)/apt/usr/include $(BUILD_DIST)/apt-dev/usr
 	
 	#apt.mk Sign
 	$(call SIGN,apt,general.xml)
@@ -76,6 +76,6 @@ apt-stage: apt
 	$(call PACK,apt-dev,DEB_APT_V)
 	
 	# apt.mk Build cleanup
-	rm -rf $(BUILD_DIST)/apt{,-utils,-dev}
+	#rm -rf $(BUILD_DIST)/apt{,-utils,-dev}
 
 .PHONY: apt apt-stage

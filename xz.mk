@@ -30,7 +30,7 @@ xz-stage: xz
 	mkdir -p $(BUILD_DIST)/xz-utils
 	
 	# xz.mk Prep xz-utils
-	cp -ar $(BUILD_STAGE)/xz/usr $(BUILD_DIST)/xz-utils
+	cp -a $(BUILD_STAGE)/xz/usr $(BUILD_DIST)/xz-utils
 	
 	# xz.mk Sign
 	$(call SIGN,xz-utils,general.xml)
