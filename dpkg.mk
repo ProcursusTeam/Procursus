@@ -5,6 +5,8 @@ endif
 DPKG_VERSION := 1.20.0
 DEB_DPKG_V   ?= $(DPKG_VERSION)
 
+# TODO: we shouldn’t need to patch the config output to make dpkg use the right architecture params
+
 ifneq ($(wildcard dpkg/.build_complete),)
 dpkg:
 	@echo "Using previously built dpkg."
@@ -28,10 +30,10 @@ dpkg: setup xz
 		PERL_LIBDIR='$$(prefix)/lib' \
 		TAR=$(TAR) \
 		LZMA_LIBS=$(BUILD_BASE)/usr/local/lib/liblzma.5.dylib
-	$(MAKE) -C dpkg \
-		ARCHITECTURE=$(DEB_ARCH) \
-		ARCHITECTURE_OS=$(PLATFORM) \
-		TAR=tar
+	$(SED) -i s/'#define ARCHITECTURE "darwin-arm64"'/'#define ARCHITECTURE "$(DEB_ARCH)"'/ dpkg/config.h
+	$(SED) -i s/'#define ARCHITECTURE_OS "darwin"'/'#define ARCHITECTURE_OS "$(PLATFORM)"'/ dpkg/config.h
+	$(SED) -i s/'$(TAR)'/'tar'/ dpkg/config.h
+	$(MAKE) -C dpkg
 	$(FAKEROOT) $(MAKE) -C dpkg install \
 		DESTDIR="$(BUILD_STAGE)/dpkg"
 	$(FAKEROOT) mkdir -p $(BUILD_STAGE)/dpkg/var/lib
