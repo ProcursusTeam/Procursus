@@ -1,5 +1,3 @@
 #!/bin/sh
 pwd_mkdb -p /etc/master.passwd
-chsh -s /bin/zsh root
-chsh -s /bin/zsh mobile
 rm /etc/pwd.db /etc/spwd.db
