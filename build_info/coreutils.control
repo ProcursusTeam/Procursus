@@ -1,21 +1,13 @@
 Package: coreutils
-Version: 8.31
-Architecture: $ARCH
-Priority: required
-Essential: yes
+Version: $DEB_COREUTILS_V
+Architecture: $DEB_ARCH
+Maintainer: $DEB_MAINTAINER
+Depends: bash, profile.d
+Replaces: netatalk (<= 2.0.3-6), coreutils-bin, shell-cmds (<< 118-5)
+Provides: md5sum, sha1sum, coreutils-bin (=$DEB_COREUTILS_V), dirname, kill, mktemp, su
+Filename: debs/1443.00/coreutils_8.31-1_iphoneos-arm.deb
 Section: Utilities
-Maintainer: $MAINTAINER
-Homepage: http://gnu.org/software/coreutils
-Description: GNU core utilities
- This package contains the basic file, shell and text manipulation
- utilities which are expected to exist on every operating system.
- .
- Specifically, this package includes: arch base64 basename cat chcon chgrp
- chmod chown chroot cksum comm cp csplit cut date dd df dir dircolors
- dirname du echo env expand expr factor false flock fmt fold groups head
- hostid id install join link ln logname ls md5sum mkdir mkfifo mknod mktemp
- mv nice nl nohup nproc numfmt od paste pathchk pinky pr printenv printf
- ptx pwd readlink realpath rm rmdir runcon sha*sum seq shred sleep sort
- split stat stty sum sync tac tail tee test timeout touch tr true truncate
- tsort tty uname unexpand uniq unlink users vdir wc who whoami yes
-Tag: role::hacker
+Priority: standard
+Homepage: http://www.gnu.org/software/coreutils/
+Description: core set of Unix shell utilities from GNU
+Name: Core Utilities

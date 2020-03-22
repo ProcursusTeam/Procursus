@@ -84,11 +84,11 @@ DO_PATCH    = if [ ! -f $(BUILD_WORK)/$(2)/$(notdir $(1)).done ]; then \
 		touch $(BUILD_WORK)/$(2)/$(notdir $(1)).done; \
 	fi
 
-SIGN =  find $(BUILD_DIST)/$(1) -name '*.la' -type f -delete ; \
-		find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \; &> /dev/null ; \
+SIGN =  find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \; &> /dev/null ; \
 		find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete ;
 		
 PACK =  find $(BUILD_DIST)/$(1) -name '*.la' -type f -delete ; \
+		rm -rf $(BUILD_DIST)/$(1)/usr/share/{info,man} ; \
 		mkdir -p $(BUILD_DIST)/$(1)/DEBIAN ; \
 		cp $(BUILD_INFO)/$(1).control $(BUILD_DIST)/$(1)/DEBIAN/control ; \
 		cp $(BUILD_INFO)/$(1).postinst $(BUILD_DIST)/$(1)/DEBIAN/postinst 2>/dev/null || : ; \
