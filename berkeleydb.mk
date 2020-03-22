@@ -43,5 +43,4 @@ berkeleydb-stage: berkeleydb
 	# berkeleydb.mk Build cleanup
 	rm -rf $(BUILD_DIST)/berkeleydb
 
-
 .PHONY: berkeleydb berkeleydb-stage
