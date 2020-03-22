@@ -25,4 +25,23 @@ berkeleydb: setup
 	touch $(BUILD_WORK)/berkeleydb/.build_complete
 endif
 
-.PHONY: berkeleydb
+berkeleydb-stage: berkeleydb
+	# berkeleydb.mk Package Structure
+	rm -rf $(BUILD_DIST)/berkeleydb
+	mkdir -p $(BUILD_DIST)/berkeleydb
+	
+	# berkeleydb.mk Prep berkeleydb
+	cp -a $(BUILD_STAGE)/berkeleydb/usr $(BUILD_DIST)/berkeleydb
+	rm -rf $(BUILD_DIST)/berkeleydb/usr/docs
+	
+	# berkeleydb.mk Sign
+	$(call SIGN,berkeleydb,general.xml)
+	
+	# berkeleydb.mk Make .debs
+	$(call PACK,berkeleydb,DEB_BDB_V)
+	
+	# berkeleydb.mk Build cleanup
+	rm -rf $(BUILD_DIST)/berkeleydb
+
+
+.PHONY: berkeleydb berkeleydb-stage
