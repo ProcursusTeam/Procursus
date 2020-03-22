@@ -37,4 +37,4 @@ bzip2-stage: bzip2
 	# bzip2.mk Build cleanup
 	rm -rf $(BUILD_DIST)/bzip2
 
-.PHONY: bzip2
+.PHONY: bzip2 bzip2-stage

@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+
+case "$1" in
+    upgrade)
+  ;;
+
+    remove|deconfigure)
+      update-alternatives --quiet --remove sh /bin/bash
+      dpkg-divert --quiet --remove /bin/sh
+      if [ ! -e /bin/sh ]; then
+          echo There would be no shell!
+          ln -s bash /bin/sh
+          exit 1
+      fi
+  ;;
+
+    failed-upgrade)
+  ;;
+    *)
+        echo "prerm called with unknown argument \`$1'" >&2
+        exit 1
+  ;;
+esac
