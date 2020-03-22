@@ -17,6 +17,7 @@ cacerts: setup
 	mkdir -p $(BUILD_STAGE)/cacerts/etc/{profile.d,ssl/certs}
 	cp $(BUILD_WORK)/cacerts/cacerts.bootstrap.sh $(BUILD_STAGE)/cacerts/etc/profile.d
 	cp $(BUILD_WORK)/cacerts/certdata.txt $(BUILD_STAGE)/cacerts/etc/ssl/certs/cacert.pem
+	touch $(BUILD_WORK)/cacerts/.build_complete
 endif
 
 cacerts-stage: cacerts
