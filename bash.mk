@@ -49,4 +49,23 @@ bash: setup ncurses readline
 	touch $(BUILD_WORK)/bash/.build_complete
 endif
 
-.PHONY: bash
+bash-stage: 
+	#bash.mk Package Structure
+	rm -rf $(BUILD_DIST)/bash
+	mkdir -p $(BUILD_DIST)/bash/{bin,usr}
+
+	#bash.mk Prep bash
+	cp -a $(BUILD_STAGE)/bash/usr/{bin,include,lib} $(BUILD_DIST)/bash/usr
+	ln -s /usr/bin/bash $(BUILD_DIST)/bash/bin/bash
+	ln -s /usr/bin/bash $(BUILD_DIST)/bash/bin/sh
+
+	#bash.mk Sign
+	$(call SIGN,bash,general.xml)
+
+	#bash.mk Make .debs
+	$(call PACK,bash,DEB_BASH_V)
+
+	#bash.mk Build cleanup
+	rm -rf $(BUILD_DIST)/bash
+
+.PHONY: bash bash-stage
