@@ -49,7 +49,7 @@ bash: setup ncurses readline
 	touch $(BUILD_WORK)/bash/.build_complete
 endif
 
-bash-stage: 
+bash-stage: bash
 	#bash.mk Package Structure
 	rm -rf $(BUILD_DIST)/bash
 	mkdir -p $(BUILD_DIST)/bash/{bin,usr}

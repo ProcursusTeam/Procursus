@@ -97,9 +97,9 @@ PACK =  find $(BUILD_DIST)/$(1) \( -name '*.la' -o -name '*.a' \) -type f -delet
 		cp $(BUILD_INFO)/$(1).prerm $(BUILD_DIST)/$(1)/DEBIAN/prerm 2>/dev/null || : ; \
 		cp $(BUILD_INFO)/$(1).extrainst_ $(BUILD_DIST)/$(1)/DEBIAN/extrainst_ 2>/dev/null || : ; \
 		chmod 0755 $(BUILD_DIST)/$(1)/DEBIAN/* ; \
-		$(SED) -i ':a; s/$$$(2)/$($(2))/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control ; \
-		$(SED) -i ':a; s/$$DEB_MAINTAINER/$(DEB_MAINTAINER)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control ; \
-		$(SED) -i ':a; s/$$DEB_ARCH/$(DEB_ARCH)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control ; \
+		$(SED) -i ':a; s/@$(2)@/$($(2))/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control ; \
+		$(SED) -i ':a; s/@DEB_MAINTAINER@/$(DEB_MAINTAINER)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control ; \
+		$(SED) -i ':a; s/@DEB_ARCH@/$(DEB_ARCH)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control ; \
 		$(DPKG_DEB) -b $(BUILD_DIST)/$(1) $(BUILD_DIST)/$(1)_$($(2))_$(DEB_ARCH).deb ;
 
 ifeq ($(call HAS_COMMAND,shasum),1)

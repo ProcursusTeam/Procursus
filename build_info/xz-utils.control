@@ -1,9 +1,9 @@
 Package: xz-utils
-Version: $DEB_XZ_V
-Architecture: $DEB_ARCH
-Maintainer: $DEB_MAINTAINER
+Version: @DEB_XZ_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
 Replaces: xz, lzma
-Provides: xz (=$DEB_XZ_V), lzma (=$DEB_XZ_V)
+Provides: xz (=@DEB_XZ_V@), lzma (=@DEB_XZ_V@)
 Depends: grep, sed
 Section: Archiving
 Priority: important

@@ -1,10 +1,10 @@
 Package: apt-dev
 Priority: standard
 Section: Packaging
-Maintainer: $DEB_MAINTAINER
-Architecture: $DEB_ARCH
-Version: $DEB_APT_V
-Depends: apt (=$DEB_APT_V)
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_APT_V@
+Depends: apt (=@DEB_APT_V@)
 Pre-Depends: dpkg (>= 1.14.25-8)
 Replaces: libapt-pkg-dev
 Conflicts: apt7 (<<1:0), apt1.4 (<<1:0), apt (<<2.0.0)

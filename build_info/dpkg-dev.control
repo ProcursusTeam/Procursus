@@ -1,7 +1,7 @@
 Package: dpkg-dev
-Version: $DEB_DPKG_V
-Architecture: $DEB_ARCH
-Maintainer: $DEB_MAINTAINER
+Version: @DEB_DPKG_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
 Depends: dpkg, perl
 Replaces: dpkg-perl
 Section: Packaging

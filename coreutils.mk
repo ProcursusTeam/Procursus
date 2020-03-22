@@ -31,7 +31,7 @@ coreutils: setup
 	touch $(BUILD_WORK)/coreutils/.build_complete
 endif
 
-coreutils-stage:
+coreutils-stage: coreutils
 	# coreutils.mk Package Structure
 	rm -rf $(BUILD_DIST)/coreutils
 	mkdir -p $(BUILD_DIST)/coreutils/{etc/profile.d,bin,usr/sbin}

@@ -1,7 +1,7 @@
 Package: zstd
-Maintainer: $DEB_MAINTAINER
-Architecture: $DEB_ARCH
-Version: $DEB_LZ4_V
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LZ4_V@
 Section: Archiving
 Priority: important
 Multi-Arch: foreign

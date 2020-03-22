@@ -41,7 +41,7 @@ dpkg: setup xz
 	touch dpkg/.build_complete
 endif
 
-dpkg-stage:
+dpkg-stage: dpkg
 	# dpkg.mk Package Structure
 	rm -rf $(BUILD_DIST)/dpkg{,-dev}
 	mkdir -p $(BUILD_DIST)/dpkg{,-dev}/usr/{bin,share/dpkg}
