@@ -16,7 +16,7 @@ grep: setup pcre
 		--disable-dependency-tracking \
 		--with-packager="$(DEB_MAINTAINER)"
 	$(MAKE) -C $(BUILD_WORK)/grep
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/grep install \
+	$(MAKE) -C $(BUILD_WORK)/grep install \
 		DESTDIR=$(BUILD_STAGE)/grep
 	touch $(BUILD_WORK)/grep/.build_complete
 endif

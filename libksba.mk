@@ -15,9 +15,9 @@ libksba: setup libgpg-error
 		--prefix=/usr \
 		--with-gpg-error-prefix=$(BUILD_BASE)/usr
 	$(MAKE) -C $(BUILD_WORK)/libksba
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/libksba install \
+	$(MAKE) -C $(BUILD_WORK)/libksba install \
 		DESTDIR=$(BUILD_STAGE)/libksba
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/libksba install \
+	$(MAKE) -C $(BUILD_WORK)/libksba install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libksba/.build_complete
 endif

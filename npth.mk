@@ -14,9 +14,9 @@ npth: setup
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
 	$(MAKE) -C $(BUILD_WORK)/npth
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/npth install \
+	$(MAKE) -C $(BUILD_WORK)/npth install \
 		DESTDIR=$(BUILD_STAGE)/npth
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/npth install \
+	$(MAKE) -C $(BUILD_WORK)/npth install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/npth/.build_complete
 endif

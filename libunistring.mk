@@ -14,9 +14,9 @@ libunistring: setup
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
 	$(MAKE) -C $(BUILD_WORK)/libunistring
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/libunistring install \
+	$(MAKE) -C $(BUILD_WORK)/libunistring install \
 		DESTDIR=$(BUILD_STAGE)/libunistring
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/libunistring install \
+	$(MAKE) -C $(BUILD_WORK)/libunistring install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libunistring/.build_complete
 endif

@@ -24,7 +24,7 @@ zsh: setup pcre ncurses
 		DL_EXT=bundle \
 		zsh_cv_rlimit_rss_is_as=yes
 	$(MAKE) -C $(BUILD_WORK)/zsh
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/zsh install install.info \
+	$(MAKE) -C $(BUILD_WORK)/zsh install install.info \
 		DESTDIR="$(BUILD_STAGE)/zsh"
 	touch $(BUILD_WORK)/zsh/.build_complete
 endif

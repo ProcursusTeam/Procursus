@@ -19,9 +19,9 @@ gettext: setup ncurses
 	$(MAKE) -C $(BUILD_WORK)/gettext \
 		LIBTERMINFO=-lncursesw \
 		LTLIBTERMINFO=-lncursesw
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/gettext install \
+	$(MAKE) -C $(BUILD_WORK)/gettext install \
 		DESTDIR=$(BUILD_STAGE)/gettext
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/gettext install \
+	$(MAKE) -C $(BUILD_WORK)/gettext install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/gettext/.build_complete
 endif

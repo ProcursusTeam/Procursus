@@ -34,29 +34,29 @@ dpkg: setup xz
 	$(SED) -i s/'#define ARCHITECTURE_OS "darwin"'/'#define ARCHITECTURE_OS "$(PLATFORM)"'/ dpkg/config.h
 	$(SED) -i s/'$(TAR)'/'tar'/ dpkg/config.h
 	$(MAKE) -C dpkg
-	$(FAKEROOT) $(MAKE) -C dpkg install \
+	$(MAKE) -C dpkg install \
 		DESTDIR="$(BUILD_STAGE)/dpkg"
-	$(FAKEROOT) mkdir -p $(BUILD_STAGE)/dpkg/var/lib
-	$(FAKEROOT) ln -s /Library/dpkg $(BUILD_STAGE)/dpkg/var/lib/dpkg
+	mkdir -p $(BUILD_STAGE)/dpkg/var/lib
+	ln -s /Library/dpkg $(BUILD_STAGE)/dpkg/var/lib/dpkg
 	touch dpkg/.build_complete
 endif
 
-dpkg-stage: dpkg
+dpkg-package: dpkg-stage
 	# dpkg.mk Package Structure
 	rm -rf $(BUILD_DIST)/dpkg{,-dev}
 	mkdir -p $(BUILD_DIST)/dpkg{,-dev}/usr/{bin,share/dpkg}
 	
 	# dpkg.mk Prep DPKG
-	cp -a $(BUILD_STAGE)/dpkg/{etc,Library,var} $(BUILD_DIST)/dpkg
-	cp -a $(BUILD_STAGE)/dpkg/usr/bin/{dpkg{,-deb,-divert,-maintscript-helper,-query,-split,-statoverride,-trigger},update-alternatives} $(BUILD_DIST)/dpkg/usr/bin
-	cp -a $(BUILD_STAGE)/dpkg/usr/share/polkit-1 $(BUILD_DIST)/dpkg/usr/share
-	cp -a $(BUILD_STAGE)/dpkg/usr/share/dpkg/{abi,cpu,os,tuple}table $(BUILD_DIST)/dpkg/usr/share/dpkg
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/dpkg/{etc,Library,var} $(BUILD_DIST)/dpkg
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/dpkg/usr/bin/{dpkg{,-deb,-divert,-maintscript-helper,-query,-split,-statoverride,-trigger},update-alternatives} $(BUILD_DIST)/dpkg/usr/bin
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/dpkg/usr/share/polkit-1 $(BUILD_DIST)/dpkg/usr/share
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/dpkg/usr/share/dpkg/{abi,cpu,os,tuple}table $(BUILD_DIST)/dpkg/usr/share/dpkg
 	
 	# dpkg.mk Prep DPKG-Dev
-	cp -a $(BUILD_STAGE)/dpkg/usr/bin/dpkg-{architecture,buildflags,buildpackage,checkbuilddeps,distaddfile,genbuildinfo,genchanges,gencontrol,gensymbols,mergechangelogs,name,parsechangelog,scanpackages,scansources,shlibdeps,source,vendor} $(BUILD_DIST)/dpkg-dev/usr/bin
-	cp -a $(BUILD_STAGE)/dpkg/usr/lib $(BUILD_DIST)/dpkg-dev/usr
-	cp -a $(BUILD_STAGE)/dpkg/usr/share/perl5 $(BUILD_DIST)/dpkg-dev/usr/share
-	cp -a $(BUILD_STAGE)/dpkg/usr/share/dpkg/*.mk $(BUILD_DIST)/dpkg-dev/usr/share/dpkg
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/dpkg/usr/bin/dpkg-{architecture,buildflags,buildpackage,checkbuilddeps,distaddfile,genbuildinfo,genchanges,gencontrol,gensymbols,mergechangelogs,name,parsechangelog,scanpackages,scansources,shlibdeps,source,vendor} $(BUILD_DIST)/dpkg-dev/usr/bin
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/dpkg/usr/lib $(BUILD_DIST)/dpkg-dev/usr
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/dpkg/usr/share/perl5 $(BUILD_DIST)/dpkg-dev/usr/share
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/dpkg/usr/share/dpkg/*.mk $(BUILD_DIST)/dpkg-dev/usr/share/dpkg
 	
 	#dpkg.mk Sign
 	$(call SIGN,dpkg,general.xml)
@@ -68,5 +68,5 @@ dpkg-stage: dpkg
 	# dpkg.mk Build cleanup
 	rm -rf $(BUILD_DIST)/dpkg{,-dev}
 
-.PHONY: dpkg
+.PHONY: dpkg dpkg-package
 

@@ -21,7 +21,7 @@ findutils: setup
 		--disable-debug \
 		gl_cv_func_ftello_works=yes
 	$(MAKE) -C $(BUILD_WORK)/findutils
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/findutils install \
+	$(MAKE) -C $(BUILD_WORK)/findutils install \
 		DESTDIR=$(BUILD_STAGE)/findutils
 	touch $(BUILD_WORK)/findutils/.build_complete
 endif

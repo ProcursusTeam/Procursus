@@ -14,9 +14,9 @@ libtasn1: setup
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
 	$(MAKE) -C $(BUILD_WORK)/libtasn1
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/libtasn1 install \
+	$(MAKE) -C $(BUILD_WORK)/libtasn1 install \
 		DESTDIR=$(BUILD_STAGE)/libtasn1
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/libtasn1 install \
+	$(MAKE) -C $(BUILD_WORK)/libtasn1 install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libtasn1/.build_complete
 endif

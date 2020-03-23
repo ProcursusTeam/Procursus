@@ -14,10 +14,10 @@ uikittools: setup
 		CC=$(CC) \
 		STRIP=$(STRIP) \
 		CFLAGS="$(CFLAGS)"
-	$(FAKEROOT) mkdir -p $(BUILD_STAGE)/uikittools/usr/bin
+	mkdir -p $(BUILD_STAGE)/uikittools/usr/bin
 	for bin in uikittools/*; do \
 		if [ -f $$bin ] && [ -x $$bin ]; then \
-			$(FAKEROOT) cp $$bin $(BUILD_STAGE)/uikittools/usr/bin ; \
+			cp $$bin $(BUILD_STAGE)/uikittools/usr/bin ; \
 		fi \
 	done
 	touch uikittools/.build_complete

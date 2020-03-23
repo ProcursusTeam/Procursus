@@ -11,19 +11,19 @@ darwintools:
 else
 darwintools: setup
 	cd darwintools && make
-	$(FAKEROOT) mkdir -p $(BUILD_STAGE)/darwintools/usr/{bin,libexec/cydia}
-	$(FAKEROOT) cp darwintools/sw_vers $(BUILD_STAGE)/darwintools/usr/bin
-	$(FAKEROOT) cp $(BUILD_INFO)/firmware.sh $(BUILD_STAGE)/darwintools/usr/libexec
+	mkdir -p $(BUILD_STAGE)/darwintools/usr/{bin,libexec/cydia}
+	cp darwintools/sw_vers $(BUILD_STAGE)/darwintools/usr/bin
+	cp $(BUILD_INFO)/firmware.sh $(BUILD_STAGE)/darwintools/usr/libexec
 	touch darwintools/.build_complete
 endif
 
-darwintools-stage: darwintools
+darwintools-package: darwintools-stage
 	# darwintools.mk Package Structure
 	rm -rf $(BUILD_DIST)/darwintools
 	mkdir -p $(BUILD_DIST)/darwintools
 	
 	# darwintools.mk Prep darwintools
-	cp -a $(BUILD_STAGE)/darwintools/usr $(BUILD_DIST)/darwintools
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/darwintools/usr $(BUILD_DIST)/darwintools
 	
 	# darwintools.mk Sign
 	$(call SIGN,darwintools,general.xml)
@@ -34,4 +34,4 @@ darwintools-stage: darwintools
 	# darwintools.mk Build cleanup
 	rm -rf $(BUILD_DIST)/darwintools
 
-.PHONY: darwintools darwintools-stage
+.PHONY: darwintools darwintools-package

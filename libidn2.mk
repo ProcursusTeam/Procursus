@@ -14,9 +14,9 @@ libidn2: setup gettext
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
 	$(MAKE) -C $(BUILD_WORK)/libidn2
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/libidn2 install \
+	$(MAKE) -C $(BUILD_WORK)/libidn2 install \
 		DESTDIR=$(BUILD_STAGE)/libidn2
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/libidn2 install \
+	$(MAKE) -C $(BUILD_WORK)/libidn2 install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libidn2/.build_complete
 endif

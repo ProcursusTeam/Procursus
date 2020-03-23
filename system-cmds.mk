@@ -43,14 +43,11 @@ system-cmds: setup
 		echo "$$tproj" ; \
 		$(CC) -o $$tproj $$tproj.tproj/*.c -I. -D'__FBSDID(x)=' -DTARGET_OS_EMBEDDED -framework CoreFoundation -framework IOKit $(CFLAGS) $$CFLAGS ; \
 	done
-
-	chmod u+s system-cmds/{passwd,login}
 	
 	mkdir -p $(BUILD_STAGE)/system-cmds/{/bin,/sbin,/usr/bin,/usr/sbin}
 
 	cp -a system-cmds/{reboot,nologin} $(BUILD_STAGE)/system-cmds/usr/sbin
 	cp -a system-cmds/pagesize.tproj/pagesize.sh $(BUILD_STAGE)/system-cmds/usr/bin/pagesize
-	chmod a+x $(BUILD_STAGE)/system-cmds/usr/bin/pagesize
 
 	cp -a system-cmds/sync $(BUILD_STAGE)/system-cmds/bin
 	cp -a system-cmds/{dmesg,dynamic_pager} $(BUILD_STAGE)/system-cmds/sbin
@@ -65,16 +62,19 @@ system-cmds: setup
 	touch system-cmds/.build_complete
 endif
 
-system-cmds-stage: system-cmds
+system-cmds-package: system-cmds-stage
 	# system-cmds.mk Package Structure
 	rm -rf $(BUILD_DIST)/system-cmds
-	mkdir -p $(BUILD_DIST)/system-cmds
 	
 	# system-cmds.mk Prep system-cmds
-	cp -a $(BUILD_STAGE)/system-cmds/* $(BUILD_DIST)/system-cmds
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/system-cmds $(BUILD_DIST)
 
 	# system-cmds.mk Sign
 	$(call SIGN,system-cmds,general.xml)
+
+	# system-cmds.mk Permissions
+	$(FAKEROOT) chmod u+s $(BUILD_DIST)/system-cmds/usr/bin/{passwd,login}
+	$(FAKEROOT) chmod a+x $(BUILD_DIST)/system-cmds/usr/bin/pagesize
 	
 	# system-cmds.mk Make .debs
 	$(call PACK,system-cmds,DEB_SYSTEM-CMDS_V)
@@ -82,4 +82,4 @@ system-cmds-stage: system-cmds
 	# system-cmds.mk Build cleanup
 	rm -rf $(BUILD_DIST)/system-cmds
 
-.PHONY: system-cmds system-cmds-stage
+.PHONY: system-cmds system-cmds-package

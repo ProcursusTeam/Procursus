@@ -20,7 +20,7 @@ sed: setup
 		--disable-dependency-tracking \
 		gl_cv_func_ftello_works=yes
 	$(MAKE) -C $(BUILD_WORK)/sed
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/sed install \
+	$(MAKE) -C $(BUILD_WORK)/sed install \
 		DESTDIR=$(BUILD_STAGE)/sed
 	touch $(BUILD_WORK)/sed/.build_complete
 endif

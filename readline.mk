@@ -18,7 +18,7 @@ readline: setup ncurses
 	$(MAKE) -C $(BUILD_WORK)/readline \
 		SHLIB_LIBS="-lncursesw"
 		TERMCAP_LIB="-lncursesw"
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/readline install \
+	$(MAKE) -C $(BUILD_WORK)/readline install \
 		DESTDIR=$(BUILD_STAGE)/readline
 	$(MAKE) -C $(BUILD_WORK)/readline install \
 		DESTDIR=$(BUILD_BASE)

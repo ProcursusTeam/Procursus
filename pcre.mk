@@ -23,7 +23,7 @@ pcre: setup
 		--enable-pcregrep-libz \
 		--enable-pcregrep-libbz2
 	$(MAKE) -C $(BUILD_WORK)/pcre
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/pcre install \
+	$(MAKE) -C $(BUILD_WORK)/pcre install \
 		DESTDIR=$(BUILD_STAGE)/pcre
 	$(MAKE) -C $(BUILD_WORK)/pcre install \
 		DESTDIR=$(BUILD_BASE)

@@ -20,9 +20,9 @@ gnupg: setup readline libgpg-error libgcrypt libassuan libksba npth
 		--with-ksba-prefix=$(BUILD_BASE)/usr \
 		--with-bzip2
 	$(MAKE) -C $(BUILD_WORK)/gnupg
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/gnupg install \
+	$(MAKE) -C $(BUILD_WORK)/gnupg install \
 		DESTDIR=$(BUILD_STAGE)/gnupg
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/gnupg install \
+	$(MAKE) -C $(BUILD_WORK)/gnupg install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/gnupg/.build_complete
 endif

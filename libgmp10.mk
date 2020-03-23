@@ -15,9 +15,9 @@ libgmp10: setup
 		--prefix=/usr \
 		--disable-assembly
 	$(MAKE) -C $(BUILD_WORK)/libgmp10
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/libgmp10 install \
+	$(MAKE) -C $(BUILD_WORK)/libgmp10 install \
 		DESTDIR=$(BUILD_STAGE)/libgmp10
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/libgmp10 install \
+	$(MAKE) -C $(BUILD_WORK)/libgmp10 install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libgmp10/.build_complete
 endif

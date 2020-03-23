@@ -26,9 +26,9 @@ libgcrypt: setup libgpg-error
 	$(SED) -i '/.type  _gcry_mpih_submul_1/d' $(BUILD_WORK)/libgcrypt/mpi/aarch64/mpih-mul3.S
 	$(SED) -i '/.size _gcry_mpih_submul_1/d' $(BUILD_WORK)/libgcrypt/mpi/aarch64/mpih-mul3.S
 	$(MAKE) -C $(BUILD_WORK)/libgcrypt
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/libgcrypt install \
+	$(MAKE) -C $(BUILD_WORK)/libgcrypt install \
 		DESTDIR=$(BUILD_STAGE)/libgcrypt
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/libgcrypt install \
+	$(MAKE) -C $(BUILD_WORK)/libgcrypt install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libgcrypt/.build_complete
 endif

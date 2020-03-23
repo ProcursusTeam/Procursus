@@ -21,7 +21,7 @@ nano: setup ncurses
 		--enable-nanorc \
 		NCURSESW_LIBS=$(BUILD_BASE)/usr/lib/libncursesw.dylib
 	$(MAKE) -C $(BUILD_WORK)/nano
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/nano install \
+	$(MAKE) -C $(BUILD_WORK)/nano install \
 		DESTDIR=$(BUILD_STAGE)/nano
 	touch $(BUILD_WORK)/nano/.build_complete
 endif

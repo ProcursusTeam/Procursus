@@ -15,9 +15,9 @@ libgpg-error: setup
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
 	$(MAKE) -C $(BUILD_WORK)/libgpg-error
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/libgpg-error install \
+	$(MAKE) -C $(BUILD_WORK)/libgpg-error install \
 		DESTDIR=$(BUILD_STAGE)/libgpg-error
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/libgpg-error install \
+	$(MAKE) -C $(BUILD_WORK)/libgpg-error install \
 		DESTDIR=$(BUILD_BASE)	
 	touch $(BUILD_WORK)/libgpg-error/.build_complete
 endif

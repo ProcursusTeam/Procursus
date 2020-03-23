@@ -26,9 +26,9 @@ gnutls: setup readline gettext libgcrypt libgmp10 libidn2 libunistring nettle p1
 		--prefix=/usr \
 		P11_KIT_CFLAGS=-I$(BUILD_BASE)/usr/include/p11-kit-1
 	$(MAKE) -C $(BUILD_WORK)/gnutls
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/gnutls install \
+	$(MAKE) -C $(BUILD_WORK)/gnutls install \
 		DESTDIR=$(BUILD_STAGE)/gnutls
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/gnutls install \
+	$(MAKE) -C $(BUILD_WORK)/gnutls install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/gnutls/.build_complete
 endif

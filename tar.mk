@@ -19,7 +19,7 @@ tar: setup
 		--prefix=/usr \
 		gl_cv_func_ftello_works=yes
 	$(MAKE) -C $(BUILD_WORK)/tar
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/tar install \
+	$(MAKE) -C $(BUILD_WORK)/tar install \
 		DESTDIR=$(BUILD_STAGE)/tar
 	touch $(BUILD_WORK)/tar/.build_complete
 endif

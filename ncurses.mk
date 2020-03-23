@@ -45,7 +45,7 @@ ncurses: setup
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)"
 	$(MAKE) -C $(BUILD_WORK)/ncurses \
 		DESTDIR="$(BUILD_STAGE)/ncurses"
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/ncurses install \
+	$(MAKE) -C $(BUILD_WORK)/ncurses install \
 		DESTDIR="$(BUILD_STAGE)/ncurses"
 	$(MAKE) -C $(BUILD_WORK)/ncurses install \
 		DESTDIR="$(BUILD_BASE)"

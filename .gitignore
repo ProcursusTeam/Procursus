@@ -1,4 +1,4 @@
-fakeroot_persist
+.fakeroot_persist
 .build_complete
 build_base/
 build_source/

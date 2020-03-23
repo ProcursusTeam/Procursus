@@ -25,19 +25,19 @@ coreutils: setup
 		--without-gmp \
 		gl_cv_func_ftello_works=yes
 	$(MAKE) -C $(BUILD_WORK)/coreutils
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/coreutils install \
+	$(MAKE) -C $(BUILD_WORK)/coreutils install \
 		DESTDIR=$(BUILD_STAGE)/coreutils
 	cp $(BUILD_WORK)/coreutils/su/su $(BUILD_STAGE)/coreutils/usr/bin
 	touch $(BUILD_WORK)/coreutils/.build_complete
 endif
 
-coreutils-stage: coreutils
+coreutils-package: coreutils-stage
 	# coreutils.mk Package Structure
 	rm -rf $(BUILD_DIST)/coreutils
 	mkdir -p $(BUILD_DIST)/coreutils/{etc/profile.d,bin,usr/sbin}
 	
 	# coreutils.mk Prep coreutils
-	cp -a $(BUILD_STAGE)/coreutils/usr $(BUILD_DIST)/coreutils
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/coreutils/usr $(BUILD_DIST)/coreutils
 	ln -s /usr/bin/chown $(BUILD_DIST)/coreutils/usr/sbin
 	ln -s /usr/bin/chown $(BUILD_DIST)/coreutils/bin
 	ln -s /usr/bin/chroot $(BUILD_DIST)/coreutils/usr/sbin
@@ -46,6 +46,9 @@ coreutils-stage: coreutils
 
 	# coreutils.mk Sign
 	$(call SIGN,coreutils,general.xml)
+
+	# coreutils.mk Permissions
+	$(FAKEROOT) chmod u+s $(BUILD_DIST)/coreutils/usr/bin/su
 	
 	# coreutils.mk Make .debs
 	$(call PACK,coreutils,DEB_COREUTILS_V)
@@ -53,4 +56,4 @@ coreutils-stage: coreutils
 	# coreutils.mk Build cleanup
 	rm -rf $(BUILD_DIST)/coreutils
 
-.PHONY: coreutils coreutils-stage
+.PHONY: coreutils coreutils-package

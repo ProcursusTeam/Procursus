@@ -87,9 +87,10 @@ DO_PATCH    = if [ ! -f $(BUILD_WORK)/$(2)/$(notdir $(1)).done ]; then \
 SIGN =  find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \; &> /dev/null ; \
 		find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete ;
 		
-PACK =  find $(BUILD_DIST)/$(1) \( -name '*.la' -o -name '*.a' \) -type f -delete ; \
-		rm -rf $(BUILD_DIST)/$(1)/usr/share/{info,man} ; \
-		mkdir -p $(BUILD_DIST)/$(1)/DEBIAN ; \
+PACK =  $(FAKEROOT) find $(BUILD_DIST)/$(1) \( -name '*.la' -o -name '*.a' \) -type f -delete ; \
+		$(FAKEROOT) rm -rf $(BUILD_DIST)/$(1)/usr/share/{info,man} ; \
+		$(FAKEROOT) chown -R 0:0 $(BUILD_DIST)/$(1)/* ; \
+		$(FAKEROOT) mkdir -p $(BUILD_DIST)/$(1)/DEBIAN ; \
 		cp $(BUILD_INFO)/$(1).control $(BUILD_DIST)/$(1)/DEBIAN/control ; \
 		cp $(BUILD_INFO)/$(1).postinst $(BUILD_DIST)/$(1)/DEBIAN/postinst 2>/dev/null || : ; \
 		cp $(BUILD_INFO)/$(1).preinst $(BUILD_DIST)/$(1)/DEBIAN/preinst 2>/dev/null || : ; \
@@ -100,7 +101,7 @@ PACK =  find $(BUILD_DIST)/$(1) \( -name '*.la' -o -name '*.a' \) -type f -delet
 		$(SED) -i ':a; s/@$(2)@/$($(2))/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control ; \
 		$(SED) -i ':a; s/@DEB_MAINTAINER@/$(DEB_MAINTAINER)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control ; \
 		$(SED) -i ':a; s/@DEB_ARCH@/$(DEB_ARCH)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control ; \
-		$(DPKG_DEB) -b $(BUILD_DIST)/$(1) $(BUILD_DIST)/$(1)_$($(2))_$(DEB_ARCH).deb ;
+		$(FAKEROOT) $(DPKG_DEB) -b $(BUILD_DIST)/$(1) $(BUILD_DIST)/$(1)_$($(2))_$(DEB_ARCH).deb ;
 
 ifeq ($(call HAS_COMMAND,shasum),1)
 GET_SHA1   = shasum -a 1 $(1) | cut -c1-40
@@ -172,9 +173,9 @@ $(error Install GNU coreutils)
 endif
 
 ifeq ($(call HAS_COMMAND,fakeroot),1)
-$(shell touch fakeroot_persist)
-# FAKEROOT := fakeroot -i $(PWD)/fakeroot_persist -s $(PWD)/fakeroot_persist --
-FAKEROOT :=
+$(shell touch .fakeroot_persist)
+FAKEROOT := fakeroot -i $(PWD)/.fakeroot_persist -s $(PWD)/.fakeroot_persist --
+# FAKEROOT :=
 else
 $(error Install fakeroot)
 endif
@@ -213,8 +214,8 @@ CHECKRA1N_MEMO := 1
 
 $(foreach proj,$(SUBPROJECTS),$(eval include $(proj).mk))
 
-%-package: %-stage
-	@echo DONE $@
+%-stage: %
+	rm -f $(BUILD_ROOT)/.fakeroot_persist
 
 .PHONY: $(SUBPROJECTS)
 
@@ -373,24 +374,24 @@ setup:
 	$(call DO_PATCH,bash50-016,bash,-p0)
 
 	@# Copy headers from MacOSX.sdk
-	mkdir -p $(BUILD_BASE)/usr/include/sys/
-	mkdir -p $(BUILD_BASE)/usr/include/IOKit
+	rm -rf $(BUILD_BASE)/usr/include/libkern
+	mkdir -p $(BUILD_BASE)/usr/include/{IOKit,sys,xpc,net,servers,libkern.bad}
 	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/ttydev.h $(BUILD_BASE)/usr/include/sys/
 	cp -rf $(MACOSX_SYSROOT)/usr/include/ar.h $(BUILD_BASE)/usr/include/
-	cp -rf $(MACOSX_SYSROOT)/usr/include/xpc $(BUILD_BASE)/usr/include/
+	cp -rf $(MACOSX_SYSROOT)/usr/include/xpc/* $(BUILD_BASE)/usr/include/xpc
 	cp -rf $(MACOSX_SYSROOT)/usr/include/launch.h $(BUILD_BASE)/usr/include/
 	cp -rf $(MACOSX_SYSROOT)/usr/include/libc.h $(BUILD_BASE)/usr/include/
 	cp -rf $(MACOSX_SYSROOT)/usr/include/libproc.h $(BUILD_BASE)/usr/include/
 	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/proc*.h $(BUILD_BASE)/usr/include/sys
 	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/kern_control.h $(BUILD_BASE)/usr/include/sys
-	cp -rf $(MACOSX_SYSROOT)/usr/include/net $(BUILD_BASE)/usr/include/net
-	cp -rf $(MACOSX_SYSROOT)/usr/include/servers $(BUILD_BASE)/usr/include/servers
+	cp -rf $(MACOSX_SYSROOT)/usr/include/net/* $(BUILD_BASE)/usr/include/net
+	cp -rf $(MACOSX_SYSROOT)/usr/include/servers/* $(BUILD_BASE)/usr/include/servers
 	cp -rf $(MACOSX_SYSROOT)/usr/include/bootstrap*.h $(BUILD_BASE)/usr/include
 	cp -rf $(MACOSX_SYSROOT)/usr/include/NSSystemDirectories.h $(BUILD_BASE)/usr/include/NSSystemDirectories.h
 	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/reboot.h $(BUILD_BASE)/usr/include/sys
 	cp -rf $(MACOSX_SYSROOT)/usr/include/tzfile.h $(BUILD_BASE)/usr/include
 	cp -rf $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_BASE)/usr/include/IOKit
-	cp -rf $(MACOSX_SYSROOT)/usr/include/libkern $(BUILD_BASE)/usr/include/libkern.bad
+	cp -rf $(MACOSX_SYSROOT)/usr/include/libkern/* $(BUILD_BASE)/usr/include/libkern.bad
 	
 	@# Download extra headers that aren't included in MacOSX.sdk
 

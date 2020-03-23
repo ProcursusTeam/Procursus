@@ -17,20 +17,20 @@ xz: setup
 		--disable-dependency-tracking \
 		--disable-silent-rules
 	$(MAKE) -C $(BUILD_WORK)/xz
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/xz install \
+	$(MAKE) -C $(BUILD_WORK)/xz install \
 		DESTDIR=$(BUILD_STAGE)/xz
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/xz install \
+	$(MAKE) -C $(BUILD_WORK)/xz install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/xz/.build_complete
 endif
 
-xz-stage: xz
+xz-package: xz-stage
 	# xz.mk Package Structure
 	rm -rf $(BUILD_DIST)/xz-utils
 	mkdir -p $(BUILD_DIST)/xz-utils
 	
 	# xz.mk Prep xz-utils
-	cp -a $(BUILD_STAGE)/xz/usr $(BUILD_DIST)/xz-utils
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/xz/usr $(BUILD_DIST)/xz-utils
 	
 	# xz.mk Sign
 	$(call SIGN,xz-utils,general.xml)
@@ -41,4 +41,4 @@ xz-stage: xz
 	# xz.mk Build cleanup
 	rm -rf $(BUILD_DIST)/xz-utils
 
-.PHONY: xz xz-stage
+.PHONY: xz xz-package

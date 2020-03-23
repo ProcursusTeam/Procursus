@@ -25,7 +25,7 @@ openssh: setup libressl
 		--prefix=/usr \
 		--sysconfdir=/etc/ssh
 	$(MAKE) -C openssh
-	$(FAKEROOT) $(MAKE) -C openssh install \
+	$(MAKE) -C openssh install \
 		DESTDIR="$(BUILD_STAGE)/openssh"
 	touch openssh/.build_complete
 endif

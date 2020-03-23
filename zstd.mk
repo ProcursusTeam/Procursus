@@ -23,13 +23,13 @@ zstd: setup lz4 xz
 	touch $(BUILD_WORK)/zstd/.build_complete
 endif
 
-zstd-stage: zstd
+zstd-package: zstd-stage
 	# zstd.mk Package Structure
 	rm -rf $(BUILD_DIST)/zstd
 	mkdir -p $(BUILD_DIST)/zstd
 	
 	# zstd.mk Prep zstd
-	cp -a $(BUILD_STAGE)/zstd/usr $(BUILD_DIST)/zstd
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/zstd/usr $(BUILD_DIST)/zstd
 	
 	# zstd.mk Sign
 	$(call SIGN,zstd,general.xml)
@@ -40,4 +40,4 @@ zstd-stage: zstd
 	# zstd.mk Build cleanup
 	rm -rf $(BUILD_DIST)/zstd
 
-.PHONY: zstd zstd-stage
+.PHONY: zstd zstd-package

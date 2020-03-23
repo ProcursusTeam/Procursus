@@ -19,13 +19,13 @@ bzip2: setup
 	touch $(BUILD_WORK)/bzip2/.build_complete
 endif
 
-bzip2-stage: bzip2
+bzip2-package: bzip2-stage
 	# bzip2.mk Package Structure
 	rm -rf $(BUILD_DIST)/bzip2
 	mkdir -p $(BUILD_DIST)/bzip2
 	
 	# bzip2.mk Prep bzip2
-	cp -a $(BUILD_STAGE)/bzip2/usr $(BUILD_DIST)/bzip2
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/bzip2/usr $(BUILD_DIST)/bzip2
 	rm -rf $(BUILD_DIST)/bzip2/usr/man
 	
 	# bzip2.mk Sign
@@ -37,4 +37,4 @@ bzip2-stage: bzip2
 	# bzip2.mk Build cleanup
 	rm -rf $(BUILD_DIST)/bzip2
 
-.PHONY: bzip2 bzip2-stage
+.PHONY: bzip2 bzip2-package

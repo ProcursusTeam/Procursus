@@ -44,18 +44,18 @@ bash: setup ncurses readline
 		gt_cv_int_divbyzero_sigfpe=no
 	$(MAKE) -C $(BUILD_WORK)/bash \
 		TERMCAP_LIB=-lncursesw
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/bash install \
+	$(MAKE) -C $(BUILD_WORK)/bash install \
 		DESTDIR="$(BUILD_STAGE)/bash"
 	touch $(BUILD_WORK)/bash/.build_complete
 endif
 
-bash-stage: bash
+bash-package: bash-stage
 	#bash.mk Package Structure
 	rm -rf $(BUILD_DIST)/bash
 	mkdir -p $(BUILD_DIST)/bash/{bin,usr}
 
 	#bash.mk Prep bash
-	cp -a $(BUILD_STAGE)/bash/usr/{bin,include,lib} $(BUILD_DIST)/bash/usr
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/bash/usr/{bin,include,lib} $(BUILD_DIST)/bash/usr
 	ln -s /usr/bin/bash $(BUILD_DIST)/bash/bin/bash
 	ln -s /usr/bin/bash $(BUILD_DIST)/bash/bin/sh
 
@@ -68,4 +68,4 @@ bash-stage: bash
 	#bash.mk Build cleanup
 	rm -rf $(BUILD_DIST)/bash
 
-.PHONY: bash bash-stage
+.PHONY: bash bash-package

@@ -15,9 +15,9 @@ libassuan: setup libgpg-error
 		--prefix=/usr \
 		--with-gpg-error-prefix=$(BUILD_BASE)/usr
 	$(MAKE) -C $(BUILD_WORK)/libassuan
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/libassuan install \
+	$(MAKE) -C $(BUILD_WORK)/libassuan install \
 		DESTDIR=$(BUILD_STAGE)/libassuan
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/libassuan install \
+	$(MAKE) -C $(BUILD_WORK)/libassuan install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libassuan/.build_complete
 endif

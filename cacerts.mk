@@ -20,15 +20,18 @@ cacerts: setup
 	touch $(BUILD_WORK)/cacerts/.build_complete
 endif
 
-cacerts-stage: cacerts
+cacerts-package: cacerts-stage
 	# cacerts.mk Package Structure
 	rm -rf $(BUILD_DIST)/ca-certificates
 	mkdir -p $(BUILD_DIST)/ca-certificates/usr/lib/ssl
 	
 	# cacerts.mk Prep ca-certificates
-	cp -a $(BUILD_STAGE)/cacerts/etc $(BUILD_DIST)/ca-certificates
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/cacerts/etc $(BUILD_DIST)/ca-certificates
 	ln -s /etc/ssl/certs $(BUILD_DIST)/ca-certificates/usr/lib/ssl
 	ln -s /etc/ssl/certs/cacert.pem $(BUILD_DIST)/ca-certificates/usr/lib/ssl
+
+	# cacerts.mk Permissions
+	$(FAKEROOT) chmod a+x $(BUILD_DIST)/ca-certificates/etc/profile.d/cacerts.bootstrap.sh
 	
 	# cacerts.mk Make .debs
 	$(call PACK,ca-certificates,DEB_CACERTS_V)
@@ -36,4 +39,4 @@ cacerts-stage: cacerts
 	# cacerts.mk Build cleanup
 	rm -rf $(BUILD_DIST)/ca-certificates
 
-.PHONY: cacerts cacerts-stage
+.PHONY: cacerts cacerts-package

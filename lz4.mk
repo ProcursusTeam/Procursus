@@ -23,13 +23,13 @@ lz4: setup
 	touch $(BUILD_WORK)/lz4/.build_complete
 endif
 
-lz4-stage: lz4
+lz4-package: lz4-stage
 	# lz4.mk Package Structure
 	rm -rf $(BUILD_DIST)/lz4
 	mkdir -p $(BUILD_DIST)/lz4
 	
 	# lz4.mk Prep lz4
-	cp -a $(BUILD_STAGE)/lz4/usr $(BUILD_DIST)/lz4
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/lz4/usr $(BUILD_DIST)/lz4
 	
 	# lz4.mk Sign
 	$(call SIGN,lz4,general.xml)
@@ -40,4 +40,4 @@ lz4-stage: lz4
 	# lz4.mk Build cleanup
 	rm -rf $(BUILD_DIST)/lz4
 
-.PHONY: lz4 lz4-stage
+.PHONY: lz4 lz4-package

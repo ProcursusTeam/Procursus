@@ -17,7 +17,7 @@ less: setup ncurses pcre
 		CFLAGS="$(CFLAGS) -Wno-implicit-function-declaration" \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)"
 	$(MAKE) -C $(BUILD_WORK)/less
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/less install \
+	$(MAKE) -C $(BUILD_WORK)/less install \
 		DESTDIR="$(BUILD_STAGE)/less"
 	touch $(BUILD_WORK)/less/.build_complete
 endif
