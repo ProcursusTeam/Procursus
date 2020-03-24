@@ -26,4 +26,21 @@ findutils: setup
 	touch $(BUILD_WORK)/findutils/.build_complete
 endif
 
-.PHONY: findutils
+findutils-package: findutils-stage
+	# findutils.mk Package Structure
+	rm -rf $(BUILD_DIST)/findutils
+	mkdir -p $(BUILD_DIST)/findutils
+	
+	# findutils.mk Prep findutils
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/findutils/usr $(BUILD_DIST)/findutils
+	
+	# findutils.mk Sign
+	$(call SIGN,findutils,general.xml)
+	
+	# findutils.mk Make .debs
+	$(call PACK,findutils,DEB_FINDUTILS_V)
+	
+	# findutils.mk Build cleanup
+	rm -rf $(BUILD_DIST)/findutils
+
+.PHONY: findutils findutils-package
