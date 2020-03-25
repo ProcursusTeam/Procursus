@@ -23,7 +23,26 @@ gettext: setup ncurses
 		DESTDIR=$(BUILD_STAGE)/gettext
 	$(MAKE) -C $(BUILD_WORK)/gettext install \
 		DESTDIR=$(BUILD_BASE)
+	rm -rf $(BUILD_STAGE)/gettext/usr/share
 	touch $(BUILD_WORK)/gettext/.build_complete
 endif
 
-.PHONY: gettext
+gettext-package: gettext-stage
+	# gettext.mk Package Structure
+	rm -rf $(BUILD_DIST)/gettext
+	mkdir -p $(BUILD_DIST)/gettext
+	
+	# gettext.mk Prep gettext
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/gettext/usr $(BUILD_DIST)/gettext
+	
+	# gettext.mk Sign
+	$(call SIGN,gettext,general.xml)
+	
+	# gettext.mk Make .debs
+	$(call PACK,gettext,DEB_GETTEXT_V)
+	
+	# gettext.mk Build cleanup
+	rm -rf $(BUILD_DIST)/gettext
+
+.PHONY: gettext gettext-package
+
