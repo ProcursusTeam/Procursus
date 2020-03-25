@@ -27,4 +27,21 @@ gnupg: setup readline libgpg-error libgcrypt libassuan libksba npth
 	touch $(BUILD_WORK)/gnupg/.build_complete
 endif
 
-.PHONY: gnupg
+gnupg-package: gnupg-stage
+	# gnupg.mk Package Structure
+	rm -rf $(BUILD_DIST)/gnupg
+	mkdir -p $(BUILD_DIST)/gnupg
+	
+	# gnupg.mk Prep gnupg
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/gnupg/usr $(BUILD_DIST)/gnupg
+	
+	# gnupg.mk Sign
+	$(call SIGN,gnupg,general.xml)
+	
+	# gnupg.mk Make .debs
+	$(call PACK,gnupg,DEB_GNUPG_V)
+	
+	# gnupg.mk Build cleanup
+	rm -rf $(BUILD_DIST)/gnupg
+
+.PHONY: gnupg gnupg-package

@@ -1,0 +1,12 @@
+Package: gnupg
+Maintainer: $DEB_MAINTAINER
+Architecture: @DEB_ARCH@
+Version: @DEB_GNUPG_V@
+Depends: gcrypt, libassuan, libksba, npth, libgpg-error
+Conflicts: gnupg2
+Replaces: gnupg2
+Provides: gnupg2 (=@DEB_GNUPG_V@)
+Section: Security
+Priority: required
+Description: GNU privacy guard - a free PGP replacement
+Name: GnuPG
