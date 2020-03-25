@@ -1,0 +1,11 @@
+Package: tar
+Version: @DEB_TAR_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: bzip2, gzip, lzma, xz, zstd
+Conflicts: dpkg (=1.18.24)
+Section: Archiving
+Priority: required
+Homepage: http://www.gnu.org/software/tar/
+Description: tool for making tape archives
+Name: Tape Archive
