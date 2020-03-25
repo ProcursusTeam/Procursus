@@ -1,8 +1,8 @@
 Package: gnupg
-Maintainer: $DEB_MAINTAINER
+Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_GNUPG_V@
-Depends: gcrypt, libassuan, libksba, npth, libgpg-error
+Depends: libgcrypt, libassuan, libksba, npth, libgpg-error
 Conflicts: gnupg2
 Replaces: gnupg2
 Provides: gnupg2 (=@DEB_GNUPG_V@)

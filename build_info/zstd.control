@@ -1,7 +1,7 @@
 Package: zstd
 Priority: standard
 Section: Archiving
-Maintainer: $DEB_MAINTAINER
+Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_ZSTD_V@
 Depends: lz4, xz-utils

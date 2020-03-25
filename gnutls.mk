@@ -30,7 +30,25 @@ gnutls: setup readline gettext libgcrypt libgmp10 libidn2 libunistring nettle p1
 		DESTDIR=$(BUILD_STAGE)/gnutls
 	$(MAKE) -C $(BUILD_WORK)/gnutls install \
 		DESTDIR=$(BUILD_BASE)
+	rm -rf $(BUILD_STAGE)/gnutls/usr/share
 	touch $(BUILD_WORK)/gnutls/.build_complete
 endif
 
-.PHONY: gnutls
+gnutls-package: gnutls-stage
+	# gnutls.mk Package Structure
+	rm -rf $(BUILD_DIST)/gnutls
+	mkdir -p $(BUILD_DIST)/gnutls
+	
+	# gnutls.mk Prep gnutls
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/gnutls/usr $(BUILD_DIST)/gnutls
+	
+	# gnutls.mk Sign
+	$(call SIGN,gnutls,general.xml)
+	
+	# gnutls.mk Make .debs
+	$(call PACK,gnutls,DEB_GNUTLS_V)
+	
+	# gnutls.mk Build cleanup
+	rm -rf $(BUILD_DIST)/gnutls
+
+.PHONY: gnutls gnutls-package

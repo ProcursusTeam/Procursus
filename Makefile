@@ -216,6 +216,7 @@ $(foreach proj,$(SUBPROJECTS),$(eval include $(proj).mk))
 
 %-stage: %
 	rm -f $(BUILD_ROOT)/.fakeroot_persist
+	touch $(BUILD_ROOT)/.fakeroot_persist
 
 .PHONY: $(SUBPROJECTS)
 
