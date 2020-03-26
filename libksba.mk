@@ -22,4 +22,21 @@ libksba: setup libgpg-error
 	touch $(BUILD_WORK)/libksba/.build_complete
 endif
 
-.PHONY: libksba
+libksba-package: libksba-stage
+	# libksba.mk Package Structure
+	rm -rf $(BUILD_DIST)/libksba
+	mkdir -p $(BUILD_DIST)/libksba
+	
+	# libksba.mk Prep libksba
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/libksba/usr $(BUILD_DIST)/libksba
+	
+	# libksba.mk Sign
+	$(call SIGN,libksba,general.xml)
+	
+	# libksba.mk Make .debs
+	$(call PACK,libksba,DEB_KSBA_V)
+	
+	# libksba.mk Build cleanup
+	rm -rf $(BUILD_DIST)/libksba
+
+.PHONY: libksba libksba-package
