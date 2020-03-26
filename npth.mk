@@ -21,4 +21,21 @@ npth: setup
 	touch $(BUILD_WORK)/npth/.build_complete
 endif
 
-.PHONY: npth
+npth-package: npth-stage
+	# npth.mk Package Structure
+	rm -rf $(BUILD_DIST)/npth
+	mkdir -p $(BUILD_DIST)/npth
+	
+	# npth.mk Prep npth
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/npth/usr $(BUILD_DIST)/npth
+	
+	# npth.mk Sign
+	$(call SIGN,npth,general.xml)
+	
+	# npth.mk Make .debs
+	$(call PACK,npth,DEB_NPTH_V)
+	
+	# npth.mk Build cleanup
+	rm -rf $(BUILD_DIST)/npth
+
+.PHONY: npth npth-package
