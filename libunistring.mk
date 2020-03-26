@@ -21,4 +21,21 @@ libunistring: setup
 	touch $(BUILD_WORK)/libunistring/.build_complete
 endif
 
-.PHONY: libunistring
+libunistring-package: libunistring-stage
+	# libunistring.mk Package Structure
+	rm -rf $(BUILD_DIST)/libunistring
+	mkdir -p $(BUILD_DIST)/libunistring
+	
+	# libunistring.mk Prep libunistring
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/libunistring/usr $(BUILD_DIST)/libunistring
+	
+	# libunistring.mk Sign
+	$(call SIGN,libunistring,general.xml)
+	
+	# libunistring.mk Make .debs
+	$(call PACK,libunistring,DEB_UNISTRING_V)
+	
+	# libunistring.mk Build cleanup
+	rm -rf $(BUILD_DIST)/libunistring
+
+.PHONY: libunistring libunistring-package

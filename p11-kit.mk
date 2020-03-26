@@ -23,4 +23,21 @@ p11-kit: setup gettext libtasn1
 	touch $(BUILD_WORK)/p11-kit/.build_complete
 endif
 
-.PHONY: p11-kit
+p11-kit-package: p11-kit-stage
+	# p11-kit.mk Package Structure
+	rm -rf $(BUILD_DIST)/p11-kit
+	mkdir -p $(BUILD_DIST)/p11-kit
+	
+	# p11-kit.mk Prep p11-kit
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/p11-kit/usr $(BUILD_DIST)/p11-kit
+	
+	# p11-kit.mk Sign
+	$(call SIGN,p11-kit,general.xml)
+	
+	# p11-kit.mk Make .debs
+	$(call PACK,p11-kit,DEB_P11_V)
+	
+	# p11-kit.mk Build cleanup
+	rm -rf $(BUILD_DIST)/p11-kit
+
+.PHONY: p11-kit p11-kit-package
