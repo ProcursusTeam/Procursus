@@ -29,4 +29,21 @@ zsh: setup pcre ncurses
 	touch $(BUILD_WORK)/zsh/.build_complete
 endif
 
-.PHONY: zsh
+zsh-package: zsh-stage
+	# zsh.mk Package Structure
+	rm -rf $(BUILD_DIST)/zsh
+	mkdir -p $(BUILD_DIST)/zsh
+	
+	# zsh.mk Prep zsh
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/zsh/usr $(BUILD_DIST)/zsh
+	
+	# zsh.mk Sign
+	$(call SIGN,zsh,general.xml)
+	
+	# zsh.mk Make .debs
+	$(call PACK,zsh,DEB_ZSH_V)
+	
+	# zsh.mk Build cleanup
+	rm -rf $(BUILD_DIST)/zsh
+
+.PHONY: zsh zsh-package
