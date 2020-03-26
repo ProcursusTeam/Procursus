@@ -22,4 +22,22 @@ libassuan: setup libgpg-error
 	touch $(BUILD_WORK)/libassuan/.build_complete
 endif
 
-.PHONY: libassuan
+libassuan-package: libassuan-stage
+	# libassuan.mk Package Structure
+	rm -rf $(BUILD_DIST)/libassuan
+	mkdir -p $(BUILD_DIST)/libassuan
+	
+	# libassuan.mk Prep libassuan
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/libassuan/usr $(BUILD_DIST)/libassuan
+	
+	# libassuan.mk Sign
+	$(call SIGN,libassuan,general.xml)
+	
+	# libassuan.mk Make .debs
+	$(call PACK,libassuan,DEB_LIBASSUAN_V)
+	
+	# libassuan.mk Build cleanup
+	rm -rf $(BUILD_DIST)/libassuan
+
+.PHONY: libassuan libassuan-package
+
