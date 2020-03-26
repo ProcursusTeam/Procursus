@@ -23,4 +23,21 @@ libressl: setup
 	touch $(BUILD_WORK)/libressl/.build_complete
 endif
 
-.PHONY: libressl
+libressl-package: libressl-stage
+	# libressl.mk Package Structure
+	rm -rf $(BUILD_DIST)/libressl
+	mkdir -p $(BUILD_DIST)/libressl
+	
+	# libressl.mk Prep libressl
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/libressl/usr $(BUILD_DIST)/libressl
+	
+	# libressl.mk Sign
+	$(call SIGN,libressl,general.xml)
+	
+	# libressl.mk Make .debs
+	$(call PACK,libressl,DEB_LIBRESSL_V)
+	
+	# libressl.mk Build cleanup
+	rm -rf $(BUILD_DIST)/libressl
+
+.PHONY: libressl libressl-package

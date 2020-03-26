@@ -30,4 +30,21 @@ openssh: setup libressl
 	touch openssh/.build_complete
 endif
 
-.PHONY: openssh
+openssh-package: openssh-stage
+	# openssh.mk Package Structure
+	rm -rf $(BUILD_DIST)/openssh
+	mkdir -p $(BUILD_DIST)/openssh
+	
+	# openssh.mk Prep openssh
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/openssh/usr $(BUILD_DIST)/openssh
+	
+	# openssh.mk Sign
+	$(call SIGN,openssh,general.xml)
+	
+	# openssh.mk Make .debs
+	$(call PACK,openssh,DEB_OPENSSH_V)
+	
+	# openssh.mk Build cleanup
+	rm -rf $(BUILD_DIST)/openssh
+
+.PHONY: openssh openssh-package

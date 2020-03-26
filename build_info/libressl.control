@@ -1,0 +1,11 @@
+Package: libressl
+Version: @DEB_LIBRESSL_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Conflicts: openssh (<=7.6p1-5)
+Replaces: openssl
+Provides: openssl (=@DEB_LIBRESSL_V@)
+Section: Security
+Priority: standard
+Description: SSL library and cryptographic tools
+Name: LibreSSL
