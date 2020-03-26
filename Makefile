@@ -5,7 +5,7 @@ endif
 SHELL           := /usr/bin/env bash
 UNAME           := $(shell uname -s)
 SUBPROJECTS     := \
-	cacerts coreutils sed grep findutils diffutils tar readline ncurses bash berkeleydb libgpg-error libtasn1 libgmp10 libidn2 libunistring npth zstd profile.d \
+	cacerts coreutils sed grep findutils diffutils tar readline ncurses bash berkeleydb libgpg-error libtasn1 libgmp10 libidn2 libunistring npth zstd profile.d firmware-sbin \
 	libressl openssh libgcrypt gettext p11-kit nettle libksba libassuan \
 	bzip2 lz4 xz gnutls gnupg \
 	pcre zsh \

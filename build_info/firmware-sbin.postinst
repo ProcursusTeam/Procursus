@@ -1,0 +1,3 @@
+#!/bin/bash
+# This is here so that postinst abort-remove will not fail
+exit 0

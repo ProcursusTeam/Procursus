@@ -1,0 +1,12 @@
+Package: firmware-sbin
+Version: @DEB_FIRMWARE-SBIN_V@
+Architecture: all
+Essential: yes
+Maintainer: @DEB_MAINTAINER@
+Pre-Depends: firmware (>= 11.0)
+Replaces: system-cmds (<= 433.4-11), diskdev-cmds (<= 421.7-3)
+Section: System
+Priority: required
+Multi-Arch: foreign
+Description: represents Telesphoreo / iPhoneOS conflicts
+Name: iPhone Firmware (/sbin)
