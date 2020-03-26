@@ -11,7 +11,7 @@ SUBPROJECTS     := \
 	pcre zsh \
 	less nano \
 	apt dpkg \
-	uikittools darwintools system-cmds
+	uikittools darwintools system-cmds debianutils
 
 PLATFORM        ?= iphoneos
 ARCH            ?= arm64
@@ -266,7 +266,8 @@ setup:
 		https://gnupg.org/ftp/gcrypt/libassuan/libassuan-$(LIBASSUAN_VERSION).tar.bz2{,.sig} \
 		https://gnupg.org/ftp/gcrypt/gnupg/gnupg-$(GNUPG_VERSION).tar.bz2{,.sig} \
 		https://github.com/facebook/zstd/archive/v$(ZSTD_VERSION).tar.gz \
-		https://ftp.gnu.org/gnu/gzip/gzip-$(GZIP_VERSION).tar.xz{,.sig}
+		https://ftp.gnu.org/gnu/gzip/gzip-$(GZIP_VERSION).tar.xz{,.sig} \
+		http://deb.debian.org/debian/pool/main/d/debianutils/debianutils_$(DEBIANUTILS_VERSION).tar.xz
 	
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_VERSION).tar.xz)
 	$(call PGP_VERIFY,sed-$(SED_VERSION).tar.xz)
@@ -355,6 +356,7 @@ setup:
 	$(call EXTRACT_TAR,gnupg-$(GNUPG_VERSION).tar.bz2,gnupg-$(GNUPG_VERSION),gnupg)
 	$(call EXTRACT_TAR,v$(ZSTD_VERSION).tar.gz,zstd-$(ZSTD_VERSION),zstd)
 	$(call EXTRACT_TAR,gzip-$(GZIP_VERSION).tar.xz,gzip-$(GZIP_VERSION),gzip)
+	$(call EXTRACT_TAR,debianutils_$(DEBIANUTILS_VERSION).tar.xz,debianutils-$(DEBIANUTILS_VERSION),debianutils)
 
 	$(call DO_PATCH,readline80-001,readline,-p0)
 	$(call DO_PATCH,readline80-002,readline,-p0)
