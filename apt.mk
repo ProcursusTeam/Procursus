@@ -56,6 +56,7 @@ apt-package: apt-stage
 	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/usr/libexec/apt/planners/dump $(BUILD_DIST)/apt/usr/libexec/apt/planners
 	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/usr/libexec/apt/solvers/dump $(BUILD_DIST)/apt/usr/libexec/apt/solvers
 	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/usr/share $(BUILD_DIST)/apt/usr
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/{etc,var} $(BUILD_DIST)/apt
 	
 	# apt.mk Prep APT-Utils
 	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/usr/bin/apt-{extracttemplates,ftparchive,sortpkgs} $(BUILD_DIST)/apt-utils/usr/bin
