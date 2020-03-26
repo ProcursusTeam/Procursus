@@ -29,7 +29,7 @@ libressl-package: libressl-stage
 	mkdir -p $(BUILD_DIST)/libressl
 	
 	# libressl.mk Prep libressl
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/libressl/usr $(BUILD_DIST)/libressl
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/libressl/{etc,usr} $(BUILD_DIST)/libressl
 	
 	# libressl.mk Sign
 	$(call SIGN,libressl,general.xml)

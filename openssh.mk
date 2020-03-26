@@ -27,6 +27,8 @@ openssh: setup libressl
 	$(MAKE) -C openssh
 	$(MAKE) -C openssh install \
 		DESTDIR="$(BUILD_STAGE)/openssh"
+	mkdir -p $(BUILD_STAGE)/openssh/Library/LaunchDaemons
+	cp $(BUILD_INFO)/com.openssh.sshd.plist $(BUILD_STAGE)/openssh/Library/LaunchDaemons
 	touch openssh/.build_complete
 endif
 
@@ -36,7 +38,7 @@ openssh-package: openssh-stage
 	mkdir -p $(BUILD_DIST)/openssh
 	
 	# openssh.mk Prep openssh
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/openssh/usr $(BUILD_DIST)/openssh
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/openssh/{usr,etc,var,Library} $(BUILD_DIST)/openssh
 	
 	# openssh.mk Sign
 	$(call SIGN,openssh,general.xml)
