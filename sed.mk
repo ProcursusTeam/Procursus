@@ -25,4 +25,21 @@ sed: setup
 	touch $(BUILD_WORK)/sed/.build_complete
 endif
 
-.PHONY: sed
+sed-package: sed-stage
+	# sed.mk Package Structure
+	rm -rf $(BUILD_DIST)/sed
+	mkdir -p $(BUILD_DIST)/sed
+	
+	# sed.mk Prep sed
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/sed/usr $(BUILD_DIST)/sed
+	
+	# sed.mk Sign
+	$(call SIGN,sed,general.xml)
+	
+	# sed.mk Make .debs
+	$(call PACK,sed,DEB_SED_V)
+	
+	# sed.mk Build cleanup
+	rm -rf $(BUILD_DIST)/sed
+
+.PHONY: sed sed-package
