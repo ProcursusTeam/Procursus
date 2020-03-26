@@ -26,4 +26,21 @@ nano: setup ncurses
 	touch $(BUILD_WORK)/nano/.build_complete
 endif
 
-.PHONY: nano
+nano-package: nano-stage
+	# nano.mk Package Structure
+	rm -rf $(BUILD_DIST)/nano
+	mkdir -p $(BUILD_DIST)/nano
+	
+	# nano.mk Prep nano
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/nano/usr $(BUILD_DIST)/nano
+	
+	# nano.mk Sign
+	$(call SIGN,nano,general.xml)
+	
+	# nano.mk Make .debs
+	$(call PACK,nano,DEB_NANO_V)
+	
+	# nano.mk Build cleanup
+	rm -rf $(BUILD_DIST)/nano
+
+.PHONY: nano nano-package
