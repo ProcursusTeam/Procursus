@@ -18,7 +18,8 @@ gnupg: setup readline libgpg-error libgcrypt libassuan libksba npth
 		--with-npth-prefix=$(BUILD_BASE)/usr \
 		--with-libgcrypt-prefix=$(BUILD_BASE)/usr \
 		--with-ksba-prefix=$(BUILD_BASE)/usr \
-		--with-bzip2
+		--with-bzip2 \
+		--sysconfdir=/etc
 	$(MAKE) -C $(BUILD_WORK)/gnupg
 	$(MAKE) -C $(BUILD_WORK)/gnupg install \
 		DESTDIR=$(BUILD_STAGE)/gnupg
