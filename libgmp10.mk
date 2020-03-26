@@ -22,4 +22,21 @@ libgmp10: setup
 	touch $(BUILD_WORK)/libgmp10/.build_complete
 endif
 
-.PHONY: libgmp10
+libgmp10-package: libgmp10-stage
+	# libgmp10.mk Package Structure
+	rm -rf $(BUILD_DIST)/libgmp10
+	mkdir -p $(BUILD_DIST)/libgmp10
+	
+	# libgmp10.mk Prep libgmp10
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/libgmp10/usr $(BUILD_DIST)/libgmp10
+	
+	# libgmp10.mk Sign
+	$(call SIGN,libgmp10,general.xml)
+	
+	# libgmp10.mk Make .debs
+	$(call PACK,libgmp10,DEB_GMP_V)
+	
+	# libgmp10.mk Build cleanup
+	rm -rf $(BUILD_DIST)/libgmp10
+
+.PHONY: libgmp10 libgmp10-package
