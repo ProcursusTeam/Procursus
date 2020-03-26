@@ -7,7 +7,7 @@ UNAME           := $(shell uname -s)
 SUBPROJECTS     := \
 	cacerts coreutils sed grep findutils diffutils tar readline ncurses bash berkeleydb libgpg-error libtasn1 libgmp10 libidn2 libunistring npth zstd profile.d firmware-sbin \
 	libressl openssh libgcrypt gettext p11-kit nettle libksba libassuan \
-	bzip2 lz4 xz gnutls gnupg \
+	bzip2 gzip lz4 xz gnutls gnupg \
 	pcre zsh \
 	less nano \
 	apt dpkg \
@@ -265,7 +265,8 @@ setup:
 		https://gnupg.org/ftp/gcrypt/npth/npth-$(NPTH_VERSION).tar.bz2{,.sig} \
 		https://gnupg.org/ftp/gcrypt/libassuan/libassuan-$(LIBASSUAN_VERSION).tar.bz2{,.sig} \
 		https://gnupg.org/ftp/gcrypt/gnupg/gnupg-$(GNUPG_VERSION).tar.bz2{,.sig} \
-		https://github.com/facebook/zstd/archive/v$(ZSTD_VERSION).tar.gz
+		https://github.com/facebook/zstd/archive/v$(ZSTD_VERSION).tar.gz \
+		https://ftp.gnu.org/gnu/gzip/gzip-$(GZIP_VERSION).tar.xz{,.sig}
 	
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_VERSION).tar.xz)
 	$(call PGP_VERIFY,sed-$(SED_VERSION).tar.xz)
@@ -318,6 +319,7 @@ setup:
 	$(call PGP_VERIFY,npth-$(NPTH_VERSION).tar.bz2)
 	$(call PGP_VERIFY,libassuan-$(LIBASSUAN_VERSION).tar.bz2)
 	$(call PGP_VERIFY,gnupg-$(GNUPG_VERSION).tar.bz2)
+	$(call PGP_VERIFY,gzip-$(GZIP_VERSION).tar.xz)
 
 	$(call EXTRACT_TAR,coreutils-$(COREUTILS_VERSION).tar.xz,coreutils-$(COREUTILS_VERSION),coreutils)
 	$(call EXTRACT_TAR,sed-$(SED_VERSION).tar.xz,sed-$(SED_VERSION),sed)
@@ -352,6 +354,7 @@ setup:
 	$(call EXTRACT_TAR,libassuan-$(LIBASSUAN_VERSION).tar.bz2,libassuan-$(LIBASSUAN_VERSION),libassuan)
 	$(call EXTRACT_TAR,gnupg-$(GNUPG_VERSION).tar.bz2,gnupg-$(GNUPG_VERSION),gnupg)
 	$(call EXTRACT_TAR,v$(ZSTD_VERSION).tar.gz,zstd-$(ZSTD_VERSION),zstd)
+	$(call EXTRACT_TAR,gzip-$(GZIP_VERSION).tar.xz,gzip-$(GZIP_VERSION),gzip)
 
 	$(call DO_PATCH,readline80-001,readline,-p0)
 	$(call DO_PATCH,readline80-002,readline,-p0)
