@@ -11,7 +11,7 @@ SUBPROJECTS     := \
 	pcre zsh \
 	less nano \
 	apt dpkg \
-	uikittools darwintools system-cmds debianutils
+	uikittools darwintools system-cmds debianutils shell-cmds
 
 PLATFORM        ?= iphoneos
 ARCH            ?= arm64
@@ -43,7 +43,7 @@ iphoneos_VERSION_MIN := -miphoneos-version-min=11.0
 
 DEB_ARCH       := iphoneos-arm
 DEB_ORIGIN     := checkra1n
-DEB_MAINTAINER := checkra1n
+DEB_MAINTAINER := Hayden Seay <me@diatr.us>
 
 # Root
 BUILD_ROOT     := $(PWD)
@@ -267,7 +267,8 @@ setup:
 		https://gnupg.org/ftp/gcrypt/gnupg/gnupg-$(GNUPG_VERSION).tar.bz2{,.sig} \
 		https://github.com/facebook/zstd/archive/v$(ZSTD_VERSION).tar.gz \
 		https://ftp.gnu.org/gnu/gzip/gzip-$(GZIP_VERSION).tar.xz{,.sig} \
-		http://deb.debian.org/debian/pool/main/d/debianutils/debianutils_$(DEBIANUTILS_VERSION).tar.xz
+		http://deb.debian.org/debian/pool/main/d/debianutils/debianutils_$(DEBIANUTILS_VERSION).tar.xz \
+		https://opensource.apple.com/tarballs/shell_cmds/shell_cmds-$(SHELL-CMDS_VERSION).tar.gz
 	
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_VERSION).tar.xz)
 	$(call PGP_VERIFY,sed-$(SED_VERSION).tar.xz)
@@ -357,6 +358,7 @@ setup:
 	$(call EXTRACT_TAR,v$(ZSTD_VERSION).tar.gz,zstd-$(ZSTD_VERSION),zstd)
 	$(call EXTRACT_TAR,gzip-$(GZIP_VERSION).tar.xz,gzip-$(GZIP_VERSION),gzip)
 	$(call EXTRACT_TAR,debianutils_$(DEBIANUTILS_VERSION).tar.xz,debianutils-$(DEBIANUTILS_VERSION),debianutils)
+	$(call EXTRACT_TAR,shell_cmds-$(SHELL-CMDS_VERSION).tar.gz,shell_cmds-$(SHELL-CMDS_VERSION),shell-cmds)
 
 	$(call DO_PATCH,readline80-001,readline,-p0)
 	$(call DO_PATCH,readline80-002,readline,-p0)
@@ -389,6 +391,7 @@ setup:
 	cp -rf $(MACOSX_SYSROOT)/usr/include/libc.h $(BUILD_BASE)/usr/include/
 	cp -rf $(MACOSX_SYSROOT)/usr/include/libproc.h $(BUILD_BASE)/usr/include/
 	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/proc*.h $(BUILD_BASE)/usr/include/sys
+	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/user.h $(BUILD_BASE)/usr/include/sys
 	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/kern_control.h $(BUILD_BASE)/usr/include/sys
 	cp -rf $(MACOSX_SYSROOT)/usr/include/net/* $(BUILD_BASE)/usr/include/net
 	cp -rf $(MACOSX_SYSROOT)/usr/include/servers/* $(BUILD_BASE)/usr/include/servers

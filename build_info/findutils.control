@@ -2,7 +2,7 @@ Package: findutils
 Version: @DEB_FINDUTILS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: bash, sed
+Depends: bash, sed, shell-cmds
 Section: Utilities
 Priority: important
 Multi-Arch: foreign
