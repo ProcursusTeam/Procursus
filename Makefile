@@ -11,7 +11,7 @@ SUBPROJECTS     := \
 	pcre zsh \
 	less nano \
 	apt dpkg \
-	uikittools darwintools system-cmds debianutils shell-cmds
+	uikittools darwintools system-cmds debianutils shell-cmds essential
 
 PLATFORM        ?= iphoneos
 ARCH            ?= arm64
@@ -215,8 +215,8 @@ CHECKRA1N_MEMO := 1
 $(foreach proj,$(SUBPROJECTS),$(eval include $(proj).mk))
 
 %-stage: %
-	rm -f $(BUILD_ROOT)/.fakeroot_persist
-	touch $(BUILD_ROOT)/.fakeroot_persist
+	#rm -f $(BUILD_ROOT)/.fakeroot_persist
+	#touch $(BUILD_ROOT)/.fakeroot_persist
 
 .PHONY: $(SUBPROJECTS)
 
