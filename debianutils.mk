@@ -16,6 +16,8 @@ debianutils: setup
 		--disable-dependency-tracking
 	$(MAKE) -C $(BUILD_WORK)/debianutils install \
 		DESTDIR=$(BUILD_STAGE)/debianutils
+	rm -rf $(BUILD_STAGE)/debianutils/usr/{sbin,share}
+	rm -f $(BUILD_STAGE)/debianutils/usr/bin/{ischroot,which,tempfile,savelog}
 	touch $(BUILD_WORK)/debianutils/.build_complete
 endif
 
