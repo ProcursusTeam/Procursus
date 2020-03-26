@@ -30,4 +30,21 @@ pcre: setup
 	touch $(BUILD_WORK)/pcre/.build_complete
 endif
 
-.PHONY: pcre
+pcre-package: pcre-stage
+	# pcre.mk Package Structure
+	rm -rf $(BUILD_DIST)/libpcre
+	mkdir -p $(BUILD_DIST)/libpcre
+	
+	# pcre.mk Prep pcre
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/pcre/usr $(BUILD_DIST)/libpcre
+	
+	# pcre.mk Sign
+	$(call SIGN,libpcre,general.xml)
+	
+	# prce.mk Make .debs
+	$(call PACK,libpcre,DEB_PCRE_V)
+	
+	# pcre.mk Build cleanup
+	rm -rf $(BUILD_DIST)/libpcre
+
+.PHONY: pcre pcre-package
