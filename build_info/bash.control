@@ -1,7 +1,7 @@
 Package: bash
 Version: @DEB_BASH_V@
 Architecture: @DEB_ARCH@
-Maintainer: @DEB_MAINATAINER@
+Maintainer: @DEB_MAINTAINER@
 Pre-Depends: readline (>= 8.0)
 Depends: grep, ncurses, readline, sed
 Section: Terminal_Support

@@ -9,4 +9,4 @@ Pre-Depends: dpkg (>= 1.14.25-8)
 Replaces: libapt-pkg-dev
 Conflicts: apt7 (<<1:0), apt1.4 (<<1:0), apt (<<2.0.0)
 Description: Advanced Packaging Tool (APT) Development Files
-Name: APT Devel
+Name: APT (Devel)

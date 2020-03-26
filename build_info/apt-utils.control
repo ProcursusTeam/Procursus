@@ -8,4 +8,4 @@ Depends: apt (=@DEB_APT_V@), berkeleydb
 Pre-Depends: dpkg (>= 1.14.25-8)
 Conflicts: apt7 (<<1:0), apt1.4 (<<1:0), apt (<<2.0.0)
 Description: Advanced Packaging Tool (APT) Extra Utilities
-Name: APT Utils
+Name: APT (Utilities)

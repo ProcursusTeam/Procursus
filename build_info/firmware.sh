@@ -139,7 +139,7 @@ rm -f "${data}"/status-tmp.!("${xxxxxx}")
 
     pseudo "cy+kernel.$(lower <<<$(sysctl -n kern.ostype))" "$(sysctl -n kern.osrelease)" "virtual kernel dependency"
 
-    pseudo "cy+lib.corefoundation" "$(/usr/libexec/cydia/cfversion)" "virtual corefoundation dependency"
+    pseudo "cy+lib.corefoundation" "$(/usr/bin/cfversion)" "virtual corefoundation dependency"
 
 } >"${output}"
 

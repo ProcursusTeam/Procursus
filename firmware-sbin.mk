@@ -11,7 +11,7 @@ firmware-sbin:
 else
 firmware-sbin: setup
 	mkdir -p $(BUILD_STAGE)/firmware-sbin/{sbin,usr/sbin}
-	touch $(BUILD_STAGE)/firmware-sbin/{sbin/{fsck,fsck_apfs,fsck_exfat,fsck_hfs,fsck_msdos,launchd,mount,mount_apfs,newfs_apfs,newfs_hfs,pfctl},usr/sbin/{BTAvrcp,BTLEServer,BTMap,BTPbap,BlueTool,WirelessRadioManagerd,absd,addNetworkInterface,aslmanager,bluetoothd,cfprefsd,distnoted,filecoordinationd,ioreg,ipconfig,mDNSResponder,mDNSResponderHelper,mediaserverd,notifyd,nvram,pppd,racoon,rtadvd,scutil,spindump,syslogd,wifid,wirelessproxd}}
+	touch $(BUILD_STAGE)/firmware-sbin/{sbin/{fstyp_hfs,fsck,newfs_hfs,mount_hfs,mount,fstyp,fsck_hfs},usr/sbin/nvram}
 	touch $(BUILD_STAGE)/firmware-sbin/.build_complete
 endif
 
