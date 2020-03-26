@@ -33,4 +33,21 @@ libgcrypt: setup libgpg-error
 	touch $(BUILD_WORK)/libgcrypt/.build_complete
 endif
 
-.PHONY: libgcrypt
+libgcrypt-package: libgcrypt-stage
+	# libgcrypt.mk Package Structure
+	rm -rf $(BUILD_DIST)/libgcrypt
+	mkdir -p $(BUILD_DIST)/libgcrypt
+	
+	# libgcrypt.mk Prep libgcrypt
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/libgcrypt/usr $(BUILD_DIST)/libgcrypt
+	
+	# libgcrypt.mk Sign
+	$(call SIGN,libgcrypt,general.xml)
+	
+	# libgcrypt.mk Make .debs
+	$(call PACK,libgcrypt,DEB_LIBGCRYPT_V)
+	
+	# libgcrypt.mk Build cleanup
+	rm -rf $(BUILD_DIST)/libgcrypt
+
+.PHONY: libgcrypt libgcrypt-package
