@@ -77,4 +77,21 @@ ncurses: setup
 	touch $(BUILD_WORK)/ncurses/.build_complete
 endif
 
-.PHONY: ncurses
+ncurses-package: ncurses-stage
+	# ncurses.mk Package Structure
+	rm -rf $(BUILD_DIST)/ncurses
+	mkdir -p $(BUILD_DIST)/ncurses
+	
+	# ncurses.mk Prep ncurses
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/ncurses/usr $(BUILD_DIST)/ncurses
+	
+	# ncurses.mk Sign
+	$(call SIGN,ncurses,general.xml)
+	
+	# ncurses.mk Make .debs
+	$(call PACK,ncurses,DEB_NCURSES_V)
+	
+	# ncurses.mk Build cleanup
+	rm -rf $(BUILD_DIST)/ncurses
+
+.PHONY: ncurses ncurses-package
