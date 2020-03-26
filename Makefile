@@ -174,8 +174,8 @@ endif
 
 ifeq ($(call HAS_COMMAND,fakeroot),1)
 $(shell touch .fakeroot_persist)
-FAKEROOT := fakeroot -i $(PWD)/.fakeroot_persist -s $(PWD)/.fakeroot_persist --
-# FAKEROOT :=
+# FAKEROOT := fakeroot -i $(PWD)/.fakeroot_persist -s $(PWD)/.fakeroot_persist --
+FAKEROOT := fakeroot
 else
 $(error Install fakeroot)
 endif
