@@ -12,7 +12,7 @@ else
 darwintools: setup
 	cd darwintools && make
 	mkdir -p $(BUILD_STAGE)/darwintools/usr/{bin,libexec/cydia}
-	cp darwintools/{sw_vers,cfversion} $(BUILD_STAGE)/darwintools/usr/bin
+	cp darwintools/sw_vers $(BUILD_STAGE)/darwintools/usr/bin
 	cp $(BUILD_INFO)/firmware.sh $(BUILD_STAGE)/darwintools/usr/libexec
 	chmod 0755 $(BUILD_STAGE)/darwintools/usr/libexec/firmware.sh
 	touch darwintools/.build_complete
