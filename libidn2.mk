@@ -21,4 +21,21 @@ libidn2: setup gettext
 	touch $(BUILD_WORK)/libidn2/.build_complete
 endif
 
-.PHONY: libidn2
+libidn2-package: libidn2-stage
+	# libidn2.mk Package Structure
+	rm -rf $(BUILD_DIST)/libidn2
+	mkdir -p $(BUILD_DIST)/libidn2
+	
+	# libidn2.mk Prep libidn2
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/libidn2/usr $(BUILD_DIST)/libidn2
+	
+	# libidn2.mk Sign
+	$(call SIGN,libidn2,general.xml)
+	
+	# libidn2.mk Make .debs
+	$(call PACK,libidn2,DEB_IDN2_V)
+	
+	# libidn2.mk Build cleanup
+	rm -rf $(BUILD_DIST)/libidn2
+
+.PHONY: libidn2 libidn2-package
