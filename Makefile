@@ -7,7 +7,7 @@ UNAME           := $(shell uname -s)
 SUBPROJECTS     := \
 	cacerts coreutils sed grep findutils diffutils tar readline ncurses bash berkeleydb libgpg-error libtasn1 libgmp10 libidn2 libunistring npth zstd profile.d firmware-sbin \
 	libressl openssh libgcrypt gettext p11-kit nettle libksba libassuan \
-	bzip2 gzip lz4 xz gnutls gnupg libssh2 \
+	bzip2 gzip lz4 xz gnutls gnupg libssh2 nghttp2 \
 	pcre pcre2 zsh \
 	less nano \
 	apt dpkg \
@@ -270,7 +270,8 @@ setup:
 		https://ftp.gnu.org/gnu/gzip/gzip-$(GZIP_VERSION).tar.xz{,.sig} \
 		http://deb.debian.org/debian/pool/main/d/debianutils/debianutils_$(DEBIANUTILS_VERSION).tar.xz \
 		https://opensource.apple.com/tarballs/shell_cmds/shell_cmds-$(SHELL-CMDS_VERSION).tar.gz \
-		https://libssh2.org/download/libssh2-$(LIBSSH2_VERSION).tar.gz{,.asc}
+		https://libssh2.org/download/libssh2-$(LIBSSH2_VERSION).tar.gz{,.asc} \
+		https://github.com/nghttp2/nghttp2/releases/download/v$(NGHTTP2_VERSION)/nghttp2-$(NGHTTP2_VERSION).tar.xz
 	
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_VERSION).tar.xz)
 	$(call PGP_VERIFY,sed-$(SED_VERSION).tar.xz)
@@ -365,6 +366,7 @@ setup:
 	$(call EXTRACT_TAR,debianutils_$(DEBIANUTILS_VERSION).tar.xz,debianutils-$(DEBIANUTILS_VERSION),debianutils)
 	$(call EXTRACT_TAR,shell_cmds-$(SHELL-CMDS_VERSION).tar.gz,shell_cmds-$(SHELL-CMDS_VERSION),shell-cmds)
 	$(call EXTRACT_TAR,libssh2-$(LIBSSH2_VERSION).tar.gz,libssh2-$(LIBSSH2_VERSION),libssh2)
+	$(call EXTRACT_TAR,nghttp2-$(NGHTTP2_VERSION).tar.xz,nghttp2-$(NGHTTP2_VERSION),nghttp2)
 
 	$(call DO_PATCH,readline80-001,readline,-p0)
 	$(call DO_PATCH,readline80-002,readline,-p0)
