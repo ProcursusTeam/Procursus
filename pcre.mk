@@ -41,7 +41,7 @@ pcre-package: pcre-stage
 	# pcre.mk Sign
 	$(call SIGN,libpcre,general.xml)
 	
-	# prce.mk Make .debs
+	# pcre.mk Make .debs
 	$(call PACK,libpcre,DEB_PCRE_V)
 	
 	# pcre.mk Build cleanup

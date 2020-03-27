@@ -8,7 +8,7 @@ SUBPROJECTS     := \
 	cacerts coreutils sed grep findutils diffutils tar readline ncurses bash berkeleydb libgpg-error libtasn1 libgmp10 libidn2 libunistring npth zstd profile.d firmware-sbin \
 	libressl openssh libgcrypt gettext p11-kit nettle libksba libassuan \
 	bzip2 gzip lz4 xz gnutls gnupg \
-	pcre zsh \
+	pcre pcre2 zsh \
 	less nano \
 	apt dpkg \
 	uikittools darwintools system-cmds debianutils shell-cmds essential
@@ -246,6 +246,7 @@ setup:
 		https://github.com/lz4/lz4/archive/v$(LZ4_VERSION).tar.gz \
 		https://tukaani.org/xz/xz-$(XZ_VERSION).tar.xz{,.sig} \
 		https://ftp.pcre.org/pub/pcre/pcre-$(PCRE_VERSION).tar.bz2{,.sig} \
+		https://ftp.pcre.org/pub/pcre/pcre2-$(PCRE2_VERSION).tar.bz2{,.sig} \
 		https://www.zsh.org/pub/zsh-$(ZSH_VERSION).tar.xz{,.asc} \
 		https://ftp.gnu.org/gnu/less/less-$(LESS_VERSION).tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/nano/nano-$(NANO_VERSION).tar.xz{,.sig} \
@@ -303,6 +304,7 @@ setup:
 	# $(call PGP_VERIFY,v1.9.2.tar.gz)
 	$(call PGP_VERIFY,xz-$(XZ_VERSION).tar.xz)
 	$(call PGP_VERIFY,pcre-$(PCRE_VERSION).tar.bz2)
+	$(call PGP_VERIFY,pcre2-$(PCRE2_VERSION).tar.bz2)
 	# $(call PGP_VERIFY,zsh-5.8.tar.xz,asc)
 	$(call PGP_VERIFY,less-$(LESS_VERSION).tar.gz)
 	$(call PGP_VERIFY,nano-$(NANO_VERSION).tar.xz)
@@ -336,6 +338,7 @@ setup:
 	$(call EXTRACT_TAR,v$(LZ4_VERSION).tar.gz,lz4-$(LZ4_VERSION),lz4)
 	$(call EXTRACT_TAR,xz-$(XZ_VERSION).tar.xz,xz-$(XZ_VERSION),xz)
 	$(call EXTRACT_TAR,pcre-$(PCRE_VERSION).tar.bz2,pcre-$(PCRE_VERSION),pcre)
+	$(call EXTRACT_TAR,pcre2-$(PCRE2_VERSION).tar.bz2,pcre2-$(PCRE2_VERSION),pcre2)
 	$(call EXTRACT_TAR,zsh-$(ZSH_VERSION).tar.xz,zsh-$(ZSH_VERSION),zsh)
 	$(call EXTRACT_TAR,less-$(LESS_VERSION).tar.gz,less-$(LESS_VERSION),less)
 	$(call EXTRACT_TAR,nano-$(NANO_VERSION).tar.xz,nano-$(NANO_VERSION),nano)

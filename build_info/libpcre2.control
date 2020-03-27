@@ -1,10 +1,10 @@
-Package: libpcre
-Version: @DEB_PCRE_V@
+Package: libpcre2
+Version: @DEB_PCRE2_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Replaces: pcre
-Provides: pcre (=@DEB_PCRE_V@)
-Conflicts: pcre
+Replaces: pcre2
+Provides: pcre2 (=@DEB_PCRE2_V@)
+Conflicts: pcre2
 Section: Development
 Priority: required
 Multi-Arch: foreign
