@@ -173,7 +173,7 @@ $(error Install GNU coreutils)
 endif
 
 ifeq ($(call HAS_COMMAND,fakeroot),1)
-$(shell touch .fakeroot_persist)
+#$(shell touch .fakeroot_persist)
 # FAKEROOT := fakeroot -i $(PWD)/.fakeroot_persist -s $(PWD)/.fakeroot_persist --
 FAKEROOT := fakeroot
 else
@@ -442,9 +442,9 @@ clean::
 	git submodule foreach --recursive git clean -xfd
 	git submodule foreach --recursive git reset --hard
 	rm -f darwintools/.build_complete
-	$(MAKE) -C darwintools clean
+	$(MAKE) -C darwintools clean 2>/dev/null || :
 
-extreme-clean::
+extreme-clean:: clean
 	git clean -xfd && git reset
 
 .PHONY: clean setup
