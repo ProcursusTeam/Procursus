@@ -16,7 +16,8 @@ curl: setup libressl libssh2 nghttp2
 		--disable-debug \
 		--disable-dependency-tracking \
 		--with-libssh2 \
-		--with-nghttp2
+		--with-nghttp2 \
+		--with-ca-bundle=/etc/ssl/certs/cacert.pem
 	$(MAKE) -C $(BUILD_WORK)/curl
 	$(MAKE) -C $(BUILD_WORK)/curl install \
 		DESTDIR="$(BUILD_STAGE)/curl"
