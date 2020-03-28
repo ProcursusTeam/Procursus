@@ -8,7 +8,7 @@ SUBPROJECTS     := \
 	cacerts coreutils sed grep findutils diffutils tar readline ncurses bash berkeleydb libgpg-error libtasn1 libgmp10 libidn2 libunistring npth zstd profile.d firmware-sbin \
 	libressl openssh libgcrypt gettext p11-kit nettle libksba libassuan \
 	bzip2 gzip lz4 xz gnutls gnupg libssh2 nghttp2 \
-	pcre pcre2 zsh \
+	pcre pcre2 zsh curl \
 	less nano \
 	apt dpkg \
 	uikittools darwintools system-cmds debianutils shell-cmds essential
@@ -271,7 +271,9 @@ setup:
 		http://deb.debian.org/debian/pool/main/d/debianutils/debianutils_$(DEBIANUTILS_VERSION).tar.xz \
 		https://opensource.apple.com/tarballs/shell_cmds/shell_cmds-$(SHELL-CMDS_VERSION).tar.gz \
 		https://libssh2.org/download/libssh2-$(LIBSSH2_VERSION).tar.gz{,.asc} \
-		https://github.com/nghttp2/nghttp2/releases/download/v$(NGHTTP2_VERSION)/nghttp2-$(NGHTTP2_VERSION).tar.xz
+		https://github.com/nghttp2/nghttp2/releases/download/v$(NGHTTP2_VERSION)/nghttp2-$(NGHTTP2_VERSION).tar.xz \
+		https://curl.haxx.se/download/curl-$(CURL_VERSION).tar.xz{,.asc}
+
 	
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_VERSION).tar.xz)
 	$(call PGP_VERIFY,sed-$(SED_VERSION).tar.xz)
@@ -327,6 +329,7 @@ setup:
 	$(call PGP_VERIFY,gnupg-$(GNUPG_VERSION).tar.bz2)
 	$(call PGP_VERIFY,gzip-$(GZIP_VERSION).tar.xz)
 	$(call PGP_VERIFY,libssh2-$(LIBSSH2_VERSION).tar.gz,asc)
+	$(call PGP_VERIFY,curl-$(CURL_VERSION).tar.xz,asc)
 
 	$(call EXTRACT_TAR,coreutils-$(COREUTILS_VERSION).tar.xz,coreutils-$(COREUTILS_VERSION),coreutils)
 	$(call EXTRACT_TAR,sed-$(SED_VERSION).tar.xz,sed-$(SED_VERSION),sed)
@@ -367,6 +370,7 @@ setup:
 	$(call EXTRACT_TAR,shell_cmds-$(SHELL-CMDS_VERSION).tar.gz,shell_cmds-$(SHELL-CMDS_VERSION),shell-cmds)
 	$(call EXTRACT_TAR,libssh2-$(LIBSSH2_VERSION).tar.gz,libssh2-$(LIBSSH2_VERSION),libssh2)
 	$(call EXTRACT_TAR,nghttp2-$(NGHTTP2_VERSION).tar.xz,nghttp2-$(NGHTTP2_VERSION),nghttp2)
+	$(call EXTRACT_TAR,curl-$(CURL_VERSION).tar.xz,curl-$(CURL_VERSION),curl)
 
 	$(call DO_PATCH,readline80-001,readline,-p0)
 	$(call DO_PATCH,readline80-002,readline,-p0)

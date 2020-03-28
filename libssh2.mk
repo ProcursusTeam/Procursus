@@ -10,6 +10,7 @@ libssh2:
 	@echo "Using previously built libssh2."
 else
 libssh2: setup libressl
+	find $(BUILD_BASE) -name "*.la" -type f -delete
 	cd $(BUILD_WORK)/libssh2 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
