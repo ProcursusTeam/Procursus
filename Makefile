@@ -9,7 +9,7 @@ SUBPROJECTS     := \
 	libressl openssh libgcrypt gettext p11-kit nettle libksba libassuan \
 	bzip2 gzip lz4 xz gnutls gnupg libssh2 nghttp2 \
 	pcre pcre2 zsh curl \
-	less nano \
+	less nano git \
 	apt dpkg \
 	uikittools darwintools system-cmds debianutils shell-cmds essential
 
@@ -272,7 +272,8 @@ setup:
 		https://opensource.apple.com/tarballs/shell_cmds/shell_cmds-$(SHELL-CMDS_VERSION).tar.gz \
 		https://libssh2.org/download/libssh2-$(LIBSSH2_VERSION).tar.gz{,.asc} \
 		https://github.com/nghttp2/nghttp2/releases/download/v$(NGHTTP2_VERSION)/nghttp2-$(NGHTTP2_VERSION).tar.xz \
-		https://curl.haxx.se/download/curl-$(CURL_VERSION).tar.xz{,.asc}
+		https://curl.haxx.se/download/curl-$(CURL_VERSION).tar.xz{,.asc} \
+		https://mirrors.edge.kernel.org/pub/software/scm/git/git-$(GIT_VERSION).tar.xz \
 
 	
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_VERSION).tar.xz)
@@ -371,6 +372,7 @@ setup:
 	$(call EXTRACT_TAR,libssh2-$(LIBSSH2_VERSION).tar.gz,libssh2-$(LIBSSH2_VERSION),libssh2)
 	$(call EXTRACT_TAR,nghttp2-$(NGHTTP2_VERSION).tar.xz,nghttp2-$(NGHTTP2_VERSION),nghttp2)
 	$(call EXTRACT_TAR,curl-$(CURL_VERSION).tar.xz,curl-$(CURL_VERSION),curl)
+	$(call EXTRACT_TAR,git-$(GIT_VERSION).tar.xz,git-$(GIT_VERSION),git)
 
 	$(call DO_PATCH,readline80-001,readline,-p0)
 	$(call DO_PATCH,readline80-002,readline,-p0)
