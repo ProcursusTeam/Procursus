@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 BASH_VERSION := 5.0
-BASH_SUB_V   := $(shell find build_source -name 'bash50*' -not -name '*.sig' | wc -l)
+BASH_SUB_V   := $(shell find $(BUILD_SOURCE) -name 'bash50*' -not -name '*.sig' | wc -l)
 DEB_BASH_V   ?= $(BASH_VERSION).$(BASH_SUB_V)
 
 # When built with SSH_SOURCE_BASHRC, bash will source ~/.bashrc when

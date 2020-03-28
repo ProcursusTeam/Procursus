@@ -218,6 +218,16 @@ $(foreach proj,$(SUBPROJECTS),$(eval include $(proj).mk))
 	#rm -f $(BUILD_ROOT)/.fakeroot_persist
 	#touch $(BUILD_ROOT)/.fakeroot_persist
 
+REPROJ=$(shell echo $@ | cut -f2- -d"-")
+rebuild-%:
+	@echo Rebuild $(REPROJ)
+	if [ -d $(BUILD_WORK)/$(REPROJ) ]; then \
+		rm -rf {$(BUILD_WORK),$(BUILD_STAGE)}/$(REPROJ) ; \
+	elif [ -d $(REPROJ) ]; then \
+		cd $(REPROJ) && git clean -xfd && git reset 2>/dev/null || : ; \
+	fi
+	make $(REPROJ)
+
 .PHONY: $(SUBPROJECTS)
 
 setup:
@@ -426,9 +436,6 @@ setup:
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/stdlib.h > $(BUILD_BASE)/usr/include/stdlib.h
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/time.h > $(BUILD_BASE)/usr/include/time.h
 
-after-all::
-	# find $(DESTDIR) -type f -exec $(LDID) -S {} \; 2>&1 | grep -v '_assert(false); errno=0'
-
 clean::
 	rm -rf $(BUILD_BASE) $(BUILD_WORK) $(BUILD_STAGE)
 	@# When using 'make clean' in submodules, there is still an issue with the subproject changing when committing. This fixes that.
@@ -436,5 +443,8 @@ clean::
 	git submodule foreach --recursive git reset --hard
 	rm -f darwintools/.build_complete
 	$(MAKE) -C darwintools clean
+
+extreme-clean::
+	git clean -xfd && git reset
 
 .PHONY: clean setup

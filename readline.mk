@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 READLINE_VERSION := 8.0
-READLINE_SUB_V   := $(shell find build_source -name 'readline80*' -not -name '*.sig' | wc -l)
+READLINE_SUB_V   := $(shell find $(BUILD_SOURCE) -name 'readline80*' -not -name '*.sig' | wc -l)
 DEB_READLINE_V   ?= $(READLINE_VERSION).$(READLINE_SUB_V)
 
 ifneq ($(wildcard $(BUILD_WORK)/readline/.build_complete),)
