@@ -7,7 +7,7 @@ UNAME           := $(shell uname -s)
 STRAPPROJECTS   := \
 	gnupg ncurses readline libgpg-error libgcrypt libassuan libksba npth diffutils findutils \
 	coreutils darwintools system-cmds uikittools shell-cmds bash lz4 xz zstd tar bzip2 gzip \
-	profile.d base cacerts debianutils essential grep sed pcre firmware-sbin apt dpkg
+	profile.d base cacerts debianutils essential grep sed pcre firmware-sbin apt dpkg launchctl
 SUBPROJECTS     := $(STRAPPROJECTS) \
 	berkeleydb libtasn1 libgmp10 libidn2 libunistring \
 	libressl openssh gettext p11-kit nettle \
@@ -233,6 +233,7 @@ bootstrap:: $(STRAPPROJECTS:%=%-package)
 	mkdir -p $(BUILD_STRAP)/strap/private
 	mv $(BUILD_STRAP)/strap/{etc,var} $(BUILD_STRAP)/strap/private
 	cd $(BUILD_STRAP)/strap && tar -czvf ../bootstrap.tar.gz . &>/dev/null
+	cd $(BUILD_STRAP)/strap/usr/libexec/cydia && ln -fs ../firmware.sh
 	rm -rf $(BUILD_STRAP)/strap
 	@echo DONE $(BUILD_STRAP)/bootstrap.tar.gz
 
