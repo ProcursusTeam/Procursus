@@ -93,7 +93,12 @@ SIGN =  find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \;
 		
 PACK =  $(FAKEROOT) find $(BUILD_DIST)/$(1) \( -name '*.la' -o -name '*.a' \) -type f -delete ; \
 		$(FAKEROOT) rm -rf $(BUILD_DIST)/$(1)/usr/share/{info,man,aclocal,doc} ; \
-		$(FAKEROOT) chown -R 0:0 $(BUILD_DIST)/$(1)/* ; \
+		if [ -z $(3) ]; then \
+			echo Setting $(1) owner to 0:0. ; \
+			$(FAKEROOT) chown -R 0:0 $(BUILD_DIST)/$(1)/* ; \
+		elif [ $(3) = "2" ]; then \
+			echo $(1) owner set within individual makefile. ; \
+		fi ; \
 		$(FAKEROOT) mkdir -p $(BUILD_DIST)/$(1)/DEBIAN ; \
 		cp $(BUILD_INFO)/$(1).control $(BUILD_DIST)/$(1)/DEBIAN/control ; \
 		cp $(BUILD_INFO)/$(1).postinst $(BUILD_DIST)/$(1)/DEBIAN/postinst 2>/dev/null || : ; \
@@ -178,9 +183,8 @@ $(error Install GNU coreutils)
 endif
 
 ifeq ($(call HAS_COMMAND,fakeroot),1)
-#$(shell touch .fakeroot_persist)
-# FAKEROOT := fakeroot -i $(PWD)/.fakeroot_persist -s $(PWD)/.fakeroot_persist --
-FAKEROOT := fakeroot
+#FAKEROOT := fakeroot -i $(PWD)/.fakeroot_persist -s $(PWD)/.fakeroot_persist --
+#FAKEROOT := fakeroot
 else
 $(error Install fakeroot)
 endif
@@ -216,38 +220,39 @@ all:: setup $(SUBPROJECTS) package
 package:: $(SUBPROJECTS:%=%-package)
 bootstrap:: export BUILD_DIST=$(BUILD_STRAP)
 bootstrap:: $(STRAPPROJECTS:%=%-package)
-	rm -rf $(BUILD_STRAP)/strap
-	mkdir -p $(BUILD_STRAP)/strap/Library/dpkg/info
-	$(FAKEROOT) touch $(BUILD_STRAP)/strap/Library/dpkg/status
+	rm -f $(BUILD_STAGE)/.fakeroot_bootstrap
+	touch $(BUILD_STAGE)/.fakeroot_bootstrap
+	export FAKEROOT='fakeroot -i $(BUILD_STAGE)/.fakeroot_bootstrap -s $(BUILD_STAGE)/.fakeroot_bootstrap --' ; \
+	mkdir -p $(BUILD_STRAP)/strap/Library/dpkg/info ; \
+	$$FAKEROOT touch $(BUILD_STRAP)/strap/Library/dpkg/status ; \
 	cd $(BUILD_STRAP) && rm -f apt-*.deb dpkg-*.deb ; \
 	for DEB in *.deb; do \
 		PKGNAME=$$(echo $$DEB | cut -f1 -d"_") ; \
-		$(FAKEROOT) dpkg-deb -R $$DEB ./strap ; \
-		$(FAKEROOT) cp ./strap/DEBIAN/md5sums ./strap/Library/dpkg/info/$$PKGNAME.md5sums ; \
-		$(FAKEROOT) dpkg-deb -c $$DEB | cut -f2- -d"." | awk -F'\\-\\>' '{print $$1}' > $(BUILD_STRAP)/strap/Library/dpkg/info/$$PKGNAME.list ; \
+		$$FAKEROOT dpkg-deb -R $$DEB ./strap ; \
+		$$FAKEROOT cp ./strap/DEBIAN/md5sums ./strap/Library/dpkg/info/$$PKGNAME.md5sums ; \
+		$$FAKEROOT dpkg-deb -c $$DEB | cut -f2- -d"." | awk -F'\\-\\>' '{print $$1}' > $(BUILD_STRAP)/strap/Library/dpkg/info/$$PKGNAME.list ; \
 		$(SED) -i '1 s/$$/./' $(BUILD_STRAP)/strap/Library/dpkg/info/$$PKGNAME.list ; \
-		$(FAKEROOT) cp $(BUILD_INFO)/$$PKGNAME.{preinst,postinst,extrainst_,prerm,postrm} $(BUILD_STRAP)/strap/Library/dpkg/info 2>/dev/null || : ; \
+		$$FAKEROOT cp $(BUILD_INFO)/$$PKGNAME.{preinst,postinst,extrainst_,prerm,postrm} $(BUILD_STRAP)/strap/Library/dpkg/info 2>/dev/null || : ; \
 		dpkg-deb --info $$DEB | $(SED) '/Package:/,$$!d' | $(SED) -e 's/^[ \t]*//' >> $(BUILD_STRAP)/strap/Library/dpkg/status ; \
 		echo -e "Status: install ok installed\n" >> $(BUILD_STRAP)/strap/Library/dpkg/status ; \
 		rm -rf ./strap/DEBIAN ; \
-	done
-	cd $(BUILD_STRAP)/strap/Library/dpkg/ && head -n -1 status > status.new && mv status.new status
-	mkdir -p $(BUILD_STRAP)/strap/private
-	$(FAKEROOT) mv $(BUILD_STRAP)/strap/{etc,var} $(BUILD_STRAP)/strap/private
-	$(FAKEROOT) rm -f $(BUILD_STRAP)/strap/{usr/sbin,sbin}/{nvram,newfs_hfs,mount_hfs,mount,fstyp_hfs,fstyp,fsck_hfs,fsck}
-	$(FAKEROOT) mkdir -p $(BUILD_STRAP)/strap/private/var/lib/cydia
-	cd $(BUILD_STRAP)/strap/usr/libexec/cydia && ln -fs ../firmware.sh
-	cd $(BUILD_STRAP)/strap && $(FAKEROOT) tar -czvf ../bootstrap.tar.gz . &>/dev/null
-	rm -rf $(BUILD_STRAP)/strap
+	done ; \
+	cd $(BUILD_STRAP)/strap/Library/dpkg/ && head -n -1 status > status.new && mv status.new status ; \
+	rm -f $(BUILD_STRAP)/strap/{usr/sbin,sbin}/{nvram,newfs_hfs,mount_hfs,mount,fstyp_hfs,fstyp,fsck_hfs,fsck} ; \
+	$$FAKEROOT mkdir -p $(BUILD_STRAP)/strap/private/var/lib/cydia ; \
+	cd $(BUILD_STRAP)/strap/usr/libexec/cydia && ln -fs ../firmware.sh ; \
+	cd $(BUILD_STRAP)/strap && $$FAKEROOT tar -czvf ../bootstrap.tar.gz . &>/dev/null ; \
+	rm -rf $(BUILD_STRAP)/{strap,*.deb}
 	@echo DONE $(BUILD_STRAP)/bootstrap.tar.gz
 
 CHECKRA1N_MEMO := 1
 
 $(foreach proj,$(SUBPROJECTS),$(eval include $(proj).mk))
 
+%-package: FAKEROOT=fakeroot -i $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev) -s $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev) --
 %-stage: %
-	#rm -f $(BUILD_ROOT)/.fakeroot_persist
-	#touch $(BUILD_ROOT)/.fakeroot_persist
+	rm -f $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev)
+	touch $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev)
 
 REPROJ=$(shell echo $@ | cut -f2- -d"-")
 rebuild-%:
