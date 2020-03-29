@@ -4,14 +4,16 @@ endif
 
 SHELL           := /usr/bin/env bash
 UNAME           := $(shell uname -s)
-SUBPROJECTS     := \
-	base cacerts coreutils sed grep findutils diffutils tar readline ncurses bash berkeleydb libgpg-error libtasn1 libgmp10 libidn2 libunistring npth zstd profile.d firmware-sbin \
-	libressl openssh libgcrypt gettext p11-kit nettle libksba libassuan \
-	bzip2 gzip lz4 xz gnutls gnupg libssh2 nghttp2 \
-	pcre pcre2 zsh curl \
-	less nano git \
-	apt dpkg \
-	uikittools darwintools system-cmds debianutils shell-cmds essential
+STRAPPROJECTS   := \
+	gnupg ncurses readline libgpg-error libgcrypt libassuan libksba npth diffutils findutils \
+	coreutils darwintools system-cmds uikittools shell-cmds bash lz4 xz zstd tar bzip2 gzip \
+	profile.d base cacerts debianutils essential grep sed pcre firmware-sbin apt dpkg
+SUBPROJECTS     := $(STRAPPROJECTS) \
+	berkeleydb libtasn1 libgmp10 libidn2 libunistring \
+	libressl openssh gettext p11-kit nettle \
+	gnutls libssh2 nghttp2 \
+	pcre2 zsh curl \
+	less nano git
 
 PLATFORM        ?= iphoneos
 ARCH            ?= arm64
@@ -46,19 +48,21 @@ DEB_ORIGIN     := checkra1n
 DEB_MAINTAINER := Hayden Seay <me@diatr.us>
 
 # Root
-BUILD_ROOT     := $(PWD)
+BUILD_ROOT     ?= $(PWD)
 # Downloaded source files
-BUILD_SOURCE   := $(PWD)/build_source
+BUILD_SOURCE   ?= $(BUILD_ROOT)/build_source
 # Base headers/libs (e.g. patched from SDK)
-BUILD_BASE     := $(PWD)/build_base
+BUILD_BASE     ?= $(BUILD_ROOT)/build_base
 # Dpkg info storage area
-BUILD_INFO    := $(PWD)/build_info
+BUILD_INFO     ?= $(BUILD_ROOT)/build_info
 # Extracted source working directory
-BUILD_WORK     := $(PWD)/build_work
+BUILD_WORK     ?= $(BUILD_ROOT)/build_work
 # Bootstrap working area
-BUILD_STAGE    := $(PWD)/build_stage
+BUILD_STAGE    ?= $(BUILD_ROOT)/build_stage
 # Final output
-BUILD_DIST     := $(PWD)/build_dist
+BUILD_DIST     ?= $(BUILD_ROOT)/build_dist
+# Actual bootrap staging
+BUILD_STRAP    ?= $(BUILD_ROOT)/build_strap
 
 CFLAGS          := -O2 -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include
 CXXFLAGS        := $(CFLAGS)
@@ -97,6 +101,7 @@ PACK =  $(FAKEROOT) find $(BUILD_DIST)/$(1) \( -name '*.la' -o -name '*.a' \) -t
 		cp $(BUILD_INFO)/$(1).postrm $(BUILD_DIST)/$(1)/DEBIAN/postrm 2>/dev/null || : ; \
 		cp $(BUILD_INFO)/$(1).prerm $(BUILD_DIST)/$(1)/DEBIAN/prerm 2>/dev/null || : ; \
 		cp $(BUILD_INFO)/$(1).extrainst_ $(BUILD_DIST)/$(1)/DEBIAN/extrainst_ 2>/dev/null || : ; \
+		cd $(BUILD_DIST)/$(1) && find . -type f ! -regex '.*.hg.*' ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -printf '%P ' | xargs md5sum > $(BUILD_DIST)/$(1)/DEBIAN/md5sums ; \
 		chmod 0755 $(BUILD_DIST)/$(1)/DEBIAN/* ; \
 		$(SED) -i ':a; s/@$(2)@/$($(2))/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control ; \
 		$(SED) -i ':a; s/@DEB_MAINTAINER@/$(DEB_MAINTAINER)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control ; \
@@ -209,6 +214,27 @@ endif
 
 all:: setup $(SUBPROJECTS) package
 package:: $(SUBPROJECTS:%=%-package)
+bootstrap:: export BUILD_DIST=$(BUILD_STRAP)
+bootstrap:: $(STRAPPROJECTS:%=%-package)
+	rm -rf $(BUILD_STRAP)/strap
+	mkdir -p $(BUILD_STRAP)/strap/Library/dpkg/info
+	touch $(BUILD_STRAP)/strap/Library/dpkg/status
+	cd $(BUILD_STRAP) && rm -f apt-*.deb dpkg-*.deb ; \
+	for DEB in *.deb; do \
+		PKGNAME=$$(echo $$DEB | cut -f1 -d"_") ; \
+		dpkg-deb -R $$DEB ./strap ; \
+		cp ./strap/DEBIAN/md5sums ./strap/Library/dpkg/info/$$PKGNAME.md5sums ; \
+		dpkg-deb -c $$DEB | cut -f2 -d"." | cut -f2- -d">" > $(BUILD_STRAP)/strap/Library/dpkg/info/$$PKGNAME.list ; \
+		cp $(BUILD_INFO)/$$PKGNAME.{preinst,postinst,extrainst_,prerm,postrm} $(BUILD_STRAP)/strap/Library/dpkg/info 2>/dev/null || : ; \
+		dpkg-deb --info $$DEB | $(SED) '/Package:/,$$!d' >> $(BUILD_STRAP)/strap/Library/dpkg/status ; \
+		echo -e "" >> $(BUILD_STRAP)/strap/Library/dpkg/status ; \
+		rm -rf ./strap/DEBIAN ; \
+	done
+	mkdir -p $(BUILD_STRAP)/strap/private
+	mv $(BUILD_STRAP)/strap/{etc,var} $(BUILD_STRAP)/strap/private
+	cd $(BUILD_STRAP)/strap && tar -czvf ../bootstrap.tar.gz . &>/dev/null
+	rm -rf $(BUILD_STRAP)/strap
+	@echo DONE $(BUILD_STRAP)/bootstrap.tar.gz
 
 CHECKRA1N_MEMO := 1
 
@@ -233,7 +259,7 @@ rebuild-%:
 setup:
 	mkdir -p \
 		$(BUILD_BASE) $(BUILD_BASE)/usr/{include,lib} \
-		$(BUILD_WORK) $(BUILD_STAGE) $(BUILD_DIST)
+		$(BUILD_WORK) $(BUILD_STAGE) $(BUILD_DIST) $(BUILD_STRAP)
 
 	git submodule update --init --recursive
 
