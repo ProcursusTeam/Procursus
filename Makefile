@@ -234,6 +234,8 @@ bootstrap:: $(STRAPPROJECTS:%=%-package)
 	cd $(BUILD_STRAP)/strap/Library/dpkg/ && head -n -1 status > status.new && mv status.new status
 	mkdir -p $(BUILD_STRAP)/strap/private
 	$(FAKEROOT) mv $(BUILD_STRAP)/strap/{etc,var} $(BUILD_STRAP)/strap/private
+	$(FAKEROOT) rm -f $(BUILD_STRAP)/strap/{usr/sbin,sbin}/{nvram,newfs_hfs,mount_hfs,mount,fstyp_hfs,fstyp,fsck_hfs,fsck}
+	$(FAKEROOT) mkdir -p $(BUILD_STRAP)/strap/private/var/lib/cydia
 	cd $(BUILD_STRAP)/strap/usr/libexec/cydia && ln -fs ../firmware.sh
 	cd $(BUILD_STRAP)/strap && $(FAKEROOT) tar -czvf ../bootstrap.tar.gz . &>/dev/null
 	rm -rf $(BUILD_STRAP)/strap
