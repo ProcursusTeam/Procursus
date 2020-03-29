@@ -16,9 +16,9 @@ launchctl-package: launchctl-stage
 	# launchctl.mk Prep launchctl
 	$(FAKEROOT) cp -a $(BUILD_INFO)/launchctl $(BUILD_DIST)/launchctl/usr/bin
 	ln -s /usr/bin/launchctl $(BUILD_DIST)/launchctl/bin/launchctl
-	
+
 	# launchctl.mk Sign launchctl
-	$(call PACK,launchctl,launchctl.xml)
+	$(call SIGN,launchctl,launchctl.xml)
 	
 	# launchctl.mk Make .debs
 	$(call PACK,launchctl,DEB_LAUNCHCTL_V)

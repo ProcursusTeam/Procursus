@@ -218,22 +218,24 @@ bootstrap:: export BUILD_DIST=$(BUILD_STRAP)
 bootstrap:: $(STRAPPROJECTS:%=%-package)
 	rm -rf $(BUILD_STRAP)/strap
 	mkdir -p $(BUILD_STRAP)/strap/Library/dpkg/info
-	touch $(BUILD_STRAP)/strap/Library/dpkg/status
+	$(FAKEROOT) touch $(BUILD_STRAP)/strap/Library/dpkg/status
 	cd $(BUILD_STRAP) && rm -f apt-*.deb dpkg-*.deb ; \
 	for DEB in *.deb; do \
 		PKGNAME=$$(echo $$DEB | cut -f1 -d"_") ; \
-		dpkg-deb -R $$DEB ./strap ; \
-		cp ./strap/DEBIAN/md5sums ./strap/Library/dpkg/info/$$PKGNAME.md5sums ; \
-		dpkg-deb -c $$DEB | cut -f2 -d"." | cut -f2- -d">" > $(BUILD_STRAP)/strap/Library/dpkg/info/$$PKGNAME.list ; \
-		cp $(BUILD_INFO)/$$PKGNAME.{preinst,postinst,extrainst_,prerm,postrm} $(BUILD_STRAP)/strap/Library/dpkg/info 2>/dev/null || : ; \
-		dpkg-deb --info $$DEB | $(SED) '/Package:/,$$!d' >> $(BUILD_STRAP)/strap/Library/dpkg/status ; \
-		echo -e "" >> $(BUILD_STRAP)/strap/Library/dpkg/status ; \
+		$(FAKEROOT) dpkg-deb -R $$DEB ./strap ; \
+		$(FAKEROOT) cp ./strap/DEBIAN/md5sums ./strap/Library/dpkg/info/$$PKGNAME.md5sums ; \
+		$(FAKEROOT) dpkg-deb -c $$DEB | cut -f2- -d"." | awk -F'\\-\\>' '{print $$1}' > $(BUILD_STRAP)/strap/Library/dpkg/info/$$PKGNAME.list ; \
+		$(SED) -i '1 s/$$/./' $(BUILD_STRAP)/strap/Library/dpkg/info/$$PKGNAME.list ; \
+		$(FAKEROOT) cp $(BUILD_INFO)/$$PKGNAME.{preinst,postinst,extrainst_,prerm,postrm} $(BUILD_STRAP)/strap/Library/dpkg/info 2>/dev/null || : ; \
+		dpkg-deb --info $$DEB | $(SED) '/Package:/,$$!d' | $(SED) -e 's/^[ \t]*//' >> $(BUILD_STRAP)/strap/Library/dpkg/status ; \
+		echo -e "Status: install ok installed\n" >> $(BUILD_STRAP)/strap/Library/dpkg/status ; \
 		rm -rf ./strap/DEBIAN ; \
 	done
+	cd $(BUILD_STRAP)/strap/Library/dpkg/ && head -n -1 status > status.new && mv status.new status
 	mkdir -p $(BUILD_STRAP)/strap/private
-	mv $(BUILD_STRAP)/strap/{etc,var} $(BUILD_STRAP)/strap/private
-	cd $(BUILD_STRAP)/strap && tar -czvf ../bootstrap.tar.gz . &>/dev/null
+	$(FAKEROOT) mv $(BUILD_STRAP)/strap/{etc,var} $(BUILD_STRAP)/strap/private
 	cd $(BUILD_STRAP)/strap/usr/libexec/cydia && ln -fs ../firmware.sh
+	cd $(BUILD_STRAP)/strap && $(FAKEROOT) tar -czvf ../bootstrap.tar.gz . &>/dev/null
 	rm -rf $(BUILD_STRAP)/strap
 	@echo DONE $(BUILD_STRAP)/bootstrap.tar.gz
 
