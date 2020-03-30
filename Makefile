@@ -220,10 +220,11 @@ all:: setup $(SUBPROJECTS) package
 package:: $(SUBPROJECTS:%=%-package)
 bootstrap:: export BUILD_DIST=$(BUILD_STRAP)
 bootstrap:: $(STRAPPROJECTS:%=%-package)
+	rm -rf $(BUILD_STRAP)/strap
 	rm -f $(BUILD_STAGE)/.fakeroot_bootstrap
 	touch $(BUILD_STAGE)/.fakeroot_bootstrap
+	mkdir -p $(BUILD_STRAP)/strap/Library/dpkg/info
 	export FAKEROOT='fakeroot -i $(BUILD_STAGE)/.fakeroot_bootstrap -s $(BUILD_STAGE)/.fakeroot_bootstrap --' ; \
-	mkdir -p $(BUILD_STRAP)/strap/Library/dpkg/info ; \
 	$$FAKEROOT touch $(BUILD_STRAP)/strap/Library/dpkg/status ; \
 	cd $(BUILD_STRAP) && rm -f apt-*.deb dpkg-*.deb ; \
 	for DEB in *.deb; do \
@@ -237,9 +238,13 @@ bootstrap:: $(STRAPPROJECTS:%=%-package)
 		echo -e "Status: install ok installed\n" >> $(BUILD_STRAP)/strap/Library/dpkg/status ; \
 		rm -rf ./strap/DEBIAN ; \
 	done ; \
+	$(RMDIR) --ignore-fail-on-non-empty $(BUILD_STRAP)/strap/{Applications,bin,boot,dev,etc/{default,profile.d},lib,Library/{Frameworks,LaunchAgents,LaunchDaemons,Preferences,Ringtones,Wallpaper},mnt,sbin,System/Library/{Extensions,Fonts,Frameworks,Internet\ Plug-Ins,KeyboardDictionaries,LaunchDaemons,PreferenceBundles,PrivateFrameworks,SystemConfiguration,VideoDecoders},tmp,usr/{bin,games,include,sbin,share/{dict,misc}},var/{backups,cache,db,empty,lib/misc,local,lock,log,logs,mobile/{Library/Preferences,Media},msgs,preferences,root/Media,run,spool,tmp,vm}}
+	mkdir -p $(BUILD_STRAP)/strap/private ; \
 	cd $(BUILD_STRAP)/strap/Library/dpkg/ && head -n -1 status > status.new && mv status.new status ; \
 	rm -f $(BUILD_STRAP)/strap/{usr/sbin,sbin}/{nvram,newfs_hfs,mount_hfs,mount,fstyp_hfs,fstyp,fsck_hfs,fsck} ; \
-	$$FAKEROOT mkdir -p $(BUILD_STRAP)/strap/private/var/lib/cydia ; \
+	mv $(BUILD_STRAP)/strap/{etc,var} $(BUILD_STRAP)/strap/private ; \
+	mkdir -p $(BUILD_STRAP)/strap/usr/libexec/cydia ; \
+	mkdir -p $(BUILD_STRAP)/strap/private/var/lib/cydia ; \
 	cd $(BUILD_STRAP)/strap/usr/libexec/cydia && ln -fs ../firmware.sh ; \
 	cd $(BUILD_STRAP)/strap && $$FAKEROOT tar -czvf ../bootstrap.tar.gz . &>/dev/null ; \
 	rm -rf $(BUILD_STRAP)/{strap,*.deb}
