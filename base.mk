@@ -5,15 +5,9 @@ endif
 BASE_VERSION := 1-5
 DEB_BASE_V   ?= $(BASE_VERSION)
 
-ifneq ($(wildcard $(BUILD_STAGE)/base/.build_complete),)
-base:
-	@echo "Using previously built base."
-else
 base:
 	mkdir -p $(BUILD_STAGE)/base/{Applications,bin,boot,dev,etc/{default,profile.d},lib,Library/{Frameworks,LaunchAgents,LaunchDaemons,Preferences,Ringtones,Wallpaper},mnt,sbin,System/Library/{Extensions,Fonts,Frameworks,Internet\ Plug-Ins,KeyboardDictionaries,LaunchDaemons,PreferenceBundles,PrivateFrameworks,SystemConfiguration,VideoDecoders},tmp,usr/{bin,games,include,sbin,share/{dict,misc}},var/{backups,cache,db,empty,lib/misc,local,lock,log,logs,mobile/{Library/Preferences,Media},msgs,preferences,root/Media,run,spool,tmp,vm}}
 	touch $(BUILD_STAGE)/base/var/run/utmp
-	touch $(BUILD_STAGE)/base/.build_complete
-endif
 
 base-package: base-stage
 	# base.mk Package Structure
