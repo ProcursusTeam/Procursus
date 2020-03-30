@@ -238,11 +238,11 @@ bootstrap:: $(STRAPPROJECTS:%=%-package)
 		echo -e "Status: install ok installed\n" >> $(BUILD_STRAP)/strap/Library/dpkg/status ; \
 		rm -rf ./strap/DEBIAN ; \
 	done ; \
-	$(RMDIR) --ignore-fail-on-non-empty $(BUILD_STRAP)/strap/{Applications,bin,boot,dev,etc/{default,profile.d},lib,Library/{Frameworks,LaunchAgents,LaunchDaemons,Preferences,Ringtones,Wallpaper},mnt,sbin,System/Library/{Extensions,Fonts,Frameworks,Internet\ Plug-Ins,KeyboardDictionaries,LaunchDaemons,PreferenceBundles,PrivateFrameworks,SystemConfiguration,VideoDecoders},tmp,usr/{bin,games,include,sbin,share/{dict,misc}},var/{backups,cache,db,empty,lib/misc,local,lock,log,logs,mobile/{Library/Preferences,Media},msgs,preferences,root/Media,run,spool,tmp,vm}}
+	$(RMDIR) --ignore-fail-on-non-empty $(BUILD_STRAP)/strap/{Applications,bin,dev,etc/{default,profile.d},Library/{Frameworks,LaunchAgents,LaunchDaemons,Preferences,Ringtones,Wallpaper},sbin,System/Library/{Extensions,Fonts,Frameworks,Internet\ Plug-Ins,KeyboardDictionaries,LaunchDaemons,PreferenceBundles,PrivateFrameworks,SystemConfiguration,VideoDecoders},System/Library,System,tmp,usr/{bin,games,include,sbin,var,share/{dict,misc}},var/{backups,cache,db,lib/misc,local,lock,log,logs,mobile/{Library/Preferences,Library,Media},mobile,msgs,preferences,root/Media,root,run,spool,tmp,vm}} ; \
 	mkdir -p $(BUILD_STRAP)/strap/private ; \
 	cd $(BUILD_STRAP)/strap/Library/dpkg/ && head -n -1 status > status.new && mv status.new status ; \
 	rm -f $(BUILD_STRAP)/strap/{usr/sbin,sbin}/{nvram,newfs_hfs,mount_hfs,mount,fstyp_hfs,fstyp,fsck_hfs,fsck} ; \
-	mv $(BUILD_STRAP)/strap/{etc,var} $(BUILD_STRAP)/strap/private ; \
+	$$FAKEROOT mv $(BUILD_STRAP)/strap/{etc,var} $(BUILD_STRAP)/strap/private ; \
 	mkdir -p $(BUILD_STRAP)/strap/usr/libexec/cydia ; \
 	mkdir -p $(BUILD_STRAP)/strap/private/var/lib/cydia ; \
 	cd $(BUILD_STRAP)/strap/usr/libexec/cydia && ln -fs ../firmware.sh ; \
