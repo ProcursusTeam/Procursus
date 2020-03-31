@@ -243,6 +243,8 @@ bootstrap:: $(STRAPPROJECTS:%=%-package)
 	cd $(BUILD_STRAP)/strap/Library/dpkg/ && head -n -1 status > status.new && mv status.new status ; \
 	rm -f $(BUILD_STRAP)/strap/{usr/sbin,sbin}/{nvram,newfs_hfs,mount_hfs,mount,fstyp_hfs,fstyp,fsck_hfs,fsck} ; \
 	$$FAKEROOT mv $(BUILD_STRAP)/strap/{etc,var} $(BUILD_STRAP)/strap/private ; \
+	$$FAKEROOT chown 0:80 $(BUILD_STRAP)/strap/Library ; \
+	$$FAKEROOT chmod 0775 $(BUILD_STRAP)/strap/Library ; \
 	mkdir -p $(BUILD_STRAP)/strap/usr/libexec/cydia ; \
 	mkdir -p $(BUILD_STRAP)/strap/private/var/lib/cydia ; \
 	cd $(BUILD_STRAP)/strap/usr/libexec/cydia && ln -fs ../firmware.sh ; \

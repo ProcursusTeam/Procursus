@@ -23,7 +23,7 @@ base-package: base-stage
 	$(FAKEROOT) chown 0:20 $(BUILD_DIST)/base/var/local
 	$(FAKEROOT) chown 0:1 $(BUILD_DIST)/base/var/run
 	$(FAKEROOT) chown -R 501:501 $(BUILD_DIST)/base/var/mobile
-	$(FAKEROOT) chmod 0775 $(BUILD_DIST)/base/{Applications,var/run}
+	$(FAKEROOT) chmod 0775 $(BUILD_DIST)/base/{Applications,Library,var/run}
 	$(FAKEROOT) chmod 2775 $(BUILD_DIST)/base/var/local
 	$(FAKEROOT) chmod 1775 $(BUILD_DIST)/base/var/{lock,tmp}
 	$(FAKEROOT) chmod 0775 $(BUILD_DIST)/base/var/root
