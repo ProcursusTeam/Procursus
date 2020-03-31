@@ -26,7 +26,7 @@ bzip2-package: bzip2-stage
 	
 	# bzip2.mk Prep bzip2
 	$(FAKEROOT) cp -a $(BUILD_STAGE)/bzip2/usr $(BUILD_DIST)/bzip2
-	rm -rf $(BUILD_DIST)/bzip2/usr/man
+	$(FAKEROOT) rm -rf $(BUILD_DIST)/bzip2/usr/man
 	
 	# bzip2.mk Sign
 	$(call SIGN,bzip2,general.xml)

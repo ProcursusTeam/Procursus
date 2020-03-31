@@ -13,7 +13,7 @@ SUBPROJECTS     := $(STRAPPROJECTS) \
 	libressl openssh gettext p11-kit nettle \
 	gnutls libssh2 nghttp2 \
 	pcre2 zsh curl \
-	less nano git
+	less nano git zip unzip
 
 PLATFORM        ?= iphoneos
 ARCH            ?= arm64
@@ -83,10 +83,13 @@ EXTRACT_TAR = if [ ! -d $(BUILD_WORK)/$(3) ]; then \
 		mv $(2) $(3); \
 	fi
 
-DO_PATCH    = if [ ! -f $(BUILD_WORK)/$(2)/$(notdir $(1)).done ]; then \
-		$(PATCH) -sN -d $(BUILD_WORK)/$(2) $(3) < $(BUILD_SOURCE)/$(1); \
-		touch $(BUILD_WORK)/$(2)/$(notdir $(1)).done; \
-	fi
+DO_PATCH    = cd $(BUILD_WORK)/$(1); \
+	for PATCHFILE in *; do \
+		if [ ! -f $(BUILD_WORK)/$(2)/$(notdir $$PATCHFILE).done ]; then \
+			$(PATCH) -sN -d $(BUILD_WORK)/$(2) $(3) < $$PATCHFILE; \
+			touch $(BUILD_WORK)/$(2)/$(notdir $$PATCHFILE).done; \
+		fi ; \
+	done
 
 SIGN =  find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \; &> /dev/null ; \
 		find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete ;
@@ -327,8 +330,11 @@ setup:
 		https://github.com/nghttp2/nghttp2/releases/download/v$(NGHTTP2_VERSION)/nghttp2-$(NGHTTP2_VERSION).tar.xz \
 		https://curl.haxx.se/download/curl-$(CURL_VERSION).tar.xz{,.asc} \
 		https://mirrors.edge.kernel.org/pub/software/scm/git/git-$(GIT_VERSION).tar.xz \
+		https://deb.debian.org/debian/pool/main/z/zip/zip_$(ZIP_VERSION).orig.tar.gz \
+		https://deb.debian.org/debian/pool/main/z/zip/zip_$(DEBIAN_ZIP_V).debian.tar.xz \
+		https://deb.debian.org/debian/pool/main/u/unzip/unzip_$(UNZIP_VERSION).orig.tar.gz \
+		https://deb.debian.org/debian/pool/main/u/unzip/unzip_$(DEBIAN_UNZIP_V).debian.tar.xz
 
-	
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_VERSION).tar.xz)
 	$(call PGP_VERIFY,sed-$(SED_VERSION).tar.xz)
 	$(call PGP_VERIFY,grep-$(GREP_VERSION).tar.xz)
@@ -426,27 +432,20 @@ setup:
 	$(call EXTRACT_TAR,nghttp2-$(NGHTTP2_VERSION).tar.xz,nghttp2-$(NGHTTP2_VERSION),nghttp2)
 	$(call EXTRACT_TAR,curl-$(CURL_VERSION).tar.xz,curl-$(CURL_VERSION),curl)
 	$(call EXTRACT_TAR,git-$(GIT_VERSION).tar.xz,git-$(GIT_VERSION),git)
+	$(call EXTRACT_TAR,zip_$(ZIP_VERSION).orig.tar.gz,zip30,zip)
+	$(call EXTRACT_TAR,zip_$(DEBIAN_ZIP_V).debian.tar.xz,debian/patches,zip-$(ZIP_VERSION)-patches)
+	$(call EXTRACT_TAR,unzip_$(UNZIP_VERSION).orig.tar.gz,unzip60,unzip)
+	$(call EXTRACT_TAR,unzip_$(DEBIAN_UNZIP_V).debian.tar.xz,debian/patches,unzip-$(UNZIP_VERSION)-patches)
 
-	$(call DO_PATCH,readline80-001,readline,-p0)
-	$(call DO_PATCH,readline80-002,readline,-p0)
-	$(call DO_PATCH,readline80-003,readline,-p0)
-	$(call DO_PATCH,readline80-004,readline,-p0)
-	$(call DO_PATCH,bash50-001,bash,-p0)
-	$(call DO_PATCH,bash50-002,bash,-p0)
-	$(call DO_PATCH,bash50-003,bash,-p0)
-	$(call DO_PATCH,bash50-004,bash,-p0)
-	$(call DO_PATCH,bash50-005,bash,-p0)
-	$(call DO_PATCH,bash50-006,bash,-p0)
-	$(call DO_PATCH,bash50-007,bash,-p0)
-	$(call DO_PATCH,bash50-008,bash,-p0)
-	$(call DO_PATCH,bash50-009,bash,-p0)
-	$(call DO_PATCH,bash50-010,bash,-p0)
-	$(call DO_PATCH,bash50-011,bash,-p0)
-	$(call DO_PATCH,bash50-012,bash,-p0)
-	$(call DO_PATCH,bash50-013,bash,-p0)
-	$(call DO_PATCH,bash50-014,bash,-p0)
-	$(call DO_PATCH,bash50-015,bash,-p0)
-	$(call DO_PATCH,bash50-016,bash,-p0)
+	mkdir -p $(BUILD_WORK)/{readline-$(READLINE_VERSION),bash-$(BASH_VERSION)}-patches
+	find $(BUILD_SOURCE) -name 'readline80*' -not -name '*.sig' -exec cp '{}' $(BUILD_WORK)/readline-$(READLINE_VERSION)-patches/ \;
+	find $(BUILD_SOURCE) -name 'bash50*' -not -name '*.sig' -exec cp '{}' $(BUILD_WORK)/bash-$(BASH_VERSION)-patches/ \;
+	rm -f $(BUILD_WORK)/{zip-$(ZIP_VERSION),unzip-$(UNZIP_VERSION)}-patches/series
+
+	$(call DO_PATCH,readline-$(READLINE_VERSION)-patches,readline,-p0)
+	$(call DO_PATCH,bash-$(BASH_VERSION)-patches,bash,-p0)
+	$(call DO_PATCH,zip-$(ZIP_VERSION)-patches,zip,-p1)
+	$(call DO_PATCH,unzip-$(UNZIP_VERSION)-patches,unzip,-p1)
 
 	@# Copy headers from MacOSX.sdk
 	rm -rf $(BUILD_BASE)/usr/include/libkern
