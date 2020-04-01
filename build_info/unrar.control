@@ -1,0 +1,10 @@
+Package: unrar
+Version: @DEB_UNRAR_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Archiving
+Priority: optional
+Multi-Arch: foreign
+Homepage: http://www.rarlab.com/rar_add.htm
+Description: de-compresses files in rar format
+Tag: purpose::console, role::hacker

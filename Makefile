@@ -13,7 +13,7 @@ SUBPROJECTS     := $(STRAPPROJECTS) \
 	libressl openssh gettext p11-kit nettle \
 	gnutls libssh2 nghttp2 \
 	pcre2 zsh curl \
-	less nano git zip unzip p7zip
+	less nano git zip unzip p7zip unrar
 
 PLATFORM        ?= iphoneos
 ARCH            ?= arm64
@@ -80,7 +80,7 @@ PGP_VERIFY  = gpg --verify $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) $(BUILD_SOUR
 EXTRACT_TAR = if [ ! -d $(BUILD_WORK)/$(3) ]; then \
 		cd $(BUILD_WORK) && \
 		$(TAR) -xf $(BUILD_SOURCE)/$(1) && \
-		mv $(2) $(3); \
+		mv $(2) $(3) 2>/dev/null || :; \
 	fi
 
 DO_PATCH    = cd $(BUILD_WORK)/$(1)-patches; \
@@ -340,7 +340,8 @@ setup:
 		https://deb.debian.org/debian/pool/main/u/unzip/unzip_$(DEBIAN_UNZIP_V).debian.tar.xz \
 		https://deb.debian.org/debian/pool/main/p/p7zip/p7zip_$(P7ZIP_VERSION)+dfsg.orig.tar.xz \
 		https://deb.debian.org/debian/pool/main/p/p7zip/p7zip_$(DEBIAN_P7ZIP_V).debian.tar.xz \
-		https://raw.githubusercontent.com/shirkdog/hardenedbsd-ports/master/archivers/p7zip/files/patch-CPP_Windows_ErrorMsg.cpp
+		https://raw.githubusercontent.com/shirkdog/hardenedbsd-ports/master/archivers/p7zip/files/patch-CPP_Windows_ErrorMsg.cpp \
+		https://www.rarlab.com/rar/unrarsrc-$(UNRAR_VERSION).tar.gz
 
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_VERSION).tar.xz)
 	$(call PGP_VERIFY,sed-$(SED_VERSION).tar.xz)
@@ -445,6 +446,7 @@ setup:
 	$(call EXTRACT_TAR,unzip_$(DEBIAN_UNZIP_V).debian.tar.xz,debian/patches,unzip-$(UNZIP_VERSION)-patches)
 	$(call EXTRACT_TAR,p7zip_$(P7ZIP_VERSION)+dfsg.orig.tar.xz,p7zip_$(P7ZIP_VERSION),p7zip)
 	$(call EXTRACT_TAR,p7zip_$(DEBIAN_P7ZIP_V).debian.tar.xz,debian/patches,p7zip-$(P7ZIP_VERSION)-patches)
+	$(call EXTRACT_TAR,unrarsrc-$(UNRAR_VERSION).tar.gz,,unrar)
 
 	mkdir -p $(BUILD_WORK)/{readline-$(READLINE_VERSION),bash-$(BASH_VERSION)}-patches
 	find $(BUILD_SOURCE) -name 'readline80*' -not -name '*.sig' -exec cp '{}' $(BUILD_WORK)/readline-$(READLINE_VERSION)-patches/ \;
