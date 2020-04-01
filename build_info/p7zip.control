@@ -1,0 +1,10 @@
+Package: p7zip
+Version: @DEB_P7ZIP_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Archiving
+Priority: optional
+Multi-Arch: foreign
+Description: claims to be a good compressor
+Name: 7-zip (POSIX)
+Tag: purpose::console, role::hacker

@@ -13,7 +13,7 @@ SUBPROJECTS     := $(STRAPPROJECTS) \
 	libressl openssh gettext p11-kit nettle \
 	gnutls libssh2 nghttp2 \
 	pcre2 zsh curl \
-	less nano git zip unzip
+	less nano git zip unzip p7zip
 
 PLATFORM        ?= iphoneos
 ARCH            ?= arm64
@@ -83,10 +83,14 @@ EXTRACT_TAR = if [ ! -d $(BUILD_WORK)/$(3) ]; then \
 		mv $(2) $(3); \
 	fi
 
-DO_PATCH    = cd $(BUILD_WORK)/$(1); \
+DO_PATCH    = cd $(BUILD_WORK)/$(1)-patches; \
+	rm -f ./series; \
 	for PATCHFILE in *; do \
 		if [ ! -f $(BUILD_WORK)/$(2)/$(notdir $$PATCHFILE).done ]; then \
-			$(PATCH) -sN -d $(BUILD_WORK)/$(2) $(3) < $$PATCHFILE; \
+			$(PATCH) -sN -d $(BUILD_WORK)/$(2) $(3) < $$PATCHFILE &> /dev/null; \
+			if [ $(4) ]; then \
+				$(PATCH) -sN -d $(BUILD_WORK)/$(2) $(4) < $$PATCHFILE &> /dev/null; \
+			fi ; \
 			touch $(BUILD_WORK)/$(2)/$(notdir $$PATCHFILE).done; \
 		fi ; \
 	done
@@ -333,7 +337,10 @@ setup:
 		https://deb.debian.org/debian/pool/main/z/zip/zip_$(ZIP_VERSION).orig.tar.gz \
 		https://deb.debian.org/debian/pool/main/z/zip/zip_$(DEBIAN_ZIP_V).debian.tar.xz \
 		https://deb.debian.org/debian/pool/main/u/unzip/unzip_$(UNZIP_VERSION).orig.tar.gz \
-		https://deb.debian.org/debian/pool/main/u/unzip/unzip_$(DEBIAN_UNZIP_V).debian.tar.xz
+		https://deb.debian.org/debian/pool/main/u/unzip/unzip_$(DEBIAN_UNZIP_V).debian.tar.xz \
+		https://deb.debian.org/debian/pool/main/p/p7zip/p7zip_$(P7ZIP_VERSION)+dfsg.orig.tar.xz \
+		https://deb.debian.org/debian/pool/main/p/p7zip/p7zip_$(DEBIAN_P7ZIP_V).debian.tar.xz \
+		https://raw.githubusercontent.com/shirkdog/hardenedbsd-ports/master/archivers/p7zip/files/patch-CPP_Windows_ErrorMsg.cpp
 
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_VERSION).tar.xz)
 	$(call PGP_VERIFY,sed-$(SED_VERSION).tar.xz)
@@ -436,16 +443,19 @@ setup:
 	$(call EXTRACT_TAR,zip_$(DEBIAN_ZIP_V).debian.tar.xz,debian/patches,zip-$(ZIP_VERSION)-patches)
 	$(call EXTRACT_TAR,unzip_$(UNZIP_VERSION).orig.tar.gz,unzip60,unzip)
 	$(call EXTRACT_TAR,unzip_$(DEBIAN_UNZIP_V).debian.tar.xz,debian/patches,unzip-$(UNZIP_VERSION)-patches)
+	$(call EXTRACT_TAR,p7zip_$(P7ZIP_VERSION)+dfsg.orig.tar.xz,p7zip_$(P7ZIP_VERSION),p7zip)
+	$(call EXTRACT_TAR,p7zip_$(DEBIAN_P7ZIP_V).debian.tar.xz,debian/patches,p7zip-$(P7ZIP_VERSION)-patches)
 
 	mkdir -p $(BUILD_WORK)/{readline-$(READLINE_VERSION),bash-$(BASH_VERSION)}-patches
 	find $(BUILD_SOURCE) -name 'readline80*' -not -name '*.sig' -exec cp '{}' $(BUILD_WORK)/readline-$(READLINE_VERSION)-patches/ \;
 	find $(BUILD_SOURCE) -name 'bash50*' -not -name '*.sig' -exec cp '{}' $(BUILD_WORK)/bash-$(BASH_VERSION)-patches/ \;
-	rm -f $(BUILD_WORK)/{zip-$(ZIP_VERSION),unzip-$(UNZIP_VERSION)}-patches/series
+	cp $(BUILD_SOURCE)/patch-CPP_Windows_ErrorMsg.cpp $(BUILD_WORK)/p7zip-$(P7ZIP_VERSION)-patches
 
-	$(call DO_PATCH,readline-$(READLINE_VERSION)-patches,readline,-p0)
-	$(call DO_PATCH,bash-$(BASH_VERSION)-patches,bash,-p0)
-	$(call DO_PATCH,zip-$(ZIP_VERSION)-patches,zip,-p1)
-	$(call DO_PATCH,unzip-$(UNZIP_VERSION)-patches,unzip,-p1)
+	$(call DO_PATCH,readline-$(READLINE_VERSION),readline,-p0)
+	$(call DO_PATCH,bash-$(BASH_VERSION),bash,-p0)
+	$(call DO_PATCH,zip-$(ZIP_VERSION),zip,-p1)
+	$(call DO_PATCH,unzip-$(UNZIP_VERSION),unzip,-p1)
+	$(call DO_PATCH,p7zip-$(P7ZIP_VERSION),p7zip,-p0,-p1)
 
 	@# Copy headers from MacOSX.sdk
 	rm -rf $(BUILD_BASE)/usr/include/libkern

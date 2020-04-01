@@ -14,7 +14,7 @@ zip: setup
 	cd $(BUILD_WORK)/zip && $(MAKE) -f unix/Makefile install \
 		prefix=$(BUILD_STAGE)/zip/usr \
 		CC=$(CC) \
-		CPP="$(CPP)" \
+		CPP="$(CXX)" \
 		CFLAGS="$(CFLAGS) -I. -DUNIX -DBZIP2_SUPPORT" \
 		LFLAGS2="-lbz2"
 	touch $(BUILD_WORK)/zip/.build_complete
