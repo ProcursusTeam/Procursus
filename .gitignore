@@ -10,3 +10,4 @@ build_strap/
 !.gitkeep
 darwintools/cfversion
 build_info/launchctl
+darwintools/firmware

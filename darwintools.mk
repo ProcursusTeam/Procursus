@@ -13,8 +13,9 @@ darwintools: setup
 	cd darwintools && make
 	mkdir -p $(BUILD_STAGE)/darwintools/usr/{bin,libexec/cydia}
 	cp darwintools/sw_vers $(BUILD_STAGE)/darwintools/usr/bin
-	cp $(BUILD_INFO)/firmware.sh $(BUILD_STAGE)/darwintools/usr/libexec
-	chmod 0755 $(BUILD_STAGE)/darwintools/usr/libexec/firmware.sh
+	cp darwintools/firmware $(BUILD_STAGE)/darwintools/usr/libexec
+	cd $(BUILD_STAGE)/darwintools/usr/libexec && ln -s firmware firmware.sh 
+	chmod 0755 $(BUILD_STAGE)/darwintools/usr/libexec/firmware
 	touch darwintools/.build_complete
 endif
 

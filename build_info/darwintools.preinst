@@ -15,5 +15,5 @@ if [ ! -L /usr/libexec/cydia/firmware.sh ]; then
     if [ ! -d $(dirname ${target}) ]; then
         mkdir -p $(dirname ${target})
     fi
-    ln -fs ../firmware.sh ${target}
+    ln -fs ../firmware ${target}
 fi
