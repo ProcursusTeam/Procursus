@@ -16,6 +16,12 @@ bzip2: setup
 		AR=$(AR) \
 		RANLIB=$(RANLIB) \
 		CFLAGS="$(CFLAGS)"
+	cd $(BUILD_STAGE)/bzip2/usr/bin; \
+	rm -f bz{cmp,egrep,fgrep,less}; \
+	ln -s bzdiff bzcmp; \
+	ln -s bzgrep bzegrep; \
+	ln -s bzgrep bzfgrep; \
+	ln -s bzmore bzless
 	touch $(BUILD_WORK)/bzip2/.build_complete
 endif
 
