@@ -12,8 +12,9 @@ SUBPROJECTS     := $(STRAPPROJECTS) \
 	berkeleydb libtasn1 libgmp10 libidn2 libunistring \
 	libressl openssh gettext p11-kit nettle \
 	gnutls libssh2 nghttp2 \
-	pcre2 zsh curl \
-	less nano git zip unzip p7zip unrar
+	pcre2 zsh curl perl \
+	less nano git zip unzip p7zip unrar \
+	adv-cmds
 
 PLATFORM        ?= iphoneos
 ARCH            ?= arm64
@@ -341,7 +342,8 @@ setup:
 		https://deb.debian.org/debian/pool/main/p/p7zip/p7zip_$(P7ZIP_VERSION)+dfsg.orig.tar.xz \
 		https://deb.debian.org/debian/pool/main/p/p7zip/p7zip_$(DEBIAN_P7ZIP_V).debian.tar.xz \
 		https://raw.githubusercontent.com/shirkdog/hardenedbsd-ports/master/archivers/p7zip/files/patch-CPP_Windows_ErrorMsg.cpp \
-		https://www.rarlab.com/rar/unrarsrc-$(UNRAR_VERSION).tar.gz
+		https://www.rarlab.com/rar/unrarsrc-$(UNRAR_VERSION).tar.gz \
+		https://opensource.apple.com/tarballs/adv_cmds/adv_cmds-$(ADV-CMDS_VERSION).tar.gz
 
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_VERSION).tar.xz)
 	$(call PGP_VERIFY,sed-$(SED_VERSION).tar.xz)
@@ -447,6 +449,7 @@ setup:
 	$(call EXTRACT_TAR,p7zip_$(P7ZIP_VERSION)+dfsg.orig.tar.xz,p7zip_$(P7ZIP_VERSION),p7zip)
 	$(call EXTRACT_TAR,p7zip_$(DEBIAN_P7ZIP_V).debian.tar.xz,debian/patches,p7zip-$(P7ZIP_VERSION)-patches)
 	$(call EXTRACT_TAR,unrarsrc-$(UNRAR_VERSION).tar.gz,,unrar)
+	$(call EXTRACT_TAR,adv_cmds-$(ADV-CMDS_VERSION).tar.gz,adv_cmds-$(ADV-CMDS_VERSION),adv-cmds)
 
 	mkdir -p $(BUILD_WORK)/{readline-$(READLINE_VERSION),bash-$(BASH_VERSION)}-patches
 	find $(BUILD_SOURCE) -name 'readline80*' -not -name '*.sig' -exec cp '{}' $(BUILD_WORK)/readline-$(READLINE_VERSION)-patches/ \;
@@ -462,7 +465,7 @@ setup:
 	@# Copy headers from MacOSX.sdk
 	rm -rf $(BUILD_BASE)/usr/include/libkern
 	mkdir -p $(BUILD_BASE)/usr/include/{IOKit,sys,xpc,net,servers,libkern.bad}
-	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/ttydev.h $(BUILD_BASE)/usr/include/sys/
+	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/tty*.h $(BUILD_BASE)/usr/include/sys/
 	cp -rf $(MACOSX_SYSROOT)/usr/include/ar.h $(BUILD_BASE)/usr/include/
 	cp -rf $(MACOSX_SYSROOT)/usr/include/xpc/* $(BUILD_BASE)/usr/include/xpc
 	cp -rf $(MACOSX_SYSROOT)/usr/include/launch.h $(BUILD_BASE)/usr/include/

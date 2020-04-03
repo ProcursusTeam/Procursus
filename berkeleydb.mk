@@ -9,7 +9,7 @@ ifneq ($(wildcard $(BUILD_WORK)/berkeleydb/.build_complete),)
 berkeleydb:
 	@echo "Using previously built berkeleydb."
 else
-berkeleydb: setup system-cmds
+berkeleydb: setup system-cmds adv-cmds
 	cd $(BUILD_WORK)/berkeleydb/dist && ./s_config
 	cd $(BUILD_WORK)/berkeleydb/build_unix && ../dist/configure \
 		--host=$(GNU_HOST_TRIPLE) \
