@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 APT_DIR     := $(BUILD_ROOT)/apt
-APT_VERSION := 2.0.0
+APT_VERSION := 2.0.1
 DEB_APT_V   ?= $(APT_VERSION)
 
 ifneq ($(wildcard $(APT_DIR)/build/.build_complete),)
