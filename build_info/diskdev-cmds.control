@@ -1,6 +1,6 @@
 Package: diskdev-cmds
 Version: @DEB_DISKDEV-CMDS_V@
-Architecture: @DEV_ARCH@
+Architecture: @DEB_ARCH@
 Essential: yes
 Maintainer: @DEB_MAINTAINER@
 Section: System
