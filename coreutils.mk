@@ -2,7 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-COREUTILS_VERSION := 8.31
+COREUTILS_VERSION := 8.32
 DEB_COREUTILS_V   ?= $(COREUTILS_VERSION)
 
 # `gl_cv_func_ftello_works=yes` workaround for gnulib issue on macOS Catalina, presumably also

@@ -14,7 +14,7 @@ SUBPROJECTS     := $(STRAPPROJECTS) \
 	gnutls libssh2 nghttp2 \
 	pcre2 zsh curl perl \
 	less nano git zip unzip p7zip unrar \
-	adv-cmds file-cmds
+	adv-cmds file-cmds basic-cmds
 
 PLATFORM        ?= iphoneos
 ARCH            ?= arm64
@@ -344,7 +344,8 @@ setup:
 		https://raw.githubusercontent.com/shirkdog/hardenedbsd-ports/master/archivers/p7zip/files/patch-CPP_Windows_ErrorMsg.cpp \
 		https://www.rarlab.com/rar/unrarsrc-$(UNRAR_VERSION).tar.gz \
 		https://opensource.apple.com/tarballs/adv_cmds/adv_cmds-$(ADV-CMDS_VERSION).tar.gz \
-		https://opensource.apple.com/tarballs/file_cmds/file_cmds-$(FILE-CMDS_VERSION).tar.gz
+		https://opensource.apple.com/tarballs/file_cmds/file_cmds-$(FILE-CMDS_VERSION).tar.gz \
+		https://opensource.apple.com/tarballs/basic_cmds/basic_cmds-$(BASIC-CMDS_VERSION).tar.gz
 
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_VERSION).tar.xz)
 	$(call PGP_VERIFY,sed-$(SED_VERSION).tar.xz)
@@ -452,6 +453,7 @@ setup:
 	$(call EXTRACT_TAR,unrarsrc-$(UNRAR_VERSION).tar.gz,,unrar)
 	$(call EXTRACT_TAR,adv_cmds-$(ADV-CMDS_VERSION).tar.gz,adv_cmds-$(ADV-CMDS_VERSION),adv-cmds)
 	$(call EXTRACT_TAR,file_cmds-$(FILE-CMDS_VERSION).tar.gz,file_cmds-$(FILE-CMDS_VERSION),file-cmds)
+	$(call EXTRACT_TAR,basic_cmds-$(BASIC-CMDS_VERSION).tar.gz,basic_cmds-$(BASIC-CMDS_VERSION),basic-cmds)
 
 	mkdir -p $(BUILD_WORK)/{readline-$(READLINE_VERSION),bash-$(BASH_VERSION)}-patches
 	find $(BUILD_SOURCE) -name 'readline80*' -not -name '*.sig' -exec cp '{}' $(BUILD_WORK)/readline-$(READLINE_VERSION)-patches/ \;

@@ -2,7 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-GNUPG_VERSION := 2.2.19
+GNUPG_VERSION := 2.2.20
 DEB_GNUPG_V   ?= $(GNUPG_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/gnupg/.build_complete),)
