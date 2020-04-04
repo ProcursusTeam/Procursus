@@ -1,0 +1,9 @@
+Package: diskdev-cmds
+Version: @DEB_DISKDEV-CMDS_V@
+Architecture: @DEV_ARCH@
+Essential: yes
+Maintainer: @DEB_MAINTAINER@
+Section: System
+Priority: required
+Description: mount, quota, fsck, fstyp, fdisk, tunefs
+Tag: purpose::console, role::sysadmn
