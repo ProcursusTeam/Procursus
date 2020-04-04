@@ -2,7 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-SHELL-CMDS_VERSION := 207.11.1
+SHELL-CMDS_VERSION := 207.40.1
 DEB_SHELL-CMDS_V   ?= $(SHELL-CMDS_VERSION)
 
 # For shell-cmds, there is a required libc.h header not included in sdks. Simply
