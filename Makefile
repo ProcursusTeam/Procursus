@@ -249,7 +249,7 @@ bootstrap:: $(STRAPPROJECTS:%=%-package)
 	$(RMDIR) --ignore-fail-on-non-empty $(BUILD_STRAP)/strap/{Applications,bin,dev,etc/{default,profile.d},Library/{Frameworks,LaunchAgents,LaunchDaemons,Preferences,Ringtones,Wallpaper},sbin,System/Library/{Extensions,Fonts,Frameworks,Internet\ Plug-Ins,KeyboardDictionaries,LaunchDaemons,PreferenceBundles,PrivateFrameworks,SystemConfiguration,VideoDecoders},System/Library,System,tmp,usr/{bin,games,include,sbin,var,share/{dict,misc}},var/{backups,cache,db,lib/misc,local,lock,log,logs,mobile/{Library/Preferences,Library,Media},mobile,msgs,preferences,root/Media,root,run,spool,tmp,vm}} ; \
 	mkdir -p $(BUILD_STRAP)/strap/private ; \
 	cd $(BUILD_STRAP)/strap/Library/dpkg/ && head -n -1 status > status.new && mv status.new status ; \
-	rm -f $(BUILD_STRAP)/strap/{usr/sbin,sbin}/{nvram,newfs_hfs,mount_hfs,mount,fstyp_hfs,fstyp,fsck_hfs,fsck} ; \
+	rm -f $(BUILD_STRAP)/strap/{sbin/{fsck,fsck_apfs,fsck_exfat,fsck_hfs,fsck_msdos,launchd,mount,mount_apfs,newfs_apfs,newfs_hfs,pfctl},usr/sbin/{BTAvrcp,BTLEServer,BTMap,BTPbap,BlueTool,WirelessRadioManagerd,absd,addNetworkInterface,aslmanager,bluetoothd,cfprefsd,distnoted,filecoordinationd,ioreg,ipconfig,mDNSResponder,mDNSResponderHelper,mediaserverd,notifyd,nvram,pppd,racoon,rtadvd,scutil,spindump,syslogd,wifid}}; \
 	$$FAKEROOT mv $(BUILD_STRAP)/strap/{etc,var} $(BUILD_STRAP)/strap/private ; \
 	$$FAKEROOT chown 0:80 $(BUILD_STRAP)/strap/Library ; \
 	$$FAKEROOT chmod 0775 $(BUILD_STRAP)/strap/Library ; \
