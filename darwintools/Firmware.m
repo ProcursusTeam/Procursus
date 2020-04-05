@@ -225,9 +225,10 @@
 
 
     // delete user directory
-
-    if (![fileManager removeItemAtPath:userDirectory error:&error]) {
-        [self exitWithError:error andMessage:[NSString stringWithFormat:@"Error deleting %@", userDirectory]];
+    if (userAttributes) {
+        if (![fileManager removeItemAtPath:userDirectory error:&error]) {
+            [self exitWithError:error andMessage:[NSString stringWithFormat:@"Error deleting %@", userDirectory]];
+        }
     }
 
     // symlink user directory to mobile user directory
