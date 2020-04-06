@@ -10,8 +10,7 @@ sw_vers: sw_vers.c
 	$(LDID) -S sw_vers
 
 firmware: main.m Firmware.m DeviceInfo.m
-	$(SED) -i 's/@DEB_MAINTAINER@/$(DEB_MAINTAINER)/g' Firmware.m
-	$(CC) $(CFLAGS) main.m Firmware.m DeviceInfo.m -o firmware -I. -framework Foundation -O3
+	$(CC) $(CFLAGS) -DMAINTAINER='@"$(DEB_MAINTAINER)"' main.m Firmware.m DeviceInfo.m -o firmware -I. -framework Foundation -O3
 	$(STRIP) firmware
 	$(LDID) -S firmware
 

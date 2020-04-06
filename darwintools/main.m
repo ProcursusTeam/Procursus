@@ -2,13 +2,15 @@
 
 #import "Firmware.h"
 
-#define FIRMWARE_VERSION 6
+#define FIRMWARE_VERSION 7
 
 int main() {
-    Firmware *firmware = [[Firmware alloc] init];
+    NSLog(@"full steam ahead");
 
+    Firmware *firmware = [[Firmware alloc] init];
     [firmware loadInstalledPackages];
-    DeviceInfo *device = [DeviceInfo sharedInstance];
+
+    DeviceInfo *device = [DeviceInfo sharedDevice];
 
     // generate device specific packages
 
@@ -47,7 +49,7 @@ int main() {
 
         NSError *error;
 
-        NSString *firmwareFile = @"/var/lib/cydia/firmware.ver";
+        NSString *firmwareFile = @"/Library/dpkg/info/firmware.ver";
         NSString *firwareVersion = [NSString stringWithFormat:@"%d\n", FIRMWARE_VERSION];
 
         if (![firwareVersion writeToFile:firmwareFile atomically:YES encoding:NSUTF8StringEncoding error:&error]) {

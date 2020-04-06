@@ -11,7 +11,7 @@
 
 @interface DeviceInfo : NSObject
 
-+ (instancetype)sharedInstance;
++ (instancetype)sharedDevice;
 
 @property (readonly) BOOL ios;
 @property (readonly) NSString *cpuArchitecture;
