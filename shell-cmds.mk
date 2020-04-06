@@ -14,7 +14,7 @@ else
 shell-cmds: setup
 	mkdir -p $(BUILD_STAGE)/shell-cmds/usr/bin
 	cd $(BUILD_WORK)/shell-cmds ; \
-	for bin in killall renice script time which getopt; do \
+	for bin in killall renice script time which getopt what; do \
     	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/shell-cmds/usr/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -save-temps ; \
 	done
 	touch $(BUILD_WORK)/shell-cmds/.build_complete
