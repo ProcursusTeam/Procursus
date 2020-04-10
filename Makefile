@@ -78,10 +78,12 @@ export CFLAGS CXXFLAGS LDFLAGS PKG_CONFIG_PATH
 HAS_COMMAND = $(shell type $(1) >/dev/null 2>&1 && echo 1)
 PGP_VERIFY  = gpg --verify $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) $(BUILD_SOURCE)/$(1) 2>&1 | grep -q 'Good signature'
 
-EXTRACT_TAR = if [ ! -d $(BUILD_WORK)/$(3) ]; then \
+EXTRACT_TAR = if [ ! -d $(BUILD_WORK)/$(3) ] || [ $(4) = "1" ]; then \
 		cd $(BUILD_WORK) && \
 		$(TAR) -xf $(BUILD_SOURCE)/$(1) && \
-		mv $(2) $(3) 2>/dev/null || :; \
+		mkdir -p $(3); \
+		cp -af $(2)/* $(3) 2>/dev/null || :; \
+		rm -rf $(2); \
 	fi
 
 DO_PATCH    = cd $(BUILD_WORK)/$(1)-patches; \
@@ -221,7 +223,7 @@ GET_LOGICAL_CORES := nproc
 else
 GET_LOGICAL_CORES := sysctl -n hw.ncpu
 endif
-MAKEFLAGS += -j$(shell $(GET_LOGICAL_CORES)) -Otarget
+MAKEFLAGS += --jobs=$(shell $(GET_LOGICAL_CORES)) -Otarget
 endif
 
 all:: setup $(SUBPROJECTS) package
@@ -345,7 +347,9 @@ setup:
 		https://opensource.apple.com/tarballs/adv_cmds/adv_cmds-$(ADV-CMDS_VERSION).tar.gz \
 		https://opensource.apple.com/tarballs/file_cmds/file_cmds-$(FILE-CMDS_VERSION).tar.gz \
 		https://opensource.apple.com/tarballs/basic_cmds/basic_cmds-$(BASIC-CMDS_VERSION).tar.gz \
-		https://opensource.apple.com/tarballs/diskdev_cmds/diskdev_cmds-$(DISKDEV-CMDS_VERSION).tar.gz
+		https://opensource.apple.com/tarballs/diskdev_cmds/diskdev_cmds-$(DISKDEV-CMDS_VERSION).tar.gz \
+		https://www.cpan.org/src/5.0/perl-$(PERL_VERSION).tar.gz \
+		https://github.com/arsv/perl-cross/releases/download/$(PERL_CROSS_V)/perl-cross-$(PERL_CROSS_V).tar.gz
 
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_VERSION).tar.xz)
 	$(call PGP_VERIFY,sed-$(SED_VERSION).tar.xz)
@@ -450,11 +454,13 @@ setup:
 	$(call EXTRACT_TAR,unzip_$(DEBIAN_UNZIP_V).debian.tar.xz,debian/patches,unzip-$(UNZIP_VERSION)-patches)
 	$(call EXTRACT_TAR,p7zip_$(P7ZIP_VERSION)+dfsg.orig.tar.xz,p7zip_$(P7ZIP_VERSION),p7zip)
 	$(call EXTRACT_TAR,p7zip_$(DEBIAN_P7ZIP_V).debian.tar.xz,debian/patches,p7zip-$(P7ZIP_VERSION)-patches)
-	$(call EXTRACT_TAR,unrarsrc-$(UNRAR_VERSION).tar.gz,,unrar)
+	$(call EXTRACT_TAR,unrarsrc-$(UNRAR_VERSION).tar.gz,unrar,unrar)
 	$(call EXTRACT_TAR,adv_cmds-$(ADV-CMDS_VERSION).tar.gz,adv_cmds-$(ADV-CMDS_VERSION),adv-cmds)
 	$(call EXTRACT_TAR,file_cmds-$(FILE-CMDS_VERSION).tar.gz,file_cmds-$(FILE-CMDS_VERSION),file-cmds)
 	$(call EXTRACT_TAR,basic_cmds-$(BASIC-CMDS_VERSION).tar.gz,basic_cmds-$(BASIC-CMDS_VERSION),basic-cmds)
 	$(call EXTRACT_TAR,diskdev_cmds-$(DISKDEV-CMDS_VERSION).tar.gz,diskdev_cmds-$(DISKDEV-CMDS_VERSION),diskdev-cmds)
+	$(call EXTRACT_TAR,perl-$(PERL_VERSION).tar.gz,perl-$(PERL_VERSION),perl)
+	$(call EXTRACT_TAR,perl-cross-$(PERL_CROSS_V).tar.gz,perl-cross-$(PERL_CROSS_V),perl,1)
 
 	mkdir -p $(BUILD_WORK)/{readline-$(READLINE_VERSION),bash-$(BASH_VERSION)}-patches
 	find $(BUILD_SOURCE) -name 'readline80*' -not -name '*.sig' -exec cp '{}' $(BUILD_WORK)/readline-$(READLINE_VERSION)-patches/ \;
@@ -514,6 +520,8 @@ setup:
 	@# Patch headers from iPhoneOS.sdk
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/stdlib.h > $(BUILD_BASE)/usr/include/stdlib.h
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/time.h > $(BUILD_BASE)/usr/include/time.h
+
+	@echo Makeflags: $(MAKEFLAGS)
 
 clean::
 	rm -rf $(BUILD_BASE) $(BUILD_WORK) $(BUILD_STAGE)
