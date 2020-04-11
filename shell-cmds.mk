@@ -5,17 +5,20 @@ endif
 SHELL-CMDS_VERSION := 207.40.1
 DEB_SHELL-CMDS_V   ?= $(SHELL-CMDS_VERSION)
 
-# For shell-cmds, there is a required libc.h header not included in sdks. Simply
-
 ifneq ($(wildcard $(BUILD_WORK)/shell-cmds/.build_complete),)
 shell-cmds:
 	@echo "Using previously built shell-cmds."
 else
 shell-cmds: setup
 	mkdir -p $(BUILD_STAGE)/shell-cmds/usr/bin
+
+	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
+	mkdir -p $(BUILD_WORK)/shell-cmds/include/sys
+	cp -a $(MACOSX_SYSROOT)/usr/include/sys/user.h $(BUILD_WORK)/shell-cmds/include/sys
+
 	cd $(BUILD_WORK)/shell-cmds ; \
 	for bin in killall renice script time which getopt what; do \
-    	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/shell-cmds/usr/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -save-temps ; \
+    	$(CC) -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isystem include -o $(BUILD_STAGE)/shell-cmds/usr/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -save-temps ; \
 	done
 	touch $(BUILD_WORK)/shell-cmds/.build_complete
 endif

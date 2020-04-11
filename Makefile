@@ -81,9 +81,9 @@ PGP_VERIFY  = gpg --verify $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) $(BUILD_SOUR
 EXTRACT_TAR = if [ ! -d $(BUILD_WORK)/$(3) ] || [ $(4) = "1" ]; then \
 		cd $(BUILD_WORK) && \
 		$(TAR) -xf $(BUILD_SOURCE)/$(1) && \
-		mkdir -p $(3); \
+		mkdir -p $(3); 2>/dev/null || :; \
 		cp -af $(2)/* $(3) 2>/dev/null || :; \
-		rm -rf $(2); \
+		rm -rf $(2); 2>/dev/null || :; \
 	fi
 
 DO_PATCH    = cd $(BUILD_WORK)/$(1)-patches; \
@@ -454,7 +454,7 @@ setup:
 	$(call EXTRACT_TAR,unzip_$(DEBIAN_UNZIP_V).debian.tar.xz,debian/patches,unzip-$(UNZIP_VERSION)-patches)
 	$(call EXTRACT_TAR,p7zip_$(P7ZIP_VERSION)+dfsg.orig.tar.xz,p7zip_$(P7ZIP_VERSION),p7zip)
 	$(call EXTRACT_TAR,p7zip_$(DEBIAN_P7ZIP_V).debian.tar.xz,debian/patches,p7zip-$(P7ZIP_VERSION)-patches)
-	$(call EXTRACT_TAR,unrarsrc-$(UNRAR_VERSION).tar.gz,unrar,unrar)
+	$(call EXTRACT_TAR,unrarsrc-$(UNRAR_VERSION).tar.gz,n/a,unrar)
 	$(call EXTRACT_TAR,adv_cmds-$(ADV-CMDS_VERSION).tar.gz,adv_cmds-$(ADV-CMDS_VERSION),adv-cmds)
 	$(call EXTRACT_TAR,file_cmds-$(FILE-CMDS_VERSION).tar.gz,file_cmds-$(FILE-CMDS_VERSION),file-cmds)
 	$(call EXTRACT_TAR,basic_cmds-$(BASIC-CMDS_VERSION).tar.gz,basic_cmds-$(BASIC-CMDS_VERSION),basic-cmds)
@@ -473,49 +473,12 @@ setup:
 	$(call DO_PATCH,unzip-$(UNZIP_VERSION),unzip,-p1)
 	$(call DO_PATCH,p7zip-$(P7ZIP_VERSION),p7zip,-p0,-p1)
 
-	mkdir -p $(BUILD_BASE)/usr/include/{IOKit,arm,machine,System/uuid,{System/,}sys,xpc,net,servers,os,libkern.bad}
-	
-	@# Download extra headers that aren't included in MacOSX.sdk
-	wget -nc -P $(BUILD_BASE)/usr/include \
-		https://opensource.apple.com/source/launchd/launchd-328/launchd/src/bootstrap_priv.h \
-		https://opensource.apple.com/source/launchd/launchd-328/launchd/src/reboot2.h \
-		https://opensource.apple.com/source/libutil/libutil-57/mntopts.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/EXTERNAL_HEADERS/mach-o/nlist.h
-	wget -nc -P $(BUILD_BASE)/usr/include/machine \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/machine/disklabel.h
-	wget -nc -P $(BUILD_BASE)/usr/include/arm \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/arm/disklabel.h
-	wget -nc -P $(BUILD_BASE)/usr/include/sys \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/vnode.h
-	wget -nc -P $(BUILD_BASE)/usr/include/System/sys \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/fsctl.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/reason.h
-	wget -nc -P $(BUILD_BASE)/usr/include/System/uuid \
-		https://opensource.apple.com/source/Libc/Libc-1353.11.2/uuid/namespace.h
+	mkdir -p $(BUILD_BASE)/usr/include/sys
 
 	@# Copy headers from MacOSX.sdk
-	rm -rf $(BUILD_BASE)/usr/include/libkern
-	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/tty*.h $(BUILD_BASE)/usr/include/sys/
-	cp -rf $(MACOSX_SYSROOT)/usr/include/ar.h $(BUILD_BASE)/usr/include/
-	cp -rf $(MACOSX_SYSROOT)/usr/include/xpc/* $(BUILD_BASE)/usr/include/xpc
-	cp -rf $(MACOSX_SYSROOT)/usr/include/launch.h $(BUILD_BASE)/usr/include/
-	cp -rf $(MACOSX_SYSROOT)/usr/include/libc.h $(BUILD_BASE)/usr/include/
-	cp -rf $(MACOSX_SYSROOT)/usr/include/libproc.h $(BUILD_BASE)/usr/include/
-	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/proc*.h $(BUILD_BASE)/usr/include/sys
-	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/user.h $(BUILD_BASE)/usr/include/sys
-	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/kern_control.h $(BUILD_BASE)/usr/include/sys
-	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/disk.h $(BUILD_BASE)/usr/include/sys
-	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/vnioctl.h $(BUILD_BASE)/usr/include/sys
-	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/vmmeter.h $(BUILD_BASE)/usr/include/sys
-	cp -rf $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Versions/Current/Headers/sys/disklabel.h $(BUILD_BASE)/usr/include/sys
-	cp -rf $(MACOSX_SYSROOT)/usr/include/net/* $(BUILD_BASE)/usr/include/net
-	cp -rf $(MACOSX_SYSROOT)/usr/include/servers/* $(BUILD_BASE)/usr/include/servers
-	cp -rf $(MACOSX_SYSROOT)/usr/include/bootstrap*.h $(BUILD_BASE)/usr/include
-	cp -rf $(MACOSX_SYSROOT)/usr/include/NSSystemDirectories.h $(BUILD_BASE)/usr/include/NSSystemDirectories.h
-	cp -rf $(MACOSX_SYSROOT)/usr/include/sys/reboot.h $(BUILD_BASE)/usr/include/sys
-	cp -rf $(MACOSX_SYSROOT)/usr/include/tzfile.h $(BUILD_BASE)/usr/include
-	cp -rf $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_BASE)/usr/include/IOKit
-	cp -rf $(MACOSX_SYSROOT)/usr/include/libkern/* $(BUILD_BASE)/usr/include/libkern.bad
+	cp -a $(MACOSX_SYSROOT)/usr/include/xpc $(BUILD_BASE)/usr/include
+	cp -a $(MACOSX_SYSROOT)/usr/include/sys/tty*.h $(BUILD_BASE)/usr/include/sys
+	cp -a $(MACOSX_SYSROOT)/usr/include/{ar,launch,tzfile}.h $(BUILD_BASE)/usr/include
 
 	@# Patch headers from iPhoneOS.sdk
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/stdlib.h > $(BUILD_BASE)/usr/include/stdlib.h

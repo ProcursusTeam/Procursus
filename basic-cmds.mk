@@ -13,7 +13,7 @@ basic-cmds: setup ncurses
 	mkdir -p $(BUILD_STAGE)/basic-cmds/usr/bin
 	cd $(BUILD_WORK)/basic-cmds; \
 	for bin in mesg write uudecode uuencode; do \
-    	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/basic-cmds/usr/bin/$$bin $$bin/*.c; \
+    	$(CC) -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -o $(BUILD_STAGE)/basic-cmds/usr/bin/$$bin $$bin/*.c; \
 	done
 	touch $(BUILD_WORK)/basic-cmds/.build_complete
 endif

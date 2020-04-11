@@ -2,7 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-FILE-CMDS_VERSION := 287.40.2
+# Don't upgrade file-cmds, as any future version includes APIs introduced in iOS 13+.
+FILE-CMDS_VERSION := 272.250.1
 DEB_FILE-CMDS_V   ?= $(FILE-CMDS_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/file-cmds/.build_complete),)
@@ -11,6 +12,11 @@ file-cmds:
 else
 file-cmds: setup
 	mkdir -p $(BUILD_STAGE)/file-cmds/usr/bin
+	
+	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
+	mkdir -p $(BUILD_WORK)/file-cmds/include
+	cp -a $(MACOSX_SYSROOT)/usr/include/tzfile.h $(BUILD_WORK)/file-cmds/include
+
 	mkdir -p $(BUILD_WORK)/file-cmds/ipcs/sys
 	wget -nc -P $(BUILD_WORK)/file-cmds/ipcs/sys \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/ipcs.h \
@@ -20,9 +26,10 @@ file-cmds: setup
 	$(SED) -i 's/user32_time_t/user_time_t/g' $(BUILD_WORK)/file-cmds/ipcs/sys/sem_internal.h
 	$(SED) -i 's/user32_addr_t/user_addr_t/g' $(BUILD_WORK)/file-cmds/ipcs/sys/shm_internal.h
 	$(SED) -i 's/#include <nlist.h>/#include <mach-o\/nlist.h>/g' $(BUILD_WORK)/file-cmds/ipcs/ipcs.c
+	
 	cd $(BUILD_WORK)/file-cmds ; \
 	for bin in chflags compress ipcrm ipcs pax; do \
-    	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/file-cmds/usr/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -D__POSIX_C_SOURCE; \
+    	$(CC) -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isystem include -o $(BUILD_STAGE)/file-cmds/usr/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -D__POSIX_C_SOURCE; \
 	done
 	touch $(BUILD_WORK)/file-cmds/.build_complete
 endif
