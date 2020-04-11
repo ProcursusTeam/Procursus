@@ -1,0 +1,12 @@
+Package: xz-utils
+Version: @DEB_XZ_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Replaces: xz, lzma
+Provides: xz (=@DEB_XZ_V@), lzma (=@DEB_XZ_V@)
+Depends: grep, sed
+Section: Archiving
+Priority: important
+Homepage: https://tukaani.org/xz/
+Description: slower, but better, compression algorithm
+Name: XZ Utils

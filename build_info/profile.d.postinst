@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Switch default shell to zsh
+pwd_mkdb -p /etc/master.passwd
+chsh -s /usr/bin/zsh root
+chsh -s /usr/bin/zsh mobile
+rm /etc/pwd.db /etc/spwd.db
+
+# Link /bin/(ba)sh to /usr/bin/zsh
+update-alternatives --quiet --remove sh /bin/bash
+for link in /bin/bash /bin/sh; do
+    if [ ! -L ${link} ]; then
+        ln -sf ../usr/bin/zsh ${link}
+    fi
+done

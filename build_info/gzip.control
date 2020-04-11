@@ -1,0 +1,9 @@
+Package: gzip
+Version: @DEB_GZIP_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Archiving
+Priority: required
+Multi-Arch: foreign
+Homepage: http://www.gzip.org/
+Description: the standard Unix compression algorithm

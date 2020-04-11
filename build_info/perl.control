@@ -1,0 +1,8 @@
+Package: perl
+Version: @DEB_PERL_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Priority: optional
+Section: Scripting
+Description: awesome combination of sed and awk
+Name: Perl

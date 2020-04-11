@@ -1,0 +1,9 @@
+Package: shell-cmds
+Version: @DEB_SHELL-CMDS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Provides: killall, which
+Section: Administration
+Priority: important
+Description: killall, renice, script, time, which, getopt, what
+Tag: purpose::console, role::hacker

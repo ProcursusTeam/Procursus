@@ -1,0 +1,11 @@
+Package: curl
+Version: @DEB_CURL_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libnghttp2-14, libssh2, libressl
+Section: Networking
+Priority: standard
+Homepage: http://curl.haxx.se/
+Description: flexible multi-protocol file transfers
+Name: cURL
+Tag: purpose::console, role::hacker

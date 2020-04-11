@@ -1,0 +1,10 @@
+Package: system-cmds
+Version: @DEB_SYSTEM-CMDS_V@
+Architecture: @DEB_ARCH@
+Essential: yes
+Maintainer: @DEB_MAINTAINER@
+Depends: firmware-sbin
+Provides: login, passwd, reboot
+Section: Administration
+Priority: required
+Description: iostat, login, passwd, sync, sysctl

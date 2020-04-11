@@ -1,0 +1,10 @@
+Package: libksba
+Version: @DEB_KSBA_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libgpg-error
+Section: Security
+Priority: optional
+Multi-Arch: foreign
+Description: GnuPG's certification management library
+Name: KSBA

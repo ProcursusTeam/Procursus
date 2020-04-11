@@ -1,8 +1,13 @@
-fakeroot_persist
+.fakeroot_persist
+.build_complete
 build_base/
 build_source/
 build_stage/
 build_work/
 build_dist/
+build_strap/
 
 !.gitkeep
+darwintools/cfversion
+build_info/launchctl
+darwintools/firmware

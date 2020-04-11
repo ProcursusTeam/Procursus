@@ -1,0 +1,9 @@
+Package: debianutils
+Version: @DEB_DEBIANUTILS_V@
+Architecture: @DEB_ARCH@
+Essential: yes
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: required
+Description: pretty much just run-parts. yep? run-parts
+Name: Debian Utilities

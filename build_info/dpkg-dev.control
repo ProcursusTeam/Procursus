@@ -1,0 +1,11 @@
+Package: dpkg-dev
+Version: @DEB_DPKG_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: dpkg, perl
+Replaces: dpkg-perl
+Section: Packaging
+Priority: optional
+Homepage: http://wiki.debian.org/Teams/Dpkg
+Description: This package provides the development tools (including dpkg-source) required to unpack, build and upload Debian source packages. 
+Name: Debian Packager (Devel)

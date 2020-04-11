@@ -1,0 +1,10 @@
+Package: less
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LESS_V@
+Depends: ncurses, libpcre
+Replaces: system-cmds (<= 433.4-11)
+Provides: more
+Section: Utilities
+Priority: important
+Description: provides less information than more does

@@ -2,34 +2,32 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-APT_DIR := $(PWD)/apt
+APT_DIR     := $(BUILD_ROOT)/apt
+APT_VERSION := 2.0.2
+DEB_APT_V   ?= $(APT_VERSION)
 
-ifneq ($(wildcard $(BUILD_WORK)/apt/.build_complete),)
+ifneq ($(wildcard $(APT_DIR)/build/.build_complete),)
 apt:
 	@echo "Using previously built apt."
 else
-apt: 
-	mkdir -p $(BUILD_WORK)/apt
-	cd $(BUILD_WORK)/apt && echo -e "set(CMAKE_SYSTEM_NAME Darwin)  # Tell CMake we're cross-compiling\nset(CMAKE_CROSSCOMPILING true)\n#include(CMakeForceCompiler)\nset(CMAKE_SYSTEM_PROCESSOR $(ARCH))\nset(triple $(GNU_HOST_TRIPLE))\nset(CMAKE_FIND_ROOT_PATH /)\nset(CMAKE_LIBRARY_PATH )\nset(CMAKE_INCLUDE_PATH )\nset(CMAKE_C_COMPILER $(TRIPLE)clang)\nset(CMAKE_CXX_COMPILER $(TRIPLE)clang++)\nset(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)\nset(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)\nset(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)\n">> iphoneos_toolchain.cmake
-	cd $(BUILD_WORK)/apt && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
-		-DCMAKE_TOOLCHAIN_FILE=iphoneos_toolchain.cmake \
+apt: setup libgcrypt berkeleydb lz4 xz zstd
+	mkdir -p $(APT_DIR)/build
+	cd $(APT_DIR)/build && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_SYSTEM_NAME=Darwin \
+		-DCMAKE_CROSSCOMPILING=true \
 		-DSTATE_DIR=/var/lib/apt \
 		-DCACHE_DIR=/var/cache/apt \
 		-DLOG_DIR=/var/log/apt \
 		-DCONF_DIR=/etc/apt \
+		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
 		-DCMAKE_INSTALL_PREFIX=/ \
 		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
 		-DCMAKE_INSTALL_RPATH=/usr \
 		-DCMAKE_OSX_SYSROOT="$(SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS) -DENABLE_SILEO=1" \
-		-DCMAKE_CXX_FLAGS="$(CXXFLAGS) -DENABLE_SILEO=1" \
+		-DCMAKE_C_FLAGS="$(CFLAGS)" \
+		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
 		-DCMAKE_SHARED_LINKER_FLAGS="-lresolv -L$(BUILD_BASE)/usr/lib" \
-		-DLZ4_INCLUDE_DIRS=$(BUILD_BASE)/include \
-		-DLZ4_LIBRARIES=$(BUILD_BASE)/usr/lib/liblz4.dylib \
-		-DLZMA_INCLUDE_DIRS=$(BUILD_BASE)/include \
-		-DLZMA_LIBRARIES=$(BUILD_BASE)/usr/local/lib/liblzma.dylib \
-		-DBERKELEY_DB_LIBRARIES=$(BUILD_BASE)/usr/lib/libdb.dylib \
-		-DBERKELEY_DB_INCLUDE_DIRS=$(BUILD_BASE)/usr/include \
 		-DCURRENT_VENDOR=debian \
 		-DCOMMON_ARCH=$(DEB_ARCH) \
 		-DUSE_NLS=0 \
@@ -37,10 +35,48 @@ apt:
 		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
 		-DDPKG_DATADIR=/usr/share/dpkg \
 		$(APT_DIR)
-	$(MAKE) -C $(BUILD_WORK)/apt/build
-	$(FAKEROOT) $(MAKE) -C $(BUILD_WORK)/apt/build install \
+	$(MAKE) -C $(APT_DIR)/build
+	$(MAKE) -C $(APT_DIR)/build install \
 		DESTDIR="$(BUILD_STAGE)/apt"
-	touch $(BUILD_WORK)/apt/.build_complete
+	touch $(APT_DIR)/build/.build_complete
 endif
 
-.PHONY: apt apt-stage
+apt-package: apt-stage
+	# apt.mk Package Structure
+	rm -rf $(BUILD_DIST)/apt{,-utils,-dev}
+	mkdir -p $(BUILD_DIST)/apt/usr/{bin,lib,libexec/apt/{planners,solvers}}
+	mkdir -p $(BUILD_DIST)/apt-utils/usr/{bin,libexec/apt/{planners,solvers}}
+	mkdir -p $(BUILD_DIST)/apt-dev/usr/lib
+	
+	# apt.mk Prep APT
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/usr/bin/apt{,-cache,-cdrom,-config,-get,-key,-mark} $(BUILD_DIST)/apt/usr/bin
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/usr/lib/*dylib $(BUILD_DIST)/apt/usr/lib
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/usr/libexec/dpkg $(BUILD_DIST)/apt/usr/libexec
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/usr/libexec/apt/{methods,apt-helper} $(BUILD_DIST)/apt/usr/libexec/apt
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/usr/libexec/apt/planners/dump $(BUILD_DIST)/apt/usr/libexec/apt/planners
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/usr/libexec/apt/solvers/dump $(BUILD_DIST)/apt/usr/libexec/apt/solvers
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/usr/share $(BUILD_DIST)/apt/usr
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/{etc,var} $(BUILD_DIST)/apt
+	
+	# apt.mk Prep APT-Utils
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/usr/bin/apt-{extracttemplates,ftparchive,sortpkgs} $(BUILD_DIST)/apt-utils/usr/bin
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/usr/libexec/apt/planners/apt $(BUILD_DIST)/apt-utils/usr/libexec/apt/planners
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/usr/libexec/apt/solvers/apt $(BUILD_DIST)/apt-utils/usr/libexec/apt/solvers
+	
+	# apt.mk Prep APT-Dev
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/usr/lib/pkgconfig $(BUILD_DIST)/apt-dev/usr/lib
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/usr/include $(BUILD_DIST)/apt-dev/usr
+	
+	#apt.mk Sign
+	$(call SIGN,apt,general.xml)
+	$(call SIGN,apt-utils,general.xml)
+	
+	# apt.mk Make .debs
+	$(call PACK,apt,DEB_APT_V)
+	$(call PACK,apt-utils,DEB_APT_V)
+	$(call PACK,apt-dev,DEB_APT_V)
+	
+	# apt.mk Build cleanup
+	rm -rf $(BUILD_DIST)/apt{,-utils,-dev}
+
+.PHONY: apt apt-package

@@ -1,0 +1,9 @@
+Package: zip
+Version: @DEB_ZIP_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Archiving
+Priority: important
+Multi-Arch: foreign
+Description: standard Windows compression tool
+Tag: purpose::console, role::hacker
