@@ -33,8 +33,8 @@ dpkg: setup xz
 	$(SED) -i s/'#define ARCHITECTURE "darwin-arm64"'/'#define ARCHITECTURE "$(DEB_ARCH)"'/ dpkg/config.h
 	$(SED) -i s/'#define ARCHITECTURE_OS "darwin"'/'#define ARCHITECTURE_OS "$(PLATFORM)"'/ dpkg/config.h
 	$(SED) -i s/'$(TAR)'/'tar'/ dpkg/config.h
-	$(MAKE) -C dpkg
-	$(MAKE) -C dpkg install \
+	+$(MAKE) -C dpkg
+	+$(MAKE) -C dpkg install \
 		DESTDIR="$(BUILD_STAGE)/dpkg"
 	mkdir -p $(BUILD_STAGE)/dpkg/var/lib
 	ln -s /Library/dpkg $(BUILD_STAGE)/dpkg/var/lib/dpkg

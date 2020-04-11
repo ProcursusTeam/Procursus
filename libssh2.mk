@@ -17,10 +17,10 @@ libssh2: setup libressl
 		--disable-debug \
 		--disable-dependency-tracking \
 		--with-libz
-	$(MAKE) -C $(BUILD_WORK)/libssh2
-	$(MAKE) -C $(BUILD_WORK)/libssh2 install \
+	+$(MAKE) -C $(BUILD_WORK)/libssh2
+	+$(MAKE) -C $(BUILD_WORK)/libssh2 install \
 		DESTDIR="$(BUILD_STAGE)/libssh2"
-	$(MAKE) -C $(BUILD_WORK)/libssh2 install \
+	+$(MAKE) -C $(BUILD_WORK)/libssh2 install \
 		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/libssh2/.build_complete
 endif

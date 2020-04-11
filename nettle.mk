@@ -13,10 +13,10 @@ nettle: setup libgmp10
 	cd $(BUILD_WORK)/nettle && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
-	$(MAKE) -C $(BUILD_WORK)/nettle
-	$(MAKE) -C $(BUILD_WORK)/nettle install \
+	+$(MAKE) -C $(BUILD_WORK)/nettle
+	+$(MAKE) -C $(BUILD_WORK)/nettle install \
 		DESTDIR=$(BUILD_STAGE)/nettle
-	$(MAKE) -C $(BUILD_WORK)/nettle install \
+	+$(MAKE) -C $(BUILD_WORK)/nettle install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/nettle/.build_complete
 endif

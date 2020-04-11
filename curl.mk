@@ -18,10 +18,10 @@ curl: setup libressl libssh2 nghttp2
 		--with-libssh2 \
 		--with-nghttp2 \
 		--with-ca-bundle=/etc/ssl/certs/cacert.pem
-	$(MAKE) -C $(BUILD_WORK)/curl
-	$(MAKE) -C $(BUILD_WORK)/curl install \
+	+$(MAKE) -C $(BUILD_WORK)/curl
+	+$(MAKE) -C $(BUILD_WORK)/curl install \
 		DESTDIR="$(BUILD_STAGE)/curl"
-	$(MAKE) -C $(BUILD_WORK)/curl install \
+	+$(MAKE) -C $(BUILD_WORK)/curl install \
 		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/curl/.build_complete
 endif

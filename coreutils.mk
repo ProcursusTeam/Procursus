@@ -24,8 +24,8 @@ coreutils: setup
 		--prefix=/usr \
 		--without-gmp \
 		gl_cv_func_ftello_works=yes
-	$(MAKE) -C $(BUILD_WORK)/coreutils
-	$(MAKE) -C $(BUILD_WORK)/coreutils install \
+	+$(MAKE) -C $(BUILD_WORK)/coreutils
+	+$(MAKE) -C $(BUILD_WORK)/coreutils install \
 		DESTDIR=$(BUILD_STAGE)/coreutils
 	cp $(BUILD_WORK)/coreutils/su/su $(BUILD_STAGE)/coreutils/usr/bin
 	touch $(BUILD_WORK)/coreutils/.build_complete

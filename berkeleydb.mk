@@ -17,10 +17,10 @@ berkeleydb: setup
 		--enable-static=no \
 		--enable-shared=yes \
 		--with-mutex=Darwin/_spin_lock_try
-	$(MAKE) -C $(BUILD_WORK)/berkeleydb/build_unix
-	$(MAKE) -C $(BUILD_WORK)/berkeleydb/build_unix install \
+	+$(MAKE) -C $(BUILD_WORK)/berkeleydb/build_unix
+	+$(MAKE) -C $(BUILD_WORK)/berkeleydb/build_unix install \
 		DESTDIR=$(BUILD_STAGE)/berkeleydb
-	$(MAKE) -C $(BUILD_WORK)/berkeleydb/build_unix install \
+	+$(MAKE) -C $(BUILD_WORK)/berkeleydb/build_unix install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/berkeleydb/.build_complete
 endif

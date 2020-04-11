@@ -287,7 +287,7 @@ rebuild-%:
 	elif [ -d $(REPROJ) ]; then \
 		cd $(REPROJ) && git clean -xfd && git reset 2>/dev/null || : ; \
 	fi
-	make $(REPROJ)
+	+$(MAKE) $(REPROJ)
 
 .PHONY: $(SUBPROJECTS)
 

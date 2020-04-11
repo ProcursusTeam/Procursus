@@ -14,7 +14,7 @@ gzip: setup
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-dependency-tracking
-	$(MAKE) -C $(BUILD_WORK)/gzip install \
+	+$(MAKE) -C $(BUILD_WORK)/gzip install \
 		DESTDIR=$(BUILD_STAGE)/gzip
 	touch $(BUILD_WORK)/gzip/.build_complete
 endif

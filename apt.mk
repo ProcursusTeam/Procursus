@@ -35,8 +35,8 @@ apt: setup libgcrypt berkeleydb lz4 xz zstd
 		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
 		-DDPKG_DATADIR=/usr/share/dpkg \
 		$(APT_DIR)
-	$(MAKE) -C $(APT_DIR)/build
-	$(MAKE) -C $(APT_DIR)/build install \
+	+$(MAKE) -C $(APT_DIR)/build
+	+$(MAKE) -C $(APT_DIR)/build install \
 		DESTDIR="$(BUILD_STAGE)/apt"
 	touch $(APT_DIR)/build/.build_complete
 endif

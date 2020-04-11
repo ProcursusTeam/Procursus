@@ -15,12 +15,12 @@ readline: setup ncurses
 		--prefix=/usr \
 		ac_cv_type_sig_atomic_t=no \
 		LDFLAGS="$(CLFLAGS) $(LDFLAGS)"
-	$(MAKE) -C $(BUILD_WORK)/readline \
+	+$(MAKE) -C $(BUILD_WORK)/readline \
 		SHLIB_LIBS="-lncursesw"
 		TERMCAP_LIB="-lncursesw"
-	$(MAKE) -C $(BUILD_WORK)/readline install \
+	+$(MAKE) -C $(BUILD_WORK)/readline install \
 		DESTDIR=$(BUILD_STAGE)/readline
-	$(MAKE) -C $(BUILD_WORK)/readline install \
+	+$(MAKE) -C $(BUILD_WORK)/readline install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/readline/.build_complete
 endif

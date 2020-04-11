@@ -13,10 +13,10 @@ npth: setup
 	cd $(BUILD_WORK)/npth && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
-	$(MAKE) -C $(BUILD_WORK)/npth
-	$(MAKE) -C $(BUILD_WORK)/npth install \
+	+$(MAKE) -C $(BUILD_WORK)/npth
+	+$(MAKE) -C $(BUILD_WORK)/npth install \
 		DESTDIR=$(BUILD_STAGE)/npth
-	$(MAKE) -C $(BUILD_WORK)/npth install \
+	+$(MAKE) -C $(BUILD_WORK)/npth install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/npth/.build_complete
 endif

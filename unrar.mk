@@ -11,22 +11,22 @@ unrar:
 else
 unrar: setup
 	$(SED) -i 's/libunrar.so/libunrar.dylib/g' $(BUILD_WORK)/unrar/makefile
-	$(MAKE) -C $(BUILD_WORK)/unrar \
+	+$(MAKE) -C $(BUILD_WORK)/unrar \
 		CXX="$(CXX)" \
 		STRIP=$(STRIP) \
 		CPPFLAGS="$(CFLAGS)"
-	$(MAKE) -C $(BUILD_WORK)/unrar clean ; \
-	$(MAKE) -C $(BUILD_WORK)/unrar lib \
+	+$(MAKE) -C $(BUILD_WORK)/unrar clean
+	+$(MAKE) -C $(BUILD_WORK)/unrar lib \
 		CXX="$(CXX)" \
 		AR="$(AR)" \
 		STRIP=$(STRIP) \
 		CPPFLAGS="$(CFLAGS)"
 	mkdir -p $(BUILD_STAGE)/unrar/usr/{bin,lib}
-	$(MAKE) -C $(BUILD_WORK)/unrar install-lib \
+	+$(MAKE) -C $(BUILD_WORK)/unrar install-lib \
 		DESTDIR=$(BUILD_BASE)/usr
-	$(MAKE) -C $(BUILD_WORK)/unrar install-lib \
+	+$(MAKE) -C $(BUILD_WORK)/unrar install-lib \
 		DESTDIR=$(BUILD_STAGE)/unrar/usr
-	$(MAKE) -C $(BUILD_WORK)/unrar install-unrar \
+	+$(MAKE) -C $(BUILD_WORK)/unrar install-unrar \
 		DESTDIR=$(BUILD_STAGE)/unrar/usr
 	touch $(BUILD_WORK)/unrar/.build_complete
 endif

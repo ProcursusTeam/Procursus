@@ -22,10 +22,10 @@ pcre: setup
 		--enable-unicode-properties \
 		--enable-pcregrep-libz \
 		--enable-pcregrep-libbz2
-	$(MAKE) -C $(BUILD_WORK)/pcre
-	$(MAKE) -C $(BUILD_WORK)/pcre install \
+	+$(MAKE) -C $(BUILD_WORK)/pcre
+	+$(MAKE) -C $(BUILD_WORK)/pcre install \
 		DESTDIR=$(BUILD_STAGE)/pcre
-	$(MAKE) -C $(BUILD_WORK)/pcre install \
+	+$(MAKE) -C $(BUILD_WORK)/pcre install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/pcre/.build_complete
 endif

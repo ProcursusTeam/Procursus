@@ -24,8 +24,8 @@ openssh: setup libressl
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc/ssh
-	$(MAKE) -C openssh
-	$(MAKE) -C openssh install \
+	+$(MAKE) -C openssh
+	+$(MAKE) -C openssh install \
 		DESTDIR="$(BUILD_STAGE)/openssh"
 	mkdir -p $(BUILD_STAGE)/openssh/Library/LaunchDaemons
 	cp $(BUILD_INFO)/com.openssh.sshd.plist $(BUILD_STAGE)/openssh/Library/LaunchDaemons
