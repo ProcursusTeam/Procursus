@@ -51,22 +51,21 @@ endif
 
 bash-package: BASH_SUB_V=$(shell find $(BUILD_WORK)/bash-$(BASH_VERSION)-patches -type f | wc -l)
 bash-package: bash-stage
-	#bash.mk Package Structure
+	# bash.mk Package Structure
 	rm -rf $(BUILD_DIST)/bash
-	mkdir -p $(BUILD_DIST)/bash/{bin,usr}
+	mkdir -p $(BUILD_DIST)/bash/usr
 
-	#bash.mk Prep bash
+	# bash.mk Prep bash
 	$(FAKEROOT) cp -a $(BUILD_STAGE)/bash/usr/{bin,include,lib} $(BUILD_DIST)/bash/usr
-	ln -s /usr/bin/bash $(BUILD_DIST)/bash/bin/bash
-	ln -s /usr/bin/bash $(BUILD_DIST)/bash/bin/sh
+	ln -s bash $(BUILD_DIST)/bash/usr/bin/sh
 
-	#bash.mk Sign
+	# bash.mk Sign
 	$(call SIGN,bash,general.xml)
 
-	#bash.mk Make .debs
+	# bash.mk Make .debs
 	$(call PACK,bash,DEB_BASH_V)
 
-	#bash.mk Build cleanup
+	# bash.mk Build cleanup
 	rm -rf $(BUILD_DIST)/bash
 
 .PHONY: bash bash-package

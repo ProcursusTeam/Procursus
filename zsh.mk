@@ -26,16 +26,18 @@ zsh: setup pcre ncurses
 	$(MAKE) -C $(BUILD_WORK)/zsh
 	$(MAKE) -C $(BUILD_WORK)/zsh install install.info \
 		DESTDIR="$(BUILD_STAGE)/zsh"
+	rm -f $(BUILD_STAGE)/zsh/usr/bin/zsh-$(ZSH_VERSION)
 	touch $(BUILD_WORK)/zsh/.build_complete
 endif
 
 zsh-package: zsh-stage
 	# zsh.mk Package Structure
 	rm -rf $(BUILD_DIST)/zsh
-	mkdir -p $(BUILD_DIST)/zsh
+	mkdir -p $(BUILD_DIST)/zsh/bin
 	
 	# zsh.mk Prep zsh
 	$(FAKEROOT) cp -a $(BUILD_STAGE)/zsh/usr $(BUILD_DIST)/zsh
+	ln -s ../usr/bin/zsh $(BUILD_DIST)/zsh/bin/zsh
 	
 	# zsh.mk Sign
 	$(call SIGN,zsh,general.xml)
