@@ -15,16 +15,18 @@ zsh: setup pcre ncurses
 		--prefix=/usr \
 		--enable-cap \
 		--enable-pcre \
-		--enable-maildir-support \
 		--enable-multibyte \
 		--enable-zsh-secure-free \
 		--enable-unicode9 \
 		--with-tcsetpgrp \
+		--enable-function-subdirs \
 		LDFLAGS="$(CFLAGS) -lpcre $(LDFLAGS)" \
 		DL_EXT=bundle \
-		zsh_cv_rlimit_rss_is_as=yes
+		zsh_cv_rlimit_rss_is_as=yes \
+		zsh_cv_path_utmpx=/var/run/utmpx \
+		zsh_cv_path_utmp=no
 	$(MAKE) -C $(BUILD_WORK)/zsh
-	$(MAKE) -C $(BUILD_WORK)/zsh install install.info \
+	$(MAKE) -C $(BUILD_WORK)/zsh install \
 		DESTDIR="$(BUILD_STAGE)/zsh"
 	rm -f $(BUILD_STAGE)/zsh/usr/bin/zsh-$(ZSH_VERSION)
 	touch $(BUILD_WORK)/zsh/.build_complete
