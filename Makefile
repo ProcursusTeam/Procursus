@@ -6,13 +6,13 @@ SHELL           := /usr/bin/env bash
 UNAME           := $(shell uname -s)
 STRAPPROJECTS   := \
 	gnupg ncurses readline libgpg-error libgcrypt libassuan libksba npth diffutils findutils \
-	coreutils darwintools system-cmds uikittools shell-cmds bash lz4 xz zstd tar bzip2 gzip \
+	coreutils darwintools system-cmds uikittools shell-cmds zsh lz4 xz zstd tar bzip2 gzip \
 	profile.d base cacerts debianutils essential grep sed pcre firmware-sbin apt dpkg launchctl
 SUBPROJECTS     := $(STRAPPROJECTS) \
 	berkeleydb libtasn1 libgmp10 libidn2 libunistring \
 	libressl openssh gettext p11-kit nettle \
 	gnutls libssh2 nghttp2 \
-	pcre2 zsh curl perl \
+	pcre2 bash curl perl \
 	less nano git zip unzip p7zip unrar \
 	adv-cmds file-cmds basic-cmds diskdev-cmds
 
