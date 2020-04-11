@@ -235,31 +235,37 @@ bootstrap:: $(STRAPPROJECTS:%=%-package)
 	touch $(BUILD_STAGE)/.fakeroot_bootstrap
 	mkdir -p $(BUILD_STRAP)/strap/Library/dpkg/info
 	export FAKEROOT='fakeroot -i $(BUILD_STAGE)/.fakeroot_bootstrap -s $(BUILD_STAGE)/.fakeroot_bootstrap --'; \
-	$$FAKEROOT touch $(BUILD_STRAP)/strap/Library/dpkg/status; \
+	touch $(BUILD_STRAP)/strap/Library/dpkg/status; \
 	cd $(BUILD_STRAP) && rm -f apt-*.deb dpkg-*.deb; \
 	for DEB in *.deb; do \
 		PKGNAME=$$(echo $$DEB | cut -f1 -d"_"); \
-		$$FAKEROOT dpkg-deb -R $$DEB ./strap; \
-		$$FAKEROOT cp ./strap/DEBIAN/md5sums ./strap/Library/dpkg/info/$$PKGNAME.md5sums; \
-		$$FAKEROOT dpkg-deb -c $$DEB | cut -f2- -d"." | awk -F'\\-\\>' '{print $$1}' > $(BUILD_STRAP)/strap/Library/dpkg/info/$$PKGNAME.list; \
+		dpkg-deb -R $$DEB ./strap; \
+		cp ./strap/DEBIAN/md5sums ./strap/Library/dpkg/info/$$PKGNAME.md5sums; \
+		dpkg-deb -c $$DEB | cut -f2- -d"." | awk -F'\\-\\>' '{print $$1}' > $(BUILD_STRAP)/strap/Library/dpkg/info/$$PKGNAME.list; \
 		$(SED) -i '1 s/$$/./' $(BUILD_STRAP)/strap/Library/dpkg/info/$$PKGNAME.list; \
-		$$FAKEROOT cp $(BUILD_INFO)/$$PKGNAME.{preinst,postinst,extrainst_,prerm,postrm} $(BUILD_STRAP)/strap/Library/dpkg/info 2>/dev/null || :; \
-		$$FAKEROOT dpkg-deb --info $$DEB | $(SED) '/Package:/,$$!d' | $(SED) -e 's/^[ \t]*//' >> $(BUILD_STRAP)/strap/Library/dpkg/status; \
+		cp $(BUILD_INFO)/$$PKGNAME.{preinst,postinst,extrainst_,prerm,postrm} $(BUILD_STRAP)/strap/Library/dpkg/info 2>/dev/null || :; \
+		dpkg-deb --info $$DEB | $(SED) '/Package:/,$$!d' | $(SED) -e 's/^[ \t]*//' >> $(BUILD_STRAP)/strap/Library/dpkg/status; \
 		echo -e "Status: install ok installed\n" >> $(BUILD_STRAP)/strap/Library/dpkg/status; \
 		rm -rf ./strap/DEBIAN; \
 	done; \
 	$(RMDIR) --ignore-fail-on-non-empty $(BUILD_STRAP)/strap/{Applications,bin,dev,etc/{default,profile.d},Library/{Frameworks,LaunchAgents,LaunchDaemons,Preferences,Ringtones,Wallpaper},sbin,System/Library/{Extensions,Fonts,Frameworks,Internet\ Plug-Ins,KeyboardDictionaries,LaunchDaemons,PreferenceBundles,PrivateFrameworks,SystemConfiguration,VideoDecoders},System/Library,System,tmp,usr/{bin,games,include,sbin,var,share/{dict,misc}},var/{backups,cache,db,lib/misc,local,lock,log,logs,mobile/{Library/Preferences,Library,Media},mobile,msgs,preferences,root/Media,root,run,spool,tmp,vm}}; \
 	mkdir -p $(BUILD_STRAP)/strap/private; \
 	rm -f $(BUILD_STRAP)/strap/{sbin/{fsck,fsck_apfs,fsck_exfat,fsck_hfs,fsck_msdos,launchd,mount,mount_apfs,newfs_apfs,newfs_hfs,pfctl},usr/sbin/{BTAvrcp,BTLEServer,BTMap,BTPbap,BlueTool,WirelessRadioManagerd,absd,addNetworkInterface,aslmanager,bluetoothd,cfprefsd,distnoted,filecoordinationd,ioreg,ipconfig,mDNSResponder,mDNSResponderHelper,mediaserverd,notifyd,nvram,pppd,racoon,rtadvd,scutil,spindump,syslogd,wifid}}; \
-	$$FAKEROOT mv $(BUILD_STRAP)/strap/{etc,var} $(BUILD_STRAP)/strap/private; \
-	$$FAKEROOT chown 0:80 $(BUILD_STRAP)/strap/Library; \
-	$$FAKEROOT chmod 0775 $(BUILD_STRAP)/strap/Library; \
-	mkdir -p $(BUILD_STRAP)/strap/usr/libexec/cydia; \
-	mkdir -p $(BUILD_STRAP)/strap/private/var/lib/cydia; \
-	cd $(BUILD_STRAP)/strap/usr/libexec/cydia && ln -fs ../firmware.sh; \
-	ln -s ../usr/bin/zsh $(BUILD_STRAP)/strap/bin/zsh; \
+	mv $(BUILD_STRAP)/strap/{etc,var} $(BUILD_STRAP)/strap/private; \
+	if [ $(PLATFORM) = "appletvos" ]; then \
+		mgr=nitotv;\
+	else \
+		mgr=cydia; \
+	fi; \
+	mkdir -p $(BUILD_STRAP)/strap/private/var/lib/$$mgr; \
+	mkdir -p $(BUILD_STRAP)/strap/usr/libexec/$$mgr; \
+	cd $(BUILD_STRAP)/strap/usr/libexec/$$mgr && ln -fs ../firmware.sh; \
 	ln -s ../usr/bin/zsh $(BUILD_STRAP)/strap/bin/bash; \
 	ln -s ../usr/bin/zsh $(BUILD_STRAP)/strap/bin/sh; \
+	chmod 0775 $(BUILD_STRAP)/strap/Library; \
+	$$FAKEROOT chown 0:80 $(BUILD_STRAP)/strap/Library; \
+	$$FAKEROOT chown 0:3 $(BUILD_STRAP)/strap/private/var/empty; \
+	$$FAKEROOT chown 0:1 $(BUILD_STRAP)/strap/private/var/run; \
 	cd $(BUILD_STRAP)/strap && $$FAKEROOT tar -czvf ../bootstrap.tar.gz . &>/dev/null; \
 	rm -rf $(BUILD_STRAP)/{strap,*.deb}
 	@echo DONE $(BUILD_STRAP)/bootstrap.tar.gz
