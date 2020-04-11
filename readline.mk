@@ -3,7 +3,6 @@ $(error Use the main Makefile)
 endif
 
 READLINE_VERSION := 8.0
-READLINE_SUB_V   := $(shell find $(BUILD_WORK)/readline-$(READLINE_VERSION)-patches -type f | wc -l)
 DEB_READLINE_V   ?= $(READLINE_VERSION).$(READLINE_SUB_V)
 
 ifneq ($(wildcard $(BUILD_WORK)/readline/.build_complete),)
@@ -26,6 +25,7 @@ readline: setup ncurses
 	touch $(BUILD_WORK)/readline/.build_complete
 endif
 
+readline-package: READLINE_SUB_V=$(shell find $(BUILD_WORK)/readline-$(READLINE_VERSION)-patches -type f | wc -l)
 readline-package: readline-stage
 	# readline.mk Package Structure
 	rm -rf $(BUILD_DIST)/readline
