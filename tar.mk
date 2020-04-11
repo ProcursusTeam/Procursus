@@ -19,8 +19,8 @@ tar: setup
 		--prefix=/usr \
 		--disable-nls \
 		gl_cv_func_ftello_works=yes
-	$(MAKE) -C $(BUILD_WORK)/tar
-	$(MAKE) -C $(BUILD_WORK)/tar install \
+	+$(MAKE) -C $(BUILD_WORK)/tar
+	+$(MAKE) -C $(BUILD_WORK)/tar install \
 		DESTDIR=$(BUILD_STAGE)/tar
 	touch $(BUILD_WORK)/tar/.build_complete
 endif

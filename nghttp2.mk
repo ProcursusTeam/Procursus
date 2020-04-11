@@ -14,10 +14,10 @@ nghttp2: setup
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-dependency-tracking
-	$(MAKE) -C $(BUILD_WORK)/nghttp2
-	$(MAKE) -C $(BUILD_WORK)/nghttp2 install \
+	+$(MAKE) -C $(BUILD_WORK)/nghttp2
+	+$(MAKE) -C $(BUILD_WORK)/nghttp2 install \
 		DESTDIR="$(BUILD_STAGE)/nghttp2"
-	$(MAKE) -C $(BUILD_WORK)/nghttp2 install \
+	+$(MAKE) -C $(BUILD_WORK)/nghttp2 install \
 		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/nghttp2/.build_complete
 endif

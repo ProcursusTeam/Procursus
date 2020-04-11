@@ -16,12 +16,12 @@ gettext: setup ncurses
 		--disable-java \
 		--disable-csharp \
 		--without-libintl-prefix
-	$(MAKE) -C $(BUILD_WORK)/gettext \
+	+$(MAKE) -C $(BUILD_WORK)/gettext \
 		LIBTERMINFO=-lncursesw \
 		LTLIBTERMINFO=-lncursesw
-	$(MAKE) -C $(BUILD_WORK)/gettext install \
+	+$(MAKE) -C $(BUILD_WORK)/gettext install \
 		DESTDIR=$(BUILD_STAGE)/gettext
-	$(MAKE) -C $(BUILD_WORK)/gettext install \
+	+$(MAKE) -C $(BUILD_WORK)/gettext install \
 		DESTDIR=$(BUILD_BASE)
 	rm -rf $(BUILD_STAGE)/gettext/usr/share
 	touch $(BUILD_WORK)/gettext/.build_complete

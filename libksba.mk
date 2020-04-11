@@ -14,10 +14,10 @@ libksba: setup libgpg-error
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--with-gpg-error-prefix=$(BUILD_BASE)/usr
-	$(MAKE) -C $(BUILD_WORK)/libksba
-	$(MAKE) -C $(BUILD_WORK)/libksba install \
+	+$(MAKE) -C $(BUILD_WORK)/libksba
+	+$(MAKE) -C $(BUILD_WORK)/libksba install \
 		DESTDIR=$(BUILD_STAGE)/libksba
-	$(MAKE) -C $(BUILD_WORK)/libksba install \
+	+$(MAKE) -C $(BUILD_WORK)/libksba install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libksba/.build_complete
 endif

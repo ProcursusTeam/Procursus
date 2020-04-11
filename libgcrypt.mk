@@ -15,10 +15,10 @@ libgcrypt: setup libgpg-error
 		--prefix=/usr \
 		--with-gpg-error-prefix=$(BUILD_BASE)/usr \
 		--disable-asm
-	$(MAKE) -C $(BUILD_WORK)/libgcrypt
-	$(MAKE) -C $(BUILD_WORK)/libgcrypt install \
+	+$(MAKE) -C $(BUILD_WORK)/libgcrypt
+	+$(MAKE) -C $(BUILD_WORK)/libgcrypt install \
 		DESTDIR=$(BUILD_STAGE)/libgcrypt
-	$(MAKE) -C $(BUILD_WORK)/libgcrypt install \
+	+$(MAKE) -C $(BUILD_WORK)/libgcrypt install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libgcrypt/.build_complete
 endif

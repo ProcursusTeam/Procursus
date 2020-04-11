@@ -35,21 +35,22 @@ perl: setup
 	d_clock='define'\n\
 	libperl='libperl.dylib'" > $(BUILD_WORK)/perl/cnf/hints/darwin
 	cd $(BUILD_WORK)/perl && CFLAGS='-DPERL_DARWIN -DPERL_USE_SAFE_PUTENV -DTIME_HIRES_CLOCKID_T $(CFLAGS)' ./configure \
-	--target=$(GNU_HOST_TRIPLE) \
-	--sysroot=$(SYSROOT) \
-	--prefix=/usr \
-	-Duseshrplib \
-	-Dusevendorprefix \
-	-Dvendorprefix=/usr \
-	-Dusethreads \
-	-Dbyteorder=12345678 \
-	-Dvendorlib=/usr/share/perl5 \
-	-Dvendorarch=/usr/lib/perl5/$(PERL_VERSION)
-	make -C $(BUILD_WORK)/perl \
+		--target=$(GNU_HOST_TRIPLE) \
+		--sysroot=$(SYSROOT) \
+		--prefix=/usr \
+		-Duseshrplib \
+		-Dusevendorprefix \
+		-Dvendorprefix=/usr \
+		-Dusethreads \
+		-Dbyteorder=12345678 \
+		-Dvendorlib=/usr/share/perl5 \
+		-Dvendorarch=/usr/lib/perl5/$(PERL_VERSION)
+	+$(MAKE) -C $(BUILD_WORK)/perl \
 		PERL_ARCHIVE=$(BUILD_WORK)/perl/libperl.dylib
 	touch $(BUILD_WORK)/perl/.build_complete
-	make -C $(BUILD_WORK)/perl install.perl \
+	+$(MAKE) -C $(BUILD_WORK)/perl install.perl \
 		DESTDIR=$(BUILD_STAGE)/perl
+	touch $(BUILD_WORK)/perl/.build_complete
 endif
 
 perl-package: perl-stage

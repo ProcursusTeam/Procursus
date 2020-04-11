@@ -15,10 +15,10 @@ p11-kit: setup gettext libtasn1
 		--prefix=/usr \
 		--without-trust-paths \
 		--without-libffi
-	$(MAKE) -C $(BUILD_WORK)/p11-kit
-	$(MAKE) -C $(BUILD_WORK)/p11-kit install \
+	+$(MAKE) -C $(BUILD_WORK)/p11-kit
+	+$(MAKE) -C $(BUILD_WORK)/p11-kit install \
 		DESTDIR=$(BUILD_STAGE)/p11-kit
-	$(MAKE) -C $(BUILD_WORK)/p11-kit install \
+	+$(MAKE) -C $(BUILD_WORK)/p11-kit install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/p11-kit/.build_complete
 endif

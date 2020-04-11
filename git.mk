@@ -10,7 +10,7 @@ git:
 	@echo "Using previously built git."
 else
 git: setup libressl curl pcre2 gettext
-	cd $(BUILD_WORK)/git && make configure
+	cd $(BUILD_WORK)/git && $(MAKE) configure
 	cd $(BUILD_WORK)/git && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
@@ -32,7 +32,7 @@ git: setup libressl curl pcre2 gettext
 			execve(SHELL_PATH, (char *const *) out.argv, \
  			       (char *const *) childenv); \
 		}' $(BUILD_WORK)/git/run-command.c
-	$(MAKE) -C $(BUILD_WORK)/git install \
+	+$(MAKE) -C $(BUILD_WORK)/git install \
 		uname_S=Darwin \
 		HOST_CPU=$(GNU_HOST_TRIPLE) \
 		DESTDIR=$(BUILD_STAGE)/git \

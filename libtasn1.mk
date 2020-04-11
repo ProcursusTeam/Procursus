@@ -13,10 +13,10 @@ libtasn1: setup
 	cd $(BUILD_WORK)/libtasn1 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
-	$(MAKE) -C $(BUILD_WORK)/libtasn1
-	$(MAKE) -C $(BUILD_WORK)/libtasn1 install \
+	+$(MAKE) -C $(BUILD_WORK)/libtasn1
+	+$(MAKE) -C $(BUILD_WORK)/libtasn1 install \
 		DESTDIR=$(BUILD_STAGE)/libtasn1
-	$(MAKE) -C $(BUILD_WORK)/libtasn1 install \
+	+$(MAKE) -C $(BUILD_WORK)/libtasn1 install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libtasn1/.build_complete
 endif

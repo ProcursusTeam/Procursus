@@ -25,10 +25,10 @@ gnutls: setup readline gettext libgcrypt libgmp10 libidn2 libunistring nettle p1
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		P11_KIT_CFLAGS=-I$(BUILD_BASE)/usr/include/p11-kit-1
-	$(MAKE) -C $(BUILD_WORK)/gnutls
-	$(MAKE) -C $(BUILD_WORK)/gnutls install \
+	+$(MAKE) -C $(BUILD_WORK)/gnutls
+	+$(MAKE) -C $(BUILD_WORK)/gnutls install \
 		DESTDIR=$(BUILD_STAGE)/gnutls
-	$(MAKE) -C $(BUILD_WORK)/gnutls install \
+	+$(MAKE) -C $(BUILD_WORK)/gnutls install \
 		DESTDIR=$(BUILD_BASE)
 	rm -rf $(BUILD_STAGE)/gnutls/usr/share
 	touch $(BUILD_WORK)/gnutls/.build_complete

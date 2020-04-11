@@ -14,8 +14,8 @@ diffutils: setup
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-dependency-tracking
-	$(MAKE) -C $(BUILD_WORK)/diffutils
-	$(MAKE) -C $(BUILD_WORK)/diffutils install \
+	+$(MAKE) -C $(BUILD_WORK)/diffutils
+	+$(MAKE) -C $(BUILD_WORK)/diffutils install \
 		DESTDIR=$(BUILD_STAGE)/diffutils
 	touch $(BUILD_WORK)/diffutils/.build_complete
 endif

@@ -19,10 +19,10 @@ pcre2: setup
 		--enable-jit \
 		--enable-pcre2grep-libz \
 		--enable-pcre2grep-libbz2
-	$(MAKE) -C $(BUILD_WORK)/pcre2
-	$(MAKE) -C $(BUILD_WORK)/pcre2 install \
+	+$(MAKE) -C $(BUILD_WORK)/pcre2
+	+$(MAKE) -C $(BUILD_WORK)/pcre2 install \
 		DESTDIR=$(BUILD_STAGE)/pcre2
-	$(MAKE) -C $(BUILD_WORK)/pcre2 install \
+	+$(MAKE) -C $(BUILD_WORK)/pcre2 install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/pcre2/.build_complete
 endif

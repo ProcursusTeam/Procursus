@@ -13,10 +13,10 @@ libunistring: setup
 	cd $(BUILD_WORK)/libunistring && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
-	$(MAKE) -C $(BUILD_WORK)/libunistring
-	$(MAKE) -C $(BUILD_WORK)/libunistring install \
+	+$(MAKE) -C $(BUILD_WORK)/libunistring
+	+$(MAKE) -C $(BUILD_WORK)/libunistring install \
 		DESTDIR=$(BUILD_STAGE)/libunistring
-	$(MAKE) -C $(BUILD_WORK)/libunistring install \
+	+$(MAKE) -C $(BUILD_WORK)/libunistring install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libunistring/.build_complete
 endif

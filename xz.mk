@@ -16,10 +16,10 @@ xz: setup
 		--disable-debug \
 		--disable-dependency-tracking \
 		--disable-silent-rules
-	$(MAKE) -C $(BUILD_WORK)/xz
-	$(MAKE) -C $(BUILD_WORK)/xz install \
+	+$(MAKE) -C $(BUILD_WORK)/xz
+	+$(MAKE) -C $(BUILD_WORK)/xz install \
 		DESTDIR=$(BUILD_STAGE)/xz
-	$(MAKE) -C $(BUILD_WORK)/xz install \
+	+$(MAKE) -C $(BUILD_WORK)/xz install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/xz/.build_complete
 endif

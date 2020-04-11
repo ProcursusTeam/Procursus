@@ -42,9 +42,9 @@ bash: setup ncurses readline
 		bash_cv_sys_named_pipes=present \
 		bash_cv_sys_siglist=yes \
 		gt_cv_int_divbyzero_sigfpe=no
-	$(MAKE) -C $(BUILD_WORK)/bash \
+	+$(MAKE) -C $(BUILD_WORK)/bash \
 		TERMCAP_LIB=-lncursesw
-	$(MAKE) -C $(BUILD_WORK)/bash install \
+	+$(MAKE) -C $(BUILD_WORK)/bash install \
 		DESTDIR="$(BUILD_STAGE)/bash"
 	touch $(BUILD_WORK)/bash/.build_complete
 endif
