@@ -2,14 +2,20 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+STRAPPROJECTS     += libgcrypt
+DOWNLOAD          += https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-$(LIBGCRYPT_VERSION).tar.bz2{,.sig}
 LIBGCRYPT_VERSION := 1.8.5
 DEB_LIBGCRYPT_V   ?= $(LIBGCRYPT_VERSION)
+
+libgcrypt-setup: setup
+	$(call PGP_VERIFY,libgcrypt-$(LIBGCRYPT_VERSION).tar.bz2)
+	$(call EXTRACT_TAR,libgcrypt-$(LIBGCRYPT_VERSION).tar.bz2,libgcrypt-$(LIBGCRYPT_VERSION),libgcrypt)
 
 ifneq ($(wildcard $(BUILD_WORK)/libgcrypt/.build_complete),)
 libgcrypt:
 	@echo "Using previously built libgcrypt."
 else
-libgcrypt: setup libgpg-error
+libgcrypt: libgcrypt-setup libgpg-error
 	cd $(BUILD_WORK)/libgcrypt && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

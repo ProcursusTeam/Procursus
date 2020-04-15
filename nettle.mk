@@ -2,14 +2,20 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+STRAPPROJECTS  += nettle
+DOWNLOAD       += https://ftp.gnu.org/gnu/nettle/nettle-$(NETTLE_VERSION).tar.gz{,.sig}
 NETTLE_VERSION := 3.5.1
 DEB_NETTLE_V   ?= $(NETTLE_VERSION)
+
+nettle-setup: setup
+	$(call PGP_VERIFY,nettle-$(NETTLE_VERSION).tar.gz)
+	$(call EXTRACT_TAR,nettle-$(NETTLE_VERSION).tar.gz,nettle-$(NETTLE_VERSION),nettle)
 
 ifneq ($(wildcard $(BUILD_WORK)/nettle/.build_complete),)
 nettle:
 	@echo "Using previously built nettle."
 else
-nettle: setup libgmp10
+nettle: nettle-setup libgmp10
 	cd $(BUILD_WORK)/nettle && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr

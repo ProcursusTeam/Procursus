@@ -2,14 +2,20 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+SUBPROJECTS  += curl
+DOWNLOAD     += https://curl.haxx.se/download/curl-$(CURL_VERSION).tar.xz{,.asc}
 CURL_VERSION := 7.69.1
 DEB_CURL_V   ?= $(CURL_VERSION)
+
+curl-setup: setup
+	$(call PGP_VERIFY,curl-$(CURL_VERSION).tar.xz,asc)
+	$(call EXTRACT_TAR,curl-$(CURL_VERSION).tar.xz,curl-$(CURL_VERSION),curl)
 
 ifneq ($(wildcard $(BUILD_WORK)/curl/.build_complete),)
 curl:
 	@echo "Using previously built curl."
 else
-curl: setup libressl libssh2 nghttp2
+curl: curl-setup libressl libssh2 nghttp2
 	cd $(BUILD_WORK)/curl && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

@@ -2,8 +2,14 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-TAR_VERSION := 1.32
-DEB_TAR_V   ?= $(TAR_VERSION)
+STRAPPROJECTS += tar
+DOWNLOAD      += https://ftp.gnu.org/gnu/tar/tar-$(TAR_VERSION).tar.xz{,.sig}
+TAR_VERSION   := 1.32
+DEB_TAR_V     ?= $(TAR_VERSION)
+
+tar-setup: setup
+	$(call PGP_VERIFY,tar-$(TAR_VERSION).tar.xz)
+	$(call EXTRACT_TAR,tar-$(TAR_VERSION).tar.xz,tar-$(TAR_VERSION),tar)
 
 # `gl_cv_func_ftello_works=yes` workaround for gnulib issue on macOS Catalina, presumably also
 # iOS 13, borrowed from Homebrew formula for coreutils
@@ -13,7 +19,7 @@ ifneq ($(wildcard $(BUILD_WORK)/tar/.build_complete),)
 tar:
 	@echo "Using previously built tar."
 else
-tar: setup
+tar: tar-setup
 	cd $(BUILD_WORK)/tar && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

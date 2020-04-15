@@ -2,6 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+STRAPPROJECTS    += profile.d
 PROFILED_VERSION := 0-5
 DEB_PROFILED_V   ?= $(PROFILED_VERSION)
 
@@ -9,7 +10,7 @@ ifneq ($(wildcard $(BUILD_STAGE)/profile.d/.build_complete),)
 profile.d:
 	@echo "Using previously built profile.d."
 else
-profile.d: setup
+profile.d:
 	mkdir -p $(BUILD_STAGE)/profile.d/etc/profile.d
 	cp $(BUILD_INFO)/{,z}profile $(BUILD_STAGE)/profile.d/etc
 	cp $(BUILD_INFO)/terminal.sh $(BUILD_STAGE)/profile.d/etc/profile.d

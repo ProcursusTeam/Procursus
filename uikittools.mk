@@ -2,6 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+STRAPPROJECTS      += uikittools
 UIKITTOOLS_VERSION := 2.0.2
 DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)
 

@@ -2,14 +2,20 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+SUBPROJECTS      += libressl
+DOWNLOAD         += https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-$(LIBRESSL_VERSION).tar.gz{,.asc}
 LIBRESSL_VERSION := 3.0.2
 DEB_LIBRESSL_V   ?= $(LIBRESSL_VERSION)
+
+libressl-setup: setup
+	$(call PGP_VERIFY,libressl-$(LIBRESSL_VERSION).tar.gz,asc)
+	$(call EXTRACT_TAR,libressl-$(LIBRESSL_VERSION).tar.gz,libressl-$(LIBRESSL_VERSION),libressl)
 
 ifneq ($(wildcard $(BUILD_WORK)/libressl/.build_complete),)
 libressl:
 	@echo "Using previously built libressl."
 else
-libressl: setup
+libressl: libressl-setup
 	cd $(BUILD_WORK)/libressl && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

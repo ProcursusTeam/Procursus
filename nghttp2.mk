@@ -2,14 +2,19 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+SUBPROJECTS     += nghttp2
+DOWNLOAD        += https://github.com/nghttp2/nghttp2/releases/download/v$(NGHTTP2_VERSION)/nghttp2-$(NGHTTP2_VERSION).tar.xz
 NGHTTP2_VERSION := 1.40.0
 DEB_NGHTTP2_V   ?= $(NGHTTP2_VERSION)
+
+nghttp2-setup: setup
+	$(call EXTRACT_TAR,nghttp2-$(NGHTTP2_VERSION).tar.xz,nghttp2-$(NGHTTP2_VERSION),nghttp2)
 
 ifneq ($(wildcard $(BUILD_WORK)/nghttp2/.build_complete),)
 nghttp2:
 	@echo "Using previously built nghttp2."
 else
-nghttp2: setup
+nghttp2: nghttp2-setup
 	cd $(BUILD_WORK)/nghttp2 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

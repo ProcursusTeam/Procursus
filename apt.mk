@@ -2,9 +2,10 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-APT_DIR     := $(BUILD_ROOT)/apt
-APT_VERSION := 2.0.2
-DEB_APT_V   ?= $(APT_VERSION)
+STRAPPROJECTS += apt
+APT_DIR       := $(BUILD_ROOT)/apt
+APT_VERSION   := 2.0.2
+DEB_APT_V     ?= $(APT_VERSION)
 
 ifneq ($(wildcard $(APT_DIR)/build/.build_complete),)
 apt:

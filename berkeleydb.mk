@@ -2,14 +2,20 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+SUBPROJECTS += berkeleydb
+# Berkeleydb requires registration on Oracle's website, so this is a mirror.
+DOWNLOAD    += https://fossies.org/linux/misc/db-$(BDB_VERSION).tar.gz
 BDB_VERSION := 18.1.32
 DEB_BDB_V   ?= $(BDB_VERSION)
+
+berkeleydb-setup: setup
+	$(call EXTRACT_TAR,db-$(BDB_VERSION).tar.gz,db-$(BDB_VERSION),berkeleydb)
 
 ifneq ($(wildcard $(BUILD_WORK)/berkeleydb/.build_complete),)
 berkeleydb:
 	@echo "Using previously built berkeleydb."
 else
-berkeleydb: setup
+berkeleydb: berkeleydb-setup
 	cd $(BUILD_WORK)/berkeleydb/dist && ./s_config
 	cd $(BUILD_WORK)/berkeleydb/build_unix && ../dist/configure \
 		--host=$(GNU_HOST_TRIPLE) \

@@ -2,6 +2,7 @@ Package: libidn2
 Version: @DEB_IDN2_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Requires: gettext
 Section: Security
 Priority: optional
 Multi-Arch: foreign

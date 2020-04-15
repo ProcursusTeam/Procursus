@@ -2,14 +2,19 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-ZSTD_VERSION := 1.4.4
-DEB_ZSTD_V   ?= $(ZSTD_VERSION)
+STRAPPROJECTS += zstd
+DOWNLOAD      += https://github.com/facebook/zstd/archive/v$(ZSTD_VERSION).tar.gz
+ZSTD_VERSION  := 1.4.4
+DEB_ZSTD_V    ?= $(ZSTD_VERSION)
+
+zstd-setup: setup
+	$(call EXTRACT_TAR,v$(ZSTD_VERSION).tar.gz,zstd-$(ZSTD_VERSION),zstd)
 
 ifneq ($(wildcard $(BUILD_WORK)/zstd/.build_complete),)
 zstd:
 	@echo "Using previously built zstd."
 else
-zstd: setup lz4 xz
+zstd: zstd-setup lz4 xz
 	$(SED) -i s/'($$(shell uname), Darwin)'/'($$(shell test -n),)'/ $(BUILD_WORK)/zstd/lib/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/zstd install \
 		PREFIX=/usr \

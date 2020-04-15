@@ -2,14 +2,20 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-XZ_VERSION := 5.2.4
-DEB_XZ_V   ?= $(XZ_VERSION)
+STRAPPROJECTS += xz
+DOWNLOAD      += https://tukaani.org/xz/xz-$(XZ_VERSION).tar.xz{,.sig}
+XZ_VERSION    := 5.2.5
+DEB_XZ_V      ?= $(XZ_VERSION)
+
+xz-setup: setup
+	$(call PGP_VERIFY,xz-$(XZ_VERSION).tar.xz)
+	$(call EXTRACT_TAR,xz-$(XZ_VERSION).tar.xz,xz-$(XZ_VERSION),xz)
 
 ifneq ($(wildcard $(BUILD_WORK)/xz/.build_complete),)
 xz:
 	@echo "Using previously built xz."
 else
-xz: setup
+xz: xz-setup
 	cd $(BUILD_WORK)/xz && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr/local \

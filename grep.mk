@@ -2,14 +2,20 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-GREP_VERSION := 3.3
-DEB_GREP_V   ?= $(GREP_VERSION)
+STRAPPROJECTS += grep
+DOWNLOAD      += https://ftp.gnu.org/gnu/grep/grep-$(GREP_VERSION).tar.xz{,.sig}
+GREP_VERSION  := 3.4
+DEB_GREP_V    ?= $(GREP_VERSION)
+
+grep-setup: setup
+	$(call PGP_VERIFY,grep-$(GREP_VERSION).tar.xz)
+	$(call EXTRACT_TAR,grep-$(GREP_VERSION).tar.xz,grep-$(GREP_VERSION),grep)
 
 ifneq ($(wildcard $(BUILD_WORK)/grep/.build_complete),)
 grep:
 	@echo "Using previously built grep."
 else
-grep: setup pcre
+grep: grep-setup pcre
 	cd $(BUILD_WORK)/grep && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

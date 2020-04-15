@@ -4,17 +4,7 @@ endif
 
 SHELL           := /usr/bin/env bash
 UNAME           := $(shell uname -s)
-STRAPPROJECTS   := \
-	gnupg ncurses readline libgpg-error libgcrypt libassuan libksba npth diffutils findutils \
-	coreutils darwintools system-cmds uikittools shell-cmds zsh lz4 xz zstd tar bzip2 gzip \
-	profile.d base cacerts debianutils essential grep sed pcre firmware-sbin apt dpkg launchctl
-SUBPROJECTS     := $(STRAPPROJECTS) \
-	berkeleydb libtasn1 libgmp10 libidn2 libunistring \
-	libressl openssh gettext p11-kit nettle \
-	gnutls libssh2 nghttp2 \
-	pcre2 bash curl perl \
-	less nano git zip unzip p7zip unrar \
-	adv-cmds file-cmds basic-cmds diskdev-cmds
+SUBPROJECTS     += $(STRAPPROJECTS)
 
 PLATFORM        ?= iphoneos
 ARCH            ?= arm64
@@ -31,6 +21,7 @@ AR       := $(GNU_HOST_TRIPLE)-ar
 RANLIB   := $(GNU_HOST_TRIPLE)-ranlib
 STRIP    := $(GNU_HOST_TRIPLE)-strip
 I_N_T    := $(GNU_HOST_TRIPLE)-install_name_tool
+EXTRA    := INSTALL="/usr/bin/install -c --strip-program=$(STRIP)"
 export CC CXX AR RANLIB STRIP
 
 else ifeq ($(UNAME),Darwin)
@@ -38,6 +29,7 @@ $(warning Building on MacOS)
 SYSROOT         ?= $(THEOS)/sdks/iPhoneOS12.2.sdk
 MACOSX_SYSROOT  ?= $(shell xcode-select -print-path)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 I_N_T           := install_name_tool
+EXTRA           :=
 else
 $(error Please use Linux or MacOS to build)
 endif
@@ -70,15 +62,15 @@ CXXFLAGS        := $(CFLAGS)
 LDFLAGS         := -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib
 PKG_CONFIG_PATH := $(BUILD_BASE)/usr/lib/pkgconfig
 
-export PLATFORM ARCH SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE I_N_T
-export BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST
+export PLATFORM ARCH SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE I_N_T EXTRA
+export BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP
 export DEB_ARCH DEB_ORIGIN DEB_MAINTAINER
 export CFLAGS CXXFLAGS LDFLAGS PKG_CONFIG_PATH
 
 HAS_COMMAND = $(shell type $(1) >/dev/null 2>&1 && echo 1)
 PGP_VERIFY  = gpg --verify $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) $(BUILD_SOURCE)/$(1) 2>&1 | grep -q 'Good signature'
 
-EXTRACT_TAR = if [ ! -d $(BUILD_WORK)/$(3) ] || [ $(4) = "1" ]; then \
+EXTRACT_TAR = if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 		cd $(BUILD_WORK) && \
 		$(TAR) -xf $(BUILD_SOURCE)/$(1) && \
 		mkdir -p $(3); 2>/dev/null || :; \
@@ -226,7 +218,12 @@ endif
 MAKEFLAGS += --jobs=$(shell $(GET_LOGICAL_CORES)) -Otarget
 endif
 
+CHECKRA1N_MEMO := 1
+include *.mk
+
 all:: setup $(SUBPROJECTS) package
+	@echo "Successfully built debs for $(SUBPROJECTS)"
+
 package:: $(SUBPROJECTS:%=%-package)
 bootstrap:: export BUILD_DIST=$(BUILD_STRAP)
 bootstrap:: $(STRAPPROJECTS:%=%-package)
@@ -248,7 +245,7 @@ bootstrap:: $(STRAPPROJECTS:%=%-package)
 		echo -e "Status: install ok installed\n" >> $(BUILD_STRAP)/strap/Library/dpkg/status; \
 		rm -rf ./strap/DEBIAN; \
 	done; \
-	$(RMDIR) --ignore-fail-on-non-empty $(BUILD_STRAP)/strap/{Applications,bin,dev,etc/{default,profile.d},Library/{Frameworks,LaunchAgents,LaunchDaemons,Preferences,Ringtones,Wallpaper},sbin,System/Library/{Extensions,Fonts,Frameworks,Internet\ Plug-Ins,KeyboardDictionaries,LaunchDaemons,PreferenceBundles,PrivateFrameworks,SystemConfiguration,VideoDecoders},System/Library,System,tmp,usr/{bin,games,include,sbin,var,share/{dict,misc}},var/{backups,cache,db,lib/misc,local,lock,log,logs,mobile/{Library/Preferences,Library,Media},mobile,msgs,preferences,root/Media,root,run,spool,tmp,vm}}; \
+	$(RMDIR) --ignore-fail-on-non-empty $(BUILD_STRAP)/strap/{Applications,bin,dev,etc/{default,profile.d},Library/{Frameworks,LaunchAgents,LaunchDaemons,Preferences,Ringtones,Wallpaper},sbin,System/Library/{Extensions,Fonts,Frameworks,Internet\ Plug-Ins,KeyboardDictionaries,LaunchDaemons,PreferenceBundles,PrivateFrameworks,SystemConfiguration,VideoDecoders},System/Library,System,tmp,usr/{bin,games,include,sbin,var,share/{dict,misc}},var/{backups,cache,db,lib/misc,local,lock,logs,mobile/{Library/Preferences,Library,Media},mobile,msgs,preferences,root/Media,root,run,spool,tmp,vm}}; \
 	mkdir -p $(BUILD_STRAP)/strap/private; \
 	rm -f $(BUILD_STRAP)/strap/{sbin/{fsck,fsck_apfs,fsck_exfat,fsck_hfs,fsck_msdos,launchd,mount,mount_apfs,newfs_apfs,newfs_hfs,pfctl},usr/sbin/{BTAvrcp,BTLEServer,BTMap,BTPbap,BlueTool,WirelessRadioManagerd,absd,addNetworkInterface,aslmanager,bluetoothd,cfprefsd,distnoted,filecoordinationd,ioreg,ipconfig,mDNSResponder,mDNSResponderHelper,mediaserverd,notifyd,nvram,pppd,racoon,rtadvd,scutil,spindump,syslogd,wifid}}; \
 	mv $(BUILD_STRAP)/strap/{etc,var} $(BUILD_STRAP)/strap/private; \
@@ -266,13 +263,9 @@ bootstrap:: $(STRAPPROJECTS:%=%-package)
 	$$FAKEROOT chown 0:80 $(BUILD_STRAP)/strap/Library; \
 	$$FAKEROOT chown 0:3 $(BUILD_STRAP)/strap/private/var/empty; \
 	$$FAKEROOT chown 0:1 $(BUILD_STRAP)/strap/private/var/run; \
-	cd $(BUILD_STRAP)/strap && $$FAKEROOT tar -czvf ../bootstrap.tar.gz . &>/dev/null; \
+	cd $(BUILD_STRAP)/strap && $$FAKEROOT $(TAR) -czvf ../bootstrap.tar.gz . &>/dev/null; \
 	rm -rf $(BUILD_STRAP)/{strap,*.deb}
 	@echo DONE $(BUILD_STRAP)/bootstrap.tar.gz
-
-CHECKRA1N_MEMO := 1
-
-$(foreach proj,$(SUBPROJECTS),$(eval include $(proj).mk))
 
 %-package: FAKEROOT=fakeroot -i $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev) -s $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev) --
 %-stage: %
@@ -298,189 +291,7 @@ setup:
 
 	git submodule update --init --recursive
 
-	@# TODO: lz4 + zstd + zsh no signature check
-	@# Berkeleydb requires registration on Oracle's website, so this is a mirror.
-	wget -nc -P $(BUILD_SOURCE) \
-		https://ftp.gnu.org/gnu/coreutils/coreutils-$(COREUTILS_VERSION).tar.xz{,.sig} \
-		https://ftp.gnu.org/gnu/sed/sed-$(SED_VERSION).tar.xz{,.sig} \
-		https://ftp.gnu.org/gnu/grep/grep-$(GREP_VERSION).tar.xz{,.sig} \
-		https://ftp.gnu.org/gnu/findutils/findutils-$(FINDUTILS_VERSION).tar.xz{,.sig} \
-		https://ftp.gnu.org/gnu/diffutils/diffutils-$(DIFFUTILS_VERSION).tar.xz{,.sig} \
-		https://ftp.gnu.org/gnu/tar/tar-$(TAR_VERSION).tar.gz{,.sig} \
-		https://ftp.gnu.org/gnu/readline/readline-$(READLINE_VERSION).tar.gz{,.sig} \
-		https://ftp.gnu.org/gnu/readline/readline-$(READLINE_VERSION)-patches/readline80-00{1..4}{,.sig} \
-		https://ftp.gnu.org/gnu/ncurses/ncurses-$(NCURSES_VERSION).tar.gz{,.sig} \
-		https://ftp.gnu.org/gnu/bash/bash-$(BASH_VERSION).tar.gz{,.sig} \
-		https://ftp.gnu.org/gnu/bash/bash-$(BASH_VERSION)-patches/bash50-00{1..9}{,.sig} \
-		https://ftp.gnu.org/gnu/bash/bash-$(BASH_VERSION)-patches/bash50-0{10..16}{,.sig} \
-		https://sourceware.org/pub/bzip2/bzip2-$(BZIP2_VERSION).tar.gz{,.sig} \
-		https://github.com/lz4/lz4/archive/v$(LZ4_VERSION).tar.gz \
-		https://tukaani.org/xz/xz-$(XZ_VERSION).tar.xz{,.sig} \
-		https://ftp.pcre.org/pub/pcre/pcre-$(PCRE_VERSION).tar.bz2{,.sig} \
-		https://ftp.pcre.org/pub/pcre/pcre2-$(PCRE2_VERSION).tar.bz2{,.sig} \
-		https://www.zsh.org/pub/zsh-$(ZSH_VERSION).tar.xz{,.asc} \
-		https://ftp.gnu.org/gnu/less/less-$(LESS_VERSION).tar.gz{,.sig} \
-		https://ftp.gnu.org/gnu/nano/nano-$(NANO_VERSION).tar.xz{,.sig} \
-		https://fossies.org/linux/misc/db-$(BDB_VERSION).tar.gz \
-		https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-$(LIBRESSL_VERSION).tar.gz{,.asc} \
-		https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-$(LIBGPG-ERROR_VERSION).tar.bz2{,.sig} \
-		https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-$(LIBGCRYPT_VERSION).tar.bz2{,.sig} \
-		https://ftp.gnu.org/pub/gnu/gettext/gettext-$(GETTEXT_VERSION).tar.xz{,.sig} \
-		https://ftp.gnu.org/gnu/libtasn1/libtasn1-$(LIBTASN1_VERSION).tar.gz{,.sig} \
-		https://github.com/p11-glue/p11-kit/releases/download/$(P11_VERSION)/p11-kit-$(P11_VERSION).tar.xz{,.sig} \
-		https://gmplib.org/download/gmp/gmp-$(GMP_VERSION).tar.xz{,.sig} \
-		https://ftp.gnu.org/gnu/nettle/nettle-$(NETTLE_VERSION).tar.gz{,.sig} \
-		https://ftp.gnu.org/gnu/libidn/libidn2-$(IDN2_VERSION).tar.gz{,.sig} \
-		https://ftp.gnu.org/gnu/libunistring/libunistring-$(UNISTRING_VERSION).tar.gz{,.sig} \
-		https://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/gnutls-$(GNUTLS_VERSION).tar.xz{,.sig} \
-		https://gnupg.org/ftp/gcrypt/libksba/libksba-$(KSBA_VERSION).tar.bz2{,.sig} \
-		https://gnupg.org/ftp/gcrypt/npth/npth-$(NPTH_VERSION).tar.bz2{,.sig} \
-		https://gnupg.org/ftp/gcrypt/libassuan/libassuan-$(LIBASSUAN_VERSION).tar.bz2{,.sig} \
-		https://gnupg.org/ftp/gcrypt/gnupg/gnupg-$(GNUPG_VERSION).tar.bz2{,.sig} \
-		https://github.com/facebook/zstd/archive/v$(ZSTD_VERSION).tar.gz \
-		https://ftp.gnu.org/gnu/gzip/gzip-$(GZIP_VERSION).tar.xz{,.sig} \
-		http://deb.debian.org/debian/pool/main/d/debianutils/debianutils_$(DEBIANUTILS_VERSION).tar.xz \
-		https://opensource.apple.com/tarballs/shell_cmds/shell_cmds-$(SHELL-CMDS_VERSION).tar.gz \
-		https://libssh2.org/download/libssh2-$(LIBSSH2_VERSION).tar.gz{,.asc} \
-		https://github.com/nghttp2/nghttp2/releases/download/v$(NGHTTP2_VERSION)/nghttp2-$(NGHTTP2_VERSION).tar.xz \
-		https://curl.haxx.se/download/curl-$(CURL_VERSION).tar.xz{,.asc} \
-		https://mirrors.edge.kernel.org/pub/software/scm/git/git-$(GIT_VERSION).tar.xz \
-		https://deb.debian.org/debian/pool/main/z/zip/zip_$(ZIP_VERSION).orig.tar.gz \
-		https://deb.debian.org/debian/pool/main/z/zip/zip_$(DEBIAN_ZIP_V).debian.tar.xz \
-		https://deb.debian.org/debian/pool/main/u/unzip/unzip_$(UNZIP_VERSION).orig.tar.gz \
-		https://deb.debian.org/debian/pool/main/u/unzip/unzip_$(DEBIAN_UNZIP_V).debian.tar.xz \
-		https://deb.debian.org/debian/pool/main/p/p7zip/p7zip_$(P7ZIP_VERSION)+dfsg.orig.tar.xz \
-		https://deb.debian.org/debian/pool/main/p/p7zip/p7zip_$(DEBIAN_P7ZIP_V).debian.tar.xz \
-		https://raw.githubusercontent.com/shirkdog/hardenedbsd-ports/master/archivers/p7zip/files/patch-CPP_Windows_ErrorMsg.cpp \
-		https://www.rarlab.com/rar/unrarsrc-$(UNRAR_VERSION).tar.gz \
-		https://opensource.apple.com/tarballs/adv_cmds/adv_cmds-$(ADV-CMDS_VERSION).tar.gz \
-		https://opensource.apple.com/tarballs/file_cmds/file_cmds-$(FILE-CMDS_VERSION).tar.gz \
-		https://opensource.apple.com/tarballs/basic_cmds/basic_cmds-$(BASIC-CMDS_VERSION).tar.gz \
-		https://opensource.apple.com/tarballs/diskdev_cmds/diskdev_cmds-$(DISKDEV-CMDS_VERSION).tar.gz \
-		https://www.cpan.org/src/5.0/perl-$(PERL_VERSION).tar.gz \
-		https://github.com/arsv/perl-cross/releases/download/$(PERL_CROSS_V)/perl-cross-$(PERL_CROSS_V).tar.gz
-
-	$(call PGP_VERIFY,coreutils-$(COREUTILS_VERSION).tar.xz)
-	$(call PGP_VERIFY,sed-$(SED_VERSION).tar.xz)
-	$(call PGP_VERIFY,grep-$(GREP_VERSION).tar.xz)
-	$(call PGP_VERIFY,findutils-$(FINDUTILS_VERSION).tar.xz)
-	$(call PGP_VERIFY,diffutils-$(DIFFUTILS_VERSION).tar.xz)
-	$(call PGP_VERIFY,tar-$(TAR_VERSION).tar.gz)
-	$(call PGP_VERIFY,readline-$(READLINE_VERSION).tar.gz)
-	$(call PGP_VERIFY,readline80-001)
-	$(call PGP_VERIFY,readline80-002)
-	$(call PGP_VERIFY,readline80-003)
-	$(call PGP_VERIFY,readline80-004)
-	$(call PGP_VERIFY,ncurses-$(NCURSES_VERSION).tar.gz)
-	$(call PGP_VERIFY,bash-$(BASH_VERSION).tar.gz)
-	$(call PGP_VERIFY,bash50-001)
-	$(call PGP_VERIFY,bash50-002)
-	$(call PGP_VERIFY,bash50-003)
-	$(call PGP_VERIFY,bash50-004)
-	$(call PGP_VERIFY,bash50-005)
-	$(call PGP_VERIFY,bash50-006)
-	$(call PGP_VERIFY,bash50-007)
-	$(call PGP_VERIFY,bash50-008)
-	$(call PGP_VERIFY,bash50-009)
-	$(call PGP_VERIFY,bash50-010)
-	$(call PGP_VERIFY,bash50-011)
-	$(call PGP_VERIFY,bash50-012)
-	$(call PGP_VERIFY,bash50-013)
-	$(call PGP_VERIFY,bash50-014)
-	$(call PGP_VERIFY,bash50-015)
-	$(call PGP_VERIFY,bash50-016)
-	$(call PGP_VERIFY,bzip2-$(BZIP2_VERSION).tar.gz)
-	# $(call PGP_VERIFY,v1.9.2.tar.gz)
-	$(call PGP_VERIFY,xz-$(XZ_VERSION).tar.xz)
-	$(call PGP_VERIFY,pcre-$(PCRE_VERSION).tar.bz2)
-	$(call PGP_VERIFY,pcre2-$(PCRE2_VERSION).tar.bz2)
-	# $(call PGP_VERIFY,zsh-5.8.tar.xz,asc)
-	$(call PGP_VERIFY,less-$(LESS_VERSION).tar.gz)
-	$(call PGP_VERIFY,nano-$(NANO_VERSION).tar.xz)
-	$(call PGP_VERIFY,libressl-$(LIBRESSL_VERSION).tar.gz,asc)
-	$(call PGP_VERIFY,libgpg-error-$(LIBGPG-ERROR_VERSION).tar.bz2)
-	$(call PGP_VERIFY,libgcrypt-$(LIBGCRYPT_VERSION).tar.bz2)
-	$(call PGP_VERIFY,gettext-$(GETTEXT_VERSION).tar.xz)
-	$(call PGP_VERIFY,libtasn1-$(LIBTASN1_VERSION).tar.gz)
-	$(call PGP_VERIFY,p11-kit-$(P11_VERSION).tar.xz)
-	$(call PGP_VERIFY,gmp-$(GMP_VERSION).tar.xz)
-	$(call PGP_VERIFY,nettle-$(NETTLE_VERSION).tar.gz)
-	$(call PGP_VERIFY,libidn2-$(IDN2_VERSION).tar.gz)
-	$(call PGP_VERIFY,libunistring-$(UNISTRING_VERSION).tar.gz)
-	$(call PGP_VERIFY,gnutls-$(GNUTLS_VERSION).tar.xz)
-	$(call PGP_VERIFY,libksba-$(KSBA_VERSION).tar.bz2)
-	$(call PGP_VERIFY,npth-$(NPTH_VERSION).tar.bz2)
-	$(call PGP_VERIFY,libassuan-$(LIBASSUAN_VERSION).tar.bz2)
-	$(call PGP_VERIFY,gnupg-$(GNUPG_VERSION).tar.bz2)
-	$(call PGP_VERIFY,gzip-$(GZIP_VERSION).tar.xz)
-	$(call PGP_VERIFY,libssh2-$(LIBSSH2_VERSION).tar.gz,asc)
-	$(call PGP_VERIFY,curl-$(CURL_VERSION).tar.xz,asc)
-
-	$(call EXTRACT_TAR,coreutils-$(COREUTILS_VERSION).tar.xz,coreutils-$(COREUTILS_VERSION),coreutils)
-	$(call EXTRACT_TAR,sed-$(SED_VERSION).tar.xz,sed-$(SED_VERSION),sed)
-	$(call EXTRACT_TAR,grep-$(GREP_VERSION).tar.xz,grep-$(GREP_VERSION),grep)
-	$(call EXTRACT_TAR,findutils-$(FINDUTILS_VERSION).tar.xz,findutils-$(FINDUTILS_VERSION),findutils)
-	$(call EXTRACT_TAR,diffutils-$(DIFFUTILS_VERSION).tar.xz,diffutils-$(DIFFUTILS_VERSION),diffutils)
-	$(call EXTRACT_TAR,tar-$(TAR_VERSION).tar.gz,tar-$(TAR_VERSION),tar)
-	$(call EXTRACT_TAR,readline-$(READLINE_VERSION).tar.gz,readline-$(READLINE_VERSION),readline)
-	$(call EXTRACT_TAR,ncurses-$(NCURSES_VERSION).tar.gz,ncurses-$(NCURSES_VERSION),ncurses)
-	$(call EXTRACT_TAR,bash-$(BASH_VERSION).tar.gz,bash-$(BASH_VERSION),bash)
-	$(call EXTRACT_TAR,bzip2-$(BZIP2_VERSION).tar.gz,bzip2-$(BZIP2_VERSION),bzip2)
-	$(call EXTRACT_TAR,v$(LZ4_VERSION).tar.gz,lz4-$(LZ4_VERSION),lz4)
-	$(call EXTRACT_TAR,xz-$(XZ_VERSION).tar.xz,xz-$(XZ_VERSION),xz)
-	$(call EXTRACT_TAR,pcre-$(PCRE_VERSION).tar.bz2,pcre-$(PCRE_VERSION),pcre)
-	$(call EXTRACT_TAR,pcre2-$(PCRE2_VERSION).tar.bz2,pcre2-$(PCRE2_VERSION),pcre2)
-	$(call EXTRACT_TAR,zsh-$(ZSH_VERSION).tar.xz,zsh-$(ZSH_VERSION),zsh)
-	$(call EXTRACT_TAR,less-$(LESS_VERSION).tar.gz,less-$(LESS_VERSION),less)
-	$(call EXTRACT_TAR,nano-$(NANO_VERSION).tar.xz,nano-$(NANO_VERSION),nano)
-	$(call EXTRACT_TAR,db-$(BDB_VERSION).tar.gz,db-$(BDB_VERSION),berkeleydb)
-	$(call EXTRACT_TAR,libressl-$(LIBRESSL_VERSION).tar.gz,libressl-$(LIBRESSL_VERSION),libressl)
-	$(call EXTRACT_TAR,libgpg-error-$(LIBGPG-ERROR_VERSION).tar.bz2,libgpg-error-$(LIBGPG-ERROR_VERSION),libgpg-error)
-	$(call EXTRACT_TAR,libgcrypt-$(LIBGCRYPT_VERSION).tar.bz2,libgcrypt-$(LIBGCRYPT_VERSION),libgcrypt)
-	$(call EXTRACT_TAR,gettext-$(GETTEXT_VERSION).tar.xz,gettext-$(GETTEXT_VERSION),gettext)
-	$(call EXTRACT_TAR,libtasn1-$(LIBTASN1_VERSION).tar.gz,libtasn1-$(LIBTASN1_VERSION),libtasn1)
-	$(call EXTRACT_TAR,p11-kit-$(P11_VERSION).tar.xz,p11-kit-$(P11_VERSION),p11-kit)
-	$(call EXTRACT_TAR,gmp-$(GMP_VERSION).tar.xz,gmp-$(GMP_VERSION),libgmp10)
-	$(call EXTRACT_TAR,nettle-$(NETTLE_VERSION).tar.gz,nettle-$(NETTLE_VERSION),nettle)
-	$(call EXTRACT_TAR,libidn2-$(IDN2_VERSION).tar.gz,libidn2-$(IDN2_VERSION),libidn2)
-	$(call EXTRACT_TAR,libunistring-$(UNISTRING_VERSION).tar.gz,libunistring-$(UNISTRING_VERSION),libunistring)
-	$(call EXTRACT_TAR,gnutls-$(GNUTLS_VERSION).tar.xz,gnutls-$(GNUTLS_VERSION),gnutls)
-	$(call EXTRACT_TAR,libksba-$(KSBA_VERSION).tar.bz2,libksba-$(KSBA_VERSION),libksba)
-	$(call EXTRACT_TAR,npth-$(NPTH_VERSION).tar.bz2,npth-$(NPTH_VERSION),npth)
-	$(call EXTRACT_TAR,libassuan-$(LIBASSUAN_VERSION).tar.bz2,libassuan-$(LIBASSUAN_VERSION),libassuan)
-	$(call EXTRACT_TAR,gnupg-$(GNUPG_VERSION).tar.bz2,gnupg-$(GNUPG_VERSION),gnupg)
-	$(call EXTRACT_TAR,v$(ZSTD_VERSION).tar.gz,zstd-$(ZSTD_VERSION),zstd)
-	$(call EXTRACT_TAR,gzip-$(GZIP_VERSION).tar.xz,gzip-$(GZIP_VERSION),gzip)
-	$(call EXTRACT_TAR,debianutils_$(DEBIANUTILS_VERSION).tar.xz,debianutils-$(DEBIANUTILS_VERSION),debianutils)
-	$(call EXTRACT_TAR,shell_cmds-$(SHELL-CMDS_VERSION).tar.gz,shell_cmds-$(SHELL-CMDS_VERSION),shell-cmds)
-	$(call EXTRACT_TAR,libssh2-$(LIBSSH2_VERSION).tar.gz,libssh2-$(LIBSSH2_VERSION),libssh2)
-	$(call EXTRACT_TAR,nghttp2-$(NGHTTP2_VERSION).tar.xz,nghttp2-$(NGHTTP2_VERSION),nghttp2)
-	$(call EXTRACT_TAR,curl-$(CURL_VERSION).tar.xz,curl-$(CURL_VERSION),curl)
-	$(call EXTRACT_TAR,git-$(GIT_VERSION).tar.xz,git-$(GIT_VERSION),git)
-	$(call EXTRACT_TAR,zip_$(ZIP_VERSION).orig.tar.gz,zip30,zip)
-	$(call EXTRACT_TAR,zip_$(DEBIAN_ZIP_V).debian.tar.xz,debian/patches,zip-$(ZIP_VERSION)-patches)
-	$(call EXTRACT_TAR,unzip_$(UNZIP_VERSION).orig.tar.gz,unzip60,unzip)
-	$(call EXTRACT_TAR,unzip_$(DEBIAN_UNZIP_V).debian.tar.xz,debian/patches,unzip-$(UNZIP_VERSION)-patches)
-	$(call EXTRACT_TAR,p7zip_$(P7ZIP_VERSION)+dfsg.orig.tar.xz,p7zip_$(P7ZIP_VERSION),p7zip)
-	$(call EXTRACT_TAR,p7zip_$(DEBIAN_P7ZIP_V).debian.tar.xz,debian/patches,p7zip-$(P7ZIP_VERSION)-patches)
-	$(call EXTRACT_TAR,unrarsrc-$(UNRAR_VERSION).tar.gz,n/a,unrar)
-	$(call EXTRACT_TAR,adv_cmds-$(ADV-CMDS_VERSION).tar.gz,adv_cmds-$(ADV-CMDS_VERSION),adv-cmds)
-	$(call EXTRACT_TAR,file_cmds-$(FILE-CMDS_VERSION).tar.gz,file_cmds-$(FILE-CMDS_VERSION),file-cmds)
-	$(call EXTRACT_TAR,basic_cmds-$(BASIC-CMDS_VERSION).tar.gz,basic_cmds-$(BASIC-CMDS_VERSION),basic-cmds)
-	$(call EXTRACT_TAR,diskdev_cmds-$(DISKDEV-CMDS_VERSION).tar.gz,diskdev_cmds-$(DISKDEV-CMDS_VERSION),diskdev-cmds)
-	$(call EXTRACT_TAR,perl-$(PERL_VERSION).tar.gz,perl-$(PERL_VERSION),perl)
-	$(call EXTRACT_TAR,perl-cross-$(PERL_CROSS_V).tar.gz,perl-cross-$(PERL_CROSS_V),perl,1)
-
-	mkdir -p $(BUILD_WORK)/{readline-$(READLINE_VERSION),bash-$(BASH_VERSION)}-patches
-	find $(BUILD_SOURCE) -name 'readline80*' -not -name '*.sig' -exec cp '{}' $(BUILD_WORK)/readline-$(READLINE_VERSION)-patches/ \;
-	find $(BUILD_SOURCE) -name 'bash50*' -not -name '*.sig' -exec cp '{}' $(BUILD_WORK)/bash-$(BASH_VERSION)-patches/ \;
-	cp $(BUILD_SOURCE)/patch-CPP_Windows_ErrorMsg.cpp $(BUILD_WORK)/p7zip-$(P7ZIP_VERSION)-patches
-
-	$(call DO_PATCH,readline-$(READLINE_VERSION),readline,-p0)
-	$(call DO_PATCH,bash-$(BASH_VERSION),bash,-p0)
-	$(call DO_PATCH,zip-$(ZIP_VERSION),zip,-p1)
-	$(call DO_PATCH,unzip-$(UNZIP_VERSION),unzip,-p1)
-	$(call DO_PATCH,p7zip-$(P7ZIP_VERSION),p7zip,-p0,-p1)
+	wget -nc -P $(BUILD_SOURCE) $(DOWNLOAD)
 
 	mkdir -p $(BUILD_BASE)/usr/include/sys
 

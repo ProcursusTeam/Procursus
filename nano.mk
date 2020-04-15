@@ -2,14 +2,20 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-NANO_VERSION := 4.5
+SUBPROJECTS  += nano
+DOWNLOAD     += https://ftp.gnu.org/gnu/nano/nano-$(NANO_VERSION).tar.xz{,.sig}
+NANO_VERSION := 4.9.2
 DEB_NANO_V   ?= $(NANO_VERSION)
+
+nano-setup: setup
+	$(call PGP_VERIFY,nano-$(NANO_VERSION).tar.xz)
+	$(call EXTRACT_TAR,nano-$(NANO_VERSION).tar.xz,nano-$(NANO_VERSION),nano)
 
 ifneq ($(wildcard $(BUILD_WORK)/nano/.build_complete),)
 nano:
 	@echo "Using previously built nano."
 else
-nano: setup ncurses
+nano: nano-setup ncurses
 	cd $(BUILD_WORK)/nano && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

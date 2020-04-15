@@ -2,14 +2,19 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-ZSH_VERSION := 5.8
-DEB_ZSH_V   ?= $(ZSH_VERSION)
+STRAPPROJECTS += zsh
+DOWNLOAD      += https://www.zsh.org/pub/zsh-$(ZSH_VERSION).tar.xz{,.asc}
+ZSH_VERSION   := 5.8
+DEB_ZSH_V     ?= $(ZSH_VERSION)
+
+zsh-setup: setup
+	$(call EXTRACT_TAR,zsh-$(ZSH_VERSION).tar.xz,zsh-$(ZSH_VERSION),zsh)
 
 ifneq ($(wildcard $(BUILD_WORK)/zsh/.build_complete),)
 zsh:
 	@echo "Using previously built zsh."
 else
-zsh: setup pcre ncurses
+zsh: zsh-setup pcre ncurses
 	cd $(BUILD_WORK)/zsh && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

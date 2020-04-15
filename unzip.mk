@@ -2,15 +2,24 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+SUBPROJECTS    += unzip
+DOWNLOAD       += https://deb.debian.org/debian/pool/main/u/unzip/unzip_$(UNZIP_VERSION).orig.tar.gz \
+		https://deb.debian.org/debian/pool/main/u/unzip/unzip_$(DEBIAN_UNZIP_V).debian.tar.xz
 UNZIP_VERSION  := 6.0
 DEBIAN_UNZIP_V := $(UNZIP_VERSION)-25
 DEB_UNZIP_V    ?= $(DEBIAN_UNZIP_V)
+
+unzip-setup: setup
+	$(call EXTRACT_TAR,unzip_$(UNZIP_VERSION).orig.tar.gz,unzip60,unzip)
+	$(call EXTRACT_TAR,unzip_$(DEBIAN_UNZIP_V).debian.tar.xz,debian/patches,unzip-$(UNZIP_VERSION)-patches)
+	rm -rf $(BUILD_WORK)/debian
+	$(call DO_PATCH,unzip-$(UNZIP_VERSION),unzip,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/unzip/.build_complete),)
 unzip:
 	@echo "Using previously built unzip."
 else
-unzip: setup
+unzip: unzip-setup
 	cd $(BUILD_WORK)/unzip && $(MAKE) -f unix/Makefile unzips \
 		CC=$(CC) \
 		CF='$(CFLAGS) -Wall -I. -DBSD -DUNIX -DACORN_FTYPE_NFS -DWILD_STOP_AT_DIR \

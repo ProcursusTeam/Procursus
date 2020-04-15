@@ -2,14 +2,20 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-GETTEXT_VERSION := 0.20.1
+STRAPPROJECTS   += gettext
+DOWNLOAD        += https://ftp.gnu.org/pub/gnu/gettext/gettext-$(GETTEXT_VERSION).tar.xz{,.sig}
+GETTEXT_VERSION := 0.20.2
 DEB_GETTEXT_V   ?= $(GETTEXT_VERSION)
+
+gettext-setup: setup
+	$(call PGP_VERIFY,gettext-$(GETTEXT_VERSION).tar.xz)
+	$(call EXTRACT_TAR,gettext-$(GETTEXT_VERSION).tar.xz,gettext-$(GETTEXT_VERSION),gettext)
 
 ifneq ($(wildcard $(BUILD_WORK)/gettext/.build_complete),)
 gettext:
 	@echo "Using previously built gettext."
 else
-gettext: setup ncurses
+gettext: gettext-setup ncurses
 	cd $(BUILD_WORK)/gettext && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

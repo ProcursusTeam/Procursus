@@ -2,14 +2,20 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+SUBPROJECTS   += pcre2
+DOWNLOAD      += https://ftp.pcre.org/pub/pcre/pcre2-$(PCRE2_VERSION).tar.bz2{,.sig}
 PCRE2_VERSION := 10.34
 DEB_PCRE2_V   ?= $(PCRE2_VERSION)
+
+pcre2-setup: setup
+	$(call PGP_VERIFY,pcre2-$(PCRE2_VERSION).tar.bz2)
+	$(call EXTRACT_TAR,pcre2-$(PCRE2_VERSION).tar.bz2,pcre2-$(PCRE2_VERSION),pcre2)
 
 ifneq ($(wildcard $(BUILD_WORK)/pcre2/.build_complete),)
 pcre2:
 	@echo "Using previously built pcre2."
 else
-pcre2: setup
+pcre2: pcre2-setup
 	cd $(BUILD_WORK)/pcre2 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

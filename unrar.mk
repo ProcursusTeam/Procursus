@@ -2,14 +2,19 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+SUBPROJECTS   += unrar
+DOWNLOAD      += https://www.rarlab.com/rar/unrarsrc-$(UNRAR_VERSION).tar.gz
 UNRAR_VERSION := 5.9.2
 DEB_UNRAR_V   ?= $(UNRAR_VERSION)
+
+unrar-setup: setup
+	$(call EXTRACT_TAR,unrarsrc-$(UNRAR_VERSION).tar.gz,n/a,unrar)
 
 ifneq ($(wildcard $(BUILD_WORK)/unrar/.build_complete),)
 unrar:
 	@echo "Using previously built unrar."
 else
-unrar: setup
+unrar: unrar-setup
 	$(SED) -i 's/libunrar.so/libunrar.dylib/g' $(BUILD_WORK)/unrar/makefile
 	+$(MAKE) -C $(BUILD_WORK)/unrar \
 		CXX="$(CXX)" \

@@ -2,14 +2,20 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+SUBPROJECTS  += less
+DOWNLOAD     += https://ftp.gnu.org/gnu/less/less-$(LESS_VERSION).tar.gz{,.sig}
 LESS_VERSION := 530
 DEB_LESS_V   ?= $(LESS_VERSION)
+
+less-setup: setup
+	$(call PGP_VERIFY,less-$(LESS_VERSION).tar.gz)
+	$(call EXTRACT_TAR,less-$(LESS_VERSION).tar.gz,less-$(LESS_VERSION),less)
 
 ifneq ($(wildcard $(BUILD_WORK)/less/.build_complete),)
 less:
 	@echo "Using previously built less."
 else
-less: setup ncurses pcre
+less: less-setup ncurses pcre
 	cd $(BUILD_WORK)/less && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

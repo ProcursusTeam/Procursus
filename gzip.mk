@@ -2,14 +2,20 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-GZIP_VERSION := 1.10
-DEB_GZIP_V   ?= $(GZIP_VERSION)
+STRAPPROJECTS += gzip
+DOWNLOAD      += https://ftp.gnu.org/gnu/gzip/gzip-$(GZIP_VERSION).tar.xz{,.sig}
+GZIP_VERSION  := 1.10
+DEB_GZIP_V    ?= $(GZIP_VERSION)
+
+gzip-setup: setup
+	$(call PGP_VERIFY,gzip-$(GZIP_VERSION).tar.xz)
+	$(call EXTRACT_TAR,gzip-$(GZIP_VERSION).tar.xz,gzip-$(GZIP_VERSION),gzip)
 
 ifneq ($(wildcard $(BUILD_WORK)/gzip/.build_complete),)
 gzip:
 	@echo "Using previously built gzip."
 else
-gzip: setup
+gzip: gzip-setup
 	cd $(BUILD_WORK)/gzip && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

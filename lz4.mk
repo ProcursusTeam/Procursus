@@ -2,14 +2,19 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-LZ4_VERSION := 1.9.2
-DEB_LZ4_V   ?= $(LZ4_VERSION)
+STRAPPROJECTS += lz4
+DOWNLOAD      += https://github.com/lz4/lz4/archive/v$(LZ4_VERSION).tar.gz
+LZ4_VERSION   := 1.9.2
+DEB_LZ4_V     ?= $(LZ4_VERSION)
+
+lz4-setup: setup
+	$(call EXTRACT_TAR,v$(LZ4_VERSION).tar.gz,lz4-$(LZ4_VERSION),lz4)
 
 ifneq ($(wildcard $(BUILD_WORK)/lz4/.build_complete),)
 lz4:
 	@echo "Using previously built lz4."
 else
-lz4: setup
+lz4: lz4-setup
 	TARGET_OS=Darwin \
 		$(MAKE) -C $(BUILD_WORK)/lz4 install \
 		PREFIX=/usr \

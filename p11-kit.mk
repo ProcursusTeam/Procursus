@@ -2,14 +2,20 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-P11_VERSION := 0.23.20
-DEB_P11_V   ?= $(P11_VERSION)
+SUBPROJECTS   += p11-kit
+DOWNLOAD      += https://github.com/p11-glue/p11-kit/releases/download/$(P11_VERSION)/p11-kit-$(P11_VERSION).tar.xz{,.sig}
+P11_VERSION   := 0.23.20
+DEB_P11_V     ?= $(P11_VERSION)
+
+p11-kit-setup: setup
+	$(call PGP_VERIFY,p11-kit-$(P11_VERSION).tar.xz)
+	$(call EXTRACT_TAR,p11-kit-$(P11_VERSION).tar.xz,p11-kit-$(P11_VERSION),p11-kit)
 
 ifneq ($(wildcard $(BUILD_WORK)/p11-kit/.build_complete),)
 p11-kit:
 	@echo "Using previously built p11-kit."
 else
-p11-kit: setup gettext libtasn1
+p11-kit: p11-kit-setup gettext libtasn1
 	cd $(BUILD_WORK)/p11-kit && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

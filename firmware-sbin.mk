@@ -2,6 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+STRAPPROJECTS         += firmware-sbin
 FIRMWARE-SBIN_VERSION := 0-1
 DEB_FIRMWARE-SBIN_V   ?= $(FIRMWARE-SBIN_VERSION)
 

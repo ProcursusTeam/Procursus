@@ -2,14 +2,20 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+SUBPROJECTS      += libtasn1
+DOWNLOAD         += https://ftp.gnu.org/gnu/libtasn1/libtasn1-$(LIBTASN1_VERSION).tar.gz{,.sig}
 LIBTASN1_VERSION := 4.16.0
 DEB_LIBTASN1_V   ?= $(LIBTASN1_VERSION)
+
+libtasn1-setup: setup
+	$(call PGP_VERIFY,libtasn1-$(LIBTASN1_VERSION).tar.gz)
+	$(call EXTRACT_TAR,libtasn1-$(LIBTASN1_VERSION).tar.gz,libtasn1-$(LIBTASN1_VERSION),libtasn1)
 
 ifneq ($(wildcard $(BUILD_WORK)/libtasn1/.build_complete),)
 libtasn1:
 	@echo "Using previously built libtasn1."
 else
-libtasn1: setup
+libtasn1: libtasn1-setup
 	cd $(BUILD_WORK)/libtasn1 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr

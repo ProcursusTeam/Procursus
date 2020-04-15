@@ -2,6 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+STRAPPROJECTS     += essential
 ESSENTIAL_VERSION := 0-3
 DEB_ESSENTIAL_V   ?= $(ESSENTIAL_VERSION)
 

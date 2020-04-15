@@ -2,14 +2,20 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+SUBPROJECTS        += basic-cmds
+DOWNLOAD           += https://opensource.apple.com/tarballs/basic_cmds/basic_cmds-$(BASIC-CMDS_VERSION).tar.gz
 BASIC-CMDS_VERSION := 55
 DEB_BASIC-CMDS_V   ?= $(BASIC-CMDS_VERSION)
+
+basic-cmds-setup: setup
+	$(call EXTRACT_TAR,basic_cmds-$(BASIC-CMDS_VERSION).tar.gz,basic_cmds-$(BASIC-CMDS_VERSION),basic-cmds)
+	mkdir -p $(BUILD_STAGE)/basic-cmds/usr/bin
 
 ifneq ($(wildcard $(BUILD_WORK)/basic-cmds/.build_complete),)
 basic-cmds:
 	@echo "Using previously built basic-cmds."
 else
-basic-cmds: setup ncurses
+basic-cmds: basic-cmds-setup ncurses
 	mkdir -p $(BUILD_STAGE)/basic-cmds/usr/bin
 	cd $(BUILD_WORK)/basic-cmds; \
 	for bin in mesg write uudecode uuencode; do \

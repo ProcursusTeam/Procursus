@@ -2,6 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+STRAPPROJECTS   += cacerts
 CACERTS_VERSION := 0.0.3
 DEB_CACERTS_V   ?= $(CACERTS_VERSION)
 
@@ -9,7 +10,7 @@ ifneq ($(wildcard $(BUILD_WORK)/cacerts/.build_complete),)
 cacerts:
 	@echo "Using previously built cacerts."
 else
-cacerts: setup
+cacerts: setup curl-setup
 	mkdir -p $(BUILD_WORK)/cacerts
 	cd $(BUILD_WORK)/cacerts && $(BUILD_WORK)/curl/lib/mk-ca-bundle.pl
 	echo -e "## git ##\ngit config --global http.sslCAInfo /etc/ssl/certs/cacert.pem &> /dev/null" > $(BUILD_WORK)/cacerts/cacerts.bootstrap.sh

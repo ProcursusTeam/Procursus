@@ -2,15 +2,24 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+SUBPROJECTS  += zip
+DOWNLOAD     += https://deb.debian.org/debian/pool/main/z/zip/zip_$(ZIP_VERSION).orig.tar.gz \
+		https://deb.debian.org/debian/pool/main/z/zip/zip_$(DEBIAN_ZIP_V).debian.tar.xz
 ZIP_VERSION  := 3.0
 DEBIAN_ZIP_V := $(ZIP_VERSION)-11
 DEB_ZIP_V    ?= $(DEBIAN_ZIP_V)
+
+zip-setup: setup
+	$(call EXTRACT_TAR,zip_$(ZIP_VERSION).orig.tar.gz,zip30,zip)
+	$(call EXTRACT_TAR,zip_$(DEBIAN_ZIP_V).debian.tar.xz,debian/patches,zip-$(ZIP_VERSION)-patches)
+	rm -rf $(BUILD_WORK)/debian
+	$(call DO_PATCH,zip-$(ZIP_VERSION),zip,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/zip/.build_complete),)
 zip:
 	@echo "Using previously built zip."
 else
-zip: setup
+zip: zip-setup
 	cd $(BUILD_WORK)/zip && $(MAKE) -f unix/Makefile install \
 		prefix=$(BUILD_STAGE)/zip/usr \
 		CC=$(CC) \

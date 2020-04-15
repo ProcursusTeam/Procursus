@@ -2,14 +2,9 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+SUBPROJECTS     += openssh
 OPENSSH_VERSION := 8.2
 DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)
-
-ifeq ($(UNAME),Linux)
-EXTRA := INSTALL="/usr/bin/install -c --strip-program=$(STRIP)"
-else
-EXTRA :=
-endif
 
 ifneq ($(wildcard openssh/.build_complete),)
 openssh:

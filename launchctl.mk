@@ -2,6 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+STRAPPROJECTS     += launchctl
 LAUNCHCTL_VERSION := 23-2
 DEB_LAUNCHCTL_V   ?= $(LAUNCHCTL_VERSION)
 

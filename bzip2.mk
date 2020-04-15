@@ -2,14 +2,20 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+STRAPPROJECTS += bzip2
+DOWNLOAD      += https://sourceware.org/pub/bzip2/bzip2-$(BZIP2_VERSION).tar.gz{,.sig}
 BZIP2_VERSION := 1.0.8
 DEB_BZIP2_V   ?= $(BZIP2_VERSION)
+
+bzip2-setup: setup
+	$(call PGP_VERIFY,bzip2-$(BZIP2_VERSION).tar.gz)
+	$(call EXTRACT_TAR,bzip2-$(BZIP2_VERSION).tar.gz,bzip2-$(BZIP2_VERSION),bzip2)
 
 ifneq ($(wildcard $(BUILD_WORK)/bzip2/.build_complete),)
 bzip2:
 	@echo "Using previously built bzip2."
 else
-bzip2: setup
+bzip2: bzip2-setup
 	+$(MAKE) -C $(BUILD_WORK)/bzip2 install \
 		PREFIX=$(BUILD_STAGE)/bzip2/usr \
 		CC=$(CC) \

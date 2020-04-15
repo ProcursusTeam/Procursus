@@ -2,14 +2,11 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+STRAPPROJECTS       += system-cmds
 SYSTEM-CMDS_VERSION := 854.40.2
 DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)
 
-ifneq ($(wildcard system-cmds/.build_complete),)
-system-cmds:
-	@echo "Using previously built system-cmds."
-else
-system-cmds: setup
+system-cmds-setup: setup
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p system-cmds/include/{IOKit,sys}
 	cp -a $(MACOSX_SYSROOT)/usr/include/{libkern,net,servers,xpc} system-cmds/include
@@ -31,6 +28,11 @@ system-cmds: setup
 		https://raw.githubusercontent.com/coolstar/freebsd-ports-ios/master/lib/libc/gen/pw_scan.{c,h} \
 		https://raw.githubusercontent.com/coolstar/freebsd-ports-ios/master/usr.bin/chpass/{chpass{.h,.c},edit.c,field.c,table.c,util.c}
 
+ifneq ($(wildcard system-cmds/.build_complete),)
+system-cmds:
+	@echo "Using previously built system-cmds."
+else
+system-cmds: system-cmds-setup
 	for gperf in system-cmds/getconf.tproj/*.gperf; do \
 	    LC_ALL=C awk -f system-cmds/getconf.tproj/fake-gperf.awk < $$gperf > system-cmds/getconf.tproj/"$$(basename $$gperf .gperf).c" ; \
 	done

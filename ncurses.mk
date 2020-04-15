@@ -2,27 +2,23 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-NCURSES_VERSION := 6.1
+STRAPPROJECTS   += ncurses
+DOWNLOAD        += https://ftp.gnu.org/gnu/ncurses/ncurses-$(NCURSES_VERSION).tar.gz{,.sig}
+NCURSES_VERSION := 6.2
 DEB_NCURSES_V   ?= $(NCURSES_VERSION)
 
-ifeq ($(UNAME),Linux)
-EXTRA := INSTALL="/usr/bin/install -c --strip-program=$(STRIP)"
-else
-EXTRA :=
-endif
+ncurses-setup: setup
+	$(call PGP_VERIFY,ncurses-$(NCURSES_VERSION).tar.gz)
+	$(call EXTRACT_TAR,ncurses-$(NCURSES_VERSION).tar.gz,ncurses-$(NCURSES_VERSION),ncurses)
 
 # Needs DESTDIR in make -j8 to not attempt to build test files (which fail to link)
 # May need the make clean in between to keep out artifacts from the old DESTDIR
-
-# TODO: Apple vendors ncurses 5.4 but without terminfo. Can we safely upgrade to ncurses 6.x?
-
-# TODO: Is it ok to not include the regular ncurses libraries and instead use ncursesw exclusively?
 
 ifneq ($(wildcard $(BUILD_WORK)/ncurses/.build_complete),)
 ncurses:
 	@echo "Using previously built ncurses."
 else
-ncurses: setup
+ncurses: ncurses-setup
 	if [ -f $(BUILD_WORK)/ncurses/Makefile ]; then \
 		$(MAKE) -C $(BUILD_WORK)/ncurses clean; \
 	else \

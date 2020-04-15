@@ -2,14 +2,20 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+STRAPPROJECTS += gnupg
+DOWNLOAD      += https://gnupg.org/ftp/gcrypt/gnupg/gnupg-$(GNUPG_VERSION).tar.bz2{,.sig}
 GNUPG_VERSION := 2.2.20
 DEB_GNUPG_V   ?= $(GNUPG_VERSION)
+
+gnupg-setup: setup
+	$(call PGP_VERIFY,gnupg-$(GNUPG_VERSION).tar.bz2)
+	$(call EXTRACT_TAR,gnupg-$(GNUPG_VERSION).tar.bz2,gnupg-$(GNUPG_VERSION),gnupg)
 
 ifneq ($(wildcard $(BUILD_WORK)/gnupg/.build_complete),)
 gnupg:
 	@echo "Using previously built libassuan."
 else
-gnupg: setup readline libgpg-error libgcrypt libassuan libksba npth
+gnupg: gnupg-setup readline libgpg-error libgcrypt libassuan libksba npth
 	cd $(BUILD_WORK)/gnupg && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

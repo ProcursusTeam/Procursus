@@ -2,14 +2,20 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+SUBPROJECTS     += libssh2
+DOWNLOAD        += https://libssh2.org/download/libssh2-$(LIBSSH2_VERSION).tar.gz{,.asc}
 LIBSSH2_VERSION := 1.9.0
 DEB_LIBSSH2_V   ?= $(LIBSSH2_VERSION)
+
+libssh2-setup: setup
+	$(call PGP_VERIFY,libssh2-$(LIBSSH2_VERSION).tar.gz,asc)
+	$(call EXTRACT_TAR,libssh2-$(LIBSSH2_VERSION).tar.gz,libssh2-$(LIBSSH2_VERSION),libssh2)
 
 ifneq ($(wildcard $(BUILD_WORK)/libssh2/.build_complete),)
 libssh2:
 	@echo "Using previously built libssh2."
 else
-libssh2: setup libressl
+libssh2: libssh2-setup libressl
 	find $(BUILD_BASE) -name "*.la" -type f -delete
 	cd $(BUILD_WORK)/libssh2 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \

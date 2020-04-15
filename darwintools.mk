@@ -2,6 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+STRAPPROJECTS       += darwintools
 DARWINTOOLS_VERSION := 1.2
 DEB_DARWINTOOLS_V   ?= $(DARWINTOOLS_VERSION)
 

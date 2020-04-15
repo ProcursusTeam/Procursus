@@ -2,14 +2,19 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+STRAPPROJECTS       += debianutils
+DOWNLOAD            += http://deb.debian.org/debian/pool/main/d/debianutils/debianutils_$(DEBIANUTILS_VERSION).tar.xz
 DEBIANUTILS_VERSION := 4.9.1
 DEB_DEBIANUTILS_V   ?= $(DEBIANUTILS_VERSION)
+
+debianutils-setup: setup
+	$(call EXTRACT_TAR,debianutils_$(DEBIANUTILS_VERSION).tar.xz,debianutils-$(DEBIANUTILS_VERSION),debianutils)
 
 ifneq ($(wildcard $(BUILD_WORK)/debianutils/.build_complete),)
 debianutils:
 	@echo "Using previously built debianutils."
 else
-debianutils: setup
+debianutils: debianutils-setup
 	cd $(BUILD_WORK)/debianutils && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

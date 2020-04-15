@@ -2,17 +2,15 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+SUBPROJECTS       += file-cmds
+DOWNLOAD          += https://opensource.apple.com/tarballs/file_cmds/file_cmds-$(FILE-CMDS_VERSION).tar.gz
 # Don't upgrade file-cmds, as any future version includes APIs introduced in iOS 13+.
 FILE-CMDS_VERSION := 272.250.1
 DEB_FILE-CMDS_V   ?= $(FILE-CMDS_VERSION)
 
-ifneq ($(wildcard $(BUILD_WORK)/file-cmds/.build_complete),)
-file-cmds:
-	@echo "Using previously built file-cmds."
-else
-file-cmds: setup
+file-cmds-setup: setup
+	$(call EXTRACT_TAR,file_cmds-$(FILE-CMDS_VERSION).tar.gz,file_cmds-$(FILE-CMDS_VERSION),file-cmds)
 	mkdir -p $(BUILD_STAGE)/file-cmds/usr/bin
-	
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/file-cmds/include
 	cp -a $(MACOSX_SYSROOT)/usr/include/tzfile.h $(BUILD_WORK)/file-cmds/include
@@ -26,7 +24,12 @@ file-cmds: setup
 	$(SED) -i 's/user32_time_t/user_time_t/g' $(BUILD_WORK)/file-cmds/ipcs/sys/sem_internal.h
 	$(SED) -i 's/user32_addr_t/user_addr_t/g' $(BUILD_WORK)/file-cmds/ipcs/sys/shm_internal.h
 	$(SED) -i 's/#include <nlist.h>/#include <mach-o\/nlist.h>/g' $(BUILD_WORK)/file-cmds/ipcs/ipcs.c
-	
+
+ifneq ($(wildcard $(BUILD_WORK)/file-cmds/.build_complete),)
+file-cmds:
+	@echo "Using previously built file-cmds."
+else
+file-cmds: file-cmds-setup
 	cd $(BUILD_WORK)/file-cmds ; \
 	for bin in chflags compress ipcrm ipcs pax; do \
     	$(CC) -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isystem include -o $(BUILD_STAGE)/file-cmds/usr/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -D__POSIX_C_SOURCE; \

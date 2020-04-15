@@ -2,8 +2,18 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+STRAPPROJECTS     += coreutils
+DOWNLOAD          += https://ftp.gnu.org/gnu/coreutils/coreutils-$(COREUTILS_VERSION).tar.xz{,.sig}
 COREUTILS_VERSION := 8.32
 DEB_COREUTILS_V   ?= $(COREUTILS_VERSION)
+
+coreutils-setup: setup
+	$(call PGP_VERIFY,coreutils-$(COREUTILS_VERSION).tar.xz)
+	$(call EXTRACT_TAR,coreutils-$(COREUTILS_VERSION).tar.xz,coreutils-$(COREUTILS_VERSION),coreutils)
+	mkdir -p $(BUILD_WORK)/coreutils/su
+	wget -nc -P $(BUILD_WORK)/coreutils/su \
+		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/usr.bin/su/su.c \
+		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/usr.bin/su/suutil.{c,h}
 
 # `gl_cv_func_ftello_works=yes` workaround for gnulib issue on macOS Catalina, presumably also
 # iOS 13, borrowed from Homebrew formula for coreutils
@@ -13,12 +23,8 @@ ifneq ($(wildcard $(BUILD_WORK)/coreutils/.build_complete),)
 coreutils:
 	@echo "Using previously built coreutils."
 else
-coreutils: setup
-	mkdir -p $(BUILD_WORK)/coreutils/su
-	wget -nc -P $(BUILD_WORK)/coreutils/su \
-		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/usr.bin/su/su.c \
-		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/usr.bin/su/suutil.{c,h}
-	cd $(BUILD_WORK)/coreutils/su && $(CC) $(CFLAGS) su.c suutil.c -o su -DBSD4_4
+coreutils: coreutils-setup
+	cd $(BUILD_WORK)/coreutils/su && $(CC) $(CFLAGS) su.c suutil.c -o su -DBSD4_4 -D'__RCSID(x)='
 	cd $(BUILD_WORK)/coreutils && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

@@ -2,15 +2,13 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+STRAPPROJECTS        += diskdev-cmds
+DOWNLOAD             += https://opensource.apple.com/tarballs/diskdev_cmds/diskdev_cmds-$(DISKDEV-CMDS_VERSION).tar.gz
 DISKDEV-CMDS_VERSION := 593.230.1
 DEB_DISKDEV-CMDS_V   ?= $(DISKDEV-CMDS_VERSION)
 
-ifneq ($(wildcard $(BUILD_WORK)/diskdev-cmds/.build_complete),)
-diskdev-cmds:
-	@echo "Using previously built diskdev-cmds."
-else
-diskdev-cmds: .SHELLFLAGS=-O extglob -c
-diskdev-cmds: setup
+diskdev-cmds-setup: setup
+	$(call EXTRACT_TAR,diskdev_cmds-$(DISKDEV-CMDS_VERSION).tar.gz,diskdev_cmds-$(DISKDEV-CMDS_VERSION),diskdev-cmds)
 	mkdir -p $(BUILD_STAGE)/diskdev-cmds/{usr/{{s,}bin,libexec},sbin}
 
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
@@ -32,6 +30,12 @@ diskdev-cmds: setup
 	wget -nc -P $(BUILD_WORK)/diskdev-cmds/include/System/uuid \
 		https://opensource.apple.com/source/Libc/Libc-1353.11.2/uuid/namespace.h
 
+ifneq ($(wildcard $(BUILD_WORK)/diskdev-cmds/.build_complete),)
+diskdev-cmds:
+	@echo "Using previously built diskdev-cmds."
+else
+diskdev-cmds: .SHELLFLAGS=-O extglob -c
+diskdev-cmds: diskdev-cmds-setup
 	cd $(BUILD_WORK)/diskdev-cmds/disklib; \
 	rm -f mntopts.h getmntopts.c; \
 	$(CC) -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isystem ../include -fno-common -c *.c; \

@@ -2,20 +2,24 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+SUBPROJECTS      += adv-cmds
+DOWNLOAD         += https://opensource.apple.com/tarballs/adv_cmds/adv_cmds-$(ADV-CMDS_VERSION).tar.gz
 ADV-CMDS_VERSION := 174.0.1
 DEB_ADV-CMDS_V   ?= $(ADV-CMDS_VERSION)
+
+adv-cmds-setup: setup
+	$(call EXTRACT_TAR,adv_cmds-$(ADV-CMDS_VERSION).tar.gz,adv_cmds-$(ADV-CMDS_VERSION),adv-cmds)
+	mkdir -p $(BUILD_STAGE)/adv-cmds/usr/bin
+
+	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
+	mkdir -p $(BUILD_WORK)/adv-cmds/include
+	cp -a $(MACOSX_SYSROOT)/usr/include/tzfile.h $(BUILD_WORK)/adv-cmds/include
 
 ifneq ($(wildcard $(BUILD_WORK)/adv-cmds/.build_complete),)
 adv-cmds:
 	@echo "Using previously built adv-cmds."
 else
-adv-cmds: setup ncurses
-	mkdir -p $(BUILD_STAGE)/adv-cmds/usr/bin
-	
-	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
-	mkdir -p $(BUILD_WORK)/adv-cmds/include/sys
-	cp -a $(MACOSX_SYSROOT)/usr/include/tzfile.h $(BUILD_WORK)/adv-cmds/include
-
+adv-cmds: adv-cmds-setup ncurses
 	cd $(BUILD_WORK)/adv-cmds; \
 	$(CXX) -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/usr/bin/locale locale/*.cc; \
 	$(CC) $(CFLAGS) -L $(BUILD_BASE)/usr/lib -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/usr/bin/tabs tabs/*.c -lncursesw; \

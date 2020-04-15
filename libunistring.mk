@@ -2,14 +2,20 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+SUBPROJECTS       += libunistring
+DOWNLOAD          += https://ftp.gnu.org/gnu/libunistring/libunistring-$(UNISTRING_VERSION).tar.gz{,.sig}
 UNISTRING_VERSION := 0.9.10
 DEB_UNISTRING_V   ?= $(UNISTRING_VERSION)
+
+libunistring-setup: setup
+	$(call PGP_VERIFY,libunistring-$(UNISTRING_VERSION).tar.gz)
+	$(call EXTRACT_TAR,libunistring-$(UNISTRING_VERSION).tar.gz,libunistring-$(UNISTRING_VERSION),libunistring)
 
 ifneq ($(wildcard $(BUILD_WORK)/libunistring/.build_complete),)
 libunistring:
 	@echo "Using previously built libunistring."
 else
-libunistring: setup
+libunistring: libunistring-setup
 	cd $(BUILD_WORK)/libunistring && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr

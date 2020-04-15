@@ -2,14 +2,19 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-GIT_VERSION := 2.26.0
+SUBPROJECTS += git
+DOWNLOAD    += https://mirrors.edge.kernel.org/pub/software/scm/git/git-$(GIT_VERSION).tar.xz
+GIT_VERSION := 2.26.1
 DEB_GIT_V   ?= $(GIT_VERSION)
+
+git-setup: setup
+	$(call EXTRACT_TAR,git-$(GIT_VERSION).tar.xz,git-$(GIT_VERSION),git)
 
 ifneq ($(wildcard $(BUILD_WORK)/git/.build_complete),)
 git:
 	@echo "Using previously built git."
 else
-git: setup libressl curl pcre2 gettext
+git: git-setup libressl curl pcre2 gettext
 	cd $(BUILD_WORK)/git && $(MAKE) configure
 	cd $(BUILD_WORK)/git && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \

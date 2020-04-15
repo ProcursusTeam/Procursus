@@ -2,8 +2,9 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-DPKG_VERSION := 1.20.0
-DEB_DPKG_V   ?= $(DPKG_VERSION)
+STRAPPROJECTS  += dpkg
+DPKG_VERSION   := 1.20.0
+DEB_DPKG_V     ?= $(DPKG_VERSION)
 
 # TODO: we shouldn’t need to patch the config output to make dpkg use the right architecture params
 
@@ -15,7 +16,6 @@ dpkg: setup xz
 	if ! [ -f dpkg/configure ]; then \
 		cd dpkg && ./autogen; \
 	fi
-	# autoconf && autoheader && aclocal && automake --add-missing && glibtoolize
 	cd dpkg && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

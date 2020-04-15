@@ -2,14 +2,28 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+STRAPPROJECTS    += readline
+DOWNLOAD         += https://ftp.gnu.org/gnu/readline/readline-$(READLINE_VERSION).tar.gz{,.sig} \
+		https://ftp.gnu.org/gnu/readline/readline-$(READLINE_VERSION)-patches/readline80-00{1..4}{,.sig}
 READLINE_VERSION := 8.0
 DEB_READLINE_V   ?= $(READLINE_VERSION).$(READLINE_SUB_V)
+
+readline-setup: setup
+	$(call PGP_VERIFY,readline-$(READLINE_VERSION).tar.gz)
+	$(call PGP_VERIFY,readline80-001)
+	$(call PGP_VERIFY,readline80-002)
+	$(call PGP_VERIFY,readline80-003)
+	$(call PGP_VERIFY,readline80-004)
+	$(call EXTRACT_TAR,readline-$(READLINE_VERSION).tar.gz,readline-$(READLINE_VERSION),readline)
+	mkdir -p $(BUILD_WORK)/readline-$(READLINE_VERSION)-patches
+	find $(BUILD_SOURCE) -name 'readline80*' -not -name '*.sig' -exec cp '{}' $(BUILD_WORK)/readline-$(READLINE_VERSION)-patches/ \;
+	$(call DO_PATCH,readline-$(READLINE_VERSION),readline,-p0)
 
 ifneq ($(wildcard $(BUILD_WORK)/readline/.build_complete),)
 readline:
 	@echo "Using previously built readline."
 else
-readline: setup ncurses
+readline: readline-setup ncurses
 	cd $(BUILD_WORK)/readline && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

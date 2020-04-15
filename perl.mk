@@ -2,17 +2,19 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+SUBPROJECTS  += perl
+DOWNLOAD     += https://www.cpan.org/src/5.0/perl-$(PERL_VERSION).tar.gz \
+		https://github.com/arsv/perl-cross/releases/download/$(PERL_CROSS_V)/perl-cross-$(PERL_CROSS_V).tar.gz
 PERL_MAJOR   := 5.30
-PERL_VERSION := $(PERL_MAJOR).1
+PERL_VERSION := $(PERL_MAJOR).2
 PERL_API_V   := $(PERL_MAJOR).0
 PERL_CROSS_V := 1.3.2
 DEB_PERL_V   ?= $(PERL_VERSION)
 
-ifneq ($(wildcard $(BUILD_WORK)/perl/.build_complete),)
-perl:
-	@echo "Using previously built perl."
-else
-perl: setup
+perl-setup: setup
+	rm -rf $(BUILD_WORK)/perl
+	$(call EXTRACT_TAR,perl-$(PERL_VERSION).tar.gz,perl-$(PERL_VERSION),perl)
+	$(call EXTRACT_TAR,perl-cross-$(PERL_CROSS_V).tar.gz,perl-cross-$(PERL_CROSS_V),perl,1)
 	$(SED) -i 's/readelf --syms/nm -g/g' $(BUILD_WORK)/perl/cnf/configure_type.sh
 	$(SED) -i 's/readelf/nm/g' $(BUILD_WORK)/perl/cnf/configure__f.sh
 	$(SED) -i 's/readelf/nm/g' $(BUILD_WORK)/perl/cnf/configure_tool.sh
@@ -34,7 +36,14 @@ perl: setup
 	d_clock_nanosleep='undef'\n\
 	d_clock='define'\n\
 	libperl='libperl.dylib'" > $(BUILD_WORK)/perl/cnf/hints/darwin
-	cd $(BUILD_WORK)/perl && CFLAGS='-DPERL_DARWIN -DPERL_USE_SAFE_PUTENV -DTIME_HIRES_CLOCKID_T $(CFLAGS)' ./configure \
+
+ifneq ($(wildcard $(BUILD_WORK)/perl/.build_complete),)
+perl:
+	@echo "Using previously built perl."
+else
+perl: perl-setup
+	@# Don't use $(CFLAGS) here because, in the case BerkeleyDB was made before perl, it will look at the db.h in $(BUILD_BASE).
+	cd $(BUILD_WORK)/perl && CFLAGS='-DPERL_DARWIN -DPERL_USE_SAFE_PUTENV -DTIME_HIRES_CLOCKID_T -O2 -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN)' ./configure \
 		--target=$(GNU_HOST_TRIPLE) \
 		--sysroot=$(SYSROOT) \
 		--prefix=/usr \
@@ -47,7 +56,6 @@ perl: setup
 		-Dvendorarch=/usr/lib/perl5/$(PERL_VERSION)
 	+$(MAKE) -C $(BUILD_WORK)/perl \
 		PERL_ARCHIVE=$(BUILD_WORK)/perl/libperl.dylib
-	touch $(BUILD_WORK)/perl/.build_complete
 	+$(MAKE) -C $(BUILD_WORK)/perl install.perl \
 		DESTDIR=$(BUILD_STAGE)/perl
 	touch $(BUILD_WORK)/perl/.build_complete

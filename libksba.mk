@@ -2,14 +2,20 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-KSBA_VERSION := 1.3.5
-DEB_KSBA_V   ?= $(KSBA_VERSION)
+STRAPPROJECTS += libksba
+DOWNLOAD      += https://gnupg.org/ftp/gcrypt/libksba/libksba-$(KSBA_VERSION).tar.bz2{,.sig}
+KSBA_VERSION  := 1.3.5
+DEB_KSBA_V    ?= $(KSBA_VERSION)
+
+libksba-setup: setup
+	$(call PGP_VERIFY,libksba-$(KSBA_VERSION).tar.bz2)
+	$(call EXTRACT_TAR,libksba-$(KSBA_VERSION).tar.bz2,libksba-$(KSBA_VERSION),libksba)
 
 ifneq ($(wildcard $(BUILD_WORK)/libksba/.build_complete),)
 libksba:
 	@echo "Using previously built libksba."
 else
-libksba: setup libgpg-error
+libksba: libksba-setup libgpg-error
 	cd $(BUILD_WORK)/libksba && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

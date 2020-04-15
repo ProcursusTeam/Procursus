@@ -2,14 +2,20 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+SUBPROJECTS  += libidn2
+DOWNLOAD     += https://ftp.gnu.org/gnu/libidn/libidn2-$(IDN2_VERSION).tar.gz{,.sig}
 IDN2_VERSION := 2.3.0
 DEB_IDN2_V   ?= $(IDN2_VERSION)
+
+libidn2-setup: setup
+	$(call PGP_VERIFY,libidn2-$(IDN2_VERSION).tar.gz)
+	$(call EXTRACT_TAR,libidn2-$(IDN2_VERSION).tar.gz,libidn2-$(IDN2_VERSION),libidn2)
 
 ifneq ($(wildcard $(BUILD_WORK)/libidn2/.build_complete),)
 libidn2:
 	@echo "Using previously built libidn2."
 else
-libidn2: setup gettext
+libidn2: libidn2-setup gettext
 	cd $(BUILD_WORK)/libidn2 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr

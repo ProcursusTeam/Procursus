@@ -2,14 +2,20 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+STRAPPROJECTS     += libassuan
+DOWNLOAD          += https://gnupg.org/ftp/gcrypt/libassuan/libassuan-$(LIBASSUAN_VERSION).tar.bz2{,.sig}
 LIBASSUAN_VERSION := 2.5.3
 DEB_LIBASSUAN_V   ?= $(LIBASSUAN_VERSION)
+
+libassuan-setup: setup
+	$(call PGP_VERIFY,libassuan-$(LIBASSUAN_VERSION).tar.bz2)
+	$(call EXTRACT_TAR,libassuan-$(LIBASSUAN_VERSION).tar.bz2,libassuan-$(LIBASSUAN_VERSION),libassuan)
 
 ifneq ($(wildcard $(BUILD_WORK)/libassuan/.build_complete),)
 libassuan:
 	@echo "Using previously built libassuan."
 else
-libassuan: setup libgpg-error
+libassuan: libassuan-setup libgpg-error
 	cd $(BUILD_WORK)/libassuan && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
