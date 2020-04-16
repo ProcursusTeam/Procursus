@@ -1,0 +1,10 @@
+Package: libssl1.1
+Version: @DEB_OPENSSL_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: ca-certificates
+Section: Security
+Priority: standard
+Description: OpenSSL Libraries for version 1.1.x
+Name: OpenSSL 1.1.x Libraries
+Tag: purpose::library, role::developer

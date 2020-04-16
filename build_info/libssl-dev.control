@@ -1,0 +1,10 @@
+Package: libssl-dev
+Version: @DEB_OPENSSL_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libssl1.1 (= @DEB_OPENSSL_V@)
+Section: Security
+Priority: standard
+Description: OpenSSL Libraries for version 1.1 (development)
+Name: OpenSSL 1.1.x Libraries (Devel)
+Tag: purpose::library, role::developer

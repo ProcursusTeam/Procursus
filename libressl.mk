@@ -2,8 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS      += libressl
-DOWNLOAD         += https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-$(LIBRESSL_VERSION).tar.gz{,.asc}
+#SUBPROJECTS      += libressl
+#DOWNLOAD         += https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-$(LIBRESSL_VERSION).tar.gz{,.asc}
 LIBRESSL_VERSION := 3.0.2
 DEB_LIBRESSL_V   ?= $(LIBRESSL_VERSION)
 
