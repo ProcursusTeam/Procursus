@@ -300,7 +300,7 @@ setup:
 	mkdir -p $(BUILD_BASE)/usr/include/sys
 
 	@# Copy headers from MacOSX.sdk
-	cp -a $(MACOSX_SYSROOT)/usr/include/xpc $(BUILD_BASE)/usr/include
+	cp -a $(MACOSX_SYSROOT)/usr/include/{arpa,xpc} $(BUILD_BASE)/usr/include
 	cp -a $(MACOSX_SYSROOT)/usr/include/sys/tty*.h $(BUILD_BASE)/usr/include/sys
 	cp -a $(MACOSX_SYSROOT)/usr/include/{ar,launch,tzfile}.h $(BUILD_BASE)/usr/include
 

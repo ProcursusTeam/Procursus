@@ -1,0 +1,11 @@
+Package: inetutils
+Version: @DEB_INETUTILS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: ncurses, readline
+Provides: hostname, ping, telnet
+Section: Networking
+Priority: standard
+Homepage: http://www.gnu.org/software/inetutils/
+Description: ftp, inetd, ping, rlogin, telnet, tftp
+Tag: purpose::console, role::hacker
