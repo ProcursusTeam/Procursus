@@ -5,5 +5,5 @@ Maintainer: @DEB_MAINTAINER@
 Provides: killall, which
 Section: Administration
 Priority: important
-Description: killall, renice, script, time, which, getopt, what
+Description: killall, renice, script, time, which, getopt, what, hexdump
 Tag: purpose::console, role::hacker
