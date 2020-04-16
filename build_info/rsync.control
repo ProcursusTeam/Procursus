@@ -1,0 +1,9 @@
+Package: rsync
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_RSYNC_V@
+Section: Networking
+Priority: important
+Homepage: http://www.samba.org/rsync/
+Description: synchronize files between computers
+Tag: purpose::console, role::hacker

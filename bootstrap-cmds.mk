@@ -2,7 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS            += boostrap-cmds
+SUBPROJECTS            += bootstrap-cmds
 DOWNLOAD               += https://opensource.apple.com/tarballs/bootstrap_cmds/bootstrap_cmds-$(BOOTSTRAP-CMDS_VERSION).tar.gz
 BOOTSTRAP-CMDS_VERSION := 116
 DEB_BOOTSTRAP-CMDS_V   ?= $(BOOTSTRAP-CMDS_VERSION)

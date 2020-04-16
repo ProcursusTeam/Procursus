@@ -11,7 +11,7 @@ coreutils-setup: setup
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,coreutils-$(COREUTILS_VERSION).tar.xz,coreutils-$(COREUTILS_VERSION),coreutils)
 	mkdir -p $(BUILD_WORK)/coreutils/su
-	wget -ncq -P $(BUILD_WORK)/coreutils/su \
+	wget -q -nc -P $(BUILD_WORK)/coreutils/su \
 		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/usr.bin/su/su.c \
 		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/usr.bin/su/suutil.{c,h}
 

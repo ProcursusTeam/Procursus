@@ -1,0 +1,45 @@
+ifneq ($(CHECKRA1N_MEMO),1)
+$(error Use the main Makefile)
+endif
+
+SUBPROJECTS   += rsync
+DOWNLOAD      += https://download.samba.org/pub/rsync/src/rsync-$(RSYNC_VERSION).tar.gz{,.asc}
+RSYNC_VERSION := 3.1.3
+DEB_RSYNC_V   ?= $(RSYNC_VERSION)
+
+rsync-setup: setup
+	$(call PGP_VERIFY,rsync-$(RSYNC_VERSION).tar.gz,asc)
+	$(call EXTRACT_TAR,rsync-$(RSYNC_VERSION).tar.gz,rsync-$(RSYNC_VERSION),rsync)
+
+ifneq ($(wildcard $(BUILD_WORK)/rsync/.build_complete),)
+rsync:
+	@echo "Using previously built rsync."
+else
+rsync: rsync-setup
+	cd $(BUILD_WORK)/rsync && ./configure \
+		--host=$(GNU_HOST_TRIPLE) \
+		--prefix=/usr \
+		rsync_cv_HAVE_GETTIMEOFDAY_TZ=yes
+	+$(MAKE) -C $(BUILD_WORK)/rsync install \
+		DESTDIR=$(BUILD_STAGE)/rsync
+	touch $(BUILD_WORK)/rsync/.build_complete
+endif
+
+rsync-package: rsync-stage
+	# rsync.mk Package Structure
+	rm -rf $(BUILD_DIST)/rsync
+	mkdir -p $(BUILD_DIST)/rsync
+	
+	# rsync.mk Prep rsync
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/rsync/usr $(BUILD_DIST)/rsync
+	
+	# rsync.mk Sign
+	$(call SIGN,rsync,general.xml)
+	
+	# rsync.mk Make .debs
+	$(call PACK,rsync,DEB_RSYNC_V)
+	
+	# rsync.mk Build cleanup
+	rm -rf $(BUILD_DIST)/rsync
+
+.PHONY: rsync rsync-package
