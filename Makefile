@@ -297,12 +297,13 @@ setup:
 
 	wget -q -nc -P $(BUILD_SOURCE) $(DOWNLOAD)
 
-	mkdir -p $(BUILD_BASE)/usr/include/sys
+	mkdir -p $(BUILD_BASE)/usr/include/{sys,IOKit}
 
 	@# Copy headers from MacOSX.sdk
-	cp -a $(MACOSX_SYSROOT)/usr/include/{arpa,xpc} $(BUILD_BASE)/usr/include
-	cp -a $(MACOSX_SYSROOT)/usr/include/sys/tty*.h $(BUILD_BASE)/usr/include/sys
-	cp -a $(MACOSX_SYSROOT)/usr/include/{ar,launch,tzfile}.h $(BUILD_BASE)/usr/include
+	cp -a $(MACOSX_SYSROOT)/usr/include/{arpa,net,xpc} $(BUILD_BASE)/usr/include
+	cp -a $(MACOSX_SYSROOT)/usr/include/sys/{tty*,proc*,kern*}.h $(BUILD_BASE)/usr/include/sys
+	cp -a $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/ps $(BUILD_BASE)/usr/include/IOKit
+	cp -a $(MACOSX_SYSROOT)/usr/include/{ar,launch,libproc,tzfile}.h $(BUILD_BASE)/usr/include
 
 	@# Patch headers from iPhoneOS.sdk
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/stdlib.h > $(BUILD_BASE)/usr/include/stdlib.h
