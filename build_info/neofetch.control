@@ -1,0 +1,16 @@
+Package: neofetch
+Version: @DEB_NEOFETCH_V@
+Architecture: @DEB_ARCH@
+Priority: optional
+Section: Utilities
+Maintainer: @DEB_MAINTAINER@
+Author: Dylan Araps <dylan.araps@gmail.com>
+Depends: bash, gawk
+Replaces: com.matdev.neofetch-ios
+Homepage: https://github.com/dylanaraps/neofetch
+Description: Shows System Information with Distribution Logo
+ Neoftech is a cross-platform and easy-to-use system information
+ command line script that collects your system information
+ and display it on the terminal next to an image, it could be your
+ distributions logo or any ascii art of your choice.
+

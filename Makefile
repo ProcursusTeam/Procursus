@@ -94,7 +94,7 @@ SIGN =  find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \;
 		find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete ;
 		
 PACK =  $(FAKEROOT) find $(BUILD_DIST)/$(1) \( -name '*.la' -o -name '*.a' \) -type f -delete ; \
-		$(FAKEROOT) rm -rf $(BUILD_DIST)/$(1)/usr/share/{info,man,aclocal,doc} ; \
+		$(FAKEROOT) rm -rf $(BUILD_DIST)/$(1)/usr/share/{info,aclocal,doc} ; \
 		if [ -z $(3) ]; then \
 			echo Setting $(1) owner to 0:0. ; \
 			$(FAKEROOT) chown -R 0:0 $(BUILD_DIST)/$(1)/* ; \
