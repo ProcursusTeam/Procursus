@@ -295,7 +295,7 @@ setup:
 
 	git submodule update --init --recursive
 
-	wget -nc -P $(BUILD_SOURCE) $(DOWNLOAD)
+	wget -q -nc -P $(BUILD_SOURCE) $(DOWNLOAD)
 
 	mkdir -p $(BUILD_BASE)/usr/include/sys
 

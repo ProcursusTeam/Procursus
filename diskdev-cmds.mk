@@ -12,22 +12,22 @@ diskdev-cmds-setup: setup
 	mkdir -p $(BUILD_STAGE)/diskdev-cmds/{usr/{{s,}bin,libexec},sbin}
 
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
-	mkdir -p $(BUILD_WORK)/diskdev-cmds/include{arm,machine,{/System,}/sys,uuid}
+	mkdir -p $(BUILD_WORK)/diskdev-cmds/include/{arm,machine,{System/,}sys,uuid}
 	cp -a $(MACOSX_SYSROOT)/usr/include/sys/{disk,reboot,vnioctl,vmmeter}.h $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Versions/Current/Headers/sys/disklabel.h $(BUILD_WORK)/diskdev-cmds/include/sys
 	cp -a $(BUILD_BASE)/usr/include/stdlib.h $(BUILD_WORK)/diskdev-cmds/include
 
-	wget -nc -P $(BUILD_WORK)/diskdev-cmds/include \
+	wget -q -nc -P $(BUILD_WORK)/diskdev-cmds/include \
 		https://opensource.apple.com/source/libutil/libutil-57/mntopts.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/EXTERNAL_HEADERS/mach-o/nlist.h
-	wget -nc -P $(BUILD_WORK)/diskdev-cmds/include/arm \
+	wget -q -nc -P $(BUILD_WORK)/diskdev-cmds/include/arm \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/arm/disklabel.h
-	wget -nc -P $(BUILD_WORK)/diskdev-cmds/include/machine \
+	wget -q -nc -P $(BUILD_WORK)/diskdev-cmds/include/machine \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/machine/disklabel.h
-	wget -nc -P $(BUILD_WORK)/diskdev-cmds/include/sys \
+	wget -q -nc -P $(BUILD_WORK)/diskdev-cmds/include/sys \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/vnode.h
-	wget -nc -P $(BUILD_WORK)/diskdev-cmds/include/System/sys \
+	wget -q -nc -P $(BUILD_WORK)/diskdev-cmds/include/System/sys \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/fsctl.h
-	wget -nc -P $(BUILD_WORK)/diskdev-cmds/include/System/uuid \
+	wget -q -nc -P $(BUILD_WORK)/diskdev-cmds/include/System/uuid \
 		https://opensource.apple.com/source/Libc/Libc-1353.11.2/uuid/namespace.h
 
 ifneq ($(wildcard $(BUILD_WORK)/diskdev-cmds/.build_complete),)

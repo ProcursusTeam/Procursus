@@ -5,5 +5,5 @@ Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Multi-Arch: foreign
 Version: @DEB_DEVELOPER-CMDS_V@
-Description: ctags, error, rpcgen, unifdef
+Description: ctags, rpcgen, unifdef
 Tag: purpose::console, role::developer

@@ -10,7 +10,7 @@ DEB_GNUTLS_V   ?= $(GNUTLS_VERSION)
 gnutls-setup: setup
 	$(call EXTRACT_TAR,gnutls-$(GNUTLS_VERSION).tar.xz,gnutls-$(GNUTLS_VERSION),gnutls)
 	mkdir -p $(BUILD_WORK)/gnutls/lib/accelerated/aarch64/macosx
-	wget -nc -P $(BUILD_WORK)/gnutls/lib/accelerated/aarch64/macosx \
+	wget -q -nc -P $(BUILD_WORK)/gnutls/lib/accelerated/aarch64/macosx \
 		https://gitlab.com/gnutls/gnutls/-/raw/master/lib/accelerated/aarch64/macosx/aes-aarch64.s \
 		https://gitlab.com/gnutls/gnutls/-/raw/master/lib/accelerated/aarch64/macosx/ghash-aarch64.s \
 		https://gitlab.com/gnutls/gnutls/-/raw/master/lib/accelerated/aarch64/macosx/sha1-armv8.s \
