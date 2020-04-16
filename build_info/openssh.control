@@ -2,7 +2,7 @@ Package: openssh
 Version: @DEB_OPENSSH_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libressl
+Depends: libssl1.1
 Section: Networking
 Priority: important
 Description: secure remote access between machines

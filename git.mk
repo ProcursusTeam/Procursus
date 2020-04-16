@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/git/.build_complete),)
 git:
 	@echo "Using previously built git."
 else
-git: git-setup libressl curl pcre2 gettext
+git: git-setup openssl curl pcre2 gettext
 	cd $(BUILD_WORK)/git && $(MAKE) configure
 	cd $(BUILD_WORK)/git && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \

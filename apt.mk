@@ -58,7 +58,7 @@ apt-package: apt-stage
 	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/usr/libexec/apt/solvers/dump $(BUILD_DIST)/apt/usr/libexec/apt/solvers
 	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/usr/share $(BUILD_DIST)/apt/usr
 	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/{etc,var} $(BUILD_DIST)/apt
-	$(FAKEROOT) rm -f $(BUILD_DIST)/apt/usr/lib/libapt-{pkg,private}.dylib
+	$(FAKEROOT) rm -f $(BUILD_DIST)/apt/usr/lib/libapt-pkg.dylib
 	
 	# apt.mk Prep APT-Utils
 	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/usr/bin/apt-{extracttemplates,ftparchive,sortpkgs} $(BUILD_DIST)/apt-utils/usr/bin
@@ -66,7 +66,7 @@ apt-package: apt-stage
 	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/usr/libexec/apt/solvers/apt $(BUILD_DIST)/apt-utils/usr/libexec/apt/solvers
 	
 	# apt.mk Prep APT-Dev
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/usr/lib/libapt-{pkg,private}.dylib $(BUILD_DIST)/apt-dev/usr/lib
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/usr/lib/libapt-pkg.dylib $(BUILD_DIST)/apt-dev/usr/lib
 	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/usr/lib/pkgconfig $(BUILD_DIST)/apt-dev/usr/lib
 	$(FAKEROOT) cp -a $(BUILD_STAGE)/apt/usr/include $(BUILD_DIST)/apt-dev/usr
 	

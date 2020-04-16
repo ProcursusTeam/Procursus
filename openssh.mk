@@ -10,7 +10,7 @@ ifneq ($(wildcard openssh/.build_complete),)
 openssh:
 	@echo "Using previously built openssh."
 else
-openssh: setup libressl
+openssh: setup openssl
 	if ! [ -f openssh/configure ]; then \
 		cd openssh && autoreconf; \
 	fi
