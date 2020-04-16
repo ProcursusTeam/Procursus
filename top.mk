@@ -36,12 +36,16 @@ endif
 top-package: top-stage
 	# top.mk Package Structure
 	rm -rf $(BUILD_DIST)/top
+	mkdir -p $(BUILD_DIST)/top
 	
 	# top.mk Prep top
 	$(FAKEROOT) cp -a $(BUILD_STAGE)/top/usr $(BUILD_DIST)/top
 	
 	# top.mk Sign
 	$(call SIGN,top,top.xml)
+
+	# top.mk Permissions
+	chmod u+s $(BUILD_DIST)/top/usr/bin/top
 	
 	# top.mk Make .debs
 	$(call PACK,top,DEB_TOP_V)
