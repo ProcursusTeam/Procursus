@@ -1,0 +1,9 @@
+Package: bootstrap-cmds
+Version: @DEB_BOOTSTRAP-CMDS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Description: Mach interface and stub generator
+Name: Bootstrap Commands
+Tag: purpose::console, role::developer

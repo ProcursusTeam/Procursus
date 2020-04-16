@@ -156,8 +156,12 @@ ifneq ($(call HAS_COMMAND,cmake),1)
 $(error Install cmake)
 endif
 
-ifneq ($(call HAS_COMMAND,cmake),1)
-$(error Install cmake)
+ifneq ($(call HAS_COMMAND,yacc),1)
+$(error Install bison)
+endif
+
+ifneq ($(call HAS_COMMAND,lex),1)
+$(error Install flex)
 endif
 
 ifeq ($(call HAS_COMMAND,gpatch),1)
