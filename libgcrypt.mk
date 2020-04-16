@@ -10,6 +10,11 @@ DEB_LIBGCRYPT_V   ?= $(LIBGCRYPT_VERSION)
 libgcrypt-setup: setup
 	$(call PGP_VERIFY,libgcrypt-$(LIBGCRYPT_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libgcrypt-$(LIBGCRYPT_VERSION).tar.bz2,libgcrypt-$(LIBGCRYPT_VERSION),libgcrypt)
+	for ASM in $(BUILD_WORK)/libgcrypt/mpi/aarch64/*.S; do \
+		$(SED) -i '/.type/d' $$ASM; \
+		$(SED) -i '/.size/d' $$ASM; \
+		$(SED) -i 's/_gcry/__gcry/g' $$ASM; \
+	done
 
 ifneq ($(wildcard $(BUILD_WORK)/libgcrypt/.build_complete),)
 libgcrypt:
@@ -19,8 +24,7 @@ libgcrypt: libgcrypt-setup libgpg-error
 	cd $(BUILD_WORK)/libgcrypt && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
-		--with-gpg-error-prefix=$(BUILD_BASE)/usr \
-		--disable-asm
+		--with-gpg-error-prefix=$(BUILD_BASE)/usr
 	+$(MAKE) -C $(BUILD_WORK)/libgcrypt
 	+$(MAKE) -C $(BUILD_WORK)/libgcrypt install \
 		DESTDIR=$(BUILD_STAGE)/libgcrypt
