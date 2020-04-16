@@ -7,6 +7,7 @@ Maintainer: @DEB_MAINTAINER@
 Author: Dylan Araps <dylan.araps@gmail.com>
 Depends: bash, gawk
 Replaces: com.matdev.neofetch-ios
+Conflicts: com.matdev.neofetch-ios
 Homepage: https://github.com/dylanaraps/neofetch
 Description: Shows System Information with Distribution Logo
  Neoftech is a cross-platform and easy-to-use system information
