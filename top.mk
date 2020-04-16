@@ -18,8 +18,6 @@ top-setup: setup
 		https://opensource.apple.com/source/libutil/libutil-57/libutil.h
 	wget -nc -P $(BUILD_WORK)/top/include/mach \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/osfmk/mach/shared_region.h
-	wget -nc -P $(BUILD_WORK)/top \
-		https://opensource.apple.com/source/libutil/libutil-57/humanize_number.c
 	$(SED) -i 's/ARM:/ARM64:/g' $(BUILD_WORK)/top/libtop.c
 	$(SED) -i 's/ARM;/ARM64;/g' $(BUILD_WORK)/top/libtop.c
 
@@ -29,7 +27,7 @@ top:
 else
 top: top-setup ncurses
 	mkdir -p $(BUILD_STAGE)/top/usr/bin/
-	$(CC) $(CFLAGS) -isystem $(BUILD_WORK)/top/include -L $(BUILD_BASE)/usr/lib -o $(BUILD_STAGE)/top/usr/bin/top $(BUILD_WORK)/top/*.c -framework IOKit -framework CoreFoundation -lncursesw -lpanelw;
+	$(CC) $(CFLAGS) -isystem $(BUILD_WORK)/top/include -L $(BUILD_BASE)/usr/lib -o $(BUILD_STAGE)/top/usr/bin/top $(BUILD_WORK)/top/*.c -framework IOKit -framework CoreFoundation -lncursesw -lpanelw -lutil;
 	touch $(BUILD_WORK)/top/.build_complete
 endif
 
