@@ -30,6 +30,7 @@ inetutils: inetutils-setup ncurses readline
 	$(SED) -i 's/-ltermcap/-lncursesw/g' $(BUILD_WORK)/inetutils/telnetd/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/inetutils install \
 		DESTDIR=$(BUILD_STAGE)/inetutils
+	chmod 0755 $(BUILD_STAGE)/inetutils/usr/bin/*
 	$(LN) -sf ../usr/bin/ping $(BUILD_STAGE)/inetutils/bin
 	$(LN) -sf ../usr/bin/ping $(BUILD_STAGE)/inetutils/sbin
 	touch $(BUILD_WORK)/inetutils/.build_complete
