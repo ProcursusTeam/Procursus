@@ -2,7 +2,7 @@ Package: coreutils
 Version: @DEB_COREUTILS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: bash, profile.d
+Depends: zsh, profile.d
 Replaces: netatalk (<= 2.0.3-6), coreutils-bin, shell-cmds (<< 118-5)
 Provides: md5sum, sha1sum, coreutils-bin (=@DEB_COREUTILS_V@), dirname, kill, mktemp, su
 Section: Utilities
