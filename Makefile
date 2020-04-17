@@ -164,6 +164,10 @@ ifneq ($(call HAS_COMMAND,lex),1)
 $(error Install flex)
 endif
 
+ifneq ($(call HAS_COMMAND,groff),1)
+$(error Install groff)
+endif
+
 ifeq ($(call HAS_COMMAND,gpatch),1)
 PATCH := gpatch
 else ifeq ($(shell patch --version | grep -q 'GNU patch' && echo 1),1)
