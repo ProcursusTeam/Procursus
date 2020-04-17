@@ -245,8 +245,7 @@ bootstrap:: $(STRAPPROJECTS:%=%-package)
 		PKGNAME=$$(basename $$DEB | cut -f1 -d"_"); \
 		dpkg-deb -R $$DEB $(BUILD_STRAP)/strap; \
 		cp $(BUILD_STRAP)/strap/DEBIAN/md5sums $(BUILD_STRAP)/strap/Library/dpkg/info/$$PKGNAME.md5sums; \
-		dpkg-deb -c $$DEB | cut -f2- -d"." | awk -F'\\-\\>' '{print $$1}' > $(BUILD_STRAP)/strap/Library/dpkg/info/$$PKGNAME.list; \
-		$(SED) -i '1 s/$$/./' $(BUILD_STRAP)/strap/Library/dpkg/info/$$PKGNAME.list; \
+		dpkg-deb -c $$DEB | cut -f2- -d"." | awk -F'\\-\\>' '{print $$1}' | $(SED) '1 s/$$/./' | $(SED) 's/\/$$//' > $(BUILD_STRAP)/strap/Library/dpkg/info/$$PKGNAME.list; \
 		cp $(BUILD_INFO)/$$PKGNAME.{preinst,postinst,extrainst_,prerm,postrm} $(BUILD_STRAP)/strap/Library/dpkg/info 2>/dev/null || :; \
 		dpkg-deb --info $$DEB | $(SED) '/Package:/,$$!d' | $(SED) -e 's/^[ \t]*//' >> $(BUILD_STRAP)/strap/Library/dpkg/status; \
 		echo -e "Status: install ok installed\n" >> $(BUILD_STRAP)/strap/Library/dpkg/status; \
