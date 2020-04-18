@@ -33,9 +33,9 @@ ncurses: ncurses-setup
 		--without-normal \
 		--without-debug \
 		--enable-sigwinch \
-		--disable-mixed-case \
 		--enable-termcap \
 		--enable-pc-files \
+		--without-x11-rgb \
 		--with-pkg-config-libdir=/usr/lib/pkgconfig \
 		--enable-widec \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)"
