@@ -1,0 +1,45 @@
+ifneq ($(CHECKRA1N_MEMO),1)
+$(error Use the main Makefile)
+endif
+
+SUBPROJECTS    += tmux
+DOWNLOAD       += https://github.com/tmux/tmux/releases/download/$(TMUX_VERSION)/tmux-$(TMUX_VERSION).tar.gz
+TMUX_VERSION   := 3.0a
+DEB_TMUX_V     ?= $(TMUX_VERSION)
+
+tmux-setup: setup
+	$(call EXTRACT_TAR,tmux-$(TMUX_VERSION).tar.gz,tmux-$(TMUX_VERSION),tmux)
+
+ifneq ($(wildcard $(BUILD_WORK)/tmux/.build_complete),)
+tmux:
+	@echo "Using previously built tmux."
+else
+tmux: tmux-setup ncurses libevent libutf8proc
+	cd $(BUILD_WORK)/tmux && ./configure \
+		--host=$(GNU_HOST_TRIPLE) \
+		--prefix=/usr \
+		--enable-utf8proc \
+		PKG_CONFIG_LIBDIR=$(BUILD_BASE)/usr/lib
+	+$(MAKE) -C $(BUILD_WORK)/tmux install \
+		DESTDIR=$(BUILD_STAGE)/tmux
+	touch $(BUILD_WORK)/tmux/.build_complete
+endif
+
+tmux-package: tmux-stage
+	# tmux.mk Package Structure
+	rm -rf $(BUILD_DIST)/tmux
+	mkdir -p $(BUILD_DIST)/tmux
+	
+	# tmux.mk Prep tmux
+	$(FAKEROOT) cp -a $(BUILD_STAGE)/tmux/usr $(BUILD_DIST)/tmux
+	
+	# tmux.mk Sign
+	$(call SIGN,tmux,tmux.xml)
+	
+	# tmux.mk Make .debs
+	$(call PACK,tmux,DEB_TMUX_V)
+	
+	# tmux.mk Build cleanup
+	rm -rf $(BUILD_DIST)/tmux
+
+.PHONY: tmux tmux-package
