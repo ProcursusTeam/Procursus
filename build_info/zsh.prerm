@@ -1,0 +1,10 @@
+#!/usr/bin/zsh
+
+set -e
+
+if [ "$1" != "upgrade" ]; then
+    update-alternatives --remove sh /usr/bin/zsh
+    update-alternatives --remove bash /usr/bin/zsh
+fi
+
+
