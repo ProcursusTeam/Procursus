@@ -38,7 +38,7 @@ curl-package: curl-stage
 	mkdir -p $(BUILD_DIST)/curl
 	
 	# curl.mk Prep curl
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/curl/usr $(BUILD_DIST)/curl
+	cp -a $(BUILD_STAGE)/curl/usr $(BUILD_DIST)/curl
 	
 	# curl.mk Sign
 	$(call SIGN,curl,general.xml)

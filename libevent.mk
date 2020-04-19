@@ -32,7 +32,7 @@ libevent-package: libevent-stage
 	mkdir -p $(BUILD_DIST)/libevent
 	
 	# libevent.mk Prep libevent
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/libevent/usr $(BUILD_DIST)/libevent
+	cp -a $(BUILD_STAGE)/libevent/usr $(BUILD_DIST)/libevent
 	
 	# libevent.mk Sign
 	$(call SIGN,libevent,libevent.xml)

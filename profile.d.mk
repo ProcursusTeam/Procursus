@@ -23,7 +23,7 @@ profile.d-package: profile.d-stage
 	mkdir -p $(BUILD_DIST)/profile.d
 	
 	# profile.d.mk Prep profile.d
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/profile.d/etc $(BUILD_DIST)/profile.d
+	cp -a $(BUILD_STAGE)/profile.d/etc $(BUILD_DIST)/profile.d
 
 	# profile.d.mk Permissions
 	$(FAKEROOT) chmod a+x $(BUILD_DIST)/profile.d/etc/profile.d/terminal.sh

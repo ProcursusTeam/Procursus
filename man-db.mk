@@ -33,7 +33,7 @@ man-db-package: man-db-stage
 	mkdir -p $(BUILD_DIST)/man-db
 	
 	# man-db.mk Prep man-db
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/man-db/usr $(BUILD_DIST)/man-db
+	cp -a $(BUILD_STAGE)/man-db/usr $(BUILD_DIST)/man-db
 	
 	# man-db.mk Sign
 	$(call SIGN,man-db,general.xml)

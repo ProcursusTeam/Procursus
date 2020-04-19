@@ -26,7 +26,7 @@ cacerts-package: cacerts-stage
 	mkdir -p $(BUILD_DIST)/ca-certificates/usr/lib/ssl
 	
 	# cacerts.mk Prep ca-certificates
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/cacerts/etc $(BUILD_DIST)/ca-certificates
+	cp -a $(BUILD_STAGE)/cacerts/etc $(BUILD_DIST)/ca-certificates
 	ln -s /etc/ssl/certs $(BUILD_DIST)/ca-certificates/usr/lib/ssl
 	ln -s /etc/ssl/certs/cacert.pem $(BUILD_DIST)/ca-certificates/usr/lib/ssl
 

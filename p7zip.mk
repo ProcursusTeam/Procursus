@@ -39,8 +39,8 @@ p7zip-package: p7zip-stage
 	mkdir -p $(BUILD_DIST)/p7zip
 	
 	# p7zip.mk Prep p7zip
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/p7zip/usr $(BUILD_DIST)/p7zip
-	$(FAKEROOT) rm -rf $(BUILD_DIST)/p7zip/usr/man
+	cp -a $(BUILD_STAGE)/p7zip/usr $(BUILD_DIST)/p7zip
+	rm -rf $(BUILD_DIST)/p7zip/usr/man
 	
 	# p7zip.mk Sign
 	$(call SIGN,p7zip,general.xml)

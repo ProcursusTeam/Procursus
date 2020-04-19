@@ -31,7 +31,7 @@ gzip-package: gzip-stage
 	mkdir -p $(BUILD_DIST)/gzip
 	
 	# gzip.mk Prep gzip
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/gzip/usr $(BUILD_DIST)/gzip
+	cp -a $(BUILD_STAGE)/gzip/usr $(BUILD_DIST)/gzip
 	
 	# gzip.mk Sign
 	$(call SIGN,gzip,general.xml)

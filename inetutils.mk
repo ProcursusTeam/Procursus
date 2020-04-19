@@ -41,7 +41,7 @@ inetutils-package: inetutils-stage
 	mkdir -p $(BUILD_DIST)/inetutils
 	
 	# inetutils.mk Prep inetutils
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/inetutils/usr $(BUILD_DIST)/inetutils
+	cp -a $(BUILD_STAGE)/inetutils/usr $(BUILD_DIST)/inetutils
 	
 	# inetutils.mk Sign
 	$(call SIGN,inetutils,general.xml)

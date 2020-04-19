@@ -43,7 +43,7 @@ zsh-package: zsh-stage
 	mkdir -p $(BUILD_DIST)/zsh/bin
 	
 	# zsh.mk Prep zsh
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/zsh/usr $(BUILD_DIST)/zsh
+	cp -a $(BUILD_STAGE)/zsh/usr $(BUILD_DIST)/zsh
 	ln -s ../usr/bin/zsh $(BUILD_DIST)/zsh/bin/zsh
 	
 	# zsh.mk Sign

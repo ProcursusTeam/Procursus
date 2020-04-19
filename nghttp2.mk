@@ -33,11 +33,11 @@ nghttp2-package: nghttp2-stage
 	mkdir -p $(BUILD_DIST)/libnghttp2-{14,dev}/usr/lib
 	
 	# nghttp2.mk Prep libnghttp2-14
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/nghttp2/usr/lib/*.dylib $(BUILD_DIST)/libnghttp2-14/usr/lib
+	cp -a $(BUILD_STAGE)/nghttp2/usr/lib/*.dylib $(BUILD_DIST)/libnghttp2-14/usr/lib
 	
 	# nghttp2.mk Prep libnghttp2-dev
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/nghttp2/usr/lib/pkgconfig $(BUILD_DIST)/libnghttp2-dev/usr/lib
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/nghttp2/usr/include $(BUILD_DIST)/libnghttp2-dev/usr
+	cp -a $(BUILD_STAGE)/nghttp2/usr/lib/pkgconfig $(BUILD_DIST)/libnghttp2-dev/usr/lib
+	cp -a $(BUILD_STAGE)/nghttp2/usr/include $(BUILD_DIST)/libnghttp2-dev/usr
 	
 	#nghttp2.mk Sign
 	$(call SIGN,libnghttp2-14,general.xml)

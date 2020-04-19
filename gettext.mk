@@ -39,7 +39,7 @@ gettext-package: gettext-stage
 	mkdir -p $(BUILD_DIST)/gettext
 	
 	# gettext.mk Prep gettext
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/gettext/usr $(BUILD_DIST)/gettext
+	cp -a $(BUILD_STAGE)/gettext/usr $(BUILD_DIST)/gettext
 	
 	# gettext.mk Sign
 	$(call SIGN,gettext,general.xml)

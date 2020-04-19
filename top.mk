@@ -2,7 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS += top
+SUBPROJECTS   += top
 DOWNLOAD      += https://opensource.apple.com/tarballs/top/top-$(TOP_VERSION).tar.gz
 TOP_VERSION   := 125
 DEB_TOP_V     ?= $(TOP_VERSION)
@@ -37,7 +37,7 @@ top-package: top-stage
 	mkdir -p $(BUILD_DIST)/top
 	
 	# top.mk Prep top
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/top/usr $(BUILD_DIST)/top
+	cp -a $(BUILD_STAGE)/top/usr $(BUILD_DIST)/top
 	
 	# top.mk Sign
 	$(call SIGN,top,top.xml)

@@ -37,7 +37,7 @@ libssh2-package: libssh2-stage
 	mkdir -p $(BUILD_DIST)/libssh2
 	
 	# libssh2.mk Prep libssh2
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/libssh2/usr $(BUILD_DIST)/libssh2
+	cp -a $(BUILD_STAGE)/libssh2/usr $(BUILD_DIST)/libssh2
 	
 	# libssh2.mk Sign
 	$(call SIGN,libssh2,general.xml)

@@ -35,7 +35,7 @@ htop-package: htop-stage
 	rm -rf $(BUILD_DIST)/htop
 	
 	# htop.mk Prep htop
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/htop $(BUILD_DIST)
+	cp -a $(BUILD_STAGE)/htop $(BUILD_DIST)
 	
 	# htop.mk Make .debs
 	$(call PACK,htop,DEB_HTOP_V)

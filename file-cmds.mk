@@ -42,7 +42,7 @@ file-cmds-package: file-cmds-stage
 	rm -rf $(BUILD_DIST)/file-cmds
 	
 	# file-cmds.mk Prep file-cmds
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/file-cmds $(BUILD_DIST)
+	cp -a $(BUILD_STAGE)/file-cmds $(BUILD_DIST)
 
 	# file-cmds.mk Sign
 	$(call SIGN,file-cmds,general.xml)

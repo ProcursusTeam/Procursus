@@ -33,7 +33,7 @@ libgdbm-package: libgdbm-stage
 	mkdir -p $(BUILD_DIST)/libgdbm
 	
 	# libgdbm.mk Prep libgdbm
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/libgdbm/usr $(BUILD_DIST)/libgdbm
+	cp -a $(BUILD_STAGE)/libgdbm/usr $(BUILD_DIST)/libgdbm
 	
 	# libgdbm.mk Sign
 	$(call SIGN,libgdbm,general.xml)

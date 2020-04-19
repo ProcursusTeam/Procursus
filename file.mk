@@ -35,7 +35,7 @@ file-package: file-stage
 	mkdir -p $(BUILD_DIST)/file
 	
 	# file.mk Prep file
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/file/usr $(BUILD_DIST)/file
+	cp -a $(BUILD_STAGE)/file/usr $(BUILD_DIST)/file
 	
 	# file.mk Sign
 	$(call SIGN,file,general.xml)

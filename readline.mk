@@ -46,7 +46,7 @@ readline-package: readline-stage
 	mkdir -p $(BUILD_DIST)/readline
 	
 	# readline.mk Prep readline
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/readline/usr $(BUILD_DIST)/readline
+	cp -a $(BUILD_STAGE)/readline/usr $(BUILD_DIST)/readline
 	
 	# readline.mk Sign
 	$(call SIGN,readline,general.xml)

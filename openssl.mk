@@ -46,15 +46,15 @@ openssl-package: openssl-stage
 	mkdir -p $(BUILD_DIST)/{openssl/usr/bin,libssl{1.1,-dev}/usr/lib}
 
 	# openssl.mk Prep libssl1.1
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/openssl/usr/lib $(BUILD_DIST)/libssl1.1/usr
-	$(FAKEROOT) rm -rf $(BUILD_DIST)/libssl1.1/usr/lib/{lib{ssl,crypto}.{a,dylib},pkgconfig}
+	cp -a $(BUILD_STAGE)/openssl/usr/lib $(BUILD_DIST)/libssl1.1/usr
+	rm -rf $(BUILD_DIST)/libssl1.1/usr/lib/{lib{ssl,crypto}.{a,dylib},pkgconfig}
 
 	# openssl.mk Prep libssl-dev
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/openssl/usr/lib/{lib{ssl,crypto}.{a,dylib},pkgconfig} $(BUILD_DIST)/libssl-dev/usr/lib
+	cp -a $(BUILD_STAGE)/openssl/usr/lib/{lib{ssl,crypto}.{a,dylib},pkgconfig} $(BUILD_DIST)/libssl-dev/usr/lib
 	
 	# openssl.mk Prep openssl
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/openssl/etc $(BUILD_DIST)/openssl
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/openssl/usr/bin/* $(BUILD_DIST)/openssl/usr/bin
+	cp -a $(BUILD_STAGE)/openssl/etc $(BUILD_DIST)/openssl
+	cp -a $(BUILD_STAGE)/openssl/usr/bin/* $(BUILD_DIST)/openssl/usr/bin
 	
 	# openssl.mk Sign
 	$(call SIGN,libssl1.1,general.xml)

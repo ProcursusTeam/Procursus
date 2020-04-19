@@ -29,7 +29,7 @@ basic-cmds-package: basic-cmds-stage
 	rm -rf $(BUILD_DIST)/basic-cmds
 	
 	# basic-cmds.mk Prep basic-cmds
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/basic-cmds $(BUILD_DIST)
+	cp -a $(BUILD_STAGE)/basic-cmds $(BUILD_DIST)
 
 	# basic-cmds.mk Sign
 	$(call SIGN,basic-cmds,general.xml)

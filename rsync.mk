@@ -31,7 +31,7 @@ rsync-package: rsync-stage
 	mkdir -p $(BUILD_DIST)/rsync
 	
 	# rsync.mk Prep rsync
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/rsync/usr $(BUILD_DIST)/rsync
+	cp -a $(BUILD_STAGE)/rsync/usr $(BUILD_DIST)/rsync
 	
 	# rsync.mk Sign
 	$(call SIGN,rsync,general.xml)

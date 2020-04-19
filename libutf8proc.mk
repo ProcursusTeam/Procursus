@@ -32,7 +32,7 @@ libutf8proc-package: libutf8proc-stage
 	mkdir -p $(BUILD_DIST)/libutf8proc
 	
 	# libutf8proc.mk Prep libutf8proc
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/libutf8proc/usr $(BUILD_DIST)/libutf8proc
+	cp -a $(BUILD_STAGE)/libutf8proc/usr $(BUILD_DIST)/libutf8proc
 	
 	# libutf8proc.mk Sign
 	$(call SIGN,libutf8proc,libutf8proc.xml)

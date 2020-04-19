@@ -30,7 +30,7 @@ uikittools-package: uikittools-stage
 	mkdir -p $(BUILD_DIST)/uikittools
 	
 	# uikittools.mk Prep uikittools
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/uikittools/usr $(BUILD_DIST)/uikittools
+	cp -a $(BUILD_STAGE)/uikittools/usr $(BUILD_DIST)/uikittools
 	
 	# uikittools.mk Make .debs
 	$(call PACK,uikittools,DEB_UIKITTOOLS_V)

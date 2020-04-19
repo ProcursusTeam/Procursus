@@ -38,7 +38,7 @@ nano-package: nano-stage
 	mkdir -p $(BUILD_DIST)/nano
 	
 	# nano.mk Prep nano
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/nano/usr $(BUILD_DIST)/nano
+	cp -a $(BUILD_STAGE)/nano/usr $(BUILD_DIST)/nano
 	
 	# nano.mk Sign
 	$(call SIGN,nano,general.xml)

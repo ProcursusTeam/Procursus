@@ -37,7 +37,7 @@ sed-package: sed-stage
 	mkdir -p $(BUILD_DIST)/sed
 	
 	# sed.mk Prep sed
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/sed/usr $(BUILD_DIST)/sed
+	cp -a $(BUILD_STAGE)/sed/usr $(BUILD_DIST)/sed
 	
 	# sed.mk Sign
 	$(call SIGN,sed,general.xml)

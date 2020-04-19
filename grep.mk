@@ -34,7 +34,7 @@ grep-package: grep-stage
 	mkdir -p $(BUILD_DIST)/grep
 	
 	# grep.mk Prep grep
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/grep/usr $(BUILD_DIST)/grep
+	cp -a $(BUILD_STAGE)/grep/usr $(BUILD_DIST)/grep
 	
 	# grep.mk Sign
 	$(call SIGN,grep,general.xml)

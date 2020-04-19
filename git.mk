@@ -55,7 +55,7 @@ git-package: git-stage
 	mkdir -p $(BUILD_DIST)/git
 	
 	# git.mk Prep git
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/git/usr $(BUILD_DIST)/git
+	cp -a $(BUILD_STAGE)/git/usr $(BUILD_DIST)/git
 	
 	# git.mk Sign
 	$(call SIGN,git,general.xml)

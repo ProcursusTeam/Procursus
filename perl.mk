@@ -67,7 +67,7 @@ perl-package: perl-stage
 	mkdir -p $(BUILD_DIST)/perl
 	
 	# perl.mk Prep perl
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/perl/usr $(BUILD_DIST)/perl
+	cp -a $(BUILD_STAGE)/perl/usr $(BUILD_DIST)/perl
 	
 	# perl.mk Sign
 	$(call SIGN,perl,general.xml)

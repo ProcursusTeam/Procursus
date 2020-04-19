@@ -38,7 +38,7 @@ findutils-package: findutils-stage
 	mkdir -p $(BUILD_DIST)/findutils
 	
 	# findutils.mk Prep findutils
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/findutils/usr $(BUILD_DIST)/findutils
+	cp -a $(BUILD_STAGE)/findutils/usr $(BUILD_DIST)/findutils
 	
 	# findutils.mk Sign
 	$(call SIGN,findutils,general.xml)

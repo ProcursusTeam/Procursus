@@ -35,7 +35,7 @@ p11-kit-package: p11-kit-stage
 	mkdir -p $(BUILD_DIST)/p11-kit
 	
 	# p11-kit.mk Prep p11-kit
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/p11-kit/usr $(BUILD_DIST)/p11-kit
+	cp -a $(BUILD_STAGE)/p11-kit/usr $(BUILD_DIST)/p11-kit
 	
 	# p11-kit.mk Sign
 	$(call SIGN,p11-kit,general.xml)

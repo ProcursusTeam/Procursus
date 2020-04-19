@@ -117,7 +117,7 @@ network-cmds-package: network-cmds-stage
 	rm -rf $(BUILD_DIST)/network-cmds
 	
 	# network-cmds.mk Prep network-cmds
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/network-cmds $(BUILD_DIST)
+	cp -a $(BUILD_STAGE)/network-cmds $(BUILD_DIST)
 
 	# network-cmds.mk Sign
 	$(call SIGN,network-cmds,general.xml)

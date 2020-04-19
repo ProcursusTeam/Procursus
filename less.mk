@@ -34,7 +34,7 @@ less-package: less-stage
 	mkdir -p $(BUILD_DIST)/less/{bin,etc/profile.d}
 	
 	# less.mk Prep less
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/less/usr $(BUILD_DIST)/less
+	cp -a $(BUILD_STAGE)/less/usr $(BUILD_DIST)/less
 	cp $(BUILD_INFO)/less.sh $(BUILD_DIST)/less/etc/profile.d
 	ln -s /usr/bin/less $(BUILD_DIST)/less/bin/more
 	ln -s /usr/bin/less $(BUILD_DIST)/less/usr/bin/more

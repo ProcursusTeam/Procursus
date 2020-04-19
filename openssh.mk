@@ -33,7 +33,7 @@ openssh-package: openssh-stage
 	mkdir -p $(BUILD_DIST)/openssh
 	
 	# openssh.mk Prep openssh
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/openssh/{usr,etc,var,Library} $(BUILD_DIST)/openssh
+	cp -a $(BUILD_STAGE)/openssh/{usr,etc,var,Library} $(BUILD_DIST)/openssh
 	
 	# openssh.mk Sign
 	$(call SIGN,openssh,general.xml)

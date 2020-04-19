@@ -76,7 +76,7 @@ system-cmds-package: system-cmds-stage
 	rm -rf $(BUILD_DIST)/system-cmds
 	
 	# system-cmds.mk Prep system-cmds
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/system-cmds $(BUILD_DIST)
+	cp -a $(BUILD_STAGE)/system-cmds $(BUILD_DIST)
 
 	# system-cmds.mk Sign
 	$(call SIGN,system-cmds,general.xml)

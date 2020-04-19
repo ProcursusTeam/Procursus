@@ -26,7 +26,7 @@ darwintools-package: darwintools-stage
 	mkdir -p $(BUILD_DIST)/darwintools
 	
 	# darwintools.mk Prep darwintools
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/darwintools/usr $(BUILD_DIST)/darwintools
+	cp -a $(BUILD_STAGE)/darwintools/usr $(BUILD_DIST)/darwintools
 	
 	# darwintools.mk Sign
 	$(call SIGN,darwintools,general.xml)

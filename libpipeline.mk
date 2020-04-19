@@ -33,7 +33,7 @@ libpipeline-package: libpipeline-stage
 	mkdir -p $(BUILD_DIST)/libpipeline
 	
 	# libpipeline.mk Prep libpipeline
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/libpipeline/usr $(BUILD_DIST)/libpipeline
+	cp -a $(BUILD_STAGE)/libpipeline/usr $(BUILD_DIST)/libpipeline
 	
 	# libpipeline.mk Sign
 	$(call SIGN,libpipeline,general.xml)

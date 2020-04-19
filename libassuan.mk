@@ -34,7 +34,7 @@ libassuan-package: libassuan-stage
 	mkdir -p $(BUILD_DIST)/libassuan
 	
 	# libassuan.mk Prep libassuan
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/libassuan/usr $(BUILD_DIST)/libassuan
+	cp -a $(BUILD_STAGE)/libassuan/usr $(BUILD_DIST)/libassuan
 	
 	# libassuan.mk Sign
 	$(call SIGN,libassuan,general.xml)

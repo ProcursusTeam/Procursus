@@ -34,7 +34,7 @@ zstd-package: zstd-stage
 	mkdir -p $(BUILD_DIST)/zstd
 	
 	# zstd.mk Prep zstd
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/zstd/usr $(BUILD_DIST)/zstd
+	cp -a $(BUILD_STAGE)/zstd/usr $(BUILD_DIST)/zstd
 	
 	# zstd.mk Sign
 	$(call SIGN,zstd,general.xml)

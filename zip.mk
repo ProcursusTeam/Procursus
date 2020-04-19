@@ -35,8 +35,9 @@ zip-package: zip-stage
 	mkdir -p $(BUILD_DIST)/zip
 	
 	# zip.mk Prep zip
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/zip/usr $(BUILD_DIST)/zip
-	$(FAKEROOT) rm -rf $(BUILD_DIST)/zip/usr/man
+	cp -a $(BUILD_STAGE)/zip/usr $(BUILD_DIST)/zip
+	mkdir -p $(BUILD_DIST)/zip/usr/share
+	mv $(BUILD_DIST)/zip/usr/man $(BUILD_DIST)/zip/usr/share
 	
 	# zip.mk Sign
 	$(call SIGN,zip,general.xml)

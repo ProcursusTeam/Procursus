@@ -31,7 +31,7 @@ tmux-package: tmux-stage
 	mkdir -p $(BUILD_DIST)/tmux
 	
 	# tmux.mk Prep tmux
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/tmux/usr $(BUILD_DIST)/tmux
+	cp -a $(BUILD_STAGE)/tmux/usr $(BUILD_DIST)/tmux
 	
 	# tmux.mk Sign
 	$(call SIGN,tmux,tmux.xml)

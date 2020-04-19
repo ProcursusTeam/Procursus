@@ -36,8 +36,8 @@ berkeleydb-package: berkeleydb-stage
 	rm -rf $(BUILD_DIST)/berkeleydb
 	
 	# berkeleydb.mk Prep berkeleydb
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/berkeleydb $(BUILD_DIST)
-	$(FAKEROOT) rm -rf $(BUILD_DIST)/berkeleydb/usr/docs
+	cp -a $(BUILD_STAGE)/berkeleydb $(BUILD_DIST)
+	rm -rf $(BUILD_DIST)/berkeleydb/usr/docs
 	
 	# berkeleydb.mk Sign
 	$(call SIGN,berkeleydb,general.xml)

@@ -45,7 +45,7 @@ gnutls-package: gnutls-stage
 	mkdir -p $(BUILD_DIST)/gnutls
 	
 	# gnutls.mk Prep gnutls
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/gnutls/usr $(BUILD_DIST)/gnutls
+	cp -a $(BUILD_STAGE)/gnutls/usr $(BUILD_DIST)/gnutls
 	
 	# gnutls.mk Sign
 	$(call SIGN,gnutls,general.xml)

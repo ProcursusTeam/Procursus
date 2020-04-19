@@ -42,7 +42,7 @@ fakeroot-package: fakeroot-stage
 	mkdir -p $(BUILD_DIST)/fakeroot
 	
 	# fakeroot.mk Prep fakeroot
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/fakeroot/usr $(BUILD_DIST)/fakeroot
+	cp -a $(BUILD_STAGE)/fakeroot/usr $(BUILD_DIST)/fakeroot
 	
 	# fakeroot.mk Sign
 	$(call SIGN,fakeroot,general.xml)

@@ -83,7 +83,7 @@ bash-package: bash-stage
 	mkdir -p $(BUILD_DIST)/bash/usr
 
 	# bash.mk Prep bash
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/bash/usr/{bin,include,lib} $(BUILD_DIST)/bash/usr
+	cp -a $(BUILD_STAGE)/bash/usr/{bin,include,lib} $(BUILD_DIST)/bash/usr
 	ln -s bash $(BUILD_DIST)/bash/usr/bin/sh
 
 	# bash.mk Sign

@@ -39,7 +39,7 @@ libgcrypt-package: libgcrypt-stage
 	mkdir -p $(BUILD_DIST)/libgcrypt
 	
 	# libgcrypt.mk Prep libgcrypt
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/libgcrypt/usr $(BUILD_DIST)/libgcrypt
+	cp -a $(BUILD_STAGE)/libgcrypt/usr $(BUILD_DIST)/libgcrypt
 	
 	# libgcrypt.mk Sign
 	$(call SIGN,libgcrypt,general.xml)

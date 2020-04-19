@@ -74,7 +74,7 @@ diskdev-cmds-package: diskdev-cmds-stage
 	rm -rf $(BUILD_DIST)/diskdev-cmds
 	
 	# diskdev-cmds.mk Prep diskdev-cmds
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/diskdev-cmds $(BUILD_DIST)
+	cp -a $(BUILD_STAGE)/diskdev-cmds $(BUILD_DIST)
 
 	# diskdev-cmds.mk Sign
 	$(call SIGN,diskdev-cmds,general.xml)

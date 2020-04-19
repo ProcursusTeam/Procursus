@@ -40,7 +40,7 @@ gnupg-package: gnupg-stage
 	mkdir -p $(BUILD_DIST)/gnupg
 	
 	# gnupg.mk Prep gnupg
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/gnupg/usr $(BUILD_DIST)/gnupg
+	cp -a $(BUILD_STAGE)/gnupg/usr $(BUILD_DIST)/gnupg
 	
 	# gnupg.mk Sign
 	$(call SIGN,gnupg,general.xml)

@@ -35,7 +35,7 @@ groff-package: groff-stage
 	mkdir -p $(BUILD_DIST)/groff
 	
 	# groff.mk Prep groff
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/groff/usr $(BUILD_DIST)/groff
+	cp -a $(BUILD_STAGE)/groff/usr $(BUILD_DIST)/groff
 	
 	# groff.mk Sign
 	$(call SIGN,groff,general.xml)

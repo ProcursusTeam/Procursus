@@ -79,7 +79,7 @@ ncurses-package: ncurses-stage
 	mkdir -p $(BUILD_DIST)/ncurses
 	
 	# ncurses.mk Prep ncurses
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/ncurses/usr $(BUILD_DIST)/ncurses
+	cp -a $(BUILD_STAGE)/ncurses/usr $(BUILD_DIST)/ncurses
 	
 	# ncurses.mk Sign
 	$(call SIGN,ncurses,general.xml)

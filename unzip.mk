@@ -37,8 +37,9 @@ unzip-package: unzip-stage
 	mkdir -p $(BUILD_DIST)/unzip
 	
 	# unzip.mk Prep unzip
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/unzip/usr $(BUILD_DIST)/unzip
-	$(FAKEROOT) rm -rf $(BUILD_DIST)/unzip/usr/man
+	cp -a $(BUILD_STAGE)/unzip/usr $(BUILD_DIST)/unzip
+	mkdir -p $(BUILD_DIST)/unzip/usr/share
+	mv $(BUILD_DIST)/unzip/usr/man $(BUILD_DIST)/unzip/usr/share
 	
 	# unzip.mk Sign
 	$(call SIGN,unzip,general.xml)

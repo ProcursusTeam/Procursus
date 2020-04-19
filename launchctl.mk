@@ -15,7 +15,7 @@ launchctl-package: launchctl-stage
 	mkdir -p $(BUILD_DIST)/launchctl/{usr/bin,bin}
 
 	# launchctl.mk Prep launchctl
-	$(FAKEROOT) cp -a $(BUILD_INFO)/launchctl $(BUILD_DIST)/launchctl/usr/bin
+	cp -a $(BUILD_INFO)/launchctl $(BUILD_DIST)/launchctl/usr/bin
 	ln -s /usr/bin/launchctl $(BUILD_DIST)/launchctl/bin/launchctl
 
 	# launchctl.mk Sign launchctl

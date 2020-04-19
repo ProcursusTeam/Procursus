@@ -30,7 +30,7 @@ gawk-package: gawk-stage
 	rm -rf $(BUILD_DIST)/gawk
 	
 	# gawk.mk Prep gawk
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/gawk $(BUILD_DIST)
+	cp -a $(BUILD_STAGE)/gawk $(BUILD_DIST)
 	
 	# gawk.mk Sign
 	$(call SIGN,gawk,general.xml)

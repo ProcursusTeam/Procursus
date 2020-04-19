@@ -35,7 +35,7 @@ libgpg-error-package: libgpg-error-stage
 	mkdir -p $(BUILD_DIST)/libgpg-error
 	
 	# libgpg-error.mk Prep libgpg-error
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/libgpg-error/usr $(BUILD_DIST)/libgpg-error
+	cp -a $(BUILD_STAGE)/libgpg-error/usr $(BUILD_DIST)/libgpg-error
 	
 	# libgpg-error.mk Sign
 	$(call SIGN,libgpg-error,general.xml)

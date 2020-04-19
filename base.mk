@@ -16,7 +16,7 @@ base-package: base-stage
 	mkdir -p $(BUILD_DIST)/base
 	
 	# base.mk Prep base
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/base/* $(BUILD_DIST)/base
+	cp -a $(BUILD_STAGE)/base/* $(BUILD_DIST)/base
 
 	# base.mk Permissions
 	$(FAKEROOT) chown 0:80 $(BUILD_DIST)/base/{,Applications,Library/{,Frameworks,Preferences,Ringtones,Wallpaper},etc,tmp,var/{,db}}

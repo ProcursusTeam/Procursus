@@ -37,7 +37,7 @@ tar-package: tar-stage
 	mkdir -p $(BUILD_DIST)/tar/bin
 	
 	# tar.mk Prep tar
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/tar/usr $(BUILD_DIST)/tar
+	cp -a $(BUILD_STAGE)/tar/usr $(BUILD_DIST)/tar
 	ln -s /usr/bin/tar $(BUILD_DIST)/tar/bin/tar
 	
 	# tar.mk Sign

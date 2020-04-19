@@ -34,7 +34,7 @@ libksba-package: libksba-stage
 	mkdir -p $(BUILD_DIST)/libksba
 	
 	# libksba.mk Prep libksba
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/libksba/usr $(BUILD_DIST)/libksba
+	cp -a $(BUILD_STAGE)/libksba/usr $(BUILD_DIST)/libksba
 	
 	# libksba.mk Sign
 	$(call SIGN,libksba,general.xml)

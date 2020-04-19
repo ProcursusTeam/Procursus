@@ -43,7 +43,7 @@ coreutils-package: coreutils-stage
 	mkdir -p $(BUILD_DIST)/coreutils/{etc/profile.d,bin,usr/sbin}
 	
 	# coreutils.mk Prep coreutils
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/coreutils/usr $(BUILD_DIST)/coreutils
+	cp -a $(BUILD_STAGE)/coreutils/usr $(BUILD_DIST)/coreutils
 	ln -s /usr/bin/chown $(BUILD_DIST)/coreutils/usr/sbin
 	ln -s /usr/bin/chown $(BUILD_DIST)/coreutils/bin
 	ln -s /usr/bin/chroot $(BUILD_DIST)/coreutils/usr/sbin

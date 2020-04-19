@@ -33,7 +33,7 @@ libunistring-package: libunistring-stage
 	mkdir -p $(BUILD_DIST)/libunistring
 	
 	# libunistring.mk Prep libunistring
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/libunistring/usr $(BUILD_DIST)/libunistring
+	cp -a $(BUILD_STAGE)/libunistring/usr $(BUILD_DIST)/libunistring
 	
 	# libunistring.mk Sign
 	$(call SIGN,libunistring,general.xml)

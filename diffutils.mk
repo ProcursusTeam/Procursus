@@ -32,7 +32,7 @@ diffutils-package: diffutils-stage
 	mkdir -p $(BUILD_DIST)/diffutils
 	
 	# diffutils.mk Prep diffutils
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/diffutils/usr $(BUILD_DIST)/diffutils
+	cp -a $(BUILD_STAGE)/diffutils/usr $(BUILD_DIST)/diffutils
 	
 	# diffutils.mk Sign
 	$(call SIGN,diffutils,general.xml)

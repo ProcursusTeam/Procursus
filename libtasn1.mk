@@ -33,7 +33,7 @@ libtasn1-package: libtasn1-stage
 	mkdir -p $(BUILD_DIST)/libtasn1
 	
 	# libtasn1.mk Prep libtasn1
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/libtasn1/usr $(BUILD_DIST)/libtasn1
+	cp -a $(BUILD_STAGE)/libtasn1/usr $(BUILD_DIST)/libtasn1
 	
 	# libtasn1.mk Sign
 	$(call SIGN,libtasn1,general.xml)

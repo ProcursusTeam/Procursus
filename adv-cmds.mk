@@ -34,7 +34,7 @@ adv-cmds-package: adv-cmds-stage
 	rm -rf $(BUILD_DIST)/adv-cmds
 	
 	# adv-cmds.mk Prep adv-cmds
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/adv-cmds $(BUILD_DIST)
+	cp -a $(BUILD_STAGE)/adv-cmds $(BUILD_DIST)
 
 	# adv-cmds.mk Sign
 	$(call SIGN,adv-cmds,general.xml)

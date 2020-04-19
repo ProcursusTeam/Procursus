@@ -34,7 +34,7 @@ shell-cmds-package: shell-cmds-stage
 	rm -rf $(BUILD_DIST)/shell-cmds
 	
 	# shell-cmds.mk Prep shell-cmds
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/shell-cmds $(BUILD_DIST)
+	cp -a $(BUILD_STAGE)/shell-cmds $(BUILD_DIST)
 
 	# shell-cmds.mk Sign
 	$(call SIGN,shell-cmds,general.xml)

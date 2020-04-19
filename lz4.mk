@@ -34,7 +34,7 @@ lz4-package: lz4-stage
 	mkdir -p $(BUILD_DIST)/lz4
 	
 	# lz4.mk Prep lz4
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/lz4/usr $(BUILD_DIST)/lz4
+	cp -a $(BUILD_STAGE)/lz4/usr $(BUILD_DIST)/lz4
 	
 	# lz4.mk Sign
 	$(call SIGN,lz4,general.xml)

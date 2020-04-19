@@ -30,7 +30,7 @@ developer-cmds-package: developer-cmds-stage
 	rm -rf $(BUILD_DIST)/developer-cmds
 	
 	# developer-cmds.mk Prep developer-cmds
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/developer-cmds $(BUILD_DIST)
+	cp -a $(BUILD_STAGE)/developer-cmds $(BUILD_DIST)
 
 	# developer-cmds.mk Sign
 	$(call SIGN,developer-cmds,general.xml)

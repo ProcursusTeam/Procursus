@@ -33,7 +33,7 @@ nettle-package: nettle-stage
 	mkdir -p $(BUILD_DIST)/nettle
 	
 	# nettle.mk Prep nettle
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/nettle/usr $(BUILD_DIST)/nettle
+	cp -a $(BUILD_STAGE)/nettle/usr $(BUILD_DIST)/nettle
 	
 	# nettle.mk Sign
 	$(call SIGN,nettle,general.xml)

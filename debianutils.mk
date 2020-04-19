@@ -32,7 +32,7 @@ debianutils-package: debianutils-stage
 	mkdir -p $(BUILD_DIST)/debianutils/bin
 	
 	# debianutils.mk Prep debianutils
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/debianutils/usr $(BUILD_DIST)/debianutils
+	cp -a $(BUILD_STAGE)/debianutils/usr $(BUILD_DIST)/debianutils
 	ln -s /usr/bin/run-parts $(BUILD_DIST)/debianutils/bin
 	
 	# debianutils.mk Sign

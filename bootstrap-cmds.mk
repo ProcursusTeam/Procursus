@@ -31,12 +31,12 @@ bootstrap-cmds-package: bootstrap-cmds-stage
 	rm -rf $(BUILD_DIST)/bootstrap-cmds
 	
 	# bootstrap-cmds.mk Prep bootstrap-cmds
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/bootstrap-cmds $(BUILD_DIST)
+	cp -a $(BUILD_STAGE)/bootstrap-cmds $(BUILD_DIST)
 
 	# bootstrap-cmds.mk Sign
 	$(call SIGN,bootstrap-cmds,general.xml)
 
-	# system-cmds.mk Permissions
+	# bootstrap-cmds.mk Permissions
 	$(FAKEROOT) chmod a+x $(BUILD_DIST)/bootstrap-cmds/usr/bin/mig
 	
 	# bootstrap-cmds.mk Make .debs

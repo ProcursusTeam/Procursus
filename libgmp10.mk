@@ -34,7 +34,7 @@ libgmp10-package: libgmp10-stage
 	mkdir -p $(BUILD_DIST)/libgmp10
 	
 	# libgmp10.mk Prep libgmp10
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/libgmp10/usr $(BUILD_DIST)/libgmp10
+	cp -a $(BUILD_STAGE)/libgmp10/usr $(BUILD_DIST)/libgmp10
 	
 	# libgmp10.mk Sign
 	$(call SIGN,libgmp10,general.xml)

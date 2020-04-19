@@ -42,7 +42,7 @@ pcre-package: pcre-stage
 	mkdir -p $(BUILD_DIST)/libpcre
 	
 	# pcre.mk Prep pcre
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/pcre/usr $(BUILD_DIST)/libpcre
+	cp -a $(BUILD_STAGE)/pcre/usr $(BUILD_DIST)/libpcre
 	
 	# pcre.mk Sign
 	$(call SIGN,libpcre,general.xml)

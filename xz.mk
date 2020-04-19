@@ -36,7 +36,7 @@ xz-package: xz-stage
 	mkdir -p $(BUILD_DIST)/xz-utils
 	
 	# xz.mk Prep xz-utils
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/xz/usr $(BUILD_DIST)/xz-utils
+	cp -a $(BUILD_STAGE)/xz/usr $(BUILD_DIST)/xz-utils
 	
 	# xz.mk Sign
 	$(call SIGN,xz-utils,general.xml)

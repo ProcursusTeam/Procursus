@@ -26,7 +26,7 @@ neofetch-package: neofetch-stage
 	rm -rf $(BUILD_DIST)/neofetch
 	
 	# neofetch.mk Prep neofetch
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/neofetch $(BUILD_DIST)
+	cp -a $(BUILD_STAGE)/neofetch $(BUILD_DIST)
 	
 	# neofetch.mk Make .debs
 	$(call PACK,neofetch,DEB_NEOFETCH_V)

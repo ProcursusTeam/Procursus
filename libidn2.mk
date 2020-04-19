@@ -33,7 +33,7 @@ libidn2-package: libidn2-stage
 	mkdir -p $(BUILD_DIST)/libidn2
 	
 	# libidn2.mk Prep libidn2
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/libidn2/usr $(BUILD_DIST)/libidn2
+	cp -a $(BUILD_STAGE)/libidn2/usr $(BUILD_DIST)/libidn2
 	
 	# libidn2.mk Sign
 	$(call SIGN,libidn2,general.xml)

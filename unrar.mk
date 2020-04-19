@@ -42,7 +42,7 @@ unrar-package: unrar-stage
 	mkdir -p $(BUILD_DIST)/unrar/bin
 	
 	# unrar.mk Prep unrar
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/unrar/usr $(BUILD_DIST)/unrar
+	cp -a $(BUILD_STAGE)/unrar/usr $(BUILD_DIST)/unrar
 	
 	# unrar.mk Sign
 	$(call SIGN,unrar,general.xml)

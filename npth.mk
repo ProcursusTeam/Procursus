@@ -33,7 +33,7 @@ npth-package: npth-stage
 	mkdir -p $(BUILD_DIST)/npth
 	
 	# npth.mk Prep npth
-	$(FAKEROOT) cp -a $(BUILD_STAGE)/npth/usr $(BUILD_DIST)/npth
+	cp -a $(BUILD_STAGE)/npth/usr $(BUILD_DIST)/npth
 	
 	# npth.mk Sign
 	$(call SIGN,npth,general.xml)
