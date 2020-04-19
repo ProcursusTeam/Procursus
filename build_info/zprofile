@@ -2,6 +2,8 @@ export PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/b
 export PS1='%m%::%~ %n%# '	
 umask 022
 
+export EDITOR=/usr/bin/editor
+
 for i in /etc/profile.d/*.sh ; do
     if [ -r "$i" ]; then
         . $i

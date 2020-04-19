@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ]; then
+    update-alternatives --install /usr/bin/editor editor /usr/bin/nano 40 \
+      --slave /usr/share/man/man1/editor.1 editor.1 \
+      /usr/share/man/man1/nano.1
+    update-alternatives --install /usr/bin/pico pico /usr/bin/nano 10 \
+      --slave /usr/share/man/man1/pico.1 pico.1 \
+      /usr/share/man/man1/nano.1
+fi
+
+

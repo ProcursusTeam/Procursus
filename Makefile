@@ -59,13 +59,14 @@ BUILD_STRAP    ?= $(BUILD_ROOT)/build_strap
 
 CFLAGS          := -O2 -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include
 CXXFLAGS        := $(CFLAGS)
+CPPFLAGS        := $(CFLAGS)
 LDFLAGS         := -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib
 PKG_CONFIG_PATH := $(BUILD_BASE)/usr/lib/pkgconfig
 
 export PLATFORM ARCH SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE I_N_T EXTRA
 export BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP
 export DEB_ARCH DEB_ORIGIN DEB_MAINTAINER
-export CFLAGS CXXFLAGS LDFLAGS PKG_CONFIG_PATH
+export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS PKG_CONFIG_PATH
 
 HAS_COMMAND = $(shell type $(1) >/dev/null 2>&1 && echo 1)
 PGP_VERIFY  = gpg --verify $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) $(BUILD_SOURCE)/$(1) 2>&1 | grep -q 'Good signature'
@@ -93,15 +94,15 @@ DO_PATCH    = cd $(BUILD_WORK)/$(1)-patches; \
 SIGN =  find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \; &> /dev/null ; \
 		find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete ;
 		
-PACK =  $(FAKEROOT) find $(BUILD_DIST)/$(1) \( -name '*.la' -o -name '*.a' \) -type f -delete ; \
-		$(FAKEROOT) rm -rf $(BUILD_DIST)/$(1)/usr/share/{info,aclocal,doc} ; \
+PACK =  find $(BUILD_DIST)/$(1) \( -name '*.la' -o -name '*.a' \) -type f -delete ; \
+		rm -rf $(BUILD_DIST)/$(1)/usr/share/{info,aclocal,doc} ; \
 		if [ -z $(3) ]; then \
 			echo Setting $(1) owner to 0:0. ; \
 			$(FAKEROOT) chown -R 0:0 $(BUILD_DIST)/$(1)/* ; \
 		elif [ $(3) = "2" ]; then \
 			echo $(1) owner set within individual makefile. ; \
 		fi ; \
-		$(FAKEROOT) mkdir -p $(BUILD_DIST)/$(1)/DEBIAN ; \
+		mkdir -p $(BUILD_DIST)/$(1)/DEBIAN ; \
 		cp $(BUILD_INFO)/$(1).control $(BUILD_DIST)/$(1)/DEBIAN/control ; \
 		cp $(BUILD_INFO)/$(1).postinst $(BUILD_DIST)/$(1)/DEBIAN/postinst 2>/dev/null || : ; \
 		cp $(BUILD_INFO)/$(1).preinst $(BUILD_DIST)/$(1)/DEBIAN/preinst 2>/dev/null || : ; \

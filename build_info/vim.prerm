@@ -1,0 +1,31 @@
+#!/bin/sh
+set -e
+
+pkg=vim
+variant=basic
+
+# remove /usr/bin/vim.variant as alternative for /usr/bin/vim
+
+remove_variant_alternative () {
+  for i in vi view ex editor rvim rview vimdiff vim; do
+    update-alternatives --remove $i /usr/bin/vim.$variant
+  done
+}
+
+case "$1" in
+  # only remove in remove/deconfigure so we don't disrupt users' preferences
+  remove|deconfigure)
+    remove_variant_alternative
+    ;;
+
+  upgrade|failed-upgrade)
+    ;;
+
+  *)
+    echo "prerm called with unknown argument \`$1'" >&2
+    exit 0
+    ;;
+esac
+
+
+exit 0
