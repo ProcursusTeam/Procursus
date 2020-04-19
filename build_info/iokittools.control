@@ -1,0 +1,10 @@
+Package: iokittools
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_IOKITTOOLS_V@
+Depends: ncurses
+Section: Administration
+Priority: important
+Description: ioalloccount, ioclasscount
+Name: IOKit Tools
+Tag: purpose::console, role::hacker
