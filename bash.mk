@@ -38,6 +38,7 @@ bash-setup: setup
 	mkdir -p $(BUILD_WORK)/bash-$(BASH_VERSION)-patches
 	find $(BUILD_SOURCE) -name 'bash50*' -not -name '*.sig' -exec cp '{}' $(BUILD_WORK)/bash-$(BASH_VERSION)-patches/ \;
 	$(call DO_PATCH,bash-$(BASH_VERSION),bash,-p0)
+	$(SED) -i 's/ENOEXEC)/ENOEXEC \&\& i != EPERM)/' $(BUILD_WORK)/bash/execute_cmd.c
 
 ifneq ($(wildcard $(BUILD_WORK)/bash/.build_complete),)
 bash:

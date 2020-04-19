@@ -9,6 +9,8 @@ DEB_ZSH_V     ?= $(ZSH_VERSION)
 
 zsh-setup: setup
 	$(call EXTRACT_TAR,zsh-$(ZSH_VERSION).tar.xz,zsh-$(ZSH_VERSION),zsh)
+	$(SED) -i 's/|| eno == ENOENT)/|| eno == ENOENT || eno == EPERM)/' $(BUILD_WORK)/zsh/Src/exec.c
+	$(SED) -i 's/(eno == ENOEXEC)/(eno == ENOEXEC || eno == EPERM)/' $(BUILD_WORK)/zsh/Src/exec.c
 
 ifneq ($(wildcard $(BUILD_WORK)/zsh/.build_complete),)
 zsh:
