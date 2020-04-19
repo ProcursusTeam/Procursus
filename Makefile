@@ -256,6 +256,7 @@ bootstrap:: $(STRAPPROJECTS:%=%-package)
 	mkdir -p $(BUILD_STRAP)/strap/private
 	rm -f $(BUILD_STRAP)/strap/{sbin/{fsck,fsck_apfs,fsck_exfat,fsck_hfs,fsck_msdos,launchd,mount,mount_apfs,newfs_apfs,newfs_hfs,pfctl},usr/sbin/{BTAvrcp,BTLEServer,BTMap,BTPbap,BlueTool,WirelessRadioManagerd,absd,addNetworkInterface,aslmanager,bluetoothd,cfprefsd,distnoted,filecoordinationd,ioreg,ipconfig,mDNSResponder,mDNSResponderHelper,mediaserverd,notifyd,nvram,pppd,racoon,rtadvd,scutil,spindump,syslogd,wifid}}
 	mv $(BUILD_STRAP)/strap/{etc,var} $(BUILD_STRAP)/strap/private
+	mkdir -p $(BUILD_STRAP)/strap/private/var/log/dpkg
 	if [ $(PLATFORM) = "appletvos" ]; then \
 		mgr=nitotv;\
 	else \
