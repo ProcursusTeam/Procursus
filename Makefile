@@ -86,35 +86,38 @@ DO_PATCH    = cd $(BUILD_WORK)/$(1)-patches; \
 			$(PATCH) -sN -d $(BUILD_WORK)/$(2) $(3) < $$PATCHFILE &> /dev/null; \
 			if [ $(4) ]; then \
 				$(PATCH) -sN -d $(BUILD_WORK)/$(2) $(4) < $$PATCHFILE &> /dev/null; \
-			fi ; \
+			fi; \
 			touch $(BUILD_WORK)/$(2)/$(notdir $$PATCHFILE).done; \
-		fi ; \
+		fi; \
 	done
 
-SIGN =  find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \; &> /dev/null ; \
-		find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete ;
+SIGN =  find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \; &> /dev/null; \
+	find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
 		
-PACK =  find $(BUILD_DIST)/$(1) \( -name '*.la' -o -name '*.a' \) -type f -delete ; \
-		rm -rf $(BUILD_DIST)/$(1)/usr/share/{info,aclocal,doc} ; \
-		if [ -z $(3) ]; then \
-			echo Setting $(1) owner to 0:0. ; \
-			$(FAKEROOT) chown -R 0:0 $(BUILD_DIST)/$(1)/* ; \
-		elif [ $(3) = "2" ]; then \
-			echo $(1) owner set within individual makefile. ; \
-		fi ; \
-		mkdir -p $(BUILD_DIST)/$(1)/DEBIAN ; \
-		cp $(BUILD_INFO)/$(1).control $(BUILD_DIST)/$(1)/DEBIAN/control ; \
-		cp $(BUILD_INFO)/$(1).postinst $(BUILD_DIST)/$(1)/DEBIAN/postinst 2>/dev/null || : ; \
-		cp $(BUILD_INFO)/$(1).preinst $(BUILD_DIST)/$(1)/DEBIAN/preinst 2>/dev/null || : ; \
-		cp $(BUILD_INFO)/$(1).postrm $(BUILD_DIST)/$(1)/DEBIAN/postrm 2>/dev/null || : ; \
-		cp $(BUILD_INFO)/$(1).prerm $(BUILD_DIST)/$(1)/DEBIAN/prerm 2>/dev/null || : ; \
-		cp $(BUILD_INFO)/$(1).extrainst_ $(BUILD_DIST)/$(1)/DEBIAN/extrainst_ 2>/dev/null || : ; \
-		cd $(BUILD_DIST)/$(1) && find . -type f ! -regex '.*.hg.*' ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -printf '%P ' | xargs md5sum > $(BUILD_DIST)/$(1)/DEBIAN/md5sums ; \
-		chmod 0755 $(BUILD_DIST)/$(1)/DEBIAN/* ; \
-		$(SED) -i ':a; s/@$(2)@/$($(2))/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control ; \
-		$(SED) -i ':a; s/@DEB_MAINTAINER@/$(DEB_MAINTAINER)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control ; \
-		$(SED) -i ':a; s/@DEB_ARCH@/$(DEB_ARCH)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control ; \
-		$(FAKEROOT) $(DPKG_DEB) -b $(BUILD_DIST)/$(1) $(BUILD_DIST)/$(1)_$($(2))_$(DEB_ARCH).deb ;
+PACK =  find $(BUILD_DIST)/$(1) \( -name '*.la' -o -name '*.a' \) -type f -delete; \
+	rm -rf $(BUILD_DIST)/$(1)/usr/share/{info,aclocal,doc}; \
+	if [ -z $(3) ]; then \
+		echo Setting $(1) owner to 0:0.; \
+		$(FAKEROOT) chown -R 0:0 $(BUILD_DIST)/$(1)/*; \
+	elif [ $(3) = "2" ]; then \
+		echo $(1) owner set within individual makefile.; \
+	fi; \
+	SIZE=$$(du -s $(BUILD_DIST)/$(1) | cut -f 1); \
+	mkdir -p $(BUILD_DIST)/$(1)/DEBIAN; \
+	cp $(BUILD_INFO)/$(1).control $(BUILD_DIST)/$(1)/DEBIAN/control; \
+	cp $(BUILD_INFO)/$(1).postinst $(BUILD_DIST)/$(1)/DEBIAN/postinst 2>/dev/null || :; \
+	cp $(BUILD_INFO)/$(1).preinst $(BUILD_DIST)/$(1)/DEBIAN/preinst 2>/dev/null || :; \
+	cp $(BUILD_INFO)/$(1).postrm $(BUILD_DIST)/$(1)/DEBIAN/postrm 2>/dev/null || :; \
+	cp $(BUILD_INFO)/$(1).prerm $(BUILD_DIST)/$(1)/DEBIAN/prerm 2>/dev/null || :; \
+	cp $(BUILD_INFO)/$(1).extrainst_ $(BUILD_DIST)/$(1)/DEBIAN/extrainst_ 2>/dev/null || :; \
+	cd $(BUILD_DIST)/$(1) && find . -type f ! -regex '.*.hg.*' ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -printf '%P ' | xargs md5sum > $(BUILD_DIST)/$(1)/DEBIAN/md5sums; \
+	chmod 0755 $(BUILD_DIST)/$(1)/DEBIAN/*; \
+	$(SED) -i ':a; s/@$(2)@/$($(2))/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control; \
+	$(SED) -i ':a; s/@DEB_MAINTAINER@/$(DEB_MAINTAINER)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control; \
+	$(SED) -i ':a; s/@DEB_ARCH@/$(DEB_ARCH)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control; \
+	echo "Installed-Size: $$SIZE"; \
+	echo "Installed-Size: $$SIZE" >> $(BUILD_DIST)/$(1)/DEBIAN/control; \
+	$(FAKEROOT) $(DPKG_DEB) -b $(BUILD_DIST)/$(1) $(BUILD_DIST)/$(1)_$($(2))_$(DEB_ARCH).deb
 
 ifeq ($(call HAS_COMMAND,shasum),1)
 GET_SHA1   = shasum -a 1 $(1) | cut -c1-40
@@ -285,9 +288,9 @@ REPROJ=$(shell echo $@ | cut -f2- -d"-")
 rebuild-%:
 	@echo Rebuild $(REPROJ)
 	if [ -d $(BUILD_WORK)/$(REPROJ) ]; then \
-		rm -rf {$(BUILD_WORK),$(BUILD_STAGE)}/$(REPROJ) ; \
+		rm -rf {$(BUILD_WORK),$(BUILD_STAGE)}/$(REPROJ); \
 	elif [ -d $(REPROJ) ]; then \
-		cd $(REPROJ) && git clean -xfd && git reset 2>/dev/null || : ; \
+		cd $(REPROJ) && git clean -xfd && git reset 2>/dev/null || :; \
 	fi
 	+$(MAKE) $(REPROJ)
 
