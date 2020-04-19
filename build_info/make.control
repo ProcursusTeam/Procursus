@@ -1,0 +1,9 @@
+Package: make
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_MAKE_V@
+Section: Development
+Priority: important
+Description: dependency-based build environments
+Name: Make
+Tag: purpose::console, role::hacker
