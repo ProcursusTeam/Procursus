@@ -1,0 +1,10 @@
+Package: lsof
+Version: @DEB_LSOF_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: ncurses
+Section: Administration
+Priority: standard
+Multi-Arch: foreign
+Description: shows what files programs have open
+Tag: purpose::console, role::developer
