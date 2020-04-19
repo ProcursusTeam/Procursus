@@ -3,6 +3,7 @@ export PS1='%m%::%~ %n%# '
 umask 022
 
 export EDITOR=/usr/bin/editor
+export PAGER=/usr/bin/pager
 
 for i in /etc/profile.d/*.sh ; do
     if [ -r "$i" ]; then

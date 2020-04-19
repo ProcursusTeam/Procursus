@@ -35,7 +35,6 @@ less-package: less-stage
 	
 	# less.mk Prep less
 	cp -a $(BUILD_STAGE)/less/usr $(BUILD_DIST)/less
-	cp $(BUILD_INFO)/less.sh $(BUILD_DIST)/less/etc/profile.d
 	ln -s /usr/bin/less $(BUILD_DIST)/less/bin/more
 	ln -s /usr/bin/less $(BUILD_DIST)/less/usr/bin/more
 	
