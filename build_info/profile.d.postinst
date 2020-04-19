@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Switch default shell to zsh
-pwd_mkdb -p /etc/master.passwd
+pwd_mkdb -p /etc/master.passwd &>/dev/null
 chsh -s /usr/bin/zsh root &>/dev/null
 chsh -s /usr/bin/zsh mobile &>/dev/null
 rm /etc/pwd.db /etc/spwd.db
