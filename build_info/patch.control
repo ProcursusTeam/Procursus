@@ -1,0 +1,9 @@
+Package: patch
+Version: @DEB_PATCH_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: important
+Multi-Arch: foreign
+Description: merge a difference onto a file
+Tag: purpose::console, role::hacker
