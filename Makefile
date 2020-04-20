@@ -238,9 +238,12 @@ endif
 
 CHECKRA1N_MEMO := 1
 
-all:: setup $(SUBPROJECTS) package
-	@echo "Successfully built debs for $(SUBPROJECTS)"
+all:: package
+	@echo "********** Successfully built debs for **********"
+	@echo "$(SUBPROJECTS)"
 	$(BUILD_TOOLS)/check_gettext.sh
+
+include *.mk
 
 package:: $(SUBPROJECTS:%=%-package)
 bootstrap:: export BUILD_DIST=$(BUILD_STRAP)
@@ -281,12 +284,15 @@ bootstrap:: $(STRAPPROJECTS:%=%-package)
 	$$FAKEROOT chown 0:1 $(BUILD_STRAP)/strap/private/var/run; \
 	cd $(BUILD_STRAP)/strap && $$FAKEROOT $(TAR) -czvf ../bootstrap.tar.gz . &>/dev/null
 	rm -rf $(BUILD_STRAP)/{strap,*.deb}
-	@echo DONE $(BUILD_STRAP)/bootstrap.tar.gz
+	@echo "********** Successfully built bootstrap with **********"
+	@echo "$(STRAPPROJECTS)"
+	@echo "$(BUILD_STRAP)/bootstrap.tar.gz"
 
 %-package: FAKEROOT=fakeroot -i $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev) -s $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev) --
 %-stage: %
 	rm -f $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev)
 	touch $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev)
+	find $(BUILD_BASE)/usr/lib -name "*.la" -type f -delete
 
 REPROJ=$(shell echo $@ | cut -f2- -d"-")
 rebuild-%:
@@ -297,8 +303,6 @@ rebuild-%:
 		cd $(REPROJ) && git clean -xfd && git reset 2>/dev/null || :; \
 	fi
 	+$(MAKE) $(REPROJ)
-
-include *.mk
 
 .PHONY: $(SUBPROJECTS)
 

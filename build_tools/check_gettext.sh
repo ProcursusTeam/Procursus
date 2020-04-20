@@ -20,8 +20,8 @@ for bin in $(find ../build_stage/*{/usr,}/{s,}bin ../build_stage/*/usr/lib -type
     fi
 done
 if [[ -n "${output}" ]]; then
-    echo "***** The following link libintl without you knowing! *****"
+    echo "********** The following link libintl without you knowing! **********"
     echo "${output}" | ${AWK} -v RS="[ \n]+" '!n[$0]++'
 else
-    echo "***** No programs link libintl without you knowing *****"
+    echo "********** No programs link libintl without you knowing **********"
 fi
