@@ -1,0 +1,12 @@
+Package: pincrush
+Version: @DEB_PINCRUSH_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libpng16
+Section: Utilities
+Homepage: http://howett.net/pincrush
+Description: optimize PNGs just like Apple does
+ pincrush is an open, cross-platform alternative to Apple's proprietary PNG mangler, to optimize PNGs for display on iPhoneOS devices.
+Tag: purpose::console, role::hacker
+Author: Dustin Howett <dustin@howett.net>
+Name: pincrush

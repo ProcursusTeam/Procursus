@@ -2,8 +2,8 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS  += patch
-DOWNLOAD     += https://ftp.gnu.org/gnu/patch/patch-$(PATCH_VERSION).tar.xz{,.sig}
+SUBPROJECTS   += patch
+DOWNLOAD      += https://ftp.gnu.org/gnu/patch/patch-$(PATCH_VERSION).tar.xz{,.sig}
 PATCH_VERSION := 2.7.6
 DEB_PATCH_V   ?= $(PATCH_VERSION)
 
@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/patch/.build_complete),)
 patch:
 	@echo "Using previously built patch."
 else
-patch: patch-setup ncurses gettext
+patch: patch-setup
 	cd $(BUILD_WORK)/patch && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE)
 	+$(MAKE) -C $(BUILD_WORK)/patch
