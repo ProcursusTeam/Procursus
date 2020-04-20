@@ -29,7 +29,7 @@ gettext: gettext-setup ncurses
 		DESTDIR=$(BUILD_STAGE)/gettext
 	+$(MAKE) -C $(BUILD_WORK)/gettext install \
 		DESTDIR=$(BUILD_BASE)
-	rm -rf $(BUILD_STAGE)/gettext/usr/share
+	rm -rf $(BUILD_STAGE)/gettext/usr/share/gettext-*
 	touch $(BUILD_WORK)/gettext/.build_complete
 endif
 

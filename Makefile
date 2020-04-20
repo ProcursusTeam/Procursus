@@ -6,6 +6,10 @@ SHELL           := /usr/bin/env bash
 UNAME           := $(shell uname -s)
 SUBPROJECTS     += $(STRAPPROJECTS)
 
+ifneq ($(shell umask),0022)
+$(error Please run `umask 022` before running this)
+endif
+
 PLATFORM        ?= iphoneos
 ARCH            ?= arm64
 GNU_HOST_TRIPLE ?= aarch64-apple-darwin
@@ -233,7 +237,6 @@ MAKEFLAGS += --jobs=$(shell $(GET_LOGICAL_CORES)) -Otarget
 endif
 
 CHECKRA1N_MEMO := 1
-include *.mk
 
 all:: setup $(SUBPROJECTS) package
 	@echo "Successfully built debs for $(SUBPROJECTS)"
@@ -294,6 +297,8 @@ rebuild-%:
 		cd $(REPROJ) && git clean -xfd && git reset 2>/dev/null || :; \
 	fi
 	+$(MAKE) $(REPROJ)
+
+include *.mk
 
 .PHONY: $(SUBPROJECTS)
 
