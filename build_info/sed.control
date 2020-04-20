@@ -2,6 +2,7 @@ Package: sed
 Version: @DEB_SED_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Depends: gettext
 Section: Utilities
 Priority: important
 Multi-Arch: foreign

@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/diffutils/.build_complete),)
 diffutils:
 	@echo "Using previously built diffutils."
 else
-diffutils: diffutils-setup
+diffutils: diffutils-setup gettext
 	cd $(BUILD_WORK)/diffutils && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

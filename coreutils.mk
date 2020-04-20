@@ -23,7 +23,7 @@ ifneq ($(wildcard $(BUILD_WORK)/coreutils/.build_complete),)
 coreutils:
 	@echo "Using previously built coreutils."
 else
-coreutils: coreutils-setup
+coreutils: coreutils-setup gettext
 	cd $(BUILD_WORK)/coreutils/su && $(CC) $(CFLAGS) su.c suutil.c -o su -DBSD4_4 -D'__RCSID(x)='
 	cd $(BUILD_WORK)/coreutils && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \

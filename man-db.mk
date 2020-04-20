@@ -15,13 +15,15 @@ ifneq ($(wildcard $(BUILD_WORK)/man-db/.build_complete),)
 man-db:
 	@echo "Using previously built man-db."
 else
-man-db: man-db-setup libpipeline libgdbm
+man-db: man-db-setup libpipeline libgdbm gettext
 	cd $(BUILD_WORK)/man-db && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-cache-owner \
-		--disable-setuid
-	+$(MAKE) -C $(BUILD_WORK)/man-db
+		--disable-setuid \
+		--enable-nls
+	+$(MAKE) -C $(BUILD_WORK)/man-db \
+		LDFLAGS="$(LDFLAGS) -lintl -Wl,-framework -Wl,CoreFoundation"
 	+$(MAKE) -C $(BUILD_WORK)/man-db install \
 		DESTDIR=$(BUILD_STAGE)/man-db
 	touch $(BUILD_WORK)/man-db/.build_complete

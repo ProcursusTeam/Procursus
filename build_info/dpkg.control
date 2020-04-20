@@ -4,7 +4,7 @@ Architecture: @DEB_ARCH@
 Essential: yes
 Maintainer: @DEB_MAINTAINER@
 Pre-Depends: tar (>= 1.23)
-Depends: zsh, coreutils, diffutils, tar, xz-utils
+Depends: bash, coreutils, diffutils, tar, xz-utils, gettext
 Section: Packaging
 Priority: required
 Homepage: http://wiki.debian.org/Teams/Dpkg

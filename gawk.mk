@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/gawk/.build_complete),)
 gawk:
 	@echo "Using previously built gawk."
 else
-gawk: gawk-setup
+gawk: gawk-setup gettext
 	cd $(BUILD_WORK)/gawk && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr

@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/make/.build_complete),)
 make:
 	@echo "Using previously built make."
 else
-make: make-setup
+make: make-setup gettext
 	$(SED) -i '/case ENOEXEC:/a \ \ \ \ case EPERM:' $(BUILD_WORK)/make/src/job.c
 	cd $(BUILD_WORK)/make && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \

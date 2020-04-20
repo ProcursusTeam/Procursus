@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/nano/.build_complete),)
 nano:
 	@echo "Using previously built nano."
 else
-nano: nano-setup ncurses
+nano: nano-setup ncurses gettext
 	cd $(BUILD_WORK)/nano && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

@@ -8,4 +8,3 @@ Priority: optional
 Description: fast content-addressable filesystem
 Name: Git
 Tag: purpose::console, role::hacker
-

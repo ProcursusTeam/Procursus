@@ -12,7 +12,7 @@ ifneq ($(wildcard dpkg/.build_complete),)
 dpkg:
 	@echo "Using previously built dpkg."
 else
-dpkg: setup xz
+dpkg: setup xz gettext
 	if ! [ -f dpkg/configure ]; then \
 		cd dpkg && ./autogen; \
 	fi

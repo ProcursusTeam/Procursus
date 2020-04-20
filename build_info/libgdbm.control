@@ -2,7 +2,7 @@ Package: libgdbm
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LIBGDBM_V@
-Depends: readline (>= 8.0)
+Depends: readline (>= 8.0), gettext
 Section: Development
 Priority: optional
 Homepage: https://www.gnu.org.ua/software/gdbm

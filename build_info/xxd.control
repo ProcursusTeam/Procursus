@@ -2,6 +2,7 @@ Package: xxd
 Version: @DEB_VIM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Depends: gettext
 Section: Text_Editors
 Priority: standard
 Description: tool to make (or reverse) a hex dump

@@ -2,11 +2,8 @@ Package: launchctl
 Essential: yes
 Priority: required
 Section: System
-Installed-Size: 336
-Maintainer: Sam Bingner <maintainer@sbdhi.com>
-Architecture: iphoneos-arm
-Version: 23-1
-Pre-Depends: dpkg (>= 1.14.25-8)
-Replaces: jailbreak-resources (<< 1.0~b27)
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LAUNCHCTL_V@
 Description: Tells launchd what to do
 Name: Launch Daemon Controller

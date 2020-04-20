@@ -19,7 +19,7 @@ ifneq ($(wildcard $(BUILD_WORK)/sed/.build_complete),)
 sed:
 	@echo "Using previously built sed."
 else
-sed: sed-setup
+sed: sed-setup gettext
 	cd $(BUILD_WORK)/sed && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

@@ -19,7 +19,7 @@ ifneq ($(wildcard $(BUILD_WORK)/findutils/.build_complete),)
 findutils:
 	@echo "Using previously built findutils."
 else
-findutils: findutils-setup
+findutils: findutils-setup gettext
 	cd $(BUILD_WORK)/findutils && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

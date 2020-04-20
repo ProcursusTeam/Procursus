@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libgdbm/.build_complete),)
 libgdbm:
 	@echo "Using previously built libgdbm."
 else
-libgdbm: libgdbm-setup readline
+libgdbm: libgdbm-setup readline gettext
 	cd $(BUILD_WORK)/libgdbm && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr

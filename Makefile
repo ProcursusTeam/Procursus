@@ -56,6 +56,8 @@ BUILD_STAGE    ?= $(BUILD_ROOT)/build_stage
 BUILD_DIST     ?= $(BUILD_ROOT)/build_dist
 # Actual bootrap staging
 BUILD_STRAP    ?= $(BUILD_ROOT)/build_strap
+# Extra scripts for the buildsystem
+BUILD_TOOLS    ?= $(BUILD_ROOT)/build_tools
 
 CFLAGS          := -O2 -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include
 CXXFLAGS        := $(CFLAGS)
@@ -64,7 +66,7 @@ LDFLAGS         := -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib
 PKG_CONFIG_PATH := $(BUILD_BASE)/usr/lib/pkgconfig
 
 export PLATFORM ARCH SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE I_N_T EXTRA
-export BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP
+export BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP BUILD_TOOLS
 export DEB_ARCH DEB_ORIGIN DEB_MAINTAINER
 export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS PKG_CONFIG_PATH
 
@@ -235,6 +237,7 @@ include *.mk
 
 all:: setup $(SUBPROJECTS) package
 	@echo "Successfully built debs for $(SUBPROJECTS)"
+	$(BUILD_TOOLS)/check_gettext.sh
 
 package:: $(SUBPROJECTS:%=%-package)
 bootstrap:: export BUILD_DIST=$(BUILD_STRAP)
