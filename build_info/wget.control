@@ -1,0 +1,9 @@
+Package: wget
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_WGET_V@
+Depends: libssl1.1, libpcre2, gettext, libunistring
+Section: Networking
+Priority: important
+Description: simple HTTP file transfer client
+Tag: purpose::console, role::hacker

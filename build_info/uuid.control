@@ -1,0 +1,9 @@
+Package: uuid
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_UUID_V@
+Section: System
+Priority: important
+Description: universally unique identifiers
+Name: UUID Generator
+Tag: purpose::library, purpose::console, role::developer

@@ -1,0 +1,9 @@
+Package: wget2
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_WGET2_V@
+Depends: libssl1.1, libpcre2, gettext, xz-utils, libnghttp2, libidn2
+Section: Networking
+Priority: important
+Description: simple HTTP file transfer client, but there's 2
+Tag: purpose::console, role::hacker

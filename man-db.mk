@@ -19,6 +19,7 @@ man-db: man-db-setup libpipeline libgdbm gettext
 	cd $(BUILD_WORK)/man-db && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
+		--sysconfdir=/etc \
 		--disable-cache-owner \
 		--disable-setuid \
 		--enable-nls
@@ -35,7 +36,7 @@ man-db-package: man-db-stage
 	mkdir -p $(BUILD_DIST)/man-db
 	
 	# man-db.mk Prep man-db
-	cp -a $(BUILD_STAGE)/man-db/usr $(BUILD_DIST)/man-db
+	cp -a $(BUILD_STAGE)/man-db $(BUILD_DIST)
 	
 	# man-db.mk Sign
 	$(call SIGN,man-db,general.xml)
