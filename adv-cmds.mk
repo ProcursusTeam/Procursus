@@ -26,6 +26,10 @@ adv-cmds: adv-cmds-setup ncurses
 	for bin in finger last lsvfs cap_mkdb; do \
     	$(CC) -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isystem include -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/usr/bin/$$bin $$bin/*.c -D'__FBSDID(x)='; \
 	done
+	cd $(BUILD_WORK)/adv-cmds/mklocale; \
+	yacc -d yacc.y; \
+	lex lex.l
+	$(CC) -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isystem include -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/usr/bin/mklocale $(BUILD_WORK)/adv-cmds/mklocale/*.c -D'__FBSDID(x)='
 	touch $(BUILD_WORK)/adv-cmds/.build_complete
 endif
 
