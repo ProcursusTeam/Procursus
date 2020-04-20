@@ -2,7 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS  += groff
+SUBPROJECTS    += groff
 DOWNLOAD       += https://ftp.gnu.org/gnu/groff/groff-$(GROFF_VERSION).tar.gz{,.sig}
 GROFF_VERSION  := 1.22.4
 DEB_GROFF_V    ?= $(GROFF_VERSION)

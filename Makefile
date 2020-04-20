@@ -289,6 +289,7 @@ bootstrap:: $(STRAPPROJECTS:%=%-package)
 	@echo "$(BUILD_STRAP)/bootstrap.tar.gz"
 
 bootstrap-device: bootstrap
+	@echo "********** Bootstrapping device. This may take a while! **********"
 	$(BUILD_TOOLS)/bootstrap_device.sh
 
 %-package: FAKEROOT=fakeroot -i $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev) -s $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev) --

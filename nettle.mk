@@ -2,7 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS  += nettle
+SUBPROJECTS    += nettle
 DOWNLOAD       += https://ftp.gnu.org/gnu/nettle/nettle-$(NETTLE_VERSION).tar.gz{,.sig}
 NETTLE_VERSION := 3.5.1
 DEB_NETTLE_V   ?= $(NETTLE_VERSION)
