@@ -15,10 +15,6 @@ coreutils-setup: setup
 		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/usr.bin/su/su.c \
 		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/usr.bin/su/suutil.{c,h}
 
-# `gl_cv_func_ftello_works=yes` workaround for gnulib issue on macOS Catalina, presumably also
-# iOS 13, borrowed from Homebrew formula for coreutils
-# TODO: Remove when GNU fixes this issue
-
 ifneq ($(wildcard $(BUILD_WORK)/coreutils/.build_complete),)
 coreutils:
 	@echo "Using previously built coreutils."
@@ -28,8 +24,7 @@ coreutils: coreutils-setup gettext
 	cd $(BUILD_WORK)/coreutils && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
-		--without-gmp \
-		gl_cv_func_ftello_works=yes
+		--without-gmp
 	+$(MAKE) -C $(BUILD_WORK)/coreutils
 	+$(MAKE) -C $(BUILD_WORK)/coreutils install \
 		DESTDIR=$(BUILD_STAGE)/coreutils

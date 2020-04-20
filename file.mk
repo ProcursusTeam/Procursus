@@ -11,10 +11,6 @@ file-setup: setup
 	$(call PGP_VERIFY,file-$(FILE_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,file-$(FILE_VERSION).tar.gz,file-$(FILE_VERSION),file)
 
-# `gl_cv_func_ftello_works=yes` workaround for gnulib issue on macOS Catalina, presumably also
-# iOS 13, borrowed from Homebrew formula for coreutils
-# TODO: Remove when GNU fixes this issue
-
 ifneq ($(wildcard $(BUILD_WORK)/file/.build_complete),)
 file:
 	@echo "Using previously built file."
