@@ -1,0 +1,11 @@
+Package: sudo
+Essential: yes
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_SUDO_V@
+Depends: gettext
+Section: Administration
+Priority: required
+Description: temporarily assume root priviledges
+Name: Sudo
+Tag: purpose::console, role::hacker
