@@ -3,7 +3,6 @@ Version: @DEB_ZSH_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: ncurses, libpcre
-Provides: bash
 Section: Terminal_Support
 Priority: required
 Description: a shell with interactive features

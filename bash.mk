@@ -2,12 +2,12 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS  += bash
-DOWNLOAD     += https://ftp.gnu.org/gnu/bash/bash-$(BASH_VERSION).tar.gz{,.sig} \
+STRAPPROJECTS += bash
+DOWNLOAD      += https://ftp.gnu.org/gnu/bash/bash-$(BASH_VERSION).tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/bash/bash-$(BASH_VERSION)-patches/bash50-00{1..9}{,.sig} \
 		https://ftp.gnu.org/gnu/bash/bash-$(BASH_VERSION)-patches/bash50-0{10..16}{,.sig}
-BASH_VERSION := 5.0
-DEB_BASH_V   ?= $(BASH_VERSION).$(BASH_SUB_V)
+BASH_VERSION  := 5.0
+DEB_BASH_V    ?= $(BASH_VERSION).$(BASH_SUB_V)
 
 # When built with SSH_SOURCE_BASHRC, bash will source ~/.bashrc when
 # it's non-interactively from sshd.  This allows the user to set
@@ -35,6 +35,7 @@ bash-setup: setup
 	$(call PGP_VERIFY,bash50-015)
 	$(call PGP_VERIFY,bash50-016)
 	$(call EXTRACT_TAR,bash-$(BASH_VERSION).tar.gz,bash-$(BASH_VERSION),bash)
+	mkdir -p $(BUILD_STAGE)/bash/bin
 	mkdir -p $(BUILD_WORK)/bash-$(BASH_VERSION)-patches
 	find $(BUILD_SOURCE) -name 'bash50*' -not -name '*.sig' -exec cp '{}' $(BUILD_WORK)/bash-$(BASH_VERSION)-patches/ \;
 	$(call DO_PATCH,bash-$(BASH_VERSION),bash,-p0)
@@ -74,6 +75,9 @@ bash: bash-setup ncurses readline
 		TERMCAP_LIB=-lncursesw
 	+$(MAKE) -C $(BUILD_WORK)/bash install \
 		DESTDIR="$(BUILD_STAGE)/bash"
+	ln -s ../usr/bin/bash $(BUILD_STAGE)/bash/bin/bash
+	ln -s ../usr/bin/bash $(BUILD_STAGE)/bash/bin/sh
+	ln -s bash $(BUILD_STAGE)/bash/usr/bin/sh
 	touch $(BUILD_WORK)/bash/.build_complete
 endif
 
@@ -85,7 +89,7 @@ bash-package: bash-stage
 
 	# bash.mk Prep bash
 	cp -a $(BUILD_STAGE)/bash/usr/{bin,include,lib} $(BUILD_DIST)/bash/usr
-	ln -s bash $(BUILD_DIST)/bash/usr/bin/sh
+	cp -a $(BUILD_STAGE)/bash/bin $(BUILD_DIST)/bash
 
 	# bash.mk Sign
 	$(call SIGN,bash,general.xml)

@@ -271,8 +271,6 @@ bootstrap:: $(STRAPPROJECTS:%=%-package)
 	mkdir -p $(BUILD_STRAP)/strap/private/var/lib/$$mgr; \
 	mkdir -p $(BUILD_STRAP)/strap/usr/libexec/$$mgr; \
 	cd $(BUILD_STRAP)/strap/usr/libexec/$$mgr && ln -fs ../firmware.sh
-	ln -s ../usr/bin/zsh $(BUILD_STRAP)/strap/bin/bash
-	ln -s ../usr/bin/zsh $(BUILD_STRAP)/strap/bin/sh
 	chmod 0775 $(BUILD_STRAP)/strap/Library
 	export FAKEROOT='fakeroot -i $(BUILD_STAGE)/.fakeroot_bootstrap -s $(BUILD_STAGE)/.fakeroot_bootstrap --'; \
 	$$FAKEROOT chown 0:80 $(BUILD_STRAP)/strap/Library; \
