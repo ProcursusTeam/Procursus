@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS     += openssl
 DOWNLOAD        += https://www.openssl.org/source/openssl-$(OPENSSL_VERSION).tar.gz{,.asc}
-OPENSSL_VERSION := 1.1.1f
+OPENSSL_VERSION := 1.1.1g
 DEB_OPENSSL_V   ?= $(OPENSSL_VERSION)
 
 openssl-setup: setup

@@ -299,12 +299,13 @@ bootstrap-device: bootstrap
 	find $(BUILD_BASE)/usr/lib -name "*.la" -type f -delete
 
 REPROJ=$(shell echo $@ | cut -f2- -d"-")
+REPROJ2=$(shell echo $(REPROJ) | sed 's/-package//')
 rebuild-%:
-	@echo Rebuild $(REPROJ)
-	if [ -d $(BUILD_WORK)/$(REPROJ) ]; then \
-		rm -rf {$(BUILD_WORK),$(BUILD_STAGE)}/$(REPROJ); \
-	elif [ -d $(REPROJ) ]; then \
-		cd $(REPROJ) && git clean -xfd && git reset 2>/dev/null || :; \
+	@echo Rebuild $(REPROJ2)
+	if [ -d $(BUILD_WORK)/$(REPROJ2) ]; then \
+		rm -rf {$(BUILD_WORK),$(BUILD_STAGE)}/$(REPROJ2); \
+	elif [ -d $(REPROJ2) ]; then \
+		cd $(REPROJ2) && git clean -xfd && git reset 2>/dev/null || :; \
 	fi
 	+$(MAKE) $(REPROJ)
 
