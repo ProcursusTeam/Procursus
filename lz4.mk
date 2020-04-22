@@ -15,6 +15,7 @@ lz4:
 	@echo "Using previously built lz4."
 else
 lz4: lz4-setup
+	$(SED) -i 's/\<ln -s\>/ln -sf/g' $(BUILD_WORK)/lz4/Makefile.inc
 	TARGET_OS=Darwin \
 		$(MAKE) -C $(BUILD_WORK)/lz4 install \
 		PREFIX=/usr \

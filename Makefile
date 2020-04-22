@@ -302,7 +302,7 @@ REPROJ=$(shell echo $@ | cut -f2- -d"-")
 REPROJ2=$(shell echo $(REPROJ) | sed 's/-package//')
 rebuild-%:
 	@echo Rebuild $(REPROJ2)
-	if [ $(REPROJ) = "all" ] | [ $(REPROJ) = "package" ]; then \
+	if [ $(REPROJ) = "all" ] || [ $(REPROJ) = "package" ]; then \
 		rm -rf $(BUILD_WORK) $(BUILD_STAGE); \
 		git submodule foreach --recursive git clean -xfd; \
 		git submodule foreach --recursive git reset --hard; \
@@ -314,7 +314,7 @@ rebuild-%:
 	elif [ -d $(REPROJ2) ]; then \
 		cd $(REPROJ2) && git clean -xfd && git reset 2>/dev/null || :; \
 	fi
-	+$(MAKE) $(REPROJ)
+	$(MAKE) $(REPROJ)
 
 .PHONY: $(SUBPROJECTS)
 
