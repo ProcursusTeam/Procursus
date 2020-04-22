@@ -302,6 +302,13 @@ REPROJ=$(shell echo $@ | cut -f2- -d"-")
 REPROJ2=$(shell echo $(REPROJ) | sed 's/-package//')
 rebuild-%:
 	@echo Rebuild $(REPROJ2)
+	if [ $(REPROJ) = "all" ] | [ $(REPROJ) = "package" ]; then \
+		rm -rf $(BUILD_WORK) $(BUILD_STAGE); \
+		git submodule foreach --recursive git clean -xfd; \
+		git submodule foreach --recursive git reset --hard; \
+		rm -f darwintools/.build_complete; \
+		$(MAKE) -C darwintools clean 2>/dev/null || :; \
+	fi
 	if [ -d $(BUILD_WORK)/$(REPROJ2) ]; then \
 		rm -rf {$(BUILD_WORK),$(BUILD_STAGE)}/$(REPROJ2); \
 	elif [ -d $(REPROJ2) ]; then \
