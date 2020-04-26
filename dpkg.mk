@@ -3,20 +3,64 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS  += dpkg
+DOWNLOAD       += https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_$(DPKG_VERSION).tar.xz
 DPKG_VERSION   := 1.20.0
 DEB_DPKG_V     ?= $(DPKG_VERSION)
 
+dpkg-setup: setup
+	$(call EXTRACT_TAR,dpkg_$(DPKG_VERSION).tar.xz,dpkg-$(DPKG_VERSION),dpkg)
+	mkdir -p $(BUILD_WORK)/dpkg-$(DPKG_VERSION)-patches
+	wget -q -O $(BUILD_WORK)/dpkg-$(DPKG_VERSION)-patches/zstd.patch \
+		'https://bugs.debian.org/cgi-bin/bugreport.cgi?att=1;bug=892664;filename=0001-dpkg-Add-Zstandard-compression-and-decompression-sup.patch;msg=20'
+	$(call DO_PATCH,dpkg-$(DPKG_VERSION),dpkg,-p1)
+
 # TODO: we shouldn’t need to patch the config output to make dpkg use the right architecture params
 
-ifneq ($(wildcard dpkg/.build_complete),)
+ifneq ($(wildcard $(BUILD_WORK)/dpkg/.build_complete),)
 dpkg:
 	@echo "Using previously built dpkg."
 else
-dpkg: setup xz gettext
-	if ! [ -f dpkg/configure ]; then \
-		cd dpkg && ./autogen; \
+dpkg: dpkg-setup gettext xz zstd
+	# Ugliness to avoid using a git submodule
+	$(SED) -i '/PREINSTFILE/a #define EXTRAINSTFILE      \"extrainst_\"' $(BUILD_WORK)/dpkg/lib/dpkg/dpkg.h
+	$(SED) -i '/tar_deferred_extract/a \	if (oldversionstatus == PKG_STAT_NOTINSTALLED || oldversionstatus == PKG_STAT_CONFIGFILES) { \
+    maintscript_new(pkg, EXTRAINSTFILE, "extra-installation", cidir, cidirrest, \
+                    "install", NULL); \
+  } else { \
+    maintscript_new(pkg, EXTRAINSTFILE, "extra-installation", cidir, cidirrest, \
+                    "upgrade", \
+                    versiondescribe(&pkg->installed.version, vdew_nonambig), \
+                    NULL); \
+  }' $(BUILD_WORK)/dpkg/src/unpack.c
+	$(SED) -i '/update_dyld_shared_cache/d' $(BUILD_WORK)/dpkg/src/help.c
+	$(SED) -i '/i18n.h/a #ifdef __APPLE__ \
+#include <string.h> \
+#include <xlocale.h> \
+#endif' $(BUILD_WORK)/dpkg/lib/dpkg/i18n.c
+	$(SED) -i '/config.h/i #include <sys/errno.h>' $(BUILD_WORK)/dpkg/lib/dpkg/command.c
+	$(SED) -i 's/ohshite(_("unable to execute %s (%s)"), cmd->name, cmd->filename);/if (errno == EPERM || errno == ENOEXEC) { \
+\		const char *shell; \
+\		if (access(DEFAULTSHELL, X_OK) == 0) { \
+\			shell = DEFAULTSHELL; \
+\		} else if (access("\/etc\/alternatives\/sh", X_OK) == 0) { \
+\			shell = "\/etc\/alternatives\/sh"; \
+\		} else if (access("\/bin\/bash", X_OK) == 0) { \
+\			shell = "\/bin\/bash"; \
+\		} else { \
+\			ohshite(_("unable to execute %s (%s): no shell!"), cmd->name, cmd->filename); \
+\		} \
+\		struct command newcmd; \
+\		command_init(\&newcmd, shell, NULL); \
+\		command_add_args(\&newcmd, shell, "-c", "\\"$$0\\" \\"$$@\\"", NULL); \
+\		command_add_argl(\&newcmd, cmd->argv); \
+\		execvp(shell, (char * const *)newcmd.argv); \
+\		& \
+\	}/' $(BUILD_WORK)/dpkg/lib/dpkg/command.c
+
+	if ! [ -f $(BUILD_WORK)/dpkg/configure ]; then \
+		cd $(BUILD_WORK)/dpkg && ./autogen; \
 	fi
-	cd dpkg && ./configure -C \
+	cd $(BUILD_WORK)/dpkg && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--localstatedir=/var \
@@ -26,19 +70,17 @@ dpkg: setup xz gettext
 		--disable-start-stop-daemon \
 		--disable-dselect \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
-		USE_NLS=no \
 		PERL_LIBDIR='$$(prefix)/share/perl5' \
-		TAR=$(TAR) \
-		LZMA_LIBS=$(BUILD_BASE)/usr/local/lib/liblzma.5.dylib 
-	$(SED) -i s/'#define ARCHITECTURE "darwin-arm64"'/'#define ARCHITECTURE "$(DEB_ARCH)"'/ dpkg/config.h
-	$(SED) -i s/'#define ARCHITECTURE_OS "darwin"'/'#define ARCHITECTURE_OS "$(PLATFORM)"'/ dpkg/config.h
-	$(SED) -i s/'$(TAR)'/'tar'/ dpkg/config.h
-	+$(MAKE) -C dpkg
-	+$(MAKE) -C dpkg install \
+		TAR=$(TAR)
+	$(SED) -i s/'#define ARCHITECTURE "darwin-arm64"'/'#define ARCHITECTURE "$(DEB_ARCH)"'/ $(BUILD_WORK)/dpkg/config.h
+	$(SED) -i s/'#define ARCHITECTURE_OS "darwin"'/'#define ARCHITECTURE_OS "$(PLATFORM)"'/ $(BUILD_WORK)/dpkg/config.h
+	$(SED) -i s/'$(TAR)'/'tar'/ $(BUILD_WORK)/dpkg/config.h
+	+$(MAKE) -C $(BUILD_WORK)/dpkg
+	+$(MAKE) -C $(BUILD_WORK)/dpkg install \
 		DESTDIR="$(BUILD_STAGE)/dpkg"
 	mkdir -p $(BUILD_STAGE)/dpkg/var/lib
 	ln -s /Library/dpkg $(BUILD_STAGE)/dpkg/var/lib/dpkg
-	touch dpkg/.build_complete
+	touch $(BUILD_WORK)/dpkg/.build_complete
 endif
 
 dpkg-package: dpkg-stage

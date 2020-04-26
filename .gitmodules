@@ -1,6 +1,3 @@
-[submodule "dpkg"]
-	path = dpkg
-	url = https://github.com/Diatrus/dpkg.git
 [submodule "uikittools"]
 	path = uikittools
 	url = https://github.com/Diatrus/uikittools-ng

@@ -81,7 +81,7 @@ EXTRACT_TAR = if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 		cd $(BUILD_WORK) && \
 		$(TAR) -xf $(BUILD_SOURCE)/$(1) && \
 		mkdir -p $(3); 2>/dev/null || :; \
-		cp -af $(2)/* $(3) 2>/dev/null || :; \
+		cp -af $(2)/. $(3) 2>/dev/null || :; \
 		rm -rf $(2); 2>/dev/null || :; \
 	fi
 
@@ -314,7 +314,7 @@ rebuild-%:
 	elif [ -d $(REPROJ2) ]; then \
 		cd $(REPROJ2) && git clean -xfd && git reset 2>/dev/null || :; \
 	fi
-	$(MAKE) $(REPROJ)
+	+$(MAKE) $(REPROJ)
 
 .PHONY: $(SUBPROJECTS)
 
