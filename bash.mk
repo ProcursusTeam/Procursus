@@ -5,7 +5,7 @@ endif
 STRAPPROJECTS += bash
 DOWNLOAD      += https://ftp.gnu.org/gnu/bash/bash-$(BASH_VERSION).tar.gz{,.sig} \
 		https://ftp.gnu.org/gnu/bash/bash-$(BASH_VERSION)-patches/bash50-00{1..9}{,.sig} \
-		https://ftp.gnu.org/gnu/bash/bash-$(BASH_VERSION)-patches/bash50-0{10..16}{,.sig}
+		https://ftp.gnu.org/gnu/bash/bash-$(BASH_VERSION)-patches/bash50-0{10..17}{,.sig}
 BASH_VERSION  := 5.0
 DEB_BASH_V    ?= $(BASH_VERSION).$(BASH_SUB_V)
 
@@ -34,6 +34,7 @@ bash-setup: setup
 	$(call PGP_VERIFY,bash50-014)
 	$(call PGP_VERIFY,bash50-015)
 	$(call PGP_VERIFY,bash50-016)
+	$(call PGP_VERIFY,bash50-017)
 	$(call EXTRACT_TAR,bash-$(BASH_VERSION).tar.gz,bash-$(BASH_VERSION),bash)
 	mkdir -p $(BUILD_STAGE)/bash/bin
 	mkdir -p $(BUILD_WORK)/bash-$(BASH_VERSION)-patches
