@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/berkeleydb/.build_complete),)
 berkeleydb:
 	@echo "Using previously built berkeleydb."
 else
-berkeleydb: berkeleydb-setup gettext
+berkeleydb: berkeleydb-setup gettext openssl
 	cd $(BUILD_WORK)/berkeleydb/dist && ./s_config
 	cd $(BUILD_WORK)/berkeleydb/build_unix && ../dist/configure \
 		--host=$(GNU_HOST_TRIPLE) \

@@ -2,7 +2,7 @@ Package: berkeleydb
 Version: @DEB_BDB_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: gettext
+Depends: gettext, libssl1.1
 Section: Data_Storage
 Priority: standard
 Homepage: http://www.oracle.com/technology/products/berkeley-db/index.html
