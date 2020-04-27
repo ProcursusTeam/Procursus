@@ -56,6 +56,10 @@ dpkg: dpkg-setup gettext xz zstd
 \		execvp(shell, (char * const *)newcmd.argv); \
 \		& \
 \	}/' $(BUILD_WORK)/dpkg/lib/dpkg/command.c
+	$(SED) -i '/base-bsd-darwin/a base-bsd-darwin-arm64		iphoneos-arm64 \
+base-bsd-darwin-arm		iphoneos-arm \
+base-bsd-darwin-armk		watchos-arm' $(BUILD_WORK)/dpkg/data/tupletable
+	$(SED) -i '/armeb/a armk		armk		arm.*k			32	little' $(BUILD_WORK)/dpkg/data/cputable
 
 	if ! [ -f $(BUILD_WORK)/dpkg/configure ]; then \
 		cd $(BUILD_WORK)/dpkg && ./autogen; \
@@ -72,8 +76,6 @@ dpkg: dpkg-setup gettext xz zstd
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
 		PERL_LIBDIR='$$(prefix)/share/perl5' \
 		TAR=$(TAR)
-	$(SED) -i s/'#define ARCHITECTURE "darwin-arm64"'/'#define ARCHITECTURE "$(DEB_ARCH)"'/ $(BUILD_WORK)/dpkg/config.h
-	$(SED) -i s/'#define ARCHITECTURE_OS "darwin"'/'#define ARCHITECTURE_OS "$(PLATFORM)"'/ $(BUILD_WORK)/dpkg/config.h
 	$(SED) -i s/'$(TAR)'/'tar'/ $(BUILD_WORK)/dpkg/config.h
 	+$(MAKE) -C $(BUILD_WORK)/dpkg
 	+$(MAKE) -C $(BUILD_WORK)/dpkg install \
