@@ -38,7 +38,7 @@ diskdev-cmds: .SHELLFLAGS=-O extglob -c
 diskdev-cmds: diskdev-cmds-setup
 	cd $(BUILD_WORK)/diskdev-cmds/disklib; \
 	rm -f mntopts.h getmntopts.c; \
-	$(CC) -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isystem ../include -fno-common -c *.c; \
+	$(CC) -arch $(ARCH) -isysroot $(SYSROOT) $(PLATFORM_VERSION_MIN) -isystem ../include -fno-common -c *.c; \
 	$(AR) -r libdisk.a *.o
 	cd $(BUILD_WORK)/diskdev-cmds; \
 	for tproj in !(fstyp|fsck_hfs|fuser|mount_portal|mount_swapfs|mount_umap|newfs_hfs_debug).tproj; do \
@@ -54,12 +54,12 @@ diskdev-cmds: diskdev-cmds-setup
 		if [[ $$tproj = mount_cd9660 || $$tproj = mount_hfs || $$tproj = newfs_hfs ]]; then \
 			extra="${extra} -framework CoreFoundation"; \
 		fi; \
-    	$(CC) -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isystem include -DTARGET_OS_SIMULATOR -Idisklib -o $$tproj $$(find "$$tproj.tproj" -name '*.c') disklib/libdisk.a -lutil $$extra; \
+    	$(CC) -arch $(ARCH) -isysroot $(SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -DTARGET_OS_SIMULATOR -Idisklib -o $$tproj $$(find "$$tproj.tproj" -name '*.c') disklib/libdisk.a -lutil $$extra; \
 	done
 	cd $(BUILD_WORK)/diskdev-cmds/fstyp.tproj; \
 	for c in *.c; do \
     	bin=../$$(basename $$c .c); \
-    	$(CC) -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isystem ../include -o $$bin $$c; \
+    	$(CC) -arch $(ARCH) -isysroot $(SYSROOT) $(PLATFORM_VERSION_MIN) -isystem ../include -o $$bin $$c; \
 	done
 	cd $(BUILD_WORK)/diskdev-cmds; \
 	cp -a quota $(BUILD_STAGE)/diskdev-cmds/usr/bin; \

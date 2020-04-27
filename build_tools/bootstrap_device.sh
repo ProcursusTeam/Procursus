@@ -71,10 +71,10 @@ else
     PORT=22
 fi
 echo "Download Zebra."
-wget -q -nc -P ${TMP} https://github.com/wstyres/Zebra/raw/gh-pages/beta/pkgfiles/xyz.willy.zebra_1.1%7Ebeta6_iphoneos-arm.deb
+wget -q -nc -P ${TMP} https://github.com/wstyres/Zebra/raw/gh-pages/beta/pkgfiles/xyz.willy.zebra_1.1%7Ebeta7_iphoneos-arm.deb
 echo "Bootstrapping..."
 ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[localhost]:2222"
-scpfile '../build_strap/bootstrap.tar.gz'
+scpfile '../build_strap/'${PLATFORM}'/bootstrap.tar.gz'
 scpfile ''${TMP}'/xyz.willy.zebra_1.1~beta6_iphoneos-arm.deb'
 sshcommand 'mount -o rw,union,update /'
 sshcommand 'tar --preserve-permissions -xzf bootstrap.tar.gz -C /'

@@ -10,9 +10,32 @@ ifneq ($(shell umask),0022)
 $(error Please run `umask 022` before running this)
 endif
 
-PLATFORM        ?= iphoneos
-ARCH            ?= arm64
-GNU_HOST_TRIPLE ?= aarch64-apple-darwin
+PLATFORM             ?= iphoneos
+
+ifeq ($(PLATFORM),iphoneos)
+$(warning Building on iOS)
+ARCH                 := arm64
+DEB_ARCH             := iphoneos-arm
+GNU_HOST_TRIPLE      := aarch64-apple-darwin
+PLATFORM_VERSION_MIN := -miphoneos-version-min=11.0
+
+else ifeq ($(PLATFORM),appletvos)
+$(warning Building on tvOS)
+ARCH                 := arm64
+DEB_ARCH             := appletvos-arm
+GNU_HOST_TRIPLE      := aarch64-apple-darwin
+PLATFORM_VERSION_MIN := -mappletvos-version-min=11.0
+
+else ifeq ($(PLATFORM),watchos)
+$(warning Building for WatchOS)
+ARCH                 := arm64_32
+DEB_ARCH             := watchos-arm
+GNU_HOST_TRIPLE      := armv7k-apple-darwin
+PLATFORM_VERSION_MIN := -mwatchos-version-min=11.0
+
+else
+$(error Platform not supported)
+endif
 
 ifeq ($(UNAME),Linux)
 $(warning Building on Linux)
@@ -38,9 +61,6 @@ else
 $(error Please use Linux or MacOS to build)
 endif
 
-iphoneos_VERSION_MIN := -miphoneos-version-min=11.0
-
-DEB_ARCH       := iphoneos-arm
 DEB_ORIGIN     := checkra1n
 DEB_MAINTAINER := Hayden Seay <me@diatr.us>
 
@@ -49,21 +69,21 @@ BUILD_ROOT     ?= $(PWD)
 # Downloaded source files
 BUILD_SOURCE   ?= $(BUILD_ROOT)/build_source
 # Base headers/libs (e.g. patched from SDK)
-BUILD_BASE     ?= $(BUILD_ROOT)/build_base
+BUILD_BASE     ?= $(BUILD_ROOT)/build_base/$(PLATFORM)
 # Dpkg info storage area
 BUILD_INFO     ?= $(BUILD_ROOT)/build_info
 # Extracted source working directory
-BUILD_WORK     ?= $(BUILD_ROOT)/build_work
+BUILD_WORK     ?= $(BUILD_ROOT)/build_work/$(PLATFORM)
 # Bootstrap working area
-BUILD_STAGE    ?= $(BUILD_ROOT)/build_stage
+BUILD_STAGE    ?= $(BUILD_ROOT)/build_stage/$(PLATFORM)
 # Final output
-BUILD_DIST     ?= $(BUILD_ROOT)/build_dist
+BUILD_DIST     ?= $(BUILD_ROOT)/build_dist/$(PLATFORM)
 # Actual bootrap staging
-BUILD_STRAP    ?= $(BUILD_ROOT)/build_strap
+BUILD_STRAP    ?= $(BUILD_ROOT)/build_strap/$(PLATFORM)
 # Extra scripts for the buildsystem
 BUILD_TOOLS    ?= $(BUILD_ROOT)/build_tools
 
-CFLAGS          := -O2 -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include
+CFLAGS          := -O2 -arch $(ARCH) -isysroot $(SYSROOT) $(PLATFORM_VERSION_MIN) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include
 CXXFLAGS        := $(CFLAGS)
 CPPFLAGS        := $(CFLAGS)
 LDFLAGS         := -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib

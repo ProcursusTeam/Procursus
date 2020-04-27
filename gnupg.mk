@@ -25,6 +25,7 @@ gnupg: gnupg-setup readline libgpg-error libgcrypt libassuan libksba npth gettex
 		--with-libgcrypt-prefix=$(BUILD_BASE)/usr \
 		--with-ksba-prefix=$(BUILD_BASE)/usr \
 		--with-bzip2 \
+		--disable-gnutls \
 		--sysconfdir=/etc
 	+$(MAKE) -C $(BUILD_WORK)/gnupg
 	+$(MAKE) -C $(BUILD_WORK)/gnupg install \

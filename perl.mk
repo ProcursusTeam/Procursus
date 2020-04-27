@@ -42,8 +42,8 @@ perl:
 	@echo "Using previously built perl."
 else
 perl: perl-setup
-	@# Don't use $(CFLAGS) here because, in the case BerkeleyDB was made before perl, it will look at the db.h in $(BUILD_BASE).
-	cd $(BUILD_WORK)/perl && CFLAGS='-DPERL_DARWIN -DPERL_USE_SAFE_PUTENV -DTIME_HIRES_CLOCKID_T -O2 -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN)' ./configure \
+	@# Don't use $$(CFLAGS) here because, in the case BerkeleyDB was made before perl, it will look at the db.h in $$(BUILD_BASE).
+	cd $(BUILD_WORK)/perl && CFLAGS='-DPERL_DARWIN -DPERL_USE_SAFE_PUTENV -DTIME_HIRES_CLOCKID_T -O2 -arch $(ARCH) -isysroot $(SYSROOT) $(PLATFORM_VERSION_MIN)' ./configure \
 		--target=$(GNU_HOST_TRIPLE) \
 		--sysroot=$(SYSROOT) \
 		--prefix=/usr \
