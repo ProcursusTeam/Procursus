@@ -72,7 +72,8 @@ base-bsd-darwin-armk		watchos-arm' $(BUILD_WORK)/dpkg/data/tupletable
 		--disable-start-stop-daemon \
 		--disable-dselect \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
-		PERL_LIBDIR='$$(prefix)/share/perl5'
+		PERL_LIBDIR='$$(prefix)/share/perl5' \
+		TAR=tar
 	+$(MAKE) -C $(BUILD_WORK)/dpkg
 	+$(MAKE) -C $(BUILD_WORK)/dpkg install \
 		DESTDIR="$(BUILD_STAGE)/dpkg"
