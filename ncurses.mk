@@ -59,7 +59,12 @@ ncurses: ncurses-setup
 	$(RMDIR) --ignore-fail-on-non-empty $(BUILD_STAGE)/ncurses/usr/share/terminfo/*
 
 	for ti in $(BUILD_STAGE)/ncurses/usr/share/terminfo/*; do \
-		$(LN) -Tsf "$${ti##*/}" $(BUILD_STAGE)/ncurses/usr/share/terminfo/"$$(printf "%02x" "'$${ti##*/}")" ; \
+		if [[ ! -L "$(BUILD_STAGE)/ncurses/usr/share/terminfo/78" ]] && [[ -d "$(BUILD_STAGE)/ncurses/usr/share/terminfo/78" ]]; then \
+			LINK=$$(printf "\x$${ti##*/}"); \
+		else \
+			LINK=$$(printf "%02x" "'$${ti##*/}"); \
+		fi; \
+		$(LN) -Tsf "$${ti##*/}" $(BUILD_STAGE)/ncurses/usr/share/terminfo/$${LINK}; \
 	done
 	
 	mkdir -p $(BUILD_STAGE)/ncurses/usr/include/ncursesw
