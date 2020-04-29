@@ -6,18 +6,23 @@ STRAPPROJECTS       += darwintools
 DARWINTOOLS_VERSION := 1.2
 DEB_DARWINTOOLS_V   ?= $(DARWINTOOLS_VERSION)
 
-ifneq ($(wildcard darwintools/.build_complete),)
+darwintools-setup: setup
+	rm -rf $(BUILD_WORK)/darwintools
+	mkdir -p $(BUILD_WORK)/darwintools
+	cp -af darwintools/* $(BUILD_WORK)/darwintools
+
+ifneq ($(wildcard $(BUILD_WORK)/darwintools/.build_complete),)
 darwintools:
 	@echo "Using previously built darwintools."
 else
-darwintools: setup
-	cd darwintools && make
-	mkdir -p $(BUILD_STAGE)/darwintools/usr/{bin,libexec/cydia}
-	cp darwintools/sw_vers $(BUILD_STAGE)/darwintools/usr/bin
-	cp darwintools/firmware $(BUILD_STAGE)/darwintools/usr/libexec
+darwintools: darwintools-setup
+	cd $(BUILD_WORK)/darwintools && make
+	mkdir -p $(BUILD_STAGE)/darwintools/usr/{bin,libexec}
+	cp $(BUILD_WORK)/darwintools/sw_vers $(BUILD_STAGE)/darwintools/usr/bin
+	cp $(BUILD_WORK)/darwintools/firmware $(BUILD_STAGE)/darwintools/usr/libexec
 	cd $(BUILD_STAGE)/darwintools/usr/libexec && ln -sf firmware firmware.sh 
 	chmod 0755 $(BUILD_STAGE)/darwintools/usr/libexec/firmware
-	touch darwintools/.build_complete
+	touch $(BUILD_WORK)/darwintools/.build_complete
 endif
 
 darwintools-package: darwintools-stage

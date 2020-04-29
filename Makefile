@@ -36,7 +36,7 @@ $(warning Building for WatchOS)
 ARCH                 := arm64_32
 DEB_ARCH             := watchos-arm
 GNU_HOST_TRIPLE      := armv7k-apple-darwin
-PLATFORM_VERSION_MIN := -mwatchos-version-min=11.0
+PLATFORM_VERSION_MIN := -mwatchos-version-min=4.0
 
 else
 $(error Platform not supported)
@@ -59,7 +59,7 @@ export CC CXX AR
 
 else ifeq ($(UNAME),Darwin)
 $(warning Building on MacOS)
-SYSROOT         ?= $(shell xcrun --sdk iphoneos --show-sdk-path)
+SYSROOT         ?= $(shell xcrun --sdk $(PLATFORM) --show-sdk-path)
 MACOSX_SYSROOT  ?= $(shell xcrun --show-sdk-path)
 RANLIB          := ranlib
 STRIP           := strip
@@ -413,6 +413,7 @@ setup:
 	@# Patch headers from iPhoneOS.sdk
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/stdlib.h > $(BUILD_BASE)/usr/include/stdlib.h
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/time.h > $(BUILD_BASE)/usr/include/time.h
+	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/unistd.h > $(BUILD_BASE)/usr/include/unistd.h
 
 	@echo Makeflags: $(MAKEFLAGS)
 

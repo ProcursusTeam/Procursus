@@ -14,7 +14,7 @@ diskdev-cmds-setup: setup
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/diskdev-cmds/include/{arm,machine,{System/,}sys,uuid}
 	cp -a $(MACOSX_SYSROOT)/usr/include/sys/{disk,reboot,vnioctl,vmmeter}.h $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Versions/Current/Headers/sys/disklabel.h $(BUILD_WORK)/diskdev-cmds/include/sys
-	cp -a $(BUILD_BASE)/usr/include/stdlib.h $(BUILD_WORK)/diskdev-cmds/include
+	cp -a $(BUILD_BASE)/usr/include/{unistd,stdlib}.h $(BUILD_WORK)/diskdev-cmds/include
 
 	wget -q -nc -P $(BUILD_WORK)/diskdev-cmds/include \
 		https://opensource.apple.com/source/libutil/libutil-57/mntopts.h \

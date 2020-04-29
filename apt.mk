@@ -7,13 +7,16 @@ APT_DIR       := $(BUILD_ROOT)/apt
 APT_VERSION   := 2.0.2
 DEB_APT_V     ?= $(APT_VERSION)
 
-ifneq ($(wildcard $(APT_DIR)/build/.build_complete),)
+apt-setup: setup
+	rm -rf $(BUILD_WORK)/apt
+	mkdir -p $(BUILD_WORK)/apt
+
+ifneq ($(wildcard $(BUILD_WORK)/apt/.build_complete),)
 apt:
 	@echo "Using previously built apt."
 else
-apt: setup libgcrypt berkeleydb lz4 xz zstd
-	mkdir -p $(APT_DIR)/build
-	cd $(APT_DIR)/build && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+apt: apt-setup libgcrypt berkeleydb lz4 xz zstd
+	cd $(BUILD_WORK)/apt && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
@@ -35,11 +38,11 @@ apt: setup libgcrypt berkeleydb lz4 xz zstd
 		-DWITH_DOC=0 \
 		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
 		-DDPKG_DATADIR=/usr/share/dpkg \
-		$(APT_DIR)
-	+$(MAKE) -C $(APT_DIR)/build
-	+$(MAKE) -C $(APT_DIR)/build install \
+		$(BUILD_ROOT)/apt
+	+$(MAKE) -C $(BUILD_WORK)/apt
+	+$(MAKE) -C $(BUILD_WORK)/apt install \
 		DESTDIR="$(BUILD_STAGE)/apt"
-	touch $(APT_DIR)/build/.build_complete
+	touch $(BUILD_WORK)/apt/.build_complete
 endif
 
 apt-package: apt-stage

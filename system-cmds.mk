@@ -7,43 +7,46 @@ SYSTEM-CMDS_VERSION := 854.40.2
 DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)
 
 system-cmds-setup: setup
+	rm -rf $(BUILD_WORK)/system-cmds
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
-	mkdir -p system-cmds/include/{IOKit,sys}
-	cp -a $(MACOSX_SYSROOT)/usr/include/{libkern,net,servers,xpc} system-cmds/include
-	cp -a $(MACOSX_SYSROOT)/usr/include/{lib{c,proc},NSSystemDirectories,bootstrap,tzfile}.h system-cmds/include
-	cp -a $(MACOSX_SYSROOT)/usr/include/sys/{reboot,proc*,kern_control}.h system-cmds/include/sys
-	cp -a $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* system-cmds/include/IOKit
-	cp -a $(BUILD_BASE)/usr/include/stdlib.h system-cmds/include
+	mkdir -p $(BUILD_WORK)/system-cmds/include/{IOKit,sys}
+	cp -af system-cmds/* $(BUILD_WORK)/system-cmds
+	cp -a $(MACOSX_SYSROOT)/usr/include/{libkern,net,servers,xpc} $(BUILD_WORK)/system-cmds/include
+	cp -a $(MACOSX_SYSROOT)/usr/include/{lib{c,proc},NSSystemDirectories,bootstrap,tzfile}.h $(BUILD_WORK)/system-cmds/include
+	cp -a $(MACOSX_SYSROOT)/usr/include/sys/{reboot,proc*,kern_control}.h $(BUILD_WORK)/system-cmds/include/sys
+	cp -a $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_WORK)/system-cmds/include/IOKit
+	cp -a $(BUILD_BASE)/usr/include/{unistd,stdlib}.h $(BUILD_WORK)/system-cmds/include
 	
-	wget -nc -P system-cmds/include \
+	wget -nc -P $(BUILD_WORK)/system-cmds/include \
 		https://opensource.apple.com/source/launchd/launchd-328/launchd/src/reboot2.h \
-		https://opensource.apple.com/source/launchd/launchd-328/launchd/src/bootstrap_priv.h
+		https://opensource.apple.com/source/launchd/launchd-328/launchd/src/bootstrap_priv.h \
+		https://opensource.apple.com/source/Libc/Libc-583/include/spawn.h
 
 	# Apple's chpass won't build so we used a modified freebsd version.
-	rm -rf system-cmds/chpass.tproj && mkdir -p system-cmds/chpass.tproj
-	wget -nc -P system-cmds/chpass.tproj \
+	rm -rf $(BUILD_WORK)/system-cmds/chpass.tproj && mkdir -p $(BUILD_WORK)/system-cmds/chpass.tproj
+	wget -nc -P $(BUILD_WORK)/system-cmds/chpass.tproj \
 		https://raw.githubusercontent.com/coolstar/freebsd-ports-ios/master/lib/libutil/libutil.h \
 		https://raw.githubusercontent.com/coolstar/freebsd-ports-ios/master/lib/libutil/pw_util.c \
 		https://raw.githubusercontent.com/coolstar/freebsd-ports-ios/master/lib/libutil/flopen.c \
 		https://raw.githubusercontent.com/coolstar/freebsd-ports-ios/master/lib/libc/gen/pw_scan.{c,h} \
 		https://raw.githubusercontent.com/coolstar/freebsd-ports-ios/master/usr.bin/chpass/{chpass{.h,.c},edit.c,field.c,table.c,util.c}
 
-ifneq ($(wildcard system-cmds/.build_complete),)
+ifneq ($(wildcard $(BUILD_WORK)/system-cmds/.build_complete),)
 system-cmds:
 	@echo "Using previously built system-cmds."
 else
 system-cmds: system-cmds-setup
-	for gperf in system-cmds/getconf.tproj/*.gperf; do \
-	    LC_ALL=C awk -f system-cmds/getconf.tproj/fake-gperf.awk < $$gperf > system-cmds/getconf.tproj/"$$(basename $$gperf .gperf).c" ; \
+	for gperf in $(BUILD_WORK)/system-cmds/getconf.tproj/*.gperf; do \
+	    LC_ALL=C awk -f $(BUILD_WORK)/system-cmds/getconf.tproj/fake-gperf.awk < $$gperf > $(BUILD_WORK)/system-cmds/getconf.tproj/"$$(basename $$gperf .gperf).c" ; \
 	done
 	
-	rm -f system-cmds/passwd.tproj/od_passwd.c
-	cd system-cmds && $(CC) -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -std=c89 -o passwd passwd.tproj/*.c -isystem include
-	cd system-cmds && $(CC) -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -o dmesg dmesg.tproj/*.c -isystem include 
-	cd system-cmds && $(CC) -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -o sysctl sysctl.tproj/sysctl.c -isystem include 
-	cd system-cmds && $(CC) -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -o arch arch.tproj/*.c -isystem include -framework CoreFoundation -framework Foundation -lobjc 
+	rm -f $(BUILD_WORK)/system-cmds/passwd.tproj/od_passwd.c
+	cd $(BUILD_WORK)/system-cmds && $(CC) -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -std=c89 -o passwd passwd.tproj/*.c -isystem include
+	cd $(BUILD_WORK)/system-cmds && $(CC) -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -o dmesg dmesg.tproj/*.c -isystem include 
+	cd $(BUILD_WORK)/system-cmds && $(CC) -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -o sysctl sysctl.tproj/sysctl.c -isystem include 
+	cd $(BUILD_WORK)/system-cmds && $(CC) -arch $(ARCH) -isysroot $(SYSROOT) $($(PLATFORM)_VERSION_MIN) -o arch arch.tproj/*.c -isystem include -framework CoreFoundation -framework Foundation -lobjc 
 	
-	cd system-cmds; \
+	cd $(BUILD_WORK)/system-cmds; \
 	for tproj in ac accton chpass dynamic_pager getconf getty hostinfo iostat login mkfile pwd_mkdb reboot sync vifs vipw zdump zic nologin; do \
 		CFLAGS=; \
 		EXTRA=; \
@@ -58,17 +61,17 @@ system-cmds: system-cmds-setup
 	
 	mkdir -p $(BUILD_STAGE)/system-cmds/{/bin,/sbin,/usr/bin,/usr/sbin}
 
-	cp -a system-cmds/{reboot,nologin} $(BUILD_STAGE)/system-cmds/usr/sbin
-	cp -a system-cmds/pagesize.tproj/pagesize.sh $(BUILD_STAGE)/system-cmds/usr/bin/pagesize
+	cp -a $(BUILD_WORK)/system-cmds/{reboot,nologin} $(BUILD_STAGE)/system-cmds/usr/sbin
+	cp -a $(BUILD_WORK)/system-cmds/pagesize.tproj/pagesize.sh $(BUILD_STAGE)/system-cmds/usr/bin/pagesize
 
-	cp -a system-cmds/sync $(BUILD_STAGE)/system-cmds/bin
-	cp -a system-cmds/{dmesg,dynamic_pager} $(BUILD_STAGE)/system-cmds/sbin
+	cp -a $(BUILD_WORK)/system-cmds/sync $(BUILD_STAGE)/system-cmds/bin
+	cp -a $(BUILD_WORK)/system-cmds/{dmesg,dynamic_pager} $(BUILD_STAGE)/system-cmds/sbin
 	$(LN) -sf ../usr/sbin/reboot $(BUILD_STAGE)/system-cmds/sbin/halt
-	cp -a system-cmds/{arch,chpass,getconf,getty,hostinfo,login,passwd} $(BUILD_STAGE)/system-cmds/usr/bin
+	cp -a $(BUILD_WORK)/system-cmds/{arch,chpass,getconf,getty,hostinfo,login,passwd} $(BUILD_STAGE)/system-cmds/usr/bin
 	$(LN) -sf chpass $(BUILD_STAGE)/system-cmds/usr/bin/chfn
 	$(LN) -sf chpass $(BUILD_STAGE)/system-cmds/usr/bin/chsh
-	cp -a system-cmds/{ac,accton,iostat,mkfile,pwd_mkdb,sysctl,vifs,vipw,zdump,zic} $(BUILD_STAGE)/system-cmds/usr/sbin
-	touch system-cmds/.build_complete
+	cp -a $(BUILD_WORK)/system-cmds/{ac,accton,iostat,mkfile,pwd_mkdb,sysctl,vifs,vipw,zdump,zic} $(BUILD_STAGE)/system-cmds/usr/sbin
+	touch $(BUILD_WORK)/system-cmds/.build_complete
 endif
 
 system-cmds-package: system-cmds-stage

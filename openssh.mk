@@ -6,26 +6,30 @@ SUBPROJECTS     += openssh
 OPENSSH_VERSION := 8.2
 DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)
 
-ifneq ($(wildcard openssh/.build_complete),)
+openssh-setup: setup
+	rm -rf $(BUILD_WORK)/openssh
+	mkdir -p $(BUILD_WORK)/openssh
+
+ifneq ($(wildcard $(BUILD_WORK)/openssh/.build_complete),)
 openssh:
 	@echo "Using previously built openssh."
 else
-openssh: setup openssl
-	if ! [ -f openssh/configure ]; then \
+openssh: openssh-setup openssl
+	if ! [ -f $(BUILD_WORK)/openssh/configure ]; then \
 		cd openssh && autoreconf; \
 	fi
 	$(SED) -i '/HAVE_ENDIAN_H/d' openssh/config.h.in
-	cd openssh && $(EXTRA) \
-		./configure -C \
+	cd $(BUILD_WORK)/openssh && $(EXTRA) \
+		$(BUILD_ROOT)/openssh/configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc/ssh
-	+$(MAKE) -C openssh
-	+$(MAKE) -C openssh install \
+	+$(MAKE) -C $(BUILD_WORK)/openssh
+	+$(MAKE) -C $(BUILD_WORK)/openssh install \
 		DESTDIR="$(BUILD_STAGE)/openssh"
 	mkdir -p $(BUILD_STAGE)/openssh/Library/LaunchDaemons
 	cp $(BUILD_INFO)/com.openssh.sshd.plist $(BUILD_STAGE)/openssh/Library/LaunchDaemons
-	touch openssh/.build_complete
+	touch $(BUILD_WORK)/openssh/.build_complete
 endif
 
 openssh-package: openssh-stage
