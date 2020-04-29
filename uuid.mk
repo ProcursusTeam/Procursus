@@ -20,7 +20,9 @@ uuid: uuid-setup
 	cd $(BUILD_WORK)/uuid && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
-		ac_cv_va_copy=yes
+		ac_cv_va_copy=yes \
+		CC="$(CC) $(CFLAGS)" \
+		CXX="$(CXX) $(CXXFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/uuid
 	+$(MAKE) -C $(BUILD_WORK)/uuid install \
 		DESTDIR=$(BUILD_STAGE)/uuid

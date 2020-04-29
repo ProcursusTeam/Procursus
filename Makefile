@@ -2,7 +2,12 @@ ifeq ($(firstword $(subst ., ,$(MAKE_VERSION))),3)
 $(error Install latest make from Homebrew - brew install make)
 endif
 
-SHELL           := /usr/bin/env bash
+ifeq ($(shell /usr/bin/env bash --version | grep -q 'version 5' && echo 1),1)
+SHELL := /usr/bin/env bash
+else
+$(error Install bash 5.0)
+endif
+
 UNAME           := $(shell uname -s)
 SUBPROJECTS     += $(STRAPPROJECTS)
 
@@ -13,14 +18,14 @@ endif
 PLATFORM             ?= iphoneos
 
 ifeq ($(PLATFORM),iphoneos)
-$(warning Building on iOS)
+$(warning Building for iOS)
 ARCH                 := arm64
 DEB_ARCH             := iphoneos-arm
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
 PLATFORM_VERSION_MIN := -miphoneos-version-min=11.0
 
 else ifeq ($(PLATFORM),appletvos)
-$(warning Building on tvOS)
+$(warning Building for tvOS)
 ARCH                 := arm64
 DEB_ARCH             := appletvos-arm
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
@@ -48,13 +53,17 @@ AR       := $(GNU_HOST_TRIPLE)-ar
 RANLIB   := $(GNU_HOST_TRIPLE)-ranlib
 STRIP    := $(GNU_HOST_TRIPLE)-strip
 I_N_T    := $(GNU_HOST_TRIPLE)-install_name_tool
+NM       := $(GNU_HOST_TRIPLE)-nm
 EXTRA    := INSTALL="/usr/bin/install -c --strip-program=$(STRIP)"
-export CC CXX AR RANLIB STRIP
+export CC CXX AR
 
 else ifeq ($(UNAME),Darwin)
 $(warning Building on MacOS)
-SYSROOT         ?= $(THEOS)/sdks/iPhoneOS12.2.sdk
-MACOSX_SYSROOT  ?= $(shell xcode-select -print-path)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+SYSROOT         ?= $(shell xcrun --sdk iphoneos --show-sdk-path)
+MACOSX_SYSROOT  ?= $(shell xcrun --show-sdk-path)
+RANLIB          := ranlib
+STRIP           := strip
+NM              := nm
 I_N_T           := install_name_tool
 EXTRA           :=
 else
@@ -86,10 +95,10 @@ BUILD_TOOLS    ?= $(BUILD_ROOT)/build_tools
 CFLAGS          := -O2 -arch $(ARCH) -isysroot $(SYSROOT) $(PLATFORM_VERSION_MIN) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include
 CXXFLAGS        := $(CFLAGS)
 CPPFLAGS        := $(CFLAGS)
-LDFLAGS         := -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib
-PKG_CONFIG_PATH := $(BUILD_BASE)/usr/lib/pkgconfig
+LDFLAGS         := -O2 -arch $(ARCH) -isysroot $(SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib
+PKG_CONFIG_PATH := $(BUILD_BASE)/usr/lib/pkgconfig:$(BUILD_BASE)/usr/local/lib/pkgconfig
 
-export PLATFORM ARCH SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE I_N_T EXTRA
+export PLATFORM ARCH SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE RANLIB STRIP NM I_N_T EXTRA
 export BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP BUILD_TOOLS
 export DEB_ARCH DEB_ORIGIN DEB_MAINTAINER
 export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS PKG_CONFIG_PATH
@@ -101,7 +110,7 @@ EXTRACT_TAR = if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 		cd $(BUILD_WORK) && \
 		$(TAR) -xf $(BUILD_SOURCE)/$(1) && \
 		mkdir -p $(3); 2>/dev/null || :; \
-		cp -af $(2)/. $(3) 2>/dev/null || :; \
+		$(CP) -af $(2)/. $(3) 2>/dev/null || :; \
 		rm -rf $(2); 2>/dev/null || :; \
 	fi
 
@@ -124,19 +133,19 @@ PACK =  find $(BUILD_DIST)/$(1) \( -name '*.la' -o -name '*.a' \) -type f -delet
 	rm -rf $(BUILD_DIST)/$(1)/usr/share/{info,aclocal,doc}; \
 	if [ -z $(3) ]; then \
 		echo Setting $(1) owner to 0:0.; \
-		$(FAKEROOT) chown -R 0:0 $(BUILD_DIST)/$(1)/*; \
+		$(FAKEROOT) chown -R 0:0 $(BUILD_DIST)/$(1)/* &>/dev/null; \
 	elif [ $(3) = "2" ]; then \
 		echo $(1) owner set within individual makefile.; \
 	fi; \
 	SIZE=$$(du -s $(BUILD_DIST)/$(1) | cut -f 1); \
 	mkdir -p $(BUILD_DIST)/$(1)/DEBIAN; \
-	cp $(BUILD_INFO)/$(1).control $(BUILD_DIST)/$(1)/DEBIAN/control; \
-	cp $(BUILD_INFO)/$(1).postinst $(BUILD_DIST)/$(1)/DEBIAN/postinst 2>/dev/null || :; \
-	cp $(BUILD_INFO)/$(1).preinst $(BUILD_DIST)/$(1)/DEBIAN/preinst 2>/dev/null || :; \
-	cp $(BUILD_INFO)/$(1).postrm $(BUILD_DIST)/$(1)/DEBIAN/postrm 2>/dev/null || :; \
-	cp $(BUILD_INFO)/$(1).prerm $(BUILD_DIST)/$(1)/DEBIAN/prerm 2>/dev/null || :; \
-	cp $(BUILD_INFO)/$(1).extrainst_ $(BUILD_DIST)/$(1)/DEBIAN/extrainst_ 2>/dev/null || :; \
-	cd $(BUILD_DIST)/$(1) && find . -type f ! -regex '.*.hg.*' ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -printf '%P ' | xargs md5sum > $(BUILD_DIST)/$(1)/DEBIAN/md5sums; \
+	$(CP) $(BUILD_INFO)/$(1).control $(BUILD_DIST)/$(1)/DEBIAN/control; \
+	$(CP) $(BUILD_INFO)/$(1).postinst $(BUILD_DIST)/$(1)/DEBIAN/postinst 2>/dev/null || :; \
+	$(CP) $(BUILD_INFO)/$(1).preinst $(BUILD_DIST)/$(1)/DEBIAN/preinst 2>/dev/null || :; \
+	$(CP) $(BUILD_INFO)/$(1).postrm $(BUILD_DIST)/$(1)/DEBIAN/postrm 2>/dev/null || :; \
+	$(CP) $(BUILD_INFO)/$(1).prerm $(BUILD_DIST)/$(1)/DEBIAN/prerm 2>/dev/null || :; \
+	$(CP) $(BUILD_INFO)/$(1).extrainst_ $(BUILD_DIST)/$(1)/DEBIAN/extrainst_ 2>/dev/null || :; \
+	cd $(BUILD_DIST)/$(1) && $(FIND) . -type f ! -regex '.*.hg.*' ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -printf '%P ' | xargs md5sum > $(BUILD_DIST)/$(1)/DEBIAN/md5sums; \
 	chmod 0755 $(BUILD_DIST)/$(1)/DEBIAN/*; \
 	$(SED) -i ':a; s/@$(2)@/$($(2))/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	$(SED) -i ':a; s/@DEB_MAINTAINER@/$(DEB_MAINTAINER)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control; \
@@ -162,9 +171,10 @@ $(error Install GNU tar)
 endif
 
 ifeq ($(call HAS_COMMAND,gsed),1)
-SED := gsed
+PATH := $(shell brew --prefix)/opt/gnu-sed/libexec/gnubin:$(PATH)
+SED  := gsed
 else ifeq ($(shell sed --version | grep -q GNU && echo 1),1)
-SED := sed
+SED  := sed
 else
 $(error Install GNU sed)
 endif
@@ -186,6 +196,14 @@ ifneq ($(call HAS_COMMAND,cmake),1)
 $(error Install cmake)
 endif
 
+ifneq ($(call HAS_COMMAND,pkg-config),1)
+$(error Install pkg-config)
+endif
+
+ifneq ($(call HAS_COMMAND,automake),1)
+$(error Install automake)
+endif
+
 ifneq ($(call HAS_COMMAND,yacc),1)
 $(error Install bison)
 endif
@@ -195,7 +213,9 @@ $(error Install flex)
 endif
 
 ifneq ($(call HAS_COMMAND,groff),1)
-$(error Install groff)
+ifneq ($(shell groff --version | grep -q 'version 1.2' && echo 1),1)
+$(error Install newer groff)
+endif
 endif
 
 ifeq ($(call HAS_COMMAND,gpatch),1)
@@ -206,10 +226,34 @@ else
 $(error Install GNU patch)
 endif
 
+ifeq ($(call HAS_COMMAND,gfind),1)
+FIND := gfind
+else ifeq ($(shell find --version | grep -q 'GNU find' && echo 1),1)
+FIND := find
+else
+$(error Install GNU findutils)
+endif
+
 ifeq ($(call HAS_COMMAND,grmdir),1)
 RMDIR := grmdir
 else ifeq ($(shell rmdir --version | grep -q 'GNU coreutils' && echo 1),1)
 RMDIR := rmdir
+else
+$(error Install GNU coreutils)
+endif
+
+ifeq ($(call HAS_COMMAND,gwc),1)
+WC := gwc
+else ifeq ($(shell wc --version | grep -q 'GNU coreutils' && echo 1),1)
+WC := wc
+else
+$(error Install GNU coreutils)
+endif
+
+ifeq ($(call HAS_COMMAND,gcp),1)
+CP := gcp
+else ifeq ($(shell cp --version | grep -q 'GNU coreutils' && echo 1),1)
+CP := cp
 else
 $(error Install GNU coreutils)
 endif
@@ -245,6 +289,16 @@ $(error Install gettext)
 endif
 endif
 
+ifneq ($(shell tic -V | grep -q 'ncurses 6' && echo 1),1)
+ifeq ($(call HAS_COMMAND,$(shell brew --prefix)/opt/ncurses/bin/tic),1)
+PATH := $(shell brew --prefix)/opt/ncurses/bin:$(PATH)
+else
+$(error Install ncurses)
+endif
+endif
+
+PATH += :$(BUILD_TOOLS)
+
 MAKEFLAGS += --no-print-directory
 
 ifeq ($(findstring --jobserver-auth=,$(MAKEFLAGS)),)
@@ -277,9 +331,9 @@ bootstrap:: $(STRAPPROJECTS:%=%-package)
 	for DEB in $(BUILD_STRAP)/*.deb; do \
 		PKGNAME=$$(basename $$DEB | cut -f1 -d"_"); \
 		dpkg-deb -R $$DEB $(BUILD_STRAP)/strap; \
-		cp $(BUILD_STRAP)/strap/DEBIAN/md5sums $(BUILD_STRAP)/strap/Library/dpkg/info/$$PKGNAME.md5sums; \
+		$(CP) $(BUILD_STRAP)/strap/DEBIAN/md5sums $(BUILD_STRAP)/strap/Library/dpkg/info/$$PKGNAME.md5sums; \
 		dpkg-deb -c $$DEB | cut -f2- -d"." | awk -F'\\-\\>' '{print $$1}' | $(SED) '1 s/$$/./' | $(SED) 's/\/$$//' > $(BUILD_STRAP)/strap/Library/dpkg/info/$$PKGNAME.list; \
-		cp $(BUILD_INFO)/$$PKGNAME.{preinst,postinst,extrainst_,prerm,postrm} $(BUILD_STRAP)/strap/Library/dpkg/info 2>/dev/null || :; \
+		$(CP) $(BUILD_INFO)/$$PKGNAME.{preinst,postinst,extrainst_,prerm,postrm} $(BUILD_STRAP)/strap/Library/dpkg/info 2>/dev/null || :; \
 		dpkg-deb --info $$DEB | $(SED) '/Package:/,$$!d' | $(SED) -e 's/^[ \t]*//' >> $(BUILD_STRAP)/strap/Library/dpkg/status; \
 		echo -e "Status: install ok installed\n" >> $(BUILD_STRAP)/strap/Library/dpkg/status; \
 		rm -rf $(BUILD_STRAP)/strap/DEBIAN; \
@@ -350,10 +404,10 @@ setup:
 	mkdir -p $(BUILD_BASE)/usr/include/{sys,IOKit}
 
 	@# Copy headers from MacOSX.sdk
-	cp -a $(MACOSX_SYSROOT)/usr/include/{arpa,net,xpc} $(BUILD_BASE)/usr/include
-	cp -a $(MACOSX_SYSROOT)/usr/include/sys/{tty*,proc*,kern*}.h $(BUILD_BASE)/usr/include/sys
-	cp -a $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/ps $(BUILD_BASE)/usr/include/IOKit
-	cp -a $(MACOSX_SYSROOT)/usr/include/{ar,launch,libproc,tzfile}.h $(BUILD_BASE)/usr/include
+	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{arpa,net,xpc} $(BUILD_BASE)/usr/include
+	$(CP) -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,proc*,kern*}.h $(BUILD_BASE)/usr/include/sys
+	$(CP) -af $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/ps $(BUILD_BASE)/usr/include/IOKit
+	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{ar,launch,libproc,tzfile}.h $(BUILD_BASE)/usr/include
 
 	@# Patch headers from iPhoneOS.sdk
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/stdlib.h > $(BUILD_BASE)/usr/include/stdlib.h

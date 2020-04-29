@@ -16,6 +16,7 @@ gnutls-setup: setup
 		https://gitlab.com/gnutls/gnutls/-/raw/master/lib/accelerated/aarch64/macosx/sha1-armv8.s \
 		https://gitlab.com/gnutls/gnutls/-/raw/master/lib/accelerated/aarch64/macosx/sha256-armv8.s \
 		https://gitlab.com/gnutls/gnutls/-/raw/master/lib/accelerated/aarch64/macosx/sha512-armv8.s
+	$(SED) -i '/-Wl,-no_weak_imports/d' $(BUILD_WORK)/gnutls/configure.ac # Workaround for XCode 11.4 bug, remove this when Apple fixes.
 
 ifneq ($(wildcard $(BUILD_WORK)/gnutls/.build_complete),)
 gnutls:

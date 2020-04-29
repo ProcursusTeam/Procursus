@@ -25,7 +25,7 @@ zip: zip-setup
 		CC=$(CC) \
 		CPP="$(CXX)" \
 		CFLAGS="$(CFLAGS) -I. -DUNIX -DBZIP2_SUPPORT" \
-		LFLAGS2="-lbz2"
+		LFLAGS2="-lbz2 $(CFLAGS)"
 	touch $(BUILD_WORK)/zip/.build_complete
 endif
 

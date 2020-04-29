@@ -10,7 +10,7 @@ stopiproxy() {
 }
 
 scpfile() {
-    /usr/bin/expect <(cat << EOF
+    /usr/bin/env expect <(cat << EOF
 spawn scp -P ${PORT} $1 root@${IP}:/var/root
 expect {
     "The authenticity of host" {
@@ -35,7 +35,7 @@ EOF
 }
 
 sshcommand() {
-    /usr/bin/expect <(cat << EOF
+    /usr/bin/env expect <(cat << EOF
 spawn ssh -t root@${IP} -p ${PORT} $1
 expect {
     "The authenticity of host" {

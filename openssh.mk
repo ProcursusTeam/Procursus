@@ -14,6 +14,7 @@ openssh: setup openssl
 	if ! [ -f openssh/configure ]; then \
 		cd openssh && autoreconf; \
 	fi
+	$(SED) -i '/HAVE_ENDIAN_H/d' openssh/config.h.in
 	cd openssh && $(EXTRA) \
 		./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \

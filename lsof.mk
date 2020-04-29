@@ -35,7 +35,7 @@ lsof: lsof-setup network-cmds-setup ncurses
 		CC=$(CC) \
 		AR="$(AR) cr \$${LIB} \$${OBJ}" \
 		RANLIB="$(RANLIB) \$${LIB}" \
-		RC_CFLAGS="-DHASUTMPX -isystem $(BUILD_WORK)/network-cmds/include -isystem $(BUILD_WORK)/lsof/lsof/include -L$(BUILD_BASE)/usr/lib"
+		RC_CFLAGS="$(CFLAGS) -DHASUTMPX -isystem $(BUILD_WORK)/network-cmds/include -isystem $(BUILD_WORK)/lsof/lsof/include -L$(BUILD_BASE)/usr/lib"
 	cp -a $(BUILD_WORK)/lsof/lsof/lsof $(BUILD_STAGE)/lsof/usr/sbin
 	cp -a $(BUILD_WORK)/lsof/lsof/lsof.8 $(BUILD_STAGE)/lsof/usr/share/man/man8
 	touch $(BUILD_WORK)/lsof/.build_complete

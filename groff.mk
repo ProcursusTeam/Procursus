@@ -22,8 +22,8 @@ groff: groff-setup
 		--with-x=no
 	+$(MAKE) -C $(BUILD_WORK)/groff \
 		AR="$(AR)" \
-		GROFFBIN="/usr/bin/groff" \
-		GROFF_BIN_PATH="/usr/bin"
+		GROFFBIN="$$(which groff)" \
+		GROFF_BIN_PATH="$$(which groff | rev | cut -f2- -d'/' | rev)"
 	+$(MAKE) -C $(BUILD_WORK)/groff install \
 		DESTDIR=$(BUILD_STAGE)/groff
 	touch $(BUILD_WORK)/groff/.build_complete

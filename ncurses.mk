@@ -69,6 +69,14 @@ ncurses: ncurses-setup
 			$(LN) -srf $$h $(BUILD_STAGE)/ncurses/usr/include/ncursesw ; \
 		fi \
 	done
+	
+	mkdir -p $(BUILD_BASE)/usr/include/ncursesw
+
+	for h in $(BUILD_BASE)/usr/include/*; do \
+		if [[ ! -d $$h ]]; then \
+			$(LN) -srf $$h $(BUILD_BASE)/usr/include/ncursesw ; \
+		fi \
+	done
 
 	touch $(BUILD_WORK)/ncurses/.build_complete
 endif

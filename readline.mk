@@ -39,7 +39,7 @@ readline: readline-setup ncurses
 	touch $(BUILD_WORK)/readline/.build_complete
 endif
 
-readline-package: READLINE_SUB_V=$(shell find $(BUILD_WORK)/readline-$(READLINE_VERSION)-patches -type f | wc -l)
+readline-package: READLINE_SUB_V=$(shell find $(BUILD_WORK)/readline-$(READLINE_VERSION)-patches -type f | $(WC) -l)
 readline-package: readline-stage
 	# readline.mk Package Structure
 	rm -rf $(BUILD_DIST)/readline
