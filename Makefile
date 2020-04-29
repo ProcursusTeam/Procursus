@@ -163,16 +163,17 @@ GET_SHA256 = sha256sum $(1) | cut -c1-64
 endif
 
 ifeq ($(call HAS_COMMAND,gtar),1)
-TAR := gtar
+PATH := $(shell brew --prefix)/opt/gnu-tar/libexec/gnubin:$(PATH)
+TAR  := tar
 else ifeq ($(shell tar --version | grep -q GNU && echo 1),1)
-TAR := tar
+TAR  := tar
 else
 $(error Install GNU tar)
 endif
 
 ifeq ($(call HAS_COMMAND,gsed),1)
 PATH := $(shell brew --prefix)/opt/gnu-sed/libexec/gnubin:$(PATH)
-SED  := gsed
+SED  := sed
 else ifeq ($(shell sed --version | grep -q GNU && echo 1),1)
 SED  := sed
 else
