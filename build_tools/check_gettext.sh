@@ -10,10 +10,10 @@ else
     echo "Use a good OS please."
 fi
 cd $(dirname "$0")
-for bin in $(find ../build_stage/*{/usr,}/{s,}bin ../build_stage/*/usr/lib -type f); do
+for bin in $(find ../build_stage/${PLATFORM}/*{/usr,}/{s,}bin ../build_stage/${PLATFORM}/*/usr/lib -type f); do
     if [[ -f ${bin} ]] && [[ ! -h ${bin} ]]; then
         if [[ $(${OTOOL} ${bin} | grep intl) ]]; then
-            if [[ ! $(grep gettext ../$(echo "${bin}" | cut -d'/' -f3).mk) ]]; then
+            if [[ ! $(grep gettext ../$(echo "${bin}" | cut -d'/' -f4).mk) ]]; then
                 output="$(echo "${bin}" | cut -d'/' -f3) ${output}"
             fi
         fi

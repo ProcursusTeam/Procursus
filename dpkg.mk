@@ -14,8 +14,6 @@ dpkg-setup: setup
 		'https://bugs.debian.org/cgi-bin/bugreport.cgi?att=1;bug=892664;filename=0001-dpkg-Add-Zstandard-compression-and-decompression-sup.patch;msg=20'
 	$(call DO_PATCH,dpkg-$(DPKG_VERSION),dpkg,-p1)
 
-# TODO: we shouldn’t need to patch the config output to make dpkg use the right architecture params
-
 ifneq ($(wildcard $(BUILD_WORK)/dpkg/.build_complete),)
 dpkg:
 	@echo "Using previously built dpkg."
@@ -56,7 +54,7 @@ dpkg: dpkg-setup gettext xz zstd
 \		execvp(shell, (char * const *)newcmd.argv); \
 \		& \
 \	}/' $(BUILD_WORK)/dpkg/lib/dpkg/command.c
-	$(SED) -i '/base-bsd-darwin/a base-bsd-darwin-arm64		iphoneos-arm64 \
+	$(SED) -i '/base-bsd-darwin/a base-bsd-darwin-arm64		iphoneos-arm \
 base-bsd-darwin-arm		iphoneos-arm \
 base-bsd-darwin-armk		watchos-arm' $(BUILD_WORK)/dpkg/data/tupletable
 	$(SED) -i '/armeb/a armk		armk		arm.*k			32	little' $(BUILD_WORK)/dpkg/data/cputable
@@ -75,8 +73,7 @@ base-bsd-darwin-armk		watchos-arm' $(BUILD_WORK)/dpkg/data/tupletable
 		--disable-dselect \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
 		PERL_LIBDIR='$$(prefix)/share/perl5' \
-		TAR=$(TAR)
-	$(SED) -i s/'$(TAR)'/'tar'/ $(BUILD_WORK)/dpkg/config.h
+		TAR=tar
 	+$(MAKE) -C $(BUILD_WORK)/dpkg
 	+$(MAKE) -C $(BUILD_WORK)/dpkg install \
 		DESTDIR="$(BUILD_STAGE)/dpkg"

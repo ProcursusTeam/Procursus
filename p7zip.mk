@@ -25,8 +25,8 @@ p7zip: p7zip-setup
 	$(SED) -i 's/ifdef __APPLE_CC__/if 0\/\/__APPLE_CC__/g' $(BUILD_WORK)/p7zip/CPP/Windows/DLL.cpp
 	cd $(BUILD_WORK)/p7zip && mv -f makefile.macosx_gcc_64bits makefile.machine
 	+$(MAKE) -C $(BUILD_WORK)/p7zip all3 \
-		CC=$(CC) \
-		CXX="$(CXX)"
+		CC="$(CC) $(CFLAGS)" \
+		CXX="$(CXX) $(CFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/p7zip install \
 		DEST_DIR=$(BUILD_STAGE)/p7zip \
 		DEST_HOME=/usr

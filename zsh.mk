@@ -27,6 +27,7 @@ zsh: zsh-setup pcre ncurses
 		--enable-unicode9 \
 		--with-tcsetpgrp \
 		--enable-function-subdirs \
+		--disable-gdbm \
 		LDFLAGS="$(CFLAGS) -lpcre $(LDFLAGS)" \
 		DL_EXT=bundle \
 		zsh_cv_rlimit_rss_is_as=yes \

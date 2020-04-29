@@ -25,7 +25,7 @@ unzip: unzip-setup
 		CF='$(CFLAGS) -Wall -I. -DBSD -DUNIX -DACORN_FTYPE_NFS -DWILD_STOP_AT_DIR \
     	-DLARGE_FILE_SUPPORT -DUNICODE_SUPPORT -DUNICODE_WCHAR -DUTF8_MAYBE_NATIVE \
     	-DNO_LCHMOD -DDATE_FORMAT=DF_YMD -DUSE_BZIP2 -DIZ_HAVE_UXUIDGID ' \
-    	LF2= L_BZ2=-lbz2
+    	LF2="$(CFLAGS)" L_BZ2=-lbz2
 	cd $(BUILD_WORK)/unzip && $(MAKE) -f unix/Makefile install \
 		prefix=$(BUILD_STAGE)/unzip/usr 
 	touch $(BUILD_WORK)/unzip/.build_complete

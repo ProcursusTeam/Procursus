@@ -6,22 +6,27 @@ STRAPPROJECTS      += uikittools
 UIKITTOOLS_VERSION := 2.0.2
 DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)
 
-ifneq ($(wildcard uikittools/.build_complete),)
+uikittools-setup: setup
+	rm -rf $(BUILD_WORK)/uikittools
+	mkdir -p $(BUILD_WORK)/uikittools
+	cp -af uikittools/* $(BUILD_WORK)/uikittools
+
+ifneq ($(wildcard $(BUILD_WORK)/uikittools/.build_complete),)
 uikittools:
 	@echo "Using previously built uikittools."
 else
-uikittools: setup
-	cd uikittools && make \
+uikittools: uikittools-setup
+	cd $(BUILD_WORK)/uikittools && make \
 		CC=$(CC) \
 		STRIP=$(STRIP) \
 		CFLAGS="$(CFLAGS)"
 	mkdir -p $(BUILD_STAGE)/uikittools/usr/bin
-	for bin in uikittools/*; do \
+	for bin in $(BUILD_WORK)/uikittools/*; do \
 		if [ -f $$bin ] && [ -x $$bin ]; then \
 			cp $$bin $(BUILD_STAGE)/uikittools/usr/bin ; \
 		fi \
 	done
-	touch uikittools/.build_complete
+	touch $(BUILD_WORK)/uikittools/.build_complete
 endif
 
 uikittools-package: uikittools-stage

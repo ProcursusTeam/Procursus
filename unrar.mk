@@ -17,22 +17,17 @@ else
 unrar: unrar-setup
 	$(SED) -i 's/libunrar.so/libunrar.dylib/g' $(BUILD_WORK)/unrar/makefile
 	+$(MAKE) -C $(BUILD_WORK)/unrar \
-		CXX="$(CXX)" \
-		STRIP=$(STRIP) \
-		CPPFLAGS="$(CFLAGS)"
+		CXX="$(CXX) $(CFLAGS)" \
+		STRIP=$(STRIP)
 	+$(MAKE) -C $(BUILD_WORK)/unrar clean
 	+$(MAKE) -C $(BUILD_WORK)/unrar lib \
-		CXX="$(CXX)" \
+		CXX="$(CXX) $(CFLAGS)" \
 		AR="$(AR)" \
-		STRIP=$(STRIP) \
-		CPPFLAGS="$(CFLAGS)"
+		STRIP=$(STRIP)
 	mkdir -p $(BUILD_STAGE)/unrar/usr/{bin,lib}
-	+$(MAKE) -C $(BUILD_WORK)/unrar install-lib \
-		DESTDIR=$(BUILD_BASE)/usr
-	+$(MAKE) -C $(BUILD_WORK)/unrar install-lib \
-		DESTDIR=$(BUILD_STAGE)/unrar/usr
-	+$(MAKE) -C $(BUILD_WORK)/unrar install-unrar \
-		DESTDIR=$(BUILD_STAGE)/unrar/usr
+	cd $(BUILD_WORK)/unrar; \
+		cp -af unrar $(BUILD_STAGE)/unrar/usr/bin; \
+		cp -af libunrar.dylib $(BUILD_STAGE)/unrar/usr/lib
 	touch $(BUILD_WORK)/unrar/.build_complete
 endif
 
