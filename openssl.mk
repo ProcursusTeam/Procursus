@@ -7,17 +7,32 @@ DOWNLOAD        += https://www.openssl.org/source/openssl-$(OPENSSL_VERSION).tar
 OPENSSL_VERSION := 1.1.1g
 DEB_OPENSSL_V   ?= $(OPENSSL_VERSION)
 
+ifneq (,$(findstring aarch64,$(GNU_HOST_TRIPLE)))
+	SSL_SCHEME := aarch64-apple-darwin
+else ifneq (,$(findstring arm,$(GNU_HOST_TRIPLE)))
+	SSL_SCHEME := arm-apple-darwin
+else
+	$(error Host triple $(GNU_HOST_TRIPLE) isn't supported)
+endif
+
 openssl-setup: setup
 	$(call PGP_VERIFY,openssl-$(OPENSSL_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,openssl-$(OPENSSL_VERSION).tar.gz,openssl-$(OPENSSL_VERSION),openssl)
 	touch $(BUILD_WORK)/openssl/Configurations/15-diatrus.conf
 	@echo -e "my %targets = (\n\
-		\"$(GNU_HOST_TRIPLE)\" => {\n\
+		\"aarch64-apple-darwin\" => {\n\
 			inherit_from     => [ \"darwin-common\", asm(\"aarch64_asm\") ],\n\
 			CC               => \"$(CC)\",\n\
 			cflags           => add(\"-O2 -fomit-frame-pointer -fno-common\"),\n\
 			bn_ops           => \"SIXTY_FOUR_BIT_LONG RC4_CHAR\",\n\
 			perlasm_scheme   => \"ios64\",\n\
+			sys_id           => \"$(PLATFORM)\",\n\
+		},\n\
+		\"arm-apple-darwin\" => {\n\
+			inherit_from     => [ \"darwin-common\", asm(\"armv4_asm\") ],\n\
+			CC               => \"$(CC)\",\n\
+			cflags           => add(\"-O2 -fomit-frame-pointer -fno-common\"),\n\
+			perlasm_scheme   => \"ios32\",\n\
 			sys_id           => \"$(PLATFORM)\",\n\
 		},\n\
 	);" > $(BUILD_WORK)/openssl/Configurations/15-diatrus.conf
@@ -31,7 +46,7 @@ openssl: openssl-setup
 		--prefix=/usr \
 		--openssldir=/etc/ssl \
 		shared \
-		$(GNU_HOST_TRIPLE)
+		$(SSL_SCHEME)
 	+$(MAKE) -C $(BUILD_WORK)/openssl
 	+$(MAKE) -C $(BUILD_WORK)/openssl install_sw install_ssldirs \
 		DESTDIR=$(BUILD_STAGE)/openssl

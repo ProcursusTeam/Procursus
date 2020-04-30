@@ -29,7 +29,7 @@ perl-setup: setup
 	$(SED) -i '/$$Is{Solaris} =/a \ \ \ \ $$Is{Darwin}  = $$^O eq '\''darwin'\'';' $(BUILD_WORK)/perl/cpan/ExtUtils-MakeMaker/lib/ExtUtils/MM_Unix.pm
 	$(SED) -i "s/&& $$^O ne 'darwin' //" $(BUILD_WORK)/perl/ext/Errno/Errno_pm.pl
 	$(SED) -i "s/$$^O eq 'linux'/\$$Config{gccversion} ne ''/" $(BUILD_WORK)/perl/ext/Errno/Errno_pm.pl
-	$(SED) -i 's/--sysroot=$$sysroot/-isysroot $$sysroot -arch $(ARCH) $(PLATFORM_VERSION_MIN)/' $(BUILD_WORK)/perl/cnf/configure_tool.sh
+	$(SED) -i 's/--sysroot=$$sysroot/-isysroot $$sysroot $(ARCH) $(PLATFORM_VERSION_MIN)/' $(BUILD_WORK)/perl/cnf/configure_tool.sh
 	touch $(BUILD_WORK)/perl/cnf/hints/darwin
 	echo -e "# Linux syscalls\n\
 	d_voidsig='undef'\n\
@@ -47,7 +47,7 @@ perl:
 else
 perl: perl-setup
 	@# Don't use $$(CFLAGS) here because, in the case BerkeleyDB was made before perl, it will look at the db.h in $$(BUILD_BASE).
-	cd $(BUILD_WORK)/perl && CC='$(CC)' AR='$(AR)' NM='$(NM)' OBJDUMP='objdump' CFLAGS='-DPERL_DARWIN -DPERL_USE_SAFE_PUTENV -DTIME_HIRES_CLOCKID_T -O2 -arch $(ARCH) -isysroot $(SYSROOT) $(PLATFORM_VERSION_MIN)' ./configure \
+	cd $(BUILD_WORK)/perl && CC='$(CC)' AR='$(AR)' NM='$(NM)' OBJDUMP='objdump' CFLAGS='-DPERL_DARWIN -DPERL_USE_SAFE_PUTENV -DTIME_HIRES_CLOCKID_T -O2 $(ARCH) -isysroot $(SYSROOT) $(PLATFORM_VERSION_MIN)' ./configure \
 		--target=$(GNU_HOST_TRIPLE) \
 		--sysroot=$(SYSROOT) \
 		--prefix=/usr \

@@ -54,9 +54,9 @@ dpkg: dpkg-setup gettext xz zstd
 \		execvp(shell, (char * const *)newcmd.argv); \
 \		& \
 \	}/' $(BUILD_WORK)/dpkg/lib/dpkg/command.c
-	$(SED) -i '/base-bsd-darwin/a base-bsd-darwin-arm64		iphoneos-arm \
-base-bsd-darwin-arm		iphoneos-arm \
-base-bsd-darwin-armk		watchos-arm' $(BUILD_WORK)/dpkg/data/tupletable
+	$(SED) -i '/base-bsd-darwin/a base-bsd-darwin-arm64		$(DEB_ARCH) \
+base-bsd-darwin-arm		$(DEB_ARCH) \
+base-bsd-darwin-armk		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
 	$(SED) -i '/armeb/a armk		armk		arm.*k			32	little' $(BUILD_WORK)/dpkg/data/cputable
 
 	if ! [ -f $(BUILD_WORK)/dpkg/configure ]; then \
@@ -73,7 +73,8 @@ base-bsd-darwin-armk		watchos-arm' $(BUILD_WORK)/dpkg/data/tupletable
 		--disable-dselect \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
 		PERL_LIBDIR='$$(prefix)/share/perl5' \
-		TAR=tar
+		TAR=tar \
+		LZMA_LIBS='$(BUILD_BASE)/usr/local/lib/liblzma.dylib'
 	+$(MAKE) -C $(BUILD_WORK)/dpkg
 	+$(MAKE) -C $(BUILD_WORK)/dpkg install \
 		DESTDIR="$(BUILD_STAGE)/dpkg"

@@ -7,6 +7,14 @@ DOWNLOAD             += https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-$
 LIBGPG-ERROR_VERSION := 1.37
 DEB_LIBGPG-ERROR_V   ?= $(LIBGPG-ERROR_VERSION)
 
+ifneq (,$(findstring aarch64,$(GNU_HOST_TRIPLE)))
+        GPG_SCHEME := aarch64-apple-darwin
+else ifneq (,$(findstring arm,$(GNU_HOST_TRIPLE)))
+        GPG_SCHEME := arm-apple-darwin
+else
+        $(error Host triple $(GNU_HOST_TRIPLE) isn't supported)
+endif
+
 libgpg-error-setup: setup
 	$(call PGP_VERIFY,libgpg-error-$(LIBGPG-ERROR_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libgpg-error-$(LIBGPG-ERROR_VERSION).tar.bz2,libgpg-error-$(LIBGPG-ERROR_VERSION),libgpg-error)
@@ -16,7 +24,7 @@ libgpg-error:
 	@echo "Using previously built libgpg-error."
 else
 libgpg-error: libgpg-error-setup
-	$(SED) -i '/{"armv7-unknown-linux-gnueabihf"  },/a \ \ \ \ {"$(GNU_HOST_TRIPLE)",  "$(GNU_HOST_TRIPLE)" },' $(BUILD_WORK)/libgpg-error/src/mkheader.c
+	$(SED) -i '/{"armv7-unknown-linux-gnueabihf"  },/a \ \ \ \ {"$(GNU_HOST_TRIPLE)",  "$(GPG_SCHEME)" },' $(BUILD_WORK)/libgpg-error/src/mkheader.c
 	cd $(BUILD_WORK)/libgpg-error && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

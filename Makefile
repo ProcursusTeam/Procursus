@@ -15,32 +15,49 @@ ifneq ($(shell umask),0022)
 $(error Please run `umask 022` before running this)
 endif
 
-PLATFORM             ?= iphoneos
+TARGET             ?= iphoneos
 
-ifeq ($(PLATFORM),iphoneos)
+ifeq ($(TARGET),iphoneos)
 $(warning Building for iOS)
-ARCH                 := arm64
+ARCHES               := arm64
+PLATFORM             := iphoneos
 DEB_ARCH             := iphoneos-arm
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
 PLATFORM_VERSION_MIN := -miphoneos-version-min=11.0
+DIST                 := iphoneos-arm64/georgia
 
-else ifeq ($(PLATFORM),appletvos)
+else ifeq ($(TARGET),appletvos)
 $(warning Building for tvOS)
-ARCH                 := arm64
+ARCHES               := arm64
+PLATFORM             := appletvos
 DEB_ARCH             := appletvos-arm
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
 PLATFORM_VERSION_MIN := -mappletvos-version-min=11.0
+DIST                 := appletvos-arm/georgia
 
-else ifeq ($(PLATFORM),watchos)
+else ifeq ($(TARGET),watchos-arm)
 $(warning Building for WatchOS)
-ARCH                 := arm64_32
+ARCHES               := armv7k
+PLATFORM             := watchos
 DEB_ARCH             := watchos-arm
 GNU_HOST_TRIPLE      := armv7k-apple-darwin
 PLATFORM_VERSION_MIN := -mwatchos-version-min=4.0
+DIST                 := watchos-arm/georgia
+
+else ifeq ($(TARGET),watchos-arm64)
+$(warning Building for WatchOS)
+ARCHES               := arm64_32
+PLATFORM             := watchos
+DEB_ARCH             := watchos-arm
+GNU_HOST_TRIPLE      := aarch64-apple-darwin
+PLATFORM_VERSION_MIN := -mwatchos-version-min=5.0
+DIST                 := watchos-arm64/georgia
 
 else
 $(error Platform not supported)
 endif
+
+ARCH := $(shell echo $(ARCHES) | awk -F' ' '{ for(i=1;i<=NF;i++) print "-arch " $$i }' ORS=" ")
 
 ifeq ($(UNAME),Linux)
 $(warning Building on Linux)
@@ -49,11 +66,13 @@ MACOSX_SYSROOT  ?= $(HOME)/cctools/SDK/MacOSX.sdk
 
 CC       := $(GNU_HOST_TRIPLE)-clang
 CXX      := $(GNU_HOST_TRIPLE)-clang++
+CPP      := $(GNU_HOST_TRIPLE)-clang -E
 AR       := $(GNU_HOST_TRIPLE)-ar
 RANLIB   := $(GNU_HOST_TRIPLE)-ranlib
 STRIP    := $(GNU_HOST_TRIPLE)-strip
 I_N_T    := $(GNU_HOST_TRIPLE)-install_name_tool
 NM       := $(GNU_HOST_TRIPLE)-nm
+LIPO     := $(GNU_HOST_TRIPLE)-lipo
 EXTRA    := INSTALL="/usr/bin/install -c --strip-program=$(STRIP)"
 export CC CXX AR
 
@@ -61,9 +80,11 @@ else ifeq ($(UNAME),Darwin)
 $(warning Building on MacOS)
 SYSROOT         ?= $(shell xcrun --sdk $(PLATFORM) --show-sdk-path)
 MACOSX_SYSROOT  ?= $(shell xcrun --show-sdk-path)
+CPP             := cc -E
 RANLIB          := ranlib
 STRIP           := strip
 NM              := nm
+LIPO            := lipo
 I_N_T           := install_name_tool
 EXTRA           :=
 else
@@ -78,27 +99,27 @@ BUILD_ROOT     ?= $(PWD)
 # Downloaded source files
 BUILD_SOURCE   ?= $(BUILD_ROOT)/build_source
 # Base headers/libs (e.g. patched from SDK)
-BUILD_BASE     ?= $(BUILD_ROOT)/build_base/$(PLATFORM)
+BUILD_BASE     ?= $(BUILD_ROOT)/build_base/$(TARGET)
 # Dpkg info storage area
 BUILD_INFO     ?= $(BUILD_ROOT)/build_info
 # Extracted source working directory
-BUILD_WORK     ?= $(BUILD_ROOT)/build_work/$(PLATFORM)
+BUILD_WORK     ?= $(BUILD_ROOT)/build_work/$(TARGET)
 # Bootstrap working area
-BUILD_STAGE    ?= $(BUILD_ROOT)/build_stage/$(PLATFORM)
+BUILD_STAGE    ?= $(BUILD_ROOT)/build_stage/$(TARGET)
 # Final output
-BUILD_DIST     ?= $(BUILD_ROOT)/build_dist/$(PLATFORM)
+BUILD_DIST     ?= $(BUILD_ROOT)/build_dist/$(TARGET)
 # Actual bootrap staging
-BUILD_STRAP    ?= $(BUILD_ROOT)/build_strap/$(PLATFORM)
+BUILD_STRAP    ?= $(BUILD_ROOT)/build_strap/$(TARGET)
 # Extra scripts for the buildsystem
 BUILD_TOOLS    ?= $(BUILD_ROOT)/build_tools
 
-CFLAGS          := -O2 -arch $(ARCH) -isysroot $(SYSROOT) $(PLATFORM_VERSION_MIN) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include
+CFLAGS          := -O2 $(ARCH) -isysroot $(SYSROOT) $(PLATFORM_VERSION_MIN) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include -F$(BUILD_BASE)/System/Library/Frameworks
 CXXFLAGS        := $(CFLAGS)
-CPPFLAGS        := $(CFLAGS)
-LDFLAGS         := -O2 -arch $(ARCH) -isysroot $(SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib
+CPPFLAGS        := -O2 -arch $(shell echo $(ARCHES) | cut -f1 -d' ') $(PLATFORM_VERSION_MIN) -isysroot $(SYSROOT) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include
+LDFLAGS         := -O2 $(ARCH) -isysroot $(SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib -F$(BUILD_BASE)/System/Library/Frameworks
 PKG_CONFIG_PATH := $(BUILD_BASE)/usr/lib/pkgconfig:$(BUILD_BASE)/usr/local/lib/pkgconfig
 
-export PLATFORM ARCH SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE RANLIB STRIP NM I_N_T EXTRA
+export PLATFORM ARCH SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE CPP RANLIB STRIP NM LIPO I_N_T EXTRA
 export BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP BUILD_TOOLS
 export DEB_ARCH DEB_ORIGIN DEB_MAINTAINER
 export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS PKG_CONFIG_PATH
@@ -395,25 +416,30 @@ rebuild-%:
 
 setup:
 	mkdir -p \
-		$(BUILD_BASE) $(BUILD_BASE)/usr/{include,lib} \
+		$(BUILD_BASE) $(BUILD_BASE)/{System/Library/Frameworks,usr/{include/{sys,IOKit,mach},lib}} \
 		$(BUILD_WORK) $(BUILD_STAGE) $(BUILD_DIST) $(BUILD_STRAP)
 
 	git submodule update --init --recursive
 
 	wget -q -nc -P $(BUILD_SOURCE) $(DOWNLOAD)
 
-	mkdir -p $(BUILD_BASE)/usr/include/{sys,IOKit}
+	wget -q -nc -P $(BUILD_BASE)/usr/include \
+		https://opensource.apple.com/source/xnu/xnu-6153.61.1/libsyscall/wrappers/spawn/spawn.h
 
 	@# Copy headers from MacOSX.sdk
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{arpa,net,xpc} $(BUILD_BASE)/usr/include
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,proc*,kern*}.h $(BUILD_BASE)/usr/include/sys
 	$(CP) -af $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/ps $(BUILD_BASE)/usr/include/IOKit
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{ar,launch,libproc,tzfile}.h $(BUILD_BASE)/usr/include
+	$(CP) -af $(BUILD_INFO)/IOKit.framework.$(PLATFORM) $(BUILD_BASE)/System/Library/Frameworks/IOKit.framework || :
 
 	@# Patch headers from iPhoneOS.sdk
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/stdlib.h > $(BUILD_BASE)/usr/include/stdlib.h
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/time.h > $(BUILD_BASE)/usr/include/time.h
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/unistd.h > $(BUILD_BASE)/usr/include/unistd.h
+	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/mach/task.h > $(BUILD_BASE)/usr/include/mach/task.h
+	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/mach/mach_host.h > $(BUILD_BASE)/usr/include/mach/mach_host.h
+	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/ucontext.h > $(BUILD_BASE)/usr/include/ucontext.h
 
 	@echo Makeflags: $(MAKEFLAGS)
 

@@ -20,11 +20,12 @@ shell-cmds: shell-cmds-setup
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/shell-cmds/include/sys
 	cp -a $(MACOSX_SYSROOT)/usr/include/sys/user.h $(BUILD_WORK)/shell-cmds/include/sys
+	cp -a $(BUILD_BASE)/usr/include/unistd.h $(BUILD_WORK)/shell-cmds/include
 
 	cd $(BUILD_WORK)/shell-cmds; \
-	$(CC) -arch $(ARCH) -isysroot $(SYSROOT) $(PLATFORM_VERSION_MIN) -o $(BUILD_STAGE)/shell-cmds/usr/bin/hexdump hexdump/{conv,display,hexdump,hexsyntax,odsyntax,parse}.c -D'__FBSDID(x)=' -D__DARWIN_C_LEVEL=200112L; \
+	$(CC) $(ARCH) -isysroot $(SYSROOT) $(PLATFORM_VERSION_MIN) -o $(BUILD_STAGE)/shell-cmds/usr/bin/hexdump hexdump/{conv,display,hexdump,hexsyntax,odsyntax,parse}.c -D'__FBSDID(x)=' -D__DARWIN_C_LEVEL=200112L; \
 	for bin in killall renice script time which getopt what; do \
-    	$(CC) -arch $(ARCH) -isysroot $(SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -o $(BUILD_STAGE)/shell-cmds/usr/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -save-temps; \
+    	$(CC) $(ARCH) -isysroot $(SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -o $(BUILD_STAGE)/shell-cmds/usr/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -save-temps; \
 	done
 	touch $(BUILD_WORK)/shell-cmds/.build_complete
 endif
