@@ -15,7 +15,7 @@ git:
 	@echo "Using previously built git."
 else
 git: git-setup openssl curl pcre2 gettext libidn2
-	cd $(BUILD_WORK)/git && $(MAKE) configure
+	+cd $(BUILD_WORK)/git && $(MAKE) configure
 	cd $(BUILD_WORK)/git && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

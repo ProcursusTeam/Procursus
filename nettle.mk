@@ -18,7 +18,8 @@ else
 nettle: nettle-setup libgmp10
 	cd $(BUILD_WORK)/nettle && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/usr \
+		--disable-assembler
 	+$(MAKE) -C $(BUILD_WORK)/nettle
 	+$(MAKE) -C $(BUILD_WORK)/nettle install \
 		DESTDIR=$(BUILD_STAGE)/nettle

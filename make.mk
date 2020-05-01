@@ -17,10 +17,12 @@ make:
 else
 make: make-setup gettext
 	$(SED) -i '/case ENOEXEC:/a \ \ \ \ case EPERM:' $(BUILD_WORK)/make/src/job.c
+	$(SED) -i 's/defined (__arm) ||//' $(BUILD_WORK)/make/src/makeint.h
 	cd $(BUILD_WORK)/make && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
-	+$(MAKE) -C $(BUILD_WORK)/make
+	+$(MAKE) -C $(BUILD_WORK)/make \
+		CFLAGS="$(CFLAGS) -DPOSIX"
 	+$(MAKE) -C $(BUILD_WORK)/make install \
 		DESTDIR="$(BUILD_STAGE)/make"
 	touch $(BUILD_WORK)/make/.build_complete

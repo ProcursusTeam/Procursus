@@ -30,7 +30,7 @@ fakeroot: fakeroot-setup
 		ac_cv_func_openat=no
 	$(SED) -i 's/SETGROUPS_SIZE_TYPE unknown/SETGROUPS_SIZE_TYPE int/g' $(BUILD_WORK)/fakeroot/config.h
 	+$(MAKE) -C $(BUILD_WORK)/fakeroot \
-		CFLAGS='$(CFLAGS) -DMAC_OS_X_VERSION_MIN_REQUIRED=1000'
+		CFLAGS='$(CFLAGS) -D__DARWIN_UNIX03 -DMAC_OS_X_VERSION_MIN_REQUIRED=1000'
 	+$(MAKE) -C $(BUILD_WORK)/fakeroot install \
 		DESTDIR=$(BUILD_STAGE)/fakeroot
 	touch $(BUILD_WORK)/fakeroot/.build_complete

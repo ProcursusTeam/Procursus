@@ -15,43 +15,39 @@ ifneq ($(shell umask),0022)
 $(error Please run `umask 022` before running this)
 endif
 
-TARGET             ?= iphoneos
+MEMO_TARGET          ?= iphoneos-arm64
 
-ifeq ($(TARGET),iphoneos)
+ifeq ($(MEMO_TARGET),iphoneos-arm64)
 $(warning Building for iOS)
 ARCHES               := arm64
 PLATFORM             := iphoneos
 DEB_ARCH             := iphoneos-arm
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
 PLATFORM_VERSION_MIN := -miphoneos-version-min=11.0
-DIST                 := iphoneos-arm64/georgia
 
-else ifeq ($(TARGET),appletvos)
+else ifeq ($(MEMO_TARGET),appletvos-arm64)
 $(warning Building for tvOS)
 ARCHES               := arm64
 PLATFORM             := appletvos
 DEB_ARCH             := appletvos-arm
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
 PLATFORM_VERSION_MIN := -mappletvos-version-min=11.0
-DIST                 := appletvos-arm/georgia
 
-else ifeq ($(TARGET),watchos-arm)
+else ifeq ($(MEMO_TARGET),watchos-arm)
 $(warning Building for WatchOS)
 ARCHES               := armv7k
 PLATFORM             := watchos
 DEB_ARCH             := watchos-arm
 GNU_HOST_TRIPLE      := armv7k-apple-darwin
 PLATFORM_VERSION_MIN := -mwatchos-version-min=4.0
-DIST                 := watchos-arm/georgia
 
-else ifeq ($(TARGET),watchos-arm64)
+else ifeq ($(MEMO_TARGET),watchos-arm64)
 $(warning Building for WatchOS)
 ARCHES               := arm64_32
 PLATFORM             := watchos
 DEB_ARCH             := watchos-arm
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
 PLATFORM_VERSION_MIN := -mwatchos-version-min=5.0
-DIST                 := watchos-arm64/georgia
 
 else
 $(error Platform not supported)
@@ -73,6 +69,7 @@ STRIP    := $(GNU_HOST_TRIPLE)-strip
 I_N_T    := $(GNU_HOST_TRIPLE)-install_name_tool
 NM       := $(GNU_HOST_TRIPLE)-nm
 LIPO     := $(GNU_HOST_TRIPLE)-lipo
+OTOOL    := $(GNU_HOST_TRIPLE)-otool
 EXTRA    := INSTALL="/usr/bin/install -c --strip-program=$(STRIP)"
 export CC CXX AR
 
@@ -85,6 +82,7 @@ RANLIB          := ranlib
 STRIP           := strip
 NM              := nm
 LIPO            := lipo
+OTOOL           := otool
 I_N_T           := install_name_tool
 EXTRA           :=
 else
@@ -92,26 +90,28 @@ $(error Please use Linux or MacOS to build)
 endif
 
 DEB_ORIGIN     := checkra1n
+DEB_DIST       := georgia
+DIST           := $(MEMO_TARGET)/$(DEB_DIST)
 DEB_MAINTAINER := Hayden Seay <me@diatr.us>
 
 # Root
 BUILD_ROOT     ?= $(PWD)
 # Downloaded source files
-BUILD_SOURCE   ?= $(BUILD_ROOT)/build_source
+BUILD_SOURCE   := $(BUILD_ROOT)/build_source
 # Base headers/libs (e.g. patched from SDK)
-BUILD_BASE     ?= $(BUILD_ROOT)/build_base/$(TARGET)
+BUILD_BASE     := $(BUILD_ROOT)/build_base/$(MEMO_TARGET)
 # Dpkg info storage area
-BUILD_INFO     ?= $(BUILD_ROOT)/build_info
+BUILD_INFO     := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_info
 # Extracted source working directory
-BUILD_WORK     ?= $(BUILD_ROOT)/build_work/$(TARGET)
+BUILD_WORK     := $(BUILD_ROOT)/build_work/$(MEMO_TARGET)
 # Bootstrap working area
-BUILD_STAGE    ?= $(BUILD_ROOT)/build_stage/$(TARGET)
+BUILD_STAGE    := $(BUILD_ROOT)/build_stage/$(MEMO_TARGET)
 # Final output
-BUILD_DIST     ?= $(BUILD_ROOT)/build_dist/$(TARGET)
+BUILD_DIST     := $(BUILD_ROOT)/build_dist/$(MEMO_TARGET)
 # Actual bootrap staging
-BUILD_STRAP    ?= $(BUILD_ROOT)/build_strap/$(TARGET)
+BUILD_STRAP    := $(BUILD_ROOT)/build_strap/$(MEMO_TARGET)
 # Extra scripts for the buildsystem
-BUILD_TOOLS    ?= $(BUILD_ROOT)/build_tools
+BUILD_TOOLS    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_tools
 
 CFLAGS          := -O2 $(ARCH) -isysroot $(SYSROOT) $(PLATFORM_VERSION_MIN) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include -F$(BUILD_BASE)/System/Library/Frameworks
 CXXFLAGS        := $(CFLAGS)
@@ -119,8 +119,8 @@ CPPFLAGS        := -O2 -arch $(shell echo $(ARCHES) | cut -f1 -d' ') $(PLATFORM_
 LDFLAGS         := -O2 $(ARCH) -isysroot $(SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib -F$(BUILD_BASE)/System/Library/Frameworks
 PKG_CONFIG_PATH := $(BUILD_BASE)/usr/lib/pkgconfig:$(BUILD_BASE)/usr/local/lib/pkgconfig
 
-export PLATFORM ARCH SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE CPP RANLIB STRIP NM LIPO I_N_T EXTRA
-export BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP BUILD_TOOLS
+export PLATFORM ARCH SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE CPP RANLIB STRIP NM LIPO OTOOL I_N_T EXTRA SED
+export BUILD_ROOT BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP BUILD_TOOLS
 export DEB_ARCH DEB_ORIGIN DEB_MAINTAINER
 export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS PKG_CONFIG_PATH
 
@@ -335,9 +335,15 @@ endif
 CHECKRA1N_MEMO := 1
 
 all:: package
-	@echo "********** Successfully built debs for **********"
+	@echo "********** Successfully built debs for $(MEMO_TARGET) **********"
 	@echo "$(SUBPROJECTS)"
 	$(BUILD_TOOLS)/check_gettext.sh
+
+everything::
+	+unset SYSROOT && $(MAKE) MEMO_TARGET=watchos-arm rebuild-all
+	+unset SYSROOT && $(MAKE) MEMO_TARGET=watchos-arm64 rebuild-all
+	+unset SYSROOT && $(MAKE) MEMO_TARGET=appletvos-arm rebuild-all
+	+unset SYSROOT && $(MAKE) MEMO_TARGET=iphoneos-arm rebuild-all
 
 include *.mk
 
@@ -410,6 +416,7 @@ rebuild-%:
 	elif [ -d $(REPROJ2) ]; then \
 		cd $(REPROJ2) && git clean -xfd && git reset 2>/dev/null || :; \
 	fi
+	rm -rf $(BUILD_WORK)/$(REPROJ2)*patches
 	+$(MAKE) $(REPROJ)
 
 .PHONY: $(SUBPROJECTS)
@@ -440,11 +447,12 @@ setup:
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/mach/task.h > $(BUILD_BASE)/usr/include/mach/task.h
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/mach/mach_host.h > $(BUILD_BASE)/usr/include/mach/mach_host.h
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/ucontext.h > $(BUILD_BASE)/usr/include/ucontext.h
+	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/signal.h > $(BUILD_BASE)/usr/include/signal.h
 
 	@echo Makeflags: $(MAKEFLAGS)
 
 clean::
-	rm -rf $(BUILD_BASE) $(BUILD_WORK) $(BUILD_STAGE)
+	rm -rf $(BUILD_WORK) $(BUILD_BASE) $(BUILD_STAGE)
 	@# When using 'make clean' in submodules, there is still an issue with the subproject changing when committing. This fixes that.
 	git submodule foreach --recursive git clean -xfd
 	git submodule foreach --recursive git reset --hard

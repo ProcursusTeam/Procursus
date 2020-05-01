@@ -71,15 +71,16 @@ else
     PORT=22
 fi
 echo "Download Zebra."
-wget -q -nc -P ${TMP} https://getzbra.com/beta/pkgfiles/xyz.willy.zebra_1.1~beta7-1_iphoneos-arm.deb
+ZEBRADEB=xyz.willy.zebra_1.1~beta8_iphoneos-arm.deb
+wget -q -nc -P ${TMP} https://getzbra.com/beta/pkgfiles/${ZEBRADEB}
 echo "Bootstrapping..."
 ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${IP}]:${PORT}"
-scpfile '../build_strap/'${PLATFORM}'/bootstrap.tar.gz'
-scpfile ''${TMP}'/xyz.willy.zebra_1.1~beta7-1_iphoneos-arm.deb'
+scpfile '${BUILD_STRAP}/'${PLATFORM}'/bootstrap.tar.gz'
+scpfile ''${TMP}'/'${ZEBRADEB}''
 sshcommand 'mount -o rw,union,update /'
 sshcommand 'tar --preserve-permissions -xzf bootstrap.tar.gz -C /'
 sshcommand '/usr/libexec/firmware'
-sshcommand 'PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11:/usr/games\" dpkg -i xyz.willy.zebra_1.1~beta7-1_iphoneos-arm.deb'
+sshcommand 'PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11:/usr/games\" dpkg -i '${ZEBRADEB}''
 sshcommand '/binpack/etc/ssl/bin/snappy -f / -r \$(/binpack/etc/ssl/bin/snappy -f / -l | sed -n 2p) -t orig-fs'
 sshcommand 'touch /.bootstrapped && touch /.mount_rw'
 sshcommand '/Library/dpkg/info/profile.d.postinst'

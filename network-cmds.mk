@@ -15,11 +15,10 @@ network-cmds-setup: setup
 	mkdir -p $(BUILD_WORK)/network-cmds/include/sys
 	cp -a $(MACOSX_SYSROOT)/usr/include/nlist.h $(BUILD_WORK)/network-cmds/include
 	mkdir -p $(BUILD_WORK)/network-cmds/include/net/{classq,pktsched}
+	cp -a $(BUILD_BASE)/usr/include/{stdlib,unistd}.h $(BUILD_WORK)/network-cmds/include
 
 	@#TODO: Needs severe cleaning. Was done late at night.
 
-	@wget -q -nc -P $(BUILD_WORK)/network-cmds/include \
-		https://opensource.apple.com/source/Libc/Libc-1353.11.2/include/unistd.h
 	@wget -q -nc -P $(BUILD_WORK)/network-cmds/include/net \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/net_api_stats.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/if_bridgevar.h \

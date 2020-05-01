@@ -19,7 +19,7 @@ file: file-setup xz
 	rm -rf $(BUILD_WORK)/file-native
 	cp -af $(BUILD_WORK)/file $(BUILD_WORK)/file-native
 	cd $(BUILD_WORK)/file-native && env -i ./configure
-	env -i $(MAKE) -C $(BUILD_WORK)/file-native
+	+env -i $(MAKE) -C $(BUILD_WORK)/file-native
 	cd $(BUILD_WORK)/file && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr

@@ -20,7 +20,7 @@ zip:
 	@echo "Using previously built zip."
 else
 zip: zip-setup
-	cd $(BUILD_WORK)/zip && $(MAKE) -f unix/Makefile install \
+	+cd $(BUILD_WORK)/zip && $(MAKE) -f unix/Makefile install \
 		prefix=$(BUILD_STAGE)/zip/usr \
 		CC=$(CC) \
 		CPP="$(CXX)" \

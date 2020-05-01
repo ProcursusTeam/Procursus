@@ -11,7 +11,7 @@ developer-cmds-setup: setup
 	$(call EXTRACT_TAR,developer_cmds-$(DEVELOPER-CMDS_VERSION).tar.gz,developer_cmds-$(DEVELOPER-CMDS_VERSION),developer-cmds)
 	mkdir -p $(BUILD_STAGE)/developer-cmds/usr/bin
 	mkdir -p $(BUILD_WORK)/developer-cmds/include
-	cp -a $(BUILD_BASE)/usr/include/stdlib.h $(BUILD_WORK)/developer-cmds/include
+	cp -a $(BUILD_BASE)/usr/include/{unistd,stdlib}.h $(BUILD_WORK)/developer-cmds/include
 
 ifneq ($(wildcard $(BUILD_WORK)/developer-cmds/.build_complete),)
 developer-cmds:

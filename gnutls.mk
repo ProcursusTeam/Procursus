@@ -27,10 +27,18 @@ gnutls: gnutls-setup readline gettext libgcrypt libgmp10 libidn2 libunistring ne
 	if ! [ -f $(BUILD_WORK)/gnutls/configure ]; then \
 		cd $(BUILD_WORK)/gnutls && autoreconf -f -i ; \
 	fi
+ifeq ($(MEMO_TARGET),watchos-arm64)
+	cd $(BUILD_WORK)/gnutls && ./configure -C \
+		--host=$(GNU_HOST_TRIPLE) \
+		--prefix=/usr \
+		--disable-hardware-acceleration \
+ 		P11_KIT_CFLAGS=-I$(BUILD_BASE)/usr/include/p11-kit-1
+else
 	cd $(BUILD_WORK)/gnutls && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		P11_KIT_CFLAGS=-I$(BUILD_BASE)/usr/include/p11-kit-1
+endif
 	+$(MAKE) -C $(BUILD_WORK)/gnutls
 	+$(MAKE) -C $(BUILD_WORK)/gnutls install \
 		DESTDIR=$(BUILD_STAGE)/gnutls

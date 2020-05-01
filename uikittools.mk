@@ -16,7 +16,7 @@ uikittools:
 	@echo "Using previously built uikittools."
 else
 uikittools: uikittools-setup
-	cd $(BUILD_WORK)/uikittools && make \
+	+cd $(BUILD_WORK)/uikittools && $(MAKE) \
 		CC=$(CC) \
 		STRIP=$(STRIP) \
 		CFLAGS="$(CFLAGS)"
