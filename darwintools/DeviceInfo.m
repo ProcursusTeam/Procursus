@@ -42,15 +42,13 @@
     self->_cpuArchitecture = [NSString stringWithCString:cpu encoding:NSUTF8StringEncoding];
 
     NXFreeArchInfo(ai);
-
-    self->_ios = (type == CPU_TYPE_ARM || type == CPU_TYPE_ARM64);
 }
 
 
 - (void)initModel {
-    if (self->_ios) {
+#if (TARGET_OS_IPHONE)
         self->_model = [NSString stringWithCString:self->_systemInfo.machine encoding:NSUTF8StringEncoding];
-    } else {
+#else
         size_t size;
         char *model;
 
@@ -60,7 +58,7 @@
 
         self->_model = [NSString stringWithCString:model encoding:NSUTF8StringEncoding];
         free(model);
-    }
+#endif
 }
 
 - (NSRegularExpression *)regexWithPattern:(NSString *)pattern {
@@ -100,15 +98,53 @@
 }
 
 - (NSString *)getDebianArchitecture {
-    return self->_ios ? @"iphoneos-arm" : @"cydia";
+#if (TARGET_OS_IOS)
+    return @"iphoneos-arm";
+#elif (TARGET_OS_TV)
+    return @"appletvos-arm";
+#elif (TARGET_OS_WATCH)
+    return @"watchos-arm";
+#else
+    return @"darwin-amd64";
+#endif
 }
 
 - (NSString *)getOperatingSystem {
-    return self->_ios ? @"ios" : @"macosx";
+#if (TARGET_OS_IOS)
+    return @"iphoneos";
+#elif (TARGET_OS_TV)
+    return @"appletvos";
+#elif (TARGET_OS_WATCH)
+    return @"watchos";
+#else 
+    return @"macos";
+#endif    
 }
 
-- (NSString *)getDPKGDataDirectory {
-    return self->_ios ? @"/Library/dpkg" : @"/Library/dpkg";
+- (NSString *)getDPKGAdminDirectory {
+    NSTask *task = [[NSTask alloc] init];
+    [task setLaunchPath:@"/usr/bin/apt-config"];
+
+    NSArray *args = [NSArray arrayWithObjects:@"--format",
+                     @"%v",
+                     @"dump",
+                     @"Dir::State::status",
+                     nil];
+
+    [task setArguments:args];
+
+    NSPipe *outPipe = [NSPipe pipe];
+    [task setStandardOutput:outPipe];
+
+    [task launch];
+    [task waitUntilExit];
+
+    NSData *dpkgStatusData = [[outPipe fileHandleForReading] readDataToEndOfFile];
+    NSString *dpkgStatusFile = [[[NSString alloc] initWithData:dpkgStatusData encoding:NSUTF8StringEncoding] autorelease];
+    NSString *dpkgAdminDir = [dpkgStatusFile stringByReplacingOccurrencesOfString:@"/status" withString:@""];
+
+    NSError *error;
+    return dpkgAdminDir;
 }
 
 - (NSDictionary *)getCapabilities {

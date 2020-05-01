@@ -3,7 +3,7 @@
 #import "Firmware.h"
 
 @implementation Firmware {
-    NSString *_dataDirectory;
+    NSString *_adminDirectory;
     NSMutableString *_status;
     DeviceInfo *_deviceInfo;
 }
@@ -13,7 +13,7 @@
     if (self) {
         self->_status = [[NSMutableString alloc] init];
         self->_deviceInfo = [DeviceInfo sharedDevice];
-        self->_dataDirectory = [self->_deviceInfo getDPKGDataDirectory];
+        self->_adminDirectory = [self->_deviceInfo getDPKGAdminDirectory];
     }
     return self;
 }
@@ -46,7 +46,7 @@
 
     // file reading
 
-    const char *statusFilePath = [[self->_dataDirectory stringByAppendingString:@"/status"] UTF8String];
+    const char *statusFilePath = [[self->_adminDirectory stringByAppendingString:@"/status"] UTF8String];
     FILE *statusFile;
     char *cLine = NULL;
     size_t len = 0;
@@ -98,7 +98,7 @@
         pathFormat = @"%@/info/%@.list";
     });
 
-    NSString *packageListFile = [NSString stringWithFormat:pathFormat, self->_dataDirectory, package];
+    NSString *packageListFile = [NSString stringWithFormat:pathFormat, self->_adminDirectory, package];
 
     NSError *error;
     if (![packageList writeToFile:packageListFile atomically:YES encoding:NSUTF8StringEncoding error:&error]) {
@@ -179,7 +179,7 @@
 
 - (void)writePackagesToStatusFile {
     NSError *error;
-    NSString *statusFile = [self->_dataDirectory stringByAppendingString:@"/status"];
+    NSString *statusFile = [self->_adminDirectory stringByAppendingString:@"/status"];
 
     if (![self->_status writeToFile:statusFile atomically:YES encoding:NSUTF8StringEncoding error:&error]) {
         [self exitWithError:error andMessage:@"Error writing to status file"];

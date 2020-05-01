@@ -21,9 +21,9 @@ int main() {
 
     NSString *iosVersion = [device getOperatingSystemVersion];
 
-    if (device.ios) {
-        [firmware generatePackage:@"firmware" forVersion:iosVersion withDescription:@"almost impressive Apple frameworks" andName:@"iOS Firmware"];
-    }
+#if (TARGET_OS_IPHONE)
+    [firmware generatePackage:@"firmware" forVersion:iosVersion withDescription:@"almost impressive Apple frameworks" andName:@"iOS Firmware"];
+#endif
 
     NSString *packageName = [@"cy+os." stringByAppendingString:[device getOperatingSystem]];
     [firmware generatePackage:packageName forVersion:iosVersion withDescription:@"virtual operating system dependency"];
@@ -42,20 +42,20 @@ int main() {
 
     [firmware writePackagesToStatusFile];
 
-    if (device.ios) {
-        [firmware setupUserSymbolicLink];
+#if (TARGET_OS_IPHONE)
+    [firmware setupUserSymbolicLink];
 
-        // write firmware version
+    // write firmware version
 
-        NSError *error;
+    NSError *error;
 
-        NSString *firmwareFile = @"/Library/dpkg/info/firmware.ver";
-        NSString *firwareVersion = [NSString stringWithFormat:@"%d\n", FIRMWARE_VERSION];
+    NSString *firmwareFile = @"/Library/dpkg/info/firmware.ver";
+    NSString *firwareVersion = [NSString stringWithFormat:@"%d\n", FIRMWARE_VERSION];
 
-        if (![firwareVersion writeToFile:firmwareFile atomically:YES encoding:NSUTF8StringEncoding error:&error]) {
-            [firmware exitWithError:error andMessage:[NSString stringWithFormat:@"Error writing firmware version to %@", firmwareFile]];
-        }
+    if (![firwareVersion writeToFile:firmwareFile atomically:YES encoding:NSUTF8StringEncoding error:&error]) {
+        [firmware exitWithError:error andMessage:[NSString stringWithFormat:@"Error writing firmware version to %@", firmwareFile]];
     }
+#endif
 
     NSLog(@"my work here is done");
     return 0;

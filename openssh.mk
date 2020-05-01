@@ -2,7 +2,11 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+ifeq ($(PLATFORM),watchos)
+STRAPPROJECTS   += openssh
+else
 SUBPROJECTS     += openssh
+endif
 OPENSSH_VERSION := 8.2
 DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)
 

@@ -2,7 +2,11 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
+ifeq ($(PLATFORM),watchos)
+STRAPPROJECTS   += openssl
+else
 SUBPROJECTS     += openssl
+endif
 DOWNLOAD        += https://www.openssl.org/source/openssl-$(OPENSSL_VERSION).tar.gz{,.asc}
 OPENSSL_VERSION := 1.1.1g
 DEB_OPENSSL_V   ?= $(OPENSSL_VERSION)
