@@ -29,7 +29,7 @@ else ifeq ($(MEMO_TARGET),appletvos-arm64)
 $(warning Building for tvOS)
 ARCHES               := arm64
 PLATFORM             := appletvos
-DEB_ARCH             := appletvos-arm
+DEB_ARCH             := appletvos-arm64
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
 PLATFORM_VERSION_MIN := -mappletvos-version-min=11.0
 
@@ -435,7 +435,7 @@ setup:
 
 	@# Copy headers from MacOSX.sdk
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{arpa,net,xpc} $(BUILD_BASE)/usr/include
-	$(CP) -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,proc*,kern*}.h $(BUILD_BASE)/usr/include/sys
+	$(CP) -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,proc*,kern*,random}.h $(BUILD_BASE)/usr/include/sys
 	$(CP) -af $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/ps $(BUILD_BASE)/usr/include/IOKit
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{ar,launch,libproc,tzfile}.h $(BUILD_BASE)/usr/include
 	$(CP) -af $(BUILD_INFO)/IOKit.framework.$(PLATFORM) $(BUILD_BASE)/System/Library/Frameworks/IOKit.framework || :

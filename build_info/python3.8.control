@@ -1,0 +1,10 @@
+Package: python3.8
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_PYTHON3_V@
+Depends: ncurses (>= 6.0), readline (>= 8.0), libssl1.1, libffi, xz-utils, libgdbm
+Section: Scripting
+Priority: optional
+Description: Interpreted, interactive, object-oriendted programming language.
+Name: Python 3.8
+Tag: purpose::console, role::hacker

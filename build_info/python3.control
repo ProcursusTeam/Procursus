@@ -1,0 +1,10 @@
+Package: python3
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_PYTHON3_V@
+Depends: python3.8
+Section: Scripting
+Priority: optional
+Description: Interpreted, interactive, object-oriendted programming language.
+Name: Python 3
+Tag: purpose::console, role::hacker

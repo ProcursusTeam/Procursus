@@ -2,7 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS   += libffi
+SUBPROJECTS   += libffi
 DOWNLOAD        += https://sourceware.org/pub/libffi/libffi-$(LIBFFI_VERSION).tar.gz
 LIBFFI_VERSION  := 3.3
 DEB_LIBFFI_V    ?= $(LIBFFI_VERSION)
@@ -21,6 +21,8 @@ libffi: libffi-setup
 	+$(MAKE) -C $(BUILD_WORK)/libffi
 	+$(MAKE) -C $(BUILD_WORK)/libffi install \
 		DESTDIR=$(BUILD_STAGE)/libffi
+	+$(MAKE) -C $(BUILD_WORK)/libffi install \
+                DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libffi/.build_complete
 endif
 
