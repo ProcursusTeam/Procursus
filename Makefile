@@ -21,34 +21,48 @@ MEMO_CFVER           ?= 1600.00
 CFVER_WHOLE          := $(shell echo $(MEMO_CFVER) | cut -d. -f1)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1100 ] && [ "$(CFVER_WHOLE)" -lt 1200 ] && echo 1),1)
-IPHONE_MIN := 8.0
-TVOS_MIN   := XXX
-WATCH_MIN  := 1.0
+IPHONE_MIN           := 8.0
+TVOS_MIN             := XXX
+WATCH_MIN            := 1.0
+override MEMO_CFVER  := 1100
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1200 ] && [ "$(CFVER_WHOLE)" -lt 1300 ] && echo 1),1)
-IPHONE_MIN := 9.0
-TVOS_MIN   := 9.0
-WATCH_MIN  := 2.0
+IPHONE_MIN           := 9.0
+TVOS_MIN             := 9.0
+WATCH_MIN            := 2.0
+override MEMO_CFVER  := 1200
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1300 ] && [ "$(CFVER_WHOLE)" -lt 1400 ] && echo 1),1)
-IPHONE_MIN := 10.0
-TVOS_MIN   := 10.0
-WATCH_MIN  := 3.0
+IPHONE_MIN           := 10.0
+TVOS_MIN             := 10.0
+WATCH_MIN            := 3.0
+override MEMO_CFVER  := 1300
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1400 ] && [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
-IPHONE_MIN := 11.0
-TVOS_MIN   := 11.0
-WATCH_MIN  := 4.0
+IPHONE_MIN           := 11.0
+TVOS_MIN             := 11.0
+WATCH_MIN            := 4.0
+override MEMO_CFVER  := 1400
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1500 ] && [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
-IPHONE_MIN := 12.0
-TVOS_MIN   := 12.0
-WATCH_MIN  := 5.0
+IPHONE_MIN           := 12.0
+TVOS_MIN             := 12.0
+WATCH_MIN            := 5.0
+override MEMO_CFVER  := 1500
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
-IPHONE_MIN := 13.0
-TVOS_MIN   := 13.0
-WATCH_MIN  := 6.0
+IPHONE_MIN           := 13.0
+TVOS_MIN             := 13.0
+WATCH_MIN            := 6.0
+override MEMO_CFVER  := 1600
 else
 $(error Unsupported CoreFoundation version)
 endif
 
-ifeq ($(MEMO_TARGET),iphoneos-arm64)
+ifeq ($(MEMO_TARGET),iphoneos-arm)
+$(warning Building for iOS)
+ARCHES               := armv7
+PLATFORM             := iphoneos
+DEB_ARCH             := iphoneos-arm
+GNU_HOST_TRIPLE      := armv7-apple-darwin
+PLATFORM_VERSION_MIN := -miphoneos-version-min=$(IPHONE_MIN)
+
+else ifeq ($(MEMO_TARGET),iphoneos-arm64)
 $(warning Building for iOS)
 ARCHES               := arm64
 PLATFORM             := iphoneos
@@ -319,10 +333,7 @@ else
 $(error Install GNU coreutils)
 endif
 
-ifeq ($(call HAS_COMMAND,fakeroot),1)
-#FAKEROOT := fakeroot -i $(PWD)/.fakeroot_persist -s $(PWD)/.fakeroot_persist --
-#FAKEROOT := fakeroot
-else
+ifneq ($(call HAS_COMMAND,fakeroot),1)
 $(error Install fakeroot)
 endif
 
