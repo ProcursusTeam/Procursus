@@ -16,6 +16,35 @@ $(error Please run `umask 022` before running this)
 endif
 
 MEMO_TARGET          ?= iphoneos-arm64
+MEMO_CFVER           ?= 1665.15 # iOS 13.0. TODO: Find out specific CFVersions for tvOS and watchOS
+
+ifeq($(shell [ "$(MEMO_CFVER)" -ge 1100 ] && [ "$(MEMO_CFVER)" -lt 1200 ] && echo 1),1)
+IPHONE_MIN := 8.0
+TVOS_MIN   := XXX
+WATCH_MIN  := 1.0
+else ifeq($(shell [ "$(MEMO_CFVER)" -ge 1200 ] && [ "$(MEMO_CFVER)" -lt 1300 ] && echo 1),1)
+IPHONE_MIN := 9.0
+TVOS_MIN   := 9.0
+WATCH_MIN  := 2.0
+else ifeq($(shell [ "$(MEMO_CFVER)" -ge 1300 ] && [ "$(MEMO_CFVER)" -lt 1400 ] && echo 1),1)
+IPHONE_MIN := 10.0
+TVOS_MIN   := 10.0
+WATCH_MIN  := 3.0
+else ifeq($(shell [ "$(MEMO_CFVER)" -ge 1400 ] && [ "$(MEMO_CFVER)" -lt 1500 ] && echo 1),1)
+IPHONE_MIN := 11.0
+TVOS_MIN   := 11.0
+WATCH_MIN  := 4.0
+else ifeq($(shell [ "$(MEMO_CFVER)" -ge 1500 ] && [ "$(MEMO_CFVER)" -lt 1600 ] && echo 1),1)
+IPHONE_MIN := 12.0
+TVOS_MIN   := 12.0
+WATCH_MIN  := 5.0
+else ifeq($(shell [ "$(MEMO_CFVER)" -ge 1600 ] && [ "$(MEMO_CFVER)" -lt 1700 ] && echo 1),1)
+IPHONE_MIN := 13.0
+TVOS_MIN   := 13.0
+WATCH_MIN  := 6.0
+else
+$(error Unsupported CoreFoundation version)
+endif
 
 ifeq ($(MEMO_TARGET),iphoneos-arm64)
 $(warning Building for iOS)
@@ -23,7 +52,7 @@ ARCHES               := arm64
 PLATFORM             := iphoneos
 DEB_ARCH             := iphoneos-arm
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -miphoneos-version-min=11.0
+PLATFORM_VERSION_MIN := -miphoneos-version-min=$(IPHONE_MIN)
 
 else ifeq ($(MEMO_TARGET),appletvos-arm64)
 $(warning Building for tvOS)
@@ -31,7 +60,7 @@ ARCHES               := arm64
 PLATFORM             := appletvos
 DEB_ARCH             := appletvos-arm64
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -mappletvos-version-min=11.0
+PLATFORM_VERSION_MIN := -mappletvos-version-min=$(TVOS_MIN)
 
 else ifeq ($(MEMO_TARGET),watchos-arm)
 $(warning Building for WatchOS)
@@ -39,7 +68,7 @@ ARCHES               := armv7k
 PLATFORM             := watchos
 DEB_ARCH             := watchos-arm
 GNU_HOST_TRIPLE      := armv7k-apple-darwin
-PLATFORM_VERSION_MIN := -mwatchos-version-min=4.0
+PLATFORM_VERSION_MIN := -mwatchos-version-min=$(WATCH_MIN)
 
 else ifeq ($(MEMO_TARGET),watchos-arm64)
 $(warning Building for WatchOS)
@@ -47,7 +76,7 @@ ARCHES               := arm64_32
 PLATFORM             := watchos
 DEB_ARCH             := watchos-arm
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -mwatchos-version-min=5.0
+PLATFORM_VERSION_MIN := -mwatchos-version-min=$(WATCH_MIN)
 
 else
 $(error Platform not supported)
@@ -99,17 +128,17 @@ BUILD_ROOT     ?= $(PWD)
 # Downloaded source files
 BUILD_SOURCE   := $(BUILD_ROOT)/build_source
 # Base headers/libs (e.g. patched from SDK)
-BUILD_BASE     := $(BUILD_ROOT)/build_base/$(MEMO_TARGET)
+BUILD_BASE     := $(BUILD_ROOT)/build_base/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Dpkg info storage area
 BUILD_INFO     := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_info
 # Extracted source working directory
-BUILD_WORK     := $(BUILD_ROOT)/build_work/$(MEMO_TARGET)
+BUILD_WORK     := $(BUILD_ROOT)/build_work/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Bootstrap working area
-BUILD_STAGE    := $(BUILD_ROOT)/build_stage/$(MEMO_TARGET)
+BUILD_STAGE    := $(BUILD_ROOT)/build_stage/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Final output
-BUILD_DIST     := $(BUILD_ROOT)/build_dist/$(MEMO_TARGET)
+BUILD_DIST     := $(BUILD_ROOT)/build_dist/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Actual bootrap staging
-BUILD_STRAP    := $(BUILD_ROOT)/build_strap/$(MEMO_TARGET)
+BUILD_STRAP    := $(BUILD_ROOT)/build_strap/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Extra scripts for the buildsystem
 BUILD_TOOLS    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_tools
 

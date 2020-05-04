@@ -16,16 +16,16 @@ file:
 	@echo "Using previously built file."
 else
 file: file-setup xz
-	rm -rf $(BUILD_WORK)/../native/file
-	mkdir -p $(BUILD_WORK)/../native/file
-	cd $(BUILD_WORK)/../native/file && env -i $(BUILD_WORK)/file/configure
-	+env -i $(MAKE) -C $(BUILD_WORK)/../native/file
+	rm -rf $(BUILD_WORK)/../../native/file
+	mkdir -p $(BUILD_WORK)/../../native/file
+	cd $(BUILD_WORK)/../../native/file && env -i $(BUILD_WORK)/file/configure
+	+env -i $(MAKE) -C $(BUILD_WORK)/../../native/file
 	cd $(BUILD_WORK)/file && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/file \
 		CFLAGS="$(CFLAGS)" \
-		FILE_COMPILE="$(BUILD_WORK)/../native/file/src/file" \
+		FILE_COMPILE="$(BUILD_WORK)/../../native/file/src/file" \
 		LIBS="$(BUILD_BASE)/usr/local/lib/liblzma.a -lbz2 -lz"
 	+$(MAKE) -C $(BUILD_WORK)/file install \
 		DESTDIR=$(BUILD_STAGE)/file
