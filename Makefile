@@ -16,29 +16,31 @@ $(error Please run `umask 022` before running this)
 endif
 
 MEMO_TARGET          ?= iphoneos-arm64
-MEMO_CFVER           ?= 1665.15 # iOS 13.0. TODO: Find out specific CFVersions for tvOS and watchOS
+MEMO_CFVER           ?= 1600.00
+# iOS 13.0 == 1665.15.
+CFVER_WHOLE          := $(shell echo $(MEMO_CFVER) | cut -d. -f1)
 
-ifeq($(shell [ "$(MEMO_CFVER)" -ge 1100 ] && [ "$(MEMO_CFVER)" -lt 1200 ] && echo 1),1)
+ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1100 ] && [ "$(CFVER_WHOLE)" -lt 1200 ] && echo 1),1)
 IPHONE_MIN := 8.0
 TVOS_MIN   := XXX
 WATCH_MIN  := 1.0
-else ifeq($(shell [ "$(MEMO_CFVER)" -ge 1200 ] && [ "$(MEMO_CFVER)" -lt 1300 ] && echo 1),1)
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1200 ] && [ "$(CFVER_WHOLE)" -lt 1300 ] && echo 1),1)
 IPHONE_MIN := 9.0
 TVOS_MIN   := 9.0
 WATCH_MIN  := 2.0
-else ifeq($(shell [ "$(MEMO_CFVER)" -ge 1300 ] && [ "$(MEMO_CFVER)" -lt 1400 ] && echo 1),1)
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1300 ] && [ "$(CFVER_WHOLE)" -lt 1400 ] && echo 1),1)
 IPHONE_MIN := 10.0
 TVOS_MIN   := 10.0
 WATCH_MIN  := 3.0
-else ifeq($(shell [ "$(MEMO_CFVER)" -ge 1400 ] && [ "$(MEMO_CFVER)" -lt 1500 ] && echo 1),1)
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1400 ] && [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
 IPHONE_MIN := 11.0
 TVOS_MIN   := 11.0
 WATCH_MIN  := 4.0
-else ifeq($(shell [ "$(MEMO_CFVER)" -ge 1500 ] && [ "$(MEMO_CFVER)" -lt 1600 ] && echo 1),1)
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1500 ] && [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 IPHONE_MIN := 12.0
 TVOS_MIN   := 12.0
 WATCH_MIN  := 5.0
-else ifeq($(shell [ "$(MEMO_CFVER)" -ge 1600 ] && [ "$(MEMO_CFVER)" -lt 1700 ] && echo 1),1)
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
 IPHONE_MIN := 13.0
 TVOS_MIN   := 13.0
 WATCH_MIN  := 6.0

@@ -5,7 +5,11 @@ endif
 SUBPROJECTS       += file-cmds
 DOWNLOAD          += https://opensource.apple.com/tarballs/file_cmds/file_cmds-$(FILE-CMDS_VERSION).tar.gz
 # Don't upgrade file-cmds, as any future version includes APIs introduced in iOS 13+.
+ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 FILE-CMDS_VERSION := 272.250.1
+else
+FILE-CMDS_VERSION := 287.40.2
+endif
 DEB_FILE-CMDS_V   ?= $(FILE-CMDS_VERSION)
 
 file-cmds-setup: setup
