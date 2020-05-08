@@ -18,7 +18,8 @@ nghttp2: nghttp2-setup
 	cd $(BUILD_WORK)/nghttp2 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
-		--disable-dependency-tracking
+		--disable-dependency-tracking \
+		--enable-lib-only
 	+$(MAKE) -C $(BUILD_WORK)/nghttp2
 	+$(MAKE) -C $(BUILD_WORK)/nghttp2 install \
 		DESTDIR="$(BUILD_STAGE)/nghttp2"

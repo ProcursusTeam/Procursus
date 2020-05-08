@@ -30,7 +30,7 @@ python3:
 	@echo "Using previously built python3."
 else
 python3: .SHELLFLAGS=-O extglob -c
-python3: python3-setup libffi ncurses readline xz openssl libgdbm
+python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm
 	cd $(BUILD_WORK)/python3 && autoconf -f
 	cd $(BUILD_WORK)/python3 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \

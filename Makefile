@@ -16,7 +16,7 @@ $(error Please run `umask 022` before running this)
 endif
 
 MEMO_TARGET          ?= iphoneos-arm64
-MEMO_CFVER           ?= 1600.00
+MEMO_CFVER           ?= 1500.00
 # iOS 13.0 == 1665.15.
 CFVER_WHOLE          := $(shell echo $(MEMO_CFVER) | cut -d. -f1)
 
@@ -172,12 +172,12 @@ export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS PKG_CONFIG_PATH
 HAS_COMMAND = $(shell type $(1) >/dev/null 2>&1 && echo 1)
 PGP_VERIFY  = gpg --verify $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) $(BUILD_SOURCE)/$(1) 2>&1 | grep -q 'Good signature'
 
-EXTRACT_TAR = if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
+EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 		cd $(BUILD_WORK) && \
 		$(TAR) -xf $(BUILD_SOURCE)/$(1) && \
-		mkdir -p $(3); 2>/dev/null || :; \
-		$(CP) -af $(2)/. $(3) 2>/dev/null || :; \
-		rm -rf $(2); 2>/dev/null || :; \
+		mkdir -p $(3); \
+		$(CP) -af $(2)/. $(3); \
+		rm -rf $(2); \
 	fi
 
 DO_PATCH    = cd $(BUILD_WORK)/$(1)-patches; \
@@ -195,7 +195,7 @@ DO_PATCH    = cd $(BUILD_WORK)/$(1)-patches; \
 SIGN =  find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \; &> /dev/null; \
 	find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
 		
-PACK =  find $(BUILD_DIST)/$(1) \( -name '*.la' -o -name '*.a' \) -type f -delete; \
+PACK =  -find $(BUILD_DIST)/$(1) \( -name '*.la' -o -name '*.a' \) -type f -delete; \
 	rm -rf $(BUILD_DIST)/$(1)/usr/share/{info,aclocal,doc}; \
 	if [ -z $(3) ]; then \
 		echo Setting $(1) owner to 0:0.; \
@@ -206,11 +206,11 @@ PACK =  find $(BUILD_DIST)/$(1) \( -name '*.la' -o -name '*.a' \) -type f -delet
 	SIZE=$$(du -s $(BUILD_DIST)/$(1) | cut -f 1); \
 	mkdir -p $(BUILD_DIST)/$(1)/DEBIAN; \
 	$(CP) $(BUILD_INFO)/$(1).control $(BUILD_DIST)/$(1)/DEBIAN/control; \
-	$(CP) $(BUILD_INFO)/$(1).postinst $(BUILD_DIST)/$(1)/DEBIAN/postinst 2>/dev/null || :; \
-	$(CP) $(BUILD_INFO)/$(1).preinst $(BUILD_DIST)/$(1)/DEBIAN/preinst 2>/dev/null || :; \
-	$(CP) $(BUILD_INFO)/$(1).postrm $(BUILD_DIST)/$(1)/DEBIAN/postrm 2>/dev/null || :; \
-	$(CP) $(BUILD_INFO)/$(1).prerm $(BUILD_DIST)/$(1)/DEBIAN/prerm 2>/dev/null || :; \
-	$(CP) $(BUILD_INFO)/$(1).extrainst_ $(BUILD_DIST)/$(1)/DEBIAN/extrainst_ 2>/dev/null || :; \
+	$(CP) $(BUILD_INFO)/$(1).postinst $(BUILD_DIST)/$(1)/DEBIAN/postinst; \
+	$(CP) $(BUILD_INFO)/$(1).preinst $(BUILD_DIST)/$(1)/DEBIAN/preinst; \
+	$(CP) $(BUILD_INFO)/$(1).postrm $(BUILD_DIST)/$(1)/DEBIAN/postrm; \
+	$(CP) $(BUILD_INFO)/$(1).prerm $(BUILD_DIST)/$(1)/DEBIAN/prerm; \
+	$(CP) $(BUILD_INFO)/$(1).extrainst_ $(BUILD_DIST)/$(1)/DEBIAN/extrainst_; \
 	cd $(BUILD_DIST)/$(1) && $(FIND) . -type f ! -regex '.*.hg.*' ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -printf '%P ' | xargs md5sum > $(BUILD_DIST)/$(1)/DEBIAN/md5sums; \
 	chmod 0755 $(BUILD_DIST)/$(1)/DEBIAN/*; \
 	$(SED) -i ':a; s/@$(2)@/$($(2))/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control; \
@@ -379,12 +379,12 @@ CHECKRA1N_MEMO := 1
 all:: package
 	@echo "********** Successfully built debs for $(MEMO_TARGET) **********"
 	@echo "$(SUBPROJECTS)"
-	$(BUILD_TOOLS)/check_gettext.sh
+	@MEMO_TARGET="$(MEMO_TARGET)" MEMO_CFVER="$(MEMO_CFVER)" '$(BUILD_TOOLS)/check_gettext.sh'
 
 everything::
 	+unset SYSROOT && $(MAKE) MEMO_TARGET=watchos-arm rebuild-all
 	+unset SYSROOT && $(MAKE) MEMO_TARGET=watchos-arm64 rebuild-all
-	+unset SYSROOT && $(MAKE) MEMO_TARGET=appletvos-arm rebuild-all
+	+unset SYSROOT && $(MAKE) MEMO_TARGET=appletvos-arm64 rebuild-all
 	+unset SYSROOT && $(MAKE) MEMO_TARGET=iphoneos-arm rebuild-all
 
 include *.mk
@@ -398,12 +398,12 @@ bootstrap:: $(STRAPPROJECTS:%=%-package)
 	mkdir -p $(BUILD_STRAP)/strap/Library/dpkg/info
 	touch $(BUILD_STRAP)/strap/Library/dpkg/status
 	cd $(BUILD_STRAP) && rm -f openssl*.deb libssl*-dev*.deb apt-*.deb dpkg-*.deb
-	for DEB in $(BUILD_STRAP)/*.deb; do \
+	-for DEB in $(BUILD_STRAP)/*.deb; do \
 		PKGNAME=$$(basename $$DEB | cut -f1 -d"_"); \
 		dpkg-deb -R $$DEB $(BUILD_STRAP)/strap; \
 		$(CP) $(BUILD_STRAP)/strap/DEBIAN/md5sums $(BUILD_STRAP)/strap/Library/dpkg/info/$$PKGNAME.md5sums; \
 		dpkg-deb -c $$DEB | cut -f2- -d"." | awk -F'\\-\\>' '{print $$1}' | $(SED) '1 s/$$/./' | $(SED) 's/\/$$//' > $(BUILD_STRAP)/strap/Library/dpkg/info/$$PKGNAME.list; \
-		$(CP) $(BUILD_INFO)/$$PKGNAME.{preinst,postinst,extrainst_,prerm,postrm} $(BUILD_STRAP)/strap/Library/dpkg/info 2>/dev/null || :; \
+		$(CP) $(BUILD_INFO)/$$PKGNAME.{preinst,postinst,extrainst_,prerm,postrm} $(BUILD_STRAP)/strap/Library/dpkg/info; \
 		dpkg-deb --info $$DEB | $(SED) '/Package:/,$$!d' | $(SED) -e 's/^[ \t]*//' >> $(BUILD_STRAP)/strap/Library/dpkg/status; \
 		echo -e "Status: install ok installed\n" >> $(BUILD_STRAP)/strap/Library/dpkg/status; \
 		rm -rf $(BUILD_STRAP)/strap/DEBIAN; \
@@ -443,20 +443,20 @@ bootstrap-device: bootstrap
 	find $(BUILD_BASE)/usr/lib -name "*.la" -type f -delete
 
 REPROJ=$(shell echo $@ | cut -f2- -d"-")
-REPROJ2=$(shell echo $(REPROJ) | sed 's/-package//')
+REPROJ2=$(shell echo $(REPROJ) | $(SED) 's/-package//')
 rebuild-%:
 	@echo Rebuild $(REPROJ2)
-	if [ $(REPROJ) = "all" ] || [ $(REPROJ) = "package" ]; then \
+	-if [ $(REPROJ) = "all" ] || [ $(REPROJ) = "package" ]; then \
 		rm -rf $(BUILD_WORK) $(BUILD_STAGE); \
 		git submodule foreach --recursive git clean -xfd; \
 		git submodule foreach --recursive git reset --hard; \
 		rm -f darwintools/.build_complete; \
-		$(MAKE) -C darwintools clean 2>/dev/null || :; \
+		$(MAKE) -C darwintools clean; \
 	fi
-	if [ -d $(BUILD_WORK)/$(REPROJ2) ]; then \
+	-if [ -d $(BUILD_WORK)/$(REPROJ2) ]; then \
 		rm -rf {$(BUILD_WORK),$(BUILD_STAGE)}/$(REPROJ2); \
 	elif [ -d $(REPROJ2) ]; then \
-		cd $(REPROJ2) && git clean -xfd && git reset 2>/dev/null || :; \
+		cd $(REPROJ2) && git clean -xfd && git reset; \
 	fi
 	rm -rf $(BUILD_WORK)/$(REPROJ2)*patches
 	+$(MAKE) $(REPROJ)
@@ -480,7 +480,7 @@ setup:
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,proc*,kern*,random}.h $(BUILD_BASE)/usr/include/sys
 	$(CP) -af $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/ps $(BUILD_BASE)/usr/include/IOKit
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{ar,launch,libproc,tzfile}.h $(BUILD_BASE)/usr/include
-	$(CP) -af $(BUILD_INFO)/IOKit.framework.$(PLATFORM) $(BUILD_BASE)/System/Library/Frameworks/IOKit.framework || :
+	-$(CP) -af $(BUILD_INFO)/IOKit.framework.$(PLATFORM) $(BUILD_BASE)/System/Library/Frameworks/IOKit.framework
 
 	@# Patch headers from iPhoneOS.sdk
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/stdlib.h > $(BUILD_BASE)/usr/include/stdlib.h
@@ -499,7 +499,7 @@ clean::
 	git submodule foreach --recursive git clean -xfd
 	git submodule foreach --recursive git reset --hard
 	rm -f darwintools/.build_complete
-	$(MAKE) -C darwintools clean 2>/dev/null || :
+	-$(MAKE) -C darwintools clean
 
 extreme-clean:: clean
 	git clean -xfd && git reset

@@ -2,9 +2,9 @@
 # This script is simply to check if anything's been linked to libintl without my knowledge.
 for bin in $(find ${BUILD_STAGE}/*{/usr,}/{s,}bin ${BUILD_STAGE}/*/usr/lib -type f); do
     if [[ -f ${bin} ]] && [[ ! -h ${bin} ]]; then
-        if [[ $(${OTOOL} -L ${bin} | grep intl) ]]; then
-            if [[ ! $(grep gettext ${BUILD_ROOT}/$(echo "${bin}" | ${SED} 's/.*'${MEMO_TARGET}'\/\(.*\)\/usr.*/\1/').mk) ]]; then
-                output="$(echo "${bin}" | cut -d'/' -f3) ${output}"
+        if [[ $(${OTOOL} -L ${bin} 2>/dev/null | grep intl) ]]; then
+            if [[ ! $(grep gettext ${BUILD_ROOT}/$(echo "${bin}" | ${SED} 's/.*'${MEMO_TARGET}'\/'${MEMO_CFVER}'\/\(.*\)\/usr.*/\1/').mk) ]]; then
+                output="$(echo "${bin}" | ${SED} 's/.*'${MEMO_TARGET}'\/'${MEMO_CFVER}'\/\(.*\)\/usr.*/\1/') ${output}"
             fi
         fi
     fi
