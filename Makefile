@@ -361,7 +361,7 @@ $(error Install ncurses)
 endif
 endif
 
-PATH += :$(BUILD_TOOLS)
+PATH := $(BUILD_TOOLS):$(PATH)
 
 MAKEFLAGS += --no-print-directory
 
@@ -493,6 +493,7 @@ setup:
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/signal.h > $(BUILD_BASE)/usr/include/signal.h
 
 	@echo Makeflags: $(MAKEFLAGS)
+	@echo Path: $(PATH)
 
 clean::
 	rm -rf $(BUILD_WORK) $(BUILD_BASE) $(BUILD_STAGE)
