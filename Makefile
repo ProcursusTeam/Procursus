@@ -16,7 +16,7 @@ $(error Please run `umask 022` before running this)
 endif
 
 MEMO_TARGET          ?= iphoneos-arm64
-MEMO_CFVER           ?= 1500.00
+MEMO_CFVER           ?= 1500
 # iOS 13.0 == 1665.15.
 CFVER_WHOLE          := $(shell echo $(MEMO_CFVER) | cut -d. -f1)
 
@@ -382,10 +382,10 @@ all:: package
 	@MEMO_TARGET="$(MEMO_TARGET)" MEMO_CFVER="$(MEMO_CFVER)" '$(BUILD_TOOLS)/check_gettext.sh'
 
 everything::
-	+unset SYSROOT && $(MAKE) MEMO_TARGET=watchos-arm rebuild-all
-	+unset SYSROOT && $(MAKE) MEMO_TARGET=watchos-arm64 rebuild-all
-	+unset SYSROOT && $(MAKE) MEMO_TARGET=appletvos-arm64 rebuild-all
-	+unset SYSROOT && $(MAKE) MEMO_TARGET=iphoneos-arm rebuild-all
+	+unset SYSROOT && $(MAKE) MEMO_TARGET=watchos-arm MEMO_CFVER=1400 rebuild-all
+	+unset SYSROOT && $(MAKE) MEMO_TARGET=watchos-arm64 MEMO_CFVER=1400 rebuild-all
+	+unset SYSROOT && $(MAKE) MEMO_TARGET=appletvos-arm64 MEMO_CFVER=1300 rebuild-all
+	+unset SYSROOT && $(MAKE) MEMO_TARGET=iphoneos-arm MEMO_CFVER=1100 rebuild-all
 
 include *.mk
 
@@ -459,6 +459,7 @@ rebuild-%:
 		cd $(REPROJ2) && git clean -xfd && git reset; \
 	fi
 	rm -rf $(BUILD_WORK)/$(REPROJ2)*patches
+	rm -rf $(BUILD_STAGE)/$(REPROJ2)
 	+$(MAKE) $(REPROJ)
 
 .PHONY: $(SUBPROJECTS)
