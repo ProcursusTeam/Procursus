@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += apt
 APT_DIR       := $(BUILD_ROOT)/apt
-APT_VERSION   := 2.0.2
+APT_VERSION   := 2.1.1
 DEB_APT_V     ?= $(APT_VERSION)
 
 apt-setup: setup
