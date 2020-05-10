@@ -7,6 +7,10 @@ APT_DIR       := $(BUILD_ROOT)/apt
 APT_VERSION   := 2.1.1
 DEB_APT_V     ?= $(APT_VERSION)
 
+ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
+APT_CMAKE_ARGS += -DHAVE_PTSNAME_R=0
+endif
+
 apt-setup: setup
 	rm -rf $(BUILD_WORK)/apt
 	mkdir -p $(BUILD_WORK)/apt
@@ -38,6 +42,7 @@ apt: apt-setup libgcrypt berkeleydb lz4 xz zstd
 		-DWITH_DOC=0 \
 		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
 		-DDPKG_DATADIR=/usr/share/dpkg \
+		$(APT_CMAKE_ARGS) \
 		$(BUILD_ROOT)/apt
 	+$(MAKE) -C $(BUILD_WORK)/apt
 	+$(MAKE) -C $(BUILD_WORK)/apt install \

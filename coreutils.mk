@@ -7,6 +7,10 @@ DOWNLOAD          += https://ftp.gnu.org/gnu/coreutils/coreutils-$(COREUTILS_VER
 COREUTILS_VERSION := 8.32
 DEB_COREUTILS_V   ?= $(COREUTILS_VERSION)
 
+ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
+COREUTILS_CONFIGURE_ARGS += ac_cv_func_rpmatch=no
+endif
+
 coreutils-setup: setup
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,coreutils-$(COREUTILS_VERSION).tar.xz,coreutils-$(COREUTILS_VERSION),coreutils)
@@ -24,7 +28,8 @@ coreutils: coreutils-setup gettext
 	cd $(BUILD_WORK)/coreutils && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
-		--without-gmp
+		--without-gmp \
+		$(COREUTILS_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/coreutils
 	+$(MAKE) -C $(BUILD_WORK)/coreutils install \
 		DESTDIR=$(BUILD_STAGE)/coreutils

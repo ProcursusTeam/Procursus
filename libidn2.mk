@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libidn2/.build_complete),)
 libidn2:
 	@echo "Using previously built libidn2."
 else
-libidn2: libidn2-setup gettext
+libidn2: libidn2-setup gettext libunistring
 	cd $(BUILD_WORK)/libidn2 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr

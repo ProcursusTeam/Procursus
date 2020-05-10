@@ -7,6 +7,10 @@ DOWNLOAD      += https://ftp.gnu.org/gnu/tar/tar-$(TAR_VERSION).tar.xz{,.sig}
 TAR_VERSION   := 1.32
 DEB_TAR_V     ?= $(TAR_VERSION)
 
+ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
+TAR_CONFIGURE_ARGS += ac_cv_func_rpmatch=no
+endif
+
 tar-setup: setup
 	$(call PGP_VERIFY,tar-$(TAR_VERSION).tar.xz)
 	$(call EXTRACT_TAR,tar-$(TAR_VERSION).tar.xz,tar-$(TAR_VERSION),tar)
@@ -19,7 +23,8 @@ tar: tar-setup
 	cd $(BUILD_WORK)/tar && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
-		--disable-nls
+		--disable-nls \
+		$(TAR_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/tar
 	+$(MAKE) -C $(BUILD_WORK)/tar install \
 		DESTDIR=$(BUILD_STAGE)/tar
