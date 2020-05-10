@@ -218,7 +218,7 @@ PACK =  -find $(BUILD_DIST)/$(1) \( -name '*.la' -o -name '*.a' \) -type f -dele
 	$(SED) -i ':a; s/@DEB_ARCH@/$(DEB_ARCH)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	echo "Installed-Size: $$SIZE"; \
 	echo "Installed-Size: $$SIZE" >> $(BUILD_DIST)/$(1)/DEBIAN/control; \
-	$(FAKEROOT) $(DPKG_DEB) -b $(BUILD_DIST)/$(1) $(BUILD_DIST)/$(1)_$($(2))_$(DEB_ARCH).deb
+	$(FAKEROOT) $(DPKG_DEB) -b $(BUILD_DIST)/$(1) $(BUILD_DIST)/$(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d ' ')_$($(2))_$(DEB_ARCH).deb
 
 ifeq ($(call HAS_COMMAND,shasum),1)
 GET_SHA1   = shasum -a 1 $(1) | cut -c1-40
