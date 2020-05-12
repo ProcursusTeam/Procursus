@@ -1,0 +1,10 @@
+
+Package: plutil
+Version: @DEB_PLUTIL_V@
+Architecture: @DEB_ARCH@
+Description: Utility for creating and editing Apple property list files.
+Maintainer: @DEB_MAINTAINER@
+Conflicts: com.ericasadun.utilities, com.bingner.plutil
+Author: Samuel Bingner
+Section: System
+Tag: role::hacker
