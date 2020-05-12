@@ -1,0 +1,8 @@
+Package: libplist
+Version: @DEB_LIBPLIST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Networking
+Priority: standard
+Description: plist library
+Tag: purpose::library, role::developer

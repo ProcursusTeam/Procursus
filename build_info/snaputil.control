@@ -1,0 +1,10 @@
+Package: snaputil
+Version: @DEB_SNAPUTIL_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: firmware (>= 10.3)
+Section: System
+Description: APFS Snapshot Tool.
+Homepage: https://github.com/ahl/apfs/
+Tag: role::hacker
+Name: APFS Snapshot Utility
