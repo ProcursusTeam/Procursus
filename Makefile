@@ -259,6 +259,12 @@ else
 $(error Install ldid2)
 endif
 
+ifneq ($(call HAS_COMMAND,libtoolize),1)
+ifneq ($(call HAS_COMMAND,glibtoolize),1)
+$(error Install libtool)
+endif
+endif
+
 ifneq ($(call HAS_COMMAND,cmake),1)
 $(error Install cmake)
 endif
