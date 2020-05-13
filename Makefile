@@ -380,7 +380,7 @@ endif
 MAKEFLAGS += --jobs=$(shell $(GET_LOGICAL_CORES)) -Otarget
 endif
 
-CHECKRA1N_MEMO := 1
+PROCURSUS := 1
 
 all:: package
 	@echo "********** Successfully built debs for $(MEMO_TARGET) **********"

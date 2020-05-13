@@ -1,4 +1,4 @@
-ifneq ($(CHECKRA1N_MEMO),1)
+ifneq ($(PROCURSUS),1)
 $(error Use the main Makefakeroot)
 endif
 
