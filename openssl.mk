@@ -2,7 +2,7 @@ ifneq ($(CHECKRA1N_MEMO),1)
 $(error Use the main Makefile)
 endif
 
-ifeq ($(PLATFORM),watchos)
+ifeq ($(SSH_STRAP),1)
 STRAPPROJECTS   += openssl
 else
 SUBPROJECTS     += openssl
