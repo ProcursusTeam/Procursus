@@ -71,6 +71,9 @@ diskdev-cmds: diskdev-cmds-setup
 	cp -a dev_mkdb edquota fdisk quotaon repquota vsdbutil $(BUILD_STAGE)/diskdev-cmds/usr/sbin; \
 	cp -a vndevice $(BUILD_STAGE)/diskdev-cmds/usr/libexec; \
 	cp -a quotacheck umount @(fstyp|newfs)?(_*([a-z0-9])) @(mount_*([a-z0-9])) $(BUILD_STAGE)/diskdev-cmds/sbin
+ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1)
+	rm -f $(BUILD_STAGE)/diskdev-cmds/sbin/umount
+endif
 	touch $(BUILD_WORK)/diskdev-cmds/.build_complete
 endif
 
@@ -85,8 +88,11 @@ diskdev-cmds-package: diskdev-cmds-stage
 	$(call SIGN,diskdev-cmds,general.xml)
 
 	# system-cmds.mk Permissions
-	$(FAKEROOT) chmod u+s $(BUILD_DIST)/diskdev-cmds/{usr/bin/quota,sbin/umount}
-	
+	$(FAKEROOT) chmod u+s $(BUILD_DIST)/diskdev-cmds/usr/bin/quota
+ifneq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1)
+	$(FAKEROOT) chmod u+s $(BUILD_DIST)/diskdev-cmds/sbin/umount
+endif
+
 	# diskdev-cmds.mk Make .debs
 	$(call PACK,diskdev-cmds,DEB_DISKDEV-CMDS_V)
 	
