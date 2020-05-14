@@ -431,6 +431,7 @@ endif
 	mkdir -p $(BUILD_STRAP)/strap/usr/libexec/$$mgr; \
 	cd $(BUILD_STRAP)/strap/usr/libexec/$$mgr && ln -fs ../firmware.sh
 	chmod 0775 $(BUILD_STRAP)/strap/Library
+	touch $(BUILD_STRAP)/strap/.procursus_strapped
 	export FAKEROOT='fakeroot -i $(BUILD_STAGE)/.fakeroot_bootstrap -s $(BUILD_STAGE)/.fakeroot_bootstrap --'; \
 	$$FAKEROOT chown 0:80 $(BUILD_STRAP)/strap/Library; \
 	$$FAKEROOT chown 0:3 $(BUILD_STRAP)/strap/private/var/empty; \
