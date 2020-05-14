@@ -52,6 +52,7 @@
     size_t len = 0;
     ssize_t read;
 
+    DEBUGLOG("Check status file path: %s", statusFilePath);
     statusFile = fopen(statusFilePath, "r");
     if (statusFile == NULL) {
         [self exitWithError:nil andMessage:[NSString stringWithFormat:@"Error opening statusfile for reading at: %s", statusFilePath]];
@@ -62,8 +63,10 @@
             previousWasBlank = YES;
 
             if (virtualFirmwarePackage) {
+                DEBUGLOG("Virtual firmware package present.");
                 virtualFirmwarePackage = NO;
             } else {
+                DEBUGLOG("Appending newline to status file.");
                 [self->_status appendString:[NSString stringWithCString:cLine encoding:NSUTF8StringEncoding]];
             }
 
@@ -85,6 +88,7 @@
             }
         }
 
+        DEBUGLOG("Appending newline to status file.");
         [self->_status appendString:line];
     }
 }
@@ -209,7 +213,8 @@
         extern char **environ;
         
         char *argv[] = {
-            "/bin/cp",
+            "/usr/bin/env",
+            "cp",
             "-afT",
             (char *)[userPath UTF8String],
             (char *)[varMobileDirectory UTF8String],

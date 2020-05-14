@@ -2,6 +2,7 @@
 
 #import <Foundation/Foundation.h>
 #import "NSTask.h"
+#import "debug.h"
 
 #import <mach-o/arch.h>
 #import <sys/sysctl.h>

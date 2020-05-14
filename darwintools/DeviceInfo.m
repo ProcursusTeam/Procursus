@@ -133,17 +133,21 @@
 
     [task setArguments:args];
 
-    NSPipe *outPipe = [NSPipe pipe];
-    [task setStandardOutput:outPipe];
+    NSPipe *outputPipe = [NSPipe pipe];
+    task.standardOutput = outputPipe;
 
     [task launch];
     [task waitUntilExit];
 
-    NSData *dpkgStatusData = [[outPipe fileHandleForReading] readDataToEndOfFile];
-    NSString *dpkgStatusFile = [[[NSString alloc] initWithData:dpkgStatusData encoding:NSUTF8StringEncoding] autorelease];
-    NSString *dpkgAdminDir = [dpkgStatusFile stringByReplacingOccurrencesOfString:@"/status" withString:@""];
-
     NSError *error;
+    NSData *dpkgStatusData = [outputPipe.fileHandleForReading availableData];
+    NSString *dpkgStatusFile = [[NSString alloc] initWithData:dpkgStatusData encoding:NSUTF8StringEncoding];
+    NSString *dpkgAdminDir = [dpkgStatusFile stringByReplacingOccurrencesOfString:@"/status" withString:@""];
+    
+    if (!dpkgAdminDir) {
+        [self exitWithError:error andMessage:@"Error getting dpkg admin directory."];
+    }
+    DEBUGLOG("dpkgAdminDir: %@", dpkgAdminDir);
     return dpkgAdminDir;
 }
 
@@ -151,21 +155,18 @@
     NSTask *task = [[NSTask alloc] init];
     [task setLaunchPath:@"/usr/bin/gssc"];
 
-    NSPipe *outPipe = [NSPipe pipe];
-    [task setStandardOutput:outPipe];
+    NSPipe *outputPipe = [NSPipe pipe];
+    task.standardOutput = outputPipe;
 
     [task launch];
     [task waitUntilExit];
 
-    NSData *gsscData = [[outPipe fileHandleForReading] readDataToEndOfFile];
-
     NSError *error;
+    NSData *gsscData = [[outputPipe fileHandleForReading] readDataToEndOfFile];
     NSDictionary *unfilteredCapabilities = [NSPropertyListSerialization propertyListWithData:gsscData options:NSPropertyListMutableContainersAndLeaves format:nil error:&error];
-
     if (!unfilteredCapabilities) {
         [self exitWithError:error andMessage:@"Error parsing device capabilites from GSSC"];
     }
-
     NSRegularExpression *numberRegex = [self regexWithPattern:@"^[0-9]+$"];
     NSRegularExpression *uppercaseRegex = [self regexWithPattern:@"([A-Z])"];
 
@@ -179,10 +180,10 @@
             && [numberRegex firstMatchInString:value options:0 range:NSMakeRange(0, [value length])]) {
 
             NSString *modifiedName = [[uppercaseRegex stringByReplacingMatchesInString:name
-                                                                              options:0
+                                                                            options:0
                                                                                 range:NSMakeRange(0, [name length])
-                                                                         withTemplate:@"-$1"]
-                                     lowercaseString];
+                                                                        withTemplate:@"-$1"]
+                                    lowercaseString];
 
             if ([modifiedName hasPrefix:@"-"]) {
                 [capabilities setObject:value forKey:[modifiedName substringFromIndex:1]];
@@ -191,7 +192,6 @@
             }
         }
     }
-    
     return (NSDictionary *)capabilities;
 }
 

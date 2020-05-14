@@ -1,6 +1,9 @@
 LDID           ?= ldid
 SED            ?= sed
 DEB_MAINTAINER ?= absidue
+ifeq ($(DEBUG),1)
+CFLAGS += -DDEBUG
+endif
 
 all: sw_vers firmware
 
@@ -10,7 +13,7 @@ sw_vers: sw_vers.c
 	$(LDID) -S sw_vers
 
 firmware: main.m Firmware.m DeviceInfo.m
-	$(CC) $(CFLAGS) -DMAINTAINER='@"$(DEB_MAINTAINER)"' main.m Firmware.m DeviceInfo.m -o firmware -I. -framework Foundation -O3
+	$(CC) $(CFLAGS) -fobjc-arc -DMAINTAINER='@"$(DEB_MAINTAINER)"' main.m Firmware.m DeviceInfo.m -o firmware -I. -framework Foundation -O3
 	$(STRIP) firmware
 	$(LDID) -S firmware
 
