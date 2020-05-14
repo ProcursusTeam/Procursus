@@ -432,6 +432,11 @@ endif
 	cd $(BUILD_STRAP)/strap/usr/libexec/$$mgr && ln -fs ../firmware.sh
 	chmod 0775 $(BUILD_STRAP)/strap/Library
 	touch $(BUILD_STRAP)/strap/.procursus_strapped
+	touch $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procursus.sources
+	echo -e "Types: deb\n\
+URIs: https://apt.procurs.us/\n\
+Suites: iphoneos-arm64/$(MEMO_CFVER)\n\
+Components: main\n" > $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procursus.sources
 	export FAKEROOT='fakeroot -i $(BUILD_STAGE)/.fakeroot_bootstrap -s $(BUILD_STAGE)/.fakeroot_bootstrap --'; \
 	$$FAKEROOT chown 0:80 $(BUILD_STRAP)/strap/Library; \
 	$$FAKEROOT chown 0:3 $(BUILD_STRAP)/strap/private/var/empty; \
