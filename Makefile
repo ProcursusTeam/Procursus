@@ -343,6 +343,10 @@ ifneq ($(call HAS_COMMAND,fakeroot),1)
 $(error Install fakeroot)
 endif
 
+ifneq ($(call HAS_COMMAND,zstd),1)
+$(error Install zstd)
+endif
+
 ifeq ($(call HAS_COMMAND,dpkg-deb),1)
 DPKG_DEB := dpkg-deb -z9
 else ifeq ($(call HAS_COMMAND,dm.pl),1)
@@ -441,11 +445,12 @@ Components: main\n" > $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procur
 	$$FAKEROOT chown 0:80 $(BUILD_STRAP)/strap/Library; \
 	$$FAKEROOT chown 0:3 $(BUILD_STRAP)/strap/private/var/empty; \
 	$$FAKEROOT chown 0:1 $(BUILD_STRAP)/strap/private/var/run; \
-	cd $(BUILD_STRAP)/strap && $$FAKEROOT $(TAR) -czvf ../bootstrap.tar.gz . &>/dev/null
+	cd $(BUILD_STRAP)/strap && $$FAKEROOT $(TAR) -cf ../bootstrap.tar .
+	zstd -qf -c19 --rm $(BUILD_STRAP)/bootstrap.tar > $(BUILD_STRAP)/bootstrap.tar.zst
 	rm -rf $(BUILD_STRAP)/{strap,*.deb}
 	@echo "********** Successfully built bootstrap with **********"
 	@echo "$(STRAPPROJECTS)"
-	@echo "$(BUILD_STRAP)/bootstrap.tar.gz"
+	@echo "$(BUILD_STRAP)/bootstrap.tar.zst"
 
 bootstrap-device: bootstrap
 	@echo "********** Bootstrapping device. This may take a while! **********"

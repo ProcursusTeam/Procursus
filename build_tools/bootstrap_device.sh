@@ -75,15 +75,19 @@ ZEBRADEB=xyz.willy.zebra_1.1_iphoneos-arm.deb
 wget -q -nc -P ${TMP} https://getzbra.com/repo/pkgfiles/${ZEBRADEB}
 echo "Bootstrapping..."
 ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "[${IP}]:${PORT}"
-scpfile '${BUILD_STRAP}/bootstrap.tar.gz'
+scpfile '${BUILD_STRAP}/bootstrap.tar.zst'
 scpfile ''${TMP}'/'${ZEBRADEB}''
+scpfile ''${BUILD_STAGE}'/zstd/usr/bin/zstd' # Insert an actually signed zstd bin here later. This is just a placeholder.
 sshcommand 'mount -o rw,union,update /'
-sshcommand 'tar --preserve-permissions -xzf bootstrap.tar.gz -C /'
+sshcommand 'mv zstd /usr/bin'
+sshcommand '/usr/bin/zstd -d bootstrap.tar.zst > bootstrap.tar'
+sshcommand 'tar --preserve-permissions -xf bootstrap.tar -C /'
 sshcommand '/usr/libexec/firmware'
 sshcommand 'PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11:/usr/games\" dpkg -i '${ZEBRADEB}''
-sshcommand '/binpack/etc/ssl/bin/snappy -f / -r \$(/binpack/etc/ssl/bin/snappy -f / -l | sed -n 2p) -t orig-fs'
+sshcommand '/usr/bin/snaputil -n \$(/usr/bin/snaputil -l /) orig-fs /'
 sshcommand 'touch /.bootstrapped && touch /.mount_rw'
 sshcommand '/Library/dpkg/info/profile.d.postinst'
+sshcommand '/Library/dpkg/info/openssh.postinst'
 echo "Cleanup."
 rm -rf ${TMP}
 if [[ "${IP}" == "localhost" ]]; then
