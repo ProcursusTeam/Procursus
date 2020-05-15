@@ -4,6 +4,8 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: dpkg, perl
 Replaces: dpkg-perl
+Conflicts: dpkg-perl
+Provides: dpkg-perl (=@DEB_DPKG_V@)
 Section: Packaging
 Priority: optional
 Homepage: http://wiki.debian.org/Teams/Dpkg

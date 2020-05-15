@@ -3,9 +3,9 @@ Version: @DEB_OPENSSL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: ca-certificates
-Replaces: libressl
-Conflicts: libressl
-Provides: libressl
+Replaces: libressl, libssl1.1.1
+Conflicts: libressl, libssl1.1.1
+Provides: libressl, libssl1.1.1 (=@DEB_OPENSSL_V@)
 Section: Security
 Priority: standard
 Description: OpenSSL Libraries for version 1.1.x
