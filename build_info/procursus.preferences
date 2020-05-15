@@ -1,0 +1,4 @@
+Package: *
+Pin: release o=Procursus
+Pin-Priority: 1001
+
