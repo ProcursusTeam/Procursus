@@ -2,7 +2,7 @@ Package: tar
 Version: @DEB_TAR_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: bzip2, gzip, xz-utils, zstd
+Depends: bzip2, gzip, xz-utils (>= 5.2.5), zstd
 Section: Archiving
 Priority: required
 Homepage: http://www.gnu.org/software/tar/
