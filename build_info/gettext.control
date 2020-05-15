@@ -2,7 +2,8 @@ Package: gettext
 Version: @DEB_GETTEXT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: ncurses, gettext
+Depends: ncurses
+Breaks: apt (<< 2.1.0)
 Section: System
 Priority: optional
 Homepage: http://www.gnu.org/software/gettext/

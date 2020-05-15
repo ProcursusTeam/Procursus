@@ -4,7 +4,7 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: dpkg, perl
 Replaces: dpkg-perl
-Conflicts: dpkg-perl
+Conflicts: dpkg-perl (<<1:0)
 Provides: dpkg-perl (=@DEB_DPKG_V@)
 Section: Packaging
 Priority: optional
