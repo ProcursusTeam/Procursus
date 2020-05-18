@@ -10,6 +10,7 @@ DEB_GZIP_V    ?= $(GZIP_VERSION)
 gzip-setup: setup
 	$(call PGP_VERIFY,gzip-$(GZIP_VERSION).tar.xz)
 	$(call EXTRACT_TAR,gzip-$(GZIP_VERSION).tar.xz,gzip-$(GZIP_VERSION),gzip)
+	mkdir -p $(BUILD_STAGE)/gzip/bin
 
 ifneq ($(wildcard $(BUILD_WORK)/gzip/.build_complete),)
 gzip:
@@ -22,6 +23,9 @@ gzip: gzip-setup
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/gzip install \
 		DESTDIR=$(BUILD_STAGE)/gzip
+	for bin in $(BUILD_STAGE)/gzip/usr/bin/*; do \
+		ln -s ../usr/bin/$$(basename $$bin) $(BUILD_STAGE)/gzip/bin/$$(basename $$bin); \
+	done
 	touch $(BUILD_WORK)/gzip/.build_complete
 endif
 
@@ -31,7 +35,7 @@ gzip-package: gzip-stage
 	mkdir -p $(BUILD_DIST)/gzip
 	
 	# gzip.mk Prep gzip
-	cp -a $(BUILD_STAGE)/gzip/usr $(BUILD_DIST)/gzip
+	cp -a $(BUILD_STAGE)/gzip $(BUILD_DIST)
 	
 	# gzip.mk Sign
 	$(call SIGN,gzip,general.xml)

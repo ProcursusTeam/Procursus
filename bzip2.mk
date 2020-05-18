@@ -10,6 +10,7 @@ DEB_BZIP2_V   ?= $(BZIP2_VERSION)
 bzip2-setup: setup
 	$(call PGP_VERIFY,bzip2-$(BZIP2_VERSION).tar.gz)
 	$(call EXTRACT_TAR,bzip2-$(BZIP2_VERSION).tar.gz,bzip2-$(BZIP2_VERSION),bzip2)
+	mkdir -p $(BUILD_STAGE)/bzip2/bin
 
 ifneq ($(wildcard $(BUILD_WORK)/bzip2/.build_complete),)
 bzip2:
@@ -28,6 +29,9 @@ bzip2: bzip2-setup
 	ln -s bzgrep bzegrep; \
 	ln -s bzgrep bzfgrep; \
 	ln -s bzmore bzless
+	for bin in $(BUILD_STAGE)/bzip2/usr/bin/*; do \
+		ln -s ../usr/bin/$$(basename $$bin) $(BUILD_STAGE)/bzip2/bin/$$(basename $$bin); \
+	done
 	touch $(BUILD_WORK)/bzip2/.build_complete
 endif
 
@@ -37,7 +41,7 @@ bzip2-package: bzip2-stage
 	mkdir -p $(BUILD_DIST)/bzip2
 	
 	# bzip2.mk Prep bzip2
-	cp -a $(BUILD_STAGE)/bzip2/usr $(BUILD_DIST)/bzip2
+	cp -a $(BUILD_STAGE)/bzip2 $(BUILD_DIST)
 	rm -rf $(BUILD_DIST)/bzip2/usr/man
 	
 	# bzip2.mk Sign
