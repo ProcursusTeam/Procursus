@@ -13,6 +13,7 @@
     dispatch_once(&onceToken, ^{
         sharedInstance = [[DeviceInfo alloc] init];
         [sharedInstance initCpuArchitecture];
+        [sharedInstance initCpuSubArchitecture];
         uname(&(sharedInstance->_systemInfo));
         [sharedInstance initModel];
     });
@@ -44,6 +45,37 @@
     NXFreeArchInfo(ai);
 }
 
+- (void)initCpuSubArchitecture {
+    cpu_subtype_t subtype;
+    size_t size = sizeof(subtype);
+
+    char *cpu = NULL;
+    if (sysctlbyname("hw.cpusubtype", &subtype, &size, NULL, 0) == 0) {
+        if (subtype == CPU_SUBTYPE_ARM_V6) {
+            cpu = "armv6";
+        } else if (subtype == CPU_SUBTYPE_ARM_V7) {
+            cpu = "armv7";
+        } else if (subtype == CPU_SUBTYPE_ARM_V7S) {
+            cpu = "armv7s";
+        } else if (subtype == CPU_SUBTYPE_ARM_V7K) {
+            cpu = "armv7k";
+        } else if (subtype == CPU_SUBTYPE_ARM64_ALL) {
+            cpu = "arm64";
+        } else if (subtype == CPU_SUBTYPE_ARM64_V8) {
+            cpu = "arm64v8";
+        } else if (subtype == CPU_SUBTYPE_ARM64E) {
+            cpu = "arm64e";
+        } else if (subtype == CPU_SUBTYPE_X86_64_ALL) {
+            cpu = "x86_64";
+        } else {
+            [self exitWithError:nil andMessage:@"Unknown cpu sub-architecture"];
+        }
+    } else {
+        [self exitWithError:nil andMessage:@"Error getting cpu sub-architecture"];
+    }
+
+    self->_cpuSubArchitecture = [NSString stringWithCString:cpu encoding:NSUTF8StringEncoding];
+}
 
 - (void)initModel {
 #if (TARGET_OS_IPHONE)

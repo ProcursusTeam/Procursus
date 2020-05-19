@@ -15,6 +15,7 @@
 + (instancetype)sharedDevice;
 
 @property (readonly) NSString *cpuArchitecture;
+@property (readonly) NSString *cpuSubArchitecture;
 
 - (NSString *)getOperatingSystemVersion;    // e.g. 13.3.1
 - (NSString *)getModelName;                 // e.g. iPhone7,1   -> iphone

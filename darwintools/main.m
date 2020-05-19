@@ -34,6 +34,10 @@ int main() {
     packageName = [@"cy+cpu." stringByAppendingString:device.cpuArchitecture];
     [firmware generatePackage:packageName forVersion:@"0" withDescription:@"virtual CPU dependency"];
 
+    DEBUGLOG("Generate sub-cpu package.");
+    packageName = [@"cy+cpu." stringByAppendingString:device.cpuSubArchitecture];
+    [firmware generatePackage:packageName forVersion:@"0" withDescription:@"virtual CPU dependency"];
+
     DEBUGLOG("Generate model package.");
     packageName = [@"cy+model." stringByAppendingString:[device getModelName]];
     [firmware generatePackage:packageName forVersion:[device getModelVersion] withDescription:@"virtual model dependency"];
