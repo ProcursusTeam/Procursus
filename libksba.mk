@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += libksba
 DOWNLOAD      += https://gnupg.org/ftp/gcrypt/libksba/libksba-$(KSBA_VERSION).tar.bz2{,.sig}
-KSBA_VERSION  := 1.3.5
+KSBA_VERSION  := 1.4.0
 DEB_KSBA_V    ?= $(KSBA_VERSION)
 
 libksba-setup: setup
