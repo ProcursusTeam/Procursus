@@ -1,6 +1,8 @@
 Package: gzip
 Version: @DEB_GZIP_V@
 Architecture: @DEB_ARCH@
+Replaces: file-cmds (<= 1:0)
+Conflicts: file-cmds (<= 1:0)
 Maintainer: @DEB_MAINTAINER@
 Section: Archiving
 Priority: required
