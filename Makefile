@@ -195,13 +195,17 @@ DO_PATCH    = cd $(BUILD_WORK)/$(1)-patches; \
 SIGN =  find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \; &> /dev/null; \
 	find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
 		
-PACK =  -find $(BUILD_DIST)/$(1) \( -name '*.la' -o -name '*.a' \) -type f -delete; \
+PACK = -find $(BUILD_DIST)/$(1) \( -name '*.la' -o -name '*.a' \) -type f -delete; \
 	rm -rf $(BUILD_DIST)/$(1)/usr/share/{info,aclocal,doc}; \
 	if [ -z $(3) ]; then \
 		echo Setting $(1) owner to 0:0.; \
 		$(FAKEROOT) chown -R 0:0 $(BUILD_DIST)/$(1)/* &>/dev/null; \
 	elif [ $(3) = "2" ]; then \
 		echo $(1) owner set within individual makefile.; \
+	fi; \
+	if [ -d "$(BUILD_DIST)/$(1)/usr/share/locale" ]; then \
+		$(CP) -af $(BUILD_DIST)/$(1)/usr/share/locale $(BUILD_DIST)/$(1)-locale; \
+		rm -rf $(BUILD_DIST)/$(1)/usr/share/locale; \
 	fi; \
 	SIZE=$$(du -s $(BUILD_DIST)/$(1) | cut -f 1); \
 	mkdir -p $(BUILD_DIST)/$(1)/DEBIAN; \
@@ -211,14 +215,33 @@ PACK =  -find $(BUILD_DIST)/$(1) \( -name '*.la' -o -name '*.a' \) -type f -dele
 	$(CP) $(BUILD_INFO)/$(1).postrm $(BUILD_DIST)/$(1)/DEBIAN/postrm; \
 	$(CP) $(BUILD_INFO)/$(1).prerm $(BUILD_DIST)/$(1)/DEBIAN/prerm; \
 	$(CP) $(BUILD_INFO)/$(1).extrainst_ $(BUILD_DIST)/$(1)/DEBIAN/extrainst_; \
-	cd $(BUILD_DIST)/$(1) && $(FIND) . -type f ! -regex '.*.hg.*' ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -printf '%P ' | xargs md5sum > $(BUILD_DIST)/$(1)/DEBIAN/md5sums; \
-	chmod 0755 $(BUILD_DIST)/$(1)/DEBIAN/*; \
 	$(SED) -i ':a; s/@$(2)@/$($(2))/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	$(SED) -i ':a; s/@DEB_MAINTAINER@/$(DEB_MAINTAINER)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	$(SED) -i ':a; s/@DEB_ARCH@/$(DEB_ARCH)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control; \
+	if [ -d "$(BUILD_DIST)/$(1)/usr/share/locale" ]; then \
+		$(call PACK_LOCALE,$(1)); \
+	fi; \
+	cd $(BUILD_DIST)/$(1) && $(FIND) . -type f ! -regex '.*.hg.*' ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -printf '%P ' | xargs md5sum > $(BUILD_DIST)/$(1)/DEBIAN/md5sums; \
+	chmod 0755 $(BUILD_DIST)/$(1)/DEBIAN/*; \
 	echo "Installed-Size: $$SIZE"; \
 	echo "Installed-Size: $$SIZE" >> $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	$(FAKEROOT) $(DPKG_DEB) -b $(BUILD_DIST)/$(1) $(BUILD_DIST)/$(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d ' ')_$($(2))_$(DEB_ARCH).deb
+
+PACK_LOCALE = mkdir -p $(BUILD_DIST)/$(1)-locale/{DEBIAN,usr/share}; \
+	$(CP) -af $(BUILD_DIST)/$(1)-locale $(BUILD_DIST)/$(1)-locale/usr/share/locale; \
+	rm -rf $(BUILD_DIST)/$(1)-locale; \
+	LSIZE=$$(du -s $(BUILD_DIST)/$(1)-locale | cut -f 1); \
+	$(CP) $(BUILD_DIST)/$(1)/DEBIAN/control $(BUILD_DIST)/$(1)-locale/DEBIAN; \
+	VERSION=$$(grep Version: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d " "); \
+	$(SED) -i "s/^Depends:.*/Depends: $(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d " ") (= $$VERSION)/" $(BUILD_DIST)/$(1)-locale/DEBIAN/control; \
+	$(SED) -i 's/^Package:.*/Package: $(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d " ")-locale/' $(BUILD_DIST)/$(1)-locale/DEBIAN/control; \
+	$(SED) -i 's/^Priority:.*/Priority: optional/' $(BUILD_DIST)/$(1)-locale/DEBIAN/control; \
+	$(SED) -i 's/^Section:.*/Section: Locales/' $(BUILD_DIST)/$(1)-locale/DEBIAN/control; \
+	$(SED) -i 's/^Description:.*/Description: Locale files for $(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d ' ')./' $(BUILD_DIST)/$(1)-locale/DEBIAN/control; \
+	$(SED) -i -e '/^Name:/d' -e '/^Provides:/d' -e '/^Replaces:/d' -e '/^Conflicts:/d' $(BUILD_DIST)/$(1)-locale/DEBIAN/control; \
+	echo "Installed-Size: $$LSIZE" >> $(BUILD_DIST)/$(1)-locale/DEBIAN/control; \
+	$(FAKEROOT) $(DPKG_DEB) -b $(BUILD_DIST)/$(1)-locale $(BUILD_DIST)/$(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d ' ')-locale_$${VERSION}_$(DEB_ARCH).deb; \
+	rm -rf $(BUILD_DIST)/$(1)-locale
 
 ifeq ($(call HAS_COMMAND,shasum),1)
 GET_SHA1   = shasum -a 1 $(1) | cut -c1-40
