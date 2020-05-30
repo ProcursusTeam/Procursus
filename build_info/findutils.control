@@ -2,6 +2,8 @@ Package: findutils
 Version: @DEB_FINDUTILS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Replaces: shell-cmds (<< 207.40.1)
+Conflicts: shell-cmds (<< 207.40.1)
 Depends: bash, sed, shell-cmds, gettext
 Section: Utilities
 Priority: important
