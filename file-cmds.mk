@@ -10,7 +10,7 @@ FILE-CMDS_VERSION := 272.250.1
 else
 FILE-CMDS_VERSION := 287.40.2
 endif
-DEB_FILE-CMDS_V   ?= $(FILE-CMDS_VERSION)
+DEB_FILE-CMDS_V   ?= $(FILE-CMDS_VERSION)-1
 
 file-cmds-setup: setup
 	$(call EXTRACT_TAR,file_cmds-$(FILE-CMDS_VERSION).tar.gz,file_cmds-$(FILE-CMDS_VERSION),file-cmds)
