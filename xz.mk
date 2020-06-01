@@ -10,6 +10,7 @@ DEB_XZ_V      ?= $(XZ_VERSION)
 xz-setup: setup
 	$(call PGP_VERIFY,xz-$(XZ_VERSION).tar.xz)
 	$(call EXTRACT_TAR,xz-$(XZ_VERSION).tar.xz,xz-$(XZ_VERSION),xz)
+	mkdir -p $(BUILD_STAGE)/xz/usr/bin
 
 ifneq ($(wildcard $(BUILD_WORK)/xz/.build_complete),)
 xz:
@@ -27,6 +28,9 @@ xz: xz-setup
 		DESTDIR=$(BUILD_STAGE)/xz
 	+$(MAKE) -C $(BUILD_WORK)/xz install \
 		DESTDIR=$(BUILD_BASE)
+	for bin in $(BUILD_STAGE)/xz/usr/local/bin/*; do \
+		ln -s ../local/bin/$$(basename $$bin) $(BUILD_STAGE)/xz/usr/bin/$$(basename $$bin); \
+	done
 	touch $(BUILD_WORK)/xz/.build_complete
 endif
 
