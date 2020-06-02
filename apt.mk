@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += apt
 APT_DIR       := $(BUILD_ROOT)/apt
-APT_VERSION   := 2.1.1
+APT_VERSION   := 2.1.5
 DEB_APT_V     ?= $(APT_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
