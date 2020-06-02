@@ -471,11 +471,16 @@ Components: main\n" > $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procur
 	$$FAKEROOT chown 0:3 $(BUILD_STRAP)/strap/private/var/empty; \
 	$$FAKEROOT chown 0:1 $(BUILD_STRAP)/strap/private/var/run; \
 	cd $(BUILD_STRAP)/strap && $$FAKEROOT $(TAR) -cf ../bootstrap.tar .
-	zstd -qf -c19 --rm $(BUILD_STRAP)/bootstrap.tar > $(BUILD_STRAP)/bootstrap.tar.zst
-	rm -rf $(BUILD_STRAP)/{strap,*.deb}
-	@echo "********** Successfully built bootstrap with **********"
-	@echo "$(STRAPPROJECTS)"
-	@echo "$(BUILD_STRAP)/bootstrap.tar.zst"
+	@if [[ "$(SSH_STRAP)" = 1 ]]; then \
+		BOOTSTRAP=bootstrap-ssh.tar.zst; \
+	else \
+		BOOTSTRAP=bootstrap.tar.zst; \
+	fi; \
+	zstd -qf -c19 --rm $(BUILD_STRAP)/bootstrap.tar > $(BUILD_STRAP)/$${BOOTSTRAP}; \
+	rm -rf $(BUILD_STRAP)/{strap,*.deb}; \
+	echo "********** Successfully built bootstrap with **********"; \
+	echo "$(STRAPPROJECTS)"; \
+	echo "$(BUILD_STRAP)/$${BOOTSTRAP}"
 
 bootstrap-device: bootstrap
 	@echo "********** Bootstrapping device. This may take a while! **********"
