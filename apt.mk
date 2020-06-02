@@ -14,6 +14,7 @@ endif
 apt-setup: setup
 	rm -rf $(BUILD_WORK)/apt
 	mkdir -p $(BUILD_WORK)/apt
+	$(SED) -i -e '/setlocale/d' $(APT_DIR)/CMake/apti18n.h.in
 
 ifneq ($(wildcard $(BUILD_WORK)/apt/.build_complete),)
 apt:
