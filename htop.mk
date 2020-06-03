@@ -36,6 +36,9 @@ htop-package: htop-stage
 	
 	# htop.mk Prep htop
 	cp -a $(BUILD_STAGE)/htop $(BUILD_DIST)
+
+	# htop.mk Sign
+	$(call SIGN,htop,general.xml)
 	
 	# htop.mk Make .debs
 	$(call PACK,htop,DEB_HTOP_V)
