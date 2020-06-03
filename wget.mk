@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/wget/.build_complete),)
 wget:
 	@echo "Using previously built wget."
 else
-wget: wget-setup openssl pcre2 gettext libunistring
+wget: wget-setup openssl pcre2 gettext libunistring libidn2
 	cd $(BUILD_WORK)/wget && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

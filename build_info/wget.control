@@ -2,7 +2,7 @@ Package: wget
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_WGET_V@
-Depends: libssl1.1, libpcre2, gettext, libunistring
+Depends: libssl1.1, libpcre2, gettext, libunistring, libidn2
 Section: Networking
 Priority: important
 Description: simple HTTP file transfer client
