@@ -170,7 +170,11 @@ export DEB_ARCH DEB_ORIGIN DEB_MAINTAINER
 export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS PKG_CONFIG_PATH
 
 HAS_COMMAND = $(shell type $(1) >/dev/null 2>&1 && echo 1)
+ifeq ($(NO_PGP),1)
+PGP_VERIFY  = echo "Skipping verification of $(1) because NO_PGP was set to 1."
+else
 PGP_VERIFY  = gpg --verify $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) $(BUILD_SOURCE)/$(1) 2>&1 | grep -q 'Good signature'
+endif
 
 EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 		cd $(BUILD_WORK) && \
