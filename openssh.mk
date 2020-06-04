@@ -8,7 +8,7 @@ else
 SUBPROJECTS     += openssh
 endif
 OPENSSH_VERSION := 8.2
-DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)
+DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)-1
 
 openssh-setup: setup
 	rm -rf $(BUILD_WORK)/openssh
@@ -33,6 +33,7 @@ openssh: openssh-setup openssl
 		DESTDIR="$(BUILD_STAGE)/openssh"
 	mkdir -p $(BUILD_STAGE)/openssh/Library/LaunchDaemons
 	cp $(BUILD_INFO)/com.openssh.sshd.plist $(BUILD_STAGE)/openssh/Library/LaunchDaemons
+	cp $(BUILD_INFO)/sshd-keygen-wrapper $(BUILD_STAGE)/openssh/usr/libexec
 	touch $(BUILD_WORK)/openssh/.build_complete
 endif
 
