@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS  += nano
 DOWNLOAD     += https://ftp.gnu.org/gnu/nano/nano-$(NANO_VERSION).tar.xz{,.sig}
-NANO_VERSION := 4.9.2
+NANO_VERSION := 4.9.3
 DEB_NANO_V   ?= $(NANO_VERSION)
 
 nano-setup: setup
