@@ -122,6 +122,7 @@ else ifeq ($(UNAME),Darwin)
 $(warning Building on MacOS)
 SYSROOT         ?= $(shell xcrun --sdk $(PLATFORM) --show-sdk-path)
 MACOSX_SYSROOT  ?= $(shell xcrun --show-sdk-path)
+PATH            := /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:$(PATH)
 CPP             := cc -E
 RANLIB          := ranlib
 STRIP           := strip
