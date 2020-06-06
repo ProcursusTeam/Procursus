@@ -34,7 +34,7 @@ tmux-package: tmux-stage
 	cp -a $(BUILD_STAGE)/tmux/usr $(BUILD_DIST)/tmux
 	
 	# tmux.mk Sign
-	$(call SIGN,tmux,tmux.xml)
+	$(call SIGN,tmux,general.xml)
 	
 	# tmux.mk Make .debs
 	$(call PACK,tmux,DEB_TMUX_V)
