@@ -40,7 +40,7 @@ ncurses: ncurses-setup
 		--enable-widec \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/ncurses \
-		DESTDIR="$(BUILD_STAGE)/ncurses"
+		BUILD_CCFLAGS="-I$(MACOSX_SYSROOT)/usr/include"
 	+$(MAKE) -C $(BUILD_WORK)/ncurses install \
 		DESTDIR="$(BUILD_STAGE)/ncurses"
 	+$(MAKE) -C $(BUILD_WORK)/ncurses install \
