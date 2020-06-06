@@ -39,8 +39,12 @@ ncurses: ncurses-setup
 		--with-pkg-config-libdir=/usr/lib/pkgconfig \
 		--enable-widec \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)"
+ifeq ($(UNAME),Darwin)
 	+$(MAKE) -C $(BUILD_WORK)/ncurses \
 		BUILD_CCFLAGS="-I$(MACOSX_SYSROOT)/usr/include"
+else
+	+$(MAKE) -C $(BUILD_WORK)/ncurses
+endif
 	+$(MAKE) -C $(BUILD_WORK)/ncurses install \
 		DESTDIR="$(BUILD_STAGE)/ncurses"
 	+$(MAKE) -C $(BUILD_WORK)/ncurses install \
