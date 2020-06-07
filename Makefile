@@ -174,7 +174,11 @@ HAS_COMMAND = $(shell type $(1) >/dev/null 2>&1 && echo 1)
 ifeq ($(NO_PGP),1)
 PGP_VERIFY  = echo "Skipping verification of $(1) because NO_PGP was set to 1."
 else
-PGP_VERIFY  = gpg --verify $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) $(BUILD_SOURCE)/$(1) 2>&1 | grep -q 'Good signature'
+PGP_VERIFY  = KEY=$$(gpg --verify --status-fd 1 $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) | grep NO_PUBKEY | cut -f3 -d' '); \
+	if [ ! -z "$$KEY" ]; then \
+		gpg --keyserver hkp://keys.gnupg.net --recv-keys $$KEY; \
+	fi; \
+	gpg --verify $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) $(BUILD_SOURCE)/$(1) 2>&1 | grep -q 'Good signature'
 endif
 
 EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
@@ -199,7 +203,7 @@ DO_PATCH    = cd $(BUILD_WORK)/$(1)-patches; \
 
 SIGN =  find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \; &> /dev/null; \
 	find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
-		
+
 PACK = -find $(BUILD_DIST)/$(1) \( -name '*.la' -o -name '*.a' \) -type f -delete; \
 	rm -rf $(BUILD_DIST)/$(1)/usr/share/{info,aclocal,doc}; \
 	if [ -z $(3) ]; then \
