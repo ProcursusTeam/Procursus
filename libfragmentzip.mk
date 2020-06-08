@@ -2,8 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS  += libfragmentzip
-DOWNLOAD     += https://github.com/tihmstar/libfragmentzip/archive/$(LIBFRAGMENTZIP_VERSION).tar.gz
+SUBPROJECTS            += libfragmentzip
+DOWNLOAD               += https://github.com/tihmstar/libfragmentzip/archive/$(LIBFRAGMENTZIP_VERSION).tar.gz
 LIBFRAGMENTZIP_VERSION := 60
 DEB_LIBFRAGMENTZIP_V   ?= $(LIBFRAGMENTZIP_VERSION)
 
