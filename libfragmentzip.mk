@@ -20,7 +20,7 @@ libfragmentzip: libfragmentzip-setup libzip curl
 		--prefix=/usr 
 	+$(MAKE) -C $(BUILD_WORK)/libfragmentzip
 	+$(MAKE) -C $(BUILD_WORK)/libfragmentzip install \
-		DESTDIR=$(BUILD_STAGE)/libfragmentzip
+		DESTDIR="$(BUILD_STAGE)/libfragmentzip"
 	touch $(BUILD_WORK)/libfragmentzip/.build_complete
 endif
 
