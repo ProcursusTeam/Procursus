@@ -187,7 +187,8 @@ EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 		mkdir -p $(3); \
 		$(CP) -af $(2)/. $(3); \
 		rm -rf $(2); \
-	fi
+	fi; \
+	find $(BUILD_BASE)/usr/lib -name "*.la" -type f -delete
 
 DO_PATCH    = cd $(BUILD_WORK)/$(1)-patches; \
 	rm -f ./series; \
@@ -504,7 +505,6 @@ bootstrap-device: bootstrap
 %-stage: %
 	rm -f $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev)
 	touch $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev)
-	find $(BUILD_BASE)/usr/lib -name "*.la" -type f -delete
 
 REPROJ=$(shell echo $@ | cut -f2- -d"-")
 REPROJ2=$(shell echo $(REPROJ) | $(SED) 's/-package//')
