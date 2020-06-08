@@ -2,13 +2,13 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS            += libfragmentzip
-DOWNLOAD               += https://github.com/tihmstar/libfragmentzip/archive/libfragmentzip-$(LIBFRAGMENTZIP_VERSION).tar.gz
+SUBPROJECTS  += libfragmentzip
+DOWNLOAD     += https://github.com/tihmstar/libfragmentzip/archive/$(LIBFRAGMENTZIP_VERSION).tar.gz
 LIBFRAGMENTZIP_VERSION := 60
 DEB_LIBFRAGMENTZIP_V   ?= $(LIBFRAGMENTZIP_VERSION)
 
 libfragmentzip-setup: setup
-	$(call EXTRACT_TAR,libfragmentzip-$(LIBFRAGMENTZIP_VERSION).tar.xz,libfragmentzip-$(LIBFRAGMENTZIP_VERSION),libfragmentzip)
+	$(call EXTRACT_TAR,libfragmentzip-$(LIBFRAGMENTZIP_VERSION).tar.gz,libfragmentzip-$(LIBFRAGMENTZIP_VERSION),libfragmentzip)
 
 ifneq ($(wildcard $(BUILD_WORK)/libfragmentzip/.build_complete),)
 libfragmentzip:
@@ -20,7 +20,7 @@ libfragmentzip: libfragmentzip-setup libzip curl
 		--prefix=/usr 
 	+$(MAKE) -C $(BUILD_WORK)/libfragmentzip
 	+$(MAKE) -C $(BUILD_WORK)/libfragmentzip install \
-		DESTDIR="$(BUILD_STAGE)/libfragmentzip"
+		DESTDIR=$(BUILD_STAGE)/libfragmentzip
 	touch $(BUILD_WORK)/libfragmentzip/.build_complete
 endif
 
