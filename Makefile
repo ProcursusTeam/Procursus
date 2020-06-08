@@ -122,7 +122,7 @@ else ifeq ($(UNAME),Darwin)
 $(warning Building on MacOS)
 SYSROOT         ?= $(shell xcrun --sdk $(PLATFORM) --show-sdk-path)
 MACOSX_SYSROOT  ?= $(shell xcrun --show-sdk-path)
-PATH            := /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:$(PATH)
+PATH            := /usr/bin:$(PATH)
 CPP             := cc -E
 RANLIB          := ranlib
 STRIP           := strip
@@ -256,6 +256,10 @@ GET_SHA1   = sha1sum $(1) | cut -c1-40
 GET_SHA256 = sha256sum $(1) | cut -c1-64
 endif
 
+ifeq ($(call HAS_COMMAND,gmake),1)
+PATH := $(shell brew --prefix)/opt/make/libexec/gnubin:$(PATH)
+endif
+
 ifeq ($(call HAS_COMMAND,gtar),1)
 PATH := $(shell brew --prefix)/opt/gnu-tar/libexec/gnubin:$(PATH)
 TAR  := tar
@@ -319,12 +323,12 @@ $(error Install newer groff)
 endif
 endif
 
-ifeq ($(call HAS_COMMAND,gpatch),1)
-PATCH := gpatch
-else ifeq ($(shell patch --version | grep -q 'GNU patch' && echo 1),1)
-PATCH := patch
+ifneq ($(shell patch --version | grep -q 'GNU patch' && echo 1),1)
+ifeq (,$(wildcard $(shell brew --prefix)/opt/gnu-patch/libexec/gnubin))
+PATH := $(shell brew --prefix)/opt/gnu-patch/libexec/gnubin:$(PATH)
 else
 $(error Install GNU patch)
+endif
 endif
 
 ifeq ($(call HAS_COMMAND,gfind),1)
@@ -393,9 +397,10 @@ endif
 
 ifneq ($(shell tic -V | grep -q 'ncurses 6' && echo 1),1)
 ifeq ($(call HAS_COMMAND,$(shell brew --prefix)/opt/ncurses/bin/tic),1)
-PATH := $(shell brew --prefix)/opt/ncurses/bin:$(PATH)
+TIC_PATH := $(shell brew --prefix)/opt/ncurses/bin/tic
+export TIC_PATH
 else
-$(error Install ncurses)
+$(error Install ncurses 6)
 endif
 endif
 
