@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libfragmentzip/.build_complete),)
 libfragmentzip:
 	@echo "Using previously built libfragmentzip."
 else
-libfragmentzip: libfragmentzip-setup libzip
+libfragmentzip: libfragmentzip-setup libzip curl
 	cd $(BUILD_WORK)/libfragmentzip && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr 
