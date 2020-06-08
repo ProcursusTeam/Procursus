@@ -10,3 +10,6 @@
 [submodule "apt"]
 	path = apt
 	url = https://github.com/Diatrus/apt.git
+[submodule "libirecovery"]
+	path = libirecovery
+	url = https://github.com/libimobiledevice/libirecovery
