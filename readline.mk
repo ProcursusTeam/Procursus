@@ -15,8 +15,8 @@ readline-setup: setup
 	$(call PGP_VERIFY,readline80-003)
 	$(call PGP_VERIFY,readline80-004)
 	$(call EXTRACT_TAR,readline-$(READLINE_VERSION).tar.gz,readline-$(READLINE_VERSION),readline)
-	mkdir -p $(BUILD_WORK)/readline-$(READLINE_VERSION)-patches
-	find $(BUILD_SOURCE) -name 'readline80*' -not -name '*.sig' -exec cp '{}' $(BUILD_WORK)/readline-$(READLINE_VERSION)-patches/ \;
+	mkdir -p $(BUILD_PATCH)/readline-$(READLINE_VERSION)
+	find $(BUILD_SOURCE) -name 'readline80*' -not -name '*.sig' -exec cp '{}' $(BUILD_PATCH)/readline-$(READLINE_VERSION)/ \;
 	$(call DO_PATCH,readline-$(READLINE_VERSION),readline,-p0)
 
 ifneq ($(wildcard $(BUILD_WORK)/readline/.build_complete),)
@@ -39,7 +39,7 @@ readline: readline-setup ncurses
 	touch $(BUILD_WORK)/readline/.build_complete
 endif
 
-readline-package: READLINE_SUB_V=$(shell find $(BUILD_WORK)/readline-$(READLINE_VERSION)-patches -type f | $(WC) -l)
+readline-package: READLINE_SUB_V=$(shell find $(BUILD_PATCH)/readline-$(READLINE_VERSION) -type f | $(WC) -l)
 readline-package: readline-stage
 	# readline.mk Package Structure
 	rm -rf $(BUILD_DIST)/readline

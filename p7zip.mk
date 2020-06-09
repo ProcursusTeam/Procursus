@@ -12,9 +12,9 @@ DEB_P7ZIP_V    ?= $(DEBIAN_P7ZIP_V)
 
 p7zip-setup: setup
 	$(call EXTRACT_TAR,p7zip_$(P7ZIP_VERSION)+dfsg.orig.tar.xz,p7zip_$(P7ZIP_VERSION),p7zip)
-	$(call EXTRACT_TAR,p7zip_$(DEBIAN_P7ZIP_V).debian.tar.xz,debian/patches,p7zip-$(P7ZIP_VERSION)-patches)
+	$(call EXTRACT_TAR,p7zip_$(DEBIAN_P7ZIP_V).debian.tar.xz,debian/patches,$(BUILD_PATCH)/p7zip-$(P7ZIP_VERSION))
 	rm -rf $(BUILD_WORK)/debian
-	cp $(BUILD_SOURCE)/patch-CPP_Windows_ErrorMsg.cpp $(BUILD_WORK)/p7zip-$(P7ZIP_VERSION)-patches
+	cp $(BUILD_SOURCE)/patch-CPP_Windows_ErrorMsg.cpp $(BUILD_PATCH)/p7zip-$(P7ZIP_VERSION)
 	$(call DO_PATCH,p7zip-$(P7ZIP_VERSION),p7zip,-p0,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/p7zip/.build_complete),)

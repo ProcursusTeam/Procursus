@@ -148,6 +148,8 @@ BUILD_SOURCE   := $(BUILD_ROOT)/build_source
 BUILD_BASE     := $(BUILD_ROOT)/build_base/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Dpkg info storage area
 BUILD_INFO     := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_info
+# Patch storage area
+BUILD_PATCH    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_patch
 # Extracted source working directory
 BUILD_WORK     := $(BUILD_ROOT)/build_work/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Bootstrap working area
@@ -176,7 +178,7 @@ PGP_VERIFY  = echo "Skipping verification of $(1) because NO_PGP was set to 1."
 else
 PGP_VERIFY  = KEY=$$(gpg --verify --status-fd 1 $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) | grep NO_PUBKEY | cut -f3 -d' '); \
 	if [ ! -z "$$KEY" ]; then \
-		gpg --keyserver hkp://keys.gnupg.net --recv-keys $$KEY; \
+		gpg --keyserver hkps://pgp.mit.edu --recv-keys $$KEY; \
 	fi; \
 	gpg --verify $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) $(BUILD_SOURCE)/$(1) 2>&1 | grep -q 'Good signature'
 endif
@@ -190,13 +192,13 @@ EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 	fi; \
 	find $(BUILD_BASE)/usr/lib -name "*.la" -type f -delete
 
-DO_PATCH    = cd $(BUILD_WORK)/$(1)-patches; \
+DO_PATCH    = -cd $(BUILD_PATCH)/$(1); \
 	rm -f ./series; \
 	for PATCHFILE in *; do \
 		if [ ! -f $(BUILD_WORK)/$(2)/$(notdir $$PATCHFILE).done ]; then \
-			$(PATCH) -sN -d $(BUILD_WORK)/$(2) $(3) < $$PATCHFILE &> /dev/null; \
+			patch -sN -d $(BUILD_WORK)/$(2) $(3) < $$PATCHFILE; \
 			if [ $(4) ]; then \
-				$(PATCH) -sN -d $(BUILD_WORK)/$(2) $(4) < $$PATCHFILE &> /dev/null; \
+				patch -sN -d $(BUILD_WORK)/$(2) $(4) < $$PATCHFILE; \
 			fi; \
 			touch $(BUILD_WORK)/$(2)/$(notdir $$PATCHFILE).done; \
 		fi; \
