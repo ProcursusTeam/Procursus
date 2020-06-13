@@ -532,7 +532,7 @@ rebuild-%:
 
 setup:
 	mkdir -p \
-		$(BUILD_BASE) $(BUILD_BASE)/{System/Library/Frameworks,usr/{include/{sys,IOKit,mach},lib}} \
+		$(BUILD_BASE) $(BUILD_BASE)/{System/Library/Frameworks,usr/{include/{bsm,sys,IOKit,mach/machine},lib}} \
 		$(BUILD_WORK) $(BUILD_STAGE) $(BUILD_DIST) $(BUILD_STRAP)
 
 	git submodule update --init --recursive
@@ -542,11 +542,19 @@ setup:
 	wget -q -nc -P $(BUILD_BASE)/usr/include \
 		https://opensource.apple.com/source/xnu/xnu-6153.61.1/libsyscall/wrappers/spawn/spawn.h
 
+	wget -q -nc -P $(BUILD_BASE)/usr/include/mach/machine \
+		https://opensource.apple.com/source/xnu/xnu-6153.81.5/osfmk/mach/machine/thread_state.h
+
+	wget -q -nc -P $(BUILD_BASE)/usr/include/bsm \
+		https://opensource.apple.com/source/xnu/xnu-6153.81.5/bsd/bsm/audit_kevents.h
+
 	@# Copy headers from MacOSX.sdk
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{arpa,net,xpc} $(BUILD_BASE)/usr/include
-	$(CP) -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,proc*,kern*,random,vnode}.h $(BUILD_BASE)/usr/include/sys
+	$(CP) -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,proc*,ptrace,kern*,random,vnode}.h $(BUILD_BASE)/usr/include/sys
 	$(CP) -af $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/ps $(BUILD_BASE)/usr/include/IOKit
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{ar,launch,libproc,tzfile}.h $(BUILD_BASE)/usr/include
+	$(CP) -af $(MACOSX_SYSROOT)/usr/include/mach/{*.defs,{mach_vm,shared_region}.h} $(BUILD_BASE)/usr/include/mach
+	$(CP) -af $(MACOSX_SYSROOT)/usr/include/mach/machine/*.defs $(BUILD_BASE)/usr/include/mach/machine
 	-$(CP) -af $(BUILD_INFO)/IOKit.framework.$(PLATFORM) $(BUILD_BASE)/System/Library/Frameworks/IOKit.framework
 
 	@# Patch headers from iPhoneOS.sdk

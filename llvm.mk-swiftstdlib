@@ -1,14 +1,13 @@
+# Keeping this here just in case I need to compile the swift stdlib sometime.
+
 ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
 #SUBPROJECTS   += llvm
-DOWNLOAD       += https://github.com/apple/llvm-project/archive/swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz
+DOWNLOAD       += https://github.com/apple/llvm-project/archive/swift-5.3-DEVELOPMENT-SNAPSHOT-2020-06-08-a.tar.gz
 LLVM_VERSION   := 10.0.9
 LLVM_MAJOR_V   := 10
-SWIFT_VERSION  := 5.3
-SWIFT_SUFFIX   := DEVELOPMENT-SNAPSHOT-2020-06-10-a
-DEB_SWIFT_V    ?= $(SWIFT_VERSION)~$(SWIFT_SUFFIX)
 DEB_LLVM_V     ?= $(LLVM_VERSION)
 
 ifeq ($(MEMO_TARGET),iphoneos-arm64)
@@ -34,11 +33,11 @@ SWIFT_OLD           := ON
 endif
 
 llvm-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/swift-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz" ] && wget -O $(BUILD_SOURCE)/swift-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz https://github.com/apple/swift/archive/swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz
-	-[ ! -e "$(BUILD_SOURCE)/swift-cmark-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz" ] && wget -O $(BUILD_SOURCE)/swift-cmark-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz https://github.com/apple/cmark/archive/swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz
-	$(call EXTRACT_TAR,swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz,llvm-project-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),llvm)
-	$(call EXTRACT_TAR,swift-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz,swift-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),llvm/swift)
-	$(call EXTRACT_TAR,swift-cmark-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz,swift-cmark-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),llvm/cmark)
+	-[ ! -e "$(BUILD_SOURCE)/swift-swift-5.3-DEVELOPMENT-SNAPSHOT-2020-06-08-a.tar.gz" ] && wget -O $(BUILD_SOURCE)/swift-swift-5.3-DEVELOPMENT-SNAPSHOT-2020-06-08-a.tar.gz https://github.com/apple/swift/archive/swift-5.3-DEVELOPMENT-SNAPSHOT-2020-06-08-a.tar.gz
+	-[ ! -e "$(BUILD_SOURCE)/swift-cmark-5.3-DEVELOPMENT-SNAPSHOT-2020-06-08-a.tar.gz" ] && wget -O $(BUILD_SOURCE)/swift-cmark-5.3-DEVELOPMENT-SNAPSHOT-2020-06-08-a.tar.gz https://github.com/apple/cmark/archive/swift-5.3-DEVELOPMENT-SNAPSHOT-2020-06-08-a.tar.gz
+	$(call EXTRACT_TAR,swift-5.3-DEVELOPMENT-SNAPSHOT-2020-06-08-a.tar.gz,llvm-project-swift-5.3-DEVELOPMENT-SNAPSHOT-2020-06-08-a,llvm)
+	$(call EXTRACT_TAR,swift-swift-5.3-DEVELOPMENT-SNAPSHOT-2020-06-08-a.tar.gz,swift-swift-5.3-DEVELOPMENT-SNAPSHOT-2020-06-08-a,llvm/swift)
+	$(call EXTRACT_TAR,swift-cmark-swift-5.3-DEVELOPMENT-SNAPSHOT-2020-06-08-a.tar.gz,swift-cmark-swift-5.3-DEVELOPMENT-SNAPSHOT-2020-06-08-a,llvm/cmark)
 	$(call DO_PATCH,llvm,llvm,-p1)
 	$(call DO_PATCH,swift,llvm/swift,-p1)
 	mkdir -p $(BUILD_WORK)/llvm/build
@@ -76,6 +75,7 @@ llvm: llvm-setup libffi ncurses xz
 		-DCMAKE_STATIC_LINKER_FLAGS="" \
 		-DLLVM_ENABLE_FFI=ON \
 		-DCURSES_NCURSES_LIBRARY="$(BUILD_BASE)/usr/lib/libncursesw.dylib" \
+		-DNCURSES_LDFLAGS:INTERNAL=-lncursesw \
 		-DLIBXML2_LIBRARY="$(SYSROOT)/usr/lib/libxml2.tbd" \
 		-DLIBXML2_INCLUDE_DIR="$(SYSROOT)/usr/include/libxml" \
 		-DLibEdit_INCLUDE_DIRS="$(BUILD_BASE)/usr/include" \
@@ -112,14 +112,28 @@ llvm: llvm-setup libffi ncurses xz
 		-DSWIFT_ENABLE_IOS32="$(SWIFT_OLD)" \
 		-DSWIFT_INCLUDE_TESTS=OFF \
 		-DSWIFT_BUILD_RUNTIME_WITH_HOST_COMPILER=ON \
-		-DSWIFT_BUILD_REMOTE_MIRROR=FALSE \
-		-DSWIFT_BUILD_DYNAMIC_STDLIB=FALSE \
-		-DSWIFT_BUILD_STDLIB_EXTRA_TOOLCHAIN_CONTENT=FALSE \
+		-DSWIFT_NATIVE_SWIFT_TOOLS_PATH="$(BUILD_WORK)/llvm/build/NATIVE/bin" \
 		../llvm
-	$(SED) -i 's|-lncurses|-lncursesw|' $(BUILD_WORK)/llvm/build/CMakeCache.txt
+	mkdir -p $(BUILD_WORK)/llvm/build/NATIVE && cd $(BUILD_WORK)/llvm/build/NATIVE && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+		-DCMAKE_C_COMPILER=cc \
+		-DCMAKE_CXX_COMPILER=c++ \
+		-DCMAKE_OSX_SYSROOT="$(MACOSX_SYSROOT)" \
+		-DCMAKE_C_FLAGS="" \
+		-DCMAKE_CXX_FLAGS="" \
+		-DCMAKE_CXX_FLAGS="" \
+		-DCMAKE_EXE_LINKER_FLAGS="" \
+		-DSWIFT_INCLUDE_TESTS=OFF \
+		-DSWIFT_BUILD_RUNTIME_WITH_HOST_COMPILER=ON \
+		-DLLVM_TARGETS_TO_BUILD="X86;ARM;AArch64" \
+		-DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;lldb;cmark;swift" \
+ 		-DLLVM_EXTERNAL_PROJECTS="cmark;swift" \
+		-DLLVM_EXTERNAL_SWIFT_SOURCE_DIR="$(BUILD_WORK)/llvm/swift" \
+		-DLLVM_EXTERNAL_CMARK_SOURCE_DIR="$(BUILD_WORK)/llvm/cmark" \
+		../../llvm
+	+$(MAKE) -C $(BUILD_WORK)/llvm/build/NATIVE swift
 	+$(MAKE) -C $(BUILD_WORK)/llvm/build install \
 		DESTDIR="$(BUILD_STAGE)/llvm"
-	+$(MAKE) -C $(BUILD_WORK)/llvm/build install \
+	+$(MAKE) -C $(BUILD_WORK)/llvm/build install \  
 		DESTDIR="$(BUILD_BASE)"
 	mv $(BUILD_BASE)/usr/include/stdlib.h.old $(BUILD_BASE)/usr/include/stdlib.h
 	touch $(BUILD_WORK)/llvm/.build_complete
