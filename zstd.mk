@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += zstd
 DOWNLOAD      += https://github.com/facebook/zstd/archive/v$(ZSTD_VERSION).tar.gz
-ZSTD_VERSION  := 1.4.4
+ZSTD_VERSION  := 1.4.5
 DEB_ZSTD_V    ?= $(ZSTD_VERSION)
 
 zstd-setup: setup
