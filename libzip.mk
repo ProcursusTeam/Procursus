@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS          += libzip
 DOWNLOAD             += https://libzip.org/download/libzip-$(LIBZIP_VERSION).tar.gz
-LIBZIP_VERSION       := 1.7.0
+LIBZIP_VERSION       := 1.7.1
 DEB_LIBZIP_V         ?= $(LIBZIP_VERSION)
 
 libzip-setup: setup
