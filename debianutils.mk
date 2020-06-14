@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS       += debianutils
 DOWNLOAD            += http://deb.debian.org/debian/pool/main/d/debianutils/debianutils_$(DEBIANUTILS_VERSION).tar.xz
-DEBIANUTILS_VERSION := 4.9.1
+DEBIANUTILS_VERSION := 4.11
 DEB_DEBIANUTILS_V   ?= $(DEBIANUTILS_VERSION)
 
 debianutils-setup: setup
