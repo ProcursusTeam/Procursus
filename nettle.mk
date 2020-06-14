@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += nettle
 DOWNLOAD       += https://ftp.gnu.org/gnu/nettle/nettle-$(NETTLE_VERSION).tar.gz{,.sig}
-NETTLE_VERSION := 3.5.1
+NETTLE_VERSION := 3.6
 DEB_NETTLE_V   ?= $(NETTLE_VERSION)
 
 nettle-setup: setup
