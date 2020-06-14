@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS  += lsof
 DOWNLOAD     += https://opensource.apple.com/tarballs/lsof/lsof-$(LSOF_VERSION).tar.gz
-LSOF_VERSION := 62
+LSOF_VERSION := 67
 DEB_LSOF_V   ?= $(LSOF_VERSION)
 
 lsof-setup: setup
