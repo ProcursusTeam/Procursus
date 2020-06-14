@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS        += libgpg-error
 DOWNLOAD             += https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-$(LIBGPG-ERROR_VERSION).tar.bz2{,.sig}
-LIBGPG-ERROR_VERSION := 1.37
+LIBGPG-ERROR_VERSION := 1.38
 DEB_LIBGPG-ERROR_V   ?= $(LIBGPG-ERROR_VERSION)
 
 ifneq (,$(findstring aarch64,$(GNU_HOST_TRIPLE)))
