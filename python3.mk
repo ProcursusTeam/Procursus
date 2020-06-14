@@ -4,8 +4,8 @@ endif
 
 SUBPROJECTS      += python3
 DOWNLOAD         += https://www.python.org/ftp/python/$(PYTHON3_VERSION)/Python-$(PYTHON3_VERSION).tar.xz{,.asc}
-PYTHON3_MAJOR_V  := 3.8.3
-PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).2
+PYTHON3_MAJOR_V  := 3.8
+PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).3
 DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)
 
 ifeq ($(call HAS_COMMAND,python$(PYTHON3_MAJOR_V)),1)
