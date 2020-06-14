@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS     += nghttp2
 DOWNLOAD        += https://github.com/nghttp2/nghttp2/releases/download/v$(NGHTTP2_VERSION)/nghttp2-$(NGHTTP2_VERSION).tar.xz
-NGHTTP2_VERSION := 1.40.0
+NGHTTP2_VERSION := 1.41.0
 DEB_NGHTTP2_V   ?= $(NGHTTP2_VERSION)
 
 nghttp2-setup: setup
