@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS  += curl
 DOWNLOAD     += https://curl.haxx.se/download/curl-$(CURL_VERSION).tar.xz{,.asc}
-CURL_VERSION := 7.69.1
+CURL_VERSION := 7.70.0
 DEB_CURL_V   ?= $(CURL_VERSION)
 
 curl-setup: setup
