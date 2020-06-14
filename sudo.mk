@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += sudo
 DOWNLOAD      += https://www.sudo.ws/dist/sudo-$(SUDO_VERSION).tar.gz{,.sig}
-SUDO_VERSION  := 1.8.31p1
+SUDO_VERSION  := 1.9.0
 DEB_SUDO_V    ?= $(SUDO_VERSION)
 
 sudo-setup: setup
