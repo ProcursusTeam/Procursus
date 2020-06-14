@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS += git
 DOWNLOAD    += https://mirrors.edge.kernel.org/pub/software/scm/git/git-$(GIT_VERSION).tar.xz
-GIT_VERSION := 2.26.1
+GIT_VERSION := 2.27.0
 DEB_GIT_V   ?= $(GIT_VERSION)
 
 git-setup: setup
