@@ -119,8 +119,6 @@ llvm: llvm-setup libffi ncurses xz
 	$(SED) -i 's|-lncurses|-lncursesw|' $(BUILD_WORK)/llvm/build/CMakeCache.txt
 	+$(MAKE) -C $(BUILD_WORK)/llvm/build install \
 		DESTDIR="$(BUILD_STAGE)/llvm"
-	+$(MAKE) -C $(BUILD_WORK)/llvm/build install \
-		DESTDIR="$(BUILD_BASE)"
 	mv $(BUILD_BASE)/usr/include/stdlib.h.old $(BUILD_BASE)/usr/include/stdlib.h
 	touch $(BUILD_WORK)/llvm/.build_complete
 endif

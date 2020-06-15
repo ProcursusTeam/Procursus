@@ -20,8 +20,14 @@ xar: xar-setup xz openssl
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--enable-static=no \
+		ac_cv_header_libxml_xmlwriter_h=yes \
+		ac_cv_header_openssl_evp_h=yes \
 		ac_cv_lib_crypto_OpenSSL_add_all_ciphers=yes \
-		CPPFLAGS="$(CPPFLAGS) -I$(SYSROOT)/usr/include/libxml2"
+		ac_cv_header_zlib_h=yes \
+		ac_cv_lib_z_deflate=yes
+	$(SED) -i 's|$(MACOSX_SYSROOT)/usr/lib|$(SYSROOT)/usr/lib|g' $(BUILD_WORK)/xar/lib/Makefile.inc
+	$(SED) -i 's|$(MACOSX_SYSROOT)/usr/lib|$(SYSROOT)/usr/lib|g' $(BUILD_WORK)/xar/src/Makefile.inc
+	$(SED) -i 's|$(MACOSX_SYSROOT)/usr/include|$(SYSROOT)/usr/include|g' $(BUILD_WORK)/xar/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/xar
 	+$(MAKE) -C $(BUILD_WORK)/xar install \
 		DESTDIR=$(BUILD_STAGE)/xar
