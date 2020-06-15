@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += gawk
-DOWNLOAD     += https://ftp.gnu.org/gnu/gawk/gawk-$(GAWK_VERSION).tar.xz{,.sig}
+DOWNLOAD     += https://ftpmirror.gnu.org/gawk/gawk-$(GAWK_VERSION).tar.xz{,.sig}
 GAWK_VERSION := 5.1.0
 DEB_GAWK_V   ?= $(GAWK_VERSION)
 

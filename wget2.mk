@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += wget2
-DOWNLOAD     += https://ftp.gnu.org/gnu/wget/wget2-$(WGET2_VERSION).tar.gz{,.sig}
+DOWNLOAD     += https://ftpmirror.gnu.org/wget/wget2-$(WGET2_VERSION).tar.gz{,.sig}
 WGET2_VERSION := 1.99.2
 DEB_WGET2_V   ?= $(WGET2_VERSION)
 

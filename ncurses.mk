@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS   += ncurses
-DOWNLOAD        += https://ftp.gnu.org/gnu/ncurses/ncurses-$(NCURSES_VERSION).tar.gz{,.sig}
+DOWNLOAD        += https://ftpmirror.gnu.org/ncurses/ncurses-$(NCURSES_VERSION).tar.gz{,.sig}
 NCURSES_VERSION := 6.2
 DEB_NCURSES_V   ?= $(NCURSES_VERSION)
 

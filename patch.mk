@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += patch
-DOWNLOAD      += https://ftp.gnu.org/gnu/patch/patch-$(PATCH_VERSION).tar.xz{,.sig}
+DOWNLOAD      += https://ftpmirror.gnu.org/patch/patch-$(PATCH_VERSION).tar.xz{,.sig}
 PATCH_VERSION := 2.7.6
 DEB_PATCH_V   ?= $(PATCH_VERSION)
 

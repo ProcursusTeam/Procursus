@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += make
-DOWNLOAD     += https://ftp.gnu.org/gnu/make/make-$(MAKE_VERSION).tar.gz{,.sig}
+DOWNLOAD     += https://ftpmirror.gnu.org/make/make-$(MAKE_VERSION).tar.gz{,.sig}
 MAKE_VERSION := 4.3
 DEB_MAKE_V   ?= $(MAKE_VERSION)
 

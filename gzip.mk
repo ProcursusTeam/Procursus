@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += gzip
-DOWNLOAD      += https://ftp.gnu.org/gnu/gzip/gzip-$(GZIP_VERSION).tar.xz{,.sig}
+DOWNLOAD      += https://ftpmirror.gnu.org/gzip/gzip-$(GZIP_VERSION).tar.xz{,.sig}
 GZIP_VERSION  := 1.10
 DEB_GZIP_V    ?= $(GZIP_VERSION)
 

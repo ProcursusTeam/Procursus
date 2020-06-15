@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS     += diffutils
-DOWNLOAD          += https://ftp.gnu.org/gnu/diffutils/diffutils-$(DIFFUTILS_VERSION).tar.xz{,.sig}
+DOWNLOAD          += https://ftpmirror.gnu.org/diffutils/diffutils-$(DIFFUTILS_VERSION).tar.xz{,.sig}
 DIFFUTILS_VERSION := 3.7
 DEB_DIFFUTILS_V   ?= $(DIFFUTILS_VERSION)
 

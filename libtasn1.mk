@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += libtasn1
-DOWNLOAD         += https://ftp.gnu.org/gnu/libtasn1/libtasn1-$(LIBTASN1_VERSION).tar.gz{,.sig}
+DOWNLOAD         += https://ftpmirror.gnu.org/libtasn1/libtasn1-$(LIBTASN1_VERSION).tar.gz{,.sig}
 LIBTASN1_VERSION := 4.16.0
 DEB_LIBTASN1_V   ?= $(LIBTASN1_VERSION)
 

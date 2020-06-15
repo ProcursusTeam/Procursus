@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += grep
-DOWNLOAD      += https://ftp.gnu.org/gnu/grep/grep-$(GREP_VERSION).tar.xz{,.sig}
+DOWNLOAD      += https://ftpmirror.gnu.org/grep/grep-$(GREP_VERSION).tar.xz{,.sig}
 GREP_VERSION  := 3.4
 DEB_GREP_V    ?= $(GREP_VERSION)
 
