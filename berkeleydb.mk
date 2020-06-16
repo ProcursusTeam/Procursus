@@ -11,7 +11,7 @@ DEB_BDB_V   ?= $(BDB_VERSION)
 berkeleydb-setup: setup
 	$(call EXTRACT_TAR,db-$(BDB_VERSION).tar.gz,db-$(BDB_VERSION),berkeleydb)
 	$(SED) -i 's/install_docs//g' $(BUILD_WORK)/berkeleydb/dist/Makefile.in
-	$(SED) -i 's/install_docs//g' $(BUILD_WORK)/berkeleydb/dist/Makefile.in
+	$(SED) -i 's/uninstall_docs//g' $(BUILD_WORK)/berkeleydb/dist/Makefile.in
 ifneq ($(wildcard $(BUILD_WORK)/berkeleydb/.build_complete),)
 berkeleydb:
 	@echo "Using previously built berkeleydb."
@@ -23,7 +23,6 @@ berkeleydb: berkeleydb-setup gettext openssl
 		--prefix=/usr \
 		--enable-static=no \
 		--enable-shared=yes \
-		--docdir=$(BUILD_WORK)/berkeleydb/docs \
 		--with-mutex=Darwin/_spin_lock_try
 	+$(MAKE) -C $(BUILD_WORK)/berkeleydb/build_unix
 	+$(MAKE) -C $(BUILD_WORK)/berkeleydb/build_unix install \
@@ -42,7 +41,7 @@ berkeleydb-package: berkeleydb-stage
 	rm -rf $(BUILD_DIST)/berkeleydb/usr/docs
 	
 	# berkeleydb.mk Sign
-	$(call SIGN,berkeleydb,general.xml)
+	+$(call SIGN,berkeleydb,general.xml)
 	
 	# berkeleydb.mk Make .debs
 	$(call PACK,berkeleydb,DEB_BDB_V)
