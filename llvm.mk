@@ -4,12 +4,12 @@ endif
 
 #SUBPROJECTS   += llvm
 DOWNLOAD       += https://github.com/apple/llvm-project/archive/swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz
-LLVM_VERSION   := 10.0.9
+LLVM_VERSION   := 10.0.0
 LLVM_MAJOR_V   := 10
 SWIFT_VERSION  := 5.3
 SWIFT_SUFFIX   := DEVELOPMENT-SNAPSHOT-2020-06-14-a
 DEB_SWIFT_V    ?= $(SWIFT_VERSION)~$(SWIFT_SUFFIX)
-DEB_LLVM_V     ?= $(LLVM_VERSION)
+DEB_LLVM_V     ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)
 
 ifeq ($(MEMO_TARGET),iphoneos-arm64)
 LLVM_DEFAULT_TRIPLE := arm64-apple-ios12.0
