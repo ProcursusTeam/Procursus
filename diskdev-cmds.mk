@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS        += diskdev-cmds
 DOWNLOAD             += https://opensource.apple.com/tarballs/diskdev_cmds/diskdev_cmds-$(DISKDEV-CMDS_VERSION).tar.gz
-DISKDEV-CMDS_VERSION := 641.0.1
+DISKDEV-CMDS_VERSION := 593.230.1
 DEB_DISKDEV-CMDS_V   ?= $(DISKDEV-CMDS_VERSION)
 
 diskdev-cmds-setup: setup
