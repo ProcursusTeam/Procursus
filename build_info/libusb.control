@@ -1,0 +1,8 @@
+Package: libusb
+Version: @DEB_LIBUSB_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends:
+Section: Development
+Priority: optional
+Description: userspace USB programming library
