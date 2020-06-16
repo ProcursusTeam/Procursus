@@ -52,6 +52,8 @@ llvm: llvm-setup libffi ncurses xz
 	cp -a $(SYSROOT)/usr/include/mach/arm $(BUILD_BASE)/usr/include/mach
 	cp -a $(MACOSX_SYSROOT)/usr/include/{editline,kern} $(BUILD_BASE)/usr/include
 	cp -a $(MACOSX_SYSROOT)/usr/include/histedit.h $(BUILD_BASE)/usr/include
+	ln -sf $(BUILD_BASE)/usr/lib/libncursesw.dylib $(BUILD_BASE)/usr/lib/libcurses.dylib
+	ln -sf $(BUILD_BASE)/usr/lib/libpanelw.dylib $(BUILD_BASE)/usr/lib/libpanel.dylib
 	mv $(BUILD_BASE)/usr/include/stdlib.h $(BUILD_BASE)/usr/include/stdlib.h.old
 	cd $(BUILD_WORK)/llvm/build && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
 		-DCMAKE_BUILD_TYPE=Release \
@@ -75,7 +77,6 @@ llvm: llvm-setup libffi ncurses xz
 		-DCMAKE_SHARED_LINKER_FLAGS="-L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
 		-DCMAKE_STATIC_LINKER_FLAGS="" \
 		-DLLVM_ENABLE_FFI=ON \
-		-DCURSES_NCURSES_LIBRARY="$(BUILD_BASE)/usr/lib/libncursesw.dylib" \
 		-DLIBXML2_LIBRARY="$(SYSROOT)/usr/lib/libxml2.tbd" \
 		-DLIBXML2_INCLUDE_DIR="$(SYSROOT)/usr/include/libxml" \
 		-DLibEdit_INCLUDE_DIRS="$(BUILD_BASE)/usr/include" \
@@ -116,9 +117,9 @@ llvm: llvm-setup libffi ncurses xz
 		-DSWIFT_BUILD_DYNAMIC_STDLIB=FALSE \
 		-DSWIFT_BUILD_STDLIB_EXTRA_TOOLCHAIN_CONTENT=FALSE \
 		../llvm
-	$(SED) -i 's|-lncurses|-lncursesw|' $(BUILD_WORK)/llvm/build/CMakeCache.txt
 	+$(MAKE) -C $(BUILD_WORK)/llvm/build install \
 		DESTDIR="$(BUILD_STAGE)/llvm"
+	rm -rf $(BUILD_BASE)/usr/lib/libcurses.dylib $(BUILD_BASE)/usr/lib/libpanel.dylib
 	mv $(BUILD_BASE)/usr/include/stdlib.h.old $(BUILD_BASE)/usr/include/stdlib.h
 	touch $(BUILD_WORK)/llvm/.build_complete
 endif

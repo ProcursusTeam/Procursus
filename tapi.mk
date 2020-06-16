@@ -16,6 +16,7 @@ tapi:
 	@echo "Using previously built tapi."
 else
 tapi: tapi-setup
+	ln -sf $(BUILD_BASE)/usr/lib/libncursesw.dylib $(BUILD_BASE)/usr/lib/libcurses.dylib
 	cd $(BUILD_WORK)/tapi/build && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
@@ -46,8 +47,7 @@ tapi: tapi-setup
 	+$(MAKE) -C $(BUILD_WORK)/tapi/build libtapi
 	+$(MAKE) -C $(BUILD_WORK)/tapi/build install-libtapi install-tapi-headers \
 		DESTDIR="$(BUILD_STAGE)/tapi"
-	+$(MAKE) -C $(BUILD_WORK)/tapi/build install-libtapi install-tapi-headers \
-		DESTDIR="$(BUILD_BASE)"
+	rm -rf $(BUILD_BASE)/usr/lib/libcurses.dylib
 	touch $(BUILD_WORK)/tapi/.build_complete
 endif
 

@@ -10,6 +10,7 @@ DEB_CCTOOLS_V   ?= $(CCTOOLS_VERSION)
 
 cctools-setup: setup
 	$(call EXTRACT_TAR,$(CCTOOLS_VERSION)-ld64-$(LD64_VERSION).tar.gz,cctools-port-$(CCTOOLS_VERSION)-ld64-$(LD64_VERSION)/cctools,cctools)
+	rm -rf $(BUILD_WORK)/cctools-*
 
 ifneq ($(wildcard $(BUILD_WORK)/cctools/.build_complete),)
 cctools:
