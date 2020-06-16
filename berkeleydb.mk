@@ -41,7 +41,7 @@ berkeleydb-package: berkeleydb-stage
 	rm -rf $(BUILD_DIST)/berkeleydb/usr/docs
 	
 	# berkeleydb.mk Sign
-	+$(call SIGN,berkeleydb,general.xml)
+	$(call SIGN,berkeleydb,general.xml)
 	
 	# berkeleydb.mk Make .debs
 	$(call PACK,berkeleydb,DEB_BDB_V)
