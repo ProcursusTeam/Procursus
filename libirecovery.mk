@@ -3,12 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS          += libirecovery
-DOWNLOAD             += https://github.com/libimobiledevice/libirecovery/archive/$(LIBFRAGMENTZIP_VERSION).tar.gz
+DOWNLOAD             += https://github.com/libimobiledevice/libirecovery/archive/$(LIBIRECOVERY_VERSION).tar.gz
 LIBIRECOVERY_VERSION := 1.0.0
 DEB_LIBIRECOVERY_V   ?= $(LIBIRECOVERY_VERSION)
 
 libirecovery-setup: setup
-	$(call EXTRACT_TAR,$(LIBIRECOVERY_VERSION).tar.gz,libirecovery-$(LIBIRECOVERY_VERSION),libirecovery)
+	$(call EXTRACT_TAR,libirecovery-$(LIBIRECOVERY_VERSION).tar.gz,libirecovery-$(LIBIRECOVERY_VERSION),libirecovery)
 
 ifneq ($(wildcard $(BUILD_WORK)/libirecovery/.build_complete),)
 libirecovery:
