@@ -126,19 +126,125 @@ endif
 
 llvm-package: llvm-stage
 	# llvm.mk Package Structure
-	rm -rf $(BUILD_DIST)/llvm
-	mkdir -p $(BUILD_DIST)/llvm
+	rm -rf $(BUILD_DIST)/{clang*,debugserver*,libc++*-dev,libclang-common-*-dev,libclang-cpp*,liblldb-*,libllvm*,liblto*,lldb*,dsymutil*,swift*}/
 	
-	# llvm.mk Prep llvm
-	cp -a $(BUILD_STAGE)/llvm/usr $(BUILD_DIST)/llvm
-	
+	# llvm.mk Prep clang-$(LLVM_MAJOR_V)
+	mkdir -p $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/usr/{bin,lib/llvm-$(LLVM_MAJOR_V)/{bin,lib/cmake,share/clang}}
+	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/bin/clang{,-$(LLVM_MAJOR_V),++,-cpp} $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/bin
+	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/share/clang/bash-autocomplete.sh $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/share/clang
+	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/cmake/clang $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/cmake
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/clang-$(LLVM_MAJOR_V) $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/usr/bin/clang-$(LLVM_MAJOR_V)
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/clang-cpp $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/usr/bin/clang-cpp-$(LLVM_MAJOR_V)
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/clang++ $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/usr/bin/clang++-$(LLVM_MAJOR_V)
+
+	# llvm.mk Prep clang
+	mkdir -p $(BUILD_DIST)/clang/usr/bin
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/clang $(BUILD_DIST)/clang/usr/bin/clang
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/clang++ $(BUILD_DIST)/clang/usr/bin/clang++
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/clang-cpp $(BUILD_DIST)/clang/usr/bin/clang-cpp
+
+	# llvm.mk Prep debugserver-$(LLVM_MAJOR_V)
+	mkdir -p $(BUILD_DIST)/debugserver-$(LLVM_MAJOR_V)/usr/{bin,lib/llvm-$(LLVM_MAJOR_V)/bin}
+	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/bin/debugserver $(BUILD_DIST)/debugserver-$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/bin
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/debugserver $(BUILD_DIST)/debugserver-$(LLVM_MAJOR_V)/usr/bin/debugserver-$(LLVM_MAJOR_V)
+
+	# llvm.mk Prep debugserver
+	mkdir -p $(BUILD_DIST)/debugserver/usr/bin
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/debugserver $(BUILD_DIST)/debugserver/usr/bin/debugserver
+
+	# llvm.mk Prep libc++-$(LLVM_MAJOR_V)-dev
+	mkdir -p $(BUILD_DIST)/libc++-$(LLVM_MAJOR_V)-dev/usr/lib/llvm-$(LLVM_MAJOR_V)/{include,lib}
+	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/include/c++ $(BUILD_DIST)/libc++-$(LLVM_MAJOR_V)-dev/usr/lib/llvm-$(LLVM_MAJOR_V)/include
+	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/libc++{,.1}.dylib $(BUILD_DIST)/libc++-$(LLVM_MAJOR_V)-dev/usr/lib/llvm-$(LLVM_MAJOR_V)/lib
+
+	# llvm.mk Prep libc++-dev
+	mkdir -p $(BUILD_DIST)/libc++-dev/usr/include
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/include/c++ $(BUILD_DIST)/libc++-dev/usr/include
+
+	# llvm.mk Prep libclang-common-$(LLVM_MAJOR_V)-dev
+	mkdir -p $(BUILD_DIST)/libclang-common-$(LLVM_MAJOR_V)-dev/usr/lib/{,llvm-$(LLVM_MAJOR_V)/lib/}clang
+	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/clang/$(LLVM_VERSION) $(BUILD_DIST)/libclang-common-$(LLVM_MAJOR_V)-dev/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/clang
+	ln -s ../llvm-$(LLVM_MAJOR_V)/lib/clang/$(LLVM_VERSION) $(BUILD_DIST)/libclang-common-$(LLVM_MAJOR_V)-dev/usr/lib/clang
+
+	# llvm.mk Prep libclang-cpp$(LLVM_MAJOR_V)
+	mkdir -p $(BUILD_DIST)/libclang-cpp$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/lib
+	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/libclang-cpp.dylib $(BUILD_DIST)/libclang-cpp$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/lib
+
+	# llvm.mk Prep liblldb-$(LLVM_MAJOR_V)
+	mkdir -p $(BUILD_DIST)/liblldb-$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/lib
+	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/liblldb.$(LLVM_VERSION).dylib $(BUILD_DIST)/liblldb-$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/lib
+
+	# llvm.mk Prep libllvm$(LLVM_MAJOR_V)
+	mkdir -p $(BUILD_DIST)/libllvm$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/lib
+	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/libLLVM.dylib $(BUILD_DIST)/libllvm$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/lib
+
+	# llvm.mk Prep liblto$(LLVM_MAJOR_V)
+	mkdir -p $(BUILD_DIST)/liblto$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/lib
+	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/libLTO.dylib $(BUILD_DIST)/liblto$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/lib
+
+	# llvm.mk Prep lldb-$(LLVM_MAJOR_V)
+	mkdir -p $(BUILD_DIST)/lldb-$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/bin
+	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/bin/lldb{,-argdumper,-instr,-server} $(BUILD_DIST)/lldb-$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/bin
+
+	# llvm.mk Prep lldb
+	mkdir -p $(BUILD_DIST)/lldb/usr/bin
+	for bin in lldb{,-argdumper,-instr,-server}; do \
+		ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/$$bin $(BUILD_DIST)/lldb/usr/bin/$$bin; \
+	done
+
+	# llvm.mk Prep dsymutil-$(LLVM_MAJOR_V)
+	mkdir -p $(BUILD_DIST)/dsymutil-$(LLVM_MAJOR_V)/usr/{bin,lib/llvm-$(LLVM_MAJOR_V)/bin}
+	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/bin/dsymutil $(BUILD_DIST)/dsymutil-$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/bin
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/dsymutil $(BUILD_DIST)/dsymutil-$(LLVM_MAJOR_V)/usr/bin/dsymutil-$(LLVM_MAJOR_V)
+
+	# llvm.mk Prep dsymutil
+	mkdir -p $(BUILD_DIST)/dsymutil/usr/bin
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/dsymutil $(BUILD_DIST)/dsymutil/usr/bin/dsymutil
+
+	# llvm.mk Prep swift-$(SWIFT_VERSION)
+	mkdir -p $(BUILD_DIST)/swift-$(SWIFT_VERSION)/usr/{bin,lib/llvm-$(LLVM_MAJOR_V)/{bin,lib,share}}
+	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/share/swift $(BUILD_DIST)/swift-$(SWIFT_VERSION)/usr/lib/llvm-$(LLVM_MAJOR_V)/share
+	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/swift $(BUILD_DIST)/swift-$(SWIFT_VERSION)/usr/lib/llvm-$(LLVM_MAJOR_V)/lib
+	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/bin/swift{,c,-api-digester,-api-dump.py,-demangle,-syntax*} $(BUILD_DIST)/swift-$(SWIFT_VERSION)/usr/lib/llvm-$(LLVM_MAJOR_V)/bin
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/swift $(BUILD_DIST)/swift-$(SWIFT_VERSION)/usr/bin/swift-$(SWIFT_VERSION)
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/swiftc $(BUILD_DIST)/swift-$(SWIFT_VERSION)/usr/bin/swiftc-$(SWIFT_VERSION)
+
+	# llvm.mk Prep swift
+	mkdir -p $(BUILD_DIST)/swift/usr/bin
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/swift $(BUILD_DIST)/swift/usr/bin/swift
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/swiftc $(BUILD_DIST)/swift/usr/bin/swiftc
+
 	# llvm.mk Sign
-	$(call SIGN,llvm,general.xml)
-	
+	$(call SIGN,clang-$(LLVM_MAJOR_V),general.xml)
+	$(call SIGN,debugserver-$(LLVM_MAJOR_V),debugserver.xml)
+	$(call SIGN,libclang-cpp$(LLVM_MAJOR_V),general.xml)
+	$(call SIGN,liblldb-$(LLVM_MAJOR_V),general.xml)
+	$(call SIGN,libllvm$(LLVM_MAJOR_V),general.xml)
+	$(call SIGN,liblto$(LLVM_MAJOR_V),general.xml)
+	$(call SIGN,lldb-$(LLVM_MAJOR_V),general.xml)
+	$(call SIGN,dsymutil-$(LLVM_MAJOR_V),general.xml)
+	$(call SIGN,swift-$(SWIFT_VERSION),general.xml)
+
 	# llvm.mk Make .debs
-	$(call PACK,llvm,DEB_LLVM_V)
-	
+	$(call PACK,clang-$(LLVM_MAJOR_V),DEB_LLVM_V)
+	$(call PACK,clang,DEB_LLVM_V)
+	$(call PACK,debugserver-$(LLVM_MAJOR_V),DEB_LLVM_V)
+	$(call PACK,debugserver,DEB_LLVM_V)
+	$(call PACK,libc++-$(LLVM_MAJOR_V)-dev,DEB_LLVM_V)
+	$(call PACK,libc++-dev,DEB_LLVM_V)
+	$(call PACK,libclang-common-$(LLVM_MAJOR_V)-dev,DEB_LLVM_V)
+	$(call PACK,libclang-cpp$(LLVM_MAJOR_V),DEB_LLVM_V)
+	$(call PACK,liblldb-$(LLVM_MAJOR_V),DEB_LLVM_V)
+	$(call PACK,libllvm$(LLVM_MAJOR_V),DEB_LLVM_V)
+	$(call PACK,liblto$(LLVM_MAJOR_V),DEB_LLVM_V)
+	$(call PACK,lldb-$(LLVM_MAJOR_V),DEB_LLVM_V)
+	$(call PACK,lldb,DEB_LLVM_V)
+	$(call PACK,dsymutil-$(LLVM_MAJOR_V),DEB_LLVM_V)
+	$(call PACK,dsymutil,DEB_LLVM_V)
+	$(call PACK,swift-$(SWIFT_VERSION),DEB_SWIFT_V)
+	$(call PACK,swift,DEB_SWIFT_V)
+
 	# llvm.mk Build cleanup
-	rm -rf $(BUILD_DIST)/llvm
+	rm -rf $(BUILD_DIST)/{clang*,debugserver*,libc++*-dev,libclang-common-*-dev,libclang-cpp*,liblldb-*,libllvm*,liblto*,lldb*,dsymutil*,swift*}/
 
 .PHONY: llvm llvm-package

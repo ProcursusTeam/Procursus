@@ -7,6 +7,7 @@ DOWNLOAD        += https://github.com/Diatrus/cctools-port/archive/$(CCTOOLS_VER
 CCTOOLS_VERSION := 949.0.1
 LD64_VERSION    := 530
 DEB_CCTOOLS_V   ?= $(CCTOOLS_VERSION)
+DEB_LD64_V      ?= $(LD64_VERSION)
 
 cctools-setup: setup
 	$(call EXTRACT_TAR,$(CCTOOLS_VERSION)-ld64-$(LD64_VERSION).tar.gz,cctools-port-$(CCTOOLS_VERSION)-ld64-$(LD64_VERSION)/cctools,cctools)
@@ -39,19 +40,26 @@ endif
 
 cctools-package: cctools-stage
 	# cctools.mk Package Structure
-	rm -rf $(BUILD_DIST)/cctools
-	mkdir -p $(BUILD_DIST)/cctools
-	
+	rm -rf $(BUILD_DIST)/{cctools,ld64}
+	mkdir -p $(BUILD_DIST)/{cctools,ld64/usr/{bin,share/man/man1}}
+
 	# cctools.mk Prep cctools
 	cp -a $(BUILD_STAGE)/cctools/usr $(BUILD_DIST)/cctools
 	
+	# cctools.mk Prep ld64
+	mv $(BUILD_DIST)/cctools/usr/bin/{dyldinfo,ld,machocheck,ObjectDump,unwinddump} $(BUILD_DIST)/ld64/usr/bin
+	mv $(BUILD_DIST)/cctools/usr/share/man/man1/{dyldinfo,ld{,64},unwinddump}.1 $(BUILD_DIST)/ld64/usr/share/man/man1
+	cd $(BUILD_DIST)/ld64/usr/bin && ln -s ld ld64
+
 	# cctools.mk Sign
 	$(call SIGN,cctools,general.xml)
-	
+	$(call SIGN,ld64,general.xml)	
+
 	# cctools.mk Make .debs
 	$(call PACK,cctools,DEB_CCTOOLS_V)
+	$(call PACK,ld64,DEB_LD64_V)
 	
 	# cctools.mk Build cleanup
-	rm -rf $(BUILD_DIST)/cctools
+	rm -rf $(BUILD_DIST)/{cctools,ld64}
 
 .PHONY: cctools cctools-package

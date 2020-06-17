@@ -53,19 +53,19 @@ endif
 
 tapi-package: tapi-stage
 	# tapi.mk Package Structure
-	rm -rf $(BUILD_DIST)/tapi
-	mkdir -p $(BUILD_DIST)/tapi
+	rm -rf $(BUILD_DIST)/libtapi
+	mkdir -p $(BUILD_DIST)/libtapi
 	
 	# tapi.mk Prep tapi
-	cp -a $(BUILD_STAGE)/tapi/usr $(BUILD_DIST)/tapi
+	cp -a $(BUILD_STAGE)/tapi/usr $(BUILD_DIST)/libtapi
 	
 	# tapi.mk Sign
-	$(call SIGN,tapi,general.xml)
+	$(call SIGN,libtapi,general.xml)
 	
 	# tapi.mk Make .debs
-	$(call PACK,tapi,DEB_tapi_V)
+	$(call PACK,libtapi,DEB_TAPI_V)
 	
 	# tapi.mk Build cleanup
-	rm -rf $(BUILD_DIST)/tapi
+	rm -rf $(BUILD_DIST)/libtapi
 
 .PHONY: tapi tapi-package

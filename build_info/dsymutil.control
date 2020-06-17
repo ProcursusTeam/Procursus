@@ -1,11 +1,10 @@
-Package: clang
+Package: dsymutil
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: clang-10, libc++-dev
-Provides: c++-compiler, c-compiler, objc-compiler
+Depends: dsymutil-10
 Section: Development
 Priority: optional
 Homepage: https://www.llvm.org/
-Description: C, C++ and Objective-C compiler
+Description: manipulate archived DWARF debug symbol files
 Tag: purpose::console, role::developer
