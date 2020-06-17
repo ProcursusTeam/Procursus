@@ -2,9 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+DOWNLOAD      += http://deb.debian.org/debian/pool/main/a/apt/apt_$(APT_VERSION).tar.xz
 STRAPPROJECTS += apt
-APT_DIR       := $(BUILD_ROOT)/apt
-APT_VERSION   := 2.1.5
+APT_VERSION   := 2.1.6
 DEB_APT_V     ?= $(APT_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
@@ -12,16 +12,18 @@ APT_CMAKE_ARGS += -DHAVE_PTSNAME_R=0
 endif
 
 apt-setup: setup
-	rm -rf $(BUILD_WORK)/apt
-	mkdir -p $(BUILD_WORK)/apt
-	$(SED) -i -e '/setlocale/d' $(APT_DIR)/CMake/apti18n.h.in
+	$(call EXTRACT_TAR,apt_$(APT_VERSION).tar.xz,apt-$(APT_VERSION),apt)
+	$(call DO_PATCH,apt,apt,-p1)
+	mkdir -p $(BUILD_WORK)/apt/build
+	rm -rf $(BUILD_WORK)/apt/apt-private/private-output.cc \
+		$(BUILD_WORK)/apt/apt-pkg/algorithms.cc
 
 ifneq ($(wildcard $(BUILD_WORK)/apt/.build_complete),)
 apt:
 	@echo "Using previously built apt."
 else
 apt: apt-setup libgcrypt berkeleydb lz4 xz zstd
-	cd $(BUILD_WORK)/apt && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/apt/build && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
@@ -44,9 +46,9 @@ apt: apt-setup libgcrypt berkeleydb lz4 xz zstd
 		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
 		-DDPKG_DATADIR=/usr/share/dpkg \
 		$(APT_CMAKE_ARGS) \
-		$(BUILD_ROOT)/apt
-	+$(MAKE) -C $(BUILD_WORK)/apt
-	+$(MAKE) -C $(BUILD_WORK)/apt install \
+		..
+	+$(MAKE) -C $(BUILD_WORK)/apt/build
+	+$(MAKE) -C $(BUILD_WORK)/apt/build install \
 		DESTDIR="$(BUILD_STAGE)/apt"
 	touch $(BUILD_WORK)/apt/.build_complete
 endif

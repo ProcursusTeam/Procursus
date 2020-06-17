@@ -1,0 +1,12 @@
+diff -ur swift/stdlib/CMakeLists.txt /llvm/swift/stdlib/CMakeLists.txt
+--- swift/stdlib/CMakeLists.txt	2020-06-06 13:17:07.000000000 -0700
++++ swift/stdlib/CMakeLists.txt	2020-06-12 22:34:57.000000000 -0700
+@@ -11,6 +11,8 @@
+ 
+ include(AddSwiftStdlib)
+ 
++set(CMAKE_OSX_ARCHITECTURES "")
++
+ # Create convenience targets for the Swift standard library.
+ 
+ # NOTE(compnerd) this will pass the *build* configuration to the *host*
