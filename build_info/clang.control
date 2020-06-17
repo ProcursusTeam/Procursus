@@ -1,0 +1,11 @@
+Package: clang-10
+Version: @DEB_LLVM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: clang-10, libc++-dev
+Provides: c++-compiler, c-compiler, objc-compiler
+Section: Development
+Priority: optional
+Homepage: https://www.llvm.org/
+Description: C, C++ and Objective-C compiler
+Tag: purpose::console, role::developer
