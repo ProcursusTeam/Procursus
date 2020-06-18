@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += libgdbm
-DOWNLOAD        += https://ftp.gnu.org/gnu/gdbm/gdbm-$(LIBGDBM_VERSION).tar.gz{,.sig}
+DOWNLOAD        += https://ftpmirror.gnu.org/gdbm/gdbm-$(LIBGDBM_VERSION).tar.gz{,.sig}
 LIBGDBM_VERSION := 1.18.1
 DEB_LIBGDBM_V   ?= $(LIBGDBM_VERSION)
 

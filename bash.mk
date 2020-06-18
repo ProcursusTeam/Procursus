@@ -3,9 +3,9 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += bash
-DOWNLOAD      += https://ftp.gnu.org/gnu/bash/bash-$(BASH_VERSION).tar.gz{,.sig} \
-		https://ftp.gnu.org/gnu/bash/bash-$(BASH_VERSION)-patches/bash50-00{1..9}{,.sig} \
-		https://ftp.gnu.org/gnu/bash/bash-$(BASH_VERSION)-patches/bash50-0{10..17}{,.sig}
+DOWNLOAD      += https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION).tar.gz{,.sig} \
+		https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION)-patches/bash50-00{1..9}{,.sig} \
+		https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION)-patches/bash50-0{10..17}{,.sig}
 BASH_VERSION  := 5.0
 DEB_BASH_V    ?= $(BASH_VERSION).$(BASH_SUB_V)
 

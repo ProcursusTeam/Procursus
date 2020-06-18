@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += less
-DOWNLOAD     += https://ftp.gnu.org/gnu/less/less-$(LESS_VERSION).tar.gz{,.sig}
+DOWNLOAD     += https://ftpmirror.gnu.org/less/less-$(LESS_VERSION).tar.gz{,.sig}
 LESS_VERSION := 530
 DEB_LESS_V   ?= $(LESS_VERSION)
 

@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += nettle
-DOWNLOAD       += https://ftp.gnu.org/gnu/nettle/nettle-$(NETTLE_VERSION).tar.gz{,.sig}
+DOWNLOAD       += https://ftpmirror.gnu.org/nettle/nettle-$(NETTLE_VERSION).tar.gz{,.sig}
 NETTLE_VERSION := 3.5.1
 DEB_NETTLE_V   ?= $(NETTLE_VERSION)
 

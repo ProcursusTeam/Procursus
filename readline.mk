@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS    += readline
-DOWNLOAD         += https://ftp.gnu.org/gnu/readline/readline-$(READLINE_VERSION).tar.gz{,.sig} \
-		https://ftp.gnu.org/gnu/readline/readline-$(READLINE_VERSION)-patches/readline80-00{1..4}{,.sig}
+DOWNLOAD         += https://ftpmirror.gnu.org/readline/readline-$(READLINE_VERSION).tar.gz{,.sig} \
+		https://ftpmirror.gnu.org/readline/readline-$(READLINE_VERSION)-patches/readline80-00{1..4}{,.sig}
 READLINE_VERSION := 8.0
 DEB_READLINE_V   ?= $(READLINE_VERSION).$(READLINE_SUB_V)
 

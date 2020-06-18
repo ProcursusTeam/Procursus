@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += groff
-DOWNLOAD       += https://ftp.gnu.org/gnu/groff/groff-$(GROFF_VERSION).tar.gz{,.sig}
+DOWNLOAD       += https://ftpmirror.gnu.org/groff/groff-$(GROFF_VERSION).tar.gz{,.sig}
 GROFF_VERSION  := 1.22.4
 DEB_GROFF_V    ?= $(GROFF_VERSION)
 

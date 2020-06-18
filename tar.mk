@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += tar
-DOWNLOAD      += https://ftp.gnu.org/gnu/tar/tar-$(TAR_VERSION).tar.xz{,.sig}
+DOWNLOAD      += https://ftpmirror.gnu.org/tar/tar-$(TAR_VERSION).tar.xz{,.sig}
 TAR_VERSION   := 1.32
 DEB_TAR_V     ?= $(TAR_VERSION)
 
