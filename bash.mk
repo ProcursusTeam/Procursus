@@ -38,7 +38,7 @@ bash-setup: setup
 	$(call EXTRACT_TAR,bash-$(BASH_VERSION).tar.gz,bash-$(BASH_VERSION),bash)
 	mkdir -p $(BUILD_STAGE)/bash/bin
 	mkdir -p $(BUILD_PATCH)/bash-$(BASH_VERSION)
-	find $(BUILD_SOURCE) -name 'bash50*' -not -name '*.sig' -exec cp '{}' $(BUILD_WORK)/bash-$(BASH_VERSION)/ \;
+	find $(BUILD_SOURCE) -name 'bash50*' -not -name '*.sig' -exec cp '{}' $(BUILD_PATCH)/bash-$(BASH_VERSION)/ \;
 	$(call DO_PATCH,bash-$(BASH_VERSION),bash,-p0)
 	$(SED) -i 's/ENOEXEC)/ENOEXEC \&\& i != EPERM)/' $(BUILD_WORK)/bash/execute_cmd.c
 
