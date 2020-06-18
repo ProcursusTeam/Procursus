@@ -2,8 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS	+= lolcat 
-DOWNLOAD	+= https://github.com/jaseg/lolcat/archive/v$(LOLCAT_VERSION).tar.gz
+SUBPROJECTS		+= lolcat 
+DOWNLOAD		+= https://github.com/jaseg/lolcat/archive/v$(LOLCAT_VERSION).tar.gz
 LOLCAT_VERSION  := 1.0
 DEB_LOLCAT_V    ?= $(LOLCAT_VERSION)
 
