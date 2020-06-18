@@ -2,12 +2,12 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS     += cctools
+#SUBPROJECTS    += cctools
 DOWNLOAD        += https://github.com/Diatrus/cctools-port/archive/$(CCTOOLS_VERSION)-ld64-$(LD64_VERSION).tar.gz
 CCTOOLS_VERSION := 949.0.1
 LD64_VERSION    := 530
-DEB_CCTOOLS_V   ?= $(CCTOOLS_VERSION)
-DEB_LD64_V      ?= $(LD64_VERSION)
+DEB_CCTOOLS_V   ?= $(CCTOOLS_VERSION)-1
+DEB_LD64_V      ?= $(LD64_VERSION)-1
 
 cctools-setup: setup
 	$(call EXTRACT_TAR,$(CCTOOLS_VERSION)-ld64-$(LD64_VERSION).tar.gz,cctools-port-$(CCTOOLS_VERSION)-ld64-$(LD64_VERSION)/cctools,cctools)
@@ -27,7 +27,7 @@ cctools: cctools-setup llvm uuid tapi xar
 		CXX="$(CXX)" \
 		CFLAGS='$(CFLAGS) -DHAVE_XAR_XAR_H' \
 		CXXFLAGS='$(CXXFLAGS) -DHAVE_XAR_XAR_H' \
-		LDFLAGS='$(LDFLAGS) -L$(BUILD_STAGE)/llvm/usr/lib/llvm-10/lib -lLTO'
+		LDFLAGS='$(LDFLAGS) $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/libLTO.dylib'
 	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-10/include/llvm-c/{lto,ExternC}.h $(BUILD_WORK)/cctools/include/llvm-c
 	+$(MAKE) -C $(BUILD_WORK)/cctools \
 		XAR_LIB="-lxar" \
