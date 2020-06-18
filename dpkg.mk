@@ -5,7 +5,7 @@ endif
 STRAPPROJECTS  += dpkg
 DOWNLOAD       += https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_$(DPKG_VERSION).tar.xz
 DPKG_VERSION   := 1.20.0
-DEB_DPKG_V     ?= $(DPKG_VERSION)
+DEB_DPKG_V     ?= $(DPKG_VERSION)-1
 
 dpkg-setup: setup
 	$(call EXTRACT_TAR,dpkg_$(DPKG_VERSION).tar.xz,dpkg-$(DPKG_VERSION),dpkg)
@@ -33,6 +33,7 @@ base-bsd-darwin-armk		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
 		--disable-dselect \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
 		PERL_LIBDIR='$$(prefix)/share/perl5' \
+		PERL="/usr/bin/perl" \
 		TAR=tar \
 		LZMA_LIBS='$(BUILD_BASE)/usr/local/lib/liblzma.dylib'
 	+$(MAKE) -C $(BUILD_WORK)/dpkg
