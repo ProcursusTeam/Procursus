@@ -330,12 +330,12 @@ $(error Install newer groff)
 endif
 endif
 
-ifneq ($(shell patch --version | grep -q 'GNU patch' && echo 1),1)
-ifeq (,$(wildcard $(shell brew --prefix)/opt/gnu-patch/libexec/gnubin))
-PATH := $(shell brew --prefix)/opt/gnu-patch/libexec/gnubin:$(PATH)
-else
-$(error Install GNU patch)
+ifneq (,$(wildcard $(shell brew --prefix)/opt/gpatch/bin))
+PATH := $(shell brew --prefix)/opt/gpatch/bin:$(PATH)
 endif
+
+ifneq ($(shell patch --version | grep -q 'GNU patch' && echo 1),1)
+$(error Install GNU patch)
 endif
 
 ifeq ($(call HAS_COMMAND,gfind),1)
