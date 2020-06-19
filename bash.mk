@@ -7,7 +7,7 @@ DOWNLOAD      += https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION).tar.gz{,.si
 		https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION)-patches/bash50-00{1..9}{,.sig} \
 		https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION)-patches/bash50-0{10..17}{,.sig}
 BASH_VERSION  := 5.0
-DEB_BASH_V    ?= $(BASH_VERSION).$(BASH_SUB_V)
+DEB_BASH_V    ?= $(BASH_VERSION).$(BASH_SUB_V)-2
 
 # When built with SSH_SOURCE_BASHRC, bash will source ~/.bashrc when
 # it's non-interactively from sshd.  This allows the user to set
@@ -71,7 +71,8 @@ bash: bash-setup ncurses readline
 		bash_cv_must_reinstall_sighandlers=no \
 		bash_cv_sys_named_pipes=present \
 		bash_cv_sys_siglist=yes \
-		gt_cv_int_divbyzero_sigfpe=no
+		gt_cv_int_divbyzero_sigfpe=no \
+		ac_cv_sys_interpreter=no
 	+$(MAKE) -C $(BUILD_WORK)/bash \
 		TERMCAP_LIB=-lncursesw
 	+$(MAKE) -C $(BUILD_WORK)/bash install \
