@@ -1,0 +1,262 @@
+# DP: distutils: Add an option --install-layout=deb, which
+# DP: - installs into $prefix/dist-packages instead of $prefix/site-packages.
+# DP: - doesn't encode the python version into the egg name.
+
+--- a/Lib/distutils/command/install_egg_info.py
++++ b/Lib/distutils/command/install_egg_info.py
+@@ -14,18 +14,38 @@ class install_egg_info(Command):
+     description = "Install package's PKG-INFO metadata as an .egg-info file"
+     user_options = [
+         ('install-dir=', 'd', "directory to install to"),
++        ('install-layout', None, "custom installation layout"),
+     ]
+ 
+     def initialize_options(self):
+         self.install_dir = None
++        self.install_layout = None
++        self.prefix_option = None
+ 
+     def finalize_options(self):
+         self.set_undefined_options('install_lib',('install_dir','install_dir'))
+-        basename = "%s-%s-py%d.%d.egg-info" % (
+-            to_filename(safe_name(self.distribution.get_name())),
+-            to_filename(safe_version(self.distribution.get_version())),
+-            *sys.version_info[:2]
+-        )
++        self.set_undefined_options('install',('install_layout','install_layout'))
++        self.set_undefined_options('install',('prefix_option','prefix_option'))
++        if self.install_layout:
++            if not self.install_layout.lower() in ['deb', 'unix']:
++                raise DistutilsOptionError(
++                    "unknown value for --install-layout")
++            no_pyver = (self.install_layout.lower() == 'deb')
++        elif self.prefix_option:
++            no_pyver = False
++        else:
++            no_pyver = True
++        if no_pyver:
++            basename = "%s-%s.egg-info" % (
++                to_filename(safe_name(self.distribution.get_name())),
++                to_filename(safe_version(self.distribution.get_version()))
++                )
++        else:
++            basename = "%s-%s-py%d.%d.egg-info" % (
++                to_filename(safe_name(self.distribution.get_name())),
++                to_filename(safe_version(self.distribution.get_version())),
++                *sys.version_info[:2]
++            )
+         self.target = os.path.join(self.install_dir, basename)
+         self.outputs = [self.target]
+ 
+--- a/Lib/distutils/command/install.py
++++ b/Lib/distutils/command/install.py
+@@ -35,6 +35,20 @@ INSTALL_SCHEMES = {
+         'scripts': '$base/bin',
+         'data'   : '$base',
+         },
++    'unix_local': {
++        'purelib': '$base/local/lib/python$py_version_short/dist-packages',
++        'platlib': '$platbase/local/lib/python$py_version_short/dist-packages',
++        'headers': '$base/local/include/python$py_version_short/$dist_name',
++        'scripts': '$base/local/bin',
++        'data'   : '$base/local',
++        },
++    'deb_system': {
++        'purelib': '$base/lib/python3/dist-packages',
++        'platlib': '$platbase/lib/python3/dist-packages',
++        'headers': '$base/include/python$py_version_short/$dist_name',
++        'scripts': '$base/bin',
++        'data'   : '$base',
++        },
+     'unix_home': {
+         'purelib': '$base/lib/python',
+         'platlib': '$base/lib/python',
+@@ -131,6 +145,9 @@ class install(Command):
+ 
+         ('record=', None,
+          "filename in which to record list of installed files"),
++
++        ('install-layout=', None,
++         "installation layout to choose (known values: deb, unix)"),
+         ]
+ 
+     boolean_options = ['compile', 'force', 'skip-build']
+@@ -151,6 +168,7 @@ class install(Command):
+         self.exec_prefix = None
+         self.home = None
+         self.user = 0
++        self.prefix_option = None
+ 
+         # These select only the installation base; it's up to the user to
+         # specify the installation scheme (currently, that means supplying
+@@ -172,6 +190,9 @@ class install(Command):
+         self.install_userbase = USER_BASE
+         self.install_usersite = USER_SITE
+ 
++        # enable custom installation, known values: deb
++        self.install_layout = None
++        
+         self.compile = None
+         self.optimize = None
+ 
+@@ -413,6 +434,7 @@ class install(Command):
+             self.install_base = self.install_platbase = self.home
+             self.select_scheme("unix_home")
+         else:
++            self.prefix_option = self.prefix
+             if self.prefix is None:
+                 if self.exec_prefix is not None:
+                     raise DistutilsOptionError(
+@@ -427,7 +449,26 @@ class install(Command):
+ 
+             self.install_base = self.prefix
+             self.install_platbase = self.exec_prefix
+-            self.select_scheme("unix_prefix")
++            if self.install_layout:
++                if self.install_layout.lower() in ['deb']:
++                    self.select_scheme("deb_system")
++                elif self.install_layout.lower() in ['unix']:
++                    self.select_scheme("unix_prefix")
++                else:
++                    raise DistutilsOptionError(
++                        "unknown value for --install-layout")
++            elif ((self.prefix_option and
++                   os.path.normpath(self.prefix) != '/usr/local')
++                  or sys.base_prefix != sys.prefix
++                  or 'PYTHONUSERBASE' in os.environ
++                  or 'VIRTUAL_ENV' in os.environ
++                  or 'real_prefix' in sys.__dict__):
++                self.select_scheme("unix_prefix")
++            else:
++                if os.path.normpath(self.prefix) == '/usr/local':
++                    self.prefix = self.exec_prefix = '/usr'
++                    self.install_base = self.install_platbase = '/usr'
++                self.select_scheme("unix_local")
+ 
+     def finalize_other(self):
+         """Finalizes options for non-posix platforms"""
+--- a/Lib/distutils/sysconfig.py
++++ b/Lib/distutils/sysconfig.py
+@@ -139,6 +139,7 @@ def get_python_lib(plat_specific=0, stan
+     If 'prefix' is supplied, use it instead of sys.base_prefix or
+     sys.base_exec_prefix -- i.e., ignore 'plat_specific'.
+     """
++    is_default_prefix = not prefix or os.path.normpath(prefix) in ('/usr', '/usr/local')
+     if prefix is None:
+         if standard_lib:
+             prefix = plat_specific and BASE_EXEC_PREFIX or BASE_PREFIX
+@@ -150,6 +151,12 @@ def get_python_lib(plat_specific=0, stan
+                                  "lib", "python" + get_python_version())
+         if standard_lib:
+             return libpython
++        elif (is_default_prefix and
++              'PYTHONUSERBASE' not in os.environ and
++              'VIRTUAL_ENV' not in os.environ and
++              'real_prefix' not in sys.__dict__ and
++              sys.prefix == sys.base_prefix):
++            return os.path.join(prefix, "lib", "python3", "dist-packages")
+         else:
+             return os.path.join(libpython, "site-packages")
+     elif os.name == "nt":
+--- a/Lib/site.py
++++ b/Lib/site.py
+@@ -7,12 +7,18 @@
+ This will append site-specific paths to the module search path.  On
+ Unix (including Mac OSX), it starts with sys.prefix and
+ sys.exec_prefix (if different) and appends
+-lib/python<version>/site-packages.
++lib/python3/dist-packages.
+ On other platforms (such as Windows), it tries each of the
+ prefixes directly, as well as with lib/site-packages appended.  The
+ resulting directories, if they exist, are appended to sys.path, and
+ also inspected for path configuration files.
+ 
++For Debian and derivatives, this sys.path is augmented with directories
++for packages distributed within the distribution. Local addons go
++into /usr/local/lib/python<version>/dist-packages, Debian addons
++install into /usr/lib/python3/dist-packages.
++/usr/lib/python<version>/site-packages is not used.
++
+ If a file named "pyvenv.cfg" exists one directory above sys.executable,
+ sys.prefix and sys.exec_prefix are set to that directory and
+ it is also checked for site-packages (sys.base_prefix and
+@@ -335,9 +341,20 @@ def getsitepackages(prefixes=None):
+         seen.add(prefix)
+ 
+         if os.sep == '/':
++            if 'VIRTUAL_ENV' in os.environ or sys.base_prefix != sys.prefix:
++                sitepackages.append(os.path.join(prefix, "lib",
++                                                 "python" + sys.version[:3],
++                                                 "site-packages"))
++            sitepackages.append(os.path.join(prefix, "local/lib",
++                                             "python" + sys.version[:3],
++                                             "dist-packages"))
++            sitepackages.append(os.path.join(prefix, "lib",
++                                             "python3",
++                                             "dist-packages"))
++            # this one is deprecated for Debian
+             sitepackages.append(os.path.join(prefix, "lib",
+-                                        "python%d.%d" % sys.version_info[:2],
+-                                        "site-packages"))
++                                             "python" + sys.version[:3],
++                                             "dist-packages"))
+         else:
+             sitepackages.append(prefix)
+             sitepackages.append(os.path.join(prefix, "lib", "site-packages"))
+--- a/Lib/test/test_site.py
++++ b/Lib/test/test_site.py
+@@ -267,10 +267,10 @@ class HelperFunctionsTests(unittest.Test
+         dirs = site.getsitepackages()
+         if os.sep == '/':
+             # OS X, Linux, FreeBSD, etc
+-            self.assertEqual(len(dirs), 1)
+-            wanted = os.path.join('xoxo', 'lib',
++            self.assertEqual(len(dirs), 3)
++            wanted = os.path.join('xoxo', 'local', 'lib',
+                                   'python%d.%d' % sys.version_info[:2],
+-                                  'site-packages')
++                                  'dist-packages')
+             self.assertEqual(dirs[0], wanted)
+         else:
+             # other platforms
+--- a/Lib/distutils/tests/test_bdist_dumb.py
++++ b/Lib/distutils/tests/test_bdist_dumb.py
+@@ -85,7 +85,7 @@ class BuildDumbTestCase(support.TempdirM
+             fp.close()
+ 
+         contents = sorted(filter(None, map(os.path.basename, contents)))
+-        wanted = ['foo-0.1-py%s.%s.egg-info' % sys.version_info[:2], 'foo.py']
++        wanted = ['foo-0.1.egg-info', 'foo.py']
+         if not sys.dont_write_bytecode:
+             wanted.append('foo.%s.pyc' % sys.implementation.cache_tag)
+         self.assertEqual(contents, sorted(wanted))
+--- a/Lib/distutils/tests/test_install.py
++++ b/Lib/distutils/tests/test_install.py
+@@ -193,7 +193,7 @@ class InstallTestCase(support.TempdirMan
+         found = [os.path.basename(line) for line in content.splitlines()]
+         expected = ['hello.py', 'hello.%s.pyc' % sys.implementation.cache_tag,
+                     'sayhi',
+-                    'UNKNOWN-0.0.0-py%s.%s.egg-info' % sys.version_info[:2]]
++                    'UNKNOWN-0.0.0.egg-info']
+         self.assertEqual(found, expected)
+ 
+     def test_record_extensions(self):
+@@ -226,7 +226,7 @@ class InstallTestCase(support.TempdirMan
+ 
+         found = [os.path.basename(line) for line in content.splitlines()]
+         expected = [_make_ext_name('xx'),
+-                    'UNKNOWN-0.0.0-py%s.%s.egg-info' % sys.version_info[:2]]
++                    'UNKNOWN-0.0.0.egg-info']
+         self.assertEqual(found, expected)
+ 
+     def test_debug_mode(self):
+--- a/Lib/pydoc.py
++++ b/Lib/pydoc.py
+@@ -413,6 +413,7 @@ class Doc:
+                                  'marshal', 'posix', 'signal', 'sys',
+                                  '_thread', 'zipimport') or
+              (file.startswith(basedir) and
++              not file.startswith(os.path.join(basedir, 'dist-packages')) and
+               not file.startswith(os.path.join(basedir, 'site-packages')))) and
+             object.__name__ not in ('xml.etree', 'test.pydoc_mod')):
+             if docloc.startswith(("http://", "https://")):
