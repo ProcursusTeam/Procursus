@@ -83,7 +83,7 @@ bash: bash-setup ncurses readline
 	touch $(BUILD_WORK)/bash/.build_complete
 endif
 
-bash-package: BASH_SUB_V=$(shell find $(BUILD_WORK)/bash-$(BASH_VERSION)-patches -type f | $(WC) -l)
+bash-package: BASH_SUB_V=$(shell find $(BUILD_PATCH)/bash-$(BASH_VERSION) -type f | $(WC) -l)
 bash-package: bash-stage
 	# bash.mk Package Structure
 	rm -rf $(BUILD_DIST)/bash
