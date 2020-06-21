@@ -178,7 +178,7 @@ PGP_VERIFY  = echo "Skipping verification of $(1) because NO_PGP was set to 1."
 else
 PGP_VERIFY  = KEY=$$(gpg --verify --status-fd 1 $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) | grep NO_PUBKEY | cut -f3 -d' '); \
 	if [ ! -z "$$KEY" ]; then \
-		gpg --keyserver hkps://pgp.mit.edu --recv-keys $$KEY; \
+		gpg --keyserver hkps://keyserver.ubuntu.com/ --recv-keys $$KEY; \
 	fi; \
 	gpg --verify $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) $(BUILD_SOURCE)/$(1) 2>&1 | grep -q 'Good signature'
 endif
@@ -263,6 +263,10 @@ GET_SHA1   = sha1sum $(1) | cut -c1-40
 GET_SHA256 = sha256sum $(1) | cut -c1-64
 endif
 
+ifneq ($(call HAS_COMMAND,wget),1)
+$(error Install wget)
+endif
+
 ifeq ($(call HAS_COMMAND,gmake),1)
 PATH := $(shell brew --prefix)/opt/make/libexec/gnubin:$(PATH)
 endif
@@ -276,12 +280,11 @@ else
 $(error Install GNU tar)
 endif
 
+SED  := sed
+
 ifeq ($(call HAS_COMMAND,gsed),1)
 PATH := $(shell brew --prefix)/opt/gnu-sed/libexec/gnubin:$(PATH)
-SED  := sed
-else ifeq ($(shell sed --version | grep -q GNU && echo 1),1)
-SED  := sed
-else
+else ifneq ($(shell sed --version | grep -q GNU && echo 1),1)
 $(error Install GNU sed)
 endif
 
@@ -332,9 +335,7 @@ endif
 
 ifneq (,$(wildcard $(shell brew --prefix)/opt/gpatch/bin))
 PATH := $(shell brew --prefix)/opt/gpatch/bin:$(PATH)
-endif
-
-ifneq ($(shell patch --version | grep -q 'GNU patch' && echo 1),1)
+else ifneq ($(shell patch --version | grep -q 'GNU patch' && echo 1),1)
 $(error Install GNU patch)
 endif
 
