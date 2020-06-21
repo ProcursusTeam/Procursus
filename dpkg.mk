@@ -5,60 +5,20 @@ endif
 STRAPPROJECTS  += dpkg
 DOWNLOAD       += https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_$(DPKG_VERSION).tar.xz
 DPKG_VERSION   := 1.20.0
-DEB_DPKG_V     ?= $(DPKG_VERSION)
+DEB_DPKG_V     ?= $(DPKG_VERSION)-1
 
 dpkg-setup: setup
 	$(call EXTRACT_TAR,dpkg_$(DPKG_VERSION).tar.xz,dpkg-$(DPKG_VERSION),dpkg)
-	mkdir -p $(BUILD_WORK)/dpkg-$(DPKG_VERSION)-patches
-	wget -q -O $(BUILD_WORK)/dpkg-$(DPKG_VERSION)-patches/zstd.patch \
-		'https://bugs.debian.org/cgi-bin/bugreport.cgi?att=1;bug=892664;filename=0001-dpkg-Add-Zstandard-compression-and-decompression-sup.patch;msg=20'
-	$(call DO_PATCH,dpkg-$(DPKG_VERSION),dpkg,-p1)
+	$(call DO_PATCH,dpkg,dpkg,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/dpkg/.build_complete),)
 dpkg:
 	@echo "Using previously built dpkg."
 else
 dpkg: dpkg-setup gettext xz zstd
-	# Ugliness to avoid using a git submodule
-	$(SED) -i '/PREINSTFILE/a #define EXTRAINSTFILE      \"extrainst_\"' $(BUILD_WORK)/dpkg/lib/dpkg/dpkg.h
-	$(SED) -i '/tar_deferred_extract/a \	if (oldversionstatus == PKG_STAT_NOTINSTALLED || oldversionstatus == PKG_STAT_CONFIGFILES) { \
-    maintscript_new(pkg, EXTRAINSTFILE, "extra-installation", cidir, cidirrest, \
-                    "install", NULL); \
-  } else { \
-    maintscript_new(pkg, EXTRAINSTFILE, "extra-installation", cidir, cidirrest, \
-                    "upgrade", \
-                    versiondescribe(&pkg->installed.version, vdew_nonambig), \
-                    NULL); \
-  }' $(BUILD_WORK)/dpkg/src/unpack.c
-	$(SED) -i '/update_dyld_shared_cache/d' $(BUILD_WORK)/dpkg/src/help.c
-	$(SED) -i '/i18n.h/a #ifdef __APPLE__ \
-#include <string.h> \
-#include <xlocale.h> \
-#endif' $(BUILD_WORK)/dpkg/lib/dpkg/i18n.c
-	$(SED) -i '/config.h/i #include <sys/errno.h>' $(BUILD_WORK)/dpkg/lib/dpkg/command.c
-	$(SED) -i 's/ohshite(_("unable to execute %s (%s)"), cmd->name, cmd->filename);/if (errno == EPERM || errno == ENOEXEC) { \
-\		const char *shell; \
-\		if (access(DEFAULTSHELL, X_OK) == 0) { \
-\			shell = DEFAULTSHELL; \
-\		} else if (access("\/etc\/alternatives\/sh", X_OK) == 0) { \
-\			shell = "\/etc\/alternatives\/sh"; \
-\		} else if (access("\/bin\/bash", X_OK) == 0) { \
-\			shell = "\/bin\/bash"; \
-\		} else { \
-\			ohshite(_("unable to execute %s (%s): no shell!"), cmd->name, cmd->filename); \
-\		} \
-\		struct command newcmd; \
-\		command_init(\&newcmd, shell, NULL); \
-\		command_add_args(\&newcmd, shell, "-c", "\\"$$0\\" \\"$$@\\"", NULL); \
-\		command_add_argl(\&newcmd, cmd->argv); \
-\		execvp(shell, (char * const *)newcmd.argv); \
-\		& \
-\	}/' $(BUILD_WORK)/dpkg/lib/dpkg/command.c
 	$(SED) -i '/base-bsd-darwin/a base-bsd-darwin-arm64		$(DEB_ARCH) \
 base-bsd-darwin-arm		$(DEB_ARCH) \
 base-bsd-darwin-armk		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
-	$(SED) -i '/armeb/a armk		armk		arm.*k			32	little' $(BUILD_WORK)/dpkg/data/cputable
-
 	if ! [ -f $(BUILD_WORK)/dpkg/configure ]; then \
 		cd $(BUILD_WORK)/dpkg && ./autogen; \
 	fi
@@ -73,6 +33,7 @@ base-bsd-darwin-armk		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
 		--disable-dselect \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
 		PERL_LIBDIR='$$(prefix)/share/perl5' \
+		PERL="/usr/bin/perl" \
 		TAR=tar \
 		LZMA_LIBS='$(BUILD_BASE)/usr/local/lib/liblzma.dylib'
 	+$(MAKE) -C $(BUILD_WORK)/dpkg

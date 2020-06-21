@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += tmux
 DOWNLOAD       += https://github.com/tmux/tmux/releases/download/$(TMUX_VERSION)/tmux-$(TMUX_VERSION).tar.gz
-TMUX_VERSION   := 3.0a
+TMUX_VERSION   := 3.1b
 DEB_TMUX_V     ?= $(TMUX_VERSION)
 
 tmux-setup: setup
@@ -34,7 +34,7 @@ tmux-package: tmux-stage
 	cp -a $(BUILD_STAGE)/tmux/usr $(BUILD_DIST)/tmux
 	
 	# tmux.mk Sign
-	$(call SIGN,tmux,tmux.xml)
+	$(call SIGN,tmux,general.xml)
 	
 	# tmux.mk Make .debs
 	$(call PACK,tmux,DEB_TMUX_V)

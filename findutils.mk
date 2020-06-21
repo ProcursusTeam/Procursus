@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS     += findutils
-DOWNLOAD          += https://ftp.gnu.org/gnu/findutils/findutils-$(FINDUTILS_VERSION).tar.xz{,.sig}
+DOWNLOAD          += https://ftpmirror.gnu.org/findutils/findutils-$(FINDUTILS_VERSION).tar.xz{,.sig}
 FINDUTILS_VERSION := 4.7.0
 DEB_FINDUTILS_V   ?= $(FINDUTILS_VERSION)
 

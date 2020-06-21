@@ -1,0 +1,11 @@
+Package: libtapi
+Version: @DEB_TAPI_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Conflicts: libtapi10
+Replaces: libtapi10
+Depends: ncurses (>= 6.0)
+Section: Development
+Priority: optional
+Description: Text-based Application Programming Interface (library)
+Tag: purpose::console, role::developer

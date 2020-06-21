@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += inetutils
-DOWNLOAD          += https://ftp.gnu.org/gnu/inetutils/inetutils-1.9.4.tar.xz{,.sig}
+DOWNLOAD          += https://ftpmirror.gnu.org/inetutils/inetutils-1.9.4.tar.xz{,.sig}
 INETUTILS_VERSION := 1.9.4
 DEB_INETUTILS_V   ?= $(INETUTILS_VERSION)
 

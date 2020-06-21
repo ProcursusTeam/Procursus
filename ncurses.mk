@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS   += ncurses
-DOWNLOAD        += https://ftp.gnu.org/gnu/ncurses/ncurses-$(NCURSES_VERSION).tar.gz{,.sig}
+DOWNLOAD        += https://ftpmirror.gnu.org/ncurses/ncurses-$(NCURSES_VERSION).tar.gz{,.sig}
 NCURSES_VERSION := 6.2
 DEB_NCURSES_V   ?= $(NCURSES_VERSION)
 
@@ -39,8 +39,7 @@ ncurses: ncurses-setup
 		--with-pkg-config-libdir=/usr/lib/pkgconfig \
 		--enable-widec \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)"
-	+$(MAKE) -C $(BUILD_WORK)/ncurses \
-		DESTDIR="$(BUILD_STAGE)/ncurses"
+	+$(MAKE) -C $(BUILD_WORK)/ncurses
 	+$(MAKE) -C $(BUILD_WORK)/ncurses install \
 		DESTDIR="$(BUILD_STAGE)/ncurses"
 	+$(MAKE) -C $(BUILD_WORK)/ncurses install \

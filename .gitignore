@@ -6,6 +6,7 @@ build_stage/
 build_work/
 build_dist/
 build_strap/
+build_patch/*-[0-9]*
 
 !.gitkeep
 darwintools/cfversion

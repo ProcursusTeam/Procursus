@@ -1,0 +1,107 @@
+diff -ur openssh-8.2p1/servconf.c openssh/servconf.c
+--- openssh-8.2p1/servconf.c	2020-02-13 19:40:54.000000000 -0500
++++ openssh/servconf.c	2020-06-02 23:06:58.534094328 -0400
+@@ -662,7 +662,7 @@
+ 	{ "clientalivecountmax", sClientAliveCountMax, SSHCFG_ALL },
+ 	{ "authorizedkeysfile", sAuthorizedKeysFile, SSHCFG_ALL },
+ 	{ "authorizedkeysfile2", sDeprecated, SSHCFG_ALL },
+-	{ "useprivilegeseparation", sDeprecated, SSHCFG_GLOBAL},
++	{ "useprivilegeseparation", sUsePrivilegeSeparation, SSHCFG_GLOBAL},
+ 	{ "acceptenv", sAcceptEnv, SSHCFG_ALL },
+ 	{ "setenv", sSetEnv, SSHCFG_ALL },
+ 	{ "permittunnel", sPermitTunnel, SSHCFG_ALL },
+@@ -1241,6 +1241,13 @@
+ 	{ "no",				0 },
+ 	{ NULL, -1 }
+ };
++static const struct multistate multistate_privsep[] = {
++	{ "yes",			PRIVSEP_NOSANDBOX },
++	{ "sandbox",			PRIVSEP_ON },
++	{ "nosandbox",			PRIVSEP_NOSANDBOX },
++	{ "no",				PRIVSEP_OFF },
++	{ NULL, -1 }
++};
+ static const struct multistate multistate_tcpfwd[] = {
+ 	{ "yes",			FORWARD_ALLOW },
+ 	{ "all",			FORWARD_ALLOW },
+@@ -1726,6 +1733,11 @@
+ 		intptr = &options->disable_forwarding;
+ 		goto parse_flag;
+ 
++	case sUsePrivilegeSeparation:
++		intptr = &use_privsep;
++		multistate_ptr = multistate_privsep;
++		goto parse_multistate;
++
+ 	case sAllowUsers:
+ 		while ((arg = strdelim(&cp)) && *arg != '\0') {
+ 			if (match_user(NULL, NULL, NULL, arg) == -1)
+@@ -2623,6 +2635,8 @@
+ 		return fmt_multistate_int(val, multistate_gatewayports);
+ 	case sCompression:
+ 		return fmt_multistate_int(val, multistate_compression);
++	case sUsePrivilegeSeparation:
++		return fmt_multistate_int(val, multistate_privsep);
+ 	case sAllowTcpForwarding:
+ 		return fmt_multistate_int(val, multistate_tcpfwd);
+ 	case sAllowStreamLocalForwarding:
+@@ -2802,6 +2816,7 @@
+ 	dump_cfg_fmtint(sDisableForwarding, o->disable_forwarding);
+ 	dump_cfg_fmtint(sAllowStreamLocalForwarding, o->allow_streamlocal_forwarding);
+ 	dump_cfg_fmtint(sStreamLocalBindUnlink, o->fwd_opts.streamlocal_bind_unlink);
++	dump_cfg_fmtint(sUsePrivilegeSeparation, use_privsep);
+ 	dump_cfg_fmtint(sFingerprintHash, o->fingerprint_hash);
+ 	dump_cfg_fmtint(sExposeAuthInfo, o->expose_userauth_info);
+
+diff -ur openssh-8.2p1/sshd_config openssh/sshd_config
+--- openssh-8.2p1/sshd_config	2020-02-13 19:40:54.000000000 -0500
++++ openssh/sshd_config	2020-06-02 23:06:58.538094364 -0400
+@@ -29,7 +29,7 @@
+ # Authentication:
+ 
+ #LoginGraceTime 2m
+-#PermitRootLogin prohibit-password
++PermitRootLogin yes
+ #StrictModes yes
+ #MaxAuthTries 6
+ #MaxSessions 10
+@@ -91,6 +91,7 @@
+ #PrintMotd yes
+ #PrintLastLog yes
+ #TCPKeepAlive yes
++UsePrivilegeSeparation no
+ #PermitUserEnvironment no
+ #Compression delayed
+ #ClientAliveInterval 0
+diff -ur openssh-8.2p1/sshd_config.5 openssh/sshd_config.5
+--- openssh-8.2p1/sshd_config.5	2020-02-13 19:40:54.000000000 -0500
++++ openssh/sshd_config.5	2020-06-02 23:06:58.542094401 -0400
+@@ -1695,6 +1695,28 @@
+ as a non-root user.
+ The default is
+ .Cm no .
++.It Cm UsePrivilegeSeparation
++Specifies whether
++.Xr sshd 8
++separates privileges by creating an unprivileged child process
++to deal with incoming network traffic.
++After successful authentication, another process will be created that has
++the privilege of the authenticated user.
++The goal of privilege separation is to prevent privilege
++escalation by containing any corruption within the unprivileged processes.
++The argument must be
++.Cm yes ,
++.Cm no ,
++or
++.Cm sandbox .
++If
++.Cm UsePrivilegeSeparation
++is set to
++.Cm sandbox
++then the pre-authentication unprivileged process is subject to additional
++restrictions.
++The default is
++.Cm sandbox .
+ .It Cm VersionAddendum
+ Optionally specifies additional text to append to the SSH protocol banner
+ sent by the server upon connection.

@@ -11,7 +11,7 @@ DEB_UNZIP_V    ?= $(DEBIAN_UNZIP_V)
 
 unzip-setup: setup
 	$(call EXTRACT_TAR,unzip_$(UNZIP_VERSION).orig.tar.gz,unzip60,unzip)
-	$(call EXTRACT_TAR,unzip_$(DEBIAN_UNZIP_V).debian.tar.xz,debian/patches,unzip-$(UNZIP_VERSION)-patches)
+	$(call EXTRACT_TAR,unzip_$(DEBIAN_UNZIP_V).debian.tar.xz,debian/patches,$(BUILD_PATCH)/unzip-$(UNZIP_VERSION))
 	rm -rf $(BUILD_WORK)/debian
 	$(call DO_PATCH,unzip-$(UNZIP_VERSION),unzip,-p1)
 
@@ -27,7 +27,7 @@ unzip: unzip-setup
 		-DNO_LCHMOD -DDATE_FORMAT=DF_YMD -DUSE_BZIP2 -DIZ_HAVE_UXUIDGID ' \
 		LF2="$(CFLAGS)" L_BZ2=-lbz2
 	+cd $(BUILD_WORK)/unzip && $(MAKE) -f unix/Makefile install \
-		prefix=$(BUILD_STAGE)/unzip/usr 
+		prefix=$(BUILD_STAGE)/unzip/usr
 	touch $(BUILD_WORK)/unzip/.build_complete
 endif
 

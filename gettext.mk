@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS   += gettext
-DOWNLOAD        += https://ftp.gnu.org/pub/gnu/gettext/gettext-$(GETTEXT_VERSION).tar.xz{,.sig}
+DOWNLOAD        += https://ftpmirror.gnu.org/gettext/gettext-$(GETTEXT_VERSION).tar.xz{,.sig}
 GETTEXT_VERSION := 0.20.2
 DEB_GETTEXT_V   ?= $(GETTEXT_VERSION)
 

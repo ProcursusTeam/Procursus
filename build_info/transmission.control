@@ -1,0 +1,8 @@
+Package: transmission
+Version: @DEB_TRANSMISSION_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: curl, libevent
+Section: Networking
+Priority: optional
+Description: lightweight BitTorrent client
