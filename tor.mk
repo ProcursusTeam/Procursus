@@ -14,10 +14,14 @@ ifneq ($(wildcard $(BUILD_WORK)/tor/.build_complete),)
 tor:
 	@echo "Using previously built tor."
 else
-tor: tor-setup
-	cd $(BUILD_WORK)/tor && ./configure --prefix=$(BUILD_STAGE)/tor \
+tor: tor-setup libevent openssl xz zstd
+	cd $(BUILD_WORK)/tor && ./configure --prefix=$(BUILD_STAGE)/tor/usr \
 		--host=$(GNU_HOST_TRIPLE) \
-		--disable-tool-name-check
+		--disable-tool-name-check \
+		--sysconfdir=$(BUILD_STAGE)/tor/etc \
+		--enable-zstd \
+		--disable-html-manual \
+		--enable-lzma
 	+$(MAKE) -C $(BUILD_WORK)/tor \
 		CC=$(CC) \
 		CPP="$(CXX)" \
@@ -30,13 +34,12 @@ endif
 tor-package: tor-stage
 	# tor.mk Package Structure
 	rm -rf $(BUILD_DIST)/tor
-	mkdir -p $(BUILD_DIST)/tor
+	mkdir -p $(BUILD_DIST)/tor/etc
 	mkdir -p $(BUILD_DIST)/tor/usr
 	
 	# tor.mk Prep tor
 	cp -a $(BUILD_STAGE)/tor/etc $(BUILD_DIST)/tor
-	cp -a $(BUILD_STAGE)/tor/bin $(BUILD_DIST)/tor
-	cp -a $(BUILD_STAGE)/tor/share $(BUILD_DIST)/tor/usr/
+	cp -a $(BUILD_STAGE)/tor/usr $(BUILD_DIST)/tor
 	
 	# tor.mk Sign
 	$(call SIGN,tor,general.xml)
