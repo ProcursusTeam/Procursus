@@ -327,10 +327,10 @@ ifneq ($(call HAS_COMMAND,lex),1)
 $(error Install flex)
 endif
 
-ifneq ($(call HAS_COMMAND,groff),1)
-ifneq ($(shell groff --version | grep -q 'version 1.2' && echo 1),1)
+ifneq (,$(wildcard $(shell brew --prefix)/opt/groff/bin))
+PATH := $(shell brew --prefix)/opt/groff/bin:$(PATH)
+else ifneq ($(shell groff --version | grep -q 'version 1.2' && echo 1),1)
 $(error Install newer groff)
-endif
 endif
 
 ifneq (,$(wildcard $(shell brew --prefix)/opt/gpatch/bin))
