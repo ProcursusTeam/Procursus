@@ -34,12 +34,9 @@ endif
 tor-package: tor-stage
 	# tor.mk Package Structure
 	rm -rf $(BUILD_DIST)/tor
-	mkdir -p $(BUILD_DIST)/tor/etc
-	mkdir -p $(BUILD_DIST)/tor/usr
 	
 	# tor.mk Prep tor
-	cp -a $(BUILD_STAGE)/tor/etc $(BUILD_DIST)/tor
-	cp -a $(BUILD_STAGE)/tor/usr $(BUILD_DIST)/tor
+	cp -a $(BUILD_STAGE)/tor $(BUILD_DIST)
 	
 	# tor.mk Sign
 	$(call SIGN,tor,general.xml)
