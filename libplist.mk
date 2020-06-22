@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS       += libplist
 DOWNLOAD          += https://github.com/libimobiledevice/libplist/archive/$(LIBPLIST_VERSION).tar.gz
-LIBPLIST_VERSION  := 2.1.0
+LIBPLIST_VERSION  := 2.2.0
 DEB_LIBPLIST_V    ?= $(LIBPLIST_VERSION)
 
 libplist-setup: setup

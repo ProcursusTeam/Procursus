@@ -3,6 +3,7 @@ Version: @DEB_SL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: ncurses
+Conflicts: com.ichitaso.sl
 Section: Utilities
 Priority: optional
 Description: cure your bad habit of mistyping
