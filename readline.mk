@@ -3,12 +3,12 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS    += readline
-DOWNLOAD         += https://ftpmirror.gnu.org/readline/readline-$(READLINE_VERSION).tar.gz{,.sig} \
-		https://ftpmirror.gnu.org/readline/readline-$(READLINE_VERSION)-patches/readline80-00{1..4}{,.sig}
 READLINE_VERSION := 8.0
 DEB_READLINE_V   ?= $(READLINE_VERSION).$(READLINE_SUB_V)
 
 readline-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/readline/readline-$(READLINE_VERSION).tar.gz{,.sig} \
+		https://ftpmirror.gnu.org/readline/readline-$(READLINE_VERSION)-patches/readline80-00{1..4}{,.sig}
 	$(call PGP_VERIFY,readline-$(READLINE_VERSION).tar.gz)
 	$(call PGP_VERIFY,readline80-001)
 	$(call PGP_VERIFY,readline80-002)

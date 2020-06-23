@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += ldid
-DOWNLOAD      += https://github.com/Diatrus/saurik-ldid/archive/v$(LDID_VERSION).tar.gz
 LDID_VERSION  := 2.1.2
 DEB_LDID_V    ?= $(LDID_VERSION)
 
 ldid-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/Diatrus/saurik-ldid/archive/v$(LDID_VERSION).tar.gz
 	$(call EXTRACT_TAR,v$(LDID_VERSION).tar.gz,saurik-ldid-$(LDID_VERSION),ldid)
 	mkdir -p $(BUILD_STAGE)/ldid/usr/bin
 

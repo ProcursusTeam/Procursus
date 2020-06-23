@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS       += debianutils
-DOWNLOAD            += http://deb.debian.org/debian/pool/main/d/debianutils/debianutils_$(DEBIANUTILS_VERSION).tar.xz
 DEBIANUTILS_VERSION := 4.9.1
 DEB_DEBIANUTILS_V   ?= $(DEBIANUTILS_VERSION)
 
 debianutils-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/d/debianutils/debianutils_$(DEBIANUTILS_VERSION).tar.xz
 	$(call EXTRACT_TAR,debianutils_$(DEBIANUTILS_VERSION).tar.xz,debianutils-$(DEBIANUTILS_VERSION),debianutils)
 
 ifneq ($(wildcard $(BUILD_WORK)/debianutils/.build_complete),)

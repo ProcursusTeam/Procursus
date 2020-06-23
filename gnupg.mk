@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += gnupg
-DOWNLOAD      += https://gnupg.org/ftp/gcrypt/gnupg/gnupg-$(GNUPG_VERSION).tar.bz2{,.sig}
 GNUPG_VERSION := 2.2.20
 DEB_GNUPG_V   ?= $(GNUPG_VERSION)
 
 gnupg-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/gnupg/gnupg-$(GNUPG_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,gnupg-$(GNUPG_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,gnupg-$(GNUPG_VERSION).tar.bz2,gnupg-$(GNUPG_VERSION),gnupg)
 

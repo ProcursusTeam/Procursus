@@ -3,13 +3,13 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += zip
-DOWNLOAD     += https://deb.debian.org/debian/pool/main/z/zip/zip_$(ZIP_VERSION).orig.tar.gz \
-		https://deb.debian.org/debian/pool/main/z/zip/zip_$(DEBIAN_ZIP_V).debian.tar.xz
 ZIP_VERSION  := 3.0
 DEBIAN_ZIP_V := $(ZIP_VERSION)-11
 DEB_ZIP_V    ?= $(DEBIAN_ZIP_V)
 
 zip-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/z/zip/zip_$(ZIP_VERSION).orig.tar.gz \
+		https://deb.debian.org/debian/pool/main/z/zip/zip_$(DEBIAN_ZIP_V).debian.tar.xz
 	$(call EXTRACT_TAR,zip_$(ZIP_VERSION).orig.tar.gz,zip30,zip)
 	$(call EXTRACT_TAR,zip_$(DEBIAN_ZIP_V).debian.tar.xz,debian/patches,$(BUILD_PATCH)/zip-$(ZIP_VERSION))
 	rm -rf $(BUILD_WORK)/debian

@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += basic-cmds
-DOWNLOAD           += https://opensource.apple.com/tarballs/basic_cmds/basic_cmds-$(BASIC-CMDS_VERSION).tar.gz
 BASIC-CMDS_VERSION := 55
 DEB_BASIC-CMDS_V   ?= $(BASIC-CMDS_VERSION)
 
 basic-cmds-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/basic_cmds/basic_cmds-$(BASIC-CMDS_VERSION).tar.gz
 	$(call EXTRACT_TAR,basic_cmds-$(BASIC-CMDS_VERSION).tar.gz,basic_cmds-$(BASIC-CMDS_VERSION),basic-cmds)
 	mkdir -p $(BUILD_STAGE)/basic-cmds/usr/bin
 

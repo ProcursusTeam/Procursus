@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS         += libpipeline
-DOWNLOAD            += https://mirrors.sarata.com/non-gnu/libpipeline/libpipeline-$(LIBPIPELINE_VERSION).tar.gz{,.asc}
 LIBPIPELINE_VERSION := 1.5.2
 DEB_LIBPIPELINE_V   ?= $(LIBPIPELINE_VERSION)
 
 libpipeline-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://mirrors.sarata.com/non-gnu/libpipeline/libpipeline-$(LIBPIPELINE_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,libpipeline-$(LIBPIPELINE_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,libpipeline-$(LIBPIPELINE_VERSION).tar.gz,libpipeline-$(LIBPIPELINE_VERSION),libpipeline)
 

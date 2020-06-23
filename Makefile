@@ -538,8 +538,6 @@ setup:
 
 	git submodule update --init --recursive
 
-	wget -q -nc -P $(BUILD_SOURCE) $(DOWNLOAD)
-
 	wget -q -nc -P $(BUILD_BASE)/usr/include \
 		https://opensource.apple.com/source/xnu/xnu-6153.61.1/libsyscall/wrappers/spawn/spawn.h
 

@@ -2,7 +2,6 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-DOWNLOAD        += https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$(OPENSSH_VERSION).tar.gz{,.asc}
 ifeq ($(SSH_STRAP),1)
 STRAPPROJECTS   += openssh
 else
@@ -12,6 +11,7 @@ OPENSSH_VERSION := 8.3p1
 DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)
 
 openssh-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$(OPENSSH_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,openssh-$(OPENSSH_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,openssh-$(OPENSSH_VERSION).tar.gz,openssh-$(OPENSSH_VERSION),openssh)
 	$(call DO_PATCH,openssh,openssh,-p1)

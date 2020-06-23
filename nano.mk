@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += nano
-DOWNLOAD     += https://ftpmirror.gnu.org/nano/nano-$(NANO_VERSION).tar.xz{,.sig}
 NANO_VERSION := 4.9.3
 DEB_NANO_V   ?= $(NANO_VERSION)
 
 nano-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/nano/nano-$(NANO_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,nano-$(NANO_VERSION).tar.xz)
 	$(call EXTRACT_TAR,nano-$(NANO_VERSION).tar.xz,nano-$(NANO_VERSION),nano)
 

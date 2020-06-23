@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += adv-cmds
-DOWNLOAD         += https://opensource.apple.com/tarballs/adv_cmds/adv_cmds-$(ADV-CMDS_VERSION).tar.gz
 ADV-CMDS_VERSION := 174.0.1
 DEB_ADV-CMDS_V   ?= $(ADV-CMDS_VERSION)
 
 adv-cmds-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/adv_cmds/adv_cmds-$(ADV-CMDS_VERSION).tar.gz
 	$(call EXTRACT_TAR,adv_cmds-$(ADV-CMDS_VERSION).tar.gz,adv_cmds-$(ADV-CMDS_VERSION),adv-cmds)
 	mkdir -p $(BUILD_STAGE)/adv-cmds/usr/bin
 

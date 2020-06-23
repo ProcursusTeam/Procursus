@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += grep                                                                  ### In this case, STRAPPROJECTS is the variable used. Most tools are unneeded in the bootstrap and would instead the SUBPROJECTS variable.
-DOWNLOAD      += https://ftpmirror.gnu.org/grep/grep-$(GREP_VERSION).tar.xz{,.sig}       ### Tarball to download. If available, always download the .sig or .asc file with it. See line 11.
 GREP_VERSION  := 3.4                                                                   ### For most tools, all it takes to update is changing this version number and recompiling the package.
 DEB_GREP_V    ?= $(GREP_VERSION)                                                       ### This is the version number put into the package's control file. Just in case we need to increment the version before a new one is released by the maintainers. See it used on line 48.
 
-grep-setup: setup                                                                      ### The main setup stage downloads all tarballs. This target should always be required by the (tool)-setup target. This is also usually where any edits to files being built should be performed.
+grep-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/grep/grep-$(GREP_VERSION).tar.xz{,.sig}       ### Tarball to download. If available, always download the .sig or .asc file with it. See line 11.                                                                      ### The main setup stage downloads all tarballs. This target should always be required by the (tool)-setup target. This is also usually where any edits to files being built should be performed.
 	$(call PGP_VERIFY,grep-$(GREP_VERSION).tar.xz)                                     ### Verifies the downloaded tarball against the sig file downloaded. This stage can be bypassed by passing `NO_PGP=1` when making.
 	### In the case you downloaded a .asc file, the above line would look like this:
 	### $(call PGP_VERIFY,grep-$(GREP_VERSION).tar.xz,asc)

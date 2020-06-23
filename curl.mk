@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += curl
-DOWNLOAD     += https://curl.haxx.se/download/curl-$(CURL_VERSION).tar.xz{,.asc}
 CURL_VERSION := 7.69.1
 DEB_CURL_V   ?= $(CURL_VERSION)
 
 curl-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://curl.haxx.se/download/curl-$(CURL_VERSION).tar.xz{,.asc}
 	$(call PGP_VERIFY,curl-$(CURL_VERSION).tar.xz,asc)
 	$(call EXTRACT_TAR,curl-$(CURL_VERSION).tar.xz,curl-$(CURL_VERSION),curl)
 

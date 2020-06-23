@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += lz4
-DOWNLOAD      += https://github.com/lz4/lz4/archive/v$(LZ4_VERSION).tar.gz
 LZ4_VERSION   := 1.9.2
 DEB_LZ4_V     ?= $(LZ4_VERSION)
 
 lz4-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/lz4/lz4/archive/v$(LZ4_VERSION).tar.gz
 	$(call EXTRACT_TAR,v$(LZ4_VERSION).tar.gz,lz4-$(LZ4_VERSION),lz4)
 
 ifneq ($(wildcard $(BUILD_WORK)/lz4/.build_complete),)

@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += uuid
-DOWNLOAD      += http://deb.debian.org/debian/pool/main/o/ossp-uuid/ossp-uuid_$(UUID_VERSION).orig.tar.gz
 UUID_VERSION  := 1.6.2
 DEB_UUID_V    ?= $(UUID_VERSION)
 
-uuid-setup: setup file-setup
+uuid-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/o/ossp-uuid/ossp-uuid_$(UUID_VERSION).orig.tar.gz file-setup
 	$(call EXTRACT_TAR,ossp-uuid_$(UUID_VERSION).orig.tar.gz,uuid-$(UUID_VERSION),uuid)
 	cp -a $(BUILD_WORK)/file/config.sub $(BUILD_WORK)/uuid
 	$(SED) -i 's/-c -s -m/-c -m/g' $(BUILD_WORK)/uuid/Makefile.in

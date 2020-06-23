@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += tmux
-DOWNLOAD       += https://github.com/tmux/tmux/releases/download/$(TMUX_VERSION)/tmux-$(TMUX_VERSION).tar.gz
 TMUX_VERSION   := 3.1b
 DEB_TMUX_V     ?= $(TMUX_VERSION)
 
 tmux-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tmux/tmux/releases/download/$(TMUX_VERSION)/tmux-$(TMUX_VERSION).tar.gz
 	$(call EXTRACT_TAR,tmux-$(TMUX_VERSION).tar.gz,tmux-$(TMUX_VERSION),tmux)
 
 ifneq ($(wildcard $(BUILD_WORK)/tmux/.build_complete),)

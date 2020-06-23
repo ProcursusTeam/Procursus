@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS          += transmission
-DOWNLOAD             += https://github.com/transmission/transmission-releases/raw/master/transmission-$(TRANSMISSION_VERSION).tar.xz
 TRANSMISSION_VERSION := 3.00
 DEB_TRANSMISSION_V   ?= $(TRANSMISSION_VERSION)
 
 transmission-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/transmission/transmission-releases/raw/master/transmission-$(TRANSMISSION_VERSION).tar.xz
 	$(call EXTRACT_TAR,transmission-$(TRANSMISSION_VERSION).tar.xz,transmission-$(TRANSMISSION_VERSION),transmission)
 
 ifneq ($(wildcard $(BUILD_WORK)/transmission/.build_complete),)

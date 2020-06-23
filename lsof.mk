@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += lsof
-DOWNLOAD     += https://opensource.apple.com/tarballs/lsof/lsof-$(LSOF_VERSION).tar.gz
 LSOF_VERSION := 62
 DEB_LSOF_V   ?= $(LSOF_VERSION)
 
 lsof-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/lsof/lsof-$(LSOF_VERSION).tar.gz
 	$(call EXTRACT_TAR,lsof-$(LSOF_VERSION).tar.gz,lsof-$(LSOF_VERSION),lsof)
 	mkdir -p $(BUILD_STAGE)/lsof/usr/{sbin,share/man/man8}
 	$(SED) -i 's/lcurses/lncursesw/' $(BUILD_WORK)/lsof/lsof/Configure

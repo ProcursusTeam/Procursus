@@ -3,8 +3,6 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += perl
-DOWNLOAD     += https://www.cpan.org/src/5.0/perl-$(PERL_VERSION).tar.gz \
-		https://github.com/arsv/perl-cross/releases/download/$(PERL_CROSS_V)/perl-cross-$(PERL_CROSS_V).tar.gz
 PERL_MAJOR   := 5.30
 PERL_VERSION := $(PERL_MAJOR).3
 PERL_API_V   := $(PERL_MAJOR).0
@@ -12,6 +10,8 @@ PERL_CROSS_V := 1.3.4
 DEB_PERL_V   ?= $(PERL_VERSION)
 
 perl-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://www.cpan.org/src/5.0/perl-$(PERL_VERSION).tar.gz \
+		https://github.com/arsv/perl-cross/releases/download/$(PERL_CROSS_V)/perl-cross-$(PERL_CROSS_V).tar.gz
 	rm -rf $(BUILD_WORK)/perl
 	$(call EXTRACT_TAR,perl-$(PERL_VERSION).tar.gz,perl-$(PERL_VERSION),perl)
 	$(call EXTRACT_TAR,perl-cross-$(PERL_CROSS_V).tar.gz,perl-cross-$(PERL_CROSS_V),perl,1)

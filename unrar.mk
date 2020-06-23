@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += unrar
-DOWNLOAD      += https://www.rarlab.com/rar/unrarsrc-$(UNRAR_VERSION).tar.gz
 UNRAR_VERSION := 5.9.2
 DEB_UNRAR_V   ?= $(UNRAR_VERSION)
 
 unrar-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://www.rarlab.com/rar/unrarsrc-$(UNRAR_VERSION).tar.gz
 	$(call EXTRACT_TAR,unrarsrc-$(UNRAR_VERSION).tar.gz,n/a,unrar)
 
 ifneq ($(wildcard $(BUILD_WORK)/unrar/.build_complete),)

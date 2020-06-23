@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += zstd
-DOWNLOAD      += https://github.com/facebook/zstd/archive/v$(ZSTD_VERSION).tar.gz
 ZSTD_VERSION  := 1.4.4
 DEB_ZSTD_V    ?= $(ZSTD_VERSION)
 
 zstd-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/facebook/zstd/archive/v$(ZSTD_VERSION).tar.gz
 	$(call EXTRACT_TAR,v$(ZSTD_VERSION).tar.gz,zstd-$(ZSTD_VERSION),zstd)
 
 ifneq ($(wildcard $(BUILD_WORK)/zstd/.build_complete),)

@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += grep
-DOWNLOAD      += https://ftpmirror.gnu.org/grep/grep-$(GREP_VERSION).tar.xz{,.sig}
 GREP_VERSION  := 3.4
 DEB_GREP_V    ?= $(GREP_VERSION)
 
 grep-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/grep/grep-$(GREP_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,grep-$(GREP_VERSION).tar.xz)
 	$(call EXTRACT_TAR,grep-$(GREP_VERSION).tar.xz,grep-$(GREP_VERSION),grep)
 
