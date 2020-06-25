@@ -15,12 +15,13 @@ ifneq ($(wildcard $(BUILD_WORK)/p11-kit/.build_complete),)
 p11-kit:
 	@echo "Using previously built p11-kit."
 else
-p11-kit: p11-kit-setup gettext libtasn1
+p11-kit: p11-kit-setup gettext
 	cd $(BUILD_WORK)/p11-kit && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--without-trust-paths \
-		--without-libffi
+		--without-libffi \
+		LIBTASN1_CFLAGS=-I$(BUILD_BASE)/usr/include
 	+$(MAKE) -C $(BUILD_WORK)/p11-kit
 	+$(MAKE) -C $(BUILD_WORK)/p11-kit install \
 		DESTDIR=$(BUILD_STAGE)/p11-kit
