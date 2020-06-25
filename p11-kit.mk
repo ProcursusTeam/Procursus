@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/p11-kit/.build_complete),)
 p11-kit:
 	@echo "Using previously built p11-kit."
 else
-p11-kit: p11-kit-setup gettext
+p11-kit: p11-kit-setup gettext libtasn1
 	cd $(BUILD_WORK)/p11-kit && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
