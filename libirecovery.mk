@@ -3,24 +3,26 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS          += libirecovery
-DOWNLOAD             += https://github.com/libimobiledevice/libirecovery/archive/$(LIBIRECOVERY_VERSION).tar.gz
 LIBIRECOVERY_VERSION := 1.0.0
 DEB_LIBIRECOVERY_V   ?= $(LIBIRECOVERY_VERSION)
 
 libirecovery-setup: setup
-	$(call EXTRACT_TAR,$(LIBIRECOVERY_VERSION).tar.gz,libirecovery-$(LIBIRECOVERY_VERSION),libirecovery)
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libimobiledevice/libirecovery/releases/download/$(LIBIRECOVERY_VERSION)/libirecovery-$(LIBIRECOVERY_VERSION).tar.bz2
+	$(call EXTRACT_TAR,libirecovery-$(LIBIRECOVERY_VERSION).tar.bz2,libirecovery-$(LIBIRECOVERY_VERSION),libirecovery)
 
 ifneq ($(wildcard $(BUILD_WORK)/libirecovery/.build_complete),)
 libirecovery:
 	@echo "Using previously built libirecovery."
 else
 libirecovery: libirecovery-setup readline
-	cd $(BUILD_WORK)/libirecovery && ./autogen.sh -C \
+	cd $(BUILD_WORK)/libirecovery && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--with-sysroot=$(SYSROOT) \
-		--with-iokit 
-	+$(MAKE) -C $(BUILD_WORK)/libirecovery
+		--with-iokit \
+		ac_cv_header_IOKit_usb_IOUSBLib_h=yes
+	+$(MAKE) -C $(BUILD_WORK)/libirecovery \
+		CFLAGS="$(CFLAGS) -D__OPEN_SOURCE__"
 	+$(MAKE) -C $(BUILD_WORK)/libirecovery install \
 		DESTDIR=$(BUILD_STAGE)/libirecovery
 	touch $(BUILD_WORK)/libirecovery/.build_complete
