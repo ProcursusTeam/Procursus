@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS  += whois
+SUBPROJECTS  += whois
 WHOIS_VERSION   := 5.5.6
 DEB_WHOIS_V     ?= $(WHOIS_VERSION)
 
