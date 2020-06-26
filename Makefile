@@ -549,7 +549,7 @@ setup:
 
 	@# Copy headers from MacOSX.sdk
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{arpa,net,xpc} $(BUILD_BASE)/usr/include
-	$(CP) -af $(MACOSX_SYSROOT)/usr/include/libkern/OSTypes.h $(BUILD_BASE)/usr/include
+	$(CP) -af $(MACOSX_SYSROOT)/usr/include/libkern/OSTypes.h $(BUILD_BASE)/usr/include/libkern
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,proc*,ptrace,kern*,random,vnode}.h $(BUILD_BASE)/usr/include/sys
 	$(CP) -af $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_BASE)/usr/include/IOKit
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{ar,launch,libproc,tzfile}.h $(BUILD_BASE)/usr/include
