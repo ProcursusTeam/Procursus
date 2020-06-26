@@ -3,7 +3,6 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += tar
-DOWNLOAD      += https://ftp.gnu.org/gnu/tar/tar-$(TAR_VERSION).tar.xz{,.sig}
 TAR_VERSION   := 1.32
 DEB_TAR_V     ?= $(TAR_VERSION)
 
@@ -12,6 +11,7 @@ TAR_CONFIGURE_ARGS += ac_cv_func_rpmatch=no
 endif
 
 tar-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/tar/tar-$(TAR_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,tar-$(TAR_VERSION).tar.xz)
 	$(call EXTRACT_TAR,tar-$(TAR_VERSION).tar.xz,tar-$(TAR_VERSION),tar)
 

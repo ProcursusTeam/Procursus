@@ -3,18 +3,18 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += p7zip
-DOWNLOAD       += https://deb.debian.org/debian/pool/main/p/p7zip/p7zip_$(P7ZIP_VERSION)+dfsg.orig.tar.xz \
-		https://deb.debian.org/debian/pool/main/p/p7zip/p7zip_$(DEBIAN_P7ZIP_V).debian.tar.xz \
-		https://raw.githubusercontent.com/shirkdog/hardenedbsd-ports/master/archivers/p7zip/files/patch-CPP_Windows_ErrorMsg.cpp
 P7ZIP_VERSION  := 16.02
 DEBIAN_P7ZIP_V := $(P7ZIP_VERSION)+dfsg-7
 DEB_P7ZIP_V    ?= $(DEBIAN_P7ZIP_V)
 
 p7zip-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/p/p7zip/p7zip_$(P7ZIP_VERSION)+dfsg.orig.tar.xz \
+		https://deb.debian.org/debian/pool/main/p/p7zip/p7zip_$(DEBIAN_P7ZIP_V).debian.tar.xz \
+		https://raw.githubusercontent.com/shirkdog/hardenedbsd-ports/master/archivers/p7zip/files/patch-CPP_Windows_ErrorMsg.cpp
 	$(call EXTRACT_TAR,p7zip_$(P7ZIP_VERSION)+dfsg.orig.tar.xz,p7zip_$(P7ZIP_VERSION),p7zip)
-	$(call EXTRACT_TAR,p7zip_$(DEBIAN_P7ZIP_V).debian.tar.xz,debian/patches,p7zip-$(P7ZIP_VERSION)-patches)
+	$(call EXTRACT_TAR,p7zip_$(DEBIAN_P7ZIP_V).debian.tar.xz,debian/patches,$(BUILD_PATCH)/p7zip-$(P7ZIP_VERSION))
 	rm -rf $(BUILD_WORK)/debian
-	cp $(BUILD_SOURCE)/patch-CPP_Windows_ErrorMsg.cpp $(BUILD_WORK)/p7zip-$(P7ZIP_VERSION)-patches
+	cp $(BUILD_SOURCE)/patch-CPP_Windows_ErrorMsg.cpp $(BUILD_PATCH)/p7zip-$(P7ZIP_VERSION)
 	$(call DO_PATCH,p7zip-$(P7ZIP_VERSION),p7zip,-p0,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/p7zip/.build_complete),)

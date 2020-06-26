@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS            += developer-cmds
-DOWNLOAD               += https://opensource.apple.com/tarballs/developer_cmds/developer_cmds-$(DEVELOPER-CMDS_VERSION).tar.gz
 DEVELOPER-CMDS_VERSION := 66
 DEB_DEVELOPER-CMDS_V   ?= $(DEVELOPER-CMDS_VERSION)
 
 developer-cmds-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/developer_cmds/developer_cmds-$(DEVELOPER-CMDS_VERSION).tar.gz
 	$(call EXTRACT_TAR,developer_cmds-$(DEVELOPER-CMDS_VERSION).tar.gz,developer_cmds-$(DEVELOPER-CMDS_VERSION),developer-cmds)
 	mkdir -p $(BUILD_STAGE)/developer-cmds/usr/bin
 	mkdir -p $(BUILD_WORK)/developer-cmds/include

@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += wget2
-DOWNLOAD     += https://ftp.gnu.org/gnu/wget/wget2-$(WGET2_VERSION).tar.gz{,.sig}
 WGET2_VERSION := 1.99.2
 DEB_WGET2_V   ?= $(WGET2_VERSION)
 
 wget2-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/wget/wget2-$(WGET2_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,wget2-$(WGET2_VERSION).tar.gz)
 	$(call EXTRACT_TAR,wget2-$(WGET2_VERSION).tar.gz,wget2-$(WGET2_VERSION),wget2)
 

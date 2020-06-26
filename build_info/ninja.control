@@ -1,0 +1,8 @@
+Package: ninja
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_NINJA_V@
+Section: Development
+Priority: optional
+Description: Small build system for use with gyp or CMake
+Tag: purpose::console, role::hacker

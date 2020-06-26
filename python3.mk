@@ -3,9 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += python3
-DOWNLOAD         += https://www.python.org/ftp/python/$(PYTHON3_VERSION)/Python-$(PYTHON3_VERSION).tar.xz{,.asc}
 PYTHON3_MAJOR_V  := 3.8
-PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).2
+PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).3
 DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)
 
 ifeq ($(call HAS_COMMAND,python$(PYTHON3_MAJOR_V)),1)
@@ -16,8 +15,10 @@ $(error Install Python $(PYTHON3_MAJOR_V))
 endif
 
 python3-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://www.python.org/ftp/python/$(PYTHON3_VERSION)/Python-$(PYTHON3_VERSION).tar.xz{,.asc}
 	$(call PGP_VERIFY,Python-$(PYTHON3_VERSION).tar.xz,asc)
 	$(call EXTRACT_TAR,Python-$(PYTHON3_VERSION).tar.xz,Python-$(PYTHON3_VERSION),python3)
+	$(call DO_PATCH,python3,python3,-p1)
 	$(SED) -i 's/-vxworks/-darwin/g' $(BUILD_WORK)/python3/configure.ac
 	$(SED) -i 's/system=VxWorks/system=Darwin/g' $(BUILD_WORK)/python3/configure.ac
 	$(SED) -i '/readelf for/d' $(BUILD_WORK)/python3/configure.ac
@@ -47,6 +48,7 @@ python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm
 	+$(MAKE) -C $(BUILD_WORK)/python3 install \
 		DESTDIR=$(BUILD_STAGE)/python3
 	rm -f $(BUILD_STAGE)/python3/usr/{bin,share/man/man1}/!(*$(PYTHON3_MAJOR_V)*)
+	mkdir -p $(BUILD_STAGE)/python3/usr/lib/python3/dist-packages
 	touch $(BUILD_WORK)/python3/.build_complete
 endif
 

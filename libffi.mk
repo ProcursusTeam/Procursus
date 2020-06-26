@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += libffi
-DOWNLOAD        += https://sourceware.org/pub/libffi/libffi-$(LIBFFI_VERSION).tar.gz
 LIBFFI_VERSION  := 3.3
 DEB_LIBFFI_V    ?= $(LIBFFI_VERSION)
 
 libffi-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://sourceware.org/pub/libffi/libffi-$(LIBFFI_VERSION).tar.gz
 	$(call EXTRACT_TAR,libffi-$(LIBFFI_VERSION).tar.gz,libffi-$(LIBFFI_VERSION),libffi)
 
 ifneq ($(wildcard $(BUILD_WORK)/libffi/.build_complete),)

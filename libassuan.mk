@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS     += libassuan
-DOWNLOAD          += https://gnupg.org/ftp/gcrypt/libassuan/libassuan-$(LIBASSUAN_VERSION).tar.bz2{,.sig}
 LIBASSUAN_VERSION := 2.5.3
 DEB_LIBASSUAN_V   ?= $(LIBASSUAN_VERSION)
 
 libassuan-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/libassuan/libassuan-$(LIBASSUAN_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,libassuan-$(LIBASSUAN_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libassuan-$(LIBASSUAN_VERSION).tar.bz2,libassuan-$(LIBASSUAN_VERSION),libassuan)
 

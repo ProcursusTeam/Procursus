@@ -7,10 +7,11 @@ SYSTEM-CMDS_VERSION := 854.40.2
 DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)
 
 system-cmds-setup: setup
-	rm -rf $(BUILD_WORK)/system-cmds
+	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/system_cmds/system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz
+	$(call EXTRACT_TAR,system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz,system_cmds-$(SYSTEM-CMDS_VERSION),system-cmds)
+	$(call DO_PATCH,system-cmds,system-cmds,-p1)
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/system-cmds/include/{IOKit,mach,sys}
-	cp -af system-cmds/* $(BUILD_WORK)/system-cmds
 	cp -a $(MACOSX_SYSROOT)/usr/include/{libkern,net,servers,xpc} $(BUILD_WORK)/system-cmds/include
 	cp -a $(MACOSX_SYSROOT)/usr/include/{lib{c,proc},NSSystemDirectories,bootstrap,tzfile}.h $(BUILD_WORK)/system-cmds/include
 	cp -a $(MACOSX_SYSROOT)/usr/include/sys/{reboot,proc*,kern_control}.h $(BUILD_WORK)/system-cmds/include/sys

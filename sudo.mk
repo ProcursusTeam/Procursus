@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += sudo
-DOWNLOAD      += https://www.sudo.ws/dist/sudo-$(SUDO_VERSION).tar.gz{,.sig}
 SUDO_VERSION  := 1.8.31p1
 DEB_SUDO_V    ?= $(SUDO_VERSION)
 
 sudo-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://www.sudo.ws/dist/sudo-$(SUDO_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,sudo-$(SUDO_VERSION).tar.gz)
 	$(call EXTRACT_TAR,sudo-$(SUDO_VERSION).tar.gz,sudo-$(SUDO_VERSION),sudo)
 

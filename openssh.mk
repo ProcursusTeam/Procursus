@@ -7,12 +7,14 @@ STRAPPROJECTS   += openssh
 else
 SUBPROJECTS     += openssh
 endif
-OPENSSH_VERSION := 8.2
-DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)-1
+OPENSSH_VERSION := 8.3p1
+DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)
 
 openssh-setup: setup
-	rm -rf $(BUILD_WORK)/openssh
-	mkdir -p $(BUILD_WORK)/openssh
+	wget -q -nc -P $(BUILD_SOURCE) https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$(OPENSSH_VERSION).tar.gz{,.asc}
+	$(call PGP_VERIFY,openssh-$(OPENSSH_VERSION).tar.gz,asc)
+	$(call EXTRACT_TAR,openssh-$(OPENSSH_VERSION).tar.gz,openssh-$(OPENSSH_VERSION),openssh)
+	$(call DO_PATCH,openssh,openssh,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/openssh/.build_complete),)
 openssh:
@@ -20,11 +22,10 @@ openssh:
 else
 openssh: openssh-setup openssl
 	if ! [ -f $(BUILD_WORK)/openssh/configure ]; then \
-		cd openssh && autoreconf; \
+		cd $(BUILD_WORK)/openssh && autoreconf; \
 	fi
-	$(SED) -i '/HAVE_ENDIAN_H/d' openssh/config.h.in
-	cd $(BUILD_WORK)/openssh && $(EXTRA) \
-		$(BUILD_ROOT)/openssh/configure -C \
+	$(SED) -i '/HAVE_ENDIAN_H/d' $(BUILD_WORK)/openssh/config.h.in
+	cd $(BUILD_WORK)/openssh && $(EXTRA) ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc/ssh

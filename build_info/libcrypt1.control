@@ -1,0 +1,13 @@
+Package: libcrypt1
+Version: @LIBCRYPT1_VERSION@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: gettext
+Section: Development
+Priority: optional
+Description: 
+  libxcrypt is a modern library for one-way hashing of passwords.
+  It supports DES, MD5, NTHASH, SUNMD5, SHA-2-256, SHA-2-512,
+  and bcrypt-based password hashes It provides the traditional Unix 'crypt' and 'crypt_r' interfaces,
+  as well as a set of extended interfaces like 'crypt_gensalt'.
+Tag: role::developer

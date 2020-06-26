@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS    += snaputil
-DOWNLOAD         += https://github.com/Diatrus/apfs/archive/v$(SNAPUTIL_VERSION).tar.gz
 SNAPUTIL_VERSION := 10.15.1
 DEB_SNAPUTIL_V   ?= $(SNAPUTIL_VERSION)
 
 snaputil-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/Diatrus/apfs/archive/v$(SNAPUTIL_VERSION).tar.gz
 	$(call EXTRACT_TAR,v$(SNAPUTIL_VERSION).tar.gz,apfs-$(SNAPUTIL_VERSION),snaputil)
 	mkdir -p $(BUILD_STAGE)/snaputil/usr/bin
 

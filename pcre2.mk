@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += pcre2
-DOWNLOAD      += https://ftp.pcre.org/pub/pcre/pcre2-$(PCRE2_VERSION).tar.bz2{,.sig}
 PCRE2_VERSION := 10.34
 DEB_PCRE2_V   ?= $(PCRE2_VERSION)
 
 pcre2-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://ftp.pcre.org/pub/pcre/pcre2-$(PCRE2_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,pcre2-$(PCRE2_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,pcre2-$(PCRE2_VERSION).tar.bz2,pcre2-$(PCRE2_VERSION),pcre2)
 

@@ -2,7 +2,8 @@ Package: libfragmentzip
 Version: @DEB_LIBFRAGMENTZIP_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libzip, curl
+Depends: libzip, curl, libgeneral
 Section: Development
 Priority: optional
 Description: A library allowing to download single files from a remote zip archive 
+Tag: purpose::console, role::developer

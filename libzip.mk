@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS          += libzip
-DOWNLOAD             += https://libzip.org/download/libzip-$(LIBZIP_VERSION).tar.gz
-LIBZIP_VERSION       := 1.7.0
+LIBZIP_VERSION       := 1.7.1
 DEB_LIBZIP_V         ?= $(LIBZIP_VERSION)
 
 libzip-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://libzip.org/download/libzip-$(LIBZIP_VERSION).tar.gz
 	$(call EXTRACT_TAR,libzip-$(LIBZIP_VERSION).tar.gz,libzip-$(LIBZIP_VERSION),libzip)
 
 ifneq ($(wildcard $(BUILD_WORK)/libzip/.build_complete),)
@@ -31,13 +31,15 @@ libzip: libzip-setup
 	+$(MAKE) -C $(BUILD_WORK)/libzip
 	+$(MAKE) -C $(BUILD_WORK)/libzip install \
 		DESTDIR="$(BUILD_STAGE)/libzip"
+	+$(MAKE) -C $(BUILD_WORK)/libzip install \
+		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/libzip/.build_complete
 endif
 
 libzip-package: libzip-stage
 	# libzip.mk Package Structure
-	rm -rf $(BUILD_DIST)/nano
-	mkdir -p $(BUILD_DIST)/nano
+	rm -rf $(BUILD_DIST)/libzip
+	mkdir -p $(BUILD_DIST)/libzip
 
 	# libzip.mk Prep libzip
 	cp -a $(BUILD_STAGE)/libzip/usr $(BUILD_DIST)/libzip
@@ -49,6 +51,6 @@ libzip-package: libzip-stage
 	$(call PACK,libzip,DEB_LIBZIP_V)
 
 	# libzip.mk Build cleanup
-	rm -rf $(BUILD_DIST)/nano
+	rm -rf $(BUILD_DIST)/libzip
 
 .PHONY: libzip libzip-package

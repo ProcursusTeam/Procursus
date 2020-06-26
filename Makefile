@@ -148,6 +148,8 @@ BUILD_SOURCE   := $(BUILD_ROOT)/build_source
 BUILD_BASE     := $(BUILD_ROOT)/build_base/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Dpkg info storage area
 BUILD_INFO     := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_info
+# Patch storage area
+BUILD_PATCH    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_patch
 # Extracted source working directory
 BUILD_WORK     := $(BUILD_ROOT)/build_work/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Bootstrap working area
@@ -176,7 +178,7 @@ PGP_VERIFY  = echo "Skipping verification of $(1) because NO_PGP was set to 1."
 else
 PGP_VERIFY  = KEY=$$(gpg --verify --status-fd 1 $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) | grep NO_PUBKEY | cut -f3 -d' '); \
 	if [ ! -z "$$KEY" ]; then \
-		gpg --keyserver hkp://keys.gnupg.net --recv-keys $$KEY; \
+		gpg --keyserver hkps://keyserver.ubuntu.com/ --recv-keys $$KEY; \
 	fi; \
 	gpg --verify $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) $(BUILD_SOURCE)/$(1) 2>&1 | grep -q 'Good signature'
 endif
@@ -190,13 +192,13 @@ EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 	fi; \
 	find $(BUILD_BASE)/usr/lib -name "*.la" -type f -delete
 
-DO_PATCH    = cd $(BUILD_WORK)/$(1)-patches; \
+DO_PATCH    = -cd $(BUILD_PATCH)/$(1); \
 	rm -f ./series; \
 	for PATCHFILE in *; do \
 		if [ ! -f $(BUILD_WORK)/$(2)/$(notdir $$PATCHFILE).done ]; then \
-			$(PATCH) -sN -d $(BUILD_WORK)/$(2) $(3) < $$PATCHFILE &> /dev/null; \
+			patch -sN -d $(BUILD_WORK)/$(2) $(3) < $$PATCHFILE; \
 			if [ $(4) ]; then \
-				$(PATCH) -sN -d $(BUILD_WORK)/$(2) $(4) < $$PATCHFILE &> /dev/null; \
+				patch -sN -d $(BUILD_WORK)/$(2) $(4) < $$PATCHFILE; \
 			fi; \
 			touch $(BUILD_WORK)/$(2)/$(notdir $$PATCHFILE).done; \
 		fi; \
@@ -261,6 +263,10 @@ GET_SHA1   = sha1sum $(1) | cut -c1-40
 GET_SHA256 = sha256sum $(1) | cut -c1-64
 endif
 
+ifneq ($(call HAS_COMMAND,wget),1)
+$(error Install wget)
+endif
+
 ifeq ($(call HAS_COMMAND,gmake),1)
 PATH := $(shell brew --prefix)/opt/make/libexec/gnubin:$(PATH)
 endif
@@ -274,12 +280,11 @@ else
 $(error Install GNU tar)
 endif
 
+SED  := sed
+
 ifeq ($(call HAS_COMMAND,gsed),1)
 PATH := $(shell brew --prefix)/opt/gnu-sed/libexec/gnubin:$(PATH)
-SED  := sed
-else ifeq ($(shell sed --version | grep -q GNU && echo 1),1)
-SED  := sed
-else
+else ifneq ($(shell sed --version | grep -q GNU && echo 1),1)
 $(error Install GNU sed)
 endif
 
@@ -322,18 +327,16 @@ ifneq ($(call HAS_COMMAND,lex),1)
 $(error Install flex)
 endif
 
-ifneq ($(call HAS_COMMAND,groff),1)
-ifneq ($(shell groff --version | grep -q 'version 1.2' && echo 1),1)
+ifneq (,$(wildcard $(shell brew --prefix)/opt/groff/bin))
+PATH := $(shell brew --prefix)/opt/groff/bin:$(PATH)
+else ifneq ($(shell groff --version | grep -q 'version 1.2' && echo 1),1)
 $(error Install newer groff)
 endif
-endif
 
-ifneq ($(shell patch --version | grep -q 'GNU patch' && echo 1),1)
-ifeq (,$(wildcard $(shell brew --prefix)/opt/gnu-patch/libexec/gnubin))
-PATH := $(shell brew --prefix)/opt/gnu-patch/libexec/gnubin:$(PATH)
-else
+ifneq (,$(wildcard $(shell brew --prefix)/opt/gpatch/bin))
+PATH := $(shell brew --prefix)/opt/gpatch/bin:$(PATH)
+else ifneq ($(shell patch --version | grep -q 'GNU patch' && echo 1),1)
 $(error Install GNU patch)
-endif
 endif
 
 ifeq ($(call HAS_COMMAND,gfind),1)
@@ -530,15 +533,19 @@ rebuild-%:
 
 setup:
 	mkdir -p \
-		$(BUILD_BASE) $(BUILD_BASE)/{System/Library/Frameworks,usr/{include/{sys,IOKit,libkern,mach},lib}} \
+		$(BUILD_BASE) $(BUILD_BASE)/{System/Library/Frameworks,usr/{include/{bsm,sys,IOKit,libkern,mach/machine},lib}} \
 		$(BUILD_WORK) $(BUILD_STAGE) $(BUILD_DIST) $(BUILD_STRAP)
 
 	git submodule update --init --recursive
 
-	wget -q -nc -P $(BUILD_SOURCE) $(DOWNLOAD)
-
 	wget -q -nc -P $(BUILD_BASE)/usr/include \
 		https://opensource.apple.com/source/xnu/xnu-6153.61.1/libsyscall/wrappers/spawn/spawn.h
+
+	wget -q -nc -P $(BUILD_BASE)/usr/include/mach/machine \
+		https://opensource.apple.com/source/xnu/xnu-6153.81.5/osfmk/mach/machine/thread_state.h
+
+	wget -q -nc -P $(BUILD_BASE)/usr/include/bsm \
+		https://opensource.apple.com/source/xnu/xnu-6153.81.5/bsd/bsm/audit_kevents.h
 
 	@# Copy headers from MacOSX.sdk
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{arpa,net,xpc} $(BUILD_BASE)/usr/include
@@ -546,6 +553,12 @@ setup:
 	$(CP) -af $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_BASE)/usr/include/IOKit
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{ar,launch,libproc,tzfile}.h $(BUILD_BASE)/usr/include
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/libkern/OSTypes.h $(BUILD_BASE)/usr/include
+	$(CP) -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,proc*,ptrace,kern*,random,vnode}.h $(BUILD_BASE)/usr/include/sys
+	$(CP) -af $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_BASE)/usr/include/IOKit
+	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{ar,launch,libproc,tzfile}.h $(BUILD_BASE)/usr/include
+	$(CP) -af $(MACOSX_SYSROOT)/usr/include/mach/{*.defs,{mach_vm,shared_region}.h} $(BUILD_BASE)/usr/include/mach
+	$(CP) -af $(MACOSX_SYSROOT)/usr/include/mach/machine/*.defs $(BUILD_BASE)/usr/include/mach/machine
+  $(CP) -af $(MACOSX_SYSROOT)/usr/include/libkern/OSTypes.h $(BUILD_BASE)/usr/include
 	-$(CP) -af $(BUILD_INFO)/IOKit.framework.$(PLATFORM) $(BUILD_BASE)/System/Library/Frameworks/IOKit.framework
 
 	@# Patch headers from iPhoneOS.sdk

@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS      += shell-cmds
-DOWNLOAD           += https://opensource.apple.com/tarballs/shell_cmds/shell_cmds-$(SHELL-CMDS_VERSION).tar.gz
 SHELL-CMDS_VERSION := 207.40.1
 DEB_SHELL-CMDS_V   ?= $(SHELL-CMDS_VERSION)
 
 shell-cmds-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/shell_cmds/shell_cmds-$(SHELL-CMDS_VERSION).tar.gz
 	$(call EXTRACT_TAR,shell_cmds-$(SHELL-CMDS_VERSION).tar.gz,shell_cmds-$(SHELL-CMDS_VERSION),shell-cmds)
 
 ifneq ($(wildcard $(BUILD_WORK)/shell-cmds/.build_complete),)

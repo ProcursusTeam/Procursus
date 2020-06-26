@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += zsh
-DOWNLOAD      += https://www.zsh.org/pub/zsh-$(ZSH_VERSION).tar.xz{,.asc}
 ZSH_VERSION   := 5.8
-DEB_ZSH_V     ?= $(ZSH_VERSION)
+DEB_ZSH_V     ?= $(ZSH_VERSION)-1
 
 zsh-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://www.zsh.org/pub/zsh-$(ZSH_VERSION).tar.xz{,.asc}
 	$(call EXTRACT_TAR,zsh-$(ZSH_VERSION).tar.xz,zsh-$(ZSH_VERSION),zsh)
 	$(SED) -i 's/|| eno == ENOENT)/|| eno == ENOENT || eno == EPERM)/' $(BUILD_WORK)/zsh/Src/exec.c
 	$(SED) -i 's/(eno == ENOEXEC)/(eno == ENOEXEC || eno == EPERM)/' $(BUILD_WORK)/zsh/Src/exec.c
@@ -28,11 +28,14 @@ zsh: zsh-setup pcre ncurses
 		--with-tcsetpgrp \
 		--enable-function-subdirs \
 		--disable-gdbm \
-		LDFLAGS="$(CFLAGS) -lpcre $(LDFLAGS)" \
 		DL_EXT=bundle \
+		zsh_cv_shared_environ=yes \
+		zsh_cv_sys_elf=no \
+		zsh_cv_sys_dynamic_execsyms=yes \
 		zsh_cv_rlimit_rss_is_as=yes \
 		zsh_cv_path_utmpx=/var/run/utmpx \
-		zsh_cv_path_utmp=no
+		zsh_cv_path_utmp=no \
+		ac_cv_prog_PCRECONF="$(BUILD_STAGE)/pcre/usr/bin/pcre-config"
 	+$(MAKE) -C $(BUILD_WORK)/zsh
 	+$(MAKE) -C $(BUILD_WORK)/zsh install \
 		DESTDIR="$(BUILD_STAGE)/zsh"

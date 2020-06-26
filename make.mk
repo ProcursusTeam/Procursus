@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += make
-DOWNLOAD     += https://ftp.gnu.org/gnu/make/make-$(MAKE_VERSION).tar.gz{,.sig}
 MAKE_VERSION := 4.3
 DEB_MAKE_V   ?= $(MAKE_VERSION)
 
 make-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/make/make-$(MAKE_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,make-$(MAKE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,make-$(MAKE_VERSION).tar.gz,make-$(MAKE_VERSION),make)
 

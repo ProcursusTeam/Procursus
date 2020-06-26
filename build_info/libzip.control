@@ -5,3 +5,4 @@ Maintainer: @DEB_MAINTAINER@
 Section: Development
 Priority: optional
 Description: a C library for reading, creating, and modifying zip archives. 
+Tag: purpose::console, role::developer

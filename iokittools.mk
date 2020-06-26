@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += iokittools
-DOWNLOAD           += https://opensource.apple.com/tarballs/IOKitTools/IOKitTools-$(IOKITTOOLS_VERSION).tar.gz
 IOKITTOOLS_VERSION := 91
 DEB_IOKITTOOLS_V   ?= $(IOKITTOOLS_VERSION)
 
 iokittools-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/IOKitTools/IOKitTools-$(IOKITTOOLS_VERSION).tar.gz
 	$(call EXTRACT_TAR,IOKitTools-$(IOKITTOOLS_VERSION).tar.gz,IOKitTools-$(IOKITTOOLS_VERSION),iokittools)
 	mkdir -p $(BUILD_STAGE)/iokittools/usr/sbin
 

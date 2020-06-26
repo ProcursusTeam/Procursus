@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += socat
-DOWNLOAD      += http://www.dest-unreach.org/socat/download/socat-$(SOCAT_VERSION).tar.gz
 SOCAT_VERSION := 1.7.3.4
 DEB_SOCAT_V   ?= $(SOCAT_VERSION)
 
 socat-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) http://www.dest-unreach.org/socat/download/socat-$(SOCAT_VERSION).tar.gz
 	$(call EXTRACT_TAR,socat-$(SOCAT_VERSION).tar.gz,socat-$(SOCAT_VERSION),socat)
 
 ifneq ($(wildcard $(BUILD_WORK)/socat/.build_complete),)

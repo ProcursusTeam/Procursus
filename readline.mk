@@ -3,20 +3,20 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS    += readline
-DOWNLOAD         += https://ftp.gnu.org/gnu/readline/readline-$(READLINE_VERSION).tar.gz{,.sig} \
-		https://ftp.gnu.org/gnu/readline/readline-$(READLINE_VERSION)-patches/readline80-00{1..4}{,.sig}
 READLINE_VERSION := 8.0
 DEB_READLINE_V   ?= $(READLINE_VERSION).$(READLINE_SUB_V)
 
 readline-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/readline/readline-$(READLINE_VERSION).tar.gz{,.sig} \
+		https://ftpmirror.gnu.org/readline/readline-$(READLINE_VERSION)-patches/readline80-00{1..4}{,.sig}
 	$(call PGP_VERIFY,readline-$(READLINE_VERSION).tar.gz)
 	$(call PGP_VERIFY,readline80-001)
 	$(call PGP_VERIFY,readline80-002)
 	$(call PGP_VERIFY,readline80-003)
 	$(call PGP_VERIFY,readline80-004)
 	$(call EXTRACT_TAR,readline-$(READLINE_VERSION).tar.gz,readline-$(READLINE_VERSION),readline)
-	mkdir -p $(BUILD_WORK)/readline-$(READLINE_VERSION)-patches
-	find $(BUILD_SOURCE) -name 'readline80*' -not -name '*.sig' -exec cp '{}' $(BUILD_WORK)/readline-$(READLINE_VERSION)-patches/ \;
+	mkdir -p $(BUILD_PATCH)/readline-$(READLINE_VERSION)
+	find $(BUILD_SOURCE) -name 'readline80*' -not -name '*.sig' -exec cp '{}' $(BUILD_PATCH)/readline-$(READLINE_VERSION)/ \;
 	$(call DO_PATCH,readline-$(READLINE_VERSION),readline,-p0)
 
 ifneq ($(wildcard $(BUILD_WORK)/readline/.build_complete),)
@@ -39,7 +39,7 @@ readline: readline-setup ncurses
 	touch $(BUILD_WORK)/readline/.build_complete
 endif
 
-readline-package: READLINE_SUB_V=$(shell find $(BUILD_WORK)/readline-$(READLINE_VERSION)-patches -type f | $(WC) -l)
+readline-package: READLINE_SUB_V=$(shell find $(BUILD_PATCH)/readline-$(READLINE_VERSION) -type f | $(WC) -l)
 readline-package: readline-stage
 	# readline.mk Package Structure
 	rm -rf $(BUILD_DIST)/readline

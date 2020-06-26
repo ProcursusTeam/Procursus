@@ -1,0 +1,9 @@
+Package: tor
+Version: @DEB_TOR_V@ 
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Networking
+Priority: optional
+Description: Anonymzing overlay network for TCP
+Depends: xz-utils, libevent, libssl1.1, zstd
+Homepage: https://www.torproject.org/

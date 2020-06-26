@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += nghttp2
-DOWNLOAD        += https://github.com/nghttp2/nghttp2/releases/download/v$(NGHTTP2_VERSION)/nghttp2-$(NGHTTP2_VERSION).tar.xz
 NGHTTP2_VERSION := 1.40.0
 DEB_NGHTTP2_V   ?= $(NGHTTP2_VERSION)
 
 nghttp2-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/nghttp2/nghttp2/releases/download/v$(NGHTTP2_VERSION)/nghttp2-$(NGHTTP2_VERSION).tar.xz
 	$(call EXTRACT_TAR,nghttp2-$(NGHTTP2_VERSION).tar.xz,nghttp2-$(NGHTTP2_VERSION),nghttp2)
 
 ifneq ($(wildcard $(BUILD_WORK)/nghttp2/.build_complete),)

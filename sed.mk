@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += sed
-DOWNLOAD      += https://ftp.gnu.org/gnu/sed/sed-$(SED_VERSION).tar.xz{,.sig}
 SED_VERSION   := 4.8
 DEB_SED_V     ?= $(SED_VERSION)
 
 sed-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/sed/sed-$(SED_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,sed-$(SED_VERSION).tar.xz)
 	$(call EXTRACT_TAR,sed-$(SED_VERSION).tar.xz,sed-$(SED_VERSION),sed)
 

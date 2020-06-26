@@ -3,11 +3,11 @@ $(error Use the main Makefakeroot)
 endif
 
 SUBPROJECTS        += fakeroot
-DOWNLOAD           += https://deb.debian.org/debian/pool/main/f/fakeroot/fakeroot_$(FAKEROOT_VERSION).orig.tar.gz
 FAKEROOT_VERSION   := 1.24
 DEB_FAKEROOT_V     ?= $(FAKEROOT_VERSION)
 
 fakeroot-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/f/fakeroot/fakeroot_$(FAKEROOT_VERSION).orig.tar.gz
 	$(call EXTRACT_TAR,fakeroot_$(FAKEROOT_VERSION).orig.tar.gz,fakeroot-$(FAKEROOT_VERSION),fakeroot)
 	for file in $(BUILD_WORK)/fakeroot/{communicate.{c,h},faked.c,libfakeroot{,_unix2003}.c,wrapfunc.inp}; do \
 		$(SED) -i 's/struct stat64/struct stat/g' $$file; \

@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 #SUBPROJECTS      += libressl
-#DOWNLOAD         += https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-$(LIBRESSL_VERSION).tar.gz{,.asc}
 LIBRESSL_VERSION := 3.0.2
 DEB_LIBRESSL_V   ?= $(LIBRESSL_VERSION)
 
 libressl-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-$(LIBRESSL_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,libressl-$(LIBRESSL_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,libressl-$(LIBRESSL_VERSION).tar.gz,libressl-$(LIBRESSL_VERSION),libressl)
 

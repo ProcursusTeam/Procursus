@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS           += libutf8proc
-DOWNLOAD              += https://github.com/JuliaStrings/utf8proc/archive/v$(LIBUTF8PROC_VERSION).tar.gz
 LIBUTF8PROC_VERSION   := 2.5.0
 DEB_LIBUTF8PROC_V     ?= $(LIBUTF8PROC_VERSION)
 
 libutf8proc-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/JuliaStrings/utf8proc/archive/v$(LIBUTF8PROC_VERSION).tar.gz
 	$(call EXTRACT_TAR,v$(LIBUTF8PROC_VERSION).tar.gz,utf8proc-$(LIBUTF8PROC_VERSION),libutf8proc)
 
 ifneq ($(wildcard $(BUILD_WORK)/libutf8proc/.build_complete),)

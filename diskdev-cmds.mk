@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS        += diskdev-cmds
-DOWNLOAD             += https://opensource.apple.com/tarballs/diskdev_cmds/diskdev_cmds-$(DISKDEV-CMDS_VERSION).tar.gz
 DISKDEV-CMDS_VERSION := 593.230.1
 DEB_DISKDEV-CMDS_V   ?= $(DISKDEV-CMDS_VERSION)
 
 diskdev-cmds-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/diskdev_cmds/diskdev_cmds-$(DISKDEV-CMDS_VERSION).tar.gz
 	$(call EXTRACT_TAR,diskdev_cmds-$(DISKDEV-CMDS_VERSION).tar.gz,diskdev_cmds-$(DISKDEV-CMDS_VERSION),diskdev-cmds)
 	mkdir -p $(BUILD_STAGE)/diskdev-cmds/{usr/{{s,}bin,libexec},sbin}
 

@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += libgmp10
-DOWNLOAD    += https://gmplib.org/download/gmp/gmp-$(GMP_VERSION).tar.xz{,.sig}
 GMP_VERSION := 6.2.0
 DEB_GMP_V   ?= $(GMP_VERSION)
 
 libgmp10-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://gmplib.org/download/gmp/gmp-$(GMP_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,gmp-$(GMP_VERSION).tar.xz)
 	$(call EXTRACT_TAR,gmp-$(GMP_VERSION).tar.xz,gmp-$(GMP_VERSION),libgmp10)
 

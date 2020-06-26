@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += rsync
-DOWNLOAD      += https://download.samba.org/pub/rsync/src/rsync-$(RSYNC_VERSION).tar.gz{,.asc}
-RSYNC_VERSION := 3.1.3
+RSYNC_VERSION := 3.2.1
 DEB_RSYNC_V   ?= $(RSYNC_VERSION)
 
 rsync-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://download.samba.org/pub/rsync/src/rsync-$(RSYNC_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,rsync-$(RSYNC_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,rsync-$(RSYNC_VERSION).tar.gz,rsync-$(RSYNC_VERSION),rsync)
 
@@ -19,6 +19,8 @@ rsync: rsync-setup
 	cd $(BUILD_WORK)/rsync && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
+		--disable-simd \
+		--disable-xxhash \
 		rsync_cv_HAVE_GETTIMEOFDAY_TZ=yes
 	+$(MAKE) -C $(BUILD_WORK)/rsync install \
 		DESTDIR=$(BUILD_STAGE)/rsync
