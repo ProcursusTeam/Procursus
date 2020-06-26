@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS   += ldid
 LDID_VERSION  := 2.1.2
-DEB_LDID_V    ?= $(LDID_VERSION)
+DEB_LDID_V    ?= $(LDID_VERSION)-1
 
 ldid-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/Diatrus/saurik-ldid/archive/v$(LDID_VERSION).tar.gz
@@ -17,7 +17,7 @@ ldid:
 else
 ldid: ldid-setup openssl libplist
 	$(CC) -c $(CFLAGS) $(LDFLAGS) -o $(BUILD_WORK)/ldid/lookup2.o $(BUILD_WORK)/ldid/lookup2.c -I$(BUILD_WORK)/ldid
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -std=c++11 -o $(BUILD_STAGE)/ldid/usr/bin/ldid $(BUILD_WORK)/ldid/lookup2.o $(BUILD_WORK)/ldid/ldid.cpp -I$(BUILD_WORK)/ldid -framework CoreFoundation -framework Security -lcrypto -lplist -lxml2
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -std=c++11 -o $(BUILD_STAGE)/ldid/usr/bin/ldid $(BUILD_WORK)/ldid/lookup2.o $(BUILD_WORK)/ldid/ldid.cpp -I$(BUILD_WORK)/ldid -framework CoreFoundation -framework Security -lcrypto -lplist-2.0 -lxml2
 	$(LN) -s ldid $(BUILD_STAGE)/ldid/usr/bin/ldid2
 	touch $(BUILD_WORK)/ldid/.build_complete
 endif

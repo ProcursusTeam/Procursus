@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += libplist
-LIBPLIST_VERSION  := 2.1.0
+LIBPLIST_VERSION  := 2.2.0
 DEB_LIBPLIST_V    ?= $(LIBPLIST_VERSION)
 
 libplist-setup: setup
