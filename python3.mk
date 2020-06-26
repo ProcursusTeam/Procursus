@@ -5,7 +5,7 @@ endif
 SUBPROJECTS      += python3
 PYTHON3_MAJOR_V  := 3.8
 PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).3
-DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)-1
+DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)-2
 
 ifeq ($(call HAS_COMMAND,python$(PYTHON3_MAJOR_V)),1)
 else ifeq ($(call HAS_COMMAND,$(shell brew --prefix)/opt/python@$(PYTHON3_MAJOR_V)/bin/python$(PYTHON3_MAJOR_V)),1)
@@ -42,6 +42,7 @@ python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm
 	+$(MAKE) -C $(BUILD_WORK)/python3
 	+$(MAKE) -C $(BUILD_WORK)/python3 install \
 		DESTDIR=$(BUILD_STAGE)/python3
+	$(SED) -i -e 's|$(SYSROOT)|/usr/share/SDKs/iPhoneOS.sdk|' -e 's|$(BUILD_BASE)|/usr/share/SDKs/iPhoneOS.sdk|' $(BUILD_STAGE)/python3/usr/lib/python*/_sysconfigdata*.py
 	rm -f $(BUILD_STAGE)/python3/usr/{bin,share/man/man1}/!(*$(PYTHON3_MAJOR_V)*)
 	touch $(BUILD_WORK)/python3/.build_complete
 endif
