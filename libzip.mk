@@ -38,8 +38,8 @@ endif
 
 libzip-package: libzip-stage
 	# libzip.mk Package Structure
-	rm -rf $(BUILD_DIST)/nano
-	mkdir -p $(BUILD_DIST)/nano
+	rm -rf $(BUILD_DIST)/libzip
+	mkdir -p $(BUILD_DIST)/libzip
 
 	# libzip.mk Prep libzip
 	cp -a $(BUILD_STAGE)/libzip/usr $(BUILD_DIST)/libzip
@@ -51,6 +51,6 @@ libzip-package: libzip-stage
 	$(call PACK,libzip,DEB_LIBZIP_V)
 
 	# libzip.mk Build cleanup
-	rm -rf $(BUILD_DIST)/nano
+	rm -rf $(BUILD_DIST)/libzip
 
 .PHONY: libzip libzip-package
