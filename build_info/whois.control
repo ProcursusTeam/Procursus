@@ -1,0 +1,12 @@
+Package: whois
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_WHOIS_V@
+Depends: libidn2, libcrypt1
+Section: Networking
+Priority: important
+Description:
+  This package provides a commandline client for the WHOIS (RFC 3912) protocol,
+  which queries online servers for information such as contact details for domains and IP address assignments.
+  It can intelligently select the appropriate WHOIS server for most queries.
+Tag: purpose::console, role::hacker
