@@ -2,7 +2,6 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-DOWNLOAD      += http://deb.debian.org/debian/pool/main/a/apt/apt_$(APT_VERSION).tar.xz
 STRAPPROJECTS += apt
 APT_VERSION   := 2.1.6
 DEB_APT_V     ?= $(APT_VERSION)
@@ -12,6 +11,7 @@ APT_CMAKE_ARGS += -DHAVE_PTSNAME_R=0
 endif
 
 apt-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/a/apt/apt_$(APT_VERSION).tar.xz
 	$(call EXTRACT_TAR,apt_$(APT_VERSION).tar.xz,apt-$(APT_VERSION),apt)
 	$(call DO_PATCH,apt,apt,-p1)
 	mkdir -p $(BUILD_WORK)/apt/build

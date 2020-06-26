@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += npth
-DOWNLOAD      += https://gnupg.org/ftp/gcrypt/npth/npth-$(NPTH_VERSION).tar.bz2{,.sig}
 NPTH_VERSION  := 1.6
 DEB_NPTH_V    ?= $(NPTH_VERSION)
 
 npth-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/npth/npth-$(NPTH_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,npth-$(NPTH_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,npth-$(NPTH_VERSION).tar.bz2,npth-$(NPTH_VERSION),npth)
 

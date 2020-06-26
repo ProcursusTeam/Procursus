@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += ninja
-DOWNLOAD      += https://github.com/ninja-build/ninja/archive/v$(NINJA_VERSION).tar.gz
 NINJA_VERSION := 1.10.0
 DEB_NINJA_V   ?= $(NINJA_VERSION)
 
 ninja-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/ninja-build/ninja/archive/v$(NINJA_VERSION).tar.gz
 	$(call EXTRACT_TAR,v$(NINJA_VERSION).tar.gz,ninja-$(NINJA_VERSION),ninja)
 	mkdir -p $(BUILD_WORK)/ninja/build $(BUILD_STAGE)/ninja/usr/bin
 

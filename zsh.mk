@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += zsh
-DOWNLOAD      += https://www.zsh.org/pub/zsh-$(ZSH_VERSION).tar.xz{,.asc}
 ZSH_VERSION   := 5.8
 DEB_ZSH_V     ?= $(ZSH_VERSION)-1
 
 zsh-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://www.zsh.org/pub/zsh-$(ZSH_VERSION).tar.xz{,.asc}
 	$(call EXTRACT_TAR,zsh-$(ZSH_VERSION).tar.xz,zsh-$(ZSH_VERSION),zsh)
 	$(SED) -i 's/|| eno == ENOENT)/|| eno == ENOENT || eno == EPERM)/' $(BUILD_WORK)/zsh/Src/exec.c
 	$(SED) -i 's/(eno == ENOEXEC)/(eno == ENOEXEC || eno == EPERM)/' $(BUILD_WORK)/zsh/Src/exec.c

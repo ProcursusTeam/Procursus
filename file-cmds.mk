@@ -3,7 +3,6 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += file-cmds
-DOWNLOAD          += https://opensource.apple.com/tarballs/file_cmds/file_cmds-$(FILE-CMDS_VERSION).tar.gz
 # Don't upgrade file-cmds, as any future version includes APIs introduced in iOS 13+.
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 FILE-CMDS_VERSION := 272.250.1
@@ -13,6 +12,7 @@ endif
 DEB_FILE-CMDS_V   ?= $(FILE-CMDS_VERSION)-1
 
 file-cmds-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/file_cmds/file_cmds-$(FILE-CMDS_VERSION).tar.gz
 	$(call EXTRACT_TAR,file_cmds-$(FILE-CMDS_VERSION).tar.gz,file_cmds-$(FILE-CMDS_VERSION),file-cmds)
 	mkdir -p $(BUILD_STAGE)/file-cmds/usr/bin
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.

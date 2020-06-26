@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += pcre
-DOWNLOAD      += https://ftp.pcre.org/pub/pcre/pcre-$(PCRE_VERSION).tar.bz2{,.sig}
 PCRE_VERSION  := 8.44
 DEB_PCRE_V    ?= $(PCRE_VERSION)
 
 pcre-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://ftp.pcre.org/pub/pcre/pcre-$(PCRE_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,pcre-$(PCRE_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,pcre-$(PCRE_VERSION).tar.bz2,pcre-$(PCRE_VERSION),pcre)
 

@@ -3,13 +3,13 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += unzip
-DOWNLOAD       += https://deb.debian.org/debian/pool/main/u/unzip/unzip_$(UNZIP_VERSION).orig.tar.gz \
-		https://deb.debian.org/debian/pool/main/u/unzip/unzip_$(DEBIAN_UNZIP_V).debian.tar.xz
 UNZIP_VERSION  := 6.0
 DEBIAN_UNZIP_V := $(UNZIP_VERSION)-25
 DEB_UNZIP_V    ?= $(DEBIAN_UNZIP_V)
 
 unzip-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/u/unzip/unzip_$(UNZIP_VERSION).orig.tar.gz \
+		https://deb.debian.org/debian/pool/main/u/unzip/unzip_$(DEBIAN_UNZIP_V).debian.tar.xz
 	$(call EXTRACT_TAR,unzip_$(UNZIP_VERSION).orig.tar.gz,unzip60,unzip)
 	$(call EXTRACT_TAR,unzip_$(DEBIAN_UNZIP_V).debian.tar.xz,debian/patches,$(BUILD_PATCH)/unzip-$(UNZIP_VERSION))
 	rm -rf $(BUILD_WORK)/debian

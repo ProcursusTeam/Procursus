@@ -3,7 +3,6 @@ $(error Use the main Makefile)
 endif
 
 #SUBPROJECTS   += llvm
-DOWNLOAD       += https://github.com/apple/llvm-project/archive/swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz
 LLVM_VERSION   := 10.0.0
 LLVM_MAJOR_V   := 10
 SWIFT_VERSION  := 5.3
@@ -34,6 +33,7 @@ SWIFT_OLD           := ON
 endif
 
 llvm-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/apple/llvm-project/archive/swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz
 	-[ ! -e "$(BUILD_SOURCE)/swift-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz" ] && wget -O $(BUILD_SOURCE)/swift-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz https://github.com/apple/swift/archive/swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz
 	-[ ! -e "$(BUILD_SOURCE)/swift-cmark-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz" ] && wget -O $(BUILD_SOURCE)/swift-cmark-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz https://github.com/apple/cmark/archive/swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz
 	$(call EXTRACT_TAR,swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz,llvm-project-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),llvm)

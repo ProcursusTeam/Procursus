@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += xz
-DOWNLOAD      += https://tukaani.org/xz/xz-$(XZ_VERSION).tar.xz{,.sig}
 XZ_VERSION    := 5.2.5
 DEB_XZ_V      ?= $(XZ_VERSION)
 
 xz-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://tukaani.org/xz/xz-$(XZ_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,xz-$(XZ_VERSION).tar.xz)
 	$(call EXTRACT_TAR,xz-$(XZ_VERSION).tar.xz,xz-$(XZ_VERSION),xz)
 	mkdir -p $(BUILD_STAGE)/xz/usr/bin

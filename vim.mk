@@ -3,12 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += vim
-DOWNLOAD    += https://github.com/vim/vim/archive/v$(VIM_VERSION).tar.gz
 # Per homebrew, vim should only be updated every 50 releases on multiples of 50
 VIM_VERSION := 8.2.0700
 DEB_VIM_V   ?= $(VIM_VERSION)
 
 vim-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/vim/vim/archive/v$(VIM_VERSION).tar.gz
 	$(call EXTRACT_TAR,v$(VIM_VERSION).tar.gz,vim-$(VIM_VERSION),vim)
 
 ifneq ($(wildcard $(BUILD_WORK)/vim/.build_complete),)

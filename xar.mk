@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += xar
-DOWNLOAD    += https://github.com/downloads/mackyle/xar/xar-$(XAR_VERSION).tar.gz
 XAR_VERSION := 1.6.1
 DEB_XAR_V   ?= $(XAR_VERSION)
 
-xar-setup: setup file-setup
+xar-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/downloads/mackyle/xar/xar-$(XAR_VERSION).tar.gz file-setup
 	$(call EXTRACT_TAR,xar-$(XAR_VERSION).tar.gz,xar-$(XAR_VERSION),xar)
 	cp -a $(BUILD_WORK)/file/config.sub $(BUILD_WORK)/xar
 

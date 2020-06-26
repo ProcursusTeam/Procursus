@@ -3,7 +3,6 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += python3
-DOWNLOAD         += https://www.python.org/ftp/python/$(PYTHON3_VERSION)/Python-$(PYTHON3_VERSION).tar.xz{,.asc}
 PYTHON3_MAJOR_V  := 3.8
 PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).3
 DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)
@@ -16,6 +15,7 @@ $(error Install Python $(PYTHON3_MAJOR_V))
 endif
 
 python3-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://www.python.org/ftp/python/$(PYTHON3_VERSION)/Python-$(PYTHON3_VERSION).tar.xz{,.asc}
 	$(call PGP_VERIFY,Python-$(PYTHON3_VERSION).tar.xz,asc)
 	$(call EXTRACT_TAR,Python-$(PYTHON3_VERSION).tar.xz,Python-$(PYTHON3_VERSION),python3)
 	$(call DO_PATCH,python3,python3,-p1)

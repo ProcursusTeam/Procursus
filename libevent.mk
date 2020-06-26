@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += libevent
-DOWNLOAD           += https://github.com/libevent/libevent/releases/download/release-$(LIBEVENT_VERSION)-stable/libevent-$(LIBEVENT_VERSION)-stable.tar.gz{,.asc}
 LIBEVENT_VERSION   := 2.1.11
 DEB_LIBEVENT_V     ?= $(LIBEVENT_VERSION)
 
 libevent-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libevent/libevent/releases/download/release-$(LIBEVENT_VERSION)-stable/libevent-$(LIBEVENT_VERSION)-stable.tar.gz{,.asc}
 	$(call PGP_VERIFY,libevent-$(LIBEVENT_VERSION)-stable.tar.gz,asc)
 	$(call EXTRACT_TAR,libevent-$(LIBEVENT_VERSION)-stable.tar.gz,libevent-$(LIBEVENT_VERSION)-stable,libevent)
 

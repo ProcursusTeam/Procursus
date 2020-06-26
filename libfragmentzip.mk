@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS            += libfragmentzip
-DOWNLOAD               += https://github.com/tihmstar/libfragmentzip/archive/$(LIBFRAGMENTZIP_VERSION).tar.gz
 LIBFRAGMENTZIP_VERSION := 60
 DEB_LIBFRAGMENTZIP_V   ?= $(LIBFRAGMENTZIP_VERSION)
 
 libfragmentzip-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tihmstar/libfragmentzip/archive/$(LIBFRAGMENTZIP_VERSION).tar.gz
 	$(call EXTRACT_TAR,libfragmentzip-$(LIBFRAGMENTZIP_VERSION).tar.gz,libfragmentzip-$(LIBFRAGMENTZIP_VERSION),libfragmentzip)
 
 ifneq ($(wildcard $(BUILD_WORK)/libfragmentzip/.build_complete),)

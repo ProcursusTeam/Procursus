@@ -3,7 +3,6 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS     += coreutils
-DOWNLOAD          += https://ftpmirror.gnu.org/coreutils/coreutils-$(COREUTILS_VERSION).tar.xz{,.sig}
 COREUTILS_VERSION := 8.32
 DEB_COREUTILS_V   ?= $(COREUTILS_VERSION)
 
@@ -12,6 +11,7 @@ COREUTILS_CONFIGURE_ARGS += ac_cv_func_rpmatch=no
 endif
 
 coreutils-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/coreutils/coreutils-$(COREUTILS_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,coreutils-$(COREUTILS_VERSION).tar.xz,coreutils-$(COREUTILS_VERSION),coreutils)
 	mkdir -p $(BUILD_WORK)/coreutils/su

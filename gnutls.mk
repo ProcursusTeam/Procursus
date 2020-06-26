@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += gnutls
-DOWNLOAD       += https://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/gnutls-$(GNUTLS_VERSION).tar.xz
 GNUTLS_VERSION := 3.6.13
 DEB_GNUTLS_V   ?= $(GNUTLS_VERSION)
 
 gnutls-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/gnutls-$(GNUTLS_VERSION).tar.xz
 	$(call EXTRACT_TAR,gnutls-$(GNUTLS_VERSION).tar.xz,gnutls-$(GNUTLS_VERSION),gnutls)
 	mkdir -p $(BUILD_WORK)/gnutls/lib/accelerated/aarch64/macosx
 	wget -q -nc -P $(BUILD_WORK)/gnutls/lib/accelerated/aarch64/macosx \

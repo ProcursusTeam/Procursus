@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS     += diffutils
-DOWNLOAD          += https://ftpmirror.gnu.org/diffutils/diffutils-$(DIFFUTILS_VERSION).tar.xz{,.sig}
 DIFFUTILS_VERSION := 3.7
 DEB_DIFFUTILS_V   ?= $(DIFFUTILS_VERSION)
 
 diffutils-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/diffutils/diffutils-$(DIFFUTILS_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,diffutils-$(DIFFUTILS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,diffutils-$(DIFFUTILS_VERSION).tar.xz,diffutils-$(DIFFUTILS_VERSION),diffutils)
 

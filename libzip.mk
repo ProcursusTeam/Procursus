@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS          += libzip
-DOWNLOAD             += https://libzip.org/download/libzip-$(LIBZIP_VERSION).tar.gz
 LIBZIP_VERSION       := 1.7.0
 DEB_LIBZIP_V         ?= $(LIBZIP_VERSION)
 
 libzip-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://libzip.org/download/libzip-$(LIBZIP_VERSION).tar.gz
 	$(call EXTRACT_TAR,libzip-$(LIBZIP_VERSION).tar.gz,libzip-$(LIBZIP_VERSION),libzip)
 
 ifneq ($(wildcard $(BUILD_WORK)/libzip/.build_complete),)

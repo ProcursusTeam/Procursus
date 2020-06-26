@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += pincrush
-DOWNLOAD         += https://github.com/DHowett/pincrush/archive/$(PINCRUSH_VERSION).tar.gz
 PINCRUSH_VERSION := 0.9.2
 DEB_PINCRUSH_V   ?= $(PINCRUSH_VERSION)
 
 pincrush-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/DHowett/pincrush/archive/$(PINCRUSH_VERSION).tar.gz
 	$(call EXTRACT_TAR,$(PINCRUSH_VERSION).tar.gz,pincrush-$(PINCRUSH_VERSION),pincrush)
 	mkdir -p $(BUILD_STAGE)/pincrush/usr/bin
 

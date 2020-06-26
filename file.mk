@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += file
-DOWNLOAD       += ftp://ftp.astron.com/pub/file/file-$(FILE_VERSION).tar.gz{,.asc}
 FILE_VERSION   := 5.38
 DEB_FILE_V     ?= $(FILE_VERSION)
 
 file-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) ftp://ftp.astron.com/pub/file/file-$(FILE_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,file-$(FILE_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,file-$(FILE_VERSION).tar.gz,file-$(FILE_VERSION),file)
 

@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += neofetch
-DOWNLOAD         += https://github.com/dylanaraps/neofetch/archive/$(NEOFETCH_VERSION).tar.gz
 NEOFETCH_VERSION := 7.0.0
 DEB_NEOFETCH_V   ?= $(NEOFETCH_VERSION)
 
 neofetch-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/dylanaraps/neofetch/archive/$(NEOFETCH_VERSION).tar.gz
 	$(call EXTRACT_TAR,$(NEOFETCH_VERSION).tar.gz,neofetch-$(NEOFETCH_VERSION),neofetch)
 
 ifneq ($(wildcard $(BUILD_WORK)/neofetch/.build_complete),)

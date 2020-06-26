@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += htop
-DOWNLOAD     += https://hisham.hm/htop/releases/$(HTOP_VERSION)/htop-$(HTOP_VERSION).tar.gz{,.asc}
 HTOP_VERSION := 2.2.0
 DEB_HTOP_V   ?= $(HTOP_VERSION)
 
 htop-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://hisham.hm/htop/releases/$(HTOP_VERSION)/htop-$(HTOP_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,htop-$(HTOP_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,htop-$(HTOP_VERSION).tar.gz,htop-$(HTOP_VERSION),htop)
 

@@ -7,7 +7,6 @@ STRAPPROJECTS   += openssl
 else
 SUBPROJECTS     += openssl
 endif
-DOWNLOAD        += https://www.openssl.org/source/openssl-$(OPENSSL_VERSION).tar.gz{,.asc}
 OPENSSL_VERSION := 1.1.1g
 DEB_OPENSSL_V   ?= $(OPENSSL_VERSION)
 
@@ -20,6 +19,7 @@ else
 endif
 
 openssl-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://www.openssl.org/source/openssl-$(OPENSSL_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,openssl-$(OPENSSL_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,openssl-$(OPENSSL_VERSION).tar.gz,openssl-$(OPENSSL_VERSION),openssl)
 	touch $(BUILD_WORK)/openssl/Configurations/15-diatrus.conf

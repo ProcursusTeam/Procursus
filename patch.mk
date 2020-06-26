@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += patch
-DOWNLOAD      += https://ftpmirror.gnu.org/patch/patch-$(PATCH_VERSION).tar.xz{,.sig}
 PATCH_VERSION := 2.7.6
 DEB_PATCH_V   ?= $(PATCH_VERSION)
 
 patch-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/patch/patch-$(PATCH_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,patch-$(PATCH_VERSION).tar.xz)
 	$(call EXTRACT_TAR,patch-$(PATCH_VERSION).tar.xz,patch-$(PATCH_VERSION),patch)
 

@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += less
-DOWNLOAD     += https://ftpmirror.gnu.org/less/less-$(LESS_VERSION).tar.gz{,.sig}
 LESS_VERSION := 530
 DEB_LESS_V   ?= $(LESS_VERSION)
 
 less-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/less/less-$(LESS_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,less-$(LESS_VERSION).tar.gz)
 	$(call EXTRACT_TAR,less-$(LESS_VERSION).tar.gz,less-$(LESS_VERSION),less)
 

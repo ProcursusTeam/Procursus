@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += libgdbm
-DOWNLOAD        += https://ftpmirror.gnu.org/gdbm/gdbm-$(LIBGDBM_VERSION).tar.gz{,.sig}
 LIBGDBM_VERSION := 1.18.1
 DEB_LIBGDBM_V   ?= $(LIBGDBM_VERSION)
 
 libgdbm-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gdbm/gdbm-$(LIBGDBM_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,gdbm-$(LIBGDBM_VERSION).tar.gz)
 	$(call EXTRACT_TAR,gdbm-$(LIBGDBM_VERSION).tar.gz,gdbm-$(LIBGDBM_VERSION),libgdbm)
 

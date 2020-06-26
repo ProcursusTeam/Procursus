@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS  += dpkg
-DOWNLOAD       += https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_$(DPKG_VERSION).tar.xz
 DPKG_VERSION   := 1.20.0
 DEB_DPKG_V     ?= $(DPKG_VERSION)-1
 
 dpkg-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_$(DPKG_VERSION).tar.xz
 	$(call EXTRACT_TAR,dpkg_$(DPKG_VERSION).tar.xz,dpkg-$(DPKG_VERSION),dpkg)
 	$(call DO_PATCH,dpkg,dpkg,-p1)
 

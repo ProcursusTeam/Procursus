@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS   += gettext
-DOWNLOAD        += https://ftpmirror.gnu.org/gettext/gettext-$(GETTEXT_VERSION).tar.xz{,.sig}
 GETTEXT_VERSION := 0.20.2
 DEB_GETTEXT_V   ?= $(GETTEXT_VERSION)
 
 gettext-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gettext/gettext-$(GETTEXT_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,gettext-$(GETTEXT_VERSION).tar.xz)
 	$(call EXTRACT_TAR,gettext-$(GETTEXT_VERSION).tar.xz,gettext-$(GETTEXT_VERSION),gettext)
 

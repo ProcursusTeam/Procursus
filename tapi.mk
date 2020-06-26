@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 #SUBPROJECTS   += tapi
-DOWNLOAD       += https://github.com/Diatrus/apple-libtapi/archive/v$(TAPI_VERSION).tar.gz
 TAPI_VERSION   := 1000.10.8
 DEB_TAPI_V     ?= $(TAPI_VERSION)
 
 tapi-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/Diatrus/apple-libtapi/archive/v$(TAPI_VERSION).tar.gz
 	$(call EXTRACT_TAR,v$(TAPI_VERSION).tar.gz,apple-libtapi-$(TAPI_VERSION),tapi)
 	mkdir -p $(BUILD_WORK)/tapi/build
 

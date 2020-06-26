@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += groff
-DOWNLOAD       += https://ftpmirror.gnu.org/groff/groff-$(GROFF_VERSION).tar.gz{,.sig}
 GROFF_VERSION  := 1.22.4
 DEB_GROFF_V    ?= $(GROFF_VERSION)
 
 groff-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/groff/groff-$(GROFF_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,groff-$(GROFF_VERSION).tar.gz)
 	$(call EXTRACT_TAR,groff-$(GROFF_VERSION).tar.gz,groff-$(GROFF_VERSION),groff)
 

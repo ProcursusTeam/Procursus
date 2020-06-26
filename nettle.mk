@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += nettle
-DOWNLOAD       += https://ftpmirror.gnu.org/nettle/nettle-$(NETTLE_VERSION).tar.gz{,.sig}
 NETTLE_VERSION := 3.5.1
 DEB_NETTLE_V   ?= $(NETTLE_VERSION)
 
 nettle-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/nettle/nettle-$(NETTLE_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,nettle-$(NETTLE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,nettle-$(NETTLE_VERSION).tar.gz,nettle-$(NETTLE_VERSION),nettle)
 

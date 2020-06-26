@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += gzip
-DOWNLOAD      += https://ftpmirror.gnu.org/gzip/gzip-$(GZIP_VERSION).tar.xz{,.sig}
 GZIP_VERSION  := 1.10
 DEB_GZIP_V    ?= $(GZIP_VERSION)
 
 gzip-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gzip/gzip-$(GZIP_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,gzip-$(GZIP_VERSION).tar.xz)
 	$(call EXTRACT_TAR,gzip-$(GZIP_VERSION).tar.xz,gzip-$(GZIP_VERSION),gzip)
 	mkdir -p $(BUILD_STAGE)/gzip/bin

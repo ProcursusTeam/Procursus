@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += man-db
-DOWNLOAD       += https://download.savannah.gnu.org/releases/man-db/man-db-$(MAN-DB_VERSION).tar.xz{,.asc}
 MAN-DB_VERSION := 2.9.1
 DEB_MAN-DB_V   ?= $(MAN-DB_VERSION)
 
 man-db-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://download.savannah.gnu.org/releases/man-db/man-db-$(MAN-DB_VERSION).tar.xz{,.asc}
 	$(call PGP_VERIFY,man-db-$(MAN-DB_VERSION).tar.xz,asc)
 	$(call EXTRACT_TAR,man-db-$(MAN-DB_VERSION).tar.xz,man-db-$(MAN-DB_VERSION),man-db)
 
