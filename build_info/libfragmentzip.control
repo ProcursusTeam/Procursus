@@ -6,3 +6,4 @@ Depends: libzip, curl
 Section: Development
 Priority: optional
 Description: A library allowing to download single files from a remote zip archive 
+Tag: purpose::console, role::developer

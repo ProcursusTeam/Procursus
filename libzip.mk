@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS          += libzip
-LIBZIP_VERSION       := 1.7.0
+LIBZIP_VERSION       := 1.7.1
 DEB_LIBZIP_V         ?= $(LIBZIP_VERSION)
 
 libzip-setup: setup
@@ -31,6 +31,8 @@ libzip: libzip-setup
 	+$(MAKE) -C $(BUILD_WORK)/libzip
 	+$(MAKE) -C $(BUILD_WORK)/libzip install \
 		DESTDIR="$(BUILD_STAGE)/libzip"
+	+$(MAKE) -C $(BUILD_WORK)/libzip install \
+		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/libzip/.build_complete
 endif
 
