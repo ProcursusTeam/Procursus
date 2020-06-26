@@ -5,7 +5,7 @@ endif
 SUBPROJECTS      += python3
 PYTHON3_MAJOR_V  := 3.8
 PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).3
-DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)
+DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)-1
 
 ifeq ($(call HAS_COMMAND,python$(PYTHON3_MAJOR_V)),1)
 else ifeq ($(call HAS_COMMAND,$(shell brew --prefix)/opt/python@$(PYTHON3_MAJOR_V)/bin/python$(PYTHON3_MAJOR_V)),1)
@@ -18,13 +18,8 @@ python3-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.python.org/ftp/python/$(PYTHON3_VERSION)/Python-$(PYTHON3_VERSION).tar.xz{,.asc}
 	$(call PGP_VERIFY,Python-$(PYTHON3_VERSION).tar.xz,asc)
 	$(call EXTRACT_TAR,Python-$(PYTHON3_VERSION).tar.xz,Python-$(PYTHON3_VERSION),python3)
-	$(call DO_PATCH,python3,python3,-p1)
-	$(SED) -i 's/-vxworks/-darwin/g' $(BUILD_WORK)/python3/configure.ac
-	$(SED) -i 's/system=VxWorks/system=Darwin/g' $(BUILD_WORK)/python3/configure.ac
-	$(SED) -i '/readelf for/d' $(BUILD_WORK)/python3/configure.ac
-	$(SED) -i "s|self.compiler.library_dirs|['$(SYSROOT)/usr/lib'] + ['$(BUILD_BASE)/usr/lib']|g" $(BUILD_WORK)/python3/setup.py
-	$(SED) -i "s|self.compiler.include_dirs|['$(SYSROOT)/usr/include'] + ['$(BUILD_BASE)/usr/include']|g" $(BUILD_WORK)/python3/setup.py
-	$(SED) -i 's|LIBFFI_INCLUDEDIR=.*|LIBFFI_INCLUDEDIR="$(BUILD_BASE)/usr/include"|g' $(BUILD_WORK)/python3/configure.ac
+	$(SED) -i -e 's/-vxworks/-darwin/g' -e 's/system=VxWorks/system=Darwin/g' -e '/readelf for/d' -e 's|LIBFFI_INCLUDEDIR=.*|LIBFFI_INCLUDEDIR="$(BUILD_BASE)/usr/include"|g' $(BUILD_WORK)/python3/configure.ac
+	$(SED) -i -e "s|self.compiler.library_dirs|['$(SYSROOT)/usr/lib'] + ['$(BUILD_BASE)/usr/lib']|g" -e "s|self.compiler.include_dirs|['$(SYSROOT)/usr/include'] + ['$(BUILD_BASE)/usr/include']|g" -e "s/HOST_PLATFORM == 'darwin'/HOST_PLATFORM.startswith('darwin')/" $(BUILD_WORK)/python3/setup.py
 
 ifneq ($(wildcard $(BUILD_WORK)/python3/.build_complete),)
 python3:
@@ -48,7 +43,6 @@ python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm
 	+$(MAKE) -C $(BUILD_WORK)/python3 install \
 		DESTDIR=$(BUILD_STAGE)/python3
 	rm -f $(BUILD_STAGE)/python3/usr/{bin,share/man/man1}/!(*$(PYTHON3_MAJOR_V)*)
-	mkdir -p $(BUILD_STAGE)/python3/usr/lib/python3/dist-packages
 	touch $(BUILD_WORK)/python3/.build_complete
 endif
 
