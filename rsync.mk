@@ -19,6 +19,8 @@ rsync: rsync-setup
 	cd $(BUILD_WORK)/rsync && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
+		--disable-simd \
+		--disable-xxhash \
 		rsync_cv_HAVE_GETTIMEOFDAY_TZ=yes
 	+$(MAKE) -C $(BUILD_WORK)/rsync install \
 		DESTDIR=$(BUILD_STAGE)/rsync
