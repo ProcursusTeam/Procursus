@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += tor
-DOWNLOAD     += https://dist.torproject.org/tor-$(TOR_VERSION).tar.gz
 TOR_VERSION  := 0.4.3.5
 DEB_TOR_V    ?= $(TOR_VERSION)
 
 tor-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://dist.torproject.org/tor-$(TOR_VERSION).tar.gz
 	$(call EXTRACT_TAR,tor-$(TOR_VERSION).tar.gz,tor-$(TOR_VERSION),tor)
 
 ifneq ($(wildcard $(BUILD_WORK)/tor/.build_complete),)
