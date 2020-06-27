@@ -10,3 +10,6 @@
 [submodule "apt"]
 	path = apt
 	url = https://github.com/Diatrus/apt.git
+[submodule "nanorc"]
+	path = nanorc
+	url = https://github.com/scopatz/nanorc

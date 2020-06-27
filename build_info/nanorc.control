@@ -1,0 +1,8 @@
+Package: nanorc
+Version: @DEB_NANORC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: nano
+Section: Text_Editors
+Priority: optional
+Description: Improved Nano Syntax Highlighting Files
