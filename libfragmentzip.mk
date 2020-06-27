@@ -21,6 +21,8 @@ libfragmentzip: libfragmentzip-setup libgeneral libzip curl
 	+$(MAKE) -C $(BUILD_WORK)/libfragmentzip
 	+$(MAKE) -C $(BUILD_WORK)/libfragmentzip install \
 		DESTDIR="$(BUILD_STAGE)/libfragmentzip"
+	+$(MAKE) -C $(BUILD_WORK)/libfragmentzip install \
+		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/libfragmentzip/.build_complete
 endif
 
