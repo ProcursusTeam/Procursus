@@ -25,8 +25,6 @@ lzfse: lzfse-setup
 		-DCMAKE_INSTALL_RPATH=/usr \
 		-DCMAKE_OSX_SYSROOT="$(SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
-		-DCOMMON_ARCH=$(DEB_ARCH) \
 		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) 
 	+$(MAKE) -C $(BUILD_WORK)/lzfse
 	+$(MAKE) -C $(BUILD_WORK)/lzfse install \
