@@ -14,6 +14,16 @@ else
 $(error Install Python $(PYTHON3_MAJOR_V))
 endif
 
+ifeq ($(PLATFORM),iphoneos)
+BARE_SDK := iPhoneOS.sdk
+else ifeq ($(PLATFORM),appletvos)
+BARE_SDK := AppleTVOS.sdk
+else ifeq ($(PLATFORM),watchos)
+BARE_SDK := WatchOS.sdk
+else
+$(error Unsupported platform $(PLATFORM))
+endif
+
 python3-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.python.org/ftp/python/$(PYTHON3_VERSION)/Python-$(PYTHON3_VERSION).tar.xz{,.asc}
 	$(call PGP_VERIFY,Python-$(PYTHON3_VERSION).tar.xz,asc)
@@ -42,7 +52,7 @@ python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm
 	+$(MAKE) -C $(BUILD_WORK)/python3
 	+$(MAKE) -C $(BUILD_WORK)/python3 install \
 		DESTDIR=$(BUILD_STAGE)/python3
-	$(SED) -i -e 's|$(SYSROOT)|/usr/share/SDKs/iPhoneOS.sdk|' -e 's|$(BUILD_BASE)|/usr/share/SDKs/iPhoneOS.sdk|' $(BUILD_STAGE)/python3/usr/lib/python*/_sysconfigdata*.py
+	$(SED) -i -e 's|$(SYSROOT)|/usr/share/SDKs/$(BARE_SDK)|' -e 's|$(BUILD_BASE)|/usr/share/SDKs/$(BARE_SDK)|' $(BUILD_STAGE)/python3/usr/lib/python*/_sysconfigdata*.py
 	rm -f $(BUILD_STAGE)/python3/usr/{bin,share/man/man1}/!(*$(PYTHON3_MAJOR_V)*)
 	touch $(BUILD_WORK)/python3/.build_complete
 endif
