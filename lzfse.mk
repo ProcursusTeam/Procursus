@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += lzfse
-DOWNLOAD      += https://github.com/lzfse/lzfse/archive/lzfse-$(LZFSE_VERSION).tar.gz
 LZFSE_VERSION := 1.0
 DEB_LZFSE_V   ?= $(LZFSE_VERSION)
 
 lzfse-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/lzfse/lzfse/archive/lzfse-$(LZFSE_VERSION).tar.gz
 	$(call EXTRACT_TAR,lzfse-$(LZFSE_VERSION).tar.gz,lzfse-lzfse-$(LZFSE_VERSION),lzfse)
 
 ifneq ($(wildcard $(BUILD_WORK)/lzfse/.build_complete),)
