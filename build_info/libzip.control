@@ -2,7 +2,7 @@ Package: libzip
 Version: @DEB_LIBZIP_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: xz
+Depends: xz-utils
 Section: Development
 Priority: optional
 Description: a C library for reading, creating, and modifying zip archives. 
