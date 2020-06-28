@@ -25,6 +25,8 @@ libirecovery: libirecovery-setup readline
 		CFLAGS="$(CFLAGS) -D__OPEN_SOURCE__"
 	+$(MAKE) -C $(BUILD_WORK)/libirecovery install \
 		DESTDIR=$(BUILD_STAGE)/libirecovery
+	+$(MAKE) -C $(BUILD_WORK)/libirecovery install \
+		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libirecovery/.build_complete
 endif
 

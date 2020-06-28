@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/curl/.build_complete),)
 curl:
 	@echo "Using previously built curl."
 else
-curl: curl-setup openssl libssh2 nghttp2 libidn2
+curl: curl-setup openssl libssh2 nghttp2 libidn2 libunistring
 	cd $(BUILD_WORK)/curl && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

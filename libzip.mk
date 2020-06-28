@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libzip/.build_complete),)
 libzip:
 	@echo "Using previously built libzip."
 else
-libzip: libzip-setup
+libzip: libzip-setup xz
 	cd $(BUILD_WORK)/libzip && cmake . \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
