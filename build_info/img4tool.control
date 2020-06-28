@@ -1,0 +1,9 @@
+Package: img4tool
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_IMG4TOOL_V@
+Depends: libplist, openssl
+Section: Utilities
+Priority: optional
+Description: a powerfull tool to check tss signing status of various devices and firmwares
+Tag: purpose::console, role::hacker
