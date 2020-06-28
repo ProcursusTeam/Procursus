@@ -5,5 +5,5 @@ Version: @DEB_IMG4TOOL_V@
 Depends: libplist, openssl
 Section: Utilities
 Priority: optional
-Description: a powerfull tool to check tss signing status of various devices and firmwares
+Description: A tool for manipulating IMG4, IM4M and IM4P files
 Tag: purpose::console, role::hacker
