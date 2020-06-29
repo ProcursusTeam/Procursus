@@ -1,7 +1,7 @@
-Package: libtool
+Package: GNU libtool
 Version: @DEB_LIBTOOL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Development
 Priority: optional
-Description: GNU Libtool is a generic library support script. Libtool hides the complexity of using shared libraries behind a consistent, portable interface.
+Description: GNU Libtool is a generic library support script. Libtool hides the complexity of using shared libraries behind a consistent, portable interface. This libtool is prefixed with g in order to not conflict with Darwin CC Tools.
