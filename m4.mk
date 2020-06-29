@@ -18,8 +18,7 @@ else
 m4: m4-setup
 	cd $(BUILD_WORK)/m4 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--enable-ltdl-install
+		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/m4
 	+$(MAKE) -C $(BUILD_WORK)/m4 install \
 		DESTDIR=$(BUILD_STAGE)/m4
