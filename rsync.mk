@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/rsync/.build_complete),)
 rsync:
 	@echo "Using previously built rsync."
 else
-rsync: rsync-setup
+rsync: rsync-setup openssl lz4 zstd
 	cd $(BUILD_WORK)/rsync && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
