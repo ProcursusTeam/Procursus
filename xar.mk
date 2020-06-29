@@ -6,8 +6,8 @@ SUBPROJECTS += xar
 XAR_VERSION := 1.6.1
 DEB_XAR_V   ?= $(XAR_VERSION)
 
-xar-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/downloads/mackyle/xar/xar-$(XAR_VERSION).tar.gz file-setup
+xar-setup: setup file-setup
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/downloads/mackyle/xar/xar-$(XAR_VERSION).tar.gz
 	$(call EXTRACT_TAR,xar-$(XAR_VERSION).tar.gz,xar-$(XAR_VERSION),xar)
 	cp -a $(BUILD_WORK)/file/config.sub $(BUILD_WORK)/xar
 
