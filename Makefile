@@ -311,6 +311,10 @@ ifneq ($(call HAS_COMMAND,cmake),1)
 $(error Install cmake)
 endif
 
+ifneq ($(call HAS_COMMAND,po4a),1)
+$(error Install po4a)
+endif
+
 ifneq ($(call HAS_COMMAND,pkg-config),1)
 $(error Install pkg-config)
 endif

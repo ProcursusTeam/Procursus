@@ -15,8 +15,6 @@ Subject: [PATCH] dpkg: Add Zstandard compression and decompression support for
  lib/dpkg/compress.c  | 157 ++++++++++++++++++++++++++++++++++++++++++-
  lib/dpkg/compress.h  |   1 +
  m4/dpkg-libs.m4      |   7 ++
- man/deb.man          |   6 +-
- man/dpkg-deb.man     |   2 +-
  t-func/deb-format.at |  13 ++++
  13 files changed, 193 insertions(+), 5 deletions(-)
 
@@ -349,43 +347,6 @@ index 577264706..8cbb3faa3 100644
  # DPKG_LIB_LZMA
  # -------------
  # Check for lzma library.
-diff --git a/man/deb.man b/man/deb.man
-index 2b8da5ff0..8d680dbdd 100644
---- a/man/deb.man
-+++ b/man/deb.man
-@@ -75,8 +75,9 @@ The second required member is named
- .BR control.tar .
- It is a tar archive containing the package control information, either
- not compressed (supported since dpkg 1.17.6), or compressed with
--gzip (with \fB.gz\fP extension) or
--xz (with \fB.xz\fP extension, supported since 1.17.6),
-+gzip (with \fB.gz\fP extension),
-+xz (with \fB.xz\fP extension, supported since 1.17.6) or
-+zstd (with \fB.zst\fP extension, supported since 1.19.1),
- as a series of plain files, of which the file
- .B control
- is mandatory and contains the core control information, the
-@@ -98,6 +99,7 @@ It contains the filesystem as a tar archive, either
- not compressed (supported since dpkg 1.10.24), or compressed with
- gzip (with \fB.gz\fP extension),
- xz (with \fB.xz\fP extension, supported since dpkg 1.15.6),
-+zstd (with \fB.zst\fP extension, supported since 1.19.1),
- bzip2 (with \fB.bz2\fP extension, supported since dpkg 1.10.24) or
- lzma (with \fB.lzma\fP extension, supported since dpkg 1.13.25).
- .PP
-diff --git a/man/dpkg-deb.man b/man/dpkg-deb.man
-index f843f0a83..f94539f6a 100644
---- a/man/dpkg-deb.man
-+++ b/man/dpkg-deb.man
-@@ -230,7 +230,7 @@ The default for this field is “${Package}\\t${Version}\\n”.
- .TP
- .BI \-z compress-level
- Specify which compression level to use on the compressor backend, when
--building a package (default is 9 for gzip, 6 for xz).
-+building a package (default is 9 for gzip, 6 for xz and 19 for zstd).
- The accepted values are 0-9 with: 0 being mapped to compressor none for gzip.
- Before dpkg 1.16.2 level 0 was equivalent to compressor none for all
- compressors.
 diff --git a/t-func/deb-format.at b/t-func/deb-format.at
 index cdfc648a8..0296c1d04 100644
 --- a/t-func/deb-format.at

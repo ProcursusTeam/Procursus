@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS  += dpkg
-DPKG_VERSION   := 1.20.0
+DPKG_VERSION   := 1.20.3
 DEB_DPKG_V     ?= $(DPKG_VERSION)-1
 
 dpkg-setup: setup
@@ -52,16 +52,17 @@ dpkg-package: dpkg-stage
 	# dpkg.mk Prep DPKG
 	cp -a $(BUILD_STAGE)/dpkg/{etc,Library,var} $(BUILD_DIST)/dpkg
 	cp -a $(BUILD_STAGE)/dpkg/usr/bin/{dpkg{,-deb,-divert,-maintscript-helper,-query,-split,-statoverride,-trigger},update-alternatives} $(BUILD_DIST)/dpkg/usr/bin
-	cp -a $(BUILD_STAGE)/dpkg/usr/share/polkit-1 $(BUILD_DIST)/dpkg/usr/share
+	cp -a $(BUILD_STAGE)/dpkg/usr/share/{man,polkit-1} $(BUILD_DIST)/dpkg/usr/share
 	cp -a $(BUILD_STAGE)/dpkg/usr/share/dpkg/{abi,cpu,os,tuple}table $(BUILD_DIST)/dpkg/usr/share/dpkg
 	
 	# dpkg.mk Prep DPKG-Dev
 	cp -a $(BUILD_STAGE)/dpkg/usr/bin/dpkg-{architecture,buildflags,buildpackage,checkbuilddeps,distaddfile,genbuildinfo,genchanges,gencontrol,gensymbols,mergechangelogs,name,parsechangelog,scanpackages,scansources,shlibdeps,source,vendor} $(BUILD_DIST)/dpkg-dev/usr/bin
 	cp -a $(BUILD_STAGE)/dpkg/usr/lib $(BUILD_DIST)/dpkg-dev/usr
+	cp -a $(BUILD_STAGE)/dpkg/usr/include $(BUILD_DIST)/dpkg-dev/usr
 	cp -a $(BUILD_STAGE)/dpkg/usr/share/perl5 $(BUILD_DIST)/dpkg-dev/usr/share
 	cp -a $(BUILD_STAGE)/dpkg/usr/share/dpkg/*.mk $(BUILD_DIST)/dpkg-dev/usr/share/dpkg
 	
-	#dpkg.mk Sign
+	# dpkg.mk Sign
 	$(call SIGN,dpkg,general.xml)
 	
 	# dpkg.mk Make .debs
