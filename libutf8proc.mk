@@ -35,7 +35,7 @@ libutf8proc-package: libutf8proc-stage
 	cp -a $(BUILD_STAGE)/libutf8proc/usr $(BUILD_DIST)/libutf8proc
 	
 	# libutf8proc.mk Sign
-	$(call SIGN,libutf8proc,libutf8proc.xml)
+	$(call SIGN,libutf8proc,general.xml)
 	
 	# libutf8proc.mk Make .debs
 	$(call PACK,libutf8proc,DEB_LIBUTF8PROC_V)
