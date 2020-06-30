@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS        += libevent
 LIBEVENT_VERSION   := 2.1.11
-DEB_LIBEVENT_V     ?= $(LIBEVENT_VERSION)
+DEB_LIBEVENT_V     ?= $(LIBEVENT_VERSION)-1
 
 libevent-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libevent/libevent/releases/download/release-$(LIBEVENT_VERSION)-stable/libevent-$(LIBEVENT_VERSION)-stable.tar.gz{,.asc}
@@ -35,7 +35,7 @@ libevent-package: libevent-stage
 	cp -a $(BUILD_STAGE)/libevent/usr $(BUILD_DIST)/libevent
 	
 	# libevent.mk Sign
-	$(call SIGN,libevent,libevent.xml)
+	$(call SIGN,libevent,general.xml)
 	
 	# libevent.mk Make .debs
 	$(call PACK,libevent,DEB_LIBEVENT_V)
