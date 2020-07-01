@@ -16,7 +16,7 @@ automake:
 	@echo "Using previously built automake."
 else
 automake: automake-setup
-	cd $(BUILD_WORK)/automake && ./configure -C \
+	cd $(BUILD_WORK)/automake && PERL=/usr/bin/perl ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/automake

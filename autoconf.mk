@@ -18,7 +18,7 @@ autoconf:
 	@echo "Using previously built autoconf."
 else
 autoconf: autoconf-setup
-	cd $(BUILD_WORK)/autoconf && ./configure -C \
+	cd $(BUILD_WORK)/autoconf && PERL=/usr/bin/perl ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/autoconf
