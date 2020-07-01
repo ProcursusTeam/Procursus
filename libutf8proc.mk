@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS           += libutf8proc
 LIBUTF8PROC_VERSION   := 2.5.0
-DEB_LIBUTF8PROC_V     ?= $(LIBUTF8PROC_VERSION)
+DEB_LIBUTF8PROC_V     ?= $(LIBUTF8PROC_VERSION)-1
 
 libutf8proc-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/JuliaStrings/utf8proc/archive/v$(LIBUTF8PROC_VERSION).tar.gz
