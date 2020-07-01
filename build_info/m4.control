@@ -1,0 +1,7 @@
+Package: m4
+Version: @DEB_M4_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Description: Macro processing language
