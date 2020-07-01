@@ -15,10 +15,11 @@ tor:
 	@echo "Using previously built tor."
 else
 tor: tor-setup libevent openssl xz zstd
-	cd $(BUILD_WORK)/tor && ./configure --prefix=$(BUILD_STAGE)/tor/usr \
+	cd $(BUILD_WORK)/tor && ./configure \
+		--prefix=/usr \
 		--host=$(GNU_HOST_TRIPLE) \
 		--disable-tool-name-check \
-		--sysconfdir=$(BUILD_STAGE)/tor/etc \
+		--sysconfdir=/etc \
 		--enable-zstd \
 		--disable-html-manual \
 		--enable-lzma
@@ -27,7 +28,8 @@ tor: tor-setup libevent openssl xz zstd
 		CPP="$(CXX)" \
 		CFLAGS="$(CFLAGS)" \
 		LFLAGS2="$(CFLAGS)"
-	+$(MAKE) -C $(BUILD_WORK)/tor install
+	+$(MAKE) -C $(BUILD_WORK)/tor install \
+		DESTDIR="$(BUILD_STAGE)/tor"
 	touch $(BUILD_WORK)/tor/.build_complete
 endif
 
