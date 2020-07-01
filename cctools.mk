@@ -6,7 +6,7 @@ endif
 CCTOOLS_VERSION := 949.0.1
 LD64_VERSION    := 530
 DEB_CCTOOLS_V   ?= $(CCTOOLS_VERSION)-1
-DEB_LD64_V      ?= $(LD64_VERSION)-1
+DEB_LD64_V      ?= $(LD64_VERSION)-2
 
 cctools-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/Diatrus/cctools-port/archive/$(CCTOOLS_VERSION)-ld64-$(LD64_VERSION).tar.gz
@@ -35,13 +35,15 @@ cctools: cctools-setup llvm uuid tapi xar
 		LTO_DEF="-DLTO_SUPPORT"
 	+$(MAKE) -C $(BUILD_WORK)/cctools install \
 		DESTDIR=$(BUILD_STAGE)/cctools
+	mv $(BUILD_STAGE)/cctools/usr/bin/ld $(BUILD_STAGE)/cctools/usr/libexec
+	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/cctools/usr/bin/ld $(BUILD_INFO)/wrapper.c
 	touch $(BUILD_WORK)/cctools/.build_complete
 endif
 
 cctools-package: cctools-stage
 	# cctools.mk Package Structure
 	rm -rf $(BUILD_DIST)/{cctools,ld64}
-	mkdir -p $(BUILD_DIST)/{cctools,ld64/usr/{bin,share/man/man1}}
+	mkdir -p $(BUILD_DIST)/{cctools,ld64/usr/{bin,libexec,share/{entitlements,man/man1}}}
 
 	# cctools.mk Prep cctools
 	cp -a $(BUILD_STAGE)/cctools/usr $(BUILD_DIST)/cctools
@@ -49,6 +51,8 @@ cctools-package: cctools-stage
 	# cctools.mk Prep ld64
 	mv $(BUILD_DIST)/cctools/usr/bin/{dyldinfo,ld,machocheck,ObjectDump,unwinddump} $(BUILD_DIST)/ld64/usr/bin
 	mv $(BUILD_DIST)/cctools/usr/share/man/man1/{dyldinfo,ld{,64},unwinddump}.1 $(BUILD_DIST)/ld64/usr/share/man/man1
+	mv $(BUILD_DIST)/cctools/usr/libexec/ld $(BUILD_DIST)/ld64/usr/libexec
+	cp -a $(BUILD_INFO)/general.xml $(BUILD_DIST)/ld64/usr/share/entitlements
 	cd $(BUILD_DIST)/ld64/usr/bin && ln -s ld ld64
 
 	# cctools.mk Sign
