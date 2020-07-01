@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS          += libzip
 LIBZIP_VERSION       := 1.7.1
-DEB_LIBZIP_V         ?= $(LIBZIP_VERSION)
+DEB_LIBZIP_V         ?= $(LIBZIP_VERSION)-1
 
 libzip-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://libzip.org/download/libzip-$(LIBZIP_VERSION).tar.gz
@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libzip/.build_complete),)
 libzip:
 	@echo "Using previously built libzip."
 else
-libzip: libzip-setup
+libzip: libzip-setup xz
 	cd $(BUILD_WORK)/libzip && cmake . \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
