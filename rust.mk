@@ -32,9 +32,9 @@ rust-setup: setup
 
 	$(SED) -i 's|PROCURSUS_BUILD_DIR|$(BUILD_WORK)/rust/build|g' "$(BUILD_WORK)/rust/config.toml"
 	$(SED) -i 's|PROCURSUS_TARGET|$(RUST_TARGET)|g' "$(BUILD_WORK)/rust/config.toml"
-	$(SED) -i 's|PROCURSUS_INSTALL_PREFIX|$(BUILD_STAGE)/rust|g' "$(BUILD_WORK)/rust/config.toml"
+	$(SED) -i 's|PROCURSUS_INSTALL_PREFIX|$(BUILD_STAGE)/rust/usr|g' "$(BUILD_WORK)/rust/config.toml"
 
-ifneq ($(wildcard "$(BUILD_WORK)/rust/.build_complete"),)
+ifneq ($(wildcard $(BUILD_WORK)/rust/.build_complete),)
 rust:
 	@echo "Using previously built rust."
 else
@@ -44,8 +44,11 @@ rust: rust-setup openssl curl
 		cd "$(BUILD_WORK)/rust"; \
 		export IPHONEOS_DEPLOYMENT_TARGET=10.0 \
 		AARCH64_APPLE_IOS_OPENSSL_DIR="$(BUILD_BASE)/usr"; \
+		ARMV7_APPLE_IOS_OPENSSL_DIR="$(BUILD_BASE)/usr"; \
 		./x.py build; \
 		./x.py install
 	mv $(BUILD_BASE)/usr/include/stdlib.h.old $(BUILD_BASE)/usr/include/stdlib.h
-	touch "$(BUILD_WORK)/rust/.build_complete"
+	touch $(BUILD_WORK)/rust/.build_complete
 endif
+
+rust-package:
