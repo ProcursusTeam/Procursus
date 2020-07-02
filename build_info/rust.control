@@ -1,0 +1,8 @@
+Package: rust
+Version: @DEB_RUST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: openssl, curl
+Section: Development
+Priority: optional
+Description: Systems programming language focused on safety, speed and concurrency.
