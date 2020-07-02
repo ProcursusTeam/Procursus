@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 #SUBPROJECTS += rust
-RUST_VERSION := 1.44.2-nightly
+RUST_VERSION := 1.45.0-nightly
 DEB_RUST_V   ?= $(RUST_VERSION)
 
 ifeq ($(MEMO_TARGET),iphoneos-arm64)
@@ -15,11 +15,13 @@ endif
 # This needs ccache extra to build.
 
 rust-setup: setup
-	-[ ! -d "$(BUILD_WORK)/rust" ] && git clone https://github.com/rust-lang/rust $(BUILD_WORK)/rust; \
+	if [ ! -d "$(BUILD_WORK)/rust" ]; then \
+		git clone https://github.com/rust-lang/rust $(BUILD_WORK)/rust; \
 		cd "$(BUILD_WORK)/rust"; \
 		git fetch origin; \
 		git reset --hard origin/master; \
-		git checkout HEAD .
+		git checkout HEAD .; \
+	fi
 	# Change the above mess when the necessary iOS changes are added to upstream.
 
 	$(call DO_PATCH,rust,rust,-p1)
