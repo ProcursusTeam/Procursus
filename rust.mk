@@ -42,7 +42,8 @@ rust: rust-setup openssl curl
 	mv $(BUILD_BASE)/usr/include/stdlib.h $(BUILD_BASE)/usr/include/stdlib.h.old
 	unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS; \
 		cd "$(BUILD_WORK)/rust"; \
-		export IPHONEOS_DEPLOYMENT_TARGET=10.0 \
+		export MACOSX_DEPLOYMENT_TARGET=10.13 \
+		IPHONEOS_DEPLOYMENT_TARGET=10.0 \
 		AARCH64_APPLE_IOS_OPENSSL_DIR="$(BUILD_BASE)/usr"; \
 		ARMV7_APPLE_IOS_OPENSSL_DIR="$(BUILD_BASE)/usr"; \
 		./x.py build; \
