@@ -34,6 +34,8 @@ rust-setup: setup
 	$(SED) -i 's|PROCURSUS_TARGET|$(RUST_TARGET)|g' "$(BUILD_WORK)/rust/config.toml"
 	$(SED) -i 's|PROCURSUS_INSTALL_PREFIX|$(BUILD_STAGE)/rust/usr|g' "$(BUILD_WORK)/rust/config.toml"
 
+	@echo "*********** This is one of the only targets that will stay blank for up to many hours while building. It's working, trust me! ***********"
+
 ifneq ($(wildcard $(BUILD_WORK)/rust/.build_complete),)
 rust:
 	@echo "Using previously built rust."
