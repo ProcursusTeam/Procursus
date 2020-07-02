@@ -41,9 +41,9 @@ else
 rust: rust-setup openssl curl
 	mv $(BUILD_BASE)/usr/include/stdlib.h $(BUILD_BASE)/usr/include/stdlib.h.old
 	unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS; \
-		cd "$(BUILD_WORK)/rust" && LIBRARY_PATH="$(BUILD_BASE)/usr/lib" \
-		C_INCLUDE_PATH="$(BUILD_BASE)/usr/include" \
-		CPLUS_INCLUDE_PATH="$(BUILD_BASE)/usr/include" \
+		cd "$(BUILD_WORK)/rust"; \
+		export IPHONEOS_DEPLOYMENT_TARGET=10.0 \
+		AARCH64_APPLE_IOS_OPENSSL_DIR="$(BUILD_BASE)/usr"; \
 		./x.py build; \
 		./x.py install
 	mv $(BUILD_BASE)/usr/include/stdlib.h.old $(BUILD_BASE)/usr/include/stdlib.h
