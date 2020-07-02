@@ -2,8 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS  += rust
-RUST_VERSION := 1.46.0-nightly
+#SUBPROJECTS += rust
+RUST_VERSION := 1.44.2-nightly
 DEB_RUST_V   ?= $(RUST_VERSION)
 
 ifeq ($(MEMO_TARGET),iphoneos-arm64)
@@ -12,14 +12,15 @@ else ifeq ($(MEMO_TARGET),iphoneos-arm)
 RUST_TARGET := armv7-apple-ios
 endif
 
-rust-setup:
-	-[ ! -d "$(BUILD_WORK)/rust" ] && echo "Cloning the Rust git repository. This may take a while!"
-	-[ ! -d "$(BUILD_WORK)/rust" ] && git clone https://github.com/rust-lang/rust $(BUILD_WORK)/rust
+# This needs ccache extra to build.
 
-	-[ -d "$(BUILD_WORK)/rust" ] && cd "$(BUILD_WORK)/rust"
-	-[ -d "$(BUILD_WORK)/rust" ] && git fetch origin
-	-[ -d "$(BUILD_WORK)/rust" ] && git reset --hard origin/master
-	-[ -d "$(BUILD_WORK)/rust" ] && git checkout HEAD .
+rust-setup: setup
+	-[ ! -d "$(BUILD_WORK)/rust" ] && git clone https://github.com/rust-lang/rust $(BUILD_WORK)/rust; \
+		cd "$(BUILD_WORK)/rust"; \
+		git fetch origin; \
+		git reset --hard origin/master; \
+		git checkout HEAD .
+	# Change the above mess when the necessary iOS changes are added to upstream.
 
 	$(call DO_PATCH,rust,rust,-p1)
 	
@@ -36,11 +37,13 @@ rust:
 	@echo "Using previously built rust."
 else
 rust: rust-setup openssl curl
-	cd "$(BUILD_WORK)/rust"
-	LIBRARY_PATH="$(BUILD_BASE)/$(MEMO_TARGET)/usr/lib" \ 
-		C_INCLUDE_PATH="$(BUILD_BASE)/$(MEMO_TARGET)/usr/include" \
-		CPLUS_INCLUDE_PATH="$(BUILD_BASE)/$(MEMO_TARGET)/usr/include" \
-		./x.py build
-	./x.py install
+	mv $(BUILD_BASE)/usr/include/stdlib.h $(BUILD_BASE)/usr/include/stdlib.h.old
+	unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS; \
+		cd "$(BUILD_WORK)/rust" && LIBRARY_PATH="$(BUILD_BASE)/usr/lib" \
+		C_INCLUDE_PATH="$(BUILD_BASE)/usr/include" \
+		CPLUS_INCLUDE_PATH="$(BUILD_BASE)/usr/include" \
+		./x.py build; \
+		./x.py install
+	mv $(BUILD_BASE)/usr/include/stdlib.h.old $(BUILD_BASE)/usr/include/stdlib.h
 	touch "$(BUILD_WORK)/rust/.build_complete"
 endif
