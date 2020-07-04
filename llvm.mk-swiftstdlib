@@ -48,7 +48,7 @@ llvm:
 	@echo "Using previously built llvm."
 else
 llvm: llvm-setup libffi ncurses xz
-	cp -a $(SYSROOT)/usr/include/mach/arm $(BUILD_BASE)/usr/include/mach
+	cp -a $(TARGET_SYSROOT)/usr/include/mach/arm $(BUILD_BASE)/usr/include/mach
 	cp -a $(MACOSX_SYSROOT)/usr/include/{editline,kern} $(BUILD_BASE)/usr/include
 	cp -a $(MACOSX_SYSROOT)/usr/include/histedit.h $(BUILD_BASE)/usr/include
 	mv $(BUILD_BASE)/usr/include/stdlib.h $(BUILD_BASE)/usr/include/stdlib.h.old
@@ -61,7 +61,7 @@ llvm: llvm-setup libffi ncurses xz
 		-DCMAKE_INSTALL_NAME_DIR=/usr/lib/llvm-$(LLVM_MAJOR_V)/lib \
 		-DCMAKE_INSTALL_RPATH=/usr/lib/llvm-$(LLVM_MAJOR_V) \
 		-DCMAKE_OSX_ARCHITECTURES="$(ARCHES)" \
-		-DCMAKE_OSX_SYSROOT="$(SYSROOT)" \
+		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
 		-DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
 		-DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
@@ -76,15 +76,15 @@ llvm: llvm-setup libffi ncurses xz
 		-DLLVM_ENABLE_FFI=ON \
 		-DCURSES_NCURSES_LIBRARY="$(BUILD_BASE)/usr/lib/libncursesw.dylib" \
 		-DNCURSES_LDFLAGS:INTERNAL=-lncursesw \
-		-DLIBXML2_LIBRARY="$(SYSROOT)/usr/lib/libxml2.tbd" \
-		-DLIBXML2_INCLUDE_DIR="$(SYSROOT)/usr/include/libxml" \
+		-DLIBXML2_LIBRARY="$(TARGET_SYSROOT)/usr/lib/libxml2.tbd" \
+		-DLIBXML2_INCLUDE_DIR="$(TARGET_SYSROOT)/usr/include/libxml" \
 		-DLibEdit_INCLUDE_DIRS="$(BUILD_BASE)/usr/include" \
-		-DLibEdit_LIBRARIES="$(SYSROOT)/usr/lib/libedit.tbd" \
-		-DCORE_FOUNDATION_LIBRARY="$(SYSROOT)/System/Library/Frameworks/CoreFoundation.framework" \
-		-DCORE_SERVICES_LIBRARY="$(SYSROOT)/System/Library/Frameworks/CoreServices.framework" \
-		-DFOUNDATION_LIBRARY="$(SYSROOT)/System/Library/Frameworks/Foundation.framework" \
-		-DFOUNDATION="$(SYSROOT)/System/Library/Frameworks/Foundation.framework" \
-		-DSECURITY_LIBRARY="$(SYSROOT)/System/Library/Frameworks/Security.framework" \
+		-DLibEdit_LIBRARIES="$(TARGET_SYSROOT)/usr/lib/libedit.tbd" \
+		-DCORE_FOUNDATION_LIBRARY="$(TARGET_SYSROOT)/System/Library/Frameworks/CoreFoundation.framework" \
+		-DCORE_SERVICES_LIBRARY="$(TARGET_SYSROOT)/System/Library/Frameworks/CoreServices.framework" \
+		-DFOUNDATION_LIBRARY="$(TARGET_SYSROOT)/System/Library/Frameworks/Foundation.framework" \
+		-DFOUNDATION="$(TARGET_SYSROOT)/System/Library/Frameworks/Foundation.framework" \
+		-DSECURITY_LIBRARY="$(TARGET_SYSROOT)/System/Library/Frameworks/Security.framework" \
 		-DCROSS_TOOLCHAIN_FLAGS_NATIVE='-DCMAKE_C_COMPILER=cc;-DCMAKE_CXX_COMPILER=c++;-DCMAKE_OSX_SYSROOT="$(MACOSX_SYSROOT)";-DCMAKE_OSX_ARCHITECTURES="";-DCMAKE_C_FLAGS="";-DCMAKE_CXX_FLAGS="";-DCMAKE_EXE_LINKER_FLAGS=""' \
 		-DCLANG_VERSION=$(LLVM_VERSION) \
 		-DLLVM_BUILD_LLVM_DYLIB=ON \

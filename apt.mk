@@ -35,7 +35,7 @@ apt: apt-setup libgcrypt berkeleydb lz4 xz zstd
 		-DCMAKE_INSTALL_PREFIX=/ \
 		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
 		-DCMAKE_INSTALL_RPATH=/usr \
-		-DCMAKE_OSX_SYSROOT="$(SYSROOT)" \
+		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
 		-DCMAKE_SHARED_LINKER_FLAGS="-lresolv -L$(BUILD_BASE)/usr/lib" \

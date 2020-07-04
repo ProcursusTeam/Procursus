@@ -18,7 +18,7 @@ libirecovery: libirecovery-setup readline
 	cd $(BUILD_WORK)/libirecovery && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
-		--with-sysroot=$(SYSROOT) \
+		--with-sysroot=$(TARGET_SYSROOT) \
 		--with-iokit \
 		ac_cv_header_IOKit_usb_IOUSBLib_h=yes
 	+$(MAKE) -C $(BUILD_WORK)/libirecovery \
