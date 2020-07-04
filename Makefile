@@ -102,7 +102,7 @@ ARCH := $(shell echo $(ARCHES) | awk -F' ' '{ for(i=1;i<=NF;i++) print "-arch " 
 
 ifeq ($(UNAME),Linux)
 $(warning Building on Linux)
-TARGET_SYSROOT         ?= $(HOME)/cctools/SDK/iPhoneOS13.2.sdk
+TARGET_SYSROOT  ?= $(HOME)/cctools/SDK/iPhoneOS13.2.sdk
 MACOSX_SYSROOT  ?= $(HOME)/cctools/SDK/MacOSX.sdk
 
 CC       := $(GNU_HOST_TRIPLE)-clang
@@ -120,7 +120,7 @@ export CC CXX AR
 
 else ifeq ($(UNAME),Darwin)
 $(warning Building on MacOS)
-TARGET_SYSROOT         ?= $(shell xcrun --sdk $(PLATFORM) --show-sdk-path)
+TARGET_SYSROOT  ?= $(shell xcrun --sdk $(PLATFORM) --show-sdk-path)
 MACOSX_SYSROOT  ?= $(shell xcrun --show-sdk-path)
 PATH            := /usr/bin:$(PATH)
 CPP             := cc -E
