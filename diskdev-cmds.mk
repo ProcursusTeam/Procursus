@@ -40,7 +40,7 @@ diskdev-cmds: diskdev-cmds-setup
 	rm -f mntopts.h getmntopts.c; \
 	for arch in $(ARCHES); do \
 		for c in *.c; do \
-			$(CC) -arch $${arch} -isysroot $(SYSROOT) $(PLATFORM_VERSION_MIN) -isystem ../include -fno-common -o $$(basename $${c} .c)-$${arch}.o -c $${c}; \
+			$(CC) -arch $${arch} -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem ../include -fno-common -o $$(basename $${c} .c)-$${arch}.o -c $${c}; \
 		done; \
 		$(AR) -r libdisk-$${arch}.a *-$${arch}.o; \
 		LIBDISKA=$$(echo disklib/libdisk-$${arch}.a $${LIBDISKA}); \
@@ -59,12 +59,12 @@ diskdev-cmds: diskdev-cmds-setup
 		if [[ $$tproj = mount_cd9660 || $$tproj = mount_hfs || $$tproj = newfs_hfs ]]; then \
 			extra="${extra} -framework CoreFoundation"; \
 		fi; \
-    	$(CC) $(ARCH) -isysroot $(SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -DTARGET_OS_SIMULATOR -Idisklib -o $$tproj $$(find "$$tproj.tproj" -name '*.c') $${LIBDISKA} -lutil $$extra; \
+    	$(CC) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -DTARGET_OS_SIMULATOR -Idisklib -o $$tproj $$(find "$$tproj.tproj" -name '*.c') $${LIBDISKA} -lutil $$extra; \
 	done
 	cd $(BUILD_WORK)/diskdev-cmds/fstyp.tproj; \
 	for c in *.c; do \
     	bin=../$$(basename $$c .c); \
-    	$(CC) $(ARCH) -isysroot $(SYSROOT) $(PLATFORM_VERSION_MIN) -isystem ../include -o $$bin $$c; \
+    	$(CC) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem ../include -o $$bin $$c; \
 	done
 	cd $(BUILD_WORK)/diskdev-cmds; \
 	cp -a quota $(BUILD_STAGE)/diskdev-cmds/usr/bin; \

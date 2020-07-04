@@ -25,9 +25,9 @@ xar: xar-setup xz openssl
 		ac_cv_lib_crypto_OpenSSL_add_all_ciphers=yes \
 		ac_cv_header_zlib_h=yes \
 		ac_cv_lib_z_deflate=yes
-	$(SED) -i 's|$(MACOSX_SYSROOT)/usr/lib|$(SYSROOT)/usr/lib|g' $(BUILD_WORK)/xar/lib/Makefile.inc
-	$(SED) -i 's|$(MACOSX_SYSROOT)/usr/lib|$(SYSROOT)/usr/lib|g' $(BUILD_WORK)/xar/src/Makefile.inc
-	$(SED) -i 's|$(MACOSX_SYSROOT)/usr/include|$(SYSROOT)/usr/include|g' $(BUILD_WORK)/xar/Makefile
+	$(SED) -i 's|$(MACOSX_SYSROOT)/usr/lib|$(TARGET_SYSROOT)/usr/lib|g' $(BUILD_WORK)/xar/lib/Makefile.inc
+	$(SED) -i 's|$(MACOSX_SYSROOT)/usr/lib|$(TARGET_SYSROOT)/usr/lib|g' $(BUILD_WORK)/xar/src/Makefile.inc
+	$(SED) -i 's|$(MACOSX_SYSROOT)/usr/include|$(TARGET_SYSROOT)/usr/include|g' $(BUILD_WORK)/xar/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/xar
 	+$(MAKE) -C $(BUILD_WORK)/xar install \
 		DESTDIR=$(BUILD_STAGE)/xar

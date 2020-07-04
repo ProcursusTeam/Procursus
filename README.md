@@ -63,7 +63,7 @@ There are very few variables you'll need to pay attention to/change to get build
 | MEMO_TARGET    | Can be set to any of the supported host systems. Pretty self explainatory. (Defaults to iphoneos-arm64)                                                              |
 | MEMO_CFVER     | Used to set minimum *OS version to compile for. Use the CoreFoundation version that coresponds to the OS version you're compiling for. (Defaults to 1600 for iOS 13) |
 | NO_PGP         | Set to 1 if you want to bypass verifying tarballs with gpg. Useful if you just want a quick build without importing everyone's public keys.                          |
-| SYSROOT        | Path to your chosen iPhone SDK. (Defaults to Xcode default path on macOS and the cctools-port default path on Linux.)                                                |
+| TARGET_SYSROOT | Path to your chosen iPhone SDK. (Defaults to Xcode default path on macOS and the cctools-port default path on Linux.)                                                |
 | MACOSX_SYSROOT | Path to your chosen macOS SDK. (Defaults to Xcode default path on macOS and the cctools-port default path on Linux.)                                                 |
 | BUILD_ROOT     | If you have this repo in one place, but want to build everything in a different place, set BUILD_ROOT to said different place. (Untested but should work fine.)      |
 

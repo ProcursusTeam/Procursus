@@ -20,7 +20,7 @@ bootstrap-cmds: bootstrap-cmds-setup
 	cd $(BUILD_WORK)/bootstrap-cmds/migcom.tproj; \
 	yacc -d parser.y; \
 	lex lexxer.l; \
-	$(CC) $(ARCH) -isysroot $(SYSROOT) $(PLATFORM_VERSION_MIN) -DMIG_VERSION=\"mig-$(BOOTSTRAP-CMDS_VERSION)\" -o migcom !(handler).c -save-temps; \
+	$(CC) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -DMIG_VERSION=\"mig-$(BOOTSTRAP-CMDS_VERSION)\" -o migcom !(handler).c -save-temps; \
 	cp -a migcom $(BUILD_STAGE)/bootstrap-cmds/usr/libexec; \
 	cp -a mig.sh $(BUILD_STAGE)/bootstrap-cmds/usr/bin/mig
 	touch $(BUILD_WORK)/bootstrap-cmds/.build_complete
