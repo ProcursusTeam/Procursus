@@ -29,7 +29,7 @@ python3-setup: setup
 	$(call PGP_VERIFY,Python-$(PYTHON3_VERSION).tar.xz,asc)
 	$(call EXTRACT_TAR,Python-$(PYTHON3_VERSION).tar.xz,Python-$(PYTHON3_VERSION),python3)
 	$(SED) -i -e 's/-vxworks/-darwin/g' -e 's/system=VxWorks/system=Darwin/g' -e '/readelf for/d' -e 's|LIBFFI_INCLUDEDIR=.*|LIBFFI_INCLUDEDIR="$(BUILD_BASE)/usr/include"|g' $(BUILD_WORK)/python3/configure.ac
-	$(SED) -i -e "s|self.compiler.library_dirs|['$(SYSROOT)/usr/lib'] + ['$(BUILD_BASE)/usr/lib']|g" -e "s|self.compiler.include_dirs|['$(SYSROOT)/usr/include'] + ['$(BUILD_BASE)/usr/include']|g" -e "s/HOST_PLATFORM == 'darwin'/HOST_PLATFORM.startswith('darwin')/" $(BUILD_WORK)/python3/setup.py
+	$(SED) -i -e "s|self.compiler.library_dirs|['$(TARGET_SYSROOT)/usr/lib'] + ['$(BUILD_BASE)/usr/lib']|g" -e "s|self.compiler.include_dirs|['$(TARGET_SYSROOT)/usr/include'] + ['$(BUILD_BASE)/usr/include']|g" -e "s/HOST_PLATFORM == 'darwin'/HOST_PLATFORM.startswith('darwin')/" $(BUILD_WORK)/python3/setup.py
 
 ifneq ($(wildcard $(BUILD_WORK)/python3/.build_complete),)
 python3:
@@ -52,7 +52,7 @@ python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm
 	+$(MAKE) -C $(BUILD_WORK)/python3
 	+$(MAKE) -C $(BUILD_WORK)/python3 install \
 		DESTDIR=$(BUILD_STAGE)/python3
-	$(SED) -i -e 's|$(SYSROOT)|/usr/share/SDKs/$(BARE_SDK)|' -e 's|$(BUILD_BASE)|/usr/share/SDKs/$(BARE_SDK)|' $(BUILD_STAGE)/python3/usr/lib/python*/_sysconfigdata*.py
+	$(SED) -i -e 's|$(TARGET_SYSROOT)|/usr/share/SDKs/$(BARE_SDK)|' -e 's|$(BUILD_BASE)|/usr/share/SDKs/$(BARE_SDK)|' $(BUILD_STAGE)/python3/usr/lib/python*/_sysconfigdata*.py
 	rm -f $(BUILD_STAGE)/python3/usr/{bin,share/man/man1}/!(*$(PYTHON3_MAJOR_V)*)
 	touch $(BUILD_WORK)/python3/.build_complete
 endif

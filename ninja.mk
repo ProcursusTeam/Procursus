@@ -21,7 +21,7 @@ ninja: ninja-setup
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_OSX_ARCHITECTURES="$(ARCHES)" \
-		-DCMAKE_OSX_SYSROOT="$(SYSROOT)" \
+		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		..
 	+$(MAKE) -C $(BUILD_WORK)/ninja/build
 	cp $(BUILD_WORK)/ninja/build/ninja $(BUILD_STAGE)/ninja/usr/bin/

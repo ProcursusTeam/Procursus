@@ -50,9 +50,9 @@ perl:
 else
 perl: perl-setup
 	@# Don't use $$(CFLAGS) here because, in the case BerkeleyDB was made before perl, it will look at the db.h in $$(BUILD_BASE).
-	cd $(BUILD_WORK)/perl && CC='$(CC)' AR='$(AR)' NM='$(NM)' OBJDUMP='objdump' CFLAGS='-DPERL_DARWIN -DPERL_USE_SAFE_PUTENV -DTIME_HIRES_CLOCKID_T -O2 $(ARCH) -isysroot $(SYSROOT) -isystem $(BUILD_WORK)/perl/include $(PLATFORM_VERSION_MIN)' ./configure \
+	cd $(BUILD_WORK)/perl && CC='$(CC)' AR='$(AR)' NM='$(NM)' OBJDUMP='objdump' CFLAGS='-DPERL_DARWIN -DPERL_USE_SAFE_PUTENV -DTIME_HIRES_CLOCKID_T -O2 $(ARCH) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_WORK)/perl/include $(PLATFORM_VERSION_MIN)' ./configure \
 		--target=$(GNU_HOST_TRIPLE) \
-		--sysroot=$(SYSROOT) \
+		--sysroot=$(TARGET_SYSROOT) \
 		--prefix=/usr \
 		-Duseshrplib \
 		-Dusevendorprefix \

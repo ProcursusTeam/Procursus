@@ -102,7 +102,7 @@ ARCH := $(shell echo $(ARCHES) | awk -F' ' '{ for(i=1;i<=NF;i++) print "-arch " 
 
 ifeq ($(UNAME),Linux)
 $(warning Building on Linux)
-SYSROOT         ?= $(HOME)/cctools/SDK/iPhoneOS13.2.sdk
+TARGET_SYSROOT         ?= $(HOME)/cctools/SDK/iPhoneOS13.2.sdk
 MACOSX_SYSROOT  ?= $(HOME)/cctools/SDK/MacOSX.sdk
 
 CC       := $(GNU_HOST_TRIPLE)-clang
@@ -120,7 +120,7 @@ export CC CXX AR
 
 else ifeq ($(UNAME),Darwin)
 $(warning Building on MacOS)
-SYSROOT         ?= $(shell xcrun --sdk $(PLATFORM) --show-sdk-path)
+TARGET_SYSROOT         ?= $(shell xcrun --sdk $(PLATFORM) --show-sdk-path)
 MACOSX_SYSROOT  ?= $(shell xcrun --show-sdk-path)
 PATH            := /usr/bin:$(PATH)
 CPP             := cc -E
@@ -161,10 +161,10 @@ BUILD_STRAP    := $(BUILD_ROOT)/build_strap/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Extra scripts for the buildsystem
 BUILD_TOOLS    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_tools
 
-CFLAGS          := -O2 $(ARCH) -isysroot $(SYSROOT) $(PLATFORM_VERSION_MIN) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include -F$(BUILD_BASE)/System/Library/Frameworks
+CFLAGS          := -O2 $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include -F$(BUILD_BASE)/System/Library/Frameworks
 CXXFLAGS        := $(CFLAGS)
-CPPFLAGS        := -O2 -arch $(shell echo $(ARCHES) | cut -f1 -d' ') $(PLATFORM_VERSION_MIN) -isysroot $(SYSROOT) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include
-LDFLAGS         := -O2 $(ARCH) -isysroot $(SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib -F$(BUILD_BASE)/System/Library/Frameworks
+CPPFLAGS        := -O2 -arch $(shell echo $(ARCHES) | cut -f1 -d' ') $(PLATFORM_VERSION_MIN) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include
+LDFLAGS         := -O2 $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib -F$(BUILD_BASE)/System/Library/Frameworks
 PKG_CONFIG_PATH := $(BUILD_BASE)/usr/lib/pkgconfig:$(BUILD_BASE)/usr/local/lib/pkgconfig
 
 export PLATFORM ARCH SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE CPP RANLIB STRIP NM LIPO OTOOL I_N_T EXTRA SED
@@ -563,13 +563,13 @@ setup:
 	-$(CP) -af $(BUILD_INFO)/IOKit.framework.$(PLATFORM) $(BUILD_BASE)/System/Library/Frameworks/IOKit.framework
 
 	@# Patch headers from iPhoneOS.sdk
-	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/stdlib.h > $(BUILD_BASE)/usr/include/stdlib.h
-	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/time.h > $(BUILD_BASE)/usr/include/time.h
-	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/unistd.h > $(BUILD_BASE)/usr/include/unistd.h
-	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/mach/task.h > $(BUILD_BASE)/usr/include/mach/task.h
-	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/mach/mach_host.h > $(BUILD_BASE)/usr/include/mach/mach_host.h
-	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/ucontext.h > $(BUILD_BASE)/usr/include/ucontext.h
-	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(SYSROOT)/usr/include/signal.h > $(BUILD_BASE)/usr/include/signal.h
+	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/stdlib.h > $(BUILD_BASE)/usr/include/stdlib.h
+	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/time.h > $(BUILD_BASE)/usr/include/time.h
+	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/unistd.h > $(BUILD_BASE)/usr/include/unistd.h
+	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/mach/task.h > $(BUILD_BASE)/usr/include/mach/task.h
+	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/mach/mach_host.h > $(BUILD_BASE)/usr/include/mach/mach_host.h
+	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/ucontext.h > $(BUILD_BASE)/usr/include/ucontext.h
+	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/signal.h > $(BUILD_BASE)/usr/include/signal.h
 
 	@echo Makeflags: $(MAKEFLAGS)
 	@echo Path: $(PATH)
