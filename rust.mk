@@ -48,6 +48,9 @@ rust: rust-setup openssl curl
 		./x.py build; \
 		./x.py install
 	mv $(BUILD_BASE)/usr/include/stdlib.h.old $(BUILD_BASE)/usr/include/stdlib.h
+	rm -rf $(BUILD_STAGE)/rust/usr/{share/doc,etc}
+	rm -rf $(BUILD_STAGE)/rust/usr/lib/rustlib/{src,manifest-*,components,install.log,uninstall.sh,rust-installer-version}
+	rm -rf $(BUILD_STAGE)/rust/usr/lib/rustlib/*/analysis
 	touch $(BUILD_WORK)/rust/.build_complete
 endif
 
