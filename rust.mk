@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 #SUBPROJECTS += rust
-RUST_VERSION := 1.45.0-nightly
-DEB_RUST_V   ?= $(RUST_VERSION)
+RUST_VERSION := 1.45.0
+DEB_RUST_V   ?= $(RUST_VERSION)-nightly
 
 ifeq ($(MEMO_TARGET),iphoneos-arm64)
 RUST_TARGET := aarch64-apple-ios
@@ -23,16 +23,13 @@ rust-setup: setup
 		git checkout HEAD .; \
 	fi
 	# Change the above mess when the necessary iOS changes are added to upstream.
-
-	$(call DO_PATCH,rust,rust,-p1)
 	
 	mkdir -p "$(BUILD_WORK)/rust/build"
 	mkdir -p "$(BUILD_STAGE)/rust"
 	cp -f "$(BUILD_INFO)/rust_config.toml" "$(BUILD_WORK)/rust/config.toml"
 
-	$(SED) -i 's|PROCURSUS_BUILD_DIR|$(BUILD_WORK)/rust/build|g' "$(BUILD_WORK)/rust/config.toml"
-	$(SED) -i 's|PROCURSUS_TARGET|$(RUST_TARGET)|g' "$(BUILD_WORK)/rust/config.toml"
-	$(SED) -i 's|PROCURSUS_INSTALL_PREFIX|$(BUILD_STAGE)/rust/usr|g' "$(BUILD_WORK)/rust/config.toml"
+	$(SED) -i -e 's|PROCURSUS_BUILD_DIR|$(BUILD_WORK)/rust/build|g' -e 's|PROCURSUS_TARGET|$(RUST_TARGET)|g' -e 's|PROCURSUS_INSTALL_PREFIX|$(BUILD_STAGE)/rust/usr|g' "$(BUILD_WORK)/rust/config.toml"
+	#$(SED) -i -e 's/"LLVM_ENABLE_ZLIB", "OFF"/"LLVM_ENABLE_ZLIB", "ON"/' -e 's|"CMAKE_OSX_SYSROOT", "/"|"CMAKE_OSX_SYSROOT", "$(TARGET_SYSROOT)"|' "$(BUILD_WORK)/rust/src/bootstrap/native.rs"
 
 	@echo "*********** This is one of the only targets that will stay blank for up to many hours while building. It's working, trust me! ***********"
 
