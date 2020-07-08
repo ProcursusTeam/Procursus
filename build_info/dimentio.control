@@ -1,0 +1,8 @@
+Package: dimentio
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_DIMENTIO_V@
+Section: Utilities
+Priority: optional
+Description: PoC tool for setting nonce without triggering KPP/KTRR/PAC. (requires tfp0)
+Tag: purpose::console, role::hacker

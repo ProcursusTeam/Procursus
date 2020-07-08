@@ -10,3 +10,6 @@
 [submodule "apt"]
 	path = apt
 	url = https://github.com/Diatrus/apt.git
+[submodule "dimentio"]
+	path = dimentio
+	url = https://github.com/0x7ff/dimentio.git
