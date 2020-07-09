@@ -18,4 +18,4 @@ firmware: main.m Firmware.m DeviceInfo.m
 	$(LDID) -S firmware
 
 clean:
-	rm sw_vers firmware
+	rm -f sw_vers firmware
