@@ -17,7 +17,8 @@ else
 libgeneral: libgeneral-setup
 	cd $(BUILD_WORK)/libgeneral && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr 
+		--prefix=/usr \
+		--disable-dependency-tracking  
 	+$(MAKE) -C $(BUILD_WORK)/libgeneral
 	+$(MAKE) -C $(BUILD_WORK)/libgeneral install \
 		DESTDIR="$(BUILD_STAGE)/libgeneral"
