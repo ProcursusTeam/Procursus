@@ -20,13 +20,9 @@ nano: nano-setup ncurses gettext
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-debug \
-		--disable-dependency-tracking \
-		--enable-color \
-		--enable-extra \
 		--sysconfdir=/etc \
-		--enable-multibuffer \
-		--enable-nanorc \
-		--enable-utf8 \
+		--disable-dependency-tracking \
+		--enable-all \
 		NCURSESW_LIBS=$(BUILD_BASE)/usr/lib/libncursesw.dylib
 	+$(MAKE) -C $(BUILD_WORK)/nano
 	+$(MAKE) -C $(BUILD_WORK)/nano install \
