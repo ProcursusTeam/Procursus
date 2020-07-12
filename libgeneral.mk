@@ -16,6 +16,7 @@ libgeneral:
 else
 libgeneral: libgeneral-setup
 	cd $(BUILD_WORK)/libgeneral && ./autogen.sh \
+		--CC=gcc \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-dependency-tracking  
