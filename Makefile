@@ -105,8 +105,8 @@ $(warning Building on Linux)
 TARGET_SYSROOT  ?= $(HOME)/cctools/SDK/iPhoneOS13.2.sdk
 MACOSX_SYSROOT  ?= $(HOME)/cctools/SDK/MacOSX.sdk
 
-CC       := $(GNU_HOST_TRIPLE)-clang
-CXX      := $(GNU_HOST_TRIPLE)-clang++
+CC       := $(GNU_HOST_TRIPLE)-gcc
+CXX      := $(GNU_HOST_TRIPLE)-g++
 CPP      := $(GNU_HOST_TRIPLE)-clang -E
 AR       := $(GNU_HOST_TRIPLE)-ar
 RANLIB   := $(GNU_HOST_TRIPLE)-ranlib
