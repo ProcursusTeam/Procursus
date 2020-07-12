@@ -15,7 +15,7 @@ libgeneral:
 	@echo "Using previously built libgeneral."
 else
 libgeneral: libgeneral-setup
-	cd $(BUILD_WORK)/libgeneral && ./autogen.sh \
+	cd $(BUILD_WORK)/libgeneral && ./autogen.sh && ./configure.sh \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-dependency-tracking  
