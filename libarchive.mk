@@ -17,11 +17,12 @@ else
 libarchive: libarchive-setup openssl zstd bzip2 xz
 	cd $(BUILD_WORK)/libarchive && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--without-zlib \
 		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/libarchive
 	+$(MAKE) -C $(BUILD_WORK)/libarchive install \
 		DESTDIR=$(BUILD_STAGE)/libarchive
+	+$(MAKE) -C $(BUILD_WORK)/libarchive install \
+		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libarchive/.build_complete
 endif
 
