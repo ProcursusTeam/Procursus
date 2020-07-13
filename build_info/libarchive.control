@@ -4,5 +4,5 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Utilities
 Priority: optional
-Depends: bzip2, openssl, zstd, xz
+Depends: bzip2, openssl, zstd, xz, zlib
 Description: Multi-format archive and compression library
