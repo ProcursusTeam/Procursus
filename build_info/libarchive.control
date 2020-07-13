@@ -1,0 +1,8 @@
+Package: libarchive
+Version: @DEB_LIBARCHIVE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Depends: bzip2, openssl, zstd, xz
+Description: Multi-format archive and compression library
