@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/zlib/.build_complete),)
 zlib:
 	@echo "Using previously built zlib."
 else
-zlib: zlib-setup openssl zstd bzip2 xz
+zlib: zlib-setup
 	cd $(BUILD_WORK)/zlib && ./configure \
 		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/zlib
