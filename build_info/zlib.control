@@ -1,7 +1,0 @@
-Package: libarchive
-Version: @DEB_ZLIB_V@
-Architecture: @DEB_ARCH@
-Maintainer: @DEB_MAINTAINER@
-Section: Utilities
-Priority: optional
-Description: Multi-format archive and compression library
