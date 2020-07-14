@@ -14,16 +14,16 @@ ifneq ($(wildcard $(BUILD_WORK)/libarchive/.build_complete),)
 libarchive:
 	@echo "Using previously built libarchive."
 else
-libarchive: libarchive-setup openssl zstd bzip2 xz
+libarchive: libarchive-setup lz4 zstd xz
 	cd $(BUILD_WORK)/libarchive && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
 		--disable-dependency-tracking \
 		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/libarchive
 	+$(MAKE) -C $(BUILD_WORK)/libarchive install \
-		DESTDIR=$(BUILD_STAGE)/libarchive
+		DESTDIR="$(BUILD_STAGE)/libarchive"
 	+$(MAKE) -C $(BUILD_WORK)/libarchive install \
-		DESTDIR=$(BUILD_BASE)
+		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/libarchive/.build_complete
 endif
 
