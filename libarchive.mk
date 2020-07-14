@@ -24,6 +24,7 @@ libarchive: libarchive-setup lz4 zstd xz
 		DESTDIR="$(BUILD_STAGE)/libarchive"
 	+$(MAKE) -C $(BUILD_WORK)/libarchive install \
 		DESTDIR="$(BUILD_BASE)"
+	rm -f $(BUILD_STAGE)/libarchive/usr/lib/libarchive.dylib
 	touch $(BUILD_WORK)/libarchive/.build_complete
 endif
 
