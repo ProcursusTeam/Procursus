@@ -237,6 +237,7 @@ PACK = -find $(BUILD_DIST)/$(1) \( -name '*.la' -o -name '*.a' \) -type f -delet
 	$(FAKEROOT) chmod 0755 $(BUILD_DIST)/$(1)/DEBIAN/*; \
 	echo "Installed-Size: $$SIZE"; \
 	echo "Installed-Size: $$SIZE" >> $(BUILD_DIST)/$(1)/DEBIAN/control; \
+	find $(BUILD_DIST)/$(1) -name '.DS_Store' -type f -delete; \
 	$(FAKEROOT) $(DPKG_DEB) -b $(BUILD_DIST)/$(1) $(BUILD_DIST)/$(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d ' ')_$($(2))_$(DEB_ARCH).deb
 
 PACK_LOCALE = mkdir -p $(BUILD_DIST)/$(1)-locale/{DEBIAN,usr/share}; \

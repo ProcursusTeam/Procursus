@@ -1,0 +1,10 @@
+Package: cargo
+Version: @DEB_RUST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: rust (=@DEB_RUST_V@), libssl1.1, curl
+Section: Development
+Priority: optional
+Homepage: https://www.rust-lang.org/
+Description: Rust package compiler. For Cargo to work properly on modern jailbreaks, set the TEMPDIR environment variable to something in the root partition before using.
+Tag: purpose::console, role::developer
