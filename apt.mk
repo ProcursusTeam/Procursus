@@ -81,7 +81,7 @@ apt-package: apt-stage
 	cp -a $(BUILD_STAGE)/apt/usr/lib/pkgconfig $(BUILD_DIST)/apt-dev/usr/lib
 	cp -a $(BUILD_STAGE)/apt/usr/include $(BUILD_DIST)/apt-dev/usr
 	
-	#apt.mk Sign
+	# apt.mk Sign
 	$(call SIGN,apt,general.xml)
 	$(call SIGN,apt-utils,general.xml)
 	

@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 #SUBPROJECTS += rust
-RUST_VERSION := 1.45.0
-DEB_RUST_V   ?= $(RUST_VERSION)-nightly
+RUST_VERSION := 1.44.1
+DEB_RUST_V   ?= $(RUST_VERSION)+nightly
 
 ifeq ($(MEMO_TARGET),iphoneos-arm64)
 RUST_TARGET := aarch64-apple-ios
@@ -54,4 +54,35 @@ rust: rust-setup openssl curl
 	touch $(BUILD_WORK)/rust/.build_complete
 endif
 
-rust-package:
+rust-package: rust
+	# rust.mk Package Structure
+	rm -rf $(BUILD_DIST)/{rust{,-toolchain},cargo}
+	mkdir -p $(BUILD_DIST)/{rust,cargo}/usr/{bin,share/man/man1}
+	mkdir -p $(BUILD_DIST)/rust-toolchain/usr
+	
+	# rust.mk Prep rust
+	cp -a $(BUILD_STAGE)/rust/usr/bin/{rust*,clippy-driver} $(BUILD_DIST)/rust/usr/bin
+	cp -a $(BUILD_STAGE)/rust/usr/share/man/man1/rust* $(BUILD_DIST)/rust/usr/share/man/man1
+	
+	# rust.mk Prep cargo
+	cp -a $(BUILD_STAGE)/rust/usr/bin/cargo* $(BUILD_DIST)/cargo/usr/bin
+	cp -a $(BUILD_STAGE)/rust/usr/share/zsh $(BUILD_DIST)/cargo/usr/share
+	cp -a $(BUILD_STAGE)/rust/usr/share/man/man1/cargo* $(BUILD_DIST)/cargo/usr/share/man/man1
+	
+	# rust.mk Prep rust-toolchain
+	cp -a $(BUILD_STAGE)/rust/usr/lib $(BUILD_DIST)/rust-toolchain/usr
+	
+	# rust.mk Sign
+	$(call SIGN,rust,general.xml)
+	$(call SIGN,cargo,general.xml)
+	$(call SIGN,rust-toolchain,general.xml)
+	
+	# rust.mk Make .debs
+	$(call PACK,rust,DEB_RUST_V)
+	$(call PACK,cargo,DEB_RUST_V)
+	$(call PACK,rust-toolchain,DEB_RUST_V)
+	
+	# rust.mk Build cleanup
+	rm -rf $(BUILD_DIST)/{cargo,rust{,-toolchain}}
+
+.PHONY: rust rust-package
