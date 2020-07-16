@@ -141,6 +141,8 @@ llvm-package: llvm-stage
 	mkdir -p $(BUILD_DIST)/clang/usr/bin
 	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/clang $(BUILD_DIST)/clang/usr/bin/clang
 	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/clang++ $(BUILD_DIST)/clang/usr/bin/clang++
+	ln -s clang $(BUILD_DIST)/clang/usr/bin/cc
+	ln -s clang++ $(BUILD_DIST)/clang/usr/bin/c++
 	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/clang-cpp $(BUILD_DIST)/clang/usr/bin/clang-cpp
 
 	# llvm.mk Prep debugserver-$(LLVM_MAJOR_V)
