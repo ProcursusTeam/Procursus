@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS        += golb
+SUBPROJECTS    += golb
 GOLB_VERSION   := 1.0
 DEB_GOLB_V     ?= $(GOLB_VERSION)
 
