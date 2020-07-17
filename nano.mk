@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS  += nano
 NANO_VERSION := 4.9.3
-DEB_NANO_V   ?= $(NANO_VERSION)
+DEB_NANO_V   ?= $(NANO_VERSION)-1
 
 nano-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/nano/nano-$(NANO_VERSION).tar.xz{,.sig}
@@ -20,11 +20,12 @@ nano: nano-setup ncurses gettext
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-debug \
+		--sysconfdir=/etc \
 		--disable-dependency-tracking \
 		--enable-color \
 		--enable-extra \
-		--enable-multibuffer \
 		--enable-nanorc \
+		--enable-utf8 \
 		NCURSESW_LIBS=$(BUILD_BASE)/usr/lib/libncursesw.dylib
 	+$(MAKE) -C $(BUILD_WORK)/nano
 	+$(MAKE) -C $(BUILD_WORK)/nano install \
