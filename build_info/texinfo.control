@@ -1,0 +1,8 @@
+Package: texinfo
+Version: @DEB_TEXINFO_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: perl
+Section: Development
+Priority: optional
+Description: Documentation system for on-line information and printed output

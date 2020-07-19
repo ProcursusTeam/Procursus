@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += apt
-APT_VERSION   := 2.1.6
+APT_VERSION   := 2.1.7
 DEB_APT_V     ?= $(APT_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
@@ -81,7 +81,7 @@ apt-package: apt-stage
 	cp -a $(BUILD_STAGE)/apt/usr/lib/pkgconfig $(BUILD_DIST)/apt-dev/usr/lib
 	cp -a $(BUILD_STAGE)/apt/usr/include $(BUILD_DIST)/apt-dev/usr
 	
-	#apt.mk Sign
+	# apt.mk Sign
 	$(call SIGN,apt,general.xml)
 	$(call SIGN,apt-utils,general.xml)
 	

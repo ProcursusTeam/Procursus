@@ -1,0 +1,9 @@
+Package: rust-toolchain
+Version: @DEB_RUST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Homepage: https://www.rust-lang.org/
+Description: aarch64-darwin-apple and x86_64-darwin-apple Rust toolchains
+Tag: purpose::console, role::developer
