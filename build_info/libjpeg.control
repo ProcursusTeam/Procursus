@@ -1,0 +1,9 @@
+Package: libjpeg
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBJPEG_V@
+Section: Development
+Priority: optional
+Homepage: http://libjpeg.sourceforge.net/
+Description: The libjpeg-turbo JPEG library is a library for handling JPEG files.
+Tag: purpose::library, role::developer
