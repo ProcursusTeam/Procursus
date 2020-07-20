@@ -1,0 +1,22 @@
+--- auto/cc/name.old    2020-07-19 20:27:42.582848617 +0800
++++ auto/cc/name        2020-07-19 20:27:09.012836304 +0800
+@@ -7,7 +7,7 @@
+ 
+     ngx_feature="C compiler"
+     ngx_feature_name=
+-    ngx_feature_run=yes
++    ngx_feature_run=no
+     ngx_feature_incs=
+     ngx_feature_path=
+     ngx_feature_libs=
+
+--- auto/types/sizeof.old       2020-07-19 20:36:53.433044446 +0800
++++ auto/types/sizeof   2020-07-19 20:37:27.553055934 +0800
+@@ -40,7 +40,7 @@
+ 
+ 
+ if [ -x $NGX_AUTOTEST ]; then
+-    ngx_size=`$NGX_AUTOTEST`
++    ngx_size=4
+     echo " $ngx_size bytes"
+ fi
