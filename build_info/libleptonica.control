@@ -1,0 +1,10 @@
+Package: libleptonica
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBLEPTONICA_V@
+Section: Development
+Depends: libgif, libjpeg, libpng16, libtiff, libwebp
+Priority: optional
+Homepage: http://www.leptonica.org/
+Description: Well-tested C library for some basic image processing operations, along with a description of the functions and some design methods.
+Tag: purpose::library, role::developer
