@@ -1,0 +1,9 @@
+Package: libwebp
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBWEBP_V@
+Section: Development
+Depends: libjpeg, libpng16, libgif, libtiff
+Priority: optional
+Description: Image Compression format, based on the VP8 codec. WebP uses the modern VP8 compression format to deliver efficient compression of images for the web. More than 30% extra gain over optimized JPEG, for same quality, is not unusual.
+Tag: purpose::library, role::developer
