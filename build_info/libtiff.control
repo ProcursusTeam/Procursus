@@ -1,0 +1,10 @@
+Package: libtiff
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBTIFF_V@
+Section: Development
+Depends: xz-utils
+Priority: optional
+Homepage: http://www.libtiff.org/
+Description: libtiff is a library providing support for the Tag Image File Format (TIFF), a widely used format for storing image data.
+Tag: purpose::library, role::developer
