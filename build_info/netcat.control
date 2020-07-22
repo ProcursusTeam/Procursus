@@ -1,0 +1,10 @@
+Package: netcat
+Version: @DEB_NETCAT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: gettext
+Section: Networking
+Priority: important
+Multi-Arch: foreign
+Description: simple socket manipulation tool
+Tag: purpose::console, role::hacker
