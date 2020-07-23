@@ -19,10 +19,10 @@ libusb: libusb-setup
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/libusb install \
-		CFLAGS="$(CFLAGS) -D__OPEN_SOURCE__" \
+		CFLAGS="$(CFLAGS) -D__OPEN_SOURCE__ -DMAC_OS_X_VERSION_MIN_REQUIRED=101500" \
 		DESTDIR="$(BUILD_STAGE)/libusb"
 	+$(MAKE) -C $(BUILD_WORK)/libusb install \
-		CFLAGS="$(CFLAGS) -D__OPEN_SOURCE__" \
+		CFLAGS="$(CFLAGS) -D__OPEN_SOURCE__ -DMAC_OS_X_VERSION_MIN_REQUIRED=101500" \
 		DESTDIR="$(BUILD_BASE)"
 	mkdir -p $(BUILD_STAGE)/libusb/usr/share
 	cp -a $(BUILD_WORK)/libusb/examples $(BUILD_STAGE)/libusb/usr/share
