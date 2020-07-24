@@ -1,0 +1,9 @@
+Package: jq
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_JQ_V@
+Depends: liboniguruma
+Section: Utilities
+Priority: optional
+Description: Command-line JSON processor
+Tag: purpose::console, role::hacker

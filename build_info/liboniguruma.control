@@ -1,0 +1,8 @@
+Package: liboniguruma
+Version: @DEB_LIBONIGURUMA_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Description: regular expression library
+Tag: purpose::console, role::developer
