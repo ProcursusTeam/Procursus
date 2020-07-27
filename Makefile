@@ -207,7 +207,7 @@ DO_PATCH    = -cd $(BUILD_PATCH)/$(1); \
 SIGN =  find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \; &> /dev/null; \
 	find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
 
-PACK = -find $(BUILD_DIST)/$(1) \( -name '*.la' -o -name '*.a' \) -type f -delete; \
+PACK = -find $(BUILD_DIST)/$(1) -name '*.la' -type f -delete; \
 	rm -rf $(BUILD_DIST)/$(1)/usr/share/{info,aclocal,doc}; \
 	if [ -z $(3) ]; then \
 		echo Setting $(1) owner to 0:0.; \
