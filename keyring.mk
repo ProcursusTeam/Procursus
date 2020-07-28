@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS += keyring
+STRAPPROJECTS    += keyring
 KEYRING_VERSION  := 2020.05.09
 DEB_KEYRING_V    ?= $(KEYRING_VERSION)
 
