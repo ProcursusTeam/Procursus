@@ -3,23 +3,21 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += pfetch
-PFETCH_VERSION := 0.7.0
+PFETCH_VERSION := 0.6.0
 DEB_PFETCH_V   ?= $(PFETCH_VERSION)
 
 pfetch-setup: setup
-	rm -rf $(BUILD_WORK)/pfetch
-	mkdir -p $(BUILD_WORK)/pfetch
-	cp -af pfetch/* $(BUILD_WORK)/pfetch
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/dylanaraps/pfetch/archive/$(PFETCH_VERSION).tar.gz
+	$(call EXTRACT_TAR,$(PFETCH_VERSION).tar.gz,pfetch-$(PFETCH_VERSION),pfetch)
 
 ifneq ($(wildcard $(BUILD_WORK)/pfetch/.build_complete),)
 pfetch:
 	@echo "Using previously built pfetch."
 else
 pfetch: pfetch-setup 
-	+$(MAKE) -C $(BUILD_WORK)/pfetch install \
-		DESTDIR=$(BUILD_STAGE)/pfetch \
-		PREFIX=/usr
-		touch $(BUILD_WORK)/pfetch/.build_complete
+	mkdir -p $(BUILD_STAGE)/pfetch/usr/bin
+	cp $(BUILD_WORK)/pfetch/pfetch $(BUILD_STAGE)/pfetch/usr/bin/
+	touch $(BUILD_WORK)/pfetch/.build_complete
 endif
 
 pfetch-package: pfetch-stage
