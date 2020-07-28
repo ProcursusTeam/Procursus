@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += man-db
-MAN-DB_VERSION := 2.9.1
+MAN-DB_VERSION := 2.9.3
 DEB_MAN-DB_V   ?= $(MAN-DB_VERSION)
 
 man-db-setup: setup
@@ -21,8 +21,9 @@ man-db: man-db-setup libpipeline libgdbm gettext
 		--prefix=/usr \
 		--sysconfdir=/etc \
 		--disable-cache-owner \
-		--disable-setuid \
-		--enable-nls
+		--enable-nls \
+		--with-nroff=groff \
+		man_cv_prog_gnu_nroff=yes
 	+$(MAKE) -C $(BUILD_WORK)/man-db \
 		LDFLAGS="$(LDFLAGS) -lintl -Wl,-framework -Wl,CoreFoundation"
 	+$(MAKE) -C $(BUILD_WORK)/man-db install \
