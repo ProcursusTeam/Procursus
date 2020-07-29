@@ -1,0 +1,9 @@
+Package: vde2
+Version: @DEB_LIBVDE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libvde0, libvdeplug2
+Section: Development
+Priority: optional
+Multi-Arch: foreign
+Description: Virtual Distributed Ethernet

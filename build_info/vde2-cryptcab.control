@@ -1,0 +1,9 @@
+Package: vde2-cryptcab
+Version: @DEB_LIBVDE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libvdeplug2, libssl1.1
+Section: Development
+Priority: optional
+Multi-Arch: foreign
+Description: Virtual Distributed Ethernet - CryptCab
