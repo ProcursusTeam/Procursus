@@ -37,7 +37,7 @@ libusb-package: libusb-stage
 
 	# libusb.mk Prep libusb-1.0-0-dev
 	cp -a $(BUILD_STAGE)/libusb/usr/lib/{pkgconfig,libusb-1.0.dylib} $(BUILD_DIST)/libusb-1.0-0-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libusb/usr/{include,share} $(BUILD_DIST)/libusb-1.0-0-dev/usr
+	cp -a $(BUILD_STAGE)/libusb/usr/include $(BUILD_DIST)/libusb-1.0-0-dev/usr
 	
 	# libusb.mk Sign
 	$(call SIGN,libusb-1.0-0,general.xml)
