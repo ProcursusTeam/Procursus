@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS          += libirecovery
 LIBIRECOVERY_VERSION := 1.0.0
-DEB_LIBIRECOVERY_V   ?= $(LIBIRECOVERY_VERSION)
+DEB_LIBIRECOVERY_V   ?= $(LIBIRECOVERY_VERSION)-1
 
 libirecovery-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libimobiledevice/libirecovery/releases/download/$(LIBIRECOVERY_VERSION)/libirecovery-$(LIBIRECOVERY_VERSION).tar.bz2
@@ -14,15 +14,12 @@ ifneq ($(wildcard $(BUILD_WORK)/libirecovery/.build_complete),)
 libirecovery:
 	@echo "Using previously built libirecovery."
 else
-libirecovery: libirecovery-setup readline
+libirecovery: libirecovery-setup readline libusb
 	cd $(BUILD_WORK)/libirecovery && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--with-sysroot=$(TARGET_SYSROOT) \
-		--with-iokit \
-		ac_cv_header_IOKit_usb_IOUSBLib_h=yes
+		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/libirecovery \
-		CFLAGS="$(CFLAGS) -D__OPEN_SOURCE__"
+		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)/usr/include/libusb-1.0"
 	+$(MAKE) -C $(BUILD_WORK)/libirecovery install \
 		DESTDIR=$(BUILD_STAGE)/libirecovery
 	+$(MAKE) -C $(BUILD_WORK)/libirecovery install \
