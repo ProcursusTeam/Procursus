@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += libusb
 LIBUSB_VERSION := 1.0.23
-DEB_LIBUSB_V   ?= $(LIBUSB_VERSION)
+DEB_LIBUSB_V   ?= $(LIBUSB_VERSION)-1
 
 libusb-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libusb/libusb/releases/download/v$(LIBUSB_VERSION)/libusb-$(LIBUSB_VERSION).tar.bz2
