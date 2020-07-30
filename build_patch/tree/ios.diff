@@ -1,0 +1,30 @@
+diff -urN tree-1.8.0/Makefile tree/Makefile
+--- tree-1.8.0/Makefile	2018-01-18 15:02:20.000000000 -0500
++++ tree/Makefile	2020-07-30 01:23:21.880850344 -0400
+@@ -18,7 +18,7 @@
+ 
+ prefix = /usr
+ 
+-CC=gcc
++#CC=gcc
+ 
+ VERSION=1.8.0
+ TREE_DEST=tree
+@@ -30,7 +30,7 @@
+ # Uncomment options below for your particular OS:
+ 
+ # Linux defaults:
+-CFLAGS=-ggdb -pedantic -Wall -DLINUX -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
++#CFLAGS=-ggdb -pedantic -Wall -DLINUX -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
+ #CFLAGS=-O4 -Wall  -DLINUX -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
+ #LDFLAGS=-s
+ 
+@@ -66,7 +66,7 @@
+ #CFLAGS=-O2 -Wall -fomit-frame-pointer -no-cpp-precomp
+ #LDFLAGS=
+ #MANDIR=/usr/share/man/man1
+-#OBJS+=strverscmp.o
++OBJS+=strverscmp.o
+ 
+ # Uncomment for HP/UX:
+ #CC=cc
