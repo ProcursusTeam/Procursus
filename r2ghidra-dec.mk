@@ -21,7 +21,7 @@ ifneq ($(wildcard $(BUILD_WORK)/r2ghidra-dec/.build_complete),)
 r2ghidra-dec:
 	@echo "Using previously built r2ghidra-dec."
 else
-r2ghidra-dec: r2ghidra-dec-setup radare2
+r2ghidra-dec: r2ghidra-dec-setup radare2 openssl
 	mkdir -p $(BUILD_WORK)/../../native && cp -a $(BUILD_WORK)/r2ghidra-dec/ghidra $(BUILD_WORK)/../../native
 	+cd $(BUILD_WORK)/../../native/ghidra && unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS && cmake .; \
 	$(MAKE) -C $(BUILD_WORK)/../../native/ghidra sleighc
