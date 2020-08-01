@@ -1,8 +1,8 @@
-Package: libusbmuxd-dev
-Version: @DEB_LIBUSBMUXD_V@
+Package: libimobiledevice-dev
+Version: @DEB_LIBIMOBILEDEVICE_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libusbmuxd6 (= @DEB_LIBUSBMUXD_V@), libplist-dev (>= 2.2.0)
+Depends: libimobiledevice6 (= @DEB_LIBIMOBILEDEVICE_V@), libplist-dev (>= 2.2.0), libusbmuxd-dev (>= 2.0.2)
 Section: Development
 Priority: standard
 Description: USB multiplexor daemon for iPhone and iPod Touch devices - devel

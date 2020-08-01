@@ -30,8 +30,8 @@ libusbmuxd-package: libusbmuxd-stage
 	# libusbmuxd.mk Package Structure
 	rm -rf $(BUILD_DIST)/libusbmuxd{6,-dev,-tools}
 	mkdir -p $(BUILD_DIST)/libusbmuxd6/usr/lib \
-	$(BUILD_DIST)/libusbmuxd-dev/usr/lib \
-	$(BUILD_DIST)/libusbmuxd-tools/usr
+		$(BUILD_DIST)/libusbmuxd-dev/usr/lib \
+		$(BUILD_DIST)/libusbmuxd-tools/usr
 
 	# libusbmuxd.mk Prep libusbmuxd6
 	cp -a $(BUILD_STAGE)/libusbmuxd/usr/lib/libusbmuxd-2.0.6.dylib $(BUILD_DIST)/libusbmuxd6/usr/lib/

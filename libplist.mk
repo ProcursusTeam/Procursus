@@ -32,10 +32,10 @@ libplist-package: libplist-stage
 	# libplist.mk Package Structure
 	rm -rf $(BUILD_DIST)/libplist{3,-dev,-utils} $(BUILD_DIST)/libplist++{3v5,-dev}
 	mkdir -p $(BUILD_DIST)/libplist3/usr/lib \
-	$(BUILD_DIST)/libplist-dev/usr/{include/plist,lib/pkgconfig} \
-	$(BUILD_DIST)/libplist-utils/usr \
-	$(BUILD_DIST)/libplist++3v5/usr/lib \
-	$(BUILD_DIST)/libplist++-dev/usr/{include/plist,lib/pkgconfig}
+		$(BUILD_DIST)/libplist-dev/usr/{include/plist,lib/pkgconfig} \
+		$(BUILD_DIST)/libplist-utils/usr \
+		$(BUILD_DIST)/libplist++3v5/usr/lib \
+		$(BUILD_DIST)/libplist++-dev/usr/{include/plist,lib/pkgconfig}
 
 	# libplist.mk Prep libplist3
 	cp -a $(BUILD_STAGE)/libplist/usr/lib/libplist-2.0.3.dylib $(BUILD_DIST)/libplist3/usr/lib

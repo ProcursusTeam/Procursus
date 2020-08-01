@@ -5,5 +5,5 @@ Maintainer: @DEB_MAINTAINER@
 Depends: libplist3, libusbmuxd6
 Section: Administration
 Priority: standard
-Description: USB multiplexor daemon for iPhone and iPod Touch devices
-Tag: ole::developer
+Description: USB multiplexor daemon for iPhone and iPod Touch devices - tools
+Tag: role::developer
