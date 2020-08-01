@@ -1,0 +1,10 @@
+Package: libplist-utils
+Version: @DEB_LIBPLIST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libplist3 (>= 2.2.0)
+Conflicts: libplist (<< 99)
+Section: Networking
+Priority: standard
+Description: Apple property list converter
+Tag: role::developer

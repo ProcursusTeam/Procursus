@@ -27,20 +27,48 @@ libplist: libplist-setup
 	touch $(BUILD_WORK)/libplist/.build_complete
 endif
 
+libplist-package: .SHELLFLAGS=-O extglob -c
 libplist-package: libplist-stage
 	# libplist.mk Package Structure
-	rm -rf $(BUILD_DIST)/libplist
+	rm -rf $(BUILD_DIST)/libplist{3,-dev,-utils} $(BUILD_DIST)/libplist++{3v5,-dev}
+	mkdir -p $(BUILD_DIST)/libplist3/usr/lib \
+	$(BUILD_DIST)/libplist-dev/usr/{include/plist,lib/pkgconfig} \
+	$(BUILD_DIST)/libplist-utils/usr \
+	$(BUILD_DIST)/libplist++3v5/usr/lib \
+	$(BUILD_DIST)/libplist++-dev/usr/{include/plist,lib/pkgconfig}
 
-	# libplist.mk Prep libplist
-	cp -a $(BUILD_STAGE)/libplist $(BUILD_DIST)
+	# libplist.mk Prep libplist3
+	cp -a $(BUILD_STAGE)/libplist/usr/lib/libplist-2.0.3.dylib $(BUILD_DIST)/libplist3/usr/lib
+
+	# libplist.mk Prep libplist-dev
+	cp -a $(BUILD_STAGE)/libplist/usr/include/plist/plist.h $(BUILD_DIST)/libplist-dev/usr/include/plist
+	cp -a $(BUILD_STAGE)/libplist/usr/lib/libplist-2.0.{a,dylib} $(BUILD_DIST)/libplist-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libplist/usr/lib/pkgconfig/libplist-2.0.pc $(BUILD_DIST)/libplist-dev/usr/lib/pkgconfig
+
+	# libplist.mk Prep libplist-utils
+	cp -a $(BUILD_STAGE)/libplist/usr/{bin,share} $(BUILD_DIST)/libplist-utils/usr
+
+	# libplist.mk Prep libplist++3v5
+	cp -a $(BUILD_STAGE)/libplist/usr/lib/libplist++-2.0.3.dylib $(BUILD_DIST)/libplist++3v5/usr/lib
+
+	# libplist.mk Prep libplist++-dev
+	cp -a $(BUILD_STAGE)/libplist/usr/include/plist/!(plist).h $(BUILD_DIST)/libplist++-dev/usr/include/plist
+	cp -a $(BUILD_STAGE)/libplist/usr/lib/libplist++-2.0.{a,dylib} $(BUILD_DIST)/libplist++-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libplist/usr/lib/pkgconfig/libplist++-2.0.pc $(BUILD_DIST)/libplist++-dev/usr/lib/pkgconfig
 
 	# libplist.mk Sign
-	$(call SIGN,libplist,general.xml)
+	$(call SIGN,libplist3,general.xml)
+	$(call SIGN,libplist-utils,general.xml)
+	$(call SIGN,libplist++3v5,general.xml)
 
 	# libplist.mk Make .debs
-	$(call PACK,libplist,DEB_LIBPLIST_V)
+	$(call PACK,libplist3,DEB_LIBPLIST_V)
+	$(call PACK,libplist-dev,DEB_LIBPLIST_V)
+	$(call PACK,libplist-utils,DEB_LIBPLIST_V)
+	$(call PACK,libplist++3v5,DEB_LIBPLIST_V)
+	$(call PACK,libplist++-dev,DEB_LIBPLIST_V)
 
 	# libplist.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libplist
+	rm -rf $(BUILD_DIST)/libplist{3,-dev,-utils} $(BUILD_DIST)/libplist++{3v5,-dev}
 
 .PHONY: libplist libplist-package

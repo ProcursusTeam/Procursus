@@ -1,0 +1,11 @@
+Package: libplist3
+Version: @DEB_LIBPLIST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Replaces: libplist
+Conflicts: libplist
+Provides: libplist (= 99)
+Section: Networking
+Priority: standard
+Description: Library for handling Apple binary and XML property lists
+Tag: purpose::library, role::developer

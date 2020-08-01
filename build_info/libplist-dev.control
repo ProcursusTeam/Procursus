@@ -1,0 +1,10 @@
+Package: libplist-dev
+Version: @DEB_LIBPLIST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libplist3 (= @DEB_LIBPLIST_V@)
+Conflicts: libplist (<< 99)
+Section: Development
+Priority: standard
+Description: Library for handling Apple binary and XML property lists - development files
+Tag: purpose::library, role::developer
