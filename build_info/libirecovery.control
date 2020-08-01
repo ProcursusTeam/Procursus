@@ -1,8 +1,0 @@
-Package: libirecovery
-Version: @DEB_LIBIRECOVERY_V@
-Architecture: @DEB_ARCH@
-Maintainer: @DEB_MAINTAINER@
-Depends: readline (>= 8.0), libusb-1.0-0
-Section: Development
-Priority: optional
-Description: Library and utility to talk to iBoot/iBSS via USB

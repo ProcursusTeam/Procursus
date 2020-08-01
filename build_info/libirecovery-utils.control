@@ -1,0 +1,10 @@
+Package: libirecovery-utils
+Version: @DEB_LIBIRECOVERY_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libirecovery3 (>= 1.0.0)
+Conflicts: libirecovery (<< 99)
+Section: Administration
+Priority: standard
+Description: Communicate with iBoot/iBSS of iOS devices via USB
+Tag: role::developer
