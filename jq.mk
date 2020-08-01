@@ -15,7 +15,8 @@ jq:
 	@echo "Using previously built jq."
 else
 jq: jq-setup liboniguruma
-	cd $(BUILD_WORK)/jq && autoreconf -fi && CFLAGS="$(CFLAGS) -D_REENTRANT" ./configure \
+	cd $(BUILD_WORK)/jq && autoreconf -fi
+	cd $(BUILD_WORK)/jq && CFLAGS="$(CFLAGS) -D_REENTRANT" ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--enable-shared=yes \
@@ -23,6 +24,8 @@ jq: jq-setup liboniguruma
 		--with-oniguruma=$(BUILD_STAGE)/liboniguruma/usr \
 		--disable-docs \
 		--disable-maintainer-mode
+	+$(MAKE) -C $(BUILD_WORK)/jq \
+		DESTDIR=$(BUILD_STAGE)/jq
 	+$(MAKE) -C $(BUILD_WORK)/jq install \
 		DESTDIR=$(BUILD_STAGE)/jq
 	touch $(BUILD_WORK)/jq/.build_complete
