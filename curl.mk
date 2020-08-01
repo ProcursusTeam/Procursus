@@ -24,6 +24,7 @@ curl: curl-setup openssl libssh2 nghttp2 libidn2
 		--with-libssh2 \
 		--with-nghttp2 \
 		--with-ca-bundle=/etc/ssl/certs/cacert.pem
+	rm -f $(BUILD_BASE)/usr/lib/libintl.la
 	+$(MAKE) -C $(BUILD_WORK)/curl
 	+$(MAKE) -C $(BUILD_WORK)/curl install \
 		DESTDIR="$(BUILD_STAGE)/curl"
