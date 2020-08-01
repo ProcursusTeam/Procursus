@@ -5,5 +5,6 @@ Version: @DEB_JQ_V@
 Depends: liboniguruma
 Section: Utilities
 Priority: optional
-Description: Command-line JSON processor
+Homepage: https://stedolan.github.io/jq/
+Description: a lightweight and flexible command-line JSON processor
 Tag: purpose::console, role::hacker
