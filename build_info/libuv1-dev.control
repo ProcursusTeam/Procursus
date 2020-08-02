@@ -1,0 +1,9 @@
+Package: libuv1-dev
+Version: @DEB_LIBUV1_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libuv1 (= @DEB_LIBUV1_V@)
+Section: Development
+Priority: optional
+Multi-Arch: foreign
+Description: asynchronous event notification library - development files

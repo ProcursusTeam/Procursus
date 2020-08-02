@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/radare2/.build_complete),)
 radare2:
 	@echo "Using previously built radare2."
 else
-radare2: radare2-setup libuv
+radare2: radare2-setup libuv1
 	cd $(BUILD_WORK)/radare2 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
