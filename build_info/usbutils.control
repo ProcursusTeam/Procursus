@@ -1,0 +1,9 @@
+Package: usbutils
+Version: @DEB_USBUTILS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libusb-1.0-0 (>= 1.0.9), usb.ids (>= 2020.07.06)
+Section: Administration
+Priority: standard
+Description: Linux USB utilities
+Tag: role::developer

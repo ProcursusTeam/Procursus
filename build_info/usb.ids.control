@@ -1,0 +1,8 @@
+Package: usb.ids
+Version: @DEB_USBIDS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Administration
+Priority: standard
+Description: USB ID Repository
+Tag: role::developer
