@@ -31,6 +31,7 @@ radare2: radare2-setup libuv1 libzip openssl
 		DESTDIR="$(BUILD_STAGE)/radare2"
 	+$(MAKE) -C $(BUILD_WORK)/radare2 install \
 		DESTDIR="$(BUILD_BASE)"
+	rm -f $(BUILD_STAGE)/radare2/usr/{lib,share}/radare2/last
 	touch $(BUILD_WORK)/radare2/.build_complete
 endif
 
@@ -49,6 +50,7 @@ radare2-package: radare2-stage
 
 	# radare2.mk Prep libradare2-$(RADARE2_API_V)
 	cp -a $(BUILD_STAGE)/radare2/usr/lib/*$(RADARE2_VERSION).dylib $(BUILD_DIST)/libradare2-$(RADARE2_API_V)/usr/lib
+	cp -a $(BUILD_STAGE)/radare2/usr/lib/radare2 $(BUILD_DIST)/libradare2-$(RADARE2_API_V)/usr/lib
 
 	# radare2.mk Prep libradare2-common
 	cp -a $(BUILD_STAGE)/radare2/usr/share/radare2 $(BUILD_DIST)/libradare2-common/usr/share
