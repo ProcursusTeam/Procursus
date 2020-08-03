@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS      += r2ghidra-dec
 R2GHIDRA_VERSION := 4.5.0
-DEB_R2GHIDRA_V   ?= $(R2GHIDRA_VERSION)
+DEB_R2GHIDRA_V   ?= $(R2GHIDRA_VERSION)-1
 
 r2ghidra-dec-setup: setup
 	if [ ! -d "$(BUILD_WORK)/r2ghidra-dec" ]; then \
