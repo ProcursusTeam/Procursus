@@ -1,0 +1,11 @@
+Package: r2ghidra-dec
+Version: @DEB_R2GHIDRA_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libradare2-4.5 (>= 4.5.0), libssl1.1 (>= 1.1.0), libzip
+Section: Utilities
+Priority: optional
+Homepage: https://www.radare.org
+Description: This is an integration of the Ghidra decompiler for radare2.
+Name: Ghidra Decompiler for Radare2
+Tag: purpose::console, role::hacker

@@ -1,0 +1,10 @@
+Package: radare2
+Version: @DEB_RADARE2_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libradare2-4.5 (>= @DEB_RADARE2_V@)
+Section: Utilities
+Priority: optional
+Homepage: https://www.radare.org
+Description: Free and advanced command line hexadecimal editor. The project aims to create a complete, portable, multi-architecture, unix-like toolchain for reverse engineering.
+Tag: purpose::console, role::hacker
