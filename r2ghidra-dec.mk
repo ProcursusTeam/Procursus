@@ -12,7 +12,7 @@ r2ghidra-dec-setup: setup
 		cd "$(BUILD_WORK)/r2ghidra-dec"; \
 		git fetch origin; \
 		git reset --hard origin/master; \
-		git checkout HEAD .; \
+		git checkout 17ec3b3; \
 		git submodule update --init; \
 	fi
 	$(call DO_PATCH,r2ghidra,r2ghidra-dec,-p1)
@@ -30,9 +30,8 @@ r2ghidra-dec: r2ghidra-dec-setup radare2 openssl
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/ \
+		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
-		-DCMAKE_INSTALL_RPATH=/usr \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
