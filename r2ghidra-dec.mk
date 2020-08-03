@@ -45,10 +45,10 @@ endif
 r2ghidra-dec-package: r2ghidra-dec-stage
 	# r2ghidra-dec.mk Package Structure
 	rm -rf $(BUILD_DIST)/r2ghidra-dec
-	mkdir -p $(BUILD_DIST)/r2ghidra-dec
+	mkdir -p $(BUILD_DIST)/r2ghidra-dec/usr/lib/radare2
 	
 	# r2ghidra-dec.mk Prep r2ghidra-dec
-	cp -a $(BUILD_STAGE)/r2ghidra-dec/usr $(BUILD_DIST)/r2ghidra-dec
+	cp -a $(BUILD_STAGE)/r2ghidra-dec/usr/share/radare2/plugins $(BUILD_DIST)/r2ghidra-dec/usr/lib/radare2/$(RADARE2_VERSION)
 	
 	# r2ghidra-dec.mk Sign
 	$(call SIGN,r2ghidra-dec,general.xml)
