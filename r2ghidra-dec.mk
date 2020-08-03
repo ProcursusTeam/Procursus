@@ -31,6 +31,7 @@ r2ghidra-dec: r2ghidra-dec-setup radare2 openssl
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
 		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DRADARE2_INSTALL_PLUGDIR=/usr/lib/radare2/$(RADARE2_VERSION) \
 		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
@@ -45,10 +46,9 @@ endif
 r2ghidra-dec-package: r2ghidra-dec-stage
 	# r2ghidra-dec.mk Package Structure
 	rm -rf $(BUILD_DIST)/r2ghidra-dec
-	mkdir -p $(BUILD_DIST)/r2ghidra-dec/usr/lib/radare2
 	
 	# r2ghidra-dec.mk Prep r2ghidra-dec
-	cp -a $(BUILD_STAGE)/r2ghidra-dec/usr/share/radare2/plugins $(BUILD_DIST)/r2ghidra-dec/usr/lib/radare2/$(RADARE2_VERSION)
+	cp -a $(BUILD_STAGE)/r2ghidra-dec $(BUILD_DIST)
 	
 	# r2ghidra-dec.mk Sign
 	$(call SIGN,r2ghidra-dec,general.xml)
