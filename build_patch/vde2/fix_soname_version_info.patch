@@ -1,0 +1,47 @@
+Index: vde2-2.3.2/src/lib/Makefile.am
+===================================================================
+--- vde2-2.3.2.orig/src/lib/Makefile.am	2011-11-23 17:41:17.000000000 +0100
++++ vde2-2.3.2/src/lib/Makefile.am	2012-01-16 15:49:37.166791413 +0100
+@@ -17,16 +17,16 @@
+ # read before touching http://www.gnu.org/software/libtool/manual/libtool.html#Updating-version-info
+ 
+ libvdemgmt_la_LIBADD = $(LIBADD)
+-libvdemgmt_la_LDFLAGS = $(AM_LDFLAGS) -version-number 0:0:1 -export-dynamic
++libvdemgmt_la_LDFLAGS = $(AM_LDFLAGS) -version-info 0:1:0 -export-dynamic
+ 
+ libvdesnmp_la_LIBADD = $(LIBADD) $(top_builddir)/src/lib/libvdemgmt.la
+-libvdesnmp_la_LDFLAGS = $(AM_LDFLAGS) -version-number 0:0:1 -export-dynamic
++libvdesnmp_la_LDFLAGS = $(AM_LDFLAGS) -version-info 0:1:0 -export-dynamic
+ 
+ libvdeplug_la_LIBADD = $(LIBADD)
+-libvdeplug_la_LDFLAGS = $(AM_LDFLAGS) -version-number 3:0:1 -export-dynamic
++libvdeplug_la_LDFLAGS = $(AM_LDFLAGS) -version-info 3:2:1 -export-dynamic
+ 
+ libvdehist_la_LIBADD = $(LIBADD)
+-libvdehist_la_LDFLAGS = $(AM_LDFLAGS) -version-number 0:0:1 -export-dynamic
++libvdehist_la_LDFLAGS = $(AM_LDFLAGS) -version-info 0:1:0 -export-dynamic
+ 
+ if ENABLE_PYTHON
+ SUBDIRS += . python
+Index: vde2-2.3.2/src/lib/Makefile.in
+===================================================================
+--- vde2-2.3.2.orig/src/lib/Makefile.in	2011-11-23 17:42:07.000000000 +0100
++++ vde2-2.3.2/src/lib/Makefile.in	2012-01-16 15:49:56.479132165 +0100
+@@ -320,13 +320,13 @@
+ 
+ # read before touching http://www.gnu.org/software/libtool/manual/libtool.html#Updating-version-info
+ libvdemgmt_la_LIBADD = $(LIBADD)
+-libvdemgmt_la_LDFLAGS = $(AM_LDFLAGS) -version-number 0:0:1 -export-dynamic
++libvdemgmt_la_LDFLAGS = $(AM_LDFLAGS) -version-info 0:1:0 -export-dynamic
+ libvdesnmp_la_LIBADD = $(LIBADD) $(top_builddir)/src/lib/libvdemgmt.la
+-libvdesnmp_la_LDFLAGS = $(AM_LDFLAGS) -version-number 0:0:1 -export-dynamic
++libvdesnmp_la_LDFLAGS = $(AM_LDFLAGS) -version-info 0:1:0 -export-dynamic
+ libvdeplug_la_LIBADD = $(LIBADD)
+-libvdeplug_la_LDFLAGS = $(AM_LDFLAGS) -version-number 3:0:1 -export-dynamic
++libvdeplug_la_LDFLAGS = $(AM_LDFLAGS) -version-info 3:0:1 -export-dynamic
+ libvdehist_la_LIBADD = $(LIBADD)
+-libvdehist_la_LDFLAGS = $(AM_LDFLAGS) -version-number 0:0:1 -export-dynamic
++libvdehist_la_LDFLAGS = $(AM_LDFLAGS) -version-info 0:1:0 -export-dynamic
+ pkgconfigdir = $(libdir)/pkgconfig
+ pkgconfig_DATA = vdesnmp.pc vdemgmt.pc vdeplug.pc vdehist.pc
+ all: all-recursive

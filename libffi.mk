@@ -2,9 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += libffi
-LIBFFI_VERSION  := 3.3
-DEB_LIBFFI_V    ?= $(LIBFFI_VERSION)
+SUBPROJECTS    += libffi
+LIBFFI_VERSION := 3.3
+DEB_LIBFFI_V   ?= $(LIBFFI_VERSION)
 
 libffi-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://sourceware.org/pub/libffi/libffi-$(LIBFFI_VERSION).tar.gz

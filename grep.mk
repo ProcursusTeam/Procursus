@@ -20,7 +20,6 @@ grep: grep-setup pcre
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-dependency-tracking \
-		--disable-nls \
 		--with-packager="$(DEB_MAINTAINER)"
 	+$(MAKE) -C $(BUILD_WORK)/grep
 	+$(MAKE) -C $(BUILD_WORK)/grep install \

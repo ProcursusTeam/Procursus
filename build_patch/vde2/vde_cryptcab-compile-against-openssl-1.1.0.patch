@@ -1,0 +1,110 @@
+## Description: add some description
+## Origin/Author: add some origin or author
+## Bug: bug URL
+From 5f2c4c7b67617991af65798a4d177ada90f7e463 Mon Sep 17 00:00:00 2001
+From: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
+Date: Fri, 2 Sep 2016 19:52:49 +0000
+Subject: [PATCH] vde_cryptcab: compile against openssl 1.1.0
+
+Signed-off-by: Sebastian Andrzej Siewior <sebastian@breakpoint.cc>
+---
+ src/vde_cryptcab/cryptcab.c | 30 +++++++++++++++++++-----------
+ 1 file changed, 19 insertions(+), 11 deletions(-)
+
+diff --git a/src/vde_cryptcab/cryptcab.c b/src/vde_cryptcab/cryptcab.c
+index c5b4474..a2780f1 100644
+--- a/src/vde_cryptcab/cryptcab.c
++++ b/src/vde_cryptcab/cryptcab.c
+@@ -22,7 +22,7 @@ static void Usage(char *programname)
+ 	exit(1);
+ }
+ 	
+-static EVP_CIPHER_CTX ctx;
++static EVP_CIPHER_CTX *ctx;
+ static int ctx_initialized = 0;
+ static int encryption_disabled = 0;
+ static int nfd;
+@@ -30,6 +30,10 @@ static unsigned long long mycounter=1;
+ static struct vde_open_args open_args={.port=0,.group=NULL,.mode=0700};
+ static int verbose = 0;
+ 
++#if OPENSSL_VERSION_NUMBER < 0x10100000
++#define EVP_CIPHER_CTX_reset(x)	EVP_CIPHER_CTX_cleanup(x)
++#endif
++
+ void vc_printlog(int priority, const char *format, ...)
+ {
+ 	va_list arg;
+@@ -105,19 +109,21 @@ int data_encrypt(unsigned char *src, unsigned char *dst, int len, struct peer *p
+ 	}
+ 
+ 	if (!ctx_initialized) {
+-		EVP_CIPHER_CTX_init (&ctx);
++		ctx = EVP_CIPHER_CTX_new ();
++		if (!ctx)
++			return -1;
+ 		ctx_initialized = 1;
+ 	}
+ 	
+-	EVP_EncryptInit (&ctx, EVP_bf_cbc (), p->key, p->iv);
+-	if (EVP_EncryptUpdate (&ctx, dst, &olen, src, len) != 1)
++	EVP_EncryptInit (ctx, EVP_bf_cbc (), p->key, p->iv);
++	if (EVP_EncryptUpdate (ctx, dst, &olen, src, len) != 1)
+ 	{
+ 		fprintf (stderr,"error in encrypt update\n");
+ 		olen = -1;
+ 		goto cleanup;
+ 	}
+ 
+-	if (EVP_EncryptFinal (&ctx, dst + ulen, &tlen) != 1)
++	if (EVP_EncryptFinal (ctx, dst + ulen, &tlen) != 1)
+ 	{
+ 		fprintf (stderr,"error in encrypt final\n");
+ 		olen = -1;
+@@ -126,7 +132,7 @@ int data_encrypt(unsigned char *src, unsigned char *dst, int len, struct peer *p
+ 	olen += tlen;
+ 
+ cleanup:
+-	EVP_CIPHER_CTX_cleanup(&ctx);	
++	EVP_CIPHER_CTX_reset(ctx);
+ 	return olen;
+ }
+ 
+@@ -142,19 +148,21 @@ int data_decrypt(unsigned char *src, unsigned char *dst, int len, struct peer *p
+ 	}
+ 	
+ 	if (!ctx_initialized) {
+-		EVP_CIPHER_CTX_init (&ctx);
++		ctx = EVP_CIPHER_CTX_new ();
++		if (!ctx)
++			return -1;
+ 		ctx_initialized = 1;
+ 	}
+ 
+-	EVP_DecryptInit (&ctx, EVP_bf_cbc (), p->key, p->iv);
+-	if (EVP_DecryptUpdate (&ctx, dst, &olen, src, ulen) != 1)
++	EVP_DecryptInit (ctx, EVP_bf_cbc (), p->key, p->iv);
++	if (EVP_DecryptUpdate (ctx, dst, &olen, src, ulen) != 1)
+ 	{
+ 		fprintf (stderr,"error in decrypt update\n");
+ 		olen = -1;
+ 		goto cleanup;
+ 	}
+ 
+-	if (EVP_DecryptFinal (&ctx, dst + ulen, &tlen) != 1)
++	if (EVP_DecryptFinal (ctx, dst + ulen, &tlen) != 1)
+ 	{
+ 		fprintf (stderr,"error in decrypt final, ulen = %d, tlen = %d\n", ulen, tlen);
+ 		olen = -1;
+@@ -163,7 +171,7 @@ int data_decrypt(unsigned char *src, unsigned char *dst, int len, struct peer *p
+ 	olen += tlen;
+ 
+ cleanup:
+-	EVP_CIPHER_CTX_cleanup(&ctx);	
++	EVP_CIPHER_CTX_reset (ctx);
+ 	return olen;
+ }
+ 
+-- 
+2.9.3
+

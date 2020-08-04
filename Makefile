@@ -135,10 +135,7 @@ else
 $(error Please use Linux or MacOS to build)
 endif
 
-DEB_ORIGIN     := checkra1n
-DEB_DIST       := georgia
-DIST           := $(MEMO_TARGET)/$(DEB_DIST)
-DEB_MAINTAINER := Hayden Seay <me@diatr.us>
+DEB_MAINTAINER ?= Hayden Seay <me@diatr.us>
 
 # Root
 BUILD_ROOT     ?= $(PWD)
@@ -207,15 +204,17 @@ DO_PATCH    = -cd $(BUILD_PATCH)/$(1); \
 SIGN =  find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \; &> /dev/null; \
 	find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
 
-PACK = -find $(BUILD_DIST)/$(1) \( -name '*.la' -o -name '*.a' \) -type f -delete; \
-	rm -rf $(BUILD_DIST)/$(1)/usr/share/{info,aclocal,doc}; \
+PACK = -find $(BUILD_DIST)/$(1) -name '*.la' -type f -delete; \
+	rm -rf $(BUILD_DIST)/$(1)/usr/share/{info,doc}; \
+	find $(BUILD_DIST)/$(1)/usr/share/man -type f -exec zstd -19 --rm '{}' \; 2> /dev/null; \
 	if [ -z $(3) ]; then \
 		echo Setting $(1) owner to 0:0.; \
 		$(FAKEROOT) chown -R 0:0 $(BUILD_DIST)/$(1)/* &>/dev/null; \
 	elif [ $(3) = "2" ]; then \
 		echo $(1) owner set within individual makefile.; \
 	fi; \
-	if [ -d "$(BUILD_DIST)/$(1)/usr/share/locale" ]; then \
+	if [ -d "$(BUILD_DIST)/$(1)/usr/share/locale" ] && [ ! "$(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d ' ')" = "gettext-localizations" ]; then \
+		rm -rf $(BUILD_DIST)/$(1)/usr/share/locale/*/LC_TIME; \
 		$(CP) -af $(BUILD_DIST)/$(1)/usr/share/locale $(BUILD_DIST)/$(1)-locales; \
 		rm -rf $(BUILD_DIST)/$(1)/usr/share/locale; \
 	fi; \
@@ -243,13 +242,14 @@ PACK = -find $(BUILD_DIST)/$(1) \( -name '*.la' -o -name '*.a' \) -type f -delet
 PACK_LOCALE = mkdir -p $(BUILD_DIST)/$(1)-locale/{DEBIAN,usr/share}; \
 	$(CP) -af $(BUILD_DIST)/$(1)-locales $(BUILD_DIST)/$(1)-locale/usr/share/locale; \
 	rm -rf $(BUILD_DIST)/$(1)-locales; \
+	rm -f $(BUILD_DIST)/$(1)-locale/usr/share/locale/locale.alias; \
 	LSIZE=$$(du -s $(BUILD_DIST)/$(1)-locale | cut -f 1); \
 	$(CP) $(BUILD_DIST)/$(1)/DEBIAN/control $(BUILD_DIST)/$(1)-locale/DEBIAN; \
 	VERSION=$$(grep Version: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d " "); \
-	$(SED) -i "s/^Depends:.*/Depends: $(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d " ") (= $$VERSION)/" $(BUILD_DIST)/$(1)-locale/DEBIAN/control; \
+	$(SED) -i "s/^Depends:.*/Depends: $(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d " ") (= $$VERSION), gettext-localizations/" $(BUILD_DIST)/$(1)-locale/DEBIAN/control; \
 	$(SED) -i 's/^Package:.*/Package: $(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d " ")-locale/' $(BUILD_DIST)/$(1)-locale/DEBIAN/control; \
 	$(SED) -i 's/^Priority:.*/Priority: optional/' $(BUILD_DIST)/$(1)-locale/DEBIAN/control; \
-	$(SED) -i 's/^Section:.*/Section: Locales/' $(BUILD_DIST)/$(1)-locale/DEBIAN/control; \
+	$(SED) -i 's/^Section:.*/Section: Localizations/' $(BUILD_DIST)/$(1)-locale/DEBIAN/control; \
 	$(SED) -i 's/^Description:.*/Description: Locale files for $(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d ' ')./' $(BUILD_DIST)/$(1)-locale/DEBIAN/control; \
 	$(SED) -i -e '/^Name:/d' -e '/^Provides:/d' -e '/^Replaces:/d' -e '/^Conflicts:/d' -e '/^Tag:/d' -e '/^Essential:/d' $(BUILD_DIST)/$(1)-locale/DEBIAN/control; \
 	echo "Installed-Size: $$LSIZE" >> $(BUILD_DIST)/$(1)-locale/DEBIAN/control; \
@@ -415,6 +415,14 @@ export TIC_PATH
 else
 $(error Install ncurses 6)
 endif
+endif
+
+ifneq (,$(wildcard $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl))
+DOCBOOK_XSL := $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl
+else ifneq (,$(wildcard /usr/share/xml/docbook/stylesheet/docbook-xsl))
+DOCBOOK_XSL := /usr/share/xml/docbook/stylesheet/docbook-xsl
+else
+$(error Install docbook-xsl)
 endif
 
 PATH := $(BUILD_TOOLS):$(PATH)

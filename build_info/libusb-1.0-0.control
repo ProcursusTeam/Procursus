@@ -1,0 +1,10 @@
+Package: libusb-1.0-0
+Section: Development
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBUSB_V@
+Maintainer: @DEB_MAINTAINER@
+Description: userspace USB programming library
+ Library for programming USB applications.
+ .
+ This package contains what you need to run programs that use this
+ library.

@@ -14,15 +14,12 @@ ifneq ($(wildcard $(BUILD_WORK)/libirecovery/.build_complete),)
 libirecovery:
 	@echo "Using previously built libirecovery."
 else
-libirecovery: libirecovery-setup readline
+libirecovery: libirecovery-setup readline libusb
 	cd $(BUILD_WORK)/libirecovery && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--with-sysroot=$(TARGET_SYSROOT) \
-		--with-iokit \
-		ac_cv_header_IOKit_usb_IOUSBLib_h=yes
+		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/libirecovery \
-		CFLAGS="$(CFLAGS) -D__OPEN_SOURCE__"
+		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)/usr/include/libusb-1.0"
 	+$(MAKE) -C $(BUILD_WORK)/libirecovery install \
 		DESTDIR=$(BUILD_STAGE)/libirecovery
 	+$(MAKE) -C $(BUILD_WORK)/libirecovery install \
@@ -32,19 +29,31 @@ endif
 
 libirecovery-package: libirecovery-stage
 	# libirecovery.mk Package Structure
-	rm -rf $(BUILD_DIST)/libirecovery
-	mkdir -p $(BUILD_DIST)/libirecovery
+	rm -rf $(BUILD_DIST)/libirecovery{3,-dev,-utils}
+	mkdir -p $(BUILD_DIST)/libirecovery3/usr/lib \
+		$(BUILD_DIST)/libirecovery-dev/usr/lib \
+		$(BUILD_DIST)/libirecovery-utils/usr
+
+	# libirecovery.mk Prep libirecovery3
+	cp -a $(BUILD_STAGE)/libirecovery/usr/lib/libirecovery-1.0.3.dylib $(BUILD_DIST)/libirecovery3/usr/lib/
 	
-	# libirecovery.mk Prep libirecovery
-	cp -a $(BUILD_STAGE)/libirecovery/usr $(BUILD_DIST)/libirecovery
+	# libirecovery.mk Prep libirecovery-dev
+	cp -a $(BUILD_STAGE)/libirecovery/usr/lib/{pkgconfig,libirecovery-1.0.{a,dylib}} $(BUILD_DIST)/libirecovery-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libirecovery/usr/include $(BUILD_DIST)/libirecovery-dev/usr
 	
+	# libirecovery.mk Prep libirecovery-utils
+	cp -a $(BUILD_STAGE)/libirecovery/usr/bin $(BUILD_DIST)/libirecovery-utils/usr
+
 	# libirecovery.mk Sign
-	$(call SIGN,libirecovery,general.xml)
-	
+	$(call SIGN,libirecovery3,general.xml)
+	$(call SIGN,libirecovery-utils,general.xml)
+
 	# libirecovery.mk Make .debs
-	$(call PACK,libirecovery,DEB_LIBIRECOVERY_V)
-	
+	$(call PACK,libirecovery3,DEB_LIBIRECOVERY_V)
+	$(call PACK,libirecovery-dev,DEB_LIBIRECOVERY_V)
+	$(call PACK,libirecovery-utils,DEB_LIBIRECOVERY_V)
+
 	# libirecovery.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libirecovery
+	rm -rf $(BUILD_DIST)/libirecovery{3,-dev,-utils}
 
 .PHONY: libirecovery libirecovery-package

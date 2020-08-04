@@ -1,0 +1,9 @@
+Package: libvde-dev
+Version: @DEB_LIBVDE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libvde0 (= @DEB_LIBVDE_V@)
+Section: Development
+Priority: optional
+Multi-Arch: foreign
+Description: Virtual Distributed Ethernet - support libraries development files

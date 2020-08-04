@@ -1,0 +1,11 @@
+Package: libradare2-common
+Version: @DEB_RADARE2_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Conflicts: radare2 (<< 4.5.0)
+Replaces: radare2 (<< 4.5.0)
+Section: Development
+Priority: optional
+Homepage: https://www.radare.org
+Description: arch independent files from the radare2 suite
+Tag: role::developer

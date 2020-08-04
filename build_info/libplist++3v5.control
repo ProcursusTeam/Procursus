@@ -1,8 +1,10 @@
-Package: libplist
+Package: libplist++3v5
 Version: @DEB_LIBPLIST_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Depends: libplist3 (>= 2.2.0)
+Conflicts: libplist (<< 99)
 Section: Networking
 Priority: standard
-Description: plist library
+Description: C++ Library for handling Apple binary and XML property lists
 Tag: purpose::library, role::developer
