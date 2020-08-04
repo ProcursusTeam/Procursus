@@ -184,8 +184,10 @@ EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 		cd $(BUILD_WORK) && \
 		$(TAR) -xf $(BUILD_SOURCE)/$(1) && \
 		mkdir -p $(3); \
-		$(CP) -af $(2)/. $(3); \
-		rm -rf $(2); \
+		if [ "$(2)" -ne "$(3)" ]; then \
+			$(CP) -af $(2)/. $(3); \
+			rm -rf $(2); \
+		fi; \
 	fi; \
 	find $(BUILD_BASE)/usr -name "*.la" -type f -delete
 
