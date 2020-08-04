@@ -1,0 +1,9 @@
+Package: bison
+Version: @DEB_BISON_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: m4
+Section: Development
+Priority: optional
+Description: a general-purpose parser generator
+Name: Bison
