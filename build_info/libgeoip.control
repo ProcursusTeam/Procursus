@@ -1,8 +1,0 @@
-Package: libgeoip
-Version: @DEB_LIBGEOIP_V@
-Architecture: @DEB_ARCH@
-Maintainer: @DEB_MAINTAINER@
-Section: Development
-Priority: optional
-Description: GeoIP is a C library that enables the user to find the country that any IP address or hostname originates from. It uses a file based database.
-Tag: purpose::console, role::developer

@@ -31,20 +31,34 @@ libgeoip: libgeoip-setup
 endif
 
 libgeoip-package: libgeoip-stage
-  # libgeoip.mk Package Structure
-	rm -rf $(BUILD_DIST)/libgeoip
-	mkdir -p $(BUILD_DIST)/libgeoip
+  # libgeoip Package Structure
+	rm -rf $(BUILD_DIST)/libgeoip{1,-dev}
+	mkdir -p \
+		$(BUILD_DIST)/libgeoip1/usr/lib \
+		$(BUILD_DIST)/libgeoip-dev/usr/{include,lib} \
+		$(BUILD_DIST)/geoip-bin/usr/bin
 
-  # libgeoip.mk Prep libgeoip
-	cp -a $(BUILD_STAGE)/libgeoip/usr $(BUILD_DIST)/libgeoip
+  # libgeoip1 Prep libgeoip
+	cp -a $(BUILD_STAGE)/libgeoip/usr/lib/libGeoIP{.1.dylib,.dylib} $(BUILD_DIST)/libgeoip1/usr/lib
+	cp -a $(BUILD_STAGE)/libgeoip/usr/lib/libGeoIP.a $(BUILD_STAGE)/libgeoip/usr/lib/pkgconfig $(BUILD_DIST)/libgeoip-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libgeoip/usr/include/* $(BUILD_DIST)/libgeoip-dev/usr/include
+	cp -a $(BUILD_STAGE)/libgeoip/usr/bin/* $(BUILD_DIST)/geoip-bin/usr/bin
 
-  # libgeoip.mk Sign
-	$(call SIGN,libgeoip,general.xml)
 
-  # libgeoip.mk Make .debs
-	$(call PACK,libgeoip,DEB_LIBGEOIP_V)
+  # libgeoip Sign
+	$(call SIGN,libgeoip1,general.xml)
+	$(call SIGN,libgeoip-dev,general.xml)
+	$(call SIGN,geoip-bin,general.xml)
 
-  # libgeoip.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libgeoip
+
+
+  # libgeoip Make .debs
+	$(call PACK,libgeoip1,DEB_LIBGEOIP_V)
+	$(call PACK,libgeoip-dev,DEB_LIBGEOIP_V)
+	$(call PACK,geoip-bin,DEB_LIBGEOIP_V)
+
+
+  # libgeoip Build cleanup
+	rm -rf $(BUILD_DIST)/libgeoip{1,-dev} $(BUILD_DIST)/geoip-bin
 
 .PHONY: libgeoip libgeoip-package
