@@ -1,9 +1,7 @@
-Package: bison
+Package: libbison-dev
 Version: @DEB_BISON_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: m4, gettext, readline
 Section: Development
 Priority: optional
-Description: a general-purpose parser generator
-Name: Bison
+Description: a general-purpose parser generator - development library

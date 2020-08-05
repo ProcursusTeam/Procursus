@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/bison/.build_complete),)
 bison:
 	@echo "Using previously built bison."
 else
-bison: bison-setup m4
+bison: bison-setup m4 gettext readline
 	cd $(BUILD_WORK)/bison && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
@@ -28,20 +28,25 @@ bison: bison-setup m4
 endif
 
 bison-package: bison-stage
-	# m4.mk Package Structure
-	rm -rf $(BUILD_DIST)/bison
-	mkdir -p $(BUILD_DIST)/bison
+	# bison.mk Package Structure
+	rm -rf $(BUILD_DIST)/{bison,libbison-dev}
+	mkdir -p $(BUILD_DIST)/bison/usr \
+		$(BUILD_DIST)/libbison-dev/usr
 	
-	# m4.mk Prep m4
-	cp -a $(BUILD_STAGE)/bison/usr $(BUILD_DIST)/bison
+	# bison.mk Prep bison
+	cp -a $(BUILD_STAGE)/bison/usr/{bin,share} $(BUILD_DIST)/bison/usr
+
+	# bison.mk Prep libbison-dev
+	cp -a $(BUILD_STAGE)/bison/usr/lib $(BUILD_DIST)/libbison-dev/usr
 	
 	# bison.mk Sign
 	$(call SIGN,bison,general.xml)
 	
 	# bison.mk Make .debs
 	$(call PACK,bison,DEB_BISON_V)
+	$(call PACK,libbison-dev,DEB_BISON_V)
 	
 	# bison.mk Build cleanup
-	rm -rf $(BUILD_DIST)/bison
+	rm -rf $(BUILD_DIST)/{bison,libbison-dev}
 
 .PHONY: bison bison-package
