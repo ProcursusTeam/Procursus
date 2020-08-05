@@ -1,7 +1,7 @@
-diff -urN tree-1.8.0/Makefile tree/Makefile
---- tree-1.8.0/Makefile	2018-01-18 15:02:20.000000000 -0500
-+++ tree/Makefile	2020-07-30 01:23:21.880850344 -0400
-@@ -18,7 +18,7 @@
+diff -ur build_work/iphoneos-arm64/1500/tree/Makefile build_work/iphoneos-arm64/1600/tree/Makefile
+--- tree/Makefile	2018-01-18 15:02:20.000000000 -0500
++++ tree/Makefile	2020-08-05 10:20:12.000000000 -0400
+@@ -18,19 +18,19 @@
  
  prefix = /usr
  
@@ -10,7 +10,12 @@ diff -urN tree-1.8.0/Makefile tree/Makefile
  
  VERSION=1.8.0
  TREE_DEST=tree
-@@ -30,7 +30,7 @@
+ BINDIR=${prefix}/bin
+ MAN=tree.1
+-MANDIR=${prefix}/man/man1
++#MANDIR=${prefix}/man/man1
+ OBJS=tree.o unix.o html.o xml.o json.o hash.o color.o file.o
+ 
  # Uncomment options below for your particular OS:
  
  # Linux defaults:
@@ -19,11 +24,16 @@ diff -urN tree-1.8.0/Makefile tree/Makefile
  #CFLAGS=-O4 -Wall  -DLINUX -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
  #LDFLAGS=-s
  
-@@ -66,7 +66,7 @@
- #CFLAGS=-O2 -Wall -fomit-frame-pointer -no-cpp-precomp
+@@ -63,10 +63,10 @@
+ # It is not allowed to install to /usr/bin on OS X any longer (SIP):
+ #prefix = /usr/local
+ #CC=cc
+-#CFLAGS=-O2 -Wall -fomit-frame-pointer -no-cpp-precomp
++CFLAGS+=-O2 -Wall -fomit-frame-pointer -no-cpp-precomp
  #LDFLAGS=
- #MANDIR=/usr/share/man/man1
+-#MANDIR=/usr/share/man/man1
 -#OBJS+=strverscmp.o
++MANDIR=${prefix}/share/man/man1
 +OBJS+=strverscmp.o
  
  # Uncomment for HP/UX:
