@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS += berkeleydb
 # Berkeleydb requires registration on Oracle's website, so this is a mirror.
-BDB_VERSION := 18.1.32
+BDB_VERSION := 18.1.40
 DEB_BDB_V   ?= $(BDB_VERSION)
 
 berkeleydb-setup: setup
