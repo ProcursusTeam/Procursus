@@ -14,6 +14,7 @@ apt-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/a/apt/apt_$(APT_VERSION).tar.xz
 	$(call EXTRACT_TAR,apt_$(APT_VERSION).tar.xz,apt-$(APT_VERSION),apt)
 	$(call DO_PATCH,apt,apt,-p1)
+	$(SED) -i 's/_apt/root/' $(BUILD_WORK)/apt/apt-pkg/init.cc
 	mkdir -p $(BUILD_WORK)/apt/build
 	rm -rf $(BUILD_WORK)/apt/apt-private/private-output.cc \
 		$(BUILD_WORK)/apt/apt-pkg/algorithms.cc
