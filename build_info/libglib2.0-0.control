@@ -1,0 +1,13 @@
+Package: libglib2.0-0
+Version: @DEB_GLIB2.0_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Replaces: glib (<< 1:0)
+Conflicts: glib (<< 1:0)
+Provides: glib (= @DEB_GLIB2.0_V@)
+Depends: libffi, gettext, libpcre
+Section: Libraries
+Priority: important
+Multi-Arch: foreign
+Homepage: http://www.gtk.org/
+Description: GLib library of C routines

@@ -1,0 +1,12 @@
+Package: libglib2.0-dev-bin
+Version: @DEB_GLIB2.0_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Replaces: glib (<< 1:0)
+Conflicts: glib (<< 1:0)
+Depends: libglib2.0-0 (>= 2.65.0)
+Section: Utilities
+Priority: important
+Multi-Arch: foreign
+Homepage: http://www.gtk.org/
+Description: Development utilities for the GLib library
