@@ -435,7 +435,7 @@ GET_LOGICAL_CORES := nproc
 else
 GET_LOGICAL_CORES := sysctl -n hw.ncpu
 endif
-MAKEFLAGS += --jobs=$(shell $(GET_LOGICAL_CORES)) -Otarget
+MAKEFLAGS += --jobs=$(shell $(GET_LOGICAL_CORES))
 endif
 
 PROCURSUS := 1
