@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS     += radare2
 RADARE2_VERSION := 4.5.0
-DEB_RADARE2_V   ?= $(RADARE2_VERSION)
+DEB_RADARE2_V   ?= $(RADARE2_VERSION)-1
 ifeq ($(shell [[ "$(RADARE2_VERSION)" =~ '0'$$ ]] && echo 1),1)
 RADARE2_API_V   := $(shell echo "$(RADARE2_VERSION)" | rev | cut -c3- | rev)
 else
@@ -57,7 +57,7 @@ radare2-package: radare2-stage
 
 	# radare2.mk Prep libradare2-dev
 	cp -a $(BUILD_STAGE)/radare2/usr/include $(BUILD_DIST)/libradare2-dev/usr
-	cp -a $(BUILD_STAGE)/radare2/usr/lib/{*!(*$(RADARE2_VERSION).dylib).dylib,pkgconfig} $(BUILD_DIST)/libradare2-dev/usr/lib
+	cp -a $(BUILD_STAGE)/radare2/usr/lib/!(*$(RADARE2_VERSION)*|radare2) $(BUILD_DIST)/libradare2-dev/usr/lib
 	
 	# radare2.mk Sign
 	$(call SIGN,radare2,general.xml)

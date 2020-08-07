@@ -22,7 +22,6 @@ rust-setup: setup
 		git reset --hard origin/master; \
 		git checkout d3fb005 .; \
 	fi
-	# Change the above mess when the necessary iOS changes are added to upstream.
 	
 	mkdir -p "$(BUILD_WORK)/rust/build"
 	mkdir -p "$(BUILD_STAGE)/rust"
