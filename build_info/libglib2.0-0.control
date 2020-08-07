@@ -4,7 +4,7 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Replaces: glib (<< 1:0)
 Conflicts: glib (<< 1:0)
-Provides: glib (= @DEB_GLIB2.0_V@)
+Provides: glib (= 1:0)
 Depends: libffi, gettext, libpcre
 Section: Libraries
 Priority: important
