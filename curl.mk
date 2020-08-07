@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/curl/.build_complete),)
 curl:
 	@echo "Using previously built curl."
 else
-curl: curl-setup openssl libssh2 nghttp2 libidn2
+curl: curl-setup gettext openssl libssh2 nghttp2 libidn2
 	cd $(BUILD_WORK)/curl && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
@@ -24,7 +24,6 @@ curl: curl-setup openssl libssh2 nghttp2 libidn2
 		--with-libssh2 \
 		--with-nghttp2 \
 		--with-ca-bundle=/etc/ssl/certs/cacert.pem
-	rm -f $(BUILD_BASE)/usr/lib/libintl.la
 	+$(MAKE) -C $(BUILD_WORK)/curl
 	+$(MAKE) -C $(BUILD_WORK)/curl install \
 		DESTDIR="$(BUILD_STAGE)/curl"
