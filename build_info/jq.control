@@ -1,0 +1,10 @@
+Package: jq
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_JQ_V@
+Depends: libjq1 (= @DEB_JQ_V@), libonig5
+Section: Utilities
+Priority: optional
+Homepage: https://stedolan.github.io/jq/
+Description: a lightweight and flexible command-line JSON processor
+Tag: purpose::console, role::hacker

@@ -1,0 +1,10 @@
+Package: libjq-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_JQ_V@
+Depends: libjq1 (= @DEB_JQ_V@)
+Section: Development
+Priority: optional
+Homepage: https://stedolan.github.io/jq/
+Description: a lightweight and flexible command-line JSON processor - development files
+Tag: role::developer

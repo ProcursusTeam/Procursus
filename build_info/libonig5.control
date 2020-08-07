@@ -1,0 +1,8 @@
+Package: libonig5
+Version: @DEB_LIBONIG_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Description: regular expression library
+Tag: purpose::library, role::developer
