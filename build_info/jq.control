@@ -2,7 +2,7 @@ Package: jq
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_JQ_V@
-Depends: liboniguruma
+Depends: libjq1 (= @DEB_JQ_V@), libonig5
 Section: Utilities
 Priority: optional
 Homepage: https://stedolan.github.io/jq/
