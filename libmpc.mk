@@ -8,22 +8,22 @@ DEB_LIBMPC_V   ?= $(LIBMPC_VERSION)
 
 libmpc-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftp.gnu.org/gnu/mpc/mpc-$(LIBMPC_VERSION).tar.gz
-	$(call EXTRACT_TAR,mpc-$(LIBMPC_VERSION).tar.gz,mpc-$(LIBMPC_VERSION),mpc)
+	$(call EXTRACT_TAR,mpc-$(LIBMPC_VERSION).tar.gz,mpc-$(LIBMPC_VERSION),libmpc)
 
-ifneq ($(wildcard $(BUILD_WORK)/mpc/.build_complete),)
+ifneq ($(wildcard $(BUILD_WORK)/libmpc/.build_complete),)
 libmpc:
 	@echo "Using previously built libmpc."
 else
 libmpc: libmpc-setup libgmp10 libmpfr
-	cd $(BUILD_WORK)/mpc && ./configure -C \
+	cd $(BUILD_WORK)/libmpc && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
-	+$(MAKE) -C $(BUILD_WORK)/mpc
-	+$(MAKE) -C $(BUILD_WORK)/mpc install \
-		DESTDIR=$(BUILD_STAGE)/mpc
-	+$(MAKE) -C $(BUILD_WORK)/mpc install \
+	+$(MAKE) -C $(BUILD_WORK)/libmpc
+	+$(MAKE) -C $(BUILD_WORK)/libmpc install \
+		DESTDIR=$(BUILD_STAGE)/libmpc
+	+$(MAKE) -C $(BUILD_WORK)/libmpc install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/mpc/.build_complete
+	touch $(BUILD_WORK)/libmpc/.build_complete
 endif
 
 libmpc-package: libmpc-stage
@@ -34,9 +34,9 @@ libmpc-package: libmpc-stage
 		$(BUILD_DIST)/libmpc-dev/usr/{lib,include}
 	
 	# libmpc.mk Prep mpc
-	cp -a $(BUILD_STAGE)/mpc/usr/lib/libmpc*dylib $(BUILD_DIST)/libmpc3/usr/lib
-	cp -a $(BUILD_STAGE)/mpc/usr/include $(BUILD_DIST)/libmpc-dev/usr
-	cp -a $(BUILD_STAGE)/mpc/usr/lib/libmpc.a $(BUILD_DIST)/libmpc-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libmpc/usr/lib/libmpc*dylib $(BUILD_DIST)/libmpc3/usr/lib
+	cp -a $(BUILD_STAGE)/libmpc/usr/include $(BUILD_DIST)/libmpc-dev/usr
+	cp -a $(BUILD_STAGE)/libmpc/usr/lib/libmpc.a $(BUILD_DIST)/libmpc-dev/usr/lib
 	
 	# libmpc.mk Sign
 	$(call SIGN,libmpc3,general.xml)
