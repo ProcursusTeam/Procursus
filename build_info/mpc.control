@@ -6,3 +6,4 @@ Section: Utilities
 Homepage: http://www.multiprecision.org/mpc/home.html
 Description: GNU MPC is a C library for the arithmetic of complex numbers with arbitrarily high precision and correct rounding of the result.
 Name: mpc
+Depends: libgmp10, mpfr
