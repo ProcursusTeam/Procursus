@@ -30,7 +30,7 @@ libmpc-package: libmpc-stage
 	# libmpc.mk Package Structure
 	rm -rf $(BUILD_DIST)/libmpc
 	mkdir -p \
-		$(BUILD_DIST)/libmpc3/usr
+		$(BUILD_DIST)/libmpc3/usr/lib
 		$(BUILD_DIST)/libmpc-dev/{lib,include}
 	
 	# libmpc.mk Prep mpc
