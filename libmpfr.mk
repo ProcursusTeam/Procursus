@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/mpfr/.build_complete),)
 libmpfr:
 	@echo "Using previously built libmpfr."
 else
-libmpfr:
+libmpfr: libmpfr-setup
 	cd $(BUILD_WORK)/mpfr && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
@@ -28,25 +28,25 @@ endif
 
 libmpfr-package: libmpfr-stage
 	# libmpfr.mk Package Structure
-	rm -rf $(BUILD_DIST)/libmpfr
+	rm -rf $(BUILD_DIST)/{libmpfr6,libmpfr-dev}
 	mkdir -p \
         	$(BUILD_DIST)/libmpfr6/usr/lib
         	$(BUILD_DIST)/libmpfr-dev/usr/{lib,include}
 	
 	# libmpfr.mk Prep mpfr
 	cp -a $(BUILD_STAGE)/mpfr/usr/lib/libmpfr*dylib $(BUILD_DIST)/libmpfr6/usr/lib
-    	cp -a $(BUILD_STAGE)/mpfr/usr/include $(BUILD_DIST)/libmpfr-dev/usr
-    	cp -a $(BUILD_STAGE)/mpfr/usr/lib/libmpfr.a $(BUILD_DIST)/libmpfr-dev/usr/lib
+	cp -a $(BUILD_STAGE)/mpfr/usr/include $(BUILD_DIST)/libmpfr-dev/usr
+	cp -a $(BUILD_STAGE)/mpfr/usr/lib/libmpfr.a $(BUILD_DIST)/libmpfr-dev/usr/lib
 	
 	# libmpfr.mk Sign
 	$(call SIGN,libmpfr6,general.xml)
-    	$(call SIGN,libmpfr-dev,general.xml)
+	$(call SIGN,libmpfr-dev,general.xml)
 	
 	# libmpfr.mk Make .debs
-	$(call PACK,libmpfr6,DEB_LIBMPfr_V)
-    	$(call PACK,libmpfr-dev,DEB_LIBMPfr_V)
+	$(call PACK,libmpfr6,DEB_LIBMPFR_V)
+	$(call PACK,libmpfr-dev,DEB_LIBMPFR_V)
 	
 	# libmpfr.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libmpfr
+	rm -rf $(BUILD_DIST)/{libmpfr6,libmpfr-dev}
 
 .PHONY: libmpfr libmpfr-package
