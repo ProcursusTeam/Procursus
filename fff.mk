@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS      += fff
+SUBPROJECTS += fff
 fff_VERSION := 2.1
 DEB_fff_V   ?= $(fff_VERSION)
 
