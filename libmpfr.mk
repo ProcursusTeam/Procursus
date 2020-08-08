@@ -34,9 +34,9 @@ libmpfr-package: libmpfr-stage
         	$(BUILD_DIST)/libmpfr-dev/usr/{lib,include}
 	
 	# libmpfr.mk Prep mpfr
-	cp -a $(BUILD_STAGE)/libmpfr/usr/lib/libmpfr*dylib $(BUILD_DIST)/libmpfr/usr/lib
-    	cp -a $(BUILD_STAGE)/libmpfr/usr/include $(BUILD_DIST)/libmpfr-dev/usr
-    	cp -a $(BUILD_STAGE)/libmpfr/usr/lib/libmpfr.a $(BUILD_DIST)/libmpfr-dev/usr/lib
+	cp -a $(BUILD_STAGE)/mpfr/usr/lib/libmpfr*dylib $(BUILD_DIST)/libmpfr/usr/lib
+    	cp -a $(BUILD_STAGE)/mpfr/usr/include $(BUILD_DIST)/libmpfr-dev/usr
+    	cp -a $(BUILD_STAGE)/mpfr/usr/lib/libmpfr.a $(BUILD_DIST)/libmpfr-dev/usr/lib
 	
 	# libmpfr.mk Sign
 	$(call SIGN,libmpfr,general.xml)
