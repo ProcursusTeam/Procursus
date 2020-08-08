@@ -31,7 +31,7 @@ libmpc-package: libmpc-stage
 	rm -rf $(BUILD_DIST)/{libmpc3,libmpc-dev}
 	mkdir -p \
 		$(BUILD_DIST)/libmpc3/usr/lib
-		$(BUILD_DIST)/libmpc-dev/{lib,include}
+		$(BUILD_DIST)/libmpc-dev/usr/{lib,include}
 	
 	# libmpc.mk Prep mpc
 	cp -a $(BUILD_STAGE)/mpc/usr/lib/libmpc*dylib $(BUILD_DIST)/libmpc3/usr/lib
