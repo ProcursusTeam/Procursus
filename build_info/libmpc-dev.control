@@ -1,0 +1,8 @@
+Package: libmpc-dev
+Version: @DEB_LIBMPC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Homepage: http://www.multiprecision.org/mpc/home.html
+Description: GNU MPC is a C library for the arithmetic of complex numbers with arbitrarily high precision and correct rounding of the result.
+Name: libmpc-dev

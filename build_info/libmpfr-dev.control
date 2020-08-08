@@ -1,0 +1,8 @@
+Package: libmpfr-dev
+Version: @DEB_LIBMPFR_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Homepage: https://www.mpfr.org/
+Description: The MPFR library is a C library for multiple-precision floating-point computations with correct rounding.
+Name: libmpfr-dev
