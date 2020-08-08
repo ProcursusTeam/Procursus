@@ -30,7 +30,7 @@ libmpfr-package: libmpfr-stage
 	# libmpfr.mk Package Structure
 	rm -rf $(BUILD_DIST)/libmpfr
 	mkdir -p \
-        	$(BUILD_DIST)/libmpfr6/usr/lib
+        	$(BUILD_DIST)/libmpfr6/usr
         	$(BUILD_DIST)/libmpfr-dev/usr/{lib,include}
 	
 	# libmpfr.mk Prep mpfr
