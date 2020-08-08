@@ -28,7 +28,7 @@ endif
 
 libmpc-package: libmpc-stage
 	# libmpc.mk Package Structure
-	rm -rf $(BUILD_DIST)/mpc
+	rm -rf $(BUILD_DIST)/libmpc
 	mkdir -p \
 		$(BUILD_DIST)/libmpc
 		$(BUILD_DIST)/libmpc-dev/{lib,include}
@@ -47,6 +47,6 @@ libmpc-package: libmpc-stage
     	$(call PACK,libmpc-dev,DEB_LIBMPC_V)
 	
 	# libmpc.mk Build cleanup
-	rm -rf $(BUILD_DIST)/mpc
+	rm -rf $(BUILD_DIST)/libmpc
 
 .PHONY: libmpc libmpc-package
