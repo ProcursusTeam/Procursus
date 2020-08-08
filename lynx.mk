@@ -18,10 +18,10 @@ lynx: lynx-setup ncurses libidn2 openssl
 	cd $(BUILD_WORK)/lynx && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
-    --sysconfdir=/etc \
-    --with-ssl=/usr \
-    --enable-nls \
-    --mandir=/usr/share/man
+		--sysconfdir=/etc \
+		--with-ssl=/usr \
+		--enable-nls \
+		--mandir=/usr/share/man
 	+$(MAKE) -C $(BUILD_WORK)/lynx
 	+$(MAKE) -C $(BUILD_WORK)/lynx install \
 		DESTDIR=$(BUILD_STAGE)/lynx
