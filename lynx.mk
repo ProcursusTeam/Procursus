@@ -10,20 +10,30 @@ lynx-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://invisible-mirror.net/archives/lynx/tarballs/lynx$(LYNX_VERSION)rel.1.tar.bz2{,.asc}
 	$(call PGP_VERIFY,lynx$(LYNX_VERSION)rel.1.tar.bz2,asc)
 	$(call EXTRACT_TAR,lynx$(LYNX_VERSION)rel.1.tar.bz2,lynx$(LYNX_VERSION)rel.1,lynx)
+ifeq ($(UNAME),Darwin)
+	$(SED) -i 's|#define socklen_t int|//#define socklen_t int|' $(BUILD_WORK)/lynx/WWW/Library/Implementation/www_tcp.h
+endif
 
 ifneq ($(wildcard $(BUILD_WORK)/lynx/.build_complete),)
 lynx:
 	@echo "Using previously built lynx."
 else
-lynx: lynx-setup ncurses libidn2 openssl
+lynx: lynx-setup ncurses libidn2 openssl gettext
 	cd $(BUILD_WORK)/lynx && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
+		--with-build-cc=cc \
 		--sysconfdir=/etc \
-		--with-ssl=/usr \
-		--enable-nls \
 		--mandir=/usr/share/man \
-		--with-screen=ncurses
+		--with-ssl="$(BUILD_BASE)/usr/lib" \
+		--disable-echo \
+		--enable-default-colors \
+		--with-zlib \
+		--with-bzlib \
+		--enable-ipv6 \
+		--enable-nls \
+		--with-screen=ncurses \
+		--disable-config-info
 	+$(MAKE) -C $(BUILD_WORK)/lynx
 	+$(MAKE) -C $(BUILD_WORK)/lynx install \
 		DESTDIR=$(BUILD_STAGE)/lynx
