@@ -22,7 +22,8 @@ lynx: lynx-setup ncurses libidn2 openssl
 		--sysconfdir=/etc \
 		--with-ssl=/usr \
 		--enable-nls \
-		--mandir=/usr/share/man
+		--mandir=/usr/share/man \
+		--with-screen=ncurses
 	+$(MAKE) -C $(BUILD_WORK)/lynx
 	+$(MAKE) -C $(BUILD_WORK)/lynx install \
 		DESTDIR=$(BUILD_STAGE)/lynx
@@ -35,7 +36,7 @@ lynx-package: lynx-stage
 	mkdir -p $(BUILD_DIST)/lynx
 	
 	# lynx.mk Prep lynx
-	cp -a $(BUILD_STAGE)/lynx/usr $(BUILD_DIST)/lynx
+	cp -a $(BUILD_STAGE)/lynx $(BUILD_DIST)
 	
 	# lynx.mk Sign
 	$(call SIGN,lynx,general.xml)
