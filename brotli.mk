@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += brotli
+SUBPROJECTS      += brotli
 BROTLI_VERSION   := 1.0.7
 DEB_BROTLI_V     ?= $(BROTLI_VERSION)
 
@@ -18,19 +18,21 @@ brotli:
 	@echo "Using previously built brotli."
 else
 brotli: brotli-setup
-	$(SED) -i 's/exit \$$$$/exit \$$?/' $(BUILD_WORK)/brotli/bootstrap
-	printf -- '\n' >> $(BUILD_WORK)/brotli/configure.ac
-	printf -- 'man_MANS = docs/brotli.1\n' >> $(BUILD_WORK)/brotli/Makefile.am
-
-	cd $(BUILD_WORK)/brotli && ./bootstrap
-	cd $(BUILD_WORK)/brotli && ./configure -C \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--mandir=/usr/share/man
-	+$(MAKE) -C $(BUILD_WORK)/brotli \
-		DESTDIR=$(BUILD_STAGE)/brotli
+	cd $(BUILD_WORK)/brotli && cmake . \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_SYSTEM_NAME=Darwin \
+		-DCMAKE_CROSSCOMPILING=true \
+		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
+		-DCMAKE_INSTALL_PREFIX=/ \
+		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
+		-DCMAKE_INSTALL_RPATH=/usr \
+		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
+		-DCMAKE_C_FLAGS="$(CFLAGS)" \
+		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
+		-DCMAKE_AUTOGEN_PARALLEL=6
+	+$(MAKE) -C $(BUILD_WORK)/brotli
 	+$(MAKE) -C $(BUILD_WORK)/brotli install \
-		DESTDIR=$(BUILD_STAGE)/brotli
+		DESTDIR="$(BUILD_STAGE)/brotli"
 	touch $(BUILD_WORK)/brotli/.build_complete
 endif
 
@@ -43,12 +45,17 @@ brotli-package: brotli-stage
 
 	# brotli.mk Prep brotli
 	cp -a $(BUILD_STAGE)/brotli/usr/bin/brotli $(BUILD_DIST)/brotli/usr/bin
-	cp -a $(BUILD_STAGE)/brotli/usr/share/man/man1/brotli.1 $(BUILD_DIST)/brotli/usr/share/man/man1
+	cp -a $(BUILD_WORK)/brotli/docs/brotli.1 $(BUILD_DIST)/brotli/usr/share/man/man1
 
 	# brotli.mk Prep libbrotli-dev
+	for lib in $(BUILD_STAGE)/brotli/usr/lib/libbrotli{common,dec,enc}-static.a; do \
+		if [ -f $$lib ]; then \
+			mv $$lib $${lib/-static.a/.a}; \
+		fi; \
+	done
+
 	cp -a $(BUILD_STAGE)/brotli/usr/include/brotli/{decode,encode,port,types}.h $(BUILD_DIST)/libbrotli-dev/usr/include/brotli
-	cp -a $(BUILD_STAGE)/brotli/usr/lib/libbrotli{common,dec,enc}.a $(BUILD_DIST)/libbrotli-dev/usr/lib
-	cp -a $(BUILD_STAGE)/brotli/usr/lib/libbrotli{common,dec,enc}.dylib $(BUILD_DIST)/libbrotli-dev/usr/lib
+	cp -a $(BUILD_STAGE)/brotli/usr/lib/libbrotli{common,dec,enc}.{a,dylib} $(BUILD_DIST)/libbrotli-dev/usr/lib
 	cp -a $(BUILD_STAGE)/brotli/usr/lib/pkgconfig/libbrotli{common,dec,enc}.pc $(BUILD_DIST)/libbrotli-dev/usr/lib/pkgconfig
 
 	# brotli.mk Prep libbrotli1
