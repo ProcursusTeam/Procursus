@@ -1,0 +1,6 @@
+Package: libhidapi0
+Section: Libraries
+Architecture: @DEB_ARCH@
+Version: @DEB_HIDAPI_V@
+Maintainer: @DEB_MAINTAINER@
+Description: Multi-Platform library for communication with HID devices (IOKit backend)

@@ -1,0 +1,7 @@
+Package: libhidapi-dev
+Section: Development
+Architecture: @DEB_ARCH@
+Version: @DEB_HIDAPI_V@
+Maintainer: @DEB_MAINTAINER@
+Depends: libhidapi0 (= @DEB_HIDAPI_V@)
+Description: Multi-Platform library for communication with HID devices (development files)
