@@ -7,7 +7,7 @@ SL_VERSION  := 5.02
 DEB_SL_V    ?= $(SL_VERSION)
 
 sl-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/M1staAwesome/sl/archive/$(SL_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/marijuanARM/sl/archive/$(SL_VERSION).tar.gz
 	$(call EXTRACT_TAR,$(SL_VERSION).tar.gz,sl-$(SL_VERSION),sl)
 	mkdir -p $(BUILD_STAGE)/sl/usr/bin
 
