@@ -1,0 +1,6 @@
+Package: liblzo2-2
+Section: Development
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBLZO2_V@
+Maintainer: @DEB_MAINTAINER@
+Description: Portable lossless data compression library
