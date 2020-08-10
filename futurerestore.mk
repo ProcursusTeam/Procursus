@@ -11,10 +11,10 @@ IDEVICERESTORE_COMMIT := c97e02e22b9971471db5dcb3b9e02eb30222d6c0
 futurerestore-setup: setup tsschecker-setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tihmstar/futurerestore/archive/$(FUTURERESTORE_VERSION).tar.gz
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tihmstar/idevicerestore/archive/$(IDEVICERESTORE_COMMIT).tar.gz
-	-$(RMDIR) $(BUILD_WORK)/futurerestore/external/{idevicerestore,tsschecker}
 	$(call EXTRACT_TAR,$(FUTURERESTORE_VERSION).tar.gz,futurerestore-$(FUTURERESTORE_VERSION),futurerestore)
+	
+	-$(RMDIR) $(BUILD_WORK)/futurerestore/external/{idevicerestore,tsschecker}
 	$(call EXTRACT_TAR,$(IDEVICERESTORE_COMMIT).tar.gz,idevicerestore-$(IDEVICERESTORE_COMMIT),futurerestore/external/idevicerestore)
-
 	cp -R $(BUILD_WORK)/tsschecker $(BUILD_WORK)/futurerestore/external
 
 	$(SED) -i 's/libplist /libplist-2.0 /g' $(BUILD_WORK)/futurerestore/configure.ac
