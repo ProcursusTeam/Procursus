@@ -415,7 +415,7 @@ $(error Install ncurses 6)
 endif
 endif
 
-ifndef $(LEAVE_ME_ALONE)
+ifneq ($(LEAVE_ME_ALONE),1)
 
 ifneq (,$(wildcard $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl))
 DOCBOOK_XSL := $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl
