@@ -108,14 +108,17 @@ nginx-light: nginx-setup
 	touch $(BUILD_WORK)/nginx/.light_build_complete
 endif
 
-	echo "#ifndef NGX_HAVE_MAP_ANON" >> $(BUILD_WORK)/nginx/objs/ngx_auto_config.h
-	echo "#define NGX_HAVE_MAP_ANON 1" >> $(BUILD_WORK)/nginx/objs/ngx_auto_config.h
-	echo "#endif" >> $(BUILD_WORK)/nginx/objs/ngx_auto_config.h
+ifneq ($(wildcard $(BUILD_WORK)/nginx/.full_build_complete),)
+nginx-full:
+	@echo "Using previously built nginx-full."
+else
+nginx-full: nginx-setup
+	cd $(BUILD_WORK)/nginx && ./configure $(FULL_CONFIGURE_FLAGS)
 
 	+$(MAKE) -C $(BUILD_WORK)/nginx
 	+$(MAKE) -C $(BUILD_WORK)/nginx install \
-		DESTDIR="$(BUILD_STAGE)/nginx-light"
-	touch $(BUILD_WORK)/nginx/.light_build_complete
+		DESTDIR="$(BUILD_STAGE)/nginx-full"
+	touch $(BUILD_WORK)/nginx/.full_build_complete
 endif
 	
 nginx-package: nginx-stage
