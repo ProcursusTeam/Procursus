@@ -15,7 +15,7 @@ lzfse:
 	@echo "Using previously built lzfse."
 else
 lzfse: lzfse-setup
-	cd $(BUILD_WORK)/lzfse && cmake . \
+	cd $(BUILD_WORK)/lzfse && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
@@ -25,7 +25,8 @@ lzfse: lzfse-setup
 		-DCMAKE_INSTALL_RPATH=/usr \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) 
+		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
+		.
 	+$(MAKE) -C $(BUILD_WORK)/lzfse
 	+$(MAKE) -C $(BUILD_WORK)/lzfse install \
 		DESTDIR="$(BUILD_STAGE)/lzfse"

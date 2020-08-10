@@ -1,0 +1,9 @@
+Package: cmake-curses-gui
+Version: @DEB_CMAKE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: cmake (= @DEB_CMAKE_V@), ncurses
+Section: Development
+Priority: optional
+Homepage: https://cmake.org/
+Description: curses based user interface for CMake (ccmake)

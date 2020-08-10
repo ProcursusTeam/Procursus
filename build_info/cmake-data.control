@@ -1,0 +1,8 @@
+Package: cmake-data
+Version: @DEB_CMAKE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Homepage: https://cmake.org/
+Description: CMake data files (modules, templates and documentation)
