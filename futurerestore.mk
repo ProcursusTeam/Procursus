@@ -44,10 +44,10 @@ endif
 futurerestore-package: futurerestore-stage
 	# futurerestore.mk Package Structure
 	rm -rf $(BUILD_DIST)/futurerestore
-	mkdir -p $(BUILD_DIST)/futurerestore
+	mkdir -p $(BUILD_DIST)/futurerestore/usr
 	
 	# futurerestore.mk Prep futurerestore
-	cp -a $(BUILD_STAGE)/futurerestore/usr $(BUILD_DIST)/futurerestore
+	cp -a $(BUILD_STAGE)/futurerestore/usr/{bin,share} $(BUILD_DIST)/futurerestore
 	
 	# futurerestore.mk Sign
 	$(call SIGN,futurerestore,general.xml)
