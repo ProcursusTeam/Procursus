@@ -47,7 +47,7 @@ futurerestore-package: futurerestore-stage
 	mkdir -p $(BUILD_DIST)/futurerestore/usr
 	
 	# futurerestore.mk Prep futurerestore
-	cp -a $(BUILD_STAGE)/futurerestore/usr/{bin,share} $(BUILD_DIST)/futurerestore
+	cp -a $(BUILD_STAGE)/futurerestore/usr/{bin,share} $(BUILD_DIST)/futurerestore/usr
 	
 	# futurerestore.mk Sign
 	$(call SIGN,futurerestore,general.xml)
