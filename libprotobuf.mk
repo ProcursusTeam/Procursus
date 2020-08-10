@@ -28,20 +28,20 @@ libprotobuf: libprotobuf-setup
 endif
 
 libprotobuf-package: libprotobuf-stage
-	# rsync.mk Package Structure
+	# libprotobuf.mk Package Structure
 	rm -rf $(BUILD_DIST)/libprotobuf
 	mkdir -p $(BUILD_DIST)/libprotobuf
 	
-	# rsync.mk Prep rsync
+	# libprotobuf.mk Prep libprotobuf
 	cp -a $(BUILD_STAGE)/libprotobuf/usr $(BUILD_DIST)/libprotobuf
 	
-	# rsync.mk Sign
+	# libprotobuf.mk Sign
 	$(call SIGN,libprotobuf,general.xml)
 	
-	# rsync.mk Make .debs
+	# libprotobuf.mk Make .debs
 	$(call PACK,libprotobuf,DEB_LIBPROTOBUF_V)
 	
-	# rsync.mk Build cleanup
+	# libprotobuf.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libprotobuf
 
 .PHONY: libprotobuf libprotobuf-package
