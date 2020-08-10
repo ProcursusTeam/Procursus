@@ -36,8 +36,8 @@ libpixman-package: libpixman-stage
 		$(BUILD_DIST)/libpixman-1-dev/usr/{lib,include/pixman-1}
 	
 	# libpixman.mk Prep libpixman
-	cp -a $(BUILD_STAGE)/libpixman/usr/lib/libpixman-1.0.40.0.dylib $(BUILD_DIST)/libpixman-1-0/usr/lib
-
+	cp -a $(BUILD_STAGE)/libpixman/usr/lib/libpixman-1.0*.dylib $(BUILD_DIST)/libpixman-1-0/usr/lib
+	
 	# libpixman.mk Prep libpixman-dev
 	cp -a $(BUILD_STAGE)/libpixman/usr/lib/{pkgconfig,libpixman-1.{a,dylib}} $(BUILD_DIST)/libpixman-1-dev/usr/lib
 	cp -a $(BUILD_STAGE)/libpixman/usr/include/pixman-1/ $(BUILD_DIST)/libpixman-1-dev/usr/include/pixman-1

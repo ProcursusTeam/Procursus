@@ -2,7 +2,7 @@ Package: libpixman-1-0
 Version: @DEB_LIBPIXMAN_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Section: Multimedia
+Section: Libraries
 Priority: optional
 Description: The pixel-manipulation library for X and cairo
 Tag: purpose::library, role::developer
