@@ -1,9 +1,9 @@
-Package: libpixman-1-0-dev
+Package: libpixman-1-dev
 Version: @DEB_LIBPIXMAN_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Development
 Priority: optional
-Depends: libpixman (= @DEB_LIBPIXMAN_V@)
+Depends: libpixman-1-0 (= @DEB_LIBPIXMAN_V@)
 Description: The pixel-manipulation library for X and cairo - devel
 Tag: purpose::library, role::developer
