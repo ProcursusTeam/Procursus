@@ -1,0 +1,9 @@
+Package: lzop
+Version: @DEB_LZOP_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: liblzo2-2
+Section: Archiving
+Priority: standard
+Homepage: https://www.lzop.org/
+Description: File compressor using lzo lib
