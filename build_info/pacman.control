@@ -1,0 +1,8 @@
+Package: pacman
+Version: @DEB_PACMAN_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Depends: libarchive, openssl, curl, zstd, tar
+Priority: optional
+Description: A library-based package manager with dependency support
