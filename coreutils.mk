@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS     += coreutils
 COREUTILS_VERSION := 8.32
-DEB_COREUTILS_V   ?= $(COREUTILS_VERSION)-2
+DEB_COREUTILS_V   ?= $(COREUTILS_VERSION)-3
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 COREUTILS_CONFIGURE_ARGS += ac_cv_func_rpmatch=no
@@ -14,10 +14,12 @@ coreutils-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/coreutils/coreutils-$(COREUTILS_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,coreutils-$(COREUTILS_VERSION).tar.xz,coreutils-$(COREUTILS_VERSION),coreutils)
-	mkdir -p $(BUILD_WORK)/coreutils/su
+	mkdir -p $(BUILD_WORK)/coreutils/{su,rev}
 	wget -q -nc -P $(BUILD_WORK)/coreutils/su \
 		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/usr.bin/su/su.c \
 		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/usr.bin/su/suutil.{c,h}
+	wget -q -nc -P $(BUILD_WORK)/coreutils/rev \
+		https://opensource.apple.com/source/text_cmds/text_cmds-88/rev/rev.c
 
 ifneq ($(wildcard $(BUILD_WORK)/coreutils/.build_complete),)
 coreutils:
@@ -25,6 +27,7 @@ coreutils:
 else
 coreutils: coreutils-setup gettext
 	cd $(BUILD_WORK)/coreutils/su && $(CC) $(CFLAGS) su.c suutil.c -o su -DBSD4_4 -D'__RCSID(x)='
+	cd $(BUILD_WORK)/coreutils/rev && $(CC) $(CFLAGS) rev.c -o rev -D'__FBSDID(x)='
 	cd $(BUILD_WORK)/coreutils && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
@@ -33,7 +36,7 @@ coreutils: coreutils-setup gettext
 	+$(MAKE) -C $(BUILD_WORK)/coreutils
 	+$(MAKE) -C $(BUILD_WORK)/coreutils install \
 		DESTDIR=$(BUILD_STAGE)/coreutils
-	cp $(BUILD_WORK)/coreutils/su/su $(BUILD_STAGE)/coreutils/usr/bin
+	cp $(BUILD_WORK)/coreutils/{su/su,rev/rev} $(BUILD_STAGE)/coreutils/usr/bin
 	touch $(BUILD_WORK)/coreutils/.build_complete
 endif
 
