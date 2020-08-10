@@ -1,0 +1,10 @@
+Package: libbrotli-dev
+Version: @DEB_BROTLI_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libbrotli1 (= @DEB_BROTLI_V@)
+Section: Development
+Priority: optional
+Homepage: https://www.brotli.org/
+Description: Development files for the Brotli compression format
+Tag: purpose::library, role::developer
