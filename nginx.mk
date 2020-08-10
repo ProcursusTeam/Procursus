@@ -13,59 +13,106 @@ nginx-setup: setup
 	awk -i inplace '!found && /NGX_PLATFORM/ { print "NGX_PLATFORM=Darwin:19.5.0:iPhone10,1"; found=1 } 1' \
 		$(BUILD_WORK)/nginx/configure
 
+COMMON_CONFIGURE_FLAGS= \
+	--with-cc-opt="$(CFLAGS) $(CPPFLAGS) -g -O2 -fstack-protector-strong -Wformat -Werror=format-security -Wp,-D_FORTIFY_SOURCE=2 -fPIC" \
+	--with-ld-opt="$(LDFLAGS)"
+	--prefix=/usr/share/nginx \
+	--conf-path=/etc/nginx/nginx.conf \
+	--http-log-path=/var/log/nginx/access.log \
+	--error-log-path=/var/log/nginx/error.log \
+	--lock-path=/var/lock/nginx.lock \
+	--pid-path=/run/nginx.pid \
+	--modules-path=/usr/lib/nginx/modules \
+	--http-client-body-temp-path=/var/lib/nginx/body \
+	--http-fastcgi-temp-path=/var/lib/nginx/fastcgi \
+	--http-proxy-temp-path=/var/lib/nginx/proxy \
+	--http-scgi-temp-path=/var/lib/nginx/scgi \
+	--http-uwsgi-temp-path=/var/lib/nginx/uwsgi \
+	--with-debug \
+	--with-pcre-jit \
+	--with-http_ssl_module \
+	--with-http_stub_status_module \
+	--with-http_realip_module \
+	--with-http_auth_request_module \
+	--with-http_v2_module \
+	--with-http_dav_module \
+	--with-http_slice_module \
+	--with-threads \
+	--with-compat
 
-ifneq ($(wildcard $(BUILD_WORK)/nginx/.build_complete),)
-nginx:
-	@echo "Using previously built nginx."
+LIGHT_CONFIGURE_FLAGS= \
+	$(COMMON_CONFIGURE_FLAGS) \
+	--with-http_gzip_static_module \
+	--without-http_browser_module \
+	--without-http_geo_module \
+	--without-http_limit_req_module \
+	--without-http_limit_conn_module \
+	--without-http_memcached_module \
+	--without-http_referer_module \
+	--without-http_split_clients_module \
+	--without-http_userid_module
+#	--add-dynamic-module=$(MODULESDIR)/http-echo
+
+FULL_CONFIGURE_FLAGS= \
+	$(COMMON_CONFIGURE_FLAGS) \
+	--with-http_addition_module \
+	--with-http_geoip_module=dynamic \
+	--with-http_gunzip_module \
+	--with-http_gzip_static_module \
+	--with-http_image_filter_module=dynamic \
+	--with-http_sub_module \
+	--with-http_xslt_module=dynamic \
+	--with-stream=dynamic \
+	--with-stream_ssl_module \
+	--with-stream_ssl_preread_module \
+	--with-mail=dynamic \
+	--with-mail_ssl_module
+#	--add-dynamic-module=$(MODULESDIR)/http-auth-pam \
+#	--add-dynamic-module=$(MODULESDIR)/http-dav-ext \
+#	--add-dynamic-module=$(MODULESDIR)/http-echo \
+#	--add-dynamic-module=$(MODULESDIR)/http-upstream-fair \
+#	--add-dynamic-module=$(MODULESDIR)/http-subs-filter
+
+EXTRAS_CONFIGURE_FLAGS= \
+	$(COMMON_CONFIGURE_FLAGS) \
+	--with-http_addition_module \
+	--with-http_flv_module \
+	--with-http_geoip_module=dynamic \
+	--with-http_gunzip_module \
+	--with-http_gzip_static_module \
+	--with-http_image_filter_module=dynamic \
+	--with-http_mp4_module \
+	--with-http_perl_module=dynamic \
+	--with-http_random_index_module \
+	--with-http_secure_link_module \
+	--with-http_sub_module \
+	--with-http_xslt_module=dynamic \
+	--with-mail=dynamic \
+	--with-mail_ssl_module \
+	--with-stream=dynamic \
+	--with-stream_ssl_module \
+	--with-stream_ssl_preread_module
+#	--add-dynamic-module=$(MODULESDIR)/http-headers-more-filter \
+#	--add-dynamic-module=$(MODULESDIR)/http-auth-pam \
+#	--add-dynamic-module=$(MODULESDIR)/http-cache-purge \
+#	--add-dynamic-module=$(MODULESDIR)/http-dav-ext \
+#	--add-dynamic-module=$(MODULESDIR)/http-ndk \
+#	--add-dynamic-module=$(MODULESDIR)/http-echo \
+#	--add-dynamic-module=$(MODULESDIR)/http-fancyindex \
+#	--add-dynamic-module=$(MODULESDIR)/nchan \
+#	--add-dynamic-module=$(MODULESDIR)/http-lua \
+#	--add-dynamic-module=$(MODULESDIR)/rtmp \
+#	--add-dynamic-module=$(MODULESDIR)/http-uploadprogress \
+#	--add-dynamic-module=$(MODULESDIR)/http-upstream-fair \
+#	--add-dynamic-module=$(MODULESDIR)/http-subs-filter
+
+ifneq ($(wildcard $(BUILD_WORK)/nginx/.light_build_complete),)
+nginx-light:
+	@echo "Using previously built nginx-light."
 else
-nginx: nginx-setup openssl pcre libgeoip
-	cd $(BUILD_WORK)/nginx && ./configure \
-		--with-cc-opt="$(CFLAGS) $(CPPFLAGS)" \
-		--with-ld-opt="$(LDFLAGS)" \
-		--sbin-path=/usr/bin/nginx \
-		--prefix=/etc/nginx \
-		--conf-path=/etc/nginx/nginx.conf \
-		--pid-path=/var/run/nginx.pid \
-		--lock-path=/var/run/nginx.lock \
-		--http-log-path=/var/log/nginx/access.log \
-    --error-log-path=stderr \
-    --http-client-body-temp-path=/var/lib/nginx/client-body \
-    --http-proxy-temp-path=/var/lib/nginx/proxy \
-    --http-fastcgi-temp-path=/var/lib/nginx/fastcgi \
-    --http-scgi-temp-path=/var/lib/nginx/scgi \
-    --http-uwsgi-temp-path=/var/lib/nginx/uwsgi \
-		--with-compat \
-		--with-debug \
-		--with-http_addition_module \
-		--with-http_auth_request_module \
-		--with-http_dav_module \
-		--with-http_degradation_module \
-		--with-http_flv_module \
-		--with-http_geoip_module \
-		--with-http_gunzip_module \
-		--with-http_gzip_static_module \
-		--with-http_mp4_module \
-		--with-http_random_index_module \
-		--with-http_realip_module \
-		--with-http_secure_link_module \
-		--with-http_slice_module \
-		--with-http_ssl_module \
-		--with-http_stub_status_module \
-		--with-http_sub_module \
-		--with-http_v2_module \
-		--with-mail \
-		--with-mail_ssl_module \
-		--with-pcre-jit \
-		--with-stream \
-		--with-stream_geoip_module \
-		--with-stream_realip_module \
-		--with-stream_ssl_module \
-		--with-stream_ssl_preread_module \
-		--with-threads \
+nginx-light: nginx-setup openssl pcre libgeoip
+	cd $(BUILD_WORK)/nginx && ./configure $(LIGHT_CONFIGURE_FLAGS)
 
-
-	# Post configure patch. ngx_auto_config.h is generated by ./configure
-	# Huge thanks to https://programmer.help/blogs/cross-compiling-nginx-used-on-hi3536.html
 	echo "#ifndef NGX_SYS_NERR" >> $(BUILD_WORK)/nginx/objs/ngx_auto_config.h
 	echo "#define NGX_SYS_NERR  132" >> $(BUILD_WORK)/nginx/objs/ngx_auto_config.h
 	echo "#endif" >> $(BUILD_WORK)/nginx/objs/ngx_auto_config.h
@@ -76,8 +123,8 @@ nginx: nginx-setup openssl pcre libgeoip
 
 	+$(MAKE) -C $(BUILD_WORK)/nginx
 	+$(MAKE) -C $(BUILD_WORK)/nginx install \
-		DESTDIR="$(BUILD_STAGE)/nginx"
-	touch $(BUILD_WORK)/nginx/.build_complete
+		DESTDIR="$(BUILD_STAGE)/nginx-light"
+	touch $(BUILD_WORK)/nginx/.light_build_complete
 endif
 	
 nginx-package: nginx-stage
