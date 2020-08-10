@@ -1,0 +1,9 @@
+Package: futurerestore
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_FUTURERESTORE_V@
+Depends: curl, libplist, openssl, libirecovery, libfragmentzip, libgeneral, img4tool, libimobiledevice6
+Section: Utilities
+Priority: optional
+Description: A hacked up idevicerestore wrapper, which allows specifying SEP and Baseband for restoring
+Tag: purpose::console, role::hacker
