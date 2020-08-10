@@ -40,11 +40,10 @@ libpixman-package: libpixman-stage
 	
 	# libpixman.mk Prep libpixman-dev
 	cp -a $(BUILD_STAGE)/libpixman/usr/lib/{pkgconfig,libpixman-1.{a,dylib}} $(BUILD_DIST)/libpixman-1-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libpixman/usr/include/pixman-1/ $(BUILD_DIST)/libpixman-1-dev/usr/include/pixman-1
+	cp -a $(BUILD_STAGE)/libpixman/usr/include/pixman-1/* $(BUILD_DIST)/libpixman-1-dev/usr/include/pixman-1
 	
 	# libpixman.mk Sign
 	$(call SIGN,libpixman-1-0,general.xml)
-	$(call SIGN,libpixman-1-dev,general.xml)
 	
 	# libpixman.mk Make .debs
 	$(call PACK,libpixman-1-0,DEB_LIBPIXMAN_V)
