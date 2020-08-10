@@ -24,6 +24,8 @@ libpixman: libpixman-setup libpng16
 	+$(MAKE) -C $(BUILD_WORK)/libpixman
 	+$(MAKE) -C $(BUILD_WORK)/libpixman install \
 		DESTDIR=$(BUILD_STAGE)/libpixman
+	+$(MAKE) -C $(BUILD_WORK)/libpixman install \
+		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libpixman/.build_complete
 endif
 
