@@ -15,14 +15,18 @@ ifneq ($(wildcard $(BUILD_WORK)/mosh/.build_complete),)
 mosh:
 	@echo "Using previously built mosh."
 else
-mosh: mosh-setup libprotobuf
+mosh: mosh-setup libprotobuf openssl ncurses
 	cd $(BUILD_WORK)/mosh && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
+		--sysconfdir=/etc \
 		--with-ncursesw \
+		--with-crypto-library=openssl \
 		--disable-dependency-tracking \
-		--enable-completion
-	+$(MAKE) -C $(BUILD_WORK)/mosh 
+		--enable-completion \
+		TINFO_LIBS="-L$(BUILD_BASE)/usr/lib -lncursesw"
+	+$(MAKE) -C $(BUILD_WORK)/mosh \
+		CXX="$(CXX) -std=c++11"
 	+$(MAKE) -C $(BUILD_WORK)/mosh install \
 		DESTDIR=$(BUILD_STAGE)/mosh
 	touch $(BUILD_WORK)/mosh/.build_complete
