@@ -32,7 +32,7 @@ lynx: lynx-setup ncurses libidn2 openssl gettext
 		--with-bzlib \
 		--enable-ipv6 \
 		--enable-nls \
-		--with-screen=ncurses \
+		--with-screen=ncursesw \
 		--disable-config-info
 	+$(MAKE) -C $(BUILD_WORK)/lynx
 	+$(MAKE) -C $(BUILD_WORK)/lynx install \
