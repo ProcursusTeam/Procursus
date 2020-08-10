@@ -16,18 +16,12 @@ libc-ares:
 	@echo "Using previously built libc-ares."
 else
 libc-ares: libc-ares-setup
-	cd $(BUILD_WORK)/libc-ares && cmake . \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/ \
-		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
-		-DCMAKE_INSTALL_RPATH=/usr \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
-		-DCMAKE_AUTOGEN_PARALLEL=6
+	cd $(BUILD_WORK)/libc-ares && ./configure -C \
+		--host=$(GNU_HOST_TRIPLE) \
+		--prefix=/usr \
+		--disable-dependency-tracking \
+		--disable-debug \
+		--enable-shared
 	+$(MAKE) -C $(BUILD_WORK)/libc-ares
 	+$(MAKE) -C $(BUILD_WORK)/libc-ares install \
 		DESTDIR="$(BUILD_STAGE)/libc-ares"
@@ -42,12 +36,12 @@ libc-ares-package: libc-ares-stage
 
 	# libc-ares.mk Prep libc-ares-dev
 	cp -a $(BUILD_STAGE)/libc-ares/usr/include/ares{,_build,_dns,_rules,_version}.h $(BUILD_DIST)/libc-ares-dev/usr/include
-	cp -a $(BUILD_STAGE)/libc-ares/usr/lib/libcares{,.2}.dylib $(BUILD_DIST)/libc-ares-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libc-ares/usr/lib/libcares.{a,dylib} $(BUILD_DIST)/libc-ares-dev/usr/lib
 	cp -a $(BUILD_STAGE)/libc-ares/usr/lib/pkgconfig/libcares.pc $(BUILD_DIST)/libc-ares-dev/usr/lib/pkgconfig
 	cp -a $(BUILD_STAGE)/libc-ares/usr/share/man/man3/ares_*.3 $(BUILD_DIST)/libc-ares-dev/usr/share/man/man3
 
 	# libc-ares.mk Prep libc-ares2
-	cp -a $(BUILD_STAGE)/libc-ares/usr/lib/libcares.2.*.dylib $(BUILD_DIST)/libc-ares2/usr/lib
+	cp -a $(BUILD_STAGE)/libc-ares/usr/lib/libcares.2.dylib $(BUILD_DIST)/libc-ares2/usr/lib
 
 	# libc-ares.mk Sign
 	$(call SIGN,libc-ares2,general.xml)
