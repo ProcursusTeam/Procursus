@@ -14,8 +14,9 @@ nginx-setup: setup openssl pcre libgeoip
 		$(BUILD_WORK)/nginx/configure
 
 COMMON_CONFIGURE_FLAGS= \
-	--with-cc-opt="$(CFLAGS) $(CPPFLAGS) -g -O2 -fstack-protector-strong -Wformat -Werror=format-security -Wp,-D_FORTIFY_SOURCE=2 -fPIC" \
-	--with-ld-opt="$(LDFLAGS)"
+	--with-cc-opt="$(CFLAGS) $(CPPFLAGS) -g -O2 -fstack-protector-strong -Wformat -Werror=format-security -Wp,-D_FORTIFY_SOURCE=2 -fPIC -DNGX_SYS_NERR=132 -DNGX_HAVE_MAP_ANON=1" \
+	--with-ld-opt="$(LDFLAGS)" \
+	--sbin-path=/usr/bin/nginx \
 	--prefix=/usr/share/nginx \
 	--conf-path=/etc/nginx/nginx.conf \
 	--http-log-path=/var/log/nginx/access.log \
@@ -101,9 +102,11 @@ else
 nginx-light: nginx-setup
 	cd $(BUILD_WORK)/nginx && ./configure $(LIGHT_CONFIGURE_FLAGS)
 
-	echo "#ifndef NGX_SYS_NERR" >> $(BUILD_WORK)/nginx/objs/ngx_auto_config.h
-	echo "#define NGX_SYS_NERR  132" >> $(BUILD_WORK)/nginx/objs/ngx_auto_config.h
-	echo "#endif" >> $(BUILD_WORK)/nginx/objs/ngx_auto_config.h
+	+$(MAKE) -C $(BUILD_WORK)/nginx
+	+$(MAKE) -C $(BUILD_WORK)/nginx install \
+		DESTDIR="$(BUILD_STAGE)/nginx-light"
+	touch $(BUILD_WORK)/nginx/.light_build_complete
+endif
 
 	echo "#ifndef NGX_HAVE_MAP_ANON" >> $(BUILD_WORK)/nginx/objs/ngx_auto_config.h
 	echo "#define NGX_HAVE_MAP_ANON 1" >> $(BUILD_WORK)/nginx/objs/ngx_auto_config.h
