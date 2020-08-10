@@ -33,6 +33,11 @@ brotli: brotli-setup
 	+$(MAKE) -C $(BUILD_WORK)/brotli
 	+$(MAKE) -C $(BUILD_WORK)/brotli install \
 		DESTDIR="$(BUILD_STAGE)/brotli"
+	for lib in $(BUILD_STAGE)/brotli/usr/lib/libbrotli{common,dec,enc}-static.a; do \
+		if [ -f $$lib ]; then \
+			mv $$lib $${lib/-static.a/.a}; \
+		fi; \
+	done
 	touch $(BUILD_WORK)/brotli/.build_complete
 endif
 
@@ -48,18 +53,12 @@ brotli-package: brotli-stage
 	cp -a $(BUILD_WORK)/brotli/docs/brotli.1 $(BUILD_DIST)/brotli/usr/share/man/man1
 
 	# brotli.mk Prep libbrotli-dev
-	for lib in $(BUILD_STAGE)/brotli/usr/lib/libbrotli{common,dec,enc}-static.a; do \
-		if [ -f $$lib ]; then \
-			mv $$lib $${lib/-static.a/.a}; \
-		fi; \
-	done
-
 	cp -a $(BUILD_STAGE)/brotli/usr/include/brotli/{decode,encode,port,types}.h $(BUILD_DIST)/libbrotli-dev/usr/include/brotli
 	cp -a $(BUILD_STAGE)/brotli/usr/lib/libbrotli{common,dec,enc}.{a,dylib} $(BUILD_DIST)/libbrotli-dev/usr/lib
 	cp -a $(BUILD_STAGE)/brotli/usr/lib/pkgconfig/libbrotli{common,dec,enc}.pc $(BUILD_DIST)/libbrotli-dev/usr/lib/pkgconfig
 
 	# brotli.mk Prep libbrotli1
-	cp -a $(BUILD_STAGE)/brotli/usr/lib/libbrotli{common,dec,enc}.1.dylib $(BUILD_DIST)/libbrotli1/usr/lib
+	cp -a $(BUILD_STAGE)/brotli/usr/lib/libbrotli{common,dec,enc}.1*.dylib $(BUILD_DIST)/libbrotli1/usr/lib
 
 	# brotli.mk Sign
 	$(call SIGN,brotli,general.xml)
