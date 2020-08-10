@@ -1,4 +1,4 @@
-Package: libpixman-dev
+Package: libpixman-1-0-dev
 Version: @DEB_LIBPIXMAN_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
