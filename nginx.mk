@@ -6,7 +6,7 @@ SUBPROJECTS  += nginx
 NGINX_VERSION := 1.19.1
 DEB_NGINX_V   ?= $(NGINX_VERSION)
 
-nginx-setup: setup
+nginx-setup: setup openssl pcre libgeoip
 	wget -q -nc -P $(BUILD_SOURCE) https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz
 	$(call EXTRACT_TAR,nginx-$(NGINX_VERSION).tar.gz,nginx-$(NGINX_VERSION),nginx)
 	$(call DO_PATCH,nginx,nginx,-p0)
@@ -110,7 +110,7 @@ ifneq ($(wildcard $(BUILD_WORK)/nginx/.light_build_complete),)
 nginx-light:
 	@echo "Using previously built nginx-light."
 else
-nginx-light: nginx-setup openssl pcre libgeoip
+nginx-light: nginx-setup
 	cd $(BUILD_WORK)/nginx && ./configure $(LIGHT_CONFIGURE_FLAGS)
 
 	echo "#ifndef NGX_SYS_NERR" >> $(BUILD_WORK)/nginx/objs/ngx_auto_config.h
