@@ -4,12 +4,13 @@ endif
 
 SUBPROJECTS += m4
 M4_VERSION  := 1.4.18
-DEB_M4_V    ?= $(M4_VERSION)
+DEB_M4_V    ?= $(M4_VERSION)-1
 
 m4-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/m4/m4-$(M4_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,m4-$(M4_VERSION).tar.gz)
 	$(call EXTRACT_TAR,m4-$(M4_VERSION).tar.gz,m4-$(M4_VERSION),m4)
+	$(call DO_PATCH,m4,m4,-p0)
 
 ifneq ($(wildcard $(BUILD_WORK)/m4/.build_complete),)
 m4:

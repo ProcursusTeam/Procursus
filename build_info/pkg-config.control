@@ -1,0 +1,10 @@
+Package: pkg-config
+Version: @DEB_PKG-CONFIG_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libglib2.0-0 (>= 2.65.0), gettext
+Section: Utilities
+Priority: important
+Multi-Arch: foreign
+Homepage: https://www.freedesktop.org/wiki/Software/pkg-config/
+Description: manage compile and link flags for libraries

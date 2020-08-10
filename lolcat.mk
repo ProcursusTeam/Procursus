@@ -23,20 +23,20 @@ lolcat: lolcat-setup
 endif
 
 lolcat-package: lolcat-stage
-	# rsync.mk Package Structure
+	# lolcat.mk Package Structure
 	rm -rf $(BUILD_DIST)/lolcat
 	mkdir -p $(BUILD_DIST)/lolcat
 	
-	# rsync.mk Prep rsync
+	# lolcat.mk Prep lolcat
 	cp -a $(BUILD_STAGE)/lolcat/usr $(BUILD_DIST)/lolcat
 	
-	# rsync.mk Sign
+	# lolcat.mk Sign
 	$(call SIGN,lolcat,general.xml)
 	
-	# rsync.mk Make .debs
+	# lolcat.mk Make .debs
 	$(call PACK,lolcat,DEB_LOLCAT_V)
 	
-	# rsync.mk Build cleanup
+	# lolcat.mk Build cleanup
 	rm -rf $(BUILD_DIST)/lolcat
 
 .PHONY: lolcat lolcat-package

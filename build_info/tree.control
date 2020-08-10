@@ -1,0 +1,7 @@
+Package: tree
+Version: @DEB_TREE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Description: A directory listing program displaying a depth indented list of files

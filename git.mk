@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += git
-GIT_VERSION := 2.26.1
+GIT_VERSION := 2.28.0
 DEB_GIT_V   ?= $(GIT_VERSION)
 
 git-setup: setup

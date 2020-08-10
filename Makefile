@@ -435,7 +435,7 @@ GET_LOGICAL_CORES := nproc
 else
 GET_LOGICAL_CORES := sysctl -n hw.ncpu
 endif
-MAKEFLAGS += --jobs=$(shell $(GET_LOGICAL_CORES)) -Otarget
+MAKEFLAGS += --jobs=$(shell $(GET_LOGICAL_CORES))
 endif
 
 PROCURSUS := 1
@@ -518,6 +518,7 @@ bootstrap-device: bootstrap
 	$(BUILD_TOOLS)/bootstrap_device.sh
 
 %-package: FAKEROOT=fakeroot -i $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev) -s $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev) --
+%-package: .SHELLFLAGS=-O extglob -c
 %-stage: %
 	rm -f $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev)
 	touch $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev)

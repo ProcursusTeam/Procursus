@@ -2,6 +2,7 @@ Package: dimentio
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_DIMENTIO_V@
+Conflicts: com.michael.dimentio, com.kasiimh1.dimentio
 Section: Utilities
 Priority: optional
 Description: PoC tool for setting nonce without triggering KPP/KTRR/PAC. (requires tfp0)
