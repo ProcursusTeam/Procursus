@@ -119,6 +119,7 @@ EXTRA    := INSTALL="/usr/bin/install -c --strip-program=$(STRIP)"
 export CC CXX AR
 
 else ifeq ($(UNAME),Darwin)
+ifeq ($(filter $(shell uname -m | cut -c -4), iPad iPho),)
 $(warning Building on MacOS)
 TARGET_SYSROOT  ?= $(shell xcrun --sdk $(PLATFORM) --show-sdk-path)
 MACOSX_SYSROOT  ?= $(shell xcrun --show-sdk-path)
@@ -131,6 +132,22 @@ LIPO            := lipo
 OTOOL           := otool
 I_N_T           := install_name_tool
 EXTRA           :=
+
+else
+$(warning Building on iOS)
+TARGET_SYSROOT  ?= /usr/share/SDKs/iPhoneOS.sdk
+MACOSX_SYSROOT  ?= /usr/share/SDKs/MacOSX.sdk
+PATH            := /usr/bin:$(PATH)
+CPP             := clang -E
+RANLIB          := ranlib
+STRIP           := strip
+NM              := nm
+LIPO            := lipo
+OTOOL           := otool
+I_N_T           := install_name_tool
+EXTRA           :=
+
+endif
 else
 $(error Please use Linux or MacOS to build)
 endif
