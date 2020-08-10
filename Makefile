@@ -322,24 +322,12 @@ ifneq ($(call HAS_COMMAND,cmake),1)
 $(error Install cmake)
 endif
 
-ifneq ($(call HAS_COMMAND,po4a),1)
-$(error Install po4a)
-endif
-
 ifneq ($(call HAS_COMMAND,pkg-config),1)
 $(error Install pkg-config)
 endif
 
 ifneq ($(call HAS_COMMAND,automake),1)
 $(error Install automake)
-endif
-
-ifneq ($(call HAS_COMMAND,yacc),1)
-$(error Install bison)
-endif
-
-ifneq ($(call HAS_COMMAND,lex),1)
-$(error Install flex)
 endif
 
 ifneq (,$(wildcard $(shell brew --prefix)/opt/groff/bin))
@@ -427,12 +415,28 @@ $(error Install ncurses 6)
 endif
 endif
 
+ifndef $(LEAVE_ME_ALONE)
+
 ifneq (,$(wildcard $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl))
 DOCBOOK_XSL := $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl
 else ifneq (,$(wildcard /usr/share/xml/docbook/stylesheet/docbook-xsl))
 DOCBOOK_XSL := /usr/share/xml/docbook/stylesheet/docbook-xsl
 else
 $(error Install docbook-xsl)
+endif
+
+ifneq ($(call HAS_COMMAND,yacc),1)
+$(error Install bison)
+endif
+
+ifneq ($(call HAS_COMMAND,lex),1)
+$(error Install flex)
+endif
+
+ifneq ($(call HAS_COMMAND,po4a),1)
+$(error Install po4a)
+endif
+
 endif
 
 PATH := $(BUILD_TOOLS):$(PATH)
