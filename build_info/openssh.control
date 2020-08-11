@@ -6,5 +6,4 @@ Depends: openssh-client, openssh-server, openssh-sftp-server
 Section: Networking
 Priority: important
 Description: secure shell client and server (metapackage)
-Depiction: http://cydia.saurik.com/info/openssh/
 Name: OpenSSH

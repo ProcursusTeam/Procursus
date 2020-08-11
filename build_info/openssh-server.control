@@ -7,5 +7,4 @@ Conflicts: com.midnightchips.localhostssh
 Section: Networking
 Priority: important
 Description: secure shell (SSH) server, for secure access from remote machines
-Depiction: http://cydia.saurik.com/info/openssh/
 Name: OpenSSH Server

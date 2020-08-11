@@ -6,5 +6,4 @@ Depends: libssl1.1
 Section: Networking
 Priority: important
 Description: secure shell (SSH) client, for secure access to remote machines
-Depiction: http://cydia.saurik.com/info/openssh/
 Name: OpenSSH Client
