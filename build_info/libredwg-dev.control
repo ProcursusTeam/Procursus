@@ -5,4 +5,4 @@ Maintainer: @DEB_MAINTAINER@
 Section: Development
 Homepage: https://www.gnu.org/software/libredwg/
 Description: GNU LibreDWG is a free C library to handle DWG files. (Development files)
-Depends: libredwg0 (= @DEV_LIBREDWG_V@)
+Depends: libredwg0 (= @DEB_LIBREDWG_V@)
