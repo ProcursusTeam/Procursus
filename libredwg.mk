@@ -30,7 +30,7 @@ libredwg-package: libredwg-stage
     # libredwg.mk Package Structure
 	rm -rf $(BUILD_DIST)/libredwg{0,-dev,-utils}
 	mkdir -p $(BUILD_DIST)/libredwg0/usr/lib \
-			$(BUILD_DIST)/libredwg-dev/usr/{lib,bin} \
+			$(BUILD_DIST)/libredwg-dev/usr/lib \
 			$(BUILD_DIST)/libredwg-utils/usr
     
     # libredwg.mk Prep libredwg
