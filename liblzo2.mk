@@ -18,7 +18,8 @@ liblzo2: liblzo2-setup
 	cd $(BUILD_WORK)/liblzo2 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
-		--disable-dependency-tracking
+		--disable-dependency-tracking \
+		--enable-shared
 	+$(MAKE) -C $(BUILD_WORK)/liblzo2
 	+$(MAKE) -C $(BUILD_WORK)/liblzo2 install \
 		DESTDIR=$(BUILD_STAGE)/liblzo2
@@ -33,15 +34,14 @@ liblzo2-package: liblzo2-stage
 	mkdir -p $(BUILD_DIST)/liblzo2{-2/usr/lib,-dev/usr/{include,lib}}
 	
 	# liblzo2.mk Prep liblzo2-2
-	cp -a $(BUILD_STAGE)/liblzo2/usr/lib/liblzo2.a $(BUILD_DIST)/liblzo2-2/usr/lib/
+	cp -a $(BUILD_STAGE)/liblzo2/usr/lib/liblzo2.2.dylib $(BUILD_DIST)/liblzo2-2/usr/lib
 	
 	# liblzo2.mk Prep liblzo2-dev
-	cp -a $(BUILD_STAGE)/liblzo2/usr/include $(BUILD_DIST)/liblzo2-dev/usr/
-	cp -a $(BUILD_STAGE)/liblzo2/usr/lib/pkgconfig $(BUILD_DIST)/liblzo2-dev/usr/lib/
+	cp -a $(BUILD_STAGE)/liblzo2/usr/include $(BUILD_DIST)/liblzo2-dev/usr
+	cp -a $(BUILD_STAGE)/liblzo2/usr/lib/{pkgconfig,liblzo2.{a,dylib}} $(BUILD_DIST)/liblzo2-dev/usr/lib
 	
 	# liblzo2.mk Sign
 	$(call SIGN,liblzo2-2,general.xml)
-	$(call SIGN,liblzo2-dev,general.xml)
 	
 	# liblzo2.mk Make .debs
 	$(call PACK,liblzo2-2,DEB_LIBLZO2_V)
