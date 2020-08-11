@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += apt
-APT_VERSION   := 2.1.7
+APT_VERSION   := 2.1.10
 DEB_APT_V     ?= $(APT_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
@@ -14,10 +14,10 @@ apt-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/a/apt/apt_$(APT_VERSION).tar.xz
 	$(call EXTRACT_TAR,apt_$(APT_VERSION).tar.xz,apt-$(APT_VERSION),apt)
 	$(call DO_PATCH,apt,apt,-p1)
+	mv $(BUILD_WORK)/apt/apt-private/private-output.{cc,mm}
+	mv $(BUILD_WORK)/apt/apt-pkg/algorithms.{cc,mm}
 	$(SED) -i 's/_apt/root/' $(BUILD_WORK)/apt/apt-pkg/init.cc
 	mkdir -p $(BUILD_WORK)/apt/build
-	rm -rf $(BUILD_WORK)/apt/apt-private/private-output.cc \
-		$(BUILD_WORK)/apt/apt-pkg/algorithms.cc
 
 ifneq ($(wildcard $(BUILD_WORK)/apt/.build_complete),)
 apt:
