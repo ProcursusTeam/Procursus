@@ -1,0 +1,7 @@
+Package: libredwg-dev
+Version: @DEB_LIBREDWG_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Homepage: https://www.gnu.org/software/libredwg/
+Description: GNU LibreDWG is a free C library to handle DWG files. (Development files)

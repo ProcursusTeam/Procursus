@@ -1,0 +1,7 @@
+Package: libredwg-utils
+Version: @DEB_LIBREDWG_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Homepage: https://www.gnu.org/software/libredwg/
+Description: GNU LibreDWG is a free C library to handle DWG files. (Utility Files)
