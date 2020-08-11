@@ -1,10 +1,10 @@
-Package: openssh
+Package: openssh-client
 Version: @DEB_OPENSSH_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: openssh-client, openssh-server, openssh-sftp-server
+Depends: libssl1.1
 Section: Networking
 Priority: important
-Description: secure shell client and server (metapackage)
+Description: secure shell (SSH) client, for secure access to remote machines
 Depiction: http://cydia.saurik.com/info/openssh/
-Name: OpenSSH
+Name: OpenSSH Client
