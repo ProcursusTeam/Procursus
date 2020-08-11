@@ -2,8 +2,7 @@ Package: openssh-sftp-server
 Version: @DEB_OPENSSH_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libssl1.1, openssh-client
-Conflicts: com.midnightchips.localhostssh
+Depends: libssl1.1, openssh-client (= @DEB_OPENSSH_V@)
 Section: Networking
 Priority: important
 Description: secure shell (SSH) sftp server module, for SFTP access from remote machines
