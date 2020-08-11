@@ -1,0 +1,8 @@
+Package: libideviceactivation2
+Version: @DEB_LIBIDEVICEACTIVATION_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Homepage: https://libimobiledevice.org/
+Description: A library to handle the activation process of iOS devices
+Depends: libimobiledevice6, usbmuxd, curl, libplist3

@@ -1,0 +1,8 @@
+Package: libideviceactivation-dev
+Version: @DEB_LIBIDEVICEACTIVATION_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Homepage: https://libimobiledevice.org/
+Description: A library to handle the activation process of iOS devices (Development files)
+Depends: libideviceactivation2 (= @DEB_LIBIDEVICEACTIVATION_V@), libimobiledevice-dev, libusbmuxd-dev, curl
