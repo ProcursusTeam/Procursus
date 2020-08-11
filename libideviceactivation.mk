@@ -31,17 +31,18 @@ endif
 libideviceactivation-package: libideviceactivation-stage
 	# libideviceactivation.mk Package Structure
 	rm -rf $(BUILD_DIST)/libideviceactivation{2,-dev,-utils}
-	mkdir -p $(BUILD_DIST)/libideviceactivation2
-	mkdir -p $(BUILD_DIST)/libideviceactivation-dev/usr/{lib,bin}
-	mkdir -p $(BUILD_DIST)/libideviceactivation-utils/usr
+	mkdir -p $(BUILD_DIST)/libideviceactivation2/usr/lib \
+		$(BUILD_DIST)/libideviceactivation-dev/usr/{lib,bin} \
+		$(BUILD_DIST)/libideviceactivation-utils/usr
 	
 	# libideviceactivation.mk Prep libideviceactivation
 	cp -a $(BUILD_STAGE)/libideviceactivation/usr/lib/libideviceactivation-1.0.2.dylib $(BUILD_DIST)/libideviceactivation2/usr/lib
 	cp -a $(BUILD_STAGE)/libideviceactivation/usr/{bin,share} $(BUILD_DIST)/libideviceactivation-utils/usr
 	cp -a $(BUILD_STAGE)/libideviceactivation/usr/include $(BUILD_DIST)/libideviceactivation-dev/usr
-	cp -a $(BUILD_STAGE)/libideviceactivation/usr/lib/{libideviceactivation-1.0.a,libideviceactivation-1.0.dylib} $(BUILD_DIST)/libideviceactivation-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libideviceactivation/usr/lib/{pkgconfig,libideviceactivation-1.0.{a,dylib}} $(BUILD_DIST)/libideviceactivation-dev/usr/lib
 	
 	# libideviceactivation.mk Sign
+	$(call SIGN,libideviceactivation2,general.xml)
 	$(call SIGN,libideviceactivation-utils,general.xml)
 	
 	# libideviceactivation.mk Make .debs
@@ -50,6 +51,6 @@ libideviceactivation-package: libideviceactivation-stage
 	$(call PACK,libideviceactivation-utils,DEB_LIBIDEVICEACTIVATION_V)
 	
 	# libideviceactivation.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libideviceactivation{2,dev,utils}
+	rm -rf $(BUILD_DIST)/libideviceactivation{2,-dev,-utils}
 
 .PHONY: libideviceactivation libideviceactivation-package
