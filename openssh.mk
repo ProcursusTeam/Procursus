@@ -8,7 +8,7 @@ else
 SUBPROJECTS     += openssh
 endif
 OPENSSH_VERSION := 8.3p1
-DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)
+DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)-1
 
 openssh-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$(OPENSSH_VERSION).tar.gz{,.asc}

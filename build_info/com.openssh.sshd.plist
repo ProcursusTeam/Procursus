@@ -5,6 +5,10 @@
 <dict>
     <key>Label</key>
     <string>com.openssh.sshd</string>
+    <key>POSIXSpawnType</key>
+    <string>Interactive</string>
+    <key>ProcessType</key>
+    <string>Interactive</string>
 
     <key>Program</key>
     <string>/bin/sh</string>
