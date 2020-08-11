@@ -1,4 +1,4 @@
-Package: libideviceactivation0
+Package: libideviceactivation2
 Version: @DEB_LIBIDEVICEACTIVATION_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
