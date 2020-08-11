@@ -34,13 +34,14 @@ libredwg-package: libredwg-stage
 			$(BUILD_DIST)/libredwg-utils/usr
     
     # libredwg.mk Prep libredwg
-	cp -a $(BUILD_STAGE)/libredwg/usr/lib/libredwg.0.dylib $(BUILD_DIST)/libredwg/usr/lib
+	cp -a $(BUILD_STAGE)/libredwg/usr/lib/libredwg.0.dylib $(BUILD_DIST)/libredwg0/usr/lib
 	cp -a $(BUILD_STAGE)/libredwg/usr/{bin,share} $(BUILD_DIST)/libredwg-utils/usr
 	cp -a $(BUILD_STAGE)/libredwg/usr/include $(BUILD_DIST)/libredwg-dev/usr
 	cp -a $(BUILD_STAGE)/libredwg/usr/lib/{pkgconfig,libredwg.{a,dylib}} $(BUILD_DIST)/libredwg-dev/usr/lib
     
     # libredwg.mk Sign
 	$(call SIGN,libredwg-utils,general.xml)
+	$(call SIGN,libredwg0,general.xml)
     
     # libredwg.mk Make .debs
 	$(call PACK,libredwg0,DEB_LIBREDWG_V)
