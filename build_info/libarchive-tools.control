@@ -1,0 +1,10 @@
+Package: libarchive-tools
+Version: @DEB_LIBARCHIVE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Replaces: libarchive
+Conflicts: libarchive
+Depends: libarchive13 (= @DEB_LIBARCHIVE_V@)
+Description: FreeBSD implementations of 'tar' and 'cpio' and other archive tools

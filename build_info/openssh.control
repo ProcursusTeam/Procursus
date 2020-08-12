@@ -1,11 +1,8 @@
 Package: openssh
-Version: @DEB_OPENSSH_V@
+Version: 1:0
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libssl1.1
-Conflicts: com.midnightchips.localhostssh
+Depends: openssh-client, openssh-server, openssh-sftp-server
 Section: Networking
 Priority: important
-Description: secure remote access between machines
-Depiction: http://cydia.saurik.com/info/openssh/
-Name: OpenSSH
+Description: secure shell client and server (metapackage)

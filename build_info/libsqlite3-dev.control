@@ -1,0 +1,10 @@
+Package: libsqlite3-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_SQLITE3_V@
+Depends: libsqlite3-1 (= @DEB_SQLITE3_V@)
+Section: Development
+Priority: standard
+Description: SQLite 3 development files
+Homepage: https://www.sqlite.org/
+Tag: purpose::library
