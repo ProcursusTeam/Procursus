@@ -1,8 +1,8 @@
-Package: libarchive
+Package: libarchive13
 Version: @DEB_LIBARCHIVE_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Utilities
 Priority: optional
-Depends: lz4, xz-utils, zstd
+Depends: lz4, xz-utils, zstd, bzip2, nettle
 Description: Multi-format archive and compression library

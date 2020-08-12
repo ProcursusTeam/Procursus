@@ -1,0 +1,8 @@
+Package: libarchive-dev
+Version: @DEB_LIBARCHIVE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Depends: libarchive13 (= @DEB_LIBARCHIVE_V@)
+Description: Multi-format archive and compression library - devel
