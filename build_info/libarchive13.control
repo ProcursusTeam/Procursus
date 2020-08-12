@@ -7,4 +7,5 @@ Priority: optional
 Depends: lz4, xz-utils, zstd, bzip2, nettle
 Provdes: libarchive (= @DEB_LIBARCHIVE_V@)
 Replaces: libarchive
+Conflicts: libarchive
 Description: Multi-format archive and compression library
