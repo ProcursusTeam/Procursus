@@ -41,10 +41,10 @@ endif
 openssh-package: openssh-stage
 	# openssh.mk Package Structure
 	rm -rf $(BUILD_DIST)/openssh{,-sftp-server,-server,-client}
-	mkdir -p $(BUILD_DIST)/openssh
-	mkdir -p $(BUILD_DIST)/openssh-client/{var/empty,etc/ssh,usr/{libexec,share/man/{man1,man5,man8}}}
-	mkdir -p $(BUILD_DIST)/openssh-server/{etc/ssh,usr/{libexec,share/man/{man5,man8}}}
-	mkdir -p $(BUILD_DIST)/openssh-sftp-server/usr/{libexec,/share/man/man8}
+	mkdir -p $(BUILD_DIST)/openssh \
+		$(BUILD_DIST)/openssh-client/{var/empty,etc/ssh,usr/{libexec,share/man/{man1,man5,man8}}} \
+		$(BUILD_DIST)/openssh-server/{etc/ssh,usr/{libexec,share/man/{man5,man8}}} \
+		$(BUILD_DIST)/openssh-sftp-server/usr/{libexec,/share/man/man8}
 	
 	# openssh.mk Prep openssh-client
 	cp -a $(BUILD_STAGE)/openssh/etc/ssh/ssh_config $(BUILD_DIST)/openssh-client/etc/ssh
