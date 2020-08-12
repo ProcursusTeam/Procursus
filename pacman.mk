@@ -21,10 +21,12 @@ pacman: pacman-setup libarchive openssl curl
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \
-		--disable-dependency-tracking
+		--disable-dependency-tracking \
+		--disable-doc
 	+$(MAKE) -C $(BUILD_WORK)/pacman
 	+$(MAKE) -C $(BUILD_WORK)/pacman install \
 		DESTDIR=$(BUILD_STAGE)/pacman
+	find $(BUILD_STAGE)/pacman -type f -exec $(SED) -i 's+/usr/local/bin/+/usr/bin/+g' {} +
 	touch $(BUILD_WORK)/pacman/.build_complete
 endif
 
