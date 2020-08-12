@@ -14,16 +14,17 @@ ifneq ($(wildcard $(BUILD_WORK)/libarchive/.build_complete),)
 libarchive:
 	@echo "Using previously built libarchive."
 else
-libarchive: libarchive-setup lz4 zstd xz bzip2 nettle
+libarchive: libarchive-setup lz4 liblzo2 zstd xz nettle
 	cd $(BUILD_WORK)/libarchive && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
+		--prefix=/usr \
 		--disable-dependency-tracking \
 		--without-openssl \
 		--with-nettle \
+		--with-lzo2 \
 		--enable-bsdtar=shared \
 		--enable-bsdcpio=shared \
-		--enable-bsdcat=shared \
-		--prefix=/usr
+		--enable-bsdcat=shared
 	+$(MAKE) -C $(BUILD_WORK)/libarchive
 	+$(MAKE) -C $(BUILD_WORK)/libarchive install \
 		DESTDIR="$(BUILD_STAGE)/libarchive"
