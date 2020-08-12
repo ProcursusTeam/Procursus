@@ -1,0 +1,10 @@
+Package: libc-ares-dev
+Version: @DEB_LIBC-ARES_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libc-ares2 (= @DEB_LIBC-ARES_V@)
+Section: Development
+Priority: optional
+Homepage: https://c-ares.haxx.se/
+Description: Development files for the c-ares asynchronous name resolver library.
+Tag: purpose::library, role::developer

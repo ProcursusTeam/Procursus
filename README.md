@@ -51,6 +51,7 @@ Supported host systems as of 06/04/2020 are iphoneos-arm64, iphoneos-arm, applet
 | `make` or `make all` or `make package` | Compiles the entire Procursus suite and packs it into debian packages.                                             |
 | `make (tool)`                          | Used to compile only a specified tool.                                                                             |
 | `make (tool)-package`                  | Used to compile only a specified tool and pack it into a debian package.                                           |
+| `make rebuild-(tool)`                  | Used to recompile only a specified tool after it's already been compiled before.                                   |
 | `make rebuild-(tool)-package`          | Used to recompile only a specified tool after it's already been compiled before and pack it into a debian package. |
 | `make everything`                      | Compiles the entire Procursus suite for every supported host platform and packs it into debian packages.           |
 | `make clean`                           | Clean out $(BUILD_STAGE), $(BUILD_BASE), and $(BUILD_WORK).                                                        |
