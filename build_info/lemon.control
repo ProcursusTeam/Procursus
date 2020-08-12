@@ -1,0 +1,9 @@
+Package: lemon
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_SQLITE3_V@
+Section: Development
+Priority: standard
+Description: LALR(1) Parser Generator for C or C++
+Homepage: https://www.sqlite.org/
+Tag: purpose::console, role::hacker

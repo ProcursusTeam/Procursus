@@ -1,0 +1,9 @@
+Package: libsqlite3-1
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_SQLITE3_V@
+Section: Libraries
+Priority: standard
+Description: SQLite 3 shared library
+Homepage: https://www.sqlite.org/
+Tag: purpose::library
