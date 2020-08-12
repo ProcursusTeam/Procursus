@@ -6,5 +6,5 @@ Section: Utilities
 Priority: optional
 Replaces: libarchive
 Conflicts: libarchive
-Depends: lz4, xz-utils, zstd, bzip2, nettle, libarchive13 (= @DEB_LIBARCHIVE_V@)
+Depends: libarchive13 (= @DEB_LIBARCHIVE_V@)
 Description: FreeBSD implementations of 'tar' and 'cpio' and other archive tools
