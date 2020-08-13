@@ -1,0 +1,11 @@
+diff -urN screen/pty.c.orig screen/pty.c 
+--- screen/pty.c.orig	2020-02-05 15:09:38.000000000 -0500
++++ screen/pty.c	2020-08-13 12:17:24.000000000 -0400
+@@ -30,6 +30,7 @@
+ #include <sys/stat.h>
+ #include <fcntl.h>
+ #include <signal.h>
++#include <util.h>
+ 
+ #include "config.h"
+ #include "screen.h"
