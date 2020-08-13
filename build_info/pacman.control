@@ -6,3 +6,4 @@ Section: Utilities
 Depends: libarchive13, libarchive-tools, openssl, curl, zstd, tar
 Priority: optional
 Description: A library-based package manager with dependency support
+Name: makepkg
