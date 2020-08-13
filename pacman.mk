@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/pacman/.build_complete),)
 pacman:
 	@echo "Using previously built pacman."
 else
-pacman: pacman-setup libarchive openssl curl
+pacman: pacman-setup libarchive openssl curl gettext
 	cd $(BUILD_WORK)/pacman && ./autogen.sh
 	cd $(BUILD_WORK)/pacman && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
