@@ -1,0 +1,7 @@
+Package: libboost-atomic1.73.0
+Version: @DEB_LIBBOOST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Description: atomic data types, operations, and memory ordering constraints
