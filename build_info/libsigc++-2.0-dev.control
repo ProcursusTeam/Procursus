@@ -1,0 +1,8 @@
+Package: libsigc++-2.0-dev
+Version: @DEB_LIBSIGCPLUSPLUS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Depends: libsigc++-2.0-0v5 (= @DEB_LIBSIGCPLUSPLUS_V@)
+Description: type-safe Signal Framework for C++ - development files
