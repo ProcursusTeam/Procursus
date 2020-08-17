@@ -1,0 +1,8 @@
+Package: libxapian-dev
+Version: @DEB_XAPIAN_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Depends: libxapian30 (= @DEB_XAPIAN_V@)
+Description: Development files for Xapian search engine library

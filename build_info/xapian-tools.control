@@ -1,0 +1,7 @@
+Package: xapian-tools
+Version: @DEB_XAPIAN_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Description: Basic tools for Xapian search engine library
+Depends: libxapian30 (= @DEB_XAPIAN_V@)
