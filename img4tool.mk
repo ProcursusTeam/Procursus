@@ -2,14 +2,13 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS += img4tool
-IMG4TOOL_VERSION := 182
+SUBPROJECTS      += img4tool
+IMG4TOOL_VERSION := 192
 DEB_IMG4TOOL_V   ?= $(IMG4TOOL_VERSION)
 
 img4tool-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tihmstar/img4tool/archive/$(IMG4TOOL_VERSION).tar.gz
 	$(call EXTRACT_TAR,$(IMG4TOOL_VERSION).tar.gz,img4tool-$(IMG4TOOL_VERSION),img4tool)
-	$(SED) -i 's/libplist /libplist-2.0 /g' $(BUILD_WORK)/img4tool/configure.ac
 
 ifneq ($(wildcard $(BUILD_WORK)/img4tool/.build_complete),)
 img4tool:
