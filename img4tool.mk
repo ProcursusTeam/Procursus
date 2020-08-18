@@ -29,22 +29,28 @@ endif
 img4tool-package: img4tool-stage
 	# img4tool.mk Package Structure
 	rm -rf $(BUILD_DIST)/img4tool
-	mkdir -p $(BUILD_DIST)/{img4tool/usr/bin,libimg4tool/usr}
+	mkdir -p $(BUILD_DIST)/{img4tool/usr/bin,libimg4tool0/usr/lib,libimg4tool-dev/usr/{lib/pkgconfig,include}}
 	
 	# img4tool.mk Prep img4tool
 	cp -a $(BUILD_STAGE)/img4tool/usr/bin/img4tool $(BUILD_DIST)/img4tool/usr/bin
 
-	# img4tool.mk Prep libimg4tool
-	cp -a $(BUILD_STAGE)/img4tool/usr/lib $(BUILD_DIST)/libimg4tool/usr
+	# img4tool.mk Prep libimg4tool0
+	cp -a $(BUILD_STAGE)/img4tool/usr/lib/libimg4tool.0.dylib $(BUILD_DIST)/libimg4tool0/usr/lib
+
+	# img4tool.mk Prep libimg4tool-dev
+	cp -a $(BUILD_STAGE)/img4tool/usr/lib/{libimg4tool.dylib,pkgconfig} $(BUILD_DIST)/libimg4tool-dev/usr/lib
+	cp -a $(BUILD_STAGE)/img4tool/usr/include/img4tool $(BUILD_DIST)/libimg4tool-dev/usr/include
 
 	# img4tool.mk Sign
 	$(call SIGN,img4tool,general.xml)
-	$(call SIGN,libimg4tool,general.xml)
-	
+	$(call SIGN,libimg4tool0,general.xml)
+	$(call SIGN,libimg4tool-dev,general.xml)
+
 	# img4tool.mk Make .debs
 	$(call PACK,img4tool,DEB_IMG4TOOL_V)
-	$(call PACK,libimg4tool,DEB_IMG4TOOL_V)
-	
+	$(call PACK,libimg4tool0,DEB_IMG4TOOL_V)
+	$(call PACK,libimg4tool-dev,DEB_IMG4TOOL_V)
+
 	# img4tool.mk Build cleanup
 	rm -rf $(BUILD_DIST)/{img4tool,libimg4tool}
 
