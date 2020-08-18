@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += bsdiff
-BSDIFF_VERSION := 4.2
+BSDIFF_VERSION := 4.3
 DEB_BSDIFF_V   ?= $(BSDIFF_VERSION)
 
 bsdiff-setup: setup
