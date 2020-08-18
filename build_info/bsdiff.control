@@ -1,0 +1,8 @@
+Package: bsdiff
+Version: @DEB_BSDIFF_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Description: Generate and apply patches to binary files
+Tag: purpose::console, role::hackerb
