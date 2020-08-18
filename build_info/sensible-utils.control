@@ -1,0 +1,7 @@
+Package: sensible-utils
+Version: @DEB_SENSIBLE-UTILS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Description: Utilities for sensible alternative selection
