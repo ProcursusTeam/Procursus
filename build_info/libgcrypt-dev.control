@@ -7,5 +7,5 @@ Section: Development
 Priority: optional
 Multi-Arch: foreign
 Description: LGPL cryptographic algorithm library (Development files)
-Replaces: libgcrypt
-Conflicts: libgcrypt
+Replaces: libgcrypt, gcrypt
+Conflicts: libgcrypt, gcrypt
