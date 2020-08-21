@@ -7,5 +7,5 @@ Section: Utilities
 Priority: optional
 Multi-Arch: foreign
 Description: LGPL cryptographic algorithm library (Utility files)
-Replaces: libgcrypt
-Conflicts: libgcrypt
+Replaces: libgcrypt, gcrypt
+Conflicts: libgcrypt, gcrypt
