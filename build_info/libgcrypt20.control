@@ -7,5 +7,6 @@ Section: Libraries
 Priority: optional
 Multi-Arch: foreign
 Description: LGPL cryptographic algorithm library (Libraries)
-Replaces: libgcrypt
-Conflicts: libgcrypt
+Replaces: gcrypt
+Conflicts: gcrypt (<<1:0)
+Provides: gcrypt (=@DEB_LIBGCRYPT_V@)
