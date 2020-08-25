@@ -3,12 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += sl
-SL_VERSION  := 5.02
+SL_VERSION  := 5.05
 DEB_SL_V    ?= $(SL_VERSION)
 
 sl-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/M1staAwesome/sl/archive/$(SL_VERSION).tar.gz
-	$(call EXTRACT_TAR,$(SL_VERSION).tar.gz,sl-$(SL_VERSION),sl)
+	-[[ ! -f $(BUILD_SOURCE)/sl-$(SL_VERSION).tar.gz ]] && wget -q -nc -O $(BUILD_SOURCE)/sl-$(SL_VERSION).tar.gz https://github.com/eyJhb/sl/archive/$(SL_VERSION).tar.gz
+	$(call EXTRACT_TAR,sl-$(SL_VERSION).tar.gz,sl-$(SL_VERSION),sl)
 	mkdir -p $(BUILD_STAGE)/sl/usr/bin
 
 ifneq ($(wildcard $(BUILD_WORK)/sl/.build_complete),)
