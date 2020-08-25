@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS  += pacman
+SUBPROJECTS    += pacman
 PACMAN_VERSION := 5.2.2
 DEB_PACMAN_V   ?= $(PACMAN_VERSION)
 
