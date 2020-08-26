@@ -1,0 +1,8 @@
+Package: libboost-iostreams1.74.0
+Version: @DEB_LIBBOOST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: zstd, xz-utils
+Section: Libraries
+Priority: optional
+Description: Boost.Iostreams Library
