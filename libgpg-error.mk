@@ -39,23 +39,26 @@ endif
 
 libgpg-error-package: libgpg-error-stage
 	# libgpg-error.mk Package Structure
-	rm -rf $(BUILD_DIST)/libgpg-error{0,-dev}
+	rm -rf $(BUILD_DIST)/{libgpg-error{0,-dev},gpgrt-tools}
 	mkdir -p $(BUILD_DIST)/libgpg-error{0,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/gpgrt-tools/usr
 	
 	# libgpg-error.mk Prep libgpg-error
 	cp -a $(BUILD_STAGE)/libgpg-error/usr/lib/libgpg-error.0.dylib $(BUILD_DIST)/libgpg-error0/usr/lib
-	cp -a $(BUILD_STAGE)/libgpg-error/usr/{bin,share,include} $(BUILD_DIST)/libgpg-error-dev/usr
+	cp -a $(BUILD_STAGE)/libgpg-error/usr/include $(BUILD_DIST)/libgpg-error-dev/usr
 	cp -a $(BUILD_STAGE)/libgpg-error/usr/lib/{libgpg-error.dylib,pkgconfig} $(BUILD_DIST)/libgpg-error-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libgpg-error/usr/{bin,share} $(BUILD_DIST)/gpgrt-tools/usr
 	
 	# libgpg-error.mk Sign
 	$(call SIGN,libgpg-error0,general.xml)
-	$(call SIGN,libgpg-error-dev,general.xml)
+	$(call SIGN,gpgrt-tools,general.xml)
 	
 	# libgpg-error.mk Make .debs
 	$(call PACK,libgpg-error0,DEB_LIBGPG-ERROR_V)
 	$(call PACK,libgpg-error-dev,DEB_LIBGPG-ERROR_V)
+	$(call PACK,gpgrt-tools,DEB_LIBGPG-ERROR_V)
 	
 	# libgpg-error.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libgpg-error{0,-dev}
+	rm -rf $(BUILD_DIST)/{libgpg-error{0,-dev},gpgrt-tools}
 
 .PHONY: libgpg-error libgpg-error-package
