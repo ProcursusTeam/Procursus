@@ -28,7 +28,7 @@ endif
 
 img4tool-package: img4tool-stage
 	# img4tool.mk Package Structure
-	rm -rf $(BUILD_DIST)/img4tool
+	rm -rf $(BUILD_DIST)/*img4tool*/
 	mkdir -p $(BUILD_DIST)/{img4tool/usr/bin,libimg4tool0/usr/lib,libimg4tool-dev/usr/{lib/pkgconfig,include}}
 	
 	# img4tool.mk Prep img4tool
@@ -51,6 +51,6 @@ img4tool-package: img4tool-stage
 	$(call PACK,libimg4tool-dev,DEB_IMG4TOOL_V)
 
 	# img4tool.mk Build cleanup
-	rm -rf $(BUILD_DIST)/{img4tool,libimg4tool}
+	rm -rf $(BUILD_DIST)/*img4tool*/
 
 .PHONY: img4tool img4tool-package
