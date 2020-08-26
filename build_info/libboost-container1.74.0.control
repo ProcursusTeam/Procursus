@@ -1,8 +1,7 @@
-Package: libboost-iostreams1.73.0
+Package: libboost-container1.74.0
 Version: @DEB_LIBBOOST_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: bzip2, zstd, xz
 Section: Libraries
 Priority: optional
-Description: Boost.Iostreams Library
+Description: C++ library that implements several well-known containers

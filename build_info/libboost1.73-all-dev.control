@@ -1,8 +1,0 @@
-Package: libboost1.73-all-dev
-Version: @DEB_LIBBOOST_V@
-Architecture: @DEB_ARCH@
-Maintainer: @DEB_MAINTAINER@
-Depends: libboost-atomic1.73.0 (=  @DEB_LIBBOOST_V@), libboost-chrono1.73.0 (=  @DEB_LIBBOOST_V@), libboost-container1.73.0 (=  @DEB_LIBBOOST_V@), libboost-context1.73.0 (=  @DEB_LIBBOOST_V@), libboost-contract1.73.0 (=  @DEB_LIBBOOST_V@), libboost-coroutine1.73.0 (=  @DEB_LIBBOOST_V@), libboost-date-time1.73.0 (=  @DEB_LIBBOOST_V@), libboost-filesystem1.73.0 (=  @DEB_LIBBOOST_V@), libboost-graph1.73.0 (=  @DEB_LIBBOOST_V@), libboost-iostreams1.73.0 (=  @DEB_LIBBOOST_V@), libboost-locale1.73.0 (=  @DEB_LIBBOOST_V@), libboost-log1.73.0 (=  @DEB_LIBBOOST_V@), libboost-math1.73.0 (=  @DEB_LIBBOOST_V@), libboost-numpy1.73.0 (=  @DEB_LIBBOOST_V@), libboost-program-options1.73.0 (=  @DEB_LIBBOOST_V@), libboost-random1.73.0 (=  @DEB_LIBBOOST_V@), libboost-regex1.73.0 (=  @DEB_LIBBOOST_V@), libboost-serialization1.73.0 (=  @DEB_LIBBOOST_V@), libboost-stacktrace1.73.0 (=  @DEB_LIBBOOST_V@), libboost-system1.73.0 (=  @DEB_LIBBOOST_V@), libboost-test1.73.0 (=  @DEB_LIBBOOST_V@), libboost-thread1.73.0 (=  @DEB_LIBBOOST_V@), libboost-timer1.73.0 (=  @DEB_LIBBOOST_V@), libboost-type-erasure1.73.0 (=  @DEB_LIBBOOST_V@), libboost-wave1.73.0 (=  @DEB_LIBBOOST_V@)
-Section: Development
-Priority: Optional
-Description: Boost C++ Libraries development files (ALL)
