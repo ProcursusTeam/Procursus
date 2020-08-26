@@ -2,7 +2,7 @@ Package: libgcrypt20
 Version: @DEB_LIBGCRYPT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libgpg-error (>= 1.37)
+Depends: libgpg-error0 (>= 1.37)
 Section: Libraries
 Priority: optional
 Multi-Arch: foreign
