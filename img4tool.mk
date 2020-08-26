@@ -2,14 +2,13 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS += img4tool
-IMG4TOOL_VERSION := 182
+SUBPROJECTS      += img4tool
+IMG4TOOL_VERSION := 192
 DEB_IMG4TOOL_V   ?= $(IMG4TOOL_VERSION)
 
 img4tool-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tihmstar/img4tool/archive/$(IMG4TOOL_VERSION).tar.gz
 	$(call EXTRACT_TAR,$(IMG4TOOL_VERSION).tar.gz,img4tool-$(IMG4TOOL_VERSION),img4tool)
-	$(SED) -i 's/libplist /libplist-2.0 /g' $(BUILD_WORK)/img4tool/configure.ac
 
 ifneq ($(wildcard $(BUILD_WORK)/img4tool/.build_complete),)
 img4tool:
@@ -30,18 +29,28 @@ endif
 img4tool-package: img4tool-stage
 	# img4tool.mk Package Structure
 	rm -rf $(BUILD_DIST)/img4tool
-	mkdir -p $(BUILD_DIST)/img4tool
+	mkdir -p $(BUILD_DIST)/{img4tool/usr/bin,libimg4tool0/usr/lib,libimg4tool-dev/usr/{lib/pkgconfig,include}}
 	
 	# img4tool.mk Prep img4tool
-	cp -a $(BUILD_STAGE)/img4tool/usr $(BUILD_DIST)/img4tool
-	
+	cp -a $(BUILD_STAGE)/img4tool/usr/bin/img4tool $(BUILD_DIST)/img4tool/usr/bin
+
+	# img4tool.mk Prep libimg4tool0
+	cp -a $(BUILD_STAGE)/img4tool/usr/lib/libimg4tool.0.dylib $(BUILD_DIST)/libimg4tool0/usr/lib
+
+	# img4tool.mk Prep libimg4tool-dev
+	cp -a $(BUILD_STAGE)/img4tool/usr/lib/{libimg4tool.dylib,pkgconfig} $(BUILD_DIST)/libimg4tool-dev/usr/lib
+	cp -a $(BUILD_STAGE)/img4tool/usr/include/img4tool $(BUILD_DIST)/libimg4tool-dev/usr/include
+
 	# img4tool.mk Sign
 	$(call SIGN,img4tool,general.xml)
-	
+	$(call SIGN,libimg4tool0,general.xml)
+
 	# img4tool.mk Make .debs
 	$(call PACK,img4tool,DEB_IMG4TOOL_V)
-	
+	$(call PACK,libimg4tool0,DEB_IMG4TOOL_V)
+	$(call PACK,libimg4tool-dev,DEB_IMG4TOOL_V)
+
 	# img4tool.mk Build cleanup
-	rm -rf $(BUILD_DIST)/img4tool
+	rm -rf $(BUILD_DIST)/{img4tool,libimg4tool}
 
 .PHONY: img4tool img4tool-package

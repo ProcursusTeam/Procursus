@@ -1,9 +1,9 @@
-Package: img4tool
+Package: libimg4tool0
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_IMG4TOOL_V@
-Depends: libplist3, libssl1.1, libgeneral, libimg4tool0
+Depends: libplist3, libssl1.1, libgeneral
 Section: Utilities
 Priority: optional
-Description: A tool for manipulating IMG4, IM4M and IM4P files
+Description: Development files for img4tool
 Tag: purpose::console, role::hacker
