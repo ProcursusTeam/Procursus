@@ -1,0 +1,10 @@
+Package: libsigc++-2.0-0v5
+Version: @DEB_LIBSIGCPLUSPLUS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Conflicts: libsigc++
+Replaces: libsigc++
+Provides: libsigc++
+Description: type-safe Signal Framework for C++ - runtime
