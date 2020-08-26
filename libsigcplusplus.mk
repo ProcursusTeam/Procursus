@@ -35,11 +35,11 @@ libsigcplusplus-package: libsigcplusplus-stage
 	mkdir -p $(BUILD_DIST)/libsigc++-2.0-{0v5,dev}/usr/lib
 	
 	# libsigcplusplus.mk Prep libsigc++-2.0-0v5
-	cp -a $(BUILD_STAGE)/libsigcplusplus/usr/lib/libsigc-*.dylib $(BUILD_DIST)/libsigc++-2.0-0v5/usr/lib
+	cp -a $(BUILD_STAGE)/libsigcplusplus/usr/lib/libsigc-2.0.0.dylib $(BUILD_DIST)/libsigc++-2.0-0v5/usr/lib
 	
 	# libsigcplusplus.mk Prep libsigc++-2.0-dev
 	cp -a $(BUILD_STAGE)/libsigcplusplus/usr/include $(BUILD_DIST)/libsigc++-2.0-dev/usr
-	cp -a $(BUILD_STAGE)/libsigcplusplus/usr/lib/{pkgconfig,sigc++-2.0} $(BUILD_DIST)/libsigc++-2.0-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libsigcplusplus/usr/lib/!(libsigc-2.0.0.dylib) $(BUILD_DIST)/libsigc++-2.0-dev/usr/lib
 	
 	# libsigcplusplus.mk Sign
 	$(call SIGN,libsigc++-2.0-0v5,general.xml)
