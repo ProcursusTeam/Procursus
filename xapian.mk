@@ -37,12 +37,12 @@ xapian-package: xapian-stage
 		$(BUILD_DIST)/xapian-{examples,tools}/usr/{bin,share/man/man1}
 	
 	# xapian.mk Prep libxapian30
-	cp -a $(BUILD_STAGE)/xapian/usr/lib/libxapian*.dylib $(BUILD_DIST)/libxapian30/usr/lib
+	cp -a $(BUILD_STAGE)/xapian/usr/lib/libxapian.30.dylib $(BUILD_DIST)/libxapian30/usr/lib
 	
 	# xapian.mk Prep libxapian-dev
 	cp -a $(BUILD_STAGE)/xapian/usr/bin/xapian-config $(BUILD_DIST)/libxapian-dev/usr/bin
 	cp -a $(BUILD_STAGE)/xapian/usr/include $(BUILD_DIST)/libxapian-dev/usr
-	cp -a $(BUILD_STAGE)/xapian/usr/lib/{cmake,pkgconfig} $(BUILD_DIST)/libxapian-dev/usr/lib
+	cp -a $(BUILD_STAGE)/xapian/usr/lib/!(libxapian.30.dylib) $(BUILD_DIST)/libxapian-dev/usr/lib
 	cp -a $(BUILD_STAGE)/xapian/usr/share/aclocal $(BUILD_DIST)/libxapian-dev/usr/share
 	cp -a $(BUILD_STAGE)/xapian/usr/share/man/man1/xapian-config.1 $(BUILD_DIST)/libxapian-dev/usr/share/man/man1
 	
