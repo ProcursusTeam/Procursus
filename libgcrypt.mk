@@ -35,27 +35,25 @@ endif
 
 libgcrypt-package: libgcrypt-stage
 	# libgcrypt.mk Package Structure
-	rm -rf $(BUILD_DIST)/libgcrypt{20,-dev,-utils}
+	rm -rf $(BUILD_DIST)/libgcrypt20{,-dev}
 	mkdir -p $(BUILD_DIST)/libgcrypt20/usr/lib
-	mkdir -p $(BUILD_DIST)/libgcrypt-utils/usr
-	mkdir -p $(BUILD_DIST)/libgcrypt-dev/usr/lib
+	mkdir -p $(BUILD_DIST)/libgcrypt20-dev/usr/lib
 	
 	# libgcrypt.mk Prep libgcrypt
 	cp -a $(BUILD_STAGE)/libgcrypt/usr/lib/libgcrypt.20.dylib $(BUILD_DIST)/libgcrypt20/usr/lib
-	cp -a $(BUILD_STAGE)/libgcrypt/usr/{bin,share} $(BUILD_DIST)/libgcrypt-utils/usr
-	cp -a $(BUILD_STAGE)/libgcrypt/usr/include $(BUILD_DIST)/libgcrypt-dev/usr
-	cp -a $(BUILD_STAGE)/libgcrypt/usr/lib/{pkgconfig,libgcrypt.dylib} $(BUILD_DIST)/libgcrypt-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libgcrypt/usr/{bin,share} $(BUILD_DIST)/libgcrypt20-dev/usr
+	cp -a $(BUILD_STAGE)/libgcrypt/usr/include $(BUILD_DIST)/libgcrypt20-dev/usr
+	cp -a $(BUILD_STAGE)/libgcrypt/usr/lib/{pkgconfig,libgcrypt.dylib} $(BUILD_DIST)/libgcrypt20-dev/usr/lib
 
 	# libgcrypt.mk Sign
 	$(call SIGN,libgcrypt20,general.xml)
-	$(call SIGN,libgcrypt-utils,general.xml)
+	$(call SIGN,libgcrypt20-dev,general.xml)
 	
 	# libgcrypt.mk Make .debs
 	$(call PACK,libgcrypt20,DEB_LIBGCRYPT_V)
-	$(call PACK,libgcrypt-dev,DEB_LIBGCRYPT_V)
-	$(call PACK,libgcrypt-utils,DEB_LIBGCRYPT_V)
+	$(call PACK,libgcrypt20-dev,DEB_LIBGCRYPT_V)
 	
 	# libgcrypt.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libgcrypt{20,-dev,-utils}
+	rm -rf $(BUILD_DIST)/libgcrypt20{,-dev}
 
 .PHONY: libgcrypt libgcrypt-package
