@@ -1,0 +1,7 @@
+Package: xapian-examples
+Version: @DEB_XAPIAN_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Description: Xapian simple example programs
+Depends: libxapian30 (= @DEB_XAPIAN_V@)
