@@ -48,6 +48,7 @@ img4tool-package: img4tool-stage
 	# img4tool.mk Make .debs
 	$(call PACK,img4tool,DEB_IMG4TOOL_V)
 	$(call PACK,libimg4tool0,DEB_IMG4TOOL_V)
+	$(call PACK,libimg4tool-dev,DEB_IMG4TOOL_V)
 
 	# img4tool.mk Build cleanup
 	rm -rf $(BUILD_DIST)/{img4tool,libimg4tool}
