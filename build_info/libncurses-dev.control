@@ -1,0 +1,10 @@
+Package: libncurses-dev
+Version: @DEB_NCURSES_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libncursesw6 (= @DEB_NCURSES_V@)
+Replaces: ncurses (<< @DEB_NCURSES_V@)
+Conflicts: ncurses (<< @DEB_NCURSES_V@)
+Section: Development
+Priority: optional
+Description: developer's libraries for ncurses

@@ -1,0 +1,11 @@
+Package: libncursesw6
+Version: @DEB_NCURSES_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: ncurses-term (>= @DEB_NCURSES_V@)
+Provides: ncurses (= @DEB_NCURSES_V@)
+Replaces: ncurses (<< @DEB_NCURSES_V@)
+Conflicts: ncurses (<< @DEB_NCURSES_V@)
+Section: Libraries
+Priority: required
+Description: shared libraries for terminal handling (wide character support)

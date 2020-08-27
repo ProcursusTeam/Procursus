@@ -3,16 +3,13 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS   += ncurses
-NCURSES_VERSION := 6.2
+NCURSES_VERSION := 6.2-1
 DEB_NCURSES_V   ?= $(NCURSES_VERSION)
 
 ncurses-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/ncurses/ncurses-$(NCURSES_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,ncurses-$(NCURSES_VERSION).tar.gz)
 	$(call EXTRACT_TAR,ncurses-$(NCURSES_VERSION).tar.gz,ncurses-$(NCURSES_VERSION),ncurses)
-
-# Needs DESTDIR in make -j8 to not attempt to build test files (which fail to link)
-# May need the make clean in between to keep out artifacts from the old DESTDIR
 
 ifneq ($(wildcard $(BUILD_WORK)/ncurses/.build_complete),)
 ncurses:
@@ -30,9 +27,10 @@ ncurses: ncurses-setup
 		--prefix=/usr \
 		--with-build-cc=clang \
 		--with-shared \
-		--without-normal \
 		--without-debug \
 		--enable-sigwinch \
+		--enable-const \
+		--enable-symlinks \
 		--enable-termcap \
 		--enable-pc-files \
 		--without-x11-rgb \
@@ -87,19 +85,46 @@ endif
 
 ncurses-package: ncurses-stage
 	# ncurses.mk Package Structure
-	rm -rf $(BUILD_DIST)/ncurses
-	mkdir -p $(BUILD_DIST)/ncurses
+	rm -rf $(BUILD_DIST)/*ncurses*/
+	mkdir -p $(BUILD_DIST)/libncursesw6/usr/lib \
+		$(BUILD_DIST)/libncurses-dev/usr/{bin,lib,share/man/man1} \
+		$(BUILD_DIST)/ncurses-term/usr/{lib,share} \
+		$(BUILD_DIST)/ncurses-bin/usr/{bin,share/man/man1} \
+		$(BUILD_DIST)/ncurses-doc/usr/share/man
 	
-	# ncurses.mk Prep ncurses
-	cp -a $(BUILD_STAGE)/ncurses/usr $(BUILD_DIST)/ncurses
+	# ncurses.mk Prep libncursesw6
+	cp -a $(BUILD_STAGE)/ncurses/usr/lib/lib*.6.dylib $(BUILD_DIST)/libncursesw6/usr/lib
+	
+	# ncurses.mk Prep libncurses-dev
+	cp -a $(BUILD_STAGE)/ncurses/usr/bin/ncurses*-config $(BUILD_DIST)/libncurses-dev/usr/bin
+	cp -a $(BUILD_STAGE)/ncurses/usr/share/man/man1/ncurses*-config.1 $(BUILD_DIST)/libncurses-dev/usr/share/man/man1
+	cp -a $(BUILD_STAGE)/ncurses/usr/include $(BUILD_DIST)/libncurses-dev/usr
+	cp -a $(BUILD_STAGE)/ncurses/usr/lib/!(*.6.*|*.5.*|terminfo) $(BUILD_DIST)/libncurses-dev/usr/lib
+	
+	# ncurses.mk Prep ncurses-term
+	cp -a $(BUILD_STAGE)/ncurses/usr/lib/terminfo $(BUILD_DIST)/ncurses-term/usr/lib
+	cp -a $(BUILD_STAGE)/ncurses/usr/share/terminfo $(BUILD_DIST)/ncurses-term/usr/share
+	
+	# ncurses.mk Prep ncurses-bin
+	cp -a $(BUILD_STAGE)/ncurses/usr/bin/!(ncurses*-config) $(BUILD_DIST)/ncurses-bin/usr/bin
+	cp -a $(BUILD_STAGE)/ncurses/usr/share/man/man1/!(ncurses*-config.1) $(BUILD_DIST)/ncurses-bin/usr/share/man/man1
+	cp -a $(BUILD_STAGE)/ncurses/usr/share/man/man{5,7} $(BUILD_DIST)/ncurses-bin/usr/share/man
+	
+	# ncurses.mk Prep ncurses-doc
+	cp -a $(BUILD_STAGE)/ncurses/usr/share/man/man3 $(BUILD_DIST)/ncurses-doc/usr/share/man
 	
 	# ncurses.mk Sign
-	$(call SIGN,ncurses,general.xml)
+	$(call SIGN,libncursesw6,general.xml)
+	$(call SIGN,ncurses-bin,general.xml)
 	
 	# ncurses.mk Make .debs
-	$(call PACK,ncurses,DEB_NCURSES_V)
+	$(call PACK,libncursesw6,DEB_NCURSES_V)
+	$(call PACK,libncurses-dev,DEB_NCURSES_V)
+	$(call PACK,ncurses-term,DEB_NCURSES_V)
+	$(call PACK,ncurses-bin,DEB_NCURSES_V)
+	$(call PACK,ncurses-doc,DEB_NCURSES_V)
 	
 	# ncurses.mk Build cleanup
-	rm -rf $(BUILD_DIST)/ncurses
+	rm -rf $(BUILD_DIST)/*ncurses*/
 
 .PHONY: ncurses ncurses-package

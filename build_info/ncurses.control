@@ -1,9 +1,0 @@
-Package: ncurses
-Version: @DEB_NCURSES_V@
-Architecture: @DEB_ARCH@
-Maintainer: @DEB_MAINTAINER@
-Depends: coreutils
-Section: System
-Priority: required
-Description: feature-complete terminal library
-Name: New Curses

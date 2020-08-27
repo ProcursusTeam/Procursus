@@ -1,0 +1,9 @@
+Package: ncurses-term
+Version: @DEB_NCURSES_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Replaces: ncurses (<< @DEB_NCURSES_V@)
+Conflicts: ncurses (<< @DEB_NCURSES_V@)
+Section: System
+Priority: required
+Description: This package contains terminfo data files to support most types of terminals.
