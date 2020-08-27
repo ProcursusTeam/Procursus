@@ -2,7 +2,7 @@ Package: iokittools
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_IOKITTOOLS_V@
-Depends: ncurses
+Depends: libncursesw6
 Section: Administration
 Priority: important
 Description: ioalloccount, ioclasscount

@@ -2,7 +2,7 @@ Package: vim
 Version: @DEB_VIM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: ncurses, xxd, gettext
+Depends: libncursesw6, xxd, gettext
 Section: Text_Editors
 Priority: standard
 Description: the best syntax highlighter, ever

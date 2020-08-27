@@ -2,7 +2,7 @@ Package: cmake-curses-gui
 Version: @DEB_CMAKE_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: cmake (= @DEB_CMAKE_V@), ncurses
+Depends: cmake (= @DEB_CMAKE_V@), libncursesw6
 Section: Development
 Priority: optional
 Homepage: https://cmake.org/

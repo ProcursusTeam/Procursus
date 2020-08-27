@@ -2,7 +2,7 @@ Package: lsof
 Version: @DEB_LSOF_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: ncurses
+Depends: libncursesw6
 Section: Administration
 Priority: standard
 Multi-Arch: foreign

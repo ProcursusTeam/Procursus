@@ -2,7 +2,7 @@ Package: zsh
 Version: @DEB_ZSH_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: ncurses, libpcre
+Depends: libncursesw6, libpcre
 Section: Terminal_Support
 Priority: required
 Description: a shell with interactive features

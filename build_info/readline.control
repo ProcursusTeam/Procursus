@@ -2,7 +2,7 @@ Package: readline
 Version: @DEB_READLINE_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: ncurses
+Depends: libncursesw6
 Section: Development
 Priority: required
 Description: command-line history management

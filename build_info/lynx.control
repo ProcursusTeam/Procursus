@@ -2,7 +2,7 @@ Package: lynx
 Version: @DEB_LYNX_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: ncurses, libidn2, openssl, gettext
+Depends: libncursesw6, libidn2, openssl, gettext
 Section: Networking
 Priority: optional
 Description: A text browser for the World Wide Web

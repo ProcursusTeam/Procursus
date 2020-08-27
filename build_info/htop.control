@@ -2,7 +2,7 @@ Package: htop
 Version: @DEB_HTOP_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: ncurses (>= 6.0)
+Depends: libncursesw6 (>= 6.0)
 Section: Administration
 Priority: important
 Description: An interactive process viewer for Unix systems.

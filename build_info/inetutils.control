@@ -2,7 +2,7 @@ Package: inetutils
 Version: @DEB_INETUTILS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: ncurses, readline
+Depends: libncursesw6, readline
 Provides: hostname, ping, telnet
 Section: Networking
 Priority: standard

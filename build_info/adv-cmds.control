@@ -5,5 +5,5 @@ Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Multi-Arch: foreign
 Version: @DEB_ADV-CMDS_V@
-Depends: ncurses
+Depends: libncursesw6
 Description: cap_mkdb, finger, last, locale, lsvfs, tabs

@@ -2,7 +2,7 @@ Package: top
 Version: @DEB_TOP_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: ncurses
+Depends: libncursesw6
 Section: Administration
 Priority: important
 Multi-Arch: foreign

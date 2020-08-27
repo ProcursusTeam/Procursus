@@ -2,7 +2,7 @@ Package: screen
 Version: @DEB_SCREEN_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: ncurses (>= 6.0), libcrypt1
+Depends: libncursesw6 (>= 6.0), libcrypt1
 Section: Terminal_Support
 Priority: standard
 Multi-Arch: foreign

@@ -2,7 +2,7 @@ Package: nano
 Version: @DEB_NANO_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: ncurses, gettext
+Depends: libncursesw6, gettext
 Section: Text_Editors
 Priority: standard
 Description: completely free, modern clone of Pico

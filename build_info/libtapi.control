@@ -4,7 +4,7 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Conflicts: libtapi10
 Replaces: libtapi10
-Depends: ncurses (>= 6.0)
+Depends: libncursesw6 (>= 6.0)
 Section: Development
 Priority: optional
 Description: Text-based Application Programming Interface (library)

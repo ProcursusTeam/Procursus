@@ -3,7 +3,7 @@ Version: @DEB_BASH_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Pre-Depends: readline (>= 8.0), profile.d (>= 0-5)
-Depends: grep, ncurses, readline, sed
+Depends: grep, libncursesw6, readline, sed
 Section: Terminal_Support
 Priority: optional
 Homepage: http://www.gnu.org/software/bash/

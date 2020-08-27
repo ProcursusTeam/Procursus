@@ -2,7 +2,7 @@ Package: gettext
 Version: @DEB_GETTEXT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: ncurses
+Depends: libncursesw6
 Breaks: apt (<< 2.1.0)
 Section: System
 Priority: optional
