@@ -4,7 +4,7 @@ A new, powerful cross-compilation system for *OS devices coupled with an APT rep
 
 ## Why?
 
-At it's birth, this build-system was meant to create an APT repo included in a specific jailbreak. That never came to pass, however, and it turned into more of a hobby project.
+At its birth, this build-system was meant to create an APT repo included in a specific jailbreak. That never came to pass, however, and it turned into more of a hobby project.
 
 The current goal of Procursus is to provide a large set of consistently up-to-date *nix tools cross compiled to work on Darwin based platforms. It's built from the ground up in such a way that updating packages is quick and easy, helping to not fall behind upstream.
 
