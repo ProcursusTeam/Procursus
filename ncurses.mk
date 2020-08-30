@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS   += ncurses
-NCURSES_VERSION := 6.2-1
-DEB_NCURSES_V   ?= $(NCURSES_VERSION)
+NCURSES_VERSION := 6.2
+DEB_NCURSES_V   ?= $(NCURSES_VERSION)-1
 
 ncurses-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/ncurses/ncurses-$(NCURSES_VERSION).tar.gz{,.sig}
