@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS        += libgpg-error
-LIBGPG-ERROR_VERSION := 1.37
+LIBGPG-ERROR_VERSION := 1.39
 DEB_LIBGPG-ERROR_V   ?= $(LIBGPG-ERROR_VERSION)
 
 ifneq (,$(findstring aarch64,$(GNU_HOST_TRIPLE)))
@@ -39,19 +39,26 @@ endif
 
 libgpg-error-package: libgpg-error-stage
 	# libgpg-error.mk Package Structure
-	rm -rf $(BUILD_DIST)/libgpg-error
-	mkdir -p $(BUILD_DIST)/libgpg-error
+	rm -rf $(BUILD_DIST)/{libgpg-error{0,-dev},gpgrt-tools}
+	mkdir -p $(BUILD_DIST)/libgpg-error{0,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/gpgrt-tools/usr
 	
 	# libgpg-error.mk Prep libgpg-error
-	cp -a $(BUILD_STAGE)/libgpg-error/usr $(BUILD_DIST)/libgpg-error
+	cp -a $(BUILD_STAGE)/libgpg-error/usr/lib/libgpg-error.0.dylib $(BUILD_DIST)/libgpg-error0/usr/lib
+	cp -a $(BUILD_STAGE)/libgpg-error/usr/include $(BUILD_DIST)/libgpg-error-dev/usr
+	cp -a $(BUILD_STAGE)/libgpg-error/usr/lib/{libgpg-error.dylib,pkgconfig} $(BUILD_DIST)/libgpg-error-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libgpg-error/usr/{bin,share} $(BUILD_DIST)/gpgrt-tools/usr
 	
 	# libgpg-error.mk Sign
-	$(call SIGN,libgpg-error,general.xml)
+	$(call SIGN,libgpg-error0,general.xml)
+	$(call SIGN,gpgrt-tools,general.xml)
 	
 	# libgpg-error.mk Make .debs
-	$(call PACK,libgpg-error,DEB_LIBGPG-ERROR_V)
+	$(call PACK,libgpg-error0,DEB_LIBGPG-ERROR_V)
+	$(call PACK,libgpg-error-dev,DEB_LIBGPG-ERROR_V)
+	$(call PACK,gpgrt-tools,DEB_LIBGPG-ERROR_V)
 	
 	# libgpg-error.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libgpg-error
+	rm -rf $(BUILD_DIST)/{libgpg-error{0,-dev},gpgrt-tools}
 
 .PHONY: libgpg-error libgpg-error-package

@@ -1,0 +1,12 @@
+Package: libgpg-error-dev
+Version: @DEB_LIBGPG-ERROR_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Multi-Arch: foreign
+Description: GnuPG's error management library (Development Files)
+Name: GnuPG Errors (Development)
+Replaces: libgpg-error
+Conflicts: libgpg-error
+Depends: libgpg-error0 (= @DEB_LIBGPG-ERROR_V@)
