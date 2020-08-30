@@ -1,0 +1,12 @@
+Package: libgcrypt20
+Version: @DEB_LIBGCRYPT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libgpg-error0 (>= 1.37)
+Section: Libraries
+Priority: optional
+Multi-Arch: foreign
+Description: LGPL cryptographic algorithm library (Libraries)
+Replaces: gcrypt, libgcrypt
+Conflicts: gcrypt (<<1:0), libgcrypt (<<1:0)
+Provides: gcrypt (=@DEB_LIBGCRYPT_V@), libgcrypt (=@DEB_LIBGCRYPT_V@)

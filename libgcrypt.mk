@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS     += libgcrypt
-LIBGCRYPT_VERSION := 1.8.5
+LIBGCRYPT_VERSION := 1.8.6
 DEB_LIBGCRYPT_V   ?= $(LIBGCRYPT_VERSION)
 
 libgcrypt-setup: setup
@@ -35,19 +35,25 @@ endif
 
 libgcrypt-package: libgcrypt-stage
 	# libgcrypt.mk Package Structure
-	rm -rf $(BUILD_DIST)/libgcrypt
-	mkdir -p $(BUILD_DIST)/libgcrypt
+	rm -rf $(BUILD_DIST)/libgcrypt20{,-dev}
+	mkdir -p $(BUILD_DIST)/libgcrypt20/usr/lib
+	mkdir -p $(BUILD_DIST)/libgcrypt20-dev/usr/lib
 	
 	# libgcrypt.mk Prep libgcrypt
-	cp -a $(BUILD_STAGE)/libgcrypt/usr $(BUILD_DIST)/libgcrypt
-	
+	cp -a $(BUILD_STAGE)/libgcrypt/usr/lib/libgcrypt.20.dylib $(BUILD_DIST)/libgcrypt20/usr/lib
+	cp -a $(BUILD_STAGE)/libgcrypt/usr/{bin,share} $(BUILD_DIST)/libgcrypt20-dev/usr
+	cp -a $(BUILD_STAGE)/libgcrypt/usr/include $(BUILD_DIST)/libgcrypt20-dev/usr
+	cp -a $(BUILD_STAGE)/libgcrypt/usr/lib/{pkgconfig,libgcrypt.dylib} $(BUILD_DIST)/libgcrypt20-dev/usr/lib
+
 	# libgcrypt.mk Sign
-	$(call SIGN,libgcrypt,general.xml)
+	$(call SIGN,libgcrypt20,general.xml)
+	$(call SIGN,libgcrypt20-dev,general.xml)
 	
 	# libgcrypt.mk Make .debs
-	$(call PACK,libgcrypt,DEB_LIBGCRYPT_V)
+	$(call PACK,libgcrypt20,DEB_LIBGCRYPT_V)
+	$(call PACK,libgcrypt20-dev,DEB_LIBGCRYPT_V)
 	
 	# libgcrypt.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libgcrypt
+	rm -rf $(BUILD_DIST)/libgcrypt20{,-dev}
 
 .PHONY: libgcrypt libgcrypt-package
