@@ -3,13 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += bsdiff
-BSDIFF_VERSION := 4.3
+BSDIFF_VERSION := 4.3.1
 DEB_BSDIFF_V   ?= $(BSDIFF_VERSION)
 
 bsdiff-setup: setup
-	rm -rf $(BUILD_WORK)/bsdiff
-	mkdir -p $(BUILD_WORK)/bsdiff
-	cp -af bsdiff/* $(BUILD_WORK)/bsdiff
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/marijuanARM/bsdiff/archive/v$(BSDIFF_VERSION).tar.gz
+	$(call EXTRACT_TAR,v$(BSDIFF_VERSION).tar.gz,bsdiff-$(BSDIFF_VERSION),bsdiff)
 
 ifneq ($(wildcard $(BUILD_WORK)/bsdiff/.build_complete),)
 bsdiff:
