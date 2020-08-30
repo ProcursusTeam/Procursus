@@ -9,4 +9,4 @@ Description: GnuPG's error management library (Library)
 Name: GnuPG Errors
 Replaces: libgpg-error
 Conflicts: libgpg-error (<<1:0)
-Provides: libgpg-error (=@DEB_LIBGPG-ERROR_V)
+Provides: libgpg-error (=@DEB_LIBGPG-ERROR_V@)

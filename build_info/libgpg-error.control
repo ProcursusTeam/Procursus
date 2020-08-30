@@ -1,9 +1,0 @@
-Package: libgpg-error
-Version: @DEB_LIBGPG-ERROR_V@
-Architecture: @DEB_ARCH@
-Maintainer: @DEB_MAINTAINER@
-Section: Security
-Priority: optional
-Multi-Arch: foreign
-Description: GnuPG's error management library
-Name: GnuPG Errors
