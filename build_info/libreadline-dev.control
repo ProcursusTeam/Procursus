@@ -1,0 +1,10 @@
+Package: libreadline-dev
+Version: @DEB_READLINE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Replaces: readline (<< @DEB_READLINE_V@)
+Conflicts: readline (<< @DEB_READLINE_V@)
+Depends: libreadline8 (= @DEB_READLINE_V@), libncursesw6
+Section: Development
+Priority: optional
+Description: GNU readline and history libraries, development files

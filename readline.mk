@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS    += readline
 READLINE_VERSION := 8.0
-DEB_READLINE_V   ?= $(READLINE_VERSION).$(READLINE_SUB_V)
+DEB_READLINE_V   ?= $(READLINE_VERSION).$(READLINE_SUB_V)-1
 
 readline-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/readline/readline-$(READLINE_VERSION).tar.gz{,.sig} \
@@ -42,19 +42,25 @@ endif
 readline-package: READLINE_SUB_V=$(shell find $(BUILD_PATCH)/readline-$(READLINE_VERSION) -type f | $(WC) -l)
 readline-package: readline-stage
 	# readline.mk Package Structure
-	rm -rf $(BUILD_DIST)/readline
-	mkdir -p $(BUILD_DIST)/readline
+	rm -rf $(BUILD_DIST)/libreadline{8,-dev}
+	mkdir -p $(BUILD_DIST)/libreadline8/usr/lib \
+		$(BUILD_DIST)/libreadline-dev/usr/{lib,share}
 	
-	# readline.mk Prep readline
-	cp -a $(BUILD_STAGE)/readline/usr $(BUILD_DIST)/readline
+	# readline.mk Prep libreadline8
+	cp -a $(BUILD_STAGE)/readline/usr/lib/*.8.*dylib $(BUILD_DIST)/libreadline8/usr/lib
+
+	# readline.mk Prep libreadline-dev
+	cp -a $(BUILD_STAGE)/readline/usr/lib/!(*.8.*dylib) $(BUILD_DIST)/libreadline-dev/usr/lib
+	cp -a $(BUILD_STAGE)/readline/usr/share/man $(BUILD_DIST)/libreadline-dev/usr/share
 	
 	# readline.mk Sign
-	$(call SIGN,readline,general.xml)
+	$(call SIGN,libreadline8,general.xml)
 	
 	# readline.mk Make .debs
-	$(call PACK,readline,DEB_READLINE_V)
+	$(call PACK,libreadline8,DEB_READLINE_V)
+	$(call PACK,libreadline-dev,DEB_READLINE_V)
 	
 	# readline.mk Build cleanup
-	rm -rf $(BUILD_DIST)/readline
+	rm -rf $(BUILD_DIST)/libreadline{8,-dev}
 
 .PHONY: readline readline-package

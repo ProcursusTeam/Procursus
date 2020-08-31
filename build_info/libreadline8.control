@@ -1,0 +1,11 @@
+Package: libreadline8
+Version: @DEB_READLINE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Provides: readline (= @DEB_READLINE_V@)
+Replaces: readline (<< @DEB_READLINE_V@)
+Conflicts: readline (<< @DEB_READLINE_V@)
+Depends: libncursesw6
+Section: Libraries
+Priority: required
+Description: GNU readline and history libraries, run-time libraries

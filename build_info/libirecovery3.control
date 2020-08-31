@@ -2,7 +2,7 @@ Package: libirecovery3
 Version: @DEB_LIBIRECOVERY_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: readline (>= 8.0), libusb-1.0-0
+Depends: libreadline8 (>= 8.0), libusb-1.0-0
 Replaces: libirecovery
 Conflicts: libirecovery
 Provides: libirecovery (= 99)
