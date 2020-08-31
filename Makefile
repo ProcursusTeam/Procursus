@@ -358,6 +358,14 @@ else
 $(error Install GNU coreutils)
 endif
 
+ifeq ($(call HAS_COMMAND,ginstall),1)
+GINSTALL := ginstall
+else ifeq ($(shell install --version | grep -q 'GNU coreutils' && echo 1),1)
+GINSTALL := install
+else
+$(error Install GNU coreutils)
+endif
+
 ifeq ($(call HAS_COMMAND,gwc),1)
 WC := gwc
 else ifeq ($(shell wc --version | grep -q 'GNU coreutils' && echo 1),1)
