@@ -3,12 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += fff
-fff_VERSION := 2.1
-DEB_fff_V   ?= $(fff_VERSION)
+FFF_VERSION := 2.1
+DEB_FFF_V   ?= $(FFF_VERSION)
 
 fff-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/dylanaraps/fff/archive/$(fff_VERSION).tar.gz
-	$(call EXTRACT_TAR,$(fff_VERSION).tar.gz,fff-$(fff_VERSION),fff)
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/dylanaraps/fff/archive/$(FFF_VERSION).tar.gz
+	$(call EXTRACT_TAR,$(FFF_VERSION).tar.gz,fff-$(FFF_VERSION),fff)
 
 ifneq ($(wildcard $(BUILD_WORK)/fff/.build_complete),)
 fff:
@@ -29,7 +29,7 @@ fff-package: fff-stage
 	cp -a $(BUILD_STAGE)/fff $(BUILD_DIST)
 	
 	# fff.mk Make .debs
-	$(call PACK,fff,DEB_fff_V)
+	$(call PACK,fff,DEB_FFF_V)
 	
 	# fff.mk Build cleanup
 	rm -rf $(BUILD_DIST)/fff
