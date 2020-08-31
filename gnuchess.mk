@@ -15,13 +15,14 @@ ifneq ($(wildcard $(BUILD_WORK)/gnuchess/.build_complete),)
 gnuchess:
 	@echo "Using previously built gnuchess."
 else
-gnuchess: gnuchess-setup readline
+gnuchess: gnuchess-setup ncurses readline gettext
 	cd $(BUILD_WORK)/gnuchess && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		ac_cv_func_malloc_0_nonnull=yes \
 		ac_cv_func_realloc_0_nonnull=yes
-	+$(MAKE) -C $(BUILD_WORK)/gnuchess
+	+$(MAKE) -C $(BUILD_WORK)/gnuchess \
+		LIBS="-lreadline -lncursesw"
 	+$(MAKE) -C $(BUILD_WORK)/gnuchess install \
 		DESTDIR=$(BUILD_STAGE)/gnuchess
 	touch $(BUILD_WORK)/gnuchess/.build_complete
