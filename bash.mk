@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += bash
 BASH_VERSION  := 5.0
-DEB_BASH_V    ?= $(BASH_VERSION).$(BASH_SUB_V)-2
+DEB_BASH_V    ?= $(BASH_VERSION).$(BASH_SUB_V)
 
 # When built with SSH_SOURCE_BASHRC, bash will source ~/.bashrc when
 # it's non-interactively from sshd.  This allows the user to set
@@ -16,7 +16,7 @@ DEB_BASH_V    ?= $(BASH_VERSION).$(BASH_SUB_V)-2
 bash-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION).tar.gz{,.sig} \
 		https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION)-patches/bash50-00{1..9}{,.sig} \
-		https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION)-patches/bash50-0{10..17}{,.sig}
+		https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION)-patches/bash50-0{10..18}{,.sig}
 	$(call PGP_VERIFY,bash-$(BASH_VERSION).tar.gz)
 	$(call PGP_VERIFY,bash50-001)
 	$(call PGP_VERIFY,bash50-002)
@@ -35,6 +35,7 @@ bash-setup: setup
 	$(call PGP_VERIFY,bash50-015)
 	$(call PGP_VERIFY,bash50-016)
 	$(call PGP_VERIFY,bash50-017)
+	$(call PGP_VERIFY,bash50-018)
 	$(call EXTRACT_TAR,bash-$(BASH_VERSION).tar.gz,bash-$(BASH_VERSION),bash)
 	mkdir -p $(BUILD_STAGE)/bash/bin
 	mkdir -p $(BUILD_PATCH)/bash-$(BASH_VERSION)
