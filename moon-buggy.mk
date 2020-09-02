@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS        += moon-buggy
 MOON-BUGGY_VERSION := 1.0.51
-DEB_MOON-BUGGY_V   ?= $(MOON-BUGGY_VERSION)
+DEB_MOON-BUGGY_V   ?= $(MOON-BUGGY_VERSION)-1
 
 moon-buggy-setup: setup file-setup
 	wget -q -nc -P $(BUILD_SOURCE) https://m.seehuhn.de/programs/moon-buggy-$(MOON-BUGGY_VERSION).tar.gz{,.sig}
@@ -21,10 +21,11 @@ moon-buggy: moon-buggy-setup ncurses
 	cd $(BUILD_WORK)/moon-buggy && autoreconf -fi
 	cd $(BUILD_WORK)/moon-buggy && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/usr \
 		--with-curses-lib="-L$(BUILD_BASE)/usr/lib -lncursesw"
 	+$(MAKE) -C $(BUILD_WORK)/moon-buggy \
-		DESTDIR="$(BUILD_STAGE)/moon-buggy"
+		moon_buggy_LDADD="-lncursesw" \
+		CURSES_LIBS="-lncursesw"
 	+$(MAKE) -C $(BUILD_WORK)/moon-buggy install \
 		DESTDIR="$(BUILD_STAGE)/moon-buggy"
 	touch $(BUILD_WORK)/moon-buggy/.build_complete
