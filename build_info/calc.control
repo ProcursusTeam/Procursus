@@ -1,0 +1,8 @@
+Package: calc
+Version: @DEB_CALC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libncursesw6, libreadline8
+Section: Utilities
+Priority: standard
+Description: Arbitrary precision calculator
