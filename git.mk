@@ -4,17 +4,17 @@ endif
 
 SUBPROJECTS += git
 GIT_VERSION := 2.28.0
-DEB_GIT_V   ?= $(GIT_VERSION)-1
+DEB_GIT_V   ?= $(GIT_VERSION)
 
 GIT_ARGS += uname_S=Darwin \
-						HOST_CPU=$(GNU_HOST_TRIPLE) \
-						DESTDIR=$(BUILD_STAGE)/git \
-						MANDIR=/usr/share/man \
-						NO_DARWIN_PORTS=1 \
-						NO_FINK=1 \
-						NO_APPLE_COMMON_CRYPTO=1 \
-						INSTALL_SYMLINKS=1 \
-						NO_INSTALL_HARDLINKS=1
+	HOST_CPU=$(GNU_HOST_TRIPLE) \
+	DESTDIR=$(BUILD_STAGE)/git \
+	MANDIR=/usr/share/man \
+	NO_DARWIN_PORTS=1 \
+	NO_FINK=1 \
+	NO_APPLE_COMMON_CRYPTO=1 \
+	INSTALL_SYMLINKS=1 \
+	NO_INSTALL_HARDLINKS=1
 
 git-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://mirrors.edge.kernel.org/pub/software/scm/git/git-$(GIT_VERSION).tar.xz
