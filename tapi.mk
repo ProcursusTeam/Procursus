@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 #SUBPROJECTS   += tapi
-TAPI_VERSION   := 1000.10.8
+TAPI_VERSION   := 1100.0.11
 DEB_TAPI_V     ?= $(TAPI_VERSION)
 
 tapi-setup: setup
