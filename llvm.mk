@@ -6,7 +6,7 @@ endif
 LLVM_VERSION   := 10.0.0
 LLVM_MAJOR_V   := 10
 SWIFT_VERSION  := 5.3
-SWIFT_SUFFIX   := DEVELOPMENT-SNAPSHOT-2020-06-10-a
+SWIFT_SUFFIX   := RELEASE
 DEB_SWIFT_V    ?= $(SWIFT_VERSION)~$(SWIFT_SUFFIX)
 DEB_LLVM_V     ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)
 
@@ -55,6 +55,25 @@ llvm: llvm-setup libffi ncurses xz
 	ln -sf $(BUILD_BASE)/usr/lib/libncursesw.dylib $(BUILD_BASE)/usr/lib/libcurses.dylib
 	ln -sf $(BUILD_BASE)/usr/lib/libpanelw.dylib $(BUILD_BASE)/usr/lib/libpanel.dylib
 	mv $(BUILD_BASE)/usr/include/stdlib.h $(BUILD_BASE)/usr/include/stdlib.h.old
+
+	mkdir -p $(BUILD_WORK)/llvm/build/NATIVE && cd $(BUILD_WORK)/llvm/build/NATIVE && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+		-DCMAKE_C_COMPILER=cc \
+		-DCMAKE_CXX_COMPILER=c++ \
+		-DCMAKE_OSX_SYSROOT="$(MACOSX_SYSROOT)" \
+		-DCMAKE_C_FLAGS="" \
+		-DCMAKE_CXX_FLAGS="" \
+		-DCMAKE_CXX_FLAGS="" \
+		-DCMAKE_EXE_LINKER_FLAGS="" \
+		-DSWIFT_INCLUDE_TESTS=OFF \
+		-DSWIFT_BUILD_RUNTIME_WITH_HOST_COMPILER=ON \
+		-DLLVM_TARGETS_TO_BUILD="X86;ARM;AArch64" \
+		-DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;lldb;cmark;swift" \
+ 		-DLLVM_EXTERNAL_PROJECTS="cmark;swift" \
+		-DLLVM_EXTERNAL_SWIFT_SOURCE_DIR="$(BUILD_WORK)/llvm/swift" \
+		-DLLVM_EXTERNAL_CMARK_SOURCE_DIR="$(BUILD_WORK)/llvm/cmark" \
+		../../llvm
+	+$(MAKE) -C $(BUILD_WORK)/llvm/build/NATIVE swift lldb-tblgen
+
 	cd $(BUILD_WORK)/llvm/build && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
@@ -113,9 +132,12 @@ llvm: llvm-setup libffi ncurses xz
 		-DSWIFT_ENABLE_IOS32="$(SWIFT_OLD)" \
 		-DSWIFT_INCLUDE_TESTS=OFF \
 		-DSWIFT_BUILD_RUNTIME_WITH_HOST_COMPILER=ON \
-		-DSWIFT_BUILD_REMOTE_MIRROR=FALSE \
-		-DSWIFT_BUILD_DYNAMIC_STDLIB=FALSE \
-		-DSWIFT_BUILD_STDLIB_EXTRA_TOOLCHAIN_CONTENT=FALSE \
+		-DSWIFT_NATIVE_SWIFT_TOOLS_PATH="$(BUILD_WORK)/llvm/build/NATIVE/bin" \
+		-DLLVM_TABLEGEN="$(BUILD_WORK)/llvm/build/NATIVE/bin/llvm-tblgen" \
+		-DCLANG_TABLEGEN="$(BUILD_WORK)/llvm/build/NATIVE/bin/clang-tblgen" \
+		-DCLANG_TABLEGEN_EXE="$(BUILD_WORK)/llvm/build/NATIVE/bin/clang-tblgen" \
+		-DLLDB_TABLEGEN="$(BUILD_WORK)/llvm/build/NATIVE/bin/lldb-tblgen" \
+		-DLLVM_VERSION_SUFFIX="" \
 		../llvm
 	+$(MAKE) -C $(BUILD_WORK)/llvm/build install \
 		DESTDIR="$(BUILD_STAGE)/llvm"
@@ -206,15 +228,21 @@ llvm-package: llvm-stage
 	# llvm.mk Prep swift-$(SWIFT_VERSION)
 	mkdir -p $(BUILD_DIST)/swift-$(SWIFT_VERSION)/usr/{bin,lib/llvm-$(LLVM_MAJOR_V)/{bin,lib,share}}
 	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/share/swift $(BUILD_DIST)/swift-$(SWIFT_VERSION)/usr/lib/llvm-$(LLVM_MAJOR_V)/share
-	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/swift $(BUILD_DIST)/swift-$(SWIFT_VERSION)/usr/lib/llvm-$(LLVM_MAJOR_V)/lib
+	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/{swift,libswift*} $(BUILD_DIST)/swift-$(SWIFT_VERSION)/usr/lib/llvm-$(LLVM_MAJOR_V)/lib
 	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/bin/swift{,c,-api-digester,-api-dump.py,-demangle,-syntax*} $(BUILD_DIST)/swift-$(SWIFT_VERSION)/usr/lib/llvm-$(LLVM_MAJOR_V)/bin
+	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/bin/sil-{func-extractor,llvm-gen,nm,passpipeline-dumper} $(BUILD_DIST)/swift-$(SWIFT_VERSION)/usr/lib/llvm-$(LLVM_MAJOR_V)/bin
+	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/bin/repl_swift $(BUILD_DIST)/swift-$(SWIFT_VERSION)/usr/lib/llvm-$(LLVM_MAJOR_V)/bin
 	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/swift $(BUILD_DIST)/swift-$(SWIFT_VERSION)/usr/bin/swift-$(SWIFT_VERSION)
 	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/swiftc $(BUILD_DIST)/swift-$(SWIFT_VERSION)/usr/bin/swiftc-$(SWIFT_VERSION)
 
 	# llvm.mk Prep swift
-	mkdir -p $(BUILD_DIST)/swift/usr/bin
+	mkdir -p $(BUILD_DIST)/swift/usr/{bin,lib/swift}
 	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/swift $(BUILD_DIST)/swift/usr/bin/swift
 	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/swiftc $(BUILD_DIST)/swift/usr/bin/swiftc
+	cd $(BUILD_DIST)/swift-$(SWIFT_VERSION)/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/swift; \
+	for lib in *; do \
+		ln -s ../llvm-$(LLVM_MAJOR_V)/lib/swift/$$lib $(BUILD_DIST)/swift/usr/lib/swift/$$lib; \
+	done
 
 	# llvm.mk Sign
 	$(call SIGN,clang-$(LLVM_MAJOR_V),general.xml)
