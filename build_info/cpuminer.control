@@ -1,0 +1,9 @@
+Package: cpuminer
+Version: @DEB_CPUMINER_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities 
+Priority: optional
+Description: A multi-threaded CPU miner for Litecoin and Bitcoin
+Depends: jansson, curl
+Tag: purpose::console, role::developer
