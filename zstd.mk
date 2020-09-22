@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += zstd
 ZSTD_VERSION  := 1.4.5
-DEB_ZSTD_V    ?= $(ZSTD_VERSION)
+DEB_ZSTD_V    ?= $(ZSTD_VERSION)-1
 
 zstd-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/facebook/zstd/archive/v$(ZSTD_VERSION).tar.gz
@@ -30,19 +30,33 @@ endif
 
 zstd-package: zstd-stage
 	# zstd.mk Package Structure
-	rm -rf $(BUILD_DIST)/zstd
-	mkdir -p $(BUILD_DIST)/zstd
+	rm -rf $(BUILD_DIST)/zstd \
+		$(BUILD_DIST)/libzstd{1,-dev}
+	mkdir -p $(BUILD_DIST)/zstd/usr \
+		$(BUILD_DIST)/libzstd{1,-dev}/usr/lib
 	
 	# zstd.mk Prep zstd
-	cp -a $(BUILD_STAGE)/zstd/usr $(BUILD_DIST)/zstd
+	cp -a $(BUILD_STAGE)/zstd/usr/bin $(BUILD_DIST)/zstd/usr
+	cp -a $(BUILD_STAGE)/zstd/usr/share $(BUILD_DIST)/zstd/usr
+	
+	# zstd.mk Prep libzstd1
+	cp -a $(BUILD_STAGE)/zstd/usr/lib/libzstd.{1,1.4.5}.dylib $(BUILD_DIST)/libzstd1/usr/lib
+	
+	# zstd.mk Prep libzstd-dev
+	cp -a $(BUILD_STAGE)/zstd/usr/lib/{pkgconfig,libzstd.{a,dylib}} $(BUILD_DIST)/libzstd-dev/usr/lib
+	cp -a $(BUILD_STAGE)/zstd/usr/include $(BUILD_DIST)/libzstd-dev/usr
 	
 	# zstd.mk Sign
 	$(call SIGN,zstd,general.xml)
+	$(call SIGN,libzstd1,general.xml)
 	
 	# zstd.mk Make .debs
 	$(call PACK,zstd,DEB_ZSTD_V)
+	$(call PACK,libzstd1,DEB_ZSTD_V)
+	$(call PACK,libzstd-dev,DEB_ZSTD_V)
 	
 	# zstd.mk Build cleanup
-	rm -rf $(BUILD_DIST)/zstd
+	rm -rf $(BUILD_DIST)/zstd \
+		$(BUILD_DIST)/libzstd{1,-dev}
 
 .PHONY: zstd zstd-package
