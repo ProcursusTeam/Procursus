@@ -9,31 +9,31 @@ DEB_CALC_V   ?= $(CALC_VERSION)
 calc-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) http://www.isthe.com/chongo/src/calc/calc-$(CALC_VERSION).tar.bz2
 	$(call EXTRACT_TAR,calc-$(CALC_VERSION).tar.bz2,calc-$(CALC_VERSION),calc)
-	$(call DO_PATCH,calc,calc,-p1)
+	$(SED) -i '/#include <stdio.h>/a #include <string.h>' $(BUILD_WORK)/calc/have_memmv.c
+	$(SED) -i '/#include <stdio.h>/a #include <string.h>' $(BUILD_WORK)/calc/have_newstr.c
+	$(SED) -i '/#include <stdio.h>/a #include <unistd.h>' $(BUILD_WORK)/calc/have_posscl.c
 
 ifneq ($(wildcard $(BUILD_WORK)/calc/.build_complete),)
 calc:
 	@echo "Using previously built calc."
 else
 calc: calc-setup ncurses readline
-	+unset CC CFLAGS CXXFLAGS CPPFLAGS LDFLAGS RANLIB && $(MAKE) -C $(BUILD_WORK)/calc install \
-		DEFAULT_LIB_INSTALL_PATH="$(BUILD_WORK)/calc:$(BUILD_BASE)/usr/lib:/lib:/usr/lib:/usr/local/lib" \
+	+$(MAKE) -C $(BUILD_WORK)/calc install \
 		LCC=clang \
 		CC=$(CC) \
-		RANLIB="$(RANLIB)" \
+		CFLAGS="$(CFLAGS) -DCALC_SRC -DCUSTOMHELPDIR=\"\\\"/usr/share/calc/custhelp\\\"\" -DHELPDIR=\"\\\"/usr/share/calc/help\\\"\" -DDEFAULTCALCPATH=\"\\\".:./cal:~/.cal:/usr/share/calc:/usr/share/calc/custom\\\"\" -I$(BUILD_WORK)" \
+		LDFLAGS="$(LDFLAGS)" \
 		target="Darwin" \
 		BINDIR="/usr/bin" \
 		LIBDIR="/usr/lib" \
+		INCDIR="/usr/include" \
 		CALC_SHAREDIR="/usr/share/calc" \
-		CUSTOMCALDIR="/usr/share/calc/custom" \
-		HELPDIR="/usr/share/calc/help" \
-		CFLAGS="$(CFLAGS) -DCALC_SRC -I$(BUILD_WORK)" \
-		LDFLAGS="$(LDFLAGS) -I$(BUILD_WORK)" \
+		CALCPAGER="pager" \
 		USE_READLINE="-DUSE_READLINE" \
 		READLINE_LIB="-lreadline" \
 		READLINE_EXTRAS="-L$(BUILD_BASE)/usr/lib -lhistory -lncursesw" \
 		BLD_TYPE="calc-static-only" \
-		T=$(BUILD_STAGE)/calc \
+		T="$(BUILD_STAGE)/calc" \
 		-j1
 	rm -rf $(BUILD_STAGE)/calc/usr/bin/{cscript,calc-static}
 	touch $(BUILD_WORK)/calc/.build_complete
@@ -42,13 +42,14 @@ endif
 calc-package: calc-stage
 	# calc.mk Package Structure
 	rm -rf $(BUILD_DIST)/calc{,-dev}
-	mkdir -p $(BUILD_DIST)/calc{,-dev}/usr
+	mkdir -p $(BUILD_DIST)/calc{,-dev}/usr/lib
 	
 	# calc.mk Prep calc
 	cp -a $(BUILD_STAGE)/calc/usr/{bin,share} $(BUILD_DIST)/calc/usr
 	
 	# calc.mk Prep calc-dev
 	cp -a $(BUILD_STAGE)/calc/usr/include $(BUILD_DIST)/calc-dev/usr
+	cp -a $(BUILD_STAGE)/calc/usr/lib/*.a $(BUILD_DIST)/calc-dev/usr/lib
 	
 	# calc.mk Sign
 	$(call SIGN,calc,general.xml)
