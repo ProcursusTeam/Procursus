@@ -1,0 +1,14 @@
+Package: libcwidget4
+Version: @DEB_CWIDGET_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libncursesw6, libsigc++-2.0-0v5
+Section: Libraries
+Priority: optional
+Description: high-level terminal interface library for C++ (runtime files)
+ libcwidget is a modern user interface library modeled on GTK+ and Qt,
+ but using curses as its display layer and with widgets that are
+ tailored to a terminal environment.
+ .
+ This package contains the files that are required to run programs
+ compiled against libcwidget.
