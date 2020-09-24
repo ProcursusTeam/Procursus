@@ -1,0 +1,8 @@
+Package: calc-dev
+Version: @DEB_CALC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: calc (= @DEB_CALC_V@)
+Section: Development
+Priority: optional
+Description: Arbitrary precision calculator (development files)
