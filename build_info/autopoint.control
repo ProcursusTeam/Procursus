@@ -1,0 +1,9 @@
+Package: autopoint
+Version: @DEB_GETTEXT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: xz-utils
+Section: Development
+Priority: optional
+Homepage: http://www.gnu.org/software/gettext/
+Description: autopoint program from GNU gettext
