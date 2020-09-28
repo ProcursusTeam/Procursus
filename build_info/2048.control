@@ -1,0 +1,9 @@
+Package: 2048
+Priority: optional
+Section: Games
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_2048_V@
+Homepage: https://github.com/mevdschee/2048.c
+Description: 4x4 tile mathematics puzzle game
+ The 2048 game is a mathematics based puzzle game where you have to slide tiles in a 4x4 board in any of the four possible directions. Touching tiles with the same value are then merged into tiles with the added value of the merged ones. You start with a couple of 2-valued tiles and new tiles appear randomly after sliding. The target of the game is to reach a tile with a value of 2048 before the board is full.
