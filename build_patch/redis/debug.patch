@@ -1,0 +1,12 @@
+diff -ruN redis-6.0.8/src/debug.c redis/src/debug.c
+--- redis-6.0.8/src/debug.c	2020-09-10 19:09:00.000000000 +0800
++++ redis/src/debug.c	2020-09-30 00:38:50.629542718 +0800
+@@ -53,6 +53,8 @@
+ #endif
+ #endif
+ 
++#include <mach/thread_status.h>
++
+ /* ================================= Debugging ============================== */
+ 
+ /* Compute the sha1 of string at 's' with 'len' bytes long.
