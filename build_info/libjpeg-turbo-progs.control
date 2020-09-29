@@ -1,0 +1,13 @@
+Package: libjpeg-turbo-progs
+Version: @DEB_LIBJPEG_TURBO_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Depends: libjpeg62-turbo, libturbojpeg0
+Description: Programs for manipulating JPEG files
+ This package contains programs for manipulating JPEG files from the
+ libjpeg-turbo JPEG library:
+  * cjpeg/djpeg: convert to/from the JPEG file format
+  * rdjpgcom/wrjpgcom: read/write comments in JPEG files
+  * jpegtran: lossless transformations of JPEG files
+  * tjbench: a simple JPEG benchmarking tool
