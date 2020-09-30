@@ -27,7 +27,6 @@ else
 redis: redis-setup
 	+$(MAKE) -C $(BUILD_WORK)/redis \
 		MALLOC=libc \
-		BUILD_TLS=yes \
 		USE_SYSTEMD=no \
 		uname_S=Darwin \
 		PREFIX=$(BUILD_STAGE)/redis/usr \
