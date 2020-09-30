@@ -1,0 +1,10 @@
+Package: libtiffxx5
+Version: @DEB_LIBTIFF_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libaries
+Depends: libjpeg62-turbo, xz-utils, libwebp7, zstd
+Description: Tag Image File Format (TIFF) library -- C++ interface
+ libtiff is a library providing support for the Tag Image File Format
+ (TIFF), a widely used format for storing image data.  This package
+ includes the shared library for the experimental C++ interfaces.
