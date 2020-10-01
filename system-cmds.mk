@@ -4,9 +4,9 @@ endif
 
 STRAPPROJECTS       += system-cmds
 SYSTEM-CMDS_VERSION := 854.40.2
-DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)
+DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-1
 
-system-cmds-setup: setup
+system-cmds-setup: setup libxcrypt
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/system_cmds/system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz
 	$(call EXTRACT_TAR,system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz,system_cmds-$(SYSTEM-CMDS_VERSION),system-cmds)
 	$(call DO_PATCH,system-cmds,system-cmds,-p1)
@@ -17,7 +17,8 @@ system-cmds-setup: setup
 	cp -a $(MACOSX_SYSROOT)/usr/include/sys/{reboot,proc*,kern_control}.h $(BUILD_WORK)/system-cmds/include/sys
 	cp -a $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_WORK)/system-cmds/include/IOKit
 	cp -a $(BUILD_BASE)/usr/include/{unistd,stdlib}.h $(BUILD_WORK)/system-cmds/include
-	cp -a $(BUILD_BASE)/usr/include/mach/{task,mach_host}.h $(BUILD_WORK)/system-cmds/include/mach	
+	cp -a $(BUILD_BASE)/usr/include/mach/{task,mach_host}.h $(BUILD_WORK)/system-cmds/include/mach
+	cp -a $(BUILD_BASE)/usr/include/crypt.h $(BUILD_WORK)/system-cmds/include	
 
 	wget -nc -P $(BUILD_WORK)/system-cmds/include \
 		https://opensource.apple.com/source/launchd/launchd-328/launchd/src/reboot2.h \
@@ -33,6 +34,9 @@ system-cmds-setup: setup
 		https://raw.githubusercontent.com/coolstar/freebsd-ports-ios/master/lib/libc/gen/pw_scan.{c,h} \
 		https://raw.githubusercontent.com/coolstar/freebsd-ports-ios/master/usr.bin/chpass/{chpass{.h,.c},edit.c,field.c,table.c,util.c}
 
+	$(SED) -i '/#include <stdio.h>/a #include <crypt.h>' $(BUILD_WORK)/system-cmds/login.tproj/login.c
+	$(SED) -i '/#include <libutil.h>/a #include <crypt.h>' $(BUILD_WORK)/system-cmds/chpass.tproj/chpass.c
+
 ifneq ($(wildcard $(BUILD_WORK)/system-cmds/.build_complete),)
 system-cmds:
 	@echo "Using previously built system-cmds."
@@ -42,8 +46,8 @@ system-cmds: system-cmds-setup
 	    LC_ALL=C awk -f $(BUILD_WORK)/system-cmds/getconf.tproj/fake-gperf.awk < $$gperf > $(BUILD_WORK)/system-cmds/getconf.tproj/"$$(basename $$gperf .gperf).c" ; \
 	done
 
-	rm -f $(BUILD_WORK)/system-cmds/passwd.tproj/od_passwd.c
-	cd $(BUILD_WORK)/system-cmds && $(CC) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -std=c89 -o passwd passwd.tproj/*.c -isystem include
+	rm -f $(BUILD_WORK)/system-cmds/passwd.tproj/{od,nis,pam}_passwd.c
+	cd $(BUILD_WORK)/system-cmds && $(CC) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o passwd passwd.tproj/*.c -isystem include $(BUILD_BASE)/usr/lib/libcrypt.dylib
 	cd $(BUILD_WORK)/system-cmds && $(CC) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o dmesg dmesg.tproj/*.c -isystem include 
 	cd $(BUILD_WORK)/system-cmds && $(CC) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o sysctl sysctl.tproj/sysctl.c -isystem include 
 	cd $(BUILD_WORK)/system-cmds && $(CC) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o arch arch.tproj/*.c -isystem include -framework CoreFoundation -framework Foundation -lobjc 
@@ -53,12 +57,13 @@ system-cmds: system-cmds-setup
 		CFLAGS=; \
 		EXTRA=; \
 		case $$tproj in \
-			chpass) CFLAGS="-Ichpass.tproj";; \
+			chpass) CFLAGS="-Ichpass.tproj" LDFLAGS="$(BUILD_BASE)/usr/lib/libcrypt.dylib";; \
+			login) LDFLAGS="$(BUILD_BASE)/usr/lib/libcrypt.dylib";; \
 			dynamic_pager) CFLAGS="-Idynamic_pager.tproj";; \
 			pwd_mkdb) CFLAGS="-D_PW_NAME_LEN=MAXLOGNAME -D_PW_YPTOKEN=\"__YP!\"";; \
 		esac ; \
 		echo "$$tproj" ; \
-		$(CC) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o $$tproj $$tproj.tproj/*.c -isystem include -D'__FBSDID(x)=' -F$(BUILD_BASE)/System/Library/Frameworks -framework CoreFoundation -framework IOKit $$CFLAGS; \
+		$(CC) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o $$tproj $$tproj.tproj/*.c -isystem include -D'__FBSDID(x)=' $$CFLAGS -F$(BUILD_BASE)/System/Library/Frameworks -framework CoreFoundation -framework IOKit $$LDFLAGS; \
 	done
 
 	mkdir -p $(BUILD_STAGE)/system-cmds/{/bin,/sbin,/usr/bin,/usr/sbin}

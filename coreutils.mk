@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS     += coreutils
 COREUTILS_VERSION := 8.32
-DEB_COREUTILS_V   ?= $(COREUTILS_VERSION)-4
+DEB_COREUTILS_V   ?= $(COREUTILS_VERSION)-5
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 COREUTILS_CONFIGURE_ARGS += ac_cv_func_rpmatch=no
@@ -28,8 +28,8 @@ ifneq ($(wildcard $(BUILD_WORK)/coreutils/.build_complete),)
 coreutils:
 	@echo "Using previously built coreutils."
 else
-coreutils: coreutils-setup gettext
-	cd $(BUILD_WORK)/coreutils/su && $(CC) $(CFLAGS) su.c suutil.c -o su -DBSD4_4 -D'__RCSID(x)='
+coreutils: coreutils-setup gettext libxcrypt
+	cd $(BUILD_WORK)/coreutils/su && $(CC) $(CFLAGS) su.c suutil.c -o su -DBSD4_4 -D'__RCSID(x)=' $(LDFLAGS) -lcrypt
 	cd $(BUILD_WORK)/coreutils/rev && $(CC) $(CFLAGS) rev.c -o rev -D'__FBSDID(x)='
 	cd $(BUILD_WORK)/coreutils/bsdcp && $(CC) $(CFLAGS) -I. cp.c utils.c -o bsdcp -D'__FBSDID(x)='
 	cd $(BUILD_WORK)/coreutils && ./configure -C \

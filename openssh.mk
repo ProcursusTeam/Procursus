@@ -7,8 +7,12 @@ STRAPPROJECTS   += openssh
 else
 SUBPROJECTS     += openssh
 endif
-OPENSSH_VERSION := 8.3p1
-DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)-2
+OPENSSH_VERSION := 8.4p1
+DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)-3
+
+ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
+OPENSSH_CONFARGS += ac_cv_func_strtonum=no
+endif
 
 openssh-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$(OPENSSH_VERSION).tar.gz{,.asc}
@@ -20,7 +24,7 @@ ifneq ($(wildcard $(BUILD_WORK)/openssh/.build_complete),)
 openssh:
 	@echo "Using previously built openssh."
 else
-openssh: openssh-setup openssl
+openssh: openssh-setup openssl libxcrypt
 	if ! [ -f $(BUILD_WORK)/openssh/configure ]; then \
 		cd $(BUILD_WORK)/openssh && autoreconf; \
 	fi
@@ -28,7 +32,9 @@ openssh: openssh-setup openssl
 	cd $(BUILD_WORK)/openssh && $(EXTRA) ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
-		--sysconfdir=/etc/ssh
+		--sysconfdir=/etc/ssh \
+		check_for_libcrypt_before=1 \
+		$(OPENSSH_CONFARGS)	
 	+$(MAKE) -C $(BUILD_WORK)/openssh
 	+$(MAKE) -C $(BUILD_WORK)/openssh install \
 		DESTDIR="$(BUILD_STAGE)/openssh"
