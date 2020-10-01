@@ -2,7 +2,7 @@ Package: whois
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_WHOIS_V@
-Depends: libidn2, libcrypt1
+Depends: libidn2, libcrypt2
 Section: Networking
 Priority: important
 Description:

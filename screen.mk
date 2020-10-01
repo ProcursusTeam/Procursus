@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += screen
 SCREEN_VERSION := 4.8.0
-DEB_SCREEN_V   ?= $(SCREEN_VERSION)
+DEB_SCREEN_V   ?= $(SCREEN_VERSION)-1
 
 screen-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftp.gnu.org/gnu/screen/screen-$(SCREEN_VERSION).tar.gz{,.sig}
@@ -16,7 +16,7 @@ ifneq ($(wildcard $(BUILD_WORK)/screen/.build_complete),)
 screen:
 	@echo "Using previously built screen."
 else
-screen: screen-setup ncurses libcrypt1
+screen: screen-setup ncurses libxcrypt
 	cd $(BUILD_WORK)/screen && ./autogen.sh
 	cd $(BUILD_WORK)/screen && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
