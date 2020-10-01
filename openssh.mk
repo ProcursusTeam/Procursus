@@ -8,7 +8,7 @@ else
 SUBPROJECTS     += openssh
 endif
 OPENSSH_VERSION := 8.4p1
-DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)-3
+DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
 OPENSSH_CONFARGS += ac_cv_func_strtonum=no
