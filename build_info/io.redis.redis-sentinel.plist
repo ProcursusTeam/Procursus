@@ -7,7 +7,7 @@
 	<key>ProgramArguments</key>
 	<array>
 		<string>/usr/bin/redis-sentinel</string>
-    <string>/etc/redis/sentinel.conf</string>
+		<string>/etc/redis/sentinel.conf</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>
