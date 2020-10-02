@@ -1,0 +1,12 @@
+Package: libjemalloc-dev
+Version: @DEB_LIBJEMALLOC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Depends: libjemalloc2 (= @DEB_LIBJEMALLOC_V@)
+Description: development files and documentation for jemalloc
+ Files used for development with jemalloc. This package contains
+ headers and documentation.
+ .
+ jemalloc is a library providing a malloc(3) implementation for
+ multi-threaded processes on multi-processor systems.
