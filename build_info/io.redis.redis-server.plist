@@ -7,7 +7,7 @@
 	<key>ProgramArguments</key>
 	<array>
 		<string>/usr/bin/redis-server</string>
-    <string>/etc/redis/redis.conf</string>
+		<string>/etc/redis/redis.conf</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>
