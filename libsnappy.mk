@@ -34,9 +34,9 @@ libsnappy: libsnappy-setup
 		-DBUILD_SHARED_LIBS=true
 	+$(MAKE) -C $(BUILD_WORK)/libsnappy all
 	+$(MAKE) -C $(BUILD_WORK)/libsnappy install \
-					DESTDIR="$(BUILD_STAGE)/libsnappy"
+		DESTDIR="$(BUILD_STAGE)/libsnappy"
 	+$(MAKE) -C $(BUILD_WORK)/libsnappy install \
-					DESTDIR="$(BUILD_BASE)"
+		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/libsnappy/.build_complete
 endif
 
