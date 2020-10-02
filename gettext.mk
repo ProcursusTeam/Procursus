@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS   += gettext
 GETTEXT_VERSION := 0.21
-DEB_GETTEXT_V   ?= $(GETTEXT_VERSION)
+DEB_GETTEXT_V   ?= $(GETTEXT_VERSION)-1
 
 gettext-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gettext/gettext-$(GETTEXT_VERSION).tar.xz{,.sig}
@@ -36,17 +36,24 @@ endif
 
 gettext-package: gettext-stage
 	# gettext.mk Package Structure
-	rm -rf $(BUILD_DIST)/{gettext{,-base},autopoint,libintl{8,-dev}}
+	rm -rf $(BUILD_DIST)/gettext{,-base} \
+		$(BUILD_DIST)/autopoint \
+		$(BUILD_DIST)/libintl{8,-dev} \
+		$(BUILD_DIST)/libtextstyle{0v5,-dev} \
+		$(BUILD_DIST)/libgettextpo{0,-dev}
 	mkdir -p $(BUILD_DIST)/gettext/usr/{bin,lib,share/{aclocal,man/man1,gettext}} \
 		$(BUILD_DIST)/{gettext-base,autopoint}/usr/{bin,share/man/man1} \
 		$(BUILD_DIST)/libintl8/usr/lib \
 		$(BUILD_DIST)/libintl-dev/usr/{lib,include} \
 		$(BUILD_DIST)/libtextstyle{0v5,-dev}/usr/lib \
-		$(BUILD_DIST)/libtextstyle-dev/usr/include
+		$(BUILD_DIST)/libtextstyle-dev/usr/include \
+		$(BUILD_DIST)/libgettextpo{0,-dev}/usr/lib \
+		$(BUILD_DIST)/libgettextpo-dev/usr/include
 	
 	# gettext.mk Prep gettext
 	cp -a $(BUILD_STAGE)/gettext/usr/bin/{msg*,gettextize,recode-sr-latin,xgettext} $(BUILD_DIST)/gettext/usr/bin
 	cp -a $(BUILD_STAGE)/gettext/usr/lib/{libgettext{lib,src}-0.21.dylib,gettext} $(BUILD_DIST)/gettext/usr/lib
+	cp -a $(BUILD_STAGE)/gettext/usr/lib/libgettextlib.a $(BUILD_DIST)/gettext/usr/lib
 	cp -a $(BUILD_STAGE)/gettext/usr/share/aclocal/!(host-cpu-c-abi.m4) $(BUILD_DIST)/gettext/usr/share/aclocal
 	cp -a $(BUILD_STAGE)/gettext/usr/share/gettext/!(archive.dir.tar.xz) $(BUILD_DIST)/gettext/usr/share/gettext
 	cp -a $(BUILD_STAGE)/gettext/usr/share/man/man1/{msg*.1,gettextize.1,recode-sr-latin.1,xgettext.1} $(BUILD_DIST)/gettext/usr/share/man/man1/
@@ -71,22 +78,36 @@ gettext-package: gettext-stage
 	cp -a $(BUILD_STAGE)/gettext/usr/lib/libtextstyle.0.dylib $(BUILD_DIST)/libtextstyle0v5/usr/lib
 	
 	# gettext.mk Prep libtextstyle-dev
-	cp -a $(BUILD_STAGE)/gettext/usr/lib/libtextstyle.dylib $(BUILD_DIST)/libtextstyle-dev/usr/lib
+	cp -a $(BUILD_STAGE)/gettext/usr/lib/libtextstyle.{dylib,a} $(BUILD_DIST)/libtextstyle-dev/usr/lib
 	cp -a $(BUILD_STAGE)/gettext/usr/include/textstyle{,.h} $(BUILD_DIST)/libtextstyle-dev/usr/include
+	
+	# gettext.mk Prep libgettextpo0
+	cp -a $(BUILD_STAGE)/gettext/usr/lib/libgettextpo.0.dylib $(BUILD_DIST)/libgettextpo0/usr/lib
+	
+	# gettext.mk Prep libgettextpo-dev
+	cp -a $(BUILD_STAGE)/gettext/usr/lib/libgettextpo.{dylib,a} $(BUILD_DIST)/libgettextpo-dev/usr/lib
+	cp -a $(BUILD_STAGE)/gettext/usr/include/gettext-po.h $(BUILD_DIST)/libgettextpo-dev/usr/include
 	
 	# gettext.mk Sign
 	$(call SIGN,gettext,general.xml)
 	$(call SIGN,gettext-base,general.xml)
+	$(call SIGN,libintl8,general.xml)
+	$(call SIGN,libtextstyle0v5,general.xml)
+	$(call SIGN,libgettextpo0,general.xml)
 	
 	# gettext.mk Make .debs
 	$(call PACK,gettext,DEB_GETTEXT_V)
 	$(call PACK,gettext-base,DEB_GETTEXT_V)
 	$(call PACK,autopoint,DEB_GETTEXT_V)
+	$(call PACK,libintl8,DEB_GETTEXT_V)
+	$(call PACK,libtextstyle0v5,DEB_GETTEXT_V)
+	$(call PACK,libgettextpo0,DEB_GETTEXT_V)
 	
 	# gettext.mk Build cleanup
-	#rm -rf $(BUILD_DIST)/gettext{,-base} \
-	#	$(BUILD_DIST)/autopoint \
-	#	$(BUILD_DIST)/libintl{8,-dev} \
-	#	$(BUILD_DIST)/libtextstyle{0v5,-dev} \
+	rm -rf $(BUILD_DIST)/gettext{,-base} \
+		$(BUILD_DIST)/autopoint \
+		$(BUILD_DIST)/libintl{8,-dev} \
+		$(BUILD_DIST)/libtextstyle{0v5,-dev} \
+		$(BUILD_DIST)/libgettextpo{0,-dev}
 
 .PHONY: gettext gettext-package

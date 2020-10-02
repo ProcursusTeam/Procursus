@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS     += coreutils
 COREUTILS_VERSION := 8.32
-DEB_COREUTILS_V   ?= $(COREUTILS_VERSION)-4
+DEB_COREUTILS_V   ?= $(COREUTILS_VERSION)-5
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 COREUTILS_CONFIGURE_ARGS += ac_cv_func_rpmatch=no

@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS  += bison
 BISON_VERSION := 3.7.1
-DEB_BISON_V   ?= $(BISON_VERSION)
+DEB_BISON_V   ?= $(BISON_VERSION)-1
 
 bison-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/bison/bison-$(BISON_VERSION).tar.xz{,.sig}

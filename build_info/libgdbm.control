@@ -2,7 +2,7 @@ Package: libgdbm
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LIBGDBM_V@
-Depends: libreadline8 (>= 8.0), gettext
+Depends: libreadline8 (>= 8.0), libintl8
 Section: Development
 Priority: optional
 Homepage: https://www.gnu.org.ua/software/gdbm

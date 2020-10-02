@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += man-db
 MAN-DB_VERSION := 2.9.3
-DEB_MAN-DB_V   ?= $(MAN-DB_VERSION)
+DEB_MAN-DB_V   ?= $(MAN-DB_VERSION)-1
 
 man-db-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://download.savannah.gnu.org/releases/man-db/man-db-$(MAN-DB_VERSION).tar.xz{,.asc}

@@ -2,7 +2,7 @@ Package: p11-kit
 Version: @DEB_P11_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libtasn1, gettext
+Depends: libtasn1, libintl8
 Section: Security
 Priority: optional
 Multi-Arch: foreign

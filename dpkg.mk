@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS  += dpkg
 DPKG_VERSION   := 1.20.5
-DEB_DPKG_V     ?= $(DPKG_VERSION)-1
+DEB_DPKG_V     ?= $(DPKG_VERSION)-2
 
 dpkg-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_$(DPKG_VERSION).tar.xz

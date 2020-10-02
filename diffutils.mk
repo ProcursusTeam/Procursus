@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS     += diffutils
 DIFFUTILS_VERSION := 3.7
-DEB_DIFFUTILS_V   ?= $(DIFFUTILS_VERSION)
+DEB_DIFFUTILS_V   ?= $(DIFFUTILS_VERSION)-1
 
 diffutils-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/diffutils/diffutils-$(DIFFUTILS_VERSION).tar.xz{,.sig}

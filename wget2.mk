@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS  += wget2
 WGET2_VERSION := 1.99.2
-DEB_WGET2_V   ?= $(WGET2_VERSION)
+DEB_WGET2_V   ?= $(WGET2_VERSION)-1
 
 wget2-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/wget/wget2-$(WGET2_VERSION).tar.gz{,.sig}

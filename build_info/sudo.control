@@ -3,7 +3,7 @@ Essential: yes
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_SUDO_V@
-Depends: gettext
+Depends: libintl8
 Section: Administration
 Priority: required
 Description: temporarily assume root priviledges

@@ -1,0 +1,7 @@
+Package: libtextstyle0v5
+Version: @DEB_GETTEXT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Homepage: http://www.gnu.org/software/gettext/
+Description: internationalization helper for strings

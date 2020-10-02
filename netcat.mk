@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += netcat
 NETCAT_VERSION := 0.7.1
-DEB_NETCAT_V   ?= $(NETCAT_VERSION)
+DEB_NETCAT_V   ?= $(NETCAT_VERSION)-1
 
 netcat-setup: setup file-setup
 	wget -q -nc -P $(BUILD_SOURCE) https://downloads.sourceforge.net/project/netcat/netcat/$(NETCAT_VERSION)/netcat-$(NETCAT_VERSION).tar.bz2

@@ -2,7 +2,7 @@ Package: git
 Version: @DEB_GIT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: curl, libssl1.1, gettext, libpcre2, libidn2
+Depends: curl, libssl1.1, libintl8, libpcre2, libidn2
 Section: Data_Storage
 Priority: optional
 Description: fast content-addressable filesystem

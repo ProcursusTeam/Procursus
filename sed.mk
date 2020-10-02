@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += sed
 SED_VERSION   := 4.8
-DEB_SED_V     ?= $(SED_VERSION)
+DEB_SED_V     ?= $(SED_VERSION)-1
 
 sed-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/sed/sed-$(SED_VERSION).tar.xz{,.sig}
