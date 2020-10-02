@@ -15,16 +15,18 @@ ifneq ($(wildcard $(BUILD_WORK)/tor/.build_complete),)
 tor:
 	@echo "Using previously built tor."
 else
-tor: tor-setup libevent openssl xz zstd
+tor: tor-setup libevent openssl xz zstd libscrypt
 	cd $(BUILD_WORK)/tor && ./configure \
 		--prefix=/usr \
 		--host=$(GNU_HOST_TRIPLE) \
 		--disable-tool-name-check \
 		--sysconfdir=/etc \
+		--localstatedir=/var \
 		--enable-zstd \
 		--disable-html-manual \
 		--enable-lzma \
-		--localstatedir=/var
+		--disable-seccomp \
+		--disable-unittests
 	+$(MAKE) -C $(BUILD_WORK)/tor \
 		CC=$(CC) \
 		CPP="$(CXX)" \
