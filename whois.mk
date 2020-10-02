@@ -2,9 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS  += whois
-WHOIS_VERSION   := 5.5.6
-DEB_WHOIS_V     ?= $(WHOIS_VERSION)
+SUBPROJECTS   += whois
+WHOIS_VERSION := 5.5.6
+DEB_WHOIS_V   ?= $(WHOIS_VERSION)-1
 
 whois-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/w/whois/whois_$(WHOIS_VERSION).tar.xz
@@ -16,7 +16,7 @@ ifneq ($(wildcard $(BUILD_WORK)/whois/.build_complete),)
 whois:
 	@echo "Using previously built whois."
 else
-whois: whois-setup libidn2 libcrypt1
+whois: whois-setup libidn2 libxcrypt
 	cd $(BUILD_WORK)/whois
 
 	+$(MAKE) -C $(BUILD_WORK)/whois \

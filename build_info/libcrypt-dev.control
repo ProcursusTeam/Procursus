@@ -1,0 +1,11 @@
+Package: libcrypt-dev
+Version: @DEB_LIBXCRYPT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libcrypt2 (= @DEB_LIBXCRYPT_V@)
+Section: Development
+Priority: standard
+Description: libcrypt development files
+ This package contains the files needed for developing applications that
+ use libcrypt.
+Tag: role::developer
