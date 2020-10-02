@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS       += libscrypt
 LIBSCRYPT_VERSION := 1.21
-DEB_LIBSCRYPT_V   ?= $(LIBSCRYPT_VERSION)
+DEB_LIBSCRYPT_V   ?= $(LIBSCRYPT_VERSION)-1
 
 libscrypt-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/libscrypt-$(LIBSCRYPT_VERSION).tar.gz" ] && \
@@ -20,11 +20,15 @@ libscrypt: libscrypt-setup
 	$(MAKE) -C $(BUILD_WORK)/libscrypt install-osx install-static \
 		DESTDIR=$(BUILD_STAGE)/libscrypt \
 		PREFIX=/usr \
+		CFLAGS="$(CFLAGS) -D_FORTIFY_SOURCE=2 -fPIC" \
 		-j1
 	$(MAKE) -C $(BUILD_WORK)/libscrypt install-osx install-static \
 		DESTDIR=$(BUILD_BASE) \
 		PREFIX=/usr \
+		CFLAGS="$(CFLAGS) -D_FORTIFY_SOURCE=2 -fPIC" \
 		-j1
+	$(I_N_T) -id /usr/lib/libscrypt.0.dylib $(BUILD_STAGE)/libscrypt/usr/lib/libscrypt.0.dylib
+	$(I_N_T) -id /usr/lib/libscrypt.0.dylib $(BUILD_BASE)/usr/lib/libscrypt.0.dylib
 	touch $(BUILD_WORK)/libscrypt/.build_complete
 endif
 
