@@ -18,8 +18,6 @@ redis-setup: setup
 	sed -i 's/AR=.*/AR=$(AR)/g' $(BUILD_WORK)/redis/deps/lua/src/Makefile
 	sed -i 's/RANLIB=.*/RANLIB=$(RANLIB)/g' $(BUILD_WORK)/redis/deps/lua/src/Makefile
 
-
-
 ifneq ($(wildcard $(BUILD_WORK)/redis/.build_complete),)
 redis:
 	@echo "Using previously built redis."
