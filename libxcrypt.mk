@@ -7,7 +7,7 @@ LIBXCRYPT_VERSION := 4.4.17
 DEB_LIBXCRYPT_V   ?= $(LIBXCRYPT_VERSION)
 
 libxcrypt-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/libxcrypt-$(LIBXCRYPT_VERSION).tar.gz" ] && wget -q -nc -O$(BUILD_SOURCE)/libxcrypt-$(LIBXCRYPT_VERSION).tar.gz https://github.com/besser82/libxcrypt/archive/v4.4.17.tar.gz
+	-[ ! -f "$(BUILD_SOURCE)/libxcrypt-$(LIBXCRYPT_VERSION).tar.gz" ] && wget -q -nc -O$(BUILD_SOURCE)/libxcrypt-$(LIBXCRYPT_VERSION).tar.gz https://github.com/besser82/libxcrypt/archive/v$(LIBXCRYPT_VERSION).tar.gz
 	$(call EXTRACT_TAR,libxcrypt-$(LIBXCRYPT_VERSION).tar.gz,libxcrypt-$(LIBXCRYPT_VERSION),libxcrypt)
 
 ifneq ($(wildcard $(BUILD_WORK)/libxcrypt/.build_complete),)
