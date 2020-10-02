@@ -45,7 +45,8 @@ redis-package: redis-stage
 	# redis.mk Package Structure
 	rm -rf $(BUILD_DIST)/redis-{server,tools,sentinel}
 	mkdir -p $(BUILD_DIST)/redis-{sentinel,server,tools}/usr/bin \
-		$(BUILD_DIST)/redis-{server,sentinel}/{etc/redis,Library/LaunchDaemons}
+		$(BUILD_DIST)/redis-{server,sentinel}/{etc/redis,Library/LaunchDaemons} \
+		$(BUILD_DIST)/redis-server/var/lib/redis
 
 	# redis.mk Prep redis-sentinel
 	cp -a $(BUILD_STAGE)/redis/usr/bin/redis-sentinel $(BUILD_DIST)/redis-sentinel/usr/bin
