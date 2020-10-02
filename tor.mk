@@ -3,11 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += tor
-TOR_VERSION  := 0.4.3.5
-DEB_TOR_V    ?= $(TOR_VERSION)-2
+TOR_VERSION  := 0.4.4.5
+DEB_TOR_V    ?= $(TOR_VERSION)
 
 tor-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://dist.torproject.org/tor-$(TOR_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://dist.torproject.org/tor-$(TOR_VERSION).tar.gz{,.asc}
+	$(call PGP_VERIFY,tor-$(TOR_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,tor-$(TOR_VERSION).tar.gz,tor-$(TOR_VERSION),tor)
 
 ifneq ($(wildcard $(BUILD_WORK)/tor/.build_complete),)
@@ -22,7 +23,8 @@ tor: tor-setup libevent openssl xz zstd
 		--sysconfdir=/etc \
 		--enable-zstd \
 		--disable-html-manual \
-		--enable-lzma
+		--enable-lzma \
+		--localstatedir=/var
 	+$(MAKE) -C $(BUILD_WORK)/tor \
 		CC=$(CC) \
 		CPP="$(CXX)" \
