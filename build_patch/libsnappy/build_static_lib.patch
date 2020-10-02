@@ -1,0 +1,44 @@
+Description: add static library build
+ Add upstream missed static library target.
+Author: Laszlo Boszormenyi (GCS) <gcs@debian.org>
+Last-Update: 2017-09-05
+
+---
+
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -202,6 +202,25 @@ if(BUILD_SHARED_LIBS)
+   set_target_properties(snappy PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
+ endif(BUILD_SHARED_LIBS)
+ 
++ADD_LIBRARY(snappy-static STATIC
++        snappy-c.cc
++        snappy-c.h
++        snappy-sinksource.cc
++        snappy-sinksource.h
++        snappy-stubs-internal.cc
++        snappy-stubs-public.h
++        snappy.cc
++        snappy.h)
++
++target_include_directories(snappy-static
++  PUBLIC
++    $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>
++    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
++    $<INSTALL_INTERFACE:include>
++)
++
++SET_TARGET_PROPERTIES(snappy-static PROPERTIES OUTPUT_NAME snappy)
++
+ if(SNAPPY_BUILD_TESTS)
+   enable_testing()
+ 
+@@ -258,7 +277,7 @@ endif(SNAPPY_FUZZING_BUILD)
+ include(GNUInstallDirs)
+ 
+ if(SNAPPY_INSTALL)
+-  install(TARGETS snappy
++  install(TARGETS snappy snappy-static
+     EXPORT SnappyTargets
+     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
