@@ -1,0 +1,37 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index e9e70c8..be4938e 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -221,6 +221,15 @@ ADD_LIBRARY(snappy-static STATIC
+ 
+ SET_TARGET_PROPERTIES(snappy-static PROPERTIES OUTPUT_NAME snappy)
+ 
++if(UNIX)
++  configure_file(
++    "${PROJECT_SOURCE_DIR}/cmake/snappy.pc.in"
++    "${PROJECT_BINARY_DIR}/snappy.pc"
++    @ONLY
++  )
++  install(FILES "${PROJECT_BINARY_DIR}/snappy.pc" DESTINATION usr/lib/pkgconfig)
++endif(UNIX)
++
+ if(SNAPPY_BUILD_TESTS)
+   enable_testing()
+ 
+diff --git a/cmake/snappy.pc.in b/cmake/snappy.pc.in
+new file mode 100644
+index 0000000..6c43545
+--- /dev/null
++++ b/cmake/snappy.pc.in
+@@ -0,0 +1,10 @@
++prefix=@CMAKE_INSTALL_PREFIX@
++exec_prefix=${prefix}
++libdir=@CMAKE_INSTALL_LIBDIR@
++includedir=${prefix}/include
++
++Name: @PROJECT_NAME@
++Description: A fast compression/decompression library
++Version: @PROJECT_VERSION@
++Libs: -L${libdir} -lsnappy
++Cflags: -I${includedir}
+\ No newline at end of file

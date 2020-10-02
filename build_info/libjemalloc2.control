@@ -1,0 +1,11 @@
+Package: libjemalloc2
+Version: @DEB_LIBJEMALLOC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Description: general-purpose scalable concurrent malloc(3) implementation
+ A library providing a malloc(3) implementation for multi-threaded processes on
+ multi-processor systems.
+ .
+ Notable features are reduced lock contention, predictable low fragmentation,
+ and introspection with heap profiling.
