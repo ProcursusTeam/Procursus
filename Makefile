@@ -722,7 +722,7 @@ setup:
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	@# Copy headers from MacOSX.sdk
-	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{arpa,net,xpc,netinet} $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{arpa,net,xpc,netinet,libxslt,libexslt} $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/objc/objc-runtime.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/objc
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/libkern/OSTypes.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,proc*,ptrace,kern*,random,vnode}.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys
