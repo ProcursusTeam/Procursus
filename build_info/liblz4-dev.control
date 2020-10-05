@@ -1,11 +1,8 @@
-Package: lz4
+Package: liblz4-dev
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LZ4_V@
-Section: Archiving
-Priority: important
-Multi-Arch: foreign
+Section: Development
 Depends: liblz4-1 (= @DEB_LZ4_V@)
 Homepage: http://tukaani.org/lzma/
-Description: Fast LZ compression algorithm library - tool
-Name: LZ4
+Description: Fast LZ compression algorithm library - development files

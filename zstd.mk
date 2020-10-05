@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += zstd
 ZSTD_VERSION  := 1.4.5
-DEB_ZSTD_V    ?= $(ZSTD_VERSION)
+DEB_ZSTD_V    ?= $(ZSTD_VERSION)-1
 
 zstd-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/facebook/zstd/archive/v$(ZSTD_VERSION).tar.gz

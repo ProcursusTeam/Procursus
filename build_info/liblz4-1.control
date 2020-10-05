@@ -1,0 +1,8 @@
+Package: liblz4-1
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LZ4_V@
+Section: Libraries
+Priority: important
+Homepage: http://tukaani.org/lzma/
+Description: Fast LZ compression algorithm library - runtime
