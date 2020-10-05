@@ -5,5 +5,5 @@ Maintainer: @DEB_MAINTAINER@
 Section: Networking
 Priority: optional
 Description: Anonymzing overlay network for TCP
-Depends: xz-utils, libevent, libssl1.1, zstd, libscrypt0
+Depends: xz-utils, libevent, libssl1.1, libzstd1, libscrypt0
 Homepage: https://www.torproject.org/

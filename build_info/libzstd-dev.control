@@ -1,0 +1,7 @@
+Package: libzstd-dev
+Section: Development
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_ZSTD_V@
+Depends: libzstd1 (= @DEB_ZSTD_V@)
+Description: fast lossless compression algorithm -- development files

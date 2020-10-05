@@ -5,5 +5,5 @@ Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_ZSTD_V@
 Depends: liblz4-1, xz-utils (>= 5.2.5)
-Description: Modern compression algorithm by Facebook.
+Description: fast lossless compression algorithm -- CLI tool 
 Name: Zstandard
