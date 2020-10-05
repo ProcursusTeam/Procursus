@@ -1,0 +1,5 @@
+#!/bin/sh
+
+set -eu
+
+rm -f /usr/lib/ccache/* 2>/dev/null || true
