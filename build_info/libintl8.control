@@ -1,10 +1,7 @@
-Package: gettext
+Package: libintl8
 Version: @DEB_GETTEXT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libncursesw6, gettext-base, libintl8
-Breaks: apt (<< 2.1.0)
 Section: System
-Priority: optional
 Homepage: http://www.gnu.org/software/gettext/
 Description: internationalization helper for strings

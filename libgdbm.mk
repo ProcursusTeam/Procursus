@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS     += libgdbm
 LIBGDBM_VERSION := 1.18.1
-DEB_LIBGDBM_V   ?= $(LIBGDBM_VERSION)
+DEB_LIBGDBM_V   ?= $(LIBGDBM_VERSION)-1
 
 libgdbm-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gdbm/gdbm-$(LIBGDBM_VERSION).tar.gz{,.sig}

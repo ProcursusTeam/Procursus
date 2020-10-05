@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS   += p11-kit
 P11_VERSION   := 0.23.20
-DEB_P11_V     ?= $(P11_VERSION)
+DEB_P11_V     ?= $(P11_VERSION)-1
 
 p11-kit-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/p11-glue/p11-kit/releases/download/$(P11_VERSION)/p11-kit-$(P11_VERSION).tar.xz{,.sig}

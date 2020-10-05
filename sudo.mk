@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += sudo
 SUDO_VERSION  := 1.9.3p1
-DEB_SUDO_V    ?= $(SUDO_VERSION)
+DEB_SUDO_V    ?= $(SUDO_VERSION)-1
 
 sudo-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.sudo.ws/dist/sudo-$(SUDO_VERSION).tar.gz{,.sig}

@@ -5,7 +5,7 @@ endif
 SUBPROJECTS     += glib2.0
 GLIB2.0_MAJOR_V := 2.65
 GLIB2.0_VERSION := $(GLIB2.0_MAJOR_V).0
-DEB_GLIB2.0_V   ?= $(GLIB2.0_VERSION)-1
+DEB_GLIB2.0_V   ?= $(GLIB2.0_VERSION)-2
 
 glib2.0-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftp.gnome.org/pub/gnome/sources/glib/$(GLIB2.0_MAJOR_V)/glib-$(GLIB2.0_VERSION).tar.xz

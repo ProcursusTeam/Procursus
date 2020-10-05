@@ -5,7 +5,7 @@ endif
 SUBPROJECTS += vim
 # Per homebrew, vim should only be updated every 50 releases on multiples of 50
 VIM_VERSION := 8.2.0700
-DEB_VIM_V   ?= $(VIM_VERSION)
+DEB_VIM_V   ?= $(VIM_VERSION)-1
 
 vim-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/vim/vim/archive/v$(VIM_VERSION).tar.gz
