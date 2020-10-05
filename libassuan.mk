@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS     += libassuan
 LIBASSUAN_VERSION := 2.5.3
-DEB_LIBASSUAN_V   ?= $(LIBASSUAN_VERSION)
+DEB_LIBASSUAN_V   ?= $(LIBASSUAN_VERSION)-1
 
 libassuan-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/libassuan/libassuan-$(LIBASSUAN_VERSION).tar.bz2{,.sig}
