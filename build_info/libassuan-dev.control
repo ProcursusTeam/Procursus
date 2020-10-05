@@ -1,0 +1,11 @@
+Package: libassuan-dev
+Version: @DEB_LIBASSUAN_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libgpg-error-dev, libassuan0 (= @DEB_LIBASSUAN_V@)
+Replaces: libassuan (<< @DEB_LIBASSUAN_V@)
+Conflicts: libassuan (<< @DEB_LIBASSUAN_V@)
+Section: Development
+Priority: optional
+Multi-Arch: foreign
+Description: IPC library for the GnuPG components -- header files
