@@ -1,0 +1,13 @@
+Package: libksba8
+Version: @DEB_KSBA_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libgpg-error
+Replaces: libksba (<< @DEB_KSBA_V@)
+Conflicts: libksba (<< @DEB_KSBA_V@)
+Provides: libksba (= @DEB_KSBA_V@)
+Section: Security
+Priority: optional
+Multi-Arch: foreign
+Description: X.509 and CMS support library
+Name: KSBA

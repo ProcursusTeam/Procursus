@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += libksba
 KSBA_VERSION  := 1.4.0
-DEB_KSBA_V    ?= $(KSBA_VERSION)
+DEB_KSBA_V    ?= $(KSBA_VERSION)-1
 
 libksba-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/libksba/libksba-$(KSBA_VERSION).tar.bz2{,.sig}
@@ -30,19 +30,25 @@ endif
 
 libksba-package: libksba-stage
 	# libksba.mk Package Structure
-	rm -rf $(BUILD_DIST)/libksba
-	mkdir -p $(BUILD_DIST)/libksba
+	rm -rf $(BUILD_DIST)/libksba{8,-dev}
+	mkdir -p $(BUILD_DIST)/libksba{8,-dev}/usr/lib
 	
-	# libksba.mk Prep libksba
-	cp -a $(BUILD_STAGE)/libksba/usr $(BUILD_DIST)/libksba
+	# libksba.mk Prep libksba8
+	cp -a $(BUILD_STAGE)/libksba/usr/lib/libksba.8.dylib $(BUILD_DIST)/libksba8/usr/lib
+	
+	# libksba.mk Prep libksba-dev
+	cp -a $(BUILD_STAGE)/libksba/usr/lib/{pkgconfig,libksba.{dylib,la}} $(BUILD_DIST)/libksba-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libksba/usr/{bin,include,share} $(BUILD_DIST)/libksba-dev/usr
 	
 	# libksba.mk Sign
-	$(call SIGN,libksba,general.xml)
+	$(call SIGN,libksba8,general.xml)
+	$(call SIGN,libksba-dev,general.xml)
 	
 	# libksba.mk Make .debs
-	$(call PACK,libksba,DEB_KSBA_V)
+	$(call PACK,libksba8,DEB_KSBA_V)
+	$(call PACK,libksba-dev,DEB_KSBA_V)
 	
 	# libksba.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libksba
+	rm -rf $(BUILD_DIST)/libksba{8,-dev}
 
 .PHONY: libksba libksba-package
