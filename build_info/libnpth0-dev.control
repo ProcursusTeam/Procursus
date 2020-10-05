@@ -1,0 +1,11 @@
+Package: libnpth0-dev
+Version: @DEB_NPTH_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Conflicts: npth (<< @DEB_NPTH_V@)
+Replaces: npth (<< @DEB_NPTH_V@)
+Depends: libnpth0 (= @DEB_NPTH_V@)
+Section: Development
+Priority: optional
+Multi-Arch: foreign
+Description: headers for libnpth0
