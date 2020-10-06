@@ -31,6 +31,9 @@ ncdu-package: ncdu-stage
 	# ncdu.mk Prep ncdu
 	cp -a $(BUILD_STAGE)/ncdu $(BUILD_DIST)
 
+	# ncdu.mk Sign
+	$(call SIGN,ncdu,general.xml)
+
 	# ncdu.mk Make .debs
 	$(call PACK,ncdu,DEB_NCDU_V)
 
