@@ -2,7 +2,7 @@ Package: tmux
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_TMUX_V@
-Depends: libevent, libutf8proc, libncursesw6, libintl8-localizations
+Depends: libevent, libutf8proc2, libncursesw6, gettext-localizations
 Section: Terminal_Support
 Priority: important
 Description: multiplexes a terminal into many
