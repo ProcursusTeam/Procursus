@@ -1,0 +1,16 @@
+Package: libzip-dev
+Version: @DEB_LIBZIP_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Replaces: libzip (<< 1:0)
+Conflicts: libzip (<< 1:0)
+Depends: libzip5 (= @DEB_LIBZIP_V@), liblzma-dev, libssl-dev
+Section: Development
+Priority: optional
+Description: library for reading, creating, and modifying zip archives (development)
+ libzip is a C library for reading, creating, and modifying zip archives. Files
+ can be added from data buffers, files, or compressed data copied directly from
+ other zip archives. Changes made without closing the archive can be reverted.
+ .
+ This package contains the static libraries and headers for developing
+ applications that use the libzip library API.

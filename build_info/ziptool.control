@@ -1,0 +1,13 @@
+Package: ziptool
+Version: @DEB_LIBZIP_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Replaces: libzip (<< 1:0)
+Conflicts: libzip (<< 1:0)
+Depends: libzip5 (>= @DEB_LIBZIP_V@)
+Section: Archiving
+Priority: optional
+Description: modify zip archives
+ ziptool is a utility for working with zip archives.  It can modify
+ details of zip archives according to the commands given, including
+ timestamps and other metadata about the included files.
