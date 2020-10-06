@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += grep
-GREP_VERSION  := 3.4
+GREP_VERSION  := 3.5
 DEB_GREP_V    ?= $(GREP_VERSION)
 
 grep-setup: setup
