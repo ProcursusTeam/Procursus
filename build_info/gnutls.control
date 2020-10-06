@@ -2,7 +2,7 @@ Package: gnutls
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_GNUTLS_V@
-Depends: libgcrypt20, libintl8 (>= 0.20.0), libgmp10, libidn2, libunistring2, nettle, p11-kit, libreadline8
+Depends: libgcrypt20, libintl8 (>= 0.20.0), libgmp10, libidn2-0, libunistring2, nettle, p11-kit, libreadline8
 Section: Security
 Priority: optional
 Homepage: http://www.gnu.org/software/gnutls/
