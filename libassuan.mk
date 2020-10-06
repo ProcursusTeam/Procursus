@@ -37,7 +37,7 @@ libassuan-package: libassuan-stage
 	cp -a $(BUILD_STAGE)/libassuan/usr/lib/libassuan.0.dylib $(BUILD_DIST)/libassuan0/usr/lib
 	
 	# libassuan.mk Prep libassuan-dev
-	cp -a $(BUILD_STAGE)/libassuan/usr/lib/{pkgconfig,libassuan.{dylib,la}} $(BUILD_DIST)/libassuan-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libassuan/usr/lib/{pkgconfig,libassuan.dylib} $(BUILD_DIST)/libassuan-dev/usr/lib
 	cp -a $(BUILD_STAGE)/libassuan/usr/{bin,share,include} $(BUILD_DIST)/libassuan-dev/usr
 	
 	# libassuan.mk Sign

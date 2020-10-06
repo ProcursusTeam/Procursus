@@ -37,7 +37,7 @@ libksba-package: libksba-stage
 	cp -a $(BUILD_STAGE)/libksba/usr/lib/libksba.8.dylib $(BUILD_DIST)/libksba8/usr/lib
 	
 	# libksba.mk Prep libksba-dev
-	cp -a $(BUILD_STAGE)/libksba/usr/lib/{pkgconfig,libksba.{dylib,la}} $(BUILD_DIST)/libksba-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libksba/usr/lib/{pkgconfig,libksba.dylib} $(BUILD_DIST)/libksba-dev/usr/lib
 	cp -a $(BUILD_STAGE)/libksba/usr/{bin,include,share} $(BUILD_DIST)/libksba-dev/usr
 	
 	# libksba.mk Sign

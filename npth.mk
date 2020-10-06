@@ -36,7 +36,7 @@ npth-package: npth-stage
 	cp -a $(BUILD_STAGE)/npth/usr/lib/libnpth.0.dylib $(BUILD_DIST)/libnpth0/usr/lib
 	
 	# npth.mk Prep libnpth0-dev
-	cp -a $(BUILD_STAGE)/npth/usr/lib/libnpth.{la,dylib} $(BUILD_DIST)/libnpth0-dev/usr/lib
+	cp -a $(BUILD_STAGE)/npth/usr/lib/libnpth.dylib $(BUILD_DIST)/libnpth0-dev/usr/lib
 	cp -a $(BUILD_STAGE)/npth/usr/{bin,include,share} $(BUILD_DIST)/libnpth0-dev/usr
 	
 	# npth.mk Sign
