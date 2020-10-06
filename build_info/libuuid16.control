@@ -1,17 +1,14 @@
-Package: uuid
+Package: libuuid16
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_UUID_V@
-Depends: libuuid16 (>= @DEB_UUID_V@)
-Section: System
-Priority: optional
-Description: runtime components for the Universally Unique ID library
+Replaces: uuid (<< @DEB_UUID_V@)
+Conflicts: uuid (<< @DEB_UUID_V@)
+Section: Libraries
+Priority: important
+Description: Universally Unique ID library
  The libuuid library generates and parses 128-bit Universally Unique
  IDs (UUIDs). A UUID is an identifier that is unique within the space
  of all such identifiers across both space and time. It can be used for
  multiple purposes, from tagging objects with an extremely short lifetime
  to reliably identifying very persistent objects across a network.
- .
- See RFC 4122 for more information.
- .
- This package contains the uuid program.
