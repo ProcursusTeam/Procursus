@@ -1,0 +1,67 @@
+From a23fc4b1856b862894bb15d0a2da33c85edf3c3b Mon Sep 17 00:00:00 2001
+From: Greg Whitehead <grwhitehead@gmail.com>
+Date: Mon, 14 Oct 2019 11:53:26 -0700
+Subject: [PATCH] Build fixes for MacOS X
+
+---
+ README   | 4 ++++
+ io.c     | 1 +
+ io.h     | 1 +
+ ttyrec.c | 5 +++++
+ 4 files changed, 11 insertions(+)
+
+diff --git a/README b/README
+index b34f53f..1ad6503 100644
+--- a/README
++++ b/README
+@@ -8,6 +8,10 @@ or if your system is SVR4 system (Solaris etc.),
+ 
+   % make CFLAGS=-DSVR4
+ 
++or if your system supports openpty(3) (MacOS X etc.),
++
++  % make CFLAGS=-DHAVE_openpty
++
+ or if your system supports getpt(3),
+ 
+   % make CFLAGS=-DHAVE_getpt
+diff --git a/io.c b/io.c
+index b5dde0c..ddaaf4f 100644
+--- a/io.c
++++ b/io.c
+@@ -158,4 +158,5 @@ efdopen (int fd, const char *mode)
+ 	fprintf(stderr, "%s: fdopen failed: %s\n", progname, strerror(errno));
+ 	exit(EXIT_FAILURE);
+     }
++    return fp;
+ }
+diff --git a/io.h b/io.h
+index 5549c9c..b584f9e 100644
+--- a/io.h
++++ b/io.h
+@@ -5,6 +5,7 @@
+ 
+ int     read_header     (FILE *fp, Header *h);
+ int     write_header    (FILE *fp, Header *h);
++void    set_progname    (const char *name);
+ FILE*   efopen          (const char *path, const char *mode);
+ int     edup            (int oldfd);
+ int     edup2           (int oldfd, int newfd);
+diff --git a/ttyrec.c b/ttyrec.c
+index 3392f70..80f62cb 100644
+--- a/ttyrec.c
++++ b/ttyrec.c
+@@ -71,8 +71,13 @@
+ #define _(FOO) FOO
+ 
+ #ifdef HAVE_openpty
++#if defined(__APPLE__)
++#include <util.h>
++#include <signal.h>
++#else
+ #include <libutil.h>
+ #endif
++#endif
+ 
+ #if defined(SVR4) && !defined(CDEL)
+ #if defined(_POSIX_VDISABLE)
