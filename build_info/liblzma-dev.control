@@ -6,7 +6,7 @@ Maintainer: @DEB_MAINTAINER@
 Replaces: xz, lzma
 Conflicts: xz (<<1:0), lzma (<<3:0)
 Depends: liblzma5 (>= @DEB_XZ_V@)
-Section: Archiving
+Section: Development
 Priority: required
 Homepage: https://tukaani.org/xz/
 Description: XZ-format compression library - development files
