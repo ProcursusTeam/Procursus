@@ -2,9 +2,9 @@ Package: tar
 Version: @DEB_TAR_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: bzip2, gzip, xz-utils (>= 5.2.5), zstd
+Recommends: bzip2, gzip, xz-utils, zstd
+Depends: libintl8
 Section: Archiving
 Priority: required
 Homepage: http://www.gnu.org/software/tar/
 Description: tool for making tape archives
-Name: Tape Archive

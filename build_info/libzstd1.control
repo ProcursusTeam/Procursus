@@ -3,5 +3,5 @@ Section: Libraries
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_ZSTD_V@
-Depends: liblz4-1, xz-utils (>= 5.2.5)
+Depends: liblz4-1, liblzma5 (>= 5.2.5)
 Description: fast lossless compression algorithm

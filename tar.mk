@@ -19,11 +19,10 @@ ifneq ($(wildcard $(BUILD_WORK)/tar/.build_complete),)
 tar:
 	@echo "Using previously built tar."
 else
-tar: tar-setup
+tar: tar-setup gettext
 	cd $(BUILD_WORK)/tar && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
-		--disable-nls \
 		$(TAR_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/tar
 	+$(MAKE) -C $(BUILD_WORK)/tar install \

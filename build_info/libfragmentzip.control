@@ -2,7 +2,7 @@ Package: libfragmentzip
 Version: @DEB_LIBFRAGMENTZIP_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libzip, curl, libgeneral
+Depends: libzip5 (>= 1.7.3), curl, libgeneral
 Section: Development
 Priority: optional
 Description: A library allowing to download single files from a remote zip archive 
