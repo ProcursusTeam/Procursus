@@ -5,7 +5,7 @@ endif
 SUBPROJECTS += berkeleydb
 # Berkeleydb requires registration on Oracle's website, so this is a mirror.
 BDB_VERSION := 18.1.40
-DEB_BDB_V   ?= $(BDB_VERSION)-1
+DEB_BDB_V   ?= $(BDB_VERSION)-2
 
 berkeleydb-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://fossies.org/linux/misc/db-$(BDB_VERSION).tar.gz
@@ -38,19 +38,52 @@ endif
 
 berkeleydb-package: berkeleydb-stage
 	# berkeleydb.mk Package Structure
-	rm -rf $(BUILD_DIST)/berkeleydb
+	rm -rf $(BUILD_DIST)/db18.1-util \
+		$(BUILD_DIST)/libdb18.1{,++,-stl}{,-dev}
+	mkdir -p $(BUILD_DIST)/db18.1-util/usr \
+		$(BUILD_DIST)/libdb18.1{,++,-stl}{/usr/lib,-dev/usr/{lib,include}}
 	
-	# berkeleydb.mk Prep berkeleydb
-	cp -a $(BUILD_STAGE)/berkeleydb $(BUILD_DIST)
-	rm -rf $(BUILD_DIST)/berkeleydb/usr/docs
+	# berkeleydb.mk Prep db18.1-util
+	cp -a $(BUILD_STAGE)/berkeleydb/usr/bin $(BUILD_DIST)/db18.1-util/usr
+	
+	# berkeleydb.mk Prep libdb18.1
+	cp -a $(BUILD_STAGE)/berkeleydb/usr/lib/libdb-18{,.1}.dylib $(BUILD_DIST)/libdb18.1/usr/lib
+	
+	# berkeleydb.mk Prep libdb18.1++
+	cp -a $(BUILD_STAGE)/berkeleydb/usr/lib/libdb_cxx-18{,.1}.dylib $(BUILD_DIST)/libdb18.1++/usr/lib
+	
+	# berkeleydb.mk Prep libdb18.1-stl
+	cp -a $(BUILD_STAGE)/berkeleydb/usr/lib/libdb_stl-18{,.1}.dylib $(BUILD_DIST)/libdb18.1-stl/usr/lib
+	
+	# berkeleydb.mk Prep libdb18.1-dev
+	cp -a $(BUILD_STAGE)/berkeleydb/usr/lib/libdb{-18.1.a,.dylib} $(BUILD_DIST)/libdb18.1-dev/usr/lib
+	cp -a $(BUILD_STAGE)/berkeleydb/usr/include/db{,_185}.h $(BUILD_DIST)/libdb18.1-dev/usr/include
+	
+	# berkeleydb.mk Prep libdb18.1++-dev
+	cp -a $(BUILD_STAGE)/berkeleydb/usr/lib/libdb_cxx{-18.1.a,.dylib} $(BUILD_DIST)/libdb18.1++-dev/usr/lib
+	cp -a $(BUILD_STAGE)/berkeleydb/usr/include/db_cxx.h $(BUILD_DIST)/libdb18.1++-dev/usr/include
+	
+	# berkeleydb.mk Prep libdb18.1-stl-dev
+	cp -a $(BUILD_STAGE)/berkeleydb/usr/lib/libdb_stl{-18.1.a,.dylib} $(BUILD_DIST)/libdb18.1-stl-dev/usr/lib
+	cp -a $(BUILD_STAGE)/berkeleydb/usr/include/dbstl*.h $(BUILD_DIST)/libdb18.1-stl-dev/usr/include
 	
 	# berkeleydb.mk Sign
-	$(call SIGN,berkeleydb,general.xml)
+	$(call SIGN,db18.1-util,general.xml)
+	$(call SIGN,libdb18.1,general.xml)
+	$(call SIGN,libdb18.1++,general.xml)
+	$(call SIGN,libdb18.1-stl,general.xml)
 	
 	# berkeleydb.mk Make .debs
-	$(call PACK,berkeleydb,DEB_BDB_V)
+	$(call PACK,db18.1-util,DEB_BDB_V)
+	$(call PACK,libdb18.1,DEB_BDB_V)
+	$(call PACK,libdb18.1++,DEB_BDB_V)
+	$(call PACK,libdb18.1-stl,DEB_BDB_V)
+	$(call PACK,libdb18.1-dev,DEB_BDB_V)
+	$(call PACK,libdb18.1++-dev,DEB_BDB_V)
+	$(call PACK,libdb18.1-stl-dev,DEB_BDB_V)
 	
 	# berkeleydb.mk Build cleanup
-	rm -rf $(BUILD_DIST)/berkeleydb
+	rm -rf $(BUILD_DIST)/db18.1-util \
+		$(BUILD_DIST)/libdb18.1{,++,-stl}{,-dev}
 
 .PHONY: berkeleydb berkeleydb-package
