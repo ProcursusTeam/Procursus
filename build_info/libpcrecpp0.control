@@ -1,0 +1,15 @@
+Package: libpcrecpp0
+Version: @DEB_PCRE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Replaces: pcre, libpcre
+Conflicts: pcre (<<1:0), libpcre
+Depends: libpcre1 (= @DEB_PCRE_V@)
+Section: Libraries
+Priority: standard
+Multi-Arch: foreign
+Description: Old Perl 5 Compatible Regular Expression Library - C++ runtime files
+ This is a C++ library of functions to support regular expressions whose syntax 
+ and semantics are as close as possible to those of the Perl 5 language.
+ .
+ This package contains the C++ runtime library.

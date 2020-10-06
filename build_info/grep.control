@@ -4,7 +4,7 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Replaces: text-cmds (<< 1:0)
 Conflicts: text-cmds (<< 1:0)
-Depends: libpcre
+Depends: libpcre1
 Section: Utilities
 Priority: important
 Multi-Arch: foreign

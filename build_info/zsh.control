@@ -1,8 +1,9 @@
 Package: zsh
+Essential: yes
 Version: @DEB_ZSH_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libncursesw6, libpcre
+Depends: libncursesw6, libpcre1
 Section: Terminal_Support
 Priority: required
 Description: a shell with interactive features

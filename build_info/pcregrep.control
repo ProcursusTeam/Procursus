@@ -1,0 +1,17 @@
+Package: pcregrep
+Version: @DEB_PCRE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Replaces: pcre, libpcre
+Conflicts: pcre (<<1:0), libpcre
+Depends: libpcre1 (= @DEB_PCRE_V@), libpcreposix0 (= @DEB_PCRE_V@)
+Section: Utilities
+Priority: standard
+Multi-Arch: foreign
+Description: grep utility that uses perl 5 compatible regexes.
+ Perl-style regexps have many useful features that the standard POSIX ones
+ don't; this is basically the same as grep but with the different
+ regexp syntax.
+ .
+ The other reason for the existence of pcregrep is that its source code is an
+ example of programming with libpcre.
