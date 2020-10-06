@@ -2,7 +2,7 @@ Package: tsschecker
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_TSSCHECKER_V@
-Depends: libcurl4, libplist, libirecovery, libfragmentzip, libgeneral
+Depends: libcurl4, libplist3, libirecovery3, libfragmentzip, libgeneral0
 Section: Utilities
 Priority: optional
 Description: a powerfull tool to check tss signing status of various devices and firmwares

@@ -2,7 +2,7 @@ Package: futurerestore
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_FUTURERESTORE_V@
-Depends: libcurl4, libplist, openssl, libirecovery, libfragmentzip, libgeneral, img4tool, libimobiledevice6
+Depends: libcurl4, libplist3, libssl1.1, libirecovery3, libfragmentzip, libgeneral0, libimg4tool0, libimobiledevice6
 Section: Utilities
 Priority: optional
 Description: A hacked up idevicerestore wrapper, which allows specifying SEP and Baseband for restoring

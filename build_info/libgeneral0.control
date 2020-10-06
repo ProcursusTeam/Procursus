@@ -1,8 +1,11 @@
-Package: libgeneral
+Package: libgeneral0
 Version: @DEB_LIBGENERAL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Section: Development
+Conflicts: libgeneral (<< 1:0)
+Replaces: libgeneral (<< 1:0)
+Provides: libgeneral (= @DEB_LIBGENERAL_V@)
+Section: Libraries
 Priority: optional
 Description: Common library for tihmstar tools
 Tag: purpose::console, role::developer

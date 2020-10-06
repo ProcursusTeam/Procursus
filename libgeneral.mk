@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += libgeneral
-LIBGENERAL_VERSION := 31
+LIBGENERAL_VERSION := 32
 DEB_LIBGENERAL_V   ?= $(LIBGENERAL_VERSION)
 
 libgeneral-setup: setup
@@ -28,19 +28,24 @@ endif
 
 libgeneral-package: libgeneral-stage
 	# libgeneral.mk Package Structure
-	rm -rf $(BUILD_DIST)/libgeneral
-	mkdir -p $(BUILD_DIST)/libgeneral
+	rm -rf $(BUILD_DIST)/libgeneral{0,-dev}
+	mkdir -p $(BUILD_DIST)/libgeneral{0,-dev}/usr/lib
 	
-	# libgeneral.mk Prep libgeneral
-	cp -a $(BUILD_STAGE)/libgeneral/usr $(BUILD_DIST)/libgeneral
+	# libgeneral.mk Prep libgeneral0
+	cp -a $(BUILD_STAGE)/libgeneral/usr/lib/libgeneral.0.dylib $(BUILD_DIST)/libgeneral0/usr/lib
+	
+	# libgeneral.mk Prep libgeneral-dev
+	cp -a $(BUILD_STAGE)/libgeneral/usr/lib/!(libgeneral.0.dylib) $(BUILD_DIST)/libgeneral-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libgeneral/usr/include $(BUILD_DIST)/libgeneral-dev/usr
 	
 	# libgeneral.mk Sign
-	$(call SIGN,libgeneral,general.xml)
+	$(call SIGN,libgeneral0,general.xml)
 	
 	# libgeneral.mk Make .debs
-	$(call PACK,libgeneral,DEB_LIBGENERAL_V)
+	$(call PACK,libgeneral0,DEB_LIBGENERAL_V)
+	$(call PACK,libgeneral-dev,DEB_LIBGENERAL_V)
 	
 	# libgeneral.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libgeneral
+	rm -rf $(BUILD_DIST)/libgeneral{0,-dev}
 
 .PHONY: libgeneral libgeneral-package
