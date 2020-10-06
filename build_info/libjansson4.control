@@ -1,0 +1,8 @@
+Package: libjansson4
+Version: @DEB_JANSSON_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Description: A C library for encoding, decoding and manipulating JSON 
+Tag: purpose::console, role::developer
