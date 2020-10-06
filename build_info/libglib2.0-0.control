@@ -5,7 +5,7 @@ Maintainer: @DEB_MAINTAINER@
 Replaces: glib (<< 1:0)
 Conflicts: glib (<< 1:0)
 Provides: glib (= 1:0)
-Depends: libffi, libintl8, libpcre
+Depends: libffi7, libintl8, libpcre1
 Section: Libraries
 Priority: important
 Multi-Arch: foreign

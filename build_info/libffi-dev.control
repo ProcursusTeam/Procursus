@@ -1,0 +1,16 @@
+Package: libffi-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBFFI_V@
+Replaces: libffi (<< 1:0)
+Conflicts: libffi (<< 1:0)
+Section: Development
+Priority: optional
+Multi-Arch: foreign
+Description: Foreign Function Interface library (development files)
+ This package contains the headers and static library files necessary for
+ building programs which use libffi.
+ .
+ A foreign function interface is the popular name for the interface that
+ allows code written in one language to call code written in another
+ language.
