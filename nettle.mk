@@ -3,23 +3,24 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += nettle
-NETTLE_VERSION := 3.5.1
+NETTLE_VERSION := 3.6
 DEB_NETTLE_V   ?= $(NETTLE_VERSION)
 
 nettle-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/nettle/nettle-$(NETTLE_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,nettle-$(NETTLE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,nettle-$(NETTLE_VERSION).tar.gz,nettle-$(NETTLE_VERSION),nettle)
+	$(call DO_PATCH,nettle,nettle,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/nettle/.build_complete),)
 nettle:
 	@echo "Using previously built nettle."
 else
 nettle: nettle-setup libgmp10
+	cd $(BUILD_WORK)/nettle && autoreconf -iv
 	cd $(BUILD_WORK)/nettle && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--disable-assembler
+		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/nettle
 	+$(MAKE) -C $(BUILD_WORK)/nettle install \
 		DESTDIR=$(BUILD_STAGE)/nettle
