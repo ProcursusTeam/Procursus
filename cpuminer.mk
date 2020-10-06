@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/cpuminer/.build_complete),)
 cpuminer:
 	@echo "Using previously built cpuminer."
 else
-cpuminer: cpuminer-setup curl jansson 
+cpuminer: cpuminer-setup curl libjansson4
 	cd $(BUILD_WORK)/cpuminer && ./configure \
 	--host=$(GNU_HOST_TRIPLE) \
 	--prefix=/usr \

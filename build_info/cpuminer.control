@@ -5,5 +5,5 @@ Maintainer: @DEB_MAINTAINER@
 Section: Utilities 
 Priority: optional
 Description: A multi-threaded CPU miner for Litecoin and Bitcoin
-Depends: jansson, curl
+Depends: libjansson4, curl
 Tag: purpose::console, role::developer
