@@ -57,6 +57,7 @@ pcre2-package: pcre2-stage
 	cp -a $(BUILD_STAGE)/pcre2/usr/bin/pcre2-config $(BUILD_DIST)/libpcre2-dev/usr/bin
 	cp -a $(BUILD_STAGE)/pcre2/usr/share/man/man1/pcre2-config.1 $(BUILD_DIST)/libpcre2-dev/usr/share/man/man1
 	cp -a $(BUILD_STAGE)/pcre2/usr/share/man/man3 $(BUILD_DIST)/libpcre2-dev/usr/share/man
+	cp -a $(BUILD_STAGE)/pcre2/usr/include $(BUILD_DIST)/libpcre2-dev/usr
 	
 	# pcre2.mk Sign
 	$(call SIGN,libpcre2-8-0,general.xml)
