@@ -1,9 +1,0 @@
-Package: libjansson-dev
-Version: @DEB_JANSSON_V@
-Architecture: @DEB_ARCH@
-Maintainer: @DEB_MAINTAINER@
-Section: development
-Priority: optional
-Depends: libjansson4 (= @DEB_JANSSON_V@)
-Description: A C library for encoding, decoding and manipulating JSON 
-Tag: purpose::console, role::developer
