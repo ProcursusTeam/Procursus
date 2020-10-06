@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += gnutls
 GNUTLS_VERSION := 3.6.14
-DEB_GNUTLS_V   ?= $(GNUTLS_VERSION)-1
+DEB_GNUTLS_V   ?= $(GNUTLS_VERSION)-2
 
 gnutls-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/gnutls-$(GNUTLS_VERSION).tar.xz
