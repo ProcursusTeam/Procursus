@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += nettle
 NETTLE_VERSION := 3.6
-DEB_NETTLE_V   ?= $(NETTLE_VERSION)-1
+DEB_NETTLE_V   ?= $(NETTLE_VERSION)
 
 nettle-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/nettle/nettle-$(NETTLE_VERSION).tar.gz{,.sig}
