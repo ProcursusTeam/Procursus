@@ -50,6 +50,8 @@ jansson-package: jansson-stage
 	$(call PACK,libjansson4,DEB_JANSSON_V)
 	
 	# jansson.mk Build cleanup
-
-
+	rm -rf $(BUILD_DIST)/jansson 
+	rm -rf $(BUILD_DIST)libjansson-dev
+	rm -rf $(BUILD_DIST)/libjansson4
+	
 .PHONY: jansson jansson-package
