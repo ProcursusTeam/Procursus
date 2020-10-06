@@ -28,19 +28,24 @@ endif
 
 libfragmentzip-package: libfragmentzip-stage
 	# libfragmentzip.mk Package Structure
-	rm -rf $(BUILD_DIST)/libfragmentzip
-	mkdir -p $(BUILD_DIST)/libfragmentzip
+	rm -rf $(BUILD_DIST)/libfragmentzip{0,-dev}
+	mkdir -p $(BUILD_DIST)/libfragmentzip{0,-dev}/usr/lib
 	
-	# libfragmentzip.mk Prep libfragmentzip
-	cp -a $(BUILD_STAGE)/libfragmentzip/usr $(BUILD_DIST)/libfragmentzip
+	# libfragmentzip.mk Prep libfragmentzip0
+	cp -a $(BUILD_STAGE)/libfragmentzip/usr/lib/libfragmentzip.0.dylib $(BUILD_DIST)/libfragmentzip0/usr/lib
+	
+	# libfragmentzip.mk Prep libfragmentzip-dev
+	cp -a $(BUILD_STAGE)/libfragmentzip/usr/lib/!(libfragmentzip.0.dylib) $(BUILD_DIST)/libfragmentzip-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libfragmentzip/usr/include $(BUILD_DIST)/libfragmentzip-dev/usr
 	
 	# libfragmentzip.mk Sign
-	$(call SIGN,libfragmentzip,general.xml)
+	$(call SIGN,libfragmentzip0,general.xml)
 	
 	# libfragmentzip.mk Make .debs
-	$(call PACK,libfragmentzip,DEB_LIBFRAGMENTZIP_V)
+	$(call PACK,libfragmentzip0,DEB_LIBFRAGMENTZIP_V)
+	$(call PACK,libfragmentzip-dev,DEB_LIBFRAGMENTZIP_V)
 	
 	# libfragmentzip.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libfragmentzip
+	rm -rf $(BUILD_DIST)/libfragmentzip{0,-dev}
 
 .PHONY: libfragmentzip libfragmentzip-package
