@@ -1,0 +1,22 @@
+Package: libtasn1-bin
+Version: @DEB_LIBTASN1_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Replaces: libtasn1 (<< 1:0)
+Conflicts: libtasn1 (<< 1:0)
+Section: Security
+Priority: optional
+Multi-Arch: foreign
+Homepage: https://www.gnu.org/software/libtasn1
+Description: Manage ASN.1 structures (binaries)
+ Manage ASN1 (Abstract Syntax Notation One) structures.
+ The main features of this library are:
+   * on-line ASN1 structure management that doesn't require any C code
+     file generation.
+   * off-line ASN1 structure management with C code file generation
+     containing an array.
+   * DER (Distinguish Encoding Rules) encoding
+   * no limits for INTEGER and ENUMERATED values
+ .
+ This package contains programs to encode, decode and parse asn1 data
+ structures.
