@@ -20,7 +20,8 @@ p11-kit: p11-kit-setup gettext libtasn1
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--without-trust-paths \
-		--without-libffi
+		--without-libffi \
+		--without-systemd
 	+$(MAKE) -C $(BUILD_WORK)/p11-kit
 	+$(MAKE) -C $(BUILD_WORK)/p11-kit install \
 		DESTDIR=$(BUILD_STAGE)/p11-kit

@@ -24,9 +24,7 @@ gnutls:
 else
 gnutls: gnutls-setup readline gettext libgcrypt libgmp10 libidn2 libunistring nettle p11-kit
 	find $(BUILD_BASE) -name "*.la" -type f -delete
-	if ! [ -f $(BUILD_WORK)/gnutls/configure ]; then \
-		cd $(BUILD_WORK)/gnutls && autoreconf -f -i ; \
-	fi
+	cd $(BUILD_WORK)/gnutls && autoreconf -f -i
 ifeq ($(MEMO_TARGET),watchos-arm64)
 	cd $(BUILD_WORK)/gnutls && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
