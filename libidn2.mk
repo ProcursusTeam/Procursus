@@ -52,12 +52,12 @@ libidn2-package: libidn2-stage
 	$(call SIGN,libidn2-0,general.xml)
 	
 	# libidn2.mk Make .debs
-	#$(call PACK,idn2,DEB_IDN2_V)
-	#$(call PACK,libidn2-0,DEB_IDN2_V)
-	#$(call PACK,libidn2-dev,DEB_IDN2_V)
+	$(call PACK,idn2,DEB_IDN2_V)
+	$(call PACK,libidn2-0,DEB_IDN2_V)
+	$(call PACK,libidn2-dev,DEB_IDN2_V)
 	
 	# libidn2.mk Build cleanup
-	#rm -rf $(BUILD_DIST)/libidn2-{0,dev} \
-	#	$(BUILD_DIST)/idn2
+	rm -rf $(BUILD_DIST)/libidn2-{0,dev} \
+		$(BUILD_DIST)/idn2
 
 .PHONY: libidn2 libidn2-package
