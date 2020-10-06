@@ -2,8 +2,10 @@ Package: libutf8proc-dev
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LIBUTF8PROC_V@
-Section: Development
+Conflicts: libutf8proc (<< @DEB_LIBUTF8PROC_V@)
+Replaces: libutf8proc (<< @DEB_LIBUTF8PROC_V@)
 Depends: libutf8proc2
+Section: Development
 Priority: optional
 Multi-Arch: foreign
 Homepage: http://juliastrings.github.io/utf8proc/
