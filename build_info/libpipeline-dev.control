@@ -1,0 +1,16 @@
+Package: libpipeline-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBPIPELINE_V@
+Section: Development
+Priority: optional
+Homepage: https://nongnu.org/libpipeline/
+Description: Unix process pipeline manipulation library (development files)
+ This is a C library for setting up and running pipelines of processes,
+ without needing to involve shell command-line parsing which is often
+ error-prone and insecure.
+ .
+ This package contains files needed for developing with libpipeline.
+Tag: purpose::library, role::developer
+Replaces: libpipeline
+Conflicts: libpipeline
