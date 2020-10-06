@@ -1,0 +1,9 @@
+Package: libhogweed6
+Version: @DEB_NETTLE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libgmp10, libnettle8 (= @DEB_NETTLE_V@)
+Section: Libraries
+Priority: optional
+Homepage: http://www.lysator.liu.se/~nisse/nettle/
+Description: low level cryptographic library (public-key cryptos)
