@@ -2,7 +2,7 @@ Package: libffi-dev
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LIBFFI_V@
-Depends: libffi (>= @DEB_LIBFFI_V@)
+Depends: libffi7 (>= @DEB_LIBFFI_V@)
 Section: Development
 Priority: optional
 Multi-Arch: foreign

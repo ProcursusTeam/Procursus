@@ -1,8 +1,8 @@
 Package: libintl8
+Essental: yes
 Version: @DEB_GETTEXT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Replaces: gettext (<< @DEB_GETTEXT_V@)
 Conflicts: gettext (<< @DEB_GETTEXT_V@)
 Section: System
 Homepage: http://www.gnu.org/software/gettext/
