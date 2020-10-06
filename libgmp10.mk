@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS += libgmp10
 GMP_VERSION := 6.2.0
-DEB_GMP_V   ?= $(GMP_VERSION)
+DEB_GMP_V   ?= $(GMP_VERSION)-1
 
 libgmp10-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://gmplib.org/download/gmp/gmp-$(GMP_VERSION).tar.xz{,.sig}
@@ -30,19 +30,24 @@ endif
 
 libgmp10-package: libgmp10-stage
 	# libgmp10.mk Package Structure
-	rm -rf $(BUILD_DIST)/libgmp10
-	mkdir -p $(BUILD_DIST)/libgmp10
+	rm -rf $(BUILD_DIST)/libgmp{10,-dev}
+	mkdir -p $(BUILD_DIST)/libgmp{10,-dev}/usr/lib
 	
 	# libgmp10.mk Prep libgmp10
-	cp -a $(BUILD_STAGE)/libgmp10/usr $(BUILD_DIST)/libgmp10
+	cp -a $(BUILD_STAGE)/libgmp10/usr/lib/libgmp.10.dylib $(BUILD_DIST)/libgmp10/usr/lib
+	
+	# libgmp10.mk Prep libgmp-dev
+	cp -a $(BUILD_STAGE)/libgmp10/usr/lib/{pkgconfig,libgmp.{dylib,a}} $(BUILD_DIST)/libgmp-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libgmp10/usr/include $(BUILD_DIST)/libgmp-dev/usr
 	
 	# libgmp10.mk Sign
 	$(call SIGN,libgmp10,general.xml)
 	
 	# libgmp10.mk Make .debs
 	$(call PACK,libgmp10,DEB_GMP_V)
+	$(call PACK,libgmp-dev,DEB_GMP_V)
 	
 	# libgmp10.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libgmp10
+	rm -rf $(BUILD_DIST)/libgmp{10,-dev}
 
 .PHONY: libgmp10 libgmp10-package
