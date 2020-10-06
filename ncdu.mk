@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/ncdu/.build_complete),)
 ncdu:
 	@echo "Using previously built ncdu."
 else
-ncdu: ncdu-setup
+ncdu: ncdu-setup ncurses
 	cd $(BUILD_WORK)/ncdu && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr

@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/nload/.build_complete),)
 nload:
 	@echo "Using previously built nload."
 else
-nload: nload-setup
+nload: nload-setup ncurses
 	cd $(BUILD_WORK)/nload &&./run_autotools && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
