@@ -17,8 +17,7 @@ jansson:
 else
 jansson: jansson-setup
 	cd $(BUILD_WORK)/jansson && ./configure \
---build=aarch64-apple-darwin \
---host=aarch64-apple-darwin \
+--host=$(GNU_HOST_TRIPLE) \
 	--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/jansson
 	+$(MAKE) -C $(BUILD_WORK)/jansson install \
