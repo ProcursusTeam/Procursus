@@ -5,7 +5,7 @@ Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_APT_V@
 Pre-Depends: dpkg (>= 1.14.25-8)
-Depends: gnupg, libgcrypt, dpkg (>= 1.19.0), liblz4-1, xz-utils (>= 5.2.5), libzstd1
+Depends: gnupg, libgcrypt20, dpkg (>= 1.19.0), liblz4-1, liblzma5 (>= 5.2.5), libzstd1
 Replaces: apt1.8, apt1.4, libapt, libapt-pkg5.0, apt-lib, apt-key
 Conflicts: apt7 (<<1:0), apt1.4 (<<1:0), apt1.8, libapt-pkg5.0 (<<1:0), libapt (<<1:0), apt-key (<<1:0)
 Provides: apt1.8 (=@DEB_APT_V@), apt-lib (=@DEB_APT_V@), libapt (=@DEB_APT_V@), apt-key (=@DEB_APT_V@)

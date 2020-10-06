@@ -2,7 +2,7 @@ Package: file
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_FILE_V@
-Depends: xz-utils
+Depends: liblzma5 (>= 5.2.5)
 Section: Utilities
 Priority: important
 Description: guesses the type of a file from contents

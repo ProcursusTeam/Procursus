@@ -2,7 +2,7 @@ Package: autopoint
 Version: @DEB_GETTEXT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: xz-utils
+Depends: liblzma5 (>= 5.2.5)
 Section: Development
 Priority: optional
 Homepage: http://www.gnu.org/software/gettext/

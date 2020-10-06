@@ -61,7 +61,7 @@ apt-package: apt-stage
 	mkdir -p $(BUILD_DIST)/apt-utils/usr/{bin,libexec/apt/{planners,solvers}}
 	mkdir -p $(BUILD_DIST)/apt-dev/usr/lib
 	
-	# apt.mk Prep APT
+	# apt.mk Prep apt
 	cp -a $(BUILD_STAGE)/apt/usr/bin/apt{,-cache,-cdrom,-config,-get,-key,-mark} $(BUILD_DIST)/apt/usr/bin
 	cp -a $(BUILD_STAGE)/apt/usr/lib/*dylib $(BUILD_DIST)/apt/usr/lib
 	cp -a $(BUILD_STAGE)/apt/usr/libexec/dpkg $(BUILD_DIST)/apt/usr/libexec
@@ -72,12 +72,12 @@ apt-package: apt-stage
 	cp -a $(BUILD_STAGE)/apt/{etc,var} $(BUILD_DIST)/apt
 	rm -f $(BUILD_DIST)/apt/usr/lib/libapt-pkg.dylib
 	
-	# apt.mk Prep APT-Utils
+	# apt.mk Prep apt-utils
 	cp -a $(BUILD_STAGE)/apt/usr/bin/apt-{extracttemplates,ftparchive,sortpkgs} $(BUILD_DIST)/apt-utils/usr/bin
 	cp -a $(BUILD_STAGE)/apt/usr/libexec/apt/planners/apt $(BUILD_DIST)/apt-utils/usr/libexec/apt/planners
 	cp -a $(BUILD_STAGE)/apt/usr/libexec/apt/solvers/apt $(BUILD_DIST)/apt-utils/usr/libexec/apt/solvers
 	
-	# apt.mk Prep APT-Dev
+	# apt.mk Prep apt-dev
 	cp -a $(BUILD_STAGE)/apt/usr/lib/libapt-pkg.dylib $(BUILD_DIST)/apt-dev/usr/lib
 	cp -a $(BUILD_STAGE)/apt/usr/lib/pkgconfig $(BUILD_DIST)/apt-dev/usr/lib
 	cp -a $(BUILD_STAGE)/apt/usr/include $(BUILD_DIST)/apt-dev/usr
