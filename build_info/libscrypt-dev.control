@@ -1,0 +1,13 @@
+Package: libscrypt-dev
+Version: @DEB_LIBSCRYPT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Depends: libscrypt0
+Description: scrypt shared library - development files
+ The scrypt algorithm is a password-based key derivation function
+ designed to require large amounts of memory. This proof-of-work scheme
+ is intended to make it costly to perform large-scale hardware
+ attacks.
+ .
+ This package contains files for development with libscrypt.

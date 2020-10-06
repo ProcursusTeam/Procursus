@@ -1,0 +1,35 @@
+diff -ur system_cmds-854.11.2/passwd.tproj/passwd.c.old system-cmds-854.11.2/passwd.tproj/passwd.c
+--- system-cmds-854.11.2/passwd.tproj/passwd.c.old	2020-10-01 14:34:52.000000000 -0400
++++ system-cmds-854.11.2/passwd.tproj/passwd.c	2020-10-01 14:38:14.000000000 -0400
+@@ -25,6 +25,7 @@
+ #define _PASSWD_FILE "/etc/master.passwd"
+ 
+ #include <stdio.h>
++#include <crypt.h>
+ #include <errno.h>
+ #include <pwd.h>
+ #include <libc.h>
+@@ -50,7 +51,6 @@
+ 	char *p;
+ 	static char obuf[_PASSWORD_LEN+1];
+ 	static char nbuf[_PASSWORD_LEN+1];
+-	char salt[9];
+ 
+ 	printf("Changing password for %s.\n", name);
+ 
+@@ -131,14 +131,7 @@
+ 		printf("Mismatch; try again, EOF to quit.\n");
+ 	}
+ 
+-	/*
+-	 * Create a random salt
+-	 */
+-	srandom((int)time((time_t *)NULL));
+-	salt[0] = saltchars[random() % strlen(saltchars)];
+-	salt[1] = saltchars[random() % strlen(saltchars)];
+-	salt[2] = '\0';
+-	*new_pw = crypt(nbuf, salt);
++	*new_pw = crypt(nbuf, crypt_gensalt("$6$", 0, saltchars, strlen(saltchars)));
+ 
+ 	*old_clear = obuf;
+ 	*new_clear = nbuf;

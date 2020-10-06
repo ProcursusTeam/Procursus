@@ -312,10 +312,12 @@ else
 $(error Install ldid2)
 endif
 
-ifneq ($(call HAS_COMMAND,libtoolize),1)
-ifneq ($(call HAS_COMMAND,glibtoolize),1)
+ifeq ($(call HAS_COMMAND,libtoolize),1)
+LIBTOOLIZE := libtoolize
+else ifeq ($(call HAS_COMMAND,glibtoolize),1)
+LIBTOOLIZE := glibtoolize
+else
 $(error Install libtool)
-endif
 endif
 
 ifneq ($(call HAS_COMMAND,cmake),1)

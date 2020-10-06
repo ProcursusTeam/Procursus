@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += sudo
-SUDO_VERSION  := 1.9.2
+SUDO_VERSION  := 1.9.3p1
 DEB_SUDO_V    ?= $(SUDO_VERSION)
 
 sudo-setup: setup
@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/sudo/.build_complete),)
 sudo:
 	@echo "Using previously built sudo."
 else
-sudo: sudo-setup gettext
+sudo: sudo-setup gettext libxcrypt
 		$(SED) -i '/#include "sudo_plugin_int.h"/a #include <dlfcn.h>\
 \/* Set platform binary flag *\/\
 #define FLAG_PLATFORMIZE (1 << 1)\
@@ -56,8 +56,15 @@ void patch_setuidandplatformize() {\
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--without-pam \
+		--enable-static-sudoers \
+		--with-all-insults \
 		--with-env-editor \
-		sudo_cv___func__=yes
+		--with-editor=/usr/bin/editor \
+		--with-timeout=15 \
+		--with-password-timeout=0 \
+		--with-passprompt="[sudo] password for %p: " \
+		sudo_cv___func__=yes \
+		ac_cv_search_crypt="-lcrypt"
 	+$(MAKE) -C $(BUILD_WORK)/sudo
 	+$(MAKE) -C $(BUILD_WORK)/sudo install \
 		DESTDIR=$(BUILD_STAGE)/sudo \

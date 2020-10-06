@@ -1,0 +1,19 @@
+Package: libcwidget-dev
+Version: @DEB_CWIDGET_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libcwidget4 (= @DEB_CWIDGET_V@), libncurses-dev, libsigc++-2.0-dev
+Section: Development
+Priority: optional
+Description: high-level terminal interface library for C++ (development files)
+ libcwidget is a modern user interface library modeled on GTK+ and Qt,
+ but using curses as its display layer and with widgets that are
+ tailored to a terminal environment.
+ .
+ This package contains files that are needed to write or compile
+ software that uses libcwidget.
+ .
+ WARNING: this is a newly created library whose development is closely
+ tied to the development of aptitude.  Its API may be incomplete and
+ is likely to change considerably version-over-version!  You may want
+ to avoid cwidget for stable projects.

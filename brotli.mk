@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += brotli
-BROTLI_VERSION   := 1.0.7
+BROTLI_VERSION   := 1.0.9
 DEB_BROTLI_V     ?= $(BROTLI_VERSION)
 
 brotli-setup: setup
@@ -33,6 +33,8 @@ brotli: brotli-setup
 	+$(MAKE) -C $(BUILD_WORK)/brotli
 	+$(MAKE) -C $(BUILD_WORK)/brotli install \
 		DESTDIR="$(BUILD_STAGE)/brotli"
+	+$(MAKE) -C $(BUILD_WORK)/brotli install \
+		DESTDIR="$(BUILD_BASE)"
 	for lib in $(BUILD_STAGE)/brotli/usr/lib/libbrotli{common,dec,enc}-static.a; do \
 		if [ -f $$lib ]; then \
 			mv $$lib $${lib/-static.a/.a}; \

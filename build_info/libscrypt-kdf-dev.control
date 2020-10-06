@@ -1,0 +1,16 @@
+Package: libscrypt-kdf-dev
+Version: @DEB_SCRYPT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Depends: libscrypt-kdf1 (= @DEB_SCRYPT_V@), libssl-dev (>= 1.1.0)
+Description: Development library for encryption using scrypt for key derivation
+ A simple password-based encryption utility which demonstrates the
+ scrypt key derivation function.  On modern hardware and with default
+ parameters, the cost of cracking the password on a file encrypted by
+ scrypt enc is approximately 100 billion times more than the cost of
+ cracking the same password on a file encrypted by openssl enc; this
+ means that a five-character password using scrypt is stronger than a
+ ten-character password using openssl.
+ .
+ This package contains the development files.
