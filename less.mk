@@ -3,23 +3,22 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += less
-LESS_VERSION := 530
+LESS_VERSION := 551
 DEB_LESS_V   ?= $(LESS_VERSION)
 
 less-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/less/less-$(LESS_VERSION).tar.gz{,.sig}
-	$(call PGP_VERIFY,less-$(LESS_VERSION).tar.gz)
+	wget -q -nc -P $(BUILD_SOURCE) http://www.greenwoodsoftware.com/less/less-$(LESS_VERSION).tar.gz
 	$(call EXTRACT_TAR,less-$(LESS_VERSION).tar.gz,less-$(LESS_VERSION),less)
 
 ifneq ($(wildcard $(BUILD_WORK)/less/.build_complete),)
 less:
 	@echo "Using previously built less."
 else
-less: less-setup ncurses pcre
+less: less-setup ncurses pcre2
 	cd $(BUILD_WORK)/less && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
-		--with-regex=pcre \
+		--with-regex=pcre2 \
 		CFLAGS="$(CFLAGS) -Wno-implicit-function-declaration" \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/less
