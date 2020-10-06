@@ -30,7 +30,12 @@ endif
 
 jansson-package: jansson-stage
 	# jansson.mk Package Structure
-	mkdir -p $(BUILD_DIST)/libjansson-dev/usr/{include,lib} \
+	rm -rf $(BUILD_DIST)/jansson 
+	rm -rf $(BUILD_DIST)libjansson-dev
+	rm -rf $(BUILD_DIST)/libjansson4
+	
+
+	mkdir $(BUILD_DIST)/libjansson-dev/usr/{include,lib} \
 		$(BUILD_DIST)/libjansson4/usr/{lib,} \
 	
 	# jansson.mk Prep libjanssson-dev
