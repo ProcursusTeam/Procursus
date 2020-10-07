@@ -37,9 +37,6 @@ libgdbm-package: libgdbm-stage
 		$(BUILD_DIST)/libgdbm{-dev,6}/usr/lib \
 		$(BUILD_DIST)/{libgdbm-dev,gdbmtool}/usr/share/man
 
-	# libgdbm.mk Prep gdbm-l10n
-	cp -a $(BUILD_STAGE)/libgdbm/usr/share/locale $(BUILD_DIST)/gdbm-l10n/usr/share
-
 	# libgdbm.mk Prep gdbmtool
 	cp -a $(BUILD_STAGE)/libgdbm/usr/bin $(BUILD_DIST)/gdbmtool/usr
 	cp -a $(BUILD_STAGE)/libgdbm/usr/share/man/man1 $(BUILD_DIST)/gdbmtool/usr/share/man
@@ -52,15 +49,13 @@ libgdbm-package: libgdbm-stage
 
 	# libgdbm.mk Prep libgdbm6
 	cp -a $(BUILD_STAGE)/libgdbm/usr/lib/libgdbm.6.dylib $(BUILD_DIST)/libgdbm6/usr/lib
+	cp -a $(BUILD_STAGE)/libgdbm/usr/share/locale $(BUILD_DIST)/gdbm-l10n/usr/share
 
 	# libgdbm.mk Sign
-	$(call SIGN,gdbm-l10n,general.xml)
 	$(call SIGN,gdbmtool,general.xml)
-	$(call SIGN,libgdbm-dev,general.xml)
 	$(call SIGN,libgdbm6,general.xml)
 
 	# libgdbm.mk Make .debs
-	$(call PACK,gdbm-l10n,DEB_LIBGDBM_V)
 	$(call PACK,gdbmtool,DEB_LIBGDBM_V)
 	$(call PACK,libgdbm-dev,DEB_LIBGDBM_V)
 	$(call PACK,libgdbm6,DEB_LIBGDBM_V)
