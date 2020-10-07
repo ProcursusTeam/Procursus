@@ -31,10 +31,11 @@ libgdbm-package: libgdbm-stage
 	# libgdbm.mk Package Structure
 	rm -rf \
 		$(BUILD_DIST)/libgdbm{-dev,6} \
-		$(BUILD_DIST)/gdbm{-l10n,tool}
+		$(BUILD_DIST)/gdbmtool
 	mkdir -p \
 		$(BUILD_DIST)/gdbm-l10n/usr/share \
-		$(BUILD_DIST)/libgdbm{-dev,6}/usr/lib \
+		$(BUILD_DIST)/libgdbm-dev/usr/lib \
+		$(BUILD_DIST)/libgdbm6/usr/{lib,share} \
 		$(BUILD_DIST)/{libgdbm-dev,gdbmtool}/usr/share/man
 
 	# libgdbm.mk Prep gdbmtool
@@ -49,7 +50,7 @@ libgdbm-package: libgdbm-stage
 
 	# libgdbm.mk Prep libgdbm6
 	cp -a $(BUILD_STAGE)/libgdbm/usr/lib/libgdbm.6.dylib $(BUILD_DIST)/libgdbm6/usr/lib
-	cp -a $(BUILD_STAGE)/libgdbm/usr/share/locale $(BUILD_DIST)/gdbm-l10n/usr/share
+	cp -a $(BUILD_STAGE)/libgdbm/usr/share/locale $(BUILD_DIST)/libgdbm6/usr/share
 
 	# libgdbm.mk Sign
 	$(call SIGN,gdbmtool,general.xml)
@@ -63,6 +64,6 @@ libgdbm-package: libgdbm-stage
 	# libgdbm.mk Build cleanup
 	rm -rf \
 		$(BUILD_DIST)/libgdbm{-dev,6} \
-		$(BUILD_DIST)/gdbm{-l10n,tool}
+		$(BUILD_DIST)/gdbmtool
 
 .PHONY: libgdbm libgdbm-package

@@ -4,8 +4,6 @@ Architecture: @DEB_ARCH@
 Version: @DEB_LIBGDBM_V@
 Depends: libgdbm6
 Conflicts: libgdbm (<< @DEB_LIBGDBM_V@)
-Replaces: libgdbm (<< @DEB_LIBGDBM_V@)
-Provides: libgdbm (<< @DEB_LIBGDBM_V@)
 Section: Development
 Description: GNU dbm database routines (development files) 
  GNU dbm ('gdbm') is a library of database functions that use extendible
