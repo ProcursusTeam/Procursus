@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += radare2
-RADARE2_VERSION := 4.5.1
-DEB_RADARE2_V   ?= $(RADARE2_VERSION)
+RADARE2_VERSION := 4.5.0
+DEB_RADARE2_V   ?= $(RADARE2_VERSION)-2
 ifeq ($(shell [[ "$(RADARE2_VERSION)" =~ '0'$$ ]] && echo 1),1)
 RADARE2_API_V   := $(shell echo "$(RADARE2_VERSION)" | rev | cut -c3- | rev)
 else
