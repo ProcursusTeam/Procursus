@@ -65,7 +65,7 @@ curl-package: curl-stage
 	$(call PACK,libcurl4-openssl-dev,DEB_CURL_V)
 	
 	# curl.mk Build cleanup
-	#rm -rf $(BUILD_DIST)/curl \
-	#	$(BUILD_DIST)/libcurl4{,-openssl-dev}
+	rm -rf $(BUILD_DIST)/curl \
+		$(BUILD_DIST)/libcurl4{,-openssl-dev}
 
 .PHONY: curl curl-package
