@@ -1,12 +1,19 @@
 Package: gnupg
 Maintainer: @DEB_MAINTAINER@
-Architecture: @DEB_ARCH@
+Architecture: all
 Version: @DEB_GNUPG_V@
-Depends: libgcrypt20, libassuan0, libksba8, libnpth0, libgpg-error0, pinentry, libintl8
+Depends: dirmngr (= @DEB_GNUPG_V@), gnupg-utils (= @DEB_GNUPG_V@), gpg (= @DEB_GNUPG_V@), gpg-agent (= @DEB_GNUPG_V@), gpg-wks-client (= @DEB_GNUPG_V@), gpg-wks-server (= @DEB_GNUPG_V@), gpgconf(= @DEB_GNUPG_V@), gpgsm (= @DEB_GNUPG_V@), gpgv (= @DEB_GNUPG_V@), scdaemon (= @DEB_GNUPG_V@)
 Conflicts: gnupg2
 Replaces: gnupg2
 Provides: gnupg2 (=@DEB_GNUPG_V@)
 Section: Security
-Priority: required
+Priority: standard
 Description: GNU privacy guard - a free PGP replacement
+ GnuPG is GNU's tool for secure communication and data storage.
+ It can be used to encrypt data and to create digital signatures.
+ It includes an advanced key management facility and is compliant
+ with the proposed OpenPGP Internet standard as described in RFC4880.
+ .
+ This package contains the full suite of GnuPG tools for cryptographic
+ communications and data storage.
 Name: GnuPG

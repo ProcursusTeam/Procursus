@@ -1,0 +1,21 @@
+Package: dirmngr
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_GNUPG_V@
+Depends: gpgconf (= @DEB_GNUPG_V@), libassuan0, libgcrypt20, libgnutls30, libgpg-error0, libksba8, libnpth0, libintl8
+Conflicts: gnupg2, gnupg (<< @DEB_GNUPG_V@)
+Replaces: gnupg2
+Section: Security
+Priority: standard
+Description: GNU privacy guard - network certificate management service
+ dirmngr is a server for managing and downloading OpenPGP and X.509
+ certificates, as well as updates and status signals related to those
+ certificates.  For OpenPGP, this means pulling from the public
+ HKP/HKPS keyservers, or from LDAP servers.  For X.509 this includes
+ Certificate Revocation Lists (CRLs) and Online Certificate Status
+ Protocol updates (OCSP).  It is capable of using Tor for network
+ access.
+ .
+ dirmngr is used for network access by gpg, gpgsm, and dirmngr-client,
+ among other tools.  Unless this package is installed, the parts of
+ the GnuPG suite that try to interact with the network will fail.

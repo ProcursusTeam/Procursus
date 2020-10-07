@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += gnutls
-GNUTLS_VERSION := 3.6.14
-DEB_GNUTLS_V   ?= $(GNUTLS_VERSION)-3
+GNUTLS_VERSION := 3.6.15
+DEB_GNUTLS_V   ?= $(GNUTLS_VERSION)
 
 gnutls-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/gnutls-$(GNUTLS_VERSION).tar.xz
