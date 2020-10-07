@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/gnupg/.build_complete),)
 gnupg:
 	@echo "Using previously built gnupg."
 else
-gnupg: gnupg-setup readline libgpg-error libgcrypt libassuan libksba npth gettext gnutls
+gnupg: gnupg-setup readline libgpg-error libgcrypt libassuan libksba npth gettext gnutls libusb
 	cd $(BUILD_WORK)/gnupg && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
