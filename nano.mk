@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += nano
-NANO_VERSION := 5.2
-DEB_NANO_V   ?= $(NANO_VERSION)-2
+NANO_VERSION := 5.3
+DEB_NANO_V   ?= $(NANO_VERSION)
 
 nano-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/nano/nano-$(NANO_VERSION).tar.xz{,.sig}
@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/nano/.build_complete),)
 nano:
 	@echo "Using previously built nano."
 else
-nano: nano-setup ncurses gettext
+nano: nano-setup ncurses gettext file
 	cd $(BUILD_WORK)/nano && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
