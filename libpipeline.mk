@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS         += libpipeline
-LIBPIPELINE_VERSION := 1.5.2
-DEB_LIBPIPELINE_V   ?= $(LIBPIPELINE_VERSION)-1
+LIBPIPELINE_VERSION := 1.5.3
+DEB_LIBPIPELINE_V   ?= $(LIBPIPELINE_VERSION)
 
 libpipeline-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://mirrors.sarata.com/non-gnu/libpipeline/libpipeline-$(LIBPIPELINE_VERSION).tar.gz{,.asc}

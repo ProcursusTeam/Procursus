@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS        += libgeneral
 LIBGENERAL_VERSION := 32
-DEB_LIBGENERAL_V   ?= $(LIBGENERAL_VERSION)
+DEB_LIBGENERAL_V   ?= $(LIBGENERAL_VERSION)-1
 
 libgeneral-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tihmstar/libgeneral/archive/$(LIBGENERAL_VERSION).tar.gz

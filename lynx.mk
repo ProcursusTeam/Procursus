@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS  += lynx
 LYNX_VERSION := 2.8.9
-DEB_LYNX_V   ?= $(LYNX_VERSION)-2
+DEB_LYNX_V   ?= $(LYNX_VERSION)-3
 
 lynx-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://invisible-mirror.net/archives/lynx/tarballs/lynx$(LYNX_VERSION)rel.1.tar.bz2{,.asc}

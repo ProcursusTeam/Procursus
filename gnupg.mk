@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += gnupg
 GNUPG_VERSION := 2.2.23
-DEB_GNUPG_V   ?= $(GNUPG_VERSION)
+DEB_GNUPG_V   ?= $(GNUPG_VERSION)-1
 
 gnupg-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/gnupg/gnupg-$(GNUPG_VERSION).tar.bz2

@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS            += libfragmentzip
 LIBFRAGMENTZIP_VERSION := 60
-DEB_LIBFRAGMENTZIP_V   ?= $(LIBFRAGMENTZIP_VERSION)
+DEB_LIBFRAGMENTZIP_V   ?= $(LIBFRAGMENTZIP_VERSION)-1
 
 libfragmentzip-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tihmstar/libfragmentzip/archive/$(LIBFRAGMENTZIP_VERSION).tar.gz

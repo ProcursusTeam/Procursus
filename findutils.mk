@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS     += findutils
 FINDUTILS_VERSION := 4.7.0
-DEB_FINDUTILS_V   ?= $(FINDUTILS_VERSION)-1
+DEB_FINDUTILS_V   ?= $(FINDUTILS_VERSION)-2
 
 findutils-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/findutils/findutils-$(FINDUTILS_VERSION).tar.xz{,.sig}

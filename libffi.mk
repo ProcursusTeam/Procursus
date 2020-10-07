@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS  += libffi
 LIBFFI_VERSION := 3.3
-DEB_LIBFFI_V   ?= $(LIBFFI_VERSION)
+DEB_LIBFFI_V   ?= $(LIBFFI_VERSION)-1
 
 libffi-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://sourceware.org/pub/libffi/libffi-$(LIBFFI_VERSION).tar.gz

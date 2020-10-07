@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS      += libgit2
 LIBGIT2_VERSION  := 1.0.1
-DEB_LIBGIT2_V    ?= $(LIBGIT2_VERSION)
+DEB_LIBGIT2_V    ?= $(LIBGIT2_VERSION)-1
 
 libgit2-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libgit2/libgit2/archive/v$(LIBGIT2_VERSION).tar.gz

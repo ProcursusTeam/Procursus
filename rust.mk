@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 #SUBPROJECTS += rust
-RUST_VERSION := 1.45.2
+RUST_VERSION := 1.46.0
 DEB_RUST_V   ?= $(RUST_VERSION)
 
 ifeq ($(MEMO_TARGET),iphoneos-arm64)
@@ -20,7 +20,7 @@ rust-setup: setup
 		cd "$(BUILD_WORK)/rust"; \
 		git fetch origin; \
 		git reset --hard origin/master; \
-		git checkout d3fb005 .; \
+		git checkout 04488af .; \
 	fi
 	
 	mkdir -p "$(BUILD_WORK)/rust/build"

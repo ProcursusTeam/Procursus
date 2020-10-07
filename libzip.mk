@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += libzip
 LIBZIP_VERSION := 1.7.3
-DEB_LIBZIP_V   ?= $(LIBZIP_VERSION)
+DEB_LIBZIP_V   ?= $(LIBZIP_VERSION)-1
 
 libzip-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://libzip.org/download/libzip-$(LIBZIP_VERSION).tar.gz

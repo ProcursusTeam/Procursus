@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS       += libunistring
 UNISTRING_VERSION := 0.9.10
-DEB_UNISTRING_V   ?= $(UNISTRING_VERSION)-1
+DEB_UNISTRING_V   ?= $(UNISTRING_VERSION)-2
 
 libunistring-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/libunistring/libunistring-$(UNISTRING_VERSION).tar.gz{,.sig}

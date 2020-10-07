@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += pacman
 PACMAN_VERSION := 5.2.2
-DEB_PACMAN_V   ?= $(PACMAN_VERSION)-1
+DEB_PACMAN_V   ?= $(PACMAN_VERSION)-2
 
 pacman-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://git.archlinux.org/pacman.git/snapshot/pacman-$(PACMAN_VERSION).tar.gz

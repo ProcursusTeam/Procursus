@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += grep
 GREP_VERSION  := 3.5
-DEB_GREP_V    ?= $(GREP_VERSION)
+DEB_GREP_V    ?= $(GREP_VERSION)-1
 
 grep-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/grep/grep-$(GREP_VERSION).tar.xz{,.sig}

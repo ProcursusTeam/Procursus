@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += apt
 APT_VERSION   := 2.1.10
-DEB_APT_V     ?= $(APT_VERSION)-2
+DEB_APT_V     ?= $(APT_VERSION)-3
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
 APT_CMAKE_ARGS += -DHAVE_PTSNAME_R=0

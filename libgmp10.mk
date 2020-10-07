@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS += libgmp10
 GMP_VERSION := 6.2.0
-DEB_GMP_V   ?= $(GMP_VERSION)-1
+DEB_GMP_V   ?= $(GMP_VERSION)-2
 
 libgmp10-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://gmplib.org/download/gmp/gmp-$(GMP_VERSION).tar.xz{,.sig}

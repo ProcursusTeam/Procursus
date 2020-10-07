@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS      += libtasn1
 LIBTASN1_VERSION := 4.16.0
-DEB_LIBTASN1_V   ?= $(LIBTASN1_VERSION)-1
+DEB_LIBTASN1_V   ?= $(LIBTASN1_VERSION)-2
 
 libtasn1-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/libtasn1/libtasn1-$(LIBTASN1_VERSION).tar.gz{,.sig}

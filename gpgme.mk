@@ -2,9 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS += gpgme
+SUBPROJECTS   += gpgme
 GPGME_VERSION := 1.14.0
-DEB_GPGME_V   ?= $(GPGME_VERSION)-1
+DEB_GPGME_V   ?= $(GPGME_VERSION)-2
 
 gpgme-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/gpgme/gpgme-$(GPGME_VERSION).tar.bz2{,.sig}

@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS      += pinentry
 PINENTRY_VERSION := 1.1.0
-DEB_PINENTRY_V   ?= $(PINENTRY_VERSION)-1
+DEB_PINENTRY_V   ?= $(PINENTRY_VERSION)-2
 
 pinentry-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.gnupg.org/ftp/gcrypt/pinentry/pinentry-$(PINENTRY_VERSION).tar.bz2{,.sig}

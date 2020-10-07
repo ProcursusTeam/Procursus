@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += npth
 NPTH_VERSION  := 1.6
-DEB_NPTH_V    ?= $(NPTH_VERSION)-1
+DEB_NPTH_V    ?= $(NPTH_VERSION)-2
 
 npth-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/npth/npth-$(NPTH_VERSION).tar.bz2{,.sig}

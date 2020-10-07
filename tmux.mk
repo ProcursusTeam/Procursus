@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += tmux
 TMUX_VERSION   := 3.1b
-DEB_TMUX_V     ?= $(TMUX_VERSION)-1
+DEB_TMUX_V     ?= $(TMUX_VERSION)-2
 
 tmux-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tmux/tmux/releases/download/$(TMUX_VERSION)/tmux-$(TMUX_VERSION).tar.gz

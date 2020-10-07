@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += r2ghidra-dec
-R2GHIDRA_VERSION := 4.5.0
-DEB_R2GHIDRA_V   ?= $(R2GHIDRA_VERSION)-1
+R2GHIDRA_VERSION := 4.5.1
+DEB_R2GHIDRA_V   ?= $(R2GHIDRA_VERSION)
 
 r2ghidra-dec-setup: setup
 	if [ ! -d "$(BUILD_WORK)/r2ghidra-dec" ]; then \
@@ -12,7 +12,7 @@ r2ghidra-dec-setup: setup
 		cd "$(BUILD_WORK)/r2ghidra-dec"; \
 		git fetch origin; \
 		git reset --hard origin/master; \
-		git checkout 17ec3b3; \
+		git checkout 8e576ee; \
 		git submodule update --init; \
 	fi
 	$(call DO_PATCH,r2ghidra,r2ghidra-dec,-p1)

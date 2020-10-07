@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS     += libssh2
 LIBSSH2_VERSION := 1.9.0
-DEB_LIBSSH2_V   ?= $(LIBSSH2_VERSION)-1
+DEB_LIBSSH2_V   ?= $(LIBSSH2_VERSION)-2
 
 libssh2-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://libssh2.org/download/libssh2-$(LIBSSH2_VERSION).tar.gz{,.asc}

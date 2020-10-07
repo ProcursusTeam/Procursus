@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += file
 FILE_VERSION   := 5.39
-DEB_FILE_V     ?= $(FILE_VERSION)
+DEB_FILE_V     ?= $(FILE_VERSION)-1
 
 file-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) ftp://ftp.astron.com/pub/file/file-$(FILE_VERSION).tar.gz{,.asc}

@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS            += idevicerestore
 IDEVICERESTORE_VERSION := 1.0.0
-DEB_IDEVICERESTORE_V   ?= $(IDEVICERESTORE_VERSION)
+DEB_IDEVICERESTORE_V   ?= $(IDEVICERESTORE_VERSION)-1
 
 idevicerestore-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libimobiledevice/idevicerestore/releases/download/$(IDEVICERESTORE_VERSION)/idevicerestore-$(IDEVICERESTORE_VERSION).tar.bz2
