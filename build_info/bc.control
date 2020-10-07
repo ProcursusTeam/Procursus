@@ -1,0 +1,9 @@
+Package: bc
+Version: @DEB_BC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Description: idk yet
+Tag: purpose::console, role::developer
+	
