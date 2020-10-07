@@ -16,7 +16,7 @@ gettext:
 	@echo "Using previously built gettext."
 else
 gettext: .SHELLFLAGS=-O extglob -c
-gettext: gettext-setup ncurses
+gettext: gettext-setup ncurses libunistring
 	cd $(BUILD_WORK)/gettext && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
@@ -100,8 +100,11 @@ gettext-package: gettext-stage
 	$(call PACK,gettext-base,DEB_GETTEXT_V)
 	$(call PACK,autopoint,DEB_GETTEXT_V)
 	$(call PACK,libintl8,DEB_GETTEXT_V)
+	$(call PACK,libintl-dev,DEB_GETTEXT_V)
 	$(call PACK,libtextstyle0v5,DEB_GETTEXT_V)
+	$(call PACK,libtextstyle-dev,DEB_GETTEXT_V)
 	$(call PACK,libgettextpo0,DEB_GETTEXT_V)
+	$(call PACK,libgettextpo-dev,DEB_GETTEXT_V)
 	
 	# gettext.mk Build cleanup
 	rm -rf $(BUILD_DIST)/gettext{,-base} \

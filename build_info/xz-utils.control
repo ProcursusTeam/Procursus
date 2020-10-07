@@ -4,7 +4,7 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Replaces: xz, lzma
 Conflicts: xz (<<1:0), lzma (<<3:0)
-Provides: xz (=@DEB_XZ_V@), lzma (=2:@DEB_XZ_V@)
+Provides: xz (=1:0), lzma (=3:0)
 Depends: liblzma5 (>= @DEB_XZ_V@), libintl8
 Section: Archiving
 Priority: standard

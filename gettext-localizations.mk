@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS                   += gettext-localizations
-GETTEXT-LOCALIZATIONS_VERSION := 2020.07.27
+GETTEXT-LOCALIZATIONS_VERSION := 2020.10.07
 DEB_GETTEXT-LOCALIZATIONS_V   ?= $(GETTEXT-LOCALIZATIONS_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/gettext-localizations/.build_complete),)

@@ -2,7 +2,7 @@ Package: libtextstyle-dev
 Version: @DEB_GETTEXT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libtextstyle (= @DEB_GETTEXT_V@)
+Depends: libtextstyle0v5 (= @DEB_GETTEXT_V@)
 Section: Development
 Homepage: http://www.gnu.org/software/gettext/
 Description: internationalization helper for strings - development files

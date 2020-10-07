@@ -54,7 +54,7 @@ xz-package: xz-stage
 	# xz.mk Package Structure
 	rm -rf $(BUILD_DIST)/xz{dec,-utils} $(BUILD_DIST)/liblzma{5,-dev}
 	mkdir -p $(BUILD_DIST)/xz{dec,-utils}/usr/{bin,local/{bin,share/man/man1}} \
-		$(BUILD_DIST)/liblzma{5,-dev}/usr/lib
+		$(BUILD_DIST)/liblzma{5,-dev}/usr/local/lib
 	
 	# xz.mk Prep xz-utils
 	cp -a $(BUILD_STAGE)/xz/usr/bin/!(*dec) $(BUILD_DIST)/xz-utils/usr/bin
@@ -67,11 +67,11 @@ xz-package: xz-stage
 	cp -a $(BUILD_STAGE)/xz/usr/local/share/man/man1/*dec.1 $(BUILD_DIST)/xzdec/usr/local/share/man/man1
 
 	# xz.mk Prep liblzma5
-	cp -a $(BUILD_STAGE)/xz/usr/local/lib/liblzma.5.dylib $(BUILD_DIST)/liblzma5/usr/lib
+	cp -a $(BUILD_STAGE)/xz/usr/local/lib/liblzma.5.dylib $(BUILD_DIST)/liblzma5/usr/local/lib
 
 	# xz.mk Prep liblzma-dev
-	cp -a $(BUILD_STAGE)/xz/usr/local/lib/!(liblzma.5.dylib) $(BUILD_DIST)/liblzma-dev/usr/lib
-	cp -a $(BUILD_STAGE)/xz/usr/local/include $(BUILD_DIST)/liblzma-dev/usr
+	cp -a $(BUILD_STAGE)/xz/usr/local/lib/!(liblzma.5.dylib) $(BUILD_DIST)/liblzma-dev/usr/local/lib
+	cp -a $(BUILD_STAGE)/xz/usr/local/include $(BUILD_DIST)/liblzma-dev/usr/local
 	
 	# xz.mk Sign
 	$(call SIGN,xz-utils,general.xml)

@@ -2,7 +2,7 @@ Package: libgnutls30
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_GNUTLS_V@
-Provides: gnutls (= @DEB_GNUTLS_V@)
+Provides: gnutls (= 1:0)
 Conflicts: gnutls (<< 1:0)
 Replaces: gnutls (<< 1:0)
 Depends: libintl8 (>= 0.20.0), libgmp10, libidn2-0, libunistring2, libnettle8, libhogweed6, libp11-kit0, libtasn1-6

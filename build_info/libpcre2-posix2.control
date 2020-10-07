@@ -3,7 +3,7 @@ Version: @DEB_PCRE2_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Conflicts: pcre2 (<< 1:0), libpcre2 (<< @DEB_PCRE2_V@)
-Depends: libpcre2-8-0 (= @DEB_PCRE2_V@)
+Depends: libpcre2-8-0 (>= @DEB_PCRE2_V@)
 Section: Libraries
 Priority: standard
 Multi-Arch: foreign

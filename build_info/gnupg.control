@@ -5,7 +5,6 @@ Version: @DEB_GNUPG_V@
 Depends: dirmngr (= @DEB_GNUPG_V@), gnupg-utils (= @DEB_GNUPG_V@), gpg (= @DEB_GNUPG_V@), gpg-agent (= @DEB_GNUPG_V@), gpg-wks-client (= @DEB_GNUPG_V@), gpg-wks-server (= @DEB_GNUPG_V@), gpgconf(= @DEB_GNUPG_V@), gpgsm (= @DEB_GNUPG_V@), gpgv (= @DEB_GNUPG_V@), scdaemon (= @DEB_GNUPG_V@)
 Conflicts: gnupg2
 Replaces: gnupg2
-Provides: gnupg2 (=@DEB_GNUPG_V@)
 Section: Security
 Priority: standard
 Description: GNU privacy guard - a free PGP replacement

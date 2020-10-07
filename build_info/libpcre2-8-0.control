@@ -3,7 +3,7 @@ Version: @DEB_PCRE2_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Replaces: pcre2, libpcre2
-Provides: pcre2 (= @DEB_PCRE2_V@), libpcre2 (= @DEB_PCRE2_V@)
+Provides: pcre2 (= 1:0), libpcre2 (= @DEB_PCRE2_V@)
 Conflicts: pcre2 (<< 1:0), libpcre2 (<< 1:0)
 Section: Libraries
 Priority: standard

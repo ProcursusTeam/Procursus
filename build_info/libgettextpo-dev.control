@@ -2,7 +2,7 @@ Package: libgettexpo-dev
 Version: @DEB_GETTEXT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libgettexpo0 (= @DEB_GETTEXT_V@)
+Depends: libgettextpo0 (= @DEB_GETTEXT_V@)
 Section: Development
 Homepage: http://www.gnu.org/software/gettext/
 Description: process PO files - static libraries and headers
