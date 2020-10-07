@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS         += libprotobuf
 LIBPROTOBUF_VERSION := 3.13.0
-DEB_LIBPROTOBUF_V   ?= $(LIBPROTOBUF_VERSION)
+DEB_LIBPROTOBUF_V   ?= $(LIBPROTOBUF_VERSION)-1
 
 libprotobuf-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/protocolbuffers/protobuf/releases/download/v$(LIBPROTOBUF_VERSION)/protobuf-cpp-$(LIBPROTOBUF_VERSION).tar.gz
