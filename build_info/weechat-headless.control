@@ -2,7 +2,7 @@ Package: weechat-headless
 Version: @DEB_WEECHAT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libgcrypt20, gnutls, curl, weechat-core
+Depends: libgcrypt20, libgnutls30, libcurl4, libintl8, libgpg-error0, weechat-core
 Section: Networking
 Priority: optional
 Description: Fast, light and extensible chat client - headless client

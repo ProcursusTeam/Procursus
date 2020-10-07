@@ -2,7 +2,7 @@ Package: weechat-curses
 Version: @DEB_WEECHAT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libgcrypt20, gnutls, curl, libncursesw6, libgcrypt20, weechat-core
+Depends: libgcrypt20, libgnutls30, libcurl4, libintl8, libncursesw6, libgpg-error0, weechat-core
 Section: Networking
 Priority: optional
 Description: Fast, light and extensible chat client - console client
