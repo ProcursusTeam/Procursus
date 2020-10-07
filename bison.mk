@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += bison
-BISON_VERSION := 3.7.1
-DEB_BISON_V   ?= $(BISON_VERSION)-1
+BISON_VERSION := 3.7.2
+DEB_BISON_V   ?= $(BISON_VERSION)
 
 bison-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/bison/bison-$(BISON_VERSION).tar.xz{,.sig}
