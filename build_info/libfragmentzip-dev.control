@@ -2,8 +2,7 @@ Package: libfragmentzip-dev
 Version: @DEB_LIBFRAGMENTZIP_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Replaces: libfragmentzip (<< 1:0)
-Conflicts: libfragmentzip (<< 1:0)
+Conflicts: libfragmentzip (<< @DEB_LIBFRAGMENTZIP_V@)
 Depends: libfragmentzip0 (>= @DEB_LIBFRAGMENTZIP_V@), libzip-dev, libcurl-dev, libgeneral-dev
 Section: Development
 Priority: optional

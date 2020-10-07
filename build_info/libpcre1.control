@@ -3,8 +3,8 @@ Version: @DEB_PCRE_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Replaces: pcre, libpcre
-Provides: pcre (=@DEB_PCRE_V@), libpcre (=@DEB_PCRE_V@)
-Conflicts: pcre (<<1:0), libpcre
+Provides: pcre (= @DEB_PCRE_V@), libpcre (= @DEB_PCRE_V@)
+Conflicts: pcre (<< 1:0), libpcre (<< 1:0)
 Section: Libraries
 Priority: standard
 Multi-Arch: foreign

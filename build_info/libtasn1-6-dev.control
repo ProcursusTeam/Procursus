@@ -2,8 +2,8 @@ Package: libtasn1-6-dev
 Version: @DEB_LIBTASN1_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Replaces: libtasn1 (<< 1:0)
-Conflicts: libtasn1 (<< 1:0)
+Conflicts: libtasn1 (<< @DEB_LIBTASN1_V@)
+Depends: libtasn1-6 (>= @DEB_LIBTASN1_V@)
 Section: Development
 Priority: optional
 Multi-Arch: foreign

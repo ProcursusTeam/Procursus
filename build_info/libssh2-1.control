@@ -7,7 +7,6 @@ Section: Libraries
 Priority: optional
 Homepage: https://www.libssh2.org/
 Description: SSH2 client-side library
-Tag: purpose::library, role::developer
 Replaces: libssh2 (<< @DEB_LIBSSH2_V@)
 Conflicts: libssh2 (<< @DEB_LIBSSH2_V@)
 Provides: libssh2 (= @DEB_LIBSSH2_V@)

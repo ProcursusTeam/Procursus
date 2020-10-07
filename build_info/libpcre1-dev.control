@@ -2,8 +2,7 @@ Package: libpcre1-dev
 Version: @DEB_PCRE_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Replaces: pcre, libpcre
-Conflicts: pcre (<<1:0), libpcre
+Conflicts: pcre (<<1:0), libpcre (<< @DEB_PCRE_V@)
 Section: Development
 Priority: standard
 Multi-Arch: foreign

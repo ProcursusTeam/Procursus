@@ -2,8 +2,8 @@ Package: pcre2-utils
 Version: @DEB_PCRE2_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Replaces: pcre2, libpcre2
-Conflicts: pcre2 (<< 1:0), libpcre2
+Replaces: pcre2
+Conflicts: pcre2 (<< 1:0), libpcre2 (<< @DEB_PCRE_V@)
 Depends: libpcre2-8-0 (= @DEB_PCRE2_V@), libpcre2-16-0 (= @DEB_PCRE2_V@), libpcre2-32-0 (= @DEB_PCRE2_V@), libpcre2-posix2 (= @DEB_PCRE2_V@)
 Section: Utilities
 Priority: standard

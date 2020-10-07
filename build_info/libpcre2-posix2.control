@@ -2,8 +2,7 @@ Package: libpcre2-posix2
 Version: @DEB_PCRE2_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Replaces: pcre2, libpcre2
-Conflicts: pcre2 (<< 1:0), libpcre2
+Conflicts: pcre2 (<< 1:0), libpcre2 (<< @DEB_PCRE2_V@)
 Depends: libpcre2-8-0 (= @DEB_PCRE2_V@)
 Section: Libraries
 Priority: standard

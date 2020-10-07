@@ -2,11 +2,9 @@ Package: libssh2-dev
 Version: @DEB_LIBSSH2_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libssh2-1 (= @DEB_LIBSSH2_V@)
+Depends: libssh2-1 (>= @DEB_LIBSSH2_V@)
 Section: Development
 Priority: optional
 Homepage: https://www.libssh2.org/
 Description: SSH2 client-side library (development headers)
-Tag: purpose::library, role::developer
-Replaces: libssh2 (<< @DEB_LIBSSH2_V@)
 Conflicts: libssh2 (<< @DEB_LIBSSH2_V@)

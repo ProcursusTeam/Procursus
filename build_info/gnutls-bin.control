@@ -2,11 +2,10 @@ Package: gnutls-bin
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_GNUTLS_V@
-Depends: libgnutls30, libintl8 (>= 0.20.0), libgmp10, libidn2-0, libunistring2, libnettle8, libhogweed6, libp11-kit0, libtasn1-6
+Conflicts: gnutls (<< @DEB_GNUTLS_V@)
+Depends: libgnutls30 (>= @DEB_GNUTLS_V@), libintl8 (>= 0.20.0), libgmp10, libidn2-0, libunistring2, libnettle8, libhogweed6, libp11-kit0, libtasn1-6
 Section: Utilities
 Priority: optional
-Conflicts: gnutls
-Replaces: gnutls
 Description: GNU TLS library - commandline utilities
  GnuTLS is a portable library which implements the Transport Layer
  Security (TLS 1.0, 1.1, 1.2, 1.3) and Datagram

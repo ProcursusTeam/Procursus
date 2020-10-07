@@ -2,7 +2,8 @@ Package: libgnutls28-dev
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_GNUTLS_V@
-Depends: libgnutls30 (= @DEB_GNUTLS_V@), libgnutlsxx28 (= @DEB_GNUTLS_V@), libp11-kit-dev, libtasn1-6-dev, nettle-dev, libidn2-dev
+Conflicts: gnutls (<< 1:0)
+Depends: libgnutls30 (>= @DEB_GNUTLS_V@), libgnutlsxx28 (>= @DEB_GNUTLS_V@), libp11-kit-dev, libtasn1-6-dev, nettle-dev, libidn2-dev
 Section: Libraries
 Priority: optional
 Homepage: http://www.gnu.org/software/gnutls/
@@ -21,5 +22,3 @@ Description: GNU TLS library - development files
   - HSMs and cryptographic tokens, via PKCS #11.
  .
  This package contains the GnuTLS development files.
-Conflicts: gnutls
-Replaces: gnutls

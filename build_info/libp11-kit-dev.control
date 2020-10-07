@@ -3,7 +3,6 @@ Version: @DEB_P11_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Conflicts: p11-kit (<< @DEB_P11_V@)
-Replaces: p11-kit (<< @DEB_P11_V@)
 Depends: libp11-kit0 (>= @DEB_P11_V@), libintl-dev, libffi-dev
 Section: Development
 Priority: optional

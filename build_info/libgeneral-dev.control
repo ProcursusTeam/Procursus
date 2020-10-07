@@ -2,8 +2,7 @@ Package: libgeneral-dev
 Version: @DEB_LIBGENERAL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Conflicts: libgeneral (<< 1:0)
-Replaces: libgeneral (<< 1:0)
+Conflicts: libgeneral (<< @DEB_LIBGENERAL_V@)
 Depends: libgeneral0 (>= @DEB_LIBGENERAL_V@)
 Section: Development
 Priority: optional
