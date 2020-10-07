@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS  += libffi
+SUBPROJECTS    += libffi
 LIBFFI_VERSION := 3.3
 DEB_LIBFFI_V   ?= $(LIBFFI_VERSION)-1
 
