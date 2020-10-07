@@ -34,6 +34,7 @@ xar: xar-setup openssl
 		CFLAGS="$(CFLAGS) -I$(BUILD_WORK)/xar/lib"
 	+$(MAKE) -C $(BUILD_WORK)/xar install \
 		DESTDIR=$(BUILD_STAGE)/xar
+	cp -a $(BUILD_STAGE)/xar/usr/include/* $(BUILD_BASE)/usr/include
 	cp -a $(BUILD_STAGE)/xar/usr/lib/* $(BUILD_BASE)/usr/lib
 	touch $(BUILD_WORK)/xar/.build_complete
 endif

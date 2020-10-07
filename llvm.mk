@@ -48,7 +48,7 @@ ifneq ($(wildcard $(BUILD_WORK)/llvm/.build_complete),)
 llvm:
 	@echo "Using previously built llvm."
 else
-llvm: llvm-setup libffi ncurses xz
+llvm: llvm-setup libffi ncurses xz xar
 	cp -a $(TARGET_SYSROOT)/usr/include/mach/arm $(BUILD_BASE)/usr/include/mach
 	cp -a $(MACOSX_SYSROOT)/usr/include/{editline,kern} $(BUILD_BASE)/usr/include
 	cp -a $(MACOSX_SYSROOT)/usr/include/histedit.h $(BUILD_BASE)/usr/include
