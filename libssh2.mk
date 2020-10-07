@@ -51,6 +51,6 @@ libssh2-package: libssh2-stage
 	$(call PACK,libssh2-dev,DEB_LIBSSH2_V)
 	
 	# libssh2.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libssh2-{0,dev}
+	rm -rf $(BUILD_DIST)/libssh2-{1,dev}
 
 .PHONY: libssh2 libssh2-package
