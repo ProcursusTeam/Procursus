@@ -1,0 +1,10 @@
+--- a/bspatch.c      2020-10-08 17:10:24.148882184 +0800
++++ b/bspatch.c   2020-10-08 17:10:25.738886953 +0800
+@@ -35,6 +35,7 @@
+ #include <err.h>
+ #include <unistd.h>
+ #include <fcntl.h>
++#include <sys/types.h>
+ 
+ static off_t offtin(u_char *buf)
+ {
