@@ -478,6 +478,7 @@ everything::
 include *.mk
 
 package:: $(SUBPROJECTS:%=%-package)
+bootstrap:: .SHELLFLAGS=-O extglob -c
 bootstrap:: export BUILD_DIST=$(BUILD_STRAP)
 bootstrap:: $(STRAPPROJECTS:%=%-package)
 	rm -rf $(BUILD_STRAP)/strap
@@ -485,7 +486,11 @@ bootstrap:: $(STRAPPROJECTS:%=%-package)
 	touch $(BUILD_STAGE)/.fakeroot_bootstrap
 	mkdir -p $(BUILD_STRAP)/strap/Library/dpkg/info
 	touch $(BUILD_STRAP)/strap/Library/dpkg/status
-	cd $(BUILD_STRAP) && rm -f *-locale_*.deb openssl*.deb libssl*-dev*.deb apt-*.deb dpkg-*.deb
+	ifeq ($(SSH_STRAP),1)
+		cd $(BUILD_STRAP) && rm -f !(apt_*|base_*|bash_*|ca-certificates_*|coreutils_*|darwintools_*|debianutils_*|diffutils_*|diskdev-cmds_*|dpkg_*|essential_*|findutils_*|firmware-sbin_*|gpgv_*|grep_*|launchctl_*|libapt-pkg6.0_*|libcrypt2_*|libgcrypt20_*|libgpg-error0_*|libintl8_*|liblz4-1_*|liblzma5_*|libncursesw6_*|libpcre1_*|libreadline8_*|libssl1.1_*|libzstd1_*|ncurses-term_*|openssh_*|openssh-client_*|openssh-server_*|openssh-sftp-server_*|procursus-keyring_*|profile.d_*|sed_*|shell-cmds_*|snaputil_*|sudo_*|system-cmds_*|tar_*|uikittools_*|zsh_*).deb
+	else
+		cd $(BUILD_STRAP) && rm -f !(apt_*|base_*|bash_*|ca-certificates_*|coreutils_*|darwintools_*|debianutils_*|diffutils_*|diskdev-cmds_*|dpkg_*|essential_*|findutils_*|firmware-sbin_*|gpgv_*|grep_*|launchctl_*|libapt-pkg6.0_*|libcrypt2_*|libgcrypt20_*|libgpg-error0_*|libintl8_*|liblz4-1_*|liblzma5_*|libncursesw6_*|libpcre1_*|libreadline8_*|libssl1.1_*|libzstd1_*|ncurses-term_*|procursus-keyring_*|profile.d_*|sed_*|shell-cmds_*|snaputil_*|sudo_*|system-cmds_*|tar_*|uikittools_*|zsh_*).deb
+	endif
 	-for DEB in $(BUILD_STRAP)/*.deb; do \
 		PKGNAME=$$(basename $$DEB | cut -f1 -d"_"); \
 		dpkg-deb -R $$DEB $(BUILD_STRAP)/strap; \
