@@ -1,0 +1,19 @@
+Package: nload
+Version: @DEB_NLOAD_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Networking
+Homepage: http://www.roland-riegel.de/nload/
+Vcs-git: https://github.com/marciosouza20/nload.git
+Vcs-Browser: https://github.com/marciosouza20/nload.git
+Depends: libncursesw6
+Description: realtime console network usage monitor
+ Nload is a console application which monitors network traffic and bandwidth
+ usage in real time. It displays the total amount of data that has been
+ transferred over a network device since the last reboot, the current bandwidth
+ usage, and the minimum, maximum, and average bandwidth usage measured
+ since it started.
+ .
+ If the user wants, it is also able to display two bars, similar to progress
+ bars, presenting the current load graphically. Support for displaying several
+ devices simultaneously is included.

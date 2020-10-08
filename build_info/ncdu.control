@@ -1,0 +1,11 @@
+Package: ncdu
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_NCDU_V@
+Section: Utilities
+Depends: libncursesw6
+Homepage: http://dev.yorhel.nl/ncdu/
+Description: ncurses disk usage viewer
+ Ncdu is a ncurses-based du viewer. It provides a fast and easy-to-use interface
+ through famous du utility. It allows one to browse through the directories and
+ show percentages of disk usage with ncurses library.
