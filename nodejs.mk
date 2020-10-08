@@ -3,14 +3,14 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS   += nodejs
-NODEJS_VERSION  := 14.13.0
+NODEJS_VERSION  := 14.13.1
 DEB_NODEJS_V    ?= $(NODEJS_VERSION)
-
 
 nodejs-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://nodejs.org/dist/v$(NODEJS_VERSION)/node-v$(NODEJS_VERSION).tar.gz
 	$(call EXTRACT_TAR,node-v$(NODEJS_VERSION).tar.gz,node-v$(NODEJS_VERSION),nodejs)
 	$(call DO_PATCH,nodejs,nodejs,-p1)
+	$(SED) -i 's/@@IPHONEOSVERMIN@@/$(shell echo "$(PLATFORM_VERSION_MIN)" | cut -d= -f2)/g' $(BUILD_WORK)/nodejs/common.gypi
 
 ifneq ($(UNAME),Darwin)
 nodejs:
@@ -20,7 +20,6 @@ nodejs:
 	@echo "Using previously built nodejs."
 else
 nodejs: nodejs-setup nghttp2 openssl brotli libc-ares libuv1
-	# use included nghttp2 since building against Procursus is broken
 	cd $(BUILD_WORK)/nodejs && GYP_DEFINES="target_arch=arm64 host_os=mac target_os=ios" ./configure \
 		--prefix=/usr \
 		--dest-os=ios \
@@ -34,6 +33,7 @@ nodejs: nodejs-setup nghttp2 openssl brotli libc-ares libuv1
 		--shared-libuv \
 		--shared-brotli \
 		--shared-brotli-libpath=$(BUILD_BASE)/usr/lib \
+		--shared-nghttp2 \
 		--shared-cares \
 		--experimental-http-parser \
 		--openssl-use-def-ca-store \

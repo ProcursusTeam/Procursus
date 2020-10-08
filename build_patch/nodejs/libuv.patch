@@ -11,3 +11,4 @@ diff -ruN node-v14.13.0/deps/uv/src/unix/darwin.c nodejs/deps/uv/src/unix/darwin
  
  static uv_once_t once = UV_ONCE_INIT;
  static uint64_t (*time_func)(void);
+ 
