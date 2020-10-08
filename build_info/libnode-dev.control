@@ -3,7 +3,7 @@ Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_NODEJS_V@
 Section: Development
-Depends: libnode83, libssl-dev, libuv1-dev
+Depends: libnode83 (= @DEB_NODEJS_V@), libbrotli-dev, libc-ares-dev, libssl-dev, libuv1-dev
 Provides: libv8-dev
 Description: evented I/O for V8 javascript (development files)
  Node.js is a platform built on Chrome's JavaScript runtime for easily

@@ -2,7 +2,8 @@ Package: nodejs
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_NODEJS_V@
-Depends: libnode83
+Section: Scripting
+Depends: libnode83 (= @DEB_NODEJS_V@)
 Recommends: ca-certificates
 Suggests: npm
 Description: evented I/O for V8 javascript - runtime executable
