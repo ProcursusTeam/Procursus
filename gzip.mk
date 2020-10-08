@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += gzip
 GZIP_VERSION  := 1.10
-DEB_GZIP_V    ?= $(GZIP_VERSION)
+DEB_GZIP_V    ?= $(GZIP_VERSION)-1
 
 gzip-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gzip/gzip-$(GZIP_VERSION).tar.xz{,.sig}

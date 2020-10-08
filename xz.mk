@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += xz
 XZ_VERSION    := 5.2.5
-DEB_XZ_V      ?= $(XZ_VERSION)-1
+DEB_XZ_V      ?= $(XZ_VERSION)-2
 
 xz-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://tukaani.org/xz/xz-$(XZ_VERSION).tar.xz{,.sig}

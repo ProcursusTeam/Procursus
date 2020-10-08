@@ -6,7 +6,7 @@ Replaces: xz, lzma
 Conflicts: xz (<<1:0), lzma (<<3:0)
 Depends: liblzma5 (>= @DEB_XZ_V@)
 Section: Development
-Priority: required
+Priority: standard
 Homepage: https://tukaani.org/xz/
 Description: XZ-format compression library - development files
  XZ is the successor to the Lempel-Ziv/Markov-chain Algorithm

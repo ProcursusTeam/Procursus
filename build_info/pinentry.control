@@ -4,5 +4,5 @@ Architecture: @DEB_ARCH@
 Version: @DEB_PINENTRY_V@
 Depends: libassuan0, libgpg-error, libncursesw6
 Section: Security
-Priority: required
+Priority: standard
 Description: Passphrase entry dialog utilizing the Assuan protocol
