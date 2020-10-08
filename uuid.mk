@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += uuid
 UUID_VERSION  := 1.6.2
-DEB_UUID_V    ?= $(UUID_VERSION)-2
+DEB_UUID_V    ?= $(UUID_VERSION)-3
 
 uuid-setup: setup file-setup
 	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/o/ossp-uuid/ossp-uuid_$(UUID_VERSION).orig.tar.gz
@@ -39,7 +39,7 @@ uuid-package: uuid-stage
 		$(BUILD_DIST)/libuuid16/usr/lib
 	
 	# uuid.mk Prep uuid
-	cp -a $(BUILD_STAGE)/uuid/usr/bin/uuid $(BUILD_DIST)/uuid/usr
+	cp -a $(BUILD_STAGE)/uuid/usr/bin/uuid $(BUILD_DIST)/uuid/usr/bin
 	cp -a $(BUILD_STAGE)/uuid/usr/share/man/man1/uuid.1 $(BUILD_DIST)/uuid/usr/share/man/man1
 	
 	# uuid.mk Prep libuuid16
