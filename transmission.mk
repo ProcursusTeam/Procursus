@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS          += transmission
 TRANSMISSION_VERSION := 3.00
-DEB_TRANSMISSION_V   ?= $(TRANSMISSION_VERSION)
+DEB_TRANSMISSION_V   ?= $(TRANSMISSION_VERSION)-1
 
 transmission-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/transmission/transmission-releases/raw/master/transmission-$(TRANSMISSION_VERSION).tar.xz

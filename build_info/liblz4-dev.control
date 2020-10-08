@@ -1,0 +1,9 @@
+Package: liblz4-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LZ4_V@
+Conflicts: lz4 (<< @DEB_LZ4_V@)
+Section: Development
+Depends: liblz4-1 (= @DEB_LZ4_V@)
+Homepage: http://tukaani.org/lzma/
+Description: Fast LZ compression algorithm library - development files

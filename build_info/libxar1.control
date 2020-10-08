@@ -1,0 +1,12 @@
+Package: libxar1
+Version: @DEB_XAR_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Replaces: xar (<< @DEB_XAR_V@)
+Conflicts: xar (<< @DEB_XAR_V@)
+Depends: libssl1.1
+Section: Libraries
+Priority: optional
+Homepage: https://mackyle.github.io/xar/
+Description: eXtensible ARchive format - dynamic library
+Tag: purpose::console, role::hacker

@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += uuid
 UUID_VERSION  := 1.6.2
-DEB_UUID_V    ?= $(UUID_VERSION)
+DEB_UUID_V    ?= $(UUID_VERSION)-2
 
 uuid-setup: setup file-setup
 	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/o/ossp-uuid/ossp-uuid_$(UUID_VERSION).orig.tar.gz
@@ -33,19 +33,35 @@ endif
 
 uuid-package: uuid-stage
 	# uuid.mk Package Structure
-	rm -rf $(BUILD_DIST)/uuid
-	mkdir -p $(BUILD_DIST)/uuid
+	rm -rf $(BUILD_DIST)/uuid $(BUILD_DIST)/libuuid{16,-dev}
+	mkdir -p $(BUILD_DIST)/uuid/usr/{bin,share/man/man1} \
+		$(BUILD_DIST)/libuuid-dev/usr/{bin,share/man/man1,lib} \
+		$(BUILD_DIST)/libuuid16/usr/lib
 	
 	# uuid.mk Prep uuid
-	cp -a $(BUILD_STAGE)/uuid/usr $(BUILD_DIST)/uuid
+	cp -a $(BUILD_STAGE)/uuid/usr/bin/uuid $(BUILD_DIST)/uuid/usr
+	cp -a $(BUILD_STAGE)/uuid/usr/share/man/man1/uuid.1 $(BUILD_DIST)/uuid/usr/share/man/man1
+	
+	# uuid.mk Prep libuuid16
+	cp -a $(BUILD_STAGE)/uuid/usr/lib/libuuid.16.dylib $(BUILD_DIST)/libuuid16/usr/lib
+
+	# uuid.mk Prep libuuid-dev
+	cp -a $(BUILD_STAGE)/uuid/usr/lib/!(libuuid.16.dylib) $(BUILD_DIST)/libuuid-dev/usr/lib
+	cp -a $(BUILD_STAGE)/uuid/usr/share/man/man1/uuid-config.1 $(BUILD_DIST)/libuuid-dev/usr/share/man/man1
+	cp -a $(BUILD_STAGE)/uuid/usr/bin/uuid-config $(BUILD_DIST)/libuuid-dev/usr/bin
+	cp -a $(BUILD_STAGE)/uuid/usr/share/man/man3 $(BUILD_DIST)/libuuid-dev/usr/share/man
+	cp -a $(BUILD_STAGE)/uuid/usr/include $(BUILD_DIST)/libuuid-dev/usr
 	
 	# uuid.mk Sign
 	$(call SIGN,uuid,general.xml)
+	$(call SIGN,libuuid16,general.xml)
 	
 	# uuid.mk Make .debs
 	$(call PACK,uuid,DEB_UUID_V)
+	$(call PACK,libuuid16,DEB_UUID_V)
+	$(call PACK,libuuid-dev,DEB_UUID_V)
 	
 	# uuid.mk Build cleanup
-	rm -rf $(BUILD_DIST)/uuid
+	rm -rf $(BUILD_DIST)/uuid $(BUILD_DIST)/libuuid{16,-dev}
 
 .PHONY: uuid uuid-package

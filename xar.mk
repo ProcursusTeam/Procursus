@@ -3,54 +3,67 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += xar
-XAR_VERSION := 1.6.1
-DEB_XAR_V   ?= $(XAR_VERSION)
+XAR_VERSION := 420
+DEB_XAR_V   ?= 1.8.0.$(XAR_VERSION)+fc-6
 
 xar-setup: setup file-setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/downloads/mackyle/xar/xar-$(XAR_VERSION).tar.gz
-	$(call EXTRACT_TAR,xar-$(XAR_VERSION).tar.gz,xar-$(XAR_VERSION),xar)
+	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/xar/xar-$(XAR_VERSION).tar.gz
+	$(call EXTRACT_TAR,xar-$(XAR_VERSION).tar.gz,xar-$(XAR_VERSION)/xar,xar)
+	$(call DO_PATCH,xar,xar,-p1)
 	cp -a $(BUILD_WORK)/file/config.sub $(BUILD_WORK)/xar
 
 ifneq ($(wildcard $(BUILD_WORK)/xar/.build_complete),)
 xar:
 	@echo "Using previously built xar."
 else
-xar: xar-setup xz openssl
-	cd $(BUILD_WORK)/xar && ./configure -C \
+xar: xar-setup openssl
+	cd $(BUILD_WORK)/xar && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
-		--enable-static=no \
-		ac_cv_header_libxml_xmlwriter_h=yes \
 		ac_cv_header_openssl_evp_h=yes \
-		ac_cv_lib_crypto_OpenSSL_add_all_ciphers=yes \
+		ac_cv_lib_crypto_OPENSSL_init_crypto=yes \
+		ac_cv_header_libxml_xmlwriter_h=yes \
 		ac_cv_header_zlib_h=yes \
-		ac_cv_lib_z_deflate=yes
+		ac_cv_lib_z_deflate=yes \
+		ac_cv_header_bzlib_h=yes \
+		ac_cv_lib_bz2_BZ2_bzCompress=yes
 	$(SED) -i 's|$(MACOSX_SYSROOT)/usr/lib|$(TARGET_SYSROOT)/usr/lib|g' $(BUILD_WORK)/xar/lib/Makefile.inc
 	$(SED) -i 's|$(MACOSX_SYSROOT)/usr/lib|$(TARGET_SYSROOT)/usr/lib|g' $(BUILD_WORK)/xar/src/Makefile.inc
 	$(SED) -i 's|$(MACOSX_SYSROOT)/usr/include|$(TARGET_SYSROOT)/usr/include|g' $(BUILD_WORK)/xar/Makefile
-	+$(MAKE) -C $(BUILD_WORK)/xar
+	+$(MAKE) -C $(BUILD_WORK)/xar \
+		CFLAGS="$(CFLAGS) -I$(BUILD_WORK)/xar/lib"
 	+$(MAKE) -C $(BUILD_WORK)/xar install \
 		DESTDIR=$(BUILD_STAGE)/xar
-	+$(MAKE) -C $(BUILD_WORK)/xar install \
-		DESTDIR=$(BUILD_BASE)
+	cp -a $(BUILD_STAGE)/xar/usr/include/* $(BUILD_BASE)/usr/include
+	cp -a $(BUILD_STAGE)/xar/usr/lib/* $(BUILD_BASE)/usr/lib
 	touch $(BUILD_WORK)/xar/.build_complete
 endif
 
 xar-package: xar-stage
 	# xar.mk Package Structure
-	rm -rf $(BUILD_DIST)/xar
-	mkdir -p $(BUILD_DIST)/xar
+	rm -rf $(BUILD_DIST)/xar $(BUILD_DIST)/libxar{1,-dev}
+	mkdir -p $(BUILD_DIST)/xar/usr/share/man \
+		$(BUILD_DIST)/libxar{1,-dev}/usr/lib
 	
 	# xar.mk Prep xar
-	cp -a $(BUILD_STAGE)/xar/usr $(BUILD_DIST)/xar
+	cp -a $(BUILD_STAGE)/xar/usr/{bin,share} $(BUILD_DIST)/xar/usr
+
+	# xar.mk Prep libxar1
+	cp -a $(BUILD_STAGE)/xar/usr/lib/libxar.1.dylib $(BUILD_DIST)/libxar1/usr/lib
+
+	# xar.mk Prep libxar-dev
+	cp -a $(BUILD_STAGE)/xar/usr/lib/!(libxar.1.dylib) $(BUILD_DIST)/libxar-dev/usr/lib
 	
 	# xar.mk Sign
 	$(call SIGN,xar,general.xml)
+	$(call SIGN,libxar1,general.xml)
 	
 	# xar.mk Make .debs
 	$(call PACK,xar,DEB_XAR_V)
+	$(call PACK,libxar1,DEB_XAR_V)
+	$(call PACK,libxar-dev,DEB_XAR_V)
 	
 	# xar.mk Build cleanup
-	rm -rf $(BUILD_DIST)/xar
+	rm -rf $(BUILD_DIST)/xar $(BUILD_DIST)/libxar{1,-dev}
 
 .PHONY: xar xar-package

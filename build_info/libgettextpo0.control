@@ -1,0 +1,8 @@
+Package: libgettextpo0
+Version: @DEB_GETTEXT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Depends: libunistring2, libintl8
+Homepage: http://www.gnu.org/software/gettext/
+Description: process PO files - shared library

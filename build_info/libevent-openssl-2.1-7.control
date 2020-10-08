@@ -1,0 +1,21 @@
+Package: libevent-openssl-2.1-7
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBEVENT_V@
+Conflicts: libevent (<< @DEB_LIBEVENT_V@)
+Replaces: libevent (<< @DEB_LIBEVENT_V@)
+Section: Libraries
+Depends: libevent-core-2.1-7
+Description: Asynchronous event notification library (openssl)
+ Libevent is an asynchronous event notification library that provides a
+ mechanism to execute a callback function when a specific event occurs
+ on a file descriptor or after a timeout has been reached.
+ .
+ It is meant to replace the asynchronous event loop found in
+ event driven network servers. Currently, libevent supports /dev/poll,
+ kqueue(2), event ports, select(2), poll(2) and epoll(4).
+ .
+ There is now a bufferevent type that supports SSL/TLS using the
+ OpenSSL library.  The code for this is build in a separate
+ library, libevent_openssl, so that your programs don't need to
+ link against OpenSSL unless they actually want SSL support.

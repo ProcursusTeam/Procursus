@@ -1,0 +1,20 @@
+Package: p11-kit-modules
+Version: @DEB_P11_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Conflicts: p11-kit (<< @DEB_P11_V@)
+Replaces: p11-kit (<< @DEB_P11_V@)
+Depends: libp11-kit0 (= @DEB_P11_V@), libtasn1-6, libintl8, libffi7, ca-certificates
+Section: Security
+Priority: optional
+Multi-Arch: foreign
+Homepage: https://p11-glue.github.io/p11-glue/p11-kit.html
+Description: p11-glue proxy and trust modules
+ The p11-kit library provides a way to load and enumerate Public-Key
+ Cryptography Standard #11 modules, along with a standard configuration
+ setup for installing PKCS#11 modules so that they're discoverable. It
+ also solves problems with coordinating the use of PKCS#11 by different
+ components or libraries living in the same process.
+ .
+ This package contains the p11-kit proxy module and the system trust
+ policy module.

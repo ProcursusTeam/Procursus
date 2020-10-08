@@ -1,0 +1,12 @@
+Package: zipmerge
+Version: @DEB_LIBZIP_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Conflicts: libzip (<< @DEB_LIBZIP_V@)
+Depends: libzip5 (>= @DEB_LIBZIP_V@)
+Section: Archiving
+Priority: optional
+Description: merge zip archives
+ zipmerge merges a source zip archives into a target zip archive.
+ By default, files in the source zip archives overwrite existing files of the
+ same name in the target zip archive.

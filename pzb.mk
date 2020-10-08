@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS += pzb
 PZB_VERSION := 36
-DEB_PZB_V   ?= $(PZB_VERSION)
+DEB_PZB_V   ?= $(PZB_VERSION)-1
 
 pzb-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tihmstar/partialZipBrowser/archive/$(PZB_VERSION).tar.gz

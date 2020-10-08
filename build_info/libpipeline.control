@@ -1,9 +1,0 @@
-Package: libpipeline
-Maintainer: @DEB_MAINTAINER@
-Architecture: @DEB_ARCH@
-Version: @DEB_LIBPIPELINE_V@
-Section: Development
-Priority: optional
-Homepage: http://savannah.nongnu.org/projects/libpipeline
-Description: Library for manipulating pipelines of subprocesses
-Tag: purpose::library, role::developer

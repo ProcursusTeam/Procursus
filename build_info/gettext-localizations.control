@@ -2,7 +2,7 @@ Package: gettext-localizations
 Version: @DEB_GETTEXT-LOCALIZATIONS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: gettext (>= 0.20.0)
+Depends: libintl8 (>= 0.20.0)
 Conflicts: com.linusyang.localeutf8
 Replaces: com.linusyang.localeutf8
 Provides: com.linusyang.localeutf8 (= 99.9)

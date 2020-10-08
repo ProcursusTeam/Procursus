@@ -1,0 +1,10 @@
+Package: libintl-dev
+Version: @DEB_GETTEXT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Replaces: gettext (<< @DEB_GETTEXT_V@)
+Conflicts: gettext (<< @DEB_GETTEXT_V@)
+Depends: libintl8 (= @DEB_GETTEXT_V@)
+Section: Development
+Homepage: http://www.gnu.org/software/gettext/
+Description: internationalization helper for strings - development files

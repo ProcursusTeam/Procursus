@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += libffi
 LIBFFI_VERSION := 3.3
-DEB_LIBFFI_V   ?= $(LIBFFI_VERSION)
+DEB_LIBFFI_V   ?= $(LIBFFI_VERSION)-1
 
 libffi-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://sourceware.org/pub/libffi/libffi-$(LIBFFI_VERSION).tar.gz
@@ -28,19 +28,24 @@ endif
 
 libffi-package: libffi-stage
 	# libffi.mk Package Structure
-	rm -rf $(BUILD_DIST)/libffi
-	mkdir -p $(BUILD_DIST)/libffi
+	rm -rf $(BUILD_DIST)/libffi{7,-dev}
+	mkdir -p $(BUILD_DIST)/libffi{7,-dev}/usr/lib
 	
-	# libffi.mk Prep libffi
-	cp -a $(BUILD_STAGE)/libffi/usr $(BUILD_DIST)/libffi
+	# libffi.mk Prep libffi7
+	cp -a $(BUILD_STAGE)/libffi/usr/lib/libffi.7.dylib $(BUILD_DIST)/libffi7/usr/lib
+
+	# libffi.mk Prep libffi-dev
+	cp -a $(BUILD_STAGE)/libffi/usr/lib/!(libffi.7.dylib) $(BUILD_DIST)/libffi-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libffi/usr/{include,share} $(BUILD_DIST)/libffi-dev/usr
 	
 	# libffi.mk Sign
-	$(call SIGN,libffi,general.xml)
+	$(call SIGN,libffi7,general.xml)
 	
 	# libffi.mk Make .debs
-	$(call PACK,libffi,DEB_LIBFFI_V)
+	$(call PACK,libffi7,DEB_LIBFFI_V)
+	$(call PACK,libffi-dev,DEB_LIBFFI_V)
 	
 	# libffi.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libffi
+	rm -rf $(BUILD_DIST)/libffi{7,-dev}
 
 .PHONY: libffi libffi-package

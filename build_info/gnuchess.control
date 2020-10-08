@@ -6,4 +6,4 @@ Section: Games
 Homepage: https://www.gnu.org/software/chess/
 Description: GNU Chess is a chess-playing program. It can be used to play chess against the computer on a terminal or, more commonly, as a chess engine for graphical chess frontends such as XBoard.
 Name: GNU Chess
-Depends: libreadline8, libncursesw6, gettext
+Depends: libreadline8, libncursesw6, libintl8

@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 #SUBPROJECTS += rust
-RUST_VERSION := 1.45.2
+RUST_VERSION := 1.46.0
 DEB_RUST_V   ?= $(RUST_VERSION)
 
 ifeq ($(MEMO_TARGET),iphoneos-arm64)
@@ -14,14 +14,13 @@ endif
 
 # This needs ccache extra to build.
 
+##### THIS MAKEFILE IS CURRENTLY WIP AGAIN #####
+
 rust-setup: setup
-	if [ ! -d "$(BUILD_WORK)/rust" ]; then \
-		git clone https://github.com/rust-lang/rust $(BUILD_WORK)/rust; \
-		cd "$(BUILD_WORK)/rust"; \
-		git fetch origin; \
-		git reset --hard origin/master; \
-		git checkout d3fb005 .; \
-	fi
+	-[[ ! -f $(BUILD_SOURCE)/rust-$(RUST_VERSION).tar.gz ]] && \
+		wget -q -nc -O $(BUILD_SOURCE)/rust-$(RUST_VERSION).tar.gz \
+			https://github.com/rust-lang/rust/archive/$(RUST_VERSION).tar.gz
+	$(call EXTRACT_TAR,rust-$(RUST_VERSION).tar.gz,rust-$(RUST_VERSION),rust)
 	
 	mkdir -p "$(BUILD_WORK)/rust/build"
 	mkdir -p "$(BUILD_STAGE)/rust"

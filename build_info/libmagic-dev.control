@@ -1,0 +1,14 @@
+Package: libmagic-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_FILE_V@
+Replaces: file (<< @DEB_FILE_V@)
+Conflicts: file (<< @DEB_FILE_V@)
+Depends: libmagic1 (= @DEB_FILE_V@), liblzma-dev
+Section: Development
+Priority: important
+Description: Recognize the type of data in a file using "magic" numbers - development
+ This library can be used to classify files according to magic number
+ tests.
+ .
+ This package contains the development files.

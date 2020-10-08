@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += gnutls
-GNUTLS_VERSION := 3.6.14
-DEB_GNUTLS_V   ?= $(GNUTLS_VERSION)
+GNUTLS_VERSION := 3.6.15
+DEB_GNUTLS_V   ?= $(GNUTLS_VERSION)-1
 
 gnutls-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/gnutls-$(GNUTLS_VERSION).tar.xz
@@ -24,9 +24,7 @@ gnutls:
 else
 gnutls: gnutls-setup readline gettext libgcrypt libgmp10 libidn2 libunistring nettle p11-kit
 	find $(BUILD_BASE) -name "*.la" -type f -delete
-	if ! [ -f $(BUILD_WORK)/gnutls/configure ]; then \
-		cd $(BUILD_WORK)/gnutls && autoreconf -f -i ; \
-	fi
+	cd $(BUILD_WORK)/gnutls && autoreconf -f -i
 ifeq ($(MEMO_TARGET),watchos-arm64)
 	cd $(BUILD_WORK)/gnutls && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
@@ -50,19 +48,43 @@ endif
 
 gnutls-package: gnutls-stage
 	# gnutls.mk Package Structure
-	rm -rf $(BUILD_DIST)/gnutls
-	mkdir -p $(BUILD_DIST)/gnutls
+	rm -rf $(BUILD_DIST)/gnutls-bin \
+		$(BUILD_DIST)/libgnutls30 \
+		$(BUILD_DIST)/libgnutlsxx28 \
+		$(BUILD_DIST)/libgnutls28-dev
+	mkdir -p $(BUILD_DIST)/gnutls-bin/usr \
+		$(BUILD_DIST)/libgnutls30/usr/lib \
+		$(BUILD_DIST)/libgnutlsxx28/usr/lib \
+		$(BUILD_DIST)/libgnutls28-dev/usr/lib
 	
-	# gnutls.mk Prep gnutls
-	cp -a $(BUILD_STAGE)/gnutls/usr $(BUILD_DIST)/gnutls
+	# gnutls.mk Prep gnutls-bin
+	cp -a $(BUILD_STAGE)/gnutls/usr/bin $(BUILD_DIST)/gnutls-bin/usr
+	
+	# gnutls.mk Prep libgnutls30
+	cp -a $(BUILD_STAGE)/gnutls/usr/lib/libgnutls.30.dylib $(BUILD_DIST)/libgnutls30/usr/lib
+	
+	# gnutls.mk Prep libgnutlsxx28
+	cp -a $(BUILD_STAGE)/gnutls/usr/lib/libgnutlsxx.28.dylib $(BUILD_DIST)/libgnutlsxx28/usr/lib
+	
+	# gnutls.mk Prep libgnutls28-dev
+	cp -a $(BUILD_STAGE)/gnutls/usr/lib/{pkgconfig,libgnutls{,xx}.dylib} $(BUILD_DIST)/libgnutls28-dev/usr/lib
+	cp -a $(BUILD_STAGE)/gnutls/usr/include $(BUILD_DIST)/libgnutls28-dev/usr
 	
 	# gnutls.mk Sign
-	$(call SIGN,gnutls,general.xml)
+	$(call SIGN,gnutls-bin,general.xml)
+	$(call SIGN,libgnutls30,general.xml)
+	$(call SIGN,libgnutlsxx28,general.xml)
 	
 	# gnutls.mk Make .debs
-	$(call PACK,gnutls,DEB_GNUTLS_V)
+	$(call PACK,gnutls-bin,DEB_GNUTLS_V)
+	$(call PACK,libgnutls30,DEB_GNUTLS_V)
+	$(call PACK,libgnutlsxx28,DEB_GNUTLS_V)
+	$(call PACK,libgnutls28-dev,DEB_GNUTLS_V)
 	
 	# gnutls.mk Build cleanup
-	rm -rf $(BUILD_DIST)/gnutls
+	rm -rf $(BUILD_DIST)/gnutls-bin \
+		$(BUILD_DIST)/libgnutls30 \
+		$(BUILD_DIST)/libgnutlsxx28 \
+		$(BUILD_DIST)/libgnutls28-dev
 
 .PHONY: gnutls gnutls-package

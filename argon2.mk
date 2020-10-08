@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS  += argon2
+SUBPROJECTS    += argon2
 ARGON2_VERSION := 20190702
 DEB_ARGON2_V   ?= 0~$(ARGON2_VERSION)
 

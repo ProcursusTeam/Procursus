@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += pcre
 PCRE_VERSION  := 8.44
-DEB_PCRE_V    ?= $(PCRE_VERSION)
+DEB_PCRE_V    ?= $(PCRE_VERSION)-1
 
 pcre-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftp.pcre.org/pub/pcre/pcre-$(PCRE_VERSION).tar.bz2{,.sig}
@@ -38,19 +38,53 @@ endif
 
 pcre-package: pcre-stage
 	# pcre.mk Package Structure
-	rm -rf $(BUILD_DIST)/libpcre
-	mkdir -p $(BUILD_DIST)/libpcre
+	rm -rf $(BUILD_DIST)/libpcre{1{,-dev},16-0,32-0,posix0,cpp0} $(BUILD_DIST)/pcregrep
+	mkdir -p $(BUILD_DIST)/libpcre{1,16-0,32-0,posix0,cpp0}/usr/lib \
+		$(BUILD_DIST)/libpcre1-dev/usr/{bin,lib,share/man/man1} \
+		$(BUILD_DIST)/pcregrep/usr/{bin,share/man/man1}
 	
-	# pcre.mk Prep pcre
-	cp -a $(BUILD_STAGE)/pcre/usr $(BUILD_DIST)/libpcre
+	# pcre.mk Prep libpcre1
+	cp -a $(BUILD_STAGE)/pcre/usr/lib/libpcre.1.dylib $(BUILD_DIST)/libpcre1/usr/lib
+
+	# pcre.mk Prep libpcre{16-0,32-0}
+	for ver in {16,32}; do \
+		cp -a $(BUILD_STAGE)/pcre/usr/lib/libpcre$${ver}.0.dylib $(BUILD_DIST)/libpcre$${ver}-0/usr/lib; \
+	done
+
+	# pcre.mk Prep libpcre{posix0,cpp0}
+	for ver in {posix,cpp}; do \
+		cp -a $(BUILD_STAGE)/pcre/usr/lib/libpcre$${ver}.0.dylib $(BUILD_DIST)/libpcre$${ver}0/usr/lib; \
+	done
+
+	# pcre.mk Prep libpcre1-dev
+	cp -a $(BUILD_STAGE)/pcre/usr/lib/!(*.1*|*.0*|*.0*) $(BUILD_DIST)/libpcre1-dev/usr/lib
+	cp -a $(BUILD_STAGE)/pcre/usr/bin/pcre-config $(BUILD_DIST)/libpcre1-dev/usr/bin
+	cp -a $(BUILD_STAGE)/pcre/usr/share/man/man1/pcre-config.1 $(BUILD_DIST)/libpcre1-dev/usr/share/man/man1
+	cp -a $(BUILD_STAGE)/pcre/usr/share/man/man3 $(BUILD_DIST)/libpcre1-dev/usr/share/man
+	cp -a $(BUILD_STAGE)/pcre/usr/include $(BUILD_DIST)/libpcre1-dev/usr
+
+	# pcre.mk Prep pcregrep
+	cp -a $(BUILD_STAGE)/pcre/usr/bin/pcregrep $(BUILD_DIST)/pcregrep/usr/bin
+	cp -a $(BUILD_STAGE)/pcre/usr/share/man/man1/pcregrep.1 $(BUILD_DIST)/pcregrep/usr/share/man/man1
 	
 	# pcre.mk Sign
-	$(call SIGN,libpcre,general.xml)
+	$(call SIGN,libpcre1,general.xml)
+	$(call SIGN,libpcre16-0,general.xml)
+	$(call SIGN,libpcre32-0,general.xml)
+	$(call SIGN,libpcreposix0,general.xml)
+	$(call SIGN,libpcrecpp0,general.xml)
+	$(call SIGN,pcregrep,general.xml)
 	
 	# pcre.mk Make .debs
-	$(call PACK,libpcre,DEB_PCRE_V)
+	$(call PACK,libpcre1,DEB_PCRE_V)
+	$(call PACK,libpcre1-dev,DEB_PCRE_V)
+	$(call PACK,libpcre16-0,DEB_PCRE_V)
+	$(call PACK,libpcre32-0,DEB_PCRE_V)
+	$(call PACK,libpcreposix0,DEB_PCRE_V)
+	$(call PACK,libpcrecpp0,DEB_PCRE_V)
+	$(call PACK,pcregrep,DEB_PCRE_V)
 	
 	# pcre.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libpcre
+	rm -rf $(BUILD_DIST)/libpcre{1{,-dev},16-0,32-0,posix0,cpp0} $(BUILD_DIST)/pcregrep
 
 .PHONY: pcre pcre-package

@@ -2,8 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS  += bison
-BISON_VERSION := 3.7.1
+SUBPROJECTS   += bison
+BISON_VERSION := 3.7.2
 DEB_BISON_V   ?= $(BISON_VERSION)
 
 bison-setup: setup

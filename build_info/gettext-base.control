@@ -1,0 +1,11 @@
+Package: gettext-base
+Version: @DEB_GETTEXT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Conflicts: gettext (<< @DEB_GETTEXT_V@)
+Replaces: gettext (<< @DEB_GETTEXT_V@)
+Depends: libintl8
+Section: System
+Priority: optional
+Homepage: http://www.gnu.org/software/gettext/
+Description: GNU Internationalization utilities for the base system

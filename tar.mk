@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += tar
 TAR_VERSION   := 1.32
-DEB_TAR_V     ?= $(TAR_VERSION)
+DEB_TAR_V     ?= $(TAR_VERSION)-1
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 TAR_CONFIGURE_ARGS += ac_cv_func_rpmatch=no
@@ -19,11 +19,10 @@ ifneq ($(wildcard $(BUILD_WORK)/tar/.build_complete),)
 tar:
 	@echo "Using previously built tar."
 else
-tar: tar-setup
+tar: tar-setup gettext
 	cd $(BUILD_WORK)/tar && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
-		--disable-nls \
 		$(TAR_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/tar
 	+$(MAKE) -C $(BUILD_WORK)/tar install \

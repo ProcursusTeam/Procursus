@@ -2,7 +2,7 @@ Package: pincrush
 Version: @DEB_PINCRUSH_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libpng16
+Depends: libpng16-16
 Section: Utilities
 Homepage: http://howett.net/pincrush
 Description: optimize PNGs just like Apple does

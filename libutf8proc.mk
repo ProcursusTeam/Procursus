@@ -2,9 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS           += libutf8proc
-LIBUTF8PROC_VERSION   := 2.5.0
-DEB_LIBUTF8PROC_V     ?= $(LIBUTF8PROC_VERSION)-1
+SUBPROJECTS         += libutf8proc
+LIBUTF8PROC_VERSION := 2.5.0
+DEB_LIBUTF8PROC_V   ?= $(LIBUTF8PROC_VERSION)-2
 
 libutf8proc-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/JuliaStrings/utf8proc/archive/v$(LIBUTF8PROC_VERSION).tar.gz
@@ -28,19 +28,25 @@ endif
 
 libutf8proc-package: libutf8proc-stage
 	# libutf8proc.mk Package Structure
-	rm -rf $(BUILD_DIST)/libutf8proc
-	mkdir -p $(BUILD_DIST)/libutf8proc
-	
-	# libutf8proc.mk Prep libutf8proc
-	cp -a $(BUILD_STAGE)/libutf8proc/usr $(BUILD_DIST)/libutf8proc
-	
+	rm -rf $(BUILD_DIST)/libutf8proc{2,-dev}
+	mkdir -p $(BUILD_DIST)/libutf8proc{2,-dev}/usr/lib
+
+	# libutf8proc.mk Prep libutf8proc-dev
+	cp -a $(BUILD_STAGE)/libutf8proc/usr/include $(BUILD_DIST)/libutf8proc-dev/usr
+	cp -a $(BUILD_STAGE)/libutf8proc/usr/lib/{pkgconfig,libutf8proc.{a,dylib}} $(BUILD_DIST)/libutf8proc-dev/usr/lib
+
+	# libutf8proc.mk Prep libutf8proc2
+	cp -a $(BUILD_STAGE)/libutf8proc/usr/lib/libutf8proc.2.dylib $(BUILD_DIST)/libutf8proc2/usr/lib
+
 	# libutf8proc.mk Sign
-	$(call SIGN,libutf8proc,general.xml)
-	
+	$(call SIGN,libutf8proc-dev,general.xml)
+	$(call SIGN,libutf8proc2,general.xml)
+
 	# libutf8proc.mk Make .debs
-	$(call PACK,libutf8proc,DEB_LIBUTF8PROC_V)
-	
+	$(call PACK,libutf8proc-dev,DEB_LIBUTF8PROC_V)
+	$(call PACK,libutf8proc2,DEB_LIBUTF8PROC_V)
+
 	# libutf8proc.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libutf8proc
+	rm -rf $(BUILD_DIST)/libutf8proc{2,-dev}
 
 .PHONY: libutf8proc libutf8proc-package

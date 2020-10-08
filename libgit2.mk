@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS      += libgit2
 LIBGIT2_VERSION  := 1.0.1
-DEB_LIBGIT2_V    ?= $(LIBGIT2_VERSION)
+DEB_LIBGIT2_V    ?= $(LIBGIT2_VERSION)-1
 
 libgit2-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libgit2/libgit2/archive/v$(LIBGIT2_VERSION).tar.gz
@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libgit2/.build_complete),)
 libgit2:
 	@echo "Using previously built libgit2."
 else
-libgit2: libgit2-setup openssl libssh2 pcre
+libgit2: libgit2-setup openssl libssh2 pcre2
 	cd $(BUILD_WORK)/libgit2 && cmake . \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
@@ -35,7 +35,8 @@ libgit2: libgit2-setup openssl libssh2 pcre
 		-DCMAKE_SHARED_LINKER_FLAGS="-L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
 		-DCMAKE_STATIC_LINKER_FLAGS="" \
 		-DCOMMON_ARCH=$(DEB_ARCH) \
-		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) 
+		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
+		-DREGEX_BACKEND=pcre2
 	+$(MAKE) -C $(BUILD_WORK)/libgit2
 	+$(MAKE) -C $(BUILD_WORK)/libgit2 install \
 		DESTDIR="$(BUILD_STAGE)/libgit2"

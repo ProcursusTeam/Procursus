@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS += git
 GIT_VERSION := 2.28.0
-DEB_GIT_V   ?= $(GIT_VERSION)
+DEB_GIT_V   ?= $(GIT_VERSION)-2
 
 GIT_ARGS += uname_S=Darwin \
 	HOST_CPU=$(GNU_HOST_TRIPLE) \

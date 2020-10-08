@@ -1,0 +1,17 @@
+Package: libpcreposix0
+Version: @DEB_PCRE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Conflicts: pcre (<<1:0), libpcre (<< @DEB_PCRE_V@)
+Depends: libpcre1 (= @DEB_PCRE_V@)
+Section: Libraries
+Priority: standard
+Multi-Arch: foreign
+Description: Old Perl 5 Compatible Regular Expression Library - posix-compatible runtime files
+ This is a library of functions to support regular expressions whose syntax 
+ and semantics are as close as possible to those of the Perl 5 language.
+ .
+ New packages should use the newer pcre2 packages, and existing
+ packages should migrate to pcre2.
+ .
+ This package contains the runtime library for the posix-compatible API.

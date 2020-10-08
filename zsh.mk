@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += zsh
 ZSH_VERSION   := 5.8
-DEB_ZSH_V     ?= $(ZSH_VERSION)-1
+DEB_ZSH_V     ?= $(ZSH_VERSION)-2
 
 zsh-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.zsh.org/pub/zsh-$(ZSH_VERSION).tar.xz{,.asc}
@@ -36,7 +36,8 @@ zsh: zsh-setup pcre ncurses
 		zsh_cv_path_utmpx=/var/run/utmpx \
 		zsh_cv_path_utmp=no \
 		ac_cv_prog_PCRECONF="$(BUILD_STAGE)/pcre/usr/bin/pcre-config"
-	+$(MAKE) -C $(BUILD_WORK)/zsh
+	+$(MAKE) -C $(BUILD_WORK)/zsh \
+		CPP="$(CPP) $(CPPFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/zsh install \
 		DESTDIR="$(BUILD_STAGE)/zsh"
 	rm -f $(BUILD_STAGE)/zsh/usr/bin/zsh-$(ZSH_VERSION)

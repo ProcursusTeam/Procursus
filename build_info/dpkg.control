@@ -3,8 +3,8 @@ Version: @DEB_DPKG_V@
 Architecture: @DEB_ARCH@
 Essential: yes
 Maintainer: @DEB_MAINTAINER@
-Pre-Depends: tar (>= 1.23), gettext (>= 0.20)
-Depends: bash, coreutils, diffutils, tar, xz-utils (>= 5.2.5), bzip2, gzip, gettext, zstd
+Pre-Depends: tar (>= 1.23), libintl8 (>= 0.20)
+Depends: bash, coreutils, diffutils, tar, liblzma5 (>= 5.2.5), libintl8, libzstd1
 Section: Packaging
 Priority: required
 Homepage: http://wiki.debian.org/Teams/Dpkg

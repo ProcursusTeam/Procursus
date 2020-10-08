@@ -1,0 +1,10 @@
+Package: libdb18.1-stl-dev
+Version: @DEB_BDB_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libdb18.1-stl (>= @DEB_BDB_V@)
+Section: Development
+Priority: standard
+Description: Berkeley v5.3 Database Libraries [STL development]
+ This is the development package which contains headers and static
+ libraries for the Berkeley v5.3 database library.

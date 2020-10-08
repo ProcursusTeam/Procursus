@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS     += libassuan
 LIBASSUAN_VERSION := 2.5.3
-DEB_LIBASSUAN_V   ?= $(LIBASSUAN_VERSION)
+DEB_LIBASSUAN_V   ?= $(LIBASSUAN_VERSION)-2
 
 libassuan-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/libassuan/libassuan-$(LIBASSUAN_VERSION).tar.bz2{,.sig}
@@ -30,20 +30,26 @@ endif
 
 libassuan-package: libassuan-stage
 	# libassuan.mk Package Structure
-	rm -rf $(BUILD_DIST)/libassuan
-	mkdir -p $(BUILD_DIST)/libassuan
+	rm -rf $(BUILD_DIST)/libassuan{-dev,0}
+	mkdir -p $(BUILD_DIST)/libassuan{-dev,0}/usr/lib
 	
-	# libassuan.mk Prep libassuan
-	cp -a $(BUILD_STAGE)/libassuan/usr $(BUILD_DIST)/libassuan
+	# libassuan.mk Prep libassuan0
+	cp -a $(BUILD_STAGE)/libassuan/usr/lib/libassuan.0.dylib $(BUILD_DIST)/libassuan0/usr/lib
+	
+	# libassuan.mk Prep libassuan-dev
+	cp -a $(BUILD_STAGE)/libassuan/usr/lib/{pkgconfig,libassuan.dylib} $(BUILD_DIST)/libassuan-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libassuan/usr/{bin,share,include} $(BUILD_DIST)/libassuan-dev/usr
 	
 	# libassuan.mk Sign
-	$(call SIGN,libassuan,general.xml)
+	$(call SIGN,libassuan0,general.xml)
+	$(call SIGN,libassuan-dev,general.xml)
 	
 	# libassuan.mk Make .debs
-	$(call PACK,libassuan,DEB_LIBASSUAN_V)
+	$(call PACK,libassuan0,DEB_LIBASSUAN_V)
+	$(call PACK,libassuan-dev,DEB_LIBASSUAN_V)
 	
 	# libassuan.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libassuan
+	rm -rf $(BUILD_DIST)/libassuan{-dev,0}
 
 .PHONY: libassuan libassuan-package
 

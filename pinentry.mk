@@ -2,9 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS    += pinentry
+SUBPROJECTS      += pinentry
 PINENTRY_VERSION := 1.1.0
-DEB_PINENTRY_V   ?= $(PINENTRY_VERSION)
+DEB_PINENTRY_V   ?= $(PINENTRY_VERSION)-3
 
 pinentry-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.gnupg.org/ftp/gcrypt/pinentry/pinentry-$(PINENTRY_VERSION).tar.bz2{,.sig}
