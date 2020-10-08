@@ -1,0 +1,21 @@
+Package: libnode83
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_NODEJS_V@
+Section: Libraries
+Conflicts: nodejs (<< 14.13.1)
+Depends: libbrotli1, libc-ares2, libssl1.1, libnghttp2-14, libuv1
+Description: evented I/O for V8 javascript - runtime library
+ Node.js is a platform built on Chrome's JavaScript runtime for easily
+ building fast, scalable network applications. Node.js uses an
+ event-driven, non-blocking I/O model that makes it lightweight and
+ efficient, perfect for data-intensive real-time applications that run
+ across distributed devices.
+ .
+ Node.js is bundled with several useful libraries to handle server
+ tasks:
+ .
+ System, Events, Standard I/O, Modules, Timers, Child Processes, POSIX,
+ HTTP, Multipart Parsing, TCP, DNS, Assert, Path, URL, Query Strings.
+ .
+ This package provides the dynamic library for Node.js.
