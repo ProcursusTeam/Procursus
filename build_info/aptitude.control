@@ -1,0 +1,15 @@
+Package: aptitude
+Section: Packaging
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_APTITUDE_V@
+Description: terminal-based package manager
+ aptitude is a package manager with a number of useful features,
+ including: a mutt-like syntax for matching packages in a flexible
+ manner, dselect-like persistence of user actions, the ability to
+ retrieve and display the Debian changelog of most packages, and a
+ command-line mode similar to that of apt-get.
+ .
+ aptitude is also Y2K-compliant, non-fattening, naturally cleansing,
+ and housebroken.
+Depends: libapt-pkg6.0, libboost-iostreams1.74.0, libboost-system1.74.0, libcwidget4, libncursesw6, libsigc++-2.0-0v5, libxapian30, libsqlite3-1, sudo

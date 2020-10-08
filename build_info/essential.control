@@ -4,7 +4,7 @@ Architecture: @DEB_ARCH@
 Essential: yes
 Maintainer: @DEB_MAINTAINER@
 Pre-Depends: bootstrap | dpkg (>= 1.19.0)
-Depends: cydia | org.coolstar.sileo | xyz.willy.zebra | me.apptapp.installer
+Depends: cydia | org.coolstar.sileo | xyz.willy.zebra | me.apptapp.installer | aptitude
 Section: System
 Priority: required
 Description: contains nothing, represents everything
