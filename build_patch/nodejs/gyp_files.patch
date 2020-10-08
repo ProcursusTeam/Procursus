@@ -117,6 +117,32 @@ diff -ruN node-v14.13.0/common.gypi nodejs/common.gypi
        ['OS=="freebsd" and node_use_dtrace=="true"', {
          'libraries': [ '-lelf' ],
        }],
+diff -ruN node-v14.13.0/common.gypi nodejs/common.gypi
+--- node-v14.13.0/common.gypi     2020-10-08 12:41:29.000000000 +0900
++++ nodejs/common.gypi 2020-10-08 12:41:41.000000000 +0900
+@@ -532,6 +532,21 @@
+           ],
+         },
+         'target_conditions': [
++          ['_toolset=="host" and host_os=="mac"', {
++            'xcode_settings': {
++              'SDKROOT': '',
++              'IPHONEOS_DEPLOYMENT_TARGET': '',
++              'MACOSX_DEPLOYMENT_TARGET': '10.10',
++            },
++            'conditions':[
++              ['target_arch=="arm64"', {
++                'xcode_settings': {
++                  'ARCHS!': ['arm64'],
++                  'ARCHS': ['x86_64'],
++                },
++              }],
++            ],
++          }],
+           ['_type!="static_library"', {
+             'xcode_settings': {
+               'OTHER_LDFLAGS': [
+
 diff -ruN node-v14.13.0/configure.py nodejs/configure.py
 --- node-v14.13.0/configure.py	2020-09-30 01:58:11.000000000 +0900
 +++ nodejs/configure.py	2020-10-07 10:47:03.000000000 +0900
