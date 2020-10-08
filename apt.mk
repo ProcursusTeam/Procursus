@@ -51,6 +51,8 @@ apt: apt-setup libgcrypt berkeleydb lz4 xz zstd
 	+$(MAKE) -C $(BUILD_WORK)/apt/build
 	+$(MAKE) -C $(BUILD_WORK)/apt/build install \
 		DESTDIR="$(BUILD_STAGE)/apt"
+	+$(MAKE) -C $(BUILD_WORK)/apt/build install \
+		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/apt/.build_complete
 endif
 
