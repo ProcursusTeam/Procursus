@@ -16,11 +16,14 @@ ifneq ($(wildcard $(BUILD_WORK)/nghttp2/.build_complete),)
 nghttp2:
 	@echo "Using previously built nghttp2."
 else
-nghttp2: nghttp2-setup openssl libc-ares libev jansson libjemalloc
+nghttp2: nghttp2-setup openssl libc-ares libev jansson libjemalloc libevent
 	cd $(BUILD_WORK)/nghttp2 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
-		--disable-dependency-tracking
+		--disable-dependency-tracking \
+		--without-systemd \
+		LIBXML2_CFLAGS=-I$(TARGET_SYSROOT)/usr/include/libxml2 \
+		LIBXML2_LIBS=-lxml2
 	+$(MAKE) -C $(BUILD_WORK)/nghttp2
 	+$(MAKE) -C $(BUILD_WORK)/nghttp2 install \
 		DESTDIR="$(BUILD_STAGE)/nghttp2"
