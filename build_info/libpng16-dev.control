@@ -1,9 +1,10 @@
-Package: libpng16
+Package: libpng16-dev
 Version: @DEB_LIBPNG16_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Section: Multimedia
+Depends: libpng16-16 (>= @DEB_LIBPNG16_V@)
+Section: Development
 Priority: optional
 Multi-Arch: foreign
-Description: library for manipulating PNG files
+Description: library for manipulating PNG files (development files)
 Tag: purpose::library, role::developer
