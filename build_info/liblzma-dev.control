@@ -1,5 +1,4 @@
 Package: liblzma-dev
-Essential: yes
 Version: @DEB_XZ_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
