@@ -6,7 +6,7 @@ Provides: libcurl-dev (= @DEB_CURL_V@)
 Depends: libcurl4 (= @DEB_CURL_V@), libidn2-dev, libssl-dev, libssh2-dev, libnghttp2-dev
 Replaces: curl (<< @DEB_CURL_V@)
 Conflicts: curl (<< @DEB_CURL_V@)
-Section: Libraries
+Section: Development
 Priority: standard
 Homepage: http://curl.haxx.se/
 Description: development files and documentation for libcurl (OpenSSL flavour)
