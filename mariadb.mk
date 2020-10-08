@@ -90,8 +90,7 @@ mariadb: mariadb-setup mariadb-import-executables openssl ncurses readline libev
 		-DCURL_LIBRARY=$(BUILD_BASE)/usr/lib/libcurl.dylib \
 		-DLIBXML2_INCLUDE_DIR=$(TARGET_SYSROOT)/usr/include \
 		-DICONV_LIBRARIES=$(TARGET_SYSROOT)/usr/lib/libiconv.tbd \
-		-DIMPORT_EXECUTABLES=$(BUILD_WORK)/mariadb/host/import_executables.cmake \
-		-DWITHOUT_MROONGA=YES
+		-DIMPORT_EXECUTABLES=$(BUILD_WORK)/mariadb/host/import_executables.cmake
 
 	+$(MAKE) -C $(BUILD_WORK)/mariadb LIBTOOL=$(GNU_HOST_TRIPLE)-libtool
 	+$(MAKE) -C $(BUILD_WORK)/mariadb install \
