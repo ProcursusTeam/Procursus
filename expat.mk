@@ -37,7 +37,7 @@ expat-package: expat-stage
 	cp -a $(BUILD_STAGE)/expat/usr/bin/xmlwf $(BUILD_DIST)/expat/usr/bin
 	
 	# expat.mk Prep libexpat1
-	cp -a $(BUILD_STAGE)/expat/usr/lib/libexpat.1{,.6.12}.dylib $(BUILD_DIST)/libexpat1/usr/lib
+	cp -a $(BUILD_STAGE)/expat/usr/lib/libexpat.1*.dylib $(BUILD_DIST)/libexpat1/usr/lib
 	
 	# expat.mk Prep libexpat1-dev
 	cp -a $(BUILD_STAGE)/expat/usr/lib/{libexpat.{a,dylib},pkgconfig} $(BUILD_DIST)/libexpat1-dev/usr/lib
