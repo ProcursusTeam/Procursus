@@ -1,0 +1,17 @@
+Package: npm
+Version: @DEB_NPM_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Depends: nodejs
+Section: Scripting
+Priority: optional
+Description: package manager for Node.js
+ Node.js is an event-based server-side javascript engine.
+ .
+ npm is the package manager for the Node JavaScript platform.  It puts
+ modules in place so that node can find them, and manages dependency
+ conflicts intelligently.
+ .
+ It is extremely configurable to support a wide variety of use cases.
+ Most commonly, it is used to publish, discover, install, and develop
+ node programs.
