@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS  += tor
 TOR_VERSION  := 0.4.4.5
-DEB_TOR_V    ?= $(TOR_VERSION)
+DEB_TOR_V    ?= $(TOR_VERSION)-1
 
 tor-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://dist.torproject.org/tor-$(TOR_VERSION).tar.gz{,.asc}

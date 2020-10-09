@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS     += libssh2
 LIBSSH2_VERSION := 1.9.0
-DEB_LIBSSH2_V   ?= $(LIBSSH2_VERSION)
+DEB_LIBSSH2_V   ?= $(LIBSSH2_VERSION)-2
 
 libssh2-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://libssh2.org/download/libssh2-$(LIBSSH2_VERSION).tar.gz{,.asc}
@@ -33,19 +33,24 @@ endif
 
 libssh2-package: libssh2-stage
 	# libssh2.mk Package Structure
-	rm -rf $(BUILD_DIST)/libssh2
-	mkdir -p $(BUILD_DIST)/libssh2
+	rm -rf $(BUILD_DIST)/libssh2-{1,dev}
+	mkdir -p $(BUILD_DIST)/libssh2-{1,dev}/usr/lib
 	
-	# libssh2.mk Prep libssh2
-	cp -a $(BUILD_STAGE)/libssh2/usr $(BUILD_DIST)/libssh2
+	# libssh2.mk Prep libssh2-1
+	cp -a $(BUILD_STAGE)/libssh2/usr/lib/libssh2.1.dylib $(BUILD_DIST)/libssh2-1/usr/lib
+	
+	# libssh2.mk Prep libssh2-dev
+	cp -a $(BUILD_STAGE)/libssh2/usr/lib/{pkgconfig,libssh2.{dylib,a}} $(BUILD_DIST)/libssh2-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libssh2/usr/{include,share} $(BUILD_DIST)/libssh2-dev/usr/
 	
 	# libssh2.mk Sign
-	$(call SIGN,libssh2,general.xml)
+	$(call SIGN,libssh2-1,general.xml)
 	
 	# libssh2.mk Make .debs
-	$(call PACK,libssh2,DEB_LIBSSH2_V)
+	$(call PACK,libssh2-1,DEB_LIBSSH2_V)
+	$(call PACK,libssh2-dev,DEB_LIBSSH2_V)
 	
 	# libssh2.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libssh2
+	rm -rf $(BUILD_DIST)/libssh2-{1,dev}
 
 .PHONY: libssh2 libssh2-package

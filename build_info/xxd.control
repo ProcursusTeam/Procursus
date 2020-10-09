@@ -2,7 +2,7 @@ Package: xxd
 Version: @DEB_VIM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: gettext
+Depends: libintl8
 Conflicts: vim (<< 8.2.0650)
 Section: Text_Editors
 Priority: standard

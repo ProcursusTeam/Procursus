@@ -1,0 +1,11 @@
+Package: libdb18.1++-dev
+Version: @DEB_BDB_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libdb18.1++ (>= @DEB_BDB_V@)
+Section: Development
+Priority: standard
+Description: Berkeley v5.3 Database Libraries for C++ [development]
+ This is the development package which contains headers and static
+ libraries for the Berkeley v5.3 database library.  This is only for
+ programs which will use the C++ interface.

@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS        += libarchive
 LIBARCHIVE_VERSION := 3.4.3
-DEB_LIBARCHIVE_V   ?= $(LIBARCHIVE_VERSION)-1
+DEB_LIBARCHIVE_V   ?= $(LIBARCHIVE_VERSION)-4
 
 libarchive-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libarchive/libarchive/releases/download/v$(LIBARCHIVE_VERSION)/libarchive-$(LIBARCHIVE_VERSION).tar.xz

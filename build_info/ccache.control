@@ -1,0 +1,12 @@
+Package: ccache
+Version: @DEB_CCACHE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Suggests: distcc | icecc
+Homepage: https://ccache.samba.org
+Description: Compiler cache for fast recompilation of C/C++ code
+ ccache is a compiler cache. It speeds up recompilation by caching
+ previous compilations and detecting when the same compilation is
+ being done again. Supported languages are C, C++, Objective-C and
+ Objective-C++.

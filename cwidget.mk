@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS   += cwidget
+SUBPROJECTS     += cwidget
 CWIDGET_VERSION := 0.5.18
 DEB_CWIDGET_V   ?= $(CWIDGET_VERSION)
 

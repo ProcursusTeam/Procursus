@@ -2,7 +2,7 @@ Package: less
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LESS_V@
-Depends: libncursesw6, libpcre
+Depends: libncursesw6, libpcre2-8-0
 Replaces: system-cmds (<= 433.4-11)
 Provides: more
 Section: Utilities

@@ -2,9 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS += tsschecker
+SUBPROJECTS        += tsschecker
 TSSCHECKER_VERSION := 304
-DEB_TSSCHECKER_V   ?= $(TSSCHECKER_VERSION)
+DEB_TSSCHECKER_V   ?= $(TSSCHECKER_VERSION)-1
 
 tsschecker-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tihmstar/tsschecker/archive/$(TSSCHECKER_VERSION).tar.gz

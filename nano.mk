@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += nano
-NANO_VERSION := 5.2
+NANO_VERSION := 5.3
 DEB_NANO_V   ?= $(NANO_VERSION)
 
 nano-setup: setup
@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/nano/.build_complete),)
 nano:
 	@echo "Using previously built nano."
 else
-nano: nano-setup ncurses gettext
+nano: nano-setup ncurses gettext file
 	cd $(BUILD_WORK)/nano && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

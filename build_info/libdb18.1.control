@@ -1,0 +1,14 @@
+Package: libdb18.1
+Version: @DEB_BDB_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libssl1.1
+Section: Libraries
+Priority: standard
+Homepage: http://www.oracle.com/technology/products/berkeley-db/index.html
+Description: Berkeley v18.1 Database Libraries [runtime]
+ This is the runtime package for programs that use the v18.1 Berkeley
+ database library.
+Replaces: berkeleydb
+Conflicts: berkeleydb
+Provides: berkeleydb (= @DEB_BDB_V@)

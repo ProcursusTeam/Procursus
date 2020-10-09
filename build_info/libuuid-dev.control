@@ -1,0 +1,13 @@
+Package: libuuid-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_UUID_V@
+Replaces: uuid (<< @DEB_UUID_V@)
+Conflicts: uuid (<< @DEB_UUID_V@)
+Section: Development
+Priority: optional
+Description: Universally Unique ID library - headers and static libraries
+ The libuuid library generates and parses 128-bit Universally Unique IDs
+ (UUIDs). See RFC 4122 for more information.
+ .
+ This package contains the development environment for the uuid library.

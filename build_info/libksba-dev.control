@@ -1,0 +1,11 @@
+Package: libksba-dev
+Version: @DEB_KSBA_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libksba8 (= @DEB_KSBA_V@)
+Replaces: libksba (<< @DEB_KSBA_V@)
+Conflicts: libksba (<< @DEB_KSBA_V@)
+Section: Development
+Priority: optional
+Multi-Arch: foreign
+Description: X.509 and CMS support library - development files

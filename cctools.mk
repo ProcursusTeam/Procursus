@@ -5,8 +5,8 @@ endif
 #SUBPROJECTS    += cctools
 CCTOOLS_VERSION := 949.0.1
 LD64_VERSION    := 530
-DEB_CCTOOLS_V   ?= $(CCTOOLS_VERSION)-1
-DEB_LD64_V      ?= $(LD64_VERSION)-2
+DEB_CCTOOLS_V   ?= $(CCTOOLS_VERSION)-2
+DEB_LD64_V      ?= $(LD64_VERSION)-3
 
 cctools-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/Diatrus/cctools-port/archive/$(CCTOOLS_VERSION)-ld64-$(LD64_VERSION).tar.gz

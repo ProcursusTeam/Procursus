@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS           += build-essential
+SUBPROJECTS             += build-essential
 BUILD-ESSENTIAL_VERSION := 1
 DEB_BUILD-ESSENTIAL_V   ?= $(BUILD-ESSENTIAL_VERSION)
 

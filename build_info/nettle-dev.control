@@ -1,0 +1,11 @@
+Package: nettle-dev
+Version: @DEB_NETTLE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libnettle8 (= @DEB_NETTLE_V@), libhogweed6 (= @DEB_NETTLE_V@)
+Section: Development
+Priority: optional
+Homepage: http://www.lysator.liu.se/~nisse/nettle/
+Description: low level cryptographic library (development files)
+Replaces: nettle
+Conflicts: nettle

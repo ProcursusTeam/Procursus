@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS  += make
 MAKE_VERSION := 4.3
-DEB_MAKE_V   ?= $(MAKE_VERSION)
+DEB_MAKE_V   ?= $(MAKE_VERSION)-2
 
 make-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/make/make-$(MAKE_VERSION).tar.gz{,.sig}
@@ -20,7 +20,8 @@ make: make-setup gettext
 	$(SED) -i 's/defined (__arm) ||//' $(BUILD_WORK)/make/src/makeint.h
 	cd $(BUILD_WORK)/make && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/usr \
+		--with-guile=no
 	+$(MAKE) -C $(BUILD_WORK)/make \
 		CFLAGS="$(CFLAGS) -DPOSIX"
 	+$(MAKE) -C $(BUILD_WORK)/make install \

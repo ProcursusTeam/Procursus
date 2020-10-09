@@ -19,15 +19,15 @@ update-alternatives --install /usr/bin/rview rview /usr/bin/vim.$variant 30
 for i in vi view ex editor ; do
   update-alternatives \
     --install /usr/bin/$i $i /usr/bin/vim.$variant 30 \
-    --slave $mandir/da/man1/$i.1 $i.da.1 $mandir/da/man1/vim.1 \
-    --slave $mandir/de/man1/$i.1 $i.de.1 $mandir/de/man1/vim.1 \
-    --slave $mandir/fr/man1/$i.1 $i.fr.1 $mandir/fr/man1/vim.1 \
-    --slave $mandir/it/man1/$i.1 $i.it.1 $mandir/it/man1/vim.1 \
-    --slave $mandir/ja/man1/$i.1 $i.ja.1 $mandir/ja/man1/vim.1 \
-    --slave $mandir/pl/man1/$i.1 $i.pl.1 $mandir/pl/man1/vim.1 \
-    --slave $mandir/ru/man1/$i.1 $i.ru.1 $mandir/ru/man1/vim.1 \
-    --slave $mandir/man1/$i.1 $i.1 \
-            $mandir/man1/vim.1
+    --slave $mandir/da/man1/$i.1.zst $i.da.1.zst $mandir/da/man1/vim.1.zst \
+    --slave $mandir/de/man1/$i.1.zst $i.de.1.zst $mandir/de/man1/vim.1.zst \
+    --slave $mandir/fr/man1/$i.1.zst $i.fr.1.zst $mandir/fr/man1/vim.1.zst \
+    --slave $mandir/it/man1/$i.1.zst $i.it.1.zst $mandir/it/man1/vim.1.zst \
+    --slave $mandir/ja/man1/$i.1.zst $i.ja.1.zst $mandir/ja/man1/vim.1.zst \
+    --slave $mandir/pl/man1/$i.1.zst $i.pl.1.zst $mandir/pl/man1/vim.1.zst \
+    --slave $mandir/ru/man1/$i.1.zst $i.ru.1.zst $mandir/ru/man1/vim.1.zst \
+    --slave $mandir/man1/$i.1.zst $i.1.zst \
+            $mandir/man1/vim.1.zst
 done
 
 exit 0

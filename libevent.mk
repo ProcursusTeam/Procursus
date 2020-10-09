@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += libevent
-LIBEVENT_VERSION   := 2.1.11
+LIBEVENT_VERSION   := 2.1.12
 DEB_LIBEVENT_V     ?= $(LIBEVENT_VERSION)-1
 
 libevent-setup: setup
@@ -28,19 +28,49 @@ endif
 
 libevent-package: libevent-stage
 	# libevent.mk Package Structure
-	rm -rf $(BUILD_DIST)/libevent
-	mkdir -p $(BUILD_DIST)/libevent
-	
-	# libevent.mk Prep libevent
-	cp -a $(BUILD_STAGE)/libevent/usr $(BUILD_DIST)/libevent
-	
+	rm -rf $(BUILD_DIST)/libevent-{{core-,extra-,openssl-,pthreads-,}2.1-7,dev}
+	mkdir -p \
+		$(BUILD_DIST)/libevent-{core-,extra-,openssl-,pthreads-,}2.1-7/usr/lib \
+		$(BUILD_DIST)/libevent-dev
+
+	# libevent.mk Prep libevent-2.1-7
+	cp -a $(BUILD_STAGE)/libevent/usr/lib/libevent-2.1.7.dylib $(BUILD_DIST)/libevent-2.1-7/usr/lib
+
+	# libevent.mk Prep libevent-core-2.1-7
+	cp -a $(BUILD_STAGE)/libevent/usr/lib/libevent_core-2.1.7.dylib $(BUILD_DIST)/libevent-core-2.1-7/usr/lib
+
+	# libevent.mk Prep libevent-dev
+	cp -a $(BUILD_STAGE)/libevent/usr/include $(BUILD_DIST)/libevent-dev/usr
+	cp -a $(BUILD_STAGE)/libevent/usr/lib/pkgconfig $(BUILD_DIST)/libevent-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libevent/usr/lib/libevent{_{core,extra,openssl,pthreads},}.{a,dylib} $(BUILD_DIST)/libevent-dev/usr/lib
+
+	# libevent.mk Prep libevent-extra-2.1-7
+	cp -a $(BUILD_STAGE)/libevent/usr/lib/libevent_extra-2.1.7.dylib $(BUILD_DIST)/libevent-extra-2.1-7/usr/lib
+
+	# libevent.mk Prep libevent-openssl-2.1-7
+	cp -a $(BUILD_STAGE)/libevent/usr/lib/libevent_openssl-2.1.7.dylib $(BUILD_DIST)/libevent-openssl-2.1-7/usr/lib
+
+	# libevent.mk Prep libevent-pthreads-2.1-7
+	cp -a $(BUILD_STAGE)/libevent/usr/lib/libevent_pthreads-2.1.7.dylib $(BUILD_DIST)/libevent-pthreads-2.1-7/usr/lib
+
+
 	# libevent.mk Sign
-	$(call SIGN,libevent,general.xml)
-	
+	$(call SIGN,libevent-2.1-7,general.xml)
+	$(call SIGN,libevent-core-2.1-7,general.xml)
+	$(call SIGN,libevent-dev,general.xml)
+	$(call SIGN,libevent-extra-2.1-7,general.xml)
+	$(call SIGN,libevent-openssl-2.1-7,general.xml)
+	$(call SIGN,libevent-pthreads-2.1-7,general.xml)
+
 	# libevent.mk Make .debs
-	$(call PACK,libevent,DEB_LIBEVENT_V)
-	
+	$(call PACK,libevent-2.1-7,DEB_LIBEVENT_V)
+	$(call PACK,libevent-core-2.1-7,DEB_LIBEVENT_V)
+	$(call PACK,libevent-dev,DEB_LIBEVENT_V)
+	$(call PACK,libevent-extra-2.1-7,DEB_LIBEVENT_V)
+	$(call PACK,libevent-openssl-2.1-7,DEB_LIBEVENT_V)
+	$(call PACK,libevent-pthreads-2.1-7,DEB_LIBEVENT_V)
+
 	# libevent.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libevent
+	rm -rf $(BUILD_DIST)/libevent-{{core-,extra-,openssl-,pthreads-,}2.1-7,dev}
 
 .PHONY: libevent libevent-package

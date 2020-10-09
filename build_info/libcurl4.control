@@ -1,0 +1,12 @@
+Package: libcurl4
+Version: @DEB_CURL_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libnghttp2-14, libssh2-1, libssl1.1, libidn2-0
+Replaces: curl (<< @DEB_CURL_V@)
+Conflicts: curl (<< @DEB_CURL_V@)
+Section: Libraries
+Priority: standard
+Homepage: http://curl.haxx.se/
+Description: easy-to-use client-side URL transfer library (OpenSSL flavour)
+Tag: purpose::console, role::hacker

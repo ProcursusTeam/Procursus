@@ -1,0 +1,17 @@
+Package: gpgv
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_GNUPG_V@
+Depends: libgcrypt20, libgpg-error0, libintl8
+Conflicts: gnupg2, gnupg (<< @DEB_GNUPG_V@)
+Replaces: gnupg2
+Section: Security
+Priority: standard
+Description: GNU privacy guard - signature verification tool
+ GnuPG is GNU's tool for secure communication and data storage.
+ .
+ gpgv is actually a stripped-down version of gpg which is only able
+ to check signatures. It is somewhat smaller than the fully-blown gpg
+ and uses a different (and simpler) way to check that the public keys
+ used to make the signature are valid. There are no configuration
+ files and only a few options are implemented.

@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS              += ideviceinstaller
 IDEVICEINSTALLER_VERSION := 1.1.1
-DEB_IDEVICEINSTALLER_V   ?= $(IDEVICEINSTALLER_VERSION)
+DEB_IDEVICEINSTALLER_V   ?= $(IDEVICEINSTALLER_VERSION)-1
 
 ideviceinstaller-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libimobiledevice/ideviceinstaller/releases/download/$(IDEVICEINSTALLER_VERSION)/ideviceinstaller-$(IDEVICEINSTALLER_VERSION).tar.bz2

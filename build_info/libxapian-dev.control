@@ -4,5 +4,5 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Development
 Priority: optional
-Depends: libxapian30 (= @DEB_XAPIAN_V@)
+Depends: libxapian30 (= @DEB_XAPIAN_V@), libuuid-dev
 Description: Development files for Xapian search engine library

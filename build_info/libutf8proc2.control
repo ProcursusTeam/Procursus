@@ -1,0 +1,17 @@
+Package: libutf8proc2
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBUTF8PROC_V@
+Conflicts: libutf8proc (<< @DEB_LIBUTF8PROC_V@)
+Replaces: libutf8proc (<< @DEB_LIBUTF8PROC_V@)
+Section: Libraries
+Priority: optional
+Multi-Arch: foreign
+Homepage: http://juliastrings.github.io/utf8proc/
+Tag: purpose::library, role::developer
+Description: C library for processing UTF-8 Unicode data (shared library)
+ utf8proc is a small, clean C library that provides Unicode normalization,
+ case-folding, and other operations for data in the UTF-8 encoding, supporting
+ Unicode version 8.0.
+ .
+ This package contains a shared version of the library.

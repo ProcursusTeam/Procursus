@@ -1,0 +1,20 @@
+Package: pcre2-utils
+Version: @DEB_PCRE2_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Replaces: pcre2
+Conflicts: pcre2 (<< 1:0), libpcre2 (<< @DEB_PCRE2_V@)
+Depends: libpcre2-8-0 (= @DEB_PCRE2_V@), libpcre2-16-0 (= @DEB_PCRE2_V@), libpcre2-32-0 (= @DEB_PCRE2_V@), libpcre2-posix2 (= @DEB_PCRE2_V@)
+Section: Utilities
+Priority: standard
+Multi-Arch: foreign
+Description: New Perl Compatible Regular Expression Library - utilities
+ This is PCRE2, the new implementation of PCRE, a library of functions
+ to support regular expressions whose syntax and semantics are as
+ close as possible to those of the Perl 5 language. New projects
+ should use this library in preference to the older library.
+ .
+ This package contains the utilities pcre2grep (like grep with PCRE)
+ and pcre2test (a test program for the library, but also useful for
+ experimenting with regular expressions). Both programs are also
+ useful examples of programming with libpcre2.

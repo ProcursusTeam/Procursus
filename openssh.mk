@@ -8,7 +8,7 @@ else
 SUBPROJECTS     += openssh
 endif
 OPENSSH_VERSION := 8.4p1
-DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)
+DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)-1
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
 OPENSSH_CONFARGS += ac_cv_func_strtonum=no
@@ -41,6 +41,8 @@ openssh: openssh-setup openssl libxcrypt
 	mkdir -p $(BUILD_STAGE)/openssh/Library/LaunchDaemons
 	cp $(BUILD_INFO)/com.openssh.sshd.plist $(BUILD_STAGE)/openssh/Library/LaunchDaemons
 	cp $(BUILD_INFO)/sshd-keygen-wrapper $(BUILD_STAGE)/openssh/usr/libexec
+	cp $(BUILD_WORK)/openssh/contrib/ssh-copy-id $(BUILD_STAGE)/openssh/usr/bin
+	chmod 0755 $(BUILD_STAGE)/openssh/usr/bin/ssh-copy-id
 	touch $(BUILD_WORK)/openssh/.build_complete
 endif
 

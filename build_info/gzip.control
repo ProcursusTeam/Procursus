@@ -5,7 +5,7 @@ Replaces: file-cmds (<= 272.250.1-1)
 Conflicts: file-cmds (<= 272.250.1-1)
 Maintainer: @DEB_MAINTAINER@
 Section: Archiving
-Priority: required
+Priority: standard
 Multi-Arch: foreign
 Homepage: http://www.gzip.org/
 Description: the standard Unix compression algorithm

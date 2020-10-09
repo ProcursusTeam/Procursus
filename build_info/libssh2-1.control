@@ -1,0 +1,12 @@
+Package: libssh2-1
+Version: @DEB_LIBSSH2_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libssl1.1
+Section: Libraries
+Priority: optional
+Homepage: https://www.libssh2.org/
+Description: SSH2 client-side library
+Replaces: libssh2 (<< @DEB_LIBSSH2_V@)
+Conflicts: libssh2 (<< @DEB_LIBSSH2_V@)
+Provides: libssh2 (= @DEB_LIBSSH2_V@)

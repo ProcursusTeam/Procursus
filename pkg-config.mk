@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS        += pkg-config
 PKG-CONFIG_VERSION := 0.29.2
-DEB_PKG-CONFIG_V   ?= $(PKG-CONFIG_VERSION)-1
+DEB_PKG-CONFIG_V   ?= $(PKG-CONFIG_VERSION)-3
 
 pkg-config-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://pkgconfig.freedesktop.org/releases/pkg-config-$(PKG-CONFIG_VERSION).tar.gz{,.asc}

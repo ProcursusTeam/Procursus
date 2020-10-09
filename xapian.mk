@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += xapian
-XAPIAN_VERSION := 1.4.16
+XAPIAN_VERSION := 1.4.17
 DEB_XAPIAN_V   ?= $(XAPIAN_VERSION)
 
 xapian-setup: setup

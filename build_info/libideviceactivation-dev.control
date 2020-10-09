@@ -5,4 +5,4 @@ Maintainer: @DEB_MAINTAINER@
 Section: Development
 Homepage: https://libimobiledevice.org/
 Description: A library to handle the activation process of iOS devices (Development files)
-Depends: libideviceactivation2 (= @DEB_LIBIDEVICEACTIVATION_V@), libimobiledevice-dev, libusbmuxd-dev, curl
+Depends: libideviceactivation2 (= @DEB_LIBIDEVICEACTIVATION_V@), libimobiledevice-dev, libusbmuxd-dev, libcurl4-openssl-dev
