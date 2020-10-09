@@ -1,0 +1,13 @@
+Package: libgtest-dev
+Version: @DEB_GOOGLETEST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: googletest (= @DEB_GOOGLETEST_V@)
+Section: Development
+Priority: standard
+Description: Google's framework for writing C++ tests
+ Google's framework for writing C++ tests on a variety of platforms. Based on
+ the xUnit architecture. Supports automatic test discovery, a rich set of
+ assertions, user-defined assertions, death tests, fatal and non-fatal failures,
+ value- and type-parameterized tests, various options for running the tests, and
+ XML test report generation.
