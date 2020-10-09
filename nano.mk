@@ -4,12 +4,13 @@ endif
 
 SUBPROJECTS  += nano
 NANO_VERSION := 5.3
-DEB_NANO_V   ?= $(NANO_VERSION)
+DEB_NANO_V   ?= $(NANO_VERSION)-1
 
 nano-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/nano/nano-$(NANO_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,nano-$(NANO_VERSION).tar.xz)
 	$(call EXTRACT_TAR,nano-$(NANO_VERSION).tar.xz,nano-$(NANO_VERSION),nano)
+	$(call DO_PATCH,nano,nano,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/nano/.build_complete),)
 nano:
@@ -30,6 +31,8 @@ nano: nano-setup ncurses gettext file
 	+$(MAKE) -C $(BUILD_WORK)/nano
 	+$(MAKE) -C $(BUILD_WORK)/nano install \
 		DESTDIR=$(BUILD_STAGE)/nano
+	mkdir -p $(BUILD_STAGE)/nano/etc
+	cp -a $(BUILD_WORK)/nano/doc/sample.nanorc $(BUILD_STAGE)/nano/etc/nanorc
 	touch $(BUILD_WORK)/nano/.build_complete
 endif
 
@@ -39,7 +42,7 @@ nano-package: nano-stage
 	mkdir -p $(BUILD_DIST)/nano
 	
 	# nano.mk Prep nano
-	cp -a $(BUILD_STAGE)/nano/usr $(BUILD_DIST)/nano
+	cp -a $(BUILD_STAGE)/nano $(BUILD_DIST)
 	
 	# nano.mk Sign
 	$(call SIGN,nano,general.xml)
