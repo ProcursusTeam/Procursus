@@ -70,6 +70,7 @@ openssl-package: openssl-stage
 
 	# openssl.mk Prep libssl-dev
 	cp -a $(BUILD_STAGE)/openssl/usr/lib/{lib{ssl,crypto}.{a,dylib},pkgconfig} $(BUILD_DIST)/libssl-dev/usr/lib
+	cp -a $(BUILD_STAGE)/openssl/usr/include $(BUILD_DIST)/libssl-dev/usr
 	
 	# openssl.mk Prep openssl
 	cp -a $(BUILD_STAGE)/openssl/etc $(BUILD_DIST)/openssl
