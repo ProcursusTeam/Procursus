@@ -1,0 +1,12 @@
+Package: libogg-dev
+Version: @DEB_LIBOGG_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libogg0 (= @DEB_LIBOGG_V@)
+Section: Development
+Priority: optional
+Homepage: http://xiph.org/ogg/
+Description: Ogg bitstream library development files
+ The libogg-dev package contains the header files and documentation
+ needed to develop applications with libogg.
+Tag: purpose::library, role::developer
