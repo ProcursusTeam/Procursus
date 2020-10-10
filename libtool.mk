@@ -17,7 +17,7 @@ libtool:
 else
 libtool: libtool-setup
 	cd $(BUILD_WORK)/libtool && ./configure -C \
-		--host=$(GNU_HOST_TRIPLE) \
+		--host=GNU_HOST_TRIPLE \
 		--prefix=/usr \
 		--program-prefix=g \
 		--enable-ltdl-install
@@ -34,7 +34,7 @@ libtool-package: libtool-stage
 	mkdir -p $(BUILD_DIST)/libtool
 	
 	# libtool.mk Prep libtool
-	cp -a $(BUILD_STAGE)/libtool/usr $(BUILD_DIST)/libtool
+	cp -r -a $(BUILD_STAGE)/libtool/usr $(BUILD_DIST)/libtool
 	
 	# libtool.mk Sign
 	$(call SIGN,libtool,general.xml)
