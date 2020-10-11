@@ -17,7 +17,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libogg/.build_complete),)
 libogg:
 	@echo "Using previously built libogg."
 else
-libogg: libogg-setup m4
+libogg: libogg-setup
 	cd $(BUILD_WORK)/libogg && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
