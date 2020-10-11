@@ -10,11 +10,14 @@ libogg-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://downloads.xiph.org/releases/ogg/libogg-$(LIBOGG_VERSION).tar.xz
 	$(call EXTRACT_TAR,libogg-$(LIBOGG_VERSION).tar.xz,libogg-$(LIBOGG_VERSION),libogg)
 
+	# don't build the html docs
+	$(SED) -ri 's/(SUBDIRS = .*)doc(.*)/\1 \2/' $(BUILD_WORK)/libogg/Makefile.in
+
 ifneq ($(wildcard $(BUILD_WORK)/libogg/.build_complete),)
 libogg:
 	@echo "Using previously built libogg."
 else
-libogg: libogg-setup
+libogg: libogg-setup m4
 	cd $(BUILD_WORK)/libogg && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
@@ -22,6 +25,8 @@ libogg: libogg-setup
 	+$(MAKE) -C $(BUILD_WORK)/libogg
 	+$(MAKE) -C $(BUILD_WORK)/libogg install \
 		DESTDIR=$(BUILD_STAGE)/libogg
+	+$(MAKE) -C $(BUILD_WORK)/libogg install \
+		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/libogg/.build_complete
 endif
 
