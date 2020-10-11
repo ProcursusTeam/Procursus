@@ -34,6 +34,7 @@ libogg-package: libogg-stage
 	# libogg.mk Package Structure
 	rm -rf $(BUILD_DIST)/libogg{0,-dev}
 	mkdir -p $(BUILD_DIST)/libogg{0,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/libogg-dev/usr/share
 	
 	# libogg.mk Prep libogg0
 	cp -a $(BUILD_STAGE)/libogg/usr/lib/libogg.0.dylib $(BUILD_DIST)/libogg0/usr/lib
@@ -42,6 +43,7 @@ libogg-package: libogg-stage
 	cp -a $(BUILD_STAGE)/libogg/usr/lib/pkgconfig $(BUILD_DIST)/libogg-dev/usr/lib
 	cp -a $(BUILD_STAGE)/libogg/usr/lib/libogg.{dylib,a} $(BUILD_DIST)/libogg-dev/usr/lib
 	cp -a $(BUILD_STAGE)/libogg/usr/include $(BUILD_DIST)/libogg-dev/usr
+	cp -a $(BUILD_STAGE)/libogg/usr/share/aclocal $(BUILD_DIST)/libogg-dev/usr/share
 	
 	# libogg.mk Sign
 	$(call SIGN,libogg0,general.xml)
