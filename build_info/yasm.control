@@ -1,0 +1,7 @@
+Package: yasm
+Version: @DEB_YASM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Description: Modular BSD reimplementation of NASM
