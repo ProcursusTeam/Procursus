@@ -6,13 +6,13 @@ SUBPROJECTS     += zsign
 ZSIGN_VERSION   := 20200919
 DEB_ZSIGN_V     ?= 0~$(ZSIGN_VERSION)
 
-COMMIT_HASH=e2e78a1
+ZSIGN_COMMIT_HASH=e2e78a1
 
 zsign-setup: setup
 	-[ ! -e "$(BUILD_SOURCE)/zsign-$(ZSIGN_VERSION).tar.gz" ] \
 		&& wget -nc -O$(BUILD_SOURCE)/zsign-$(ZSIGN_VERSION).tar.gz \
-			https://github.com/zhlynn/zsign/archive/$(COMMIT_HASH).tar.gz
-	$(call EXTRACT_TAR,zsign-$(ZSIGN_VERSION).tar.gz,zsign-$(COMMIT_HASH)*,zsign)
+			https://github.com/zhlynn/zsign/archive/$(ZSIGN_COMMIT_HASH).tar.gz
+	$(call EXTRACT_TAR,zsign-$(ZSIGN_VERSION).tar.gz,zsign-$(ZSIGN_COMMIT_HASH)*,zsign)
 
 ifneq ($(wildcard $(BUILD_WORK)/zsign/.build_complete),)
 zsign:
