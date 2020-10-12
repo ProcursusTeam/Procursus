@@ -3,7 +3,7 @@ Version: @DEB_MTR_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Networking
-Depends: libncursesw6
+Depends: libncursesw6, libjansson4
 Description: Full screen ncurses and X11 traceroute tool
  mtr combines the functionality of the 'traceroute' and 'ping' programs
  in a single network diagnostic tool.
