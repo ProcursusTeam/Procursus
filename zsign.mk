@@ -39,7 +39,7 @@ zsign-package: zsign-stage
 	cp -a $(BUILD_STAGE)/zsign/usr $(BUILD_DIST)/zsign
 
 	# zsign.mk Sign
-	$(call SIGN,zsign,tfp0.xml)
+	$(call SIGN,zsign,general.xml)
 
 	# zsign.mk Make .debs
 	$(call PACK,zsign,DEB_ZSIGN_V)
