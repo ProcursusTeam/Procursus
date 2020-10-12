@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += zsign
-ZSIGN_VERSION   := 1.0
-DEB_ZSIGN_V     ?= $(ZSIGN_VERSION)
+ZSIGN_VERSION   := 20200919
+DEB_ZSIGN_V     ?= 0~$(ZSIGN_VERSION)
 
 COMMIT_HASH=e2e78a1
 
@@ -48,4 +48,4 @@ zsign-package: zsign-stage
 	rm -rf $(BUILD_DIST)/zsign
 
 .PHONY: zsign zsign-package
-
+ 
