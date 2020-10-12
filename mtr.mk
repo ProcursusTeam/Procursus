@@ -20,7 +20,8 @@ mtr: mtr-setup ncurses jansson
 		--prefix=/usr \
 		--without-gtk \
 		--with-jansson
-	+$(MAKE) -C $(BUILD_WORK)/mtr
+	+$(MAKE) -C $(BUILD_WORK)/mtr \
+		LIBS="-lncursesw -lm"
 	+$(MAKE) -C $(BUILD_WORK)/mtr install \
 		DESTDIR=$(BUILD_STAGE)/mtr
 	touch $(BUILD_WORK)/mtr/.build_complete
