@@ -14,12 +14,12 @@ ifneq ($(wildcard $(BUILD_WORK)/mtr/.build_complete),)
 mtr:
 	@echo "Using previously built mtr."
 else
-mtr: mtr-setup ncurses
+mtr: mtr-setup ncurses jansson
 	cd $(BUILD_WORK)/mtr && ./bootstrap.sh && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--without-gtk \
-		--without-jansson
+		--with-jansson
 	+$(MAKE) -C $(BUILD_WORK)/mtr
 	+$(MAKE) -C $(BUILD_WORK)/mtr install \
 		DESTDIR=$(BUILD_STAGE)/mtr
