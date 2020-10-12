@@ -1,0 +1,18 @@
+Package: libxvidcore-dev
+Version: @DEB_LIBXVIDCORE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libxvidcore4 (= @DEB_LIBXVIDCORE_V@)
+Section: Development
+Priority: optional
+Homepage: https://labs.xvid.com/
+Description: Open source MPEG-4 video codec (development)
+ Xvid (formerly XviD) is an open source MPEG-4 video codec, implementing MPEG-4
+ Simple Profile, Advanced Simple Profile, and Advanced Video Coding standards.
+ It is written in C with assembler optimizations for quality and speed
+ (including MMX, SSE, and 3Dnow! code for i386 and AltiVec for PowerPC), and is
+ especially optimized towards offline, multi-pass compression for storage and
+ archival purposes.
+ .
+ This package contains the development files.
+Tag: purpose::library, role::developer
