@@ -8,8 +8,10 @@ VIM_VERSION := 8.2.1800
 DEB_VIM_V   ?= $(VIM_VERSION)
 
 vim-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/vim/vim/archive/v$(VIM_VERSION).tar.gz
-	$(call EXTRACT_TAR,v$(VIM_VERSION).tar.gz,vim-$(VIM_VERSION),vim)
+	-[ ! -f "$(BUILD_SOURCE)/vim-$(VIM_VERSION).tar.gz" ] && \
+		wget -q -nc -O$(BUILD_SOURCE)/vim-$(VIM_VERSION).tar.gz \
+			https://github.com/vim/vim/archive/v$(VIM_VERSION).tar.gz
+	$(call EXTRACT_TAR,vim-$(VIM_VERSION).tar.gz,vim-$(VIM_VERSION),vim)
 
 ifneq ($(wildcard $(BUILD_WORK)/vim/.build_complete),)
 vim:

@@ -7,8 +7,10 @@ MTR_VERSION := 0.94
 DEB_MTR_V   ?= $(MTR_VERSION)
 
 mtr-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/traviscross/mtr/archive/v$(MTR_VERSION).tar.gz
-	$(call EXTRACT_TAR,v$(MTR_VERSION).tar.gz,mtr-$(MTR_VERSION),mtr)
+	-[ ! -f "$(BUILD_SOURCE)/mtr-$(MTR_VERSION).tar.gz" ] && \
+		wget -q -nc -O$(BUILD_SOURCE)/mtr-$(MTR_VERSION).tar.gz \
+			https://github.com/traviscross/mtr/archive/v$(MTR_VERSION).tar.gz
+	$(call EXTRACT_TAR,mtr-$(MTR_VERSION).tar.gz,mtr-$(MTR_VERSION),mtr)
 
 ifneq ($(wildcard $(BUILD_WORK)/mtr/.build_complete),)
 mtr:
