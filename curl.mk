@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += curl
-CURL_VERSION := 7.71.1
+CURL_VERSION := 7.73.0
 DEB_CURL_V   ?= $(CURL_VERSION)-2
 
 curl-setup: setup
