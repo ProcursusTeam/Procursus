@@ -10,7 +10,7 @@ speedtest-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/speedtest-$(SPEEDTEST_VERSION).tar.gz" ] && \
 		wget -q -nc -O$(BUILD_SOURCE)/speedtest-$(SPEEDTEST_VERSION).tar.gz \
 			https://github.com/sivel/speedtest-cli/archive/v$(SPEEDTEST_VERSION).tar.gz
-	$(call EXTRACT_TAR,speedtest-$(SPEEDTEST_VERSION).tar.gz,speedtest-$(SPEEDTEST_VERSION),speedtest)
+	$(call EXTRACT_TAR,speedtest-$(SPEEDTEST_VERSION).tar.gz,speedtest-cli-$(SPEEDTEST_VERSION),speedtest)
 
 ifneq ($(wildcard $(BUILD_WORK)/speedtest/.build_complete),)
 speedtest:
@@ -30,8 +30,6 @@ speedtest-package: speedtest-stage
 	# speedtest.mk Prep speedtest
 	cp -a $(BUILD_STAGE)/speedtest $(BUILD_DIST)
 
-	# speedtest.mk Fix permissions
-	
 	# speedtest.mk Make .debs
 	$(call PACK,speedtest,DEB_SPEEDTEST_V)
 	
