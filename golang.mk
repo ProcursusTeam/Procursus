@@ -15,7 +15,7 @@ golang-setup: setup
 	cp -a $(BUILD_WORK)/golang/misc/ios/clangwrap.sh $(BUILD_WORK)/golang/superbin/clang
 
 ifneq ($(UNAME),Darwin)
-nodejs:
+golang:
 	@echo "golang building only supported on macOS"
 else ifneq ($(wildcard $(BUILD_WORK)/golang/.build_complete),)
 golang:
