@@ -17,8 +17,8 @@ speedtest:
 	@echo "Using previously built speedtest."
 else
 speedtest: speedtest-setup 
-	mkdir -p $(BUILD_STAGE)/speedtest/usr/bin
-	cp $(BUILD_WORK)/speedtest/speedtest.py $(BUILD_STAGE)/speedtest/usr/bin/speedtest
+	cd $(BUILD_WORK)/speedtest && python setup.py install --root="$(BUILD_STAGE)/speedtest" --optimize=1
+	install -Dm 644 $(BUILD_WORK)/speedtest/speedtest-cli.1 -t "$(BUILD_STAGE)/speedtest/usr/share/man/man1"
 	touch $(BUILD_WORK)/speedtest/.build_complete
 endif
 
