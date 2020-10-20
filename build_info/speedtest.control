@@ -1,0 +1,9 @@
+Package: speedtest-cli
+Version: @DEB_SPEEDTEST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: python3
+Section: Utilities
+Priority: optional
+Homepage: https://speedtest.net/
+Description: Command line interface for testing internet bandwidth using speedtest.net
