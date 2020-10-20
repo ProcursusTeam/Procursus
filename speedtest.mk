@@ -7,14 +7,10 @@ SPEEDTEST_VERSION := 2.1.2
 DEB_SPEEDTEST_V   ?= $(SPEEDTEST_VERSION)
 
 speedtest-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/sivel/speedtest-cli/archive/v$(SPEEDTEST_VERSION).tar.gz
-	$(call EXTRACT_TAR,v$(SPEEDTEST_VERSION).tar.gz,speedtest-$(SPEEDTEST_VERSION),speedtest)
-
-speedtest-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/v$(SPEEDTEST_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/v$(SPEEDTEST_VERSION).tar.gz \
+	-[ ! -f "$(BUILD_SOURCE)/speedtest-$(SPEEDTEST_VERSION).tar.gz" ] && \
+		wget -q -nc -O$(BUILD_SOURCE)/speedtest-$(SPEEDTEST_VERSION).tar.gz \
 			https://github.com/sivel/speedtest-cli/archive/v$(SPEEDTEST_VERSION).tar.gz
-	$(call EXTRACT_TAR,v$(SPEEDTEST_VERSION).tar.gz,speedtest-$(SPEEDTEST_VERSION),speedtest)
+	$(call EXTRACT_TAR,speedtest-$(SPEEDTEST_VERSION).tar.gz,speedtest-$(SPEEDTEST_VERSION),speedtest)
 
 ifneq ($(wildcard $(BUILD_WORK)/speedtest/.build_complete),)
 speedtest:
