@@ -1,4 +1,4 @@
-Package: speedtest
+Package: speedtest-cli
 Version: @DEB_SPEEDTEST_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
