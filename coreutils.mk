@@ -11,7 +11,8 @@ COREUTILS_CONFIGURE_ARGS += ac_cv_func_rpmatch=no
 endif
 
 coreutils-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/coreutils/coreutils-$(COREUTILS_VERSION).tar.xz{,.sig}
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/coreutils/coreutils-$(COREUTILS_VERSION).tar.xz{,.sig} \
+		https://raw.githubusercontent.com/jarun/advcpmv/master/advcpmv-0.8-$(COREUTILS_VERSION).patch
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,coreutils-$(COREUTILS_VERSION).tar.xz,coreutils-$(COREUTILS_VERSION),coreutils)
 	mkdir -p $(BUILD_WORK)/coreutils/{su,rev,bsdcp}
@@ -23,6 +24,9 @@ coreutils-setup: setup
 	wget -q -nc -P $(BUILD_WORK)/coreutils/bsdcp \
 		https://opensource.apple.com/source/file_cmds/file_cmds-272.250.1/cp/{{cp,utils}.c,extern.h} \
 		https://opensource.apple.com/source/Libc/Libc-1353.41.1/gen/get_compat.h
+	mkdir -p $(BUILD_PATCH)/coreutils-$(COREUTILS_VERSION)
+	find $(BUILD_SOURCE) -name 'advcpmv*' -not -name '*.sig' -exec cp '{}' $(BUILD_PATCH)/coreutils-$(COREUTILS_VERSION)/ \;
+	$(call DO_PATCH,coreutils-$(COREUTILS_VERSION),coreutils,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/coreutils/.build_complete),)
 coreutils:
