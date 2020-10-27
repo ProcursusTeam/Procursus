@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS  += nano
 NANO_VERSION := 5.3
-DEB_NANO_V   ?= $(NANO_VERSION)-1
+DEB_NANO_V   ?= $(NANO_VERSION)-2
 
 nano-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/nano/nano-$(NANO_VERSION).tar.xz{,.sig}
@@ -27,6 +27,7 @@ nano: nano-setup ncurses gettext file
 		--enable-extra \
 		--enable-nanorc \
 		--enable-utf8 \
+		--enable-multibuffer \
 		NCURSESW_LIBS=$(BUILD_BASE)/usr/lib/libncursesw.dylib
 	+$(MAKE) -C $(BUILD_WORK)/nano
 	+$(MAKE) -C $(BUILD_WORK)/nano install \
