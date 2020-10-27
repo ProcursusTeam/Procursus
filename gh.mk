@@ -15,6 +15,9 @@ gh-setup: setup
 ifneq ($(ARCHES),arm64)
 gh:
 	@echo "Unsupported target $(MEMO_TARGET)"
+else ifneq ($(UNAME),Darwin)
+gh:
+	@echo "gh building only supported on macOS"
 else ifneq ($(wildcard $(BUILD_WORK)/gh/.build_complete),)
 gh:
 	@echo "Using previously built gh."
