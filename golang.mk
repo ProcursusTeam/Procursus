@@ -14,7 +14,10 @@ golang-setup: setup
 	mkdir -p $(BUILD_WORK)/golang/superbin
 	cp -a $(BUILD_WORK)/golang/misc/ios/clangwrap.sh $(BUILD_WORK)/golang/superbin/clang
 
-ifneq ($(UNAME),Darwin)
+ifneq ($(ARCHES),arm64)
+golang:
+	@echo "Unsupported target $(MEMO_TARGET)"
+else ifneq ($(UNAME),Darwin)
 golang:
 	@echo "golang building only supported on macOS"
 else ifneq ($(wildcard $(BUILD_WORK)/golang/.build_complete),)
