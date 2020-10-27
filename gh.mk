@@ -19,7 +19,7 @@ else ifneq ($(wildcard $(BUILD_WORK)/gh/.build_complete),)
 gh:
 	@echo "Using previously built gh."
 else
-gh: gh-setup
+gh: gh-setup golang
 	+$(MAKE) -C $(BUILD_WORK)/gh bin/gh manpages \
 		GOARCH=arm64 \
 		GOOS=darwin
