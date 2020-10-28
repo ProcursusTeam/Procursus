@@ -230,27 +230,30 @@ DEB_MAINTAINER    ?= Hayden Seay <me@diatr.us>
 CODESIGN_IDENTITY ?= -
 
 # Root
-BUILD_ROOT     ?= $(PWD)
+BUILD_ROOT      ?= $(PWD)
 # Downloaded source files
-BUILD_SOURCE   := $(BUILD_ROOT)/build_source
+BUILD_SOURCE    := $(BUILD_ROOT)/build_source
 # Base headers/libs (e.g. patched from SDK)
-BUILD_BASE     := $(BUILD_ROOT)/build_base/$(MEMO_TARGET)/$(MEMO_CFVER)
+BUILD_BASE      := $(BUILD_ROOT)/build_base/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Dpkg info storage area
 BUILD_INFO     := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_info
 # Miscellaneous Procursus files
 BUILD_MISC     := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_misc
 # Patch storage area
-BUILD_PATCH    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_patch
+BUILD_PATCH     := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_patch
 # Extracted source working directory
-BUILD_WORK     := $(BUILD_ROOT)/build_work/$(MEMO_TARGET)/$(MEMO_CFVER)
+BUILD_WORK      := $(BUILD_ROOT)/build_work/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Bootstrap working area
-BUILD_STAGE    := $(BUILD_ROOT)/build_stage/$(MEMO_TARGET)/$(MEMO_CFVER)
+BUILD_STAGE     := $(BUILD_ROOT)/build_stage/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Final output
-BUILD_DIST     := $(BUILD_ROOT)/build_dist/$(MEMO_TARGET)/$(MEMO_CFVER)
+BUILD_DIST      := $(BUILD_ROOT)/build_dist/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Actual bootrap staging
-BUILD_STRAP    := $(BUILD_ROOT)/build_strap/$(MEMO_TARGET)/$(MEMO_CFVER)
+BUILD_STRAP     := $(BUILD_ROOT)/build_strap/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Extra scripts for the buildsystem
-BUILD_TOOLS    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_tools
+BUILD_TOOLS     := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_tools
+# Device ip and port
+MEMO_DEVICE_IP   ?= localhost
+MEMO_DEVICE_PORT ?= 2222
 
 CFLAGS              := -O2 -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)$(MEMO_PREFIX)/Library/Frameworks
 CXXFLAGS            := $(CFLAGS)
@@ -373,6 +376,12 @@ PACK = -if [ -z $(4) ]; then \
 	echo "Installed-Size: $$SIZE" >> $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	find $(BUILD_DIST)/$(1) -name '.DS_Store' -type f -delete; \
 	$(FAKEROOT) $(DPKG_DEB) -b $(BUILD_DIST)/$(1) $(BUILD_DIST)/$$(grep Package: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ')_$($(2))_$$(grep Architecture: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ').deb
+	if [ "$(TO_INSTALL)" = "1" ]; then \
+		scp -P$(MEMO_DEVICE_PORT) $(BUILD_DIST)/$(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d ' ')_$($(2))_$(DEB_ARCH).deb root@$(MEMO_DEVICE_IP):/tmp/$(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d ' ')_$($(2))_$(DEB_ARCH).deb; \
+		ssh -p $(MEMO_DEVICE_PORT) root@$(MEMO_DEVICE_IP) 'apt-get update'; \
+		ssh -p $(MEMO_DEVICE_PORT) root@$(MEMO_DEVICE_IP) 'apt-get reinstall /tmp/$(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d ' ')_$($(2))_$(DEB_ARCH).deb'; \
+		ssh -p $(MEMO_DEVICE_PORT) root@$(MEMO_DEVICE_IP) 'rm /tmp/$(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d ' ')_$($(2))_$(DEB_ARCH).deb'; \
+	fi
 
 PACK_LOCALE = mkdir -p $(BUILD_DIST)/$(1)-locale/{DEBIAN,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share}; \
 	$(CP) -af $(BUILD_DIST)/$(1)-locales $(BUILD_DIST)/$(1)-locale/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale; \
@@ -737,6 +746,8 @@ bootstrap-device: bootstrap
 	rm -f $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev)
 	touch $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev)
 	mkdir -p $(BUILD_DIST)
+%-install:
+	+TO_INSTALL=1 $(MAKE) $(shell echo $@ | $(SED) 's/-install//')-package
 
 REPROJ=$(shell echo $@ | cut -f2- -d"-")
 REPROJ2=$(shell echo $(REPROJ) | $(SED) 's/-package//' | $(SED) 's/-setup//')

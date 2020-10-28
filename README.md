@@ -54,13 +54,15 @@ On macOS, all the build requirements can be installed with the following command
 brew install make bash wget gnu-tar gnu-sed gnupg ldid cmake automake groff gpatch findutils coreutils fakeroot zstd dpkg ncurses docbook-xsl python3
 ```
 
-| Supported commands    | Function                                                                                                                            |
-|:--------------------------------------:|:-------------------------------------------------------------------------------------------------------------------|
+| Supported commands               | Function                                                                                                           |
+|:--------------------------------:|:-------------------------------------------------------------------------------------------------------------------|
 | `make` or `make all` or `make package` | Compiles the entire Procursus suite and packs it into debian packages.                                             |
 | `make (tool)`                          | Used to compile only a specified tool.                                                                             |
 | `make (tool)-package`                  | Used to compile only a specified tool and pack it into a debian package.                                           |
+| `make (tool)-install`                  | Used to compile only a specified tool and pack it into a debian package that gets installed to your device.        |
 | `make rebuild-(tool)`                  | Used to recompile only a specified tool after it's already been compiled before.                                   |
 | `make rebuild-(tool)-package`          | Used to recompile only a specified tool after it's already been compiled before and pack it into a debian package. |
+| `make rebuild-(tool)-install`          | Used to recompile only a specified tool after it's already been compiled before and pack it into a debian package that gets installed to your device. |
 | `make everything`                      | Compiles the entire Procursus suite for every supported host platform and packs it into debian packages.           |
 | `make clean`                           | Clean out $(BUILD_STAGE), $(BUILD_BASE), and $(BUILD_WORK).                                                        |
 | `make extreme-clean`                   | Resets the entire git repository.                                                                                  |
@@ -78,6 +80,8 @@ There are very few variables you'll need to pay attention to/change to get build
 | MACOSX_SYSROOT | Path to your chosen macOS SDK. (Defaults to Xcode default path on macOS and the cctools-port default path on Linux.)                                                 |
 | BUILD_ROOT     | If you have this repo in one place, but want to build everything in a different place, set BUILD_ROOT to said different place. (Untested but should work fine.)      |
 | MEMO_QUIET     | Mute unnecessary warnings and echos.                                                                                                                                 |
+| MEMO_DEVICE_IP   | The IP of the device to install on when using `make (tool)-install`                                                                                                    |
+| MEMO_DEVICE_PORT | The PORT of the device to install on when using `make (tool)-install`                                                                                                  |
 
 ## Contributing and/or Issues
 
