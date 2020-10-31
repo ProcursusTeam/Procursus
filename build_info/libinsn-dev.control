@@ -1,0 +1,9 @@
+Package: libinsn-dev
+Version: @DEB_LIBINSN_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libinsn0 (>= @DEB_LIBINSN_V@), libgeneral-dev
+Section: Development
+Priority: optional
+Description: Support library for tihmstar's liboffsetfinder64 (development files)
+Tag: role::developer
