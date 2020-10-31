@@ -17,8 +17,10 @@ speedtest-cli:
 	@echo "Using previously built speedtest-cli."
 else
 speedtest-cli: speedtest-cli-setup 
-	cd $(BUILD_WORK)/speedtest-cli && python setup.py install --root="$(BUILD_STAGE)/speedtest-cli" --optimize=1
-	install -Dm 644 $(BUILD_WORK)/speedtest-cli/speedtest-cli.1 -t "$(BUILD_STAGE)/speedtest-cli/usr/share/man/man1"
+	$(GINSTALL) -Dm 644 $(BUILD_WORK)/speedtest-cli/speedtest.py -t "$(BUILD_STAGE)/speedtest-cli/usr/bin"
+	mv $(BUILD_STAGE)/speedtest-cli/usr/bin/speedtest.py $(BUILD_STAGE)/speedtest-cli/usr/bin/speedtest-cli
+	ln -s speedtest-cli $(BUILD_STAGE)/speedtest-cli/usr/bin/speedtest
+	$(GINSTALL) -Dm 644 $(BUILD_WORK)/speedtest-cli/speedtest-cli.1 -t "$(BUILD_STAGE)/speedtest-cli/usr/share/man/man1"
 	touch $(BUILD_WORK)/speedtest-cli/.build_complete
 endif
 
