@@ -1,5 +1,5 @@
 Package: speedtest-cli
-Version: @DEB_SPEEDTEST_V@
+Version: @DEB_SPEEDTEST-CLI_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: python3
