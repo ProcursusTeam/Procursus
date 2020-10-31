@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS  += curl
 CURL_VERSION := 7.73.0
-DEB_CURL_V   ?= $(CURL_VERSION)-2
+DEB_CURL_V   ?= $(CURL_VERSION)-3
 
 curl-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://curl.haxx.se/download/curl-$(CURL_VERSION).tar.xz{,.asc}
