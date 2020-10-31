@@ -1,0 +1,14 @@
+Package: libfribidi-dev
+Version: @DEB_LIBFRIBIDI_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libfribidi0 (= @DEB_LIBFRIBIDI_V@)
+Section: Development
+Priority: optional
+Homepage: https://github.com/fribidi/fribidi/
+Description: Development files for FreeBidi library
+ FriBiDi is a BiDi algorithm implementation for Hebrew and/or Arabic
+ languages.
+ This package contains the header files and static libraries for the
+ FriBidi C library.
+Tag: purpose::library, role::developer

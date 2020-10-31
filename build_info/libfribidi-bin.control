@@ -1,0 +1,12 @@
+Package: libfribidi-bin
+Version: @DEB_LIBFRIBIDI_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libfribidi0 (= @DEB_LIBFRIBIDI_V@)
+Section: Utilities
+Priority: optional
+Homepage: https://github.com/fribidi/fribidi/
+Description: Free Implementation of the Unicode BiDi algorithm (utility)
+ FriBiDi is a BiDi algorithm implementation for Hebrew and/or Arabic
+ languages.
+ This package contains a command line interface for the fribidi library.
