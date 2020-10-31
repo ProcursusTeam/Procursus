@@ -9,7 +9,11 @@ DEB_LIBTOMMATH_V   ?= $(LIBTOMMATH_VERSION)
 libtommath-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libtom/libtommath/releases/download/v$(LIBTOMMATH_VERSION)/ltm-$(LIBTOMMATH_VERSION).tar.xz
 	$(call EXTRACT_TAR,ltm-$(LIBTOMMATH_VERSION).tar.xz,libtommath-$(LIBTOMMATH_VERSION),libtommath)
-	#$(call DO_PATCH,libtommath,libtommath,-p1)
+	mkdir -p $(BUILD_WORK)/libtommath/libtool
+	echo -e "AC_INIT([dummy],[1.0])\n\
+LT_INIT\n\
+AC_PROG_LIBTOOL\n\
+AC_OUTPUT" > $(BUILD_WORK)/libtommath/libtool/configure.ac
 
 ifneq ($(wildcard $(BUILD_WORK)/libtommath/.build_complete),)
 libtommath:
@@ -17,8 +21,6 @@ libtommath:
 else
 libtommath: libtommath-setup
 	# libtommath.mk Make libtool executable
-	mkdir -p $(BUILD_WORK)/libtommath/libtool
-	cp $(BUILD_INFO)/libtom-configure.ac $(BUILD_WORK)/libtommath/libtool/configure.ac
 	cd $(BUILD_WORK)/libtommath/libtool && LIBTOOLIZE="$(LIBTOOLIZE) -i" autoreconf -fi
 	cd $(BUILD_WORK)/libtommath/libtool && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE)
