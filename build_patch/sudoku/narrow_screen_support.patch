@@ -1,0 +1,321 @@
+diff -urN a/sudoku.c b/sudoku.c
+--- a/sudoku.c	2015-03-13 16:20:28.000000000 +0100
++++ b/sudoku.c	2020-10-03 16:10:16.000000000 +0200
+@@ -42,6 +42,7 @@
+ #include <unistd.h>
+ #include <curses.h>
+ #include <stddef.h>
++#include <locale.h>
+ 
+ /* Default file locations */
+ #if !defined (TEMPLATE)
+@@ -1669,16 +1670,17 @@
+  **/
+ 
+ /* Screen geometry */
++static int left_middle;
++static int left;
++static int sudoku_pos;
++static int line_size;
++
+ #define SUDOKU_LINE   2
+ #define TITLE_LINE    4
+ #define TOP           6
+ #define LEFT_LEFT     0
+-#define LEFT_MIDDLE  15
+-#define LEFT         27
+-#define SUDOKU_POS   35
+ #define BOTTOM       (TOP+3*4)
+-#define RIGHT        (LEFT+3*8)
+-#define LINE_SIZE    80
++#define RIGHT        (left+3*8)
+ #define STATUS_LINE  20
+ #define FILE_LINE    21
+ #define LAST_LINE    23
+@@ -1690,9 +1692,9 @@
+ static int have_status;  /* True (non-zero) if status line set */
+ static int have_hint;    /* True (non-zero) If hint displayed */
+ 
+-static char statusline[LINE_SIZE];  /* Buffer for status line */
++static char statusline[80];  /* Buffer for status line */
+ 
+-/* Render board background - assume 24x80 screen */
++/* Render board background - assume 24x80 or 24x53 screen */
+ static
+ void
+ draw_screen (void)
+@@ -1701,47 +1703,67 @@
+ 
+     wclear(stdscr);
+     attron(A_BOLD);
+-    mvaddstr(SUDOKU_LINE, SUDOKU_POS, "Su-Do-Ku!");
++    mvaddstr(SUDOKU_LINE, sudoku_pos, "Su-Do-Ku!");
+     attroff(A_BOLD);
+ 
+     for (i = 0; i < 3; ++i) {
+-        mvaddstr(TOP + 0 + 4 * i, LEFT, "+-------+-------+-------+");
+-        mvaddstr(TOP + 1 + 4 * i, LEFT, "|       |       |       |");
+-        mvaddstr(TOP + 2 + 4 * i, LEFT, "|       |       |       |");
+-        mvaddstr(TOP + 3 + 4 * i, LEFT, "|       |       |       |");
+-    }
+-    mvaddstr(TOP + 4 * 3, LEFT, "+-------+-------+-------+");
+-
+-    mvaddstr(TOP + 2, LEFT_LEFT + 1, "Rules:");
+-    mvaddstr(TOP + 3, LEFT_LEFT + 2, "Fill the grid so that");
+-    mvaddstr(TOP + 4, LEFT_LEFT + 2, "every column, row and");
+-    mvaddstr(TOP + 5, LEFT_LEFT + 2, "3x3 box contains each");
+-    mvaddstr(TOP + 6, LEFT_LEFT + 2, "of the digits 1 to 9.");
+-    i = TOP + 7;
+-    if (0 == opt_restrict) {
+-        mvaddstr(++i, LEFT_LEFT + 1, "File:");
+-        mvaddstr(++i, LEFT_LEFT + 2, "s   save board");
+-        mvaddstr(++i, LEFT_LEFT + 2, "w   write template");
+-        mvaddstr(++i, LEFT_LEFT + 2, "o   open board");
+-        mvaddstr(++i, LEFT_LEFT + 2, "t   set board title");
++        mvaddstr(TOP + 0 + 4 * i, left, "+-------+-------+-------+");
++        mvaddstr(TOP + 1 + 4 * i, left, "|       |       |       |");
++        mvaddstr(TOP + 2 + 4 * i, left, "|       |       |       |");
++        mvaddstr(TOP + 3 + 4 * i, left, "|       |       |       |");
++    }
++    mvaddstr(TOP + 4 * 3, left, "+-------+-------+-------+");
++
++    if (COLS >= 80) {
++        mvaddstr(TOP + 2, LEFT_LEFT + 1, "Rules:");
++        mvaddstr(TOP + 3, LEFT_LEFT + 2, "Fill the grid so that");
++        mvaddstr(TOP + 4, LEFT_LEFT + 2, "every column, row and");
++        mvaddstr(TOP + 5, LEFT_LEFT + 2, "3x3 box contains each");
++        mvaddstr(TOP + 6, LEFT_LEFT + 2, "of the digits 1 to 9.");
++        i = TOP + 7;
++        if (0 == opt_restrict) {
++            mvaddstr(++i, LEFT_LEFT + 1, "File:");
++            mvaddstr(++i, LEFT_LEFT + 2, "s   save board");
++            mvaddstr(++i, LEFT_LEFT + 2, "w   write template");
++            mvaddstr(++i, LEFT_LEFT + 2, "o   open board");
++            mvaddstr(++i, LEFT_LEFT + 2, "t   set board title");
++        }
+     }
+ 
+ /*    mvaddstr(TOP - 1, RIGHT + 4, "Keys:"); */
+-    mvaddstr(TOP + 0, RIGHT + 8, "k");
+-    mvaddstr(TOP + 1, RIGHT + 4, "  h   l move cursor");
+-    mvaddstr(TOP + 2, RIGHT + 8, "j");
+-    mvaddstr(TOP + 3, RIGHT + 7, "1-9  place digit");
+-    mvaddstr(TOP + 4, RIGHT + 7, "0 .  clear digit");
+-    mvaddstr(TOP + 5, RIGHT + 8, "c   clear board");
+-    mvaddstr(TOP + 6, RIGHT + 8, "d   redraw the board");
+-    mvaddstr(TOP + 7, RIGHT + 8, "f   fix squares");
+-    mvaddstr(TOP + 8, RIGHT + 8, "n   new board");
+-    mvaddstr(TOP + 9, RIGHT + 8, "q   quit game");
+-    i = TOP + 9;
+-    mvaddstr(++i, RIGHT + 8, "r   restart");
+-    mvaddstr(++i, RIGHT + 8, "u   undo last move");
+-    mvaddstr(++i, RIGHT + 8, "v   solve");
+-    mvaddstr(++i, RIGHT + 8, "?   request hint");
++    if (COLS < 80) {
++        mvaddstr(TOP + 0, RIGHT + 4, "k");
++        mvaddstr(TOP + 1, RIGHT + 2, "h   l move cursor");
++        mvaddstr(TOP + 2, RIGHT + 4, "j");
++        mvaddstr(TOP + 3, RIGHT + 3, "1-9  place digit");
++        mvaddstr(TOP + 4, RIGHT + 3, "0 .  clear digit");
++        mvaddstr(TOP + 5, RIGHT + 4, "c   clear board");
++        mvaddstr(TOP + 6, RIGHT + 4, "d   redraw the board");
++        mvaddstr(TOP + 7, RIGHT + 4, "f   fix squares");
++        mvaddstr(TOP + 8, RIGHT + 4, "n   new board");
++        mvaddstr(TOP + 9, RIGHT + 4, "q   quit game");
++        i = TOP + 9;
++        mvaddstr(++i, RIGHT + 4, "r   restart");
++        mvaddstr(++i, RIGHT + 4, "u   undo last move");
++        mvaddstr(++i, RIGHT + 4, "v   solve");
++        mvaddstr(++i, RIGHT + 4, "?   request hint");
++    } else {
++        mvaddstr(TOP + 0, RIGHT + 8, "k");
++        mvaddstr(TOP + 1, RIGHT + 4, "  h   l move cursor");
++        mvaddstr(TOP + 2, RIGHT + 8, "j");
++        mvaddstr(TOP + 3, RIGHT + 7, "1-9  place digit");
++        mvaddstr(TOP + 4, RIGHT + 7, "0 .  clear digit");
++        mvaddstr(TOP + 5, RIGHT + 8, "c   clear board");
++        mvaddstr(TOP + 6, RIGHT + 8, "d   redraw the board");
++        mvaddstr(TOP + 7, RIGHT + 8, "f   fix squares");
++        mvaddstr(TOP + 8, RIGHT + 8, "n   new board");
++        mvaddstr(TOP + 9, RIGHT + 8, "q   quit game");
++        i = TOP + 9;
++        mvaddstr(++i, RIGHT + 8, "r   restart");
++        mvaddstr(++i, RIGHT + 8, "u   undo last move");
++        mvaddstr(++i, RIGHT + 8, "v   solve");
++        mvaddstr(++i, RIGHT + 8, "?   request hint");
++    }
+ }
+ 
+ /* Write board title */
+@@ -1752,9 +1774,21 @@
+     move(TITLE_LINE, LEFT_LEFT);
+     wclrtoeol(stdscr);
+     if (0 != title) {
+-        mvaddstr(TITLE_LINE,
+-                 (int)((LINE_SIZE - strlen(title)) / 2),
+-                 title);
++        int titleLength = strlen(title);
++        if (COLS < 80 && titleLength >= line_size) {
++
++            char shortendTitle[line_size];
++            strncpy(shortendTitle, title, line_size - 1);
++            shortendTitle[line_size - 1] = '\0';
++
++            mvaddstr(TITLE_LINE,
++                    0,
++                    shortendTitle);
++        } else {
++            mvaddstr(TITLE_LINE,
++                    (int)((line_size - titleLength) / 2),
++                    title);
++        }
+     }
+ }
+ 
+@@ -1767,7 +1801,7 @@
+     cury = y;
+ 
+     move(TOP + 1 + y + y / 3,
+-         LEFT + 2 + 2 * (x + x / 3));
++         left + 2 + 2 * (x + x / 3));
+ 
+     wrefresh(stdscr);
+ }
+@@ -1799,9 +1833,21 @@
+ void
+ set_status (const char * txt)
+ {
+-    mvaddstr(STATUS_LINE,
+-             (int)((LINE_SIZE - strlen(txt)) / 2),
+-             (char *)txt);
++    int txtLength = strlen(txt);
++    if (COLS < 80 && txtLength >= line_size) {
++
++        char shortendTxt[line_size];
++        strncpy(shortendTxt, txt, line_size - 1);
++        shortendTxt[line_size - 1] = '\0';
++
++        mvaddstr(TITLE_LINE,
++                0,
++                shortendTxt);
++    } else {
++        mvaddstr(STATUS_LINE,
++                (int)((line_size - txtLength) / 2),
++                (char *)txt);
++    }
+ 
+     move_to(curx, cury);
+     wrefresh(stdscr);
+@@ -1846,7 +1892,7 @@
+     int i, x, y;
+ 
+     for (i = 0; i < 81; ++i) {
+-        x = LEFT + 2 + 2 * (COLUMN(i) + COLUMN(i) / 3);
++        x = left + 2 + 2 * (COLUMN(i) + COLUMN(i) / 3);
+         y = TOP + 1 + ROW(i) + ROW(i) / 3;
+         assert(0 <= DIGIT(i));
+         assert(DIGIT(i) <= 9); /* XXX FAILING */
+@@ -1868,7 +1914,7 @@
+ void
+ row_hint (int row)
+ {
+-    mvaddch(TOP + 1 + row + row / 3, LEFT - 2, '>');
++    mvaddch(TOP + 1 + row + row / 3, left - 2, '>');
+     mvaddch(TOP + 1 + row + row / 3, RIGHT + 2, '<');
+     move_to(curx, cury);
+     have_hint = 1;
+@@ -1878,8 +1924,8 @@
+ void
+ column_hint (int col)
+ {
+-    mvaddch(TOP - 1, LEFT + 2 + 2 * (col + col / 3), 'v');
+-    mvaddch(BOTTOM + 1, LEFT + 2 + 2 * (col + col / 3), '^');
++    mvaddch(TOP - 1, left + 2 + 2 * (col + col / 3), 'v');
++    mvaddch(BOTTOM + 1, left + 2 + 2 * (col + col / 3), '^');
+     move_to(curx, cury);
+     have_hint = 1;
+ }
+@@ -1891,11 +1937,11 @@
+     int i, j;
+     for (i = 0; i < 3; ++i) {
+         j = 3 * (block / 3) + i;
+-        mvaddch(TOP + 1 + j + j / 3, LEFT - 2, '>');
++        mvaddch(TOP + 1 + j + j / 3, left - 2, '>');
+         mvaddch(TOP + 1 + j + j / 3, RIGHT + 2, '<');
+         j = 3 * (block % 3) + i;
+-        mvaddch(TOP - 1, LEFT + 2 + 2 * (j + j / 3), 'v');
+-        mvaddch(BOTTOM + 1, LEFT + 2 + 2 * (j + j / 3), '^');
++        mvaddch(TOP - 1, left + 2 + 2 * (j + j / 3), 'v');
++        mvaddch(BOTTOM + 1, left + 2 + 2 * (j + j / 3), '^');
+     }
+     move_to(curx, cury);
+     have_hint = 1;
+@@ -1907,10 +1953,10 @@
+ {
+     int i;
+     for (i = 0; i < 9; ++i) {
+-        mvaddch(TOP + 1 + i + i / 3, LEFT - 2, ' ');
++        mvaddch(TOP + 1 + i + i / 3, left - 2, ' ');
+         mvaddch(TOP + 1 + i + i / 3, RIGHT + 2, ' ');
+-        mvaddch(TOP - 1, LEFT + 2 + 2 * (i + i / 3), ' ');
+-        mvaddch(BOTTOM + 1, LEFT + 2 + 2 * (i + i / 3), ' ');
++        mvaddch(TOP - 1, left + 2 + 2 * (i + i / 3), ' ');
++        mvaddch(BOTTOM + 1, left + 2 + 2 * (i + i / 3), ' ');
+     }
+     have_hint = 0;
+     move_to(curx, cury);
+@@ -3063,10 +3109,7 @@
+     }
+     assert (buffer != NULL && buffsize > 0);
+     if (buffer != NULL && temp_str != NULL) {
+-        #if (LINE_SIZE - LEFT_MIDDLE + 1) < 60
+-        #error "Bad parameters, there isn't enough room for status display."
+-        #endif
+-        char abort_message[LINE_SIZE - LEFT_MIDDLE + 1];
++        char abort_message[line_size - left_middle + 1];
+         size_t  storage_size = sizeof(abort_message);
+         const char * first_part = "Press Esc key twice to abort the '";
+         const char * last_part  = "' operation.";
+@@ -3098,13 +3141,13 @@
+ 
+         clear_status();
+         mvaddstr(STATUS_LINE, LEFT_LEFT, edit_field_name);
+-        mvaddstr(STATUS_LINE, LEFT_MIDDLE, abort_message);
++        mvaddstr(STATUS_LINE, left_middle, abort_message);
+ 
+         i = edit_line(FILE_LINE,
+                       LEFT_LEFT,
+                       temp_str,
+                       buffsize,
+-                      LINE_SIZE - LEFT_LEFT - 3);
++                      line_size - LEFT_LEFT - 3);
+ 
+         if (i > 0) {
+             /* We have a nonzero length string, and the user
+@@ -3986,6 +4029,7 @@
+ int
+ main (int argc, char **argv)
+ {
++    setlocale(LC_ALL, "");
+     program = argv[0];
+ 
+     /* Limited support for options */
+@@ -4076,6 +4120,18 @@
+     /* Any signal will now shutdown curses cleanly */
+     signals();
+ 
++    if (COLS < 80) {
++        left_middle = 0;
++        left = 1;
++        sudoku_pos = 22;
++        line_size = 53;
++    } else {
++        left_middle = 15;
++        left = 27;
++        sudoku_pos = 35;
++        line_size = 80;
++    }
++
+     draw_screen();
+     noecho();
+     cbreak();

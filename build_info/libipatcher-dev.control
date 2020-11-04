@@ -1,0 +1,9 @@
+Package: libipatcher-dev
+Version: @DEB_LIBIPATCHER_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libipatcher0 (>= @DEB_LIBIPATCHER_V@), libcurl-dev, libpng16-dev, liboffsetfinder64-dev, libimg4tool-dev, libssl-dev, libplist-dev, libinsn-dev, libgeneral-dev
+Section: Development
+Priority: optional
+Description: a convinient wrapper for iBoot32Patcher (development files)
+Tag: role::developer

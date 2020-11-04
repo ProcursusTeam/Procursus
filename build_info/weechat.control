@@ -1,0 +1,8 @@
+Package: weechat
+Version: @DEB_WEECHAT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: weechat-curses (= @DEB_WEECHAT_V@) | weechat-headless (= @DEB_WEECHAT_V@)
+Section: Networking
+Priority: optional
+Description: Fast, light and extensible chat client (metapackage)

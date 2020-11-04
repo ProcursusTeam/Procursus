@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS += futurerestore
+SUBPROJECTS           += futurerestore
 FUTURERESTORE_VERSION := 180
 DEB_FUTURERESTORE_V   ?= $(FUTURERESTORE_VERSION)
 
@@ -27,11 +27,13 @@ futurerestore-setup: setup tsschecker-setup
 	$(SED) -i 's/LIBPLIST_VERSION=1.12/LIBPLIST_VERSION=2.2.0/' $(BUILD_WORK)/futurerestore/external/idevicerestore/configure.ac
 	$(SED) -i 's/LIBIRECOVERY_VERSION=0.2.0/LIBIRECOVERY_VERSION=1.0.0/' $(BUILD_WORK)/futurerestore/external/idevicerestore/configure.ac
 
+	$(SED) -i 's/libipatcher::version().c_str()/libipatcher::version()/' $(BUILD_WORK)/futurerestore/futurerestore/main.cpp
+
 ifneq ($(wildcard $(BUILD_WORK)/futurerestore/.build_complete),)
 futurerestore:
 	@echo "Using previously built futurerestore."
 else
-futurerestore: futurerestore-setup tsschecker libirecovery openssl libusbmuxd libimobiledevice img4tool libgeneral
+futurerestore: futurerestore-setup tsschecker libirecovery openssl libusbmuxd libimobiledevice img4tool libgeneral libipatcher libzip
 	cd $(BUILD_WORK)/futurerestore && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr

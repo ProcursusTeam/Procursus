@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS        += basic-cmds
 BASIC-CMDS_VERSION := 55
-DEB_BASIC-CMDS_V   ?= $(BASIC-CMDS_VERSION)
+DEB_BASIC-CMDS_V   ?= $(BASIC-CMDS_VERSION)-1
 
 basic-cmds-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/basic_cmds/basic_cmds-$(BASIC-CMDS_VERSION).tar.gz

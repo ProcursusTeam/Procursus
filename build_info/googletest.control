@@ -1,0 +1,41 @@
+Package: googletest
+Version: @DEB_GOOGLETEST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: standard
+Description: Google's C++ test framework sources
+ This package provides sources for Google Test and Google Mock.
+ .
+ Google Test is a framework for writing C++ tests on a variety of
+ platforms. Based on the xUnit architecture. Supports automatic test
+ discovery, a rich set of assertions, user-defined assertions, death
+ tests, fatal and non-fatal failures, value- and type-parameterized
+ tests, various options for running the tests, and XML test report
+ generation.
+ .
+ Google Mock is an extension of Google Test for C++ mocking.  Inspired
+ by jMock, EasyMock, and Hamcrest, and designed with C++'s specifics
+ in mind, it can help you derive better designs of your system and
+ write better tests.
+ .
+ Google Mock:
+ .
+  - provides a declarative syntax for defining mocks,
+  - can easily define partial (hybrid) mocks, which are a cross of real
+    and mock objects,
+  - handles functions of arbitrary types and overloaded functions,
+  - comes with a rich set of matchers for validating function arguments,
+  - uses an intuitive syntax for controlling the behavior of a mock,
+  - does automatic verification of expectations (no record-and-replay
+    needed),
+  - allows arbitrary (partial) ordering constraints on
+    function calls to be expressed,
+  - lets a user extend it by defining new matchers and actions.
+  - does not use exceptions, and
+  - is easy to learn and use.
+ .
+ NOTE: This package does not contain a library to link against, but rather
+ the source code to build the google test and mock libraries.  This enables
+ building the google test and mock libraries with the same flags as the
+ C++ code under test.
