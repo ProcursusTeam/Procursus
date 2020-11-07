@@ -33,8 +33,7 @@ libfribidi-package: libfribidi-stage
 	# libfribidi.mk Package Structure
 	rm -rf $(BUILD_DIST)/libfribidi{0,-dev,-bin}
 	mkdir -p $(BUILD_DIST)/libfribidi{0,-dev}/usr/lib \
-		$(BUILD_DIST)/libfribidi-bin/usr \
-		$(BUILD_DIST)/libfribidi-deb/usr/share/man
+		$(BUILD_DIST)/libfribidi-bin/usr
 
 	# libfribidi.mk Prep libfribidi0
 	cp -a $(BUILD_STAGE)/libfribidi/usr/lib/libfribidi.0.dylib $(BUILD_DIST)/libfribidi0/usr/lib
@@ -42,7 +41,7 @@ libfribidi-package: libfribidi-stage
 	# libfribidi.mk Prep libfribidi-dev
 	cp -a $(BUILD_STAGE)/libfribidi/usr/lib/libfribidi.dylib $(BUILD_DIST)/libfribidi-dev/usr/lib
 	cp -a $(BUILD_STAGE)/libfribidi/usr/include $(BUILD_DIST)/libfribidi-dev/usr
-	cp -a $(BUILD_STAGE)/libfribidi/usr/share/man/man3 $(BUILD_DIST)/libfribidi-dev/usr/man
+	cp -a $(BUILD_STAGE)/libfribidi/usr/share $(BUILD_DIST)/libfribidi-dev/usr
 
 	# libfribidi.mk Prep libfribidi-bin
 	cp -a $(BUILD_STAGE)/libfribidi/usr/bin $(BUILD_DIST)/libfribidi-bin/usr
