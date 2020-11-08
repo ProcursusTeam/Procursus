@@ -1,0 +1,15 @@
+Package: libopencore-amrnb-dev
+Version: @DEB_LIBOPENCORE-AMR_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libopencore-amrnb0 (= @DEB_LIBOPENCORE-AMR_V@)
+Section: Development
+Priority: optional
+Homepage: https://sourceforge.net/projects/opencore-amr/
+Description: Adaptive Multi Rate speech codec - development files
+ This library contains an implementation of the 3GPP TS 26.073 specification for
+ the Adaptive Multi Rate (AMR) speech codec. The implementation is derived from
+ the OpenCORE framework, part of the Google Android project.
+ .
+ This package contains the files necessary for development.
+Tag: purpose::library, role::developer
