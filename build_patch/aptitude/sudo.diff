@@ -1,0 +1,52 @@
+diff -urN aptitude-0.8.13/src/ui.cc aptitude-sudo/src/ui.cc
+--- aptitude-0.8.13/src/ui.cc	2020-05-20 23:32:38.000000000 -0400
++++ aptitude-sudo/src/ui.cc	2020-10-25 21:29:36.389314352 -0400
+@@ -457,25 +457,19 @@
+       return;
+     }
+ 
+-  std::string root_command = aptcfg->Find(PACKAGE "::Get-Root-Command",
+-					  "su:/bin/su");
+-
+-  if(root_command == "su")
+-    root_command = "su:/bin/su";
+-  else if(root_command == "sudo")
+-    root_command = "sudo:/usr/bin/sudo";
++  std::string root_command = "sudo:/usr/bin/sudo";
+ 
+   std::string::size_type splitloc = root_command.find(':');
+   if(splitloc == std::string::npos)
+     {
+-      _error->Error(_("Invalid Get-Root-Command; it should start with su: or sudo:"));
++      _error->Error(_("Invalid Get-Root-Command; it should start with sudo:"));
+       return;
+     }
+ 
+   std::string protocol(root_command, 0, splitloc);
+-  if(protocol != "su" && protocol != "sudo")
++  if(protocol != "sudo")
+     {
+-      _error->Error(_("Invalid Get-Root-Command; it should start with su: or sudo:, not %s:"), protocol.c_str());
++      _error->Error(_("Invalid Get-Root-Command; it should start with sudo:, not %s:"), protocol.c_str());
+       return;
+     }
+   std::string root_program(root_command, splitloc + 1);
+@@ -527,17 +521,7 @@
+       //
+       // What happens if tmpdir has spaces in it?  Can I get more
+       // control over how the su-to-root function is called?
+-      if(protocol == "su")
+-	{
+-	  std::ostringstream cmdbuf;
+-	  cmdbuf << argv0 << " --no-gui -S "
+-		 << statusname.get_name() << " "
+-		 << args;
+-	  execl(root_program.c_str(), root_program.c_str(), "--login", "-c", cmdbuf.str().c_str(), NULL);
+-
+-	  exit(1);
+-	}
+-      else if(protocol == "sudo")
++	    if(protocol == "sudo")
+ 	{
+ 	  std::vector<std::string> cmdlist;
+ 	  // Split whitespace in the input command.

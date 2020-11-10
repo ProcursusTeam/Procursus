@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS     += essential
-ESSENTIAL_VERSION := 0-3
+ESSENTIAL_VERSION := 0-4
 DEB_ESSENTIAL_V   ?= $(ESSENTIAL_VERSION)
 
 essential:

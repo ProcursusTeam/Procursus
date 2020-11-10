@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "remove" ]; then
+    update-alternatives --remove aptitude /usr/bin/aptitude-curses
+fi
+
+#DEBHELPER#
