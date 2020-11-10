@@ -79,6 +79,11 @@ ncurses: ncurses-setup
 			$(LN) -srf $$h $(BUILD_BASE)/usr/include/ncursesw ; \
 		fi \
 	done
+	
+	for pc in formw menuw ncurses++w ncursesw panelw; do \
+		$(SED) -i '/Libs:/c\Libs: -l'$${pc}'' $(BUILD_STAGE)/ncurses/usr/lib/pkgconfig/$${pc}.pc; \
+		$(SED) -i '/Libs:/c\Libs: -l'$${pc}'' $(BUILD_BASE)/usr/lib/pkgconfig/$${pc}.pc; \
+	done
 
 	touch $(BUILD_WORK)/ncurses/.build_complete
 endif

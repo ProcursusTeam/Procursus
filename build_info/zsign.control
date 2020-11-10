@@ -1,0 +1,7 @@
+Package: zsign
+Version: @DEB_ZSIGN_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libssl1.1, unzip, zip
+Section: Utilities
+Description: Maybe is the most quickly codesign alternative for iOS12+ in the world, cross-platform ( Linux & macOS ), more features.

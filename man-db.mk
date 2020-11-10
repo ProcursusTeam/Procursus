@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/man-db/.build_complete),)
 man-db:
 	@echo "Using previously built man-db."
 else
-man-db: man-db-setup libpipeline libgdbm gettext
+man-db: man-db-setup libpipeline libgdbm gettext zstd
 	cd $(BUILD_WORK)/man-db && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

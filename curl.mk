@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += curl
-CURL_VERSION := 7.71.1
-DEB_CURL_V   ?= $(CURL_VERSION)-2
+CURL_VERSION := 7.73.0
+DEB_CURL_V   ?= $(CURL_VERSION)-3
 
 curl-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://curl.haxx.se/download/curl-$(CURL_VERSION).tar.xz{,.asc}
@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/curl/.build_complete),)
 curl:
 	@echo "Using previously built curl."
 else
-curl: curl-setup gettext openssl libssh2 nghttp2 libidn2
+curl: curl-setup gettext openssl libssh2 nghttp2 libidn2 brotli zstd
 	cd $(BUILD_WORK)/curl && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
