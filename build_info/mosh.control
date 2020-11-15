@@ -2,7 +2,7 @@ Package: mosh
 Version: @DEB_MOSH_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libncursesw6, openssh-client, libprotobuf24, gettext-localizations, libssl1.1, perl
+Depends: libncursesw6, openssh-client, libprotobuf25, gettext-localizations, libssl1.1, perl
 Section: Networking
 Priority: standard
 Description: Mobile shell, surviving disconnects with local echo and line editing

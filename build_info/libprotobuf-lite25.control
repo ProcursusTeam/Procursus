@@ -1,4 +1,4 @@
-Package: libprotobuf-lite24
+Package: libprotobuf-lite25
 Version: @DEB_LIBPROTOBUF_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
