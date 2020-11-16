@@ -5,10 +5,10 @@ endif
 #SUBPROJECTS   += llvm
 LLVM_VERSION   := 10.0.0
 LLVM_MAJOR_V   := 10
-SWIFT_VERSION  := 5.3
+SWIFT_VERSION  := 5.3.1
 SWIFT_SUFFIX   := RELEASE
-DEB_SWIFT_V    ?= $(SWIFT_VERSION)~$(SWIFT_SUFFIX)-1
-DEB_LLVM_V     ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)-1
+DEB_SWIFT_V    ?= $(SWIFT_VERSION)~$(SWIFT_SUFFIX)
+DEB_LLVM_V     ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)
 
 ifeq ($(MEMO_TARGET),iphoneos-arm64)
 LLVM_DEFAULT_TRIPLE := arm64-apple-ios12.0
@@ -48,7 +48,7 @@ ifneq ($(wildcard $(BUILD_WORK)/llvm/.build_complete),)
 llvm:
 	@echo "Using previously built llvm."
 else
-llvm: llvm-setup libffi ncurses xz xar
+llvm: llvm-setup libffi libedit ncurses xz xar
 	cp -a $(TARGET_SYSROOT)/usr/include/mach/arm $(BUILD_BASE)/usr/include/mach
 	cp -a $(MACOSX_SYSROOT)/usr/include/{editline,kern} $(BUILD_BASE)/usr/include
 	cp -a $(MACOSX_SYSROOT)/usr/include/histedit.h $(BUILD_BASE)/usr/include
@@ -99,7 +99,7 @@ llvm: llvm-setup libffi ncurses xz xar
 		-DLIBXML2_LIBRARY="$(TARGET_SYSROOT)/usr/lib/libxml2.tbd" \
 		-DLIBXML2_INCLUDE_DIR="$(TARGET_SYSROOT)/usr/include/libxml" \
 		-DLibEdit_INCLUDE_DIRS="$(BUILD_BASE)/usr/include" \
-		-DLibEdit_LIBRARIES="$(TARGET_SYSROOT)/usr/lib/libedit.tbd" \
+		-DLibEdit_LIBRARIES="$(BUILD_BASE)/usr/lib/libedit.dylib" \
 		-DCORE_FOUNDATION_LIBRARY="$(TARGET_SYSROOT)/System/Library/Frameworks/CoreFoundation.framework" \
 		-DCORE_SERVICES_LIBRARY="$(TARGET_SYSROOT)/System/Library/Frameworks/CoreServices.framework" \
 		-DFOUNDATION_LIBRARY="$(TARGET_SYSROOT)/System/Library/Frameworks/Foundation.framework" \
