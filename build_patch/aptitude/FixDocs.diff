@@ -1,0 +1,21 @@
+diff -urN aptitude-0.8.13/doc/Makefile.am aptitude/doc/Makefile.am
+--- aptitude-0.8.13/doc/Makefile.am	2020-05-20 23:32:38.000000000 -0400
++++ aptitude/doc/Makefile.am	2020-10-26 16:32:36.594520968 -0400
+@@ -1,4 +1,4 @@
+-SUBDIRS=cs de en es fi fr it ja nl pl ru po4a
++SUBDIRS=cs de en es it ja nl ru po4a
+ 
+ EXTRA_DIST=aptitude-common.xsl aptitude-html.xsl aptitude-man.xsl aptitude-txt.xsl aptitude.css html-to-text xx/Makefile.am
+ 
+diff -urN aptitude-0.8.13/doc/Makefile.in aptitude/doc/Makefile.in
+--- aptitude-0.8.13/doc/Makefile.in	2020-05-20 23:38:12.000000000 -0400
++++ aptitude/doc/Makefile.in	2020-10-26 16:32:48.370520316 -0400
+@@ -338,7 +338,7 @@
+ top_build_prefix = @top_build_prefix@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+-SUBDIRS = cs de en es fi fr it ja nl pl ru po4a
++SUBDIRS = cs de en es it ja nl ru po4a
+ EXTRA_DIST = aptitude-common.xsl aptitude-html.xsl aptitude-man.xsl aptitude-txt.xsl aptitude.css html-to-text xx/Makefile.am
+ PO4AFLAGS = --srcdir=$(top_srcdir)/doc --destdir=$(top_builddir)/doc \
+ 	--package-name='$(PACKAGE)' --package-version='$(PACKAGE_VERSION)' \
