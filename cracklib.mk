@@ -10,6 +10,7 @@ cracklib-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/cracklib/cracklib/releases/download/v$(CRACKLIB_VERSION)/cracklib-$(CRACKLIB_VERSION).tar.gz
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/cracklib/cracklib/releases/download/v$(CRACKLIB_VERSION)/cracklib-words-$(CRACKLIB_VERSION).gz
 	$(call EXTRACT_TAR,cracklib-$(CRACKLIB_VERSION).tar.gz,cracklib-$(CRACKLIB_VERSION),cracklib)
+	gzip -dc < $(BUILD_SOURCE)/cracklib-words-$(CRACKLIB_VERSION).gz > $(BUILD_WORK)/cracklib/dicts/cracklib-words
 
 ifneq ($(wildcard $(BUILD_WORK)/cracklib/.build_complete),)
 cracklib:
@@ -24,6 +25,7 @@ cracklib: cracklib-setup
 	+$(MAKE) -C $(BUILD_WORK)/cracklib
 	+$(MAKE) -C $(BUILD_WORK)/cracklib install \
 		DESTDIR=$(BUILD_STAGE)/cracklib
+	$(GINSTALL) -Dm 644 $(BUILD_WORK)/cracklib/dicts/cracklib-words -t "$(BUILD_STAGE)/cracklib/usr/share/cracklib"
 	touch $(BUILD_WORK)/cracklib/.build_complete
 endif
 
