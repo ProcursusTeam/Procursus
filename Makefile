@@ -141,6 +141,7 @@ LIPO            := lipo
 OTOOL           := otool
 I_N_T           := install_name_tool
 EXTRA           :=
+LIBTOOL         := libtool
 
 else
 $(error Please use Linux or MacOS to build)
