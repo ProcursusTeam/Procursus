@@ -116,6 +116,7 @@ NM       := $(GNU_HOST_TRIPLE)-nm
 LIPO     := $(GNU_HOST_TRIPLE)-lipo
 OTOOL    := $(GNU_HOST_TRIPLE)-otool
 EXTRA    := INSTALL="/usr/bin/install -c --strip-program=$(STRIP)"
+LIBTOOL  := $(GNU_HOST_TRIPLE)-libtool
 export CC CXX AR
 
 else ifeq ($(UNAME),Darwin)

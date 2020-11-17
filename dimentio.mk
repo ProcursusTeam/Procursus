@@ -3,17 +3,18 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += dimentio
-DIMENTIO_VERSION   := 1.0.1
+DIMENTIO_VERSION   := 1.0.2
 DEB_DIMENTIO_V     ?= $(DIMENTIO_VERSION)
+
+DIMENTIO_COMMIT = 7ffffffd95119e439669aba5b3d0af36fff5ba17
+SOVERSION = 0
+LIBS = -framework CoreFoundation -framework IOKit -lcompression
 
 dimentio-setup: setup
 	-[ ! -e "$(BUILD_SOURCE)/dimentio-v$(DIMENTIO_VERSION).tar.gz" ] \
 		&& wget -nc -O$(BUILD_SOURCE)/dimentio-v$(DIMENTIO_VERSION).tar.gz \
-			https://github.com/ProcursusTeam/dimentio/archive/v$(DIMENTIO_VERSION).tar.gz
-	$(call EXTRACT_TAR,dimentio-v$(DIMENTIO_VERSION).tar.gz,dimentio-$(DIMENTIO_VERSION),dimentio)
-
-	# I'm a dumbass here. Fix this next tag.
-	$(SED) -i 's/SOVERSION := 1/SOVERSION := 0/' $(BUILD_WORK)/dimentio/Makefile
+			https://github.com/0x7ff/dimentio/archive/$(DIMENTIO_COMMIT).tar.gz
+	$(call EXTRACT_TAR,dimentio-v$(DIMENTIO_VERSION).tar.gz,dimentio-$(DIMENTIO_COMMIT),dimentio)
 
 	mkdir -p $(BUILD_STAGE)/dimentio/usr/{bin,lib,include}
 
@@ -22,8 +23,37 @@ dimentio:
 	@echo "Using previously built dimentio."
 else
 dimentio: dimentio-setup
-	+$(MAKE) -C $(BUILD_WORK)/dimentio \
-		CFLAGS="$(CFLAGS) -D__arm64e__"
+	# libdimentio.o
+	$(CC) $(CFLAGS) \
+		-c -o $(BUILD_WORK)/dimentio/libdimentio.o -x c \
+		$(BUILD_WORK)/dimentio/libdimentio.c
+
+	# libdimentio.dylib
+	$(CC) $(CFLAGS) -dynamiclib \
+		-install_name "/usr/lib/libdimentio.$(SOVERSION).dylib" \
+		-o $(BUILD_WORK)/dimentio/libdimentio.$(SOVERSION).dylib \
+		$(BUILD_WORK)/dimentio/libdimentio.o \
+		$(LDFLAGS) $(LIBS)
+	$(LDID) -S $(BUILD_WORK)/dimentio/libdimentio.$(SOVERSION).dylib
+
+	# libdimentio.a
+	$(LIBTOOL) -static \
+		-o $(BUILD_WORK)/dimentio/libdimentio.a \
+		$(BUILD_WORK)/dimentio/libdimentio.o
+
+	# dimentio.o
+	$(CC) $(CFLAGS) \
+		-c -o $(BUILD_WORK)/dimentio/dimentio.o -x c \
+		$(BUILD_WORK)/dimentio/dimentio.c
+
+	# dimentio
+	$(CC) $(CFLAGS) \
+		-o $(BUILD_WORK)/dimentio/dimentio \
+		$(BUILD_WORK)/dimentio/dimentio.o \
+		$(BUILD_WORK)/dimentio/libdimentio.$(SOVERSION).dylib
+	$(LDID) -S$(BUILD_WORK)/dimentio/tfp0.plist $(BUILD_WORK)/dimentio/dimentio
+	chmod u+s $(BUILD_WORK)/dimentio/dimentio
+
 	cp -a $(BUILD_WORK)/dimentio/dimentio $(BUILD_STAGE)/dimentio/usr/bin
 	cp -a $(BUILD_WORK)/dimentio/libdimentio*.{a,dylib} $(BUILD_STAGE)/dimentio/usr/lib
 	cp -a $(BUILD_WORK)/dimentio/libdimentio*.{a,dylib} $(BUILD_BASE)/usr/lib
@@ -38,7 +68,7 @@ dimentio-package: dimentio-stage
 	mkdir -p $(BUILD_DIST)/dimentio/usr/bin \
 		$(BUILD_DIST)/libdimentio0/usr/lib \
 		$(BUILD_DIST)/libdimentio-dev/usr/{lib,include}
-	
+
 	# dimentio.mk Prep libdimentio0
 	cp -a $(BUILD_STAGE)/dimentio/usr/lib/libdimentio.0.dylib $(BUILD_DIST)/libdimentio0/usr/lib
 
@@ -46,19 +76,19 @@ dimentio-package: dimentio-stage
 	cp -a $(BUILD_STAGE)/dimentio/usr/lib/libdimentio.a $(BUILD_DIST)/libdimentio-dev/usr/lib
 	cp -a $(BUILD_STAGE)/dimentio/usr/include/libdimentio.h $(BUILD_DIST)/libdimentio-dev/usr/include
 	ln -s libdimentio.0.dylib $(BUILD_DIST)/libdimentio-dev/usr/lib/libdimentio.dylib
-	
+
 	# dimentio.mk Prep dimentio
 	cp -a $(BUILD_STAGE)/dimentio/usr/bin/dimentio $(BUILD_DIST)/dimentio/usr/bin
-	
+
 	# dimentio.mk Sign
 	$(call SIGN,dimentio,dimentio.xml)
 	$(call SIGN,libdimentio0,dimentio.xml)
-	
+
 	# dimentio.mk Make .debs
 	$(call PACK,dimentio,DEB_DIMENTIO_V)
 	$(call PACK,libdimentio0,DEB_DIMENTIO_V)
 	$(call PACK,libdimentio-dev,DEB_DIMENTIO_V)
-	
+
 	# dimentio.mk Build cleanup
 	rm -rf $(BUILD_DIST)/dimentio $(BUILD_DIST)/libdimentio{0,-dev}
 
