@@ -23,7 +23,7 @@ dimentio:
 else
 dimentio: dimentio-setup
 	# libdimentio.o
-	$(CC) $(CFLAGS) \
+	$(CC) $(CFLAGS) -D__arm64e__ \
 		-c -o $(BUILD_WORK)/dimentio/libdimentio.o -x c \
 		$(BUILD_WORK)/dimentio/libdimentio.c
 
