@@ -1,5 +1,5 @@
-Package: cracklib2
-Version: @DEB_CRACKLIB_V@
+Package: libcrack2
+Version: @DEB_LIBCRACK_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Utilities
