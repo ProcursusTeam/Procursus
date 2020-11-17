@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += dimentio
-DIMENTIO_VERSION   := 1.0.1
+DIMENTIO_VERSION   := 1.0.2
 DEB_DIMENTIO_V     ?= $(DIMENTIO_VERSION)
 
 DIMENTIO_COMMIT    := 7ffffffd95119e439669aba5b3d0af36fff5ba17
