@@ -31,12 +31,12 @@ endif
 
 libcrack-package: libcrack-stage
 	# libcrack.mk Package Structure
-	rm -rf $(BUILD_DIST)/libcrack{-bin,2,-dev}
-	mkdir -p $(BUILD_DIST)/libcrack{-bin/usr/{bin,share},2/usr/lib,-dev/usr/lib}
+	rm -rf $(BUILD_DIST)/libcrack{2,-dev} $(BUILD_DIST)/cracklib-runtime
+	mkdir -p $(BUILD_DIST)/libcrack{2/usr/lib,-dev/usr/lib} $(BUILD_DIST)/cracklib-runtime/usr/{bin,share}
 	
-	# libcrack.mk Prep libcrack-bin
-	cp -a $(BUILD_STAGE)/libcrack/usr/sbin/* $(BUILD_DIST)/libcrack-bin/usr/bin
-	cp -a $(BUILD_STAGE)/libcrack/usr/share/libcrack $(BUILD_DIST)/libcrack-bin/usr/share
+	# libcrack.mk Prep cracklib-runtime
+	cp -a $(BUILD_STAGE)/libcrack/usr/sbin/* $(BUILD_DIST)/cracklib-runtime/usr/bin
+	cp -a $(BUILD_STAGE)/libcrack/usr/share/libcrack $(BUILD_DIST)/cracklib-runtime/usr/share
 
 	# libcrack.mk Prep libcrack2
 	cp -a $(BUILD_STAGE)/libcrack/usr/lib/libcrack.2.dylib $(BUILD_DIST)/libcrack2/usr/lib
@@ -46,15 +46,15 @@ libcrack-package: libcrack-stage
 	cp -a $(BUILD_STAGE)/libcrack/usr/lib/{libcrack.a,libcrack.dylib} $(BUILD_DIST)/libcrack-dev/usr/lib
 	
 	# libcrack.mk Sign
-	$(call SIGN,libcrack-bin,general.xml)
+	$(call SIGN,cracklib-runtime,general.xml)
 	$(call SIGN,libcrack2,general.xml)
 	
 	# libcrack.mk Make .debs
-	$(call PACK,libcrack-bin,DEB_LIBCRACK_V)
+	$(call PACK,cracklib-runtime,DEB_LIBCRACK_V)
 	$(call PACK,libcrack2,DEB_LIBCRACK_V)
 	$(call PACK,libcrack-dev,DEB_LIBCRACK_V)
 	
 	# libcrack.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libcrack{-bin,2,-dev}
+	rm -rf $(BUILD_DIST)/libcrack{2,-dev} $(BUILD_DIST)/cracklib-runtime
 
 .PHONY: libcrack libcrack-package
