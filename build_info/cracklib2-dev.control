@@ -1,0 +1,7 @@
+Package: cracklib-dev
+Version: @DEB_CRACKLIB_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Description: pro-active password checker library - development files
