@@ -49,7 +49,6 @@ dimentio: dimentio-setup
 		-o $(BUILD_WORK)/dimentio/dimentio \
 		$(BUILD_WORK)/dimentio/dimentio.o \
 		$(BUILD_WORK)/dimentio/libdimentio.$(DIMENTIO_SOVERSION).dylib
-	chmod u+s $(BUILD_WORK)/dimentio/dimentio
 
 	cp -a $(BUILD_WORK)/dimentio/dimentio $(BUILD_STAGE)/dimentio/usr/bin
 	cp -a $(BUILD_WORK)/dimentio/libdimentio*.{a,dylib} $(BUILD_STAGE)/dimentio/usr/lib
@@ -78,8 +77,11 @@ dimentio-package: dimentio-stage
 	cp -a $(BUILD_STAGE)/dimentio/usr/bin/dimentio $(BUILD_DIST)/dimentio/usr/bin
 
 	# dimentio.mk Sign
-	$(call SIGN,dimentio,dimentio.xml)
-	$(call SIGN,libdimentio$(DIMENTIO_SOVERSION),dimentio.xml)
+	$(call SIGN,dimentio,dimentio.plist)
+	$(call SIGN,libdimentio$(DIMENTIO_SOVERSION),dimentio.plist)
+
+	# dimentio.mk Permissions
+	chmod u+s $(BUILD_DIST)/dimentio/usr/bin/dimentio
 
 	# dimentio.mk Make .debs
 	$(call PACK,dimentio,DEB_DIMENTIO_V)
