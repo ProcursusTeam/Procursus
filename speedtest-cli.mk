@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS           += speedtest-cli
 SPEEDTEST-CLI_VERSION := 2.1.2
-DEB_SPEEDTEST-CLI_V   ?= $(SPEEDTEST-CLI_VERSION)
+DEB_SPEEDTEST-CLI_V   ?= $(SPEEDTEST-CLI_VERSION)-1
 
 speedtest-cli-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/speedtest-cli-$(SPEEDTEST-CLI_VERSION).tar.gz" ] && \
@@ -17,8 +17,7 @@ speedtest-cli:
 	@echo "Using previously built speedtest-cli."
 else
 speedtest-cli: speedtest-cli-setup 
-	$(GINSTALL) -Dm 755 $(BUILD_WORK)/speedtest-cli/speedtest.py -t "$(BUILD_STAGE)/speedtest-cli/usr/bin"
-	mv $(BUILD_STAGE)/speedtest-cli/usr/bin/speedtest.py $(BUILD_STAGE)/speedtest-cli/usr/bin/speedtest-cli
+	$(GINSTALL) -Dm 755 $(BUILD_WORK)/speedtest-cli/speedtest.py "$(BUILD_STAGE)/speedtest-cli/usr/bin/speedtest-cli"
 	ln -s speedtest-cli $(BUILD_STAGE)/speedtest-cli/usr/bin/speedtest
 	$(GINSTALL) -Dm 644 $(BUILD_WORK)/speedtest-cli/speedtest-cli.1 -t "$(BUILD_STAGE)/speedtest-cli/usr/share/man/man1"
 	touch $(BUILD_WORK)/speedtest-cli/.build_complete
