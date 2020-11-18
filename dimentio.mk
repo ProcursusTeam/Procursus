@@ -3,18 +3,19 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += dimentio
-DIMENTIO_VERSION   := 1.0.2
+# I'm not going to bump the version any higher than 1.0.3. Just change commit date/short hash.
+DIMENTIO_VERSION   := 1.0.3+git20201118.7ffffff
 DEB_DIMENTIO_V     ?= $(DIMENTIO_VERSION)
 
-DIMENTIO_COMMIT    := 7ffffffd95119e439669aba5b3d0af36fff5ba17
+DIMENTIO_COMMIT    := 7ffffffaaf195108ba586f3b2f437cdbddd589ea
 DIMENTIO_SOVERSION := 0
 DIMENTIO_LIBS      := -framework CoreFoundation -framework IOKit -lcompression
 
 dimentio-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/dimentio-v$(DIMENTIO_VERSION).tar.gz" ] \
-		&& wget -nc -O$(BUILD_SOURCE)/dimentio-v$(DIMENTIO_VERSION).tar.gz \
+	-[ ! -e "$(BUILD_SOURCE)/dimentio-v$(DIMENTIO_COMMIT).tar.gz" ] \
+		&& wget -nc -O$(BUILD_SOURCE)/dimentio-v$(DIMENTIO_COMMIT).tar.gz \
 			https://github.com/0x7ff/dimentio/archive/$(DIMENTIO_COMMIT).tar.gz
-	$(call EXTRACT_TAR,dimentio-v$(DIMENTIO_VERSION).tar.gz,dimentio-$(DIMENTIO_COMMIT),dimentio)
+	$(call EXTRACT_TAR,dimentio-v$(DIMENTIO_COMMIT).tar.gz,dimentio-$(DIMENTIO_COMMIT),dimentio)
 	mkdir -p $(BUILD_STAGE)/dimentio/usr/{bin,lib,include}
 
 ifneq ($(wildcard $(BUILD_WORK)/dimentio/.build_complete),)
