@@ -61,6 +61,7 @@ PLATFORM             := iphoneos
 DEB_ARCH             := iphoneos-arm
 GNU_HOST_TRIPLE      := armv7-apple-darwin
 PLATFORM_VERSION_MIN := -miphoneos-version-min=$(IPHONE_MIN)
+RUST_TARGET          := armv7-apple-ios
 
 else ifeq ($(MEMO_TARGET),iphoneos-arm64)
 $(warning Building for iOS)
@@ -69,6 +70,7 @@ PLATFORM             := iphoneos
 DEB_ARCH             := iphoneos-arm
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
 PLATFORM_VERSION_MIN := -miphoneos-version-min=$(IPHONE_MIN)
+RUST_TARGET          := aarch64-apple-ios
 
 else ifeq ($(MEMO_TARGET),appletvos-arm64)
 $(warning Building for tvOS)

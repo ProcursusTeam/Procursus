@@ -6,12 +6,6 @@ endif
 RUST_VERSION := 1.46.0
 DEB_RUST_V   ?= $(RUST_VERSION)
 
-ifeq ($(MEMO_TARGET),iphoneos-arm64)
-RUST_TARGET := aarch64-apple-ios
-else ifeq ($(MEMO_TARGET),iphoneos-arm)
-RUST_TARGET := armv7-apple-ios
-endif
-
 # This needs ccache extra to build.
 
 ##### THIS MAKEFILE IS CURRENTLY WIP AGAIN #####
