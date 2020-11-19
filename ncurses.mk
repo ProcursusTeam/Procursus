@@ -24,7 +24,7 @@ ncurses: ncurses-setup
 	cd $(BUILD_WORK)/ncurses && $(EXTRA) \
 		./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-build-cc=clang \
 		--with-shared \
 		--without-debug \
@@ -34,7 +34,7 @@ ncurses: ncurses-setup
 		--enable-termcap \
 		--enable-pc-files \
 		--without-x11-rgb \
-		--with-pkg-config-libdir=/usr/lib/pkgconfig \
+		--with-pkg-config-libdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig \
 		--enable-widec \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/ncurses
@@ -43,9 +43,9 @@ ncurses: ncurses-setup
 	+$(MAKE) -C $(BUILD_WORK)/ncurses install \
 		DESTDIR="$(BUILD_BASE)"
 		
-	rm $(BUILD_STAGE)/ncurses/usr/bin/tabs
+	rm $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/tabs
 		
-	for ti in $(BUILD_STAGE)/ncurses/usr/share/terminfo/*/*; do \
+	for ti in $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo/*/*; do \
 		if [[ $$ti == */@(?(pc)ansi|cons25|cygwin|dumb|linux|mach|rxvt|screen|sun|vt@(52|100|102|220)|swvt25?(m)|[Exe]term|putty|konsole|gnome|apple|Apple_Terminal|unknown)?([-+.]*) ]]; then \
 			echo "keeping terminfo: $$ti" ; \
 		else \
@@ -53,36 +53,36 @@ ncurses: ncurses-setup
 		fi \
 	done
 
-	$(RMDIR) --ignore-fail-on-non-empty $(BUILD_STAGE)/ncurses/usr/share/terminfo/*
+	$(RMDIR) --ignore-fail-on-non-empty $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo/*
 
-	for ti in $(BUILD_STAGE)/ncurses/usr/share/terminfo/*; do \
-		if [[ ! -L "$(BUILD_STAGE)/ncurses/usr/share/terminfo/78" ]] && [[ -d "$(BUILD_STAGE)/ncurses/usr/share/terminfo/78" ]]; then \
+	for ti in $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo/*; do \
+		if [[ ! -L "$(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo/78" ]] && [[ -d "$(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo/78" ]]; then \
 			LINK=$$(printf "\x$${ti##*/}"); \
 		else \
 			LINK=$$(printf "%02x" "'$${ti##*/}"); \
 		fi; \
-		$(LN) -Tsf "$${ti##*/}" $(BUILD_STAGE)/ncurses/usr/share/terminfo/$${LINK}; \
+		$(LN) -Tsf "$${ti##*/}" $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo/$${LINK}; \
 	done
 	
-	mkdir -p $(BUILD_STAGE)/ncurses/usr/include/ncursesw
+	mkdir -p $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw
 	
-	for h in $(BUILD_STAGE)/ncurses/usr/include/*; do \
+	for h in $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/*; do \
 		if [[ ! -d $$h ]]; then \
-			$(LN) -srf $$h $(BUILD_STAGE)/ncurses/usr/include/ncursesw ; \
+			$(LN) -srf $$h $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw ; \
 		fi \
 	done
 	
-	mkdir -p $(BUILD_BASE)/usr/include/ncursesw
+	mkdir -p $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw
 
-	for h in $(BUILD_BASE)/usr/include/*; do \
+	for h in $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/*; do \
 		if [[ ! -d $$h ]]; then \
-			$(LN) -srf $$h $(BUILD_BASE)/usr/include/ncursesw ; \
+			$(LN) -srf $$h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw ; \
 		fi \
 	done
 	
 	for pc in formw menuw ncurses++w ncursesw panelw; do \
-		$(SED) -i '/Libs:/c\Libs: -l'$${pc}'' $(BUILD_STAGE)/ncurses/usr/lib/pkgconfig/$${pc}.pc; \
-		$(SED) -i '/Libs:/c\Libs: -l'$${pc}'' $(BUILD_BASE)/usr/lib/pkgconfig/$${pc}.pc; \
+		$(SED) -i '/Libs:/c\Libs: -l'$${pc}'' $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/$${pc}.pc; \
+		$(SED) -i '/Libs:/c\Libs: -l'$${pc}'' $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/$${pc}.pc; \
 	done
 
 	touch $(BUILD_WORK)/ncurses/.build_complete
@@ -91,32 +91,32 @@ endif
 ncurses-package: ncurses-stage
 	# ncurses.mk Package Structure
 	rm -rf $(BUILD_DIST)/*ncurses*/
-	mkdir -p $(BUILD_DIST)/libncursesw6/usr/lib \
-		$(BUILD_DIST)/libncurses-dev/usr/{bin,lib,share/man/man1} \
-		$(BUILD_DIST)/ncurses-term/usr/{lib,share} \
-		$(BUILD_DIST)/ncurses-bin/usr/{bin,share/man/man1} \
-		$(BUILD_DIST)/ncurses-doc/usr/share/man
+	mkdir -p $(BUILD_DIST)/libncursesw6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libncurses-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib,share/man/man1} \
+		$(BUILD_DIST)/ncurses-term/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share} \
+		$(BUILD_DIST)/ncurses-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
+		$(BUILD_DIST)/ncurses-doc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	
 	# ncurses.mk Prep libncursesw6
-	cp -a $(BUILD_STAGE)/ncurses/usr/lib/lib*.6.dylib $(BUILD_DIST)/libncursesw6/usr/lib
+	cp -a $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/lib*.6.dylib $(BUILD_DIST)/libncursesw6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# ncurses.mk Prep libncurses-dev
-	cp -a $(BUILD_STAGE)/ncurses/usr/bin/ncurses*-config $(BUILD_DIST)/libncurses-dev/usr/bin
-	cp -a $(BUILD_STAGE)/ncurses/usr/share/man/man1/ncurses*-config.1 $(BUILD_DIST)/libncurses-dev/usr/share/man/man1
-	cp -a $(BUILD_STAGE)/ncurses/usr/include $(BUILD_DIST)/libncurses-dev/usr
-	cp -a $(BUILD_STAGE)/ncurses/usr/lib/!(*.6.*|*.5.*|terminfo) $(BUILD_DIST)/libncurses-dev/usr/lib
+	cp -a $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ncurses*-config $(BUILD_DIST)/libncurses-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/ncurses*-config.1 $(BUILD_DIST)/libncurses-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libncurses-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(*.6.*|*.5.*|terminfo) $(BUILD_DIST)/libncurses-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# ncurses.mk Prep ncurses-term
-	cp -a $(BUILD_STAGE)/ncurses/usr/lib/terminfo $(BUILD_DIST)/ncurses-term/usr/lib
-	cp -a $(BUILD_STAGE)/ncurses/usr/share/terminfo $(BUILD_DIST)/ncurses-term/usr/share
+	cp -a $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/terminfo $(BUILD_DIST)/ncurses-term/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo $(BUILD_DIST)/ncurses-term/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	
 	# ncurses.mk Prep ncurses-bin
-	cp -a $(BUILD_STAGE)/ncurses/usr/bin/!(ncurses*-config) $(BUILD_DIST)/ncurses-bin/usr/bin
-	cp -a $(BUILD_STAGE)/ncurses/usr/share/man/man1/!(ncurses*-config.1) $(BUILD_DIST)/ncurses-bin/usr/share/man/man1
-	cp -a $(BUILD_STAGE)/ncurses/usr/share/man/man{5,7} $(BUILD_DIST)/ncurses-bin/usr/share/man
+	cp -a $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/!(ncurses*-config) $(BUILD_DIST)/ncurses-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/!(ncurses*-config.1) $(BUILD_DIST)/ncurses-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man{5,7} $(BUILD_DIST)/ncurses-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	
 	# ncurses.mk Prep ncurses-doc
-	cp -a $(BUILD_STAGE)/ncurses/usr/share/man/man3 $(BUILD_DIST)/ncurses-doc/usr/share/man
+	cp -a $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/ncurses-doc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	
 	# ncurses.mk Sign
 	$(call SIGN,libncursesw6,general.xml)

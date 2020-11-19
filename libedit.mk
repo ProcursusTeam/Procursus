@@ -18,7 +18,7 @@ else
 libedit: libedit-setup ncurses
 	cd $(BUILD_WORK)/libedit && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-examples=no
 	+$(MAKE) -C $(BUILD_WORK)/libedit \
 		LIBS=-lncursesw
@@ -32,16 +32,16 @@ endif
 libedit-package: libedit-stage
 	# libedit.mk Package Structure
 	rm -rf $(BUILD_DIST)/libedit{0,-dev}
-	mkdir -p $(BUILD_DIST)/libedit{0,-dev}/usr/{lib,share/man}
+	mkdir -p $(BUILD_DIST)/libedit{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share/man}
 	
 	# libedit.mk Prep libedit0
-	cp -a $(BUILD_STAGE)/libedit/usr/lib/libedit.0.dylib $(BUILD_DIST)/libedit0/usr/lib
-	cp -a $(BUILD_STAGE)/libedit/usr/share/man/!(man3) $(BUILD_DIST)/libedit0/usr/share/man
+	cp -a $(BUILD_STAGE)/libedit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libedit.0.dylib $(BUILD_DIST)/libedit0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libedit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/!(man3) $(BUILD_DIST)/libedit0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
 	# libedit.mk Prep libedit-dev
-	cp -a $(BUILD_STAGE)/libedit/usr/lib/!(libedit.0.dylib) $(BUILD_DIST)/libedit-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libedit/usr/share/man/man3 $(BUILD_DIST)/libedit-dev/usr/share/man
-	cp -a $(BUILD_STAGE)/libedit/usr/include $(BUILD_DIST)/libedit-dev/usr
+	cp -a $(BUILD_STAGE)/libedit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libedit.0.dylib) $(BUILD_DIST)/libedit-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libedit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libedit-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+	cp -a $(BUILD_STAGE)/libedit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libedit-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libedit.mk Sign
 	$(call SIGN,libedit0,general.xml)

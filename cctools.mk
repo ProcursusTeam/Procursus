@@ -20,40 +20,40 @@ else
 cctools: cctools-setup llvm uuid tapi xar
 	cd $(BUILD_WORK)/cctools && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--enable-lto-support \
-		--with-libtapi="$(BUILD_STAGE)/tapi/usr" \
+		--with-libtapi="$(BUILD_STAGE)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		CC="$(CC)" \
 		CXX="$(CXX)" \
 		CFLAGS='$(CFLAGS) -DHAVE_XAR_XAR_H' \
 		CXXFLAGS='$(CXXFLAGS) -DHAVE_XAR_XAR_H' \
-		LDFLAGS='$(LDFLAGS) $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/libLTO.dylib'
-	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-10/include/llvm-c/{lto,ExternC}.h $(BUILD_WORK)/cctools/include/llvm-c
+		LDFLAGS='$(LDFLAGS) $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/libLTO.dylib'
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-10/include/llvm-c/{lto,ExternC}.h $(BUILD_WORK)/cctools/include/llvm-c
 	+$(MAKE) -C $(BUILD_WORK)/cctools \
 		XAR_LIB="-lxar" \
 		UUID_LIB="-luuid" \
 		LTO_DEF="-DLTO_SUPPORT"
 	+$(MAKE) -C $(BUILD_WORK)/cctools install \
 		DESTDIR=$(BUILD_STAGE)/cctools
-	mv $(BUILD_STAGE)/cctools/usr/bin/ld $(BUILD_STAGE)/cctools/usr/libexec
-	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/cctools/usr/bin/ld $(BUILD_INFO)/wrapper.c
+	mv $(BUILD_STAGE)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ld $(BUILD_STAGE)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
+	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ld $(BUILD_INFO)/wrapper.c
 	touch $(BUILD_WORK)/cctools/.build_complete
 endif
 
 cctools-package: cctools-stage
 	# cctools.mk Package Structure
 	rm -rf $(BUILD_DIST)/{cctools,ld64}
-	mkdir -p $(BUILD_DIST)/{cctools,ld64/usr/{bin,libexec,share/{entitlements,man/man1}}}
+	mkdir -p $(BUILD_DIST)/{cctools,ld64/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,libexec,share/{entitlements,man/man1}}}
 
 	# cctools.mk Prep cctools
-	cp -a $(BUILD_STAGE)/cctools/usr $(BUILD_DIST)/cctools
+	cp -a $(BUILD_STAGE)/cctools $(BUILD_DIST)
 	
 	# cctools.mk Prep ld64
-	mv $(BUILD_DIST)/cctools/usr/bin/{dyldinfo,ld,machocheck,ObjectDump,unwinddump} $(BUILD_DIST)/ld64/usr/bin
-	mv $(BUILD_DIST)/cctools/usr/share/man/man1/{dyldinfo,ld{,64},unwinddump}.1 $(BUILD_DIST)/ld64/usr/share/man/man1
-	mv $(BUILD_DIST)/cctools/usr/libexec/ld $(BUILD_DIST)/ld64/usr/libexec
-	cp -a $(BUILD_INFO)/general.xml $(BUILD_DIST)/ld64/usr/share/entitlements
-	cd $(BUILD_DIST)/ld64/usr/bin && ln -s ld ld64
+	mv $(BUILD_DIST)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{dyldinfo,ld,machocheck,ObjectDump,unwinddump} $(BUILD_DIST)/ld64/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	mv $(BUILD_DIST)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/{dyldinfo,ld{,64},unwinddump}.1 $(BUILD_DIST)/ld64/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	mv $(BUILD_DIST)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/ld $(BUILD_DIST)/ld64/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
+	cp -a $(BUILD_INFO)/general.xml $(BUILD_DIST)/ld64/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/entitlements
+	cd $(BUILD_DIST)/ld64/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin && ln -s ld ld64
 
 	# cctools.mk Sign
 	$(call SIGN,cctools,general.xml)

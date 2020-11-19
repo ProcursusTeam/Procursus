@@ -11,9 +11,9 @@ gettext-localizations:
 	@echo "Using previously built gettext-localizations."
 else ifeq ($(shell [ $(UNAME) = Darwin ] && [ -f "/System/Library/Kernels/kernel" ] && echo 1),1)
 gettext-localizations: setup
-	mkdir -p $(BUILD_STAGE)/gettext-localizations/usr/share
-	cp -af /usr/share/locale $(BUILD_STAGE)/gettext-localizations/usr/share
-	rm -f $(BUILD_STAGE)/gettext-localizations/usr/share/locale/locale.alias
+	mkdir -p $(BUILD_STAGE)/gettext-localizations/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	cp -af /usr/share/locale $(BUILD_STAGE)/gettext-localizations/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	rm -f $(BUILD_STAGE)/gettext-localizations/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale/locale.alias
 else
 gettext-localizations:
 	@echo "Please make gettext-localizations from a Mac."

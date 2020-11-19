@@ -17,10 +17,10 @@ else
 ccache: ccache-setup
 	cd $(BUILD_WORK)/ccache && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--mandir=/usr/share/man \
-		--infodir=/usr/share/info \
-		--sysconfdir=/etc
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--mandir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
+		--infodir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/info \
+		--sysconfdir=$(MEMO_PREFIX)/etc
 	+$(MAKE) -C $(BUILD_WORK)/ccache
 	+$(MAKE) -C $(BUILD_WORK)/ccache install \
 		DESTDIR="$(BUILD_STAGE)/ccache"
@@ -33,7 +33,7 @@ ccache-package: ccache-stage
 	mkdir -p $(BUILD_DIST)/ccache
 
 	# ccache.mk Prep ccache
-	cp -a $(BUILD_STAGE)/ccache/usr $(BUILD_DIST)/ccache
+	cp -a $(BUILD_STAGE)/ccache $(BUILD_DIST)
 
 	# ccache.mk Sign
 	$(call SIGN,ccache,general.xml)

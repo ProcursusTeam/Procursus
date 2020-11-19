@@ -17,7 +17,7 @@ else
 libjemalloc: libjemalloc-setup
 	cd $(BUILD_WORK)/libjemalloc && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-lg-page=14
 		# The above system page size is specified because
 		# iOS arm64 devices have a 16KB page size.
@@ -33,15 +33,15 @@ libjemalloc-package: libjemalloc-stage
 	# libjemalloc.mk Package Structure
 	rm -rf $(BUILD_DIST)/libjemalloc{2,-dev}
 	mkdir -p \
-		$(BUILD_DIST)/libjemalloc2/usr/lib \
-		$(BUILD_DIST)/libjemalloc-dev/usr/lib
+		$(BUILD_DIST)/libjemalloc2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libjemalloc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libjemalloc.mk Prep libjemalloc2
-	cp -a $(BUILD_STAGE)/libjemalloc/usr/lib/libjemalloc.2.dylib $(BUILD_DIST)/libjemalloc2/usr/lib/
+	cp -a $(BUILD_STAGE)/libjemalloc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjemalloc.2.dylib $(BUILD_DIST)/libjemalloc2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 
 	# libjemalloc.mk Prep libjemalloc-dev
-	cp -a $(BUILD_STAGE)/libjemalloc/usr/lib/{pkgconfig,libjemalloc{_pic.a,.a,.dylib}} $(BUILD_DIST)/libjemalloc-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libjemalloc/usr/{bin,include,share} $(BUILD_DIST)/libjemalloc-dev/usr
+	cp -a $(BUILD_STAGE)/libjemalloc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libjemalloc{_pic.a,.a,.dylib}} $(BUILD_DIST)/libjemalloc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libjemalloc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include,share} $(BUILD_DIST)/libjemalloc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 
 	# libjemalloc.mk Sign

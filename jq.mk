@@ -18,8 +18,8 @@ jq: jq-setup libonig
 	cd $(BUILD_WORK)/jq && autoreconf -fi
 	cd $(BUILD_WORK)/jq && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--with-oniguruma=$(BUILD_STAGE)/libonig/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--with-oniguruma=$(BUILD_STAGE)/libonig/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-docs \
 		--disable-maintainer-mode \
 		CFLAGS="$(CFLAGS) -D_REENTRANT"
@@ -33,20 +33,20 @@ endif
 jq-package: jq-stage
 	# jq.mk Package Structure
 	rm -rf $(BUILD_DIST)/{jq,libjq-dev,libjq1}
-	mkdir -p $(BUILD_DIST)/jq/usr/{bin,share/man/man1} \
-			$(BUILD_DIST)/libjq-dev/usr/{include,lib} \
-			$(BUILD_DIST)/libjq1/usr/lib
+	mkdir -p $(BUILD_DIST)/jq/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
+			$(BUILD_DIST)/libjq-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib} \
+			$(BUILD_DIST)/libjq1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# jq.mk Prep jq
-	cp -a $(BUILD_STAGE)/jq/usr/bin/jq $(BUILD_DIST)/jq/usr/bin
-	cp -a $(BUILD_STAGE)/jq/usr/share/man/man1/jq.1 $(BUILD_DIST)/jq/usr/share/man/man1
+	cp -a $(BUILD_STAGE)/jq/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/jq $(BUILD_DIST)/jq/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/jq/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/jq.1 $(BUILD_DIST)/jq/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# jq.mk Prep libjq-dev
-	cp -a $(BUILD_STAGE)/jq/usr/include/{jq.h,jv.h} $(BUILD_DIST)/libjq-dev/usr/include
-	cp -a $(BUILD_STAGE)/jq/usr/lib/libjq.dylib $(BUILD_DIST)/libjq-dev/usr/lib
+	cp -a $(BUILD_STAGE)/jq/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/{jq.h,jv.h} $(BUILD_DIST)/libjq-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/jq/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjq.dylib $(BUILD_DIST)/libjq-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# jq.mk Prep libjq1
-	cp -a $(BUILD_STAGE)/jq/usr/lib/libjq.{a,1.dylib} $(BUILD_DIST)/libjq1/usr/lib
+	cp -a $(BUILD_STAGE)/jq/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjq.{a,1.dylib} $(BUILD_DIST)/libjq1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# jq.mk Sign
 	$(call SIGN,jq,general.xml)

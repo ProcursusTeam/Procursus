@@ -18,7 +18,7 @@ else
 libc-ares: libc-ares-setup
 	cd $(BUILD_WORK)/libc-ares && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--disable-debug \
 		--enable-shared
@@ -33,17 +33,17 @@ endif
 libc-ares-package: libc-ares-stage
 	# libc-ares.mk Package Structure
 	rm -rf $(BUILD_DIST)/libc-ares{-dev,2}
-	mkdir -p $(BUILD_DIST)/libc-ares-dev/usr/{include,lib/pkgconfig,share/man/man3} \
-			$(BUILD_DIST)/libc-ares2/usr/lib
+	mkdir -p $(BUILD_DIST)/libc-ares-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/pkgconfig,share/man/man3} \
+			$(BUILD_DIST)/libc-ares2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libc-ares.mk Prep libc-ares-dev
-	cp -a $(BUILD_STAGE)/libc-ares/usr/include/ares{,_build,_dns,_rules,_version}.h $(BUILD_DIST)/libc-ares-dev/usr/include
-	cp -a $(BUILD_STAGE)/libc-ares/usr/lib/libcares.{a,dylib} $(BUILD_DIST)/libc-ares-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libc-ares/usr/lib/pkgconfig/libcares.pc $(BUILD_DIST)/libc-ares-dev/usr/lib/pkgconfig
-	cp -a $(BUILD_STAGE)/libc-ares/usr/share/man/man3/ares_*.3 $(BUILD_DIST)/libc-ares-dev/usr/share/man/man3
+	cp -a $(BUILD_STAGE)/libc-ares/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ares{,_build,_dns,_rules,_version}.h $(BUILD_DIST)/libc-ares-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/libc-ares/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcares.{a,dylib} $(BUILD_DIST)/libc-ares-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libc-ares/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/libcares.pc $(BUILD_DIST)/libc-ares-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
+	cp -a $(BUILD_STAGE)/libc-ares/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3/ares_*.3 $(BUILD_DIST)/libc-ares-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3
 
 	# libc-ares.mk Prep libc-ares2
-	cp -a $(BUILD_STAGE)/libc-ares/usr/lib/libcares.2.dylib $(BUILD_DIST)/libc-ares2/usr/lib
+	cp -a $(BUILD_STAGE)/libc-ares/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcares.2.dylib $(BUILD_DIST)/libc-ares2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libc-ares.mk Sign
 	$(call SIGN,libc-ares2,general.xml)

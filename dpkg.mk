@@ -24,9 +24,9 @@ base-bsd-darwin-armk		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
 	fi
 	cd $(BUILD_WORK)/dpkg && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--localstatedir=/var \
-		--sysconfdir=/etc \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--with-admindir=/Library/dpkg \
 		--with-logdir=/var/log/dpkg \
 		--disable-start-stop-daemon \
@@ -35,7 +35,7 @@ base-bsd-darwin-armk		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
 		PERL_LIBDIR='$$(prefix)/share/perl5' \
 		PERL="/usr/bin/perl" \
 		TAR=tar \
-		LZMA_LIBS='$(BUILD_BASE)/usr/local/lib/liblzma.dylib'
+		LZMA_LIBS='$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_ALT_PREFIX)/local/lib/liblzma.dylib'
 	+$(MAKE) -C $(BUILD_WORK)/dpkg
 	+$(MAKE) -C $(BUILD_WORK)/dpkg install \
 		DESTDIR="$(BUILD_STAGE)/dpkg"
@@ -47,30 +47,30 @@ endif
 dpkg-package: dpkg-stage
 	# dpkg.mk Package Structure
 	rm -rf $(BUILD_DIST)/dpkg{,-dev} $(BUILD_DIST)/libdpkg-perl
-	mkdir -p $(BUILD_DIST)/dpkg{,-dev}/usr/{bin,share/dpkg} \
-		$(BUILD_DIST)/libdpkg-perl/usr/share/locale/{ca,de,es,fr,pl,ru,sv}/LC_MESSAGES \
-		$(BUILD_DIST)/libdpkg-dev/usr
+	mkdir -p $(BUILD_DIST)/dpkg{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/dpkg} \
+		$(BUILD_DIST)/libdpkg-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale/{ca,de,es,fr,pl,ru,sv}/LC_MESSAGES \
+		$(BUILD_DIST)/libdpkg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# dpkg.mk Prep DPKG
 	cp -a $(BUILD_STAGE)/dpkg/{etc,Library,var} $(BUILD_DIST)/dpkg
-	cp -a $(BUILD_STAGE)/dpkg/usr/bin/{dpkg{,-deb,-divert,-maintscript-helper,-query,-realpath,-split,-statoverride,-trigger},update-alternatives} $(BUILD_DIST)/dpkg/usr/bin
-	cp -a $(BUILD_STAGE)/dpkg/usr/share/{man,polkit-1,locale} $(BUILD_DIST)/dpkg/usr/share
-	rm -f $(BUILD_DIST)/dpkg/usr/share/locale/*/LC_MESSAGES/dpkg-dev.mo
-	cp -a $(BUILD_STAGE)/dpkg/usr/share/dpkg/{{abi,cpu,os,tuple}table,sh} $(BUILD_DIST)/dpkg/usr/share/dpkg
+	cp -a $(BUILD_STAGE)/dpkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{dpkg{,-deb,-divert,-maintscript-helper,-query,-realpath,-split,-statoverride,-trigger},update-alternatives} $(BUILD_DIST)/dpkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/dpkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{man,polkit-1,locale} $(BUILD_DIST)/dpkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	rm -f $(BUILD_DIST)/dpkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale/*/LC_MESSAGES/dpkg-dev.mo
+	cp -a $(BUILD_STAGE)/dpkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/dpkg/{{abi,cpu,os,tuple}table,sh} $(BUILD_DIST)/dpkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/dpkg
 	
 	# dpkg.mk Prep DPKG-Dev
-	cp -a $(BUILD_STAGE)/dpkg/usr/bin/dpkg-{architecture,buildflags,buildpackage,checkbuilddeps,distaddfile,genbuildinfo,genchanges,gencontrol,gensymbols,mergechangelogs,name,parsechangelog,scanpackages,scansources,shlibdeps,source,vendor} $(BUILD_DIST)/dpkg-dev/usr/bin
-	cp -a $(BUILD_STAGE)/dpkg/usr/share/dpkg/*.mk $(BUILD_DIST)/dpkg-dev/usr/share/dpkg
+	cp -a $(BUILD_STAGE)/dpkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dpkg-{architecture,buildflags,buildpackage,checkbuilddeps,distaddfile,genbuildinfo,genchanges,gencontrol,gensymbols,mergechangelogs,name,parsechangelog,scanpackages,scansources,shlibdeps,source,vendor} $(BUILD_DIST)/dpkg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/dpkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/dpkg/*.mk $(BUILD_DIST)/dpkg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/dpkg
 	
 	# dpkg.mk Prep libdpkg-perl
-	cp -a $(BUILD_STAGE)/dpkg/usr/share/perl5 $(BUILD_DIST)/libdpkg-perl/usr/share
+	cp -a $(BUILD_STAGE)/dpkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 $(BUILD_DIST)/libdpkg-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	for locale in ca de es fr pl ru sv; do \
-		cp -a $(BUILD_STAGE)/dpkg/usr/share/locale/$$locale/LC_MESSAGES/dpkg-dev.mo $(BUILD_DIST)/libdpkg-perl/usr/share/locale/$$locale/LC_MESSAGES; \
+		cp -a $(BUILD_STAGE)/dpkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale/$$locale/LC_MESSAGES/dpkg-dev.mo $(BUILD_DIST)/libdpkg-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale/$$locale/LC_MESSAGES; \
 	done
 	
 	# dpkg.mk Prep libdpkg-dev
-	cp -a $(BUILD_STAGE)/dpkg/usr/include $(BUILD_DIST)/libdpkg-dev/usr
-	cp -a $(BUILD_STAGE)/dpkg/usr/lib $(BUILD_DIST)/libdpkg-dev/usr
+	cp -a $(BUILD_STAGE)/dpkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libdpkg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/dpkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib $(BUILD_DIST)/libdpkg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# dpkg.mk Sign
 	$(call SIGN,dpkg,general.xml)

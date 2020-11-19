@@ -19,7 +19,7 @@ ideviceinstaller: ideviceinstaller-setup libzip libplist libimobiledevice
 	cd $(BUILD_WORK)/ideviceinstaller && autoreconf -fi
 	cd $(BUILD_WORK)/ideviceinstaller && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/ideviceinstaller V=1
 	+$(MAKE) -C $(BUILD_WORK)/ideviceinstaller install \
 		DESTDIR=$(BUILD_STAGE)/ideviceinstaller

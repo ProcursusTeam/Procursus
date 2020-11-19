@@ -17,9 +17,9 @@ else
 libirecovery: libirecovery-setup readline libusb
 	cd $(BUILD_WORK)/libirecovery && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libirecovery \
-		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)/usr/include/libusb-1.0"
+		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libusb-1.0"
 	+$(MAKE) -C $(BUILD_WORK)/libirecovery install \
 		DESTDIR=$(BUILD_STAGE)/libirecovery
 	+$(MAKE) -C $(BUILD_WORK)/libirecovery install \
@@ -30,19 +30,19 @@ endif
 libirecovery-package: libirecovery-stage
 	# libirecovery.mk Package Structure
 	rm -rf $(BUILD_DIST)/libirecovery{3,-dev,-utils}
-	mkdir -p $(BUILD_DIST)/libirecovery3/usr/lib \
-		$(BUILD_DIST)/libirecovery-dev/usr/lib \
-		$(BUILD_DIST)/libirecovery-utils/usr
+	mkdir -p $(BUILD_DIST)/libirecovery3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libirecovery-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libirecovery-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libirecovery.mk Prep libirecovery3
-	cp -a $(BUILD_STAGE)/libirecovery/usr/lib/libirecovery-1.0.3.dylib $(BUILD_DIST)/libirecovery3/usr/lib/
+	cp -a $(BUILD_STAGE)/libirecovery/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libirecovery-1.0.3.dylib $(BUILD_DIST)/libirecovery3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 	
 	# libirecovery.mk Prep libirecovery-dev
-	cp -a $(BUILD_STAGE)/libirecovery/usr/lib/{pkgconfig,libirecovery-1.0.{a,dylib}} $(BUILD_DIST)/libirecovery-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libirecovery/usr/include $(BUILD_DIST)/libirecovery-dev/usr
+	cp -a $(BUILD_STAGE)/libirecovery/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libirecovery-1.0.{a,dylib}} $(BUILD_DIST)/libirecovery-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libirecovery/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libirecovery-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libirecovery.mk Prep libirecovery-utils
-	cp -a $(BUILD_STAGE)/libirecovery/usr/bin $(BUILD_DIST)/libirecovery-utils/usr
+	cp -a $(BUILD_STAGE)/libirecovery/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/libirecovery-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libirecovery.mk Sign
 	$(call SIGN,libirecovery3,general.xml)

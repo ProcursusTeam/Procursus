@@ -18,8 +18,8 @@ else
 wget: wget-setup openssl pcre2 gettext libunistring libidn2
 	cd $(BUILD_WORK)/wget && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=/etc \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--with-ssl=openssl \
 		--with-openssl \
 		--without-libpsl

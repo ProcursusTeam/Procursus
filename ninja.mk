@@ -11,7 +11,7 @@ ninja-setup: setup
 		wget -q -nc -O$(BUILD_SOURCE)/ninja-$(NINJA_VERSION).tar.gz \
 			https://github.com/ninja-build/ninja/archive/v$(NINJA_VERSION).tar.gz
 	$(call EXTRACT_TAR,ninja-$(NINJA_VERSION).tar.gz,ninja-$(NINJA_VERSION),ninja)
-	mkdir -p $(BUILD_WORK)/ninja/build $(BUILD_STAGE)/ninja/usr/bin
+	mkdir -p $(BUILD_WORK)/ninja/build $(BUILD_STAGE)/ninja/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 ifneq ($(wildcard $(BUILD_WORK)/ninja/.build_complete),)
 ninja:
@@ -26,7 +26,7 @@ ninja: ninja-setup
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		..
 	+$(MAKE) -C $(BUILD_WORK)/ninja/build
-	cp $(BUILD_WORK)/ninja/build/ninja $(BUILD_STAGE)/ninja/usr/bin/
+	cp $(BUILD_WORK)/ninja/build/ninja $(BUILD_STAGE)/ninja/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
 	touch $(BUILD_WORK)/ninja/.build_complete
 endif
 
@@ -36,7 +36,7 @@ ninja-package: ninja-stage
 	mkdir -p $(BUILD_DIST)/ninja
 	
 	# ninja.mk Prep ninja
-	cp -a $(BUILD_STAGE)/ninja/usr $(BUILD_DIST)/ninja
+	cp -a $(BUILD_STAGE)/ninja $(BUILD_DIST)
 	
 	# ninja.mk Sign
 	$(call SIGN,ninja,general.xml)

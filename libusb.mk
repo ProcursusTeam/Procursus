@@ -17,7 +17,7 @@ else
 libusb: libusb-setup
 	cd $(BUILD_WORK)/libusb && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libusb install \
 		CFLAGS="$(CFLAGS) -D__OPEN_SOURCE__ -DMAC_OS_X_VERSION_MIN_REQUIRED=101500" \
 		DESTDIR="$(BUILD_STAGE)/libusb"
@@ -30,14 +30,14 @@ endif
 libusb-package: libusb-stage
 	# libusb.mk Package Structure
 	rm -rf $(BUILD_DIST)/libusb-1.0-0{,-dev}
-	mkdir -p $(BUILD_DIST)/libusb-1.0-0{,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/libusb-1.0-0{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libusb.mk Prep libusb-1.0-0
-	cp -a $(BUILD_STAGE)/libusb/usr/lib/libusb-1.0.0.dylib $(BUILD_DIST)/libusb-1.0-0/usr/lib
+	cp -a $(BUILD_STAGE)/libusb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libusb-1.0.0.dylib $(BUILD_DIST)/libusb-1.0-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libusb.mk Prep libusb-1.0-0-dev
-	cp -a $(BUILD_STAGE)/libusb/usr/lib/{pkgconfig,libusb-1.0.dylib} $(BUILD_DIST)/libusb-1.0-0-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libusb/usr/include $(BUILD_DIST)/libusb-1.0-0-dev/usr
+	cp -a $(BUILD_STAGE)/libusb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libusb-1.0.dylib} $(BUILD_DIST)/libusb-1.0-0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libusb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libusb-1.0-0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libusb.mk Sign
 	$(call SIGN,libusb-1.0-0,general.xml)

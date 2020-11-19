@@ -20,7 +20,7 @@ patch: patch-setup
 		--host=$(GNU_HOST_TRIPLE)
 	+$(MAKE) -C $(BUILD_WORK)/patch
 	+$(MAKE) -C $(BUILD_WORK)/patch install \
-		prefix=$(BUILD_STAGE)/patch/usr
+		prefix=$(BUILD_STAGE)/patch/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	touch $(BUILD_WORK)/patch/.build_complete
 endif
 
@@ -30,7 +30,7 @@ patch-package: patch-stage
 	mkdir -p $(BUILD_DIST)/patch
 	
 	# patch.mk Prep patch
-	cp -a $(BUILD_STAGE)/patch/usr $(BUILD_DIST)/patch
+	cp -a $(BUILD_STAGE)/patch $(BUILD_DIST)
 	
 	# patch.mk Sign
 	$(call SIGN,patch,general.xml)

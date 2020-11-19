@@ -18,8 +18,8 @@ else
 libksba: libksba-setup libgpg-error
 	cd $(BUILD_WORK)/libksba && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--with-gpg-error-prefix=$(BUILD_BASE)/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--with-gpg-error-prefix=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libksba
 	+$(MAKE) -C $(BUILD_WORK)/libksba install \
 		DESTDIR=$(BUILD_STAGE)/libksba
@@ -31,14 +31,14 @@ endif
 libksba-package: libksba-stage
 	# libksba.mk Package Structure
 	rm -rf $(BUILD_DIST)/libksba{8,-dev}
-	mkdir -p $(BUILD_DIST)/libksba{8,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/libksba{8,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libksba.mk Prep libksba8
-	cp -a $(BUILD_STAGE)/libksba/usr/lib/libksba.8.dylib $(BUILD_DIST)/libksba8/usr/lib
+	cp -a $(BUILD_STAGE)/libksba/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libksba.8.dylib $(BUILD_DIST)/libksba8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libksba.mk Prep libksba-dev
-	cp -a $(BUILD_STAGE)/libksba/usr/lib/{pkgconfig,libksba.dylib} $(BUILD_DIST)/libksba-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libksba/usr/{bin,include,share} $(BUILD_DIST)/libksba-dev/usr
+	cp -a $(BUILD_STAGE)/libksba/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libksba.dylib} $(BUILD_DIST)/libksba-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libksba/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include,share} $(BUILD_DIST)/libksba-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libksba.mk Sign
 	$(call SIGN,libksba8,general.xml)

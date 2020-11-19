@@ -18,11 +18,11 @@ else
 pkg-config: pkg-config-setup gettext glib2.0
 	cd $(BUILD_WORK)/pkg-config && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-installed-glib \
 		--disable-host-tool
 	+$(MAKE) -C $(BUILD_WORK)/pkg-config \
-		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)/usr/include/glib-2.0 -I$(BUILD_BASE)/usr/lib/glib-2.0/include"
+		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/glib-2.0 -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/glib-2.0/include"
 	+$(MAKE) -C $(BUILD_WORK)/pkg-config install \
 		DESTDIR="$(BUILD_STAGE)/pkg-config"
 	touch $(BUILD_WORK)/pkg-config/.build_complete

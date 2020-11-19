@@ -25,7 +25,7 @@ libuv1: libuv1-setup
 	fi
 	cd $(BUILD_WORK)/libuv1 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libuv1
 	+$(MAKE) -C $(BUILD_WORK)/libuv1 install \
 		DESTDIR="$(BUILD_STAGE)/libuv1"
@@ -37,14 +37,14 @@ endif
 libuv1-package: libuv1-stage
 	# libuv1.mk Package Structure
 	rm -rf $(BUILD_DIST)/libuv1{,-dev}
-	mkdir -p $(BUILD_DIST)/libuv1{,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/libuv1{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libuv1.mk Prep libuv1
-	cp -a $(BUILD_STAGE)/libuv1/usr/lib/libuv.1.dylib $(BUILD_DIST)/libuv1/usr/lib
+	cp -a $(BUILD_STAGE)/libuv1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuv.1.dylib $(BUILD_DIST)/libuv1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libuv1.mk Prep libuv1-dev
-	cp -a $(BUILD_STAGE)/libuv1/usr/include $(BUILD_DIST)/libuv1-dev/usr
-	cp -a $(BUILD_STAGE)/libuv1/usr/lib/{libuv.{a,dylib},pkgconfig} $(BUILD_DIST)/libuv1-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libuv1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libuv1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libuv1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libuv.{a,dylib},pkgconfig} $(BUILD_DIST)/libuv1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libuv1.mk Sign
 	$(call SIGN,libuv1,general.xml)

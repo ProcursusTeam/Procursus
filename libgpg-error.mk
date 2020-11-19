@@ -27,7 +27,7 @@ libgpg-error: libgpg-error-setup
 	$(SED) -i '/{"armv7-unknown-linux-gnueabihf"  },/a \ \ \ \ {"$(GNU_HOST_TRIPLE)",  "$(GPG_SCHEME)" },' $(BUILD_WORK)/libgpg-error/src/mkheader.c
 	cd $(BUILD_WORK)/libgpg-error && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-nls
 	+$(MAKE) -C $(BUILD_WORK)/libgpg-error
 	+$(MAKE) -C $(BUILD_WORK)/libgpg-error install \
@@ -40,14 +40,14 @@ endif
 libgpg-error-package: libgpg-error-stage
 	# libgpg-error.mk Package Structure
 	rm -rf $(BUILD_DIST)/{libgpg-error{0,-dev},gpgrt-tools}
-	mkdir -p $(BUILD_DIST)/libgpg-error{0,-dev}/usr/lib
-	mkdir -p $(BUILD_DIST)/gpgrt-tools/usr
+	mkdir -p $(BUILD_DIST)/libgpg-error{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/gpgrt-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libgpg-error.mk Prep libgpg-error
-	cp -a $(BUILD_STAGE)/libgpg-error/usr/lib/libgpg-error.0.dylib $(BUILD_DIST)/libgpg-error0/usr/lib
-	cp -a $(BUILD_STAGE)/libgpg-error/usr/include $(BUILD_DIST)/libgpg-error-dev/usr
-	cp -a $(BUILD_STAGE)/libgpg-error/usr/lib/{libgpg-error.dylib,pkgconfig} $(BUILD_DIST)/libgpg-error-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libgpg-error/usr/{bin,share} $(BUILD_DIST)/gpgrt-tools/usr
+	cp -a $(BUILD_STAGE)/libgpg-error/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgpg-error.0.dylib $(BUILD_DIST)/libgpg-error0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libgpg-error/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libgpg-error-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libgpg-error/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libgpg-error.dylib,pkgconfig} $(BUILD_DIST)/libgpg-error-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libgpg-error/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/gpgrt-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libgpg-error.mk Sign
 	$(call SIGN,libgpg-error0,general.xml)

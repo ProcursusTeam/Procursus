@@ -20,14 +20,14 @@ screen: screen-setup ncurses libxcrypt
 	cd $(BUILD_WORK)/screen && ./autogen.sh
 	cd $(BUILD_WORK)/screen && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--mandir=/usr/share/man \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--mandir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
 		--enable-colors256 \
 		--disable-pam \
 		--with-sys-screenrc=/etc/screenrc
 	+$(MAKE) -C $(BUILD_WORK)/screen install \
 		DESTDIR="$(BUILD_STAGE)/screen"
-	rm -f $(BUILD_STAGE)/screen/usr/bin/screen && mv $(BUILD_STAGE)/screen/usr/bin/screen{-$(SCREEN_VERSION),}
+	rm -f $(BUILD_STAGE)/screen/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/screen && mv $(BUILD_STAGE)/screen/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/screen{-$(SCREEN_VERSION),}
 	mkdir -p $(BUILD_STAGE)/screen/etc
 	cp -a $(BUILD_WORK)/screen/etc/etcscreenrc $(BUILD_STAGE)/screen/etc/screenrc
 	touch $(BUILD_WORK)/screen/.build_complete

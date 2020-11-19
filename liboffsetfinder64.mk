@@ -19,7 +19,7 @@ else
 liboffsetfinder64: liboffsetfinder64-setup libgeneral libinsn img4tool openssl
 	cd $(BUILD_WORK)/liboffsetfinder64 && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr 
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) 
 	+$(MAKE) -C $(BUILD_WORK)/liboffsetfinder64
 	+$(MAKE) -C $(BUILD_WORK)/liboffsetfinder64 install \
 		DESTDIR="$(BUILD_STAGE)/liboffsetfinder64"
@@ -31,14 +31,14 @@ endif
 liboffsetfinder64-package: liboffsetfinder64-stage
 	# liboffsetfinder64.mk Package Structure
 	rm -rf $(BUILD_DIST)/liboffsetfinder64-{0,dev}
-	mkdir -p $(BUILD_DIST)/liboffsetfinder64-{0,dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/liboffsetfinder64-{0,dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# liboffsetfinder64.mk Prep liboffsetfinder64-0
-	cp -a $(BUILD_STAGE)/liboffsetfinder64/usr/lib/liboffsetfinder64.0.dylib $(BUILD_DIST)/liboffsetfinder64-0/usr/lib
+	cp -a $(BUILD_STAGE)/liboffsetfinder64/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liboffsetfinder64.0.dylib $(BUILD_DIST)/liboffsetfinder64-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# liboffsetfinder64.mk Prep liboffsetfinder64-dev
-	cp -a $(BUILD_STAGE)/liboffsetfinder64/usr/lib/!(liboffsetfinder64.0.dylib) $(BUILD_DIST)/liboffsetfinder64-dev/usr/lib
-	cp -a $(BUILD_STAGE)/liboffsetfinder64/usr/include $(BUILD_DIST)/liboffsetfinder64-dev/usr
+	cp -a $(BUILD_STAGE)/liboffsetfinder64/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(liboffsetfinder64.0.dylib) $(BUILD_DIST)/liboffsetfinder64-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/liboffsetfinder64/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/liboffsetfinder64-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# liboffsetfinder64.mk Sign
 	$(call SIGN,liboffsetfinder64-0,general.xml)

@@ -18,7 +18,7 @@ else
 curl: curl-setup gettext openssl libssh2 nghttp2 libidn2 brotli zstd
 	cd $(BUILD_WORK)/curl && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-debug \
 		--disable-dependency-tracking \
 		--with-libssh2 \
@@ -36,23 +36,23 @@ curl-package: curl-stage
 	# curl.mk Package Structure
 	rm -rf $(BUILD_DIST)/curl \
 		$(BUILD_DIST)/libcurl4{,-openssl-dev}
-	mkdir -p $(BUILD_DIST)/curl/usr/{bin,share/man/man1} \
-		$(BUILD_DIST)/libcurl4-openssl-dev/usr/{bin,lib,share/man/man1} \
-		$(BUILD_DIST)/libcurl4/usr/lib
+	mkdir -p $(BUILD_DIST)/curl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
+		$(BUILD_DIST)/libcurl4-openssl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib,share/man/man1} \
+		$(BUILD_DIST)/libcurl4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# curl.mk Prep curl
-	cp -a $(BUILD_STAGE)/curl/usr/bin/curl $(BUILD_DIST)/curl/usr/bin
-	cp -a $(BUILD_STAGE)/curl/usr/share/man/man1/curl.1 $(BUILD_DIST)/curl/usr/share/man/man1
+	cp -a $(BUILD_STAGE)/curl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/curl $(BUILD_DIST)/curl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/curl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/curl.1 $(BUILD_DIST)/curl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	
 	# curl.mk Prep libcurl4
-	cp -a $(BUILD_STAGE)/curl/usr/lib/libcurl.4.dylib $(BUILD_DIST)/libcurl4/usr/lib
+	cp -a $(BUILD_STAGE)/curl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcurl.4.dylib $(BUILD_DIST)/libcurl4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# curl.mk Prep libcurl4-openssl-dev
-	cp -a $(BUILD_STAGE)/curl/usr/lib/{pkgconfig,libcurl.{dylib,a}} $(BUILD_DIST)/libcurl4-openssl-dev/usr/lib
-	cp -a $(BUILD_STAGE)/curl/usr/share/man/man1/curl-config.1 $(BUILD_DIST)/libcurl4-openssl-dev/usr/share/man/man1
-	cp -a $(BUILD_STAGE)/curl/usr/share/man/man3 $(BUILD_DIST)/libcurl4-openssl-dev/usr/share/man
-	cp -a $(BUILD_STAGE)/curl/usr/bin/curl-config $(BUILD_DIST)/libcurl4-openssl-dev/usr/bin
-	cp -a $(BUILD_STAGE)/curl/usr/include $(BUILD_DIST)/libcurl4-openssl-dev/usr
+	cp -a $(BUILD_STAGE)/curl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libcurl.{dylib,a}} $(BUILD_DIST)/libcurl4-openssl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/curl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/curl-config.1 $(BUILD_DIST)/libcurl4-openssl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/curl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libcurl4-openssl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+	cp -a $(BUILD_STAGE)/curl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/curl-config $(BUILD_DIST)/libcurl4-openssl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/curl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libcurl4-openssl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# curl.mk Sign
 	$(call SIGN,curl,general.xml)

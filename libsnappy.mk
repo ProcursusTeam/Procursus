@@ -23,9 +23,9 @@ libsnappy: libsnappy-setup
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/ \
-		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
-		-DCMAKE_INSTALL_RPATH=/usr \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX) \
+		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
@@ -43,14 +43,14 @@ endif
 libsnappy-package: libsnappy-stage
 	# libsnappy.mk Package Structure
 	rm -rf $(BUILD_DIST)/libsnappy{1v5,-dev}
-	mkdir -p $(BUILD_DIST)/libsnappy{1v5,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/libsnappy{1v5,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libsnappy.mk Prep libsnappy-dev
-	cp -a $(BUILD_STAGE)/libsnappy/usr/lib/{libsnappy.{a,dylib},cmake,pkgconfig} $(BUILD_DIST)/libsnappy-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libsnappy/usr/include $(BUILD_DIST)/libsnappy-dev/usr
+	cp -a $(BUILD_STAGE)/libsnappy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libsnappy.{a,dylib},cmake,pkgconfig} $(BUILD_DIST)/libsnappy-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libsnappy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libsnappy-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libsnappy.mk Prep libsnappy1v5
-	cp -a $(BUILD_STAGE)/libsnappy/usr/lib/libsnappy.*.dylib $(BUILD_DIST)/libsnappy1v5/usr/lib
+	cp -a $(BUILD_STAGE)/libsnappy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsnappy.*.dylib $(BUILD_DIST)/libsnappy1v5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 
 	# libsnappy.mk Sign

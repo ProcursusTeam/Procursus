@@ -28,21 +28,21 @@ gnutls: gnutls-setup readline gettext libgcrypt libgmp10 libidn2 libunistring ne
 ifeq ($(MEMO_TARGET),watchos-arm64)
 	cd $(BUILD_WORK)/gnutls && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-hardware-acceleration \
- 		P11_KIT_CFLAGS=-I$(BUILD_BASE)/usr/include/p11-kit-1
+ 		P11_KIT_CFLAGS=-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/p11-kit-1
 else
 	cd $(BUILD_WORK)/gnutls && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		P11_KIT_CFLAGS=-I$(BUILD_BASE)/usr/include/p11-kit-1
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		P11_KIT_CFLAGS=-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/p11-kit-1
 endif
 	+$(MAKE) -C $(BUILD_WORK)/gnutls
 	+$(MAKE) -C $(BUILD_WORK)/gnutls install \
 		DESTDIR=$(BUILD_STAGE)/gnutls
 	+$(MAKE) -C $(BUILD_WORK)/gnutls install \
 		DESTDIR=$(BUILD_BASE)
-	rm -rf $(BUILD_STAGE)/gnutls/usr/share
+	rm -rf $(BUILD_STAGE)/gnutls/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	touch $(BUILD_WORK)/gnutls/.build_complete
 endif
 
@@ -52,23 +52,23 @@ gnutls-package: gnutls-stage
 		$(BUILD_DIST)/libgnutls30 \
 		$(BUILD_DIST)/libgnutlsxx28 \
 		$(BUILD_DIST)/libgnutls28-dev
-	mkdir -p $(BUILD_DIST)/gnutls-bin/usr \
-		$(BUILD_DIST)/libgnutls30/usr/lib \
-		$(BUILD_DIST)/libgnutlsxx28/usr/lib \
-		$(BUILD_DIST)/libgnutls28-dev/usr/lib
+	mkdir -p $(BUILD_DIST)/gnutls-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(BUILD_DIST)/libgnutls30/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libgnutlsxx28/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libgnutls28-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# gnutls.mk Prep gnutls-bin
-	cp -a $(BUILD_STAGE)/gnutls/usr/bin $(BUILD_DIST)/gnutls-bin/usr
+	cp -a $(BUILD_STAGE)/gnutls/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/gnutls-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# gnutls.mk Prep libgnutls30
-	cp -a $(BUILD_STAGE)/gnutls/usr/lib/libgnutls.30.dylib $(BUILD_DIST)/libgnutls30/usr/lib
+	cp -a $(BUILD_STAGE)/gnutls/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgnutls.30.dylib $(BUILD_DIST)/libgnutls30/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# gnutls.mk Prep libgnutlsxx28
-	cp -a $(BUILD_STAGE)/gnutls/usr/lib/libgnutlsxx.28.dylib $(BUILD_DIST)/libgnutlsxx28/usr/lib
+	cp -a $(BUILD_STAGE)/gnutls/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgnutlsxx.28.dylib $(BUILD_DIST)/libgnutlsxx28/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# gnutls.mk Prep libgnutls28-dev
-	cp -a $(BUILD_STAGE)/gnutls/usr/lib/{pkgconfig,libgnutls{,xx}.dylib} $(BUILD_DIST)/libgnutls28-dev/usr/lib
-	cp -a $(BUILD_STAGE)/gnutls/usr/include $(BUILD_DIST)/libgnutls28-dev/usr
+	cp -a $(BUILD_STAGE)/gnutls/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libgnutls{,xx}.dylib} $(BUILD_DIST)/libgnutls28-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/gnutls/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libgnutls28-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# gnutls.mk Sign
 	$(call SIGN,gnutls-bin,general.xml)

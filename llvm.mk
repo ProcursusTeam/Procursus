@@ -49,12 +49,12 @@ llvm:
 	@echo "Using previously built llvm."
 else
 llvm: llvm-setup libffi libedit ncurses xz xar
-	cp -a $(TARGET_SYSROOT)/usr/include/mach/arm $(BUILD_BASE)/usr/include/mach
-	cp -a $(MACOSX_SYSROOT)/usr/include/{editline,kern} $(BUILD_BASE)/usr/include
-	cp -a $(MACOSX_SYSROOT)/usr/include/histedit.h $(BUILD_BASE)/usr/include
-	ln -sf $(BUILD_BASE)/usr/lib/libncursesw.dylib $(BUILD_BASE)/usr/lib/libcurses.dylib
-	ln -sf $(BUILD_BASE)/usr/lib/libpanelw.dylib $(BUILD_BASE)/usr/lib/libpanel.dylib
-	mv $(BUILD_BASE)/usr/include/stdlib.h $(BUILD_BASE)/usr/include/stdlib.h.old
+	cp -a $(TARGET_SYSROOT)/usr/include/mach/arm $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach
+	cp -a $(MACOSX_SYSROOT)/usr/include/{editline,kern} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(MACOSX_SYSROOT)/usr/include/histedit.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	ln -sf $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcurses.dylib
+	ln -sf $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpanelw.dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpanel.dylib
+	mv $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h.old
 
 	mkdir -p $(BUILD_WORK)/llvm/build/NATIVE && cd $(BUILD_WORK)/llvm/build/NATIVE && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
 		-DCMAKE_C_COMPILER=cc \
@@ -79,9 +79,9 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/usr/lib/llvm-$(LLVM_MAJOR_V) \
-		-DCMAKE_INSTALL_NAME_DIR=/usr/lib/llvm-$(LLVM_MAJOR_V)/lib \
-		-DCMAKE_INSTALL_RPATH=/usr/lib/llvm-$(LLVM_MAJOR_V) \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V) \
+		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib \
+		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V) \
 		-DCMAKE_OSX_ARCHITECTURES="$(ARCHES)" \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
@@ -89,17 +89,17 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		-DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
 		-DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \
 		-DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY \
-		-DCMAKE_C_FLAGS="-isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include $(PLATFORM_VERSION_MIN)" \
-		-DCMAKE_CXX_FLAGS="-isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include $(PLATFORM_VERSION_MIN)" \
-		-DCMAKE_EXE_LINKER_FLAGS="-L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
-		-DCMAKE_MODULE_LINKER_FLAGS="-L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
-		-DCMAKE_SHARED_LINKER_FLAGS="-L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
+		-DCMAKE_C_FLAGS="-isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include -isystem $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/include $(PLATFORM_VERSION_MIN)" \
+		-DCMAKE_CXX_FLAGS="-isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include -isystem $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/include $(PLATFORM_VERSION_MIN)" \
+		-DCMAKE_EXE_LINKER_FLAGS="-L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib -L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
+		-DCMAKE_MODULE_LINKER_FLAGS="-L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib -L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
+		-DCMAKE_SHARED_LINKER_FLAGS="-L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib -L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
 		-DCMAKE_STATIC_LINKER_FLAGS="" \
 		-DLLVM_ENABLE_FFI=ON \
 		-DLIBXML2_LIBRARY="$(TARGET_SYSROOT)/usr/lib/libxml2.tbd" \
 		-DLIBXML2_INCLUDE_DIR="$(TARGET_SYSROOT)/usr/include/libxml" \
-		-DLibEdit_INCLUDE_DIRS="$(BUILD_BASE)/usr/include" \
-		-DLibEdit_LIBRARIES="$(BUILD_BASE)/usr/lib/libedit.dylib" \
+		-DLibEdit_INCLUDE_DIRS="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
+		-DLibEdit_LIBRARIES="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libedit.dylib" \
 		-DCORE_FOUNDATION_LIBRARY="$(TARGET_SYSROOT)/System/Library/Frameworks/CoreFoundation.framework" \
 		-DCORE_SERVICES_LIBRARY="$(TARGET_SYSROOT)/System/Library/Frameworks/CoreServices.framework" \
 		-DFOUNDATION_LIBRARY="$(TARGET_SYSROOT)/System/Library/Frameworks/Foundation.framework" \
@@ -141,8 +141,8 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		../llvm
 	+$(MAKE) -C $(BUILD_WORK)/llvm/build install \
 		DESTDIR="$(BUILD_STAGE)/llvm"
-	rm -rf $(BUILD_BASE)/usr/lib/libcurses.dylib $(BUILD_BASE)/usr/lib/libpanel.dylib
-	mv $(BUILD_BASE)/usr/include/stdlib.h.old $(BUILD_BASE)/usr/include/stdlib.h
+	rm -rf $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcurses.dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpanel.dylib
+	mv $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h.old $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h
 	touch $(BUILD_WORK)/llvm/.build_complete
 endif
 
@@ -151,97 +151,97 @@ llvm-package: llvm-stage
 	rm -rf $(BUILD_DIST)/{clang*,debugserver*,libc++*-dev,libclang-common-*-dev,libclang-cpp*,liblldb-*,libllvm*,liblto*,lldb*,dsymutil*,swift*}/
 	
 	# llvm.mk Prep clang-$(LLVM_MAJOR_V)
-	mkdir -p $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/usr/{bin,lib/llvm-$(LLVM_MAJOR_V)/{bin,lib/cmake,share/clang}}
-	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/bin/clang{,-$(LLVM_MAJOR_V),++,-cpp} $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/bin
-	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/share/clang/bash-autocomplete.sh $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/share/clang
-	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/cmake/clang $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/cmake
-	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/clang-$(LLVM_MAJOR_V) $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/usr/bin/clang-$(LLVM_MAJOR_V)
-	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/clang-cpp $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/usr/bin/clang-cpp-$(LLVM_MAJOR_V)
-	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/clang++ $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/usr/bin/clang++-$(LLVM_MAJOR_V)
+	mkdir -p $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib/llvm-$(LLVM_MAJOR_V)/{bin,lib/cmake,share/clang}}
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/clang{,-$(LLVM_MAJOR_V),++,-cpp} $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/share/clang/bash-autocomplete.sh $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/share/clang
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/cmake/clang $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/cmake
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/clang-$(LLVM_MAJOR_V) $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/clang-$(LLVM_MAJOR_V)
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/clang-cpp $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/clang-cpp-$(LLVM_MAJOR_V)
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/clang++ $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/clang++-$(LLVM_MAJOR_V)
 
 	# llvm.mk Prep clang
-	mkdir -p $(BUILD_DIST)/clang/usr/bin
-	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/clang $(BUILD_DIST)/clang/usr/bin/clang
-	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/clang++ $(BUILD_DIST)/clang/usr/bin/clang++
-	ln -s clang $(BUILD_DIST)/clang/usr/bin/cc
-	ln -s clang++ $(BUILD_DIST)/clang/usr/bin/c++
-	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/clang-cpp $(BUILD_DIST)/clang/usr/bin/clang-cpp
+	mkdir -p $(BUILD_DIST)/clang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/clang $(BUILD_DIST)/clang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/clang
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/clang++ $(BUILD_DIST)/clang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/clang++
+	ln -s clang $(BUILD_DIST)/clang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/cc
+	ln -s clang++ $(BUILD_DIST)/clang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/c++
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/clang-cpp $(BUILD_DIST)/clang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/clang-cpp
 
 	# llvm.mk Prep debugserver-$(LLVM_MAJOR_V)
-	mkdir -p $(BUILD_DIST)/debugserver-$(LLVM_MAJOR_V)/usr/{bin,lib/llvm-$(LLVM_MAJOR_V)/bin}
-	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/bin/debugserver $(BUILD_DIST)/debugserver-$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/bin
-	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/debugserver $(BUILD_DIST)/debugserver-$(LLVM_MAJOR_V)/usr/bin/debugserver-$(LLVM_MAJOR_V)
+	mkdir -p $(BUILD_DIST)/debugserver-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib/llvm-$(LLVM_MAJOR_V)/bin}
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/debugserver $(BUILD_DIST)/debugserver-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/debugserver $(BUILD_DIST)/debugserver-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/debugserver-$(LLVM_MAJOR_V)
 
 	# llvm.mk Prep debugserver
-	mkdir -p $(BUILD_DIST)/debugserver/usr/bin
-	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/debugserver $(BUILD_DIST)/debugserver/usr/bin/debugserver
+	mkdir -p $(BUILD_DIST)/debugserver/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/debugserver $(BUILD_DIST)/debugserver/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/debugserver
 
 	# llvm.mk Prep libc++-$(LLVM_MAJOR_V)-dev
-	mkdir -p $(BUILD_DIST)/libc++-$(LLVM_MAJOR_V)-dev/usr/lib/llvm-$(LLVM_MAJOR_V)/{include,lib}
-	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/include/c++ $(BUILD_DIST)/libc++-$(LLVM_MAJOR_V)-dev/usr/lib/llvm-$(LLVM_MAJOR_V)/include
-	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/libc++{,.1}.dylib $(BUILD_DIST)/libc++-$(LLVM_MAJOR_V)-dev/usr/lib/llvm-$(LLVM_MAJOR_V)/lib
+	mkdir -p $(BUILD_DIST)/libc++-$(LLVM_MAJOR_V)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/{include,lib}
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/include/c++ $(BUILD_DIST)/libc++-$(LLVM_MAJOR_V)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/include
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/libc++{,.1}.dylib $(BUILD_DIST)/libc++-$(LLVM_MAJOR_V)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib
 
 	# llvm.mk Prep libc++-dev
-	mkdir -p $(BUILD_DIST)/libc++-dev/usr/include
-	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/include/c++ $(BUILD_DIST)/libc++-dev/usr/include
+	mkdir -p $(BUILD_DIST)/libc++-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/include/c++ $(BUILD_DIST)/libc++-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 
 	# llvm.mk Prep libclang-common-$(LLVM_MAJOR_V)-dev
-	mkdir -p $(BUILD_DIST)/libclang-common-$(LLVM_MAJOR_V)-dev/usr/lib/{,llvm-$(LLVM_MAJOR_V)/lib/}clang
-	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/clang/$(LLVM_VERSION) $(BUILD_DIST)/libclang-common-$(LLVM_MAJOR_V)-dev/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/clang
-	ln -s ../llvm-$(LLVM_MAJOR_V)/lib/clang/$(LLVM_VERSION) $(BUILD_DIST)/libclang-common-$(LLVM_MAJOR_V)-dev/usr/lib/clang
+	mkdir -p $(BUILD_DIST)/libclang-common-$(LLVM_MAJOR_V)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{,llvm-$(LLVM_MAJOR_V)/lib/}clang
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/clang/$(LLVM_VERSION) $(BUILD_DIST)/libclang-common-$(LLVM_MAJOR_V)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/clang
+	ln -s ../llvm-$(LLVM_MAJOR_V)/lib/clang/$(LLVM_VERSION) $(BUILD_DIST)/libclang-common-$(LLVM_MAJOR_V)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/clang
 
 	# llvm.mk Prep libclang-cpp$(LLVM_MAJOR_V)
-	mkdir -p $(BUILD_DIST)/libclang-cpp$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/lib
-	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/libclang-cpp.dylib $(BUILD_DIST)/libclang-cpp$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/lib
+	mkdir -p $(BUILD_DIST)/libclang-cpp$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/libclang-cpp.dylib $(BUILD_DIST)/libclang-cpp$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib
 
 	# llvm.mk Prep liblldb-$(LLVM_MAJOR_V)
-	mkdir -p $(BUILD_DIST)/liblldb-$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/lib
-	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/liblldb.$(LLVM_VERSION).dylib $(BUILD_DIST)/liblldb-$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/lib
+	mkdir -p $(BUILD_DIST)/liblldb-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/liblldb.$(LLVM_VERSION).dylib $(BUILD_DIST)/liblldb-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib
 
 	# llvm.mk Prep libllvm$(LLVM_MAJOR_V)
-	mkdir -p $(BUILD_DIST)/libllvm$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/lib
-	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/libLLVM.dylib $(BUILD_DIST)/libllvm$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/lib
+	mkdir -p $(BUILD_DIST)/libllvm$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/libLLVM.dylib $(BUILD_DIST)/libllvm$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib
 
 	# llvm.mk Prep liblto$(LLVM_MAJOR_V)
-	mkdir -p $(BUILD_DIST)/liblto$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/lib
-	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/libLTO.dylib $(BUILD_DIST)/liblto$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/lib
+	mkdir -p $(BUILD_DIST)/liblto$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/libLTO.dylib $(BUILD_DIST)/liblto$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib
 
 	# llvm.mk Prep lldb-$(LLVM_MAJOR_V)
-	mkdir -p $(BUILD_DIST)/lldb-$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/bin
-	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/bin/lldb{,-argdumper,-instr,-server} $(BUILD_DIST)/lldb-$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/bin
+	mkdir -p $(BUILD_DIST)/lldb-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/lldb{,-argdumper,-instr,-server} $(BUILD_DIST)/lldb-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
 
 	# llvm.mk Prep lldb
-	mkdir -p $(BUILD_DIST)/lldb/usr/bin
+	mkdir -p $(BUILD_DIST)/lldb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	for bin in lldb{,-argdumper,-instr,-server}; do \
-		ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/$$bin $(BUILD_DIST)/lldb/usr/bin/$$bin; \
+		ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/$$bin $(BUILD_DIST)/lldb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin; \
 	done
 
 	# llvm.mk Prep dsymutil-$(LLVM_MAJOR_V)
-	mkdir -p $(BUILD_DIST)/dsymutil-$(LLVM_MAJOR_V)/usr/{bin,lib/llvm-$(LLVM_MAJOR_V)/bin}
-	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/bin/dsymutil $(BUILD_DIST)/dsymutil-$(LLVM_MAJOR_V)/usr/lib/llvm-$(LLVM_MAJOR_V)/bin
-	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/dsymutil $(BUILD_DIST)/dsymutil-$(LLVM_MAJOR_V)/usr/bin/dsymutil-$(LLVM_MAJOR_V)
+	mkdir -p $(BUILD_DIST)/dsymutil-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib/llvm-$(LLVM_MAJOR_V)/bin}
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/dsymutil $(BUILD_DIST)/dsymutil-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/dsymutil $(BUILD_DIST)/dsymutil-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dsymutil-$(LLVM_MAJOR_V)
 
 	# llvm.mk Prep dsymutil
-	mkdir -p $(BUILD_DIST)/dsymutil/usr/bin
-	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/dsymutil $(BUILD_DIST)/dsymutil/usr/bin/dsymutil
+	mkdir -p $(BUILD_DIST)/dsymutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/dsymutil $(BUILD_DIST)/dsymutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dsymutil
 
 	# llvm.mk Prep swift-$(SWIFT_VERSION)
-	mkdir -p $(BUILD_DIST)/swift-$(SWIFT_VERSION)/usr/{bin,lib/llvm-$(LLVM_MAJOR_V)/{bin,lib,share}}
-	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/share/swift $(BUILD_DIST)/swift-$(SWIFT_VERSION)/usr/lib/llvm-$(LLVM_MAJOR_V)/share
-	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/{swift,libswift*} $(BUILD_DIST)/swift-$(SWIFT_VERSION)/usr/lib/llvm-$(LLVM_MAJOR_V)/lib
-	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/bin/swift{,c,-api-digester,-api-dump.py,-demangle,-syntax*} $(BUILD_DIST)/swift-$(SWIFT_VERSION)/usr/lib/llvm-$(LLVM_MAJOR_V)/bin
-	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/bin/sil-{func-extractor,llvm-gen,nm,passpipeline-dumper} $(BUILD_DIST)/swift-$(SWIFT_VERSION)/usr/lib/llvm-$(LLVM_MAJOR_V)/bin
-	cp -a $(BUILD_STAGE)/llvm/usr/lib/llvm-$(LLVM_MAJOR_V)/bin/repl_swift $(BUILD_DIST)/swift-$(SWIFT_VERSION)/usr/lib/llvm-$(LLVM_MAJOR_V)/bin
-	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/swift $(BUILD_DIST)/swift-$(SWIFT_VERSION)/usr/bin/swift-$(SWIFT_VERSION)
-	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/swiftc $(BUILD_DIST)/swift-$(SWIFT_VERSION)/usr/bin/swiftc-$(SWIFT_VERSION)
+	mkdir -p $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib/llvm-$(LLVM_MAJOR_V)/{bin,lib,share}}
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/share/swift $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/share
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/{swift,libswift*} $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/swift{,c,-api-digester,-api-dump.py,-demangle,-syntax*} $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/sil-{func-extractor,llvm-gen,nm,passpipeline-dumper} $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/repl_swift $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/swift $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/swift-$(SWIFT_VERSION)
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/swiftc $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/swiftc-$(SWIFT_VERSION)
 
 	# llvm.mk Prep swift
-	mkdir -p $(BUILD_DIST)/swift/usr/{bin,lib/swift}
-	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/swift $(BUILD_DIST)/swift/usr/bin/swift
-	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/swiftc $(BUILD_DIST)/swift/usr/bin/swiftc
-	cd $(BUILD_DIST)/swift-$(SWIFT_VERSION)/usr/lib/llvm-$(LLVM_MAJOR_V)/lib/swift; \
+	mkdir -p $(BUILD_DIST)/swift/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib/swift}
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/swift $(BUILD_DIST)/swift/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/swift
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/swiftc $(BUILD_DIST)/swift/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/swiftc
+	cd $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/swift; \
 	for lib in *; do \
-		ln -s ../llvm-$(LLVM_MAJOR_V)/lib/swift/$$lib $(BUILD_DIST)/swift/usr/lib/swift/$$lib; \
+		ln -s ../llvm-$(LLVM_MAJOR_V)/lib/swift/$$lib $(BUILD_DIST)/swift/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/swift/$$lib; \
 	done
 
 	# llvm.mk Sign

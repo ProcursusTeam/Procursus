@@ -23,8 +23,8 @@ else
 libgcrypt: libgcrypt-setup libgpg-error
 	cd $(BUILD_WORK)/libgcrypt && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--with-gpg-error-prefix=$(BUILD_BASE)/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--with-gpg-error-prefix=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libgcrypt
 	+$(MAKE) -C $(BUILD_WORK)/libgcrypt install \
 		DESTDIR=$(BUILD_STAGE)/libgcrypt
@@ -36,14 +36,14 @@ endif
 libgcrypt-package: libgcrypt-stage
 	# libgcrypt.mk Package Structure
 	rm -rf $(BUILD_DIST)/libgcrypt20{,-dev}
-	mkdir -p $(BUILD_DIST)/libgcrypt20/usr/lib
-	mkdir -p $(BUILD_DIST)/libgcrypt20-dev/usr/lib
+	mkdir -p $(BUILD_DIST)/libgcrypt20/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libgcrypt20-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libgcrypt.mk Prep libgcrypt
-	cp -a $(BUILD_STAGE)/libgcrypt/usr/lib/libgcrypt.20.dylib $(BUILD_DIST)/libgcrypt20/usr/lib
-	cp -a $(BUILD_STAGE)/libgcrypt/usr/{bin,share} $(BUILD_DIST)/libgcrypt20-dev/usr
-	cp -a $(BUILD_STAGE)/libgcrypt/usr/include $(BUILD_DIST)/libgcrypt20-dev/usr
-	cp -a $(BUILD_STAGE)/libgcrypt/usr/lib/{pkgconfig,libgcrypt.dylib} $(BUILD_DIST)/libgcrypt20-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libgcrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgcrypt.20.dylib $(BUILD_DIST)/libgcrypt20/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libgcrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/libgcrypt20-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libgcrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libgcrypt20-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libgcrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libgcrypt.dylib} $(BUILD_DIST)/libgcrypt20-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libgcrypt.mk Sign
 	$(call SIGN,libgcrypt20,general.xml)

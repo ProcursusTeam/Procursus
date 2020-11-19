@@ -18,7 +18,7 @@ else
 libtool: libtool-setup
 	cd $(BUILD_WORK)/libtool && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--program-prefix=g \
 		--enable-ltdl-install
 	+$(MAKE) -C $(BUILD_WORK)/libtool
@@ -34,7 +34,7 @@ libtool-package: libtool-stage
 	mkdir -p $(BUILD_DIST)/libtool
 	
 	# libtool.mk Prep libtool
-	cp -a $(BUILD_STAGE)/libtool/usr $(BUILD_DIST)/libtool
+	cp -a $(BUILD_STAGE)/libtool $(BUILD_DIST)
 	
 	# libtool.mk Sign
 	$(call SIGN,libtool,general.xml)

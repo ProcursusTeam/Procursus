@@ -32,10 +32,10 @@ endif
 whois-package: whois-stage
 	# whois.mk Package Structure
 	rm -rf $(BUILD_DIST)/whois
-	mkdir -p $(BUILD_DIST)/whois/usr/{bin,share}
+	mkdir -p $(BUILD_DIST)/whois/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share}
 	
 	# whois.mk Prep WHOIS
-	cp -a $(BUILD_STAGE)/whois/usr/{bin,share} $(BUILD_DIST)/whois/usr
+	cp -a $(BUILD_STAGE)/whois/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/whois/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	#whois.mk Sign
 	$(call SIGN,whois,general.xml)

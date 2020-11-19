@@ -18,7 +18,7 @@ else
 findutils: findutils-setup gettext
 	cd $(BUILD_WORK)/findutils && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--disable-debug
 	+$(MAKE) -C $(BUILD_WORK)/findutils
@@ -33,7 +33,7 @@ findutils-package: findutils-stage
 	mkdir -p $(BUILD_DIST)/findutils
 	
 	# findutils.mk Prep findutils
-	cp -a $(BUILD_STAGE)/findutils/usr $(BUILD_DIST)/findutils
+	cp -a $(BUILD_STAGE)/findutils $(BUILD_DIST)
 	
 	# findutils.mk Sign
 	$(call SIGN,findutils,general.xml)

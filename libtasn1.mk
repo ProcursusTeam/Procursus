@@ -18,7 +18,7 @@ else
 libtasn1: libtasn1-setup
 	cd $(BUILD_WORK)/libtasn1 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libtasn1
 	+$(MAKE) -C $(BUILD_WORK)/libtasn1 install \
 		DESTDIR=$(BUILD_STAGE)/libtasn1
@@ -30,21 +30,21 @@ endif
 libtasn1-package: libtasn1-stage
 	# libtasn1.mk Package Structure
 	rm -rf $(BUILD_DIST)/libtasn1-{6{,-dev},bin}
-	mkdir -p $(BUILD_DIST)/libtasn1-6/usr/lib \
-		$(BUILD_DIST)/libtasn1-6-dev/usr/{lib,share/man} \
-		$(BUILD_DIST)/libtasn1-bin/usr/share/man
+	mkdir -p $(BUILD_DIST)/libtasn1-6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libtasn1-6-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share/man} \
+		$(BUILD_DIST)/libtasn1-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	
 	# libtasn1.mk Prep libtasn1-6
-	cp -a $(BUILD_STAGE)/libtasn1/usr/lib/libtasn1.6.dylib $(BUILD_DIST)/libtasn1-6/usr/lib
+	cp -a $(BUILD_STAGE)/libtasn1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libtasn1.6.dylib $(BUILD_DIST)/libtasn1-6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libtasn1.mk Prep libtasn1-dev
-	cp -a $(BUILD_STAGE)/libtasn1/usr/lib/!(libtasn1.6.dylib) $(BUILD_DIST)/libtasn1-6-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libtasn1/usr/share/man/man3 $(BUILD_DIST)/libtasn1-6-dev/usr/share/man
-	cp -a $(BUILD_STAGE)/libtasn1/usr/include $(BUILD_DIST)/libtasn1-6-dev/usr
+	cp -a $(BUILD_STAGE)/libtasn1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libtasn1.6.dylib) $(BUILD_DIST)/libtasn1-6-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libtasn1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libtasn1-6-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+	cp -a $(BUILD_STAGE)/libtasn1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libtasn1-6-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libtasn1.mk Prep libtasn1-bin
-	cp -a $(BUILD_STAGE)/libtasn1/usr/share/man/man1 $(BUILD_DIST)/libtasn1-bin/usr/share/man
-	cp -a $(BUILD_STAGE)/libtasn1/usr/bin $(BUILD_DIST)/libtasn1-bin/usr
+	cp -a $(BUILD_STAGE)/libtasn1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/libtasn1-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+	cp -a $(BUILD_STAGE)/libtasn1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/libtasn1-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libtasn1.mk Sign
 	$(call SIGN,libtasn1-6,general.xml)

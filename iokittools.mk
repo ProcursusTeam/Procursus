@@ -9,7 +9,7 @@ DEB_IOKITTOOLS_V   ?= $(IOKITTOOLS_VERSION)
 iokittools-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/IOKitTools/IOKitTools-$(IOKITTOOLS_VERSION).tar.gz
 	$(call EXTRACT_TAR,IOKitTools-$(IOKITTOOLS_VERSION).tar.gz,IOKitTools-$(IOKITTOOLS_VERSION),iokittools)
-	mkdir -p $(BUILD_STAGE)/iokittools/usr/sbin
+	mkdir -p $(BUILD_STAGE)/iokittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/iokittools/include/IOKit
@@ -27,7 +27,7 @@ iokittools: iokittools-setup ncurses
 	cd $(BUILD_WORK)/iokittools; \
 	for tproj in {ioalloccount,ioclasscount}.tproj; do \
 		tproj=$$(basename $$tproj .tproj); \
-		$(CC) $(CFLAGS) -L $(BUILD_BASE)/usr/lib -isystem include -o $(BUILD_STAGE)/iokittools/usr/sbin/$$tproj $$tproj.tproj/*.c -framework CoreFoundation -framework IOKit -lncursesw; \
+		$(CC) $(CFLAGS) -L $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -isystem include -o $(BUILD_STAGE)/iokittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/$$tproj $$tproj.tproj/*.c -framework CoreFoundation -framework IOKit -lncursesw; \
 	done
 	touch $(BUILD_WORK)/iokittools/.build_complete
 endif

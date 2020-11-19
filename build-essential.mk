@@ -21,7 +21,7 @@ build-essential:
 	@echo "Using previously built build-essential."
 else
 build-essential: setup
-	mkdir -p $(BUILD_WORK)/build-essential/{usr/share/SDKs,etc/profile.d}
+	mkdir -p $(BUILD_WORK)/build-essential/$(MEMO_PREFIX)/{$(MEMO_SUB_PREFIX)/share/SDKs,etc/profile.d}
 	$(SED) -E 's|@@PLATFORM@@|$(BARE_PLATFORM)|' < $(BUILD_INFO)/sdkroot.sh.in > $(BUILD_WORK)/build-essential/etc/profile.d/sdkroot.sh
 	touch $(BUILD_WORK)/build-essential/.build_complete
 endif
@@ -29,10 +29,10 @@ endif
 build-essential-package: build-essential-stage
 	# build-essential.mk Package Structure
 	rm -rf $(BUILD_DIST)/build-essential
-	mkdir -p $(BUILD_DIST)/build-essential
+	mkdir -p $(BUILD_DIST)/build-essential/$(MEMO_PREFIX)
 	
 	# build-essential.mk Prep build-essential
-	cp -a $(BUILD_WORK)/build-essential/{etc,usr} $(BUILD_DIST)/build-essential
+	cp -a $(BUILD_WORK)/build-essential/$(MEMO_PREFIX)/{etc,$(MEMO_SUB_PREFIX)} $(BUILD_DIST)/build-essential/$(MEMO_PREFIX)
 	
 	# build-essential.mk Make .debs
 	$(call PACK,build-essential,DEB_BUILD-ESSENTIAL_V)

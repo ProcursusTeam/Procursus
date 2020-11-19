@@ -23,7 +23,7 @@ vim: vim-setup ncurses gettext
 	cd $(BUILD_WORK)/vim/src && autoconf -f
 	cd $(BUILD_WORK)/vim && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--enable-gui=no \
 		--with-tlib=ncursesw \
 		--without-x \
@@ -39,27 +39,27 @@ vim: vim-setup ncurses gettext
 	+$(MAKE) -C $(BUILD_WORK)/vim
 	+$(MAKE) -C $(BUILD_WORK)/vim install \
 		DESTDIR="$(BUILD_STAGE)/vim"
-	rm -f $(BUILD_STAGE)/vim/usr/bin/!(vim|vimtutor|xxd)
-	mv $(BUILD_STAGE)/vim/usr/bin/vim $(BUILD_STAGE)/vim/usr/bin/vim.basic
-	rm -rf $(BUILD_STAGE)/vim/usr/share/man/*{ISO*,UTF*,KOI*}
-	find $(BUILD_STAGE)/vim/usr/share/man -type f ! -name "vim.1" ! -name "vimtutor.1" ! -name "xxd.1" -delete
-	find $(BUILD_STAGE)/vim/usr/share/man -type l -delete
+	rm -f $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/!(vim|vimtutor|xxd)
+	mv $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/vim $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/vim.basic
+	rm -rf $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/*{ISO*,UTF*,KOI*}
+	find $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f ! -name "vim.1" ! -name "vimtutor.1" ! -name "xxd.1" -delete
+	find $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type l -delete
 	touch $(BUILD_WORK)/vim/.build_complete
 endif
 vim-package: vim-stage
 	# vim.mk Package Structure
 	rm -rf $(BUILD_DIST)/{vim,xxd}
-	mkdir -p $(BUILD_DIST)/{vim,xxd}/usr/{bin,share}
+	mkdir -p $(BUILD_DIST)/{vim,xxd}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share}
 	
 	# vim.mk Prep vim
-	cp -a $(BUILD_STAGE)/vim/usr/bin/vim{.basic,tutor} $(BUILD_DIST)/vim/usr/bin
-	cp -a $(BUILD_STAGE)/vim/usr/share/{vim,man} $(BUILD_DIST)/vim/usr/share
-	find $(BUILD_DIST)/vim/usr/share/man -type f -name "xxd.1" -delete
+	cp -a $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/vim{.basic,tutor} $(BUILD_DIST)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{vim,man} $(BUILD_DIST)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	find $(BUILD_DIST)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name "xxd.1" -delete
 
 	# vim.mk Prep xxd
-	cp -a $(BUILD_STAGE)/vim/usr/bin/xxd $(BUILD_DIST)/xxd/usr/bin
-	cp -a $(BUILD_STAGE)/vim/usr/share/man $(BUILD_DIST)/xxd/usr/share
-	find $(BUILD_DIST)/xxd/usr/share/man -type f ! -name "xxd.1" -delete
+	cp -a $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/xxd $(BUILD_DIST)/xxd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/xxd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	find $(BUILD_DIST)/xxd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f ! -name "xxd.1" -delete
 	
 	# vim.mk Sign
 	$(call SIGN,vim,general.xml)

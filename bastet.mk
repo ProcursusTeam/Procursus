@@ -11,7 +11,7 @@ bastet-setup: setup
 	$(call EXTRACT_TAR,bastet-$(BASTET_VERSION).tar.gz,bastet-$(BASTET_VERSION),bastet)
 	$(call DO_PATCH,bastet,bastet,-p1)
 	$(SED) -i 's/-lncurses/-lncursesw/' $(BUILD_WORK)/bastet/Makefile
-	mkdir -p $(BUILD_STAGE)/bastet/usr/{bin,share/man/man6}
+	mkdir -p $(BUILD_STAGE)/bastet/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man6}
 
 ifneq ($(wildcard $(BUILD_WORK)/bastet/.build_complete),)
 bastet:
@@ -20,8 +20,8 @@ else
 bastet: bastet-setup ncurses libboost
 	+$(MAKE) -C $(BUILD_WORK)/bastet all \
 		CXX="$(CXX) $(CXXFLAGS)"
-	cp -a $(BUILD_WORK)/bastet/bastet $(BUILD_STAGE)/bastet/usr/bin
-	cp -a $(BUILD_WORK)/bastet/bastet.6 $(BUILD_STAGE)/bastet/usr/share/man/man6
+	cp -a $(BUILD_WORK)/bastet/bastet $(BUILD_STAGE)/bastet/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_WORK)/bastet/bastet.6 $(BUILD_STAGE)/bastet/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man6
 	touch $(BUILD_WORK)/bastet/.build_complete
 endif
 

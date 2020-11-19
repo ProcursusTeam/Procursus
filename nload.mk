@@ -20,7 +20,7 @@ else
 nload: nload-setup ncurses
 	cd $(BUILD_WORK)/nload &&./run_autotools && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/nload \
 		LIBS="-lformw -lncursesw"

@@ -9,12 +9,12 @@ DEB_DISKDEV-CMDS_V   ?= $(DISKDEV-CMDS_VERSION)
 diskdev-cmds-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/diskdev_cmds/diskdev_cmds-$(DISKDEV-CMDS_VERSION).tar.gz
 	$(call EXTRACT_TAR,diskdev_cmds-$(DISKDEV-CMDS_VERSION).tar.gz,diskdev_cmds-$(DISKDEV-CMDS_VERSION),diskdev-cmds)
-	mkdir -p $(BUILD_STAGE)/diskdev-cmds/{usr/{{s,}bin,libexec},sbin}
+	mkdir -p $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)/{$(MEMO_SUB_PREFIX)/{{s,}bin,libexec},sbin}
 
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/diskdev-cmds/include/{arm,machine,{System/,}sys,uuid}
 	cp -a $(MACOSX_SYSROOT)/usr/include/sys/{disk,reboot,vnioctl,vmmeter}.h $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Versions/Current/Headers/sys/disklabel.h $(BUILD_WORK)/diskdev-cmds/include/sys
-	cp -a $(BUILD_BASE)/usr/include/{unistd,stdlib}.h $(BUILD_WORK)/diskdev-cmds/include
+	cp -a $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/{unistd,stdlib}.h $(BUILD_WORK)/diskdev-cmds/include
 
 	wget -q -nc -P $(BUILD_WORK)/diskdev-cmds/include \
 		https://opensource.apple.com/source/libutil/libutil-57/mntopts.h \
@@ -67,9 +67,9 @@ diskdev-cmds: diskdev-cmds-setup
     	$(CC) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem ../include -o $$bin $$c; \
 	done
 	cd $(BUILD_WORK)/diskdev-cmds; \
-	cp -a quota $(BUILD_STAGE)/diskdev-cmds/usr/bin; \
-	cp -a dev_mkdb edquota fdisk quotaon repquota vsdbutil $(BUILD_STAGE)/diskdev-cmds/usr/sbin; \
-	cp -a vndevice $(BUILD_STAGE)/diskdev-cmds/usr/libexec; \
+	cp -a quota $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \
+	cp -a dev_mkdb edquota fdisk quotaon repquota vsdbutil $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin; \
+	cp -a vndevice $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec; \
 	cp -a quotacheck umount @(fstyp|newfs)?(_*([a-z0-9])) @(mount_*([a-z0-9])) $(BUILD_STAGE)/diskdev-cmds/sbin
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1)
 	rm -f $(BUILD_STAGE)/diskdev-cmds/sbin/umount

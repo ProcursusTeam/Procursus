@@ -20,9 +20,9 @@ libzip: libzip-setup xz openssl
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
-		-DCMAKE_INSTALL_RPATH=/usr \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
@@ -44,22 +44,22 @@ endif
 libzip-package: libzip-stage
 	# libzip.mk Package Structure
 	rm -rf $(BUILD_DIST)/libzip{5,-dev} $(BUILD_DIST)/zip{cmp,merge,tool}
-	mkdir -p $(BUILD_DIST)/libzip5/usr/lib \
-		$(BUILD_DIST)/libzip-dev/usr/{lib,share/man} \
-		$(BUILD_DIST)/zip{cmp,merge,tool}/usr/{bin,share/man/man1}
+	mkdir -p $(BUILD_DIST)/libzip5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libzip-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share/man} \
+		$(BUILD_DIST)/zip{cmp,merge,tool}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 
 	# libzip.mk Prep libzip5
-	cp -a $(BUILD_STAGE)/libzip/usr/lib/libzip.5*.dylib $(BUILD_DIST)/libzip5/usr/lib
+	cp -a $(BUILD_STAGE)/libzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libzip.5*.dylib $(BUILD_DIST)/libzip5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libzip.mk Prep libzip-dev
-	cp -a $(BUILD_STAGE)/libzip/usr/lib/!(libzip.5*.dylib) $(BUILD_DIST)/libzip-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libzip/usr/share/man/man3 $(BUILD_DIST)/libzip-dev/usr/share/man
-	cp -a $(BUILD_STAGE)/libzip/usr/include $(BUILD_DIST)/libzip-dev/usr
+	cp -a $(BUILD_STAGE)/libzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libzip.5*.dylib) $(BUILD_DIST)/libzip-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libzip-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+	cp -a $(BUILD_STAGE)/libzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libzip-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libzip.mk Prep zip{cmp,merge,tool}
 	for bin in zip{cmp,merge,tool}; do \
-		cp -a $(BUILD_STAGE)/libzip/usr/bin/$$bin $(BUILD_DIST)/$$bin/usr/bin; \
-		cp -a $(BUILD_STAGE)/libzip/usr/share/man/man1/$$bin.1 $(BUILD_DIST)/$$bin/usr/share/man/man1; \
+		cp -a $(BUILD_STAGE)/libzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $(BUILD_DIST)/$$bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \
+		cp -a $(BUILD_STAGE)/libzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$$bin.1 $(BUILD_DIST)/$$bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
 	done
 	
 	# libzip.mk Sign

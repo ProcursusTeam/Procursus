@@ -18,7 +18,7 @@ else
 sed: sed-setup gettext
 	cd $(BUILD_WORK)/sed && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/sed
 	+$(MAKE) -C $(BUILD_WORK)/sed install \
@@ -29,10 +29,9 @@ endif
 sed-package: sed-stage
 	# sed.mk Package Structure
 	rm -rf $(BUILD_DIST)/sed
-	mkdir -p $(BUILD_DIST)/sed
 	
 	# sed.mk Prep sed
-	cp -a $(BUILD_STAGE)/sed/usr $(BUILD_DIST)/sed
+	cp -a $(BUILD_STAGE)/sed $(BUILD_DIST)
 	
 	# sed.mk Sign
 	$(call SIGN,sed,general.xml)

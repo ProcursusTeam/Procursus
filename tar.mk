@@ -22,7 +22,7 @@ else
 tar: tar-setup gettext
 	cd $(BUILD_WORK)/tar && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		$(TAR_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/tar
 	+$(MAKE) -C $(BUILD_WORK)/tar install \
@@ -33,11 +33,11 @@ endif
 tar-package: tar-stage
 	# tar.mk Package Structure
 	rm -rf $(BUILD_DIST)/tar
-	mkdir -p $(BUILD_DIST)/tar/bin
+	mkdir -p $(BUILD_DIST)/tar/$(MEMO_PREFIX)/bin
 	
 	# tar.mk Prep tar
-	cp -a $(BUILD_STAGE)/tar/usr $(BUILD_DIST)/tar
-	ln -s /usr/bin/tar $(BUILD_DIST)/tar/bin/tar
+	cp -a $(BUILD_STAGE)/tar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/tar/$(MEMO_PREFIX)
+	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/tar $(BUILD_DIST)/tar/$(MEMO_PREFIX)/bin/tar
 	
 	# tar.mk Sign
 	$(call SIGN,tar,general.xml)

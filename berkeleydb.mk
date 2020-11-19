@@ -20,7 +20,7 @@ berkeleydb: berkeleydb-setup gettext openssl
 	cd $(BUILD_WORK)/berkeleydb/dist && ./s_config
 	cd $(BUILD_WORK)/berkeleydb/build_unix && ../dist/configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--enable-cxx \
 		--enable-compat185 \
 		--enable-sql \
@@ -40,32 +40,32 @@ berkeleydb-package: berkeleydb-stage
 	# berkeleydb.mk Package Structure
 	rm -rf $(BUILD_DIST)/db18.1-util \
 		$(BUILD_DIST)/libdb18.1{,++,-stl}{,-dev}
-	mkdir -p $(BUILD_DIST)/db18.1-util/usr \
-		$(BUILD_DIST)/libdb18.1{,++,-stl}{/usr/lib,-dev/usr/{lib,include}}
+	mkdir -p $(BUILD_DIST)/db18.1-util/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(BUILD_DIST)/libdb18.1{,++,-stl}{/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib,-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include}}
 	
 	# berkeleydb.mk Prep db18.1-util
-	cp -a $(BUILD_STAGE)/berkeleydb/usr/bin $(BUILD_DIST)/db18.1-util/usr
+	cp -a $(BUILD_STAGE)/berkeleydb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/db18.1-util/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# berkeleydb.mk Prep libdb18.1
-	cp -a $(BUILD_STAGE)/berkeleydb/usr/lib/libdb-18{,.1}.dylib $(BUILD_DIST)/libdb18.1/usr/lib
+	cp -a $(BUILD_STAGE)/berkeleydb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdb-18{,.1}.dylib $(BUILD_DIST)/libdb18.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# berkeleydb.mk Prep libdb18.1++
-	cp -a $(BUILD_STAGE)/berkeleydb/usr/lib/libdb_cxx-18{,.1}.dylib $(BUILD_DIST)/libdb18.1++/usr/lib
+	cp -a $(BUILD_STAGE)/berkeleydb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdb_cxx-18{,.1}.dylib $(BUILD_DIST)/libdb18.1++/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# berkeleydb.mk Prep libdb18.1-stl
-	cp -a $(BUILD_STAGE)/berkeleydb/usr/lib/libdb_stl-18{,.1}.dylib $(BUILD_DIST)/libdb18.1-stl/usr/lib
+	cp -a $(BUILD_STAGE)/berkeleydb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdb_stl-18{,.1}.dylib $(BUILD_DIST)/libdb18.1-stl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# berkeleydb.mk Prep libdb18.1-dev
-	cp -a $(BUILD_STAGE)/berkeleydb/usr/lib/libdb{-18.1.a,.dylib} $(BUILD_DIST)/libdb18.1-dev/usr/lib
-	cp -a $(BUILD_STAGE)/berkeleydb/usr/include/db{,_185}.h $(BUILD_DIST)/libdb18.1-dev/usr/include
+	cp -a $(BUILD_STAGE)/berkeleydb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdb{-18.1.a,.dylib} $(BUILD_DIST)/libdb18.1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/berkeleydb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/db{,_185}.h $(BUILD_DIST)/libdb18.1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	
 	# berkeleydb.mk Prep libdb18.1++-dev
-	cp -a $(BUILD_STAGE)/berkeleydb/usr/lib/libdb_cxx{-18.1.a,.dylib} $(BUILD_DIST)/libdb18.1++-dev/usr/lib
-	cp -a $(BUILD_STAGE)/berkeleydb/usr/include/db_cxx.h $(BUILD_DIST)/libdb18.1++-dev/usr/include
+	cp -a $(BUILD_STAGE)/berkeleydb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdb_cxx{-18.1.a,.dylib} $(BUILD_DIST)/libdb18.1++-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/berkeleydb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/db_cxx.h $(BUILD_DIST)/libdb18.1++-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	
 	# berkeleydb.mk Prep libdb18.1-stl-dev
-	cp -a $(BUILD_STAGE)/berkeleydb/usr/lib/libdb_stl{-18.1.a,.dylib} $(BUILD_DIST)/libdb18.1-stl-dev/usr/lib
-	cp -a $(BUILD_STAGE)/berkeleydb/usr/include/dbstl*.h $(BUILD_DIST)/libdb18.1-stl-dev/usr/include
+	cp -a $(BUILD_STAGE)/berkeleydb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdb_stl{-18.1.a,.dylib} $(BUILD_DIST)/libdb18.1-stl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/berkeleydb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/dbstl*.h $(BUILD_DIST)/libdb18.1-stl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	
 	# berkeleydb.mk Sign
 	$(call SIGN,db18.1-util,general.xml)

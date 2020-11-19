@@ -19,7 +19,7 @@ else
 mtr: mtr-setup ncurses jansson
 	cd $(BUILD_WORK)/mtr && ./bootstrap.sh && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--without-gtk \
 		--with-jansson
 	+$(MAKE) -C $(BUILD_WORK)/mtr \
@@ -35,7 +35,7 @@ mtr-package: mtr-stage
 	mkdir -p $(BUILD_DIST)/mtr
 
 	# mtr.mk Prep mtr
-	cp -a $(BUILD_STAGE)/mtr/usr $(BUILD_DIST)/mtr
+	cp -a $(BUILD_STAGE)/mtr $(BUILD_DIST)
 
 	# mtr.mk Sign
 	$(call SIGN,mtr,general.xml)

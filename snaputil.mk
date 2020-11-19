@@ -11,14 +11,14 @@ snaputil-setup: setup
 		wget -q -nc -O$(BUILD_SOURCE)/snaputil-$(SNAPUTIL_VERSION).tar.gz \
 			https://github.com/Diatrus/apfs/archive/v$(SNAPUTIL_VERSION).tar.gz
 	$(call EXTRACT_TAR,snaputil-$(SNAPUTIL_VERSION).tar.gz,apfs-$(SNAPUTIL_VERSION),snaputil)
-	mkdir -p $(BUILD_STAGE)/snaputil/usr/bin
+	mkdir -p $(BUILD_STAGE)/snaputil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 ifneq ($(wildcard $(BUILD_WORK)/snaputil/.build_complete),)
 snaputil:
 	@echo "Using previously built snaputil."
 else
 snaputil: snaputil-setup
-	$(CC) $(ARCH) -Os -Wall -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o $(BUILD_STAGE)/snaputil/usr/bin/snaputil $(BUILD_WORK)/snaputil/snapUtil.c
+	$(CC) $(ARCH) -Os -Wall -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o $(BUILD_STAGE)/snaputil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/snaputil $(BUILD_WORK)/snaputil/snapUtil.c
 	touch $(BUILD_WORK)/snaputil/.build_complete
 endif
 

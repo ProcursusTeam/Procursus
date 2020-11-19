@@ -19,7 +19,7 @@ else
 nghttp2: nghttp2-setup openssl libc-ares libev jansson libjemalloc libevent
 	cd $(BUILD_WORK)/nghttp2 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--without-systemd \
 		LIBXML2_CFLAGS=-I$(TARGET_SYSROOT)/usr/include/libxml2 \
@@ -35,28 +35,28 @@ endif
 nghttp2-package: nghttp2-stage
 	# nghttp2.mk Package Structure
 	rm -rf $(BUILD_DIST)/libnghttp2-{14,dev} $(BUILD_DIST)/nghttp2-{client,proxy,server}
-	mkdir -p $(BUILD_DIST)/libnghttp2-{14,dev}/usr/lib \
-		$(BUILD_DIST)/nghttp2-{proxy,server,client}/usr/{bin,share/man/man1}
+	mkdir -p $(BUILD_DIST)/libnghttp2-{14,dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/nghttp2-{proxy,server,client}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 	
 	# nghttp2.mk Prep libnghttp2-14
-	cp -a $(BUILD_STAGE)/nghttp2/usr/lib/libnghttp2.14.dylib $(BUILD_DIST)/libnghttp2-14/usr/lib
+	cp -a $(BUILD_STAGE)/nghttp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libnghttp2.14.dylib $(BUILD_DIST)/libnghttp2-14/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# nghttp2.mk Prep libnghttp2-dev
-	cp -a $(BUILD_STAGE)/nghttp2/usr/lib/!(libnghttp2.14.dylib) $(BUILD_DIST)/libnghttp2-dev/usr/lib
-	cp -a $(BUILD_STAGE)/nghttp2/usr/include $(BUILD_DIST)/libnghttp2-dev/usr
+	cp -a $(BUILD_STAGE)/nghttp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libnghttp2.14.dylib) $(BUILD_DIST)/libnghttp2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/nghttp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libnghttp2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# nghttp2.mk Prep nghttp2-proxy
-	cp -a $(BUILD_STAGE)/nghttp2/usr/bin/nghttpx $(BUILD_DIST)/nghttp2-proxy/usr/bin
-	cp -a $(BUILD_STAGE)/nghttp2/usr/share/man/man1/nghttpx.1 $(BUILD_DIST)/nghttp2-proxy/usr/share/man/man1
-	cp -a $(BUILD_STAGE)/nghttp2/usr/share/nghttp2 $(BUILD_DIST)/nghttp2-proxy/usr/share
+	cp -a $(BUILD_STAGE)/nghttp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/nghttpx $(BUILD_DIST)/nghttp2-proxy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/nghttp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/nghttpx.1 $(BUILD_DIST)/nghttp2-proxy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/nghttp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/nghttp2 $(BUILD_DIST)/nghttp2-proxy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
 	# nghttp2.mk Prep nghttp2-server
-	cp -a $(BUILD_STAGE)/nghttp2/usr/bin/nghttpd $(BUILD_DIST)/nghttp2-server/usr/bin
-	cp -a $(BUILD_STAGE)/nghttp2/usr/share/man/man1/nghttpd.1 $(BUILD_DIST)/nghttp2-server/usr/share/man/man1
+	cp -a $(BUILD_STAGE)/nghttp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/nghttpd $(BUILD_DIST)/nghttp2-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/nghttp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/nghttpd.1 $(BUILD_DIST)/nghttp2-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# nghttp2.mk Prep nghttp2-client
-	cp -a $(BUILD_STAGE)/nghttp2/usr/bin/nghttp $(BUILD_DIST)/nghttp2-client/usr/bin
-	cp -a $(BUILD_STAGE)/nghttp2/usr/share/man/man1/nghttp.1 $(BUILD_DIST)/nghttp2-client/usr/share/man/man1
+	cp -a $(BUILD_STAGE)/nghttp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/nghttp $(BUILD_DIST)/nghttp2-client/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/nghttp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/nghttp.1 $(BUILD_DIST)/nghttp2-client/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	#nghttp2.mk Sign
 	$(call SIGN,libnghttp2-14,general.xml)

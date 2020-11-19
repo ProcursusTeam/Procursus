@@ -18,7 +18,7 @@ libprotobuf: libprotobuf-setup
 	cd $(BUILD_WORK)/libprotobuf && ./autogen.sh
 	cd $(BUILD_WORK)/libprotobuf && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libprotobuf
 	+$(MAKE) -C $(BUILD_WORK)/libprotobuf install \
 		DESTDIR="$(BUILD_BASE)"
@@ -30,32 +30,32 @@ endif
 libprotobuf-package: libprotobuf-stage
 	# libprotobuf.mk Package Structure
 	rm -rf $(BUILD_DIST)/libprotobuf{{,-lite}24,-dev} $(BUILD_DIST)/libprotoc{24,-dev} $(BUILD_DIST)/protobuf-compiler
-	mkdir -p $(BUILD_DIST)/libprotobuf24/usr/lib \
-		$(BUILD_DIST)/libprotobuf-lite24/usr/lib \
-		$(BUILD_DIST)/libprotobuf-dev/usr/{include/google/protobuf,lib} \
-		$(BUILD_DIST)/libprotoc24/usr/lib \
-		$(BUILD_DIST)/libprotoc-dev/usr/{include/google/protobuf,lib} \
-		$(BUILD_DIST)/protobuf-compiler/usr
+	mkdir -p $(BUILD_DIST)/libprotobuf24/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libprotobuf-lite24/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libprotobuf-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include/google/protobuf,lib} \
+		$(BUILD_DIST)/libprotoc24/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libprotoc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include/google/protobuf,lib} \
+		$(BUILD_DIST)/protobuf-compiler/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libprotobuf.mk Prep libprotobuf24
-	cp -a $(BUILD_STAGE)/libprotobuf/usr/lib/libprotobuf.24.dylib $(BUILD_DIST)/libprotobuf24/usr/lib
+	cp -a $(BUILD_STAGE)/libprotobuf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libprotobuf.24.dylib $(BUILD_DIST)/libprotobuf24/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libprotobuf.mk Prep libprotobuf-lite24
-	cp -a $(BUILD_STAGE)/libprotobuf/usr/lib/libprotobuf-lite.24.dylib $(BUILD_DIST)/libprotobuf-lite24/usr/lib
+	cp -a $(BUILD_STAGE)/libprotobuf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libprotobuf-lite.24.dylib $(BUILD_DIST)/libprotobuf-lite24/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libprotobuf.mk Prep libprotobuf-dev
-	cp -a $(BUILD_STAGE)/libprotobuf/usr/lib/{pkgconfig,libprotobuf.{a,dylib}} $(BUILD_DIST)/libprotobuf-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libprotobuf/usr/include/google/protobuf/!(compiler) $(BUILD_DIST)/libprotobuf-dev/usr/include/google/protobuf
+	cp -a $(BUILD_STAGE)/libprotobuf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libprotobuf.{a,dylib}} $(BUILD_DIST)/libprotobuf-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libprotobuf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/google/protobuf/!(compiler) $(BUILD_DIST)/libprotobuf-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/google/protobuf
 
 	# libprotobuf.mk Prep libprotoc24
-	cp -a $(BUILD_STAGE)/libprotobuf/usr/lib/libprotoc.24.dylib $(BUILD_DIST)/libprotoc24/usr/lib
+	cp -a $(BUILD_STAGE)/libprotobuf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libprotoc.24.dylib $(BUILD_DIST)/libprotoc24/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libprotobuf.mk Prep libprotoc-dev
-	cp -a $(BUILD_STAGE)/libprotobuf/usr/lib/libprotoc.{a,dylib} $(BUILD_DIST)/libprotoc-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libprotobuf/usr/include/google/protobuf/compiler $(BUILD_DIST)/libprotoc-dev/usr/include/google/protobuf
+	cp -a $(BUILD_STAGE)/libprotobuf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libprotoc.{a,dylib} $(BUILD_DIST)/libprotoc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libprotobuf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/google/protobuf/compiler $(BUILD_DIST)/libprotoc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/google/protobuf
 
 	# libprotobuf.mk Prep protobuf-compiler
-	cp -a $(BUILD_STAGE)/libprotobuf/usr/bin $(BUILD_DIST)/protobuf-compiler/usr
+	cp -a $(BUILD_STAGE)/libprotobuf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/protobuf-compiler/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libprotobuf.mk Sign
 	$(call SIGN,libprotobuf24,general.xml)

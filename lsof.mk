@@ -9,7 +9,7 @@ DEB_LSOF_V   ?= $(LSOF_VERSION)
 lsof-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/lsof/lsof-$(LSOF_VERSION).tar.gz
 	$(call EXTRACT_TAR,lsof-$(LSOF_VERSION).tar.gz,lsof-$(LSOF_VERSION),lsof)
-	mkdir -p $(BUILD_STAGE)/lsof/usr/{sbin,share/man/man8}
+	mkdir -p $(BUILD_STAGE)/lsof/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{sbin,share/man/man8}
 	$(SED) -i 's/lcurses/lncursesw/' $(BUILD_WORK)/lsof/lsof/Configure
 
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
@@ -25,7 +25,7 @@ else
 lsof: lsof-setup network-cmds-setup ncurses
 	cd $(BUILD_WORK)/lsof/lsof; \
 	DARWIN_BASE=libproc LSOF_VERS=1700 \
-		LSOF_INCLUDE=$(BUILD_BASE)/usr/include \
+		LSOF_INCLUDE=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include \
 		./Configure -n darwin
 	unlink $(BUILD_WORK)/lsof/lsof/dchannel.c && touch $(BUILD_WORK)/lsof/lsof/dchannel.c
 	echo -e "#include \"lsof.h\"\n \
@@ -35,9 +35,9 @@ lsof: lsof-setup network-cmds-setup ncurses
 		CC=$(CC) \
 		AR="$(AR) cr \$${LIB} \$${OBJ}" \
 		RANLIB="$(RANLIB) \$${LIB}" \
-		RC_CFLAGS="$(CFLAGS) -DHASUTMPX -isystem $(BUILD_WORK)/network-cmds/include -isystem $(BUILD_WORK)/lsof/lsof/include -L$(BUILD_BASE)/usr/lib"
-	cp -a $(BUILD_WORK)/lsof/lsof/lsof $(BUILD_STAGE)/lsof/usr/sbin
-	cp -a $(BUILD_WORK)/lsof/lsof/lsof.8 $(BUILD_STAGE)/lsof/usr/share/man/man8
+		RC_CFLAGS="$(CFLAGS) -DHASUTMPX -isystem $(BUILD_WORK)/network-cmds/include -isystem $(BUILD_WORK)/lsof/lsof/include -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib"
+	cp -a $(BUILD_WORK)/lsof/lsof/lsof $(BUILD_STAGE)/lsof/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
+	cp -a $(BUILD_WORK)/lsof/lsof/lsof.8 $(BUILD_STAGE)/lsof/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
 	touch $(BUILD_WORK)/lsof/.build_complete
 endif
 

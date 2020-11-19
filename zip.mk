@@ -21,7 +21,7 @@ zip:
 else
 zip: zip-setup
 	+cd $(BUILD_WORK)/zip && $(MAKE) -f unix/Makefile install \
-		prefix=$(BUILD_STAGE)/zip/usr \
+		prefix=$(BUILD_STAGE)/zip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		CC=$(CC) \
 		CPP="$(CXX)" \
 		CFLAGS="$(CFLAGS) -I. -DUNIX -DBZIP2_SUPPORT" \
@@ -32,12 +32,12 @@ endif
 zip-package: zip-stage
 	# zip.mk Package Structure
 	rm -rf $(BUILD_DIST)/zip
-	mkdir -p $(BUILD_DIST)/zip
+	mkdir -p $(BUILD_DIST)/zip/$(MEMO_PREFIX)
 	
 	# zip.mk Prep zip
-	cp -a $(BUILD_STAGE)/zip/usr $(BUILD_DIST)/zip
-	mkdir -p $(BUILD_DIST)/zip/usr/share
-	mv $(BUILD_DIST)/zip/usr/man $(BUILD_DIST)/zip/usr/share
+	cp -a $(BUILD_STAGE)/zip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/zip/$(MEMO_PREFIX)
+	mkdir -p $(BUILD_DIST)/zip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	mv $(BUILD_DIST)/zip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/man $(BUILD_DIST)/zip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	
 	# zip.mk Sign
 	$(call SIGN,zip,general.xml)

@@ -20,9 +20,9 @@ lzfse: lzfse-setup
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/ \
-		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
-		-DCMAKE_INSTALL_RPATH=/usr \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX) \
+		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
@@ -39,7 +39,7 @@ lzfse-package: lzfse-stage
 	mkdir -p $(BUILD_DIST)/lzfse
 	
 	# lzfse.mk Prep lzfse
-	cp -a $(BUILD_STAGE)/lzfse/usr $(BUILD_DIST)/lzfse
+	cp -a $(BUILD_STAGE)/lzfse $(BUILD_DIST)
 	
 	# lzfse.mk Sign
 	$(call SIGN,lzfse,general.xml)

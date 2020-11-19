@@ -17,9 +17,9 @@ else
 tmux: tmux-setup ncurses libevent libutf8proc
 	cd $(BUILD_WORK)/tmux && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--enable-utf8proc \
-		PKG_CONFIG_LIBDIR="$(BUILD_BASE)/usr/lib"
+		PKG_CONFIG_LIBDIR="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib"
 	+$(MAKE) -C $(BUILD_WORK)/tmux install \
 		DESTDIR=$(BUILD_STAGE)/tmux
 	touch $(BUILD_WORK)/tmux/.build_complete
@@ -31,7 +31,7 @@ tmux-package: tmux-stage
 	mkdir -p $(BUILD_DIST)/tmux
 	
 	# tmux.mk Prep tmux
-	cp -a $(BUILD_STAGE)/tmux/usr $(BUILD_DIST)/tmux
+	cp -a $(BUILD_STAGE)/tmux $(BUILD_DIST)
 	
 	# tmux.mk Sign
 	$(call SIGN,tmux,general.xml)

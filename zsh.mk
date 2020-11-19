@@ -19,7 +19,7 @@ else
 zsh: zsh-setup pcre ncurses
 	cd $(BUILD_WORK)/zsh && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--enable-cap \
 		--enable-pcre \
 		--enable-multibyte \
@@ -35,23 +35,23 @@ zsh: zsh-setup pcre ncurses
 		zsh_cv_rlimit_rss_is_as=yes \
 		zsh_cv_path_utmpx=/var/run/utmpx \
 		zsh_cv_path_utmp=no \
-		ac_cv_prog_PCRECONF="$(BUILD_STAGE)/pcre/usr/bin/pcre-config"
+		ac_cv_prog_PCRECONF="$(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pcre-config"
 	+$(MAKE) -C $(BUILD_WORK)/zsh \
 		CPP="$(CPP) $(CPPFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/zsh install \
 		DESTDIR="$(BUILD_STAGE)/zsh"
-	rm -f $(BUILD_STAGE)/zsh/usr/bin/zsh-$(ZSH_VERSION)
+	rm -f $(BUILD_STAGE)/zsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/zsh-$(ZSH_VERSION)
 	touch $(BUILD_WORK)/zsh/.build_complete
 endif
 
 zsh-package: zsh-stage
 	# zsh.mk Package Structure
 	rm -rf $(BUILD_DIST)/zsh
-	mkdir -p $(BUILD_DIST)/zsh/bin
+	mkdir -p $(BUILD_DIST)/zsh/$(MEMO_PREFIX)/bin
 	
 	# zsh.mk Prep zsh
-	cp -a $(BUILD_STAGE)/zsh/usr $(BUILD_DIST)/zsh
-	ln -s ../usr/bin/zsh $(BUILD_DIST)/zsh/bin/zsh
+	cp -a $(BUILD_STAGE)/zsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/zsh/$(MEMO_PREFIX)
+	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/zsh $(BUILD_DIST)/zsh/$(MEMO_PREFIX)/bin/zsh
 	
 	# zsh.mk Sign
 	$(call SIGN,zsh,general.xml)

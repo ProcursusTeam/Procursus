@@ -18,7 +18,7 @@ else
 libunistring: libunistring-setup
 	cd $(BUILD_WORK)/libunistring && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libunistring
 	+$(MAKE) -C $(BUILD_WORK)/libunistring install \
 		DESTDIR=$(BUILD_STAGE)/libunistring
@@ -30,14 +30,14 @@ endif
 libunistring-package: libunistring-stage
 	# libunistring.mk Package Structure
 	rm -rf $(BUILD_DIST)/libunistring{2,-dev}
-	mkdir -p $(BUILD_DIST)/libunistring{2,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/libunistring{2,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libunistring.mk Prep libunistring2
-	cp -a $(BUILD_STAGE)/libunistring/usr/lib/libunistring.2.dylib $(BUILD_DIST)/libunistring2/usr/lib
+	cp -a $(BUILD_STAGE)/libunistring/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libunistring.2.dylib $(BUILD_DIST)/libunistring2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libunistring.mk Prep libunistring-dev
-	cp -a $(BUILD_STAGE)/libunistring/usr/lib/libunistring.{dylib,a} $(BUILD_DIST)/libunistring-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libunistring/usr/include $(BUILD_DIST)/libunistring-dev/usr
+	cp -a $(BUILD_STAGE)/libunistring/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libunistring.{dylib,a} $(BUILD_DIST)/libunistring-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libunistring/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libunistring-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libunistring.mk Sign
 	$(call SIGN,libunistring2,general.xml)

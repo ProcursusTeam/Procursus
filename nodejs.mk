@@ -21,7 +21,7 @@ nodejs:
 else
 nodejs: nodejs-setup nghttp2 openssl brotli libc-ares libuv1
 	cd $(BUILD_WORK)/nodejs && GYP_DEFINES="target_arch=arm64 host_os=mac target_os=ios" ./configure \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--dest-os=ios \
 		--dest-cpu=arm64 \
 		--with-arm-fpu=neon \
@@ -32,7 +32,7 @@ nodejs: nodejs-setup nghttp2 openssl brotli libc-ares libuv1
 		--shared-zlib \
 		--shared-libuv \
 		--shared-brotli \
-		--shared-brotli-libpath=$(BUILD_BASE)/usr/lib \
+		--shared-brotli-libpath=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		--shared-nghttp2 \
 		--shared-cares \
 		--experimental-http-parser \
@@ -45,8 +45,8 @@ nodejs: nodejs-setup nghttp2 openssl brotli libc-ares libuv1
 	+$(MAKE) -C $(BUILD_WORK)/nodejs install \
 		DESTDIR=$(BUILD_STAGE)/nodejs
 
-	mkdir -p $(BUILD_STAGE)/nodejs/usr/bin
-	cp -a $(BUILD_WORK)/nodejs/out/Release/node $(BUILD_STAGE)/nodejs/usr/bin
+	mkdir -p $(BUILD_STAGE)/nodejs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_WORK)/nodejs/out/Release/node $(BUILD_STAGE)/nodejs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	touch $(BUILD_WORK)/nodejs/.build_complete
 endif
 
@@ -56,21 +56,21 @@ nodejs-package: nodejs-stage
 		$(BUILD_DIST)/libnode{83,-dev} \
 		$(BUILD_DIST)/nodejs
 	mkdir -p \
-		$(BUILD_DIST)/libnode-dev/usr \
-		$(BUILD_DIST)/libnode83/usr/share \
-		$(BUILD_DIST)/nodejs/usr/share/doc/nodejs
+		$(BUILD_DIST)/libnode-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(BUILD_DIST)/libnode83/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share \
+		$(BUILD_DIST)/nodejs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/nodejs
 
 	# nodejs.mk Prep libnode-dev
-	cp -a $(BUILD_STAGE)/nodejs/usr/include $(BUILD_DIST)/libnode-dev/usr
+	cp -a $(BUILD_STAGE)/nodejs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libnode-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# nodejs.mk Prep libnode83
-	cp -a $(BUILD_STAGE)/nodejs/usr/lib $(BUILD_DIST)/libnode83/usr
-	cp -a $(BUILD_STAGE)/nodejs/usr/share/systemtap $(BUILD_DIST)/libnode83/usr/share
+	cp -a $(BUILD_STAGE)/nodejs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib $(BUILD_DIST)/libnode83/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/nodejs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/systemtap $(BUILD_DIST)/libnode83/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
 	# nodejs.mk Prep nodejs
-	cp -a $(BUILD_STAGE)/nodejs/usr/bin $(BUILD_DIST)/nodejs/usr
-	cp -a $(BUILD_STAGE)/nodejs/usr/share/doc/node/* $(BUILD_DIST)/nodejs/usr/share/doc/nodejs
-	cp -a $(BUILD_STAGE)/nodejs/usr/share/man $(BUILD_DIST)/nodejs/usr/share
+	cp -a $(BUILD_STAGE)/nodejs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/nodejs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/nodejs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/node/* $(BUILD_DIST)/nodejs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/nodejs
+	cp -a $(BUILD_STAGE)/nodejs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/nodejs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
 	# nodejs.mk Sign
 	$(call SIGN,libnode83,general.xml)

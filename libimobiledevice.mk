@@ -17,7 +17,7 @@ else
 libimobiledevice: libimobiledevice-setup libusbmuxd libplist openssl
 	cd $(BUILD_WORK)/libimobiledevice && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--without-cython
 	+$(MAKE) -C $(BUILD_WORK)/libimobiledevice
 	+$(MAKE) -C $(BUILD_WORK)/libimobiledevice install \
@@ -30,19 +30,19 @@ endif
 libimobiledevice-package: libimobiledevice-stage
 	# libimobiledevice.mk Package Structure
 	rm -rf $(BUILD_DIST)/libimobiledevice{6,-dev,-utils}
-	mkdir -p $(BUILD_DIST)/libimobiledevice6/usr/lib \
-		$(BUILD_DIST)/libimobiledevice-dev/usr/lib \
-		$(BUILD_DIST)/libimobiledevice-utils/usr
+	mkdir -p $(BUILD_DIST)/libimobiledevice6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libimobiledevice-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libimobiledevice-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libimobiledevice.mk Prep libimobiledevice6
-	cp -a $(BUILD_STAGE)/libimobiledevice/usr/lib/libimobiledevice-1.0.6.dylib $(BUILD_DIST)/libimobiledevice6/usr/lib
+	cp -a $(BUILD_STAGE)/libimobiledevice/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libimobiledevice-1.0.6.dylib $(BUILD_DIST)/libimobiledevice6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libimobiledevice.mk Prep libimobiledevice-dev
-	cp -a $(BUILD_STAGE)/libimobiledevice/usr/lib/{pkgconfig,libimobiledevice-1.0.{a,dylib}} $(BUILD_DIST)/libimobiledevice-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libimobiledevice/usr/include $(BUILD_DIST)/libimobiledevice-dev/usr
+	cp -a $(BUILD_STAGE)/libimobiledevice/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libimobiledevice-1.0.{a,dylib}} $(BUILD_DIST)/libimobiledevice-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libimobiledevice/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libimobiledevice-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libimobiledevice.mk Prep libimobiledevice-utils
-	cp -a $(BUILD_STAGE)/libimobiledevice/usr/{bin,share} $(BUILD_DIST)/libimobiledevice-utils/usr
+	cp -a $(BUILD_STAGE)/libimobiledevice/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/libimobiledevice-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libimobiledevice.mk Sign
 	$(call SIGN,libimobiledevice6,general.xml)

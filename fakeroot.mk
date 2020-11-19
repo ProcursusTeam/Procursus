@@ -25,7 +25,7 @@ else
 fakeroot: fakeroot-setup
 	cd $(BUILD_WORK)/fakeroot && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-ipc=tcp \
 		ac_cv_func_openat=no
 	$(SED) -i 's/SETGROUPS_SIZE_TYPE unknown/SETGROUPS_SIZE_TYPE int/g' $(BUILD_WORK)/fakeroot/config.h
@@ -42,7 +42,7 @@ fakeroot-package: fakeroot-stage
 	mkdir -p $(BUILD_DIST)/fakeroot
 	
 	# fakeroot.mk Prep fakeroot
-	cp -a $(BUILD_STAGE)/fakeroot/usr $(BUILD_DIST)/fakeroot
+	cp -a $(BUILD_STAGE)/fakeroot $(BUILD_DIST)
 	
 	# fakeroot.mk Sign
 	$(call SIGN,fakeroot,general.xml)

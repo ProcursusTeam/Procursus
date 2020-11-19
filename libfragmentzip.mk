@@ -17,7 +17,7 @@ else
 libfragmentzip: libfragmentzip-setup libgeneral libzip curl
 	cd $(BUILD_WORK)/libfragmentzip && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr 
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) 
 	+$(MAKE) -C $(BUILD_WORK)/libfragmentzip
 	+$(MAKE) -C $(BUILD_WORK)/libfragmentzip install \
 		DESTDIR="$(BUILD_STAGE)/libfragmentzip"
@@ -29,14 +29,14 @@ endif
 libfragmentzip-package: libfragmentzip-stage
 	# libfragmentzip.mk Package Structure
 	rm -rf $(BUILD_DIST)/libfragmentzip{0,-dev}
-	mkdir -p $(BUILD_DIST)/libfragmentzip{0,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/libfragmentzip{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libfragmentzip.mk Prep libfragmentzip0
-	cp -a $(BUILD_STAGE)/libfragmentzip/usr/lib/libfragmentzip.0.dylib $(BUILD_DIST)/libfragmentzip0/usr/lib
+	cp -a $(BUILD_STAGE)/libfragmentzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libfragmentzip.0.dylib $(BUILD_DIST)/libfragmentzip0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libfragmentzip.mk Prep libfragmentzip-dev
-	cp -a $(BUILD_STAGE)/libfragmentzip/usr/lib/!(libfragmentzip.0.dylib) $(BUILD_DIST)/libfragmentzip-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libfragmentzip/usr/include $(BUILD_DIST)/libfragmentzip-dev/usr
+	cp -a $(BUILD_STAGE)/libfragmentzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libfragmentzip.0.dylib) $(BUILD_DIST)/libfragmentzip-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libfragmentzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libfragmentzip-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libfragmentzip.mk Sign
 	$(call SIGN,libfragmentzip0,general.xml)

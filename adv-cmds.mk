@@ -9,7 +9,7 @@ DEB_ADV-CMDS_V   ?= $(ADV-CMDS_VERSION)
 adv-cmds-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/adv_cmds/adv_cmds-$(ADV-CMDS_VERSION).tar.gz
 	$(call EXTRACT_TAR,adv_cmds-$(ADV-CMDS_VERSION).tar.gz,adv_cmds-$(ADV-CMDS_VERSION),adv-cmds)
-	mkdir -p $(BUILD_STAGE)/adv-cmds/usr/bin
+	mkdir -p $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/adv-cmds/include
@@ -21,15 +21,15 @@ adv-cmds:
 else
 adv-cmds: adv-cmds-setup ncurses
 	cd $(BUILD_WORK)/adv-cmds; \
-	$(CXX) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/usr/bin/locale locale/*.cc; \
-	$(CC) $(CFLAGS) -L $(BUILD_BASE)/usr/lib -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/usr/bin/tabs tabs/*.c -lncursesw; \
+	$(CXX) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/locale locale/*.cc; \
+	$(CC) $(CFLAGS) -L $(BUILD_BASE)/usr/lib -L $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/tabs tabs/*.c -lncursesw; \
 	for bin in finger last lsvfs cap_mkdb; do \
-    	$(CC) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/usr/bin/$$bin $$bin/*.c -D'__FBSDID(x)='; \
+    	$(CC) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -D'__FBSDID(x)='; \
 	done
 	cd $(BUILD_WORK)/adv-cmds/mklocale; \
 	yacc -d yacc.y; \
 	lex lex.l
-	$(CC) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/usr/bin/mklocale $(BUILD_WORK)/adv-cmds/mklocale/*.c -D'__FBSDID(x)='
+	$(CC) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/mklocale $(BUILD_WORK)/adv-cmds/mklocale/*.c -D'__FBSDID(x)='
 	touch $(BUILD_WORK)/adv-cmds/.build_complete
 endif
 

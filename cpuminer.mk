@@ -17,7 +17,7 @@ else
 cpuminer: cpuminer-setup curl jansson
 	cd $(BUILD_WORK)/cpuminer && ./configure \
 	--host=$(GNU_HOST_TRIPLE) \
-	--prefix=/usr \
+	--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 	--disable-assembly
 	+$(MAKE) -C $(BUILD_WORK)/cpuminer install \
 		DESTDIR="$(BUILD_STAGE)/cpuminer"
@@ -30,7 +30,7 @@ cpuminer-package: cpuminer-stage
 	mkdir -p $(BUILD_DIST)/cpuminer
 	
 	# cpuminer.mk Prep cpuminer
-	cp -a $(BUILD_STAGE)/cpuminer/usr $(BUILD_DIST)/cpuminer
+	cp -a $(BUILD_STAGE)/cpuminer $(BUILD_DIST)
 	
 	# cpuminer.mk Sign
 	$(call SIGN,cpuminer,general.xml)

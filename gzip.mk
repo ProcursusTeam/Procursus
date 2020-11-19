@@ -19,12 +19,12 @@ else
 gzip: gzip-setup
 	cd $(BUILD_WORK)/gzip && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/gzip install \
 		DESTDIR=$(BUILD_STAGE)/gzip
-	for bin in $(BUILD_STAGE)/gzip/usr/bin/*; do \
-		ln -s ../usr/bin/$$(basename $$bin) $(BUILD_STAGE)/gzip/bin/$$(basename $$bin); \
+	for bin in $(BUILD_STAGE)/gzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
+		ln -s ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(basename $$bin) $(BUILD_STAGE)/gzip/$(MEMO_PREFIX)/bin/$$(basename $$bin); \
 	done
 	touch $(BUILD_WORK)/gzip/.build_complete
 endif

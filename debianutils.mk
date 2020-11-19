@@ -17,12 +17,12 @@ else
 debianutils: debianutils-setup
 	cd $(BUILD_WORK)/debianutils && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/debianutils install \
 		DESTDIR=$(BUILD_STAGE)/debianutils
-	rm -rf $(BUILD_STAGE)/debianutils/usr/{sbin,share}
-	rm -f $(BUILD_STAGE)/debianutils/usr/bin/{ischroot,which,tempfile,savelog}
+	rm -rf $(BUILD_STAGE)/debianutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{sbin,share}
+	rm -f $(BUILD_STAGE)/debianutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{ischroot,which,tempfile,savelog}
 	touch $(BUILD_WORK)/debianutils/.build_complete
 endif
 
@@ -32,8 +32,8 @@ debianutils-package: debianutils-stage
 	mkdir -p $(BUILD_DIST)/debianutils/bin
 	
 	# debianutils.mk Prep debianutils
-	cp -a $(BUILD_STAGE)/debianutils/usr $(BUILD_DIST)/debianutils
-	ln -s /usr/bin/run-parts $(BUILD_DIST)/debianutils/bin
+	cp -a $(BUILD_STAGE)/debianutils $(BUILD_DIST)
+	ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/run-parts $(BUILD_DIST)/debianutils/$(MEMO_PREFIX)/bin
 	
 	# debianutils.mk Sign
 	$(call SIGN,debianutils,general.xml)

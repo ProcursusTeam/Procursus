@@ -21,9 +21,9 @@ googletest: googletest-setup
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/ \
-		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
-		-DCMAKE_INSTALL_RPATH=/usr \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX) \
+		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
@@ -43,26 +43,26 @@ endif
 googletest-package: googletest-stage
 	# googletest.mk Package Structure
 	rm -rf $(BUILD_DIST)/{libg{test,mock}-dev,googletest{,-tools}}
-	mkdir -p $(BUILD_DIST)/googletest/usr/src/googletest \
-		$(BUILD_DIST)/googletest-tools/usr/{bin,share/googletest-tools/generator} \
-		$(BUILD_DIST)/libg{mock,test}-dev/usr/{include,lib/pkgconfig}
+	mkdir -p $(BUILD_DIST)/googletest/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/src/googletest \
+		$(BUILD_DIST)/googletest-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/googletest-tools/generator} \
+		$(BUILD_DIST)/libg{mock,test}-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/pkgconfig}
 	
 	# googletest.mk Prep googletest
-	cp -a $(BUILD_WORK)/googletest/googletest $(BUILD_DIST)/googletest/usr/src/googletest
-	cp -a $(BUILD_WORK)/googletest/googlemock $(BUILD_DIST)/googletest/usr/src/googletest
-	cp -a $(BUILD_WORK)/googletest/CMakeLists.txt $(BUILD_DIST)/googletest/usr/src/googletest
+	cp -a $(BUILD_WORK)/googletest/googletest $(BUILD_DIST)/googletest/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/src/googletest
+	cp -a $(BUILD_WORK)/googletest/googlemock $(BUILD_DIST)/googletest/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/src/googletest
+	cp -a $(BUILD_WORK)/googletest/CMakeLists.txt $(BUILD_DIST)/googletest/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/src/googletest
 	
 	# googletest.mk Prep googletest-tools
-	cp -a $(BUILD_WORK)/googletest/googlemock/scripts/generator/gmock_gen.py $(BUILD_DIST)/googletest-tools/usr/bin/gmock_gen
-	cp -a $(BUILD_WORK)/googletest/googlemock/scripts/generator/cpp $(BUILD_DIST)/googletest-tools/usr/share/googletest-tools/generator
+	cp -a $(BUILD_WORK)/googletest/googlemock/scripts/generator/gmock_gen.py $(BUILD_DIST)/googletest-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gmock_gen
+	cp -a $(BUILD_WORK)/googletest/googlemock/scripts/generator/cpp $(BUILD_DIST)/googletest-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/googletest-tools/generator
 	
 	# googletest.mk Prep libgmock-dev
-	cp -a $(BUILD_STAGE)/googletest/usr/include/gmock $(BUILD_DIST)/libgmock-dev/usr/include
-	cp -a $(BUILD_STAGE)/googletest/usr/lib/pkgconfig/gmock*.pc $(BUILD_DIST)/libgmock-dev/usr/lib/pkgconfig
+	cp -a $(BUILD_STAGE)/googletest/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/gmock $(BUILD_DIST)/libgmock-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/googletest/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/gmock*.pc $(BUILD_DIST)/libgmock-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 	
 	# googletest.mk Prep libgtest-dev
-	cp -a $(BUILD_STAGE)/googletest/usr/include/gtest $(BUILD_DIST)/libgtest-dev/usr/include
-	cp -a $(BUILD_STAGE)/googletest/usr/lib/pkgconfig/gtest*.pc $(BUILD_DIST)/libgtest-dev/usr/lib/pkgconfig
+	cp -a $(BUILD_STAGE)/googletest/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/gtest $(BUILD_DIST)/libgtest-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/googletest/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/gtest*.pc $(BUILD_DIST)/libgtest-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 	
 	# googletest.mk Make .debs
 	$(call PACK,googletest,DEB_GOOGLETEST_V)

@@ -42,7 +42,7 @@ perl-setup: setup
 	libperl='libperl.dylib'" > $(BUILD_WORK)/perl/cnf/hints/darwin
 
 	mkdir -p $(BUILD_WORK)/perl/include
-	cp -a $(BUILD_BASE)/usr/include/unistd.h $(BUILD_WORK)/perl/include
+	cp -a $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h $(BUILD_WORK)/perl/include
 
 ifneq ($(wildcard $(BUILD_WORK)/perl/.build_complete),)
 perl:
@@ -53,13 +53,13 @@ perl: perl-setup
 	cd $(BUILD_WORK)/perl && CC='$(CC)' AR='$(AR)' NM='$(NM)' OBJDUMP='objdump' CFLAGS='-DPERL_DARWIN -DPERL_USE_SAFE_PUTENV -DTIME_HIRES_CLOCKID_T -O2 $(ARCH) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_WORK)/perl/include $(PLATFORM_VERSION_MIN)' ./configure \
 		--target=$(GNU_HOST_TRIPLE) \
 		--sysroot=$(TARGET_SYSROOT) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-Duseshrplib \
 		-Dusevendorprefix \
-		-Dvendorprefix=/usr \
+		-Dvendorprefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-Dusethreads \
-		-Dvendorlib=/usr/share/perl5 \
-		-Dvendorarch=/usr/lib/perl5/$(PERL_VERSION)
+		-Dvendorlib=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 \
+		-Dvendorarch=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_VERSION)
 	+$(MAKE) -C $(BUILD_WORK)/perl \
 		PERL_ARCHIVE=$(BUILD_WORK)/perl/libperl.dylib
 	+$(MAKE) -C $(BUILD_WORK)/perl install.perl \
@@ -73,7 +73,7 @@ perl-package: perl-stage
 	mkdir -p $(BUILD_DIST)/perl
 	
 	# perl.mk Prep perl
-	cp -a $(BUILD_STAGE)/perl/usr $(BUILD_DIST)/perl
+	cp -a $(BUILD_STAGE)/perl $(BUILD_DIST)
 	
 	# perl.mk Sign
 	$(call SIGN,perl,general.xml)

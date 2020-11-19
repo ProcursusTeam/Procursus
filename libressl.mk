@@ -18,9 +18,9 @@ else
 libressl: libressl-setup
 	cd $(BUILD_WORK)/libressl && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-openssldir=/etc/ssl \
-		--sysconfdir=/etc
+		--sysconfdir=$(MEMO_PREFIX)/etc
 	+$(MAKE) -C $(BUILD_WORK)/libressl
 	+$(MAKE) -C $(BUILD_WORK)/libressl install \
 		DESTDIR=$(BUILD_STAGE)/libressl
@@ -32,10 +32,10 @@ endif
 libressl-package: libressl-stage
 	# libressl.mk Package Structure
 	rm -rf $(BUILD_DIST)/libressl
-	mkdir -p $(BUILD_DIST)/libressl
+	mkdir -p $(BUILD_DIST)/libressl/$(MEMO_PREFIX)
 	
 	# libressl.mk Prep libressl
-	cp -a $(BUILD_STAGE)/libressl/{etc,usr} $(BUILD_DIST)/libressl
+	cp -a $(BUILD_STAGE)/libressl/$(MEMO_PREFIX)/{etc,$(MEMO_SUB_PREFIX)} $(BUILD_DIST)/libressl/$(MEMO_PREFIX)
 	
 	# libressl.mk Sign
 	$(call SIGN,libressl,general.xml)

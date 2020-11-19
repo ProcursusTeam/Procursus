@@ -15,8 +15,8 @@ pfetch:
 	@echo "Using previously built pfetch."
 else
 pfetch: pfetch-setup 
-	mkdir -p $(BUILD_STAGE)/pfetch/usr/bin
-	cp $(BUILD_WORK)/pfetch/pfetch $(BUILD_STAGE)/pfetch/usr/bin/
+	mkdir -p $(BUILD_STAGE)/pfetch/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp $(BUILD_WORK)/pfetch/pfetch $(BUILD_STAGE)/pfetch/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
 	touch $(BUILD_WORK)/pfetch/.build_complete
 endif
 

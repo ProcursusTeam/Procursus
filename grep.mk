@@ -18,7 +18,7 @@ else
 grep: grep-setup pcre
 	cd $(BUILD_WORK)/grep && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--with-packager="$(DEB_MAINTAINER)"
 	+$(MAKE) -C $(BUILD_WORK)/grep
@@ -33,7 +33,7 @@ grep-package: grep-stage
 	mkdir -p $(BUILD_DIST)/grep
 	
 	# grep.mk Prep grep
-	cp -a $(BUILD_STAGE)/grep/usr $(BUILD_DIST)/grep
+	cp -a $(BUILD_STAGE)/grep $(BUILD_DIST)
 	
 	# grep.mk Sign
 	$(call SIGN,grep,general.xml)

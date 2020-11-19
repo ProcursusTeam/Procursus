@@ -19,14 +19,14 @@ pacman: pacman-setup libarchive openssl curl gettext
 	cd $(BUILD_WORK)/pacman && ./autogen.sh
 	cd $(BUILD_WORK)/pacman && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=/etc \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--disable-dependency-tracking \
 		--disable-doc
 	+$(MAKE) -C $(BUILD_WORK)/pacman
 	+$(MAKE) -C $(BUILD_WORK)/pacman install \
 		DESTDIR=$(BUILD_STAGE)/pacman
-	find $(BUILD_STAGE)/pacman -type f -exec $(SED) -i 's+/usr/local/bin/+/usr/bin/+g' {} +
+	find $(BUILD_STAGE)/pacman -type f -exec $(SED) -i 's+/usr/local/bin/+$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/+g' {} +
 	touch $(BUILD_WORK)/pacman/.build_complete
 endif
 

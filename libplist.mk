@@ -17,7 +17,7 @@ else
 libplist: libplist-setup
 	cd $(BUILD_WORK)/libplist && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--without-cython
 	+$(MAKE) -C $(BUILD_WORK)/libplist
 	+$(MAKE) -C $(BUILD_WORK)/libplist install \
@@ -31,30 +31,30 @@ libplist-package: .SHELLFLAGS=-O extglob -c
 libplist-package: libplist-stage
 	# libplist.mk Package Structure
 	rm -rf $(BUILD_DIST)/libplist{3,-dev,-utils} $(BUILD_DIST)/libplist++{3v5,-dev}
-	mkdir -p $(BUILD_DIST)/libplist3/usr/lib \
-		$(BUILD_DIST)/libplist-dev/usr/{include/plist,lib/pkgconfig} \
-		$(BUILD_DIST)/libplist-utils/usr \
-		$(BUILD_DIST)/libplist++3v5/usr/lib \
-		$(BUILD_DIST)/libplist++-dev/usr/{include/plist,lib/pkgconfig}
+	mkdir -p $(BUILD_DIST)/libplist3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libplist-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include/plist,lib/pkgconfig} \
+		$(BUILD_DIST)/libplist-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(BUILD_DIST)/libplist++3v5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libplist++-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include/plist,lib/pkgconfig}
 
 	# libplist.mk Prep libplist3
-	cp -a $(BUILD_STAGE)/libplist/usr/lib/libplist-2.0.3.dylib $(BUILD_DIST)/libplist3/usr/lib
+	cp -a $(BUILD_STAGE)/libplist/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libplist-2.0.3.dylib $(BUILD_DIST)/libplist3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libplist.mk Prep libplist-dev
-	cp -a $(BUILD_STAGE)/libplist/usr/include/plist/plist.h $(BUILD_DIST)/libplist-dev/usr/include/plist
-	cp -a $(BUILD_STAGE)/libplist/usr/lib/libplist-2.0.{a,dylib} $(BUILD_DIST)/libplist-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libplist/usr/lib/pkgconfig/libplist-2.0.pc $(BUILD_DIST)/libplist-dev/usr/lib/pkgconfig
+	cp -a $(BUILD_STAGE)/libplist/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/plist/plist.h $(BUILD_DIST)/libplist-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/plist
+	cp -a $(BUILD_STAGE)/libplist/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libplist-2.0.{a,dylib} $(BUILD_DIST)/libplist-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libplist/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/libplist-2.0.pc $(BUILD_DIST)/libplist-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 
 	# libplist.mk Prep libplist-utils
-	cp -a $(BUILD_STAGE)/libplist/usr/{bin,share} $(BUILD_DIST)/libplist-utils/usr
+	cp -a $(BUILD_STAGE)/libplist/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/libplist-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libplist.mk Prep libplist++3v5
-	cp -a $(BUILD_STAGE)/libplist/usr/lib/libplist++-2.0.3.dylib $(BUILD_DIST)/libplist++3v5/usr/lib
+	cp -a $(BUILD_STAGE)/libplist/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libplist++-2.0.3.dylib $(BUILD_DIST)/libplist++3v5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libplist.mk Prep libplist++-dev
-	cp -a $(BUILD_STAGE)/libplist/usr/include/plist/!(plist).h $(BUILD_DIST)/libplist++-dev/usr/include/plist
-	cp -a $(BUILD_STAGE)/libplist/usr/lib/libplist++-2.0.{a,dylib} $(BUILD_DIST)/libplist++-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libplist/usr/lib/pkgconfig/libplist++-2.0.pc $(BUILD_DIST)/libplist++-dev/usr/lib/pkgconfig
+	cp -a $(BUILD_STAGE)/libplist/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/plist/!(plist).h $(BUILD_DIST)/libplist++-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/plist
+	cp -a $(BUILD_STAGE)/libplist/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libplist++-2.0.{a,dylib} $(BUILD_DIST)/libplist++-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libplist/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/libplist++-2.0.pc $(BUILD_DIST)/libplist++-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 
 	# libplist.mk Sign
 	$(call SIGN,libplist3,general.xml)

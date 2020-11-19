@@ -18,7 +18,7 @@ else
 libgmp10: libgmp10-setup
 	cd $(BUILD_WORK)/libgmp10 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-assembly
 	+$(MAKE) -C $(BUILD_WORK)/libgmp10
 	+$(MAKE) -C $(BUILD_WORK)/libgmp10 install \
@@ -31,14 +31,14 @@ endif
 libgmp10-package: libgmp10-stage
 	# libgmp10.mk Package Structure
 	rm -rf $(BUILD_DIST)/libgmp{10,-dev}
-	mkdir -p $(BUILD_DIST)/libgmp{10,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/libgmp{10,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libgmp10.mk Prep libgmp10
-	cp -a $(BUILD_STAGE)/libgmp10/usr/lib/libgmp.10.dylib $(BUILD_DIST)/libgmp10/usr/lib
+	cp -a $(BUILD_STAGE)/libgmp10/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgmp.10.dylib $(BUILD_DIST)/libgmp10/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libgmp10.mk Prep libgmp-dev
-	cp -a $(BUILD_STAGE)/libgmp10/usr/lib/{pkgconfig,libgmp.{dylib,a}} $(BUILD_DIST)/libgmp-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libgmp10/usr/include $(BUILD_DIST)/libgmp-dev/usr
+	cp -a $(BUILD_STAGE)/libgmp10/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libgmp.{dylib,a}} $(BUILD_DIST)/libgmp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libgmp10/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libgmp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libgmp10.mk Sign
 	$(call SIGN,libgmp10,general.xml)

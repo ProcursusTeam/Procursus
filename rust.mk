@@ -20,7 +20,7 @@ rust-setup: setup
 	mkdir -p "$(BUILD_STAGE)/rust"
 	cp -f "$(BUILD_INFO)/rust_config.toml" "$(BUILD_WORK)/rust/config.toml"
 
-	$(SED) -i -e 's|PROCURSUS_BUILD_DIR|$(BUILD_WORK)/rust/build|g' -e 's|PROCURSUS_TARGET|$(RUST_TARGET)|g' -e 's|PROCURSUS_INSTALL_PREFIX|$(BUILD_STAGE)/rust/usr|g' "$(BUILD_WORK)/rust/config.toml"
+	$(SED) -i -e 's|PROCURSUS_BUILD_DIR|$(BUILD_WORK)/rust/build|g' -e 's|PROCURSUS_TARGET|$(RUST_TARGET)|g' -e 's|PROCURSUS_INSTALL_PREFIX|$(BUILD_STAGE)/rust/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' "$(BUILD_WORK)/rust/config.toml"
 	#$(SED) -i -e 's/"LLVM_ENABLE_ZLIB", "OFF"/"LLVM_ENABLE_ZLIB", "ON"/' -e 's|"CMAKE_OSX_SYSROOT", "/"|"CMAKE_OSX_SYSROOT", "$(TARGET_SYSROOT)"|' "$(BUILD_WORK)/rust/src/bootstrap/native.rs"
 
 ifneq ($(wildcard $(BUILD_WORK)/rust/.build_complete),)
@@ -28,39 +28,39 @@ rust:
 	@echo "Using previously built rust."
 else
 rust: rust-setup openssl curl
-	mv $(BUILD_BASE)/usr/include/stdlib.h $(BUILD_BASE)/usr/include/stdlib.h.old
+	mv $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h.old
 	unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS; \
 		cd "$(BUILD_WORK)/rust"; \
 		export MACOSX_DEPLOYMENT_TARGET=10.13 \
 		IPHONEOS_DEPLOYMENT_TARGET=10.0 \
-		AARCH64_APPLE_IOS_OPENSSL_DIR="$(BUILD_BASE)/usr"; \
-		ARMV7_APPLE_IOS_OPENSSL_DIR="$(BUILD_BASE)/usr"; \
+		AARCH64_APPLE_IOS_OPENSSL_DIR="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"; \
+		ARMV7_APPLE_IOS_OPENSSL_DIR="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"; \
 		./x.py build; \
 		./x.py install
-	mv $(BUILD_BASE)/usr/include/stdlib.h.old $(BUILD_BASE)/usr/include/stdlib.h
-	rm -rf $(BUILD_STAGE)/rust/usr/{share/doc,etc}
-	rm -rf $(BUILD_STAGE)/rust/usr/lib/rustlib/{src,manifest-*,components,install.log,uninstall.sh,rust-installer-version}
-	rm -rf $(BUILD_STAGE)/rust/usr/lib/rustlib/*/analysis
+	mv $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h.old $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h
+	rm -rf $(BUILD_STAGE)/rust/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{share/doc,etc}
+	rm -rf $(BUILD_STAGE)/rust/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/rustlib/{src,manifest-*,components,install.log,uninstall.sh,rust-installer-version}
+	rm -rf $(BUILD_STAGE)/rust/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/rustlib/*/analysis
 	touch $(BUILD_WORK)/rust/.build_complete
 endif
 
 rust-package: rust
 	# rust.mk Package Structure
 	rm -rf $(BUILD_DIST)/{rust{,-toolchain},cargo}
-	mkdir -p $(BUILD_DIST)/{rust,cargo}/usr/{bin,share/man/man1}
-	mkdir -p $(BUILD_DIST)/rust-toolchain/usr
+	mkdir -p $(BUILD_DIST)/{rust,cargo}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
+	mkdir -p $(BUILD_DIST)/rust-toolchain/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# rust.mk Prep rust
-	cp -a $(BUILD_STAGE)/rust/usr/bin/{rust*,clippy-driver} $(BUILD_DIST)/rust/usr/bin
-	cp -a $(BUILD_STAGE)/rust/usr/share/man/man1/rust* $(BUILD_DIST)/rust/usr/share/man/man1
+	cp -a $(BUILD_STAGE)/rust/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{rust*,clippy-driver} $(BUILD_DIST)/rust/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/rust/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/rust* $(BUILD_DIST)/rust/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	
 	# rust.mk Prep cargo
-	cp -a $(BUILD_STAGE)/rust/usr/bin/cargo* $(BUILD_DIST)/cargo/usr/bin
-	cp -a $(BUILD_STAGE)/rust/usr/share/zsh $(BUILD_DIST)/cargo/usr/share
-	cp -a $(BUILD_STAGE)/rust/usr/share/man/man1/cargo* $(BUILD_DIST)/cargo/usr/share/man/man1
+	cp -a $(BUILD_STAGE)/rust/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/cargo* $(BUILD_DIST)/cargo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/rust/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh $(BUILD_DIST)/cargo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	cp -a $(BUILD_STAGE)/rust/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/cargo* $(BUILD_DIST)/cargo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	
 	# rust.mk Prep rust-toolchain
-	cp -a $(BUILD_STAGE)/rust/usr/lib $(BUILD_DIST)/rust-toolchain/usr
+	cp -a $(BUILD_STAGE)/rust/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib $(BUILD_DIST)/rust-toolchain/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# rust.mk Sign
 	$(call SIGN,rust,general.xml)

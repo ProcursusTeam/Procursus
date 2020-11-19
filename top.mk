@@ -26,8 +26,8 @@ top:
 	@echo "Using previously built top."
 else
 top: top-setup ncurses
-	mkdir -p $(BUILD_STAGE)/top/usr/bin/
-	$(CC) $(CFLAGS) -isystem $(BUILD_WORK)/top/include -L $(BUILD_BASE)/usr/lib -o $(BUILD_STAGE)/top/usr/bin/top $(BUILD_WORK)/top/*.c -framework IOKit -framework CoreFoundation -lncursesw -lpanelw -lutil;
+	mkdir -p $(BUILD_STAGE)/top/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
+	$(CC) $(CFLAGS) -isystem $(BUILD_WORK)/top/include -L $(BUILD_BASE)/usr/lib -L $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -o $(BUILD_STAGE)/top/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/top $(BUILD_WORK)/top/*.c -framework IOKit -framework CoreFoundation -lncursesw -lpanelw -lutil;
 	touch $(BUILD_WORK)/top/.build_complete
 endif
 
@@ -37,13 +37,13 @@ top-package: top-stage
 	mkdir -p $(BUILD_DIST)/top
 	
 	# top.mk Prep top
-	cp -a $(BUILD_STAGE)/top/usr $(BUILD_DIST)/top
+	cp -a $(BUILD_STAGE)/top $(BUILD_DIST)
 	
 	# top.mk Sign
 	$(call SIGN,top,top.xml)
 
 	# top.mk Permissions
-	chmod u+s $(BUILD_DIST)/top/usr/bin/top
+	chmod u+s $(BUILD_DIST)/top/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/top
 	
 	# top.mk Make .debs
 	$(call PACK,top,DEB_TOP_V)

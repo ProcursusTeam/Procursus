@@ -18,7 +18,7 @@ libxcrypt: libxcrypt-setup
 	cd $(BUILD_WORK)/libxcrypt && autoreconf -iv
 	cd $(BUILD_WORK)/libxcrypt && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libxcrypt
 	+$(MAKE) -C $(BUILD_WORK)/libxcrypt install \
 		DESTDIR=$(BUILD_STAGE)/libxcrypt
@@ -30,13 +30,13 @@ endif
 libxcrypt-package: libxcrypt-stage
 	# libxcrypt.mk Package Structure
 	rm -rf $(BUILD_DIST)/libcrypt{2,-dev}
-	mkdir -p $(BUILD_DIST)/libcrypt{2,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/libcrypt{2,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libxcrypt.mk Prep libxcrypt
-	cp -a $(BUILD_STAGE)/libxcrypt/usr/lib/libcrypt.2.dylib $(BUILD_DIST)/libcrypt2/usr/lib
-	cp -a $(BUILD_STAGE)/libxcrypt/usr/include $(BUILD_DIST)/libcrypt-dev/usr
-	cp -a $(BUILD_STAGE)/libxcrypt/usr/lib/{libcrypt.{a,dylib},pkgconfig} $(BUILD_DIST)/libcrypt-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libxcrypt/usr/share $(BUILD_DIST)/libcrypt-dev/usr
+	cp -a $(BUILD_STAGE)/libxcrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcrypt.2.dylib $(BUILD_DIST)/libcrypt2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxcrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libcrypt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libxcrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libcrypt.{a,dylib},pkgconfig} $(BUILD_DIST)/libcrypt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxcrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/libcrypt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libxcrypt.mk Sign
 	$(call SIGN,libcrypt2,general.xml)

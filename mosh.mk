@@ -18,13 +18,13 @@ else
 mosh: mosh-setup libprotobuf openssl ncurses
 	cd $(BUILD_WORK)/mosh && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=/etc \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--with-ncursesw \
 		--with-crypto-library=openssl \
 		--disable-dependency-tracking \
 		--enable-completion \
-		TINFO_LIBS="-L$(BUILD_BASE)/usr/lib -lncursesw"
+		TINFO_LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -lncursesw"
 	+$(MAKE) -C $(BUILD_WORK)/mosh \
 		CXX="$(CXX) -std=c++11"
 	+$(MAKE) -C $(BUILD_WORK)/mosh install \
@@ -38,7 +38,7 @@ mosh-package: mosh-stage
 	mkdir -p $(BUILD_DIST)/mosh
 	
 	# mosh.mk Prep mosh
-	cp -a $(BUILD_STAGE)/mosh/usr $(BUILD_DIST)/mosh
+	cp -a $(BUILD_STAGE)/mosh $(BUILD_DIST)
 	
 	# mosh.mk Sign
 	$(call SIGN,mosh,general.xml)

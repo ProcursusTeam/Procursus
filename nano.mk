@@ -19,16 +19,16 @@ else
 nano: nano-setup ncurses gettext file
 	cd $(BUILD_WORK)/nano && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-debug \
-		--sysconfdir=/etc \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--disable-dependency-tracking \
 		--enable-color \
 		--enable-extra \
 		--enable-nanorc \
 		--enable-utf8 \
 		--enable-multibuffer \
-		NCURSESW_LIBS=$(BUILD_BASE)/usr/lib/libncursesw.dylib
+		NCURSESW_LIBS=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib
 	+$(MAKE) -C $(BUILD_WORK)/nano
 	+$(MAKE) -C $(BUILD_WORK)/nano install \
 		DESTDIR=$(BUILD_STAGE)/nano

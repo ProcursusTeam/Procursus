@@ -20,7 +20,7 @@ else
 grep: grep-setup pcre                                                                  ### The (tool) target is where the actual building happens.
 	cd $(BUILD_WORK)/grep && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--disable-nls \
 		--with-packager="$(DEB_MAINTAINER)"
@@ -39,7 +39,7 @@ grep-package: grep-stage                                                        
 	mkdir -p $(BUILD_DIST)/grep
 	
 	# grep.mk Prep grep
-	cp -a $(BUILD_STAGE)/grep/usr $(BUILD_DIST)/grep
+	cp -a $(BUILD_STAGE)/grep $(BUILD_DIST)
 	
 	# grep.mk Sign
 	$(call SIGN,grep,general.xml)                                                      ### This signs the package with ldid. If your tool needs different entitlements than usual, place it's own entitlements file in build_info, and reflect said file here.

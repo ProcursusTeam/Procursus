@@ -51,9 +51,9 @@ bash: bash-setup ncurses readline
 	@# TODO: This is kinda messy, clean up
 	cd $(BUILD_WORK)/bash && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-nls \
-		--with-installed-readline=$(BUILD_BASE)/usr/lib \
+		--with-installed-readline=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		CFLAGS="$(CFLAGS) -DSSH_SOURCE_BASHRC" \
 		ac_cv_c_stack_direction=-1 \
 		ac_cv_func_mmap_fixed_mapped=yes \
@@ -78,9 +78,9 @@ bash: bash-setup ncurses readline
 		TERMCAP_LIB=-lncursesw
 	+$(MAKE) -C $(BUILD_WORK)/bash install \
 		DESTDIR="$(BUILD_STAGE)/bash"
-	ln -s ../usr/bin/bash $(BUILD_STAGE)/bash/bin/bash
-	ln -s ../usr/bin/bash $(BUILD_STAGE)/bash/bin/sh
-	ln -s bash $(BUILD_STAGE)/bash/usr/bin/sh
+	ln -s ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bash $(BUILD_STAGE)/bash/$(MEMO_PREFIX)/bin/bash
+	ln -s ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bash $(BUILD_STAGE)/bash/$(MEMO_PREFIX)/bin/sh
+	ln -s bash $(BUILD_STAGE)/bash/$(MEMO_PREFIX)/bin/sh
 	touch $(BUILD_WORK)/bash/.build_complete
 endif
 
@@ -88,10 +88,10 @@ bash-package: BASH_SUB_V=$(shell find $(BUILD_PATCH)/bash-$(BASH_VERSION) -type 
 bash-package: bash-stage
 	# bash.mk Package Structure
 	rm -rf $(BUILD_DIST)/bash
-	mkdir -p $(BUILD_DIST)/bash/usr
+	mkdir -p $(BUILD_DIST)/bash/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# bash.mk Prep bash
-	cp -a $(BUILD_STAGE)/bash/usr/{bin,include,lib} $(BUILD_DIST)/bash/usr
+	cp -a $(BUILD_STAGE)/bash/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include,lib} $(BUILD_DIST)/bash/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/bash/bin $(BUILD_DIST)/bash
 
 	# bash.mk Sign

@@ -19,7 +19,7 @@ else
 m4: m4-setup
 	cd $(BUILD_WORK)/m4 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/m4
 	+$(MAKE) -C $(BUILD_WORK)/m4 install \
 		DESTDIR=$(BUILD_STAGE)/m4
@@ -33,7 +33,7 @@ m4-package: m4-stage
 	mkdir -p $(BUILD_DIST)/m4
 	
 	# m4.mk Prep m4
-	cp -a $(BUILD_STAGE)/m4/usr $(BUILD_DIST)/m4
+	cp -a $(BUILD_STAGE)/m4 $(BUILD_DIST)
 	
 	# m4.mk Sign
 	$(call SIGN,m4,general.xml)

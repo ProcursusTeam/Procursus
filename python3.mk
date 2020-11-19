@@ -18,8 +18,8 @@ python3-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.python.org/ftp/python/$(PYTHON3_VERSION)/Python-$(PYTHON3_VERSION).tar.xz{,.asc}
 	$(call PGP_VERIFY,Python-$(PYTHON3_VERSION).tar.xz,asc)
 	$(call EXTRACT_TAR,Python-$(PYTHON3_VERSION).tar.xz,Python-$(PYTHON3_VERSION),python3)
-	$(SED) -i -e 's/-vxworks/-darwin/g' -e 's/system=VxWorks/system=Darwin/g' -e '/readelf for/d' -e 's|LIBFFI_INCLUDEDIR=.*|LIBFFI_INCLUDEDIR="$(BUILD_BASE)/usr/include"|g' $(BUILD_WORK)/python3/configure.ac
-	$(SED) -i -e "s|self.compiler.library_dirs|['$(TARGET_SYSROOT)/usr/lib'] + ['$(BUILD_BASE)/usr/lib']|g" -e "s|self.compiler.include_dirs|['$(TARGET_SYSROOT)/usr/include'] + ['$(BUILD_BASE)/usr/include']|g" -e "s/HOST_PLATFORM == 'darwin'/HOST_PLATFORM.startswith('darwin')/" $(BUILD_WORK)/python3/setup.py
+	$(SED) -i -e 's/-vxworks/-darwin/g' -e 's/system=VxWorks/system=Darwin/g' -e '/readelf for/d' -e 's|LIBFFI_INCLUDEDIR=.*|LIBFFI_INCLUDEDIR="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include"|g' $(BUILD_WORK)/python3/configure.ac
+	$(SED) -i -e "s|self.compiler.library_dirs|['$(TARGET_SYSROOT)/usr/lib'] + ['$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib']|g" -e "s|self.compiler.include_dirs|['$(TARGET_SYSROOT)/usr/include'] + ['$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include']|g" -e "s/HOST_PLATFORM == 'darwin'/HOST_PLATFORM.startswith('darwin')/" $(BUILD_WORK)/python3/setup.py
 
 ifneq ($(wildcard $(BUILD_WORK)/python3/.build_complete),)
 python3:
@@ -31,7 +31,7 @@ python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm
 	cd $(BUILD_WORK)/python3 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--build=$(shell $(BUILD_WORK)/python3/config.guess) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--enable-ipv6 \
 		--without-ensurepip \
 		--with-system-ffi \
@@ -42,18 +42,18 @@ python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm
 	+$(MAKE) -C $(BUILD_WORK)/python3
 	+$(MAKE) -C $(BUILD_WORK)/python3 install \
 		DESTDIR=$(BUILD_STAGE)/python3
-	$(SED) -i -e 's|$(TARGET_SYSROOT)|/usr/share/SDKs/$(BARE_PLATFORM).sdk|' -e 's|$(BUILD_BASE)|/usr/share/SDKs/$(BARE_PLATFORM).sdk|' $(BUILD_STAGE)/python3/usr/lib/python*/_sysconfigdata*.py
-	rm -f $(BUILD_STAGE)/python3/usr/{bin,share/man/man1}/!(*$(PYTHON3_MAJOR_V)*)
+	$(SED) -i -e 's|$(TARGET_SYSROOT)|/usr/share/SDKs/$(BARE_PLATFORM).sdk|' -e 's|$(BUILD_BASE)|/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/$(BARE_PLATFORM).sdk|' $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python*/_sysconfigdata*.py
+	rm -f $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}/!(*$(PYTHON3_MAJOR_V)*)
 	touch $(BUILD_WORK)/python3/.build_complete
 endif
 
 python3-package: python3-stage
 	# python3.mk Package Structure
 	rm -rf $(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3}
-	mkdir -p $(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3}
+	mkdir -p $(BUILD_DIST)/python3
 	
 	# python3.mk Prep python$(PYTHON3_MAJOR_V)
-	cp -a $(BUILD_STAGE)/python3/usr $(BUILD_DIST)/python$(PYTHON3_MAJOR_V)
+	cp -a $(BUILD_STAGE)/python3 $(BUILD_DIST)/python$(PYTHON3_MAJOR_V)
 	
 	# python3.mk Sign
 	$(call SIGN,python$(PYTHON3_MAJOR_V),general.xml)

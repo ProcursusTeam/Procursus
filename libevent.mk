@@ -18,7 +18,7 @@ else
 libevent: libevent-setup openssl
 	cd $(BUILD_WORK)/libevent && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libevent install \
 		DESTDIR=$(BUILD_STAGE)/libevent
 	+$(MAKE) -C $(BUILD_WORK)/libevent install \
@@ -30,28 +30,28 @@ libevent-package: libevent-stage
 	# libevent.mk Package Structure
 	rm -rf $(BUILD_DIST)/libevent-{{core-,extra-,openssl-,pthreads-,}2.1-7,dev}
 	mkdir -p \
-		$(BUILD_DIST)/libevent-{core-,extra-,openssl-,pthreads-,}2.1-7/usr/lib \
+		$(BUILD_DIST)/libevent-{core-,extra-,openssl-,pthreads-,}2.1-7/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libevent-dev
 
 	# libevent.mk Prep libevent-2.1-7
-	cp -a $(BUILD_STAGE)/libevent/usr/lib/libevent-2.1.7.dylib $(BUILD_DIST)/libevent-2.1-7/usr/lib
+	cp -a $(BUILD_STAGE)/libevent/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libevent-2.1.7.dylib $(BUILD_DIST)/libevent-2.1-7/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libevent.mk Prep libevent-core-2.1-7
-	cp -a $(BUILD_STAGE)/libevent/usr/lib/libevent_core-2.1.7.dylib $(BUILD_DIST)/libevent-core-2.1-7/usr/lib
+	cp -a $(BUILD_STAGE)/libevent/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libevent_core-2.1.7.dylib $(BUILD_DIST)/libevent-core-2.1-7/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libevent.mk Prep libevent-dev
-	cp -a $(BUILD_STAGE)/libevent/usr/include $(BUILD_DIST)/libevent-dev/usr
-	cp -a $(BUILD_STAGE)/libevent/usr/lib/pkgconfig $(BUILD_DIST)/libevent-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libevent/usr/lib/libevent{_{core,extra,openssl,pthreads},}.{a,dylib} $(BUILD_DIST)/libevent-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libevent/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libevent-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libevent/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libevent-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libevent/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libevent{_{core,extra,openssl,pthreads},}.{a,dylib} $(BUILD_DIST)/libevent-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libevent.mk Prep libevent-extra-2.1-7
-	cp -a $(BUILD_STAGE)/libevent/usr/lib/libevent_extra-2.1.7.dylib $(BUILD_DIST)/libevent-extra-2.1-7/usr/lib
+	cp -a $(BUILD_STAGE)/libevent/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libevent_extra-2.1.7.dylib $(BUILD_DIST)/libevent-extra-2.1-7/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libevent.mk Prep libevent-openssl-2.1-7
-	cp -a $(BUILD_STAGE)/libevent/usr/lib/libevent_openssl-2.1.7.dylib $(BUILD_DIST)/libevent-openssl-2.1-7/usr/lib
+	cp -a $(BUILD_STAGE)/libevent/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libevent_openssl-2.1.7.dylib $(BUILD_DIST)/libevent-openssl-2.1-7/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libevent.mk Prep libevent-pthreads-2.1-7
-	cp -a $(BUILD_STAGE)/libevent/usr/lib/libevent_pthreads-2.1.7.dylib $(BUILD_DIST)/libevent-pthreads-2.1-7/usr/lib
+	cp -a $(BUILD_STAGE)/libevent/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libevent_pthreads-2.1.7.dylib $(BUILD_DIST)/libevent-pthreads-2.1-7/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 
 	# libevent.mk Sign

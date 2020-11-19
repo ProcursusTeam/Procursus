@@ -17,7 +17,7 @@ else
 libpng16: libpng16-setup
 	cd $(BUILD_WORK)/libpng16 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libpng16
 	+$(MAKE) -C $(BUILD_WORK)/libpng16 install \
 		DESTDIR=$(BUILD_STAGE)/libpng16
@@ -29,21 +29,21 @@ endif
 libpng16-package: libpng16-stage
 	# libpng16.mk Package Structure
 	rm -rf $(BUILD_DIST)/libpng16-{16,dev,tools}
-	mkdir -p $(BUILD_DIST)/libpng16-16/usr/lib \
-		$(BUILD_DIST)/libpng16-dev/usr/{bin,lib} \
-		$(BUILD_DIST)/libpng16-tools/usr/bin
+	mkdir -p $(BUILD_DIST)/libpng16-16/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libpng16-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib} \
+		$(BUILD_DIST)/libpng16-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	
 	# libpng16.mk Prep libpng16-16
-	cp -a $(BUILD_STAGE)/libpng16/usr/lib/libpng16.16.dylib $(BUILD_DIST)/libpng16-16/usr/lib
+	cp -a $(BUILD_STAGE)/libpng16/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpng16.16.dylib $(BUILD_DIST)/libpng16-16/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libpng16.mk Prep libpng16-dev
-	cp -a $(BUILD_STAGE)/libpng16/usr/bin/*-config $(BUILD_DIST)/libpng16-dev/usr/bin
-	cp -a $(BUILD_STAGE)/libpng16/usr/lib/!(libpng16.16.dylib) $(BUILD_DIST)/libpng16-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libpng16/usr/include $(BUILD_DIST)/libpng16-dev/usr
-	cp -a $(BUILD_STAGE)/libpng16/usr/share $(BUILD_DIST)/libpng16-dev/usr
+	cp -a $(BUILD_STAGE)/libpng16/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*-config $(BUILD_DIST)/libpng16-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/libpng16/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libpng16.16.dylib) $(BUILD_DIST)/libpng16-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libpng16/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libpng16-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libpng16/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/libpng16-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libpng16.mk Prep libpng16-tools
-	cp -a $(BUILD_STAGE)/libpng16/usr/bin/!(*-config) $(BUILD_DIST)/libpng16-tools/usr/bin
+	cp -a $(BUILD_STAGE)/libpng16/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/!(*-config) $(BUILD_DIST)/libpng16-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 	# libpng16.mk Sign
 	$(call SIGN,libpng16-16,general.xml)

@@ -21,7 +21,7 @@ sudoku: sudoku-setup ncurses
 	$(MAKE) -C $(BUILD_WORK)/sudoku
 	$(MAKE) -C $(BUILD_WORK)/sudoku install \
 		DESTDIR=$(BUILD_STAGE)/sudoku \
-		PREFIX=/usr
+		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	touch $(BUILD_WORK)/sudoku/.build_complete
 endif
 
@@ -31,7 +31,7 @@ sudoku-package: sudoku-stage
 	mkdir -p $(BUILD_DIST)/sudoku
 
 	# sudoku.mk Prep sudoku
-	cp -a $(BUILD_STAGE)/sudoku/usr $(BUILD_DIST)/sudoku
+	cp -a $(BUILD_STAGE)/sudoku $(BUILD_DIST)
 
 	# sudoku.mk Sign
 	$(call SIGN,sudoku,general.xml)

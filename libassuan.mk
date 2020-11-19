@@ -18,8 +18,8 @@ else
 libassuan: libassuan-setup libgpg-error
 	cd $(BUILD_WORK)/libassuan && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--with-gpg-error-prefix=$(BUILD_BASE)/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--with-gpg-error-prefix=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libassuan
 	+$(MAKE) -C $(BUILD_WORK)/libassuan install \
 		DESTDIR=$(BUILD_STAGE)/libassuan
@@ -31,14 +31,14 @@ endif
 libassuan-package: libassuan-stage
 	# libassuan.mk Package Structure
 	rm -rf $(BUILD_DIST)/libassuan{-dev,0}
-	mkdir -p $(BUILD_DIST)/libassuan{-dev,0}/usr/lib
+	mkdir -p $(BUILD_DIST)/libassuan{-dev,0}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libassuan.mk Prep libassuan0
-	cp -a $(BUILD_STAGE)/libassuan/usr/lib/libassuan.0.dylib $(BUILD_DIST)/libassuan0/usr/lib
+	cp -a $(BUILD_STAGE)/libassuan/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libassuan.0.dylib $(BUILD_DIST)/libassuan0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libassuan.mk Prep libassuan-dev
-	cp -a $(BUILD_STAGE)/libassuan/usr/lib/{pkgconfig,libassuan.dylib} $(BUILD_DIST)/libassuan-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libassuan/usr/{bin,share,include} $(BUILD_DIST)/libassuan-dev/usr
+	cp -a $(BUILD_STAGE)/libassuan/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libassuan.dylib} $(BUILD_DIST)/libassuan-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libassuan/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share,include} $(BUILD_DIST)/libassuan-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libassuan.mk Sign
 	$(call SIGN,libassuan0,general.xml)

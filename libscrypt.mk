@@ -19,16 +19,16 @@ else
 libscrypt: libscrypt-setup
 	$(MAKE) -C $(BUILD_WORK)/libscrypt install-osx install-static \
 		DESTDIR=$(BUILD_STAGE)/libscrypt \
-		PREFIX=/usr \
+		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		CFLAGS="$(CFLAGS) -D_FORTIFY_SOURCE=2 -fPIC" \
 		-j1
 	$(MAKE) -C $(BUILD_WORK)/libscrypt install-osx install-static \
 		DESTDIR=$(BUILD_BASE) \
-		PREFIX=/usr \
+		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		CFLAGS="$(CFLAGS) -D_FORTIFY_SOURCE=2 -fPIC" \
 		-j1
-	$(I_N_T) -id /usr/lib/libscrypt.0.dylib $(BUILD_STAGE)/libscrypt/usr/lib/libscrypt.0.dylib
-	$(I_N_T) -id /usr/lib/libscrypt.0.dylib $(BUILD_BASE)/usr/lib/libscrypt.0.dylib
+	$(I_N_T) -id /usr/lib/libscrypt.0.dylib $(BUILD_STAGE)/libscrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libscrypt.0.dylib
+	$(I_N_T) -id /usr/lib/libscrypt.0.dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libscrypt.0.dylib
 	touch $(BUILD_WORK)/libscrypt/.build_complete
 endif
 
@@ -36,15 +36,15 @@ libscrypt-package: libscrypt-stage
 	# libscrypt.mk Package Structure
 	rm -rf $(BUILD_DIST)/libscrypt{0,-dev}
 	mkdir -p \
-		$(BUILD_DIST)/libscrypt0/usr/lib \
-		$(BUILD_DIST)/libscrypt-dev/usr/lib
+		$(BUILD_DIST)/libscrypt0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libscrypt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libscrypt.mk Prep libscrypt0
-	cp -a $(BUILD_STAGE)/libscrypt/usr/lib/libscrypt.0.dylib $(BUILD_DIST)/libscrypt0/usr/lib/
+	cp -a $(BUILD_STAGE)/libscrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libscrypt.0.dylib $(BUILD_DIST)/libscrypt0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 
 	# libscrypt.mk Prep libscrypt-dev
-	cp -a $(BUILD_STAGE)/libscrypt/usr/lib/libscrypt.{a,dylib} $(BUILD_DIST)/libscrypt-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libscrypt/usr/include $(BUILD_DIST)/libscrypt-dev/usr
+	cp -a $(BUILD_STAGE)/libscrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libscrypt.{a,dylib} $(BUILD_DIST)/libscrypt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libscrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libscrypt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 
 	# libscrypt.mk Sign

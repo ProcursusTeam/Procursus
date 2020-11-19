@@ -10,7 +10,7 @@ DEB_GOLANG_V   ?= $(GOLANG_VERSION)
 golang-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://golang.org/dl/go$(GO_VERSION).src.tar.gz
 	$(call EXTRACT_TAR,go$(GOLANG_VERSION).src.tar.gz,go,golang)
-	mkdir -p $(BUILD_STAGE)/golang/usr/lib/go-$(GOLANG_MAJOR_V)
+	mkdir -p $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)
 	mkdir -p $(BUILD_WORK)/golang/superbin
 	cp -a $(BUILD_WORK)/golang/misc/ios/clangwrap.sh $(BUILD_WORK)/golang/superbin/clang
 
@@ -28,7 +28,7 @@ golang: golang-setup
 	export PATH="$(BUILD_WORK)/golang/superbin:$(PATH)"; \
 		cd $(BUILD_WORK)/golang/src && \
 			CGO_ENABLED=1 \
-			GOROOT_FINAL=/usr/lib/go-$(GOLANG_MAJOR_V) \
+			GOROOT_FINAL=/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V) \
 			GOHOSTARCH=amd64 \
 			GOHOSTOS=darwin \
 			GOARCH=arm64 \
@@ -36,30 +36,30 @@ golang: golang-setup
 			CC=cc \
 			CC_FOR_TARGET=clang \
 			./make.bash
-	cp -a $(BUILD_WORK)/golang/* $(BUILD_STAGE)/golang/usr/lib/go-$(GOLANG_MAJOR_V)
-	-find $(BUILD_STAGE)/golang/usr/lib/go-$(GOLANG_MAJOR_V) -name darwin_amd64 -type d -exec rm -rf {} \;
+	cp -a $(BUILD_WORK)/golang/* $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)
+	-find $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V) -name darwin_amd64 -type d -exec rm -rf {} \;
 	touch $(BUILD_WORK)/golang/.build_complete
 endif
 
 golang-package: golang-stage
 	# golang.mk Package Structure
 	rm -rf $(BUILD_DIST)/golang{,-$(GOLANG_MAJOR_V)}-{src,go}
-	mkdir -p $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-src/usr/lib/go-$(GOLANG_MAJOR_V) \
-		$(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/usr/lib/go-$(GOLANG_MAJOR_V)/{bin,pkg} \
-		$(BUILD_DIST)/golang-go/usr/{bin,lib}
+	mkdir -p $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-src/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V) \
+		$(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/{bin,pkg} \
+		$(BUILD_DIST)/golang-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib}
 
 	# golang.mk Prep golang-$(GOLANG_MAJOR_V)-src
-	cp -a $(BUILD_STAGE)/golang/usr/lib/go-$(GOLANG_MAJOR_V)/{api,misc,src,test} $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-src/usr/lib/go-$(GOLANG_MAJOR_V)
+	cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/{api,misc,src,test} $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-src/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)
 	
 	# golang.mk Prep golang-$(GOLANG_MAJOR_V)-go
-	cp -a $(BUILD_STAGE)/golang/usr/lib/go-$(GOLANG_MAJOR_V)/VERSION $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/usr/lib/go-$(GOLANG_MAJOR_V)
-	cp -a $(BUILD_STAGE)/golang/usr/lib/go-$(GOLANG_MAJOR_V)/bin/darwin_arm64/go{,fmt} $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/usr/lib/go-$(GOLANG_MAJOR_V)/bin
-	cp -a $(BUILD_STAGE)/golang/usr/lib/go-$(GOLANG_MAJOR_V)/pkg/{*_*,include,tool} $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/usr/lib/go-$(GOLANG_MAJOR_V)/pkg
+	cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/VERSION $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)
+	cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/bin/darwin_arm64/go{,fmt} $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/bin
+	cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg/{*_*,include,tool} $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg
 	
 	# golang.mk Prep golang-go
-	ln -s ../lib/go-$(GOLANG_MAJOR_V)/bin/go $(BUILD_DIST)/golang-go/usr/bin/go
-	ln -s ../lib/go-$(GOLANG_MAJOR_V)/bin/gofmt $(BUILD_DIST)/golang-go/usr/bin/gofmt
-	ln -s ../lib/go-$(GOLANG_MAJOR_V) $(BUILD_DIST)/golang-go/usr/lib/go
+	ln -s ../lib/go-$(GOLANG_MAJOR_V)/bin/go $(BUILD_DIST)/golang-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/go
+	ln -s ../lib/go-$(GOLANG_MAJOR_V)/bin/gofmt $(BUILD_DIST)/golang-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gofmt
+	ln -s ../lib/go-$(GOLANG_MAJOR_V) $(BUILD_DIST)/golang-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go
 
 	# golang.mk Sign
 	$(call SIGN,golang-$(GOLANG_MAJOR_V)-go,general.xml)

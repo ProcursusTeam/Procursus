@@ -18,19 +18,19 @@ bzip2:
 else
 bzip2: bzip2-setup
 	+$(MAKE) -C $(BUILD_WORK)/bzip2 install \
-		PREFIX=$(BUILD_STAGE)/bzip2/usr \
+		PREFIX=$(BUILD_STAGE)/bzip2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		CC=$(CC) \
 		AR=$(AR) \
 		RANLIB=$(RANLIB) \
 		CFLAGS="$(CFLAGS)"
-	cd $(BUILD_STAGE)/bzip2/usr/bin; \
+	cd $(BUILD_STAGE)/bzip2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \
 	rm -f bz{cmp,egrep,fgrep,less}; \
 	ln -s bzdiff bzcmp; \
 	ln -s bzgrep bzegrep; \
 	ln -s bzgrep bzfgrep; \
 	ln -s bzmore bzless
-	for bin in $(BUILD_STAGE)/bzip2/usr/bin/*; do \
-		ln -s ../usr/bin/$$(basename $$bin) $(BUILD_STAGE)/bzip2/bin/$$(basename $$bin); \
+	for bin in $(BUILD_STAGE)/bzip2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
+		ln -s ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(basename $$bin) $(BUILD_STAGE)/bzip2/bin/$$(basename $$bin); \
 	done
 	touch $(BUILD_WORK)/bzip2/.build_complete
 endif
@@ -42,7 +42,7 @@ bzip2-package: bzip2-stage
 	
 	# bzip2.mk Prep bzip2
 	cp -a $(BUILD_STAGE)/bzip2 $(BUILD_DIST)
-	rm -rf $(BUILD_DIST)/bzip2/usr/man
+	rm -rf $(BUILD_DIST)/bzip2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/man
 	
 	# bzip2.mk Sign
 	$(call SIGN,bzip2,general.xml)

@@ -21,7 +21,7 @@ sudo: sudo-setup gettext libxcrypt
 #define FLAG_PLATFORMIZE (1 << 1)\
 \
 void patch_setuidandplatformize() {\
-\	void* handle = dlopen("/usr/lib/libjailbreak.dylib", RTLD_LAZY);\
+\	void* handle = dlopen("$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjailbreak.dylib", RTLD_LAZY);\
 \	if (!handle) return;\
 \
 \	// Reset errors\
@@ -54,12 +54,12 @@ void patch_setuidandplatformize() {\
 
 	cd $(BUILD_WORK)/sudo && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--without-pam \
 		--enable-static-sudoers \
 		--with-all-insults \
 		--with-env-editor \
-		--with-editor=/usr/bin/editor \
+		--with-editor=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/editor \
 		--with-timeout=15 \
 		--with-password-timeout=0 \
 		--with-passprompt="[sudo] password for %p: " \
@@ -83,7 +83,7 @@ sudo-package: sudo-stage
 	$(call SIGN,sudo,general.xml)
 
 	# sudo.mk Permissions
-	$(FAKEROOT) chmod u+s $(BUILD_DIST)/sudo/usr/bin/sudo
+	$(FAKEROOT) chmod u+s $(BUILD_DIST)/sudo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sudo
 	
 	# sudo.mk Make .debs
 	$(call PACK,sudo,DEB_SUDO_V)

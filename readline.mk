@@ -26,7 +26,7 @@ else
 readline: readline-setup ncurses
 	cd $(BUILD_WORK)/readline && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		ac_cv_type_sig_atomic_t=no \
 		LDFLAGS="$(CLFLAGS) $(LDFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/readline \
@@ -43,15 +43,15 @@ readline-package: READLINE_SUB_V=$(shell find $(BUILD_PATCH)/readline-$(READLINE
 readline-package: readline-stage
 	# readline.mk Package Structure
 	rm -rf $(BUILD_DIST)/libreadline{8,-dev}
-	mkdir -p $(BUILD_DIST)/libreadline8/usr/lib \
-		$(BUILD_DIST)/libreadline-dev/usr/{lib,share}
+	mkdir -p $(BUILD_DIST)/libreadline8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libreadline-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share}
 	
 	# readline.mk Prep libreadline8
-	cp -a $(BUILD_STAGE)/readline/usr/lib/*.8.*dylib $(BUILD_DIST)/libreadline8/usr/lib
+	cp -a $(BUILD_STAGE)/readline/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/*.8.*dylib $(BUILD_DIST)/libreadline8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# readline.mk Prep libreadline-dev
-	cp -a $(BUILD_STAGE)/readline/usr/lib/!(*.8.*dylib) $(BUILD_DIST)/libreadline-dev/usr/lib
-	cp -a $(BUILD_STAGE)/readline/usr/share/man $(BUILD_DIST)/libreadline-dev/usr/share
+	cp -a $(BUILD_STAGE)/readline/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(*.8.*dylib) $(BUILD_DIST)/libreadline-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/readline/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/libreadline-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	
 	# readline.mk Sign
 	$(call SIGN,libreadline8,general.xml)

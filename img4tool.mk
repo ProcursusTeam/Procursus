@@ -17,7 +17,7 @@ else
 img4tool: img4tool-setup openssl libplist libgeneral
 	cd $(BUILD_WORK)/img4tool && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/img4tool
 	+$(MAKE) -C $(BUILD_WORK)/img4tool install \
 		DESTDIR="$(BUILD_STAGE)/img4tool"
@@ -29,17 +29,17 @@ endif
 img4tool-package: img4tool-stage
 	# img4tool.mk Package Structure
 	rm -rf $(BUILD_DIST)/*img4tool*/
-	mkdir -p $(BUILD_DIST)/{img4tool/usr/bin,libimg4tool0/usr/lib,libimg4tool-dev/usr/{lib/pkgconfig,include}}
+	mkdir -p $(BUILD_DIST)/{img4tool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin,libimg4tool0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib,libimg4tool-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pkgconfig,include}}
 	
 	# img4tool.mk Prep img4tool
-	cp -a $(BUILD_STAGE)/img4tool/usr/bin/img4tool $(BUILD_DIST)/img4tool/usr/bin
+	cp -a $(BUILD_STAGE)/img4tool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/img4tool $(BUILD_DIST)/img4tool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 	# img4tool.mk Prep libimg4tool0
-	cp -a $(BUILD_STAGE)/img4tool/usr/lib/libimg4tool.0.dylib $(BUILD_DIST)/libimg4tool0/usr/lib
+	cp -a $(BUILD_STAGE)/img4tool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libimg4tool.0.dylib $(BUILD_DIST)/libimg4tool0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# img4tool.mk Prep libimg4tool-dev
-	cp -a $(BUILD_STAGE)/img4tool/usr/lib/{libimg4tool.dylib,pkgconfig} $(BUILD_DIST)/libimg4tool-dev/usr/lib
-	cp -a $(BUILD_STAGE)/img4tool/usr/include/img4tool $(BUILD_DIST)/libimg4tool-dev/usr/include
+	cp -a $(BUILD_STAGE)/img4tool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libimg4tool.dylib,pkgconfig} $(BUILD_DIST)/libimg4tool-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/img4tool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/img4tool $(BUILD_DIST)/libimg4tool-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 
 	# img4tool.mk Sign
 	$(call SIGN,img4tool,general.xml)

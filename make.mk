@@ -20,7 +20,7 @@ make: make-setup gettext
 	$(SED) -i 's/defined (__arm) ||//' $(BUILD_WORK)/make/src/makeint.h
 	cd $(BUILD_WORK)/make && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-guile=no
 	+$(MAKE) -C $(BUILD_WORK)/make \
 		CFLAGS="$(CFLAGS) -DPOSIX"
@@ -35,7 +35,7 @@ make-package: make-stage
 	mkdir -p $(BUILD_DIST)/make
 	
 	# make.mk Prep make
-	cp -a $(BUILD_STAGE)/make/usr $(BUILD_DIST)/make
+	cp -a $(BUILD_STAGE)/make $(BUILD_DIST)
 	
 	# make.mk Sign
 	$(call SIGN,make,general.xml)

@@ -25,8 +25,8 @@ zsign: zsign-setup openssl
 		$(LDFLAGS) \
 		-lcrypto \
 		-o zsign
-	mkdir -p $(BUILD_STAGE)/zsign/usr/bin
-	cp $(BUILD_WORK)/zsign/zsign $(BUILD_STAGE)/zsign/usr/bin
+	mkdir -p $(BUILD_STAGE)/zsign/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp $(BUILD_WORK)/zsign/zsign $(BUILD_STAGE)/zsign/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	touch $(BUILD_WORK)/zsign/.build_complete
 endif
 
@@ -36,7 +36,7 @@ zsign-package: zsign-stage
 	mkdir -p $(BUILD_DIST)/zsign
 
 	# zsign.mk Prep zsign
-	cp -a $(BUILD_STAGE)/zsign/usr $(BUILD_DIST)/zsign
+	cp -a $(BUILD_STAGE)/zsign $(BUILD_DIST)
 
 	# zsign.mk Sign
 	$(call SIGN,zsign,general.xml)

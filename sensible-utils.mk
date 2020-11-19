@@ -17,7 +17,7 @@ else
 sensible-utils: sensible-utils-setup
 	cd $(BUILD_WORK)/sensible-utils && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/sensible-utils
 	+$(MAKE) -C $(BUILD_WORK)/sensible-utils install \
 		DESTDIR=$(BUILD_STAGE)/sensible-utils
@@ -27,10 +27,10 @@ endif
 sensible-utils-package: sensible-utils-stage
 	# sensible-utils.mk Package Structure
 	rm -rf $(BUILD_DIST)/sensible-utils
-	mkdir -p $(BUILD_DIST)/sensible-utils
+	mkdir -p $(BUILD_DIST)
 	
 	# sensible-utils.mk Prep sensible-utils
-	cp -a $(BUILD_STAGE)/sensible-utils/usr $(BUILD_DIST)/sensible-utils
+	cp -a $(BUILD_STAGE)/sensible-utils $(BUILD_DIST)
 	
 	# sensible-utils.mk Sign
 	$(call SIGN,sensible-utils,general.xml)

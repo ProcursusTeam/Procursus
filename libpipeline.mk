@@ -18,7 +18,7 @@ else
 libpipeline: libpipeline-setup
 	cd $(BUILD_WORK)/libpipeline && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libpipeline
 	+$(MAKE) -C $(BUILD_WORK)/libpipeline install \
 		DESTDIR=$(BUILD_STAGE)/libpipeline
@@ -30,14 +30,14 @@ endif
 libpipeline-package: libpipeline-stage
 	# libpipeline.mk Package Structure
 	rm -rf $(BUILD_DIST)/libpipeline{1,-dev}
-	mkdir -p $(BUILD_DIST)/libpipeline{1,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/libpipeline{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libpipeline.mk Prep libpipeline1
-	cp -a $(BUILD_STAGE)/libpipeline/usr/lib/libpipeline.1.dylib $(BUILD_DIST)/libpipeline1/usr/lib
+	cp -a $(BUILD_STAGE)/libpipeline/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpipeline.1.dylib $(BUILD_DIST)/libpipeline1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libpipeline.mk Prep libpipeline-dev
-	cp -a $(BUILD_STAGE)/libpipeline/usr/lib/{libpipeline.dylib,pkgconfig} $(BUILD_DIST)/libpipeline-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libpipeline/usr/{include,share} $(BUILD_DIST)/libpipeline-dev/usr
+	cp -a $(BUILD_STAGE)/libpipeline/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libpipeline.dylib,pkgconfig} $(BUILD_DIST)/libpipeline-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libpipeline/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libpipeline-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libpipeline.mk Sign
 	$(call SIGN,libpipeline1,general.xml)

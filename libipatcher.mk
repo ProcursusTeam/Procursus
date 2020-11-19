@@ -30,7 +30,7 @@ libipatcher-setup: setup
 
 	$(SED) -i '/AC_FUNC_MALLOC/d' $(BUILD_WORK)/libipatcher/configure.ac
 	$(SED) -i '/AC_FUNC_REALLOC/d' $(BUILD_WORK)/libipatcher/configure.ac
-	$(SED) -i 's|/usr/local/lib/|$(BUILD_BASE)/usr/lib|g' $(BUILD_WORK)/libipatcher/libipatcher/Makefile.am
+	$(SED) -i 's|/usr/local/lib/|$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib|g' $(BUILD_WORK)/libipatcher/libipatcher/Makefile.am
 
 	$(SED) -i 's/powerpc-apple-darwin8-libtool/libtool/' $(BUILD_WORK)/libipatcher/external/xpwn/ipsw-patch/CMakeLists.txt
 
@@ -44,9 +44,9 @@ libipatcher: libipatcher-setup libpng16 openssl img4tool liboffsetfinder64 libge
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/ \
-		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
-		-DCMAKE_INSTALL_RPATH=/usr \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX) \
+		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
@@ -58,7 +58,7 @@ libipatcher: libipatcher-setup libpng16 openssl img4tool liboffsetfinder64 libge
 	
 	cd $(BUILD_WORK)/libipatcher && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		CFLAGS="$(CFLAGS) -I$(BUILD_WORK)/libipatcher/external/xpwn/includes" \
 		CPPFLAGS="$(CPPFLAGS) -I$(BUILD_WORK)/libipatcher/external/xpwn/includes" \
 		LDFLAGS="$(LDFLAGS) -L$(BUILD_WORK)/libipatcher/external/xpwn/{ipsw-patch,common} -lcurl"
@@ -73,14 +73,14 @@ endif
 libipatcher-package: libipatcher-stage
 	# libipatcher.mk Package Structure
 	rm -rf $(BUILD_DIST)/libipatcher{0,-dev}
-	mkdir -p $(BUILD_DIST)/libipatcher{0,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/libipatcher{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libipatcher.mk Prep libipatcher0
-	cp -a $(BUILD_STAGE)/libipatcher/usr/lib/libipatcher.0.dylib $(BUILD_DIST)/libipatcher0/usr/lib
+	cp -a $(BUILD_STAGE)/libipatcher/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libipatcher.0.dylib $(BUILD_DIST)/libipatcher0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libipatcher.mk Prep libipatcher-dev
-	cp -a $(BUILD_STAGE)/libipatcher/usr/lib/!(libipatcher.0.dylib) $(BUILD_DIST)/libipatcher-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libipatcher/usr/include $(BUILD_DIST)/libipatcher-dev/usr
+	cp -a $(BUILD_STAGE)/libipatcher/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libipatcher.0.dylib) $(BUILD_DIST)/libipatcher-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libipatcher/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libipatcher-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libipatcher.mk Sign
 	$(call SIGN,libipatcher0,general.xml)

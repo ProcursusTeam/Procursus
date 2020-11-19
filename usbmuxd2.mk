@@ -24,7 +24,7 @@ else
 usbmuxd2: usbmuxd2-setup libgeneral libusb libimobiledevice libplist
 	cd $(BUILD_WORK)/usbmuxd2 && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--without-systemd \
 		--without-wifi
 	+$(MAKE) -C $(BUILD_WORK)/usbmuxd2 \
@@ -32,8 +32,8 @@ usbmuxd2: usbmuxd2-setup libgeneral libusb libimobiledevice libplist
 		CXXFLAGS="-std=c++17 -DVERSION_COMMIT_COUNT=\\\"$(USBMUXD2_VERSION)\\\" -DVERSION_COMMIT_SHA=\\\"$(USBMUXD2_COMMIT)\\\" $(CXXFLAGS) -DHAVE_WIFI_MDNS -DHAVE_WIFI_SUPPORT"
 	+$(MAKE) -C $(BUILD_WORK)/usbmuxd2 install \
 		DESTDIR="$(BUILD_STAGE)/usbmuxd2"
-	mkdir -p $(BUILD_STAGE)/usbmuxd2/Library/LaunchDaemons
-	cp -a $(BUILD_INFO)/org.libimobiledevice.usbmuxd.plist $(BUILD_STAGE)/usbmuxd2/Library/LaunchDaemons
+	mkdir -p $(BUILD_STAGE)/usbmuxd2/$(MEMO_PREFIX)/Library/LaunchDaemons
+	cp -a $(BUILD_INFO)/org.libimobiledevice.usbmuxd.plist $(BUILD_STAGE)/usbmuxd2/$(MEMO_PREFIX)/Library/LaunchDaemons
 	touch $(BUILD_WORK)/usbmuxd2/.build_complete
 endif
 

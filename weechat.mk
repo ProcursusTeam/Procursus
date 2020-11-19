@@ -18,7 +18,7 @@ weechat: weechat-setup ncurses gettext gnutls curl libgcrypt
 	cd $(BUILD_WORK)/weechat && ./autogen.sh
 	cd $(BUILD_WORK)/weechat && ./configure \
 		--host=${GNU_HOST_TRIPLE} \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--disable-static \
 		--disable-alias \
@@ -46,22 +46,22 @@ endif
 weechat-package: weechat-stage
 	# weechat.mk Package Structure
 	rm -rf $(BUILD_DIST)/weechat{,-core,-curses,-headless,-dev}
-	mkdir -p $(BUILD_DIST)/weechat{,-core/usr/lib/weechat} \
-	$(BUILD_DIST)/weechat-curses/usr/bin \
-	$(BUILD_DIST)/weechat-headless/usr/bin \
-	$(BUILD_DIST)/weechat-dev/usr/
+	mkdir -p $(BUILD_DIST)/weechat{,-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/weechat} \
+	$(BUILD_DIST)/weechat-curses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
+	$(BUILD_DIST)/weechat-headless/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
+	$(BUILD_DIST)/weechat-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
 	
 	# weechat.mk Prep weechat-core
-	cp -a $(BUILD_STAGE)/weechat/usr/lib/weechat $(BUILD_DIST)/weechat-core/usr/lib/
+	cp -a $(BUILD_STAGE)/weechat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/weechat $(BUILD_DIST)/weechat-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 	
 	# weechat.mk Prep weechat-curses
-	cp -a $(BUILD_STAGE)/weechat/usr/bin/weechat{,-curses} $(BUILD_DIST)/weechat-curses/usr/bin
+	cp -a $(BUILD_STAGE)/weechat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/weechat{,-curses} $(BUILD_DIST)/weechat-curses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	
 	# weechat.mk Prep weechat-headless
-	cp -a $(BUILD_STAGE)/weechat/usr/bin/weechat-headless $(BUILD_DIST)/weechat-headless/usr/bin
+	cp -a $(BUILD_STAGE)/weechat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/weechat-headless $(BUILD_DIST)/weechat-headless/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	
 	# weechat.mk Prep weechat-dev
-	cp -a $(BUILD_STAGE)/weechat/usr/include $(BUILD_DIST)/weechat-dev/usr
+	cp -a $(BUILD_STAGE)/weechat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/weechat-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# weechat.mk Sign
 	$(call SIGN,weechat-core,general.xml)

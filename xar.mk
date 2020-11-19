@@ -19,7 +19,7 @@ else
 xar: xar-setup openssl
 	cd $(BUILD_WORK)/xar && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		ac_cv_header_openssl_evp_h=yes \
 		ac_cv_lib_crypto_OPENSSL_init_crypto=yes \
 		ac_cv_header_libxml_xmlwriter_h=yes \
@@ -34,25 +34,25 @@ xar: xar-setup openssl
 		CFLAGS="$(CFLAGS) -I$(BUILD_WORK)/xar/lib"
 	+$(MAKE) -C $(BUILD_WORK)/xar install \
 		DESTDIR=$(BUILD_STAGE)/xar
-	cp -a $(BUILD_STAGE)/xar/usr/include/* $(BUILD_BASE)/usr/include
-	cp -a $(BUILD_STAGE)/xar/usr/lib/* $(BUILD_BASE)/usr/lib
+	cp -a $(BUILD_STAGE)/xar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/* $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/xar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/* $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	touch $(BUILD_WORK)/xar/.build_complete
 endif
 
 xar-package: xar-stage
 	# xar.mk Package Structure
 	rm -rf $(BUILD_DIST)/xar $(BUILD_DIST)/libxar{1,-dev}
-	mkdir -p $(BUILD_DIST)/xar/usr/share/man \
-		$(BUILD_DIST)/libxar{1,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/xar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
+		$(BUILD_DIST)/libxar{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# xar.mk Prep xar
-	cp -a $(BUILD_STAGE)/xar/usr/{bin,share} $(BUILD_DIST)/xar/usr
+	cp -a $(BUILD_STAGE)/xar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/xar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# xar.mk Prep libxar1
-	cp -a $(BUILD_STAGE)/xar/usr/lib/libxar.1.dylib $(BUILD_DIST)/libxar1/usr/lib
+	cp -a $(BUILD_STAGE)/xar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libxar.1.dylib $(BUILD_DIST)/libxar1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# xar.mk Prep libxar-dev
-	cp -a $(BUILD_STAGE)/xar/usr/lib/!(libxar.1.dylib) $(BUILD_DIST)/libxar-dev/usr/lib
+	cp -a $(BUILD_STAGE)/xar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libxar.1.dylib) $(BUILD_DIST)/libxar-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# xar.mk Sign
 	$(call SIGN,xar,general.xml)

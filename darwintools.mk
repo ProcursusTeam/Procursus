@@ -17,11 +17,11 @@ darwintools:
 else
 darwintools: darwintools-setup
 	cd $(BUILD_WORK)/darwintools && make
-	mkdir -p $(BUILD_STAGE)/darwintools/usr/{bin,libexec}
-	cp $(BUILD_WORK)/darwintools/sw_vers $(BUILD_STAGE)/darwintools/usr/bin
-	cp $(BUILD_WORK)/darwintools/firmware $(BUILD_STAGE)/darwintools/usr/libexec
-	cd $(BUILD_STAGE)/darwintools/usr/libexec && ln -sf firmware firmware.sh 
-	chmod 0755 $(BUILD_STAGE)/darwintools/usr/libexec/firmware
+	mkdir -p $(BUILD_STAGE)/darwintools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,libexec}
+	cp $(BUILD_WORK)/darwintools/sw_vers $(BUILD_STAGE)/darwintools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp $(BUILD_WORK)/darwintools/firmware $(BUILD_STAGE)/darwintools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
+	cd $(BUILD_STAGE)/darwintools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec && ln -sf firmware firmware.sh 
+	chmod 0755 $(BUILD_STAGE)/darwintools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/firmware
 	touch $(BUILD_WORK)/darwintools/.build_complete
 endif
 
@@ -31,7 +31,7 @@ darwintools-package: darwintools-stage
 	mkdir -p $(BUILD_DIST)/darwintools
 	
 	# darwintools.mk Prep darwintools
-	cp -a $(BUILD_STAGE)/darwintools/usr $(BUILD_DIST)/darwintools
+	cp -a $(BUILD_STAGE)/darwintools $(BUILD_DIST)
 	
 	# darwintools.mk Sign
 	$(call SIGN,darwintools,general.xml)
