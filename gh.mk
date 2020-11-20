@@ -7,25 +7,29 @@ GH_VERSION  := 1.1.0
 DEB_GH_V    ?= $(GH_VERSION)
 
 gh-setup: setup
-	wget -q -nc -O$(BUILD_SOURCE)/gh-$(GH_VERSION).tar.gz \
-		https://github.com/cli/cli/archive/v$(GH_VERSION).tar.gz
+	-[ ! -f "$(BUILD_SOURCE)/gh-$(GH_VERSION).tar.gz" ] && \
+		wget -q -nc -O$(BUILD_SOURCE)/gh-$(GH_VERSION).tar.gz \
+			https://github.com/cli/cli/archive/v$(GH_VERSION).tar.gz
 	$(call EXTRACT_TAR,gh-$(GH_VERSION).tar.gz,cli-$(GH_VERSION),gh)
 	mkdir -p $(BUILD_STAGE)/gh/usr/bin
 
 ifneq ($(ARCHES),arm64)
 gh:
 	@echo "Unsupported target $(MEMO_TARGET)"
-else ifneq ($(UNAME),Darwin)
-gh:
-	@echo "gh building only supported on macOS"
 else ifneq ($(wildcard $(BUILD_WORK)/gh/.build_complete),)
 gh:
 	@echo "Using previously built gh."
 else
-gh: gh-setup golang
-	+$(MAKE) -C $(BUILD_WORK)/gh bin/gh manpages \
+gh: gh-setup
+	+$(MAKE) -C $(BUILD_WORK)/gh bin/gh \
 		GOARCH=arm64 \
-		GOOS=darwin
+		GOOS=darwin \
+		CGO_CFLAGS="$(CFLAGS)" \
+		CGO_CPPFLAGS="$(CPPFLAGS)" \
+		CGO_LDFLAGS="$(LDFLAGS)" \
+		CGO_ENABLED=1 \
+		CC="$(CC)"
+	+unset CC CXX CFLAGS CPPFLAGS LDFLAGS && $(MAKE) -C $(BUILD_WORK)/gh manpages
 	$(CP) -a $(BUILD_WORK)/gh/bin/gh $(BUILD_STAGE)/gh/usr/bin
 	$(CP) -a $(BUILD_WORK)/gh/share $(BUILD_STAGE)/gh/usr
 	touch $(BUILD_WORK)/gh/.build_complete
