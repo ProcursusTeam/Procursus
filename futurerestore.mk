@@ -4,13 +4,13 @@ endif
 
 SUBPROJECTS           += futurerestore
 FUTURERESTORE_VERSION := 180
-DEB_FUTURERESTORE_V   ?= $(FUTURERESTORE_VERSION)
+DEB_FUTURERESTORE_V   ?= $(FUTURERESTORE_VERSION)-1
 
-IDEVICERESTORE_COMMIT := c97e02e22b9971471db5dcb3b9e02eb30222d6c0
+IDEVICERESTORE_COMMIT := 12667e70defe51fec607ff3006729d0cb5a6aaa8
 
 futurerestore-setup: setup tsschecker-setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tihmstar/futurerestore/archive/$(FUTURERESTORE_VERSION).tar.gz
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tihmstar/idevicerestore/archive/$(IDEVICERESTORE_COMMIT).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/marijuanARM/idevicerestore/archive/$(IDEVICERESTORE_COMMIT).tar.gz
 	$(call EXTRACT_TAR,$(FUTURERESTORE_VERSION).tar.gz,futurerestore-$(FUTURERESTORE_VERSION),futurerestore)
 	
 	-$(RMDIR) $(BUILD_WORK)/futurerestore/external/{idevicerestore,tsschecker}
@@ -40,6 +40,7 @@ futurerestore: futurerestore-setup tsschecker libirecovery openssl libusbmuxd li
 	+$(MAKE) -C $(BUILD_WORK)/futurerestore
 	+$(MAKE) -C $(BUILD_WORK)/futurerestore install \
 		DESTDIR="$(BUILD_STAGE)/futurerestore"
+	rm -f $(BUILD_STAGE)/futurerestore/usr/share/man/man1/idevicerestore.1
 	touch $(BUILD_WORK)/futurerestore/.build_complete
 endif
 

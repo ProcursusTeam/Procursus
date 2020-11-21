@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if [[ $1 == remove || $1 == purge ]]; then
+    /usr/bin/launchctl unload /Library/LaunchDaemons/org.libimobiledevice.usbmuxd.plist
+fi
+
+exit 0

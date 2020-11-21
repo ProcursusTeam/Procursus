@@ -61,6 +61,7 @@ PLATFORM             := iphoneos
 DEB_ARCH             := iphoneos-arm
 GNU_HOST_TRIPLE      := armv7-apple-darwin
 PLATFORM_VERSION_MIN := -miphoneos-version-min=$(IPHONE_MIN)
+RUST_TARGET          := armv7-apple-ios
 
 else ifeq ($(MEMO_TARGET),iphoneos-arm64)
 $(warning Building for iOS)
@@ -69,6 +70,7 @@ PLATFORM             := iphoneos
 DEB_ARCH             := iphoneos-arm
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
 PLATFORM_VERSION_MIN := -miphoneos-version-min=$(IPHONE_MIN)
+RUST_TARGET          := aarch64-apple-ios
 
 else ifeq ($(MEMO_TARGET),appletvos-arm64)
 $(warning Building for tvOS)
@@ -116,6 +118,7 @@ NM       := $(GNU_HOST_TRIPLE)-nm
 LIPO     := $(GNU_HOST_TRIPLE)-lipo
 OTOOL    := $(GNU_HOST_TRIPLE)-otool
 EXTRA    := INSTALL="/usr/bin/install -c --strip-program=$(STRIP)"
+LIBTOOL  := $(GNU_HOST_TRIPLE)-libtool
 export CC CXX AR
 
 else ifeq ($(UNAME),Darwin)
@@ -140,6 +143,7 @@ LIPO            := lipo
 OTOOL           := otool
 I_N_T           := install_name_tool
 EXTRA           :=
+LIBTOOL         := libtool
 
 else
 $(error Please use Linux or MacOS to build)

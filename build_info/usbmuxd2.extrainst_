@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [[ $1 == upgrade ]]; then
+    /usr/bin/launchctl unload /Library/LaunchDaemons/org.libimobiledevice.usbmuxd.plist
+    /usr/bin/launchctl load /Library/LaunchDaemons/org.libimobiledevice.usbmuxd.plist
+fi
+
+if [[ $1 == install ]]; then
+    /usr/bin/launchctl load -w /Library/LaunchDaemons/org.libimobiledevice.usbmuxd.plist
+fi
+
+exit 0

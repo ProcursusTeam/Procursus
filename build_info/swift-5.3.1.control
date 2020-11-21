@@ -1,4 +1,4 @@
-Package: swift-5.3
+Package: swift-5.3.1
 Version: @DEB_SWIFT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
