@@ -15,6 +15,9 @@ Description: The minimal, blazing-fast, and infinitely customizable prompt for a
  * Feature rich: support for all your favorite tools.
  * Easy: quick to install – start using it in minutes.
  .
+ To activate starship, add the following to the end of your ~/.zshrc:
+ eval "$(starship init zsh)"
+ .
  To be able to see the glyphs that starship shows you need a nerd font installed and enabled in your terminal.
  If you are connecting from another machine the font will need to be enabled on that machine.
  On iOS:
