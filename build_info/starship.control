@@ -1,0 +1,8 @@
+Package: starship
+Version: @DEB_STARSHIP_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Homepage: https://starship.rs/
+Description: The minimal, blazing-fast, and infinitely customizable prompt for any shell!
