@@ -40,6 +40,7 @@ futurerestore: futurerestore-setup tsschecker libirecovery openssl libusbmuxd li
 	+$(MAKE) -C $(BUILD_WORK)/futurerestore
 	+$(MAKE) -C $(BUILD_WORK)/futurerestore install \
 		DESTDIR="$(BUILD_STAGE)/futurerestore"
+	rm $(BUILD_STAGE)/futurerestore/usr/share/man/man1/idevicerestore.1
 	touch $(BUILD_WORK)/futurerestore/.build_complete
 endif
 
