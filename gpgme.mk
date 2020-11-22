@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += gpgme
-GPGME_VERSION := 1.14.0
-DEB_GPGME_V   ?= $(GPGME_VERSION)-2
+GPGME_VERSION := 1.15.0
+DEB_GPGME_V   ?= $(GPGME_VERSION)
 
 gpgme-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/gpgme/gpgme-$(GPGME_VERSION).tar.bz2{,.sig}
