@@ -1,0 +1,46 @@
+# Building on Linux
+Building on linux is made possible by cctools-port.
+
+Here is how, exactly, to install cctools and use it to compile.
+
+1. Dependencies
+- You need: clang (>=3.4) and everything Procursus normally needs. Get clang with apt.
+
+2. Get iOS SDK
+- You're going to need an iOS 13 SDK. Since you're on Linux, you're going to have to search online for one. I personally use https://github.com/xybp888/iOS-SDKs.
+
+3. Compress SDK
+- Compress iPhoneOS.sdk to iPhoneOS.sdk.tar.xz. On Ubuntu you can use the Files program and compress files by right-clicking and selecting Compress. 
+
+4. Get CCTools Port
+- You need Git for this. ```git clone https://github.com/tpoechtrager/cctools-port```
+
+5. Build iOS Toolchain
+- ```cd cctools-port/usage_examples/ios_toolchain && ./build.sh /PATH/TO/IPHONEOS-SDK/TAR/XZ arm64```
+
+6. Add to PATH
+- The last step made a toolchain in the "target" folder. We can use this to compile Procursus, but first we need to move it to our home folder and tell our system to use it.
+- ```mv target ~/cctools```
+- Then add this to your .profile:
+
+```
+if [ -d "$HOME/cctools" ] ; then
+    PATH="$HOME/cctools/bin:$PATH"
+fi
+```
+- And finally, ```source ~/.profile```. You'll need to re-source every time you use a new shell.
+
+7. Get MacOS SDK
+
+Download the MacOS 10.15 SDK from https://github.com/phracker/MacOSX-SDKs and extract it, then move it to ~/cctools/SDK/MacOSX.sdk.
+
+You can now compile Procursus... with some tweaking. You'll need to set some options manually with your custom build.
+
+You need to set GNU_HOST_TRIPLE=aarch64-apple-darwin11 or whatever cctools generated for you (check the names of files in ~/cctools/bin).
+Also set TARGET_SYSROOT=$(HOME)/cctools/SDK/YOUR_SDK_HERE (in case you didn't use the 13.2 SDK, which is default for this repo).
+
+The final command to build looks something like this: 
+
+```make bash GNU_HOST_TRIPLE=aarch64-apple-darwin11 TARGET_SYSROOT=$(HOME)/cctools/SDK/iPhoneOS13.3.sdk```
+
+You should now be able to compile almost everything in Procursus with Linux. Some tools, like golang and nodejs, will need an actual MacOS system, but most things won't.
