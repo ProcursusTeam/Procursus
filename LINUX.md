@@ -3,6 +3,17 @@ Building on linux is made possible by cctools-port.
 
 ### The easiest way to do this is by using [this script](https://gist.github.com/1Conan/4347fd5f604cfe6116f7acb0237ef155).
 
+```bash
+wget https://gist.github.com/1Conan/4347fd5f604cfe6116f7acb0237ef155/raw/1def5bf44275ffd6424721f1ce7a535db71a3016/procursus-utils.sh
+
+# run this once to download and compile everything needed
+bash procursus-utils.sh
+
+# then you can source it in your .profile or just in your shell to get started
+source procursus-utils.sh
+```
+
+
 If you want to do it manually, however, follow these instructions.
 
 1. Dependencies
