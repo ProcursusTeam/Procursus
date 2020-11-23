@@ -435,6 +435,8 @@ ifneq (,$(wildcard $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl))
 DOCBOOK_XSL := $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl
 else ifneq (,$(wildcard /usr/share/xml/docbook/stylesheet/docbook-xsl))
 DOCBOOK_XSL := /usr/share/xml/docbook/stylesheet/docbook-xsl
+else ifneq (,$(wildcard /usr/share/xsl/docbook))
+DOCBOOK_XSL := /usr/share/xsl/docbook
 else
 $(error Install docbook-xsl)
 endif

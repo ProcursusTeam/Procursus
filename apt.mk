@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += apt
 APT_VERSION   := 2.1.11
-DEB_APT_V     ?= $(APT_VERSION)
+DEB_APT_V     ?= $(APT_VERSION)-1
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
 APT_CMAKE_ARGS += -DHAVE_PTSNAME_R=0
@@ -45,6 +45,8 @@ apt: apt-setup libgcrypt berkeleydb lz4 xz zstd
 		-DCOMMON_ARCH=$(DEB_ARCH) \
 		-DUSE_NLS=0 \
 		-DWITH_DOC=0 \
+		-DWITH_TESTS=0 \
+		-DDOCBOOK_XSL=$(DOCBOOK_XSL) \
 		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
 		-DDPKG_DATADIR=/usr/share/dpkg \
 		$(APT_CMAKE_ARGS) \
@@ -61,7 +63,7 @@ apt-package: apt-stage
 	# apt.mk Package Structure
 	rm -rf $(BUILD_DIST)/apt{,-utils} $(BUILD_DIST)/libapt*/
 	mkdir -p $(BUILD_DIST)/apt/usr/{bin,lib,libexec/apt/{planners,solvers}} \
-	$(BUILD_DIST)/apt-utils/usr/{bin,libexec/apt/{planners,solvers}} \
+	$(BUILD_DIST)/apt-utils/usr/{share/man,bin,libexec/apt/{planners,solvers}} \
 	$(BUILD_DIST)/libapt-pkg{6.0,-dev}/usr/lib
 	
 	# apt.mk Prep apt
@@ -73,11 +75,21 @@ apt-package: apt-stage
 	cp -a $(BUILD_STAGE)/apt/usr/libexec/apt/solvers/dump $(BUILD_DIST)/apt/usr/libexec/apt/solvers
 	cp -a $(BUILD_STAGE)/apt/usr/share $(BUILD_DIST)/apt/usr
 	cp -a $(BUILD_STAGE)/apt/{etc,var} $(BUILD_DIST)/apt
+	rm -f $(BUILD_DIST)/apt/usr/share/man/*/man1/apt-{extracttemplates,ftparchive,sortpkgs}.1
+	rm -f $(BUILD_DIST)/apt/usr/share/man/man1/apt-{extracttemplates,ftparchive,sortpkgs}.1
 	
 	# apt.mk Prep apt-utils
 	cp -a $(BUILD_STAGE)/apt/usr/bin/apt-{extracttemplates,ftparchive,sortpkgs} $(BUILD_DIST)/apt-utils/usr/bin
 	cp -a $(BUILD_STAGE)/apt/usr/libexec/apt/planners/apt $(BUILD_DIST)/apt-utils/usr/libexec/apt/planners
 	cp -a $(BUILD_STAGE)/apt/usr/libexec/apt/solvers/apt $(BUILD_DIST)/apt-utils/usr/libexec/apt/solvers
+	cp -a $(BUILD_STAGE)/apt/usr/share $(BUILD_DIST)/apt-utils/usr
+	rm -rf $(BUILD_DIST)/apt-utils/usr/share/man/man{5,7,8}
+	rm -rf $(BUILD_DIST)/apt-utils/usr/share/bash-completion
+	for i in $(BUILD_DIST)/apt-utils/usr/share/man/?? $(BUILD_DIST)/apt-utils/usr/share/man/pt_BR; do \
+		rm -rf $$i/man{5,7,8}; \
+	done
+	rm -f $(BUILD_DIST)/apt-utils/usr/share/man/??/man1/apt-transport*.1
+	rm -f $(BUILD_DIST)/apt-utils/usr/share/man/man1/apt-transport*.1
 
 	# apt.mk Prep libapt-pkg6.0
 	cp -a $(BUILD_STAGE)/apt/usr/lib/libapt-pkg.6.0*.dylib $(BUILD_DIST)/libapt-pkg6.0/usr/lib
