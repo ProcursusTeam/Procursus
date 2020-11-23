@@ -66,12 +66,12 @@ rm MacOSX10.15.sdk.tar.xz
 
 You can now compile Procursus packages!
 
-If you used a different SDK, you need to set TARGET_SYSROOT=$(HOME)/cctools/SDK/YOUR_SDK_HERE.
+If you used a different SDK, you need to set `TARGET_SYSROOT=$(HOME)/cctools/SDK/YOUR_SDK_HERE`.
 Ideally, you should set it inside your .profile, .bashrc, or .zshrc. Then, open a new shell or use ```source``` again.
 
 Test your toolchain by trying to build bash: 
 
-```make bash NO_GPG=1```
+```make bash```
 
 This will build bash quickly, so you can test if your toolchain works. If it does, congratulations! 
 You should now be able to compile almost everything in Procursus with Linux. 
