@@ -9,22 +9,37 @@ If you want to do it manually, however, follow these instructions.
 - You need: clang (>=3.4) and everything Procursus normally needs. Get clang with apt.
 
 2. Get iOS SDK
-- You're going to need an iOS 13 SDK. Since you're on Linux, you're going to have to search online for one. I personally use https://github.com/xybp888/iOS-SDKs.
+- You're going to need an iOS 13 SDK. Since you're on Linux, you're going to have to download an _unpatched_ SDK, and add C++ standard libraries to it.
+```
+TEMPSDKFOLDER=$(mktemp -d)
+mkdir $TEMPSDKFOLDER/tmp
+wget https://github.com/okanon/iPhoneOS.sdk/releases/download/v0.0.1/iPhoneOS13.2.sdk.tar.gz -O $TEMPSDKFOLDER/iOSSDK.tar.gz
+tar -xf $TEMPSDKFOLDER/iOSSDK.tar.gz -C $TEMPSDKFOLDER/tmp
+wget https://cdn.discordapp.com/attachments/688121419980341282/725234834024431686/c.zip -O $TEMPSDKFOLDER/iOSC.zip
+unzip -o $TEMPSDKFOLDER/iOSC.zip -d $TEMPSDKFOLDER/tmp/iPhoneOS13.2.sdk/usr/include
+(
+cd $TEMPSDKFOLDER/tmp/
+tar caf ~/iPhoneOS13.2.sdk.tar.xz iPhoneOS13.2.sdk
+)
+rm -Rf $TEMPSDKFOLDER
+```
 
-3. Compress SDK
-- Compress iPhoneOS.sdk to iPhoneOS.sdk.tar.xz. ```tar caf iPhoneOS.sdk.tar.xz iPhoneOS.sdk```
-
-4. Get CCTools Port
+3. Get CCTools Port
 - You need Git for this. ```git clone https://github.com/tpoechtrager/cctools-port```
 
-5. Build iOS Toolchain
-- ```cd cctools-port/usage_examples/ios_toolchain && ./build.sh /PATH/TO/IPHONEOS-SDK/TAR/XZ arm64```
+4. Build iOS Toolchain
+- Edit TRIPLE in cctools-port/usage_examples/ios_toolchain/build.sh (line 90) to aarch64-apple-darwin, or whatever toolchain you want to build. Just make sure you remove the 11 from darwin.
+```
+cd cctools-port/usage_examples/ios_toolchain
+sed -i 's/arm-apple-darwin11/aarch64-apple-darwin/g' build.sh
+```
+- Now, build!
+```./build.sh ~/iPhoneOS13.2.sdk.tar.xz arm64```
 
-6. Add to PATH
+5. Add to PATH
 - The last step made a toolchain in the "target" folder. We can use this to compile Procursus, but first we need to move it to our home folder and tell our system to use it.
 - ```mv target ~/cctools```
-- Then add this to your .profile, .bashrc, or .zshrc:
-
+- Then add this to your .profile, .bashrc, or .zshrc (for whichever shell you're using):
 ```
 if [ -d "$HOME/cctools" ] ; then
     PATH="$HOME/cctools/bin:$PATH"
@@ -32,24 +47,26 @@ fi
 ```
 - And finally, ```source ~/.the_file_you_just_edited```. Or, just exit and relogin to a new shell.
 
-7. Rename files
 
-- You need to rename the files for them to work properly with Procursus.
+6. Get MacOS SDK
 
-```cd ~/cctools/bin
-for i in aarch64*; do; mv -v "$i" "$(echo "$i" | sed -e 's/11//' -)"; done
+We're going to download the MacOS 10.15 SDK from https://github.com/phracker/MacOSX-SDKs and extract it, then move it to ~/cctools/SDK/MacOSX.sdk.
+```
+wget https://github.com/phracker/MacOSX-SDKs/releases/download/10.15/MacOSX10.15.sdk.tar.xz
+tar -xf MacOSX10.15.sdk.tar.xz -C ~/cctools/SDK/
+mv ~/cctools/SDK/MacOSX10.15.sdk ~/cctools/SDK/MacOSX.sdk
+rm MacOSX10.15.sdk.tar.xz
 ```
 
-8. Get MacOS SDK
+You can now compile Procursus packages!
 
-Download the MacOS 10.15 SDK from https://github.com/phracker/MacOSX-SDKs and extract it, then move it to ~/cctools/SDK/MacOSX.sdk.
+If you used a different SDK, you need to set TARGET_SYSROOT=$(HOME)/cctools/SDK/YOUR_SDK_HERE.
+Ideally, you should set it inside your .profile, .bashrc, or .zshrc. Then, open a new shell or use ```source``` again.
 
-You can now compile Procursus... with some tweaking. You'll need to set some options manually with your custom build.
+Test your toolchain by trying to build bash: 
 
-You need to set TARGET_SYSROOT=$(HOME)/cctools/SDK/YOUR_SDK_HERE (in case you didn't use the 13.2 SDK, which is default for this repo).
+```make bash NO_GPG=1```
 
-The final command to build looks something like this: 
-
-```make bash TARGET_SYSROOT=$(HOME)/cctools/SDK/iPhoneOS13.3.sdk```
-
-You should now be able to compile almost everything in Procursus with Linux. Some tools, like golang and nodejs, will need an actual MacOS system, but most things won't.
+This will build bash quickly, so you can test if your toolchain works. If it does, congratulations! 
+You should now be able to compile almost everything in Procursus with Linux. 
+Some tools, like golang and nodejs, will need an actual MacOS system, but most things won't. If you do find the need to run MacOS, you can use [this excellent guide for setting up MacOS in a KVM](https://github.com/foxlet/macOS-Simple-KVM).
