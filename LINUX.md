@@ -25,7 +25,9 @@ rm -Rf $TEMPSDKFOLDER
 ```
 
 3. Get CCTools Port
-- You need Git for this. ```git clone https://github.com/tpoechtrager/cctools-port```
+- You need Git for this. 
+
+```git clone https://github.com/tpoechtrager/cctools-port```
 
 4. Build iOS Toolchain
 - Edit TRIPLE in cctools-port/usage_examples/ios_toolchain/build.sh (line 90) to aarch64-apple-darwin, or whatever toolchain you want to build. Just make sure you remove the 11 from darwin.
@@ -34,18 +36,22 @@ cd cctools-port/usage_examples/ios_toolchain
 sed -i 's/arm-apple-darwin11/aarch64-apple-darwin/g' build.sh
 ```
 - Now, build!
+
 ```./build.sh ~/iPhoneOS13.2.sdk.tar.xz arm64```
 
 5. Add to PATH
 - The last step made a toolchain in the "target" folder. We can use this to compile Procursus, but first we need to move it to our home folder and tell our system to use it.
-- ```mv target ~/cctools```
+
+```mv target ~/cctools```
 - Then add this to your .profile, .bashrc, or .zshrc (for whichever shell you're using):
 ```
 if [ -d "$HOME/cctools" ] ; then
     PATH="$HOME/cctools/bin:$PATH"
 fi
 ```
-- And finally, ```source ~/.the_file_you_just_edited```. Or, just exit and relogin to a new shell.
+- And finally, login to a new shell or
+
+```source ~/.the_file_you_just_edited```. 
 
 
 6. Get MacOS SDK
