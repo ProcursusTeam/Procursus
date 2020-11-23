@@ -10,7 +10,7 @@ Here is how, exactly, to install cctools and use it to compile.
 - You're going to need an iOS 13 SDK. Since you're on Linux, you're going to have to search online for one. I personally use https://github.com/xybp888/iOS-SDKs.
 
 3. Compress SDK
-- Compress iPhoneOS.sdk to iPhoneOS.sdk.tar.xz. On Ubuntu you can use the Files program and compress files by right-clicking and selecting Compress. 
+- Compress iPhoneOS.sdk to iPhoneOS.sdk.tar.xz. ```tar caf iPhoneOS.sdk.tar.xz iPhoneOS.sdk```
 
 4. Get CCTools Port
 - You need Git for this. ```git clone https://github.com/tpoechtrager/cctools-port```
