@@ -4,11 +4,11 @@ endif
 
 SUBPROJECTS    += golang
 GOLANG_MAJOR_V := 1.15
-GOLANG_VERSION := $(GOLANG_MAJOR_V).2
+GOLANG_VERSION := $(GOLANG_MAJOR_V).5
 DEB_GOLANG_V   ?= $(GOLANG_VERSION)
 
 golang-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://golang.org/dl/go$(GO_VERSION).src.tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://golang.org/dl/go$(GOLANG_VERSION).src.tar.gz
 	$(call EXTRACT_TAR,go$(GOLANG_VERSION).src.tar.gz,go,golang)
 	mkdir -p $(BUILD_STAGE)/golang/usr/lib/go-$(GOLANG_MAJOR_V)
 	mkdir -p $(BUILD_WORK)/golang/superbin

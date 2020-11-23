@@ -3,14 +3,15 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += apt
-APT_VERSION   := 2.1.10
-DEB_APT_V     ?= $(APT_VERSION)-3
+APT_VERSION   := 2.1.11
+DEB_APT_V     ?= $(APT_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
 APT_CMAKE_ARGS += -DHAVE_PTSNAME_R=0
 endif
 
 apt-setup: setup
+	# Change this to a git release download sometime.
 	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/a/apt/apt_$(APT_VERSION).tar.xz
 	$(call EXTRACT_TAR,apt_$(APT_VERSION).tar.xz,apt-$(APT_VERSION),apt)
 	$(call DO_PATCH,apt,apt,-p1)
