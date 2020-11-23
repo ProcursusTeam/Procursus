@@ -24,27 +24,27 @@ Building has been made to be simple, yet get the job done properly. Both macOS a
 
 Supported host systems as of 06/04/2020 are iphoneos-arm64, iphoneos-arm, appletvos-arm64, watchos-arm64, and watchos-arm.
 
-|                     Requirements                      |
-|:-----------------------------------------------------:|
-| Xcode + Xcode Commandline Tools + Homebrew (on macOS) |
-| An iOS toolchain, cctools-port recommended (on Linux) |
-| GNU make (On macOS you'll have to run `gmake`)        |
-| GNU coreutils                                         |
-| GNU findutils                                         |
-| GNU sed                                               |
-| GNU tar                                               |
-| GNU patch                                             |
-| bash 5.0                                              |
-| openssl                                               |
-| gnupg                                                 |
-| ldid with sha256 hashes (ldid from Homebrew is fine)  |
-| libtoolize                                            |
-| automake                                              |
-| yacc, lex, groff                                      |
-| fakeroot                                              |
-| dpkg                                                  |
-| zstd                                                  |
-| ncurses 6                                             |
+|                     Requirements                                  |
+|:-----------------------------------------------------------------:|
+| Xcode + Xcode Commandline Tools + Homebrew (on macOS)             |
+| [An iOS toolchain, cctools-port recommended (on Linux)](LINUX.md) |
+| GNU make (On macOS you'll have to run `gmake`)                    |
+| GNU coreutils                                                     |
+| GNU findutils                                                     |
+| GNU sed                                                           |
+| GNU tar                                                           |
+| GNU patch                                                         |
+| bash 5.0                                                          |
+| openssl                                                           |
+| gnupg                                                             |
+| ldid with sha256 hashes (ldid from Homebrew is fine)              |
+| libtoolize                                                        |
+| automake                                                          |
+| yacc, lex, groff                                                  |
+| fakeroot                                                          |
+| dpkg                                                              |
+| zstd                                                              |
+| ncurses 6                                                         |
 
 | Supported commands    | Function                                                                                                                            |
 |:--------------------------------------:|:-------------------------------------------------------------------------------------------------------------------|
