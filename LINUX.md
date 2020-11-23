@@ -1,7 +1,9 @@
 # Building on Linux
 Building on linux is made possible by cctools-port.
 
-Here is how, exactly, to install cctools and use it to compile.
+### The easiest way to do this is by using [this script](https://gist.github.com/1Conan/4347fd5f604cfe6116f7acb0237ef155).
+
+If you want to do it manually, however, follow these instructions.
 
 1. Dependencies
 - You need: clang (>=3.4) and everything Procursus normally needs. Get clang with apt.
