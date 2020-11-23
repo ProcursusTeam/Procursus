@@ -21,23 +21,30 @@ Here is how, exactly, to install cctools and use it to compile.
 6. Add to PATH
 - The last step made a toolchain in the "target" folder. We can use this to compile Procursus, but first we need to move it to our home folder and tell our system to use it.
 - ```mv target ~/cctools```
-- Then add this to your .profile:
+- Then add this to your .profile, .bashrc, or .zshrc:
 
 ```
 if [ -d "$HOME/cctools" ] ; then
     PATH="$HOME/cctools/bin:$PATH"
 fi
 ```
-- And finally, ```source ~/.profile```. You'll need to re-source every time you use a new shell.
+- And finally, ```source ~/.the_file_you_just_edited```. Or, just exit and relogin to a new shell.
 
-7. Get MacOS SDK
+7. Rename files
+
+- You need to rename the files for them to work properly with Procursus.
+
+```cd ~/cctools/bin
+for i in aarch64*; do; mv -v "$i" "$(echo "$i" | sed -e 's/11//' -)"; done
+```
+
+8. Get MacOS SDK
 
 Download the MacOS 10.15 SDK from https://github.com/phracker/MacOSX-SDKs and extract it, then move it to ~/cctools/SDK/MacOSX.sdk.
 
 You can now compile Procursus... with some tweaking. You'll need to set some options manually with your custom build.
 
-You need to set GNU_HOST_TRIPLE=aarch64-apple-darwin11 or whatever cctools generated for you (check the names of files in ~/cctools/bin).
-Also set TARGET_SYSROOT=$(HOME)/cctools/SDK/YOUR_SDK_HERE (in case you didn't use the 13.2 SDK, which is default for this repo).
+You need to set TARGET_SYSROOT=$(HOME)/cctools/SDK/YOUR_SDK_HERE (in case you didn't use the 13.2 SDK, which is default for this repo).
 
 The final command to build looks something like this: 
 
