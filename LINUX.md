@@ -48,6 +48,6 @@ You need to set TARGET_SYSROOT=$(HOME)/cctools/SDK/YOUR_SDK_HERE (in case you di
 
 The final command to build looks something like this: 
 
-```make bash GNU_HOST_TRIPLE=aarch64-apple-darwin11 TARGET_SYSROOT=$(HOME)/cctools/SDK/iPhoneOS13.3.sdk```
+```make bash TARGET_SYSROOT=$(HOME)/cctools/SDK/iPhoneOS13.3.sdk```
 
 You should now be able to compile almost everything in Procursus with Linux. Some tools, like golang and nodejs, will need an actual MacOS system, but most things won't.
