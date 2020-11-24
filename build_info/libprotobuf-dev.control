@@ -2,7 +2,7 @@ Package: libprotobuf-dev
 Version: @DEB_LIBPROTOBUF_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libprotobuf24 (= @DEB_LIBPROTOBUF_V@), libprotobuf-lite24 (= @DEB_LIBPROTOBUF_V@)
+Depends: libprotobuf25 (= @DEB_LIBPROTOBUF_V@), libprotobuf-lite25 (= @DEB_LIBPROTOBUF_V@)
 Section: Development
 Priority: standard
 Description: Protocol Buffers - Google's data interchange format - devel
