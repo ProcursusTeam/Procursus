@@ -4,10 +4,10 @@ endif
 
 SUBPROJECTS    += golb
 # I'm not going to bump the version any higher than 1.0.1. Just change commit date/short hash.
-GOLB_VERSION   := 1.0.1+git20201118.7ffffff
+GOLB_VERSION   := 1.0.1+git20201124.7ffffff
 DEB_GOLB_V     ?= $(GOLB_VERSION)
 
-GOLB_COMMIT    := 7ffffff5ec79e0ce4c26ef219c6b7c43891917e4
+GOLB_COMMIT    := 7ffffff2bd24017b06d499f337f27ccab73129a1
 
 golb-setup: setup
 	-[ ! -e "$(BUILD_SOURCE)/golb-v$(GOLB_COMMIT).tar.gz" ] \
@@ -21,14 +21,22 @@ golb:
 	@echo "Using previously built golb."
 else
 golb: golb-setup
-	$(CC) $(CFLAGS) \
+
+	###
+	# As of right now, -arch arm64e is prepended to the CFLAGS to allow for it to work properly on arm64e iPhones.
+	# Do not compile this for <= 1600 with XCode 12, and do not compile it for >= 1700 with Xcode << 12.
+	# 1.0.3+git20201124.7ffffff should be the last version (save for some emergency update) for CFVER <= 1600
+	# To make toolchain switching easier on me, I'm just going to compile this for >= 1700 from now on.
+	###
+
+	$(CC) -arch arm64e $(CFLAGS) \
 		-framework IOKit \
 		-framework CoreFoundation \
 		-lcompression \
 		$(BUILD_WORK)/golb/golb.c \
 		$(BUILD_WORK)/golb/aes_ap.c \
 		-o $(BUILD_STAGE)/golb/usr/bin/aes_ap
-	$(CC) $(CFLAGS) \
+	$(CC) -arch arm64e $(CFLAGS) \
 		-framework IOKit \
 		-framework CoreFoundation \
 		-lcompression \
