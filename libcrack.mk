@@ -16,7 +16,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libcrack/.build_complete),)
 libcrack:
 	@echo "Using previously built libcrack."
 else
-libcrack: libcrack-setup
+libcrack: libcrack-setup gettext
 	cd $(BUILD_WORK)/libcrack && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
