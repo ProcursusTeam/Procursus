@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# aptitude needs the apt xapian index stuff now, so make sure it at
+# least exists.
+
+set -e
+
+mandir=/usr/share/man
+
+if [ "$1" = "configure" ]
+then
+  slaves="--slave $mandir/man8/aptitude.8.zst aptitude.8.zst $mandir/man8/aptitude-curses.8.zst"
+  for lang in de es gl it ja nl ru ; do
+    slaves="$slaves --slave $mandir/$lang/man8/aptitude.8.zst aptitude.$lang.8.zst $mandir/$lang/man8/aptitude-curses.8.zst"
+  done
+  update-alternatives \
+    --install /usr/bin/aptitude aptitude /usr/bin/aptitude-curses 30 $slaves
+fi
+
+#DEBHELPER#

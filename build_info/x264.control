@@ -1,0 +1,29 @@
+Package: x264
+Version: @DEB_X264_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libx264-161 (>= @DEB_X264_V@)
+Section: Multimedia
+Priority: optional
+Description: video encoder for the H.264/MPEG-4 AVC standard
+ x264 is an advanced commandline encoder for creating H.264 (MPEG-4 AVC)
+ video streams.
+ .
+ x264 supports the following features:
+  * CABAC (context-based adaptive binary arithmetic coding) and CAVLC
+    (context-based adaptive variable length coding
+  * multiple reference frames
+  * 16x16, 8x8 and 4x4 intra-predicted macroblocks
+  * all P-frame inter-predicted macroblock types
+  * B-Inter-predicted macroblock types from 16x16 down to 8x8
+  * rate distortion optimization
+  * multiple rate control modes (constant quantizer, constant quality, single
+    or multipass ABR with the option of VBV)
+  * scene cut detection
+  * adaptive B-frame placement, with the option of keeping B-frames as
+    references / arbitrary frame order
+  * 8x8 and 4x4 adaptive spatial transform (high profile)
+  * lossless mode (high 4:4:4 profile)
+  * custom quantization matrices (high profile)
+  * parallel encoding on multiple CPUs
+  * interlaced streams

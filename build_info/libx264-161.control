@@ -1,0 +1,13 @@
+Package: libx264-161
+Version: @DEB_X264_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Multi-Arch: foreign
+Homepage: https://www.videolan.org/developers/x264.html
+Description: x264 video coding library
+ libx264 is an advanced encoding library for creating H.264 (MPEG-4 AVC)
+ video streams.
+ .
+ This package contains the libx264 shared library.

@@ -1,0 +1,7 @@
+Package: libcrack2
+Version: @DEB_LIBCRACK_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Description: pro-active password checker library

@@ -1,8 +1,8 @@
-Package: libprotoc24
+Package: libprotoc25
 Version: @DEB_LIBPROTOBUF_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libprotobuf24 (>= @DEB_LIBPROTOBUF_V@)
+Depends: libprotobuf25 (>= @DEB_LIBPROTOBUF_V@)
 Section: Libraries
 Priority: standard
 Description: protocol buffers compiler library

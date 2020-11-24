@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS     += libtool
 LIBTOOL_VERSION := 2.4.6
-DEB_LIBTOOL_V   ?= $(LIBTOOL_VERSION)
+DEB_LIBTOOL_V   ?= $(LIBTOOL_VERSION)-1
 
 libtool-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/libtool/libtool-$(LIBTOOL_VERSION).tar.gz{,.sig}

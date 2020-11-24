@@ -1,0 +1,10 @@
+Package: googletest-tools
+Version: @DEB_GOOGLETEST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: python3
+Section: Development
+Priority: standard
+Description: Google's C++ test framework sources
+ This package provides tools to be used with Google Test and/or Google
+ Mock.

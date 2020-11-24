@@ -2,7 +2,7 @@ Package: libprotoc-dev
 Version: @DEB_LIBPROTOBUF_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libprotoc24 (= @DEB_LIBPROTOBUF_V@), libprotobuf-dev (= @DEB_LIBPROTOBUF_V@)
+Depends: libprotoc25 (= @DEB_LIBPROTOBUF_V@), libprotobuf-dev (= @DEB_LIBPROTOBUF_V@)
 Section: Development
 Priority: standard
 Description: protocol buffers compiler library (development files)

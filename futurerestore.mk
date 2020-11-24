@@ -2,15 +2,15 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS += futurerestore
+SUBPROJECTS           += futurerestore
 FUTURERESTORE_VERSION := 180
-DEB_FUTURERESTORE_V   ?= $(FUTURERESTORE_VERSION)
+DEB_FUTURERESTORE_V   ?= $(FUTURERESTORE_VERSION)-1
 
-IDEVICERESTORE_COMMIT := c97e02e22b9971471db5dcb3b9e02eb30222d6c0
+IDEVICERESTORE_COMMIT := 12667e70defe51fec607ff3006729d0cb5a6aaa8
 
 futurerestore-setup: setup tsschecker-setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tihmstar/futurerestore/archive/$(FUTURERESTORE_VERSION).tar.gz
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tihmstar/idevicerestore/archive/$(IDEVICERESTORE_COMMIT).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/marijuanARM/idevicerestore/archive/$(IDEVICERESTORE_COMMIT).tar.gz
 	$(call EXTRACT_TAR,$(FUTURERESTORE_VERSION).tar.gz,futurerestore-$(FUTURERESTORE_VERSION),futurerestore)
 	
 	-$(RMDIR) $(BUILD_WORK)/futurerestore/external/{idevicerestore,tsschecker}
@@ -27,17 +27,20 @@ futurerestore-setup: setup tsschecker-setup
 	$(SED) -i 's/LIBPLIST_VERSION=1.12/LIBPLIST_VERSION=2.2.0/' $(BUILD_WORK)/futurerestore/external/idevicerestore/configure.ac
 	$(SED) -i 's/LIBIRECOVERY_VERSION=0.2.0/LIBIRECOVERY_VERSION=1.0.0/' $(BUILD_WORK)/futurerestore/external/idevicerestore/configure.ac
 
+	$(SED) -i 's/libipatcher::version().c_str()/libipatcher::version()/' $(BUILD_WORK)/futurerestore/futurerestore/main.cpp
+
 ifneq ($(wildcard $(BUILD_WORK)/futurerestore/.build_complete),)
 futurerestore:
 	@echo "Using previously built futurerestore."
 else
-futurerestore: futurerestore-setup tsschecker libirecovery openssl libusbmuxd libimobiledevice img4tool libgeneral
+futurerestore: futurerestore-setup tsschecker libirecovery openssl libusbmuxd libimobiledevice img4tool libgeneral libipatcher libzip
 	cd $(BUILD_WORK)/futurerestore && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/futurerestore
 	+$(MAKE) -C $(BUILD_WORK)/futurerestore install \
 		DESTDIR="$(BUILD_STAGE)/futurerestore"
+	rm -f $(BUILD_STAGE)/futurerestore/usr/share/man/man1/idevicerestore.1
 	touch $(BUILD_WORK)/futurerestore/.build_complete
 endif
 

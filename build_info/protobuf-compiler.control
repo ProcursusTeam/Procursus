@@ -2,7 +2,7 @@ Package: protobuf-compiler
 Version: @DEB_LIBPROTOBUF_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libprotobuf24 (>= @DEB_LIBPROTOBUF_V@), libprotoc24 (= @DEB_LIBPROTOBUF_V@)
+Depends: libprotobuf25 (>= @DEB_LIBPROTOBUF_V@), libprotoc25 (= @DEB_LIBPROTOBUF_V@)
 Section: Utilities
 Priority: standard
 Description: compiler for protocol buffer definition files

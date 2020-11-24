@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS  += gawk
 GAWK_VERSION := 5.1.0
-DEB_GAWK_V   ?= $(GAWK_VERSION)
+DEB_GAWK_V   ?= $(GAWK_VERSION)-1
 
 gawk-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gawk/gawk-$(GAWK_VERSION).tar.xz{,.sig}

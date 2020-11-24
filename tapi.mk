@@ -7,8 +7,10 @@ TAPI_VERSION   := 1100.0.11
 DEB_TAPI_V     ?= $(TAPI_VERSION)
 
 tapi-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/Diatrus/apple-libtapi/archive/v$(TAPI_VERSION).tar.gz
-	$(call EXTRACT_TAR,v$(TAPI_VERSION).tar.gz,apple-libtapi-$(TAPI_VERSION),tapi)
+	-[ ! -f "$(BUILD_SOURCE)/tapi-$(TAPI_VERSION).tar.gz" ] && \
+		wget -q -nc -O$(BUILD_SOURCE)/tapi-$(TAPI_VERSION).tar.gz \
+			https://github.com/Diatrus/apple-libtapi/archive/v$(TAPI_VERSION).tar.gz
+	$(call EXTRACT_TAR,tapi-$(TAPI_VERSION).tar.gz,apple-libtapi-$(TAPI_VERSION),tapi)
 	mkdir -p $(BUILD_WORK)/tapi/build
 
 ifneq ($(wildcard $(BUILD_WORK)/tapi/.build_complete),)

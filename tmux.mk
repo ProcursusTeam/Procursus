@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += tmux
-TMUX_VERSION   := 3.1b
-DEB_TMUX_V     ?= $(TMUX_VERSION)-2
+TMUX_VERSION   := 3.1c
+DEB_TMUX_V     ?= $(TMUX_VERSION)
 
 tmux-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tmux/tmux/releases/download/$(TMUX_VERSION)/tmux-$(TMUX_VERSION).tar.gz
@@ -19,7 +19,7 @@ tmux: tmux-setup ncurses libevent libutf8proc
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--enable-utf8proc \
-		PKG_CONFIG_LIBDIR=$(BUILD_BASE)/usr/lib
+		PKG_CONFIG_LIBDIR="$(BUILD_BASE)/usr/lib"
 	+$(MAKE) -C $(BUILD_WORK)/tmux install \
 		DESTDIR=$(BUILD_STAGE)/tmux
 	touch $(BUILD_WORK)/tmux/.build_complete

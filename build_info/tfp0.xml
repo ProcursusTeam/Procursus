@@ -8,6 +8,8 @@
 	<true/>
 	<key>platform-application</key>
 	<true/>
+	<key>com.apple.private.kernel.get-kext-info</key>
+	<true/>
 	<key>com.apple.private.security.no-container</key>
 	<true/>
 </dict>

@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += libksba
-KSBA_VERSION  := 1.4.0
-DEB_KSBA_V    ?= $(KSBA_VERSION)-2
+KSBA_VERSION  := 1.5.0
+DEB_KSBA_V    ?= $(KSBA_VERSION)
 
 libksba-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/libksba/libksba-$(KSBA_VERSION).tar.bz2{,.sig}

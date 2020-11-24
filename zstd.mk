@@ -7,8 +7,10 @@ ZSTD_VERSION  := 1.4.5
 DEB_ZSTD_V    ?= $(ZSTD_VERSION)-2
 
 zstd-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/facebook/zstd/archive/v$(ZSTD_VERSION).tar.gz
-	$(call EXTRACT_TAR,v$(ZSTD_VERSION).tar.gz,zstd-$(ZSTD_VERSION),zstd)
+	-[ ! -f "$(BUILD_SOURCE)/zstd-$(ZSTD_VERSION).tar.gz" ] && \
+		wget -q -nc -O$(BUILD_SOURCE)/zstd-$(ZSTD_VERSION).tar.gz \
+			https://github.com/facebook/zstd/archive/v$(ZSTD_VERSION).tar.gz
+	$(call EXTRACT_TAR,zstd-$(ZSTD_VERSION).tar.gz,zstd-$(ZSTD_VERSION),zstd)
 
 ifneq ($(wildcard $(BUILD_WORK)/zstd/.build_complete),)
 zstd:

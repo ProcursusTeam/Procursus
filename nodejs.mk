@@ -2,9 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS   += nodejs
-NODEJS_VERSION  := 14.13.1
-DEB_NODEJS_V    ?= $(NODEJS_VERSION)
+SUBPROJECTS    += nodejs
+NODEJS_VERSION := 14.13.1
+DEB_NODEJS_V   ?= $(NODEJS_VERSION)
 
 nodejs-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://nodejs.org/dist/v$(NODEJS_VERSION)/node-v$(NODEJS_VERSION).tar.gz

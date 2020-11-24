@@ -18,8 +18,6 @@ tsschecker-setup: setup
 	$(SED) -i '/AC_FUNC_MALLOC/d' $(BUILD_WORK)/tsschecker/configure.ac
 	$(SED) -i '/AC_FUNC_REALLOC/d' $(BUILD_WORK)/tsschecker/configure.ac
 
-	cd $(BUILD_WORK)/tsschecker && git submodule update --init --recursive
-
 
 ifneq ($(wildcard $(BUILD_WORK)/tsschecker/.build_complete),)
 tsschecker:
