@@ -1,0 +1,28 @@
+Package: starship
+Version: @DEB_STARSHIP_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Homepage: https://starship.rs/
+Description: The minimal, blazing-fast, and infinitely customizable prompt for any shell!
+ The minimal, blazing-fast, and infinitely customizable prompt for any shell!
+ .
+ * Fast: it's fast – really really fast! 🚀
+ * Customizable: configure every aspect of your prompt.
+ * Universal: works on any shell, on any operating system.
+ * Intelligent: shows relevant information at a glance.
+ * Feature rich: support for all your favorite tools.
+ * Easy: quick to install – start using it in minutes.
+ .
+ To activate starship, add the following to the end of your ~/.zshrc:
+ eval "$(starship init zsh)"
+ .
+ To be able to see the glyphs that starship shows you need a nerd font installed and enabled in your terminal.
+ If you are connecting from another machine the font will need to be enabled on that machine.
+ On iOS:
+ * ... the font in MTerminal is incompatible
+ * ... in NewTerm all fonts apart from the Menlo and SF Mono fonts are compatible
+ * ... all fonts in the Blink Shell app are compatible
+ * ... in Terminus all fonts with Powerline in the name are compatible
+ * ... other SSH/MOSH clients and terminals have not been tested yet
