@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += apt
-APT_VERSION   := 2.1.11
-DEB_APT_V     ?= $(APT_VERSION)-1
+APT_VERSION   := 2.1.12
+DEB_APT_V     ?= $(APT_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
 APT_CMAKE_ARGS += -DHAVE_PTSNAME_R=0
@@ -85,10 +85,10 @@ apt-package: apt-stage
 	cp -a $(BUILD_STAGE)/apt/usr/share $(BUILD_DIST)/apt-utils/usr
 	rm -rf $(BUILD_DIST)/apt-utils/usr/share/man/man{5,7,8}
 	rm -rf $(BUILD_DIST)/apt-utils/usr/share/bash-completion
-	for i in $(BUILD_DIST)/apt-utils/usr/share/man/?? $(BUILD_DIST)/apt-utils/usr/share/man/pt_BR; do \
+	for i in $(BUILD_DIST)/apt-utils/usr/share/man/!(man1); do \
 		rm -rf $$i/man{5,7,8}; \
 	done
-	rm -f $(BUILD_DIST)/apt-utils/usr/share/man/??/man1/apt-transport*.1
+	rm -f $(BUILD_DIST)/apt-utils/usr/share/man/!(man1)/man1/apt-transport*.1
 	rm -f $(BUILD_DIST)/apt-utils/usr/share/man/man1/apt-transport*.1
 
 	# apt.mk Prep libapt-pkg6.0

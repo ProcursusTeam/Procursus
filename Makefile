@@ -433,6 +433,7 @@ ifneq ($(LEAVE_ME_ALONE),1)
 
 ifneq (,$(wildcard $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl))
 DOCBOOK_XSL := $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl
+export XML_CATALOG_FILES=$(shell brew --prefix)/etc/xml/catalog
 else ifneq (,$(wildcard /usr/share/xml/docbook/stylesheet/docbook-xsl))
 DOCBOOK_XSL := /usr/share/xml/docbook/stylesheet/docbook-xsl
 else ifneq (,$(wildcard /usr/share/xsl/docbook))
