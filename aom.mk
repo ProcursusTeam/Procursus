@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS += aom
+SUBPROJECTS   += aom
 AOM_VERSION   := 2.0.0
 DEB_AOM_V     ?= $(AOM_VERSION)
 
