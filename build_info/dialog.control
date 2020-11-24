@@ -1,0 +1,26 @@
+Package: dialog
+Version: @DEB_DIALOG_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libncursesw6, libintl8
+Section: Utilities
+Priority: standard
+Homepage: http://invisible-island.net/dialog/dialog.html
+Description: Displays user-friendly dialog boxes from shell scripts
+ This application provides a method of displaying several different types
+ of dialog boxes from shell scripts.  This allows a developer of a script
+ to interact with the user in a much friendlier manner.
+ .
+ The following types of boxes are at your disposal:
+  yes/no           Typical query style box with "Yes" and "No" answer buttons
+  menu             A scrolling list of menu choices with single entry selection
+  input            Query style box with text entry field
+  message          Similar to the yes/no box, but with only an "Ok" button
+  text             A scrollable text box that works like a simple file viewer
+  info             A message display that allows asynchronous script execution
+  checklist        Similar to the menu box, but allowing multiple selections
+  radiolist        Checklist style box allowing single selections
+  gauge            Typical "progress report" style box
+  tail             Allows viewing the end of files (tail) that auto updates
+  background tail  Similar to tail but runs in the background.
+  editbox          Allows editing an existing file
