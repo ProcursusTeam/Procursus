@@ -17,6 +17,9 @@ lzip:
 else
 lzip: lzip-setup
 	cd $(BUILD_WORK)/lzip && ./configure \
+	CXX=$(CXX) \        CXXFLAGS="$(CXXFLAGS)" \
+        CPPFLAGS="$(CPPFLAGS)" \
+        LDFLAGS="$(LDFLAGS)" \
 		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/lzip
 	+$(MAKE) -C $(BUILD_WORK)/lzip install \
