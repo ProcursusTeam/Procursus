@@ -2,6 +2,6 @@ Package: libgpgmepp6
 Version: @DEB_GPGME_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: gnupg, libassuan0, libgpg-error0, libgpgme11 (= @DEB_GPGME_V@)
+Depends: gpg | gnupg, libassuan0, libgpg-error0, libgpgme11 (= @DEB_GPGME_V@)
 Section: Libraries
 Description: GpgME++ (aka GpgMEpp) is a C++ wrapper (or C++ bindings) for the GnuPG project's GPGME (GnuPG Made Easy) library. (Libraries)
