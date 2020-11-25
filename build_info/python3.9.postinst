@@ -2,7 +2,7 @@
 set -e
 
 major=3
-minor=8
+minor=9
 priority=60
 mandir=/usr/share/man
 

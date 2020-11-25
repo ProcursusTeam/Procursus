@@ -2,7 +2,7 @@
 set -e
 
 major=3
-minor=8
+minor=9
 
 remove_variant_alternative () {
   update-alternatives --remove 2to3 /usr/bin/2to3-${major}.${minor}
