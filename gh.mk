@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS += gh
 GH_VERSION  := 1.2.1
-DEB_GH_V    ?= $(GH_VERSION)
+DEB_GH_V    ?= $(GH_VERSION)-1
 
 gh-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/gh-$(GH_VERSION).tar.gz" ] && \
@@ -12,6 +12,10 @@ gh-setup: setup
 			https://github.com/cli/cli/archive/v$(GH_VERSION).tar.gz
 	$(call EXTRACT_TAR,gh-$(GH_VERSION).tar.gz,cli-$(GH_VERSION),gh)
 	mkdir -p $(BUILD_STAGE)/gh/usr/bin
+
+ifneq ($(MEMO_TARGET),darwin-arm64e)
+	$(SED) -i 's/exe := "open"/exe := "uiopen"/' $(BUILD_WORK)/gh/pkg/browser/browser.go
+endif
 
 ifneq ($(ARCHES),arm64)
 gh:

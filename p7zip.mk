@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += p7zip
 P7ZIP_VERSION  := 16.02
-DEBIAN_P7ZIP_V := $(P7ZIP_VERSION)+dfsg-7
+DEBIAN_P7ZIP_V := $(P7ZIP_VERSION)+dfsg-8
 DEB_P7ZIP_V    ?= $(DEBIAN_P7ZIP_V)
 
 p7zip-setup: setup
@@ -15,7 +15,8 @@ p7zip-setup: setup
 	$(call EXTRACT_TAR,p7zip_$(DEBIAN_P7ZIP_V).debian.tar.xz,debian/patches,$(BUILD_PATCH)/p7zip-$(P7ZIP_VERSION))
 	rm -rf $(BUILD_WORK)/debian
 	cp $(BUILD_SOURCE)/patch-CPP_Windows_ErrorMsg.cpp $(BUILD_PATCH)/p7zip-$(P7ZIP_VERSION)
-	$(call DO_PATCH,p7zip-$(P7ZIP_VERSION),p7zip,-p0,-p1)
+	$(SED) -i 's|CPP/Windows|p7zip/CPP/Windows|' $(BUILD_PATCH)/p7zip-$(P7ZIP_VERSION)/patch-CPP_Windows_ErrorMsg.cpp
+	$(call DO_PATCH,p7zip-$(P7ZIP_VERSION),p7zip,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/p7zip/.build_complete),)
 p7zip:
