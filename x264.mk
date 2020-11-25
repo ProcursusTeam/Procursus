@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS  += x264
+SUBPROJECTS    += x264
 X264_SOVERSION := 161
 X264_VERSION   := 0.$(X264_SOVERSION).3027+git4121277
 DEB_X264_V     ?= $(X264_VERSION)

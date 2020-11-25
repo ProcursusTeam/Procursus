@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS  += mosh
 MOSH_VERSION := 1.3.2
-DEB_MOSH_V   ?= $(MOSH_VERSION)-3
+DEB_MOSH_V   ?= $(MOSH_VERSION)-4
 
 mosh-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://mosh.org/mosh-$(MOSH_VERSION).tar.gz

@@ -1,30 +1,105 @@
-diff -urN apt-2.1.10/apt-pkg/acquire.cc apt/apt-pkg/acquire.cc
---- apt-2.1.10/apt-pkg/acquire.cc	2020-08-11 08:28:07.000000000 -0400
-+++ apt/apt-pkg/acquire.cc	2020-10-07 01:57:17.502671926 -0400
-@@ -1263,7 +1263,7 @@
-    auto const Time = std::chrono::steady_clock::now().time_since_epoch();
-    auto const Time_sec = std::chrono::duration_cast<std::chrono::seconds>(Time);
-    auto const Time_usec = std::chrono::duration_cast<std::chrono::microseconds>(Time - Time_sec);
--   return { Time_sec.count(), Time_usec.count() };
-+   return { static_cast<__darwin_time_t>(Time_sec.count()), static_cast<__darwin_suseconds_t>(Time_usec.count()) };
- }
- bool pkgAcquireStatus::Pulse(pkgAcquire *Owner)
- {
-diff -urN apt-2.1.10/apt-pkg/cachefilter-patterns.cc apt/apt-pkg/cachefilter-patterns.cc
---- apt-2.1.10/apt-pkg/cachefilter-patterns.cc	2020-08-11 08:28:07.000000000 -0400
-+++ apt/apt-pkg/cachefilter-patterns.cc	2020-10-07 01:57:17.502671926 -0400
-@@ -501,7 +501,7 @@
- }
- bool BaseRegexMatcher::operator()(const char *string)
- {
--   if (unlikely(pattern == nullptr) || string == nullptr)
-+   if (unlikely(pattern == NULL))
-       return false;
-    else
-       return regexec(pattern, string, 0, 0, 0) == 0;
-diff -urN apt-2.1.10/apt-pkg/CMakeLists.txt apt/apt-pkg/CMakeLists.txt
---- apt-2.1.10/apt-pkg/CMakeLists.txt	2020-08-11 08:28:07.000000000 -0400
-+++ apt/apt-pkg/CMakeLists.txt	2020-10-07 01:57:17.502671926 -0400
+diff -urN apt-2.1.11/CMake/Misc.cmake apt/CMake/Misc.cmake
+--- apt-2.1.11/CMake/Misc.cmake	2020-10-21 05:53:18.000000000 -0400
++++ apt/CMake/Misc.cmake	2020-11-22 18:23:41.695439833 -0500
+@@ -74,7 +74,7 @@
+                        COMMAND echo "${name} {global: *; };" > "${script}"
+                        VERBATIM )
+     add_custom_target(${target}-versionscript DEPENDS "${script}")
+-    target_link_libraries(${target} PRIVATE -Wl,-version-script="${script}")
++    #target_link_libraries(${target} PRIVATE -Wl,-version-script="${script}")
+     add_dependencies(${target} ${target}-versionscript)
+ endfunction()
+ 
+diff -urN apt-2.1.11/CMake/apti18n.h.in apt/CMake/apti18n.h.in
+--- apt-2.1.11/CMake/apti18n.h.in	2020-10-21 05:53:18.000000000 -0400
++++ apt/CMake/apti18n.h.in	2020-11-22 18:23:41.695439833 -0500
+@@ -22,7 +22,7 @@
+ # define N_(x) x
+ #else
+ // apt will not use any gettext
+-extern "C" inline char* setlocale(int, const char*) throw() { return nullptr; }
++// extern "C" inline char* setlocale(int, const char*) throw() { return nullptr; }
+ extern "C" inline char* textdomain(const char*) throw() { return nullptr; }
+ extern "C" inline char* bindtextdomain(const char*, const char*) throw() { return nullptr; }
+ extern "C" inline char* dgettext(const char*, const char* msg) throw() { return const_cast<char*>(msg); }
+diff -urN apt-2.1.11/CMakeLists.txt apt/CMakeLists.txt
+--- apt-2.1.11/CMakeLists.txt	2020-10-21 05:53:18.000000000 -0400
++++ apt/CMakeLists.txt	2020-11-22 18:24:03.107379080 -0500
+@@ -22,9 +22,9 @@
+ set(CMAKE_SHARED_LINKER_FLAGS_COVERAGE "-lgcov")
+ 
+ # Work around bug in GNUInstallDirs
+-if (EXISTS "/etc/debian_version")
+-  set(CMAKE_INSTALL_LIBEXECDIR "lib")
+-endif()
++#if (EXISTS "/etc/debian_version")
++#  set(CMAKE_INSTALL_LIBEXECDIR "lib")
++#endif()
+ 
+ # Include stuff
+ include(Misc)
+@@ -85,10 +85,10 @@
+   set(HAVE_BDB 1)
+ endif()
+ 
+-find_package(GnuTLS REQUIRED)
+-if (GNUTLS_FOUND)
+-  set(HAVE_GNUTLS 1)
+-endif()
++#find_package(GnuTLS REQUIRED)
++#if (GNUTLS_FOUND)
++#  set(HAVE_GNUTLS 1)
++#endif()
+ 
+ # (De)Compressor libraries
+ find_package(ZLIB REQUIRED)
+@@ -119,20 +119,20 @@
+ endif()
+ 
+ 
+-find_package(Udev)
+-if (UDEV_FOUND)
+-  set(HAVE_UDEV 1)
+-endif()
+-
+-find_package(Systemd)
+-if (SYSTEMD_FOUND)
+-  set(HAVE_SYSTEMD 1)
+-endif()
+-
+-find_package(Seccomp)
+-if (SECCOMP_FOUND)
+-  set(HAVE_SECCOMP 1)
+-endif()
++#find_package(Udev)
++#if (UDEV_FOUND)
++#  set(HAVE_UDEV 1)
++#endif()
++
++#find_package(Systemd)
++#if (SYSTEMD_FOUND)
++#  set(HAVE_SYSTEMD 1)
++#endif()
++
++#find_package(Seccomp)
++#if (SECCOMP_FOUND)
++#  set(HAVE_SECCOMP 1)
++#endif()
+ 
+ find_package(Gcrypt REQUIRED)
+ 
+@@ -247,7 +247,7 @@
+ add_subdirectory(dselect)
+ add_subdirectory(ftparchive)
+ add_subdirectory(methods)
+-add_subdirectory(test)
++#add_subdirectory(test)
+ 
+ if (USE_NLS)
+ add_subdirectory(po)
+diff -urN apt-2.1.11/apt-pkg/CMakeLists.txt apt/apt-pkg/CMakeLists.txt
+--- apt-2.1.11/apt-pkg/CMakeLists.txt	2020-10-21 05:53:18.000000000 -0400
++++ apt/apt-pkg/CMakeLists.txt	2020-11-22 18:23:41.693439838 -0500
 @@ -32,7 +32,7 @@
  # Definition of the C++ files used to build the library - note that this
  # is expanded at CMake time, so you have to rerun cmake if you add or remove
@@ -42,9 +117,33 @@ diff -urN apt-2.1.10/apt-pkg/CMakeLists.txt apt/apt-pkg/CMakeLists.txt
  )
  set_target_properties(apt-pkg PROPERTIES VERSION ${MAJOR}.${MINOR})
  set_target_properties(apt-pkg PROPERTIES SOVERSION ${MAJOR})
-diff -urN apt-2.1.10/apt-pkg/contrib/cdromutl.cc apt/apt-pkg/contrib/cdromutl.cc
---- apt-2.1.10/apt-pkg/contrib/cdromutl.cc	2020-08-11 08:28:07.000000000 -0400
-+++ apt/apt-pkg/contrib/cdromutl.cc	2020-10-07 01:57:17.502671926 -0400
+diff -urN apt-2.1.11/apt-pkg/acquire.cc apt/apt-pkg/acquire.cc
+--- apt-2.1.11/apt-pkg/acquire.cc	2020-10-21 05:53:18.000000000 -0400
++++ apt/apt-pkg/acquire.cc	2020-11-22 18:23:41.692439841 -0500
+@@ -1263,7 +1263,7 @@
+    auto const Time = std::chrono::steady_clock::now().time_since_epoch();
+    auto const Time_sec = std::chrono::duration_cast<std::chrono::seconds>(Time);
+    auto const Time_usec = std::chrono::duration_cast<std::chrono::microseconds>(Time - Time_sec);
+-   return { Time_sec.count(), Time_usec.count() };
++   return { static_cast<__darwin_time_t>(Time_sec.count()), static_cast<__darwin_suseconds_t>(Time_usec.count()) };
+ }
+ bool pkgAcquireStatus::Pulse(pkgAcquire *Owner)
+ {
+diff -urN apt-2.1.11/apt-pkg/cachefilter-patterns.cc apt/apt-pkg/cachefilter-patterns.cc
+--- apt-2.1.11/apt-pkg/cachefilter-patterns.cc	2020-10-21 05:53:18.000000000 -0400
++++ apt/apt-pkg/cachefilter-patterns.cc	2020-11-22 18:23:41.692439841 -0500
+@@ -501,7 +501,7 @@
+ }
+ bool BaseRegexMatcher::operator()(const char *string)
+ {
+-   if (unlikely(pattern == nullptr) || string == nullptr)
++   if (unlikely(pattern == NULL))
+       return false;
+    else
+       return regexec(pattern, string, 0, 0, 0) == 0;
+diff -urN apt-2.1.11/apt-pkg/contrib/cdromutl.cc apt/apt-pkg/contrib/cdromutl.cc
+--- apt-2.1.11/apt-pkg/contrib/cdromutl.cc	2020-10-21 05:53:18.000000000 -0400
++++ apt/apt-pkg/contrib/cdromutl.cc	2020-11-22 18:23:41.693439838 -0500
 @@ -98,7 +98,7 @@
  
  	 if (_config->Exists("Acquire::cdrom::"+Path+"::UMount") == true)
@@ -63,9 +162,9 @@ diff -urN apt-2.1.10/apt-pkg/contrib/cdromutl.cc apt/apt-pkg/contrib/cdromutl.cc
  	    _exit(100);
  	 _exit(0);	 
        }
-diff -urN apt-2.1.10/apt-pkg/contrib/fileutl.cc apt/apt-pkg/contrib/fileutl.cc
---- apt-2.1.10/apt-pkg/contrib/fileutl.cc	2020-08-11 08:28:07.000000000 -0400
-+++ apt/apt-pkg/contrib/fileutl.cc	2020-10-07 01:57:17.503671925 -0400
+diff -urN apt-2.1.11/apt-pkg/contrib/fileutl.cc apt/apt-pkg/contrib/fileutl.cc
+--- apt-2.1.11/apt-pkg/contrib/fileutl.cc	2020-10-21 05:53:18.000000000 -0400
++++ apt/apt-pkg/contrib/fileutl.cc	2020-11-22 18:23:41.693439838 -0500
 @@ -24,6 +24,7 @@
  #include <apt-pkg/error.h>
  #include <apt-pkg/fileutl.h>
@@ -285,9 +384,9 @@ diff -urN apt-2.1.10/apt-pkg/contrib/fileutl.cc apt/apt-pkg/contrib/fileutl.cc
  	 .pos = 0,
        };
  
-diff -urN apt-2.1.10/apt-pkg/contrib/fileutl.h apt/apt-pkg/contrib/fileutl.h
---- apt-2.1.10/apt-pkg/contrib/fileutl.h	2020-08-11 08:28:07.000000000 -0400
-+++ apt/apt-pkg/contrib/fileutl.h	2020-10-07 01:57:17.503671925 -0400
+diff -urN apt-2.1.11/apt-pkg/contrib/fileutl.h apt/apt-pkg/contrib/fileutl.h
+--- apt-2.1.11/apt-pkg/contrib/fileutl.h	2020-10-21 05:53:18.000000000 -0400
++++ apt/apt-pkg/contrib/fileutl.h	2020-11-22 18:23:41.693439838 -0500
 @@ -174,6 +174,7 @@
     APT_HIDDEN bool FileFdError(const char* Description,...) APT_PRINTF(2) APT_COLD;
  };
@@ -296,9 +395,9 @@ diff -urN apt-2.1.10/apt-pkg/contrib/fileutl.h apt/apt-pkg/contrib/fileutl.h
  APT_PUBLIC bool RunScripts(const char *Cnf);
  APT_PUBLIC bool CopyFile(FileFd &From,FileFd &To);
  APT_PUBLIC bool RemoveFile(char const * const Function, std::string const &FileName);
-diff -urN apt-2.1.10/apt-pkg/contrib/gpgv.cc apt/apt-pkg/contrib/gpgv.cc
---- apt-2.1.10/apt-pkg/contrib/gpgv.cc	2020-08-11 08:28:07.000000000 -0400
-+++ apt/apt-pkg/contrib/gpgv.cc	2020-10-07 01:57:17.504671923 -0400
+diff -urN apt-2.1.11/apt-pkg/contrib/gpgv.cc apt/apt-pkg/contrib/gpgv.cc
+--- apt-2.1.11/apt-pkg/contrib/gpgv.cc	2020-10-21 05:53:18.000000000 -0400
++++ apt/apt-pkg/contrib/gpgv.cc	2020-11-22 18:23:41.693439838 -0500
 @@ -359,6 +359,21 @@
  
     Args.push_back(NULL);
@@ -330,9 +429,9 @@ diff -urN apt-2.1.10/apt-pkg/contrib/gpgv.cc apt/apt-pkg/contrib/gpgv.cc
        apt_error(std::cerr, statusfd, fd, "Couldn't execute %s to check %s", Args[0], File.c_str());
        local_exit(EINTERNAL);
     }
-diff -urN apt-2.1.10/apt-pkg/contrib/progress.cc apt/apt-pkg/contrib/progress.cc
---- apt-2.1.10/apt-pkg/contrib/progress.cc	2020-08-11 08:28:07.000000000 -0400
-+++ apt/apt-pkg/contrib/progress.cc	2020-10-07 01:57:17.504671923 -0400
+diff -urN apt-2.1.11/apt-pkg/contrib/progress.cc apt/apt-pkg/contrib/progress.cc
+--- apt-2.1.11/apt-pkg/contrib/progress.cc	2020-10-21 05:53:18.000000000 -0400
++++ apt/apt-pkg/contrib/progress.cc	2020-11-22 18:23:41.694439835 -0500
 @@ -122,7 +122,7 @@
     auto const Now = std::chrono::steady_clock::now().time_since_epoch();
     auto const Now_sec = std::chrono::duration_cast<std::chrono::seconds>(Now);
@@ -342,9 +441,9 @@ diff -urN apt-2.1.10/apt-pkg/contrib/progress.cc apt/apt-pkg/contrib/progress.cc
  
     std::chrono::duration<decltype(Interval)> Delta =
        std::chrono::seconds(NowTime.tv_sec - LastTime.tv_sec) +
-diff -urN apt-2.1.10/apt-pkg/contrib/srvrec.cc apt/apt-pkg/contrib/srvrec.cc
---- apt-2.1.10/apt-pkg/contrib/srvrec.cc	2020-08-11 08:28:07.000000000 -0400
-+++ apt/apt-pkg/contrib/srvrec.cc	2020-10-07 01:57:17.504671923 -0400
+diff -urN apt-2.1.11/apt-pkg/contrib/srvrec.cc apt/apt-pkg/contrib/srvrec.cc
+--- apt-2.1.11/apt-pkg/contrib/srvrec.cc	2020-10-21 05:53:18.000000000 -0400
++++ apt/apt-pkg/contrib/srvrec.cc	2020-11-22 18:23:41.694439835 -0500
 @@ -11,6 +11,7 @@
  #include <netdb.h>
  
@@ -353,9 +452,9 @@ diff -urN apt-2.1.10/apt-pkg/contrib/srvrec.cc apt/apt-pkg/contrib/srvrec.cc
  #include <arpa/inet.h>
  #include <netinet/in.h>
  #include <resolv.h>
-diff -urN apt-2.1.10/apt-pkg/contrib/string_view.h apt/apt-pkg/contrib/string_view.h
---- apt-2.1.10/apt-pkg/contrib/string_view.h	2020-08-11 08:28:07.000000000 -0400
-+++ apt/apt-pkg/contrib/string_view.h	2020-10-07 01:57:17.504671923 -0400
+diff -urN apt-2.1.11/apt-pkg/contrib/string_view.h apt/apt-pkg/contrib/string_view.h
+--- apt-2.1.11/apt-pkg/contrib/string_view.h	2020-10-21 05:53:18.000000000 -0400
++++ apt/apt-pkg/contrib/string_view.h	2020-11-22 18:23:41.694439835 -0500
 @@ -12,6 +12,7 @@
  #if !defined(APT_STRINGVIEW_H)
  #define APT_STRINGVIEW_H
@@ -364,9 +463,9 @@ diff -urN apt-2.1.10/apt-pkg/contrib/string_view.h apt/apt-pkg/contrib/string_vi
  #include <string>
  #include <string.h>
  
-diff -urN apt-2.1.10/apt-pkg/deb/dpkgpm.cc apt/apt-pkg/deb/dpkgpm.cc
---- apt-2.1.10/apt-pkg/deb/dpkgpm.cc	2020-08-11 08:28:07.000000000 -0400
-+++ apt/apt-pkg/deb/dpkgpm.cc	2020-10-07 01:57:17.505671922 -0400
+diff -urN apt-2.1.11/apt-pkg/deb/dpkgpm.cc apt/apt-pkg/deb/dpkgpm.cc
+--- apt-2.1.11/apt-pkg/deb/dpkgpm.cc	2020-10-21 05:53:18.000000000 -0400
++++ apt/apt-pkg/deb/dpkgpm.cc	2020-11-22 18:23:41.694439835 -0500
 @@ -1724,7 +1724,7 @@
     bool dpkgProtectedField = debSystem::AssertFeature("protected-field");
  
@@ -385,9 +484,9 @@ diff -urN apt-2.1.10/apt-pkg/deb/dpkgpm.cc apt/apt-pkg/deb/dpkgpm.cc
     CloseLog();
  
     if (d->dpkg_error.empty() == false)
-diff -urN apt-2.1.10/apt-pkg/endian.h apt/apt-pkg/endian.h
---- apt-2.1.10/apt-pkg/endian.h	1969-12-31 19:00:00.000000000 -0500
-+++ apt/apt-pkg/endian.h	2020-10-07 01:57:17.505671922 -0400
+diff -urN apt-2.1.11/apt-pkg/endian.h apt/apt-pkg/endian.h
+--- apt-2.1.11/apt-pkg/endian.h	1969-12-31 19:00:00.000000000 -0500
++++ apt/apt-pkg/endian.h	2020-11-22 18:23:41.694439835 -0500
 @@ -0,0 +1,118 @@
 +// "License": Public Domain
 +// I, Mathias Panzenböck, place this file hereby into the public domain. Use it at your own risk for whatever you like.
@@ -507,9 +606,9 @@ diff -urN apt-2.1.10/apt-pkg/endian.h apt/apt-pkg/endian.h
 +#endif
 +
 +#endif
-diff -urN apt-2.1.10/apt-pkg/getservbyport_r.cc apt/apt-pkg/getservbyport_r.cc
---- apt-2.1.10/apt-pkg/getservbyport_r.cc	1969-12-31 19:00:00.000000000 -0500
-+++ apt/apt-pkg/getservbyport_r.cc	2020-10-07 01:57:17.505671922 -0400
+diff -urN apt-2.1.11/apt-pkg/getservbyport_r.cc apt/apt-pkg/getservbyport_r.cc
+--- apt-2.1.11/apt-pkg/getservbyport_r.cc	1969-12-31 19:00:00.000000000 -0500
++++ apt/apt-pkg/getservbyport_r.cc	2020-11-22 18:23:41.694439835 -0500
 @@ -0,0 +1,59 @@
 +#define _GNU_SOURCE
 +#include <sys/types.h>
@@ -570,9 +669,9 @@ diff -urN apt-2.1.10/apt-pkg/getservbyport_r.cc apt/apt-pkg/getservbyport_r.cc
 +	return 0;
 +}
 +#endif
-diff -urN apt-2.1.10/apt-pkg/indexfile.cc apt/apt-pkg/indexfile.cc
---- apt-2.1.10/apt-pkg/indexfile.cc	2020-08-11 08:28:07.000000000 -0400
-+++ apt/apt-pkg/indexfile.cc	2020-10-07 01:57:17.505671922 -0400
+diff -urN apt-2.1.11/apt-pkg/indexfile.cc apt/apt-pkg/indexfile.cc
+--- apt-2.1.11/apt-pkg/indexfile.cc	2020-10-21 05:53:18.000000000 -0400
++++ apt/apt-pkg/indexfile.cc	2020-11-22 18:23:41.694439835 -0500
 @@ -174,6 +174,8 @@
  									/*}}}*/
  std::string pkgDebianIndexTargetFile::ArchiveURI(std::string const &File) const/*{{{*/
@@ -582,9 +681,9 @@ diff -urN apt-2.1.10/apt-pkg/indexfile.cc apt/apt-pkg/indexfile.cc
     return Target.Option(IndexTarget::REPO_URI) + File;
  }
  									/*}}}*/
-diff -urN apt-2.1.10/apt-pkg/memrchr.cc apt/apt-pkg/memrchr.cc
---- apt-2.1.10/apt-pkg/memrchr.cc	1969-12-31 19:00:00.000000000 -0500
-+++ apt/apt-pkg/memrchr.cc	2020-10-07 01:57:17.505671922 -0400
+diff -urN apt-2.1.11/apt-pkg/memrchr.cc apt/apt-pkg/memrchr.cc
+--- apt-2.1.11/apt-pkg/memrchr.cc	1969-12-31 19:00:00.000000000 -0500
++++ apt/apt-pkg/memrchr.cc	2020-11-22 18:23:41.695439833 -0500
 @@ -0,0 +1,158 @@
 +/* memrchr -- find the last occurrence of a byte in a memory block
 +
@@ -744,9 +843,9 @@ diff -urN apt-2.1.10/apt-pkg/memrchr.cc apt/apt-pkg/memrchr.cc
 +  return NULL;
 +}
 +#endif
-diff -urN apt-2.1.10/apt-pkg/missing.h apt/apt-pkg/missing.h
---- apt-2.1.10/apt-pkg/missing.h	1969-12-31 19:00:00.000000000 -0500
-+++ apt/apt-pkg/missing.h	2020-10-07 01:57:17.505671922 -0400
+diff -urN apt-2.1.11/apt-pkg/missing.h apt/apt-pkg/missing.h
+--- apt-2.1.11/apt-pkg/missing.h	1969-12-31 19:00:00.000000000 -0500
++++ apt/apt-pkg/missing.h	2020-11-22 18:23:41.695439833 -0500
 @@ -0,0 +1,27 @@
 +#define _GNU_SOURCE
 +#include <sys/socket.h>
@@ -775,9 +874,9 @@ diff -urN apt-2.1.10/apt-pkg/missing.h apt/apt-pkg/missing.h
 +
 +#endif
 +
-diff -urN apt-2.1.10/apt-pkg/nameser_compat.h apt/apt-pkg/nameser_compat.h
---- apt-2.1.10/apt-pkg/nameser_compat.h	1969-12-31 19:00:00.000000000 -0500
-+++ apt/apt-pkg/nameser_compat.h	2020-10-07 01:57:17.506671921 -0400
+diff -urN apt-2.1.11/apt-pkg/nameser_compat.h apt/apt-pkg/nameser_compat.h
+--- apt-2.1.11/apt-pkg/nameser_compat.h	1969-12-31 19:00:00.000000000 -0500
++++ apt/apt-pkg/nameser_compat.h	2020-11-22 18:23:41.695439833 -0500
 @@ -0,0 +1,187 @@
 +/* Copyright (c) 1983, 1989
 + *    The Regents of the University of California.  All rights reserved.
@@ -966,9 +1065,9 @@ diff -urN apt-2.1.10/apt-pkg/nameser_compat.h apt/apt-pkg/nameser_compat.h
 +
 +#endif /* _ARPA_NAMESER_COMPAT_ */
 +/*! \file */
-diff -urN apt-2.1.10/apt-pkg/rawmemchr.cc apt/apt-pkg/rawmemchr.cc
---- apt-2.1.10/apt-pkg/rawmemchr.cc	1969-12-31 19:00:00.000000000 -0500
-+++ apt/apt-pkg/rawmemchr.cc	2020-10-07 01:57:17.506671921 -0400
+diff -urN apt-2.1.11/apt-pkg/rawmemchr.cc apt/apt-pkg/rawmemchr.cc
+--- apt-2.1.11/apt-pkg/rawmemchr.cc	1969-12-31 19:00:00.000000000 -0500
++++ apt/apt-pkg/rawmemchr.cc	2020-11-22 18:23:41.695439833 -0500
 @@ -0,0 +1,139 @@
 +/* Searching in a string.
 +   Copyright (C) 2008-2015 Free Software Foundation, Inc.
@@ -1109,9 +1208,9 @@ diff -urN apt-2.1.10/apt-pkg/rawmemchr.cc apt/apt-pkg/rawmemchr.cc
 +  return (void *) char_ptr;
 +}
 +#endif
-diff -urN apt-2.1.10/apt-pkg/strchrnul.cc apt/apt-pkg/strchrnul.cc
---- apt-2.1.10/apt-pkg/strchrnul.cc	1969-12-31 19:00:00.000000000 -0500
-+++ apt/apt-pkg/strchrnul.cc	2020-10-07 01:57:17.506671921 -0400
+diff -urN apt-2.1.11/apt-pkg/strchrnul.cc apt/apt-pkg/strchrnul.cc
+--- apt-2.1.11/apt-pkg/strchrnul.cc	1969-12-31 19:00:00.000000000 -0500
++++ apt/apt-pkg/strchrnul.cc	2020-11-22 18:23:41.695439833 -0500
 @@ -0,0 +1,147 @@
 +/* Searching in a string.
 +   Copyright (C) 2003, 2007-2015 Free Software Foundation, Inc.
@@ -1260,9 +1359,9 @@ diff -urN apt-2.1.10/apt-pkg/strchrnul.cc apt/apt-pkg/strchrnul.cc
 +  return (char *) char_ptr;
 +}
 +#endif
-diff -urN apt-2.1.10/apt-private/CMakeLists.txt apt/apt-private/CMakeLists.txt
---- apt-2.1.10/apt-private/CMakeLists.txt	2020-08-11 08:28:07.000000000 -0400
-+++ apt/apt-private/CMakeLists.txt	2020-10-07 01:57:17.506671921 -0400
+diff -urN apt-2.1.11/apt-private/CMakeLists.txt apt/apt-private/CMakeLists.txt
+--- apt-2.1.11/apt-private/CMakeLists.txt	2020-10-21 05:53:18.000000000 -0400
++++ apt/apt-private/CMakeLists.txt	2020-11-22 18:23:41.695439833 -0500
 @@ -5,14 +5,14 @@
  # Definition of the C++ files used to build the library - note that this
  # is expanded at CMake time, so you have to rerun cmake if you add or remove
@@ -1280,9 +1379,9 @@ diff -urN apt-2.1.10/apt-private/CMakeLists.txt apt/apt-private/CMakeLists.txt
  set_target_properties(apt-private PROPERTIES VERSION ${MAJOR}.${MINOR})
  set_target_properties(apt-private PROPERTIES SOVERSION ${MAJOR})
  set_target_properties(apt-private PROPERTIES CXX_VISIBILITY_PRESET hidden)
-diff -urN apt-2.1.10/apt-private/private-source.cc apt/apt-private/private-source.cc
---- apt-2.1.10/apt-private/private-source.cc	2020-08-11 08:28:07.000000000 -0400
-+++ apt/apt-private/private-source.cc	2020-10-07 01:57:17.506671921 -0400
+diff -urN apt-2.1.11/apt-private/private-source.cc apt/apt-private/private-source.cc
+--- apt-2.1.11/apt-private/private-source.cc	2020-10-21 05:53:18.000000000 -0400
++++ apt/apt-private/private-source.cc	2020-11-22 18:23:41.695439833 -0500
 @@ -520,7 +520,7 @@
  	 strprintf(S, "%s %s %s",
  	       _config->Find("Dir::Bin::dpkg-source","dpkg-source").c_str(),
@@ -1301,113 +1400,9 @@ diff -urN apt-2.1.10/apt-private/private-source.cc apt/apt-private/private-sourc
  	 {
  	    _error->Error(_("Build command '%s' failed.\n"), S.c_str());
  	    continue;
-diff -urN apt-2.1.10/CMake/apti18n.h.in apt/CMake/apti18n.h.in
---- apt-2.1.10/CMake/apti18n.h.in	2020-08-11 08:28:07.000000000 -0400
-+++ apt/CMake/apti18n.h.in	2020-10-07 01:57:17.506671921 -0400
-@@ -22,7 +22,7 @@
- # define N_(x) x
- #else
- // apt will not use any gettext
--extern "C" inline char* setlocale(int, const char*) throw() { return nullptr; }
-+// extern "C" inline char* setlocale(int, const char*) throw() { return nullptr; }
- extern "C" inline char* textdomain(const char*) throw() { return nullptr; }
- extern "C" inline char* bindtextdomain(const char*, const char*) throw() { return nullptr; }
- extern "C" inline char* dgettext(const char*, const char* msg) throw() { return const_cast<char*>(msg); }
-diff -urN apt-2.1.10/CMake/Misc.cmake apt/CMake/Misc.cmake
---- apt-2.1.10/CMake/Misc.cmake	2020-08-11 08:28:07.000000000 -0400
-+++ apt/CMake/Misc.cmake	2020-10-07 01:57:17.506671921 -0400
-@@ -74,7 +74,7 @@
-                        COMMAND echo "${name} {global: *; };" > "${script}"
-                        VERBATIM )
-     add_custom_target(${target}-versionscript DEPENDS "${script}")
--    target_link_libraries(${target} PRIVATE -Wl,-version-script="${script}")
-+    #target_link_libraries(${target} PRIVATE -Wl,-version-script="${script}")
-     add_dependencies(${target} ${target}-versionscript)
- endfunction()
- 
-diff -urN apt-2.1.10/CMakeLists.txt apt/CMakeLists.txt
---- apt-2.1.10/CMakeLists.txt	2020-08-11 08:28:07.000000000 -0400
-+++ apt/CMakeLists.txt	2020-10-07 01:58:44.537557574 -0400
-@@ -22,9 +22,9 @@
- set(CMAKE_SHARED_LINKER_FLAGS_COVERAGE "-lgcov")
- 
- # Work around bug in GNUInstallDirs
--if (EXISTS "/etc/debian_version")
--  set(CMAKE_INSTALL_LIBEXECDIR "lib")
--endif()
-+#if (EXISTS "/etc/debian_version")
-+#  set(CMAKE_INSTALL_LIBEXECDIR "lib")
-+#endif()
- 
- # Include stuff
- include(Misc)
-@@ -85,10 +85,10 @@
-   set(HAVE_BDB 1)
- endif()
- 
--find_package(GnuTLS REQUIRED)
--if (GNUTLS_FOUND)
--  set(HAVE_GNUTLS 1)
--endif()
-+#find_package(GnuTLS REQUIRED)
-+#if (GNUTLS_FOUND)
-+#  set(HAVE_GNUTLS 1)
-+#endif()
- 
- # (De)Compressor libraries
- find_package(ZLIB REQUIRED)
-@@ -119,20 +119,20 @@
- endif()
- 
- 
--find_package(Udev)
--if (UDEV_FOUND)
--  set(HAVE_UDEV 1)
--endif()
--
--find_package(Systemd)
--if (SYSTEMD_FOUND)
--  set(HAVE_SYSTEMD 1)
--endif()
--
--find_package(Seccomp)
--if (SECCOMP_FOUND)
--  set(HAVE_SECCOMP 1)
--endif()
-+#find_package(Udev)
-+#if (UDEV_FOUND)
-+#  set(HAVE_UDEV 1)
-+#endif()
-+
-+#find_package(Systemd)
-+#if (SYSTEMD_FOUND)
-+#  set(HAVE_SYSTEMD 1)
-+#endif()
-+
-+#find_package(Seccomp)
-+#if (SECCOMP_FOUND)
-+#  set(HAVE_SECCOMP 1)
-+#endif()
- 
- find_package(Gcrypt REQUIRED)
- 
-@@ -243,11 +243,11 @@
- add_subdirectory(apt-private)
- add_subdirectory(cmdline)
- add_subdirectory(completions)
--add_subdirectory(doc)
-+#add_subdirectory(doc)
- add_subdirectory(dselect)
- add_subdirectory(ftparchive)
- add_subdirectory(methods)
--add_subdirectory(test)
-+#add_subdirectory(test)
- 
- if (USE_NLS)
- add_subdirectory(po)
-diff -urN apt-2.1.10/ftparchive/apt-ftparchive.cc apt/ftparchive/apt-ftparchive.cc
---- apt-2.1.10/ftparchive/apt-ftparchive.cc	2020-08-11 08:28:07.000000000 -0400
-+++ apt/ftparchive/apt-ftparchive.cc	2020-10-07 01:57:17.507671919 -0400
+diff -urN apt-2.1.11/ftparchive/apt-ftparchive.cc apt/ftparchive/apt-ftparchive.cc
+--- apt-2.1.11/ftparchive/apt-ftparchive.cc	2020-10-21 05:53:18.000000000 -0400
++++ apt/ftparchive/apt-ftparchive.cc	2020-11-22 18:23:41.696439830 -0500
 @@ -53,7 +53,7 @@
     auto const Time = std::chrono::steady_clock::now().time_since_epoch();
     auto const Time_sec = std::chrono::duration_cast<std::chrono::seconds>(Time);
@@ -1417,9 +1412,9 @@ diff -urN apt-2.1.10/ftparchive/apt-ftparchive.cc apt/ftparchive/apt-ftparchive.
  }
  									/*}}}*/
  static auto GetTimeDeltaSince(struct timeval StartTime)			/*{{{*/
-diff -urN apt-2.1.10/ftparchive/byhash.cc apt/ftparchive/byhash.cc
---- apt-2.1.10/ftparchive/byhash.cc	2020-08-11 08:28:07.000000000 -0400
-+++ apt/ftparchive/byhash.cc	2020-10-07 01:57:17.507671919 -0400
+diff -urN apt-2.1.11/ftparchive/byhash.cc apt/ftparchive/byhash.cc
+--- apt-2.1.11/ftparchive/byhash.cc	2020-10-21 05:53:18.000000000 -0400
++++ apt/ftparchive/byhash.cc	2020-11-22 18:23:41.696439830 -0500
 @@ -17,6 +17,8 @@
  #include <sys/stat.h>
  #include <unistd.h>
@@ -1429,9 +1424,9 @@ diff -urN apt-2.1.10/ftparchive/byhash.cc apt/ftparchive/byhash.cc
  #include "byhash.h"
  #include <apt-pkg/fileutl.h>
  #include <apt-pkg/hashes.h>
-diff -urN apt-2.1.10/ftparchive/cachedb.cc apt/ftparchive/cachedb.cc
---- apt-2.1.10/ftparchive/cachedb.cc	2020-08-11 08:28:07.000000000 -0400
-+++ apt/ftparchive/cachedb.cc	2020-10-07 01:57:17.507671919 -0400
+diff -urN apt-2.1.11/ftparchive/cachedb.cc apt/ftparchive/cachedb.cc
+--- apt-2.1.11/ftparchive/cachedb.cc	2020-10-21 05:53:18.000000000 -0400
++++ apt/ftparchive/cachedb.cc	2020-11-22 18:23:41.696439830 -0500
 @@ -18,6 +18,7 @@
  #include <apt-pkg/gpgv.h>
  #include <apt-pkg/hashes.h>
@@ -1440,14 +1435,9 @@ diff -urN apt-2.1.10/ftparchive/cachedb.cc apt/ftparchive/cachedb.cc
  
  #include <ctype.h>
  #include <netinet/in.h> // htonl, etc
-diff -urN apt-2.1.10/.git apt/.git
---- apt-2.1.10/.git	1969-12-31 19:00:00.000000000 -0500
-+++ apt/.git	2020-10-07 01:57:17.507671919 -0400
-@@ -0,0 +1 @@
-+gitdir: ../.git/modules/apt
-diff -urN apt-2.1.10/methods/CMakeLists.txt apt/methods/CMakeLists.txt
---- apt-2.1.10/methods/CMakeLists.txt	2020-08-11 08:28:07.000000000 -0400
-+++ apt/methods/CMakeLists.txt	2020-10-07 01:57:17.507671919 -0400
+diff -urN apt-2.1.11/methods/CMakeLists.txt apt/methods/CMakeLists.txt
+--- apt-2.1.11/methods/CMakeLists.txt	2020-10-21 05:53:18.000000000 -0400
++++ apt/methods/CMakeLists.txt	2020-11-22 18:23:41.696439830 -0500
 @@ -2,33 +2,35 @@
  include_directories($<$<BOOL:${SECCOMP_FOUND}>:${SECCOMP_INCLUDE_DIR}>)
  link_libraries(apt-pkg $<$<BOOL:${SECCOMP_FOUND}>:${SECCOMP_LIBRARIES}>)
@@ -1494,9 +1484,9 @@ diff -urN apt-2.1.10/methods/CMakeLists.txt apt/methods/CMakeLists.txt
  
 -add_links(${CMAKE_INSTALL_LIBEXECDIR}/apt/methods http https)
 +add_links(${CMAKE_INSTALL_LIBEXECDIR}/apt/methods https http)
-diff -urN apt-2.1.10/methods/nshttp.h apt/methods/nshttp.h
---- apt-2.1.10/methods/nshttp.h	1969-12-31 19:00:00.000000000 -0500
-+++ apt/methods/nshttp.h	2020-10-07 01:57:17.507671919 -0400
+diff -urN apt-2.1.11/methods/nshttp.h apt/methods/nshttp.h
+--- apt-2.1.11/methods/nshttp.h	1969-12-31 19:00:00.000000000 -0500
++++ apt/methods/nshttp.h	2020-11-22 18:23:41.696439830 -0500
 @@ -0,0 +1,40 @@
 +// -*- mode: cpp; mode: fold -*-
 +// Description								/*{{{*/
@@ -1538,9 +1528,9 @@ diff -urN apt-2.1.10/methods/nshttp.h apt/methods/nshttp.h
 +};
 +
 +#endif
-diff -urN apt-2.1.10/methods/nshttp.mm apt/methods/nshttp.mm
---- apt-2.1.10/methods/nshttp.mm	1969-12-31 19:00:00.000000000 -0500
-+++ apt/methods/nshttp.mm	2020-10-07 01:57:17.508671918 -0400
+diff -urN apt-2.1.11/methods/nshttp.mm apt/methods/nshttp.mm
+--- apt-2.1.11/methods/nshttp.mm	1969-12-31 19:00:00.000000000 -0500
++++ apt/methods/nshttp.mm	2020-11-22 18:23:41.697439827 -0500
 @@ -0,0 +1,260 @@
 +// -*- mode: cpp; mode: fold -*-
 +// Description								/*{{{*/

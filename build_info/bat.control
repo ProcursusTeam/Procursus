@@ -1,0 +1,20 @@
+Package: bat
+Version: @DEB_BAT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: standard
+Description: cat(1) clone with syntax highlighting and git integration
+ bat is a drop-in cat(1) replacement featuring:
+ .
+  * syntax highlighting for a large number of languages;
+  * git integration;
+  * automatic paging;
+  * a user-friendly command-line interface.
+ .
+ In this package the executable and its manpage have been renamed from ‘bat’ to
+ ‘batcat’ because of a file name clash with another Debian package.
+ .
+ This package contains the following binaries built from the Rust crate
+ "bat":
+  - bat

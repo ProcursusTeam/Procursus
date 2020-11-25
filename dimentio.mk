@@ -4,10 +4,10 @@ endif
 
 SUBPROJECTS        += dimentio
 # I'm not going to bump the version any higher than 1.0.3. Just change commit date/short hash.
-DIMENTIO_VERSION   := 1.0.3+git20201119.7ffffff
+DIMENTIO_VERSION   := 1.0.3+git20201124.7ffffff
 DEB_DIMENTIO_V     ?= $(DIMENTIO_VERSION)
 
-DIMENTIO_COMMIT    := 7ffffff0e21207079d9e4667145496739f1f3dcb
+DIMENTIO_COMMIT    := 7ffffff5f441285c457773742241df1849063fd2
 DIMENTIO_SOVERSION := 0
 DIMENTIO_LIBS      := -framework CoreFoundation -framework IOKit -lcompression
 
@@ -23,13 +23,21 @@ dimentio:
 	@echo "Using previously built dimentio."
 else
 dimentio: dimentio-setup
+
+	###
+	# As of right now, -arch arm64e is prepended to the CFLAGS to allow for it to work properly on arm64e iPhones.
+	# Do not compile this for <= 1600 with XCode 12, and do not compile it for >= 1700 with Xcode << 12.
+	# 1.0.3+git20201124.7ffffff should be the last version (save for some emergency update) for CFVER <= 1600
+	# To make toolchain switching easier on me, I'm just going to compile this for >= 1700 from now on.
+	###
+
 	# libdimentio.o
-	$(CC) $(CFLAGS) -D__arm64e__ \
+	$(CC) -arch arm64e $(CFLAGS) \
 		-c -o $(BUILD_WORK)/dimentio/libdimentio.o -x c \
 		$(BUILD_WORK)/dimentio/libdimentio.c
 
 	# libdimentio.dylib
-	$(CC) $(CFLAGS) -dynamiclib \
+	$(CC) -arch arm64e $(CFLAGS) -dynamiclib \
 		-install_name "/usr/lib/libdimentio.$(DIMENTIO_SOVERSION).dylib" \
 		-o $(BUILD_WORK)/dimentio/libdimentio.$(DIMENTIO_SOVERSION).dylib \
 		$(BUILD_WORK)/dimentio/libdimentio.o \
@@ -41,12 +49,12 @@ dimentio: dimentio-setup
 		$(BUILD_WORK)/dimentio/libdimentio.o
 
 	# dimentio.o
-	$(CC) $(CFLAGS) \
+	$(CC) -arch arm64e $(CFLAGS) \
 		-c -o $(BUILD_WORK)/dimentio/dimentio.o -x c \
 		$(BUILD_WORK)/dimentio/dimentio.c
 
 	# dimentio
-	$(CC) $(CFLAGS) \
+	$(CC) -arch arm64e $(CFLAGS) \
 		-o $(BUILD_WORK)/dimentio/dimentio \
 		$(BUILD_WORK)/dimentio/dimentio.o \
 		$(BUILD_WORK)/dimentio/libdimentio.$(DIMENTIO_SOVERSION).dylib

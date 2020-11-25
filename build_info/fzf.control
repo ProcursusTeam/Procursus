@@ -1,0 +1,10 @@
+Package: fzf
+Version: @DEB_FZF_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: standard
+Description: general-purpose command-line fuzzy finder
+ It's an interactive Unix filter for command-line that can be used with
+ any list; files, command history, processes, hostnames, bookmarks, git
+ commits, etc.
