@@ -17,15 +17,15 @@ lzip:
 else
 lzip: lzip-setup
 	cd $(BUILD_WORK)/lzip && ./configure \
+		--prefix=/usr \
         CXX=$(CXX) \
         CXXFLAGS="$(CXXFLAGS)" \
         CPPFLAGS="$(CPPFLAGS)" \
         LDFLAGS="$(LDFLAGS)"
-		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/lzip
-	+$(MAKE) -C $(BUILD_WORK)/lzip install \
-		DESTDIR=$(BUILD_STAGE)/lzip
-	+$(MAKE) -C $(BUILD_WORK)/lzip install \
+	+$(MAKE) -C $(BUILD_WORK)/lzip install -j1 \
+		DESTDIR="$(BUILD_STAGE)/lzip"
+	+$(MAKE) -C $(BUILD_WORK)/lzip install -j1 \
 		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/lzip/.build_complete
 endif
@@ -46,4 +46,4 @@ lzip-package: lzip-stage
 	# lzip.mk Build cleanup
 	rm -rf $(BUILD_DIST)/lzip
 
-	.PHONY: lzip lzip-package
+.PHONY: lzip lzip-package
