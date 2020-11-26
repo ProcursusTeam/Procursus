@@ -1,0 +1,13 @@
+Package: libsdl2-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_SDL2_V@
+Depends: libsdl2-2.0-0 (>= @DEB_SDL2_V@)
+Section: Development
+Priority: optional
+Description: Simple DirectMedia Layer development files
+ SDL is a library that allows programs portable low level access to a video
+ framebuffer, audio output, mouse, and keyboard.
+ .
+ This package contains the files needed to compile and link programs which
+ use SDL.

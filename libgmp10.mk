@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += libgmp10
-GMP_VERSION := 6.2.0
-DEB_GMP_V   ?= $(GMP_VERSION)-2
+GMP_VERSION := 6.2.1
+DEB_GMP_V   ?= $(GMP_VERSION)
 
 libgmp10-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://gmplib.org/download/gmp/gmp-$(GMP_VERSION).tar.xz{,.sig}
@@ -18,8 +18,7 @@ else
 libgmp10: libgmp10-setup
 	cd $(BUILD_WORK)/libgmp10 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--disable-assembly
+		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/libgmp10
 	+$(MAKE) -C $(BUILD_WORK)/libgmp10 install \
 		DESTDIR=$(BUILD_STAGE)/libgmp10
