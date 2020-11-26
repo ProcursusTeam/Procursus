@@ -33,6 +33,8 @@ sdl2: sdl2-setup
 	cp $(BUILD_WORK)/sdl2/include/SDL_config_iphoneos.h $(BUILD_WORK)/sdl2/include/SDL_config.h
 	+$(MAKE) -C $(BUILD_WORK)/sdl2 install \
 		DESTDIR=$(BUILD_STAGE)/sdl2
+	+$(MAKE) -C $(BUILD_WORK)/sdl2 install \
+		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/sdl2/.build_complete
 endif
 
