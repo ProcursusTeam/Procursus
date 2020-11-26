@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += gh
-GH_VERSION  := 1.2.1
-DEB_GH_V    ?= $(GH_VERSION)-1
+GH_VERSION  := 1.3.0
+DEB_GH_V    ?= $(GH_VERSION)
 
 gh-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/gh-$(GH_VERSION).tar.gz" ] && \
