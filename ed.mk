@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS       += ed
+SUBPROJECTS += ed
 ED_VERSION  := 1.16
 DEB_ED_V    ?= $(ED_VERSION)
 
@@ -17,15 +17,15 @@ ed:
 else
 ed: ed-setup
 	cd $(BUILD_WORK)/ed && ./configure \
-	CC=$(CC) \
-	CFLAGS="$(CCFLAGS)" \
-	CPPFLAGS="$(CPPFLAGS)" \
-	LDFLAGS="$(LDFLAGS)" \
-	--prefix=/usr
+		--prefix=/usr \
+		CC=$(CC) \
+		CFLAGS="$(CCFLAGS)" \
+		CPPFLAGS="$(CPPFLAGS)" \
+		LDFLAGS="$(LDFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/ed
-	+$(MAKE) -C $(BUILD_WORK)/ed install \
+	+$(MAKE) -C $(BUILD_WORK)/ed install -j1 \
 		DESTDIR=$(BUILD_STAGE)/ed
-	+$(MAKE) -C $(BUILD_WORK)/ed install \
+	+$(MAKE) -C $(BUILD_WORK)/ed install -j1 \
 		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/ed/.build_complete
 endif
@@ -46,4 +46,4 @@ ed-package: ed-stage
 	# ed.mk Build cleanup
 	rm -rf $(BUILD_DIST)/ed
 
-	.PHONY: ed ed-package
+.PHONY: ed ed-package

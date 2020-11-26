@@ -1,10 +1,10 @@
-Package: flex
+Package: libfl2
 Version: @DEB_FLEX_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Section: Development
+Section: Libraries
 Priority: optional
-Description: fast lexical analyzer generator
+Description: SHARED library for flex (a fast lexical analyzer generator)
  Flex is a tool for generating scanners: programs which recognized lexical
  patterns in text. It reads the given input files for a description of a
  scanner to generate. The description is in the form of pairs of regular
@@ -13,3 +13,5 @@ Description: fast lexical analyzer generator
  and linked with the -lfl library to produce an executable. When the
  executable is run, it analyzes its input for occurrences of the regular
  expressions. Whenever it finds one, it executes the corresponding C code.
+ .
+ This package contains the shared library for flex.
