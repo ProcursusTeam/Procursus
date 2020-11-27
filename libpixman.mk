@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libpixman/.build_complete),)
 libpixman:
 	@echo "Using previously built libpixman."
 else
-libpixman: libpixman-setup libpng16
+libpixman: libpixman-setup
 	cd $(BUILD_WORK)/libpixman && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
