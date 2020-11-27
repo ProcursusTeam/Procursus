@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS     += libwebp
 LIBWEBP_VERSION := 1.1.0
-DEB_LIBWEBP_V   ?= $(LIBWEBP_VERSION)
+DEB_LIBWEBP_V   ?= $(LIBWEBP_VERSION)-1
 
 libwebp-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/libwebp-$(LIBWEBP_VERSION).tar.gz" ] && wget -q -nc -L -O$(BUILD_SOURCE)/libwebp-$(LIBWEBP_VERSION).tar.gz \
@@ -17,7 +17,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libwebp/.build_complete),)
 libwebp:
 	@echo "Using previously built libwebp."
 else
-libwebp: libwebp-setup libpng16 libtiff libjpeg-turbo
+libwebp: libwebp-setup libpng16 libgif libtiff libjpeg-turbo
 	cd $(BUILD_WORK)/libwebp && ./autogen.sh && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

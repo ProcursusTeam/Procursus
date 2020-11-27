@@ -5,7 +5,7 @@ endif
 
 SUBPROJECTS    += libgif
 LIBGIF_VERSION := 5.2.1
-DEB_LIBGIF_V   ?= $(LIBGIF_VERSION)
+DEB_LIBGIF_V   ?= $(LIBGIF_VERSION)-1
 
 libgif-setup: setup
 	wget -q -nc -L -P $(BUILD_SOURCE) \
@@ -19,7 +19,9 @@ libgif:
 else
 libgif: libgif-setup
 	+$(MAKE) -C $(BUILD_WORK)/libgif all -j1 \
-		PREFIX=/usr
+		PREFIX=/usr \
+		CFLAGS="$(CFLAGS)" \
+		LDFLAGS="$(LDFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/libgif install -j1 \
 		PREFIX=/usr \
 		DESTDIR=$(BUILD_STAGE)/libgif
@@ -44,7 +46,7 @@ libgif-package: libgif-stage
 	cp -a $(BUILD_STAGE)/libgif/usr/lib/libgif.{a,dylib} $(BUILD_DIST)/libgif-dev/usr/lib
 
   # libgif.mk Prep libgif7
-	cp -a $(BUILD_STAGE)/libgif/usr/lib/libgif.7*.dylib $(BUILD_DIST)/libgif-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libgif/usr/lib/libgif.7*.dylib $(BUILD_DIST)/libgif7/usr/lib
 
   # libgif.mk Sign
 	$(call SIGN,giflib-tools,general.xml)
