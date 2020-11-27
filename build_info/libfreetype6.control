@@ -1,4 +1,4 @@
-Package: freetype6
+Package: libfreetype6
 Version: @DEB_FREETYPE_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@

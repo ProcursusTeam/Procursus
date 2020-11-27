@@ -31,24 +31,24 @@ endif
 
 freetype-package: freetype-stage
 	# freetype.mk Package Structure
-	rm -rf $(BUILD_DIST)/freetype6{,-dev}
-	mkdir -p $(BUILD_DIST)/freetype6{,-dev}/usr/lib
+	rm -rf $(BUILD_DIST)/libfreetype6{,-dev}
+	mkdir -p $(BUILD_DIST)/libfreetype6{,-dev}/usr/lib
 	
 	# freetype.mk Prep freetype6
-	cp -a $(BUILD_STAGE)/freetype/usr/lib/libfreetype.6.dylib $(BUILD_DIST)/freetype6/usr/lib
+	cp -a $(BUILD_STAGE)/freetype/usr/lib/libfreetype.6.dylib $(BUILD_DIST)/libfreetype6/usr/lib
 	
 	# freetype.mk Prep freetype6-dev
-	cp -a $(BUILD_STAGE)/freetype/usr/lib/{libfreetype.{a,dylib},pkgconfig} $(BUILD_DIST)/freetype6-dev/usr/lib
-	cp -a $(BUILD_STAGE)/freetype/usr/{include,share} $(BUILD_DIST)/freetype6-dev/usr
+	cp -a $(BUILD_STAGE)/freetype/usr/lib/{libfreetype.{a,dylib},pkgconfig} $(BUILD_DIST)/libfreetype6-dev/usr/lib
+	cp -a $(BUILD_STAGE)/freetype/usr/{include,share} $(BUILD_DIST)/libfreetype6-dev/usr
 	
 	# freetype.mk Sign
-	$(call SIGN,freetype6,general.xml)
+	$(call SIGN,libfreetype6,general.xml)
 	
 	# freetype.mk Make .debs
-	$(call PACK,freetype6,DEB_FREETYPE_V)
-	$(call PACK,freetype6-dev,DEB_FREETYPE_V)
+	$(call PACK,libfreetype6,DEB_FREETYPE_V)
+	$(call PACK,libfreetype6-dev,DEB_FREETYPE_V)
 	
 	# freetype.mk Build cleanup
-	rm -rf $(BUILD_DIST)/freetype6{,-dev}
+	rm -rf $(BUILD_DIST)/libfreetype6{,-dev}
 
 .PHONY: freetype freetype-package

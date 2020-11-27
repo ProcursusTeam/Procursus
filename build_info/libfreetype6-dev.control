@@ -1,8 +1,8 @@
-Package: freetype6-dev
+Package: libreetype6-dev
 Version: @DEB_FREETYPE_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libbrotli-dev, libpng16-dev, freetype6 (= @DEB_FREETYPE_V@)
+Depends: libbrotli-dev, libpng16-dev, libfreetype6 (= @DEB_FREETYPE_V@)
 Section: Development
 Priority: standard
 Description: FreeType 2 font engine, development files (transitional package)

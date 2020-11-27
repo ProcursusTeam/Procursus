@@ -1,0 +1,13 @@
+Package: libcairo-gobject2
+Version: @DEB_CAIRO_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libcairo2 (= @DEB_CAIRO_V@), libfontconfig1, libfreetype6, libpng16-16, libpixman-1-0, libglib2.0-0
+Section: Libraries
+Priority: optional
+Description: Cairo 2D vector graphics library (GObject library)
+ Cairo is a multi-platform library providing anti-aliased
+ vector-based rendering for multiple target backends.
+ .
+ This package contains the GObject library, providing wrapper GObject types
+ for all cairo types.
