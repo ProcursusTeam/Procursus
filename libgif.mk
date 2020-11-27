@@ -3,7 +3,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS  += libgif
+SUBPROJECTS    += libgif
 LIBGIF_VERSION := 5.2.1
 DEB_LIBGIF_V   ?= $(LIBGIF_VERSION)
 
@@ -13,17 +13,17 @@ libgif-setup: setup
 	$(call EXTRACT_TAR,giflib-$(LIBGIF_VERSION).tar.gz,giflib-$(LIBGIF_VERSION),libgif)
 	$(call DO_PATCH,libgif,libgif,-p0)
 
-
 ifneq ($(wildcard $(BUILD_WORK)/libgif/.build_complete),)
 libgif:
 	@echo "Using previously built libgif."
 else
 libgif: libgif-setup
-	+$(MAKE) -C $(BUILD_WORK)/libgif all
-	+$(MAKE) -C $(BUILD_WORK)/libgif install \
+	+$(MAKE) -C $(BUILD_WORK)/libgif all -j1 \
+		PREFIX=/usr
+	+$(MAKE) -C $(BUILD_WORK)/libgif install -j1 \
 		PREFIX=/usr \
 		DESTDIR=$(BUILD_STAGE)/libgif
-	+$(MAKE) -C $(BUILD_WORK)/libgif install \
+	+$(MAKE) -C $(BUILD_WORK)/libgif install -j1 \
 		PREFIX=/usr \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libgif/.build_complete
@@ -44,7 +44,7 @@ libgif-package: libgif-stage
 	cp -a $(BUILD_STAGE)/libgif/usr/lib/libgif.{a,dylib} $(BUILD_DIST)/libgif-dev/usr/lib
 
   # libgif.mk Prep libgif7
-	cp -a $(BUILD_STAGE)/libgif/usr/lib/libgif.*.dylib $(BUILD_DIST)/libgif-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libgif/usr/lib/libgif.7*.dylib $(BUILD_DIST)/libgif-dev/usr/lib
 
   # libgif.mk Sign
 	$(call SIGN,giflib-tools,general.xml)

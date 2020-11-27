@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS  += libwebp
+SUBPROJECTS     += libwebp
 LIBWEBP_VERSION := 1.1.0
 DEB_LIBWEBP_V   ?= $(LIBWEBP_VERSION)
 
@@ -18,11 +18,11 @@ ifneq ($(wildcard $(BUILD_WORK)/libwebp/.build_complete),)
 libwebp:
 	@echo "Using previously built libwebp."
 else
-libwebp: libwebp-setup
+libwebp: libwebp-setup libpng16 libtiff libjpeg-turbo
 	cd $(BUILD_WORK)/libwebp && ./autogen.sh && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
-		--disable-{sdl,png,jpeg,tiff,gif} \
+		--disable-{sdl,gl} \
 		--enable-libwebp{mux,demux,decoder,extras}
 	+$(MAKE) -C $(BUILD_WORK)/libwebp
 	+$(MAKE) -C $(BUILD_WORK)/libwebp install \

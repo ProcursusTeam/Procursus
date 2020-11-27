@@ -16,10 +16,11 @@ ifneq ($(wildcard $(BUILD_WORK)/libtiff/.build_complete),)
 libtiff:
 	@echo "Using previously built libtiff."
 else
-libtiff: libtiff-setup libjpeg-turbo xz libwebp zstd
+libtiff: libtiff-setup libjpeg-turbo xz zstd
 	cd $(BUILD_WORK)/libtiff && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/usr \
+		--disable-webp
 	+$(MAKE) -C $(BUILD_WORK)/libtiff
 	+$(MAKE) -C $(BUILD_WORK)/libtiff install \
 		DESTDIR="$(BUILD_STAGE)/libtiff"

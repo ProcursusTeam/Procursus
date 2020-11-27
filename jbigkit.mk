@@ -16,23 +16,23 @@ jbigkit:
 	@echo "Using previously built jbigkit."
 else
 jbigkit: jbigkit-setup
-	+$(MAKE) -C $(BUILD_WORK)/jbigkit CC="$(CC)" CFLAGS="$(CFLAGS) -I../libjbig"
+	+$(MAKE) -C $(BUILD_WORK)/jbigkit CC="$(CC)" CFLAGS="$(CFLAGS) -I../libjbig" PREFIX=/usr
 
-	install -D -m644 $(BUILD_WORK)/jbigkit/libjbig/libjbig.0.dylib $(BUILD_STAGE)/jbigkit/usr/lib/libjbig.0.dylib
-	install -D -m644 $(BUILD_WORK)/jbigkit/libjbig/libjbig.dylib $(BUILD_STAGE)/jbigkit/usr/lib/libjbig.dylib
+	$(GINSTALL) -D -m644 $(BUILD_WORK)/jbigkit/libjbig/libjbig.0.dylib $(BUILD_STAGE)/jbigkit/usr/lib/libjbig.0.dylib
+	$(GINSTALL) -D -m644 $(BUILD_WORK)/jbigkit/libjbig/libjbig.dylib $(BUILD_STAGE)/jbigkit/usr/lib/libjbig.dylib
 
-	install -D -m644 $(BUILD_WORK)/jbigkit/libjbig/jbig.h $(BUILD_STAGE)/jbigkit/usr/include/jbig.h
-	install -D -m644 $(BUILD_WORK)/jbigkit/libjbig/jbig_ar.h $(BUILD_STAGE)/jbigkit/usr/include/jbig_ar.h
-	install -D -m644 $(BUILD_WORK)/jbigkit/libjbig/jbig85.h $(BUILD_STAGE)/jbigkit/usr/include/jbig85.h
+	$(GINSTALL) -D -m644 $(BUILD_WORK)/jbigkit/libjbig/jbig.h $(BUILD_STAGE)/jbigkit/usr/include/jbig.h
+	$(GINSTALL) -D -m644 $(BUILD_WORK)/jbigkit/libjbig/jbig_ar.h $(BUILD_STAGE)/jbigkit/usr/include/jbig_ar.h
+	$(GINSTALL) -D -m644 $(BUILD_WORK)/jbigkit/libjbig/jbig85.h $(BUILD_STAGE)/jbigkit/usr/include/jbig85.h
 
-	install -D -m644 $(BUILD_WORK)/jbigkit/pbmtools/jbgtopbm $(BUILD_STAGE)/jbigkit/usr/bin/jbgtopbm
-	install -D -m644 $(BUILD_WORK)/jbigkit/pbmtools/pbmtojbg $(BUILD_STAGE)/jbigkit/usr/bin/pbmtojbg
-	install -D -m644 $(BUILD_WORK)/jbigkit/pbmtools/jbgtopbm85 $(BUILD_STAGE)/jbigkit/usr/bin/jbgtopbm85
-	install -D -m644 $(BUILD_WORK)/jbigkit/pbmtools/pbmtojbg85 $(BUILD_STAGE)/jbigkit/usr/bin/pbmtojbg85
+	$(GINSTALL) -D -m755 $(BUILD_WORK)/jbigkit/pbmtools/jbgtopbm $(BUILD_STAGE)/jbigkit/usr/bin/jbgtopbm
+	$(GINSTALL) -D -m755 $(BUILD_WORK)/jbigkit/pbmtools/pbmtojbg $(BUILD_STAGE)/jbigkit/usr/bin/pbmtojbg
+	$(GINSTALL) -D -m755 $(BUILD_WORK)/jbigkit/pbmtools/jbgtopbm85 $(BUILD_STAGE)/jbigkit/usr/bin/jbgtopbm85
+	$(GINSTALL) -D -m755 $(BUILD_WORK)/jbigkit/pbmtools/pbmtojbg85 $(BUILD_STAGE)/jbigkit/usr/bin/pbmtojbg85
 
-	install -d -m755 $(BUILD_STAGE)/jbigkit/usr/share/man/man1
-	install -m644 "$(BUILD_WORK)/jbigkit/pbmtools/pbmtojbg.1" $(BUILD_STAGE)/jbigkit/usr/share/man/man1
-	install -m644 "$(BUILD_WORK)/jbigkit/pbmtools/jbgtopbm.1" $(BUILD_STAGE)/jbigkit/usr/share/man/man1
+	$(GINSTALL) -d -m755 $(BUILD_STAGE)/jbigkit/usr/share/man/man1
+	$(GINSTALL) -m644 "$(BUILD_WORK)/jbigkit/pbmtools/pbmtojbg.1" $(BUILD_STAGE)/jbigkit/usr/share/man/man1
+	$(GINSTALL) -m644 "$(BUILD_WORK)/jbigkit/pbmtools/jbgtopbm.1" $(BUILD_STAGE)/jbigkit/usr/share/man/man1
 
 	touch $(BUILD_WORK)/jbigkit/.build_complete
 endif

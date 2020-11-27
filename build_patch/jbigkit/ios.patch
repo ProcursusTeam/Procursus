@@ -27,7 +27,7 @@ diff -ruN jbigkit-2.1/libjbig/Makefile jbigkit/libjbig/Makefile
 +	-$(RANLIB) libjbig.a
 +
 +libjbig.dylib: jbig.pic_o jbig_ar.pic_o jbig85.pic_o
-+	$(CC) $(LDFLAGS) -dynamiclib -current_version 0 $+ -o libjbig.0.dylib
++	$(CC) $(LDFLAGS) -dynamiclib -install_name $(PREFIX)/lib/libjbig.0.dylib -current_version 0 $+ -o libjbig.0.dylib
 +	ln -sf libjbig.0.dylib libjbig.dylib
  
  libjbig85.a: jbig85.o jbig_ar.o

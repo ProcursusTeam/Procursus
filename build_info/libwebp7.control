@@ -1,4 +1,4 @@
-Package: libwebp6
+Package: libwebp7
 Version: @DEB_LIBWEBP_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@

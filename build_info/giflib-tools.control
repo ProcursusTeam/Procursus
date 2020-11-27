@@ -3,7 +3,6 @@ Version: @DEB_LIBGIF_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Utilities
-Depends: libgif7
 Description: library for GIF images (utilities)
  GIFLIB is a package of portable tools and library routines for working with GIF
  images.

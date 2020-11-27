@@ -3,7 +3,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS  				 	+= libjpeg-turbo
+SUBPROJECTS           += libjpeg-turbo
 LIBJPEG_TURBO_VERSION := 2.0.5
 DEB_LIBJPEG_TURBO_V   ?= $(LIBJPEG_TURBO_VERSION)
 
@@ -26,7 +26,6 @@ libjpeg-turbo: libjpeg-turbo-setup
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
 		-DCMAKE_INSTALL_PREFIX=/ \
 		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
-		-DCMAKE_INSTALL_RPATH=/usr \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
@@ -48,7 +47,7 @@ libjpeg-turbo-package: libjpeg-turbo-stage
 	mkdir -p \
 		$(BUILD_DIST)/libjpeg-turbo-progs/usr/{bin,share} \
 		$(BUILD_DIST)/{libjpeg62-turbo,libturbojpeg0}/usr/lib \
-		$(BUILD_DIST)/{libjpeg62-turbo-dev,libturbojpeg0-dev}/usr/{include,lib/pkgconfig} \
+		$(BUILD_DIST)/{libjpeg62-turbo-dev,libturbojpeg0-dev}/usr/{include,lib/pkgconfig}
 
 
 	# libjpeg-turbo.mk Prep libjpeg-turbo-progs

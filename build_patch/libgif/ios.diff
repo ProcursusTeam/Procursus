@@ -41,7 +41,7 @@
 -	$(CC) $(CFLAGS) -shared $(LDFLAGS) -Wl,-soname -Wl,libgif.so.$(LIBMAJOR) -o libgif.so $(OBJECTS)
 +$(LIBGIFSO): $(OBJECTS) $(HEADERS)
 +ifeq ($(UNAME), Darwin)
-+	$(CC) $(CFLAGS) -dynamiclib -current_version $(LIBVER) $(OBJECTS) -o $(LIBGIFSO)
++	$(CC) $(CFLAGS) -dynamiclib -install_name $(PREFIX)/lib/$(LIBGIFSOMAJOR) -current_version $(LIBVER) $(OBJECTS) -o $(LIBGIFSO)
 +else
 +	$(CC) $(CFLAGS) -shared $(LDFLAGS) -Wl,-soname -Wl,$(LIBGIFSOMAJOR) -o $(LIBGIFSO) $(OBJECTS)
 +endif
