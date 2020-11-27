@@ -1,0 +1,9 @@
+Package: cameronkatri-keyring
+Version: @DEB_CKATRI_KEYRING_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: System
+Priority: standard
+Description: GnuPG keys for Cameron Katri's repositories.
+Name: Cameron Katri's APT Keyring
+Tag: purpose::backend, role::hacker
