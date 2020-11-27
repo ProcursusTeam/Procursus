@@ -1,0 +1,19 @@
+Package: libvidstab1.1
+Version: @DEB_LIBVIDSTAB_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Description: video stabilization library (shared library)
+ Imagine you captured a nice video with your camcorder, compact camera or
+ even cell phone while skiing, cycling or whatever sports and the video is
+ basically just jiggled.
+ .
+ Modern cameras come along with hardware stabilisation, however this does
+ not work if you have really strong vibrations - rather the contrary -
+ sometimes this mechanism starts to oscillate.
+ .
+ Vid.Stab is your friend in this matter. It is designed to stabilize even
+ strongly jiggled clips.
+ .
+ This package contains the shared library.
