@@ -2,7 +2,7 @@ Package: libsrt-dev
 Version: @DEB_LIBSRT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libsrt1 (= @DEB_LIBSRT_V@)
+Depends: libsrt1 (= @DEB_LIBSRT_V@), libssl-dev
 Section: Development
 Priority: optional
 Homepage: https://github.com/Haivision/srt/
