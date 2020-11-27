@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libsndfile/.build_complete),)
 libsndfile:
 	@echo "Using previously built libsndfile."
 else
-libsndfile: libsndfile-setup
+libsndfile: libsndfile-setup flac libogg libvorbis libopus
 	cd $(BUILD_WORK)/libsndfile && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

@@ -2,6 +2,7 @@ Package: libsndfile1-dev
 Version: @DEB_LIBSNDFILE_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Depends: libsndfile1 (= @DEB_LIBSNDFILE_V@), libflac-dev, libvorbis-dev, libopus-dev, libogg-dev
 Section: Development
 Priority: standard
 Description: Development files for libsndfile; a library for reading/writing audio files

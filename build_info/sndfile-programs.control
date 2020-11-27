@@ -2,6 +2,7 @@ Package: sndfile-programs
 Version: @DEB_LIBSNDFILE_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Depends: libsndfile1 (>= @DEB_LIBSNDFILE_V@), libflac8, libvorbis0a, libvorbisenc2, libopus0, libogg0
 Section: Utilities 
 Priority: standard
 Description: Sample programs that use libsndfile
