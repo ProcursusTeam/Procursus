@@ -35,6 +35,8 @@ aom: aom-setup
 		-DGIT_EXECUTABLE=/non-existant-binary \
 		-DAOM_TARGET_CPU="$(ARCHES)" \
 		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
+		-DCMAKE_INSTALL_RPATH=/usr \
 		..
 	+$(MAKE) -C $(BUILD_WORK)/aom/build
 	+$(MAKE) -C $(BUILD_WORK)/aom/build install \
@@ -54,7 +56,7 @@ aom-package: aom-stage
 	cp -a $(BUILD_STAGE)/aom/usr/bin $(BUILD_DIST)/aom-tools/usr
 	
 	# aom.mk Prep libaom2
-	cp -a $(BUILD_STAGE)/aom/usr/lib/libaom.$(AOM_VERSION).dylib $(BUILD_DIST)/libaom2/usr/lib
+	cp -a $(BUILD_STAGE)/aom/usr/lib/libaom.2.0.0.dylib $(BUILD_DIST)/libaom2/usr/lib
 	cp -a $(BUILD_STAGE)/aom/usr/lib/libaom.2.dylib $(BUILD_DIST)/libaom2/usr/lib
 	
 	# aom.mk Prep libaom-pkg-dev
