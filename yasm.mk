@@ -30,7 +30,7 @@ endif
 
 yasm-package: yasm-stage
 	# yasm.mk Package Structure
-	rm -rf $(BUILD_DIST)/yasm
+	rm -rf $(BUILD_DIST)/yasm $(BUILD_DIST)/libyasm-dev
 	mkdir -p $(BUILD_DIST)/{yasm/usr,libyasm-dev/usr}
 	
 	# yasm.mk Prep yasm
@@ -47,6 +47,6 @@ yasm-package: yasm-stage
 	$(call PACK,libyasm-dev,DEB_YASM_V)
 	
 	# yasm.mk Build cleanup
-	rm -rf $(BUILD_DIST)/yasm
+	rm -rf $(BUILD_DIST)/yasm $(BUILD_DIST)/libyasm-dev
 
 .PHONY: yasm yasm-package
