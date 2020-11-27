@@ -55,6 +55,8 @@ libvorbis-package: libvorbis-stage
 	
 	# libvorbis.mk Sign
 	$(call SIGN,libvorbis0a,general.xml)
+	$(call SIGN,libvorbisenc2,general.xml)
+	$(call SIGN,libvorbisfile3,general.xml)
 	
 	# libvorbis.mk Make .debs
 	$(call PACK,libvorbis0a,DEB_LIBVORBIS_V)
