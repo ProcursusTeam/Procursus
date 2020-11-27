@@ -1,0 +1,20 @@
+Package: liblept5
+Version: @DEB_LEPTONICA_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libpng16-16, libjpeg62-turbo, libgif7, libtiff5, libwebpmux3, libwebp7, libopenjp2-7
+Section: Libraries
+Priority: optional
+Description: image processing library
+ Well-tested C library for some basic image processing operations,
+ along with a description of the functions and some design methods. A
+ full set of affine transformations (translation, shear, rotation,
+ scaling) on images of all depths is included, with the exception that
+ some of the scaling methods do not work at all depths. There are also
+ implementations of binary morphology, grayscale morphology,
+ convolution and rank order filters, and applications such as jbig2
+ image processing and color quantization. You will also find basic
+ utilities for the safe and efficient handling of arrays (of strings,
+ numbers, number pairs and image-related geometrical objects), byte
+ queues, generic stacks, generic lists, and endian-independent
+ indexing into 32-bit arrays.
