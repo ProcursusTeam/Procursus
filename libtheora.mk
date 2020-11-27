@@ -6,20 +6,20 @@ SUBPROJECTS       += libtheora
 LIBTHEORA_VERSION := 1.1.1
 DEB_LIBTHEORA_V   ?= $(LIBTHEORA_VERSION)
 
-libtheora-setup: setup
+libtheora-setup: setup file-setup
 	wget -q -nc -P $(BUILD_SOURCE) https://downloads.xiph.org/releases/theora/libtheora-$(LIBTHEORA_VERSION).tar.xz
 	$(call EXTRACT_TAR,libtheora-$(LIBTHEORA_VERSION).tar.xz,libtheora-$(LIBTHEORA_VERSION),libtheora)
+	cp -a $(BUILD_WORK)/file/config.sub $(BUILD_WORK)/libtheora
 
 ifneq ($(wildcard $(BUILD_WORK)/libtheora/.build_complete),)
 libtheora:
 	@echo "Using previously built libtheora."
 else
-libtheora: libtheora-setup libogg libvorbis
+libtheora: libtheora-setup libogg
 	cd $(BUILD_WORK)/libtheora && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-dependency-tracking \
-		--disable-asm \
 		--disable-oggtest \
 		--disable-vorbistest \
 		--disable-sdltest \
