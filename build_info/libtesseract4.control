@@ -1,0 +1,12 @@
+Package: libtesseract4
+Version: @DEB_TESSERACT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: liblept5, libarchive13, libcurl4
+Section: Libraries
+Priority: optional
+Description: Tesseract OCR library
+ Tesseract is an open source Optical Character Recognition (OCR)
+ Engine. It can be used directly, or (for programmers) using an API to
+ extract printed text from images. It supports a wide variety of
+ languages. This package includes the shared library.
