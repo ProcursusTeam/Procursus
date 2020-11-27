@@ -2,7 +2,7 @@ Package: man-db
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_MAN-DB_V@
-Depends: libgdbm6, libpipeline1, groff, less, libintl8, libzstd1
+Depends: libgdbm6, libpipeline1, groff, less, libintl8, zstd
 Section: Development
 Priority: optional
 Homepage: https://nongnu.org/man-db/
