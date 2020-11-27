@@ -1,0 +1,7 @@
+Package: libyasm-dev
+Version: @DEB_YASM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Description: Modular BSD reimplementation of NASM

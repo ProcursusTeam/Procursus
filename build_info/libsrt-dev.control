@@ -1,0 +1,15 @@
+Package: libsrt-dev
+Version: @DEB_LIBSRT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libsrt1 (= @DEB_LIBSRT_V@), libssl-dev
+Section: Development
+Priority: optional
+Homepage: https://github.com/Haivision/srt/
+Description: Secure Reliable Transport UDP streaming library
+ SRT is a latency-aware UDP transport mechanism optimized for video streams.
+ It detects and compensates for jitter and bandwidth fluctuations due to
+ network congestion. It mitigates packet loss and supports AES encryption.
+ .
+ This package contains the files necessary for development.
+Tag: purpose::library, role::developer

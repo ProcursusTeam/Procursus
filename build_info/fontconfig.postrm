@@ -1,0 +1,12 @@
+#! /bin/sh
+
+set -e
+
+case "$1" in
+	purge)
+	    rm -f /var/log/fontconfig.log
+	    rm -rf /var/cache/fontconfig
+	    ;;
+esac
+
+#DEBHELPER#

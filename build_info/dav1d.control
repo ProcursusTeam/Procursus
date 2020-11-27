@@ -1,0 +1,19 @@
+Package: dav1d
+Version: @DEB_DAV1D_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libdav1d4
+Section: Utilities
+Priority: standard
+Description: fast and small AV1 video stream decoder
+ dav1d is an AOMedia Video 1 (AV1) cross-platform decoder and focused on speed
+ and correctness.
+ .
+ dav1d supports the following features:
+  * support for all features of the AV1 bitstream
+  * support for all bitdepth, 8, 10 and 12bits
+  * support for all chroma subsamplings 4:2:0, 4:2:2, 4:4:4 and grayscale
+  * full acceleration for AVX-2 chips
+  * full acceleration for SSSE3+ chips
+  * full acceleration for ARMv8 chips
+  * partial acceleration for ARMv7 chips

@@ -1,0 +1,13 @@
+Package: libsndfile1-dev
+Version: @DEB_LIBSNDFILE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libsndfile1 (= @DEB_LIBSNDFILE_V@), libflac-dev, libvorbis-dev, libopus-dev, libogg-dev
+Section: Development
+Priority: standard
+Description: Development files for libsndfile; a library for reading/writing audio files
+ libsndfile is a library of C routines for reading and writing files containing
+ sampled audio data.
+ .
+ This is the development version of libsndfile. You will need this only if you
+ intend to compile programs that use this library.

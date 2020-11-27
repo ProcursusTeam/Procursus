@@ -1,0 +1,16 @@
+Package: libvorbisenc2
+Version: @DEB_LIBVORBIS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libogg0 (>= 1.3.4), libvorbis0a (= @DEB_LIBVORBIS_V@)
+Section: Libraries
+Priority: optional
+Homepage: https://www.xiph.org/vorbis/
+Description: encoder library for Vorbis General Audio Compression Codec
+ Ogg Vorbis is a fully open, non-proprietary, patent-and-royalty-free,
+ general-purpose compressed audio format for audio and music at fixed
+ and variable bitrates from 16 to 128 kbps/channel.
+ .
+ The Vorbisenc library provides a convenient API for setting up an encoding
+ environment using libvorbis.
+Tag: purpose::library

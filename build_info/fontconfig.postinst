@@ -1,0 +1,20 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = triggered ]; then
+  # Force regeneration of all fontconfig cache files.
+  mkdir -p /var/cache/fontconfig
+  fc-cache -s -v 1>/var/log/fontconfig.log 2>&1 || printf "fc-cache failed.\nSee /var/log/fontconfig.log for more information.\n"
+  exit 0
+fi
+
+#DEBHELPER#
+
+if [ "$1" = configure ]; then
+  # Force regeneration of all fontconfig cache files.
+  mkdir -p /var/cache/fontconfig
+  printf "Regenerating fonts cache... "
+  fc-cache -s -f -v 1>/var/log/fontconfig.log 2>&1 || (printf "failed.\nSee /var/log/fontconfig.log for more information.\n"; exit 1)
+  printf "done.\n"
+fi
