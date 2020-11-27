@@ -13,7 +13,6 @@ libwebp-setup: setup
 	mkdir -p $(BUILD_WORK)/libwebp
 	$(TAR) xf $(BUILD_SOURCE)/libwebp-$(LIBWEBP_VERSION).tar.gz -C $(BUILD_WORK)/libwebp
 
-
 ifneq ($(wildcard $(BUILD_WORK)/libwebp/.build_complete),)
 libwebp:
 	@echo "Using previously built libwebp."
