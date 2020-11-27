@@ -17,8 +17,7 @@ else
 libxvidcore: libxvidcore-setup
 	cd $(BUILD_WORK)/libxvidcore/build/generic && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--disable-assembly
+		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/libxvidcore/build/generic
 	+$(MAKE) -C $(BUILD_WORK)/libxvidcore/build/generic install \
 		DESTDIR=$(BUILD_STAGE)/libxvidcore
