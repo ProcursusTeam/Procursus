@@ -20,9 +20,6 @@ flac: flac-setup libogg
 		--prefix=/usr \
 		--disable-dependency-tracking \
 		--disable-debug \
-		--disable-asm-optimizations \
-		--disable-sse \
-		--disable-altivec \
 		--enable-shared \
 		--disable-silent-rules \
 		--disable-xmms-plugin \
