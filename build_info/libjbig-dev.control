@@ -1,0 +1,16 @@
+Package: libjbig-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_JBIGKIT_V@
+Section: Development
+Depends: libjbig0
+Description: JBIGkit development files
+ JBIG-KIT provides a portable library of compression and decompression functions
+ with a documented interface that you can include very easily into your image or
+ document processing software.
+ .
+ This package contains the headers for the library.
+ .
+ Please note: There is no statically linked library in this package, and what
+ was previously two libraries with a single common file has been merged into
+ one library (libjbig).

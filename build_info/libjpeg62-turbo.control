@@ -1,0 +1,14 @@
+Package: libjpeg62-turbo
+Version: @DEB_LIBJPEG_TURBO_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Description: libjpeg-turbo JPEG runtime library
+ The libjpeg-turbo JPEG library is a library for handling JPEG files.
+ .
+ libjpeg-turbo is a JPEG image codec that uses SIMD instructions (MMX,
+ SSE2, NEON) to accelerate baseline JPEG compression and decompression
+ on x86, x86-64, and ARM systems.  The libjpeg-turbo JPEG library is
+ an API/ABI compatible with the IJG JPEG library.
+ .
+ This package contains the shared runtime library.

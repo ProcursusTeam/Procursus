@@ -1,0 +1,9 @@
+Package: libtiff-doc
+Version: @DEB_LIBTIFF_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Documentation
+Description: TIFF manipulation and conversion documentation
+ libtiff is a library providing support for the Tag Image File Format
+ (TIFF), a widely used format for storing image data.  This package
+ contains documentation.

@@ -1,0 +1,98 @@
+diff -ruN jbigkit-2.1/libjbig/Makefile jbigkit/libjbig/Makefile
+--- jbigkit-2.1/libjbig/Makefile	2014-03-28 02:47:15.000000000 +0800
++++ jbigkit/libjbig/Makefile	2020-11-11 03:36:01.476539244 +0800
+@@ -6,23 +6,31 @@
+ # Options for the compiler: A high optimization level is suggested
+ CFLAGS = -g -O -W -Wall -ansi -pedantic # --coverage
+ 
+-all: libjbig.a libjbig85.a tstcodec tstcodec85
++%.o: %.c
++	$(CC) $(CFLAGS) -c $<
++%.pic_o: %.c
++	$(CC) -fPIC $(CFLAGS) -c -o $@ $<
+ 
++all: libjbig.a libjbig.dylib libjbig85.a tstcodec tstcodec85
+ tstcodec: tstcodec.o jbig.o jbig_ar.o
+ 	$(CC) $(CFLAGS) -o tstcodec tstcodec.o jbig.o jbig_ar.o
+ 
+ tstcodec85: tstcodec85.o jbig85.o jbig_ar.o
+ 	$(CC) $(CFLAGS) -o tstcodec85 tstcodec85.o jbig85.o jbig_ar.o
+ 
+-libjbig.a: jbig.o jbig_ar.o
++libjbig.a: jbig.o jbig_ar.o jbig85.o
+ 	rm -f libjbig.a
+-	ar rc libjbig.a jbig.o jbig_ar.o
+-	-ranlib libjbig.a
++	$(AR) cru libjbig.a jbig.o jbig_ar.o
++	-$(RANLIB) libjbig.a
++
++libjbig.dylib: jbig.pic_o jbig_ar.pic_o jbig85.pic_o
++	$(CC) $(LDFLAGS) -dynamiclib -install_name $(PREFIX)/lib/libjbig.0.dylib -current_version 0 $+ -o libjbig.0.dylib
++	ln -sf libjbig.0.dylib libjbig.dylib
+ 
+ libjbig85.a: jbig85.o jbig_ar.o
+ 	rm -f libjbig85.a
+-	ar rc libjbig85.a jbig85.o jbig_ar.o
+-	-ranlib libjbig85.a
++	$(AR) cru libjbig85.a jbig85.o jbig_ar.o
++	-$(RANLIB) libjbig85.a
+ 
+ jbig.o: jbig.c jbig.h jbig_ar.h
+ jbig85.o: jbig85.c jbig85.h jbig_ar.h
+@@ -51,5 +59,6 @@
+ 
+ clean:
+ 	rm -f *.o *.gcda *.gcno *.gcov *.plist *~ core gmon.out dbg_d\=??.pbm
++	rm -rf *.dylib* *.a *.la *.pic_o
+ 	rm -f t82test.pbm
+ 	rm -f tstcodec tstcodec85
+
+diff -ruN jbigkit-2.1/pbmtools/Makefile jbigkit/pbmtools/Makefile
+--- jbigkit-2.1/pbmtools/Makefile	2014-03-28 02:47:15.000000000 +0800
++++ jbigkit/pbmtools/Makefile	2020-11-11 03:33:47.216219586 +0800
+@@ -5,7 +5,9 @@
+ 
+ # Options for the compiler
+ CFLAGS = -g -O -W -Wall -Wno-unused-result -ansi -pedantic # --coverage
+-CPPFLAGS = -I../libjbig 
++override CPPFLAGS += -I../libjbig
++override CFLAGS += -I../libjbig
++export LD_LIBRARY_PATH = ../libjbig
+ 
+ .SUFFIXES: .1 .5 .txt $(SUFFIXES)
+ .PHONY: txt test test82 test85 clean
+@@ -15,16 +17,16 @@
+ txt: pbmtojbg.txt jbgtopbm.txt pbm.txt pgm.txt
+ 
+ pbmtojbg: pbmtojbg.o ../libjbig/libjbig.a
+-	$(CC) $(CFLAGS) -o pbmtojbg pbmtojbg.o -L../libjbig -ljbig
++	$(CC) $(LDFLAGS) $(CFLAGS) -o pbmtojbg pbmtojbg.o -L../libjbig -ljbig
+ 
+ jbgtopbm: jbgtopbm.o ../libjbig/libjbig.a
+-	$(CC) $(CFLAGS) -o jbgtopbm jbgtopbm.o -L../libjbig -ljbig
++	$(CC) $(LDFLAGS) $(CFLAGS) -o jbgtopbm jbgtopbm.o -L../libjbig -ljbig
+ 
+ pbmtojbg85: pbmtojbg85.o ../libjbig/libjbig85.a
+-	$(CC) $(CFLAGS) -o pbmtojbg85 pbmtojbg85.o -L../libjbig -ljbig85
++	$(CC) $(LDFLAGS) $(CFLAGS) -o pbmtojbg85 pbmtojbg85.o -L../libjbig -ljbig85
+ 
+ jbgtopbm85: jbgtopbm85.o ../libjbig/libjbig85.a
+-	$(CC) $(CFLAGS) -o jbgtopbm85 jbgtopbm85.o -L../libjbig -ljbig85
++	$(CC) $(LDFLAGS) $(CFLAGS) -o jbgtopbm85 jbgtopbm85.o -L../libjbig -ljbig85
+ 
+ jbgtopbm.o: jbgtopbm.c ../libjbig/jbig.h
+ pbmtojbg.o: pbmtojbg.c ../libjbig/jbig.h
+@@ -33,11 +35,11 @@
+ 
+ ../libjbig/libjbig.a: ../libjbig/jbig.c ../libjbig/jbig.h \
+ 	../libjbig/jbig_ar.c ../libjbig/jbig_ar.h
+-	make -C ../libjbig libjbig.a
++	$(MAKE) -C ../libjbig libjbig.a
+ 
+ ../libjbig/libjbig85.a: ../libjbig/jbig85.c ../libjbig/jbig85.h \
+ 	../libjbig/jbig_ar.c ../libjbig/jbig_ar.h
+-	make -C ../libjbig libjbig85.a
++	$(MAKE) -C ../libjbig libjbig85.a
+ 
+ analyze:
+ 	clang $(CPPFLAGS) --analyze *.c

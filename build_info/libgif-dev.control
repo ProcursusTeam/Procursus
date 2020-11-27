@@ -1,0 +1,11 @@
+Package: libgif-dev
+Version: @DEB_LIBGIF_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Depends: libgif7
+Description: library for GIF images (development)
+ GIFLIB is a package of portable tools and library routines for working with GIF
+ images.
+ .
+ This package contains the development files.
