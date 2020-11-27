@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS  += frei0r
 FREI0R_VERSION := 1.7.0
-DEB_FREI0R_V   ?= $(FREI0R_VERSION)
+DEB_FREI0R_V   ?= $(FREI0R_VERSION)-1
 
 frei0r-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://files.dyne.org/frei0r/releases/frei0r-plugins-$(FREI0R_VERSION).tar.gz
@@ -33,7 +33,7 @@ frei0r: frei0r-setup cairo
 		DESTDIR=$(BUILD_STAGE)/frei0r
 	+$(MAKE) -C $(BUILD_WORK)/frei0r install \
 		DESTDIR=$(BUILD_BASE)
-	for file in $(BUILD_STAGE)/frei0r/usr/lib/frei0r-1/*.so ; do cp $$file "$${file%.*}.dylib" ; done
+	for file in $(BUILD_STAGE)/frei0r/usr/lib/frei0r-1/*.so ; do mv $$file "$${file%.*}.dylib" ; done
 	touch $(BUILD_WORK)/frei0r/.build_complete
 endif
 
