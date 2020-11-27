@@ -9,6 +9,7 @@ DEB_FONTCONFIG_V   ?= $(FONTCONFIG_VERSION)
 fontconfig-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.freedesktop.org/software/fontconfig/release/fontconfig-$(FONTCONFIG_VERSION).tar.bz2
 	$(call EXTRACT_TAR,fontconfig-$(FONTCONFIG_VERSION).tar.bz2,fontconfig-$(FONTCONFIG_VERSION),fontconfig)
+	$(call DO_PATCH,fontconfig,fontconfig,-p1) # Remove this patch after next release.
 
 ifneq ($(wildcard $(BUILD_WORK)/fontconfig/.build_complete),)
 fontconfig:
