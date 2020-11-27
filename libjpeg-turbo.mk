@@ -43,7 +43,7 @@ libjpeg-turbo-package: libjpeg-turbo-stage
   # libjpeg-turbo.mk Package Structure
 	rm -rf \
 		$(BUILD_DIST)/libjpeg62-{turbo,turbo-dev} \
-		$(BUILD_DIST)/{libjpeg-turbo-progs,libturbojpeg0}
+		$(BUILD_DIST)/{libjpeg-turbo-progs,libturbojpeg0{,-dev}}
 	mkdir -p \
 		$(BUILD_DIST)/libjpeg-turbo-progs/usr/{bin,share} \
 		$(BUILD_DIST)/{libjpeg62-turbo,libturbojpeg0}/usr/lib \
@@ -87,6 +87,6 @@ libjpeg-turbo-package: libjpeg-turbo-stage
   # libjpeg-turbo.mk Build cleanup
 	rm -rf \
 		$(BUILD_DIST)/libjpeg62-{turbo,turbo-dev} \
-		$(BUILD_DIST)/{libjpeg-turbo-progs,libturbojpeg0}
+		$(BUILD_DIST)/{libjpeg-turbo-progs,libturbojpeg0{,-dev}}
 
 .PHONY: libjpeg-turbo libjpeg-turbo-package
