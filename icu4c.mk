@@ -11,19 +11,19 @@ icu4c-setup: setup
 		wget -q -nc -O$(BUILD_SOURCE)/icu4c-$(ICU_VERSION).tar.gz \
 			https://github.com/unicode-org/icu/releases/download/release-$(shell echo $(ICU_VERSION) | $(SED) 's/\./-/')/icu4c-$(shell echo $(ICU_VERSION) | $(SED) 's/\./_/')-src.tgz
 	$(call EXTRACT_TAR,icu4c-$(ICU_VERSION).tar.gz,icu,icu4c)
-	$(call EXTRACT_TAR,icu4c-$(ICU_VERSION).tar.gz,icu,icu4c/host)
+	mkdir -p $(BUILD_WORK)/icu4c/host
 
 ifneq ($(wildcard $(BUILD_WORK)/icu4c/.build_complete),)
 icu4c:
 	@echo "Using previously built icu4c."
 else
 icu4c: icu4c-setup
-	cd $(BUILD_WORK)/icu4c/host/source && unset CC CXX CPP CFLAGS CPPFLAGS CXXFLAGS RANLIB AR; \
-		./configure; \
-		$(MAKE) -C $(BUILD_WORK)/icu4c/host/source
+	cd $(BUILD_WORK)/icu4c/host && unset CC CXX CPP CFLAGS CPPFLAGS CXXFLAGS LDFLAGS RANLIB AR; \
+		../source/configure; \
+		$(MAKE) -C $(BUILD_WORK)/icu4c/host
 	cd $(BUILD_WORK)/icu4c/source && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--with-cross-build=$(BUILD_WORK)/icu4c/host/source \
+		--with-cross-build=$(BUILD_WORK)/icu4c/host \
 		--prefix=/usr \
 		--disable-samples \
 		--disable-tests
