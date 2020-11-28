@@ -1,0 +1,10 @@
+Package: libluajit-5.1-dev
+Version: @DEB_LUAJIT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libluajit-5.1-2 (= @DEB_LUAJIT_V@)
+Section: Development
+Priority: optional
+Description: Just in time compiler for Lua - development files
+ This package contains header files and a statically linkable library for
+ LuaJIT.

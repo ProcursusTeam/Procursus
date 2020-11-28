@@ -1,0 +1,14 @@
+Package: luajit
+Version: @DEB_LUAJIT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libluajit-5.1-2 (= @DEB_LUAJIT_V@), libluajit-5.1-common (= @DEB_LUAJIT_V@)
+Section: Scripting
+Priority: optional
+Description: Just in time compiler for Lua programming language version 5.1
+ LuaJIT implements the full set of language features defined by Lua 5.1. The
+ virtual machine (VM) is API- and ABI-compatible to the standard Lua interpreter
+ and can be deployed as a drop-in replacement.
+ .
+ This package contains the standalone interpreter/jitter that can be used
+ as a replacement for the standard lua5.1 interpreter.

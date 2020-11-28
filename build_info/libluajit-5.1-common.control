@@ -1,0 +1,9 @@
+Package: libluajit-5.1-common
+Version: @DEB_LUAJIT_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Description: Just in time compiler for Lua - common files
+ This package contains files needed by the LuaJIT interpreter/jitter as well
+ by its embeddable (i.e. library) version.
