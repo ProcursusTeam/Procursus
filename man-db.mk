@@ -2,7 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq ($(FULL_STRAP),1)
+STRAPPROJECTS  += man-db
+else
 SUBPROJECTS    += man-db
+endif
 MAN-DB_VERSION := 2.9.3
 DEB_MAN-DB_V   ?= $(MAN-DB_VERSION)-2
 

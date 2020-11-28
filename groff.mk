@@ -2,7 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq ($(FULL_STRAP),1)
+STRAPPROJECTS  += groff
+else
 SUBPROJECTS    += groff
+endif
 GROFF_VERSION  := 1.22.4
 DEB_GROFF_V    ?= $(GROFF_VERSION)
 

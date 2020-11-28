@@ -2,7 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq ($(FULL_STRAP),1)
+STRAPPROJECTS   += libgdbm
+else
 SUBPROJECTS     += libgdbm
+endif
 LIBGDBM_VERSION := 1.18.1
 DEB_LIBGDBM_V   ?= $(LIBGDBM_VERSION)-2
 

@@ -2,7 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq ($(FULL_STRAP),1)
+STRAPPROJECTS += rsync
+else
 SUBPROJECTS   += rsync
+endif
 RSYNC_VERSION := 3.2.3
 DEB_RSYNC_V   ?= $(RSYNC_VERSION)
 

@@ -2,9 +2,13 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS += vi
-VI_VERSION  := 070224
-DEB_VI_V    ?= $(VI_VERSION)
+ifeq ($(FULL_STRAP),1)
+STRAPPROJECTS += vi
+else
+SUBPROJECTS   += vi
+endif
+VI_VERSION    := 070224
+DEB_VI_V      ?= $(VI_VERSION)
 
 vi-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://sources.archlinux.org/other/vi/ex-$(VI_VERSION).tar.xz

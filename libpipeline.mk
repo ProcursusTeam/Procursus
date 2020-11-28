@@ -2,7 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq ($(FULL_STRAP),1)
+STRAPPROJECTS       += libpipeline
+else
 SUBPROJECTS         += libpipeline
+endif
 LIBPIPELINE_VERSION := 1.5.3
 DEB_LIBPIPELINE_V   ?= $(LIBPIPELINE_VERSION)
 

@@ -2,9 +2,13 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS  += less
-LESS_VERSION := 551
-DEB_LESS_V   ?= $(LESS_VERSION)
+ifeq ($(FULL_STRAP),1)
+STRAPPROJECTS += less
+else
+SUBPROJECTS   += less
+endif
+LESS_VERSION  := 551
+DEB_LESS_V    ?= $(LESS_VERSION)
 
 less-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) http://www.greenwoodsoftware.com/less/less-$(LESS_VERSION).tar.gz

@@ -4,6 +4,8 @@ endif
 
 ifeq ($(SSH_STRAP),1)
 STRAPPROJECTS   += openssh
+else ifeq ($(FULL_STRAP),1)
+STRAPPROJECTS   += openssh
 else
 SUBPROJECTS     += openssh
 endif
