@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS   += cairo
 CAIRO_VERSION := 1.16.0
-DEB_CAIRO_V   ?= $(CAIRO_VERSION)
+DEB_CAIRO_V   ?= $(CAIRO_VERSION)-1
 
 cairo-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://cairographics.org/releases/cairo-$(CAIRO_VERSION).tar.xz

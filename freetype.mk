@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS      += freetype
 FREETYPE_VERSION := 2.10.3
-DEB_FREETYPE_V   ?= $(FREETYPE_VERSION)
+DEB_FREETYPE_V   ?= $(FREETYPE_VERSION)-1
 
 freetype-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://download.savannah.gnu.org/releases/freetype/freetype-$(FREETYPE_VERSION).tar.xz{,.sig}
@@ -31,24 +31,24 @@ endif
 
 freetype-package: freetype-stage
 	# freetype.mk Package Structure
-	rm -rf $(BUILD_DIST)/libfreetype6{,-dev}
-	mkdir -p $(BUILD_DIST)/libfreetype6{,-dev}/usr/lib
+	rm -rf $(BUILD_DIST)/libfreetype{6,-dev}
+	mkdir -p $(BUILD_DIST)/libfreetype{6,-dev}/usr/lib
 	
 	# freetype.mk Prep freetype6
 	cp -a $(BUILD_STAGE)/freetype/usr/lib/libfreetype.6.dylib $(BUILD_DIST)/libfreetype6/usr/lib
 	
 	# freetype.mk Prep freetype6-dev
-	cp -a $(BUILD_STAGE)/freetype/usr/lib/{libfreetype.{a,dylib},pkgconfig} $(BUILD_DIST)/libfreetype6-dev/usr/lib
-	cp -a $(BUILD_STAGE)/freetype/usr/{include,share} $(BUILD_DIST)/libfreetype6-dev/usr
+	cp -a $(BUILD_STAGE)/freetype/usr/lib/{libfreetype.{a,dylib},pkgconfig} $(BUILD_DIST)/libfreetype-dev/usr/lib
+	cp -a $(BUILD_STAGE)/freetype/usr/{include,share} $(BUILD_DIST)/libfreetype-dev/usr
 	
 	# freetype.mk Sign
 	$(call SIGN,libfreetype6,general.xml)
 	
 	# freetype.mk Make .debs
 	$(call PACK,libfreetype6,DEB_FREETYPE_V)
-	$(call PACK,libfreetype6-dev,DEB_FREETYPE_V)
+	$(call PACK,libfreetype-dev,DEB_FREETYPE_V)
 	
 	# freetype.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libfreetype6{,-dev}
+	rm -rf $(BUILD_DIST)/libfreetype{6,-dev}
 
 .PHONY: freetype freetype-package
