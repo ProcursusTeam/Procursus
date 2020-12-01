@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS        += fontconfig
 FONTCONFIG_VERSION := 2.13.1
-DEB_FONTCONFIG_V   ?= $(FONTCONFIG_VERSION)
+DEB_FONTCONFIG_V   ?= $(FONTCONFIG_VERSION)-1
 
 fontconfig-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.freedesktop.org/software/fontconfig/release/fontconfig-$(FONTCONFIG_VERSION).tar.bz2
