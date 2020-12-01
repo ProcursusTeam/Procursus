@@ -4,12 +4,17 @@ endif
 
 SUBPROJECTS    += luajit
 LUAJIT_VERSION := 2.1.0-beta3
-DEB_LUAJIT_V   ?= $(shell echo $(LUAJIT_VERSION) | cut -d- -f1)~beta3
+DEB_LUAJIT_V   ?= $(shell echo $(LUAJIT_VERSION) | cut -d- -f1)~beta3+git$(shell echo $(LUAJIT_COMMIT) | cut -c -7)
+
+LUAJIT_COMMIT    := 377a8488b62a9f1b589bb68875dd1288aa70e76e
 
 luajit-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://luajit.org/download/LuaJIT-$(LUAJIT_VERSION).tar.gz
-	$(call EXTRACT_TAR,luajit-$(LUAJIT_VERSION).tar.gz,luajit-$(LUAJIT_VERSION),luajit)
+	-[ ! -e "$(BUILD_SOURCE)/LuaJIT-$(LUAJIT_COMMIT).tar.gz" ] \
+		&& wget -nc -O$(BUILD_SOURCE)/LuaJIT-$(LUAJIT_COMMIT).tar.gz \
+			https://github.com/LuaJIT/LuaJIT/archive/$(LUAJIT_COMMIT).tar.gz
+	$(call EXTRACT_TAR,LuaJIT-$(LUAJIT_COMMIT).tar.gz,LuaJIT-$(LUAJIT_COMMIT),luajit)
 	$(SED) -i 's/#BUILDMODE= dynamic/BUILDMODE= dynamic/' $(BUILD_WORK)/luajit/src/Makefile
+	$(SED) -i 's/#define LJ_OS_NOJIT		1/#undef LJ_OS_NOJIT/' $(BUILD_WORK)/luajit/src/lj_arch.h
 
 ifneq ($(wildcard $(BUILD_WORK)/luajit/.build_complete),)
 luajit:
@@ -22,7 +27,7 @@ luajit: luajit-setup
 		TARGET_CFLAGS="$(CFLAGS)" \
 		TARGET_LDFLAGS="$(LDFLAGS)" \
 		TARGET_SHLDFLAGS="$(LDFLAGS)" \
-		TARGET_SYS=Darwin \
+		TARGET_SYS=iOS \
 		PREFIX=/usr
 	+$(MAKE) -C $(BUILD_WORK)/luajit install \
 		DESTDIR="$(BUILD_STAGE)/luajit" \

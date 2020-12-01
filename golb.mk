@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += golb
 # I'm not going to bump the version any higher than 1.0.1. Just change commit date/short hash.
-GOLB_VERSION   := 1.0.1+git20201124.7ffffff
+GOLB_VERSION   := 1.0.1+git20201124.$(shell echo $(GOLB_COMMIT) | cut -c -7)
 DEB_GOLB_V     ?= $(GOLB_VERSION)
 
 GOLB_COMMIT    := 7ffffff2bd24017b06d499f337f27ccab73129a1
