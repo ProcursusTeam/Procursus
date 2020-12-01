@@ -2,7 +2,7 @@ Package: librav1e-dev
 Version: @DEB_RAV1E_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libaom-dev (>= 2.0.1), libdav1d-dev (>= 0.7.1)
+Depends: librav1e (= @DEB_RAV1E_V@)
 Section: Development
 Priority: optional
 Homepage: https://github.com/xiph/rav1e

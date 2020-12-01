@@ -32,7 +32,7 @@ rav1e: rav1e-setup aom dav1d
 
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/rav1e $(BUILD_STAGE)/rav1e/usr/bin/rav1e
 
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.dylib $(BUILD_STAGE)/rav1e/usr/lib/librav1e.dylib
+	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.dylib $(BUILD_STAGE)/rav1e/usr/lib/librav1e.$(RAV1E_VERSION).dylib
 
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.a $(BUILD_STAGE)/rav1e/usr/lib/librav1e.a
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/rav1e.pc $(BUILD_STAGE)/rav1e/usr/lib/pkgconfig/rav1e.pc
@@ -41,7 +41,7 @@ rav1e: rav1e-setup aom dav1d
 
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/rav1e $(BUILD_BASE)/usr/bin/rav1e
 
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.dylib $(BUILD_BASE)/usr/lib/librav1e.dylib
+	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.dylib $(BUILD_BASE)/usr/lib/librav1e.$(RAV1E_VERSION).dylib
 
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.a $(BUILD_BASE)/usr/lib/librav1e.a
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/rav1e.pc $(BUILD_BASE)/usr/lib/pkgconfig/rav1e.pc
@@ -62,7 +62,7 @@ rav1e-package: rav1e-stage
 	cp -a $(BUILD_STAGE)/rav1e/usr/bin $(BUILD_DIST)/rav1e/usr
 
 	# rav1e.mk Prep librav1e
-	cp -a $(BUILD_STAGE)/rav1e/usr/lib/librav1e.dylib $(BUILD_DIST)/librav1e/usr/lib
+	cp -a $(BUILD_STAGE)/rav1e/usr/lib/librav1e.$(RAV1E_VERSION).dylib $(BUILD_DIST)/librav1e/usr/lib
 
 	# rav1e.mk Prep librav1e-dev
 	cp -a $(BUILD_STAGE)/rav1e/usr/lib/librav1e.a $(BUILD_DIST)/librav1e-dev/usr/lib
