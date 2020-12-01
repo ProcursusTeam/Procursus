@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS   += gettext
 GETTEXT_VERSION := 0.21
-DEB_GETTEXT_V   ?= $(GETTEXT_VERSION)-2
+DEB_GETTEXT_V   ?= $(GETTEXT_VERSION)-3
 
 gettext-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gettext/gettext-$(GETTEXT_VERSION).tar.xz{,.sig}
@@ -42,7 +42,8 @@ gettext-package: gettext-stage
 		$(BUILD_DIST)/libtextstyle{0v5,-dev} \
 		$(BUILD_DIST)/libgettextpo{0,-dev}
 	mkdir -p $(BUILD_DIST)/gettext/usr/{bin,lib,share/{aclocal,man/man1,gettext}} \
-		$(BUILD_DIST)/{gettext-base,autopoint}/usr/{bin,share/man/man1} \
+		$(BUILD_DIST)/gettext-base/usr/{bin,share/man/man1} \
+		$(BUILD_DIST)/autopoint/usr/{bin,share/{man/man1,gettext}} \
 		$(BUILD_DIST)/libintl8/usr/lib \
 		$(BUILD_DIST)/libintl-dev/usr/{lib,include} \
 		$(BUILD_DIST)/libtextstyle{0v5,-dev}/usr/lib \
@@ -66,6 +67,7 @@ gettext-package: gettext-stage
 	# gettext.mk Prep autopoint
 	cp -a $(BUILD_STAGE)/gettext/usr/bin/autopoint $(BUILD_DIST)/autopoint/usr/bin
 	cp -a $(BUILD_STAGE)/gettext/usr/share/man/man1/autopoint.1 $(BUILD_DIST)/autopoint/usr/share/man/man1
+	cp -a $(BUILD_STAGE)/gettext/usr/share/gettext/archive.dir.tar.xz $(BUILD_DIST)/autopoint/usr/share/gettext
 	
 	# gettext.mk Prep libintl8
 	cp -a $(BUILD_STAGE)/gettext/usr/lib/libintl.8.dylib $(BUILD_DIST)/libintl8/usr/lib
