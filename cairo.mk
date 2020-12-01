@@ -60,6 +60,7 @@ cairo-package: cairo-stage
 
 	# cairo.mk Prep libcairo2-dev
 	cp -a $(BUILD_STAGE)/cairo/usr/lib/!(cairo|*.2.dylib) $(BUILD_DIST)/libcairo2-dev/usr/lib
+	cp -a $(BUILD_STAGE)/cairo/usr/include $(BUILD_DIST)/libcairo2-dev/usr
 
 	# cairo.mk Prep cairo-perf-utils
 	#cp -a $(BUILD_STAGE)/cairo/usr/bin/cairo-trace $(BUILD_DIST)/cairo-perf-utils/usr/bin
