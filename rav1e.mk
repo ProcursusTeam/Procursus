@@ -55,14 +55,14 @@ rav1e-package: rav1e-stage
 	rm -rf $(BUILD_DIST)/{rav1e,librav1e,librav1e-dev}
 	mkdir -p \
 		$(BUILD_DIST)/rav1e/usr \
-		$(BUILD_DIST)/librav1e/usr/lib \
+		$(BUILD_DIST)/librav1e0/usr/lib \
 		$(BUILD_DIST)/librav1e-dev/usr/lib
 
 	# rav1e.mk Prep rav1e
 	cp -a $(BUILD_STAGE)/rav1e/usr/bin $(BUILD_DIST)/rav1e/usr
 
-	# rav1e.mk Prep librav1e
-	cp -a $(BUILD_STAGE)/rav1e/usr/lib/librav1e.$(RAV1E_VERSION).dylib $(BUILD_DIST)/librav1e/usr/lib
+	# rav1e.mk Prep librav1e0
+	cp -a $(BUILD_STAGE)/rav1e/usr/lib/librav1e.$(RAV1E_VERSION).dylib $(BUILD_DIST)/librav1e0/usr/lib
 
 	# rav1e.mk Prep librav1e-dev
 	cp -a $(BUILD_STAGE)/rav1e/usr/lib/librav1e.a $(BUILD_DIST)/librav1e-dev/usr/lib
@@ -71,14 +71,14 @@ rav1e-package: rav1e-stage
 
 	# rav1e.mk Sign
 	$(call SIGN,rav1e,general.xml)
-	$(call SIGN,librav1e,general.xml)
+	$(call SIGN,librav1e0,general.xml)
 
 	# rav1e.mk Make .debs
 	$(call PACK,rav1e,DEB_RAV1E_V)
-	$(call PACK,librav1e,DEB_RAV1E_V)
+	$(call PACK,librav1e0,DEB_RAV1E_V)
 	$(call PACK,librav1e-dev,DEB_RAV1E_V)
 
 	# rav1e.mk Build cleanup
-	rm -rf $(BUILD_DIST)/{rav1e,librav1e,librav1e-dev}
+	rm -rf $(BUILD_DIST)/{rav1e,librav1e0,librav1e-dev}
 
 .PHONY: rav1e rav1e-package

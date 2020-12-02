@@ -1,4 +1,4 @@
-Package: librav1e
+Package: librav1e0
 Version: @DEB_RAV1E_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
