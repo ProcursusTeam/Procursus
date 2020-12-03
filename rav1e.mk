@@ -8,7 +8,7 @@ DEB_RAV1E_V   ?= $(RAV1E_VERSION)
 
 rav1e-setup: setup
 ifeq (, $(shell which cargo-cbuild))
-	$(error "No cargo-cbuild in PATH, please run cargo install c-cargo")
+	$(error "No cargo-cbuild in PATH, please run cargo install cargo-c")
 endif
 
 	-[ ! -f "$(BUILD_SOURCE)/rav1e-$(RAV1E_VERSION).tar.gz" ] && wget -q -nc -O$(BUILD_SOURCE)/rav1e-$(RAV1E_VERSION).tar.gz https://github.com/xiph/rav1e/archive/v$(RAV1E_VERSION).tar.gz
