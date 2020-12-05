@@ -50,7 +50,7 @@ endif
 xpwn-package: xpwn-stage
 	# xpwn.mk Package Structure
 	rm -rf $(BUILD_DIST)/{libxpwn-dev,xpwn}
-	mkdir -p $(BUILD_DIST)/{libxpwn-dev,xpwn}
+	mkdir -p $(BUILD_DIST)/{libxpwn-dev,xpwn}/usr
 
 	# xpwn.mk Prep xpwn
 	cp -a $(BUILD_STAGE)/xpwn/usr/bin $(BUILD_DIST)/xpwn/usr
