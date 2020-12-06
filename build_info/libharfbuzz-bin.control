@@ -1,0 +1,13 @@
+Package: libharfbuzz-bin
+Version: @DEB_HARFBUZZ_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libharfbuzz0b, libgraphite2-3, libintl8, libfreetype6, libcairo2, libharfbuzz-subset0
+Section: Utilities
+Priority: standard
+Multi-Arch: foreign
+Description: OpenType text shaping engine (utility)
+ HarfBuzz is an implementation of the OpenType Layout engine (aka layout
+ engine) and the script-specific logic (aka shaping engine).
+ .
+ This package contains a command line interface for the HarfBuzz library.
