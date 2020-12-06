@@ -53,7 +53,7 @@ xpwn-package: xpwn-stage
 	mkdir -p $(BUILD_DIST)/{libxpwn-dev,xpwn}/usr
 
 	# xpwn.mk Prep xpwn
-	cp -a $(BUILD_STAGE)/xpwn/usr/bin $(BUILD_DIST)/xpwn/usr
+	cp -a $(BUILD_STAGE)/xpwn/usr/{bin,share} $(BUILD_DIST)/xpwn/usr
 
 	# xpwn.mk Prep libxpwn-dev
 	cp -a $(BUILD_STAGE)/xpwn/usr/{include,lib} $(BUILD_DIST)/libxpwn-dev/usr
