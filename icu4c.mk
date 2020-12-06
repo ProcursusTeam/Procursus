@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS  += icu4c
 ICU_VERSION  := 68.1
-DEB_ICU_V    ?= $(ICU_VERSION)
+DEB_ICU_V    ?= $(ICU_VERSION)-1
 
 icu4c-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/icu4c-$(ICU_VERSION).tar.gz" ] && \
@@ -33,6 +33,8 @@ icu4c: icu4c-setup
 	+$(MAKE) -C $(BUILD_WORK)/icu4c/source install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/icu4c/.build_complete
+		$(I_N_T) -change libicuuc.68.dylib /usr/lib/libicuuc.68.dylib $$stuff; \
+	done
 endif
 
 icu4c-package: icu4c-stage
