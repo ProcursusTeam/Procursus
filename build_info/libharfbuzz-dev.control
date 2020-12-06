@@ -2,13 +2,7 @@ Package: libharfbuzz-dev
 Version: @DEB_HARFBUZZ_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libharfbuzz0b (= @DEB_HARFBUZZ_V@),
-  libharfbuzz-icu0 (= @DEB_HARFBUZZ_V@),
-  libharfbuzz-gobject0 (= @DEB_HARFBUZZ_V@),
-  libgraphite2-dev, 
-  libicu-dev,
-  libfreetype6-dev,
-  libglib2.0-dev
+Depends: libharfbuzz0b (= @DEB_HARFBUZZ_V@), libharfbuzz-icu0 (= @DEB_HARFBUZZ_V@), libharfbuzz-gobject0 (= @DEB_HARFBUZZ_V@), libgraphite2-dev, libicu-dev, libfreetype6-dev, libglib2.0-dev
 Section: Development
 Priority: standard
 Multi-Arch: foreign
