@@ -33,6 +33,19 @@ icu4c: icu4c-setup
 	+$(MAKE) -C $(BUILD_WORK)/icu4c/source install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/icu4c/.build_complete
+
+	for lib in $(BUILD_STAGE)/icu4c/usr/lib/libicu*.68.1.dylib $(BUILD_BASE)/usr/lib/libicu*.68.1.dylib; do \
+		$(I_N_T) -id /usr/lib/$$(echo $$lib | rev | cut -d. -f4 | cut -d/ -f1 | rev).68.dylib $$lib; \
+		ln -sf $$(echo $$lib | rev | cut -d. -f4 | cut -d/ -f1 | rev).68.1.dylib $$(echo $$lib | rev | cut -d. -f4 | rev).68.dylib; \
+		ln -sf $$(echo $$lib | rev | cut -d. -f4 | cut -d/ -f1 | rev).68.dylib $$(echo $$lib | rev | cut -d. -f4 | rev).dylib; \
+	done
+
+	for stuff in $(BUILD_STAGE)/icu4c/usr/lib/libicu*.68.1.dylib $(BUILD_BASE)/usr/lib/libicu*.68.1.dylib $(BUILD_STAGE)/icu4c/usr/bin/*; do \
+		$(I_N_T) -change libicudata.68.dylib /usr/lib/libicudata.68.dylib $$stuff; \
+		$(I_N_T) -change libicui18n.68.dylib /usr/lib/libicui18n.68.dylib $$stuff; \
+		$(I_N_T) -change libicuio.68.dylib /usr/lib/libicuio.68.dylib $$stuff; \
+		$(I_N_T) -change libicutest.68.dylib /usr/lib/libicutest.68.dylib $$stuff; \
+		$(I_N_T) -change libicutu.68.dylib /usr/lib/libicutu.68.dylib $$stuff; \
 		$(I_N_T) -change libicuuc.68.dylib /usr/lib/libicuuc.68.dylib $$stuff; \
 	done
 endif
