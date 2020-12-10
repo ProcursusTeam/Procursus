@@ -1,0 +1,7 @@
+Package: libimg4-dev
+Version: @DEB_IMG4LIB_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Description: image4 vfs - development files
