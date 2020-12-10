@@ -2,7 +2,7 @@ Package: img4lib
 Version: @DEB_IMG4LIB_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: openssl
+Depends: libssl1.1
 Section: Development
 Priority: optional
 Description: image4 vfs
