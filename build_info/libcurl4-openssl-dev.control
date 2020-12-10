@@ -3,7 +3,7 @@ Version: @DEB_CURL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Provides: libcurl-dev (= @DEB_CURL_V@)
-Depends: libcurl4 (= @DEB_CURL_V@), libidn2-dev, libssl-dev, libssh2-dev, libnghttp2-dev
+Depends: libcurl4 (= @DEB_CURL_V@), libidn2-dev, libssl-dev, libssh2-dev, libnghttp2-dev, librtmp-dev
 Replaces: curl (<< @DEB_CURL_V@)
 Conflicts: curl (<< @DEB_CURL_V@)
 Section: Development
