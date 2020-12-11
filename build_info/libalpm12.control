@@ -1,8 +1,8 @@
-Package: pacman
+Package: libalpm12
 Version: @DEB_PACMAN_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Section: Utilities
-Depends: libarchive13, libarchive-tools, libintl8, libgpgme11, libassuan0, libgpg-error0, libcurl4, libssl1.1
+Section: Libraries
+Depends: libarchive13, libintl8, libgpgme11, libassuan0, libgpg-error0, libcurl4, libssl1.1
 Priority: optional
 Description: A library-based package manager with dependency support

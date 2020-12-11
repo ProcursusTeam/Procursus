@@ -1,0 +1,8 @@
+Package: libalpm-dev
+Version: @DEB_PACMAN_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Depends: libalpm12 (= @DEB_PACMAN_V@), libarchive-dev, libintl-dev, libgpgme-dev, libassuan-dev, libgpg-error-dev, libcurl4-openssl-dev, libssl-dev
+Priority: optional
+Description: A library-based package manager with dependency support - Development Files
