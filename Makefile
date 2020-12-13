@@ -111,6 +111,7 @@ CC       := $(GNU_HOST_TRIPLE)-clang
 CXX      := $(GNU_HOST_TRIPLE)-clang++
 CPP      := $(GNU_HOST_TRIPLE)-clang -E
 AR       := $(GNU_HOST_TRIPLE)-ar
+LD       := $(GNU_HOST_TRIPLE)-ld
 RANLIB   := $(GNU_HOST_TRIPLE)-ranlib
 STRIP    := $(GNU_HOST_TRIPLE)-strip
 I_N_T    := $(GNU_HOST_TRIPLE)-install_name_tool
@@ -119,23 +120,28 @@ LIPO     := $(GNU_HOST_TRIPLE)-lipo
 OTOOL    := $(GNU_HOST_TRIPLE)-otool
 EXTRA    := INSTALL="/usr/bin/install -c --strip-program=$(STRIP)"
 LIBTOOL  := $(GNU_HOST_TRIPLE)-libtool
-export CC CXX AR
 
 else ifeq ($(UNAME),Darwin)
 ifeq ($(filter $(shell uname -m | cut -c -4), iPad iPho),)
 $(warning Building on MacOS)
 TARGET_SYSROOT  ?= $(shell xcrun --sdk $(PLATFORM) --show-sdk-path)
 MACOSX_SYSROOT  ?= $(shell xcrun --show-sdk-path)
+CC              := cc
+CXX             := c++
 CPP             := cc -E
 
 else
 $(warning Building on iOS)
 TARGET_SYSROOT  ?= /usr/share/SDKs/iPhoneOS.sdk
 MACOSX_SYSROOT  ?= /usr/share/SDKs/MacOSX.sdk
+CC              := clang
+CXX             := clang++
 CPP             := clang -E
 
 endif
 PATH            := /usr/bin:$(PATH)
+AR              := ar
+LD              := ld
 RANLIB          := ranlib
 STRIP           := strip
 NM              := nm
@@ -178,7 +184,7 @@ CPPFLAGS            := -O2 -arch $(shell echo $(ARCHES) | cut -f1 -d' ') $(PLATF
 LDFLAGS             := -O2 $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib -F$(BUILD_BASE)/System/Library/Frameworks
 PKG_CONFIG_PATH     := $(BUILD_BASE)/usr/lib/pkgconfig:$(BUILD_BASE)/usr/local/lib/pkgconfig
 
-export PLATFORM ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE CPP RANLIB STRIP NM LIPO OTOOL I_N_T EXTRA SED
+export PLATFORM ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T EXTRA SED
 export BUILD_ROOT BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP BUILD_TOOLS
 export DEB_ARCH DEB_ORIGIN DEB_MAINTAINER
 export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS PKG_CONFIG_PATH
@@ -598,7 +604,7 @@ setup:
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/libkern/OSTypes.h $(BUILD_BASE)/usr/include/libkern
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,proc*,ptrace,kern*,random,vnode}.h $(BUILD_BASE)/usr/include/sys
 	$(CP) -af $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_BASE)/usr/include/IOKit
-	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{ar,launch,libproc,tzfile}.h $(BUILD_BASE)/usr/include
+	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{ar,launch,libcharset,localcharset,libproc,tzfile}.h $(BUILD_BASE)/usr/include
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/mach/{*.defs,{mach_vm,shared_region}.h} $(BUILD_BASE)/usr/include/mach
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/mach/machine/*.defs $(BUILD_BASE)/usr/include/mach/machine
 	$(CP) -af $(BUILD_INFO)/availability.h $(BUILD_BASE)/usr/include/os
