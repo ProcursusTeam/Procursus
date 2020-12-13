@@ -21,56 +21,54 @@ MEMO_CFVER           ?= 1600
 CFVER_WHOLE          := $(shell echo $(MEMO_CFVER) | cut -d. -f1)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1100 ] && [ "$(CFVER_WHOLE)" -lt 1200 ] && echo 1),1)
-IPHONE_MIN           := 8.0
-TVOS_MIN             := XXX
-WATCH_MIN            := 1.0
-override MEMO_CFVER  := 1100
+IPHONEOS_DEPLOYMENT_TARGET  := 8.0
+APPLETVOS_DEPLOYMENT_TARGET := XXX
+WATCHOS_DEPLOYMENT_TARGET   := 1.0
+MACOSX_DEPLOYMENT_TARGET    := 10.11
+override MEMO_CFVER         := 1100
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1200 ] && [ "$(CFVER_WHOLE)" -lt 1300 ] && echo 1),1)
-IPHONE_MIN           := 9.0
-TVOS_MIN             := 9.0
-WATCH_MIN            := 2.0
-override MEMO_CFVER  := 1200
+IPHONEOS_DEPLOYMENT_TARGET  := 9.0
+APPLETVOS_DEPLOYMENT_TARGET := 9.0
+WATCHOS_DEPLOYMENT_TARGET   := 2.0
+MACOSX_DEPLOYMENT_TARGET    := 10.12
+override MEMO_CFVER         := 1200
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1300 ] && [ "$(CFVER_WHOLE)" -lt 1400 ] && echo 1),1)
-IPHONE_MIN           := 10.0
-TVOS_MIN             := 10.0
-WATCH_MIN            := 3.0
-override MEMO_CFVER  := 1300
+IPHONEOS_DEPLOYMENT_TARGET  := 10.0
+APPLETVOS_DEPLOYMENT_TARGET := 10.0
+WATCHOS_DEPLOYMENT_TARGET   := 3.0
+MACOSX_DEPLOYMENT_TARGET    := 10.13
+override MEMO_CFVER         := 1300
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1400 ] && [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
-IPHONE_MIN           := 11.0
-TVOS_MIN             := 11.0
-WATCH_MIN            := 4.0
-override MEMO_CFVER  := 1400
+IPHONEOS_DEPLOYMENT_TARGET  := 11.0
+APPLETVOS_DEPLOYMENT_TARGET := 11.0
+WATCHOS_DEPLOYMENT_TARGET   := 4.0
+MACOSX_DEPLOYMENT_TARGET    := 10.14
+override MEMO_CFVER         := 1400
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1500 ] && [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
-IPHONE_MIN           := 12.0
-TVOS_MIN             := 12.0
-WATCH_MIN            := 5.0
-override MEMO_CFVER  := 1500
+IPHONEOS_DEPLOYMENT_TARGET  := 12.0
+APPLETVOS_DEPLOYMENT_TARGET := 12.0
+WATCHOS_DEPLOYMENT_TARGET   := 5.0
+MACOSX_DEPLOYMENT_TARGET    := 10.15
+override MEMO_CFVER         := 1500
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
-IPHONE_MIN           := 13.0
-TVOS_MIN             := 13.0
-WATCH_MIN            := 6.0
-override MEMO_CFVER  := 1600
+IPHONEOS_DEPLOYMENT_TARGET  := 13.0
+APPLETVOS_DEPLOYMENT_TARGET := 13.0
+WATCHOS_DEPLOYMENT_TARGET   := 6.0
+MACOSX_DEPLOYMENT_TARGET    := 11.0
+override MEMO_CFVER         := 1600
 else
 $(error Unsupported CoreFoundation version)
 endif
 
-ifeq ($(MEMO_TARGET),iphoneos-arm)
-$(warning Building for iOS)
-ARCHES               := armv7
-PLATFORM             := iphoneos
-DEB_ARCH             := iphoneos-arm
-GNU_HOST_TRIPLE      := armv7-apple-darwin
-PLATFORM_VERSION_MIN := -miphoneos-version-min=$(IPHONE_MIN)
-RUST_TARGET          := armv7-apple-ios
-
-else ifeq ($(MEMO_TARGET),iphoneos-arm64)
+ifeq ($(MEMO_TARGET),iphoneos-arm64)
 $(warning Building for iOS)
 ARCHES               := arm64
 PLATFORM             := iphoneos
 DEB_ARCH             := iphoneos-arm
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -miphoneos-version-min=$(IPHONE_MIN)
+PLATFORM_VERSION_MIN := -miphoneos-version-min=$(IPHONEOS_DEPLOYMENT_TARGET)
 RUST_TARGET          := aarch64-apple-ios
+export IPHONEOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),appletvos-arm64)
 $(warning Building for tvOS)
@@ -78,15 +76,8 @@ ARCHES               := arm64
 PLATFORM             := appletvos
 DEB_ARCH             := appletvos-arm64
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -mappletvos-version-min=$(TVOS_MIN)
-
-else ifeq ($(MEMO_TARGET),watchos-arm)
-$(warning Building for WatchOS)
-ARCHES               := armv7k
-PLATFORM             := watchos
-DEB_ARCH             := watchos-arm
-GNU_HOST_TRIPLE      := armv7k-apple-darwin
-PLATFORM_VERSION_MIN := -mwatchos-version-min=$(WATCH_MIN)
+PLATFORM_VERSION_MIN := -mappletvos-version-min=$(APPLETVOS_DEPLOYMENT_TARGET)
+export APPLETVOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),watchos-arm64)
 $(warning Building for WatchOS)
@@ -94,7 +85,8 @@ ARCHES               := arm64_32
 PLATFORM             := watchos
 DEB_ARCH             := watchos-arm
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -mwatchos-version-min=$(WATCH_MIN)
+PLATFORM_VERSION_MIN := -mwatchos-version-min=$(WATCHOS_DEPLOYMENT_TARGET)
+export WATCHOS_DEPLOYMENT_TARGET
 
 else
 $(error Platform not supported)
