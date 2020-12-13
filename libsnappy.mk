@@ -31,7 +31,8 @@ libsnappy: libsnappy-setup
 		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
 		-DCOMMON_ARCH=$(DEB_ARCH) \
 		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
-		-DBUILD_SHARED_LIBS=true
+		-DBUILD_SHARED_LIBS=true \
+		-DSNAPPY_BUILD_TESTS=false
 	+$(MAKE) -C $(BUILD_WORK)/libsnappy all
 	+$(MAKE) -C $(BUILD_WORK)/libsnappy install \
 		DESTDIR="$(BUILD_STAGE)/libsnappy"
