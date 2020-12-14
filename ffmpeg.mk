@@ -108,7 +108,7 @@ ffmpeg-package: ffmpeg-stage
 		$(BUILD_DIST)/libswscale-dev/usr/{lib/pkgconfig,include}
 	
 	# ffmpeg.mk Prep ffmpeg
-	cp -a $(BUILD_STAGE)/ffmpeg/usr/bin/{ffmpeg,ffprobe,qt-faststart} $(BUILD_DIST)/ffmpeg/usr/bin
+	cp -a $(BUILD_STAGE)/ffmpeg/usr/bin/{ffmpeg,ffplay,ffprobe,qt-faststart} $(BUILD_DIST)/ffmpeg/usr/bin
 	cp -a $(BUILD_STAGE)/ffmpeg/usr/share $(BUILD_DIST)/ffmpeg/usr
 	
 	# ffmpeg.mk Prep libavcodec58
