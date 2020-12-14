@@ -2,7 +2,7 @@ Package: libavfilter-dev
 Version: @DEB_FFMPEG_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Section: Developemt
+Section: Development
 Priority: standard
 Description: FFmpeg library containing media filters - development files
  FFmpeg is the leading multimedia framework, able to decode, encode, transcode,
