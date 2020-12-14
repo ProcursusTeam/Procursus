@@ -4,8 +4,7 @@ endif
 
 SUBPROJECTS           += rubberband
 RUBBERBAND_VERSION    := 1.9.0
-RUBBERBAND_SO_VERSION := 2.1.2
-DEB_RUBBERBAND_V      ?= $(RUBBERBAND_VERSION)
+DEB_RUBBERBAND_V      ?= $(RUBBERBAND_VERSION)-1
 
 rubberband-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://breakfastquay.com/files/releases/rubberband-$(RUBBERBAND_VERSION).tar.bz2
@@ -47,10 +46,10 @@ rubberband-package: rubberband-stage
 	cp -a $(BUILD_STAGE)/rubberband/usr/bin $(BUILD_DIST)/rubberband-cli/usr
 	
 	# rubberband.mk Prep librubberband2
-	cp -a $(BUILD_STAGE)/rubberband/usr/lib/librubberband.$(RUBBERBAND_SO_VERSION).dylib $(BUILD_DIST)/librubberband2/usr/lib
+	cp -a $(BUILD_STAGE)/rubberband/usr/lib/librubberband.2{,.1.2}.dylib $(BUILD_DIST)/librubberband2/usr/lib
 	
 	# rubberband.mk Prep librubberband-dev
-	cp -a $(BUILD_STAGE)/rubberband/usr/lib/{pkgconfig,librubberband.{{,2.}dylib,a}} $(BUILD_DIST)/librubberband-dev/usr/lib
+	cp -a $(BUILD_STAGE)/rubberband/usr/lib/{pkgconfig,librubberband.{dylib,a}} $(BUILD_DIST)/librubberband-dev/usr/lib
 	cp -a $(BUILD_STAGE)/rubberband/usr/include $(BUILD_DIST)/librubberband-dev/usr
 	
 	# rubberband.mk Sign
