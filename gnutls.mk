@@ -3,20 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += gnutls
-GNUTLS_VERSION := 3.6.15
-DEB_GNUTLS_V   ?= $(GNUTLS_VERSION)-1
+GNUTLS_VERSION := 3.7.0
+DEB_GNUTLS_V   ?= $(GNUTLS_VERSION)
 
 gnutls-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/gnutls-$(GNUTLS_VERSION).tar.xz
+	wget -q -nc -P $(BUILD_SOURCE) https://www.gnupg.org/ftp/gcrypt/gnutls/v3.7/gnutls-$(GNUTLS_VERSION).tar.xz
 	$(call EXTRACT_TAR,gnutls-$(GNUTLS_VERSION).tar.xz,gnutls-$(GNUTLS_VERSION),gnutls)
-	mkdir -p $(BUILD_WORK)/gnutls/lib/accelerated/aarch64/macosx
-	wget -q -nc -P $(BUILD_WORK)/gnutls/lib/accelerated/aarch64/macosx \
-		https://gitlab.com/gnutls/gnutls/-/raw/master/lib/accelerated/aarch64/macosx/aes-aarch64.s \
-		https://gitlab.com/gnutls/gnutls/-/raw/master/lib/accelerated/aarch64/macosx/ghash-aarch64.s \
-		https://gitlab.com/gnutls/gnutls/-/raw/master/lib/accelerated/aarch64/macosx/sha1-armv8.s \
-		https://gitlab.com/gnutls/gnutls/-/raw/master/lib/accelerated/aarch64/macosx/sha256-armv8.s \
-		https://gitlab.com/gnutls/gnutls/-/raw/master/lib/accelerated/aarch64/macosx/sha512-armv8.s
-	$(SED) -i '/-Wl,-no_weak_imports/d' $(BUILD_WORK)/gnutls/configure.ac # Workaround for XCode 11.4 bug, remove this when Apple fixes.
 
 ifneq ($(wildcard $(BUILD_WORK)/gnutls/.build_complete),)
 gnutls:
@@ -30,11 +22,15 @@ ifeq ($(MEMO_TARGET),watchos-arm64)
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-hardware-acceleration \
+		--enable-local-libopts \
+		--with-default-trust-store-file=/etc/ssl/certs/cacert.pem \
  		P11_KIT_CFLAGS=-I$(BUILD_BASE)/usr/include/p11-kit-1
 else
 	cd $(BUILD_WORK)/gnutls && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
+		--enable-local-libopts \
+		--with-default-trust-store-file=/etc/ssl/certs/cacert.pem \
 		P11_KIT_CFLAGS=-I$(BUILD_BASE)/usr/include/p11-kit-1
 endif
 	+$(MAKE) -C $(BUILD_WORK)/gnutls

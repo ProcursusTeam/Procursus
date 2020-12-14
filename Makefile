@@ -60,6 +60,8 @@ else
 $(error Unsupported CoreFoundation version)
 endif
 
+export MACOSX_DEPLOYMENT_TARGET
+
 ifeq ($(MEMO_TARGET),iphoneos-arm64)
 $(warning Building for iOS)
 ARCHES               := arm64
