@@ -1,0 +1,35 @@
+diff -urN liblqr-0.4.2/configure liblqr/configure
+--- liblqr-0.4.2/configure	2012-12-03 20:03:10.000000000 -0500
++++ liblqr/configure	2020-12-14 12:16:39.184479352 -0500
+@@ -17002,9 +17002,6 @@
+ 
+ fi
+ 
+-GLIB_CFLAGS=`$PKG_CONFIG --cflags glib-2.0`
+-
+-
+ GLIB_LIBS=`$PKG_CONFIG --libs glib-2.0`
+ 
+ 
+diff -urN liblqr-0.4.2/lqr/Makefile.am liblqr/lqr/Makefile.am
+--- liblqr-0.4.2/lqr/Makefile.am	2012-12-03 20:03:10.000000000 -0500
++++ liblqr/lqr/Makefile.am	2020-12-14 12:19:28.256974514 -0500
+@@ -62,7 +62,6 @@
+ 	-DDATADIR=\""$(DATADIR)"\"		\
+ 	-I$(top_srcdir)		\
+ 	@GLIB_CFLAGS@		\
+-	-I$(includedir)		\
+ 	@FVISIBILITY_FLAG@
+ 
+ lqr_include0_HEADERS = lqr.h
+diff -urN liblqr-0.4.2/lqr/Makefile.in liblqr/lqr/Makefile.in
+--- liblqr-0.4.2/lqr/Makefile.in	2012-12-03 20:03:10.000000000 -0500
++++ liblqr/lqr/Makefile.in	2020-12-14 12:19:20.201998564 -0500
+@@ -274,7 +274,6 @@
+ 	-DDATADIR=\""$(DATADIR)"\"		\
+ 	-I$(top_srcdir)		\
+ 	@GLIB_CFLAGS@		\
+-	-I$(includedir)		\
+ 	@FVISIBILITY_FLAG@
+ 
+ lqr_include0_HEADERS = lqr.h
