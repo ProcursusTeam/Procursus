@@ -1,0 +1,22 @@
+Package: libavcodec58
+Version: @DEB_FFMPEG_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: standard
+Description: FFmpeg library with de/encoders for audio/video codecs - runtime files
+ FFmpeg is the leading multimedia framework, able to decode, encode, transcode,
+ mux, demux, stream, filter and play pretty much anything that humans and
+ machines have created. It supports the most obscure ancient formats up to the
+ cutting edge.
+ .
+ This library provides a generic encoding/decoding framework and
+ contains multiple decoders and encoders for audio, video and subtitle streams,
+ and several bitstream filters.
+ .
+ The shared architecture provides various services ranging from bit stream I/O
+ to DSP optimizations, and makes it suitable for implementing robust and fast
+ codecs as well as for experimentation.
+ .
+ This package contains the runtime files.
+Depends: libswresample3 (= @DEB_FFMPEG_V@), libavutil56 (= @DEB_FFMPEG_V@), libvpx6, libwebpmux3, libwebp7, libdav1d4, libopencore-amrwb0, libsnappy1v5, libaom2, libmp3lame0, libopencore-amrnb0, libopenjp2-7, libopus0, librav1e0, libspeex1, libtheora0, libogg0, libvorbis0a, libvorbisenc2, libx265-192, libx264-161, libsoxr0, liblzma5
