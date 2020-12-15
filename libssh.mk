@@ -43,7 +43,7 @@ libssh-package: libssh-stage
 	mkdir -p $(BUILD_DIST)/libssh-{4,dev}/usr/lib
 	
 	# libssh.mk Prep libssh-4
-	cp -a $(BUILD_STAGE)/libssh/usr/lib/libssh.4{,.8.6}.dylib $(BUILD_DIST)/libssh-4/usr/lib
+	cp -a $(BUILD_STAGE)/libssh/usr/lib/libssh.4*.dylib $(BUILD_DIST)/libssh-4/usr/lib
 	
 	# libssh.mk Prep liblibssh-dev
 	cp -a $(BUILD_STAGE)/libssh/usr/lib/{libssh.dylib,pkgconfig,cmake} $(BUILD_DIST)/libssh-dev/usr/lib
