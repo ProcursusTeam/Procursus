@@ -1,8 +1,0 @@
-Package: python3-psutil
-Version: @DEB_PSUTIL_V@
-Architecture: all
-Depends: python3
-Section: Utilities
-Priority: optional
-Homepage: https://github.com/giampaolo/psutil
-Description: module providing convenience functions for managing processes
