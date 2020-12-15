@@ -8,10 +8,9 @@ PSUTIL_VERSION  := 5.7.3                                                        
 DEB_PSUTIL_V    ?= $(PSUTIL_VERSION)-1                                                       ### This is the version number put into the package's control file. Just in case we need to increment the version before a new one is released by the maintainers. See it used on line 48.
 
 psutil-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/giampaolo/psutil/releases/tag/release-$(PSUTIL_VERSION).tar.gz{,.sig}       ### Tarball to download. If available, always download the .sig or .asc file with it. See line 11.                                                                      ### The main setup stage downloads all tarballs. This target should always be required by the (tool)-setup target. This is also usually where any edits to files being built should be performed.
-	$(call PGP_VERIFY,psutil-$(PSUTIL_VERSION).tar.gz)                                     ### Verifies the downloaded tarball against the sig file downloaded. This stage can be bypassed by passing `NO_PGP=1` when making.
-	### In the case you downloaded a .asc file, the above line would look like this:
-	### $(call PGP_VERIFY,psutil-$(PSUTIL_VERSION).tar.gz,asc)
+	-[ ! -f "$(BUILD_SOURCE)/psutil-$(PSUTIL_VERSION).tar.gz" ] && \
+		wget -q -nc -O$(BUILD_SOURCE)/psutil-$(PSUTIL_VERSION).tar.gz \
+			https://github.com/google/psutil/archive/v$(PSUTIL_VERSION).tar.gz
 	$(call EXTRACT_TAR,psutil-$(PSUTIL_VERSION).tar.gz,psutil-$(PSUTIL_VERSION),psutil)          ### Extracts tarball.
 
 ifneq ($(wildcard $(BUILD_WORK)/psutil/.build_complete),)                                ### On a successful build of a tool, a .build_complete file should be made in it's build work directory. (See line 33) This prevents it from being unnecessarily built again. You can rebuild a package by running `make rebuild-(tool)`.
