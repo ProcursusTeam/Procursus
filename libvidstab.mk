@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS      += libvidstab
+SUBPROJECTS        += libvidstab
 LIBVIDSTAB_VERSION := 1.1.0
 DEB_LIBVIDSTAB_V   ?= $(LIBVIDSTAB_VERSION)
 
