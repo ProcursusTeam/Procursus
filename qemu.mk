@@ -29,7 +29,6 @@ qemu: qemu-setup glib2.0 gnutls libjpeg-turbo libpng16 libssh libusb liblzo2 ncu
 		--enable-lzfse \
 		--enable-vde \
 		--enable-zstd \
-		--enable-tcg-interpreter \
 		--enable-tools \
 		--disable-sdl \
 		--disable-gtk \
