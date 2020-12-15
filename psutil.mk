@@ -10,7 +10,7 @@ DEB_PSUTIL_V    ?= $(PSUTIL_VERSION)-1                                          
 psutil-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/psutil-$(PSUTIL_VERSION).tar.gz" ] && \
 		wget -q -nc -O$(BUILD_SOURCE)/psutil-$(PSUTIL_VERSION).tar.gz \
-			https://github.com/giampaolo/psutil/releases/tag/release-$(PSUTIL_VERSION).tar.gz
+			https://github.com/giampaolo/psutil/archive/release-$(PSUTIL_VERSION).tar.gz
 	$(call EXTRACT_TAR,psutil-$(PSUTIL_VERSION).tar.gz,psutil-$(PSUTIL_VERSION),psutil)          ### Extracts tarball.
 
 ifneq ($(wildcard $(BUILD_WORK)/psutil/.build_complete),)                                ### On a successful build of a tool, a .build_complete file should be made in it's build work directory. (See line 33) This prevents it from being unnecessarily built again. You can rebuild a package by running `make rebuild-(tool)`.
