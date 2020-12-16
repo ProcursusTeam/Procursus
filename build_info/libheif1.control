@@ -1,0 +1,13 @@
+Package: libheif1
+Version: @DEB_LIBHEIF_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: standard
+Description: ISO/IEC 23008-12:2017 HEIF file format decoder - shared library
+ libheif is an ISO/IEC 23008-12:2017 HEIF file format decoder. HEIF is a new
+ image file format employing HEVC (h.265) image coding for the best compression
+ ratios currently possible.
+ .
+ This package contains the shared library.
+Depends: libx265-192, libaom2, libde265-0

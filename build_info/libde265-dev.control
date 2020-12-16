@@ -1,0 +1,14 @@
+Package: libde265-dev
+Version: @DEB_LIBDE265_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: standard
+Description: Open H.265 video codec implementation - development files
+ libde265 is an open source implementation of the H.265 video codec.
+ It is written from scratch in plain C for simplicity and efficiency.
+ Its simple API makes it easy to integrate it into other software.
+ .
+ The development headers for compiling programs that use libde265
+ are provided by this package.
+Depends: libde265-0 (= @DEB_LIBDE265_V@)
