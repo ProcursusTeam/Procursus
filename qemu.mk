@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS  += qemu
 QEMU_VERSION := 5.2.0
-DEB_QEMU_V   ?= $(QEMU_VERSION)
+DEB_QEMU_V   ?= $(QEMU_VERSION)-1
 
 qemu-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/utmapp/qemu/releases/download/v$(QEMU_VERSION)-asi/qemu-$(QEMU_VERSION)-asi.tar.bz2
@@ -29,7 +29,6 @@ qemu: qemu-setup glib2.0 gnutls libjpeg-turbo libpng16 libssh libusb liblzo2 ncu
 		--enable-lzfse \
 		--enable-vde \
 		--enable-zstd \
-		--enable-tcg-interpreter \
 		--enable-tools \
 		--disable-sdl \
 		--disable-gtk \
