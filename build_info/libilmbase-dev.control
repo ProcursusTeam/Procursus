@@ -1,0 +1,13 @@
+Package: libopenexr-dev
+Version: @DEB_OPENEXR_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Multi-Arch: foreign
+Description: development files for IlmBase
+ This package provides the development files for IlmBase, a set of
+ utility libraries released by ILM and used by OpenEXR. Install this
+ package if you want to compile a program that makes use of these
+ libraries.
+Depends: libilmbase25 (= @DEB_OPENEXR_V@) 
