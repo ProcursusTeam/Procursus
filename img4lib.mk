@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += img4lib
-IMG4LIB_VERSION := 1.0+git20201209.$(shell echo $(IMG4LIB_COMMIT) | cut -c -7)
 IMG4LIB_COMMIT  := be2e7dd93339f42d7143ae574a329938e97020b4
+IMG4LIB_VERSION := 1.0+git20201209.$(shell echo $(IMG4LIB_COMMIT) | cut -c -7)
 DEB_IMG4LIB_V   ?= $(IMG4LIB_VERSION)
 
 img4lib-setup: setup
@@ -23,7 +23,8 @@ img4lib:
 	@echo "Using previously built img4lib."
 else
 img4lib: img4lib-setup openssl
-	+$(MAKE) -C $(BUILD_WORK)/img4lib
+	+$(MAKE) -C $(BUILD_WORK)/img4lib \
+		CFLAGS="$(CFLAGS) -DiOS10"
 	cp -a $(BUILD_WORK)/img4lib/img4 $(BUILD_STAGE)/img4lib/usr/bin
 	cp -a $(BUILD_WORK)/img4lib/libvfs/vfs.h $(BUILD_STAGE)/img4lib/usr/include
 	cp -a $(BUILD_WORK)/img4lib/libimg4.a $(BUILD_STAGE)/img4lib/usr/lib

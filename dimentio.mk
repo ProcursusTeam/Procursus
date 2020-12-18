@@ -4,10 +4,10 @@ endif
 
 SUBPROJECTS        += dimentio
 # I'm not going to bump the version any higher than 1.0.3. Just change commit date/short hash.
+DIMENTIO_COMMIT    := 7ffffff5f441285c457773742241df1849063fd2
 DIMENTIO_VERSION   := 1.0.3+git20201124.$(shell echo $(DIMENTIO_COMMIT) | cut -c -7)
 DEB_DIMENTIO_V     ?= $(DIMENTIO_VERSION)
 
-DIMENTIO_COMMIT    := 7ffffff5f441285c457773742241df1849063fd2
 DIMENTIO_SOVERSION := 0
 DIMENTIO_LIBS      := -framework CoreFoundation -framework IOKit -lcompression
 
