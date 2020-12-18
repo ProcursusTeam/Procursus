@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += sudo
-SUDO_VERSION  := 1.9.3p1
-DEB_SUDO_V    ?= $(SUDO_VERSION)-2
+SUDO_VERSION  := 1.9.4p1
+DEB_SUDO_V    ?= $(SUDO_VERSION)
 
 sudo-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.sudo.ws/dist/sudo-$(SUDO_VERSION).tar.gz{,.sig}
