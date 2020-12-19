@@ -23,8 +23,7 @@ img4lib:
 	@echo "Using previously built img4lib."
 else
 img4lib: img4lib-setup openssl
-	+$(MAKE) -C $(BUILD_WORK)/img4lib \
-		CFLAGS="$(CFLAGS) -DiOS10"
+	+$(MAKE) -C $(BUILD_WORK)/img4lib
 	cp -a $(BUILD_WORK)/img4lib/img4 $(BUILD_STAGE)/img4lib/usr/bin
 	cp -a $(BUILD_WORK)/img4lib/libvfs/vfs.h $(BUILD_STAGE)/img4lib/usr/include
 	cp -a $(BUILD_WORK)/img4lib/libimg4.a $(BUILD_STAGE)/img4lib/usr/lib
