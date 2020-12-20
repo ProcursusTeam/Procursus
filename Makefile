@@ -243,7 +243,7 @@ PACK = -find $(BUILD_DIST)/$(1) -name '*.la' -type f -delete; \
 	$(SED) -i ':a; s/@$(2)@/$($(2))/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	$(SED) -i ':a; s/@DEB_MAINTAINER@/$(DEB_MAINTAINER)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	$(SED) -i ':a; s/@DEB_ARCH@/$(DEB_ARCH)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control; \
-	$(SED) -i ":a; s/@DYLIBS@/$$(find $(BUILD_DIST)/$(1) -type f -executable -exec otool -L {} \; | grep -P -o '(?<=lib\/)(.*).*dylib(?!:)' | sort -u | grep -f - $(BUILD_INFO)/dylibs | grep -v "$$(echo $@ | cut -f1 -d"-") " | cut -d" " -f3 | paste -sd" " | sed 's/ /, /g')/g; ta" $(BUILD_DIST)/$(1)/DEBIAN/control; \
+	$(SED) -i ":a; s/@DYLIBS@/$$(find $(BUILD_DIST)/$(1) -type f -executable -exec $(OTOOL) -L {} \; | grep -P -o '(?<=lib\/)(.*).*dylib(?!:)' | sort -u | grep -f - $(BUILD_INFO)/dylibs | grep -v "$$(echo $@ | cut -f1 -d"-") " | cut -d" " -f3 | sort -u | paste -sd" " | $(SED) 's/ /, /g')/g; ta" $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	if [ -d "$(BUILD_DIST)/$(1)-locales" ]; then \
 		$(call PACK_LOCALE,$(1)); \
 	fi; \
