@@ -1,0 +1,22 @@
+<target name> <dylib name> <package name>
+gettext libintl.8.dylib libintl8
+gettext libgettextlib-0.21.dylib gettext
+gettext libgettextsrc-0.21.dylib gettext
+gettext libgettextsrc-0.21.dylib gettext
+gettext libtextstyle.0.dylib libtextstyle0v5
+gettext libgettextpo.0.dylib libgettextpo0
+zstd libzstd.1.dylib libzstd1
+lz4 liblz4.1.dylib liblz4-1
+xz liblzma.5.dylib liblzma5
+pcre2 libpcre2-16.0.dylib libpcre2-16-0
+pcre2 libpcre2-32.0.dylib libpcre2-32-0
+pcre2 libpcre2-posix.2.dylib libpcre2-posix2
+pcre2 libpcre2-8.0.dylib libpcre2-8-0
+openssl libcrypto.1.1.dylib libssl1.1
+openssl libssl.1.1.dylib libssl1.1
+curl libcurl.4.dylib libcurl4
+nghttp2 libnghttp2.14.dylib libnghttp2-14
+libidn2 libidn2.0.dylib libidn2-0
+libssh2 libssh2.1.dylib libssh2-1
+libgit2 libgit2.1.0.dylib libgit2-1.0
+expat libexpat.1.dylib libexpat1
