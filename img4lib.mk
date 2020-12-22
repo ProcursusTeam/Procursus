@@ -23,7 +23,10 @@ img4lib:
 	@echo "Using previously built img4lib."
 else
 img4lib: img4lib-setup openssl lzfse
-	+$(MAKE) -C $(BUILD_WORK)/img4lib
+	unset CFLAGS LDFLAGS
+	+$(MAKE) -C $(BUILD_WORK)/img4lib \
+		CFLAGS="$(CFLAGS) -DiOS10 -I. -DDER_MULTIBYTE_TAGS=1 -DDER_TAG_SIZE=8 -D__unused='__attribute__((unused))'" \
+		LDFLAGS="$(LDFLAGS) -lcrypto -llzfse"
 	cp -a $(BUILD_WORK)/img4lib/img4 $(BUILD_STAGE)/img4lib/usr/bin
 	cp -a $(BUILD_WORK)/img4lib/libvfs/vfs.h $(BUILD_STAGE)/img4lib/usr/include
 	cp -a $(BUILD_WORK)/img4lib/libimg4.a $(BUILD_STAGE)/img4lib/usr/lib
