@@ -2,6 +2,7 @@ Package: lzfse
 Version: @DEB_LZFSE_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Depends: liblzfse
 Section: Utilities
 Priority: optional
 Description: LZFSE compression library and command line tool
