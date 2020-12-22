@@ -12,10 +12,10 @@ img4lib-setup: setup
 		&& wget -q -nc -O$(BUILD_SOURCE)/img4lib-v$(IMG4LIB_COMMIT).tar.gz \
 			https://github.com/xerub/img4lib/archive/$(IMG4LIB_COMMIT).tar.gz
 	$(call EXTRACT_TAR,img4lib-v$(IMG4LIB_COMMIT).tar.gz,img4lib-$(IMG4LIB_COMMIT),img4lib)
-
 	$(SED) -i 's/CFLAGS =/CFLAGS ?=/' $(BUILD_WORK)/img4lib/Makefile
 	$(SED) -i 's/LDFLAGS =/LDFLAGS ?=/' $(BUILD_WORK)/img4lib/Makefile
-
+	$(SED) -i '/CFLAGS += -DUSE_LIBCOMPRESSION/d' $(BUILD_WORK)/img4lib/Makefile
+	$(SED) -i '/LDLIBS = -lcompression/d' $(BUILD_WORK)/img4lib/Makefile
 	mkdir -p $(BUILD_STAGE)/img4lib/usr/{bin,include/{libvfs,libDER},lib}
 
 ifneq ($(wildcard $(BUILD_WORK)/img4lib/.build_complete),)
