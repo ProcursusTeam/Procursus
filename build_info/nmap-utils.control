@@ -2,7 +2,7 @@ Package: nmap-utils
 Version: @DEB_NANO_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libpcre1, libssh2-1, libssl1.1, nmap-common
+Depends: libpcre1, libssl1.1, nmap-common
 Section: Utilities
 Priority: optional
 Description: The Network Mapper

@@ -32,7 +32,7 @@ endif
 nmap-package: nmap-stage
 	# nmap.mk Package Structure
 	rm -rf $(BUILD_DIST)/nmap{-utils,-common}
-	mkdir -p $(BUILD_DIST)/nmap{-utils/usr/bin,-common/usr/share}
+	mkdir -p $(BUILD_DIST)/nmap{-utils/usr,-common/usr/share}
 	
 	# nmap.mk Prep nmap-utils
 	cp -a $(BUILD_STAGE)/nmap/usr/bin $(BUILD_DIST)/nmap-utils/usr
