@@ -1,0 +1,28 @@
+Package: libilmbase-dev
+Version: @DEB_OPENEXR_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Multi-Arch: foreign
+Description: development files for the OpenEXR image library
+ OpenEXR is a high dynamic-range (HDR) image file format developed by
+ Industrial Light & Magic for use in computer imaging applications.
+ .
+ OpenEXR's features include:
+    * Higher dynamic range and colour precision than existing 8- and
+      10-bit image file formats.
+    * Support for the "half" 16-bit floating-point pixel format.
+    * Multiple lossless image compression algorithms. Some of the
+      included codecs can achieve 2:1 lossless compression ratios on
+      images with film grain.
+    * Extensibility. New compression codecs and image types can easily
+      be added by extending the C++ classes included in the OpenEXR
+      software distribution. New image attributes (strings, vectors,
+      integers, etc.) can be added to OpenEXR image headers without
+      affecting backward compatibility with existing OpenEXR
+      applications.
+ .
+ This package contains the header files required if you wish to
+ compile/develop applications that use OpenEXR libraries.
+Depends: libopenexr25 (= @DEB_OPENEXR_V@)

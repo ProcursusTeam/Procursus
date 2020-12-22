@@ -21,56 +21,56 @@ MEMO_CFVER           ?= 1600
 CFVER_WHOLE          := $(shell echo $(MEMO_CFVER) | cut -d. -f1)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1100 ] && [ "$(CFVER_WHOLE)" -lt 1200 ] && echo 1),1)
-IPHONE_MIN           := 8.0
-TVOS_MIN             := XXX
-WATCH_MIN            := 1.0
-override MEMO_CFVER  := 1100
+IPHONEOS_DEPLOYMENT_TARGET  := 8.0
+APPLETVOS_DEPLOYMENT_TARGET := XXX
+WATCHOS_DEPLOYMENT_TARGET   := 1.0
+MACOSX_DEPLOYMENT_TARGET    := 10.11
+override MEMO_CFVER         := 1100
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1200 ] && [ "$(CFVER_WHOLE)" -lt 1300 ] && echo 1),1)
-IPHONE_MIN           := 9.0
-TVOS_MIN             := 9.0
-WATCH_MIN            := 2.0
-override MEMO_CFVER  := 1200
+IPHONEOS_DEPLOYMENT_TARGET  := 9.0
+APPLETVOS_DEPLOYMENT_TARGET := 9.0
+WATCHOS_DEPLOYMENT_TARGET   := 2.0
+MACOSX_DEPLOYMENT_TARGET    := 10.12
+override MEMO_CFVER         := 1200
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1300 ] && [ "$(CFVER_WHOLE)" -lt 1400 ] && echo 1),1)
-IPHONE_MIN           := 10.0
-TVOS_MIN             := 10.0
-WATCH_MIN            := 3.0
-override MEMO_CFVER  := 1300
+IPHONEOS_DEPLOYMENT_TARGET  := 10.0
+APPLETVOS_DEPLOYMENT_TARGET := 10.0
+WATCHOS_DEPLOYMENT_TARGET   := 3.0
+MACOSX_DEPLOYMENT_TARGET    := 10.13
+override MEMO_CFVER         := 1300
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1400 ] && [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
-IPHONE_MIN           := 11.0
-TVOS_MIN             := 11.0
-WATCH_MIN            := 4.0
-override MEMO_CFVER  := 1400
+IPHONEOS_DEPLOYMENT_TARGET  := 11.0
+APPLETVOS_DEPLOYMENT_TARGET := 11.0
+WATCHOS_DEPLOYMENT_TARGET   := 4.0
+MACOSX_DEPLOYMENT_TARGET    := 10.14
+override MEMO_CFVER         := 1400
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1500 ] && [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
-IPHONE_MIN           := 12.0
-TVOS_MIN             := 12.0
-WATCH_MIN            := 5.0
-override MEMO_CFVER  := 1500
+IPHONEOS_DEPLOYMENT_TARGET  := 12.0
+APPLETVOS_DEPLOYMENT_TARGET := 12.0
+WATCHOS_DEPLOYMENT_TARGET   := 5.0
+MACOSX_DEPLOYMENT_TARGET    := 10.15
+override MEMO_CFVER         := 1500
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
-IPHONE_MIN           := 13.0
-TVOS_MIN             := 13.0
-WATCH_MIN            := 6.0
-override MEMO_CFVER  := 1600
+IPHONEOS_DEPLOYMENT_TARGET  := 13.0
+APPLETVOS_DEPLOYMENT_TARGET := 13.0
+WATCHOS_DEPLOYMENT_TARGET   := 6.0
+MACOSX_DEPLOYMENT_TARGET    := 11.0
+override MEMO_CFVER         := 1600
 else
 $(error Unsupported CoreFoundation version)
 endif
 
-ifeq ($(MEMO_TARGET),iphoneos-arm)
-$(warning Building for iOS)
-ARCHES               := armv7
-PLATFORM             := iphoneos
-DEB_ARCH             := iphoneos-arm
-GNU_HOST_TRIPLE      := armv7-apple-darwin
-PLATFORM_VERSION_MIN := -miphoneos-version-min=$(IPHONE_MIN)
-RUST_TARGET          := armv7-apple-ios
+export MACOSX_DEPLOYMENT_TARGET
 
-else ifeq ($(MEMO_TARGET),iphoneos-arm64)
+ifeq ($(MEMO_TARGET),iphoneos-arm64)
 $(warning Building for iOS)
 ARCHES               := arm64
 PLATFORM             := iphoneos
 DEB_ARCH             := iphoneos-arm
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -miphoneos-version-min=$(IPHONE_MIN)
+PLATFORM_VERSION_MIN := -miphoneos-version-min=$(IPHONEOS_DEPLOYMENT_TARGET)
 RUST_TARGET          := aarch64-apple-ios
+export IPHONEOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),appletvos-arm64)
 $(warning Building for tvOS)
@@ -78,15 +78,8 @@ ARCHES               := arm64
 PLATFORM             := appletvos
 DEB_ARCH             := appletvos-arm64
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -mappletvos-version-min=$(TVOS_MIN)
-
-else ifeq ($(MEMO_TARGET),watchos-arm)
-$(warning Building for WatchOS)
-ARCHES               := armv7k
-PLATFORM             := watchos
-DEB_ARCH             := watchos-arm
-GNU_HOST_TRIPLE      := armv7k-apple-darwin
-PLATFORM_VERSION_MIN := -mwatchos-version-min=$(WATCH_MIN)
+PLATFORM_VERSION_MIN := -mappletvos-version-min=$(APPLETVOS_DEPLOYMENT_TARGET)
+export APPLETVOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),watchos-arm64)
 $(warning Building for WatchOS)
@@ -94,7 +87,8 @@ ARCHES               := arm64_32
 PLATFORM             := watchos
 DEB_ARCH             := watchos-arm
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -mwatchos-version-min=$(WATCH_MIN)
+PLATFORM_VERSION_MIN := -mwatchos-version-min=$(WATCHOS_DEPLOYMENT_TARGET)
+export WATCHOS_DEPLOYMENT_TARGET
 
 else
 $(error Platform not supported)
@@ -111,6 +105,7 @@ CC       := $(GNU_HOST_TRIPLE)-clang
 CXX      := $(GNU_HOST_TRIPLE)-clang++
 CPP      := $(GNU_HOST_TRIPLE)-clang -E
 AR       := $(GNU_HOST_TRIPLE)-ar
+LD       := $(GNU_HOST_TRIPLE)-ld
 RANLIB   := $(GNU_HOST_TRIPLE)-ranlib
 STRIP    := $(GNU_HOST_TRIPLE)-strip
 I_N_T    := $(GNU_HOST_TRIPLE)-install_name_tool
@@ -119,23 +114,28 @@ LIPO     := $(GNU_HOST_TRIPLE)-lipo
 OTOOL    := $(GNU_HOST_TRIPLE)-otool
 EXTRA    := INSTALL="/usr/bin/install -c --strip-program=$(STRIP)"
 LIBTOOL  := $(GNU_HOST_TRIPLE)-libtool
-export CC CXX AR
 
 else ifeq ($(UNAME),Darwin)
 ifeq ($(filter $(shell uname -m | cut -c -4), iPad iPho),)
 $(warning Building on MacOS)
 TARGET_SYSROOT  ?= $(shell xcrun --sdk $(PLATFORM) --show-sdk-path)
 MACOSX_SYSROOT  ?= $(shell xcrun --show-sdk-path)
+CC              := cc
+CXX             := c++
 CPP             := cc -E
 
 else
 $(warning Building on iOS)
 TARGET_SYSROOT  ?= /usr/share/SDKs/iPhoneOS.sdk
 MACOSX_SYSROOT  ?= /usr/share/SDKs/MacOSX.sdk
+CC              := clang
+CXX             := clang++
 CPP             := clang -E
 
 endif
 PATH            := /usr/bin:$(PATH)
+AR              := ar
+LD              := ld
 RANLIB          := ranlib
 STRIP           := strip
 NM              := nm
@@ -178,7 +178,7 @@ CPPFLAGS            := -O2 -arch $(shell echo $(ARCHES) | cut -f1 -d' ') $(PLATF
 LDFLAGS             := -O2 $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib -F$(BUILD_BASE)/System/Library/Frameworks
 PKG_CONFIG_PATH     := $(BUILD_BASE)/usr/lib/pkgconfig:$(BUILD_BASE)/usr/local/lib/pkgconfig
 
-export PLATFORM ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE CPP RANLIB STRIP NM LIPO OTOOL I_N_T EXTRA SED
+export PLATFORM ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T EXTRA SED
 export BUILD_ROOT BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP BUILD_TOOLS
 export DEB_ARCH DEB_ORIGIN DEB_MAINTAINER
 export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS PKG_CONFIG_PATH
@@ -493,7 +493,7 @@ bootstrap:: $(STRAPPROJECTS:%=%-package)
 	touch $(BUILD_STAGE)/.fakeroot_bootstrap
 	mkdir -p $(BUILD_STRAP)/strap/Library/dpkg/info
 	touch $(BUILD_STRAP)/strap/Library/dpkg/status
-	cd $(BUILD_STRAP) && rm -f !(apt_*|base_*|bash_*|ca-certificates_*|coreutils_*|darwintools_*|debianutils_*|diffutils_*|diskdev-cmds_*|dpkg_*|essential_*|findutils_*|firmware-sbin_*|gpgv_*|grep_*|launchctl_*|libapt-pkg6.0_*|libcrypt2_*|libgcrypt20_*|libgpg-error0_*|libintl8_*|liblz4-1_*|liblzma5_*|libncursesw6_*|libpcre1_*|libreadline8_*|libssl1.1_*|libzstd1_*|ncurses-bin_*|ncurses-term_*|openssh_*|openssh-client_*|openssh-server_*|openssh-sftp-server_*|procursus-keyring_*|profile.d_*|sed_*|shell-cmds_*|snaputil_*|sudo_*|system-cmds_*|tar_*|uikittools_*|zsh_*).deb
+	cd $(BUILD_STRAP) && rm -f !(apt_*|base_*|bash_*|ca-certificates_*|coreutils_*|darwintools_*|debianutils_*|diffutils_*|diskdev-cmds_*|dpkg_*|essential_*|findutils_*|firmware-sbin_*|gpgv_*|grep_*|launchctl_*|libapt-pkg6.0_*|libcrypt2_*|libgcrypt20_*|libgpg-error0_*|libintl8_*|liblz4-1_*|liblzma5_*|libncursesw6_*|libpcre1_*|libreadline8_*|libssl1.1_*|libxxhash0_*|libzstd1_*|ncurses-bin_*|ncurses-term_*|openssh_*|openssh-client_*|openssh-server_*|openssh-sftp-server_*|procursus-keyring_*|profile.d_*|sed_*|shell-cmds_*|snaputil_*|sudo_*|system-cmds_*|tar_*|uikittools_*|zsh_*).deb
 	-for DEB in $(BUILD_STRAP)/*.deb; do \
 		PKGNAME=$$(basename $$DEB | cut -f1 -d"_"); \
 		dpkg-deb -R $$DEB $(BUILD_STRAP)/strap; \
@@ -598,7 +598,7 @@ setup:
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/libkern/OSTypes.h $(BUILD_BASE)/usr/include/libkern
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,proc*,ptrace,kern*,random,vnode}.h $(BUILD_BASE)/usr/include/sys
 	$(CP) -af $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_BASE)/usr/include/IOKit
-	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{ar,launch,libproc,tzfile}.h $(BUILD_BASE)/usr/include
+	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{ar,launch,libcharset,localcharset,libproc,tzfile}.h $(BUILD_BASE)/usr/include
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/mach/{*.defs,{mach_vm,shared_region}.h} $(BUILD_BASE)/usr/include/mach
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/mach/machine/*.defs $(BUILD_BASE)/usr/include/mach/machine
 	$(CP) -af $(BUILD_INFO)/availability.h $(BUILD_BASE)/usr/include/os

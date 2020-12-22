@@ -1,0 +1,20 @@
+Package: libavutil56
+Version: @DEB_FFMPEG_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: standard
+Description: FFmpeg library with functions for simplifying programming - runtime files
+ FFmpeg is the leading multimedia framework, able to decode, encode, transcode,
+ mux, demux, stream, filter and play pretty much anything that humans and
+ machines have created. It supports the most obscure ancient formats up to the
+ cutting edge.
+ .
+ This library is a utility library to aid portable multimedia programming.
+ It contains safe portable string functions, random number generators, data
+ structures, additional mathematics functions, cryptography and multimedia
+ related functionality (like enumerations for pixel and sample formats).
+ It is not a library for code needed by both libavcodec and libavformat.
+ The goal for this library is to be modular, small, efficient and useful.
+ .
+ This package contains the runtime files.

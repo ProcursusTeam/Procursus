@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += apt
-APT_VERSION   := 2.1.12
+APT_VERSION   := 2.1.14
 DEB_APT_V     ?= $(APT_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
@@ -24,7 +24,7 @@ ifneq ($(wildcard $(BUILD_WORK)/apt/.build_complete),)
 apt:
 	@echo "Using previously built apt."
 else
-apt: apt-setup libgcrypt berkeleydb lz4 xz zstd
+apt: apt-setup libgcrypt berkeleydb lz4 xxhash xz zstd
 	cd $(BUILD_WORK)/apt/build && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
