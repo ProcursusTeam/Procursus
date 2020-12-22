@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += libsrt
 LIBSRT_VERSION := 1.4.2
-DEB_LIBSRT_V   ?= $(LIBSRT_VERSION)
+DEB_LIBSRT_V   ?= $(LIBSRT_VERSION)-1
 
 libsrt-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/libsrt-$(LIBSRT_VERSION).tar.gz" ] && \
@@ -48,10 +48,10 @@ libsrt-package: libsrt-stage
 		$(BUILD_DIST)/srt-tools/usr
 
 	# libsrt.mk Prep libsrt1
-	cp -a $(BUILD_STAGE)/libsrt/usr/lib/libsrt.$(LIBSRT_VERSION).dylib $(BUILD_DIST)/libsrt1/usr/lib
+	cp -a $(BUILD_STAGE)/libsrt/usr/lib/libsrt.{$(LIBSRT_VERSION),1}.dylib $(BUILD_DIST)/libsrt1/usr/lib
 
 	# libsrt.mk Prep libsrt-dev
-	cp -a $(BUILD_STAGE)/libsrt/usr/lib/libsrt.{dylib,1.dylib,a} $(BUILD_DIST)/libsrt-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libsrt/usr/lib/libsrt.{dylib,a} $(BUILD_DIST)/libsrt-dev/usr/lib
 	cp -a $(BUILD_STAGE)/libsrt/usr/include $(BUILD_DIST)/libsrt-dev/usr
 	cp -a $(BUILD_STAGE)/libsrt/usr/lib/pkgconfig $(BUILD_DIST)/libsrt-dev/usr/lib
 

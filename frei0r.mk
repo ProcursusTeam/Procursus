@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS  += frei0r
+SUBPROJECTS    += frei0r
 FREI0R_VERSION := 1.7.0
 DEB_FREI0R_V   ?= $(FREI0R_VERSION)-1
 

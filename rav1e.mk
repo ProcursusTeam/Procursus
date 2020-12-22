@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS   += rav1e
 RAV1E_VERSION := 0.3.4
-DEB_RAV1E_V   ?= $(RAV1E_VERSION)
+DEB_RAV1E_V   ?= $(RAV1E_VERSION)-1
 
 rav1e-setup: setup
 ifeq (, $(shell which cargo-cbuild))
@@ -50,6 +50,7 @@ rav1e: rav1e-setup aom dav1d
 	
 	$(I_N_T) -id /usr/lib/librav1e.0.dylib $(BUILD_STAGE)/rav1e/usr/lib/librav1e.0.dylib
 	$(I_N_T) -id /usr/lib/librav1e.0.dylib $(BUILD_BASE)/usr/lib/librav1e.0.dylib
+	ln -sf librav1e.0.dylib $(BUILD_BASE)/usr/lib/librav1e.dylib
 
 	touch $(BUILD_WORK)/rav1e/.build_complete
 endif

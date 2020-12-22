@@ -17,7 +17,7 @@ libvde:
 	@echo "Using previously built libvde."
 else
 libvde: libvde-setup openssl
-	cd $(BUILD_WORK)/libvde && ./configure -C \
+	cd $(BUILD_WORK)/libvde && unset MACOSX_DEPLOYMENT_TARGET && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \

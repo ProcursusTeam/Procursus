@@ -13,7 +13,7 @@ DIMENTIO_LIBS      := -framework CoreFoundation -framework IOKit -lcompression
 
 dimentio-setup: setup
 	-[ ! -e "$(BUILD_SOURCE)/dimentio-v$(DIMENTIO_COMMIT).tar.gz" ] \
-		&& wget -nc -O$(BUILD_SOURCE)/dimentio-v$(DIMENTIO_COMMIT).tar.gz \
+		&& wget -q -nc -O$(BUILD_SOURCE)/dimentio-v$(DIMENTIO_COMMIT).tar.gz \
 			https://github.com/0x7ff/dimentio/archive/$(DIMENTIO_COMMIT).tar.gz
 	$(call EXTRACT_TAR,dimentio-v$(DIMENTIO_COMMIT).tar.gz,dimentio-$(DIMENTIO_COMMIT),dimentio)
 	mkdir -p $(BUILD_STAGE)/dimentio/usr/{bin,lib,include}

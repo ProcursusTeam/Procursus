@@ -1,0 +1,16 @@
+Package: qemu-system
+Version: @DEB_QEMU_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Depends: qemu-system-arm, qemu-system-mips, qemu-system-ppc, qemu-system-sparc, qemu-system-x86, qemu-system-misc
+Section: Utilities
+Priority: optional
+Description: QEMU full system emulation binaries
+ QEMU is a fast processor emulator: currently the package supports
+ ARM, CRIS, i386, M68k (ColdFire), MicroBlaze, MIPS, PowerPC, SH4,
+ SPARC and x86-64 emulation. By using dynamic translation it achieves
+ reasonable speed while being easy to port on new host CPUs.
+ .
+ This metapackage provides the full system emulation binaries for all supported
+ targets, by depending on all per-architecture system emulation packages which
+ QEMU supports.

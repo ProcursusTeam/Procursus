@@ -1,0 +1,19 @@
+Package: libavformat58
+Version: @DEB_FFMPEG_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: standard
+Description: FFmpeg library with (de)muxers for multimedia containers - runtime files
+ FFmpeg is the leading multimedia framework, able to decode, encode, transcode,
+ mux, demux, stream, filter and play pretty much anything that humans and
+ machines have created. It supports the most obscure ancient formats up to the
+ cutting edge.
+ .
+ This library provides a generic framework for multiplexing and demultiplexing
+ (muxing and demuxing) audio, video and subtitle streams. It encompasses
+ multiple muxers and demuxers for multimedia container formats. It also
+ supports several input and output protocols to access a media resource.
+ .
+ This package contains the runtime files.
+Depends: libavcodec58 (= @DEB_FFMPEG_V@), libswresample3 (= @DEB_FFMPEG_V@), libavutil56 (= @DEB_FFMPEG_V@), libgnutls30, librtmp1, libgmp10, libhogweed6, libnettle8, libsrt1, libvpx6, libwebpmux3, libwebp7, liblzma5, libdav1d4, libopencore-amrwb0, libsnappy1v5, libaom2, libmp3lame0, libopencore-amrnb0, libopenjp2-7, libopus0, librav1e0, libspeex1, libtheora0, libogg0, libvorbis0a, libvorbisenc2, libx264-161, libx265-192, libsoxr0

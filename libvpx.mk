@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS  += libvpx
+SUBPROJECTS    += libvpx
 LIBVPX_VERSION := 1.9.0
 DEB_LIBVPX_V   ?= $(LIBVPX_VERSION)
 

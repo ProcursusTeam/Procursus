@@ -16,7 +16,7 @@ pcre2:
 	@echo "Using previously built pcre2."
 else
 pcre2: pcre2-setup readline
-	cd $(BUILD_WORK)/pcre2 && ./configure -C \
+	cd $(BUILD_WORK)/pcre2 && unset MACOSX_DEPLOYMENT_TARGET && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-dependency-tracking \
