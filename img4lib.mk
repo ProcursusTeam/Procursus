@@ -16,6 +16,9 @@ img4lib-setup: setup
 	$(SED) -i 's/LDFLAGS =/LDFLAGS ?=/' $(BUILD_WORK)/img4lib/Makefile
 	$(SED) -i '/CFLAGS += -DUSE_LIBCOMPRESSION/d' $(BUILD_WORK)/img4lib/Makefile
 	$(SED) -i '/LDLIBS = -lcompression/d' $(BUILD_WORK)/img4lib/Makefile
+	$(SED) -i 's/CC =/CC ?=/' $(BUILD_WORK)/img4lib/Makefile
+	$(SED) -i 's/LD =/LD ?=/' $(BUILD_WORK)/img4lib/Makefile
+	$(SED) -i 's/AR =/AR ?=/' $(BUILD_WORK)/img4lib/Makefile
 	mkdir -p $(BUILD_STAGE)/img4lib/usr/{bin,include/{libvfs,libDER},lib}
 
 ifneq ($(wildcard $(BUILD_WORK)/img4lib/.build_complete),)
