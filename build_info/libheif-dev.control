@@ -1,0 +1,14 @@
+Package: libheif-dev
+Version: @DEB_LIBHEIF_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: standard
+Description: ISO/IEC 23008-12:2017 HEIF file format decoder - development files
+ libheif is an ISO/IEC 23008-12:2017 HEIF file format decoder. HEIF is a new
+ image file format employing HEVC (h.265) image coding for the best compression
+ ratios currently possible.
+ .
+ The development headers for compiling programs that use libheif are provided
+ by this package.
+Depends: libheif1 (= @DEB_LIBHEIF_V@), libx265-dev, libaom-dev, libde265-dev

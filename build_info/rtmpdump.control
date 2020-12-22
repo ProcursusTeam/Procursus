@@ -1,0 +1,11 @@
+Package: rtmpdump
+Version: @DEB_RTMPDUMP_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libgnutls30, libhogweed6, libnettle8, libgmp10, librtmp1
+Section: Utilities
+Priority: standard
+Description: small dumper for media content streamed over the RTMP protocol
+ A small dumper for media content streamed over the RTMP protocol (like BBC's
+ iPlayer high quality streams). Supplying an RTMP URL will result in a dumped
+ flv file, which can be played/transcoded with standard tools.

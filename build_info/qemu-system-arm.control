@@ -1,0 +1,20 @@
+Package: qemu-system-arm
+Version: @DEB_QEMU_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: qemu-system-common (= @DEB_QEMU_V@), qemu-system-data (= @DEB_QEMU_V@), liblzo2-2, libsnappy1v5, libpixman-1-0, libpng16-16, libzstd1, libglib2.0-0, libvdeplug2, libjpeg62-turbo, libusb-1.0-0, libgnutls30, libnettle8
+Suggests: qemu-block-extra (= @DEB_QEMU_V@)
+Section: Utilities
+Priority: optional
+Description: QEMU full system emulation binaries (arm)
+ QEMU is a fast processor emulator: currently the package supports
+ ARM emulation. By using dynamic translation it achieves
+ reasonable speed while being easy to port on new host CPUs.
+ .
+ This package provides the full system emulation binaries to emulate
+ the following arm hardware: arm, aarch64.
+ .
+ In system emulation mode QEMU emulates a full system, including a processor
+ and various peripherals.  It enables easier testing and debugging of system
+ code.  It can also be used to provide virtual hosting of several virtual
+ machines on a single server.
