@@ -10,7 +10,7 @@ xxhash-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/xxhash-$(XXHASH_VERSION).tar.gz" ] && \
 		wget -q -nc -O$(BUILD_SOURCE)/xxhash-$(XXHASH_VERSION).tar.gz \
 			https://github.com/Cyan4973/xxhash/archive/v$(XXHASH_VERSION).tar.gz
-	$(call EXTRACT_TAR,xxhash-$(XXHASH_VERSION).tar.gz,xxhash-$(XXHASH_VERSION),xxhash)
+	$(call EXTRACT_TAR,xxhash-$(XXHASH_VERSION).tar.gz,xxHash-$(XXHASH_VERSION),xxhash)
 	$(SED) -i 's/UNAME :=/UNAME ?=/' $(BUILD_WORK)/xxhash/Makefile
 
 ifneq ($(wildcard $(BUILD_WORK)/xxhash/.build_complete),)
@@ -22,9 +22,11 @@ xxhash: xxhash-setup
 		UNAME=Darwin \
 		PREFIX=/usr
 	+$(MAKE) -C $(BUILD_WORK)/xxhash install \
+		UNAME=Darwin \
 		PREFIX=/usr \
 		DESTDIR=$(BUILD_STAGE)/xxhash
 	+$(MAKE) -C $(BUILD_WORK)/xxhash install \
+		UNAME=Darwin \
 		PREFIX=/usr \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/xxhash/.build_complete
