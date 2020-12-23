@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += mediacli
-MEDIACLI_VERSION := 1.1.1
+MEDIACLI_VERSION := 1.2
 DEB_MEDIACLI_V   ?= $(MEDIACLI_VERSION)
 
 mediacli-setup: setup
