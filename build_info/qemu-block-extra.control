@@ -2,7 +2,7 @@ Package: qemu-block-extra
 Version: @DEB_QEMU_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libglib2.0-0, libcurl4, libssh-4, lzfse
+Depends: libglib2.0-0, libcurl4, libssh-4, liblzfse
 Enhances: qemu-utils, qemu-system-misc, qemu-system-arm, qemu-system-mips, qemu-system-sparc, qemu-system-x86
 Section: Utilities
 Priority: optional

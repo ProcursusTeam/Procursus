@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS   += lzfse
 LZFSE_VERSION := 1.0
-DEB_LZFSE_V   ?= $(LZFSE_VERSION)
+DEB_LZFSE_V   ?= $(LZFSE_VERSION)-1
 
 lzfse-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/lzfse/lzfse/archive/lzfse-$(LZFSE_VERSION).tar.gz
