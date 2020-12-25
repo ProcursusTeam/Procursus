@@ -1,0 +1,8 @@
+Package: pbupload
+Author: quiprr <quiprr@ametrine.dev>
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_PBUPLOAD_V@
+Section: Utilities
+Priority: optional
+Description: Objective-C Pastebin Uploader
