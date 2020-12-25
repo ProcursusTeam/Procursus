@@ -4,14 +4,14 @@ endif
 
 STRAPPROJECTS       += darwintools
 DARWINTOOLS_VERSION := 1.3
-DARWINTOOLS_COMMIT  := e4b7cf07bb491ecdbf08519063d7a9fa16aefdb8
+ZBRFIRMWARE_COMMIT  := e4b7cf07bb491ecdbf08519063d7a9fa16aefdb8
 DEB_DARWINTOOLS_V   ?= $(DARWINTOOLS_VERSION)
 
 darwintools-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/darwintools-v$(DIMENTIO_COMMIT).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/darwintools-v$(DARWINTOOLS_COMMIT).tar.gz \
-			https://github.com/zbrateam/Firmware/archive/$(DARWINTOOLS_COMMIT).tar.gz
-	$(call EXTRACT_TAR,darwintools-v$(DARWINTOOLS_COMMIT).tar.gz,Firmware-$(DARWINTOOLS_COMMIT),darwintools)
+	-[ ! -e "$(BUILD_SOURCE)/Firmware-$(ZBRFIRMWARE_COMMIT).tar.gz" ] \
+		&& wget -q -nc -O$(BUILD_SOURCE)/Firmware-$(ZBRFIRMWARE_COMMIT).tar.gz \
+			https://github.com/zbrateam/Firmware/archive/$(ZBRFIRMWARE_COMMIT).tar.gz
+	$(call EXTRACT_TAR,Firmware-$(ZBRFIRMWARE_COMMIT).tar.gz,Firmware-$(ZBRFIRMWARE_COMMIT),darwintools)
 
 ifneq ($(wildcard $(BUILD_WORK)/darwintools/.build_complete),)
 darwintools:
