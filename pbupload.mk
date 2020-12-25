@@ -19,11 +19,11 @@ pbupload:
 	@echo "Using previously built pbupload."
 else
 pbupload: pbupload-setup 
-	$(CC) -fobjc-arc $(PBUPLOAD_LIBS) $(CFLAGS) \
-		-o $(BUILD_WORK)/pbupload/pbupload \
-		$(BUILD_WORK)/pbupload/Sources/pbupload.m
-
-	cp -a $(BUILD_WORK)/pbupload/pbupload $(BUILD_STAGE)/pbupload/usr/bin
+	$(CC) $(CFLAGS) -fobjc-arc \
+		$(BUILD_WORK)/pbupload/Sources/pbupload.m \
+		-o $(BUILD_STAGE)/pbupload/usr/bin/pbupload \
+		$(LDFLAGS) \
+		$(PBUPLOAD_LIBS)
 	touch $(BUILD_WORK)/pbupload/.build_complete
 endif
 
@@ -35,8 +35,8 @@ pbupload-package: pbupload-stage
 	# pbupload.mk Prep pbupload
 	cp -a $(BUILD_STAGE)/pbupload/usr/bin/pbupload $(BUILD_DIST)/pbupload/usr/bin
 
-	# pbupload.mk Permissions
-	chmod u+s $(BUILD_DIST)/pbupload/usr/bin/pbupload
+	# pbupload.mk Sign
+	$(call SIGN,pbupload,general.xml)
 
 	# pbupload.mk Make .debs
 	$(call PACK,pbupload,DEB_PBUPLOAD_V)
