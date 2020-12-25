@@ -59,6 +59,6 @@ lzfse-package: lzfse-stage
 	$(call PACK,liblzfse-dev,DEB_LZFSE_V)
 	
 	# lzfse.mk Build cleanup
-	rm -rf $(BUILD_DIST)/{liblzfse{-dev},lzfse}
+	rm -rf $(BUILD_DIST)/{liblzfse{,-dev},lzfse}
 
 .PHONY: lzfse lzfse-package
