@@ -1,0 +1,16 @@
+Package: libgs-dev
+Version: @DEB_GHOSTSCRIPT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libgs9 (= @DEB_GHOSTSCRIPT_V@), libexpat1-dev, libfontconfig-dev, libfreetype-dev, libjbig2dec0-dev, libjpeg62-turbo-dev, liblcms2-dev, libopenjp2-7-dev, libpaper-dev, libpng16-dev, libtiff-dev
+Section: Development
+Priority: optional
+Multi-Arch: foreign
+Description: interpreter for the PostScript language and for PDF - Development Files
+ GPL Ghostscript is used for PostScript/PDF preview and printing.
+ Usually as a back-end to a program such as ghostview, it can display
+ PostScript and PDF documents in an X11 environment.
+ .
+ This package provides the development files for the GPL Ghostscript
+ library which makes the facilities of GPL Ghostscript available to
+ applications.
