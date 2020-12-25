@@ -377,7 +377,7 @@ PACK = -if [ -z $(4) ]; then \
 	find $(BUILD_DIST)/$(1) -name '.DS_Store' -type f -delete; \
 	$(FAKEROOT) $(DPKG_DEB) -b $(BUILD_DIST)/$(1) $(BUILD_DIST)/$$(grep Package: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ')_$($(2))_$$(grep Architecture: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ').deb
 	if [ "$(TO_INSTALL)" = "1" ]; then \
-		scp -P$(MEMO_DEVICE_PORT) $(BUILD_DIST)/$(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d ' ')_$($(2))_$(DEB_ARCH).deb root@$(MEMO_DEVICE_IP):/tmp/$(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d ' ')_$($(2))_$(DEB_ARCH).deb; \
+		rsync -vz -e "ssh -p $(MEMO_DEVICE_PORT)" $(BUILD_DIST)/$(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d ' ')_$($(2))_$(DEB_ARCH).deb root@$(MEMO_DEVICE_IP):/tmp/$(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d ' ')_$($(2))_$(DEB_ARCH).deb; \
 		ssh -p $(MEMO_DEVICE_PORT) root@$(MEMO_DEVICE_IP) 'apt-get update'; \
 		ssh -p $(MEMO_DEVICE_PORT) root@$(MEMO_DEVICE_IP) 'apt-get reinstall /tmp/$(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d ' ')_$($(2))_$(DEB_ARCH).deb'; \
 		ssh -p $(MEMO_DEVICE_PORT) root@$(MEMO_DEVICE_IP) 'rm /tmp/$(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d ' ')_$($(2))_$(DEB_ARCH).deb'; \
