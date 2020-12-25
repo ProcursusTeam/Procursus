@@ -62,6 +62,8 @@ coreutils-package: coreutils-stage
 
 	# coreutils.mk Sign
 	$(call SIGN,coreutils,general.xml)
+	$(LDID) -S$(BUILD_INFO)/dd.xml $(BUILD_DIST)/coreutils/usr/bin/dd # Do a manual sign for dd.
+	find $(BUILD_DIST)/coreutils -name '.ldid*' -type f -delete
 
 	# coreutils.mk Permissions
 	$(FAKEROOT) chmod u+s $(BUILD_DIST)/coreutils/usr/bin/su
