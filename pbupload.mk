@@ -19,7 +19,7 @@ pbupload:
 	@echo "Using previously built pbupload."
 else
 pbupload: pbupload-setup 
-	$(CC) -arch arm64e -fobjc-arc $(PBUPLOAD_LIBS) $(CFLAGS) \
+	$(CC) -fobjc-arc $(PBUPLOAD_LIBS) $(CFLAGS) \
 		-o $(BUILD_WORK)/pbupload/pbupload \
 		$(BUILD_WORK)/pbupload/Sources/pbupload.m
 
