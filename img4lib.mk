@@ -26,7 +26,8 @@ img4lib:
 	@echo "Using previously built img4lib."
 else
 img4lib: img4lib-setup openssl lzfse
-	+$(MAKE) -C $(BUILD_WORK)/img4lib
+	+$(MAKE) -C $(BUILD_WORK)/img4lib \
+		LD=$(CC)
 	cp -a $(BUILD_WORK)/img4lib/img4 $(BUILD_STAGE)/img4lib/usr/bin
 	cp -a $(BUILD_WORK)/img4lib/libDER/*.h $(BUILD_STAGE)/img4lib/usr/include/libDER
 	cp -a $(BUILD_WORK)/img4lib/libvfs/*.h $(BUILD_STAGE)/img4lib/usr/include/libvfs
