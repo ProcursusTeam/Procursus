@@ -7,4 +7,3 @@ Depends: libc++-10-dev
 Section: Development
 Priority: optional
 Description: LLVM C++ Standard library (development files)
-Tag: purpose::console, role::developer
