@@ -38,7 +38,7 @@ endif
 lzfse-package: lzfse-stage
 	# lzfse.mk Package Structure
 	rm -rf $(BUILD_DIST)/{liblzfse{,-dev},lzfse}
-	mkdir -p $(BUILD_DIST)/{liblzfse{,-dev},lzfse}
+	mkdir -p $(BUILD_DIST)/{liblzfse{,-dev},lzfse}/usr
 	
 	# lzfse.mk Prep lzfse
 	cp -a $(BUILD_STAGE)/lzfse/usr/bin $(BUILD_DIST)/lzfse/usr
