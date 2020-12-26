@@ -1,0 +1,7 @@
+Package: libomp1
+Version: @DEB_OPENMP_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Description: LLVM's OpenMP runtime library - shared library

@@ -1,0 +1,8 @@
+Package: libomp-dev
+Version: @DEB_OPENMP_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libomp1 (= @DEB_OPENMP_V@)
+Section: Development
+Priority: optional
+Description: LLVM's OpenMP runtime library - development files
