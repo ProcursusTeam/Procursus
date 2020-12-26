@@ -2,8 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS  += libtiff
-LIBTIFF_VERSION := 4.1.0
+SUBPROJECTS     += libtiff
+LIBTIFF_VERSION := 4.2.0
 DEB_LIBTIFF_V   ?= $(LIBTIFF_VERSION)
 
 libtiff-setup: setup
