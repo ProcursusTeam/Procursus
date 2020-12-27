@@ -32,7 +32,7 @@ endif
 
 libxcb-package: libxcb-stage
 	# libxcb.mk Package Structure
-	rm -rf $(BUILD_DIST)/libxcb*
+	rm -rf $(BUILD_DIST)/libxcb*/
 	mkdir -p $(BUILD_DIST)/libxcb{1,-{composite0,damage0,dpms0,dri2-0,dri3-0,glx0,present0,randr0,record0,render0,res0,screensaver0,shape0,shm0,sync1,xf86dri0,xfixes0,xinerama0,xinput0,xkb1,xtest0,xv0,xvmc0}}/usr/lib
 	mkdir -p $(BUILD_DIST)/libxcb{1,-{composite0,damage0,dpms0,dri2-0,dri3,glx0,present,randr0,record0,render0,res0,screensaver0,shape0,shm0,sync,xf86dri0,xfixes0,xinerama0,xinput,xkb,xtest0,xv0,xvmc0}}-dev/usr/{include/xcb,lib/pkgconfig}
 	
@@ -305,6 +305,6 @@ libxcb-package: libxcb-stage
 	$(call PACK,libxcb-xvmc0-dev,DEB_LIBXCB_V)
 
 	# libxcb.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libxcb*
+	rm -rf $(BUILD_DIST)/libxcb*/
 
 .PHONY: libxcb libxcb-package
