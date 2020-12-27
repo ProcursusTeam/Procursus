@@ -18,7 +18,9 @@ else
 libxau: libxau-setup xorgproto
 	cd $(BUILD_WORK)/libxau && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--localstatedir=/var
 	+$(MAKE) -C $(BUILD_WORK)/libxau
 	+$(MAKE) -C $(BUILD_WORK)/libxau install \
 		DESTDIR=$(BUILD_STAGE)/libxau
