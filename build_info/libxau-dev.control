@@ -2,6 +2,7 @@ Package: libxau6
 Version: @DEB_LIBXAU_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Depends: libxau6
 Section: Development
 Priority: optional
 Description: X.Org: A Sample Authorization Protocol for X - development files
