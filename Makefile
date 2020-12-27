@@ -176,7 +176,7 @@ CFLAGS              := -O2 $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSIO
 CXXFLAGS            := $(CFLAGS)
 CPPFLAGS            := -O2 -arch $(shell echo $(ARCHES) | cut -f1 -d' ') $(PLATFORM_VERSION_MIN) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include -Wno-error-implicit-function-declaration
 LDFLAGS             := -O2 $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib -F$(BUILD_BASE)/System/Library/Frameworks
-PKG_CONFIG_PATH     := $(BUILD_BASE)/usr/lib/pkgconfig:$(BUILD_BASE)/usr/local/lib/pkgconfig
+PKG_CONFIG_PATH     := $(BUILD_BASE)/usr/lib/pkgconfig:$(BUILD_BASE)/usr/local/lib/pkgconfig:$(BUILD_BASE)/usr/share/pkgconfig:$(BUILD_BASE)/usr/local/share/pkgconfig
 
 export PLATFORM ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T EXTRA SED
 export BUILD_ROOT BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP BUILD_TOOLS
