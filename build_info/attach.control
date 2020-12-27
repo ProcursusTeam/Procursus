@@ -1,0 +1,9 @@
+Package: attach
+Author: comex
+Version: @DEB_ATTACH_V@
+Architecture: @DEB_ARCH@
+Provides: com.comex.attachanddetach
+Maintainer: @DEB_MAINTAINER@
+Section: Utilties
+Priority: optional
+Description: use .dmgs on iOS
