@@ -1,4 +1,4 @@
-Package: libxcb-composite0
+Package: libxcb-xfixes0
 Version: @DEB_LIBXCB_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
