@@ -218,7 +218,9 @@ DO_PATCH    = -cd $(BUILD_PATCH)/$(1); \
 SIGN =  find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \; &> /dev/null; \
 	find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
 
-PACK = -find $(BUILD_DIST)/$(1) -name '*.la' -type f -delete; \
+PACK = -if [ -z $(4) ]; then \
+		find $(BUILD_DIST)/$(1) -name '*.la' -type f -delete; \
+	fi; \
 	rm -rf $(BUILD_DIST)/$(1)/usr/share/{info,doc}; \
 	find $(BUILD_DIST)/$(1)/usr/share/man -type f -exec zstd -19 --rm '{}' \; 2> /dev/null; \
 	if [ -z $(3) ]; then \

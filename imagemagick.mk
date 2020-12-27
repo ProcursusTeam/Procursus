@@ -126,7 +126,7 @@ imagemagick-package: imagemagick-stage
 	$(call PACK,libmagick++-7.q16hdri-4,DEB_IMAGEMAGICK_V)
 	$(call PACK,libmagick++-7.q16hdri-dev,DEB_IMAGEMAGICK_V)
 	$(call PACK,libmagick++-7-headers,DEB_IMAGEMAGICK_V)
-	$(call PACK,libmagickcore-7.q16hdri-8,DEB_IMAGEMAGICK_V)
+	$(call PACK,libmagickcore-7.q16hdri-8,DEB_IMAGEMAGICK_V,,SettingFourthVar)
 	$(call PACK,libmagickcore-7.q16hdri-dev,DEB_IMAGEMAGICK_V)
 	$(call PACK,libmagickcore-7-headers,DEB_IMAGEMAGICK_V)
 	$(call PACK,libmagickwand-7.q16hdri-8,DEB_IMAGEMAGICK_V)
