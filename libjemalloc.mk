@@ -19,7 +19,8 @@ libjemalloc: libjemalloc-setup
 	cd $(BUILD_WORK)/libjemalloc && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
-		--with-lg-page=14
+		--with-lg-page=14 \
+		--with-jemalloc-prefix=
 		# The above system page size is specified because
 		# iOS arm64 devices have a 16KB page size.
 	+$(MAKE) -C $(BUILD_WORK)/libjemalloc
