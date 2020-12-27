@@ -563,16 +563,8 @@ rebuild-%:
 	@echo Rebuild $(REPROJ2)
 	-if [ $(REPROJ) = "all" ] || [ $(REPROJ) = "package" ]; then \
 		rm -rf $(BUILD_WORK) $(BUILD_STAGE); \
-		git submodule foreach --recursive git clean -xfd; \
-		git submodule foreach --recursive git reset --hard; \
-		rm -f darwintools/.build_complete; \
-		$(MAKE) -C darwintools clean; \
 	fi
-	-if [ -d $(BUILD_WORK)/$(REPROJ2) ]; then \
-		rm -rf {$(BUILD_WORK),$(BUILD_STAGE)}/$(REPROJ2); \
-	elif [ -d $(REPROJ2) ]; then \
-		cd $(REPROJ2) && git clean -xfd && git reset; \
-	fi
+	rm -rf {$(BUILD_WORK),$(BUILD_STAGE)}/$(REPROJ2)
 	rm -rf $(BUILD_WORK)/$(REPROJ2)*patches
 	rm -rf $(BUILD_STAGE)/$(REPROJ2)
 	+$(MAKE) $(REPROJ)
@@ -583,8 +575,6 @@ setup:
 	mkdir -p \
 		$(BUILD_BASE) $(BUILD_BASE)/{System/Library/Frameworks,usr/{include/{bsm,os,sys,IOKit,libkern,mach/machine},lib}} \
 		$(BUILD_SOURCE) $(BUILD_WORK) $(BUILD_STAGE) $(BUILD_DIST) $(BUILD_STRAP)
-
-	git submodule update --init --recursive
 
 	wget -q -nc -P $(BUILD_BASE)/usr/include \
 		https://opensource.apple.com/source/xnu/xnu-6153.61.1/libsyscall/wrappers/spawn/spawn.h
@@ -620,11 +610,6 @@ setup:
 
 clean::
 	rm -rf $(BUILD_WORK) $(BUILD_BASE) $(BUILD_STAGE)
-	@# When using 'make clean' in submodules, there is still an issue with the subproject changing when committing. This fixes that.
-	git submodule foreach --recursive git clean -xfd
-	git submodule foreach --recursive git reset --hard
-	rm -f darwintools/.build_complete
-	-$(MAKE) -C darwintools clean
 
 extreme-clean:: clean
 	git clean -xfd && git reset
