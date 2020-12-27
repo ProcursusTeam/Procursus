@@ -1,8 +1,8 @@
-Package: libldtl-dev
+Package: libltdl-dev
 Version: @DEB_LIBTOOL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libldtl7 (= @DEB_LIBTOOL_V@)
+Depends: libltdl7 (= @DEB_LIBTOOL_V@)
 Section: Development
 Priority: optional
 Description: System independent dlopen wrapper for GNU libtool

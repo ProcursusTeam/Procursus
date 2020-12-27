@@ -3,7 +3,7 @@ Package: libtool
 Version: @DEB_LIBTOOL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libldtl7 (= @DEB_LIBTOOL_V@)
+Depends: libltdl7 (= @DEB_LIBTOOL_V@)
 Section: Development
 Priority: optional
 Description: Generic library support script

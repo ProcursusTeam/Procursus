@@ -1,4 +1,4 @@
-Package: libldtl7
+Package: libltdl7
 Version: @DEB_LIBTOOL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@

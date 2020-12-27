@@ -30,7 +30,7 @@ libtool: libtool-setup
 endif
 libtool-package: libtool-stage
 	# libtool.mk Package Structure
-	rm -rf $(BUILD_DIST)/libtool $(BUILD_DIST)/libltdtl{7,-dev}
+	rm -rf $(BUILD_DIST)/libtool $(BUILD_DIST)/libltdl{7,-dev}
 	mkdir -p $(BUILD_DIST)/libtool/usr/share \
 		$(BUILD_DIST)/libltdl7/usr/lib \
 		$(BUILD_DIST)/libltdl-dev/usr/{lib,share}
@@ -39,12 +39,12 @@ libtool-package: libtool-stage
 	cp -a $(BUILD_STAGE)/libtool/usr/bin $(BUILD_DIST)/libtool/usr
 	cp -a $(BUILD_STAGE)/libtool/usr/share/man $(BUILD_DIST)/libtool/usr/share
 
-	# libtool.mk Prep libldtl7
-	cp -a $(BUILD_STAGE)/libtool/usr/lib/libltdl.7.dylib $(BUILD_DIST)/libldtl7/usr/lib
+	# libtool.mk Prep libltdl7
+	cp -a $(BUILD_STAGE)/libtool/usr/lib/libltdl.7.dylib $(BUILD_DIST)/libltdl7/usr/lib
 
-	# libtool.mk Prep libldtl-dev
-	cp -a $(BUILD_STAGE)/libtool/usr/lib/!(libltdl.7.dylib) $(BUILD_DIST)/libtool/usr/lib
-	cp -a $(BUILD_STAGE)/libtool/usr/share/{aclocal,libtool} $(BUILD_DIST)/libtool/usr/share
+	# libtool.mk Prep libltdl-dev
+	cp -a $(BUILD_STAGE)/libtool/usr/lib/!(libltdl.7.dylib) $(BUILD_DIST)/libltdl-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libtool/usr/share/{aclocal,libtool} $(BUILD_DIST)/libltdl-dev/usr/share
 	
 	# libtool.mk Sign
 	$(call SIGN,libtool,general.xml)
@@ -56,6 +56,6 @@ libtool-package: libtool-stage
 	$(call PACK,libltdl-dev,DEB_LIBTOOL_V)
 	
 	# libtool.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libtool $(BUILD_DIST)/libltdtl{7,-dev}
+	rm -rf $(BUILD_DIST)/libtool $(BUILD_DIST)/libltdl{7,-dev}
 
 .PHONY: libtool libtool-package
