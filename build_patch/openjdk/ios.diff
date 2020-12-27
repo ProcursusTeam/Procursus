@@ -1,0 +1,285 @@
+diff -urN openjdk/make/autoconf/flags-ldflags.m4.orig openjdk/make/autoconf/flags-ldflags.m4
+--- openjdk/make/autoconf/flags-ldflags.m4	2020-12-27 05:18:10.000000000 -0500
++++ openjdk/make/autoconf/flags-ldflags.m4	2020-12-27 05:18:45.000000000 -0500
+@@ -106,7 +106,7 @@
+       # Assume clang or gcc.
+       # FIXME: We should really generalize SET_SHARED_LIBRARY_ORIGIN instead.
+       OS_LDFLAGS_JVM_ONLY="-Wl,-rpath,@loader_path/. -Wl,-rpath,@loader_path/.."
+-      OS_LDFLAGS_JDK_ONLY="-mmacosx-version-min=$MACOSX_VERSION_MIN"
++      #OS_LDFLAGS_JDK_ONLY="-mmacosx-version-min=$MACOSX_VERSION_MIN"
+     fi
+   fi
+ 
+diff -urN openjdk/make/autoconf/flags-cflags.m4.orig openjdk/make/autoconf/flags-cflags.m4 
+--- openjdk/make/autoconf/flags-cflags.m4	2020-12-27 05:17:00.000000000 -0500
++++ openjdk/make/autoconf/flags-cflags.m4	2020-12-27 05:17:47.000000000 -0500
+@@ -554,15 +554,15 @@
+   # Set some additional per-OS defines.
+ 
+   # Additional macosx handling
+-  if test "x$OPENJDK_TARGET_OS" = xmacosx; then
+-    OS_CFLAGS="-DMAC_OS_X_VERSION_MIN_REQUIRED=$MACOSX_VERSION_MIN_NODOTS \
+-        -mmacosx-version-min=$MACOSX_VERSION_MIN"
+-
+-    if test -n "$MACOSX_VERSION_MAX"; then
+-        OS_CFLAGS="$OS_CFLAGS \
+-            -DMAC_OS_X_VERSION_MAX_ALLOWED=$MACOSX_VERSION_MAX_NODOTS"
+-    fi
+-  fi
++  #if test "x$OPENJDK_TARGET_OS" = xmacosx; then
++  #  OS_CFLAGS="-DMAC_OS_X_VERSION_MIN_REQUIRED=$MACOSX_VERSION_MIN_NODOTS \
++  #      -mmacosx-version-min=$MACOSX_VERSION_MIN"
++  #
++  #  if test -n "$MACOSX_VERSION_MAX"; then
++  #      OS_CFLAGS="$OS_CFLAGS \
++  #          -DMAC_OS_X_VERSION_MAX_ALLOWED=$MACOSX_VERSION_MAX_NODOTS"
++  #  fi
++  #fi
+ 
+   OS_CFLAGS="$OS_CFLAGS -DLIBC=$OPENJDK_TARGET_LIBC"
+   if test "x$OPENJDK_TARGET_LIBC" = xmusl; then
+diff -urN openjdk/make/modules/jdk.hotspot.agent/Gensrc.gmk.orig openjdk/make/modules/jdk.hotspot.agent/Gensrc.gmk
+--- openjdk/make/modules/jdk.hotspot.agent/Gensrc.gmk	2020-12-27 06:12:16.000000000 -0500
++++ openjdk/make/modules/jdk.hotspot.agent/Gensrc.gmk	2020-12-27 06:12:50.000000000 -0500
+@@ -43,11 +43,12 @@
+   MACH_EXC_USER := $(MIG_OUTPUT_DIR)/mach_excUser.c
+   MACH_EXC_SERVER := $(MIG_OUTPUT_DIR)/mach_excServer.c
+ 
+-  $(MACH_EXC_SERVER): $(SDKROOT)/usr/include/mach/mach_exc.defs
++  $(MACH_EXC_SERVER): $(BUILD_BASE)/usr/include/mach/mach_exc.defs
+ 	$(call MakeTargetDir)
+ 	$(MIG) $(if $(SDKROOT), -isysroot $(SDKROOT)) \
++		 -arch arm64 -isysroot $(BUILD_BASE) \
+ 	    -server $@ -user $(MACH_EXC_USER) \
+-	    -header $(MACH_EXC_HEADER) $(SDKROOT)/usr/include/mach/mach_exc.defs
++	    -header $(MACH_EXC_HEADER) $(BUILD_BASE)/usr/include/mach/mach_exc.defs
+ 
+   TARGETS += $(MACH_EXC_SERVER)
+ endif
+diff -urN openjdk/src/hotspot/os_cpu/bsd_aarch64/icache_bsd_aarch64.hpp.orig openjdk/src/hotspot/os_cpu/bsd_aarch64/icache_bsd_aarch64.hpp
+--- openjdk/src/hotspot/os_cpu/bsd_aarch64/icache_bsd_aarch64.hpp	2020-12-27 07:06:56.000000000 -0500
++++ openjdk/src/hotspot/os_cpu/bsd_aarch64/icache_bsd_aarch64.hpp	2020-12-27 07:08:20.000000000 -0500
+@@ -23,6 +23,8 @@
+  *
+  */
+ 
++#include <libkern/OSCacheControl.h>
++
+ #ifndef OS_CPU_BSD_AARCH64_ICACHE_AARCH64_HPP
+ #define OS_CPU_BSD_AARCH64_ICACHE_AARCH64_HPP
+ 
+@@ -33,11 +35,14 @@
+ class ICache : public AbstractICache {
+  public:
+   static void initialize();
++  static void __clear_cache_(void *start, void *end) {
++     sys_icache_invalidate(start, (char *)end-(char *)start);
++   }
+   static void invalidate_word(address addr) {
+-    __clear_cache((char *)addr, (char *)(addr + 4));
++    __clear_cache_((char *)addr, (char *)(addr + 4));
+   }
+   static void invalidate_range(address start, int nbytes) {
+-    __clear_cache((char *)start, (char *)(start + nbytes));
++    __clear_cache_((char *)start, (char *)(start + nbytes));
+   }
+ };
+ 
+diff -urN openjdk/make/modules/java.base/Lib.gmk.orig openjdk/make/modules/java.base/Lib.gmk
+--- openjdk/make/modules/java.base/Lib.gmk	2020-12-27 08:06:49.000000000 -0500
++++ openjdk/make/modules/java.base/Lib.gmk	2020-12-27 08:11:43.000000000 -0500
+@@ -55,7 +55,7 @@
+     LIBS_aix := $(LIBDL),\
+     LIBS_windows := ws2_32.lib jvm.lib secur32.lib iphlpapi.lib winhttp.lib \
+         delayimp.lib $(WIN_JAVA_LIB) advapi32.lib, \
+-    LIBS_macosx := -framework CoreFoundation -framework CoreServices, \
++    LIBS_macosx := -framework CoreFoundation -framework CoreServices -framework CFNetwork, \
+ ))
+ 
+ $(BUILD_LIBNET): $(BUILD_LIBJAVA)
+@@ -95,33 +95,33 @@
+ ################################################################################
+ # Create the macosx security library
+ 
+-ifeq ($(call isTargetOs, macosx), true)
+-  # JavaNativeFoundation framework not supported in static builds
+-  ifneq ($(STATIC_BUILD), true)
+-
+-    $(eval $(call SetupJdkLibrary, BUILD_LIBOSXSECURITY, \
+-        NAME := osxsecurity, \
+-        OPTIMIZATION := LOW, \
+-        CFLAGS := $(CFLAGS_JDKLIB), \
+-        DISABLED_WARNINGS_clang := deprecated-declarations \
+-            missing-method-return-type, \
+-        LDFLAGS := $(LDFLAGS_JDKLIB) \
+-            -L$(SUPPORT_OUTPUTDIR)/modules_libs/java.base \
+-            $(call SET_SHARED_LIBRARY_ORIGIN), \
+-        LIBS := \
+-            -lobjc \
+-            -framework JavaNativeFoundation \
+-            -framework CoreServices \
+-            -framework Security \
+-            $(JDKLIB_LIBS), \
+-    ))
+-
+-    $(BUILD_LIBOSXSECURITY): $(BUILD_LIBJAVA)
+-
+-    TARGETS += $(BUILD_LIBOSXSECURITY)
+-
+-  endif
+-endif
++#ifeq ($(call isTargetOs, macosx), true)
++#  # JavaNativeFoundation framework not supported in static builds
++#  ifneq ($(STATIC_BUILD), true)
++#
++#    $(eval $(call SetupJdkLibrary, BUILD_LIBOSXSECURITY, \
++#        NAME := osxsecurity, \
++#        OPTIMIZATION := LOW, \
++#        CFLAGS := $(CFLAGS_JDKLIB), \
++#        DISABLED_WARNINGS_clang := deprecated-declarations \
++#            missing-method-return-type, \
++#        LDFLAGS := $(LDFLAGS_JDKLIB) \
++#            -L$(SUPPORT_OUTPUTDIR)/modules_libs/java.base \
++#            $(call SET_SHARED_LIBRARY_ORIGIN), \
++#        LIBS := \
++#            -lobjc \
++#            -framework JavaNativeFoundation \
++#            -framework CoreServices \
++#            -framework Security \
++#            $(JDKLIB_LIBS), \
++#    ))
++#
++#    $(BUILD_LIBOSXSECURITY): $(BUILD_LIBJAVA)
++#
++#    TARGETS += $(BUILD_LIBOSXSECURITY)
++#
++#  endif
++#endif
+ 
+ ################################################################################
+ # Create the jsig library
+diff -urN openjdk/make/modules/java.base/lib/CoreLibraries.gmk.orig openjdk/make/modules/java.base/lib/CoreLibraries.gmk
+--- openjdk/make/modules/java.base/lib/CoreLibraries.gmk	2020-12-27 08:18:11.000000000 -0500
++++ openjdk/make/modules/java.base/lib/CoreLibraries.gmk	2020-12-27 08:18:20.000000000 -0500
+@@ -209,7 +209,7 @@
+     LIBS_unix := $(LIBZ_LIBS), \
+     LIBS_linux := $(LIBDL) -lpthread, \
+     LIBS_aix := $(LIBDL),\
+-    LIBS_macosx := -framework Cocoa -framework Security -framework ApplicationServices, \
++    LIBS_macosx := -framework Foundation -framework Security, \
+     LIBS_windows := advapi32.lib comctl32.lib user32.lib, \
+ ))
+ 
+--- openjdk/make/modules/java.desktop/Lib.gmk.orig	2020-12-27 08:39:01.000000000 -0500
++++ openjdk/make/modules/java.desktop/Lib.gmk	2020-12-27 09:00:07.000000000 -0500
+@@ -34,12 +34,12 @@
+ ################################################################################
+ # Create the AWT/2D libraries
+ 
+-include lib/Awt2dLibraries.gmk
++#include lib/Awt2dLibraries.gmk
+ 
+ ################################################################################
+ # Create the libjsound library
+ 
+-ifeq ($(call isTargetOs, aix), false)
++ifeq ($(call isTargetOs, macosx), false)
+ 
+   LIBJSOUND_CFLAGS := \
+       $(ALSA_CFLAGS) \
+@@ -82,7 +82,7 @@
+ ################################################################################
+ # Create the macosx specific osxapp and osx libraries
+ 
+-ifeq ($(call isTargetOs, macosx), true)
++ifeq ($(call isTargetOs, macosx), false)
+ 
+   $(eval $(call SetupJdkLibrary, BUILD_LIBOSXAPP, \
+       NAME := osxapp, \
+diff -urN openjdk/make/modules/jdk.hotspot.agent/Lib.gmk.orig openjdk/make/modules/jdk.hotspot.agent/Lib.gmk    
+--- openjdk/make/modules/jdk.hotspot.agent/Lib.gmk	2020-12-27 09:03:10.000000000 -0500
++++ openjdk/make/modules/jdk.hotspot.agent/Lib.gmk	2020-12-27 09:02:50.000000000 -0500
+@@ -73,6 +73,6 @@
+     LIBS_windows := dbgeng.lib, \
+ ))
+ 
+-TARGETS += $(BUILD_LIBSA)
++#TARGETS += $(BUILD_LIBSA)
+ 
+ ################################################################################
+diff -urN openjdk/make/common/modules/LauncherCommon.gmk.orig openjdk/make/common/modules/LauncherCommon.gmk
+--- openjdk/make/common/modules/LauncherCommon.gmk	2020-12-27 09:23:00.000000000 -0500
++++ openjdk/make/common/modules/LauncherCommon.gmk	2020-12-27 09:23:33.000000000 -0500
+@@ -162,8 +162,7 @@
+       LDFLAGS_aix := -L$(SUPPORT_OUTPUTDIR)/native/java.base, \
+       LIBS := $(JDKEXE_LIBS) $$($1_LIBS), \
+       LIBS_linux := -ljli -lpthread $(LIBDL), \
+-      LIBS_macosx := -ljli -framework Cocoa -framework Security \
+-          -framework ApplicationServices, \
++      LIBS_macosx := -ljli -framework Foundation -framework Security, \
+       LIBS_aix := -ljli_static, \
+       LIBS_windows := $$($1_WINDOWS_JLI_LIB) \
+           $(SUPPORT_OUTPUTDIR)/native/java.base/libjava/java.lib, \
+diff -urN openjdk/make/modules/java.instrument/Lib.gmk.orig openjdk/make/modules/java.instrument/Lib.gmk 
+--- openjdk/make/modules/java.instrument/Lib.gmk	2020-12-27 09:30:31.000000000 -0500
++++ openjdk/make/modules/java.instrument/Lib.gmk2020-12-27 09:30:51.000000000 -0500
+@@ -51,8 +51,7 @@
+     LIBS_unix := -ljava -ljvm $(LIBZ_LIBS), \
+     LIBS_linux := -ljli $(LIBDL), \
+     LIBS_aix := -liconv -ljli_static $(LIBDL), \
+-    LIBS_macosx := -ljli -liconv -framework Cocoa -framework Security \
+-        -framework ApplicationServices, \
++    LIBS_macosx := -ljli -liconv -framework Foundation -framework Security, \
+     LIBS_windows := jvm.lib $(WIN_JAVA_LIB) advapi32.lib \
+         $(WINDOWS_JLI_LIB), \
+ ))
+diff -urN openjdk/make/modules/jdk.jpackage/Lib.gmk.orig openjdk/make/modules/jdk.jpackage/Lib.gmk
+--- openjdk/make/modules/jdk.jpackage/Lib.gmk	2020-12-27 09:49:08.000000000 -0500
++++ openjdk/make/modules/jdk.jpackage/Lib.gmk	2020-12-27 09:49:21.000000000 -0500
+@@ -57,7 +57,7 @@
+         $(addprefix -I, $(JPACKAGE_APPLAUNCHER_SRC)), \
+     CXXFLAGS_windows := $(JPACKAGE_CXXFLAGS_windows), \
+     LDFLAGS := $(LDFLAGS_JDKEXE), \
+-    LIBS_macosx := -framework Cocoa, \
++    LIBS_macosx := -framework Foundation, \
+     LIBS := $(LIBCXX), \
+     LIBS_linux := -ldl, \
+ ))
+diff -urN openjdk/make/modules/java.security.jgss/Lib.gmk.orig openjdk/make/modules/java.security.jgss/Lib.gmk
+--- openjdk/make/modules/java.security.jgss/Lib.gmk	2020-12-27 09:35:26.000000000 -0500
++++ openjdk/make/modules/java.security.jgss/Lib.gmk	2020-12-27 09:35:43.000000000 -0500
+@@ -38,7 +38,7 @@
+     LIBS := $(LIBDL), \
+ ))
+ 
+-TARGETS += $(BUILD_LIBJ2GSS)
++#TARGETS += $(BUILD_LIBJ2GSS)
+ 
+ ################################################################################
+ 
+@@ -56,7 +56,7 @@
+             ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib wsock32.lib, \
+     ))
+ 
+-    TARGETS += $(BUILD_LIBW2K_LSA_AUTH)
++    #TARGETS += $(BUILD_LIBW2K_LSA_AUTH)
+ 
+     $(eval $(call SetupJdkLibrary, BUILD_LIBSSPI_BRIDGE, \
+         NAME := sspi_bridge, \
+@@ -67,7 +67,7 @@
+             $(call SET_SHARED_LIBRARY_ORIGIN) \
+     ))
+ 
+-    TARGETS += $(BUILD_LIBSSPI_BRIDGE)
++    #TARGETS += $(BUILD_LIBSSPI_BRIDGE)
+   endif
+ 
+   ifeq ($(call isTargetOs, macosx), true)
+@@ -84,7 +84,7 @@
+             -framework SystemConfiguration -framework Kerberos, \
+     ))
+ 
+-    TARGETS += $(BUILD_LIBOSXKRB5)
++    #TARGETS += $(BUILD_LIBOSXKRB5)
+   endif
+ endif

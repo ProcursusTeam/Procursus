@@ -24,38 +24,44 @@ ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1100 ] && [ "$(CFVER_WHOLE)" -lt 1200 ] && 
 IPHONEOS_DEPLOYMENT_TARGET  := 8.0
 APPLETVOS_DEPLOYMENT_TARGET := XXX
 WATCHOS_DEPLOYMENT_TARGET   := 1.0
-MACOSX_DEPLOYMENT_TARGET    := 10.11
+MACOSX_DEPLOYMENT_TARGET    := 10.10
 override MEMO_CFVER         := 1100
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1200 ] && [ "$(CFVER_WHOLE)" -lt 1300 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 9.0
 APPLETVOS_DEPLOYMENT_TARGET := 9.0
 WATCHOS_DEPLOYMENT_TARGET   := 2.0
-MACOSX_DEPLOYMENT_TARGET    := 10.12
+MACOSX_DEPLOYMENT_TARGET    := 10.11
 override MEMO_CFVER         := 1200
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1300 ] && [ "$(CFVER_WHOLE)" -lt 1400 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 10.0
 APPLETVOS_DEPLOYMENT_TARGET := 10.0
 WATCHOS_DEPLOYMENT_TARGET   := 3.0
-MACOSX_DEPLOYMENT_TARGET    := 10.13
+MACOSX_DEPLOYMENT_TARGET    := 10.12
 override MEMO_CFVER         := 1300
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1400 ] && [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 11.0
 APPLETVOS_DEPLOYMENT_TARGET := 11.0
 WATCHOS_DEPLOYMENT_TARGET   := 4.0
-MACOSX_DEPLOYMENT_TARGET    := 10.14
+MACOSX_DEPLOYMENT_TARGET    := 10.13
 override MEMO_CFVER         := 1400
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1500 ] && [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 12.0
 APPLETVOS_DEPLOYMENT_TARGET := 12.0
 WATCHOS_DEPLOYMENT_TARGET   := 5.0
-MACOSX_DEPLOYMENT_TARGET    := 10.15
+MACOSX_DEPLOYMENT_TARGET    := 10.14
 override MEMO_CFVER         := 1500
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 13.0
 APPLETVOS_DEPLOYMENT_TARGET := 13.0
 WATCHOS_DEPLOYMENT_TARGET   := 6.0
-MACOSX_DEPLOYMENT_TARGET    := 11.0
+MACOSX_DEPLOYMENT_TARGET    := 10.15
 override MEMO_CFVER         := 1600
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1700 ] && [ "$(CFVER_WHOLE)" -lt 1800 ] && echo 1),1)
+IPHONEOS_DEPLOYMENT_TARGET  := 14.0
+APPLETVOS_DEPLOYMENT_TARGET := 14.0
+WATCHOS_DEPLOYMENT_TARGET   := 7.0
+MACOSX_DEPLOYMENT_TARGET    := 11.0
+override MEMO_CFVER         := 1700
 else
 $(error Unsupported CoreFoundation version)
 endif
@@ -573,7 +579,7 @@ rebuild-%:
 
 setup:
 	mkdir -p \
-		$(BUILD_BASE) $(BUILD_BASE)/{System/Library/Frameworks,usr/{include/{bsm,os,sys,IOKit,libkern,mach/machine},lib}} \
+		$(BUILD_BASE) $(BUILD_BASE)/{System/Library/Frameworks,usr/{include/{bsm,objc,os,sys,IOKit,libkern,mach/machine},lib}} \
 		$(BUILD_SOURCE) $(BUILD_WORK) $(BUILD_STAGE) $(BUILD_DIST) $(BUILD_STRAP)
 
 	wget -q -nc -P $(BUILD_BASE)/usr/include \
@@ -587,6 +593,7 @@ setup:
 
 	@# Copy headers from MacOSX.sdk
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{arpa,net,xpc} $(BUILD_BASE)/usr/include
+	$(CP) -af $(MACOSX_SYSROOT)/usr/include/objc/objc-runtime.h $(BUILD_BASE)/usr/include/objc
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/libkern/OSTypes.h $(BUILD_BASE)/usr/include/libkern
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,proc*,ptrace,kern*,random,vnode}.h $(BUILD_BASE)/usr/include/sys
 	$(CP) -af $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_BASE)/usr/include/IOKit
@@ -604,6 +611,7 @@ setup:
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/mach/mach_host.h > $(BUILD_BASE)/usr/include/mach/mach_host.h
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/ucontext.h > $(BUILD_BASE)/usr/include/ucontext.h
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/signal.h > $(BUILD_BASE)/usr/include/signal.h
+	$(SED) -E /'__API_UNAVAILABLE'/d < $(TARGET_SYSROOT)/usr/include/pthread.h > $(BUILD_BASE)/usr/include/pthread.h
 
 	@echo Makeflags: $(MAKEFLAGS)
 	@echo Path: $(PATH)
