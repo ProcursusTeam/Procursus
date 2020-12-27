@@ -29,7 +29,7 @@ endif
 
 libxau-package: libxau-stage
 	# libxau.mk Package Structure
-	rm -rf $(BUILD_DIST)/libxau*
+	rm -rf $(BUILD_DIST)/libxau{6,-dev}
 	mkdir -p $(BUILD_DIST)/libxau6/usr/lib
 	mkdir -p $(BUILD_DIST)/libxau-dev/usr/{include,lib}
 	
@@ -37,7 +37,8 @@ libxau-package: libxau-stage
 	cp -a $(BUILD_STAGE)/libxau/usr/lib/libxau.6.dylib $(BUILD_DIST)/libxau6/usr/lib
 
 	# libxau.mk Prep libxau-dev
-	cp -a $(BUILD_STAGE)/libxau/usr/{include,lib/{libXau{.a,.dylib},pkgconfig}}
+	cp -a $(BUILD_STAGE)/libxau/usr/lib/{libXau{.a,.dylib},pkgconfig} $(BUILD_DIST)/libxau-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libxau/usr/include $(BUILD_DIST)/libxau-dev/usr
 	
 	# libxau.mk Sign
 	$(call SIGN,libxau6,general.xml)
@@ -47,6 +48,6 @@ libxau-package: libxau-stage
 	$(call PACK,libxau-dev,DEB_LIBXAU_V)
 	
 	# libxau.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libxau*
+	rm -rf $(BUILD_DIST)/libxau{6,-dev}
 
 .PHONY: libxau libxau-package
