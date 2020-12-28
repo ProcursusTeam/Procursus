@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += fzf
-FZF_VERSION  := 0.24.3
+FZF_VERSION  := 0.24.4
 DEB_FZF_V    ?= $(FZF_VERSION)
 
 fzf-setup: setup
@@ -23,7 +23,7 @@ else
 fzf: fzf-setup
 	+$(MAKE) -C $(BUILD_WORK)/fzf bin/fzf \
 		FZF_VERSION="$(FZF_VERSION)" \
-		FZF_REVISION="procursus" \
+		FZF_REVISION="Procursus" \
 		BINARY="fzf-darwin_arm8" \
 		GOARCH=arm64 \
 		GOOS=darwin \

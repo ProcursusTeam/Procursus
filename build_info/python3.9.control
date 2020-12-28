@@ -1,0 +1,10 @@
+Package: python3.9
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_PYTHON3_V@
+Depends: libncursesw6 (>= 6.0), libreadline8 (>= 8.0), libssl1.1, libffi7, liblzma5 (>= 5.2.5), libgdbm6, libintl8, libexpat1, libcrypt2
+Section: Scripting
+Priority: optional
+Description: Interpreted, interactive, object-oriented programming language.
+Name: Python 3.9
+Tag: purpose::console, role::hacker

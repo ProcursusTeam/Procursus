@@ -1,0 +1,10 @@
+Package: qemu-system-data
+Version: @DEB_QEMU_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Description: QEMU full system emulation (data files)
+ This package provides architecture-neutral data files
+ (such as keyboard definitions, icons) for system-mode
+ QEMU emulation (qemu-system-*) packages.

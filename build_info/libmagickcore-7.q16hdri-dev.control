@@ -1,0 +1,19 @@
+Package: libmagickcore-7.q16hdri-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_IMAGEMAGICK_V@
+Depends: libmagickcore-7.q16hdri-8 (= @DEB_IMAGEMAGICK_V@), libmagickcore-7-headers (= @DEB_IMAGEMAGICK_V@), imagemagick-7-common (= @DEB_IMAGEMAGICK_V@), libilmbase-dev, libopenexr-dev, libomp-dev, liblcms2-dev, liblqr-1-0-dev, libglib2.0-dev, libgs-dev, libintl-dev, libjbig-dev, libfontconfig-dev, libfreetype-dev, liblzma-dev, libopenjp2-7-dev, libpng16-dev, libtiff-dev, libwebp-dev, libzip-dev, libjemalloc-dev
+Section: Development
+Priority: optional
+Description: low-level image manipulation library - development files (Q16)
+ The MagickCore API is a low-level interface between the C programming language
+ and the ImageMagick image processing libraries and is recommended for
+ wizard-level programmers only. Unlike the MagickWand C API which uses only a
+ few opaque types and accessors, with MagickCore you almost exclusively access
+ the structure members directly.
+ .
+ This package includes header static libraries needed to compile
+ programs using MagickCore.
+ .
+ This version of libmagickcore-dev is compiled for a channel
+ depth of 16 bits with high dynamic range (Q16HDRI).

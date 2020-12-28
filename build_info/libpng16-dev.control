@@ -7,4 +7,3 @@ Section: Development
 Priority: optional
 Multi-Arch: foreign
 Description: library for manipulating PNG files (development files)
-Tag: purpose::library, role::developer

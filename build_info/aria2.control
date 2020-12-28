@@ -1,0 +1,12 @@
+Package: aria2
+Version: @DEB_ARIA2_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: standard
+Description: High speed download utility
+ Aria2 is a command line download client with resuming and
+ segmented downloading. Supported protocols are HTTP/HTTPS/
+ SFTP/FTP/BitTorrent and it also supports Metalink.
+Recommends: ca-certificates
+Depends: libuv1, libsqlite3-1, libssh2-1, libjemalloc2, libc-ares2, libintl8, libaria2-0 (= @DEB_ARIA2_V@), libssl1.1

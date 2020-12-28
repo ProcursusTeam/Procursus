@@ -3,20 +3,21 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS      += uikittools
-UIKITTOOLS_VERSION := 2.0.2
+UIKITTOOLS_VERSION := 2.0.3
 DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)
 
 uikittools-setup: setup
-	rm -rf $(BUILD_WORK)/uikittools
-	mkdir -p $(BUILD_WORK)/uikittools
-	cp -af uikittools/* $(BUILD_WORK)/uikittools
+	-[ ! -e "$(BUILD_SOURCE)/uikittools-ng-$(UIKITTOOLS_VERSION).tar.gz" ] \
+		&& wget -q -nc -O$(BUILD_SOURCE)/uikittools-ng-$(UIKITTOOLS_VERSION).tar.gz \
+			https://github.com/Diatrus/uikittools-ng/archive/v$(UIKITTOOLS_VERSION).tar.gz
+	$(call EXTRACT_TAR,uikittools-ng-$(UIKITTOOLS_VERSION).tar.gz,uikittools-ng-$(UIKITTOOLS_VERSION),uikittools)
 
 ifneq ($(wildcard $(BUILD_WORK)/uikittools/.build_complete),)
 uikittools:
 	@echo "Using previously built uikittools."
 else
 uikittools: uikittools-setup
-	+cd $(BUILD_WORK)/uikittools && $(MAKE) \
+	+$(MAKE) -C $(BUILD_WORK)/uikittools \
 		CC=$(CC) \
 		STRIP=$(STRIP) \
 		CFLAGS="$(CFLAGS)"

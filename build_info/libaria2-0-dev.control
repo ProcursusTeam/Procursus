@@ -1,0 +1,13 @@
+Package: libaria2-0-dev
+Version: @DEB_ARIA2_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: standard
+Description: High speed download utility (Development files)
+ Aria2 is a command line download client with resuming and
+ segmented downloading. Supported protocols are HTTP/HTTPS/
+ SFTP/FTP/BitTorrent and it also supports Metalink.
+ .
+ This package provides development files for libaria2.
+Depends: libaria2-0 (= @DEB_ARIA2_V@), libuv1-dev, libsqlite3-dev, libssh2-dev, libjemalloc-dev, libc-ares-dev, libintl-dev, libssl-dev

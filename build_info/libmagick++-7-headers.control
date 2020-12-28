@@ -1,0 +1,15 @@
+Package: libmagick++-7-headers
+Maintainer: @DEB_MAINTAINER@
+Architecture: all
+Version: @DEB_IMAGEMAGICK_V@
+Depends: imagemagick-7-common (= @DEB_IMAGEMAGICK_V@), libmagickcore-7-headers (= @DEB_IMAGEMAGICK_V@), libmagickwand-7-headers (= @DEB_IMAGEMAGICK_V@)
+Section: Development
+Priority: optional
+Description: object-oriented C++ interface to ImageMagick - header files
+ The Magick++ library is a set of C++ wrapper classes that provides access
+ to the ImageMagick package functionality from within a C++ application.
+ .
+ This package includes header files needed to compile
+ programs using Magick++.
+ .
+ This package is independent of channel depth.

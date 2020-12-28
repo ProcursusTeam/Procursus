@@ -1,0 +1,17 @@
+Package: libmagickwand-7-headers
+Maintainer: @DEB_MAINTAINER@
+Architecture: all
+Version: @DEB_IMAGEMAGICK_V@
+Depends: imagemagick-7-common (= @DEB_IMAGEMAGICK_V@), libmagickcore-7-headers (= @DEB_IMAGEMAGICK_V@)
+Section: Development
+Priority: optional
+Description: image manipulation library - headers files
+ The MagickWand API is the recommended interface between the C programming
+ language and the ImageMagick image processing libraries. Unlike the
+ MagickCore C API, MagickWand uses only a few opaque types. Accessors are
+ available to set or get important wand properties.
+ .
+ This package includes header files needed to compile
+ programs using MagickWand.
+ .
+ This package is independent of channel depth.

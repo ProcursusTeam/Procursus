@@ -1,0 +1,13 @@
+Package: imagemagick-7-common
+Maintainer: @DEB_MAINTAINER@
+Architecture: all
+Version: @DEB_IMAGEMAGICK_V@
+Section: Multimedia
+Priority: optional
+Description: image manipulation programs -- infrastructure
+ imagemagick-common contains the filesystem infrastructure required for
+ further installation of imagemagick in any configuration; it does not provide
+ a full installation of binaries, libraries, and utilities
+ required to run imagemagick.
+ .
+ This package is independent of channel depth.

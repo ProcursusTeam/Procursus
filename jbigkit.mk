@@ -25,6 +25,13 @@ jbigkit: jbigkit-setup
 	$(GINSTALL) -D -m644 $(BUILD_WORK)/jbigkit/libjbig/jbig_ar.h $(BUILD_STAGE)/jbigkit/usr/include/jbig_ar.h
 	$(GINSTALL) -D -m644 $(BUILD_WORK)/jbigkit/libjbig/jbig85.h $(BUILD_STAGE)/jbigkit/usr/include/jbig85.h
 
+	$(GINSTALL) -D -m644 $(BUILD_WORK)/jbigkit/libjbig/libjbig.0.dylib $(BUILD_BASE)/usr/lib/libjbig.0.dylib
+	$(GINSTALL) -D -m644 $(BUILD_WORK)/jbigkit/libjbig/libjbig.dylib $(BUILD_BASE)/usr/lib/libjbig.dylib
+
+	$(GINSTALL) -D -m644 $(BUILD_WORK)/jbigkit/libjbig/jbig.h $(BUILD_BASE)/usr/include/jbig.h
+	$(GINSTALL) -D -m644 $(BUILD_WORK)/jbigkit/libjbig/jbig_ar.h $(BUILD_BASE)/usr/include/jbig_ar.h
+	$(GINSTALL) -D -m644 $(BUILD_WORK)/jbigkit/libjbig/jbig85.h $(BUILD_BASE)/usr/include/jbig85.h
+
 	$(GINSTALL) -D -m755 $(BUILD_WORK)/jbigkit/pbmtools/jbgtopbm $(BUILD_STAGE)/jbigkit/usr/bin/jbgtopbm
 	$(GINSTALL) -D -m755 $(BUILD_WORK)/jbigkit/pbmtools/pbmtojbg $(BUILD_STAGE)/jbigkit/usr/bin/pbmtojbg
 	$(GINSTALL) -D -m755 $(BUILD_WORK)/jbigkit/pbmtools/jbgtopbm85 $(BUILD_STAGE)/jbigkit/usr/bin/jbgtopbm85

@@ -1,0 +1,18 @@
+Package: libmagickwand-7.q16hdri-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_IMAGEMAGICK_V@
+Depends: libmagickwand-7.q16hdri-8 (= @DEB_IMAGEMAGICK_V@), libmagickwand-7-headers (= @DEB_IMAGEMAGICK_V@), imagemagick-7-common (= @DEB_IMAGEMAGICK_V@), libmagickcore-7.q16hdri-dev (= @DEB_IMAGEMAGICK_V@)
+Section: Development
+Priority: optional
+Description: image manipulation library - development files (Q16)
+ The MagickWand API is the recommended interface between the C programming
+ language and the ImageMagick image processing libraries. Unlike the
+ MagickCore C API, MagickWand uses only a few opaque types. Accessors are
+ available to set or get important wand properties.
+ .
+ This package the static libraries needed to compile
+ programs using MagickWand.
+ .
+ This version of libmagickwand-dev is compiled for a channel
+ depth of 16 bits with high dynamic range (Q16HDRI).

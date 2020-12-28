@@ -1,0 +1,26 @@
+diff -urN libheif-1.9.1/Makefile.am libheif/Makefile.am
+--- libheif-1.9.1/Makefile.am	2020-09-24 06:00:39.000000000 -0400
++++ libheif/Makefile.am	2020-12-14 15:33:12.660376180 -0500
+@@ -8,8 +8,7 @@
+     gdk-pixbuf \
+     gnome \
+     go \
+-    scripts \
+-    tests
++    scripts
+ 
+ pkgconfigdir = $(libdir)/pkgconfig
+ pkgconfig_DATA = libheif.pc
+diff -urN libheif-1.9.1/Makefile.in libheif/Makefile.in
+--- libheif-1.9.1/Makefile.in	2020-09-25 04:29:24.000000000 -0400
++++ libheif/Makefile.in	2020-12-14 15:33:42.960969115 -0500
+@@ -418,8 +418,7 @@
+     gdk-pixbuf \
+     gnome \
+     go \
+-    scripts \
+-    tests
++    scripts
+ 
+ pkgconfigdir = $(libdir)/pkgconfig
+ pkgconfig_DATA = libheif.pc
