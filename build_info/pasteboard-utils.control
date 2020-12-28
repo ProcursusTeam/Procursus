@@ -1,0 +1,10 @@
+Package: pasteboard-utils
+Author: quiprr <quiprr@ametrine.dev>
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_PASTEBOARD-UTILS_V@
+Replaces: pbupload
+Conflicts: pbupload
+Section: Utilities
+Priority: optional
+Description: Objective-C Pasteboard Utilities
