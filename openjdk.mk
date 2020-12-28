@@ -6,13 +6,7 @@ SUBPROJECTS     += openjdk
 OPENJDK_COMMIT  := 8383f41ca7faa59dab17f6bb47fecd5a93ab72e3
 OPENJDK_MAJOR_V := 16
 OPENJDK_VERSION := $(OPENJDK_MAJOR_V).0.0+git20201217.$(shell echo $(OPENJDK_COMMIT) | cut -c -7)
-DEB_OPENJDK_V   ?= $(OPENJDK_VERSION)
-
-###
-#
-# Believe it or not, this is only compatible with iOS 14.0 and above. Go figure.
-#
-###
+DEB_OPENJDK_V   ?= $(OPENJDK_VERSION)-1
 
 openjdk-setup: setup
 	-[ ! -e "$(BUILD_SOURCE)/openjdk-$(OPENJDK_COMMIT).tar.gz" ] \
@@ -25,9 +19,14 @@ openjdk-setup: setup
 	$(call EXTRACT_TAR,openjdk-$(OPENJDK_COMMIT).tar.gz,aarch64-port-$(OPENJDK_COMMIT),openjdk)
 	$(call EXTRACT_TAR,cups-2.3.3-source.tar.gz,cups-2.3.3,apple-cups)
 	$(call EXTRACT_TAR,openjdk-15_osx-x64_bin.tar.gz,jdk-15.jdk,boot-jdk.jdk) # Change this to use the Linux one on Linux
-	$(call DO_PATCH,openjdk,openjdk,-p1)
+ifneq ($(MEMO_TARGET),darwin-arm64e)
+	$(call DO_PATCH,openjdk-ios,openjdk,-p1)
 	$(SED) -i 's|<Cocoa/Cocoa.h>|<Foundation/Foundation.h>|' $(BUILD_WORK)/openjdk/src/java.base/macosx/native/libjli/java_md_macosx.m
 	$(SED) -i '/<CoreServices\/CoreServices.h>/a #include <CFNetwork/CFNetwork.h>' $(BUILD_WORK)/openjdk/src/java.base/macosx/native/libnet/DefaultProxySelector.c
+ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
+	$(call DO_PATCH,openjdk-pre1700,openjdk,-p1)
+endif
+endif
 
 ifneq ($(wildcard $(BUILD_WORK)/openjdk/.build_complete),)
 openjdk:
@@ -53,7 +52,6 @@ openjdk: openjdk-setup
 		--with-jvm-variants=server \
 		CPP="$(CPP) -arch arm64" \
 		CXXCPP="$(CXX) -E -arch arm64"
-		# This didn't dynamic link the libs I wanted it to. I'll handle that next time.
 	make -C $(BUILD_WORK)/openjdk images \
 		JOBS=$(shell $(GET_LOGICAL_CORES))
 	cp -a $(BUILD_WORK)/openjdk/build/*/images/jdk $(BUILD_STAGE)/openjdk/usr/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk

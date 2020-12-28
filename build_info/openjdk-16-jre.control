@@ -2,7 +2,6 @@ Package: openjdk-16-jre
 Version: @DEB_OPENJDK_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: firmware (>= 14.0)
 Section: Development
 Priority: optional
 Homepage: https://github.com/openjdk/aarch64-port/tree/jdk-macos
