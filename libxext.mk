@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libxext/.build_complete),)
 libxext:
 	@echo "Using previously built libxext."
 else
-libxext: libxext-setup libx11
+libxext: libxext-setup libx11 xorgproto
 	cd $(BUILD_WORK)/libxext && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
@@ -35,8 +35,9 @@ endif
 
 libxext-package: libxext-stage
 	# libxext.mk Package Structure
-	rm -rf $(BUILD_DIST)/libxext{6,-dev}
-	mkdir -p $(BUILD_DIST)/libxext{6,-dev}/usr/lib
+	rm -rf $(BUILD_DIST)/libxext{6,-dev,-doc}
+	mkdir -p $(BUILD_DIST)/libxext{6,-dev}/usr/lib \
+		$(BUILD_DIST)/libxext-doc/usr
 	
 	# libxext.mk Prep libxext6
 	cp -a $(BUILD_STAGE)/libxext/usr/lib/libxext.6.dylib $(BUILD_DIST)/libxext6/usr/lib
@@ -44,6 +45,9 @@ libxext-package: libxext-stage
 	# libxext.mk Prep libxext-dev
 	cp -a $(BUILD_STAGE)/libxext/usr/lib/{libxext.{a,dylib},pkgconfig} $(BUILD_DIST)/libxext-dev/usr/lib
 	cp -a $(BUILD_STAGE)/libxext/usr/include $(BUILD_DIST)/libxext-dev/usr
+
+	# libxext.mk Prep libxext-doc
+	cp -a $(BUILD_STAGE)/libxext/usr/share $(BUILD_DIST)/libxext-doc/usr
 	
 	# libxext.mk Sign
 	$(call SIGN,libxext6,general.xml)
@@ -51,8 +55,9 @@ libxext-package: libxext-stage
 	# libxext.mk Make .debs
 	$(call PACK,libxext6,DEB_LIBXEXT_V)
 	$(call PACK,libxext-dev,DEB_LIBXEXT_V)
+	$(call PACK,libxext-doc,DEB_LIBXEXT_V)
 	
 	# libxext.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libxext{6,-dev}
+	rm -rf $(BUILD_DIST)/libxext{6,-dev,-doc}
 
 .PHONY: libxext libxext-package
