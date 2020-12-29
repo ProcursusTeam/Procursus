@@ -8,8 +8,8 @@ DEB_LIBX11_V   ?= $(LIBX11_VERSION)
 
 libx11-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libX11-$(LIBX11_VERSION).tar.gz{,.sig}
-	$(call PGP_VERIFY,libx11-$(LIBX11_VERSION).tar.gz)
-	$(call EXTRACT_TAR,libx11-$(LIBX11_VERSION).tar.gz,libx11-$(LIBX11_VERSION),libx11)
+	$(call PGP_VERIFY,libX11-$(LIBX11_VERSION).tar.gz)
+	$(call EXTRACT_TAR,libX11-$(LIBX11_VERSION).tar.gz,libX11-$(LIBX11_VERSION),libx11)
 
 ifneq ($(wildcard $(BUILD_WORK)/libx11/.build_complete),)
 libx11:

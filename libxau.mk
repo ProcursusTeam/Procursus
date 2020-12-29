@@ -8,8 +8,8 @@ DEB_LIBXAU_V   ?= $(LIBXAU_VERSION)-1
 
 libxau-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXau-$(LIBXAU_VERSION).tar.gz{,.sig}
-	$(call PGP_VERIFY,libxau-$(LIBXAU_VERSION).tar.gz)
-	$(call EXTRACT_TAR,libxau-$(LIBXAU_VERSION).tar.gz,libxau-$(LIBXAU_VERSION),libxau)
+	$(call PGP_VERIFY,libXau-$(LIBXAU_VERSION).tar.gz)
+	$(call EXTRACT_TAR,libXau-$(LIBXAU_VERSION).tar.gz,libXau-$(LIBXAU_VERSION),libxau)
 
 ifneq ($(wildcard $(BUILD_WORK)/libxau/.build_complete),)
 libxau:
