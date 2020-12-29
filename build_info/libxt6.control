@@ -1,0 +1,18 @@
+Package: libxt6
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBXT_V@
+Depends: libx11-6, libice6, libsm6
+Section: Libraries
+Priority: optional
+Multi-Arch: foreign
+Description: X11 toolkit intrinsics library
+ libXt provides the X Toolkit Intrinsics, an abstract widget library upon
+ which other toolkits are based.  Xt is the basis for many toolkits, including
+ the Athena widgets (Xaw), and LessTif (a Motif implementation).
+ .
+ More information about X.Org can be found at:
+ <URL:http://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libXt
