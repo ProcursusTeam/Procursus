@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += lolcat
-LOLCAT_VERSION := 1.0
+LOLCAT_VERSION := 1.1
 DEB_LOLCAT_V   ?= $(LOLCAT_VERSION)
 
 lolcat-setup: setup
@@ -11,7 +11,7 @@ lolcat-setup: setup
 		wget -q -nc -O$(BUILD_SOURCE)/lolcat-$(LOLCAT_VERSION).tar.gz \
 			wget -q -nc -P $(BUILD_SOURCE) https://github.com/jaseg/lolcat/archive/v$(LOLCAT_VERSION).tar.gz
 	$(call EXTRACT_TAR,lolcat-$(LOLCAT_VERSION).tar.gz,lolcat-$(LOLCAT_VERSION),lolcat)
-	mkdir -p $(BUILD_STAGE)/lolcat/usr/bin
+	mkdir -p $(BUILD_STAGE)/lolcat/usr/games
 
 ifneq ($(wildcard $(BUILD_WORK)/lolcat/.build_complete),)
 lolcat:
@@ -20,7 +20,7 @@ else
 lolcat: lolcat-setup 
 	+$(MAKE) -C $(BUILD_WORK)/lolcat
 	+$(MAKE) -C $(BUILD_WORK)/lolcat install \
-		DESTDIR=$(BUILD_STAGE)/lolcat/usr/bin
+		DESTDIR=$(BUILD_STAGE)/lolcat/usr/games
 	touch $(BUILD_WORK)/lolcat/.build_complete
 endif
 
