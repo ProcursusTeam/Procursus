@@ -61,7 +61,7 @@ perl: perl-setup
 		-Dvendorlib=/usr/share/perl5 \
 		-Dvendorarch=/usr/lib/perl5/$(PERL_VERSION)
 	+$(MAKE) -C $(BUILD_WORK)/perl \
-		PERL_MEMO_ARCHIVE=$(BUILD_WORK)/perl/libperl.dylib
+		PERL_ARCHIVE=$(BUILD_WORK)/perl/libperl.dylib
 	+$(MAKE) -C $(BUILD_WORK)/perl install.perl \
 		DESTDIR=$(BUILD_STAGE)/perl
 	touch $(BUILD_WORK)/perl/.build_complete
