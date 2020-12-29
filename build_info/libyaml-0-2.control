@@ -1,0 +1,9 @@
+Package: libyaml-0-2
+Version: @DEB_LIBYAML_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Description: Fast YAML 1.1 parser and emitter library (development)
+ LibYAML is a C library for parsing and emitting data in YAML 1.1, a
+ human-readable data serialization format.
