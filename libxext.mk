@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS     += libxext
 LIBXEXT_VERSION := 1.3.4
-DEB_LIBXEXT_V   ?= $(LIBXEXT_VERSION)
+DEB_LIBXEXT_V   ?= $(LIBXEXT_VERSION)-1
 
 libxext-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXext-$(LIBXEXT_VERSION).tar.gz{,.sig}
@@ -40,10 +40,10 @@ libxext-package: libxext-stage
 		$(BUILD_DIST)/libxext-doc/usr
 	
 	# libxext.mk Prep libxext6
-	cp -a $(BUILD_STAGE)/libxext/usr/lib/libxext.6.dylib $(BUILD_DIST)/libxext6/usr/lib
+	cp -a $(BUILD_STAGE)/libxext/usr/lib/libXext.6.dylib $(BUILD_DIST)/libxext6/usr/lib
 
 	# libxext.mk Prep libxext-dev
-	cp -a $(BUILD_STAGE)/libxext/usr/lib/{libxext.{a,dylib},pkgconfig} $(BUILD_DIST)/libxext-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libxext/usr/lib/{libXext.{a,dylib},pkgconfig} $(BUILD_DIST)/libxext-dev/usr/lib
 	cp -a $(BUILD_STAGE)/libxext/usr/include $(BUILD_DIST)/libxext-dev/usr
 
 	# libxext.mk Prep libxext-doc

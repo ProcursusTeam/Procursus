@@ -1,4 +1,4 @@
-Package: libxfixes6
+Package: libxfixes3
 Version: @DEB_LIBXFIXES_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@

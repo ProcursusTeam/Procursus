@@ -1,0 +1,18 @@
+Package: libimlib2-dev
+Version: @DEB_IMLIB2_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libimlib2-1 (>= @DEB_IMLIB2_V@), libfreetype-dev, libgif-dev, libjpeg62-turbo-dev, libpng16-dev, libtiff-dev, libwebp-dev, libx11-dev, libxext-dev
+Section: Development
+Priority: optional
+Multi-Arch: foreign
+Description: image loading, rendering, saving library (development files)
+ Imlib2 is a library that does image file loading and saving as well as
+ rendering, manipulation, arbitrary polygon support, etc.
+ .
+ It does ALL of these operations FAST. Imlib2 also tries to be highly
+ intelligent about doing them, so writing naive programs can be done easily,
+ without sacrificing speed.
+ .
+ This package provides the development files (ie. includes, static library,
+ manual pages) that allow one to build software which uses imlib2.
