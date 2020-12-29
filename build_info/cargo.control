@@ -6,5 +6,5 @@ Depends: rust (=@DEB_RUST_V@), libssl1.1, libcurl4
 Section: Development
 Priority: optional
 Homepage: https://www.rust-lang.org/
-Description: Rust package compiler. For Cargo to work properly on modern jailbreaks, set the TEMPDIR environment variable to something in the root partition before using.
+Description: Rust package compiler. For Cargo to work properly on modern jailbreaks, make sure you have corresponding version of iOS SDK under /usr/share/SDKs/ , and use --release optoin with build and run commond.
 Tag: purpose::console, role::developer
