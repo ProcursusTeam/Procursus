@@ -8,8 +8,8 @@ DEB_LIBXEXT_V   ?= $(LIBXEXT_VERSION)-1
 
 libxext-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXext-$(LIBXEXT_VERSION).tar.gz{,.sig}
-	$(call PGP_VERIFY,libxext-$(LIBXEXT_VERSION).tar.gz)
-	$(call EXTRACT_TAR,libxext-$(LIBXEXT_VERSION).tar.gz,libxext-$(LIBXEXT_VERSION),libxext)
+	$(call PGP_VERIFY,libXext-$(LIBXEXT_VERSION).tar.gz)
+	$(call EXTRACT_TAR,libXext-$(LIBXEXT_VERSION).tar.gz,libXext-$(LIBXEXT_VERSION),libxext)
 
 ifneq ($(wildcard $(BUILD_WORK)/libxext/.build_complete),)
 libxext:
