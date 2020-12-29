@@ -36,6 +36,7 @@ imlib2-package: imlib2-stage
 	
 	# imlib2.mk Prep libimlib2-1
 	cp -a $(BUILD_STAGE)/imlib2/usr/lib/libImlib2.1.dylib $(BUILD_DIST)/libimlib2-1/usr/lib
+	cp -a $(BUILD_STAGE)/imlib2/usr/lib/imlib2 $(BUILD_DIST)/libimlib2-1/usr/lib
 
 	# imlib2.mk Prep libimlib2-dev
 	cp -a $(BUILD_STAGE)/imlib2/usr/lib/!(libImlib2.1.dylib|imlib2) $(BUILD_DIST)/libimlib2-dev/usr/lib
