@@ -14,7 +14,7 @@ ghostbin-setup: setup
 	$(call EXTRACT_TAR,ghostbin-v$(GHOSTBIN_COMMIT).tar.gz,spectre-$(GHOSTBIN_COMMIT),ghostbin)
 	$(SED) -i '/account creation has been disabled/,+3d' $(BUILD_WORK)/ghostbin/auth.go
 
-ifneq ($(ARCHES),arm64)
+ifneq ($(MEMO_ARCH),arm64)
 ghostbin:
 	@echo "Unsupported target $(MEMO_TARGET)"
 else ifneq ($(wildcard $(BUILD_WORK)/ghostbin/.build_complete),)

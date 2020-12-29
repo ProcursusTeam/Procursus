@@ -13,7 +13,7 @@ rclone-setup: setup
 	$(call EXTRACT_TAR,rclone-$(RCLONE_VERSION).tar.gz,rclone-$(RCLONE_VERSION),rclone)
 	mkdir -p $(BUILD_STAGE)/rclone/usr/{bin,share/man/man1}
 
-ifneq ($(ARCHES),arm64)
+ifneq ($(MEMO_ARCH),arm64)
 rclone:
 	@echo "Unsupported target $(MEMO_TARGET)"
 else ifneq ($(wildcard $(BUILD_WORK)/rclone/.build_complete),)

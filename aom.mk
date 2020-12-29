@@ -33,7 +33,7 @@ aom: aom-setup
 		-DCONFIG_RUNTIME_CPU_DETECT=0 \
 		-DENABLE_TESTS=0 \
 		-DGIT_EXECUTABLE=/non-existant-binary \
-		-DAOM_TARGET_CPU="$(ARCHES)" \
+		-DAOM_TARGET_CPU="$(MEMO_ARCH)" \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
 		-DCMAKE_INSTALL_RPATH=/usr \

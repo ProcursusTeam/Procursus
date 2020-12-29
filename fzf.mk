@@ -13,7 +13,7 @@ fzf-setup: setup
 	$(call EXTRACT_TAR,fzf-$(FZF_VERSION).tar.gz,fzf-$(FZF_VERSION),fzf)
 	mkdir -p $(BUILD_STAGE)/fzf/usr/share
 
-ifneq ($(ARCHES),arm64)
+ifneq ($(MEMO_ARCH),arm64)
 fzf:
 	@echo "Unsupported target $(MEMO_TARGET)"
 else ifneq ($(wildcard $(BUILD_WORK)/fzf/.build_complete),)

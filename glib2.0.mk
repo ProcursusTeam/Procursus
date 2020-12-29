@@ -14,7 +14,7 @@ glib2.0-setup: setup
 
 	echo -e "[host_machine]\n \
 	cpu_family = '$(shell echo $(GNU_HOST_TRIPLE) | cut -d- -f1)'\n \
-	cpu = '$(ARCHES)'\n \
+	cpu = '$(MEMO_ARCH)'\n \
 	endian = 'little'\n \
 	system = 'darwin'\n \
 	[properties]\n \
