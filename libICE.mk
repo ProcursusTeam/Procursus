@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += libice
+SUBPROJECTS    += libice
 LIBICE_VERSION := 1.0.10
 DEB_LIBICE_V   ?= $(LIBICE_VERSION)
 
