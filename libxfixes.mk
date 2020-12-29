@@ -36,11 +36,11 @@ libxfixes-package: libxfixes-stage
 		$(BUILD_DIST)/libxfixes-dev/usr/{include,lib}
 	
 	# libxfixes.mk Prep libxfixes3
-	cp -a $(BUILD_STAGE)/libxfixes/usr/lib/libXfixes.3.dylib $(BUILD_DIST)/libXfixes3/usr/lib
+	cp -a $(BUILD_STAGE)/libxfixes/usr/lib/libXfixes.3.dylib $(BUILD_DIST)/libxfixes3/usr/lib
 
 	# libxfixes.mk Prep libxfixes-dev
 	cp -a $(BUILD_STAGE)/libxfixes/usr/lib/!(libXfixes.3.dylib) $(BUILD_DIST)/libxfixes-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libxfixes/usr/include $(BUILD_DIST)/libxfixes-dev/usr
+	cp -a $(BUILD_STAGE)/libxfixes/usr/{include,share} $(BUILD_DIST)/libxfixes-dev/usr
 	
 	# libxfixes.mk Sign
 	$(call SIGN,libxfixes3,general.xml)
