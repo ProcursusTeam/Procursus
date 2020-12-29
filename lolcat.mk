@@ -8,8 +8,7 @@ DEB_LOLCAT_V   ?= $(LOLCAT_VERSION)
 
 lolcat-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/lolcat-$(LOLCAT_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/lolcat-$(LOLCAT_VERSION).tar.gz \
-			wget -q -nc -P $(BUILD_SOURCE) https://github.com/jaseg/lolcat/archive/v$(LOLCAT_VERSION).tar.gz
+		wget -q -nc -O$(BUILD_SOURCE)/lolcat-$(LOLCAT_VERSION).tar.gz https://github.com/jaseg/lolcat/archive/v$(LOLCAT_VERSION).tar.gz
 	$(call EXTRACT_TAR,lolcat-$(LOLCAT_VERSION).tar.gz,lolcat-$(LOLCAT_VERSION),lolcat)
 	mkdir -p $(BUILD_STAGE)/lolcat/usr/games
 
