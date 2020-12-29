@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libxi/.build_complete),)
 libxi:
 	@echo "Using previously built libxi."
 else
-libxi: libxi-setup libx11 xorgproto
+libxi: libxi-setup libx11 xorgproto libxext libxfixes
 	cd $(BUILD_WORK)/libxi && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
