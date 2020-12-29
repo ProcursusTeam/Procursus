@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libxrender/.build_complete),)
 libxrender:
 	@echo "Using previously built libxrender."
 else
-libxrender: libxrender-setup libx11
+libxrender: libxrender-setup libx11 xorgproto
 	cd $(BUILD_WORK)/libxrender && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
