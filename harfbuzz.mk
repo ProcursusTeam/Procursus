@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += harfbuzz
-HARFBUZZ_VERSION := 2.7.2
+HARFBUZZ_VERSION := 2.7.4
 DEB_HARFBUZZ_V   ?= $(HARFBUZZ_VERSION)
 
 harfbuzz-setup: setup
@@ -27,6 +27,7 @@ harfbuzz: harfbuzz-setup cairo freetype glib2.0 graphite2 icu4c fontconfig
 		--with-gobject \
 		--with-icu \
 		--with-graphite2 \
+		--with-coretext \
 		FONTCONFIG_CFLAGS="-I$(BUILD_BASE)/usr/include/freetype2 -I$(BUILD_BASE)/usr/include/libpng16" \
 		FREETYPE_CFLAGS="-I$(BUILD_BASE)/usr/include/freetype2 -I$(BUILD_BASE)/usr/include/libpng16" \
 		GOBJECT_CFLAGS="-I$(BUILD_BASE)/usr/include/glib-2.0 -I$(BUILD_BASE)/usr/include/glib-2.0/include" \
