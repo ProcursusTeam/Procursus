@@ -4,13 +4,15 @@ endif
 
 STRAPPROJECTS += bash
 BASH_VERSION  := 5.1
-DEB_BASH_V    ?= $(BASH_VERSION)
+BASH_SUB_V    := 004
+DEB_BASH_V    ?= $(BASH_VERSION).$(BASH_SUB_V)
 
 bash-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,bash-$(BASH_VERSION).tar.gz)
 	$(call EXTRACT_TAR,bash-$(BASH_VERSION).tar.gz,bash-$(BASH_VERSION),bash)
 	mkdir -p $(BUILD_STAGE)/bash/bin
+	$(call DO_PATCH,bash,bash,-p0)
 	$(SED) -i 's/ENOEXEC)/ENOEXEC \&\& i != EPERM)/' $(BUILD_WORK)/bash/execute_cmd.c
 
 ifneq ($(wildcard $(BUILD_WORK)/bash/.build_complete),)
