@@ -6,7 +6,14 @@ SUBPROJECTS     += openjdk
 OPENJDK_COMMIT  := 8383f41ca7faa59dab17f6bb47fecd5a93ab72e3
 OPENJDK_MAJOR_V := 16
 OPENJDK_VERSION := $(OPENJDK_MAJOR_V).0.0+git20201217.$(shell echo $(OPENJDK_COMMIT) | cut -c -7)
-DEB_OPENJDK_V   ?= $(OPENJDK_VERSION)-1
+DEB_OPENJDK_V   ?= $(OPENJDK_VERSION)-2
+
+###
+#
+# The patches are horribly ugly, pay no mind.
+# TODO: Try and get libjsound working.
+#
+###
 
 openjdk-setup: setup
 	-[ ! -e "$(BUILD_SOURCE)/openjdk-$(OPENJDK_COMMIT).tar.gz" ] \
@@ -21,8 +28,34 @@ openjdk-setup: setup
 	$(call EXTRACT_TAR,openjdk-15_osx-x64_bin.tar.gz,jdk-15.jdk,boot-jdk.jdk) # Change this to use the Linux one on Linux
 ifneq ($(MEMO_TARGET),darwin-arm64e)
 	$(call DO_PATCH,openjdk-ios,openjdk,-p1)
-	$(SED) -i 's|<Cocoa/Cocoa.h>|<Foundation/Foundation.h>|' $(BUILD_WORK)/openjdk/src/java.base/macosx/native/libjli/java_md_macosx.m
 	$(SED) -i '/<CoreServices\/CoreServices.h>/a #include <CFNetwork/CFNetwork.h>' $(BUILD_WORK)/openjdk/src/java.base/macosx/native/libnet/DefaultProxySelector.c
+	for file in $(BUILD_WORK)/openjdk/src/java.base/macosx/native/libjli/java_md_macosx.m \
+	$(BUILD_WORK)/openjdk/src/java.desktop/macosx/native/libawt_lwawt/awt/LWCToolkit.h \
+	$(BUILD_WORK)/openjdk/src/java.desktop/macosx/native/libawt_lwawt/awt/AWTWindow.m \
+	$(BUILD_WORK)/openjdk/src/java.desktop/macosx/native/libawt_lwawt/awt/ApplicationDelegate.h \
+	$(BUILD_WORK)/openjdk/src/java.desktop/macosx/native/libawt_lwawt/awt/CDataTransferer.h \
+	$(BUILD_WORK)/openjdk/src/java.desktop/macosx/native/libawt_lwawt/java2d/opengl/J2D_GL/cglext.h \
+	$(BUILD_WORK)/openjdk/src/java.security.jgss/macosx/native/libosxkrb5/SCDynamicStoreConfig.m; do \
+		$(SED) -i 's|<Cocoa/Cocoa.h>|<Foundation/Foundation.h>|' $$file; \
+	done
+	for file in $(BUILD_WORK)/openjdk/src/java.desktop/share/native/libfontmanager/hb-jdk-font.c \
+	$(BUILD_WORK)/openjdk/src/java.desktop/share/native/libfontmanager/HBShaper.c \
+	$(BUILD_WORK)/openjdk/src/java.desktop/share/native/common/java2d/opengl/OGLFuncs.h \
+	$(BUILD_WORK)/openjdk/src/java.desktop/share/native/libmlib_image/mlib_image.h \
+	$(BUILD_WORK)/openjdk/src/java.desktop/share/native/libmlib_image/mlib_types.h \
+	$(BUILD_WORK)/openjdk/src/java.desktop/share/native/libmlib_image/mlib_ImageAffine.h \
+	$(BUILD_WORK)/openjdk/src/java.desktop/share/native/common/java2d/opengl/OGLBlitLoops.c \
+	$(BUILD_WORK)/openjdk/src/java.desktop/unix/native/libawt/awt/awt_LoadLibrary.c \
+	$(BUILD_WORK)/openjdk/src/java.desktop/unix/native/common/awt/color.h \
+	$(BUILD_WORK)/openjdk/src/java.desktop/unix/native/common/awt/utility/rect.h \
+	$(BUILD_WORK)/openjdk/src/java.desktop/unix/native/common/awt/awt.h \
+	$(BUILD_WORK)/openjdk/src/java.desktop/unix/native/common/awt/img_util_md.h \
+	$(BUILD_WORK)/openjdk/src/java.desktop/unix/native/libawt/java2d/j2d_md.h \
+	$(BUILD_WORK)/openjdk/src/java.desktop/unix/native/common/java2d/opengl/OGLFuncs_md.h; do \
+		$(SED) -i 's|MACOSX|MACOSXXXXXX|' $$file; \
+	done
+	cp $(BUILD_WORK)/openjdk/make/data/charsetmapping/stdcs-linux $(BUILD_WORK)/openjdk/make/data/charsetmapping/stdcs-macosx
+	rm -rf $(BUILD_WORK)/openjdk/src/java.desktop/macosx/
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
 	$(call DO_PATCH,openjdk-pre1700,openjdk,-p1)
 endif
@@ -32,29 +65,43 @@ ifneq ($(wildcard $(BUILD_WORK)/openjdk/.build_complete),)
 openjdk:
 	@echo "Using previously built openjdk."
 else
-openjdk: openjdk-setup
+openjdk: openjdk-setup libx11 libxext libxi libxrender libxtst freetype libgif harfbuzz lcms2 libpng16
 	rm -rf $(BUILD_STAGE)/openjdk
 	mkdir -p $(BUILD_STAGE)/openjdk/usr/lib/jvm
 	chmod 0755 $(BUILD_WORK)/openjdk/configure
 	cd $(BUILD_WORK)/openjdk && ./configure \
 		--prefix=/usr/lib \
 		--openjdk-target=$(GNU_HOST_TRIPLE) \
-		--with-extra-cflags="$(CFLAGS)" \
-		--with-extra-cxxflags="$(CXXFLAGS)" \
+		--with-extra-cflags="$(CFLAGS) -DTARGET_OS_OSX" \
+		--with-extra-cxxflags="$(CXXFLAGS) -DTARGET_OS_OSX" \
 		--with-extra-ldflags="$(LDFLAGS) -headerpad_max_install_names" \
 		--with-sysroot="$(TARGET_SYSROOT)" \
-		--with-cups-include="$(BUILD_WORK)/apple-cups" \
 		--without-version-pre \
 		--without-version-opt \
 		--with-boot-jdk="$(BUILD_WORK)/boot-jdk.jdk/Contents/Home" \
 		--with-debug-level=release \
 		--with-native-debug-symbols=none \
 		--with-jvm-variants=server \
+		--with-x=system \
+		--with-cups-include="$(BUILD_WORK)/apple-cups" \
+		--with-fontconfig=$(BUILD_BASE)/usr \
+		--with-freetype=system \
+		--with-freetype-lib=$(BUILD_BASE)/usr/lib \
+		--with-freetype-include=$(BUILD_BASE)/usr/include \
+		--with-libjpeg=system \
+		--with-giflib=system \
+		--with-libpng=system \
+		--with-zlib=system \
+		--with-lcms=system \
+		--with-harfbuzz=system \
 		CPP="$(CPP) -arch arm64" \
 		CXXCPP="$(CXX) -E -arch arm64"
 	make -C $(BUILD_WORK)/openjdk images \
 		JOBS=$(shell $(GET_LOGICAL_CORES))
 	cp -a $(BUILD_WORK)/openjdk/build/*/images/jdk $(BUILD_STAGE)/openjdk/usr/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk
+	for dylib in $(BUILD_STAGE)/openjdk/usr/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/lib/{,*/}*.dylib; do \
+		ln -sf $$(echo $$dylib | rev | cut -d/ -f1 | rev) $$(echo $$dylib | $(SED) s/.dylib//).so; \
+	done
 	touch $(BUILD_WORK)/openjdk/.build_complete
 endif
 

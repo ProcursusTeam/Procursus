@@ -170,32 +170,6 @@ diff -urN openjdk/make/modules/java.base/lib/CoreLibraries.gmk.orig openjdk/make
      LIBS_windows := advapi32.lib comctl32.lib user32.lib, \
  ))
  
---- openjdk/make/modules/java.desktop/Lib.gmk.orig	2020-12-27 08:39:01.000000000 -0500
-+++ openjdk/make/modules/java.desktop/Lib.gmk	2020-12-27 09:00:07.000000000 -0500
-@@ -34,12 +34,12 @@
- ################################################################################
- # Create the AWT/2D libraries
- 
--include lib/Awt2dLibraries.gmk
-+#include lib/Awt2dLibraries.gmk
- 
- ################################################################################
- # Create the libjsound library
- 
--ifeq ($(call isTargetOs, aix), false)
-+ifeq ($(call isTargetOs, macosx), false)
- 
-   LIBJSOUND_CFLAGS := \
-       $(ALSA_CFLAGS) \
-@@ -82,7 +82,7 @@
- ################################################################################
- # Create the macosx specific osxapp and osx libraries
- 
--ifeq ($(call isTargetOs, macosx), true)
-+ifeq ($(call isTargetOs, macosx), false)
- 
-   $(eval $(call SetupJdkLibrary, BUILD_LIBOSXAPP, \
-       NAME := osxapp, \
 diff -urN openjdk/make/modules/jdk.hotspot.agent/Lib.gmk.orig openjdk/make/modules/jdk.hotspot.agent/Lib.gmk    
 --- openjdk/make/modules/jdk.hotspot.agent/Lib.gmk	2020-12-27 09:03:10.000000000 -0500
 +++ openjdk/make/modules/jdk.hotspot.agent/Lib.gmk	2020-12-27 09:02:50.000000000 -0500
@@ -245,41 +219,15 @@ diff -urN openjdk/make/modules/jdk.jpackage/Lib.gmk.orig openjdk/make/modules/jd
      LIBS := $(LIBCXX), \
      LIBS_linux := -ldl, \
  ))
-diff -urN openjdk/make/modules/java.security.jgss/Lib.gmk.orig openjdk/make/modules/java.security.jgss/Lib.gmk
---- openjdk/make/modules/java.security.jgss/Lib.gmk	2020-12-27 09:35:26.000000000 -0500
-+++ openjdk/make/modules/java.security.jgss/Lib.gmk	2020-12-27 09:35:43.000000000 -0500
-@@ -38,7 +38,7 @@
-     LIBS := $(LIBDL), \
- ))
- 
--TARGETS += $(BUILD_LIBJ2GSS)
-+#TARGETS += $(BUILD_LIBJ2GSS)
- 
- ################################################################################
- 
-@@ -56,7 +56,7 @@
-             ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib wsock32.lib, \
-     ))
- 
--    TARGETS += $(BUILD_LIBW2K_LSA_AUTH)
-+    #TARGETS += $(BUILD_LIBW2K_LSA_AUTH)
- 
-     $(eval $(call SetupJdkLibrary, BUILD_LIBSSPI_BRIDGE, \
-         NAME := sspi_bridge, \
-@@ -67,7 +67,7 @@
-             $(call SET_SHARED_LIBRARY_ORIGIN) \
-     ))
- 
--    TARGETS += $(BUILD_LIBSSPI_BRIDGE)
-+    #TARGETS += $(BUILD_LIBSSPI_BRIDGE)
+diff -urN  openjdk/make/modules/java.security.jgss/Lib.gmk.orig openjdk/make/modules/java.security.jgss/Lib.gmk
+--- openjdk/make/modules/java.security.jgss/Lib.gmk	2020-12-29 18:09:42.000000000 -0500
++++ openjdk/make/modules/java.security.jgss/Lib.gmk	2020-12-29 18:10:05.000000000 -0500
+@@ -70,7 +70,7 @@
+     TARGETS += $(BUILD_LIBSSPI_BRIDGE)
    endif
  
-   ifeq ($(call isTargetOs, macosx), true)
-@@ -84,7 +84,7 @@
-             -framework SystemConfiguration -framework Kerberos, \
-     ))
- 
--    TARGETS += $(BUILD_LIBOSXKRB5)
-+    #TARGETS += $(BUILD_LIBOSXKRB5)
-   endif
- endif
+-  ifeq ($(call isTargetOs, macosx), true)
++  ifeq (false, true)
+     # libosxkrb5 needs to call deprecated krb5 APIs so that java
+     # can use the native credentials cache.
+     $(eval $(call SetupJdkLibrary, BUILD_LIBOSXKRB5, \
