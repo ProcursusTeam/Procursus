@@ -2,9 +2,13 @@ Package: fish
 Version: @DEB_FISH_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libncursesw6, python3, gettext
+Depends: libncursesw6, libintl8
+Recommends: python3, lynx, man-db
 Section: Terminal_Support
 Priority: optional
 Multi-Arch: foreign
 Homepage: https://fishshell.com
-Description: fish is a smart and user-friendly command line shell for macOS, Linux, and the rest of the family. fish includes features like syntax highlighting, autosuggest-as-you-type, and fancy tab completions that just work, with no configuration required.
+Description: friendly interactive shell
+ Fish is a shell geared towards interactive use.  Its features are focused on
+ user friendliness and discoverability.  The language syntax is simple but
+ incompatible with other shell languages.
