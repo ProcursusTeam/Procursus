@@ -19,7 +19,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libtomcrypt/.build_complete),)
 libtomcrypt:
 	@echo "Using previously built libtomcrypt."
 else
-libtomcrypt: libtomcrypt-setup libgmp10
+libtomcrypt: libtomcrypt-setup libgmp10 libtommath
 	cd $(BUILD_WORK)/libtomcrypt/libtool && LIBTOOLIZE="$(LIBTOOLIZE) -i" autoreconf -fi
 	cd $(BUILD_WORK)/libtomcrypt/libtool && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE)
