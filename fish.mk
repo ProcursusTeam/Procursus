@@ -45,10 +45,8 @@ endif
 
 fish-package: fish-stage
 	rm -rf $(BUILD_DIST)/fish
-	mkdir -p $(BUILD_DIST)/fish
 	
-	cp -a $(BUILD_STAGE)/fish/usr $(BUILD_DIST)/fish
-	mv $(BUILD_DIST)/fish/usr/etc $(BUILD_DIST)/fish/etc
+	cp -a $(BUILD_STAGE)/fish $(BUILD_DIST)
 
 	$(call SIGN,fish,general.xml)
 	
