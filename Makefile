@@ -585,7 +585,7 @@ rebuild-%:
 
 setup:
 	mkdir -p \
-		$(BUILD_BASE) $(BUILD_BASE)/{System/Library/Frameworks,usr/{include/{bsm,objc,os,sys,IOKit,libkern,mach/machine},lib}} \
+		$(BUILD_BASE) $(BUILD_BASE)/{{,System}/Library/Frameworks,usr/{include/{bsm,objc,os,sys,IOKit,libkern,mach/machine},lib,local/lib}} \
 		$(BUILD_SOURCE) $(BUILD_WORK) $(BUILD_STAGE) $(BUILD_STRAP)
 
 	wget -q -nc -P $(BUILD_BASE)/usr/include \
