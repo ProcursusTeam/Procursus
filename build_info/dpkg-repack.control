@@ -2,7 +2,7 @@ Package: dpkg-repack
 Version: @DEB_DPKG_REPACK_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libdpkg-perl
+Depends: perl, libdpkg-perl
 Suggests: fakeroot
 Section: Utilities
 Priority: standard
