@@ -1,0 +1,20 @@
+#!/bin/sh -e
+
+if test -z "$2" && test ! -f /etc/shells
+then
+        cp -p /usr/share/debianutils/shells /etc/shells
+fi
+
+case "$1" in
+    configure)
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac

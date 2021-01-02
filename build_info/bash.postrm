@@ -1,0 +1,10 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+	(remove)
+	remove-shell /bin/bash
+	remove-shell /usr/bin/bash
+	;;
+esac

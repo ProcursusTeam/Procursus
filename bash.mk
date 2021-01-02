@@ -5,7 +5,7 @@ endif
 STRAPPROJECTS += bash
 BASH_VERSION  := 5.1
 BASH_SUB_V    := 004
-DEB_BASH_V    ?= $(BASH_VERSION).$(BASH_SUB_V)
+DEB_BASH_V    ?= $(BASH_VERSION).$(BASH_SUB_V)-1
 
 bash-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION).tar.gz{,.sig}

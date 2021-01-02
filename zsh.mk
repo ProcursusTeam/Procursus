@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += zsh
 ZSH_VERSION   := 5.8
-DEB_ZSH_V     ?= $(ZSH_VERSION)-2
+DEB_ZSH_V     ?= $(ZSH_VERSION)-3
 
 zsh-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.zsh.org/pub/zsh-$(ZSH_VERSION).tar.xz{,.asc}

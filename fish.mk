@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS   += fish
 FISH_VERSION  := 3.1.2
-DEB_FISH_V    ?= $(FISH_VERSION)
+DEB_FISH_V    ?= $(FISH_VERSION)-1
 
 fish-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/fish-shell/fish-shell/releases/download/$(FISH_VERSION)/fish-$(FISH_VERSION).tar.gz{,.asc}
