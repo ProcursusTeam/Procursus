@@ -9,4 +9,3 @@ Section: Libraries
 Priority: optional
 Multi-Arch: foreign
 Description: library for manipulating PNG files (runtime libraries)
-Tag: purpose::library, role::developer

@@ -1,0 +1,23 @@
+Package: libxrandr-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBXRANDR_V@
+Depends: libxrandr2 (= @DEB_LIBXRANDR_V@), libx11-dev, libxext-dev, libxrender-dev, x11proto-dev
+Section: Development
+Priority: optional
+Multi-Arch: foreign
+Description: X11 RandR extension library (development headers)
+ libXrandr provides an X Window System client interface to the RandR
+ extension to the X protocol.
+ .
+ The RandR extension allows for run-time configuration of display attributes
+ such as resolution, rotation, and reflection.
+ .
+ This package contains the development headers for the library found in
+ libxrandr2.  Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at:
+ <URL:https://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libXrandr

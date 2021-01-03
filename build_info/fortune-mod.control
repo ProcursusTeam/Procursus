@@ -1,0 +1,14 @@
+Package: fortune-mod
+Version: @DEB_FORTUNE-MOD_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Games
+Priority: optional
+Depends: fortunes (= @DEB_FORTUNE-MOD_V@), librecode3
+Description: provides fortune cookies on demand
+ The fortune program displays epigrams, known as fortune cookies,
+ selected randomly from a selection of fortune files.
+ .
+ This package provides the fortune program itself and the programs
+ used for generating the data files. The data files are contained in
+ the fortunes, and fortunes-off packages.

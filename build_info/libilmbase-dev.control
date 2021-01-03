@@ -1,4 +1,4 @@
-Package: libopenexr-dev
+Package: libilmbase-dev
 Version: @DEB_OPENEXR_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@

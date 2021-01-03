@@ -1,0 +1,19 @@
+Package: libgs9-common
+Version: @DEB_GHOSTSCRIPT_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Multi-Arch: foreign
+Description: interpreter for the PostScript language and for PDF - common files
+ GPL Ghostscript is used for PostScript/PDF preview and printing.
+ Usually as a back-end to a program such as ghostview, it can display
+ PostScript and PDF documents in an X11 environment.
+ .
+ This package provides common architecture-independent files needed by
+ the GPL Ghostscript library.
+ .
+ By default, GPL Ghostscript uses a font from the fonts-droid package to
+ approximate glyphs in PDFs for which the requested CJK TrueType font
+ is missing.  If the fonts-droid package is not installed, these glyphs
+ will be rendered as bullets.

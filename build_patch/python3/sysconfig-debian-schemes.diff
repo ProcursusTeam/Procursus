@@ -1,0 +1,88 @@
+# DP: Add schemes 'deb_system' and 'posix_local', make the latter the default
+
+Index: b/Lib/sysconfig.py
+===================================================================
+--- a/Lib/sysconfig.py
++++ b/Lib/sysconfig.py
+@@ -31,6 +31,30 @@ _INSTALL_SCHEMES = {
+         'scripts': '{base}/bin',
+         'data': '{base}',
+         },
++    'deb_system': {
++        'stdlib': '{installed_base}/lib/python{py_version_short}',
++        'platstdlib': '{platbase}/lib/python{py_version_short}',
++        'purelib': '{base}/lib/python3/dist-packages',
++        'platlib': '{platbase}/lib/python3/dist-packages',
++        'include':
++            '{installed_base}/include/python{py_version_short}{abiflags}',
++        'platinclude':
++            '{installed_platbase}/include/python{py_version_short}{abiflags}',
++        'scripts': '{base}/bin',
++        'data': '{base}',
++        },
++    'posix_local': {
++        'stdlib': '{installed_base}/lib/python{py_version_short}',
++        'platstdlib': '{platbase}/lib/python{py_version_short}',
++        'purelib': '{base}/local/lib/python{py_version_short}/dist-packages',
++        'platlib': '{platbase}/local/lib/python{py_version_short}/dist-packages',
++        'include':
++            '{installed_base}/local/include/python{py_version_short}{abiflags}',
++        'platinclude':
++            '{installed_platbase}/local/include/python{py_version_short}{abiflags}',
++        'scripts': '{base}/local/bin',
++        'data': '{base}',
++        },
+     'posix_home': {
+         'stdlib': '{installed_base}/lib/python',
+         'platstdlib': '{base}/lib/python',
+@@ -136,7 +160,7 @@ def is_python_build(check_home=False):
+ _PYTHON_BUILD = is_python_build(True)
+ 
+ if _PYTHON_BUILD:
+-    for scheme in ('posix_prefix', 'posix_home'):
++    for scheme in ('posix_prefix', 'posix_home', 'posix_local', 'deb_system'):
+         _INSTALL_SCHEMES[scheme]['include'] = '{srcdir}/Include'
+         _INSTALL_SCHEMES[scheme]['platinclude'] = '{projectbase}/.'
+ 
+@@ -174,7 +198,16 @@ def _expand_vars(scheme, vars):
+ def _get_default_scheme():
+     if os.name == 'posix':
+         # the default scheme for posix is posix_prefix
+-        return 'posix_prefix'
++        if 'real_prefix' in sys.__dict__ or 'VIRTUAL_ENV' in os.environ:
++            # virtual environments
++            return 'posix_prefix'
++        else:
++            # default to /usr for package builds, /usr/local otherwise
++            deb_build = os.environ.get('DEB_PYTHON_INSTALL_LAYOUT', 'posix_local')
++            if deb_build in ('deb', 'deb_system'):
++                return 'deb_system'
++            else:
++                return 'posix_local'
+     return os.name
+ 
+ 
+@@ -472,7 +505,7 @@ def get_config_h_filename():
+         else:
+             inc_dir = _sys_home or _PROJECT_BASE
+     else:
+-        inc_dir = get_path('platinclude')
++        inc_dir = get_path('platinclude', 'posix_prefix')
+     return os.path.join(inc_dir, 'pyconfig.h')
+ 
+ 
+Index: b/Lib/test/test_sysconfig.py
+===================================================================
+--- a/Lib/test/test_sysconfig.py
++++ b/Lib/test/test_sysconfig.py
+@@ -227,8 +227,8 @@ class TestSysConfig(unittest.TestCase):
+         self.assertTrue(os.path.isfile(config_h), config_h)
+ 
+     def test_get_scheme_names(self):
+-        wanted = ('nt', 'nt_user', 'osx_framework_user',
+-                  'posix_home', 'posix_prefix', 'posix_user')
++        wanted = ('deb_system', 'nt', 'nt_user', 'osx_framework_user',
++                  'posix_home', 'posix_local', 'posix_prefix', 'posix_user')
+         self.assertEqual(get_scheme_names(), wanted)
+ 
+     @skip_unless_symlink

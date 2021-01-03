@@ -1,0 +1,22 @@
+Package: libxi-dev
+Version: @DEB_LIBXI_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libxi6 (= @DEB_LIBXI_V@), libx11-dev, libxext-dev, libxfixes-dev, x11proto-dev
+Section: Development
+Priority: optional
+Description: X11 Input extension library (development headers)
+ libXi provides an X Window System client interface to the XINPUT
+ extension to the X protocol.
+ .
+ The Input extension allows setup and configuration of multiple input devices,
+ and hotplugging of input devices (to be added and removed on the fly).
+ .
+ This package contains the development headers for the library found in
+ libxi6.  Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at:
+ <URL:https://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libXi

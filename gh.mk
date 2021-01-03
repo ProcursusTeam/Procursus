@@ -17,7 +17,7 @@ ifneq ($(MEMO_TARGET),darwin-arm64e)
 	$(SED) -i 's/exe := "open"/exe := "uiopen"/' $(BUILD_WORK)/gh/pkg/browser/browser.go
 endif
 
-ifneq ($(ARCHES),arm64)
+ifneq ($(MEMO_ARCH),arm64)
 gh:
 	@echo "Unsupported target $(MEMO_TARGET)"
 else ifneq ($(wildcard $(BUILD_WORK)/gh/.build_complete),)

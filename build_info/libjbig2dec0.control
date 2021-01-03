@@ -1,0 +1,13 @@
+Package: libjbig2dec0
+Version: @DEB_JBIG2DEC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Multi-Arch: foreign
+Description: JBIG2 decoder library - shared libraries
+ jbig2dec is a decoder library and example utility implementing the JBIG2
+ bi-level image compression spec. Also known as ITU T.88 and ISO IEC
+ 14492, and included by reference in Adobe's PDF version 1.4 and later.
+ .
+ This package contains the shared library libjbig2dec.

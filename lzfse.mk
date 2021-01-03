@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS   += lzfse
 LZFSE_VERSION := 1.0
-DEB_LZFSE_V   ?= $(LZFSE_VERSION)
+DEB_LZFSE_V   ?= $(LZFSE_VERSION)-1
 
 lzfse-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/lzfse/lzfse/archive/lzfse-$(LZFSE_VERSION).tar.gz
@@ -37,19 +37,28 @@ endif
 
 lzfse-package: lzfse-stage
 	# lzfse.mk Package Structure
-	rm -rf $(BUILD_DIST)/lzfse
-	mkdir -p $(BUILD_DIST)/lzfse
+	rm -rf $(BUILD_DIST)/{liblzfse{,-dev},lzfse}
+	mkdir -p $(BUILD_DIST)/{liblzfse{,-dev},lzfse}/usr
 	
 	# lzfse.mk Prep lzfse
-	cp -a $(BUILD_STAGE)/lzfse/usr $(BUILD_DIST)/lzfse
+	cp -a $(BUILD_STAGE)/lzfse/usr/bin $(BUILD_DIST)/lzfse/usr
+
+	# lzfse.mk Prep liblzfse
+	cp -a $(BUILD_STAGE)/lzfse/usr/lib $(BUILD_DIST)/liblzfse/usr
+
+	# lzfse.mk Prep liblzfse-dev
+	cp -a $(BUILD_STAGE)/lzfse/usr/include $(BUILD_DIST)/liblzfse-dev/usr
 	
 	# lzfse.mk Sign
 	$(call SIGN,lzfse,general.xml)
+	$(call SIGN,liblzfse,general.xml)
 	
 	# lzfse.mk Make .debs
 	$(call PACK,lzfse,DEB_LZFSE_V)
+	$(call PACK,liblzfse,DEB_LZFSE_V)
+	$(call PACK,liblzfse-dev,DEB_LZFSE_V)
 	
 	# lzfse.mk Build cleanup
-	rm -rf $(BUILD_DIST)/lzfse
+	rm -rf $(BUILD_DIST)/{liblzfse{,-dev},lzfse}
 
 .PHONY: lzfse lzfse-package

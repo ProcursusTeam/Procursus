@@ -1,0 +1,16 @@
+Package: fortunes-off
+Version: @DEB_FORTUNE-MOD_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Games
+Priority: optional
+Depends: fortune-mod (= @DEB_FORTUNE-MOD_V@), fortunes (= @DEB_FORTUNE-MOD_V@)
+Description: Data files containing offensive fortune cookies
+ The fortune program displays epigrams, known as fortune cookies,
+ selected randomly from a selection of fortune files.
+ .
+ This package contains cookies which some may consider to be
+ offensive. Please do not install this package if you or your users
+ are easily offended.
+ .
+ You'll need the fortune-mod package to display the cookies.

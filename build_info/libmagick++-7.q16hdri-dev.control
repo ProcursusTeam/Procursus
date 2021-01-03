@@ -1,0 +1,16 @@
+Package: libmagick++-7.q16hdri-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_IMAGEMAGICK_V@
+Depends: libmagick++-7.q16hdri-4 (= @DEB_IMAGEMAGICK_V@), libmagick++-7-headers (= @DEB_IMAGEMAGICK_V@), imagemagick-7-common (= @DEB_IMAGEMAGICK_V@), libmagickcore-7.q16hdri-dev (= @DEB_IMAGEMAGICK_V@), libmagickwand-7.q16hdri-dev (= @DEB_IMAGEMAGICK_V@)
+Section: Development
+Priority: optional
+Description: C++ interface to ImageMagick - development files (Q16)
+ The Magick++ library is a set of C++ wrapper classes that provides access
+ to the ImageMagick package functionality from within a C++ application.
+ .
+ This package includes header files and static libraries needed to compile
+ programs using Magick++.
+ .
+ This version of libmagick++-dev is compiled for a channel
+ depth of 16 bits with high dynamic range (Q16HDRI).

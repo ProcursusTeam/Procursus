@@ -1,0 +1,14 @@
+Package: fortunes
+Version: @DEB_FORTUNE-MOD_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Games
+Priority: optional
+Depends: fortune-mod (= @DEB_FORTUNE-MOD_V@)
+Description: Data files containing fortune cookies
+ The fortune program displays epigrams, known as fortune cookies,
+ selected randomly from a selection of fortune files.
+ .
+ There are far over 15000 different cookies in this package.
+ .
+ You'll need the fortune-mod package to display the cookies.
