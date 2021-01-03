@@ -48,10 +48,10 @@ Supported host systems as of 06/04/2020 are iphoneos-arm64, iphoneos-arm, applet
 | wget                                                              |
 | cmake                                                             |
 | docbook-xsl                                                       |
-| python 3.8 (python@3.8 in Homebrew)                               |
+| python 3.9                                                        |
 On macOS, all the build requirements can be installed with the following command.
 ```
-brew install make bash wget gnu-tar gnu-sed gnupg ldid cmake automake groff gpatch findutils coreutils fakeroot zstd dpkg ncurses docbook-xsl python@3.8
+brew install make bash wget gnu-tar gnu-sed gnupg ldid cmake automake groff gpatch findutils coreutils fakeroot zstd dpkg ncurses docbook-xsl python3
 ```
 
 | Supported commands    | Function                                                                                                                            |
