@@ -1,11 +1,11 @@
-Package: libtool
+Package: libtool-bin
 Version: @DEB_LIBTOOL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: clang, file
+Depends: libtool (>= @DEB_LIBTOOL_V@)
 Section: Development
 Priority: optional
-Description: Generic library support script
+Description: Generic library support script (glibtool binary)
  This is GNU libtool, a generic library support script.  Libtool hides
  the complexity of generating special library types (such as shared
  libraries) behind a consistent interface.  To use libtool, add the
@@ -14,3 +14,7 @@ Description: Generic library support script
  building static libraries on all platforms.
  .
  Libtool supports generation of C, C++, Fortran and Java libraries.
+ .
+ This package contains the glibtool binary only. It is not necessary
+ for normal development on Darwin platforms. For Apple's non-prefixed
+ libtool, install Darwin CC Tools (odcctools).
