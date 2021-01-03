@@ -19,11 +19,11 @@ base-package: base-stage
 	cp -a $(BUILD_STAGE)/base/* $(BUILD_DIST)/base
 
 	# base.mk Permissions
-	$(FAKEROOT) $(CHOWN) 0:80 $(BUILD_DIST)/base/{,Applications,Library/{,Frameworks,Preferences,Ringtones,Wallpaper},etc,tmp,var/{,db}}
-	$(FAKEROOT) $(CHOWN) 0:3 $(BUILD_DIST)/base/var/empty
-	$(FAKEROOT) $(CHOWN) 0:20 $(BUILD_DIST)/base/var/local
-	$(FAKEROOT) $(CHOWN) 0:1 $(BUILD_DIST)/base/var/run
-	$(FAKEROOT) $(CHOWN) -R 501:501 $(BUILD_DIST)/base/var/mobile
+	$(FAKEROOT) chown 0:80 $(BUILD_DIST)/base/{,Applications,Library/{,Frameworks,Preferences,Ringtones,Wallpaper},etc,tmp,var/{,db}}
+	$(FAKEROOT) chown 0:3 $(BUILD_DIST)/base/var/empty
+	$(FAKEROOT) chown 0:20 $(BUILD_DIST)/base/var/local
+	$(FAKEROOT) chown 0:1 $(BUILD_DIST)/base/var/run
+	$(FAKEROOT) chown -R 501:501 $(BUILD_DIST)/base/var/mobile
 	$(FAKEROOT) chmod 0775 $(BUILD_DIST)/base/{Applications,Library,var/run}
 	$(FAKEROOT) chmod 2775 $(BUILD_DIST)/base/var/local
 	$(FAKEROOT) chmod 1775 $(BUILD_DIST)/base/var/{lock,tmp}

@@ -408,14 +408,6 @@ else
 $(error Install GNU coreutils)
 endif
 
-ifeq ($(call HAS_COMMAND,gchown),1)
-CHOWN := gchown
-else ifeq ($(shell chown --version | grep -q 'GNU coreutils' && echo 1),1)
-CHOWN := chown
-else
-$(error Install GNU coreutils)
-endif
-
 ifneq ($(call HAS_COMMAND,fakeroot),1)
 $(error Install fakeroot)
 endif
