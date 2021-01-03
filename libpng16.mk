@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS      += libpng16
 LIBPNG16_VERSION := 1.6.37
-DEB_LIBPNG16_V   ?= $(LIBPNG16_VERSION)
+DEB_LIBPNG16_V   ?= $(LIBPNG16_VERSION)-1
 
 libpng16-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://sourceforge.net/projects/libpng/files/libpng16/$(LIBPNG16_VERSION)/libpng-$(LIBPNG16_VERSION).tar.xz
