@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS      += harfbuzz
 HARFBUZZ_VERSION := 2.7.4
-DEB_HARFBUZZ_V   ?= $(HARFBUZZ_VERSION)
+DEB_HARFBUZZ_V   ?= $(HARFBUZZ_VERSION)-1
 
 harfbuzz-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/harfbuzz-$(HARFBUZZ_VERSION).tar.gz" ] && \
