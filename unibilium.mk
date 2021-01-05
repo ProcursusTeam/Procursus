@@ -28,7 +28,8 @@ unibilium: unibilium-setup
 		--host=$(GNU_HOST_TRIPLE)
 	+$(MAKE) -C $(BUILD_WORK)/unibilium \
 		PREFIX=/usr \
-		LIBTOOL="$(BUILD_WORK)/unibilium/libtool/libtool"
+		LIBTOOL="$(BUILD_WORK)/unibilium/libtool/libtool" \
+		TERMINFO_DIRS="/usr/share/terminfo"
 	+$(MAKE) -C $(BUILD_WORK)/unibilium install PREFIX=/usr \
 		DESTDIR="$(BUILD_STAGE)/unibilium"
 	+$(MAKE) -C $(BUILD_WORK)/unibilium install PREFIX=/usr \
