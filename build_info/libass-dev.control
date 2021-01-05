@@ -2,7 +2,7 @@ Package: libass-dev
 Version: @DEB_LIBASS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libass9 (= @DEB_LIBASS_V@), libfribidi-dev, libfontconfig-dev, libfreetype6-dev, libharfbuzz-dev
+Depends: libass9 (= @DEB_LIBASS_V@), libfribidi-dev, libfontconfig-dev, libfreetype-dev, libharfbuzz-dev
 Section: Development
 Priority: optional
 Multi-Arch: foreign
