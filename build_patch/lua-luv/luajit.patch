@@ -1,0 +1,20 @@
+diff --color -urN luv-1.36.0-0/CMakeLists.txt lua-luv/CMakeLists.txt
+--- luv-1.36.0-0/CMakeLists.txt	2020-04-19 04:44:19.000000000 -0400
++++ lua-luv/CMakeLists.txt	2021-01-06 17:29:25.613439298 -0500
+@@ -106,7 +106,6 @@
+     if (USE_LUAJIT)
+       find_package(LuaJIT REQUIRED)
+       include_directories(${LUAJIT_INCLUDE_DIR})
+-      link_directories(${LUAJIT_LIBRARIES})
+     else (USE_LUAJIT)
+       find_package(Lua REQUIRED)
+       include_directories(${LUA_INCLUDE_DIR})
+@@ -187,7 +186,7 @@
+   elseif("${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
+     target_link_libraries(${TARGET_NAME} ${LIBUV_LIBRARIES} rt)
+   else()
+-    target_link_libraries(${TARGET_NAME} ${LIBUV_LIBRARIES})
++    target_link_libraries(${TARGET_NAME} ${LIBUV_LIBRARIES} ${LUAJIT_LIBRARIES})
+   endif()
+ endforeach()
+ 
