@@ -16,6 +16,7 @@ ifneq ($(wildcard $(BUILD_WORK)/fish/.build_complete),)
 fish:
 	@echo "Using previously built fish"
 else
+fish: .SHELLFLAGS=-O extglob -c
 fish: fish-setup ncurses gettext pcre2
 	cd $(BUILD_WORK)/fish && cmake . \
 		-DCMAKE_BUILD_TYPE=Release \
@@ -27,9 +28,9 @@ fish: fish-setup ncurses gettext pcre2
 		-DCMAKE_LIBRARY_PATH="$(BUILD_BASE)/usr/lib" \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_CROSSCOMPILING=true \
-		-DCURSES_CURSES_LIBRARY="$(BUILD_BASE)/usr/lib/libncursesw.dylib" \
+		-DCURSES_CURSES_LIBRARY="$(BUILD_BASE)/usr/lib/libncursesw.?(dylib|tbd)" \
 		-DCURSES_INCLUDE_PATH="$(BUILD_BASE)/usr/include/ncursesw" \
-		-DPCRE2_LIB="$(BUILD_BASE)/usr/lib/libpcre2-32.dylib" \
+		-DPCRE2_LIB="$(BUILD_BASE)/usr/lib/libpcre2-32.?(dylib|tbd)" \
 		-DPCRE2_INCLUDE_DIR="$(BUILD_BASE)/usr/include/pcre2" \
 		-DSED=/usr/bin/sed \
 		-DCMAKE_INSTALL_SYSCONFDIR=/etc \

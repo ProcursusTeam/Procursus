@@ -51,8 +51,8 @@ else
 llvm: llvm-setup libffi libedit ncurses xz xar
 	cp -a $(MACOSX_SYSROOT)/usr/include/kern $(BUILD_BASE)/usr/include
 	cp -a $(MACOSX_SYSROOT)/usr/include/histedit.h $(BUILD_BASE)/usr/include
-	ln -sf $(BUILD_BASE)/usr/lib/libncursesw.dylib $(BUILD_BASE)/usr/lib/libcurses.dylib
-	ln -sf $(BUILD_BASE)/usr/lib/libpanelw.dylib $(BUILD_BASE)/usr/lib/libpanel.dylib
+	ln -sf $(BUILD_BASE)/usr/lib/libncursesw.tbd $(BUILD_BASE)/usr/lib/libcurses.tbd
+	ln -sf $(BUILD_BASE)/usr/lib/libpanelw.tbd $(BUILD_BASE)/usr/lib/libpanel.tbd
 	mv $(BUILD_BASE)/usr/include/stdlib.h $(BUILD_BASE)/usr/include/stdlib.h.old
 
 	mkdir -p $(BUILD_WORK)/llvm/build/NATIVE && cd $(BUILD_WORK)/llvm/build/NATIVE && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
@@ -98,7 +98,7 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		-DLIBXML2_LIBRARY="$(TARGET_SYSROOT)/usr/lib/libxml2.tbd" \
 		-DLIBXML2_INCLUDE_DIR="$(TARGET_SYSROOT)/usr/include/libxml" \
 		-DLibEdit_INCLUDE_DIRS="$(BUILD_BASE)/usr/include" \
-		-DLibEdit_LIBRARIES="$(BUILD_BASE)/usr/lib/libedit.dylib" \
+		-DLibEdit_LIBRARIES="$(BUILD_BASE)/usr/lib/libedit.tbd" \
 		-DCORE_FOUNDATION_LIBRARY="$(TARGET_SYSROOT)/System/Library/Frameworks/CoreFoundation.framework" \
 		-DCORE_SERVICES_LIBRARY="$(TARGET_SYSROOT)/System/Library/Frameworks/CoreServices.framework" \
 		-DFOUNDATION_LIBRARY="$(TARGET_SYSROOT)/System/Library/Frameworks/Foundation.framework" \
@@ -140,7 +140,7 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		../llvm
 	+$(MAKE) -C $(BUILD_WORK)/llvm/build install \
 		DESTDIR="$(BUILD_STAGE)/llvm"
-	rm -rf $(BUILD_BASE)/usr/lib/libcurses.dylib $(BUILD_BASE)/usr/lib/libpanel.dylib
+	rm -rf $(BUILD_BASE)/usr/lib/libcurses.tbd $(BUILD_BASE)/usr/lib/libpanel.tbd
 	mv $(BUILD_BASE)/usr/include/stdlib.h.old $(BUILD_BASE)/usr/include/stdlib.h
 	touch $(BUILD_WORK)/llvm/.build_complete
 endif

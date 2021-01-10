@@ -16,6 +16,7 @@ ifneq ($(wildcard $(BUILD_WORK)/nano/.build_complete),)
 nano:
 	@echo "Using previously built nano."
 else
+nano: .SHELLFLAGS=-O extglob -c
 nano: nano-setup ncurses gettext file
 	cd $(BUILD_WORK)/nano && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
@@ -28,7 +29,7 @@ nano: nano-setup ncurses gettext file
 		--enable-nanorc \
 		--enable-utf8 \
 		--enable-multibuffer \
-		NCURSESW_LIBS=$(BUILD_BASE)/usr/lib/libncursesw.dylib
+		NCURSESW_LIBS=$(BUILD_BASE)/usr/lib/libncursesw.?(dylib|tbd)
 	+$(MAKE) -C $(BUILD_WORK)/nano
 	+$(MAKE) -C $(BUILD_WORK)/nano install \
 		DESTDIR=$(BUILD_STAGE)/nano

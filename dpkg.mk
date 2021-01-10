@@ -35,7 +35,7 @@ base-bsd-darwin-armk		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
 		PERL_LIBDIR='$$(prefix)/share/perl5' \
 		PERL="/usr/bin/perl" \
 		TAR=tar \
-		LZMA_LIBS='$(BUILD_BASE)/usr/local/lib/liblzma.dylib'
+		LZMA_LIBS="$(BUILD_BASE)/usr/local/lib/liblzma.tbd"
 	+$(MAKE) -C $(BUILD_WORK)/dpkg
 	+$(MAKE) -C $(BUILD_WORK)/dpkg install \
 		DESTDIR="$(BUILD_STAGE)/dpkg"

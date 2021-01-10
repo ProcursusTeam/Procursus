@@ -15,6 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/cmake/.build_complete),)
 cmake:
 	@echo "Using previously built cmake."
 else
+cmake: .SHELLFLAGS=-O extglob -c
 cmake: cmake-setup ncurses
 	cd $(BUILD_WORK)/cmake && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
 		-DCMAKE_BUILD_TYPE=Release \
@@ -30,7 +31,7 @@ cmake: cmake-setup ncurses
 		-DHAVE_POLL_FINE_EXITCODE__TRYRUN_OUTPUT=1 \
 		-DHAVE_CoreServices:INTERNAL=0 \
 		-DBUILD_CursesDialog:BOOL=ON \
-		-DCURSES_NCURSES_LIBRARY:FILEPATH="$(BUILD_BASE)/usr/lib/libncursesw.dylib" \
+		-DCURSES_NCURSES_LIBRARY:FILEPATH="$(BUILD_BASE)/usr/lib/libncursesw.?(dylib|tbd)" \
 		-DSPHINX_MAN:BOOL=ON \
 		.
 	+$(MAKE) -C $(BUILD_WORK)/cmake install \

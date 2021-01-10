@@ -205,7 +205,8 @@ EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 		$(CP) -af $(2)/. $(3); \
 		rm -rf $(2); \
 	fi; \
-	find $(BUILD_BASE)/usr -name "*.la" -type f -delete
+	find $(BUILD_BASE)/usr -name "*.la" -type f -delete; \
+	$(BUILD_TOOLS)/build_base_tbd.sh
 
 DO_PATCH    = -cd $(BUILD_PATCH)/$(1); \
 	rm -f ./series; \

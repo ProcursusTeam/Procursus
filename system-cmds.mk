@@ -41,13 +41,14 @@ ifneq ($(wildcard $(BUILD_WORK)/system-cmds/.build_complete),)
 system-cmds:
 	@echo "Using previously built system-cmds."
 else
+system-cmds: .SHELLFLAGS=-O extglob -c
 system-cmds: system-cmds-setup
 	for gperf in $(BUILD_WORK)/system-cmds/getconf.tproj/*.gperf; do \
 	    LC_ALL=C awk -f $(BUILD_WORK)/system-cmds/getconf.tproj/fake-gperf.awk < $$gperf > $(BUILD_WORK)/system-cmds/getconf.tproj/"$$(basename $$gperf .gperf).c" ; \
 	done
 
 	rm -f $(BUILD_WORK)/system-cmds/passwd.tproj/{od,nis,pam}_passwd.c
-	cd $(BUILD_WORK)/system-cmds && $(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o passwd passwd.tproj/*.c -isystem include $(BUILD_BASE)/usr/lib/libcrypt.dylib
+	cd $(BUILD_WORK)/system-cmds && $(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o passwd passwd.tproj/*.c -isystem include $(BUILD_BASE)/usr/lib/libcrypt.?(dylib|tbd)
 	cd $(BUILD_WORK)/system-cmds && $(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o dmesg dmesg.tproj/*.c -isystem include 
 	cd $(BUILD_WORK)/system-cmds && $(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o sysctl sysctl.tproj/sysctl.c -isystem include 
 	cd $(BUILD_WORK)/system-cmds && $(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o arch arch.tproj/*.c -isystem include -framework CoreFoundation -framework Foundation -lobjc 
@@ -57,8 +58,8 @@ system-cmds: system-cmds-setup
 		CFLAGS=; \
 		EXTRA=; \
 		case $$tproj in \
-			chpass) CFLAGS="-Ichpass.tproj" LDFLAGS="$(BUILD_BASE)/usr/lib/libcrypt.dylib";; \
-			login) LDFLAGS="$(BUILD_BASE)/usr/lib/libcrypt.dylib";; \
+			chpass) CFLAGS="-Ichpass.tproj" LDFLAGS="$(BUILD_BASE)/usr/lib/libcrypt.?(dylib|tbd)";; \
+			login) LDFLAGS="$(BUILD_BASE)/usr/lib/libcrypt.?(dylib|tbd)";; \
 			dynamic_pager) CFLAGS="-Idynamic_pager.tproj";; \
 			pwd_mkdb) CFLAGS="-D_PW_NAME_LEN=MAXLOGNAME -D_PW_YPTOKEN=\"__YP!\"";; \
 		esac ; \
