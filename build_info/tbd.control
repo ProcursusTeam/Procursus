@@ -1,0 +1,8 @@
+Package: tbd
+Version: @DEB_TBD_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Description: Convert Mach-O Libraries & Frameworks to .tbd
+ A command-line tool to create Text-Based Application Programming Interface (TAPI) files from existing binaries
