@@ -2,7 +2,7 @@ Package: libgs9
 Version: @DEB_GHOSTSCRIPT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libgs9-common (= @DEB_GHOSTSCRIPT_V@), libexpat1, libfontconfig1, libfreetype6, libjbig2dec0, libjpeg62-turbo, liblcms2-2, libopenjp2-7, libpaper1, libpng16-16, libtiff5
+Depends: libgs9-common (= @DEB_GHOSTSCRIPT_V@), firmware (>= 14.0) | libexpat1, libfontconfig1, libfreetype6, libjbig2dec0, libjpeg62-turbo, liblcms2-2, libopenjp2-7, libpaper1, libpng16-16, libtiff5
 Section: Libraries
 Priority: optional
 Multi-Arch: foreign

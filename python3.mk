@@ -5,7 +5,7 @@ endif
 SUBPROJECTS      += python3
 PYTHON3_MAJOR_V  := 3.9
 PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).1
-DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)
+DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)-1
 
 ifeq ($(call HAS_COMMAND,python$(PYTHON3_MAJOR_V)),1)
 else ifeq ($(call HAS_COMMAND,$(shell brew --prefix)/opt/python@$(PYTHON3_MAJOR_V)/bin/python$(PYTHON3_MAJOR_V)),1)
