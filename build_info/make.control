@@ -6,5 +6,4 @@ Depends: libintl8
 Section: Development
 Priority: important
 Description: dependency-based build environments
-Name: Make
 Tag: purpose::console, role::hacker

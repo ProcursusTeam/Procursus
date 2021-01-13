@@ -7,5 +7,4 @@ Section: Terminal_Support
 Priority: standard
 Multi-Arch: foreign
 Description: multiplexes a terminal into many
-Name: Screen
 Tag: purpose::console, role::hacker

@@ -10,4 +10,3 @@ Section: Utilities
 Priority: optional
 Multi-Arch: foreign
 Description: CA certs for curl, wget, git.
-Name: CA Certs

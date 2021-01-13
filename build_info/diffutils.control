@@ -8,4 +8,3 @@ Priority: important
 Multi-Arch: foreign
 Homepage: http://www.gnu.org/software/diffutils/
 Description: compare two files for differences
-Name: Diff Utilities

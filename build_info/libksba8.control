@@ -10,4 +10,3 @@ Section: Security
 Priority: optional
 Multi-Arch: foreign
 Description: X.509 and CMS support library
-Name: KSBA

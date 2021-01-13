@@ -6,4 +6,3 @@ Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LAUNCHCTL_V@
 Description: Tells launchd what to do
-Name: Launch Daemon Controller

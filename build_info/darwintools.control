@@ -6,4 +6,3 @@ Depends: system-cmds, uikittools (>= 2.0.0)
 Section: Administration
 Priority: required
 Description: sw_vers, firmware(.sh)
-Name: Darwin Tools

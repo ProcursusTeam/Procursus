@@ -5,4 +5,3 @@ Maintainer: @DEB_MAINTAINER@
 Priority: optional
 Section: Scripting
 Description: awesome combination of sed and awk
-Name: Perl

@@ -8,4 +8,3 @@ Conflicts: com.midnightchips.localhostssh, openssh (<< 1:0)
 Section: Networking
 Priority: important
 Description: secure shell (SSH) server, for secure access from remote machines
-Name: OpenSSH Server

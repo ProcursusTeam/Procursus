@@ -6,5 +6,4 @@ Depends: libfragmentzip0
 Section: Archiving
 Priority: optional
 Description: partialZipBrowser is a commandline tool for browsing and downloading files from zip files on remote webserver
-Name: partialZipBrowser
 Tag: purpose::console, role::hacker

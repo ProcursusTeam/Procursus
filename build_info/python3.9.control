@@ -6,5 +6,4 @@ Depends: libncursesw6 (>= 6.0), libreadline8 (>= 8.0), libssl1.1, libffi7, liblz
 Section: Scripting
 Priority: optional
 Description: Interpreted, interactive, object-oriented programming language.
-Name: Python 3.9
 Tag: purpose::console, role::hacker

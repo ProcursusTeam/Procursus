@@ -7,4 +7,3 @@ Section: Development
 Priority: optional
 Description: linker and assembler for the iPhone
 Homepage: https://github.com/tpoechtrager/cctools-port
-Name: Darwin CC Tools

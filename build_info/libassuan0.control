@@ -10,4 +10,3 @@ Section: Libraries
 Priority: optional
 Multi-Arch: foreign
 Description: IPC library for the GnuPG components
-Name: Assuan

@@ -6,5 +6,4 @@ Depends: libncursesw6, xxd, libintl8
 Section: Text_Editors
 Priority: standard
 Description: the best syntax highlighter, ever
-Name: Vi IMproved
 Tag: purpose::console, role::hacker

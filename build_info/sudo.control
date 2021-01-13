@@ -7,5 +7,4 @@ Depends: libintl8, libcrypt2
 Section: Administration
 Priority: required
 Description: temporarily assume root priviledges
-Name: Sudo
 Tag: purpose::console, role::hacker

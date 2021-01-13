@@ -8,4 +8,3 @@ Section: Terminal_Support
 Priority: optional
 Homepage: http://www.gnu.org/software/bash/
 Description: the best shell ever written by Brian Fox
-Name: Bourne-Again SHell

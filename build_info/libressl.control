@@ -8,4 +8,3 @@ Provides: openssl (=@DEB_LIBRESSL_V@), libssl0.9.8, libssl1.0, libssl1.1, libssl
 Section: Security
 Priority: standard
 Description: SSL library and cryptographic tools
-Name: LibreSSL

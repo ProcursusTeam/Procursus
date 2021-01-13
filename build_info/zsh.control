@@ -7,4 +7,3 @@ Depends: libncursesw6, libpcre1
 Section: Terminal_Support
 Priority: required
 Description: a shell with interactive features
-Name: Z Shell

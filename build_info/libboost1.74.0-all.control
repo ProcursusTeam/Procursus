@@ -6,4 +6,3 @@ Depends: libboost-atomic1.74.0, libboost-chrono1.74.0, libboost-container1.74.0,
 Section: Libraries
 Priority: Optional
 Description: Boost C++ Libraries Meta Package
-Name: libboost Meta Package

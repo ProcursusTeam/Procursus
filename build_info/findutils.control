@@ -10,4 +10,3 @@ Priority: important
 Multi-Arch: foreign
 Homepage: http://www.gnu.org/software/findutils/
 Description: indexes and searches filesystems
-Name: Find Utilities

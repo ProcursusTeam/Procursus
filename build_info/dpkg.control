@@ -9,4 +9,3 @@ Section: Packaging
 Priority: required
 Homepage: http://wiki.debian.org/Teams/Dpkg
 Description: package maintainance tools from Debian
-Name: Debian Packager

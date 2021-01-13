@@ -7,5 +7,4 @@ Priority: important
 Multi-Arch: foreign
 Homepage: http://www.gnu.org/software/gawk/
 Description: GNU's heavy-weight implementation of awk
-Name: Gawk
 Tag: purpose::console, role::hacker

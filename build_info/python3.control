@@ -8,5 +8,4 @@ Priority: optional
 Description: Interpreted, interactive, object-oriented programming language.
  Installing pip from the command line can be done with the `sudo python -m ensurepip` command.
  After installing pip, place an SDK for your platform in /usr/share/SDKs. (e.g. /usr/share/SDKs/iPhoneOS.sdk)
-Name: Python 3
 Tag: purpose::console, role::hacker

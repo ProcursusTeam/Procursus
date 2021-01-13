@@ -7,5 +7,4 @@ Section: Development
 Priority: optional
 Description: pseudo-codesign Mach-O files
 Author: Jay Freeman (saurik) <saurik@saurik.com>
-Name: Link Identity Editor
 Tag: purpose::console, role::developer

@@ -6,5 +6,4 @@ Depends: firmware (>= 9.0) | rtadvd
 Section: Networking
 Priority: important
 Description: arp, ndp, traceroute, mnc, mtest, traceroute6, ifconfig, ip6addrctl, netstat, ping6, route, rtsol
-Name: Network Commands
 Tag: purpose::console, role::hacker

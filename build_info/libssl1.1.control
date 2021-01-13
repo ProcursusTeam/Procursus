@@ -14,5 +14,4 @@ Description: Secure Sockets Layer toolkit - shared libraries
  Internet.
  .
  It provides the libssl and libcrypto shared libraries.
-Name: OpenSSL 1.1.x Libraries
 Tag: purpose::library, role::developer

@@ -7,4 +7,3 @@ Section: System
 Description: APFS Snapshot Tool.
 Homepage: https://github.com/ahl/apfs/
 Tag: role::hacker
-Name: APFS Snapshot Utility

@@ -8,4 +8,3 @@ Replaces: openssh (<< 1:0)
 Section: Networking
 Priority: important
 Description: secure shell (SSH) sftp server module, for SFTP access from remote machines
-Name: OpenSSH SFTP Server

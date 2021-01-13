@@ -6,7 +6,6 @@ Depends: dpkg, libdpkg-perl (= @DEB_DPKG_V@)
 Section: Packaging
 Priority: optional
 Homepage: http://wiki.debian.org/Teams/Dpkg
-Name: Debian Packager (Devel)
 Description: Debian package development tools
  This package provides the development tools (including dpkg-source)
  required to unpack, build and upload Debian source packages.

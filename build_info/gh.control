@@ -5,5 +5,4 @@ Maintainer: @DEB_MAINTAINER@
 Section: Development
 Priority: optional
 Description: GitHub command-line tool
-Name: GitHub CLI
 Tag: purpose::console, role::hacker

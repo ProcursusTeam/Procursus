@@ -6,6 +6,5 @@ Section: Utilities
 Priority: optional
 Multi-Arch: foreign
 Description: gpgrt (also known as libgpg-error) defines common error values, messages, and common runtime functionality for all GnuPG components. This package contains yat2m, a Texinfo to nroff/troff converter useful for building manpages, and gpg-error, a binary for deciphering GnuPG/libgcrypt error codes.
-Name: GnuPG Errors (Tools)
 Conflicts: libgpg-error (<< @DEB_LIBGPG-ERROR_V@)
 Depends: libgpg-error0 (= @DEB_LIBGPG-ERROR_V@)

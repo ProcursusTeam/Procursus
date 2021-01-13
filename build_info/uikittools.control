@@ -8,5 +8,4 @@ Section: Utilities
 Priority: optional
 Description: Command line access for UIKit/LaunchServices/CoreServices
 Author: CoolStar <coolstarorganization@gmail.com>
-Name: UIKit Tools
 Sileodepiction: https://coolstar.moe/sileoassets/depictionoverride.php?package=uikittools
