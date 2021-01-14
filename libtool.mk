@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS     += libtool
 LIBTOOL_VERSION := 2.4.6
-DEB_LIBTOOL_V   ?= $(LIBTOOL_VERSION)-2
+DEB_LIBTOOL_V   ?= $(LIBTOOL_VERSION)-3
 
 libtool-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/libtool/libtool-$(LIBTOOL_VERSION).tar.gz{,.sig}
@@ -30,32 +30,42 @@ libtool: libtool-setup
 endif
 libtool-package: libtool-stage
 	# libtool.mk Package Structure
-	rm -rf $(BUILD_DIST)/libtool $(BUILD_DIST)/libltdl{7,-dev}
-	mkdir -p $(BUILD_DIST)/libtool/usr/share \
+	rm -rf $(BUILD_DIST)/libtool{,-bin} $(BUILD_DIST)/libltdl{7,-dev}
+	mkdir -p $(BUILD_DIST)/libtool/usr/{bin,share/{man/man1,libtool,aclocal}} \
+		$(BUILD_DIST)/libtool-bin/usr/{bin,share/man/man1} \
 		$(BUILD_DIST)/libltdl7/usr/lib \
-		$(BUILD_DIST)/libltdl-dev/usr/{lib,share}
+		$(BUILD_DIST)/libltdl-dev/usr/{lib,share/{libtool,aclocal}}
 	
 	# libtool.mk Prep libtool
-	cp -a $(BUILD_STAGE)/libtool/usr/bin $(BUILD_DIST)/libtool/usr
-	cp -a $(BUILD_STAGE)/libtool/usr/share/man $(BUILD_DIST)/libtool/usr/share
+	cp -a $(BUILD_STAGE)/libtool/usr/bin/glibtoolize $(BUILD_DIST)/libtool/usr/bin
+	cp -a $(BUILD_STAGE)/libtool/usr/share/man/man1/glibtoolize.1 $(BUILD_DIST)/libtool/usr/share/man/man1
+	cp -a $(BUILD_STAGE)/libtool/usr/share/aclocal/!(ltdl.m4) $(BUILD_DIST)/libtool/usr/share/aclocal
+	cp -a $(BUILD_STAGE)/libtool/usr/share/libtool/build-aux $(BUILD_DIST)/libtool/usr/share/libtool
+
+	# libtool.mk Prep libtool-bin
+	cp -a $(BUILD_STAGE)/libtool/usr/bin/glibtool $(BUILD_DIST)/libtool-bin/usr/bin
+	cp -a $(BUILD_STAGE)/libtool/usr/share/man/man1/glibtool.1 $(BUILD_DIST)/libtool-bin/usr/share/man/man1
 
 	# libtool.mk Prep libltdl7
 	cp -a $(BUILD_STAGE)/libtool/usr/lib/libltdl.7.dylib $(BUILD_DIST)/libltdl7/usr/lib
 
 	# libtool.mk Prep libltdl-dev
 	cp -a $(BUILD_STAGE)/libtool/usr/lib/!(libltdl.7.dylib) $(BUILD_DIST)/libltdl-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libtool/usr/share/{aclocal,libtool} $(BUILD_DIST)/libltdl-dev/usr/share
+	cp -a $(BUILD_STAGE)/libtool/usr/share/aclocal/ltdl.m4 $(BUILD_DIST)/libltdl-dev/usr/share/aclocal
+	cp -a $(BUILD_STAGE)/libtool/usr/share/libtool/!(build-aux) $(BUILD_DIST)/libltdl-dev/usr/share/libtool
 	
 	# libtool.mk Sign
 	$(call SIGN,libtool,general.xml)
+	$(call SIGN,libtool-bin,general.xml)
 	$(call SIGN,libltdl7,general.xml)
 	
 	# libtool.mk Make .debs
 	$(call PACK,libtool,DEB_LIBTOOL_V)
+	$(call PACK,libtool-bin,DEB_LIBTOOL_V)
 	$(call PACK,libltdl7,DEB_LIBTOOL_V)
 	$(call PACK,libltdl-dev,DEB_LIBTOOL_V)
 	
 	# libtool.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libtool $(BUILD_DIST)/libltdl{7,-dev}
+	rm -rf $(BUILD_DIST)/libtool{,-bin} $(BUILD_DIST)/libltdl{7,-dev}
 
 .PHONY: libtool libtool-package

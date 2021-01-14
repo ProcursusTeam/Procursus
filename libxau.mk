@@ -4,12 +4,12 @@ endif
 
 SUBPROJECTS    += libxau
 LIBXAU_VERSION := 1.0.9
-DEB_LIBXAU_V   ?= $(LIBXAU_VERSION)
+DEB_LIBXAU_V   ?= $(LIBXAU_VERSION)-1
 
 libxau-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXau-$(LIBXAU_VERSION).tar.gz{,.sig}
-	$(call PGP_VERIFY,libxau-$(LIBXAU_VERSION).tar.gz)
-	$(call EXTRACT_TAR,libxau-$(LIBXAU_VERSION).tar.gz,libxau-$(LIBXAU_VERSION),libxau)
+	$(call PGP_VERIFY,libXau-$(LIBXAU_VERSION).tar.gz)
+	$(call EXTRACT_TAR,libXau-$(LIBXAU_VERSION).tar.gz,libXau-$(LIBXAU_VERSION),libxau)
 
 ifneq ($(wildcard $(BUILD_WORK)/libxau/.build_complete),)
 libxau:
@@ -36,7 +36,7 @@ libxau-package: libxau-stage
 	mkdir -p $(BUILD_DIST)/libxau-dev/usr/{include,lib}
 	
 	# libxau.mk Prep libxau6
-	cp -a $(BUILD_STAGE)/libxau/usr/lib/libxau.6.dylib $(BUILD_DIST)/libxau6/usr/lib
+	cp -a $(BUILD_STAGE)/libxau/usr/lib/libXau.6.dylib $(BUILD_DIST)/libxau6/usr/lib
 
 	# libxau.mk Prep libxau-dev
 	cp -a $(BUILD_STAGE)/libxau/usr/lib/{libXau{.a,.dylib},pkgconfig} $(BUILD_DIST)/libxau-dev/usr/lib

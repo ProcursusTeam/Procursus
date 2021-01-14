@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += attach
 ATTACH_VERSION := 0.0.2
-DEB_ATTACH_V   ?= $(ATTACH_VERSION)
+DEB_ATTACH_V   ?= $(ATTACH_VERSION)-1
 
 attach-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/attach-$(ATTACH_VERSION).tar.gz" ] && \

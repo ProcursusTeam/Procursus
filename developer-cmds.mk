@@ -20,7 +20,7 @@ else
 developer-cmds: developer-cmds-setup
 	cd $(BUILD_WORK)/developer-cmds; \
 	for bin in ctags rpcgen unifdef; do \
-    	$(CC) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/developer-cmds/usr/bin/$$bin $$bin/*.c -D_POSIX_C_SOURCE=200112L -DS_IREAD=S_IRUSR -DS_IWRITE=S_IWUSR; \
+    	$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/developer-cmds/usr/bin/$$bin $$bin/*.c -D_POSIX_C_SOURCE=200112L -DS_IREAD=S_IRUSR -DS_IWRITE=S_IWUSR; \
 	done
 	touch $(BUILD_WORK)/developer-cmds/.build_complete
 endif

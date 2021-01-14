@@ -1,8 +1,8 @@
-Package: pbupload
+Package: appuninst
 Author: quiprr <quiprr@ametrine.dev>
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
-Version: @DEB_PBUPLOAD_V@
+Version: @DEB_APPUNINST_V@
 Section: Utilities
 Priority: optional
-Description: Objective-C Pastebin Uploader
+Description: Objective-C App Uninstaller

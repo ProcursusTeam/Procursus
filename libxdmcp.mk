@@ -8,7 +8,7 @@ DEB_LIBXDMCP_V   ?= $(LIBXDMCP_VERSION)
 
 libxdmcp-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/lib/libXdmcp-$(LIBXDMCP_VERSION).tar.bz2
-	$(call EXTRACT_TAR,libxdmcp-$(LIBXDMCP_VERSION).tar.bz2,libxdmcp-$(LIBXDMCP_VERSION),libxdmcp)
+	$(call EXTRACT_TAR,libXdmcp-$(LIBXDMCP_VERSION).tar.bz2,libXdmcp-$(LIBXDMCP_VERSION),libxdmcp)
 
 ifneq ($(wildcard $(BUILD_WORK)/libxdmcp/.build_complete),)
 libxdmcp:

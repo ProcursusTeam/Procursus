@@ -1,0 +1,20 @@
+Package: libice-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBICE_V@
+Depends: libice6 (= @DEB_LIBICE_V@), x11proto-dev
+Section: Development
+Priority: optional
+Multi-Arch: foreign
+Description: X11 Inter-Client Exchange library (development headers)
+ This package provides the main interface to the X11 Inter-Client Exchange
+ library, which allows for communication of data between X clients.
+ .
+ This package contains the development headers for the library found in libice6.
+ Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at:
+ <URL:http://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libICE

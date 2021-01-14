@@ -47,10 +47,10 @@ system-cmds: system-cmds-setup
 	done
 
 	rm -f $(BUILD_WORK)/system-cmds/passwd.tproj/{od,nis,pam}_passwd.c
-	cd $(BUILD_WORK)/system-cmds && $(CC) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o passwd passwd.tproj/*.c -isystem include $(BUILD_BASE)/usr/lib/libcrypt.dylib
-	cd $(BUILD_WORK)/system-cmds && $(CC) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o dmesg dmesg.tproj/*.c -isystem include 
-	cd $(BUILD_WORK)/system-cmds && $(CC) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o sysctl sysctl.tproj/sysctl.c -isystem include 
-	cd $(BUILD_WORK)/system-cmds && $(CC) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o arch arch.tproj/*.c -isystem include -framework CoreFoundation -framework Foundation -lobjc 
+	cd $(BUILD_WORK)/system-cmds && $(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o passwd passwd.tproj/*.c -isystem include $(BUILD_BASE)/usr/lib/libcrypt.dylib
+	cd $(BUILD_WORK)/system-cmds && $(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o dmesg dmesg.tproj/*.c -isystem include 
+	cd $(BUILD_WORK)/system-cmds && $(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o sysctl sysctl.tproj/sysctl.c -isystem include 
+	cd $(BUILD_WORK)/system-cmds && $(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o arch arch.tproj/*.c -isystem include -framework CoreFoundation -framework Foundation -lobjc 
 
 	cd $(BUILD_WORK)/system-cmds; \
 	for tproj in ac accton chpass dynamic_pager getconf getty hostinfo iostat login mkfile pwd_mkdb reboot sync vifs vipw zdump zic nologin; do \
@@ -63,7 +63,7 @@ system-cmds: system-cmds-setup
 			pwd_mkdb) CFLAGS="-D_PW_NAME_LEN=MAXLOGNAME -D_PW_YPTOKEN=\"__YP!\"";; \
 		esac ; \
 		echo "$$tproj" ; \
-		$(CC) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o $$tproj $$tproj.tproj/*.c -isystem include -D'__FBSDID(x)=' $$CFLAGS -F$(BUILD_BASE)/System/Library/Frameworks -framework CoreFoundation -framework IOKit $$LDFLAGS; \
+		$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o $$tproj $$tproj.tproj/*.c -isystem include -D'__FBSDID(x)=' $$CFLAGS -F$(BUILD_BASE)/System/Library/Frameworks -framework CoreFoundation -framework IOKit $$LDFLAGS; \
 	done
 
 	mkdir -p $(BUILD_STAGE)/system-cmds/{/bin,/sbin,/usr/bin,/usr/sbin}

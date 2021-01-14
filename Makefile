@@ -70,7 +70,7 @@ export MACOSX_DEPLOYMENT_TARGET
 
 ifeq ($(MEMO_TARGET),iphoneos-arm64)
 $(warning Building for iOS)
-ARCHES               := arm64
+MEMO_ARCH                 := arm64
 PLATFORM             := iphoneos
 DEB_ARCH             := iphoneos-arm
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
@@ -80,7 +80,7 @@ export IPHONEOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),appletvos-arm64)
 $(warning Building for tvOS)
-ARCHES               := arm64
+MEMO_ARCH                 := arm64
 PLATFORM             := appletvos
 DEB_ARCH             := appletvos-arm64
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
@@ -89,7 +89,7 @@ export APPLETVOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),watchos-arm64)
 $(warning Building for WatchOS)
-ARCHES               := arm64_32
+MEMO_ARCH                 := arm64_32
 PLATFORM             := watchos
 DEB_ARCH             := watchos-arm
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
@@ -99,8 +99,6 @@ export WATCHOS_DEPLOYMENT_TARGET
 else
 $(error Platform not supported)
 endif
-
-ARCH := $(shell echo $(ARCHES) | awk -F' ' '{ for(i=1;i<=NF;i++) print "-arch " $$i }' ORS=" ")
 
 ifeq ($(UNAME),Linux)
 $(warning Building on Linux)
@@ -178,13 +176,13 @@ BUILD_STRAP    := $(BUILD_ROOT)/build_strap/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Extra scripts for the buildsystem
 BUILD_TOOLS    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_tools
 
-CFLAGS              := -O2 $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include -F$(BUILD_BASE)/System/Library/Frameworks
+CFLAGS              := -O2 -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include -F$(BUILD_BASE)/System/Library/Frameworks -F$(BUILD_BASE)/Library/Frameworks
 CXXFLAGS            := $(CFLAGS)
-CPPFLAGS            := -O2 -arch $(shell echo $(ARCHES) | cut -f1 -d' ') $(PLATFORM_VERSION_MIN) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include -Wno-error-implicit-function-declaration
-LDFLAGS             := -O2 $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib -F$(BUILD_BASE)/System/Library/Frameworks
+CPPFLAGS            := -O2 -arch $(MEMO_ARCH) $(PLATFORM_VERSION_MIN) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include -Wno-error-implicit-function-declaration
+LDFLAGS             := -O2 -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib -F$(BUILD_BASE)/System/Library/Frameworks -F$(BUILD_BASE)/Library/Frameworks
 PKG_CONFIG_PATH     := $(BUILD_BASE)/usr/lib/pkgconfig:$(BUILD_BASE)/usr/local/lib/pkgconfig:$(BUILD_BASE)/usr/share/pkgconfig:$(BUILD_BASE)/usr/local/share/pkgconfig
 
-export PLATFORM ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T EXTRA SED
+export PLATFORM MEMO_ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T EXTRA SED
 export BUILD_ROOT BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP BUILD_TOOLS
 export DEB_ARCH DEB_ORIGIN DEB_MAINTAINER
 export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS PKG_CONFIG_PATH
@@ -223,6 +221,12 @@ DO_PATCH    = -cd $(BUILD_PATCH)/$(1); \
 
 SIGN =  find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \; &> /dev/null; \
 	find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
+
+###
+#
+# TODO: Please cleanup the PACK function, it's so horrible.
+#
+###
 
 PACK = -if [ -z $(4) ]; then \
 		find $(BUILD_DIST)/$(1) -name '*.la' -type f -delete; \
@@ -412,10 +416,11 @@ ifneq ($(call HAS_COMMAND,zstd),1)
 $(error Install zstd)
 endif
 
+DPKG_TYPE ?= xz
 ifeq ($(call HAS_COMMAND,dpkg-deb),1)
-DPKG_DEB := dpkg-deb -z9
+DPKG_DEB := dpkg-deb -Z$(DPKG_TYPE) 
 else ifeq ($(call HAS_COMMAND,dm.pl),1)
-DPKG_DEB := dm.pl -Zlzma -z9
+DPKG_DEB := dm.pl -Z$(DPKG_TYPE) 
 else
 $(error Install dpkg-deb)
 endif
@@ -562,6 +567,7 @@ bootstrap-device: bootstrap
 %-stage: %
 	rm -f $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev)
 	touch $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev)
+	mkdir -p $(BUILD_DIST)
 
 REPROJ=$(shell echo $@ | cut -f2- -d"-")
 REPROJ2=$(shell echo $(REPROJ) | $(SED) 's/-package//')
@@ -579,8 +585,8 @@ rebuild-%:
 
 setup:
 	mkdir -p \
-		$(BUILD_BASE) $(BUILD_BASE)/{System/Library/Frameworks,usr/{include/{bsm,objc,os,sys,IOKit,libkern,mach/machine},lib}} \
-		$(BUILD_SOURCE) $(BUILD_WORK) $(BUILD_STAGE) $(BUILD_DIST) $(BUILD_STRAP)
+		$(BUILD_BASE) $(BUILD_BASE)/{{,System}/Library/Frameworks,usr/{include/{bsm,objc,os,sys,IOKit,libkern,mach/machine},lib,local/lib}} \
+		$(BUILD_SOURCE) $(BUILD_WORK) $(BUILD_STAGE) $(BUILD_STRAP)
 
 	wget -q -nc -P $(BUILD_BASE)/usr/include \
 		https://opensource.apple.com/source/xnu/xnu-6153.61.1/libsyscall/wrappers/spawn/spawn.h

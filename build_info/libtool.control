@@ -1,9 +1,8 @@
-Name: GNU Libtool
 Package: libtool
 Version: @DEB_LIBTOOL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libltdl7 (= @DEB_LIBTOOL_V@)
+Depends: clang, file
 Section: Development
 Priority: optional
 Description: Generic library support script
