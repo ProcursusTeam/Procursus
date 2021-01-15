@@ -1,0 +1,10 @@
+Package: liblua50-dev
+Version: @DEB_LUA50_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: standard
+Depends: liblualib50 (= @DEB_LUA50_V@), liblua50 (= @DEB_LUA50_V@)
+Description: Main interpreter library for Lua 5.0: static library and headers
+ Using this package you can develop applications which have Lua interpreters
+ built into them.
