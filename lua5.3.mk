@@ -34,6 +34,14 @@ lua5.3: lua5.3-setup
 		INSTALL_MAN="$(BUILD_STAGE)/lua5.3/usr/share/man/man1" \
 		TO_BIN="lua5.3 luac5.3" \
 		TO_LIB="liblua5.3.a liblua5.3.0.dylib"
+	+$(MAKE) -C $(BUILD_WORK)/lua5.3 install \
+		INSTALL_TOP="$(BUILD_BASE)/usr" \
+		INSTALL_INC="$(BUILD_BASE)/usr/include/lua5.3" \
+		INSTALL_MAN="$(BUILD_BASE)/usr/share/man/man1" \
+		TO_BIN="lua5.3 luac5.3" \
+		TO_LIB="liblua5.3.a liblua5.3.0.dylib"
+	ln -sf liblua5.3.0.dylib $(BUILD_BASE)/usr/lib/liblua5.3.0.0.0.dylib
+	ln -sf liblua5.3.0.dylib $(BUILD_BASE)/usr/lib/liblua5.3.dylib
 	touch $(BUILD_WORK)/lua5.3/.build_complete
 endif
 

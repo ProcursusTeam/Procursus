@@ -34,6 +34,14 @@ lua5.4: lua5.4-setup
 		INSTALL_MAN="$(BUILD_STAGE)/lua5.4/usr/share/man/man1" \
 		TO_BIN="lua5.4 luac5.4" \
 		TO_LIB="liblua5.4.a liblua5.4.0.dylib"
+	+$(MAKE) -C $(BUILD_WORK)/lua5.4 install \
+		INSTALL_TOP="$(BUILD_BASE)/usr" \
+		INSTALL_INC="$(BUILD_BASE)/usr/include/lua5.4" \
+		INSTALL_MAN="$(BUILD_BASE)/usr/share/man/man1" \
+		TO_BIN="lua5.4 luac5.4" \
+		TO_LIB="liblua5.4.a liblua5.4.0.dylib"
+	ln -sf liblua5.4.0.dylib $(BUILD_BASE)/usr/lib/liblua5.4.0.0.0.dylib
+	ln -sf liblua5.4.0.dylib $(BUILD_BASE)/usr/lib/liblua5.4.dylib
 	touch $(BUILD_WORK)/lua5.4/.build_complete
 endif
 

@@ -47,6 +47,16 @@ lua50: lua50-setup
 		INSTALL_ROOT="$(BUILD_STAGE)/lua50/usr" \
 		INSTALL_INC="$(BUILD_STAGE)/lua50/usr/include/lua50" \
 		INSTALL_MAN="$(BUILD_STAGE)/lua50/usr/share/man/man1"
+	+$(MAKE) -C $(BUILD_WORK)/lua50 install \
+		STRIP="$(STRIP)" \
+		INSTALL_ROOT="$(BUILD_BASE)/usr" \
+		INSTALL_INC="$(BUILD_BASE)/usr/include/lua50" \
+		INSTALL_MAN="$(BUILD_BASE)/usr/share/man/man1"
+	+$(MAKE) -C $(BUILD_WORK)/lua50 soinstall \
+		STRIP="$(STRIP)" \
+		INSTALL_ROOT="$(BUILD_BASE)/usr" \
+		INSTALL_INC="$(BUILD_BASE)/usr/include/lua50" \
+		INSTALL_MAN="$(BUILD_BASE)/usr/share/man/man1"
 	touch $(BUILD_WORK)/lua50/.build_complete
 endif
 

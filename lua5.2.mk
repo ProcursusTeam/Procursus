@@ -34,6 +34,14 @@ lua5.2: lua5.2-setup
 		INSTALL_MAN="$(BUILD_STAGE)/lua5.2/usr/share/man/man1" \
 		TO_BIN="lua5.2 luac5.2" \
 		TO_LIB="liblua5.2.a liblua5.2.0.dylib"
+	+$(MAKE) -C $(BUILD_WORK)/lua5.2 install \
+		INSTALL_TOP="$(BUILD_BASE)/usr" \
+		INSTALL_INC="$(BUILD_BASE)/usr/include/lua5.2" \
+		INSTALL_MAN="$(BUILD_BASE)/usr/share/man/man1" \
+		TO_BIN="lua5.2 luac5.2" \
+		TO_LIB="liblua5.2.a liblua5.2.0.dylib"
+	ln -sf liblua5.2.0.dylib $(BUILD_BASE)/usr/lib/liblua5.2.0.0.0.dylib
+	ln -sf liblua5.2.0.dylib $(BUILD_BASE)/usr/lib/liblua5.2.dylib
 	touch $(BUILD_WORK)/lua5.2/.build_complete
 endif
 

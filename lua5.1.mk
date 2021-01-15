@@ -34,6 +34,14 @@ lua5.1: lua5.1-setup
 		INSTALL_MAN="$(BUILD_STAGE)/lua5.1/usr/share/man/man1" \
 		TO_BIN="lua5.1 luac5.1" \
 		TO_LIB="liblua5.1.a liblua5.1.0.dylib"
+	+$(MAKE) -C $(BUILD_WORK)/lua5.1 install \
+		INSTALL_TOP="$(BUILD_BASE)/usr" \
+		INSTALL_INC="$(BUILD_BASE)/usr/include/lua5.1" \
+		INSTALL_MAN="$(BUILD_BASE)/usr/share/man/man1" \
+		TO_BIN="lua5.1 luac5.1" \
+		TO_LIB="liblua5.1.a liblua5.1.0.dylib"
+	ln -sf liblua5.1.0.dylib $(BUILD_BASE)/usr/lib/liblua5.1.0.0.0.dylib
+	ln -sf liblua5.1.0.dylib $(BUILD_BASE)/usr/lib/liblua5.1.dylib
 	touch $(BUILD_WORK)/lua5.1/.build_complete
 endif
 
