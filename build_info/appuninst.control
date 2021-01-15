@@ -6,3 +6,4 @@ Version: @DEB_APPUNINST_V@
 Section: Utilities
 Priority: optional
 Description: Objective-C App Uninstaller
+
