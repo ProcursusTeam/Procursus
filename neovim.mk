@@ -37,6 +37,8 @@ neovim: neovim-setup gettext lua-luv libuv1 msgpack libvterm libtermkey unibiliu
 		-DXGETTEXT_PRG="`which xgettext`" \
 		-DGETTEXT_MSGFMT_EXECUTABLE="`which msgfmt`" \
 		-DGETTEXT_MSGMERGE_EXECUTABLE="`which msgmerge`" \
+		-DLIBLUV_LIBRARY="$(BUILD_BASE)/usr/lib/liblua5.1-luv.dylib" \
+		-DLIBLUV_INCLUDE_DIR="$(BUILD_BASE)/usr/include/lua5.1/" \
 		..
 	+$(MAKE) -C $(BUILD_WORK)/neovim/build
 	+$(MAKE) -C $(BUILD_WORK)/neovim/build install \
