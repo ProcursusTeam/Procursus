@@ -16,7 +16,7 @@ libevent:
 	@echo "Using previously built libevent."
 else
 libevent: libevent-setup openssl
-	cd $(BUILD_WORK)/libevent && ./configure \
+	cd $(BUILD_WORK)/libevent && unset MACOSX_DEPLOYMENT_TARGET && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/libevent install \
