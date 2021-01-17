@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += libarchive
-LIBARCHIVE_VERSION := 3.4.3
-DEB_LIBARCHIVE_V   ?= $(LIBARCHIVE_VERSION)-4
+LIBARCHIVE_VERSION := 3.5.1
+DEB_LIBARCHIVE_V   ?= $(LIBARCHIVE_VERSION)
 
 libarchive-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libarchive/libarchive/releases/download/v$(LIBARCHIVE_VERSION)/libarchive-$(LIBARCHIVE_VERSION).tar.xz
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libarchive/libarchive/releases/download/$(LIBARCHIVE_VERSION)/libarchive-$(LIBARCHIVE_VERSION).tar.xz
 	$(call EXTRACT_TAR,libarchive-$(LIBARCHIVE_VERSION).tar.xz,libarchive-$(LIBARCHIVE_VERSION),libarchive)
 
 ifneq ($(wildcard $(BUILD_WORK)/libarchive/.build_complete),)
