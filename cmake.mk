@@ -16,7 +16,7 @@ ifneq ($(wildcard $(BUILD_WORK)/cmake/.build_complete),)
 cmake:
 	@echo "Using previously built cmake."
 else
-cmake: cmake-setup ncurses libuv1
+cmake: cmake-setup ncurses libuv1 curl libarchive expat xz nghttp2 zstd
 	cd $(BUILD_WORK)/cmake && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
@@ -34,6 +34,14 @@ cmake: cmake-setup ncurses libuv1
 		-DCURSES_NCURSES_LIBRARY:FILEPATH="$(BUILD_BASE)/usr/lib/libncursesw.dylib" \
 		-DSPHINX_MAN:BOOL=ON \
 		-DCMAKE_USE_SYSTEM_LIBUV=ON \
+		-DCMAKE_USE_SYSTEM_BZIP2=ON \
+                -DCMAKE_USE_SYSTEM_CURL=ON \
+                -DCMAKE_USE_SYSTEM_EXPAT=ON \
+                -DCMAKE_USE_SYSTEM_LIBARCHIVE=ON \
+                -DCMAKE_USE_SYSTEM_LIBLZMA=ON \
+                -DCMAKE_USE_SYSTEM_NGHTTP2=ON \
+                -DCMAKE_USE_SYSTEM_ZLIB=ON \
+                -DCMAKE_USE_SYSTEM_ZSTD=ON \
 		.
 	+$(MAKE) -C $(BUILD_WORK)/cmake install \
 		DESTDIR="$(BUILD_STAGE)/cmake"
