@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += cmake
-CMAKE_VERSION := 3.18.1
+CMAKE_VERSION := 3.19.3
 DEB_CMAKE_V   ?= $(CMAKE_VERSION)
 
 cmake-setup: setup
@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/cmake/.build_complete),)
 cmake:
 	@echo "Using previously built cmake."
 else
-cmake: cmake-setup ncurses
+cmake: cmake-setup ncurses libuv1
 	cd $(BUILD_WORK)/cmake && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
@@ -32,6 +32,7 @@ cmake: cmake-setup ncurses
 		-DBUILD_CursesDialog:BOOL=ON \
 		-DCURSES_NCURSES_LIBRARY:FILEPATH="$(BUILD_BASE)/usr/lib/libncursesw.dylib" \
 		-DSPHINX_MAN:BOOL=ON \
+		-DCMAKE_USE_SYSTEM_LIBUV=ON \
 		.
 	+$(MAKE) -C $(BUILD_WORK)/cmake install \
 		DESTDIR="$(BUILD_STAGE)/cmake"
