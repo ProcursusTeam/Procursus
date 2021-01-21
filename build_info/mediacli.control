@@ -1,0 +1,11 @@
+Package: mediacli
+Name: MediaCLI
+Version: @DEB_MEDIACLI_V@
+Architecture: @DEB_ARCH@
+Conflicts: com.rob311.sshmediacontrols, com.rob311.sshvol, me.absidue.mediacli
+Provides: me.absidue.mediacli
+Description: CLI tool to control media playback. Run "media help" to list the available actions.
+Maintainer: @DEB_MAINTAINER@
+Author: absidue <apt@absidue.me>
+Section: Multimedia
+Homepage: https://github.com/absidue/MediaCLI/

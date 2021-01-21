@@ -1,0 +1,16 @@
+Package: cowsay-off
+Version: @DEB_COWSAY_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: perl, cowsay (= @DEB_COWSAY_V@)
+Section: Games
+Priority: optional
+Description: configurable talking cow (offensive cows)
+ Cowsay (or cowthink) will turn text into happy ASCII cows, with
+ speech (or thought) balloons. If you don't like cows, ASCII art is
+ available to replace it with some other creatures (Tux, the BSD
+ daemon, dragons, and a plethora of animals, from a turkey to
+ an elephant in a snake).
+ .
+ This package contains cows which some may consider to be offensive.
+ Please do not install this package if you or your users are easily offended.

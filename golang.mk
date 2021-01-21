@@ -14,7 +14,7 @@ golang-setup: setup
 	mkdir -p $(BUILD_WORK)/golang/superbin
 	cp -a $(BUILD_WORK)/golang/misc/ios/clangwrap.sh $(BUILD_WORK)/golang/superbin/clang
 
-ifneq ($(ARCHES),arm64)
+ifneq ($(MEMO_ARCH),arm64)
 golang:
 	@echo "Unsupported target $(MEMO_TARGET)"
 else ifneq ($(UNAME),Darwin)

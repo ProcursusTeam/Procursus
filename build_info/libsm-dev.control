@@ -1,0 +1,18 @@
+Package: libsm-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBSM_V@
+Depends: libsm6 (= @DEB_LIBSM_V@), libice-dev, x11proto-dev, libuuid-dev
+Section: Development
+Priority: optional
+Multi-Arch: foreign
+Description: X11 Session Management library (development headers)
+ This package provides the main interface to the X11 Session Management
+ library, which allows for applications to both manage sessions, and make use
+ of session managers to save and restore their state for later use.
+ .
+ This package contains the development headers for the library found in libsm6.
+ Non-developers likely have little use for this package.
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libSM

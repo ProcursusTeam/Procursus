@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += git
-GIT_VERSION := 2.28.0
-DEB_GIT_V   ?= $(GIT_VERSION)-3
+GIT_VERSION := 2.29.2
+DEB_GIT_V   ?= $(GIT_VERSION)
 
 GIT_ARGS += uname_S=Darwin \
 	HOST_CPU=$(GNU_HOST_TRIPLE) \
@@ -14,7 +14,8 @@ GIT_ARGS += uname_S=Darwin \
 	NO_FINK=1 \
 	NO_APPLE_COMMON_CRYPTO=1 \
 	INSTALL_SYMLINKS=1 \
-	NO_INSTALL_HARDLINKS=1
+	NO_INSTALL_HARDLINKS=1 \
+	V=1
 
 git-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://mirrors.edge.kernel.org/pub/software/scm/git/git-$(GIT_VERSION).tar.xz
@@ -38,13 +39,13 @@ git: git-setup openssl curl pcre2 gettext libidn2
 		CURL_CONFIG=$(BUILD_BASE)/usr/bin/curl-config
 	$(SED) -i s/'errno == ENOEXEC)'/'errno == ENOEXEC || errno == EPERM) {'/ $(BUILD_WORK)/git/run-command.c
 	$(SED) -i '/execve(argv.argv\[0/,+1 d' $(BUILD_WORK)/git/run-command.c
-	$(SED) -i '/errno == ENOEXEC || errno == EPERM/a			struct argv_array out = ARGV_ARRAY_INIT; \
-			argv_array_push(&out, SHELL_PATH); \
-			argv_array_push(&out, "-c"); \
-			argv_array_push(&out, "\\"$$@\\""); \
-			argv_array_push(&out, SHELL_PATH); // unused $$0 \
-			argv_array_pushv(&out, cmd->argv); \
-			execve(SHELL_PATH, (char *const *) out.argv, \
+	$(SED) -i '/errno == ENOEXEC || errno == EPERM/a			struct strvec args = STRVEC_INIT; \
+			strvec_push(&args, SHELL_PATH); \
+			strvec_push(&args, "-c"); \
+			strvec_push(&args, "\\"$$@\\""); \
+			strvec_push(&args, SHELL_PATH); // unused $$0 \
+			strvec_pushv(&args, cmd->argv); \
+			execve(SHELL_PATH, (char *const *) args.v, \
  			       (char *const *) childenv); \
 		}' $(BUILD_WORK)/git/run-command.c
 	+$(MAKE) -C $(BUILD_WORK)/git all \

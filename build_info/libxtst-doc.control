@@ -1,0 +1,22 @@
+Package: libxtst-doc
+Version: @DEB_LIBXTST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: X_Window
+Priority: optional
+Depends: libxtst-dev (= @DEB_LIBXTST_V@)
+Description: X11 Record extension library (documentation)
+ libXtst provides an X Window System client interface to the Record
+ extension to the X protocol.
+ .
+ The Record extension allows X clients to synthesise input events, which
+ is useful for automated testing.
+ .
+ This package contains the API documentation for the X Record and XTEST
+ extension libraries.  Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at:
+ <URL:https://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libXtst

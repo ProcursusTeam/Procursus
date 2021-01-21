@@ -1,0 +1,18 @@
+Package: libmagickcore-7-headers
+Maintainer: @DEB_MAINTAINER@
+Architecture: all
+Version: @DEB_IMAGEMAGICK_V@
+Depends: imagemagick-7-common (= @DEB_IMAGEMAGICK_V@)
+Section: Development
+Priority: optional
+Description: low-level image manipulation library - header files
+ The MagickCore API is a low-level interface between the C programming language
+ and the ImageMagick image processing libraries and is recommended for
+ wizard-level programmers only. Unlike the MagickWand C API which uses only a
+ few opaque types and accessors, with MagickCore you almost exclusively access
+ the structure members directly.
+ .
+ This package includes the architecture independent header files
+ needed to compile programs using MagickCore.
+ .
+ This package is independent of channel depth.

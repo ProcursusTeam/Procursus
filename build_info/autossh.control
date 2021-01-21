@@ -1,0 +1,14 @@
+Package: autossh
+Version: @DEB_AUTOSSH_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Depends: openssh-client
+Enhances: openssh-client
+Description: Automatically restart SSH sessions and tunnels
+ autossh is a program to start an instance of ssh and monitor it, restarting it
+ as necessary should it die or stop passing traffic. The idea is from rstunnel
+ (Reliable SSH Tunnel), but implemented in C. Connection monitoring is done
+ using a loop of port forwardings. It backs off on the rate of connection
+ attempts when experiencing rapid failures such as connection refused.

@@ -67,7 +67,7 @@ diff -urN apt-2.1.11/CMakeLists.txt apt/CMakeLists.txt
 -  set(HAVE_SYSTEMD 1)
 -endif()
 -
--find_package(Seccomp)
+-find_package(SECCOMP)
 -if (SECCOMP_FOUND)
 -  set(HAVE_SECCOMP 1)
 -endif()
@@ -81,13 +81,13 @@ diff -urN apt-2.1.11/CMakeLists.txt apt/CMakeLists.txt
 +#  set(HAVE_SYSTEMD 1)
 +#endif()
 +
-+#find_package(Seccomp)
++#find_package(SECCOMP)
 +#if (SECCOMP_FOUND)
 +#  set(HAVE_SECCOMP 1)
 +#endif()
  
- find_package(Gcrypt REQUIRED)
- 
+ find_package(GCRYPT REQUIRED)
+ find_package(XXHASH REQUIRED)
 @@ -247,7 +247,7 @@
  add_subdirectory(dselect)
  add_subdirectory(ftparchive)
@@ -109,10 +109,10 @@ diff -urN apt-2.1.11/apt-pkg/CMakeLists.txt apt/apt-pkg/CMakeLists.txt
  file(GLOB_RECURSE headers "*.h")
  
  # Create a library using the C++ files
-@@ -63,6 +63,7 @@
-                              $<$<BOOL:${SYSTEMD_FOUND}>:${SYSTEMD_LIBRARIES}>
+@@ -50,6 +50,7 @@
                               ${ICONV_LIBRARIES}
                               $<$<BOOL:${GCRYPT_FOUND}>:${GCRYPT_LIBRARIES}>
+                              $<$<BOOL:${XXHASH_FOUND}>:${XXHASH_LIBRARIES}>
 +                             "-framework Foundation"
  )
  set_target_properties(apt-pkg PROPERTIES VERSION ${MAJOR}.${MINOR})
@@ -1438,7 +1438,7 @@ diff -urN apt-2.1.11/ftparchive/cachedb.cc apt/ftparchive/cachedb.cc
 diff -urN apt-2.1.11/methods/CMakeLists.txt apt/methods/CMakeLists.txt
 --- apt-2.1.11/methods/CMakeLists.txt	2020-10-21 05:53:18.000000000 -0400
 +++ apt/methods/CMakeLists.txt	2020-11-22 18:23:41.696439830 -0500
-@@ -2,33 +2,35 @@
+@@ -2,35 +2,37 @@
  include_directories($<$<BOOL:${SECCOMP_FOUND}>:${SECCOMP_INCLUDE_DIR}>)
  link_libraries(apt-pkg $<$<BOOL:${SECCOMP_FOUND}>:${SECCOMP_LIBRARIES}>)
  
@@ -1472,6 +1472,8 @@ diff -urN apt-2.1.11/methods/CMakeLists.txt apt/methods/CMakeLists.txt
 +#target_link_libraries(http ${GNUTLS_LIBRARIES} $<$<BOOL:${SYSTEMD_FOUND}>:${SYSTEMD_LIBRARIES}>)
 +target_link_libraries(https "-framework Foundation")
 +#target_link_libraries(ftp ${GNUTLS_LIBRARIES})
+
+ target_link_libraries(rred apt-private)
  
  # Install the library
 -install(TARGETS file copy store gpgv cdrom http ftp rred rsh mirror

@@ -1,0 +1,20 @@
+Package: caca-utils
+Version: @DEB_LIBCACA_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libcaca0 (= @DEB_LIBCACA_V@), libimlib2-1, libslang2, libncursesw6
+Section: Libraries
+Priority: optional
+Description: text mode graphics utilities
+ This package contains utilities and demonstration programs for libcaca, the
+ Colour AsCii Art library.
+ .
+ cacaview is a simple image viewer for the terminal. It opens most image
+ formats such as JPEG, PNG, GIF etc. and renders them on the terminal using
+ ASCII art. The user can zoom and scroll the image, set the dithering method
+ or enable anti-aliasing.
+ .
+ cacafire is a port of AALib's aafire and displays burning ASCII art flames.
+ .
+ cacademo is a tiny graphic program that renders animated ASCII metaballs,
+ matrix effects, colourful moiré circles and old school plasma effects.

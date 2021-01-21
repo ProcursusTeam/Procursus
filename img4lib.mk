@@ -5,27 +5,32 @@ endif
 SUBPROJECTS     += img4lib
 IMG4LIB_COMMIT  := be2e7dd93339f42d7143ae574a329938e97020b4
 IMG4LIB_VERSION := 1.0+git20201209.$(shell echo $(IMG4LIB_COMMIT) | cut -c -7)
-DEB_IMG4LIB_V   ?= $(IMG4LIB_VERSION)
+DEB_IMG4LIB_V   ?= $(IMG4LIB_VERSION)-1
 
 img4lib-setup: setup
 	-[ ! -e "$(BUILD_SOURCE)/img4lib-v$(IMG4LIB_COMMIT).tar.gz" ] \
 		&& wget -q -nc -O$(BUILD_SOURCE)/img4lib-v$(IMG4LIB_COMMIT).tar.gz \
 			https://github.com/xerub/img4lib/archive/$(IMG4LIB_COMMIT).tar.gz
 	$(call EXTRACT_TAR,img4lib-v$(IMG4LIB_COMMIT).tar.gz,img4lib-$(IMG4LIB_COMMIT),img4lib)
-
 	$(SED) -i 's/CFLAGS =/CFLAGS ?=/' $(BUILD_WORK)/img4lib/Makefile
 	$(SED) -i 's/LDFLAGS =/LDFLAGS ?=/' $(BUILD_WORK)/img4lib/Makefile
-
-	mkdir -p $(BUILD_STAGE)/img4lib/usr/{bin,include,lib}
+	$(SED) -i '/CFLAGS += -DUSE_LIBCOMPRESSION/d' $(BUILD_WORK)/img4lib/Makefile
+	$(SED) -i '/LDLIBS = -lcompression/d' $(BUILD_WORK)/img4lib/Makefile
+	$(SED) -i 's/CC =/CC ?=/' $(BUILD_WORK)/img4lib/Makefile
+	$(SED) -i 's/LD =/LD ?=/' $(BUILD_WORK)/img4lib/Makefile
+	$(SED) -i 's/AR =/AR ?=/' $(BUILD_WORK)/img4lib/Makefile
+	mkdir -p $(BUILD_STAGE)/img4lib/usr/{bin,include/{libvfs,libDER},lib}
 
 ifneq ($(wildcard $(BUILD_WORK)/img4lib/.build_complete),)
 img4lib:
 	@echo "Using previously built img4lib."
 else
 img4lib: img4lib-setup openssl lzfse
-	+$(MAKE) -C $(BUILD_WORK)/img4lib
+	+$(MAKE) -C $(BUILD_WORK)/img4lib \
+		LD=$(CC)
 	cp -a $(BUILD_WORK)/img4lib/img4 $(BUILD_STAGE)/img4lib/usr/bin
-	cp -a $(BUILD_WORK)/img4lib/libvfs/vfs.h $(BUILD_STAGE)/img4lib/usr/include
+	cp -a $(BUILD_WORK)/img4lib/libDER/*.h $(BUILD_STAGE)/img4lib/usr/include/libDER
+	cp -a $(BUILD_WORK)/img4lib/libvfs/*.h $(BUILD_STAGE)/img4lib/usr/include/libvfs
 	cp -a $(BUILD_WORK)/img4lib/libimg4.a $(BUILD_STAGE)/img4lib/usr/lib
 	touch $(BUILD_WORK)/img4lib/.build_complete
 endif

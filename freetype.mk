@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += freetype
-FREETYPE_VERSION := 2.10.3
-DEB_FREETYPE_V   ?= $(FREETYPE_VERSION)-1
+FREETYPE_VERSION := 2.10.4
+DEB_FREETYPE_V   ?= $(FREETYPE_VERSION)
 
 freetype-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://download.savannah.gnu.org/releases/freetype/freetype-$(FREETYPE_VERSION).tar.xz{,.sig}

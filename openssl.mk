@@ -7,7 +7,7 @@ STRAPPROJECTS   += openssl
 else
 SUBPROJECTS     += openssl
 endif
-OPENSSL_VERSION := 1.1.1h
+OPENSSL_VERSION := 1.1.1i
 DEB_OPENSSL_V   ?= $(OPENSSL_VERSION)
 
 ifneq (,$(findstring aarch64,$(GNU_HOST_TRIPLE)))

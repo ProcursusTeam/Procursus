@@ -1,0 +1,13 @@
+Package: libslang2
+Version: @DEB_SLANG2_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Description: S-Lang programming library - runtime version
+ S-Lang is a C programmer's library that includes routines for the rapid
+ development of sophisticated, user friendly, multi-platform applications.
+ .
+ This package contains only the shared library libslang.*.dylib.
+ It is only necessary for programs that use this library (such as jed 
+ and slrn). If you plan on doing development with S-Lang, you will
+ need the companion -dev package as well.

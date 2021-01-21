@@ -2,11 +2,11 @@ Package: python3
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_PYTHON3_V@
-Depends: python3.8
+Depends: python3.9
 Section: Scripting
 Priority: optional
 Description: Interpreted, interactive, object-oriented programming language.
  Installing pip from the command line can be done with the `sudo python -m ensurepip` command.
- After installing pip, place an SDK for your platform in /usr/share/SDKs. (e.g. /usr/share/iPhoneOS.sdk)
+ After installing pip, place an SDK for your platform in /usr/share/SDKs. (e.g. /usr/share/SDKs/iPhoneOS.sdk)
 Name: Python 3
 Tag: purpose::console, role::hacker
