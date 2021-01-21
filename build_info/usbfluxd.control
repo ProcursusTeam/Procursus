@@ -1,0 +1,9 @@
+Package: usbfluxd
+Version: @DEB_USBFLUXD_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: usbmuxd, libplist3 (>= 2.2.0)
+Section: Administration
+Priority: standard
+Description: Redirects the standard usbmuxd socket to allow connections to local and remote usbmuxd instances
+Tag: role::developer
