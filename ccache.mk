@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  	 += ccache
-CCACHE_VERSION := 3.7.12
+CCACHE_VERSION := 4.1
 DEB_CCACHE_V   ?= $(CCACHE_VERSION)
 
 ccache-setup: setup
