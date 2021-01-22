@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += libgeneral
-LIBGENERAL_VERSION := 32
+LIBGENERAL_VERSION := 49
 DEB_LIBGENERAL_V   ?= $(LIBGENERAL_VERSION)-1
 
 libgeneral-setup: setup
