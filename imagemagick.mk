@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS         += imagemagick
-IMAGEMAGICK_VERSION := 7.0.10-53
+IMAGEMAGICK_VERSION := 7.0.10-58
 DEB_IMAGEMAGICK_V   ?= $(shell echo $(IMAGEMAGICK_VERSION) | sed s/-/./)
 
 ###
@@ -28,12 +28,11 @@ imagemagick: imagemagick-setup openexr fontconfig freetype glib2.0 ghostscript l
 		--sysconfdir=/etc \
 		--disable-dependency-tracking \
 		--disable-silent-rules \
-		--disable-opencl \
 		--enable-shared \
 		--enable-static \
 		--with-jemalloc \
+		--disable-opencl \
 		--with-freetype=yes \
-		--with-modules \
 		--with-openjp2 \
 		--with-openexr \
 		--with-webp=yes \
