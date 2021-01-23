@@ -3,9 +3,9 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += img4lib
-IMG4LIB_COMMIT  := be2e7dd93339f42d7143ae574a329938e97020b4
-IMG4LIB_VERSION := 1.0+git20201209.$(shell echo $(IMG4LIB_COMMIT) | cut -c -7)
-DEB_IMG4LIB_V   ?= $(IMG4LIB_VERSION)-1
+IMG4LIB_COMMIT  := 1d8c1dd96a0e60e2070353771fff9adcfe3f3360
+IMG4LIB_VERSION := 1.0+git20210121.$(shell echo $(IMG4LIB_COMMIT) | cut -c -7)
+DEB_IMG4LIB_V   ?= $(IMG4LIB_VERSION)
 
 img4lib-setup: setup
 	-[ ! -e "$(BUILD_SOURCE)/img4lib-v$(IMG4LIB_COMMIT).tar.gz" ] \
