@@ -35,14 +35,14 @@ aptitude: aptitude-setup ncurses libboost xapian cwidget apt googletest sqlite3
 		CWIDGET_CFLAGS="-I$(BUILD_BASE)/usr/include/cwidget -I$(BUILD_BASE)/usr/lib/cwidget -I$(BUILD_BASE)/usr/include/sigc++-2.0 -I$(BUILD_BASE)/usr/lib/sigc++-2.0/include" \
 		CXXFLAGS="-std=gnu++17 $(CXXFLAGS) -D_XOPEN_SOURCE_EXTENDED" \
 		CFLAGS="$(CFLAGS) -D_XOPEN_SOURCE_EXTENDED" \
-		LIBS=" -lapt-pkg -lncursesw -lsigc-2.0 -lcwidget -lncursesw -lsigc-2.0 -lsqlite3 -lboost_iostreams.1.74.0 -lboost_system -lxapian -lpthread" \
+		LIBS=" -lapt-pkg -lncursesw -lsigc-2.0 -lcwidget -lncursesw -lsigc-2.0 -lsqlite3 -lboost_iostreams.1.75.0 -lboost_system -lxapian -lpthread" \
 		pkgdata_DATA="" \
 		DOCBOOK_TARGETS="docbook-man"
 	+$(MAKE) -C $(BUILD_WORK)/aptitude \
 		AR=$(AR) \
 		FILESYSTEM_LDFLAGS="" \
 		README="" \
-		LIBS=" -lapt-pkg -lncursesw -lsigc-2.0 -lcwidget -lncursesw -lsigc-2.0 -lsqlite3 -lboost_iostreams.1.74.0 -lboost_system -lxapian -lpthread" \
+		LIBS=" -lapt-pkg -lncursesw -lsigc-2.0 -lcwidget -lncursesw -lsigc-2.0 -lsqlite3 -lboost_iostreams.1.75.0 -lboost_system -lxapian -lpthread" \
 		DOCBOOK_TARGETS="docbook-man"
 	+$(MAKE) -C $(BUILD_WORK)/aptitude install \
 		DESTDIR=$(BUILD_STAGE)/aptitude \

@@ -3,9 +3,9 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += libboost
-LIBBOOST_FORMAT_V := 1_74_0
-LIBBOOST_VERSION  := 1.74.0
-DEB_LIBBOOST_V    ?= $(LIBBOOST_VERSION)-1
+LIBBOOST_FORMAT_V := 1_75_0
+LIBBOOST_VERSION  := 1.75.0
+DEB_LIBBOOST_V    ?= $(LIBBOOST_VERSION)
 
 libboost-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://dl.bintray.com/boostorg/release/$(LIBBOOST_VERSION)/source/boost_$(LIBBOOST_FORMAT_V).tar.bz2
