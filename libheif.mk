@@ -3,13 +3,13 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += libheif
-LIBHEIF_VERSION := 1.9.1
+LIBHEIF_VERSION := 1.10.0
 DEB_LIBHEIF_V   ?= $(LIBHEIF_VERSION)
 
 libheif-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/strukturag/libheif/releases/download/v$(LIBHEIF_VERSION)/libheif-$(LIBHEIF_VERSION).tar.gz
 	$(call EXTRACT_TAR,libheif-$(LIBHEIF_VERSION).tar.gz,libheif-$(LIBHEIF_VERSION),libheif)
-	$(call DO_PATCH,libheif,libheif,-p1)
+	$(call DO_PATCH,libheif,libheif,-p1)	
 
 ifneq ($(wildcard $(BUILD_WORK)/libheif/.build_complete),)
 libheif:
