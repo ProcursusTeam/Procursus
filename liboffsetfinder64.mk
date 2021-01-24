@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS               += liboffsetfinder64
-LIBOFFSETFINDER64_VERSION := 126
+LIBOFFSETFINDER64_VERSION := 127
 DEB_LIBOFFSETFINDER64_V   ?= $(LIBOFFSETFINDER64_VERSION)
 
 liboffsetfinder64-setup: setup
