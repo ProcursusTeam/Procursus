@@ -1,0 +1,11 @@
+Package: bender
+Version: @DEB_BENDER_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Homepage: https://github.com/aspenluxxxy/bender
+Depends: org.coolstar.libhooker (>=1.4.0), cy+cpu.arm64
+Description: bender is a CLI configuration utility written in Rust, for coolstar's libhooker iOS tweak loader, 
+ providing a terminal-based alternative to the SwiftUI-based libhooker-configurator - 
+ which, while convienent, is sometimes buggy or non-functional on older iOS versions.
