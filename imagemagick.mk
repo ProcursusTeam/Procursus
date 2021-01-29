@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS         += imagemagick
-IMAGEMAGICK_VERSION := 7.0.10-58
+IMAGEMAGICK_VERSION := 7.0.10-60
 DEB_IMAGEMAGICK_V   ?= $(shell echo $(IMAGEMAGICK_VERSION) | sed s/-/./)
 
 ###
