@@ -1,0 +1,9 @@
+Package: lsdtrip
+Version: @DEB_LSDTRIP_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: Jonathan Levin
+Section: Utilities
+Priority: optional
+Homepage: http://newosxbook.com/tools/lsdtrip.html
+Description: simple command line utility, which can be used to explore the lesser known reaches of LaunchServices.framework
