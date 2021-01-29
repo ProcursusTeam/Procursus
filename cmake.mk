@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += cmake
-CMAKE_VERSION := 3.19.3
+CMAKE_VERSION := 3.19.4
 DEB_CMAKE_V   ?= $(CMAKE_VERSION)
 
 cmake-setup: setup
