@@ -1,0 +1,14 @@
+#!/bin/sh -e
+
+case "$1" in
+    configure)
+        update-alternatives \
+            --install /usr/bin/lua lua-interpreter /usr/bin/lua5.2 120 \
+            --slave /usr/share/man/man1/lua.1.zst lua-manual \
+                /usr/share/man/man1/lua5.2.1.zst
+        update-alternatives \
+            --install /usr/bin/luac lua-compiler /usr/bin/luac5.2 120 \
+            --slave /usr/share/man/man1/luac.1.zst lua-compiler-manual \
+                /usr/share/man/man1/luac5.2.1.zst
+        ;;
+esac
