@@ -13,6 +13,7 @@ neovim-setup: setup
 	$(call EXTRACT_TAR,neovim-$(NEOVIM_VERSION).tar.gz,neovim-$(NEOVIM_VERSION),neovim)
 	$(call DO_PATCH,neovim,neovim,-p1)
 	mkdir -p $(BUILD_WORK)/neovim/build
+	@echo "If this fails, run \`eval \$$(luarocks path --lua-dir=[path-to-luadir])\` --bin)"
 
 ifneq ($(call HAS_COMMAND,nvim),1)
 neovim:
