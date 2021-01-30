@@ -27,7 +27,8 @@ libtermkey: libtermkey-setup unibilium
 	+$(MAKE) -C $(BUILD_WORK)/libtermkey \
 		PREFIX=/usr \
 		LIBTOOL="$(BUILD_WORK)/libtermkey/libtool/libtool" \
-		CC="$(CC) $(CFLAGS) -I$(BUILD_BASE)/usr/include/glib-2.0 -I$(BUILD_BASE)/usr/lib/glib-2.0/include"
+		CC="$(CC) $(CFLAGS)" \
+		DEMOS=""
 	+$(MAKE) -C $(BUILD_WORK)/libtermkey install PREFIX=/usr \
 		DESTDIR="$(BUILD_STAGE)/libtermkey"
 	+$(MAKE) -C $(BUILD_WORK)/libtermkey install PREFIX=/usr \
