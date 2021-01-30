@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += libarchive
-LIBARCHIVE_VERSION := 3.4.3
-DEB_LIBARCHIVE_V   ?= $(LIBARCHIVE_VERSION)-4
+LIBARCHIVE_VERSION := 3.5.1
+DEB_LIBARCHIVE_V   ?= $(LIBARCHIVE_VERSION)
 
 libarchive-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libarchive/libarchive/releases/download/v$(LIBARCHIVE_VERSION)/libarchive-$(LIBARCHIVE_VERSION).tar.xz
+	wget -q -nc -P $(BUILD_SOURCE) https://www.libarchive.org/downloads/libarchive-$(LIBARCHIVE_VERSION).tar.xz
 	$(call EXTRACT_TAR,libarchive-$(LIBARCHIVE_VERSION).tar.xz,libarchive-$(LIBARCHIVE_VERSION),libarchive)
 
 ifneq ($(wildcard $(BUILD_WORK)/libarchive/.build_complete),)
@@ -30,7 +30,6 @@ libarchive: libarchive-setup lz4 liblzo2 zstd xz nettle
 		DESTDIR="$(BUILD_STAGE)/libarchive"
 	+$(MAKE) -C $(BUILD_WORK)/libarchive install \
 		DESTDIR="$(BUILD_BASE)"
-	rm -f $(BUILD_STAGE)/libarchive/usr/lib/libarchive.dylib
 	touch $(BUILD_WORK)/libarchive/.build_complete
 endif
 
@@ -50,7 +49,7 @@ libarchive-package: libarchive-stage
 	
 	# libarchive.mk Prep libarchive-dev
 	cp -a $(BUILD_STAGE)/libarchive/usr/include $(BUILD_DIST)/libarchive-dev/usr
-	cp -a $(BUILD_STAGE)/libarchive/usr/lib/pkgconfig $(BUILD_DIST)/libarchive-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libarchive/usr/lib/{libarchive.dylib,pkgconfig} $(BUILD_DIST)/libarchive-dev/usr/lib
 	cp -a $(BUILD_STAGE)/libarchive/usr/share/man/man{3,5} $(BUILD_DIST)/libarchive-dev/usr/share/man
 	
 	# libarchive.mk Sign
