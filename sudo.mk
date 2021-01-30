@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += sudo
-SUDO_VERSION  := 1.9.4p1
+SUDO_VERSION  := 1.9.5p2
 DEB_SUDO_V    ?= $(SUDO_VERSION)
 
 sudo-setup: setup
