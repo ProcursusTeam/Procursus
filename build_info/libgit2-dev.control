@@ -2,7 +2,7 @@ Package: libgit2-dev
 Version: @DEB_LIBGIT2_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libgit2-1.0 (= @DEB_LIBGIT2_V@), libssl-dev (>= 1.1.0), libssh2-dev, libpcre
+Depends: libgit2-1.1 (= @DEB_LIBGIT2_V@), libssl-dev (>= 1.1.0), libssh2-dev, libpcre2-dev
 Section: Development
 Priority: optional
 Description: low-level Git library (development files)
