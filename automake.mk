@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += automake
-AUTOMAKE_VERSION  := 1.16.2
+AUTOMAKE_VERSION  := 1.16.3
 DEB_AUTOMAKE_V    ?= $(AUTOMAKE_VERSION)
 
 automake-setup: setup
