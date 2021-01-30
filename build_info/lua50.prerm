@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+
+if [ "$1" != "upgrade" ]; then
+	update-alternatives --remove lua-compiler /usr/bin/luac50
+	update-alternatives --remove lua-interpreter /usr/bin/lua50
+fi
+
