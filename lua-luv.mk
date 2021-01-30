@@ -47,13 +47,13 @@ lua-luv: lua-luv-setup libuv1 lua5.1 lua5.2 lua5.3
 	$(LN) -sf liblua5.$$ver-luv.$(LUA-LUV_VERSION).dylib $(BUILD_BASE)/usr/lib/liblua5.$$ver-luv.1.dylib; \
 	$(LN) -sf liblua5.$$ver-luv.$(LUA-LUV_VERSION).dylib $(BUILD_BASE)/usr/lib/liblua5.$$ver-luv.dylib; \
 	mkdir -p $(BUILD_BASE)/usr/lib/lua/5.$$ver/; \
-	$(LN) -sf ../../liblua5.$$ver-luv.$(LUA-LUV_VERSION).dylib $(BUILD_BASE)/usr/lib/lua/5.$$ver/luv.dylib; \
+	$(LN) -sf ../../liblua5.$$ver-luv.$(LUA-LUV_VERSION).dylib $(BUILD_BASE)/usr/lib/lua/5.$$ver/luv.so; \
 	mv $(BUILD_STAGE)/lua-luv/usr/lib/libluv.$(LUA-LUV_VERSION).dylib $(BUILD_STAGE)/lua-luv/usr/lib/liblua5.$$ver-luv.$(LUA-LUV_VERSION).dylib; \
 	rm -f $(BUILD_STAGE)/lua-luv/usr/lib/libluv.{1.,}dylib; \
 	$(LN) -sf liblua5.$$ver-luv.$(LUA-LUV_VERSION).dylib $(BUILD_STAGE)/lua-luv/usr/lib/liblua5.$$ver-luv.1.dylib; \
 	$(LN) -sf liblua5.$$ver-luv.$(LUA-LUV_VERSION).dylib $(BUILD_STAGE)/lua-luv/usr/lib/liblua5.$$ver-luv.dylib; \
 	mkdir -p $(BUILD_STAGE)/lua-luv/usr/lib/lua/5.$$ver/; \
-	$(LN) -sf ../../liblua5.$$ver-luv.$(LUA-LUV_VERSION).dylib $(BUILD_STAGE)/lua-luv/usr/lib/lua/5.$$ver/luv.dylib; \
+	$(LN) -sf ../../liblua5.$$ver-luv.$(LUA-LUV_VERSION).dylib $(BUILD_STAGE)/lua-luv/usr/lib/lua/5.$$ver/luv.so; \
 	$(I_N_T) -id /usr/lib/liblua5.$$ver-luv.1.dylib $(BUILD_STAGE)/lua-luv/usr/lib/liblua5.$$ver-luv.$(LUA-LUV_VERSION).dylib; \
 	$(I_N_T) -id /usr/lib/liblua5.$$ver-luv.1.dylib $(BUILD_BASE)/usr/lib/liblua5.$$ver-luv.$(LUA-LUV_VERSION).dylib; \
 	mv $(BUILD_STAGE)/lua-luv/usr/lib/pkgconfig/libluv.pc $(BUILD_STAGE)/lua-luv/usr/lib/pkgconfig/lua5.$$ver-luv.pc; \
