@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += sqlite3
-SQLITE3_VERSION  := 3.33.0
+SQLITE3_VERSION  := 3.34.1
 DEB_SQLITE3_V    ?= $(SQLITE3_VERSION)
 
 sqlite3-setup: setup
