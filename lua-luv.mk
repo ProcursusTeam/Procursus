@@ -70,7 +70,7 @@ lua-luv-package: lua-luv-stage
 	mkdir -p $(BUILD_DIST)/lua-luv{,-dev}/usr/lib
 	
 	# lua-luv.mk Prep lua-luv
-	cp -a $(BUILD_STAGE)/lua-luv/usr/lib/{liblua5.*-luv.1{,.36.0}.dylib,lua} $(BUILD_DIST)/lua-luv/usr/lib
+	cp -a $(BUILD_STAGE)/lua-luv/usr/lib/{liblua5.*-luv.*.dylib,lua} $(BUILD_DIST)/lua-luv/usr/lib
 	
 	# lua-luv.mk Prep lua-luv-dev
 	cp -a $(BUILD_STAGE)/lua-luv/usr/include $(BUILD_DIST)/lua-luv-dev/usr
