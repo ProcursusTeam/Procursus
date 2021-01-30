@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS     += findutils
-FINDUTILS_VERSION := 4.7.0
-DEB_FINDUTILS_V   ?= $(FINDUTILS_VERSION)-3
+FINDUTILS_VERSION := 4.8.0
+DEB_FINDUTILS_V   ?= $(FINDUTILS_VERSION)
 
 findutils-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/findutils/findutils-$(FINDUTILS_VERSION).tar.xz{,.sig}
