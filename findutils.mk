@@ -19,9 +19,13 @@ findutils: findutils-setup gettext
 	cd $(BUILD_WORK)/findutils && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
-		--localstatedir=/var \
+		--localstatedir=/var/cache/locate \
 		--disable-dependency-tracking \
-		--disable-debug
+		--disable-debug \
+		--without-selinux \
+		--with-packager=Procursus \
+		--enable-threads=posix \
+		CFLAGS="$(CFLAGS) -D__nonnull\(params\)="
 	+$(MAKE) -C $(BUILD_WORK)/findutils
 	+$(MAKE) -C $(BUILD_WORK)/findutils install \
 		DESTDIR=$(BUILD_STAGE)/findutils
