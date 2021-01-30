@@ -1,0 +1,15 @@
+Package: libsm6
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBSM_V@
+Depends: libice6, libuuid16
+Section: Libraries
+Priority: optional
+Multi-Arch: foreign
+Description: X11 Session Management library
+ This package provides the main interface to the X11 Session Management
+ library, which allows for applications to both manage sessions, and make use
+ of session managers to save and restore their state for later use.
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libSM

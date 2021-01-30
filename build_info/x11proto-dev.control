@@ -1,0 +1,14 @@
+Package: x11proto-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: all
+Version: @DEB_XORGPROTO_V@
+Section: Development
+Description: X11 extension protocols and auxiliary headers
+ This package provides development headers describing the wire protocol
+ for the X11 core and extension protocols, and also provides a number of
+ utility headers, used to abstract OS-specific functions.
+ .
+ More information about X.Org can be found at:
+ <URL:https://www.X.org>
+ .
+ This package is built from the X.org xorgproto module.

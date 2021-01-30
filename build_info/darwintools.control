@@ -2,7 +2,7 @@ Package: darwintools
 Version: @DEB_DARWINTOOLS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: apt (>= 2.0.2), system-cmds, uikittools (>= 2.0.0)
+Depends: system-cmds, uikittools (>= 2.0.0)
 Section: Administration
 Priority: required
 Description: sw_vers, firmware(.sh)

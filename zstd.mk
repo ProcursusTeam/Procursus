@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += zstd
-ZSTD_VERSION  := 1.4.5
-DEB_ZSTD_V    ?= $(ZSTD_VERSION)-2
+ZSTD_VERSION  := 1.4.7
+DEB_ZSTD_V    ?= $(ZSTD_VERSION)
 
 zstd-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/zstd-$(ZSTD_VERSION).tar.gz" ] && \
@@ -17,7 +17,7 @@ zstd:
 	@echo "Using previously built zstd."
 else
 zstd: zstd-setup lz4 xz
-	$(SED) -i s/'($$(shell uname), Darwin)'/'($$(shell test -n),)'/ $(BUILD_WORK)/zstd/lib/Makefile
+	$(SED) -i s/'UNAME := $$(shell uname)'/'UNAME := Darwin'/ $(BUILD_WORK)/zstd/lib/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/zstd install \
 		PREFIX=/usr \
 		DESTDIR=$(BUILD_STAGE)/zstd
@@ -42,7 +42,7 @@ zstd-package: zstd-stage
 	cp -a $(BUILD_STAGE)/zstd/usr/share $(BUILD_DIST)/zstd/usr
 	
 	# zstd.mk Prep libzstd1
-	cp -a $(BUILD_STAGE)/zstd/usr/lib/libzstd.{1,1.4.5}.dylib $(BUILD_DIST)/libzstd1/usr/lib
+	cp -a $(BUILD_STAGE)/zstd/usr/lib/libzstd.1*.dylib $(BUILD_DIST)/libzstd1/usr/lib
 	
 	# zstd.mk Prep libzstd-dev
 	cp -a $(BUILD_STAGE)/zstd/usr/lib/{pkgconfig,libzstd.{a,dylib}} $(BUILD_DIST)/libzstd-dev/usr/lib

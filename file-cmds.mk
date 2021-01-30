@@ -37,7 +37,7 @@ else
 file-cmds: file-cmds-setup
 	cd $(BUILD_WORK)/file-cmds ; \
 	for bin in chflags compress ipcrm ipcs pax; do \
-	    	$(CC) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -o $(BUILD_STAGE)/file-cmds/usr/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -D__POSIX_C_SOURCE; \
+	    	$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -o $(BUILD_STAGE)/file-cmds/usr/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -D__POSIX_C_SOURCE; \
 	done
 	touch $(BUILD_WORK)/file-cmds/.build_complete
 endif

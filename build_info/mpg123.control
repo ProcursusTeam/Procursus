@@ -1,0 +1,11 @@
+Package: mpg123
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_MPG123_V@
+Depends: libmpg123-0 (= @DEB_MPG123_V@), libout123-0 (= @DEB_MPG123_V@), libsyn123-0 (= @DEB_MPG123_V@)
+Section: Multimedia
+Description: MPEG layer 1/2/3 audio player
+ mpg123 is a real time MPEG 1.0/2.0/2.5 audio player/decoder for layers
+ 1, 2 and 3 (MPEG 1.0 layer 3 also known as MP3).
+ .
+ This package contains output plugin for Apple's CoreAudio.

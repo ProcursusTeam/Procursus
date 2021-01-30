@@ -1,0 +1,21 @@
+Package: libx11-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBX11_V@
+Depends: libx11-6 (= @DEB_LIBX11_V@), libxcb1-dev, libxdmcp-dev, libxau-dev, x11proto-dev, xtrans-dev
+Section: Development
+Priority: optional
+Multi-Arch: foreign
+Description: X11 client-side library (development headers)
+ This package provides a client interface to the X Window System, otherwise
+ known as 'Xlib'.  It provides a complete API for the basic functions of the
+ window system.
+ .
+ This package contains the development headers for the library found in 
+ libx11-6. Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at:
+ <URL:https://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libX11

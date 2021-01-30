@@ -1,0 +1,15 @@
+Package: ruby
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_RUBY_V@
+Depends: ruby3.0
+Section: Scripting
+Priority: optional
+Description: Interpreter of object-oriented scripting language Ruby (default version)
+ Ruby is the interpreted scripting language for quick and easy
+ object-oriented programming.  It has many features to process text
+ files and to do system management tasks (as in perl).  It is simple,
+ straight-forward, and extensible.
+ .
+ This package is a dependency package, which depends on Procursus's default Ruby
+ version (currently v@DEB_RUBY_V@).

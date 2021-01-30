@@ -2,7 +2,7 @@ Package: libdpkg-dev
 Version: @DEB_DPKG_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: liblzma-dev
+Depends: liblzma-dev, libzstd-dev
 Section: Packaging
 Priority: optional
 Homepage: http://wiki.debian.org/Teams/Dpkg

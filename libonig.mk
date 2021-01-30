@@ -2,9 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += libonig
-LIBONIG_VERSION   := 6.9.4
-DEB_LIBONIG_V     ?= $(LIBONIG_VERSION)
+SUBPROJECTS     += libonig
+LIBONIG_VERSION := 6.9.4
+DEB_LIBONIG_V   ?= $(LIBONIG_VERSION)
 
 libonig-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/kkos/oniguruma/releases/download/v$(LIBONIG_VERSION)/onig-$(LIBONIG_VERSION).tar.gz
@@ -20,6 +20,8 @@ libonig: libonig-setup
 		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/libonig install \
 		DESTDIR=$(BUILD_STAGE)/libonig
+	+$(MAKE) -C $(BUILD_WORK)/libonig install \
+		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libonig/.build_complete
 endif
 

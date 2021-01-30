@@ -1,0 +1,22 @@
+Package: libxtst-dev
+Version: @DEB_LIBXTST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Depends: libxtst6 (= @DEB_LIBXTST_V@), libx11-dev, libxext-dev, libxi-dev
+Description: X11 Record extension library (development headers)
+ libXtst provides an X Window System client interface to the Record
+ extension to the X protocol.
+ .
+ The Record extension allows X clients to synthesise input events, which
+ is useful for automated testing.
+ .
+ This package contains the development headers for the library found in
+ libxtst6.  Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at:
+ <URL:https://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libXtst

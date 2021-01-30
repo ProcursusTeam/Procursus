@@ -21,86 +21,84 @@ MEMO_CFVER           ?= 1600
 CFVER_WHOLE          := $(shell echo $(MEMO_CFVER) | cut -d. -f1)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1100 ] && [ "$(CFVER_WHOLE)" -lt 1200 ] && echo 1),1)
-IPHONE_MIN           := 8.0
-TVOS_MIN             := XXX
-WATCH_MIN            := 1.0
-override MEMO_CFVER  := 1100
+IPHONEOS_DEPLOYMENT_TARGET  := 8.0
+APPLETVOS_DEPLOYMENT_TARGET := XXX
+WATCHOS_DEPLOYMENT_TARGET   := 1.0
+MACOSX_DEPLOYMENT_TARGET    := 10.10
+override MEMO_CFVER         := 1100
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1200 ] && [ "$(CFVER_WHOLE)" -lt 1300 ] && echo 1),1)
-IPHONE_MIN           := 9.0
-TVOS_MIN             := 9.0
-WATCH_MIN            := 2.0
-override MEMO_CFVER  := 1200
+IPHONEOS_DEPLOYMENT_TARGET  := 9.0
+APPLETVOS_DEPLOYMENT_TARGET := 9.0
+WATCHOS_DEPLOYMENT_TARGET   := 2.0
+MACOSX_DEPLOYMENT_TARGET    := 10.11
+override MEMO_CFVER         := 1200
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1300 ] && [ "$(CFVER_WHOLE)" -lt 1400 ] && echo 1),1)
-IPHONE_MIN           := 10.0
-TVOS_MIN             := 10.0
-WATCH_MIN            := 3.0
-override MEMO_CFVER  := 1300
+IPHONEOS_DEPLOYMENT_TARGET  := 10.0
+APPLETVOS_DEPLOYMENT_TARGET := 10.0
+WATCHOS_DEPLOYMENT_TARGET   := 3.0
+MACOSX_DEPLOYMENT_TARGET    := 10.12
+override MEMO_CFVER         := 1300
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1400 ] && [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
-IPHONE_MIN           := 11.0
-TVOS_MIN             := 11.0
-WATCH_MIN            := 4.0
-override MEMO_CFVER  := 1400
+IPHONEOS_DEPLOYMENT_TARGET  := 11.0
+APPLETVOS_DEPLOYMENT_TARGET := 11.0
+WATCHOS_DEPLOYMENT_TARGET   := 4.0
+MACOSX_DEPLOYMENT_TARGET    := 10.13
+override MEMO_CFVER         := 1400
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1500 ] && [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
-IPHONE_MIN           := 12.0
-TVOS_MIN             := 12.0
-WATCH_MIN            := 5.0
-override MEMO_CFVER  := 1500
+IPHONEOS_DEPLOYMENT_TARGET  := 12.0
+APPLETVOS_DEPLOYMENT_TARGET := 12.0
+WATCHOS_DEPLOYMENT_TARGET   := 5.0
+MACOSX_DEPLOYMENT_TARGET    := 10.14
+override MEMO_CFVER         := 1500
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
-IPHONE_MIN           := 13.0
-TVOS_MIN             := 13.0
-WATCH_MIN            := 6.0
-override MEMO_CFVER  := 1600
+IPHONEOS_DEPLOYMENT_TARGET  := 13.0
+APPLETVOS_DEPLOYMENT_TARGET := 13.0
+WATCHOS_DEPLOYMENT_TARGET   := 6.0
+MACOSX_DEPLOYMENT_TARGET    := 10.15
+override MEMO_CFVER         := 1600
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1700 ] && [ "$(CFVER_WHOLE)" -lt 1800 ] && echo 1),1)
+IPHONEOS_DEPLOYMENT_TARGET  := 14.0
+APPLETVOS_DEPLOYMENT_TARGET := 14.0
+WATCHOS_DEPLOYMENT_TARGET   := 7.0
+MACOSX_DEPLOYMENT_TARGET    := 11.0
+override MEMO_CFVER         := 1700
 else
 $(error Unsupported CoreFoundation version)
 endif
 
-ifeq ($(MEMO_TARGET),iphoneos-arm)
-$(warning Building for iOS)
-ARCHES               := armv7
-PLATFORM             := iphoneos
-DEB_ARCH             := iphoneos-arm
-GNU_HOST_TRIPLE      := armv7-apple-darwin
-PLATFORM_VERSION_MIN := -miphoneos-version-min=$(IPHONE_MIN)
-RUST_TARGET          := armv7-apple-ios
+export MACOSX_DEPLOYMENT_TARGET
 
-else ifeq ($(MEMO_TARGET),iphoneos-arm64)
+ifeq ($(MEMO_TARGET),iphoneos-arm64)
 $(warning Building for iOS)
-ARCHES               := arm64
+MEMO_ARCH                 := arm64
 PLATFORM             := iphoneos
 DEB_ARCH             := iphoneos-arm
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -miphoneos-version-min=$(IPHONE_MIN)
+PLATFORM_VERSION_MIN := -miphoneos-version-min=$(IPHONEOS_DEPLOYMENT_TARGET)
 RUST_TARGET          := aarch64-apple-ios
+export IPHONEOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),appletvos-arm64)
 $(warning Building for tvOS)
-ARCHES               := arm64
+MEMO_ARCH                 := arm64
 PLATFORM             := appletvos
 DEB_ARCH             := appletvos-arm64
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -mappletvos-version-min=$(TVOS_MIN)
-
-else ifeq ($(MEMO_TARGET),watchos-arm)
-$(warning Building for WatchOS)
-ARCHES               := armv7k
-PLATFORM             := watchos
-DEB_ARCH             := watchos-arm
-GNU_HOST_TRIPLE      := armv7k-apple-darwin
-PLATFORM_VERSION_MIN := -mwatchos-version-min=$(WATCH_MIN)
+PLATFORM_VERSION_MIN := -mappletvos-version-min=$(APPLETVOS_DEPLOYMENT_TARGET)
+export APPLETVOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),watchos-arm64)
 $(warning Building for WatchOS)
-ARCHES               := arm64_32
+MEMO_ARCH                 := arm64_32
 PLATFORM             := watchos
 DEB_ARCH             := watchos-arm
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -mwatchos-version-min=$(WATCH_MIN)
+PLATFORM_VERSION_MIN := -mwatchos-version-min=$(WATCHOS_DEPLOYMENT_TARGET)
+export WATCHOS_DEPLOYMENT_TARGET
 
 else
 $(error Platform not supported)
 endif
-
-ARCH := $(shell echo $(ARCHES) | awk -F' ' '{ for(i=1;i<=NF;i++) print "-arch " $$i }' ORS=" ")
 
 ifeq ($(UNAME),Linux)
 $(warning Building on Linux)
@@ -111,6 +109,7 @@ CC       := $(GNU_HOST_TRIPLE)-clang
 CXX      := $(GNU_HOST_TRIPLE)-clang++
 CPP      := $(GNU_HOST_TRIPLE)-clang -E
 AR       := $(GNU_HOST_TRIPLE)-ar
+LD       := $(GNU_HOST_TRIPLE)-ld
 RANLIB   := $(GNU_HOST_TRIPLE)-ranlib
 STRIP    := $(GNU_HOST_TRIPLE)-strip
 I_N_T    := $(GNU_HOST_TRIPLE)-install_name_tool
@@ -119,23 +118,28 @@ LIPO     := $(GNU_HOST_TRIPLE)-lipo
 OTOOL    := $(GNU_HOST_TRIPLE)-otool
 EXTRA    := INSTALL="/usr/bin/install -c --strip-program=$(STRIP)"
 LIBTOOL  := $(GNU_HOST_TRIPLE)-libtool
-export CC CXX AR
 
 else ifeq ($(UNAME),Darwin)
 ifeq ($(filter $(shell uname -m | cut -c -4), iPad iPho),)
 $(warning Building on MacOS)
 TARGET_SYSROOT  ?= $(shell xcrun --sdk $(PLATFORM) --show-sdk-path)
 MACOSX_SYSROOT  ?= $(shell xcrun --show-sdk-path)
+CC              := cc
+CXX             := c++
 CPP             := cc -E
 
 else
 $(warning Building on iOS)
 TARGET_SYSROOT  ?= /usr/share/SDKs/iPhoneOS.sdk
 MACOSX_SYSROOT  ?= /usr/share/SDKs/MacOSX.sdk
+CC              := clang
+CXX             := clang++
 CPP             := clang -E
 
 endif
 PATH            := /usr/bin:$(PATH)
+AR              := ar
+LD              := ld
 RANLIB          := ranlib
 STRIP           := strip
 NM              := nm
@@ -172,13 +176,13 @@ BUILD_STRAP    := $(BUILD_ROOT)/build_strap/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Extra scripts for the buildsystem
 BUILD_TOOLS    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_tools
 
-CFLAGS              := -O2 $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include -F$(BUILD_BASE)/System/Library/Frameworks
+CFLAGS              := -O2 -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include -F$(BUILD_BASE)/System/Library/Frameworks -F$(BUILD_BASE)/Library/Frameworks
 CXXFLAGS            := $(CFLAGS)
-CPPFLAGS            := -O2 -arch $(shell echo $(ARCHES) | cut -f1 -d' ') $(PLATFORM_VERSION_MIN) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include -Wno-error-implicit-function-declaration
-LDFLAGS             := -O2 $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib -F$(BUILD_BASE)/System/Library/Frameworks
-PKG_CONFIG_PATH     := $(BUILD_BASE)/usr/lib/pkgconfig:$(BUILD_BASE)/usr/local/lib/pkgconfig
+CPPFLAGS            := -O2 -arch $(MEMO_ARCH) $(PLATFORM_VERSION_MIN) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_BASE)/usr/include -isystem $(BUILD_BASE)/usr/local/include -Wno-error-implicit-function-declaration
+LDFLAGS             := -O2 -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)/usr/lib -L$(BUILD_BASE)/usr/local/lib -F$(BUILD_BASE)/System/Library/Frameworks -F$(BUILD_BASE)/Library/Frameworks
+PKG_CONFIG_PATH     := $(BUILD_BASE)/usr/lib/pkgconfig:$(BUILD_BASE)/usr/local/lib/pkgconfig:$(BUILD_BASE)/usr/share/pkgconfig:$(BUILD_BASE)/usr/local/share/pkgconfig
 
-export PLATFORM ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE CPP RANLIB STRIP NM LIPO OTOOL I_N_T EXTRA SED
+export PLATFORM MEMO_ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T EXTRA SED
 export BUILD_ROOT BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP BUILD_TOOLS
 export DEB_ARCH DEB_ORIGIN DEB_MAINTAINER
 export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS PKG_CONFIG_PATH
@@ -218,7 +222,15 @@ DO_PATCH    = -cd $(BUILD_PATCH)/$(1); \
 SIGN =  find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \; &> /dev/null; \
 	find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
 
-PACK = -find $(BUILD_DIST)/$(1) -name '*.la' -type f -delete; \
+###
+#
+# TODO: Please cleanup the PACK function, it's so horrible.
+#
+###
+
+PACK = -if [ -z $(4) ]; then \
+		find $(BUILD_DIST)/$(1) -name '*.la' -type f -delete; \
+	fi; \
 	rm -rf $(BUILD_DIST)/$(1)/usr/share/{info,doc}; \
 	find $(BUILD_DIST)/$(1)/usr/share/man -type f -exec zstd -19 --rm '{}' \; 2> /dev/null; \
 	if [ -z $(3) ]; then \
@@ -404,10 +416,11 @@ ifneq ($(call HAS_COMMAND,zstd),1)
 $(error Install zstd)
 endif
 
+DPKG_TYPE ?= xz
 ifeq ($(call HAS_COMMAND,dpkg-deb),1)
-DPKG_DEB := dpkg-deb -z9
+DPKG_DEB := dpkg-deb -Z$(DPKG_TYPE) 
 else ifeq ($(call HAS_COMMAND,dm.pl),1)
-DPKG_DEB := dm.pl -Zlzma -z9
+DPKG_DEB := dm.pl -Z$(DPKG_TYPE) 
 else
 $(error Install dpkg-deb)
 endif
@@ -493,7 +506,7 @@ bootstrap:: $(STRAPPROJECTS:%=%-package)
 	touch $(BUILD_STAGE)/.fakeroot_bootstrap
 	mkdir -p $(BUILD_STRAP)/strap/Library/dpkg/info
 	touch $(BUILD_STRAP)/strap/Library/dpkg/status
-	cd $(BUILD_STRAP) && rm -f !(apt_*|base_*|bash_*|ca-certificates_*|coreutils_*|darwintools_*|debianutils_*|diffutils_*|diskdev-cmds_*|dpkg_*|essential_*|findutils_*|firmware-sbin_*|gpgv_*|grep_*|launchctl_*|libapt-pkg6.0_*|libcrypt2_*|libgcrypt20_*|libgpg-error0_*|libintl8_*|liblz4-1_*|liblzma5_*|libncursesw6_*|libpcre1_*|libreadline8_*|libssl1.1_*|libzstd1_*|ncurses-bin_*|ncurses-term_*|openssh_*|openssh-client_*|openssh-server_*|openssh-sftp-server_*|procursus-keyring_*|profile.d_*|sed_*|shell-cmds_*|snaputil_*|sudo_*|system-cmds_*|tar_*|uikittools_*|zsh_*).deb
+	cd $(BUILD_STRAP) && rm -f !(apt_*|base_*|bash_*|ca-certificates_*|coreutils_*|darwintools_*|debianutils_*|diffutils_*|diskdev-cmds_*|dpkg_*|essential_*|findutils_*|firmware-sbin_*|gpgv_*|grep_*|launchctl_*|libapt-pkg6.0_*|libcrypt2_*|libgcrypt20_*|libgpg-error0_*|libintl8_*|liblz4-1_*|liblzma5_*|libncursesw6_*|libpcre1_*|libreadline8_*|libssl1.1_*|libxxhash0_*|libzstd1_*|ncurses-bin_*|ncurses-term_*|openssh_*|openssh-client_*|openssh-server_*|openssh-sftp-server_*|procursus-keyring_*|profile.d_*|sed_*|shell-cmds_*|snaputil_*|sudo_*|system-cmds_*|tar_*|uikittools_*|zsh_*).deb
 	-for DEB in $(BUILD_STRAP)/*.deb; do \
 		PKGNAME=$$(basename $$DEB | cut -f1 -d"_"); \
 		dpkg-deb -R $$DEB $(BUILD_STRAP)/strap; \
@@ -554,6 +567,7 @@ bootstrap-device: bootstrap
 %-stage: %
 	rm -f $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev)
 	touch $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev)
+	mkdir -p $(BUILD_DIST)
 
 REPROJ=$(shell echo $@ | cut -f2- -d"-")
 REPROJ2=$(shell echo $(REPROJ) | $(SED) 's/-package//')
@@ -561,16 +575,8 @@ rebuild-%:
 	@echo Rebuild $(REPROJ2)
 	-if [ $(REPROJ) = "all" ] || [ $(REPROJ) = "package" ]; then \
 		rm -rf $(BUILD_WORK) $(BUILD_STAGE); \
-		git submodule foreach --recursive git clean -xfd; \
-		git submodule foreach --recursive git reset --hard; \
-		rm -f darwintools/.build_complete; \
-		$(MAKE) -C darwintools clean; \
 	fi
-	-if [ -d $(BUILD_WORK)/$(REPROJ2) ]; then \
-		rm -rf {$(BUILD_WORK),$(BUILD_STAGE)}/$(REPROJ2); \
-	elif [ -d $(REPROJ2) ]; then \
-		cd $(REPROJ2) && git clean -xfd && git reset; \
-	fi
+	rm -rf {$(BUILD_WORK),$(BUILD_STAGE)}/$(REPROJ2)
 	rm -rf $(BUILD_WORK)/$(REPROJ2)*patches
 	rm -rf $(BUILD_STAGE)/$(REPROJ2)
 	+$(MAKE) $(REPROJ)
@@ -579,10 +585,8 @@ rebuild-%:
 
 setup:
 	mkdir -p \
-		$(BUILD_BASE) $(BUILD_BASE)/{System/Library/Frameworks,usr/{include/{bsm,os,sys,IOKit,libkern,mach/machine},lib}} \
-		$(BUILD_SOURCE) $(BUILD_WORK) $(BUILD_STAGE) $(BUILD_DIST) $(BUILD_STRAP)
-
-	git submodule update --init --recursive
+		$(BUILD_BASE) $(BUILD_BASE)/{{,System}/Library/Frameworks,usr/{include/{bsm,objc,os,sys,IOKit,libkern,mach/machine},lib,local/lib}} \
+		$(BUILD_SOURCE) $(BUILD_WORK) $(BUILD_STAGE) $(BUILD_STRAP)
 
 	wget -q -nc -P $(BUILD_BASE)/usr/include \
 		https://opensource.apple.com/source/xnu/xnu-6153.61.1/libsyscall/wrappers/spawn/spawn.h
@@ -595,12 +599,14 @@ setup:
 
 	@# Copy headers from MacOSX.sdk
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{arpa,net,xpc} $(BUILD_BASE)/usr/include
+	$(CP) -af $(MACOSX_SYSROOT)/usr/include/objc/objc-runtime.h $(BUILD_BASE)/usr/include/objc
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/libkern/OSTypes.h $(BUILD_BASE)/usr/include/libkern
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,proc*,ptrace,kern*,random,vnode}.h $(BUILD_BASE)/usr/include/sys
 	$(CP) -af $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_BASE)/usr/include/IOKit
-	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{ar,launch,libproc,tzfile}.h $(BUILD_BASE)/usr/include
+	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{ar,launch,libcharset,localcharset,libproc,tzfile}.h $(BUILD_BASE)/usr/include
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/mach/{*.defs,{mach_vm,shared_region}.h} $(BUILD_BASE)/usr/include/mach
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/mach/machine/*.defs $(BUILD_BASE)/usr/include/mach/machine
+	$(CP) -af $(TARGET_SYSROOT)/usr/include/mach/arm $(BUILD_BASE)/usr/include/mach
 	$(CP) -af $(BUILD_INFO)/availability.h $(BUILD_BASE)/usr/include/os
 	-$(CP) -af $(BUILD_INFO)/IOKit.framework.$(PLATFORM) $(BUILD_BASE)/System/Library/Frameworks/IOKit.framework
 
@@ -612,17 +618,13 @@ setup:
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/mach/mach_host.h > $(BUILD_BASE)/usr/include/mach/mach_host.h
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/ucontext.h > $(BUILD_BASE)/usr/include/ucontext.h
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/signal.h > $(BUILD_BASE)/usr/include/signal.h
+	$(SED) -E /'__API_UNAVAILABLE'/d < $(TARGET_SYSROOT)/usr/include/pthread.h > $(BUILD_BASE)/usr/include/pthread.h
 
 	@echo Makeflags: $(MAKEFLAGS)
 	@echo Path: $(PATH)
 
 clean::
 	rm -rf $(BUILD_WORK) $(BUILD_BASE) $(BUILD_STAGE)
-	@# When using 'make clean' in submodules, there is still an issue with the subproject changing when committing. This fixes that.
-	git submodule foreach --recursive git clean -xfd
-	git submodule foreach --recursive git reset --hard
-	rm -f darwintools/.build_complete
-	-$(MAKE) -C darwintools clean
 
 extreme-clean:: clean
 	git clean -xfd && git reset

@@ -16,7 +16,7 @@ pcre:
 	@echo "Using previously built pcre."
 else
 pcre: pcre-setup
-	cd $(BUILD_WORK)/pcre && ./configure -C \
+	cd $(BUILD_WORK)/pcre && unset MACOSX_DEPLOYMENT_TARGET && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-dependency-tracking \

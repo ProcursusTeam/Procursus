@@ -1,0 +1,27 @@
+Package: libswscale5
+Version: @DEB_FFMPEG_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: standard
+Description: FFmpeg library for image scaling and various conversions - runtime files
+ FFmpeg is the leading multimedia framework, able to decode, encode, transcode,
+ mux, demux, stream, filter and play pretty much anything that humans and
+ machines have created. It supports the most obscure ancient formats up to the
+ cutting edge.
+ .
+ This library performs highly optimized image scaling and colorspace and pixel
+ format conversion operations.
+ Specifically, this library performs the following conversions:
+  * Rescaling is the process of changing the video size. Several rescaling
+    options and algorithms are available. This is usually a lossy process.
+  * Pixel format conversion is the process of converting the image format and
+    colorspace of the image, for example from planar YUV420P to RGB24 packed.
+    It also handles packing conversion, that is converts from packed layout
+    (all pixels belonging to distinct planes interleaved in the same buffer),
+    to planar layout (all samples belonging to the same plane stored in a
+    dedicated buffer or "plane"). This is usually a lossy process in case the
+    source and destination colorspaces differ.
+ .
+ This package contains the runtime files.
+Depends: libavutil56 (= @DEB_FFMPEG_V@)

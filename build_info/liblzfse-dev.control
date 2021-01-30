@@ -1,0 +1,7 @@
+Package: liblzfse-dev
+Version: @DEB_LZFSE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Description: LZFSE compression library and command line tool - development files

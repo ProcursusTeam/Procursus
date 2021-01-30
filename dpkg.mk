@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS  += dpkg
 DPKG_VERSION   := 1.20.5
-DEB_DPKG_V     ?= $(DPKG_VERSION)-3
+DEB_DPKG_V     ?= $(DPKG_VERSION)-4
 
 dpkg-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_$(DPKG_VERSION).tar.xz
@@ -48,25 +48,29 @@ dpkg-package: dpkg-stage
 	# dpkg.mk Package Structure
 	rm -rf $(BUILD_DIST)/dpkg{,-dev} $(BUILD_DIST)/libdpkg-perl
 	mkdir -p $(BUILD_DIST)/dpkg{,-dev}/usr/{bin,share/dpkg} \
-		$(BUILD_DIST)/libdpkg-perl/usr/share/locale/{ca,de,es,fr,pl,ru,sv}/LC_MESSAGES \
+		$(BUILD_DIST)/libdpkg-perl/usr/share/man \
 		$(BUILD_DIST)/libdpkg-dev/usr
 	
-	# dpkg.mk Prep DPKG
+	# dpkg.mk Prep dpkg
 	cp -a $(BUILD_STAGE)/dpkg/{etc,Library,var} $(BUILD_DIST)/dpkg
 	cp -a $(BUILD_STAGE)/dpkg/usr/bin/{dpkg{,-deb,-divert,-maintscript-helper,-query,-realpath,-split,-statoverride,-trigger},update-alternatives} $(BUILD_DIST)/dpkg/usr/bin
 	cp -a $(BUILD_STAGE)/dpkg/usr/share/{man,polkit-1,locale} $(BUILD_DIST)/dpkg/usr/share
-	rm -f $(BUILD_DIST)/dpkg/usr/share/locale/*/LC_MESSAGES/dpkg-dev.mo
+	rm -f $(BUILD_DIST)/dpkg/usr/share/man/{,??}/man1/!(dpkg|dpkg-deb|dpkg-divert|dpkg-maintscript-helper|dpkg-query|dpkg-realpath|dpkg-split|dpkg-statoverride|dpkg-trigger|update-alternatives).1
+	rm -rf $(BUILD_DIST)/dpkg/usr/share/man/{,??}/man{2..8}
+	rm -f $(BUILD_DIST)/dpkg/usr/share/locale/*/LC_MESSAGES/!(dpkg.mo)
 	cp -a $(BUILD_STAGE)/dpkg/usr/share/dpkg/{{abi,cpu,os,tuple}table,sh} $(BUILD_DIST)/dpkg/usr/share/dpkg
 	
-	# dpkg.mk Prep DPKG-Dev
+	# dpkg.mk Prep dpkg-dev
 	cp -a $(BUILD_STAGE)/dpkg/usr/bin/dpkg-{architecture,buildflags,buildpackage,checkbuilddeps,distaddfile,genbuildinfo,genchanges,gencontrol,gensymbols,mergechangelogs,name,parsechangelog,scanpackages,scansources,shlibdeps,source,vendor} $(BUILD_DIST)/dpkg-dev/usr/bin
 	cp -a $(BUILD_STAGE)/dpkg/usr/share/dpkg/*.mk $(BUILD_DIST)/dpkg-dev/usr/share/dpkg
+	cp -a $(BUILD_STAGE)/dpkg/usr/share/man $(BUILD_DIST)/dpkg-dev/usr/share
+	rm -f $(BUILD_DIST)/dpkg-dev/usr/share/man/{,??}/man1/!(dpkg-architecture|dpkg-buildflags|dpkg-buildpacke|dpkg-checkbuilddeps|dpkg-distaddfile|dpkg-genbuildinfo|dpkg-genchanges|dpkg-gencontrol|dpkg-gensymbols|dpkg-mergechangelogs|dpkg-name|dpkg-parsechangelog|dpkg-scanpackages|dpkg-scansources|dpkg-shlibdeps|dpkg-source|dpkg-vendor).1
+	rm -rf $(BUILD_DIST)/dpkg-dev/usr/share/man/{,??}/man{3,8}
 	
 	# dpkg.mk Prep libdpkg-perl
-	cp -a $(BUILD_STAGE)/dpkg/usr/share/perl5 $(BUILD_DIST)/libdpkg-perl/usr/share
-	for locale in ca de es fr pl ru sv; do \
-		cp -a $(BUILD_STAGE)/dpkg/usr/share/locale/$$locale/LC_MESSAGES/dpkg-dev.mo $(BUILD_DIST)/libdpkg-perl/usr/share/locale/$$locale/LC_MESSAGES; \
-	done
+	cp -a $(BUILD_STAGE)/dpkg/usr/share/{locale,perl5} $(BUILD_DIST)/libdpkg-perl/usr/share
+	rm -f $(BUILD_DIST)/libdpkg-perl/usr/share/locale/*/LC_MESSAGES/!(dpkg-dev.mo)
+	cp -a $(BUILD_STAGE)/dpkg/usr/share/man/man3 $(BUILD_DIST)/libdpkg-perl/usr/share/man
 	
 	# dpkg.mk Prep libdpkg-dev
 	cp -a $(BUILD_STAGE)/dpkg/usr/include $(BUILD_DIST)/libdpkg-dev/usr

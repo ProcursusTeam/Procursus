@@ -1,0 +1,10 @@
+Package: libunibilium4
+Version: @DEB_UNIBILIUM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Description: simple, self-contained terminfo library
+ Unibilium is a very basic terminfo library. It doesn't depend on curses or any
+ other library. It also doesn't use global variables, so it should be
+ thread-safe.

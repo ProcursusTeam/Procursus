@@ -1,0 +1,23 @@
+Package: libx11-xcb-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBX11_V@
+Depends: libx11-xcb1 (= @DEB_LIBX11_V@)
+Section: Development
+Priority: optional
+Multi-Arch: foreign
+Description: Xlib/XCB interface library (development headers)
+ libX11-xcb provides functions needed by clients which take advantage of
+ Xlib/XCB to mix calls to both Xlib and XCB over the same X connection.
+ .
+ This package contains the development headers for the library found in 
+ libx11-xcb1. Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at:
+ <URL:https://www.X.org>
+ .
+ More information about XCB can be found at:
+ <URL:https://xcb.freedesktop.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libX11

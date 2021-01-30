@@ -1,0 +1,14 @@
+Package: recode
+Version: @DEB_LIBRECODE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Depends: libintl8, librecode3 (= @DEB_LIBRECODE_V@)
+Description: Character set conversion utility
+ Free `recode' converts files between character sets and usages.  When
+ exact transliterations are not possible, it may get rid of the
+ offending characters or fall back on approximations.  This program
+ recognizes or produces nearly 300 different character sets and is able
+ to transliterate files between almost any pair.  Most RFC 1345
+ character sets, and all `libiconv' character sets, are supported.

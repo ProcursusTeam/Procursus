@@ -1,0 +1,11 @@
+Package: liblualib50
+Version: @DEB_LUA50_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: standard
+Description: Extension library for the Lua 5.0 programming language
+ This package provides string, maths and IO functions to liblua50.
+ .
+ This package will most commonly be installed by programs depending on it
+ or by authors using the liblualib50-dev package

@@ -1,0 +1,22 @@
+Package: libavcodec-dev
+Version: @DEB_FFMPEG_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: standard
+Description: FFmpeg library with de/encoders for audio/video codecs - development files
+ FFmpeg is the leading multimedia framework, able to decode, encode, transcode,
+ mux, demux, stream, filter and play pretty much anything that humans and
+ machines have created. It supports the most obscure ancient formats up to the
+ cutting edge.
+ .
+ This library provides a generic encoding/decoding framework and
+ contains multiple decoders and encoders for audio, video and subtitle streams,
+ and several bitstream filters.
+ .
+ The shared architecture provides various services ranging from bit stream I/O
+ to DSP optimizations, and makes it suitable for implementing robust and fast
+ codecs as well as for experimentation.
+ .
+ This package contains the development files.
+Depends: libavcodec58 (= @DEB_FFMPEG_V@), libswresample-dev (= @DEB_FFMPEG_V@), libavutil-dev (= @DEB_FFMPEG_V@)

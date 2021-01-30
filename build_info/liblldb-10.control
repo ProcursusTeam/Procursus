@@ -7,4 +7,3 @@ Section: Development
 Priority: optional
 Homepage: https://www.llvm.org/
 Description: Next generation, high-performance debugger, library
-Tag: purpose::console, role::developer

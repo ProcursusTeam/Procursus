@@ -1,0 +1,10 @@
+Package: libmsgpackc2
+Version: @DEB_MSGPACK_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Description: binary-based efficient object serialization library
+ MessagePack is a binary-based efficient object serialization library.
+ It enables to exchange structured objects between many languages like JSON.
+ But unlike JSON, it is very fast and small.

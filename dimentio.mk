@@ -4,16 +4,16 @@ endif
 
 SUBPROJECTS        += dimentio
 # I'm not going to bump the version any higher than 1.0.3. Just change commit date/short hash.
+DIMENTIO_COMMIT    := 7ffffff5f441285c457773742241df1849063fd2
 DIMENTIO_VERSION   := 1.0.3+git20201124.$(shell echo $(DIMENTIO_COMMIT) | cut -c -7)
 DEB_DIMENTIO_V     ?= $(DIMENTIO_VERSION)
 
-DIMENTIO_COMMIT    := 7ffffff5f441285c457773742241df1849063fd2
 DIMENTIO_SOVERSION := 0
 DIMENTIO_LIBS      := -framework CoreFoundation -framework IOKit -lcompression
 
 dimentio-setup: setup
 	-[ ! -e "$(BUILD_SOURCE)/dimentio-v$(DIMENTIO_COMMIT).tar.gz" ] \
-		&& wget -nc -O$(BUILD_SOURCE)/dimentio-v$(DIMENTIO_COMMIT).tar.gz \
+		&& wget -q -nc -O$(BUILD_SOURCE)/dimentio-v$(DIMENTIO_COMMIT).tar.gz \
 			https://github.com/0x7ff/dimentio/archive/$(DIMENTIO_COMMIT).tar.gz
 	$(call EXTRACT_TAR,dimentio-v$(DIMENTIO_COMMIT).tar.gz,dimentio-$(DIMENTIO_COMMIT),dimentio)
 	mkdir -p $(BUILD_STAGE)/dimentio/usr/{bin,lib,include}

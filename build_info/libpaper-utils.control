@@ -1,0 +1,14 @@
+Package: libpaper-utils
+Version: @DEB_LIBPAPER_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libpaper1 (= @DEB_LIBPAPER_V@)
+Section: Utilities
+Description: library for handling paper characteristics (utilities)
+ The libpaper paper-handling library automates recognition of many
+ different paper types and sizes for programs that need to deal with
+ printed output.
+ .
+ This package contains utilities for setting the system's default
+ paper type and for accessing paper type information from shell
+ scripts.

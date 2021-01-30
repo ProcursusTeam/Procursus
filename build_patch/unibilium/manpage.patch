@@ -1,0 +1,22 @@
+--- Makefile.orig	2020-02-14 03:28:54.000000000 -0500
++++ Makefile	2021-01-04 10:49:52.321961600 -0500
+@@ -56,7 +56,7 @@
+ LIBRARY=libunibilium.la
+ 
+ PODS=$(wildcard doc/*.pod)
+-MANPAGES=$(addprefix man/,$(notdir $(PODS:.pod=.3.gz)))
++MANPAGES=$(addprefix man/,$(notdir $(PODS:.pod=.3)))
+ 
+ TOOLS=$(wildcard tools/*.c)
+ 
+@@ -121,8 +121,8 @@
+ .PHONY: build-man
+ build-man: $(MANPAGES)
+ 
+-man/%.3.gz: doc/%.pod
+-	$(POD2MAN) $(POD2MAN_OPTS) $< | gzip > $@
++man/%.3: doc/%.pod
++	$(POD2MAN) $(POD2MAN_OPTS) $< > $@
+ 
+ 
+ # Regenerate static test files, based on existing terminfo entries.

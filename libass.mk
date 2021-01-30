@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += libass
 LIBASS_VERSION := 0.15.0
-DEB_LIBASS_V   ?= $(LIBASS_VERSION)
+DEB_LIBASS_V   ?= $(LIBASS_VERSION)-1
 
 libass-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libass/libass/releases/download/$(LIBASS_VERSION)/libass-$(LIBASS_VERSION).tar.xz

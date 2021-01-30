@@ -5,7 +5,7 @@ endif
 #SUBPROJECTS   += llvm
 LLVM_VERSION   := 10.0.0
 LLVM_MAJOR_V   := 10
-SWIFT_VERSION  := 5.3.1
+SWIFT_VERSION  := 5.3.2
 SWIFT_SUFFIX   := RELEASE
 DEB_SWIFT_V    ?= $(SWIFT_VERSION)~$(SWIFT_SUFFIX)
 DEB_LLVM_V     ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)
@@ -49,8 +49,7 @@ llvm:
 	@echo "Using previously built llvm."
 else
 llvm: llvm-setup libffi libedit ncurses xz xar
-	cp -a $(TARGET_SYSROOT)/usr/include/mach/arm $(BUILD_BASE)/usr/include/mach
-	cp -a $(MACOSX_SYSROOT)/usr/include/{editline,kern} $(BUILD_BASE)/usr/include
+	cp -a $(MACOSX_SYSROOT)/usr/include/kern $(BUILD_BASE)/usr/include
 	cp -a $(MACOSX_SYSROOT)/usr/include/histedit.h $(BUILD_BASE)/usr/include
 	ln -sf $(BUILD_BASE)/usr/lib/libncursesw.dylib $(BUILD_BASE)/usr/lib/libcurses.dylib
 	ln -sf $(BUILD_BASE)/usr/lib/libpanelw.dylib $(BUILD_BASE)/usr/lib/libpanel.dylib
@@ -82,7 +81,7 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		-DCMAKE_INSTALL_PREFIX=/usr/lib/llvm-$(LLVM_MAJOR_V) \
 		-DCMAKE_INSTALL_NAME_DIR=/usr/lib/llvm-$(LLVM_MAJOR_V)/lib \
 		-DCMAKE_INSTALL_RPATH=/usr/lib/llvm-$(LLVM_MAJOR_V) \
-		-DCMAKE_OSX_ARCHITECTURES="$(ARCHES)" \
+		-DCMAKE_OSX_ARCHITECTURES="$(MEMO_ARCH)" \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
 		-DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
@@ -119,16 +118,16 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		-DLLVM_EXTERNAL_SWIFT_SOURCE_DIR="$(BUILD_WORK)/llvm/swift" \
 		-DLLVM_EXTERNAL_CMARK_SOURCE_DIR="$(BUILD_WORK)/llvm/cmark" \
 		-DLLVM_INCLUDE_TESTS=OFF \
-		-DMIG_ARCHS=$(ARCHES) \
+		-DMIG_ARCHS=$(MEMO_ARCH) \
 		-DCFLAGS_SDK="$(SWIFT_VARIANT)" \
 		-DCFLAGS_DEPLOYMENT_VERSION_IOS=12.0 \
 		-DCFLAGS_DEPLOYMENT_VERSION_TVOS=10.0 \
 		-DCFLAGS_DEPLOYMENT_VERSION_WATCHOS=4.0 \
 		-DSWIFT_PRIMARY_VARIANT_SDK="$(SWIFT_VARIANT)" \
-		-DSWIFT_PRIMARY_VARIANT_ARCH="$(ARCHES)" \
+		-DSWIFT_PRIMARY_VARIANT_ARCH="$(MEMO_ARCH)" \
 		-DSWIFT_HOST_VARIANT_SDK="$(SWIFT_VARIANT)" \
 		-DSWIFT_HOST_VARIANT="$(PLATFORM)" \
-		-DSWIFT_HOST_VARIANT_ARCH="$(ARCHES)" \
+		-DSWIFT_HOST_VARIANT_ARCH="$(MEMO_ARCH)" \
 		-DSWIFT_ENABLE_IOS32="$(SWIFT_OLD)" \
 		-DSWIFT_INCLUDE_TESTS=OFF \
 		-DSWIFT_BUILD_RUNTIME_WITH_HOST_COMPILER=ON \

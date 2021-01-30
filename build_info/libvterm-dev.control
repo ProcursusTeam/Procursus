@@ -1,0 +1,17 @@
+Package: libvterm-dev
+Version: @DEB_LIBVTERM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Depends: libvterm0 (= @DEB_LIBVTERM_V@)
+Description: abstract terminal library (development files)
+ An abstract C99 library which implements a VT220 or xterm-like terminal
+ emulator. It doesn't use any particular graphics toolkit or output
+ system, instead it invokes callback function pointers that its embedding
+ program should provide it to draw on its behalf. It avoids calling
+ malloc() during normal running state, allowing it to be used in embedded
+ kernel situations.
+ .
+ This package contains the header files and libraries needed for developing
+ with libvterm.
