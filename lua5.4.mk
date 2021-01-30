@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/lua5.4/.build_complete),)
 lua5.4:
 	@echo "Using previously built lua5.4."
 else
-lua5.4: lua5.4-setup
+lua5.4: lua5.4-setup readline
 	+$(MAKE) -C $(BUILD_WORK)/lua5.4 macosx \
 		CC="$(CC)" \
 		CFLAGS="$(CFLAGS) -fPIC -DLUA_COMPAT_5_3" \

@@ -5,6 +5,7 @@ Maintainer: @DEB_MAINTAINER@
 Section: Utilities
 Priority: standard
 Provides: lua
+Depends: libreadline8
 Description: Small embeddable language with simple procedural syntax
  Lua is a programming language originally designed for extending
  applications, but also frequently used as a general-purpose,
