@@ -16,9 +16,18 @@ libevent:
 	@echo "Using previously built libevent."
 else
 libevent: libevent-setup openssl
-	cd $(BUILD_WORK)/libevent && ./configure \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+	cd $(BUILD_WORK)/libevent && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_SYSTEM_NAME=Darwin \
+		-DCMAKE_CROSSCOMPILING=true \
+		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
+		-DCMAKE_INSTALL_RPATH=/usr \
+		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
+		-DCMAKE_C_FLAGS="$(CFLAGS)" \
+		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
+		.
 	+$(MAKE) -C $(BUILD_WORK)/libevent install \
 		DESTDIR=$(BUILD_STAGE)/libevent
 	+$(MAKE) -C $(BUILD_WORK)/libevent install \

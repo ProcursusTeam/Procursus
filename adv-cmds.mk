@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += adv-cmds
-ADV-CMDS_VERSION := 174.0.1
+ADV-CMDS_VERSION := 176
 DEB_ADV-CMDS_V   ?= $(ADV-CMDS_VERSION)
 
 adv-cmds-setup: setup

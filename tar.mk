@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += tar
-TAR_VERSION   := 1.32
+TAR_VERSION   := 1.33
 DEB_TAR_V     ?= $(TAR_VERSION)-1
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)

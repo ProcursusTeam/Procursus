@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS            += bootstrap-cmds
-BOOTSTRAP-CMDS_VERSION := 116
+BOOTSTRAP-CMDS_VERSION := 121
 DEB_BOOTSTRAP-CMDS_V   ?= $(BOOTSTRAP-CMDS_VERSION)
 
 bootstrap-cmds-setup: setup

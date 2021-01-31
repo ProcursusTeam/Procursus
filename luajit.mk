@@ -32,6 +32,9 @@ luajit: luajit-setup
 	+$(MAKE) -C $(BUILD_WORK)/luajit install \
 		DESTDIR="$(BUILD_STAGE)/luajit" \
 		PREFIX=/usr
+	+$(MAKE) -C $(BUILD_WORK)/luajit install \
+		DESTDIR="$(BUILD_BASE)" \
+		PREFIX=/usr
 	mv $(BUILD_STAGE)/luajit/usr/bin/luajit-$(LUAJIT_VERSION) $(BUILD_STAGE)/luajit/usr/bin/luajit
 	touch $(BUILD_WORK)/luajit/.build_complete
 endif

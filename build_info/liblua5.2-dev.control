@@ -1,0 +1,19 @@
+Package: liblua5.2-dev
+Version: @DEB_LUA5.2_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: standard
+Depends: liblua5.2-0 (= @DEB_LUA5.2_V@)
+Description: Development files for the Lua language version 5.2
+ Lua is a powerful, light-weight programming language designed for extending
+ applications.  The language engine is accessible as a library, having a C
+ API which allows the application to exchange data with Lua programs and also
+ to extend Lua with C functions.  Lua is also used as a general-purpose,
+ stand-alone language through the simple command line interpreter provided.
+ .
+ This package contains developer resources for using the Lua library.
+ Install it if you are developing programs which use the Lua C API.
+ .
+ This package also contains the official manual covering the Lua language
+ and C API.
