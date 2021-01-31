@@ -26,7 +26,8 @@ findutils: findutils-setup gettext
 		--with-packager=Procursus \
 		--enable-threads=posix \
 		CFLAGS="$(CFLAGS) -D__nonnull\(params\)="
-	+$(MAKE) -C $(BUILD_WORK)/findutils
+	+$(MAKE) -C $(BUILD_WORK)/findutils \
+		SORT="/usr/bin/sort"
 	+$(MAKE) -C $(BUILD_WORK)/findutils install \
 		DESTDIR=$(BUILD_STAGE)/findutils
 	touch $(BUILD_WORK)/findutils/.build_complete
