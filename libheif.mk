@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libheif/.build_complete),)
 libheif:
 	@echo "Using previously built libheif."
 else
-libheif: libheif-setup x265 libde265 aom
+libheif: libheif-setup x265 libde265 aom rav1e dav1d
 	cd $(BUILD_WORK)/libheif && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
