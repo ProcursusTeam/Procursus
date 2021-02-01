@@ -9,8 +9,7 @@ DEB_CMAKE_V   ?= $(CMAKE_VERSION)
 cmake-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/Kitware/CMake/releases/download/v$(CMAKE_VERSION)/cmake-$(CMAKE_VERSION).tar.gz
 	$(call EXTRACT_TAR,cmake-$(CMAKE_VERSION).tar.gz,cmake-$(CMAKE_VERSION),cmake)
-	$(SED) -i 's|#if !defined(CMAKE_BOOTSTRAP) \&\& defined(__APPLE__)|#if 0|' $(BUILD_WORK)/cmake/Source/cmGlobalXCodeGenerator.cxx
-	$(SED) -i '\|#include <cmext/string_view>|a #include <CoreFoundation/CoreFoundation.h>' $(BUILD_WORK)/cmake/Source/cmGlobalXCodeGenerator.cxx
+	$(call DO_PATCH,cmake,cmake,-p1) # Remove when cmake 3.20.0 releases.
 
 ifneq ($(wildcard $(BUILD_WORK)/cmake/.build_complete),)
 cmake:
