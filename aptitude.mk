@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/aptitude/.build_complete),)
 aptitude:
 	@echo "Using previously built aptitude."
 else
-aptitude: aptitude-setup ncurses libboost xapian cwidget apt googletest sqlite3
+aptitude: aptitude-setup ncurses libboost xapian cwidget apt googletest
 	$(SED) -i 's|/usr/share/xml/docbook/stylesheet/nwalsh|$(DOCBOOK_XSL)|g' \
 		$(BUILD_WORK)/aptitude/buildlib/docbook.mk \
 		$(BUILD_WORK)/aptitude/doc/aptitude-{txt,man,html}.xsl \
