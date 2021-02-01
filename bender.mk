@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += bender
-BENDER_VERSION   := 1.0.1
+BENDER_VERSION   := 1.1.0
 DEB_BENDER_V     ?= $(BENDER_VERSION)
 
 bender-setup: setup
