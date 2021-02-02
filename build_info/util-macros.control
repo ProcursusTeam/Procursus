@@ -2,7 +2,7 @@ Package: usbutils
 Version: @DEB_UTILMACROS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Section: Development
+Section: X11
 Priority: standard
 Description: m4 macros used by Xorg packages
 Tag: role::developer
