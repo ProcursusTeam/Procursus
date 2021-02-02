@@ -25,24 +25,26 @@ util-macros: util-macros-setup
 	+$(MAKE) -C $(BUILD_WORK)/util-macros
 	+$(MAKE) -C $(BUILD_WORK)/util-macros install \
 		DESTDIR=$(BUILD_STAGE)/util-macros
+	+$(MAKE) -C $(BUILD_WORK)/util-macros install \
+		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/util-macros/.build_complete
 endif
 
 
 util-macros-package: util-macros-stage
-	rm -rf $(BUILD_DIST)/util-macros
-	mkdir -p $(BUILD_DIST)/util-macros
+	rm -rf $(BUILD_DIST)/xorg-util-macros
+	mkdir -p $(BUILD_DIST)/xorg-util-macros
 	
 	# util-macros.mk Prep util-macros
 	cp -a $(BUILD_STAGE)/util-macros/usr $(BUILD_DIST)/xorg-util-macros
 
 	# util-macros.mk Sign
-	$(call SIGN,util-macros,general.xml)
+	$(call SIGN,xorg-util-macros,general.xml)
 	
 	# util-macros.mk Make .debs
-	$(call PACK,util-macros,DEB_UTILMACROS_V)
+	$(call PACK,xorg-util-macros,DEB_UTILMACROS_V)
 	
 	# util-macros.mk Build cleanup
-	rm -rf $(BUILD_DIST)/util-macros
+	rm -rf $(BUILD_DIST)/xorg-util-macros
 
 .PHONY: util-macros util-macros-package
