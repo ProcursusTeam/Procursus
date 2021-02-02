@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS         += ghostscript
 GHOSTSCRIPT_VERSION := 9.53.3
-DEB_GHOSTSCRIPT_V   ?= $(GHOSTSCRIPT_VERSION)-1
+DEB_GHOSTSCRIPT_V   ?= $(GHOSTSCRIPT_VERSION)
 
 ghostscript-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs9533/ghostpdl-$(GHOSTSCRIPT_VERSION).tar.gz
