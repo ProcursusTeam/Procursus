@@ -3,10 +3,10 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += zsign
-ZSIGN_VERSION   := 20200919
+ZSIGN_VERSION   := 20210202
 DEB_ZSIGN_V     := 0~$(ZSIGN_VERSION)
 
-ZSIGN_COMMIT_HASH=e2e78a1
+ZSIGN_COMMIT_HASH=b5733ea0bb2d612492e732ba0fa5a828c0ca04da
 
 zsign-setup: setup
 	-[ ! -e "$(BUILD_SOURCE)/zsign-$(ZSIGN_VERSION).tar.gz" ] \
