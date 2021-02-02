@@ -1,0 +1,8 @@
+Package: xorg-xcb-proto
+Version: @DEB_XCBPROTO_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: X11
+Priority: standard
+Description: Provides the XML-XCB protocol descriptions that libxcb uses to generate the majority of its code and API. 
+Tag: role::developer
