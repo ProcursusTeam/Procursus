@@ -1,15 +1,13 @@
-Package: xcb-proto
+Package: python3-xcbgen
 Version: @DEB_XCBPROTO_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Depends: python3
 Section: X11
 Priority: standard
-Description: X C Binding - protocol descriptions
- xcb-proto contains descriptions of the X Window System core protocol and
- selected extensions in an XML-based data format. The X C Binding (XCB)
- library uses these descriptions to generate much of its code. You only need
- this package if you want to compile XCB or otherwise make use of these
- protocol descriptions.
+Description: X C Binding - protocol binding generator (Python 3)
+ python3-xcbgen generates the X protocol C language bindings from XML
+ descriptions.
  .
  The XCB library provides an interface to the X Window System protocol,
  designed to replace the Xlib interface.  XCB provides several advantages over
