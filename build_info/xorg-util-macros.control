@@ -1,0 +1,8 @@
+Package: xorg-util-macros
+Version: @DEB_UTILMACROS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: X11
+Priority: standard
+Description: m4 macros used by Xorg packages
+Tag: role::developer
