@@ -1,4 +1,4 @@
-Package: xorg-xcb-proto
+Package: xcb-proto
 Version: @DEB_XCBPROTO_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@

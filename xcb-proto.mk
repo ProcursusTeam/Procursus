@@ -31,19 +31,19 @@ endif
 
 
 xcb-proto-package: xcb-proto-stage
-	rm -rf $(BUILD_DIST)/xorg-xcb-proto
-	mkdir -p $(BUILD_DIST)/xorg-xcb-proto
+	rm -rf $(BUILD_DIST)/xcb-proto
+	mkdir -p $(BUILD_DIST)/xcb-proto
 	
 	# xcb-proto.mk Prep xcb-proto
-	cp -a $(BUILD_STAGE)/xcb-proto/usr $(BUILD_DIST)/xorg-xcb-proto
+	cp -a $(BUILD_STAGE)/xcb-proto/usr $(BUILD_DIST)/xcb-proto
 
 	# xcb-proto.mk Sign
-	$(call SIGN,xorg-xcb-proto,general.xml)
+	$(call SIGN,xcb-proto,general.xml)
 	
 	# xcb-proto.mk Make .debs
-	$(call PACK,xorg-xcb-proto,DEB_XCBPROTO_V)
+	$(call PACK,xcb-proto,DEB_XCBPROTO_V)
 	
 	# xcb-proto.mk Build cleanup
-	rm -rf $(BUILD_DIST)/xorg-xcb-proto
+	rm -rf $(BUILD_DIST)/xcb-proto
 
 .PHONY: xcb-proto xcb-proto-package
