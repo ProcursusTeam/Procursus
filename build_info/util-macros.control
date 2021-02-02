@@ -1,4 +1,4 @@
-Package: usbutils
+Package: xorg-util-macros
 Version: @DEB_UTILMACROS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@

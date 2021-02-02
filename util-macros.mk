@@ -34,7 +34,7 @@ util-macros-package: util-macros-stage
 	mkdir -p $(BUILD_DIST)/util-macros
 	
 	# util-macros.mk Prep util-macros
-	cp -a $(BUILD_STAGE)/util-macros/usr $(BUILD_DIST)/util-macros
+	cp -a $(BUILD_STAGE)/util-macros/usr $(BUILD_DIST)/xorg-util-macros
 
 	# util-macros.mk Sign
 	$(call SIGN,util-macros,general.xml)
