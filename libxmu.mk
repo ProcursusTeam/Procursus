@@ -36,11 +36,12 @@ libxmu-package: libxmu-stage
 	# libxmu.mk Package Structure
 	rm -rf $(BUILD_DIST)/libxmu{6,-dev}
 	mkdir -p $(BUILD_DIST)/libxmu/usr/lib \
-		$(BUILD_DIST)/libxmu-dev/usr/lib
+		$(BUILD_DIST)/libxmu-dev/usr/lib \
+		$(BUILD_DIST)/libxmuu/usr/lib
 	
-	# libxmu.mk Prep libxmu
+	# libxmu.mk Prep libxmu6 and libxmuu1
 	cp -a $(BUILD_STAGE)/libxmu/usr/lib/libXmu.6.dylib $(BUILD_DIST)/libxmu/usr/lib
-	cp -a $(BUILD_STAGE)/libxmu/usr/lib/libXmuu.1.dylib $(BUILD_DIST)/libxmu/usr/lib
+	cp -a $(BUILD_STAGE)/libxmu/usr/lib/libXmuu.1.dylib $(BUILD_DIST)/libxmuu/usr/lib
 
 	# libxmu.mk Prep libxmu-dev
 	cp -a $(BUILD_STAGE)/libxmu/usr/lib/!(libXmu.6.dylib) $(BUILD_DIST)/libxmu-dev/usr/lib
@@ -48,12 +49,14 @@ libxmu-package: libxmu-stage
 	
 	# libxmu.mk Sign
 	$(call SIGN,libxmu,general.xml)
-	
+	$(call SIGN,libxmuu,general.xml)
+
 	# libxmu.mk Make .debs
 	$(call PACK,libxmu,DEB_LIBXMU_V)
+	$(call PACK,libxmuu,DEB_LIBXMU_V)
 	$(call PACK,libxmu-dev,DEB_LIBXMU_V)
 	
 	# libxmu.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libxmu{6,-dev}
+	rm -rf $(BUILD_DIST)/libxmu{6,-dev, u}
 
 .PHONY: libxmu libxmu-package
