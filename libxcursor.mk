@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += libxcursor
+SUBPROJECTS        += libxcursor
 LIBXCURSOR_VERSION := 1.2.0
 DEB_LIBXCURSOR_V   ?= $(LIBXCURSOR_VERSION)
 
@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libxcursor/.build_complete),)
 libxcursor:
 	@echo "Using previously built libxcursor."
 else
-libxcursor: libxcursor-setup libx11 libxfixes libxrender
+libxcursor: libxcursor-setup libx11 libxfixes libxrender util-macros
 	cd $(BUILD_WORK)/libxcursor && unset CPP CPPFLAGS && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
@@ -51,6 +51,6 @@ libxcursor-package: libxcursor-stage
 	$(call PACK,libxcursor-dev,DEB_LIBXCURSOR_V)
 	
 	# libxcursor.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libxcursor{1,-dev} $(BUILD_DIST)/libxcursor
+	rm -rf $(BUILD_DIST)/libxcursor{1,-dev}
 
 .PHONY: libxcursor libxcursor-package

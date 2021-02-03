@@ -1,8 +1,8 @@
-Package: libxcursor1
+Package: libxcursor-dev
 Version: @DEB_LIBXCURSOR_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libx11-dev, libxfixes-dev, libxrender-dev, x11proto-dev
+Depends: libxcursor1 (= @DEB_LIBXCURSOR_V@), libx11-dev, libxfixes-dev, libxrender-dev, x11proto-dev
 Section: Libraries
 Priority: optional
 Description: X cursor management library
