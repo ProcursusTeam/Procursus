@@ -1,0 +1,16 @@
+Package: libebml-dev
+Priority: optional
+Section: Development
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBEBML_V@
+Depends: libebml5 (= @DEB_LIBEBML_V@)
+Homepage: https://matroska-org.github.io/libebml/index.html
+Description: access library for the EBML format (development files)
+ The libebml library allows one to read and write files using EBML (the
+ Extensible Binary Meta Language), a binary pendant to XML. Using libebml
+ makes it easier to extend a file format without breaking support in
+ older parsers.
+ .
+ This package contains the header files and static libraries needed to
+ compile applications that use libebml.
