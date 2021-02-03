@@ -1,0 +1,7 @@
+Package: nmap-common
+Version: @DEB_NANO_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Description: Architecture independent files for nmap
