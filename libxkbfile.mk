@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libxkbfile/.build_complete),)
 libxkbfile:
 	@echo "Using previously built libxkbfile."
 else
-libxkbfile: libxkbfile-setup xorgproto libx11 libxext
+libxkbfile: libxkbfile-setup libx11
 	cd $(BUILD_WORK)/libxkbfile && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
