@@ -1,4 +1,4 @@
-Package: libxfont-dev
+Package: libxxf86vm-dev
 Version: @DEB_LIBXXF86VM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
