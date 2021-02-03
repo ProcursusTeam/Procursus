@@ -15,13 +15,12 @@ ifneq ($(wildcard $(BUILD_WORK)/libxpm/.build_complete),)
 libxpm:
 	@echo "Using previously built libxpm."
 else
-libxpm: libxpm-setup libx11 xorgproto libxt libxext
+libxpm: libxpm-setup libx11 xorgproto libxt libxext gettext
 	cd $(BUILD_WORK)/libxpm && unset CPP CPPFLAGS && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \
-		--localstatedir=/var \
-
+		--localstatedir=/var
 	+$(MAKE) -C $(BUILD_WORK)/libxpm
 	+$(MAKE) -C $(BUILD_WORK)/libxpm install \
 		DESTDIR=$(BUILD_STAGE)/libxpm
@@ -35,8 +34,7 @@ libxpm-package: libxpm-stage
 	rm -rf $(BUILD_DIST)/libxpm{4,-dev} $(BUILD_DIST)/libxpm $(BUILD_DIST)/xpmutils
 	mkdir -p $(BUILD_DIST)/libxpm4/usr/lib \
 		$(BUILD_DIST)/libxpm-dev/usr/lib \
-		$(BUILD_DIST)/xpmutils/usr/bin \
-		$(BUILD_DIST)/xpmutils/usr/share
+		$(BUILD_DIST)/xpmutils/usr
 
 	# libxpm.mk Prep libxpm4
 	cp -a $(BUILD_STAGE)/libxpm/usr/lib/libXpm.4.dylib $(BUILD_DIST)/libxpm4/usr/lib
@@ -46,8 +44,7 @@ libxpm-package: libxpm-stage
 	cp -a $(BUILD_STAGE)/libxpm/usr/include $(BUILD_DIST)/libxpm-dev/usr
 
 	# libxpm.mk xpmutils
-	cp -a $(BUILD_STAGE)/libxpm/usr/bin $(BUILD_DIST)/xpmutils/usr
-	cp -a $(BUILD_STAGE)/libxpm/usr/share $(BUILD_DIST)/xpmutils/usr
+	cp -a $(BUILD_STAGE)/libxpm/usr/{bin,share} $(BUILD_DIST)/xpmutils/usr
 
 	# libxpm.mk Sign
 	$(call SIGN,libxpm4,general.xml)

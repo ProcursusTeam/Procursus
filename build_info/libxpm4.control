@@ -3,6 +3,7 @@ Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LIBXPM_V@
 Section: Libraries
+Depends: libx11-6, libintl8
 Description: X11 pixmap library
  libXpm provides support and common operation for the XPM pixmap format,
   which is commonly used in legacy X applications. XPM is an extension
