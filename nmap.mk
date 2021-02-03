@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/nmap/.build_complete),)
 nmap:
 	@echo "Using previously built nmap."
 else
-nmap: nmap-setup lua5.3 openssl pcre
+nmap: nmap-setup lua5.3 openssl pcre libssh2
 	cd $(BUILD_WORK)/nmap && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
