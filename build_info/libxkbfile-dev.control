@@ -1,0 +1,14 @@
+Package: libxkbfile-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBXKBFILE_V@
+Section: Libraries
+Description: X11 keyboard file manipulation library (development headers)
+ libxkbfile provides an interface to read and manipulate description files for XKB, 
+ the X11 keyboard configuration extension. 
+ .
+ More information about X.Org can be found at:
+ <URL:http://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libxkbfile
