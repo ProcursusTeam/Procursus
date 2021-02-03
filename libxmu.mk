@@ -57,6 +57,6 @@ libxmu-package: libxmu-stage
 	$(call PACK,libxmu-dev,DEB_LIBXMU_V)
 	
 	# libxmu.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libxmu{6,-dev} $(BUILD_DIST)/libxmuu1
+	rm -rf $(BUILD_DIST)/libxmu{6,-dev} $(BUILD_DIST)/libxmu
 
 .PHONY: libxmu libxmu-package
