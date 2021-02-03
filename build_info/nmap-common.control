@@ -1,5 +1,5 @@
 Package: nmap-common
-Version: @DEB_NANO_V@
+Version: @DEB_NMAP_V@
 Architecture: all
 Maintainer: @DEB_MAINTAINER@
 Section: Development
