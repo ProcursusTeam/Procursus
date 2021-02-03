@@ -2,7 +2,7 @@ Package: libxmu6
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LIBXMU_V@
-Depends: libxext6, libxt6
+Depends: libx11-6, libxext6, libxt6
 Section: Libraries
 Priority: optional
 Multi-Arch: foreign

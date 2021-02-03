@@ -34,29 +34,29 @@ endif
 
 libxmu-package: libxmu-stage
 	# libxmu.mk Package Structure
-	rm -rf $(BUILD_DIST)/libxmu{6,-dev}
-	mkdir -p $(BUILD_DIST)/libxmu/usr/lib \
+	rm -rf $(BUILD_DIST)/libxmu{6,-dev} $(BUILD_DIST)/libxmuu1
+	mkdir -p $(BUILD_DIST)/libxmu6/usr/lib \
 		$(BUILD_DIST)/libxmu-dev/usr/lib \
-		$(BUILD_DIST)/libxmuu/usr/lib
+		$(BUILD_DIST)/libxmuu1/usr/lib
 	
 	# libxmu.mk Prep libxmu6 and libxmuu1
-	cp -a $(BUILD_STAGE)/libxmu/usr/lib/libXmu.6.dylib $(BUILD_DIST)/libxmu/usr/lib
-	cp -a $(BUILD_STAGE)/libxmu/usr/lib/libXmuu.1.dylib $(BUILD_DIST)/libxmuu/usr/lib
+	cp -a $(BUILD_STAGE)/libxmu/usr/lib/libXmu.6.dylib $(BUILD_DIST)/libxmu6/usr/lib
+	cp -a $(BUILD_STAGE)/libxmu/usr/lib/libXmuu.1.dylib $(BUILD_DIST)/libxmuu1/usr/lib
 
 	# libxmu.mk Prep libxmu-dev
 	cp -a $(BUILD_STAGE)/libxmu/usr/lib/!(libXmu.6.dylib) $(BUILD_DIST)/libxmu-dev/usr/lib
 	cp -a $(BUILD_STAGE)/libxmu/usr/{include,share} $(BUILD_DIST)/libxmu-dev/usr
 	
 	# libxmu.mk Sign
-	$(call SIGN,libxmu,general.xml)
-	$(call SIGN,libxmuu,general.xml)
+	$(call SIGN,libxmu6,general.xml)
+	$(call SIGN,libxmuu1,general.xml)
 
 	# libxmu.mk Make .debs
-	$(call PACK,libxmu,DEB_LIBXMU_V)
-	$(call PACK,libxmuu,DEB_LIBXMU_V)
+	$(call PACK,libxmu6,DEB_LIBXMU_V)
+	$(call PACK,libxmuu1,DEB_LIBXMU_V)
 	$(call PACK,libxmu-dev,DEB_LIBXMU_V)
 	
 	# libxmu.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libxmu{6,-dev, u}
+	rm -rf $(BUILD_DIST)/libxmu{6,-dev} $(BUILD_DIST)/libxmuu1
 
 .PHONY: libxmu libxmu-package
