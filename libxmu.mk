@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += libxmu
+SUBPROJECTS    += libxmu
 LIBXMU_VERSION := 1.1.3
 DEB_LIBXMU_V   ?= $(LIBXMU_VERSION)
 
