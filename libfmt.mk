@@ -61,6 +61,6 @@ libfmt-package: libfmt-stage
 	$(call PACK,libfmt-dev,DEB_LIBFMT_V)
 
 	# libfmt.mk Build cleanup
-	# rm -rf $(BUILD_DIST)/libfmt{7,-dev}
+	rm -rf $(BUILD_DIST)/libfmt{7,-dev}
 
 .PHONY: libfmt libfmt-package
