@@ -4,7 +4,6 @@ endif
 
 SUBPROJECTS            += libpugixml
 LIBPUGIXML_VERSION     := 1.11.4
-LIBPUGIXML_LIB_VERSION := 1.11
 DEB_LIBPUGIXML_V       ?= $(LIBPUGIXML_VERSION)
 
 libpugixml-setup: setup
@@ -43,7 +42,7 @@ libpugixml-package: libpugixml-stage
 	mkdir -p $(BUILD_DIST)/libpugixml{1,-dev}/usr/lib
 
 	# libpugixml.mk Prep libpugixml1
-	cp -a $(BUILD_STAGE)/libpugixml/usr/lib/libpugixml.{1,$(LIBPUGIXML_LIB_VERSION)}.dylib $(BUILD_DIST)/libpugixml1/usr/lib
+	cp -a $(BUILD_STAGE)/libpugixml/usr/lib/libpugixml.1*.dylib $(BUILD_DIST)/libpugixml1/usr/lib
 
 	# libpugixml.mk Prep libpugixml-dev
 	cp -a $(BUILD_STAGE)/libpugixml/usr/include $(BUILD_DIST)/libpugixml-dev/usr
