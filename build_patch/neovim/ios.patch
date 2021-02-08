@@ -1,0 +1,49 @@
+diff --color -urN neovim-0.4.4/CMakeLists.txt neovim/CMakeLists.txt
+--- neovim-0.4.4/CMakeLists.txt	2020-08-04 20:07:48.000000000 -0400
++++ neovim/CMakeLists.txt	2021-01-13 19:35:20.715404680 -0500
+@@ -358,15 +358,15 @@
+   add_definitions(-D_GNU_SOURCE)
+ endif()
+ 
+-if(CMAKE_SYSTEM_NAME STREQUAL "Darwin" AND CMAKE_SIZEOF_VOID_P EQUAL 8)
+-  # Required for luajit.
+-  set(CMAKE_EXE_LINKER_FLAGS
+-    "${CMAKE_EXE_LINKER_FLAGS} -pagezero_size 10000 -image_base 100000000")
+-  set(CMAKE_SHARED_LINKER_FLAGS
+-    "${CMAKE_SHARED_LINKER_FLAGS} -image_base 100000000")
+-  set(CMAKE_MODULE_LINKER_FLAGS
+-    "${CMAKE_MODULE_LINKER_FLAGS} -image_base 100000000")
+-endif()
++#if(CMAKE_SYSTEM_NAME STREQUAL "Darwin" AND CMAKE_SIZEOF_VOID_P EQUAL 8)
++#  # Required for luajit.
++#  set(CMAKE_EXE_LINKER_FLAGS
++#    "${CMAKE_EXE_LINKER_FLAGS} -pagezero_size 10000 -image_base 100000000")
++#  set(CMAKE_SHARED_LINKER_FLAGS
++#    "${CMAKE_SHARED_LINKER_FLAGS} -image_base 100000000")
++#  set(CMAKE_MODULE_LINKER_FLAGS
++#    "${CMAKE_MODULE_LINKER_FLAGS} -image_base 100000000")
++#endif()
+ 
+ include_directories("${PROJECT_BINARY_DIR}/config")
+ include_directories("${PROJECT_SOURCE_DIR}/src")
+diff --color -urN neovim-0.4.4/runtime/CMakeLists.txt neovim/runtime/CMakeLists.txt
+--- neovim-0.4.4/runtime/CMakeLists.txt	2020-08-04 20:07:48.000000000 -0400
++++ neovim/runtime/CMakeLists.txt	2021-01-13 19:34:51.332499253 -0500
+@@ -32,7 +32,7 @@
+     add_custom_command(OUTPUT "${GENERATED_PACKAGE_DIR}/${PACKNAME}/doc/tags"
+       COMMAND ${CMAKE_COMMAND} -E copy_directory
+         ${PACKAGE} ${GENERATED_PACKAGE_DIR}/${PACKNAME}
+-      COMMAND "${PROJECT_BINARY_DIR}/bin/nvim"
++      COMMAND "nvim"
+         -u NONE -i NONE -e --headless -c "helptags doc" -c quit
+       DEPENDS
+         nvim
+@@ -66,7 +66,7 @@
+   COMMAND ${CMAKE_COMMAND} -E remove doc/*
+   COMMAND ${CMAKE_COMMAND} -E copy_directory
+     ${PROJECT_SOURCE_DIR}/runtime/doc doc
+-  COMMAND "${PROJECT_BINARY_DIR}/bin/nvim"
++  COMMAND "nvim"
+     -u NONE -i NONE -e --headless -c "helptags ++t doc" -c quit
+   DEPENDS
+     nvim

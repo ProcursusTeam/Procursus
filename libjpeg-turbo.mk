@@ -4,7 +4,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS           += libjpeg-turbo
-LIBJPEG_TURBO_VERSION := 2.0.5
+LIBJPEG_TURBO_VERSION := 2.0.6
 DEB_LIBJPEG_TURBO_V   ?= $(LIBJPEG_TURBO_VERSION)
 
 libjpeg-turbo-setup: setup

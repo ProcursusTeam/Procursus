@@ -1,0 +1,28 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+  remove|deconfigure)
+    update-alternatives --remove editor /usr/bin/nvim
+    update-alternatives --remove ex /usr/libexec/neovim/ex
+    update-alternatives --remove rvim /usr/libexec/neovim/rvim
+    update-alternatives --remove rview /usr/libexec/neovim/rview
+    update-alternatives --remove vi /usr/bin/nvim
+    update-alternatives --remove vim /usr/bin/nvim
+    update-alternatives --remove view /usr/libexec/neovim/view
+    update-alternatives --remove vimdiff /usr/libexec/neovim/vimdiff
+    ;;
+
+  upgrade|failed-upgrade)
+    ;;
+
+  *)
+    echo "prerm called with unknown argument '$1'" >&2
+    exit 0
+    ;;
+esac
+
+#DEBHELPER#
+
+exit 0

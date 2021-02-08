@@ -1,0 +1,10 @@
+Package: liblualib50-dev
+Version: @DEB_LUA50_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Depends: liblualib50 (= @DEB_LUA50_V@), liblua50 (= @DEB_LUA50_V@)
+Priority: standard
+Description: Extension library for Lua 5.0: static and headers
+ This package allows you to link to the Lua standard libraries
+ providing maths, string and IO functions to your Lua based programs.

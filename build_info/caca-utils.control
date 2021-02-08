@@ -3,7 +3,7 @@ Version: @DEB_LIBCACA_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: libcaca0 (= @DEB_LIBCACA_V@), libimlib2-1, libslang2, libncursesw6
-Section: Libraries
+Section: Multimedia
 Priority: optional
 Description: text mode graphics utilities
  This package contains utilities and demonstration programs for libcaca, the

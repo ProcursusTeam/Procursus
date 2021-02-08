@@ -1,4 +1,4 @@
-Package: libgit2-1.0
+Package: libgit2-1.1
 Version: @DEB_LIBGIT2_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@

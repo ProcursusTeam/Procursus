@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += sqlite3
-SQLITE3_VERSION  := 3.33.0
+SQLITE3_VERSION  := 3.34.1
 DEB_SQLITE3_V    ?= $(SQLITE3_VERSION)
 
 sqlite3-setup: setup
@@ -33,8 +33,6 @@ sqlite3: sqlite3-setup ncurses readline
 	+$(MAKE) -C $(BUILD_WORK)/sqlite3 all sqldiff
 	+$(MAKE) -C $(BUILD_WORK)/sqlite3 install \
 		DESTDIR="$(BUILD_STAGE)/sqlite3"
-	+$(MAKE) -C $(BUILD_WORK)/sqlite3 install \
-		DESTDIR="$(BUILD_BASE)"
 	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/sqlite3/usr/bin/lemon $(BUILD_WORK)/sqlite3/tool/lemon.c $(LDFLAGS)
 	cp -a $(BUILD_WORK)/sqlite3/.libs/sqldiff $(BUILD_STAGE)/sqlite3/usr/bin
 	mkdir -p $(BUILD_STAGE)/sqlite3/usr/share/lemon

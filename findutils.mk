@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS     += findutils
-FINDUTILS_VERSION := 4.7.0
-DEB_FINDUTILS_V   ?= $(FINDUTILS_VERSION)-2
+FINDUTILS_VERSION := 4.8.0
+DEB_FINDUTILS_V   ?= $(FINDUTILS_VERSION)
 
 findutils-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/findutils/findutils-$(FINDUTILS_VERSION).tar.xz{,.sig}
@@ -19,9 +19,15 @@ findutils: findutils-setup gettext
 	cd $(BUILD_WORK)/findutils && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
+		--localstatedir=/var/cache/locate \
 		--disable-dependency-tracking \
-		--disable-debug
-	+$(MAKE) -C $(BUILD_WORK)/findutils
+		--disable-debug \
+		--without-selinux \
+		--with-packager=Procursus \
+		--enable-threads=posix \
+		CFLAGS="$(CFLAGS) -D__nonnull\(params\)="
+	+$(MAKE) -C $(BUILD_WORK)/findutils \
+		SORT="/usr/bin/sort"
 	+$(MAKE) -C $(BUILD_WORK)/findutils install \
 		DESTDIR=$(BUILD_STAGE)/findutils
 	touch $(BUILD_WORK)/findutils/.build_complete
@@ -30,10 +36,9 @@ endif
 findutils-package: findutils-stage
 	# findutils.mk Package Structure
 	rm -rf $(BUILD_DIST)/findutils
-	mkdir -p $(BUILD_DIST)/findutils
 	
 	# findutils.mk Prep findutils
-	cp -a $(BUILD_STAGE)/findutils/usr $(BUILD_DIST)/findutils
+	cp -a $(BUILD_STAGE)/findutils $(BUILD_DIST)
 	
 	# findutils.mk Sign
 	$(call SIGN,findutils,general.xml)

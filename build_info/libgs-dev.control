@@ -2,7 +2,7 @@ Package: libgs-dev
 Version: @DEB_GHOSTSCRIPT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libgs9 (= @DEB_GHOSTSCRIPT_V@), libexpat1-dev, libfontconfig-dev, libfreetype-dev, libjbig2dec0-dev, libjpeg62-turbo-dev, liblcms2-dev, libopenjp2-7-dev, libpaper-dev, libpng16-dev, libtiff-dev
+Depends: libgs9 (= @DEB_GHOSTSCRIPT_V@), firmware (>= 14.0) | libexpat1-dev, libfontconfig-dev, libfreetype-dev, libjbig2dec0-dev, libjpeg62-turbo-dev, liblcms2-dev, libopenjp2-7-dev, libpaper-dev, libpng16-dev, libtiff-dev
 Section: Development
 Priority: optional
 Multi-Arch: foreign

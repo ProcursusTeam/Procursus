@@ -11,7 +11,10 @@ expat-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libexpat/libexpat/releases/download/R_$(EXPAT_FORMAT_V)/expat-$(EXPAT_VERSION).tar.xz
 	$(call EXTRACT_TAR,expat-$(EXPAT_VERSION).tar.xz,expat-$(EXPAT_VERSION),expat)
 
-ifneq ($(wildcard $(BUILD_WORK)/expat/.build_complete),)
+ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1700 ] && echo 1),1)
+expat:
+	@echo "Expat is not needed on CFVER 1700+"
+else ifneq ($(wildcard $(BUILD_WORK)/expat/.build_complete),)
 expat:
 	@echo "Using previously built expat."
 else

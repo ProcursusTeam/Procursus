@@ -1,0 +1,9 @@
+Package: lua-luv-dev
+Version: @DEB_LUA-LUV_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libuv1-dev
+Section: Development
+Priority: optional
+Description: libuv bindings for Lua (development files)
+ This package provide the static library and headers for lua-luv

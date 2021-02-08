@@ -1,0 +1,9 @@
+Package: pbzx
+Version: @DEB_PBZX_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: liblzma5, libxar1
+Section: Utilities
+Priority: optional
+Homepage: https://github.com/NiklasRosenstein/pbzx
+Description: pbzx stream parser
