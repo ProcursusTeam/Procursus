@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq ($(MEMO_TARGET),darwin-arm64e)
+
 SUBPROJECTS             += build-essential
 BUILD-ESSENTIAL_VERSION := 1
 DEB_BUILD-ESSENTIAL_V   ?= $(BUILD-ESSENTIAL_VERSION)
@@ -12,7 +14,6 @@ else ifeq ($(PLATFORM),appletvos)
 BARE_PLATFORM := AppleTVOS
 else ifeq ($(PLATFORM),watchos)
 BARE_PLATFORM := WatchOS
-else
 $(error Unsupported platform $(PLATFORM))
 endif
 
@@ -41,3 +42,5 @@ build-essential-package: build-essential-stage
 	rm -rf $(BUILD_DIST)/build-essential
 
 .PHONY: build-essential build-essential-package
+
+endif # ($(MEMO_TARGET),darwin-arm64e)

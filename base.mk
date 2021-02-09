@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq ($(MEMO_TARGET),darwin-arm64e)
+
 STRAPPROJECTS += base
 BASE_VERSION  := 1-5
 DEB_BASE_V    ?= $(BASE_VERSION)
@@ -37,3 +39,5 @@ base-package: base-stage
 	rm -rf $(BUILD_DIST)/base
 
 .PHONY: base base-package
+
+endif # ($(MEMO_TARGET),darwin-arm64e)
