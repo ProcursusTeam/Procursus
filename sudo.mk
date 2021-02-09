@@ -2,7 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq ($(MEMO_TARGET),darwin-arm64e)
 STRAPPROJECTS += sudo
+else # ($(MEMO_TARGET),darwin-arm64e)
+SUBPROJECTS   += sudo
+endif # ($(MEMO_TARGET),darwin-arm64e)
 SUDO_VERSION  := 1.9.5p2
 DEB_SUDO_V    ?= $(SUDO_VERSION)
 

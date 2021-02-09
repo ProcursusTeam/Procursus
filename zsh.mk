@@ -2,7 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq ($(MEMO_TARGET),darwin-arm64e)
 STRAPPROJECTS += zsh
+else # ($(MEMO_TARGET),darwin-arm64e)
+SUBPROJECTS   += zsh
+endif # ($(MEMO_TARGET),darwin-arm64e)
 ZSH_VERSION   := 5.8
 DEB_ZSH_V     ?= $(ZSH_VERSION)-2
 

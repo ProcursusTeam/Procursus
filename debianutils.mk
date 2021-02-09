@@ -2,7 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq ($(MEMO_TARGET),darwin-arm64e)
 STRAPPROJECTS       += debianutils
+else # ($(MEMO_TARGET),darwin-arm64e)
+SUBPROJECTS         += debianutils
+endif # ($(MEMO_TARGET),darwin-arm64e)
 DEBIANUTILS_VERSION := 4.9.1
 DEB_DEBIANUTILS_V   ?= $(DEBIANUTILS_VERSION)
 

@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq ($(MEMO_TARGET),darwin-arm64e)
+
 STRAPPROJECTS       += system-cmds
 SYSTEM-CMDS_VERSION := 854.40.2
 DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-1
@@ -102,3 +104,5 @@ system-cmds-package: system-cmds-stage
 	rm -rf $(BUILD_DIST)/system-cmds
 
 .PHONY: system-cmds system-cmds-package
+
+endif # ($(MEMO_TARGET),darwin-arm64e)

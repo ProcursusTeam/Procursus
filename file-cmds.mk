@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq ($(MEMO_TARGET),darwin-arm64e)
+
 SUBPROJECTS       += file-cmds
 # Don't upgrade file-cmds, as any future version includes APIs introduced in iOS 13+.
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
@@ -59,3 +61,5 @@ file-cmds-package: file-cmds-stage
 	rm -rf $(BUILD_DIST)/file-cmds
 
 .PHONY: file-cmds file-cmds-package
+
+endif # ($(MEMO_TARGET),darwin-arm64e)

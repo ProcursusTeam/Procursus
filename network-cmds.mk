@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq ($(MEMO_TARGET),darwin-arm64e)
+
 SUBPROJECTS          += network-cmds
 NETWORK-CMDS_VERSION := 596
 DEB_NETWORK-CMDS_V   ?= $(NETWORK-CMDS_VERSION)
@@ -128,3 +130,5 @@ network-cmds-package: network-cmds-stage
 	rm -rf $(BUILD_DIST)/network-cmds
 
 .PHONY: network-cmds network-cmds-package
+
+endif # ($(MEMO_TARGET),darwin-arm64e)

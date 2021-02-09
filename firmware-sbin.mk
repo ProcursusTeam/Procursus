@@ -2,7 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq ($(MEMO_TARGET),darwin-arm64e)
 STRAPPROJECTS         += firmware-sbin
+else # ($(MEMO_TARGET),darwin-arm64e)
+SUBPROJECTS           += firmware-sbin
+endif # ($(MEMO_TARGET),darwin-arm64e)
 FIRMWARE-SBIN_VERSION := 0-1
 DEB_FIRMWARE-SBIN_V   ?= $(FIRMWARE-SBIN_VERSION)
 

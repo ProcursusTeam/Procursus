@@ -2,7 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq ($(MEMO_TARGET),darwin-arm64e)
 STRAPPROJECTS     += coreutils
+else # ($(MEMO_TARGET),darwin-arm64e)
+SUBPROJECTS       += coreutils
+endif # ($(MEMO_TARGET),darwin-arm64e)
 COREUTILS_VERSION := 8.32
 DEB_COREUTILS_V   ?= $(COREUTILS_VERSION)-7
 

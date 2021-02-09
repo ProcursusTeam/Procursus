@@ -2,7 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq ($(MEMO_TARGET),darwin-arm64e)
 STRAPPROJECTS        += diskdev-cmds
+else # ($(MEMO_TARGET),darwin-arm64e)
+SUBPROJECTS          += diskdev-cmds
+endif # ($(MEMO_TARGET),darwin-arm64e)
 DISKDEV-CMDS_VERSION := 667.40.1
 DEB_DISKDEV-CMDS_V   ?= $(DISKDEV-CMDS_VERSION)
 

@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq ($(MEMO_TARGET),darwin-arm64e)
+
 SUBPROJECTS      += adv-cmds
 ADV-CMDS_VERSION := 176
 DEB_ADV-CMDS_V   ?= $(ADV-CMDS_VERSION)
@@ -50,3 +52,5 @@ adv-cmds-package: adv-cmds-stage
 	rm -rf $(BUILD_DIST)/adv-cmds
 
 .PHONY: adv-cmds adv-cmds-package
+
+endif # ($(MEMO_TARGET),darwin-arm64e)

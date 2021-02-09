@@ -2,7 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq ($(MEMO_TARGET),darwin-arm64e)
 STRAPPROJECTS    += readline
+else # ($(MEMO_TARGET),darwin-arm64e)
+SUBPROJECTS      += readline
+endif # ($(MEMO_TARGET),darwin-arm64e)
 READLINE_VERSION := 8.1
 DEB_READLINE_V   ?= $(READLINE_VERSION)
 

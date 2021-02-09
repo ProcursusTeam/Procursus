@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq ($(MEMO_TARGET),darwin-arm64e)
+
 SUBPROJECTS            += bootstrap-cmds
 BOOTSTRAP-CMDS_VERSION := 121
 DEB_BOOTSTRAP-CMDS_V   ?= $(BOOTSTRAP-CMDS_VERSION)
@@ -46,3 +48,5 @@ bootstrap-cmds-package: bootstrap-cmds-stage
 	rm -rf $(BUILD_DIST)/bootstrap-cmds
 
 .PHONY: bootstrap-cmds bootstrap-cmds-package
+
+endif # ($(MEMO_TARGET),darwin-arm64e)

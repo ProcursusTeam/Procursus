@@ -2,7 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq ($(MEMO_TARGET),darwin-arm64e)
 STRAPPROJECTS += sed
+else # ($(MEMO_TARGET),darwin-arm64e)
+SUBPROJECTS   += sed
+endif # ($(MEMO_TARGET),darwin-arm64e)
 SED_VERSION   := 4.8
 DEB_SED_V     ?= $(SED_VERSION)-2
 

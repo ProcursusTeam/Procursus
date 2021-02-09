@@ -2,9 +2,13 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq ($(MEMO_TARGET),darwin-arm64e)
 ifeq ($(SSH_STRAP),1)
 STRAPPROJECTS   += openssl
-else
+else # ($(SSH_STRAP),1)
+SUBPROJECTS     += openssl
+endif # ($(SSH_STRAP),1)
+else # ($(MEMO_TARGET),darwin-arm64e)
 SUBPROJECTS     += openssl
 endif
 OPENSSL_VERSION := 1.1.1i
