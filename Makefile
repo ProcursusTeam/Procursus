@@ -61,6 +61,7 @@ IPHONEOS_DEPLOYMENT_TARGET  := 14.0
 APPLETVOS_DEPLOYMENT_TARGET := 14.0
 WATCHOS_DEPLOYMENT_TARGET   := 7.0
 MACOSX_DEPLOYMENT_TARGET    := 11.0
+MACOSX_SUITE_NAME           := big_sur
 override MEMO_CFVER         := 1700
 else
 $(error Unsupported CoreFoundation version)
@@ -588,10 +589,17 @@ else # ($(MEMO_PREFIX),)
 	$(CP) $(BUILD_INFO)/procursus.preferences $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/preferences.d/procursus
 	touch $(BUILD_STRAP)/strap/.procursus_strapped
 	touch $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
+ifeq ($(MEMO_TARGET),darwin-arm64e)
+	echo -e "Types: deb\n\
+URIs: https://apt.procurs.us/\n\
+Suites: $(MACOSX_SUITE_NAME)\n\
+Components: main\n" > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
+else
 	echo -e "Types: deb\n\
 URIs: https://apt.procurs.us/\n\
 Suites: $(MEMO_TARGET)/$(MEMO_CFVER)\n\
 Components: main\n" > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
+endif
 	export FAKEROOT='fakeroot -i $(BUILD_STAGE)/.fakeroot_bootstrap -s $(BUILD_STAGE)/.fakeroot_bootstrap --'; \
 	$$FAKEROOT chown 0:80 $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library; \
 	$$FAKEROOT chown 0:3 $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/var/empty; \
