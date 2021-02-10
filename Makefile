@@ -260,6 +260,7 @@ SIGN =  if [ $(MEMO_TARGET) != darwin-arm64e ]; then \
 PACK = -if [ -z $(4) ]; then \
 		find $(BUILD_DIST)/$(1) -name '*.la' -type f -delete; \
 	fi; \
+	rm -f $(BUILD_DIST)/$(1)/.build_complete; \
 	rm -rf $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/{info,doc}; \
 	find $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man -type f -exec zstd -19 --rm '{}' \; 2> /dev/null; \
 	if [ -z $(3) ]; then \
@@ -592,7 +593,7 @@ else # ($(MEMO_PREFIX),)
 	chmod 0775 $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library
 	mkdir -p $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/preferences.d
 	$(CP) $(BUILD_INFO)/procursus.preferences $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/preferences.d/procursus
-	touch $(BUILD_STRAP)/strap/.procursus_strapped
+	touch $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/.procursus_strapped
 	touch $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
 ifeq ($(MEMO_TARGET),darwin-arm64e)
 	echo -e "Types: deb\n\
@@ -606,9 +607,6 @@ Suites: $(MEMO_TARGET)/$(MEMO_CFVER)\n\
 Components: main\n" > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
 endif
 	export FAKEROOT='fakeroot -i $(BUILD_STAGE)/.fakeroot_bootstrap -s $(BUILD_STAGE)/.fakeroot_bootstrap --'; \
-	$$FAKEROOT chown 0:80 $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library; \
-	$$FAKEROOT chown 0:3 $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/var/empty; \
-	$$FAKEROOT chown 0:1 $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/var/run; \
 	cd $(BUILD_STRAP)/strap && $$FAKEROOT $(TAR) -cf ../bootstrap.tar .
 	@if [[ "$(SSH_STRAP)" = 1 ]]; then \
 		BOOTSTRAP=bootstrap-ssh.tar.zst; \
