@@ -243,8 +243,13 @@ DO_PATCH    = -cd $(BUILD_PATCH)/$(1); \
 		fi; \
 	done
 
-SIGN =  find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \; &> /dev/null; \
-	find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
+SIGN =  if [ $(MEMO_TARGET) != darwin-arm64e ]; then \
+		find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \; &> /dev/null; \
+		find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete; \
+	else \
+		find $(BUILD_DIST)/$(1) -type f -exec codesign --remove {} \; &> /dev/null; \
+		find $(BUILD_DIST)/$(1) -type f -exec codesign -s - {} \; &> /dev/null; \
+	fi
 
 ###
 #
