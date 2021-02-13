@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += fzf
-FZF_VERSION  := 0.24.4
+FZF_VERSION  := 0.25.0
 DEB_FZF_V    ?= $(FZF_VERSION)
 
 fzf-setup: setup

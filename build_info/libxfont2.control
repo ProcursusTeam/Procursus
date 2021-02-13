@@ -1,0 +1,16 @@
+Package: libxfont2
+Version: @DEB_LIBXFONT2_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libfreetype2, libfontenc1
+Section: Libraries
+Priority: optional
+Description: X11 font rasterisation library
+ libXfont provides various services for X servers, most notably font
+ selection and rasterisation (through external libraries).
+ .
+ More information about X.Org can be found at:
+ <URL:https://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libXfont

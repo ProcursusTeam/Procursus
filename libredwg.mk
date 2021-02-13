@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += libredwg
-LIBREDWG_VERSION := 0.11
+LIBREDWG_VERSION := 0.12
 DEB_LIBREDWG_V   ?= $(LIBREDWG_VERSION)
 
 libredwg-setup: setup

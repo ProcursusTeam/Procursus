@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS  += dpkg
-DPKG_VERSION   := 1.20.5
-DEB_DPKG_V     ?= $(DPKG_VERSION)-4
+DPKG_VERSION   := 1.20.7.1
+DEB_DPKG_V     ?= $(DPKG_VERSION)
 
 dpkg-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_$(DPKG_VERSION).tar.xz
@@ -31,6 +31,7 @@ base-bsd-darwin-armk		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
 		--with-logdir=/var/log/dpkg \
 		--disable-start-stop-daemon \
 		--disable-dselect \
+		--without-libselinux \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
 		PERL_LIBDIR='$$(prefix)/share/perl5' \
 		PERL="/usr/bin/perl" \

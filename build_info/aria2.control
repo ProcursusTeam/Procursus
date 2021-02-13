@@ -9,4 +9,4 @@ Description: High speed download utility
  segmented downloading. Supported protocols are HTTP/HTTPS/
  SFTP/FTP/BitTorrent and it also supports Metalink.
 Recommends: ca-certificates
-Depends: libuv1, libsqlite3-1, libssh2-1, libjemalloc2, libc-ares2, libintl8, libaria2-0 (= @DEB_ARIA2_V@), libssl1.1
+Depends: libuv1, libssh2-1, libjemalloc2, libc-ares2, libintl8, libaria2-0 (= @DEB_ARIA2_V@), libssl1.1

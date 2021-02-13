@@ -3,19 +3,19 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += cmake
-CMAKE_VERSION := 3.18.1
+CMAKE_VERSION := 3.19.4
 DEB_CMAKE_V   ?= $(CMAKE_VERSION)
 
 cmake-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/Kitware/CMake/releases/download/v$(CMAKE_VERSION)/cmake-$(CMAKE_VERSION).tar.gz
 	$(call EXTRACT_TAR,cmake-$(CMAKE_VERSION).tar.gz,cmake-$(CMAKE_VERSION),cmake)
-	$(SED) -i 's|#if !defined(CMAKE_BOOTSTRAP) \&\& defined(__APPLE__)|#if 0|' $(BUILD_WORK)/cmake/Source/cmGlobalXCodeGenerator.cxx
+	$(call DO_PATCH,cmake,cmake,-p1) # Remove when cmake 3.20.0 releases.
 
 ifneq ($(wildcard $(BUILD_WORK)/cmake/.build_complete),)
 cmake:
 	@echo "Using previously built cmake."
 else
-cmake: cmake-setup ncurses
+cmake: cmake-setup ncurses libuv1 curl libarchive expat xz nghttp2 zstd
 	cd $(BUILD_WORK)/cmake && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
@@ -32,6 +32,15 @@ cmake: cmake-setup ncurses
 		-DBUILD_CursesDialog:BOOL=ON \
 		-DCURSES_NCURSES_LIBRARY:FILEPATH="$(BUILD_BASE)/usr/lib/libncursesw.dylib" \
 		-DSPHINX_MAN:BOOL=ON \
+		-DCMAKE_USE_SYSTEM_LIBUV=ON \
+		-DCMAKE_USE_SYSTEM_BZIP2=ON \
+		-DCMAKE_USE_SYSTEM_CURL=ON \
+		-DCMAKE_USE_SYSTEM_EXPAT=ON \
+		-DCMAKE_USE_SYSTEM_LIBARCHIVE=ON \
+		-DCMAKE_USE_SYSTEM_LIBLZMA=ON \
+		-DCMAKE_USE_SYSTEM_NGHTTP2=ON \
+		-DCMAKE_USE_SYSTEM_ZLIB=ON \
+		-DCMAKE_USE_SYSTEM_ZSTD=ON \
 		.
 	+$(MAKE) -C $(BUILD_WORK)/cmake install \
 		DESTDIR="$(BUILD_STAGE)/cmake"

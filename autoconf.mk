@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += autoconf
-AUTOCONF_VERSION  := 2.69
+AUTOCONF_VERSION  := 2.70
 DEB_AUTOCONF_V    ?= $(AUTOCONF_VERSION)
 
 autoconf-setup: setup

@@ -1,0 +1,18 @@
+Package: libgl1-mesa-dri
+Version: @DEB_MESA_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Depends: libglapi-mesa (= @DEB_MESA_V@), firmware (>= 14.0) | libexpat1, libzstd1
+Priority: optional
+Homepage: https://mesa3d.org/
+Description: free implementation of the OpenGL API -- DRI modules
+ This version of Mesa provides GLX and DRI capabilities: it is capable of
+ both direct and indirect rendering.  For direct rendering, it can use DRI
+ modules from the libgl1-mesa-dri package to accelerate drawing.
+ .
+ This package does not include the OpenGL library itself, only the DRI
+ modules for accelerating direct rendering.
+ .
+ For a complete description of Mesa, please look at the
+ libgl1-mesa-glx package.

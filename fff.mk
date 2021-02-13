@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += fff
-FFF_VERSION := 2.1
+FFF_VERSION := 2.2
 DEB_FFF_V   ?= $(FFF_VERSION)
 
 fff-setup: setup

@@ -2,7 +2,7 @@ Package: libfontconfig1
 Version: @DEB_FONTCONFIG_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libuuid16, libintl8, libfreetype6, libexpat1, fontconfig-config
+Depends: libuuid16, libintl8, libfreetype6, firmware (>= 14.0) | libexpat1, fontconfig-config
 Section: Libraries
 Priority: standard
 Description: generic font configuration library - runtime

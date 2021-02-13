@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += htop
-HTOP_VERSION := 3.0.0
+HTOP_VERSION := 3.0.5
 DEB_HTOP_V   ?= $(HTOP_VERSION)
 
 htop-setup: setup

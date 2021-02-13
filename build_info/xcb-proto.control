@@ -1,0 +1,24 @@
+Package: xcb-proto
+Version: @DEB_XCBPROTO_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: X11
+Priority: standard
+Description: X C Binding - protocol descriptions
+ xcb-proto contains descriptions of the X Window System core protocol and
+ selected extensions in an XML-based data format. The X C Binding (XCB)
+ library uses these descriptions to generate much of its code. You only need
+ this package if you want to compile XCB or otherwise make use of these
+ protocol descriptions.
+ .
+ The XCB library provides an interface to the X Window System protocol,
+ designed to replace the Xlib interface.  XCB provides several advantages over
+ Xlib:
+ .
+  * Size: small library and lower memory footprint
+  * Latency hiding: batch several requests and wait for the replies later
+  * Direct protocol access: one-to-one mapping between interface and protocol
+  * Thread support: access XCB from multiple threads, with no explicit locking
+  * Easy creation of new extensions: automatically generates interface from
+    machine-parsable protocol descriptions
+Tag: role::developer

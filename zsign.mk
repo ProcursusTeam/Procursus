@@ -2,17 +2,16 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS     += zsign
-ZSIGN_VERSION   := 20200919
-DEB_ZSIGN_V     := 0~$(ZSIGN_VERSION)
-
-ZSIGN_COMMIT_HASH=e2e78a1
+SUBPROJECTS   += zsign
+ZSIGN_COMMIT  := b5733ea0bb2d612492e732ba0fa5a828c0ca04da
+ZSIGN_VERSION := 0~20210202.$(shell echo $(ZSIGN_COMMIT) | cut -c -7)
+DEB_ZSIGN_V   := $(ZSIGN_VERSION)
 
 zsign-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/zsign-$(ZSIGN_VERSION).tar.gz" ] \
-		&& wget -nc -O$(BUILD_SOURCE)/zsign-$(ZSIGN_VERSION).tar.gz \
-			https://github.com/zhlynn/zsign/archive/$(ZSIGN_COMMIT_HASH).tar.gz
-	$(call EXTRACT_TAR,zsign-$(ZSIGN_VERSION).tar.gz,zsign-$(ZSIGN_COMMIT_HASH)*,zsign)
+	-[ ! -e "$(BUILD_SOURCE)/zsign-$(ZSIGN_COMMIT).tar.gz" ] \
+		&& wget -nc -O$(BUILD_SOURCE)/zsign-$(ZSIGN_COMMIT).tar.gz \
+			https://github.com/zhlynn/zsign/archive/$(ZSIGN_COMMIT).tar.gz
+	$(call EXTRACT_TAR,zsign-$(ZSIGN_COMMIT).tar.gz,zsign-$(ZSIGN_COMMIT)*,zsign)
 
 ifneq ($(wildcard $(BUILD_WORK)/zsign/.build_complete),)
 zsign:
