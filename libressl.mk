@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 #SUBPROJECTS      += libressl
-LIBRESSL_VERSION := 3.0.2
+LIBRESSL_VERSION := 3.3.1
 DEB_LIBRESSL_V   ?= $(LIBRESSL_VERSION)
 
 libressl-setup: setup

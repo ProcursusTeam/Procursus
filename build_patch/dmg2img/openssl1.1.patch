@@ -1,0 +1,159 @@
+From: Reiner Herrmann <reiner@reiner-h.de>
+Date: Tue, 21 Nov 2017 21:34:41 +0000
+Subject: Fix building with OpenSSL 1.1
+
+---
+ vfdecrypt.c | 57 ++++++++++++++++++++++++++++++++++-----------------------
+ 1 file changed, 34 insertions(+), 23 deletions(-)
+
+diff --git a/vfdecrypt.c b/vfdecrypt.c
+index 56d3530..833a09e 100644
+--- a/vfdecrypt.c
++++ b/vfdecrypt.c
+@@ -183,7 +183,7 @@ void adjust_v2_header_byteorder(cencrypted_v2_pwheader *pwhdr) {
+   pwhdr->encrypted_keyblob_size = htonl(pwhdr->encrypted_keyblob_size);
+ }
+ 
+-HMAC_CTX hmacsha1_ctx;
++HMAC_CTX *hmacsha1_ctx = NULL;
+ AES_KEY aes_decrypt_key;
+ int CHUNK_SIZE=4096;  // default
+ 
+@@ -196,9 +196,9 @@ void compute_iv(uint32_t chunk_no, uint8_t *iv) {
+   unsigned int mdLen;
+   
+   chunk_no = OSSwapHostToBigInt32(chunk_no);
+-  HMAC_Init_ex(&hmacsha1_ctx, NULL, 0, NULL, NULL);
+-  HMAC_Update(&hmacsha1_ctx, (void *) &chunk_no, sizeof(uint32_t));
+-  HMAC_Final(&hmacsha1_ctx, mdResult, &mdLen);
++  HMAC_Init_ex(hmacsha1_ctx, NULL, 0, NULL, NULL);
++  HMAC_Update(hmacsha1_ctx, (void *) &chunk_no, sizeof(uint32_t));
++  HMAC_Final(hmacsha1_ctx, mdResult, &mdLen);
+   memcpy(iv, mdResult, CIPHER_BLOCKSIZE);
+ }
+ 
+@@ -212,47 +212,47 @@ void decrypt_chunk(uint8_t *ctext, uint8_t *ptext, uint32_t chunk_no) {
+ /* DES3-EDE unwrap operation loosely based on to RFC 2630, section 12.6 
+  *    wrapped_key has to be 40 bytes in length.  */
+ int apple_des3_ede_unwrap_key(uint8_t *wrapped_key, int wrapped_key_len, uint8_t *decryptKey, uint8_t *unwrapped_key) {
+-  EVP_CIPHER_CTX ctx;
++  EVP_CIPHER_CTX *ctx;
+   uint8_t *TEMP1, *TEMP2, *CEKICV;
+   uint8_t IV[8] = { 0x4a, 0xdd, 0xa2, 0x2c, 0x79, 0xe8, 0x21, 0x05 };
+   int outlen, tmplen, i;
+ 
+-  EVP_CIPHER_CTX_init(&ctx);
++  ctx = EVP_CIPHER_CTX_new();
+   /* result of the decryption operation shouldn't be bigger than ciphertext */
+   TEMP1 = malloc(wrapped_key_len);
+   TEMP2 = malloc(wrapped_key_len);
+   CEKICV = malloc(wrapped_key_len);
+   /* uses PKCS#7 padding for symmetric key operations by default */
+-  EVP_DecryptInit_ex(&ctx, EVP_des_ede3_cbc(), NULL, decryptKey, IV);
++  EVP_DecryptInit_ex(ctx, EVP_des_ede3_cbc(), NULL, decryptKey, IV);
+ 
+-  if(!EVP_DecryptUpdate(&ctx, TEMP1, &outlen, wrapped_key, wrapped_key_len)) {
++  if(!EVP_DecryptUpdate(ctx, TEMP1, &outlen, wrapped_key, wrapped_key_len)) {
+     fprintf(stderr, "internal error (1) during key unwrap operation!\n");
+     return(-1);
+   }
+-  if(!EVP_DecryptFinal_ex(&ctx, TEMP1 + outlen, &tmplen)) {
++  if(!EVP_DecryptFinal_ex(ctx, TEMP1 + outlen, &tmplen)) {
+     fprintf(stderr, "internal error (2) during key unwrap operation!\n");
+     return(-1);
+   }
+   outlen += tmplen;
+-  EVP_CIPHER_CTX_cleanup(&ctx);
++  EVP_CIPHER_CTX_free(ctx);
+ 
+   /* reverse order of TEMP3 */
+   for(i = 0; i < outlen; i++) TEMP2[i] = TEMP1[outlen - i - 1];
+ 
+-  EVP_CIPHER_CTX_init(&ctx);
++  ctx = EVP_CIPHER_CTX_new();
+   /* uses PKCS#7 padding for symmetric key operations by default */
+-  EVP_DecryptInit_ex(&ctx, EVP_des_ede3_cbc(), NULL, decryptKey, TEMP2);
+-  if(!EVP_DecryptUpdate(&ctx, CEKICV, &outlen, TEMP2+8, outlen-8)) {
++  EVP_DecryptInit_ex(ctx, EVP_des_ede3_cbc(), NULL, decryptKey, TEMP2);
++  if(!EVP_DecryptUpdate(ctx, CEKICV, &outlen, TEMP2+8, outlen-8)) {
+     fprintf(stderr, "internal error (3) during key unwrap operation!\n");
+     return(-1);
+   }
+-  if(!EVP_DecryptFinal_ex(&ctx, CEKICV + outlen, &tmplen)) {
++  if(!EVP_DecryptFinal_ex(ctx, CEKICV + outlen, &tmplen)) {
+     fprintf(stderr, "internal error (4) during key unwrap operation!\n");
+     return(-1);
+   }
+ 
+   outlen += tmplen;
+-  EVP_CIPHER_CTX_cleanup(&ctx);
++  EVP_CIPHER_CTX_free(ctx);
+ 
+   memcpy(unwrapped_key, CEKICV+4, outlen-4);
+   free(TEMP1);
+@@ -279,7 +279,7 @@ int unwrap_v1_header(char *passphrase, cencrypted_v1_header *header, uint8_t *ae
+ int unwrap_v2_header(char *passphrase, cencrypted_v2_pwheader *header, uint8_t *aes_key, uint8_t *hmacsha1_key) {
+   /* derived key is a 3DES-EDE key */
+   uint8_t derived_key[192/8];
+-  EVP_CIPHER_CTX ctx;
++  EVP_CIPHER_CTX *ctx;
+   uint8_t *TEMP1;
+   int outlen, tmplen;
+ 
+@@ -288,22 +288,22 @@ int unwrap_v2_header(char *passphrase, cencrypted_v2_pwheader *header, uint8_t *
+ 
+   print_hex(derived_key, 192/8);
+ 
+-  EVP_CIPHER_CTX_init(&ctx);
++  ctx = EVP_CIPHER_CTX_new();
+   /* result of the decryption operation shouldn't be bigger than ciphertext */
+   TEMP1 = malloc(header->encrypted_keyblob_size);
+   /* uses PKCS#7 padding for symmetric key operations by default */
+-  EVP_DecryptInit_ex(&ctx, EVP_des_ede3_cbc(), NULL, derived_key, header->blob_enc_iv);
++  EVP_DecryptInit_ex(ctx, EVP_des_ede3_cbc(), NULL, derived_key, header->blob_enc_iv);
+ 
+-  if(!EVP_DecryptUpdate(&ctx, TEMP1, &outlen, header->encrypted_keyblob, header->encrypted_keyblob_size)) {
++  if(!EVP_DecryptUpdate(ctx, TEMP1, &outlen, header->encrypted_keyblob, header->encrypted_keyblob_size)) {
+     fprintf(stderr, "internal error (1) during key unwrap operation!\n");
+     return(-1);
+   }
+-  if(!EVP_DecryptFinal_ex(&ctx, TEMP1 + outlen, &tmplen)) {
++  if(!EVP_DecryptFinal_ex(ctx, TEMP1 + outlen, &tmplen)) {
+     fprintf(stderr, "internal error (2) during key unwrap operation!\n");
+     return(-1);
+   }
+   outlen += tmplen;
+-  EVP_CIPHER_CTX_cleanup(&ctx);
++  EVP_CIPHER_CTX_free(ctx);
+   memcpy(aes_key, TEMP1, 16);
+   memcpy(hmacsha1_key, TEMP1, 20);
+ 
+@@ -446,8 +446,13 @@ int main(int argc, char *argv[]) {
+     CHUNK_SIZE = v2header.blocksize;
+   }
+   
+-  HMAC_CTX_init(&hmacsha1_ctx);
+-  HMAC_Init_ex(&hmacsha1_ctx, hmacsha1_key, sizeof(hmacsha1_key), EVP_sha1(), NULL);
++#if OPENSSL_VERSION_NUMBER < 0x10100000L
++  hmacsha1_ctx = OPENSSL_malloc(sizeof(*hmacsha1_ctx));
++  HMAC_CTX_init(hmacsha1_ctx);
++#else
++  hmacsha1_ctx = HMAC_CTX_new();
++#endif
++  HMAC_Init_ex(hmacsha1_ctx, hmacsha1_key, sizeof(hmacsha1_key), EVP_sha1(), NULL);
+   AES_set_decrypt_key(aes_key, CIPHER_KEY_LENGTH * 8, &aes_decrypt_key);
+   
+   if (verbose >= 1) {
+@@ -470,6 +475,12 @@ int main(int argc, char *argv[]) {
+     }
+     fwrite(outbuf, CHUNK_SIZE, 1, out);
+   }
++#if OPENSSL_VERSION_NUMBER < 0x10100000L
++  HMAC_CTX_cleanup(hmacsha1_ctx);
++  OPENSSL_free(hmacsha1_ctx);
++#else
++  HMAC_CTX_free(hmacsha1_ctx);
++#endif
+   
+   if (verbose)  fprintf(stderr, "%"PRIX32" chunks written\n", chunk_no);
+   return(0);

@@ -1,0 +1,8 @@
+#!/bin/sh -e
+
+case "$1" in
+    remove)
+        update-alternatives --remove lua-interpreter /usr/bin/lua5.2
+        update-alternatives --remove lua-compiler /usr/bin/luac5.2
+        ;;
+esac

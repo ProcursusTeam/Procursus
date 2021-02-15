@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += libgdbm
-LIBGDBM_VERSION := 1.18.1
-DEB_LIBGDBM_V   ?= $(LIBGDBM_VERSION)-2
+LIBGDBM_VERSION := 1.19
+DEB_LIBGDBM_V   ?= $(LIBGDBM_VERSION)
 
 libgdbm-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gdbm/gdbm-$(LIBGDBM_VERSION).tar.gz{,.sig}

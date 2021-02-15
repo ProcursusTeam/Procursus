@@ -15,18 +15,24 @@ ifneq ($(wildcard $(BUILD_WORK)/libxcb/.build_complete),)
 libxcb:
 	@echo "Using previously built libxcb."
 else
-libxcb: libxcb-setup libxau libxdmcp libpthread-stubs
+libxcb: libxcb-setup xcb-proto libxau libxdmcp libpthread-stubs
 	cd $(BUILD_WORK)/libxcb && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--with-launchd \
 		--enable-dri3 \
 		--enable-xevie
-	+$(MAKE) -C $(BUILD_WORK)/libxcb
+	+$(MAKE) -C $(BUILD_WORK)/libxcb \
+		XCBPROTO_XCBPYTHONDIR="$(BUILD_BASE)/usr/lib/python3/dist-packages" \
+		XCBPROTO_XCBINCLUDEDIR="$(BUILD_BASE)/usr/share/xcb"
 	+$(MAKE) -C $(BUILD_WORK)/libxcb install \
-		DESTDIR=$(BUILD_STAGE)/libxcb
+		DESTDIR=$(BUILD_STAGE)/libxcb \
+		XCBPROTO_XCBPYTHONDIR="$(BUILD_BASE)/usr/lib/python3/dist-packages" \
+		XCBPROTO_XCBINCLUDEDIR="$(BUILD_BASE)/usr/share/xcb"
 	+$(MAKE) -C $(BUILD_WORK)/libxcb install \
-		DESTDIR=$(BUILD_BASE)
+		DESTDIR=$(BUILD_BASE) \
+		XCBPROTO_XCBPYTHONDIR="$(BUILD_BASE)/usr/lib/python3/dist-packages" \
+		XCBPROTO_XCBINCLUDEDIR="$(BUILD_BASE)/usr/share/xcb"
 	touch $(BUILD_WORK)/libxcb/.build_complete
 endif
 

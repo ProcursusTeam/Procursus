@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [[ $1 == upgrade ]]; then
+    /usr/bin/launchctl unload /Library/LaunchDaemons/com.corellium.usbfluxd.plist
+    /usr/bin/launchctl load /Library/LaunchDaemons/com.corellium.usbfluxd.plist
+fi
+
+if [[ $1 == install ]]; then
+    /usr/bin/launchctl load -w /Library/LaunchDaemons/com.corellium.usbfluxd.plist
+fi
+
+exit 0

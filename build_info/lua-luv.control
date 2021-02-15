@@ -1,0 +1,11 @@
+Package: lua-luv
+Version: @DEB_LUA-LUV_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libuv1
+Section: Libraries 
+Priority: optional
+Description: libuv bindings for Lua
+ libuv is a multi-platform support library with a focus on asynchronous I/O.
+ .
+ This package provides libuv bindings for the Lua programming language.
