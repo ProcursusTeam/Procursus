@@ -1,0 +1,15 @@
+Package: mkvtoolnix
+Priority: optional
+Section: Utilities
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_MKVTOOLNIX_V@
+Depends: libboost-filesystem1.74.0, libboost-system1.74.0, libflac8, libfmt7, gettext, libebml5, libmagic1, libvorbis0a, libpcre2-8-0, libpugixml1
+Homepage: https://mkvtoolnix.download/index.html
+Description: Set of command-line tools to work with Matroska files
+ Matroska is a new multimedia container format, based on EBML (Extensible
+ Binary Meta Language), which is a kind of binary XML.
+ These tools allow one to manipulate Matroska files.
+  * mkvmerge is a tool to create Matroska files from other formats
+  * mkvinfo allow one to get information about the tracks in a Matroska file
+  * mkvextract can extract tracks from Matroska files to other formats
