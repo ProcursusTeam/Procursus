@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += usbfluxd
-USBFLUXD_COMMIT  := f1773325c7e197384bd6ac724f47b319dea3d2d4
+USBFLUXD_COMMIT  := 422734fd2b01ad4fefeefb9c8c4e65a5abd69f0f
 USBFLUXD_VERSION := 1.2.0+git20200925.$(shell echo $(USBFLUXD_COMMIT) | cut -c -7)
 DEB_USBFLUXD_V   ?= $(USBFLUXD_VERSION)
 
@@ -12,7 +12,6 @@ usbfluxd-setup: setup
 		&& wget -q -nc -O$(BUILD_SOURCE)/usbfluxd-$(USBFLUXD_VERSION).tar.gz \
 			https://github.com/corellium/usbfluxd/archive/$(USBFLUXD_COMMIT).tar.gz
 	$(call EXTRACT_TAR,usbfluxd-$(USBFLUXD_VERSION).tar.gz,usbfluxd-$(USBFLUXD_COMMIT),usbfluxd)
-	$(call DO_PATCH,usbfluxd,usbfluxd,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/usbfluxd/.build_complete),)
 usbfluxd:
