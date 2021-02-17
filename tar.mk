@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += tar
-TAR_VERSION   := 1.33
-DEB_TAR_V     ?= $(TAR_VERSION)-1
+TAR_VERSION   := 1.34
+DEB_TAR_V     ?= $(TAR_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 TAR_CONFIGURE_ARGS += ac_cv_func_rpmatch=no
