@@ -8,9 +8,7 @@ LDID_VERSION  := 2.1.2+20210222.$(shell echo $(LDID_COMMIT) | cut -c -7)
 DEB_LDID_V    ?= $(LDID_VERSION)
 
 ldid-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/saurik-ldid-$(LDID_COMMIT).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/saurik-ldid-$(LDID_COMMIT).tar.gz \
-			https://github.com/Diatrus/saurik-ldid/archive/$(LDID_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,Diatrus,saurik-ldid,$(LDID_COMMIT),$(LDID_COMMIT))
 	$(call EXTRACT_TAR,saurik-ldid-$(LDID_COMMIT).tar.gz,saurik-ldid-$(LDID_COMMIT),ldid)
 	mkdir -p $(BUILD_STAGE)/ldid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 

@@ -10,9 +10,7 @@ GOLB_VERSION   := 1.0.1+git20210401.$(shell echo $(GOLB_COMMIT) | cut -c -7)
 DEB_GOLB_V     ?= $(GOLB_VERSION)
 
 golb-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/golb-v$(GOLB_COMMIT).tar.gz" ] \
-		&& wget -nc -O$(BUILD_SOURCE)/golb-v$(GOLB_COMMIT).tar.gz \
-			https://github.com/0x7ff/golb/archive/$(GOLB_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,0x7ff,golb,v$(GOLB_COMMIT),$(GOLB_COMMIT))
 	$(call EXTRACT_TAR,golb-v$(GOLB_COMMIT).tar.gz,golb-$(GOLB_COMMIT),golb)
 	mkdir -p $(BUILD_STAGE)/golb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 

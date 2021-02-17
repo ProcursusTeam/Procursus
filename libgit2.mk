@@ -7,9 +7,7 @@ LIBGIT2_VERSION  := 1.1.0
 DEB_LIBGIT2_V    ?= $(LIBGIT2_VERSION)
 
 libgit2-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/libgit2-$(LIBGIT2_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/libgit2-$(LIBGIT2_VERSION).tar.gz \
-			https://github.com/libgit2/libgit2/archive/v$(LIBGIT2_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,libgit2,libgit2,$(LIBGIT2_VERSION),v$(LIBGIT2_VERSION))
 	$(call EXTRACT_TAR,libgit2-$(LIBGIT2_VERSION).tar.gz,libgit2-$(LIBGIT2_VERSION),libgit2)
 
 ifneq ($(wildcard $(BUILD_WORK)/libgit2/.build_complete),)

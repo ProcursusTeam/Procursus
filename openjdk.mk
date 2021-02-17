@@ -16,9 +16,7 @@ DEB_OPENJDK_V   ?= $(OPENJDK_VERSION)-2
 ###
 
 openjdk-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/openjdk-$(OPENJDK_COMMIT).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/openjdk-$(OPENJDK_COMMIT).tar.gz \
-			https://github.com/openjdk/aarch64-port/archive/$(OPENJDK_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,openjdk,aarch64-port,$(OPENJDK_COMMIT),$(OPENJDK_COMMIT),openjdk)
 	wget -q -nc -P $(BUILD_SOURCE) \
 		https://github.com/apple/cups/releases/download/v2.3.3/cups-2.3.3-source.tar.gz \
 		https://download.java.net/java/GA/jdk15/779bf45e88a44cbd9ea6621d33e33db1/36/GPL/openjdk-15_osx-x64_bin.tar.gz

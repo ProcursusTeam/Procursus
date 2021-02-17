@@ -9,8 +9,8 @@ DEB_CCTOOLS_V   ?= $(CCTOOLS_VERSION)-2
 DEB_LD64_V      ?= $(LD64_VERSION)-3
 
 cctools-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/Diatrus/cctools-port/archive/$(CCTOOLS_VERSION)-ld64-$(LD64_VERSION).tar.gz
-	$(call EXTRACT_TAR,$(CCTOOLS_VERSION)-ld64-$(LD64_VERSION).tar.gz,cctools-port-$(CCTOOLS_VERSION)-ld64-$(LD64_VERSION)/cctools,cctools)
+	$(call GITHUB_ARCHIVE,Diatrus,cctools-port,$(CCTOOLS_VERSION)-ld64-$(LD64_VERSION),$(CCTOOLS_VERSION)-ld64-$(LD64_VERSION),cctools)
+	$(call EXTRACT_TAR,cctools-$(CCTOOLS_VERSION)-ld64-$(LD64_VERSION).tar.gz,cctools-port-$(CCTOOLS_VERSION)-ld64-$(LD64_VERSION)/cctools,cctools)
 	rm -rf $(BUILD_WORK)/cctools-*
 
 ifneq ($(wildcard $(BUILD_WORK)/cctools/.build_complete),)

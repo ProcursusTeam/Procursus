@@ -7,9 +7,7 @@ LIBSNAPPY_VERSION := 1.1.8
 DEB_LIBSNAPPY_V   ?= $(LIBSNAPPY_VERSION)
 
 libsnappy-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/libsnappy-$(LIBSNAPPY_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/libsnappy-$(LIBSNAPPY_VERSION).tar.gz \
-			https://github.com/google/snappy/archive/$(LIBSNAPPY_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,google,snappy,$(LIBSNAPPY_VERSION),$(LIBSNAPPY_VERSION),libsnappy)
 	$(call EXTRACT_TAR,libsnappy-$(LIBSNAPPY_VERSION).tar.gz,snappy-$(LIBSNAPPY_VERSION),libsnappy)
 	$(call DO_PATCH,libsnappy,libsnappy,-p1)
 

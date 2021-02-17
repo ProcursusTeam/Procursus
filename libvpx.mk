@@ -7,9 +7,7 @@ LIBVPX_VERSION := 1.9.0
 DEB_LIBVPX_V   ?= $(LIBVPX_VERSION)
 
 libvpx-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/libvpx-$(LIBVPX_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/libvpx-$(LIBVPX_VERSION).tar.gz \
-			https://github.com/webmproject/libvpx/archive/v$(LIBVPX_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,webmproject,libvpx,$(LIBVPX_VERSION),v$(LIBVPX_VERSION))
 	$(call EXTRACT_TAR,libvpx-$(LIBVPX_VERSION).tar.gz,libvpx-$(LIBVPX_VERSION),libvpx)
 
 ifneq ($(wildcard $(BUILD_WORK)/libvpx/.build_complete),)

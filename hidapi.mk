@@ -7,7 +7,7 @@ HIDAPI_VERSION := 0.9.0
 DEB_HIDAPI_V   ?= $(HIDAPI_VERSION)
 
 hidapi-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libusb/hidapi/archive/hidapi-$(HIDAPI_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,libusb,hidapi,$(HIDAPI_VERSION),hidapi-$(HIDAPI_VERSION))
 	$(call EXTRACT_TAR,hidapi-$(HIDAPI_VERSION).tar.gz,hidapi-hidapi-$(HIDAPI_VERSION),hidapi)
 
 ifneq ($(wildcard $(BUILD_WORK)/hidapi/.build_complete),)

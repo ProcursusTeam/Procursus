@@ -12,9 +12,7 @@ DEB_TESSERACT_V   ?= $(TESSERACT_VERSION)
 ###
 
 tesseract-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/tesseract-$(TESSERACT_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/tesseract-$(TESSERACT_VERSION).tar.gz \
-			https://github.com/tesseract-ocr/tesseract/archive/$(TESSERACT_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,tesseract-ocr,tesseract,$(TESSERACT_VERSION),$(TESSERACT_VERSION))
 	$(call EXTRACT_TAR,tesseract-$(TESSERACT_VERSION).tar.gz,tesseract-$(TESSERACT_VERSION),tesseract)
 
 ifneq ($(wildcard $(BUILD_WORK)/tesseract/.build_complete),)
