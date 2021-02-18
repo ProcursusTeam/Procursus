@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += calc
-CALC_VERSION := 2.12.7.2
+CALC_VERSION := 2.12.8.1
 DEB_CALC_V   ?= $(CALC_VERSION)
 
 calc-setup: setup
@@ -31,7 +31,7 @@ calc: calc-setup ncurses readline
 		CALCPAGER="pager" \
 		USE_READLINE="-DUSE_READLINE" \
 		READLINE_LIB="-lreadline" \
-		READLINE_EXTRAS="-L$(BUILD_BASE)/usr/lib -lhistory -lncursesw" \
+		READLINE_EXTRAS="-L$(BUILD_BASE)/usr/lib -lncursesw" \
 		BLD_TYPE="calc-static-only" \
 		T="$(BUILD_STAGE)/calc" \
 		-j1
