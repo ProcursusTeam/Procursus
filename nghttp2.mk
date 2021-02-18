@@ -22,6 +22,7 @@ nghttp2: nghttp2-setup openssl libc-ares libev jansson libjemalloc libevent
 		--prefix=/usr \
 		--disable-dependency-tracking \
 		--without-systemd \
+		--enable-python-bindings=no \
 		LIBXML2_CFLAGS=-I$(TARGET_SYSROOT)/usr/include/libxml2 \
 		LIBXML2_LIBS=-lxml2
 	+$(MAKE) -C $(BUILD_WORK)/nghttp2

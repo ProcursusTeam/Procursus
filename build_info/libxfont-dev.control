@@ -1,0 +1,19 @@
+Package: libxfont-dev
+Version: @DEB_LIBXFONT2_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libxfont2 (= @DEB_LIBXFONT2_V@), x11proto-dev, libfreetype-dev, libfontenc-dev
+Section: Development
+Priority: optional
+Description: X11 font rasterisation library (development headers)
+ libXfont provides various services for X servers, most notably font
+ selection and rasterisation (through external libraries).
+ .
+ This package contains the development headers for the library found in
+ libxfont2.  Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at:
+ <URL:https://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libXfont

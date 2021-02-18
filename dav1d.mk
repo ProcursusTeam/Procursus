@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += dav1d
-DAV1D_VERSION := 0.7.1
+DAV1D_VERSION := 0.8.1
 DEB_DAV1D_V   ?= $(DAV1D_VERSION)
 
 dav1d-setup: setup
@@ -41,15 +41,15 @@ endif
 dav1d-package: dav1d-stage
 	# dav1d.mk Package Structure
 	rm -rf $(BUILD_DIST)/dav1d \
-		$(BUILD_DIST)/libdav1d{-dev,4}
+		$(BUILD_DIST)/libdav1d{-dev,5}
 	mkdir -p $(BUILD_DIST)/dav1d/usr/ \
-		$(BUILD_DIST)/libdav1d{4,-dev}/usr/lib
+		$(BUILD_DIST)/libdav1d{5,-dev}/usr/lib
 	
 	# dav1d.mk Prep dav1d
 	cp -a $(BUILD_STAGE)/dav1d/usr/bin $(BUILD_DIST)/dav1d/usr
 	
-	# dav1d.mk Prep libdav1d4
-	cp -a $(BUILD_STAGE)/dav1d/usr/lib/libdav1d.4.dylib $(BUILD_DIST)/libdav1d4/usr/lib
+	# dav1d.mk Prep libdav1d5
+	cp -a $(BUILD_STAGE)/dav1d/usr/lib/libdav1d.5.dylib $(BUILD_DIST)/libdav1d5/usr/lib
 	
 	# dav1d.mk Prep libdav1d-dev
 	cp -a $(BUILD_STAGE)/dav1d/usr/lib/{libdav1d.dylib,pkgconfig} $(BUILD_DIST)/libdav1d-dev/usr/lib
@@ -57,15 +57,15 @@ dav1d-package: dav1d-stage
 	
 	# dav1d.mk Sign
 	$(call SIGN,dav1d,general.xml)
-	$(call SIGN,libdav1d4,general.xml)
+	$(call SIGN,libdav1d5,general.xml)
 	
 	# dav1d.mk Make .debs
 	$(call PACK,dav1d,DEB_DAV1D_V)
-	$(call PACK,libdav1d4,DEB_DAV1D_V)
+	$(call PACK,libdav1d5,DEB_DAV1D_V)
 	$(call PACK,libdav1d-dev,DEB_DAV1D_V)
 	
 	# dav1d.mk Build cleanup
 	rm -rf $(BUILD_DIST)/dav1d \
-		$(BUILD_DIST)/libdav1d{-dev,4}
+		$(BUILD_DIST)/libdav1d{-dev,5}
 
 .PHONY: dav1d dav1d-package

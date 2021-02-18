@@ -3,13 +3,18 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS        += diskdev-cmds
-DISKDEV-CMDS_VERSION := 593.230.1
+DISKDEV-CMDS_VERSION := 667.40.1
 DEB_DISKDEV-CMDS_V   ?= $(DISKDEV-CMDS_VERSION)
 
 diskdev-cmds-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/diskdev_cmds/diskdev_cmds-$(DISKDEV-CMDS_VERSION).tar.gz
 	$(call EXTRACT_TAR,diskdev_cmds-$(DISKDEV-CMDS_VERSION).tar.gz,diskdev_cmds-$(DISKDEV-CMDS_VERSION),diskdev-cmds)
-	mkdir -p $(BUILD_STAGE)/diskdev-cmds/{usr/{{s,}bin,libexec},sbin}
+	$(SED) -i -e '/#include <TargetConditionals.h>/d' \
+		$(BUILD_WORK)/diskdev-cmds/edt_fstab/edt_fstab.h \
+		$(BUILD_WORK)/diskdev-cmds/fsck.tproj/fsck.c
+	$(SED) -i -e '/TARGET_OS_OSX/d' \
+		$(BUILD_WORK)/diskdev-cmds/disklib/preen.c
+	mkdir -p $(BUILD_STAGE)/diskdev-cmds/{usr/{{s,}bin,libexec,share/man/man{1,5,8}},sbin}
 
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/diskdev-cmds/include/{arm,machine,{System/,}sys,uuid}
@@ -38,7 +43,7 @@ diskdev-cmds: .SHELLFLAGS=-O extglob -c
 diskdev-cmds: diskdev-cmds-setup
 	cd $(BUILD_WORK)/diskdev-cmds/disklib; \
 	rm -f mntopts.h getmntopts.c; \
-	for arch in $(MEMO_ARCHES); do \
+	for arch in $(MEMO_ARCH); do \
 		for c in *.c; do \
 			$(CC) -arch $${arch} -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem ../include -fno-common -o $$(basename $${c} .c)-$${arch}.o -c $${c}; \
 		done; \
@@ -46,7 +51,7 @@ diskdev-cmds: diskdev-cmds-setup
 		LIBDISKA=$$(echo disklib/libdisk-$${arch}.a $${LIBDISKA}); \
 	done; \
 	cd $(BUILD_WORK)/diskdev-cmds; \
-	for tproj in !(fstyp|fsck_hfs|fuser|mount_portal|mount_swapfs|mount_umap|newfs_hfs_debug).tproj; do \
+	for tproj in !(fstyp|fsck_hfs|fuser|mount|mount_portal|mount_swapfs|mount_umap|newfs_hfs_debug).tproj; do \
 		tproj=$$(basename $$tproj .tproj); \
 		echo $$tproj; \
 		extra=; \
@@ -59,6 +64,9 @@ diskdev-cmds: diskdev-cmds-setup
 		if [[ $$tproj = mount_cd9660 || $$tproj = mount_hfs || $$tproj = newfs_hfs ]]; then \
 			extra="${extra} -framework CoreFoundation"; \
 		fi; \
+		if [[ $$tproj = vsdbutil ]]; then \
+			extra="${extra} mount_flags_dir/mount_flags.c"; \
+		fi; \
     	$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -DTARGET_OS_SIMULATOR -Idisklib -o $$tproj $$(find "$$tproj.tproj" -name '*.c') $${LIBDISKA} -lutil $$extra; \
 	done
 	cd $(BUILD_WORK)/diskdev-cmds/fstyp.tproj; \
@@ -70,7 +78,10 @@ diskdev-cmds: diskdev-cmds-setup
 	cp -a quota $(BUILD_STAGE)/diskdev-cmds/usr/bin; \
 	cp -a dev_mkdb edquota fdisk quotaon repquota vsdbutil $(BUILD_STAGE)/diskdev-cmds/usr/sbin; \
 	cp -a vndevice $(BUILD_STAGE)/diskdev-cmds/usr/libexec; \
-	cp -a quotacheck umount @(fstyp|newfs)?(_*([a-z0-9])) @(mount_*([a-z0-9])) $(BUILD_STAGE)/diskdev-cmds/sbin
+	cp -a quotacheck umount @(fstyp|newfs)?(_*([a-z0-9])) @(mount_*([a-z0-9])) $(BUILD_STAGE)/diskdev-cmds/sbin; \
+	cp -a quota.tproj/quota.1 $(BUILD_STAGE)/diskdev-cmds/usr/share/man/man1; \
+	cp -a mount.tproj/fstab.5 $(BUILD_STAGE)/diskdev-cmds/usr/share/man/man5; \
+	cp -a !(setclass).tproj/*.8 $(BUILD_STAGE)/diskdev-cmds/usr/share/man/man8
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1)
 	rm -f $(BUILD_STAGE)/diskdev-cmds/sbin/umount
 endif
