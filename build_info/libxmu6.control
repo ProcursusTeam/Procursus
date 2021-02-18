@@ -1,0 +1,18 @@
+Package: libxmu6
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBXMU_V@
+Depends: libx11-6, libxext6, libxt6
+Section: Libraries
+Priority: optional
+Multi-Arch: foreign
+Description: X11 miscellaneous utility library
+ libXmu provides a set of miscellaneous utility convenience functions for
+ X libraries to use. libXmuu is a lighter-weight version that does not depend
+ on libXt or libXext; for more information, see libxmuu1. 
+ .
+ More information about X.Org can be found at:
+ <URL:http://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/LibXmu

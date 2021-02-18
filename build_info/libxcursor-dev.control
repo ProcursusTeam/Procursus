@@ -1,0 +1,15 @@
+Package: libxcursor-dev
+Version: @DEB_LIBXCURSOR_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libxcursor1 (= @DEB_LIBXCURSOR_V@), libx11-dev, libxfixes-dev, libxrender-dev, x11proto-dev
+Section: Libraries
+Priority: optional
+Description: X cursor management library
+ Xcursor is a simple library designed to help locate and load cursors for the X Window System.
+ .
+ More information about X.Org can be found at:
+ <URL:http://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libXau

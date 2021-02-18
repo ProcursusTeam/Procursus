@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += glib2.0
-GLIB2.0_MAJOR_V := 2.66
-GLIB2.0_VERSION := $(GLIB2.0_MAJOR_V).1
+GLIB2.0_MAJOR_V := 2.67
+GLIB2.0_VERSION := $(GLIB2.0_MAJOR_V).2
 DEB_GLIB2.0_V   ?= $(GLIB2.0_VERSION)
 
 glib2.0-setup: setup

@@ -1,0 +1,8 @@
+Package: nmap-utils
+Version: @DEB_NMAP_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libpcre1, libssl1.1, nmap-common, liblua5.3-0, libssh2-1
+Section: Utilities
+Priority: optional
+Description: The Network Mapper

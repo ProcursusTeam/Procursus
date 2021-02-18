@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/aria2/.build_complete),)
 aria2:
 	@echo "Using previously built aria2."
 else
-aria2: aria2-setup sqlite3 openssl libjemalloc libuv1 libssh2 libc-ares
+aria2: aria2-setup openssl libjemalloc libuv1 libssh2 libc-ares
 	cd $(BUILD_WORK)/aria2 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \

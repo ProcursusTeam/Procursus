@@ -1,0 +1,42 @@
+.TH "dmg2img" 1
+.SH NAME
+dmg2img \- convert compressed dmg to standard (hfsplus) image disk files
+.SH SYNOPSIS
+.B dmg2img
+[-s] [-v] [-V] [-d] <input.dmg> [<output.img>]
+.PP
+.B dmg2img
+[-s] [-v] [-V] [-d] -i <input.dmg> -o <output.img>
+.SH DESCRIPTION
+.B dmg2img
+is an Apple's compressed dmg to standard (hfsplus) image disk file conversion tool.
+.SH OPTIONS
+.TP
+.B \-i
+Path to the input .dmg file.
+.TP
+.B \-s
+Silent operation
+.TP
+.B \-v
+Verbose operation
+Try to extract key from input file.
+.TP
+.B \-V
+Extremely verbose operation
+.TP
+.B \-d
+Enable debugging.
+.TP
+.B \-o
+The output file (if left out it will be named <input_file>.img).
+.SH "SEE ALSO"
+vfdecrypt(1)
+.SH AUTHORS
+.TP
+vu1tur <to@vu1tur.eu.org>
+.TP
+Jean-Pierre Demailly <demailly@fourier.ujf-grenoble.fr>.
+.PP
+This manual page was written by Soeren Sonnenburg <sonne@debian.org>,
+for the Debian project (but may be used by others).

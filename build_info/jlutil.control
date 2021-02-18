@@ -1,0 +1,9 @@
+Package: jlutil
+Version: @DEB_JLUTIL_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: Jonathan Levin
+Section: Utilities
+Priority: optional
+Homepage: http://newosxbook.com/tools/jlutil.html
+Description: an alternate, cross-platform format for representing property lists

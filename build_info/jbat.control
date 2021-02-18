@@ -1,0 +1,9 @@
+Package: jbat
+Version: @DEB_JBAT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: Jonathan Levin
+Section: Utilities
+Priority: optional
+Homepage: http://newosxbook.com/src.jl?tree=listings&file=bat.c
+Description: A simple battery statistics reader
