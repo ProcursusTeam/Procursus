@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS     += glib2.0
 GLIB2.0_MAJOR_V := 2.67
-GLIB2.0_VERSION := $(GLIB2.0_MAJOR_V).3
+GLIB2.0_VERSION := $(GLIB2.0_MAJOR_V).4
 DEB_GLIB2.0_V   ?= $(GLIB2.0_VERSION)
 
 glib2.0-setup: setup
