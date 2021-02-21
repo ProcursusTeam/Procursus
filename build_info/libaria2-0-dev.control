@@ -10,4 +10,4 @@ Description: High speed download utility (Development files)
  SFTP/FTP/BitTorrent and it also supports Metalink.
  .
  This package provides development files for libaria2.
-Depends: libaria2-0 (= @DEB_ARIA2_V@), libuv1-dev, libsqlite3-dev, libssh2-dev, libjemalloc-dev, libc-ares-dev, libintl-dev, libssl-dev
+Depends: libaria2-0 (= @DEB_ARIA2_V@), libuv1-dev, libssh2-dev, libjemalloc-dev, libc-ares-dev, libintl-dev, libssl-dev

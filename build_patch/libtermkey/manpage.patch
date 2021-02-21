@@ -1,0 +1,19 @@
+diff --color -urN libtermkey-0.22/Makefile libtermkey/Makefile
+--- libtermkey-0.22/Makefile	2019-03-14 09:47:10.000000000 -0400
++++ libtermkey/Makefile	2021-01-06 16:03:36.668165434 -0500
+@@ -121,13 +121,6 @@
+ install-man:
+ 	install -d $(DESTDIR)$(MAN3DIR)
+ 	install -d $(DESTDIR)$(MAN7DIR)
+-	for F in man/*.3; do \
+-	  gzip <$$F >$(DESTDIR)$(MAN3DIR)/$${F#man/}.gz; \
+-	done
+-	for F in man/*.7; do \
+-	  gzip <$$F >$(DESTDIR)$(MAN7DIR)/$${F#man/}.gz; \
+-	done
+-	while read FROM EQ TO; do \
+-	  echo ln -sf $$TO.gz $(DESTDIR)$(MAN3DIR)/$$FROM.gz; \
+-	done < man/also
++	install -m644 man/*.3 $(DESTDIR)$(MAN3DIR)
++	install -m644 man/*.7 $(DESTDIR)$(MAN7DIR)
+ 

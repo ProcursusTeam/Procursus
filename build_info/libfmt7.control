@@ -1,0 +1,13 @@
+Package: libfmt7
+Priority: optional
+Section: Libraries
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBFMT_V@
+Homepage: https://fmt.dev/
+Description: fast type-safe C++ formatting library -- library
+ This library provides fast, type-safe, small, C++11-aware replacement of
+ (s)printf and related machinery. In some cases it's noticeably faster
+ than boost::format, boost::lexical_cast and even sprintf itself.
+ .
+ This package contains the shared library.

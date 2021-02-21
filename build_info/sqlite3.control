@@ -5,7 +5,7 @@ Version: @DEB_SQLITE3_V@
 Depends: libsqlite3-1 (= @DEB_SQLITE3_V@), libreadline8, libncursesw6
 Section: Data_Storage
 Priority: standard
-Description: dependency-based build environments
+Description: Command line interface for SQLite 3
 Homepage: https://www.sqlite.org/
 Name: SQLite 3.x
 Tag: purpose::console, role::hacker

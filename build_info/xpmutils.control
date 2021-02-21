@@ -1,0 +1,16 @@
+Package: xpmutils
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBXPM_V@
+Section: Libraries
+Depends: libxpm4 (= @DEB_LIBXPM_V@), libx11-6, libxt6, libxext6, libintl8
+Description: X11 pixmap utilities
+ This package provides two tools, cxpm and sxpm. 
+ cxpm is a tool to check the integrity of an XPM file. 
+ sxpm is a tool to view XPM files, and takes a number of options. 
+ .
+ More information about X.Org can be found at:
+ <URL:http://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libXpm
