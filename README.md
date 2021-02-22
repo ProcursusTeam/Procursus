@@ -64,6 +64,7 @@ brew install make bash wget gnu-tar gnu-sed gnupg ldid cmake automake groff gpat
 | `make everything`                      | Compiles the entire Procursus suite for every supported host platform and packs it into debian packages.           |
 | `make clean`                           | Clean out $(BUILD_STAGE), $(BUILD_BASE), and $(BUILD_WORK).                                                        |
 | `make extreme-clean`                   | Resets the entire git repository.                                                                                  |
+| `make env`                             | Print the `proenv` shell function to STDOUT to give a cross-compilation environment in your POSIX shell (`make env >> ~/.zshrc`) |
 
 There are very few variables you'll need to pay attention to/change to get building working well.
 
