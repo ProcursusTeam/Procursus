@@ -2,7 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS += sed
+else # ($(MEMO_TARGET),darwin-\*)
+SUBPROJECTS   += sed
+endif # ($(MEMO_TARGET),darwin-\*)
 SED_VERSION   := 4.8
 DEB_SED_V     ?= $(SED_VERSION)-2
 

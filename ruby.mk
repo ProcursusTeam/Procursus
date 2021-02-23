@@ -10,7 +10,7 @@ DEB_RUBY_V       ?= $(RUBY_API_VERSION)
 ruby-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://cache.ruby-lang.org/pub/ruby/$(RUBY_VERSION)/ruby-$(RUBY_API_VERSION).tar.gz
 	$(call EXTRACT_TAR,ruby-$(RUBY_API_VERSION).tar.gz,ruby-$(RUBY_API_VERSION),ruby)
-ifneq ($(MEMO_TARGET),darwin-arm64e)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call DO_PATCH,ruby-ios,ruby,-p1)
 endif
 

@@ -2,7 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS += bash
+else # ($(MEMO_TARGET),darwin-\*)
+SUBPROJECTS   += bash
+endif # ($(MEMO_TARGET),darwin-\*)
 BASH_VERSION  := 5.1
 BASH_SUB_V    := 004
 DEB_BASH_V    ?= $(BASH_VERSION).$(BASH_SUB_V)

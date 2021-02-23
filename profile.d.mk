@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+
 STRAPPROJECTS    += profile.d
 PROFILED_VERSION := 0-5
 DEB_PROFILED_V   ?= $(PROFILED_VERSION)
@@ -35,3 +37,5 @@ profile.d-package: profile.d-stage
 	rm -rf $(BUILD_DIST)/profile.d
 
 .PHONY: profile.d profile.d-package
+
+endif # ($(MEMO_TARGET),darwin-\*)

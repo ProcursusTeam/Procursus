@@ -17,7 +17,7 @@ else
 libffi: libffi-setup
 	cd $(BUILD_WORK)/libffi && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libffi
 	+$(MAKE) -C $(BUILD_WORK)/libffi install \
 		DESTDIR=$(BUILD_STAGE)/libffi
@@ -29,14 +29,14 @@ endif
 libffi-package: libffi-stage
 	# libffi.mk Package Structure
 	rm -rf $(BUILD_DIST)/libffi{7,-dev}
-	mkdir -p $(BUILD_DIST)/libffi{7,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/libffi{7,-dev}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
 	
 	# libffi.mk Prep libffi7
-	cp -a $(BUILD_STAGE)/libffi/usr/lib/libffi.7.dylib $(BUILD_DIST)/libffi7/usr/lib
+	cp -a $(BUILD_STAGE)/libffi/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libffi.7.dylib $(BUILD_DIST)/libffi7/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
 
 	# libffi.mk Prep libffi-dev
-	cp -a $(BUILD_STAGE)/libffi/usr/lib/!(libffi.7.dylib) $(BUILD_DIST)/libffi-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libffi/usr/{include,share} $(BUILD_DIST)/libffi-dev/usr
+	cp -a $(BUILD_STAGE)/libffi/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/!(libffi.7.dylib) $(BUILD_DIST)/libffi-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libffi/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libffi-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	
 	# libffi.mk Sign
 	$(call SIGN,libffi7,general.xml)

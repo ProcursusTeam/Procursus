@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS += pcre2
+SUBPROJECTS   += pcre2
 PCRE2_VERSION := 10.35
 DEB_PCRE2_V   ?= $(PCRE2_VERSION)
 

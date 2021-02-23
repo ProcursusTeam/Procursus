@@ -2,7 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS       += debianutils
+else # ($(MEMO_TARGET),darwin-\*)
+SUBPROJECTS         += debianutils
+endif # ($(MEMO_TARGET),darwin-\*)
 DEBIANUTILS_VERSION := 4.9.1
 DEB_DEBIANUTILS_V   ?= $(DEBIANUTILS_VERSION)
 

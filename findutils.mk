@@ -2,7 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS     += findutils
+else # ($(MEMO_TARGET),darwin-\*)
+SUBPROJECTS       += findutils
+endif # ($(MEMO_TARGET),darwin-\*)
 FINDUTILS_VERSION := 4.8.0
 DEB_FINDUTILS_V   ?= $(FINDUTILS_VERSION)
 

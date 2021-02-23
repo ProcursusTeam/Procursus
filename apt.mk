@@ -10,6 +10,13 @@ ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
 APT_CMAKE_ARGS += -DHAVE_PTSNAME_R=0
 endif
 
+###
+#
+# TODO: Write a native useradd command for macOS/iOS. For now setting root user here will be fine.
+# TODO: Make our own vendor configuration instead of using debian.
+#
+###
+
 apt-setup: setup
 	# Change this to a git release download sometime.
 	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/a/apt/apt_$(APT_VERSION).tar.xz
@@ -33,18 +40,18 @@ apt: apt-setup libgcrypt berkeleydb lz4 xxhash xz zstd
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
-		-DSTATE_DIR=/var/lib/apt \
-		-DCACHE_DIR=/var/cache/apt \
-		-DLOG_DIR=/var/log/apt \
-		-DCONF_DIR=/etc/apt \
+		-DSTATE_DIR=/$(MEMO_PREFIX)/var/lib/apt \
+		-DCACHE_DIR=/$(MEMO_PREFIX)/var/cache/apt \
+		-DLOG_DIR=/$(MEMO_PREFIX)/var/log/apt \
+		-DCONF_DIR=/$(MEMO_PREFIX)/etc/apt \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/ \
-		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
-		-DCMAKE_INSTALL_RPATH=/usr \
+		-DCMAKE_INSTALL_PREFIX=/$(MEMO_PREFIX)/ \
+		-DCMAKE_INSTALL_NAME_DIR=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib \
+		-DCMAKE_INSTALL_RPATH=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
-		-DCMAKE_SHARED_LINKER_FLAGS="-lresolv -L$(BUILD_BASE)/usr/lib" \
+		-DCMAKE_SHARED_LINKER_FLAGS="-lresolv -L$(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib" \
 		-DCURRENT_VENDOR=debian \
 		-DCOMMON_ARCH=$(DEB_ARCH) \
 		-DUSE_NLS=0 \
@@ -52,7 +59,7 @@ apt: apt-setup libgcrypt berkeleydb lz4 xxhash xz zstd
 		-DWITH_TESTS=0 \
 		-DDOCBOOK_XSL=$(DOCBOOK_XSL) \
 		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
-		-DDPKG_DATADIR=/usr/share/dpkg \
+		-DDPKG_DATADIR=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/dpkg \
 		$(APT_CMAKE_ARGS) \
 		..
 	+$(MAKE) -C $(BUILD_WORK)/apt/build
@@ -66,42 +73,42 @@ endif
 apt-package: apt-stage
 	# apt.mk Package Structure
 	rm -rf $(BUILD_DIST)/apt{,-utils} $(BUILD_DIST)/libapt*/
-	mkdir -p $(BUILD_DIST)/apt/usr/{bin,lib,libexec/apt/{planners,solvers}} \
-	$(BUILD_DIST)/apt-utils/usr/{share/man,bin,libexec/apt/{planners,solvers}} \
-	$(BUILD_DIST)/libapt-pkg{6.0,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/apt/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{bin,lib,libexec/apt/{planners,solvers}} \
+	$(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{share/man,bin,libexec/apt/{planners,solvers}} \
+	$(BUILD_DIST)/libapt-pkg{6.0,-dev}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
 	
 	# apt.mk Prep apt
-	cp -a $(BUILD_STAGE)/apt/usr/bin/apt{,-cache,-cdrom,-config,-get,-key,-mark} $(BUILD_DIST)/apt/usr/bin
-	cp -a $(BUILD_STAGE)/apt/usr/lib/libapt-private*.dylib $(BUILD_DIST)/apt/usr/lib
-	cp -a $(BUILD_STAGE)/apt/usr/libexec/dpkg $(BUILD_DIST)/apt/usr/libexec
-	cp -a $(BUILD_STAGE)/apt/usr/libexec/apt/{methods,apt-helper} $(BUILD_DIST)/apt/usr/libexec/apt
-	cp -a $(BUILD_STAGE)/apt/usr/libexec/apt/planners/dump $(BUILD_DIST)/apt/usr/libexec/apt/planners
-	cp -a $(BUILD_STAGE)/apt/usr/libexec/apt/solvers/dump $(BUILD_DIST)/apt/usr/libexec/apt/solvers
-	cp -a $(BUILD_STAGE)/apt/usr/share $(BUILD_DIST)/apt/usr
-	cp -a $(BUILD_STAGE)/apt/{etc,var} $(BUILD_DIST)/apt
-	rm -f $(BUILD_DIST)/apt/usr/share/man/*/man1/apt-{extracttemplates,ftparchive,sortpkgs}.1
-	rm -f $(BUILD_DIST)/apt/usr/share/man/man1/apt-{extracttemplates,ftparchive,sortpkgs}.1
+	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/apt{,-cache,-cdrom,-config,-get,-key,-mark} $(BUILD_DIST)/apt/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libapt-private*.dylib $(BUILD_DIST)/apt/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/dpkg $(BUILD_DIST)/apt/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec
+	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/apt/{methods,apt-helper} $(BUILD_DIST)/apt/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/apt
+	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/apt/planners/dump $(BUILD_DIST)/apt/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/apt/planners
+	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/apt/solvers/dump $(BUILD_DIST)/apt/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/apt/solvers
+	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/apt/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)/{etc,var} $(BUILD_DIST)/apt/$(MEMO_PREFIX)
+	rm -f $(BUILD_DIST)/apt/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/*/man1/apt-{extracttemplates,ftparchive,sortpkgs}.1
+	rm -f $(BUILD_DIST)/apt/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1/apt-{extracttemplates,ftparchive,sortpkgs}.1
 	
 	# apt.mk Prep apt-utils
-	cp -a $(BUILD_STAGE)/apt/usr/bin/apt-{extracttemplates,ftparchive,sortpkgs} $(BUILD_DIST)/apt-utils/usr/bin
-	cp -a $(BUILD_STAGE)/apt/usr/libexec/apt/planners/apt $(BUILD_DIST)/apt-utils/usr/libexec/apt/planners
-	cp -a $(BUILD_STAGE)/apt/usr/libexec/apt/solvers/apt $(BUILD_DIST)/apt-utils/usr/libexec/apt/solvers
-	cp -a $(BUILD_STAGE)/apt/usr/share $(BUILD_DIST)/apt-utils/usr
-	rm -rf $(BUILD_DIST)/apt-utils/usr/share/man/man{5,7,8}
-	rm -rf $(BUILD_DIST)/apt-utils/usr/share/bash-completion
-	for i in $(BUILD_DIST)/apt-utils/usr/share/man/!(man1); do \
+	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/apt-{extracttemplates,ftparchive,sortpkgs} $(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/apt/planners/apt $(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/apt/planners
+	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/apt/solvers/apt $(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/apt/solvers
+	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	rm -rf $(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man{5,7,8}
+	rm -rf $(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/bash-completion
+	for i in $(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/!(man1); do \
 		rm -rf $$i/man{5,7,8}; \
 	done
-	rm -f $(BUILD_DIST)/apt-utils/usr/share/man/!(man1)/man1/apt-transport*.1
-	rm -f $(BUILD_DIST)/apt-utils/usr/share/man/man1/apt-transport*.1
+	rm -f $(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/!(man1)/man1/apt-transport*.1
+	rm -f $(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1/apt-transport*.1
 
 	# apt.mk Prep libapt-pkg6.0
-	cp -a $(BUILD_STAGE)/apt/usr/lib/libapt-pkg.6.0*.dylib $(BUILD_DIST)/libapt-pkg6.0/usr/lib
+	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libapt-pkg.6.0*.dylib $(BUILD_DIST)/libapt-pkg6.0/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
 
 	# apt.mk Prep libapt-pkg-dev
-	cp -a $(BUILD_STAGE)/apt/usr/lib/libapt-pkg.dylib $(BUILD_DIST)/libapt-pkg-dev/usr/lib
-	cp -a $(BUILD_STAGE)/apt/usr/lib/pkgconfig $(BUILD_DIST)/libapt-pkg-dev/usr/lib
-	cp -a $(BUILD_STAGE)/apt/usr/include $(BUILD_DIST)/libapt-pkg-dev/usr
+	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libapt-pkg.dylib $(BUILD_DIST)/libapt-pkg-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libapt-pkg-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libapt-pkg-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	
 	# apt.mk Sign
 	$(call SIGN,apt,general.xml)

@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS     += diffutils
+SUBPROJECTS       += diffutils
 DIFFUTILS_VERSION := 3.7
 DEB_DIFFUTILS_V   ?= $(DIFFUTILS_VERSION)-2
 

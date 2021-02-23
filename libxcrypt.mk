@@ -2,7 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS     += libxcrypt
+else # ($(MEMO_TARGET),darwin-\*)
+SUBPROJECTS       += libxcrypt
+endif # ($(MEMO_TARGET),darwin-\*)
 LIBXCRYPT_VERSION := 4.4.17
 DEB_LIBXCRYPT_V   ?= $(LIBXCRYPT_VERSION)
 
