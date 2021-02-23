@@ -2,11 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifneq ($(MEMO_TARGET),darwin-arm64e)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS     += launchctl
-else # ($(MEMO_TARGET),darwin-arm64e)
+else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS       += launchctl
-endif # ($(MEMO_TARGET),darwin-arm64e)
+endif # ($(MEMO_TARGET),darwin-\*)
 LAUNCHCTL_VERSION := 23-2
 DEB_LAUNCHCTL_V   ?= $(LAUNCHCTL_VERSION)
 

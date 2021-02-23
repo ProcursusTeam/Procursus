@@ -2,11 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifneq ($(MEMO_TARGET),darwin-arm64e)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS += grep
-else # ($(MEMO_TARGET),darwin-arm64e)
+else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += grep
-endif # ($(MEMO_TARGET),darwin-arm64e)
+endif # ($(MEMO_TARGET),darwin-\*)
 GREP_VERSION  := 3.6
 DEB_GREP_V    ?= $(GREP_VERSION)
 

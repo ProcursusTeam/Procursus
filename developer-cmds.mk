@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifneq ($(MEMO_TARGET),darwin-arm64e)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS            += developer-cmds
 DEVELOPER-CMDS_VERSION := 66
@@ -45,4 +45,4 @@ developer-cmds-package: developer-cmds-stage
 
 .PHONY: developer-cmds developer-cmds-package
 
-endif # ($(MEMO_TARGET),darwin-arm64e)
+endif # ($(MEMO_TARGET),darwin-\*)

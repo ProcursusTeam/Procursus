@@ -2,11 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifneq ($(MEMO_TARGET),darwin-arm64e)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS   += cacerts
-else # ($(MEMO_TARGET),darwin-arm64e)
+else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += cacerts
-endif # ($(MEMO_TARGET),darwin-arm64e)
+endif # ($(MEMO_TARGET),darwin-\*)
 CACERTS_VERSION := 0.0.3
 DEB_CACERTS_V   ?= $(CACERTS_VERSION)
 

@@ -2,11 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifneq ($(MEMO_TARGET),darwin-arm64e)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS   += ncurses
-else # ($(MEMO_TARGET),darwin-arm64e)
+else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += ncurses
-endif # ($(MEMO_TARGET),darwin-arm64e)
+endif # ($(MEMO_TARGET),darwin-\*)
 NCURSES_VERSION := 6.2
 DEB_NCURSES_V   ?= $(NCURSES_VERSION)-1
 

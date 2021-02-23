@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifneq ($(MEMO_TARGET),darwin-arm64e)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS    += profile.d
 PROFILED_VERSION := 0-5
@@ -38,4 +38,4 @@ profile.d-package: profile.d-stage
 
 .PHONY: profile.d profile.d-package
 
-endif # ($(MEMO_TARGET),darwin-arm64e)
+endif # ($(MEMO_TARGET),darwin-\*)

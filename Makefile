@@ -15,7 +15,7 @@ ifneq ($(shell umask),0022)
 $(error Please run `umask 022` before running this)
 endif
 
-MEMO_TARGET          ?= darwin-arm64e
+MEMO_TARGET          ?= darwin-arm64
 MEMO_CFVER           ?= 1700
 # iOS 13.0 == 1665.15.
 CFVER_WHOLE          := $(shell echo $(MEMO_CFVER) | cut -d. -f1)
@@ -109,10 +109,22 @@ MEMO_ALT_PREFIX      ?= local
 export WATCHOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),darwin-arm64e)
-$(warning Building for WatchOS)
+$(warning Building for macOS arm64e)
 MEMO_ARCH            := arm64e
 PLATFORM             := macosx
 DEB_ARCH             := darwin-arm64e
+GNU_HOST_TRIPLE      := aarch64-apple-darwin
+RUST_TARGET          := $(GNU_HOST_TRIPLE)
+PLATFORM_VERSION_MIN := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
+MEMO_PREFIX          ?= opt/procursus
+MEMO_SUB_PREFIX      ?=
+MEMO_ALT_PREFIX      ?=
+
+else ifeq ($(MEMO_TARGET),darwin-arm64)
+$(warning Building for macOS arm64)
+MEMO_ARCH            := arm64
+PLATFORM             := macosx
+DEB_ARCH             := darwin-arm64
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
 RUST_TARGET          := $(GNU_HOST_TRIPLE)
 PLATFORM_VERSION_MIN := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
@@ -243,13 +255,12 @@ DO_PATCH    = -cd $(BUILD_PATCH)/$(1); \
 		fi; \
 	done
 
-SIGN =  if [ $(MEMO_TARGET) != darwin-arm64e ]; then \
-		find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \; &> /dev/null; \
-		find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete; \
-	else \
-		find $(BUILD_DIST)/$(1) -type f -exec codesign --remove {} \; &> /dev/null; \
-		find $(BUILD_DIST)/$(1) -type f -exec codesign -s - {} \; &> /dev/null; \
-	fi
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+SIGN = find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \; &> /dev/null; \
+	find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
+else
+SIGN = find $(BUILD_DIST)/$(1) -type f -exec codesign --sign - --force --preserve-metadata=entitlements,requirements,flags,runtime {} \; &> /dev/null
+endif
 
 ###
 #
@@ -533,11 +544,11 @@ bootstrap:: $(STRAPPROJECTS:%=%-package)
 	touch $(BUILD_STAGE)/.fakeroot_bootstrap
 	mkdir -p $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/info
 	touch $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/status
-ifneq ($(MEMO_TARGET),darwin-arm64e)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	cd $(BUILD_STRAP) && rm -f !(apt_*|base_*|bash_*|ca-certificates_*|coreutils_*|darwintools_*|debianutils_*|diffutils_*|diskdev-cmds_*|dpkg_*|essential_*|findutils_*|firmware-sbin_*|gpgv_*|grep_*|launchctl_*|libapt-pkg6.0_*|libcrypt2_*|libgcrypt20_*|libgpg-error0_*|libintl8_*|liblz4-1_*|liblzma5_*|libncursesw6_*|libpcre1_*|libreadline8_*|libssl1.1_*|libxxhash0_*|libzstd1_*|ncurses-bin_*|ncurses-term_*|openssh_*|openssh-client_*|openssh-server_*|openssh-sftp-server_*|procursus-keyring_*|profile.d_*|sed_*|shell-cmds_*|snaputil_*|sudo_*|system-cmds_*|tar_*|uikittools_*|zsh_*).deb
-else # $(MEMO_TARGET),darwin-arm64e
+else # $(MEMO_TARGET),darwin-*
 	cd $(BUILD_STRAP) && rm -f !(apt_*|darwintools_*|dpkg_*|gpgv_*|libapt-pkg6.0_*|libgcrypt20_*|libgpg-error0_*|libintl8_*|liblz4-1_*|liblzma5_*|libxxhash0_*|libzstd1_*|procursus-keyring_*|tar_*).deb
-endif # $(MEMO_TARGET),darwin-arm64e
+endif # $(MEMO_TARGET),darwin-*
 	-for DEB in $(BUILD_STRAP)/*.deb; do \
 		PKGNAME=$$(basename $$DEB | cut -f1 -d"_"); \
 		dpkg-deb -R $$DEB $(BUILD_STRAP)/strap; \
@@ -595,7 +606,7 @@ else # ($(MEMO_PREFIX),)
 	$(CP) $(BUILD_INFO)/procursus.preferences $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/preferences.d/procursus
 	touch $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/.procursus_strapped
 	touch $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
-ifeq ($(MEMO_TARGET),darwin-arm64e)
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 	echo -e "Types: deb\n\
 URIs: https://apt.procurs.us/\n\
 Suites: $(MACOSX_SUITE_NAME)\n\
@@ -659,7 +670,7 @@ setup:
 	wget -q -nc -P $(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include/bsm \
 		https://opensource.apple.com/source/xnu/xnu-6153.81.5/bsd/bsm/audit_kevents.h
 
-ifneq ($(MEMO_TARGET),darwin-arm64e)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	@# Copy headers from MacOSX.sdk
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{arpa,net,xpc,netinet} $(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/objc/objc-runtime.h $(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include/objc

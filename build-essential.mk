@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifneq ($(MEMO_TARGET),darwin-arm64e)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS             += build-essential
 BUILD-ESSENTIAL_VERSION := 1
@@ -43,4 +43,4 @@ build-essential-package: build-essential-stage
 
 .PHONY: build-essential build-essential-package
 
-endif # ($(MEMO_TARGET),darwin-arm64e)
+endif # ($(MEMO_TARGET),darwin-\*)

@@ -13,7 +13,7 @@ gh-setup: setup
 	$(call EXTRACT_TAR,gh-$(GH_VERSION).tar.gz,cli-$(GH_VERSION),gh)
 	mkdir -p $(BUILD_STAGE)/gh/usr/bin
 
-ifneq ($(MEMO_TARGET),darwin-arm64e)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(SED) -i 's/exe := "open"/exe := "uiopen"/' $(BUILD_WORK)/gh/pkg/browser/browser.go
 endif
 

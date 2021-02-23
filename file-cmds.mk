@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifneq ($(MEMO_TARGET),darwin-arm64e)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS       += file-cmds
 # Don't upgrade file-cmds, as any future version includes APIs introduced in iOS 13+.
@@ -62,4 +62,4 @@ file-cmds-package: file-cmds-stage
 
 .PHONY: file-cmds file-cmds-package
 
-endif # ($(MEMO_TARGET),darwin-arm64e)
+endif # ($(MEMO_TARGET),darwin-\*)
