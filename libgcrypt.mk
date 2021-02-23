@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS     += libgcrypt
-LIBGCRYPT_VERSION := 1.9.1
+LIBGCRYPT_VERSION := 1.9.2
 DEB_LIBGCRYPT_V   ?= $(LIBGCRYPT_VERSION)
 
 libgcrypt-setup: setup
