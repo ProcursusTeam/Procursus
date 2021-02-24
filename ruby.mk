@@ -34,7 +34,7 @@ ruby: ruby-setup libxcrypt libgmp10 libjemalloc ncurses readline openssl libyaml
 		--with-arch=$(MEMO_ARCH) \
 		--with-coroutine=ucontext \
 		--with-jemalloc \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--enable-shared \
 		--program-suffix=$(RUBY_VERSION) \
 		--with-soname=ruby-$(RUBY_VERSION) \

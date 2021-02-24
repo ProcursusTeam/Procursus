@@ -17,7 +17,7 @@ else
 libirecovery: libirecovery-setup readline libusb
 	cd $(BUILD_WORK)/libirecovery && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libirecovery \
 		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)/usr/include/libusb-1.0"
 	+$(MAKE) -C $(BUILD_WORK)/libirecovery install \

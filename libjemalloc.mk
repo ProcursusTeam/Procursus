@@ -18,7 +18,7 @@ else
 libjemalloc: libjemalloc-setup
 	cd $(BUILD_WORK)/libjemalloc && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--with-lg-page=14 \
 		--with-jemalloc-prefix=
 		# The above system page size is specified because

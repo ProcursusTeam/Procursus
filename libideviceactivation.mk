@@ -17,7 +17,7 @@ else
 libideviceactivation: libideviceactivation-setup libplist libimobiledevice curl
 	cd $(BUILD_WORK)/libideviceactivation && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		libxml2_CFLAGS=-I$(TARGET_SYSROOT)/usr/include/libxml2 \
 		libxml2_LIBS=-lxml2
 	+$(MAKE) -C $(BUILD_WORK)/libideviceactivation

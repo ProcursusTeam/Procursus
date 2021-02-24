@@ -18,7 +18,7 @@ else
 pkg-config: pkg-config-setup gettext glib2.0
 	cd $(BUILD_WORK)/pkg-config && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--with-installed-glib \
 		--disable-host-tool
 	+$(MAKE) -C $(BUILD_WORK)/pkg-config \

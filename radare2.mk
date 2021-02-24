@@ -22,7 +22,7 @@ else
 radare2: radare2-setup libuv1 libzip openssl
 	cd $(BUILD_WORK)/radare2 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--with-openssl \
 		--with-syszip
 	+$(MAKE) -C $(BUILD_WORK)/radare2 \

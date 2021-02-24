@@ -17,7 +17,7 @@ else
 socat: socat-setup openssl readline
 	cd $(BUILD_WORK)/socat && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/socat
 	+$(MAKE) -C $(BUILD_WORK)/socat install \
 		DESTDIR=$(BUILD_STAGE)/socat

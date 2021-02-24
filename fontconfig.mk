@@ -18,7 +18,7 @@ else
 fontconfig: fontconfig-setup gettext freetype uuid expat
 	cd $(BUILD_WORK)/fontconfig && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc \
 		--localstatedir=/var \
 		--with-add-fonts="/System/Library/Fonts,~/Library/UserFonts" \

@@ -21,7 +21,7 @@ qemu: qemu-setup glib2.0 gnutls libjpeg-turbo libpng16 libssh libusb liblzo2 ncu
 		--cross-prefix="" \
 		--cc=$(CC) \
 		--host-cc=cc \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-bsd-user \
 		--disable-guest-agent \
 		--enable-curses \

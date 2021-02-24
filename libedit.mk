@@ -18,7 +18,7 @@ else
 libedit: libedit-setup ncurses
 	cd $(BUILD_WORK)/libedit && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--with-examples=no
 	+$(MAKE) -C $(BUILD_WORK)/libedit \
 		LIBS=-lncursesw

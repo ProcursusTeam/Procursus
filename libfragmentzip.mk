@@ -17,7 +17,7 @@ else
 libfragmentzip: libfragmentzip-setup libgeneral libzip curl
 	cd $(BUILD_WORK)/libfragmentzip && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr 
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) 
 	+$(MAKE) -C $(BUILD_WORK)/libfragmentzip
 	+$(MAKE) -C $(BUILD_WORK)/libfragmentzip install \
 		DESTDIR="$(BUILD_STAGE)/libfragmentzip"

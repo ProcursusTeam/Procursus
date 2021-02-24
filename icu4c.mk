@@ -24,7 +24,7 @@ icu4c: icu4c-setup
 	cd $(BUILD_WORK)/icu4c/source && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--with-cross-build=$(BUILD_WORK)/icu4c/host \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-samples \
 		--disable-tests
 	+$(MAKE) -C $(BUILD_WORK)/icu4c/source

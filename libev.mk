@@ -17,7 +17,7 @@ else
 libev: libev-setup
 	cd $(BUILD_WORK)/libev && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libev install \
 		DESTDIR=$(BUILD_STAGE)/libev
 	# Do not make install to build_base do to conflicts with event.h from libevent.

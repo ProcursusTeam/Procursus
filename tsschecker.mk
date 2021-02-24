@@ -26,7 +26,7 @@ else
 tsschecker: tsschecker-setup libfragmentzip libplist curl libirecovery
 	cd $(BUILD_WORK)/tsschecker && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/tsschecker
 	+$(MAKE) -C $(BUILD_WORK)/tsschecker install \
 		DESTDIR="$(BUILD_STAGE)/tsschecker"

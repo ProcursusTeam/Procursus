@@ -18,7 +18,7 @@ htop: htop-setup ncurses
 	cd $(BUILD_WORK)/htop && ./autogen.sh
 	cd $(BUILD_WORK)/htop && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-linux-affinity \
 		ac_cv_lib_ncursesw_addnwstr=yes
 	+$(MAKE) -C $(BUILD_WORK)/htop install \

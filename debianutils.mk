@@ -21,7 +21,7 @@ else
 debianutils: debianutils-setup
 	cd $(BUILD_WORK)/debianutils && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/debianutils install \
 		DESTDIR=$(BUILD_STAGE)/debianutils

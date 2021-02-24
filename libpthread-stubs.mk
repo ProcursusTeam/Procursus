@@ -17,7 +17,7 @@ else
 libpthread-stubs: libpthread-stubs-setup
 	cd $(BUILD_WORK)/libpthread-stubs && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libpthread-stubs
 	+$(MAKE) -C $(BUILD_WORK)/libpthread-stubs install \
 		DESTDIR=$(BUILD_STAGE)/libpthread-stubs

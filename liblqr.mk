@@ -20,7 +20,7 @@ else
 liblqr: liblqr-setup glib2.0 gettext
 	cd $(BUILD_WORK)/liblqr && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--enable-install-man \
 		GLIB_CFLAGS="-I$(BUILD_BASE)/usr/include/glib-2.0 -I$(BUILD_BASE)/usr/include/glib-2.0/include -I$(BUILD_BASE)/usr/lib/glib-2.0/include"

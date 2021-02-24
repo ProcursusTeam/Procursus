@@ -18,7 +18,7 @@ else
 libfs: libfs-setup xorgproto xtrans
 	cd $(BUILD_WORK)/libfs && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc \
 		--localstatedir=/var \
 		--enable-malloc0returnsnull=no

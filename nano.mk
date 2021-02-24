@@ -19,7 +19,7 @@ else
 nano: nano-setup ncurses gettext file
 	cd $(BUILD_WORK)/nano && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-debug \
 		--sysconfdir=/etc \
 		--disable-dependency-tracking \

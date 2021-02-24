@@ -17,7 +17,7 @@ else
 libsigcplusplus: libsigcplusplus-setup
 	cd $(BUILD_WORK)/libsigcplusplus && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc \
 		--disable-dependency-tracking \
 		--enable-shared

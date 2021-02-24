@@ -20,7 +20,7 @@ else
 libvorbis: libvorbis-setup libogg
 	cd $(BUILD_WORK)/libvorbis && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--with-pic \
 		--disable-docs

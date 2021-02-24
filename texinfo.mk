@@ -18,7 +18,7 @@ else
 texinfo: texinfo-setup
 	cd $(BUILD_WORK)/texinfo && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-debug \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/texinfo

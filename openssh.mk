@@ -35,7 +35,7 @@ openssh: openssh-setup openssl libxcrypt
 	$(SED) -i '/HAVE_ENDIAN_H/d' $(BUILD_WORK)/openssh/config.h.in
 	cd $(BUILD_WORK)/openssh && $(EXTRA) ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc/ssh \
 		check_for_libcrypt_before=1 \
 		$(OPENSSH_CONFARGS)	

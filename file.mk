@@ -23,7 +23,7 @@ file: file-setup xz
 		$(MAKE) -C $(BUILD_WORK)/../../native/file
 	cd $(BUILD_WORK)/file && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-libseccomp \
 		--enable-fsect-man5
 	+$(MAKE) -C $(BUILD_WORK)/file \

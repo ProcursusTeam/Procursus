@@ -18,7 +18,7 @@ else
 libxfont2: libxfont2-setup xorgproto xtrans util-macros freetype libfontenc
 	cd $(BUILD_WORK)/libxfont2 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc \
 		--disable-silent-rules \
 		--disable-dependency-tracking \

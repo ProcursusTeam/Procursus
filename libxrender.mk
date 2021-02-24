@@ -18,7 +18,7 @@ else
 libxrender: libxrender-setup libx11 xorgproto
 	cd $(BUILD_WORK)/libxrender && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc \
 		--localstatedir=/var \
 		--enable-malloc0returnsnull=no

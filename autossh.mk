@@ -20,7 +20,7 @@ autossh: autossh-setup
 	cd $(BUILD_WORK)/autossh && autoreconf -fi
 	cd $(BUILD_WORK)/autossh && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		CFLAGS="$(CFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/autossh
 	+$(MAKE) -C $(BUILD_WORK)/autossh install \

@@ -17,7 +17,7 @@ else
 xorgproto: xorgproto-setup
 	cd $(BUILD_WORK)/xorgproto && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc \
 		--localstatedir=/var
 	+$(MAKE) -C $(BUILD_WORK)/xorgproto install \

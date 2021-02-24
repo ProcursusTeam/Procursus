@@ -58,7 +58,7 @@ libipatcher: libipatcher-setup libpng16 openssl img4tool liboffsetfinder64 libge
 	
 	cd $(BUILD_WORK)/libipatcher && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		CFLAGS="$(CFLAGS) -I$(BUILD_WORK)/libipatcher/external/xpwn/includes" \
 		CPPFLAGS="$(CPPFLAGS) -I$(BUILD_WORK)/libipatcher/external/xpwn/includes" \
 		LDFLAGS="$(LDFLAGS) -L$(BUILD_WORK)/libipatcher/external/xpwn/{ipsw-patch,common} -lcurl"

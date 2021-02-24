@@ -18,7 +18,7 @@ else
 rsync: rsync-setup openssl lz4 zstd
 	cd $(BUILD_WORK)/rsync && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-simd \
 		--disable-xxhash \
 		rsync_cv_HAVE_GETTIMEOFDAY_TZ=yes

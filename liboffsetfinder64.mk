@@ -19,7 +19,7 @@ else
 liboffsetfinder64: liboffsetfinder64-setup libgeneral libinsn img4tool openssl
 	cd $(BUILD_WORK)/liboffsetfinder64 && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr 
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) 
 	+$(MAKE) -C $(BUILD_WORK)/liboffsetfinder64
 	+$(MAKE) -C $(BUILD_WORK)/liboffsetfinder64 install \
 		DESTDIR="$(BUILD_STAGE)/liboffsetfinder64"

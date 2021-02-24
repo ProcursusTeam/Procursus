@@ -18,7 +18,7 @@ else
 libxcb: libxcb-setup xcb-proto libxau libxdmcp libpthread-stubs
 	cd $(BUILD_WORK)/libxcb && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--with-launchd \
 		--enable-dri3 \
 		--enable-xevie

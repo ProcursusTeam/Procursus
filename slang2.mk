@@ -18,7 +18,7 @@ else
 slang2: slang2-setup libpng16 pcre libonig
 	cd $(BUILD_WORK)/slang2 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc \
 		--with-pcre=$(BUILD_BASE)/usr \
 		--with-onig=$(BUILD_BASE)/usr \

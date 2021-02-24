@@ -19,7 +19,7 @@ else
 libcrack: libcrack-setup gettext
 	cd $(BUILD_WORK)/libcrack && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--without-python \
 		--with-default-dict=/usr/share/libcrack-words
 	+$(MAKE) -C $(BUILD_WORK)/libcrack

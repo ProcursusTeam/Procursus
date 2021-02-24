@@ -25,7 +25,7 @@ libuv1: libuv1-setup
 	fi
 	cd $(BUILD_WORK)/libuv1 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libuv1
 	+$(MAKE) -C $(BUILD_WORK)/libuv1 install \
 		DESTDIR="$(BUILD_STAGE)/libuv1"

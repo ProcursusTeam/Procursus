@@ -18,7 +18,7 @@ else
 libressl: libressl-setup
 	cd $(BUILD_WORK)/libressl && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--with-openssldir=/etc/ssl \
 		--sysconfdir=/etc
 	+$(MAKE) -C $(BUILD_WORK)/libressl

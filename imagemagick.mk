@@ -24,7 +24,7 @@ imagemagick: imagemagick-setup openexr fontconfig freetype glib2.0 ghostscript l
 	cd $(BUILD_WORK)/imagemagick && PKG_CONFIG="pkg-config --define-prefix" ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--enable-osx-universal-binary=no \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc \
 		--disable-dependency-tracking \
 		--disable-silent-rules \

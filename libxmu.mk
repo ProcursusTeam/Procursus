@@ -18,7 +18,7 @@ else
 libxmu: libxmu-setup libxext libxt
 	cd $(BUILD_WORK)/libxmu && unset CPP CPPFLAGS && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc \
 		--localstatedir=/var \
 		--enable-malloc0returnsnull=no \

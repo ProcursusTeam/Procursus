@@ -19,7 +19,7 @@ else
 xar: xar-setup openssl
 	cd $(BUILD_WORK)/xar && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		ac_cv_header_openssl_evp_h=yes \
 		ac_cv_lib_crypto_OPENSSL_init_crypto=yes \
 		ac_cv_header_libxml_xmlwriter_h=yes \

@@ -17,7 +17,7 @@ else
 libusbmuxd: libusbmuxd-setup libplist
 	cd $(BUILD_WORK)/libusbmuxd && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libusbmuxd
 	+$(MAKE) -C $(BUILD_WORK)/libusbmuxd install \
 		DESTDIR="$(BUILD_STAGE)/libusbmuxd"

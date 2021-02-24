@@ -17,7 +17,7 @@ else
 mpg123: mpg123-setup
 	cd $(BUILD_WORK)/mpg123 && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--with-audio=coreaudio \
 		--with-cpu=aarch64
 	+$(MAKE) -C $(BUILD_WORK)/mpg123 install \

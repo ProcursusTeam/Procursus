@@ -20,7 +20,7 @@ else
 libwebp: libwebp-setup libpng16 libgif libtiff libjpeg-turbo
 	cd $(BUILD_WORK)/libwebp && ./autogen.sh && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-{sdl,gl} \
 		--enable-libwebp{mux,demux,decoder,extras}
 	+$(MAKE) -C $(BUILD_WORK)/libwebp

@@ -18,7 +18,7 @@ else
 libtheora: libtheora-setup libogg
 	cd $(BUILD_WORK)/libtheora && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--disable-oggtest \
 		--disable-vorbistest \

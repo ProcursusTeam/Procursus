@@ -24,7 +24,7 @@ else
 usbmuxd2: usbmuxd2-setup libgeneral libusb libimobiledevice libplist
 	cd $(BUILD_WORK)/usbmuxd2 && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--without-systemd \
 		--without-wifi
 	+$(MAKE) -C $(BUILD_WORK)/usbmuxd2 \

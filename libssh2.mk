@@ -19,7 +19,7 @@ libssh2: libssh2-setup openssl
 	find $(BUILD_BASE) -name "*.la" -type f -delete
 	cd $(BUILD_WORK)/libssh2 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-debug \
 		--disable-dependency-tracking \
 		--with-libz

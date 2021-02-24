@@ -18,7 +18,7 @@ else
 mosh: mosh-setup libprotobuf openssl ncurses
 	cd $(BUILD_WORK)/mosh && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc \
 		--with-ncursesw \
 		--with-crypto-library=openssl \

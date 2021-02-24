@@ -18,7 +18,7 @@ else
 libice: libice-setup xtrans xorgproto
 	cd $(BUILD_WORK)/libice && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc \
 		--localstatedir=/var \
 		--enable-malloc0returnsnull=no \

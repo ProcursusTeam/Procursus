@@ -18,7 +18,7 @@ else
 libxi: libxi-setup libx11 xorgproto libxext libxfixes
 	cd $(BUILD_WORK)/libxi && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc \
 		--localstatedir=/var \
 		--enable-malloc0returnsnull=no \

@@ -18,7 +18,7 @@ else
 bison: bison-setup m4 gettext readline
 	cd $(BUILD_WORK)/bison && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/bison
 	+$(MAKE) -C $(BUILD_WORK)/bison install \
 		DESTDIR=$(BUILD_STAGE)/bison

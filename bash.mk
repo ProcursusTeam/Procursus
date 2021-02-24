@@ -27,7 +27,7 @@ bash: bash-setup ncurses readline
 	@# TODO: This is kinda messy, clean up
 	cd $(BUILD_WORK)/bash && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-nls \
 		--with-installed-readline=$(BUILD_BASE)/usr/lib \
 		CFLAGS="$(CFLAGS) -DSSH_SOURCE_BASHRC" \

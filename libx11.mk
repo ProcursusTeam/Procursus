@@ -19,7 +19,7 @@ libx11: libx11-setup xorgproto libxcb xtrans
 	unset MACOSX_DEPLOYMENT_TARGET && \
 	cd $(BUILD_WORK)/libx11 && unset MACOSX_DEPLOYMENT_TARGET && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--enable-unix-transport \
 		--enable-tcp-transport \
 		--enable-ipv6 \

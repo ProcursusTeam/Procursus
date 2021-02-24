@@ -22,7 +22,7 @@ else
 grep: grep-setup pcre
 	cd $(BUILD_WORK)/grep && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--with-packager="$(DEB_MAINTAINER)"
 	+$(MAKE) -C $(BUILD_WORK)/grep

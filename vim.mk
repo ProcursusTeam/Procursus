@@ -23,7 +23,7 @@ vim: vim-setup ncurses gettext
 	cd $(BUILD_WORK)/vim/src && autoconf -f
 	cd $(BUILD_WORK)/vim && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--enable-gui=no \
 		--with-tlib=ncursesw \
 		--without-x \

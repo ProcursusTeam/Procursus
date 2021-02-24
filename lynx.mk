@@ -21,7 +21,7 @@ else
 lynx: lynx-setup ncurses libidn2 openssl gettext
 	cd $(BUILD_WORK)/lynx && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--with-build-cc=cc \
 		--sysconfdir=/etc \
 		--mandir=/usr/share/man \

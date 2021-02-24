@@ -20,7 +20,7 @@ else
 cctools: cctools-setup llvm uuid tapi xar
 	cd $(BUILD_WORK)/cctools && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--enable-lto-support \
 		--with-libtapi="$(BUILD_STAGE)/tapi/usr" \
 		CC="$(CC)" \

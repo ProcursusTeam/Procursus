@@ -17,7 +17,7 @@ else
 libopus: libopus-setup
 	cd $(BUILD_WORK)/libopus && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--disable-doc
 	+$(MAKE) -C $(BUILD_WORK)/libopus

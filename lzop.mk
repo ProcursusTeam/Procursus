@@ -17,7 +17,7 @@ else
 lzop: lzop-setup liblzo2
 	cd $(BUILD_WORK)/lzop && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/lzop
 	+$(MAKE) -C $(BUILD_WORK)/lzop install \

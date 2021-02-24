@@ -17,7 +17,7 @@ else
 libde265: libde265-setup
 	cd $(BUILD_WORK)/libde265 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-sherlock265
 	+$(MAKE) -C $(BUILD_WORK)/libde265
 	+$(MAKE) -C $(BUILD_WORK)/libde265 install \

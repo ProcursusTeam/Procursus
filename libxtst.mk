@@ -18,7 +18,7 @@ else
 libxtst: libxtst-setup xorgproto libx11 libxi
 	cd $(BUILD_WORK)/libxtst && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc \
 		--localstatedir=/var
 	+$(MAKE) -C $(BUILD_WORK)/libxtst

@@ -28,7 +28,7 @@ rav1e: rav1e-setup aom dav1d
 	cd $(BUILD_WORK)/rav1e && SDKROOT="$(TARGET_SYSROOT)" cargo \
 		cbuild \
 		--release \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--target=$(RUST_TARGET)
 
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/rav1e $(BUILD_STAGE)/rav1e/usr/bin/rav1e

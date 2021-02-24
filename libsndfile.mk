@@ -17,7 +17,7 @@ else
 libsndfile: libsndfile-setup flac libogg libvorbis libopus
 	cd $(BUILD_WORK)/libsndfile && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/libsndfile
 	+$(MAKE) -C $(BUILD_WORK)/libsndfile install \

@@ -18,7 +18,7 @@ else
 gawk: gawk-setup gettext
 	cd $(BUILD_WORK)/gawk && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc
 	+$(MAKE) -C $(BUILD_WORK)/gawk install \
 		DESTDIR=$(BUILD_STAGE)/gawk

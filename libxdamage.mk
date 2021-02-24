@@ -18,7 +18,7 @@ else
 libxdamage: libxdamage-setup xorgproto libx11 libxfixes
 	cd $(BUILD_WORK)/libxdamage && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc \
 		--localstatedir=/var
 	+$(MAKE) -C $(BUILD_WORK)/libxdamage

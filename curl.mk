@@ -18,7 +18,7 @@ else
 curl: curl-setup gettext openssl libssh2 nghttp2 libidn2 brotli zstd rtmpdump
 	cd $(BUILD_WORK)/curl && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-debug \
 		--disable-dependency-tracking \
 		--with-libssh2 \

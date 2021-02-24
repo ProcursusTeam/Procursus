@@ -36,7 +36,7 @@ else
 futurerestore: futurerestore-setup tsschecker libirecovery openssl libusbmuxd libimobiledevice img4tool libgeneral libipatcher libzip
 	cd $(BUILD_WORK)/futurerestore && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/futurerestore
 	+$(MAKE) -C $(BUILD_WORK)/futurerestore install \
 		DESTDIR="$(BUILD_STAGE)/futurerestore"

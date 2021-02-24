@@ -18,7 +18,7 @@ else
 dialog: dialog-setup ncurses gettext
 	cd $(BUILD_WORK)/dialog && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--with-ncursesw \
 		--enable-nls
 	+$(MAKE) -C $(BUILD_WORK)/dialog

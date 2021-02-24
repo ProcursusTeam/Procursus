@@ -17,7 +17,7 @@ else
 sshpass: sshpass-setup
 	cd $(BUILD_WORK)/sshpass && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		ac_cv_func_malloc_0_nonnull=yes
 	+$(MAKE) -C $(BUILD_WORK)/sshpass
 	+$(MAKE) -C $(BUILD_WORK)/sshpass install \

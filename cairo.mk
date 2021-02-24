@@ -17,7 +17,7 @@ else
 cairo: cairo-setup freetype fontconfig glib2.0 libpng16 liblzo2 libpixman
 	cd $(BUILD_WORK)/cairo && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--enable-pdf \
 		--enable-ps \
 		--enable-png \

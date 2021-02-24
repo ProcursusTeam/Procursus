@@ -18,7 +18,7 @@ else
 libtool: libtool-setup
 	cd $(BUILD_WORK)/libtool && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--program-prefix=g \
 		--enable-ltdl-install
 	+$(MAKE) -C $(BUILD_WORK)/libtool

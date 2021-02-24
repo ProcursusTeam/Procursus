@@ -17,7 +17,7 @@ else
 ccache: ccache-setup
 	cd $(BUILD_WORK)/ccache && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--mandir=/usr/share/man \
 		--infodir=/usr/share/info \
 		--sysconfdir=/etc

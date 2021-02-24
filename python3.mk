@@ -32,7 +32,7 @@ python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm expat 
 	cd $(BUILD_WORK)/python3 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--build=$(shell $(BUILD_WORK)/python3/config.guess) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--enable-ipv6 \
 		--without-ensurepip \
 		--with-system-ffi \

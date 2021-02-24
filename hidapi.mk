@@ -18,7 +18,7 @@ hidapi: hidapi-setup
 	cd $(BUILD_WORK)/hidapi && ./bootstrap
 	cd $(BUILD_WORK)/hidapi && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/hidapi install \
 		CFLAGS="$(CFLAGS) -D__OPEN_SOURCE__ -DMAC_OS_X_VERSION_MIN_REQUIRED=101500" \
 		DESTDIR="$(BUILD_STAGE)/hidapi"

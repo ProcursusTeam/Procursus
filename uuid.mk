@@ -19,7 +19,7 @@ else
 uuid: uuid-setup
 	cd $(BUILD_WORK)/uuid && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		ac_cv_va_copy=yes \
 		CC="$(CC) $(CFLAGS)" \
 		CXX="$(CXX) $(CXXFLAGS)"

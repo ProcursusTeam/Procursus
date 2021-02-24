@@ -17,7 +17,7 @@ else
 libfribidi: libfribidi-setup
 	cd $(BUILD_WORK)/libfribidi && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--disable-silent-rules \
 		--disable-debug

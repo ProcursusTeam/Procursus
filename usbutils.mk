@@ -17,7 +17,7 @@ else
 usbutils: usbutils-setup libusb
 	cd $(BUILD_WORK)/usbutils && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/usbutils install \
 		DESTDIR="$(BUILD_STAGE)/usbutils" \
 		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)/usr/include/libusb-1.0" \

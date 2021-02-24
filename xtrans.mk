@@ -18,7 +18,7 @@ else
 xtrans: xtrans-setup
 	cd $(BUILD_WORK)/xtrans && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc \
 		--localstatedir=/var \
 		--enable-docs=no

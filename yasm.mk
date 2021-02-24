@@ -17,7 +17,7 @@ else
 yasm: yasm-setup
 	cd $(BUILD_WORK)/yasm && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-python \
 		--disable-debug
 	+$(MAKE) -C $(BUILD_WORK)/yasm

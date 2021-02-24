@@ -25,7 +25,7 @@ tesseract: tesseract-setup leptonica libarchive curl
 	cd $(BUILD_WORK)/tesseract && ./autogen.sh
 	cd $(BUILD_WORK)/tesseract && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		LEPTONICA_CFLAGS="-I$(BUILD_STAGE)/leptonica/usr/include/leptonica"
 	+$(MAKE) -C $(BUILD_WORK)/tesseract
 	+$(MAKE) -C $(BUILD_WORK)/tesseract install \

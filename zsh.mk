@@ -23,7 +23,7 @@ else
 zsh: zsh-setup pcre ncurses
 	cd $(BUILD_WORK)/zsh && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--enable-cap \
 		--enable-pcre \
 		--enable-multibyte \

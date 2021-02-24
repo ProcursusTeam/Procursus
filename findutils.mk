@@ -22,7 +22,7 @@ else
 findutils: findutils-setup gettext
 	cd $(BUILD_WORK)/findutils && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--localstatedir=/var/cache/locate \
 		--disable-dependency-tracking \
 		--disable-debug \

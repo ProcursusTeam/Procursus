@@ -17,7 +17,7 @@ else
 xapian: xapian-setup uuid
 	cd $(BUILD_WORK)/xapian && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--enable-shared=yes \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/xapian

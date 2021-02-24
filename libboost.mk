@@ -18,7 +18,7 @@ else
 libboost: libboost-setup xz zstd
 	rm -rf $(BUILD_BASE)/usr/lib/libboost_*
 	cd $(BUILD_WORK)/libboost && unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS SYSROOT && ./bootstrap.sh \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--without-icu
 	echo 'using clang-darwin : arm : $(CXX) : <compileflags>"$(CPPFLAGS)" <cflags>"$(CFLAGS)" <cxxflags>"$(CXXFLAGS)" <linkflags>"$(LDFLAGS)" ;' > $(BUILD_WORK)/libboost/tools/build/src/user-config.jam
 	cd $(BUILD_WORK)/libboost && ./b2 \

@@ -25,7 +25,7 @@ else
 sdl2: sdl2-setup
 	cd $(BUILD_WORK)/sdl2 && ./configure -C \
 		--host=aarch64-ios-darwin \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--enable-hidapi \
 		CFLAGS="-DNDEBUG -DIOS_DYLIB -g -O0 -pipe -fPIC -fobjc-arc $(CFLAGS)" \

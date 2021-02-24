@@ -18,7 +18,7 @@ jq: jq-setup libonig
 	cd $(BUILD_WORK)/jq && autoreconf -fi
 	cd $(BUILD_WORK)/jq && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--with-oniguruma=$(BUILD_STAGE)/libonig/usr \
 		--disable-docs \
 		--disable-maintainer-mode \

@@ -17,7 +17,7 @@ tor:
 else
 tor: tor-setup libevent openssl xz zstd libscrypt
 	cd $(BUILD_WORK)/tor && ./configure \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--disable-tool-name-check \
 		--sysconfdir=/etc \

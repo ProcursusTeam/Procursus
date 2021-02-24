@@ -20,7 +20,7 @@ else
 sqlite3: sqlite3-setup ncurses readline
 	cd $(BUILD_WORK)/sqlite3 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--enable-readline \
 		--disable-editline \
 		--enable-session \

@@ -17,7 +17,7 @@ else
 jansson: jansson-setup
 	cd $(BUILD_WORK)/jansson && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/jansson
 	+$(MAKE) -C $(BUILD_WORK)/jansson install \
 		DESTDIR="$(BUILD_STAGE)/jansson"

@@ -22,7 +22,7 @@ aptitude: aptitude-setup ncurses libboost xapian cwidget apt googletest
 		$(BUILD_WORK)/aptitude/doc/{de,nl,it,es,ja,en,ru,fr,pl,fi,cs}/Makefile.in
 	cd $(BUILD_WORK)/aptitude && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc \
 		--disable-qt \
 		--disable-gtk \

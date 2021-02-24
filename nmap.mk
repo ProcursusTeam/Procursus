@@ -17,7 +17,7 @@ else
 nmap: nmap-setup lua5.3 openssl pcre libssh2
 	cd $(BUILD_WORK)/nmap && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--with-liblua=$(BUILD_BASE)/usr \
 		--without-nmap-update \
 		--disable-universal \

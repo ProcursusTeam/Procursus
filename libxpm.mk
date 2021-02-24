@@ -18,7 +18,7 @@ else
 libxpm: libxpm-setup libx11 xorgproto libxt libxext gettext
 	cd $(BUILD_WORK)/libxpm && unset CPP CPPFLAGS && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc \
 		--localstatedir=/var
 	+$(MAKE) -C $(BUILD_WORK)/libxpm

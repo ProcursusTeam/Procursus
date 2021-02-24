@@ -20,7 +20,7 @@ else
 libogg: libogg-setup
 	cd $(BUILD_WORK)/libogg && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/libogg
 	+$(MAKE) -C $(BUILD_WORK)/libogg install \

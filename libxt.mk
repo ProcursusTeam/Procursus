@@ -18,7 +18,7 @@ else
 libxt: libxt-setup libx11 libice libsm
 	cd $(BUILD_WORK)/libxt && unset CPP CPPFLAGS && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc \
 		--localstatedir=/var \
 		--enable-malloc0returnsnull=no \

@@ -19,7 +19,7 @@ else
 libpng16: libpng16-setup
 	cd $(BUILD_WORK)/libpng16 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libpng16
 	+$(MAKE) -C $(BUILD_WORK)/libpng16 install \
 		DESTDIR=$(BUILD_STAGE)/libpng16

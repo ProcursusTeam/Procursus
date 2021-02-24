@@ -18,7 +18,7 @@ else
 util-macros: util-macros-setup
 	cd $(BUILD_WORK)/util-macros && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc \
 		--localstatedir=/var \
 		--disable-static

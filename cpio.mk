@@ -19,7 +19,7 @@ else
 cpio: cpio-setup gettext
 	cd $(BUILD_WORK)/cpio && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/cpio
 	+$(MAKE) -C $(BUILD_WORK)/cpio install \
 		DESTDIR=$(BUILD_STAGE)/cpio

@@ -17,7 +17,7 @@ else
 libredwg: libredwg-setup
 	cd $(BUILD_WORK)/libredwg && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libredwg
 	+$(MAKE) -C $(BUILD_WORK)/libredwg install \
 		DESTDIR=$(BUILD_STAGE)/libredwg

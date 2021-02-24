@@ -19,7 +19,7 @@ else
 nghttp2: nghttp2-setup openssl libc-ares libev jansson libjemalloc libevent
 	cd $(BUILD_WORK)/nghttp2 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--without-systemd \
 		--enable-python-bindings=no \

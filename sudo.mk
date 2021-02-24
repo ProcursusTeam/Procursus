@@ -58,7 +58,7 @@ void patch_setuidandplatformize() {\
 
 	cd $(BUILD_WORK)/sudo && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--without-pam \
 		--enable-static-sudoers \
 		--with-all-insults \

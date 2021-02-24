@@ -17,7 +17,7 @@ else
 libass: libass-setup freetype fontconfig libfribidi harfbuzz
 	cd $(BUILD_WORK)/libass && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		FONTCONFIG_CFLAGS="-I$(BUILD_BASE)/usr/include/freetype2 -I$(BUILD_BASE)/usr/include/libpng16" \
 		FREETYPE_CFLAGS="-I$(BUILD_BASE)/usr/include/freetype2 -I$(BUILD_BASE)/usr/include/libpng16" \
 		FRIBIDI_CFLAGS="-I$(BUILD_BASE)/usr/include/fribidi" \

@@ -18,7 +18,7 @@ libprotobuf: libprotobuf-setup
 	cd $(BUILD_WORK)/libprotobuf && ./autogen.sh
 	cd $(BUILD_WORK)/libprotobuf && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libprotobuf
 	+$(MAKE) -C $(BUILD_WORK)/libprotobuf install \
 		DESTDIR="$(BUILD_BASE)"

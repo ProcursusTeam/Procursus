@@ -17,7 +17,7 @@ else
 scrypt: scrypt-setup openssl
 	cd $(BUILD_WORK)/scrypt && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--enable-libscrypt-kdf
 	+$(MAKE) -C $(BUILD_WORK)/scrypt
 	+$(MAKE) -C $(BUILD_WORK)/scrypt install \

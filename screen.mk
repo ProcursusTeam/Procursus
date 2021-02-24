@@ -20,7 +20,7 @@ screen: screen-setup ncurses libxcrypt
 	cd $(BUILD_WORK)/screen && ./autogen.sh
 	cd $(BUILD_WORK)/screen && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--mandir=/usr/share/man \
 		--enable-colors256 \
 		--disable-pam \

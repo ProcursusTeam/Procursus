@@ -17,7 +17,7 @@ else
 libcaca: libcaca-setup imlib2 slang2 ncurses
 	cd $(BUILD_WORK)/libcaca && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--enable-plugins \
 		--disable-doc \
     	--disable-java \

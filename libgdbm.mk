@@ -18,7 +18,7 @@ else
 libgdbm: libgdbm-setup readline gettext
 	cd $(BUILD_WORK)/libgdbm && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libgdbm
 	+$(MAKE) -C $(BUILD_WORK)/libgdbm install \
 		DESTDIR=$(BUILD_STAGE)/libgdbm

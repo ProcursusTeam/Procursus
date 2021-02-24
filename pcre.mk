@@ -22,7 +22,7 @@ else
 pcre: pcre-setup
 	cd $(BUILD_WORK)/pcre && unset MACOSX_DEPLOYMENT_TARGET && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--enable-utf8 \
 		--enable-pcre8 \

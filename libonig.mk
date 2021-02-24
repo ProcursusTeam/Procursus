@@ -17,7 +17,7 @@ else
 libonig: libonig-setup
 	cd $(BUILD_WORK)/libonig && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libonig install \
 		DESTDIR=$(BUILD_STAGE)/libonig
 	+$(MAKE) -C $(BUILD_WORK)/libonig install \

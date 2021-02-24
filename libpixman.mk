@@ -17,7 +17,7 @@ else
 libpixman: libpixman-setup
 	cd $(BUILD_WORK)/libpixman && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--disable-gtk \
 		--disable-silent-rules 

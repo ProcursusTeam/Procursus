@@ -20,7 +20,7 @@ else
 grep: grep-setup pcre                                                                  ### The (tool) target is where the actual building happens.
 	cd $(BUILD_WORK)/grep && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--disable-nls \
 		--with-packager="$(DEB_MAINTAINER)"

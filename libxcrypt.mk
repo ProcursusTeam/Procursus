@@ -20,7 +20,7 @@ libxcrypt: libxcrypt-setup
 	cd $(BUILD_WORK)/libxcrypt && autoreconf -iv
 	cd $(BUILD_WORK)/libxcrypt && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libxcrypt
 	+$(MAKE) -C $(BUILD_WORK)/libxcrypt install \
 		DESTDIR=$(BUILD_STAGE)/libxcrypt

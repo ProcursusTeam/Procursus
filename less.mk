@@ -17,7 +17,7 @@ else
 less: less-setup ncurses pcre2
 	cd $(BUILD_WORK)/less && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--with-regex=pcre2 \
 		CFLAGS="$(CFLAGS) -Wno-implicit-function-declaration" \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)"

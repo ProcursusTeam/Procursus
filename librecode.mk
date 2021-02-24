@@ -17,7 +17,7 @@ else
 librecode: librecode-setup gettext
 	cd $(BUILD_WORK)/librecode && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--without-included-gettext
 	+$(MAKE) -C $(BUILD_WORK)/librecode
 	+$(MAKE) -C $(BUILD_WORK)/librecode install \

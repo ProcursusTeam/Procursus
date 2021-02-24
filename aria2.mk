@@ -17,7 +17,7 @@ else
 aria2: aria2-setup openssl libjemalloc libuv1 libssh2 libc-ares
 	cd $(BUILD_WORK)/aria2 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-debug \
 		--enable-libaria2 \
 		--with-openssl \

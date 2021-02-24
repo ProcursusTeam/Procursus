@@ -18,7 +18,7 @@ else
 libc-ares: libc-ares-setup
 	cd $(BUILD_WORK)/libc-ares && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--disable-debug \
 		--enable-shared

@@ -18,7 +18,7 @@ else
 groff: groff-setup
 	cd $(BUILD_WORK)/groff && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--with-x=no
 	+$(MAKE) -C $(BUILD_WORK)/groff \
 		AR="$(AR)" \

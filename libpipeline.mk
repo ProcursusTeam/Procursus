@@ -18,7 +18,7 @@ else
 libpipeline: libpipeline-setup
 	cd $(BUILD_WORK)/libpipeline && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libpipeline
 	+$(MAKE) -C $(BUILD_WORK)/libpipeline install \
 		DESTDIR=$(BUILD_STAGE)/libpipeline

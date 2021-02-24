@@ -19,7 +19,7 @@ else
 inetutils: inetutils-setup ncurses readline
 	cd $(BUILD_WORK)/inetutils && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-ifconfig \
 		--disable-ping6 \
 		--disable-syslogd \

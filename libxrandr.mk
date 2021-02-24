@@ -18,7 +18,7 @@ else
 libxrandr: libxrandr-setup libx11 libxrender libxext xorgproto
 	cd $(BUILD_WORK)/libxrandr && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc \
 		--localstatedir=/var \
 		--enable-malloc0returnsnull=no

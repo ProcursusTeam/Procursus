@@ -18,7 +18,7 @@ else
 libfontenc: libfontenc-setup
 	cd $(BUILD_WORK)/libfontenc && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc \
 		--localstatedir=/var
 	+$(MAKE) -C $(BUILD_WORK)/libfontenc

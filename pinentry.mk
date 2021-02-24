@@ -18,7 +18,7 @@ else
 pinentry: pinentry-setup libgpg-error libassuan ncurses
 	cd $(BUILD_WORK)/pinentry && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-pinentry-fltk \
 		--disable-pinentry-gnome3 \
 		--disable-pinentry-gtk2 \

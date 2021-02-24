@@ -17,7 +17,7 @@ else
 tmux: tmux-setup ncurses libevent libutf8proc
 	cd $(BUILD_WORK)/tmux && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--enable-utf8proc \
 		ac_cv_func_strtonum=no \
 		LIBNCURSES_LIBS="-lncursesw" \

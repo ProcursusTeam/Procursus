@@ -17,7 +17,7 @@ else
 libopencore-amr: libopencore-amr-setup
 	cd $(BUILD_WORK)/libopencore-amr && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/libopencore-amr
 	+$(MAKE) -C $(BUILD_WORK)/libopencore-amr install \
