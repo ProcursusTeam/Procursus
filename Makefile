@@ -137,6 +137,19 @@ MEMO_SUB_PREFIX      ?=
 MEMO_ALT_PREFIX      ?=
 GNU_PREFIX           := g
 
+else ifeq ($(MEMO_TARGET),darwin-amd64)
+$(warning Building for macOS amd64)
+MEMO_ARCH            := x86_64
+PLATFORM             := macosx
+DEB_ARCH             := darwin-amd64
+GNU_HOST_TRIPLE      := x86_64-apple-darwin
+RUST_TARGET          := $(GNU_HOST_TRIPLE)
+PLATFORM_VERSION_MIN := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
+MEMO_PREFIX          ?= opt/procursus
+MEMO_SUB_PREFIX      ?=
+MEMO_ALT_PREFIX      ?=
+GNU_PREFIX           := g
+
 else
 $(error Platform not supported)
 endif

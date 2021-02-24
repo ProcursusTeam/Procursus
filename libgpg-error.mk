@@ -10,6 +10,8 @@ ifneq (,$(findstring aarch64,$(GNU_HOST_TRIPLE)))
         GPG_SCHEME := aarch64-apple-darwin
 else ifneq (,$(findstring arm,$(GNU_HOST_TRIPLE)))
         GPG_SCHEME := arm-apple-darwin
+else ifneq (,$(findstring x86_64,$(GNU_HOST_TRIPLE)))
+        GPG_SCHEME := x86_64-apple-darwin
 else
         $(error Host triple $(GNU_HOST_TRIPLE) isn't supported)
 endif
