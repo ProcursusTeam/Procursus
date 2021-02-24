@@ -14,4 +14,3 @@ Description: fast, scalable, distributed revision control system
  Every Git working directory is a full-fledged repository with full
  revision tracking capabilities, not dependent on network access or a
  central server.
-Name: Git

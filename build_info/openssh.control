@@ -6,4 +6,3 @@ Depends: openssh-client, openssh-server, openssh-sftp-server
 Section: Networking
 Priority: important
 Description: secure shell client and server (metapackage)
-Name: OpenSSH
