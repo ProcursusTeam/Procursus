@@ -22,6 +22,9 @@ apt-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/a/apt/apt_$(APT_VERSION).tar.xz
 	$(call EXTRACT_TAR,apt_$(APT_VERSION).tar.xz,apt-$(APT_VERSION),apt)
 	$(call DO_PATCH,apt,apt,-p1)
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+	$(call DO_PATCH,apt-macos,apt,-p1)
+endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	if [ -f "$(BUILD_WORK)/apt/apt-private/private-output.cc" ]; then \
 		mv -f $(BUILD_WORK)/apt/apt-private/private-output.{cc,mm}; \
 	fi

@@ -1,0 +1,12 @@
+diff -urN apt-2.2.0/apt-pkg/init.cc apt/apt-pkg/init.cc
+--- apt-2.2.0/apt-pkg/init.cc	2021-01-30 14:51:30.000000000 -0500
++++ apt/apt-pkg/init.cc	2021-02-23 21:11:11.000000000 -0500
+@@ -210,7 +210,7 @@
+    Cnf.CndSet("Acquire::Changelogs::AlwaysOnline::Origin::Ubuntu", true);
+
+
+-   Cnf.CndSet("DPkg::Path", "/usr/sbin:/usr/bin:/sbin:/bin");
++   Cnf.CndSet("DPkg::Path", "/opt/procursus/sbin:/opt/procursus/bin:/usr/sbin:/usr/bin:/sbin:/bin");
+
+    // Read an alternate config file
+    _error->PushToStack();
