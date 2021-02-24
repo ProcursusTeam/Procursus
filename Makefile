@@ -80,6 +80,7 @@ RUST_TARGET          := aarch64-apple-ios
 MEMO_PREFIX          ?=
 MEMO_SUB_PREFIX      ?= usr
 MEMO_ALT_PREFIX      ?= local
+GNU_PREFIX           :=
 export IPHONEOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),appletvos-arm64)
@@ -93,6 +94,7 @@ RUST_TARGET          := aarch64-apple-tvos
 MEMO_PREFIX          ?=
 MEMO_SUB_PREFIX      ?= usr
 MEMO_ALT_PREFIX      ?= local
+GNU_PREFIX           :=
 export APPLETVOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),watchos-arm64_32)
@@ -106,6 +108,7 @@ RUST_TARGET          := aarch64-apple-watchos
 MEMO_PREFIX          ?=
 MEMO_SUB_PREFIX      ?= usr
 MEMO_ALT_PREFIX      ?= local
+GNU_PREFIX           :=
 export WATCHOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),darwin-arm64e)
@@ -119,6 +122,7 @@ PLATFORM_VERSION_MIN := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
 MEMO_PREFIX          ?= opt/procursus
 MEMO_SUB_PREFIX      ?=
 MEMO_ALT_PREFIX      ?=
+GNU_PREFIX           := g
 
 else ifeq ($(MEMO_TARGET),darwin-arm64)
 $(warning Building for macOS arm64)
@@ -131,6 +135,7 @@ PLATFORM_VERSION_MIN := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
 MEMO_PREFIX          ?= opt/procursus
 MEMO_SUB_PREFIX      ?=
 MEMO_ALT_PREFIX      ?=
+GNU_PREFIX           := g
 
 else
 $(error Platform not supported)
