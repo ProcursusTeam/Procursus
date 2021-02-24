@@ -17,7 +17,6 @@ apt-setup: setup
 	$(call DO_PATCH,apt,apt,-p1)
 	mv $(BUILD_WORK)/apt/apt-private/private-output.{cc,mm}
 	mv $(BUILD_WORK)/apt/apt-pkg/algorithms.{cc,mm}
-	$(SED) -i 's/_apt/root/' $(BUILD_WORK)/apt/apt-pkg/init.cc
 	mkdir -p $(BUILD_WORK)/apt/build
 
 ifneq ($(wildcard $(BUILD_WORK)/apt/.build_complete),)

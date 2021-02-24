@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS    += profile.d
-PROFILED_VERSION := 0-5
+PROFILED_VERSION := 0-6
 DEB_PROFILED_V   ?= $(PROFILED_VERSION)
 
 ifneq ($(wildcard $(BUILD_STAGE)/profile.d/.build_complete),)
