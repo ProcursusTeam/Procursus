@@ -3,9 +3,6 @@ Version: @DEB_COREUTILS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: libintl8 (>= 0.20.0)
-Conflicts: coreutils-bin (<<1:0), shell-cmds (<< 207.40.1), text-cmds (<< 1:0), file-cmds (<< 272.250.1-1)
-Replaces: netatalk (<= 2.0.3-6), coreutils-bin, shell-cmds (<< 207.40.1), text-cmds (<< 1:0), file-cmds (<< 272.250.1-1)
-Provides: md5sum, sha1sum, coreutils-bin (=@DEB_COREUTILS_V@), dirname, kill, mktemp, su
 Section: Utilities
 Priority: standard
 Homepage: http://www.gnu.org/software/coreutils/
