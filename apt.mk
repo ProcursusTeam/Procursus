@@ -12,7 +12,6 @@ endif
 
 ###
 #
-# TODO: Write a native useradd command for macOS/iOS. For now setting root user here will be fine.
 # TODO: Make our own vendor configuration instead of using debian.
 #
 ###
@@ -31,7 +30,6 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	if [ -f "$(BUILD_WORK)/apt/apt-pkg/algorithms.cc" ]; then \
 		mv -f $(BUILD_WORK)/apt/apt-pkg/algorithms.{cc,mm}; \
 	fi
-	$(SED) -i 's/_apt/root/' $(BUILD_WORK)/apt/apt-pkg/init.cc
 	mkdir -p $(BUILD_WORK)/apt/build
 
 ifneq ($(wildcard $(BUILD_WORK)/apt/.build_complete),)
@@ -47,6 +45,7 @@ apt: apt-setup libgcrypt berkeleydb lz4 xxhash xz zstd
 		-DCACHE_DIR=/$(MEMO_PREFIX)/var/cache/apt \
 		-DLOG_DIR=/$(MEMO_PREFIX)/var/log/apt \
 		-DCONF_DIR=/$(MEMO_PREFIX)/etc/apt \
+		-DROOT_GROUP=wheel \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
 		-DCMAKE_INSTALL_PREFIX=/$(MEMO_PREFIX)/ \
 		-DCMAKE_INSTALL_NAME_DIR=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib \
