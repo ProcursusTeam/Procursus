@@ -2,7 +2,7 @@ ifeq ($(firstword $(subst ., ,$(MAKE_VERSION))),3)
 $(error Install latest make from Homebrew - brew install make)
 endif
 
-ifeq ($(shell /usr/bin/env bash --version | grep -q 'version 5' && echo 1),1)
+ifeq ($(shell /usr/bin/env bash --version | grep -iq 'version 5' && echo 1),1)
 SHELL := /usr/bin/env bash
 else
 $(error Install bash 5.0)
@@ -130,6 +130,19 @@ MEMO_ARCH            := arm64
 PLATFORM             := macosx
 DEB_ARCH             := darwin-arm64
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
+RUST_TARGET          := $(GNU_HOST_TRIPLE)
+PLATFORM_VERSION_MIN := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
+MEMO_PREFIX          ?= opt/procursus
+MEMO_SUB_PREFIX      ?=
+MEMO_ALT_PREFIX      ?=
+GNU_PREFIX           := g
+
+else ifeq ($(MEMO_TARGET),darwin-amd64)
+$(warning Building for macOS amd64)
+MEMO_ARCH            := x86_64
+PLATFORM             := macosx
+DEB_ARCH             := darwin-amd64
+GNU_HOST_TRIPLE      := x86_64-apple-darwin
 RUST_TARGET          := $(GNU_HOST_TRIPLE)
 PLATFORM_VERSION_MIN := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
 MEMO_PREFIX          ?= opt/procursus
