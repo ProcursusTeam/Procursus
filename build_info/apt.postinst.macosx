@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+set -e
+
+if [ "$1" = 'configure' ]; then
+    # add unprivileged user for the apt methods
+    dscl . -create /Users/_apt UserShell /usr/bin/false
+    dscl . -create /Users/_apt NSFHomeDirectory /var/empty
+    dscl . -create /Users/_apt PrimaryGroupID -1
+    dscl . -create /Users/_apt RealName "APT Sandbox User"
+fi
