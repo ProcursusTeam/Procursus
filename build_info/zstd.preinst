@@ -5,8 +5,8 @@ set -e
 case "$1" in
     upgrade)
     if dpkg --compare-versions "$2" lt 1.4.5-2; then
-      if test -e /usr/lib/libzstd.1.dylib; then
-          mv /usr/lib/libzstd.1*.dylib /usr/local/lib
+      if test -e /@MEMO_PREFIX@/@MEMO_SUB_PREFIX@/lib/libzstd.1.dylib; then
+          mv /@MEMO_PREFIX@/@MEMO_SUB_PREFIX@/lib/libzstd.1*.dylib /@MEMO_PREFIX@/@MEMO_SUB_PREFIX@/@MEMO_ALT_PREFIX@/lib
       fi
     fi
     ;;
