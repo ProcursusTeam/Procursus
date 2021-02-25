@@ -1,0 +1,9 @@
+Package: libboost1.75.0-all
+Version: 1:0
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libboost-atomic1.75.0, libboost-chrono1.75.0, libboost-container1.75.0, libboost-context1.75.0, libboost-contract1.75.0, libboost-coroutine1.75.0, libboost-date-time1.75.0, libboost-filesystem1.75.0, libboost-graph1.75.0, libboost-iostreams1.75.0, libboost-locale1.75.0, libboost-log1.75.0, libboost-math1.75.0, libboost-program-options1.75.0, libboost-random1.75.0, libboost-regex1.75.0, libboost-serialization1.75.0, libboost-stacktrace1.75.0, libboost-system1.75.0, libboost-test1.75.0, libboost-thread1.75.0, libboost-timer1.75.0, libboost-type-erasure1.75.0, libboost-wave1.75.0
+Section: Libraries
+Priority: Optional
+Description: Boost C++ Libraries Meta Package
+Name: libboost Meta Package

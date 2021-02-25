@@ -1,0 +1,8 @@
+Package: libboost-log1.75.0
+Version: @DEB_LIBBOOST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libboost-atomic1.75.0 (= @DEB_LIBBOOST_V@), libboost-chrono1.75.0 (= @DEB_LIBBOOST_V@), libboost-thread1.75.0 (= @DEB_LIBBOOST_V@), libboost-date-time1.75.0 (= @DEB_LIBBOOST_V@), libboost-filesystem1.75.0 (= @DEB_LIBBOOST_V@), libboost-regex1.75.0 (= @DEB_LIBBOOST_V@)
+Section: Libraries
+Priority: optional
+Description: C++ logging library
