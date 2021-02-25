@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+
 SUBPROJECTS       += appuninst
 APPUNINST_VERSION := 1.0.0
 DEB_APPUNINST_V   ?= $(APPUNINST_VERSION)
@@ -46,3 +48,5 @@ appuninst-package: appuninst-stage
 	rm -rf $(BUILD_DIST)/appuninst
 
 .PHONY: appuninst appuninst-package
+
+endif # ($(MEMO_TARGET),darwin-\*)
