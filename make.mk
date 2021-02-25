@@ -35,7 +35,7 @@ make-package: make-stage
 	mkdir -p $(BUILD_DIST)/make
 	
 	# make.mk Prep make
-	cp -a $(BUILD_STAGE)/make/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) $(BUILD_DIST)
+	cp -a $(BUILD_STAGE)/make/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) $(BUILD_DIST)/make
 	
 	# make.mk Sign
 	$(call SIGN,make,general.xml)
