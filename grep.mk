@@ -47,7 +47,14 @@ grep-package: grep-stage
 	# grep.mk Prep grep
 	cp -a $(BUILD_STAGE)/grep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/ $(BUILD_DIST)/grep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/grep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1/ $(BUILD_DIST)/grep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1
-	
+
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+	mkdir -p $(BUILD_DIST)/grep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/gnubin
+	for bin in $(BUILD_DIST)/grep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/*; do \
+		ln -s /$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/$$(echo $$bin | rev | cut -d/ -f1 | rev) $(BUILD_DIST)/grep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $$bin | rev | cut -d/ -f1 | rev | cut -c2-); \
+	done
+endif
+
 	# grep.mk Sign
 	$(call SIGN,grep,general.xml)
 	
