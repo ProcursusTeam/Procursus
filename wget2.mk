@@ -19,7 +19,7 @@ wget2: wget2-setup openssl pcre2 xz zstd nghttp2 libidn2 gettext
 	cd $(BUILD_WORK)/wget2 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
-		--sysconfdir=/etc \
+		--sysconfdir=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/etc \
 		--with-ssl=openssl \
 		--with-openssl \
 		--without-libpsl
