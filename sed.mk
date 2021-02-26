@@ -2,7 +2,13 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+
+ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
+SED_CONFIGURE_ARGS += ac_cv_func_rpmatch=no
+endif
+
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+SED_CONFIGURE_ARGS += --program-prefix=$(GNU_PREFIX)
 STRAPPROJECTS += sed
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += sed
@@ -22,7 +28,7 @@ else
 sed: sed-setup gettext
 	cd $(BUILD_WORK)/sed && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/sed
 	+$(MAKE) -C $(BUILD_WORK)/sed install \
@@ -33,10 +39,12 @@ endif
 sed-package: sed-stage
 	# sed.mk Package Structure
 	rm -rf $(BUILD_DIST)/sed
-	mkdir -p $(BUILD_DIST)/sed
+	mkdir -p $(BUILD_DIST)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
+	mv -f $(BUILD_STAGE)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/sed $(BUILD_STAGE)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/gsed
 	
 	# sed.mk Prep sed
-	cp -a $(BUILD_STAGE)/sed/usr $(BUILD_DIST)/sed
+	cp -a $(BUILD_STAGE)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/ $(BUILD_DIST)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1/ $(BUILD_DIST)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1
 	
 	# sed.mk Sign
 	$(call SIGN,sed,general.xml)
