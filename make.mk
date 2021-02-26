@@ -33,11 +33,19 @@ make-package: make-stage
 	# make.mk Package Structure
 	rm -rf $(BUILD_DIST)/make
 	mkdir -p $(BUILD_DIST)/make/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{bin,include,share/man/man1}
-	
+	mv -f $(BUILD_STAGE)/make/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/make $(BUILD_STAGE)/make/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/gmake
+	mv -f $(BUILD_STAGE)/make/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1/make.1 $(BUILD_STAGE)/make/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1/gmake.1
 	# make.mk Prep make
 	cp -a $(BUILD_STAGE)/make/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/ $(BUILD_DIST)/make/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/make/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include/ $(BUILD_DIST)/make/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include
 	cp -a $(BUILD_STAGE)/make/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1/ $(BUILD_DIST)/make/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1
+
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+	mkdir -p $(BUILD_DIST)/make/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/gnubin
+	for bin in $(BUILD_DIST)/make/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/*; do \
+		ln -s /$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/$$(echo $$bin | rev | cut -d/ -f1 | rev) $(BUILD_DIST)/make/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $$bin | rev | cut -d/ -f1 | rev | cut -c2-); \
+	done
+endif
 	
 	# make.mk Sign
 	$(call SIGN,make,general.xml)
