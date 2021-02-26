@@ -1,8 +1,14 @@
-ifneq ($(PROCURSUS),1)
+ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+
+ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
+GREP_CONFIGURE_ARGS += ac_cv_func_rpmatch=no
+endif
+
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+GREP_CONFIGURE_ARGS += --program-prefix=$(GNU_PREFIX)
 STRAPPROJECTS += grep
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += grep
@@ -22,7 +28,7 @@ else
 grep: grep-setup pcre
 	cd $(BUILD_WORK)/grep && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--with-packager="$(DEB_MAINTAINER)"
 	+$(MAKE) -C $(BUILD_WORK)/grep
@@ -34,10 +40,12 @@ endif
 grep-package: grep-stage
 	# grep.mk Package Structure
 	rm -rf $(BUILD_DIST)/grep
-	mkdir -p $(BUILD_DIST)/grep
+	mkdir -p $(BUILD_DIST)/grep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
+	mv -f $(BUILD_STAGE)/grep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/grep $(BUILD_STAGE)/grep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/ggrep
 	
 	# grep.mk Prep grep
-	cp -a $(BUILD_STAGE)/grep/usr $(BUILD_DIST)/grep
+	cp -a $(BUILD_STAGE)/grep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/ $(BUILD_DIST)/grep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/grep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1/ $(BUILD_DIST)/grep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1
 	
 	# grep.mk Sign
 	$(call SIGN,grep,general.xml)
