@@ -40,8 +40,8 @@ sed-package: sed-stage
 	# sed.mk Package Structure
 	rm -rf $(BUILD_DIST)/sed
 	mkdir -p $(BUILD_DIST)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
-	mv -f $(BUILD_STAGE)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/sed $(BUILD_STAGE)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/gsed
-	
+	mv -f $(BUILD_STAGE)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/sed $(BUILD_STAGE)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/Gsed
+	mv -f $(BUILD_STAGE)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1/sed.1 $(BUILD_STAGE)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1/gsed.1
 	# sed.mk Prep sed
 	cp -a $(BUILD_STAGE)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/ $(BUILD_DIST)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1/ $(BUILD_DIST)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1
