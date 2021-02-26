@@ -207,7 +207,8 @@ else
 $(error Please use Linux or MacOS to build)
 endif
 
-DEB_MAINTAINER ?= Hayden Seay <me@diatr.us>
+DEB_MAINTAINER    ?= Hayden Seay <me@diatr.us>
+CODESIGN_IDENTITY ?= -
 
 # Root
 BUILD_ROOT     ?= $(PWD)
@@ -278,7 +279,7 @@ SIGN = find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \; 
 	find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
 else
 SIGN = find $(BUILD_DIST)/$(1) -type f -exec codesign --remove {} \; &> /dev/null; \
-	find $(BUILD_DIST)/$(1) -type f -exec codesign --sign - --force --preserve-metadata=entitlements,requirements,flags,runtime {} \; &> /dev/null
+	find $(BUILD_DIST)/$(1) -type f -exec codesign --sign $(CODESIGN_IDENTITY) --force --preserve-metadata=entitlements,requirements,flags,runtime {} \; &> /dev/null
 endif
 
 ###
