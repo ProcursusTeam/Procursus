@@ -18,7 +18,7 @@ else
 wget: wget-setup openssl pcre2 gettext libunistring libidn2
 	cd $(BUILD_WORK)/wget && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc \
 		--with-ssl=openssl \
 		--with-openssl \
@@ -32,10 +32,12 @@ endif
 wget-package: wget-stage
 	# wget.mk Package Structure
 	rm -rf $(BUILD_DIST)/wget
+	mkdir -p $(BUILD_DIST)/wget/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{etc,bin,share/man/man1}
 	
 	# wget.mk Prep wget
-	cp -a $(BUILD_STAGE)/wget $(BUILD_DIST)
-	
+	cp -a $(BUILD_STAGE)/wget/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/wget $(BUILD_DIST)/wget/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/wget/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1/wget.1 $(BUILD_DIST)/wget/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/wget/etc/wgetrc $(BUILD_DIST)/wget/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/etc
 	# wget.mk Sign
 	$(call SIGN,wget,general.xml)
 	
