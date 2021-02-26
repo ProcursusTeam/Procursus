@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+
 SUBPROJECTS                   += gettext-localizations
 GETTEXT-LOCALIZATIONS_VERSION := 2020.10.07
 DEB_GETTEXT-LOCALIZATIONS_V   ?= $(GETTEXT-LOCALIZATIONS_VERSION)
@@ -33,3 +35,5 @@ gettext-localizations-package: gettext-localizations-stage
 	rm -rf $(BUILD_DIST)/gettext-localizations
 
 .PHONY: gettext-localizations gettext-localizations-package
+
+endif
