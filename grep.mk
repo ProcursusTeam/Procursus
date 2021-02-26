@@ -42,7 +42,8 @@ grep-package: grep-stage
 	rm -rf $(BUILD_DIST)/grep
 	mkdir -p $(BUILD_DIST)/grep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 	mv -f $(BUILD_STAGE)/grep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/grep $(BUILD_STAGE)/grep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/ggrep
-	
+	mv -f $(BUILD_STAGE)/grep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1/grep.1 $(BUILD_STAGE)/grep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1/ggrep.1
+
 	# grep.mk Prep grep
 	cp -a $(BUILD_STAGE)/grep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/ $(BUILD_DIST)/grep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/grep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1/ $(BUILD_DIST)/grep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1
