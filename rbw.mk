@@ -1,3 +1,5 @@
+# This is literally just a search and replace of ripgrep.mk, thank you rust
+
 ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
@@ -14,7 +16,8 @@ ifneq ($(wildcard $(BUILD_WORK)/rbw/.build_complete),)
 rbw:
 	@echo "Using previously built rbw."
 else
-rbw: rbw-setup
+rbw: rbw-setup pinentry
+	$(call DO_PATCH,rbw,rbw,-p1)
 	cd $(BUILD_WORK)/rbw && SDKROOT="$(TARGET_SYSROOT)" cargo \
 		build \
 		--release \
@@ -23,7 +26,6 @@ rbw: rbw-setup
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/rbw/target/$(RUST_TARGET)/release/rbw-agent $(BUILD_STAGE)/rbw/usr/bin/rbw-agent
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/rbw/bin/rbw-fzf $(BUILD_STAGE)/rbw/usr/bin/rbw-fzf
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/rbw/bin/pass-import $(BUILD_STAGE)/rbw/usr/bin/pass-import
-
 
 	touch $(BUILD_WORK)/rbw/.build_complete
 endif
