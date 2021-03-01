@@ -16,6 +16,9 @@ dpkg-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_$(DPKG_VERSION).tar.xz
 	$(call EXTRACT_TAR,dpkg_$(DPKG_VERSION).tar.xz,dpkg-$(DPKG_VERSION),dpkg)
 	$(call DO_PATCH,dpkg,dpkg,-p1)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+	$(call DO_PATCH,dpkg-ios,dpkg,-p1)
+endif
 
 ifneq ($(wildcard $(BUILD_WORK)/dpkg/.build_complete),)
 dpkg:
