@@ -11,8 +11,8 @@ endif # ($(SSH_STRAP),1)
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += openssh
 endif
-OPENSSH_VERSION := 8.4p1
-DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)-1
+OPENSSH_VERSION := 8.5p1
+DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
 OPENSSH_CONFARGS += ac_cv_func_strtonum=no
@@ -20,7 +20,7 @@ endif
 
 openssh-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$(OPENSSH_VERSION).tar.gz{,.asc}
-	$(call PGP_VERIFY,openssh-$(OPENSSH_VERSION).tar.gz,asc)
+	$(call NO_PGP=1,openssh-$(OPENSSH_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,openssh-$(OPENSSH_VERSION).tar.gz,openssh-$(OPENSSH_VERSION),openssh)
 	$(call DO_PATCH,openssh,openssh,-p1)
 
@@ -35,7 +35,7 @@ openssh: openssh-setup openssl libxcrypt
 	$(SED) -i '/HAVE_ENDIAN_H/d' $(BUILD_WORK)/openssh/config.h.in
 	cd $(BUILD_WORK)/openssh && $(EXTRA) ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc/ssh \
 		check_for_libcrypt_before=1 \
 		$(OPENSSH_CONFARGS)	
@@ -44,9 +44,9 @@ openssh: openssh-setup openssl libxcrypt
 		DESTDIR="$(BUILD_STAGE)/openssh"
 	mkdir -p $(BUILD_STAGE)/openssh/Library/LaunchDaemons
 	cp $(BUILD_INFO)/com.openssh.sshd.plist $(BUILD_STAGE)/openssh/Library/LaunchDaemons
-	cp $(BUILD_INFO)/sshd-keygen-wrapper $(BUILD_STAGE)/openssh/usr/libexec
-	cp $(BUILD_WORK)/openssh/contrib/ssh-copy-id $(BUILD_STAGE)/openssh/usr/bin
-	chmod 0755 $(BUILD_STAGE)/openssh/usr/bin/ssh-copy-id
+	cp $(BUILD_INFO)/sshd-keygen-wrapper $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec
+	cp $(BUILD_WORK)/openssh/contrib/ssh-copy-id $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin
+	chmod 0755 $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/ssh-copy-id
 	touch $(BUILD_WORK)/openssh/.build_complete
 endif
 
@@ -54,29 +54,29 @@ openssh-package: openssh-stage
 	# openssh.mk Package Structure
 	rm -rf $(BUILD_DIST)/openssh{,-sftp-server,-server,-client}
 	mkdir -p $(BUILD_DIST)/openssh \
-		$(BUILD_DIST)/openssh-client/{var/empty,etc/ssh,usr/{libexec,share/man/{man1,man5,man8}}} \
-		$(BUILD_DIST)/openssh-server/{etc/ssh,usr/{libexec,share/man/{man5,man8}}} \
-		$(BUILD_DIST)/openssh-sftp-server/usr/{libexec,/share/man/man8}
+		$(BUILD_DIST)/openssh-client/{var/empty,etc/ssh,$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{libexec,share/man/{man1,man5,man8}}} \
+		$(BUILD_DIST)/openssh-server/{etc/ssh,$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{libexec,share/man/{man5,man8}}} \
+		$(BUILD_DIST)/openssh-sftp-server/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{libexec,/share/man/man8}
 	
 	# openssh.mk Prep openssh-client
 	cp -a $(BUILD_STAGE)/openssh/etc/ssh/ssh_config $(BUILD_DIST)/openssh-client/etc/ssh
-	cp -a $(BUILD_STAGE)/openssh/usr/bin $(BUILD_DIST)/openssh-client/usr
-	cp -a $(BUILD_STAGE)/openssh/usr/libexec/{ssh-keysign,ssh-pkcs11-helper,ssh-sk-helper} $(BUILD_DIST)/openssh-client/usr/libexec
-	cp -a $(BUILD_STAGE)/openssh/usr/share/man/man1 $(BUILD_DIST)/openssh-client/usr/share/man
-	cp -a $(BUILD_STAGE)/openssh/usr/share/man/man5/ssh_config.5 $(BUILD_DIST)/openssh-client/usr/share/man/man5
-	cp -a $(BUILD_STAGE)/openssh/usr/share/man/man8/{ssh-keysign.8,ssh-pkcs11-helper.8,ssh-sk-helper.8} $(BUILD_DIST)/openssh-client/usr/share/man/man8
+	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/openssh-client/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/{ssh-keysign,ssh-pkcs11-helper,ssh-sk-helper} $(BUILD_DIST)/openssh-client/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec
+	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/openssh-client/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man
+	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man5/ssh_config.5 $(BUILD_DIST)/openssh-client/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man5
+	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man8/{ssh-keysign.8,ssh-pkcs11-helper.8,ssh-sk-helper.8} $(BUILD_DIST)/openssh-client/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man8
 	
 	# openssh.mk Prep openssh-server
 	cp -a $(BUILD_STAGE)/openssh/etc/ssh/{moduli,sshd_config} $(BUILD_DIST)/openssh-server/etc/ssh
 	cp -a $(BUILD_STAGE)/openssh/Library $(BUILD_DIST)/openssh-server/
-	cp -a $(BUILD_STAGE)/openssh/usr/sbin $(BUILD_DIST)/openssh-server/usr
-	cp -a $(BUILD_STAGE)/openssh/usr/libexec/sshd-keygen-wrapper $(BUILD_DIST)/openssh-server/usr/libexec
-	cp -a $(BUILD_STAGE)/openssh/usr/share/man/man5/{moduli.5,sshd_config.5} $(BUILD_DIST)/openssh-server/usr/share/man/man5
-	cp -a $(BUILD_STAGE)/openssh/usr/share/man/man8/sshd.8 $(BUILD_DIST)/openssh-server/usr/share/man/man8
+	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/sbin $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/sshd-keygen-wrapper $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec
+	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man5/{moduli.5,sshd_config.5} $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man5
+	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man8/sshd.8 $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man8
 	
 	# openssh.mk Prep openssh-sftp-server
-	cp -a $(BUILD_STAGE)/openssh/usr/libexec/sftp-server $(BUILD_DIST)/openssh-sftp-server/usr/libexec/
-	cp -a $(BUILD_STAGE)/openssh/usr/share/man/man8/sftp-server.8 $(BUILD_DIST)/openssh-sftp-server/usr/share/man/man8
+	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/sftp-server $(BUILD_DIST)/openssh-sftp-server/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/
+	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man8/sftp-server.8 $(BUILD_DIST)/openssh-sftp-server/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man8
 	
 	# openssh.mk Sign
 	$(call SIGN,openssh-client,general.xml)
