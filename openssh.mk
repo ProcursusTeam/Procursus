@@ -28,7 +28,11 @@ ifneq ($(wildcard $(BUILD_WORK)/openssh/.build_complete),)
 openssh:
 	@echo "Using previously built openssh."
 else
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 openssh: openssh-setup openssl libxcrypt
+else # (,$(findstring darwin,$(MEMO_TARGET)))
+openssh: openssh-setup openssl
+endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	if ! [ -f $(BUILD_WORK)/openssh/configure ]; then \
 		cd $(BUILD_WORK)/openssh && autoreconf; \
 	fi
