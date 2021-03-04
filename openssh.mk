@@ -15,12 +15,16 @@ OPENSSH_VERSION := 8.5p1
 DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
-OPENSSH_CONFARGS += ac_cv_func_strtonum=no
+OPENSSH_CONFIGURE_ARGS += ac_cv_func_strtonum=no
+endif
+
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+OPENSSH_CONFIGURE_ARGS += --program-prefix=$(GNU_PREFIX)
 endif
 
 openssh-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$(OPENSSH_VERSION).tar.gz{,.asc}
-	$(call NO_PGP=1,openssh-$(OPENSSH_VERSION).tar.gz,asc)
+	$(call PGP_VERIFY,openssh-$(OPENSSH_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,openssh-$(OPENSSH_VERSION).tar.gz,openssh-$(OPENSSH_VERSION),openssh)
 	$(call DO_PATCH,openssh,openssh,-p1)
 
