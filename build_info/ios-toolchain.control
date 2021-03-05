@@ -1,0 +1,11 @@
+Package: ios-toolchain
+Version: 1:0
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: clang, ld64, odcctools, make, ldid
+Conflicts: org.coolstar.iostoolchain
+Replaces: org.coolstar.iostoolchain
+Section: Utilities
+Priority: optional
+Description: Installs clang, ld64, Darwin CC Tools, GNU Make, and ldid in one go.
+Name: iOS Toolchain

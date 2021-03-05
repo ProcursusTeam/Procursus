@@ -1,0 +1,11 @@
+Package: theos-dependencies
+Version: 1:0
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: git, grep, rsync, xz-utils, ca-certificates, perl, ios-toolchain
+Conflicts: org.theos.dependencies
+Replaces: org.theos.dependencies
+Section: Utilities
+Priority: optional
+Description: Installs git, grep, rsync, CA Certs, Perl, XZ Utils, and the iOS Toolchain in one go, allowing Theos to be set up.
+Name: Theos Dependencies
