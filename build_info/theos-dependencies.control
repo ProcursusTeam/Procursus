@@ -1,5 +1,5 @@
 Package: theos-dependencies
-Version: 1:0
+Version: @DEB_THEOSDEPS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: git, grep, rsync, xz-utils, ca-certificates, perl, ios-toolchain

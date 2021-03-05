@@ -1,5 +1,5 @@
 Package: ios-toolchain
-Version: 1:0
+Version: @DEB_THEOSDEPS_V@\
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: clang, ld64, odcctools, make, ldid
