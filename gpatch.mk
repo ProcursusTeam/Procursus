@@ -27,7 +27,7 @@ endif
 gpatch-package: gpatch-stage
 	# gpatch.mk Package Structure
 	rm -rf $(BUILD_DIST)/gpatch
-	mkdir -p $(BUILD_DIST)/gpatch/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/gpatch
+	mkdir -p $(BUILD_DIST)/gpatch
 	
 	# gpatch.mk Prep gpatch
 	mv $(BUILD_STAGE)/gpatch/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/patch $(BUILD_STAGE)/gpatch/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/gpatch
