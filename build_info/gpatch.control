@@ -1,0 +1,8 @@
+Package: gpatch
+Version: @DEB_GPATCH_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Homepage: https://savannah.gnu.org/projects/patch/
+Description: gpatch (GNU patch) takes a patch file containing a difference listing produced by the diff program and applies those differences to one or more original files, producing patched versions.
+Name: gpatch
