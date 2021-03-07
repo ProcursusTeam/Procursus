@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS      += theos-dependencies
+SUBPROJECTS        += theos-dependencies
 THEOSDEPS_VERSION  := 0-1
 DEB_THEOSDEPS_V    ?= $(THEOSDEPS_VERSION)
 
