@@ -3,19 +3,22 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS              += libimobiledevice
-LIBIMOBILEDEVICE_VERSION := 1.3.0
+LIBIMOBILEDEVICE_COMMIT  := 25059d4c7d75e03aab516af2929d7c6e6d4c17de
+LIBIMOBILEDEVICE_VERSION := 1.3.0+git20210304.$(shell echo $(LIBIMOBILEDEVICE_COMMIT) | cut -c -7)
 DEB_LIBIMOBILEDEVICE_V   ?= $(LIBIMOBILEDEVICE_VERSION)
 
 libimobiledevice-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libimobiledevice/libimobiledevice/releases/download/$(LIBIMOBILEDEVICE_VERSION)/libimobiledevice-$(LIBIMOBILEDEVICE_VERSION).tar.bz2
-	$(call EXTRACT_TAR,libimobiledevice-$(LIBIMOBILEDEVICE_VERSION).tar.bz2,libimobiledevice-$(LIBIMOBILEDEVICE_VERSION),libimobiledevice)
+	-[ ! -f "$(BUILD_SOURCE)/libimobiledevice-$(LIBIMOBILEDEVICE_COMMIT).tar.gz" ] && \
+		wget -q -nc -O$(BUILD_SOURCE)/libimobiledevice-$(LIBIMOBILEDEVICE_COMMIT).tar.gz \
+			https://github.com/libimobiledevice/libimobiledevice/archive/$(LIBIMOBILEDEVICE_COMMIT).tar.gz
+	$(call EXTRACT_TAR,libimobiledevice-$(LIBIMOBILEDEVICE_COMMIT).tar.gz,libimobiledevice-$(LIBIMOBILEDEVICE_COMMIT),libimobiledevice)
 
 ifneq ($(wildcard $(BUILD_WORK)/libimobiledevice/.build_complete),)
 libimobiledevice:
 	@echo "Using previously built libimobiledevice."
 else
 libimobiledevice: libimobiledevice-setup libusbmuxd libplist openssl
-	cd $(BUILD_WORK)/libimobiledevice && ./configure \
+	cd $(BUILD_WORK)/libimobiledevice && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--without-cython
