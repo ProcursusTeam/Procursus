@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += libuv1
-LIBUV1_VERSION := 1.40.0
+LIBUV1_VERSION := 1.41.0
 DEB_LIBUV1_V   ?= $(LIBUV1_VERSION)-1
 
 libuv1-setup: setup
