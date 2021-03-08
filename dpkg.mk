@@ -6,10 +6,19 @@ STRAPPROJECTS  += dpkg
 DPKG_VERSION   := 1.20.7.1
 DEB_DPKG_V     ?= $(DPKG_VERSION)
 
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+DPKG_TAR := gtar
+else
+DPKG_TAR := tar
+endif
+
 dpkg-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_$(DPKG_VERSION).tar.xz
 	$(call EXTRACT_TAR,dpkg_$(DPKG_VERSION).tar.xz,dpkg-$(DPKG_VERSION),dpkg)
 	$(call DO_PATCH,dpkg,dpkg,-p1)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+	$(call DO_PATCH,dpkg-ios,dpkg,-p1)
+endif
 
 ifneq ($(wildcard $(BUILD_WORK)/dpkg/.build_complete),)
 dpkg:
@@ -36,9 +45,10 @@ base-bsd-darwin-armk		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
 		PERL_LIBDIR='$$(prefix)/share/perl5' \
 		PERL="/usr/bin/perl" \
-		TAR=tar \
+		TAR=$(DPKG_TAR) \
 		LZMA_LIBS='$(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/$(MEMO_ALT_PREFIX)/lib/liblzma.dylib'
-	+$(MAKE) -C $(BUILD_WORK)/dpkg
+	+$(MAKE) -C $(BUILD_WORK)/dpkg \
+		PERL="/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/perl"
 	+$(MAKE) -C $(BUILD_WORK)/dpkg install \
 		DESTDIR="$(BUILD_STAGE)/dpkg"
 	mkdir -p $(BUILD_STAGE)/dpkg/$(MEMO_PREFIX)/var/lib
