@@ -1,7 +1,7 @@
-Package: libboost-chrono1.75.0
+Package: libboost-regex1.74.0
 Version: @DEB_LIBBOOST_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Libraries
 Priority: optional
-Description: C++ representation of time duration, time point, and clocks
+Description: regular expression library for C++

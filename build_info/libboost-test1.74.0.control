@@ -1,7 +1,7 @@
-Package: libboost-stacktrace1.75.0
+Package: libboost-test1.74.0
 Version: @DEB_LIBBOOST_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Libraries
 Priority: optional
-Description: library to capture and print stack traces
+Description: components for writing and executing test suites
