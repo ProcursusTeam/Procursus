@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += aom
-AOM_VERSION   := 2.0.1
+AOM_VERSION   := 2.0.2
 DEB_AOM_V     ?= $(AOM_VERSION)
 
 aom-setup: setup
