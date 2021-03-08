@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS  += zip
 ZIP_VERSION  := 3.0
-DEBIAN_ZIP_V := $(ZIP_VERSION)-11
+DEBIAN_ZIP_V := $(ZIP_VERSION)-12
 DEB_ZIP_V    ?= $(DEBIAN_ZIP_V)
 
 zip-setup: setup
@@ -25,19 +25,18 @@ zip: zip-setup
 		CC=$(CC) \
 		CPP="$(CXX)" \
 		CFLAGS="$(CFLAGS) -I. -DUNIX -DBZIP2_SUPPORT" \
-		LFLAGS2="-lbz2 $(CFLAGS)"
+		LFLAGS2="-lbz2 $(CFLAGS)" \
+		MANDIR="$(BUILD_STAGE)/zip/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1"
 	touch $(BUILD_WORK)/zip/.build_complete
 endif
 
 zip-package: zip-stage
 	# zip.mk Package Structure
 	rm -rf $(BUILD_DIST)/zip
-	mkdir -p $(BUILD_DIST)/zip
+	mkdir -p $(BUILD_DIST)/zip/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	
 	# zip.mk Prep zip
-	cp -a $(BUILD_STAGE)/zip/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) $(BUILD_DIST)/zip
-	mkdir -p $(BUILD_DIST)/zip/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share
-	mv $(BUILD_DIST)/zip/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/man $(BUILD_DIST)/zip/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share
+	cp -a $(BUILD_STAGE)/zip/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/* $(BUILD_DIST)/zip/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	
 	# zip.mk Sign
 	$(call SIGN,zip,general.xml)
