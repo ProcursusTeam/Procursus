@@ -56,8 +56,7 @@ aom-package: aom-stage
 	cp -a $(BUILD_STAGE)/aom/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/aom-tools/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	
 	# aom.mk Prep libaom2
-	cp -a $(BUILD_STAGE)/aom/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libaom.2.0.0.dylib $(BUILD_DIST)/libaom2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/aom/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libaom.2.dylib $(BUILD_DIST)/libaom2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/aom/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libaom.2*.dylib $(BUILD_DIST)/libaom2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
 	
 	# aom.mk Prep libaom-pkg-dev
 	cp -a $(BUILD_STAGE)/aom/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libaom.{dylib,a} $(BUILD_DIST)/libaom-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
