@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+
 SUBPROJECTS     += usbmuxd
 USBMUXD_VERSION := 1.1.1
 DEB_USBMUXD_V   ?= $(USBMUXD_VERSION)
@@ -47,3 +49,5 @@ usbmuxd-package: usbmuxd-stage
 	rm -rf $(BUILD_DIST)/usbmuxd
 
 .PHONY: usbmuxd usbmuxd-package
+
+endif
