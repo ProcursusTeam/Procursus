@@ -391,11 +391,10 @@ else ifneq ($(shell sed --version | grep -q GNU && echo 1),1)
 $(error Install GNU sed)
 endif
 
-# 99% sure this isn't even needed???
-ifeq (0,1)
-ifneq ($(call HAS_COMMAND,gpg),1)
-$(error Install GnuPG)
-endif
+ifneq (,$(wildcard $(shell brew --prefix)/opt/texinfo/bin))
+PATH := $(shell brew --prefix)/opt/texinfo/bin:$(PATH)
+else ifneq ($(shell makeinfo --version | grep -q 'texi2any' && echo 1),1)
+$(error Install newer texinfo)
 endif
 
 ifeq ($(call HAS_COMMAND,ldid2),1)
