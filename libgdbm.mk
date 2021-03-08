@@ -31,7 +31,8 @@ libgdbm-package: libgdbm-stage
 	# libgdbm.mk Package Structure
 	rm -rf \
 		$(BUILD_DIST)/libgdbm{-dev,6} \
-		$(BUILD_DIST)/gdbmtool
+		$(BUILD_DIST)/gdbmtool \
+		$(BUILD_DIST)/gdbm-l10n
 	mkdir -p \
 		$(BUILD_DIST)/gdbm-l10n/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share \
 		$(BUILD_DIST)/libgdbm-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib \
@@ -64,6 +65,7 @@ libgdbm-package: libgdbm-stage
 	# libgdbm.mk Build cleanup
 	rm -rf \
 		$(BUILD_DIST)/libgdbm{-dev,6} \
-		$(BUILD_DIST)/gdbmtool
+		$(BUILD_DIST)/gdbmtool \
+		$(BUILD_DIST)/gdbm-l10n
 
 .PHONY: libgdbm libgdbm-package
