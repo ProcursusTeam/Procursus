@@ -21,7 +21,7 @@ nano: nano-setup ncurses gettext file
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-debug \
-		--sysconfdir=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/etc \
+		--sysconfdir=/$(MEMO_PREFIX)/etc \
 		--disable-dependency-tracking \
 		--enable-color \
 		--enable-extra \
@@ -32,8 +32,8 @@ nano: nano-setup ncurses gettext file
 	+$(MAKE) -C $(BUILD_WORK)/nano
 	+$(MAKE) -C $(BUILD_WORK)/nano install \
 		DESTDIR=$(BUILD_STAGE)/nano
-	mkdir -p $(BUILD_STAGE)/nano/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/etc
-	cp -a $(BUILD_WORK)/nano/doc/sample.nanorc $(BUILD_STAGE)/nano/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/etc/nanorc
+	mkdir -p $(BUILD_STAGE)/nano/$(MEMO_PREFIX)/etc
+	cp -a $(BUILD_WORK)/nano/doc/sample.nanorc $(BUILD_STAGE)/nano/$(MEMO_PREFIX)/etc/nanorc
 	touch $(BUILD_WORK)/nano/.build_complete
 endif
 
@@ -41,16 +41,16 @@ nano-package: nano-stage
 	# nano.mk Package Structure
 	rm -rf $(BUILD_DIST)/nano
 	mkdir -p $(BUILD_DIST)/nano
-	
+
 	# nano.mk Prep nano
 	cp -a $(BUILD_STAGE)/nano $(BUILD_DIST)
-	
+
 	# nano.mk Sign
 	$(call SIGN,nano,general.xml)
-	
+
 	# nano.mk Make .debs
 	$(call PACK,nano,DEB_NANO_V)
-	
+
 	# nano.mk Build cleanup
 	rm -rf $(BUILD_DIST)/nano
 
