@@ -44,10 +44,6 @@ system-cmds-setup: setup libxcrypt
 		&& wget -q -nc -O$(BUILD_SOURCE)/pw-darwin-$(PWDARWIN_COMMIT).tar.gz \
 			https://github.com/CRKatri/pw-darwin/archive/$(PWDARWIN_COMMIT).tar.gz
 	$(call EXTRACT_TAR,pw-darwin-$(PWDARWIN_COMMIT).tar.gz,pw-darwin-$(PWDARWIN_COMMIT),system-cmds/pw-darwin)
-	-[ ! -e "$(BUILD_SOURCE)/getent-darwin-$(GETENTDARWIN_COMMIT).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/getent-darwin-$(GETENTDARWIN_COMMIT).tar.gz \
-			https://github.com/CRKatri/getent-darwin/archive/$(GETENTDARWIN_COMMIT).tar.gz
-	$(call EXTRACT_TAR,getent-darwin-$(GETENTDARWIN_COMMIT).tar.gz,getent-darwin-$(GETENTDARWIN_COMMIT),system-cmds/getent-darwin)
 
 ifneq ($(wildcard $(BUILD_WORK)/system-cmds/.build_complete),)
 system-cmds:
@@ -97,8 +93,6 @@ system-cmds: system-cmds-setup
 	$(LN) -sf chpass.1.zst $(BUILD_STAGE)/system-cmds/usr/share/man/man1/chfn.1.zst
 	$(LN) -sf chpass.1.zst $(BUILD_STAGE)/system-cmds/usr/share/man/man1/chsh.1.zst
 	+$(MAKE) -C $(BUILD_WORK)/system-cmds/pw-darwin install \
-		DESTDIR="$(BUILD_STAGE)/system-cmds/"
-	+$(MAKE) -C $(BUILD_WORK)/system-cmds/getent-darwin install \
 		DESTDIR="$(BUILD_STAGE)/system-cmds/"
 	touch $(BUILD_WORK)/system-cmds/.build_complete
 endif

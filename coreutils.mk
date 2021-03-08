@@ -28,6 +28,10 @@ coreutils-setup: setup
 	wget -q -nc -P $(BUILD_WORK)/coreutils/bsdcp \
 		https://opensource.apple.com/source/file_cmds/file_cmds-272.250.1/cp/{{cp,utils}.c,extern.h,cp.1} \
 		https://opensource.apple.com/source/Libc/Libc-1353.41.1/gen/get_compat.h
+	-[ ! -e "$(BUILD_SOURCE)/getent-darwin-$(GETENTDARWIN_COMMIT).tar.gz" ] \
+		&& wget -q -nc -O$(BUILD_SOURCE)/getent-darwin-$(GETENTDARWIN_COMMIT).tar.gz \
+			https://github.com/CRKatri/getent-darwin/archive/$(GETENTDARWIN_COMMIT).tar.gz
+	$(call EXTRACT_TAR,getent-darwin-$(GETENTDARWIN_COMMIT).tar.gz,getent-darwin-$(GETENTDARWIN_COMMIT),coreutils/getent-darwin)
 
 ifneq ($(wildcard $(BUILD_WORK)/coreutils/.build_complete),)
 coreutils:
@@ -56,6 +60,8 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	cp $(BUILD_WORK)/coreutils/{su/su,rev/rev,bsdcp/bsdcp} $(BUILD_STAGE)/coreutils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin
 	cp $(BUILD_WORK)/coreutils/{su/su,rev/rev,bsdcp/bsdcp}.1 $(BUILD_STAGE)/coreutils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1
 endif
+	+$(MAKE) -C $(BUILD_WORK)/system-cmds/getent-darwin install \
+		DESTDIR="$(BUILD_STAGE)/system-cmds/"
 	touch $(BUILD_WORK)/coreutils/.build_complete
 endif
 
