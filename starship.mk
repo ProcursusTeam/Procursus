@@ -19,7 +19,7 @@ starship: starship-setup
 		build \
 		--release \
 		--target=$(RUST_TARGET)
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/starship/target/$(RUST_TARGET)/release/starship $(BUILD_STAGE)/starship/usr/bin/starship
+	$(GINSTALL) -Dm755 $(BUILD_WORK)/starship/target/$(RUST_TARGET)/release/starship $(BUILD_STAGE)/starship/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/starship
 	touch $(BUILD_WORK)/starship/.build_complete
 endif
 
