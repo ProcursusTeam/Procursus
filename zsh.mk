@@ -15,11 +15,8 @@ zsh-setup: setup
 	$(call EXTRACT_TAR,zsh-$(ZSH_VERSION).tar.xz,zsh-$(ZSH_VERSION),zsh)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 ZSH_CONFIGURE_ARGS := --enable-etcdir=/$(MEMO_PREFIX)/etc \
-		zsh_cv_shared_environ=yes \
-		zsh_cv_sys_elf=no \
-		zsh_cv_sys_dynamic_execsyms=yes \
 		zsh_cv_path_utmpx=/var/run/utmpx \
-		zsh_cv_path_utmp=no \
+		zsh_cv_path_utmp=no
 	$(SED) -i 's/|| eno == ENOENT)/|| eno == ENOENT || eno == EPERM)/' $(BUILD_WORK)/zsh/Src/exec.c
 	$(SED) -i 's/(eno == ENOEXEC)/(eno == ENOEXEC || eno == EPERM)/' $(BUILD_WORK)/zsh/Src/exec.c
 else
@@ -31,6 +28,7 @@ zsh:
 	@echo "Using previously built zsh."
 else
 zsh: zsh-setup pcre ncurses
+	## So many flags are needed because zsh's configure script sucks! I also suck but it's cool.
 	cd $(BUILD_WORK)/zsh && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
@@ -47,8 +45,20 @@ zsh: zsh-setup pcre ncurses
 		--with-tcsetpgrp \
 		--enable-function-subdirs \
 		--disable-gdbm \
+		zsh_cv_shared_environ=yes \
+		zsh_cv_shared_tgetent=yes \
+		zsh_cv_shared_tigetstr=yes \
+		zsh_cv_sys_dynamic_clash_ok=yes \
+		zsh_cv_sys_dynamic_execsyms=yes \
+		zsh_cv_sys_dynamic_strip_lib=yes \
+		zsh_cv_printf_has_lld=yes \
+		zsh_cv_long_is_64_bit=yes \
+		zsh_cv_getcwd_malloc=yes \
+		zsh_cv_func_tgetent_accepts_null=yes \
+		zsh_cv_func_realpath_accepts_null=yes \
+		zsh_cv_c_broken_isprint=yes \
+		zsh_cv_sys_elf=no \
 		zsh_cv_rlimit_rss_is_as=yes \
-		DL_EXT=bundle \
 		ac_cv_prog_PCRECONF="$(BUILD_STAGE)/pcre/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/pcre-config" \
 		$(ZSH_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/zsh \
