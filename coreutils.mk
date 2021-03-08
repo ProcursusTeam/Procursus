@@ -62,7 +62,7 @@ endif
 coreutils-package: coreutils-stage
 	# coreutils.mk Package Structure
 	rm -rf $(BUILD_DIST)/coreutils
-	mkdir -p $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/{etc/profile.d,bin,$(MEMO_SUB_PREFIX)/sbin}
+	mkdir -p $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/{bin,$(MEMO_SUB_PREFIX)/sbin}
 	
 	# coreutils.mk Prep coreutils
 	cp -a $(BUILD_STAGE)/coreutils $(BUILD_DIST)
@@ -71,7 +71,14 @@ coreutils-package: coreutils-stage
 ifneq ($(MEMO_SUB_PREFIX),)
 	ln -s /$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/chown $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/bin
 	ln -s /$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/{cat,chgrp,cp,date,dd,dir,echo,false,kill,ln,ls,mkdir,mknod,mktemp,mv,pwd,readlink,rm,rmdir,sleep,stty,su,touch,true,uname,vdir} $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/bin
+	mkdir -p $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/etc/profile.d
 	cp $(BUILD_INFO)/coreutils.sh $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/etc/profile.d
+endif
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+	mkdir -p $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/gnubin
+	for bin in $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/*; do \
+		ln -s /$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/$$(echo $$bin | rev | cut -d/ -f1 | rev) $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $$bin | rev | cut -d/ -f1 | rev | cut -c2-); \
+	done
 endif
 
 	# coreutils.mk Sign

@@ -19,7 +19,7 @@ p11-kit: p11-kit-setup gettext libtasn1 libffi
 	cd $(BUILD_WORK)/p11-kit && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
-		--sysconfdir=/etc \
+		--sysconfdir=/$(MEMO_PREFIX)/etc \
 		--with-trust-paths=/$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem \
 		--without-systemd
 	+$(MAKE) -C $(BUILD_WORK)/p11-kit
@@ -47,7 +47,7 @@ p11-kit-package: p11-kit-stage
 
 	# p11-kit.mk Prep libp11-kit0
 	cp -a $(BUILD_STAGE)/p11-kit/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libp11-kit.0.dylib $(BUILD_DIST)/libp11-kit0/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/p11-kit/etc $(BUILD_DIST)/libp11-kit0
+	cp -a $(BUILD_STAGE)/p11-kit/$(MEMO_PREFIX)/etc $(BUILD_DIST)/libp11-kit0/$(MEMO_PREFIX)
 
 	# p11-kit.mk Prep libp11-kit-dev
 	cp -a $(BUILD_STAGE)/p11-kit/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/!(libp11-kit.0.dylib|pkcs11) $(BUILD_DIST)/libp11-kit-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib

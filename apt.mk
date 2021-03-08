@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += apt
-APT_VERSION   := 2.2.0
+APT_VERSION   := 2.2.1
 DEB_APT_V     ?= $(APT_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
@@ -23,6 +23,8 @@ apt-setup: setup
 	$(call DO_PATCH,apt,apt,-p1)
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call DO_PATCH,apt-macos,apt,-p1)
+else
+	$(call DO_PATCH,apt-ios,apt,-p1)
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	if [ -f "$(BUILD_WORK)/apt/apt-private/private-output.cc" ]; then \
 		mv -f $(BUILD_WORK)/apt/apt-private/private-output.{cc,mm}; \
