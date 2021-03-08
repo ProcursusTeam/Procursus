@@ -38,7 +38,6 @@ endif
 2048-package: 2048-stage
 	# 2048.mk Package Structure
 	rm -rf $(BUILD_DIST)/2048
-	mkdir -p $(BUILD_DIST)/2048
 	
 	# 2048.mk Prep 2048
 	cp -a $(BUILD_STAGE)/2048 $(BUILD_DIST)
