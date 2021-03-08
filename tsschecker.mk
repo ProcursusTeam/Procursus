@@ -14,6 +14,7 @@ tsschecker-setup: setup
 	# so EXTRACT_TAR wont fail
 	-$(RMDIR) $(BUILD_WORK)/tsschecker/external/jssy
 	$(call EXTRACT_TAR,jssy.tar.gz,tihmstar-jssy-*,tsschecker/external/jssy)
+	$(call DO_PATCH,tsschecker,tsschecker,-p1) # Remove when PR 165 merged upstream.
 
 
 ifneq ($(wildcard $(BUILD_WORK)/tsschecker/.build_complete),)
