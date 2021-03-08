@@ -40,7 +40,7 @@ endif
 libebml-package: libebml-stage
 	# libebml.mk Package Structure
 	rm -rf $(BUILD_DIST)/libebml{5,-dev}
-	mkdir -p $(BUILD_DIST)/libebml{5,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/libebml{5,-dev}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
 
 	# libebml.mk Prep libebml5
 	cp -a $(BUILD_STAGE)/libebml/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libebml.5{,.0.0}.dylib $(BUILD_DIST)/libebml5/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
