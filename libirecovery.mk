@@ -3,19 +3,22 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS          += libirecovery
-LIBIRECOVERY_VERSION := 1.0.0
+LIBIRECOVERY_COMMIT  := 11324701c89a2ef2ace1686fe25eeec9ad8adac8
+LIBIRECOVERY_VERSION := 1.0.0+git20210124.$(shell echo $(LIBIRECOVERY_COMMIT) | cut -c -7)
 DEB_LIBIRECOVERY_V   ?= $(LIBIRECOVERY_VERSION)
 
 libirecovery-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libimobiledevice/libirecovery/releases/download/$(LIBIRECOVERY_VERSION)/libirecovery-$(LIBIRECOVERY_VERSION).tar.bz2
-	$(call EXTRACT_TAR,libirecovery-$(LIBIRECOVERY_VERSION).tar.bz2,libirecovery-$(LIBIRECOVERY_VERSION),libirecovery)
+	-[ ! -f "$(BUILD_SOURCE)/libirecovery-$(LIBIRECOVERY_COMMIT).tar.gz" ] && \
+		wget -q -nc -O$(BUILD_SOURCE)/libirecovery-$(LIBIRECOVERY_COMMIT).tar.gz \
+			https://github.com/libimobiledevice/libirecovery/archive/$(LIBIRECOVERY_COMMIT).tar.gz
+	$(call EXTRACT_TAR,libirecovery-$(LIBIRECOVERY_COMMIT).tar.gz,libirecovery-$(LIBIRECOVERY_COMMIT),libirecovery)
 
 ifneq ($(wildcard $(BUILD_WORK)/libirecovery/.build_complete),)
 libirecovery:
 	@echo "Using previously built libirecovery."
 else
 libirecovery: libirecovery-setup readline libusb
-	cd $(BUILD_WORK)/libirecovery && ./configure \
+	cd $(BUILD_WORK)/libirecovery && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libirecovery \
