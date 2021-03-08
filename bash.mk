@@ -18,7 +18,7 @@ bash-setup: setup
 	mkdir -p $(BUILD_STAGE)/bash/$(MEMO_PREFIX)/bin
 	$(call DO_PATCH,bash,bash,-p0)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	BASH_CONFIGURE_ARGS := ac_cv_c_stack_direction=-1 \
+BASH_CONFIGURE_ARGS := ac_cv_c_stack_direction=-1 \
 		ac_cv_func_mmap_fixed_mapped=yes \
 		ac_cv_func_setvbuf_reversed=no \
 		ac_cv_func_strcoll_works=yes \
