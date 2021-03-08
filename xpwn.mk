@@ -3,10 +3,9 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += xpwn
-XPWN_VERSION := 0.5.8+git20201205.$(shell echo $(XPWN_COMMIT) | cut -c -7)
-DEB_XPWN_V   ?= $(XPWN_VERSION)
-
 XPWN_COMMIT  := def39d6e0ed0fdec0a0ff526bd11bec15d8de4e7
+XPWN_VERSION := 0.5.8+git20201206.$(shell echo $(XPWN_COMMIT) | cut -c -7)
+DEB_XPWN_V   ?= $(XPWN_VERSION)
 
 xpwn-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/xpwn-v$(XPWN_COMMIT).tar.gz" ] && \
