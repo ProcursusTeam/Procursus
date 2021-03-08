@@ -18,7 +18,7 @@ snaputil:
 	@echo "Using previously built snaputil."
 else
 snaputil: snaputil-setup
-	$(CC) $(ARCH) -Os -Wall -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o $(BUILD_STAGE)/snaputil/usr/bin/snaputil $(BUILD_WORK)/snaputil/snapUtil.c
+	$(CC) -arch $(MEMO_ARCH) -Os -Wall -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o $(BUILD_STAGE)/snaputil/usr/bin/snaputil $(BUILD_WORK)/snaputil/snapUtil.c
 	touch $(BUILD_WORK)/snaputil/.build_complete
 endif
 

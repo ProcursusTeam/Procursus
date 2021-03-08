@@ -1,0 +1,18 @@
+Package: libxdmcp-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBXDMCP_V@
+Depends: libxdmcp6 (= @DEB_LIBXDMCP_V@), x11proto-dev
+Section: Development
+Description: X11 authorisation library (development headers)
+ This package provides the main interface to the X11 display manager control
+ protocol library, which allows for remote logins to display managers.
+ .
+ This package contains the development headers for the library found in 
+ libxdmcp6. Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at:
+ <URL:http://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libXdmcp

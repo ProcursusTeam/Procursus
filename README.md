@@ -31,9 +31,9 @@ Supported host systems as of 06/04/2020 are iphoneos-arm64, iphoneos-arm, applet
 | GNU make (On macOS you'll have to run `gmake`)                    |
 | GNU coreutils                                                     |
 | GNU findutils                                                     |
-| GNU sed                                                           |
-| GNU tar                                                           |
-| GNU patch                                                         |
+| GNU sed (gnu-sed in Homebrew)                                     |
+| GNU tar (gnu-tar in Homebrew)                                     |
+| GNU patch (gpatch in Homebrew)                                    |
 | bash 5.0                                                          |
 | openssl                                                           |
 | gnupg                                                             |
@@ -45,6 +45,14 @@ Supported host systems as of 06/04/2020 are iphoneos-arm64, iphoneos-arm, applet
 | dpkg                                                              |
 | zstd                                                              |
 | ncurses 6                                                         |
+| wget                                                              |
+| cmake                                                             |
+| docbook-xsl                                                       |
+| python 3.9                                                        |
+On macOS, all the build requirements can be installed with the following command.
+```
+brew install make bash wget gnu-tar gnu-sed gnupg ldid cmake automake groff gpatch findutils coreutils fakeroot zstd dpkg ncurses docbook-xsl python3
+```
 
 | Supported commands    | Function                                                                                                                            |
 |:--------------------------------------:|:-------------------------------------------------------------------------------------------------------------------|

@@ -7,4 +7,4 @@ Depends: firmware-sbin, libcrypt2
 Provides: login, passwd, reboot
 Section: Administration
 Priority: required
-Description: iostat, login, passwd, sync, sysctl
+Description: iostat, login, passwd, sync, sysctl, pw

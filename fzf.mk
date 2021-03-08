@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += fzf
-FZF_VERSION  := 0.24.4
+FZF_VERSION  := 0.25.0
 DEB_FZF_V    ?= $(FZF_VERSION)
 
 fzf-setup: setup
@@ -13,7 +13,7 @@ fzf-setup: setup
 	$(call EXTRACT_TAR,fzf-$(FZF_VERSION).tar.gz,fzf-$(FZF_VERSION),fzf)
 	mkdir -p $(BUILD_STAGE)/fzf/usr/share
 
-ifneq ($(ARCHES),arm64)
+ifneq ($(MEMO_ARCH),arm64)
 fzf:
 	@echo "Unsupported target $(MEMO_TARGET)"
 else ifneq ($(wildcard $(BUILD_WORK)/fzf/.build_complete),)

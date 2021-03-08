@@ -1,0 +1,21 @@
+Package: libxxf86vm-dev
+Version: @DEB_LIBXXF86VM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libxxf86vm1 (= @DEB_LIBXXF86VM_V@), x11proto-dev, libx11-dev, libxext-dev
+Section: Development
+Priority: optional
+Description: X11 XFree86 video mode extension library (development headers)
+ libXxf86vm provides an interface to the XFree86-VidModeExtension
+ extension, which allows client applications to get and set video mode
+ timings in extensive detail.  It is used by the xvidtune program in
+ particular.
+ .
+ This package contains the development headers for the library found in
+ libxxf86vm1.  Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at:
+ <URL:http://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libXxf86vm

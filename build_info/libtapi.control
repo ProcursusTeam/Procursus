@@ -8,4 +8,3 @@ Depends: libncursesw6 (>= 6.0)
 Section: Development
 Priority: optional
 Description: Text-based Application Programming Interface (library)
-Tag: purpose::console, role::developer

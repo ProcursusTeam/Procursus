@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += python3
-PYTHON3_MAJOR_V  := 3.8
-PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).6
+PYTHON3_MAJOR_V  := 3.9
+PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).2
 DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)
 
 ifeq ($(call HAS_COMMAND,python$(PYTHON3_MAJOR_V)),1)
@@ -18,6 +18,7 @@ python3-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.python.org/ftp/python/$(PYTHON3_VERSION)/Python-$(PYTHON3_VERSION).tar.xz{,.asc}
 	$(call PGP_VERIFY,Python-$(PYTHON3_VERSION).tar.xz,asc)
 	$(call EXTRACT_TAR,Python-$(PYTHON3_VERSION).tar.xz,Python-$(PYTHON3_VERSION),python3)
+	$(call DO_PATCH,python3,python3,-p1)
 	$(SED) -i -e 's/-vxworks/-darwin/g' -e 's/system=VxWorks/system=Darwin/g' -e '/readelf for/d' -e 's|LIBFFI_INCLUDEDIR=.*|LIBFFI_INCLUDEDIR="$(BUILD_BASE)/usr/include"|g' $(BUILD_WORK)/python3/configure.ac
 	$(SED) -i -e "s|self.compiler.library_dirs|['$(TARGET_SYSROOT)/usr/lib'] + ['$(BUILD_BASE)/usr/lib']|g" -e "s|self.compiler.include_dirs|['$(TARGET_SYSROOT)/usr/include'] + ['$(BUILD_BASE)/usr/include']|g" -e "s/HOST_PLATFORM == 'darwin'/HOST_PLATFORM.startswith('darwin')/" $(BUILD_WORK)/python3/setup.py
 
@@ -26,15 +27,20 @@ python3:
 	@echo "Using previously built python3."
 else
 python3: .SHELLFLAGS=-O extglob -c
-python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm
-	cd $(BUILD_WORK)/python3 && autoconf -f
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm expat libxcrypt
+else
+python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm expat
+endif
+	cd $(BUILD_WORK)/python3 && autoreconf -fi
 	cd $(BUILD_WORK)/python3 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--build=$(shell $(BUILD_WORK)/python3/config.guess) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--enable-ipv6 \
 		--without-ensurepip \
 		--with-system-ffi \
+		--with-system-expat \
 		--enable-shared \
 		ac_cv_file__dev_ptmx=no \
 		ac_cv_file__dev_ptc=no \
@@ -42,18 +48,21 @@ python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm
 	+$(MAKE) -C $(BUILD_WORK)/python3
 	+$(MAKE) -C $(BUILD_WORK)/python3 install \
 		DESTDIR=$(BUILD_STAGE)/python3
-	$(SED) -i -e 's|$(TARGET_SYSROOT)|/usr/share/SDKs/$(BARE_PLATFORM).sdk|' -e 's|$(BUILD_BASE)|/usr/share/SDKs/$(BARE_PLATFORM).sdk|' $(BUILD_STAGE)/python3/usr/lib/python*/_sysconfigdata*.py
-	rm -f $(BUILD_STAGE)/python3/usr/{bin,share/man/man1}/!(*$(PYTHON3_MAJOR_V)*)
+	mkdir -p $(BUILD_STAGE)/python3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/python3/dist-packages $(BUILD_STAGE)/python3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/$(MEMO_ALT_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/dist-packages
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+	$(SED) -i -e 's|$(TARGET_SYSROOT)|/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/SDKs/$(BARE_PLATFORM).sdk|' -e 's|$(BUILD_BASE)||' $(BUILD_STAGE)/python3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/python*/_sysconfigdata*.py
+endif
+	rm -f $(BUILD_STAGE)/python3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{bin,share/man/man1}/!(*$(PYTHON3_MAJOR_V)*)
 	touch $(BUILD_WORK)/python3/.build_complete
 endif
 
 python3-package: python3-stage
 	# python3.mk Package Structure
 	rm -rf $(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3}
-	mkdir -p $(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3}
+	mkdir -p $(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3}/$(MEMO_PREFIX)
 	
 	# python3.mk Prep python$(PYTHON3_MAJOR_V)
-	cp -a $(BUILD_STAGE)/python3/usr $(BUILD_DIST)/python$(PYTHON3_MAJOR_V)
+	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) $(BUILD_DIST)/python$(PYTHON3_MAJOR_V)/$(MEMO_PREFIX)
 	
 	# python3.mk Sign
 	$(call SIGN,python$(PYTHON3_MAJOR_V),general.xml)

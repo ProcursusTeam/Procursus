@@ -1,0 +1,20 @@
+Package: sshpass
+Version: @DEB_SSHPASS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Description: Non-interactive ssh password authentication
+ SSH's (secure shell) most common authentication mode is called "interactive
+ keyboard password authentication", so called both because it is typically
+ done via keyboard, and because openssh takes active measures to make sure
+ that the password is, indeed, typed interactively by the keyboard. Sometimes,
+ however, it is necessary to fool ssh into accepting an interactive password
+ non-interactively. This is where sshpass comes in.
+ .
+ SECURITY NOTE: There is a reason openssh insists that passwords be typed
+ interactively. Passwords are harder to store securely and to pass around
+ securely between programs. If you have not looked into solving your needs
+ using SSH's "public key authentication", perhaps in conjunction with the ssh
+ agent (RTFM ssh-add), please do so before being tempted into using this
+ package.

@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+
 SUBPROJECTS       += file-cmds
 # Don't upgrade file-cmds, as any future version includes APIs introduced in iOS 13+.
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
@@ -37,7 +39,7 @@ else
 file-cmds: file-cmds-setup
 	cd $(BUILD_WORK)/file-cmds ; \
 	for bin in chflags compress ipcrm ipcs pax; do \
-	    	$(CC) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -o $(BUILD_STAGE)/file-cmds/usr/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -D__POSIX_C_SOURCE; \
+	    	$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -o $(BUILD_STAGE)/file-cmds/usr/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -D__POSIX_C_SOURCE; \
 	done
 	touch $(BUILD_WORK)/file-cmds/.build_complete
 endif
@@ -59,3 +61,5 @@ file-cmds-package: file-cmds-stage
 	rm -rf $(BUILD_DIST)/file-cmds
 
 .PHONY: file-cmds file-cmds-package
+
+endif # ($(MEMO_TARGET),darwin-\*)

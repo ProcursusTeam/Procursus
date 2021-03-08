@@ -11,4 +11,4 @@ Description: ISO/IEC 23008-12:2017 HEIF file format decoder - development files
  .
  The development headers for compiling programs that use libheif are provided
  by this package.
-Depends: libheif1 (= @DEB_LIBHEIF_V@), libx265-dev, libaom-dev, libde265-dev
+Depends: libheif1 (= @DEB_LIBHEIF_V@), libx265-dev, libaom-dev, libde265-dev, librav1e-dev, libdav1d-dev

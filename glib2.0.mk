@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += glib2.0
-GLIB2.0_MAJOR_V := 2.66
-GLIB2.0_VERSION := $(GLIB2.0_MAJOR_V).1
+GLIB2.0_MAJOR_V := 2.67
+GLIB2.0_VERSION := $(GLIB2.0_MAJOR_V).2
 DEB_GLIB2.0_V   ?= $(GLIB2.0_VERSION)
 
 glib2.0-setup: setup
@@ -14,7 +14,7 @@ glib2.0-setup: setup
 
 	echo -e "[host_machine]\n \
 	cpu_family = '$(shell echo $(GNU_HOST_TRIPLE) | cut -d- -f1)'\n \
-	cpu = '$(ARCHES)'\n \
+	cpu = '$(MEMO_ARCH)'\n \
 	endian = 'little'\n \
 	system = 'darwin'\n \
 	[properties]\n \

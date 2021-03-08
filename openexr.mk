@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS     += openexr
 OPENEXR_VERSION := 2.5.3
-DEB_OPENEXR_V   ?= $(OPENEXR_VERSION)
+DEB_OPENEXR_V   ?= $(OPENEXR_VERSION)-1
 
 openexr-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/openexr-$(OPENEXR_VERSION).tar.gz" ] && \

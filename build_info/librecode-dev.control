@@ -1,0 +1,10 @@
+Package: librecode-dev
+Version: @DEB_LIBRECODE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Depends: libintl-dev, librecode3 (= @DEB_LIBRECODE_V@)
+Description: Development package for librecode0
+ This package contains the header files and static librecode.a
+ library needed to build applications based on librecode.

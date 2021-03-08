@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += golang
 GOLANG_MAJOR_V := 1.15
-GOLANG_VERSION := $(GOLANG_MAJOR_V).5
+GOLANG_VERSION := $(GOLANG_MAJOR_V).7
 DEB_GOLANG_V   ?= $(GOLANG_VERSION)
 
 golang-setup: setup
@@ -14,7 +14,7 @@ golang-setup: setup
 	mkdir -p $(BUILD_WORK)/golang/superbin
 	cp -a $(BUILD_WORK)/golang/misc/ios/clangwrap.sh $(BUILD_WORK)/golang/superbin/clang
 
-ifneq ($(ARCHES),arm64)
+ifneq ($(MEMO_ARCH),arm64)
 golang:
 	@echo "Unsupported target $(MEMO_TARGET)"
 else ifneq ($(UNAME),Darwin)

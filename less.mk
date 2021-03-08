@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += less
-LESS_VERSION := 551
+LESS_VERSION := 563
 DEB_LESS_V   ?= $(LESS_VERSION)
 
 less-setup: setup
@@ -17,7 +17,7 @@ else
 less: less-setup ncurses pcre2
 	cd $(BUILD_WORK)/less && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--with-regex=pcre2 \
 		CFLAGS="$(CFLAGS) -Wno-implicit-function-declaration" \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)"
@@ -30,12 +30,17 @@ endif
 less-package: less-stage
 	# less.mk Package Structure
 	rm -rf $(BUILD_DIST)/less
-	mkdir -p $(BUILD_DIST)/less/{bin,etc/profile.d}
+	mkdir -p $(BUILD_DIST)/less/$(MEMO_PREFIX)/{bin,$(MEMO_SUB_PREFIX)}
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+	mkdir -p $(BUILD_DIST)/less/$(MEMO_PREFIX)/etc/profile.d
+endif
 	
 	# less.mk Prep less
-	cp -a $(BUILD_STAGE)/less/usr $(BUILD_DIST)/less
-	ln -s /usr/bin/less $(BUILD_DIST)/less/bin/more
-	ln -s /usr/bin/less $(BUILD_DIST)/less/usr/bin/more
+	cp -a $(BUILD_STAGE)/less/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/* $(BUILD_DIST)/less/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	ln -s /$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/less $(BUILD_DIST)/less/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/more
+ifneq ($(MEMO_SUB_PREFIX),)
+	ln -s /$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/less $(BUILD_DIST)/less/$(MEMO_PREFIX)/bin/more
+endif
 	
 	# less.mk Sign
 	$(call SIGN,less,general.xml)

@@ -2,11 +2,12 @@ Package: libpng16-16
 Version: @DEB_LIBPNG16_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Replaces: libpng16
-Conflicts: libpng16
-Provides: libpng16 (= @DEB_LIBPNG16_V@)
 Section: Libraries
 Priority: optional
 Multi-Arch: foreign
-Description: library for manipulating PNG files (runtime libraries)
-Tag: purpose::library, role::developer
+Description: PNG library - runtime (version 1.6)
+ libpng is a library implementing an interface for reading and writing
+ PNG (Portable Network Graphics) format files.
+ .
+ This package contains the runtime library files needed to run software
+ using libpng.

@@ -1,0 +1,9 @@
+Package: libpaper1
+Version: @DEB_LIBPAPER_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Description: library for handling paper characteristics
+ The libpaper paper-handling library automates recognition of many
+ different paper types and sizes for programs that need to deal with
+ printed output.

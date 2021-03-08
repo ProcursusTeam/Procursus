@@ -1,0 +1,18 @@
+#!/bin/sh
+set -e
+
+major=3
+minor=9
+priority=60
+mandir=/@MEMO_PREFIX@/@MEMO_SUB_PREFIX@/share/man
+
+update-alternatives --install /@MEMO_PREFIX@/@MEMO_SUB_PREFIX@/bin/2to3 2to3 /@MEMO_PREFIX@/@MEMO_SUB_PREFIX@/bin/2to3-${major}.${minor} ${priority}
+update-alternatives --install /@MEMO_PREFIX@/@MEMO_SUB_PREFIX@/bin/idle${major} idle${major} /@MEMO_PREFIX@/@MEMO_SUB_PREFIX@/bin/idle${major}.${minor} ${priority}
+update-alternatives --install /@MEMO_PREFIX@/@MEMO_SUB_PREFIX@/bin/pydoc${major} pydoc${major} /@MEMO_PREFIX@/@MEMO_SUB_PREFIX@/bin/pydoc${major}.${minor} ${priority}
+update-alternatives --install /@MEMO_PREFIX@/@MEMO_SUB_PREFIX@/bin/python${major} python${major} /@MEMO_PREFIX@/@MEMO_SUB_PREFIX@/bin/python${major}.${minor} ${priority} \
+  --slave ${mandir}/man1/python${major}.1.zst python${major}.1.zst $mandir/man1/python${major}.${minor}.1.zst
+update-alternatives --install /@MEMO_PREFIX@/@MEMO_SUB_PREFIX@/bin/python python /@MEMO_PREFIX@/@MEMO_SUB_PREFIX@/bin/python${major}.${minor} ${priority} \
+  --slave ${mandir}/man1/python.1.zst python.1.zst $mandir/man1/python${major}.${minor}.1.zst
+update-alternatives --install /@MEMO_PREFIX@/@MEMO_SUB_PREFIX@/bin/python${major}-config python${major}-config /@MEMO_PREFIX@/@MEMO_SUB_PREFIX@/bin/python${major}.${minor}-config ${priority}
+
+exit 0

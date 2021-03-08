@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += man-db
 MAN-DB_VERSION := 2.9.3
-DEB_MAN-DB_V   ?= $(MAN-DB_VERSION)-2
+DEB_MAN-DB_V   ?= $(MAN-DB_VERSION)-3
 
 man-db-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://download.savannah.gnu.org/releases/man-db/man-db-$(MAN-DB_VERSION).tar.xz{,.asc}
@@ -18,12 +18,13 @@ else
 man-db: man-db-setup libpipeline libgdbm gettext zstd
 	cd $(BUILD_WORK)/man-db && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=/etc \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		--sysconfdir=/$(MEMO_PREFIX)/etc \
 		--disable-cache-owner \
 		--enable-nls \
 		--with-nroff=groff \
-		man_cv_prog_gnu_nroff=yes
+		man_cv_prog_gnu_nroff=yes \
+		--disable-nls # Disable this until I figure out why po4a is being dumb.
 	+$(MAKE) -C $(BUILD_WORK)/man-db \
 		LDFLAGS="$(LDFLAGS) -lintl -Wl,-framework -Wl,CoreFoundation"
 	+$(MAKE) -C $(BUILD_WORK)/man-db install \

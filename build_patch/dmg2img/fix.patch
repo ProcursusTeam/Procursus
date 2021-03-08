@@ -1,0 +1,26 @@
+diff --color -urN dmg2img-1.6.7/Makefile dmg2img/Makefile
+--- dmg2img-1.6.7/Makefile	2017-11-21 16:31:42.000000000 -0500
++++ dmg2img/Makefile	2021-01-15 11:36:25.473696572 -0500
+@@ -1,11 +1,11 @@
+ #CC = gcc
+-CFLAGS = -O2 -Wall
++#CFLAGS = -O2 -Wall
+ BIN_DIR = ${DESTDIR}/usr/bin
+ 
+ all: dmg2img vfdecrypt 
+ 
+ dmg2img: dmg2img.c dmg2img.h mntcmd.h gpt.h dmg2img.o base64.o adc.o 
+-	$(CC) -s -o dmg2img dmg2img.o base64.o adc.o -L. -lz -lbz2
++	$(CC) $(LDFLAGS) -s -o dmg2img dmg2img.o base64.o adc.o -L. -lz -lbz2
+ 
+ dmg2img.o: dmg2img.c dmg2img.h
+ 	$(CC) $(CFLAGS) -c dmg2img.c
+@@ -21,7 +21,7 @@
+ 
+ install: dmg2img vfdecrypt
+ 	mkdir -p ${BIN_DIR}
+-	install -c -s -m 755 -o root -g root dmg2img vfdecrypt $(BIN_DIR)
++	$(GINSTALL) -m 755 dmg2img vfdecrypt $(BIN_DIR)
+ 
+ clean:
+ 	rm -f dmg2img vfdecrypt *~ *.o core

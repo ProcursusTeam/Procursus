@@ -1,0 +1,19 @@
+Package: libmagickcore-7.q16hdri-8
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_IMAGEMAGICK_V@
+Depends: imagemagick-7-common (= @DEB_IMAGEMAGICK_V@), libilmbase25, libopenexr25, libomp1, liblcms2-2, liblqr-1-0, libglib2.0-0, libgs9, libintl8, libjbig0, libfontconfig1, libfreetype6, liblzma5, libopenjp2-7, libpng16-16, libtiff5, libwebp7, libwebpdemux2, libwebpmux3, libzip5, libjemalloc2, libltdl7
+Section: Libraries
+Priority: optional
+Description: low-level image manipulation library -- quantum depth Q16HDRI
+ The MagickCore API is a low-level interface between the C programming language
+ and the ImageMagick image processing libraries and is recommended for
+ wizard-level programmers only. Unlike the MagickWand C API which uses only a
+ few opaque types and accessors, with MagickCore you almost exclusively access
+ the structure members directly.
+ .
+ This package contains the C libraries needed to run executables that make
+ use of MagickCore.
+ .
+ This version of libmagickcore is compiled for a channel
+ depth of 16 bits with high dynamic range (Q16HDRI).

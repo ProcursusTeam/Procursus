@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+
 SUBPROJECTS          += network-cmds
 NETWORK-CMDS_VERSION := 596
 DEB_NETWORK-CMDS_V   ?= $(NETWORK-CMDS_VERSION)
@@ -99,7 +101,7 @@ network-cmds: network-cmds-setup
 	for tproj in !(ping|rtadvd|rarpd|spray).tproj; do \
 		tproj=$$(basename $$tproj .tproj); \
 		echo $$tproj; \
-    	$(CC) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -o $$tproj $$tproj.tproj/!(ns).c ecnprobe/gmt2local.c -DPRIVATE -DINET6 -DPLATFORM_iPhoneOS -D__APPLE_USE_RFC_3542=1 -DUSE_RFC2292BIS=1 -D__APPLE_API_OBSOLETE=1 -DTARGET_OS_EMBEDDED=1 -Dether_ntohost=_old_ether_ntohost; \
+    	$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -o $$tproj $$tproj.tproj/!(ns).c ecnprobe/gmt2local.c -DPRIVATE -DINET6 -DPLATFORM_iPhoneOS -D__APPLE_USE_RFC_3542=1 -DUSE_RFC2292BIS=1 -D__APPLE_API_OBSOLETE=1 -DTARGET_OS_EMBEDDED=1 -Dether_ntohost=_old_ether_ntohost; \
 	done
 	cp -a $(BUILD_WORK)/network-cmds/kdumpd $(BUILD_STAGE)/network-cmds/usr/libexec
 	cp -a $(BUILD_WORK)/network-cmds/{arp,ndp,traceroute,mnc,mtest,traceroute6,ifconfig,ip6addrctl,netstat,ping6,route,rtsol} $(BUILD_STAGE)/network-cmds/usr/sbin
@@ -128,3 +130,5 @@ network-cmds-package: network-cmds-stage
 	rm -rf $(BUILD_DIST)/network-cmds
 
 .PHONY: network-cmds network-cmds-package
+
+endif # ($(MEMO_TARGET),darwin-\*)

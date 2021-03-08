@@ -1,0 +1,17 @@
+diff -pur a/runtime/src/z_Linux_asm.S b/runtime/src/z_Linux_asm.S
+--- a/runtime/src/z_Linux_asm.S	2020-10-07 12:10:48.000000000 +0200
++++ b/runtime/src/z_Linux_asm.S	2020-11-08 16:46:20.000000000 +0100
+@@ -1746,10 +1746,12 @@ __kmp_unnamed_critical_addr:
+     .comm .gomp_critical_user_,32,8
+     .data
+     .align 8
+-    .global __kmp_unnamed_critical_addr
+-__kmp_unnamed_critical_addr:
++    .global KMP_PREFIX_UNDERSCORE(__kmp_unnamed_critical_addr)
++KMP_PREFIX_UNDERSCORE(__kmp_unnamed_critical_addr):
+     .8byte .gomp_critical_user_
++# if KMP_OS_LINUX
+     .size __kmp_unnamed_critical_addr,8
++# endif /* KMP_OS_LINUX */
+ #endif /* KMP_ARCH_PPC64 || KMP_ARCH_AARCH64 || KMP_ARCH_MIPS64 ||
+           KMP_ARCH_RISCV64 */

@@ -1,4 +1,4 @@
-Package: libilmbase-dev
+Package: libopenexr-dev
 Version: @DEB_OPENEXR_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
@@ -25,4 +25,4 @@ Description: development files for the OpenEXR image library
  .
  This package contains the header files required if you wish to
  compile/develop applications that use OpenEXR libraries.
-Depends: libopenexr25 (= @DEB_OPENEXR_V@)
+Depends: libopenexr25 (= @DEB_OPENEXR_V@), libilmbase-dev

@@ -6,4 +6,3 @@ Depends: libllvm10
 Section: Development
 Priority: optional
 Description: Clang library - Common development package
-Tag: purpose::console, role::developer

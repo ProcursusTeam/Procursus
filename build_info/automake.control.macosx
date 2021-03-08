@@ -1,0 +1,7 @@
+Package: automake
+Version: @DEB_AUTOMAKE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Description: Tool for generating GNU Standards-compliant Makefiles

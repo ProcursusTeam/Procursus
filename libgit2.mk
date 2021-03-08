@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += libgit2
-LIBGIT2_VERSION  := 1.0.1
-DEB_LIBGIT2_V    ?= $(LIBGIT2_VERSION)-1
+LIBGIT2_VERSION  := 1.1.0
+DEB_LIBGIT2_V    ?= $(LIBGIT2_VERSION)
 
 libgit2-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/libgit2-$(LIBGIT2_VERSION).tar.gz" ] && \
@@ -49,24 +49,24 @@ endif
 
 libgit2-package: libgit2-stage
 	# libgit2.mk Package Structure
-	rm -rf $(BUILD_DIST)/libgit2-{1.0,dev}
-	mkdir -p $(BUILD_DIST)/libgit2-{1.0,dev}/usr/lib
+	rm -rf $(BUILD_DIST)/libgit2-{1.1,dev}
+	mkdir -p $(BUILD_DIST)/libgit2-{1.1,dev}/usr/lib
 
-	# libgit2.mk Prep libgit2-1.0
-	cp -a $(BUILD_STAGE)/libgit2/usr/lib/libgit2.1.0*.dylib $(BUILD_DIST)/libgit2-1.0/usr/lib
+	# libgit2.mk Prep libgit2-1.1
+	cp -a $(BUILD_STAGE)/libgit2/usr/lib/libgit2.1.1*.dylib $(BUILD_DIST)/libgit2-1.1/usr/lib
 
 	# libgit2.mk Prep libgit2-dev
 	cp -a $(BUILD_STAGE)/libgit2/usr/lib/{libgit2.dylib,pkgconfig} $(BUILD_DIST)/libgit2-dev/usr/lib
 	cp -a $(BUILD_STAGE)/libgit2/usr/include $(BUILD_DIST)/libgit2-dev/usr
 
 	# libgit2.mk Sign
-	$(call SIGN,libgit2-1.0,general.xml)
+	$(call SIGN,libgit2-1.1,general.xml)
 
 	# libgit2.mk Make .debs
-	$(call PACK,libgit2-1.0,DEB_LIBGIT2_V)
+	$(call PACK,libgit2-1.1,DEB_LIBGIT2_V)
 	$(call PACK,libgit2-dev,DEB_LIBGIT2_V)
 
 	# libgit2.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libgit2-{1.0,dev}
+	rm -rf $(BUILD_DIST)/libgit2-{1.1,dev}
 
 .PHONY: libgit2 libgit2-package

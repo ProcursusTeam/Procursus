@@ -7,4 +7,4 @@ Priority: standard
 Description: C++ library interface to aria2
  This C++ library offers interface to the core functionality
  of aria2 like networking and downloading.
-Depends: libuv1, libsqlite3-1, libssh2-1, libjemalloc2, libc-ares2, libintl8, libssl1.1
+Depends: libuv1, libssh2-1, libjemalloc2, libc-ares2, libintl8, libssl1.1

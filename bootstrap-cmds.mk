@@ -2,8 +2,10 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+
 SUBPROJECTS            += bootstrap-cmds
-BOOTSTRAP-CMDS_VERSION := 116
+BOOTSTRAP-CMDS_VERSION := 121
 DEB_BOOTSTRAP-CMDS_V   ?= $(BOOTSTRAP-CMDS_VERSION)
 
 bootstrap-cmds-setup: setup
@@ -20,7 +22,7 @@ bootstrap-cmds: bootstrap-cmds-setup
 	cd $(BUILD_WORK)/bootstrap-cmds/migcom.tproj; \
 	yacc -d parser.y; \
 	lex lexxer.l; \
-	$(CC) $(ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -DMIG_VERSION=\"mig-$(BOOTSTRAP-CMDS_VERSION)\" -o migcom !(handler).c -save-temps; \
+	$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -DMIG_VERSION=\"mig-$(BOOTSTRAP-CMDS_VERSION)\" -o migcom !(handler).c -save-temps; \
 	cp -a migcom $(BUILD_STAGE)/bootstrap-cmds/usr/libexec; \
 	cp -a mig.sh $(BUILD_STAGE)/bootstrap-cmds/usr/bin/mig
 	touch $(BUILD_WORK)/bootstrap-cmds/.build_complete
@@ -46,3 +48,5 @@ bootstrap-cmds-package: bootstrap-cmds-stage
 	rm -rf $(BUILD_DIST)/bootstrap-cmds
 
 .PHONY: bootstrap-cmds bootstrap-cmds-package
+
+endif # ($(MEMO_TARGET),darwin-\*)

@@ -1,0 +1,22 @@
+Package: libxdamage-dev
+Version: @DEB_LIBXDAMAGE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libxdamage1 (= @DEB_LIBXDAMAGE_V@), x11proto-dev, libxfixes-dev, libx11-dev
+Section: Development
+Priority: optional
+Description: X11 damaged region extension library (development headers)
+ libXdamage provides an X Window System client interface to the DAMAGE
+ extension to the X protocol.
+ .
+ The Damage extension provides for notification of when on-screen regions have
+ been 'damaged' (altered).
+ .
+ This package contains the development headers for the library found in
+ libxdamage1.  Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at:
+ <URL:http://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libXdamage
