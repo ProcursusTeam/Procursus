@@ -27,9 +27,9 @@ xpwn: xpwn-setup libpng16 openssl
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/ \
-		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
-		-DCMAKE_INSTALL_RPATH=/usr \
+		-DCMAKE_INSTALL_PREFIX=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		-DCMAKE_INSTALL_NAME_DIR=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib \
+		-DCMAKE_INSTALL_RPATH=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
@@ -41,22 +41,24 @@ xpwn: xpwn-setup libpng16 openssl
 		DESTDIR=$(BUILD_BASE)
 	+$(MAKE) -C $(BUILD_WORK)/xpwn install \
 		DESTDIR=$(BUILD_STAGE)/xpwn
-	mkdir -p $(BUILD_STAGE)/xpwn/usr/{include,lib}
-	cp -a $(BUILD_WORK)/xpwn/includes/* {$(BUILD_BASE)/usr/include,$(BUILD_STAGE)/xpwn/usr/include}
-	cp -a $(BUILD_WORK)/xpwn/{ipsw-patch/libxpwn,minizip/libminizip,common/libcommon,hfs/libhfs,dmg/libdmg}.a {$(BUILD_STAGE)/xpwn,$(BUILD_BASE)}/usr/lib
+	mkdir -p {$(BUILD_BASE),$(BUILD_STAGE)/xpwn}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{include/xpwn,lib/xpwn}
+	cp -a $(BUILD_WORK)/xpwn/includes/* $(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include/xpwn
+	cp -a $(BUILD_WORK)/xpwn/includes/* $(BUILD_STAGE)/xpwn/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include/xpwn
+	cp -a $(BUILD_WORK)/xpwn/{ipsw-patch/libxpwn,minizip/libminizip,common/libcommon,hfs/libhfs,dmg/libdmg}.a $(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/xpwn
+	cp -a $(BUILD_WORK)/xpwn/{ipsw-patch/libxpwn,minizip/libminizip,common/libcommon,hfs/libhfs,dmg/libdmg}.a $(BUILD_STAGE)/xpwn/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/xpwn
 	touch $(BUILD_WORK)/xpwn/.build_complete
 endif
 
 xpwn-package: xpwn-stage
 	# xpwn.mk Package Structure
 	rm -rf $(BUILD_DIST)/{libxpwn-dev,xpwn}
-	mkdir -p $(BUILD_DIST)/{libxpwn-dev,xpwn}/usr
+	mkdir -p $(BUILD_DIST)/{libxpwn-dev,xpwn}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 
 	# xpwn.mk Prep xpwn
-	cp -a $(BUILD_STAGE)/xpwn/usr/{bin,share} $(BUILD_DIST)/xpwn/usr
+	cp -a $(BUILD_STAGE)/xpwn/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/xpwn/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 
 	# xpwn.mk Prep libxpwn-dev
-	cp -a $(BUILD_STAGE)/xpwn/usr/{include,lib} $(BUILD_DIST)/libxpwn-dev/usr
+	cp -a $(BUILD_STAGE)/xpwn/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{include,lib} $(BUILD_DIST)/libxpwn-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	
 	# xpwn.mk Sign
 	$(call SIGN,xpwn,general.xml)
