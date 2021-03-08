@@ -1,0 +1,41 @@
+From a939345f817cc5751e442565d98d03325786927c Mon Sep 17 00:00:00 2001
+From: aspen <aspenuwu@protonmail.com>
+Date: Mon, 8 Mar 2021 15:29:44 -0500
+Subject: [PATCH 1/2] Switch sys-info to iOS-compatible fork
+
+---
+ Cargo.lock | 3 +--
+ Cargo.toml | 3 ++-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/Cargo.lock b/Cargo.lock
+index c7bedf1..4ab94f5 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -1401,8 +1401,7 @@ dependencies = [
+ [[package]]
+ name = "sys-info"
+ version = "0.8.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "3f3e7ba888a12ddcf0084e36ae4609b055845f38022d1946b67356fbc27d5795"
++source = "git+https://github.com/aspenluxxxy/sys-info-rs?rev=20cc60200fb0c4d95f55e1e6aff9fc9fde8c9b65#20cc60200fb0c4d95f55e1e6aff9fc9fde8c9b65"
+ dependencies = [
+  "cc",
+  "libc",
+diff --git a/Cargo.toml b/Cargo.toml
+index d4f709e..e43e2d2 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -46,7 +46,8 @@ unicode-segmentation = "1.7.1"
+ gethostname = "0.2.1"
+ once_cell = "1.5.2"
+ chrono = "0.4.19"
+-sys-info = "0.8.0"
++# REVERT THIS WHEN https://github.com/FillZpp/sys-info-rs/pull/88 IS MERGED 
++sys-info = { git = "https://github.com/aspenluxxxy/sys-info-rs", rev = "20cc60200fb0c4d95f55e1e6aff9fc9fde8c9b65" }
+ byte-unit = "4.0.9"
+ starship_module_config_derive = { version = "0.1.2", path = "starship_module_config_derive" }
+ yaml-rust = "0.4.5"
+-- 
+2.24.3 (Apple Git-128)
+
