@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += lolcat
-LOLCAT_VERSION := 1.1
+LOLCAT_VERSION := 1.2
 DEB_LOLCAT_V   ?= $(LOLCAT_VERSION)
 
 lolcat-setup: setup
@@ -19,17 +19,16 @@ else
 lolcat: lolcat-setup 
 	+$(MAKE) -C $(BUILD_WORK)/lolcat
 	+$(MAKE) -C $(BUILD_WORK)/lolcat install \
-		DESTDIR=$(BUILD_STAGE)/lolcat/usr/games
+		DESTDIR=$(BUILD_STAGE)/lolcat/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/games
 	touch $(BUILD_WORK)/lolcat/.build_complete
 endif
 
 lolcat-package: lolcat-stage
 	# lolcat.mk Package Structure
 	rm -rf $(BUILD_DIST)/lolcat
-	mkdir -p $(BUILD_DIST)/lolcat
 	
 	# lolcat.mk Prep lolcat
-	cp -a $(BUILD_STAGE)/lolcat/usr $(BUILD_DIST)/lolcat
+	cp -a $(BUILD_STAGE)/lolcat $(BUILD_DIST)
 	
 	# lolcat.mk Sign
 	$(call SIGN,lolcat,general.xml)
