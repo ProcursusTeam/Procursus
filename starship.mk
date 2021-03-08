@@ -19,7 +19,7 @@ starship:
 	@echo "Using previously built starship."
 else
 starship: starship-setup
-	cd $(BUILD_WORK)/starship && unset CFLAGS && SDKROOT="$(TARGET_SYSROOT)" TARGET="$(RUST_TARGET)" cargo \
+	cd $(BUILD_WORK)/starship && unset CFLAGS && SDKROOT="$(TARGET_SYSROOT)" cargo \
 		build \
 		--release \
 		--target=$(RUST_TARGET)
