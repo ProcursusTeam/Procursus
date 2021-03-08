@@ -14,11 +14,11 @@ zsh-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.zsh.org/pub/zsh-$(ZSH_VERSION).tar.xz{,.asc}
 	$(call EXTRACT_TAR,zsh-$(ZSH_VERSION).tar.xz,zsh-$(ZSH_VERSION),zsh)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+	$(SED) -i 's/|| eno == ENOENT)/|| eno == ENOENT || eno == EPERM)/' $(BUILD_WORK)/zsh/Src/exec.c
+	$(SED) -i 's/(eno == ENOEXEC)/(eno == ENOEXEC || eno == EPERM)/' $(BUILD_WORK)/zsh/Src/exec.c
 ZSH_CONFIGURE_ARGS := --enable-etcdir=/$(MEMO_PREFIX)/etc \
 		zsh_cv_path_utmpx=/var/run/utmpx \
 		zsh_cv_path_utmp=no
-	$(SED) -i 's/|| eno == ENOENT)/|| eno == ENOENT || eno == EPERM)/' $(BUILD_WORK)/zsh/Src/exec.c
-	$(SED) -i 's/(eno == ENOEXEC)/(eno == ENOEXEC || eno == EPERM)/' $(BUILD_WORK)/zsh/Src/exec.c
 else
 ZSH_CONFIGURE_ARGS := --enable-etcdir=/etc
 endif
