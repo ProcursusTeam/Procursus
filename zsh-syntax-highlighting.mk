@@ -18,7 +18,7 @@ zsh-syntax-highlighting:
 else
 zsh-syntax-highlighting: zsh-syntax-highlighting-setup ncurses gettext file
 	+$(MAKE) -C $(BUILD_WORK)/zsh-syntax-highlighting install \
-		PREFIX='$(BUILD_STAGE)/zsh-syntax-highlighting/usr'
+		PREFIX='$(BUILD_STAGE)/zsh-syntax-highlighting/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)'
 	touch $(BUILD_WORK)/zsh-syntax-highlighting/.build_complete
 endif
 
