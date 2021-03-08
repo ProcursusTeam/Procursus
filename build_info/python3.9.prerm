@@ -5,11 +5,11 @@ major=3
 minor=9
 
 remove_variant_alternative () {
-  update-alternatives --remove 2to3 /usr/bin/2to3-${major}.${minor}
-  update-alternatives --remove idle${major} /usr/bin/idle${major}.${minor}
-  update-alternatives --remove python${major} /usr/bin/python${major}.${minor}
-  update-alternatives --remove python /usr/bin/python{major}.${minor}
-  update-alternatives --remove python${major}-config /usr/bin/python{major}.${minor}-config
+  update-alternatives --remove 2to3 /@MEMO_PREFIX@/@MEMO_SUB_PREFIX@/bin/2to3-${major}.${minor}
+  update-alternatives --remove idle${major} /@MEMO_PREFIX@/@MEMO_SUB_PREFIX@/bin/idle${major}.${minor}
+  update-alternatives --remove python${major} /@MEMO_PREFIX@/@MEMO_SUB_PREFIX@/bin/python${major}.${minor}
+  update-alternatives --remove python /@MEMO_PREFIX@/@MEMO_SUB_PREFIX@/bin/python{major}.${minor}
+  update-alternatives --remove python${major}-config /@MEMO_PREFIX@/@MEMO_SUB_PREFIX@/bin/python{major}.${minor}-config
 }
 
 case "$1" in
