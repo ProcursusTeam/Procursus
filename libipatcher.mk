@@ -33,7 +33,7 @@ else
 libipatcher: libipatcher-setup libpng16 openssl img4tool liboffsetfinder64 libgeneral libplist curl xpwn
 	cd $(BUILD_WORK)/libipatcher && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		CFLAGS="$(CFLAGS) -I$(BUILD_WORK)/libipatcher/external/xpwn/includes" \
 		CPPFLAGS="$(CPPFLAGS) -I$(BUILD_WORK)/libipatcher/external/xpwn/includes" \
 		LDFLAGS="$(LDFLAGS) -L$(BUILD_WORK)/libipatcher/external/xpwn/{ipsw-patch,common} -lcurl"
@@ -48,14 +48,14 @@ endif
 libipatcher-package: libipatcher-stage
 	# libipatcher.mk Package Structure
 	rm -rf $(BUILD_DIST)/libipatcher{0,-dev}
-	mkdir -p $(BUILD_DIST)/libipatcher{0,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/libipatcher{0,-dev}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
 	
 	# libipatcher.mk Prep libipatcher0
-	cp -a $(BUILD_STAGE)/libipatcher/usr/lib/libipatcher.0.dylib $(BUILD_DIST)/libipatcher0/usr/lib
+	cp -a $(BUILD_STAGE)/libipatcher/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libipatcher.0.dylib $(BUILD_DIST)/libipatcher0/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
 	
 	# libipatcher.mk Prep libipatcher-dev
-	cp -a $(BUILD_STAGE)/libipatcher/usr/lib/!(libipatcher.0.dylib) $(BUILD_DIST)/libipatcher-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libipatcher/usr/include $(BUILD_DIST)/libipatcher-dev/usr
+	cp -a $(BUILD_STAGE)/libipatcher/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/!(libipatcher.0.dylib) $(BUILD_DIST)/libipatcher-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libipatcher/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libipatcher-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	
 	# libipatcher.mk Sign
 	$(call SIGN,libipatcher0,general.xml)
