@@ -6,6 +6,10 @@ SUBPROJECTS        += pkg-config
 PKG-CONFIG_VERSION := 0.29.2
 DEB_PKG-CONFIG_V   ?= $(PKG-CONFIG_VERSION)-3
 
+ifneq ($(MEMO_PREFIX),)
+PKG-CONFIG_CONFIGURE_ARGS := --with-pc-path="/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/pkgconfig:/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/pkgconfig:/usr/local/lib/pkgconfig:/usr/lib/pkgconfig"
+endif
+
 pkg-config-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://pkgconfig.freedesktop.org/releases/pkg-config-$(PKG-CONFIG_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,pkg-config-$(PKG-CONFIG_VERSION).tar.gz,asc)
@@ -18,11 +22,12 @@ else
 pkg-config: pkg-config-setup gettext glib2.0
 	cd $(BUILD_WORK)/pkg-config && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--with-installed-glib \
-		--disable-host-tool
+		--disable-host-tool \
+		$(PKG-CONFIG_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/pkg-config \
-		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)/usr/include/glib-2.0 -I$(BUILD_BASE)/usr/lib/glib-2.0/include"
+		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include/glib-2.0 -I$(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/glib-2.0/include"
 	+$(MAKE) -C $(BUILD_WORK)/pkg-config install \
 		DESTDIR="$(BUILD_STAGE)/pkg-config"
 	touch $(BUILD_WORK)/pkg-config/.build_complete
