@@ -58,7 +58,7 @@ endif
 
 python3-package: python3-stage
 	# python3.mk Package Structure
-	rm -rf $(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3}
+	rm -rf $(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3} $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V){,-dev}
 	mkdir -p \
 		$(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		$(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V){,-dev}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
@@ -86,6 +86,6 @@ python3-package: python3-stage
 	$(call PACK,python3,DEB_PYTHON3_V)	
 
 	# python3.mk Build cleanup
-	rm -rf $(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3}
+	rm -rf $(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3} $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V){,-dev}
 
 .PHONY: python3 python3-package
