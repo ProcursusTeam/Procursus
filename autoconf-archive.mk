@@ -2,9 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS      += autoconf-archive
+SUBPROJECTS              += autoconf-archive
 AUTOCONF-ARCHIVE_VERSION := 2021.02.19
-DEB_AUTOCONF_V   ?= $(AUTOCONF-ARCHIVE_VERSION)
+DEB_AUTOCONF-ARCHIVE_V   ?= $(AUTOCONF-ARCHIVE_VERSION)
 
 autoconf-archive-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) http://mirrors.ocf.berkeley.edu/gnu/autoconf-archive/autoconf-archive-$(AUTOCONF-ARCHIVE_VERSION).tar.xz{,.sig}
@@ -32,7 +32,7 @@ autoconf-archive-package: autoconf-archive-stage
 	cp -a $(BUILD_STAGE)/autoconf-archive $(BUILD_DIST)
 	
 	# autoconf-archive.mk Make .debs
-	$(call PACK,autoconf-archive,DEB_AUTOCONF_V)
+	$(call PACK,autoconf-archive,DEB_AUTOCONF-ARCHIVE_V)
 	
 	# autoconf-archive.mk Build cleanup
 	rm -rf $(BUILD_DIST)/autoconf-archive
