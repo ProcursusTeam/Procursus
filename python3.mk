@@ -59,16 +59,29 @@ endif
 python3-package: python3-stage
 	# python3.mk Package Structure
 	rm -rf $(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3}
-	mkdir -p $(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3}/$(MEMO_PREFIX)
+	mkdir -p \
+		$(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		$(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V){,-dev}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
 	
 	# python3.mk Prep python$(PYTHON3_MAJOR_V)
-	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) $(BUILD_DIST)/python$(PYTHON3_MAJOR_V)/$(MEMO_PREFIX)
+	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/python$(PYTHON3_MAJOR_V)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+
+	# python3.mk Prep libpython$(PYTHON3_MAJOR_V)
+	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/local $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/{libpython3.9.dylib,python3,python3.9} $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+
+	# python3.mk Prep libpython$(PYTHON3_MAJOR_V)-dev
+	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
 	
 	# python3.mk Sign
 	$(call SIGN,python$(PYTHON3_MAJOR_V),general.xml)
+	$(call SIGN,libpython$(PYTHON3_MAJOR_V),general.xml)
 	
 	# python3.mk Make .debs
 	$(call PACK,python$(PYTHON3_MAJOR_V),DEB_PYTHON3_V)
+	$(call PACK,libpython$(PYTHON3_MAJOR_V),DEB_PYTHON3_V)
+	$(call PACK,libpython$(PYTHON3_MAJOR_V)-dev,DEB_PYTHON3_V)
 	$(call PACK,python3,DEB_PYTHON3_V)	
 
 	# python3.mk Build cleanup
