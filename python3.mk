@@ -28,9 +28,9 @@ python3:
 else
 python3: .SHELLFLAGS=-O extglob -c
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm expat libxcrypt
-else
 python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm expat
+else
+python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm expat libxcrypt
 endif
 	cd $(BUILD_WORK)/python3 && autoreconf -fi
 	cd $(BUILD_WORK)/python3 && ./configure -C \
@@ -58,20 +58,34 @@ endif
 
 python3-package: python3-stage
 	# python3.mk Package Structure
-	rm -rf $(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3}
-	mkdir -p $(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3}/$(MEMO_PREFIX)
+	rm -rf $(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3} $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V){,-dev}
+	mkdir -p \
+		$(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		$(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V){,-dev}/$(MEMO_PREFIX)/{$(MEMO_SUB_PREFIX)/lib,$(MEMO_ALT_PREFIX)/lib}
 	
 	# python3.mk Prep python$(PYTHON3_MAJOR_V)
-	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) $(BUILD_DIST)/python$(PYTHON3_MAJOR_V)/$(MEMO_PREFIX)
-	
+	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/python$(PYTHON3_MAJOR_V)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+
+	# python3.mk Prep libpython$(PYTHON3_MAJOR_V)
+	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/$(MEMO_ALT_PREFIX)/lib/python$(PYTHON3_MAJOR_V) $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/$(MEMO_ALT_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/{libpython$(PYTHON3_MAJOR_V).dylib,python3,python$(PYTHON3_MAJOR_V)} $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+
+	# python3.mk Prep libpython$(PYTHON3_MAJOR_V)-dev
+	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V)-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V)-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	rm -f $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V)-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/pkgconfig/python3{,-embed}.pc
+
 	# python3.mk Sign
 	$(call SIGN,python$(PYTHON3_MAJOR_V),general.xml)
+	$(call SIGN,libpython$(PYTHON3_MAJOR_V),general.xml)
 	
 	# python3.mk Make .debs
 	$(call PACK,python$(PYTHON3_MAJOR_V),DEB_PYTHON3_V)
+	$(call PACK,libpython$(PYTHON3_MAJOR_V),DEB_PYTHON3_V)
+	$(call PACK,libpython$(PYTHON3_MAJOR_V)-dev,DEB_PYTHON3_V)
 	$(call PACK,python3,DEB_PYTHON3_V)	
 
 	# python3.mk Build cleanup
-	rm -rf $(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3}
+	rm -rf $(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3} $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V){,-dev}
 
 .PHONY: python3 python3-package
