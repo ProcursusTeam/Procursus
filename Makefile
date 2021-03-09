@@ -207,7 +207,8 @@ else
 $(error Please use Linux or MacOS to build)
 endif
 
-DEB_MAINTAINER ?= Hayden Seay <me@diatr.us>
+DEB_MAINTAINER    ?= Hayden Seay <me@diatr.us>
+CODESIGN_IDENTITY ?= -
 
 # Root
 BUILD_ROOT     ?= $(PWD)
@@ -233,7 +234,7 @@ BUILD_TOOLS    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/bui
 CFLAGS              := -O2 -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem $(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/$(MEMO_ALT_PREFIX)/include -F$(BUILD_BASE)/$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)/$(MEMO_PREFIX)/Library/Frameworks
 CXXFLAGS            := $(CFLAGS)
 CPPFLAGS            := -O2 -arch $(MEMO_ARCH) $(PLATFORM_VERSION_MIN) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/$(MEMO_ALT_PREFIX)/include -Wno-error-implicit-function-declaration
-LDFLAGS             := -O2 -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib -L$(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/$(MEMO_ALT_PREFIX)/lib -F$(BUILD_BASE)/System/Library/Frameworks -F$(BUILD_BASE)/Library/Frameworks
+LDFLAGS             := -O2 -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib -L$(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/$(MEMO_ALT_PREFIX)/lib -F$(BUILD_BASE)/$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)/$(MEMO_PREFIX)/Library/Frameworks
 PKG_CONFIG_PATH     := $(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/pkgconfig:$(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/$(MEMO_ALT_PREFIX)/lib/pkgconfig:$(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/pkgconfig:$(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/$(MEMO_ALT_PREFIX)/share/pkgconfig
 
 export PLATFORM MEMO_ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T EXTRA SED
@@ -278,7 +279,7 @@ SIGN = find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \; 
 	find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
 else
 SIGN = find $(BUILD_DIST)/$(1) -type f -exec codesign --remove {} \; &> /dev/null; \
-	find $(BUILD_DIST)/$(1) -type f -exec codesign --sign - --force --preserve-metadata=entitlements,requirements,flags,runtime {} \; &> /dev/null
+	find $(BUILD_DIST)/$(1) -type f -exec codesign --sign $(CODESIGN_IDENTITY) --force --preserve-metadata=entitlements,requirements,flags,runtime {} \; &> /dev/null
 endif
 
 ###
@@ -343,7 +344,11 @@ PACK_LOCALE = mkdir -p $(BUILD_DIST)/$(1)-locale/{DEBIAN,$(MEMO_PREFIX)/$(MEMO_S
 	LSIZE=$$(du -s $(BUILD_DIST)/$(1)-locale | cut -f 1); \
 	$(CP) $(BUILD_DIST)/$(1)/DEBIAN/control $(BUILD_DIST)/$(1)-locale/DEBIAN; \
 	VERSION=$$(grep Version: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d " "); \
-	$(SED) -i "s/^Depends:.*/Depends: $(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d " ") (= $$VERSION), gettext-localizations/" $(BUILD_DIST)/$(1)-locale/DEBIAN/control; \
+	if [[ "$(MEMO_TARGET)" == *"darwin"* ]]; then \
+		$(SED) -i "s/^Depends:.*/Depends: $(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d " ") (= $$VERSION)/" $(BUILD_DIST)/$(1)-locale/DEBIAN/control; \
+	else \
+		$(SED) -i "s/^Depends:.*/Depends: $(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d " ") (= $$VERSION), gettext-localizations/" $(BUILD_DIST)/$(1)-locale/DEBIAN/control; \
+	fi; \
 	$(SED) -i 's/^Package:.*/Package: $(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d " ")-locale/' $(BUILD_DIST)/$(1)-locale/DEBIAN/control; \
 	$(SED) -i 's/^Priority:.*/Priority: optional/' $(BUILD_DIST)/$(1)-locale/DEBIAN/control; \
 	$(SED) -i 's/^Section:.*/Section: Localizations/' $(BUILD_DIST)/$(1)-locale/DEBIAN/control; \
@@ -386,11 +391,10 @@ else ifneq ($(shell sed --version | grep -q GNU && echo 1),1)
 $(error Install GNU sed)
 endif
 
-# 99% sure this isn't even needed???
-ifeq (0,1)
-ifneq ($(call HAS_COMMAND,gpg),1)
-$(error Install GnuPG)
-endif
+ifneq (,$(wildcard $(shell brew --prefix)/opt/texinfo/bin))
+PATH := $(shell brew --prefix)/opt/texinfo/bin:$(PATH)
+else ifneq ($(shell makeinfo --version | grep -q 'texi2any' && echo 1),1)
+$(error Install newer texinfo)
 endif
 
 ifeq ($(call HAS_COMMAND,ldid2),1)
@@ -490,7 +494,7 @@ ifneq ($(call HAS_COMMAND,zstd),1)
 $(error Install zstd)
 endif
 
-DPKG_TYPE ?= xz
+DPKG_TYPE ?= zstd
 ifeq ($(call HAS_COMMAND,dpkg-deb),1)
 DPKG_DEB := dpkg-deb -Z$(DPKG_TYPE) 
 else ifeq ($(call HAS_COMMAND,dm.pl),1)
