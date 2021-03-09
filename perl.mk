@@ -62,7 +62,7 @@ perl: perl-setup
 		-Dusethreads \
 		-Dvendorlib=/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 \
 		-Dvendorarch=/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_VERSION)
-	+$(MAKE) -C $(BUILD_WORK)/perl \
+	+$(MAKE) -C $(BUILD_WORK)/perl -j1 \
 		PERL_ARCHIVE=$(BUILD_WORK)/perl/libperl.dylib
 	+$(MAKE) -C $(BUILD_WORK)/perl install.perl \
 		DESTDIR=$(BUILD_STAGE)/perl
