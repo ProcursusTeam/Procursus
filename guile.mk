@@ -33,7 +33,7 @@ guile-package: guile-stage
 	mkdir -p $(BUILD_DIST)/guile-3.0
 	
 	# guile.mk Prep guile
-	cp -a $(BUILD_STAGE)/guile/$(MEMO_PREFIX)/$MEMO_SUB_PREFIX $(BUILD_DIST)/guile-3.0
+	cp -a $(BUILD_STAGE)/guile/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) $(BUILD_DIST)/guile-3.0
 	
 	# guile.mk Sign
 	$(call SIGN,guile3.0,general.xml)
