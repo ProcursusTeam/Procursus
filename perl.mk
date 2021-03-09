@@ -55,18 +55,20 @@ perl: perl-setup
 	cd $(BUILD_WORK)/perl && CC='$(CC)' AR='$(AR)' NM='$(NM)' OBJDUMP='objdump' CFLAGS='-DPERL_DARWIN -DPERL_USE_SAFE_PUTENV -DTIME_HIRES_CLOCKID_T -O2 -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_WORK)/perl/include $(PLATFORM_VERSION_MIN)' ./configure \
 		--target=$(GNU_HOST_TRIPLE) \
 		--sysroot=$(TARGET_SYSROOT) \
-		--prefix=/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		-Duseshrplib \
 		-Dusevendorprefix \
-		-Dvendorprefix=/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		-Dvendorprefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		-Dusethreads \
 		-Dvendorlib=/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 \
-		-Dvendorarch=/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_VERSION)
+		-Dprivlib=/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
+		-Darchlib=/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
+		-Dvendorarch=/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR)
 	+$(MAKE) -C $(BUILD_WORK)/perl -j1 \
 		PERL_ARCHIVE=$(BUILD_WORK)/perl/libperl.dylib
 	+$(MAKE) -C $(BUILD_WORK)/perl install.perl \
 		DESTDIR=$(BUILD_STAGE)/perl
-	ln -s $(PERL_VERSION) $(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR)
+	ln -s $(PERL_MAJOR) $(BUILD_STAGE)/perl/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_VERSION)
 	touch $(BUILD_WORK)/perl/.build_complete
 endif
 
