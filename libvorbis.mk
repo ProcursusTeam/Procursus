@@ -21,7 +21,7 @@ libvorbis: libvorbis-setup libogg
 	cd $(BUILD_WORK)/libvorbis && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--with-pic \
 		--disable-docs
@@ -36,23 +36,23 @@ endif
 libvorbis-package: libvorbis-stage
 	# libvorbis.mk Package Structure
 	rm -rf $(BUILD_DIST)/libvorbis{0a,enc2,file3,-dev}
-	mkdir -p $(BUILD_DIST)/libvorbis{0a,enc2,file3,-dev}/usr/lib
-	mkdir -p $(BUILD_DIST)/libvorbis-dev/usr/share
+	mkdir -p $(BUILD_DIST)/libvorbis{0a,enc2,file3,-dev}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libvorbis-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share
 	
 	# libvorbis.mk Prep libvorbis0a
-	cp -a $(BUILD_STAGE)/libvorbis/usr/lib/libvorbis.0.dylib $(BUILD_DIST)/libvorbis0a/usr/lib
+	cp -a $(BUILD_STAGE)/libvorbis/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libvorbis.0.dylib $(BUILD_DIST)/libvorbis0a/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
 	
 	# libvorbis.mk Prep libvorbisenc2
-	cp -a $(BUILD_STAGE)/libvorbis/usr/lib/libvorbisenc.2.dylib $(BUILD_DIST)/libvorbisenc2/usr/lib
+	cp -a $(BUILD_STAGE)/libvorbis/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libvorbisenc.2.dylib $(BUILD_DIST)/libvorbisenc2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
 	
 	# libvorbis.mk Prep libvorbisfile3
-	cp -a $(BUILD_STAGE)/libvorbis/usr/lib/libvorbisfile.3.dylib $(BUILD_DIST)/libvorbisfile3/usr/lib
+	cp -a $(BUILD_STAGE)/libvorbis/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libvorbisfile.3.dylib $(BUILD_DIST)/libvorbisfile3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
 
 	# libvorbis.mk Prep libvorbis-dev
-	cp -a $(BUILD_STAGE)/libvorbis/usr/lib/pkgconfig $(BUILD_DIST)/libvorbis-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libvorbis/usr/lib/libvorbis{,enc,file}.{dylib,a} $(BUILD_DIST)/libvorbis-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libvorbis/usr/include $(BUILD_DIST)/libvorbis-dev/usr
-	cp -a $(BUILD_STAGE)/libvorbis/usr/share/aclocal $(BUILD_DIST)/libvorbis-dev/usr/share
+	cp -a $(BUILD_STAGE)/libvorbis/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libvorbis-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libvorbis/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libvorbis{,enc,file}.{dylib,a} $(BUILD_DIST)/libvorbis-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libvorbis/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libvorbis-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libvorbis/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/aclocal $(BUILD_DIST)/libvorbis-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share
 	
 	# libvorbis.mk Sign
 	$(call SIGN,libvorbis0a,general.xml)
