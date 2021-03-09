@@ -16,7 +16,7 @@ ifneq ($(wildcard $(BUILD_WORK)/liblocale-gettext-perl/.build_complete),)
 liblocale-gettext-perl:
 	@echo "Using previously built liblocale-gettext-perl."
 else
-liblocale-gettext-perl: liblocale-gettext-perl-setup perl
+liblocale-gettext-perl: liblocale-gettext-perl-setup perl gettext
 	cd $(BUILD_WORK)/liblocale-gettext-perl && /opt/procursus/bin/perl Makefile.PL \
 		INSTALLSITEARCH=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
 		INSTALLARCHLIB=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
@@ -36,6 +36,7 @@ liblocale-gettext-perl: liblocale-gettext-perl-setup perl
 		INSTALLMAN3DIR=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man3 \
 		INSTALLSITEMAN3DIR=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man3 \
 		INSTALLVENDORMAN3DIR=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man3 \
+		PERL="/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/perl" \
 		CCFLAGS="$(CFLAGS)" \
 		LDDLFLAGS="$(LDFLAGS) -shared"
 	+$(MAKE) -C $(BUILD_WORK)/liblocale-gettext-perl

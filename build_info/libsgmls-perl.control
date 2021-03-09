@@ -1,0 +1,11 @@
+Package: libsgmls-perl
+Version: @DEB_LIBSGMLS-PERL_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Pre-Depends: perl (>= 5.32.1)
+Section: Perl
+Homepage: https://metacpan.org/release/SGMLSpm
+Description: Perl modules for processing SGML parser output
+ This is a set of Perl5 routines for processing the output from the onsgmls,
+ sgmls, and nsgmls SGML parsers. To make sensible use of this package you will
+ need to install a suitable SGML parser as well.

@@ -36,6 +36,7 @@ libyaml-tiny-perl: libyaml-tiny-perl-setup perl
 		INSTALLMAN3DIR=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man3 \
 		INSTALLSITEMAN3DIR=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man3 \
 		INSTALLVENDORMAN3DIR=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man3 \
+		PERL="/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/perl" \
 		CCFLAGS="$(CFLAGS)" \
 		LDDLFLAGS="$(LDFLAGS) -shared"
 	+$(MAKE) -C $(BUILD_WORK)/libyaml-tiny-perl
@@ -51,9 +52,6 @@ libyaml-tiny-perl-package: libyaml-tiny-perl-stage
 	
 	# libyaml-tiny-perl.mk Prep libyaml-tiny-perl
 	cp -a $(BUILD_STAGE)/libyaml-tiny-perl $(BUILD_DIST)
-
-	# libyaml-tiny-perl.mk Sign
-	$(call SIGN,libyaml-tiny-perl,general.xml)
 	
 	# libyaml-tiny-perl.mk Make .debs
 	$(call PACK,libyaml-tiny-perl,DEB_LIBYAML-TINY-PERL_V)
