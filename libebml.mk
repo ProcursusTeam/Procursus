@@ -2,9 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS         += libebml
-LIBEBML_VERSION     := 1.4.1
-DEB_LIBEBML_V       ?= $(LIBEBML_VERSION)
+SUBPROJECTS     += libebml
+LIBEBML_VERSION := 1.4.2
+DEB_LIBEBML_V   ?= $(LIBEBML_VERSION)
 
 libebml-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://dl.matroska.org/downloads/libebml/libebml-$(LIBEBML_VERSION).tar.xz
@@ -20,9 +20,9 @@ libebml: libebml-setup
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
-		-DCMAKE_INSTALL_RPATH=/usr \
+		-DCMAKE_INSTALL_PREFIX=/$(MEMO_PREFIX)/ \
+		-DCMAKE_INSTALL_NAME_DIR=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib \
+		-DCMAKE_INSTALL_RPATH=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_CXX_FLAGS="$(CFLAGS)" \
 		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
@@ -40,16 +40,16 @@ endif
 libebml-package: libebml-stage
 	# libebml.mk Package Structure
 	rm -rf $(BUILD_DIST)/libebml{5,-dev}
-	mkdir -p $(BUILD_DIST)/libebml{5,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/libebml{5,-dev}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
 
 	# libebml.mk Prep libebml5
-	cp -a $(BUILD_STAGE)/libebml/usr/lib/libebml.5{,.0.0}.dylib $(BUILD_DIST)/libebml5/usr/lib
+	cp -a $(BUILD_STAGE)/libebml/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libebml.5{,.0.0}.dylib $(BUILD_DIST)/libebml5/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
 
 	# libebml.mk Prep libebml-dev (cmake files included for libmatroska)
-	cp -a $(BUILD_STAGE)/libebml/usr/include $(BUILD_DIST)/libebml-dev/usr
-	cp -a $(BUILD_STAGE)/libebml/usr/lib/libebml.dylib $(BUILD_DIST)/libebml-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libebml/usr/lib/pkgconfig $(BUILD_DIST)/libebml-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libebml/usr/lib/cmake $(BUILD_DIST)/libebml-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libebml/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libebml-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libebml/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libebml.dylib $(BUILD_DIST)/libebml-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libebml/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libebml-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libebml/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/cmake $(BUILD_DIST)/libebml-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
 
 	# libebml.mk Sign
 	$(call SIGN,libebml5,general.xml)
