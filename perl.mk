@@ -66,6 +66,7 @@ perl: perl-setup
 		PERL_ARCHIVE=$(BUILD_WORK)/perl/libperl.dylib
 	+$(MAKE) -C $(BUILD_WORK)/perl install.perl \
 		DESTDIR=$(BUILD_STAGE)/perl
+	ln -s $(PERL_VERSION) $(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR)
 	touch $(BUILD_WORK)/perl/.build_complete
 endif
 
