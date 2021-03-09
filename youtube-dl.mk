@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += youtube-dl
-YOUTUBE-DL_VERSION := 2020.12.22
+YOUTUBE-DL_VERSION := 2021.03.03
 DEB_YOUTUBE-DL_V   ?= $(YOUTUBE-DL_VERSION)
 
 youtube-dl-setup: setup
@@ -17,10 +17,10 @@ youtube-dl:
 else
 youtube-dl: youtube-dl-setup 
 	+$(MAKE) -C $(BUILD_WORK)/youtube-dl install \
-		PREFIX=/usr \
-		MANDIR=/usr/share/man \
+		PREFIX=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		MANDIR=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man \
 		DESTDIR=$(BUILD_STAGE)/youtube-dl \
-		PYTHON=/usr/bin/python3
+		PYTHON=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/python3
 	touch $(BUILD_WORK)/youtube-dl/.build_complete
 endif
 
