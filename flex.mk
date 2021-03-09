@@ -18,7 +18,7 @@ else
 flex: flex-setup gettext
 	cd $(BUILD_WORK)/flex && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
 		ac_cv_func_malloc_0_nonnull=yes \
 		ac_cv_func_realloc_0_nonnull=yes
 	+$(MAKE) -C $(BUILD_WORK)/flex \
@@ -33,18 +33,18 @@ endif
 flex-package: flex-stage
 	# flex.mk Package Structure
 	rm -rf $(BUILD_DIST)/flex $(BUILD_DIST)/libfl{2,-dev}
-	mkdir -p $(BUILD_DIST)/flex/usr \
-		$(BUILD_DIST)/libfl{2,-dev}/usr/lib \
+	mkdir -p $(BUILD_DIST)/flex/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		$(BUILD_DIST)/libfl{2,-dev}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib \
 	
 	# flex.mk Prep flex
-	cp -a $(BUILD_STAGE)/flex/usr/{bin,share} $(BUILD_DIST)/flex/usr
+	cp -a $(BUILD_STAGE)/flex/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/flex/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 
 	# flex.mk Prep libfl2
-	cp -a $(BUILD_STAGE)/flex/usr/lib/libfl.2.dylib $(BUILD_DIST)/libfl2/usr/lib
+	cp -a $(BUILD_STAGE)/flex/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libfl.2.dylib $(BUILD_DIST)/libfl2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
 
 	# flex.mk Prep libfl-dev
-	cp -a $(BUILD_STAGE)/flex/usr/lib/!(libfl.2.dylib) $(BUILD_DIST)/libfl-dev/usr/lib
-	cp -a $(BUILD_STAGE)/flex/usr/include $(BUILD_DIST)/libfl-dev/usr
+	cp -a $(BUILD_STAGE)/flex/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/!(libfl.2.dylib) $(BUILD_DIST)/libfl-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/flex/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libfl-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	
 	# flex.mk Sign
 	$(call SIGN,flex,general.xml)
