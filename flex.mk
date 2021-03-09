@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS  += flex
 FLEX_VERSION := 2.6.4
-DEB_FLEX_V   ?= $(FLEX_VERSION)
+DEB_FLEX_V   ?= $(FLEX_VERSION)-1
 
 flex-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/westes/flex/releases/download/v$(FLEX_VERSION)/flex-$(FLEX_VERSION).tar.gz{,.sig}
@@ -28,6 +28,7 @@ flex: flex-setup gettext
 		DESTDIR="$(BUILD_STAGE)/flex"
 	+$(MAKE) -C $(BUILD_WORK)/flex install \
 		DESTDIR="$(BUILD_BASE)"
+	ln -s flex $(BUILD_STAGE)/flex/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/lex
 	touch $(BUILD_WORK)/flex/.build_complete
 endif
 
