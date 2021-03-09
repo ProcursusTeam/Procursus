@@ -7,7 +7,7 @@ LIBATOMIC_OPS_VERSION := 7.6.10
 DEB_LIBATOMIC_OPS_V   ?= $(LIBATOMIC_OPS_VERSION)
 
 libatomic_ops-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/ivmai/libatomic_ops/archive/v$(LIBATOMIC_OPS_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/ivmai/libatomic_ops/releases/download/v$(LIBATOMIC_OPS_VERSION)/libatomic_ops-$(LIBATOMIC_OPS_VERSION).tar.gz
 	$(call EXTRACT_TAR,libatomic_ops-$(LIBATOMIC_OPS_VERSION).tar.gz,libatomic_ops-$(LIBATOMIC_OPS_VERSION),libatomic_ops)
 
 ifneq ($(wildcard $(BUILD_WORK)/libatomic_ops/.build_complete),)

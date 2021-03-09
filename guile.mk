@@ -36,7 +36,7 @@ guile-package: guile-stage
 	cp -a $(BUILD_STAGE)/guile/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) $(BUILD_DIST)/guile-3.0
 	
 	# guile.mk Sign
-	$(call SIGN,guile3.0,general.xml)
+	$(call SIGN,guile-3.0,general.xml)
 	
 	# guile.mk Make .debs
 	$(call PACK,guile-3.0,DEB_GUILE_V)

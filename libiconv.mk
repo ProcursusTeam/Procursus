@@ -15,15 +15,15 @@ ifneq ($(wildcard $(BUILD_WORK)/libiconv/.build_complete),)
 libiconv:
 	@echo "Using previously built libiconv."
 else
-libiconv: libiconv-setup
+libiconv: libiconv-setup gettext
 	cd $(BUILD_WORK)/libiconv && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libiconv
 	+$(MAKE) -C $(BUILD_WORK)/libiconv install \
 		DESTDIR=$(BUILD_STAGE)/libiconv
-	+$(MAKE) -C $(BUILD_STAGE)/libiconv install \
-		DESTDIR=$(BUILD_BASE)
+	+$(MAKE) -C $(BUILD_WORK)/libiconv install \
+		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/libiconv/.build_complete
 endif
 
