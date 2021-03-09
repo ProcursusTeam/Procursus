@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  	 += ccache
-CCACHE_VERSION := 3.7.12
+CCACHE_VERSION := 4.2
 DEB_CCACHE_V   ?= $(CCACHE_VERSION)
 
 ccache-setup: setup
@@ -14,13 +14,25 @@ ifneq ($(wildcard $(BUILD_WORK)/ccache/.build_complete),)
 ccache:
 	@echo "Using previously built ccache."
 else
-ccache: ccache-setup
-	cd $(BUILD_WORK)/ccache && ./configure -C \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--mandir=/usr/share/man \
-		--infodir=/usr/share/info \
-		--sysconfdir=/etc
+ccache: ccache-setup 
+	cd $(BUILD_WORK)/ccache && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_SYSTEM_NAME=Darwin \
+		-DCMAKE_CROSSCOMPILING=true \
+		-DHAVE_ASM_AVX2=FALSE \
+		-DHAVE_ASM_SSE2=FALSE \
+		-DHAVE_ASM_SSE41=FALSE \
+		-DHAVE_ASM_AVX512=FALSE \
+		-DHAVE_NEON=TRUE \
+		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
+		-DCMAKE_INSTALL_PREFIX=/ \
+		-DCMAKE_INSTALL_NAME_DIR=/usr/bin \
+		-DCMAKE_INSTALL_RPATH=/usr \
+		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
+		-DCMAKE_C_FLAGS="$(CFLAGS)" \
+		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
+		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
+		.
 	+$(MAKE) -C $(BUILD_WORK)/ccache
 	+$(MAKE) -C $(BUILD_WORK)/ccache install \
 		DESTDIR="$(BUILD_STAGE)/ccache"
