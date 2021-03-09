@@ -1,0 +1,9 @@
+Package: guile-3.0
+Version: @DEB_GUILE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Scripting
+Homepage: https://www.gnu.org/software/guile/
+Description: Guile is designed to help programmers create flexible applications that can be extended by users or other programmers with plug-ins, modules, or scripts. With Guile you can create applications and games for the desktop, the Web, the command-line, and more.
+Name: Guile
+Depends: libcrypt1, libffi7, libgc1, libgmp10, libltdl7, libncursesw6, libreadline8, libunistring2, libgc-dev, libgmp-dev, libltdl-dev, libncurses-dev, libreadline-dev, libiconv
