@@ -3,8 +3,8 @@ Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_PYTHON3_V@
 Depends: libpython3.9 (= @DEB_PYTHON3_V@)
-Section: Libraries
+Section: Scripting
 Priority: optional
-Description: Interpreted, interactive, object-oriented programming language. Contains the standard library and other shared libraries.
+Description: Interpreted, interactive, object-oriented programming language.
 Name: Python 3.9
 Tag: purpose::console, role::hacker
