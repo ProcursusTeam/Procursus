@@ -22,16 +22,16 @@ libatomic_ops: libatomic_ops-setup
 		--enable-shared=yes \
 		--enable-static=no
 	+$(MAKE) -C $(BUILD_WORK)/libatomic_ops
-	+$(MAKE) -C $(BUILD_WORK)/libgc install \
-		DESTDIR=$(BUILD_STAGE)/libgc
-	+$(MAKE) -C $(BUILD_WORK)/libgc install \
+	+$(MAKE) -C $(BUILD_WORK)/libatomic_ops install \
+		DESTDIR=$(BUILD_STAGE)/libatomic_ops
+	+$(MAKE) -C $(BUILD_WORK)/libatomic_ops install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libatomic_ops/.build_complete
 endif
 
 libatomic_ops-package: libatomic_ops-stage
 	# libatomic_ops.mk Package Structure
-	rm -rf $(BUILD_DIST)/libatomic_ops
+	rm -rf $(BUILD_DIST)/libatomic-ops-dev
 	mkdir -p $(BUILD_DIST)/libatomic-ops-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	
 	# libatomic_ops.mk Prep libatomic_ops
@@ -41,6 +41,6 @@ libatomic_ops-package: libatomic_ops-stage
 	$(call PACK,libatomic-ops-dev,DEB_LIBATOMIC_OPS_V)
 	
 	# libatomic_ops.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libatomic_ops
+	rm -rf $(BUILD_DIST)/libatomic-ops-dev
 
 .PHONY: libatomic_ops libatomic_ops-package
