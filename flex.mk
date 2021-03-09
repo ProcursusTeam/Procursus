@@ -16,6 +16,7 @@ flex:
 	@echo "Using previously built flex."
 else
 flex: flex-setup gettext
+	cd $(BUILD_WORK)/flex && ./autogen.sh 
 	cd $(BUILD_WORK)/flex && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
