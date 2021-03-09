@@ -4,7 +4,7 @@ Section: Development
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LIBMATROSKA_V@
-Depends: libmatroska7 (= @DEB_LIBMATROSKA_V@), libebml-dev (>= 1.4.1)
+Depends: libmatroska7 (= @DEB_LIBMATROSKA_V@), libebml-dev (>= 1.4.2)
 Homepage: https://www.matroska.org/
 Description: extensible open standard audio/video container format (development files)
  Matroska is aiming to become the standard of Multimedia
