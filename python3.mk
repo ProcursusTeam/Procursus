@@ -67,13 +67,14 @@ python3-package: python3-stage
 	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/python$(PYTHON3_MAJOR_V)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 
 	# python3.mk Prep libpython$(PYTHON3_MAJOR_V)
-	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/local $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/$(MEMO_ALT_PREFIX) $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/{libpython3.9.dylib,python3,python3.9} $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
 
 	# python3.mk Prep libpython$(PYTHON3_MAJOR_V)-dev
-	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	
+	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V)-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V)-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	rm -f $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V)-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/pkgconfig/python3{,-embed}.pc
+
 	# python3.mk Sign
 	$(call SIGN,python$(PYTHON3_MAJOR_V),general.xml)
 	$(call SIGN,libpython$(PYTHON3_MAJOR_V),general.xml)
