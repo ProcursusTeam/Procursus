@@ -16,7 +16,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libyaml-tiny-perl/.build_complete),)
 libyaml-tiny-perl:
 	@echo "Using previously built libyaml-tiny-perl."
 else
-libyaml-tiny-perl: libyaml-tiny-perl-setup perl
+libyaml-tiny-perl: libyaml-tiny-perl-setup
 	cd $(BUILD_WORK)/libyaml-tiny-perl && /opt/procursus/bin/perl Makefile.PL \
 		INSTALLSITEARCH=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
 		INSTALLARCHLIB=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
