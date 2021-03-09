@@ -23,7 +23,7 @@ wget: wget-setup openssl pcre2 gettext libunistring libidn2
 		--with-ssl=openssl \
 		--with-openssl \
 		--without-libpsl \
-		--without-included-regex
+		CFLAGS="$(CFLAGS) -Wno-macro-redefined -Wno-c99-extensions -D__nonnull\(params\)="
 	+$(MAKE) -C $(BUILD_WORK)/wget
 	+$(MAKE) -C $(BUILD_WORK)/wget install \
 		DESTDIR="$(BUILD_STAGE)/wget"
