@@ -23,7 +23,7 @@ file: file-setup xz
 		$(MAKE) -C $(BUILD_WORK)/../../native/file
 	cd $(BUILD_WORK)/file && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-libseccomp \
 		--enable-fsect-man5
 	+$(MAKE) -C $(BUILD_WORK)/file \
@@ -38,22 +38,22 @@ endif
 file-package: file-stage
 	# file.mk Package Structure
 	rm -rf $(BUILD_DIST)/file $(BUILD_DIST)/libmagic{1,-dev}
-	mkdir -p $(BUILD_DIST)/file/usr/share/man \
-		$(BUILD_DIST)/libmagic1/usr/{lib,share} \
-		$(BUILD_DIST)/libmagic-dev/usr/{lib,share/man}
+	mkdir -p $(BUILD_DIST)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
+		$(BUILD_DIST)/libmagic1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share} \
+		$(BUILD_DIST)/libmagic-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share/man}
 	
 	# file.mk Prep file
-	cp -a $(BUILD_STAGE)/file/usr/bin $(BUILD_DIST)/file/usr
-	cp -a $(BUILD_STAGE)/file/usr/share/man/man1 $(BUILD_DIST)/file/usr/share/man
+	cp -a $(BUILD_STAGE)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
 	# file.mk Prep libmagic1
-	cp -a $(BUILD_STAGE)/file/usr/lib/libmagic.1.dylib $(BUILD_DIST)/libmagic1/usr/lib
-	cp -a $(BUILD_STAGE)/file/usr/share/man/man5 $(BUILD_DIST)/libmagic1/usr/share/man
-	cp -a $(BUILD_STAGE)/file/usr/share/misc $(BUILD_DIST)/libmagic1/usr/share
+	cp -a $(BUILD_STAGE)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libmagic.1.dylib $(BUILD_DIST)/libmagic1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5 $(BUILD_DIST)/libmagic1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+	cp -a $(BUILD_STAGE)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/misc $(BUILD_DIST)/libmagic1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
 	# file.mk Prep libmagic-dev
-	cp -a $(BUILD_STAGE)/file/usr/lib/!(libmagic.1.dylib) $(BUILD_DIST)/libmagic-dev/usr/lib
-	cp -a $(BUILD_STAGE)/file/usr/share/man/man3 $(BUILD_DIST)/libmagic-dev/usr/share/man
+	cp -a $(BUILD_STAGE)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libmagic.1.dylib) $(BUILD_DIST)/libmagic-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libmagic-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	
 	# file.mk Sign
 	$(call SIGN,file,general.xml)

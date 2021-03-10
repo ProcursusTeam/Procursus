@@ -30,9 +30,9 @@ aptitude: aptitude-setup ncurses libboost xapian cwidget apt googletest
 		--disable-boost-lib-checks \
 		--disable-tests \
 		--program-transform='s&aptitude$$&aptitude-curses&' \
-		XAPIAN_CONFIG="$(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/xapian-config" \
-		SIGC_CFLAGS="-I$(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include/sigc++-2.0 -I$(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/sigc++-2.0/include" \
-		CWIDGET_CFLAGS="-I$(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include/cwidget -I$(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/cwidget -I$(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include/sigc++-2.0 -I$(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/sigc++-2.0/include" \
+		XAPIAN_CONFIG="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/xapian-config" \
+		SIGC_CFLAGS="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sigc++-2.0 -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/sigc++-2.0/include" \
+		CWIDGET_CFLAGS="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/cwidget -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/cwidget -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sigc++-2.0 -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/sigc++-2.0/include" \
 		CXXFLAGS="-std=gnu++17 $(CXXFLAGS) -D_XOPEN_SOURCE_EXTENDED" \
 		CFLAGS="$(CFLAGS) -D_XOPEN_SOURCE_EXTENDED" \
 		LIBS=" -lapt-pkg -lncursesw -lsigc-2.0 -lcwidget -lncursesw -lsigc-2.0 -lboost_iostreams.1.74.0 -lboost_system -lxapian -lpthread" \
@@ -48,7 +48,7 @@ aptitude: aptitude-setup ncurses libboost xapian cwidget apt googletest
 		DESTDIR=$(BUILD_STAGE)/aptitude \
 		README="" \
 		DOCBOOK_TARGETS="docbook-man"
-	mv $(BUILD_STAGE)/aptitude/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/gl/man8/aptitude.8 $(BUILD_STAGE)/aptitude/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/gl/man8/aptitude-curses.8
+	mv $(BUILD_STAGE)/aptitude/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/gl/man8/aptitude.8 $(BUILD_STAGE)/aptitude/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/gl/man8/aptitude-curses.8
 	touch $(BUILD_WORK)/aptitude/.build_complete
 endif
 

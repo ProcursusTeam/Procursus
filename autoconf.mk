@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += autoconf
-AUTOCONF_VERSION  := 2.70
+AUTOCONF_VERSION  := 2.71
 DEB_AUTOCONF_V    ?= $(AUTOCONF_VERSION)
 
 autoconf-setup: setup
@@ -20,7 +20,7 @@ else
 autoconf: autoconf-setup
 	cd $(BUILD_WORK)/autoconf && PERL=/usr/bin/perl ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/autoconf
 	+$(MAKE) -C $(BUILD_WORK)/autoconf install \
 		DESTDIR=$(BUILD_STAGE)/autoconf
@@ -31,10 +31,9 @@ endif
 autoconf-package: autoconf-stage
 	# autoconf.mk Package Structure
 	rm -rf $(BUILD_DIST)/autoconf
-	mkdir -p $(BUILD_DIST)/autoconf
 	
 	# autoconf.mk Prep autoconf
-	cp -a $(BUILD_STAGE)/autoconf/usr $(BUILD_DIST)/autoconf
+	cp -a $(BUILD_STAGE)/autoconf $(BUILD_DIST)
 	
 	# autoconf.mk Sign
 	$(call SIGN,autoconf,general.xml)

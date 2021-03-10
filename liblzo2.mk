@@ -17,7 +17,7 @@ else
 liblzo2: liblzo2-setup
 	cd $(BUILD_WORK)/liblzo2 && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--enable-shared
 	+$(MAKE) -C $(BUILD_WORK)/liblzo2
@@ -31,14 +31,14 @@ endif
 liblzo2-package: liblzo2-stage
 	# liblzo2.mk Package Structure
 	rm -rf $(BUILD_DIST)/liblzo2{-2,-dev}
-	mkdir -p $(BUILD_DIST)/liblzo2{-2/usr/lib,-dev/usr/{include,lib}}
+	mkdir -p $(BUILD_DIST)/liblzo2{-2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib,-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib}}
 	
 	# liblzo2.mk Prep liblzo2-2
-	cp -a $(BUILD_STAGE)/liblzo2/usr/lib/liblzo2.2.dylib $(BUILD_DIST)/liblzo2-2/usr/lib
+	cp -a $(BUILD_STAGE)/liblzo2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblzo2.2.dylib $(BUILD_DIST)/liblzo2-2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# liblzo2.mk Prep liblzo2-dev
-	cp -a $(BUILD_STAGE)/liblzo2/usr/include $(BUILD_DIST)/liblzo2-dev/usr
-	cp -a $(BUILD_STAGE)/liblzo2/usr/lib/{pkgconfig,liblzo2.{a,dylib}} $(BUILD_DIST)/liblzo2-dev/usr/lib
+	cp -a $(BUILD_STAGE)/liblzo2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/liblzo2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/liblzo2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,liblzo2.{a,dylib}} $(BUILD_DIST)/liblzo2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# liblzo2.mk Sign
 	$(call SIGN,liblzo2-2,general.xml)

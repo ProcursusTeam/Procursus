@@ -16,7 +16,7 @@ neofetch:
 else
 neofetch: neofetch-setup
 	+$(MAKE) -C $(BUILD_WORK)/neofetch install \
-		PREFIX=/usr \
+		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR=$(BUILD_STAGE)/neofetch
 	touch $(BUILD_WORK)/neofetch/.build_complete
 endif

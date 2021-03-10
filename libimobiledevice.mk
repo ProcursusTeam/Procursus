@@ -3,21 +3,24 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS              += libimobiledevice
-LIBIMOBILEDEVICE_VERSION := 1.3.0
+LIBIMOBILEDEVICE_COMMIT  := 25059d4c7d75e03aab516af2929d7c6e6d4c17de
+LIBIMOBILEDEVICE_VERSION := 1.3.0+git20210304.$(shell echo $(LIBIMOBILEDEVICE_COMMIT) | cut -c -7)
 DEB_LIBIMOBILEDEVICE_V   ?= $(LIBIMOBILEDEVICE_VERSION)
 
 libimobiledevice-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libimobiledevice/libimobiledevice/releases/download/$(LIBIMOBILEDEVICE_VERSION)/libimobiledevice-$(LIBIMOBILEDEVICE_VERSION).tar.bz2
-	$(call EXTRACT_TAR,libimobiledevice-$(LIBIMOBILEDEVICE_VERSION).tar.bz2,libimobiledevice-$(LIBIMOBILEDEVICE_VERSION),libimobiledevice)
+	-[ ! -f "$(BUILD_SOURCE)/libimobiledevice-$(LIBIMOBILEDEVICE_COMMIT).tar.gz" ] && \
+		wget -q -nc -O$(BUILD_SOURCE)/libimobiledevice-$(LIBIMOBILEDEVICE_COMMIT).tar.gz \
+			https://github.com/libimobiledevice/libimobiledevice/archive/$(LIBIMOBILEDEVICE_COMMIT).tar.gz
+	$(call EXTRACT_TAR,libimobiledevice-$(LIBIMOBILEDEVICE_COMMIT).tar.gz,libimobiledevice-$(LIBIMOBILEDEVICE_COMMIT),libimobiledevice)
 
 ifneq ($(wildcard $(BUILD_WORK)/libimobiledevice/.build_complete),)
 libimobiledevice:
 	@echo "Using previously built libimobiledevice."
 else
 libimobiledevice: libimobiledevice-setup libusbmuxd libplist openssl
-	cd $(BUILD_WORK)/libimobiledevice && ./configure \
+	cd $(BUILD_WORK)/libimobiledevice && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--without-cython
 	+$(MAKE) -C $(BUILD_WORK)/libimobiledevice
 	+$(MAKE) -C $(BUILD_WORK)/libimobiledevice install \
@@ -30,19 +33,19 @@ endif
 libimobiledevice-package: libimobiledevice-stage
 	# libimobiledevice.mk Package Structure
 	rm -rf $(BUILD_DIST)/libimobiledevice{6,-dev,-utils}
-	mkdir -p $(BUILD_DIST)/libimobiledevice6/usr/lib \
-		$(BUILD_DIST)/libimobiledevice-dev/usr/lib \
-		$(BUILD_DIST)/libimobiledevice-utils/usr
+	mkdir -p $(BUILD_DIST)/libimobiledevice6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libimobiledevice-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libimobiledevice-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libimobiledevice.mk Prep libimobiledevice6
-	cp -a $(BUILD_STAGE)/libimobiledevice/usr/lib/libimobiledevice-1.0.6.dylib $(BUILD_DIST)/libimobiledevice6/usr/lib
+	cp -a $(BUILD_STAGE)/libimobiledevice/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libimobiledevice-1.0.6.dylib $(BUILD_DIST)/libimobiledevice6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libimobiledevice.mk Prep libimobiledevice-dev
-	cp -a $(BUILD_STAGE)/libimobiledevice/usr/lib/{pkgconfig,libimobiledevice-1.0.{a,dylib}} $(BUILD_DIST)/libimobiledevice-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libimobiledevice/usr/include $(BUILD_DIST)/libimobiledevice-dev/usr
+	cp -a $(BUILD_STAGE)/libimobiledevice/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libimobiledevice-1.0.{a,dylib}} $(BUILD_DIST)/libimobiledevice-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libimobiledevice/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libimobiledevice-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libimobiledevice.mk Prep libimobiledevice-utils
-	cp -a $(BUILD_STAGE)/libimobiledevice/usr/{bin,share} $(BUILD_DIST)/libimobiledevice-utils/usr
+	cp -a $(BUILD_STAGE)/libimobiledevice/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/libimobiledevice-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libimobiledevice.mk Sign
 	$(call SIGN,libimobiledevice6,general.xml)

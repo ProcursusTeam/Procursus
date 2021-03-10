@@ -18,11 +18,11 @@ else
 gawk: gawk-setup gettext
 	cd $(BUILD_WORK)/gawk && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=/etc
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--sysconfdir=$(MEMO_PREFIX)/etc
 	+$(MAKE) -C $(BUILD_WORK)/gawk install \
 		DESTDIR=$(BUILD_STAGE)/gawk
-	rm -f $(BUILD_STAGE)/gawk/usr/bin/gawk-*
+	rm -f $(BUILD_STAGE)/gawk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gawk-*
 	touch $(BUILD_WORK)/gawk/.build_complete
 endif
 

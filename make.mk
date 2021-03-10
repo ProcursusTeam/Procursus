@@ -6,6 +6,10 @@ SUBPROJECTS  += make
 MAKE_VERSION := 4.3
 DEB_MAKE_V   ?= $(MAKE_VERSION)-2
 
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+MAKE_CONFIGURE_ARGS := --program-prefix=$(GNU_PREFIX)
+endif
+
 make-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/make/make-$(MAKE_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,make-$(MAKE_VERSION).tar.gz)
@@ -20,8 +24,9 @@ make: make-setup gettext
 	$(SED) -i 's/defined (__arm) ||//' $(BUILD_WORK)/make/src/makeint.h
 	cd $(BUILD_WORK)/make && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--with-guile=no
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--with-guile=no \
+		$(MAKE_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/make \
 		CFLAGS="$(CFLAGS) -DPOSIX"
 	+$(MAKE) -C $(BUILD_WORK)/make install \
@@ -32,10 +37,19 @@ endif
 make-package: make-stage
 	# make.mk Package Structure
 	rm -rf $(BUILD_DIST)/make
-	mkdir -p $(BUILD_DIST)/make
-	
+	mkdir -p $(BUILD_DIST)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include,share/man/man1}
+
 	# make.mk Prep make
-	cp -a $(BUILD_STAGE)/make/usr $(BUILD_DIST)/make
+	cp -a $(BUILD_STAGE)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ $(BUILD_DIST)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ $(BUILD_DIST)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/ $(BUILD_DIST)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+	mkdir -p $(BUILD_DIST)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin
+	for bin in $(BUILD_DIST)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
+		ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(echo $$bin | rev | cut -d/ -f1 | rev) $(BUILD_DIST)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $$bin | rev | cut -d/ -f1 | rev | cut -c2-); \
+	done
+endif
 	
 	# make.mk Sign
 	$(call SIGN,make,general.xml)
