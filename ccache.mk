@@ -6,10 +6,13 @@ SUBPROJECTS  	 += ccache
 CCACHE_VERSION := 4.2
 DEB_CCACHE_V   ?= $(CCACHE_VERSION)
 
-ifeq (,$(findstring darwin,$(amd64)))
-CCACHE_CMAKE_ARGS := -DHAVE_NEON=FALSE
+ifneq (,$(findstring arm64,))
+CCACHE_CMAKE_ARGS := -DHAVE_NEON=TRUE \
+	-DHAVE_ASM_AVX2=FALSE \
+	-DHAVE_ASM_SSE2=FALSE \
+	-DHAVE_ASM_SSE41=FALSE \
+	-DHAVE_ASM_AVX512=FALSE
 else
-CCACHE_CMAKE_ARGS := -DHAVE_NEON=TRUE
 endif
 
 ccache-setup: setup
@@ -20,15 +23,11 @@ ifneq ($(wildcard $(BUILD_WORK)/ccache/.build_complete),)
 ccache:
 	@echo "Using previously built ccache."
 else
-ccache: ccache-setup 
+ccache: ccache-setup
 	cd $(BUILD_WORK)/ccache && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
-		-DHAVE_ASM_AVX2=FALSE \
-		-DHAVE_ASM_SSE2=FALSE \
-		-DHAVE_ASM_SSE41=FALSE \
-		-DHAVE_ASM_AVX512=FALSE \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
 		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)/ \
 		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
@@ -37,6 +36,7 @@ ccache: ccache-setup
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
 		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
+		$(CCACHE_CMAKE_ARGS) \
 		.
 	+$(MAKE) -C $(BUILD_WORK)/ccache
 	+$(MAKE) -C $(BUILD_WORK)/ccache install \
