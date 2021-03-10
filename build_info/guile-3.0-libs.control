@@ -1,0 +1,14 @@
+Package: guile-3.0-libs
+Version: @DEB_GUILE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Homepage: https://www.gnu.org/software/guile/
+Name: Guile (Libraries)
+Description: Core Guile libraries
+ Guile is a Scheme implementation designed for real world programming,
+ providing a rich Unix interface, a module system, an interpreter, and
+ many extension languages.  Guile can be used as a standard #! style
+ interpreter, via #!/usr/bin/guile, or as an extension language for
+ other applications via libguile.

@@ -15,7 +15,6 @@ libatomic_ops:
 	@echo "Using previously built libatomic_ops."
 else
 libatomic_ops: libatomic_ops-setup
-	cd $(BUILD_WORK)/libatomic_ops && ./autogen.sh
 	cd $(BUILD_WORK)/libatomic_ops && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
