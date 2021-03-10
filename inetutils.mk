@@ -20,7 +20,7 @@ inetutils: inetutils-setup ncurses readline
 	cd $(BUILD_WORK)/inetutils && ./configure \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-ifconfig \
 		--disable-ping6 \
 		--disable-syslogd \
@@ -31,8 +31,8 @@ inetutils: inetutils-setup ncurses readline
 	$(SED) -i 's/-ltermcap/-lncursesw/g' $(BUILD_WORK)/inetutils/telnetd/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/inetutils install \
 		DESTDIR=$(BUILD_STAGE)/inetutils
-	$(LN) -sf ../$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/ping $(BUILD_STAGE)/inetutils/bin
-	$(LN) -sf ../$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/ping $(BUILD_STAGE)/inetutils/sbin
+	$(LN) -sf ..$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ping $(BUILD_STAGE)/inetutils/bin
+	$(LN) -sf ..$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ping $(BUILD_STAGE)/inetutils/sbin
 	touch $(BUILD_WORK)/inetutils/.build_complete
 endif
 
@@ -47,8 +47,8 @@ inetutils-package: inetutils-stage
 	$(call SIGN,inetutils,general.xml)
 
 	# inetutils.mk Permissions
-	$(FAKEROOT) chmod 0755 $(BUILD_DIST)/inetutils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/*
-	$(FAKEROOT) chmod 4755 $(BUILD_DIST)/inetutils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/{ping,rcp,rlogin,rsh}
+	$(FAKEROOT) chmod 0755 $(BUILD_DIST)/inetutils$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
+	$(FAKEROOT) chmod 4755 $(BUILD_DIST)/inetutils$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{ping,rcp,rlogin,rsh}
 	
 	# inetutils.mk Make .debs
 	$(call PACK,inetutils,DEB_INETUTILS_V)
