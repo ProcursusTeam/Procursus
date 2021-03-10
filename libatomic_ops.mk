@@ -17,7 +17,7 @@ else
 libatomic_ops: libatomic_ops-setup
 	cd $(BUILD_WORK)/libatomic_ops && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--enable-shared=yes \
 		--enable-static=no
 	+$(MAKE) -C $(BUILD_WORK)/libatomic_ops
@@ -31,10 +31,10 @@ endif
 libatomic_ops-package: libatomic_ops-stage
 	# libatomic_ops.mk Package Structure
 	rm -rf $(BUILD_DIST)/libatomic-ops-dev
-	mkdir -p $(BUILD_DIST)/libatomic-ops-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	mkdir -p $(BUILD_DIST)/libatomic-ops-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libatomic_ops.mk Prep libatomic_ops
-	cp -a $(BUILD_STAGE)/libatomic_ops/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libatomic-ops-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libatomic_ops$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libatomic-ops-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libatomic_ops.mk Make .debs
 	$(call PACK,libatomic-ops-dev,DEB_LIBATOMIC_OPS_V)
