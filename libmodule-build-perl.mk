@@ -21,12 +21,12 @@ libmodule-build-perl: libmodule-build-perl-setup perl
 		cc=$(CC) \
 		ld=$(CC) \
 		destdir=$(BUILD_STAGE)/libmodule-build-perl \
-		install_path=lib=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/perl5 \
-		install_path=arch=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
-		install_path=libdoc=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1 \
-		install_path=bindoc=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man3
+		install_path=lib=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 \
+		install_path=arch=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
+		install_path=libdoc=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 \
+		install_path=bindoc=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3
 	$(BUILD_WORK)/libmodule-build-perl/Build install
-	#rm -rf $(BUILD_STAGE)/libmodule-build-perl/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	#rm -rf $(BUILD_STAGE)/libmodule-build-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	touch $(BUILD_WORK)/libmodule-build-perl/.build_complete
 endif
 

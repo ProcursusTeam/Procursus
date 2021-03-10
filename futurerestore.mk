@@ -25,7 +25,7 @@ else
 futurerestore: futurerestore-setup libirecovery openssl libusbmuxd libimobiledevice img4tool libgeneral libipatcher libzip
 	cd $(BUILD_WORK)/futurerestore && ./autogen.sh \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/futurerestore
 	+$(MAKE) -C $(BUILD_WORK)/futurerestore install \
 		DESTDIR="$(BUILD_STAGE)/futurerestore"
@@ -35,10 +35,10 @@ endif
 futurerestore-package: futurerestore-stage
 	# futurerestore.mk Package Structure
 	rm -rf $(BUILD_DIST)/futurerestore
-	mkdir -p $(BUILD_DIST)/futurerestore/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	mkdir -p $(BUILD_DIST)/futurerestore/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# futurerestore.mk Prep futurerestore
-	cp -a $(BUILD_STAGE)/futurerestore/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/futurerestore/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/futurerestore/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/futurerestore/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# futurerestore.mk Sign
 	$(call SIGN,futurerestore,general.xml)

@@ -20,7 +20,7 @@ glib2.0-setup: setup
 	[properties]\n \
 	root = '$(BUILD_BASE)'\n \
 	[paths]\n \
-	prefix ='/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)'\n \
+	prefix ='/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
 	[binaries]\n \
 	c = '$(CC)'\n \
 	objc = '$(CC)'\n \
@@ -46,29 +46,29 @@ endif
 glib2.0-package: glib2.0-stage
 	# glib2.0.mk Package Structure
 	rm -rf $(BUILD_DIST)/libglib2.0-{0,bin,dev{,-bin}}
-	mkdir -p $(BUILD_DIST)/libglib2.0-0/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{lib,share} \
-		$(BUILD_DIST)/libglib2.0-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{lib,share/glib-2.0} \
-		$(BUILD_DIST)/libglib2.0-bin/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{bin,share} \
-		$(BUILD_DIST)/libglib2.0-dev-bin/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{bin,share/glib-2.0}
+	mkdir -p $(BUILD_DIST)/libglib2.0-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share} \
+		$(BUILD_DIST)/libglib2.0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share/glib-2.0} \
+		$(BUILD_DIST)/libglib2.0-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} \
+		$(BUILD_DIST)/libglib2.0-dev-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/glib-2.0}
 	
 	# glib2.0.mk Prep libglib2.0-0
-	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/*2.0.0.dylib $(BUILD_DIST)/libglib2.0-0/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/locale $(BUILD_DIST)/libglib2.0-0/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share
+	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/*2.0.0.dylib $(BUILD_DIST)/libglib2.0-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale $(BUILD_DIST)/libglib2.0-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	
 	# glib2.0.mk Prep libglib2.0-dev
-	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libglib2.0-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/!(*2.0.0*) $(BUILD_DIST)/libglib2.0-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/{gdb,gettext} $(BUILD_DIST)/libglib2.0-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share
-	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/glib-2.0/{gdb,schemas,valgrind} $(BUILD_DIST)/libglib2.0-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/glib-2.0
+	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libglib2.0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(*2.0.0*) $(BUILD_DIST)/libglib2.0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{gdb,gettext} $(BUILD_DIST)/libglib2.0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/glib-2.0/{gdb,schemas,valgrind} $(BUILD_DIST)/libglib2.0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/glib-2.0
 
 	# glib2.0.mk Prep libglib2.0-bin
-	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/{gdbus,gio,gresource,gsettings} $(BUILD_DIST)/libglib2.0-bin/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/bash-completion $(BUILD_DIST)/libglib2.0-bin/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share
+	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{gdbus,gio,gresource,gsettings} $(BUILD_DIST)/libglib2.0-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion $(BUILD_DIST)/libglib2.0-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
 	# glib2.0.mk Prep libglib2.0-dev-bin
-	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/{gdbus-codegen,glib-{compile-resources,genmarshal,gettextize,mkenums},gobject-query,gtester{,-report}} $(BUILD_DIST)/libglib2.0-dev-bin/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/aclocal $(BUILD_DIST)/libglib2.0-dev-bin/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share
-	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/glib-2.0/{codegen,gettext} $(BUILD_DIST)/libglib2.0-dev-bin/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/glib-2.0
+	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{gdbus-codegen,glib-{compile-resources,genmarshal,gettextize,mkenums},gobject-query,gtester{,-report}} $(BUILD_DIST)/libglib2.0-dev-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal $(BUILD_DIST)/libglib2.0-dev-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/glib-2.0/{codegen,gettext} $(BUILD_DIST)/libglib2.0-dev-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/glib-2.0
 	
 	# glib2.0.mk Sign
 	$(call SIGN,libglib2.0-0,general.xml)

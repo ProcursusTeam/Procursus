@@ -25,7 +25,7 @@ cmake: cmake-setup ncurses libuv1 curl libarchive expat xz nghttp2 zstd
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
@@ -33,7 +33,7 @@ cmake: cmake-setup ncurses libuv1 curl libarchive expat xz nghttp2 zstd
 		-DHAVE_POLL_FINE_EXITCODE=1 \
 		-DHAVE_POLL_FINE_EXITCODE__TRYRUN_OUTPUT=1 \
 		-DBUILD_CursesDialog:BOOL=ON \
-		-DCURSES_NCURSES_LIBRARY:FILEPATH="$(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib" \
+		-DCURSES_NCURSES_LIBRARY:FILEPATH="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib" \
 		-DSPHINX_MAN:BOOL=ON \
 		-DCMAKE_USE_SYSTEM_LIBUV=ON \
 		-DCMAKE_USE_SYSTEM_BZIP2=ON \
@@ -54,20 +54,20 @@ endif
 cmake-package: cmake-stage
 	# cmake.mk Package Structure
 	rm -rf $(BUILD_DIST)/cmake{,-data,-curses-gui}
-	mkdir -p $(BUILD_DIST)/cmake{,-curses-gui}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
-		$(BUILD_DIST)/cmake-data/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man
+	mkdir -p $(BUILD_DIST)/cmake{,-curses-gui}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
+		$(BUILD_DIST)/cmake-data/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	
 	# cmake.mk Prep cmake
-	cp -a $(BUILD_STAGE)/cmake/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/!(ccmake) $(BUILD_DIST)/cmake/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/cmake/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/man/man1/!(ccmake.1) $(BUILD_DIST)/cmake/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/cmake/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/!(ccmake) $(BUILD_DIST)/cmake/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/cmake/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/man/man1/!(ccmake.1) $(BUILD_DIST)/cmake/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# cmake.mk Prep cmake-curses-gui
-	cp -a $(BUILD_STAGE)/cmake/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/ccmake $(BUILD_DIST)/cmake-curses-gui/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/cmake/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/man/man1/ccmake.1 $(BUILD_DIST)/cmake-curses-gui/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/cmake/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ccmake $(BUILD_DIST)/cmake-curses-gui/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/cmake/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/man/man1/ccmake.1 $(BUILD_DIST)/cmake-curses-gui/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# cmake.mk Prep cmake-data
-	cp -a $(BUILD_STAGE)/cmake/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/man/man7 $(BUILD_DIST)/cmake-data/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man
-	cp -a $(BUILD_STAGE)/cmake/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/{aclocal,bash-completion,cmake-*,emacs,vim} $(BUILD_DIST)/cmake-data/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share
+	cp -a $(BUILD_STAGE)/cmake/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/man/man7 $(BUILD_DIST)/cmake-data/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+	cp -a $(BUILD_STAGE)/cmake/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{aclocal,bash-completion,cmake-*,emacs,vim} $(BUILD_DIST)/cmake-data/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	
 	# cmake.mk Sign
 	$(call SIGN,cmake,general.xml)

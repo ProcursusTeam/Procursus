@@ -18,7 +18,7 @@ else
 autoconf-archive: autoconf-archive-setup
 	cd $(BUILD_WORK)/autoconf-archive && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/autoconf-archive
 	+$(MAKE) -C $(BUILD_WORK)/autoconf-archive install \
 		DESTDIR=$(BUILD_STAGE)/autoconf-archive

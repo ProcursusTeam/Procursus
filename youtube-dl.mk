@@ -17,10 +17,10 @@ youtube-dl:
 else
 youtube-dl: youtube-dl-setup 
 	+$(MAKE) -C $(BUILD_WORK)/youtube-dl install \
-		PREFIX=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
-		MANDIR=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man \
+		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		MANDIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
 		DESTDIR=$(BUILD_STAGE)/youtube-dl \
-		PYTHON=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/python3
+		PYTHON=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3
 	touch $(BUILD_WORK)/youtube-dl/.build_complete
 endif
 

@@ -17,7 +17,7 @@ else
 libarchive: libarchive-setup lz4 liblzo2 zstd xz nettle
 	cd $(BUILD_WORK)/libarchive && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--without-openssl \
 		--with-nettle \
@@ -36,21 +36,21 @@ endif
 libarchive-package: libarchive-stage
 	# libarchive.mk Package Structure
 	rm -rf $(BUILD_DIST)/libarchive{13,-tools,-dev}
-	mkdir -p $(BUILD_DIST)/libarchive13/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	mkdir -p $(BUILD_DIST)/libarchive-tools/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man
-	mkdir -p $(BUILD_DIST)/libarchive-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{lib,share/man}
+	mkdir -p $(BUILD_DIST)/libarchive13/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libarchive-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+	mkdir -p $(BUILD_DIST)/libarchive-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share/man}
 	
 	# libarchive.mk Prep libarchive13
-	cp -a $(BUILD_STAGE)/libarchive/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libarchive.*.dylib $(BUILD_DIST)/libarchive13/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libarchive/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libarchive.*.dylib $(BUILD_DIST)/libarchive13/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libarchive.mk Prep libarchive-tools
-	cp -a $(BUILD_STAGE)/libarchive/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/libarchive-tools/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libarchive/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/libarchive-tools/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/
+	cp -a $(BUILD_STAGE)/libarchive/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/libarchive-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libarchive/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/libarchive-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/
 	
 	# libarchive.mk Prep libarchive-dev
-	cp -a $(BUILD_STAGE)/libarchive/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libarchive-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libarchive/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/{libarchive.dylib,pkgconfig} $(BUILD_DIST)/libarchive-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libarchive/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man{3,5} $(BUILD_DIST)/libarchive-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man
+	cp -a $(BUILD_STAGE)/libarchive/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libarchive-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libarchive/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libarchive.dylib,pkgconfig} $(BUILD_DIST)/libarchive-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libarchive/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man{3,5} $(BUILD_DIST)/libarchive-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	
 	# libarchive.mk Sign
 	$(call SIGN,libarchive13,general.xml)
