@@ -17,31 +17,31 @@ else
 libev: libev-setup
 	cd $(BUILD_WORK)/libev && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libev install \
 		DESTDIR=$(BUILD_STAGE)/libev
 	# Do not make install to build_base do to conflicts with event.h from libevent.
-	cp -a $(BUILD_STAGE)/libev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include/ev{,++}.h $(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include
-	cp -a $(BUILD_STAGE)/libev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/* $(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ev{,++}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/libev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/* $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	touch $(BUILD_WORK)/libev/.build_complete
 endif
 
 libev-package: libev-stage
 	# libev.mk Package Structure
 	rm -rf $(BUILD_DIST)/libev{4,{,-libevent}-dev}
-	mkdir -p $(BUILD_DIST)/libev4/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libev-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{include,lib} \
-		$(BUILD_DIST)/libev-libevent-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include
+	mkdir -p $(BUILD_DIST)/libev4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libev-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib} \
+		$(BUILD_DIST)/libev-libevent-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	
 	# libev.mk Prep libev4
-	cp -a $(BUILD_STAGE)/libev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libev.4.dylib $(BUILD_DIST)/libev4/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libev.4.dylib $(BUILD_DIST)/libev4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libev.mk Prep libev-dev
-	cp -a $(BUILD_STAGE)/libev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include/!(event.h) $(BUILD_DIST)/libev-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include
-	cp -a $(BUILD_STAGE)/libev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/!(libev.4.dylib) $(BUILD_DIST)/libev-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/!(event.h) $(BUILD_DIST)/libev-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/libev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libev.4.dylib) $(BUILD_DIST)/libev-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libev.mk Prep libev-libevent-dev
-	cp -a $(BUILD_STAGE)/libev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include/event.h $(BUILD_DIST)/libev-libevent-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/libev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/event.h $(BUILD_DIST)/libev-libevent-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	
 	# libev.mk Sign
 	$(call SIGN,libev4,general.xml)

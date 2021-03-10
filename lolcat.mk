@@ -10,7 +10,7 @@ lolcat-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/lolcat-$(LOLCAT_VERSION).tar.gz" ] && \
 		wget -q -nc -O$(BUILD_SOURCE)/lolcat-$(LOLCAT_VERSION).tar.gz https://github.com/jaseg/lolcat/archive/v$(LOLCAT_VERSION).tar.gz
 	$(call EXTRACT_TAR,lolcat-$(LOLCAT_VERSION).tar.gz,lolcat-$(LOLCAT_VERSION),lolcat)
-	mkdir -p $(BUILD_STAGE)/lolcat/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin
+	mkdir -p $(BUILD_STAGE)/lolcat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 ifneq ($(wildcard $(BUILD_WORK)/lolcat/.build_complete),)
 lolcat:
@@ -19,7 +19,7 @@ else
 lolcat: lolcat-setup 
 	+$(MAKE) -C $(BUILD_WORK)/lolcat
 	+$(MAKE) -C $(BUILD_WORK)/lolcat install \
-		DESTDIR=$(BUILD_STAGE)/lolcat/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin
+		DESTDIR=$(BUILD_STAGE)/lolcat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	touch $(BUILD_WORK)/lolcat/.build_complete
 endif
 

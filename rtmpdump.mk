@@ -17,7 +17,7 @@ rtmpdump:
 	@echo "Using previously built rtmpdump."
 else
 rtmpdump: rtmpdump-setup nettle gnutls libgmp10
-	mkdir -p $(BUILD_STAGE)/rtmpdump/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_STAGE)/rtmpdump/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	+$(MAKE) -C $(BUILD_WORK)/rtmpdump install \
 		CC="$(CC)" \
 		LD="$(LD)" \
@@ -25,9 +25,9 @@ rtmpdump: rtmpdump-setup nettle gnutls libgmp10
 		XCFLAGS="$(CFLAGS)" \
 		XLDFLAGS="$(LDFLAGS)" \
 		SYS=darwin \
-		prefix="/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)" \
+		prefix="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		DESTDIR="$(BUILD_STAGE)/rtmpdump" \
-		mandir="/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man"
+		mandir="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man"
 	+$(MAKE) -C $(BUILD_WORK)/rtmpdump install \
 		CC="$(CC)" \
 		LD="$(LD)" \
@@ -35,9 +35,9 @@ rtmpdump: rtmpdump-setup nettle gnutls libgmp10
 		XCFLAGS="$(CFLAGS)" \
 		XLDFLAGS="$(LDFLAGS)" \
 		SYS=darwin \
-		prefix="/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)" \
+		prefix="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		DESTDIR="$(BUILD_BASE)" \
-		mandir="/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man"
+		mandir="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man"
 	touch $(BUILD_WORK)/rtmpdump/.build_complete
 endif
 
@@ -45,18 +45,18 @@ rtmpdump-package: rtmpdump-stage
 	# rtmpdump.mk Package Structure
 	rm -rf $(BUILD_DIST)/rtmpdump \
 		$(BUILD_DIST)/librtmp{1,-dev}
-	mkdir -p $(BUILD_DIST)/rtmpdump/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
-		$(BUILD_DIST)/librtmp{1,-dev}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/rtmpdump/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(BUILD_DIST)/librtmp{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# rtmpdump.mk Prep rtmpdump
-	cp -a $(BUILD_STAGE)/rtmpdump/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{share,bin,sbin} $(BUILD_DIST)/rtmpdump/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/rtmpdump/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{share,bin,sbin} $(BUILD_DIST)/rtmpdump/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# rtmpdump.mk Prep librtmp1
-	cp -a $(BUILD_STAGE)/rtmpdump/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/librtmp.1.dylib $(BUILD_DIST)/librtmp1/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/rtmpdump/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librtmp.1.dylib $(BUILD_DIST)/librtmp1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# rtmpdump.mk Prep librtmp-dev
-	cp -a $(BUILD_STAGE)/rtmpdump/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/{librtmp.{dylib,a},pkgconfig} $(BUILD_DIST)/librtmp-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/rtmpdump/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/librtmp-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/rtmpdump/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{librtmp.{dylib,a},pkgconfig} $(BUILD_DIST)/librtmp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/rtmpdump/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/librtmp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# rtmpdump.mk Sign
 	$(call SIGN,rtmpdump,general.xml)
