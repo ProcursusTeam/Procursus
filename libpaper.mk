@@ -19,7 +19,7 @@ libpaper: libpaper-setup
 	cd $(BUILD_WORK)/libpaper && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libpaper
 	+$(MAKE) -C $(BUILD_WORK)/libpaper install \
 		DESTDIR="$(BUILD_STAGE)/libpaper"
@@ -31,21 +31,21 @@ endif
 libpaper-package: libpaper-stage
 	# libpaper.mk Package Structure
 	rm -rf $(BUILD_DIST)/libpaper{1,-dev,-utils}
-	mkdir -p $(BUILD_DIST)/libpaper{1,-dev}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{lib,share/man} \
-		$(BUILD_DIST)/libpaper-utils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man
+	mkdir -p $(BUILD_DIST)/libpaper{1,-dev}$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share/man} \
+		$(BUILD_DIST)/libpaper-utils$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	
 	# libpaper.mk Prep libpaper1
-	cp -a $(BUILD_STAGE)/libpaper/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libpaper.1.dylib $(BUILD_DIST)/libpaper1/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libpaper/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man5 $(BUILD_DIST)/libpaper1/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man
+	cp -a $(BUILD_STAGE)/libpaper$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpaper.1.dylib $(BUILD_DIST)/libpaper1$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libpaper$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5 $(BUILD_DIST)/libpaper1$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
 	# libpaper.mk Prep libpaper-dev
-	cp -a $(BUILD_STAGE)/libpaper/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/!(libpaper.1.dylib) $(BUILD_DIST)/libpaper-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libpaper/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libpaper-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man
-	cp -a $(BUILD_STAGE)/libpaper/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libpaper-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libpaper$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libpaper.1.dylib) $(BUILD_DIST)/libpaper-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libpaper$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libpaper-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+	cp -a $(BUILD_STAGE)/libpaper$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libpaper-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libpaper.mk Prep libpaper-utils
-	cp -a $(BUILD_STAGE)/libpaper/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{s,}bin $(BUILD_DIST)/libpaper-utils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libpaper/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man{1,8} $(BUILD_DIST)/libpaper-utils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man
+	cp -a $(BUILD_STAGE)/libpaper$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{s,}bin $(BUILD_DIST)/libpaper-utils$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libpaper$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man{1,8} $(BUILD_DIST)/libpaper-utils$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	
 	# libpaper.mk Sign
 	$(call SIGN,libpaper1,general.xml)
