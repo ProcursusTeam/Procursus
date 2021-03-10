@@ -17,7 +17,7 @@ ed:
 else
 ed: ed-setup
 	cd $(BUILD_WORK)/ed && ./configure \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		CC=$(CC) \
 		CFLAGS="$(CCFLAGS)" \
 		CPPFLAGS="$(CPPFLAGS)" \
