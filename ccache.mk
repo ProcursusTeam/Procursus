@@ -30,9 +30,9 @@ ccache: ccache-setup
 		-DHAVE_ASM_SSE41=FALSE \
 		-DHAVE_ASM_AVX512=FALSE \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/$(MEMO_PREFIX)/ \
-		-DCMAKE_INSTALL_NAME_DIR=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin \
-		-DCMAKE_INSTALL_RPATH=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)/ \
+		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
+		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
@@ -47,10 +47,10 @@ endif
 ccache-package: ccache-stage
 	# ccache.mk Package Structure
 	rm -rf $(BUILD_DIST)/ccache
-	mkdir -p $(BUILD_DIST)/ccache/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
+	mkdir -p $(BUILD_DIST)/ccache$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 
 	# ccache.mk Prep ccache
-	cp -a $(BUILD_STAGE)/ccache/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/ccache/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/ccache$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/ccache$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# ccache.mk Sign
 	$(call SIGN,ccache,general.xml)
