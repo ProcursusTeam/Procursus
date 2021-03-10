@@ -2,8 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS       += lzip
-LZIP_VERSION  := 1.21
+SUBPROJECTS   += lzip
+LZIP_VERSION  := 1.22
 DEB_LZIP_V    ?= $(LZIP_VERSION)
 
 lzip-setup: setup
@@ -17,8 +17,7 @@ lzip:
 else
 lzip: lzip-setup
 	cd $(BUILD_WORK)/lzip && ./configure \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--prefix=/usr \
+		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
         CXX=$(CXX) \
         CXXFLAGS="$(CXXFLAGS)" \
         CPPFLAGS="$(CPPFLAGS)" \
@@ -33,10 +32,9 @@ endif
 lzip-package: lzip-stage
 	# lzip.mk Package Structure
 	rm -rf $(BUILD_DIST)/lzip
-	mkdir -p $(BUILD_DIST)/lzip
 	
 	# lzip.mk Prep lzip
-	cp -a $(BUILD_STAGE)/lzip/usr $(BUILD_DIST)/lzip
+	cp -a $(BUILD_STAGE)/lzip $(BUILD_DIST)
 	
 	# lzip.mk Sign
 	$(call SIGN,lzip,general.xml)
