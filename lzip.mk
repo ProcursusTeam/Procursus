@@ -17,7 +17,7 @@ lzip:
 else
 lzip: lzip-setup
 	cd $(BUILD_WORK)/lzip && ./configure \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
         CXX=$(CXX) \
         CXXFLAGS="$(CXXFLAGS)" \
         CPPFLAGS="$(CPPFLAGS)" \
