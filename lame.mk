@@ -19,7 +19,7 @@ lame: lame-setup ncurses libsndfile
 	cd $(BUILD_WORK)/lame && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--enable-dynamic-frontends \
 		--with-fileio=sndfile
 	$(SED) -i 's/-lncurses/-lncursesw/' $(BUILD_WORK)/lame/{,frontend/}Makefile
@@ -35,19 +35,19 @@ lame-package: lame-stage
 	# lame.mk Package Structure
 	rm -rf $(BUILD_DIST)/lame \
 		$(BUILD_DIST)/libmp3lame{0,-dev}
-	mkdir -p $(BUILD_DIST)/lame/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share \
-		$(BUILD_DIST)/libmp3lame{0,-dev}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/lame$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share \
+		$(BUILD_DIST)/libmp3lame{0,-dev}$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# lame.mk Prep lame
-	cp -a $(BUILD_STAGE)/lame/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/lame/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/lame/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/lame/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share
+	cp -a $(BUILD_STAGE)/lame$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/lame$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/lame$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/lame$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	
 	# lame.mk Prep libmp3lame0
-	cp -a $(BUILD_STAGE)/lame/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libmp3lame.0.dylib $(BUILD_DIST)/libmp3lame0/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/lame$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libmp3lame.0.dylib $(BUILD_DIST)/libmp3lame0$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# lame.mk Prep libmp3lame-dev
-	cp -a $(BUILD_STAGE)/lame/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libmp3lame.{dylib,a} $(BUILD_DIST)/libmp3lame-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/lame/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libmp3lame-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/lame$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libmp3lame.{dylib,a} $(BUILD_DIST)/libmp3lame-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/lame$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libmp3lame-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# lame.mk Sign
 	$(call SIGN,lame,general.xml)
