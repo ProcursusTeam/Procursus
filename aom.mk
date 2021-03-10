@@ -34,9 +34,9 @@ aom: aom-setup
 		-DENABLE_TESTS=0 \
 		-DGIT_EXECUTABLE=/non-existant-binary \
 		-DAOM_TARGET_CPU="$(MEMO_ARCH)" \
-		-DCMAKE_INSTALL_PREFIX=/$(MEMO_PREFIX)/ \
-		-DCMAKE_INSTALL_NAME_DIR=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_INSTALL_RPATH=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)/ \
+		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		..
 	+$(MAKE) -C $(BUILD_WORK)/aom/build
 	+$(MAKE) -C $(BUILD_WORK)/aom/build install \
@@ -49,19 +49,19 @@ endif
 aom-package: aom-stage
 	# aom.mk Package Structure
 	rm -rf $(BUILD_DIST)/aom-tools $(BUILD_DIST)/libaom{2,-dev}
-	mkdir -p $(BUILD_DIST)/aom-tools/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/ \
-		$(BUILD_DIST)/libaom{2,-dev}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/aom-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/ \
+		$(BUILD_DIST)/libaom{2,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# aom.mk Prep aom-tools
-	cp -a $(BUILD_STAGE)/aom/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/aom-tools/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/aom/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/aom-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# aom.mk Prep libaom2
-	cp -a $(BUILD_STAGE)/aom/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libaom.2*.dylib $(BUILD_DIST)/libaom2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/aom/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libaom.2*.dylib $(BUILD_DIST)/libaom2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# aom.mk Prep libaom-pkg-dev
-	cp -a $(BUILD_STAGE)/aom/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libaom.{dylib,a} $(BUILD_DIST)/libaom-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/aom/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libaom-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/aom/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libaom-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/aom/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libaom.{dylib,a} $(BUILD_DIST)/libaom-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/aom/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libaom-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/aom/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libaom-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# aom.mk Sign
 	$(call SIGN,aom-tools,general.xml)

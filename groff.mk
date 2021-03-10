@@ -25,7 +25,7 @@ else
 groff: groff-setup
 	cd $(BUILD_WORK)/groff && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-x=no \
 		--without-uchardet
 	+$(MAKE) -C $(BUILD_WORK)/groff \

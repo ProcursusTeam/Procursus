@@ -22,7 +22,7 @@ else
 pcre: pcre-setup
 	cd $(BUILD_WORK)/pcre && unset MACOSX_DEPLOYMENT_TARGET && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--enable-utf8 \
 		--enable-pcre8 \
@@ -43,33 +43,33 @@ endif
 pcre-package: pcre-stage
 	# pcre.mk Package Structure
 	rm -rf $(BUILD_DIST)/libpcre{1{,-dev},16-0,32-0,posix0,cpp0} $(BUILD_DIST)/pcregrep
-	mkdir -p $(BUILD_DIST)/libpcre{1,16-0,32-0,posix0,cpp0}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libpcre1-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{bin,lib,share/man/man1} \
-		$(BUILD_DIST)/pcregrep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
+	mkdir -p $(BUILD_DIST)/libpcre{1,16-0,32-0,posix0,cpp0}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libpcre1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib,share/man/man1} \
+		$(BUILD_DIST)/pcregrep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 	
 	# pcre.mk Prep libpcre1
-	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libpcre.1.dylib $(BUILD_DIST)/libpcre1/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpcre.1.dylib $(BUILD_DIST)/libpcre1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# pcre.mk Prep libpcre{16-0,32-0}
 	for ver in {16,32}; do \
-		cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libpcre$${ver}.0.dylib $(BUILD_DIST)/libpcre$${ver}-0/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib; \
+		cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpcre$${ver}.0.dylib $(BUILD_DIST)/libpcre$${ver}-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib; \
 	done
 
 	# pcre.mk Prep libpcre{posix0,cpp0}
 	for ver in {posix,cpp}; do \
-		cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libpcre$${ver}.0.dylib $(BUILD_DIST)/libpcre$${ver}0/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib; \
+		cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpcre$${ver}.0.dylib $(BUILD_DIST)/libpcre$${ver}0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib; \
 	done
 
 	# pcre.mk Prep libpcre1-dev
-	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/!(*.1*|*.0*|*.0*) $(BUILD_DIST)/libpcre1-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/pcre-config $(BUILD_DIST)/libpcre1-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1/pcre-config.1 $(BUILD_DIST)/libpcre1-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1
-	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libpcre1-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man
-	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libpcre1-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(*.1*|*.0*|*.0*) $(BUILD_DIST)/libpcre1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pcre-config $(BUILD_DIST)/libpcre1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/pcre-config.1 $(BUILD_DIST)/libpcre1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libpcre1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libpcre1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# pcre.mk Prep pcregrep
-	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/pcregrep $(BUILD_DIST)/pcregrep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1/pcregrep.1 $(BUILD_DIST)/pcregrep/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pcregrep $(BUILD_DIST)/pcregrep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/pcregrep.1 $(BUILD_DIST)/pcregrep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	
 	# pcre.mk Sign
 	$(call SIGN,libpcre1,general.xml)

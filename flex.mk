@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS  += flex
 FLEX_VERSION := 2.6.4
-DEB_FLEX_V   ?= $(FLEX_VERSION)
+DEB_FLEX_V   ?= $(FLEX_VERSION)-1
 
 flex-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/westes/flex/releases/download/v$(FLEX_VERSION)/flex-$(FLEX_VERSION).tar.gz{,.sig}
@@ -19,7 +19,7 @@ flex: flex-setup gettext
 	cd $(BUILD_WORK)/flex && ./autogen.sh 
 	cd $(BUILD_WORK)/flex && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		ac_cv_func_malloc_0_nonnull=yes \
 		ac_cv_func_realloc_0_nonnull=yes
 	+$(MAKE) -C $(BUILD_WORK)/flex \
@@ -28,24 +28,25 @@ flex: flex-setup gettext
 		DESTDIR="$(BUILD_STAGE)/flex"
 	+$(MAKE) -C $(BUILD_WORK)/flex install \
 		DESTDIR="$(BUILD_BASE)"
+	ln -s flex $(BUILD_STAGE)/flex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lex
 	touch $(BUILD_WORK)/flex/.build_complete
 endif
 
 flex-package: flex-stage
 	# flex.mk Package Structure
 	rm -rf $(BUILD_DIST)/flex $(BUILD_DIST)/libfl{2,-dev}
-	mkdir -p $(BUILD_DIST)/flex/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
-		$(BUILD_DIST)/libfl{2,-dev}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib \
+	mkdir -p $(BUILD_DIST)/flex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(BUILD_DIST)/libfl{2,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 	
 	# flex.mk Prep flex
-	cp -a $(BUILD_STAGE)/flex/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/flex/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/flex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/flex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# flex.mk Prep libfl2
-	cp -a $(BUILD_STAGE)/flex/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libfl.2.dylib $(BUILD_DIST)/libfl2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/flex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libfl.2.dylib $(BUILD_DIST)/libfl2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# flex.mk Prep libfl-dev
-	cp -a $(BUILD_STAGE)/flex/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/!(libfl.2.dylib) $(BUILD_DIST)/libfl-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/flex/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libfl-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/flex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libfl.2.dylib) $(BUILD_DIST)/libfl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/flex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libfl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# flex.mk Sign
 	$(call SIGN,flex,general.xml)

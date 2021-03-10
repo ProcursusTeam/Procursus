@@ -18,7 +18,7 @@ else
 diffutils: diffutils-setup gettext
 	cd $(BUILD_WORK)/diffutils && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/diffutils
 	+$(MAKE) -C $(BUILD_WORK)/diffutils install \
