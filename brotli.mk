@@ -22,9 +22,9 @@ brotli: brotli-setup
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/ \
-		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
-		-DCMAKE_INSTALL_RPATH=/usr \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX) \
+		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
@@ -34,7 +34,7 @@ brotli: brotli-setup
 		DESTDIR="$(BUILD_STAGE)/brotli"
 	+$(MAKE) -C $(BUILD_WORK)/brotli install \
 		DESTDIR="$(BUILD_BASE)"
-	for lib in $(BUILD_STAGE)/brotli/usr/lib/libbrotli{common,dec,enc}-static.a; do \
+	for lib in $(BUILD_STAGE)/brotli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libbrotli{common,dec,enc}-static.a; do \
 		if [ -f $$lib ]; then \
 			mv $$lib $${lib/-static.a/.a}; \
 		fi; \
@@ -45,21 +45,21 @@ endif
 brotli-package: brotli-stage
 	# brotli.mk Package Structure
 	rm -rf $(BUILD_DIST)/{brotli,libbrotli-dev,libbrotli1}
-	mkdir -p $(BUILD_DIST)/brotli/usr/{bin,share/man/man1} \
-			$(BUILD_DIST)/libbrotli-dev/usr/{include/brotli,lib/pkgconfig} \
-			$(BUILD_DIST)/libbrotli1/usr/lib
+	mkdir -p $(BUILD_DIST)/brotli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
+			$(BUILD_DIST)/libbrotli-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include/brotli,lib/pkgconfig} \
+			$(BUILD_DIST)/libbrotli1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# brotli.mk Prep brotli
-	cp -a $(BUILD_STAGE)/brotli/usr/bin/brotli $(BUILD_DIST)/brotli/usr/bin
-	cp -a $(BUILD_WORK)/brotli/docs/brotli.1 $(BUILD_DIST)/brotli/usr/share/man/man1
+	cp -a $(BUILD_STAGE)/brotli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/brotli $(BUILD_DIST)/brotli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_WORK)/brotli/docs/brotli.1 $(BUILD_DIST)/brotli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# brotli.mk Prep libbrotli-dev
-	cp -a $(BUILD_STAGE)/brotli/usr/include/brotli/{decode,encode,port,types}.h $(BUILD_DIST)/libbrotli-dev/usr/include/brotli
-	cp -a $(BUILD_STAGE)/brotli/usr/lib/libbrotli{common,dec,enc}.{a,dylib} $(BUILD_DIST)/libbrotli-dev/usr/lib
-	cp -a $(BUILD_STAGE)/brotli/usr/lib/pkgconfig/libbrotli{common,dec,enc}.pc $(BUILD_DIST)/libbrotli-dev/usr/lib/pkgconfig
+	cp -a $(BUILD_STAGE)/brotli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/brotli/{decode,encode,port,types}.h $(BUILD_DIST)/libbrotli-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/brotli
+	cp -a $(BUILD_STAGE)/brotli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libbrotli{common,dec,enc}.{a,dylib} $(BUILD_DIST)/libbrotli-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/brotli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/libbrotli{common,dec,enc}.pc $(BUILD_DIST)/libbrotli-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 
 	# brotli.mk Prep libbrotli1
-	cp -a $(BUILD_STAGE)/brotli/usr/lib/libbrotli{common,dec,enc}.1*.dylib $(BUILD_DIST)/libbrotli1/usr/lib
+	cp -a $(BUILD_STAGE)/brotli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libbrotli{common,dec,enc}.1*.dylib $(BUILD_DIST)/libbrotli1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# brotli.mk Sign
 	$(call SIGN,brotli,general.xml)

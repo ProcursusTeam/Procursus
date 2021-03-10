@@ -18,7 +18,7 @@ else
 diffutils: diffutils-setup gettext
 	cd $(BUILD_WORK)/diffutils && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/diffutils
 	+$(MAKE) -C $(BUILD_WORK)/diffutils install \
@@ -29,10 +29,9 @@ endif
 diffutils-package: diffutils-stage
 	# diffutils.mk Package Structure
 	rm -rf $(BUILD_DIST)/diffutils
-	mkdir -p $(BUILD_DIST)/diffutils
 	
 	# diffutils.mk Prep diffutils
-	cp -a $(BUILD_STAGE)/diffutils/usr $(BUILD_DIST)/diffutils
+	cp -a $(BUILD_STAGE)/diffutils $(BUILD_DIST)
 	
 	# diffutils.mk Sign
 	$(call SIGN,diffutils,general.xml)

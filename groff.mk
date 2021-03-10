@@ -6,10 +6,17 @@ SUBPROJECTS    += groff
 GROFF_VERSION  := 1.22.4
 DEB_GROFF_V    ?= $(GROFF_VERSION)
 
+###
+#
+# TODO: Revisit this and its dependencies at a later date.
+#
+###
+
 groff-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/groff/groff-$(GROFF_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,groff-$(GROFF_VERSION).tar.gz)
 	$(call EXTRACT_TAR,groff-$(GROFF_VERSION).tar.gz,groff-$(GROFF_VERSION),groff)
+	$(call DO_PATCH,groff,groff,-p1) # Remove in next release.
 
 ifneq ($(wildcard $(BUILD_WORK)/groff/.build_complete),)
 groff:
@@ -18,8 +25,9 @@ else
 groff: groff-setup
 	cd $(BUILD_WORK)/groff && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--with-x=no
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--with-x=no \
+		--without-uchardet
 	+$(MAKE) -C $(BUILD_WORK)/groff \
 		AR="$(AR)" \
 		GROFFBIN="$$(which groff)" \
@@ -32,10 +40,9 @@ endif
 groff-package: groff-stage
 	# groff.mk Package Structure
 	rm -rf $(BUILD_DIST)/groff
-	mkdir -p $(BUILD_DIST)/groff
 	
 	# groff.mk Prep groff
-	cp -a $(BUILD_STAGE)/groff/usr $(BUILD_DIST)/groff
+	cp -a $(BUILD_STAGE)/groff $(BUILD_DIST)
 	
 	# groff.mk Sign
 	$(call SIGN,groff,general.xml)

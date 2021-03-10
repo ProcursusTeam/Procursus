@@ -73,8 +73,8 @@ mesa-package: mesa-stage
 	cp -a $(BUILD_STAGE)/mesa/usr/share $(BUILD_DIST)/libgl1-mesa-dri/usr
 
 	# mesa.mk Prep libgl1-mesa-dev
-	cp -a $(BUILD_STAGE)/mesa/usr/lib/libGL.dylib $(BUILD_DIST)/libgl1-mesa-dri/usr/lib
-	cp -a $(BUILD_STAGE)/mesa/usr/lib/pkgconfig/gl.pc $(BUILD_DIST)/libgl1-mesa-dri/usr/lib/pkgconfig
+	cp -a $(BUILD_STAGE)/mesa/usr/lib/libGL.dylib $(BUILD_DIST)/libgl1-mesa-dev/usr/lib
+	cp -a $(BUILD_STAGE)/mesa/usr/lib/pkgconfig/gl.pc $(BUILD_DIST)/libgl1-mesa-dev/usr/lib/pkgconfig
 
 	# mesa.mk Prep libgles2-mesa
 	cp -a $(BUILD_STAGE)/mesa/usr/lib/libGLESv2.2.dylib $(BUILD_DIST)/libgles2-mesa/usr/lib

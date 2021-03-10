@@ -144,6 +144,14 @@ diff -urN apt-2.1.11/apt-pkg/cachefilter-patterns.cc apt/apt-pkg/cachefilter-pat
 diff -urN apt-2.1.11/apt-pkg/contrib/fileutl.cc apt/apt-pkg/contrib/fileutl.cc
 --- apt-2.1.11/apt-pkg/contrib/fileutl.cc	2020-10-21 05:53:18.000000000 -0400
 +++ apt/apt-pkg/contrib/fileutl.cc	2020-11-22 18:23:41.693439838 -0500
+@@ -24,6 +24,7 @@
+ #include <apt-pkg/error.h>
+ #include <apt-pkg/fileutl.h>
+ #include <apt-pkg/macros.h>
++#include <apt-pkg/endian.h>
+ #include <apt-pkg/pkgsystem.h>
+ #include <apt-pkg/strutl.h>
+ 
 @@ -1847,12 +2008,12 @@
  	 // Drain compressed buffer as far as possible.
  	 ZSTD_inBuffer in = {

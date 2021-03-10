@@ -1,0 +1,9 @@
+Package: cmake
+Version: @DEB_CMAKE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: cmake-data (= @DEB_CMAKE_V@), libuv1, libarchive13, libcurl4, libncursesw6
+Section: Development
+Priority: optional
+Homepage: https://cmake.org/
+Description: cross-platform, open-source make system
