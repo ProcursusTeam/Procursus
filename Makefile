@@ -107,7 +107,7 @@ PLATFORM_VERSION_MIN := -mwatchos-version-min=$(WATCHOS_DEPLOYMENT_TARGET)
 RUST_TARGET          := aarch64-apple-watchos
 MEMO_PREFIX          ?=
 MEMO_SUB_PREFIX      ?= /usr
-MEMO_ALT_PREFIX      ?= /slocal
+MEMO_ALT_PREFIX      ?= /local
 GNU_PREFIX           :=
 export WATCHOS_DEPLOYMENT_TARGET
 
@@ -181,6 +181,7 @@ MACOSX_SYSROOT  ?= $(shell xcrun --show-sdk-path)
 CC              := cc
 CXX             := c++
 CPP             := cc -E
+PATH            := /opt/procursus/bin:/opt/make/libexec/gnubin:/usr/bin:$(PATH)
 
 else
 $(warning Building on iOS)
@@ -189,9 +190,9 @@ MACOSX_SYSROOT  ?= /usr/share/SDKs/MacOSX.sdk
 CC              := clang
 CXX             := clang++
 CPP             := clang -E
+PATH            := /usr/bin:$(PATH)
 
 endif
-PATH            := /usr/bin:$(PATH)
 AR              := ar
 LD              := ld
 RANLIB          := ranlib
@@ -330,7 +331,7 @@ PACK = -if [ -z $(4) ]; then \
 	if [ -d "$(BUILD_DIST)/$(1)-locales" ]; then \
 		$(call PACK_LOCALE,$(1)); \
 	fi; \
-	cd $(BUILD_DIST)/$(1) && $(FIND) . -type f ! -regex '.*.hg.*' ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -printf '"%P" ' | xargs md5sum > $(BUILD_DIST)/$(1)/DEBIAN/md5sums; \
+	cd $(BUILD_DIST)/$(1) && find . -type f ! -regex '.*.hg.*' ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -printf '"%P" ' | xargs md5sum > $(BUILD_DIST)/$(1)/DEBIAN/md5sums; \
 	$(FAKEROOT) chmod 0755 $(BUILD_DIST)/$(1)/DEBIAN/*; \
 	echo "Installed-Size: $$SIZE"; \
 	echo "Installed-Size: $$SIZE" >> $(BUILD_DIST)/$(1)/DEBIAN/control; \
@@ -358,28 +359,24 @@ PACK_LOCALE = mkdir -p $(BUILD_DIST)/$(1)-locale/{DEBIAN,$(MEMO_PREFIX)$(MEMO_SU
 	$(FAKEROOT) $(DPKG_DEB) -b $(BUILD_DIST)/$(1)-locale $(BUILD_DIST)/$$(grep Package: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ')-locale_$${VERSION}_$$(grep Architecture: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ').deb; \
 	rm -rf $(BUILD_DIST)/$(1)-locale
 
-ifeq ($(call HAS_COMMAND,shasum),1)
-GET_SHA1   = shasum -a 1 $(1) | cut -c1-40
-GET_SHA256 = shasum -a 256 $(1) | cut -c1-64
-else
-GET_SHA1   = sha1sum $(1) | cut -c1-40
-GET_SHA256 = sha256sum $(1) | cut -c1-64
-endif
+###
+#
+# Fix this dep checking section dumbass
+#
+###
 
 ifneq ($(call HAS_COMMAND,wget),1)
 $(error Install wget)
 endif
 
 ifeq ($(call HAS_COMMAND,gmake),1)
-PATH := $(shell brew --prefix)/opt/make/libexec/gnubin:$(PATH)
+# Fix this check.
 endif
 
+TAR  := tar
 ifeq ($(call HAS_COMMAND,gtar),1)
 PATH := $(shell brew --prefix)/opt/gnu-tar/libexec/gnubin:$(PATH)
-TAR  := tar
-else ifeq ($(shell tar --version | grep -q GNU && echo 1),1)
-TAR  := tar
-else
+else ifneq ($(shell tar --version | grep -q GNU && echo 1),1)
 $(error Install GNU tar)
 endif
 
@@ -389,12 +386,6 @@ ifeq ($(call HAS_COMMAND,gsed),1)
 PATH := $(shell brew --prefix)/opt/gnu-sed/libexec/gnubin:$(PATH)
 else ifneq ($(shell sed --version | grep -q GNU && echo 1),1)
 $(error Install GNU sed)
-endif
-
-ifneq (,$(wildcard $(shell brew --prefix)/opt/texinfo/bin))
-PATH := $(shell brew --prefix)/opt/texinfo/bin:$(PATH)
-else ifneq ($(shell makeinfo --version | grep -q 'texi2any' && echo 1),1)
-$(error Install newer texinfo)
 endif
 
 ifeq ($(call HAS_COMMAND,ldid2),1)
@@ -426,31 +417,19 @@ ifneq ($(call HAS_COMMAND,automake),1)
 $(error Install automake)
 endif
 
-ifneq (,$(wildcard $(shell brew --prefix)/opt/groff/bin))
-PATH := $(shell brew --prefix)/opt/groff/bin:$(PATH)
-else ifneq ($(shell groff --version | grep -q 'version 1.2' && echo 1),1)
+ifneq ($(shell groff --version | grep -q 'version 1.2' && echo 1),1)
 $(error Install newer groff)
 endif
 
-ifneq (,$(wildcard $(shell brew --prefix)/opt/gpatch/bin))
-PATH := $(shell brew --prefix)/opt/gpatch/bin:$(PATH)
-else ifneq ($(shell patch --version | grep -q 'GNU patch' && echo 1),1)
+ifneq ($(shell patch --version | grep -q 'GNU patch' && echo 1),1)
 $(error Install GNU patch)
 endif
 
-ifeq ($(call HAS_COMMAND,gfind),1)
-FIND := gfind
-else ifeq ($(shell find --version | grep -q 'GNU find' && echo 1),1)
-FIND := find
-else
+ifneq ($(shell find --version | grep -q 'GNU find' && echo 1),1)
 $(error Install GNU findutils)
 endif
 
-ifeq ($(call HAS_COMMAND,grmdir),1)
-RMDIR := grmdir
-else ifeq ($(shell rmdir --version | grep -q 'GNU coreutils' && echo 1),1)
-RMDIR := rmdir
-else
+ifneq ($(shell rmdir --version | grep -q 'GNU coreutils' && echo 1),1)
 $(error Install GNU coreutils)
 endif
 
@@ -600,7 +579,7 @@ endif # $(MEMO_TARGET),darwin-*
 		rm -rf $(BUILD_STRAP)/strap/DEBIAN; \
 	done
 ifeq ($(MEMO_PREFIX),)
-	$(RMDIR) --ignore-fail-on-non-empty $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/{Applications,bin,dev,etc/{default,profile.d},Library/{Frameworks,LaunchAgents,LaunchDaemons,Preferences,Ringtones,Wallpaper},sbin,System/Library/{Extensions,Fonts,Frameworks,Internet\ Plug-Ins,KeyboardDictionaries,LaunchDaemons,PreferenceBundles,PrivateFrameworks,SystemConfiguration,VideoDecoders},System/Library,System,tmp,$(MEMO_SUB_PREFIX)/{bin,games,include,sbin,var,share/{dict,misc}},var/{backups,cache,db,lib/misc,$(MEMO_ALT_PREFIX),lock,logs,mobile/{Library/Preferences,Library,Media},mobile,msgs,preferences,root/Media,root,run,spool,tmp,vm}}
+	rmdir --ignore-fail-on-non-empty $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/{Applications,bin,dev,etc/{default,profile.d},Library/{Frameworks,LaunchAgents,LaunchDaemons,Preferences,Ringtones,Wallpaper},sbin,System/Library/{Extensions,Fonts,Frameworks,Internet\ Plug-Ins,KeyboardDictionaries,LaunchDaemons,PreferenceBundles,PrivateFrameworks,SystemConfiguration,VideoDecoders},System/Library,System,tmp,$(MEMO_SUB_PREFIX)/{bin,games,include,sbin,var,share/{dict,misc}},var/{backups,cache,db,lib/misc,$(MEMO_ALT_PREFIX),lock,logs,mobile/{Library/Preferences,Library,Media},mobile,msgs,preferences,root/Media,root,run,spool,tmp,vm}}
 	mkdir -p $(BUILD_STRAP)/strap/private
 	rm -f $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/{sbin/{fsck,fsck_apfs,fsck_exfat,fsck_hfs,fsck_msdos,launchd,mount,mount_apfs,newfs_apfs,newfs_hfs,pfctl},$(MEMO_SUB_PREFIX)/sbin/{BTAvrcp,BTLEServer,BTMap,BTPbap,BlueTool,WirelessRadioManagerd,absd,addNetworkInterface,aslmanager,bluetoothd,cfprefsd,distnoted,filecoordinationd,ioreg,ipconfig,mDNSResponder,mDNSResponderHelper,mediaserverd,notifyd,nvram,pppd,racoon,rtadvd,scutil,spindump,syslogd,wifid}}
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1)

@@ -20,7 +20,7 @@ myman: myman-setup ncurses
 		--prefix=/usr
 	+unset CC CFLAGS CXXFLAGS CPPFLAGS LDFLAGS && $(MAKE) -C $(BUILD_WORK)/myman install \
 		DESTDIR="$(BUILD_STAGE)/myman" \
-		RMDIR="$(RMDIR)" \
+		RMDIR="rmdir" \
 		INSTALL="$(GINSTALL)" \
 		HOSTCC="$(CC)" \
 		HOSTCFLAGS="$(CFLAGS)" \

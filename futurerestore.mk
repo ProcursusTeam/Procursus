@@ -14,7 +14,7 @@ futurerestore-setup: setup tsschecker-setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/marijuanARM/idevicerestore/archive/$(IDEVICERESTORE_COMMIT).tar.gz
 	$(call EXTRACT_TAR,$(FUTURERESTORE_COMMIT).tar.gz,futurerestore-$(FUTURERESTORE_COMMIT),futurerestore)
 	
-	-$(RMDIR) $(BUILD_WORK)/futurerestore/external/{idevicerestore,tsschecker}
+	-rmdir $(BUILD_WORK)/futurerestore/external/{idevicerestore,tsschecker}
 	$(call EXTRACT_TAR,$(IDEVICERESTORE_COMMIT).tar.gz,idevicerestore-$(IDEVICERESTORE_COMMIT),futurerestore/external/idevicerestore)
 	cp -R $(BUILD_WORK)/tsschecker $(BUILD_WORK)/futurerestore/external
 

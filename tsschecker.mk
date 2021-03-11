@@ -12,7 +12,7 @@ tsschecker-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/jssy.tar.gz" ] && wget -q -nc -O$(BUILD_SOURCE)/jssy.tar.gz https://github.com/tihmstar/jssy/tarball/master
 	$(call EXTRACT_TAR,$(TSSCHECKER_COMMIT).tar.gz,tsschecker-$(TSSCHECKER_COMMIT),tsschecker)
 	# so EXTRACT_TAR wont fail
-	-$(RMDIR) $(BUILD_WORK)/tsschecker/external/jssy
+	-rmdir $(BUILD_WORK)/tsschecker/external/jssy
 	$(call EXTRACT_TAR,jssy.tar.gz,tihmstar-jssy-*,tsschecker/external/jssy)
 	$(call DO_PATCH,tsschecker,tsschecker,-p1) # Remove when PR 165 merged upstream.
 
