@@ -428,6 +428,14 @@ ifneq ($(call HAS_COMMAND,automake),1)
 $(error Install automake)
 endif
 
+ifneq ($(call HAS_COMMAND,autom4te),1)
+$(error Install autoconf)
+endif
+
+ifneq ($(call HAS_COMMAND,m4),1)
+$(error Install m4)
+endif
+
 ifneq ($(shell PATH=$(PATH) groff --version | grep -q 'version 1.2' && echo 1),1)
 $(error Install newer groff)
 endif
