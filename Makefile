@@ -181,7 +181,7 @@ MACOSX_SYSROOT  ?= $(shell xcrun --show-sdk-path)
 CC              := cc
 CXX             := c++
 CPP             := cc -E
-PATH            := /opt/procursus/bin:/opt/make/libexec/gnubin:/usr/bin:$(PATH)
+PATH            := /opt/procursus/bin:/opt/procursus/libexec/gnubin:/usr/bin:$(PATH)
 
 else
 $(warning Building on iOS)
@@ -402,7 +402,7 @@ LIBTOOLIZE := libtoolize
 else ifeq ($(call HAS_COMMAND,glibtoolize),1)
 LIBTOOLIZE := glibtoolize
 else
-$(error Install libtool)
+#$(error Install libtool)
 endif
 
 ifneq ($(call HAS_COMMAND,cmake),1)
