@@ -17,6 +17,7 @@ libedit:
 else
 libedit: libedit-setup ncurses
 	cd $(BUILD_WORK)/libedit && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--with-examples=no

@@ -18,6 +18,7 @@ else
 libx11: libx11-setup xorgproto libxcb xtrans
 	unset MACOSX_DEPLOYMENT_TARGET && \
 	cd $(BUILD_WORK)/libx11 && unset MACOSX_DEPLOYMENT_TARGET && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--enable-unix-transport \

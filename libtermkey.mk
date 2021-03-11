@@ -23,6 +23,7 @@ else
 libtermkey: libtermkey-setup unibilium
 	cd $(BUILD_WORK)/libtermkey/libtool && LIBTOOLIZE="$(LIBTOOLIZE) -i" autoreconf -fi
 	cd $(BUILD_WORK)/libtermkey/libtool && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE)
 	+$(MAKE) -C $(BUILD_WORK)/libtermkey \
 		PREFIX=/usr \

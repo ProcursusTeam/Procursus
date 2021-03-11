@@ -70,6 +70,7 @@ openjdk: openjdk-setup libx11 libxext libxi libxrender libxtst freetype libgif h
 	mkdir -p $(BUILD_STAGE)/openjdk/usr/lib/jvm
 	chmod 0755 $(BUILD_WORK)/openjdk/configure
 	cd $(BUILD_WORK)/openjdk && ./configure \
+		--build=$(BUILD_MISC)/config.guess \
 		--prefix=/usr/lib \
 		--openjdk-target=$(GNU_HOST_TRIPLE) \
 		--with-extra-cflags="$(CFLAGS) -DTARGET_OS_OSX" \

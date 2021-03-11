@@ -219,6 +219,8 @@ BUILD_SOURCE   := $(BUILD_ROOT)/build_source
 BUILD_BASE     := $(BUILD_ROOT)/build_base/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Dpkg info storage area
 BUILD_INFO     := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_info
+# Miscellaneous Procursus files
+BUILD_MISC     := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_misc
 # Patch storage area
 BUILD_PATCH    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_patch
 # Extracted source working directory
@@ -374,17 +376,14 @@ ifeq ($(call HAS_COMMAND,gmake),1)
 endif
 
 TAR  := tar
-ifeq ($(call HAS_COMMAND,gtar),1)
-PATH := $(shell brew --prefix)/opt/gnu-tar/libexec/gnubin:$(PATH)
-else ifneq ($(shell tar --version | grep -q GNU && echo 1),1)
+
+ifneq ($(shell PATH=$(PATH) tar --version | grep -q GNU && echo 1),1)
 $(error Install GNU tar)
 endif
 
 SED  := sed
 
-ifeq ($(call HAS_COMMAND,gsed),1)
-PATH := $(shell brew --prefix)/opt/gnu-sed/libexec/gnubin:$(PATH)
-else ifneq ($(shell sed --version | grep -q GNU && echo 1),1)
+ifneq ($(shell PATH=$(PATH) sed --version | grep -q GNU && echo 1),1)
 $(error Install GNU sed)
 endif
 
@@ -405,6 +404,18 @@ else
 #$(error Install libtool)
 endif
 
+ifneq ($(call HAS_COMMAND,xz),1)
+$(error Install xz-utils)
+endif
+
+ifneq ($(call HAS_COMMAND,gpg),1)
+$(error Install GnuPG gpg)
+endif
+
+ifneq ($(call HAS_COMMAND,dirmngr),1)
+$(error Install GnuPG dirmngr)
+endif
+
 ifneq ($(call HAS_COMMAND,cmake),1)
 $(error Install cmake)
 endif
@@ -417,49 +428,41 @@ ifneq ($(call HAS_COMMAND,automake),1)
 $(error Install automake)
 endif
 
-ifneq ($(shell groff --version | grep -q 'version 1.2' && echo 1),1)
+ifneq ($(shell PATH=$(PATH) groff --version | grep -q 'version 1.2' && echo 1),1)
 $(error Install newer groff)
 endif
 
-ifneq ($(shell patch --version | grep -q 'GNU patch' && echo 1),1)
+ifneq ($(shell PATH=$(PATH) patch --version | grep -q 'GNU patch' && echo 1),1)
 $(error Install GNU patch)
 endif
 
-ifneq ($(shell find --version | grep -q 'GNU find' && echo 1),1)
+ifneq ($(shell PATH=$(PATH) find --version | grep -q 'GNU find' && echo 1),1)
 $(error Install GNU findutils)
 endif
 
-ifneq ($(shell rmdir --version | grep -q 'GNU coreutils' && echo 1),1)
+ifneq ($(shell PATH=$(PATH) rmdir --version | grep -q 'GNU coreutils' && echo 1),1)
 $(error Install GNU coreutils)
 endif
 
-ifeq ($(call HAS_COMMAND,ginstall),1)
-GINSTALL := ginstall
-else ifeq ($(shell install --version | grep -q 'GNU coreutils' && echo 1),1)
+ifeq ($(shell PATH=$(PATH) install --version | grep -q 'GNU coreutils' && echo 1),1)
 GINSTALL := install
 else
 $(error Install GNU coreutils)
 endif
 
-ifeq ($(call HAS_COMMAND,gwc),1)
-WC := gwc
-else ifeq ($(shell wc --version | grep -q 'GNU coreutils' && echo 1),1)
+ifeq ($(shell PATH=$(PATH) wc --version | grep -q 'GNU coreutils' && echo 1),1)
 WC := wc
 else
 $(error Install GNU coreutils)
 endif
 
-ifeq ($(call HAS_COMMAND,gcp),1)
-CP := gcp
-else ifeq ($(shell cp --version | grep -q 'GNU coreutils' && echo 1),1)
+ifeq ($(shell PATH=$(PATH) cp --version | grep -q 'GNU coreutils' && echo 1),1)
 CP := cp
 else
 $(error Install GNU coreutils)
 endif
 
-ifeq ($(call HAS_COMMAND,gln),1)
-LN := gln
-else ifeq ($(shell ln --version | grep -q 'GNU coreutils' && echo 1),1)
+ifeq ($(shell PATH=$(PATH) ln --version | grep -q 'GNU coreutils' && echo 1),1)
 LN := ln
 else
 $(error Install GNU coreutils)
@@ -483,20 +486,11 @@ $(error Install dpkg-deb)
 endif
 
 ifneq ($(call HAS_COMMAND,autopoint),1)
-ifeq ($(call HAS_COMMAND,$(shell brew --prefix)/opt/gettext/bin/autopoint),1)
-PATH += :$(shell brew --prefix)/opt/gettext/bin
-else
 $(error Install gettext)
-endif
 endif
 
 ifneq ($(shell tic -V | grep -q 'ncurses 6' && echo 1),1)
-ifeq ($(call HAS_COMMAND,$(shell brew --prefix)/opt/ncurses/bin/tic),1)
-TIC_PATH := $(shell brew --prefix)/opt/ncurses/bin/tic
-export TIC_PATH
-else
 $(error Install ncurses 6)
-endif
 endif
 
 ifneq ($(LEAVE_ME_ALONE),1)

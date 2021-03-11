@@ -17,6 +17,7 @@ jp2a:
 else
 jp2a: jp2a-setup curl libjpeg-turbo libpng16 ncurses
 	cd $(BUILD_WORK)/jp2a && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-dependency-tracking \

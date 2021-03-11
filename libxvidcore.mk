@@ -16,6 +16,7 @@ libxvidcore:
 else
 libxvidcore: libxvidcore-setup
 	cd $(BUILD_WORK)/libxvidcore/build/generic && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/libxvidcore/build/generic

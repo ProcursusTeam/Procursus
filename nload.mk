@@ -19,6 +19,7 @@ nload:
 else
 nload: nload-setup ncurses
 	cd $(BUILD_WORK)/nload &&./run_autotools && ./configure \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-dependency-tracking

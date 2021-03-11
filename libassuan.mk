@@ -17,6 +17,7 @@ libassuan:
 else
 libassuan: libassuan-setup libgpg-error
 	cd $(BUILD_WORK)/libassuan && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-gpg-error-prefix=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)

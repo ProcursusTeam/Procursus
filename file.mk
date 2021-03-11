@@ -22,6 +22,7 @@ file: file-setup xz
 		cd $(BUILD_WORK)/../../native/file && $(BUILD_WORK)/file/configure; \
 		$(MAKE) -C $(BUILD_WORK)/../../native/file
 	cd $(BUILD_WORK)/file && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-libseccomp \

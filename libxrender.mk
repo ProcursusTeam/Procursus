@@ -17,6 +17,7 @@ libxrender:
 else
 libxrender: libxrender-setup libx11 xorgproto
 	cd $(BUILD_WORK)/libxrender && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \

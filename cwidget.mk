@@ -19,6 +19,7 @@ cwidget: cwidget-setup gettext ncurses libsigcplusplus
 	rm -rf $(BUILD_WORK)/cwidget/m4/{libtool,lt*}.m4
 	$(SED) -i 's/libtoolize/$(LIBTOOLIZE)/' $(BUILD_WORK)/cwidget/autogen.sh
 	cd $(BUILD_WORK)/cwidget && ./autogen.sh \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-werror \

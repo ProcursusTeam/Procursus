@@ -16,6 +16,7 @@ libffi:
 else
 libffi: libffi-setup
 	cd $(BUILD_WORK)/libffi && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libffi

@@ -17,6 +17,7 @@ libxxf86vm:
 else
 libxxf86vm: libxxf86vm-setup xorgproto libx11 libxext
 	cd $(BUILD_WORK)/libxxf86vm && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \

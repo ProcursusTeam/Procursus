@@ -53,6 +53,7 @@ else
 perl: perl-setup
 	@# Don't use $$(CFLAGS) here because, in the case BerkeleyDB was made before perl, it will look at the db.h in $$(BUILD_BASE).
 	cd $(BUILD_WORK)/perl && CC='$(CC)' AR='$(AR)' NM='$(NM)' OBJDUMP='objdump' CFLAGS='-DPERL_DARWIN -DPERL_USE_SAFE_PUTENV -DTIME_HIRES_CLOCKID_T -O2 -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_WORK)/perl/include $(PLATFORM_VERSION_MIN)' ./configure \
+		--build=$(BUILD_MISC)/config.guess \
 		--target=$(GNU_HOST_TRIPLE) \
 		--sysroot=$(TARGET_SYSROOT) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \

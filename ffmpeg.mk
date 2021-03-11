@@ -17,6 +17,7 @@ ffmpeg:
 else
 ffmpeg: ffmpeg-setup aom dav1d fontconfig freetype frei0r gnutls lame libass libsoxr libvidstab libvorbis libvpx libopencore-amr openjpeg libopus rav1e rtmpdump rubberband sdl2 libsnappy libspeex libsrt tesseract libtheora libwebp x264 x265 libxvidcore xz
 	cd $(BUILD_WORK)/ffmpeg && ./configure \
+		--build=$(BUILD_MISC)/config.guess \
 		--prefix=/usr \
 		--enable-shared \
 		--enable-pthreads \

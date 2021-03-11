@@ -21,6 +21,7 @@ aptitude: aptitude-setup ncurses libboost xapian cwidget apt googletest
 		$(BUILD_WORK)/aptitude/doc/aptitude-{txt,man,html}.xsl \
 		$(BUILD_WORK)/aptitude/doc/{de,nl,it,es,ja,en,ru,fr,pl,fi,cs}/Makefile.in
 	cd $(BUILD_WORK)/aptitude && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/$(MEMO_PREIFX)/$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/$(MEMO_PREIFX)/etc \

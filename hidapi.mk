@@ -17,6 +17,7 @@ else
 hidapi: hidapi-setup
 	cd $(BUILD_WORK)/hidapi && ./bootstrap
 	cd $(BUILD_WORK)/hidapi && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/hidapi install \

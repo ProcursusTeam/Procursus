@@ -17,6 +17,7 @@ util-macros:
 else
 util-macros: util-macros-setup
 	cd $(BUILD_WORK)/util-macros && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \

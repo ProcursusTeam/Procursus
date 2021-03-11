@@ -17,6 +17,7 @@ lzip:
 else
 lzip: lzip-setup
 	cd $(BUILD_WORK)/lzip && ./configure \
+		--build=$(BUILD_MISC)/config.guess \
 		--prefix=/usr \
         CXX=$(CXX) \
         CXXFLAGS="$(CXXFLAGS)" \

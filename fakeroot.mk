@@ -26,6 +26,7 @@ else
 fakeroot: fakeroot-setup
 	cd $(BUILD_WORK)/fakeroot && autoreconf -vi
 	cd $(BUILD_WORK)/fakeroot && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-ipc=tcp \

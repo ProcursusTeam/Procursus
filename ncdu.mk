@@ -16,6 +16,7 @@ ncdu:
 else
 ncdu: ncdu-setup ncurses
 	cd $(BUILD_WORK)/ncdu && ./configure \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/ncdu

@@ -18,6 +18,7 @@ harfbuzz:
 else
 harfbuzz: harfbuzz-setup cairo freetype glib2.0 graphite2 icu4c fontconfig
 	cd $(BUILD_WORK)/harfbuzz && ./autogen.sh \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--with-cairo \

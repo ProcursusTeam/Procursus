@@ -17,6 +17,7 @@ libxmu:
 else
 libxmu: libxmu-setup libxext libxt
 	cd $(BUILD_WORK)/libxmu && unset CPP CPPFLAGS && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \

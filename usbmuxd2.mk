@@ -23,6 +23,7 @@ usbmuxd2:
 else
 usbmuxd2: usbmuxd2-setup libgeneral libusb libimobiledevice libplist
 	cd $(BUILD_WORK)/usbmuxd2 && ./autogen.sh \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--without-systemd \

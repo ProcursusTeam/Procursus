@@ -16,6 +16,7 @@ mpg123:
 else
 mpg123: mpg123-setup
 	cd $(BUILD_WORK)/mpg123 && ./configure \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--with-audio=coreaudio \

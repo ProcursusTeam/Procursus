@@ -20,6 +20,7 @@ expat:
 else
 expat: expat-setup
 	cd $(BUILD_WORK)/expat && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/expat

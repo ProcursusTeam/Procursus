@@ -19,6 +19,7 @@ libogg:
 else
 libogg: libogg-setup
 	cd $(BUILD_WORK)/libogg && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-dependency-tracking

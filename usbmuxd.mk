@@ -18,6 +18,7 @@ usbmuxd:
 else
 usbmuxd: usbmuxd-setup libusb libimobiledevice libplist
 	cd $(BUILD_WORK)/usbmuxd && ./configure \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--without-systemd \

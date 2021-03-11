@@ -17,6 +17,7 @@ netcat:
 else
 netcat: netcat-setup gettext
 	cd $(BUILD_WORK)/netcat && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--mandir=/usr/share/man

@@ -16,6 +16,7 @@ imlib2:
 else
 imlib2: imlib2-setup freetype libgif libjpeg-turbo libpng16 libtiff libx11 libxcb libxext
 	cd $(BUILD_WORK)/imlib2 && PKG_CONFIG="pkg-config --define-prefix" ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--enable-amd64=no \

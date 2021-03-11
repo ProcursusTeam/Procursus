@@ -17,6 +17,7 @@ libxpm:
 else
 libxpm: libxpm-setup libx11 xorgproto libxt libxext gettext
 	cd $(BUILD_WORK)/libxpm && unset CPP CPPFLAGS && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \

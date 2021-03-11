@@ -17,6 +17,7 @@ p11-kit:
 else
 p11-kit: p11-kit-setup gettext libtasn1 libffi
 	cd $(BUILD_WORK)/p11-kit && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--sysconfdir=$(MEMO_PREFIX)/etc \

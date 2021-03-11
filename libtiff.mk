@@ -18,6 +18,7 @@ libtiff:
 else
 libtiff: libtiff-setup libjpeg-turbo xz zstd
 	cd $(BUILD_WORK)/libtiff && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-webp

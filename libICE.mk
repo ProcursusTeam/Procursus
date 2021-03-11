@@ -17,6 +17,7 @@ libice:
 else
 libice: libice-setup xtrans xorgproto
 	cd $(BUILD_WORK)/libice && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \

@@ -19,6 +19,7 @@ else
 nettle: nettle-setup libgmp10
 	cd $(BUILD_WORK)/nettle && autoreconf -iv
 	cd $(BUILD_WORK)/nettle && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/nettle

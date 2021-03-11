@@ -17,6 +17,7 @@ fontconfig:
 else
 fontconfig: fontconfig-setup gettext freetype uuid expat
 	cd $(BUILD_WORK)/fontconfig && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \

@@ -33,6 +33,7 @@ base-bsd-darwin-armk		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
 		cd $(BUILD_WORK)/dpkg && ./autogen; \
 	fi
 	cd $(BUILD_WORK)/dpkg && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--localstatedir=$(MEMO_PREFIX)/var \

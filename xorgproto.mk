@@ -16,6 +16,7 @@ xorgproto:
 else
 xorgproto: xorgproto-setup
 	cd $(BUILD_WORK)/xorgproto && ./configure \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \

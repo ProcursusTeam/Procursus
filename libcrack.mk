@@ -18,6 +18,7 @@ libcrack:
 else
 libcrack: libcrack-setup gettext
 	cd $(BUILD_WORK)/libcrack && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--without-python \

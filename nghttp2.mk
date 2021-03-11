@@ -18,6 +18,7 @@ nghttp2:
 else
 nghttp2: nghttp2-setup openssl libc-ares libev jansson libjemalloc libevent
 	cd $(BUILD_WORK)/nghttp2 && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \

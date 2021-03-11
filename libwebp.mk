@@ -19,6 +19,7 @@ libwebp:
 else
 libwebp: libwebp-setup libpng16 libgif libtiff libjpeg-turbo
 	cd $(BUILD_WORK)/libwebp && ./autogen.sh && ./configure \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-{sdl,gl} \

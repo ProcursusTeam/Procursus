@@ -16,6 +16,7 @@ ccache:
 else
 ccache: ccache-setup
 	cd $(BUILD_WORK)/ccache && ./configure -C \
+		--build=$(BUILD_MISC)/config.guess \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--mandir=/usr/share/man \
