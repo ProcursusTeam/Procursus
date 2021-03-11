@@ -25,13 +25,11 @@ dpkg:
 	@echo "Using previously built dpkg."
 else
 dpkg: dpkg-setup gettext xz zstd
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(SED) -i '/base-bsd-darwin/a base-bsd-darwin-arm64		$(DEB_ARCH) \
-base-bsd-darwin-arm64e		$(DEB_ARCH) \
-base-bsd-darwin-arm		$(DEB_ARCH) \
-base-bsd-darwin-armk		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
-	if ! [ -f $(BUILD_WORK)/dpkg/configure ]; then \
-		cd $(BUILD_WORK)/dpkg && ./autogen; \
-	fi
+base-bsd-darwin-arm64e		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
+endif
+	cd $(BUILD_WORK)/dpkg && ./autogen
 	cd $(BUILD_WORK)/dpkg && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
