@@ -19,8 +19,9 @@ libgeoip:
 else
 libgeoip: libgeoip-setup
 	cd $(BUILD_WORK)/libgeoip && autoreconf -f -i && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libgeoip
 	+$(MAKE) -C $(BUILD_WORK)/libgeoip install \
 		DESTDIR="$(BUILD_STAGE)/libgeoip"
