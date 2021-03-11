@@ -18,6 +18,8 @@ dpkg-setup: setup
 	$(call DO_PATCH,dpkg,dpkg,-p1)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call DO_PATCH,dpkg-ios,dpkg,-p1)
+else
+	$(call DO_PATCH,dpkg-macos,dpkg,-p1)
 endif
 
 ifneq ($(wildcard $(BUILD_WORK)/dpkg/.build_complete),)
