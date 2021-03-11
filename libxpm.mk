@@ -19,9 +19,9 @@ libxpm: libxpm-setup libx11 xorgproto libxt libxext gettext
 	cd $(BUILD_WORK)/libxpm && unset CPP CPPFLAGS && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
+		--localstatedir=$(MEMO_PREFIX)/var
 	+$(MAKE) -C $(BUILD_WORK)/libxpm
 	+$(MAKE) -C $(BUILD_WORK)/libxpm install \
 		DESTDIR=$(BUILD_STAGE)/libxpm
@@ -33,19 +33,19 @@ endif
 libxpm-package: libxpm-stage
 	# libxpm.mk Package Structure
 	rm -rf $(BUILD_DIST)/libxpm{4,-dev} $(BUILD_DIST)/libxpm $(BUILD_DIST)/xpmutils
-	mkdir -p $(BUILD_DIST)/libxpm4/usr/lib \
-		$(BUILD_DIST)/libxpm-dev/usr/lib \
-		$(BUILD_DIST)/xpmutils/usr
+	mkdir -p $(BUILD_DIST)/libxpm4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libxpm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/xpmutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libxpm.mk Prep libxpm4
-	cp -a $(BUILD_STAGE)/libxpm/usr/lib/libXpm.4.dylib $(BUILD_DIST)/libxpm4/usr/lib
+	cp -a $(BUILD_STAGE)/libxpm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXpm.4.dylib $(BUILD_DIST)/libxpm4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxpm.mk Prep libxpm-dev
-	cp -a $(BUILD_STAGE)/libxpm/usr/lib/!(libXpm.4.dylib) $(BUILD_DIST)/libxpm-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libxpm/usr/include $(BUILD_DIST)/libxpm-dev/usr
+	cp -a $(BUILD_STAGE)/libxpm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libXpm.4.dylib) $(BUILD_DIST)/libxpm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxpm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libxpm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libxpm.mk xpmutils
-	cp -a $(BUILD_STAGE)/libxpm/usr/{bin,share} $(BUILD_DIST)/xpmutils/usr
+	cp -a $(BUILD_STAGE)/libxpm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/xpmutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libxpm.mk Sign
 	$(call SIGN,libxpm4,general.xml)
