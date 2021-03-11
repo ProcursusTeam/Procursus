@@ -4,7 +4,7 @@ Architecture: all
 Maintainer: @DEB_MAINTAINER@
 Pre-Depends: perl (>= 5.32.1)
 Section: Perl
-Homepage: ttps://metacpan.org/release/Pod-Parser
+Homepage: https://metacpan.org/release/Pod-Parser
 Description: modules for parsing/translating POD format documents
  This package contains the following mdoules for using Perl5 "pod" (Plain Old
  Documentation).
