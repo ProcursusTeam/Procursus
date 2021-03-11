@@ -19,11 +19,11 @@ fontconfig: fontconfig-setup gettext freetype uuid expat
 	cd $(BUILD_WORK)/fontconfig && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
+		--localstatedir=$(MEMO_PREFIX)/var \
 		--with-add-fonts="/System/Library/Fonts,~/Library/UserFonts" \
-		FREETYPE_CFLAGS="-I$(BUILD_BASE)/usr/include/freetype2 -I$(BUILD_BASE)/usr/include/libpng16"
+		FREETYPE_CFLAGS="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/freetype2 -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libpng16"
 	+$(MAKE) -C $(BUILD_WORK)/fontconfig
 	+$(MAKE) -C $(BUILD_WORK)/fontconfig install \
 		DESTDIR=$(BUILD_STAGE)/fontconfig
@@ -36,24 +36,24 @@ fontconfig-package: fontconfig-stage
 	# fontconfig.mk Package Structure
 	rm -rf $(BUILD_DIST)/fontconfig{,-config} \
 		$(BUILD_DIST)/libfontconfig{1,-dev}
-	mkdir -p $(BUILD_DIST)/fontconfig{,-config}/usr/share/man \
-		$(BUILD_DIST)/libfontconfig{1,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/fontconfig{,-config}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
+		$(BUILD_DIST)/libfontconfig{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# fontconfig.mk Prep fontconfig
-	cp -a $(BUILD_STAGE)/fontconfig/usr/bin $(BUILD_DIST)/fontconfig/usr
-	cp -a $(BUILD_STAGE)/fontconfig/usr/share/man/man1 $(BUILD_DIST)/fontconfig/usr/share/man
+	cp -a $(BUILD_STAGE)/fontconfig/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/fontconfig/usr
+	cp -a $(BUILD_STAGE)/fontconfig/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/fontconfig/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	
 	# fontconfig.mk Prep fontconfig-config
-	cp -a $(BUILD_STAGE)/fontconfig/usr/share/{fontconfig,xml} $(BUILD_DIST)/fontconfig-config/usr/share
+	cp -a $(BUILD_STAGE)/fontconfig/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{fontconfig,xml} $(BUILD_DIST)/fontconfig-config/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	cp -a $(BUILD_STAGE)/fontconfig/etc $(BUILD_DIST)/fontconfig-config/
-	cp -a $(BUILD_STAGE)/fontconfig/usr/share/man/man5 $(BUILD_DIST)/fontconfig-config/usr/share/man
+	cp -a $(BUILD_STAGE)/fontconfig/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5 $(BUILD_DIST)/fontconfig-config/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	
 	# fontconfig.mk Prep libfontconfig1
-	cp -a $(BUILD_STAGE)/fontconfig/usr/lib/libfontconfig.1.dylib $(BUILD_DIST)/libfontconfig1/usr/lib
+	cp -a $(BUILD_STAGE)/fontconfig/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libfontconfig.1.dylib $(BUILD_DIST)/libfontconfig1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# fontconfig.mk Prep libfontconfig-dev
-	cp -a $(BUILD_STAGE)/fontconfig/usr/lib/{libfontconfig.dylib,pkgconfig} $(BUILD_DIST)/libfontconfig-dev/usr/lib
-	cp -a $(BUILD_STAGE)/fontconfig/usr/include $(BUILD_DIST)/libfontconfig-dev/usr/
+	cp -a $(BUILD_STAGE)/fontconfig/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libfontconfig.dylib,pkgconfig} $(BUILD_DIST)/libfontconfig-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/fontconfig/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libfontconfig-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
 	
 	# fontconfig.mk Sign
 	$(call SIGN,fontconfig,general.xml)
