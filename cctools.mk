@@ -19,7 +19,7 @@ cctools:
 else
 cctools: cctools-setup llvm uuid tapi xar
 	cd $(BUILD_WORK)/cctools && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--enable-lto-support \

@@ -18,7 +18,7 @@ else
 gettext: .SHELLFLAGS=-O extglob -c
 gettext: gettext-setup ncurses libunistring
 	cd $(BUILD_WORK)/gettext && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-java \

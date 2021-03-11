@@ -22,7 +22,7 @@ else
 ncurses: ncurses-setup
 	cd $(BUILD_WORK)/ncurses && $(EXTRA) \
 		./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-build-cc=clang \

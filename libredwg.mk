@@ -16,7 +16,7 @@ libredwg:
 else
 libredwg: libredwg-setup
 	cd $(BUILD_WORK)/libredwg && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/libredwg

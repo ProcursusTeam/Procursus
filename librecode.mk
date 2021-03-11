@@ -16,7 +16,7 @@ librecode:
 else
 librecode: librecode-setup gettext
 	cd $(BUILD_WORK)/librecode && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--without-included-gettext

@@ -16,7 +16,7 @@ libxdmcp:
 else
 libxdmcp: libxdmcp-setup xorgproto
 	cd $(BUILD_WORK)/libxdmcp && ./configure \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \

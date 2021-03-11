@@ -20,7 +20,7 @@ usbfluxd:
 else
 usbfluxd: usbfluxd-setup libplist
 	cd $(BUILD_WORK)/usbfluxd && ./autogen.sh \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--with-static-libplist="$(BUILD_BASE)/usr/lib/libplist-2.0.a" \

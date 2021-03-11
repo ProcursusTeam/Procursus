@@ -17,7 +17,7 @@ gnuchess:
 else
 gnuchess: gnuchess-setup ncurses readline gettext
 	cd $(BUILD_WORK)/gnuchess && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		ac_cv_func_malloc_0_nonnull=yes \

@@ -17,7 +17,7 @@ libidn2:
 else
 libidn2: libidn2-setup gettext libunistring
 	cd $(BUILD_WORK)/libidn2 && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libidn2

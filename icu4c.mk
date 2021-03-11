@@ -22,7 +22,7 @@ icu4c: icu4c-setup
 		../source/configure; \
 		$(MAKE) -C $(BUILD_WORK)/icu4c/host
 	cd $(BUILD_WORK)/icu4c/source && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--with-cross-build=$(BUILD_WORK)/icu4c/host \
 		--prefix=/usr \

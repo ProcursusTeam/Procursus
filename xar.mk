@@ -18,7 +18,7 @@ xar:
 else
 xar: xar-setup openssl
 	cd $(BUILD_WORK)/xar && ./autogen.sh \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		ac_cv_header_openssl_evp_h=yes \

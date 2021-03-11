@@ -17,7 +17,7 @@ ed:
 else
 ed: ed-setup
 	cd $(BUILD_WORK)/ed && ./configure \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--prefix=/usr \
 		CC=$(CC) \
 		CFLAGS="$(CCFLAGS)" \

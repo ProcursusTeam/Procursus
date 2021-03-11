@@ -16,7 +16,7 @@ libsigcplusplus:
 else
 libsigcplusplus: libsigcplusplus-setup
 	cd $(BUILD_WORK)/libsigcplusplus && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \

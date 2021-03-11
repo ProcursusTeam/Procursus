@@ -19,7 +19,7 @@ sqlite3:
 else
 sqlite3: sqlite3-setup ncurses readline
 	cd $(BUILD_WORK)/sqlite3 && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--enable-readline \

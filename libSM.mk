@@ -17,7 +17,7 @@ libsm:
 else
 libsm: libsm-setup xtrans libice uuid
 	cd $(BUILD_WORK)/libsm && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \

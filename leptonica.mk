@@ -16,7 +16,7 @@ leptonica:
 else
 leptonica: leptonica-setup libgif libjpeg-turbo libpng16 libtiff openjpeg libwebp
 	cd $(BUILD_WORK)/leptonica && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--with-libwebp \

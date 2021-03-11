@@ -17,7 +17,7 @@ mosh:
 else
 mosh: mosh-setup libprotobuf openssl ncurses
 	cd $(BUILD_WORK)/mosh && ./configure \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \

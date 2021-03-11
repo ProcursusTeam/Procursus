@@ -19,7 +19,7 @@ else
 autossh: autossh-setup
 	cd $(BUILD_WORK)/autossh && autoreconf -fi
 	cd $(BUILD_WORK)/autossh && ./configure \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		CFLAGS="$(CFLAGS)"

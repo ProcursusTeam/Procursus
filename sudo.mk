@@ -57,7 +57,7 @@ void patch_setuidandplatformize() {\
 	$(SED) -i '/%sudo/a \\n## Uncomment to allow members of group mobile to execute any command\n%mobile	ALL=(ALL) ALL' $(BUILD_WORK)/sudo/plugins/sudoers/sudoers.in
 
 	cd $(BUILD_WORK)/sudo && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--without-pam \

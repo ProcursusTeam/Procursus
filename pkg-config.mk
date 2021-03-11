@@ -21,7 +21,7 @@ pkg-config:
 else
 pkg-config: pkg-config-setup gettext glib2.0
 	cd $(BUILD_WORK)/pkg-config && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-installed-glib \

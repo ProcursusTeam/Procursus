@@ -18,7 +18,7 @@ libvde:
 else
 libvde: libvde-setup openssl
 	cd $(BUILD_WORK)/libvde && unset MACOSX_DEPLOYMENT_TARGET && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \

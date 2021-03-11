@@ -17,7 +17,7 @@ libxtst:
 else
 libxtst: libxtst-setup xorgproto libx11 libxi
 	cd $(BUILD_WORK)/libxtst && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \

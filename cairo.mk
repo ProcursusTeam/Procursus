@@ -16,7 +16,7 @@ cairo:
 else
 cairo: cairo-setup freetype fontconfig glib2.0 libpng16 liblzo2 libpixman
 	cd $(BUILD_WORK)/cairo && ./autogen.sh \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--enable-pdf \

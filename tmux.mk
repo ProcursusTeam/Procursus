@@ -16,7 +16,7 @@ tmux:
 else
 tmux: tmux-setup ncurses libevent libutf8proc
 	cd $(BUILD_WORK)/tmux && ./configure \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--enable-utf8proc \

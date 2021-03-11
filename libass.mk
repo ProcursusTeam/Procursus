@@ -16,7 +16,7 @@ libass:
 else
 libass: libass-setup freetype fontconfig libfribidi harfbuzz
 	cd $(BUILD_WORK)/libass && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		FONTCONFIG_CFLAGS="-I$(BUILD_BASE)/usr/include/freetype2 -I$(BUILD_BASE)/usr/include/libpng16" \

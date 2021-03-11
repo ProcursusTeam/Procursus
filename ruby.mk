@@ -44,7 +44,7 @@ endif
 	# Future reference: coroutine should be "arm64" on M1 macs
 	cd $(BUILD_WORK)/ruby && LIBS="$(RUBY_EXTRA_LIBS)" PKG_CONFIG="pkg-config --define-prefix" \
 		 ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--target=$(GNU_HOST_TRIPLE) \
 		--with-arch=$(MEMO_ARCH) \

@@ -17,7 +17,7 @@ else
 libpaper: libpaper-setup
 	cd $(BUILD_WORK)/libpaper && autoreconf -fi
 	cd $(BUILD_WORK)/libpaper && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/libpaper

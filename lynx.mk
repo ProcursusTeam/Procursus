@@ -20,7 +20,7 @@ lynx:
 else
 lynx: lynx-setup ncurses libidn2 openssl gettext
 	cd $(BUILD_WORK)/lynx && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--with-build-cc=cc \

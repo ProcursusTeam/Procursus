@@ -22,7 +22,7 @@ else
 libtomcrypt: libtomcrypt-setup libgmp10 libtommath
 	cd $(BUILD_WORK)/libtomcrypt/libtool && LIBTOOLIZE="$(LIBTOOLIZE) -i" autoreconf -fi
 	cd $(BUILD_WORK)/libtomcrypt/libtool && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE)
 	+$(MAKE) -C $(BUILD_WORK)/libtomcrypt -f makefile.shared \
 		EXTRALIBS="-lgmp -ltommath" \

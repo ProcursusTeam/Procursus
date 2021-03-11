@@ -19,7 +19,7 @@ else
 screen: screen-setup ncurses libxcrypt
 	cd $(BUILD_WORK)/screen && ./autogen.sh
 	cd $(BUILD_WORK)/screen && ./configure \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--mandir=/usr/share/man \

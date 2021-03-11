@@ -20,7 +20,7 @@ else
 moon-buggy: moon-buggy-setup ncurses
 	cd $(BUILD_WORK)/moon-buggy && autoreconf -fi
 	cd $(BUILD_WORK)/moon-buggy && ./configure \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--with-curses-lib="-L$(BUILD_BASE)/usr/lib -lncursesw"

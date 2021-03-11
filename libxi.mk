@@ -17,7 +17,7 @@ libxi:
 else
 libxi: libxi-setup libx11 xorgproto libxext libxfixes
 	cd $(BUILD_WORK)/libxi && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \

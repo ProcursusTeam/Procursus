@@ -17,7 +17,7 @@ else
 htop: htop-setup ncurses
 	cd $(BUILD_WORK)/htop && ./autogen.sh
 	cd $(BUILD_WORK)/htop && ./configure \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-linux-affinity \

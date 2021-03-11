@@ -18,7 +18,7 @@ xcb-proto:
 else
 xcb-proto: xcb-proto-setup
 	cd $(BUILD_WORK)/xcb-proto && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \

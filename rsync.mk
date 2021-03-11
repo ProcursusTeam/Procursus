@@ -17,7 +17,7 @@ rsync:
 else
 rsync: rsync-setup openssl lz4 zstd
 	cd $(BUILD_WORK)/rsync && ./configure \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-simd \

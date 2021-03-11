@@ -22,7 +22,7 @@ else
 libvterm: libvterm-setup
 	cd $(BUILD_WORK)/libvterm/libtool && LIBTOOLIZE="$(LIBTOOLIZE) -i" autoreconf -fi
 	cd $(BUILD_WORK)/libvterm/libtool && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE)
 	+$(MAKE) -C $(BUILD_WORK)/libvterm \
 		PREFIX=/usr \

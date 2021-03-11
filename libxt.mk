@@ -17,7 +17,7 @@ libxt:
 else
 libxt: libxt-setup libx11 libice libsm
 	cd $(BUILD_WORK)/libxt && unset CPP CPPFLAGS && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \

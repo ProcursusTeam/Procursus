@@ -24,7 +24,7 @@ sdl2:
 else
 sdl2: sdl2-setup
 	cd $(BUILD_WORK)/sdl2 && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=aarch64-ios-darwin \
 		--prefix=/usr \
 		--disable-dependency-tracking \

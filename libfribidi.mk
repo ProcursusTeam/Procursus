@@ -16,7 +16,7 @@ libfribidi:
 else
 libfribidi: libfribidi-setup
 	cd $(BUILD_WORK)/libfribidi && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-dependency-tracking \

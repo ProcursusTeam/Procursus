@@ -17,7 +17,7 @@ libheif:
 else
 libheif: libheif-setup x265 libde265 aom rav1e dav1d
 	cd $(BUILD_WORK)/libheif && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-tests \

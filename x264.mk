@@ -22,7 +22,7 @@ else
 x264: x264-setup
 	rm -rf $(BUILD_STAGE)/x264
 	cd $(BUILD_WORK)/x264 && AS="$(BUILD_WORK)/x264/gas-preprocessor.pl -arch aarch64 -- $(CC) $(CFLAGS)" ./configure \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-lsmash \

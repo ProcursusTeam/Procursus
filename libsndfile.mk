@@ -16,7 +16,7 @@ libsndfile:
 else
 libsndfile: libsndfile-setup flac libogg libvorbis libopus
 	cd $(BUILD_WORK)/libsndfile && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-dependency-tracking

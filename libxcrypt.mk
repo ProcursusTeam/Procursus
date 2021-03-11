@@ -19,7 +19,7 @@ else
 libxcrypt: libxcrypt-setup
 	cd $(BUILD_WORK)/libxcrypt && autoreconf -iv
 	cd $(BUILD_WORK)/libxcrypt && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/libxcrypt

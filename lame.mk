@@ -17,7 +17,7 @@ lame:
 else
 lame: lame-setup ncurses libsndfile
 	cd $(BUILD_WORK)/lame && ./configure -C \
-		--build=$(BUILD_MISC)/config.guess \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--enable-dynamic-frontends \
