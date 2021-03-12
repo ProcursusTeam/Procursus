@@ -19,8 +19,9 @@ idevicerestore:
 else
 idevicerestore: idevicerestore-setup curl libimobiledevice libirecovery libplist libzip
 	cd $(BUILD_WORK)/idevicerestore && ./autogen.sh \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/idevicerestore
 	+$(MAKE) -C $(BUILD_WORK)/idevicerestore install \
 		DESTDIR="$(BUILD_STAGE)/idevicerestore"

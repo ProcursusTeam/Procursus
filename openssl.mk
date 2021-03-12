@@ -59,8 +59,8 @@ openssl:
 else
 openssl: openssl-setup
 	cd $(BUILD_WORK)/openssl && ./Configure \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
-		--openssldir=/$(MEMO_PREFIX)/etc/ssl \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--openssldir=$(MEMO_PREFIX)/etc/ssl \
 		shared \
 		$(SSL_SCHEME)
 	+$(MAKE) -C $(BUILD_WORK)/openssl
@@ -74,19 +74,19 @@ endif
 openssl-package: openssl-stage
 	# openssl.mk Package Structure
 	rm -rf $(BUILD_DIST)/{openssl,libssl{1.1,-dev}}
-	mkdir -p $(BUILD_DIST)/{openssl/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin,libssl{1.1,-dev}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib}
+	mkdir -p $(BUILD_DIST)/{openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin,libssl{1.1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib}
 
 	# openssl.mk Prep libssl1.1
-	cp -a $(BUILD_STAGE)/openssl/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib $(BUILD_DIST)/libssl1.1/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
-	rm -rf $(BUILD_DIST)/libssl1.1/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/{lib{ssl,crypto}.{a,dylib},pkgconfig}
+	cp -a $(BUILD_STAGE)/openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib $(BUILD_DIST)/libssl1.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	rm -rf $(BUILD_DIST)/libssl1.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{lib{ssl,crypto}.{a,dylib},pkgconfig}
 
 	# openssl.mk Prep libssl-dev
-	cp -a $(BUILD_STAGE)/openssl/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/{lib{ssl,crypto}.{a,dylib},pkgconfig} $(BUILD_DIST)/libssl-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/openssl/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libssl-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{lib{ssl,crypto}.{a,dylib},pkgconfig} $(BUILD_DIST)/libssl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libssl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# openssl.mk Prep openssl
 	cp -a $(BUILD_STAGE)/openssl/$(MEMO_PREFIX)/etc $(BUILD_DIST)/openssl
-	cp -a $(BUILD_STAGE)/openssl/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/* $(BUILD_DIST)/openssl/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/* $(BUILD_DIST)/openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	
 	# openssl.mk Sign
 	$(call SIGN,libssl1.1,general.xml)

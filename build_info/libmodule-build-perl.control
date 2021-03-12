@@ -1,0 +1,19 @@
+Package: libmodule-build-perl
+Version: @DEB_LIBMODULE-BUILD-PERL_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Pre-Depends: perl (>= 5.32.1)
+Depends: libtest-harness-perl
+Recommends: libmodule-signature-perl, libpod-readme-perl, libsoftware-license-perl
+Section: Perl
+Homepage: https://metacpan.org/pod/Module::Build
+Description: framework for building and installing Perl modules
+ Module::Build is a framework for easily building, testing and installing Perl
+ packages. It is meant as a next-generation replacement for ExtUtils::MakeMaker
+ and offers many additional features characteristic of a more modern install
+ system, including simple subclassing for custom build actions.
+ .
+ Because it is written in Pure Perl, it has very few external dependencies. In
+ particular, it allows for installation of packages on systems without 'make'
+ and will even work without a shell. Its only prerequisites are modules that
+ are included with perl 5.6.0 and it is core as of perl 5.10.

@@ -16,6 +16,7 @@ transmission:
 else
 transmission: transmission-setup curl libevent
 	cd $(BUILD_WORK)/transmission && ./configure \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-debug \

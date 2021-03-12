@@ -16,8 +16,9 @@ less:
 else
 less: less-setup ncurses pcre2
 	cd $(BUILD_WORK)/less && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-regex=pcre2 \
 		CFLAGS="$(CFLAGS) -Wno-implicit-function-declaration" \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)"
@@ -36,10 +37,10 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 endif
 	
 	# less.mk Prep less
-	cp -a $(BUILD_STAGE)/less/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/* $(BUILD_DIST)/less/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
-	ln -s /$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/less $(BUILD_DIST)/less/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/more
+	cp -a $(BUILD_STAGE)/less/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/* $(BUILD_DIST)/less/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/less $(BUILD_DIST)/less/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/more
 ifneq ($(MEMO_SUB_PREFIX),)
-	ln -s /$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/less $(BUILD_DIST)/less/$(MEMO_PREFIX)/bin/more
+	ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/less $(BUILD_DIST)/less/$(MEMO_PREFIX)/bin/more
 endif
 	
 	# less.mk Sign

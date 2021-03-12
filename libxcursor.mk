@@ -17,6 +17,7 @@ libxcursor:
 else
 libxcursor: libxcursor-setup libx11 libxfixes libxrender util-macros
 	cd $(BUILD_WORK)/libxcursor && unset CPP CPPFLAGS && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \

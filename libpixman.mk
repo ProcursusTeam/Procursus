@@ -16,6 +16,7 @@ libpixman:
 else
 libpixman: libpixman-setup
 	cd $(BUILD_WORK)/libpixman && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-dependency-tracking \

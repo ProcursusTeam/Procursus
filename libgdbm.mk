@@ -17,8 +17,9 @@ libgdbm:
 else
 libgdbm: libgdbm-setup readline gettext
 	cd $(BUILD_WORK)/libgdbm && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libgdbm
 	+$(MAKE) -C $(BUILD_WORK)/libgdbm install \
 		DESTDIR=$(BUILD_STAGE)/libgdbm
@@ -34,24 +35,24 @@ libgdbm-package: libgdbm-stage
 		$(BUILD_DIST)/gdbmtool \
 		$(BUILD_DIST)/gdbm-l10n
 	mkdir -p \
-		$(BUILD_DIST)/gdbm-l10n/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share \
-		$(BUILD_DIST)/libgdbm-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libgdbm6/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{lib,share} \
-		$(BUILD_DIST)/{libgdbm-dev,gdbmtool}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man
+		$(BUILD_DIST)/gdbm-l10n/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share \
+		$(BUILD_DIST)/libgdbm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libgdbm6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share} \
+		$(BUILD_DIST)/{libgdbm-dev,gdbmtool}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
 	# libgdbm.mk Prep gdbmtool
-	cp -a $(BUILD_STAGE)/libgdbm/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/gdbmtool/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libgdbm/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/gdbmtool/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man
+	cp -a $(BUILD_STAGE)/libgdbm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/gdbmtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libgdbm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/gdbmtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
 	# libgdbm.mk Prep libgdbm-dev
-	cp -a $(BUILD_STAGE)/libgdbm/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libgdbm-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libgdbm/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libgdbm-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man
-	cp -a $(BUILD_STAGE)/libgdbm/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/info $(BUILD_DIST)/libgdbm-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share
-	cp -a $(BUILD_STAGE)/libgdbm/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libgdbm.{a,dylib} $(BUILD_DIST)/libgdbm-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libgdbm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libgdbm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libgdbm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libgdbm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+	cp -a $(BUILD_STAGE)/libgdbm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/info $(BUILD_DIST)/libgdbm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	cp -a $(BUILD_STAGE)/libgdbm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgdbm.{a,dylib} $(BUILD_DIST)/libgdbm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libgdbm.mk Prep libgdbm6
-	cp -a $(BUILD_STAGE)/libgdbm/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libgdbm.6.dylib $(BUILD_DIST)/libgdbm6/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libgdbm/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/locale $(BUILD_DIST)/libgdbm6/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share
+	cp -a $(BUILD_STAGE)/libgdbm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgdbm.6.dylib $(BUILD_DIST)/libgdbm6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libgdbm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale $(BUILD_DIST)/libgdbm6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
 	# libgdbm.mk Sign
 	$(call SIGN,gdbmtool,general.xml)

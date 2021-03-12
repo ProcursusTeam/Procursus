@@ -28,6 +28,7 @@ else
 git: git-setup openssl curl pcre2 gettext libidn2
 	+cd $(BUILD_WORK)/git && $(MAKE) configure
 	cd $(BUILD_WORK)/git && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--without-tcltk \

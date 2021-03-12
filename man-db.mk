@@ -17,9 +17,10 @@ man-db:
 else
 man-db: man-db-setup libpipeline libgdbm gettext zstd
 	cd $(BUILD_WORK)/man-db && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
-		--sysconfdir=/$(MEMO_PREFIX)/etc \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--disable-cache-owner \
 		--enable-nls \
 		--with-nroff=groff \

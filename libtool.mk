@@ -17,8 +17,9 @@ libtool:
 else
 libtool: libtool-setup
 	cd $(BUILD_WORK)/libtool && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--program-prefix=g \
 		--enable-ltdl-install
 	+$(MAKE) -C $(BUILD_WORK)/libtool
@@ -31,28 +32,28 @@ endif
 libtool-package: libtool-stage
 	# libtool.mk Package Structure
 	rm -rf $(BUILD_DIST)/libtool{,-bin} $(BUILD_DIST)/libltdl{7,-dev}
-	mkdir -p $(BUILD_DIST)/libtool/usr/{bin,share/{man/man1,libtool,aclocal}} \
-		$(BUILD_DIST)/libtool-bin/usr/{bin,share/man/man1} \
-		$(BUILD_DIST)/libltdl7/usr/lib \
-		$(BUILD_DIST)/libltdl-dev/usr/{lib,share/{libtool,aclocal}}
+	mkdir -p $(BUILD_DIST)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/{man/man1,libtool,aclocal}} \
+		$(BUILD_DIST)/libtool-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
+		$(BUILD_DIST)/libltdl7/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libltdl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share/{libtool,aclocal}}
 	
 	# libtool.mk Prep libtool
-	cp -a $(BUILD_STAGE)/libtool/usr/bin/glibtoolize $(BUILD_DIST)/libtool/usr/bin
-	cp -a $(BUILD_STAGE)/libtool/usr/share/man/man1/glibtoolize.1 $(BUILD_DIST)/libtool/usr/share/man/man1
-	cp -a $(BUILD_STAGE)/libtool/usr/share/aclocal/!(ltdl.m4) $(BUILD_DIST)/libtool/usr/share/aclocal
-	cp -a $(BUILD_STAGE)/libtool/usr/share/libtool/build-aux $(BUILD_DIST)/libtool/usr/share/libtool
+	cp -a $(BUILD_STAGE)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/glibtoolize $(BUILD_DIST)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/glibtoolize.1 $(BUILD_DIST)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal/!(ltdl.m4) $(BUILD_DIST)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal
+	cp -a $(BUILD_STAGE)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/libtool/build-aux $(BUILD_DIST)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/libtool
 
 	# libtool.mk Prep libtool-bin
-	cp -a $(BUILD_STAGE)/libtool/usr/bin/glibtool $(BUILD_DIST)/libtool-bin/usr/bin
-	cp -a $(BUILD_STAGE)/libtool/usr/share/man/man1/glibtool.1 $(BUILD_DIST)/libtool-bin/usr/share/man/man1
+	cp -a $(BUILD_STAGE)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/glibtool $(BUILD_DIST)/libtool-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/glibtool.1 $(BUILD_DIST)/libtool-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# libtool.mk Prep libltdl7
-	cp -a $(BUILD_STAGE)/libtool/usr/lib/libltdl.7.dylib $(BUILD_DIST)/libltdl7/usr/lib
+	cp -a $(BUILD_STAGE)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libltdl.7.dylib $(BUILD_DIST)/libltdl7/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libtool.mk Prep libltdl-dev
-	cp -a $(BUILD_STAGE)/libtool/usr/lib/!(libltdl.7.dylib) $(BUILD_DIST)/libltdl-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libtool/usr/share/aclocal/ltdl.m4 $(BUILD_DIST)/libltdl-dev/usr/share/aclocal
-	cp -a $(BUILD_STAGE)/libtool/usr/share/libtool/!(build-aux) $(BUILD_DIST)/libltdl-dev/usr/share/libtool
+	cp -a $(BUILD_STAGE)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libltdl.7.dylib) $(BUILD_DIST)/libltdl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal/ltdl.m4 $(BUILD_DIST)/libltdl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal
+	cp -a $(BUILD_STAGE)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/libtool/!(build-aux) $(BUILD_DIST)/libltdl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/libtool
 	
 	# libtool.mk Sign
 	$(call SIGN,libtool,general.xml)
