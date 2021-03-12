@@ -17,6 +17,7 @@ slang2:
 else
 slang2: slang2-setup libpng16 pcre libonig
 	cd $(BUILD_WORK)/slang2 && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \

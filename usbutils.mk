@@ -16,6 +16,7 @@ usbutils:
 else
 usbutils: usbutils-setup libusb
 	cd $(BUILD_WORK)/usbutils && ./configure \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/usbutils install \

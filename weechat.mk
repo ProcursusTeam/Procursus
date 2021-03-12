@@ -17,6 +17,7 @@ else
 weechat: weechat-setup ncurses gettext gnutls curl libgcrypt
 	cd $(BUILD_WORK)/weechat && ./autogen.sh
 	cd $(BUILD_WORK)/weechat && ./configure \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=${GNU_HOST_TRIPLE} \
 		--prefix=/usr \
 		--disable-dependency-tracking \

@@ -16,6 +16,7 @@ libopus:
 else
 libopus: libopus-setup
 	cd $(BUILD_WORK)/libopus && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-dependency-tracking \
