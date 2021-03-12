@@ -20,9 +20,9 @@ libmatroska: libmatroska-setup libebml
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/$(MEMO_PREFIX)/ \
-		-DCMAKE_INSTALL_NAME_DIR=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)/ \
+		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_CXX_FLAGS="$(CFLAGS)" \
 		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
@@ -40,16 +40,16 @@ endif
 libmatroska-package: libmatroska-stage
 	# libmatroska.mk Package Structure
 	rm -rf $(BUILD_DIST)/libmatroska{7,-dev}
-	mkdir -p $(BUILD_DIST)/libmatroska{7,-dev}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libmatroska{7,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libmatroska.mk Prep libmatroska7
-	cp -a $(BUILD_STAGE)/libmatroska/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libmatroska.7*.dylib $(BUILD_DIST)/libmatroska7/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libmatroska/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libmatroska.7*.dylib $(BUILD_DIST)/libmatroska7/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libmatroska.mk Prep libmatroska-dev
-	cp -a $(BUILD_STAGE)/libmatroska/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libmatroska-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libmatroska/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libmatroska.dylib $(BUILD_DIST)/libmatroska-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libmatroska/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libmatroska-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libmatroska/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/cmake $(BUILD_DIST)/libmatroska-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libmatroska/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libmatroska-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libmatroska/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libmatroska.dylib $(BUILD_DIST)/libmatroska-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libmatroska/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libmatroska-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libmatroska/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/cmake $(BUILD_DIST)/libmatroska-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libmatroska.mk Sign
 	$(call SIGN,libmatroska7,general.xml)
