@@ -19,6 +19,7 @@ libirecovery:
 else
 libirecovery: libirecovery-setup readline libusb
 	cd $(BUILD_WORK)/libirecovery && ./autogen.sh \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libirecovery \

@@ -16,6 +16,7 @@ qemu:
 else
 qemu: qemu-setup glib2.0 gnutls libjpeg-turbo libpng16 libssh libusb liblzo2 ncurses nettle libpixman libsnappy lzfse gnutls curl libvde
 	cd $(BUILD_WORK)/qemu && QEMU_PKG_CONFIG_FLAGS="--define-prefix" STRIP="strip -x" CFLAGS+=" -DNCURSES_WIDECHAR=1 -I$(BUILD_BASE)/usr/include/pixman-1" ./configure \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--cpu=aarch64 \
 		--cross-prefix="" \

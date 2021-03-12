@@ -16,6 +16,7 @@ libonig:
 else
 libonig: libonig-setup
 	cd $(BUILD_WORK)/libonig && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/libonig install \

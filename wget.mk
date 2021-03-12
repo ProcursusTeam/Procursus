@@ -17,6 +17,7 @@ wget:
 else
 wget: wget-setup openssl pcre2 gettext libunistring libidn2
 	cd $(BUILD_WORK)/wget && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--sysconfdir=$(MEMO_PREFIX)/etc \
