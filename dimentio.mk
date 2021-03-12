@@ -4,8 +4,8 @@ endif
 
 SUBPROJECTS        += dimentio
 # I'm not going to bump the version any higher than 1.0.3. Just change commit date/short hash.
-DIMENTIO_COMMIT    := 7ffffff6599f3c66446e25ff4c505031646216f1
-DIMENTIO_VERSION   := 1.0.3+git20210303.$(shell echo $(DIMENTIO_COMMIT) | cut -c -7)
+DIMENTIO_COMMIT    := 7ffffffdebda2d68795ff0823e3dbd1054de34bd
+DIMENTIO_VERSION   := 1.0.3+git20210308.$(shell echo $(DIMENTIO_COMMIT) | cut -c -7)
 DEB_DIMENTIO_V     ?= $(DIMENTIO_VERSION)
 
 DIMENTIO_SOVERSION := 0
@@ -16,7 +16,7 @@ dimentio-setup: setup
 		&& wget -q -nc -O$(BUILD_SOURCE)/dimentio-v$(DIMENTIO_COMMIT).tar.gz \
 			https://github.com/0x7ff/dimentio/archive/$(DIMENTIO_COMMIT).tar.gz
 	$(call EXTRACT_TAR,dimentio-v$(DIMENTIO_COMMIT).tar.gz,dimentio-$(DIMENTIO_COMMIT),dimentio)
-	mkdir -p $(BUILD_STAGE)/dimentio/usr/{bin,lib,include}
+	mkdir -p $(BUILD_STAGE)/dimentio/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{bin,lib,include}
 
 ifneq ($(wildcard $(BUILD_WORK)/dimentio/.build_complete),)
 dimentio:
@@ -38,7 +38,7 @@ dimentio: dimentio-setup
 
 	# libdimentio.dylib
 	$(CC) -arch arm64e $(CFLAGS) -dynamiclib \
-		-install_name "/usr/lib/libdimentio.$(DIMENTIO_SOVERSION).dylib" \
+		-install_name "/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libdimentio.$(DIMENTIO_SOVERSION).dylib" \
 		-o $(BUILD_WORK)/dimentio/libdimentio.$(DIMENTIO_SOVERSION).dylib \
 		$(BUILD_WORK)/dimentio/libdimentio.o \
 		$(LDFLAGS) $(DIMENTIO_LIBS)
