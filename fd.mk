@@ -20,8 +20,8 @@ fd: fd-setup
 		build \
 		--release \
 		--target=$(RUST_TARGET)
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/fd/target/$(RUST_TARGET)/release/fd $(BUILD_STAGE)/fd/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/fd
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/fd/target/$(RUST_TARGET)/release/build/fd-find-*/out/fd.bash $(BUILD_STAGE)/fd/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/bash-completion/completions/fd
+	$(GINSTALL) -Dm755 $(BUILD_WORK)/fd/target/$(RUST_TARGET)/release/fd $(BUILD_STAGE)/fd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/fd
+	$(GINSTALL) -Dm644 $(BUILD_WORK)/fd/target/$(RUST_TARGET)/release/build/fd-find-*/out/fd.bash $(BUILD_STAGE)/fd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/fd
 	touch $(BUILD_WORK)/fd/.build_complete
 endif
 
