@@ -1,3 +1,4 @@
+
 ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
@@ -52,10 +53,10 @@ endif
 ccache-package: ccache-stage
 	# ccache.mk Package Structure
 	rm -rf $(BUILD_DIST)/ccache
-	mkdir -p $(BUILD_DIST)/ccache$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
+	mkdir -p $(BUILD_DIST)/ccache/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 
 	# ccache.mk Prep ccache
-	cp -a $(BUILD_STAGE)/ccache$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/ccache$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/ccache/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/ccache/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# ccache.mk Sign
 	$(call SIGN,ccache,general.xml)
