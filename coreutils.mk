@@ -45,6 +45,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	mv $(BUILD_WORK)/coreutils/bsdcp/cp.1 $(BUILD_WORK)/coreutils/bsdcp/bsdcp.1
 endif
 	cd $(BUILD_WORK)/coreutils && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--without-gmp \

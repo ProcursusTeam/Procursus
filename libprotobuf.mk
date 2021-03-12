@@ -17,6 +17,7 @@ else
 libprotobuf: libprotobuf-setup
 	cd $(BUILD_WORK)/libprotobuf && ./autogen.sh
 	cd $(BUILD_WORK)/libprotobuf && ./configure \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/libprotobuf

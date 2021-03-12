@@ -18,6 +18,7 @@ inetutils:
 else
 inetutils: inetutils-setup ncurses readline
 	cd $(BUILD_WORK)/inetutils && ./configure \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-ifconfig \

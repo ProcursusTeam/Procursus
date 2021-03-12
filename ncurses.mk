@@ -22,6 +22,7 @@ else
 ncurses: ncurses-setup
 	cd $(BUILD_WORK)/ncurses && $(EXTRA) \
 		./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-build-cc=clang \
@@ -52,7 +53,7 @@ ncurses: ncurses-setup
 		fi \
 	done
 
-	$(RMDIR) --ignore-fail-on-non-empty $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo/*
+	rmdir --ignore-fail-on-non-empty $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo/*
 
 	for ti in $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo/*; do \
 		if [[ ! -L "$(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo/78" ]] && [[ -d "$(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo/78" ]]; then \
