@@ -24,6 +24,7 @@ else
 tesseract: tesseract-setup leptonica libarchive curl
 	cd $(BUILD_WORK)/tesseract && ./autogen.sh
 	cd $(BUILD_WORK)/tesseract && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		LEPTONICA_CFLAGS="-I$(BUILD_STAGE)/leptonica/usr/include/leptonica"

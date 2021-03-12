@@ -18,6 +18,8 @@ dpkg-setup: setup
 	$(call DO_PATCH,dpkg,dpkg,-p1)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call DO_PATCH,dpkg-ios,dpkg,-p1)
+else
+	$(call DO_PATCH,dpkg-macos,dpkg,-p1)
 endif
 
 ifneq ($(wildcard $(BUILD_WORK)/dpkg/.build_complete),)
@@ -25,14 +27,13 @@ dpkg:
 	@echo "Using previously built dpkg."
 else
 dpkg: dpkg-setup gettext xz zstd
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(SED) -i '/base-bsd-darwin/a base-bsd-darwin-arm64		$(DEB_ARCH) \
-base-bsd-darwin-arm64e		$(DEB_ARCH) \
-base-bsd-darwin-arm		$(DEB_ARCH) \
-base-bsd-darwin-armk		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
-	if ! [ -f $(BUILD_WORK)/dpkg/configure ]; then \
-		cd $(BUILD_WORK)/dpkg && ./autogen; \
-	fi
+base-bsd-darwin-arm64e		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
+endif
+	cd $(BUILD_WORK)/dpkg && ./autogen
 	cd $(BUILD_WORK)/dpkg && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--localstatedir=$(MEMO_PREFIX)/var \

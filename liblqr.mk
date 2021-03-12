@@ -19,6 +19,7 @@ liblqr:
 else
 liblqr: liblqr-setup glib2.0 gettext
 	cd $(BUILD_WORK)/liblqr && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-dependency-tracking \

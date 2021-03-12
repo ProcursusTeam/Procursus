@@ -25,6 +25,7 @@ tar:
 else
 tar: tar-setup gettext
 	cd $(BUILD_WORK)/tar && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		$(TAR_CONFIGURE_ARGS)

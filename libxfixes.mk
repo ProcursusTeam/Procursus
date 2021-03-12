@@ -17,6 +17,7 @@ libxfixes:
 else
 libxfixes: libxfixes-setup libx11 xorgproto
 	cd $(BUILD_WORK)/libxfixes && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \

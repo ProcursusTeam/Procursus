@@ -7,10 +7,7 @@ PYTHON3_MAJOR_V  := 3.9
 PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).2
 DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)
 
-ifeq ($(call HAS_COMMAND,python$(PYTHON3_MAJOR_V)),1)
-else ifeq ($(call HAS_COMMAND,$(shell brew --prefix)/opt/python@$(PYTHON3_MAJOR_V)/bin/python$(PYTHON3_MAJOR_V)),1)
-PATH := $(shell brew --prefix)/opt/python@$(PYTHON3_MAJOR_V)/bin:$(PATH) 
-else
+ifneq ($(call HAS_COMMAND,python$(PYTHON3_MAJOR_V)),1)
 $(error Install Python $(PYTHON3_MAJOR_V))
 endif
 
@@ -34,8 +31,8 @@ python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm expat 
 endif
 	cd $(BUILD_WORK)/python3 && autoreconf -fi
 	cd $(BUILD_WORK)/python3 && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--build=$(shell $(BUILD_WORK)/python3/config.guess) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--enable-ipv6 \
 		--without-ensurepip \
@@ -62,7 +59,8 @@ python3-package: python3-stage
 	rm -rf $(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3} $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V){,-dev}
 	mkdir -p \
 		$(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		$(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V){,-dev}/$(MEMO_PREFIX)/{$(MEMO_SUB_PREFIX)/lib,$(MEMO_ALT_PREFIX)/lib}
+		$(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V){,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX){,$(MEMO_ALT_PREFIX)}/lib \
+		$(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 	
 	# python3.mk Prep python$(PYTHON3_MAJOR_V)
 	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/python$(PYTHON3_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
@@ -75,6 +73,17 @@ python3-package: python3-stage
 	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	rm -f $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/python3{,-embed}.pc
+
+	# python3.mk Prep python3
+	ln -s 2to3-$(PYTHON3_MAJOR_V) $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/2to3
+	ln -s idle$(PYTHON3_MAJOR_V) $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/idle3
+	ln -s pydoc$(PYTHON3_MAJOR_V) $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pydoc3
+	ln -s python$(PYTHON3_MAJOR_V) $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3
+	ln -s python$(PYTHON3_MAJOR_V) $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python
+	ln -s python$(PYTHON3_MAJOR_V)-config $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3-config
+
+	ln -s python$(PYTHON3_MAJOR_V).1.zst $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/python3.1.zst
+	ln -s python$(PYTHON3_MAJOR_V).1.zst $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/python.1.zst
 
 	# python3.mk Sign
 	$(call SIGN,python$(PYTHON3_MAJOR_V),general.xml)

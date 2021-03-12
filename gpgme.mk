@@ -17,6 +17,7 @@ gpgme:
 else
 gpgme: gpgme-setup gnupg libassuan libgpg-error
 	cd $(BUILD_WORK)/gpgme && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--with-libassuan-prefix=$(BUILD_BASE)/usr \

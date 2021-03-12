@@ -17,6 +17,7 @@ else
 jq: jq-setup libonig
 	cd $(BUILD_WORK)/jq && autoreconf -fi
 	cd $(BUILD_WORK)/jq && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--with-oniguruma=$(BUILD_STAGE)/libonig/usr \

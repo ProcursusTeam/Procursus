@@ -17,6 +17,7 @@ pinentry:
 else
 pinentry: pinentry-setup libgpg-error libassuan ncurses
 	cd $(BUILD_WORK)/pinentry && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-pinentry-fltk \

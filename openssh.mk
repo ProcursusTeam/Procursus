@@ -42,6 +42,7 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	fi
 	$(SED) -i '/HAVE_ENDIAN_H/d' $(BUILD_WORK)/openssh/config.h.in
 	cd $(BUILD_WORK)/openssh && $(EXTRA) ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--sysconfdir=/etc/ssh \
