@@ -38,7 +38,7 @@ dimentio: dimentio-setup
 
 	# libdimentio.dylib
 	$(CC) -arch arm64e $(CFLAGS) -dynamiclib \
-		-install_name "/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdimentio.$(DIMENTIO_SOVERSION).dylib" \
+		-install_name "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdimentio.$(DIMENTIO_SOVERSION).dylib" \
 		-o $(BUILD_WORK)/dimentio/libdimentio.$(DIMENTIO_SOVERSION).dylib \
 		$(BUILD_WORK)/dimentio/libdimentio.o \
 		$(LDFLAGS) $(DIMENTIO_LIBS)
