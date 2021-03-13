@@ -17,6 +17,7 @@ tor:
 else
 tor: tor-setup libevent openssl xz zstd libscrypt
 	cd $(BUILD_WORK)/tor && ./configure \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--disable-tool-name-check \
@@ -34,9 +35,9 @@ tor: tor-setup libevent openssl xz zstd libscrypt
 		LFLAGS2="$(CFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/tor install \
 		DESTDIR="$(BUILD_STAGE)/tor"
-	mkdir -p $(BUILD_STAGE)/tor{/Library/LaunchDaemons,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec}
+	mkdir -p $(BUILD_STAGE)/tor{/Library/LaunchDaemons,/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec}
 	cp -a $(BUILD_INFO)/org.torproject.tor.plist $(BUILD_STAGE)/tor/Library/LaunchDaemons
-	cp -a $(BUILD_INFO)/tor-wrapper $(BUILD_STAGE)/tor$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
+	cp -a $(BUILD_INFO)/tor-wrapper $(BUILD_STAGE)/tor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
 	touch $(BUILD_WORK)/tor/.build_complete
 endif
 
