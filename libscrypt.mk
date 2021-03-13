@@ -36,15 +36,15 @@ libscrypt-package: libscrypt-stage
 	# libscrypt.mk Package Structure
 	rm -rf $(BUILD_DIST)/libscrypt{0,-dev}
 	mkdir -p \
-		$(BUILD_DIST)/libscrypt0$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libscrypt-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+		$(BUILD_DIST)/libscrypt0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libscrypt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libscrypt.mk Prep libscrypt0
-	cp -a $(BUILD_STAGE)/libscrypt$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libscrypt.0.dylib $(BUILD_DIST)/libscrypt0$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
+	cp -a $(BUILD_STAGE)/libscrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libscrypt.0.dylib $(BUILD_DIST)/libscrypt0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 
 	# libscrypt.mk Prep libscrypt-dev
-	cp -a $(BUILD_STAGE)/libscrypt$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libscrypt.{a,dylib} $(BUILD_DIST)/libscrypt-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libscrypt$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libscrypt-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libscrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libscrypt.{a,dylib} $(BUILD_DIST)/libscrypt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libscrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libscrypt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 
 	# libscrypt.mk Sign
