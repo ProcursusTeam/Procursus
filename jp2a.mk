@@ -19,7 +19,7 @@ jp2a: jp2a-setup curl libjpeg-turbo libpng16 ncurses
 	cd $(BUILD_WORK)/jp2a && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--disable-dependency-tracking \
 		--sysconfdir=$(MEMO_PREFIX)/etc
 	+$(MAKE) -C $(BUILD_WORK)/jp2a

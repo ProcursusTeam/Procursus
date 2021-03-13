@@ -19,7 +19,7 @@ libsamplerate: libsamplerate-setup
 	cd $(BUILD_WORK)/libsamplerate && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libsamplerate \
 		SUBDIRS="M4 src"
 	+$(MAKE) -C $(BUILD_WORK)/libsamplerate install \
@@ -34,14 +34,14 @@ endif
 libsamplerate-package: libsamplerate-stage
 	# libsamplerate.mk Package Structure
 	rm -rf $(BUILD_DIST)/libsamplerate0{,-dev}
-	mkdir -p $(BUILD_DIST)/libsamplerate0{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libsamplerate0{,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# libsamplerate.mk Prep libsamplerate0
-	cp -a $(BUILD_STAGE)/libsamplerate/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsamplerate.0.dylib $(BUILD_DIST)/libsamplerate0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libsamplerate/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libsamplerate.0.dylib $(BUILD_DIST)/libsamplerate0/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# libsamplerate.mk Prep libsamplerate0-dev
-	cp -a $(BUILD_STAGE)/libsamplerate/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libsamplerate.{dylib,a}} $(BUILD_DIST)/libsamplerate0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libsamplerate/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libsamplerate0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libsamplerate/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{pkgconfig,libsamplerate.{dylib,a}} $(BUILD_DIST)/libsamplerate0-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libsamplerate/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libsamplerate0-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	
 	# libsamplerate.mk Sign
 	$(call SIGN,libsamplerate0,general.xml)

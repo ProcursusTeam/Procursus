@@ -17,7 +17,7 @@ else
 plutil: plutil-setup
 	+$(MAKE) -C $(BUILD_WORK)/plutil install \
 		CC="$(CC)" \
-		DESTDIR="$(BUILD_STAGE)/plutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
+		DESTDIR="$(BUILD_STAGE)/plutil/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)"
 	touch $(BUILD_WORK)/plutil/.build_complete
 endif
 
@@ -27,7 +27,7 @@ plutil-package: plutil-stage
 	mkdir -p $(BUILD_DIST)/plutil
 	
 	# plutil.mk Prep plutil
-	cp -a $(BUILD_STAGE)/plutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/plutil
+	cp -a $(BUILD_STAGE)/plutil/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) $(BUILD_DIST)/plutil
 	
 	# plutil.mk Sign
 	$(call SIGN,plutil,general.xml)

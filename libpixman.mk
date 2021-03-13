@@ -18,7 +18,7 @@ libpixman: libpixman-setup
 	cd $(BUILD_WORK)/libpixman && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--disable-dependency-tracking \
 		--disable-gtk \
 		--disable-silent-rules 
@@ -33,15 +33,15 @@ endif
 libpixman-package: libpixman-stage
 	# libpixman.mk Package Structure
 	rm -rf $(BUILD_DIST)/libpixman-1-0{-dev}
-	mkdir -p $(BUILD_DIST)/libpixman-1-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libpixman-1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include/pixman-1}
+	mkdir -p $(BUILD_DIST)/libpixman-1-0/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+		$(BUILD_DIST)/libpixman-1-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{lib,include/pixman-1}
 	
 	# libpixman.mk Prep libpixman
-	cp -a $(BUILD_STAGE)/libpixman/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpixman-1.0*.dylib $(BUILD_DIST)/libpixman-1-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libpixman/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libpixman-1.0*.dylib $(BUILD_DIST)/libpixman-1-0/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# libpixman.mk Prep libpixman-dev
-	cp -a $(BUILD_STAGE)/libpixman/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libpixman-1.{a,dylib}} $(BUILD_DIST)/libpixman-1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libpixman/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pixman-1/* $(BUILD_DIST)/libpixman-1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pixman-1
+	cp -a $(BUILD_STAGE)/libpixman/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{pkgconfig,libpixman-1.{a,dylib}} $(BUILD_DIST)/libpixman-1-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libpixman/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/pixman-1/* $(BUILD_DIST)/libpixman-1-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/pixman-1
 	
 	# libpixman.mk Sign
 	$(call SIGN,libpixman-1-0,general.xml)

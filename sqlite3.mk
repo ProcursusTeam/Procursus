@@ -10,7 +10,7 @@ sqlite3-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/s/sqlite3/sqlite3_$(SQLITE3_VERSION).orig.tar.xz
 	$(call EXTRACT_TAR,sqlite3_$(SQLITE3_VERSION).orig.tar.xz,sqlite3-$(SQLITE3_VERSION),sqlite3)
 	
-	# I change the soversion here to allow installation to /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib on iOS where libsqlite3 is already in the shared cache.
+	# I change the soversion here to allow installation to /$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib on iOS where libsqlite3 is already in the shared cache.
 	$(call DO_PATCH,sqlite3,sqlite3,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/sqlite3/.build_complete),)
@@ -21,44 +21,44 @@ sqlite3: sqlite3-setup ncurses readline
 	cd $(BUILD_WORK)/sqlite3 && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--enable-readline \
 		--disable-editline \
 		--enable-session \
 		--enable-json1 \
 		--enable-fts4 \
 		--enable-fts5 \
-		--with-readline-inc="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/readline" \
+		--with-readline-inc="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/readline" \
 		ac_cv_search_tgetent=-lncursesw \
 		CPPFLAGS="$(CPPFLAGS) -DSQLITE_ENABLE_COLUMN_METADATA=1 -DSQLITE_MAX_VARIABLE_NUMBER=250000 -DSQLITE_ENABLE_RTREE=1 -DSQLITE_ENABLE_FTS3=1 -DSQLITE_ENABLE_FTS3_PARENTHESIS=1 -DSQLITE_ENABLE_JSON1=1"
 	+$(MAKE) -C $(BUILD_WORK)/sqlite3 all sqldiff
 	+$(MAKE) -C $(BUILD_WORK)/sqlite3 install \
 		DESTDIR="$(BUILD_STAGE)/sqlite3"
-	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lemon $(BUILD_WORK)/sqlite3/tool/lemon.c $(LDFLAGS)
-	cp -a $(BUILD_WORK)/sqlite3/.libs/sqldiff $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	mkdir -p $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/lemon
-	cp -a $(BUILD_WORK)/sqlite3/lempar.c $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/lemon
+	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/lemon $(BUILD_WORK)/sqlite3/tool/lemon.c $(LDFLAGS)
+	cp -a $(BUILD_WORK)/sqlite3/.libs/sqldiff $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin
+	mkdir -p $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/lemon
+	cp -a $(BUILD_WORK)/sqlite3/lempar.c $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/lemon
 	touch $(BUILD_WORK)/sqlite3/.build_complete
 endif
 sqlite3-package: sqlite3-stage
 	# sqlite3.mk Package Structure
 	rm -rf $(BUILD_DIST)/{sqlite3,lemon} $(BUILD_DIST)/libsqlite3-{1,dev}
-	mkdir -p $(BUILD_DIST)/{sqlite3,lemon}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
-		$(BUILD_DIST)/libsqlite3-{1,dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/{sqlite3,lemon}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin \
+		$(BUILD_DIST)/libsqlite3-{1,dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# sqlite3.mk Prep sqlite3
-	cp -a $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{sqlite3,sqldiff} $(BUILD_DIST)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/{sqlite3,sqldiff} $(BUILD_DIST)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin
 
 	# sqlite3.mk Prep lemon
-	cp -a $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/lemon/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lemon $(BUILD_DIST)/lemon/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share $(BUILD_DIST)/lemon/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/lemon $(BUILD_DIST)/lemon/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin
 
 	# sqlite3.mk Prep libsqlite3-1
-	cp -a $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsqlite3.1.dylib $(BUILD_DIST)/libsqlite3-1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libsqlite3.1.dylib $(BUILD_DIST)/libsqlite3-1/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# sqlite3.mk Prep libsqlite3-dev
-	cp -a $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libsqlite3-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libsqlite3.{a,dylib}} $(BUILD_DIST)/libsqlite3-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libsqlite3-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{pkgconfig,libsqlite3.{a,dylib}} $(BUILD_DIST)/libsqlite3-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# sqlite3.mk Sign
 	$(call SIGN,sqlite3,general.xml)

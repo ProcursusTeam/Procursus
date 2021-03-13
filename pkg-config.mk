@@ -7,7 +7,7 @@ PKG-CONFIG_VERSION := 0.29.2
 DEB_PKG-CONFIG_V   ?= $(PKG-CONFIG_VERSION)-3
 
 ifneq ($(MEMO_PREFIX),)
-PKG-CONFIG_CONFIGURE_ARGS := --with-pc-path="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig:/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/pkgconfig:/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/lib/pkgconfig:/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig"
+PKG-CONFIG_CONFIGURE_ARGS := --with-pc-path="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig:/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/pkgconfig:/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/local/lib/pkgconfig:/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig"
 endif
 
 pkg-config-setup: setup
@@ -28,7 +28,7 @@ pkg-config: pkg-config-setup gettext glib2.0
 		--disable-host-tool \
 		$(PKG-CONFIG_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/pkg-config \
-		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/glib-2.0 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/glib-2.0/include"
+		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/glib-2.0 -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/glib-2.0/include"
 	+$(MAKE) -C $(BUILD_WORK)/pkg-config install \
 		DESTDIR="$(BUILD_STAGE)/pkg-config"
 	touch $(BUILD_WORK)/pkg-config/.build_complete

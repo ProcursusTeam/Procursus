@@ -19,7 +19,7 @@ libxrender: libxrender-setup libx11 xorgproto
 	cd $(BUILD_WORK)/libxrender && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--localstatedir=$(MEMO_PREFIX)/var \
 		--enable-malloc0returnsnull=no
@@ -34,15 +34,15 @@ endif
 libxrender-package: libxrender-stage
 	# libxrender.mk Package Structure
 	rm -rf $(BUILD_DIST)/libxrender{1,-dev}
-	mkdir -p $(BUILD_DIST)/libxrender{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libxrender{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# libxrender.mk Prep libxrender1
-	cp -a $(BUILD_STAGE)/libxrender/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXrender.1.dylib $(BUILD_DIST)/libxrender1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxrender/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libXrender.1.dylib $(BUILD_DIST)/libxrender1/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# libxrender.mk Prep libxrender-dev
-	cp -a $(BUILD_STAGE)/libxrender/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXrender{.a,.dylib} $(BUILD_DIST)/libxrender-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libxrender/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libxrender-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
-	cp -a $(BUILD_STAGE)/libxrender/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libxrender-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libxrender/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libXrender{.a,.dylib} $(BUILD_DIST)/libxrender-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxrender/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig $(BUILD_DIST)/libxrender-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig
+	cp -a $(BUILD_STAGE)/libxrender/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libxrender-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	
 	# libxrender.mk Sign
 	$(call SIGN,libxrender1,general.xml)

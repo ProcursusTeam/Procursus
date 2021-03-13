@@ -13,7 +13,7 @@ golb-setup: setup
 		&& wget -nc -O$(BUILD_SOURCE)/golb-v$(GOLB_COMMIT).tar.gz \
 			https://github.com/0x7ff/golb/archive/$(GOLB_COMMIT).tar.gz
 	$(call EXTRACT_TAR,golb-v$(GOLB_COMMIT).tar.gz,golb-$(GOLB_COMMIT),golb)
-	mkdir -p $(BUILD_STAGE)/golb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	mkdir -p $(BUILD_STAGE)/golb/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin
 
 ifneq ($(wildcard $(BUILD_WORK)/golb/.build_complete),)
 golb:
@@ -34,14 +34,14 @@ golb: golb-setup
 		-lcompression \
 		$(BUILD_WORK)/golb/golb.c \
 		$(BUILD_WORK)/golb/aes_ap.c \
-		-o $(BUILD_STAGE)/golb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/aes_ap
+		-o $(BUILD_STAGE)/golb/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/aes_ap
 	$(CC) -arch arm64e $(CFLAGS) \
 		-framework IOKit \
 		-framework CoreFoundation \
 		-lcompression \
 		$(BUILD_WORK)/golb/golb_ppl.c \
 		$(BUILD_WORK)/golb/aes_ap.c \
-		-o $(BUILD_STAGE)/golb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/aes_ap_ppl
+		-o $(BUILD_STAGE)/golb/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/aes_ap_ppl
 	touch $(BUILD_WORK)/golb/.build_complete
 endif
 
@@ -51,7 +51,7 @@ golb-package: golb-stage
 	mkdir -p $(BUILD_DIST)/golb
 	
 	# golb.mk Prep golb
-	cp -a $(BUILD_STAGE)/golb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/golb
+	cp -a $(BUILD_STAGE)/golb/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) $(BUILD_DIST)/golb
 	
 	# golb.mk Sign
 	$(call SIGN,golb,tfp0.xml)

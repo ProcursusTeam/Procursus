@@ -19,7 +19,7 @@ rsync: rsync-setup openssl lz4 zstd
 	cd $(BUILD_WORK)/rsync && ./configure \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--disable-simd \
 		--disable-xxhash \
 		rsync_cv_HAVE_GETTIMEOFDAY_TZ=yes
@@ -34,7 +34,7 @@ rsync-package: rsync-stage
 	mkdir -p $(BUILD_DIST)/rsync
 	
 	# rsync.mk Prep rsync
-	cp -a $(BUILD_STAGE)/rsync/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/rsync
+	cp -a $(BUILD_STAGE)/rsync/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) $(BUILD_DIST)/rsync
 	
 	# rsync.mk Sign
 	$(call SIGN,rsync,general.xml)

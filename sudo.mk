@@ -4,13 +4,10 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS += sudo
-SUDO_CONFIGURE_ARGS += --without-pam \
-ac_cv_search_crypt="-lcrypt"
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += sudo
-SUDO_CONFIGURE_ARGS += --with-pam
 endif # ($(MEMO_TARGET),darwin-\*)
-SUDO_VERSION  := 1.9.6p1
+SUDO_VERSION  := 1.9.5p2
 DEB_SUDO_V    ?= $(SUDO_VERSION)
 
 sudo-setup: setup
@@ -22,17 +19,13 @@ ifneq ($(wildcard $(BUILD_WORK)/sudo/.build_complete),)
 sudo:
 	@echo "Using previously built sudo."
 else
-ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 sudo: sudo-setup gettext libxcrypt
-else # (,$(findstring darwin,$(MEMO_TARGET)))
-sudo: sudo-setup gettext
-endif # (,$(findstring darwin,$(MEMO_TARGET)))
 		$(SED) -i '/#include "sudo_plugin_int.h"/a #include <dlfcn.h>\
 \/* Set platform binary flag *\/\
 #define FLAG_PLATFORMIZE (1 << 1)\
 \
 void patch_setuidandplatformize() {\
-\	void* handle = dlopen("/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjailbreak.dylib", RTLD_LAZY);\
+\	void* handle = dlopen("/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libjailbreak.dylib", RTLD_LAZY);\
 \	if (!handle) return;\
 \
 \	// Reset errors\
@@ -66,24 +59,23 @@ void patch_setuidandplatformize() {\
 	cd $(BUILD_WORK)/sudo && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--localstatedir=$(MEMO_PREFIX)/var \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--without-pam \
 		--enable-static-sudoers \
 		--with-all-insults \
 		--with-env-editor \
-		--with-editor=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/editor \
+		--with-editor=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/editor \
 		--with-timeout=15 \
 		--with-password-timeout=0 \
 		--with-passprompt="[sudo] password for %p: " \
 		sudo_cv___func__=yes \
-		$(SUDO_CONFIGURE_ARGS)
+		ac_cv_search_crypt="-lcrypt"
 	+$(MAKE) -C $(BUILD_WORK)/sudo
 	+$(MAKE) -C $(BUILD_WORK)/sudo install \
 		DESTDIR=$(BUILD_STAGE)/sudo \
 		INSTALL_OWNER=''
 	touch $(BUILD_WORK)/sudo/.build_complete
-endif 
+endif
 
 sudo-package: sudo-stage
 	# sudo.mk Package Structure
@@ -96,7 +88,7 @@ sudo-package: sudo-stage
 	$(call SIGN,sudo,general.xml)
 
 	# sudo.mk Permissions
-	$(FAKEROOT) chmod u+s $(BUILD_DIST)/sudo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sudo
+	$(FAKEROOT) chmod u+s $(BUILD_DIST)/sudo/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/sudo
 	
 	# sudo.mk Make .debs
 	$(call PACK,sudo,DEB_SUDO_V)

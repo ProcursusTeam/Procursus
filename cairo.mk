@@ -18,7 +18,7 @@ cairo: cairo-setup freetype fontconfig glib2.0 libpng16 liblzo2 libpixman
 	cd $(BUILD_WORK)/cairo && ./autogen.sh \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--enable-pdf \
 		--enable-ps \
 		--enable-png \
@@ -28,14 +28,14 @@ cairo: cairo-setup freetype fontconfig glib2.0 libpng16 liblzo2 libpixman
 		--disable-xcb \
 		--disable-xlib \
 		--enable-gobject \
-		FONTCONFIG_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/freetype2 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libpng16" \
-		FREETYPE_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/freetype2 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libpng16" \
-		GOBJECT_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/glib-2.0 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/glib-2.0/include" \
-		glib_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/glib-2.0 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/glib-2.0/include -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/glib-2.0/include" \
-		pixman_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pixman-1" \
-		png_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libpng16"
+		FONTCONFIG_CFLAGS="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/freetype2 -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/libpng16" \
+		FREETYPE_CFLAGS="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/freetype2 -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/libpng16" \
+		GOBJECT_CFLAGS="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/glib-2.0 -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/glib-2.0/include" \
+		glib_CFLAGS="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/glib-2.0 -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/glib-2.0/include -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/glib-2.0/include" \
+		pixman_CFLAGS="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/pixman-1" \
+		png_CFLAGS="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/libpng16"
 	+$(MAKE) -C $(BUILD_WORK)/cairo \
-		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/glib-2.0/include"
+		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/glib-2.0/include"
 	+$(MAKE) -C $(BUILD_WORK)/cairo install \
 		DESTDIR=$(BUILD_STAGE)/cairo
 	+$(MAKE) -C $(BUILD_WORK)/cairo install \
@@ -46,25 +46,25 @@ endif
 cairo-package: cairo-stage
 	# cairo.mk Package Structure
 	rm -rf $(BUILD_DIST)/libcairo2{,-dev} $(BUILD_DIST)/libcairo{-gobject,-script-interpreter}2 #$(BUILD_DIST)/cairo-perf-utils
-	mkdir -p $(BUILD_DIST)/libcairo2{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libcairo{-gobject,-script-interpreter}2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib #\
-		#$(BUILD_DIST)/cairo-perf-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	mkdir -p $(BUILD_DIST)/libcairo2{,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+		$(BUILD_DIST)/libcairo{-gobject,-script-interpreter}2/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib #\
+		#$(BUILD_DIST)/cairo-perf-utils/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin
 	
 	# cairo.mk Prep libcairo2
-	cp -a $(BUILD_STAGE)/cairo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcairo.2.dylib $(BUILD_DIST)/libcairo2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/cairo/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libcairo.2.dylib $(BUILD_DIST)/libcairo2/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# cairo.mk Prep libcairo-gobject2
-	cp -a $(BUILD_STAGE)/cairo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcairo-gobject.2.dylib $(BUILD_DIST)/libcairo-gobject2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/cairo/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libcairo-gobject.2.dylib $(BUILD_DIST)/libcairo-gobject2/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# cairo.mk Prep libcairo-script-interpreter2
-	cp -a $(BUILD_STAGE)/cairo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcairo-script-interpreter.2.dylib $(BUILD_DIST)/libcairo-script-interpreter2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/cairo/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libcairo-script-interpreter.2.dylib $(BUILD_DIST)/libcairo-script-interpreter2/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# cairo.mk Prep libcairo2-dev
-	cp -a $(BUILD_STAGE)/cairo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(cairo|*.2.dylib) $(BUILD_DIST)/libcairo2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/cairo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libcairo2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/cairo/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/!(cairo|*.2.dylib) $(BUILD_DIST)/libcairo2-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/cairo/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libcairo2-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 
 	# cairo.mk Prep cairo-perf-utils
-	#cp -a $(BUILD_STAGE)/cairo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/cairo-trace $(BUILD_DIST)/cairo-perf-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	#cp -a $(BUILD_STAGE)/cairo/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/cairo-trace $(BUILD_DIST)/cairo-perf-utils/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin
 	
 	# cairo.mk Sign
 	$(call SIGN,libcairo2,general.xml)

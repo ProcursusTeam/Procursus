@@ -19,7 +19,7 @@ dialog: dialog-setup ncurses gettext
 	cd $(BUILD_WORK)/dialog && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--with-ncursesw \
 		--enable-nls
 	+$(MAKE) -C $(BUILD_WORK)/dialog
@@ -39,7 +39,7 @@ dialog-package: dialog-stage
 	# lib. I can't install the headers without
 	# dialog-config so that gets deleted here.
 	cp -a $(BUILD_STAGE)/dialog $(BUILD_DIST)
-	rm $(BUILD_DIST)/dialog/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dialog-config
+	rm $(BUILD_DIST)/dialog/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/dialog-config
 	
 	# dialog.mk Sign
 	$(call SIGN,dialog,general.xml)

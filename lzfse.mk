@@ -21,8 +21,8 @@ lzfse: lzfse-setup
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
 		-DCMAKE_INSTALL_PREFIX=/ \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		-DCMAKE_INSTALL_NAME_DIR=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+		-DCMAKE_INSTALL_RPATH=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
@@ -38,16 +38,16 @@ endif
 lzfse-package: lzfse-stage
 	# lzfse.mk Package Structure
 	rm -rf $(BUILD_DIST)/{liblzfse{,-dev},lzfse}
-	mkdir -p $(BUILD_DIST)/{liblzfse{,-dev},lzfse}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	mkdir -p $(BUILD_DIST)/{liblzfse{,-dev},lzfse}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	
 	# lzfse.mk Prep lzfse
-	cp -a $(BUILD_STAGE)/lzfse/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/lzfse/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/lzfse/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin $(BUILD_DIST)/lzfse/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 
 	# lzfse.mk Prep liblzfse
-	cp -a $(BUILD_STAGE)/lzfse/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib $(BUILD_DIST)/liblzfse/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/lzfse/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib $(BUILD_DIST)/liblzfse/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 
 	# lzfse.mk Prep liblzfse-dev
-	cp -a $(BUILD_STAGE)/lzfse/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/liblzfse-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/lzfse/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/liblzfse-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	
 	# lzfse.mk Sign
 	$(call SIGN,lzfse,general.xml)

@@ -19,8 +19,8 @@ launchctl-package: launchctl-stage
 	mkdir -p $(BUILD_DIST)/launchctl/{usr/bin,bin}
 
 	# launchctl.mk Prep launchctl
-	cp -a $(BUILD_INFO)/launchctl $(BUILD_DIST)/launchctl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/launchctl $(BUILD_DIST)/launchctl/bin/launchctl
+	cp -a $(BUILD_INFO)/launchctl $(BUILD_DIST)/launchctl/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin
+	ln -s /$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/launchctl $(BUILD_DIST)/launchctl/bin/launchctl
 
 	# launchctl.mk Sign launchctl
 	$(call SIGN,launchctl,launchctl.xml)

@@ -20,20 +20,20 @@ pyyaml: pyyaml-setup libyaml
 	cd $(BUILD_WORK)/pyyaml && unset MACOSX_DEPLOYMENT_TARGET && python$(PYTHON3_MAJOR_V) ./setup.py \
 		--with-libyaml \
 		install \
-		--prefix="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+		--prefix="/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)" \
 		--root="$(BUILD_STAGE)/pyyaml"
-	rm -rf $(BUILD_STAGE)/pyyaml/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/site-packages/yaml/__pycache__
-	mv $(BUILD_STAGE)/pyyaml/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/site-packages/PyYAML-5.3.1-py$(PYTHON3_MAJOR_V).egg-info \
-		$(BUILD_STAGE)/pyyaml/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/site-packages/PyYAML-5.3.1.egg-info
+	rm -rf $(BUILD_STAGE)/pyyaml/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/python$(PYTHON3_MAJOR_V)/site-packages/yaml/__pycache__
+	mv $(BUILD_STAGE)/pyyaml/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/python$(PYTHON3_MAJOR_V)/site-packages/PyYAML-5.3.1-py$(PYTHON3_MAJOR_V).egg-info \
+		$(BUILD_STAGE)/pyyaml/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/python$(PYTHON3_MAJOR_V)/site-packages/PyYAML-5.3.1.egg-info
 	touch $(BUILD_WORK)/pyyaml/.build_complete
 endif
 pyyaml-package: pyyaml-stage
 	# pyyaml.mk Package Structure
 	rm -rf $(BUILD_DIST)/python3-yaml
-	mkdir -p $(BUILD_DIST)/python3-yaml/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3/dist-packages
+	mkdir -p $(BUILD_DIST)/python3-yaml/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/python3/dist-packages
 	
 	# pyyaml.mk Prep python3-yaml
-	cp -a $(BUILD_STAGE)/pyyaml/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/site-packages/* $(BUILD_DIST)/python3-yaml/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3/dist-packages
+	cp -a $(BUILD_STAGE)/pyyaml/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/python$(PYTHON3_MAJOR_V)/site-packages/* $(BUILD_DIST)/python3-yaml/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/python3/dist-packages
 	
 	# pyyaml.mk Sign
 	$(call SIGN,python3-yaml,general.xml)

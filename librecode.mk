@@ -18,7 +18,7 @@ librecode: librecode-setup gettext
 	cd $(BUILD_WORK)/librecode && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--without-included-gettext
 	+$(MAKE) -C $(BUILD_WORK)/librecode
 	+$(MAKE) -C $(BUILD_WORK)/librecode install \
@@ -31,18 +31,18 @@ endif
 librecode-package: librecode-stage
 	# librecode.mk Package Structure
 	rm -rf $(BUILD_DIST)/librecode{3,-dev} $(BUILD_DIST)/recode
-	mkdir -p $(BUILD_DIST)/librecode{3,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib $(BUILD_DIST)/recode/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	mkdir -p $(BUILD_DIST)/librecode{3,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib $(BUILD_DIST)/recode/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	
 	# librecode.mk Prep recode
-	cp -a $(BUILD_STAGE)/librecode/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/recode/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/librecode/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/recode/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/librecode/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin $(BUILD_DIST)/recode/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin
+	cp -a $(BUILD_STAGE)/librecode/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share $(BUILD_DIST)/recode/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	
 	# librecode.mk Prep librecode3
-	cp -a $(BUILD_STAGE)/librecode/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librecode.3.dylib $(BUILD_DIST)/librecode3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/librecode/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/librecode.3.dylib $(BUILD_DIST)/librecode3/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# librecode.mk Prep librecode-dev
-	cp -a $(BUILD_STAGE)/librecode/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/librecode-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/librecode/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{librecode.a,librecode.dylib} $(BUILD_DIST)/librecode-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/librecode/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/librecode-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/librecode/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{librecode.a,librecode.dylib} $(BUILD_DIST)/librecode-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# librecode.mk Sign
 	$(call SIGN,recode,general.xml)

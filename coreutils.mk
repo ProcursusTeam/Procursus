@@ -2,10 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS       += coreutils
-COREUTILS_VERSION   := 8.32
-GETENTDARWIN_COMMIT := 1ad0e39ee51181ea6c13b3d1d4e9c6005ee35b5e
-DEB_COREUTILS_V     ?= $(COREUTILS_VERSION)-8
+STRAPPROJECTS     += coreutils
+COREUTILS_VERSION := 8.32
+DEB_COREUTILS_V   ?= $(COREUTILS_VERSION)-7
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 COREUTILS_CONFIGURE_ARGS += ac_cv_func_rpmatch=no
@@ -21,18 +20,14 @@ coreutils-setup: setup
 	$(call EXTRACT_TAR,coreutils-$(COREUTILS_VERSION).tar.xz,coreutils-$(COREUTILS_VERSION),coreutils)
 	mkdir -p $(BUILD_WORK)/coreutils/{su,rev,bsdcp}
 	wget -q -nc -P $(BUILD_WORK)/coreutils/su \
-		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX).bin/su/su.c \
-		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX).bin/su/suutil.{c,h} \
-		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX).bin/su/su.1
+		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/$(MEMO_PREFIX)$(MEMO_SUBPREFIX).bin/su/su.c \
+		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/$(MEMO_PREFIX)$(MEMO_SUBPREFIX).bin/su/suutil.{c,h} \
+		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/$(MEMO_PREFIX)$(MEMO_SUBPREFIX).bin/su/su.1
 	wget -q -nc -P $(BUILD_WORK)/coreutils/rev \
 		https://opensource.apple.com/source/text_cmds/text_cmds-88/rev/rev.{c,1}
 	wget -q -nc -P $(BUILD_WORK)/coreutils/bsdcp \
 		https://opensource.apple.com/source/file_cmds/file_cmds-272.250.1/cp/{{cp,utils}.c,extern.h,cp.1} \
 		https://opensource.apple.com/source/Libc/Libc-1353.41.1/gen/get_compat.h
-	-[ ! -e "$(BUILD_SOURCE)/getent-darwin-$(GETENTDARWIN_COMMIT).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/getent-darwin-$(GETENTDARWIN_COMMIT).tar.gz \
-			https://github.com/CRKatri/getent-darwin/archive/$(GETENTDARWIN_COMMIT).tar.gz
-	$(call EXTRACT_TAR,getent-darwin-$(GETENTDARWIN_COMMIT).tar.gz,getent-darwin-$(GETENTDARWIN_COMMIT),coreutils/getent-darwin)
 
 ifneq ($(wildcard $(BUILD_WORK)/coreutils/.build_complete),)
 coreutils:
@@ -62,9 +57,6 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	cp $(BUILD_WORK)/coreutils/{su/su,rev/rev,bsdcp/bsdcp} $(BUILD_STAGE)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp $(BUILD_WORK)/coreutils/{su/su,rev/rev,bsdcp/bsdcp}.1 $(BUILD_STAGE)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 endif
-	+$(MAKE) -C $(BUILD_WORK)/coreutils/getent-darwin install \
-		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		DESTDIR="$(BUILD_STAGE)/coreutils/"
 	touch $(BUILD_WORK)/coreutils/.build_complete
 endif
 

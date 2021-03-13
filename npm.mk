@@ -16,19 +16,19 @@ npm:
 else
 npm: npm-setup
 	mkdir -p $(BUILD_STAGE)/npm/{etc,usr/share}
-	cp -a $(BUILD_WORK)/npm $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	cp -a $(BUILD_WORK)/npm $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share
 	node $(BUILD_WORK)/npm/bin/npm-cli.js install \
 		-ddd --global \
-        --prefix="$(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
-		$(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/npm
+        --prefix="$(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)" \
+		$(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/npm
 	@echo "# DO NOT MODIFY THIS FILE - use /etc/npmrc instead.\n\
 globalconfig=/etc/npmrc\n\
 globalignorefile=/etc/npmignore\n\
-prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)\n" > $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/node_modules/npm/npmrc
-	cp -a $(BUILD_WORK)/npm/package.json $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/npm
+prefix=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)\n" > $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/node_modules/npm/npmrc
+	cp -a $(BUILD_WORK)/npm/package.json $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/npm
 	touch $(BUILD_STAGE)/npm/etc/npmrc
-	mkdir -p $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/nodejs
-	ln -s ../npm $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/nodejs/npm
+	mkdir -p $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/nodejs
+	ln -s ../npm $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/nodejs/npm
 	touch $(BUILD_WORK)/npm/.build_complete
 endif
 

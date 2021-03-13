@@ -4,7 +4,7 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
-STRAPPROJECTS     += file-cmds
+SUBPROJECTS       += file-cmds
 # Don't upgrade file-cmds, as any future version includes APIs introduced in iOS 13+.
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 FILE-CMDS_VERSION := 272.250.1
@@ -16,11 +16,11 @@ DEB_FILE-CMDS_V   ?= $(FILE-CMDS_VERSION)-1
 file-cmds-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/file_cmds/file_cmds-$(FILE-CMDS_VERSION).tar.gz
 	$(call EXTRACT_TAR,file_cmds-$(FILE-CMDS_VERSION).tar.gz,file_cmds-$(FILE-CMDS_VERSION),file-cmds)
-	mkdir -p $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	mkdir -p $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/file-cmds/include
-	cp -a $(MACOSX_SYSROOT)/usr/include/tzfile.h $(BUILD_WORK)/file-cmds/include
-	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h $(BUILD_WORK)/file-cmds/include
+	cp -a $(MACOSX_SYSROOT)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/tzfile.h $(BUILD_WORK)/file-cmds/include
+	cp -a $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/unistd.h $(BUILD_WORK)/file-cmds/include
 
 	mkdir -p $(BUILD_WORK)/file-cmds/ipcs/sys
 	wget -nc -P $(BUILD_WORK)/file-cmds/ipcs/sys \
@@ -39,7 +39,7 @@ else
 file-cmds: file-cmds-setup
 	cd $(BUILD_WORK)/file-cmds ; \
 	for bin in chflags compress ipcrm ipcs pax; do \
-	    	$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -o $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -D__POSIX_C_SOURCE; \
+	    	$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -o $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -D__POSIX_C_SOURCE; \
 	done
 	touch $(BUILD_WORK)/file-cmds/.build_complete
 endif

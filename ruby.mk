@@ -21,8 +21,8 @@ else
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 RUBY_EXTRA_LIBS     := -lcrypt -lucontext
 RUBY_CONFIGURE_ARGS := --with-coroutine=ucontext \
-	CFLAGS="$(CFLAGS) -I$(BUILD_STAGE)/libucontext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -D_STRUCT_UCONTEXT" \
-	LDFLAGS="$(LDFLAGS) -L$(BUILD_STAGE)/libucontext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib"
+	CFLAGS="$(CFLAGS) -I$(BUILD_STAGE)/libucontext/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include -D_STRUCT_UCONTEXT" \
+	LDFLAGS="$(LDFLAGS) -L$(BUILD_STAGE)/libucontext/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib"
 ruby: ruby-setup libxcrypt libgmp10 libjemalloc ncurses readline openssl libyaml libffi libgdbm libucontext
 else
 ifneq (,$(findstring amd64,$(MEMO_TARGET)))
@@ -54,8 +54,8 @@ endif
 		--program-suffix=$(RUBY_VERSION) \
 		--with-soname=ruby-$(RUBY_VERSION) \
 		--with-sitedir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/ruby/site_ruby \
-    --with-vendordir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ruby/vendor_ruby \
-		--runstatedir=$(MEMO_PREFIX)/var/run \
+    	--with-vendordir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ruby/vendor_ruby \
+		--runstatedir=/var/run \
 		--localstatedir=$(MEMO_PREFIX)/var \
 		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--disable-dtrace \

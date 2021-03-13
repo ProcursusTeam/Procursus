@@ -25,7 +25,7 @@ imagemagick: imagemagick-setup openexr fontconfig freetype glib2.0 ghostscript l
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--enable-osx-universal-binary=no \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--disable-dependency-tracking \
 		--disable-silent-rules \
@@ -40,7 +40,7 @@ imagemagick: imagemagick-setup openexr fontconfig freetype glib2.0 ghostscript l
 		--with-webp=yes \
 		--with-heic=yes \
 		--with-gslib \
-		--with-gs-font-dir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/ghostscript/fonts \
+		--with-gs-font-dir=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/ghostscript/fonts \
 		--with-lqr \
 		--without-fftw \
 		--without-pango \
@@ -61,59 +61,59 @@ endif
 imagemagick-package: imagemagick-stage
 	# imagemagick.mk Package Structure
 	rm -rf $(BUILD_DIST)/*magick*7*/ $(BUILD_DIST)/imagemagick
-	mkdir -p $(BUILD_DIST)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
-		$(BUILD_DIST)/imagemagick-7-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share \
-		$(BUILD_DIST)/libmagick++-7.q16hdri-4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libmagick++-7.q16hdri-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,ImageMagick-7.0.10/bin} \
-		$(BUILD_DIST)/libmagick++-7-headers/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ImageMagick-7 \
-		$(BUILD_DIST)/libmagickcore-7.q16hdri-8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libmagickcore-7.q16hdri-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,ImageMagick-7.0.10/bin} \
-		$(BUILD_DIST)/libmagickcore-7-headers/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ImageMagick-7 \
-		$(BUILD_DIST)/libmagickwand-7.q16hdri-8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libmagickwand-7.q16hdri-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,ImageMagick-7.0.10/bin} \
-		$(BUILD_DIST)/libmagickwand-7-headers/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ImageMagick-7
+	mkdir -p $(BUILD_DIST)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{bin,share/man/man1} \
+		$(BUILD_DIST)/imagemagick-7-common/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share \
+		$(BUILD_DIST)/libmagick++-7.q16hdri-4/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+		$(BUILD_DIST)/libmagick++-7.q16hdri-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{pkgconfig,ImageMagick-7.0.10/bin} \
+		$(BUILD_DIST)/libmagick++-7-headers/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/ImageMagick-7 \
+		$(BUILD_DIST)/libmagickcore-7.q16hdri-8/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+		$(BUILD_DIST)/libmagickcore-7.q16hdri-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{pkgconfig,ImageMagick-7.0.10/bin} \
+		$(BUILD_DIST)/libmagickcore-7-headers/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/ImageMagick-7 \
+		$(BUILD_DIST)/libmagickwand-7.q16hdri-8/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+		$(BUILD_DIST)/libmagickwand-7.q16hdri-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{pkgconfig,ImageMagick-7.0.10/bin} \
+		$(BUILD_DIST)/libmagickwand-7-headers/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/ImageMagick-7
 	
 	# imagemagick.mk Prep imagemagick
-	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/!(Magick++-config|MagickCore-config|MagickWand-config) $(BUILD_DIST)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/!(Magick++-config.1|MagickCore-config.1|MagickWand-config.1) $(BUILD_DIST)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/!(Magick++-config|MagickCore-config|MagickWand-config) $(BUILD_DIST)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin
+	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man/man1/!(Magick++-config.1|MagickCore-config.1|MagickWand-config.1) $(BUILD_DIST)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man/man1
 	
 	# imagemagick.mk Prep imagemagick-7-common
 	cp -a $(BUILD_STAGE)/imagemagick/etc $(BUILD_DIST)/imagemagick-7-common
-	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/ImageMagick-7 $(BUILD_DIST)/imagemagick-7-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/ImageMagick-7 $(BUILD_DIST)/imagemagick-7-common/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share
 
 	# imagemagick.mk Prep libmagick++-7.q16hdri-4
-	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libMagick++-7.Q16HDRI.4.dylib $(BUILD_DIST)/libmagick++-7.q16hdri-4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libMagick++-7.Q16HDRI.4.dylib $(BUILD_DIST)/libmagick++-7.q16hdri-4/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# imagemagick.mk Prep libmagick++-7.q16hdri-dev
-	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libMagick++-7.Q16HDRI.{a,dylib} $(BUILD_DIST)/libmagick++-7.q16hdri-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/Magick++-7.Q16HDRI.pc $(BUILD_DIST)/libmagick++-7.q16hdri-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
-	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/Magick++-config $(BUILD_DIST)/libmagick++-7.q16hdri-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ImageMagick-7.0.10/bin
+	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libMagick++-7.Q16HDRI.{a,dylib} $(BUILD_DIST)/libmagick++-7.q16hdri-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig/Magick++-7.Q16HDRI.pc $(BUILD_DIST)/libmagick++-7.q16hdri-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig
+	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/Magick++-config $(BUILD_DIST)/libmagick++-7.q16hdri-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/ImageMagick-7.0.10/bin
 
 	# imagemagick.mk Prep libmagick++-7-headers
-	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ImageMagick-7/Magick++* $(BUILD_DIST)/libmagick++-7-headers/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ImageMagick-7
+	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/ImageMagick-7/Magick++* $(BUILD_DIST)/libmagick++-7-headers/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/ImageMagick-7
 
 	# imagemagick.mk Prep libmagickcore-7.q16hdri-8
-	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libMagickCore-7.Q16HDRI.8.dylib $(BUILD_DIST)/libmagickcore-7.q16hdri-8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ImageMagick-7.0.10 $(BUILD_DIST)/libmagickcore-7.q16hdri-8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libMagickCore-7.Q16HDRI.8.dylib $(BUILD_DIST)/libmagickcore-7.q16hdri-8/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/ImageMagick-7.0.10 $(BUILD_DIST)/libmagickcore-7.q16hdri-8/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# imagemagick.mk Prep libmagickcore-7.q16hdri-dev
-	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libMagickCore-7.Q16HDRI.{a,dylib} $(BUILD_DIST)/libmagickcore-7.q16hdri-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/{MagickCore,ImageMagick}-7.Q16HDRI.pc $(BUILD_DIST)/libmagickcore-7.q16hdri-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
-	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/MagickCore-config $(BUILD_DIST)/libmagickcore-7.q16hdri-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ImageMagick-7.0.10/bin
+	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libMagickCore-7.Q16HDRI.{a,dylib} $(BUILD_DIST)/libmagickcore-7.q16hdri-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig/{MagickCore,ImageMagick}-7.Q16HDRI.pc $(BUILD_DIST)/libmagickcore-7.q16hdri-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig
+	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/MagickCore-config $(BUILD_DIST)/libmagickcore-7.q16hdri-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/ImageMagick-7.0.10/bin
 
 	# imagemagick.mk Prep libmagickcore-7-headers
-	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ImageMagick-7/MagickCore $(BUILD_DIST)/libmagickcore-7-headers/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ImageMagick-7
+	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/ImageMagick-7/MagickCore $(BUILD_DIST)/libmagickcore-7-headers/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/ImageMagick-7
 
 	# imagemagick.mk Prep libmagickwand-7.q16hdri-8
-	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libMagickWand-7.Q16HDRI.8.dylib $(BUILD_DIST)/libmagickwand-7.q16hdri-8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libMagickWand-7.Q16HDRI.8.dylib $(BUILD_DIST)/libmagickwand-7.q16hdri-8/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# imagemagick.mk Prep libmagickwand-7.q16hdri-dev
-	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libMagickWand-7.Q16HDRI.{a,dylib} $(BUILD_DIST)/libmagickwand-7.q16hdri-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/MagickWand-7.Q16HDRI.pc $(BUILD_DIST)/libmagickwand-7.q16hdri-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
-	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/MagickWand-config $(BUILD_DIST)/libmagickwand-7.q16hdri-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ImageMagick-7.0.10/bin
+	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libMagickWand-7.Q16HDRI.{a,dylib} $(BUILD_DIST)/libmagickwand-7.q16hdri-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig/MagickWand-7.Q16HDRI.pc $(BUILD_DIST)/libmagickwand-7.q16hdri-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig
+	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/MagickWand-config $(BUILD_DIST)/libmagickwand-7.q16hdri-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/ImageMagick-7.0.10/bin
 
 	# imagemagick.mk Prep libmagickwand-7-headers
-	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ImageMagick-7/MagickWand $(BUILD_DIST)/libmagickwand-7-headers/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ImageMagick-7
+	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/ImageMagick-7/MagickWand $(BUILD_DIST)/libmagickwand-7-headers/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/ImageMagick-7
 	
 	# imagemagick.mk Sign
 	$(call SIGN,imagemagick,general.xml)

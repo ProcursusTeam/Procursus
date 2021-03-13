@@ -22,11 +22,11 @@ lynx: lynx-setup ncurses libidn2 openssl gettext
 	cd $(BUILD_WORK)/lynx && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--with-build-cc=cc \
 		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--mandir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
-		--with-ssl="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
+		--mandir=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man \
+		--with-ssl="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib" \
 		--disable-echo \
 		--enable-default-colors \
 		--with-zlib \

@@ -19,7 +19,7 @@ libedit: libedit-setup ncurses
 	cd $(BUILD_WORK)/libedit && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--with-examples=no
 	+$(MAKE) -C $(BUILD_WORK)/libedit \
 		LIBS=-lncursesw
@@ -33,16 +33,16 @@ endif
 libedit-package: libedit-stage
 	# libedit.mk Package Structure
 	rm -rf $(BUILD_DIST)/libedit{0,-dev}
-	mkdir -p $(BUILD_DIST)/libedit{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share/man}
+	mkdir -p $(BUILD_DIST)/libedit{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{lib,share/man}
 	
 	# libedit.mk Prep libedit0
-	cp -a $(BUILD_STAGE)/libedit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libedit.0.dylib $(BUILD_DIST)/libedit0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libedit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/!(man3) $(BUILD_DIST)/libedit0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+	cp -a $(BUILD_STAGE)/libedit/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libedit.0.dylib $(BUILD_DIST)/libedit0/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libedit/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man/!(man3) $(BUILD_DIST)/libedit0/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man
 
 	# libedit.mk Prep libedit-dev
-	cp -a $(BUILD_STAGE)/libedit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libedit.0.dylib) $(BUILD_DIST)/libedit-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libedit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libedit-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
-	cp -a $(BUILD_STAGE)/libedit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libedit-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libedit/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/!(libedit.0.dylib) $(BUILD_DIST)/libedit-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libedit/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man/man3 $(BUILD_DIST)/libedit-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man
+	cp -a $(BUILD_STAGE)/libedit/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libedit-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	
 	# libedit.mk Sign
 	$(call SIGN,libedit0,general.xml)

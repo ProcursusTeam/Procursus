@@ -20,11 +20,11 @@ bat: bat-setup libgit2
 		build \
 		--release \
 		--target=$(RUST_TARGET)
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/bat/target/$(RUST_TARGET)/release/bat $(BUILD_STAGE)/bat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bat
+	$(GINSTALL) -Dm755 $(BUILD_WORK)/bat/target/$(RUST_TARGET)/release/bat $(BUILD_STAGE)/bat/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/bat
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/bat/target/$(RUST_TARGET)/release/build/bat-*/out/assets/manual/bat.1 \
-		$(BUILD_STAGE)/bat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/bat.1
+		$(BUILD_STAGE)/bat/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man/man1/bat.1
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/bat/target/$(RUST_TARGET)/release/build/bat-*/out/assets/completions/bat.zsh \
-		$(BUILD_STAGE)/bat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/site-functions/_bat
+		$(BUILD_STAGE)/bat/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/zsh/site-functions/_bat
 	touch $(BUILD_WORK)/bat/.build_complete
 endif
 

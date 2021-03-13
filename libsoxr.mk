@@ -20,7 +20,7 @@ libsoxr: libsoxr-setup
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		-DCMAKE_INSTALL_PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
@@ -40,19 +40,19 @@ endif
 libsoxr-package: libsoxr-stage
 	# libsoxr.mk Package Structure
 	rm -rf $(BUILD_DIST)/libsoxr{{,-lsr}0,-dev}
-	mkdir -p $(BUILD_DIST)/libsoxr{{,-lsr}0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libsoxr{{,-lsr}0,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# libsoxr.mk Prep libsoxr0
-	cp -a $(BUILD_STAGE)/libsoxr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsoxr.0*.dylib $(BUILD_DIST)/libsoxr0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libsoxr/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libsoxr.0*.dylib $(BUILD_DIST)/libsoxr0/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# libsoxr.mk Prep libsoxr-lsr0
-	cp -a $(BUILD_STAGE)/libsoxr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsoxr-lsr.0*.dylib $(BUILD_DIST)/libsoxr-lsr0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libsoxr/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libsoxr-lsr.0*.dylib $(BUILD_DIST)/libsoxr-lsr0/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# libsoxr.mk Prep liblibsoxr-pkg-dev
-	cp -a $(BUILD_STAGE)/libsoxr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsoxr.dylib $(BUILD_DIST)/libsoxr-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libsoxr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsoxr-lsr.dylib $(BUILD_DIST)/libsoxr-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libsoxr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libsoxr-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libsoxr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libsoxr-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libsoxr/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libsoxr.dylib $(BUILD_DIST)/libsoxr-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libsoxr/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libsoxr-lsr.dylib $(BUILD_DIST)/libsoxr-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libsoxr/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig $(BUILD_DIST)/libsoxr-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libsoxr/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libsoxr-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	
 	# libsoxr.mk Sign
 	$(call SIGN,libsoxr0,general.xml)

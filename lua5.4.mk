@@ -29,39 +29,39 @@ lua5.4: lua5.4-setup readline
 		LUAVER="5.4" \
 		SOVER="0"
 	+$(MAKE) -C $(BUILD_WORK)/lua5.4 install \
-		INSTALL_TOP="$(BUILD_STAGE)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
-		INSTALL_INC="$(BUILD_STAGE)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/lua5.4" \
-		INSTALL_MAN="$(BUILD_STAGE)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1" \
+		INSTALL_TOP="$(BUILD_STAGE)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)" \
+		INSTALL_INC="$(BUILD_STAGE)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/lua5.4" \
+		INSTALL_MAN="$(BUILD_STAGE)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man/man1" \
 		TO_BIN="lua5.4 luac5.4" \
 		TO_LIB="liblua5.4.a liblua5.4.0.dylib"
 	+$(MAKE) -C $(BUILD_WORK)/lua5.4 install \
-		INSTALL_TOP="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
-		INSTALL_INC="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/lua5.4" \
-		INSTALL_MAN="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1" \
+		INSTALL_TOP="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)" \
+		INSTALL_INC="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/lua5.4" \
+		INSTALL_MAN="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man/man1" \
 		TO_BIN="lua5.4 luac5.4" \
 		TO_LIB="liblua5.4.a liblua5.4.0.dylib"
-	ln -sf liblua5.4.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.4.dylib
+	ln -sf liblua5.4.0.dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/liblua5.4.dylib
 	touch $(BUILD_WORK)/lua5.4/.build_complete
 endif
 
 lua5.4-package: lua5.4-stage
 	# lua5.4.mk Package Structure
 	rm -rf $(BUILD_DIST)/{lua5.4,liblua5.4-{0,dev}}
-	mkdir -p $(BUILD_DIST)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share \
-		$(BUILD_DIST)/liblua5.4-{0,dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share \
+		$(BUILD_DIST)/liblua5.4-{0,dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# lua5.4.mk Prep lua5.4
-	cp -a $(BUILD_STAGE)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	$(GINSTALL) -Dm644 $(BUILD_STAGE)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/lua.1 $(BUILD_DIST)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/lua5.4.1
-	$(GINSTALL) -Dm644 $(BUILD_STAGE)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/luac.1 $(BUILD_DIST)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/luac5.4.1
+	cp -a $(BUILD_STAGE)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin $(BUILD_DIST)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	$(GINSTALL) -Dm644 $(BUILD_STAGE)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man/man1/lua.1 $(BUILD_DIST)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man/man1/lua5.4.1
+	$(GINSTALL) -Dm644 $(BUILD_STAGE)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man/man1/luac.1 $(BUILD_DIST)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man/man1/luac5.4.1
 	
 	# lua5.4.mk Prep liblua5.4-0
-	$(GINSTALL) -Dm755 $(BUILD_STAGE)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.4.0.dylib $(BUILD_DIST)/liblua5.4-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.4.0.dylib
-	ln -sf liblua5.4.0.dylib $(BUILD_DIST)/liblua5.4-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.4.0.0.0.dylib
+	$(GINSTALL) -Dm755 $(BUILD_STAGE)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/liblua5.4.0.dylib $(BUILD_DIST)/liblua5.4-0/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/liblua5.4.0.dylib
+	ln -sf liblua5.4.0.dylib $(BUILD_DIST)/liblua5.4-0/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/liblua5.4.0.0.0.dylib
 	
 	# lua5.4.mk Prep liblua5.4-dev
-	cp -a $(BUILD_STAGE)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/liblua5.4-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	ln -sf liblua5.4.0.dylib $(BUILD_DIST)/liblua5.4-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.4.dylib
+	cp -a $(BUILD_STAGE)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/liblua5.4-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	ln -sf liblua5.4.0.dylib $(BUILD_DIST)/liblua5.4-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/liblua5.4.dylib
 	
 	# lua5.4.mk Sign
 	$(call SIGN,lua5.4,general.xml)

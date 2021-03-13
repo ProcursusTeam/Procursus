@@ -28,10 +28,10 @@ libtommath: libtommath-setup
 	+$(MAKE) -C $(BUILD_WORK)/libtommath -f makefile.shared \
 		LIBTOOL="$(BUILD_WORK)/libtommath/libtool/libtool"
 	+$(MAKE) -C $(BUILD_WORK)/libtommath -f makefile.shared install \
-		PREFIX="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+		PREFIX="/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)" \
 		DESTDIR="$(BUILD_STAGE)/libtommath"
 	+$(MAKE) -C $(BUILD_WORK)/libtommath -f makefile.shared install \
-		PREFIX="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+		PREFIX="/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)" \
 		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/libtommath/.build_complete
 endif
@@ -39,12 +39,12 @@ endif
 libtommath-package: libtommath-stage
 	# libtommath.mk Package Structure
 	rm -rf $(BUILD_DIST)/libtommath{1,-dev}
-	mkdir -p $(BUILD_DIST)/libtommath{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libtommath{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# libtommath.mk Prep libtommath
-	cp -a $(BUILD_STAGE)/libtommath/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libtommath.1.dylib $(BUILD_DIST)/libtommath1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libtommath/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libtommath-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libtommath/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libtommath.{a,dylib},pkgconfig} $(BUILD_DIST)/libtommath-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libtommath/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libtommath.1.dylib $(BUILD_DIST)/libtommath1/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libtommath/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libtommath-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/libtommath/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{libtommath.{a,dylib},pkgconfig} $(BUILD_DIST)/libtommath-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# libtommath.mk Sign
 	$(call SIGN,libtommath1,general.xml)

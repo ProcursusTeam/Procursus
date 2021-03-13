@@ -21,7 +21,7 @@ term-fireworks: term-fireworks-setup
 		--release \
 		--target=$(RUST_TARGET)
 	$(GINSTALL) -Dm775 $(BUILD_WORK)/term-fireworks/target/$(RUST_TARGET)/release/fireworks \
-		$(BUILD_STAGE)/term-fireworks/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/fireworks
+		$(BUILD_STAGE)/term-fireworks/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/fireworks
 	touch $(BUILD_WORK)/term-fireworks/.build_complete
 endif
 

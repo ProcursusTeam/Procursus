@@ -11,7 +11,7 @@ rclone-setup: setup
 		wget -q -nc -O$(BUILD_SOURCE)/rclone-$(RCLONE_VERSION).tar.gz \
 			https://github.com/rclone/rclone/archive/v$(RCLONE_VERSION).tar.gz
 	$(call EXTRACT_TAR,rclone-$(RCLONE_VERSION).tar.gz,rclone-$(RCLONE_VERSION),rclone)
-	mkdir -p $(BUILD_STAGE)/rclone/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
+	mkdir -p $(BUILD_STAGE)/rclone/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{bin,share/man/man1}
 
 ifneq ($(MEMO_ARCH),arm64)
 rclone:
@@ -31,18 +31,18 @@ rclone: rclone-setup
 		CC="$(CC)" \
 		go build \
 			--ldflags "-s -X github.com/rclone/rclone/fs.Version=$(RCLONE_VERSION)"
-	cp -a $(BUILD_WORK)/rclone/rclone $(BUILD_STAGE)/rclone/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_WORK)/rclone/rclone.1 $(BUILD_STAGE)/rclone/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_WORK)/rclone/rclone $(BUILD_STAGE)/rclone/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin
+	cp -a $(BUILD_WORK)/rclone/rclone.1 $(BUILD_STAGE)/rclone/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man/man1
 	touch $(BUILD_WORK)/rclone/.build_complete
 endif
 
 rclone-package: rclone-stage
 	# rclone.mk Package Structure
 	rm -rf $(BUILD_DIST)/rclone
-	mkdir -p $(BUILD_DIST)/rclone/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	mkdir -p $(BUILD_DIST)/rclone/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 
 	# rclone.mk Prep rclone
-	cp -a $(BUILD_STAGE)/rclone/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/rclone/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/rclone/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{bin,share} $(BUILD_DIST)/rclone/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 
 	# rclone.mk Sign
 	$(call SIGN,rclone,general.xml)

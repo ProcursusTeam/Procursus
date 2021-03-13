@@ -19,7 +19,7 @@ libxtst: libxtst-setup xorgproto libx11 libxi
 	cd $(BUILD_WORK)/libxtst && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--localstatedir=$(MEMO_PREFIX)/var
 	+$(MAKE) -C $(BUILD_WORK)/libxtst
@@ -33,19 +33,19 @@ endif
 libxtst-package: libxtst-stage
 	# libxtst.mk Package Structure
 	rm -rf $(BUILD_DIST)/libxtst{6,-dev,-doc}
-	mkdir -p $(BUILD_DIST)/libxtst6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libxtst-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libxtst-doc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	mkdir -p $(BUILD_DIST)/libxtst6/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+		$(BUILD_DIST)/libxtst-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+		$(BUILD_DIST)/libxtst-doc/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	
 	# libxtst.mk Prep libxtst6
-	cp -a $(BUILD_STAGE)/libxtst/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXtst.6.dylib $(BUILD_DIST)/libxtst6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxtst/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libXtst.6.dylib $(BUILD_DIST)/libxtst6/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# libxtst.mk Prep libxtst-dev
-	cp -a $(BUILD_STAGE)/libxtst/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libXtst{.a,.dylib},pkgconfig} $(BUILD_DIST)/libxtst-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libxtst/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libxtst-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libxtst/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{libXtst{.a,.dylib},pkgconfig} $(BUILD_DIST)/libxtst-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxtst/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libxtst-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	
 	# libxtst.mk Prep libxtst-doc
-	cp -a $(BUILD_STAGE)/libxtst/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/libxtst-doc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libxtst/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share $(BUILD_DIST)/libxtst-doc/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	
 	# libxtst.mk Sign
 	$(call SIGN,libxtst6,general.xml)

@@ -18,11 +18,11 @@ tmux: tmux-setup ncurses libevent libutf8proc
 	cd $(BUILD_WORK)/tmux && ./configure \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--enable-utf8proc \
 		ac_cv_func_strtonum=no \
 		LIBNCURSES_LIBS="-lncursesw" \
-		LIBNCURSES_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw"
+		LIBNCURSES_CFLAGS="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/ncursesw"
 	+$(MAKE) -C $(BUILD_WORK)/tmux install \
 		DESTDIR=$(BUILD_STAGE)/tmux
 	touch $(BUILD_WORK)/tmux/.build_complete
@@ -34,7 +34,7 @@ tmux-package: tmux-stage
 	mkdir -p $(BUILD_DIST)/tmux
 	
 	# tmux.mk Prep tmux
-	cp -a $(BUILD_STAGE)/tmux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/tmux
+	cp -a $(BUILD_STAGE)/tmux/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) $(BUILD_DIST)/tmux
 	
 	# tmux.mk Sign
 	$(call SIGN,tmux,general.xml)

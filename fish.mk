@@ -24,18 +24,18 @@ fish: fish-setup ncurses gettext pcre2
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
 		-DCMAKE_OSX_ARCHITECTURES="$(MEMO_ARCH)" \
-		-DCMAKE_LIBRARY_PATH="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		-DCMAKE_LIBRARY_PATH="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib" \
+		-DCMAKE_INSTALL_PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		-DCMAKE_CROSSCOMPILING=true \
-		-DCURSES_CURSES_LIBRARY="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib" \
-		-DCURSES_INCLUDE_PATH="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw" \
-		-DPCRE2_LIB="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpcre2-32.dylib" \
-		-DPCRE2_INCLUDE_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pcre2" \
-		-DSED=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sed \
-		-DCMAKE_INSTALL_SYSCONFDIR=$(MEMO_PREFIX)/etc \
-		-Dextra_functionsdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/fish/vendor_functions.d \
-		-Dextra_completionsdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/fish/vendor_completions.d \
-		-Dextra_confdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/fish/vendor_conf.d
+		-DCURSES_CURSES_LIBRARY="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libncursesw.dylib" \
+		-DCURSES_INCLUDE_PATH="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/ncursesw" \
+		-DPCRE2_LIB="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libpcre2-32.dylib" \
+		-DPCRE2_INCLUDE_DIR="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/pcre2" \
+		-DSED=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/sed \
+		-DCMAKE_INSTALL_SYSCONFDIR=/etc \
+		-Dextra_functionsdir=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/fish/vendor_functions.d \
+		-Dextra_completionsdir=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/fish/vendor_completions.d \
+		-Dextra_confdir=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/fish/vendor_conf.d
 	+$(MAKE) -C $(BUILD_WORK)/fish
 	+$(MAKE) -C $(BUILD_WORK)/fish install \
 		DESTDIR=$(BUILD_STAGE)/fish

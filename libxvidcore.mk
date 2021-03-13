@@ -18,7 +18,7 @@ libxvidcore: libxvidcore-setup
 	cd $(BUILD_WORK)/libxvidcore/build/generic && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libxvidcore/build/generic
 	+$(MAKE) -C $(BUILD_WORK)/libxvidcore/build/generic install \
 		DESTDIR=$(BUILD_STAGE)/libxvidcore
@@ -30,14 +30,14 @@ endif
 libxvidcore-package: libxvidcore-stage
 	# libxvidcore.mk Package Structure
 	rm -rf $(BUILD_DIST)/libxvidcore{4,-dev}
-	mkdir -p $(BUILD_DIST)/libxvidcore{4,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libxvidcore{4,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# libxvidcore.mk Prep libxvidcore4
-	cp -a $(BUILD_STAGE)/libxvidcore/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libxvidcore.4.dylib $(BUILD_DIST)/libxvidcore4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxvidcore/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libxvidcore.4.dylib $(BUILD_DIST)/libxvidcore4/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# libxvidcore.mk Prep liblibxvidcore-dev
-	cp -a $(BUILD_STAGE)/libxvidcore/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libxvidcore.a $(BUILD_DIST)/libxvidcore-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libxvidcore/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libxvidcore-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libxvidcore/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libxvidcore.a $(BUILD_DIST)/libxvidcore-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxvidcore/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libxvidcore-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	
 	# libxvidcore.mk Sign
 	$(call SIGN,libxvidcore4,general.xml)

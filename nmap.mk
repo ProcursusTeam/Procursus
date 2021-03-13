@@ -18,8 +18,8 @@ nmap: nmap-setup lua5.3 openssl pcre libssh2
 	cd $(BUILD_WORK)/nmap && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--with-liblua=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--with-liblua=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--without-nmap-update \
 		--disable-universal \
 		--without-zenmap \
@@ -33,13 +33,13 @@ endif
 nmap-package: nmap-stage
 	# nmap.mk Package Structure
 	rm -rf $(BUILD_DIST)/nmap{-utils,-common}
-	mkdir -p $(BUILD_DIST)/nmap{-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX),-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share}
+	mkdir -p $(BUILD_DIST)/nmap{-utils/$(MEMO_PREFIX)$(MEMO_SUBPREFIX),-common/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share}
 	
 	# nmap.mk Prep nmap-utils
-	cp -a $(BUILD_STAGE)/nmap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/nmap-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/nmap/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin $(BUILD_DIST)/nmap-utils/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 
 	# nmap.mk Prep nmap-common
-	cp -a $(BUILD_STAGE)/nmap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{ncat,nmap} $(BUILD_DIST)/nmap-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	cp -a $(BUILD_STAGE)/nmap/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/{ncat,nmap} $(BUILD_DIST)/nmap-common/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share
 	
 	# nmap.mk Sign
 	$(call SIGN,nmap-utils,general.xml)

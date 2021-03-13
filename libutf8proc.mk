@@ -19,11 +19,11 @@ else
 libutf8proc: libutf8proc-setup
 	+$(MAKE) -C $(BUILD_WORK)/libutf8proc install \
 		OS=Darwin \
-		prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		prefix=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		DESTDIR="$(BUILD_STAGE)/libutf8proc"
 	+$(MAKE) -C $(BUILD_WORK)/libutf8proc install \
 		OS=Darwin \
-		prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		prefix=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/libutf8proc/.build_complete
 endif
@@ -31,14 +31,14 @@ endif
 libutf8proc-package: libutf8proc-stage
 	# libutf8proc.mk Package Structure
 	rm -rf $(BUILD_DIST)/libutf8proc{2,-dev}
-	mkdir -p $(BUILD_DIST)/libutf8proc{2,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libutf8proc{2,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# libutf8proc.mk Prep libutf8proc-dev
-	cp -a $(BUILD_STAGE)/libutf8proc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libutf8proc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libutf8proc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libutf8proc.{a,dylib}} $(BUILD_DIST)/libutf8proc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libutf8proc/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libutf8proc-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/libutf8proc/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{pkgconfig,libutf8proc.{a,dylib}} $(BUILD_DIST)/libutf8proc-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# libutf8proc.mk Prep libutf8proc2
-	cp -a $(BUILD_STAGE)/libutf8proc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libutf8proc.2.dylib $(BUILD_DIST)/libutf8proc2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libutf8proc/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libutf8proc.2.dylib $(BUILD_DIST)/libutf8proc2/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# libutf8proc.mk Sign
 	$(call SIGN,libutf8proc-dev,general.xml)
