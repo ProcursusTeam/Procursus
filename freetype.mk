@@ -40,7 +40,7 @@ freetype-package: freetype-stage
 
 	# freetype.mk Prep freetype6-dev
 	cp -a $(BUILD_STAGE)/freetype/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libfreetype.{a,dylib},pkgconfig} $(BUILD_DIST)/libfreetype-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/freetype/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libfreetype-dev/usr
+	cp -a $(BUILD_STAGE)/freetype/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libfreetype-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# freetype.mk Sign
 	$(call SIGN,libfreetype6,general.xml)
