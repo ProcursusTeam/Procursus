@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += libxt
-LIBXT_VERSION := 1.2.0
+LIBXT_VERSION := 1.2.1
 DEB_LIBXT_V   ?= $(LIBXT_VERSION)
 
 libxt-setup: setup
