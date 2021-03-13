@@ -17,6 +17,7 @@ libxrandr:
 else
 libxrandr: libxrandr-setup libx11 libxrender libxext xorgproto
 	cd $(BUILD_WORK)/libxrandr && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \

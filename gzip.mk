@@ -10,7 +10,7 @@ gzip-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gzip/gzip-$(GZIP_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,gzip-$(GZIP_VERSION).tar.xz)
 	$(call EXTRACT_TAR,gzip-$(GZIP_VERSION).tar.xz,gzip-$(GZIP_VERSION),gzip)
-	mkdir -p $(BUILD_STAGE)/gzip/bin
+	mkdir -p $(BUILD_STAGE)/gzip/$(MEMO_PREFIX)/bin
 
 ifneq ($(wildcard $(BUILD_WORK)/gzip/.build_complete),)
 gzip:
@@ -18,14 +18,17 @@ gzip:
 else
 gzip: gzip-setup
 	cd $(BUILD_WORK)/gzip && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/gzip install \
 		DESTDIR=$(BUILD_STAGE)/gzip
-	for bin in $(BUILD_STAGE)/gzip/usr/bin/*; do \
-		ln -s ../usr/bin/$$(basename $$bin) $(BUILD_STAGE)/gzip/bin/$$(basename $$bin); \
+ifneq ($(MEMO_SUB_PREFIX),)
+	for bin in $(BUILD_STAGE)/gzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
+		ln -s ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(basename $$bin) $(BUILD_STAGE)/gzip/$(MEMO_PREFIX)/bin/$$(basename $$bin); \
 	done
+endif
 	touch $(BUILD_WORK)/gzip/.build_complete
 endif
 

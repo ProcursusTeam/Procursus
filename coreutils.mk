@@ -45,16 +45,17 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	mv $(BUILD_WORK)/coreutils/bsdcp/cp.1 $(BUILD_WORK)/coreutils/bsdcp/bsdcp.1
 endif
 	cd $(BUILD_WORK)/coreutils && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--without-gmp \
 		$(COREUTILS_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/coreutils
 	+$(MAKE) -C $(BUILD_WORK)/coreutils install \
 		DESTDIR=$(BUILD_STAGE)/coreutils
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	cp $(BUILD_WORK)/coreutils/{su/su,rev/rev,bsdcp/bsdcp} $(BUILD_STAGE)/coreutils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin
-	cp $(BUILD_WORK)/coreutils/{su/su,rev/rev,bsdcp/bsdcp}.1 $(BUILD_STAGE)/coreutils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1
+	cp $(BUILD_WORK)/coreutils/{su/su,rev/rev,bsdcp/bsdcp} $(BUILD_STAGE)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp $(BUILD_WORK)/coreutils/{su/su,rev/rev,bsdcp/bsdcp}.1 $(BUILD_STAGE)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 endif
 	touch $(BUILD_WORK)/coreutils/.build_complete
 endif
@@ -62,29 +63,36 @@ endif
 coreutils-package: coreutils-stage
 	# coreutils.mk Package Structure
 	rm -rf $(BUILD_DIST)/coreutils
-	mkdir -p $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/{etc/profile.d,bin,$(MEMO_SUB_PREFIX)/sbin}
+	mkdir -p $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/{bin,$(MEMO_SUB_PREFIX)/sbin}
 	
 	# coreutils.mk Prep coreutils
 	cp -a $(BUILD_STAGE)/coreutils $(BUILD_DIST)
-	ln -s /$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/chown $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/sbin
-	ln -s /$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/chroot $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/sbin
+	ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/chown $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
+	ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/chroot $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 ifneq ($(MEMO_SUB_PREFIX),)
-	ln -s /$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/chown $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/bin
-	ln -s /$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/{cat,chgrp,cp,date,dd,dir,echo,false,kill,ln,ls,mkdir,mknod,mktemp,mv,pwd,readlink,rm,rmdir,sleep,stty,su,touch,true,uname,vdir} $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/bin
+	ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/chown $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/bin
+	ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{cat,chgrp,cp,date,dd,dir,echo,false,kill,ln,ls,mkdir,mknod,mktemp,mv,pwd,readlink,rm,rmdir,sleep,stty,su,touch,true,uname,vdir} $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/bin
+	mkdir -p $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/etc/profile.d
 	cp $(BUILD_INFO)/coreutils.sh $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/etc/profile.d
+endif
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+	mkdir -p $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin
+	for bin in $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
+		ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(echo $$bin | rev | cut -d/ -f1 | rev) $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $$bin | rev | cut -d/ -f1 | rev | cut -c2-); \
+	done
 endif
 
 	# coreutils.mk Sign
 	$(call SIGN,coreutils,general.xml)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(LDID) -S$(BUILD_INFO)/dd.xml $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/dd # Do a manual sign for dd and cat.
-	$(LDID) -S$(BUILD_INFO)/dd.xml $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/cat
+	$(LDID) -S$(BUILD_INFO)/dd.xml $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dd # Do a manual sign for dd and cat.
+	$(LDID) -S$(BUILD_INFO)/dd.xml $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/cat
 	find $(BUILD_DIST)/coreutils -name '.ldid*' -type f -delete
 endif
 
 	# coreutils.mk Permissions
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(FAKEROOT) chmod u+s $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/$(GNU_PREFIX)su
+	$(FAKEROOT) chmod u+s $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$(GNU_PREFIX)su
 endif
 	
 	# coreutils.mk Make .debs

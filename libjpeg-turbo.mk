@@ -24,8 +24,8 @@ libjpeg-turbo: libjpeg-turbo-setup
 		-DCMAKE_SYSTEM_PROCESSOR=arm64 \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/ \
-		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)/ \
+		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
@@ -45,30 +45,30 @@ libjpeg-turbo-package: libjpeg-turbo-stage
 		$(BUILD_DIST)/libjpeg62-{turbo,turbo-dev} \
 		$(BUILD_DIST)/{libjpeg-turbo-progs,libturbojpeg0{,-dev}}
 	mkdir -p \
-		$(BUILD_DIST)/libjpeg-turbo-progs/usr/{bin,share} \
-		$(BUILD_DIST)/{libjpeg62-turbo,libturbojpeg0}/usr/lib \
-		$(BUILD_DIST)/{libjpeg62-turbo-dev,libturbojpeg0-dev}/usr/{include,lib/pkgconfig}
+		$(BUILD_DIST)/libjpeg-turbo-progs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} \
+		$(BUILD_DIST)/{libjpeg62-turbo,libturbojpeg0}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/{libjpeg62-turbo-dev,libturbojpeg0-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/pkgconfig}
 
 
 	# libjpeg-turbo.mk Prep libjpeg-turbo-progs
-	cp -a $(BUILD_STAGE)/libjpeg-turbo/usr/bin/* $(BUILD_DIST)/libjpeg-turbo-progs/usr/bin
-	cp -a $(BUILD_STAGE)/libjpeg-turbo/usr/share/man $(BUILD_DIST)/libjpeg-turbo-progs/usr/share
+	cp -a $(BUILD_STAGE)/libjpeg-turbo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/* $(BUILD_DIST)/libjpeg-turbo-progs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/libjpeg-turbo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/libjpeg-turbo-progs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
 	# libjpeg-turbo.mk Prep libjpeg62-turbo-dev
-	cp -a $(BUILD_STAGE)/libjpeg-turbo/usr/include/j*.h $(BUILD_DIST)/libjpeg62-turbo-dev/usr/include
-	cp -a $(BUILD_STAGE)/libjpeg-turbo/usr/lib/libjpeg.{a,dylib} $(BUILD_DIST)/libjpeg62-turbo-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libjpeg-turbo/usr/lib/pkgconfig/libjpeg.pc $(BUILD_DIST)/libjpeg62-turbo-dev/usr/lib/pkgconfig
+	cp -a $(BUILD_STAGE)/libjpeg-turbo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/j*.h $(BUILD_DIST)/libjpeg62-turbo-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/libjpeg-turbo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjpeg.{a,dylib} $(BUILD_DIST)/libjpeg62-turbo-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libjpeg-turbo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/libjpeg.pc $(BUILD_DIST)/libjpeg62-turbo-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 
 	# libjpeg-turbo.mk Prep libjpeg62-turbo
-	cp -a $(BUILD_STAGE)/libjpeg-turbo/usr/lib/libjpeg.62*.dylib $(BUILD_DIST)/libjpeg62-turbo/usr/lib
+	cp -a $(BUILD_STAGE)/libjpeg-turbo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjpeg.62*.dylib $(BUILD_DIST)/libjpeg62-turbo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libjpeg-turbo.mk Prep libturbojpeg0-dev
-	cp -a $(BUILD_STAGE)/libjpeg-turbo/usr/include/turbojpeg.h $(BUILD_DIST)/libturbojpeg0-dev/usr/include
-	cp -a $(BUILD_STAGE)/libjpeg-turbo/usr/lib/libturbojpeg.{a,dylib} $(BUILD_DIST)/libturbojpeg0-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libjpeg-turbo/usr/lib/pkgconfig/libturbojpeg.pc $(BUILD_DIST)/libturbojpeg0-dev/usr/lib/pkgconfig
+	cp -a $(BUILD_STAGE)/libjpeg-turbo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/turbojpeg.h $(BUILD_DIST)/libturbojpeg0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/libjpeg-turbo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libturbojpeg.{a,dylib} $(BUILD_DIST)/libturbojpeg0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libjpeg-turbo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/libturbojpeg.pc $(BUILD_DIST)/libturbojpeg0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 
 	# libjpeg-turbo.mk Prep libturbojpeg0
-	cp -a $(BUILD_STAGE)/libjpeg-turbo/usr/lib/libturbojpeg.0*.dylib $(BUILD_DIST)/libturbojpeg0/usr/lib
+	cp -a $(BUILD_STAGE)/libjpeg-turbo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libturbojpeg.0*.dylib $(BUILD_DIST)/libturbojpeg0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
   # libjpeg-turbo.mk Sign
 	$(call SIGN,libjpeg-turbo-progs,general.xml)

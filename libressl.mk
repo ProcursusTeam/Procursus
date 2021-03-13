@@ -17,6 +17,7 @@ libressl:
 else
 libressl: libressl-setup
 	cd $(BUILD_WORK)/libressl && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--with-openssldir=/etc/ssl \

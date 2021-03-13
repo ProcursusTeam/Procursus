@@ -17,13 +17,15 @@ man-db:
 else
 man-db: man-db-setup libpipeline libgdbm gettext zstd
 	cd $(BUILD_WORK)/man-db && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=/etc \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--disable-cache-owner \
 		--enable-nls \
 		--with-nroff=groff \
-		man_cv_prog_gnu_nroff=yes
+		man_cv_prog_gnu_nroff=yes \
+		--disable-nls # Disable this until I figure out why po4a is being dumb.
 	+$(MAKE) -C $(BUILD_WORK)/man-db \
 		LDFLAGS="$(LDFLAGS) -lintl -Wl,-framework -Wl,CoreFoundation"
 	+$(MAKE) -C $(BUILD_WORK)/man-db install \
