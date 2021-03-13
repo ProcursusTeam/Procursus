@@ -18,7 +18,7 @@ transmission: transmission-setup curl libevent
 	cd $(BUILD_WORK)/transmission && ./configure \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--disable-debug \
 		--enable-cli \
 		--enable-daemon \
@@ -36,7 +36,7 @@ transmission-package: transmission-stage
 	mkdir -p $(BUILD_DIST)/transmission
 	
 	# transmission.mk Prep transmission
-	cp -a $(BUILD_STAGE)/transmission/usr $(BUILD_DIST)/transmission
+	cp -a $(BUILD_STAGE)/transmission/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) $(BUILD_DIST)/transmission
 	
 	# transmission.mk Sign
 	$(call SIGN,transmission,general.xml)

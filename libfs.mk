@@ -19,9 +19,9 @@ libfs: libfs-setup xorgproto xtrans
 	cd $(BUILD_WORK)/libfs && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
+		--localstatedir=$(MEMO_PREFIX)/var \
 		--enable-malloc0returnsnull=no
 	+$(MAKE) -C $(BUILD_WORK)/libfs
 	+$(MAKE) -C $(BUILD_WORK)/libfs install \
@@ -34,15 +34,15 @@ endif
 libfs-package: libfs-stage
 	# libfs.mk Package Structure
 	rm -rf $(BUILD_DIST)/libfs{6,-dev}
-	mkdir -p $(BUILD_DIST)/libfs6/usr/lib \
-		$(BUILD_DIST)/libfs-dev/usr/{include,lib}
+	mkdir -p $(BUILD_DIST)/libfs6/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+		$(BUILD_DIST)/libfs-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{include,lib}
 	
 	# libfs.mk Prep libfs6
-	cp -a $(BUILD_STAGE)/libfs/usr/lib/libFS.6.dylib $(BUILD_DIST)/libfs6/usr/lib
+	cp -a $(BUILD_STAGE)/libfs/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libFS.6.dylib $(BUILD_DIST)/libfs6/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# libfs.mk Prep libfs-dev
-	cp -a $(BUILD_STAGE)/libfs/usr/lib/!(libFS.6.dylib) $(BUILD_DIST)/libfs-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libfs/usr/include $(BUILD_DIST)/libfs-dev/usr
+	cp -a $(BUILD_STAGE)/libfs/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/!(libFS.6.dylib) $(BUILD_DIST)/libfs-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libfs/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libfs-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	
 	# libfs.mk Sign
 	$(call SIGN,libfs6,general.xml)

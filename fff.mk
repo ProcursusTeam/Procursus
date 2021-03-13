@@ -16,7 +16,7 @@ fff:
 else
 fff: fff-setup
 	+$(MAKE) -C $(BUILD_WORK)/fff install \
-		PREFIX=/usr \
+		PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		DESTDIR=$(BUILD_STAGE)/fff
 	touch $(BUILD_WORK)/fff/.build_complete
 endif

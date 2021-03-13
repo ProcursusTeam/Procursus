@@ -22,8 +22,8 @@ moon-buggy: moon-buggy-setup ncurses
 	cd $(BUILD_WORK)/moon-buggy && ./configure \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--with-curses-lib="-L$(BUILD_BASE)/usr/lib -lncursesw"
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--with-curses-lib="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -lncursesw"
 	+$(MAKE) -C $(BUILD_WORK)/moon-buggy \
 		moon_buggy_LDADD="-lncursesw" \
 		CURSES_LIBS="-lncursesw"

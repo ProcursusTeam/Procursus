@@ -7,7 +7,7 @@ PKG-CONFIG_VERSION := 0.29.2
 DEB_PKG-CONFIG_V   ?= $(PKG-CONFIG_VERSION)-3
 
 ifneq ($(MEMO_PREFIX),)
-PKG-CONFIG_CONFIGURE_ARGS := --with-pc-path="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig:/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/pkgconfig:/usr/local/lib/pkgconfig:/usr/lib/pkgconfig"
+PKG-CONFIG_CONFIGURE_ARGS := --with-pc-path="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig:/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/pkgconfig:/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/local/lib/pkgconfig:/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig"
 endif
 
 pkg-config-setup: setup

@@ -21,10 +21,10 @@ liblqr: liblqr-setup glib2.0 gettext
 	cd $(BUILD_WORK)/liblqr && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--disable-dependency-tracking \
 		--enable-install-man \
-		GLIB_CFLAGS="-I$(BUILD_BASE)/usr/include/glib-2.0 -I$(BUILD_BASE)/usr/include/glib-2.0/include -I$(BUILD_BASE)/usr/lib/glib-2.0/include"
+		GLIB_CFLAGS="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/glib-2.0 -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/glib-2.0/include -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/glib-2.0/include"
 	+$(MAKE) -C $(BUILD_WORK)/liblqr
 	+$(MAKE) -C $(BUILD_WORK)/liblqr install \
 		DESTDIR=$(BUILD_STAGE)/liblqr
@@ -36,14 +36,14 @@ endif
 liblqr-package: liblqr-stage
 	# liblqr.mk Package Structure
 	rm -rf $(BUILD_DIST)/liblqr-1-0{,-dev}
-	mkdir -p $(BUILD_DIST)/liblqr-1-0{,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/liblqr-1-0{,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# liblqr.mk Prep liblqr-1-0
-	cp -a $(BUILD_STAGE)/liblqr/usr/lib/liblqr-1.0.dylib $(BUILD_DIST)/liblqr-1-0/usr/lib
+	cp -a $(BUILD_STAGE)/liblqr/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/liblqr-1.0.dylib $(BUILD_DIST)/liblqr-1-0/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# liblqr.mk Prep liblqr-1-0-dev
-	cp -a $(BUILD_STAGE)/liblqr/usr/lib/{liblqr-1.dylib,pkgconfig} $(BUILD_DIST)/liblqr-1-0-dev/usr/lib
-	cp -a $(BUILD_STAGE)/liblqr/usr/{include,share} $(BUILD_DIST)/liblqr-1-0-dev/usr
+	cp -a $(BUILD_STAGE)/liblqr/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{liblqr-1.dylib,pkgconfig} $(BUILD_DIST)/liblqr-1-0-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/liblqr/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{include,share} $(BUILD_DIST)/liblqr-1-0-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	
 	# liblqr.mk Sign
 	$(call SIGN,liblqr-1-0,general.xml)

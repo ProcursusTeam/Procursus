@@ -19,9 +19,9 @@ libxkbfile: libxkbfile-setup libx11
 	cd $(BUILD_WORK)/libxkbfile && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
+		--localstatedir=$(MEMO_PREFIX)/var
 	+$(MAKE) -C $(BUILD_WORK)/libxkbfile
 	+$(MAKE) -C $(BUILD_WORK)/libxkbfile install \
 		DESTDIR=$(BUILD_STAGE)/libxkbfile
@@ -33,15 +33,15 @@ endif
 libxkbfile-package: libxkbfile-stage
 	# libxkbfile.mk Package Structure
 	rm -rf $(BUILD_DIST)/libxkbfile{1,-dev}
-	mkdir -p $(BUILD_DIST)/libxkbfile1/usr/lib
-	mkdir -p $(BUILD_DIST)/libxkbfile-dev/usr/{include,lib}
+	mkdir -p $(BUILD_DIST)/libxkbfile1/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libxkbfile-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{include,lib}
 	
 	# libxkbfile.mk Prep libxkbfile1
-	cp -a $(BUILD_STAGE)/libxkbfile/usr/lib/libxkbfile.1.dylib $(BUILD_DIST)/libxkbfile1/usr/lib
+	cp -a $(BUILD_STAGE)/libxkbfile/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libxkbfile.1.dylib $(BUILD_DIST)/libxkbfile1/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# libxkbfile.mk Prep libxkbfile-dev
-	cp -a $(BUILD_STAGE)/libxkbfile/usr/lib/{libxkbfile{.a,.dylib},pkgconfig} $(BUILD_DIST)/libxkbfile-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libxkbfile/usr/include $(BUILD_DIST)/libxkbfile-dev/usr
+	cp -a $(BUILD_STAGE)/libxkbfile/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{libxkbfile{.a,.dylib},pkgconfig} $(BUILD_DIST)/libxkbfile-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxkbfile/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libxkbfile-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 
 	# libxkbfile.mk Sign
 	$(call SIGN,libxkbfile1,general.xml)

@@ -10,9 +10,9 @@ top-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/top/top-$(TOP_VERSION).tar.gz
 	$(call EXTRACT_TAR,top-$(TOP_VERSION).tar.gz,top-$(TOP_VERSION),top)
 	mkdir -p $(BUILD_WORK)/top/include/{IOKit/storage,mach}
-	cp -a $(MACOSX_SYSROOT)/usr/include/libkern $(BUILD_WORK)/top/include
-	cp -a $(MACOSX_SYSROOT)/usr/include/mach/mach_vm.h $(BUILD_WORK)/top/include/mach
-	cp -a $(MACOSX_SYSROOT)/usr/include/nlist.h $(BUILD_WORK)/top/include
+	cp -a $(MACOSX_SYSROOT)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/libkern $(BUILD_WORK)/top/include
+	cp -a $(MACOSX_SYSROOT)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/mach/mach_vm.h $(BUILD_WORK)/top/include/mach
+	cp -a $(MACOSX_SYSROOT)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/nlist.h $(BUILD_WORK)/top/include
 	cp -a $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_WORK)/top/include/IOKit
 	wget -nc -P $(BUILD_WORK)/top/include \
 		https://opensource.apple.com/source/libutil/libutil-57/libutil.h
@@ -26,8 +26,8 @@ top:
 	@echo "Using previously built top."
 else
 top: top-setup ncurses
-	mkdir -p $(BUILD_STAGE)/top/usr/bin/
-	$(CC) $(CFLAGS) -isystem $(BUILD_WORK)/top/include -L $(BUILD_BASE)/usr/lib -o $(BUILD_STAGE)/top/usr/bin/top $(BUILD_WORK)/top/*.c -framework IOKit -framework CoreFoundation -lncursesw -lpanelw -lutil;
+	mkdir -p $(BUILD_STAGE)/top/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/
+	$(CC) $(CFLAGS) -isystem $(BUILD_WORK)/top/include -L $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -o $(BUILD_STAGE)/top/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/top $(BUILD_WORK)/top/*.c -framework IOKit -framework CoreFoundation -lncursesw -lpanelw -lutil;
 	touch $(BUILD_WORK)/top/.build_complete
 endif
 
@@ -37,13 +37,13 @@ top-package: top-stage
 	mkdir -p $(BUILD_DIST)/top
 	
 	# top.mk Prep top
-	cp -a $(BUILD_STAGE)/top/usr $(BUILD_DIST)/top
+	cp -a $(BUILD_STAGE)/top/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) $(BUILD_DIST)/top
 	
 	# top.mk Sign
 	$(call SIGN,top,top.xml)
 
 	# top.mk Permissions
-	chmod u+s $(BUILD_DIST)/top/usr/bin/top
+	chmod u+s $(BUILD_DIST)/top/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/top
 	
 	# top.mk Make .debs
 	$(call PACK,top,DEB_TOP_V)

@@ -19,9 +19,9 @@ libressl: libressl-setup
 	cd $(BUILD_WORK)/libressl && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--with-openssldir=/etc/ssl \
-		--sysconfdir=/etc
+		--sysconfdir=$(MEMO_PREFIX)/etc
 	+$(MAKE) -C $(BUILD_WORK)/libressl
 	+$(MAKE) -C $(BUILD_WORK)/libressl install \
 		DESTDIR=$(BUILD_STAGE)/libressl

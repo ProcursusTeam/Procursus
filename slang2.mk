@@ -19,12 +19,12 @@ slang2: slang2-setup libpng16 pcre libonig
 	cd $(BUILD_WORK)/slang2 && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--with-pcre=$(BUILD_BASE)/usr \
-		--with-onig=$(BUILD_BASE)/usr \
-		--with-png=$(BUILD_BASE)/usr \
-		--with-z=$(TARGET_SYSROOT)/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
+		--with-pcre=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--with-onig=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--with-png=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--with-z=$(TARGET_SYSROOT)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	mkdir -p $(BUILD_WORK)/slang2/src/elfobjs
 	+$(MAKE) -C $(BUILD_WORK)/slang2 all
 	+$(MAKE) -C $(BUILD_WORK)/slang2 -j1 install \
@@ -37,22 +37,22 @@ endif
 slang2-package: slang2-stage
 	# slang2.mk Package Structure
 	rm -rf $(BUILD_DIST)/slsh $(BUILD_DIST)/libslang2{,-modules,-dev}
-	mkdir -p $(BUILD_DIST)/slsh/usr/share \
-		$(BUILD_DIST)/libslang2{,-modules,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/slsh/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share \
+		$(BUILD_DIST)/libslang2{,-modules,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# slang2.mk Prep slsh
 	cp -a $(BUILD_STAGE)/slang2/etc $(BUILD_DIST)/slsh
-	cp -a $(BUILD_STAGE)/slang2/usr/{bin,share} $(BUILD_DIST)/slsh/usr
+	cp -a $(BUILD_STAGE)/slang2/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{bin,share} $(BUILD_DIST)/slsh/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 
 	# slang2.mk Prep libslang2
-	cp -a $(BUILD_STAGE)/slang2/usr/lib/libslang.2*.dylib $(BUILD_DIST)/libslang2/usr/lib
+	cp -a $(BUILD_STAGE)/slang2/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libslang.2*.dylib $(BUILD_DIST)/libslang2/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# slang2.mk Prep libslang2-modules
-	cp -a $(BUILD_STAGE)/slang2/usr/lib/slang $(BUILD_DIST)/libslang2-modules/usr/lib
+	cp -a $(BUILD_STAGE)/slang2/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/slang $(BUILD_DIST)/libslang2-modules/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# slang2.mk Prep libslang2-dev
-	cp -a $(BUILD_STAGE)/slang2/usr/include $(BUILD_DIST)/libslang2-dev/usr
-	cp -a $(BUILD_STAGE)/slang2/usr/lib/{libslang.dylib,pkgconfig} $(BUILD_DIST)/libslang2-dev/usr/lib
+	cp -a $(BUILD_STAGE)/slang2/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libslang2-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/slang2/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{libslang.dylib,pkgconfig} $(BUILD_DIST)/libslang2-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# slang2.mk Sign
 	$(call SIGN,slsh,general.xml)

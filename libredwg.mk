@@ -18,7 +18,7 @@ libredwg: libredwg-setup
 	cd $(BUILD_WORK)/libredwg && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libredwg
 	+$(MAKE) -C $(BUILD_WORK)/libredwg install \
 		DESTDIR=$(BUILD_STAGE)/libredwg
@@ -30,15 +30,15 @@ endif
 libredwg-package: libredwg-stage
     # libredwg.mk Package Structure
 	rm -rf $(BUILD_DIST)/libredwg{0,-dev,-utils}
-	mkdir -p $(BUILD_DIST)/libredwg0/usr/lib \
-			$(BUILD_DIST)/libredwg-dev/usr/lib \
-			$(BUILD_DIST)/libredwg-utils/usr
+	mkdir -p $(BUILD_DIST)/libredwg0/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+			$(BUILD_DIST)/libredwg-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+			$(BUILD_DIST)/libredwg-utils/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
     
     # libredwg.mk Prep libredwg
-	cp -a $(BUILD_STAGE)/libredwg/usr/lib/libredwg.0.dylib $(BUILD_DIST)/libredwg0/usr/lib
-	cp -a $(BUILD_STAGE)/libredwg/usr/{bin,share} $(BUILD_DIST)/libredwg-utils/usr
-	cp -a $(BUILD_STAGE)/libredwg/usr/include $(BUILD_DIST)/libredwg-dev/usr
-	cp -a $(BUILD_STAGE)/libredwg/usr/lib/{pkgconfig,libredwg.{a,dylib}} $(BUILD_DIST)/libredwg-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libredwg/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libredwg.0.dylib $(BUILD_DIST)/libredwg0/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libredwg/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{bin,share} $(BUILD_DIST)/libredwg-utils/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/libredwg/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libredwg-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/libredwg/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{pkgconfig,libredwg.{a,dylib}} $(BUILD_DIST)/libredwg-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
     
     # libredwg.mk Sign
 	$(call SIGN,libredwg-utils,general.xml)

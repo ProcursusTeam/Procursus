@@ -18,7 +18,7 @@ xapian: xapian-setup uuid
 	cd $(BUILD_WORK)/xapian && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--enable-shared=yes \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/xapian
@@ -33,26 +33,26 @@ xapian-package: xapian-stage
 	# xapian.mk Package Structure
 	rm -rf $(BUILD_DIST)/libxapian{30,-dev} \
 		$(BUILD_DIST)/xapian-{examples,tools}
-	mkdir -p $(BUILD_DIST)/libxapian30/usr/lib \
-		$(BUILD_DIST)/libxapian-dev/usr/{bin,include,lib,share/man/man1} \
-		$(BUILD_DIST)/xapian-{examples,tools}/usr/{bin,share/man/man1}
+	mkdir -p $(BUILD_DIST)/libxapian30/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+		$(BUILD_DIST)/libxapian-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{bin,include,lib,share/man/man1} \
+		$(BUILD_DIST)/xapian-{examples,tools}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{bin,share/man/man1}
 	
 	# xapian.mk Prep libxapian30
-	cp -a $(BUILD_STAGE)/xapian/usr/lib/libxapian.30.dylib $(BUILD_DIST)/libxapian30/usr/lib
+	cp -a $(BUILD_STAGE)/xapian/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libxapian.30.dylib $(BUILD_DIST)/libxapian30/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# xapian.mk Prep libxapian-dev
-	cp -a $(BUILD_STAGE)/xapian/usr/bin/xapian-config $(BUILD_DIST)/libxapian-dev/usr/bin
-	cp -a $(BUILD_STAGE)/xapian/usr/include $(BUILD_DIST)/libxapian-dev/usr
-	cp -a $(BUILD_STAGE)/xapian/usr/lib/!(libxapian.30.dylib) $(BUILD_DIST)/libxapian-dev/usr/lib
-	cp -a $(BUILD_STAGE)/xapian/usr/share/aclocal $(BUILD_DIST)/libxapian-dev/usr/share
-	cp -a $(BUILD_STAGE)/xapian/usr/share/man/man1/xapian-config.1 $(BUILD_DIST)/libxapian-dev/usr/share/man/man1
+	cp -a $(BUILD_STAGE)/xapian/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/xapian-config $(BUILD_DIST)/libxapian-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin
+	cp -a $(BUILD_STAGE)/xapian/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libxapian-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/xapian/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/!(libxapian.30.dylib) $(BUILD_DIST)/libxapian-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/xapian/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/aclocal $(BUILD_DIST)/libxapian-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share
+	cp -a $(BUILD_STAGE)/xapian/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man/man1/xapian-config.1 $(BUILD_DIST)/libxapian-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man/man1
 	
 	# xapian.mk Prep xapian-examples
-	cp -a $(BUILD_STAGE)/xapian/usr/bin/simple{expand,index,search} $(BUILD_DIST)/xapian-examples/usr/bin
+	cp -a $(BUILD_STAGE)/xapian/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/simple{expand,index,search} $(BUILD_DIST)/xapian-examples/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin
 	
 	# xapian.mk Prep xapian-tools
-	cp -a $(BUILD_STAGE)/xapian/usr/bin/{quest,copydatabase,xapian-{check,compact,delve,metadata,pos,progsrv,replicate{,-server},tcpsrv}} $(BUILD_DIST)/xapian-tools/usr/bin
-	cp -a $(BUILD_STAGE)/xapian/usr/share/man/man1/{copydatabase,quest,xapian-{check,compact,delve,metadata,pos,progsrv,replicate{,-server},tcpsrv}}.1 $(BUILD_DIST)/xapian-tools/usr/share/man/man1
+	cp -a $(BUILD_STAGE)/xapian/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/{quest,copydatabase,xapian-{check,compact,delve,metadata,pos,progsrv,replicate{,-server},tcpsrv}} $(BUILD_DIST)/xapian-tools/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin
+	cp -a $(BUILD_STAGE)/xapian/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man/man1/{copydatabase,quest,xapian-{check,compact,delve,metadata,pos,progsrv,replicate{,-server},tcpsrv}}.1 $(BUILD_DIST)/xapian-tools/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man/man1
 	
 	# xapian.mk Sign
 	$(call SIGN,libxapian30,general.xml)

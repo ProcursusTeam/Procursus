@@ -18,7 +18,7 @@ mpg123: mpg123-setup
 	cd $(BUILD_WORK)/mpg123 && ./configure \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--with-audio=coreaudio \
 		--with-cpu=aarch64
 	+$(MAKE) -C $(BUILD_WORK)/mpg123 install \
@@ -29,28 +29,28 @@ endif
 mpg123-package: mpg123-stage
 	# mpg123.mk Package Structure
 	rm -rf $(BUILD_DIST)/mpg123 $(BUILD_DIST)/lib{mpg,out,syn}123-{0,dev}
-	mkdir -p $(BUILD_DIST)/mpg123/usr/lib \
-		$(BUILD_DIST)/libmpg123-0/usr/lib \
-		$(BUILD_DIST)/libout123-0/usr/lib \
-		$(BUILD_DIST)/libsyn123-0/usr/lib \
-		$(BUILD_DIST)/libmpg123-dev/usr/lib
+	mkdir -p $(BUILD_DIST)/mpg123/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+		$(BUILD_DIST)/libmpg123-0/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+		$(BUILD_DIST)/libout123-0/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+		$(BUILD_DIST)/libsyn123-0/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+		$(BUILD_DIST)/libmpg123-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# mpg123.mk Prep mpg123
-	cp -a $(BUILD_STAGE)/mpg123/usr/{bin,share} $(BUILD_DIST)/mpg123/usr
-	cp -a $(BUILD_STAGE)/mpg123/usr/lib/mpg123 $(BUILD_DIST)/mpg123/usr/lib
+	cp -a $(BUILD_STAGE)/mpg123/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{bin,share} $(BUILD_DIST)/mpg123/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/mpg123/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/mpg123 $(BUILD_DIST)/mpg123/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# mpg123.mk Prep libmpg123-0
-	cp -a $(BUILD_STAGE)/mpg123/usr/lib/libmpg123.0.dylib $(BUILD_DIST)/libmpg123-0/usr/lib
+	cp -a $(BUILD_STAGE)/mpg123/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libmpg123.0.dylib $(BUILD_DIST)/libmpg123-0/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# mpg123.mk Prep libout123-0
-	cp -a $(BUILD_STAGE)/mpg123/usr/lib/libout123.0.dylib $(BUILD_DIST)/libout123-0/usr/lib
+	cp -a $(BUILD_STAGE)/mpg123/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libout123.0.dylib $(BUILD_DIST)/libout123-0/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# mpg123.mk Prep libsyn123-0
-	cp -a $(BUILD_STAGE)/mpg123/usr/lib/libsyn123.0.dylib $(BUILD_DIST)/libsyn123-0/usr/lib
+	cp -a $(BUILD_STAGE)/mpg123/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libsyn123.0.dylib $(BUILD_DIST)/libsyn123-0/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# mpg123.mk Prep libmpg123-dev
-	cp -a $(BUILD_STAGE)/mpg123/usr/lib/!(*.0.*|mpg123) $(BUILD_DIST)/libmpg123-dev/usr/lib
-	cp -a $(BUILD_STAGE)/mpg123/usr/include $(BUILD_DIST)/libmpg123-dev/usr
+	cp -a $(BUILD_STAGE)/mpg123/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/!(*.0.*|mpg123) $(BUILD_DIST)/libmpg123-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/mpg123/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libmpg123-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 
 	# mpg123.mk Sign
 	$(call SIGN,mpg123,general.xml)

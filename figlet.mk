@@ -17,13 +17,13 @@ figlet:
 else
 figlet: figlet-setup
 	+$(MAKE) -C $(BUILD_WORK)/figlet \
-		prefix="/usr" \
+		prefix="/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)" \
 		CC="$(CC)" \
 		CFLAGS="$(CFLAGS)" \
 		LD="$(CC)" \
 		LDFLAGS="$(LDFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/figlet install \
-		prefix="/usr" \
+		prefix="/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)" \
 		DESTDIR="$(BUILD_STAGE)/figlet"
 	touch $(BUILD_WORK)/figlet/.build_complete
 endif
@@ -34,7 +34,7 @@ figlet-package: figlet-stage
 	mkdir -p $(BUILD_DIST)/figlet
 	
 	# figlet.mk Prep figlet
-	cp -a $(BUILD_STAGE)/figlet/usr $(BUILD_DIST)/figlet
+	cp -a $(BUILD_STAGE)/figlet/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) $(BUILD_DIST)/figlet
 	
 	# figlet.mk Sign
 	$(call SIGN,figlet,general.xml)

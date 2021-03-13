@@ -19,9 +19,9 @@ libxrandr: libxrandr-setup libx11 libxrender libxext xorgproto
 	cd $(BUILD_WORK)/libxrandr && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
+		--localstatedir=$(MEMO_PREFIX)/var \
 		--enable-malloc0returnsnull=no
 	+$(MAKE) -C $(BUILD_WORK)/libxrandr
 	+$(MAKE) -C $(BUILD_WORK)/libxrandr install \
@@ -34,15 +34,15 @@ endif
 libxrandr-package: libxrandr-stage
 	# libxrandr.mk Package Structure
 	rm -rf $(BUILD_DIST)/libxrandr{2,-dev}
-	mkdir -p $(BUILD_DIST)/libxrandr{2,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/libxrandr{2,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# libxrandr.mk Prep libxrandr2
-	cp -a $(BUILD_STAGE)/libxrandr/usr/lib/libXrandr.2.dylib $(BUILD_DIST)/libxrandr2/usr/lib
+	cp -a $(BUILD_STAGE)/libxrandr/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libXrandr.2.dylib $(BUILD_DIST)/libxrandr2/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# libxrandr.mk Prep libxrandr-dev
-	cp -a $(BUILD_STAGE)/libxrandr/usr/lib/libXrandr{.a,.dylib} $(BUILD_DIST)/libxrandr-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libxrandr/usr/lib/pkgconfig $(BUILD_DIST)/libxrandr-dev/usr/lib/pkgconfig
-	cp -a $(BUILD_STAGE)/libxrandr/usr/{include,share} $(BUILD_DIST)/libxrandr-dev/usr
+	cp -a $(BUILD_STAGE)/libxrandr/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libXrandr{.a,.dylib} $(BUILD_DIST)/libxrandr-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxrandr/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig $(BUILD_DIST)/libxrandr-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig
+	cp -a $(BUILD_STAGE)/libxrandr/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{include,share} $(BUILD_DIST)/libxrandr-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	
 	# libxrandr.mk Sign
 	$(call SIGN,libxrandr2,general.xml)
