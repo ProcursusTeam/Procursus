@@ -11,7 +11,7 @@ gh-setup: setup
 		wget -q -nc -O$(BUILD_SOURCE)/gh-$(GH_VERSION).tar.gz \
 			https://github.com/cli/cli/archive/v$(GH_VERSION).tar.gz
 	$(call EXTRACT_TAR,gh-$(GH_VERSION).tar.gz,cli-$(GH_VERSION),gh)
-	mkdir -p $(BUILD_STAGE)/gh/usr/bin
+	mkdir -p $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(SED) -i 's/exe := "open"/exe := "uiopen"/' $(BUILD_WORK)/gh/pkg/browser/browser.go
@@ -34,18 +34,18 @@ gh: gh-setup
 		CGO_ENABLED=1 \
 		CC="$(CC)"
 	+unset CC CXX CFLAGS CPPFLAGS LDFLAGS && $(MAKE) -C $(BUILD_WORK)/gh manpages
-	$(CP) -a $(BUILD_WORK)/gh/bin/gh $(BUILD_STAGE)/gh/usr/bin
-	$(CP) -a $(BUILD_WORK)/gh/share $(BUILD_STAGE)/gh/usr
+	$(CP) -a $(BUILD_WORK)/gh/bin/gh $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin
+	$(CP) -a $(BUILD_WORK)/gh/share $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	touch $(BUILD_WORK)/gh/.build_complete
 endif
 
 gh-package: gh-stage
 	# gh.mk Package Structure
 	rm -rf $(BUILD_DIST)/gh
-	mkdir -p $(BUILD_DIST)/gh/usr
+	mkdir -p $(BUILD_DIST)/gh/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 
 	# gh.mk Prep gh
-	cp -a $(BUILD_STAGE)/gh/usr/{bin,share} $(BUILD_DIST)/gh/usr
+	cp -a $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{bin,share} $(BUILD_DIST)/gh/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 
 	# gh.mk Sign
 	$(call SIGN,gh,general.xml)

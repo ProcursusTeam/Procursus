@@ -22,9 +22,9 @@ libfmt: libfmt-setup
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
-		-DCMAKE_INSTALL_RPATH=/usr \
+		-DCMAKE_INSTALL_PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		-DCMAKE_INSTALL_NAME_DIR=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+		-DCMAKE_INSTALL_RPATH=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_CXX_FLAGS="$(CFLAGS)" \
 		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
@@ -42,16 +42,16 @@ endif
 libfmt-package: libfmt-stage
 	# libfmt.mk Package Structure
 	rm -rf $(BUILD_DIST)/libfmt{7,-dev}
-	mkdir -p $(BUILD_DIST)/libfmt{7,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/libfmt{7,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# libfmt.mk Prep libfmt7
-	cp -a $(BUILD_STAGE)/libfmt/usr/lib/libfmt.{7,$(LIBFMT_VERSION)}.dylib $(BUILD_DIST)/libfmt7/usr/lib
+	cp -a $(BUILD_STAGE)/libfmt/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libfmt.{7,$(LIBFMT_VERSION)}.dylib $(BUILD_DIST)/libfmt7/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# libfmt.mk Prep libfmt-dev
-	cp -a $(BUILD_STAGE)/libfmt/usr/include $(BUILD_DIST)/libfmt-dev/usr
-	cp -a $(BUILD_STAGE)/libfmt/usr/lib/libfmt.dylib $(BUILD_DIST)/libfmt-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libfmt/usr/lib/pkgconfig $(BUILD_DIST)/libfmt-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libfmt/usr/lib/cmake $(BUILD_DIST)/libfmt-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libfmt/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libfmt-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/libfmt/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libfmt.dylib $(BUILD_DIST)/libfmt-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libfmt/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig $(BUILD_DIST)/libfmt-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libfmt/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/cmake $(BUILD_DIST)/libfmt-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# libfmt.mk Sign
 	$(call SIGN,libfmt7,general.xml)

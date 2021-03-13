@@ -18,29 +18,29 @@ else
 rpmalloc: rpmalloc-setup
 	$(CC) $(CFLAGS) $(BUILD_WORK)/rpmalloc/rpmalloc.c -DENABLE_PRELOAD=1 -DENABLE_OVERRIDE=1 -o $(BUILD_WORK)/rpmalloc/rpmalloc.o -c
 	$(AR) -crs $(BUILD_WORK)/rpmalloc/librpmalloc.a $(BUILD_WORK)/rpmalloc/rpmalloc.o
-	$(CC) $(CFLAGS) $(BUILD_WORK)/rpmalloc/rpmalloc.o -dynamiclib -o $(BUILD_WORK)/rpmalloc/librpmalloc.0.dylib -install_name "/usr/lib/librpmalloc.0.dylib"
-	$(GINSTALL) -Dm0755 $(BUILD_WORK)/rpmalloc/librpmalloc.0.dylib $(BUILD_STAGE)/rpmalloc/usr/lib/librpmalloc.0.dylib
-	$(GINSTALL) -Dm0644 $(BUILD_WORK)/rpmalloc/librpmalloc.a $(BUILD_STAGE)/rpmalloc/usr/lib/librpmalloc.a
-	$(GINSTALL) -Dm0644 $(BUILD_WORK)/rpmalloc/rpmalloc.h $(BUILD_STAGE)/rpmalloc/usr/include/rpmalloc.h
-	$(LN) -s librpmalloc.0.dylib $(BUILD_STAGE)/rpmalloc/usr/lib/librpmalloc.dylib
-	$(GINSTALL) -Dm0755 $(BUILD_WORK)/rpmalloc/librpmalloc.0.dylib $(BUILD_BASE)/usr/lib/librpmalloc.0.dylib
-	$(GINSTALL) -Dm0644 $(BUILD_WORK)/rpmalloc/librpmalloc.a $(BUILD_BASE)/usr/lib/librpmalloc.a
-	$(GINSTALL) -Dm0644 $(BUILD_WORK)/rpmalloc/rpmalloc.h $(BUILD_BASE)/usr/include/rpmalloc.h
-	$(LN) -s librpmalloc.0.dylib $(BUILD_BASE)/usr/lib/librpmalloc.dylib
+	$(CC) $(CFLAGS) $(BUILD_WORK)/rpmalloc/rpmalloc.o -dynamiclib -o $(BUILD_WORK)/rpmalloc/librpmalloc.0.dylib -install_name "/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/librpmalloc.0.dylib"
+	$(GINSTALL) -Dm0755 $(BUILD_WORK)/rpmalloc/librpmalloc.0.dylib $(BUILD_STAGE)/rpmalloc/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/librpmalloc.0.dylib
+	$(GINSTALL) -Dm0644 $(BUILD_WORK)/rpmalloc/librpmalloc.a $(BUILD_STAGE)/rpmalloc/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/librpmalloc.a
+	$(GINSTALL) -Dm0644 $(BUILD_WORK)/rpmalloc/rpmalloc.h $(BUILD_STAGE)/rpmalloc/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/rpmalloc.h
+	$(LN) -s librpmalloc.0.dylib $(BUILD_STAGE)/rpmalloc/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/librpmalloc.dylib
+	$(GINSTALL) -Dm0755 $(BUILD_WORK)/rpmalloc/librpmalloc.0.dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/librpmalloc.0.dylib
+	$(GINSTALL) -Dm0644 $(BUILD_WORK)/rpmalloc/librpmalloc.a $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/librpmalloc.a
+	$(GINSTALL) -Dm0644 $(BUILD_WORK)/rpmalloc/rpmalloc.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/rpmalloc.h
+	$(LN) -s librpmalloc.0.dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/librpmalloc.dylib
 	touch $(BUILD_WORK)/rpmalloc/.build_complete
 endif
 
 rpmalloc-package: rpmalloc-stage
 	# rpmalloc.mk Package Structure
 	rm -rf $(BUILD_DIST)/librpmalloc{0,-dev}
-	mkdir -p $(BUILD_DIST)/librpmalloc{0,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/librpmalloc{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# rpmalloc.mk Prep librpmalloc0
-	cp -a $(BUILD_STAGE)/rpmalloc/usr/lib/librpmalloc.0.dylib $(BUILD_DIST)/librpmalloc0/usr/lib
+	cp -a $(BUILD_STAGE)/rpmalloc/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/librpmalloc.0.dylib $(BUILD_DIST)/librpmalloc0/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# rpmalloc.mk Prep librpmalloc-dev
-	cp -a $(BUILD_STAGE)/rpmalloc/usr/lib/librpmalloc.{dylib,a} $(BUILD_DIST)/librpmalloc-dev/usr/lib
-	cp -a $(BUILD_STAGE)/rpmalloc/usr/include $(BUILD_DIST)/librpmalloc-dev/usr
+	cp -a $(BUILD_STAGE)/rpmalloc/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/librpmalloc.{dylib,a} $(BUILD_DIST)/librpmalloc-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/rpmalloc/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/librpmalloc-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	
 	# rpmalloc.mk Sign
 	$(call SIGN,librpmalloc0,general.xml)

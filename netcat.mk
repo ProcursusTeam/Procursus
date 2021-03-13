@@ -19,11 +19,11 @@ netcat: netcat-setup gettext
 	cd $(BUILD_WORK)/netcat && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--mandir=/usr/share/man
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--mandir=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man
 	+$(MAKE) -C $(BUILD_WORK)/netcat install \
 		DESTDIR="$(BUILD_STAGE)/netcat"
-	rm -rf $(BUILD_STAGE)/netcat/usr/info
+	rm -rf $(BUILD_STAGE)/netcat/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/info
 	touch $(BUILD_WORK)/netcat/.build_complete
 endif
 
@@ -33,7 +33,7 @@ netcat-package: netcat-stage
 	mkdir -p $(BUILD_DIST)/netcat
 	
 	# netcat.mk Prep netcat
-	cp -a $(BUILD_STAGE)/netcat/usr $(BUILD_DIST)/netcat
+	cp -a $(BUILD_STAGE)/netcat/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) $(BUILD_DIST)/netcat
 	
 	# netcat.mk Sign
 	$(call SIGN,netcat,general.xml)

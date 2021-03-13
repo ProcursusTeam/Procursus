@@ -19,9 +19,9 @@ libxxf86vm: libxxf86vm-setup xorgproto libx11 libxext
 	cd $(BUILD_WORK)/libxxf86vm && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
+		--localstatedir=$(MEMO_PREFIX)/var \
 		--enable-malloc0returnsnull=no
 	+$(MAKE) -C $(BUILD_WORK)/libxxf86vm
 	+$(MAKE) -C $(BUILD_WORK)/libxxf86vm install \
@@ -34,15 +34,15 @@ endif
 libxxf86vm-package: libxxf86vm-stage
 	# libxxf86vm.mk Package Structure
 	rm -rf $(BUILD_DIST)/libxxf86vm{1,-dev}
-	mkdir -p $(BUILD_DIST)/libxxf86vm1/usr/lib
-	mkdir -p $(BUILD_DIST)/libxxf86vm-dev/usr/{include,lib}
+	mkdir -p $(BUILD_DIST)/libxxf86vm1/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libxxf86vm-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{include,lib}
 	
 	# libxxf86vm.mk Prep libxxf86vm1
-	cp -a $(BUILD_STAGE)/libxxf86vm/usr/lib/libXxf86vm.1.dylib $(BUILD_DIST)/libxxf86vm1/usr/lib
+	cp -a $(BUILD_STAGE)/libxxf86vm/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libXxf86vm.1.dylib $(BUILD_DIST)/libxxf86vm1/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# libxxf86vm.mk Prep libxxf86vm-dev
-	cp -a $(BUILD_STAGE)/libxxf86vm/usr/lib/{libXxf86vm{.a,.dylib},pkgconfig} $(BUILD_DIST)/libxxf86vm-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libxxf86vm/usr/include $(BUILD_DIST)/libxxf86vm-dev/usr
+	cp -a $(BUILD_STAGE)/libxxf86vm/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{libXxf86vm{.a,.dylib},pkgconfig} $(BUILD_DIST)/libxxf86vm-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxxf86vm/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libxxf86vm-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	
 	# libxxf86vm.mk Sign
 	$(call SIGN,libxxf86vm1,general.xml)

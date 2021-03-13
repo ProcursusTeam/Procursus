@@ -19,13 +19,13 @@ htop: htop-setup ncurses
 	cd $(BUILD_WORK)/htop && ./configure \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--disable-linux-affinity \
 		ac_cv_lib_ncursesw_addnwstr=yes
 	+$(MAKE) -C $(BUILD_WORK)/htop install \
 		CFLAGS="$(CFLAGS) -U_XOPEN_SOURCE" \
 		DESTDIR=$(BUILD_STAGE)/htop
-	rm -rf $(BUILD_STAGE)/htop/usr/share/{applications,pixmaps}
+	rm -rf $(BUILD_STAGE)/htop/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/{applications,pixmaps}
 	touch $(BUILD_WORK)/htop/.build_complete
 endif
 

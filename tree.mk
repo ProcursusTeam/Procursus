@@ -18,7 +18,7 @@ else
 tree: tree-setup 
 	+$(MAKE) -C $(BUILD_WORK)/tree
 	+$(MAKE) -C $(BUILD_WORK)/tree install \
-		prefix=$(BUILD_STAGE)/tree/usr
+		prefix=$(BUILD_STAGE)/tree/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	touch $(BUILD_WORK)/tree/.build_complete
 endif
 

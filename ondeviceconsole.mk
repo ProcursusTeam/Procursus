@@ -13,7 +13,7 @@ ondeviceconsole-setup: setup
 		https://raw.githubusercontent.com/eswick/ondeviceconsole/$(ONDEVICECONSOLE_COMMIT)/main.m
 	$(SED) -i '\|#import <sys/socket.h>|a #import <Foundation/Foundation.h>' \
 		$(BUILD_WORK)/ondeviceconsole/main.m
-	mkdir -p $(BUILD_STAGE)/ondeviceconsole/usr/bin
+	mkdir -p $(BUILD_STAGE)/ondeviceconsole/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin
 
 ifneq ($(wildcard $(BUILD_WORK)/ondeviceconsole/.build_complete),)
 ondeviceconsole:
@@ -21,7 +21,7 @@ ondeviceconsole:
 else
 ondeviceconsole: ondeviceconsole-setup
 	$(CC) $(CFLAGS) $(BUILD_WORK)/ondeviceconsole/main.m -framework Foundation \
-		-o $(BUILD_STAGE)/ondeviceconsole/usr/bin/ondeviceconsole
+		-o $(BUILD_STAGE)/ondeviceconsole/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/ondeviceconsole
 	touch $(BUILD_WORK)/ondeviceconsole/.build_complete
 endif
 

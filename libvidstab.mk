@@ -22,8 +22,8 @@ libvidstab: libvidstab-setup
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
+		-DCMAKE_INSTALL_PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		-DCMAKE_INSTALL_NAME_DIR=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
@@ -41,14 +41,14 @@ endif
 libvidstab-package: libvidstab-stage
 	# libvidstab.mk Package Structure
 	rm -rf $(BUILD_DIST)/libvidstab{1.1,-dev}
-	mkdir -p $(BUILD_DIST)/libvidstab{1.1,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/libvidstab{1.1,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# libvidstab.mk Prep libvidstab1.1
-	cp -a $(BUILD_STAGE)/libvidstab/usr/lib/libvidstab.1.1.dylib $(BUILD_DIST)/libvidstab1.1/usr/lib
+	cp -a $(BUILD_STAGE)/libvidstab/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libvidstab.1.1.dylib $(BUILD_DIST)/libvidstab1.1/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# libvidstab.mk Prep libvidstab-dev
-	cp -a $(BUILD_STAGE)/libvidstab/usr/lib/!(libvidstab.1.1.dylib) $(BUILD_DIST)/libvidstab-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libvidstab/usr/include $(BUILD_DIST)/libvidstab-dev/usr
+	cp -a $(BUILD_STAGE)/libvidstab/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/!(libvidstab.1.1.dylib) $(BUILD_DIST)/libvidstab-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libvidstab/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libvidstab-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	
 	# libvidstab.mk Sign
 	$(call SIGN,libvidstab1.1,general.xml)

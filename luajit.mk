@@ -28,37 +28,37 @@ luajit: luajit-setup
 		TARGET_LDFLAGS="$(LDFLAGS)" \
 		TARGET_SHLDFLAGS="$(LDFLAGS)" \
 		TARGET_SYS=iOS \
-		PREFIX=/usr
+		PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/luajit install \
 		DESTDIR="$(BUILD_STAGE)/luajit" \
-		PREFIX=/usr
+		PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/luajit install \
 		DESTDIR="$(BUILD_BASE)" \
-		PREFIX=/usr
-	mv $(BUILD_STAGE)/luajit/usr/bin/luajit-$(LUAJIT_VERSION) $(BUILD_STAGE)/luajit/usr/bin/luajit
+		PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	mv $(BUILD_STAGE)/luajit/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/luajit-$(LUAJIT_VERSION) $(BUILD_STAGE)/luajit/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/luajit
 	touch $(BUILD_WORK)/luajit/.build_complete
 endif
 
 luajit-package: luajit-stage
 	# luajit.mk Package Structure
 	rm -rf $(BUILD_DIST)/luajit $(BUILD_DIST)/libluajit-5.1-{2,dev,common}
-	mkdir -p $(BUILD_DIST)/luajit/usr/share \
-		$(BUILD_DIST)/libluajit-5.1-{2,dev}/usr/lib \
-		$(BUILD_DIST)/libluajit-5.1-common/usr/share
+	mkdir -p $(BUILD_DIST)/luajit/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share \
+		$(BUILD_DIST)/libluajit-5.1-{2,dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+		$(BUILD_DIST)/libluajit-5.1-common/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share
 	
 	# luajit.mk Prep luajit
-	cp -a $(BUILD_STAGE)/luajit/usr/bin $(BUILD_DIST)/luajit/usr
-	cp -a $(BUILD_STAGE)/luajit/usr/share/man $(BUILD_DIST)/luajit/usr/share
+	cp -a $(BUILD_STAGE)/luajit/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin $(BUILD_DIST)/luajit/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/luajit/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man $(BUILD_DIST)/luajit/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share
 
 	# luajit.mk Prep libluajit-5.1-2
-	cp -a $(BUILD_STAGE)/luajit/usr/lib/libluajit-5.1.2*.dylib $(BUILD_DIST)/libluajit-5.1-2/usr/lib
+	cp -a $(BUILD_STAGE)/luajit/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libluajit-5.1.2*.dylib $(BUILD_DIST)/libluajit-5.1-2/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# luajit.mk Prep libluajit-5.1-dev
-	cp -a $(BUILD_STAGE)/luajit/usr/lib/!(libluajit-5.1.2*.dylib) $(BUILD_DIST)/libluajit-5.1-dev/usr/lib
-	cp -a $(BUILD_STAGE)/luajit/usr/include $(BUILD_DIST)/libluajit-5.1-dev/usr
+	cp -a $(BUILD_STAGE)/luajit/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/!(libluajit-5.1.2*.dylib) $(BUILD_DIST)/libluajit-5.1-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/luajit/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libluajit-5.1-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 
 	# luajit.mk Prep libluajit-5.1-common
-	cp -a $(BUILD_STAGE)/luajit/usr/share/lua* $(BUILD_DIST)/libluajit-5.1-common/usr/share
+	cp -a $(BUILD_STAGE)/luajit/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/lua* $(BUILD_DIST)/libluajit-5.1-common/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share
 	
 	# luajit.mk Sign
 	$(call SIGN,luajit,general.xml)

@@ -21,9 +21,9 @@ cwidget: cwidget-setup gettext ncurses libsigcplusplus
 	cd $(BUILD_WORK)/cwidget && ./autogen.sh \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--disable-werror \
-		CXXFLAGS="-std=c++11 $(CXXFLAGS) -I$(BUILD_BASE)/usr/include/sigc++-2.0 -I$(BUILD_BASE)/usr/lib/sigc++-2.0/include -DNCURSES_WIDECHAR"
+		CXXFLAGS="-std=c++11 $(CXXFLAGS) -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/sigc++-2.0 -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/sigc++-2.0/include -DNCURSES_WIDECHAR"
 	+$(MAKE) -C $(BUILD_WORK)/cwidget \
 		LIBS="-lncursesw  -lpthread -lsigc-2.0 -liconv -lintl -Wl,-framework -Wl,CoreFoundation"
 	+$(MAKE) -C $(BUILD_WORK)/cwidget install \
@@ -36,16 +36,16 @@ endif
 cwidget-package: cwidget-stage
 	# cwidget.mk Package Structure
 	rm -rf $(BUILD_DIST)/*cwidget*/
-	mkdir -p $(BUILD_DIST)/libcwidget4/usr/lib \
-		$(BUILD_DIST)/libcwidget-dev/usr/lib
+	mkdir -p $(BUILD_DIST)/libcwidget4/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+		$(BUILD_DIST)/libcwidget-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# cwidget.mk Prep libcwidget4
-	cp -a $(BUILD_STAGE)/cwidget/usr/lib/lib*.4.dylib $(BUILD_DIST)/libcwidget4/usr/lib
-	cp -a $(BUILD_STAGE)/cwidget/usr/share $(BUILD_DIST)/libcwidget4/usr
+	cp -a $(BUILD_STAGE)/cwidget/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/lib*.4.dylib $(BUILD_DIST)/libcwidget4/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/cwidget/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share $(BUILD_DIST)/libcwidget4/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	
 	# cwidget.mk Prep libcwidget-dev
-	cp -a $(BUILD_STAGE)/cwidget/usr/include $(BUILD_DIST)/libcwidget-dev/usr
-	cp -a $(BUILD_STAGE)/cwidget/usr/lib/!(*.4.*) $(BUILD_DIST)/libcwidget-dev/usr/lib
+	cp -a $(BUILD_STAGE)/cwidget/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libcwidget-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/cwidget/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/!(*.4.*) $(BUILD_DIST)/libcwidget-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# cwidget.mk Sign
 	$(call SIGN,libcwidget4,general.xml)

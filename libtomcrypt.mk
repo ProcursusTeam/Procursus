@@ -29,10 +29,10 @@ libtomcrypt: libtomcrypt-setup libgmp10 libtommath
 		LIBTOOL="$(BUILD_WORK)/libtommath/libtool/libtool" \
 		CFLAGS="$(CFLAGS) -DGMP_DESC -DLTM_DESC -DUSE_LTM"
 	+$(MAKE) -C $(BUILD_WORK)/libtomcrypt -f makefile.shared install \
-		PREFIX="/usr" \
+		PREFIX="/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)" \
 		DESTDIR="$(BUILD_STAGE)/libtomcrypt"
 	+$(MAKE) -C $(BUILD_WORK)/libtomcrypt -f makefile.shared install \
-		PREFIX="/usr" \
+		PREFIX="/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)" \
 		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/libtomcrypt/.build_complete
 endif
@@ -40,12 +40,12 @@ endif
 libtomcrypt-package: libtomcrypt-stage
 	# libtomcrypt.mk Package Structure
 	rm -rf $(BUILD_DIST)/libtomcrypt{1,-dev}
-	mkdir -p $(BUILD_DIST)/libtomcrypt{1,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/libtomcrypt{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# libtomcrypt.mk Prep libtomcrypt
-	cp -a $(BUILD_STAGE)/libtomcrypt/usr/lib/libtomcrypt.1.dylib $(BUILD_DIST)/libtomcrypt1/usr/lib
-	cp -a $(BUILD_STAGE)/libtomcrypt/usr/include $(BUILD_DIST)/libtomcrypt-dev/usr
-	cp -a $(BUILD_STAGE)/libtomcrypt/usr/lib/{libtomcrypt.{a,dylib},pkgconfig} $(BUILD_DIST)/libtomcrypt-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libtomcrypt/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libtomcrypt.1.dylib $(BUILD_DIST)/libtomcrypt1/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libtomcrypt/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libtomcrypt-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/libtomcrypt/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{libtomcrypt.{a,dylib},pkgconfig} $(BUILD_DIST)/libtomcrypt-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# libtomcrypt.mk Sign
 	$(call SIGN,libtomcrypt1,general.xml)

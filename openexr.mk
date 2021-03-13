@@ -21,9 +21,9 @@ openexr: openexr-setup
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
-		-DCMAKE_INSTALL_RPATH=/usr \
+		-DCMAKE_INSTALL_PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		-DCMAKE_INSTALL_NAME_DIR=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+		-DCMAKE_INSTALL_RPATH=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
@@ -39,9 +39,9 @@ openexr: openexr-setup
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
-		-DCMAKE_INSTALL_RPATH=/usr \
+		-DCMAKE_INSTALL_PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		-DCMAKE_INSTALL_NAME_DIR=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+		-DCMAKE_INSTALL_RPATH=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
@@ -58,25 +58,25 @@ openexr-package: openexr-stage
 	# openexr.mk Package Structure
 	rm -rf $(BUILD_DIST)/openexr \
 		$(BUILD_DIST)/lib{openexr,ilmbase}{-dev,25}
-	mkdir -p $(BUILD_DIST)/openexr/usr \
-		$(BUILD_DIST)/lib{openexr,ilmbase}{-dev,25}/usr/lib
+	mkdir -p $(BUILD_DIST)/openexr/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		$(BUILD_DIST)/lib{openexr,ilmbase}{-dev,25}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# openexr.mk Prep openexr
-	cp -a $(BUILD_STAGE)/openexr/usr/bin $(BUILD_DIST)/openexr/usr
+	cp -a $(BUILD_STAGE)/openexr/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin $(BUILD_DIST)/openexr/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	
 	# openexr.mk Prep libopenexr25
-	cp -a $(BUILD_STAGE)/openexr/usr/lib/libIlmImf{,Util}-2_5.*.dylib $(BUILD_DIST)/libopenexr25/usr/lib
+	cp -a $(BUILD_STAGE)/openexr/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libIlmImf{,Util}-2_5.*.dylib $(BUILD_DIST)/libopenexr25/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# openexr.mk Prep libopenexr-dev
-	cp -a $(BUILD_STAGE)/openexr/usr/lib/{libIlmImf{,Util}{-2_5,}.dylib,pkgconfig,cmake} $(BUILD_DIST)/libopenexr-dev/usr/lib
-	cp -a $(BUILD_STAGE)/openexr/usr/include $(BUILD_DIST)/libopenexr-dev/usr
+	cp -a $(BUILD_STAGE)/openexr/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{libIlmImf{,Util}{-2_5,}.dylib,pkgconfig,cmake} $(BUILD_DIST)/libopenexr-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/openexr/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libopenexr-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	
 	# openexr.mk Prep libilmbase25
-	cp -a $(BUILD_STAGE)/ilmbase/usr/lib/lib{Half,Iex,IexMath,IlmThread,Imath}-2_5.*.dylib $(BUILD_DIST)/libilmbase25/usr/lib
+	cp -a $(BUILD_STAGE)/ilmbase/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/lib{Half,Iex,IexMath,IlmThread,Imath}-2_5.*.dylib $(BUILD_DIST)/libilmbase25/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# openexr.mk Prep libilmbase-dev
-	cp -a $(BUILD_STAGE)/ilmbase/usr/lib/{lib{Half,Iex,IexMath,IlmThread,Imath}{-2_5,}.dylib,pkgconfig,cmake} $(BUILD_DIST)/libilmbase-dev/usr/lib
-	cp -a $(BUILD_STAGE)/ilmbase/usr/include $(BUILD_DIST)/libilmbase-dev/usr
+	cp -a $(BUILD_STAGE)/ilmbase/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{lib{Half,Iex,IexMath,IlmThread,Imath}{-2_5,}.dylib,pkgconfig,cmake} $(BUILD_DIST)/libilmbase-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/ilmbase/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libilmbase-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	
 	# openexr.mk Sign
 	$(call SIGN,openexr,general.xml)

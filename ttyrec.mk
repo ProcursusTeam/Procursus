@@ -17,10 +17,10 @@ ttyrec:
 else
 ttyrec: ttyrec-setup
 	+$(MAKE) -C $(BUILD_WORK)/ttyrec CC="$(CC)" CFLAGS="$(CFLAGS) -DHAVE_openpty"
-	mkdir -p $(BUILD_STAGE)/ttyrec/usr/{bin,share/man/man1}
+	mkdir -p $(BUILD_STAGE)/ttyrec/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{bin,share/man/man1}
 	+$(MAKE) -C $(BUILD_WORK)/ttyrec install \
 		DESTDIR="$(BUILD_STAGE)/ttyrec"
-	cp $(BUILD_WORK)/ttyrec/tty{play,rec,time}.1 $(BUILD_STAGE)/ttyrec/usr/share/man/man1
+	cp $(BUILD_WORK)/ttyrec/tty{play,rec,time}.1 $(BUILD_STAGE)/ttyrec/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man/man1
 	touch $(BUILD_WORK)/ttyrec/.build_complete
 endif
 
@@ -30,7 +30,7 @@ ttyrec-package: ttyrec-stage
 	mkdir -p $(BUILD_DIST)/ttyrec
 	
 	# ttyrec.mk Prep ttyrec
-	cp -a $(BUILD_STAGE)/ttyrec/usr $(BUILD_DIST)/ttyrec
+	cp -a $(BUILD_STAGE)/ttyrec/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) $(BUILD_DIST)/ttyrec
 	
 	# ttyrec.mk Sign
 	$(call SIGN,ttyrec,general.xml)

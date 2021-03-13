@@ -18,9 +18,9 @@ else
 pstree: pstree-setup
 	$(MAKE) -C $(BUILD_WORK)/pstree pstree
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/pstree/pstree \
-		$(BUILD_STAGE)/pstree/usr/bin/pstree
+		$(BUILD_STAGE)/pstree/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/pstree
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/pstree/pstree.1 \
-		$(BUILD_STAGE)/pstree/usr/share/man/man1/pstree.1
+		$(BUILD_STAGE)/pstree/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man/man1/pstree.1
 	touch $(BUILD_WORK)/pstree/.build_complete
 endif
 

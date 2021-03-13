@@ -18,7 +18,7 @@ libonig: libonig-setup
 	cd $(BUILD_WORK)/libonig && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libonig install \
 		DESTDIR=$(BUILD_STAGE)/libonig
 	+$(MAKE) -C $(BUILD_WORK)/libonig install \
@@ -29,16 +29,16 @@ endif
 libonig-package: libonig-stage
 	# libonig.mk Package Structure
 	rm -rf $(BUILD_DIST)/libonig{5,-dev}
-	mkdir -p $(BUILD_DIST)/libonig5/usr/lib \
-			$(BUILD_DIST)/libonig-dev/usr/{include,lib/pkgconfig}
+	mkdir -p $(BUILD_DIST)/libonig5/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+			$(BUILD_DIST)/libonig-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{include,lib/pkgconfig}
 
 	# libonig.mk Prep libonig5
-	cp -a $(BUILD_STAGE)/libonig/usr/lib/libonig.5.dylib $(BUILD_DIST)/libonig5/usr/lib
+	cp -a $(BUILD_STAGE)/libonig/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libonig.5.dylib $(BUILD_DIST)/libonig5/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# libonig.mk Prep libonig-dev
-	cp -a $(BUILD_STAGE)/libonig/usr/include/onig{gnu.h,uruma.h} $(BUILD_DIST)/libonig-dev/usr/include
-	cp -a $(BUILD_STAGE)/libonig/usr/lib/libonig.{a,dylib} $(BUILD_DIST)/libonig-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libonig/usr/lib/pkgconfig/oniguruma.pc $(BUILD_DIST)/libonig-dev/usr/lib/pkgconfig
+	cp -a $(BUILD_STAGE)/libonig/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/onig{gnu.h,uruma.h} $(BUILD_DIST)/libonig-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include
+	cp -a $(BUILD_STAGE)/libonig/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libonig.{a,dylib} $(BUILD_DIST)/libonig-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libonig/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig/oniguruma.pc $(BUILD_DIST)/libonig-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig
 
 	# libonig.mk Sign
 	$(call SIGN,libonig5,general.xml)

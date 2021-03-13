@@ -19,7 +19,7 @@ img4lib-setup: setup
 	$(SED) -i 's/CC =/CC ?=/' $(BUILD_WORK)/img4lib/Makefile
 	$(SED) -i 's/LD =/LD ?=/' $(BUILD_WORK)/img4lib/Makefile
 	$(SED) -i 's/AR =/AR ?=/' $(BUILD_WORK)/img4lib/Makefile
-	mkdir -p $(BUILD_STAGE)/img4lib/usr/{bin,include/{libvfs,libDER},lib}
+	mkdir -p $(BUILD_STAGE)/img4lib/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{bin,include/{libvfs,libDER},lib}
 
 ifneq ($(wildcard $(BUILD_WORK)/img4lib/.build_complete),)
 img4lib:
@@ -28,23 +28,23 @@ else
 img4lib: img4lib-setup openssl lzfse
 	+$(MAKE) -C $(BUILD_WORK)/img4lib \
 		LD=$(CC)
-	cp -a $(BUILD_WORK)/img4lib/img4 $(BUILD_STAGE)/img4lib/usr/bin
-	cp -a $(BUILD_WORK)/img4lib/libDER/*.h $(BUILD_STAGE)/img4lib/usr/include/libDER
-	cp -a $(BUILD_WORK)/img4lib/libvfs/*.h $(BUILD_STAGE)/img4lib/usr/include/libvfs
-	cp -a $(BUILD_WORK)/img4lib/libimg4.a $(BUILD_STAGE)/img4lib/usr/lib
+	cp -a $(BUILD_WORK)/img4lib/img4 $(BUILD_STAGE)/img4lib/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin
+	cp -a $(BUILD_WORK)/img4lib/libDER/*.h $(BUILD_STAGE)/img4lib/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/libDER
+	cp -a $(BUILD_WORK)/img4lib/libvfs/*.h $(BUILD_STAGE)/img4lib/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/libvfs
+	cp -a $(BUILD_WORK)/img4lib/libimg4.a $(BUILD_STAGE)/img4lib/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	touch $(BUILD_WORK)/img4lib/.build_complete
 endif
 
 img4lib-package: img4lib-stage
 	# img4lib.mk Package Structure
 	rm -rf $(BUILD_DIST)/{img4lib,libimg4-dev}
-	mkdir -p $(BUILD_DIST)/{img4lib,libimg4-dev}/usr
+	mkdir -p $(BUILD_DIST)/{img4lib,libimg4-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	
 	# img4lib.mk Prep img4lib
-	cp -a $(BUILD_STAGE)/img4lib/usr/bin $(BUILD_DIST)/img4lib/usr
+	cp -a $(BUILD_STAGE)/img4lib/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin $(BUILD_DIST)/img4lib/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 
 	# img4lib.mk Prep libimg4-dev
-	cp -a $(BUILD_STAGE)/img4lib/usr/{include,lib} $(BUILD_DIST)/libimg4-dev/usr
+	cp -a $(BUILD_STAGE)/img4lib/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{include,lib} $(BUILD_DIST)/libimg4-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 
 	# img4lib.mk Sign
 	$(call SIGN,img4lib,general.xml)

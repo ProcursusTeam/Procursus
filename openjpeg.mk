@@ -22,8 +22,8 @@ openjpeg: openjpeg-setup libpng16 libtiff lcms2
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
+		-DCMAKE_INSTALL_PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		-DCMAKE_INSTALL_NAME_DIR=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
@@ -41,18 +41,18 @@ openjpeg-package: openjpeg-stage
   # openjpeg.mk Package Structure
 	rm -rf $(BUILD_DIST)/libopenjp2-{7{,-dev},tools}
 	mkdir -p \
-		$(BUILD_DIST)/libopenjp2-7{,-dev}/usr/lib \
-		$(BUILD_DIST)/libopenjp2-tools/usr
+		$(BUILD_DIST)/libopenjp2-7{,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+		$(BUILD_DIST)/libopenjp2-tools/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 
   # openjpeg.mk Prep libopenjp2-7-dev
-	cp -a $(BUILD_STAGE)/openjpeg/usr/include $(BUILD_DIST)/libopenjp2-7-dev/usr
-	cp -a $(BUILD_STAGE)/openjpeg/usr/lib/!(libopenjp2.*.dylib) $(BUILD_DIST)/libopenjp2-7-dev/usr/lib
+	cp -a $(BUILD_STAGE)/openjpeg/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libopenjp2-7-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/openjpeg/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/!(libopenjp2.*.dylib) $(BUILD_DIST)/libopenjp2-7-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
   # openjpeg.mk Prep libopenjp2-tools
-	cp -a $(BUILD_STAGE)/openjpeg/usr/bin $(BUILD_DIST)/libopenjp2-tools/usr
+	cp -a $(BUILD_STAGE)/openjpeg/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin $(BUILD_DIST)/libopenjp2-tools/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 
   # openjpeg.mk Prep libopenjp2-7
-	cp -a $(BUILD_STAGE)/openjpeg/usr/lib/libopenjp2.{7,$(OPENJPEG_VERSION)}.dylib $(BUILD_DIST)/libopenjp2-7/usr/lib
+	cp -a $(BUILD_STAGE)/openjpeg/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libopenjp2.{7,$(OPENJPEG_VERSION)}.dylib $(BUILD_DIST)/libopenjp2-7/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
   # openjpeg.mk Sign
 	$(call SIGN,libopenjp2-7,general.xml)

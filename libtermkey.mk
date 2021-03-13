@@ -26,13 +26,13 @@ libtermkey: libtermkey-setup unibilium
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE)
 	+$(MAKE) -C $(BUILD_WORK)/libtermkey \
-		PREFIX=/usr \
+		PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		LIBTOOL="$(BUILD_WORK)/libtermkey/libtool/libtool" \
 		CC="$(CC) $(CFLAGS)" \
 		DEMOS=""
-	+$(MAKE) -C $(BUILD_WORK)/libtermkey install PREFIX=/usr \
+	+$(MAKE) -C $(BUILD_WORK)/libtermkey install PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		DESTDIR="$(BUILD_STAGE)/libtermkey"
-	+$(MAKE) -C $(BUILD_WORK)/libtermkey install PREFIX=/usr \
+	+$(MAKE) -C $(BUILD_WORK)/libtermkey install PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/libtermkey/.build_complete
 endif
@@ -40,14 +40,14 @@ endif
 libtermkey-package: libtermkey-stage
 	# libtermkey.mk Package Structure
 	rm -rf $(BUILD_DIST)/libtermkey{-dev,1}
-	mkdir -p $(BUILD_DIST)/libtermkey{1,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/libtermkey{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# libtermkey.mk Prep libtermkey-dev
-	cp -a $(BUILD_STAGE)/libtermkey/usr/{include,share} $(BUILD_DIST)/libtermkey-dev/usr
-	cp -a $(BUILD_STAGE)/libtermkey/usr/lib/{pkgconfig,libtermkey.{a,dylib}} $(BUILD_DIST)/libtermkey-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libtermkey/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{include,share} $(BUILD_DIST)/libtermkey-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/libtermkey/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{pkgconfig,libtermkey.{a,dylib}} $(BUILD_DIST)/libtermkey-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# libtermkey.mk Prep libtermkey1
-	cp -a $(BUILD_STAGE)/libtermkey/usr/lib/libtermkey.1.dylib $(BUILD_DIST)/libtermkey1/usr/lib
+	cp -a $(BUILD_STAGE)/libtermkey/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libtermkey.1.dylib $(BUILD_DIST)/libtermkey1/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# libtermkey.mk Sign
 	$(call SIGN,libtermkey1,general.xml)

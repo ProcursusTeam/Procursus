@@ -20,9 +20,9 @@ libpugixml: libpugixml-setup
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
-		-DCMAKE_INSTALL_RPATH=/usr \
+		-DCMAKE_INSTALL_PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		-DCMAKE_INSTALL_NAME_DIR=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+		-DCMAKE_INSTALL_RPATH=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_CXX_FLAGS="$(CFLAGS)" \
 		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
@@ -39,15 +39,15 @@ endif
 libpugixml-package: libpugixml-stage
 	# libpugixml.mk Package Structure
 	rm -rf $(BUILD_DIST)/libpugixml{1,-dev}
-	mkdir -p $(BUILD_DIST)/libpugixml{1,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/libpugixml{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# libpugixml.mk Prep libpugixml1
-	cp -a $(BUILD_STAGE)/libpugixml/usr/lib/libpugixml.1*.dylib $(BUILD_DIST)/libpugixml1/usr/lib
+	cp -a $(BUILD_STAGE)/libpugixml/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libpugixml.1*.dylib $(BUILD_DIST)/libpugixml1/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# libpugixml.mk Prep libpugixml-dev
-	cp -a $(BUILD_STAGE)/libpugixml/usr/include $(BUILD_DIST)/libpugixml-dev/usr
-	cp -a $(BUILD_STAGE)/libpugixml/usr/lib/libpugixml.{dylib,a} $(BUILD_DIST)/libpugixml-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libpugixml/usr/lib/pkgconfig $(BUILD_DIST)/libpugixml-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libpugixml/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libpugixml-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/libpugixml/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libpugixml.{dylib,a} $(BUILD_DIST)/libpugixml-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libpugixml/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig $(BUILD_DIST)/libpugixml-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# libpugixml.mk Sign
 	$(call SIGN,libpugixml1,general.xml)

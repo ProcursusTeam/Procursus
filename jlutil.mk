@@ -21,7 +21,7 @@ jlutil: jlutil-setup
 	$(CC) $(CFLAGS) $(LDFLAGS) -DWANT_MAIN $(BUILD_WORK)/jlutil/*.c \
 		-o $(BUILD_WORK)/jlutil/jlutil
 	$(STRIP) $(BUILD_WORK)/jlutil/jlutil
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/jlutil/jlutil $(BUILD_STAGE)/jlutil/usr/bin/jlutil
+	$(GINSTALL) -Dm755 $(BUILD_WORK)/jlutil/jlutil $(BUILD_STAGE)/jlutil/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/jlutil
 	touch $(BUILD_WORK)/jlutil/.build_complete
 endif
 

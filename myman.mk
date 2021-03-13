@@ -18,7 +18,7 @@ myman: myman-setup ncurses
 	unset CC CFLAGS CXXFLAGS CPPFLAGS LDFLAGS && cd $(BUILD_WORK)/myman && ./configure \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	+unset CC CFLAGS CXXFLAGS CPPFLAGS LDFLAGS && $(MAKE) -C $(BUILD_WORK)/myman install \
 		DESTDIR="$(BUILD_STAGE)/myman" \
 		RMDIR="rmdir" \
@@ -27,7 +27,7 @@ myman: myman-setup ncurses
 		HOSTCFLAGS="$(CFLAGS)" \
 		HOSTCPPFLAGS="$(CPPFLAGS)" \
 		HOSTLDFLAGS="$(LDFLAGS)" \
-		CURSESLIBS="-L$(BUILD_BASE)/usr/lib -lncursesw"
+		CURSESLIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -lncursesw"
 	touch $(BUILD_WORK)/myman/.build_complete
 endif
 

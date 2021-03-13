@@ -19,7 +19,7 @@ lcms2: lcms2-setup libjpeg-turbo libtiff
 	cd $(BUILD_WORK)/lcms2 && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/lcms2
 	+$(MAKE) -C $(BUILD_WORK)/lcms2 install \
 		DESTDIR="$(BUILD_STAGE)/lcms2"
@@ -32,19 +32,19 @@ lcms2-package: lcms2-stage
   # lcms2.mk Package Structure
 	rm -rf $(BUILD_DIST)/liblcms2-{2,dev,utils}
 	mkdir -p \
-		$(BUILD_DIST)/liblcms2-{2,dev}/usr/lib \
-		$(BUILD_DIST)/liblcms2-utils/usr/share/man
+		$(BUILD_DIST)/liblcms2-{2,dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+		$(BUILD_DIST)/liblcms2-utils/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man
 
   # lcms2.mk Prep liblcms2-dev
-	cp -a $(BUILD_STAGE)/lcms2/usr/include $(BUILD_DIST)/liblcms2-dev/usr
-	cp -a $(BUILD_STAGE)/lcms2/usr/lib/!(liblcms2.2.dylib) $(BUILD_DIST)/liblcms2-dev/usr/lib
+	cp -a $(BUILD_STAGE)/lcms2/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/liblcms2-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/lcms2/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/!(liblcms2.2.dylib) $(BUILD_DIST)/liblcms2-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
   # lcms2.mk Prep liblcms2-utils
-	cp -a $(BUILD_STAGE)/lcms2/usr/bin $(BUILD_DIST)/liblcms2-utils/usr
-	cp -a $(BUILD_STAGE)/lcms2/usr/share/man/man1 $(BUILD_DIST)/liblcms2-utils/usr/share/man
+	cp -a $(BUILD_STAGE)/lcms2/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin $(BUILD_DIST)/liblcms2-utils/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/lcms2/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man/man1 $(BUILD_DIST)/liblcms2-utils/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man
 
   # lcms2.mk Prep liblcms2-2
-	cp -a $(BUILD_STAGE)/lcms2/usr/lib/liblcms2.2.dylib $(BUILD_DIST)/liblcms2-2/usr/lib
+	cp -a $(BUILD_STAGE)/lcms2/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/liblcms2.2.dylib $(BUILD_DIST)/liblcms2-2/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
   # lcms2.mk Sign
 	$(call SIGN,liblcms2-2,general.xml)

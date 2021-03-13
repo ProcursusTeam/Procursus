@@ -20,8 +20,8 @@ dpkg-repack: dpkg-repack-setup
 		--center='dpkg suite' \
 		--release='$(DEB_DPKG_REPACK_V)' \
 		< dpkg-repack.pod > dpkg-repack.1
-	$(GINSTALL) -Dm0755 $(BUILD_WORK)/dpkg-repack/dpkg-repack $(BUILD_STAGE)/dpkg-repack/usr/bin/dpkg-repack
-	$(GINSTALL) -Dm0644 $(BUILD_WORK)/dpkg-repack/dpkg-repack.1 $(BUILD_STAGE)/dpkg-repack/usr/share/man/man1/dpkg-repack.1
+	$(GINSTALL) -Dm0755 $(BUILD_WORK)/dpkg-repack/dpkg-repack $(BUILD_STAGE)/dpkg-repack/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/dpkg-repack
+	$(GINSTALL) -Dm0644 $(BUILD_WORK)/dpkg-repack/dpkg-repack.1 $(BUILD_STAGE)/dpkg-repack/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man/man1/dpkg-repack.1
 	touch $(BUILD_WORK)/dpkg-repack/.build_complete
 endif
 

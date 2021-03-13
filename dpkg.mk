@@ -45,7 +45,7 @@ endif
 		--without-libselinux \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
 		PERL_LIBDIR='$$(prefix)/share/perl5' \
-		PERL="/usr/bin/perl" \
+		PERL="/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/perl" \
 		TAR=$(DPKG_TAR) \
 		LZMA_LIBS='$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/liblzma.dylib'
 	+$(MAKE) -C $(BUILD_WORK)/dpkg \

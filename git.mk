@@ -9,7 +9,7 @@ DEB_GIT_V   ?= $(GIT_VERSION)
 GIT_ARGS += uname_S=Darwin \
 	HOST_CPU=$(GNU_HOST_TRIPLE) \
 	DESTDIR=$(BUILD_STAGE)/git \
-	MANDIR=/usr/share/man \
+	MANDIR=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man \
 	NO_DARWIN_PORTS=1 \
 	NO_FINK=1 \
 	NO_APPLE_COMMON_CRYPTO=1 \
@@ -30,14 +30,14 @@ git: git-setup openssl curl pcre2 gettext libidn2
 	cd $(BUILD_WORK)/git && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--without-tcltk \
 		--with-libpcre2 \
 		ac_cv_iconv_omits_bom=no \
 		ac_cv_fread_reads_directories=no \
 		ac_cv_snprintf_returns_bogus=yes \
 		ac_cv_header_libintl_h=yes \
-		CURL_CONFIG=$(BUILD_BASE)/usr/bin/curl-config
+		CURL_CONFIG=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/curl-config
 	$(SED) -i s/'errno == ENOEXEC)'/'errno == ENOEXEC || errno == EPERM) {'/ $(BUILD_WORK)/git/run-command.c
 	$(SED) -i '/execve(argv.argv\[0/,+1 d' $(BUILD_WORK)/git/run-command.c
 	$(SED) -i '/errno == ENOEXEC || errno == EPERM/a			struct strvec args = STRVEC_INIT; \
@@ -64,7 +64,7 @@ git-package: git-stage
 	mkdir -p $(BUILD_DIST)/git
 	
 	# git.mk Prep git
-	cp -a $(BUILD_STAGE)/git/usr $(BUILD_DIST)/git
+	cp -a $(BUILD_STAGE)/git/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) $(BUILD_DIST)/git
 	
 	# git.mk Sign
 	$(call SIGN,git,general.xml)

@@ -19,7 +19,7 @@ libheif: libheif-setup x265 libde265 aom rav1e dav1d
 	cd $(BUILD_WORK)/libheif && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--disable-tests \
 		--disable-examples
 	+$(MAKE) -C $(BUILD_WORK)/libheif
@@ -33,14 +33,14 @@ endif
 libheif-package: libheif-stage
 	# libheif.mk Package Structure
 	rm -rf $(BUILD_DIST)/libheif{1,-dev}
-	mkdir -p $(BUILD_DIST)/libheif{1,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/libheif{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# libheif.mk Prep libheif1
-	cp -a $(BUILD_STAGE)/libheif/usr/lib/libheif.1.dylib $(BUILD_DIST)/libheif1/usr/lib
+	cp -a $(BUILD_STAGE)/libheif/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libheif.1.dylib $(BUILD_DIST)/libheif1/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	
 	# libheif.mk Prep libheif-dev
-	cp -a $(BUILD_STAGE)/libheif/usr/lib/{libheif.{dylib,a},pkgconfig} $(BUILD_DIST)/libheif-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libheif/usr/include $(BUILD_DIST)/libheif-dev/usr
+	cp -a $(BUILD_STAGE)/libheif/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{libheif.{dylib,a},pkgconfig} $(BUILD_DIST)/libheif-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libheif/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libheif-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	
 	# libheif.mk Sign
 	$(call SIGN,libheif1,general.xml)
