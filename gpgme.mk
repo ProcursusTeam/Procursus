@@ -34,18 +34,18 @@ gpgme-package: gpgme-stage
 	# gpgme.mk Package Structure
 	rm -rf $(BUILD_DIST)/libgpgme{11,-dev,pp6,pp-dev}
 	mkdir -p $(BUILD_DIST)/libgpgme11$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-			$(BUILD_DIST)/libgpgme-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include} \
-			$(BUILD_DIST)/libgpgmepp6$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-			$(BUILD_DIST)/libgpgmepp-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include}
+			$(BUILD_DIST)/libgpgme-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include} \
+			$(BUILD_DIST)/libgpgmepp6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+			$(BUILD_DIST)/libgpgmepp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include}
 	
 	# gpgme.mk Prep gpgme
-	cp -a $(BUILD_STAGE)/gpgme$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgpgme.11.dylib $(BUILD_DIST)/libgpgme11$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/gpgme$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/libgpgme-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
-	cp -a $(BUILD_STAGE)/gpgme$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/gpgme.h $(BUILD_DIST)/libgpgme-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	cp -a $(BUILD_STAGE)/gpgme$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libgpgme.dylib,pkgconfig} $(BUILD_DIST)/libgpgme-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/gpgme$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgpgmepp.6.dylib $(BUILD_DIST)/libgpgmepp6$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/gpgme$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/gpgme++ $(BUILD_DIST)/libgpgmepp-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	cp -a $(BUILD_STAGE)/gpgme$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libgpgmepp.dylib,cmake} $(BUILD_DIST)/libgpgmepp-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/gpgme/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgpgme.11.dylib $(BUILD_DIST)/libgpgme11/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/gpgme/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/libgpgme-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
+	cp -a $(BUILD_STAGE)/gpgme/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/gpgme.h $(BUILD_DIST)/libgpgme-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/gpgme/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libgpgme.dylib,pkgconfig} $(BUILD_DIST)/libgpgme-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/gpgme/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgpgmepp.6.dylib $(BUILD_DIST)/libgpgmepp6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/gpgme/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/gpgme++ $(BUILD_DIST)/libgpgmepp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/gpgme/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libgpgmepp.dylib,cmake} $(BUILD_DIST)/libgpgmepp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# gpgme.mk Sign
 	$(call SIGN,libgpgme-dev,general.xml)
