@@ -47,8 +47,8 @@ inetutils-package: inetutils-stage
 	$(call SIGN,inetutils,general.xml)
 
 	# inetutils.mk Permissions
-	$(FAKEROOT) chmod 0755 $(BUILD_DIST)/inetutils$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
-	$(FAKEROOT) chmod 4755 $(BUILD_DIST)/inetutils$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{ping,rcp,rlogin,rsh}
+	$(FAKEROOT) chmod 0755 $(BUILD_DIST)/inetutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
+	$(FAKEROOT) chmod 4755 $(BUILD_DIST)/inetutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{ping,rcp,rlogin,rsh}
 	
 	# inetutils.mk Make .debs
 	$(call PACK,inetutils,DEB_INETUTILS_V)
