@@ -7,7 +7,7 @@ ED_VERSION  := 1.17
 DEB_ED_V    ?= $(ED_VERSION)
 
 ed-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://mirror.its.dal.ca/gnu/ed/ed-$(ED_VERSION).tar.lz{,.sig}
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/ed/ed-$(ED_VERSION).tar.lz{,.sig}
 	$(call PGP_VERIFY,ed-$(ED_VERSION).tar.lz)
 	$(call EXTRACT_TAR,ed-$(ED_VERSION).tar.lz,ed-$(ED_VERSION),ed)
 
