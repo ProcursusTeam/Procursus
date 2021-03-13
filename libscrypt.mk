@@ -27,7 +27,7 @@ libscrypt: libscrypt-setup
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		CFLAGS="$(CFLAGS) -D_FORTIFY_SOURCE=2 -fPIC" \
 		-j1
-	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libscrypt.0.dylib $(BUILD_STAGE)/libscrypt$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libscrypt.0.dylib
+	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libscrypt.0.dylib $(BUILD_STAGE)/libscrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libscrypt.0.dylib
 	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libscrypt.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libscrypt.0.dylib
 	touch $(BUILD_WORK)/libscrypt/.build_complete
 endif
