@@ -32,20 +32,20 @@ libsndfile-package: libsndfile-stage
 	# libsndfile.mk Package Structure
 	rm -rf $(BUILD_DIST)/libsndfile1{,-dev} \
 		$(BUILD_DIST)/sndfile-programs
-	mkdir -p $(BUILD_DIST)/libsndfile1{,-dev}$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/sndfile-programs$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	mkdir -p $(BUILD_DIST)/libsndfile1{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/sndfile-programs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	
 	# libsndfile.mk Prep libsndfile1
-	cp -a $(BUILD_STAGE)/libsndfile$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsndfile.1{,.0.30}.dylib $(BUILD_DIST)/libsndfile1/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libsndfile/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsndfile.1{,.0.30}.dylib $(BUILD_DIST)/libsndfile1/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
 	
 	# libsndfile.mk Prep libsndfile1-dev
-	cp -a $(BUILD_STAGE)/libsndfile$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsndfile.{dylib,a} $(BUILD_DIST)/libsndfile1-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libsndfile$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libsndfile1-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libsndfile$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libsndfile1-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libsndfile/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsndfile.{dylib,a} $(BUILD_DIST)/libsndfile1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libsndfile/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libsndfile1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libsndfile/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libsndfile1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libsndfile.mk Prep sndfile-programs
-	cp -a $(BUILD_STAGE)/libsndfile$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/sndfile-programs$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libsndfile$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/sndfile-programs$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	cp -a $(BUILD_STAGE)/libsndfile/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/sndfile-programs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libsndfile/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/sndfile-programs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	
 	# libsndfile.mk Sign
 	$(call SIGN,libsndfile1,general.xml)
