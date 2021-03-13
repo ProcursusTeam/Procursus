@@ -39,31 +39,31 @@ flac-package: flac-stage
 	# flac.mk Package Structure
 	rm -rf $(BUILD_DIST)/flac \
 		$(BUILD_DIST)/{libflac{8,-dev},libflac++{6v5,-dev}}
-	mkdir -p $(BUILD_DIST)/{libflac8,libflac++6v5}$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/{libflac-dev,libflac++-dev}$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pkgconfig,include,share/aclocal} \
-		$(BUILD_DIST)/flac$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	mkdir -p $(BUILD_DIST)/{libflac8,libflac++6v5}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/{libflac-dev,libflac++-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pkgconfig,include,share/aclocal} \
+		$(BUILD_DIST)/flac/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	
 	# flac.mk Prep flac
-	cp -a $(BUILD_STAGE)/flac$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/flac$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/flac$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/flac$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	cp -a $(BUILD_STAGE)/flac/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/flac/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/flac/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/flac/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	
 	# flac.mk Prep libflac8
-	cp -a $(BUILD_STAGE)/flac$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libFLAC.8.dylib $(BUILD_DIST)/libflac8/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/flac/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libFLAC.8.dylib $(BUILD_DIST)/libflac8/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
 	
 	# flac.mk Prep libflac-dev
-	cp -a $(BUILD_STAGE)/flac$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libFLAC.dylib $(BUILD_DIST)/libflac-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/flac$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/flac.pc $(BUILD_DIST)/libflac-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
-	cp -a $(BUILD_STAGE)/flac$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal/libFLAC.m4 $(BUILD_DIST)/libflac-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
-	cp -a $(BUILD_STAGE)/flac$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/FLAC $(BUILD_DIST)/libflac-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/flac/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libFLAC.dylib $(BUILD_DIST)/libflac-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/flac/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/flac.pc $(BUILD_DIST)/libflac-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
+	cp -a $(BUILD_STAGE)/flac/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal/libFLAC.m4 $(BUILD_DIST)/libflac-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
+	cp -a $(BUILD_STAGE)/flac/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/FLAC $(BUILD_DIST)/libflac-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	
 	# flac.mk Prep libflac++6v5
-	cp -a $(BUILD_STAGE)/flac$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libFLAC++.6.dylib $(BUILD_DIST)/libflac++6v5$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/flac/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libFLAC++.6.dylib $(BUILD_DIST)/libflac++6v5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# flac.mk Prep libflac++-dev
-	cp -a $(BUILD_STAGE)/flac$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libFLAC++.dylib $(BUILD_DIST)/libflac++-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/flac$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/flac++.pc $(BUILD_DIST)/libflac++-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
-	cp -a $(BUILD_STAGE)/flac$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal/libFLAC++.m4 $(BUILD_DIST)/libflac++-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
-	cp -a $(BUILD_STAGE)/flac$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/FLAC++ $(BUILD_DIST)/libflac++-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/flac/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libFLAC++.dylib $(BUILD_DIST)/libflac++-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/flac/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/flac++.pc $(BUILD_DIST)/libflac++-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
+	cp -a $(BUILD_STAGE)/flac/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal/libFLAC++.m4 $(BUILD_DIST)/libflac++-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
+	cp -a $(BUILD_STAGE)/flac/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/FLAC++ $(BUILD_DIST)/libflac++-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	
 	# flac.mk Sign
 	$(call SIGN,flac,general.xml)
