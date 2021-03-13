@@ -24,10 +24,10 @@ unrar: unrar-setup
 		CXX="$(CXX) $(CFLAGS)" \
 		AR="$(AR)" \
 		STRIP=$(STRIP)
-	mkdir -p $(BUILD_STAGE)/unrar$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib}
+	mkdir -p $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib}
 	cd $(BUILD_WORK)/unrar; \
-		cp -af unrar $(BUILD_STAGE)/unrar$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \
-		cp -af libunrar.dylib $(BUILD_STAGE)/unrar$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+		cp -af unrar $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \
+		cp -af libunrar.dylib $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	touch $(BUILD_WORK)/unrar/.build_complete
 endif
 
