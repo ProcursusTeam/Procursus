@@ -21,15 +21,9 @@ libevent: libevent-setup openssl
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-<<<<<<< HEAD
-		-DCMAKE_INSTALL_PREFIX=/$(MEMO_PREFIX) \
-		-DCMAKE_INSTALL_NAME_DIR=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_INSTALL_RPATH=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
-=======
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX) \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/ \
 		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
->>>>>>> as2
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
@@ -46,30 +40,6 @@ libevent-package: libevent-stage
 	# libevent.mk Package Structure
 	rm -rf $(BUILD_DIST)/libevent-{{core-,extra-,openssl-,pthreads-,}2.1-7,dev}
 	mkdir -p \
-<<<<<<< HEAD
-		$(BUILD_DIST)/libevent-{core-,extra-,openssl-,pthreads-,}2.1-7/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libevent-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/
-
-	# libevent.mk Prep libevent-2.1-7
-	cp -a $(BUILD_STAGE)/libevent/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libevent-2.1.7.dylib $(BUILD_DIST)/libevent-2.1-7/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-
-	# libevent.mk Prep libevent-core-2.1-7
-	cp -a $(BUILD_STAGE)/libevent/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libevent_core-2.1.7.dylib $(BUILD_DIST)/libevent-core-2.1-7/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-
-	# libevent.mk Prep libevent-dev
-	cp -a $(BUILD_STAGE)/libevent/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libevent-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libevent/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libevent-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libevent/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libevent{_{core,extra,openssl,pthreads},}.{a,dylib} $(BUILD_DIST)/libevent-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-
-	# libevent.mk Prep libevent-extra-2.1-7
-	cp -a $(BUILD_STAGE)/libevent/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libevent_extra-2.1.7.dylib $(BUILD_DIST)/libevent-extra-2.1-7/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-
-	# libevent.mk Prep libevent-openssl-2.1-7
-	cp -a $(BUILD_STAGE)/libevent/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libevent_openssl-2.1.7.dylib $(BUILD_DIST)/libevent-openssl-2.1-7/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-
-	# libevent.mk Prep libevent-pthreads-2.1-7
-	cp -a $(BUILD_STAGE)/libevent/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libevent_pthreads-2.1.7.dylib $(BUILD_DIST)/libevent-pthreads-2.1-7/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-=======
 		$(BUILD_DIST)/libevent-{core-,extra-,openssl-,pthreads-,}2.1-7/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libevent-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
 
@@ -92,8 +62,6 @@ libevent-package: libevent-stage
 
 	# libevent.mk Prep libevent-pthreads-2.1-7
 	cp -a $(BUILD_STAGE)/libevent/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libevent_pthreads-2.1.7.dylib $(BUILD_DIST)/libevent-pthreads-2.1-7/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
->>>>>>> as2
-
 
 	# libevent.mk Sign
 	$(call SIGN,libevent-2.1-7,general.xml)
