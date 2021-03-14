@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq (,$(findstring arm64,$(MEMO_TARGET)))
+
 SUBPROJECTS        += dimentio
 # I'm not going to bump the version any higher than 1.0.3. Just change commit date/short hash.
 DIMENTIO_COMMIT    := 7ffffffdebda2d68795ff0823e3dbd1054de34bd
@@ -101,3 +103,5 @@ dimentio-package: dimentio-stage
 	rm -rf $(BUILD_DIST)/dimentio $(BUILD_DIST)/libdimentio{$(DIMENTIO_SOVERSION),-dev}
 
 .PHONY: dimentio dimentio-package
+
+endif
