@@ -49,11 +49,11 @@ llvm:
 	@echo "Using previously built llvm."
 else
 llvm: llvm-setup libffi libedit ncurses xz xar
-	cp -a $(MACOSX_SYSROOT)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/kern $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include
-	cp -a $(MACOSX_SYSROOT)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/histedit.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include
-	ln -sf $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libncursesw.dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libcurses.dylib
-	ln -sf $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libpanelw.dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libpanel.dylib
-	mv $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/stdlib.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/stdlib.h.old
+	cp -a $(MACOSX_SYSROOT)/usr/include/kern $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include
+	cp -a $(MACOSX_SYSROOT)/usr/include/histedit.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include
+	ln -sf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libncursesw.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libcurses.dylib
+	ln -sf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libpanelw.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libpanel.dylib
+	mv $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/stdlib.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/stdlib.h.old
 
 	mkdir -p $(BUILD_WORK)/llvm/build/NATIVE && cd $(BUILD_WORK)/llvm/build/NATIVE && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
 		-DCMAKE_C_COMPILER=cc \
@@ -88,17 +88,17 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		-DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
 		-DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \
 		-DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY \
-		-DCMAKE_C_FLAGS="-isystem $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include -isystem $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/local/include $(PLATFORM_VERSION_MIN)" \
-		-DCMAKE_CXX_FLAGS="-isystem $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include -isystem $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/local/include $(PLATFORM_VERSION_MIN)" \
-		-DCMAKE_EXE_LINKER_FLAGS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/local/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
-		-DCMAKE_MODULE_LINKER_FLAGS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/local/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
-		-DCMAKE_SHARED_LINKER_FLAGS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/local/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
+		-DCMAKE_C_FLAGS="-isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/local/include $(PLATFORM_VERSION_MIN)" \
+		-DCMAKE_CXX_FLAGS="-isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/local/include $(PLATFORM_VERSION_MIN)" \
+		-DCMAKE_EXE_LINKER_FLAGS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/local/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
+		-DCMAKE_MODULE_LINKER_FLAGS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/local/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
+		-DCMAKE_SHARED_LINKER_FLAGS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/local/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
 		-DCMAKE_STATIC_LINKER_FLAGS="" \
 		-DLLVM_ENABLE_FFI=ON \
-		-DLIBXML2_LIBRARY="$(TARGET_SYSROOT)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libxml2.tbd" \
-		-DLIBXML2_INCLUDE_DIR="$(TARGET_SYSROOT)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/libxml" \
-		-DLibEdit_INCLUDE_DIRS="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include" \
-		-DLibEdit_LIBRARIES="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libedit.dylib" \
+		-DLIBXML2_LIBRARY="$(TARGET_SYSROOT)/usr/lib/libxml2.tbd" \
+		-DLIBXML2_INCLUDE_DIR="$(TARGET_SYSROOT)/usr/include/libxml" \
+		-DLibEdit_INCLUDE_DIRS="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include" \
+		-DLibEdit_LIBRARIES="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libedit.dylib" \
 		-DCORE_FOUNDATION_LIBRARY="$(TARGET_SYSROOT)/System/Library/Frameworks/CoreFoundation.framework" \
 		-DCORE_SERVICES_LIBRARY="$(TARGET_SYSROOT)/System/Library/Frameworks/CoreServices.framework" \
 		-DFOUNDATION_LIBRARY="$(TARGET_SYSROOT)/System/Library/Frameworks/Foundation.framework" \
@@ -140,8 +140,8 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		../llvm
 	+$(MAKE) -C $(BUILD_WORK)/llvm/build install \
 		DESTDIR="$(BUILD_STAGE)/llvm"
-	rm -rf $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libcurses.dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libpanel.dylib
-	mv $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/stdlib.h.old $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/stdlib.h
+	rm -rf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libcurses.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libpanel.dylib
+	mv $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/stdlib.h.old $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/stdlib.h
 	touch $(BUILD_WORK)/llvm/.build_complete
 endif
 

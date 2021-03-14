@@ -15,9 +15,9 @@ network-cmds-setup: setup
 
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/network-cmds/include/sys
-	cp -a $(MACOSX_SYSROOT)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/nlist.h $(BUILD_WORK)/network-cmds/include
+	cp -a $(MACOSX_SYSROOT)/usr/include/nlist.h $(BUILD_WORK)/network-cmds/include
 	mkdir -p $(BUILD_WORK)/network-cmds/include/net/{classq,pktsched}
-	cp -a $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/{stdlib,unistd}.h $(BUILD_WORK)/network-cmds/include
+	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/{stdlib,unistd}.h $(BUILD_WORK)/network-cmds/include
 
 	@#TODO: Needs severe cleaning. Was done late at night.
 

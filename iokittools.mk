@@ -14,7 +14,7 @@ iokittools-setup: setup
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/iokittools/include/IOKit
 	cp -a $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_WORK)/iokittools/include/IOKit
-	cp -a $(MACOSX_SYSROOT)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/libkern $(BUILD_WORK)/iokittools/include
+	cp -a $(MACOSX_SYSROOT)/usr/include/libkern $(BUILD_WORK)/iokittools/include
 
 	wget -q -nc -P $(BUILD_WORK)/iokittools/include/IOKit \
 		https://opensource.apple.com/source/IOKitUser/IOKitUser-1726.11.1/IOKitLibPrivate.h 
@@ -27,7 +27,7 @@ iokittools: iokittools-setup ncurses
 	cd $(BUILD_WORK)/iokittools; \
 	for tproj in {ioalloccount,ioclasscount}.tproj; do \
 		tproj=$$(basename $$tproj .tproj); \
-		$(CC) $(CFLAGS) -L $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -isystem include -o $(BUILD_STAGE)/iokittools/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/sbin/$$tproj $$tproj.tproj/*.c -framework CoreFoundation -framework IOKit -lncursesw; \
+		$(CC) $(CFLAGS) -L $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -isystem include -o $(BUILD_STAGE)/iokittools/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/sbin/$$tproj $$tproj.tproj/*.c -framework CoreFoundation -framework IOKit -lncursesw; \
 	done
 	touch $(BUILD_WORK)/iokittools/.build_complete
 endif

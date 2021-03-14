@@ -23,7 +23,7 @@ cwidget: cwidget-setup gettext ncurses libsigcplusplus
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--disable-werror \
-		CXXFLAGS="-std=c++11 $(CXXFLAGS) -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/sigc++-2.0 -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/sigc++-2.0/include -DNCURSES_WIDECHAR"
+		CXXFLAGS="-std=c++11 $(CXXFLAGS) -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/sigc++-2.0 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/sigc++-2.0/include -DNCURSES_WIDECHAR"
 	+$(MAKE) -C $(BUILD_WORK)/cwidget \
 		LIBS="-lncursesw  -lpthread -lsigc-2.0 -liconv -lintl -Wl,-framework -Wl,CoreFoundation"
 	+$(MAKE) -C $(BUILD_WORK)/cwidget install \

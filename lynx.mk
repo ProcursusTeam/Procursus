@@ -25,8 +25,8 @@ lynx: lynx-setup ncurses libidn2 openssl gettext
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--with-build-cc=cc \
 		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--mandir=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man \
-		--with-ssl="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib" \
+		--mandir=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man \
+		--with-ssl="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib" \
 		--disable-echo \
 		--enable-default-colors \
 		--with-zlib \

@@ -35,12 +35,12 @@ lua5.1: lua5.1-setup readline
 		TO_BIN="lua5.1 luac5.1" \
 		TO_LIB="liblua5.1.a liblua5.1.0.dylib"
 	+$(MAKE) -C $(BUILD_WORK)/lua5.1 install \
-		INSTALL_TOP="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)" \
-		INSTALL_INC="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/lua5.1" \
-		INSTALL_MAN="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man/man1" \
+		INSTALL_TOP="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)" \
+		INSTALL_INC="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/lua5.1" \
+		INSTALL_MAN="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man/man1" \
 		TO_BIN="lua5.1 luac5.1" \
 		TO_LIB="liblua5.1.a liblua5.1.0.dylib"
-	ln -sf liblua5.1.0.dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/liblua5.1.dylib
+	ln -sf liblua5.1.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/liblua5.1.dylib
 	touch $(BUILD_WORK)/lua5.1/.build_complete
 endif
 

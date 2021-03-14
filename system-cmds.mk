@@ -16,13 +16,13 @@ system-cmds-setup: setup libxcrypt
 	$(call DO_PATCH,system-cmds,system-cmds,-p1)
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/system-cmds/include/{IOKit,mach,sys}
-	cp -a $(MACOSX_SYSROOT)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/{libkern,net,servers,xpc} $(BUILD_WORK)/system-cmds/include
-	cp -a $(MACOSX_SYSROOT)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/{lib{c,proc},NSSystemDirectories,bootstrap,tzfile}.h $(BUILD_WORK)/system-cmds/include
-	cp -a $(MACOSX_SYSROOT)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/sys/{reboot,proc*,kern_control}.h $(BUILD_WORK)/system-cmds/include/sys
+	cp -a $(MACOSX_SYSROOT)/usr/include/{libkern,net,servers,xpc} $(BUILD_WORK)/system-cmds/include
+	cp -a $(MACOSX_SYSROOT)/usr/include/{lib{c,proc},NSSystemDirectories,bootstrap,tzfile}.h $(BUILD_WORK)/system-cmds/include
+	cp -a $(MACOSX_SYSROOT)/usr/include/sys/{reboot,proc*,kern_control}.h $(BUILD_WORK)/system-cmds/include/sys
 	cp -a $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_WORK)/system-cmds/include/IOKit
-	cp -a $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/{unistd,stdlib}.h $(BUILD_WORK)/system-cmds/include
-	cp -a $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/mach/{task,mach_host}.h $(BUILD_WORK)/system-cmds/include/mach
-	cp -a $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/crypt.h $(BUILD_WORK)/system-cmds/include	
+	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/{unistd,stdlib}.h $(BUILD_WORK)/system-cmds/include
+	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/mach/{task,mach_host}.h $(BUILD_WORK)/system-cmds/include/mach
+	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/crypt.h $(BUILD_WORK)/system-cmds/include	
 	
 	wget -q -nc -P $(BUILD_WORK)/system-cmds/include \
 		https://opensource.apple.com/source/launchd/launchd-328/launchd/src/reboot2.h \
@@ -59,7 +59,7 @@ system-cmds: system-cmds-setup
 	done
 	
 	rm -f $(BUILD_WORK)/system-cmds/passwd.tproj/{od,nis,pam}_passwd.c
-	cd $(BUILD_WORK)/system-cmds && $(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o passwd passwd.tproj/*.c -isystem include $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libcrypt.dylib
+	cd $(BUILD_WORK)/system-cmds && $(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o passwd passwd.tproj/*.c -isystem include $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libcrypt.dylib
 	cd $(BUILD_WORK)/system-cmds && $(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o dmesg dmesg.tproj/*.c -isystem include 
 	cd $(BUILD_WORK)/system-cmds && $(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o sysctl sysctl.tproj/sysctl.c -isystem include 
 	cd $(BUILD_WORK)/system-cmds && $(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o arch arch.tproj/*.c -isystem include -framework CoreFoundation -framework Foundation -lobjc 
@@ -69,8 +69,8 @@ system-cmds: system-cmds-setup
 		CFLAGS=; \
 		EXTRA=; \
 		case $$tproj in \
-			chpass) CFLAGS="-Ichpass.tproj" LDFLAGS="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libcrypt.dylib";; \
-			login) LDFLAGS="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libcrypt.dylib";; \
+			chpass) CFLAGS="-Ichpass.tproj" LDFLAGS="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libcrypt.dylib";; \
+			login) LDFLAGS="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libcrypt.dylib";; \
 			dynamic_pager) CFLAGS="-Idynamic_pager.tproj";; \
 			pwd_mkdb) CFLAGS="-D_PW_NAME_LEN=MAXLOGNAME -D_PW_YPTOKEN=\"__YP!\"";; \
 		esac ; \

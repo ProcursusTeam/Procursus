@@ -33,8 +33,8 @@ lua-luv: lua-luv-setup libuv1 lua5.1 lua5.2 lua5.3
 		-DBUILD_MODULE=OFF \
 		-DBUILD_SHARED_LIBS=ON \
 		-DWITH_LUA_ENGINE=Lua \
-		-DLUA_INCLUDE_DIR="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/lua5.$$ver" \
-		-DLUA_LIBRARY="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/liblua5.$$ver.a" \
+		-DLUA_INCLUDE_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/lua5.$$ver" \
+		-DLUA_LIBRARY="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/liblua5.$$ver.a" \
 		-DSHAREDLIBS_INSTALL_INC_DIR="/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/lua5.$$ver/luv" \
 		..; \
 	$(MAKE) -C $(BUILD_WORK)/lua-luv/build5$$ver; \
@@ -42,12 +42,12 @@ lua-luv: lua-luv-setup libuv1 lua5.1 lua5.2 lua5.3
 		DESTDIR="$(BUILD_STAGE)/lua-luv"; \
 	$(MAKE) -C $(BUILD_WORK)/lua-luv/build5$$ver install \
 		DESTDIR="$(BUILD_BASE)"; \
-	mv $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libluv.$(LUA-LUV_VERSION).dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/liblua5.$$ver-luv.$(LUA-LUV_VERSION).dylib; \
+	mv $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libluv.$(LUA-LUV_VERSION).dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/liblua5.$$ver-luv.$(LUA-LUV_VERSION).dylib; \
 	rm -f $(BUILD_BASE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libluv.{1.,}dylib; \
-	$(LN) -sf liblua5.$$ver-luv.$(LUA-LUV_VERSION).dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/liblua5.$$ver-luv.1.dylib; \
-	$(LN) -sf liblua5.$$ver-luv.$(LUA-LUV_VERSION).dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/liblua5.$$ver-luv.dylib; \
-	mkdir -p $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/lua/5.$$ver/; \
-	$(LN) -sf ../../liblua5.$$ver-luv.$(LUA-LUV_VERSION).dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/lua/5.$$ver/luv.so; \
+	$(LN) -sf liblua5.$$ver-luv.$(LUA-LUV_VERSION).dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/liblua5.$$ver-luv.1.dylib; \
+	$(LN) -sf liblua5.$$ver-luv.$(LUA-LUV_VERSION).dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/liblua5.$$ver-luv.dylib; \
+	mkdir -p $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/lua/5.$$ver/; \
+	$(LN) -sf ../../liblua5.$$ver-luv.$(LUA-LUV_VERSION).dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/lua/5.$$ver/luv.so; \
 	mv $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libluv.$(LUA-LUV_VERSION).dylib $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/liblua5.$$ver-luv.$(LUA-LUV_VERSION).dylib; \
 	rm -f $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libluv.{1.,}dylib; \
 	$(LN) -sf liblua5.$$ver-luv.$(LUA-LUV_VERSION).dylib $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/liblua5.$$ver-luv.1.dylib; \
@@ -55,11 +55,11 @@ lua-luv: lua-luv-setup libuv1 lua5.1 lua5.2 lua5.3
 	mkdir -p $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/lua/5.$$ver/; \
 	$(LN) -sf ../../liblua5.$$ver-luv.$(LUA-LUV_VERSION).dylib $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/lua/5.$$ver/luv.so; \
 	$(I_N_T) -id /$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/liblua5.$$ver-luv.1.dylib $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/liblua5.$$ver-luv.$(LUA-LUV_VERSION).dylib; \
-	$(I_N_T) -id /$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/liblua5.$$ver-luv.1.dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/liblua5.$$ver-luv.$(LUA-LUV_VERSION).dylib; \
+	$(I_N_T) -id /$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/liblua5.$$ver-luv.1.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/liblua5.$$ver-luv.$(LUA-LUV_VERSION).dylib; \
 	mv $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig/libluv.pc $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig/lua5.$$ver-luv.pc; \
 	sed -i "s/-lluv/-llua5.$$ver-luv/" $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig/lua5.$$ver-luv.pc; \
-	mv $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig/libluv.pc $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig/lua5.$$ver-luv.pc; \
-	sed -i "s/-lluv/-llua5.$$ver-luv/" $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig/lua5.$$ver-luv.pc; \
+	mv $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig/libluv.pc $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig/lua5.$$ver-luv.pc; \
+	sed -i "s/-lluv/-llua5.$$ver-luv/" $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig/lua5.$$ver-luv.pc; \
 	done
 	touch $(BUILD_WORK)/lua-luv/.build_complete
 endif

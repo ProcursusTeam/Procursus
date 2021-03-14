@@ -24,7 +24,7 @@ libipatcher-setup: setup
 
 	$(SED) -i '/AC_FUNC_MALLOC/d' $(BUILD_WORK)/libipatcher/configure.ac
 	$(SED) -i '/AC_FUNC_REALLOC/d' $(BUILD_WORK)/libipatcher/configure.ac
-	$(SED) -i 's|/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/local/lib/|$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib|g' $(BUILD_WORK)/libipatcher/libipatcher/Makefile.am
+	$(SED) -i 's|/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/local/lib/|$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib|g' $(BUILD_WORK)/libipatcher/libipatcher/Makefile.am
 
 ifneq ($(wildcard $(BUILD_WORK)/libipatcher/.build_complete),)
 libipatcher:
@@ -35,9 +35,9 @@ libipatcher: libipatcher-setup libpng16 openssl img4tool liboffsetfinder64 libge
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpwn" \
-		CPPFLAGS="$(CPPFLAGS) -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpwn" \
-		LDFLAGS="$(LDFLAGS) -L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xpwn"
+		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpwn" \
+		CPPFLAGS="$(CPPFLAGS) -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpwn" \
+		LDFLAGS="$(LDFLAGS) -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xpwn"
 	+$(MAKE) -C $(BUILD_WORK)/libipatcher
 	+$(MAKE) -C $(BUILD_WORK)/libipatcher install \
 		DESTDIR="$(BUILD_STAGE)/libipatcher"

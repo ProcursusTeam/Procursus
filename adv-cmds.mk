@@ -15,7 +15,7 @@ adv-cmds-setup: setup
 
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/adv-cmds/include
-	cp -a $(MACOSX_SYSROOT)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/tzfile.h $(BUILD_WORK)/adv-cmds/include
+	cp -a $(MACOSX_SYSROOT)/usr/include/tzfile.h $(BUILD_WORK)/adv-cmds/include
 
 ifneq ($(wildcard $(BUILD_WORK)/adv-cmds/.build_complete),)
 adv-cmds:
@@ -24,7 +24,7 @@ else
 adv-cmds: adv-cmds-setup ncurses
 	cd $(BUILD_WORK)/adv-cmds; \
 	$(CXX) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/locale locale/*.cc; \
-	$(CC) $(CFLAGS) -L $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/tabs tabs/*.c -lncursesw; \
+	$(CC) $(CFLAGS) -L $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/tabs tabs/*.c -lncursesw; \
 	for bin in finger last lsvfs cap_mkdb; do \
     	$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/$$bin $$bin/*.c -D'__FBSDID(x)='; \
 	done
@@ -38,16 +38,16 @@ endif
 adv-cmds-package: adv-cmds-stage
 	# adv-cmds.mk Package Structure
 	rm -rf $(BUILD_DIST)/adv-cmds
-	
+
 	# adv-cmds.mk Prep adv-cmds
 	cp -a $(BUILD_STAGE)/adv-cmds $(BUILD_DIST)
 
 	# adv-cmds.mk Sign
 	$(call SIGN,adv-cmds,general.xml)
-	
+
 	# adv-cmds.mk Make .debs
 	$(call PACK,adv-cmds,DEB_ADV-CMDS_V)
-	
+
 	# adv-cmds.mk Build cleanup
 	rm -rf $(BUILD_DIST)/adv-cmds
 

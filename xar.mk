@@ -28,15 +28,15 @@ xar: xar-setup openssl
 		ac_cv_lib_z_deflate=yes \
 		ac_cv_header_bzlib_h=yes \
 		ac_cv_lib_bz2_BZ2_bzCompress=yes
-	$(SED) -i 's|$(MACOSX_SYSROOT)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib|$(TARGET_SYSROOT)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib|g' $(BUILD_WORK)/xar/lib/Makefile.inc
-	$(SED) -i 's|$(MACOSX_SYSROOT)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib|$(TARGET_SYSROOT)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib|g' $(BUILD_WORK)/xar/src/Makefile.inc
-	$(SED) -i 's|$(MACOSX_SYSROOT)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include|$(TARGET_SYSROOT)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include|g' $(BUILD_WORK)/xar/Makefile
+	$(SED) -i 's|$(MACOSX_SYSROOT)/usr/lib|$(TARGET_SYSROOT)/usr/lib|g' $(BUILD_WORK)/xar/lib/Makefile.inc
+	$(SED) -i 's|$(MACOSX_SYSROOT)/usr/lib|$(TARGET_SYSROOT)/usr/lib|g' $(BUILD_WORK)/xar/src/Makefile.inc
+	$(SED) -i 's|$(MACOSX_SYSROOT)/usr/include|$(TARGET_SYSROOT)/usr/include|g' $(BUILD_WORK)/xar/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/xar \
 		CFLAGS="$(CFLAGS) -I$(BUILD_WORK)/xar/lib"
 	+$(MAKE) -C $(BUILD_WORK)/xar install \
 		DESTDIR=$(BUILD_STAGE)/xar
-	cp -a $(BUILD_STAGE)/xar/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/* $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include
-	cp -a $(BUILD_STAGE)/xar/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/* $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/xar/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/* $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include
+	cp -a $(BUILD_STAGE)/xar/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/* $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 	touch $(BUILD_WORK)/xar/.build_complete
 endif
 

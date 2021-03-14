@@ -33,7 +33,7 @@ nodejs: nodejs-setup nghttp2 openssl brotli libc-ares libuv1
 		--shared-zlib \
 		--shared-libuv \
 		--shared-brotli \
-		--shared-brotli-libpath=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+		--shared-brotli-libpath=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
 		--shared-nghttp2 \
 		--shared-cares \
 		--experimental-http-parser \
