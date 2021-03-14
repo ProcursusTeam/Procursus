@@ -19,11 +19,11 @@ else
 libutf8proc: libutf8proc-setup
 	+$(MAKE) -C $(BUILD_WORK)/libutf8proc install \
 		OS=Darwin \
-		prefix=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		DESTDIR="$(BUILD_STAGE)/libutf8proc"
 	+$(MAKE) -C $(BUILD_WORK)/libutf8proc install \
 		OS=Darwin \
-		prefix=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/libutf8proc/.build_complete
 endif

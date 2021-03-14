@@ -18,7 +18,7 @@ rubberband:
 else
 rubberband: rubberband-setup libsamplerate libsndfile
 	+$(MAKE) -C $(BUILD_WORK)/rubberband \
-		PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		PREFIX=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		CC="$(CC)" \
 		CXX="$(CXX)" \
 		ARG_CXXFLAGS="$(CXXFLAGS)" \
@@ -27,10 +27,10 @@ rubberband: rubberband-setup libsamplerate libsndfile
 		AR="$(AR)"
 
 	+$(MAKE) -C $(BUILD_WORK)/rubberband install \
-		PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		PREFIX=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		DESTDIR="$(BUILD_STAGE)/rubberband"
 	+$(MAKE) -C $(BUILD_WORK)/rubberband install \
-		PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		PREFIX=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		DESTDIR="$(BUILD_BASE)"
 
 	touch $(BUILD_WORK)/rubberband/.build_complete

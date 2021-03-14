@@ -37,6 +37,7 @@ glib2.0: glib2.0-setup gettext pcre libffi
 		-Dbsymbolic_functions=false \
 		-Ddtrace=false \
 		..
+	sed -i '/HAVE_LIBELF/d' $(BUILD_WORK)/glib2.0/build/config.h
 	cd $(BUILD_WORK)/glib2.0/build; \
 		DESTDIR="$(BUILD_STAGE)/glib2.0" meson install; \
 		DESTDIR="$(BUILD_BASE)" meson install

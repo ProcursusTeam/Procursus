@@ -40,7 +40,7 @@ imagemagick: imagemagick-setup openexr fontconfig freetype glib2.0 ghostscript l
 		--with-webp=yes \
 		--with-heic=yes \
 		--with-gslib \
-		--with-gs-font-dir=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/ghostscript/fonts \
+		--with-gs-font-dir=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/ghostscript/fonts \
 		--with-lqr \
 		--without-fftw \
 		--without-pango \

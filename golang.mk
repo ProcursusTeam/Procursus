@@ -28,7 +28,7 @@ golang: golang-setup
 	export PATH="$(BUILD_WORK)/golang/superbin:$(PATH)"; \
 		cd $(BUILD_WORK)/golang/src && \
 			CGO_ENABLED=1 \
-			GOROOT_FINAL=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/go-$(GOLANG_MAJOR_V) \
+			GOROOT_FINAL=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/go-$(GOLANG_MAJOR_V) \
 			GOHOSTARCH=amd64 \
 			GOHOSTOS=darwin \
 			GOARCH=arm64 \

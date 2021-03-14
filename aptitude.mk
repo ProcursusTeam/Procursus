@@ -23,8 +23,8 @@ aptitude: aptitude-setup ncurses libboost xapian cwidget apt googletest
 	cd $(BUILD_WORK)/aptitude && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREIFX)/$(MEMO_SUB_PREFIX) \
-		--sysconfdir=/$(MEMO_PREIFX)/etc \
+		--prefix=$(MEMO_PREIFX)$(MEMO_SUB_PREFIX) \
+		--sysconfdir=$(MEMO_PREIFX)/etc  \
 		--disable-qt \
 		--disable-gtk \
 		--with-boost-libdir="$(BUILD_BASE)/$(MEMO_PREIFX)/$(MEMO_SUB_PREFIX)/lib" \
