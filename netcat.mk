@@ -20,7 +20,7 @@ netcat: netcat-setup gettext
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
-		--mandir=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man
+		--mandir=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man
 	+$(MAKE) -C $(BUILD_WORK)/netcat install \
 		DESTDIR="$(BUILD_STAGE)/netcat"
 	rm -rf $(BUILD_STAGE)/netcat/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/info

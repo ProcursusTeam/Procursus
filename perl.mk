@@ -42,8 +42,8 @@ perl-setup: setup
 	libperl='libperl.dylib'" > $(BUILD_WORK)/perl/cnf/hints/darwin
 
 	mkdir -p $(BUILD_WORK)/perl/include
-ifneq (,$(wildcard $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h))
-	cp -a $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h $(BUILD_WORK)/perl/include
+ifneq (,$(wildcard $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h))
+	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h $(BUILD_WORK)/perl/include
 endif
 
 ifneq ($(wildcard $(BUILD_WORK)/perl/.build_complete),)

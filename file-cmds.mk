@@ -19,8 +19,8 @@ file-cmds-setup: setup
 	mkdir -p $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/file-cmds/include
-	cp -a $(MACOSX_SYSROOT)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/tzfile.h $(BUILD_WORK)/file-cmds/include
-	cp -a $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/unistd.h $(BUILD_WORK)/file-cmds/include
+	cp -a $(MACOSX_SYSROOT)/usr/include/tzfile.h $(BUILD_WORK)/file-cmds/include
+	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/unistd.h $(BUILD_WORK)/file-cmds/include
 
 	mkdir -p $(BUILD_WORK)/file-cmds/ipcs/sys
 	wget -nc -P $(BUILD_WORK)/file-cmds/ipcs/sys \

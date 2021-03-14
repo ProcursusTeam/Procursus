@@ -13,7 +13,7 @@ developer-cmds-setup: setup
 	$(call EXTRACT_TAR,developer_cmds-$(DEVELOPER-CMDS_VERSION).tar.gz,developer_cmds-$(DEVELOPER-CMDS_VERSION),developer-cmds)
 	mkdir -p $(BUILD_STAGE)/developer-cmds/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin
 	mkdir -p $(BUILD_WORK)/developer-cmds/include
-	cp -a $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/{unistd,stdlib}.h $(BUILD_WORK)/developer-cmds/include
+	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/{unistd,stdlib}.h $(BUILD_WORK)/developer-cmds/include
 
 ifneq ($(wildcard $(BUILD_WORK)/developer-cmds/.build_complete),)
 developer-cmds:

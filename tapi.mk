@@ -18,7 +18,7 @@ tapi:
 	@echo "Using previously built tapi."
 else
 tapi: tapi-setup
-	ln -sf $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libncursesw.dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libcurses.dylib
+	ln -sf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libncursesw.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libcurses.dylib
 	cd $(BUILD_WORK)/tapi/build && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
@@ -34,10 +34,10 @@ tapi: tapi-setup
 		-DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
 		-DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \
 		-DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY \
-		-DCMAKE_CXX_FLAGS="-isystem $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include -isystem $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/local/include $(PLATFORM_VERSION_MIN) -I $(BUILD_WORK)/tapi/src/llvm/projects/clang/include -I $(BUILD_WORK)/tapi/build/projects/clang/include" \
-		-DCMAKE_EXE_LINKER_FLAGS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/local/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
-		-DCMAKE_MODULE_LINKER_FLAGS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/local/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
-		-DCMAKE_SHARED_LINKER_FLAGS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/local/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
+		-DCMAKE_CXX_FLAGS="-isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/local/include $(PLATFORM_VERSION_MIN) -I $(BUILD_WORK)/tapi/src/llvm/projects/clang/include -I $(BUILD_WORK)/tapi/build/projects/clang/include" \
+		-DCMAKE_EXE_LINKER_FLAGS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/local/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
+		-DCMAKE_MODULE_LINKER_FLAGS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/local/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
+		-DCMAKE_SHARED_LINKER_FLAGS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/local/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
 		-DCMAKE_STATIC_LINKER_FLAGS="" \
 		-DCROSS_TOOLCHAIN_FLAGS_NATIVE='-DCMAKE_C_COMPILER=cc;-DCMAKE_CXX_COMPILER=c++;-DCMAKE_OSX_SYSROOT="$(MACOSX_SYSROOT)";-DCMAKE_OSX_ARCHITECTURES="";-DCMAKE_C_FLAGS="";-DCMAKE_CXX_FLAGS="";-DCMAKE_EXE_LINKER_FLAGS="";-DLLVM_INCLUDE_TESTS=OFF;-DTAPI_INCLUDE_TESTS=OFF' \
 		-DLLVM_ENABLE_PROJECTS="libtapi" \
@@ -49,7 +49,7 @@ tapi: tapi-setup
 	+$(MAKE) -C $(BUILD_WORK)/tapi/build libtapi
 	+$(MAKE) -C $(BUILD_WORK)/tapi/build install-libtapi install-tapi-headers \
 		DESTDIR="$(BUILD_STAGE)/tapi"
-	rm -rf $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libcurses.dylib
+	rm -rf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libcurses.dylib
 	touch $(BUILD_WORK)/tapi/.build_complete
 endif
 

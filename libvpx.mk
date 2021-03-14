@@ -41,7 +41,7 @@ libvpx: libvpx-setup
 		$(I_N_T) -change libvpx.6.dylib /$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libvpx.6.dylib $$bin; \
 	done
 	$(I_N_T) -id /$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libvpx.6.dylib $(BUILD_STAGE)/libvpx/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libvpx.6.dylib
-	$(I_N_T) -id /$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libvpx.6.dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libvpx.6.dylib
+	$(I_N_T) -id /$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libvpx.6.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libvpx.6.dylib
 	touch $(BUILD_WORK)/libvpx/.build_complete
 endif
 

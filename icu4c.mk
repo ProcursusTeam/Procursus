@@ -35,13 +35,13 @@ icu4c: icu4c-setup
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/icu4c/.build_complete
 
-	for lib in $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libicu*.68.2.dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libicu*.68.2.dylib; do \
+	for lib in $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libicu*.68.2.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libicu*.68.2.dylib; do \
 		$(I_N_T) -id /$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/$$(echo $$lib | rev | cut -d. -f4 | cut -d/ -f1 | rev).68.dylib $$lib; \
 		ln -sf $$(echo $$lib | rev | cut -d. -f4 | cut -d/ -f1 | rev).68.2.dylib $$(echo $$lib | rev | cut -d. -f4 | rev).68.dylib; \
 		ln -sf $$(echo $$lib | rev | cut -d. -f4 | cut -d/ -f1 | rev).68.dylib $$(echo $$lib | rev | cut -d. -f4 | rev).dylib; \
 	done
 
-	for stuff in $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libicu*.68.2.dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libicu*.68.2.dylib $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/*; do \
+	for stuff in $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libicu*.68.2.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libicu*.68.2.dylib $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/*; do \
 		$(I_N_T) -change libicudata.68.dylib /$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libicudata.68.dylib $$stuff; \
 		$(I_N_T) -change libicui18n.68.dylib /$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libicui18n.68.dylib $$stuff; \
 		$(I_N_T) -change libicuio.68.dylib /$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libicuio.68.dylib $$stuff; \

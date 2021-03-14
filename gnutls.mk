@@ -25,7 +25,7 @@ ifeq ($(MEMO_TARGET),watchos-arm64)
 		--disable-hardware-acceleration \
 		--enable-local-libopts \
 		--with-default-trust-store-file=$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem \
- 		P11_KIT_CFLAGS=-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/p11-kit-1
+ 		P11_KIT_CFLAGS=-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/p11-kit-1
 else
 	cd $(BUILD_WORK)/gnutls && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
@@ -33,7 +33,7 @@ else
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--enable-local-libopts \
 		--with-default-trust-store-file=$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem \
-		P11_KIT_CFLAGS=-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/p11-kit-1
+		P11_KIT_CFLAGS=-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/p11-kit-1
 endif
 	+$(MAKE) -C $(BUILD_WORK)/gnutls
 	+$(MAKE) -C $(BUILD_WORK)/gnutls install \

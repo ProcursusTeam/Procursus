@@ -31,7 +31,7 @@ calc: calc-setup ncurses readline
 		CALCPAGER="pager" \
 		USE_READLINE="-DUSE_READLINE" \
 		READLINE_LIB="-lreadline" \
-		READLINE_EXTRAS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -lhistory -lncursesw" \
+		READLINE_EXTRAS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -lhistory -lncursesw" \
 		BLD_TYPE="calc-static-only" \
 		T="$(BUILD_STAGE)/calc" \
 		-j1
