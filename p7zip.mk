@@ -26,8 +26,8 @@ p7zip: p7zip-setup
 		CXX="$(CXX) $(CFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/p7zip install \
 		DEST_DIR=$(BUILD_STAGE)/p7zip \
-		DEST_HOME=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
-		DEST_MAN=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man
+		DEST_HOME=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		DEST_MAN=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man
 	touch $(BUILD_WORK)/p7zip/.build_complete
 endif
 

@@ -25,11 +25,11 @@ libvterm: libvterm-setup
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE)
 	+$(MAKE) -C $(BUILD_WORK)/libvterm \
-		PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		PREFIX=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		LIBTOOL="$(BUILD_WORK)/libvterm/libtool/libtool"
-	+$(MAKE) -C $(BUILD_WORK)/libvterm install PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+	+$(MAKE) -C $(BUILD_WORK)/libvterm install PREFIX=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		DESTDIR="$(BUILD_STAGE)/libvterm"
-	+$(MAKE) -C $(BUILD_WORK)/libvterm install PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+	+$(MAKE) -C $(BUILD_WORK)/libvterm install PREFIX=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/libvterm/.build_complete
 endif

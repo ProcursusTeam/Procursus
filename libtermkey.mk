@@ -26,13 +26,13 @@ libtermkey: libtermkey-setup unibilium
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE)
 	+$(MAKE) -C $(BUILD_WORK)/libtermkey \
-		PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		PREFIX=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		LIBTOOL="$(BUILD_WORK)/libtermkey/libtool/libtool" \
 		CC="$(CC) $(CFLAGS)" \
 		DEMOS=""
-	+$(MAKE) -C $(BUILD_WORK)/libtermkey install PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+	+$(MAKE) -C $(BUILD_WORK)/libtermkey install PREFIX=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		DESTDIR="$(BUILD_STAGE)/libtermkey"
-	+$(MAKE) -C $(BUILD_WORK)/libtermkey install PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+	+$(MAKE) -C $(BUILD_WORK)/libtermkey install PREFIX=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/libtermkey/.build_complete
 endif

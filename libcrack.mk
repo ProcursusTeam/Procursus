@@ -22,7 +22,7 @@ libcrack: libcrack-setup gettext
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--without-python \
-		--with-default-dict=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/libcrack-words
+		--with-default-dict=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/libcrack-words
 	+$(MAKE) -C $(BUILD_WORK)/libcrack
 	+$(MAKE) -C $(BUILD_WORK)/libcrack install \
 		DESTDIR=$(BUILD_STAGE)/libcrack
