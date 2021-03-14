@@ -48,7 +48,7 @@ flac-package: flac-stage
 	cp -a $(BUILD_STAGE)/flac/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/flac/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	
 	# flac.mk Prep libflac8
-	cp -a $(BUILD_STAGE)/flac/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libFLAC.8.dylib $(BUILD_DIST)/libflac8/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/flac/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libFLAC.8.dylib $(BUILD_DIST)/libflac8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# flac.mk Prep libflac-dev
 	cp -a $(BUILD_STAGE)/flac/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libFLAC.dylib $(BUILD_DIST)/libflac-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib

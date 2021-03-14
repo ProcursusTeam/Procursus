@@ -36,7 +36,7 @@ r2ghidra-dec: r2ghidra-dec-setup radare2 openssl
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
-		-DRadare2_INCLUDE_DIRS="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/libr"
+		-DRadare2_INCLUDE_DIRS="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/libr"
 	+PATH="$(BUILD_WORK)/../../native/ghidra:$(PATH)" $(MAKE) -C $(BUILD_WORK)/r2ghidra-dec
 	$(MAKE) -C $(BUILD_WORK)/r2ghidra-dec install \
 		DESTDIR="$(BUILD_STAGE)/r2ghidra-dec"

@@ -90,32 +90,6 @@ lua-luv: lua-luv-setup libuv1 lua5.1 lua5.2 lua5.3 luajit
 		-DWITH_SHARED_LIBUV=ON \
 		-DBUILD_MODULE=OFF \
 		-DBUILD_SHARED_LIBS=ON \
-		-DWITH_LUA_ENGINE=LuaJIT \
-		-DLUAJIT_INCLUDE_DIR="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/luajit-2.1" \
-		-DLUA_LIBRARIES="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit-5.1.dylib" \
-		-DSHAREDLIBS_INSTALL_INC_DIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/luajit-2.1/luv" \
-		..
-	$(MAKE) -C $(BUILD_WORK)/lua-luv/buildjit
-	$(MAKE) -C $(BUILD_WORK)/lua-luv/buildjit install \
-		DESTDIR="$(BUILD_STAGE)/lua-luv"
-	$(MAKE) -C $(BUILD_WORK)/lua-luv/buildjit install \
-		DESTDIR="$(BUILD_BASE)"
-	mv $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluv.$(LUA-LUV_VERSION).dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit-5.1-luv.$(LUA-LUV_VERSION).dylib
-	rm -f $(BUILD_BASE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluv.{1.,}dylib
-	$(LN) -sf libluajit-5.1-luv.$(LUA-LUV_VERSION).dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit-5.1-luv.1.dylib
-	$(LN) -sf libluajit-5.1-luv.$(LUA-LUV_VERSION).dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit-5.1-luv.dylib
-	mv $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluv.$(LUA-LUV_VERSION).dylib $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit-5.1-luv.$(LUA-LUV_VERSION).dylib
-	rm -f $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluv.{1.,}dylib
-	$(LN) -sf libluajit-5.1-luv.$(LUA-LUV_VERSION).dylib $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit-5.1-luv.1.dylib
-	$(LN) -sf libluajit-5.1-luv.$(LUA-LUV_VERSION).dylib $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit-5.1-luv.dylib
-	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit-5.1-luv.1.dylib $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit-5.1-luv.$(LUA-LUV_VERSION).dylib
-	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit-5.1-luv.1.dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit-5.1-luv.$(LUA-LUV_VERSION).dylib
-	mv $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/libluv.pc $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/luajit-5.1-luv.pc
-	sed -i "s/-lluv/-lluajit-5.1-luv/" $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/luajit-5.1-luv.pc
-	mv $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/libluv.pc $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/luajit-5.1-luv.pc
-	sed -i "s/-lluv/-lluajit-5.1-luv/" $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/luajit-5.1-luv.pc
-	touch $(BUILD_WORK)/lua-luv/.build_complete
-endif
 
 lua-luv-package: lua-luv-stage
 	# lua-luv.mk Package Structure

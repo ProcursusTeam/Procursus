@@ -33,17 +33,17 @@ xpwn: xpwn-setup libpng16 openssl
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
 		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
-		-DBZIP2_LIBRARIES="-L$(TARGET_SYSROOT)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -lbz2" \
-		-DZLIB_LIBRARY="-L$(TARGET_SYSROOT)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -lz"
+		-DBZIP2_LIBRARIES="-L$(TARGET_SYSROOT)/usr/lib -lbz2" \
+		-DZLIB_LIBRARY="-L$(TARGET_SYSROOT)/usr/lib -lz"
 	+$(MAKE) -C $(BUILD_WORK)/xpwn
 	+$(MAKE) -C $(BUILD_WORK)/xpwn install \
 		DESTDIR=$(BUILD_BASE)
 	+$(MAKE) -C $(BUILD_WORK)/xpwn install \
 		DESTDIR=$(BUILD_STAGE)/xpwn
 	mkdir -p {$(BUILD_BASE),$(BUILD_STAGE)/xpwn}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include/xpwn,lib/xpwn}
-	cp -a $(BUILD_WORK)/xpwn/includes/* $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpwn
+	cp -a $(BUILD_WORK)/xpwn/includes/* $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpwn
 	cp -a $(BUILD_WORK)/xpwn/includes/* $(BUILD_STAGE)/xpwn/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpwn
-	cp -a $(BUILD_WORK)/xpwn/{ipsw-patch/libxpwn,minizip/libminizip,common/libcommon,hfs/libhfs,dmg/libdmg}.a $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xpwn
+	cp -a $(BUILD_WORK)/xpwn/{ipsw-patch/libxpwn,minizip/libminizip,common/libcommon,hfs/libhfs,dmg/libdmg}.a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xpwn
 	cp -a $(BUILD_WORK)/xpwn/{ipsw-patch/libxpwn,minizip/libminizip,common/libcommon,hfs/libhfs,dmg/libdmg}.a $(BUILD_STAGE)/xpwn/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xpwn
 	touch $(BUILD_WORK)/xpwn/.build_complete
 endif

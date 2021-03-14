@@ -21,10 +21,10 @@ slang2: slang2-setup libpng16 pcre libonig
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--with-pcre=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
-		--with-onig=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
-		--with-png=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
-		--with-z=$(TARGET_SYSROOT)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+		--with-pcre=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--with-onig=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--with-png=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--with-z=$(TARGET_SYSROOT)/usr
 	mkdir -p $(BUILD_WORK)/slang2/src/elfobjs
 	+$(MAKE) -C $(BUILD_WORK)/slang2 all
 	+$(MAKE) -C $(BUILD_WORK)/slang2 -j1 install \

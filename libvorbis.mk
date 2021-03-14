@@ -40,7 +40,7 @@ libvorbis-package: libvorbis-stage
 	mkdir -p $(BUILD_DIST)/libvorbis-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	
 	# libvorbis.mk Prep libvorbis0a
-	cp -a $(BUILD_STAGE)/libvorbis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvorbis.0.dylib $(BUILD_DIST)/libvorbis0a/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libvorbis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvorbis.0.dylib $(BUILD_DIST)/libvorbis0a/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libvorbis.mk Prep libvorbisenc2
 	cp -a $(BUILD_STAGE)/libvorbis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvorbisenc.2.dylib $(BUILD_DIST)/libvorbisenc2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib

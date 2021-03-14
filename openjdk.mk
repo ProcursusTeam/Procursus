@@ -85,10 +85,10 @@ openjdk: openjdk-setup libx11 libxext libxi libxrender libxtst freetype libgif h
 		--with-jvm-variants=server \
 		--with-x=system \
 		--with-cups-include="$(BUILD_WORK)/apple-cups" \
-		--with-fontconfig=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--with-fontconfig=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--with-freetype=system \
-		--with-freetype-lib=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
-		--with-freetype-include=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include \
+		--with-freetype-lib=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+		--with-freetype-include=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include \
 		--with-libjpeg=system \
 		--with-giflib=system \
 		--with-libpng=system \

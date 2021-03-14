@@ -28,14 +28,14 @@ cairo: cairo-setup freetype fontconfig glib2.0 libpng16 liblzo2 libpixman
 		--disable-xcb \
 		--disable-xlib \
 		--enable-gobject \
-		FONTCONFIG_CFLAGS="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/freetype2 -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/libpng16" \
-		FREETYPE_CFLAGS="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/freetype2 -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/libpng16" \
-		GOBJECT_CFLAGS="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/glib-2.0 -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/glib-2.0/include" \
-		glib_CFLAGS="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/glib-2.0 -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/glib-2.0/include -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/glib-2.0/include" \
-		pixman_CFLAGS="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/pixman-1" \
-		png_CFLAGS="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/libpng16"
+		FONTCONFIG_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/freetype2 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/libpng16" \
+		FREETYPE_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/freetype2 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/libpng16" \
+		GOBJECT_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/glib-2.0 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/glib-2.0/include" \
+		glib_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/glib-2.0 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/glib-2.0/include -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/glib-2.0/include" \
+		pixman_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/pixman-1" \
+		png_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/libpng16"
 	+$(MAKE) -C $(BUILD_WORK)/cairo \
-		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/glib-2.0/include"
+		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/glib-2.0/include"
 	+$(MAKE) -C $(BUILD_WORK)/cairo install \
 		DESTDIR=$(BUILD_STAGE)/cairo
 	+$(MAKE) -C $(BUILD_WORK)/cairo install \

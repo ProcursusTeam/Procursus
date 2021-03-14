@@ -25,7 +25,7 @@ else
 lsof: lsof-setup network-cmds-setup ncurses
 	cd $(BUILD_WORK)/lsof/lsof; \
 	DARWIN_BASE=libproc LSOF_VERS=1700 \
-		LSOF_INCLUDE=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include \
+		LSOF_INCLUDE=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include \
 		./Configure -n darwin
 	unlink $(BUILD_WORK)/lsof/lsof/dchannel.c && touch $(BUILD_WORK)/lsof/lsof/dchannel.c
 	echo -e "#include \"lsof.h\"\n \
@@ -35,7 +35,7 @@ lsof: lsof-setup network-cmds-setup ncurses
 		CC=$(CC) \
 		AR="$(AR) cr \$${LIB} \$${OBJ}" \
 		RANLIB="$(RANLIB) \$${LIB}" \
-		RC_CFLAGS="$(CFLAGS) -DHASUTMPX -isystem $(BUILD_WORK)/network-cmds/include -isystem $(BUILD_WORK)/lsof/lsof/include -L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib"
+		RC_CFLAGS="$(CFLAGS) -DHASUTMPX -isystem $(BUILD_WORK)/network-cmds/include -isystem $(BUILD_WORK)/lsof/lsof/include -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib"
 	cp -a $(BUILD_WORK)/lsof/lsof/lsof $(BUILD_STAGE)/lsof/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/sbin
 	cp -a $(BUILD_WORK)/lsof/lsof/lsof.8 $(BUILD_STAGE)/lsof/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man/man8
 	touch $(BUILD_WORK)/lsof/.build_complete

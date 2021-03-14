@@ -22,8 +22,8 @@ libev: libev-setup
 	+$(MAKE) -C $(BUILD_WORK)/libev install \
 		DESTDIR=$(BUILD_STAGE)/libev
 	# Do not make install to build_base do to conflicts with event.h from libevent.
-	cp -a $(BUILD_STAGE)/libev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ev{,++}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	cp -a $(BUILD_STAGE)/libev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/* $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ev{,++}.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/libev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/* $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	touch $(BUILD_WORK)/libev/.build_complete
 endif
 

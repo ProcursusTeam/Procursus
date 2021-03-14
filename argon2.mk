@@ -21,10 +21,10 @@ argon2: argon2-setup
 		DESTDIR=$(BUILD_STAGE)/argon2/ \
 		KERNEL_NAME="Darwin" \
 		OPTTARGET="aarch64"
-	rm -f $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libargon2.dylib
+	rm -f $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libargon2.dylib
 	+$(MAKE) -C $(BUILD_WORK)/argon2/ install \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		DESTDIR=$(BUILD_BASE)/ \
+		DESTDIR=$(BUILD_BASE) \
 		KERNEL_NAME="Darwin" \
 		OPTTARGET="aarch64"
 	touch $(BUILD_WORK)/argon2/.build_complete

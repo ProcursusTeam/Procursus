@@ -28,16 +28,16 @@ rust:
 	@echo "Using previously built rust."
 else
 rust: rust-setup openssl curl
-	mv $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/stdlib.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/stdlib.h.old
+	mv $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/stdlib.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/stdlib.h.old
 	unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS; \
 		cd "$(BUILD_WORK)/rust"; \
 		export MACOSX_DEPLOYMENT_TARGET=10.13 \
 		IPHONEOS_DEPLOYMENT_TARGET=10.0 \
-		AARCH64_APPLE_IOS_OPENSSL_DIR="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)"; \
-		ARMV7_APPLE_IOS_OPENSSL_DIR="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)"; \
+		AARCH64_APPLE_IOS_OPENSSL_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)"; \
+		ARMV7_APPLE_IOS_OPENSSL_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)"; \
 		./x.py build; \
 		./x.py install
-	mv $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/stdlib.h.old $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/stdlib.h
+	mv $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/stdlib.h.old $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/stdlib.h
 	rm -rf $(BUILD_STAGE)/rust/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{share/doc,etc}
 	rm -rf $(BUILD_STAGE)/rust/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/rustlib/{src,manifest-*,components,install.log,uninstall.sh,rust-installer-version}
 	rm -rf $(BUILD_STAGE)/rust/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/rustlib/*/analysis

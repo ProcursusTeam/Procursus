@@ -24,7 +24,7 @@ npm: npm-setup
 	@echo "# DO NOT MODIFY THIS FILE - use /etc/npmrc instead.\n\
 globalconfig=/etc/npmrc\n\
 globalignorefile=/etc/npmignore\n\
-prefix=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)\n" > $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/node_modules/npm/npmrc
+prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)\n" > $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/node_modules/npm/npmrc
 	cp -a $(BUILD_WORK)/npm/package.json $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/npm
 	touch $(BUILD_STAGE)/npm/etc/npmrc
 	mkdir -p $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/nodejs

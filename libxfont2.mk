@@ -26,8 +26,8 @@ libxfont2: libxfont2-setup xorgproto xtrans util-macros freetype libfontenc
 		--localstatedir=$(MEMO_PREFIX)/var \
 		--enable-devel-docs=no \
 		--with-bzip2 \
-		FREETYPE_CFLAGS="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/freetype2" \
-		FREETYPE_LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -lfreetype"
+		FREETYPE_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/freetype2" \
+		FREETYPE_LIBS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -lfreetype"
 	+$(MAKE) -C $(BUILD_WORK)/libxfont2
 	+$(MAKE) -C $(BUILD_WORK)/libxfont2 install \
 		DESTDIR=$(BUILD_STAGE)/libxfont2

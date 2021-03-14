@@ -24,7 +24,7 @@ liblqr: liblqr-setup glib2.0 gettext
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--disable-dependency-tracking \
 		--enable-install-man \
-		GLIB_CFLAGS="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/glib-2.0 -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/glib-2.0/include -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/glib-2.0/include"
+		GLIB_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/glib-2.0 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/glib-2.0/include -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/glib-2.0/include"
 	+$(MAKE) -C $(BUILD_WORK)/liblqr
 	+$(MAKE) -C $(BUILD_WORK)/liblqr install \
 		DESTDIR=$(BUILD_STAGE)/liblqr

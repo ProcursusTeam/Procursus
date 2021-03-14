@@ -25,7 +25,7 @@ leptonica: leptonica-setup libgif libjpeg-turbo libpng16 libtiff openjpeg libweb
 	+$(MAKE) -C $(BUILD_WORK)/leptonica
 	+$(MAKE) -C $(BUILD_WORK)/leptonica install \
 		DESTDIR="$(BUILD_STAGE)/leptonica"
-	rm -rf $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libleptonica*
+	rm -rf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libleptonica*
 	+$(MAKE) -C $(BUILD_WORK)/leptonica install \
 		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/leptonica/.build_complete

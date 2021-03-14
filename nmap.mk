@@ -19,7 +19,7 @@ nmap: nmap-setup lua5.3 openssl pcre libssh2
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
-		--with-liblua=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--with-liblua=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		--without-nmap-update \
 		--disable-universal \
 		--without-zenmap \
