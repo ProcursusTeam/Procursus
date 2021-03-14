@@ -22,7 +22,7 @@ screen: screen-setup ncurses libxcrypt
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
-		--mandir=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man \
+		--mandir=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man \
 		--enable-colors256 \
 		--disable-pam \
 		--with-sys-screenrc=/etc/screenrc

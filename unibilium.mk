@@ -28,12 +28,12 @@ unibilium: unibilium-setup
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE)
 	+$(MAKE) -C $(BUILD_WORK)/unibilium \
-		PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		PREFIX=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		LIBTOOL="$(BUILD_WORK)/unibilium/libtool/libtool" \
 		TERMINFO_DIRS='"/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/terminfo"'
-	+$(MAKE) -C $(BUILD_WORK)/unibilium install PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+	+$(MAKE) -C $(BUILD_WORK)/unibilium install PREFIX=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		DESTDIR="$(BUILD_STAGE)/unibilium"
-	+$(MAKE) -C $(BUILD_WORK)/unibilium install PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+	+$(MAKE) -C $(BUILD_WORK)/unibilium install PREFIX=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
 		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/unibilium/.build_complete
 endif

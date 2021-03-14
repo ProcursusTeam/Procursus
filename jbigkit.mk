@@ -16,7 +16,7 @@ jbigkit:
 	@echo "Using previously built jbigkit."
 else
 jbigkit: jbigkit-setup
-	+$(MAKE) -C $(BUILD_WORK)/jbigkit CC="$(CC)" CFLAGS="$(CFLAGS) -I../libjbig" PREFIX=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	+$(MAKE) -C $(BUILD_WORK)/jbigkit CC="$(CC)" CFLAGS="$(CFLAGS) -I../libjbig" PREFIX=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 
 	$(GINSTALL) -D -m644 $(BUILD_WORK)/jbigkit/libjbig/libjbig.0.dylib $(BUILD_STAGE)/jbigkit/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libjbig.0.dylib
 	$(GINSTALL) -D -m644 $(BUILD_WORK)/jbigkit/libjbig/libjbig.dylib $(BUILD_STAGE)/jbigkit/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libjbig.dylib

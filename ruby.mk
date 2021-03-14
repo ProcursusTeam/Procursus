@@ -54,8 +54,8 @@ endif
 		--program-suffix=$(RUBY_VERSION) \
 		--with-soname=ruby-$(RUBY_VERSION) \
 		--with-sitedir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/ruby/site_ruby \
-    	--with-vendordir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ruby/vendor_ruby \
-		--runstatedir=/var/run \
+    --with-vendordir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ruby/vendor_ruby \
+		--runstatedir=$(MEMO_PREFIX)/var/run \
 		--localstatedir=$(MEMO_PREFIX)/var \
 		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--disable-dtrace \

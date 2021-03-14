@@ -64,7 +64,7 @@ void patch_setuidandplatformize() {\
 		--enable-static-sudoers \
 		--with-all-insults \
 		--with-env-editor \
-		--with-editor=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/editor \
+		--with-editor=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/editor \
 		--with-timeout=15 \
 		--with-password-timeout=0 \
 		--with-passprompt="[sudo] password for %p: " \

@@ -24,7 +24,7 @@ xcb-proto: xcb-proto-setup
 		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--localstatedir=$(MEMO_PREFIX)/var \
 		--disable-static \
-		am_cv_python_pythondir=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/python3/dist-packages \
+		am_cv_python_pythondir=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/python3/dist-packages \
 		PYTHON=$(shell which python3)
 	+$(MAKE) -C $(BUILD_WORK)/xcb-proto install \
 		DESTDIR=$(BUILD_STAGE)/xcb-proto
