@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += ye
-YE_VERSION  := 0.1.2
+YE_VERSION  := 1.0
 DEB_YE_V    ?= $(YE_VERSION)
 
 ye-setup: setup
