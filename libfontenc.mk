@@ -19,7 +19,7 @@ libfontenc: libfontenc-setup
 	cd $(BUILD_WORK)/libfontenc && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--localstatedir=$(MEMO_PREFIX)/var
 	+$(MAKE) -C $(BUILD_WORK)/libfontenc
@@ -33,14 +33,14 @@ endif
 libfontenc-package: libfontenc-stage
 	# libfontenc.mk Package Structure
 	rm -rf $(BUILD_DIST)/libfontenc{1,-dev}
-	mkdir -p $(BUILD_DIST)/libfontenc{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libfontenc{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libfontenc.mk Prep libfontenc6
-	cp -a $(BUILD_STAGE)/libfontenc/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libfontenc.1.dylib $(BUILD_DIST)/libfontenc1/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libfontenc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libfontenc.1.dylib $(BUILD_DIST)/libfontenc1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libfontenc.mk Prep libfontenc-dev
-	cp -a $(BUILD_STAGE)/libfontenc/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{libfontenc.{a,dylib},pkgconfig} $(BUILD_DIST)/libfontenc-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
-	cp -a $(BUILD_STAGE)/libfontenc/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libfontenc-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/libfontenc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libfontenc.{a,dylib},pkgconfig} $(BUILD_DIST)/libfontenc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libfontenc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libfontenc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libfontenc.mk Sign
 	$(call SIGN,libfontenc1,general.xml)

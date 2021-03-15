@@ -21,35 +21,35 @@ calc: calc-setup ncurses readline
 	+$(MAKE) -C $(BUILD_WORK)/calc install \
 		LCC=clang \
 		CC=$(CC) \
-		CFLAGS="$(CFLAGS) -DCALC_SRC -DCUSTOMHELPDIR=\"\\\"/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/calc/custhelp\\\"\" -DHELPDIR=\"\\\"/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/calc/help\\\"\" -DDEFAULTCALCPATH=\"\\\".:./cal:~/.cal:/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/calc:/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/calc/custom\\\"\" -I$(BUILD_WORK)" \
+		CFLAGS="$(CFLAGS) -DCALC_SRC -DCUSTOMHELPDIR=\"\\\"/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/calc/custhelp\\\"\" -DHELPDIR=\"\\\"/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/calc/help\\\"\" -DDEFAULTCALCPATH=\"\\\".:./cal:~/.cal:/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/calc:/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/calc/custom\\\"\" -I$(BUILD_WORK)" \
 		LDFLAGS="$(LDFLAGS)" \
 		target="Darwin" \
-		BINDIR="/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin" \
-		LIBDIR="/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib" \
-		INCDIR="/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include" \
-		CALC_SHAREDIR="/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/calc" \
+		BINDIR="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin" \
+		LIBDIR="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
+		INCDIR="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
+		CALC_SHAREDIR="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/calc" \
 		CALCPAGER="pager" \
 		USE_READLINE="-DUSE_READLINE" \
 		READLINE_LIB="-lreadline" \
-		READLINE_EXTRAS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib -lhistory -lncursesw" \
+		READLINE_EXTRAS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -lhistory -lncursesw" \
 		BLD_TYPE="calc-static-only" \
 		T="$(BUILD_STAGE)/calc" \
 		-j1
-	rm -rf $(BUILD_STAGE)/calc/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/{cscript,calc-static}
+	rm -rf $(BUILD_STAGE)/calc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{cscript,calc-static}
 	touch $(BUILD_WORK)/calc/.build_complete
 endif
 
 calc-package: calc-stage
 	# calc.mk Package Structure
 	rm -rf $(BUILD_DIST)/calc{,-dev}
-	mkdir -p $(BUILD_DIST)/calc{,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	mkdir -p $(BUILD_DIST)/calc{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# calc.mk Prep calc
-	cp -a $(BUILD_STAGE)/calc/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{bin,share} $(BUILD_DIST)/calc/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/calc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/calc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# calc.mk Prep calc-dev
-	cp -a $(BUILD_STAGE)/calc/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/calc-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
-	cp -a $(BUILD_STAGE)/calc/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/*.a $(BUILD_DIST)/calc-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/calc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/calc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/calc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/*.a $(BUILD_DIST)/calc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# calc.mk Sign
 	$(call SIGN,calc,general.xml)

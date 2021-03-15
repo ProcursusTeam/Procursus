@@ -25,10 +25,10 @@ uikittools: uikittools-setup
 		CC=$(CC) \
 		STRIP=$(STRIP) \
 		CFLAGS="$(CFLAGS)"
-	mkdir -p $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin
+	mkdir -p $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	for bin in $(BUILD_WORK)/uikittools/*; do \
 		if [ -f $$bin ] && [ -x $$bin ]; then \
-			cp $$bin $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin ; \
+			cp $$bin $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin ; \
 		fi \
 	done
 	touch $(BUILD_WORK)/uikittools/.build_complete
@@ -40,7 +40,7 @@ uikittools-package: uikittools-stage
 	mkdir -p $(BUILD_DIST)/uikittools
 	
 	# uikittools.mk Prep uikittools
-	cp -a $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) $(BUILD_DIST)/uikittools
+	cp -a $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/uikittools
 	
 	# uikittools.mk Make .debs
 	$(call PACK,uikittools,DEB_UIKITTOOLS_V)

@@ -18,11 +18,11 @@ libass: libass-setup freetype fontconfig libfribidi harfbuzz
 	cd $(BUILD_WORK)/libass && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
-		FONTCONFIG_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/freetype2 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/libpng16" \
-		FREETYPE_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/freetype2 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/libpng16" \
-		FRIBIDI_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/fribidi" \
-		HARFBUZZ_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/harfbuzz"
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		FONTCONFIG_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/freetype2 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libpng16" \
+		FREETYPE_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/freetype2 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libpng16" \
+		FRIBIDI_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/fribidi" \
+		HARFBUZZ_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/harfbuzz"
 	+$(MAKE) -C $(BUILD_WORK)/libass
 	+$(MAKE) -C $(BUILD_WORK)/libass install \
 		DESTDIR="$(BUILD_STAGE)/libass"
@@ -34,14 +34,14 @@ endif
 libass-package: libass-stage
 	# libass.mk Package Structure
 	rm -rf $(BUILD_DIST)/libass{9,-dev}
-	mkdir -p $(BUILD_DIST)/libass{9,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libass{9,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libass.mk Prep libass9
-	cp -a $(BUILD_STAGE)/libass/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libass.9.dylib $(BUILD_DIST)/libass9/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libass/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libass.9.dylib $(BUILD_DIST)/libass9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libass.mk Prep libass-dev
-	cp -a $(BUILD_STAGE)/libass/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{libass.{dylib,a},pkgconfig} $(BUILD_DIST)/libass-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
-	cp -a $(BUILD_STAGE)/libass/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libass-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/libass/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libass.{dylib,a},pkgconfig} $(BUILD_DIST)/libass-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libass/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libass-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libass.mk Sign
 	$(call SIGN,libass9,general.xml)

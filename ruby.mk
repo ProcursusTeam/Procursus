@@ -21,8 +21,8 @@ else
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 RUBY_EXTRA_LIBS     := -lcrypt -lucontext
 RUBY_CONFIGURE_ARGS := --with-coroutine=ucontext \
-	CFLAGS="$(CFLAGS) -I$(BUILD_STAGE)/libucontext/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include -D_STRUCT_UCONTEXT" \
-	LDFLAGS="$(LDFLAGS) -L$(BUILD_STAGE)/libucontext/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib"
+	CFLAGS="$(CFLAGS) -I$(BUILD_STAGE)/libucontext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -D_STRUCT_UCONTEXT" \
+	LDFLAGS="$(LDFLAGS) -L$(BUILD_STAGE)/libucontext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib"
 ruby: ruby-setup libxcrypt libgmp10 libjemalloc ncurses readline openssl libyaml libffi libgdbm libucontext
 else
 ifneq (,$(findstring amd64,$(MEMO_TARGET)))

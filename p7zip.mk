@@ -26,8 +26,8 @@ p7zip: p7zip-setup
 		CXX="$(CXX) $(CFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/p7zip install \
 		DEST_DIR=$(BUILD_STAGE)/p7zip \
-		DEST_HOME=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
-		DEST_MAN=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man
+		DEST_HOME=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		DEST_MAN=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	touch $(BUILD_WORK)/p7zip/.build_complete
 endif
 
@@ -37,7 +37,7 @@ p7zip-package: p7zip-stage
 	mkdir -p $(BUILD_DIST)/p7zip
 	
 	# p7zip.mk Prep p7zip
-	cp -a $(BUILD_STAGE)/p7zip/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) $(BUILD_DIST)/p7zip
+	cp -a $(BUILD_STAGE)/p7zip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/p7zip
 	
 	# p7zip.mk Sign
 	$(call SIGN,p7zip,general.xml)

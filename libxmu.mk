@@ -19,7 +19,7 @@ libxmu: libxmu-setup libxext libxt
 	cd $(BUILD_WORK)/libxmu && unset CPP CPPFLAGS && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--localstatedir=$(MEMO_PREFIX)/var \
 		--enable-malloc0returnsnull=no \
@@ -36,17 +36,17 @@ endif
 libxmu-package: libxmu-stage
 	# libxmu.mk Package Structure
 	rm -rf $(BUILD_DIST)/libxmu{6,-dev} $(BUILD_DIST)/libxmuu1
-	mkdir -p $(BUILD_DIST)/libxmu6/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
-		$(BUILD_DIST)/libxmu-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
-		$(BUILD_DIST)/libxmuu1/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libxmu6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libxmu-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libxmuu1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libxmu.mk Prep libxmu6 and libxmuu1
-	cp -a $(BUILD_STAGE)/libxmu/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libXmu.6.dylib $(BUILD_DIST)/libxmu6/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
-	cp -a $(BUILD_STAGE)/libxmu/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libXmuu.1.dylib $(BUILD_DIST)/libxmuu1/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxmu/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXmu.6.dylib $(BUILD_DIST)/libxmu6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxmu/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXmuu.1.dylib $(BUILD_DIST)/libxmuu1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxmu.mk Prep libxmu-dev
-	cp -a $(BUILD_STAGE)/libxmu/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/!(libXmu.6.dylib) $(BUILD_DIST)/libxmu-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
-	cp -a $(BUILD_STAGE)/libxmu/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{include,share} $(BUILD_DIST)/libxmu-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/libxmu/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libXmu.6.dylib) $(BUILD_DIST)/libxmu-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxmu/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libxmu-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libxmu.mk Sign
 	$(call SIGN,libxmu6,general.xml)

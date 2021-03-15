@@ -19,7 +19,7 @@ util-macros: util-macros-setup
 	cd $(BUILD_WORK)/util-macros && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--localstatedir=$(MEMO_PREFIX)/var \
 		--disable-static
@@ -37,7 +37,7 @@ util-macros-package: util-macros-stage
 	mkdir -p $(BUILD_DIST)/xorg-util-macros
 	
 	# util-macros.mk Prep util-macros
-	cp -a $(BUILD_STAGE)/util-macros/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) $(BUILD_DIST)/xorg-util-macros
+	cp -a $(BUILD_STAGE)/util-macros/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/xorg-util-macros
 
 	# util-macros.mk Sign
 	$(call SIGN,xorg-util-macros,general.xml)
