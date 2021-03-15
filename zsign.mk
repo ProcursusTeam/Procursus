@@ -35,7 +35,7 @@ zsign-package: zsign-stage
 	mkdir -p $(BUILD_DIST)/zsign
 
 	# zsign.mk Prep zsign
-	cp -a $(BUILD_STAGE)/zsign/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/zsign
+	cp -a $(BUILD_STAGE)/zsign $(BUILD_DIST)
 
 	# zsign.mk Sign
 	$(call SIGN,zsign,general.xml)
