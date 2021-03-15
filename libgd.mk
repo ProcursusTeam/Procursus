@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += libgd
-LIBGD_VERSION := 2.3.1
+LIBGD_VERSION := 2.3.2
 DEB_LIBGD_V   ?= $(LIBGD_VERSION)
 
 libgd-setup: setup
@@ -22,13 +22,24 @@ libgd: libgd-setup fontconfig freetype libjpeg-turbo libpng16 libtiff libwebp li
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)/ \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/ \
 		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
+		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
 		-DBUILD_SHARED_LIBS=1 \
+		-DENABLE_FONTCONFIG=ON \
+		-DENABLE_FREETYPE=ON \
+		-DENABLE_ICONV=ON \
+		-DENABLE_GD_FORMATS=ON \
+		-DENABLE_JPEG=ON \
+		-DENABLE_PNG=ON \
+		-DENABLE_TIFF=ON \
+		-DENABLE_WEBP=ON \
+		-DENABLE_XPM=ON \
+		-DXPM_XPM_INCLUDE_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
 		.
 
 	+$(MAKE) -C $(BUILD_WORK)/libgd
@@ -47,16 +58,15 @@ libgd-package: libgd-stage
 		$(BUILD_DIST)/libgd-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libgd.mk Prep libgd3
-	cp -a $(BUILD_STAGE)/libgd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgd.*.dylib $(BUILD_DIST)/libgd3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libgd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgd.3.*.dylib $(BUILD_DIST)/libgd3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libgd.mk Prep libgd-dev
-	cp -a $(BUILD_STAGE)/libgd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libgd.*.dylib) $(BUILD_DIST)/libgd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libgd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libgd.3.*.dylib) $(BUILD_DIST)/libgd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libgd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libgd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libgd.mk Prep libgd-tools
 	cp -a $(BUILD_STAGE)/libgd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/libgd-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-
-	exit 1
+	
 	# libgd.mk Sign
 	$(call SIGN,libgd3,general.xml)
 	$(call SIGN,libgd-tools,general.xml)
