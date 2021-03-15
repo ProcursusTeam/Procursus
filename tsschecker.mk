@@ -5,7 +5,7 @@ endif
 SUBPROJECTS        += tsschecker
 TSSCHECKER_VERSION := 320
 TSSCHECKER_COMMIT  := 10440005e2ab5f950f76368a0456ad69677da71b
-DEB_TSSCHECKER_V   ?= $(TSSCHECKER_VERSION)
+DEB_TSSCHECKER_V   ?= $(TSSCHECKER_VERSION)-1
 
 tsschecker-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tihmstar/tsschecker/archive/$(TSSCHECKER_COMMIT).tar.gz
