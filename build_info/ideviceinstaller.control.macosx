@@ -1,0 +1,8 @@
+Package: ideviceinstaller
+Version: @DEB_IDEVICEINSTALLER_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Homepage: https://libimobiledevice.org/
+Description: A command-line application to manage apps and app archives on iOS devices.
+Depends: libimobiledevice6, libplist3, libzip5 (>= 1.7.3)
