@@ -7,8 +7,8 @@ ifeq ($(UNAME),Darwin)
 ifeq ($(filter $(shell uname -m | cut -c -4), iPad iPho),)
 
 SUBPROJECTS             += pojavlauncher
-POJAVLAUNCHER_COMMIT    := 81d8360c71feba3e14a0470f0db776d374428f55
-POJAVLAUNCHER_VERSION   := 1.0+git20210222.$(shell echo $(POJAVLAUNCHER_COMMIT) | cut -c -7)
+POJAVLAUNCHER_COMMIT    := 6423825f3106c107d806c39159e8b6aa1868c677
+POJAVLAUNCHER_VERSION   := 1.1+git20210304.$(shell echo $(POJAVLAUNCHER_COMMIT) | cut -c -7)
 DEB_POJAVLAUNCHER_V     ?= $(POJAVLAUNCHER_VERSION)
 
 pojavlauncher-setup: setup
