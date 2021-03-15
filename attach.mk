@@ -11,15 +11,15 @@ attach-setup: setup
 		wget -q -nc -O$(BUILD_SOURCE)/attach-$(ATTACH_VERSION).tar.gz \
 			https://github.com/NyaMisty/Attach-Detach/archive/$(ATTACH_VERSION).tar.gz
 	$(call EXTRACT_TAR,attach-$(ATTACH_VERSION).tar.gz,attach-detach-$(ATTACH_VERSION),attach)
-	mkdir -p $(BUILD_STAGE)/attach/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin
+	mkdir -p $(BUILD_STAGE)/attach/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 ifneq ($(wildcard $(BUILD_WORK)/attach/.build_complete),)
 attach:
 	@echo "Using previously built attach."
 else
 attach: attach-setup
-	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/attach/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/attach $(BUILD_WORK)/attach/attach.m $(LDFLAGS) -framework CoreFoundation -framework IOKit
-	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/attach/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/detach $(BUILD_WORK)/attach/detach.c $(LDFLAGS) -framework CoreFoundation -framework IOKit
+	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/attach/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/attach $(BUILD_WORK)/attach/attach.m $(LDFLAGS) -framework CoreFoundation -framework IOKit
+	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/attach/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/detach $(BUILD_WORK)/attach/detach.c $(LDFLAGS) -framework CoreFoundation -framework IOKit
 	touch $(BUILD_WORK)/attach/.build_complete
 endif
 
@@ -29,7 +29,7 @@ attach-package: attach-stage
 	mkdir -p $(BUILD_DIST)/attach
 	
 	# attach.mk Prep attach
-	cp -a $(BUILD_STAGE)/attach/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) $(BUILD_DIST)/attach
+	cp -a $(BUILD_STAGE)/attach/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/attach
 
 	# attach.mk Sign
 	$(call SIGN,attach,attach.xml)

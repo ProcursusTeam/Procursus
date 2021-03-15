@@ -18,7 +18,7 @@ libde265: libde265-setup
 	cd $(BUILD_WORK)/libde265 && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-sherlock265
 	+$(MAKE) -C $(BUILD_WORK)/libde265
 	+$(MAKE) -C $(BUILD_WORK)/libde265 install \
@@ -31,18 +31,18 @@ endif
 libde265-package: libde265-stage
 	# libde265.mk Package Structure
 	rm -rf $(BUILD_DIST)/libde265-{0,dev,examples}
-	mkdir -p $(BUILD_DIST)/libde265-{0,dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
-		$(BUILD_DIST)/libde265-examples/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin
+	mkdir -p $(BUILD_DIST)/libde265-{0,dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libde265-examples/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	
 	# libde265.mk Prep libde265-0
-	cp -a $(BUILD_STAGE)/libde265/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libde265.0.dylib $(BUILD_DIST)/libde265-0/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libde265/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libde265.0.dylib $(BUILD_DIST)/libde265-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libde265.mk Prep libde265-dev
-	cp -a $(BUILD_STAGE)/libde265/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{libde265.{dylib,a},pkgconfig} $(BUILD_DIST)/libde265-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
-	cp -a $(BUILD_STAGE)/libde265/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libde265-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/libde265/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libde265.{dylib,a},pkgconfig} $(BUILD_DIST)/libde265-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libde265/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libde265-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libde265.mk Prep libde265-examples
-	cp -a $(BUILD_STAGE)/libde265/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/dec265 $(BUILD_DIST)/libde265-examples/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/libde265-dec265
+	cp -a $(BUILD_STAGE)/libde265/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dec265 $(BUILD_DIST)/libde265-examples/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/libde265-dec265
 	
 	# libde265.mk Sign
 	$(call SIGN,libde265-0,general.xml)

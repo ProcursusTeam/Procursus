@@ -19,7 +19,7 @@ pinentry: pinentry-setup libgpg-error libassuan ncurses
 	cd $(BUILD_WORK)/pinentry && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-pinentry-fltk \
 		--disable-pinentry-gnome3 \
 		--disable-pinentry-gtk2 \
@@ -40,7 +40,7 @@ pinentry-package: pinentry-stage
 	mkdir -p $(BUILD_DIST)/pinentry
 	
 	# pinentry.mk Prep pinentry
-	cp -a $(BUILD_STAGE)/pinentry/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) $(BUILD_DIST)/pinentry
+	cp -a $(BUILD_STAGE)/pinentry/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/pinentry
 	
 	# pinentry.mk Sign
 	$(call SIGN,pinentry,general.xml)

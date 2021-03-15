@@ -19,7 +19,7 @@ libspeex: libspeex-setup libogg
 	cd $(BUILD_WORK)/libspeex && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--enable-binaries \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/libspeex
@@ -34,19 +34,19 @@ libspeex-package: libspeex-stage
 	# libspeex.mk Package Structure
 	rm -rf $(BUILD_DIST)/libspeex{1,-dev} \
 		$(BUILD_DIST)/speex
-	mkdir -p $(BUILD_DIST)/libspeex{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
-		$(BUILD_DIST)/speex/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share
+	mkdir -p $(BUILD_DIST)/libspeex{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/speex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	
 	# libspeex.mk Prep speex
-	cp -a $(BUILD_STAGE)/libspeex/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin $(BUILD_DIST)/speex/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
-	cp -a $(BUILD_STAGE)/libspeex/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share/man $(BUILD_DIST)/speex/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share
+	cp -a $(BUILD_STAGE)/libspeex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/speex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libspeex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/speex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	
 	# libspeex.mk Prep libspeex1
-	cp -a $(BUILD_STAGE)/libspeex/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libspeex.1.dylib $(BUILD_DIST)/libspeex1/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libspeex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libspeex.1.dylib $(BUILD_DIST)/libspeex1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libspeex.mk Prep libspeex-dev
-	cp -a $(BUILD_STAGE)/libspeex/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{libspeex.{a,dylib},pkgconfig} $(BUILD_DIST)/libspeex-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
-	cp -a $(BUILD_STAGE)/libspeex/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libspeex-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/libspeex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libspeex.{a,dylib},pkgconfig} $(BUILD_DIST)/libspeex-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libspeex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libspeex-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libspeex.mk Sign
 	$(call SIGN,speex,general.xml)

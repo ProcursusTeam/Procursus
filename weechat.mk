@@ -19,7 +19,7 @@ weechat: weechat-setup ncurses gettext gnutls curl libgcrypt
 	cd $(BUILD_WORK)/weechat && ./configure \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=${GNU_HOST_TRIPLE} \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--disable-static \
 		--disable-alias \
@@ -47,22 +47,22 @@ endif
 weechat-package: weechat-stage
 	# weechat.mk Package Structure
 	rm -rf $(BUILD_DIST)/weechat{,-core,-curses,-headless,-dev}
-	mkdir -p $(BUILD_DIST)/weechat{,-core/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/weechat} \
-	$(BUILD_DIST)/weechat-curses/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin \
-	$(BUILD_DIST)/weechat-headless/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin \
-	$(BUILD_DIST)/weechat-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/
+	mkdir -p $(BUILD_DIST)/weechat{,-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/weechat} \
+	$(BUILD_DIST)/weechat-curses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
+	$(BUILD_DIST)/weechat-headless/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
+	$(BUILD_DIST)/weechat-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
 	
 	# weechat.mk Prep weechat-core
-	cp -a $(BUILD_STAGE)/weechat/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/weechat $(BUILD_DIST)/weechat-core/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/
+	cp -a $(BUILD_STAGE)/weechat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/weechat $(BUILD_DIST)/weechat-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 	
 	# weechat.mk Prep weechat-curses
-	cp -a $(BUILD_STAGE)/weechat/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/weechat{,-curses} $(BUILD_DIST)/weechat-curses/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin
+	cp -a $(BUILD_STAGE)/weechat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/weechat{,-curses} $(BUILD_DIST)/weechat-curses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	
 	# weechat.mk Prep weechat-headless
-	cp -a $(BUILD_STAGE)/weechat/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/weechat-headless $(BUILD_DIST)/weechat-headless/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin
+	cp -a $(BUILD_STAGE)/weechat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/weechat-headless $(BUILD_DIST)/weechat-headless/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	
 	# weechat.mk Prep weechat-dev
-	cp -a $(BUILD_STAGE)/weechat/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/weechat-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/weechat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/weechat-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# weechat.mk Sign
 	$(call SIGN,weechat-core,general.xml)

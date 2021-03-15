@@ -20,12 +20,12 @@ msgpack: msgpack-setup
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
-		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DMSGPACK_BUILD_TESTS=OFF \
 		-DMSGPACK_ENABLE_CXX=ON
 	+$(MAKE) -C $(BUILD_WORK)/msgpack
@@ -39,14 +39,14 @@ endif
 msgpack-package: msgpack-stage
 	# msgpack.mk Package Structure
 	rm -rf $(BUILD_DIST)/libmsgpack{-dev,c2}
-	mkdir -p $(BUILD_DIST)/libmsgpack{-dev,c2}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libmsgpack{-dev,c2}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# msgpack.mk Prep libmsgpack-dev
-	cp -a $(BUILD_STAGE)/msgpack/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/ $(BUILD_DIST)/libmsgpack-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
-	cp -a $(BUILD_STAGE)/msgpack/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{libmsgpackc.{a,dylib},pkgconfig,cmake} $(BUILD_DIST)/libmsgpack-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/msgpack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ $(BUILD_DIST)/libmsgpack-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/msgpack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libmsgpackc.{a,dylib},pkgconfig,cmake} $(BUILD_DIST)/libmsgpack-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# msgpack.mk Prep libmsgpackc2
-	cp -a $(BUILD_STAGE)/msgpack/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libmsgpackc.2*.dylib $(BUILD_DIST)/libmsgpackc2/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/msgpack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libmsgpackc.2*.dylib $(BUILD_DIST)/libmsgpackc2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# msgpack.mk Sign
 	$(call SIGN,libmsgpackc2,general.xml)
