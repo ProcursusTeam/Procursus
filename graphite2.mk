@@ -20,9 +20,9 @@ graphite2: graphite2-setup
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
-		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
@@ -38,18 +38,18 @@ endif
 graphite2-package: graphite2-stage
 	# graphite2.mk Package Structure
 	rm -rf $(BUILD_DIST)/libgraphite2-{3,utils,dev}
-	mkdir -p $(BUILD_DIST)/libgraphite2-{3,dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
-		$(BUILD_DIST)/libgraphite2-utils/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	mkdir -p $(BUILD_DIST)/libgraphite2-{3,dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libgraphite2-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# graphite2.mk Prep libgraphite2-3
-	cp -a $(BUILD_STAGE)/graphite2/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libgraphite2.3*.dylib $(BUILD_DIST)/libgraphite2-3/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/graphite2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgraphite2.3*.dylib $(BUILD_DIST)/libgraphite2-3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# graphite2.mk Prep libgraphite2-utils
-	cp -a $(BUILD_STAGE)/graphite2/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin $(BUILD_DIST)/libgraphite2-utils/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/graphite2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/libgraphite2-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# graphite2.mk Prep libgraphite2-dev
-	cp -a $(BUILD_STAGE)/graphite2/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/!(libgraphite2.3*.dylib) $(BUILD_DIST)/libgraphite2-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
-	cp -a $(BUILD_STAGE)/graphite2/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{include,share} $(BUILD_DIST)/libgraphite2-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/graphite2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libgraphite2.3*.dylib) $(BUILD_DIST)/libgraphite2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/graphite2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libgraphite2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# graphite2.mk Sign
 	$(call SIGN,libgraphite2-3,general.xml)

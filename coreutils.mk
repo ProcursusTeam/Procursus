@@ -21,9 +21,9 @@ coreutils-setup: setup
 	$(call EXTRACT_TAR,coreutils-$(COREUTILS_VERSION).tar.xz,coreutils-$(COREUTILS_VERSION),coreutils)
 	mkdir -p $(BUILD_WORK)/coreutils/{su,rev,bsdcp}
 	wget -q -nc -P $(BUILD_WORK)/coreutils/su \
-		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/$(MEMO_PREFIX)$(MEMO_SUBPREFIX).bin/su/su.c \
-		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/$(MEMO_PREFIX)$(MEMO_SUBPREFIX).bin/su/suutil.{c,h} \
-		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/$(MEMO_PREFIX)$(MEMO_SUBPREFIX).bin/su/su.1
+		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX).bin/su/su.c \
+		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX).bin/su/suutil.{c,h} \
+		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX).bin/su/su.1
 	wget -q -nc -P $(BUILD_WORK)/coreutils/rev \
 		https://opensource.apple.com/source/text_cmds/text_cmds-88/rev/rev.{c,1}
 	wget -q -nc -P $(BUILD_WORK)/coreutils/bsdcp \

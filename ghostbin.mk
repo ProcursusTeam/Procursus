@@ -32,8 +32,8 @@ ghostbin: ghostbin-setup
 		CC="$(CC)" \
 		go build
 	mkdir -p $(BUILD_STAGE)/ghostbin/{Library/LaunchDaemons,usr/{libexec/ghostbin,bin}}
-	cp -a $(BUILD_WORK)/ghostbin/{ghostbin,ghosts.yml,templates,languages.yml,public} $(BUILD_STAGE)/ghostbin/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/libexec/ghostbin
-	cp -a $(BUILD_INFO)/ghostbin-wrapper $(BUILD_STAGE)/ghostbin/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/ghostbin
+	cp -a $(BUILD_WORK)/ghostbin/{ghostbin,ghosts.yml,templates,languages.yml,public} $(BUILD_STAGE)/ghostbin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/ghostbin
+	cp -a $(BUILD_INFO)/ghostbin-wrapper $(BUILD_STAGE)/ghostbin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ghostbin
 	cp -a $(BUILD_INFO)/net.howett.ghostbin.plist $(BUILD_STAGE)/ghostbin/Library/LaunchDaemons
 	touch $(BUILD_WORK)/ghostbin/.build_complete
 endif

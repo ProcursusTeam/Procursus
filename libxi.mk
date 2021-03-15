@@ -19,7 +19,7 @@ libxi: libxi-setup libx11 xorgproto libxext libxfixes
 	cd $(BUILD_WORK)/libxi && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--localstatedir=$(MEMO_PREFIX)/var \
 		--enable-malloc0returnsnull=no \
@@ -36,15 +36,15 @@ endif
 libxi-package: libxi-stage
 	# libxi.mk Package Structure
 	rm -rf $(BUILD_DIST)/libxi{6,-dev}
-	mkdir -p $(BUILD_DIST)/libxi6/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
-		$(BUILD_DIST)/libxi-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{include,lib}
+	mkdir -p $(BUILD_DIST)/libxi6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libxi-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib}
 	
 	# libxi.mk Prep libxi6
-	cp -a $(BUILD_STAGE)/libxi/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libXi.6.dylib $(BUILD_DIST)/libxi6/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXi.6.dylib $(BUILD_DIST)/libxi6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxi.mk Prep libxi-dev
-	cp -a $(BUILD_STAGE)/libxi/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/!(libXi.6.dylib) $(BUILD_DIST)/libxi-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
-	cp -a $(BUILD_STAGE)/libxi/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libxi-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/libxi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libXi.6.dylib) $(BUILD_DIST)/libxi-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libxi-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libxi.mk Sign
 	$(call SIGN,libxi6,general.xml)

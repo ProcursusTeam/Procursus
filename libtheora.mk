@@ -19,7 +19,7 @@ libtheora: libtheora-setup libogg
 	cd $(BUILD_WORK)/libtheora && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--disable-oggtest \
 		--disable-vorbistest \
@@ -37,14 +37,14 @@ endif
 libtheora-package: libtheora-stage
 	# libtheora.mk Package Structure
 	rm -rf $(BUILD_DIST)/libtheora{0,-dev}
-	mkdir -p $(BUILD_DIST)/libtheora{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libtheora{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libtheora.mk Prep libtheora0
-	cp -a $(BUILD_STAGE)/libtheora/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libtheora{.0,dec.1,enc.1}.dylib $(BUILD_DIST)/libtheora0/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libtheora/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libtheora{.0,dec.1,enc.1}.dylib $(BUILD_DIST)/libtheora0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libtheora.mk Prep libtheora-dev
-	cp -a $(BUILD_STAGE)/libtheora/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libtheora{,dec,enc}.{dylib,a} $(BUILD_DIST)/libtheora-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
-	cp -a $(BUILD_STAGE)/libtheora/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libtheora-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/libtheora/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libtheora{,dec,enc}.{dylib,a} $(BUILD_DIST)/libtheora-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libtheora/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libtheora-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libtheora.mk Sign
 	$(call SIGN,libtheora0,general.xml)

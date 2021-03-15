@@ -19,7 +19,7 @@ xtrans: xtrans-setup
 	cd $(BUILD_WORK)/xtrans && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--localstatedir=$(MEMO_PREFIX)/var \
 		--enable-docs=no
@@ -37,7 +37,7 @@ xtrans-package: xtrans-stage
 	mkdir -p $(BUILD_DIST)/xtrans-dev
 
 	# xtrans.mk Prep xtrans-dev
-	cp -a $(BUILD_STAGE)/xtrans/$(MEMO_PREFIX)$(MEMO_SUBPREFIX) $(BUILD_DIST)/xtrans-dev
+	cp -a $(BUILD_STAGE)/xtrans/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/xtrans-dev
 
 	# xtrans.mk Make .debs
 	$(call PACK,xtrans-dev,DEB_XTRANS_V)

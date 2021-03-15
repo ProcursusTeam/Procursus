@@ -8,12 +8,6 @@ DEB_LUAJIT_V   ?= $(shell echo $(LUAJIT_VERSION) | cut -d- -f1)~beta3+git$(shell
 
 LUAJIT_COMMIT    := 377a8488b62a9f1b589bb68875dd1288aa70e76e
 
-ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-LUAJIT_MAKE_ARGS := TARGET_SYS=Darwin
-else
-LUAJIT_MAKE_ARGS := TARGET_SYS=iOS
-endif
-
 luajit-setup: setup
 	-[ ! -e "$(BUILD_SOURCE)/LuaJIT-$(LUAJIT_COMMIT).tar.gz" ] \
 		&& wget -nc -O$(BUILD_SOURCE)/LuaJIT-$(LUAJIT_COMMIT).tar.gz \
@@ -33,8 +27,8 @@ luajit: luajit-setup
 		TARGET_CFLAGS="$(CFLAGS)" \
 		TARGET_LDFLAGS="$(LDFLAGS)" \
 		TARGET_SHLDFLAGS="$(LDFLAGS)" \
-		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		$(LUAJIT_MAKE_ARGS)
+		TARGET_SYS=iOS \
+		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/luajit install \
 		DESTDIR="$(BUILD_STAGE)/luajit" \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)

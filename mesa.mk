@@ -23,13 +23,13 @@ mesa-setup: setup
 	[properties]\n \
 	root = '$(BUILD_BASE)'\n \
 	[paths]\n \
-	prefix ='/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)'\n \
+	prefix ='/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
 	[binaries]\n \
 	c = '$(CC)'\n \
 	cpp = '$(CXX)'\n" > $(BUILD_WORK)/mesa/build/cross.txt
 
 	@echo "You need to install Mako with pip3 before building."
-	@echo "/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/pip3 install mako --user"
+	@echo "/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pip3 install mako --user"
 
 ifneq ($(wildcard $(BUILD_WORK)/mesa/.build_complete),)
 mesa:
@@ -55,39 +55,39 @@ mesa-package: mesa-stage
 	# mesa.mk Package Structure
 	rm -rf $(BUILD_DIST)/libgl1-mesa-{glx,dri,dev} $(BUILD_DIST)/libgles2-mesa{,-dev} \
 		$(BUILD_DIST)/libglapi-mesa $(BUILD_DIST)/mesa-common-dev
-	mkdir -p $(BUILD_DIST)/libgl1-mesa-glx/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
-		$(BUILD_DIST)/libgl1-mesa-dri/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
-		$(BUILD_DIST)/libgl1-mesa-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig \
-		$(BUILD_DIST)/libgles2-mesa/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
-		$(BUILD_DIST)/libgles2-mesa-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{include,lib/pkgconfig} \
-		$(BUILD_DIST)/libglapi-mesa/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
-		$(BUILD_DIST)/mesa-common-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{include,lib/pkgconfig}
+	mkdir -p $(BUILD_DIST)/libgl1-mesa-glx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libgl1-mesa-dri/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libgl1-mesa-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig \
+		$(BUILD_DIST)/libgles2-mesa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libgles2-mesa-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/pkgconfig} \
+		$(BUILD_DIST)/libglapi-mesa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/mesa-common-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/pkgconfig}
 	
 	# mesa.mk Prep libgl1-mesa-glx
-	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libGL.1.dylib $(BUILD_DIST)/libgl1-mesa-glx/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libGL.1.dylib $(BUILD_DIST)/libgl1-mesa-glx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# mesa.mk Prep libgl1-mesa-dri
-	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/dri $(BUILD_DIST)/libgl1-mesa-dri/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
-	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share $(BUILD_DIST)/libgl1-mesa-dri/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/dri $(BUILD_DIST)/libgl1-mesa-dri/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/libgl1-mesa-dri/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# mesa.mk Prep libgl1-mesa-dev
-	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libGL.dylib $(BUILD_DIST)/libgl1-mesa-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
-	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig/gl.pc $(BUILD_DIST)/libgl1-mesa-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig
+	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libGL.dylib $(BUILD_DIST)/libgl1-mesa-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/gl.pc $(BUILD_DIST)/libgl1-mesa-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 
 	# mesa.mk Prep libgles2-mesa
-	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libGLESv2.2.dylib $(BUILD_DIST)/libgles2-mesa/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libGLESv2.2.dylib $(BUILD_DIST)/libgles2-mesa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# mesa.mk Prep libgles2-mesa-dev
-	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libGLESv2.dylib $(BUILD_DIST)/libgles2-mesa-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
-	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig/glesv2.pc $(BUILD_DIST)/libgles2-mesa-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig
-	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/GLES{2,3} $(BUILD_DIST)/libgles2-mesa-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include
+	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libGLESv2.dylib $(BUILD_DIST)/libgles2-mesa-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/glesv2.pc $(BUILD_DIST)/libgles2-mesa-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
+	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/GLES{2,3} $(BUILD_DIST)/libgles2-mesa-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 
 	# mesa.mk Prep libglapi-mesa
-	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libglapi.0.dylib $(BUILD_DIST)/libglapi-mesa/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libglapi.0.dylib $(BUILD_DIST)/libglapi-mesa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# mesa.mk Prep mesa-common-dev
-	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/{GL,KHR} $(BUILD_DIST)/mesa-common-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include
-	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig/dri.pc $(BUILD_DIST)/mesa-common-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig
+	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/{GL,KHR} $(BUILD_DIST)/mesa-common-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/dri.pc $(BUILD_DIST)/mesa-common-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 	
 	# mesa.mk Sign
 	$(call SIGN,libgl1-mesa-glx,general.xml)

@@ -39,14 +39,14 @@ endif
 msgpack-package: msgpack-stage
 	# msgpack.mk Package Structure
 	rm -rf $(BUILD_DIST)/libmsgpack{-dev,c2}
-	mkdir -p $(BUILD_DIST)/libmsgpack{-dev,c2}$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libmsgpack{-dev,c2}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# msgpack.mk Prep libmsgpack-dev
-	cp -a $(BUILD_STAGE)/msgpack$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ $(BUILD_DIST)/libmsgpack-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/msgpack$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libmsgpackc.{a,dylib},pkgconfig,cmake} $(BUILD_DIST)/libmsgpack-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/msgpack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ $(BUILD_DIST)/libmsgpack-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/msgpack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libmsgpackc.{a,dylib},pkgconfig,cmake} $(BUILD_DIST)/libmsgpack-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# msgpack.mk Prep libmsgpackc2
-	cp -a $(BUILD_STAGE)/msgpack$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libmsgpackc.2*.dylib $(BUILD_DIST)/libmsgpackc2$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/msgpack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libmsgpackc.2*.dylib $(BUILD_DIST)/libmsgpackc2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# msgpack.mk Sign
 	$(call SIGN,libmsgpackc2,general.xml)

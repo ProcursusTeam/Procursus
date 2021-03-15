@@ -18,7 +18,7 @@ libonig: libonig-setup
 	cd $(BUILD_WORK)/libonig && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libonig install \
 		DESTDIR=$(BUILD_STAGE)/libonig
 	+$(MAKE) -C $(BUILD_WORK)/libonig install \
@@ -29,16 +29,16 @@ endif
 libonig-package: libonig-stage
 	# libonig.mk Package Structure
 	rm -rf $(BUILD_DIST)/libonig{5,-dev}
-	mkdir -p $(BUILD_DIST)/libonig5/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
-			$(BUILD_DIST)/libonig-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{include,lib/pkgconfig}
+	mkdir -p $(BUILD_DIST)/libonig5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+			$(BUILD_DIST)/libonig-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/pkgconfig}
 
 	# libonig.mk Prep libonig5
-	cp -a $(BUILD_STAGE)/libonig/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libonig.5.dylib $(BUILD_DIST)/libonig5/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libonig/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libonig.5.dylib $(BUILD_DIST)/libonig5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libonig.mk Prep libonig-dev
-	cp -a $(BUILD_STAGE)/libonig/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/onig{gnu.h,uruma.h} $(BUILD_DIST)/libonig-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include
-	cp -a $(BUILD_STAGE)/libonig/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libonig.{a,dylib} $(BUILD_DIST)/libonig-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
-	cp -a $(BUILD_STAGE)/libonig/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig/oniguruma.pc $(BUILD_DIST)/libonig-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig
+	cp -a $(BUILD_STAGE)/libonig/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/onig{gnu.h,uruma.h} $(BUILD_DIST)/libonig-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/libonig/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libonig.{a,dylib} $(BUILD_DIST)/libonig-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libonig/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/oniguruma.pc $(BUILD_DIST)/libonig-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 
 	# libonig.mk Sign
 	$(call SIGN,libonig5,general.xml)
