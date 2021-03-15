@@ -18,7 +18,7 @@ ncdu: ncdu-setup ncurses
 	cd $(BUILD_WORK)/ncdu && ./configure \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/ncdu
 	+$(MAKE) -C $(BUILD_WORK)/ncdu install \
 		DESTDIR=$(BUILD_STAGE)/ncdu

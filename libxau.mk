@@ -19,7 +19,7 @@ libxau: libxau-setup xorgproto
 	cd $(BUILD_WORK)/libxau && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--localstatedir=$(MEMO_PREFIX)/var
 	+$(MAKE) -C $(BUILD_WORK)/libxau
@@ -33,15 +33,15 @@ endif
 libxau-package: libxau-stage
 	# libxau.mk Package Structure
 	rm -rf $(BUILD_DIST)/libxau{6,-dev}
-	mkdir -p $(BUILD_DIST)/libxau6/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
-	mkdir -p $(BUILD_DIST)/libxau-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{include,lib}
+	mkdir -p $(BUILD_DIST)/libxau6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libxau-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib}
 
 	# libxau.mk Prep libxau6
-	cp -a $(BUILD_STAGE)/libxau/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libXau.6.dylib $(BUILD_DIST)/libxau6/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxau/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXau.6.dylib $(BUILD_DIST)/libxau6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxau.mk Prep libxau-dev
-	cp -a $(BUILD_STAGE)/libxau/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/{libXau{.a,.dylib},pkgconfig} $(BUILD_DIST)/libxau-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
-	cp -a $(BUILD_STAGE)/libxau/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libxau-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/libxau/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libXau{.a,.dylib},pkgconfig} $(BUILD_DIST)/libxau-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxau/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libxau-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libxau.mk Sign
 	$(call SIGN,libxau6,general.xml)

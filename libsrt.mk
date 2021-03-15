@@ -23,16 +23,16 @@ libsrt: libsrt-setup openssl
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
 		-DCMAKE_INSTALL_PREFIX=/ \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
-		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
 		-DCOMMON_ARCH=$(DEB_ARCH) \
 		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
 		-DBUILD_SHARED_LIBS=true \
-		-DWITH_OPENSSL_INCLUDEDIR=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include/openssl \
-		-DWITH_OPENSSL_LIBDIR=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+		-DWITH_OPENSSL_INCLUDEDIR=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/openssl \
+		-DWITH_OPENSSL_LIBDIR=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	+$(MAKE) -C $(BUILD_WORK)/libsrt install \
 		DESTDIR=$(BUILD_STAGE)/libsrt
 	+$(MAKE) -C $(BUILD_WORK)/libsrt install \
@@ -44,19 +44,19 @@ libsrt-package: libsrt-stage
 	# libsrt.mk Package Structure
 	rm -rf $(BUILD_DIST)/libsrt{1,-dev} \
 		$(BUILD_DIST)/srt-tools
-	mkdir -p $(BUILD_DIST)/libsrt{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
-		$(BUILD_DIST)/srt-tools/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	mkdir -p $(BUILD_DIST)/libsrt{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/srt-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libsrt.mk Prep libsrt1
-	cp -a $(BUILD_STAGE)/libsrt/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libsrt.{$(LIBSRT_VERSION),1}.dylib $(BUILD_DIST)/libsrt1/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libsrt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsrt.{$(LIBSRT_VERSION),1}.dylib $(BUILD_DIST)/libsrt1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libsrt.mk Prep libsrt-dev
-	cp -a $(BUILD_STAGE)/libsrt/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libsrt.{dylib,a} $(BUILD_DIST)/libsrt-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
-	cp -a $(BUILD_STAGE)/libsrt/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libsrt-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
-	cp -a $(BUILD_STAGE)/libsrt/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/pkgconfig $(BUILD_DIST)/libsrt-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libsrt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsrt.{dylib,a} $(BUILD_DIST)/libsrt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libsrt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libsrt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libsrt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libsrt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libsrt.mk Prep srt-tools
-	cp -a $(BUILD_STAGE)/libsrt/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin $(BUILD_DIST)/srt-tools/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/libsrt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/srt-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libsrt.mk Sign
 	$(call SIGN,libsrt1,general.xml)
