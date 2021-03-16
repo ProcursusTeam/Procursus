@@ -4,11 +4,12 @@ endif
 
 SUBPROJECTS      += neofetch
 NEOFETCH_VERSION := 7.1.0
-DEB_NEOFETCH_V   ?= $(NEOFETCH_VERSION)
+DEB_NEOFETCH_V   ?= $(NEOFETCH_VERSION)-1
 
 neofetch-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/dylanaraps/neofetch/archive/$(NEOFETCH_VERSION).tar.gz
 	$(call EXTRACT_TAR,$(NEOFETCH_VERSION).tar.gz,neofetch-$(NEOFETCH_VERSION),neofetch)
+	$(call DO_PATCH,neofetch,neofetch,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/neofetch/.build_complete),)
 neofetch:
