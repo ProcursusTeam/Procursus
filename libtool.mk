@@ -4,18 +4,20 @@ endif
 
 SUBPROJECTS     += libtool
 LIBTOOL_VERSION := 2.4.6
-DEB_LIBTOOL_V   ?= $(LIBTOOL_VERSION)-3
+DEB_LIBTOOL_V   ?= $(LIBTOOL_VERSION)-4
 
 libtool-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/libtool/libtool-$(LIBTOOL_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,libtool-$(LIBTOOL_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libtool-$(LIBTOOL_VERSION).tar.gz,libtool-$(LIBTOOL_VERSION),libtool)
+	$(call DO_PATCH,libtool,libtool,-p0)
 
 ifneq ($(wildcard $(BUILD_WORK)/libtool/.build_complete),)
 libtool:
 	@echo "Using previously built libtool."
 else
 libtool: libtool-setup
+	cd $(BUILD_WORK)/libtool && autoreconf -f
 	cd $(BUILD_WORK)/libtool && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
