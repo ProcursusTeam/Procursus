@@ -1,0 +1,13 @@
+Author: Chris Chimelis <chris@debian.org>
+Description: Don't mention monitor(3) which doesn't exist in Debian. (#160654)
+--- a/gprof/gprof.texi
++++ b/gprof/gprof.texi
+@@ -193,7 +193,7 @@ summarized dynamic call graph and profil
+ @c man end
+ 
+ @c man begin SEEALSO
+-monitor(3), profil(2), cc(1), prof(1), and the Info entry for @file{gprof}.
++cc(1), prof(1), and the Info entry for @file{gprof}.
+ 
+ ``An Execution Profiler for Modular Programs'',
+ by S. Graham, P. Kessler, M. McKusick;

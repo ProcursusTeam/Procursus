@@ -1,0 +1,14 @@
+Package: binutils-mips64el-linux-gnuabi64
+Version: @DEB_BINUTILS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: development
+Priority: optional
+Homepage: http://www.gnu.org/software/binutils/
+Description: GNU binary utilities, for mips64el-linux-gnuabi64 target
+ This package provides GNU assembler, linker and binary utilities
+ for the mips64el-linux-gnuabi64 target.
+ .
+ You don't need this package unless you plan to cross-compile programs
+ for mips64el-linux-gnuabi64 and mips64el-linux-gnuabi64 is not your native platform.
+Depends: libintl8, binutils-common (= @DEB_BINUTILS_V@)

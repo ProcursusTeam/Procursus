@@ -1,0 +1,14 @@
+Package: binutils-powerpc64-linux-musl
+Version: @DEB_BINUTILS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: development
+Priority: optional
+Homepage: http://www.gnu.org/software/binutils/
+Description: GNU binary utilities, for powerpc64-linux-musl target
+ This package provides GNU assembler, linker and binary utilities
+ for the powerpc64-linux-musl target.
+ .
+ You don't need this package unless you plan to cross-compile programs
+ for powerpc64-linux-musl and powerpc64-linux-musl is not your native platform.
+Depends: libintl8, binutils-common (= @DEB_BINUTILS_V@)

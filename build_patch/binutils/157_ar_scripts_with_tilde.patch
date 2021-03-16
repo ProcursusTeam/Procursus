@@ -1,0 +1,11 @@
+--- a/binutils/arlex.l
++++ b/binutils/arlex.l
+@@ -78,7 +78,7 @@ int linenumber;
+ "("             { return '('; }
+ ")"             { return ')'; }
+ ","             { return ','; }
+-[A-Za-z0-9/\\$:.\-\_]+  {
++[A-Za-z0-9/\\$:.\-\_~]+  { 	
+ 		yylval.name =  xstrdup (yytext);
+ 		return FILENAME;
+ 		}

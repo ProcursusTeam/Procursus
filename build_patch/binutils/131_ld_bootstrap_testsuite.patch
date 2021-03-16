@@ -1,0 +1,45 @@
+Author: 
+Description: Description: Fix ld-bootstrap testsuite when configured with --enable-plugins
+Author: Rafael Espindola
+Upstream status: proposed patch
+--- a/ld/testsuite/ld-bootstrap/bootstrap.exp
++++ b/ld/testsuite/ld-bootstrap/bootstrap.exp
+@@ -50,6 +50,15 @@ if [check_plugin_api_available] {
+     set plugins "yes"
+ }
+ 
++remote_exec host "$nm --help" "" "/dev/null" "plugin-support"
++set tmp [file_contents "plugin-support"]
++regexp ".*\(--plugin\).*\n" $tmp foo plugins
++if [info exists plugins] then {
++    set plugins "yes"
++} else {
++    set plugins "no"
++}
++
+ # Bootstrap ld.  First link the object files together using -r, in
+ # order to test -r.  Then link the result into an executable, ld1, to
+ # really test -r.  Use ld1 to link a fresh ld, ld2.  Use ld2 to link a
+@@ -114,6 +123,11 @@ foreach flags $test_flags {
+ 	continue
+     }
+ 
++    if { $flags == "--static" && $plugins == "yes" } then {
++	untested $testname
++	continue
++    }
++
+     # If we only have a shared libbfd, we probably can't run the
+     # --static test.
+     if { $flags == "--static" && ! [string match "*libbfd.a*" $BFDLIB] } then {
+@@ -158,6 +172,10 @@ foreach flags $test_flags {
+ 	}
+     }
+ 
++    if { $plugins == "yes" } {
++	set extralibs "$extralibs -ldl"
++    }
++
+     # On Irix 5, linking with --static only works if all the files are
+     # compiled using -non_shared.
+     if {"$flags" == "--static"} {

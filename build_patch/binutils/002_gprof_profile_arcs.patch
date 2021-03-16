@@ -1,0 +1,27 @@
+Author: Chris Chimelis <chris@debian.org>
+Description: Add more documentation about profiling and -fprofile-arcs.
+--- a/gprof/gprof.texi
++++ b/gprof/gprof.texi
+@@ -145,6 +145,10 @@ its symbol table and the call graph prof
+ If more than one profile file is specified, the @code{gprof}
+ output shows the sum of the profile information in the given profile files.
+ 
++If you use gcc 2.95.x or 3.0 to compile your binaries, you may need
++to add the @samp{-fprofile-arcs} to the compile command line in order
++for the call graphs to be properly stored in gmon.out.
++
+ @code{Gprof} calculates the amount of time spent in each routine.
+ Next, these times are propagated along the edges of the call graph.
+ Cycles are discovered, and calls into a cycle are made to share the time
+@@ -276,6 +280,11 @@ to do the linking, simply specify @samp{
+ options.  The same option, @samp{-pg}, alters either compilation or linking
+ to do what is necessary for profiling.  Here are examples:
+ 
++If you use gcc 2.95.x or 3.0.x, you may need to add the
++@samp{-fprofile-arcs} option to the compile line along with @samp{-pg}
++in order to allow the call-graphs to be properly included in the gmon.out
++file.
++
+ @example
+ cc -g -c myprog.c utils.c -pg
+ cc -o myprog myprog.o utils.o -pg

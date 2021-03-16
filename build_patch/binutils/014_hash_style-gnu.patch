@@ -1,0 +1,19 @@
+diff --color -urN binutils-2.36.1/ld/ldmain.c binutils/ld/ldmain.c
+--- binutils-2.36.1/ld/ldmain.c	2021-01-11 09:28:39.000000000 -0500
++++ binutils/ld/ldmain.c	2021-03-16 14:36:40.452308509 -0400
+@@ -363,6 +363,15 @@
+   emulation = get_emulation (argc, argv);
+   ldemul_choose_mode (emulation);
+   default_target = ldemul_choose_target (argc, argv);
++
++  /* Default to --hash-style=gnu */
++  if (strcmp (default_target, "elf32-tradbigmips") != 0
++      && strcmp (default_target, "elf32-tradlittlemips") != 0)
++    {
++      link_info.emit_gnu_hash = TRUE;
++      link_info.emit_hash = FALSE;
++    }
++  
+   lang_init ();
+   ldexp_init ();
+   ldemul_before_parse ();
