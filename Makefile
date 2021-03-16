@@ -70,7 +70,7 @@ export MACOSX_DEPLOYMENT_TARGET
 
 ifeq ($(MEMO_TARGET),iphoneos-arm64)
 $(warning Building for iOS)
-MEMO_ARCH                 := arm64
+MEMO_ARCH            := arm64
 PLATFORM             := iphoneos
 DEB_ARCH             := iphoneos-arm
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
@@ -80,7 +80,7 @@ export IPHONEOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),appletvos-arm64)
 $(warning Building for tvOS)
-MEMO_ARCH                 := arm64
+MEMO_ARCH            := arm64
 PLATFORM             := appletvos
 DEB_ARCH             := appletvos-arm64
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
@@ -89,7 +89,7 @@ export APPLETVOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),watchos-arm64)
 $(warning Building for WatchOS)
-MEMO_ARCH                 := arm64_32
+MEMO_ARCH            := arm64_32
 PLATFORM             := watchos
 DEB_ARCH             := watchos-arm
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
@@ -327,6 +327,7 @@ LDID := ldid
 else
 $(error Install ldid2)
 endif
+export LDID
 
 ifeq ($(call HAS_COMMAND,libtoolize),1)
 LIBTOOLIZE := libtoolize
@@ -383,6 +384,7 @@ GINSTALL := install
 else
 $(error Install GNU coreutils)
 endif
+export GINSTALL
 
 ifeq ($(call HAS_COMMAND,gwc),1)
 WC := gwc
@@ -399,6 +401,7 @@ CP := cp
 else
 $(error Install GNU coreutils)
 endif
+export CP
 
 ifeq ($(call HAS_COMMAND,gln),1)
 LN := gln
@@ -407,6 +410,7 @@ LN := ln
 else
 $(error Install GNU coreutils)
 endif
+export LN
 
 ifneq ($(call HAS_COMMAND,fakeroot),1)
 $(error Install fakeroot)
@@ -494,6 +498,24 @@ everything::
 	+unset SYSROOT && $(MAKE) MEMO_TARGET=watchos-arm64 MEMO_CFVER=1400 rebuild-all
 	+unset SYSROOT && $(MAKE) MEMO_TARGET=appletvos-arm64 MEMO_CFVER=1300 rebuild-all
 	+unset SYSROOT && $(MAKE) MEMO_TARGET=iphoneos-arm MEMO_CFVER=1100 rebuild-all
+
+env:
+	@/bin/echo -e "proenv() {"
+	@/bin/echo -e "\tPLATFORM='$(PLATFORM)' MEMO_ARCH='$(MEMO_ARCH)' TARGET_SYSROOT='$(TARGET_SYSROOT)' MACOSX_SYSROOT='$(MACOSX_SYSROOT)' GNU_HOST_TRIPLE='$(GNU_HOST_TRIPLE)'"
+	@/bin/echo -e "\tCC='$(CC)' CXX='$(CXX)' AR='$(AR)' LD='$(LD)' CPP='$(CPP)' RANLIB='$(RANLIB)' STRIP='$(STRIP)' NM='$(NM)' LIPO='$(LIPO)' OTOOL='$(OTOOL)' I_N_T='$(I_N_T)' EXTRA='$(EXTRA)' SED='$(SED)' LDID='$(LDID)' GINSTALL='$(GINSTALL)' LN='$(LN)' CP='$(CP)'"
+	@/bin/echo -e "\tBUILD_ROOT='$(BUILD_ROOT)' BUILD_BASE='$(BUILD_BASE)' BUILD_INFO='$(BUILD_INFO)' BUILD_WORK='$(BUILD_WORK)' BUILD_STAGE='$(BUILD_STAGE)' BUILD_DIST='$(BUILD_DIST)' BUILD_STRAP='$(BUILD_STRAP)' BUILD_TOOLS='$(BUILD_TOOLS)'"
+	@/bin/echo -e "\tDEB_ARCH='$(DEB_ARCH)' DEB_ORIGIN='$(DEB_ORIGIN)' DEB_MAINTAINER='$(DEB_MAINTAINER)'"
+	@/bin/echo -e "\tCFLAGS='$(CFLAGS)'"
+	@/bin/echo -e "\tCXXFLAGS='$(CXXFLAGS)'"
+	@/bin/echo -e "\tCPPFLAGS='$(CPPFLAGS)'"
+	@/bin/echo -e "\tLDFLAGS='$(LDFLAGS)'"
+	@/bin/echo -e "\tPKG_CONFIG_PATH='$(PKG_CONFIG_PATH)'"
+	@/bin/echo -e "\texport PLATFORM MEMO_ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE"
+	@/bin/echo -e "\texport CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T EXTRA SED LDID GINSTALL LN CP"
+	@/bin/echo -e "\texport BUILD_ROOT BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP BUILD_TOOLS"
+	@/bin/echo -e "\texport DEB_ARCH DEB_ORIGIN DEB_MAINTAINER"
+	@/bin/echo -e "\texport CFLAGS CXXFLAGS CPPFLAGS LDFLAGS PKG_CONFIG_PATH"
+	@/bin/echo -e "}"
 
 include *.mk
 
