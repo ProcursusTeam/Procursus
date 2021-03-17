@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += golang
-GOLANG_MAJOR_V := 1.15
-GOLANG_VERSION := $(GOLANG_MAJOR_V).7
+GOLANG_MAJOR_V := 1.16
+GOLANG_VERSION := $(GOLANG_MAJOR_V).2
 DEB_GOLANG_V   ?= $(GOLANG_VERSION)
 
 golang-setup: setup
@@ -29,15 +29,16 @@ golang: golang-setup
 		cd $(BUILD_WORK)/golang/src && \
 			CGO_ENABLED=1 \
 			GOROOT_FINAL=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V) \
+			GOROOT_BOOTSTRAP=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 			GOHOSTARCH=amd64 \
-			GOHOSTOS=darwin \
+			GOHOSTOS=ios \
 			GOARCH=arm64 \
-			GOOS=darwin \
+			GOOS=ios \
 			CC=cc \
 			CC_FOR_TARGET=clang \
 			./make.bash
 	cp -a $(BUILD_WORK)/golang/* $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)
-	-find $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V) -name darwin_amd64 -type d -exec rm -rf {} \;
+	-find $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V) -name ios_amd64 -type d -exec rm -rf {} \;
 	touch $(BUILD_WORK)/golang/.build_complete
 endif
 
@@ -53,7 +54,7 @@ golang-package: golang-stage
 	
 	# golang.mk Prep golang-$(GOLANG_MAJOR_V)-go
 	cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/VERSION $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)
-	cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/bin/darwin_arm64/go{,fmt} $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/bin
+	cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/bin/ios_arm64/go{,fmt} $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/bin
 	cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg/{*_*,include,tool} $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg
 	
 	# golang.mk Prep golang-go

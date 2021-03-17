@@ -1,12 +1,11 @@
-Package: golang-1.15-go
+Package: golang-1.16-src
 Version: @DEB_GOLANG_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: golang-1.15-src (>= @DEB_GOLANG_V@), clang
 Section: Development
 Priority: optional
 Homepage: https://golang.org
-Description: Go programming language compiler, linker, compiled stdlib
+Description: Go programming language - source files
  The Go programming language is an open source project to make programmers more
  productive. Go is expressive, concise, clean, and efficient. Its concurrency
  mechanisms make it easy to write programs that get the most out of multicore
@@ -16,8 +15,5 @@ Description: Go programming language compiler, linker, compiled stdlib
  fast, statically typed, compiled language that feels like a dynamically typed,
  interpreted language.
  .
- This package provides an assembler, compiler, linker, and compiled libraries
- for the Go programming language.
- .
- Go supports cross-compilation, but as of Go 1.5, it is no longer necessary to
- pre-compile the standard library inside GOROOT for cross-compilation to work.
+ This package provides the Go programming language source files needed for
+ cross-compilation.

@@ -2,7 +2,7 @@ Package: golang-go
 Version: @DEB_GOLANG_V@
 Architecture: all
 Maintainer: @DEB_MAINTAINER@
-Depends: golang-1.15-go (>= @DEB_GOLANG_V@)
+Depends: golang-1.16-go (>= @DEB_GOLANG_V@)
 Section: Development
 Priority: optional
 Homepage: https://golang.org
@@ -20,3 +20,4 @@ Description: Go programming language compiler, linker, compiled stdlib
  compiled standard library. It is only built on architectures that have a
  native toolchain ("gc compiler"). Packages that want to build with whichever
  of gc or gccgo is available should depend on golang-any.
+ 
