@@ -34,7 +34,7 @@ lua-luv: lua-luv-setup libuv1 lua5.1 lua5.2 lua5.3
 		-DBUILD_SHARED_LIBS=ON \
 		-DWITH_LUA_ENGINE=Lua \
 		-DLUA_INCLUDE_DIR="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/lua5.$$ver" \
-		-DLUA_LIBRARY="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.$$ver.a" \
+		-DLUA_LIBRARY="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.$$ver.dylib" \
 		-DSHAREDLIBS_INSTALL_INC_DIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/lua5.$$ver/luv" \
 		..; \
 	$(MAKE) -C $(BUILD_WORK)/lua-luv/build5$$ver; \
