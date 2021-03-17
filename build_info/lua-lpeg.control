@@ -2,7 +2,7 @@ Package: lua-lpeg
 Version: @DEB_LUA-LPEG_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: liblua5.1-0, liblua5.2-0, liblua5.3-0
+Depends: liblua5.1-0, liblua5.2-0, liblua5.3-0, libluajit-5.1-2
 Section: Libraries 
 Priority: optional
 Description: LPeg library for the Lua language
