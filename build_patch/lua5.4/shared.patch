@@ -36,7 +36,7 @@ diff --color -urN lua-5.4.2/src/luaconf.h lua-5.4-dylib/src/luaconf.h
  #else			/* }{ */
  
 -#define LUA_ROOT	"/usr/local/"
-+#define LUA_ROOT	"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
++#define LUA_ROOT	"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/"
  #define LUA_LDIR	LUA_ROOT "share/lua/" LUA_VDIR "/"
  #define LUA_CDIR	LUA_ROOT "lib/lua/" LUA_VDIR "/"
  
