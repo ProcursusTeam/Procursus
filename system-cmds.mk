@@ -8,7 +8,7 @@ STRAPPROJECTS       += system-cmds
 SYSTEM-CMDS_VERSION := 854.40.2
 PWDARWIN_COMMIT     := 3d448bd27f5948510a4e347c9c727ca7351db4ce
 GETENTDARWIN_COMMIT := 1ad0e39ee51181ea6c13b3d1d4e9c6005ee35b5e
-DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-2
+DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-3
 
 system-cmds-setup: setup libxcrypt
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/system_cmds/system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz
