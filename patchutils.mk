@@ -15,11 +15,13 @@ ifneq ($(wildcard $(BUILD_WORK)/patchutils/.build_complete),)
 patchutils:
 	@echo "Using previously built patchutils."
 else
-patchutils: patchutils-setup
+patchutils: patchutils-setup pcre2
 	cd $(BUILD_WORK)/patchutils && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--with-pcre2 \
+		PERL=/usr/bin/perl
 	+$(MAKE) -C $(BUILD_WORK)/patchutils
 	+$(MAKE) -C $(BUILD_WORK)/patchutils install \
 		DESTDIR=$(BUILD_STAGE)/patchutils
