@@ -13,6 +13,9 @@ libogg-setup: setup
 	# don't build the html docs
 	$(SED) -ri 's/(SUBDIRS = .*)doc(.*)/\1 \2/' $(BUILD_WORK)/libogg/Makefile.in
 
+	# Fix typedefs, remove in next version
+	$(call DO_PATCH,libogg,libogg,-p1)
+
 ifneq ($(wildcard $(BUILD_WORK)/libogg/.build_complete),)
 libogg:
 	@echo "Using previously built libogg."

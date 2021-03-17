@@ -24,12 +24,14 @@ xcb-proto: xcb-proto-setup
 		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--localstatedir=$(MEMO_PREFIX)/var \
 		--disable-static \
-		am_cv_python_pythondir=/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/python3/dist-packages \
+		am_cv_python_pythondir=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/python3/dist-packages \
 		PYTHON=$(shell which python3)
 	+$(MAKE) -C $(BUILD_WORK)/xcb-proto install \
-		DESTDIR=$(BUILD_STAGE)/xcb-proto
+		DESTDIR=$(BUILD_STAGE)/xcb-proto \
+		PYTHON=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/python3
 	+$(MAKE) -C $(BUILD_WORK)/xcb-proto install \
-		DESTDIR=$(BUILD_BASE)
+		DESTDIR=$(BUILD_BASE) \
+		PYTHON=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/python3
 	touch $(BUILD_WORK)/xcb-proto/.build_complete
 endif
 
@@ -44,7 +46,7 @@ xcb-proto-package: xcb-proto-stage
 	cp -a $(BUILD_STAGE)/xcb-proto/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/share $(BUILD_DIST)/xcb-proto/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
 	# xcb-proto.mk Prep python3-xcbgen
 	cp -a $(BUILD_STAGE)/xcb-proto/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/python3 $(BUILD_DIST)/python3-xcbgen/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
-	rm -f $(BUILD_DIST)/python3-xcbgen/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/python3/dist-packages/xcbgen/!(*.py)
+	rm -rf $(BUILD_DIST)/python3-xcbgen/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/python3/dist-packages/xcbgen/!(*.py)
 
 	# xcb-proto.mk Make .debs
 	$(call PACK,xcb-proto,DEB_XCBPROTO_V)

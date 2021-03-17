@@ -46,7 +46,7 @@ fontconfig-package: fontconfig-stage
 
 	# fontconfig.mk Prep fontconfig-config
 	cp -a $(BUILD_STAGE)/fontconfig/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{fontconfig,xml} $(BUILD_DIST)/fontconfig-config/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	cp -a $(BUILD_STAGE)/fontconfig/etc $(BUILD_DIST)/fontconfig-config/
+	cp -a $(BUILD_STAGE)/fontconfig/$(MEMO_PREFIX)/etc $(BUILD_DIST)/fontconfig-config/
 	cp -a $(BUILD_STAGE)/fontconfig/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5 $(BUILD_DIST)/fontconfig-config/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
 	# fontconfig.mk Prep libfontconfig1
