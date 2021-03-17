@@ -23,7 +23,7 @@ diff --color -urN lua-5.1.5/src/Makefile lua-dylib/src/Makefile
  	$(RANLIB) $@
  
 +$(LUA_SO): $(CORE_O) $(LIB_O)
-+	$(CC) -dynamiclib -install_name /usr/lib/liblua$(LUAVER).$(SOVER).dylib -o $@ $? $(LDFLAGS)
++	$(CC) -dynamiclib -install_name $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua$(LUAVER).$(SOVER).dylib -o $@ $? $(LDFLAGS)
 +
  $(LUA_T): $(LUA_O) $(LUA_A)
 -	$(CC) -o $@ $(MYLDFLAGS) $(LUA_O) $(LUA_A) $(LIBS)
@@ -43,7 +43,7 @@ diff --color -urN lua-5.1.5/src/luaconf.h lua-dylib/src/luaconf.h
  
  #else
 -#define LUA_ROOT	"/usr/local/"
-+#define LUA_ROOT	"/usr"
++#define LUA_ROOT	"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
  #define LUA_LDIR	LUA_ROOT "share/lua/5.1/"
  #define LUA_CDIR	LUA_ROOT "lib/lua/5.1/"
  #define LUA_PATH_DEFAULT  \
