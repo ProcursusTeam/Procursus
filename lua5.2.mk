@@ -18,9 +18,8 @@ else
 lua5.2: lua5.2-setup readline
 	+$(MAKE) -C $(BUILD_WORK)/lua5.2 macosx \
 		CC="$(CC)" \
-		CFLAGS="$(CFLAGS) -fPIC" \
-		CXXFLAGS="$(CXXFLAGS) -fPIC" \
-		LDFLAGS="$(LDFLAGS)" \
+		MYCFLAGS="$(CFLAGS) -fPIC -DLUA_ROOT=\\\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/\\\"" \
+		MYLDFLAGS="$(LDFLAGS)" \
 		AR="$(AR) rcu" \
 		RANLIB="$(RANLIB)" \
 		LUA_T="lua5.2" \
