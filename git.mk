@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += git
-GIT_VERSION := 2.30.0
+GIT_VERSION := 2.31.0
 DEB_GIT_V   ?= $(GIT_VERSION)
 
 GIT_ARGS += uname_S=Darwin \
@@ -61,10 +61,10 @@ endif
 git-package: git-stage
 	# git.mk Package Structure
 	rm -rf $(BUILD_DIST)/git
-	mkdir -p $(BUILD_DIST)/git
+	mkdir -p $(BUILD_DIST)/git/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share,libexec}
 	
 	# git.mk Prep git
-	cp -a $(BUILD_STAGE)/git/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/git
+	cp -a $(BUILD_STAGE)/git/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share,libexec} $(BUILD_DIST)/git/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# git.mk Sign
 	$(call SIGN,git,general.xml)
