@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/guile/.build_complete),)
 guile:
 	@echo "Using previously built guile."
 else
-guile: guile-setup libgmp10 libiconv libunistring libgc libffi readline gettext libtool
+guile: guile-setup libgmp10 libunistring libgc libffi readline gettext libtool
 	cd $(BUILD_WORK)/guile && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
