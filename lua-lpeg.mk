@@ -17,9 +17,11 @@ lua-lpeg-setup: setup
 	$(call EXTRACT_TAR,lpeg-$(LUA-LPEG_VERSION).tar.gz,lpeg-$(LUA-LPEG_VERSION),lua-lpeg/buildjit)
 	$(call EXTRACT_TAR,lpeg-$(LUA-LPEG_VERSION).tar.gz,lpeg-$(LUA-LPEG_VERSION),lua-lpeg/buildjit/bundle)
 	for ver in {1..3}; do \
-		$(SED) -i 's/-o lpeg.so/-o liblua5.'$$ver'-lpeg.2.dylib \$$(LIBS)/' $(BUILD_WORK)/lua-lpeg/build5$$ver/makefile; \
+		$(SED) -i 's/-o lpeg.so/-o liblua5.'$$ver'-lpeg.2.dylib \$$(LDFLAGS) \$$(LIBS)/' $(BUILD_WORK)/lua-lpeg/build5$$ver/makefile; \
+		$(SED) -i 's/-o lpeg.so/-o lpeg.so \$$(LDFLAGS)/' $(BUILD_WORK)/lua-lpeg/build5$$ver/bundle/makefile; \
 	done
-	$(SED) -i 's/-o lpeg.so/-o libluajit-5.1-lpeg.2.dylib \$$(LIBS)/' $(BUILD_WORK)/lua-lpeg/buildjit/makefile
+	$(SED) -i 's/-o lpeg.so/-o libluajit-5.1-lpeg.2.dylib \$$(LDFLAGS) \$$(LIBS)/' $(BUILD_WORK)/lua-lpeg/buildjit/makefile
+	$(SED) -i 's/-o lpeg.so/-o lpeg.so \$$(LDFLAGS)/' $(BUILD_WORK)/lua-lpeg/buildjit/bundle/makefile
 	mkdir -p $(BUILD_STAGE)/lua-lpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 
 ifneq ($(wildcard $(BUILD_WORK)/lua-lpeg/.build_complete),)
