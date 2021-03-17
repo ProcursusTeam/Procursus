@@ -26,7 +26,9 @@ binutils-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/binutils/binutils-$(BINUTILS_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,binutils-$(BINUTILS_VERSION).tar.xz)
 	mkdir -p $(BUILD_WORK)/binutils
-	$(foreach target,$(BINUTILS_TARGETS),$(call EXTRACT_TAR,binutils-$(BINUTILS_VERSION).tar.xz,binutils-$(BINUTILS_VERSION),binutils/$(target))
+	-for target in $(BINUTILS_TARGETS); do \
+		$(patsubst -if,if,$(call EXTRACT_TAR,binutils-$(BINUTILS_VERSION).tar.xz,binutils-$(BINUTILS_VERSION),binutils/$$target)); \
+	done
 	$(foreach target,$(BINUTILS_TARGETS),$(call DO_PATCH,binutils,binutils/$(target),-p1))
 
 ifneq ($(wildcard $(BUILD_WORK)/binutils/.build_complete),)
