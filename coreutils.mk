@@ -2,9 +2,10 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS     += coreutils
-COREUTILS_VERSION := 8.32
-DEB_COREUTILS_V   ?= $(COREUTILS_VERSION)-8
+STRAPPROJECTS       += coreutils
+COREUTILS_VERSION   := 8.32
+GETENTDARWIN_COMMIT := 1ad0e39ee51181ea6c13b3d1d4e9c6005ee35b5e
+DEB_COREUTILS_V     ?= $(COREUTILS_VERSION)-8
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 COREUTILS_CONFIGURE_ARGS += ac_cv_func_rpmatch=no
@@ -61,8 +62,9 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	cp $(BUILD_WORK)/coreutils/{su/su,rev/rev,bsdcp/bsdcp} $(BUILD_STAGE)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp $(BUILD_WORK)/coreutils/{su/su,rev/rev,bsdcp/bsdcp}.1 $(BUILD_STAGE)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 endif
-	+$(MAKE) -C $(BUILD_WORK)/system-cmds/getent-darwin install \
-		DESTDIR="$(BUILD_STAGE)/system-cmds/"
+	+$(MAKE) -C $(BUILD_WORK)/coreutils/getent-darwin install \
+		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		DESTDIR="$(BUILD_STAGE)/coreutils/"
 	touch $(BUILD_WORK)/coreutils/.build_complete
 endif
 
