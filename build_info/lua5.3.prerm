@@ -2,7 +2,7 @@
 
 case "$1" in
     remove)
-        update-alternatives --remove lua-interpreter /usr/bin/lua5.3
-        update-alternatives --remove lua-compiler /usr/bin/luac5.3
+        update-alternatives --remove lua-interpreter @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/lua5.3
+        update-alternatives --remove lua-compiler @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/luac5.3
         ;;
 esac
