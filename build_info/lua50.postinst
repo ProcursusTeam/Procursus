@@ -3,7 +3,7 @@ set -e
 
 if [ "$1" = "configure" ]; then
 	# For now, just update the alternatives set to include us.
-	update-alternatives --install /usr/bin/lua lua-interpreter /usr/bin/lua50 80 --slave /usr/share/man/man1/lua.1.gz lua-manual /usr/share/man/man1/lua50.1.gz
-	update-alternatives --install /usr/bin/luac lua-compiler /usr/bin/luac50 80 --slave /usr/share/man/man1/luac.1.gz lua-compiler-manual /usr/share/man/man1/luac50.1.gz
+	update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/lua lua-interpreter @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/lua50 80 --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/lua.1.zst lua-manual @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/lua50.1.zst
+	update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/luac lua-compiler @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/luac50 80 --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/luac.1.zst lua-compiler-manual @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/luac50.1.zst
 fi
 
