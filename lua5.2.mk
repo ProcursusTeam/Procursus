@@ -4,12 +4,13 @@ endif
 
 SUBPROJECTS    += lua5.2
 LUA5.2_VERSION := 5.2.4
-DEB_LUA5.2_V   ?= $(LUA5.2_VERSION)
+DEB_LUA5.2_V   ?= $(LUA5.2_VERSION)-1
 
 lua5.2-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.lua.org/ftp/lua-$(LUA5.2_VERSION).tar.gz 
 	$(call EXTRACT_TAR,lua-$(LUA5.2_VERSION).tar.gz,lua-$(LUA5.2_VERSION),lua5.2)
 	$(call DO_PATCH,lua5.2,lua5.2,-p1)
+	$(SED) -i -e ':a; s|@MEMO_PREFIX@|$(MEMO_PREFIX)|g; ta' -e ':a; s|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g; ta' $(BUILD_WORK)/lua5.2/src/luaconf.h
 
 ifneq ($(wildcard $(BUILD_WORK)/lua5.2/.build_complete),)
 lua5.2:
@@ -18,7 +19,7 @@ else
 lua5.2: lua5.2-setup readline
 	+$(MAKE) -C $(BUILD_WORK)/lua5.2 macosx \
 		CC="$(CC)" \
-		MYCFLAGS="$(CFLAGS) -fPIC -DLUA_ROOT=\\\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/\\\"" \
+		MYCFLAGS="$(CFLAGS) -fPIC" \
 		MYLDFLAGS="$(LDFLAGS)" \
 		AR="$(AR) rcu" \
 		RANLIB="$(RANLIB)" \

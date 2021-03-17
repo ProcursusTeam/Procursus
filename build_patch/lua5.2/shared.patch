@@ -48,11 +48,12 @@ diff -urN lua5.2/src/Makefile lua5.2/src/Makefile
  	$(MAKE) "LUA_A=lua52.dll" "LUA_T=lua.exe" \diff --color -urN lua-5.2.4/src/luaconf.h lua/src/luaconf.h
 --- lua-5.2.4/src/luaconf.h	2013-11-21 12:26:16.000000000 -0500
 +++ lua/src/luaconf.h	2021-01-14 19:42:32.025287194 -0500
-@@ -100,7 +100,6 @@
+@@ -100,7 +100,7 @@
  #else			/* }{ */
  
  #define LUA_VDIR	LUA_VERSION_MAJOR "." LUA_VERSION_MINOR "/"
 -#define LUA_ROOT	"/usr/local/"
++#define LUA_ROOT	"@MEMO_PREFIX@@MEMO_SUB_PREFIX@/"
  #define LUA_LDIR	LUA_ROOT "share/lua/" LUA_VDIR
  #define LUA_CDIR	LUA_ROOT "lib/lua/" LUA_VDIR
  #define LUA_PATH_DEFAULT  \

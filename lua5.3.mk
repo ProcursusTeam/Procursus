@@ -4,12 +4,13 @@ endif
 
 SUBPROJECTS    += lua5.3
 LUA5.3_VERSION := 5.3.3
-DEB_LUA5.3_V   ?= $(LUA5.3_VERSION)
+DEB_LUA5.3_V   ?= $(LUA5.3_VERSION)-1
 
 lua5.3-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.lua.org/ftp/lua-$(LUA5.3_VERSION).tar.gz 
 	$(call EXTRACT_TAR,lua-$(LUA5.3_VERSION).tar.gz,lua-$(LUA5.3_VERSION),lua5.3)
 	$(call DO_PATCH,lua5.3,lua5.3,-p1)
+	$(SED) -i -e ':a; s|@MEMO_PREFIX@|$(MEMO_PREFIX)|g; ta' -e ':a; s|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g; ta' $(BUILD_WORK)/lua5.3/src/luaconf.h
 
 ifneq ($(wildcard $(BUILD_WORK)/lua5.3/.build_complete),)
 lua5.3:
@@ -18,9 +19,8 @@ else
 lua5.3: lua5.3-setup readline
 	+$(MAKE) -C $(BUILD_WORK)/lua5.3 macosx \
 		CC="$(CC)" \
-		CFLAGS="$(CFLAGS) -fPIC -DLUA_COMPAT_5_3" \
-		CXXFLAGS="$(CXXFLAGS) -fPIC -DLUA_COMPAT_5_3" \
-		LDFLAGS="$(LDFLAGS)" \
+		MYCFLAGS="$(CFLAGS) -fPIC -DLUA_COMPAT_5_3" \
+		MYLDFLAGS="$(LDFLAGS)" \
 		AR="$(AR) rcu" \
 		RANLIB="$(RANLIB)" \
 		LUA_T="lua5.3" \

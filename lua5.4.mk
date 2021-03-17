@@ -4,12 +4,13 @@ endif
 
 SUBPROJECTS    += lua5.4
 LUA5.4_VERSION := 5.4.2
-DEB_LUA5.4_V   ?= $(LUA5.4_VERSION)
+DEB_LUA5.4_V   ?= $(LUA5.4_VERSION)-1
 
 lua5.4-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.lua.org/ftp/lua-$(LUA5.4_VERSION).tar.gz 
 	$(call EXTRACT_TAR,lua-$(LUA5.4_VERSION).tar.gz,lua-$(LUA5.4_VERSION),lua5.4)
 	$(call DO_PATCH,lua5.4,lua5.4,-p1)
+	$(SED) -i -e ':a; s|@MEMO_PREFIX@|$(MEMO_PREFIX)|g; ta' -e ':a; s|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g; ta' $(BUILD_WORK)/lua5.4/src/luaconf.h
 
 ifneq ($(wildcard $(BUILD_WORK)/lua5.4/.build_complete),)
 lua5.4:
@@ -18,9 +19,8 @@ else
 lua5.4: lua5.4-setup readline
 	+$(MAKE) -C $(BUILD_WORK)/lua5.4 macosx \
 		CC="$(CC)" \
-		CFLAGS="$(CFLAGS) -fPIC -DLUA_COMPAT_5_3" \
-		CXXFLAGS="$(CXXFLAGS) -fPIC -DLUA_COMPAT_5_3" \
-		LDFLAGS="$(LDFLAGS)" \
+		MYCFLAGS="$(CFLAGS) -fPIC -DLUA_COMPAT_5_3" \
+		MYLDFLAGS="$(LDFLAGS)" \
 		AR="$(AR) rcu" \
 		RANLIB="$(RANLIB)" \
 		LUA_T="lua5.4" \
