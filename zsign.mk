@@ -5,7 +5,7 @@ endif
 SUBPROJECTS   += zsign
 ZSIGN_COMMIT  := b5733ea0bb2d612492e732ba0fa5a828c0ca04da
 ZSIGN_VERSION := 0~20210202.$(shell echo $(ZSIGN_COMMIT) | cut -c -7)
-DEB_ZSIGN_V   := $(ZSIGN_VERSION)
+DEB_ZSIGN_V   := $(ZSIGN_VERSION)-1
 
 zsign-setup: setup
 	-[ ! -e "$(BUILD_SOURCE)/zsign-$(ZSIGN_COMMIT).tar.gz" ] \
