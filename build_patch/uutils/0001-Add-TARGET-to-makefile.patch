@@ -1,0 +1,41 @@
+From a438be7e9ea491b3d85b268542739155b39a7326 Mon Sep 17 00:00:00 2001
+From: aspen <aspenuwu@protonmail.com>
+Date: Wed, 17 Mar 2021 19:24:39 -0400
+Subject: [PATCH 1/2] Add TARGET to makefile
+
+---
+ GNUmakefile | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/GNUmakefile b/GNUmakefile
+index 28044f5f..f802d83a 100644
+--- a/GNUmakefile
++++ b/GNUmakefile
+@@ -1,5 +1,6 @@
+ # Config options
+ PROFILE         ?= debug
++TARGET          ?= $(shell rustc --version --verbose | grep host | awk '{ print $$2 }')
+ MULTICALL       ?= n
+ INSTALL         ?= install
+ ifneq (,$(filter install, $(MAKECMDGOALS)))
+@@ -15,7 +16,7 @@ RM := rm -rf
+ 
+ # Binaries
+ CARGO  ?= cargo
+-CARGOFLAGS ?=
++CARGOFLAGS ?= --target $(TARGET)
+ 
+ # Install directories
+ PREFIX ?= /usr/local
+@@ -36,7 +37,7 @@ PROG_PREFIX ?=
+ # This won't support any directory with spaces in its name, but you can just
+ # make a symlink without spaces that points to the directory.
+ BASEDIR       ?= $(shell pwd)
+-BUILDDIR      := $(BASEDIR)/target/${PROFILE}
++BUILDDIR      := $(BASEDIR)/target/${TARGET}/${PROFILE}
+ PKG_BUILDDIR  := $(BUILDDIR)/deps
+ DOCSDIR       := $(BASEDIR)/docs
+ 
+-- 
+2.31.0
+

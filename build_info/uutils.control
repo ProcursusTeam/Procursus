@@ -1,0 +1,11 @@
+Package: uutils
+Version: @DEB_UUTILS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Conflicts: coreutils-bin, coreutils
+Replaces: netatalk (<= 2.0.3-6), coreutils, coreutils-bin, shell-cmds (<< 207.40.1), text-cmds (<< 1:0), file-cmds (<< 272.250.1-1)
+Provides: md5sum, sha1sum, sha256sum, coreutils, coreutils-bin, dirname, kill, mktemp, su
+Section: Utilities
+Priority: standard
+Homepage: https://github.com/uutils/coreutils
+Description: Cross-platform Rust rewrite of the GNU coreutils 
