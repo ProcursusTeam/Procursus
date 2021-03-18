@@ -16,7 +16,7 @@ In the iOS jailbreak scene, it also attempts to address an odd fragmentation pro
 * **First main jailbreak repository ever** to be fully functional with any one of the main four package managers out of the box, allowing you to remove the default.
 * Includes an Obj-C implementation of the traditional firmware.sh that's not only quicker, but also creates a package for cpu subtype. (cy.cpu.arm64e, for example)
 * Uses GNU tools.
-* Updating most packages is as simple as changing the version number in it's .mk file and recompiling.
+* Updating most packages is as simple as changing the version number in its .mk file and recompiling.
 
 ## Building
 
