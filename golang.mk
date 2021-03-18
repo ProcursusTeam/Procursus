@@ -7,6 +7,14 @@ GOLANG_MAJOR_V := 1.16
 GOLANG_VERSION := $(GOLANG_MAJOR_V).2
 DEB_GOLANG_V   ?= $(GOLANG_VERSION)
 
+ifneq (,$(findstring arm64,$(MEMO_TARGET)))
+GO_ARGS := GOARCH=arm64 \
+        GOOS=ios 
+else
+GO_ARGS := GOARCH=amd64 \
+        GOOS=darwin 
+endif
+
 golang-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://golang.org/dl/go$(GOLANG_VERSION).src.tar.gz
 	$(call EXTRACT_TAR,go$(GOLANG_VERSION).src.tar.gz,go,golang)
@@ -14,10 +22,7 @@ golang-setup: setup
 	mkdir -p $(BUILD_WORK)/golang/superbin
 	cp -a $(BUILD_WORK)/golang/misc/ios/clangwrap.sh $(BUILD_WORK)/golang/superbin/clang
 
-ifneq ($(MEMO_ARCH),arm64)
-golang:
-	@echo "Unsupported target $(MEMO_TARGET)"
-else ifneq ($(UNAME),Darwin)
+ifneq ($(UNAME),Darwin)
 golang:
 	@echo "golang building only supported on macOS"
 else ifneq ($(wildcard $(BUILD_WORK)/golang/.build_complete),)
@@ -30,16 +35,19 @@ golang: golang-setup
 			CGO_ENABLED=1 \
 			GOROOT_FINAL=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V) \
 			GOROOT_BOOTSTRAP=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-			GOHOSTARCH=amd64 \
-			GOHOSTOS=ios \
-			GOARCH=arm64 \
-			GOOS=ios \
+			GOHOSTARCH= \
+			GOHOSTOS=darwin \
+			$(GO_ARGS) \
 			CC=cc \
 			CC_FOR_TARGET=clang \
 			./make.bash
 	cp -a $(BUILD_WORK)/golang/* $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)
-	-find $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V) -name ios_amd64 -type d -exec rm -rf {} \;
+ifneq (,$(findstring arm64,$(MEMO_TARGET)))
+	-find $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V) -name darwin_amd64 -type d -exec rm -rf {} \;
+else
 	touch $(BUILD_WORK)/golang/.build_complete
+endif
+
 endif
 
 golang-package: golang-stage
