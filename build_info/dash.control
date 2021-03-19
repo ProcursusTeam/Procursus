@@ -5,6 +5,6 @@ Maintainer: @DEB_MAINTAINER@
 Depends: libedit
 Section: Terminal_Support
 Priority: optional
-Homepage: http://www.gnu.org/software/bash/
+Homepage: http://gondor.apana.org.au/~herbert/dash/
 Description: POSIX compliant shell that aims to be as small as possible
 Name: dash
