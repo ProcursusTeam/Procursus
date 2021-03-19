@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS   += unrar
 UNRAR_VERSION := 6.0.4
-DEB_UNRAR_V   ?= $(UNRAR_VERSION)
+DEB_UNRAR_V   ?= $(UNRAR_VERSION)-1
 
 unrar-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.rarlab.com/rar/unrarsrc-$(UNRAR_VERSION).tar.gz
@@ -15,19 +15,19 @@ unrar:
 	@echo "Using previously built unrar."
 else
 unrar: unrar-setup
-	$(SED) -i 's/libunrar.so/libunrar.dylib/g' $(BUILD_WORK)/unrar/makefile
+	$(SED) -i 's/libunrar.so/libunrar.dylib/g' $(BUILD_WORK)/unrar/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/unrar \
 		CXX="$(CXX) $(CFLAGS)" \
 		STRIP=$(STRIP)
+	mkdir -p $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -af $(BUILD_WORK)/unrar/unrar $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	+$(MAKE) -C $(BUILD_WORK)/unrar clean
 	+$(MAKE) -C $(BUILD_WORK)/unrar lib \
 		CXX="$(CXX) $(CFLAGS)" \
 		AR="$(AR)" \
 		STRIP=$(STRIP)
-	mkdir -p $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib}
-	cd $(BUILD_WORK)/unrar; \
-		cp -af unrar $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \
-		cp -af libunrar.dylib $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -af $(BUILD_WORK)/unrar/libunrar.dylib $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	touch $(BUILD_WORK)/unrar/.build_complete
 endif
 
