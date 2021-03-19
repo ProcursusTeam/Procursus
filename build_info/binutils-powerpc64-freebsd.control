@@ -1,14 +1,14 @@
-Package: binutils-i686-kfreebsd-musl
+Package: binutils-powerpc64-freebsd
 Version: @DEB_BINUTILS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: development
 Priority: optional
 Homepage: http://www.gnu.org/software/binutils/
-Description: GNU binary utilities, for i686-kfreebsd-musl target
+Description: GNU binary utilities, for powerpc64-freebsd target
  This package provides GNU assembler, linker and binary utilities
- for the i686-kfreebsd-musl target.
+ for the powerpc64-freebsd target.
  .
  You don't need this package unless you plan to cross-compile programs
- for i686-kfreebsd-musl and i686-kfreebsd-musl is not your native platform.
+ for powerpc64-freebsd and powerpc64-freebsd is not your native platform.
 Depends: libintl8, binutils-common (= @DEB_BINUTILS_V@)

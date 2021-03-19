@@ -1,0 +1,14 @@
+Package: binutils-mips64-netbsd
+Version: @DEB_BINUTILS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: development
+Priority: optional
+Homepage: http://www.gnu.org/software/binutils/
+Description: GNU binary utilities, for mips64-netbsd target
+ This package provides GNU assembler, linker and binary utilities
+ for the mips64-netbsd target.
+ .
+ You don't need this package unless you plan to cross-compile programs
+ for mips64-netbsd and mips64-netbsd is not your native platform.
+Depends: libintl8, binutils-common (= @DEB_BINUTILS_V@)

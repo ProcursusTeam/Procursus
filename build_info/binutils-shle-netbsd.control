@@ -1,14 +1,14 @@
-Package: binutils-i686-musl
+Package: binutils-shle-netbsd
 Version: @DEB_BINUTILS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: development
 Priority: optional
 Homepage: http://www.gnu.org/software/binutils/
-Description: GNU binary utilities, for i686-musl target
+Description: GNU binary utilities, for shle-netbsd target
  This package provides GNU assembler, linker and binary utilities
- for the i686-musl target.
+ for the shle-netbsd target.
  .
  You don't need this package unless you plan to cross-compile programs
- for i686-musl and i686-musl is not your native platform.
+ for shle-netbsd and shle-netbsd is not your native platform.
 Depends: libintl8, binutils-common (= @DEB_BINUTILS_V@)

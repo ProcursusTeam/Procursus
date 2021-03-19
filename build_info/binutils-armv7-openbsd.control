@@ -1,0 +1,14 @@
+Package: binutils-armv7-openbsd
+Version: @DEB_BINUTILS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: development
+Priority: optional
+Homepage: http://www.gnu.org/software/binutils/
+Description: GNU binary utilities, for armv7-openbsd target
+ This package provides GNU assembler, linker and binary utilities
+ for the armv7-openbsd target.
+ .
+ You don't need this package unless you plan to cross-compile programs
+ for armv7-openbsd and armv7-openbsd is not your native platform.
+Depends: libintl8, binutils-common (= @DEB_BINUTILS_V@)
