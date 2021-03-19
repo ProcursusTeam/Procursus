@@ -1,8 +1,8 @@
 #!/bin/sh -e
 
-if test -z "$2" && test ! -f /etc/shells
+if test ! -f @MEMO_PREFIX@/etc/shells
 then
-        cp -p /usr/share/debianutils/shells /etc/shells
+        cp -p @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/debianutils/shells @MEMO_PREFIX@/etc/shells
 fi
 
 case "$1" in
