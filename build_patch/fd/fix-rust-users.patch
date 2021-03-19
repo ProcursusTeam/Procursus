@@ -1,0 +1,11 @@
+--- Cargo.toml	2020-12-07 11:57:45.000000000 -0600
++++ Cargo.toml	2021-03-19 10:44:17.000000000 -0500
+@@ -53,7 +53,7 @@
+ features = ["suggestions", "color", "wrap_help"]
+ 
+ [target.'cfg(unix)'.dependencies]
+-users = "0.11.0"
++users = { git = "https://github.com/aspenluxxxy/rust-users", branch = "ios" }
+ 
+ [target.'cfg(all(unix, not(target_os = "redox")))'.dependencies]
+ libc = "0.2"
