@@ -1,0 +1,10 @@
+Package: dash
+Version: @DEB_DASH_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libedit
+Section: Terminal_Support
+Priority: optional
+Homepage: http://www.gnu.org/software/bash/
+Description: POSIX compliant shell that aims to be as small as possible
+Name: dash
