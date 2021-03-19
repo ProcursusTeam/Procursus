@@ -19,7 +19,7 @@ ifneq ($(wildcard $(BUILD_WORK)/sudo/.build_complete),)
 sudo:
 	@echo "Using previously built sudo."
 else
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 sudo: sudo-setup gettext libxcrypt
 SUDO_CONFIGURE_ARGS += ac_cv_search_crypt="-lcrypt"
 else # (,$(findstring darwin,$(MEMO_TARGET)))
@@ -65,6 +65,7 @@ void patch_setuidandplatformize() {\
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--without-pam \
 		--enable-static-sudoers \
 		--with-all-insults \
