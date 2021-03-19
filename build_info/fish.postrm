@@ -1,9 +1,0 @@
-#!/bin/sh
-
-set -e
-
-case "$1" in
-	(remove)
-	remove-shell /usr/bin/fish
-	;;
-esac

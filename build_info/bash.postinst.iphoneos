@@ -4,7 +4,8 @@ set -e
 
 case "$1" in
 	(configure)
-	add-shell /usr/bin/fish
+	add-shell @MEMO_PREFIX@/bin/bash
+	add-shell @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/bash
 	;;
 	(abort-upgrade|abort-remove|abort-deconfigure)
 	exit 0
