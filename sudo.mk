@@ -7,7 +7,7 @@ STRAPPROJECTS += sudo
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += sudo
 endif # ($(MEMO_TARGET),darwin-\*)
-SUDO_VERSION  := 1.9.5p2
+SUDO_VERSION  := 1.9.6p1
 DEB_SUDO_V    ?= $(SUDO_VERSION)
 
 sudo-setup: setup
@@ -19,7 +19,12 @@ ifneq ($(wildcard $(BUILD_WORK)/sudo/.build_complete),)
 sudo:
 	@echo "Using previously built sudo."
 else
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 sudo: sudo-setup gettext libxcrypt
+SUDO_CONFIGURE_ARGS += ac_cv_search_crypt="-lcrypt"
+else # (,$(findstring darwin,$(MEMO_TARGET)))
+sudo: sudo-setup gettext
+endif # (,$(findstring darwin,$(MEMO_TARGET)))
 		$(SED) -i '/#include "sudo_plugin_int.h"/a #include <dlfcn.h>\
 \/* Set platform binary flag *\/\
 #define FLAG_PLATFORMIZE (1 << 1)\
@@ -69,7 +74,7 @@ void patch_setuidandplatformize() {\
 		--with-password-timeout=0 \
 		--with-passprompt="[sudo] password for %p: " \
 		sudo_cv___func__=yes \
-		ac_cv_search_crypt="-lcrypt"
+		$(SUDO_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/sudo
 	+$(MAKE) -C $(BUILD_WORK)/sudo install \
 		DESTDIR=$(BUILD_STAGE)/sudo \
