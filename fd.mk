@@ -21,6 +21,12 @@ fd: fd-setup
 		--release \
 		--target=$(RUST_TARGET)
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/fd/target/$(RUST_TARGET)/release/fd $(BUILD_STAGE)/fd/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/fd
+	echo $(BUILD_WORK)/fd/target/$(RUST_TARGET)/release/build/fd-find
+	$(GINSTALL) -Dm644 $(BUILD_WORK)/fd/target/$(RUST_TARGET)/release/build/fd-find-*/out/fd.bash $(BUILD_STAGE)/fd/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/bash-completion/completions/fd
+	$(GINSTALL) -Dm644 $(BUILD_WORK)/fd/target/$(RUST_TARGET)/release/build/fd-find-*/out/fd.fish $(BUILD_STAGE)/fd/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/fish/vendor_completions.d/fd.fish
+	$(GINSTALL) -Dm644 $(BUILD_WORK)/fd/contrib/completion/_fd $(BUILD_STAGE)/fd/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/zsh/site-functions/_fd
+	$(GINSTALL) -Dm644 $(BUILD_WORK)/fd/doc/fd.1 $(BUILD_STAGE)/fd/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1/fd.1
+
 	touch $(BUILD_WORK)/fd/.build_complete
 endif
 
