@@ -58,8 +58,8 @@ bash: bash-setup ncurses readline
 	+$(MAKE) -C $(BUILD_WORK)/bash install \
 		DESTDIR="$(BUILD_STAGE)/bash"
 ifneq ($(MEMO_SUB_PREFIX),)
-	ln -s ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bash $(BUILD_STAGE)/bash/bin/bash
-	ln -s ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bash $(BUILD_STAGE)/bash/bin/sh
+	ln -s ..$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bash $(BUILD_STAGE)/bash/bin/bash
+	ln -s ..$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bash $(BUILD_STAGE)/bash/bin/sh
 endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	ln -s bash $(BUILD_STAGE)/bash/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sh
