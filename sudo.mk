@@ -21,9 +21,11 @@ sudo:
 else
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 sudo: sudo-setup gettext libxcrypt
-SUDO_CONFIGURE_ARGS += ac_cv_search_crypt="-lcrypt"
+SUDO_CONFIGURE_ARGS += --without-pam \
+ac_cv_search_crypt="-lcrypt"
 else # (,$(findstring darwin,$(MEMO_TARGET)))
 sudo: sudo-setup gettext
+SUDO_CONFIGURE_ARGS += --with-pam
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 		$(SED) -i '/#include "sudo_plugin_int.h"/a #include <dlfcn.h>\
 \/* Set platform binary flag *\/\
@@ -65,8 +67,8 @@ void patch_setuidandplatformize() {\
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--localstatedir=$(MEMO_PREFIX)/var \
 		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--without-pam \
 		--enable-static-sudoers \
 		--with-all-insults \
 		--with-env-editor \
@@ -81,7 +83,7 @@ void patch_setuidandplatformize() {\
 		DESTDIR=$(BUILD_STAGE)/sudo \
 		INSTALL_OWNER=''
 	touch $(BUILD_WORK)/sudo/.build_complete
-endif
+endif 
 
 sudo-package: sudo-stage
 	# sudo.mk Package Structure
