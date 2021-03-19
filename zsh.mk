@@ -73,7 +73,7 @@ endif
 zsh-package: zsh-stage
 	# zsh.mk Package Structure
 	rm -rf $(BUILD_DIST)/zsh
-	mkdir -p $(BUILD_DIST)/zsh/$(MEMO_PREFIX)/bin
+	mkdir -p $(BUILD_DIST)/zsh/$(MEMO_PREFIX){$(MEMO_SUB_PREFIX),/bin}
 	
 	# zsh.mk Prep zsh
 	cp -a $(BUILD_STAGE)/zsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/* $(BUILD_DIST)/zsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
