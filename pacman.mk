@@ -18,6 +18,7 @@ else
 pacman: pacman-setup libarchive openssl curl gettext
 	cd $(BUILD_WORK)/pacman && ./autogen.sh
 	cd $(BUILD_WORK)/pacman && ./configure \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \

@@ -2,9 +2,17 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS     += findutils
-FINDUTILS_VERSION := 4.7.0
-DEB_FINDUTILS_V   ?= $(FINDUTILS_VERSION)-2
+else # ($(MEMO_TARGET),darwin-\*)
+SUBPROJECTS       += findutils
+endif # ($(MEMO_TARGET),darwin-\*)
+FINDUTILS_VERSION := 4.8.0
+DEB_FINDUTILS_V   ?= $(FINDUTILS_VERSION)
+
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+FINDUTILS_CONFIGURE_ARGS += --program-prefix=$(GNU_PREFIX)
+endif
 
 findutils-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/findutils/findutils-$(FINDUTILS_VERSION).tar.xz{,.sig}
@@ -17,11 +25,19 @@ findutils:
 else
 findutils: findutils-setup gettext
 	cd $(BUILD_WORK)/findutils && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--localstatedir=$(MEMO_PREFIX)/var/cache/locate \
 		--disable-dependency-tracking \
-		--disable-debug
-	+$(MAKE) -C $(BUILD_WORK)/findutils
+		--disable-debug \
+		--without-selinux \
+		--with-packager=Procursus \
+		--enable-threads=posix \
+		$(FINDUTILS_CONFIGURE_ARGS) \
+		CFLAGS="$(CFLAGS) -D__nonnull\(params\)="
+	+$(MAKE) -C $(BUILD_WORK)/findutils \
+		SORT="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$(GNU_PREFIX)sort"
 	+$(MAKE) -C $(BUILD_WORK)/findutils install \
 		DESTDIR=$(BUILD_STAGE)/findutils
 	touch $(BUILD_WORK)/findutils/.build_complete
@@ -30,10 +46,15 @@ endif
 findutils-package: findutils-stage
 	# findutils.mk Package Structure
 	rm -rf $(BUILD_DIST)/findutils
-	mkdir -p $(BUILD_DIST)/findutils
 	
 	# findutils.mk Prep findutils
-	cp -a $(BUILD_STAGE)/findutils/usr $(BUILD_DIST)/findutils
+	cp -a $(BUILD_STAGE)/findutils $(BUILD_DIST)
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+	mkdir -p $(BUILD_DIST)/findutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin
+	for bin in $(BUILD_DIST)/findutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
+		ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(echo $$bin | rev | cut -d/ -f1 | rev) $(BUILD_DIST)/findutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $$bin | rev | cut -d/ -f1 | rev | cut -c2-); \
+	done
+endif
 	
 	# findutils.mk Sign
 	$(call SIGN,findutils,general.xml)

@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += dialog
 DIALOG_VERSION := 1.3
-DIALOG_DATE    := 20200327
+DIALOG_DATE    := 20210117
 DEB_DIALOG_V   ?= $(DIALOG_VERSION)-$(DIALOG_DATE)
 
 dialog-setup: setup
@@ -17,6 +17,7 @@ dialog:
 else
 dialog: dialog-setup ncurses gettext
 	cd $(BUILD_WORK)/dialog && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--with-ncursesw \

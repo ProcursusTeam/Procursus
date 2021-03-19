@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += libredwg
-LIBREDWG_VERSION := 0.11
+LIBREDWG_VERSION := 0.12
 DEB_LIBREDWG_V   ?= $(LIBREDWG_VERSION)
 
 libredwg-setup: setup
@@ -16,6 +16,7 @@ libredwg:
 else
 libredwg: libredwg-setup
 	cd $(BUILD_WORK)/libredwg && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/libredwg

@@ -26,7 +26,7 @@ openjdk-setup: setup
 	$(call EXTRACT_TAR,openjdk-$(OPENJDK_COMMIT).tar.gz,aarch64-port-$(OPENJDK_COMMIT),openjdk)
 	$(call EXTRACT_TAR,cups-2.3.3-source.tar.gz,cups-2.3.3,apple-cups)
 	$(call EXTRACT_TAR,openjdk-15_osx-x64_bin.tar.gz,jdk-15.jdk,boot-jdk.jdk) # Change this to use the Linux one on Linux
-ifneq ($(MEMO_TARGET),darwin-arm64e)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call DO_PATCH,openjdk-ios,openjdk,-p1)
 	$(SED) -i '/<CoreServices\/CoreServices.h>/a #include <CFNetwork/CFNetwork.h>' $(BUILD_WORK)/openjdk/src/java.base/macosx/native/libnet/DefaultProxySelector.c
 	for file in $(BUILD_WORK)/openjdk/src/java.base/macosx/native/libjli/java_md_macosx.m \
@@ -70,6 +70,7 @@ openjdk: openjdk-setup libx11 libxext libxi libxrender libxtst freetype libgif h
 	mkdir -p $(BUILD_STAGE)/openjdk/usr/lib/jvm
 	chmod 0755 $(BUILD_WORK)/openjdk/configure
 	cd $(BUILD_WORK)/openjdk && ./configure \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--prefix=/usr/lib \
 		--openjdk-target=$(GNU_HOST_TRIPLE) \
 		--with-extra-cflags="$(CFLAGS) -DTARGET_OS_OSX" \

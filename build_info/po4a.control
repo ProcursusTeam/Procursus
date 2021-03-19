@@ -1,0 +1,29 @@
+Package: po4a
+Version: @DEB_PO4A_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Pre-Depends: perl (>= 5.32.1)
+Depends: gettext, libpod-parser-perl, libsgmls-perl, libyaml-tiny-perl
+Recommends: liblocale-gettext-perl, libterm-readkey-perl, libtext-wrapi18n-perl, libunicode-linebreak-perl
+Section: Perl
+Homepage: https://po4a.org/
+Description: tools to ease the translation of documentation
+ po4a eases the translation of documentation and other textual document.
+ Even more interestingly, it makes it easy to maintain these
+ translations when the original document changes. This is done by
+ using the gettext tools in this new domain.
+ .
+ This package contains the main libraries of po4a, and the necessary
+ sub-modules to handle the following formats:
+ .
+   - Dia: uncompressed Dia diagrams.
+   - INI: the INI format
+   - KernelHelp: Help messages of each kernel compilation option.
+   - LaTeX: generic TeX or LaTeX format.
+   - Man: either roff or mdoc format.
+   - POD: Perl documentation format.
+   - SGML: either DebianDoc or DocBook DTD.
+   - RubyDoc: Ruby documentation format.
+   - Texinfo: the info page format.
+   - XML: very configurable (preconfigured for DocBook, XHTML, Guide, WML).
+   - Yaml: Yaml documents.

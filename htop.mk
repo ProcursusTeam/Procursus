@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += htop
-HTOP_VERSION := 3.0.0
+HTOP_VERSION := 3.0.5
 DEB_HTOP_V   ?= $(HTOP_VERSION)
 
 htop-setup: setup
@@ -17,6 +17,7 @@ else
 htop: htop-setup ncurses
 	cd $(BUILD_WORK)/htop && ./autogen.sh
 	cd $(BUILD_WORK)/htop && ./configure \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-linux-affinity \

@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += libonig
-LIBONIG_VERSION := 6.9.4
+LIBONIG_VERSION := 6.9.6
 DEB_LIBONIG_V   ?= $(LIBONIG_VERSION)
 
 libonig-setup: setup
@@ -16,6 +16,7 @@ libonig:
 else
 libonig: libonig-setup
 	cd $(BUILD_WORK)/libonig && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/libonig install \
@@ -35,7 +36,7 @@ libonig-package: libonig-stage
 	cp -a $(BUILD_STAGE)/libonig/usr/lib/libonig.5.dylib $(BUILD_DIST)/libonig5/usr/lib
 
 	# libonig.mk Prep libonig-dev
-	cp -a $(BUILD_STAGE)/libonig/usr/include/onig{gnu.h,posix.h,uruma.h} $(BUILD_DIST)/libonig-dev/usr/include
+	cp -a $(BUILD_STAGE)/libonig/usr/include/onig{gnu.h,uruma.h} $(BUILD_DIST)/libonig-dev/usr/include
 	cp -a $(BUILD_STAGE)/libonig/usr/lib/libonig.{a,dylib} $(BUILD_DIST)/libonig-dev/usr/lib
 	cp -a $(BUILD_STAGE)/libonig/usr/lib/pkgconfig/oniguruma.pc $(BUILD_DIST)/libonig-dev/usr/lib/pkgconfig
 

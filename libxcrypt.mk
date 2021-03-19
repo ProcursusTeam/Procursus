@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+
 STRAPPROJECTS     += libxcrypt
 LIBXCRYPT_VERSION := 4.4.17
 DEB_LIBXCRYPT_V   ?= $(LIBXCRYPT_VERSION)
@@ -17,6 +19,7 @@ else
 libxcrypt: libxcrypt-setup
 	cd $(BUILD_WORK)/libxcrypt && autoreconf -iv
 	cd $(BUILD_WORK)/libxcrypt && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/libxcrypt
@@ -49,3 +52,5 @@ libxcrypt-package: libxcrypt-stage
 	rm -rf $(BUILD_DIST)/libcrypt{2,-dev}
 
 .PHONY: libxcrypt libxcrypt-package
+
+endif # ($(MEMO_TARGET),darwin-\*)

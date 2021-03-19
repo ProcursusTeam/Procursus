@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS     += diffutils
+SUBPROJECTS       += diffutils
 DIFFUTILS_VERSION := 3.7
 DEB_DIFFUTILS_V   ?= $(DIFFUTILS_VERSION)-2
 
@@ -17,8 +17,9 @@ diffutils:
 else
 diffutils: diffutils-setup gettext
 	cd $(BUILD_WORK)/diffutils && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/diffutils
 	+$(MAKE) -C $(BUILD_WORK)/diffutils install \
@@ -29,10 +30,9 @@ endif
 diffutils-package: diffutils-stage
 	# diffutils.mk Package Structure
 	rm -rf $(BUILD_DIST)/diffutils
-	mkdir -p $(BUILD_DIST)/diffutils
 	
 	# diffutils.mk Prep diffutils
-	cp -a $(BUILD_STAGE)/diffutils/usr $(BUILD_DIST)/diffutils
+	cp -a $(BUILD_STAGE)/diffutils $(BUILD_DIST)
 	
 	# diffutils.mk Sign
 	$(call SIGN,diffutils,general.xml)

@@ -21,6 +21,7 @@ nodejs:
 else
 nodejs: nodejs-setup nghttp2 openssl brotli libc-ares libuv1
 	cd $(BUILD_WORK)/nodejs && GYP_DEFINES="target_arch=arm64 host_os=mac target_os=ios" ./configure \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--prefix=/usr \
 		--dest-os=ios \
 		--dest-cpu=arm64 \

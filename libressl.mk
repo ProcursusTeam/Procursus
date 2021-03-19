@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 #SUBPROJECTS      += libressl
-LIBRESSL_VERSION := 3.0.2
+LIBRESSL_VERSION := 3.3.1
 DEB_LIBRESSL_V   ?= $(LIBRESSL_VERSION)
 
 libressl-setup: setup
@@ -17,6 +17,7 @@ libressl:
 else
 libressl: libressl-setup
 	cd $(BUILD_WORK)/libressl && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--with-openssldir=/etc/ssl \

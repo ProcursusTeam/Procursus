@@ -4,6 +4,5 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Development
 Priority: optional
-Conflicts: libarchive (<< @DEB_LIBARCHIVE_V@)
-Depends: libarchive13 (>= @DEB_LIBARCHIVE_V@)
+Depends: libarchive13 (>= @DEB_LIBARCHIVE_V@), liblz4-dev, liblzma-dev, libzstd-dev, nettle-dev, liblzo2-dev
 Description: Multi-format archive and compression library - devel

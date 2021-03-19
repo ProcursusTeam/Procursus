@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += libass
 LIBASS_VERSION := 0.15.0
-DEB_LIBASS_V   ?= $(LIBASS_VERSION)
+DEB_LIBASS_V   ?= $(LIBASS_VERSION)-1
 
 libass-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libass/libass/releases/download/$(LIBASS_VERSION)/libass-$(LIBASS_VERSION).tar.xz
@@ -16,6 +16,7 @@ libass:
 else
 libass: libass-setup freetype fontconfig libfribidi harfbuzz
 	cd $(BUILD_WORK)/libass && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		FONTCONFIG_CFLAGS="-I$(BUILD_BASE)/usr/include/freetype2 -I$(BUILD_BASE)/usr/include/libpng16" \

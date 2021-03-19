@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+
 STRAPPROJECTS       += debianutils
 DEBIANUTILS_VERSION := 4.11.2
 DEB_DEBIANUTILS_V   ?= $(DEBIANUTILS_VERSION)
@@ -18,6 +20,7 @@ else
 debianutils: .SHELLFLAGS=-O extglob -c
 debianutils: debianutils-setup
 	cd $(BUILD_WORK)/debianutils && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--disable-dependency-tracking
@@ -53,3 +56,5 @@ debianutils-package: debianutils-stage
 	rm -rf $(BUILD_DIST)/debianutils
 
 .PHONY: debianutils debianutils-package
+
+endif

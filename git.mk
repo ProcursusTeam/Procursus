@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += git
-GIT_VERSION := 2.29.2
+GIT_VERSION := 2.30.0
 DEB_GIT_V   ?= $(GIT_VERSION)
 
 GIT_ARGS += uname_S=Darwin \
@@ -28,6 +28,7 @@ else
 git: git-setup openssl curl pcre2 gettext libidn2
 	+cd $(BUILD_WORK)/git && $(MAKE) configure
 	cd $(BUILD_WORK)/git && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--without-tcltk \

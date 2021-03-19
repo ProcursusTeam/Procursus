@@ -2,8 +2,10 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+
 SUBPROJECTS      += adv-cmds
-ADV-CMDS_VERSION := 174.0.1
+ADV-CMDS_VERSION := 176
 DEB_ADV-CMDS_V   ?= $(ADV-CMDS_VERSION)
 
 adv-cmds-setup: setup
@@ -50,3 +52,5 @@ adv-cmds-package: adv-cmds-stage
 	rm -rf $(BUILD_DIST)/adv-cmds
 
 .PHONY: adv-cmds adv-cmds-package
+
+endif # ($(MEMO_TARGET),darwin-\*)

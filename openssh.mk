@@ -2,9 +2,13 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 ifeq ($(SSH_STRAP),1)
 STRAPPROJECTS   += openssh
-else
+else # ($(SSH_STRAP),1)
+SUBPROJECTS     += openssh
+endif # ($(SSH_STRAP),1)
+else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += openssh
 endif
 OPENSSH_VERSION := 8.4p1
@@ -30,6 +34,7 @@ openssh: openssh-setup openssl libxcrypt
 	fi
 	$(SED) -i '/HAVE_ENDIAN_H/d' $(BUILD_WORK)/openssh/config.h.in
 	cd $(BUILD_WORK)/openssh && $(EXTRA) ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc/ssh \

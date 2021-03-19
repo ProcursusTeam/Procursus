@@ -1,6 +1,6 @@
 Package: procursus-keyring
 Version: @DEB_KEYRING_V@
-Architecture: @DEB_ARCH@
+Architecture: all
 Essential: yes
 Maintainer: @DEB_MAINTAINER@
 Section: System

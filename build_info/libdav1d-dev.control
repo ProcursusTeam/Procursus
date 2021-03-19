@@ -2,7 +2,7 @@ Package: libdav1d-dev
 Version: @DEB_DAV1D_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libdav1d4 (=@DEB_DAV1D_V@)
+Depends: libdav1d5 (=@DEB_DAV1D_V@)
 Section: Development
 Priority: standard
 Description: fast and small AV1 video stream decoder (development files)

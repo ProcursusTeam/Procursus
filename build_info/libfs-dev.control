@@ -1,0 +1,20 @@
+Package: libfs-dev
+Version: @DEB_LIBFS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libfs6 (= @DEB_LIBFS_V@), x11proto-dev
+Section: Development
+Priority: optional
+Description: X11 Font Services library (development headers)
+ libFS, the Font Services library, provides various functions useful to
+ X11 font servers, and clients connecting to font servers.  It is not
+ used outside of these implementations.
+ .
+ This package contains the development headers for the library found in
+ libfs6.  Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at:
+ <URL:http://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libFS

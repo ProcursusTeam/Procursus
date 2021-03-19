@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS         += imagemagick
-IMAGEMAGICK_VERSION := 7.0.10-53
+IMAGEMAGICK_VERSION := 7.0.10-60
 DEB_IMAGEMAGICK_V   ?= $(shell echo $(IMAGEMAGICK_VERSION) | sed s/-/./)
 
 ###
@@ -20,20 +20,21 @@ ifneq ($(wildcard $(BUILD_WORK)/imagemagick/.build_complete),)
 imagemagick:
 	@echo "Using previously built imagemagick."
 else
-imagemagick: imagemagick-setup openexr fontconfig freetype glib2.0 ghostscript libheif gettext jbigkit libjemalloc lcms2 liblqr xz openmp openjpeg libpng16 libtiff libwebp libzip
+imagemagick: imagemagick-setup openexr fontconfig freetype glib2.0 ghostscript libheif gettext jbigkit libjemalloc lcms2 liblqr xz openmp openjpeg libpng16 libtiff libwebp libzip libtool
 	cd $(BUILD_WORK)/imagemagick && PKG_CONFIG="pkg-config --define-prefix" ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--enable-osx-universal-binary=no \
 		--prefix=/usr \
 		--sysconfdir=/etc \
 		--disable-dependency-tracking \
 		--disable-silent-rules \
-		--disable-opencl \
 		--enable-shared \
 		--enable-static \
 		--with-jemalloc \
-		--with-freetype=yes \
+		--disable-opencl \
 		--with-modules \
+		--with-freetype=yes \
 		--with-openjp2 \
 		--with-openexr \
 		--with-webp=yes \

@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS      += harfbuzz
 HARFBUZZ_VERSION := 2.7.4
-DEB_HARFBUZZ_V   ?= $(HARFBUZZ_VERSION)
+DEB_HARFBUZZ_V   ?= $(HARFBUZZ_VERSION)-1
 
 harfbuzz-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/harfbuzz-$(HARFBUZZ_VERSION).tar.gz" ] && \
@@ -18,6 +18,7 @@ harfbuzz:
 else
 harfbuzz: harfbuzz-setup cairo freetype glib2.0 graphite2 icu4c fontconfig
 	cd $(BUILD_WORK)/harfbuzz && ./autogen.sh \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--with-cairo \

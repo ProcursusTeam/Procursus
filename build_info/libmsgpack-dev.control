@@ -1,0 +1,13 @@
+Package: libmsgpack-dev
+Version: @DEB_MSGPACK_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Depends: libmsgpackc2 (= @DEB_MSGPACK_V@)
+Description: binary-based efficient object serialization library (development files)
+ MessagePack is a binary-based efficient object serialization library.
+ It enables to exchange structured objects between many languages like JSON.
+ But unlike JSON, it is very fast and small.
+ .
+ This package contains the headers files needed for developing with msgpack-c.
