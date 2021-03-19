@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += man-db
-MAN-DB_VERSION := 2.9.3
+MAN-DB_VERSION := 2.9.4
 DEB_MAN-DB_V   ?= $(MAN-DB_VERSION)-3
 
 man-db-setup: setup
