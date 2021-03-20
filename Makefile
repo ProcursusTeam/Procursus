@@ -495,7 +495,7 @@ ifneq ($(call HAS_COMMAND,zstd),1)
 $(error Install zstd)
 endif
 
-DPKG_TYPE ?= gzip
+DPKG_TYPE ?= zstd
 ifeq ($(call HAS_COMMAND,dpkg-deb),1)
 DPKG_DEB := dpkg-deb -Z$(DPKG_TYPE) 
 else ifeq ($(call HAS_COMMAND,dm.pl),1)
