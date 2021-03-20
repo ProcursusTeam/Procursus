@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += xauth
 XAUTH_VERSION := 1.1
-DEB_XAUTH_V   ?= $(XAUTH_VERSION)-1
+DEB_XAUTH_V   ?= $(XAUTH_VERSION)
 
 xauth-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/app/xauth-$(XAUTH_VERSION).tar.gz{,.sig}
@@ -18,9 +18,9 @@ else
 xauth: xauth-setup libx11 libxau libxext libxmu xorgproto
 	cd $(BUILD_WORK)/xauth && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
+		--localstatedir=$(MEMO_PREFIX)/var
 	+$(MAKE) -C $(BUILD_WORK)/xauth
 	+$(MAKE) -C $(BUILD_WORK)/xauth install \
 		DESTDIR=$(BUILD_STAGE)/xauth
@@ -32,10 +32,9 @@ endif
 xauth-package: xauth-stage
 	# xauth.mk Package Structure
 	rm -rf $(BUILD_DIST)/xauth
-	mkdir -p $(BUILD_DIST)/xauth/usr/bin
 	
 	# xauth.mk Prep xauth
-	cp -a $(BUILD_STAGE)/xauth/usr/bin/xauth $(BUILD_DIST)/xauth/usr/bin
+	cp -a $(BUILD_STAGE)/xauth $(BUILD_DIST)
 	
 	# xauth.mk Sign
 	$(call SIGN,xauth,general.xml)
