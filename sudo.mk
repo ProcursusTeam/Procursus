@@ -67,7 +67,7 @@ sudo-package: sudo-stage
 
 	# sudo.mk Permissions
 	$(FAKEROOT) chmod u+s $(BUILD_DIST)/sudo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sudo
-	$(FAKEROOT) chmod -R 0440 $(BUILD_DIST)/sudo/$(MEMO_PREFIX)/etc/sudoers
+	$(FAKEROOT) chmod -R 0440 $(BUILD_DIST)/sudo/$(MEMO_PREFIX)/etc/sudoers.d
 	
 	# sudo.mk Make .debs
 	$(call PACK,sudo,DEB_SUDO_V)
