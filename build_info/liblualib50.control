@@ -2,6 +2,7 @@ Package: liblualib50
 Version: @DEB_LUA50_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Depends: liblua50 (= @DEB_LUA50_V@)
 Section: Libraries
 Priority: standard
 Description: Extension library for the Lua 5.0 programming language

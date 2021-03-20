@@ -18,6 +18,7 @@ mtr:
 else
 mtr: mtr-setup ncurses jansson
 	cd $(BUILD_WORK)/mtr && ./bootstrap.sh && ./configure \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--without-gtk \

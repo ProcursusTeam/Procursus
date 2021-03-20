@@ -18,6 +18,7 @@ cpio:
 else
 cpio: cpio-setup gettext
 	cd $(BUILD_WORK)/cpio && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr
 	+$(MAKE) -C $(BUILD_WORK)/cpio

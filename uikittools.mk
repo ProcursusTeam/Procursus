@@ -2,7 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS      += uikittools
+else # ($(MEMO_TARGET),darwin-\*)
+SUBPROJECTS        += uikittools
+endif # ($(MEMO_TARGET),darwin-\*)
 UIKITTOOLS_VERSION := 2.0.3
 DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)
 

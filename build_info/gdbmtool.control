@@ -4,7 +4,7 @@ Architecture: @DEB_ARCH@
 Version: @DEB_LIBGDBM_V@
 Depends: libreadline8 (>= 8.0), libintl8, libncursesw6
 Conflicts: libgdbm (<< @DEB_LIBGDBM_V@)
-Suggests: gdbm-l10n
+Suggests: libgdbm6-locale
 Section: Utilities
 Description: GNU dbm database routines (command line tools) 
  GNU dbm ('gdbm') is a library of database functions that use extendible

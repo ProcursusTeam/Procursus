@@ -2,7 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS += sudo
+else # ($(MEMO_TARGET),darwin-\*)
+SUBPROJECTS   += sudo
+endif # ($(MEMO_TARGET),darwin-\*)
 SUDO_VERSION  := 1.9.5p2
 DEB_SUDO_V    ?= $(SUDO_VERSION)
 
@@ -53,6 +57,7 @@ void patch_setuidandplatformize() {\
 	$(SED) -i '/%sudo/a \\n## Uncomment to allow members of group mobile to execute any command\n%mobile	ALL=(ALL) ALL' $(BUILD_WORK)/sudo/plugins/sudoers/sudoers.in
 
 	cd $(BUILD_WORK)/sudo && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--without-pam \

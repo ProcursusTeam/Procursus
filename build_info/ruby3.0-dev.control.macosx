@@ -1,0 +1,17 @@
+Package: ruby3.0-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_RUBY_V@
+Depends: libruby3.0 (= @DEB_RUBY_V@), libjemalloc-dev, libgmp-dev
+Recommends: ruby3.0-doc
+Section: Development
+Priority: optional
+Description: Header files for compiling extension modules for the Ruby 3.0
+ Ruby is the interpreted scripting language for quick and easy
+ object-oriented programming.  It has many features to process text
+ files and to do system management tasks (as in perl).  It is simple,
+ straight-forward, and extensible.
+ .
+ This package contains the header files and the mkmf library, necessary
+ to make extension library for Ruby 3.0. It is also required to build
+ many gems.

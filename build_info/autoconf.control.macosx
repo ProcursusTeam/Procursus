@@ -1,0 +1,8 @@
+Package: autoconf
+Version: @DEB_AUTOCONF_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libtool
+Section: Development
+Priority: optional
+Description: Automatic configure script builder

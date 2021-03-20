@@ -2,7 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS       += file-cmds
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+
+STRAPPROJECTS     += file-cmds
 # Don't upgrade file-cmds, as any future version includes APIs introduced in iOS 13+.
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 FILE-CMDS_VERSION := 272.250.1
@@ -59,3 +61,5 @@ file-cmds-package: file-cmds-stage
 	rm -rf $(BUILD_DIST)/file-cmds
 
 .PHONY: file-cmds file-cmds-package
+
+endif # ($(MEMO_TARGET),darwin-\*)
