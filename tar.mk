@@ -29,7 +29,7 @@ tar: tar-setup gettext
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		$(TAR_CONFIGURE_ARGS)
-		
+
 	+$(MAKE) -C $(BUILD_WORK)/tar
 	+$(MAKE) -C $(BUILD_WORK)/tar install \
 		DESTDIR=$(BUILD_STAGE)/tar
@@ -43,12 +43,13 @@ tar-package: tar-stage
 	# tar.mk Prep tar
 	cp -a $(BUILD_STAGE)/tar $(BUILD_DIST)
 ifneq ($(MEMO_SUB_PREFIX),)
-	ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/tar $(BUILD_DIST)/tar/$(MEMO_PREFIX)/bin/tar
+	mkdir -p $(BUILD_DIST)/tar/$(MEMO_PREFIX)/bin
+	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/tar $(BUILD_DIST)/tar/$(MEMO_PREFIX)/bin/tar
 endif
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 	mkdir -p $(BUILD_DIST)/tar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin
 	for bin in $(BUILD_DIST)/tar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
-		ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(echo $$bin | rev | cut -d/ -f1 | rev) $(BUILD_DIST)/tar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $$bin | rev | cut -d/ -f1 | rev | cut -c2-); \
+		ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(echo $$bin | rev | cut -d/ -f1 | rev) $(BUILD_DIST)/tar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $$bin | rev | cut -d/ -f1 | rev | cut -c2-); \
 	done
 endif
 	
