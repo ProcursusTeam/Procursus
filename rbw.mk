@@ -16,7 +16,7 @@ ifneq ($(wildcard $(BUILD_WORK)/rbw/.build_complete),)
 rbw:
 	@echo "Using previously built rbw."
 else
-rbw: rbw-setup pinentry
+rbw: rbw-setup
 	$(call DO_PATCH,rbw,rbw,-p1)
 	cd $(BUILD_WORK)/rbw && SDKROOT="$(TARGET_SYSROOT)" cargo \
 		build \
