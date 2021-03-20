@@ -1,4 +1,3 @@
-
 Package: libapt-pkg-perl
 Version: @DEB_LIBAPT-PKG-PERL_V@
 Architecture: @DEB_ARCH@
