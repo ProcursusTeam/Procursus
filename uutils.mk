@@ -91,7 +91,7 @@ endif
 	$(call SIGN,uutils,general.xml)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(LDID) -S$(BUILD_INFO)/dd.xml $(BUILD_DIST)/uutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/cat # Do a manual sign for dd and cat.
-	$(LDID) -S$(BUILD_INFO)/dd.xml $(BUILD_DIST)/uutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/cat
+	$(LDID) -S$(BUILD_INFO)/dd.xml $(BUILD_DIST)/uutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/d
 	find $(BUILD_DIST)/uutils -name '.ldid*' -type f -delete
 endif
 	
