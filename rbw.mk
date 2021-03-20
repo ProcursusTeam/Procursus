@@ -22,10 +22,10 @@ rbw: rbw-setup pinentry
 		build \
 		--release \
 		--target=$(RUST_TARGET)
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/rbw/target/$(RUST_TARGET)/release/rbw $(BUILD_STAGE)/rbw/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/rbw
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/rbw/target/$(RUST_TARGET)/release/rbw-agent $(BUILD_STAGE)/rbw/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/rbw-agent
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/rbw/bin/rbw-fzf $(BUILD_STAGE)/rbw/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/rbw-fzf
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/rbw/bin/pass-import $(BUILD_STAGE)/rbw/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/pass-import
+	$(GINSTALL) -Dm755 $(BUILD_WORK)/rbw/target/$(RUST_TARGET)/release/rbw $(BUILD_STAGE)/rbw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/rbw
+	$(GINSTALL) -Dm755 $(BUILD_WORK)/rbw/target/$(RUST_TARGET)/release/rbw-agent $(BUILD_STAGE)/rbw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/rbw-agent
+	$(GINSTALL) -Dm755 $(BUILD_WORK)/rbw/bin/rbw-fzf $(BUILD_STAGE)/rbw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/rbw-fzf
+	$(GINSTALL) -Dm755 $(BUILD_WORK)/rbw/bin/pass-import $(BUILD_STAGE)/rbw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pass-import
 
 	touch $(BUILD_WORK)/rbw/.build_complete
 endif
