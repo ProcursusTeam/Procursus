@@ -1,0 +1,7 @@
+Package: upx
+Version: @DEB_UPX_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Description: An extendable, high-performance executable packer for several executable formats

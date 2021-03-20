@@ -1,0 +1,9 @@
+Package: ucl-dev
+Version: @DEB_UCL_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: standard
+Description: Portable lossless data compression library written in ANSI C
+ .
+ This package contains the static library + development headers.
