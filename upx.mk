@@ -10,7 +10,7 @@ upx-setup: setup
 	wget -O $(BUILD_SOURCE)/upx-$(UPX_VERSION).tar.gz https://github.com/upx/upx/archive/refs/tags/v$(UPX_VERSION).tar.gz
 	wget -O $(BUILD_SOURCE)/upx-lzma-sdk-$(UPX_VERSION).tar.gz https://github.com/upx/upx-lzma-sdk/archive/refs/tags/v$(UPX_VERSION).tar.gz
 	$(call EXTRACT_TAR,upx-$(UPX_VERSION).tar.gz,upx-$(UPX_VERSION),upx)
-	rm -r $(BUILD_WORK)/upx/src/lzma-sdk
+	rm -rf $(BUILD_WORK)/upx/src/lzma-sdk
 	$(call EXTRACT_TAR,upx-lzma-sdk-$(UPX_VERSION).tar.gz,upx-lzma-sdk-$(UPX_VERSION),upx/src/lzma-sdk/)
 
 
