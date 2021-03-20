@@ -4,8 +4,11 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS += sudo
+SUDO_CONFIGURE_ARGS += --without-pam \
+ac_cv_search_crypt="-lcrypt"
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += sudo
+SUDO_CONFIGURE_ARGS += --with-pam
 endif # ($(MEMO_TARGET),darwin-\*)
 SUDO_VERSION  := 1.9.6p1
 DEB_SUDO_V    ?= $(SUDO_VERSION)
@@ -21,11 +24,8 @@ sudo:
 else
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 sudo: sudo-setup gettext libxcrypt
-SUDO_CONFIGURE_ARGS += --without-pam \
-ac_cv_search_crypt="-lcrypt"
 else # (,$(findstring darwin,$(MEMO_TARGET)))
 sudo: sudo-setup gettext
-SUDO_CONFIGURE_ARGS += --with-pam
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 		$(SED) -i '/#include "sudo_plugin_int.h"/a #include <dlfcn.h>\
 \/* Set platform binary flag *\/\
