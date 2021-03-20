@@ -20,6 +20,7 @@ ucl: ucl-setup
 	# autoconf workaround
 	echo "echo $(GNU_HOST_TRIPLE)" > $(BUILD_WORK)/ucl/acconfig/config.sub
 
+	# I can't seem to get dynamic linking working while cross compiling for some reason, so static will do.
 	cd $(BUILD_WORK)/ucl && ./configure \
 		--disable-debug \
 		--disable-dependency-tracking \
