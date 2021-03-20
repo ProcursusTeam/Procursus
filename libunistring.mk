@@ -10,14 +10,13 @@ libunistring-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/libunistring/libunistring-$(UNISTRING_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,libunistring-$(UNISTRING_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libunistring-$(UNISTRING_VERSION).tar.gz,libunistring-$(UNISTRING_VERSION),libunistring)
-
+	cp -f $(BUILD_MISC)/{config.guess,config.sub} $(BUILD_WORK)/libunistring/build-aux
 ifneq ($(wildcard $(BUILD_WORK)/libunistring/.build_complete),)
 libunistring:
 	@echo "Using previously built libunistring."
 else
 libunistring: libunistring-setup
 	cd $(BUILD_WORK)/libunistring && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libunistring
