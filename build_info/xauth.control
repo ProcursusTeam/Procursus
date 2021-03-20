@@ -1,0 +1,8 @@
+Package: xauth
+Version: @DEB_XAUTH_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libxau6, libxmuu1, libxext6, libx11-6
+Section: Utilites
+Priority: optional
+Description: X authentication utility
