@@ -18,10 +18,6 @@ ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
 OPENSSH_CONFIGURE_ARGS += ac_cv_func_strtonum=no
 endif
 
-ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-OPENSSH_CONFIGURE_ARGS += --program-prefix=$(GNU_PREFIX)
-endif
-
 openssh-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$(OPENSSH_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,openssh-$(OPENSSH_VERSION).tar.gz,asc)
