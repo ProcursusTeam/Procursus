@@ -4,10 +4,13 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS += sudo
+SUDO_CONFIGURE_ARGS += --without-pam \
+ac_cv_search_crypt="-lcrypt"
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += sudo
+SUDO_CONFIGURE_ARGS += --with-pam
 endif # ($(MEMO_TARGET),darwin-\*)
-SUDO_VERSION  := 1.9.5p2
+SUDO_VERSION  := 1.9.6p1
 DEB_SUDO_V    ?= $(SUDO_VERSION)
 
 sudo-setup: setup
@@ -35,7 +38,6 @@ endif
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--localstatedir=$(MEMO_PREFIX)/var \
 		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--without-pam \
 		--enable-static-sudoers \
 		--with-all-insults \
 		--with-env-editor \
@@ -44,14 +46,14 @@ endif
 		--with-password-timeout=0 \
 		--with-passprompt="[sudo] password for %p: " \
 		sudo_cv___func__=yes \
-		ac_cv_search_crypt="-lcrypt"
+		$(SUDO_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/sudo
 	+$(MAKE) -C $(BUILD_WORK)/sudo install \
 		DESTDIR=$(BUILD_STAGE)/sudo \
 		INSTALL_OWNER=''
 	cp -a $(BUILD_MISC)/procursus.sudoers $(BUILD_STAGE)/sudo/$(MEMO_PREFIX)/etc/sudoers.d/procursus
 	touch $(BUILD_WORK)/sudo/.build_complete
-endif
+endif 
 
 sudo-package: sudo-stage
 	# sudo.mk Package Structure
