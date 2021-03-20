@@ -16,8 +16,9 @@ pzb:
 else
 pzb: pzb-setup libfragmentzip
 	cd $(BUILD_WORK)/pzb && ./autogen.sh \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/pzb
 	+$(MAKE) -C $(BUILD_WORK)/pzb install \
 		DESTDIR="$(BUILD_STAGE)/pzb"
@@ -27,10 +28,9 @@ endif
 pzb-package: pzb-stage
 	# pzb.mk Package Structure
 	rm -rf $(BUILD_DIST)/pzb
-	mkdir -p $(BUILD_DIST)/pzb
 	
 	# pzb.mk Prep pzb
-	cp -a $(BUILD_STAGE)/pzb/usr $(BUILD_DIST)/pzb
+	cp -a $(BUILD_STAGE)/pzb $(BUILD_DIST)
 	
 	# pzb.mk Sign
 	$(call SIGN,pzb,general.xml)

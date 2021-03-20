@@ -16,6 +16,7 @@ libcaca:
 else
 libcaca: libcaca-setup imlib2 slang2 ncurses
 	cd $(BUILD_WORK)/libcaca && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--enable-plugins \

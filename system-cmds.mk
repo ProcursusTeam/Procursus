@@ -6,9 +6,8 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS       += system-cmds
 SYSTEM-CMDS_VERSION := 854.40.2
-PWDARWIN_COMMIT     := 3d448bd27f5948510a4e347c9c727ca7351db4ce
-GETENTDARWIN_COMMIT := 1ad0e39ee51181ea6c13b3d1d4e9c6005ee35b5e
-DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-2
+PWDARWIN_COMMIT     := a477b5619a23ec06af401df48724cc6ec49d9f76
+DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-5
 
 system-cmds-setup: setup libxcrypt
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/system_cmds/system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz
@@ -44,10 +43,6 @@ system-cmds-setup: setup libxcrypt
 		&& wget -q -nc -O$(BUILD_SOURCE)/pw-darwin-$(PWDARWIN_COMMIT).tar.gz \
 			https://github.com/CRKatri/pw-darwin/archive/$(PWDARWIN_COMMIT).tar.gz
 	$(call EXTRACT_TAR,pw-darwin-$(PWDARWIN_COMMIT).tar.gz,pw-darwin-$(PWDARWIN_COMMIT),system-cmds/pw-darwin)
-	-[ ! -e "$(BUILD_SOURCE)/getent-darwin-$(GETENTDARWIN_COMMIT).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/getent-darwin-$(GETENTDARWIN_COMMIT).tar.gz \
-			https://github.com/CRKatri/getent-darwin/archive/$(GETENTDARWIN_COMMIT).tar.gz
-	$(call EXTRACT_TAR,getent-darwin-$(GETENTDARWIN_COMMIT).tar.gz,getent-darwin-$(GETENTDARWIN_COMMIT),system-cmds/getent-darwin)
 
 ifneq ($(wildcard $(BUILD_WORK)/system-cmds/.build_complete),)
 system-cmds:
@@ -97,8 +92,6 @@ system-cmds: system-cmds-setup
 	$(LN) -sf chpass.1.zst $(BUILD_STAGE)/system-cmds/usr/share/man/man1/chfn.1.zst
 	$(LN) -sf chpass.1.zst $(BUILD_STAGE)/system-cmds/usr/share/man/man1/chsh.1.zst
 	+$(MAKE) -C $(BUILD_WORK)/system-cmds/pw-darwin install \
-		DESTDIR="$(BUILD_STAGE)/system-cmds/"
-	+$(MAKE) -C $(BUILD_WORK)/system-cmds/getent-darwin install \
 		DESTDIR="$(BUILD_STAGE)/system-cmds/"
 	touch $(BUILD_WORK)/system-cmds/.build_complete
 endif

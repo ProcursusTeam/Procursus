@@ -16,8 +16,9 @@ lzop:
 else
 lzop: lzop-setup liblzo2
 	cd $(BUILD_WORK)/lzop && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/lzop
 	+$(MAKE) -C $(BUILD_WORK)/lzop install \
@@ -28,10 +29,9 @@ endif
 lzop-package: lzop-stage
 	# lzop.mk Package Structure
 	rm -rf $(BUILD_DIST)/lzop
-	mkdir -p $(BUILD_DIST)/lzop
 	
 	# lzop.mk Prep lzop
-	cp -a $(BUILD_STAGE)/lzop/usr $(BUILD_DIST)/lzop
+	cp -a $(BUILD_STAGE)/lzop $(BUILD_DIST)
 	
 	# lzop.mk Sign
 	$(call SIGN,lzop,general.xml)

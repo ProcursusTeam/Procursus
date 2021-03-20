@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = install ] || [ "$1" = upgrade ]
+    then
+    dpkg-divert --package libtest-harness-perl --add --rename \
+	--divert @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/prove.diverted @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/prove
+fi
+

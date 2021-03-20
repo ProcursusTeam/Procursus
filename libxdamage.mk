@@ -17,6 +17,7 @@ libxdamage:
 else
 libxdamage: libxdamage-setup xorgproto libx11 libxfixes
 	cd $(BUILD_WORK)/libxdamage && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
 		--sysconfdir=/etc \

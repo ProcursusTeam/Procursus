@@ -1,0 +1,14 @@
+diff -urN dpkg-1.20.0/lib/dpkg/i18n.c dpkg/lib/dpkg/i18n.c
+--- dpkg-1.20.0/lib/dpkg/i18n.c	2020-01-17 18:07:01.000000000 -0500
++++ dpkg/lib/dpkg/i18n.c	2020-06-09 01:42:14.321741090 -0400
+@@ -22,6 +22,10 @@
+ #include <compat.h>
+ 
+ #include <dpkg/i18n.h>
++#ifdef __APPLE__ 
++#include <string.h> 
++#include <xlocale.h> 
++#endif
+ 
+ #ifdef HAVE_USELOCALE
+ static locale_t dpkg_C_locale;
