@@ -3,5 +3,5 @@ Version: @DEB_XAUTH_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: libxau6, libxmuu1, libxext6, libx11-6
-Section: Utilities
+Section: X11
 Description: X authentication utility
