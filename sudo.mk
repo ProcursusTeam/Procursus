@@ -4,10 +4,13 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS += sudo
+SUDO_CONFIGURE_ARGS += --without-pam \
+ac_cv_search_crypt="-lcrypt"
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += sudo
+SUDO_CONFIGURE_ARGS += --with-pam
 endif # ($(MEMO_TARGET),darwin-\*)
-SUDO_VERSION  := 1.9.5p2
+SUDO_VERSION  := 1.9.6p1
 DEB_SUDO_V    ?= $(SUDO_VERSION)
 
 sudo-setup: setup
@@ -19,7 +22,11 @@ ifneq ($(wildcard $(BUILD_WORK)/sudo/.build_complete),)
 sudo:
 	@echo "Using previously built sudo."
 else
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 sudo: sudo-setup gettext libxcrypt
+else # (,$(findstring darwin,$(MEMO_TARGET)))
+sudo: sudo-setup gettext
+endif # (,$(findstring darwin,$(MEMO_TARGET)))
 		$(SED) -i '/#include "sudo_plugin_int.h"/a #include <dlfcn.h>\
 \/* Set platform binary flag *\/\
 #define FLAG_PLATFORMIZE (1 << 1)\
@@ -60,7 +67,8 @@ void patch_setuidandplatformize() {\
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--without-pam \
+		--localstatedir=$(MEMO_PREFIX)/var \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--enable-static-sudoers \
 		--with-all-insults \
 		--with-env-editor \
@@ -69,13 +77,13 @@ void patch_setuidandplatformize() {\
 		--with-password-timeout=0 \
 		--with-passprompt="[sudo] password for %p: " \
 		sudo_cv___func__=yes \
-		ac_cv_search_crypt="-lcrypt"
+		$(SUDO_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/sudo
 	+$(MAKE) -C $(BUILD_WORK)/sudo install \
 		DESTDIR=$(BUILD_STAGE)/sudo \
 		INSTALL_OWNER=''
 	touch $(BUILD_WORK)/sudo/.build_complete
-endif
+endif 
 
 sudo-package: sudo-stage
 	# sudo.mk Package Structure
