@@ -40,4 +40,4 @@ axel-package: axel-stage
 	# axel.mk Build cleanup
 	rm -rf $(BUILD_DIST)/axel
 
-	.PHONY: axel axel-package
+.PHONY: axel axel-package
