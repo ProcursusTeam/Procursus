@@ -32,8 +32,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 OPENSSH_SETUP_ARGS += $(call DO_PATCH,openssh,openssh,-p1)
 openssh: openssh-setup openssl libxcrypt
 else # (,$(findstring darwin,$(MEMO_TARGET)))
-OPENSSH_CONFIGURE_ARGS += --with-pam \
---with-keychain=apple
+OPENSSH_CONFIGURE_ARGS += --with-keychain=apple
 openssh: openssh-setup openssl
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	if ! [ -f $(BUILD_WORK)/openssh/configure ]; then \
@@ -45,6 +44,7 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--sysconfdir=$(MEMO_PREFIX)/etc/ssh \
+		--with-pam \
 		check_for_libcrypt_before=1 \
 		$(OPENSSH_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/openssh
