@@ -37,10 +37,10 @@ endif
 pinentry-package: pinentry-stage
 	# pinentry.mk Package Structure
 	rm -rf $(BUILD_DIST)/pinentry
-	mkdir -p $(BUILD_DIST)/pinentry
+	mkdir -p $(BUILD_DIST)/pinentry/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# pinentry.mk Prep pinentry
-	cp -a $(BUILD_STAGE)/pinentry/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/pinentry
+	cp -a $(BUILD_STAGE)/pinentry/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/pinentry$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# pinentry.mk Sign
 	$(call SIGN,pinentry,general.xml)
