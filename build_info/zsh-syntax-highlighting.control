@@ -1,6 +1,6 @@
 Package: zsh-syntax-highlighting
 Version: @DEB_ZSH-SYNTAX-HIGHLIGHTING_V@
-Architecture: @DEB_ARCH@
+Architecture: all
 Maintainer: @DEB_MAINTAINER@
 Depends: zsh
 Enhances: zsh

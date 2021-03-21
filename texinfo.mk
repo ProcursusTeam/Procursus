@@ -17,8 +17,9 @@ texinfo:
 else
 texinfo: texinfo-setup
 	cd $(BUILD_WORK)/texinfo && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-debug \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/texinfo
@@ -30,10 +31,9 @@ endif
 texinfo-package: texinfo-stage
 	# texinfo.mk Package Structure
 	rm -rf $(BUILD_DIST)/texinfo
-	mkdir -p $(BUILD_DIST)/texinfo
 	
 	# texinfo.mk Prep texinfo
-	cp -a $(BUILD_STAGE)/texinfo/usr $(BUILD_DIST)/texinfo
+	cp -a $(BUILD_STAGE)/texinfo $(BUILD_DIST)
 	
 	# texinfo.mk Sign
 	$(call SIGN,texinfo,general.xml)

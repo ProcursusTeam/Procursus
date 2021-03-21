@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += sshpass
-SSHPASS_VERSION := 1.06
+SSHPASS_VERSION := 1.09
 DEB_SSHPASS_V   ?= $(SSHPASS_VERSION)
 
 sshpass-setup: setup
@@ -16,8 +16,9 @@ sshpass:
 else
 sshpass: sshpass-setup
 	cd $(BUILD_WORK)/sshpass && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		ac_cv_func_malloc_0_nonnull=yes
 	+$(MAKE) -C $(BUILD_WORK)/sshpass
 	+$(MAKE) -C $(BUILD_WORK)/sshpass install \
@@ -28,7 +29,6 @@ endif
 sshpass-package: sshpass-stage
 	# sshpass.mk Package Structure
 	rm -rf $(BUILD_DIST)/sshpass
-	mkdir -p $(BUILD_DIST)/sshpass
 	
 	# sshpass.mk Prep sshpass
 	cp -a $(BUILD_STAGE)/sshpass $(BUILD_DIST)

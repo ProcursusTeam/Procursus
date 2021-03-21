@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += tar
-TAR_VERSION   := 1.33
-DEB_TAR_V     ?= $(TAR_VERSION)-1
+TAR_VERSION   := 1.34
+DEB_TAR_V     ?= $(TAR_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 TAR_CONFIGURE_ARGS += ac_cv_func_rpmatch=no
@@ -25,10 +25,11 @@ tar:
 else
 tar: tar-setup gettext
 	cd $(BUILD_WORK)/tar && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		$(TAR_CONFIGURE_ARGS)
-		
+
 	+$(MAKE) -C $(BUILD_WORK)/tar
 	+$(MAKE) -C $(BUILD_WORK)/tar install \
 		DESTDIR=$(BUILD_STAGE)/tar
@@ -42,12 +43,13 @@ tar-package: tar-stage
 	# tar.mk Prep tar
 	cp -a $(BUILD_STAGE)/tar $(BUILD_DIST)
 ifneq ($(MEMO_SUB_PREFIX),)
-	ln -s /$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/tar $(BUILD_DIST)/tar/$(MEMO_PREFIX)/bin/tar
+	mkdir -p $(BUILD_DIST)/tar/$(MEMO_PREFIX)/bin
+	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/tar $(BUILD_DIST)/tar/$(MEMO_PREFIX)/bin/tar
 endif
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-	mkdir -p $(BUILD_DIST)/tar/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/gnubin
-	for bin in $(BUILD_DIST)/tar/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/*; do \
-		ln -s /$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/$$(echo $$bin | rev | cut -d/ -f1 | rev) $(BUILD_DIST)/tar/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $$bin | rev | cut -d/ -f1 | rev | cut -c2-); \
+	mkdir -p $(BUILD_DIST)/tar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin
+	for bin in $(BUILD_DIST)/tar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
+		ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(echo $$bin | rev | cut -d/ -f1 | rev) $(BUILD_DIST)/tar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $$bin | rev | cut -d/ -f1 | rev | cut -c2-); \
 	done
 endif
 	
