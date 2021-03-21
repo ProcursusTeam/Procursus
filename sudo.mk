@@ -7,6 +7,7 @@ STRAPPROJECTS += sudo
 SUDO_CONFIGURE_ARGS += ac_cv_search_crypt="-lcrypt"
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += sudo
+SUDO_CONFIGURE_ARGS += --with-pam
 endif # ($(MEMO_TARGET),darwin-\*)
 SUDO_VERSION  := 1.9.6p1
 DEB_SUDO_V    ?= $(SUDO_VERSION)

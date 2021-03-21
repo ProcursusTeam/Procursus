@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += calc
-CALC_VERSION := 2.12.7.2
+CALC_VERSION := 2.12.8.1
 DEB_CALC_V   ?= $(CALC_VERSION)
 
 calc-setup: setup
@@ -21,17 +21,17 @@ calc: calc-setup ncurses readline
 	+$(MAKE) -C $(BUILD_WORK)/calc install \
 		LCC=clang \
 		CC=$(CC) \
-		CFLAGS="$(CFLAGS) -DCALC_SRC -DCUSTOMHELPDIR=\"\\\"/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/calc/custhelp\\\"\" -DHELPDIR=\"\\\"/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/calc/help\\\"\" -DDEFAULTCALCPATH=\"\\\".:./cal:~/.cal:/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/calc:/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/calc/custom\\\"\" -I$(BUILD_WORK)" \
+		CFLAGS="$(CFLAGS) -DCALC_SRC -DCUSTOMHELPDIR=\"\\\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/calc/custhelp\\\"\" -DHELPDIR=\"\\\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/calc/help\\\"\" -DDEFAULTCALCPATH=\"\\\".:./cal:~/.cal:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/calc:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/calc/custom\\\"\" -I$(BUILD_WORK)" \
 		LDFLAGS="$(LDFLAGS)" \
 		target="Darwin" \
-		BINDIR="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin" \
-		LIBDIR="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
-		INCDIR="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
-		CALC_SHAREDIR="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/calc" \
+		BINDIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin" \
+		LIBDIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
+		INCDIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
+		CALC_SHAREDIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/calc" \
 		CALCPAGER="pager" \
 		USE_READLINE="-DUSE_READLINE" \
 		READLINE_LIB="-lreadline" \
-		READLINE_EXTRAS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -lhistory -lncursesw" \
+		READLINE_EXTRAS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -lncursesw" \
 		BLD_TYPE="calc-static-only" \
 		T="$(BUILD_STAGE)/calc" \
 		-j1
