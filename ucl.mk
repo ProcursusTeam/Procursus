@@ -21,7 +21,9 @@ ucl: ucl-setup
 	cd $(BUILD_WORK)/ucl && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--disable-dependency-tracking
+		--disable-dependency-tracking \
+		--enable-shared \
+		--enable-static
 	+$(MAKE) -C $(BUILD_WORK)/ucl all
 	+$(MAKE) -C $(BUILD_WORK)/ucl install \
 		DESTDIR=$(BUILD_STAGE)/ucl
@@ -32,24 +34,24 @@ endif
 
 ucl-package: ucl-stage
 	# ucl.mk Package Structure
-	rm -rf $(BUILD_DIST)/ucl{1,-dev}
-	mkdir -p $(BUILD_DIST)/ucl{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	rm -rf $(BUILD_DIST)/libucl{1,-dev}
+	mkdir -p $(BUILD_DIST)/libucl{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# ucl.mk Prep libucl1
 	cp -a $(BUILD_STAGE)/ucl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libucl.1.dylib $(BUILD_DIST)/libucl1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# ucl.mk Prep ucl-dev
-	cp -a $(BUILD_STAGE)/ucl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/!(libucl.1.dylib) $(BUILD_DIST)/ucl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/ucl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/ucl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/ucl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libucl.1.dylib) $(BUILD_DIST)/libucl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/ucl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libucl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# ucl.mk Sign
-	$(call SIGN,ucl1,general.xml)
+	$(call SIGN,libucl1,general.xml)
 	
 	# ucl.mk Make .debs
 	$(call PACK,libucl1,DEB_UCL_V)
-	$(call PACK,ucl-dev,DEB_UCL_V)
+	$(call PACK,libucl-dev,DEB_UCL_V)
 	
 	# ucl.mk Build cleanup
-	rm -rf $(BUILD_DIST)/ucl{1,-dev}
+	rm -rf $(BUILD_DIST)/libucl{1,-dev}
 
 .PHONY: ucl ucl-package
