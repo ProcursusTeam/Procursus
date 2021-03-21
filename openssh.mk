@@ -32,7 +32,8 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 OPENSSH_SETUP_ARGS += $(call DO_PATCH,openssh,openssh,-p1)
 openssh: openssh-setup openssl libxcrypt
 else # (,$(findstring darwin,$(MEMO_TARGET)))
-OPENSSH_CONFIGURE_ARGS += --with-pam
+OPENSSH_CONFIGURE_ARGS += --with-pam \
+--with-keychain=apple
 openssh: openssh-setup openssl
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	if ! [ -f $(BUILD_WORK)/openssh/configure ]; then \
@@ -49,8 +50,8 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	+$(MAKE) -C $(BUILD_WORK)/openssh
 	+$(MAKE) -C $(BUILD_WORK)/openssh install \
 		DESTDIR="$(BUILD_STAGE)/openssh"
-	mkdir -p $(BUILD_STAGE)/openssh/Library/LaunchDaemons
-	cp $(BUILD_INFO)/com.openssh.sshd.plist $(BUILD_STAGE)/openssh/Library/LaunchDaemons
+	mkdir -p $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/Library/LaunchDaemons
+	cp $(BUILD_INFO)/com.openssh.sshd.plist $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/Library/LaunchDaemons
 	cp $(BUILD_INFO)/sshd-keygen-wrapper $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
 	cp $(BUILD_WORK)/openssh/contrib/ssh-copy-id $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	chmod 0755 $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ssh-copy-id
@@ -75,7 +76,7 @@ openssh-package: openssh-stage
 	
 	# openssh.mk Prep openssh-server
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/etc/ssh/{moduli,sshd_config} $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)/etc/ssh
-	cp -a $(BUILD_STAGE)/openssh/Library $(BUILD_DIST)/openssh-server/
+	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/Library $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)/Library
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/sshd-keygen-wrapper $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5/{moduli.5,sshd_config.5} $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5
