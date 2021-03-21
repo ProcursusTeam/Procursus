@@ -2,7 +2,7 @@ Package: libpam2
 Version: @DEB_OPENPAM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: pam-modules
+Depends: libpam-modules
 Section: Administration
 Description: Pluggable Authentication Modules library
  Contains the shared library for OpenPAM, a library that enables the
