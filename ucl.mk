@@ -9,6 +9,7 @@ DEB_UCL_V   ?= $(UCL_VERSION)
 ucl-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.oberhumer.com/opensource/ucl/download/ucl-$(UCL_VERSION).tar.gz
 	$(call EXTRACT_TAR,ucl-$(UCL_VERSION).tar.gz,ucl-$(UCL_VERSION),ucl)
+	$(call DO_PATCH,ucl,ucl,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/ucl/.build_complete),)
 ucl:
@@ -16,19 +17,11 @@ ucl:
 else
 PATH := $(BUILD_WORK)/ucl/workaround:$(PATH)
 ucl: ucl-setup
-
-	# autoconf workaround
-	echo "echo $(GNU_HOST_TRIPLE)" > $(BUILD_WORK)/ucl/acconfig/config.sub
-
-	# I can't seem to get dynamic linking working while cross compiling for some reason, so static will do.
+	cd $(BUILD_WORK)/ucl && autoreconf -fi
 	cd $(BUILD_WORK)/ucl && ./configure \
-		--disable-debug \
-		--disable-dependency-tracking \
-		--disable-shared \
-		--enable-static \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
-		--host=$(GNU_HOST_TRIPLE)
-		
+		--host=$(GNU_HOST_TRIPLE) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/ucl all
 	+$(MAKE) -C $(BUILD_WORK)/ucl install \
 		DESTDIR=$(BUILD_STAGE)/ucl
@@ -40,20 +33,20 @@ endif
 ucl-package: ucl-stage
 	# ucl.mk Package Structure
 	rm -rf $(BUILD_DIST)/ucl{1,-dev}
-	mkdir -p $(BUILD_DIST)/ucl{1,-dev}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/ucl{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
-	# ucl.mk Prep ucl1
-	# cp -a $(BUILD_STAGE)/ucl/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libucl.a $(BUILD_DIST)/ucl1/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
+	# ucl.mk Prep libucl1
+	cp -a $(BUILD_STAGE)/ucl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libucl.1.dylib $(BUILD_DIST)/libucl1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# ucl.mk Prep ucl-dev
-	cp -a $(BUILD_STAGE)/ucl/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libucl.a $(BUILD_DIST)/ucl-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/ucl/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/ucl-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/ucl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/!(libucl.1.dylib) $(BUILD_DIST)/ucl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/ucl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/ucl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# ucl.mk Sign
 	$(call SIGN,ucl1,general.xml)
 	
 	# ucl.mk Make .debs
-	# $(call PACK,ucl1,DEB_UCL_V)
+	$(call PACK,libucl1,DEB_UCL_V)
 	$(call PACK,ucl-dev,DEB_UCL_V)
 	
 	# ucl.mk Build cleanup
