@@ -712,7 +712,8 @@ setup:
 	wget -q -nc -P $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include \
 		https://opensource.apple.com/source/xnu/xnu-6153.61.1/libsyscall/wrappers/spawn/spawn.h \
 		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/bootstrap_priv.h \
-		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/vproc_priv.h
+		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/vproc_priv.h \
+		https://opensource.apple.com/source/Libinfo/Libinfo-542.40.3/membership.subproj/membershipPriv.h
 
 	wget -q -nc -P $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/machine \
 		https://opensource.apple.com/source/xnu/xnu-6153.81.5/osfmk/mach/machine/thread_state.h
