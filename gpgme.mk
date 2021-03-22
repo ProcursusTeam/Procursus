@@ -33,7 +33,7 @@ endif
 gpgme-package: gpgme-stage
 	# gpgme.mk Package Structure
 	rm -rf $(BUILD_DIST)/libgpgme{11,-dev,pp6,pp-dev}
-	mkdir -p $(BUILD_DIST)/libgpgme11$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+	mkdir -p $(BUILD_DIST)/libgpgme11/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 			$(BUILD_DIST)/libgpgme-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include} \
 			$(BUILD_DIST)/libgpgmepp6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 			$(BUILD_DIST)/libgpgmepp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include}

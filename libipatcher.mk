@@ -35,9 +35,9 @@ libipatcher: libipatcher-setup libpng16 openssl img4tool liboffsetfinder64 libge
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpwn" \
-		CPPFLAGS="$(CPPFLAGS) -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpwn" \
-		LDFLAGS="$(LDFLAGS) -L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xpwn"
+		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpwn" \
+		CPPFLAGS="$(CPPFLAGS) -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpwn" \
+		LDFLAGS="$(LDFLAGS) -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xpwn"
 	+$(MAKE) -C $(BUILD_WORK)/libipatcher \
 		LIBS="-lcurl"
 	+$(MAKE) -C $(BUILD_WORK)/libipatcher install \
