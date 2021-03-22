@@ -62,11 +62,12 @@ openssh-package: openssh-stage
 	# openssh.mk Package Structure
 	rm -rf $(BUILD_DIST)/openssh{,-sftp-server,-server,-client}
 	mkdir -p $(BUILD_DIST)/openssh \
-		$(BUILD_DIST)/openssh-client/{var/empty,$(MEMO_PREFIX)/etc/ssh,$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{libexec,share/man/{man1,man5,man8}}} \
+		$(BUILD_DIST)/openssh-client/{$(MEMO_PREFIX)/var/empty,$(MEMO_PREFIX)/etc/ssh,$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{libexec,share/man/{man1,man5,man8}}} \
 		$(BUILD_DIST)/openssh-server/{$(MEMO_PREFIX)/etc/ssh,$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{libexec,share/man/{man5,man8}}} \
 		$(BUILD_DIST)/openssh-sftp-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{libexec,/share/man/man8}
 	
 	# openssh.mk Prep openssh-client
+	cp -a $(BUILD_STAGE)/openssh/var/empty $(BUILD_DIST)/openssh-client/$(MEMO_PREFIX)/var
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/etc/ssh/ssh_config $(BUILD_DIST)/openssh-client/$(MEMO_PREFIX)/etc/ssh
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/openssh-client/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/{ssh-keysign,ssh-pkcs11-helper,ssh-sk-helper} $(BUILD_DIST)/openssh-client/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
