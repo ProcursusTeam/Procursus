@@ -16,7 +16,7 @@ In the iOS jailbreak scene, it also attempts to address an odd fragmentation pro
 * **First main jailbreak repository ever** to be fully functional with any one of the main four package managers out of the box, allowing you to remove the default.
 * Includes an Obj-C implementation of the traditional firmware.sh that's not only quicker, but also creates a package for cpu subtype. (cy.cpu.arm64e, for example)
 * Uses GNU tools.
-* Updating most packages is as simple as changing the version number in it's .mk file and recompiling.
+* Updating most packages is as simple as changing the version number in its .mk file and recompiling.
 
 ## Building
 
@@ -64,6 +64,7 @@ brew install make bash wget gnu-tar gnu-sed gnupg ldid cmake automake groff gpat
 | `make everything`                      | Compiles the entire Procursus suite for every supported host platform and packs it into debian packages.           |
 | `make clean`                           | Clean out $(BUILD_STAGE), $(BUILD_BASE), and $(BUILD_WORK).                                                        |
 | `make extreme-clean`                   | Resets the entire git repository.                                                                                  |
+| `make env`                             | Print the `proenv` shell function to STDOUT to give a cross-compilation environment in your POSIX shell (`make env >> ~/.zshrc`) |
 
 There are very few variables you'll need to pay attention to/change to get building working well.
 

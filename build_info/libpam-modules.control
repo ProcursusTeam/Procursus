@@ -1,0 +1,9 @@
+Package: libpam-modules
+Version: @DEB_PAM-MODULES_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libpam2
+Section: Administration
+Description: Pluggable Authentication Modules for PAM
+ This package completes the set of modules for PAM. It includes the
+  pam_unix.so module as well as some specialty modules.

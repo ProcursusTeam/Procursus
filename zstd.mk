@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += zstd
-ZSTD_VERSION  := 1.4.7
+ZSTD_VERSION  := 1.4.9
 DEB_ZSTD_V    ?= $(ZSTD_VERSION)
 
 zstd-setup: setup

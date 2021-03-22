@@ -7,15 +7,15 @@ FUTURERESTORE_VERSION := 195
 DEB_FUTURERESTORE_V   ?= $(FUTURERESTORE_VERSION)
 
 FUTURERESTORE_COMMIT  := 55db758b5d4d6c08daa48af9aad1abf2b6466f36
-IDEVICERESTORE_COMMIT := d7d9996b3910902a56462fa8d9dc5909fcf8f4c9
+FUTURERESTORE_IDEVICERESTORE_COMMIT := d7d9996b3910902a56462fa8d9dc5909fcf8f4c9
 
 futurerestore-setup: setup tsschecker-setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/marijuanARM/futurerestore/archive/$(FUTURERESTORE_COMMIT).tar.gz
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/marijuanARM/idevicerestore/archive/$(IDEVICERESTORE_COMMIT).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/marijuanARM/idevicerestore/archive/$(FUTURERESTORE_IDEVICERESTORE_COMMIT).tar.gz
 	$(call EXTRACT_TAR,$(FUTURERESTORE_COMMIT).tar.gz,futurerestore-$(FUTURERESTORE_COMMIT),futurerestore)
 	
 	-rmdir $(BUILD_WORK)/futurerestore/external/{idevicerestore,tsschecker}
-	$(call EXTRACT_TAR,$(IDEVICERESTORE_COMMIT).tar.gz,idevicerestore-$(IDEVICERESTORE_COMMIT),futurerestore/external/idevicerestore)
+	$(call EXTRACT_TAR,$(FUTURERESTORE_IDEVICERESTORE_COMMIT).tar.gz,idevicerestore-$(FUTURERESTORE_IDEVICERESTORE_COMMIT),futurerestore/external/idevicerestore)
 	cp -R $(BUILD_WORK)/tsschecker $(BUILD_WORK)/futurerestore/external
 
 ifneq ($(wildcard $(BUILD_WORK)/futurerestore/.build_complete),)
@@ -26,7 +26,10 @@ futurerestore: futurerestore-setup libirecovery openssl libusbmuxd libimobiledev
 	cd $(BUILD_WORK)/futurerestore && ./autogen.sh \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--disable-silent-rules \
+		zlib_LIBS="-L$(TARGET_SYSROOT)/usr/lib -lz" \
+		zlib_CFLAGS="-I$(TARGET_SYSROOT)/usr/include"
 	+$(MAKE) -C $(BUILD_WORK)/futurerestore
 	+$(MAKE) -C $(BUILD_WORK)/futurerestore install \
 		DESTDIR="$(BUILD_STAGE)/futurerestore"

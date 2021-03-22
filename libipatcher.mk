@@ -38,7 +38,8 @@ libipatcher: libipatcher-setup libpng16 openssl img4tool liboffsetfinder64 libge
 		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpwn" \
 		CPPFLAGS="$(CPPFLAGS) -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpwn" \
 		LDFLAGS="$(LDFLAGS) -L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xpwn"
-	+$(MAKE) -C $(BUILD_WORK)/libipatcher
+	+$(MAKE) -C $(BUILD_WORK)/libipatcher \
+		LIBS="-lcurl"
 	+$(MAKE) -C $(BUILD_WORK)/libipatcher install \
 		DESTDIR="$(BUILD_STAGE)/libipatcher"
 	+$(MAKE) -C $(BUILD_WORK)/libipatcher install \

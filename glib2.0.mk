@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS     += glib2.0
 GLIB2.0_MAJOR_V := 2.67
-GLIB2.0_VERSION := $(GLIB2.0_MAJOR_V).5
+GLIB2.0_VERSION := $(GLIB2.0_MAJOR_V).6
 DEB_GLIB2.0_V   ?= $(GLIB2.0_VERSION)
 
 glib2.0-setup: setup
@@ -20,7 +20,7 @@ glib2.0-setup: setup
 	[properties]\n \
 	root = '$(BUILD_BASE)'\n \
 	[paths]\n \
-	prefix ='/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
+	prefix ='$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
 	[binaries]\n \
 	c = '$(CC)'\n \
 	objc = '$(CC)'\n \
