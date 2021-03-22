@@ -18,6 +18,7 @@ openpam-setup: setup
 
 ###
 # For some reason here, libSystem's crypt() really likes being dominant. Static link to fix the issue!
+# TODO: Add pam_sm_chauthtok() to pam_unix.so
 ###
 
 ifneq ($(wildcard $(BUILD_WORK)/openpam/.build_complete),)

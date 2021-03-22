@@ -21,7 +21,7 @@ else
 pam-modules: pam-modules-setup openpam
 	set -e; \
 	cd $(BUILD_WORK)/pam-modules/modules; \
-	for module in group launchd rootok sacl self uwtmp; do \
+	for module in group launchd nologin rootok sacl self uwtmp; do \
 		echo $${module}; \
 		$(CC) $(CFLAGS) -bundle -o pam_$${module}.so pam_$${module}/*.c $(LDFLAGS) -lpam || true; \
 		cp -a pam_$${module}.so $(BUILD_STAGE)/pam-modules/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pam; \

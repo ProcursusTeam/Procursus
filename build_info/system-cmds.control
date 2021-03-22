@@ -3,7 +3,8 @@ Version: @DEB_SYSTEM-CMDS_V@
 Architecture: @DEB_ARCH@
 Essential: yes
 Maintainer: @DEB_MAINTAINER@
-Depends: firmware-sbin, libcrypt2, file-cmds
+Depends: firmware-sbin, file-cmds, libcrypt2, libpam2
+Recommends: vi
 Provides: login, passwd, reboot
 Section: Administration
 Priority: required
