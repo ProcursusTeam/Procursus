@@ -4,7 +4,6 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS += sudo
-SUDO_CONFIGURE_ARGS += ac_cv_search_crypt="-lcrypt"
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += sudo
 endif # ($(MEMO_TARGET),darwin-\*)
@@ -44,12 +43,15 @@ endif
 		--with-timeout=15 \
 		--with-password-timeout=0 \
 		--with-passprompt="[sudo] password for %p: " \
-		sudo_cv___func__=yes \
-		$(SUDO_CONFIGURE_ARGS)
+		sudo_cv___func__=yes
 	+$(MAKE) -C $(BUILD_WORK)/sudo
 	+$(MAKE) -C $(BUILD_WORK)/sudo install \
 		DESTDIR=$(BUILD_STAGE)/sudo \
 		INSTALL_OWNER=''
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+	mkdir -p $(BUILD_STAGE)/sudo/$(MEMO_PREFIX)/etc/pam.d
+	cp -a $(BUILD_MISC)/pam/sudo $(BUILD_STAGE)/sudo/$(MEMO_PREFIX)/etc/pam.d
+endif
 	cp -a $(BUILD_MISC)/procursus.sudoers $(BUILD_STAGE)/sudo/$(MEMO_PREFIX)/etc/sudoers.d/procursus
 	touch $(BUILD_WORK)/sudo/.build_complete
 endif 

@@ -42,17 +42,16 @@ endif
 
 openpam-package: openpam-stage
 	# openpam.mk Package Structure
-	rm -rf $(BUILD_DIST)/libpam{2,-dev,-runtime}
-	mkdir -p $(BUILD_DIST)/libpam{2,-dev}/$(MEMO_PREFX)$(MEMO_SUB_PREFIX)/lib
+	rm -rf $(BUILD_DIST)/libpam{2,-dev}
+	mkdir -p $(BUILD_DIST)/libpam{2,-dev}/$(MEMO_PREFX){$(MEMO_SUB_PREFIX)/lib,/etc/pam.d}
 	
 	# openpam.mk Prep libpam2
 	cp -a $(BUILD_STAGE)/openpam/$(MEMO_PREFX)$(MEMO_SUB_PREFIX)/lib/libpam.2.dylib $(BUILD_DIST)/libpam2/$(MEMO_PREFX)$(MEMO_SUB_PREFIX)/lib/libpam.2.dylib
+	cp -a $(BUILD_MISC)/pam/other $(BUILD_DIST)/libpam2/$(MEMO_PREFX)/etc/pam.d
 
 	# openpam.mk Prep libpam-dev
 	cp -a $(BUILD_STAGE)/openpam/$(MEMO_PREFX)$(MEMO_SUB_PREFIX)/lib/!(libpam.2.dylib|pam) $(BUILD_DIST)/libpam-dev/$(MEMO_PREFX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/openpam/$(MEMO_PREFX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libpam-dev/$(MEMO_PREFX)$(MEMO_SUB_PREFIX)
-
-	# openpam.mk Prep libpam-runtime
 	
 	# openpam.mk Sign
 	$(call SIGN,libpam2,general.xml)
@@ -60,10 +59,9 @@ openpam-package: openpam-stage
 	# openpam.mk Make .debs
 	$(call PACK,libpam2,DEB_OPENPAM_V)
 	$(call PACK,libpam-dev,DEB_OPENPAM_V)
-	$(call PACK,libpam-runtime,DEB_OPENPAM_V)
 	
 	# openpam.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libpam{2,-dev,-runtime}
+	rm -rf $(BUILD_DIST)/libpam{2,-dev,}
 
 .PHONY: openpam openpam-package
 
