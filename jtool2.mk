@@ -15,10 +15,11 @@ jtool2:
 	@echo "Using previously built jtool2."
 else
 jtool2: jtool2-setup
-	echo $(MEMO_TARGET)
-	mkdir -p $(BUILD_STAGE)/jtool2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin
-	$(LIPO) $(BUILD_WORK)/jtool2-bin/jtool2 -thin $$(echo $(MEMO_TARGET) | cut -d- -f2) -output $(BUILD_STAGE)/jtool2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/jtool2
-	$(LIPO) $(BUILD_WORK)/jtool2-bin/disarm -thin $$(echo $(MEMO_TARGET) | cut -d- -f2) -output $(BUILD_STAGE)/jtool2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/disarm
+	LIPO_OUTPUT_TARGET=""; \
+	[[ $$(echo $(MEMO_TARGET) | cut -d- -f2) = "amd64" ]] && LIPO_OUTPUT_TARGET="x86_64" || LIPO_OUTPUT_TARGET="arm64"; \
+	mkdir -p $(BUILD_STAGE)/jtool2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin; \
+	$(LIPO) $(BUILD_WORK)/jtool2-bin/jtool2 -thin $$LIPO_OUTPUT_TARGET -output $(BUILD_STAGE)/jtool2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/jtool2; \
+	$(LIPO) $(BUILD_WORK)/jtool2-bin/disarm -thin $$LIPO_OUTPUT_TARGET -output $(BUILD_STAGE)/jtool2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/disarm
 endif
 
 jtool2-package: jtool2-stage
