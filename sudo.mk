@@ -4,14 +4,12 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS += sudo
-SUDO_CONFIGURE_ARGS += --without-pam \
-ac_cv_search_crypt="-lcrypt"
+SUDO_CONFIGURE_ARGS += ac_cv_search_crypt="-lcrypt"
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += sudo
-SUDO_CONFIGURE_ARGS += --with-pam
 endif # ($(MEMO_TARGET),darwin-\*)
 SUDO_VERSION  := 1.9.6p1
-DEB_SUDO_V    ?= $(SUDO_VERSION)
+DEB_SUDO_V    ?= $(SUDO_VERSION)-1
 
 sudo-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.sudo.ws/dist/sudo-$(SUDO_VERSION).tar.gz{,.sig}
@@ -23,7 +21,7 @@ sudo:
 	@echo "Using previously built sudo."
 else
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-sudo: sudo-setup gettext libxcrypt
+sudo: sudo-setup gettext libxcrypt openpam
 	$(SED) -i 's/errno == ENOEXEC)/(errno == ENOEXEC || errno == EPERM))/g' $(BUILD_WORK)/sudo/src/exec_common.c
 	$(SED) -i 's/+ 2/+ 4/g' $(BUILD_WORK)/sudo/src/exec_common.c
 	$(SED) -i 's/nargv\[1\] = (char \*)path;/nargv\[1\] = "-c";/g' $(BUILD_WORK)/sudo/src/exec_common.c
@@ -38,6 +36,7 @@ endif
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--localstatedir=$(MEMO_PREFIX)/var \
 		--sysconfdir=$(MEMO_PREFIX)/etc \
+		--with-pam \
 		--enable-static-sudoers \
 		--with-all-insults \
 		--with-env-editor \

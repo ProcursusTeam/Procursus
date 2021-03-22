@@ -2,7 +2,7 @@ Package: libpam-dev
 Version: @DEB_OPENPAM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libpam2 (= @DEB_OPENPAM_V@)
+Depends: libpam2 (= @DEB_OPENPAM_V@), libcrypt-dev
 Section: Development
 Description: Development files for PAM
  Contains C header files and development libraries for libpam, the Pluggable

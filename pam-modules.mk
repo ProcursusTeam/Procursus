@@ -22,10 +22,13 @@ pam-modules: pam-modules-setup openpam
 	cd $(BUILD_WORK)/pam-modules/modules; \
 	for module in group launchd rootok self uwtmp; do \
 		echo $${module}; \
-		$(CC) -shared -o pam_$${module}.2.so pam_$${module}/*.c -lpam -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include || true; \
-		cp -a pam_$${module}.2.so $(BUILD_STAGE)/pam-modules/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pam; \
+		$(CC) $(CFLAGS) -bundle -o pam_$${module}.so pam_$${module}/*.c $(LDFLAGS) -lpam || true; \
+		cp -a pam_$${module}.so $(BUILD_STAGE)/pam-modules/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pam; \
 	done
-	cp -a $(BUILD_STAGE)/openpam/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pam/*.2.so $(BUILD_STAGE)/pam-modules/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pam
+	cd $(BUILD_STAGE)/openpam/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pam; \
+	for so in *.2.so; do \
+		cp -a $$so $(BUILD_STAGE)/pam-modules/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pam/$${so//".2"/}; \
+	done
 	touch $(BUILD_WORK)/pam-modules/.build_complete
 endif
 
