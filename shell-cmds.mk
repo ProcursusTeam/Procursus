@@ -16,9 +16,8 @@ ifneq ($(wildcard $(BUILD_WORK)/shell-cmds/.build_complete),)
 shell-cmds:
 	@echo "Using previously built shell-cmds."
 else
-shell-cmds: shell-cmds-setup
+shell-cmds: shell-cmds-setup openpam
 	mkdir -p $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX){/bin,/etc/pam.d,$(MEMO_SUB_PREFIX)/{bin,share/man/man{1,8}}}
-
 	-cd $(BUILD_WORK)/shell-cmds; \
 	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/hexdump hexdump/{conv,display,hexdump,hexsyntax,odsyntax,parse}.c -D'__FBSDID(x)=' -D__DARWIN_C_LEVEL=200112L; \
 	cp -a hexdump/hexdump.1 $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
