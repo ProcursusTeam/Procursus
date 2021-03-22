@@ -64,7 +64,7 @@ mesa-package: mesa-stage
 		$(BUILD_DIST)/libgles2-mesa-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/pkgconfig} \
 		$(BUILD_DIST)/libglapi-mesa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/mesa-common-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/pkgconfig}
-	
+
 	# mesa.mk Prep libgl1-mesa-glx
 	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libGL.1.dylib $(BUILD_DIST)/libgl1-mesa-glx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
@@ -90,13 +90,13 @@ mesa-package: mesa-stage
 	# mesa.mk Prep mesa-common-dev
 	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/{GL,KHR} $(BUILD_DIST)/mesa-common-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	cp -a $(BUILD_STAGE)/mesa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/dri.pc $(BUILD_DIST)/mesa-common-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
-	
+
 	# mesa.mk Sign
 	$(call SIGN,libgl1-mesa-glx,general.xml)
 	$(call SIGN,libgl1-mesa-dri,general.xml)
 	$(call SIGN,libgles2-mesa,general.xml)
 	$(call SIGN,libglapi-mesa,general.xml)
-	
+
 	# mesa.mk Make .debs
 	$(call PACK,libgl1-mesa-glx,DEB_MESA_V)
 	$(call PACK,libgl1-mesa-dri,DEB_MESA_V)
@@ -105,7 +105,7 @@ mesa-package: mesa-stage
 	$(call PACK,libgles2-mesa-dev,DEB_MESA_V)
 	$(call PACK,libglapi-mesa,DEB_MESA_V)
 	$(call PACK,mesa-common-dev,DEB_MESA_V)
-	
+
 	# mesa.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libgl1-mesa-{glx,dri,dev} $(BUILD_DIST)/libgles2-mesa{,-dev} \
 		$(BUILD_DIST)/libglapi-mesa  $(BUILD_DIST)/mesa-common-dev

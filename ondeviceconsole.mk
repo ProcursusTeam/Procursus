@@ -29,16 +29,16 @@ ondeviceconsole-package: ondeviceconsole-stage
 	# ondeviceconsole.mk Package Structure
 	rm -rf $(BUILD_DIST)/ondeviceconsole
 	mkdir -p $(BUILD_DIST)/ondeviceconsole
-	
+
 	# ondeviceconsole.mk Prep ondeviceconsole
 	cp -a $(BUILD_STAGE)/ondeviceconsole $(BUILD_DIST)
-	
+
 	# ondeviceconsole.mk Sign
 	$(call SIGN,ondeviceconsole,general.xml)
-	
+
 	# ondeviceconsole.mk Make .debs
 	$(call PACK,ondeviceconsole,DEB_ONDEVICECONSOLE_V)
-	
+
 	# ondeviceconsole.mk Build cleanup
 	rm -rf $(BUILD_DIST)/ondeviceconsole
 

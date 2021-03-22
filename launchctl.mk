@@ -24,10 +24,10 @@ launchctl-package: launchctl-stage
 
 	# launchctl.mk Sign launchctl
 	$(call SIGN,launchctl,launchctl.xml)
-	
+
 	# launchctl.mk Make .debs
 	$(call PACK,launchctl,DEB_LAUNCHCTL_V)
-	
+
 	# launchctl.mk Build cleanup
 	rm -rf $(BUILD_DIST)/launchctl
 

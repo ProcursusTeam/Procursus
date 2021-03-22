@@ -41,7 +41,7 @@ libvde-package: libvde-stage
 	$(BUILD_DIST)/libvdeplug-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/pkgconfig} \
 	$(BUILD_DIST)/vde2/{etc/vde2,usr/lib/vde2/vde_l3} \
 	$(BUILD_DIST)/vde2-cryptcab/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
-	
+
 	# libvde.mk Prep libvde0
 	cp -a $(BUILD_STAGE)/libvde/etc/vde2/libvdemgmt $(BUILD_DIST)/libvde0/etc/vde2
 	cp -a $(BUILD_STAGE)/libvde/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libvdehist,libvdemgmt,libvdesnmp}.0.dylib $(BUILD_DIST)/libvde0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
@@ -65,11 +65,11 @@ libvde-package: libvde-stage
 	cp -a $(BUILD_STAGE)/libvde/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/vde2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	rm -f $(BUILD_DIST)/vde2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/vde{cmd,kvm,qemu,_cryptcab}
 	rm -f $(BUILD_DIST)/vde2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/vde{cmd,kvm,qemu,_cryptcab}.1
-	
+
 	# libvde.mk Prep vde2-cryptcab
 	cp -a $(BUILD_STAGE)/libvde/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/vde_cryptcab $(BUILD_DIST)/vde2-cryptcab/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/libvde/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/vde_cryptcab.1 $(BUILD_DIST)/vde2-cryptcab/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
-	
+
 	# libvde.mk Sign
 	$(call SIGN,libvde0,general.xml)
 	$(call SIGN,libvdeplug2,general.xml)
@@ -83,7 +83,7 @@ libvde-package: libvde-stage
 	$(call PACK,libvdeplug-dev,DEB_LIBVDE_V)
 	$(call PACK,vde2,DEB_LIBVDE_V)
 	$(call PACK,vde2-cryptcab,DEB_LIBVDE_V)
-	
+
 	# libvde.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libvde{0,-dev} $(BUILD_DIST)/libvdeplug{2,-dev} $(BUILD_DIST)/vde2{,-cryptcab}
 

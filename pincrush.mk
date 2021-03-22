@@ -26,16 +26,16 @@ pincrush-package: pincrush-stage
 	# pincrush.mk Package Structure
 	rm -rf $(BUILD_DIST)/pincrush
 	mkdir -p $(BUILD_DIST)/pincrush
-	
+
 	# pincrush.mk Prep pincrush
 	cp -a $(BUILD_STAGE)/pincrush/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/pincrush
-	
+
 	# pincrush.mk Sign
 	$(call SIGN,pincrush,general.xml)
-	
+
 	# pincrush.mk Make .debs
 	$(call PACK,pincrush,DEB_PINCRUSH_V)
-	
+
 	# pincrush.mk Build cleanup
 	rm -rf $(BUILD_DIST)/pincrush
 

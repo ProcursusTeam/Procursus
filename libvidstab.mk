@@ -42,21 +42,21 @@ libvidstab-package: libvidstab-stage
 	# libvidstab.mk Package Structure
 	rm -rf $(BUILD_DIST)/libvidstab{1.1,-dev}
 	mkdir -p $(BUILD_DIST)/libvidstab{1.1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libvidstab.mk Prep libvidstab1.1
 	cp -a $(BUILD_STAGE)/libvidstab/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvidstab.1.1.dylib $(BUILD_DIST)/libvidstab1.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libvidstab.mk Prep libvidstab-dev
 	cp -a $(BUILD_STAGE)/libvidstab/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libvidstab.1.1.dylib) $(BUILD_DIST)/libvidstab-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libvidstab/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libvidstab-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libvidstab.mk Sign
 	$(call SIGN,libvidstab1.1,general.xml)
-	
+
 	# libvidstab.mk Make .debs
 	$(call PACK,libvidstab1.1,DEB_LIBVIDSTAB_V)
 	$(call PACK,libvidstab-dev,DEB_LIBVIDSTAB_V)
-	
+
 	# libvidstab.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libvidstab{1.1,-dev}
 

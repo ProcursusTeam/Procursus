@@ -111,7 +111,7 @@ openjdk-package: openjdk-stage
 	rm -rf $(BUILD_DIST)/openjdk*-{jre,jdk}
 	mkdir -p $(BUILD_DIST)/openjdk-$(OPENJDK_MAJOR_V)-{jre,jdk}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/{bin,lib,man/man1} \
 		mkdir -p $(BUILD_DIST)/openjdk-{jre,jdk}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
-	
+
 	# openjdk.mk Prep openjdk-$(OPENJDK_MAJOR_V)-jre
 	cp -a $(BUILD_STAGE)/openjdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/bin/{java,jfr,keytool,rmid,rmiregistry} \
 		$(BUILD_DIST)/openjdk-$(OPENJDK_MAJOR_V)-jre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/bin
@@ -136,7 +136,7 @@ openjdk-package: openjdk-stage
 		ln -sf ../lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/bin/$${bin} $(BUILD_DIST)/openjdk-jdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$${bin}; \
 		ln -sf ../../../lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/man/man1/$${bin}.1 $(BUILD_DIST)/openjdk-jdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$${bin}.1; \
 	done
-	
+
 	# openjdk.mk Prep openjdk-$(OPENJDK_MAJOR_V)-jdk
 	cp -a $(BUILD_STAGE)/openjdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/bin/!(java|jfr|keytool|rmid|rmiregistry) \
 		$(BUILD_DIST)/openjdk-$(OPENJDK_MAJOR_V)-jdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/bin
@@ -153,13 +153,13 @@ openjdk-package: openjdk-stage
 	# openjdk.mk Sign
 	$(call SIGN,openjdk-$(OPENJDK_MAJOR_V)-jdk,qemu-ios.xml)
 	$(call SIGN,openjdk-$(OPENJDK_MAJOR_V)-jre,qemu-ios.xml)
-	
+
 	# openjdk.mk Make .debs
 	$(call PACK,openjdk-$(OPENJDK_MAJOR_V)-jdk,DEB_OPENJDK_V)
 	$(call PACK,openjdk-$(OPENJDK_MAJOR_V)-jre,DEB_OPENJDK_V)
 	$(call PACK,openjdk-jdk,DEB_OPENJDK_V)
 	$(call PACK,openjdk-jre,DEB_OPENJDK_V)
-	
+
 	# openjdk.mk Build cleanup
 	rm -rf $(BUILD_DIST)/openjdk*-{jre,jdk}
 

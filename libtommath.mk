@@ -40,19 +40,19 @@ libtommath-package: libtommath-stage
 	# libtommath.mk Package Structure
 	rm -rf $(BUILD_DIST)/libtommath{1,-dev}
 	mkdir -p $(BUILD_DIST)/libtommath{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libtommath.mk Prep libtommath
 	cp -a $(BUILD_STAGE)/libtommath/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libtommath.1.dylib $(BUILD_DIST)/libtommath1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libtommath/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libtommath-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/libtommath/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libtommath.{a,dylib},pkgconfig} $(BUILD_DIST)/libtommath-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libtommath.mk Sign
 	$(call SIGN,libtommath1,general.xml)
-	
+
 	# libtommath.mk Make .debs
 	$(call PACK,libtommath1,DEB_LIBTOMMATH_V)
 	$(call PACK,libtommath-dev,DEB_LIBTOMMATH_V)
-	
+
 	# libtommath.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libtommath{1,-dev}
 

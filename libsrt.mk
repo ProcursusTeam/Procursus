@@ -61,12 +61,12 @@ libsrt-package: libsrt-stage
 	# libsrt.mk Sign
 	$(call SIGN,libsrt1,general.xml)
 	$(call SIGN,srt-tools,general.xml)
-	
+
 	# libsrt.mk Make .debs
 	$(call PACK,libsrt1,DEB_LIBSRT_V)
 	$(call PACK,libsrt-dev,DEB_LIBSRT_V)
 	$(call PACK,srt-tools,DEB_LIBSRT_V)
-	
+
 	# libsrt.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libsrt{1,-dev} \
 		$(BUILD_DIST)/srt-tools

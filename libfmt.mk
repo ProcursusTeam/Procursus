@@ -35,7 +35,7 @@ libfmt: libfmt-setup
 		DESTDIR="$(BUILD_STAGE)/libfmt"
 	+$(MAKE) -C $(BUILD_WORK)/libfmt install \
 		DESTDIR="$(BUILD_BASE)"
-	
+
 	touch $(BUILD_WORK)/libfmt/.build_complete
 endif
 

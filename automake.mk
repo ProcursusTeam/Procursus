@@ -30,16 +30,16 @@ endif
 automake-package: automake-stage
 	# automake.mk Package Structure
 	rm -rf $(BUILD_DIST)/automake
-	
+
 	# automake.mk Prep automake
 	cp -a $(BUILD_STAGE)/automake $(BUILD_DIST)
-	
+
 	# automake.mk Sign
 	$(call SIGN,automake,general.xml)
-	
+
 	# automake.mk Make .debs
 	$(call PACK,automake,DEB_AUTOMAKE_V)
-	
+
 	# automake.mk Build cleanup
 	rm -rf $(BUILD_DIST)/automake
 

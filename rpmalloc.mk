@@ -34,21 +34,21 @@ rpmalloc-package: rpmalloc-stage
 	# rpmalloc.mk Package Structure
 	rm -rf $(BUILD_DIST)/librpmalloc{0,-dev}
 	mkdir -p $(BUILD_DIST)/librpmalloc{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# rpmalloc.mk Prep librpmalloc0
 	cp -a $(BUILD_STAGE)/rpmalloc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librpmalloc.0.dylib $(BUILD_DIST)/librpmalloc0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# rpmalloc.mk Prep librpmalloc-dev
 	cp -a $(BUILD_STAGE)/rpmalloc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librpmalloc.{dylib,a} $(BUILD_DIST)/librpmalloc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/rpmalloc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/librpmalloc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# rpmalloc.mk Sign
 	$(call SIGN,librpmalloc0,general.xml)
-	
+
 	# rpmalloc.mk Make .debs
 	$(call PACK,librpmalloc0,DEB_RPMALLOC_V)
 	$(call PACK,librpmalloc-dev,DEB_RPMALLOC_V)
-	
+
 	# rpmalloc.mk Build cleanup
 	rm -rf $(BUILD_DIST)/librpmalloc{0,-dev}
 

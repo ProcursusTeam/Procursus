@@ -50,21 +50,21 @@ libipatcher-package: libipatcher-stage
 	# libipatcher.mk Package Structure
 	rm -rf $(BUILD_DIST)/libipatcher{0,-dev}
 	mkdir -p $(BUILD_DIST)/libipatcher{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libipatcher.mk Prep libipatcher0
 	cp -a $(BUILD_STAGE)/libipatcher/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libipatcher.0.dylib $(BUILD_DIST)/libipatcher0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libipatcher.mk Prep libipatcher-dev
 	cp -a $(BUILD_STAGE)/libipatcher/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libipatcher.0.dylib) $(BUILD_DIST)/libipatcher-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libipatcher/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libipatcher-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libipatcher.mk Sign
 	$(call SIGN,libipatcher0,general.xml)
-	
+
 	# libipatcher.mk Make .debs
 	$(call PACK,libipatcher0,DEB_LIBIPATCHER_V)
 	$(call PACK,libipatcher-dev,DEB_LIBIPATCHER_V)
-	
+
 	# libipatcher.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libipatcher{0,-dev}
 

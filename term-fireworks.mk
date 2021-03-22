@@ -28,16 +28,16 @@ endif
 term-fireworks-package: term-fireworks-stage
 	# term-fireworks.mk Package Structure
 	rm -rf $(BUILD_DIST)/term-fireworks
-	
+
 	# term-fireworks.mk Prep term-fireworks
 	cp -a $(BUILD_STAGE)/term-fireworks $(BUILD_DIST)
-	
+
 	# term-fireworks.mk Sign
 	$(call SIGN,term-fireworks,general.xml)
-	
+
 	# term-fireworks.mk Make .debs
 	$(call PACK,term-fireworks,DEB_TERM-FIREWORKS_V)
-	
+
 	# term-fireworks.mk Build cleanup
 	rm -rf $(BUILD_DIST)/term-fireworks
 

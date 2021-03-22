@@ -34,7 +34,7 @@ vi-package: vi-stage
 	# vi.mk Package Structure
 	rm -rf $(BUILD_DIST)/vi
 	mkdir -p $(BUILD_DIST)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
-	
+
 	# vi.mk Prep vi
 	cp -a $(BUILD_STAGE)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ex $(BUILD_DIST)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ex-vi
 	cp -a $(BUILD_STAGE)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib $(BUILD_DIST)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
@@ -44,10 +44,10 @@ vi-package: vi-stage
 
 	# vi.mk Sign
 	$(call SIGN,vi,general.xml)
-	
+
 	# vi.mk Make .debs
 	$(call PACK,vi,DEB_VI_V)
-	
+
 	# vi.mk Build cleanup
 	rm -rf $(BUILD_DIST)/vi
 

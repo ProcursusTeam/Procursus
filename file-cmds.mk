@@ -47,16 +47,16 @@ endif
 file-cmds-package: file-cmds-stage
 	# file-cmds.mk Package Structure
 	rm -rf $(BUILD_DIST)/file-cmds
-	
+
 	# file-cmds.mk Prep file-cmds
 	cp -a $(BUILD_STAGE)/file-cmds $(BUILD_DIST)
 
 	# file-cmds.mk Sign
 	$(call SIGN,file-cmds,general.xml)
-	
+
 	# file-cmds.mk Make .debs
 	$(call PACK,file-cmds,DEB_FILE-CMDS_V)
-	
+
 	# file-cmds.mk Build cleanup
 	rm -rf $(BUILD_DIST)/file-cmds
 

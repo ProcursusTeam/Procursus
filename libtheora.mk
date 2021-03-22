@@ -48,11 +48,11 @@ libtheora-package: libtheora-stage
 
 	# libtheora.mk Sign
 	$(call SIGN,libtheora0,general.xml)
-	
+
 	# libtheora.mk Make .debs
 	$(call PACK,libtheora0,DEB_LIBTHEORA_V)
 	$(call PACK,libtheora-dev,DEB_LIBTHEORA_V)
-	
+
 	# libtheora.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libtheora{0,-dev}
 

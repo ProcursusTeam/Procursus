@@ -41,19 +41,19 @@ libtomcrypt-package: libtomcrypt-stage
 	# libtomcrypt.mk Package Structure
 	rm -rf $(BUILD_DIST)/libtomcrypt{1,-dev}
 	mkdir -p $(BUILD_DIST)/libtomcrypt{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libtomcrypt.mk Prep libtomcrypt
 	cp -a $(BUILD_STAGE)/libtomcrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libtomcrypt.1.dylib $(BUILD_DIST)/libtomcrypt1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libtomcrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libtomcrypt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/libtomcrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libtomcrypt.{a,dylib},pkgconfig} $(BUILD_DIST)/libtomcrypt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libtomcrypt.mk Sign
 	$(call SIGN,libtomcrypt1,general.xml)
-	
+
 	# libtomcrypt.mk Make .debs
 	$(call PACK,libtomcrypt1,DEB_LIBTOMCRYPT_V)
 	$(call PACK,libtomcrypt-dev,DEB_LIBTOMCRYPT_V)
-	
+
 	# libtomcrypt.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libtomcrypt{1,-dev}
 

@@ -95,7 +95,7 @@ endif
 diskdev-cmds-package: diskdev-cmds-stage
 	# diskdev-cmds.mk Package Structure
 	rm -rf $(BUILD_DIST)/diskdev-cmds
-	
+
 	# diskdev-cmds.mk Prep diskdev-cmds
 	cp -a $(BUILD_STAGE)/diskdev-cmds $(BUILD_DIST)
 
@@ -110,7 +110,7 @@ endif
 
 	# diskdev-cmds.mk Make .debs
 	$(call PACK,diskdev-cmds,DEB_DISKDEV-CMDS_V)
-	
+
 	# diskdev-cmds.mk Build cleanup
 	rm -rf $(BUILD_DIST)/diskdev-cmds
 

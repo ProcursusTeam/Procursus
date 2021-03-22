@@ -27,16 +27,16 @@ endif
 basic-cmds-package: basic-cmds-stage
 	# basic-cmds.mk Package Structure
 	rm -rf $(BUILD_DIST)/basic-cmds
-	
+
 	# basic-cmds.mk Prep basic-cmds
 	cp -a $(BUILD_STAGE)/basic-cmds $(BUILD_DIST)
 
 	# basic-cmds.mk Sign
 	$(call SIGN,basic-cmds,general.xml)
-	
+
 	# basic-cmds.mk Make .debs
 	$(call PACK,basic-cmds,DEB_BASIC-CMDS_V)
-	
+
 	# basic-cmds.mk Build cleanup
 	rm -rf $(BUILD_DIST)/basic-cmds
 

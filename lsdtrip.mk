@@ -29,17 +29,17 @@ endif
 lsdtrip-package: lsdtrip-stage
 	# lsdtrip.mk Package Structure
 	rm -rf $(BUILD_DIST)/lsdtrip
-	
+
 	# lsdtrip.mk Prep lsdtrip
 	cp -a $(BUILD_STAGE)/lsdtrip $(BUILD_DIST)/lsdtrip
-	
+
 	# lsdtrip.mk Sign
 	$(call SIGN,lsdtrip,general.xml)
 	$(LDID) -M$(BUILD_WORK)/lsdtrip/ls.ent $(BUILD_DIST)/lsdtrip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsdtrip
-	
+
 	# lsdtrip.mk Make .debs
 	$(call PACK,lsdtrip,DEB_LSDTRIP_V)
-	
+
 	# lsdtrip.mk Build cleanup
 	rm -rf $(BUILD_DIST)/lsdtrip
 

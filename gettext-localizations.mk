@@ -24,13 +24,13 @@ endif
 gettext-localizations-package: gettext-localizations-stage
 	# gettext-localizations.mk Package Structure
 	rm -rf $(BUILD_DIST)/gettext-localizations
-	
+
 	# gettext-localizations.mk Prep gettext-localizations
 	cp -a $(BUILD_STAGE)/gettext-localizations $(BUILD_DIST)
-	
+
 	# gettext-localizations.mk Make .debs
 	$(call PACK,gettext-localizations,DEB_GETTEXT-LOCALIZATIONS_V)
-	
+
 	# gettext-localizations.mk Build cleanup
 	rm -rf $(BUILD_DIST)/gettext-localizations
 

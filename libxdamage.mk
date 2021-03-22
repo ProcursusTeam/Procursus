@@ -35,21 +35,21 @@ libxdamage-package: libxdamage-stage
 	rm -rf $(BUILD_DIST)/libxdamage{1,-dev}
 	mkdir -p $(BUILD_DIST)/libxdamage1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libxdamage-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib}
-	
+
 	# libxdamage.mk Prep libxdamage1
 	cp -a $(BUILD_STAGE)/libxdamage/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXdamage.1.dylib $(BUILD_DIST)/libxdamage1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxdamage.mk Prep libxdamage-dev
 	cp -a $(BUILD_STAGE)/libxdamage/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libXdamage.1.dylib) $(BUILD_DIST)/libxdamage-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libxdamage/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libxdamage-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libxdamage.mk Sign
 	$(call SIGN,libxdamage1,general.xml)
-	
+
 	# libxdamage.mk Make .debs
 	$(call PACK,libxdamage1,DEB_LIBXDAMAGE_V)
 	$(call PACK,libxdamage-dev,DEB_LIBXDAMAGE_V)
-	
+
 	# libxdamage.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libxdamage{1,-dev}
 

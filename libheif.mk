@@ -34,21 +34,21 @@ libheif-package: libheif-stage
 	# libheif.mk Package Structure
 	rm -rf $(BUILD_DIST)/libheif{1,-dev}
 	mkdir -p $(BUILD_DIST)/libheif{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libheif.mk Prep libheif1
 	cp -a $(BUILD_STAGE)/libheif/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libheif.1.dylib $(BUILD_DIST)/libheif1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libheif.mk Prep libheif-dev
 	cp -a $(BUILD_STAGE)/libheif/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libheif.{dylib,a},pkgconfig} $(BUILD_DIST)/libheif-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libheif/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libheif-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libheif.mk Sign
 	$(call SIGN,libheif1,general.xml)
-	
+
 	# libheif.mk Make .debs
 	$(call PACK,libheif1,DEB_LIBHEIF_V)
 	$(call PACK,libheif-dev,DEB_LIBHEIF_V)
-	
+
 	# libheif.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libheif{1,-dev}
 

@@ -31,7 +31,7 @@ endif
 bootstrap-cmds-package: bootstrap-cmds-stage
 	# bootstrap-cmds.mk Package Structure
 	rm -rf $(BUILD_DIST)/bootstrap-cmds
-	
+
 	# bootstrap-cmds.mk Prep bootstrap-cmds
 	cp -a $(BUILD_STAGE)/bootstrap-cmds $(BUILD_DIST)
 
@@ -40,10 +40,10 @@ bootstrap-cmds-package: bootstrap-cmds-stage
 
 	# bootstrap-cmds.mk Permissions
 	$(FAKEROOT) chmod a+x $(BUILD_DIST)/bootstrap-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/mig
-	
+
 	# bootstrap-cmds.mk Make .debs
 	$(call PACK,bootstrap-cmds,DEB_BOOTSTRAP-CMDS_V)
-	
+
 	# bootstrap-cmds.mk Build cleanup
 	rm -rf $(BUILD_DIST)/bootstrap-cmds
 

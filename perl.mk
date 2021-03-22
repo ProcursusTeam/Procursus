@@ -76,16 +76,16 @@ endif
 perl-package: perl-stage
 	# perl.mk Package Structure
 	rm -rf $(BUILD_DIST)/perl
-	
+
 	# perl.mk Prep perl
 	cp -a $(BUILD_STAGE)/perl $(BUILD_DIST)
-	
+
 	# perl.mk Sign
 	$(call SIGN,perl,general.xml)
-	
+
 	# perl.mk Make .debs
 	$(call PACK,perl,DEB_PERL_V)
-	
+
 	# perl.mk Build cleanup
 	rm -rf $(BUILD_DIST)/perl
 

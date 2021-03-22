@@ -29,16 +29,16 @@ sensible-utils-package: sensible-utils-stage
 	# sensible-utils.mk Package Structure
 	rm -rf $(BUILD_DIST)/sensible-utils
 	mkdir -p $(BUILD_DIST)/sensible-utils
-	
+
 	# sensible-utils.mk Prep sensible-utils
 	cp -a $(BUILD_STAGE)/sensible-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/sensible-utils
-	
+
 	# sensible-utils.mk Sign
 	$(call SIGN,sensible-utils,general.xml)
-	
+
 	# sensible-utils.mk Make .debs
 	$(call PACK,sensible-utils,DEB_SENSIBLE-UTILS_V)
-	
+
 	# sensible-utils.mk Build cleanup
 	rm -rf $(BUILD_DIST)/sensible-utils
 

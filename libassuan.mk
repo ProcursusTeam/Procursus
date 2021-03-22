@@ -33,22 +33,22 @@ libassuan-package: libassuan-stage
 	# libassuan.mk Package Structure
 	rm -rf $(BUILD_DIST)/libassuan{-dev,0}
 	mkdir -p $(BUILD_DIST)/libassuan{-dev,0}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libassuan.mk Prep libassuan0
 	cp -a $(BUILD_STAGE)/libassuan/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libassuan.0.dylib $(BUILD_DIST)/libassuan0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libassuan.mk Prep libassuan-dev
 	cp -a $(BUILD_STAGE)/libassuan/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libassuan.dylib} $(BUILD_DIST)/libassuan-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libassuan/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share,include} $(BUILD_DIST)/libassuan-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libassuan.mk Sign
 	$(call SIGN,libassuan0,general.xml)
 	$(call SIGN,libassuan-dev,general.xml)
-	
+
 	# libassuan.mk Make .debs
 	$(call PACK,libassuan0,DEB_LIBASSUAN_V)
 	$(call PACK,libassuan-dev,DEB_LIBASSUAN_V)
-	
+
 	# libassuan.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libassuan{-dev,0}
 

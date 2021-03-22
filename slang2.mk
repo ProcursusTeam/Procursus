@@ -39,7 +39,7 @@ slang2-package: slang2-stage
 	rm -rf $(BUILD_DIST)/slsh $(BUILD_DIST)/libslang2{,-modules,-dev}
 	mkdir -p $(BUILD_DIST)/slsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share \
 		$(BUILD_DIST)/libslang2{,-modules,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# slang2.mk Prep slsh
 	cp -a $(BUILD_STAGE)/slang2/etc $(BUILD_DIST)/slsh
 	cp -a $(BUILD_STAGE)/slang2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/slsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
@@ -53,18 +53,18 @@ slang2-package: slang2-stage
 	# slang2.mk Prep libslang2-dev
 	cp -a $(BUILD_STAGE)/slang2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libslang2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/slang2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libslang.dylib,pkgconfig} $(BUILD_DIST)/libslang2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# slang2.mk Sign
 	$(call SIGN,slsh,general.xml)
 	$(call SIGN,libslang2,general.xml)
 	$(call SIGN,libslang2-modules,general.xml)
-	
+
 	# slang2.mk Make .debs
 	$(call PACK,slsh,DEB_SLANG2_V)
 	$(call PACK,libslang2,DEB_SLANG2_V)
 	$(call PACK,libslang2-modules,DEB_SLANG2_V)
 	$(call PACK,libslang2-dev,DEB_SLANG2_V)
-	
+
 	# slang2.mk Build cleanup
 	rm -rf $(BUILD_DIST)/slsh $(BUILD_DIST)/libslang2{,-modules,-dev}
 

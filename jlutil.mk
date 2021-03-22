@@ -28,16 +28,16 @@ endif
 jlutil-package: jlutil-stage
 	# jlutil.mk Package Structure
 	rm -rf $(BUILD_DIST)/jlutil
-	
+
 	# jlutil.mk Prep jlutil
 	cp -a $(BUILD_STAGE)/jlutil $(BUILD_DIST)/jlutil
-	
+
 	# jlutil.mk Sign
 	$(call SIGN,jlutil,general.xml)
-	
+
 	# jlutil.mk Make .debs
 	$(call PACK,jlutil,DEB_JLUTIL_V)
-	
+
 	# jlutil.mk Build cleanup
 	rm -rf $(BUILD_DIST)/jlutil
 

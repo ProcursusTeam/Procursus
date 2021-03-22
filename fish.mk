@@ -45,13 +45,13 @@ endif
 
 fish-package: fish-stage
 	rm -rf $(BUILD_DIST)/fish
-	
+
 	cp -a $(BUILD_STAGE)/fish $(BUILD_DIST)
 
 	$(call SIGN,fish,general.xml)
-	
+
 	$(call PACK,fish,DEB_FISH_V)
-	
+
 	rm -rf $(BUILD_DIST)/fish
 
 .PHONY: fish fish-package

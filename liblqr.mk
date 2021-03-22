@@ -37,21 +37,21 @@ liblqr-package: liblqr-stage
 	# liblqr.mk Package Structure
 	rm -rf $(BUILD_DIST)/liblqr-1-0{,-dev}
 	mkdir -p $(BUILD_DIST)/liblqr-1-0{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# liblqr.mk Prep liblqr-1-0
 	cp -a $(BUILD_STAGE)/liblqr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblqr-1.0.dylib $(BUILD_DIST)/liblqr-1-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# liblqr.mk Prep liblqr-1-0-dev
 	cp -a $(BUILD_STAGE)/liblqr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{liblqr-1.dylib,pkgconfig} $(BUILD_DIST)/liblqr-1-0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/liblqr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/liblqr-1-0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# liblqr.mk Sign
 	$(call SIGN,liblqr-1-0,general.xml)
-	
+
 	# liblqr.mk Make .debs
 	$(call PACK,liblqr-1-0,DEB_LIBLQR_V)
 	$(call PACK,liblqr-1-0-dev,DEB_LIBLQR_V)
-	
+
 	# liblqr.mk Build cleanup
 	rm -rf $(BUILD_DIST)/liblqr-1-0{,-dev}
 

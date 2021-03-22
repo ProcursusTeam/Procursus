@@ -36,13 +36,13 @@ npm-package: npm-stage
 	# npm.mk Package Structure
 	rm -rf $(BUILD_DIST)/npm
 	mkdir -p $(BUILD_DIST)/npm
-	
+
 	# npm.mk Prep npm
 	cp -a $(BUILD_STAGE)/npm $(BUILD_DIST)
-	
+
 	# npm.mk Make .debs
 	$(call PACK,npm,DEB_NPM_V)
-	
+
 	# npm.mk Build cleanup
 	rm -rf $(BUILD_DIST)/npm
 

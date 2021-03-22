@@ -38,22 +38,22 @@ cwidget-package: cwidget-stage
 	rm -rf $(BUILD_DIST)/*cwidget*/
 	mkdir -p $(BUILD_DIST)/libcwidget4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libcwidget-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# cwidget.mk Prep libcwidget4
 	cp -a $(BUILD_STAGE)/cwidget/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/lib*.4.dylib $(BUILD_DIST)/libcwidget4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/cwidget/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/libcwidget4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# cwidget.mk Prep libcwidget-dev
 	cp -a $(BUILD_STAGE)/cwidget/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libcwidget-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/cwidget/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(*.4.*) $(BUILD_DIST)/libcwidget-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# cwidget.mk Sign
 	$(call SIGN,libcwidget4,general.xml)
-	
+
 	# cwidget.mk Make .debs
 	$(call PACK,libcwidget4,DEB_CWIDGET_V)
 	$(call PACK,libcwidget-dev,DEB_CWIDGET_V)
-	
+
 	# cwidget.mk Build cleanup
 	rm -rf $(BUILD_DIST)/*cwidget*/
 

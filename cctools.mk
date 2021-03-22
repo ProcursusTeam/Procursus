@@ -48,7 +48,7 @@ cctools-package: cctools-stage
 
 	# cctools.mk Prep cctools
 	cp -a $(BUILD_STAGE)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/cctools
-	
+
 	# cctools.mk Prep ld64
 	mv $(BUILD_DIST)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{dyldinfo,ld,machocheck,ObjectDump,unwinddump} $(BUILD_DIST)/ld64/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	mv $(BUILD_DIST)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/{dyldinfo,ld{,64},unwinddump}.1 $(BUILD_DIST)/ld64/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
@@ -63,7 +63,7 @@ cctools-package: cctools-stage
 	# cctools.mk Make .debs
 	$(call PACK,cctools,DEB_CCTOOLS_V)
 	$(call PACK,ld64,DEB_LD64_V)
-	
+
 	# cctools.mk Build cleanup
 	rm -rf $(BUILD_DIST)/{cctools,ld64}
 

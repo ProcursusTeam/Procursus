@@ -35,21 +35,21 @@ libass-package: libass-stage
 	# libass.mk Package Structure
 	rm -rf $(BUILD_DIST)/libass{9,-dev}
 	mkdir -p $(BUILD_DIST)/libass{9,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libass.mk Prep libass9
 	cp -a $(BUILD_STAGE)/libass/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libass.9.dylib $(BUILD_DIST)/libass9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libass.mk Prep libass-dev
 	cp -a $(BUILD_STAGE)/libass/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libass.{dylib,a},pkgconfig} $(BUILD_DIST)/libass-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libass/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libass-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libass.mk Sign
 	$(call SIGN,libass9,general.xml)
-	
+
 	# libass.mk Make .debs
 	$(call PACK,libass9,DEB_LIBASS_V)
 	$(call PACK,libass-dev,DEB_LIBASS_V)
-	
+
 	# libass.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libass{9,-dev}
 

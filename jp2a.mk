@@ -31,16 +31,16 @@ endif
 jp2a-package: jp2a-stage
 	# jp2a.mk Package Structure
 	rm -rf $(BUILD_DIST)/jp2a
-	
+
 	# jp2a.mk Prep jp2a
 	cp -a $(BUILD_STAGE)/jp2a $(BUILD_DIST)
-	
+
 	# jp2a.mk Sign
 	$(call SIGN,jp2a,general.xml)
-	
+
 	# jp2a.mk Make .debs
 	$(call PACK,jp2a,DEB_JP2A_V)
-	
+
 	# jp2a.mk Build cleanup
 	rm -rf $(BUILD_DIST)/jp2a
 

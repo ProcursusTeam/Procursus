@@ -26,16 +26,16 @@ endif
 pbzx-package: pbzx-stage
 	# pbzx.mk Package Structure
 	rm -rf $(BUILD_DIST)/pbzx
-	
+
 	# pbzx.mk Prep pbzx
 	cp -a $(BUILD_STAGE)/pbzx $(BUILD_DIST)/pbzx
-	
+
 	# pbzx.mk Sign
 	$(call SIGN,pbzx,general.xml)
-	
+
 	# pbzx.mk Make .debs
 	$(call PACK,pbzx,DEB_PBZX_V)
-	
+
 	# pbzx.mk Build cleanup
 	rm -rf $(BUILD_DIST)/pbzx
 

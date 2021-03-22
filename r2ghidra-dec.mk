@@ -46,16 +46,16 @@ endif
 r2ghidra-dec-package: r2ghidra-dec-stage
 	# r2ghidra-dec.mk Package Structure
 	rm -rf $(BUILD_DIST)/r2ghidra-dec
-	
+
 	# r2ghidra-dec.mk Prep r2ghidra-dec
 	cp -a $(BUILD_STAGE)/r2ghidra-dec $(BUILD_DIST)
-	
+
 	# r2ghidra-dec.mk Sign
 	$(call SIGN,r2ghidra-dec,general.xml)
-	
+
 	# r2ghidra-dec.mk Make .debs
 	$(call PACK,r2ghidra-dec,DEB_R2GHIDRA_V)
-	
+
 	# r2ghidra-dec.mk Build cleanup
 	rm -rf $(BUILD_DIST)/r2ghidra-dec
 

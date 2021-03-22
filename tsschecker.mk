@@ -35,16 +35,16 @@ endif
 tsschecker-package: tsschecker-stage
 	# tsschecker.mk Package Structure
 	rm -rf $(BUILD_DIST)/tsschecker
-	
+
 	# tsschecker.mk Prep tsschecker
 	cp -a $(BUILD_STAGE)/tsschecker $(BUILD_DIST)
-	
+
 	# tsschecker.mk Sign
 	$(call SIGN,tsschecker,general.xml)
-	
+
 	# tsschecker.mk Make .debs
 	$(call PACK,tsschecker,DEB_TSSCHECKER_V)
-	
+
 	# tsschecker.mk Build cleanup
 	rm -rf $(BUILD_DIST)/tsschecker
 

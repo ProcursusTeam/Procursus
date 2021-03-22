@@ -9,7 +9,7 @@ DEB_SQLITE3_V    ?= $(SQLITE3_VERSION)
 sqlite3-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/s/sqlite3/sqlite3_$(SQLITE3_VERSION).orig.tar.xz
 	$(call EXTRACT_TAR,sqlite3_$(SQLITE3_VERSION).orig.tar.xz,sqlite3-$(SQLITE3_VERSION),sqlite3)
-	
+
 	# I change the soversion here to allow installation to /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib on iOS where libsqlite3 is already in the shared cache.
 	$(call DO_PATCH,sqlite3,sqlite3,-p1)
 
@@ -64,13 +64,13 @@ sqlite3-package: sqlite3-stage
 	$(call SIGN,sqlite3,general.xml)
 	$(call SIGN,lemon,general.xml)
 	$(call SIGN,libsqlite3-1,general.xml)
-	
+
 	# sqlite3.mk Make .debs
 	$(call PACK,sqlite3,DEB_SQLITE3_V)
 	$(call PACK,lemon,DEB_SQLITE3_V)
 	$(call PACK,libsqlite3-1,DEB_SQLITE3_V)
 	$(call PACK,libsqlite3-dev,DEB_SQLITE3_V)
-	
+
 	# sqlite3.mk Build cleanup
 	rm -rf $(BUILD_DIST)/{sqlite3,lemon} $(BUILD_DIST)/libsqlite3-{1,dev}
 

@@ -60,16 +60,16 @@ lua-lpeg-package: lua-lpeg-stage
 	# lua-lpeg.mk Package Structure
 	rm -rf $(BUILD_DIST)/lua-lpeg
 	mkdir -p $(BUILD_DIST)/lua-lpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# lua-lpeg.mk Prep lua-lpeg
 	cp -a $(BUILD_STAGE)/lua-lpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{liblua*5.*-lpeg.*.dylib,lua} $(BUILD_DIST)/lua-lpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# lua-lpeg.mk Sign
 	$(call SIGN,lua-lpeg,general.xml)
-	
+
 	# lua-lpeg.mk Make .debs
 	$(call PACK,lua-lpeg,DEB_LUA-LPEG_V)
-	
+
 	# lua-lpeg.mk Build cleanup
 	rm -rf $(BUILD_DIST)/lua-lpeg
 

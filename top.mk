@@ -35,19 +35,19 @@ top-package: top-stage
 	# top.mk Package Structure
 	rm -rf $(BUILD_DIST)/top
 	mkdir -p $(BUILD_DIST)/top
-	
+
 	# top.mk Prep top
 	cp -a $(BUILD_STAGE)/top/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/top
-	
+
 	# top.mk Sign
 	$(call SIGN,top,top.xml)
 
 	# top.mk Permissions
 	chmod u+s $(BUILD_DIST)/top/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/top
-	
+
 	# top.mk Make .debs
 	$(call PACK,top,DEB_TOP_V)
-	
+
 	# top.mk Build cleanup
 	rm -rf $(BUILD_DIST)/top
 

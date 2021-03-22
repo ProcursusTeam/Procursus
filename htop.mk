@@ -32,16 +32,16 @@ endif
 htop-package: htop-stage
 	# htop.mk Package Structure
 	rm -rf $(BUILD_DIST)/htop
-	
+
 	# htop.mk Prep htop
 	cp -a $(BUILD_STAGE)/htop $(BUILD_DIST)
 
 	# htop.mk Sign
 	$(call SIGN,htop,general.xml)
-	
+
 	# htop.mk Make .debs
 	$(call PACK,htop,DEB_HTOP_V)
-	
+
 	# htop.mk Build cleanup
 	rm -rf $(BUILD_DIST)/htop
 

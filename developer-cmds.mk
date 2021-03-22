@@ -30,16 +30,16 @@ endif
 developer-cmds-package: developer-cmds-stage
 	# developer-cmds.mk Package Structure
 	rm -rf $(BUILD_DIST)/developer-cmds
-	
+
 	# developer-cmds.mk Prep developer-cmds
 	cp -a $(BUILD_STAGE)/developer-cmds $(BUILD_DIST)
 
 	# developer-cmds.mk Sign
 	$(call SIGN,developer-cmds,general.xml)
-	
+
 	# developer-cmds.mk Make .debs
 	$(call PACK,developer-cmds,DEB_DEVELOPER-CMDS_V)
-	
+
 	# developer-cmds.mk Build cleanup
 	rm -rf $(BUILD_DIST)/developer-cmds
 

@@ -40,7 +40,7 @@ libprotobuf-package: libprotobuf-stage
 
 	# libprotobuf.mk Prep libprotobuf25
 	cp -a $(BUILD_STAGE)/libprotobuf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libprotobuf.25.dylib $(BUILD_DIST)/libprotobuf25/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libprotobuf.mk Prep libprotobuf-lite25
 	cp -a $(BUILD_STAGE)/libprotobuf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libprotobuf-lite.25.dylib $(BUILD_DIST)/libprotobuf-lite25/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
@@ -63,7 +63,7 @@ libprotobuf-package: libprotobuf-stage
 	$(call SIGN,libprotobuf-lite25,general.xml)
 	$(call SIGN,libprotoc25,general.xml)
 	$(call SIGN,protobuf-compiler,general.xml)
-	
+
 	# libprotobuf.mk Make .debs
 	$(call PACK,libprotobuf25,DEB_LIBPROTOBUF_V)
 	$(call PACK,libprotobuf-lite25,DEB_LIBPROTOBUF_V)
@@ -71,7 +71,7 @@ libprotobuf-package: libprotobuf-stage
 	$(call PACK,libprotoc25,DEB_LIBPROTOBUF_V)
 	$(call PACK,libprotoc-dev,DEB_LIBPROTOBUF_V)
 	$(call PACK,protobuf-compiler,DEB_LIBPROTOBUF_V)
-	
+
 	# libprotobuf.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libprotobuf{{,-lite}25,-dev} $(BUILD_DIST)/libprotoc{25,-dev} $(BUILD_DIST)/protobuf-compiler
 

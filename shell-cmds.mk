@@ -35,16 +35,16 @@ endif
 shell-cmds-package: shell-cmds-stage
 	# shell-cmds.mk Package Structure
 	rm -rf $(BUILD_DIST)/shell-cmds
-	
+
 	# shell-cmds.mk Prep shell-cmds
 	cp -a $(BUILD_STAGE)/shell-cmds $(BUILD_DIST)
 
 	# shell-cmds.mk Sign
 	$(call SIGN,shell-cmds,general.xml)
-	
+
 	# shell-cmds.mk Make .debs
 	$(call PACK,shell-cmds,DEB_SHELL-CMDS_V)
-	
+
 	# shell-cmds.mk Build cleanup
 	rm -rf $(BUILD_DIST)/shell-cmds
 

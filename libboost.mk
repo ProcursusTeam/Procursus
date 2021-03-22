@@ -50,11 +50,11 @@ libboost-package: libboost-stage
 	mkdir -p $(BUILD_DIST)/libboost-all-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libboost-{atomic,chrono,container,context,contract,coroutine,date-time,filesystem,graph,iostreams,locale,log,math,program-options,random,regex,serialization,stacktrace,system,test,thread,timer,type-erasure,wave}$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libboost$(LIBBOOST_VERSION)-all
-	
+
 	# libboost.mk Prep libboost-all-dev
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libboost-all-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(*$(LIBBOOST_VERSION)*) $(BUILD_DIST)/libboost-all-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libboost.mk Prep libboost-*$(LIBBOOST_VERSION)
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_atomic.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-atomic$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_chrono.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-chrono$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
@@ -80,7 +80,7 @@ libboost-package: libboost-stage
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_timer.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-timer$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_type_erasure.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-type-erasure$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_wave.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-wave$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libboost.mk Sign
 	$(call SIGN,libboost-atomic$(LIBBOOST_VERSION),general.xml)
 	$(call SIGN,libboost-chrono$(LIBBOOST_VERSION),general.xml)
@@ -106,7 +106,7 @@ libboost-package: libboost-stage
 	$(call SIGN,libboost-timer$(LIBBOOST_VERSION),general.xml)
 	$(call SIGN,libboost-type-erasure$(LIBBOOST_VERSION),general.xml)
 	$(call SIGN,libboost-wave$(LIBBOOST_VERSION),general.xml)
-	
+
 	# libboost.mk Make .debs
 	$(call PACK,libboost-all-dev,DEB_LIBBOOST_V)
 	$(call PACK,libboost$(LIBBOOST_VERSION)-all,DEB_LIBBOOST_V)
@@ -134,7 +134,7 @@ libboost-package: libboost-stage
 	$(call PACK,libboost-timer$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
 	$(call PACK,libboost-type-erasure$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
 	$(call PACK,libboost-wave$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
-	
+
 	# libboost.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libboost*/
 

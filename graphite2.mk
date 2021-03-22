@@ -40,26 +40,26 @@ graphite2-package: graphite2-stage
 	rm -rf $(BUILD_DIST)/libgraphite2-{3,utils,dev}
 	mkdir -p $(BUILD_DIST)/libgraphite2-{3,dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libgraphite2-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# graphite2.mk Prep libgraphite2-3
 	cp -a $(BUILD_STAGE)/graphite2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgraphite2.3*.dylib $(BUILD_DIST)/libgraphite2-3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# graphite2.mk Prep libgraphite2-utils
 	cp -a $(BUILD_STAGE)/graphite2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/libgraphite2-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# graphite2.mk Prep libgraphite2-dev
 	cp -a $(BUILD_STAGE)/graphite2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libgraphite2.3*.dylib) $(BUILD_DIST)/libgraphite2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/graphite2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libgraphite2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# graphite2.mk Sign
 	$(call SIGN,libgraphite2-3,general.xml)
 	$(call SIGN,libgraphite2-utils,general.xml)
-	
+
 	# graphite2.mk Make .debs
 	$(call PACK,libgraphite2-3,DEB_GRAPHITE2_V)
 	$(call PACK,libgraphite2-utils,DEB_GRAPHITE2_V)
 	$(call PACK,libgraphite2-dev,DEB_GRAPHITE2_V)
-	
+
 	# graphite2.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libgraphite2-{3,utils,dev}
 

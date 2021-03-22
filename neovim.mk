@@ -50,19 +50,19 @@ endif
 neovim-package: neovim-stage
 	# neovim.mk Package Structure
 	rm -rf $(BUILD_DIST)/neovim
-	
+
 	# neovim.mk Prep neovim
 	cp -a $(BUILD_STAGE)/neovim $(BUILD_DIST)/neovim
 	for i in ex rview rvim view vimdiff; do \
 	$(GINSTALL) -Dm0755 $(BUILD_INFO)/neovim.$$i $(BUILD_DIST)/neovim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/neovim/$$i; \
 	done
-	
+
 	# neovim.mk Sign
 	$(call SIGN,neovim,general.xml)
-	
+
 	# neovim.mk Make .debs
 	$(call PACK,neovim,DEB_NEOVIM_V)
-	
+
 	# neovim.mk Build cleanup
 	rm -rf $(BUILD_DIST)/neovim
 

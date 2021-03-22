@@ -28,16 +28,16 @@ ttyrec-package: ttyrec-stage
 	# ttyrec.mk Package Structure
 	rm -rf $(BUILD_DIST)/ttyrec
 	mkdir -p $(BUILD_DIST)/ttyrec
-	
+
 	# ttyrec.mk Prep ttyrec
 	cp -a $(BUILD_STAGE)/ttyrec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/ttyrec
-	
+
 	# ttyrec.mk Sign
 	$(call SIGN,ttyrec,general.xml)
-	
+
 	# ttyrec.mk Make .debs
 	$(call PACK,ttyrec,DEB_TTYREC_V)
-	
+
 	# ttyrec.mk Build cleanup
 	rm -rf $(BUILD_DIST)/ttyrec
 

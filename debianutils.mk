@@ -35,17 +35,17 @@ debianutils-package: debianutils-stage
 	# debianutils.mk Package Structure
 	rm -rf $(BUILD_DIST)/debianutils
 	mkdir -p $(BUILD_DIST)/debianutils/bin
-	
+
 	# debianutils.mk Prep debianutils
 	cp -a $(BUILD_STAGE)/debianutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/debianutils
 	ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/run-parts $(BUILD_DIST)/debianutils/bin
-	
+
 	# debianutils.mk Sign
 	$(call SIGN,debianutils,general.xml)
-	
+
 	# debianutils.mk Make .debs
 	$(call PACK,debianutils,DEB_DEBIANUTILS_V)
-	
+
 	# debianutils.mk Build cleanup
 	rm -rf $(BUILD_DIST)/debianutils
 

@@ -57,16 +57,16 @@ aptitude-package: aptitude-stage
 	# aptitude.mk Package Structure
 	rm -rf $(BUILD_DIST)/aptitude
 	mkdir -p $(BUILD_DIST)/aptitude
-	
+
 	# aptitude.mk Prep aptitude
 	cp -a $(BUILD_STAGE)/aptitude $(BUILD_DIST)
-	
+
 	# aptitude.mk Sign
 	$(call SIGN,aptitude,general.xml)
-	
+
 	# aptitude.mk Make .debs
 	$(call PACK,aptitude,DEB_APTITUDE_V)
-	
+
 	# aptitude.mk Build cleanup
 	rm -rf $(BUILD_DIST)/aptitude
 

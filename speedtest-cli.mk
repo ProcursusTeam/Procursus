@@ -27,13 +27,13 @@ speedtest-cli-package: speedtest-cli-stage
 	# speedtest-cli.mk Package Structure
 	rm -rf $(BUILD_DIST)/speedtest-cli
 	mkdir -p $(BUILD_DIST)/speedtest-cli
-	
+
 	# speedtest-cli.mk Prep speedtest-cli
 	cp -a $(BUILD_STAGE)/speedtest-cli $(BUILD_DIST)
 
 	# speedtest-cli.mk Make .debs
 	$(call PACK,speedtest-cli,DEB_SPEEDTEST-CLI_V)
-	
+
 	# speedtest-cli.mk Build cleanup
 	rm -rf $(BUILD_DIST)/speedtest-cli
 

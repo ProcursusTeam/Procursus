@@ -58,14 +58,14 @@ xpwn-package: xpwn-stage
 
 	# xpwn.mk Prep libxpwn-dev
 	cp -a $(BUILD_STAGE)/xpwn/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib} $(BUILD_DIST)/libxpwn-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# xpwn.mk Sign
 	$(call SIGN,xpwn,general.xml)
-	
+
 	# xpwn.mk Make .debs
 	$(call PACK,xpwn,DEB_XPWN_V)
 	$(call PACK,libxpwn-dev,DEB_XPWN_V)
-	
+
 	# xpwn.mk Build cleanup
 	rm -rf $(BUILD_DIST)/{libxpwn-dev,xpwn}
 

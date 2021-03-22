@@ -34,16 +34,16 @@ ninja-package: ninja-stage
 	# ninja.mk Package Structure
 	rm -rf $(BUILD_DIST)/ninja
 	mkdir -p $(BUILD_DIST)/ninja
-	
+
 	# ninja.mk Prep ninja
 	cp -a $(BUILD_STAGE)/ninja/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/ninja
-	
+
 	# ninja.mk Sign
 	$(call SIGN,ninja,general.xml)
-	
+
 	# ninja.mk Make .debs
 	$(call PACK,ninja,DEB_NINJA_V)
-	
+
 	# ninja.mk Build cleanup
 	rm -rf $(BUILD_DIST)/ninja
 

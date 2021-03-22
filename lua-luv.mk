@@ -68,21 +68,21 @@ lua-luv-package: lua-luv-stage
 	# lua-luv.mk Package Structure
 	rm -rf $(BUILD_DIST)/lua-luv{,-dev}
 	mkdir -p $(BUILD_DIST)/lua-luv{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# lua-luv.mk Prep lua-luv
 	cp -a $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{liblua5.*-luv.*.dylib,lua} $(BUILD_DIST)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# lua-luv.mk Prep lua-luv-dev
 	cp -a $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/lua-luv-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{liblua5.*-luv.dylib,pkgconfig} $(BUILD_DIST)/lua-luv-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# lua-luv.mk Sign
 	$(call SIGN,lua-luv,general.xml)
-	
+
 	# lua-luv.mk Make .debs
 	$(call PACK,lua-luv,DEB_LUA-LUV_V)
 	$(call PACK,lua-luv-dev,DEB_LUA-LUV_V)
-	
+
 	# lua-luv.mk Build cleanup
 	rm -rf $(BUILD_DIST)/lua-luv{,-dev}
 

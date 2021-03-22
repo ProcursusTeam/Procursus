@@ -43,21 +43,21 @@ calc-package: calc-stage
 	# calc.mk Package Structure
 	rm -rf $(BUILD_DIST)/calc{,-dev}
 	mkdir -p $(BUILD_DIST)/calc{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# calc.mk Prep calc
 	cp -a $(BUILD_STAGE)/calc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/calc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# calc.mk Prep calc-dev
 	cp -a $(BUILD_STAGE)/calc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/calc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/calc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/*.a $(BUILD_DIST)/calc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# calc.mk Sign
 	$(call SIGN,calc,general.xml)
-	
+
 	# calc.mk Make .debs
 	$(call PACK,calc,DEB_CALC_V)
 	$(call PACK,calc-dev,DEB_CALC_V)
-	
+
 	# calc.mk Build cleanup
 	rm -rf $(BUILD_DIST)/calc{,-dev}
 

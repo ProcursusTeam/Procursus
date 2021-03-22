@@ -40,21 +40,21 @@ libxfont2-package: libxfont2-stage
 	# libxfont2.mk Package Structure
 	rm -rf $(BUILD_DIST)/libxfont{2,-dev}
 	mkdir -p $(BUILD_DIST)/libxfont{2,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libxfont2.mk Prep libxfont2
 	cp -a $(BUILD_STAGE)/libxfont2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXfont2.2.dylib $(BUILD_DIST)/libxfont2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxfont2.mk Prep libxfont-dev
 	cp -a $(BUILD_STAGE)/libxfont2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libXfont2.{a,dylib},pkgconfig} $(BUILD_DIST)/libxfont-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libxfont2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libxfont-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libxfont2.mk Sign
 	$(call SIGN,libxfont2,general.xml)
-	
+
 	# libxfont2.mk Make .debs
 	$(call PACK,libxfont2,DEB_LIBXFONT2_V)
 	$(call PACK,libxfont-dev,DEB_LIBXFONT2_V)
-	
+
 	# libxfont2.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libxfont{2,-dev}
 

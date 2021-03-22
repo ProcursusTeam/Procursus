@@ -40,13 +40,13 @@ upx-package: upx-stage
 	# upx.mk Prep upx-ucl
 	cp -a $(BUILD_STAGE)/upx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/upx-ucl $(BUILD_DIST)/upx-ucl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/upx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/upx-ucl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	
+
 	# upx.mk Sign
 	$(call SIGN,upx-ucl,general.xml)
-	
+
 	# upx.mk Make .debs
 	$(call PACK,upx-ucl,DEB_UPX_V)
-	
+
 	# upx.mk Build cleanup
 	rm -rf $(BUILD_DIST)/upx-ucl
 

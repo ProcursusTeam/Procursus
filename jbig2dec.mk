@@ -35,27 +35,27 @@ jbig2dec-package: jbig2dec-stage
 	mkdir -p $(BUILD_DIST)/jbig2dec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
 		$(BUILD_DIST)/libjbig2dec0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libjbig2dec0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# jbig2dec.mk Prep jbig2dec
 	cp -a $(BUILD_STAGE)/jbig2dec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/jbig2dec $(BUILD_DIST)/jbig2dec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/jbig2dec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/jbig2dec.1 $(BUILD_DIST)/jbig2dec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
-	
+
 	# jbig2dec.mk Prep libjbig2dec0
 	cp -a $(BUILD_STAGE)/jbig2dec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjbig2dec.0.dylib $(BUILD_DIST)/libjbig2dec0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# jbig2dec.mk Prep libjbig2dec0-dev
 	cp -a $(BUILD_STAGE)/jbig2dec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libjbig2dec.0.dylib) $(BUILD_DIST)/libjbig2dec0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/jbig2dec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libjbig2dec0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# jbig2dec.mk Sign
 	$(call SIGN,jbig2dec,general.xml)
 	$(call SIGN,libjbig2dec0,general.xml)
-	
+
 	# jbig2dec.mk Make .debs
 	$(call PACK,jbig2dec,DEB_JBIG2DEC_V)
 	$(call PACK,libjbig2dec0,DEB_JBIG2DEC_V)
 	$(call PACK,libjbig2dec0-dev,DEB_JBIG2DEC_V)
-	
+
 	# jbig2dec.mk Build cleanup
 	rm -rf $(BUILD_DIST)/jbig2dec \
 		$(BUILD_DIST)/libjbig2dec0{,-dev}

@@ -25,16 +25,16 @@ endif
 snaputil-package: snaputil-stage
 	# snaputil.mk Package Structure
 	rm -rf $(BUILD_DIST)/snaputil
-	
+
 	# snaputil.mk Prep snaputil
 	cp -a $(BUILD_STAGE)/snaputil $(BUILD_DIST)
 
 	# snaputil.mk Sign
 	$(call SIGN,snaputil,snaputil.xml)
-	
+
 	# snaputil.mk Make .debs
 	$(call PACK,snaputil,DEB_SNAPUTIL_V)
-	
+
 	# snaputil.mk Build cleanup
 	rm -rf $(BUILD_DIST)/snaputil
 

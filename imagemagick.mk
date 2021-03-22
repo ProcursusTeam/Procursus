@@ -72,11 +72,11 @@ imagemagick-package: imagemagick-stage
 		$(BUILD_DIST)/libmagickwand-7.q16hdri-8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libmagickwand-7.q16hdri-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,ImageMagick-7.0.10/bin} \
 		$(BUILD_DIST)/libmagickwand-7-headers/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ImageMagick-7
-	
+
 	# imagemagick.mk Prep imagemagick
 	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/!(Magick++-config|MagickCore-config|MagickWand-config) $(BUILD_DIST)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/!(Magick++-config.1|MagickCore-config.1|MagickWand-config.1) $(BUILD_DIST)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
-	
+
 	# imagemagick.mk Prep imagemagick-7-common
 	cp -a $(BUILD_STAGE)/imagemagick/etc $(BUILD_DIST)/imagemagick-7-common
 	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/ImageMagick-7 $(BUILD_DIST)/imagemagick-7-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
@@ -114,13 +114,13 @@ imagemagick-package: imagemagick-stage
 
 	# imagemagick.mk Prep libmagickwand-7-headers
 	cp -a $(BUILD_STAGE)/imagemagick/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ImageMagick-7/MagickWand $(BUILD_DIST)/libmagickwand-7-headers/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ImageMagick-7
-	
+
 	# imagemagick.mk Sign
 	$(call SIGN,imagemagick,general.xml)
 	$(call SIGN,libmagick++-7.q16hdri-4,general.xml)
 	$(call SIGN,libmagickcore-7.q16hdri-8,general.xml)
 	$(call SIGN,libmagickwand-7.q16hdri-8,general.xml)
-	
+
 	# imagemagick.mk Make .debs
 	$(call PACK,imagemagick,DEB_IMAGEMAGICK_V)
 	$(call PACK,imagemagick-7-common,DEB_IMAGEMAGICK_V)
@@ -133,7 +133,7 @@ imagemagick-package: imagemagick-stage
 	$(call PACK,libmagickwand-7.q16hdri-8,DEB_IMAGEMAGICK_V)
 	$(call PACK,libmagickwand-7.q16hdri-dev,DEB_IMAGEMAGICK_V)
 	$(call PACK,libmagickwand-7-headers,DEB_IMAGEMAGICK_V)
-	
+
 	# imagemagick.mk Build cleanup
 	rm -rf $(BUILD_DIST)/*magick*7*/ $(BUILD_DIST)/imagemagick
 

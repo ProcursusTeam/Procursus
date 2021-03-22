@@ -53,17 +53,17 @@ libsgmls-perl-package: libsgmls-perl-stage
 	rm -rf $(BUILD_DIST)/libsgmls-perl $(BUILD_DIST)/sgmlspl
 	mkdir -p $(BUILD_DIST)/libsgmls-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		$(BUILD_DIST)/sgmlspl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libsgmls-perl.mk Prep libsgmls-perl
 	cp -a $(BUILD_STAGE)/libsgmls-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/libsgmls-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libsgmls-perl.mk Prep sgmlspl
 	cp -a $(BUILD_STAGE)/libsgmls-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/sgmlspl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libsgmls-perl.mk Make .debs
 	$(call PACK,libsgmls-perl,DEB_LIBSGMLS-PERL_V)
 	$(call PACK,sgmlspl,DEB_LIBSGMLS-PERL_V)
-	
+
 	# libsgmls-perl.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libsgmls-perl $(BUILD_DIST)/sgmlspl
 

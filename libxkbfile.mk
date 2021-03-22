@@ -35,7 +35,7 @@ libxkbfile-package: libxkbfile-stage
 	rm -rf $(BUILD_DIST)/libxkbfile{1,-dev}
 	mkdir -p $(BUILD_DIST)/libxkbfile1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	mkdir -p $(BUILD_DIST)/libxkbfile-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib}
-	
+
 	# libxkbfile.mk Prep libxkbfile1
 	cp -a $(BUILD_STAGE)/libxkbfile/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libxkbfile.1.dylib $(BUILD_DIST)/libxkbfile1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 

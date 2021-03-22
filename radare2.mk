@@ -44,7 +44,7 @@ radare2-package: radare2-stage
 		$(BUILD_DIST)/libradare2-$(RADARE2_API_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libradare2-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share} \
 		$(BUILD_DIST)/libradare2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# radare2.mk Prep radare2
 	cp -a $(BUILD_STAGE)/radare2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/radare2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/radare2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/radare2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
@@ -59,17 +59,17 @@ radare2-package: radare2-stage
 	# radare2.mk Prep libradare2-dev
 	cp -a $(BUILD_STAGE)/radare2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libradare2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/radare2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(*$(RADARE2_VERSION)*|radare2) $(BUILD_DIST)/libradare2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# radare2.mk Sign
 	$(call SIGN,radare2,general.xml)
 	$(call SIGN,libradare2-$(RADARE2_API_V),general.xml)
-	
+
 	# radare2.mk Make .debs
 	$(call PACK,radare2,DEB_RADARE2_V)
 	$(call PACK,libradare2-$(RADARE2_API_V),DEB_RADARE2_V)
 	$(call PACK,libradare2-common,DEB_RADARE2_V)
 	$(call PACK,libradare2-dev,DEB_RADARE2_V)
-	
+
 	# radare2.mk Build cleanup
 	rm -rf $(BUILD_DIST)/{lib,}radare2{,-$(RADARE2_API_V),-common,-dev}
 

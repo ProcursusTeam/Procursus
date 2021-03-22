@@ -33,21 +33,21 @@ hidapi-package: hidapi-stage
 	# hidapi.mk Package Structure
 	rm -rf $(BUILD_DIST)/libhidapi{0,-dev}
 	mkdir -p $(BUILD_DIST)/libhidapi{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# hidapi.mk Prep libhidapi0
 	cp -a $(BUILD_STAGE)/hidapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libhidapi.0.dylib $(BUILD_DIST)/libhidapi0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# hidapi.mk Prep libhidapi-dev
 	cp -a $(BUILD_STAGE)/hidapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libhidapi.{a,dylib}} $(BUILD_DIST)/libhidapi-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/hidapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libhidapi-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# hidapi.mk Sign
 	$(call SIGN,libhidapi0,general.xml)
 
 	# hidapi.mk Make .debs
 	$(call PACK,libhidapi0,DEB_HIDAPI_V)
 	$(call PACK,libhidapi-dev,DEB_HIDAPI_V)
-	
+
 	# hidapi.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libhidapi{0,-dev}
 

@@ -24,13 +24,13 @@ endif
 fff-package: fff-stage
 	# fff.mk Package Structure
 	rm -rf $(BUILD_DIST)/fff
-	
+
 	# fff.mk Prep fff
 	cp -a $(BUILD_STAGE)/fff $(BUILD_DIST)
-	
+
 	# fff.mk Make .debs
 	$(call PACK,fff,DEB_FFF_V)
-	
+
 	# fff.mk Build cleanup
 	rm -rf $(BUILD_DIST)/fff
 

@@ -34,20 +34,20 @@ nmap-package: nmap-stage
 	# nmap.mk Package Structure
 	rm -rf $(BUILD_DIST)/nmap{-utils,-common}
 	mkdir -p $(BUILD_DIST)/nmap{-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX),-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share}
-	
+
 	# nmap.mk Prep nmap-utils
 	cp -a $(BUILD_STAGE)/nmap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/nmap-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# nmap.mk Prep nmap-common
 	cp -a $(BUILD_STAGE)/nmap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{ncat,nmap} $(BUILD_DIST)/nmap-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	
+
 	# nmap.mk Sign
 	$(call SIGN,nmap-utils,general.xml)
-	
+
 	# nmap.mk Make .debs
 	$(call PACK,nmap-utils,DEB_NMAP_V)
 	$(call PACK,nmap-common,DEB_NMAP_V)
-	
+
 	# nmap.mk Build cleanup
 	rm -rf $(BUILD_DIST)/nmap{-utils,-common}
 

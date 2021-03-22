@@ -39,7 +39,7 @@ img4lib-package: img4lib-stage
 	# img4lib.mk Package Structure
 	rm -rf $(BUILD_DIST)/{img4lib,libimg4-dev}
 	mkdir -p $(BUILD_DIST)/{img4lib,libimg4-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# img4lib.mk Prep img4lib
 	cp -a $(BUILD_STAGE)/img4lib/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/img4lib/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
@@ -48,11 +48,11 @@ img4lib-package: img4lib-stage
 
 	# img4lib.mk Sign
 	$(call SIGN,img4lib,general.xml)
-	
+
 	# img4lib.mk Make .debs
 	$(call PACK,img4lib,DEB_IMG4LIB_V)
 	$(call PACK,libimg4-dev,DEB_IMG4LIB_V)
-	
+
 	# img4lib.mk Build cleanup
 	rm -rf $(BUILD_DIST)/{img4lib,libimg4-dev}
 

@@ -39,7 +39,7 @@ libgcrypt-package: libgcrypt-stage
 	rm -rf $(BUILD_DIST)/libgcrypt20{,-dev}
 	mkdir -p $(BUILD_DIST)/libgcrypt20/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	mkdir -p $(BUILD_DIST)/libgcrypt20-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libgcrypt.mk Prep libgcrypt
 	cp -a $(BUILD_STAGE)/libgcrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgcrypt.20.dylib $(BUILD_DIST)/libgcrypt20/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libgcrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/libgcrypt20-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
@@ -49,11 +49,11 @@ libgcrypt-package: libgcrypt-stage
 	# libgcrypt.mk Sign
 	$(call SIGN,libgcrypt20,general.xml)
 	$(call SIGN,libgcrypt20-dev,general.xml)
-	
+
 	# libgcrypt.mk Make .debs
 	$(call PACK,libgcrypt20,DEB_LIBGCRYPT_V)
 	$(call PACK,libgcrypt20-dev,DEB_LIBGCRYPT_V)
-	
+
 	# libgcrypt.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libgcrypt20{,-dev}
 

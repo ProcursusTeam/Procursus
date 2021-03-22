@@ -34,7 +34,7 @@ mpg123-package: mpg123-stage
 		$(BUILD_DIST)/libout123-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libsyn123-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libmpg123-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# mpg123.mk Prep mpg123
 	cp -a $(BUILD_STAGE)/mpg123/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/mpg123/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/mpg123/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/mpg123 $(BUILD_DIST)/mpg123/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
@@ -57,14 +57,14 @@ mpg123-package: mpg123-stage
 	$(call SIGN,libmpg123-0,general.xml)
 	$(call SIGN,libout123-0,general.xml)
 	$(call SIGN,libsyn123-0,general.xml)
-	
+
 	# mpg123.mk Make .debs
 	$(call PACK,mpg123,DEB_MPG123_V)
 	$(call PACK,libmpg123-0,DEB_MPG123_V)
 	$(call PACK,libout123-0,DEB_MPG123_V)
 	$(call PACK,libsyn123-0,DEB_MPG123_V)
 	$(call PACK,libmpg123-dev,DEB_MPG123_V)
-	
+
 	# mpg123.mk Build cleanup
 	rm -rf $(BUILD_DIST)/mpg123 $(BUILD_DIST)/lib{mpg,out,syn}123-{0,dev}
 

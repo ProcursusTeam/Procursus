@@ -34,7 +34,7 @@ libedit-package: libedit-stage
 	# libedit.mk Package Structure
 	rm -rf $(BUILD_DIST)/libedit{0,-dev}
 	mkdir -p $(BUILD_DIST)/libedit{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share/man}
-	
+
 	# libedit.mk Prep libedit0
 	cp -a $(BUILD_STAGE)/libedit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libedit.0.dylib $(BUILD_DIST)/libedit0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libedit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/!(man3) $(BUILD_DIST)/libedit0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
@@ -43,14 +43,14 @@ libedit-package: libedit-stage
 	cp -a $(BUILD_STAGE)/libedit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libedit.0.dylib) $(BUILD_DIST)/libedit-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libedit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libedit-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	cp -a $(BUILD_STAGE)/libedit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libedit-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libedit.mk Sign
 	$(call SIGN,libedit0,general.xml)
-	
+
 	# libedit.mk Make .debs
 	$(call PACK,libedit0,DEB_LIBEDIT_V)
 	$(call PACK,libedit-dev,DEB_LIBEDIT_V)
-	
+
 	# libedit.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libedit{0,-dev}
 

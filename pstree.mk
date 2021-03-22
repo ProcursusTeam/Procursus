@@ -28,16 +28,16 @@ pstree-package: pstree-stage
 	# pstree.mk Package Structure
 	rm -rf $(BUILD_DIST)/pstree
 	mkdir -p $(BUILD_DIST)/pstree
-	
+
 	# pstree.mk Prep pstree
 	cp -a $(BUILD_STAGE)/pstree $(BUILD_DIST)
-	
+
 	# pstree.mk Sign
 	$(call SIGN,pstree,general.xml)
-	
+
 	# pstree.mk Make .debs
 	$(call PACK,pstree,DEB_PSTREE_V)
-	
+
 	# pstree.mk Build cleanup
 	rm -rf $(BUILD_DIST)/pstree
 

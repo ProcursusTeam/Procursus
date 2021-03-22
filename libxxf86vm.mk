@@ -36,21 +36,21 @@ libxxf86vm-package: libxxf86vm-stage
 	rm -rf $(BUILD_DIST)/libxxf86vm{1,-dev}
 	mkdir -p $(BUILD_DIST)/libxxf86vm1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	mkdir -p $(BUILD_DIST)/libxxf86vm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib}
-	
+
 	# libxxf86vm.mk Prep libxxf86vm1
 	cp -a $(BUILD_STAGE)/libxxf86vm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXxf86vm.1.dylib $(BUILD_DIST)/libxxf86vm1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxxf86vm.mk Prep libxxf86vm-dev
 	cp -a $(BUILD_STAGE)/libxxf86vm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libXxf86vm{.a,.dylib},pkgconfig} $(BUILD_DIST)/libxxf86vm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libxxf86vm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libxxf86vm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libxxf86vm.mk Sign
 	$(call SIGN,libxxf86vm1,general.xml)
-	
+
 	# libxxf86vm.mk Make .debs
 	$(call PACK,libxxf86vm1,DEB_LIBXXF86VM_V)
 	$(call PACK,libxxf86vm-dev,DEB_LIBXXF86VM_V)
-	
+
 	# libxxf86vm.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libxxf86vm{1,-dev}
 

@@ -42,22 +42,22 @@ unibilium-package: unibilium-stage
 	# unibilium.mk Package Structure
 	rm -rf $(BUILD_DIST)/{libunibilium-dev,libunibilium4}
 	mkdir -p $(BUILD_DIST)/libunibilium{4,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# unibilium.mk Prep libunibilium-dev
 	cp -a $(BUILD_STAGE)/unibilium/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libunibilium-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/unibilium/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libunibilium.{a,dylib}} $(BUILD_DIST)/libunibilium-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# unibilium.mk Prep libunibilium4
 	cp -a $(BUILD_STAGE)/unibilium/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libunibilium.4.dylib $(BUILD_DIST)/libunibilium4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# unibilium.mk Sign
 	$(call SIGN,libunibilium4,general.xml)
-	
+
 	# unibilium.mk Make .debs
 	$(call PACK,libunibilium-dev,DEB_UNIBILIUM_V)
 	$(call PACK,libunibilium4,DEB_UNIBILIUM_V)
-	
+
 	# unibilium.mk Build cleanup
 	rm -rf $(BUILD_DIST)/{libunibilium-dev,libunibilium4}
-	
+
 .PHONY: unibilium unibilium-package

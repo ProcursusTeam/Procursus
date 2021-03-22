@@ -44,32 +44,32 @@ ghostscript-package: ghostscript-stage
 		$(BUILD_DIST)/libgs-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libgs9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libgs9-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	
+
 	# ghostscript.mk Prep ghostscript
 	cp -a $(BUILD_STAGE)/ghostscript/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/ghostscript/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/ghostscript/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/ghostscript/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	
+
 	# ghostscript.mk Prep libgs9
 	cp -a $(BUILD_STAGE)/ghostscript/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgs.9*.dylib $(BUILD_DIST)/libgs9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# ghostscript.mk Prep libgs9-common
 	cp -a $(BUILD_STAGE)/ghostscript/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/ghostscript $(BUILD_DIST)/libgs9-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	
+
 	# ghostscript.mk Prep libgs-dev
 	cp -a $(BUILD_STAGE)/ghostscript/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgs.dylib $(BUILD_DIST)/libgs-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/ghostscript/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libgs-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# ghostscript.mk Sign
 	$(call SIGN,ghostscript,general.xml)
 	$(call SIGN,libgs9,general.xml)
 	$(call SIGN,libgs-dev,general.xml)
-	
+
 	# ghostscript.mk Make .debs
 	$(call PACK,ghostscript,DEB_GHOSTSCRIPT_V)
 	$(call PACK,libgs9,DEB_GHOSTSCRIPT_V)
 	$(call PACK,libgs9-common,DEB_GHOSTSCRIPT_V)
 	$(call PACK,libgs-dev,DEB_GHOSTSCRIPT_V)
-	
+
 	# ghostscript.mk Build cleanup
 	rm -rf $(BUILD_DIST)/ghostscript \
 		$(BUILD_DIST)/libgs{9{,-common},-dev}

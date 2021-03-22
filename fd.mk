@@ -28,16 +28,16 @@ endif
 fd-package: fd-stage
 	# fd.mk Package Structure
 	rm -rf $(BUILD_DIST)/fd
-	
+
 	# fd.mk Prep fd
 	cp -a $(BUILD_STAGE)/fd $(BUILD_DIST)
-	
+
 	# fd.mk Sign
 	$(call SIGN,fd,general.xml)
-	
+
 	# fd.mk Make .debs
 	$(call PACK,fd,DEB_FD_V)
-	
+
 	# fd.mk Build cleanup
 	rm -rf $(BUILD_DIST)/fd
 

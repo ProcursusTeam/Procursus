@@ -49,29 +49,29 @@ lua5.1-package: lua5.1-stage
 	rm -rf $(BUILD_DIST)/{lua5.1,liblua5.1-{0,dev}}
 	mkdir -p $(BUILD_DIST)/lua5.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share \
 		$(BUILD_DIST)/liblua5.1-{0,dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# lua5.1.mk Prep lua5.1
 	cp -a $(BUILD_STAGE)/lua5.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/lua5.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	$(GINSTALL) -Dm644 $(BUILD_STAGE)/lua5.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/lua.1 $(BUILD_DIST)/lua5.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/lua5.1.1
 	$(GINSTALL) -Dm644 $(BUILD_STAGE)/lua5.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/luac.1 $(BUILD_DIST)/lua5.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/luac5.1.1
-	
+
 	# lua5.1.mk Prep liblua5.1-0
 	$(GINSTALL) -Dm755 $(BUILD_STAGE)/lua5.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.1.0.dylib $(BUILD_DIST)/liblua5.1-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.1.0.dylib
 	ln -sf liblua5.1.0.dylib $(BUILD_DIST)/liblua5.1-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.1.0.0.0.dylib
-	
+
 	# lua5.1.mk Prep liblua5.1-dev
 	cp -a $(BUILD_STAGE)/lua5.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/liblua5.1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	ln -sf liblua5.1.0.dylib $(BUILD_DIST)/liblua5.1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.1.dylib
-	
+
 	# lua5.1.mk Sign
 	$(call SIGN,lua5.1,general.xml)
 	$(call SIGN,liblua5.1-0,general.xml)
-	
+
 	# lua5.1.mk Make .debs
 	$(call PACK,lua5.1,DEB_LUA5.1_V)
 	$(call PACK,liblua5.1-0,DEB_LUA5.1_V)
 	$(call PACK,liblua5.1-dev,DEB_LUA5.1_V)
-	
+
 	# lua5.1.mk Build cleanup
 	rm -rf $(BUILD_DIST)/{lua5.1,liblua5.1-{0,dev}}
 

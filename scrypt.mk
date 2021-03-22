@@ -32,26 +32,26 @@ scrypt-package: scrypt-stage
 	mkdir -p \
 		$(BUILD_DIST)/scrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		$(BUILD_DIST)/libscrypt-kdf{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# scrypt.mk Prep scrypt
 	cp -a $(BUILD_STAGE)/scrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/scrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# scrypt.mk Prep libscrypt-kdf1
 	cp -a $(BUILD_STAGE)/scrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libscrypt-kdf.1.dylib $(BUILD_DIST)/libscrypt-kdf1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# scrypt.mk Prep libscrypt-kdf-dev
 	cp -a $(BUILD_STAGE)/scrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libscrypt-kdf.1.dylib) $(BUILD_DIST)/libscrypt-kdf-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/scrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libscrypt-kdf-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# scrypt.mk Sign
 	$(call SIGN,scrypt,general.xml)
 	$(call SIGN,libscrypt-kdf1,general.xml)
-	
+
 	# scrypt.mk Make .debs
 	$(call PACK,scrypt,DEB_SCRYPT_V)
 	$(call PACK,libscrypt-kdf1,DEB_SCRYPT_V)
 	$(call PACK,libscrypt-kdf-dev,DEB_SCRYPT_V)
-	
+
 	# scrypt.mk Build cleanup
 	rm -rf $(BUILD_DIST)/scrypt $(BUILD_DIST)/libscrypt-kdf{1,-dev}
 

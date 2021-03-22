@@ -49,13 +49,13 @@ endif
 libtest-harness-perl-package: libtest-harness-perl-stage
 	# libtest-harness-perl.mk Package Structure
 	rm -rf $(BUILD_DIST)/libtest-harness-perl
-	
+
 	# libtest-harness-perl.mk Prep libtest-harness-perl
 	cp -a $(BUILD_STAGE)/libtest-harness-perl $(BUILD_DIST)
-	
+
 	# libtest-harness-perl.mk Make .debs
 	$(call PACK,libtest-harness-perl,DEB_LIBTEST-HARNESS-PERL_V)
-	
+
 	# libtest-harness-perl.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libtest-harness-perl
 

@@ -35,16 +35,16 @@ endif
 iokittools-package: iokittools-stage
 	# iokittools.mk Package Structure
 	rm -rf $(BUILD_DIST)/iokittools
-	
+
 	# iokittools.mk Prep iokittools
 	cp -a $(BUILD_STAGE)/iokittools $(BUILD_DIST)
 
 	# iokittools.mk Sign
 	$(call SIGN,iokittools,general.xml)
-	
+
 	# iokittools.mk Make .debs
 	$(call PACK,iokittools,DEB_IOKITTOOLS_V)
-	
+
 	# iokittools.mk Build cleanup
 	rm -rf $(BUILD_DIST)/iokittools
 

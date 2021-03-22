@@ -35,16 +35,16 @@ p7zip-package: p7zip-stage
 	# p7zip.mk Package Structure
 	rm -rf $(BUILD_DIST)/p7zip
 	mkdir -p $(BUILD_DIST)/p7zip
-	
+
 	# p7zip.mk Prep p7zip
 	cp -a $(BUILD_STAGE)/p7zip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/p7zip
-	
+
 	# p7zip.mk Sign
 	$(call SIGN,p7zip,general.xml)
-	
+
 	# p7zip.mk Make .debs
 	$(call PACK,p7zip,DEB_P7ZIP_V)
-	
+
 	# p7zip.mk Build cleanup
 	rm -rf $(BUILD_DIST)/p7zip
 

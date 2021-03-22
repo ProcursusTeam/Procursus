@@ -45,7 +45,7 @@ luajit-package: luajit-stage
 	mkdir -p $(BUILD_DIST)/luajit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share \
 		$(BUILD_DIST)/libluajit-5.1-{2,dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libluajit-5.1-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	
+
 	# luajit.mk Prep luajit
 	cp -a $(BUILD_STAGE)/luajit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/luajit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/luajit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/luajit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
@@ -59,17 +59,17 @@ luajit-package: luajit-stage
 
 	# luajit.mk Prep libluajit-5.1-common
 	cp -a $(BUILD_STAGE)/luajit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/lua* $(BUILD_DIST)/libluajit-5.1-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	
+
 	# luajit.mk Sign
 	$(call SIGN,luajit,general.xml)
 	$(call SIGN,libluajit-5.1-2,general.xml)
-	
+
 	# luajit.mk Make .debs
 	$(call PACK,luajit,DEB_LUAJIT_V)
 	$(call PACK,libluajit-5.1-2,DEB_LUAJIT_V)
 	$(call PACK,libluajit-5.1-dev,DEB_LUAJIT_V)
 	$(call PACK,libluajit-5.1-common,DEB_LUAJIT_V)
-	
+
 	# luajit.mk Build cleanup
 	rm -rf $(BUILD_DIST)/luajit $(BUILD_DIST)/libluajit-5.1-{2,dev,common}
 

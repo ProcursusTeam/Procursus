@@ -31,16 +31,16 @@ endif
 bat-package: bat-stage
 	# bat.mk Package Structure
 	rm -rf $(BUILD_DIST)/bat
-	
+
 	# bat.mk Prep bat
 	cp -a $(BUILD_STAGE)/bat $(BUILD_DIST)
-	
+
 	# bat.mk Sign
 	$(call SIGN,bat,general.xml)
-	
+
 	# bat.mk Make .debs
 	$(call PACK,bat,DEB_BAT_V)
-	
+
 	# bat.mk Build cleanup
 	rm -rf $(BUILD_DIST)/bat
 

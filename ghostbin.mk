@@ -41,17 +41,17 @@ endif
 ghostbin-package: ghostbin-stage
 	# ghostbin.mk Package Structure
 	rm -rf $(BUILD_DIST)/ghostbin
-	
+
 	# ghostbin.mk Prep ghostbin
 	cp -a $(BUILD_STAGE)/ghostbin $(BUILD_DIST)
-	
+
 	# ghostbin.mk Sign
 	$(call SIGN,ghostbin,general.xml)
-	
+
 	# ghostbin.mk Make .debs
 	$(call PACK,ghostbin,DEB_GHOSTBIN_V)
-	
+
 	# ghostbin.mk Build cleanup
 	rm -rf $(BUILD_DIST)/ghostbin
-	
+
 .PHONY: ghostbin ghostbin-package

@@ -27,16 +27,16 @@ attach-package: attach-stage
 	# attach.mk Package Structure
 	rm -rf $(BUILD_DIST)/attach
 	mkdir -p $(BUILD_DIST)/attach
-	
+
 	# attach.mk Prep attach
 	cp -a $(BUILD_STAGE)/attach/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/attach
 
 	# attach.mk Sign
 	$(call SIGN,attach,attach.xml)
-	
+
 	# attach.mk Make .debs
 	$(call PACK,attach,DEB_ATTACH_V)
-	
+
 	# attach.mk Build cleanup
 	rm -rf $(BUILD_DIST)/attach
 

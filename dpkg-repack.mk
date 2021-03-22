@@ -29,13 +29,13 @@ dpkg-repack-package: dpkg-repack-stage
 	# dpkg-repack.mk Package Structure
 	rm -rf $(BUILD_DIST)/dpkg-repack
 	mkdir -p $(BUILD_DIST)/dpkg-repack
-	
+
 	# dpkg-repack.mk Prep dpkg-repack
 	cp -a $(BUILD_STAGE)/dpkg-repack $(BUILD_DIST)
-	
+
 	# dpkg-repack.mk Make .debs
 	$(call PACK,dpkg-repack,DEB_DPKG_REPACK_V)
-	
+
 	# dpkg-repack.mk Build cleanup
 	rm -rf $(BUILD_DIST)/dpkg-repack
 

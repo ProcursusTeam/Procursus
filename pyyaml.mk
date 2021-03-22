@@ -31,16 +31,16 @@ pyyaml-package: pyyaml-stage
 	# pyyaml.mk Package Structure
 	rm -rf $(BUILD_DIST)/python3-yaml
 	mkdir -p $(BUILD_DIST)/python3-yaml/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3/dist-packages
-	
+
 	# pyyaml.mk Prep python3-yaml
 	cp -a $(BUILD_STAGE)/pyyaml/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/site-packages/* $(BUILD_DIST)/python3-yaml/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3/dist-packages
-	
+
 	# pyyaml.mk Sign
 	$(call SIGN,python3-yaml,general.xml)
-	
+
 	#pyyaml.mk Make .debs
 	$(call PACK,python3-yaml,DEB_PYYAML_V)
-	
+
 	# pyyaml.mk Build cleanup
 	rm -rf $(BUILD_DIST)/python3-yaml
 

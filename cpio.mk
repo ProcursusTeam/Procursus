@@ -31,16 +31,16 @@ cpio-package: cpio-stage
 	# cpio.mk Package Structure
 	rm -rf $(BUILD_DIST)/cpio
 	mkdir -p $(BUILD_DIST)/cpio
-	
+
 	# cpio.mk Prep cpio
 	cp -a $(BUILD_STAGE)/cpio $(BUILD_DIST)
-	
+
 	# cpio.mk Sign
 	$(call SIGN,cpio,general.xml)
-	
+
 	# cpio.mk Make .debs
 	$(call PACK,cpio,DEB_CPIO_V)
-	
+
 	# cpio.mk Build cleanup
 	rm -rf $(BUILD_DIST)/cpio
 

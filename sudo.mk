@@ -88,19 +88,19 @@ endif
 sudo-package: sudo-stage
 	# sudo.mk Package Structure
 	rm -rf $(BUILD_DIST)/sudo
-	
+
 	# sudo.mk Prep sudo
 	cp -a $(BUILD_STAGE)/sudo $(BUILD_DIST)
-	
+
 	# sudo.mk Sign
 	$(call SIGN,sudo,general.xml)
 
 	# sudo.mk Permissions
 	$(FAKEROOT) chmod u+s $(BUILD_DIST)/sudo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sudo
-	
+
 	# sudo.mk Make .debs
 	$(call PACK,sudo,DEB_SUDO_V)
-	
+
 	# sudo.mk Build cleanup
 	rm -rf $(BUILD_DIST)/sudo
 

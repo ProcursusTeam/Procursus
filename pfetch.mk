@@ -24,16 +24,16 @@ pfetch-package: pfetch-stage
 	# pfetch.mk Package Structure
 	rm -rf $(BUILD_DIST)/pfetch
 	mkdir -p $(BUILD_DIST)/pfetch
-	
+
 	# pfetch.mk Prep pfetch
 	cp -a $(BUILD_STAGE)/pfetch $(BUILD_DIST)
-	
+
 	# pfetch.mk Sign
 	$(call SIGN,pfetch,general.xml)
-	
+
 	# pfetch.mk Make .debs
 	$(call PACK,pfetch,DEB_PFETCH_V)
-	
+
 	# pfetch.mk Build cleanup
 	rm -rf $(BUILD_DIST)/pfetch
 

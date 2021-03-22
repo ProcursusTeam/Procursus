@@ -36,21 +36,21 @@ libxcursor-package: libxcursor-stage
 	mkdir -p $(BUILD_DIST)/libxcursor1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libxcursor-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libxcursor1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libxcursor.mk Prep libxcursor1
 	cp -a $(BUILD_STAGE)/libxcursor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXcursor.1.dylib $(BUILD_DIST)/libxcursor1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxcursor.mk Prep libxcursor-dev
 	cp -a $(BUILD_STAGE)/libxcursor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libXcursor.1.dylib) $(BUILD_DIST)/libxcursor-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libxcursor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libxcursor-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libxcursor.mk Sign
 	$(call SIGN,libxcursor1,general.xml)
 
 	# libxcursor.mk Make .debs
 	$(call PACK,libxcursor1,DEB_LIBXCURSOR_V)
 	$(call PACK,libxcursor-dev,DEB_LIBXCURSOR_V)
-	
+
 	# libxcursor.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libxcursor{1,-dev}
 

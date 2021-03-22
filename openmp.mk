@@ -75,14 +75,14 @@ openmp-package: openmp-stage
 	# openmp.mk Prep libomp-dev
 	cp -a $(BUILD_STAGE)/openmp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libomp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/openmp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libomp.1.dylib) $(BUILD_DIST)/libomp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# openmp.mk Sign
 	$(call SIGN,libomp1,general.xml)
-	
+
 	# openmp.mk Make .debs
 	$(call PACK,libomp1,DEB_OPENMP_V)
 	$(call PACK,libomp-dev,DEB_OPENMP_V)
-	
+
 	# openmp.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libomp{1,-dev}
 

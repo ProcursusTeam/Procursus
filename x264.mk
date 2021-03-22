@@ -47,7 +47,7 @@ x264-package: x264-stage
 	mkdir -p $(BUILD_DIST)/libx264-$(X264_SOVERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libx264-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/x264/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	
+
 	# x264.mk Prep libx264-$(X264_SOVERSION)
 	cp -a $(BUILD_STAGE)/x264/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libx264.$(X264_SOVERSION).dylib $(BUILD_DIST)/libx264-$(X264_SOVERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
@@ -57,16 +57,16 @@ x264-package: x264-stage
 
 	# x264.mk Prep x264
 	cp -a $(BUILD_STAGE)/x264/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/x264 $(BUILD_DIST)/x264/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	
+
 	# x264.mk Sign
 	$(call SIGN,libx264-$(X264_SOVERSION),general.xml)
 	$(call SIGN,x264,general.xml)
-	
+
 	# x264.mk Make .debs
 	$(call PACK,libx264-$(X264_SOVERSION),DEB_X264_V)
 	$(call PACK,libx264-dev,DEB_X264_V)
 	$(call PACK,x264,DEB_X264_V)
-	
+
 	# x264.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libx264-{$(X264_SOVERSION),dev} $(BUILD_DIST)/x264
 

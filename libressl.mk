@@ -34,16 +34,16 @@ libressl-package: libressl-stage
 	# libressl.mk Package Structure
 	rm -rf $(BUILD_DIST)/libressl
 	mkdir -p $(BUILD_DIST)/libressl
-	
+
 	# libressl.mk Prep libressl
 	cp -a $(BUILD_STAGE)/libressl/{etc,usr} $(BUILD_DIST)/libressl
-	
+
 	# libressl.mk Sign
 	$(call SIGN,libressl,general.xml)
-	
+
 	# libressl.mk Make .debs
 	$(call PACK,libressl,DEB_LIBRESSL_V)
-	
+
 	# libressl.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libressl
 

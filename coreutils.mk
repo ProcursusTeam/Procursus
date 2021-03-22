@@ -64,7 +64,7 @@ coreutils-package: coreutils-stage
 	# coreutils.mk Package Structure
 	rm -rf $(BUILD_DIST)/coreutils
 	mkdir -p $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/{bin,$(MEMO_SUB_PREFIX)/sbin}
-	
+
 	# coreutils.mk Prep coreutils
 	cp -a $(BUILD_STAGE)/coreutils $(BUILD_DIST)
 	ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/chown $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
@@ -94,10 +94,10 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(FAKEROOT) chmod u+s $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$(GNU_PREFIX)su
 endif
-	
+
 	# coreutils.mk Make .debs
 	$(call PACK,coreutils,DEB_COREUTILS_V)
-	
+
 	# coreutils.mk Build cleanup
 	rm -rf $(BUILD_DIST)/coreutils
 

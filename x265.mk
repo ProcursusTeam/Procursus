@@ -73,7 +73,7 @@ x265: x265-setup
 	+$(MAKE) -C $(BUILD_WORK)/x265/8bit
 	mv $(BUILD_WORK)/x265/8bit/libx265.a $(BUILD_WORK)/x265/8bit/libx265_main.a
 
-	
+
 	cd $(BUILD_WORK)/x265/8bit && $(LIBTOOL) -static -o libx265.a \
 		libx265_main.a libx265_main10.a libx265_main12.a
 
@@ -90,7 +90,7 @@ x265-package: x265-stage
 	mkdir -p $(BUILD_DIST)/libx265-$(X265_SOVERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libx265-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/x265/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	
+
 	# x265.mk Prep libx265-$(X265_SOVERSION)
 	cp -a $(BUILD_STAGE)/x265/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libx265.$(X265_SOVERSION).dylib $(BUILD_DIST)/libx265-$(X265_SOVERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
@@ -100,16 +100,16 @@ x265-package: x265-stage
 
 	# x265.mk Prep x265
 	cp -a $(BUILD_STAGE)/x265/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/x265 $(BUILD_DIST)/x265/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	
+
 	# x265.mk Sign
 	$(call SIGN,libx265-$(X265_SOVERSION),general.xml)
 	$(call SIGN,x265,general.xml)
-	
+
 	# x265.mk Make .debs
 	$(call PACK,libx265-$(X265_SOVERSION),DEB_X265_V)
 	$(call PACK,libx265-dev,DEB_X265_V)
 	$(call PACK,x265,DEB_X265_V)
-	
+
 	# x265.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libx265-{$(X265_SOVERSION),dev} $(BUILD_DIST)/x265
 

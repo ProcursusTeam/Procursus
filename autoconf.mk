@@ -32,16 +32,16 @@ endif
 autoconf-package: autoconf-stage
 	# autoconf.mk Package Structure
 	rm -rf $(BUILD_DIST)/autoconf
-	
+
 	# autoconf.mk Prep autoconf
 	cp -a $(BUILD_STAGE)/autoconf $(BUILD_DIST)
-	
+
 	# autoconf.mk Sign
 	$(call SIGN,autoconf,general.xml)
-	
+
 	# autoconf.mk Make .debs
 	$(call PACK,autoconf,DEB_AUTOCONF_V)
-	
+
 	# autoconf.mk Build cleanup
 	rm -rf $(BUILD_DIST)/autoconf
 

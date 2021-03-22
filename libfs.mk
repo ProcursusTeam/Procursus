@@ -36,21 +36,21 @@ libfs-package: libfs-stage
 	rm -rf $(BUILD_DIST)/libfs{6,-dev}
 	mkdir -p $(BUILD_DIST)/libfs6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libfs-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib}
-	
+
 	# libfs.mk Prep libfs6
 	cp -a $(BUILD_STAGE)/libfs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libFS.6.dylib $(BUILD_DIST)/libfs6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libfs.mk Prep libfs-dev
 	cp -a $(BUILD_STAGE)/libfs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libFS.6.dylib) $(BUILD_DIST)/libfs-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libfs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libfs-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libfs.mk Sign
 	$(call SIGN,libfs6,general.xml)
-	
+
 	# libfs.mk Make .debs
 	$(call PACK,libfs6,DEB_LIBFS_V)
 	$(call PACK,libfs-dev,DEB_LIBFS_V)
-	
+
 	# libfs.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libfs{6,-dev}
 

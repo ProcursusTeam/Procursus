@@ -32,7 +32,7 @@ libpugixml: libpugixml-setup
 		DESTDIR="$(BUILD_STAGE)/libpugixml"
 	+$(MAKE) -C $(BUILD_WORK)/libpugixml install \
 		DESTDIR="$(BUILD_BASE)"
-	
+
 	touch $(BUILD_WORK)/libpugixml/.build_complete
 endif
 

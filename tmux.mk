@@ -32,16 +32,16 @@ tmux-package: tmux-stage
 	# tmux.mk Package Structure
 	rm -rf $(BUILD_DIST)/tmux
 	mkdir -p $(BUILD_DIST)/tmux
-	
+
 	# tmux.mk Prep tmux
 	cp -a $(BUILD_STAGE)/tmux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/tmux
-	
+
 	# tmux.mk Sign
 	$(call SIGN,tmux,general.xml)
-	
+
 	# tmux.mk Make .debs
 	$(call PACK,tmux,DEB_TMUX_V)
-	
+
 	# tmux.mk Build cleanup
 	rm -rf $(BUILD_DIST)/tmux
 

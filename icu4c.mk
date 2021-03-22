@@ -58,30 +58,30 @@ icu4c-package: icu4c-stage
 	mkdir -p $(BUILD_DIST)/libicu{68,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libicu-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share \
 		$(BUILD_DIST)/icu-devtools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# icu4c.mk Prep libicu68
 	cp -a $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicu*.68*.dylib $(BUILD_DIST)/libicu68/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# icu4c.mk Prep libicu-dev
 	cp -a $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicu{data,i18n,io,test,tu,uc}.dylib $(BUILD_DIST)/libicu-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,icu} $(BUILD_DIST)/libicu-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/icu $(BUILD_DIST)/libicu-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	
+
 	# icu4c.mk Prep icu-devtools 
 	cp -a $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{sbin,bin,share} $(BUILD_DIST)/icu-devtools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	rm -f $(BUILD_DIST)/icu-devtools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/icu-config
 	rm -f $(BUILD_DIST)/icu-devtools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/icu-config.1
 	rm -rf $(BUILD_DIST)/icu-devtools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/icu
-	
+
 	# icu4c.mk Sign
 	$(call SIGN,libicu68,general.xml)
 	$(call SIGN,icu-devtools,general.xml)
-	
+
 	# icu4c.mk Make .debs
 	$(call PACK,libicu68,DEB_ICU_V)
 	$(call PACK,libicu-dev,DEB_ICU_V)
 	$(call PACK,icu-devtools,DEB_ICU_V)
-	
+
 	# icu4c.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libicu{68,-dev} \
 		$(BUILD_DIST)/icu-devtools

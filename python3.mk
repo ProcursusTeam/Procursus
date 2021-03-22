@@ -61,7 +61,7 @@ python3-package: python3-stage
 		$(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		$(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V){,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX){,$(MEMO_ALT_PREFIX)}/lib \
 		$(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
-	
+
 	# python3.mk Prep python$(PYTHON3_MAJOR_V)
 	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/python$(PYTHON3_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
@@ -88,7 +88,7 @@ python3-package: python3-stage
 	# python3.mk Sign
 	$(call SIGN,python$(PYTHON3_MAJOR_V),general.xml)
 	$(call SIGN,libpython$(PYTHON3_MAJOR_V),general.xml)
-	
+
 	# python3.mk Make .debs
 	$(call PACK,python$(PYTHON3_MAJOR_V),DEB_PYTHON3_V)
 	$(call PACK,libpython$(PYTHON3_MAJOR_V),DEB_PYTHON3_V)

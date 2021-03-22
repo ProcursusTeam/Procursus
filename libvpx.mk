@@ -36,7 +36,7 @@ libvpx: libvpx-setup
 		DESTDIR=$(BUILD_STAGE)/libvpx
 	+$(MAKE) -C $(BUILD_WORK)/libvpx install \
 		DESTDIR=$(BUILD_BASE)
-	
+
 	for bin in $(BUILD_STAGE)/libvpx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
 		$(I_N_T) -change libvpx.6.dylib /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib $$bin; \
 	done
@@ -50,21 +50,21 @@ libvpx-package: libvpx-stage
 	rm -rf $(BUILD_DIST)/libvpx{6,-dev} $(BUILD_DIST)/vpx-tools
 	mkdir -p $(BUILD_DIST)/libvpx{6,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/vpx-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libvpx.mk Prep libvpx6
 	cp -a $(BUILD_STAGE)/libvpx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib $(BUILD_DIST)/libvpx6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libvpx.mk Prep libvpx-dev
 	cp -a $(BUILD_STAGE)/libvpx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libvpx.6.dylib) $(BUILD_DIST)/libvpx-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libvpx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libvpx-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libvpx.mk Prep vpx-tools
 	cp -a $(BUILD_STAGE)/libvpx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/vpx-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libvpx.mk Sign
 	$(call SIGN,libvpx6,general.xml)
 	$(call SIGN,vpx-tools,general.xml)
-	
+
 	# libvpx.mk Make .debs
 	$(call PACK,libvpx6,DEB_LIBVPX_V)
 	$(call PACK,libvpx-dev,DEB_LIBVPX_V)

@@ -32,27 +32,27 @@ librecode-package: librecode-stage
 	# librecode.mk Package Structure
 	rm -rf $(BUILD_DIST)/librecode{3,-dev} $(BUILD_DIST)/recode
 	mkdir -p $(BUILD_DIST)/librecode{3,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib $(BUILD_DIST)/recode/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# librecode.mk Prep recode
 	cp -a $(BUILD_STAGE)/librecode/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/recode/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/librecode/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/recode/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# librecode.mk Prep librecode3
 	cp -a $(BUILD_STAGE)/librecode/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librecode.3.dylib $(BUILD_DIST)/librecode3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# librecode.mk Prep librecode-dev
 	cp -a $(BUILD_STAGE)/librecode/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/librecode-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/librecode/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{librecode.a,librecode.dylib} $(BUILD_DIST)/librecode-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# librecode.mk Sign
 	$(call SIGN,recode,general.xml)
 	$(call SIGN,librecode3,general.xml)
-	
+
 	# librecode.mk Make .debs
 	$(call PACK,recode,DEB_LIBRECODE_V)
 	$(call PACK,librecode3,DEB_LIBRECODE_V)
 	$(call PACK,librecode-dev,DEB_LIBRECODE_V)
-	
+
 	# librecode.mk Build cleanup
 	rm -rf $(BUILD_DIST)/librecode{3,-dev} $(BUILD_DIST)/recode
 

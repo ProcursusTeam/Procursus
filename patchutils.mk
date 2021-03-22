@@ -31,16 +31,16 @@ endif
 patchutils-package: patchutils-stage
 	# patchutils.mk Package Structure
 	rm -rf $(BUILD_DIST)/patchutils
-	
+
 	# patchutils.mk Prep patchutils
 	cp -a $(BUILD_STAGE)/patchutils $(BUILD_DIST)
-	
+
 	# patchutils.mk Sign
 	$(call SIGN,patchutils,general.xml)
-	
+
 	# patchutils.mk Make .debs
 	$(call PACK,patchutils,DEB_PATCHUTILS_V)
-	
+
 	# patchutils.mk Build cleanup
 	rm -rf $(BUILD_DIST)/patchutils
 

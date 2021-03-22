@@ -50,12 +50,12 @@ libfribidi-package: libfribidi-stage
 	# libfribidi.mk Sign
 	$(call SIGN,libfribidi0,general.xml)
 	$(call SIGN,libfribidi-bin,general.xml)
-	
+
 	# libfribidi.mk Make .debs
 	$(call PACK,libfribidi0,DEB_LIBFRIBIDI_V)
 	$(call PACK,libfribidi-dev,DEB_LIBFRIBIDI_V)
 	$(call PACK,libfribidi-bin,DEB_LIBFRIBIDI_V)
-	
+
 	# libfribidi.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libfribidi{0,-dev,-bin}
 

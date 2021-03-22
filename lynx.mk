@@ -45,16 +45,16 @@ lynx-package: lynx-stage
 	# lynx.mk Package Structure
 	rm -rf $(BUILD_DIST)/lynx
 	mkdir -p $(BUILD_DIST)/lynx
-	
+
 	# lynx.mk Prep lynx
 	cp -a $(BUILD_STAGE)/lynx $(BUILD_DIST)
-	
+
 	# lynx.mk Sign
 	$(call SIGN,lynx,general.xml)
-	
+
 	# lynx.mk Make .debs
 	$(call PACK,lynx,DEB_LYNX_V)
-	
+
 	# lynx.mk Build cleanup
 	rm -rf $(BUILD_DIST)/lynx
 

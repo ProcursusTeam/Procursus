@@ -37,16 +37,16 @@ endif
 pkg-config-package: pkg-config-stage
 	# pkg-config.mk Package Structure
 	rm -rf $(BUILD_DIST)/pkg-config
-	
+
 	# pkg-config.mk Prep pkg-config
 	cp -a $(BUILD_STAGE)/pkg-config $(BUILD_DIST)
-	
+
 	# pkg-config.mk Sign
 	$(call SIGN,pkg-config,general.xml)
-	
+
 	# pkg-config.mk Make .debs
 	$(call PACK,pkg-config,DEB_PKG-CONFIG_V)
-	
+
 	# pkg-config.mk Build cleanup
 	rm -rf $(BUILD_DIST)/pkg-config
 

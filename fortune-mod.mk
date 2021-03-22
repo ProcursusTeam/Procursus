@@ -53,25 +53,25 @@ fortune-mod-package: fortune-mod-stage
 	rm -rf $(BUILD_DIST)/fortune{-mod,s{,-off}}
 	mkdir -p $(BUILD_DIST)/fortune-mod/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share \
 		$(BUILD_DIST)/fortunes{,-off}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/games/fortunes
-	
+
 	# fortune-mod.mk Prep fortune-mod
 	cp -a $(BUILD_STAGE)/fortune-mod/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,games} $(BUILD_DIST)/fortune-mod/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/fortune-mod/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/fortune-mod/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	
+
 	# fortune-mod.mk Prep fortunes
 	cp -a $(BUILD_STAGE)/fortune-mod/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/games/fortunes/!(off) $(BUILD_DIST)/fortunes/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/games/fortunes
-	
+
 	# fortune-mod.mk Prep fortunes-off
 	cp -a $(BUILD_STAGE)/fortune-mod/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/games/fortunes/off $(BUILD_DIST)/fortunes-off/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/games/fortunes
-	
+
 	# fortune-mod.mk Sign
 	$(call SIGN,fortune-mod,general.xml)
-	
+
 	# fortune-mod.mk Make .debs
 	$(call PACK,fortune-mod,DEB_FORTUNE-MOD_V)
 	$(call PACK,fortunes,DEB_FORTUNE-MOD_V)
 	$(call PACK,fortunes-off,DEB_FORTUNE-MOD_V)
-	
+
 	# fortune-mod.mk Build cleanup
 	rm -rf $(BUILD_DIST)/fortune{-mod,s{,-off}}
 

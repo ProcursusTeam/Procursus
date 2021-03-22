@@ -57,16 +57,16 @@ tapi-package: tapi-stage
 	# tapi.mk Package Structure
 	rm -rf $(BUILD_DIST)/libtapi
 	mkdir -p $(BUILD_DIST)/libtapi
-	
+
 	# tapi.mk Prep tapi
 	cp -a $(BUILD_STAGE)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/libtapi
-	
+
 	# tapi.mk Sign
 	$(call SIGN,libtapi,general.xml)
-	
+
 	# tapi.mk Make .debs
 	$(call PACK,libtapi,DEB_TAPI_V)
-	
+
 	# tapi.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libtapi
 

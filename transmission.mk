@@ -34,16 +34,16 @@ transmission-package: transmission-stage
 	# transmission.mk Package Structure
 	rm -rf $(BUILD_DIST)/transmission
 	mkdir -p $(BUILD_DIST)/transmission
-	
+
 	# transmission.mk Prep transmission
 	cp -a $(BUILD_STAGE)/transmission/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/transmission
-	
+
 	# transmission.mk Sign
 	$(call SIGN,transmission,general.xml)
-	
+
 	# transmission.mk Make .debs
 	$(call PACK,transmission,DEB_TRANSMISSION_V)
-	
+
 	# transmission.mk Build cleanup
 	rm -rf $(BUILD_DIST)/transmission
 

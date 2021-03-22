@@ -38,13 +38,13 @@ uikittools-package: uikittools-stage
 	# uikittools.mk Package Structure
 	rm -rf $(BUILD_DIST)/uikittools
 	mkdir -p $(BUILD_DIST)/uikittools
-	
+
 	# uikittools.mk Prep uikittools
 	cp -a $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/uikittools
-	
+
 	# uikittools.mk Make .debs
 	$(call PACK,uikittools,DEB_UIKITTOOLS_V)
-	
+
 	# uikittools.mk Build cleanup
 	rm -rf $(BUILD_DIST)/uikittools
 

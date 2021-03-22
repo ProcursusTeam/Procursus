@@ -45,7 +45,7 @@ xar-package: xar-stage
 	rm -rf $(BUILD_DIST)/xar $(BUILD_DIST)/libxar{1,-dev}
 	mkdir -p $(BUILD_DIST)/xar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
 		$(BUILD_DIST)/libxar{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# xar.mk Prep xar
 	cp -a $(BUILD_STAGE)/xar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/xar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
@@ -54,16 +54,16 @@ xar-package: xar-stage
 
 	# xar.mk Prep libxar-dev
 	cp -a $(BUILD_STAGE)/xar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libxar.1.dylib) $(BUILD_DIST)/libxar-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# xar.mk Sign
 	$(call SIGN,xar,general.xml)
 	$(call SIGN,libxar1,general.xml)
-	
+
 	# xar.mk Make .debs
 	$(call PACK,xar,DEB_XAR_V)
 	$(call PACK,libxar1,DEB_XAR_V)
 	$(call PACK,libxar-dev,DEB_XAR_V)
-	
+
 	# xar.mk Build cleanup
 	rm -rf $(BUILD_DIST)/xar $(BUILD_DIST)/libxar{1,-dev}
 

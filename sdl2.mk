@@ -43,21 +43,21 @@ sdl2-package: sdl2-stage
 	# sdl2.mk Package Structure
 	rm -rf $(BUILD_DIST)/libsdl2-{2.0-0,dev}
 	mkdir -p $(BUILD_DIST)/libsdl2-{2.0-0,dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# sdl2.mk Prep libsdl2-2.0-0
 	cp -a $(BUILD_STAGE)/sdl2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libSDL2-2.0.0.dylib $(BUILD_DIST)/libsdl2-2.0-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# sdl2.mk Prep libsdl2-dev
 	cp -a $(BUILD_STAGE)/sdl2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libSDL2-2.0.0.dylib) $(BUILD_DIST)/libsdl2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/sdl2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/!(lib) $(BUILD_DIST)/libsdl2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# sdl2.mk Sign
 	$(call SIGN,libsdl2-2.0-0,general.xml)
-	
+
 	# sdl2.mk Make .debs
 	$(call PACK,libsdl2-2.0-0,DEB_SDL2_V)
 	$(call PACK,libsdl2-dev,DEB_SDL2_V)
-	
+
 	# sdl2.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libsdl2-{2.0-0,dev}
 

@@ -49,13 +49,13 @@ endif
 libpod-parser-perl-package: libpod-parser-perl-stage
 	# libpod-parser-perl.mk Package Structure
 	rm -rf $(BUILD_DIST)/libpod-parser-perl
-	
+
 	# libpod-parser-perl.mk Prep libpod-parser-perl
 	cp -a $(BUILD_STAGE)/libpod-parser-perl $(BUILD_DIST)
-	
+
 	# libpod-parser-perl.mk Make .debs
 	$(call PACK,libpod-parser-perl,DEB_LIBPOD-PARSER-PERL_V)
-	
+
 	# libpod-parser-perl.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libpod-parser-perl
 

@@ -34,21 +34,21 @@ libfontenc-package: libfontenc-stage
 	# libfontenc.mk Package Structure
 	rm -rf $(BUILD_DIST)/libfontenc{1,-dev}
 	mkdir -p $(BUILD_DIST)/libfontenc{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libfontenc.mk Prep libfontenc6
 	cp -a $(BUILD_STAGE)/libfontenc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libfontenc.1.dylib $(BUILD_DIST)/libfontenc1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libfontenc.mk Prep libfontenc-dev
 	cp -a $(BUILD_STAGE)/libfontenc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libfontenc.{a,dylib},pkgconfig} $(BUILD_DIST)/libfontenc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libfontenc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libfontenc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libfontenc.mk Sign
 	$(call SIGN,libfontenc1,general.xml)
-	
+
 	# libfontenc.mk Make .debs
 	$(call PACK,libfontenc1,DEB_LIBFONTENC_V)
 	$(call PACK,libfontenc-dev,DEB_LIBFONTENC_V)
-	
+
 	# libfontenc.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libfontenc{1,-dev}
 

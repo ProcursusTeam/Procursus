@@ -38,21 +38,21 @@ libxi-package: libxi-stage
 	rm -rf $(BUILD_DIST)/libxi{6,-dev}
 	mkdir -p $(BUILD_DIST)/libxi6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libxi-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib}
-	
+
 	# libxi.mk Prep libxi6
 	cp -a $(BUILD_STAGE)/libxi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXi.6.dylib $(BUILD_DIST)/libxi6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxi.mk Prep libxi-dev
 	cp -a $(BUILD_STAGE)/libxi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libXi.6.dylib) $(BUILD_DIST)/libxi-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libxi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libxi-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libxi.mk Sign
 	$(call SIGN,libxi6,general.xml)
-	
+
 	# libxi.mk Make .debs
 	$(call PACK,libxi6,DEB_LIBXI_V)
 	$(call PACK,libxi-dev,DEB_LIBXI_V)
-	
+
 	# libxi.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libxi{6,-dev}
 

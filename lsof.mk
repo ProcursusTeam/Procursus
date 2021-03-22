@@ -44,16 +44,16 @@ endif
 lsof-package: lsof-stage
 	# lsof.mk Package Structure
 	rm -rf $(BUILD_DIST)/lsof
-	
+
 	# lsof.mk Prep lsof
 	cp -a $(BUILD_STAGE)/lsof $(BUILD_DIST)
 
 	# lsof.mk Sign
 	$(call SIGN,lsof,general.xml)
-	
+
 	# lsof.mk Make .debs
 	$(call PACK,lsof,DEB_LSOF_V)
-	
+
 	# lsof.mk Build cleanup
 	rm -rf $(BUILD_DIST)/lsof
 

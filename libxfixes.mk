@@ -35,21 +35,21 @@ libxfixes-package: libxfixes-stage
 	rm -rf $(BUILD_DIST)/libxfixes{3,-dev}
 	mkdir -p $(BUILD_DIST)/libxfixes3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libxfixes-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib}
-	
+
 	# libxfixes.mk Prep libxfixes3
 	cp -a $(BUILD_STAGE)/libxfixes/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXfixes.3.dylib $(BUILD_DIST)/libxfixes3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxfixes.mk Prep libxfixes-dev
 	cp -a $(BUILD_STAGE)/libxfixes/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libXfixes.3.dylib) $(BUILD_DIST)/libxfixes-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libxfixes/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libxfixes-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libxfixes.mk Sign
 	$(call SIGN,libxfixes3,general.xml)
-	
+
 	# libxfixes.mk Make .debs
 	$(call PACK,libxfixes3,DEB_LIBXFIXES_V)
 	$(call PACK,libxfixes-dev,DEB_LIBXFIXES_V)
-	
+
 	# libxfixes.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libxfixes{3,-dev}
 

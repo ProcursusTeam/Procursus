@@ -26,16 +26,16 @@ endif
 bender-package: bender-stage
 	# bender.mk Package Structure
 	rm -rf $(BUILD_DIST)/bender
-	
+
 	# bender.mk Prep bender
 	cp -a $(BUILD_STAGE)/bender $(BUILD_DIST)
-	
+
 	# bender.mk Sign
 	$(call SIGN,bender,general.xml)
-	
+
 	# bender.mk Make .debs
 	$(call PACK,bender,DEB_BENDER_V)
-	
+
 	# bender.mk Build cleanup
 	rm -rf $(BUILD_DIST)/bender
 

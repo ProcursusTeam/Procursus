@@ -28,16 +28,16 @@ endif
 bastet-package: bastet-stage
 	# bastet.mk Package Structure
 	rm -rf $(BUILD_DIST)/bastet
-	
+
 	# bastet.mk Prep bastet
 	cp -a $(BUILD_STAGE)/bastet $(BUILD_DIST)
 
 	# bastet.mk Sign
 	$(call SIGN,bastet,general.xml)
-	
+
 	# bastet.mk Make .debs
 	$(call PACK,bastet,DEB_BASTET_V)
-	
+
 	# bastet.mk Build cleanup
 	rm -rf $(BUILD_DIST)/bastet
 

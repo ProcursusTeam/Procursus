@@ -62,16 +62,16 @@ git-package: git-stage
 	# git.mk Package Structure
 	rm -rf $(BUILD_DIST)/git
 	mkdir -p $(BUILD_DIST)/git/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share,libexec}
-	
+
 	# git.mk Prep git
 	cp -a $(BUILD_STAGE)/git/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share,libexec} $(BUILD_DIST)/git/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# git.mk Sign
 	$(call SIGN,git,general.xml)
-	
+
 	# git.mk Make .debs
 	$(call PACK,git,DEB_GIT_V)
-	
+
 	# git.mk Build cleanup
 	rm -rf $(BUILD_DIST)/git
 

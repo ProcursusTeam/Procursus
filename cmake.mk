@@ -56,7 +56,7 @@ cmake-package: cmake-stage
 	rm -rf $(BUILD_DIST)/cmake{,-data,-curses-gui}
 	mkdir -p $(BUILD_DIST)/cmake{,-curses-gui}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
 		$(BUILD_DIST)/cmake-data/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
-	
+
 	# cmake.mk Prep cmake
 	cp -a $(BUILD_STAGE)/cmake/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/!(ccmake) $(BUILD_DIST)/cmake/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/cmake/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/man/man1/!(ccmake.1) $(BUILD_DIST)/cmake/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
@@ -68,16 +68,16 @@ cmake-package: cmake-stage
 	# cmake.mk Prep cmake-data
 	cp -a $(BUILD_STAGE)/cmake/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/man/man7 $(BUILD_DIST)/cmake-data/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	cp -a $(BUILD_STAGE)/cmake/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{aclocal,bash-completion,cmake-*,emacs,vim} $(BUILD_DIST)/cmake-data/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	
+
 	# cmake.mk Sign
 	$(call SIGN,cmake,general.xml)
 	$(call SIGN,cmake-curses-gui,general.xml)
-	
+
 	# cmake.mk Make .debs
 	$(call PACK,cmake,DEB_CMAKE_V)
 	$(call PACK,cmake-curses-gui,DEB_CMAKE_V)
 	$(call PACK,cmake-data,DEB_CMAKE_V)
-	
+
 	# cmake.mk Build cleanup
 	rm -rf $(BUILD_DIST)/cmake{,-data,-curses-gui}
 

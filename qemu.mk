@@ -50,7 +50,7 @@ qemu-package: qemu-stage
 		$(BUILD_DIST)/qemu-system-{misc,ppc,sparc}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/qemu} \
 		$(BUILD_DIST)/qemu-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
 		$(BUILD_DIST)/qemu-system
-	
+
 	# qemu.mk Prep qemu-block-extra
 	cp -a $(BUILD_STAGE)/qemu/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/qemu/block-*.dylib $(BUILD_DIST)/qemu-block-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/qemu
 
@@ -72,7 +72,7 @@ qemu-package: qemu-stage
 	# qemu.mk Prep qemu-system-misc
 	cp -a $(BUILD_STAGE)/qemu/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/qemu-system-{alpha,avr,cris,hppa,m68k,microblaze{,el},moxie,nios2,or1k,riscv32,riscv64,rx,s390x,sh4{,eb},tricore,xtensa{,eb}} $(BUILD_DIST)/qemu-system-misc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/qemu/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/qemu/petalogix-*.dtb $(BUILD_DIST)/qemu-system-misc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/qemu
-	
+
 	# qemu.mk Prep qemu-system-ppc
 	cp -a $(BUILD_STAGE)/qemu/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/qemu-system-ppc{,64} $(BUILD_DIST)/qemu-system-ppc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/qemu/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/qemu/{bamboo,canyonlands}.dtb $(BUILD_DIST)/qemu-system-ppc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/qemu
@@ -97,7 +97,7 @@ qemu-package: qemu-stage
 	$(call SIGN,qemu-system-sparc,qemu-ios.xml)
 	$(call SIGN,qemu-system-x86,qemu-ios.xml)
 	$(call SIGN,qemu-utils,qemu-ios.xml)
-	
+
 	# qemu.mk Make .debs
 	$(call PACK,qemu-system,DEB_QEMU_V)
 	$(call PACK,qemu-block-extra,DEB_QEMU_V)
@@ -110,7 +110,7 @@ qemu-package: qemu-stage
 	$(call PACK,qemu-system-sparc,DEB_QEMU_V)
 	$(call PACK,qemu-system-x86,DEB_QEMU_V)
 	$(call PACK,qemu-utils,DEB_QEMU_V)
-	
+
 	# qemu.mk Build cleanup
 	rm -rf $(BUILD_DIST)/qemu-{utils,block-extra,system-{common,data,arm,mips,misc,ppc,sparc,x86}} $(BUILD_DIST)/qemu-system
 

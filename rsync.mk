@@ -32,16 +32,16 @@ rsync-package: rsync-stage
 	# rsync.mk Package Structure
 	rm -rf $(BUILD_DIST)/rsync
 	mkdir -p $(BUILD_DIST)/rsync
-	
+
 	# rsync.mk Prep rsync
 	cp -a $(BUILD_STAGE)/rsync/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/rsync
-	
+
 	# rsync.mk Sign
 	$(call SIGN,rsync,general.xml)
-	
+
 	# rsync.mk Make .debs
 	$(call PACK,rsync,DEB_RSYNC_V)
-	
+
 	# rsync.mk Build cleanup
 	rm -rf $(BUILD_DIST)/rsync
 

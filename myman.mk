@@ -34,16 +34,16 @@ endif
 myman-package: myman-stage
 	# myman.mk Package Structure
 	rm -rf $(BUILD_DIST)/myman
-	
+
 	# myman.mk Prep myman
 	cp -a $(BUILD_STAGE)/myman $(BUILD_DIST)
 
 	# myman.mk Sign
 	$(call SIGN,myman,general.xml)
-	
+
 	# myman.mk Make .debs
 	$(call PACK,myman,DEB_MYMAN_V)
-	
+
 	# myman.mk Build cleanup
 	rm -rf $(BUILD_DIST)/myman
 

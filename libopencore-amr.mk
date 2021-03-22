@@ -51,13 +51,13 @@ libopencore-amr-package: libopencore-amr-stage
 	# libopencore-amr.mk Sign
 	$(call SIGN,libopencore-amrnb0,general.xml)
 	$(call SIGN,libopencore-amrwb0,general.xml)
-	
+
 	# libopencore-amr.mk Make .debs
 	$(call PACK,libopencore-amrnb0,DEB_LIBOPENCORE-AMR_V)
 	$(call PACK,libopencore-amrnb-dev,DEB_LIBOPENCORE-AMR_V)
 	$(call PACK,libopencore-amrwb0,DEB_LIBOPENCORE-AMR_V)
 	$(call PACK,libopencore-amrwb-dev,DEB_LIBOPENCORE-AMR_V)
-	
+
 	# libopencore-amr.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libopencore-amr{n,w}b{0,-dev}
 

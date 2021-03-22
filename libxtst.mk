@@ -36,25 +36,25 @@ libxtst-package: libxtst-stage
 	mkdir -p $(BUILD_DIST)/libxtst6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libxtst-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libxtst-doc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libxtst.mk Prep libxtst6
 	cp -a $(BUILD_STAGE)/libxtst/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXtst.6.dylib $(BUILD_DIST)/libxtst6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libxtst.mk Prep libxtst-dev
 	cp -a $(BUILD_STAGE)/libxtst/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libXtst{.a,.dylib},pkgconfig} $(BUILD_DIST)/libxtst-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libxtst/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libxtst-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libxtst.mk Prep libxtst-doc
 	cp -a $(BUILD_STAGE)/libxtst/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/libxtst-doc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libxtst.mk Sign
 	$(call SIGN,libxtst6,general.xml)
-	
+
 	# libxtst.mk Make .debs
 	$(call PACK,libxtst6,DEB_LIBXTST_V)
 	$(call PACK,libxtst-dev,DEB_LIBXTST_V)
 	$(call PACK,libxtst-doc,DEB_LIBXTST_V)
-	
+
 	# libxtst.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libxtst{6,-dev,-doc}
 

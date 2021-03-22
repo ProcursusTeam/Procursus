@@ -49,16 +49,16 @@ golb-package: golb-stage
 	# golb.mk Package Structure
 	rm -rf $(BUILD_DIST)/golb
 	mkdir -p $(BUILD_DIST)/golb
-	
+
 	# golb.mk Prep golb
 	cp -a $(BUILD_STAGE)/golb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/golb
-	
+
 	# golb.mk Sign
 	$(call SIGN,golb,tfp0.xml)
-	
+
 	# golb.mk Make .debs
 	$(call PACK,golb,DEB_GOLB_V)
-	
+
 	# golb.mk Build cleanup
 	rm -rf $(BUILD_DIST)/golb
 

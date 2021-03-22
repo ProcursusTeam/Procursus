@@ -37,16 +37,16 @@ endif
 screen-package: screen-stage
 	# screen.mk Package Structure
 	rm -rf $(BUILD_DIST)/screen
-	
+
 	# screen.mk Prep screen
 	cp -a $(BUILD_STAGE)/screen $(BUILD_DIST)
-	
+
 	# screen.mk Sign
 	$(call SIGN,screen,general.xml)
-	
+
 	# screen.mk Make .debs
 	$(call PACK,screen,DEB_SCREEN_V)
-	
+
 	# screen.mk Build cleanup
 	rm -rf $(BUILD_DIST)/screen
 

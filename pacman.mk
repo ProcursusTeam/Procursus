@@ -35,16 +35,16 @@ pacman-package: pacman-stage
 	# pacman.mk Package Structure
 	rm -rf $(BUILD_DIST)/pacman
 	mkdir -p $(BUILD_DIST)/pacman
-	
+
 	# pacman.mk Prep pacman
 	cp -a $(BUILD_STAGE)/pacman $(BUILD_DIST)
-	
+
 	# pacman.mk Sign
 	$(call SIGN,pacman,general.xml)
-	
+
 	# pacman.mk Make .debs
 	$(call PACK,pacman,DEB_PACMAN_V)
-	
+
 	# pacman.mk Build cleanup
 	rm -rf $(BUILD_DIST)/pacman
 

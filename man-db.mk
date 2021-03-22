@@ -37,16 +37,16 @@ man-db-package: man-db-stage
 	# man-db.mk Package Structure
 	rm -rf $(BUILD_DIST)/man-db
 	mkdir -p $(BUILD_DIST)/man-db
-	
+
 	# man-db.mk Prep man-db
 	cp -a $(BUILD_STAGE)/man-db $(BUILD_DIST)
-	
+
 	# man-db.mk Sign
 	$(call SIGN,man-db,general.xml)
-	
+
 	# man-db.mk Make .debs
 	$(call PACK,man-db,DEB_MAN-DB_V)
-	
+
 	# man-db.mk Build cleanup
 	rm -rf $(BUILD_DIST)/man-db
 

@@ -51,7 +51,7 @@ vim-package: vim-stage
 	# vim.mk Package Structure
 	rm -rf $(BUILD_DIST)/{vim,xxd}
 	mkdir -p $(BUILD_DIST)/{vim,xxd}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share}
-	
+
 	# vim.mk Prep vim
 	cp -a $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/vim{.basic,tutor} $(BUILD_DIST)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{vim,man} $(BUILD_DIST)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
@@ -61,15 +61,15 @@ vim-package: vim-stage
 	cp -a $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/xxd $(BUILD_DIST)/xxd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/xxd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	find $(BUILD_DIST)/xxd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f ! -name "xxd.1" -delete
-	
+
 	# vim.mk Sign
 	$(call SIGN,vim,general.xml)
 	$(call SIGN,xxd,general.xml)
-	
+
 	# vim.mk Make .debs
 	$(call PACK,vim,DEB_VIM_V)
 	$(call PACK,xxd,DEB_VIM_V)
-	
+
 	# vim.mk Build cleanup
 	rm -rf $(BUILD_DIST)/{vim,xxd}
 

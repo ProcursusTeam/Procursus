@@ -49,7 +49,7 @@ cairo-package: cairo-stage
 	mkdir -p $(BUILD_DIST)/libcairo2{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libcairo{-gobject,-script-interpreter}2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib #\
 		#$(BUILD_DIST)/cairo-perf-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	
+
 	# cairo.mk Prep libcairo2
 	cp -a $(BUILD_STAGE)/cairo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcairo.2.dylib $(BUILD_DIST)/libcairo2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
@@ -65,20 +65,20 @@ cairo-package: cairo-stage
 
 	# cairo.mk Prep cairo-perf-utils
 	#cp -a $(BUILD_STAGE)/cairo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/cairo-trace $(BUILD_DIST)/cairo-perf-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	
+
 	# cairo.mk Sign
 	$(call SIGN,libcairo2,general.xml)
 	$(call SIGN,libcairo-gobject2,general.xml)
 	$(call SIGN,libcairo-script-interpreter2,general.xml)
 	#$(call SIGN,cairo-perf-utils,general.xml)
-	
+
 	# cairo.mk Make .debs
 	$(call PACK,libcairo2,DEB_CAIRO_V)
 	$(call PACK,libcairo2-dev,DEB_CAIRO_V)
 	$(call PACK,libcairo-gobject2,DEB_CAIRO_V)
 	$(call PACK,libcairo-script-interpreter2,DEB_CAIRO_V)
 	#$(call PACK,cairo-perf-utils,DEB_CAIRO_V)
-	
+
 	# cairo.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libcairo2{,-dev} $(BUILD_DIST)/libcairo{-gobject,-script-interpreter}2 #$(BUILD_DIST)/cairo-perf-utils
 

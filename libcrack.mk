@@ -34,7 +34,7 @@ libcrack-package: libcrack-stage
 	# libcrack.mk Package Structure
 	rm -rf $(BUILD_DIST)/libcrack{2,-dev} $(BUILD_DIST)/cracklib-runtime
 	mkdir -p $(BUILD_DIST)/libcrack{2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib,-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib} $(BUILD_DIST)/cracklib-runtime/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share}
-	
+
 	# libcrack.mk Prep cracklib-runtime
 	cp -a $(BUILD_STAGE)/libcrack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/* $(BUILD_DIST)/cracklib-runtime/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/libcrack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/libcrack $(BUILD_DIST)/cracklib-runtime/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
@@ -45,16 +45,16 @@ libcrack-package: libcrack-stage
 	# libcrack.mk Prep libcrack-dev
 	cp -a $(BUILD_STAGE)/libcrack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libcrack-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/libcrack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libcrack.a,libcrack.dylib} $(BUILD_DIST)/libcrack-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libcrack.mk Sign
 	$(call SIGN,cracklib-runtime,general.xml)
 	$(call SIGN,libcrack2,general.xml)
-	
+
 	# libcrack.mk Make .debs
 	$(call PACK,cracklib-runtime,DEB_LIBCRACK_V)
 	$(call PACK,libcrack2,DEB_LIBCRACK_V)
 	$(call PACK,libcrack-dev,DEB_LIBCRACK_V)
-	
+
 	# libcrack.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libcrack{2,-dev} $(BUILD_DIST)/cracklib-runtime
 

@@ -30,13 +30,13 @@ pasteboard-utils: pasteboard-utils-setup
 		-o $(BUILD_STAGE)/pasteboard-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pbcopy \
 		$(LDFLAGS) \
 		$(PASTEBOARD-UTILS_LIBS)
-	
+
 	$(CC) $(CFLAGS) -fobjc-arc \
 		$(BUILD_WORK)/pasteboard-utils/pbpaste/pbpaste.m \
 		-o $(BUILD_STAGE)/pasteboard-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pbpaste \
 		$(LDFLAGS) \
 		$(PASTEBOARD-UTILS_LIBS)
-	
+
 	touch $(BUILD_WORK)/pasteboard-utils/.build_complete
 endif
 

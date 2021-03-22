@@ -51,31 +51,31 @@ weechat-package: weechat-stage
 	$(BUILD_DIST)/weechat-curses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
 	$(BUILD_DIST)/weechat-headless/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
 	$(BUILD_DIST)/weechat-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
-	
+
 	# weechat.mk Prep weechat-core
 	cp -a $(BUILD_STAGE)/weechat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/weechat $(BUILD_DIST)/weechat-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
-	
+
 	# weechat.mk Prep weechat-curses
 	cp -a $(BUILD_STAGE)/weechat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/weechat{,-curses} $(BUILD_DIST)/weechat-curses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	
+
 	# weechat.mk Prep weechat-headless
 	cp -a $(BUILD_STAGE)/weechat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/weechat-headless $(BUILD_DIST)/weechat-headless/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	
+
 	# weechat.mk Prep weechat-dev
 	cp -a $(BUILD_STAGE)/weechat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/weechat-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# weechat.mk Sign
 	$(call SIGN,weechat-core,general.xml)
 	$(call SIGN,weechat-curses,general.xml)
 	$(call SIGN,weechat-headless,general.xml)
-	
+
 	# weechat.mk Make .debs
 	$(call PACK,weechat,DEB_WEECHAT_V)
 	$(call PACK,weechat-core,DEB_WEECHAT_V)
 	$(call PACK,weechat-curses,DEB_WEECHAT_V)
 	$(call PACK,weechat-headless,DEB_WEECHAT_V)
 	$(call PACK,weechat-dev,DEB_WEECHAT_V)
-	
+
 	# weechat.mk Build cleanup
 	rm -rf $(BUILD_DIST)/weechat{,-core,-curses,-headless,-dev}
 

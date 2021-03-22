@@ -49,13 +49,13 @@ endif
 libyaml-tiny-perl-package: libyaml-tiny-perl-stage
 	# libyaml-tiny-perl.mk Package Structure
 	rm -rf $(BUILD_DIST)/libyaml-tiny-perl
-	
+
 	# libyaml-tiny-perl.mk Prep libyaml-tiny-perl
 	cp -a $(BUILD_STAGE)/libyaml-tiny-perl $(BUILD_DIST)
-	
+
 	# libyaml-tiny-perl.mk Make .debs
 	$(call PACK,libyaml-tiny-perl,DEB_LIBYAML-TINY-PERL_V)
-	
+
 	# libyaml-tiny-perl.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libyaml-tiny-perl
 

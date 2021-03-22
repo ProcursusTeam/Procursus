@@ -23,16 +23,16 @@ profile.d-package: profile.d-stage
 	# profile.d.mk Package Structure
 	rm -rf $(BUILD_DIST)/profile.d
 	mkdir -p $(BUILD_DIST)/profile.d
-	
+
 	# profile.d.mk Prep profile.d
 	cp -a $(BUILD_STAGE)/profile.d/etc $(BUILD_DIST)/profile.d
 
 	# profile.d.mk Permissions
 	$(FAKEROOT) chmod a+x $(BUILD_DIST)/profile.d/etc/profile.d/terminal.sh
-	
+
 	# profile.d.mk Make .debs
 	$(call PACK,profile.d,DEB_PROFILED_V)
-	
+
 	# profile.d.mk Build cleanup
 	rm -rf $(BUILD_DIST)/profile.d
 

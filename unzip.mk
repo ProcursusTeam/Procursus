@@ -35,18 +35,18 @@ unzip-package: unzip-stage
 	# unzip.mk Package Structure
 	rm -rf $(BUILD_DIST)/unzip
 	mkdir -p $(BUILD_DIST)/unzip
-	
+
 	# unzip.mk Prep unzip
 	cp -a $(BUILD_STAGE)/unzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/unzip
 	mkdir -p $(BUILD_DIST)/unzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	mv $(BUILD_DIST)/unzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/man $(BUILD_DIST)/unzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	
+
 	# unzip.mk Sign
 	$(call SIGN,unzip,general.xml)
-	
+
 	# unzip.mk Make .debs
 	$(call PACK,unzip,DEB_UNZIP_V)
-	
+
 	# unzip.mk Build cleanup
 	rm -rf $(BUILD_DIST)/unzip
 

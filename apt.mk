@@ -80,7 +80,7 @@ apt-package: apt-stage
 	mkdir -p $(BUILD_DIST)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib,libexec/apt/{planners,solvers}} \
 	$(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{share/man,bin,libexec/apt/{planners,solvers}} \
 	$(BUILD_DIST)/libapt-pkg{6.0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# apt.mk Prep apt
 	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/apt{,-cache,-cdrom,-config,-get,-key,-mark} $(BUILD_DIST)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libapt-private*.dylib $(BUILD_DIST)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
@@ -92,7 +92,7 @@ apt-package: apt-stage
 	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)/{etc,var} $(BUILD_DIST)/apt/$(MEMO_PREFIX)
 	rm -f $(BUILD_DIST)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/*/man1/apt-{extracttemplates,ftparchive,sortpkgs}.1
 	rm -f $(BUILD_DIST)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/apt-{extracttemplates,ftparchive,sortpkgs}.1
-	
+
 	# apt.mk Prep apt-utils
 	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/apt-{extracttemplates,ftparchive,sortpkgs} $(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/apt/planners/apt $(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/apt/planners
@@ -113,18 +113,18 @@ apt-package: apt-stage
 	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libapt-pkg.dylib $(BUILD_DIST)/libapt-pkg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libapt-pkg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libapt-pkg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# apt.mk Sign
 	$(call SIGN,apt,general.xml)
 	$(call SIGN,apt-utils,general.xml)
 	$(call SIGN,libapt-pkg6.0,general.xml)
-	
+
 	# apt.mk Make .debs
 	$(call PACK,apt,DEB_APT_V)
 	$(call PACK,apt-utils,DEB_APT_V)
 	$(call PACK,libapt-pkg6.0,DEB_APT_V)
 	$(call PACK,libapt-pkg-dev,DEB_APT_V)
-	
+
 	# apt.mk Build cleanup
 	rm -rf $(BUILD_DIST)/apt{,-utils} $(BUILD_DIST)/libapt*/
 
