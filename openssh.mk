@@ -30,7 +30,7 @@ openssh:
 else
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 OPENSSH_SETUP_ARGS += $(call DO_PATCH,openssh,openssh,-p1)
-openssh: openssh-setup openssl libxcrypt
+openssh: openssh-setup openssl libxcrypt openpam
 else # (,$(findstring darwin,$(MEMO_TARGET)))
 OPENSSH_CONFIGURE_ARGS += --with-keychain=apple
 openssh: openssh-setup openssl
