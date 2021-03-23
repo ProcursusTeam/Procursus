@@ -17,7 +17,7 @@ ifneq ($(wildcard $(BUILD_WORK)/liboffsetfinder64/.build_complete),)
 liboffsetfinder64:
 	@echo "Using previously built liboffsetfinder64."
 else
-liboffsetfinder64: liboffsetfinder64-setup libgeneral libinsn img4tool openssl
+liboffsetfinder64: liboffsetfinder64-setup libgeneral libinsn img4tool openssl libplist
 	cd $(BUILD_WORK)/liboffsetfinder64 && ./autogen.sh \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \

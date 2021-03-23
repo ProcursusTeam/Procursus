@@ -1,0 +1,329 @@
+From 049aae2bf6bac87dd811b30bd343f5bfb6afb54b Mon Sep 17 00:00:00 2001
+From: aspen <aspenuwu@protonmail.com>
+Date: Mon, 8 Mar 2021 14:31:28 -0500
+Subject: [PATCH] Update dependencies; use iOS-supporting version rust-users
+
+---
+ Cargo.lock  | 108 ++++++++++++++++++++++++++--------------------------
+ Cargo.toml  |   4 +-
+ src/main.rs |   2 +-
+ 3 files changed, 58 insertions(+), 56 deletions(-)
+
+diff --git a/Cargo.lock b/Cargo.lock
+index fa3c14d..9287de2 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -29,9 +29,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "anyhow"
+-version = "1.0.35"
++version = "1.0.38"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "2c0df63cb2955042487fad3aefd2c6e3ae7389ac5dc1beb28921de0b69f779d4"
++checksum = "afddf7f520a80dbf76e6f50a35bca42a2331ef227a28b3b6dc5c2e2338d114b1"
+ 
+ [[package]]
+ name = "atty"
+@@ -58,24 +58,18 @@ checksum = "cf1de2fe8c75bc145a2f577add951f8134889b4795d47466a54a5c846d691693"
+ 
+ [[package]]
+ name = "bstr"
+-version = "0.2.14"
++version = "0.2.15"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "473fc6b38233f9af7baa94fb5852dca389e3d95b8e21c8e3719301462c5d9faf"
++checksum = "a40b47ad93e1a5404e6c18dec46b628214fee441c70f4ab5d6942142cc268a3d"
+ dependencies = [
+  "memchr",
+ ]
+ 
+ [[package]]
+ name = "cc"
+-version = "1.0.66"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "4c0496836a84f8d0495758516b8621a622beb77c0fed418570e50764093ced48"
+-
+-[[package]]
+-name = "cfg-if"
+-version = "0.1.10"
++version = "1.0.67"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "4785bdd1c96b2a846b2bd7cc02e86b6b3dbf14e7e53446c4f54c92a361040822"
++checksum = "e3c69b077ad434294d3ce9f1f6143a2a4b89a8a2d54ef813d85003a4fd1137fd"
+ 
+ [[package]]
+ name = "cfg-if"
+@@ -101,20 +95,20 @@ dependencies = [
+ 
+ [[package]]
+ name = "crossbeam-utils"
+-version = "0.8.1"
++version = "0.8.3"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "02d96d1e189ef58269ebe5b97953da3274d83a93af647c2ddd6f9dab28cedb8d"
++checksum = "e7e9d99fa91428effe99c5c6d4634cdeba32b8cf784fc428a2a687f61a952c49"
+ dependencies = [
+  "autocfg",
+- "cfg-if 1.0.0",
++ "cfg-if",
+  "lazy_static",
+ ]
+ 
+ [[package]]
+ name = "ctrlc"
+-version = "3.1.7"
++version = "3.1.8"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "b57a92e9749e10f25a171adcebfafe72991d45e7ec2dcb853e8f83d9dafaeb08"
++checksum = "c15b8ec3b5755a188c141c1f6a98e76de31b936209bf066b647979e2a84764a9"
+ dependencies = [
+  "nix",
+  "winapi",
+@@ -132,15 +126,15 @@ version = "2.0.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "b98cf8ebf19c3d1b223e151f99a4f9f0690dca41414773390fc824184ac833e1"
+ dependencies = [
+- "cfg-if 1.0.0",
++ "cfg-if",
+  "dirs-sys-next",
+ ]
+ 
+ [[package]]
+ name = "dirs-sys-next"
+-version = "0.1.1"
++version = "0.1.2"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "99de365f605554ae33f115102a02057d4fc18b01f3284d6870be0938743cfe7d"
++checksum = "4ebda144c4fe02d1f7ea1a7d9641b6fc6b580adcfa024ae48797ecdeb6825b4d"
+ dependencies = [
+  "libc",
+  "redox_users",
+@@ -176,11 +170,11 @@ dependencies = [
+ 
+ [[package]]
+ name = "filetime"
+-version = "0.2.13"
++version = "0.2.14"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "0c122a393ea57648015bf06fbd3d372378992e86b9ff5a7a497b076a28c79efe"
++checksum = "1d34cfa13a63ae058bfa601fe9e313bbdb3746427c1459185464ce0fcf62e1e8"
+ dependencies = [
+- "cfg-if 1.0.0",
++ "cfg-if",
+  "libc",
+  "redox_syscall",
+  "winapi",
+@@ -206,11 +200,11 @@ checksum = "a06f77d526c1a601b7c4cdd98f54b5eaabffc14d5f2f0296febdc7f357c6d3ba"
+ 
+ [[package]]
+ name = "getrandom"
+-version = "0.1.15"
++version = "0.2.2"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "fc587bc0ec293155d5bfa6b9891ec18a1e330c234f896ea47fbada4cadbe47e6"
++checksum = "c9495705279e7140bf035dde1f6e750c162df8b625267cd52cc44e0b156732c8"
+ dependencies = [
+- "cfg-if 0.1.10",
++ "cfg-if",
+  "libc",
+  "wasi",
+ ]
+@@ -230,18 +224,18 @@ dependencies = [
+ 
+ [[package]]
+ name = "hermit-abi"
+-version = "0.1.17"
++version = "0.1.18"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "5aca5565f760fb5b220e499d72710ed156fdb74e631659e99377d9ebfbd13ae8"
++checksum = "322f4de77956e22ed0e5032c359a0f1273f1f7f0d79bfa3b8ffbc730d7fbcc5c"
+ dependencies = [
+  "libc",
+ ]
+ 
+ [[package]]
+ name = "humantime"
+-version = "2.0.1"
++version = "2.1.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "3c1ad908cc71012b7bea4d0c53ba96a8cba9962f048fa68d143376143d863b7a"
++checksum = "9a3a5bfb195931eeb336b2a7b4d761daec841b97f947d34394601737a7bba5e4"
+ 
+ [[package]]
+ name = "ignore"
+@@ -290,17 +284,17 @@ checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
+ 
+ [[package]]
+ name = "libc"
+-version = "0.2.80"
++version = "0.2.88"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "4d58d1b70b004888f764dfbf6a26a3b0342a1632d33968e4a179d8011c760614"
++checksum = "03b07a082330a35e43f63177cc01689da34fbffa0105e1246cf0311472cac73a"
+ 
+ [[package]]
+ name = "log"
+-version = "0.4.11"
++version = "0.4.14"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "4fabed175da42fed1fa0746b0ea71f412aa9d35e76e95e59b192c64b9dc2bf8b"
++checksum = "51b9bbe6c47d51fc3e1a9b945965946b4c44142ab8792c50835a980d362c2710"
+ dependencies = [
+- "cfg-if 0.1.10",
++ "cfg-if",
+ ]
+ 
+ [[package]]
+@@ -320,13 +314,13 @@ checksum = "0ee1c47aaa256ecabcaea351eae4a9b01ef39ed810004e298d2511ed284b1525"
+ 
+ [[package]]
+ name = "nix"
+-version = "0.18.0"
++version = "0.20.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "83450fe6a6142ddd95fb064b746083fc4ef1705fe81f64a64e1d4b39f54a1055"
++checksum = "fa9b4819da1bc61c0ea48b63b7bc8604064dd43013e7cc325df098d49cd7c18a"
+ dependencies = [
+  "bitflags",
+  "cc",
+- "cfg-if 0.1.10",
++ "cfg-if",
+  "libc",
+ ]
+ 
+@@ -340,6 +334,12 @@ dependencies = [
+  "libc",
+ ]
+ 
++[[package]]
++name = "once_cell"
++version = "1.7.2"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "af8b08b04175473088b46763e51ee54da5f9a164bc162f615b91bc179dbf15a3"
++
+ [[package]]
+ name = "rand"
+ version = "0.4.6"
+@@ -379,15 +379,18 @@ dependencies = [
+ 
+ [[package]]
+ name = "redox_syscall"
+-version = "0.1.57"
++version = "0.2.5"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "41cc0f7e4d5d4544e8861606a285bb08d3e70712ccc7d2b84d7c0ccfaf4b05ce"
++checksum = "94341e4e44e24f6b591b59e47a8a027df12e008d73fd5672dbea9cc22f4507d9"
++dependencies = [
++ "bitflags",
++]
+ 
+ [[package]]
+ name = "redox_users"
+-version = "0.3.5"
++version = "0.4.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "de0737333e7a9502c789a36d7c7fa6092a49895d4faa31ca5df163857ded2e9d"
++checksum = "528532f3d801c87aec9def2add9ca802fe569e44a544afe633765267840abe64"
+ dependencies = [
+  "getrandom",
+  "redox_syscall",
+@@ -395,9 +398,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "regex"
+-version = "1.4.2"
++version = "1.4.3"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "38cf2c13ed4745de91a5eb834e11c00bcc3709e773173b2ce4c56c9fbde04b9c"
++checksum = "d9251239e129e16308e70d853559389de218ac275b515068abc96829d05b948a"
+ dependencies = [
+  "aho-corasick",
+  "memchr",
+@@ -407,9 +410,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "regex-syntax"
+-version = "0.6.21"
++version = "0.6.22"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "3b181ba2dcf07aaccad5448e8ead58db5b742cf85dfe035e2227f137a539a189"
++checksum = "b5eb417147ba9860a96cfe72a0b93bf88fee1744b5636ec99ab20c1aa9376581"
+ 
+ [[package]]
+ name = "remove_dir_all"
+@@ -467,11 +470,11 @@ dependencies = [
+ 
+ [[package]]
+ name = "thread_local"
+-version = "1.0.1"
++version = "1.1.3"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "d40c6d1b69745a6ec6fb1ca717914848da4b44ae29d9b3080cbee91d72a69b14"
++checksum = "8018d24e04c95ac8790716a5987d0fec4f8b27249ffa0f7d33f1369bdfb88cbd"
+ dependencies = [
+- "lazy_static",
++ "once_cell",
+ ]
+ 
+ [[package]]
+@@ -483,8 +486,7 @@ checksum = "9337591893a19b88d8d87f2cec1e73fad5cdfd10e5a6f349f498ad6ea2ffb1e3"
+ [[package]]
+ name = "users"
+ version = "0.11.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "24cc0f6d6f267b73e5a2cadf007ba8f9bc39c6a6f9666f8cf25ea809a153b032"
++source = "git+https://github.com/aspenluxxxy/rust-users?rev=5208452ff8fe98e21c4ae65a5c44d654f5efc0c8#5208452ff8fe98e21c4ae65a5c44d654f5efc0c8"
+ dependencies = [
+  "libc",
+  "log",
+@@ -515,9 +517,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "wasi"
+-version = "0.9.0+wasi-snapshot-preview1"
++version = "0.10.2+wasi-snapshot-preview1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "cccddf32554fecc6acb585f82a32a72e28b48f8c4c1883ddfeeeaa96f7d8e519"
++checksum = "fd6fbd9a79829dd1ad0cc20627bf1ed606756a7f77edff7b66b7064f9cb327c6"
+ 
+ [[package]]
+ name = "winapi"
+diff --git a/Cargo.toml b/Cargo.toml
+index c3e4ccc..308b0b9 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -53,7 +53,7 @@ version = "2.31.2"
+ features = ["suggestions", "color", "wrap_help"]
+ 
+ [target.'cfg(unix)'.dependencies]
+-users = "0.11.0"
++users = { git = "https://github.com/aspenluxxxy/rust-users", rev = "5208452ff8fe98e21c4ae65a5c44d654f5efc0c8" }
+ 
+ [target.'cfg(all(unix, not(target_os = "redox")))'.dependencies]
+ libc = "0.2"
+@@ -61,7 +61,7 @@ libc = "0.2"
+ # FIXME: Re-enable jemalloc on macOS
+ # jemalloc is currently disabled on macOS due to a bug in jemalloc in combination with macOS
+ # Catalina. See https://github.com/sharkdp/fd/issues/498 for details.
+-[target.'cfg(all(not(windows), not(target_os = "android"), not(target_os = "macos"), not(target_env = "musl")))'.dependencies]
++[target.'cfg(all(not(windows), not(target_os = "android"), not(target_vendor = "apple"), not(target_env = "musl")))'.dependencies]
+ jemallocator = "0.3.0"
+ 
+ [dev-dependencies]
+diff --git a/src/main.rs b/src/main.rs
+index 6f0eece..bbe3b71 100644
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -37,7 +37,7 @@ use crate::regex_helper::{pattern_has_uppercase_char, pattern_matches_strings_wi
+ #[cfg(all(
+     not(windows),
+     not(target_os = "android"),
+-    not(target_os = "macos"),
++    not(target_vendor = "apple"),
+     not(target_env = "musl")
+ ))]
+ #[global_allocator]
+-- 
+2.24.3 (Apple Git-128)
+

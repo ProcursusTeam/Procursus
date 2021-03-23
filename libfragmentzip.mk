@@ -4,11 +4,12 @@ endif
 
 SUBPROJECTS            += libfragmentzip
 LIBFRAGMENTZIP_VERSION := 60
-DEB_LIBFRAGMENTZIP_V   ?= $(LIBFRAGMENTZIP_VERSION)-1
+DEB_LIBFRAGMENTZIP_V   ?= $(LIBFRAGMENTZIP_VERSION)-2
 
 libfragmentzip-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tihmstar/libfragmentzip/archive/$(LIBFRAGMENTZIP_VERSION).tar.gz
 	$(call EXTRACT_TAR,$(LIBFRAGMENTZIP_VERSION).tar.gz,libfragmentzip-$(LIBFRAGMENTZIP_VERSION),libfragmentzip)
+	$(SED) -i 's/@libz_requires@//;s/\(Libs:.*\)/\1 -lz/' $(BUILD_WORK)/libfragmentzip/libfragmentzip.pc.in
 
 ifneq ($(wildcard $(BUILD_WORK)/libfragmentzip/.build_complete),)
 libfragmentzip:
@@ -18,7 +19,9 @@ libfragmentzip: libfragmentzip-setup libgeneral libzip curl
 	cd $(BUILD_WORK)/libfragmentzip && ./autogen.sh \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		zlib_LIBS="-L$(TARGET_SYSROOT)/usr/lib -lz" \
+		zlib_CFLAGS="-I$(TARGET_SYSROOT)/usr/include"
 	+$(MAKE) -C $(BUILD_WORK)/libfragmentzip
 	+$(MAKE) -C $(BUILD_WORK)/libfragmentzip install \
 		DESTDIR="$(BUILD_STAGE)/libfragmentzip"

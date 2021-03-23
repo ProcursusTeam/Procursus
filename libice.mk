@@ -19,9 +19,9 @@ libice: libice-setup xtrans xorgproto
 	cd $(BUILD_WORK)/libice && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
+		--localstatedir=$(MEMO_PREFIX)/var \
 		--enable-malloc0returnsnull=no \
 		--enable-docs=no \
 		--enable-specs=no
@@ -36,23 +36,23 @@ endif
 libice-package: libice-stage
 	# libice.mk Package Structure
 	rm -rf $(BUILD_DIST)/libice{6,-dev}
-	mkdir -p $(BUILD_DIST)/libice6/usr/lib \
-		$(BUILD_DIST)/libice-dev/usr/{include,lib}
-	
+	mkdir -p $(BUILD_DIST)/libice6/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
+		$(BUILD_DIST)/libice-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{include,lib}
+
 	# libice.mk Prep libice6
-	cp -a $(BUILD_STAGE)/libice/usr/lib/libICE.6.dylib $(BUILD_DIST)/libice6/usr/lib
+	cp -a $(BUILD_STAGE)/libice/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libICE.6.dylib $(BUILD_DIST)/libice6/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
 
 	# libice.mk Prep libice-dev
-	cp -a $(BUILD_STAGE)/libice/usr/lib/!(libICE.6.dylib) $(BUILD_DIST)/libice-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libice/usr/include $(BUILD_DIST)/libice-dev/usr
-	
+	cp -a $(BUILD_STAGE)/libice/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/!(libICE.6.dylib) $(BUILD_DIST)/libice-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libice/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libice-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+
 	# libice.mk Sign
 	$(call SIGN,libice6,general.xml)
-	
+
 	# libice.mk Make .debs
 	$(call PACK,libice6,DEB_LIBICE_V)
 	$(call PACK,libice-dev,DEB_LIBICE_V)
-	
+
 	# libice.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libice{6,-dev}
 

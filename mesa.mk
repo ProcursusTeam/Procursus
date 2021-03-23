@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += mesa
-MESA_VERSION := 20.3.4
+MESA_VERSION := 21.0.0
 DEB_MESA_V   ?= $(MESA_VERSION)
 
 mesa-setup: setup
@@ -42,8 +42,6 @@ mesa: mesa-setup libx11 libxext libxcb libxdamage libxxf86vm gettext expat zstd
 		-Dbsymbolic_functions=false \
 		-Ddtrace=false \
 		-Db_ndebug=true \
-		-Ddri-drivers=swrast \
-		-Dgallium-drivers= \
 		-Dplatforms=x11 \
 		-Dgles1=disabled \
 		..

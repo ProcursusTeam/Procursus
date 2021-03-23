@@ -1362,6 +1362,7 @@ EOF
 	UNAME_PROCESSOR=$(uname -p)
 	case $UNAME_PROCESSOR in
 	    unknown) UNAME_PROCESSOR=powerpc ;;
+	    arm64) UNAME_PROCESSOR=aarch64 ;;
 	esac
 	if command -v xcode-select > /dev/null 2> /dev/null && \
 		! xcode-select --print-path > /dev/null 2> /dev/null ; then

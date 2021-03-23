@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += socat
-SOCAT_VERSION := 1.7.3.4
+SOCAT_VERSION := 1.7.4.1
 DEB_SOCAT_V   ?= $(SOCAT_VERSION)
 
 socat-setup: setup
@@ -18,7 +18,7 @@ socat: socat-setup openssl readline
 	cd $(BUILD_WORK)/socat && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/socat
 	+$(MAKE) -C $(BUILD_WORK)/socat install \
 		DESTDIR=$(BUILD_STAGE)/socat
@@ -28,10 +28,9 @@ endif
 socat-package: socat-stage
 	# socat.mk Package Structure
 	rm -rf $(BUILD_DIST)/socat
-	mkdir -p $(BUILD_DIST)/socat
 	
 	# socat.mk Prep socat
-	cp -a $(BUILD_STAGE)/socat/usr $(BUILD_DIST)/socat
+	cp -a $(BUILD_STAGE)/socat $(BUILD_DIST)
 	
 	# socat.mk Sign
 	$(call SIGN,socat,general.xml)
