@@ -2,11 +2,15 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+
 STRAPPROJECTS       += pam-modules
 PAM-MODULES_VERSION := 186.60.1
 DEB_PAM-MODULES_V   ?= $(PAM-MODULES_VERSION)
 
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+###
+# TODO: Have a look at the sacl and launchd modules.
+###
 
 pam-modules-setup: setup
 	-wget -q -nc -P$(BUILD_SOURCE) https://opensource.apple.com/tarballs/pam_modules/pam_modules-$(PAM-MODULES_VERSION).tar.gz
