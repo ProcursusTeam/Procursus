@@ -1,12 +1,12 @@
 #!/bin/sh
 
 if [[ $1 == upgrade ]]; then
-    @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/launchctl unload /Library/LaunchDaemons/com.openssh.sshd.plist
-    @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/launchctl load /Library/LaunchDaemons/com.openssh.sshd.plist
+    @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/com.openssh.sshd.plist
+    @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/com.openssh.sshd.plist
 fi
 
 if [[ $1 == install ]]; then
-    @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/launchctl load -w /Library/LaunchDaemons/com.openssh.sshd.plist
+    @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/com.openssh.sshd.plist
 fi
 
 exit 0

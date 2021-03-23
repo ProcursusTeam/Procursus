@@ -22,15 +22,16 @@ openssh-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$(OPENSSH_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,openssh-$(OPENSSH_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,openssh-$(OPENSSH_VERSION).tar.gz,openssh-$(OPENSSH_VERSION),openssh)
-	$(OPENSSH_SETUP_ARGS)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+	$(call DO_PATCH,openssh,openssh,-p1)
+endif
 
 ifneq ($(wildcard $(BUILD_WORK)/openssh/.build_complete),)
 openssh:
 	@echo "Using previously built openssh."
 else
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-OPENSSH_SETUP_ARGS += $(call DO_PATCH,openssh,openssh,-p1)
-openssh: openssh-setup openssl libxcrypt
+openssh: openssh-setup openssl libxcrypt openpam
 else # (,$(findstring darwin,$(MEMO_TARGET)))
 OPENSSH_CONFIGURE_ARGS += --with-keychain=apple
 openssh: openssh-setup openssl
@@ -62,11 +63,12 @@ openssh-package: openssh-stage
 	# openssh.mk Package Structure
 	rm -rf $(BUILD_DIST)/openssh{,-sftp-server,-server,-client}
 	mkdir -p $(BUILD_DIST)/openssh \
-		$(BUILD_DIST)/openssh-client/{var/empty,$(MEMO_PREFIX)/etc/ssh,$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{libexec,share/man/{man1,man5,man8}}} \
+		$(BUILD_DIST)/openssh-client/{$(MEMO_PREFIX)/var/empty,$(MEMO_PREFIX)/etc/ssh,$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{libexec,share/man/{man1,man5,man8}}} \
 		$(BUILD_DIST)/openssh-server/{$(MEMO_PREFIX)/etc/ssh,$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{libexec,share/man/{man5,man8}}} \
 		$(BUILD_DIST)/openssh-sftp-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{libexec,/share/man/man8}
 	
 	# openssh.mk Prep openssh-client
+	cp -a $(BUILD_STAGE)/openssh/var/empty $(BUILD_DIST)/openssh-client/$(MEMO_PREFIX)/var
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/etc/ssh/ssh_config $(BUILD_DIST)/openssh-client/$(MEMO_PREFIX)/etc/ssh
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/openssh-client/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/{ssh-keysign,ssh-pkcs11-helper,ssh-sk-helper} $(BUILD_DIST)/openssh-client/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
