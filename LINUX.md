@@ -1,6 +1,22 @@
 # Building on Linux
 Building on linux is made possible by cctools-port.
 
+## Prebuild Debian Packages
+
+If you are using Debian Unstable you can install a prebuilt toolchain through APT.
+
+```
+curl -LO https://cameronkatri.com/cameronkatri.gpg
+sudo install -o root -g root cameronkatri.gpg /etc/apt/trusted.gpg.d/cameronkatri.gpg
+echo -e 'deb https://cameronkatri.com/debian unstable main\ndeb-src https://cameronkatri.com/debian unstable main' | sudo tee /etc/apt/sources.list.d/cameronkatri.list
+sudo apt update
+sudo apt install cctools-port
+```
+
+then install your SDK's and set TARGET_SYSROOT and MACOSX_SYSROOT variables
+
+## Other Distros
+
 ### The easiest way to do this is by using [this script](https://gist.github.com/1Conan/4347fd5f604cfe6116f7acb0237ef155).
 
 ```bash
@@ -20,7 +36,7 @@ If you want to do it manually, however, follow these instructions.
 - You need: clang (>=3.4) and everything Procursus normally needs. Get clang with apt.
 
 2. Get iOS SDK
-- You're going to need an iOS 13 SDK. Since you're on Linux, you're going to have to download an _unpatched_ SDK, and add C++ standard libraries to it.
+- You're going to need an iOS 13 SDK. Since you're on Linux, you're going to have to download a SDK, and add C++ standard libraries to it.
 ```
 TEMPSDKFOLDER=$(mktemp -d)
 mkdir $TEMPSDKFOLDER/tmp
