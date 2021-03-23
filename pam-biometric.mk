@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS       += pam-biometric
+SUBPROJECTS           += pam-biometric
 PAM-BIOMETRIC_VERSION := 1.0.0
 DEB_PAM-BIOMETRIC_V   ?= $(PAM-BIOMETRIC_VERSION)
 
@@ -20,7 +20,7 @@ else
 pam-biometric: pam-biometric-setup openpam
 	cd $(BUILD_WORK)/pam-biometric && \
 	$(CC) -shared pam-biometric.m $(CCFLAGS) -lpam -framework Foundation -framework LocalAuthentication -o pam-biometric.so && \
-	$(GINSTALL) -Dm755 pam-biometric.so $(BUILD_STAGE)/pam-biometric/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/pam
+	$(GINSTALL) -Dm755 pam-biometric.so $(BUILD_STAGE)/pam-biometric/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pam
 	touch $(BUILD_WORK)/pam-biometric/.build_complete
 endif
 
