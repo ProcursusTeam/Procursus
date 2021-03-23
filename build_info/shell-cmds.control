@@ -3,7 +3,7 @@ Version: @DEB_SHELL-CMDS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: libpam2
-Pre-depends: coreutils (>= 8.32-9)
+Conflicts: coreutils (<< 8.32-9)
 Provides: killall, which
 Section: Administration
 Priority: important

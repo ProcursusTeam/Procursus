@@ -52,8 +52,10 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	+$(MAKE) -C $(BUILD_WORK)/openssh install \
 		DESTDIR="$(BUILD_STAGE)/openssh"
 	mkdir -p $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/Library/LaunchDaemons
-	cp $(BUILD_INFO)/com.openssh.sshd.plist $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/Library/LaunchDaemons
-	cp $(BUILD_INFO)/sshd-keygen-wrapper $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
+	mkdir -p $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/etc/pam.d
+	cp $(BUILD_MISC)/openssh/sshd $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/etc/pam.d
+	cp $(BUILD_MISC)/openssh/com.openssh.sshd.plist $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/Library/LaunchDaemons
+	cp $(BUILD_MISC)/openssh/sshd-keygen-wrapper $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
 	cp $(BUILD_WORK)/openssh/contrib/ssh-copy-id $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	chmod 0755 $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ssh-copy-id
 	touch $(BUILD_WORK)/openssh/.build_complete
@@ -78,6 +80,9 @@ openssh-package: openssh-stage
 	
 	# openssh.mk Prep openssh-server
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/etc/ssh/{moduli,sshd_config} $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)/etc/ssh
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/etc/pam.d $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)/etc
+endif
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/Library $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)/Library
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/sshd-keygen-wrapper $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
