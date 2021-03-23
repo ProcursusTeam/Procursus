@@ -45,6 +45,7 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--sysconfdir=$(MEMO_PREFIX)/etc/ssh \
+		--localstatedir=$(MEMO_PREFIX)/var\
 		--with-pam \
 		check_for_libcrypt_before=1 \
 		$(OPENSSH_CONFIGURE_ARGS)
@@ -70,7 +71,7 @@ openssh-package: openssh-stage
 		$(BUILD_DIST)/openssh-sftp-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{libexec,/share/man/man8}
 	
 	# openssh.mk Prep openssh-client
-	cp -a $(BUILD_STAGE)/openssh/var/empty $(BUILD_DIST)/openssh-client/$(MEMO_PREFIX)/var
+	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/var/empty $(BUILD_DIST)/openssh-client/$(MEMO_PREFIX)/var
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/etc/ssh/ssh_config $(BUILD_DIST)/openssh-client/$(MEMO_PREFIX)/etc/ssh
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/openssh-client/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/{ssh-keysign,ssh-pkcs11-helper,ssh-sk-helper} $(BUILD_DIST)/openssh-client/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
