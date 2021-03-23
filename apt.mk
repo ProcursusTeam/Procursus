@@ -10,12 +10,6 @@ ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
 APT_CMAKE_ARGS += -DHAVE_PTSNAME_R=0
 endif
 
-###
-#
-# TODO: Make our own vendor configuration instead of using debian.
-#
-###
-
 apt-setup: setup
 	# Change this to a git release download sometime.
 	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/a/apt/apt_$(APT_VERSION).tar.xz
