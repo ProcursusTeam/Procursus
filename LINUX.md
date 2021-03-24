@@ -3,14 +3,14 @@ Building on linux is made possible by cctools-port.
 
 ## Prebuild Debian Packages
 
-If you are using Debian Unstable you can install a prebuilt toolchain through APT.
+If you are using Debian Unstable or Buster you can install a prebuilt toolchain through APT.
 
 ```
 curl -LO https://cameronkatri.com/cameronkatri.gpg
 sudo install -o root -g root cameronkatri.gpg /etc/apt/trusted.gpg.d/cameronkatri.gpg
-echo -e 'deb https://cameronkatri.com/debian unstable main\ndeb-src https://cameronkatri.com/debian unstable main' | sudo tee /etc/apt/sources.list.d/cameronkatri.list
+echo -e 'deb https://cameronkatri.com/debian $(lsb_release -cs) main\ndeb-src https://cameronkatri.com/debian $(lsb_release -cs) main' | sudo tee /etc/apt/sources.list.d/cameronkatri.list
 sudo apt update
-sudo apt install cctools-port
+sudo apt install cctools-port ldid
 ```
 
 then install your SDK's and set TARGET_SYSROOT and MACOSX_SYSROOT variables
