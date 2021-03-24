@@ -2,13 +2,16 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS      += nekofetch
-NEKOFETCH_VERSION := 1.4
+SUBPROJECTS       += nekofetch
+NEKOFETCH_COMMIT  := 9382314f82d37c7039e097c7eb4cf5460168d49d
+NEKOFETCH_VERSION := 1.4+git20210323.$(shell echo $(NEKOFETCH_COMMIT) | cut -c -7)
 DEB_NEKOFETCH_V   ?= $(NEKOFETCH_VERSION)
 
 nekofetch-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/proprdev/nekofetch/archive/refs/tags/v$(NEKOFETCH_VERSION).tar.gz
-	$(call EXTRACT_TAR,v$(NEKOFETCH_VERSION).tar.gz,nekofetch-$(NEKOFETCH_VERSION),nekofetch)
+	-[ ! -f "$(BUILD_SOURCE)/nekofetch-$(NEKOFETCH_COMMIT).tar.gz" ] && \
+		wget -q -nc -O $(BUILD_SOURCE)/nekofetch-$(NEKOFETCH_COMMIT).tar.gz \
+			https://github.com/proprdev/nekofetch/archive/$(NEKOFETCH_COMMIT).tar.gz
+	$(call EXTRACT_TAR,nekofetch-$(NEKOFETCH_COMMIT).tar.gz,nekofetch-$(NEKOFETCH_COMMIT),nekofetch)
 
 ifneq ($(wildcard $(BUILD_WORK)/nekofetch/.build_complete),)
 nekofetch:
