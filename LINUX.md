@@ -13,7 +13,7 @@ sudo apt update
 sudo apt install cctools-port ldid
 ```
 
-then install your SDK's and set TARGET_SYSROOT and MACOSX_SYSROOT variables
+then install your SDKs and set TARGET_SYSROOT and MACOSX_SYSROOT variables
 
 ## Other Distros
 
