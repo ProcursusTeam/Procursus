@@ -4,11 +4,9 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
-SUBPROJECTS           += pam-biometrics
-PAM-BIOMETRICS_VERSION := 1.0.0
+SUBPROJECTS            += pam-biometrics
+PAM-BIOMETRICS_VERSION := 1.1.0
 DEB_PAM-BIOMETRICS_V   ?= $(PAM-BIOMETRICS_VERSION)
-
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 pam-biometrics-setup: setup
 	-wget -q -nc -O$(BUILD_SOURCE)/pam-biometrics-$(PAM-BIOMETRICS_VERSION).tar.gz https://github.com/ProcursusTeam/pam-biometrics/archive/refs/tags/$(PAM-BIOMETRICS_VERSION).tar.gz

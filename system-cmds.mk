@@ -7,7 +7,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS       += system-cmds
 SYSTEM-CMDS_VERSION := 854.40.2
 PWDARWIN_COMMIT     := d0c36b7ba551609dd9355c6791f1ae9b55f1bc33
-DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-7
+DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-8
 
 system-cmds-setup: setup libxcrypt
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/system_cmds/system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz
@@ -97,6 +97,8 @@ system-cmds-package: system-cmds-stage
 	
 	# system-cmds.mk Sign
 	$(call SIGN,system-cmds,general.xml)
+	$(LDID) -S$(BUILD_INFO)/pam.xml $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/login
+	find $(BUILD_DIST)/system-cmds -name '.ldid*' -type f -delete
 	
 	# system-cmds.mk Permissions
 	$(FAKEROOT) chmod u+s $(BUILD_DIST)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{passwd,login}

@@ -6,7 +6,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS      += shell-cmds
 SHELL-CMDS_VERSION := 207.40.1
-DEB_SHELL-CMDS_V   ?= $(SHELL-CMDS_VERSION)-1
+DEB_SHELL-CMDS_V   ?= $(SHELL-CMDS_VERSION)-2
 
 shell-cmds-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/shell_cmds/shell_cmds-$(SHELL-CMDS_VERSION).tar.gz
@@ -44,6 +44,8 @@ endif
 
 	# shell-cmds.mk Sign
 	$(call SIGN,shell-cmds,general.xml)
+	$(LDID) -S$(BUILD_INFO)/pam.xml $(BUILD_DIST)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/su
+	find $(BUILD_DIST)/shell-cmds -name '.ldid*' -type f -delete
 
 	# shell-cmds.mk Permissions
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
