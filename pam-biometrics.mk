@@ -5,13 +5,13 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS            += pam-biometrics
-PAM-BIOMETRICS_VERSION := 1.1.0
+PAM-BIOMETRICS_VERSION := 1.1.1
 DEB_PAM-BIOMETRICS_V   ?= $(PAM-BIOMETRICS_VERSION)
 
 pam-biometrics-setup: setup
 	-wget -q -nc -O$(BUILD_SOURCE)/pam-biometrics-$(PAM-BIOMETRICS_VERSION).tar.gz https://github.com/ProcursusTeam/pam-biometrics/archive/refs/tags/$(PAM-BIOMETRICS_VERSION).tar.gz
 	$(call EXTRACT_TAR,pam-biometrics-$(PAM-BIOMETRICS_VERSION).tar.gz,pam-biometrics-$(PAM-BIOMETRICS_VERSION),pam-biometrics)
-	mkdir -p $(BUILD_STAGE)/pam-biometrics/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pam
+	mkdir -p $(BUILD_STAGE)/pam-biometrics/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{share/man/man8,lib/pam}
 	
 ifneq ($(wildcard $(BUILD_WORK)/pam-biometrics/.build_complete),)
 pam-biometrics:
@@ -19,7 +19,10 @@ pam-biometrics:
 else
 pam-biometrics: pam-biometrics-setup openpam
 	+$(MAKE) -C $(BUILD_WORK)/pam-biometrics all
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/pam-biometrics/pam-biometrics.so $(BUILD_STAGE)/pam-biometrics/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pam
+	$(GINSTALL) -Dm755 $(BUILD_WORK)/pam-biometrics/pam_biometrics.so $(BUILD_STAGE)/pam-biometrics/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pam
+	wget -q -O$(BUILD_STAGE)/pam-biometrics/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/pam_biometrics.8 https://gist.githubusercontent.com/1Conan/992efca8fb1ac1551432b7a744817faf/raw/b304293cd378aefbcceb22d427794f2777f09088/pam-biometrics.8.txt
+	ln -s pam_biometrics.so $(BUILD_STAGE)/pam-biometrics/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pam/pam-biometrics.so
+	# Leave the above symlink for compatibility with a messup I originally made when pushing this.
 	touch $(BUILD_WORK)/pam-biometrics/.build_complete
 endif
 
