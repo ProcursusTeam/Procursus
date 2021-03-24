@@ -2,7 +2,7 @@ Package: libpam-google-authenticator
 Version: @DEB_LIBPAM-GOOGLE-AUTHENTICATOR_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Section: administration
+Section: Administration
 Priority: optional
 Depends libpam2
 Description: Two-step verification
