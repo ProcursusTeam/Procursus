@@ -16,8 +16,8 @@ nekofetch:
 else
 nekofetch: nekofetch-setup
 	+$(MAKE) -C $(BUILD_WORK)/nekofetch install \
-		PREFIX=$(BUILD_STAGE)/nekofetch$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	# TODO: Separate DESTDIR from PREFIX when fix is added upstream
+		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		DESTDIR=$(BUILD_STAGE)/nekofetch
 	touch $(BUILD_WORK)/nekofetch/.build_complete
 endif
 
