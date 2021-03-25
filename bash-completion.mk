@@ -28,7 +28,7 @@ endif
 bash-completion-package: bash-completion-stage
 	# bash-completion.mk Package Structure
 	rm -rf $(BUILD_DIST)/bash-completion
-	mkdir -p $(BUILD_DIST)/bash-completion/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{etc,share}
+	mkdir -p $(BUILD_DIST)/bash-completion/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
 
 	# bash-completion.mk Prep bash-completion
 	cp -a $(BUILD_STAGE)/bash-completion/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/etc/ $(BUILD_DIST)/bash-completion/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/etc
