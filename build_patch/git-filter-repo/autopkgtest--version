@@ -1,0 +1,32 @@
+From: Stefano Rivera <stefano@rivera.za.net>
+Date: Tue, 16 Feb 2021 14:33:48 -0800
+Subject: Calculate the version correctly in autopkgtest
+
+Use the installed git-filter-repo.
+
+The forwardable version would find where git-filter-repo is on PATH and
+hash that, but our wrapper would break that, so ...
+
+Forwarded: not-needed
+---
+ t/t9390-filter-repo.sh | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/t/t9390-filter-repo.sh b/t/t9390-filter-repo.sh
+index 8ab4749..7db0714 100755
+--- a/t/t9390-filter-repo.sh
++++ b/t/t9390-filter-repo.sh
+@@ -1670,7 +1670,12 @@ test_expect_success 'tweaking just a tag' '
+ 
+ test_expect_success '--version' '
+ 	git filter-repo --version >actual &&
+-	git hash-object ../../git-filter-repo | colrm 13 >expect &&
++	if [ -e ../../git-filter-repo ]; then
++		filter_repo=../../git-filter-repo
++	else
++		filter_repo=/usr/lib/python3/dist-packages/git_filter_repo.py
++	fi &&
++	git hash-object $filter_repo | colrm 13 >expect &&
+ 	test_cmp expect actual
+ '
+ 

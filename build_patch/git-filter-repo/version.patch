@@ -1,0 +1,10 @@
+Index: git-filter-repo-2.26.0/release/setup.py
+===================================================================
+--- git-filter-repo-2.26.0.orig/release/setup.py
++++ git-filter-repo-2.26.0/release/setup.py
+@@ -5,4 +5,4 @@ for f in ['git-filter-repo', 'git_filter
+         os.symlink("../"+f, f)
+     except FileExistsError:
+         pass
+-setup(use_scm_version=dict(root="..", relative_to=__file__))
++setup(version='@PKGVER@')

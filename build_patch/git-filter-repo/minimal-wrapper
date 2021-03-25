@@ -1,0 +1,33 @@
+From: Stefano Rivera <stefano@rivera.za.net>
+Date: Tue, 16 Feb 2021 12:13:59 -0800
+Subject: Install a minimal shell wrapper
+
+Instead of doubling-up on the entire Python module.
+
+Forwarded: not-needed
+---
+ release/git-filter-repo | 2 ++
+ release/setup.py        | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+ create mode 100755 release/git-filter-repo
+
+diff --git a/release/git-filter-repo b/release/git-filter-repo
+new file mode 100755
+index 0000000..ce469f1
+--- /dev/null
++++ b/release/git-filter-repo
+@@ -0,0 +1,2 @@
++#!/bin/sh
++exec python3 -m git_filter_repo "$@"
+diff --git a/release/setup.py b/release/setup.py
+index a616466..45fd7ab 100644
+--- a/release/setup.py
++++ b/release/setup.py
+@@ -1,6 +1,6 @@
+ from setuptools import setup
+ import os
+-for f in ['git-filter-repo', 'git_filter_repo.py', 'README.md']:
++for f in ['git_filter_repo.py', 'README.md']:
+     try:
+         os.symlink("../"+f, f)
+     except FileExistsError:
