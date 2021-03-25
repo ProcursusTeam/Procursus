@@ -4,29 +4,46 @@ endif
 
 SUBPROJECTS    += pacman
 PACMAN_VERSION := 5.2.2
-DEB_PACMAN_V   ?= $(PACMAN_VERSION)-2
+DEB_PACMAN_V   ?= $(PACMAN_VERSION)-3
 
 pacman-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://git.archlinux.org/pacman.git/snapshot/pacman-$(PACMAN_VERSION).tar.gz
 	$(call EXTRACT_TAR,pacman-$(PACMAN_VERSION).tar.gz,pacman-$(PACMAN_VERSION),pacman)
 	$(call DO_PATCH,pacman,pacman,-p1)
+	$(SED) -i -e "s/with_dri_platform = 'apple'/with_dri_platform = 'none'/" \
+		-e "/dep_xcb_shm = dependency('xcb-shm')/a dep_xxf86vm = dependency('xxf86vm')" $(BUILD_WORK)/pacman/meson.build
+	mkdir -p $(BUILD_WORK)/pacman/build
+
+	echo -e "[host_machine]\n \
+        system = 'macOS'\n \
+	cpu_family = '$(shell echo $(GNU_HOST_TRIPLE) | cut -d- -f1)'\n \
+	cpu = '$(MEMO_ARCH)'\n \
+	endian = 'little'\n \
+	[properties]\n \
+	root = '$(BUILD_BASE)'\n \
+	[paths]\n \
+	prefix ='$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
+	sysconfdir='$(MEMO_PREFIX)/etc'\n \
+	localstatedir='$(MEMO_PREFIX)/var'\n \
+	[binaries]\n \
+	c = '$(CC)'\n \
+	cpp = '$(CXX)'\n" > $(BUILD_WORK)/pacman/build/cross.txt
 
 ifneq ($(wildcard $(BUILD_WORK)/pacman/.build_complete),)
 pacman:
 	@echo "Using previously built pacman."
 else
-pacman: pacman-setup libarchive openssl curl gettext
-	cd $(BUILD_WORK)/pacman && ./autogen.sh
-	cd $(BUILD_WORK)/pacman && ./configure \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--disable-dependency-tracking \
-		--disable-doc
-	+$(MAKE) -C $(BUILD_WORK)/pacman
-	+$(MAKE) -C $(BUILD_WORK)/pacman install \
-		DESTDIR=$(BUILD_STAGE)/pacman
+pacman: pacman-setup libarchive openssl curl gettext gpgme
+	cd $(BUILD_WORK)/pacman/build && PKG_CONFIG="pkg-config" meson \
+                --cross-file cross.txt \
+		--buildtype=plain \
+		-Di18n=false \
+		-Ddoc=disabled \
+		-Dcrypto=openssl \
+		..
+	cd $(BUILD_WORK)/pacman/build; \
+		DESTDIR="$(BUILD_STAGE)/pacman" meson install; \
+		DESTDIR="$(BUILD_BASE)" meson install
 	find $(BUILD_STAGE)/pacman -type f -exec $(SED) -i 's+/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/bin/+/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/+g' {} +
 	touch $(BUILD_WORK)/pacman/.build_complete
 endif
