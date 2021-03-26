@@ -15,7 +15,7 @@ pacman-setup: setup
 	mkdir -p $(BUILD_WORK)/pacman/build
 
 	echo -e "[host_machine]\n \
-        system = 'macOS'\n \
+        system = 'darwin'\n \
 	cpu_family = '$(shell echo $(GNU_HOST_TRIPLE) | cut -d- -f1)'\n \
 	cpu = '$(MEMO_ARCH)'\n \
 	endian = 'little'\n \
@@ -33,7 +33,7 @@ ifneq ($(wildcard $(BUILD_WORK)/pacman/.build_complete),)
 pacman:
 	@echo "Using previously built pacman."
 else
-pacman: pacman-setup libarchive openssl curl gettext gpgme
+pacman: pacman-setup libarchive openssl curl gettext gpgme bash-completion
 	cd $(BUILD_WORK)/pacman/build && PKG_CONFIG="pkg-config" meson \
                 --cross-file cross.txt \
 		--buildtype=plain \
