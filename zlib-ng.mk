@@ -26,10 +26,10 @@ zlib-ng: zlib-ng-setup
                 -DCMAKE_C_FLAGS="$(CFLAGS)" \
                 -DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
                 -DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
-				                -DCMAKE_OSX_ARCHITECTURES="$(MEMO_ARCH)" \
-								ZLIB_COMPAT=TRUE \
-				.
-				+$(MAKE) -C $(BUILD_WORK)/zlib-ng
+		-DCMAKE_OSX_ARCHITECTURES="$(MEMO_ARCH)" \
+		-DZLIB_COMPAT=TRUE \
+		.
+	+$(MAKE) -C $(BUILD_WORK)/zlib-ng
 	+$(MAKE) -C $(BUILD_WORK)/zlib-ng install \
 		DESTDIR=$(BUILD_STAGE)/zlib-ng
 		touch $(BUILD_WORK)/zlib-ng/.build_complete
