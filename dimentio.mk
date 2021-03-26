@@ -6,8 +6,8 @@ ifneq (,$(findstring arm64,$(MEMO_TARGET)))
 
 SUBPROJECTS        += dimentio
 # I'm not going to bump the version any higher than 1.0.3. Just change commit date/short hash.
-DIMENTIO_COMMIT    := 7ffffff774104c125959fb2ec6b6d103a04dea97
-DIMENTIO_VERSION   := 1.0.3+git20210314.$(shell echo $(DIMENTIO_COMMIT) | cut -c -7)
+DIMENTIO_COMMIT    := 7ffffffa76ca12341369c785ed4281d276631438
+DIMENTIO_VERSION   := 1.0.3+git20210325.$(shell echo $(DIMENTIO_COMMIT) | cut -c -7)
 DEB_DIMENTIO_V     ?= $(DIMENTIO_VERSION)
 
 DIMENTIO_SOVERSION := 0
