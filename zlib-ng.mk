@@ -36,13 +36,12 @@ zlib-ng: zlib-ng-setup
 endif
 zlib-ng-package: zlib-ng-stage
 	# zlib-ng.mk Package Structure
-	rm -rf $(BUILD_DIST)/zlib-ng
-		rm -rf $(BUILD_DIST)/zlib-ng-dev
-		mkdir -p  $(BUILD_DIST)/zlib-ng20/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-		mkdir -p  $(BUILD_DIST)/zlib-ng-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	rm -rf $(BUILD_DIST)/zlib-ng{,-dev}
+	mkdir -p  $(BUILD_DIST)/zlib-ng{20,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 		
 	# zlib-ng.mk Prep zlib-ng
 	cp -a $(BUILD_STAGE)/zlib-ng $(BUILD_DIST)/zlib-ng
+
 	# zlib-ng.mk Sign
 	$(call SIGN,zlib-ng,general.xml)
 	
