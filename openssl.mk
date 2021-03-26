@@ -11,7 +11,7 @@ endif # ($(SSH_STRAP),1)
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += openssl
 endif
-OPENSSL_VERSION := 1.1.1i
+OPENSSL_VERSION := 1.1.1k
 DEB_OPENSSL_V   ?= $(OPENSSL_VERSION)
 
 ###
