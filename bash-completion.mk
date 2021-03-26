@@ -18,7 +18,7 @@ bash-completion: bash-completion-setup bash
 	cd $(BUILD_WORK)/bash-completion && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/bash-completion
 	+$(MAKE) -C $(BUILD_WORK)/bash-completion install \
 		DESTDIR=$(BUILD_STAGE)/bash-completion
@@ -28,7 +28,7 @@ endif
 bash-completion-package: bash-completion-stage
 	# bash-completion.mk Package Structure
 	rm -rf $(BUILD_DIST)/bash-completion
-	mkdir -p $(BUILD_DIST)/bash-completion/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
+	mkdir -p $(BUILD_DIST)/bash-completion/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# bash-completion.mk Prep bash-completion
 	cp -a $(BUILD_STAGE)/bash-completion/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/etc/ $(BUILD_DIST)/bash-completion/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/etc
