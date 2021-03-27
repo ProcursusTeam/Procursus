@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  	 += ccache
-CCACHE_VERSION := 4.2
+CCACHE_VERSION := 4.2.1
 DEB_CCACHE_V   ?= $(CCACHE_VERSION)
 
 ifneq (,$(findstring arm64,$(MEMO_TARGET)))
@@ -29,7 +29,7 @@ ccache:
 	@echo "Using previously built ccache."
 else
 ccache: ccache-setup
-	cd $(BUILD_WORK)/ccache && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/ccache && cmake . \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
