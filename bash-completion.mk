@@ -1,8 +1,8 @@
 ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
- # ($(MEMO_TARGET),darwin-\*)
-SUBPROJECTS   += bash-completion # ($(MEMO_TARGET),darwin-\*)
+
+SUBPROJECTS   += bash-completion
 BASH-COMPLETION_VERSION  := 2.11
 DEB_BASH-COMPLETION_V    ?= $(BASH-COMPLETION_VERSION)
 
