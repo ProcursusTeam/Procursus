@@ -6,6 +6,10 @@ SUBPROJECTS  += flex
 FLEX_VERSION := 2.6.4
 DEB_FLEX_V   ?= $(FLEX_VERSION)-1
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+FLEX_LDFLAGS := -Wl,-flat_namespace -Wl,-undefined -Wl,suppress
+endif
+
 flex-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/westes/flex/releases/download/v$(FLEX_VERSION)/flex-$(FLEX_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,flex-$(FLEX_VERSION).tar.gz)
@@ -24,7 +28,8 @@ flex: flex-setup gettext
 		ac_cv_func_malloc_0_nonnull=yes \
 		ac_cv_func_realloc_0_nonnull=yes
 	+$(MAKE) -C $(BUILD_WORK)/flex \
-		LIBS="-lm -lintl -Wl,-framework -Wl,CoreFoundation"
+		LIBS="-lm -lintl -Wl,-framework -Wl,CoreFoundation" \
+		LDFLAGS="$(LDFLAGS) $(FLEX_LDFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/flex install \
 		DESTDIR="$(BUILD_STAGE)/flex"
 	+$(MAKE) -C $(BUILD_WORK)/flex install \

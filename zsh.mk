@@ -8,7 +8,7 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += zsh
 endif # ($(MEMO_TARGET),darwin-\*)
 ZSH_VERSION   := 5.8
-DEB_ZSH_V     ?= $(ZSH_VERSION)-2
+DEB_ZSH_V     ?= $(ZSH_VERSION)-3
 
 zsh-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.zsh.org/pub/zsh-$(ZSH_VERSION).tar.xz{,.asc}
@@ -73,12 +73,12 @@ endif
 zsh-package: zsh-stage
 	# zsh.mk Package Structure
 	rm -rf $(BUILD_DIST)/zsh
-	mkdir -p $(BUILD_DIST)/zsh/$(MEMO_PREFIX)/bin
+	mkdir -p $(BUILD_DIST)/zsh/$(MEMO_PREFIX){$(MEMO_SUB_PREFIX),/bin}
 	
 	# zsh.mk Prep zsh
 	cp -a $(BUILD_STAGE)/zsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/* $(BUILD_DIST)/zsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 ifneq ($(MEMO_SUB_PREFIX),)
-	ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/zsh $(BUILD_DIST)/zsh/$(MEMO_PREFIX)/bin/zsh
+	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/zsh $(BUILD_DIST)/zsh/$(MEMO_PREFIX)/bin/zsh
 endif
 	
 	# zsh.mk Sign

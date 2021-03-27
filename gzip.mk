@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += gzip
 GZIP_VERSION  := 1.10
-DEB_GZIP_V    ?= $(GZIP_VERSION)-1
+DEB_GZIP_V    ?= $(GZIP_VERSION)-2
 
 gzip-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gzip/gzip-$(GZIP_VERSION).tar.xz{,.sig}
@@ -26,7 +26,7 @@ gzip: gzip-setup
 		DESTDIR=$(BUILD_STAGE)/gzip
 ifneq ($(MEMO_SUB_PREFIX),)
 	for bin in $(BUILD_STAGE)/gzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
-		ln -s ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(basename $$bin) $(BUILD_STAGE)/gzip/$(MEMO_PREFIX)/bin/$$(basename $$bin); \
+		ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(basename $$bin) $(BUILD_STAGE)/gzip/$(MEMO_PREFIX)/bin/$$(basename $$bin); \
 	done
 endif
 	touch $(BUILD_WORK)/gzip/.build_complete
@@ -35,7 +35,6 @@ endif
 gzip-package: gzip-stage
 	# gzip.mk Package Structure
 	rm -rf $(BUILD_DIST)/gzip
-	mkdir -p $(BUILD_DIST)/gzip
 	
 	# gzip.mk Prep gzip
 	cp -a $(BUILD_STAGE)/gzip $(BUILD_DIST)
