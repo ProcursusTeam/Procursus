@@ -3,14 +3,14 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS               += liboffsetfinder64
-LIBOFFSETFINDER64_VERSION := 132
-LIBOFFSETFINDER64_COMMIT  := 35d3411bf675a83bdb768bc0ec26fe2344be16f3
+LIBOFFSETFINDER64_VERSION := 133
+LIBOFFSETFINDER64_COMMIT  := 5872501a6fb126d80a1b014f56524880df5467fc
 DEB_LIBOFFSETFINDER64_V   ?= $(LIBOFFSETFINDER64_VERSION)
 
 liboffsetfinder64-setup: setup
 	-[ ! -e "$(BUILD_SOURCE)/liboffsetfinder64-$(LIBOFFSETFINDER64_COMMIT).tar.gz" ] \
 		&& wget -q -nc -O$(BUILD_SOURCE)/liboffsetfinder64-$(LIBOFFSETFINDER64_COMMIT).tar.gz \
-			https://github.com/tihmstar/liboffsetfinder64/archive/$(LIBOFFSETFINDER64_COMMIT).tar.gz
+			https://github.com/Cryptiiiic/liboffsetfinder64/archive/$(LIBOFFSETFINDER64_COMMIT).tar.gz
 	$(call EXTRACT_TAR,liboffsetfinder64-$(LIBOFFSETFINDER64_COMMIT).tar.gz,liboffsetfinder64-$(LIBOFFSETFINDER64_COMMIT),liboffsetfinder64)
 
 ifneq ($(wildcard $(BUILD_WORK)/liboffsetfinder64/.build_complete),)
