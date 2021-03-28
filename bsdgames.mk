@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS          += bsdgames
 BSDGAMES_VERSION       := 9.99.80
-BSDGAMES-DARWIN_COMMIT := 08eca96e71d96ad1f8e9b888875ab5570f208d19
+BSDGAMES-DARWIN_COMMIT := 23454acb66be2a88647262d98d50e0f115519ea0
 DEB_BSDGAMES_V         ?= $(BSDGAMES_VERSION)
 
 bsdgames-setup: setup
@@ -18,11 +18,15 @@ bsdgames:
 	@echo "Using previously built bsdgames."
 else
 bsdgames: bsdgames-setup ncurses flex openssl
+	+$(MAKE) -C $(BUILD_WORK)/bsdgames \
+		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+		LOCALSTATEDIR="$(MEMO_PREFIX)/var" \
+		SYSCONFDIR="$(MEMO_PREFIX)/etc" \
+		LIBFLA="$(BUILD_BASE)/usr/lib/libfl.2.dylib"
 	+$(MAKE) -C $(BUILD_WORK)/bsdgames install \
 		DESTDIR="$(BUILD_STAGE)/bsdgames" \
 		GINSTALL="$(GINSTALL)" \
-		LN="$(LN)" \
-		LIBFLA="$(BUILD_BASE)/usr/lib/libfl.2.dylib"
+		LN="$(LN)"
 	touch $(BUILD_WORK)/bsdgames/.build_complete
 endif
 
