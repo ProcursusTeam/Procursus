@@ -20,10 +20,10 @@ upx:
 else
 upx: upx-setup ucl
 	cd $(BUILD_WORK)/upx && PATH="$(BUILD_WORK)/upx/workaround:$(PATH)" make \
-		CHECK_WHITESPACE=/usr/bin/true \
+		CHECK_WHITESPACE="$(shell which true)" \
 		UPX_LZMA_VERSION=0x465 \
 		all
-		
+
 	+$(MAKE) -C $(BUILD_WORK)/upx all
 
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/upx/src/upx.out $(BUILD_STAGE)/upx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/upx-ucl
@@ -36,7 +36,7 @@ upx-package: upx-stage
 	# upx.mk Package Structure
 	rm -rf $(BUILD_DIST)/upx-ucl
 	mkdir -p $(BUILD_DIST)/upx-ucl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share}
-		
+
 	# upx.mk Prep upx-ucl
 	cp -a $(BUILD_STAGE)/upx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/upx-ucl $(BUILD_DIST)/upx-ucl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/upx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/upx-ucl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
