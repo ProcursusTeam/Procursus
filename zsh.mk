@@ -20,7 +20,7 @@ ZSH_CONFIGURE_ARGS := --enable-etcdir=$(MEMO_PREFIX)/etc \
 		zsh_cv_path_utmpx=/var/run/utmpx \
 		zsh_cv_path_utmp=no
 else
-ZSH_CONFIGURE_ARGS := --enable-etcdir=/etc
+ZSH_CONFIGURE_ARGS := --enable-etcdir=$(MEMO_PREFIX)/etc
 endif
 
 ifneq ($(wildcard $(BUILD_WORK)/zsh/.build_complete),)

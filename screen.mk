@@ -25,7 +25,7 @@ screen: screen-setup ncurses libxcrypt
 		--mandir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
 		--enable-colors256 \
 		--disable-pam \
-		--with-sys-screenrc=/etc/screenrc
+		--with-sys-screenrc=$(MEMO_PREFIX)/etc/screenrc
 	+$(MAKE) -C $(BUILD_WORK)/screen install \
 		DESTDIR="$(BUILD_STAGE)/screen"
 	rm -f $(BUILD_STAGE)/screen/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/screen && mv $(BUILD_STAGE)/screen/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/screen{-$(SCREEN_VERSION),}

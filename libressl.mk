@@ -20,7 +20,7 @@ libressl: libressl-setup
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--with-openssldir=/etc/ssl \
+		--with-openssldir=$(MEMO_PREFIX)/etc/ssl \
 		--sysconfdir=$(MEMO_PREFIX)/etc
 	+$(MAKE) -C $(BUILD_WORK)/libressl
 	+$(MAKE) -C $(BUILD_WORK)/libressl install \
@@ -36,7 +36,7 @@ libressl-package: libressl-stage
 	mkdir -p $(BUILD_DIST)/libressl
 
 	# libressl.mk Prep libressl
-	cp -a $(BUILD_STAGE)/libressl/{etc,usr} $(BUILD_DIST)/libressl
+	cp -a $(BUILD_STAGE)/libressl/$(MEMO_PREFIX) $(BUILD_DIST)/libressl
 
 	# libressl.mk Sign
 	$(call SIGN,libressl,general.xml)
