@@ -20,7 +20,7 @@ ZSH_CONFIGURE_ARGS := --enable-etcdir=$(MEMO_PREFIX)/etc \
 		zsh_cv_path_utmpx=/var/run/utmpx \
 		zsh_cv_path_utmp=no
 else
-ZSH_CONFIGURE_ARGS := --enable-etcdir=/etc
+ZSH_CONFIGURE_ARGS := --enable-etcdir=$(MEMO_PREFIX)/etc
 endif
 
 ifneq ($(wildcard $(BUILD_WORK)/zsh/.build_complete),)
@@ -74,19 +74,19 @@ zsh-package: zsh-stage
 	# zsh.mk Package Structure
 	rm -rf $(BUILD_DIST)/zsh
 	mkdir -p $(BUILD_DIST)/zsh/$(MEMO_PREFIX){$(MEMO_SUB_PREFIX),/bin}
-	
+
 	# zsh.mk Prep zsh
 	cp -a $(BUILD_STAGE)/zsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/* $(BUILD_DIST)/zsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 ifneq ($(MEMO_SUB_PREFIX),)
 	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/zsh $(BUILD_DIST)/zsh/$(MEMO_PREFIX)/bin/zsh
 endif
-	
+
 	# zsh.mk Sign
 	$(call SIGN,zsh,general.xml)
-	
+
 	# zsh.mk Make .debs
 	$(call PACK,zsh,DEB_ZSH_V)
-	
+
 	# zsh.mk Build cleanup
 	rm -rf $(BUILD_DIST)/zsh
 

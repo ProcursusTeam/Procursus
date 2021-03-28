@@ -63,16 +63,16 @@ libmpack-lua-package: libmpack-lua-stage
 	# libmpack-lua.mk Package Structure
 	rm -rf $(BUILD_DIST)/lua-mpack
 	mkdir -p $(BUILD_DIST)/lua-mpack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libmpack-lua.mk Prep lua-mpack
 	cp -a $(BUILD_STAGE)/libmpack-lua/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{liblua*5.*-mpack.*.dylib,lua} $(BUILD_DIST)/lua-mpack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libmpack-lua.mk Sign
 	$(call SIGN,lua-mpack,general.xml)
-	
+
 	# libmpack-lua.mk Make .debs
 	$(call PACK,lua-mpack,DEB_LIBMPACK-LUA_V)
-	
+
 	# libmpack-lua.mk Build cleanup
 	rm -rf $(BUILD_DIST)/lua-mpack
 

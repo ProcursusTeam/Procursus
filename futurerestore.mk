@@ -13,7 +13,7 @@ futurerestore-setup: setup tsschecker-setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/marijuanARM/futurerestore/archive/$(FUTURERESTORE_COMMIT).tar.gz
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/marijuanARM/idevicerestore/archive/$(FUTURERESTORE_IDEVICERESTORE_COMMIT).tar.gz
 	$(call EXTRACT_TAR,$(FUTURERESTORE_COMMIT).tar.gz,futurerestore-$(FUTURERESTORE_COMMIT),futurerestore)
-	
+
 	-rmdir $(BUILD_WORK)/futurerestore/external/{idevicerestore,tsschecker}
 	$(call EXTRACT_TAR,$(FUTURERESTORE_IDEVICERESTORE_COMMIT).tar.gz,idevicerestore-$(FUTURERESTORE_IDEVICERESTORE_COMMIT),futurerestore/external/idevicerestore)
 	cp -R $(BUILD_WORK)/tsschecker $(BUILD_WORK)/futurerestore/external
@@ -40,16 +40,16 @@ futurerestore-package: futurerestore-stage
 	# futurerestore.mk Package Structure
 	rm -rf $(BUILD_DIST)/futurerestore
 	mkdir -p $(BUILD_DIST)/futurerestore/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# futurerestore.mk Prep futurerestore
 	cp -a $(BUILD_STAGE)/futurerestore/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/futurerestore/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# futurerestore.mk Sign
 	$(call SIGN,futurerestore,general.xml)
-	
+
 	# futurerestore.mk Make .debs
 	$(call PACK,futurerestore,DEB_FUTURERESTORE_V)
-	
+
 	# futurerestore.mk Build cleanup
 	rm -rf $(BUILD_DIST)/futurerestore
 

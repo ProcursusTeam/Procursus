@@ -18,7 +18,7 @@ autoconf:
 	@echo "Using previously built autoconf."
 else
 autoconf: autoconf-setup
-	cd $(BUILD_WORK)/autoconf && PERL=/usr/bin/perl ./configure -C \
+	cd $(BUILD_WORK)/autoconf && PERL="$(shell which perl)" ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
@@ -32,16 +32,16 @@ endif
 autoconf-package: autoconf-stage
 	# autoconf.mk Package Structure
 	rm -rf $(BUILD_DIST)/autoconf
-	
+
 	# autoconf.mk Prep autoconf
 	cp -a $(BUILD_STAGE)/autoconf $(BUILD_DIST)
-	
+
 	# autoconf.mk Sign
 	$(call SIGN,autoconf,general.xml)
-	
+
 	# autoconf.mk Make .debs
 	$(call PACK,autoconf,DEB_AUTOCONF_V)
-	
+
 	# autoconf.mk Build cleanup
 	rm -rf $(BUILD_DIST)/autoconf
 

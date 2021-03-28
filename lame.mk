@@ -37,27 +37,27 @@ lame-package: lame-stage
 		$(BUILD_DIST)/libmp3lame{0,-dev}
 	mkdir -p $(BUILD_DIST)/lame/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share \
 		$(BUILD_DIST)/libmp3lame{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# lame.mk Prep lame
 	cp -a $(BUILD_STAGE)/lame/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/lame/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/lame/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/lame/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	
+
 	# lame.mk Prep libmp3lame0
 	cp -a $(BUILD_STAGE)/lame/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libmp3lame.0.dylib $(BUILD_DIST)/libmp3lame0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# lame.mk Prep libmp3lame-dev
 	cp -a $(BUILD_STAGE)/lame/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libmp3lame.{dylib,a} $(BUILD_DIST)/libmp3lame-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/lame/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libmp3lame-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# lame.mk Sign
 	$(call SIGN,lame,general.xml)
 	$(call SIGN,libmp3lame0,general.xml)
-	
+
 	# lame.mk Make .debs
 	$(call PACK,lame,DEB_LAME_V)
 	$(call PACK,libmp3lame0,DEB_LAME_V)
 	$(call PACK,libmp3lame-dev,DEB_LAME_V)
-	
+
 	# lame.mk Build cleanup
 	rm -rf $(BUILD_DIST)/lame \
 		$(BUILD_DIST)/libmp3lame{0,-dev}

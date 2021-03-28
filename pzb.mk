@@ -28,16 +28,16 @@ endif
 pzb-package: pzb-stage
 	# pzb.mk Package Structure
 	rm -rf $(BUILD_DIST)/pzb
-	
+
 	# pzb.mk Prep pzb
 	cp -a $(BUILD_STAGE)/pzb $(BUILD_DIST)
-	
+
 	# pzb.mk Sign
 	$(call SIGN,pzb,general.xml)
-	
+
 	# pzb.mk Make .debs
 	$(call PACK,pzb,DEB_PZB_V)
-	
+
 	# pzb.mk Build cleanup
 	rm -rf $(BUILD_DIST)/pzb
 

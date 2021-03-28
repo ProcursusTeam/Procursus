@@ -17,9 +17,9 @@ speedtest-cli:
 	@echo "Using previously built speedtest-cli."
 else
 speedtest-cli: speedtest-cli-setup 
-	$(GINSTALL) -Dm 755 $(BUILD_WORK)/speedtest-cli/speedtest.py "$(BUILD_STAGE)/speedtest-cli/usr/bin/speedtest-cli"
-	ln -s speedtest-cli $(BUILD_STAGE)/speedtest-cli/usr/bin/speedtest
-	$(GINSTALL) -Dm 644 $(BUILD_WORK)/speedtest-cli/speedtest-cli.1 -t "$(BUILD_STAGE)/speedtest-cli/usr/share/man/man1"
+	$(GINSTALL) -Dm 755 $(BUILD_WORK)/speedtest-cli/speedtest.py "$(BUILD_STAGE)/speedtest-cli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/speedtest-cli"
+	ln -s speedtest-cli $(BUILD_STAGE)/speedtest-cli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/speedtest
+	$(GINSTALL) -Dm 644 $(BUILD_WORK)/speedtest-cli/speedtest-cli.1 -t "$(BUILD_STAGE)/speedtest-cli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1"
 	touch $(BUILD_WORK)/speedtest-cli/.build_complete
 endif
 
@@ -27,13 +27,13 @@ speedtest-cli-package: speedtest-cli-stage
 	# speedtest-cli.mk Package Structure
 	rm -rf $(BUILD_DIST)/speedtest-cli
 	mkdir -p $(BUILD_DIST)/speedtest-cli
-	
+
 	# speedtest-cli.mk Prep speedtest-cli
 	cp -a $(BUILD_STAGE)/speedtest-cli $(BUILD_DIST)
 
 	# speedtest-cli.mk Make .debs
 	$(call PACK,speedtest-cli,DEB_SPEEDTEST-CLI_V)
-	
+
 	# speedtest-cli.mk Build cleanup
 	rm -rf $(BUILD_DIST)/speedtest-cli
 

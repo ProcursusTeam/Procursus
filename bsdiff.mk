@@ -20,10 +20,10 @@ else
 bsdiff: bsdiff-setup
 	+$(MAKE) -C $(BUILD_WORK)/bsdiff
 
-	mkdir -p $(BUILD_STAGE)/bsdiff/usr/{bin,share/man/man1}
+	mkdir -p $(BUILD_STAGE)/bsdiff/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 
 	+$(MAKE) -C $(BUILD_WORK)/bsdiff install \
-		PREFIX="$(BUILD_STAGE)/bsdiff/usr" \
+		PREFIX="$(BUILD_STAGE)/bsdiff/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		INSTALL=install
 	touch $(BUILD_WORK)/bsdiff/.build_complete
 endif
@@ -31,10 +31,10 @@ endif
 bsdiff-package: bsdiff-stage
 	# bsdiff.mk Package Structure
 	rm -rf $(BUILD_DIST)/bsdiff
-	mkdir -p $(BUILD_DIST)/bsdiff/usr
+	mkdir -p $(BUILD_DIST)/bsdiff/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# bsdiff.mk Prep bsdiff
-	cp -a $(BUILD_STAGE)/bsdiff/usr/{bin,share} $(BUILD_DIST)/bsdiff/usr
+	cp -a $(BUILD_STAGE)/bsdiff/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/bsdiff/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# bsdiff.mk Sign
 	$(call SIGN,bsdiff,general.xml)

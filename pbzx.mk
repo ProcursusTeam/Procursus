@@ -19,23 +19,23 @@ else
 pbzx: pbzx-setup xar xz
 	$(CC) $(CFLAGS) $(LDFLAGS) -llzma -lxar $(BUILD_WORK)/pbzx/pbzx.c -o $(BUILD_WORK)/pbzx/pbzx
 	$(STRIP) $(BUILD_WORK)/pbzx/pbzx
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/pbzx/pbzx $(BUILD_STAGE)/pbzx/usr/bin/pbzx
+	$(GINSTALL) -Dm755 $(BUILD_WORK)/pbzx/pbzx $(BUILD_STAGE)/pbzx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pbzx
 	touch $(BUILD_WORK)/pbzx/.build_complete
 endif
 
 pbzx-package: pbzx-stage
 	# pbzx.mk Package Structure
 	rm -rf $(BUILD_DIST)/pbzx
-	
+
 	# pbzx.mk Prep pbzx
 	cp -a $(BUILD_STAGE)/pbzx $(BUILD_DIST)/pbzx
-	
+
 	# pbzx.mk Sign
 	$(call SIGN,pbzx,general.xml)
-	
+
 	# pbzx.mk Make .debs
 	$(call PACK,pbzx,DEB_PBZX_V)
-	
+
 	# pbzx.mk Build cleanup
 	rm -rf $(BUILD_DIST)/pbzx
 

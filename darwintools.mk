@@ -34,16 +34,16 @@ endif
 darwintools-package: darwintools-stage
 	# darwintools.mk Package Structure
 	rm -rf $(BUILD_DIST)/darwintools
-	
+
 	# darwintools.mk Prep darwintools
 	cp -a $(BUILD_STAGE)/darwintools $(BUILD_DIST)
-	
+
 	# darwintools.mk Sign
 	$(call SIGN,darwintools,general.xml)
-	
+
 	# darwintools.mk Make .debs
 	$(call PACK,darwintools,DEB_DARWINTOOLS_V)
-	
+
 	# darwintools.mk Build cleanup
 	rm -rf $(BUILD_DIST)/darwintools
 

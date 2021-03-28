@@ -25,13 +25,13 @@ endif
 neofetch-package: neofetch-stage
 	# neofetch.mk Package Structure
 	rm -rf $(BUILD_DIST)/neofetch
-	
+
 	# neofetch.mk Prep neofetch
 	cp -a $(BUILD_STAGE)/neofetch $(BUILD_DIST)
-	
+
 	# neofetch.mk Make .debs
 	$(call PACK,neofetch,DEB_NEOFETCH_V)
-	
+
 	# neofetch.mk Build cleanup
 	rm -rf $(BUILD_DIST)/neofetch
 

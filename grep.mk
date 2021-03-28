@@ -55,10 +55,10 @@ endif
 
 	# grep.mk Sign
 	$(call SIGN,grep,general.xml)
-	
+
 	# grep.mk Make .debs
 	$(call PACK,grep,DEB_GREP_V)
-	
+
 	# grep.mk Build cleanup
 	rm -rf $(BUILD_DIST)/grep
 

@@ -41,9 +41,9 @@ xpwn: xpwn-setup libpng16 openssl
 	+$(MAKE) -C $(BUILD_WORK)/xpwn install \
 		DESTDIR=$(BUILD_STAGE)/xpwn
 	mkdir -p {$(BUILD_BASE),$(BUILD_STAGE)/xpwn}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include/xpwn,lib/xpwn}
-	cp -a $(BUILD_WORK)/xpwn/includes/* $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpwn
+	cp -a $(BUILD_WORK)/xpwn/includes/* $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpwn
 	cp -a $(BUILD_WORK)/xpwn/includes/* $(BUILD_STAGE)/xpwn/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpwn
-	cp -a $(BUILD_WORK)/xpwn/{ipsw-patch/libxpwn,minizip/libminizip,common/libcommon,hfs/libhfs,dmg/libdmg}.a $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xpwn
+	cp -a $(BUILD_WORK)/xpwn/{ipsw-patch/libxpwn,minizip/libminizip,common/libcommon,hfs/libhfs,dmg/libdmg}.a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xpwn
 	cp -a $(BUILD_WORK)/xpwn/{ipsw-patch/libxpwn,minizip/libminizip,common/libcommon,hfs/libhfs,dmg/libdmg}.a $(BUILD_STAGE)/xpwn/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xpwn
 	touch $(BUILD_WORK)/xpwn/.build_complete
 endif
@@ -58,14 +58,14 @@ xpwn-package: xpwn-stage
 
 	# xpwn.mk Prep libxpwn-dev
 	cp -a $(BUILD_STAGE)/xpwn/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib} $(BUILD_DIST)/libxpwn-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# xpwn.mk Sign
 	$(call SIGN,xpwn,general.xml)
-	
+
 	# xpwn.mk Make .debs
 	$(call PACK,xpwn,DEB_XPWN_V)
 	$(call PACK,libxpwn-dev,DEB_XPWN_V)
-	
+
 	# xpwn.mk Build cleanup
 	rm -rf $(BUILD_DIST)/{libxpwn-dev,xpwn}
 

@@ -32,13 +32,13 @@ xorgproto-package: xorgproto-stage
 	# xorgproto.mk Package Structure
 	rm -rf $(BUILD_DIST)/x11proto-dev
 	mkdir -p $(BUILD_DIST)/x11proto-dev
-	
+
 	# xorgproto.mk Prep xorgproto
 	cp -a $(BUILD_STAGE)/xorgproto/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/x11proto-dev
-	
+
 	# xorgproto.mk Make .debs
 	$(call PACK,x11proto-dev,DEB_XORGPROTO_V)
-	
+
 	# xorgproto.mk Build cleanup
 	rm -rf $(BUILD_DIST)/x11proto-dev
 
