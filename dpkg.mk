@@ -45,11 +45,11 @@ endif
 		--without-libselinux \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
 		PERL_LIBDIR='$$(prefix)/share/perl5' \
-		PERL="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl" \
+		PERL="$(shell which perl)" \
 		TAR=$(DPKG_TAR) \
 		LZMA_LIBS='$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/liblzma.dylib'
 	+$(MAKE) -C $(BUILD_WORK)/dpkg \
-		PERL="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl"
+		PERL="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl"
 	+$(MAKE) -C $(BUILD_WORK)/dpkg install \
 		DESTDIR="$(BUILD_STAGE)/dpkg"
 	mkdir -p $(BUILD_STAGE)/dpkg/$(MEMO_PREFIX)/var/lib

@@ -42,7 +42,7 @@ libterm-readkey-perl: libterm-readkey-perl-setup perl
 		INSTALLMAN3DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 \
 		INSTALLSITEMAN3DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 \
 		INSTALLVENDORMAN3DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 \
-		PERL="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl" \
+		PERL="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl" \
 		CCFLAGS="$(CFLAGS)" \
 		LDDLFLAGS="$(LDFLAGS) -shared"
 	+$(MAKE) -C $(BUILD_WORK)/libterm-readkey-perl install \
