@@ -19,7 +19,7 @@ cmake:
 	@echo "Using previously built cmake."
 else
 cmake: cmake-setup ncurses libuv1 curl libarchive expat xz nghttp2 zstd
-	cd $(BUILD_WORK)/cmake && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/cmake && cmake .  \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \

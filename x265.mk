@@ -19,7 +19,7 @@ x265:
 else
 x265: x265-setup
 	mkdir -p $(BUILD_WORK)/x265/{8,10,12}bit
-	cd $(BUILD_WORK)/x265/10bit && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/x265/10bit && cmake .  \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
@@ -37,7 +37,7 @@ x265: x265-setup
 	+$(MAKE) -C $(BUILD_WORK)/x265/10bit
 	mv $(BUILD_WORK)/x265/10bit/libx265.a $(BUILD_WORK)/x265/8bit/libx265_main10.a
 
-	cd $(BUILD_WORK)/x265/12bit && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/x265/12bit && cmake .  \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
@@ -55,7 +55,7 @@ x265: x265-setup
 	+$(MAKE) -C $(BUILD_WORK)/x265/12bit
 	mv $(BUILD_WORK)/x265/12bit/libx265.a $(BUILD_WORK)/x265/8bit/libx265_main12.a
 
-	cd $(BUILD_WORK)/x265/8bit && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/x265/8bit && cmake .  \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \

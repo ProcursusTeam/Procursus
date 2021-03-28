@@ -39,7 +39,7 @@ apt:
 	@echo "Using previously built apt."
 else
 apt: apt-setup libgcrypt berkeleydb lz4 xxhash xz zstd
-	cd $(BUILD_WORK)/apt/build && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/apt/build && cmake .  \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \

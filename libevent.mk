@@ -16,7 +16,7 @@ libevent:
 	@echo "Using previously built libevent."
 else
 libevent: libevent-setup openssl
-	cd $(BUILD_WORK)/libevent && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/libevent && cmake .  \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \

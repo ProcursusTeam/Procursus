@@ -18,7 +18,7 @@ ninja:
 	@echo "Using previously built ninja."
 else
 ninja: ninja-setup
-	cd $(BUILD_WORK)/ninja/build && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/ninja/build && cmake .  \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \

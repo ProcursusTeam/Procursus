@@ -16,7 +16,7 @@ libsoxr:
 	@echo "Using previously built libsoxr."
 else
 libsoxr: libsoxr-setup
-	cd $(BUILD_WORK)/libsoxr/build && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/libsoxr/build && cmake .  \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \

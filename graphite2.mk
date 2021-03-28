@@ -15,7 +15,7 @@ graphite2:
 	@echo "Using previously built graphite2."
 else
 graphite2: graphite2-setup
-	cd $(BUILD_WORK)/graphite2 && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/graphite2 && cmake .  \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \

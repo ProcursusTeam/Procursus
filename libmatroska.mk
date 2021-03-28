@@ -15,7 +15,7 @@ libmatroska:
 	@echo "Using previously built libmatroska."
 else
 libmatroska: libmatroska-setup libebml
-	cd $(BUILD_WORK)/libmatroska && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/libmatroska && cmake .  \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \

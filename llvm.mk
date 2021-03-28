@@ -55,7 +55,7 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 	ln -sf $(BUILD_BASE)/usr/lib/libpanelw.dylib $(BUILD_BASE)/usr/lib/libpanel.dylib
 	mv $(BUILD_BASE)/usr/include/stdlib.h $(BUILD_BASE)/usr/include/stdlib.h.old
 
-	mkdir -p $(BUILD_WORK)/llvm/build/NATIVE && cd $(BUILD_WORK)/llvm/build/NATIVE && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	mkdir -p $(BUILD_WORK)/llvm/build/NATIVE && cd $(BUILD_WORK)/llvm/build/NATIVE && cmake .  \
 		-DCMAKE_C_COMPILER=cc \
 		-DCMAKE_CXX_COMPILER=c++ \
 		-DCMAKE_OSX_SYSROOT="$(MACOSX_SYSROOT)" \
@@ -73,7 +73,7 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		../../llvm
 	+$(MAKE) -C $(BUILD_WORK)/llvm/build/NATIVE swift lldb-tblgen
 
-	cd $(BUILD_WORK)/llvm/build && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/llvm/build && cmake .  \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
