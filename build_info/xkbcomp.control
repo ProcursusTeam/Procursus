@@ -1,5 +1,5 @@
 Package: xkbcomp
-Version: DEB_XKEYBOARD-CONFIG_V
+Version: @DEB_XKBCOMP_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: libxkbfile1, libx11-6
