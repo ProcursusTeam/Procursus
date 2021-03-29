@@ -52,3 +52,4 @@ pinentry-package: pinentry-stage
 	rm -rf $(BUILD_DIST)/pinentry
 
 .PHONY: pinentry pinentry-package
+
