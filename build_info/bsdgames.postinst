@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ "$1" = 'configure' ]; then
+	if !getent group 600 | grep -q games; then
+		# group 600 is not `games`! Time to error out
+		echo "Group 600 is already allocated but not games, this isn't good"
+		exit 1
+	else
+		pw group add -n games -u 600 &>/dev/null
+		pw user add -n games -u 600 -g 600 -s /usr/sbin/nologin -d /var/empty &>/dev/null
+	fi
+fi
