@@ -45,3 +45,4 @@ bat-package: bat-stage
 	rm -rf $(BUILD_DIST)/bat
 
 .PHONY: bat bat-package
+
