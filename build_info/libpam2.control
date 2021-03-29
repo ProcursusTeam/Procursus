@@ -1,0 +1,13 @@
+Package: libpam2
+Version: @DEB_OPENPAM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libpam-modules
+Section: Administration
+Description: Pluggable Authentication Modules library
+ Contains the shared library for OpenPAM, a library that enables the
+ local system administrator to choose how applications authenticate users.
+ In other words, without rewriting or recompiling a PAM-aware application,
+ it is possible to switch between the authentication mechanism(s) it uses.
+ One may entirely upgrade the local authentication system without touching
+ the applications themselves.

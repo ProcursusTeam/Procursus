@@ -1,0 +1,10 @@
+Package: libtest-harness-perl
+Version: @DEB_LIBTEST-HARNESS-PERL_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Pre-Depends: perl (>= 5.32.1)
+Section: Perl
+Homepage: https://metacpan.org/pod/Test::Harness
+Description: module to run standard Perl test scripts with statistics
+ Test::Harness is a Perl module usually invoked by Perl's test systems, namely
+ Test::Simple, Test::More and those based on Test::Builder.

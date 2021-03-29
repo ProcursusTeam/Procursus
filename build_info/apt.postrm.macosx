@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+set -e
+
+case "$1" in
+       remove)
+		;;
+       purge)
+		rm -rf @MEMO_PREFIX@/var/cache/apt
+		rm -rf @MEMO_PREFIX@/var/lib/apt
+		dscl . -delete /Users/_apt
+esac

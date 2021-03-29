@@ -17,10 +17,11 @@ jp2a:
 else
 jp2a: jp2a-setup curl libjpeg-turbo libpng16 ncurses
 	cd $(BUILD_WORK)/jp2a && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
-		--sysconfdir=/etc
+		--sysconfdir=$(MEMO_PREFIX)/etc
 	+$(MAKE) -C $(BUILD_WORK)/jp2a
 	+$(MAKE) -C $(BUILD_WORK)/jp2a install \
 		DESTDIR=$(BUILD_STAGE)/jp2a
@@ -30,16 +31,16 @@ endif
 jp2a-package: jp2a-stage
 	# jp2a.mk Package Structure
 	rm -rf $(BUILD_DIST)/jp2a
-	
+
 	# jp2a.mk Prep jp2a
 	cp -a $(BUILD_STAGE)/jp2a $(BUILD_DIST)
-	
+
 	# jp2a.mk Sign
 	$(call SIGN,jp2a,general.xml)
-	
+
 	# jp2a.mk Make .debs
 	$(call PACK,jp2a,DEB_JP2A_V)
-	
+
 	# jp2a.mk Build cleanup
 	rm -rf $(BUILD_DIST)/jp2a
 

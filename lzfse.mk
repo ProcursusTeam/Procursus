@@ -20,9 +20,9 @@ lzfse: lzfse-setup
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/ \
-		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
-		-DCMAKE_INSTALL_RPATH=/usr \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX) \
+		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
@@ -38,26 +38,26 @@ endif
 lzfse-package: lzfse-stage
 	# lzfse.mk Package Structure
 	rm -rf $(BUILD_DIST)/{liblzfse{,-dev},lzfse}
-	mkdir -p $(BUILD_DIST)/{liblzfse{,-dev},lzfse}/usr
-	
+	mkdir -p $(BUILD_DIST)/{liblzfse{,-dev},lzfse}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+
 	# lzfse.mk Prep lzfse
-	cp -a $(BUILD_STAGE)/lzfse/usr/bin $(BUILD_DIST)/lzfse/usr
+	cp -a $(BUILD_STAGE)/lzfse/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/lzfse/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# lzfse.mk Prep liblzfse
-	cp -a $(BUILD_STAGE)/lzfse/usr/lib $(BUILD_DIST)/liblzfse/usr
+	cp -a $(BUILD_STAGE)/lzfse/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib $(BUILD_DIST)/liblzfse/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# lzfse.mk Prep liblzfse-dev
-	cp -a $(BUILD_STAGE)/lzfse/usr/include $(BUILD_DIST)/liblzfse-dev/usr
-	
+	cp -a $(BUILD_STAGE)/lzfse/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/liblzfse-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+
 	# lzfse.mk Sign
 	$(call SIGN,lzfse,general.xml)
 	$(call SIGN,liblzfse,general.xml)
-	
+
 	# lzfse.mk Make .debs
 	$(call PACK,lzfse,DEB_LZFSE_V)
 	$(call PACK,liblzfse,DEB_LZFSE_V)
 	$(call PACK,liblzfse-dev,DEB_LZFSE_V)
-	
+
 	# lzfse.mk Build cleanup
 	rm -rf $(BUILD_DIST)/{liblzfse{,-dev},lzfse}
 

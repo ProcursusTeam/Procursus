@@ -24,9 +24,10 @@ else
 tesseract: tesseract-setup leptonica libarchive curl
 	cd $(BUILD_WORK)/tesseract && ./autogen.sh
 	cd $(BUILD_WORK)/tesseract && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		LEPTONICA_CFLAGS="-I$(BUILD_STAGE)/leptonica/usr/include/leptonica"
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		LEPTONICA_CFLAGS="-I$(BUILD_STAGE)/leptonica/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/leptonica"
 	+$(MAKE) -C $(BUILD_WORK)/tesseract
 	+$(MAKE) -C $(BUILD_WORK)/tesseract install \
 		DESTDIR="$(BUILD_STAGE)/tesseract"
@@ -39,23 +40,23 @@ tesseract-package: tesseract-stage
   # tesseract.mk Package Structure
 	rm -rf $(BUILD_DIST)/libtesseract4 $(BUILD_DIST)/libtesseract-dev $(BUILD_DIST)/tesseract-ocr
 	mkdir -p \
-		$(BUILD_DIST)/libtesseract-dev/usr/lib \
-		$(BUILD_DIST)/tesseract-ocr/usr \
-		$(BUILD_DIST)/libtesseract4/usr/{lib,share}
+		$(BUILD_DIST)/libtesseract-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/tesseract-ocr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(BUILD_DIST)/libtesseract4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share}
 
   # tesseract.mk Prep libtesseract-dev
-	cp -a $(BUILD_STAGE)/tesseract/usr/include $(BUILD_DIST)/libtesseract-dev/usr
-	cp -a $(BUILD_STAGE)/tesseract/usr/lib/!(libtesseract.4.dylib) $(BUILD_DIST)/libtesseract-dev/usr/lib
+	cp -a $(BUILD_STAGE)/tesseract/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libtesseract-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/tesseract/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libtesseract.4.dylib) $(BUILD_DIST)/libtesseract-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
   # tesseract.mk Prep tesseract-ocr
-	cp -a $(BUILD_STAGE)/tesseract/usr/bin $(BUILD_DIST)/tesseract-ocr/usr
-	cp -a $(BUILD_STAGE)/tesseract/usr/share/man $(BUILD_DIST)/tesseract-ocr/usr/share
+	cp -a $(BUILD_STAGE)/tesseract/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/tesseract-ocr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/tesseract/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/tesseract-ocr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
   # tesseract.mk Prep libtesseract4
-	cp -a $(BUILD_STAGE)/tesseract/usr/lib/libtesseract.4.dylib $(BUILD_DIST)/libtesseract4/usr/lib
-	cp -a $(BUILD_STAGE)/tesseract/usr/share/tessdata $(BUILD_DIST)/libtesseract4/usr/share
+	cp -a $(BUILD_STAGE)/tesseract/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libtesseract.4.dylib $(BUILD_DIST)/libtesseract4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/tesseract/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tessdata $(BUILD_DIST)/libtesseract4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	# Just bundle eng and osd with the library.
-	wget -q -nc -P $(BUILD_DIST)/libtesseract4/usr/share/tessdata \
+	wget -q -nc -P $(BUILD_DIST)/libtesseract4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tessdata \
 		https://github.com/tesseract-ocr/tessdata_fast/raw/4.0.0/eng.traineddata \
 		https://github.com/tesseract-ocr/tessdata_fast/raw/4.0.0/osd.traineddata
 

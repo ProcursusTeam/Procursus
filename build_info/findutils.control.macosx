@@ -1,0 +1,11 @@
+Package: findutils
+Version: @DEB_FINDUTILS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: coreutils, libintl8
+Section: Utilities
+Priority: important
+Multi-Arch: foreign
+Homepage: http://www.gnu.org/software/findutils/
+Description: indexes and searches filesystems
+Name: Find Utilities

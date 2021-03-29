@@ -18,7 +18,7 @@ zsh-syntax-highlighting:
 else
 zsh-syntax-highlighting: zsh-syntax-highlighting-setup ncurses gettext file
 	+$(MAKE) -C $(BUILD_WORK)/zsh-syntax-highlighting install \
-		PREFIX='$(BUILD_STAGE)/zsh-syntax-highlighting/usr'
+		PREFIX='$(BUILD_STAGE)/zsh-syntax-highlighting/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'
 	touch $(BUILD_WORK)/zsh-syntax-highlighting/.build_complete
 endif
 
@@ -26,13 +26,13 @@ zsh-syntax-highlighting-package: zsh-syntax-highlighting-stage
 	# zsh-syntax-highlighting.mk Package Structure
 	rm -rf $(BUILD_DIST)/zsh-syntax-highlighting
 	mkdir -p $(BUILD_DIST)/zsh-syntax-highlighting
-	
+
 	# zsh-syntax-highlighting.mk Prep zsh-syntax-highlighting
 	cp -a $(BUILD_STAGE)/zsh-syntax-highlighting $(BUILD_DIST)
-	
+
 	# zsh-syntax-highlighting.mk Make .debs
 	$(call PACK,zsh-syntax-highlighting,DEB_ZSH-SYNTAX-HIGHLIGHTING_V)
-	
+
 	# zsh-syntax-highlighting.mk Build cleanup
 	rm -rf $(BUILD_DIST)/zsh-syntax-highlighting
 
