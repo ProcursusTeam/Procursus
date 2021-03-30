@@ -11,6 +11,7 @@ progress-setup: setup
 		&& wget -q -nc -O$(BUILD_SOURCE)/progress-$(PROGRESS_VERSION).tar.gz \
 			https://github.com/Xfennec/progress/archive/v$(PROGRESS_VERSION).tar.gz
 	$(call EXTRACT_TAR,progress-$(PROGRESS_VERSION).tar.gz,progress-$(PROGRESS_VERSION),progress)
+	$(SED) -i 's/-lncurses/-lncursesw/g' $(BUILD_WORK)/progress/Makefile
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	wget -P $(BUILD_WORK)/progress https://raw.githubusercontent.com/NetBSD/src/trunk/{lib/libc/gen/wordexp.c,include/wordexp.h}
 	$(call DO_PATCH,progress,progress,-p1)

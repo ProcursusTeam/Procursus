@@ -11,15 +11,6 @@ diff --color -urN progress-0.16/Makefile progress/Makefile
  PKG_CONFIG ?= pkg-config
  ifeq ($(UNAME), Linux)
      ifeq (, $(shell which $(PKG_CONFIG) 2> /dev/null))
-@@ -14,7 +13,7 @@
-     override LDFLAGS += $(shell $(PKG_CONFIG) ncurses --libs)
- endif
- ifeq ($(UNAME), Darwin)
--    override LDFLAGS += -lncurses
-+    override LDFLAGS += -lncursesw
- endif
- ifeq ($(UNAME), FreeBSD)
-     override LDFLAGS += -lncurses -lprocstat
 @@ -23,7 +22,7 @@
  BINDIR = $(PREFIX)/bin
  MANDIR = $(PREFIX)/share/man/man1
