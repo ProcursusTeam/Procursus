@@ -18,13 +18,14 @@ usbmuxd:
 else
 usbmuxd: usbmuxd-setup libusb libimobiledevice libplist
 	cd $(BUILD_WORK)/usbmuxd && ./configure \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--without-systemd \
 		ac_cv_func_malloc_0_nonnull=yes \
 		ac_cv_func_realloc_0_nonnull=yes
 	+$(MAKE) -C $(BUILD_WORK)/usbmuxd \
-		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include/libusb-1.0"
+		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libusb-1.0"
 	+$(MAKE) -C $(BUILD_WORK)/usbmuxd install \
 		DESTDIR="$(BUILD_STAGE)/usbmuxd"
 	mkdir -p $(BUILD_STAGE)/usbmuxd/Library/LaunchDaemons

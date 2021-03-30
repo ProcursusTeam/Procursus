@@ -16,9 +16,10 @@ libideviceactivation:
 else
 libideviceactivation: libideviceactivation-setup libplist libimobiledevice curl
 	cd $(BUILD_WORK)/libideviceactivation && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
-		libxml2_CFLAGS=-I$(TARGET_SYSROOT)/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include/libxml2 \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		libxml2_CFLAGS=-I$(TARGET_SYSROOT)/usr/include/libxml2 \
 		libxml2_LIBS=-lxml2
 	+$(MAKE) -C $(BUILD_WORK)/libideviceactivation
 	+$(MAKE) -C $(BUILD_WORK)/libideviceactivation install \
@@ -31,25 +32,25 @@ endif
 libideviceactivation-package: libideviceactivation-stage
 	# libideviceactivation.mk Package Structure
 	rm -rf $(BUILD_DIST)/libideviceactivation{2,-dev,-utils}
-	mkdir -p $(BUILD_DIST)/libideviceactivation2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libideviceactivation-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{lib,bin} \
-		$(BUILD_DIST)/libideviceactivation-utils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
-	
+	mkdir -p $(BUILD_DIST)/libideviceactivation2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libideviceactivation-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,bin} \
+		$(BUILD_DIST)/libideviceactivation-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+
 	# libideviceactivation.mk Prep libideviceactivation
-	cp -a $(BUILD_STAGE)/libideviceactivation/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libideviceactivation-1.0.2.dylib $(BUILD_DIST)/libideviceactivation2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libideviceactivation/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/libideviceactivation-utils/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libideviceactivation/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libideviceactivation-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libideviceactivation/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libideviceactivation-1.0.{a,dylib}} $(BUILD_DIST)/libideviceactivation-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	
+	cp -a $(BUILD_STAGE)/libideviceactivation/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libideviceactivation-1.0.2.dylib $(BUILD_DIST)/libideviceactivation2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libideviceactivation/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/libideviceactivation-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libideviceactivation/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libideviceactivation-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libideviceactivation/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libideviceactivation-1.0.{a,dylib}} $(BUILD_DIST)/libideviceactivation-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# libideviceactivation.mk Sign
 	$(call SIGN,libideviceactivation2,general.xml)
 	$(call SIGN,libideviceactivation-utils,general.xml)
-	
+
 	# libideviceactivation.mk Make .debs
 	$(call PACK,libideviceactivation2,DEB_LIBIDEVICEACTIVATION_V)
 	$(call PACK,libideviceactivation-dev,DEB_LIBIDEVICEACTIVATION_V)
 	$(call PACK,libideviceactivation-utils,DEB_LIBIDEVICEACTIVATION_V)
-	
+
 	# libideviceactivation.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libideviceactivation{2,-dev,-utils}
 

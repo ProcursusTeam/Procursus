@@ -16,8 +16,9 @@ libfribidi:
 else
 libfribidi: libfribidi-setup
 	cd $(BUILD_WORK)/libfribidi && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--disable-silent-rules \
 		--disable-debug
@@ -32,29 +33,29 @@ endif
 libfribidi-package: libfribidi-stage
 	# libfribidi.mk Package Structure
 	rm -rf $(BUILD_DIST)/libfribidi{0,-dev,-bin}
-	mkdir -p $(BUILD_DIST)/libfribidi{0,-dev}/usr/lib \
-		$(BUILD_DIST)/libfribidi-bin/usr
+	mkdir -p $(BUILD_DIST)/libfribidi{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libfribidi-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libfribidi.mk Prep libfribidi0
-	cp -a $(BUILD_STAGE)/libfribidi/usr/lib/libfribidi.0.dylib $(BUILD_DIST)/libfribidi0/usr/lib
+	cp -a $(BUILD_STAGE)/libfribidi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libfribidi.0.dylib $(BUILD_DIST)/libfribidi0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libfribidi.mk Prep libfribidi-dev
-	cp -a $(BUILD_STAGE)/libfribidi/usr/lib/libfribidi.dylib $(BUILD_DIST)/libfribidi-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libfribidi/usr/include $(BUILD_DIST)/libfribidi-dev/usr
-	cp -a $(BUILD_STAGE)/libfribidi/usr/share $(BUILD_DIST)/libfribidi-dev/usr
+	cp -a $(BUILD_STAGE)/libfribidi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libfribidi.dylib $(BUILD_DIST)/libfribidi-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libfribidi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libfribidi-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libfribidi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/libfribidi-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libfribidi.mk Prep libfribidi-bin
-	cp -a $(BUILD_STAGE)/libfribidi/usr/bin $(BUILD_DIST)/libfribidi-bin/usr
+	cp -a $(BUILD_STAGE)/libfribidi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/libfribidi-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libfribidi.mk Sign
 	$(call SIGN,libfribidi0,general.xml)
 	$(call SIGN,libfribidi-bin,general.xml)
-	
+
 	# libfribidi.mk Make .debs
 	$(call PACK,libfribidi0,DEB_LIBFRIBIDI_V)
 	$(call PACK,libfribidi-dev,DEB_LIBFRIBIDI_V)
 	$(call PACK,libfribidi-bin,DEB_LIBFRIBIDI_V)
-	
+
 	# libfribidi.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libfribidi{0,-dev,-bin}
 

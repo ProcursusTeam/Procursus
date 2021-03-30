@@ -25,8 +25,9 @@ sed:
 else
 sed: sed-setup gettext
 	cd $(BUILD_WORK)/sed && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		$(SED_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/sed
@@ -38,24 +39,24 @@ endif
 sed-package: sed-stage
 	# sed.mk Package Structure
 	rm -rf $(BUILD_DIST)/sed
-	mkdir -p $(BUILD_DIST)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
+	mkdir -p $(BUILD_DIST)/sed/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
 	# sed.mk Prep sed
-	cp -a $(BUILD_STAGE)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/ $(BUILD_DIST)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1/ $(BUILD_DIST)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/sed/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/sed/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/sed/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/sed/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-	mkdir -p $(BUILD_DIST)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/gnubin
-	for bin in $(BUILD_DIST)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/*; do \
-		ln -s /$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/$$(echo $$bin | rev | cut -d/ -f1 | rev) $(BUILD_DIST)/sed/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $$bin | rev | cut -d/ -f1 | rev | cut -c2-); \
+	mkdir -p $(BUILD_DIST)/sed/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin
+	for bin in $(BUILD_DIST)/sed/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
+		ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(echo $$bin | rev | cut -d/ -f1 | rev) $(BUILD_DIST)/sed/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $$bin | rev | cut -d/ -f1 | rev | cut -c2-); \
 	done
 endif
 
 	# sed.mk Sign
 	$(call SIGN,sed,general.xml)
-	
+
 	# sed.mk Make .debs
 	$(call PACK,sed,DEB_SED_V)
-	
+
 	# sed.mk Build cleanup
 	rm -rf $(BUILD_DIST)/sed
 

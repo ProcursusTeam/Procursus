@@ -1,0 +1,12 @@
+diff -urN debianutils/add-shell debianutils-fix-shells/add-shell
+--- debianutils/add-shell	2020-05-22 20:00:40.000000000 -0400
++++ debianutils-fix-shells/add-shell	2020-10-31 20:30:46.695201656 -0400
+@@ -17,7 +17,7 @@
+ }
+ trap cleanup EXIT
+
+-if ! awk '{print}' "$file" > "$tmpfile"
++if ! cat "$file" > "$tmpfile"
+ then
+         cat 1>&2 <<EOF
+ Either another instance of $0 is running, or it was previously interrupted.

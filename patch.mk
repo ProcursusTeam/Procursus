@@ -21,8 +21,9 @@ patch:
 else
 patch: patch-setup
 	cd $(BUILD_WORK)/patch && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		$(PATCH_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/patch
 	+$(MAKE) -C $(BUILD_WORK)/patch install \
@@ -33,22 +34,22 @@ endif
 patch-package: patch-stage
 	# patch.mk Package Structure
 	rm -rf $(BUILD_DIST)/patch
-	
+
 	# patch.mk Prep patch
 	cp -a $(BUILD_STAGE)/patch $(BUILD_DIST)
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-	mkdir -p $(BUILD_DIST)/patch/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/gnubin
-	for bin in $(BUILD_DIST)/patch/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/*; do \
-		ln -s /$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/$$(echo $$bin | rev | cut -d/ -f1 | rev) $(BUILD_DIST)/patch/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $$bin | rev | cut -d/ -f1 | rev | cut -c2-); \
+	mkdir -p $(BUILD_DIST)/patch/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin
+	for bin in $(BUILD_DIST)/patch/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
+		ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(echo $$bin | rev | cut -d/ -f1 | rev) $(BUILD_DIST)/patch/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $$bin | rev | cut -d/ -f1 | rev | cut -c2-); \
 	done
 endif
-	
+
 	# patch.mk Sign
 	$(call SIGN,patch,general.xml)
-	
+
 	# patch.mk Make .debs
 	$(call PACK,patch,DEB_PATCH_V)
-	
+
 	# patch.mk Build cleanup
 	rm -rf $(BUILD_DIST)/patch
 

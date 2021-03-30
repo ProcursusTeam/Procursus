@@ -29,17 +29,17 @@ neovim: neovim-setup gettext lua-luv libuv1 msgpack libvterm libtermkey unibiliu
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/ \
-		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
-		-DCMAKE_INSTALL_RPATH=/usr \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
 		-DXGETTEXT_PRG="`which xgettext`" \
 		-DGETTEXT_MSGFMT_EXECUTABLE="`which msgfmt`" \
 		-DGETTEXT_MSGMERGE_EXECUTABLE="`which msgmerge`" \
-		-DLIBLUV_LIBRARY="$(BUILD_BASE)/usr/lib/liblua5.1-luv.dylib" \
-		-DLIBLUV_INCLUDE_DIR="$(BUILD_BASE)/usr/include/lua5.1/" \
+		-DLIBLUV_LIBRARY="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.1-luv.dylib" \
+		-DLIBLUV_INCLUDE_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/lua5.1/" \
 		..
 	+$(MAKE) -C $(BUILD_WORK)/neovim/build
 	+$(MAKE) -C $(BUILD_WORK)/neovim/build install \
@@ -50,19 +50,19 @@ endif
 neovim-package: neovim-stage
 	# neovim.mk Package Structure
 	rm -rf $(BUILD_DIST)/neovim
-	
+
 	# neovim.mk Prep neovim
 	cp -a $(BUILD_STAGE)/neovim $(BUILD_DIST)/neovim
 	for i in ex rview rvim view vimdiff; do \
-	$(GINSTALL) -Dm0755 $(BUILD_INFO)/neovim.$$i $(BUILD_DIST)/neovim/usr/libexec/neovim/$$i; \
+	$(GINSTALL) -Dm0755 $(BUILD_INFO)/neovim.$$i $(BUILD_DIST)/neovim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/neovim/$$i; \
 	done
-	
+
 	# neovim.mk Sign
 	$(call SIGN,neovim,general.xml)
-	
+
 	# neovim.mk Make .debs
 	$(call PACK,neovim,DEB_NEOVIM_V)
-	
+
 	# neovim.mk Build cleanup
 	rm -rf $(BUILD_DIST)/neovim
 

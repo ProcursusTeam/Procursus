@@ -16,8 +16,9 @@ libgeneral:
 else
 libgeneral: libgeneral-setup
 	cd $(BUILD_WORK)/libgeneral && ./autogen.sh \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) 
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) 
 	+$(MAKE) -C $(BUILD_WORK)/libgeneral
 	+$(MAKE) -C $(BUILD_WORK)/libgeneral install \
 		DESTDIR="$(BUILD_STAGE)/libgeneral"
@@ -29,22 +30,22 @@ endif
 libgeneral-package: libgeneral-stage
 	# libgeneral.mk Package Structure
 	rm -rf $(BUILD_DIST)/libgeneral{0,-dev}
-	mkdir -p $(BUILD_DIST)/libgeneral{0,-dev}/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	
+	mkdir -p $(BUILD_DIST)/libgeneral{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# libgeneral.mk Prep libgeneral0
-	cp -a $(BUILD_STAGE)/libgeneral/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/libgeneral.0.dylib $(BUILD_DIST)/libgeneral0/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	
+	cp -a $(BUILD_STAGE)/libgeneral/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgeneral.0.dylib $(BUILD_DIST)/libgeneral0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# libgeneral.mk Prep libgeneral-dev
-	cp -a $(BUILD_STAGE)/libgeneral/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/!(libgeneral.0.dylib) $(BUILD_DIST)/libgeneral-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libgeneral/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libgeneral-dev/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
-	
+	cp -a $(BUILD_STAGE)/libgeneral/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libgeneral.0.dylib) $(BUILD_DIST)/libgeneral-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libgeneral/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libgeneral-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+
 	# libgeneral.mk Sign
 	$(call SIGN,libgeneral0,general.xml)
-	
+
 	# libgeneral.mk Make .debs
 	$(call PACK,libgeneral0,DEB_LIBGENERAL_V)
 	$(call PACK,libgeneral-dev,DEB_LIBGENERAL_V)
-	
+
 	# libgeneral.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libgeneral{0,-dev}
 

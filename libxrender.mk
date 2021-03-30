@@ -17,10 +17,11 @@ libxrender:
 else
 libxrender: libxrender-setup libx11 xorgproto
 	cd $(BUILD_WORK)/libxrender && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
+		--localstatedir=$(MEMO_PREFIX)/var \
 		--enable-malloc0returnsnull=no
 	+$(MAKE) -C $(BUILD_WORK)/libxrender
 	+$(MAKE) -C $(BUILD_WORK)/libxrender install \
@@ -33,23 +34,23 @@ endif
 libxrender-package: libxrender-stage
 	# libxrender.mk Package Structure
 	rm -rf $(BUILD_DIST)/libxrender{1,-dev}
-	mkdir -p $(BUILD_DIST)/libxrender{1,-dev}/usr/lib
-	
+	mkdir -p $(BUILD_DIST)/libxrender{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# libxrender.mk Prep libxrender1
-	cp -a $(BUILD_STAGE)/libxrender/usr/lib/libXrender.1.dylib $(BUILD_DIST)/libxrender1/usr/lib
-	
+	cp -a $(BUILD_STAGE)/libxrender/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXrender.1.dylib $(BUILD_DIST)/libxrender1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# libxrender.mk Prep libxrender-dev
-	cp -a $(BUILD_STAGE)/libxrender/usr/lib/libXrender{.a,.dylib} $(BUILD_DIST)/libxrender-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libxrender/usr/lib/pkgconfig $(BUILD_DIST)/libxrender-dev/usr/lib/pkgconfig
-	cp -a $(BUILD_STAGE)/libxrender/usr/include $(BUILD_DIST)/libxrender-dev/usr
-	
+	cp -a $(BUILD_STAGE)/libxrender/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXrender{.a,.dylib} $(BUILD_DIST)/libxrender-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxrender/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libxrender-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
+	cp -a $(BUILD_STAGE)/libxrender/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libxrender-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+
 	# libxrender.mk Sign
 	$(call SIGN,libxrender1,general.xml)
-	
+
 	# libxrender.mk Make .debs
 	$(call PACK,libxrender1,DEB_LIBXRENDER_V)
 	$(call PACK,libxrender-dev,DEB_LIBXRENDER_V)
-	
+
 	# libxrender.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libxrender{1,-dev}
 

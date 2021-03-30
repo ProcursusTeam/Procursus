@@ -17,8 +17,9 @@ gnuchess:
 else
 gnuchess: gnuchess-setup ncurses readline gettext
 	cd $(BUILD_WORK)/gnuchess && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		ac_cv_func_malloc_0_nonnull=yes \
 		ac_cv_func_realloc_0_nonnull=yes
 	+$(MAKE) -C $(BUILD_WORK)/gnuchess \
@@ -31,17 +32,16 @@ endif
 gnuchess-package: gnuchess-stage
 	# gnuchess.mk Package Structure
 	rm -rf $(BUILD_DIST)/gnuchess
-	mkdir -p $(BUILD_DIST)/gnuchess
-	
+
 	# gnuchess.mk Prep gnuchess
-	cp -a $(BUILD_STAGE)/gnuchess/usr $(BUILD_DIST)/gnuchess
-	
+	cp -a $(BUILD_STAGE)/gnuchess $(BUILD_DIST)
+
 	# gnuchess.mk Sign
 	$(call SIGN,gnuchess,general.xml)
-	
+
 	# gnuchess.mk Make .debs
 	$(call PACK,gnuchess,DEB_GNUCHESS_V)
-	
+
 	# gnuchess.mk Build cleanup
 	rm -rf $(BUILD_DIST)/gnuchess
 

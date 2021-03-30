@@ -21,29 +21,29 @@ zip:
 else
 zip: zip-setup
 	+cd $(BUILD_WORK)/zip && $(MAKE) -f unix/Makefile install \
-		prefix=$(BUILD_STAGE)/zip/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		prefix=$(BUILD_STAGE)/zip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		CC=$(CC) \
 		CPP="$(CXX)" \
 		CFLAGS="$(CFLAGS) -I. -DUNIX -DBZIP2_SUPPORT" \
 		LFLAGS2="-lbz2 $(CFLAGS)" \
-		MANDIR="$(BUILD_STAGE)/zip/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/man/man1"
+		MANDIR="$(BUILD_STAGE)/zip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1"
 	touch $(BUILD_WORK)/zip/.build_complete
 endif
 
 zip-package: zip-stage
 	# zip.mk Package Structure
 	rm -rf $(BUILD_DIST)/zip
-	mkdir -p $(BUILD_DIST)/zip/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
-	
+	mkdir -p $(BUILD_DIST)/zip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+
 	# zip.mk Prep zip
-	cp -a $(BUILD_STAGE)/zip/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/* $(BUILD_DIST)/zip/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
-	
+	cp -a $(BUILD_STAGE)/zip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/* $(BUILD_DIST)/zip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+
 	# zip.mk Sign
 	$(call SIGN,zip,general.xml)
-	
+
 	# zip.mk Make .debs
 	$(call PACK,zip,DEB_ZIP_V)
-	
+
 	# zip.mk Build cleanup
 	rm -rf $(BUILD_DIST)/zip
 

@@ -22,9 +22,9 @@ openmp: openmp-setup
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
-		-DCMAKE_INSTALL_RPATH=/usr \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
@@ -37,8 +37,8 @@ openmp: openmp-setup
 	+$(MAKE) -C $(BUILD_WORK)/openmp install \
 		DESTDIR="$(BUILD_BASE)"
 
-	ln -sf libomp.1.dylib $(BUILD_BASE)/usr/lib/libomp.dylib
-	ln -sf libomp.1.dylib $(BUILD_STAGE)/openmp/usr/lib/libomp.dylib
+	ln -sf libomp.1.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libomp.dylib
+	ln -sf libomp.1.dylib $(BUILD_STAGE)/openmp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libomp.dylib
 
 	# Static lib
 	cd $(BUILD_WORK)/openmp && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
@@ -46,9 +46,9 @@ openmp: openmp-setup
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
-		-DCMAKE_INSTALL_RPATH=/usr \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
@@ -67,22 +67,22 @@ endif
 openmp-package: openmp-stage
 	# openmp.mk Package Structure
 	rm -rf $(BUILD_DIST)/libomp{1,-dev}
-	mkdir -p $(BUILD_DIST)/libomp{1,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/libomp{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# openmp.mk Prep libomp1
-	cp -a $(BUILD_STAGE)/openmp/usr/lib/libomp.1.dylib $(BUILD_DIST)/libomp1/usr/lib
+	cp -a $(BUILD_STAGE)/openmp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libomp.1.dylib $(BUILD_DIST)/libomp1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# openmp.mk Prep libomp-dev
-	cp -a $(BUILD_STAGE)/openmp/usr/include $(BUILD_DIST)/libomp-dev/usr
-	cp -a $(BUILD_STAGE)/openmp/usr/lib/!(libomp.1.dylib) $(BUILD_DIST)/libomp-dev/usr/lib
-	
+	cp -a $(BUILD_STAGE)/openmp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libomp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/openmp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libomp.1.dylib) $(BUILD_DIST)/libomp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# openmp.mk Sign
 	$(call SIGN,libomp1,general.xml)
-	
+
 	# openmp.mk Make .debs
 	$(call PACK,libomp1,DEB_OPENMP_V)
 	$(call PACK,libomp-dev,DEB_OPENMP_V)
-	
+
 	# openmp.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libomp{1,-dev}
 

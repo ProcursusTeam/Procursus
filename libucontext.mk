@@ -20,9 +20,9 @@ else
 libucontext: libucontext-setup
 	+$(MAKE) -C $(BUILD_WORK)/libucontext all \
 		ARCH=aarch64
-	mkdir -p $(BUILD_STAGE)/libucontext/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_WORK)/libucontext/libucontext.a $(BUILD_STAGE)/libucontext/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_WORK)/libucontext/include $(BUILD_STAGE)/libucontext/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)
+	mkdir -p $(BUILD_STAGE)/libucontext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_WORK)/libucontext/libucontext.a $(BUILD_STAGE)/libucontext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_WORK)/libucontext/include $(BUILD_STAGE)/libucontext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	touch $(BUILD_WORK)/libucontext/.build_complete
 endif
 

@@ -31,13 +31,13 @@ build-essential-package: build-essential-stage
 	# build-essential.mk Package Structure
 	rm -rf $(BUILD_DIST)/build-essential
 	mkdir -p $(BUILD_DIST)/build-essential
-	
+
 	# build-essential.mk Prep build-essential
 	cp -a $(BUILD_WORK)/build-essential/{etc,usr} $(BUILD_DIST)/build-essential
-	
+
 	# build-essential.mk Make .debs
 	$(call PACK,build-essential,DEB_BUILD-ESSENTIAL_V)
-	
+
 	# build-essential.mk Build cleanup
 	rm -rf $(BUILD_DIST)/build-essential
 

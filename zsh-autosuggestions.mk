@@ -19,7 +19,7 @@ else
 zsh-autosuggestions: zsh-autosuggestions-setup ncurses gettext file
 	+$(MAKE) -C $(BUILD_WORK)/zsh-autosuggestions
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/zsh-autosuggestions/zsh-autosuggestions.zsh \
-		$(BUILD_STAGE)/zsh-autosuggestions/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+		$(BUILD_STAGE)/zsh-autosuggestions/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 	touch $(BUILD_WORK)/zsh-autosuggestions/.build_complete
 endif
 
@@ -27,13 +27,13 @@ zsh-autosuggestions-package: zsh-autosuggestions-stage
 	# zsh-autosuggestions.mk Package Structure
 	rm -rf $(BUILD_DIST)/zsh-autosuggestions
 	mkdir -p $(BUILD_DIST)/zsh-autosuggestions
-	
+
 	# zsh-autosuggestions.mk Prep zsh-autosuggestions
 	cp -a $(BUILD_STAGE)/zsh-autosuggestions $(BUILD_DIST)
-	
+
 	# zsh-autosuggestions.mk Make .debs
 	$(call PACK,zsh-autosuggestions,DEB_ZSH-AUTOSUGGESTIONS_V)
-	
+
 	# zsh-autosuggestions.mk Build cleanup
 	rm -rf $(BUILD_DIST)/zsh-autosuggestions
 

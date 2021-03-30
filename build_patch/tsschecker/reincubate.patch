@@ -1,0 +1,14 @@
+diff -ruN a/tsschecker/tsschecker.c b/tsschecker/tsschecker.c
+--- a/tsschecker/tsschecker.c	2021-03-15 00:47:58.000000000 -0500
++++ b/tsschecker/tsschecker.c	2021-03-15 00:50:27.000000000 -0500
+@@ -30,8 +30,8 @@
+ #   include <openssl/sha.h>
+ #endif // __APPLE__
+ 
+-#define FIRMWARE_JSON_URL "https://api.ipsw.me/v2.1/firmwares.json/condensed"
+-#define FIRMWARE_OTA_JSON_URL "https://api.ipsw.me/v2.1/ota.json/condensed"
++#define FIRMWARE_JSON_URL "https://di-api.reincubate.com/v1/firmware/full-feed/"
++#define FIRMWARE_OTA_JSON_URL "https://di-api.reincubate.com/v1/firmware/ota-feed/"
+ 
+ /* for KTRR devices this value - 32 */
+ #define NONCELEN_BASEBAND 20

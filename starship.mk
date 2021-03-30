@@ -30,16 +30,16 @@ endif
 starship-package: starship-stage
 	# starship.mk Package Structure
 	rm -rf $(BUILD_DIST)/starship
-	
+
 	# starship.mk Prep starship
 	cp -a $(BUILD_STAGE)/starship $(BUILD_DIST)
-	
+
 	# starship.mk Sign
 	$(call SIGN,starship,general.xml)
-	
+
 	# starship.mk Make .debs
 	$(call PACK,starship,DEB_STARSHIP_V)
-	
+
 	# starship.mk Build cleanup
 	rm -rf $(BUILD_DIST)/starship
 

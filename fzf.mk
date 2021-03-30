@@ -11,7 +11,7 @@ fzf-setup: setup
 		wget -q -nc -O$(BUILD_SOURCE)/fzf-$(FZF_VERSION).tar.gz \
 			https://github.com/junegunn/fzf/archive/$(FZF_VERSION).tar.gz
 	$(call EXTRACT_TAR,fzf-$(FZF_VERSION).tar.gz,fzf-$(FZF_VERSION),fzf)
-	mkdir -p $(BUILD_STAGE)/fzf/usr/share
+	mkdir -p $(BUILD_STAGE)/fzf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
 ifneq ($(MEMO_ARCH),arm64)
 fzf:
@@ -32,8 +32,8 @@ fzf: fzf-setup
 		CGO_LDFLAGS="$(LDFLAGS)" \
 		CGO_ENABLED=1 \
 		CC="$(CC)"
-	$(CP) -a $(BUILD_WORK)/fzf/bin $(BUILD_STAGE)/fzf/usr
-	$(CP) -a $(BUILD_WORK)/fzf/man $(BUILD_STAGE)/fzf/usr/share
+	$(CP) -a $(BUILD_WORK)/fzf/bin $(BUILD_STAGE)/fzf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	$(CP) -a $(BUILD_WORK)/fzf/man $(BUILD_STAGE)/fzf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	touch $(BUILD_WORK)/fzf/.build_complete
 endif
 

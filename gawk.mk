@@ -17,28 +17,29 @@ gawk:
 else
 gawk: gawk-setup gettext
 	cd $(BUILD_WORK)/gawk && ./configure \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=/etc
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--sysconfdir=$(MEMO_PREFIX)/etc
 	+$(MAKE) -C $(BUILD_WORK)/gawk install \
 		DESTDIR=$(BUILD_STAGE)/gawk
-	rm -f $(BUILD_STAGE)/gawk/usr/bin/gawk-*
+	rm -f $(BUILD_STAGE)/gawk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gawk-*
 	touch $(BUILD_WORK)/gawk/.build_complete
 endif
 
 gawk-package: gawk-stage
 	# gawk.mk Package Structure
 	rm -rf $(BUILD_DIST)/gawk
-	
+
 	# gawk.mk Prep gawk
 	cp -a $(BUILD_STAGE)/gawk $(BUILD_DIST)
-	
+
 	# gawk.mk Sign
 	$(call SIGN,gawk,general.xml)
-	
+
 	# gawk.mk Make .debs
 	$(call PACK,gawk,DEB_GAWK_V)
-	
+
 	# gawk.mk Build cleanup
 	rm -rf $(BUILD_DIST)/gawk
 
