@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += pyyaml
-PYYAML_VERSION := 5.3.1
+PYYAML_VERSION := 5.4.1.1
 DEB_PYYAML_V   ?= $(PYYAML_VERSION)
 
 pyyaml-setup: setup
