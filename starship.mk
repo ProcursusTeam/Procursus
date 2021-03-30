@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += starship
-STARSHIP_VERSION := 0.50.0
+STARSHIP_VERSION := 0.51.0
 DEB_STARSHIP_V   ?= $(STARSHIP_VERSION)
 
 starship-setup: setup
@@ -11,7 +11,6 @@ starship-setup: setup
 	$(call EXTRACT_TAR,starship-$(STARSHIP_VERSION).tar.gz,starship-$(STARSHIP_VERSION),starship)
 	# remove this when the following upstream PRs are merged:
 	#  https://github.com/FillZpp/sys-info-rs/pull/88
-	#  https://github.com/Byron/open-rs/pull/28
 	$(call DO_PATCH,starship,starship,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/starship/.build_complete),)
