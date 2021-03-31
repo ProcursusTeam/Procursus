@@ -1,0 +1,21 @@
+diff -ruN libsoundio-2.0.0/src/coreaudio.c libsoundio/src/coreaudio.c
+--- libsoundio-2.0.0/src/coreaudio.c	2019-02-20 21:25:44.000000000 +0800
++++ libsoundio/src/coreaudio.c	2021-03-31 08:14:02.540009147 +0800
+@@ -967,7 +967,7 @@
+ 
+     AudioComponentDescription desc = {0};
+     desc.componentType = kAudioUnitType_Output;
+-    desc.componentSubType = kAudioUnitSubType_HALOutput;
++    desc.componentSubType = kAudioUnitSubType_GenericOutput;
+     desc.componentManufacturer = kAudioUnitManufacturer_Apple;
+ 
+     AudioComponent component = AudioComponentFindNext(NULL, &desc);
+@@ -1255,7 +1255,7 @@
+ 
+     AudioComponentDescription desc = {0};
+     desc.componentType = kAudioUnitType_Output;
+-    desc.componentSubType = kAudioUnitSubType_HALOutput;
++    desc.componentSubType = kAudioUnitSubType_GenericOutput;
+     desc.componentManufacturer = kAudioUnitManufacturer_Apple;
+ 
+     AudioComponent component = AudioComponentFindNext(NULL, &desc);

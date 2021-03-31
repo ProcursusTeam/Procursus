@@ -11,6 +11,9 @@ libsoundio-setup: setup
 		wget -q -nc -O$(BUILD_SOURCE)/libsoundio-$(LIBSOUNDIO_VERSION).tar.gz \
 			https://github.com/andrewrk/libsoundio/archive/$(LIBSOUNDIO_VERSION).tar.gz
 	$(call EXTRACT_TAR,libsoundio-$(LIBSOUNDIO_VERSION).tar.gz,libsoundio-$(LIBSOUNDIO_VERSION),libsoundio)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+	$(call DO_PATCH,libsoundio-ios,libsoundio,-p1)
+endif
 
 ifneq ($(wildcard $(BUILD_WORK)/libsoundio/.build_complete),)
 libsoundio:
@@ -27,6 +30,8 @@ libsoundio: libsoundio-setup
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
+		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
+		-DCMAKE_SHARED_LINKER_FLAGS="-framework CoreAudio -framework AudioToolbox" \
 		-DBUILD_DYNAMIC_LIBS=1 \
 		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
