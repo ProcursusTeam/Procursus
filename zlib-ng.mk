@@ -48,11 +48,11 @@ zlib-ng-package: zlib-ng-stage
 
 	# zlib-ng.mk Sign
 	$(call SIGN,libz-ng2,general.xml)
-	
+
 	# zlib-ng.mk Make .debs
 	$(call PACK,libz-ng2,DEB_ZLIB-NG_V)
 	$(call PACK,libz-ng-dev,DEB_ZLIB-NG_V)
-	
+
 	# zlib-ng.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libz-ng{2,-dev}
 

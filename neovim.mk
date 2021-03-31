@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += neovim
 NEOVIM_VERSION := 0.4.4
-DEB_NEOVIM_V   ?= $(NEOVIM_VERSION)-1
+DEB_NEOVIM_V   ?= $(NEOVIM_VERSION)
 
 neovim-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/neovim-$(NEOVIM_VERSION).tar.gz" ] && \
@@ -13,6 +13,7 @@ neovim-setup: setup
 	$(call EXTRACT_TAR,neovim-$(NEOVIM_VERSION).tar.gz,neovim-$(NEOVIM_VERSION),neovim)
 	$(call DO_PATCH,neovim,neovim,-p1)
 	mkdir -p $(BUILD_WORK)/neovim/build
+	@echo "If this fails, run \`eval \$$(luarocks path --lua-dir=[path-to-luadir])\` --bin)"
 
 ifneq ($(call HAS_COMMAND,nvim),1)
 neovim:
@@ -28,7 +29,7 @@ neovim: neovim-setup gettext lua-luv libuv1 msgpack libvterm libtermkey unibiliu
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)/ \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
@@ -37,7 +38,7 @@ neovim: neovim-setup gettext lua-luv libuv1 msgpack libvterm libtermkey unibiliu
 		-DXGETTEXT_PRG="`which xgettext`" \
 		-DGETTEXT_MSGFMT_EXECUTABLE="`which msgfmt`" \
 		-DGETTEXT_MSGMERGE_EXECUTABLE="`which msgmerge`" \
-		-DLIBLUV_LIBRARY="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit-5.1-luv.dylib" \
+		-DLIBLUV_LIBRARY="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.1-luv.dylib" \
 		-DLIBLUV_INCLUDE_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/lua5.1/" \
 		..
 	+$(MAKE) -C $(BUILD_WORK)/neovim/build
@@ -51,9 +52,9 @@ neovim-package: neovim-stage
 	rm -rf $(BUILD_DIST)/neovim
 
 	# neovim.mk Prep neovim
-	cp -a $(BUILD_STAGE)/neovim $(BUILD_DIST)
+	cp -a $(BUILD_STAGE)/neovim $(BUILD_DIST)/neovim
 	for i in ex rview rvim view vimdiff; do \
-		$(GINSTALL) -Dm0755 $(BUILD_MISC)/neovim.$$i $(BUILD_DIST)/neovim$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/neovim/$$i; \
+	$(GINSTALL) -Dm0755 $(BUILD_INFO)/neovim.$$i $(BUILD_DIST)/neovim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/neovim/$$i; \
 	done
 
 	# neovim.mk Sign

@@ -18,7 +18,7 @@ else
 tree: tree-setup 
 	+$(MAKE) -C $(BUILD_WORK)/tree
 	+$(MAKE) -C $(BUILD_WORK)/tree install \
-		prefix=$(BUILD_STAGE)/tree/usr
+		prefix=$(BUILD_STAGE)/tree/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	touch $(BUILD_WORK)/tree/.build_complete
 endif
 
@@ -26,16 +26,16 @@ tree-package: tree-stage
 	# tree.mk Package Structure
 	rm -rf $(BUILD_DIST)/tree
 	mkdir -p $(BUILD_DIST)/tree
-	
+
 	# tree.mk Prep tree
 	cp -a $(BUILD_STAGE)/tree $(BUILD_DIST)/
-	
+
 	# tree.mk Sign
 	$(call SIGN,tree,general.xml)
-	
+
 	# tree.mk Make .debs
 	$(call PACK,tree,DEB_TREE_V)
-	
+
 	# tree.mk Build cleanup
 	rm -rf $(BUILD_DIST)/tree
 

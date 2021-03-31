@@ -42,7 +42,7 @@ file-package: file-stage
 	mkdir -p $(BUILD_DIST)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
 		$(BUILD_DIST)/libmagic1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share} \
 		$(BUILD_DIST)/libmagic-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share/man}
-	
+
 	# file.mk Prep file
 	cp -a $(BUILD_STAGE)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
@@ -55,16 +55,16 @@ file-package: file-stage
 	# file.mk Prep libmagic-dev
 	cp -a $(BUILD_STAGE)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libmagic.1.dylib) $(BUILD_DIST)/libmagic-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libmagic-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
-	
+
 	# file.mk Sign
 	$(call SIGN,file,general.xml)
 	$(call SIGN,libmagic1,general.xml)
-	
+
 	# file.mk Make .debs
 	$(call PACK,file,DEB_FILE_V)
 	$(call PACK,libmagic1,DEB_FILE_V)
 	$(call PACK,libmagic-dev,DEB_FILE_V)
-	
+
 	# file.mk Build cleanup
 	rm -rf $(BUILD_DIST)/file $(BUILD_DIST)/libmagic{1,-dev}
 

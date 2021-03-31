@@ -26,16 +26,16 @@ endif
 lolcat-package: lolcat-stage
 	# lolcat.mk Package Structure
 	rm -rf $(BUILD_DIST)/lolcat
-	
+
 	# lolcat.mk Prep lolcat
 	cp -a $(BUILD_STAGE)/lolcat $(BUILD_DIST)
-	
+
 	# lolcat.mk Sign
 	$(call SIGN,lolcat,general.xml)
-	
+
 	# lolcat.mk Make .debs
 	$(call PACK,lolcat,DEB_LOLCAT_V)
-	
+
 	# lolcat.mk Build cleanup
 	rm -rf $(BUILD_DIST)/lolcat
 

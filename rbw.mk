@@ -33,16 +33,16 @@ endif
 rbw-package: rbw-stage
 	# rbw.mk Package Structure
 	rm -rf $(BUILD_DIST)/rbw
-	
+
 	# rbw.mk Prep rbw
 	cp -a $(BUILD_STAGE)/rbw $(BUILD_DIST)
-	
+
 	# rbw.mk Sign
 	$(call SIGN,rbw,general.xml)
-	
+
 	# rbw.mk Make .debs
 	$(call PACK,rbw,DEB_RBW_V)
-	
+
 	# rbw.mk Build cleanup
 	rm -rf $(BUILD_DIST)/rbw
 

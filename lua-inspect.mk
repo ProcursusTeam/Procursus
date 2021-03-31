@@ -27,13 +27,13 @@ endif
 lua-inspect-package: lua-inspect-stage
 	# lua-inspect.mk Package Structure
 	rm -rf $(BUILD_DIST)/lua-inspect
-	
+
 	# lua-inspect.mk Prep lua-inspect
 	cp -a $(BUILD_STAGE)/lua-inspect $(BUILD_DIST)
-	
+
 	# lua-inspect.mk Make .debs
 	$(call PACK,lua-inspect,DEB_LUA-INSPECT_V)
-	
+
 	# lua-inspect.mk Build cleanup
 	rm -rf $(BUILD_DIST)/lua-inspect
 

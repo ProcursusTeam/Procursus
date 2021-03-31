@@ -36,7 +36,7 @@ liblocale-gettext-perl: liblocale-gettext-perl-setup perl gettext
 		INSTALLMAN3DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 \
 		INSTALLSITEMAN3DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 \
 		INSTALLVENDORMAN3DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 \
-		PERL="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl" \
+		PERL="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl" \
 		CCFLAGS="$(CFLAGS)" \
 		LDDLFLAGS="$(LDFLAGS) -shared"
 	+$(MAKE) -C $(BUILD_WORK)/liblocale-gettext-perl
@@ -49,16 +49,16 @@ endif
 liblocale-gettext-perl-package: liblocale-gettext-perl-stage
 	# liblocale-gettext-perl.mk Package Structure
 	rm -rf $(BUILD_DIST)/liblocale-gettext-perl
-	
+
 	# liblocale-gettext-perl.mk Prep liblocale-gettext-perl
 	cp -a $(BUILD_STAGE)/liblocale-gettext-perl $(BUILD_DIST)
 
 	# liblocale-gettext-perl.mk Sign
 	$(call SIGN,liblocale-gettext-perl,general.xml)
-	
+
 	# liblocale-gettext-perl.mk Make .debs
 	$(call PACK,liblocale-gettext-perl,DEB_LIBLOCALE-GETTEXT-PERL_V)
-	
+
 	# liblocale-gettext-perl.mk Build cleanup
 	rm -rf $(BUILD_DIST)/liblocale-gettext-perl
 

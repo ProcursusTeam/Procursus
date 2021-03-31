@@ -28,16 +28,16 @@ endif
 ripgrep-package: ripgrep-stage
 	# ripgrep.mk Package Structure
 	rm -rf $(BUILD_DIST)/ripgrep
-	
+
 	# ripgrep.mk Prep ripgrep
 	cp -a $(BUILD_STAGE)/ripgrep $(BUILD_DIST)
-	
+
 	# ripgrep.mk Sign
 	$(call SIGN,ripgrep,general.xml)
-	
+
 	# ripgrep.mk Make .debs
 	$(call PACK,ripgrep,DEB_RIPGREP_V)
-	
+
 	# ripgrep.mk Build cleanup
 	rm -rf $(BUILD_DIST)/ripgrep
 

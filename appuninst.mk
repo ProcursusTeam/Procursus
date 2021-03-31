@@ -26,7 +26,7 @@ appuninst: appuninst-setup
 		-o $(BUILD_STAGE)/appuninst/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/appuninst \
 		$(LDFLAGS) \
 		$(APPUNINST_LIBS)
-	
+
 	touch $(BUILD_WORK)/appuninst/.build_complete
 endif
 
