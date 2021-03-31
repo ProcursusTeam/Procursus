@@ -32,21 +32,21 @@ libpipeline-package: libpipeline-stage
 	# libpipeline.mk Package Structure
 	rm -rf $(BUILD_DIST)/libpipeline{1,-dev}
 	mkdir -p $(BUILD_DIST)/libpipeline{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libpipeline.mk Prep libpipeline1
 	cp -a $(BUILD_STAGE)/libpipeline/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpipeline.1.dylib $(BUILD_DIST)/libpipeline1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libpipeline.mk Prep libpipeline-dev
 	cp -a $(BUILD_STAGE)/libpipeline/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libpipeline.dylib,pkgconfig} $(BUILD_DIST)/libpipeline-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libpipeline/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libpipeline-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libpipeline.mk Sign
 	$(call SIGN,libpipeline1,general.xml)
-	
+
 	# libpipeline.mk Make .debs
 	$(call PACK,libpipeline1,DEB_LIBPIPELINE_V)
 	$(call PACK,libpipeline-dev,DEB_LIBPIPELINE_V)
-	
+
 	# libpipeline.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libpipeline{1,-dev}
 

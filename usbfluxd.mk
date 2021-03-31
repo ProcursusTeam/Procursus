@@ -22,8 +22,8 @@ usbfluxd: usbfluxd-setup libplist
 	cd $(BUILD_WORK)/usbfluxd && ./autogen.sh \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--with-static-libplist="$(BUILD_BASE)/usr/lib/libplist-2.0.a" \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--with-static-libplist="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libplist-2.0.a" \
 		ac_cv_func_malloc_0_nonnull=yes \
 		ac_cv_func_realloc_0_nonnull=yes
 	+$(MAKE) -C $(BUILD_WORK)/usbfluxd \

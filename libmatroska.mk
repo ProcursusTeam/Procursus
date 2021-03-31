@@ -33,7 +33,7 @@ libmatroska: libmatroska-setup libebml
 		DESTDIR="$(BUILD_STAGE)/libmatroska"
 	+$(MAKE) -C $(BUILD_WORK)/libmatroska install \
 		DESTDIR="$(BUILD_BASE)"
-	
+
 	touch $(BUILD_WORK)/libmatroska/.build_complete
 endif
 

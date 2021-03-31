@@ -15,8 +15,8 @@ pfetch:
 	@echo "Using previously built pfetch."
 else
 pfetch: pfetch-setup 
-	mkdir -p $(BUILD_STAGE)/pfetch/usr/bin
-	cp $(BUILD_WORK)/pfetch/pfetch $(BUILD_STAGE)/pfetch/usr/bin/
+	mkdir -p $(BUILD_STAGE)/pfetch/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp $(BUILD_WORK)/pfetch/pfetch $(BUILD_STAGE)/pfetch/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
 	touch $(BUILD_WORK)/pfetch/.build_complete
 endif
 
@@ -24,16 +24,16 @@ pfetch-package: pfetch-stage
 	# pfetch.mk Package Structure
 	rm -rf $(BUILD_DIST)/pfetch
 	mkdir -p $(BUILD_DIST)/pfetch
-	
+
 	# pfetch.mk Prep pfetch
 	cp -a $(BUILD_STAGE)/pfetch $(BUILD_DIST)
-	
+
 	# pfetch.mk Sign
 	$(call SIGN,pfetch,general.xml)
-	
+
 	# pfetch.mk Make .debs
 	$(call PACK,pfetch,DEB_PFETCH_V)
-	
+
 	# pfetch.mk Build cleanup
 	rm -rf $(BUILD_DIST)/pfetch
 

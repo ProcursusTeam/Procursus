@@ -27,13 +27,13 @@ zsh-autosuggestions-package: zsh-autosuggestions-stage
 	# zsh-autosuggestions.mk Package Structure
 	rm -rf $(BUILD_DIST)/zsh-autosuggestions
 	mkdir -p $(BUILD_DIST)/zsh-autosuggestions
-	
+
 	# zsh-autosuggestions.mk Prep zsh-autosuggestions
 	cp -a $(BUILD_STAGE)/zsh-autosuggestions $(BUILD_DIST)
-	
+
 	# zsh-autosuggestions.mk Make .debs
 	$(call PACK,zsh-autosuggestions,DEB_ZSH-AUTOSUGGESTIONS_V)
-	
+
 	# zsh-autosuggestions.mk Build cleanup
 	rm -rf $(BUILD_DIST)/zsh-autosuggestions
 

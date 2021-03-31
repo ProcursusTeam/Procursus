@@ -16,7 +16,7 @@ automake:
 	@echo "Using previously built automake."
 else
 automake: automake-setup
-	cd $(BUILD_WORK)/automake && PERL=/usr/bin/perl ./configure -C \
+	cd $(BUILD_WORK)/automake && PERL="$(shell which perl)" ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
@@ -30,16 +30,16 @@ endif
 automake-package: automake-stage
 	# automake.mk Package Structure
 	rm -rf $(BUILD_DIST)/automake
-	
+
 	# automake.mk Prep automake
 	cp -a $(BUILD_STAGE)/automake $(BUILD_DIST)
-	
+
 	# automake.mk Sign
 	$(call SIGN,automake,general.xml)
-	
+
 	# automake.mk Make .debs
 	$(call PACK,automake,DEB_AUTOMAKE_V)
-	
+
 	# automake.mk Build cleanup
 	rm -rf $(BUILD_DIST)/automake
 

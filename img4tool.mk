@@ -31,7 +31,7 @@ img4tool-package: img4tool-stage
 	# img4tool.mk Package Structure
 	rm -rf $(BUILD_DIST)/*img4tool*/
 	mkdir -p $(BUILD_DIST)/{img4tool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin,libimg4tool0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib,libimg4tool-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pkgconfig,include}}
-	
+
 	# img4tool.mk Prep img4tool
 	cp -a $(BUILD_STAGE)/img4tool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/img4tool $(BUILD_DIST)/img4tool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 

@@ -20,8 +20,8 @@ frei0r: frei0r-setup cairo
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DCMAKE_INSTALL_NAME_DIR=/usr/lib \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
@@ -33,29 +33,29 @@ frei0r: frei0r-setup cairo
 		DESTDIR=$(BUILD_STAGE)/frei0r
 	+$(MAKE) -C $(BUILD_WORK)/frei0r install \
 		DESTDIR=$(BUILD_BASE)
-	for file in $(BUILD_STAGE)/frei0r/usr/lib/frei0r-1/*.so ; do mv $$file "$${file%.*}.dylib" ; done
+	for file in $(BUILD_STAGE)/frei0r/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/frei0r-1/*.so ; do mv $$file "$${file%.*}.dylib" ; done
 	touch $(BUILD_WORK)/frei0r/.build_complete
 endif
 
 frei0r-package: frei0r-stage
 	# frei0r.mk Package Structure
 	rm -rf $(BUILD_DIST)/frei0r-plugins{,-dev}
-	mkdir -p $(BUILD_DIST)/frei0r-plugins{,-dev}/usr/lib
-	
+	mkdir -p $(BUILD_DIST)/frei0r-plugins{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# frei0r.mk Prep frei0r-plugins
-	cp -a $(BUILD_STAGE)/frei0r/usr/lib/frei0r-1 $(BUILD_DIST)/frei0r-plugins/usr/lib
-	
+	cp -a $(BUILD_STAGE)/frei0r/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/frei0r-1 $(BUILD_DIST)/frei0r-plugins/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# frei0r.mk Prep frei0r-plugins-dev
-	cp -a $(BUILD_STAGE)/frei0r/usr/lib/pkgconfig $(BUILD_DIST)/frei0r-plugins-dev/usr/lib
-	cp -a $(BUILD_STAGE)/frei0r/usr/include $(BUILD_DIST)/frei0r-plugins-dev/usr
-	
+	cp -a $(BUILD_STAGE)/frei0r/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/frei0r-plugins-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/frei0r/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/frei0r-plugins-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+
 	# frei0r.mk Sign
 	$(call SIGN,frei0r-plugins,general.xml)
-	
+
 	# frei0r.mk Make .debs
 	$(call PACK,frei0r-plugins,DEB_FREI0R_V)
 	$(call PACK,frei0r-plugins-dev,DEB_FREI0R_V)
-	
+
 	# frei0r.mk Build cleanup
 	rm -rf $(BUILD_DIST)/frei0r-plugins{,-dev}
 

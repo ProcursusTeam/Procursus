@@ -43,16 +43,16 @@ endif
 fakeroot-package: fakeroot-stage
 	# fakeroot.mk Package Structure
 	rm -rf $(BUILD_DIST)/fakeroot
-	
+
 	# fakeroot.mk Prep fakeroot
 	cp -a $(BUILD_STAGE)/fakeroot $(BUILD_DIST)
-	
+
 	# fakeroot.mk Sign
 	$(call SIGN,fakeroot,general.xml)
-	
+
 	# fakeroot.mk Make .debs
 	$(call PACK,fakeroot,DEB_FAKEROOT_V)
-	
+
 	# fakeroot.mk Build cleanup
 	rm -rf $(BUILD_DIST)/fakeroot
 

@@ -45,22 +45,22 @@ libgpg-error-package: libgpg-error-stage
 	rm -rf $(BUILD_DIST)/{libgpg-error{0,-dev},gpgrt-tools}
 	mkdir -p $(BUILD_DIST)/libgpg-error{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	mkdir -p $(BUILD_DIST)/gpgrt-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libgpg-error.mk Prep libgpg-error
 	cp -a $(BUILD_STAGE)/libgpg-error/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgpg-error.0.dylib $(BUILD_DIST)/libgpg-error0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libgpg-error/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libgpg-error-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/libgpg-error/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libgpg-error.dylib,pkgconfig} $(BUILD_DIST)/libgpg-error-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libgpg-error/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/gpgrt-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libgpg-error.mk Sign
 	$(call SIGN,libgpg-error0,general.xml)
 	$(call SIGN,gpgrt-tools,general.xml)
-	
+
 	# libgpg-error.mk Make .debs
 	$(call PACK,libgpg-error0,DEB_LIBGPG-ERROR_V)
 	$(call PACK,libgpg-error-dev,DEB_LIBGPG-ERROR_V)
 	$(call PACK,gpgrt-tools,DEB_LIBGPG-ERROR_V)
-	
+
 	# libgpg-error.mk Build cleanup
 	rm -rf $(BUILD_DIST)/{libgpg-error{0,-dev},gpgrt-tools}
 
