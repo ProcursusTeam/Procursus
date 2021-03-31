@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS            += pam-biometrics
-PAM-BIOMETRICS_VERSION := 1.1.1
+PAM-BIOMETRICS_VERSION := 1.1.2
 DEB_PAM-BIOMETRICS_V   ?= $(PAM-BIOMETRICS_VERSION)
 
 pam-biometrics-setup: setup
