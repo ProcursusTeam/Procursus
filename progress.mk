@@ -16,6 +16,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	wget -P $(BUILD_WORK)/progress https://raw.githubusercontent.com/NetBSD/src/trunk/{lib/libc/gen/wordexp.c,include/wordexp.h}
 	$(call DO_PATCH,progress,progress,-p1)
 endif
+	mv $(BUILD_WORK)/progress/progress.1 $(BUILD_WORK)/progress/cv-progress.1
 
 ifneq ($(wildcard $(BUILD_WORK)/progress/.build_complete),)
 progress:
@@ -23,6 +24,7 @@ progress:
 else
 progress: progress-setup ncurses
 	+$(MAKE) -C $(BUILD_WORK)/progress install \
+		OBJ="cv-progress" \
 		UNAME="Darwin" \
 		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		DESTDIR="$(BUILD_STAGE)/progress"
@@ -35,6 +37,9 @@ progress-package: progress-stage
 	
 	# progress.mk Prep progress
 	cp -a $(BUILD_STAGE)/progress $(BUILD_DIST)
+	
+	# progress.mk Sign
+	$(call SIGN,progress,general.xml)
 	
 	# progress.mk Make .debs
 	$(call PACK,progress,DEB_PROGRESS_V)
