@@ -16,7 +16,7 @@ openexr:
 	@echo "Using previously built openexr."
 else
 openexr: openexr-setup
-	cd $(BUILD_WORK)/openexr/IlmBase && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/openexr/IlmBase && cmake . \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
@@ -34,7 +34,7 @@ openexr: openexr-setup
 	+$(MAKE) -C $(BUILD_WORK)/openexr/IlmBase install \
 		DESTDIR="$(BUILD_BASE)"
 
-	cd $(BUILD_WORK)/openexr/OpenEXR && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/openexr/OpenEXR && cmake . \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \

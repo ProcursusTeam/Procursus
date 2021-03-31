@@ -15,7 +15,7 @@ lzfse:
 	@echo "Using previously built lzfse."
 else
 lzfse: lzfse-setup
-	cd $(BUILD_WORK)/lzfse && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/lzfse && cmake . \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
