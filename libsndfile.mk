@@ -7,7 +7,8 @@ LIBSNDFILE_VERSION := 1.0.31
 DEB_LIBSNDFILE_V   ?= $(LIBSNDFILE_VERSION)
 
 libsndfile-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/erikd/libsndfile/releases/download/v$(LIBSNDFILE_VERSION)/libsndfile-$(LIBSNDFILE_VERSION).tar.bz2
+	wget -q -nc -P $(BUILD_SOURCE) \
+		https://github.com/libsndfile/libsndfile/releases/download/$(LIBSNDFILE_VERSION)/libsndfile-$(LIBSNDFILE_VERSION).tar.bz2
 	$(call EXTRACT_TAR,libsndfile-$(LIBSNDFILE_VERSION).tar.bz2,libsndfile-$(LIBSNDFILE_VERSION),libsndfile)
 
 ifneq ($(wildcard $(BUILD_WORK)/libsndfile/.build_complete),)
