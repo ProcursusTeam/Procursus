@@ -71,8 +71,8 @@ libsoundio-package: libsoundio-stage
 	cp -a $(BUILD_STAGE)/libsoundio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/libsoundio-progs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libsoundio.mk Sign
-	$(call SIGN,libsoundio2,general.xml)
-	$(call SIGN,libsoundio-progs,general.xml)
+	$(call SIGN,libsoundio2,audio.xml)
+	$(call SIGN,libsoundio-progs,audio.xml)
 
 	# libsoundio.mk Make .debs
 	$(call PACK,libsoundio2,DEB_LIBSOUNDIO_V)
