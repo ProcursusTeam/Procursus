@@ -5,3 +5,4 @@ Maintainer: @DEB_MAINTAINER@
 Section: X11
 Depends:
 Description: All of the x11 fonts in one package
+
