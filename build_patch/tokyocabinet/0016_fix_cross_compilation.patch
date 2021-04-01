@@ -1,0 +1,56 @@
+diff --color -urN tokyocabinet-1.4.48/configure tokyocabinet/configure
+--- tokyocabinet-1.4.48/configure	2021-04-01 09:31:08.066102307 -0400
++++ tokyocabinet/configure	2021-04-01 10:16:44.273894646 -0400
+@@ -2076,9 +2076,9 @@
+ 
+ # Building flags
+ MYCFLAGS="-std=c99 -Wall -fPIC -fsigned-char -O2"
+-MYCPPFLAGS="-I. -I\$(INCLUDEDIR) -I/usr/local/include"
++MYCPPFLAGS="-I."
+ MYCPPFLAGS="$MYCPPFLAGS -DNDEBUG -D_GNU_SOURCE=1 -D_REENTRANT -D__EXTENSIONS__"
+-MYLDFLAGS="-L. -L\$(LIBDIR) -L/usr/local/lib"
++MYLDFLAGS="-L."
+ MYCMDLDFLAGS=""
+ MYRUNPATH="\$(LIBDIR)"
+ MYLDLIBPATHENV="LD_LIBRARY_PATH"
+@@ -4232,7 +4232,7 @@
+ # Shared libraries
+ if test "$enable_shared" != "no" && test "$enable_profile" != "yes"
+ then
+-  if uname | grep Darwin >/dev/null
++  if echo "$host_alias" | grep darwin >/dev/null
+   then
+     MYLIBRARYFILES="$MYLIBRARYFILES libtokyocabinet.$MYLIBVER.$MYLIBREV.0.dylib"
+     MYLIBRARYFILES="$MYLIBRARYFILES libtokyocabinet.$MYLIBVER.dylib"
+diff --color -urN tokyocabinet-1.4.48/configure.in tokyocabinet/configure.in
+--- tokyocabinet-1.4.48/configure.in	2021-04-01 09:31:08.102102854 -0400
++++ tokyocabinet/configure.in	2021-04-01 10:16:59.881511318 -0400
+@@ -310,7 +310,7 @@
+ # Shared libraries
+ if test "$enable_shared" != "no" && test "$enable_profile" != "yes"
+ then
+-  if uname | grep Darwin >/dev/null
++  if echo "$host_alias" | grep darwin >/dev/null
+   then
+     MYLIBRARYFILES="$MYLIBRARYFILES libtokyocabinet.$MYLIBVER.$MYLIBREV.0.dylib"
+     MYLIBRARYFILES="$MYLIBRARYFILES libtokyocabinet.$MYLIBVER.dylib"
+diff --color -urN tokyocabinet-1.4.48/tcutil.c tokyocabinet/tcutil.c
+--- tokyocabinet-1.4.48/tcutil.c	2021-04-01 09:31:08.098102793 -0400
++++ tokyocabinet/tcutil.c	2021-04-01 10:13:55.695100143 -0400
+@@ -4589,7 +4589,15 @@
+   return tcmpoolpush(mpool, tree, (void (*)(void *))tctreedel);
+ }
+ 
+-#define ALIAS(old, new)  __typeof__(new) old __attribute__((alias(#new)))
++/* Darwin doesn't support alias attributes.  */
++#ifndef __APPLE__
++# define ALIAS(old, new)  __typeof__(new) old __attribute__((alias(#new)))
++#else
++# define ALIAS(old, new) \
++  __asm__(".globl _" #old); \
++  __asm__(".set _" #old", _" #new); \
++  extern __typeof(new) old
++#endif
+ ALIAS(tcmpoolput,     tcmpoolpush);
+ ALIAS(tcmpoolputptr,  tcmpoolpushptr);
+ ALIAS(tcmpoolputxstr, tcmpoolpushxstr);
