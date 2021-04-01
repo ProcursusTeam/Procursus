@@ -1,0 +1,7 @@
+Package: fonts
+Version: @DEB_FONTS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: X11
+Depends:
+Description: All of the x11 fonts in one package
