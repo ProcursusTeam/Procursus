@@ -1,0 +1,48 @@
+# This configuration file contains the default settings used by old debian
+# packages (< 0.94).
+
+set quote_regexp="^[ \t]*[a-zA-Z\.]*>"  # Default: "^([ \t]*[>|#:}])+"
+
+#
+# More header weeding
+#
+ignore Resent- Precedence In-Reply-To Return-Receipt-To Mailer X400
+ignore Originator X-Loop X-Mailing-List X-Listprocessor X-Face
+ignore X-Received X-Mailer X-Envelope-To X-Sender X-Attribution
+# Usenet headers can occur for Cc-ed messages; they can still be
+# recognized by the Newsgroups header.
+ignore Path Lines NNTP-Posting-Host X-Newsreader X-Submitted-Via
+
+#
+# Key bindings
+#
+
+bind editor     <delete>  delete-char
+
+# Color / video attribute definitions. Not too flashy.
+#
+
+color  hdrdefault      green           black
+color  header          brightyellow    black   "^from:"
+mono   header          bold                    "^from:"
+color  header          brightyellow    black   "^subject:"
+mono   header          bold                    "^subject:"
+color  quoted          green           black
+color  signature       brightred       black
+color  indicator       brightyellow    red
+color  error           brightred       black
+mono   error           bold
+color  status          brightwhite     blue
+color  tree            brightmagenta   black
+color  tilde           brightmagenta   black
+# URL highlighting with the same regexp as urlview.
+color  body            brightyellow    black	(((ht|f)tps?)|mailto):(//)?[^\ "\t]*|www\.[-a-z0-9.]+)[^\ .,;\t>">]
+mono   body            bold			(((ht|f)tps?)|mailto):(//)?[^\ "\t]*|www\.[-a-z0-9.]+)[^\ .,;\t>">]
+color  body            brightmagenta   black   "[-a-z_0-9.]+@[-a-z_0-9.]+"
+mono   body            bold                    "[-a-z_0-9.]+@[-a-z_0-9.]+"
+color  body            brightyellow    black   "^Good signature"
+mono   body            bold                    "^Good signature"
+color  body            brightwhite     red     "^Bad signature from.*"
+mono   body            bold                    "^Bad signature from.*"
+
+

@@ -1,0 +1,24 @@
+#! /bin/sh
+
+set -e
+
+# dpkg triggers support for update-mime
+if [ "$1" = "triggered" ]; then
+    if which update-mime > /dev/null; then update-mime --triggered; fi
+    exit 0
+fi
+
+# @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/open alternative
+if [ "$1" = configure ]; then
+    update-alternatives --quiet \
+        --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/open open @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/run-mailcap 30 \
+        --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/open.1.gz open.1.gz @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/run-mailcap.1.gz
+fi
+
+# Remove the old status directory (and any orphaned install-mime program)
+rm -fr @MEMO_PREFIX@/var/lib/mime
+rm -f  @MEMO_PREFIX@@MEMO_SUB_PREFIX@/sbin/install-mime
+
+
+# Run the update program
+if which update-mime > /dev/null; then update-mime --triggered; fi

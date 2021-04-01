@@ -1,0 +1,34 @@
+From: Antonio Radici <antonio@debian.org>
+Date: Thu, 27 Feb 2014 16:30:20 +0100
+Subject: gpg.rc-paths
+
+Use the correct path of pgpewrap.
+---
+ contrib/gpg.rc | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
+
+--- a/contrib/gpg.rc
++++ b/contrib/gpg.rc
+@@ -72,20 +72,16 @@
+ set pgp_decrypt_command="gpg --status-fd=2 %?p?--passphrase-fd 0 --pinentry-mode=loopback? --no-verbose --quiet --batch --output - %f"
+ 
+ # create a pgp/mime signed attachment
+-# set pgp_sign_command="gpg-2comp --comment '' --no-verbose --batch --output - %?p?--passphrase-fd 0 --pinentry-mode=loopback? --armor --detach-sign --textmode %?a?-u %a? %f"
+ set pgp_sign_command="gpg --no-verbose --batch --quiet --output - %?p?--passphrase-fd 0 --pinentry-mode=loopback? --armor --detach-sign --textmode %?a?-u %a? %f"
+ 
+ # create a application/pgp signed (old-style) message
+-# set pgp_clearsign_command="gpg-2comp --comment '' --no-verbose --batch --output - %?p?--passphrase-fd 0 --pinentry-mode=loopback? --armor --textmode --clearsign %?a?-u %a? %f"
+ set pgp_clearsign_command="gpg --no-verbose --batch --quiet --output - %?p?--passphrase-fd 0 --pinentry-mode=loopback? --armor --textmode --clearsign %?a?-u %a? %f"
+ 
+ # create a pgp/mime encrypted attachment
+-# set pgp_encrypt_only_command="pgpewrap gpg-2comp -v --batch --output - --encrypt --textmode --armor --always-trust -- -r %r -- %f"
+-set pgp_encrypt_only_command="pgpewrap gpg --batch --quiet --no-verbose --output - --encrypt --textmode --armor --always-trust -- -r %r -- %f"
++set pgp_encrypt_only_command="/usr/lib/mutt/pgpewrap gpg --batch --quiet --no-verbose --output - --encrypt --textmode --armor --always-trust -- -r %r -- %f"
+ 
+ # create a pgp/mime encrypted and signed attachment
+-# set pgp_encrypt_sign_command="pgpewrap gpg-2comp %?p?--passphrase-fd 0 --pinentry-mode=loopback? -v --batch --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
+-set pgp_encrypt_sign_command="pgpewrap gpg %?p?--passphrase-fd 0 --pinentry-mode=loopback? --batch --quiet --no-verbose --textmode --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
++set pgp_encrypt_sign_command="/usr/lib/mutt/pgpewrap gpg %?p?--passphrase-fd 0 --pinentry-mode=loopback? --batch --quiet --no-verbose --textmode --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
+ 
+ # import a key into the public key ring
+ set pgp_import_command="gpg --no-verbose --import %f"

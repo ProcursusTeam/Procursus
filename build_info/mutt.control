@@ -1,0 +1,27 @@
+Package: mutt
+Version: @DEB_MUTT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libncursesw6, libgnutls30, libtokyocabinet9, libidn2-0, libunistring2, libintl8, libgpgme11, libassuan0, libgpg-error0
+Section: Utilities
+Priority: optional
+Suggests: media-types, default-mta | mail-transport-agent, urlview, aspell | ispell, gnupg, mixmaster, openssl, ca-certificates
+Provides: mail-reader, imap-client
+Description: text-based mailreader supporting MIME, GPG, PGP and threading
+ Mutt is a sophisticated text-based Mail User Agent. Some highlights:
+ .
+  * MIME support (including RFC1522 encoding/decoding of 8-bit message
+    headers and UTF-8 support).
+  * PGP/MIME support (RFC 2015).
+  * Advanced IMAP client supporting SSL encryption and SASL authentication.
+  * POP3 support.
+  * ESMTP support.
+  * Message threading (both strict and non-strict).
+  * Keybindings are configurable, default keybindings are much like ELM;
+    Mush and PINE-like ones are provided as examples.
+  * Handles MMDF, MH and Maildir in addition to regular mbox format.
+  * Messages may be (indefinitely) postponed.
+  * Colour support.
+  * Highly configurable through easy but powerful rc file.
+  * Support for compressed mailboxes.
+  * An optional Sidebar.

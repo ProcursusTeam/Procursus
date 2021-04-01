@@ -1,0 +1,56 @@
+This file describes how to configure mutt to use S/MIME.
+
+This file is almost the same as smime-notes.txt available in mutt upstream
+sources, but it contains a few modifications about Debian-specific issues.
+
+Mutt needs some user interaction to get it ready for S/MIME.
+
+1. Make sure, that openssl (must be) and ca-certificates (recommended)
+   are installed. If not, ask your administrator to do it.
+
+2. Run 'smime_keys init'.
+
+3. If ca-certificates is installed, make a symlink:
+   ln -s /etc/ssl/certs ~/.smime/ca-bundle.crt
+   If not, there are some other packages which contain Root CA certificates,
+   for example: kdelibs-data, libcurl2.
+   This makes you trust anything that was ultimately signed by one of CA
+   included in symlinked crt file.
+
+4. Get yourself a certificate. (You can get one for free from www.thawte.com,
+   or pay for one from VeriSign or one of its competitors). The way the
+   process generally works: the certificate will be installed "into" your web
+   browser.  If you are asked what application you wish to use the
+   certificate with, select Netscape. Strangely enough, "mutt" is usually not
+   an option.
+
+5. Assuming you are using Mozilla, follow the instructions at
+   www.verisignlabs.com/Projects/smime_docs/linux.html to export the
+   certificate into a file called cert.p12. If you don't use Mozilla, you're on
+   your own.
+
+6. Run 'smime_keys add_p12 cert.p12'.
+   * When the script asks for the "Import password", enter the one you
+     provided when you exported the certificate
+   * When it asks for a "PEM pass phrase", make up a new password. Every
+     time you sign or decrypt a message, mutt will ask for the PEM passphrase
+   * Finally, when the script asks for a label, enter an easy-to-remember
+     name for the certificate, such as "me". The script output will include
+     a line like:
+     added private key: /home/raldi/.smime/keys/12345678.0 for raldi@verisignlabs.com
+     The number (including the ".0" at the end) is your keyid. You will
+     need this number in the next step.
+
+7. Edit your .muttrc file and add a lines:
+   set smime_default_key=keyid
+   set smime_sign_as=keyid
+   Probably you also want to change default values for smime_timeout
+   and smime_encrypt_with originally set in global /etc/Muttrc
+
+8. Optionally, you can add following line to your ~/.mailcap to view certificate
+   from mutt:
+   application/x-pkcs7-signature;openssl pkcs7 -in %s -inform der -noout -print_certs -text | pager; needsterminal
+
+Last updated: Tue, 23 Dec 2003 22:35:40 +0100
+Artur R. Czechowski <arturcz@hell.pl>
+

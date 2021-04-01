@@ -1,0 +1,191 @@
+From: Antonio Radici <antonio@debian.org>
+Date: Thu, 27 Feb 2014 16:22:51 +0100
+Subject: 467432-write_bcc
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+The purpose of this patch is to alter the behavior of the write_bcc option
+because exim4, the default SMTP in Debian, does not strip the Bcc headers; by
+default write_bcc is set so this could cause a privacy leak.
+
+The behavior that this patch introduces is: never write the Bcc header when the
+message is sent, otherwise, if the message is sent to Fcc, then this optin
+will be evaluated and the Bcc header will be written based on that.
+
+Background discussion on this is in the following bugs:
+http://bugs.debian.org/304718
+http://bugs.debian.org/467432
+
+This patch is a slightly modified version of the patch provided by
+Stefan Völkel <stefan@bc-bd.org> in the second bug.
+---
+ headers.c |  2 +-
+ init.h    | 11 +++--------
+ main.c    |  2 +-
+ protos.h  |  2 +-
+ send.c    |  4 ++--
+ sendlib.c |  6 +++---
+ 6 files changed, 11 insertions(+), 16 deletions(-)
+
+--- a/init.h
++++ b/init.h
+@@ -453,9 +453,6 @@
+   ** .pp
+   ** When this variable is \fIset\fP, mutt will include Delivered-To headers when
+   ** bouncing messages.  Postfix users may wish to \fIunset\fP this variable.
+-  ** .pp
+-  ** \fBNote:\fP On Debian systems, this option is unset by default in
+-  ** /etc/Muttrc.
+   */
+   { "braille_friendly", DT_BOOL, R_NONE, {.l=OPTBRAILLEFRIENDLY}, {.l=0} },
+   /*
+@@ -1010,7 +1007,7 @@
+   ** .pp
+   ** This variable specifies which editor is used by mutt.
+   ** It defaults to the value of the \fC$$$VISUAL\fP, or \fC$$$EDITOR\fP, environment
+-  ** variable, or to the string ``/usr/bin/editor'' if neither of those are set.
++  ** variable, or to the string ``vi'' if neither of those are set.
+   ** .pp
+   ** The \fC$$editor\fP string may contain a \fI%s\fP escape, which will be replaced by the name
+   ** of the file to be edited.  If the \fI%s\fP escape does not appear in \fC$$editor\fP, a
+@@ -1469,9 +1466,6 @@
+   ** your muttrc.
+   ** .pp
+   ** Also see $$use_domain and $$hidden_host.
+-  ** .pp
+-  ** \fBNote:\fP On Debian systems, the default for this variable is obtained
+-  ** from /etc/mailname when Mutt starts.
+   */
+ #if defined(HAVE_LIBIDN) || defined(HAVE_LIBIDN2)
+   { "idn_decode",	DT_BOOL, R_MENU, {.l=OPTIDNDECODE}, {.l=1} },
+@@ -2171,9 +2165,6 @@
+   ** system.  It is used with various sets of parameters to gather the
+   ** list of known remailers, and to finally send a message through the
+   ** mixmaster chain.
+-  ** .pp
+-  ** \fBNote:\fP On Debian systems, this option is set by default to
+-  ** ``mixmaster-filter'' in /etc/Muttrc.
+   */
+ #endif
+   { "move",		DT_QUAD, R_NONE, {.l=OPT_MOVE}, {.l=MUTT_NO} },
+@@ -3852,10 +3843,6 @@
+   ** This is a format string, see the $$smime_decrypt_command command for
+   ** possible \fCprintf(3)\fP-like sequences.
+   ** (S/MIME only)
+-  ** .pp
+-  ** \fBNote:\fP On Debian systems, this defaults to the first existing file in
+-  ** the following list: ~/.smime/ca-certificates.crt ~/.smime/ca-bundle.crt
+-  ** /etc/ssl/certs/ca-certificates.crt.
+   */
+ #ifdef USE_SMTP
+   { "smtp_authenticators", DT_STR, R_NONE, {.p=&SmtpAuthenticators}, {.p=0} },
+@@ -4026,9 +4013,6 @@
+   ** .ts
+   ** set ssl_ca_certificates_file=/etc/ssl/certs/ca-certificates.crt
+   ** .te
+-  ** .pp
+-  ** \fBNote:\fP On Debian systems, this option is set by default to
+-  ** ``threads'' in /etc/Muttrc.
+   */
+ #endif /* USE_SSL_GNUTLS */
+   { "ssl_client_cert", DT_PATH, R_NONE, {.p=&SslClientCert}, {.p=0} },
+--- a/protos.h
++++ b/protos.h
+@@ -401,7 +401,7 @@
+ int mutt_write_mime_body (BODY *, FILE *);
+ int mutt_write_mime_header (BODY *, FILE *);
+ int mutt_write_one_header (FILE *fp, const char *tag, const char *value, const char *pfx, int wraplen, int flags);
+-int mutt_write_rfc822_header (FILE *, ENVELOPE *, BODY *, char *, mutt_write_header_mode, int, int);
++int mutt_write_rfc822_header (FILE *, ENVELOPE *, BODY *, char *, mutt_write_header_mode, int, int, int);
+ void mutt_write_references (LIST *, FILE *, int);
+ int mutt_yesorno (const char *, int);
+ void mutt_set_header_color(CONTEXT *, HEADER *);
+--- a/sendlib.c
++++ b/sendlib.c
+@@ -427,7 +427,7 @@
+       a->mime_headers)
+   {
+     mutt_write_rfc822_header (f, a->mime_headers, NULL, a->mime_headers->date,
+-                              MUTT_WRITE_HEADER_MIME, 0, 0);
++                              MUTT_WRITE_HEADER_MIME, 0, 0, 1);
+   }
+ 
+   /* Do NOT add the terminator here!!! */
+@@ -2182,7 +2182,7 @@
+  */
+ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach, char *date,
+ 			      mutt_write_header_mode mode, int privacy,
+-                              int hide_protected_subject)
++                              int hide_protected_subject, int should_write_bcc)
+ {
+   char buffer[LONG_STRING];
+   char *p, *q;
+@@ -2237,7 +2237,7 @@
+   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
+     fputs ("Cc: \n", fp);
+ 
+-  if (env->bcc)
++  if (env->bcc && should_write_bcc)
+   {
+     if (mode == MUTT_WRITE_HEADER_POSTPONE ||
+         mode == MUTT_WRITE_HEADER_EDITHDRS ||
+@@ -3070,7 +3070,7 @@
+                             post ? MUTT_WRITE_HEADER_POSTPONE : MUTT_WRITE_HEADER_FCC,
+                             0,
+                             option (OPTCRYPTPROTHDRSREAD) &&
+-                            mutt_should_hide_protected_subject (hdr));
++                            mutt_should_hide_protected_subject (hdr), 1);
+ 
+   /* (postponment) if this was a reply of some sort, <msgid> contains the
+    * Message-ID: of message replied to.  Save it using a special X-Mutt-
+--- a/headers.c
++++ b/headers.c
+@@ -55,7 +55,7 @@
+     }
+ 
+     mutt_env_to_local (sctx->msg->env);
+-    mutt_write_rfc822_header (ofp, sctx->msg->env, NULL, NULL, MUTT_WRITE_HEADER_EDITHDRS, 0, 0);
++    mutt_write_rfc822_header (ofp, sctx->msg->env, NULL, NULL, MUTT_WRITE_HEADER_EDITHDRS, 0, 0, 1);
+     fputc ('\n', ofp);	/* tie off the header. */
+ 
+     /* now copy the body of the message. */
+--- a/main.c
++++ b/main.c
+@@ -1247,7 +1247,7 @@
+         mutt_write_rfc822_header (fout, msg->env, msg->content, NULL,
+                                   MUTT_WRITE_HEADER_POSTPONE, 0,
+                                   option (OPTCRYPTPROTHDRSREAD) &&
+-                                  mutt_should_hide_protected_subject (msg));
++                                  mutt_should_hide_protected_subject (msg), 1);
+         if (option (OPTRESUMEEDITEDDRAFTFILES))
+           fprintf (fout, "X-Mutt-Resume-Draft: 1\n");
+         fputc ('\n', fout);
+--- a/send.c
++++ b/send.c
+@@ -1184,12 +1184,12 @@
+ #ifdef MIXMASTER
+   mutt_write_rfc822_header (tempfp, msg->env, msg->content, sctx->date_header,
+                             MUTT_WRITE_HEADER_NORMAL, msg->chain ? 1 : 0,
+-                            mutt_should_hide_protected_subject (msg));
++                            mutt_should_hide_protected_subject (msg), 0);
+ #endif
+ #ifndef MIXMASTER
+   mutt_write_rfc822_header (tempfp, msg->env, msg->content, sctx->date_header,
+                             MUTT_WRITE_HEADER_NORMAL, 0,
+-                            mutt_should_hide_protected_subject (msg));
++                            mutt_should_hide_protected_subject (msg), 0);
+ #endif
+ #ifdef USE_SMTP
+   if (old_write_bcc)
+--- a/pattern.c
++++ b/pattern.c
+@@ -457,7 +457,7 @@
+ 
+     mutt_write_rfc822_header (fp, h->env, h->content, NULL,
+                               MUTT_WRITE_HEADER_POSTPONE,
+-                              0, 0);
++                              0, 0, 1);
+     fflush (fp);
+     fseek (fp, 0, 0);
+ 
