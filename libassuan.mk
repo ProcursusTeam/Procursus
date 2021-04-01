@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS     += libassuan
-LIBASSUAN_VERSION := 2.5.4
+LIBASSUAN_VERSION := 2.5.5
 DEB_LIBASSUAN_V   ?= $(LIBASSUAN_VERSION)
 
 libassuan-setup: setup
