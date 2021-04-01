@@ -10,6 +10,7 @@ DEB_TIGERVNC_V   ?= $(TIGERVNC_VERSION)
 tigervnc-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/TigerVNC/tigervnc/archive/refs/tags/v1.11.0.tar.gz
 	$(call EXTRACT_TAR,v$(TIGERVNC_VERSION).tar.gz,tigervnc-$(TIGERVNC_VERSION),tigervnc)
+	$(call DO_PATCH,tigervnc,tigervnc,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/tigervnc/.build_complete),)
 tigervnc:
