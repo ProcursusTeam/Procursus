@@ -7,7 +7,7 @@ STRAPPROJECTS       += debianutils
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS         += debianutils
 endif # ($(MEMO_TARGET),darwin-\*)
-DEBIANUTILS_VERSION := 4.9.1
+DEBIANUTILS_VERSION := 4.11.2
 DEB_DEBIANUTILS_V   ?= $(DEBIANUTILS_VERSION)
 
 debianutils-setup: setup
