@@ -1,4 +1,4 @@
-Package: fonts
+Package: X11-fonts
 Version: @DEB_FONTS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
