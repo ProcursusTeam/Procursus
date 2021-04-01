@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += libsndfile
-LIBSNDFILE_VERSION := 1.0.30
+LIBSNDFILE_VERSION := 1.0.31
 DEB_LIBSNDFILE_V   ?= $(LIBSNDFILE_VERSION)
 
 libsndfile-setup: setup
