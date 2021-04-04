@@ -22,13 +22,14 @@ ifneq ($(wildcard $(BUILD_WORK)/redis/.build_complete),)
 redis:
 	@echo "Using previously built redis."
 else
-redis: redis-setup
+redis: redis-setup libjemalloc
 	+$(MAKE) -C $(BUILD_WORK)/redis \
-		MALLOC=libc \
+		MALLOC=jemalloc \
 		USE_SYSTEMD=no \
 		uname_S=Darwin \
 		uname_M=$(MEMO_ARCH) \
 		PREFIX=$(BUILD_STAGE)/redis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		USE_SYSTEM_JEMALLOC=yes	\
 		install
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/redis/redis.conf $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/etc/redis/redis.conf
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/redis/sentinel.conf $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/etc/redis/sentinel.conf
