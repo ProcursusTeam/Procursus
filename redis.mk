@@ -27,6 +27,7 @@ redis: redis-setup
 		MALLOC=libc \
 		USE_SYSTEMD=no \
 		uname_S=Darwin \
+		uname_M=$(MEMO_ARCH) \
 		PREFIX=$(BUILD_STAGE)/redis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		install
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/redis/redis.conf $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/etc/redis/redis.conf
@@ -36,8 +37,8 @@ redis: redis-setup
 	cp -a $(BUILD_INFO)/io.redis.redis-sentinel.plist $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons
 	cp -a $(BUILD_INFO)/io.redis.redis-server.plist $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons
 	for plist in $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons/*; do \
-		$(SED) -i 's/@MEMO_PREFIX@/$(MEMO_PREFIX)' $$plist; \
-		$(SED) -i 's/@MEMO_SUB_PREFIX@/$(MEMO_SUB_PREFIX)' $$plist; \
+		$(SED) -i 's/@MEMO_PREFIX@/$(subst /,\/,$(MEMO_PREFIX))/' $$plist; \
+		$(SED) -i 's/@MEMO_SUB_PREFIX@/$(subst /,\/,$(MEMO_SUB_PREFIX))/' $$plist; \
 	done
 
 	touch $(BUILD_WORK)/redis/.build_complete
