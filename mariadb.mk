@@ -11,6 +11,8 @@ mariadb-setup: setup
 		https://downloads.mariadb.com/MariaDB/mariadb-$(MARIADB_VERSION)/source/mariadb-$(MARIADB_VERSION).tar.gz
 	$(call EXTRACT_TAR,mariadb-$(MARIADB_VERSION).tar.gz,mariadb-$(MARIADB_VERSION),mariadb)
 	$(call DO_PATCH,mariadb,mariadb,-p1)
+	# wtf
+	sed -i 's/END()/ENDIF()/' $(BUILD_WORK)/mariadb/libmariadb/cmake/ConnectorName.cmake
 
 ifeq ($(UNAME),Linux)
 	sed -i 's/COMMAND libtool/COMMAND $(GNU_HOST_TRIPLE)-libtool/' $(BUILD_WORK)/mariadb/cmake/libutils.cmake
@@ -24,13 +26,13 @@ mariadb-import-executables:
 else
 mariadb-import-executables: mariadb-setup
 	# https://mariadb.com/kb/en/cross-compiling-mariadb/
-	cd $(BUILD_WORK)/mariadb/host \
-	&& unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS && \
-			CC=$(shell which cc) \
-			CXX=$(shell which c++) \
-			cmake .. \
-				-DSTACK_DIRECTION=1 \
-		&& make import_executables
+	cd $(BUILD_WORK)/mariadb/host && \
+		unset CC CXX CPP AR LD \
+			RANLIB STRIP I_N_T NM LIPO OTOOL EXTRA LIBTOOL \
+			CFLAGS CPPFLAGS CXXFLAGS LDFLAGS PKG_CONFIG_PATH PKG_CONFIG_LIBDIR ACLOCAL_PATH && \
+		cmake .. \
+			-DSTACK_DIRECTION=1 && \
+		make import_executables
 	touch $(BUILD_WORK)/mariadb/host/.build_complete
 endif
 
@@ -39,7 +41,7 @@ mariadb:
 	@echo "Using previously built mariadb."
 else
 mariadb: mariadb-import-executables openssl ncurses readline libevent curl lz4 libsnappy libunistring
-	cd $(BUILD_WORK)/mariadb && LIBTOOL=$(GNU_HOST_TRIPLE)-libtool cmake . \
+	cd $(BUILD_WORK)/mariadb && cmake . \
 		-DCOMPILATION_COMMENT="Procursus" \
 		-Wno-dev \
 		-DCMAKE_BUILD_TYPE=Release \
@@ -78,7 +80,7 @@ mariadb: mariadb-import-executables openssl ncurses readline libevent curl lz4 l
 		-DWITH_ZLIB=system \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
+		-DCMAKE_CXX_FLAGS="$(CXXFLAGS) -I$(TARGET_SYSROOT)/usr/include/libxml2" \
 		-DCMAKE_EXE_LINKER_FLAGS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(TARGET_SYSROOT)/usr/lib -liconv -lsnappy -lxml2" \
 		-DCMAKE_MODULE_LINKER_FLAGS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(TARGET_SYSROOT)/usr/lib -liconv -lsnappy -lxml2" \
 		-DCMAKE_SHARED_LINKER_FLAGS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(TARGET_SYSROOT)/usr/lib -liconv -lsnappy -lxml2" \
