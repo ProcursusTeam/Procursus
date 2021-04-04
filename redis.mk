@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += redis
-REDIS_VERSION := 6.0.8
+REDIS_VERSION := 6.2.1
 DEB_REDIS_V   ?= $(REDIS_VERSION)
 
 redis-setup: setup
@@ -27,14 +27,14 @@ redis: redis-setup
 		MALLOC=libc \
 		USE_SYSTEMD=no \
 		uname_S=Darwin \
-		PREFIX=$(BUILD_STAGE)/redis/usr \
+		PREFIX=$(BUILD_STAGE)/redis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		install
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/redis/redis.conf $(BUILD_STAGE)/redis/etc/redis/redis.conf
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/redis/sentinel.conf $(BUILD_STAGE)/redis/etc/redis/sentinel.conf
+	$(GINSTALL) -Dm644 $(BUILD_WORK)/redis/redis.conf $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/etc/redis/redis.conf
+	$(GINSTALL) -Dm644 $(BUILD_WORK)/redis/sentinel.conf $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/etc/redis/sentinel.conf
 
-	mkdir -p $(BUILD_STAGE)/redis/Library/LaunchDaemons
-	cp -a $(BUILD_INFO)/io.redis.redis-sentinel.plist $(BUILD_STAGE)/redis/Library/LaunchDaemons
-	cp -a $(BUILD_INFO)/io.redis.redis-server.plist $(BUILD_STAGE)/redis/Library/LaunchDaemons
+	mkdir -p $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons
+	cp -a $(BUILD_INFO)/io.redis.redis-sentinel.plist $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons
+	cp -a $(BUILD_INFO)/io.redis.redis-server.plist $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons
 
 	touch $(BUILD_WORK)/redis/.build_complete
 endif
@@ -42,22 +42,22 @@ endif
 redis-package: redis-stage
 	# redis.mk Package Structure
 	rm -rf $(BUILD_DIST)/redis-{server,tools,sentinel}
-	mkdir -p $(BUILD_DIST)/redis-{sentinel,server,tools}/usr/bin \
-		$(BUILD_DIST)/redis-{server,sentinel}/{etc/redis,Library/LaunchDaemons} \
-		$(BUILD_DIST)/redis-server/var/lib/redis
+	mkdir -p $(BUILD_DIST)/redis-{sentinel,server,tools}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
+		$(BUILD_DIST)/redis-{server,sentinel}/$(MEMO_PREFIX)/{etc/redis,Library/LaunchDaemons} \
+		$(BUILD_DIST)/redis-server/$(MEMO_PREFIX)/var/lib/redis
 
 	# redis.mk Prep redis-sentinel
-	cp -a $(BUILD_STAGE)/redis/usr/bin/redis-sentinel $(BUILD_DIST)/redis-sentinel/usr/bin
-	cp -a $(BUILD_STAGE)/redis/etc/redis/sentinel.conf $(BUILD_DIST)/redis-sentinel/etc/redis
-	cp -a $(BUILD_STAGE)/redis/Library/LaunchDaemons/io.redis.redis-sentinel.plist $(BUILD_DIST)/redis-sentinel/Library/LaunchDaemons
+	cp -a $(BUILD_STAGE)/redis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/redis-sentinel $(BUILD_DIST)/redis-sentinel/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/etc/redis/sentinel.conf $(BUILD_DIST)/redis-sentinel/$(MEMO_PREFIX)/etc/redis
+	cp -a $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons/io.redis.redis-sentinel.plist $(BUILD_DIST)/redis-sentinel/$(MEMO_PREFIX)/Library/LaunchDaemons
 
 	# redis.mk Prep redis-server
-	cp -a $(BUILD_STAGE)/redis/usr/bin/redis-server $(BUILD_DIST)/redis-server/usr/bin
-	cp -a $(BUILD_STAGE)/redis/etc/redis/redis.conf $(BUILD_DIST)/redis-server/etc/redis
-	cp -a $(BUILD_STAGE)/redis/Library/LaunchDaemons/io.redis.redis-server.plist $(BUILD_DIST)/redis-server/Library/LaunchDaemons
+	cp -a $(BUILD_STAGE)/redis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/redis-server $(BUILD_DIST)/redis-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/etc/redis/redis.conf $(BUILD_DIST)/redis-server/$(MEMO_PREFIX)/etc/redis
+	cp -a $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons/io.redis.redis-server.plist $(BUILD_DIST)/redis-server/$(MEMO_PREFIX)/Library/LaunchDaemons
 
 	# redis.mk Prep redis-tools
-	cp -a $(BUILD_STAGE)/redis/usr/bin/redis-{benchmark,check-aof,check-rdb,cli} $(BUILD_DIST)/redis-tools/usr/bin
+	cp -a $(BUILD_STAGE)/redis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/redis-{benchmark,check-aof,check-rdb,cli} $(BUILD_DIST)/redis-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 	# redis.mk Sign
 	$(call SIGN,redis-sentinel,general.xml)
