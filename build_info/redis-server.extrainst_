@@ -1,12 +1,12 @@
 #!/bin/sh
 
 if [[ $1 == upgrade ]]; then
-    /usr/bin/launchctl unload /Library/LaunchDaemons/io.redis.redis-server.plist
-    /usr/bin/launchctl load /Library/LaunchDaemons/io.redis.redis-server.plist
+    /bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/io.redis.redis-server.plist
+    /bin/launchctl load @MEMO_PREFIX@//Library/LaunchDaemons/io.redis.redis-server.plist
 fi
 
 if [[ $1 == install ]]; then
-    /usr/bin/launchctl load -w /Library/LaunchDaemons/io.redis.redis-server.plist
+    /bin/launchctl load -w @MEMO_PREFIX@//Library/LaunchDaemons/io.redis.redis-server.plist
 fi
 
 exit 0
