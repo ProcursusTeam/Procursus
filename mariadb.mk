@@ -2,8 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS  += mariadb
-MARIADB_VERSION := 10.5.5
+SUBPROJECTS  		+= mariadb
+MARIADB_VERSION := 10.5.9
 DEB_MARIADB_V   ?= $(MARIADB_VERSION)
 
 mariadb-setup: setup
@@ -17,11 +17,12 @@ ifeq ($(UNAME),Linux)
 endif
 
 	mkdir -p $(BUILD_WORK)/mariadb/host
+
 ifneq ($(wildcard $(BUILD_WORK)/mariadb/host/.build_complete),)
 mariadb-import-executables:
 	@echo "Using previously built mariadb-import-executables"
 else
-mariadb-import-executables:
+mariadb-import-executables: mariadb-setup
 	# https://mariadb.com/kb/en/cross-compiling-mariadb/
 	cd $(BUILD_WORK)/mariadb/host \
 	&& unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS && \
@@ -37,18 +38,18 @@ ifneq ($(wildcard $(BUILD_WORK)/mariadb/.build_complete),)
 mariadb:
 	@echo "Using previously built mariadb."
 else
-mariadb: mariadb-setup mariadb-import-executables openssl ncurses readline libevent curl lz4 libsnappy libunistring
+mariadb: mariadb-import-executables openssl ncurses readline libevent curl lz4 libsnappy libunistring
 	cd $(BUILD_WORK)/mariadb && LIBTOOL=$(GNU_HOST_TRIPLE)-libtool cmake . \
-		-DCOMPILATION_COMMENT="iOS Procursus" \
+		-DCOMPILATION_COMMENT="Procursus" \
 		-Wno-dev \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DINSTALL_SYSCONFDIR=/etc \
-		-DINSTALL_SYSCONF2DIR=/etc/my.cnf.d \
-		-DINSTALL_UNIX_ADDRDIR=/var/run/mysqld/mysqld.sock \
-		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DINSTALL_SYSCONFDIR=$(MEMO_PREFIX)/etc \
+		-DINSTALL_SYSCONF2DIR=$(MEMO_PREFIX)/etc/my.cnf.d \
+		-DINSTALL_UNIX_ADDRDIR=$(MEMO_PREFIX)/var/run/mysqld/mysqld.sock \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DINSTALL_SCRIPTDIR=bin \
 		-DINSTALL_INCLUDEDIR=include/mysql \
 		-DINSTALL_PLUGINDIR=lib/mysql/plugin \
@@ -58,7 +59,7 @@ mariadb: mariadb-setup mariadb-import-executables openssl ncurses readline libev
 		-DINSTALL_DOCREADMEDIR=share/doc/mariadb \
 		-DINSTALL_DOCDIR=share/doc/mariadb \
 		-DINSTALL_MANDIR=share/man \
-		-DMYSQL_DATADIR=/var/lib/mysql \
+		-DMYSQL_DATADIR=$(MEMO_PREFIX)/var/lib/mysql \
 		-DDEFAULT_CHARSET=utf8mb4 \
 		-DDEFAULT_COLLATION=utf8mb4_unicode_ci \
 		-DENABLED_LOCAL_INFILE=ON \
@@ -78,28 +79,28 @@ mariadb: mariadb-setup mariadb-import-executables openssl ncurses readline libev
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
-		-DCMAKE_EXE_LINKER_FLAGS="-L$(BUILD_BASE)/usr/lib -L$(TARGET_SYSROOT)/usr/lib -liconv -lsnappy -lxml2" \
-		-DCMAKE_MODULE_LINKER_FLAGS="-L$(BUILD_BASE)/usr/lib -L$(TARGET_SYSROOT)/usr/lib -liconv -lsnappy -lxml2" \
-		-DCMAKE_SHARED_LINKER_FLAGS="-L$(BUILD_BASE)/usr/lib -L$(TARGET_SYSROOT)/usr/lib -liconv -lsnappy -lxml2" \
+		-DCMAKE_EXE_LINKER_FLAGS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(TARGET_SYSROOT)/usr/lib -liconv -lsnappy -lxml2" \
+		-DCMAKE_MODULE_LINKER_FLAGS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(TARGET_SYSROOT)/usr/lib -liconv -lsnappy -lxml2" \
+		-DCMAKE_SHARED_LINKER_FLAGS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(TARGET_SYSROOT)/usr/lib -liconv -lsnappy -lxml2" \
 		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
 		-DSTACK_DIRECTION=1 \
 		-DHAVE_IB_GCC_ATOMIC_BUILTINS=1 \
-		-DREADLINE_LIBRARY=$(BUILD_BASE)/usr/lib/libreadline.dylib \
-		-DLZ4_LIBS=$(BUILD_BASE)/usr/lib/liblz4.dylib \
-		-DCURSES_LIBRARY=$(BUILD_BASE)/usr/lib/libncursesw.dylib \
-		-DCURL_LIBRARY=$(BUILD_BASE)/usr/lib/libcurl.dylib \
+		-DREADLINE_LIBRARY=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libreadline.dylib \
+		-DLZ4_LIBS=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblz4.dylib \
+		-DCURSES_LIBRARY=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib \
+		-DCURL_LIBRARY=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcurl.dylib \
 		-DLIBXML2_INCLUDE_DIR=$(TARGET_SYSROOT)/usr/include \
 		-DICONV_LIBRARIES=$(TARGET_SYSROOT)/usr/lib/libiconv.tbd \
 		-DIMPORT_EXECUTABLES=$(BUILD_WORK)/mariadb/host/import_executables.cmake
 
-	+$(MAKE) -C $(BUILD_WORK)/mariadb LIBTOOL=$(GNU_HOST_TRIPLE)-libtool
+	+$(MAKE) -C $(BUILD_WORK)/mariadb
 	+$(MAKE) -C $(BUILD_WORK)/mariadb install \
 		DESTDIR="$(BUILD_STAGE)/mariadb"
 	+$(MAKE) -C $(BUILD_WORK)/mariadb/{libmariadb,libmysqld,libservices,include} install \
 		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/mariadb/.build_complete
 endif
-	
+
 mariadb-package: mariadb-stage
 	# mariadb.mk Package Structure
 	rm -rf \
@@ -116,7 +117,6 @@ mariadb-package: mariadb-stage
 
 	# mariadb.mk Prep libmariadb-dev-compat
 	cp -a $(BUILD_STAGE)/mariadb/usr/lib/libmysqlclient{,_r}.{a,dylib} $(BUILD_DIST)/libmariadb-dev-compat/usr/lib
-
 
 	# mariadb.mk Sign
 	$(call SIGN,libmariadb-dev-compat,general.xml)
