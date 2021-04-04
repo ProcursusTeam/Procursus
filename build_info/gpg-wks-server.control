@@ -2,7 +2,7 @@ Package: gpg-wks-server
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_GNUPG_V@
-Depends: gpgconf, gpg, libgcrypt20, libgpg-error0, libintl8
+Depends: gpgconf, gpg, @DYLIBS@
 Conflicts: gnupg2, gnupg (<< @DEB_GNUPG_V@)
 Replaces: gnupg2
 Section: Security

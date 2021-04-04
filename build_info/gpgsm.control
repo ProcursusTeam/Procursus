@@ -2,7 +2,7 @@ Package: gpgsm
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_GNUPG_V@
-Depends: gpgconf, libassuan0, libgcrypt20, libgpg-error0, libksba8, libreadline8, libintl8
+Depends: gpgconf, @DYLIBS@
 Conflicts: gnupg2, gnupg (<< @DEB_GNUPG_V@)
 Replaces: gnupg2
 Section: Security

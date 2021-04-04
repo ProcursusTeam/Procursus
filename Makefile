@@ -2,7 +2,7 @@ ifeq ($(firstword $(subst ., ,$(MAKE_VERSION))),3)
 $(error Install latest make from Homebrew - brew install make)
 endif
 
-ifeq ($(shell /usr/bin/env bash --version | grep -iq 'version 5' && echo 1),1)
+ifeq ($(shell LC_ALL=C /usr/bin/env bash --version | grep -iq 'version 5' && echo 1),1)
 SHELL := /usr/bin/env bash
 else
 $(error Install bash 5.0)
@@ -311,6 +311,11 @@ PACK = -if [ -z $(4) ]; then \
 		rm -rf $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale; \
 	fi; \
 	SIZE=$$(du -s $(BUILD_DIST)/$(1) | cut -f 1); \
+	for dylib in $$(find $(BUILD_DIST)/$(1) -name '*.dylib' -exec basename {} \;); do \
+		$(SED) -i '/^$$(echo $@ | rev | cut -f2- -d"-" | rev)/d' $(BUILD_MISC)/dylibs;\
+		echo "$$(echo $@ | rev | cut -f2- -d"-" | rev) $$dylib $(1)" >> $(BUILD_MISC)/dylibs; \
+		LC_ALL=C sort -u -o $(BUILD_MISC)/dylibs $(BUILD_MISC)/dylibs; \
+	done; \
 	mkdir -p $(BUILD_DIST)/$(1)/DEBIAN; \
 	$(CP) $(BUILD_INFO)/$(1).control $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	$(CP) $(BUILD_INFO)/$(1).control.$(PLATFORM) $(BUILD_DIST)/$(1)/DEBIAN/control; \
@@ -327,6 +332,7 @@ PACK = -if [ -z $(4) ]; then \
 	$(SED) -i ':a; s/@$(2)@/$($(2))/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	$(SED) -i ':a; s/@DEB_MAINTAINER@/$(DEB_MAINTAINER)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	$(SED) -i ':a; s/@DEB_ARCH@/$(DEB_ARCH)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control; \
+	$(SED) -i ":a; s/@DYLIBS@/$$(find $(BUILD_DIST)/$(1) -type f -exec $(OTOOL) -L {} \; | grep -P -o '(?<=lib\/)(.*).*dylib(?!:)' | sort -u | grep -f - $(BUILD_MISC)/dylibs | grep -v "^$$(echo $@ | cut -f1 -d"-") " | cut -d" " -f2 | sort -u | paste -sd" " | $(SED) 's/ /, /g')/g; ta" $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	for i in postinst preinst postrm prerm extrainst_; do \
 		$(SED) -i ':a; s|@MEMO_PREFIX@|$(MEMO_PREFIX)|g; ta' $(BUILD_DIST)/$(1)/DEBIAN/$$i; \
 		$(SED) -i ':a; s|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g; ta' $(BUILD_DIST)/$(1)/DEBIAN/$$i; \
