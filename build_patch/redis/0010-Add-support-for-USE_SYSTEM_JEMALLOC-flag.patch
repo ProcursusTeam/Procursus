@@ -13,7 +13,7 @@ https://github.com/antirez/redis/pull/5279
  6 files changed, 30 insertions(+)
 
 diff --git a/deps/Makefile b/deps/Makefile
-index 700867f..abfd688 100644
+index ff16ee9..7af01ad 100644
 --- a/deps/Makefile
 +++ b/deps/Makefile
 @@ -36,7 +36,9 @@ distclean:
@@ -23,19 +23,19 @@ index 700867f..abfd688 100644
 +ifneq ($(USE_SYSTEM_JEMALLOC),yes)
  	-(cd jemalloc && [ -f Makefile ] && $(MAKE) distclean) > /dev/null || true
 +endif
+ 	-(cd hdr_histogram && $(MAKE) clean) > /dev/null || true
  	-(rm -f .make-*)
  
- .PHONY: distclean
 diff --git a/src/Makefile b/src/Makefile
-index e1cd2c2..85b1ad8 100644
+index 42da739..bf0fd2b 100644
 --- a/src/Makefile
 +++ b/src/Makefile
-@@ -203,10 +203,15 @@ ifeq ($(MALLOC),tcmalloc_minimal)
+@@ -228,10 +228,15 @@ ifeq ($(MALLOC),tcmalloc_minimal)
  endif
  
  ifeq ($(MALLOC),jemalloc)
 +ifeq ($(USE_SYSTEM_JEMALLOC),yes)
-+	FINAL_CFLAGS+= -DUSE_JEMALLOC -I/usr/include/jemalloc/include
++	FINAL_CFLAGS+= -DUSE_JEMALLOC -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/jemalloc/include
 +	FINAL_LIBS := -ljemalloc $(FINAL_LIBS)
 +else
  	DEPENDENCY_TARGETS+= jemalloc
@@ -47,12 +47,12 @@ index e1cd2c2..85b1ad8 100644
  ifeq ($(BUILD_TLS),yes)
  	FINAL_CFLAGS+=-DUSE_OPENSSL $(OPENSSL_CFLAGS)
 diff --git a/src/debug.c b/src/debug.c
-index a85ffe2..2883a14 100644
+index a725e5a..4793ca8 100644
 --- a/src/debug.c
 +++ b/src/debug.c
-@@ -53,6 +53,10 @@ typedef ucontext_t sigcontext_t;
- #endif
- #endif
+@@ -64,6 +64,10 @@ void printCrashReport(void);
+ void bugReportEnd(int killViaSignal, int sig);
+ void logStackTrace(void *eip, int uplevel);
  
 +#if defined(USE_JEMALLOC) && (USE_SYSTEM_JEMALLOC == yes)
 +#define je_mallctl mallctl
@@ -62,7 +62,7 @@ index a85ffe2..2883a14 100644
  
  /* Compute the sha1 of string at 's' with 'len' bytes long.
 diff --git a/src/object.c b/src/object.c
-index 17a193b..0741e5f 100644
+index ce2f3dc..8e171a7 100644
 --- a/src/object.c
 +++ b/src/object.c
 @@ -36,6 +36,11 @@
@@ -78,10 +78,10 @@ index 17a193b..0741e5f 100644
  
  robj *createObject(int type, void *ptr) {
 diff --git a/src/zmalloc.c b/src/zmalloc.c
-index 0dd7918..dd0d79b 100644
+index c8d6c82..31c405b 100644
 --- a/src/zmalloc.c
 +++ b/src/zmalloc.c
-@@ -69,6 +69,15 @@ void zlibc_free(void *ptr) {
+@@ -70,6 +70,15 @@ void zlibc_free(void *ptr) {
  #define realloc(ptr,size) tc_realloc(ptr,size)
  #define free(ptr) tc_free(ptr)
  #elif defined(USE_JEMALLOC)
@@ -97,16 +97,16 @@ index 0dd7918..dd0d79b 100644
  #define malloc(size) je_malloc(size)
  #define calloc(count,size) je_calloc(count,size)
  #define realloc(ptr,size) je_realloc(ptr,size)
-@@ -76,6 +85,7 @@ void zlibc_free(void *ptr) {
+@@ -77,6 +86,7 @@ void zlibc_free(void *ptr) {
  #define mallocx(size,flags) je_mallocx(size,flags)
  #define dallocx(ptr,flags) je_dallocx(ptr,flags)
  #endif
 +#endif
  
- #define update_zmalloc_stat_alloc(__n) do { \
-     size_t _n = (__n); \
+ #define update_zmalloc_stat_alloc(__n) atomicIncr(used_memory,(__n))
+ #define update_zmalloc_stat_free(__n) atomicDecr(used_memory,(__n))
 diff --git a/src/zmalloc.h b/src/zmalloc.h
-index b136a91..25beb43 100644
+index 64bc9fc..724998f 100644
 --- a/src/zmalloc.h
 +++ b/src/zmalloc.h
 @@ -50,7 +50,11 @@

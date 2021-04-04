@@ -1,7 +1,16 @@
 #!/bin/sh
 
+set -eu
+
+CONFFILE="@MEMO_PREFIX@/etc/redis/redis.conf"
+
 if [[ $1 == remove || $1 == purge ]]; then
-    /bin/launchctl unload @MEMO_PREFIX@//Library/LaunchDaemons/io.redis.redis-server.plist
+    /bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/io.redis.redis-server.plist
+fi
+
+if [ "${1}" = "purge" ]
+then
+	dpkg-statoverride --remove ${CONFFILE} || test $? -eq 2
 fi
 
 exit 0

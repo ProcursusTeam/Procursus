@@ -6,6 +6,10 @@ SUBPROJECTS   += redis
 REDIS_VERSION := 6.2.1
 DEB_REDIS_V   ?= $(REDIS_VERSION)
 
+###
+# Dynamic link lua5.1 in the future.
+###
+
 redis-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/redis/redis/archive/$(REDIS_VERSION).tar.gz
 	$(call EXTRACT_TAR,$(REDIS_VERSION).tar.gz,redis-$(REDIS_VERSION),redis)
@@ -22,24 +26,25 @@ ifneq ($(wildcard $(BUILD_WORK)/redis/.build_complete),)
 redis:
 	@echo "Using previously built redis."
 else
-redis: redis-setup libjemalloc
-	+$(MAKE) -C $(BUILD_WORK)/redis \
+redis: redis-setup libjemalloc lua5.3 openssl
+	+$(MAKE) -C $(BUILD_WORK)/redis V=1 \
 		MALLOC=jemalloc \
 		USE_SYSTEMD=no \
 		uname_S=Darwin \
 		uname_M=$(MEMO_ARCH) \
 		PREFIX=$(BUILD_STAGE)/redis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		BUILD_TLS=yes \
 		USE_SYSTEM_JEMALLOC=yes	\
+		USE_SYSTEM_LUA=no \
 		install
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/redis/redis.conf $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/etc/redis/redis.conf
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/redis/sentinel.conf $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/etc/redis/sentinel.conf
 
 	mkdir -p $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons
-	cp -a $(BUILD_INFO)/io.redis.redis-sentinel.plist $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons
-	cp -a $(BUILD_INFO)/io.redis.redis-server.plist $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons
-	for plist in $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons/*; do \
-		$(SED) -i 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|' $$plist; \
-		$(SED) -i 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|' $$plist; \
+	cp -a $(BUILD_MISC)/redis/*.plist $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons
+	for file in $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons/* $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/etc/redis/*; do \
+		$(SED) -i 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' $$file; \
+		$(SED) -i 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $$file; \
 	done
 
 	touch $(BUILD_WORK)/redis/.build_complete
