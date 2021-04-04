@@ -6,8 +6,8 @@
 	<string>io.redis.redis-server</string>
 	<key>ProgramArguments</key>
 	<array>
-		<string>/usr/bin/redis-server</string>
-		<string>/etc/redis/redis.conf</string>
+		<string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/redis-server</string>
+		<string>@MEMO_PREFIX@/etc/redis/redis.conf</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>
