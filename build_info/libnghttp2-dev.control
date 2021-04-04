@@ -2,9 +2,13 @@ Package: libnghttp2-dev
 Version: @DEB_NGHTTP2_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libnghttp2-14 (=@DEB_NGHTTP2_V@)
-Section: Development
+Depends: libnghttp2-14 (>=@DEB_NGHTTP2_V@)
+Section: Libraries
 Priority: standard
 Homepage: https://nghttp2.org/
 Description: library implementing HTTP/2 protocol (development files)
-Tag: purpose::library, role::developer
+ This is an implementation of the Hypertext Transfer Protocol version
+ 2 in C. The framing layer of HTTP/2 is implemented as a reusable C
+ library.
+ .
+ This package installs development files.

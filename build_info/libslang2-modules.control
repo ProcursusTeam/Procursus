@@ -1,0 +1,11 @@
+Package: libslang2-modules
+Version: @DEB_SLANG2_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libslang2 (= @DEB_SLANG2_V@), libpng16-16, libonig5, libpcre1
+Section: Libraries
+Description: Shared modules for S-Lang language
+ S-Lang is a C programmer's library that includes routines for the rapid
+ development of sophisticated, user friendly, multi-platform applications.
+ .
+ This package contains dynamically-loaded modules for S-Lang applications.

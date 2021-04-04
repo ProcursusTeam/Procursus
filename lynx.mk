@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS  += lynx
 LYNX_VERSION := 2.8.9
-DEB_LYNX_V   ?= $(LYNX_VERSION)-1
+DEB_LYNX_V   ?= $(LYNX_VERSION)-3
 
 lynx-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://invisible-mirror.net/archives/lynx/tarballs/lynx$(LYNX_VERSION)rel.1.tar.bz2{,.asc}
@@ -20,12 +20,13 @@ lynx:
 else
 lynx: lynx-setup ncurses libidn2 openssl gettext
 	cd $(BUILD_WORK)/lynx && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-build-cc=cc \
-		--sysconfdir=/etc \
-		--mandir=/usr/share/man \
-		--with-ssl="$(BUILD_BASE)/usr/lib" \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
+		--mandir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
+		--with-ssl="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
 		--disable-echo \
 		--enable-default-colors \
 		--with-zlib \
@@ -44,16 +45,16 @@ lynx-package: lynx-stage
 	# lynx.mk Package Structure
 	rm -rf $(BUILD_DIST)/lynx
 	mkdir -p $(BUILD_DIST)/lynx
-	
+
 	# lynx.mk Prep lynx
 	cp -a $(BUILD_STAGE)/lynx $(BUILD_DIST)
-	
+
 	# lynx.mk Sign
 	$(call SIGN,lynx,general.xml)
-	
+
 	# lynx.mk Make .debs
 	$(call PACK,lynx,DEB_LYNX_V)
-	
+
 	# lynx.mk Build cleanup
 	rm -rf $(BUILD_DIST)/lynx
 

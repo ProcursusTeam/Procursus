@@ -1,0 +1,19 @@
+Package: libp11-kit-dev
+Version: @DEB_P11_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Conflicts: p11-kit (<< @DEB_P11_V@)
+Depends: libp11-kit0 (>= @DEB_P11_V@), libintl-dev, libffi-dev
+Section: Development
+Priority: optional
+Multi-Arch: foreign
+Homepage: https://p11-glue.github.io/p11-glue/p11-kit.html
+Description: library for loading and coordinating access to PKCS#11 modules - development
+ The p11-kit library provides a way to load and enumerate Public-Key
+ Cryptography Standard #11 modules, along with a standard configuration
+ setup for installing PKCS#11 modules so that they're discoverable. It
+ also solves problems with coordinating the use of PKCS#11 by different
+ components or libraries living in the same process.
+ .
+ This package contains the documentation and development headers required
+ to build applications using the p11-kit library.

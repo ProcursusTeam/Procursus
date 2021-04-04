@@ -1,0 +1,7 @@
+Package: ghostbin
+Version: @DEB_GHOSTBIN_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Networking
+Priority: optional
+Description: a paste service engine.

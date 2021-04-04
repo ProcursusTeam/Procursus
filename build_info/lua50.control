@@ -1,0 +1,21 @@
+Package: lua50
+Version: @DEB_LUA50_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: standard
+Provides: lua
+Depends: libreadline8
+Description: Small embeddable language with simple procedural syntax
+ Lua is a programming language originally designed for extending
+ applications, but also frequently used as a general-purpose,
+ stand-alone language. 
+ .
+ Lua combines simple procedural syntax (similar to Pascal) with
+ powerful data description constructs based on associative arrays and
+ extensible semantics. Lua is dynamically typed, interpreted from
+ bytecodes, and has automatic memory management, making it ideal for
+ configuration, scripting, and rapid prototyping. Lua is implemented
+ as a small library of C functions, written in ANSI C, and the
+ implementation goals are simplicity, efficiency, portability, and low
+ embedding cost.

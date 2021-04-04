@@ -1,0 +1,18 @@
+Package: libsoxr-lsr0
+Version: @DEB_LIBSOXR_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Depends: libsoxr0
+Priority: optional
+Description: High quality 1D sample-rate conversion library (libsamplerate bindings)
+ The SoX Resampler library `libsoxr' performs one-dimensional sample-rate
+ conversion - it may be used, for example, to resample PCM-encoded audio.
+ .
+ It aims to give fast and high quality results for any constant (rational or
+ irrational) resampling ratio. Phase-response, preserved bandwidth, aliasing,
+ and rejection level parameters are all configurable; alternatively, simple
+ `preset' configurations may be selected.
+ .
+ This package contains bindings compatible with the resampling library
+ `libsamplerate' (constant rate).

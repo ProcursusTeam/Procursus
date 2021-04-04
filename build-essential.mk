@@ -2,7 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS           += build-essential
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+
+SUBPROJECTS             += build-essential
 BUILD-ESSENTIAL_VERSION := 1
 DEB_BUILD-ESSENTIAL_V   ?= $(BUILD-ESSENTIAL_VERSION)
 
@@ -12,7 +14,6 @@ else ifeq ($(PLATFORM),appletvos)
 BARE_PLATFORM := AppleTVOS
 else ifeq ($(PLATFORM),watchos)
 BARE_PLATFORM := WatchOS
-else
 $(error Unsupported platform $(PLATFORM))
 endif
 
@@ -30,14 +31,16 @@ build-essential-package: build-essential-stage
 	# build-essential.mk Package Structure
 	rm -rf $(BUILD_DIST)/build-essential
 	mkdir -p $(BUILD_DIST)/build-essential
-	
+
 	# build-essential.mk Prep build-essential
 	cp -a $(BUILD_WORK)/build-essential/{etc,usr} $(BUILD_DIST)/build-essential
-	
+
 	# build-essential.mk Make .debs
 	$(call PACK,build-essential,DEB_BUILD-ESSENTIAL_V)
-	
+
 	# build-essential.mk Build cleanup
 	rm -rf $(BUILD_DIST)/build-essential
 
 .PHONY: build-essential build-essential-package
+
+endif # ($(MEMO_TARGET),darwin-\*)

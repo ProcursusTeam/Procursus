@@ -1,0 +1,14 @@
+Package: libpng16-dev
+Version: @DEB_LIBPNG16_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libpng16-16 (>= @DEB_LIBPNG16_V@)
+Section: Development
+Priority: optional
+Multi-Arch: foreign
+Description: PNG library - development (version 1.6)
+ libpng is a library implementing an interface for reading and writing
+ PNG (Portable Network Graphics) format files.
+ .
+ This package contains the header and development files needed to build
+ programs and packages using libpng.

@@ -1,0 +1,19 @@
+Package: libgles2-mesa
+Version: @DEB_MESA_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Conflicts: libgles2
+Replaces: libgles2
+Provides: libgles2
+Depends: libglapi-mesa (= @DEB_MESA_V@)
+Priority: optional
+Homepage: https://mesa3d.org/
+Description: free implementation of the OpenGL|ES 2.x API -- runtime
+ OpenGL|ES is a cross-platform API for full-function 2D and 3D graphics on
+ embedded systems - including consoles, phones, appliances and vehicles.
+ It contains a subset of OpenGL plus a number of extensions for the
+ special needs of embedded systems.
+ .
+ OpenGL|ES 2.x provides an API for programmable hardware including vertex
+ and fragment shaders.

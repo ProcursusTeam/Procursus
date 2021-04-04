@@ -3,21 +3,27 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS            += idevicerestore
-IDEVICERESTORE_VERSION := 1.0.0
+IDEVICERESTORE_COMMIT  := 6d3b6bba9127c02fc312468e4174e8148bf87472
+IDEVICERESTORE_VERSION := 1.0.0+git20210304.$(shell echo $(IDEVICERESTORE_COMMIT) | cut -c -7)
 DEB_IDEVICERESTORE_V   ?= $(IDEVICERESTORE_VERSION)
 
 idevicerestore-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libimobiledevice/idevicerestore/releases/download/$(IDEVICERESTORE_VERSION)/idevicerestore-$(IDEVICERESTORE_VERSION).tar.bz2
-	$(call EXTRACT_TAR,idevicerestore-$(IDEVICERESTORE_VERSION).tar.bz2,idevicerestore-$(IDEVICERESTORE_VERSION),idevicerestore)
+	-[ ! -f "$(BUILD_SOURCE)/idevicerestore-$(IDEVICERESTORE_COMMIT).tar.gz" ] && \
+		wget -q -nc -O$(BUILD_SOURCE)/idevicerestore-$(IDEVICERESTORE_COMMIT).tar.gz \
+			https://github.com/libimobiledevice/idevicerestore/archive/$(IDEVICERESTORE_COMMIT).tar.gz
+	$(call EXTRACT_TAR,idevicerestore-$(IDEVICERESTORE_COMMIT).tar.gz,idevicerestore-$(IDEVICERESTORE_COMMIT),idevicerestore)
 
 ifneq ($(wildcard $(BUILD_WORK)/idevicerestore/.build_complete),)
 idevicerestore:
 	@echo "Using previously built idevicerestore."
 else
 idevicerestore: idevicerestore-setup curl libimobiledevice libirecovery libplist libzip
-	cd $(BUILD_WORK)/idevicerestore && ./configure \
+	cd $(BUILD_WORK)/idevicerestore && ./autogen.sh \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		zlib_LIBS="-L$(TARGET_SYSROOT)/usr/lib -lz" \
+		zlib_CFLAGS="-I$(TARGET_SYSROOT)/usr/include"
 	+$(MAKE) -C $(BUILD_WORK)/idevicerestore
 	+$(MAKE) -C $(BUILD_WORK)/idevicerestore install \
 		DESTDIR="$(BUILD_STAGE)/idevicerestore"

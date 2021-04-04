@@ -1,0 +1,15 @@
+Package: libopenjp2-7-dev
+Version: @DEB_OPENJPEG_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libopenjp2-7 (= @DEB_OPENJPEG_V@)
+Section: Development
+Priority: standard
+Description: development files for OpenJPEG, a JPEG 2000 image library
+ OpenJPEG is a library for handling the JPEG 2000 image compression format.
+ JPEG 2000 is a wavelet-based image compression standard and permits progressive
+ transmission by pixel and resolution accuracy for progressive downloads of an
+ encoded image. It supports lossless and lossy compression, supports higher
+ compression than JPEG 1991, and has resilience to errors in the image.
+ .
+ This package contains the development files for openjpeg 2.x

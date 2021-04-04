@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += libgdbm
-LIBGDBM_VERSION := 1.18.1
+LIBGDBM_VERSION := 1.19
 DEB_LIBGDBM_V   ?= $(LIBGDBM_VERSION)
 
 libgdbm-setup: setup
@@ -17,8 +17,9 @@ libgdbm:
 else
 libgdbm: libgdbm-setup readline gettext
 	cd $(BUILD_WORK)/libgdbm && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libgdbm
 	+$(MAKE) -C $(BUILD_WORK)/libgdbm install \
 		DESTDIR=$(BUILD_STAGE)/libgdbm
@@ -29,19 +30,43 @@ endif
 
 libgdbm-package: libgdbm-stage
 	# libgdbm.mk Package Structure
-	rm -rf $(BUILD_DIST)/libgdbm
-	mkdir -p $(BUILD_DIST)/libgdbm
-	
-	# libgdbm.mk Prep libgdbm
-	cp -a $(BUILD_STAGE)/libgdbm/usr $(BUILD_DIST)/libgdbm
-	
+	rm -rf \
+		$(BUILD_DIST)/libgdbm{-dev,6} \
+		$(BUILD_DIST)/gdbmtool \
+		$(BUILD_DIST)/gdbm-l10n
+	mkdir -p \
+		$(BUILD_DIST)/gdbm-l10n/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share \
+		$(BUILD_DIST)/libgdbm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libgdbm6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share} \
+		$(BUILD_DIST)/{libgdbm-dev,gdbmtool}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+
+	# libgdbm.mk Prep gdbmtool
+	cp -a $(BUILD_STAGE)/libgdbm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/gdbmtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libgdbm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/gdbmtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+
+	# libgdbm.mk Prep libgdbm-dev
+	cp -a $(BUILD_STAGE)/libgdbm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libgdbm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libgdbm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libgdbm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+	cp -a $(BUILD_STAGE)/libgdbm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/info $(BUILD_DIST)/libgdbm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	cp -a $(BUILD_STAGE)/libgdbm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgdbm.{a,dylib} $(BUILD_DIST)/libgdbm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
+	# libgdbm.mk Prep libgdbm6
+	cp -a $(BUILD_STAGE)/libgdbm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgdbm.6.dylib $(BUILD_DIST)/libgdbm6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libgdbm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale $(BUILD_DIST)/libgdbm6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+
 	# libgdbm.mk Sign
-	$(call SIGN,libgdbm,general.xml)
-	
+	$(call SIGN,gdbmtool,general.xml)
+	$(call SIGN,libgdbm6,general.xml)
+
 	# libgdbm.mk Make .debs
-	$(call PACK,libgdbm,DEB_LIBGDBM_V)
-	
+	$(call PACK,gdbmtool,DEB_LIBGDBM_V)
+	$(call PACK,libgdbm-dev,DEB_LIBGDBM_V)
+	$(call PACK,libgdbm6,DEB_LIBGDBM_V)
+
 	# libgdbm.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libgdbm
+	rm -rf \
+		$(BUILD_DIST)/libgdbm{-dev,6} \
+		$(BUILD_DIST)/gdbmtool \
+		$(BUILD_DIST)/gdbm-l10n
 
 .PHONY: libgdbm libgdbm-package

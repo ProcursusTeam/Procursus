@@ -2,7 +2,7 @@ Package: bison
 Version: @DEB_BISON_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: m4, gettext, libreadline8
+Depends: m4, libintl8, libreadline8
 Section: Development
 Priority: optional
 Description: a general-purpose parser generator

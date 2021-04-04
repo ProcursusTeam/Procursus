@@ -1,0 +1,12 @@
+Package: libnpth0
+Version: @DEB_NPTH_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Conflicts: gnupth, npth (<< @DEB_NPTH_V@)
+Replaces: npth (<< @DEB_NPTH_V@)
+Provides: npth (= @DEB_NPTH_V@)
+Section: Libraries
+Priority: optional
+Multi-Arch: foreign
+Description: replacement for GNU Pth using system threads
+Name: New GNU Portable Threads

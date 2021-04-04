@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e
+
+if [ "$1" != "upgrade" ]
+then
+  for i in vi view ex editor edit vedit; do
+    update-alternatives --remove $i /usr/bin/ex-vi
+  done
+fi
+
+exit 0

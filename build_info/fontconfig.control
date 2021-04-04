@@ -1,0 +1,23 @@
+Package: fontconfig
+Version: @DEB_FONTCONFIG_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libuuid16, libfontconfig1, libintl8, libfreetype6, firmware (>= 14.0) | libexpat1, fontconfig-config
+Section: Utilities
+Priority: standard
+Description: generic font configuration library - support binaries
+ Fontconfig is a font configuration and customization library, which
+ does not depend on the X Window System. It is designed to locate
+ fonts within the system and select them according to requirements
+ specified by applications.
+ .
+ Fontconfig is not a rasterization library, nor does it impose a
+ particular rasterization library on the application. The X-specific
+ library 'Xft' uses fontconfig along with freetype to specify and
+ rasterize fonts.
+ .
+ This package contains a program to maintain the fontconfig cache
+ (fc-cache), a sample program to list installed fonts (fc-list), a program
+ to test the matching rules (fc-match) and a program to dump the binary
+ cache files in string form (fc-cat). It no longer makes fonts managed by defoma
+ available to fontconfig applications.

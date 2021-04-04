@@ -1,0 +1,14 @@
+Package: libscrypt0
+Version: @DEB_LIBSCRYPT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Description: scrypt shared library
+ The scrypt algorithm is a password-based key derivation function
+ designed to require large amounts of memory. This proof-of-work scheme
+ is intended to make it costly to perform large-scale hardware
+ attacks.
+ .
+ This package contains a shared library implementing the scrypt
+ algorithm, based on the original implementation with a number of
+ harnesses and simplified interfaces.

@@ -1,0 +1,14 @@
+Package: librtmp-dev
+Version: @DEB_RTMPDUMP_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libgnutls28-dev, nettle-dev, libgmp-dev, librtmp1 (= @DEB_RTMPDUMP_V@)
+Section: Development
+Priority: standard
+Description: toolkit for RTMP streams (development files)
+ A small dumper for media content streamed over the RTMP protocol (like BBC's
+ iPlayer high quality streams). Supplying an RTMP URL will result in a dumped
+ flv file, which can be played/transcoded with standard tools.
+ .
+ This package contains the development libraries, header files needed by
+ programs that want to compile with librtmp.

@@ -2,7 +2,7 @@ Package: netcat
 Version: @DEB_NETCAT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: gettext
+Depends: libintl8
 Section: Networking
 Priority: important
 Multi-Arch: foreign

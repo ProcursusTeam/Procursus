@@ -1,0 +1,15 @@
+Package: libruby3.0
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_RUBY_V@
+Depends: libjemalloc2, libgmp10, libffi7, libgdbm6, libncursesw6, libreadline8, libssl1.1, libyaml-0-2
+Section: Libraries
+Priority: optional
+Description: Libraries necessary to run Ruby 3.0
+ Ruby is the interpreted scripting language for quick and easy
+ object-oriented programming.  It has many features to process text
+ files and to do system management tasks (as in perl).  It is simple,
+ straight-forward, and extensible.
+ .
+ This package includes the 'libruby-3.0' library, necessary to run Ruby 3.0.
+ (API version @DEB_RUBY_V@)

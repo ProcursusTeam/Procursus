@@ -1,0 +1,18 @@
+Package: gpgsm
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_GNUPG_V@
+Depends: gpgconf, libassuan0, libgcrypt20, libgpg-error0, libksba8, libreadline8, libintl8
+Conflicts: gnupg2, gnupg (<< @DEB_GNUPG_V@)
+Replaces: gnupg2
+Section: Security
+Priority: standard
+Description: GNU privacy guard - S/MIME version
+ GnuPG is GNU's tool for secure communication and data storage.
+ It can be used to encrypt data and to create digital signatures.
+ It includes an advanced key management facility and is compliant
+ with the proposed OpenPGP Internet standard as described in RFC4880.
+ .
+ This package contains the gpgsm program. gpgsm is a tool to provide
+ digital encryption and signing services on X.509 certificates and the
+ CMS protocol. gpgsm includes complete certificate management.

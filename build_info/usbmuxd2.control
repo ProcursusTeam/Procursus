@@ -1,0 +1,23 @@
+Package: usbmuxd2
+Version: @DEB_USBMUXD2_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libgeneral0 (>= 32), libplist3 (>= 2.2.0), libusb-1.0-0 (>= 1.0.9), libimobiledevice6 (>= 1.3.0)
+Conflicts: usbmuxd
+Replaces: usbmuxd
+Provides: usbmuxd
+Section: Administration
+Priority: standard
+Description: A socket daemon to multiplex connections from and to iOS devices over USB and WIFI
+ This project is a reimplementation of the original usbmuxd daemon by the libimobiledevice 
+ project (which in turn is an open source implementation of Apple's own usbmuxd).
+ .
+ usbmuxd stands for "USB multiplexing daemon", however since the introduction of
+ iTunes WIFI sync it also multiplexes connections over WIFI.
+ .
+ When usbmuxd is running it provides a socket interface in /var/run/usbmuxd that is 
+ designed to be compatible with the socket interface that is provided on macOS.
+ .
+ The daemon also manages pairing records with iOS devices and the host in /var/lib/lockdown (Linux) 
+ or /var/db/lockdown (macOS/iOS). Ensure proper permissions are setup for the daemon to access the directory.
+Tag: role::developer

@@ -1,14 +1,31 @@
 Package: xz-utils
-Essential: yes
 Version: @DEB_XZ_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Replaces: xz, lzma
 Conflicts: xz (<<1:0), lzma (<<3:0)
-Provides: xz (=@DEB_XZ_V@), lzma (=2:@DEB_XZ_V@)
-Depends: grep, sed
+Provides: xz (=1:0), lzma (=3:0)
+Depends: liblzma5 (>= @DEB_XZ_V@), libintl8
 Section: Archiving
-Priority: required
+Priority: standard
 Homepage: https://tukaani.org/xz/
-Description: slower, but better, compression algorithm
+Description: XZ-format compression utilities
+ XZ is the successor to the Lempel-Ziv/Markov-chain Algorithm
+ compression format, which provides memory-hungry but powerful
+ compression (often better than bzip2) and fast, easy decompression.
+ .
+ This package provides the command line tools for working with XZ
+ compression, including xz, unxz, xzcat, xzgrep, and so on. They can
+ also handle the older LZMA format, and if invoked via appropriate
+ symlinks will emulate the behavior of the commands in the lzma
+ package.
+ .
+ The XZ format is similar to the older LZMA format but includes some
+ improvements for general use:
+ .
+  * 'file' magic for detecting XZ files;
+  * crc64 data integrity check;
+  * limited random-access reading support;
+  * improved support for multithreading (not used in xz-utils);
+  * support for flushing the encoder.
 Name: XZ Utils

@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += file
-FILE_VERSION   := 5.38
-DEB_FILE_V     ?= $(FILE_VERSION)
+FILE_VERSION   := 5.39
+DEB_FILE_V     ?= $(FILE_VERSION)-1
 
 file-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) ftp://ftp.astron.com/pub/file/file-$(FILE_VERSION).tar.gz{,.asc}
@@ -18,35 +18,54 @@ else
 file: file-setup xz
 	rm -rf $(BUILD_WORK)/../../native/file
 	mkdir -p $(BUILD_WORK)/../../native/file
-	cd $(BUILD_WORK)/../../native/file && env -i $(BUILD_WORK)/file/configure
-	+env -i $(MAKE) -C $(BUILD_WORK)/../../native/file
+	+unset CC CFLAGS CXXFLAGS CPPFLAGS LDFLAGS; \
+		cd $(BUILD_WORK)/../../native/file && $(BUILD_WORK)/file/configure; \
+		$(MAKE) -C $(BUILD_WORK)/../../native/file
 	cd $(BUILD_WORK)/file && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--disable-libseccomp \
+		--enable-fsect-man5
 	+$(MAKE) -C $(BUILD_WORK)/file \
-		CFLAGS="$(CFLAGS)" \
-		FILE_COMPILE="$(BUILD_WORK)/../../native/file/src/file" \
-		LIBS="$(BUILD_BASE)/usr/local/lib/liblzma.a -lbz2 -lz"
+		FILE_COMPILE="$(BUILD_WORK)/../../native/file/src/file"
 	+$(MAKE) -C $(BUILD_WORK)/file install \
-		DESTDIR=$(BUILD_STAGE)/file
+		DESTDIR="$(BUILD_STAGE)/file"
+	+$(MAKE) -C $(BUILD_WORK)/file install \
+		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/file/.build_complete
 endif
 
 file-package: file-stage
 	# file.mk Package Structure
-	rm -rf $(BUILD_DIST)/file
-	mkdir -p $(BUILD_DIST)/file
-	
+	rm -rf $(BUILD_DIST)/file $(BUILD_DIST)/libmagic{1,-dev}
+	mkdir -p $(BUILD_DIST)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
+		$(BUILD_DIST)/libmagic1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share} \
+		$(BUILD_DIST)/libmagic-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share/man}
+
 	# file.mk Prep file
-	cp -a $(BUILD_STAGE)/file/usr $(BUILD_DIST)/file
-	
+	cp -a $(BUILD_STAGE)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+
+	# file.mk Prep libmagic1
+	cp -a $(BUILD_STAGE)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libmagic.1.dylib $(BUILD_DIST)/libmagic1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5 $(BUILD_DIST)/libmagic1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+	cp -a $(BUILD_STAGE)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/misc $(BUILD_DIST)/libmagic1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+
+	# file.mk Prep libmagic-dev
+	cp -a $(BUILD_STAGE)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libmagic.1.dylib) $(BUILD_DIST)/libmagic-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libmagic-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+
 	# file.mk Sign
 	$(call SIGN,file,general.xml)
-	
+	$(call SIGN,libmagic1,general.xml)
+
 	# file.mk Make .debs
 	$(call PACK,file,DEB_FILE_V)
-	
+	$(call PACK,libmagic1,DEB_FILE_V)
+	$(call PACK,libmagic-dev,DEB_FILE_V)
+
 	# file.mk Build cleanup
-	rm -rf $(BUILD_DIST)/file
+	rm -rf $(BUILD_DIST)/file $(BUILD_DIST)/libmagic{1,-dev}
 
 .PHONY: file file-package

@@ -1,0 +1,11 @@
+Package: libicu-dev
+Version: @DEB_ICU_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libicu68 (= @DEB_ICU_V@), icu-devtools (>= @DEB_ICU_V@)
+Section: Development
+Priority: standard
+Description: Development files for International Components for Unicode
+ ICU is a C++ and C library that provides robust and full-featured
+ Unicode and locale support.  This package contains the development
+ files for ICU.

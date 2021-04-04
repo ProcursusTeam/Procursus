@@ -1,0 +1,7 @@
+Package: pstree
+Version: @DEB_PSTREE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: standard
+Description: Show ps output as a tree

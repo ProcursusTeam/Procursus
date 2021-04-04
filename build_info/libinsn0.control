@@ -1,0 +1,9 @@
+Package: libinsn0
+Version: @DEB_LIBINSN_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libgeneral0
+Section: Libraries
+Priority: optional
+Description: Support library for tihmstar's liboffsetfinder64 (shared libraries)
+Tag: purpose::library, role::developer

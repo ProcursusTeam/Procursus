@@ -2,7 +2,7 @@ Package: pzb
 Version: @DEB_PZB_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libfragmentzip
+Depends: libfragmentzip0
 Section: Archiving
 Priority: optional
 Description: partialZipBrowser is a commandline tool for browsing and downloading files from zip files on remote webserver

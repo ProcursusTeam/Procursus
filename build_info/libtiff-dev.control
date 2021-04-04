@@ -1,0 +1,10 @@
+Package: libtiff-dev
+Version: @DEB_LIBTIFF_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Depends: libjpeg62-turbo-dev, liblzma-dev, libzstd-dev, libtiff5, libtiffxx5
+Description: Tag Image File Format library (TIFF), development files
+ libtiff is a library providing support for the Tag Image File Format
+ (TIFF), a widely used format for storing image data.  This package
+ includes the development files, static library, and header files.

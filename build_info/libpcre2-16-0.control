@@ -1,0 +1,15 @@
+Package: libpcre2-16-0
+Version: @DEB_PCRE2_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Conflicts: pcre2 (<<1:0), libpcre2 (<< @DEB_PCRE2_V@)
+Section: Libraries
+Priority: standard
+Multi-Arch: foreign
+Description: New Perl Compatible Regular Expression Library - 16 bit runtime files
+ This is PCRE2, the new implementation of PCRE, a library of functions
+ to support regular expressions whose syntax and semantics are as
+ close as possible to those of the Perl 5 language. New projects
+ should use this library in preference to the older library.
+ .
+ This package contains the 16 bit runtime library.

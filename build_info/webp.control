@@ -1,0 +1,12 @@
+Package: webp
+Version: @DEB_LIBWEBP_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Depends: libwebp7, libwebpmux3, libwebpdemux2, libpng16-16, libtiff5, libzstd1, liblzma5, libjpeg62-turbo, libgif7
+Description: Lossy compression of digital photographic images.
+ Image Compression format, based on the VP8 codec.
+ WebP uses the modern VP8 compression format to deliver efficient
+ compression of images for the web. More than 30% extra gain over
+ optimized JPEG, for same quality, is not unusual.
+ 

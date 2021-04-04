@@ -3,8 +3,14 @@ Version: @DEB_OPENSSL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: libssl1.1 (= @DEB_OPENSSL_V@)
-Section: Security
+Section: Development
 Priority: standard
-Description: OpenSSL Libraries for version 1.1 (development)
+Description: Secure Sockets Layer toolkit - development files
+ This package is part of the OpenSSL project's implementation of the SSL
+ and TLS cryptographic protocols for secure communication over the
+ Internet.
+ .
+ It contains development libraries, header files, and manpages for libssl
+ and libcrypto.
 Name: OpenSSL 1.1.x Libraries (Devel)
 Tag: purpose::library, role::developer

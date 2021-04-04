@@ -1,9 +1,0 @@
-Package: libffi
-Maintainer: @DEB_MAINTAINER@
-Architecture: @DEB_ARCH@
-Version: @DEB_LIBFFI_V@
-Section: Development
-Priority: optional
-Multi-Arch: foreign
-Description: dynamic generation of function calls
-Tag: purpose::library, role::developer

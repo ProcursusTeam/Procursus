@@ -1,0 +1,14 @@
+Package: libvpx-dev
+Version: @DEB_LIBVPX_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libvpx6 (>= @DEB_LIBVPX_V@)
+Section: Development
+Priority: optional
+Description: VP8 and VP9 video codec (development files)
+ VP8 and VP9 are open video codecs, originally developed by On2 and released
+ as open source by Google Inc. They are the successor of the VP3 codec,
+ on which the Theora codec was based.
+ .
+ This package contains the development libraries, header files needed by
+ programs that want to compile with libvpx.

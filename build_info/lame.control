@@ -1,0 +1,14 @@
+Package: lame
+Version: @DEB_LAME_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libncursesw6, libsndfile1, libmp3lame0
+Section: Utilities
+Priority: optional
+Description: MP3 encoding library (frontend)
+ LAME (recursive acronym for "LAME Ain't an MP3 Encoder") is a research
+ project for learning about and improving MP3 encoding technology.
+ LAME includes an MP3 encoding library, a simple frontend application,
+ and other tools for sound analysis, as well as convenience tools.
+ .
+ This package contains the frontend.

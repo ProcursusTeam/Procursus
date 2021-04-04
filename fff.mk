@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += fff
-FFF_VERSION := 2.1
+FFF_VERSION := 2.2
 DEB_FFF_V   ?= $(FFF_VERSION)
 
 fff-setup: setup
@@ -16,7 +16,7 @@ fff:
 else
 fff: fff-setup
 	+$(MAKE) -C $(BUILD_WORK)/fff install \
-		PREFIX=/usr \
+		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR=$(BUILD_STAGE)/fff
 	touch $(BUILD_WORK)/fff/.build_complete
 endif
@@ -24,13 +24,13 @@ endif
 fff-package: fff-stage
 	# fff.mk Package Structure
 	rm -rf $(BUILD_DIST)/fff
-	
+
 	# fff.mk Prep fff
 	cp -a $(BUILD_STAGE)/fff $(BUILD_DIST)
-	
+
 	# fff.mk Make .debs
 	$(call PACK,fff,DEB_FFF_V)
-	
+
 	# fff.mk Build cleanup
 	rm -rf $(BUILD_DIST)/fff
 

@@ -1,0 +1,9 @@
+Package: expat
+Version: @DEB_EXPAT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libexpat1
+Section: Development
+Priority: optional
+Description: XML parsing C library - example application
+  This package contains xmlwf, an example application of expat, the C library for parsing XML. The arguments to xmlwf are one or more files which are each to be checked for XML well-formedness. 

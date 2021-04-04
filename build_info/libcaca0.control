@@ -1,0 +1,13 @@
+Package: libcaca0
+Version: @DEB_LIBCACA_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libslang2, libncursesw6, libx11-6
+Section: Libraries
+Priority: optional
+Description: colour ASCII art library
+ libcaca is the Colour AsCii Art library. It provides high level functions
+ for colour text drawing, simple primitives for line, polygon and ellipse
+ drawing, as well as powerful image to text conversion routines.
+ .
+ This package contains the shared library for libcaca.

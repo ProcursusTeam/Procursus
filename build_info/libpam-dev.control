@@ -1,0 +1,14 @@
+Package: libpam-dev
+Version: @DEB_OPENPAM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libpam2 (= @DEB_OPENPAM_V@), libcrypt-dev
+Section: Development
+Description: Development files for PAM
+ Contains C header files and development libraries for libpam, the Pluggable
+ Authentication Modules, a library that enables the local system
+ administrator to choose how applications authenticate users.
+ .
+ PAM decouples applications from the authentication mechanism, making it
+ possible to upgrade the authentication system without recompiling or
+ rewriting the applications.

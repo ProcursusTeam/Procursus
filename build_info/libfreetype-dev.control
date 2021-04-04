@@ -1,0 +1,15 @@
+Package: libfreetype-dev
+Version: @DEB_FREETYPE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libbrotli-dev, libpng16-dev, libfreetype6 (= @DEB_FREETYPE_V@)
+Section: Development
+Priority: standard
+Description: FreeType 2 font engine, development files (transitional package)
+ The FreeType project is a team of volunteers who develop free,
+ portable and high-quality software solutions for digital typography.
+ They specifically target embedded systems and focus on providing small,
+ efficient and ubiquitous products.
+ .
+ This package contains all of the supplementary files you need to develop your
+ own programs using the FreeType 2 library.

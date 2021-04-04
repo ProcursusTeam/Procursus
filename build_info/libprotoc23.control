@@ -1,8 +1,0 @@
-Package: libprotoc23
-Version: @DEB_LIBPROTOBUF_V@
-Architecture: @DEB_ARCH@
-Maintainer: @DEB_MAINTAINER@
-Depends: libprotobuf23 (>= @DEB_LIBPROTOBUF_V@)
-Section: Libraries
-Priority: standard
-Description: protocol buffers compiler library

@@ -1,0 +1,11 @@
+Package: libogg0
+Version: @DEB_LIBOGG_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Homepage: http://xiph.org/ogg/
+Description: Ogg bitstream library
+ Libogg is a library for manipulating ogg bitstreams. It handles
+ both making ogg bitstreams and getting packets from ogg bitstreams.
+Tag: purpose::library

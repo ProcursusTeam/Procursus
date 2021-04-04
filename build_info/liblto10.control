@@ -6,4 +6,3 @@ Depends: libllvm10
 Section: Development
 Priority: optional
 Description: Modular compiler and toolchain technologies, runtime library
-Tag: purpose::console, role::developer

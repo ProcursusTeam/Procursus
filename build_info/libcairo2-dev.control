@@ -1,0 +1,13 @@
+Package: libcairo2-dev
+Version: @DEB_CAIRO_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libcairo2 (>= @DEB_CAIRO_V@), libcairo-gobject2 (>= @DEB_CAIRO_V@), libcairo-script-interpreter2 (>= @DEB_CAIRO_V@), libfontconfig-dev, libfreetype-dev, libpng16-dev, libpixman-1-dev, libglib2.0-dev
+Section: Development
+Priority: optional
+Description: Development files for the Cairo 2D graphics library
+ Cairo is a multi-platform library providing anti-aliased
+ vector-based rendering for multiple target backends.
+ .
+ This package contains the development libraries, header files needed by
+ programs that want to compile with Cairo.

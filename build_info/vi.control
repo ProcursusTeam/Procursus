@@ -1,0 +1,9 @@
+Package: vi
+Version: @DEB_VI_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libncursesw6
+Provides: ex
+Section: Text_Editors
+Priority: standard
+Description: The original ex/vi text editor

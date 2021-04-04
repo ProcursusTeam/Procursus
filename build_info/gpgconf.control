@@ -1,0 +1,16 @@
+Package: gpgconf
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_GNUPG_V@
+Depends: libassuan0, libgcrypt20, libgpg-error0, libreadline8, libintl8
+Conflicts: gnupg2, gnupg (<< @DEB_GNUPG_V@)
+Replaces: gnupg2
+Section: Security
+Priority: standard
+Description: GNU privacy guard - core configuration utilities
+ GnuPG is GNU's tool for secure communication and data storage.
+ .
+ This package contains core utilities used by different tools in the
+ suite offered by GnuPG.  It can be used to programmatically edit
+ config files for tools in the GnuPG suite, to launch or terminate
+ per-user daemons (if installed), etc.

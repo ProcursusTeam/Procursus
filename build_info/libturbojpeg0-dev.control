@@ -1,0 +1,15 @@
+Package: libturbojpeg0-dev
+Version: @DEB_LIBJPEG_TURBO_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Depends: libturbojpeg0
+Description: Development files for the TurboJPEG library
+ The libjpeg-turbo JPEG library is a library for handling JPEG files.
+ .
+ libjpeg-turbo is a JPEG image codec that uses SIMD instructions (MMX,
+ SSE2, NEON) to accelerate baseline JPEG compression and decompression
+ on x86, x86-64, and ARM systems.
+ .
+ This package contains the static library, headers and documentation for
+ the TurboJPEG library.

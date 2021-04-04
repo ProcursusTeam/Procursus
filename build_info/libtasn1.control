@@ -1,9 +1,0 @@
-Package: libtasn1
-Version: @DEB_LIBTASN1_V@
-Architecture: @DEB_ARCH@
-Maintainer: @DEB_MAINTAINER@
-Section: Security
-Priority: optional
-Multi-Arch: foreign
-Homepage: https://www.gnu.org/software/libtasn1
-Description: Libtasn1 is the ASN.1 library used by GnuTLS, p11-kit and some other packages

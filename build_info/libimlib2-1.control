@@ -1,0 +1,15 @@
+Package: libimlib2-1
+Version: @DEB_IMLIB2_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libfreetype6, libgif7, libjpeg62-turbo, libpng16-16, libtiff5, libwebp7, libx11-6, libx11-xcb1, libxcb-shm0, libxcb1, libxext6
+Section: Libraries
+Priority: optional
+Multi-Arch: foreign
+Description: image loading, rendering, saving library
+ Imlib2 is a library that does image file loading and saving as well as
+ rendering, manipulation, arbitrary polygon support, etc.
+ .
+ It does ALL of these operations FAST. Imlib2 also tries to be highly
+ intelligent about doing them, so writing naive programs can be done easily,
+ without sacrificing speed.

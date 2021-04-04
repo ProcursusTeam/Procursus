@@ -1,0 +1,9 @@
+Package: ondeviceconsole
+Version: @DEB_ONDEVICECONSOLE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Replaces: com.eswick.ondeviceconsole
+Author: Evan Swick
+Section: Utilities
+Description: Tool to view system log from the shell.
+Tag: role::hacker

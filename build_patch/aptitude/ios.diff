@@ -1,0 +1,149 @@
+diff -urN aptitude-0.8.13/src/generic/apt/config_file.cc aptitude/src/generic/apt/config_file.cc
+--- aptitude-0.8.13/src/generic/apt/config_file.cc	2020-10-22 01:19:36.915129105 -0400
++++ aptitude/src/generic/apt/config_file.cc	2020-10-22 01:19:36.720129101 -0400
+@@ -31,7 +31,7 @@
+ #include <sstream>
+ #include <streambuf>
+ 
+-#include <error.h>
++#include <mach/error.h>
+ #include <sys/stat.h>
+ #include <unistd.h>
+ 
+diff -urN aptitude-0.8.13/src/generic/apt/matching/parse.h aptitude/src/generic/apt/matching/parse.h
+--- aptitude-0.8.13/src/generic/apt/matching/parse.h	2020-10-22 01:19:36.910129105 -0400
++++ aptitude/src/generic/apt/matching/parse.h	2020-10-22 01:19:36.721129101 -0400
+@@ -22,6 +22,7 @@
+ #define PARSE_H
+ 
+ #include <cwidget/generic/util/ref_ptr.h>
++#include <vector>
+ 
+ /** \file parse.h */
+ 
+diff -urN aptitude-0.8.13/src/generic/problemresolver/Makefile.am aptitude/src/generic/problemresolver/Makefile.am
+--- aptitude-0.8.13/src/generic/problemresolver/Makefile.am	2020-10-22 01:19:36.920129105 -0400
++++ aptitude/src/generic/problemresolver/Makefile.am	2020-10-22 01:19:36.738129101 -0400
+@@ -6,7 +6,7 @@
+ 
+ noinst_PROGRAMS=test
+ 
+-test_LDADD = $(top_builddir)/src/generic/util/libgeneric-util.a libgeneric-problemresolver.a
++test_LDADD = $(top_builddir)/src/generic/util/libgeneric-util.a libgeneric-problemresolver.a $(LIBINTL)
+ 
+ libgeneric_problemresolver_a_SOURCES = \
+ 	choice.h choice_indexed_map.h choice_set.h \
+diff -urN aptitude-0.8.13/src/generic/problemresolver/Makefile.in aptitude/src/generic/problemresolver/Makefile.in
+--- aptitude-0.8.13/src/generic/problemresolver/Makefile.in	2020-10-22 01:19:36.919129105 -0400
++++ aptitude/src/generic/problemresolver/Makefile.in	2020-10-22 01:19:36.737129101 -0400
+@@ -355,7 +355,7 @@
+ AM_CPPFLAGS = -I$(top_builddir) -I$(srcdir) -I$(top_srcdir) -I$(top_srcdir)/src
+ EXTRA_DIST = model.tex test1.txt test3.txt test4.txt resolver_undo.h
+ noinst_LIBRARIES = libgeneric-problemresolver.a
+-test_LDADD = $(top_builddir)/src/generic/util/libgeneric-util.a libgeneric-problemresolver.a
++test_LDADD = $(top_builddir)/src/generic/util/libgeneric-util.a libgeneric-problemresolver.a -lintl
+ libgeneric_problemresolver_a_SOURCES = \
+ 	choice.h choice_indexed_map.h choice_set.h \
+ 	cost.cc cost.h \
+diff -urN aptitude-0.8.13/src/generic/problemresolver/problemresolver.h aptitude/src/generic/problemresolver/problemresolver.h
+--- aptitude-0.8.13/src/generic/problemresolver/problemresolver.h	2020-10-22 01:19:36.919129105 -0400
++++ aptitude/src/generic/problemresolver/problemresolver.h	2020-10-22 01:19:36.738129101 -0400
+@@ -1706,11 +1706,12 @@
+   {
+     generic_problem_resolver &resolver;
+     const promotion &p;
++      search_graph graph;
+ 
+   public:
+     do_process_promotion(generic_problem_resolver &_resolver,
+-			 const promotion &_p)
+-      : resolver(_resolver), p(_p)
++			 const promotion &_p, search_graph _graph)
++      : resolver(_resolver), p(_p), graph(_graph)
+     {
+     }
+ 
+diff -urN aptitude-0.8.13/src/generic/util/parsers.h aptitude/src/generic/util/parsers.h
+--- aptitude-0.8.13/src/generic/util/parsers.h	2020-10-22 01:19:36.906129105 -0400
++++ aptitude/src/generic/util/parsers.h	2020-10-22 01:19:36.713129101 -0400
+@@ -73,12 +73,6 @@
+ 
+ #include <errno.h>
+ 
+-namespace std
+-{
+-  template<typename T, typename Alloc>
+-  class deque;
+-}
+-
+ namespace parsers
+ {
+   /** \defgroup Parser combinators in C++
+diff -urN aptitude-0.8.13/src/generic/util/util.cc aptitude/src/generic/util/util.cc
+--- aptitude-0.8.13/src/generic/util/util.cc	2020-10-22 01:19:36.905129105 -0400
++++ aptitude/src/generic/util/util.cc	2020-10-22 01:19:36.713129101 -0400
+@@ -220,7 +220,7 @@
+     {
+       char *buf = new char[bufsize];
+ 
+-      char *result = strerror_r(errnum, buf, bufsize);
++      int result = strerror_r(errnum, buf, bufsize);
+ 
+       if(result == NULL)
+ 	{
+@@ -240,7 +240,7 @@
+ 	  // We need to copy "result", not "buf", because some
+ 	  // versions of strerror_r can return a static string and
+ 	  // leave "buf" alone.
+-	  string rval(result);
++	  string rval(buf);
+ 	  delete[] buf;
+ 	  return rval;
+ 	}
+diff -urN aptitude-0.8.13/src/pkg_columnizer.cc aptitude/src/pkg_columnizer.cc
+--- aptitude-0.8.13/src/pkg_columnizer.cc	2020-10-22 01:19:36.925129105 -0400
++++ aptitude/src/pkg_columnizer.cc	2020-10-22 01:19:36.703129100 -0400
+@@ -71,8 +71,8 @@
+   {30, false, false},   // origin
+   {10, true, true},     // archive
+   {9, false, false},    // sizechange
+-  {strlen(PACKAGE), false, false},  // progname
+-  {strlen(VERSION), false, false},  // progver
++  {(unsigned int)strlen(PACKAGE), false, false},  // progname
++  {(unsigned int)strlen(VERSION), false, false},  // progver
+   {12, false, false},   // brokencount
+   {16, false, false},   // diskusage, example (max): "Disk: -2,587 kB "
+   {22, false, false},   // downloadsize, example (max): " DL: 2,586 kB/2,587 kB"
+@@ -398,7 +398,8 @@
+     case diskusage:
+       {
+ 	size_t bufsize = 256;
+-	char buf[bufsize] = "";
++	char buf[bufsize];
++  buf[0] = 0;
+ 	if (apt_cache_file && ((*apt_cache_file)->UsrSize() != 0))
+ 	  {
+ 	    char sign = ((*apt_cache_file)->UsrSize() > 0) ? '+' : '-';
+diff -urN aptitude-0.8.13/src/ui.cc aptitude/src/ui.cc
+--- aptitude-0.8.13/src/ui.cc	2020-10-22 01:19:36.895129105 -0400
++++ aptitude/src/ui.cc	2020-10-22 01:19:36.704129100 -0400
+@@ -22,6 +22,8 @@
+ 
+ #include "ui.h"
+ 
++#include <signal.h>
++
+ #include <sigc++/adaptors/bind.h>
+ #include <sigc++/adaptors/retype_return.h>
+ #include <sigc++/functors/ptr_fun.h>
+@@ -694,8 +696,8 @@
+ 	{
+ 	  really_quit_active = true;
+ 	  prompt_yesno(_("Really quit Aptitude?"), false,
+-		       cw::util::arg(sigc::bind(ptr_fun(do_really_quit_answer), true)),
+-		       cw::util::arg(sigc::bind(ptr_fun(do_really_quit_answer), false)));
++		       cw::util::arg(sigc::bind(sigc::ptr_fun(do_really_quit_answer), true)),
++		       cw::util::arg(sigc::bind(sigc::ptr_fun(do_really_quit_answer), false)));
+ 	}
+     }
+   else

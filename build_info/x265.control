@@ -1,0 +1,24 @@
+Package: x265
+Version: @DEB_X265_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libx265-192 (>= @DEB_X265_V@)
+Section: Multimedia
+Priority: optional
+Homepage: http://x265.org
+Description: H.265/HEVC video stream encoder
+ x265 is a commandline encoder for creating H.265/High Efficiency Video Coding
+ (HEVC) video streams.
+ .
+ x265 supports the following features:
+  * full prediction and transform quad-tree recursion supported
+  * adaptive B-frame placement
+  * B-frames as references / arbitrary frame order
+  * CABAC (context-based adaptive binary arithmetic coding) entropy coding
+  * supports all Intra block types
+  * supports all Inter P partitions
+  * supports all Inter B partitions from 64x64 down to 8x4
+  * weighted prediction for P slices
+  * multiple reference frames
+  * scenecut detection
+  * parallel encoding on multiple CPUs

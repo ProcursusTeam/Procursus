@@ -4,7 +4,7 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Libraries
 Priority: optional
-Depends: uuid
+Depends: libuuid16
 Conflicts: libxapian
 Replaces: libxapian
 Provides: libxapian

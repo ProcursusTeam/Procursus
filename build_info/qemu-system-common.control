@@ -1,0 +1,15 @@
+Package: qemu-system-common
+Version: @DEB_QEMU_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libglib2.0-0, libgnutls30, libzstd1, libnettle8, libncursesw6, libpixman-1-0
+Section: Utilities
+Priority: optional
+Description: QEMU full system emulation binaries (common files)
+ QEMU is a fast processor emulator: currently the package supports
+ ARM, CRIS, i386, M68k (ColdFire), MicroBlaze, MIPS, PowerPC, SH4,
+ SPARC and x86-64 emulation. By using dynamic translation it achieves
+ reasonable speed while being easy to port on new host CPUs.
+ .
+ This package provides common files needed for target-specific
+ full system emulation (qemu-system-*) packages.

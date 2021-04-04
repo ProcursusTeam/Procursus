@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += rsync
-RSYNC_VERSION := 3.2.1
+RSYNC_VERSION := 3.2.3
 DEB_RSYNC_V   ?= $(RSYNC_VERSION)
 
 rsync-setup: setup
@@ -17,8 +17,9 @@ rsync:
 else
 rsync: rsync-setup openssl lz4 zstd
 	cd $(BUILD_WORK)/rsync && ./configure \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-simd \
 		--disable-xxhash \
 		rsync_cv_HAVE_GETTIMEOFDAY_TZ=yes
@@ -31,16 +32,16 @@ rsync-package: rsync-stage
 	# rsync.mk Package Structure
 	rm -rf $(BUILD_DIST)/rsync
 	mkdir -p $(BUILD_DIST)/rsync
-	
+
 	# rsync.mk Prep rsync
-	cp -a $(BUILD_STAGE)/rsync/usr $(BUILD_DIST)/rsync
-	
+	cp -a $(BUILD_STAGE)/rsync/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/rsync
+
 	# rsync.mk Sign
 	$(call SIGN,rsync,general.xml)
-	
+
 	# rsync.mk Make .debs
 	$(call PACK,rsync,DEB_RSYNC_V)
-	
+
 	# rsync.mk Build cleanup
 	rm -rf $(BUILD_DIST)/rsync
 

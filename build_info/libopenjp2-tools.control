@@ -1,0 +1,17 @@
+Package: libopenjp2-tools
+Version: @DEB_OPENJPEG_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libopenjp2-7 (>= @DEB_OPENJPEG_V@), liblcms2-2, libpng16-16, libtiff5
+Section: Multimedia
+Priority: standard
+Description: command-line tools using the JPEG 2000 library
+ This package provides with command-line tools allowing for conversions between
+ several formats and also provides tools for encoding and decoding
+ motion-jpeg2000 video formats:
+ .
+  - opj_decompress: decodes j2k, jp2, and jpt files to pgm, ppm, pnm,
+                  pgx, and bmp.
+  - opj_compress: encodes pnm, pgm, pgx, bmp, and ppm files to j2k,
+                  and jp2.
+  - opj_dump: dump information contains in j2k and jp2.

@@ -5,4 +5,4 @@ Maintainer: @DEB_MAINTAINER@
 Section: Libraries
 Homepage: https://libimobiledevice.org/
 Description: A library to handle the activation process of iOS devices
-Depends: libimobiledevice6, usbmuxd, curl, libplist3
+Depends: libimobiledevice6, usbmuxd, libcurl4, libplist3

@@ -1,0 +1,15 @@
+Package: libtheora-dev
+Version: @DEB_LIBTHEORA_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libtheora0 (= @DEB_LIBTHEORA_V@), libogg-dev (>= 1.3.4)
+Section: Development
+Priority: optional
+Homepage: https://www.theora.org/
+Description: Theora Video Compression Codec (development files)
+ Theora is a fully open, non-proprietary, patent-and-royalty-free,
+ general-purpose compressed video format.
+ .
+ This package contains the header files needed to develop applications
+ with libtheora.
+Tag: purpose::library, role::developer

@@ -1,0 +1,13 @@
+Package: libgraphite2-utils
+Version: @DEB_GRAPHITE2_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libgraphite2-3 (>= @DEB_GRAPHITE2_V@)
+Section: Utilities
+Description: Font rendering engine for Complex Scripts -- utilities
+ Graphite is a system that can be used to create and use "smart fonts" capable
+ of displaying writing systems with various complex behaviors, such as:
+ contextual shaping, ligatures, reordering, split glyphs, bidirectionality,
+ stacking diacritics and complex positioning.
+ .
+ This package contains gr2fonttest.

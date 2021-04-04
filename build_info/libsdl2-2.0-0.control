@@ -1,0 +1,11 @@
+Package: libsdl2-2.0-0
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_SDL2_V@
+Section: Libraries
+Priority: optional
+Description: Simple DirectMedia Layer
+ SDL is a library that allows programs portable low level access to a video
+ framebuffer, audio output, mouse, and keyboard.
+ .
+ This version of SDL is compiled with Metal graphics drivers and CoreAudio sound drivers.

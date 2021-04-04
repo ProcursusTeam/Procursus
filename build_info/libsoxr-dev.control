@@ -1,0 +1,20 @@
+Package: libsoxr-dev
+Version: @DEB_LIBSOXR_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libsoxr0 (= @DEB_LIBSOXR_V@), libsoxr-lsr0 (= @DEB_LIBSOXR_V@)
+Section: Development
+Priority: optional
+Description: High quality 1D sample-rate conversion library (development files)
+ The SoX Resampler library `libsoxr' performs one-dimensional sample-rate
+ conversion - it may be used, for example, to resample PCM-encoded audio.
+ .
+ It aims to give fast and high quality results for any constant (rational or
+ irrational) resampling ratio. Phase-response, preserved bandwidth, aliasing,
+ and rejection level parameters are all configurable; alternatively, simple
+ `preset' configurations may be selected.
+ .
+ A simple API is provided that allows interfacing using commonly-used sample
+ formats and buffering schemes.
+ .
+ This package contains the development files.

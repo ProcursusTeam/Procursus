@@ -1,0 +1,12 @@
+Package: libedit-dev
+Version: @DEB_LIBEDIT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Depends: libedit0 (= @DEB_LIBEDIT_V@), libncurses-dev (>= 6.0)
+Description: BSD editline and history libraries (development files)
+ Command line editor library provides generic line editing,
+ history, and tokenization functions.
+ .
+ It slightly resembles GNU readline.

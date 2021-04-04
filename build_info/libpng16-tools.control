@@ -1,0 +1,14 @@
+Package: libpng16-tools
+Version: @DEB_LIBPNG16_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libpng16-16 (>= @DEB_LIBPNG16_V@)
+Section: Multimedia
+Priority: optional
+Multi-Arch: foreign
+Description: PNG library - minimal runtime library (version 1.6)
+ libpng is a library implementing an interface for reading and writing
+ PNG (Portable Network Graphics) format files.
+ .
+ This package provides the minimal libpng runtime library needed for
+ the debian-installer.

@@ -1,0 +1,11 @@
+Package: libdb18.1-dev
+Version: @DEB_BDB_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: standard
+Homepage: http://www.oracle.com/technology/products/berkeley-db/index.html
+Depends: libdb18.1 (>= @DEB_BDB_V@)
+Description: Berkeley v18.1 Database Libraries [development]
+ This is the development package which contains headers and static
+ libraries for the Berkeley v18.1 database library.

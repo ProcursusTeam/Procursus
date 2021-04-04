@@ -1,0 +1,13 @@
+Package: libass9
+Version: @DEB_LIBASS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libfribidi0, libfontconfig1, libfreetype6, libharfbuzz0b
+Section: Libraries
+Priority: optional
+Multi-Arch: foreign
+Description: library for SSA/ASS subtitles rendering
+ SubStation Alpha (SSA) is a subtitle file format that allows more
+ advanced subtitles than the conventional SRT and similar formats.
+ .
+ This package contains the shared library for libass.

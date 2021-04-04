@@ -1,0 +1,13 @@
+Package: ttyrec
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_TTYREC_V@
+Section: Utilities
+Description: Terminal interaction recorder and player (for tty)
+ This package includes "ttyrec", a tty recorder which records terminal
+ interaction, and "ttyplay", the player to see that intereaction.
+ .
+ Ttyrec records your terminal input and output, like the "script" command,
+ but additionally records timing information to allow playback at the original
+ speed.  It can record any console program, including screen-oriented programs
+ such as those using curses.

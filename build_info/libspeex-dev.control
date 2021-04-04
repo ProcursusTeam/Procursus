@@ -1,0 +1,15 @@
+Package: libspeex-dev
+Version: @DEB_LIBSPEEX_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Depends: libspeex1 (= @DEB_LIBSPEEX_V@)
+Priority: optional
+Description: The Speex codec library development files
+ Speex is an audio codec especially designed for compressing voice at low
+ bit-rates for applications such as voice over IP (VoIP). In some senses,
+ it is meant to be complementary to the Vorbis codec which places a greater
+ emphasis on high-quality music reproduction.
+ .
+ This package provides the speex library headers and development files.
+Tag: purpose::library

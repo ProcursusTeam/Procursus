@@ -1,0 +1,18 @@
+Package: sndfile-programs
+Version: @DEB_LIBSNDFILE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libsndfile1 (>= @DEB_LIBSNDFILE_V@), libflac8, libvorbis0a, libvorbisenc2, libopus0, libogg0
+Section: Utilities 
+Priority: standard
+Description: Sample programs that use libsndfile
+ This package contains simple programs which use libsndfile for operating on
+ sound files.
+ .
+ Programs include:
+   - sndfile-cmp : compare the audio data of two files
+   - sndfile-concat : concatenate two or more files
+   - sndfile-convert : convert between sound file formats
+   - sndfile-info : print information about files
+   - sndfile-metadata-get/set : get and set file metadata
+   - sndfile-play : play a sound file
