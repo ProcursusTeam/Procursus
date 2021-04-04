@@ -6,8 +6,8 @@
 	<string>io.redis.redis-sentinel</string>
 	<key>ProgramArguments</key>
 	<array>
-		<string>/usr/bin/redis-sentinel</string>
-		<string>/etc/redis/sentinel.conf</string>
+		<string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/redis-sentinel</string>
+		<string>@MEMO_PREFIX@/etc/redis/sentinel.conf</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>
