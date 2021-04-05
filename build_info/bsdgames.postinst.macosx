@@ -1,0 +1,70 @@
+#!/bin/sh
+
+set -eu
+
+CREATEUSER="games"
+
+getHiddenUserPGid()
+{
+    local __PGIDS=$(dscl . -list /Users PrimaryGroupID | awk '{print $2}' | sort -ugr)
+
+    local __NewPGID
+    for __NewPGID in $__PGIDS
+    do
+        if [[ $__NewPGID -lt 499 ]]; then
+            break;
+        fi
+    done
+
+    echo $((__NewPGID+1))
+}
+
+getHiddenUserUid()
+{
+    local __UIDS=$(dscl . -list /Users UniqueID | awk '{print $2}' | sort -ugr)
+
+    local __NewUID
+    for __NewUID in $__UIDS
+    do
+        if [[ $__NewUID -lt 499 ]] ; then
+            break;
+        fi
+    done
+
+    echo $((__NewUID+1))
+}
+
+Setup_file () {
+	FILE="${1}"
+	MODE="${2}"
+	USER="${3}"
+	GROUP="${4}"
+
+	dpkg-statoverride --update --add ${USER} ${GROUP} ${MODE} ${FILE}
+}
+
+if [ "$1" = "configure" ]
+then
+	if ! id games &>/dev/null; then
+		GROUPID=$(getHiddenUserPGid)
+		dscl . -create /Users/games UserShell /usr/bin/false
+		dscl . -create /Users/games NSFHomeDirectory /var/empty
+		dscl . -create /Users/games UniqueID $(getHiddenUserUid)
+		dscl . -create /Users/games PrimaryGroupID $GROUPID
+		dscl . -create /Users/games RealName "Games User"
+
+		dscl . -create /Groups/games gid $GROUPID
+		dscl . -create /Groups/games RealName "Games Group"
+	fi
+
+	@GNU_PREFIX@find @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/games -type f -exec Setup_file {} 0444 "root" "root" \;
+	@GNU_PREFIX@find @MEMO_PREFIX@/var/games -type f -exec Setup_file {} 0660 "root" "games" \;
+	@GNU_PREFIX@find @MEMO_PREFIX@/var/games -type d -exec Setup_file {} 0775 "root" "games" \;
+	for bin in @MEMO_PREFIX@@MEMO_SUB_PREFIX@/games/{atc,battlestar,canfield,hack,hunt,huntd,larn,phantasia,robots,rogue,sail,snake,snscore,testpat,tetris,warp,wump}; do
+		Setup_file $bin 2755 "root" "games"
+	done
+fi
+
+#DEBHELPER#
+
+exit 0

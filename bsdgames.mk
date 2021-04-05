@@ -40,19 +40,8 @@ bsdgames-package: bsdgames-stage
 	# bsdgames.mk Sign
 	$(call SIGN,bsdgames,general.xml)
 	
-	# bsdgames.mk Permissions
-	$(FAKEROOT) chown -R 0:0 $(BUILD_DIST)/bsdgames/*
-	$(FAKEROOT) chown 0:600 $(BUILD_DIST)/bsdgames/usr/games/{atc,battlestar,canfield,hack,hunt,huntd,larn,phantasia,robots,rogue,sail,snake,snscore,testpat,tetris,warp,wump}
-	$(FAKEROOT) chmod 2755 $(BUILD_DIST)/bsdgames/usr/games/{atc,battlestar,canfield,hack,hunt,huntd,larn,phantasia,robots,rogue,sail,snake,snscore,testpat,tetris,warp,wump}
-	$(FAKEROOT) chown -R 0:600 $(BUILD_DIST)/bsdgames/var/games \
-		$(BUILD_DIST)/bsdgames/usr/share/games/atc/* \
-		$(BUILD_DIST)/bsdgames/usr/share/games/cribbage.instr \
-		$(BUILD_DIST)/bsdgames/usr/share/games/larn/*
-	find $(BUILD_DIST)/bsdgames/usr/share/games -type f -exec $(FAKEROOT) chmod 0444 {} \;
-	find $(BUILD_DIST)/bsdgames/var/games -type d -exec $(FAKEROOT) chmod 0775 {} \;
-	
 	# bsdgames.mk Make .debs
-	$(call PACK,bsdgames,DEB_BSDGAMES_V,2)
+	$(call PACK,bsdgames,DEB_BSDGAMES_V)
 	
 	# bsdgames.mk Build cleanup
 	rm -rf $(BUILD_DIST)/bsdgames
