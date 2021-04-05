@@ -47,14 +47,14 @@ if [ "$1" = "configure" ]
 then
 	if ! id games &>/dev/null; then
 		GROUPID=$(getHiddenUserPGid)
-		dscl . -create /Users/games UserShell /usr/bin/false
-		dscl . -create /Users/games NSFHomeDirectory /var/empty
-		dscl . -create /Users/games UniqueID $(getHiddenUserUid)
-		dscl . -create /Users/games PrimaryGroupID $GROUPID
-		dscl . -create /Users/games RealName "Games User"
+		dscl . -create /Users/${CREATEUSER} UserShell /usr/bin/false
+		dscl . -create /Users/${CREATEUSER} NSFHomeDirectory /var/empty
+		dscl . -create /Users/${CREATEUSER} UniqueID $(getHiddenUserUid)
+		dscl . -create /Users/${CREATEUSER} PrimaryGroupID $GROUPID
+		dscl . -create /Users/${CREATEUSER} RealName "Games User"
 
-		dscl . -create /Groups/games gid $GROUPID
-		dscl . -create /Groups/games RealName "Games Group"
+		dscl . -create /Groups/${CREATEUSER} gid $GROUPID
+		dscl . -create /Groups/${CREATEUSER} RealName "Games Group"
 	fi
 
 	@GNU_PREFIX@find @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/games -type f -exec Setup_file {} 0444 "root" "root" \;
