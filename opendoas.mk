@@ -17,7 +17,11 @@ ifneq ($(wildcard $(BUILD_WORK)/opendoas/.build_complete),)
 opendoas:
 	@echo "Using previously built opendoas."
 else
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 opendoas: opendoas-setup openpam
+else # (,$(findstring darwin,$(MEMO_TARGET)))
+opendoas: opendoas-setup
+endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	cd $(BUILD_WORK)/opendoas && ./configure \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
@@ -42,8 +46,10 @@ opendoas-package: opendoas-stage
 	
 	# opendoas.mk Sign
 	$(call SIGN,doas,general.xml)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(LDID) -S$(BUILD_INFO)/pam.xml $(BUILD_DIST)/doas/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/doas
 	find $(BUILD_DIST)/doas -name '.ldid*' -type f -delete
+endif
 	
 	# opendoas.mk Permissions
 	$(FAKEROOT) chmod 4755 $(BUILD_DIST)/doas/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/doas
