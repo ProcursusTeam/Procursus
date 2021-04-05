@@ -66,7 +66,7 @@ libgd-package: libgd-stage
 
 	# libgd.mk Prep libgd-tools
 	cp -a $(BUILD_STAGE)/libgd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/libgd-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libgd.mk Sign
 	$(call SIGN,libgd3,general.xml)
 	$(call SIGN,libgd-tools,general.xml)

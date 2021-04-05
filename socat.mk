@@ -28,16 +28,16 @@ endif
 socat-package: socat-stage
 	# socat.mk Package Structure
 	rm -rf $(BUILD_DIST)/socat
-	
+
 	# socat.mk Prep socat
 	cp -a $(BUILD_STAGE)/socat $(BUILD_DIST)
-	
+
 	# socat.mk Sign
 	$(call SIGN,socat,general.xml)
-	
+
 	# socat.mk Make .debs
 	$(call PACK,socat,DEB_SOCAT_V)
-	
+
 	# socat.mk Build cleanup
 	rm -rf $(BUILD_DIST)/socat
 

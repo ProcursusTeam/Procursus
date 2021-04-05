@@ -36,13 +36,13 @@ endif
 po4a-package: po4a-stage
 	# po4a.mk Package Structure
 	rm -rf $(BUILD_DIST)/po4a
-	
+
 	# po4a.mk Prep po4a
 	cp -a $(BUILD_STAGE)/po4a $(BUILD_DIST)
-	
+
 	# po4a.mk Make .debs
 	$(call PACK,po4a,DEB_PO4A_V)
-	
+
 	# po4a.mk Build cleanup
 	rm -rf $(BUILD_DIST)/po4a
 

@@ -7,9 +7,7 @@ BROTLI_VERSION   := 1.0.9
 DEB_BROTLI_V     ?= $(BROTLI_VERSION)
 
 brotli-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/brotli-$(BROTLI_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/brotli-$(BROTLI_VERSION).tar.gz \
-			https://github.com/google/brotli/archive/v$(BROTLI_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,google,brotli,$(BROTLI_VERSION),v$(BROTLI_VERSION))
 	$(call EXTRACT_TAR,brotli-$(BROTLI_VERSION).tar.gz,brotli-$(BROTLI_VERSION),brotli)
 
 ifneq ($(wildcard $(BUILD_WORK)/brotli/.build_complete),)
@@ -22,7 +20,7 @@ brotli: brotli-setup
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX) \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \

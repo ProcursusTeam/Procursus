@@ -19,15 +19,15 @@ libxfont2: libxfont2-setup xorgproto xtrans util-macros freetype libfontenc
 	cd $(BUILD_WORK)/libxfont2 && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=/etc \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--disable-silent-rules \
 		--disable-dependency-tracking \
-		--localstatedir=/var \
+		--localstatedir=$(MEMO_PREFIX)/var \
 		--enable-devel-docs=no \
 		--with-bzip2 \
-		FREETYPE_CFLAGS="-I$(BUILD_BASE)/usr/include/freetype2" \
-		FREETYPE_LIBS="-L$(BUILD_BASE)/usr/lib -lfreetype"
+		FREETYPE_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/freetype2" \
+		FREETYPE_LIBS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -lfreetype"
 	+$(MAKE) -C $(BUILD_WORK)/libxfont2
 	+$(MAKE) -C $(BUILD_WORK)/libxfont2 install \
 		DESTDIR=$(BUILD_STAGE)/libxfont2
@@ -39,22 +39,22 @@ endif
 libxfont2-package: libxfont2-stage
 	# libxfont2.mk Package Structure
 	rm -rf $(BUILD_DIST)/libxfont{2,-dev}
-	mkdir -p $(BUILD_DIST)/libxfont{2,-dev}/usr/lib
-	
+	mkdir -p $(BUILD_DIST)/libxfont{2,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# libxfont2.mk Prep libxfont2
-	cp -a $(BUILD_STAGE)/libxfont2/usr/lib/libXfont2.2.dylib $(BUILD_DIST)/libxfont2/usr/lib
+	cp -a $(BUILD_STAGE)/libxfont2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXfont2.2.dylib $(BUILD_DIST)/libxfont2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxfont2.mk Prep libxfont-dev
-	cp -a $(BUILD_STAGE)/libxfont2/usr/lib/{libXfont2.{a,dylib},pkgconfig} $(BUILD_DIST)/libxfont-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libxfont2/usr/include $(BUILD_DIST)/libxfont-dev/usr
-	
+	cp -a $(BUILD_STAGE)/libxfont2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libXfont2.{a,dylib},pkgconfig} $(BUILD_DIST)/libxfont-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxfont2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libxfont-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+
 	# libxfont2.mk Sign
 	$(call SIGN,libxfont2,general.xml)
-	
+
 	# libxfont2.mk Make .debs
 	$(call PACK,libxfont2,DEB_LIBXFONT2_V)
 	$(call PACK,libxfont-dev,DEB_LIBXFONT2_V)
-	
+
 	# libxfont2.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libxfont{2,-dev}
 

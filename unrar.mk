@@ -39,7 +39,7 @@ unrar-package: unrar-stage
 	mkdir -p $(BUILD_DIST)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		$(BUILD_DIST)/libunrar5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libunrar-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib}
-	
+
 	# unrar.mk Prep unrar
 	cp -a $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
@@ -49,16 +49,16 @@ unrar-package: unrar-stage
 	# unrar.mk Prep libunrar-dev
 	cp -a $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libunrar.{a,dylib} $(BUILD_DIST)/libunrar-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libunrar-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# unrar.mk Sign
 	$(call SIGN,unrar,general.xml)
 	$(call SIGN,libunrar5,general.xml)
-	
+
 	# unrar.mk Make .debs
 	$(call PACK,unrar,DEB_UNRAR_V)
 	$(call PACK,libunrar5,DEB_UNRAR_V)
 	$(call PACK,libunrar-dev,DEB_UNRAR_V)
-	
+
 	# unrar.mk Build cleanup
 	rm -rf $(BUILD_DIST)/unrar $(BUILD_DIST)/libunrar{5,-dev}
 

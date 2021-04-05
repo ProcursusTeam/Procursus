@@ -7,7 +7,7 @@ FD_VERSION  := 8.2.1
 DEB_FD_V    ?= $(FD_VERSION)
 
 fd-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/fd-$(FD_VERSION).tar.gz" ] && wget -q -nc -O$(BUILD_SOURCE)/fd-$(FD_VERSION).tar.gz https://github.com/sharkdp/fd/archive/v$(FD_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,sharkdp,fd,$(FD_VERSION),v$(FD_VERSION))
 	$(call EXTRACT_TAR,fd-$(FD_VERSION).tar.gz,fd-$(FD_VERSION),fd)
 	$(call DO_PATCH,fd,fd,-p1)
 
@@ -28,16 +28,16 @@ endif
 fd-package: fd-stage
 	# fd.mk Package Structure
 	rm -rf $(BUILD_DIST)/fd
-	
+
 	# fd.mk Prep fd
 	cp -a $(BUILD_STAGE)/fd $(BUILD_DIST)
-	
+
 	# fd.mk Sign
 	$(call SIGN,fd,general.xml)
-	
+
 	# fd.mk Make .debs
 	$(call PACK,fd,DEB_FD_V)
-	
+
 	# fd.mk Build cleanup
 	rm -rf $(BUILD_DIST)/fd
 

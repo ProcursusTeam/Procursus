@@ -27,13 +27,13 @@ firmware-sbin-package: firmware-sbin-stage
 	# firmware-sbin.mk Package Structure
 	rm -rf $(BUILD_DIST)/firmware-sbin
 	mkdir -p $(BUILD_DIST)/firmware-sbin
-	
+
 	# firmware-sbin.mk Prep firmware-sbin
 	cp -a $(BUILD_STAGE)/firmware-sbin/{sbin,usr} $(BUILD_DIST)/firmware-sbin
-	
+
 	# firmware-sbin.mk Make .debs
 	$(call PACK,firmware-sbin,DEB_FIRMWARE-SBIN_V)
-	
+
 	# firmware-sbin.mk Build cleanup
 	rm -rf $(BUILD_DIST)/firmware-sbin
 

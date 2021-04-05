@@ -15,6 +15,9 @@ libgcrypt-setup: setup
 		$(SED) -i '/.size/d' $$ASM; \
 		$(SED) -i 's/_gcry/__gcry/g' $$ASM; \
 	done
+	for ASM in $(BUILD_WORK)/libgcrypt/mpi/amd64/*.S; do \
+		$(SED) -i 's/_gcry/__gcry/g' $$ASM; \
+	done
 
 ifneq ($(wildcard $(BUILD_WORK)/libgcrypt/.build_complete),)
 libgcrypt:
@@ -25,7 +28,7 @@ libgcrypt: libgcrypt-setup libgpg-error
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--with-gpg-error-prefix=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		--with-gpg-error-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libgcrypt
 	+$(MAKE) -C $(BUILD_WORK)/libgcrypt install \
 		DESTDIR=$(BUILD_STAGE)/libgcrypt
@@ -39,7 +42,7 @@ libgcrypt-package: libgcrypt-stage
 	rm -rf $(BUILD_DIST)/libgcrypt20{,-dev}
 	mkdir -p $(BUILD_DIST)/libgcrypt20/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	mkdir -p $(BUILD_DIST)/libgcrypt20-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libgcrypt.mk Prep libgcrypt
 	cp -a $(BUILD_STAGE)/libgcrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgcrypt.20.dylib $(BUILD_DIST)/libgcrypt20/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libgcrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/libgcrypt20-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
@@ -49,11 +52,11 @@ libgcrypt-package: libgcrypt-stage
 	# libgcrypt.mk Sign
 	$(call SIGN,libgcrypt20,general.xml)
 	$(call SIGN,libgcrypt20-dev,general.xml)
-	
+
 	# libgcrypt.mk Make .debs
 	$(call PACK,libgcrypt20,DEB_LIBGCRYPT_V)
 	$(call PACK,libgcrypt20-dev,DEB_LIBGCRYPT_V)
-	
+
 	# libgcrypt.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libgcrypt20{,-dev}
 

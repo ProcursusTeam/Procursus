@@ -19,9 +19,9 @@ libxfixes: libxfixes-setup libx11 xorgproto
 	cd $(BUILD_WORK)/libxfixes && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
+		--localstatedir=$(MEMO_PREFIX)/var
 	+$(MAKE) -C $(BUILD_WORK)/libxfixes
 	+$(MAKE) -C $(BUILD_WORK)/libxfixes install \
 		DESTDIR=$(BUILD_STAGE)/libxfixes
@@ -33,23 +33,23 @@ endif
 libxfixes-package: libxfixes-stage
 	# libxfixes.mk Package Structure
 	rm -rf $(BUILD_DIST)/libxfixes{3,-dev}
-	mkdir -p $(BUILD_DIST)/libxfixes3/usr/lib \
-		$(BUILD_DIST)/libxfixes-dev/usr/{include,lib}
-	
+	mkdir -p $(BUILD_DIST)/libxfixes3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libxfixes-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib}
+
 	# libxfixes.mk Prep libxfixes3
-	cp -a $(BUILD_STAGE)/libxfixes/usr/lib/libXfixes.3.dylib $(BUILD_DIST)/libxfixes3/usr/lib
+	cp -a $(BUILD_STAGE)/libxfixes/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXfixes.3.dylib $(BUILD_DIST)/libxfixes3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxfixes.mk Prep libxfixes-dev
-	cp -a $(BUILD_STAGE)/libxfixes/usr/lib/!(libXfixes.3.dylib) $(BUILD_DIST)/libxfixes-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libxfixes/usr/{include,share} $(BUILD_DIST)/libxfixes-dev/usr
-	
+	cp -a $(BUILD_STAGE)/libxfixes/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libXfixes.3.dylib) $(BUILD_DIST)/libxfixes-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxfixes/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libxfixes-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+
 	# libxfixes.mk Sign
 	$(call SIGN,libxfixes3,general.xml)
-	
+
 	# libxfixes.mk Make .debs
 	$(call PACK,libxfixes3,DEB_LIBXFIXES_V)
 	$(call PACK,libxfixes-dev,DEB_LIBXFIXES_V)
-	
+
 	# libxfixes.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libxfixes{3,-dev}
 
