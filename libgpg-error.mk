@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS        += libgpg-error
-LIBGPG-ERROR_VERSION := 1.41
+LIBGPG-ERROR_VERSION := 1.42
 DEB_LIBGPG-ERROR_V   ?= $(LIBGPG-ERROR_VERSION)-1
 
 ifneq (,$(findstring aarch64,$(GNU_HOST_TRIPLE)))
