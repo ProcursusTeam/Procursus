@@ -6,7 +6,7 @@ SUBPROJECTS      += binutils
 BINUTILS_VERSION := 2.36.1
 DEB_BINUTILS_V   ?= $(BINUTILS_VERSION)
 
-BINUTILS_TARGETS := aarch64-freebsd aarch64-linux-gnu aarch64-linux-musl aarch64-openbsd aarch64_be-netbsd alpha-linux-gnu alpha-linux-musl alpha-openbsd arm-linux-gnueabi arm-linux-gnueabihf arm-linux-musl arm-netbsd armeb-netbsd armv4-netbsd armv4eb-netbsd armv6-netbsd armv6eb-netbsd armv7-netbsd armv7-openbsd armv7eb-netbsd i386-freebsd i386-openbsd i486-netbsd i686-gnu i686-kfreebsd-gnu i686-linux-gnu i686-linux-musl ia64-linux-gnu ia64-linux-musl m68010-netbsd m68k-linux-gnu m68k-linux-musl mips64-netbsd mips64el-linux-gnuabi64 mips64el-linux-musl mipsel-linux-gnu mipsel-linux-musl powerpc-freebsd powerpc-linux-gnu powerpc-linux-musl powerpc64-freebsd powerpc64-linux-gnu powerpc64-linux-musl powerpc64-openbsd powerpc64le-linux-gnu powerpc64le-linux-musl powerpcspe-freebsd riscv64-linux-gnu riscv64-linux-musl s390x-linux-gnu s390x-linux-musl sh-netbsd sh4-linux-gnu sh4-linux-musl shle-netbsd sparc64-freebsd sparc64-linux-gnu sparc64-linux-musl sparc64-openbsd x86_64-freebsd x86_64-linux-gnu x86_64-linux-musl x86_64-netbsd x86_64-openbsd
+BINUTILS_TARGETS := aarch64-linux-gnu aarch64-linux-musl alpha-linux-gnu alpha-linux-musl arm-linux-gnueabi arm-linux-gnueabihf arm-linux-musl arm-linux-musl i686-gnu i686-kfreebsd-gnu i686-linux-gnu i686-linux-musl ia64-linux-gnu ia64-linux-musl m68k-linux-gnu m68k-linux-musl mips64el-linux-gnuabi64 mips64el-linux-musl mipsel-linux-gnu mipsel-linux-musl powerpc-linux-gnu powerpc-linux-musl powerpc64-linux-gnu powerpc64-linux-musl powerpc64le-linux-gnu powerpc64le-linux-musl riscv64-linux-gnu riscv64-linux-musl s390x-linux-gnu s390x-linux-musl sh4-linux-gnu sh4-linux-musl sparc64-linux-gnu sparc64-linux-musl x86_64-linux-gnu x86_64-linux-musl
 
 BINUTILS_CONFARGS := --enable-obsolete \
 	--enable-shared \
@@ -37,18 +37,24 @@ binutils: binutils-setup $(patsubst %,%-binutils-target,$(BINUTILS_TARGETS))
 endif
 
 %-binutils-target: binutils-setup gettext
-	mkdir -p $(BUILD_WORK)/binutils/$$(echo $@ | rev | cut -d- -f3- | rev)
-	cd $(BUILD_WORK)/binutils/$$(echo $@ | rev | cut -d- -f3- | rev) && ../configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--libdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/$(GNU_HOST_TRIPLE)/$$(echo $@ | rev | cut -d- -f3- | rev)/lib \
-		--includedir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/$(GNU_HOST_TRIPLE)/$$(echo $@ | rev | cut -d- -f3- | rev)/include \
-		--target=$$(echo $@ | rev | cut -d- -f3- | rev) \
-		$(BINUTILS_CONFARGS)
-	+$(MAKE) -C $(BUILD_WORK)/binutils/$$(echo $@ | rev | cut -d- -f3- | rev)
-	+$(MAKE) -C $(BUILD_WORK)/binutils/$$(echo $@ | rev | cut -d- -f3- | rev) install \
-		DESTDIR=$(BUILD_STAGE)/binutils/$$(echo $@ | rev | cut -d- -f3- | rev )
+	target=$$(echo $@ | rev | cut -d- -f3- | rev); \
+	if [ -f $(BUILD_WORK)/binutils/$$target/.build_complete ]; then \
+		echo "Using previously built $$target binutils"; \
+	else \
+		mkdir -p $(BUILD_WORK)/binutils/$$target; \
+		cd $(BUILD_WORK)/binutils/$$target && ../configure -C \
+			--build=$$($(BUILD_MISC)/config.guess) \
+			--host=$(GNU_HOST_TRIPLE) \
+			--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+			--libdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/$(GNU_HOST_TRIPLE)/$$target/lib \
+			--includedir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/$(GNU_HOST_TRIPLE)/$$target/include \
+			--target=$$target \
+			$(BINUTILS_CONFARGS); \
+		$(MAKE) -C $(BUILD_WORK)/binutils/$$target; \
+		$(MAKE) -C $(BUILD_WORK)/binutils/$$target install \
+			DESTDIR=$(BUILD_STAGE)/binutils/$$target; \
+		touch $(BUILD_WORK)/binutils/$$target/.build_complete; \
+	fi
 
 binutils-package: binutils-stage
 	# binutils.mk Package Structure
