@@ -1,0 +1,15 @@
+Packages: theos-dependencies
+Version: @DEB_THEOSDEPS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Pre-Depends: coreutils, dpkg, firmware (>= 11.0)
+Depends: ca-certificates, git, grep, ios-toolchain, perl, rsync, unzip, xz-utils
+Conflicts: org.theos.dependencies
+Provides: org.theos.dependencies
+Replaces: org.theos.dependencies
+Section: Utilities
+Priority: optional
+Tags: purpose::console, role::developer
+Description: What Theos needs.
+    This metapackage installs grep, rsync, unzip, Git, Perl, CA Certs, XZ Utils, and the iOS Toolchain in one go.
+Name: Theos Dependencies

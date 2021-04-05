@@ -1,0 +1,14 @@
+Package: ios-toolchain
+Version: @DEB_THEOSDEPS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: clang, ldid, make, odcctools
+Conflicts: org.coolstar.iostoolchain
+Provides: org.coolstar.iostoolchain
+Replaces: org.coolstar.iostoolchain
+Section: Utilities
+Priority: optional
+Tag: purpose::console, role::developer
+Description: LLVM+Clang, ld64, Darwin CC Tools, Make, ldid
+    This metapackage installs LLVM+Clang, ld64, Darwin CC Tools, GNU Make, and ldid in one go.
+Name: iOS Toolchain
