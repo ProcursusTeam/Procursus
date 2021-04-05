@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,findstring($(MEMO_TARGET),darwin)))
+
 SUBPROJECTS         += snaprestore
 SNAPRESTORE_VERSION := 0.3
 DEB_SNAPRESTORE_V   ?= $(SNAPRESTORE_VERSION)
@@ -41,3 +43,5 @@ snaprestore-package: snaprestore-stage
 	rm -rf $(BUILD_DIST)/snaprestore
 
 .PHONY: snaprestore snaprestore-package
+
+endif
