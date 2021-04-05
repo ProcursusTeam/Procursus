@@ -16,18 +16,16 @@ rc:
 	@echo "Using previously built rc."
 else
 rc: rc-setup readline
-	cd $(BUILD_WORK)/rc && autoreconf -fi && ./configure \
+	cd $(BUILD_WORK)/rc && autoreconf -fi && ac_cv_func_setpgrp_void=yes ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		--prefix=/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-edit=readline \
 
 	sed -i 's/HAVE_SYSV_SIGCLD\ 1/HAVE_SYSV_SIGCLD\ 0/g' $(BUILD_WORK)/rc/config.h
 	
 	+$(MAKE) -C $(BUILD_WORK)/rc
-	+$(MAKE) -C $(BUILD_WORK)/rc install -j1 \
+	+$(MAKE) -C $(BUILD_WORK)/rc install \
 		DESTDIR=$(BUILD_STAGE)/rc
-	+$(MAKE) -C $(BUILD_WORK)/rc install -j1 \
-		DESTDIR="$(BUILD_BASE)"
 		
 	touch $(BUILD_WORK)/rc/.build_complete
 endif
