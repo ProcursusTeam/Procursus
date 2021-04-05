@@ -7,6 +7,12 @@ LIBBOOST_FORMAT_V := 1_74_0
 LIBBOOST_VERSION  := 1.74.0
 DEB_LIBBOOST_V    ?= $(LIBBOOST_VERSION)
 
+ifneq (,$(findstring amd64,$(MEMO_TARGET)))
+LIBBOOST_CONFIGURE_ARGS := abi=sysv
+else
+LIBBOOST_CONFIGURE_ARGS := abi=aapcs
+endif
+
 ###
 # Add libicu next release (1.76.0)
 # NEVER FORGET TO CHECK IF THERE ARE NEW/REMOVED LIBS
@@ -35,12 +41,14 @@ endif
 		--without-python \
 		threading=multi \
 		variant=release \
+		$(LIBBOOST_CONFIGURE_ARGS) \
 		install
 	cd $(BUILD_WORK)/libboost && ./b2 \
 		--prefix=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--without-python \
 		threading=multi \
 		variant=release \
+		$(LIBBOOST_CONFIGURE_ARGS) \
 		install
 	# F u boost!
 	for lib in $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_*.dylib $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_*.dylib; do \
