@@ -4,7 +4,6 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Libraries
 Priority: optional
-Depends: libuuid16
 Description: Apache Portable Runtime Library
  APR is Apache's Portable Runtime Library, designed to be a support library
  that provides a predictable and consistent interface to underlying
