@@ -38,6 +38,7 @@ git: git-setup openssl curl pcre2 gettext libidn2
 		ac_cv_snprintf_returns_bogus=yes \
 		ac_cv_header_libintl_h=yes \
 		CURL_CONFIG=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/curl-config
+ifeq (,$(findstring darwin,$(GNU_HOST_TRIPLE)))
 	$(SED) -i s/'errno == ENOEXEC)'/'errno == ENOEXEC || errno == EPERM) {'/ $(BUILD_WORK)/git/run-command.c
 	$(SED) -i '/execve(argv.argv\[0/,+1 d' $(BUILD_WORK)/git/run-command.c
 	$(SED) -i '/errno == ENOEXEC || errno == EPERM/a			struct strvec args = STRVEC_INIT; \
@@ -49,6 +50,7 @@ git: git-setup openssl curl pcre2 gettext libidn2
 			execve(SHELL_PATH, (char *const *) args.v, \
  			       (char *const *) childenv); \
 		}' $(BUILD_WORK)/git/run-command.c
+endif
 	+$(MAKE) -C $(BUILD_WORK)/git all \
 		$(GIT_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/git/Documentation man install \
