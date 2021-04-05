@@ -32,23 +32,23 @@ ifneq ($(wildcard $(BUILD_WORK)/binutils/.build_complete),)
 binutils:
 	@echo "Using previously built binutils."
 else
-binutils: binutils-setup gettext
-	for target in $(BINUTILS_TARGETS); do \
-		mkdir -p $(BUILD_WORK)/binutils/$$target; \
-		cd $(BUILD_WORK)/binutils/$$target && ../configure -C \
-			--build=$$($(BUILD_MISC)/config.guess) \
-			--host=$(GNU_HOST_TRIPLE) \
-			--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-			--libdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/$(GNU_HOST_TRIPLE)/$$target/lib \
-			--includedir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/$(GNU_HOST_TRIPLE)/$$target/include \
-			--target=$$target \
-			$(BINUTILS_CONFARGS); \
-		$(MAKE) -C $(BUILD_WORK)/binutils/$$target; \
-		$(MAKE) -C $(BUILD_WORK)/binutils/$$target install \
-			DESTDIR=$(BUILD_STAGE)/binutils/$$target; \
-	done
+binutils: binutils-setup $(patsubst %,%-binutils-target,$(BINUTILS_TARGETS))
 	touch $(BUILD_WORK)/binutils/.build_complete
 endif
+
+%-binutils-target: binutils-setup gettext
+	mkdir -p $(BUILD_WORK)/binutils/$$(echo $@ | rev | cut -d- -f3- | rev)
+	cd $(BUILD_WORK)/binutils/$$(echo $@ | rev | cut -d- -f3- | rev) && ../configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
+		--host=$(GNU_HOST_TRIPLE) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--libdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/$(GNU_HOST_TRIPLE)/$$(echo $@ | rev | cut -d- -f3- | rev)/lib \
+		--includedir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/$(GNU_HOST_TRIPLE)/$$(echo $@ | rev | cut -d- -f3- | rev)/include \
+		--target=$$(echo $@ | rev | cut -d- -f3- | rev) \
+		$(BINUTILS_CONFARGS)
+	+$(MAKE) -C $(BUILD_WORK)/binutils/$$(echo $@ | rev | cut -d- -f3- | rev)
+	+$(MAKE) -C $(BUILD_WORK)/binutils/$$(echo $@ | rev | cut -d- -f3- | rev) install \
+		DESTDIR=$(BUILD_STAGE)/binutils/$$(echo $@ | rev | cut -d- -f3- | rev )
 
 binutils-package: binutils-stage
 	# binutils.mk Package Structure
