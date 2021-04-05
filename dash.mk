@@ -16,7 +16,7 @@ dash:
 	@echo "Using previously built dash."
 else
 dash: dash-setup libedit
-	$(FIND) $(BUILD_WORK)/dash -name '*.c' -exec $(SED) -i 's/stat64/stat/g' "{}" \;
+	find $(BUILD_WORK)/dash -name '*.c' -exec $(SED) -i 's/stat64/stat/g' "{}" \;
 
 	cd $(BUILD_WORK)/dash && ./autogen.sh && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
