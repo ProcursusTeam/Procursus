@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += xkbcomp
+SUBPROJECTS     += xkbcomp
 XKBCOMP_VERSION := 1.4.5
 DEB_XKBCOMP_V   ?= $(XKBCOMP_VERSION)
 
@@ -17,6 +17,7 @@ xkbcomp:
 else
 xkbcomp: xkbcomp-setup libx11 xorgproto libxkbfile
 	cd $(BUILD_WORK)/xkbcomp && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--sysconfdir=$(MEMO_PREFIX)/etc \

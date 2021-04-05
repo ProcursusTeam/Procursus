@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += xkeyboard-config
+SUBPROJECTS              += xkeyboard-config
 XKEYBOARD-CONFIG_VERSION := 2.32
 DEB_XKEYBOARD-CONFIG_V   ?= $(XKEYBOARD-CONFIG_VERSION)
 
@@ -14,8 +14,9 @@ ifneq ($(wildcard $(BUILD_WORK)/xkeyboard-config/.build_complete),)
 xkeyboard-config:
 	@echo "Using previously built xkeyboard-config."
 else
-xkeyboard-config: xkeyboard-config-setup libx11 libxau libxmu xorgproto xxhash
-	cd $(BUILD_WORK)/xkeyboard-config && ./autogen.sh \
+xkeyboard-config: xkeyboard-config-setup xorgproto
+	cd $(BUILD_WORK)/xkeyboard-config && ./configure \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--sysconfdir=$(MEMO_PREFIX)/etc \
