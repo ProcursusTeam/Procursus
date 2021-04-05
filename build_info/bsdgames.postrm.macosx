@@ -1,0 +1,15 @@
+#!/bin/sh
+
+set -eu
+
+if [ "${1}" = "purge" ]
+then
+	if id games &>/dev/null; then
+		dscl . -delete /Users/games
+		dscl . -delete /Groups/games
+	fi
+fi
+
+#DEBHELPER#
+
+exit 0
