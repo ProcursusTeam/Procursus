@@ -53,10 +53,10 @@ endif
 
 	# sed.mk Sign
 	$(call SIGN,sed,general.xml)
-	
+
 	# sed.mk Make .debs
 	$(call PACK,sed,DEB_SED_V)
-	
+
 	# sed.mk Build cleanup
 	rm -rf $(BUILD_DIST)/sed
 

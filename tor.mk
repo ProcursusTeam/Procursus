@@ -44,16 +44,16 @@ endif
 tor-package: tor-stage
 	# tor.mk Package Structure
 	rm -rf $(BUILD_DIST)/tor
-	
+
 	# tor.mk Prep tor
 	cp -a $(BUILD_STAGE)/tor $(BUILD_DIST)
-	
+
 	# tor.mk Sign
 	$(call SIGN,tor,general.xml)
-	
+
 	# tor.mk Make .debs
 	$(call PACK,tor,DEB_TOR_V)
-	
+
 	# tor.mk Build cleanup
 	rm -rf $(BUILD_DIST)/tor
 

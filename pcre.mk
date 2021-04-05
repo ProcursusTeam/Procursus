@@ -47,7 +47,7 @@ pcre-package: pcre-stage
 	mkdir -p $(BUILD_DIST)/libpcre{1,16-0,32-0,posix0,cpp0}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libpcre1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib,share/man/man1} \
 		$(BUILD_DIST)/pcregrep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
-	
+
 	# pcre.mk Prep libpcre1
 	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpcre.1.dylib $(BUILD_DIST)/libpcre1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
@@ -71,7 +71,7 @@ pcre-package: pcre-stage
 	# pcre.mk Prep pcregrep
 	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pcregrep $(BUILD_DIST)/pcregrep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/pcregrep.1 $(BUILD_DIST)/pcregrep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
-	
+
 	# pcre.mk Sign
 	$(call SIGN,libpcre1,general.xml)
 	$(call SIGN,libpcre16-0,general.xml)
@@ -79,7 +79,7 @@ pcre-package: pcre-stage
 	$(call SIGN,libpcreposix0,general.xml)
 	$(call SIGN,libpcrecpp0,general.xml)
 	$(call SIGN,pcregrep,general.xml)
-	
+
 	# pcre.mk Make .debs
 	$(call PACK,libpcre1,DEB_PCRE_V)
 	$(call PACK,libpcre1-dev,DEB_PCRE_V)
@@ -88,7 +88,7 @@ pcre-package: pcre-stage
 	$(call PACK,libpcreposix0,DEB_PCRE_V)
 	$(call PACK,libpcrecpp0,DEB_PCRE_V)
 	$(call PACK,pcregrep,DEB_PCRE_V)
-	
+
 	# pcre.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libpcre{1{,-dev},16-0,32-0,posix0,cpp0} $(BUILD_DIST)/pcregrep
 

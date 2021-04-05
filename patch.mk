@@ -34,7 +34,7 @@ endif
 patch-package: patch-stage
 	# patch.mk Package Structure
 	rm -rf $(BUILD_DIST)/patch
-	
+
 	# patch.mk Prep patch
 	cp -a $(BUILD_STAGE)/patch $(BUILD_DIST)
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
@@ -43,13 +43,13 @@ ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 		ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(echo $$bin | rev | cut -d/ -f1 | rev) $(BUILD_DIST)/patch/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $$bin | rev | cut -d/ -f1 | rev | cut -c2-); \
 	done
 endif
-	
+
 	# patch.mk Sign
 	$(call SIGN,patch,general.xml)
-	
+
 	# patch.mk Make .debs
 	$(call PACK,patch,DEB_PATCH_V)
-	
+
 	# patch.mk Build cleanup
 	rm -rf $(BUILD_DIST)/patch
 
