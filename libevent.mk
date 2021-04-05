@@ -16,12 +16,12 @@ libevent:
 	@echo "Using previously built libevent."
 else
 libevent: libevent-setup openssl
-	cd $(BUILD_WORK)/libevent && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/libevent && cmake . \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX) \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/ \
 		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
@@ -62,7 +62,6 @@ libevent-package: libevent-stage
 
 	# libevent.mk Prep libevent-pthreads-2.1-7
 	cp -a $(BUILD_STAGE)/libevent/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libevent_pthreads-2.1.7.dylib $(BUILD_DIST)/libevent-pthreads-2.1-7/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-
 
 	# libevent.mk Sign
 	$(call SIGN,libevent-2.1-7,general.xml)

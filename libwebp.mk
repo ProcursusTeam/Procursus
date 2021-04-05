@@ -21,7 +21,7 @@ libwebp: libwebp-setup libpng16 libgif libtiff libjpeg-turbo
 	cd $(BUILD_WORK)/libwebp && ./autogen.sh && ./configure \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-{sdl,gl} \
 		--enable-libwebp{mux,demux,decoder,extras}
 	+$(MAKE) -C $(BUILD_WORK)/libwebp
@@ -39,27 +39,27 @@ libwebp-package: libwebp-stage
 		$(BUILD_DIST)/libwebp{demux2,mux3} \
 		$(BUILD_DIST)/webp
 	mkdir -p \
-		$(BUILD_DIST)/libwebp-dev/usr/{include,lib/pkgconfig} \
-		$(BUILD_DIST)/libwebp{7,demux2,mux3}/usr/lib \
-		$(BUILD_DIST)/webp/usr/bin
+		$(BUILD_DIST)/libwebp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/pkgconfig} \
+		$(BUILD_DIST)/libwebp{7,demux2,mux3}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/webp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
   # libwebp.mk Prep libwebp-dev
-	cp -a $(BUILD_STAGE)/libwebp/usr/include $(BUILD_DIST)/libwebp-dev/usr
-	cp -a $(BUILD_STAGE)/libwebp/usr/lib/*.a $(BUILD_DIST)/libwebp-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libwebp/usr/lib/libwebp{,decoder,demux,mux}.dylib $(BUILD_DIST)/libwebp-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libwebp/usr/lib/pkgconfig $(BUILD_DIST)/libwebp-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libwebp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libwebp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libwebp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/*.a $(BUILD_DIST)/libwebp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libwebp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libwebp{,decoder,demux,mux}.dylib $(BUILD_DIST)/libwebp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libwebp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libwebp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libwebp.mk Prep libwebp7
-	cp -a $(BUILD_STAGE)/libwebp/usr/lib/libwebp.*.dylib $(BUILD_DIST)/libwebp7/usr/lib
+	cp -a $(BUILD_STAGE)/libwebp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libwebp.*.dylib $(BUILD_DIST)/libwebp7/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libwebp.mk Prep libwebpdemux2
-	cp -a $(BUILD_STAGE)/libwebp/usr/lib/libwebpdemux.*.dylib $(BUILD_DIST)/libwebpdemux2/usr/lib
+	cp -a $(BUILD_STAGE)/libwebp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libwebpdemux.*.dylib $(BUILD_DIST)/libwebpdemux2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libwebp.mk Prep libwebpmux3
-	cp -a $(BUILD_STAGE)/libwebp/usr/lib/libwebpmux.*.dylib $(BUILD_DIST)/libwebpmux3/usr/lib
+	cp -a $(BUILD_STAGE)/libwebp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libwebpmux.*.dylib $(BUILD_DIST)/libwebpmux3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libwebp.mk Prep webp
-	cp -a $(BUILD_STAGE)/libwebp/usr/bin $(BUILD_DIST)/webp/usr
+	cp -a $(BUILD_STAGE)/libwebp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/webp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
   # libwebp.mk Sign
 	$(call SIGN,libwebp-dev,general.xml)

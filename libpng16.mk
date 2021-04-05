@@ -35,10 +35,10 @@ libpng16-package: libpng16-stage
 	mkdir -p $(BUILD_DIST)/libpng16-16/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libpng16-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib} \
 		$(BUILD_DIST)/libpng16-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	
+
 	# libpng16.mk Prep libpng16-16
 	cp -a $(BUILD_STAGE)/libpng16/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpng16.16.dylib $(BUILD_DIST)/libpng16-16/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libpng16.mk Prep libpng16-dev
 	cp -a $(BUILD_STAGE)/libpng16/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*-config $(BUILD_DIST)/libpng16-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/libpng16/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libpng16.16.dylib) $(BUILD_DIST)/libpng16-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
@@ -51,12 +51,12 @@ libpng16-package: libpng16-stage
 	# libpng16.mk Sign
 	$(call SIGN,libpng16-16,general.xml)
 	$(call SIGN,libpng16-tools,general.xml)
-	
+
 	# libpng16.mk Make .debs
 	$(call PACK,libpng16-16,DEB_LIBPNG16_V)
 	$(call PACK,libpng16-dev,DEB_LIBPNG16_V)
 	$(call PACK,libpng16-tools,DEB_LIBPNG16_V)
-	
+
 	# libpng16.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libpng16-{16,dev,tools}
 

@@ -15,12 +15,12 @@ libebml:
 	@echo "Using previously built libebml."
 else
 libebml: libebml-setup
-	cd $(BUILD_WORK)/libebml && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/libebml && cmake . \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)/ \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/ \
 		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
@@ -33,7 +33,7 @@ libebml: libebml-setup
 		DESTDIR="$(BUILD_STAGE)/libebml"
 	+$(MAKE) -C $(BUILD_WORK)/libebml install \
 		DESTDIR="$(BUILD_BASE)"
-	
+
 	touch $(BUILD_WORK)/libebml/.build_complete
 endif
 

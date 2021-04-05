@@ -20,9 +20,9 @@ coreutils-setup: setup
 	$(call EXTRACT_TAR,coreutils-$(COREUTILS_VERSION).tar.xz,coreutils-$(COREUTILS_VERSION),coreutils)
 	mkdir -p $(BUILD_WORK)/coreutils/{su,rev,bsdcp}
 	wget -q -nc -P $(BUILD_WORK)/coreutils/su \
-		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/usr.bin/su/su.c \
-		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/usr.bin/su/suutil.{c,h} \
-		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/usr.bin/su/su.1
+		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX).bin/su/su.c \
+		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX).bin/su/suutil.{c,h} \
+		https://raw.githubusercontent.com/coolstar/netbsd-ports-ios/trunk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX).bin/su/su.1
 	wget -q -nc -P $(BUILD_WORK)/coreutils/rev \
 		https://opensource.apple.com/source/text_cmds/text_cmds-88/rev/rev.{c,1}
 	wget -q -nc -P $(BUILD_WORK)/coreutils/bsdcp \
@@ -64,7 +64,7 @@ coreutils-package: coreutils-stage
 	# coreutils.mk Package Structure
 	rm -rf $(BUILD_DIST)/coreutils
 	mkdir -p $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/{bin,$(MEMO_SUB_PREFIX)/sbin}
-	
+
 	# coreutils.mk Prep coreutils
 	cp -a $(BUILD_STAGE)/coreutils $(BUILD_DIST)
 	ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/chown $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
@@ -94,10 +94,10 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(FAKEROOT) chmod u+s $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$(GNU_PREFIX)su
 endif
-	
+
 	# coreutils.mk Make .debs
 	$(call PACK,coreutils,DEB_COREUTILS_V)
-	
+
 	# coreutils.mk Build cleanup
 	rm -rf $(BUILD_DIST)/coreutils
 

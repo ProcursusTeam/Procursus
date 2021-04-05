@@ -9,7 +9,7 @@ SUBPROJECTS   += bash
 endif # ($(MEMO_TARGET),darwin-\*)
 BASH_VERSION  := 5.1
 BASH_SUB_V    := 004
-DEB_BASH_V    ?= $(BASH_VERSION).$(BASH_SUB_V)
+DEB_BASH_V    ?= $(BASH_VERSION).$(BASH_SUB_V)-1
 
 bash-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION).tar.gz{,.sig}
@@ -50,7 +50,7 @@ bash: bash-setup ncurses readline
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-nls \
-		--with-installed-readline=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		--with-installed-readline=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		CFLAGS="$(CFLAGS) -DSSH_SOURCE_BASHRC" \
 		$(BASH_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/bash \
@@ -58,8 +58,8 @@ bash: bash-setup ncurses readline
 	+$(MAKE) -C $(BUILD_WORK)/bash install \
 		DESTDIR="$(BUILD_STAGE)/bash"
 ifneq ($(MEMO_SUB_PREFIX),)
-	ln -s ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bash $(BUILD_STAGE)/bash/bin/bash
-	ln -s ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bash $(BUILD_STAGE)/bash/bin/sh
+	ln -s ..$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bash $(BUILD_STAGE)/bash/bin/bash
+	ln -s ..$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bash $(BUILD_STAGE)/bash/bin/sh
 endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	ln -s bash $(BUILD_STAGE)/bash/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sh
