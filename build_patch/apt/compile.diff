@@ -593,7 +593,7 @@ diff -urN apt-2.1.11/apt-pkg/memrchr.cc apt/apt-pkg/memrchr.cc
 diff -urN apt-2.1.11/apt-pkg/missing.h apt/apt-pkg/missing.h
 --- apt-2.1.11/apt-pkg/missing.h	1969-12-31 19:00:00.000000000 -0500
 +++ apt/apt-pkg/missing.h	2020-11-22 18:23:41.695439833 -0500
-@@ -0,0 +1,27 @@
+@@ -0,0 +1,25 @@
 +#define _GNU_SOURCE
 +#include <sys/socket.h>
 +#include <netinet/in.h>
@@ -614,8 +614,6 @@ diff -urN apt-2.1.11/apt-pkg/missing.h apt/apt-pkg/missing.h
 +}
 +
 +typedef void (*sighandler_t)(int);
-+
-+extern char **environ;
 +
 +#define AI_IDN 0x0040
 +

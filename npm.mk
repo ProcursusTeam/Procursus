@@ -16,19 +16,19 @@ npm:
 else
 npm: npm-setup
 	mkdir -p $(BUILD_STAGE)/npm/{etc,usr/share}
-	cp -a $(BUILD_WORK)/npm $(BUILD_STAGE)/npm/usr/share
+	cp -a $(BUILD_WORK)/npm $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	node $(BUILD_WORK)/npm/bin/npm-cli.js install \
 		-ddd --global \
-        --prefix="$(BUILD_STAGE)/npm/usr" \
-		$(BUILD_STAGE)/npm/usr/share/npm
+        --prefix="$(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+		$(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/npm
 	@echo "# DO NOT MODIFY THIS FILE - use /etc/npmrc instead.\n\
-globalconfig=/etc/npmrc\n\
-globalignorefile=/etc/npmignore\n\
-prefix=/usr\n" > $(BUILD_STAGE)/npm/usr/lib/node_modules/npm/npmrc
-	cp -a $(BUILD_WORK)/npm/package.json $(BUILD_STAGE)/npm/usr/share/npm
+globalconfig=$(MEMO_PREFIX)/etc/npmrc\n\
+globalignorefile=$(MEMO_PREFIX)/etc/npmignore\n\
+prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)\n" > $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/node_modules/npm/npmrc
+	cp -a $(BUILD_WORK)/npm/package.json $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/npm
 	touch $(BUILD_STAGE)/npm/etc/npmrc
-	mkdir -p $(BUILD_STAGE)/npm/usr/share/nodejs
-	ln -s ../npm $(BUILD_STAGE)/npm/usr/share/nodejs/npm
+	mkdir -p $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/nodejs
+	ln -s ../npm $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/nodejs/npm
 	touch $(BUILD_WORK)/npm/.build_complete
 endif
 
@@ -36,13 +36,13 @@ npm-package: npm-stage
 	# npm.mk Package Structure
 	rm -rf $(BUILD_DIST)/npm
 	mkdir -p $(BUILD_DIST)/npm
-	
+
 	# npm.mk Prep npm
 	cp -a $(BUILD_STAGE)/npm $(BUILD_DIST)
-	
+
 	# npm.mk Make .debs
 	$(call PACK,npm,DEB_NPM_V)
-	
+
 	# npm.mk Build cleanup
 	rm -rf $(BUILD_DIST)/npm
 

@@ -31,16 +31,16 @@ endif
 m4-package: m4-stage
 	# m4.mk Package Structure
 	rm -rf $(BUILD_DIST)/m4
-	
+
 	# m4.mk Prep m4
 	cp -a $(BUILD_STAGE)/m4 $(BUILD_DIST)
-	
+
 	# m4.mk Sign
 	$(call SIGN,m4,general.xml)
-	
+
 	# m4.mk Make .debs
 	$(call PACK,m4,DEB_M4_V)
-	
+
 	# m4.mk Build cleanup
 	rm -rf $(BUILD_DIST)/m4
 

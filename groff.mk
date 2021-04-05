@@ -41,16 +41,16 @@ endif
 groff-package: groff-stage
 	# groff.mk Package Structure
 	rm -rf $(BUILD_DIST)/groff
-	
+
 	# groff.mk Prep groff
 	cp -a $(BUILD_STAGE)/groff $(BUILD_DIST)
-	
+
 	# groff.mk Sign
 	$(call SIGN,groff,general.xml)
-	
+
 	# groff.mk Make .debs
 	$(call PACK,groff,DEB_GROFF_V)
-	
+
 	# groff.mk Build cleanup
 	rm -rf $(BUILD_DIST)/groff
 

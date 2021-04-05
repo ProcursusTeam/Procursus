@@ -35,16 +35,16 @@ endif
 gzip-package: gzip-stage
 	# gzip.mk Package Structure
 	rm -rf $(BUILD_DIST)/gzip
-	
+
 	# gzip.mk Prep gzip
 	cp -a $(BUILD_STAGE)/gzip $(BUILD_DIST)
-	
+
 	# gzip.mk Sign
 	$(call SIGN,gzip,general.xml)
-	
+
 	# gzip.mk Make .debs
 	$(call PACK,gzip,DEB_GZIP_V)
-	
+
 	# gzip.mk Build cleanup
 	rm -rf $(BUILD_DIST)/gzip
 

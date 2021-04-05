@@ -28,13 +28,13 @@ youtube-dl-package: youtube-dl-stage
 	# youtube-dl.mk Package Structure
 	rm -rf $(BUILD_DIST)/youtube-dl
 	mkdir -p $(BUILD_DIST)/youtube-dl
-	
+
 	# youtube-dl.mk Prep youtube-dl
 	cp -a $(BUILD_STAGE)/youtube-dl $(BUILD_DIST)
 
 	# youtube-dl.mk Make .debs
 	$(call PACK,youtube-dl,DEB_YOUTUBE-DL_V)
-	
+
 	# youtube-dl.mk Build cleanup
 	rm -rf $(BUILD_DIST)/youtube-dl
 
