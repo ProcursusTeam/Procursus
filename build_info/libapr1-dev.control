@@ -4,8 +4,7 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Development
 Priority: optional
-Depends: libapr1 (=@DEB_APR_V@), uuid-dev, libsctp-dev, python3:any
-Conflicts: libapr0-dev, libapr1.0-dev
+Depends: libapr1 (=@DEB_APR_V@), libuuid-dev, python3:any
 Description: Apache Portable Runtime Library
  APR is Apache's Portable Runtime Library, designed to be a support library
  that provides a predictable and consistent interface to underlying
