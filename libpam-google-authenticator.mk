@@ -17,7 +17,11 @@ ifneq ($(wildcard $(BUILD_WORK)/libpam-google-authenticator/.build_complete),)
 libpam-google-authenticator:
 	@echo "Using previously built libpam-google-authenticator."
 else
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 libpam-google-authenticator: libpam-google-authenticator-setup libpam
+else # (,$(findstring darwin,$(MEMO_TARGET)))
+libpam-google-authenticator: libpam-google-authenticator-setup
+endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	cd $(BUILD_WORK)/libpam-google-authenticator && ./bootstrap.sh && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
