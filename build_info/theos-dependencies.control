@@ -4,7 +4,7 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Pre-Depends: coreutils, dpkg, firmware (>= 11.0)
 Depends: ca-certificates, git, grep, ios-toolchain, perl, rsync, unzip, xz-utils
-Recommends: plutil, swift
+Recommends: plutil
 Conflicts: org.theos.dependencies
 Provides: org.theos.dependencies
 Replaces: org.theos.dependencies
