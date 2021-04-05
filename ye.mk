@@ -18,17 +18,16 @@ ye: ye-setup
 	cd $(BUILD_WORK)/ye
 	+$(MAKE) -C $(BUILD_WORK)/ye
 	+$(MAKE) -C $(BUILD_WORK)/ye install \
-		PREFIX=$(BUILD_STAGE)/ye/usr
+		PREFIX=$(BUILD_STAGE)/ye/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	touch $(BUILD_WORK)/ye/.build_complete
 endif
 
 ye-package: ye-stage
 	# ye.mk Package Structure
 	rm -rf $(BUILD_DIST)/ye
-	mkdir -p $(BUILD_DIST)/ye
 
 	# ye.mk Prep ye
-	cp -a $(BUILD_STAGE)/ye/usr $(BUILD_DIST)/ye
+	cp -a $(BUILD_STAGE)/ye $(BUILD_DIST)
 
 	# ye.mk Sign
 	$(call SIGN,ye,general.xml)
