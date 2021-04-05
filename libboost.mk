@@ -7,6 +7,11 @@ LIBBOOST_FORMAT_V := 1_74_0
 LIBBOOST_VERSION  := 1.74.0
 DEB_LIBBOOST_V    ?= $(LIBBOOST_VERSION)
 
+###
+# Add libicu next release (1.76.0)
+# NEVER FORGET TO CHECK IF THERE ARE NEW/REMOVED LIBS
+###
+
 libboost-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://dl.bintray.com/boostorg/release/$(LIBBOOST_VERSION)/source/boost_$(LIBBOOST_FORMAT_V).tar.bz2
 	$(call EXTRACT_TAR,boost_$(LIBBOOST_FORMAT_V).tar.bz2,boost_$(LIBBOOST_FORMAT_V),libboost)
@@ -20,7 +25,11 @@ libboost: libboost-setup xz zstd
 	cd $(BUILD_WORK)/libboost && unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS SYSROOT && ./bootstrap.sh \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--without-icu
+ifneq (,$(findstring amd64,$(MEMO_TARGET)))
+	echo 'using clang-darwin : x86_64 : $(CXX) : <compileflags>"$(CPPFLAGS)" <cflags>"$(CFLAGS)" <cxxflags>"$(CXXFLAGS)" <linkflags>"$(LDFLAGS)" ;' > $(BUILD_WORK)/libboost/tools/build/src/user-config.jam
+else
 	echo 'using clang-darwin : arm : $(CXX) : <compileflags>"$(CPPFLAGS)" <cflags>"$(CFLAGS)" <cxxflags>"$(CXXFLAGS)" <linkflags>"$(LDFLAGS)" ;' > $(BUILD_WORK)/libboost/tools/build/src/user-config.jam
+endif
 	cd $(BUILD_WORK)/libboost && ./b2 \
 		--prefix=$(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--without-python \
