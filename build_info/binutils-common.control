@@ -1,6 +1,6 @@
 Package: binutils-common
 Version: @DEB_BINUTILS_V@
-Architecture: @DEB_ARCH@
+Architecture: all
 Maintainer: @DEB_MAINTAINER@
 Section: development
 Priority: optional

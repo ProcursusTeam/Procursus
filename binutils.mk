@@ -25,13 +25,8 @@ BINUTILS_CONFARGS := --enable-obsolete \
 binutils-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/binutils/binutils-$(BINUTILS_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,binutils-$(BINUTILS_VERSION).tar.xz)
-	mkdir -p $(BUILD_WORK)/binutils
-	-for target in $(BINUTILS_TARGETS); do \
-		$(patsubst -if,if,$(call EXTRACT_TAR,binutils-$(BINUTILS_VERSION).tar.xz,binutils-$(BINUTILS_VERSION),binutils/$$target)); \
-	done
-	-for target in $(BINUTILS_TARGETS); do \
-		$(patsubst -cd,cd,$(call DO_PATCH,binutils,binutils/$$target,-p1)); \
-	done
+	$(call EXTRACT_TAR,binutils-$(BINUTILS_VERSION).tar.xz,binutils-$(BINUTILS_VERSION),binutils)
+	$(call DO_PATCH,binutils,binutils,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/binutils/.build_complete),)
 binutils:
@@ -39,7 +34,8 @@ binutils:
 else
 binutils: binutils-setup gettext
 	for target in $(BINUTILS_TARGETS); do \
-		cd $(BUILD_WORK)/binutils/$$target && ./configure -C \
+		mkdir -p $(BUILD_WORK)/binutils/$$target; \
+		cd $(BUILD_WORK)/binutils/$$target && ../configure -C \
 			--build=$$($(BUILD_MISC)/config.guess) \
 			--host=$(GNU_HOST_TRIPLE) \
 			--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
@@ -86,7 +82,7 @@ binutils-package: binutils-stage
 	
 	# Make control files with:
 	# sed "s/@TARGET@/$(sed 's/_/-/g' <<< "$target")/g" binutils.control.in > binutils-$target.control
-
+	
 	# binutils.mk Make .debs
 	-for target in $(BINUTILS_TARGETS); do \
 		$(patsubst -if,if,$(call PACK,binutils-$$target,DEB_BINUTILS_V)); \
