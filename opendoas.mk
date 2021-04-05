@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS      += opendoas
 OPENDOAS_VERSION := 6.8.1
-DEB_OPENDOAS_V   ?= $(OPENDOAS_VERSION)
+DEB_OPENDOAS_V   ?= $(OPENDOAS_VERSION)-1
 
 opendoas-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/OpenDoas-$(OPENDOAS_VERSION).tar.gz" ] && \
