@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/apr/.build_complete),)
 apr:
 	@echo "Using previously built apr."
 else
-apr: apr-setup uuid
+apr: apr-setup
 	cd $(BUILD_WORK)/apr && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
@@ -45,7 +45,7 @@ apr-package: apr-stage
 	cp -a $(BUILD_STAGE)/apr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/*.1.dylib $(BUILD_DIST)/libapr1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# apr.mk Prep libapr1-dev
-	cp -a $(BUILD_STAGE)/apr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include} $(BUILD_DIST)/libapr1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/apr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include,share} $(BUILD_DIST)/libapr1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# apr.mk Sign
 	$(call SIGN,libapr1,general.xml)
