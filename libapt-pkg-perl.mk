@@ -17,7 +17,7 @@ libapt-pkg-perl:
 	@echo "Using previously built libapt-pkg-perl."
 else
 libapt-pkg-perl: libapt-pkg-perl-setup perl apt
-	cd $(BUILD_WORK)/libapt-pkg-perl && /opt/procursus/bin/perl Makefile.PL \
+	cd $(BUILD_WORK)/libapt-pkg-perl && $(shell which perl) Makefile.PL \
 		INSTALLSITEARCH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
 		INSTALLARCHLIB=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
 		INSTALLVENDORARCH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
@@ -36,11 +36,12 @@ libapt-pkg-perl: libapt-pkg-perl-setup perl apt
 		INSTALLMAN3DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 \
 		INSTALLSITEMAN3DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 \
 		INSTALLVENDORMAN3DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 \
-		PERL="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl" \
-		CCFLAGS="$(CFLAGS)" \
-		LDDLFLAGS="$(LDFLAGS) -shared" \
-		LIBS=" -lapt-pkg"
-	+$(MAKE) -C $(BUILD_WORK)/libapt-pkg-perl
+		PERL="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl"
+	+$(MAKE) -C $(BUILD_WORK)/libapt-pkg-perl \
+		CC="$(CXX)" \
+		CCFLAGS="-std=c++11 $(CXXFLAGS) -Denviron" \
+		LD="$(CXX)" \
+		LDDLFLAGS="-std=c++11 -shared $(LDFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/libapt-pkg-perl install \
 		DESTDIR="$(BUILD_STAGE)/libapt-pkg-perl"
 	rm -f $(BUILD_STAGE)/libapt-pkg-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR)/perllocal.pod
