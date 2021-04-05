@@ -9,9 +9,7 @@ DEB_LUAJIT_V   ?= $(shell echo $(LUAJIT_VERSION) | cut -d- -f1)~beta3+git$(shell
 LUAJIT_COMMIT    := 377a8488b62a9f1b589bb68875dd1288aa70e76e
 
 luajit-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/LuaJIT-$(LUAJIT_COMMIT).tar.gz" ] \
-		&& wget -nc -O$(BUILD_SOURCE)/LuaJIT-$(LUAJIT_COMMIT).tar.gz \
-			https://github.com/LuaJIT/LuaJIT/archive/$(LUAJIT_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,LuaJIT,LuaJIT,$(LUAJIT_COMMIT),$(LUAJIT_COMMIT))
 	$(call EXTRACT_TAR,LuaJIT-$(LUAJIT_COMMIT).tar.gz,LuaJIT-$(LUAJIT_COMMIT),luajit)
 	$(SED) -i 's/#BUILDMODE= dynamic/BUILDMODE= dynamic/' $(BUILD_WORK)/luajit/src/Makefile
 	$(SED) -i 's/#define LJ_OS_NOJIT		1/#undef LJ_OS_NOJIT/' $(BUILD_WORK)/luajit/src/lj_arch.h

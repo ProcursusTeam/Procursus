@@ -11,7 +11,7 @@ ifeq (, $(shell which cargo-cbuild))
 	$(error "No cargo-cbuild in PATH, please run cargo install cargo-c")
 endif
 
-	-[ ! -f "$(BUILD_SOURCE)/rav1e-$(RAV1E_VERSION).tar.gz" ] && wget -q -nc -O$(BUILD_SOURCE)/rav1e-$(RAV1E_VERSION).tar.gz https://github.com/xiph/rav1e/archive/v$(RAV1E_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,xiph,rav1e,$(RAV1E_VERSION),v$(RAV1E_VERSION))
 	$(call EXTRACT_TAR,rav1e-$(RAV1E_VERSION).tar.gz,rav1e-$(RAV1E_VERSION),rav1e)
 	$(call DO_PATCH,rav1e,rav1e,-p1)
 

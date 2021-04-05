@@ -7,9 +7,7 @@ RCLONE_VERSION := 1.53.3
 DEB_RCLONE_V   ?= $(RCLONE_VERSION)
 
 rclone-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/rclone-$(RCLONE_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/rclone-$(RCLONE_VERSION).tar.gz \
-			https://github.com/rclone/rclone/archive/v$(RCLONE_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,rclone,rclone,$(RCLONE_VERSION),v$(RCLONE_VERSION))
 	$(call EXTRACT_TAR,rclone-$(RCLONE_VERSION).tar.gz,rclone-$(RCLONE_VERSION),rclone)
 	mkdir -p $(BUILD_STAGE)/rclone/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 

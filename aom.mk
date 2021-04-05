@@ -21,7 +21,7 @@ aom:
 	@echo "Using previously built aom."
 else
 aom: aom-setup
-	cd $(BUILD_WORK)/aom/build && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/aom/build && cmake . \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
@@ -34,7 +34,7 @@ aom: aom-setup
 		-DENABLE_TESTS=0 \
 		-DGIT_EXECUTABLE=/non-existant-binary \
 		-DAOM_TARGET_CPU="$(MEMO_ARCH)" \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX) \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		..

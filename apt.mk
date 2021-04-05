@@ -39,7 +39,7 @@ apt:
 	@echo "Using previously built apt."
 else
 apt: apt-setup libgcrypt berkeleydb lz4 xxhash xz zstd
-	cd $(BUILD_WORK)/apt/build && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/apt/build && cmake . \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
@@ -49,7 +49,7 @@ apt: apt-setup libgcrypt berkeleydb lz4 xxhash xz zstd
 		-DCONF_DIR=$(MEMO_PREFIX)/etc/apt \
 		-DROOT_GROUP=wheel \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX) \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \

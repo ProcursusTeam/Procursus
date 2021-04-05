@@ -15,7 +15,7 @@ libebml:
 	@echo "Using previously built libebml."
 else
 libebml: libebml-setup
-	cd $(BUILD_WORK)/libebml && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/libebml && cmake . \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \

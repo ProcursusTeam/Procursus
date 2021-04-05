@@ -5,11 +5,11 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS            += pam-biometrics
-PAM-BIOMETRICS_VERSION := 1.1.1
+PAM-BIOMETRICS_VERSION := 1.1.2
 DEB_PAM-BIOMETRICS_V   ?= $(PAM-BIOMETRICS_VERSION)
 
 pam-biometrics-setup: setup
-	-wget -q -nc -O$(BUILD_SOURCE)/pam-biometrics-$(PAM-BIOMETRICS_VERSION).tar.gz https://github.com/ProcursusTeam/pam-biometrics/archive/refs/tags/$(PAM-BIOMETRICS_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,ProcursusTeam,pam-biometrics,$(PAM-BIOMETRICS_VERSION),$(PAM-BIOMETRICS_VERSION))
 	$(call EXTRACT_TAR,pam-biometrics-$(PAM-BIOMETRICS_VERSION).tar.gz,pam-biometrics-$(PAM-BIOMETRICS_VERSION),pam-biometrics)
 	mkdir -p $(BUILD_STAGE)/pam-biometrics/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{share/man/man8,lib/pam}
 

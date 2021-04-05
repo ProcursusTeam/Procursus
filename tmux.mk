@@ -34,7 +34,7 @@ tmux-package: tmux-stage
 	mkdir -p $(BUILD_DIST)/tmux
 
 	# tmux.mk Prep tmux
-	cp -a $(BUILD_STAGE)/tmux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/tmux
+	cp -a $(BUILD_STAGE)/tmux $(BUILD_DIST)
 
 	# tmux.mk Sign
 	$(call SIGN,tmux,general.xml)

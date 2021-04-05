@@ -7,8 +7,8 @@ GOOGLETEST_VERSION := 1.10.0
 DEB_GOOGLETEST_V   ?= $(GOOGLETEST_VERSION)
 
 googletest-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/google/googletest/archive/release-$(GOOGLETEST_VERSION).tar.gz
-	$(call EXTRACT_TAR,release-$(GOOGLETEST_VERSION).tar.gz,googletest-release-$(GOOGLETEST_VERSION),googletest)
+	$(call GITHUB_ARCHIVE,google,googletest,$(GOOGLETEST_VERSION),release-$(GOOGLETEST_VERSION))
+	$(call EXTRACT_TAR,googletest-$(GOOGLETEST_VERSION).tar.gz,googletest-release-$(GOOGLETEST_VERSION),googletest)
 
 ifneq ($(wildcard $(BUILD_WORK)/googletest/.build_complete),)
 googletest:

@@ -15,6 +15,9 @@ libgcrypt-setup: setup
 		$(SED) -i '/.size/d' $$ASM; \
 		$(SED) -i 's/_gcry/__gcry/g' $$ASM; \
 	done
+	for ASM in $(BUILD_WORK)/libgcrypt/mpi/amd64/*.S; do \
+		$(SED) -i 's/_gcry/__gcry/g' $$ASM; \
+	done
 
 ifneq ($(wildcard $(BUILD_WORK)/libgcrypt/.build_complete),)
 libgcrypt:

@@ -40,13 +40,9 @@ system-cmds-setup: setup libxcrypt
 
 	$(SED) -i '/#include <stdio.h>/a #include <crypt.h>' $(BUILD_WORK)/system-cmds/login.tproj/login.c
 	$(SED) -i '/#include <libutil.h>/a #include <crypt.h>' $(BUILD_WORK)/system-cmds/chpass.tproj/chpass.c
-	-[ ! -e "$(BUILD_SOURCE)/pw-darwin-$(PWDARWIN_COMMIT).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/pw-darwin-$(PWDARWIN_COMMIT).tar.gz \
-			https://github.com/CRKatri/pw-darwin/archive/$(PWDARWIN_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,CRKatri,pw-darwin,$(PWDARWIN_COMMIT),$(PWDARWIN_COMMIT))
 	$(call EXTRACT_TAR,pw-darwin-$(PWDARWIN_COMMIT).tar.gz,pw-darwin-$(PWDARWIN_COMMIT),system-cmds/pw-darwin)
-	-[ ! -e "$(BUILD_SOURCE)/getent-darwin-$(GETENTDARWIN_COMMIT).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/getent-darwin-$(GETENTDARWIN_COMMIT).tar.gz \
-			https://github.com/CRKatri/getent-darwin/archive/$(GETENTDARWIN_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,CRKatri,getent-darwin,$(GETENTDARWIN_COMMIT),$(GETENTDARWIN_COMMIT))
 	$(call EXTRACT_TAR,getent-darwin-$(GETENTDARWIN_COMMIT).tar.gz,getent-darwin-$(GETENTDARWIN_COMMIT),system-cmds/getent-darwin)
 
 ifneq ($(wildcard $(BUILD_WORK)/system-cmds/.build_complete),)

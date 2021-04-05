@@ -8,9 +8,7 @@ LIBINSN_COMMIT  := 64124fd2b1b57d7b76a0e2b0c06434a7048758d2
 DEB_LIBINSN_V   ?= $(LIBINSN_VERSION)-1
 
 libinsn-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/libinsn-$(LIBINSN_COMMIT).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/libinsn-$(LIBINSN_COMMIT).tar.gz \
-			https://github.com/tihmstar/libinsn/archive/$(LIBINSN_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,tihmstar,libinsn,$(LIBINSN_COMMIT),$(LIBINSN_COMMIT))
 	$(call EXTRACT_TAR,libinsn-$(LIBINSN_COMMIT).tar.gz,libinsn-$(LIBINSN_COMMIT),libinsn)
 
 ifneq ($(wildcard $(BUILD_WORK)/libinsn/.build_complete),)

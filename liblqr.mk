@@ -7,9 +7,7 @@ LIBLQR_VERSION := 0.4.2
 DEB_LIBLQR_V   ?= $(LIBLQR_VERSION)
 
 liblqr-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/liblqr-$(LIBLQR_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/liblqr-$(LIBLQR_VERSION).tar.gz \
-			https://github.com/carlobaldassi/liblqr/archive/v$(LIBLQR_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,carlobaldassi,liblqr,$(LIBLQR_VERSION),v$(LIBLQR_VERSION))
 	$(call EXTRACT_TAR,liblqr-$(LIBLQR_VERSION).tar.gz,liblqr-$(LIBLQR_VERSION),liblqr)
 	$(call DO_PATCH,liblqr,liblqr,-p1)
 

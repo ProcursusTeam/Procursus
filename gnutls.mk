@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += gnutls
-GNUTLS_VERSION := 3.7.0
+GNUTLS_VERSION := 3.7.1
 DEB_GNUTLS_V   ?= $(GNUTLS_VERSION)
 
 gnutls-setup: setup
@@ -22,7 +22,7 @@ ifeq ($(MEMO_TARGET),watchos-arm64)
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--disable-hardware-acceleration \
+		--disable-guile \
 		--enable-local-libopts \
 		--with-default-trust-store-file=$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem \
  		P11_KIT_CFLAGS=-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/p11-kit-1

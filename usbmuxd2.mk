@@ -9,9 +9,7 @@ DEB_USBMUXD2_V   ?= $(USBMUXD2_VERSION)
 USBMUXD2_COMMIT  := 8bff9068f0245659bb4f10b33a6a1b2ea4630dfe
 
 usbmuxd2-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/usbmuxd2-$(USBMUXD2_VERSION).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/usbmuxd2-$(USBMUXD2_VERSION).tar.gz \
-			https://github.com/tihmstar/usbmuxd2/archive/$(USBMUXD2_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,tihmstar,usbmuxd2,$(USBMUXD2_VERSION),$(USBMUXD2_COMMIT))
 	$(call EXTRACT_TAR,usbmuxd2-$(USBMUXD2_VERSION).tar.gz,usbmuxd2-$(USBMUXD2_COMMIT),usbmuxd2)
 	$(SED) -i 's/2.2.1/2.2.0/' $(BUILD_WORK)/usbmuxd2/configure.ac
 	$(SED) -i '/-lstdc++fs/d' $(BUILD_WORK)/usbmuxd2/configure.ac

@@ -8,9 +8,7 @@ GHOSTBIN_VERSION  := 1.0+git20201225.$(shell echo $(GHOSTBIN_COMMIT) | cut -c -7
 DEB_GHOSTBIN_V    ?= $(GHOSTBIN_VERSION)
 
 ghostbin-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/ghostbin-v$(GHOSTBIN_COMMIT).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/ghostbin-v$(GHOSTBIN_COMMIT).tar.gz \
-			https://github.com/DHowett/spectre/archive/$(GHOSTBIN_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,DHowett,spectre,v$(GHOSTBIN_COMMIT),$(GHOSTBIN_COMMIT),ghostbin)
 	$(call EXTRACT_TAR,ghostbin-v$(GHOSTBIN_COMMIT).tar.gz,spectre-$(GHOSTBIN_COMMIT),ghostbin)
 	$(SED) -i '/account creation has been disabled/,+3d' $(BUILD_WORK)/ghostbin/auth.go
 

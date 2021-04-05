@@ -7,8 +7,8 @@ IMG4TOOL_VERSION := 197
 DEB_IMG4TOOL_V   ?= $(IMG4TOOL_VERSION)
 
 img4tool-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tihmstar/img4tool/archive/$(IMG4TOOL_VERSION).tar.gz
-	$(call EXTRACT_TAR,$(IMG4TOOL_VERSION).tar.gz,img4tool-$(IMG4TOOL_VERSION),img4tool)
+	$(call GITHUB_ARCHIVE,tihmstar,img4tool,$(IMG4TOOL_VERSION),$(IMG4TOOL_VERSION))
+	$(call EXTRACT_TAR,img4tool-$(IMG4TOOL_VERSION).tar.gz,img4tool-$(IMG4TOOL_VERSION),img4tool)
 
 ifneq ($(wildcard $(BUILD_WORK)/img4tool/.build_complete),)
 img4tool:

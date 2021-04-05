@@ -7,7 +7,7 @@ LZFSE_VERSION := 1.0
 DEB_LZFSE_V   ?= $(LZFSE_VERSION)-1
 
 lzfse-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/lzfse/lzfse/archive/lzfse-$(LZFSE_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,lzfse,lzfse,$(LZFSE_VERSION),$(LZFSE_VERSION))
 	$(call EXTRACT_TAR,lzfse-$(LZFSE_VERSION).tar.gz,lzfse-lzfse-$(LZFSE_VERSION),lzfse)
 
 ifneq ($(wildcard $(BUILD_WORK)/lzfse/.build_complete),)
@@ -15,12 +15,12 @@ lzfse:
 	@echo "Using previously built lzfse."
 else
 lzfse: lzfse-setup
-	cd $(BUILD_WORK)/lzfse && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/lzfse && cmake . \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX) \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \

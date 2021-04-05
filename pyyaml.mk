@@ -7,9 +7,7 @@ PYYAML_VERSION := 5.3.1
 DEB_PYYAML_V   ?= $(PYYAML_VERSION)
 
 pyyaml-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/pyyaml-$(PYYAML_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/pyyaml-$(PYYAML_VERSION).tar.gz \
-			https://github.com/yaml/pyyaml/archive/$(PYYAML_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,yaml,pyyaml,$(PYYAML_VERSION),$(PYYAML_VERSION))
 	$(call EXTRACT_TAR,pyyaml-$(PYYAML_VERSION).tar.gz,pyyaml-$(PYYAML_VERSION),pyyaml)
 
 ifneq ($(wildcard $(BUILD_WORK)/pyyaml/.build_complete),)

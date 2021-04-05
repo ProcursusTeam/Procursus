@@ -7,8 +7,8 @@ PINCRUSH_VERSION := 0.9.2
 DEB_PINCRUSH_V   ?= $(PINCRUSH_VERSION)
 
 pincrush-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/DHowett/pincrush/archive/$(PINCRUSH_VERSION).tar.gz
-	$(call EXTRACT_TAR,$(PINCRUSH_VERSION).tar.gz,pincrush-$(PINCRUSH_VERSION),pincrush)
+	$(call GITHUB_ARCHIVE,DHowett,pincrush,$(PINCRUSH_VERSION),$(PINCRUSH_VERSION))
+	$(call EXTRACT_TAR,pincrush-$(PINCRUSH_VERSION).tar.gz,pincrush-$(PINCRUSH_VERSION),pincrush)
 	mkdir -p $(BUILD_STAGE)/pincrush/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 ifneq ($(wildcard $(BUILD_WORK)/pincrush/.build_complete),)

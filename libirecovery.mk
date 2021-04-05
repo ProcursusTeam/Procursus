@@ -8,9 +8,7 @@ LIBIRECOVERY_VERSION := 1.0.0+git20210124.$(shell echo $(LIBIRECOVERY_COMMIT) | 
 DEB_LIBIRECOVERY_V   ?= $(LIBIRECOVERY_VERSION)
 
 libirecovery-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/libirecovery-$(LIBIRECOVERY_COMMIT).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/libirecovery-$(LIBIRECOVERY_COMMIT).tar.gz \
-			https://github.com/libimobiledevice/libirecovery/archive/$(LIBIRECOVERY_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,libimobiledevice,libirecovery,$(LIBIRECOVERY_COMMIT),$(LIBIRECOVERY_COMMIT))
 	$(call EXTRACT_TAR,libirecovery-$(LIBIRECOVERY_COMMIT).tar.gz,libirecovery-$(LIBIRECOVERY_COMMIT),libirecovery)
 
 ifneq ($(wildcard $(BUILD_WORK)/libirecovery/.build_complete),)

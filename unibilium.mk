@@ -7,9 +7,7 @@ UNIBILIUM_VERSION := 2.1.0
 DEB_UNIBILIUM_V   ?= $(UNIBILIUM_VERSION)
 
 unibilium-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/unibilium-$(UNIBILIUM_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/unibilium-$(UNIBILIUM_VERSION).tar.gz \
-			https://github.com/neovim/unibilium/archive/v$(UNIBILIUM_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,neovim,unibilium,$(UNIBILIUM_VERSION),v$(UNIBILIUM_VERSION))
 	$(call EXTRACT_TAR,unibilium-$(UNIBILIUM_VERSION).tar.gz,unibilium-$(UNIBILIUM_VERSION),unibilium)
 	$(call DO_PATCH,unibilium,unibilium)
 	mkdir -p $(BUILD_WORK)/unibilium/libtool

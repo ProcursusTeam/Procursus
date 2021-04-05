@@ -7,9 +7,7 @@ GH_VERSION  := 1.3.0
 DEB_GH_V    ?= $(GH_VERSION)
 
 gh-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/gh-$(GH_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/gh-$(GH_VERSION).tar.gz \
-			https://github.com/cli/cli/archive/v$(GH_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,cli,cli,$(GH_VERSION),v$(GH_VERSION),gh)
 	$(call EXTRACT_TAR,gh-$(GH_VERSION).tar.gz,cli-$(GH_VERSION),gh)
 	mkdir -p $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
