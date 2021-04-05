@@ -35,14 +35,12 @@ endif
 		--without-python \
 		threading=multi \
 		variant=release \
-		abi=aapcs \
 		install
 	cd $(BUILD_WORK)/libboost && ./b2 \
 		--prefix=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--without-python \
 		threading=multi \
 		variant=release \
-		abi=aapcs \
 		install
 	# F u boost!
 	for lib in $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_*.dylib $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_*.dylib; do \
