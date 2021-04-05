@@ -1,5 +1,4 @@
 Package: doas
-Essential: yes
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_OPENDOAS_V@
