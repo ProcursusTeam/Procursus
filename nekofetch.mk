@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += nekofetch
-NEKOFETCH_COMMIT  := 9382314f82d37c7039e097c7eb4cf5460168d49d
-NEKOFETCH_VERSION := 1.4+git20210323.$(shell echo $(NEKOFETCH_COMMIT) | cut -c -7)
+NEKOFETCH_COMMIT  := baac62446842daa585d625a5ee0a097f2733130d
+NEKOFETCH_VERSION := 1.4+git20210404.$(shell echo $(NEKOFETCH_COMMIT) | cut -c -7)
 DEB_NEKOFETCH_V   ?= $(NEKOFETCH_VERSION)
 
 nekofetch-setup: setup
