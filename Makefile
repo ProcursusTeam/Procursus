@@ -70,7 +70,9 @@ endif
 export MACOSX_DEPLOYMENT_TARGET
 
 ifeq ($(MEMO_TARGET),iphoneos-arm64)
+ifneq ($(MEMO_QUIET),1)
 $(warning Building for iOS)
+endif # ($(MEMO_QUIET),1)
 MEMO_ARCH            := arm64
 PLATFORM             := iphoneos
 DEB_ARCH             := iphoneos-arm
@@ -84,7 +86,9 @@ GNU_PREFIX           :=
 export IPHONEOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),appletvos-arm64)
+ifneq ($(MEMO_QUIET),1)
 $(warning Building for tvOS)
+endif # ($(MEMO_QUIET),1)
 MEMO_ARCH            := arm64
 PLATFORM             := appletvos
 DEB_ARCH             := appletvos-arm64
@@ -98,7 +102,9 @@ GNU_PREFIX           :=
 export APPLETVOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),watchos-arm64_32)
+ifneq ($(MEMO_QUIET),1)
 $(warning Building for WatchOS)
+endif # ($(MEMO_QUIET),1)
 MEMO_ARCH            := arm64_32
 PLATFORM             := watchos
 DEB_ARCH             := watchos-arm64_32
@@ -112,7 +118,9 @@ GNU_PREFIX           :=
 export WATCHOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),darwin-arm64e)
+ifneq ($(MEMO_QUIET),1)
 $(warning Building for macOS arm64e)
+endif # ($(MEMO_QUIET),1)
 MEMO_ARCH            := arm64e
 PLATFORM             := macosx
 DEB_ARCH             := darwin-arm64e
@@ -125,7 +133,9 @@ MEMO_ALT_PREFIX      ?=
 GNU_PREFIX           := g
 
 else ifeq ($(MEMO_TARGET),darwin-arm64)
+ifneq ($(MEMO_QUIET),1)
 $(warning Building for macOS arm64)
+endif # ($(MEMO_QUIET),1)
 MEMO_ARCH            := arm64
 PLATFORM             := macosx
 DEB_ARCH             := darwin-arm64
@@ -138,7 +148,9 @@ MEMO_ALT_PREFIX      ?=
 GNU_PREFIX           := g
 
 else ifeq ($(MEMO_TARGET),darwin-amd64)
+ifneq ($(MEMO_QUIET),1)
 $(warning Building for macOS amd64)
+endif # ($(MEMO_QUIET),1)
 MEMO_ARCH            := x86_64
 PLATFORM             := macosx
 DEB_ARCH             := darwin-amd64
@@ -155,7 +167,9 @@ $(error Platform not supported)
 endif
 
 ifeq ($(UNAME),Linux)
+ifneq ($(MEMO_QUIET),1)
 $(warning Building on Linux)
+endif # ($(MEMO_QUIET),1)
 TARGET_SYSROOT  ?= $(HOME)/cctools/SDK/iPhoneOS13.2.sdk
 MACOSX_SYSROOT  ?= $(HOME)/cctools/SDK/MacOSX.sdk
 
@@ -175,7 +189,9 @@ LIBTOOL  := $(GNU_HOST_TRIPLE)-libtool
 
 else ifeq ($(UNAME),Darwin)
 ifeq ($(filter $(shell uname -m | cut -c -4), iPad iPho iPod),)
+ifneq ($(MEMO_QUIET),1)
 $(warning Building on MacOS)
+endif # ($(MEMO_QUIET),1)
 TARGET_SYSROOT  ?= $(shell xcrun --sdk $(PLATFORM) --show-sdk-path)
 MACOSX_SYSROOT  ?= $(shell xcrun --show-sdk-path)
 CC              := cc
@@ -184,7 +200,9 @@ CPP             := cc -E
 PATH            := /opt/procursus/bin:/opt/procursus/libexec/gnubin:/usr/bin:$(PATH)
 
 else
+ifneq ($(MEMO_QUIET),1)
 $(warning Building on iOS)
+endif # ($(MEMO_QUIET),1)
 TARGET_SYSROOT  ?= /usr/share/SDKs/iPhoneOS.sdk
 MACOSX_SYSROOT  ?= /usr/share/SDKs/MacOSX.sdk
 CC              := clang
@@ -250,7 +268,11 @@ export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS PKG_CONFIG_PATH PKG_CONFIG_LIBDIR ACLOCA
 
 HAS_COMMAND = $(shell type $(1) >/dev/null 2>&1 && echo 1)
 ifeq ($(NO_PGP),1)
+ifneq ($(MEMO_QUIET),1)
 PGP_VERIFY  = echo "Skipping verification of $(1) because NO_PGP was set to 1."
+else # ($(MEMO_QUIET),1)
+PGP_VERIFY  = 
+endif # ($(MEMO_QUIET),1)
 else
 PGP_VERIFY  = KEY=$$(gpg --verify --status-fd 1 $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) | grep NO_PUBKEY | cut -f3 -d' '); \
 	if [ ! -z "$$KEY" ]; then \
@@ -301,10 +323,14 @@ PACK = -if [ -z $(4) ]; then \
 	rm -rf $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{info,doc}; \
 	find $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -exec zstd -19 --rm '{}' \; 2> /dev/null; \
 	if [ -z $(3) ]; then \
+		if ![ $(MEMO_QUIET) == "1" ]; then \
 		echo Setting $(1) owner to 0:0.; \
+		fi; \
 		$(FAKEROOT) chown -R 0:0 $(BUILD_DIST)/$(1)/* &>/dev/null; \
 	elif [ $(3) = "2" ]; then \
+		if ![ $(MEMO_QUIET) == "1" ]; then \
 		echo $(1) owner set within individual makefile.; \
+		fi; \
 	fi; \
 	if [ -d "$(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale" ] && [ ! "$(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d ' ')" = "gettext-localizations" ]; then \
 		rm -rf $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale/*/LC_TIME; \
@@ -339,7 +365,9 @@ PACK = -if [ -z $(4) ]; then \
 	fi; \
 	cd $(BUILD_DIST)/$(1) && find . -type f ! -regex '.*.hg.*' ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -printf '"%P" ' | xargs md5sum > $(BUILD_DIST)/$(1)/DEBIAN/md5sums; \
 	$(FAKEROOT) chmod 0755 $(BUILD_DIST)/$(1)/DEBIAN/*; \
+	if ![ $(MEMO_QUIET) == "1" ]; then \
 	echo "Installed-Size: $$SIZE"; \
+	fi; \
 	echo "Installed-Size: $$SIZE" >> $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	find $(BUILD_DIST)/$(1) -name '.DS_Store' -type f -delete; \
 	$(FAKEROOT) $(DPKG_DEB) -b $(BUILD_DIST)/$(1) $(BUILD_DIST)/$$(grep Package: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ')_$($(2))_$$(grep Architecture: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ').deb
@@ -404,7 +432,9 @@ endif
 ifeq ($(call HAS_COMMAND,ldid2),1)
 LDID := ldid2
 else ifeq ($(call HAS_COMMAND,ldid),1)
+ifneq ($(MEMO_QUIET),1)
 $(warning Using ldid. Abort now and install ldid2 if this ldid does not support SHA256)
+endif # ($(MEMO_QUIET),1)
 LDID := ldid
 else
 $(error Install ldid2)
@@ -525,9 +555,9 @@ endif
 
 ifneq ($(LEAVE_ME_ALONE),1)
 
-ifneq (,$(wildcard $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl))
+ifneq (,$(wildcard $(shell brew --prefix&>/dev/null)/opt/docbook-xsl/docbook-xsl))
 DOCBOOK_XSL := $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl
-export XML_CATALOG_FILES=$(shell brew --prefix)/etc/xml/catalog
+export XML_CATALOG_FILES=$(shell brew --prefix&>/dev/null)/etc/xml/catalog
 else ifneq (,$(wildcard /usr/share/xml/docbook/stylesheet/docbook-xsl))
 DOCBOOK_XSL := /usr/share/xml/docbook/stylesheet/docbook-xsl
 else ifneq (,$(wildcard /usr/share/xsl/docbook))
@@ -718,6 +748,9 @@ rebuild-%:
 	rm -rf $(BUILD_STAGE)/$(REPROJ2)
 	+$(MAKE) $(REPROJ)
 
+%-deps: %
+	@${BUILD_TOOLS}/find_deps.sh $(BUILD_STAGE)/$^
+
 .PHONY: $(SUBPROJECTS)
 
 setup:
@@ -761,8 +794,10 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(SED) -E /'__API_UNAVAILABLE'/d < $(TARGET_SYSROOT)/usr/include/pthread.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pthread.h
 endif
 
+ifneq ($(MEMO_QUIET),1)
 	@echo Makeflags: $(MAKEFLAGS)
 	@echo Path: $(PATH)
+endif # ($(MEMO_QUIET),1)
 
 clean::
 	rm -rf $(BUILD_WORK) $(BUILD_BASE) $(BUILD_STAGE)
