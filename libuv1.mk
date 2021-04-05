@@ -39,21 +39,21 @@ libuv1-package: libuv1-stage
 	# libuv1.mk Package Structure
 	rm -rf $(BUILD_DIST)/libuv1{,-dev}
 	mkdir -p $(BUILD_DIST)/libuv1{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libuv1.mk Prep libuv1
 	cp -a $(BUILD_STAGE)/libuv1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuv.1.dylib $(BUILD_DIST)/libuv1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libuv1.mk Prep libuv1-dev
 	cp -a $(BUILD_STAGE)/libuv1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libuv1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/libuv1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libuv.{a,dylib},pkgconfig} $(BUILD_DIST)/libuv1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libuv1.mk Sign
 	$(call SIGN,libuv1,general.xml)
-	
+
 	# libuv1.mk Make .debs
 	$(call PACK,libuv1,DEB_LIBUV1_V)
 	$(call PACK,libuv1-dev,DEB_LIBUV1_V)
-	
+
 	# libuv1.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libuv1{,-dev}
 

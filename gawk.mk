@@ -30,16 +30,16 @@ endif
 gawk-package: gawk-stage
 	# gawk.mk Package Structure
 	rm -rf $(BUILD_DIST)/gawk
-	
+
 	# gawk.mk Prep gawk
 	cp -a $(BUILD_STAGE)/gawk $(BUILD_DIST)
-	
+
 	# gawk.mk Sign
 	$(call SIGN,gawk,general.xml)
-	
+
 	# gawk.mk Make .debs
 	$(call PACK,gawk,DEB_GAWK_V)
-	
+
 	# gawk.mk Build cleanup
 	rm -rf $(BUILD_DIST)/gawk
 

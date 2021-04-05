@@ -38,13 +38,13 @@ libvorbis-package: libvorbis-stage
 	rm -rf $(BUILD_DIST)/libvorbis{0a,enc2,file3,-dev}
 	mkdir -p $(BUILD_DIST)/libvorbis{0a,enc2,file3,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	mkdir -p $(BUILD_DIST)/libvorbis-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	
+
 	# libvorbis.mk Prep libvorbis0a
-	cp -a $(BUILD_STAGE)/libvorbis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvorbis.0.dylib $(BUILD_DIST)/libvorbis0a/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib
-	
+	cp -a $(BUILD_STAGE)/libvorbis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvorbis.0.dylib $(BUILD_DIST)/libvorbis0a/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# libvorbis.mk Prep libvorbisenc2
 	cp -a $(BUILD_STAGE)/libvorbis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvorbisenc.2.dylib $(BUILD_DIST)/libvorbisenc2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libvorbis.mk Prep libvorbisfile3
 	cp -a $(BUILD_STAGE)/libvorbis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvorbisfile.3.dylib $(BUILD_DIST)/libvorbisfile3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
@@ -53,18 +53,18 @@ libvorbis-package: libvorbis-stage
 	cp -a $(BUILD_STAGE)/libvorbis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvorbis{,enc,file}.{dylib,a} $(BUILD_DIST)/libvorbis-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libvorbis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libvorbis-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/libvorbis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal $(BUILD_DIST)/libvorbis-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	
+
 	# libvorbis.mk Sign
 	$(call SIGN,libvorbis0a,general.xml)
 	$(call SIGN,libvorbisenc2,general.xml)
 	$(call SIGN,libvorbisfile3,general.xml)
-	
+
 	# libvorbis.mk Make .debs
 	$(call PACK,libvorbis0a,DEB_LIBVORBIS_V)
 	$(call PACK,libvorbisenc2,DEB_LIBVORBIS_V)
 	$(call PACK,libvorbisfile3,DEB_LIBVORBIS_V)
 	$(call PACK,libvorbis-dev,DEB_LIBVORBIS_V)
-	
+
 	# libvorbis.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libvorbis{0a,enc2,file3,-dev}
 

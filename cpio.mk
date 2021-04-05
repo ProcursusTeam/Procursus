@@ -20,7 +20,7 @@ cpio: cpio-setup gettext
 	cd $(BUILD_WORK)/cpio && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/cpio
 	+$(MAKE) -C $(BUILD_WORK)/cpio install \
 		DESTDIR=$(BUILD_STAGE)/cpio
@@ -31,16 +31,16 @@ cpio-package: cpio-stage
 	# cpio.mk Package Structure
 	rm -rf $(BUILD_DIST)/cpio
 	mkdir -p $(BUILD_DIST)/cpio
-	
+
 	# cpio.mk Prep cpio
 	cp -a $(BUILD_STAGE)/cpio $(BUILD_DIST)
-	
+
 	# cpio.mk Sign
 	$(call SIGN,cpio,general.xml)
-	
+
 	# cpio.mk Make .debs
 	$(call PACK,cpio,DEB_CPIO_V)
-	
+
 	# cpio.mk Build cleanup
 	rm -rf $(BUILD_DIST)/cpio
 

@@ -32,16 +32,16 @@ endif
 gnuchess-package: gnuchess-stage
 	# gnuchess.mk Package Structure
 	rm -rf $(BUILD_DIST)/gnuchess
-	
+
 	# gnuchess.mk Prep gnuchess
 	cp -a $(BUILD_STAGE)/gnuchess $(BUILD_DIST)
-	
+
 	# gnuchess.mk Sign
 	$(call SIGN,gnuchess,general.xml)
-	
+
 	# gnuchess.mk Make .debs
 	$(call PACK,gnuchess,DEB_GNUCHESS_V)
-	
+
 	# gnuchess.mk Build cleanup
 	rm -rf $(BUILD_DIST)/gnuchess
 

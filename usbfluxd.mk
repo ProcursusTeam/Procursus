@@ -8,9 +8,7 @@ USBFLUXD_VERSION := 1.2.0+git20200925.$(shell echo $(USBFLUXD_COMMIT) | cut -c -
 DEB_USBFLUXD_V   ?= $(USBFLUXD_VERSION)
 
 usbfluxd-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/usbfluxd-$(USBFLUXD_VERSION).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/usbfluxd-$(USBFLUXD_VERSION).tar.gz \
-			https://github.com/corellium/usbfluxd/archive/$(USBFLUXD_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,corellium,usbfluxd,$(USBFLUXD_VERSION),$(USBFLUXD_COMMIT))
 	$(call EXTRACT_TAR,usbfluxd-$(USBFLUXD_VERSION).tar.gz,usbfluxd-$(USBFLUXD_COMMIT),usbfluxd)
 	$(call DO_PATCH,usbfluxd,usbfluxd,-p1)
 
@@ -22,8 +20,8 @@ usbfluxd: usbfluxd-setup libplist
 	cd $(BUILD_WORK)/usbfluxd && ./autogen.sh \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--with-static-libplist="$(BUILD_BASE)/usr/lib/libplist-2.0.a" \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--with-static-libplist="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libplist-2.0.a" \
 		ac_cv_func_malloc_0_nonnull=yes \
 		ac_cv_func_realloc_0_nonnull=yes
 	+$(MAKE) -C $(BUILD_WORK)/usbfluxd \
