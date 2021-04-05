@@ -19,6 +19,7 @@ else
 snaprestore: snaprestore-setup
 	$(MAKE) -C $(BUILD_WORK)/snaprestore
 	$(MAKE) -C $(BUILD_WORK)/snaprestore install \
+		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		DESTDIR="$(BUILD_STAGE)/snaprestore"
 	touch $(BUILD_WORK)/snaprestore/.build_complete
 endif
