@@ -9,7 +9,7 @@ DEB_LIBPAM-GOOGLE-AUTHENTICATOR_V   := $(LIBPAM-GOOGLE-AUTHENTICATOR_VERSION)
 
 libpam-google-authenticator-setup: setup
 	-[ ! -e "$(BUILD_SOURCE)/libpam-google-authenticator-$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT).tar.gz" ] \
-		&& wget -nc -O$(BUILD_SOURCE)/libpam-google-authenticator-$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT).tar.gz \
+		&& wget -q -nc -O$(BUILD_SOURCE)/libpam-google-authenticator-$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT).tar.gz \
 			https://github.com/google/google-authenticator-libpam/archive/$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT).tar.gz
 	$(call EXTRACT_TAR,libpam-google-authenticator-$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT).tar.gz,google-authenticator-libpam-$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT),libpam-google-authenticator)
 
