@@ -1,6 +1,6 @@
 Package: bash-completion
 Maintainer: @DEB_MAINTAINER@
-Architecture: @DEB_ARCH@
+Architecture: all
 Version: @DEB_BASH-COMPLETION_V@
 Depends: bash
 Section: Terminal_Support
@@ -12,4 +12,3 @@ Description: programmable completion for the bash shell
  conceived to produce programmable completion routines for the most
  common Linux/UNIX commands, reducing the amount of typing sysadmins
  and programmers need to do on a daily basis.
-

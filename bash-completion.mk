@@ -2,9 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += bash-completion
-BASH-COMPLETION_VERSION  := 2.11
-DEB_BASH-COMPLETION_V    ?= $(BASH-COMPLETION_VERSION)
+SUBPROJECTS             += bash-completion
+BASH-COMPLETION_VERSION := 2.11
+DEB_BASH-COMPLETION_V   ?= $(BASH-COMPLETION_VERSION)
 
 bash-completion-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/scop/bash-completion/releases/download/$(BASH-COMPLETION_VERSION)/bash-completion-$(BASH-COMPLETION_VERSION).tar.xz
@@ -18,7 +18,8 @@ bash-completion: bash-completion-setup bash
 	cd $(BUILD_WORK)/bash-completion && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--sysconfdir=$(MEMO_PREFIX)/etc
 	+$(MAKE) -C $(BUILD_WORK)/bash-completion
 	+$(MAKE) -C $(BUILD_WORK)/bash-completion install \
 		DESTDIR=$(BUILD_STAGE)/bash-completion
@@ -31,11 +32,8 @@ bash-completion-package: bash-completion-stage
 	mkdir -p $(BUILD_DIST)/bash-completion/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# bash-completion.mk Prep bash-completion
-	cp -a $(BUILD_STAGE)/bash-completion/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/etc/ $(BUILD_DIST)/bash-completion/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/etc
-	cp -a $(BUILD_STAGE)/bash-completion/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/ $(BUILD_DIST)/bash-completion/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-
-	# bash-completion.mk Sign
-	$(call SIGN,bash-completion,general.xml)
+	cp -a $(BUILD_STAGE)/bash-completion/$(MEMO_PREFIX)/etc $(BUILD_DIST)/bash-completion/$(MEMO_PREFIX)
+	cp -a $(BUILD_STAGE)/bash-completion/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/bash-completion/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# bash-completion.mk Make .debs
 	$(call PACK,bash-completion,DEB_BASH-COMPLETION_V)
