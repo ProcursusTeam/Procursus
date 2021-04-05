@@ -21,7 +21,7 @@ aom:
 	@echo "Using previously built aom."
 else
 aom: aom-setup
-	cd $(BUILD_WORK)/aom/build && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/aom/build && cmake . \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
@@ -51,28 +51,28 @@ aom-package: aom-stage
 	rm -rf $(BUILD_DIST)/aom-tools $(BUILD_DIST)/libaom{2,-dev}
 	mkdir -p $(BUILD_DIST)/aom-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/ \
 		$(BUILD_DIST)/libaom{2,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# aom.mk Prep aom-tools
 	cp -a $(BUILD_STAGE)/aom/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/aom-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# aom.mk Prep libaom2
 	cp -a $(BUILD_STAGE)/aom/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libaom.2*.dylib $(BUILD_DIST)/libaom2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# aom.mk Prep libaom-pkg-dev
 	cp -a $(BUILD_STAGE)/aom/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libaom.{dylib,a} $(BUILD_DIST)/libaom-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/aom/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libaom-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/aom/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libaom-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# aom.mk Sign
 	$(call SIGN,aom-tools,general.xml)
 	$(call SIGN,libaom2,general.xml)
-	
+
 	# aom.mk Make .debs
 	$(call PACK,aom-tools,DEB_AOM_V)
 	$(call PACK,libaom2,DEB_AOM_V)
 	$(call PACK,libaom-dev,DEB_AOM_V)
-	
+
 	# aom.mk Build cleanup
 	rm -rf $(BUILD_DIST)/aom-tools $(BUILD_DIST)/libaom{2,-dev}
-	
+
 .PHONY: aom aom-package

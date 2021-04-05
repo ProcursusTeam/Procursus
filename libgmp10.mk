@@ -33,21 +33,21 @@ libgmp10-package: libgmp10-stage
 	# libgmp10.mk Package Structure
 	rm -rf $(BUILD_DIST)/libgmp{10,-dev}
 	mkdir -p $(BUILD_DIST)/libgmp{10,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libgmp10.mk Prep libgmp10
 	cp -a $(BUILD_STAGE)/libgmp10/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgmp.10.dylib $(BUILD_DIST)/libgmp10/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libgmp10.mk Prep libgmp-dev
 	cp -a $(BUILD_STAGE)/libgmp10/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libgmp.{dylib,a}} $(BUILD_DIST)/libgmp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libgmp10/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libgmp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libgmp10.mk Sign
 	$(call SIGN,libgmp10,general.xml)
-	
+
 	# libgmp10.mk Make .debs
 	$(call PACK,libgmp10,DEB_GMP_V)
 	$(call PACK,libgmp-dev,DEB_GMP_V)
-	
+
 	# libgmp10.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libgmp{10,-dev}
 

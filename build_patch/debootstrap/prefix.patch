@@ -1,0 +1,26 @@
+diff --color -urN debootstrap_1.0.123/Makefile debootstrap/Makefile
+--- debootstrap_1.0.123/Makefile	2017-09-04 06:44:05.000000000 -0400
++++ debootstrap/Makefile	2021-03-23 18:33:27.899452844 -0400
+@@ -1,18 +1,15 @@
+ # avoid dpkg-dev dependency; fish out the version with sed
+-VERSION := $(shell sed 's/.*(\(.*\)).*/\1/; q' debian/changelog)
+ 
+ all:
+ 
+ clean:
+ 
+-DSDIR=$(DESTDIR)/usr/share/debootstrap
++DSDIR=$(DESTDIR)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/debootstrap
+ install:
+ 	mkdir -p $(DSDIR)/scripts
+-	mkdir -p $(DESTDIR)/usr/sbin
++	mkdir -p $(DESTDIR)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
+ 
+ 	cp -a scripts/* $(DSDIR)/scripts/
+-	install -o root -g root -m 0644 functions $(DSDIR)/
++	install -m 0644 functions $(DSDIR)/
+ 
+-	sed 's/@VERSION@/$(VERSION)/g' debootstrap >$(DESTDIR)/usr/sbin/debootstrap
+-	chown root:root $(DESTDIR)/usr/sbin/debootstrap
+-	chmod 0755 $(DESTDIR)/usr/sbin/debootstrap
++	install -m 0755 debootstrap $(DESTDIR)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/debootstrap

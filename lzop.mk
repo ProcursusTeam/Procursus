@@ -29,16 +29,16 @@ endif
 lzop-package: lzop-stage
 	# lzop.mk Package Structure
 	rm -rf $(BUILD_DIST)/lzop
-	
+
 	# lzop.mk Prep lzop
 	cp -a $(BUILD_STAGE)/lzop $(BUILD_DIST)
-	
+
 	# lzop.mk Sign
 	$(call SIGN,lzop,general.xml)
-	
+
 	# lzop.mk Make .debs
 	$(call PACK,lzop,DEB_LZOP_V)
-	
+
 	# lzop.mk Build cleanup
 	rm -rf $(BUILD_DIST)/lzop
 

@@ -32,16 +32,16 @@ endif
 xauth-package: xauth-stage
 	# xauth.mk Package Structure
 	rm -rf $(BUILD_DIST)/xauth
-	
+
 	# xauth.mk Prep xauth
 	cp -a $(BUILD_STAGE)/xauth $(BUILD_DIST)
-	
+
 	# xauth.mk Sign
 	$(call SIGN,xauth,general.xml)
-	
+
 	# xauth.mk Make .debs
 	$(call PACK,xauth,DEB_XAUTH_V)
-	
+
 	# xauth.mk Build cleanup
 	rm -rf $(BUILD_DIST)/xauth
 

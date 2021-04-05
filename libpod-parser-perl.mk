@@ -36,7 +36,7 @@ libpod-parser-perl: libpod-parser-perl-setup perl
 		INSTALLMAN3DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 \
 		INSTALLSITEMAN3DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 \
 		INSTALLVENDORMAN3DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 \
-		PERL="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl" \
+		PERL="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl" \
 		CCFLAGS="$(CFLAGS)" \
 		LDDLFLAGS="$(LDFLAGS) -shared"
 	+$(MAKE) -C $(BUILD_WORK)/libpod-parser-perl
@@ -49,13 +49,13 @@ endif
 libpod-parser-perl-package: libpod-parser-perl-stage
 	# libpod-parser-perl.mk Package Structure
 	rm -rf $(BUILD_DIST)/libpod-parser-perl
-	
+
 	# libpod-parser-perl.mk Prep libpod-parser-perl
 	cp -a $(BUILD_STAGE)/libpod-parser-perl $(BUILD_DIST)
-	
+
 	# libpod-parser-perl.mk Make .debs
 	$(call PACK,libpod-parser-perl,DEB_LIBPOD-PARSER-PERL_V)
-	
+
 	# libpod-parser-perl.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libpod-parser-perl
 
