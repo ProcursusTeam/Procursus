@@ -351,10 +351,12 @@ PACK = -if [ -z $(4) ]; then \
 	$(CP) $(BUILD_INFO)/$(1).prerm.$(PLATFORM) $(BUILD_DIST)/$(1)/DEBIAN/prerm; \
 	$(CP) $(BUILD_INFO)/$(1).extrainst_ $(BUILD_DIST)/$(1)/DEBIAN/extrainst_; \
 	$(CP) $(BUILD_INFO)/$(1).extrainst_.$(PLATFORM) $(BUILD_DIST)/$(1)/DEBIAN/extrainst_; \
+	$(CP) $(BUILD_INFO)/$(1).conffiles $(BUILD_DIST)/$(1)/DEBIAN/conffiles; \
+	$(CP) $(BUILD_INFO)/$(1).conffiles.$(PLATFORM) $(BUILD_DIST)/$(1)/DEBIAN/conffiles; \
 	$(SED) -i ':a; s/@$(2)@/$($(2))/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	$(SED) -i ':a; s/@DEB_MAINTAINER@/$(DEB_MAINTAINER)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	$(SED) -i ':a; s/@DEB_ARCH@/$(DEB_ARCH)/g; ta' $(BUILD_DIST)/$(1)/DEBIAN/control; \
-	for i in postinst preinst postrm prerm extrainst_; do \
+	for i in postinst preinst postrm prerm extrainst_ conffiles; do \
 		$(SED) -i ':a; s|@MEMO_PREFIX@|$(MEMO_PREFIX)|g; ta' $(BUILD_DIST)/$(1)/DEBIAN/$$i; \
 		$(SED) -i ':a; s|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g; ta' $(BUILD_DIST)/$(1)/DEBIAN/$$i; \
 		$(SED) -i ':a; s|@MEMO_ALT_PREFIX@|$(MEMO_ALT_PREFIX)|g; ta' $(BUILD_DIST)/$(1)/DEBIAN/$$i; \
