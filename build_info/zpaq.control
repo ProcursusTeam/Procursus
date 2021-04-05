@@ -2,7 +2,7 @@ Package: zpaq
 Version: @DEB_ZPAQ_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Section: Utilities
+Section: Archiving
 Priority: optional
 Description: maximum reference compressor for ZPAQ open standard
  The PAQ family is a series of open source data compression archivers
