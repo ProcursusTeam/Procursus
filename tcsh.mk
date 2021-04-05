@@ -19,16 +19,12 @@ else
 tcsh: tcsh-setup
 	cd $(BUILD_WORK)/tcsh && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
-		CC=$(CC) \
-		CFLAGS="$(CFLAGS)" \
-		CPPFLAGS="$(CPPFLAGS)" \
-		LDFLAGS="$(LDFLAGS)"
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+
 	+$(MAKE) -C $(BUILD_WORK)/tcsh
-	+$(MAKE) -C $(BUILD_WORK)/tcsh install -j1 \
+	+$(MAKE) -C $(BUILD_WORK)/tcsh install \
 		DESTDIR=$(BUILD_STAGE)/tcsh
-	+$(MAKE) -C $(BUILD_WORK)/tcsh install -j1 \
-		DESTDIR="$(BUILD_BASE)"
+
 	touch $(BUILD_WORK)/tcsh/.build_complete
 endif
 tcsh-package: tcsh-stage
