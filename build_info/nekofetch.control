@@ -5,4 +5,3 @@ Depends: curl, jq, jp2a, neofetch
 Recommends: imagemagick
 Description: neofetch but with nekos
 Maintainer: @DEB_MAINTAINER@
-Name: nekofetch
