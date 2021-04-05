@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifeq (,findstring($(MEMO_TARGET),darwin)))
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS         += snaprestore
 SNAPRESTORE_VERSION := 0.3
