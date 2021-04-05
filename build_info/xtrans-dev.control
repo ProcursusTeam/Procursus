@@ -1,0 +1,19 @@
+Package: xtrans-dev
+Version: @DEB_XTRANS_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Description: X transport library (development files)
+ xtrans includes a number of routines to make X implementations
+ transport-independent; at time of writing, it includes support for UNIX
+ sockets, IPv4, IPv6, and DECnet.
+ .
+ xtrans is not actually a library in itself; it includes .c files which are
+ then used in the compilation of X servers, libraries, et al.
+ .
+ More information about X.Org can be found at:
+ <URL:https://www.X.org>
+ .
+ This module can be found at
+ https://cgit.freedesktop.org/xorg/lib/libxtrans/

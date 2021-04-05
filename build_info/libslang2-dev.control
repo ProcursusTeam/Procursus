@@ -1,0 +1,25 @@
+Package: libslang2-dev
+Version: @DEB_SLANG2_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libslang2 (= @DEB_SLANG2_V@), libpng16-dev
+Section: Development
+Description: S-Lang programming library, development version
+ S-Lang is a C programmer's library that includes routines for the rapid
+ development of sophisticated, user friendly, multi-platform applications.
+ .
+ The S-Lang library includes the following:
+  * Low level tty input routines for reading single characters at a time.
+  * Keymap routines for defining keys and manipulating multiple keymaps.
+  * A high-level key processing interface (SLkp) for
+    handling function and arrow keys.
+  * High level screen management routines for manipulating both
+    monochrome and color terminals. These routines are very
+    efficient. (SLsmg)
+  * Low level terminal-independent routines for manipulating the display
+    of a terminal. (SLtt)
+  * Routines for reading single line input with line editing and recall
+    capabilities. (SLrline)
+  * Searching functions: both ordinary searches and regular expression
+    searches. (SLsearch)
+  * An embedded stack-based language interpreter with a C-like syntax.

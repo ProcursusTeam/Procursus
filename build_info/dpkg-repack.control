@@ -1,0 +1,18 @@
+Package: dpkg-repack
+Version: @DEB_DPKG_REPACK_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: perl, libdpkg-perl
+Suggests: fakeroot
+Section: Utilities
+Priority: standard
+Description: Debian package archiving tool
+ dpkg-repack creates a .deb file out of a package that has already been
+ installed. If any changes have been made to the package while it was
+ unpacked (i.e. files in /etc were modified), the new package will inherit
+ the changes.
+ .
+ This utility can make it easy to copy packages from one computer to another,
+ or to recreate packages that are installed on your system, but no longer
+ available elsewhere, or to store the current state of a package before you
+ upgrade it.

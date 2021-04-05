@@ -1,0 +1,21 @@
+Package: libxcb-xfixes0
+Version: @DEB_LIBXCB_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libxcb1
+Section: Libraries
+Priority: optional
+Description: X C Binding, xfixes extension
+ This package contains library files needed to run software
+ using libxcb-xfixes, the xfixes extension for the X C Binding.
+ .
+ The XCB library provides an interface to the X Window System protocol,
+ designed to replace the Xlib interface.  XCB provides several advantages ov>
+ Xlib:
+ .
+  * Size: small library and lower memory footprint
+  * Latency hiding: batch several requests and wait for the replies later
+  * Direct protocol access: one-to-one mapping between interface and protocol
+  * Thread support: access XCB from multiple threads, with no explicit locki>
+  * Easy creation of new extensions: automatically generates interface from
+    machine-parsable protocol descriptions

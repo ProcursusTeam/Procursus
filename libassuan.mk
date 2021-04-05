@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS     += libassuan
-LIBASSUAN_VERSION := 2.5.4
+LIBASSUAN_VERSION := 2.5.5
 DEB_LIBASSUAN_V   ?= $(LIBASSUAN_VERSION)
 
 libassuan-setup: setup
@@ -17,9 +17,10 @@ libassuan:
 else
 libassuan: libassuan-setup libgpg-error
 	cd $(BUILD_WORK)/libassuan && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--with-gpg-error-prefix=$(BUILD_BASE)/usr
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--with-gpg-error-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libassuan
 	+$(MAKE) -C $(BUILD_WORK)/libassuan install \
 		DESTDIR=$(BUILD_STAGE)/libassuan
@@ -31,23 +32,23 @@ endif
 libassuan-package: libassuan-stage
 	# libassuan.mk Package Structure
 	rm -rf $(BUILD_DIST)/libassuan{-dev,0}
-	mkdir -p $(BUILD_DIST)/libassuan{-dev,0}/usr/lib
-	
+	mkdir -p $(BUILD_DIST)/libassuan{-dev,0}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# libassuan.mk Prep libassuan0
-	cp -a $(BUILD_STAGE)/libassuan/usr/lib/libassuan.0.dylib $(BUILD_DIST)/libassuan0/usr/lib
-	
+	cp -a $(BUILD_STAGE)/libassuan/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libassuan.0.dylib $(BUILD_DIST)/libassuan0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# libassuan.mk Prep libassuan-dev
-	cp -a $(BUILD_STAGE)/libassuan/usr/lib/{pkgconfig,libassuan.dylib} $(BUILD_DIST)/libassuan-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libassuan/usr/{bin,share,include} $(BUILD_DIST)/libassuan-dev/usr
-	
+	cp -a $(BUILD_STAGE)/libassuan/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libassuan.dylib} $(BUILD_DIST)/libassuan-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libassuan/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share,include} $(BUILD_DIST)/libassuan-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+
 	# libassuan.mk Sign
 	$(call SIGN,libassuan0,general.xml)
 	$(call SIGN,libassuan-dev,general.xml)
-	
+
 	# libassuan.mk Make .debs
 	$(call PACK,libassuan0,DEB_LIBASSUAN_V)
 	$(call PACK,libassuan-dev,DEB_LIBASSUAN_V)
-	
+
 	# libassuan.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libassuan{-dev,0}
 

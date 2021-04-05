@@ -1,0 +1,21 @@
+Package: libilmbase25
+Version: @DEB_OPENEXR_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Multi-Arch: foreign
+Description: several utility libraries from ILM used by OpenEXR
+ IlmBase are a set of utility libraries released by ILM, and used in
+ their OpenEXR implementation. Included in this package you can find:
+ .
+  * libHalf: a class (Half) for manipulating "half" values (16-bit
+    floating point format) as if they were a built-in C++ data type.
+ .
+  * libIlmThread: a thread abstraction library on top of pthreads.
+ .
+  * libImath: a math library with support for matrices, 2d- and
+    3d-transformations, solvers for linear/quadratic/cubic equations,
+    and more.
+ .
+  * libIex: an exception handling library.

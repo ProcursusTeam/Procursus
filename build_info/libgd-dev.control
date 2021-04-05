@@ -1,0 +1,14 @@
+Package: libgd-dev
+Version: @DEB_LIBGD_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Depends: libfontconfig-dev, libfreetype-dev, libjpeg62-turbo-dev, libpng16-dev, libtiff-dev, libwebp-dev, libvpx-dev, libxpm-dev, libxt-dev
+Description: GD Graphics Library (development version)
+ GD is a graphics library. It allows your code to quickly draw images
+ complete with lines, arcs, text, multiple colours, cut and paste from
+ other images, flood fills, and write out the result as a PNG file.
+ This is particularly useful in World Wide Web applications, where PNG is
+ one of the formats accepted for inline images by most browsers.
+ .
+ This is the full development version of the library.

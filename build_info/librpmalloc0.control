@@ -1,0 +1,7 @@
+Package: librpmalloc0
+Version: @DEB_RPMALLOC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: standard
+Description: Public domain cross platform lock free thread caching 16-byte aligned memory allocator implemented in C 

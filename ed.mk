@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += ed
-ED_VERSION  := 1.16
+ED_VERSION  := 1.17
 DEB_ED_V    ?= $(ED_VERSION)
 
 ed-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://gnu.askapache.com/ed/ed-$(ED_VERSION).tar.lz{,.sig}
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/ed/ed-$(ED_VERSION).tar.lz{,.sig}
 	$(call PGP_VERIFY,ed-$(ED_VERSION).tar.lz)
 	$(call EXTRACT_TAR,ed-$(ED_VERSION).tar.lz,ed-$(ED_VERSION),ed)
 
@@ -17,7 +17,8 @@ ed:
 else
 ed: ed-setup
 	cd $(BUILD_WORK)/ed && ./configure \
-		--prefix=/usr \
+		--build=$$($(BUILD_MISC)/config.guess) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		CC=$(CC) \
 		CFLAGS="$(CCFLAGS)" \
 		CPPFLAGS="$(CPPFLAGS)" \
@@ -32,17 +33,16 @@ endif
 ed-package: ed-stage
 	# ed.mk Package Structure
 	rm -rf $(BUILD_DIST)/ed
-	mkdir -p $(BUILD_DIST)/ed
-	
+
 	# ed.mk Prep ed
-	cp -a $(BUILD_STAGE)/ed/usr $(BUILD_DIST)/ed
-	
+	cp -a $(BUILD_STAGE)/ed $(BUILD_DIST)
+
 	# ed.mk Sign
 	$(call SIGN,ed,general.xml)
-	
+
 	# ed.mk Make .debs
 	$(call PACK,ed,DEB_ED_V)
-	
+
 	# ed.mk Build cleanup
 	rm -rf $(BUILD_DIST)/ed
 

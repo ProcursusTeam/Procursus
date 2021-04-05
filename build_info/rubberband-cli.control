@@ -1,0 +1,13 @@
+Package: rubberband-cli
+Version: @DEB_RUBBERBAND_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libsamplerate0 (>= 0.1.9), libsndfile1 (>= 1.0.30)
+Section: Utilities
+Priority: optional
+Homepage: https://www.breakfastquay.com/rubberband/
+Description: audio time-stretching and pitch-shifting library
+ Rubber Band is a library and utility program that permits you to
+ change the tempo and pitch of an audio recording independently of one
+ another.
+ This package contains the command line utility.

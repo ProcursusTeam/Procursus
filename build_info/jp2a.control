@@ -1,0 +1,13 @@
+Package: jp2a
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_JP2A_V@
+Depends: libcurl4, libjpeg62-turbo, libncursesw6, libpng16-16
+Section: Multimedia
+Priority: optional
+Description: converts jpg and png images to ascii
+ Small utility that converts JPEG images to ASCII (text) using libjpeg. It
+ also can convert PNG pictures to ASCII via libpng. jp2a is very flexible.
+ It can use ANSI colors and html in output.
+ .
+ jp2a can also download and convert images from Internet via command line.

@@ -1,0 +1,14 @@
+Package: libtermkey-dev
+Version: @DEB_LIBTERMKEY_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Depends: libtermkey1 (= @DEB_LIBTERMKEY_V@), libunibilium-dev
+Description: library for processing keyboard input (development files)
+ This library allows easy processing of keyboard entry from terminal-based
+ programs. It handles all the necessary logic to recognise special keys, UTF-8
+ combining, and so on, with a simple interface.
+ .
+ This package contains the header files and libraries needed for developing
+ with libtermkey.

@@ -1,0 +1,17 @@
+Package: qemu-utils
+Version: @DEB_QEMU_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libglib2.0-0, libgnutls30, libzstd1, libnettle8
+Suggests: qemu-block-extra (= @DEB_QEMU_V@)
+Section: Utilities
+Priority: optional
+Description: QEMU full system emulation binaries
+ QEMU is a fast processor emulator: currently the package supports
+ ARM, CRIS, i386, M68k (ColdFire), MicroBlaze, MIPS, PowerPC, SH4,
+ SPARC and x86-64 emulation. By using dynamic translation it achieves
+ reasonable speed while being easy to port on new host CPUs.
+ .
+ This metapackage provides the full system emulation binaries for all supported
+ targets, by depending on all per-architecture system emulation packages which
+ QEMU supports.

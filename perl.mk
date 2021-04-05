@@ -4,9 +4,9 @@ endif
 
 SUBPROJECTS  += perl
 PERL_MAJOR   := 5.32
-PERL_VERSION := $(PERL_MAJOR).0
+PERL_VERSION := $(PERL_MAJOR).1
 PERL_API_V   := $(PERL_MAJOR).0
-PERL_CROSS_V := 1.3.4
+PERL_CROSS_V := 1.3.5
 DEB_PERL_V   ?= $(PERL_VERSION)
 
 perl-setup: setup
@@ -29,7 +29,7 @@ perl-setup: setup
 	$(SED) -i '/$$Is{Solaris} =/a \ \ \ \ $$Is{Darwin}  = $$^O eq '\''darwin'\'';' $(BUILD_WORK)/perl/cpan/ExtUtils-MakeMaker/lib/ExtUtils/MM_Unix.pm
 	$(SED) -i "s/&& $$^O ne 'darwin' //" $(BUILD_WORK)/perl/ext/Errno/Errno_pm.PL
 	$(SED) -i "s/$$^O eq 'linux'/\$$Config{gccversion} ne ''/" $(BUILD_WORK)/perl/ext/Errno/Errno_pm.PL
-	$(SED) -i 's/--sysroot=$$sysroot/-isysroot $$sysroot $(ARCH) $(PLATFORM_VERSION_MIN)/' $(BUILD_WORK)/perl/cnf/configure_tool.sh
+	$(SED) -i 's/--sysroot=$$sysroot/-isysroot $$sysroot -arch $(MEMO_ARCH) $(PLATFORM_VERSION_MIN)/' $(BUILD_WORK)/perl/cnf/configure_tool.sh
 	touch $(BUILD_WORK)/perl/cnf/hints/darwin
 	echo -e "# Linux syscalls\n\
 	d_voidsig='undef'\n\
@@ -42,7 +42,9 @@ perl-setup: setup
 	libperl='libperl.dylib'" > $(BUILD_WORK)/perl/cnf/hints/darwin
 
 	mkdir -p $(BUILD_WORK)/perl/include
-	cp -a $(BUILD_BASE)/usr/include/unistd.h $(BUILD_WORK)/perl/include
+ifneq (,$(wildcard $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h))
+	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h $(BUILD_WORK)/perl/include
+endif
 
 ifneq ($(wildcard $(BUILD_WORK)/perl/.build_complete),)
 perl:
@@ -50,37 +52,40 @@ perl:
 else
 perl: perl-setup
 	@# Don't use $$(CFLAGS) here because, in the case BerkeleyDB was made before perl, it will look at the db.h in $$(BUILD_BASE).
-	cd $(BUILD_WORK)/perl && CC='$(CC)' AR='$(AR)' NM='$(NM)' OBJDUMP='objdump' CFLAGS='-DPERL_DARWIN -DPERL_USE_SAFE_PUTENV -DTIME_HIRES_CLOCKID_T -O2 $(ARCH) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_WORK)/perl/include $(PLATFORM_VERSION_MIN)' ./configure \
+	cd $(BUILD_WORK)/perl && CC='$(CC)' AR='$(AR)' NM='$(NM)' OBJDUMP='objdump' CFLAGS='-DPERL_DARWIN -DPERL_USE_SAFE_PUTENV -DTIME_HIRES_CLOCKID_T -O2 -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_WORK)/perl/include $(PLATFORM_VERSION_MIN)' ./configure \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--target=$(GNU_HOST_TRIPLE) \
 		--sysroot=$(TARGET_SYSROOT) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-Duseshrplib \
 		-Dusevendorprefix \
-		-Dvendorprefix=/usr \
+		-Dvendorprefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-Dusethreads \
-		-Dvendorlib=/usr/share/perl5 \
-		-Dvendorarch=/usr/lib/perl5/$(PERL_VERSION)
-	+$(MAKE) -C $(BUILD_WORK)/perl \
+		-Dvendorlib=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 \
+		-Dprivlib=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
+		-Darchlib=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
+		-Dvendorarch=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR)
+	+$(MAKE) -C $(BUILD_WORK)/perl -j1 \
 		PERL_ARCHIVE=$(BUILD_WORK)/perl/libperl.dylib
 	+$(MAKE) -C $(BUILD_WORK)/perl install.perl \
 		DESTDIR=$(BUILD_STAGE)/perl
+	ln -s $(PERL_MAJOR) $(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_VERSION)
 	touch $(BUILD_WORK)/perl/.build_complete
 endif
 
 perl-package: perl-stage
 	# perl.mk Package Structure
 	rm -rf $(BUILD_DIST)/perl
-	mkdir -p $(BUILD_DIST)/perl
-	
+
 	# perl.mk Prep perl
-	cp -a $(BUILD_STAGE)/perl/usr $(BUILD_DIST)/perl
-	
+	cp -a $(BUILD_STAGE)/perl $(BUILD_DIST)
+
 	# perl.mk Sign
 	$(call SIGN,perl,general.xml)
-	
+
 	# perl.mk Make .debs
 	$(call PACK,perl,DEB_PERL_V)
-	
+
 	# perl.mk Build cleanup
 	rm -rf $(BUILD_DIST)/perl
 

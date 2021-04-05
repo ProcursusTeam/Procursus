@@ -6,5 +6,9 @@ Depends: libpng16-16 (>= @DEB_LIBPNG16_V@)
 Section: Development
 Priority: optional
 Multi-Arch: foreign
-Description: library for manipulating PNG files (development files)
-Tag: purpose::library, role::developer
+Description: PNG library - development (version 1.6)
+ libpng is a library implementing an interface for reading and writing
+ PNG (Portable Network Graphics) format files.
+ .
+ This package contains the header and development files needed to build
+ programs and packages using libpng.

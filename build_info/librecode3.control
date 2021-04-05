@@ -1,0 +1,13 @@
+Package: librecode3
+Version: @DEB_LIBRECODE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Depends: libintl8
+Description: Shared library on which recode is based
+ This recoding library converts files between various coded character
+ sets and surface encodings.  The library recognizes or produces more
+ than 300 different character sets and is able to convert files between
+ almost any pair.  Most RFC 1345 character sets, and all `libiconv'
+ character sets, are supported.

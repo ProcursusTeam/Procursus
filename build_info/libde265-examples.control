@@ -1,0 +1,13 @@
+Package: libde265-examples
+Version: @DEB_LIBDE265_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Multimedia
+Priority: standard
+Description: Open H.265 video codec implementation - examples
+ libde265 is an open source implementation of the H.265 video codec.
+ It is written from scratch in plain C for simplicity and efficiency.
+ Its simple API makes it easy to integrate it into other software.
+ .
+ Sample applications using libde265 are provided by this package.
+Depends: libde265-0 (= @DEB_LIBDE265_V@)

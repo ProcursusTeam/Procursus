@@ -1,0 +1,24 @@
+#!/bin/sh
+
+set -eu
+
+USER="redis"
+GROUP="$USER"
+CONFFILE="@MEMO_PREFIX@/etc/redis/sentinel.conf"
+
+if [ "$1" = "configure" ]
+then
+	if ! dpkg-statoverride --list ${CONFFILE} >/dev/null 2>&1
+	then
+		dpkg-statoverride --update --add ${USER} ${GROUP} 640 ${CONFFILE}
+	fi
+fi
+
+#DEBHELPER#
+
+if [ "$1" = "configure" ]
+then
+	@GNU_PREFIX@find @MEMO_PREFIX@/etc/redis -maxdepth 1 -type d -name 'redis-sentinel.*.d' -empty -delete
+fi
+
+exit 0

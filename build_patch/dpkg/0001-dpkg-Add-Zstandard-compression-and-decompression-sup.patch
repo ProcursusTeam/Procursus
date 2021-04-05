@@ -1,7 +1,7 @@
-From eb38de93eeb9524a54e80525c480df249828e84f Mon Sep 17 00:00:00 2001
-From: Balint Reczey <balint.reczey@canonical.com>
-Date: Thu, 8 Mar 2018 09:53:36 +0100
-Subject: [PATCH] dpkg: Add Zstandard compression and decompression support for
+From 91211c1c97c4e6d9a9e411d1acb0082229d05930 Mon Sep 17 00:00:00 2001
+From: Hayden <me@diatr.us>
+Date: Thu, 31 Dec 2020 19:55:25 -0500
+Subject: [PATCH] dpkg: Add Zstandard compression and decompression support for 
  binary packages
 
 ---
@@ -15,14 +15,16 @@ Subject: [PATCH] dpkg: Add Zstandard compression and decompression support for
  lib/dpkg/compress.c  | 157 ++++++++++++++++++++++++++++++++++++++++++-
  lib/dpkg/compress.h  |   1 +
  m4/dpkg-libs.m4      |   7 ++
+ man/dpkg-deb.pod     |   2 +-
+ man/po/dpkg-man.pot  |   3 +-
  t-func/deb-format.at |  13 ++++
- 13 files changed, 193 insertions(+), 5 deletions(-)
+ 13 files changed, 191 insertions(+), 4 deletions(-)
 
 diff --git a/README b/README
-index 348f8e700..b0cf0a528 100644
+index dd5a70fac..898369b7c 100644
 --- a/README
 +++ b/README
-@@ -72,6 +72,7 @@ To enable optional functionality or programs, this software might be needed:
+@@ -73,6 +73,7 @@ To enable optional functionality or programs, this software might be needed:
  
    libmd (used by libdpkg, currently falling back to embedded code)
    libz (from zlib, used instead of gzip command-line tool)
@@ -31,10 +33,10 @@ index 348f8e700..b0cf0a528 100644
    libbz2 (from bzip2, used instead of bzip2 command-line tool)
    libselinux
 diff --git a/configure.ac b/configure.ac
-index f6dff9f5e..2fbff6759 100644
+index 10d2ad278..7d9151376 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -75,6 +75,7 @@ AC_SYS_LARGEFILE
+@@ -88,6 +88,7 @@ AC_SYS_LARGEFILE
  # Checks for libraries.
  DPKG_LIB_MD
  DPKG_LIB_Z
@@ -42,7 +44,7 @@ index f6dff9f5e..2fbff6759 100644
  DPKG_LIB_BZ2
  DPKG_LIB_LZMA
  DPKG_LIB_SELINUX
-@@ -251,6 +252,7 @@ Configuration:
+@@ -279,6 +280,7 @@ Configuration:
      libselinux  . . . . . . . . . : $have_libselinux
      libmd . . . . . . . . . . . . : $have_libmd
      libz  . . . . . . . . . . . . : $have_libz
@@ -51,20 +53,20 @@ index f6dff9f5e..2fbff6759 100644
      libbz2  . . . . . . . . . . . : $have_libbz2
      libcurses . . . . . . . . . . : ${have_libcurses:-no}
 diff --git a/debian/control b/debian/control
-index c73f79762..10f66a55a 100644
+index 2a8fb73a5..dfdc2549f 100644
 --- a/debian/control
 +++ b/debian/control
-@@ -19,7 +19,9 @@ Build-Depends:
- # Needed for --porefs.
-  po4a (>= 0.43),
+@@ -16,7 +16,9 @@ Build-Depends:
+ # Needed for --porefs defaults, conditional addenda and mode=eof.
+  po4a (>= 0.59),
   zlib1g-dev,
 + zstd,
   libbz2-dev,
 + libzstd-dev,
   liblzma-dev,
   libselinux1-dev [linux-any],
-  libncursesw5-dev,
-@@ -67,6 +69,7 @@ Multi-Arch: same
+  libncurses-dev (>= 6.1+20180210) | libncursesw5-dev,
+@@ -56,6 +58,7 @@ Multi-Arch: same
  Depends:
   ${misc:Depends},
   zlib1g-dev,
@@ -73,10 +75,10 @@ index c73f79762..10f66a55a 100644
   libbz2-dev,
  Description: Debian package management static library
 diff --git a/debian/rules b/debian/rules
-index 27a2499ef..92f1d1c48 100755
+index 9ce27cdbf..c87590529 100755
 --- a/debian/rules
 +++ b/debian/rules
-@@ -64,6 +64,7 @@ build-tree/config.status: configure
+@@ -65,6 +65,7 @@ build-tree/config.status:
  		--with-devlibdir=\$${prefix}/lib/$(DEB_HOST_MULTIARCH) \
  		--without-libmd \
  		--with-libz \
@@ -96,10 +98,10 @@ index 02d79ed7d..bbd30e02c 100644
  	$(LZMA_LIBS) \
  	$(BZ2_LIBS)
 diff --git a/dpkg-deb/extract.c b/dpkg-deb/extract.c
-index dba15dedb..7fd4b2b67 100644
+index d0f6cb6c4..bf2d782a4 100644
 --- a/dpkg-deb/extract.c
 +++ b/dpkg-deb/extract.c
-@@ -179,6 +179,7 @@ extracthalf(const char *debar, const char *dir,
+@@ -180,6 +180,7 @@ extracthalf(const char *debar, const char *dir,
            decompressor = compressor_find_by_extension(extension);
            if (decompressor != COMPRESSOR_TYPE_NONE &&
                decompressor != COMPRESSOR_TYPE_GZIP &&
@@ -108,7 +110,7 @@ index dba15dedb..7fd4b2b67 100644
              ohshit(_("archive '%s' uses unknown compression for member '%.*s', "
                       "giving up"),
 diff --git a/dpkg-deb/main.c b/dpkg-deb/main.c
-index 52e9ce67d..7a40ecb80 100644
+index 17ed92b18..6051b2b75 100644
 --- a/dpkg-deb/main.c
 +++ b/dpkg-deb/main.c
 @@ -108,7 +108,7 @@ usage(const struct cmdinfo *cip, const char *value)
@@ -129,7 +131,7 @@ index 52e9ce67d..7a40ecb80 100644
      badusage(_("unsupported compression type '%s' with uniform compression"),
               compressor_get_name(compress_params.type));
 diff --git a/lib/dpkg/compress.c b/lib/dpkg/compress.c
-index 44075cdb6..7575478e5 100644
+index 41991317a..53a1e9167 100644
 --- a/lib/dpkg/compress.c
 +++ b/lib/dpkg/compress.c
 @@ -32,6 +32,9 @@
@@ -151,7 +153,7 @@ index 44075cdb6..7575478e5 100644
  #include <dpkg/subproc.h>
  
  static void DPKG_ATTR_SENTINEL
-@@ -750,6 +753,157 @@ static const struct compressor compressor_lzma = {
+@@ -763,6 +766,157 @@ static const struct compressor compressor_lzma = {
  	.decompress = decompress_lzma,
  };
  
@@ -184,7 +186,7 @@ index 44075cdb6..7575478e5 100644
 +	while ((just_read = fd_read(fd_in, buf_in, to_read))) {
 +		ZSTD_inBuffer input = { buf_in, just_read, 0 };
 +		while (input.pos < input.size) {
-+			ssize_t actualwrite;
++			size_t actualwrite;
 +			ZSTD_outBuffer output = { buf_out, buf_out_size, 0 };
 +			to_read = ZSTD_decompressStream(dstream, &output , &input);
 +			if (ZSTD_isError(to_read)) {
@@ -236,7 +238,7 @@ index 44075cdb6..7575478e5 100644
 +	while ((just_read = fd_read(fd_in, buf_in, to_read))) {
 +		ZSTD_inBuffer input = { buf_in, just_read, 0 };
 +		while (input.pos < input.size) {
-+			ssize_t actualwrite;
++			size_t actualwrite;
 +			ZSTD_outBuffer output = { buf_out, buf_out_size, 0 };
 +			to_read = ZSTD_compressStream(cstream, &output , &input);
 +			if (ZSTD_isError(to_read)) {
@@ -252,7 +254,7 @@ index 44075cdb6..7575478e5 100644
 +		}
 +	}
 +	do {
-+		ssize_t actualwrite;
++		size_t actualwrite;
 +		ZSTD_outBuffer output = { buf_out, buf_out_size, 0 };
 +		end_res = ZSTD_endStream(cstream, &output);
 +		if (ZSTD_isError(end_res)) {
@@ -309,7 +311,7 @@ index 44075cdb6..7575478e5 100644
  /*
   * Generic compressor filter.
   */
-@@ -760,6 +914,7 @@ static const struct compressor *compressor_array[] = {
+@@ -773,6 +927,7 @@ static const struct compressor *compressor_array[] = {
  	[COMPRESSOR_TYPE_XZ] = &compressor_xz,
  	[COMPRESSOR_TYPE_BZIP2] = &compressor_bzip2,
  	[COMPRESSOR_TYPE_LZMA] = &compressor_lzma,
@@ -330,10 +332,10 @@ index 08aaf2516..1af8a3490 100644
  
  enum compressor_strategy {
 diff --git a/m4/dpkg-libs.m4 b/m4/dpkg-libs.m4
-index 577264706..8cbb3faa3 100644
+index ffe373b7d..d9f869f22 100644
 --- a/m4/dpkg-libs.m4
 +++ b/m4/dpkg-libs.m4
-@@ -74,6 +74,13 @@ AC_DEFUN([DPKG_LIB_Z], [
+@@ -75,6 +75,13 @@ AC_DEFUN([DPKG_LIB_Z], [
    DPKG_WITH_COMPRESS_LIB([z], [zlib.h], [gzdopen])
  ])# DPKG_LIB_Z
  
@@ -347,8 +349,35 @@ index 577264706..8cbb3faa3 100644
  # DPKG_LIB_LZMA
  # -------------
  # Check for lzma library.
+diff --git a/man/dpkg-deb.pod b/man/dpkg-deb.pod
+index 87761d5b1..95c43d795 100644
+--- a/man/dpkg-deb.pod
++++ b/man/dpkg-deb.pod
+@@ -254,7 +254,7 @@ The default for this field is “${Package}\t${Version}\n”.
+ =item B<-z>I<compress-level>
+ 
+ Specify which compression level to use on the compressor backend, when
+-building a package (default is 9 for gzip, 6 for xz).
++building a package (default is 9 for gzip, 6 for xz and 19 for zstd).
+ The accepted values are 0-9 with: 0 being mapped to compressor none for gzip.
+ Before dpkg 1.16.2 level 0 was equivalent to compressor none for all
+ compressors.
+diff --git a/man/po/dpkg-man.pot b/man/po/dpkg-man.pot
+index 42fc7f6e3..e4a2b9884 100644
+--- a/man/po/dpkg-man.pot
++++ b/man/po/dpkg-man.pot
+@@ -12363,7 +12363,8 @@ msgstr ""
+ #: dpkg-deb.pod
+ msgid ""
+ "Specify which compression level to use on the compressor backend, when "
+-"building a package (default is 9 for gzip, 6 for xz).  The accepted values "
++"building a package (default is 9 for gzip, 6 for xz and 19 for zstd).  "
++"The accepted values "
+ "are 0-9 with: 0 being mapped to compressor none for gzip.  Before dpkg "
+ "1.16.2 level 0 was equivalent to compressor none for all compressors."
+ msgstr ""
 diff --git a/t-func/deb-format.at b/t-func/deb-format.at
-index cdfc648a8..0296c1d04 100644
+index 956100ce9..358ab18df 100644
 --- a/t-func/deb-format.at
 +++ b/t-func/deb-format.at
 @@ -28,6 +28,7 @@ xz -c control.tar >control.tar.xz
@@ -379,5 +408,5 @@ index cdfc648a8..0296c1d04 100644
  # Test data.tar.lzma member
  ar rc pkg-data-lzma.deb debian-binary control.tar.gz data.tar.lzma
 -- 
-2.17.0
+2.24.3 (Apple Git-128)
 

@@ -3,20 +3,14 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += p7zip
-P7ZIP_VERSION  := 16.02
-DEBIAN_P7ZIP_V := $(P7ZIP_VERSION)+dfsg-8
-DEB_P7ZIP_V    ?= $(DEBIAN_P7ZIP_V)
+P7ZIP_VERSION  := 17.03
+DEB_P7ZIP_V    ?= $(P7ZIP_VERSION)
 
 p7zip-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/p/p7zip/p7zip_$(P7ZIP_VERSION)+dfsg.orig.tar.xz \
-		https://deb.debian.org/debian/pool/main/p/p7zip/p7zip_$(DEBIAN_P7ZIP_V).debian.tar.xz \
-		https://raw.githubusercontent.com/shirkdog/hardenedbsd-ports/master/archivers/p7zip/files/patch-CPP_Windows_ErrorMsg.cpp
-	$(call EXTRACT_TAR,p7zip_$(P7ZIP_VERSION)+dfsg.orig.tar.xz,p7zip_$(P7ZIP_VERSION),p7zip)
-	$(call EXTRACT_TAR,p7zip_$(DEBIAN_P7ZIP_V).debian.tar.xz,debian/patches,$(BUILD_PATCH)/p7zip-$(P7ZIP_VERSION))
-	rm -rf $(BUILD_WORK)/debian
-	cp $(BUILD_SOURCE)/patch-CPP_Windows_ErrorMsg.cpp $(BUILD_PATCH)/p7zip-$(P7ZIP_VERSION)
-	$(SED) -i 's|CPP/Windows|p7zip/CPP/Windows|' $(BUILD_PATCH)/p7zip-$(P7ZIP_VERSION)/patch-CPP_Windows_ErrorMsg.cpp
-	$(call DO_PATCH,p7zip-$(P7ZIP_VERSION),p7zip,-p1)
+	$(call GITHUB_ARCHIVE,jinfeihan57,p7zip,$(P7ZIP_VERSION),v$(P7ZIP_VERSION))
+	$(call EXTRACT_TAR,p7zip-$(P7ZIP_VERSION).tar.gz,p7zip-$(P7ZIP_VERSION),p7zip)
+	$(call DO_PATCH,p7zip,p7zip,-p1) # Remove after next release.
+	chmod 0755 $(BUILD_WORK)/p7zip/install.sh
 
 ifneq ($(wildcard $(BUILD_WORK)/p7zip/.build_complete),)
 p7zip:
@@ -30,7 +24,8 @@ p7zip: p7zip-setup
 		CXX="$(CXX) $(CFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/p7zip install \
 		DEST_DIR=$(BUILD_STAGE)/p7zip \
-		DEST_HOME=/usr
+		DEST_HOME=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		DEST_MAN=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	touch $(BUILD_WORK)/p7zip/.build_complete
 endif
 
@@ -38,17 +33,16 @@ p7zip-package: p7zip-stage
 	# p7zip.mk Package Structure
 	rm -rf $(BUILD_DIST)/p7zip
 	mkdir -p $(BUILD_DIST)/p7zip
-	
+
 	# p7zip.mk Prep p7zip
-	cp -a $(BUILD_STAGE)/p7zip/usr $(BUILD_DIST)/p7zip
-	rm -rf $(BUILD_DIST)/p7zip/usr/man
-	
+	cp -a $(BUILD_STAGE)/p7zip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/p7zip
+
 	# p7zip.mk Sign
 	$(call SIGN,p7zip,general.xml)
-	
+
 	# p7zip.mk Make .debs
 	$(call PACK,p7zip,DEB_P7ZIP_V)
-	
+
 	# p7zip.mk Build cleanup
 	rm -rf $(BUILD_DIST)/p7zip
 

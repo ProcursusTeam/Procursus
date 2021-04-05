@@ -1,0 +1,10 @@
+Package: libunrar5
+Version: @DEB_UNRAR_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Multi-Arch: foreign
+Homepage: http://www.rarlab.com/rar_add.htm
+Description: Unarchiver for .rar files (non-free version) - shared library
+ library for unarchiving .rar files

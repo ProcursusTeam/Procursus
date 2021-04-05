@@ -1,0 +1,19 @@
+Package: libx11-doc
+Maintainer: @DEB_MAINTAINER@
+Architecture: all
+Version: @DEB_LIBX11_V@
+Section: X_Window
+Priority: optional
+Description: X11 client-side library (development documentation)
+ This package provides a client interface to the X Window System, otherwise
+ known as 'Xlib'.  It provides a complete API for the basic functions of the
+ window system.
+ .
+ This package contains supplemental documentation for the library found in
+ libx11-6. Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at:
+ <URL:https://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libX11
