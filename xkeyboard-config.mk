@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += xkeyboard-config
-XKEYBOARD-CONFIG_VERSION := 2.5
+XKEYBOARD-CONFIG_VERSION := 2.32
 DEB_XKEYBOARD-CONFIG_V   ?= $(XKEYBOARD-CONFIG_VERSION)
 
 xkeyboard-config-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/data/xkeyboard-config-$(XKEYBOARD-CONFIG_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/data/xkeyboard-config/xkeyboard-config-$(XKEYBOARD-CONFIG_VERSION).tar.gz
 	$(call EXTRACT_TAR,xkeyboard-config-$(XKEYBOARD-CONFIG_VERSION).tar.gz,xkeyboard-config-$(XKEYBOARD-CONFIG_VERSION),xkeyboard-config)
 
 ifneq ($(wildcard $(BUILD_WORK)/xkeyboard-config/.build_complete),)
