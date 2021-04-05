@@ -7,9 +7,7 @@ BSDIFF_VERSION := 4.3
 DEB_BSDIFF_V   ?= $(BSDIFF_VERSION)
 
 bsdiff-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/bsdiff-$(BSDIFF_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/bsdiff-$(BSDIFF_VERSION).tar.gz \
-			https://github.com/mendsley/bsdiff/archive/v$(BSDIFF_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,mendsley,bsdiff,$(BSDIFF_VERSION),v$(BSDIFF_VERSION))
 	$(call EXTRACT_TAR,bsdiff-$(BSDIFF_VERSION).tar.gz,bsdiff-$(BSDIFF_VERSION),bsdiff)
 	$(call DO_PATCH,bsdiff,bsdiff)
 

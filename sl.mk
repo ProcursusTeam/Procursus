@@ -7,7 +7,7 @@ SL_VERSION  := 5.05
 DEB_SL_V    ?= $(SL_VERSION)
 
 sl-setup: setup
-	-[[ ! -f $(BUILD_SOURCE)/sl-$(SL_VERSION).tar.gz ]] && wget -q -nc -O $(BUILD_SOURCE)/sl-$(SL_VERSION).tar.gz https://github.com/eyJhb/sl/archive/$(SL_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,eyJhb,sl,$(SL_VERSION),$(SL_VERSION))
 	$(call EXTRACT_TAR,sl-$(SL_VERSION).tar.gz,sl-$(SL_VERSION),sl)
 	mkdir -p $(BUILD_STAGE)/sl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 

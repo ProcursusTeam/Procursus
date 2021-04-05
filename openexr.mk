@@ -7,9 +7,7 @@ OPENEXR_VERSION := 2.5.3
 DEB_OPENEXR_V   ?= $(OPENEXR_VERSION)-1
 
 openexr-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/openexr-$(OPENEXR_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/openexr-$(OPENEXR_VERSION).tar.gz \
-			https://github.com/openexr/openexr/archive/v$(OPENEXR_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,openexr,openexr,$(OPENEXR_VERSION),v$(OPENEXR_VERSION))
 	$(call EXTRACT_TAR,openexr-$(OPENEXR_VERSION).tar.gz,openexr-$(OPENEXR_VERSION),openexr) 
 ifneq ($(wildcard $(BUILD_WORK)/openexr/.build_complete),)
 openexr:

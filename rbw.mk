@@ -9,7 +9,7 @@ RBW_VERSION := 1.0.0
 DEB_RBW_V   ?= $(RBW_VERSION)
 
 rbw-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/rbw-$(RBW_VERSION).tar.gz" ] && wget -q -nc -O $(BUILD_SOURCE)/rbw-$(RBW_VERSION).tar.gz https://github.com/doy/rbw/archive/$(RBW_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,doy,rbw,$(RBW_VERSION),$(RBW_VERSION))
 	$(call EXTRACT_TAR,rbw-$(RBW_VERSION).tar.gz,rbw-$(RBW_VERSION),rbw)
 
 ifneq ($(wildcard $(BUILD_WORK)/rbw/.build_complete),)

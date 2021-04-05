@@ -7,7 +7,7 @@ HTOP_VERSION := 3.0.5
 DEB_HTOP_V   ?= $(HTOP_VERSION)
 
 htop-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/htop-$(HTOP_VERSION).tar.gz" ] && wget -q -nc -O$(BUILD_SOURCE)/htop-$(HTOP_VERSION).tar.gz https://github.com/htop-dev/htop/archive/$(HTOP_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,htop-dev,htop,$(HTOP_VERSION),$(HTOP_VERSION))
 	$(call EXTRACT_TAR,htop-$(HTOP_VERSION).tar.gz,htop-$(HTOP_VERSION),htop)
 
 ifneq ($(wildcard $(BUILD_WORK)/htop/.build_complete),)

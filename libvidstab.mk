@@ -7,9 +7,7 @@ LIBVIDSTAB_VERSION := 1.1.0
 DEB_LIBVIDSTAB_V   ?= $(LIBVIDSTAB_VERSION)
 
 libvidstab-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/vid.stab-$(LIBVIDSTAB_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/vid.stab-$(LIBVIDSTAB_VERSION).tar.gz \
-			https://github.com/georgmartius/vid.stab/archive/v$(LIBVIDSTAB_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,georgmartius,vid.stab,$(LIBVIDSTAB_VERSION),v$(LIBVIDSTAB_VERSION))
 	$(call EXTRACT_TAR,vid.stab-$(LIBVIDSTAB_VERSION).tar.gz,vid.stab-$(LIBVIDSTAB_VERSION),libvidstab)
 
 ifneq ($(wildcard $(BUILD_WORK)/libvidstab/.build_complete),)

@@ -7,7 +7,7 @@ ZLIB-NG_VERSION  := 2.0.2
 DEB_ZLIB-NG_V    ?= $(ZLIB-NG_VERSION)
 
 zlib-ng-setup: setup
-	-wget -q -nc -O$(BUILD_SOURCE)/zlib-ng-$(ZLIB-NG_VERSION).tar.gz https://github.com/zlib-ng/zlib-ng/archive/refs/tags/$(ZLIB-NG_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,zlib-ng,zlib-ng,$(ZLIB-NG_VERSION),$(ZLIB-NG_VERSION))
 	$(call EXTRACT_TAR,zlib-ng-$(ZLIB-NG_VERSION).tar.gz,zlib-ng-$(ZLIB-NG_VERSION),zlib-ng)
 ifneq ($(wildcard $(BUILD_WORK)/zlib-ng/.build_complete),)
 zlib-ng:

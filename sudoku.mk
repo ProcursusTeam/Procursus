@@ -7,9 +7,7 @@ SUDOKU_VERSION  := 1.0.5
 DEB_SUDOKU_V    ?= $(SUDOKU_VERSION)
 
 sudoku-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/sudoku-$(SUDOKU_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/sudoku-$(SUDOKU_VERSION).tar.gz \
-			https://github.com/cinemast/sudoku/archive/v$(SUDOKU_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,cinemast,sudoku,$(SUDOKU_VERSION),v$(SUDOKU_VERSION))
 	$(call EXTRACT_TAR,sudoku-$(SUDOKU_VERSION).tar.gz,sudoku-$(SUDOKU_VERSION),sudoku)
 	$(call DO_PATCH,sudoku,sudoku,-p1)
 

@@ -365,6 +365,16 @@ PACK_LOCALE = mkdir -p $(BUILD_DIST)/$(1)-locale/{DEBIAN,$(MEMO_PREFIX)$(MEMO_SU
 	$(FAKEROOT) $(DPKG_DEB) -b $(BUILD_DIST)/$(1)-locale $(BUILD_DIST)/$$(grep Package: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ')-locale_$${VERSION}_$$(grep Architecture: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ').deb; \
 	rm -rf $(BUILD_DIST)/$(1)-locale
 
+GITHUB_ARCHIVE = -if [ $(5) ]; then \
+		[ ! -f "$(BUILD_SOURCE)/$(5)-$(3).tar.gz" ] && \
+			wget -q -nc -O$(BUILD_SOURCE)/$(5)-$(3).tar.gz \
+				https://github.com/$(1)/$(2)/archive/$(4).tar.gz; \
+	else \
+		[ ! -f "$(BUILD_SOURCE)/$(2)-$(3).tar.gz" ] && \
+			wget -q -nc -O$(BUILD_SOURCE)/$(2)-$(3).tar.gz \
+				https://github.com/$(1)/$(2)/archive/$(4).tar.gz; \
+	fi
+
 ###
 #
 # Fix this dep checking section dumbass

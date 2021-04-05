@@ -8,9 +8,7 @@ DEB_PASTEBOARD-UTILS_V        ?= $(PASTEBOARD-UTILS_VERSION)
 PASTEBOARD-UTILS_LIBS         := -framework Foundation -framework UIKit
 
 pasteboard-utils-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/pasteboard-utils-$(PASTEBOARD-UTILS_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/pasteboard-utils-$(PASTEBOARD-UTILS_VERSION).tar.gz \
-			https://github.com/quiprr/pasteboard-utils/archive/v$(PASTEBOARD-UTILS_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,quiprr,pasteboard-utils,$(PASTEBOARD-UTILS_VERSION),v$(PASTEBOARD-UTILS_VERSION))
 	$(call EXTRACT_TAR,pasteboard-utils-$(PASTEBOARD-UTILS_VERSION).tar.gz,pasteboard-utils-$(PASTEBOARD-UTILS_VERSION),pasteboard-utils)
 	mkdir -p $(BUILD_STAGE)/pasteboard-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 

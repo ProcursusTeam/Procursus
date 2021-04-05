@@ -7,9 +7,7 @@ HARFBUZZ_VERSION := 2.7.4
 DEB_HARFBUZZ_V   ?= $(HARFBUZZ_VERSION)-1
 
 harfbuzz-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/harfbuzz-$(HARFBUZZ_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/harfbuzz-$(HARFBUZZ_VERSION).tar.gz \
-			https://github.com/harfbuzz/harfbuzz/archive/$(HARFBUZZ_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,harfbuzz,harfbuzz,$(HARFBUZZ_VERSION),$(HARFBUZZ_VERSION))
 	$(call EXTRACT_TAR,harfbuzz-$(HARFBUZZ_VERSION).tar.gz,harfbuzz-$(HARFBUZZ_VERSION),harfbuzz)
 
 ifneq ($(wildcard $(BUILD_WORK)/harfbuzz/.build_complete),)
