@@ -4,7 +4,7 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Administration
 Priority: optional
-Depends libpam2
+Depends: libpam2
 Description: Two-step verification
  The Google Authenticator project includes implementations of one-time
  passcode generators for several mobile platforms, as well as a
