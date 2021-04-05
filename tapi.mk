@@ -7,9 +7,7 @@ TAPI_VERSION   := 1100.0.11
 DEB_TAPI_V     ?= $(TAPI_VERSION)
 
 tapi-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/tapi-$(TAPI_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/tapi-$(TAPI_VERSION).tar.gz \
-			https://github.com/Diatrus/apple-libtapi/archive/v$(TAPI_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,Diatrus,apple-libtapi,$(TAPI_VERSION),v$(TAPI_VERSION),tapi)
 	$(call EXTRACT_TAR,tapi-$(TAPI_VERSION).tar.gz,apple-libtapi-$(TAPI_VERSION),tapi)
 	mkdir -p $(BUILD_WORK)/tapi/build
 
@@ -19,7 +17,7 @@ tapi:
 else
 tapi: tapi-setup
 	ln -sf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcurses.dylib
-	cd $(BUILD_WORK)/tapi/build && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/tapi/build && cmake . \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \

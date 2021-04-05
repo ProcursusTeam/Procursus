@@ -11,9 +11,7 @@ DEB_RUST_V   ?= $(RUST_VERSION)
 ##### THIS MAKEFILE IS CURRENTLY WIP AGAIN #####
 
 rust-setup: setup
-	-[[ ! -f $(BUILD_SOURCE)/rust-$(RUST_VERSION).tar.gz ]] && \
-		wget -q -nc -O $(BUILD_SOURCE)/rust-$(RUST_VERSION).tar.gz \
-			https://github.com/rust-lang/rust/archive/$(RUST_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,rust-lang,rust,$(RUST_VERSION),$(RUST_VERSION))
 	$(call EXTRACT_TAR,rust-$(RUST_VERSION).tar.gz,rust-$(RUST_VERSION),rust)
 
 	mkdir -p "$(BUILD_WORK)/rust/build"

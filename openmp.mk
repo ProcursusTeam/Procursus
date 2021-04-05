@@ -17,7 +17,7 @@ openmp:
 else
 openmp: openmp-setup
 	# Shared lib
-	cd $(BUILD_WORK)/openmp && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/openmp && cmake . \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
@@ -41,7 +41,7 @@ openmp: openmp-setup
 	ln -sf libomp.1.dylib $(BUILD_STAGE)/openmp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libomp.dylib
 
 	# Static lib
-	cd $(BUILD_WORK)/openmp && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/openmp && cmake . \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \

@@ -8,10 +8,8 @@ XPWN_VERSION := 0.5.8+git20201206.$(shell echo $(XPWN_COMMIT) | cut -c -7)
 DEB_XPWN_V   ?= $(XPWN_VERSION)
 
 xpwn-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/xpwn-v$(XPWN_COMMIT).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/xpwn-v$(XPWN_COMMIT).tar.gz \
-			https://github.com/OothecaPickle/xpwn/archive/$(XPWN_COMMIT).tar.gz
-	$(call EXTRACT_TAR,xpwn-v$(XPWN_COMMIT).tar.gz,xpwn-$(XPWN_COMMIT),xpwn)
+	$(call GITHUB_ARCHIVE,OothecaPickle,xpwn,$(XPWN_COMMIT),$(XPWN_COMMIT))
+	$(call EXTRACT_TAR,xpwn-$(XPWN_COMMIT).tar.gz,xpwn-$(XPWN_COMMIT),xpwn)
 	$(call DO_PATCH,xpwn,xpwn,-p1)
 
 	$(SED) -i 's/powerpc-apple-darwin8-libtool/libtool/' $(BUILD_WORK)/xpwn/ipsw-patch/CMakeLists.txt

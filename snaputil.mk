@@ -7,9 +7,7 @@ SNAPUTIL_VERSION := 10.15.1
 DEB_SNAPUTIL_V   ?= $(SNAPUTIL_VERSION)
 
 snaputil-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/snaputil-$(SNAPUTIL_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/snaputil-$(SNAPUTIL_VERSION).tar.gz \
-			https://github.com/Diatrus/apfs/archive/v$(SNAPUTIL_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,Diatrus,apfs,$(SNAPUTIL_VERSION),v$(SNAPUTIL_VERSION),snaputil)
 	$(call EXTRACT_TAR,snaputil-$(SNAPUTIL_VERSION).tar.gz,apfs-$(SNAPUTIL_VERSION),snaputil)
 	mkdir -p $(BUILD_STAGE)/snaputil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 

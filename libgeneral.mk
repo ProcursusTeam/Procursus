@@ -7,8 +7,8 @@ LIBGENERAL_VERSION := 54
 DEB_LIBGENERAL_V   ?= $(LIBGENERAL_VERSION)
 
 libgeneral-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tihmstar/libgeneral/archive/$(LIBGENERAL_VERSION).tar.gz
-	$(call EXTRACT_TAR,$(LIBGENERAL_VERSION).tar.gz,libgeneral-$(LIBGENERAL_VERSION),libgeneral)
+	$(call GITHUB_ARCHIVE,tihmstar,libgeneral,$(LIBGENERAL_VERSION),$(LIBGENERAL_VERSION))
+	$(call EXTRACT_TAR,libgeneral-$(LIBGENERAL_VERSION).tar.gz,libgeneral-$(LIBGENERAL_VERSION),libgeneral)
 
 ifneq ($(wildcard $(BUILD_WORK)/libgeneral/.build_complete),)
 libgeneral:

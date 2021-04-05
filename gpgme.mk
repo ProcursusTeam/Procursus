@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS   += gpgme
 GPGME_VERSION := 1.15.1
-DEB_GPGME_V   ?= $(GPGME_VERSION)
+DEB_GPGME_V   ?= $(GPGME_VERSION)-1
 
 gpgme-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/gpgme/gpgme-$(GPGME_VERSION).tar.bz2{,.sig}
