@@ -58,4 +58,4 @@ apr-package: apr-stage
 	# apr.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libapr1{,-dev}
 
-	.PHONY: apr apr-package
+.PHONY: apr apr-package
