@@ -2,14 +2,14 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += libpam-google-authenticator
-LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT := 0b02aadc28ac261b6c7f5785d2f7f36b3e199d97
+SUBPROJECTS                         += libpam-google-authenticator
+LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT  := 0b02aadc28ac261b6c7f5785d2f7f36b3e199d97
 LIBPAM-GOOGLE-AUTHENTICATOR_VERSION := 0~20210222.$(shell echo $(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT) | cut -c -7)
-DEB_LIBPAM-GOOGLE-AUTHENTICATOR_V   := $(LIBPAM-GOOGLE-AUTHENTICATOR_VERSION)-1
+DEB_LIBPAM-GOOGLE-AUTHENTICATOR_V   := $(LIBPAM-GOOGLE-AUTHENTICATOR_VERSION)
 
 libpam-google-authenticator-setup: setup
 	-[ ! -e "$(BUILD_SOURCE)/libpam-google-authenticator-$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT).tar.gz" ] \
-		&& wget -nc -O$(BUILD_SOURCE)/libpam-google-authenticator-$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT).tar.gz \
+		&& wget -q -nc -O$(BUILD_SOURCE)/libpam-google-authenticator-$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT).tar.gz \
 			https://github.com/google/google-authenticator-libpam/archive/$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT).tar.gz
 	$(call EXTRACT_TAR,libpam-google-authenticator-$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT).tar.gz,google-authenticator-libpam-$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT),libpam-google-authenticator)
 
@@ -22,10 +22,10 @@ libpam-google-authenticator: libpam-google-authenticator-setup
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-			+$(MAKE) -C $(BUILD_WORK)/libpam-google-authenticator
+	+$(MAKE) -C $(BUILD_WORK)/libpam-google-authenticator
 	+$(MAKE) -C $(BUILD_WORK)/libpam-google-authenticator install \
 		DESTDIR="$(BUILD_STAGE)/libpam-google-authenticator"
-		touch $(BUILD_WORK)/libpam-google-authenticator/.build_complete
+	touch $(BUILD_WORK)/libpam-google-authenticator/.build_complete
 endif
 
 libpam-google-authenticator-package: libpam-google-authenticator-stage
@@ -35,7 +35,7 @@ libpam-google-authenticator-package: libpam-google-authenticator-stage
 
 	# libpam-google-authenticator.mk Prep libpam-google-authenticator
 	cp -a $(BUILD_STAGE)/libpam-google-authenticator $(BUILD_DIST)
-	mv -f $(BUILD_DIST)/libpam-google-authenticator$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/security $(BUILD_DIST)/libpam-google-authenticator$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pam
+	mv -f $(BUILD_DIST)/libpam-google-authenticator/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/security $(BUILD_DIST)/libpam-google-authenticator/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pam
 	# libpam-google-authenticator.mk Sign
 	$(call SIGN,libpam-google-authenticator,general.xml)
 
