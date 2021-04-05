@@ -1,0 +1,9 @@
+Package: dash
+Version: @DEB_DASH_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libedit0
+Section: Terminal_Support
+Priority: optional
+Homepage: http://gondor.apana.org.au/~herbert/dash/
+Description: POSIX compliant shell that aims to be as small as possible

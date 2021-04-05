@@ -28,13 +28,13 @@ endif
 autoconf-archive-package: autoconf-archive-stage
 	# autoconf-archive.mk Package Structure
 	rm -rf $(BUILD_DIST)/autoconf-archive
-	
+
 	# autoconf-archive.mk Prep autoconf-archive
 	cp -a $(BUILD_STAGE)/autoconf-archive $(BUILD_DIST)
-	
+
 	# autoconf-archive.mk Make .debs
 	$(call PACK,autoconf-archive,DEB_AUTOCONF-ARCHIVE_V)
-	
+
 	# autoconf-archive.mk Build cleanup
 	rm -rf $(BUILD_DIST)/autoconf-archive
 

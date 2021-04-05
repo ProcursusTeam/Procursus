@@ -39,10 +39,10 @@ nghttp2-package: nghttp2-stage
 	rm -rf $(BUILD_DIST)/libnghttp2-{14,dev} $(BUILD_DIST)/nghttp2-{client,proxy,server}
 	mkdir -p $(BUILD_DIST)/libnghttp2-{14,dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/nghttp2-{proxy,server,client}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
-	
+
 	# nghttp2.mk Prep libnghttp2-14
 	cp -a $(BUILD_STAGE)/nghttp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libnghttp2.14.dylib $(BUILD_DIST)/libnghttp2-14/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# nghttp2.mk Prep libnghttp2-dev
 	cp -a $(BUILD_STAGE)/nghttp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libnghttp2.14.dylib) $(BUILD_DIST)/libnghttp2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/nghttp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libnghttp2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
@@ -65,14 +65,14 @@ nghttp2-package: nghttp2-stage
 	$(call SIGN,nghttp2-proxy,general.xml)
 	$(call SIGN,nghttp2-server,general.xml)
 	$(call SIGN,nghttp2-client,general.xml)
-	
+
 	# nghttp2.mk Make .debs
 	$(call PACK,libnghttp2-14,DEB_NGHTTP2_V)
 	$(call PACK,libnghttp2-dev,DEB_NGHTTP2_V)
 	$(call PACK,nghttp2-proxy,DEB_NGHTTP2_V)
 	$(call PACK,nghttp2-server,DEB_NGHTTP2_V)
 	$(call PACK,nghttp2-client,DEB_NGHTTP2_V)
-	
+
 	# nghttp2.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libnghttp2-{14,dev} $(BUILD_DIST)/nghttp2-{client,proxy,server}
 

@@ -18,7 +18,7 @@ rubberband:
 else
 rubberband: rubberband-setup libsamplerate libsndfile
 	+$(MAKE) -C $(BUILD_WORK)/rubberband \
-		PREFIX=/usr \
+		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		CC="$(CC)" \
 		CXX="$(CXX)" \
 		ARG_CXXFLAGS="$(CXXFLAGS)" \
@@ -27,10 +27,10 @@ rubberband: rubberband-setup libsamplerate libsndfile
 		AR="$(AR)"
 
 	+$(MAKE) -C $(BUILD_WORK)/rubberband install \
-		PREFIX=/usr \
+		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR="$(BUILD_STAGE)/rubberband"
 	+$(MAKE) -C $(BUILD_WORK)/rubberband install \
-		PREFIX=/usr \
+		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR="$(BUILD_BASE)"
 
 	touch $(BUILD_WORK)/rubberband/.build_complete
@@ -39,28 +39,28 @@ endif
 rubberband-package: rubberband-stage
 	# rubberband.mk Package Structure
 	rm -rf $(BUILD_DIST)/{rubberband-cli,librubberband{2,-dev}}
-	mkdir -p $(BUILD_DIST)/rubberband-cli/usr \
-		$(BUILD_DIST)/librubberband{2,-dev}/usr/lib
-	
+	mkdir -p $(BUILD_DIST)/rubberband-cli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(BUILD_DIST)/librubberband{2,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# rubberband.mk Prep rubberband-cli
-	cp -a $(BUILD_STAGE)/rubberband/usr/bin $(BUILD_DIST)/rubberband-cli/usr
-	
+	cp -a $(BUILD_STAGE)/rubberband/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/rubberband-cli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+
 	# rubberband.mk Prep librubberband2
-	cp -a $(BUILD_STAGE)/rubberband/usr/lib/librubberband.2{,.1.2}.dylib $(BUILD_DIST)/librubberband2/usr/lib
-	
+	cp -a $(BUILD_STAGE)/rubberband/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librubberband.2{,.1.2}.dylib $(BUILD_DIST)/librubberband2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# rubberband.mk Prep librubberband-dev
-	cp -a $(BUILD_STAGE)/rubberband/usr/lib/{pkgconfig,librubberband.{dylib,a}} $(BUILD_DIST)/librubberband-dev/usr/lib
-	cp -a $(BUILD_STAGE)/rubberband/usr/include $(BUILD_DIST)/librubberband-dev/usr
-	
+	cp -a $(BUILD_STAGE)/rubberband/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,librubberband.{dylib,a}} $(BUILD_DIST)/librubberband-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/rubberband/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/librubberband-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+
 	# rubberband.mk Sign
 	$(call SIGN,rubberband-cli,general.xml)
 	$(call SIGN,librubberband2,general.xml)
-	
+
 	# rubberband.mk Make .debs
 	$(call PACK,rubberband-cli,DEB_RUBBERBAND_V)
 	$(call PACK,librubberband2,DEB_RUBBERBAND_V)
 	$(call PACK,librubberband-dev,DEB_RUBBERBAND_V)
-	
+
 	# rubberband.mk Build cleanup
 	rm -rf $(BUILD_DIST)/{rubberband-cli,librubberband{2,-dev}}
 

@@ -33,16 +33,16 @@ endif
 lzip-package: lzip-stage
 	# lzip.mk Package Structure
 	rm -rf $(BUILD_DIST)/lzip
-	
+
 	# lzip.mk Prep lzip
 	cp -a $(BUILD_STAGE)/lzip $(BUILD_DIST)
-	
+
 	# lzip.mk Sign
 	$(call SIGN,lzip,general.xml)
-	
+
 	#lzip.mk Make .debs
 	$(call PACK,lzip,DEB_LZIP_V)
-	
+
 	# lzip.mk Build cleanup
 	rm -rf $(BUILD_DIST)/lzip
 

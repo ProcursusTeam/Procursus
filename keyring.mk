@@ -28,7 +28,7 @@ keyring-package: keyring-stage
 
 	# keyring.mk Make .debs
 	$(call PACK,keyring,DEB_KEYRING_V)
-	
+
 	# keyring.mk Build cleanup
 	rm -rf $(BUILD_DIST)/keyring
 

@@ -35,20 +35,20 @@ less-package: less-stage
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	mkdir -p $(BUILD_DIST)/less/$(MEMO_PREFIX)/etc/profile.d
 endif
-	
+
 	# less.mk Prep less
 	cp -a $(BUILD_STAGE)/less/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/* $(BUILD_DIST)/less/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/less $(BUILD_DIST)/less/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/more
 ifneq ($(MEMO_SUB_PREFIX),)
 	ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/less $(BUILD_DIST)/less/$(MEMO_PREFIX)/bin/more
 endif
-	
+
 	# less.mk Sign
 	$(call SIGN,less,general.xml)
-	
+
 	# less.mk Make .debs
 	$(call PACK,less,DEB_LESS_V)
-	
+
 	# less.mk Build cleanup
 	rm -rf $(BUILD_DIST)/less
 

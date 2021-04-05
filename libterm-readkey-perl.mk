@@ -11,7 +11,7 @@ libterm-readkey-perl-setup: setup
 		&& wget -q -nc -O$(BUILD_SOURCE)/libterm-readkey-perl-$(LIBTERM-READKEY-PERL_VERSION).tar.gz \
 			https://cpan.metacpan.org/authors/id/J/JS/JSTOWE/TermReadKey-$(LIBTERM-READKEY-PERL_VERSION).tar.gz
 	$(call EXTRACT_TAR,libterm-readkey-perl-$(LIBTERM-READKEY-PERL_VERSION).tar.gz,TermReadKey-$(LIBTERM-READKEY-PERL_VERSION),libterm-readkey-perl)
-	
+
 	###
 	#
 	# Install libterm-readkey-perl from Procursus before building this. (Silly, I know. Sorry!)
@@ -42,7 +42,7 @@ libterm-readkey-perl: libterm-readkey-perl-setup perl
 		INSTALLMAN3DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 \
 		INSTALLSITEMAN3DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 \
 		INSTALLVENDORMAN3DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 \
-		PERL="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl" \
+		PERL="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl" \
 		CCFLAGS="$(CFLAGS)" \
 		LDDLFLAGS="$(LDFLAGS) -shared"
 	+$(MAKE) -C $(BUILD_WORK)/libterm-readkey-perl install \
@@ -55,13 +55,13 @@ endif
 libterm-readkey-perl-package: libterm-readkey-perl-stage
 	# libterm-readkey-perl.mk Package Structure
 	rm -rf $(BUILD_DIST)/libterm-readkey-perl
-	
+
 	# libterm-readkey-perl.mk Prep libterm-readkey-perl
 	cp -a $(BUILD_STAGE)/libterm-readkey-perl $(BUILD_DIST)
-	
+
 	# libterm-readkey-perl.mk Make .debs
 	$(call PACK,libterm-readkey-perl,DEB_LIBTERM-READKEY-PERL_V)
-	
+
 	# libterm-readkey-perl.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libterm-readkey-perl
 
