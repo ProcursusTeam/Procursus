@@ -1,4 +1,4 @@
-Packages: theos-dependencies
+Package: theos-dependencies
 Version: @DEB_THEOSDEPS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
