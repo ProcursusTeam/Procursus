@@ -502,7 +502,11 @@ ifneq ($(call HAS_COMMAND,zstd),1)
 $(error Install zstd)
 endif
 
+ifeq ($(shell dpkg-deb --help | grep "zstd" && echo 1),1)
 DPKG_TYPE ?= zstd
+else
+DPKG_TYPE ?= gzip
+endif
 ifeq ($(call HAS_COMMAND,dpkg-deb),1)
 DPKG_DEB := dpkg-deb -Z$(DPKG_TYPE) 
 else ifeq ($(call HAS_COMMAND,dm.pl),1)
