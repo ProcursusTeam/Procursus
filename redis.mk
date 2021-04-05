@@ -26,7 +26,7 @@ ifneq ($(wildcard $(BUILD_WORK)/redis/.build_complete),)
 redis:
 	@echo "Using previously built redis."
 else
-redis: redis-setup libjemalloc lua5.3 openssl
+redis: redis-setup libjemalloc openssl
 	+$(MAKE) -C $(BUILD_WORK)/redis V=1 \
 		MALLOC=jemalloc \
 		USE_SYSTEMD=no \
