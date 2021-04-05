@@ -38,7 +38,7 @@ endif
 		abi=aapcs \
 		install
 	cd $(BUILD_WORK)/libboost && ./b2 \
-		--prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--prefix=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--without-python \
 		threading=multi \
 		variant=release \
