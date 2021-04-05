@@ -7,8 +7,7 @@ LOLCAT_VERSION := 1.2
 DEB_LOLCAT_V   ?= $(LOLCAT_VERSION)
 
 lolcat-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/lolcat-$(LOLCAT_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/lolcat-$(LOLCAT_VERSION).tar.gz https://github.com/jaseg/lolcat/archive/v$(LOLCAT_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,jaseg,lolcat,$(LOLCAT_VERSION),v$(LOLCAT_VERSION))
 	$(call EXTRACT_TAR,lolcat-$(LOLCAT_VERSION).tar.gz,lolcat-$(LOLCAT_VERSION),lolcat)
 	mkdir -p $(BUILD_STAGE)/lolcat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
@@ -26,16 +25,16 @@ endif
 lolcat-package: lolcat-stage
 	# lolcat.mk Package Structure
 	rm -rf $(BUILD_DIST)/lolcat
-	
+
 	# lolcat.mk Prep lolcat
 	cp -a $(BUILD_STAGE)/lolcat $(BUILD_DIST)
-	
+
 	# lolcat.mk Sign
 	$(call SIGN,lolcat,general.xml)
-	
+
 	# lolcat.mk Make .debs
 	$(call PACK,lolcat,DEB_LOLCAT_V)
-	
+
 	# lolcat.mk Build cleanup
 	rm -rf $(BUILD_DIST)/lolcat
 

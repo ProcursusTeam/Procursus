@@ -20,7 +20,7 @@ libzip: libzip-setup xz openssl
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \
 		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)/ \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
@@ -61,7 +61,7 @@ libzip-package: libzip-stage
 		cp -a $(BUILD_STAGE)/libzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $(BUILD_DIST)/$$bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \
 		cp -a $(BUILD_STAGE)/libzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$$bin.1 $(BUILD_DIST)/$$bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
 	done
-	
+
 	# libzip.mk Sign
 	$(call SIGN,libzip5,general.xml)
 	$(call SIGN,zipcmp,general.xml)

@@ -8,7 +8,7 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += zsh
 endif # ($(MEMO_TARGET),darwin-\*)
 ZSH_VERSION   := 5.8
-DEB_ZSH_V     ?= $(ZSH_VERSION)-3
+DEB_ZSH_V     ?= $(ZSH_VERSION)-4
 
 zsh-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.zsh.org/pub/zsh-$(ZSH_VERSION).tar.xz{,.asc}
@@ -20,7 +20,7 @@ ZSH_CONFIGURE_ARGS := --enable-etcdir=$(MEMO_PREFIX)/etc \
 		zsh_cv_path_utmpx=/var/run/utmpx \
 		zsh_cv_path_utmp=no
 else
-ZSH_CONFIGURE_ARGS := --enable-etcdir=/etc
+ZSH_CONFIGURE_ARGS := --enable-etcdir=$(MEMO_PREFIX)/etc
 endif
 
 ifneq ($(wildcard $(BUILD_WORK)/zsh/.build_complete),)
@@ -33,11 +33,11 @@ zsh: zsh-setup pcre ncurses
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--enable-fndir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/functions \
-		--enable-scriptdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/scripts \
+		--enable-fndir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/functions \
+		--enable-scriptdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/scripts \
 		--enable-site-fndir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/site-functions \
 		--enable-site-scriptdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/site-scripts \
-		--enable-runhelpdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/help \
+		--enable-runhelpdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/help \
 		--enable-cap \
 		--enable-pcre \
 		--enable-multibyte \
@@ -74,19 +74,19 @@ zsh-package: zsh-stage
 	# zsh.mk Package Structure
 	rm -rf $(BUILD_DIST)/zsh
 	mkdir -p $(BUILD_DIST)/zsh/$(MEMO_PREFIX){$(MEMO_SUB_PREFIX),/bin}
-	
+
 	# zsh.mk Prep zsh
 	cp -a $(BUILD_STAGE)/zsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/* $(BUILD_DIST)/zsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 ifneq ($(MEMO_SUB_PREFIX),)
 	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/zsh $(BUILD_DIST)/zsh/$(MEMO_PREFIX)/bin/zsh
 endif
-	
+
 	# zsh.mk Sign
 	$(call SIGN,zsh,general.xml)
-	
+
 	# zsh.mk Make .debs
 	$(call PACK,zsh,DEB_ZSH_V)
-	
+
 	# zsh.mk Build cleanup
 	rm -rf $(BUILD_DIST)/zsh
 

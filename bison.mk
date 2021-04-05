@@ -33,20 +33,20 @@ bison-package: bison-stage
 	rm -rf $(BUILD_DIST)/{bison,libbison-dev}
 	mkdir -p $(BUILD_DIST)/bison/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		$(BUILD_DIST)/libbison-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# bison.mk Prep bison
 	cp -a $(BUILD_STAGE)/bison/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/bison/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# bison.mk Prep libbison-dev
 	cp -a $(BUILD_STAGE)/bison/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib $(BUILD_DIST)/libbison-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# bison.mk Sign
 	$(call SIGN,bison,general.xml)
-	
+
 	# bison.mk Make .debs
 	$(call PACK,bison,DEB_BISON_V)
 	$(call PACK,libbison-dev,DEB_BISON_V)
-	
+
 	# bison.mk Build cleanup
 	rm -rf $(BUILD_DIST)/{bison,libbison-dev}
 

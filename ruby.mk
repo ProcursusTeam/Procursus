@@ -21,8 +21,8 @@ else
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 RUBY_EXTRA_LIBS     := -lcrypt -lucontext
 RUBY_CONFIGURE_ARGS := --with-coroutine=ucontext \
-	CFLAGS="$(CFLAGS) -I$(BUILD_STAGE)/libucontext/usr/include -D_STRUCT_UCONTEXT" \
-	LDFLAGS="$(LDFLAGS) -L$(BUILD_STAGE)/libucontext/usr/lib"
+	CFLAGS="$(CFLAGS) -I$(BUILD_STAGE)/libucontext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -D_STRUCT_UCONTEXT" \
+	LDFLAGS="$(LDFLAGS) -L$(BUILD_STAGE)/libucontext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib"
 ruby: ruby-setup libxcrypt libgmp10 libjemalloc ncurses readline openssl libyaml libffi libgdbm libucontext
 else
 ifneq (,$(findstring amd64,$(MEMO_TARGET)))
@@ -54,8 +54,8 @@ endif
 		--program-suffix=$(RUBY_VERSION) \
 		--with-soname=ruby-$(RUBY_VERSION) \
 		--with-sitedir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/ruby/site_ruby \
-    	--with-vendordir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ruby/vendor_ruby \
-		--runstatedir=/var/run \
+    --with-vendordir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ruby/vendor_ruby \
+		--runstatedir=$(MEMO_PREFIX)/var/run \
 		--localstatedir=$(MEMO_PREFIX)/var \
 		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--disable-dtrace \
@@ -76,7 +76,7 @@ ruby-package: ruby-stage
 		$(BUILD_DIST)/ruby$(RUBY_VERSION)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libruby$(RUBY_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/ruby/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
-	
+
 	# ruby.mk Prep ruby$(RUBY_VERSION)
 	cp -a $(BUILD_STAGE)/ruby/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/ruby$(RUBY_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/ruby/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/ruby$(RUBY_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
@@ -100,14 +100,14 @@ ruby-package: ruby-stage
 	# ruby.mk Sign
 	$(call SIGN,ruby$(RUBY_VERSION),general.xml)
 	$(call SIGN,libruby$(RUBY_VERSION),general.xml)
-	
+
 	# ruby.mk Make .debs
 	$(call PACK,ruby,DEB_RUBY_V)
 	$(call PACK,ruby$(RUBY_VERSION),DEB_RUBY_V)
 	$(call PACK,ruby$(RUBY_VERSION)-dev,DEB_RUBY_V)
 	$(call PACK,ruby$(RUBY_VERSION)-doc,DEB_RUBY_V)
 	$(call PACK,libruby$(RUBY_VERSION),DEB_RUBY_V)
-	
+
 	# ruby.mk Build cleanup
 	rm -rf $(BUILD_DIST)/ruby$(RUBY_VERSION){,-dev,-doc} $(BUILD_DIST)/libruby$(RUBY_VERSION) $(BUILD_DIST)/ruby
 
