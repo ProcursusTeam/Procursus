@@ -45,7 +45,7 @@ Setup_file () {
 
 if [ "$1" = "configure" ]
 then
-	if ! id games &>/dev/null; then
+	if ! id ${CREATEUSER} &>/dev/null; then
 		GROUPID=$(getHiddenUserPGid)
 		dscl . -create /Users/${CREATEUSER} UserShell /usr/bin/false
 		dscl . -create /Users/${CREATEUSER} NSFHomeDirectory /var/empty
