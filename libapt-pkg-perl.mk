@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS                    += libapt-pkg-perl
+SUBPROJECTS             += libapt-pkg-perl
 LIBAPT-PKG-PERL_VERSION := 0.1.40
 DEB_LIBAPT-PKG-PERL_V   ?= $(LIBAPT-PKG-PERL_VERSION)
 
@@ -59,7 +59,7 @@ libapt-pkg-perl-package: libapt-pkg-perl-stage
 	$(call SIGN,libapt-pkg-perl,general.xml)
 	
 	# libapt-pkg-perl.mk Make .debs
-	$(call PACK,libapt-pkg-perl,DEB_libapt-pkg-perl_V)
+	$(call PACK,libapt-pkg-perl,DEB_LIBAPT-PKG-PERL_V)
 	
 	# libapt-pkg-perl.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libapt-pkg-perl
