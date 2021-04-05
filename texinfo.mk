@@ -31,16 +31,16 @@ endif
 texinfo-package: texinfo-stage
 	# texinfo.mk Package Structure
 	rm -rf $(BUILD_DIST)/texinfo
-	
+
 	# texinfo.mk Prep texinfo
 	cp -a $(BUILD_STAGE)/texinfo $(BUILD_DIST)
-	
+
 	# texinfo.mk Sign
 	$(call SIGN,texinfo,general.xml)
-	
+
 	# texinfo.mk Make .debs
 	$(call PACK,texinfo,DEB_TEXINFO_V)
-	
+
 	# texinfo.mk Build cleanup
 	rm -rf $(BUILD_DIST)/texinfo
 

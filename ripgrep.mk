@@ -7,7 +7,7 @@ RIPGREP_VERSION := 12.1.1
 DEB_RIPGREP_V   ?= $(RIPGREP_VERSION)
 
 ripgrep-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/ripgrep-$(RIPGREP_VERSION).tar.gz" ] && wget -q -nc -O$(BUILD_SOURCE)/ripgrep-$(RIPGREP_VERSION).tar.gz https://github.com/BurntSushi/ripgrep/archive/$(RIPGREP_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,BurntSushi,ripgrep,$(RIPGREP_VERSION),$(RIPGREP_VERSION))
 	$(call EXTRACT_TAR,ripgrep-$(RIPGREP_VERSION).tar.gz,ripgrep-$(RIPGREP_VERSION),ripgrep)
 
 ifneq ($(wildcard $(BUILD_WORK)/ripgrep/.build_complete),)
@@ -28,16 +28,16 @@ endif
 ripgrep-package: ripgrep-stage
 	# ripgrep.mk Package Structure
 	rm -rf $(BUILD_DIST)/ripgrep
-	
+
 	# ripgrep.mk Prep ripgrep
 	cp -a $(BUILD_STAGE)/ripgrep $(BUILD_DIST)
-	
+
 	# ripgrep.mk Sign
 	$(call SIGN,ripgrep,general.xml)
-	
+
 	# ripgrep.mk Make .debs
 	$(call PACK,ripgrep,DEB_RIPGREP_V)
-	
+
 	# ripgrep.mk Build cleanup
 	rm -rf $(BUILD_DIST)/ripgrep
 

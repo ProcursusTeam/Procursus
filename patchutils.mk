@@ -21,7 +21,7 @@ patchutils: patchutils-setup pcre2
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-pcre2 \
-		PERL=/usr/bin/perl
+		PERL="$(shell which perl)"
 	+$(MAKE) -C $(BUILD_WORK)/patchutils
 	+$(MAKE) -C $(BUILD_WORK)/patchutils install \
 		DESTDIR=$(BUILD_STAGE)/patchutils
@@ -31,16 +31,16 @@ endif
 patchutils-package: patchutils-stage
 	# patchutils.mk Package Structure
 	rm -rf $(BUILD_DIST)/patchutils
-	
+
 	# patchutils.mk Prep patchutils
 	cp -a $(BUILD_STAGE)/patchutils $(BUILD_DIST)
-	
+
 	# patchutils.mk Sign
 	$(call SIGN,patchutils,general.xml)
-	
+
 	# patchutils.mk Make .debs
 	$(call PACK,patchutils,DEB_PATCHUTILS_V)
-	
+
 	# patchutils.mk Build cleanup
 	rm -rf $(BUILD_DIST)/patchutils
 

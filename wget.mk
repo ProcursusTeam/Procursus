@@ -35,17 +35,17 @@ wget-package: wget-stage
 	# wget.mk Package Structure
 	rm -rf $(BUILD_DIST)/wget
 	mkdir -p $(BUILD_DIST)/wget/$(MEMO_PREFIX)/{etc,$(MEMO_SUB_PREFIX)/{bin,share/man/man1}}
-	
+
 	# wget.mk Prep wget
 	cp -a $(BUILD_STAGE)/wget/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/wget $(BUILD_DIST)/wget/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/wget/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/wget.1 $(BUILD_DIST)/wget/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_STAGE)/wget/$(MEMO_PREFIX)/etc/wgetrc $(BUILD_DIST)/wget/$(MEMO_PREFIX)/etc
 	# wget.mk Sign
 	$(call SIGN,wget,general.xml)
-	
+
 	# wget.mk Make .debs
 	$(call PACK,wget,DEB_WGET_V)
-	
+
 	# wget.mk Build cleanup
 	rm -rf $(BUILD_DIST)/wget
 

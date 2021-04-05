@@ -16,8 +16,8 @@ python3-setup: setup
 	$(call PGP_VERIFY,Python-$(PYTHON3_VERSION).tar.xz,asc)
 	$(call EXTRACT_TAR,Python-$(PYTHON3_VERSION).tar.xz,Python-$(PYTHON3_VERSION),python3)
 	$(call DO_PATCH,python3,python3,-p1)
-	$(SED) -i -e 's/-vxworks/-darwin/g' -e 's/system=VxWorks/system=Darwin/g' -e '/readelf for/d' -e 's|LIBFFI_INCLUDEDIR=.*|LIBFFI_INCLUDEDIR="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include"|g' $(BUILD_WORK)/python3/configure.ac
-	$(SED) -i -e "s|self.compiler.library_dirs|['$(TARGET_SYSROOT)/usr/lib'] + ['$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib']|g" -e "s|self.compiler.include_dirs|['$(TARGET_SYSROOT)/usr/include'] + ['$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include']|g" -e "s/HOST_PLATFORM == 'darwin'/HOST_PLATFORM.startswith('darwin')/" $(BUILD_WORK)/python3/setup.py
+	$(SED) -i -e 's/-vxworks/-darwin/g' -e 's/system=VxWorks/system=Darwin/g' -e '/readelf for/d' -e 's|LIBFFI_INCLUDEDIR=.*|LIBFFI_INCLUDEDIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include"|g' $(BUILD_WORK)/python3/configure.ac
+	$(SED) -i -e "s|self.compiler.library_dirs|['$(TARGET_SYSROOT)/usr/lib'] + ['$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib']|g" -e "s|self.compiler.include_dirs|['$(TARGET_SYSROOT)/usr/include'] + ['$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include']|g" -e "s/HOST_PLATFORM == 'darwin'/HOST_PLATFORM.startswith('darwin')/" $(BUILD_WORK)/python3/setup.py
 
 ifneq ($(wildcard $(BUILD_WORK)/python3/.build_complete),)
 python3:
@@ -61,7 +61,7 @@ python3-package: python3-stage
 		$(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		$(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V){,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX){,$(MEMO_ALT_PREFIX)}/lib \
 		$(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
-	
+
 	# python3.mk Prep python$(PYTHON3_MAJOR_V)
 	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/python$(PYTHON3_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
@@ -88,7 +88,7 @@ python3-package: python3-stage
 	# python3.mk Sign
 	$(call SIGN,python$(PYTHON3_MAJOR_V),general.xml)
 	$(call SIGN,libpython$(PYTHON3_MAJOR_V),general.xml)
-	
+
 	# python3.mk Make .debs
 	$(call PACK,python$(PYTHON3_MAJOR_V),DEB_PYTHON3_V)
 	$(call PACK,libpython$(PYTHON3_MAJOR_V),DEB_PYTHON3_V)
