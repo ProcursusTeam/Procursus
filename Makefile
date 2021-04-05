@@ -323,12 +323,12 @@ PACK = -if [ -z $(4) ]; then \
 	rm -rf $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{info,doc}; \
 	find $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -exec zstd -19 --rm '{}' \; 2> /dev/null; \
 	if [ -z $(3) ]; then \
-		if ![ $(MEMO_QUIET) == "1" ]; then \
+		if [ ! $(MEMO_QUIET) == "1" ]; then \
 		echo Setting $(1) owner to 0:0.; \
 		fi; \
 		$(FAKEROOT) chown -R 0:0 $(BUILD_DIST)/$(1)/* &>/dev/null; \
 	elif [ $(3) = "2" ]; then \
-		if ![ $(MEMO_QUIET) == "1" ]; then \
+		if [ ! $(MEMO_QUIET) == "1" ]; then \
 		echo $(1) owner set within individual makefile.; \
 		fi; \
 	fi; \
@@ -365,7 +365,7 @@ PACK = -if [ -z $(4) ]; then \
 	fi; \
 	cd $(BUILD_DIST)/$(1) && find . -type f ! -regex '.*.hg.*' ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -printf '"%P" ' | xargs md5sum > $(BUILD_DIST)/$(1)/DEBIAN/md5sums; \
 	$(FAKEROOT) chmod 0755 $(BUILD_DIST)/$(1)/DEBIAN/*; \
-	if ![ $(MEMO_QUIET) == "1" ]; then \
+	if [ ! $(MEMO_QUIET) == "1" ]; then \
 	echo "Installed-Size: $$SIZE"; \
 	fi; \
 	echo "Installed-Size: $$SIZE" >> $(BUILD_DIST)/$(1)/DEBIAN/control; \
@@ -532,7 +532,7 @@ ifneq ($(call HAS_COMMAND,zstd),1)
 $(error Install zstd)
 endif
 
-ifeq ($(shell dpkg-deb --help | grep "zstd" && echo 1),1)
+ifeq ($(shell dpkg-deb --help | grep -qi "zstd" && echo 1),1)
 DPKG_TYPE ?= zstd
 else
 DPKG_TYPE ?= gzip
@@ -555,9 +555,9 @@ endif
 
 ifneq ($(LEAVE_ME_ALONE),1)
 
-ifneq (,$(wildcard $(shell brew --prefix&>/dev/null)/opt/docbook-xsl/docbook-xsl))
+ifneq (,$(wildcard $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl))
 DOCBOOK_XSL := $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl
-export XML_CATALOG_FILES=$(shell brew --prefix&>/dev/null)/etc/xml/catalog
+export XML_CATALOG_FILES=$(shell brew --prefix)/etc/xml/catalog
 else ifneq (,$(wildcard /usr/share/xml/docbook/stylesheet/docbook-xsl))
 DOCBOOK_XSL := /usr/share/xml/docbook/stylesheet/docbook-xsl
 else ifneq (,$(wildcard /usr/share/xsl/docbook))
