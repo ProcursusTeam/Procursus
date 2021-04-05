@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += bat
-BAT_VERSION := 0.17.1
+BAT_VERSION := 0.18.0
 DEB_BAT_V   ?= $(BAT_VERSION)
 
 bat-setup: setup
@@ -45,3 +45,4 @@ bat-package: bat-stage
 	rm -rf $(BUILD_DIST)/bat
 
 .PHONY: bat bat-package
+
