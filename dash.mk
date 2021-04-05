@@ -17,15 +17,14 @@ dash:
 else
 dash: dash-setup libedit
 	find $(BUILD_WORK)/dash -name '*.c' -exec $(SED) -i 's/stat64/stat/g' "{}" \;
-
 	cd $(BUILD_WORK)/dash && ./autogen.sh && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--bindir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
 		--mandir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
 		--exec-prefix="" \
 		--with-libedit
-		
 	+$(MAKE) -C $(BUILD_WORK)/dash
 	+$(MAKE) -C $(BUILD_WORK)/dash install \
 		DESTDIR=$(BUILD_STAGE)/dash
