@@ -30,16 +30,16 @@ endif
 diffutils-package: diffutils-stage
 	# diffutils.mk Package Structure
 	rm -rf $(BUILD_DIST)/diffutils
-	
+
 	# diffutils.mk Prep diffutils
 	cp -a $(BUILD_STAGE)/diffutils $(BUILD_DIST)
-	
+
 	# diffutils.mk Sign
 	$(call SIGN,diffutils,general.xml)
-	
+
 	# diffutils.mk Make .debs
 	$(call PACK,diffutils,DEB_DIFFUTILS_V)
-	
+
 	# diffutils.mk Build cleanup
 	rm -rf $(BUILD_DIST)/diffutils
 

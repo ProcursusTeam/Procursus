@@ -8,9 +8,7 @@ IDEVICERESTORE_VERSION := 1.0.0+git20210304.$(shell echo $(IDEVICERESTORE_COMMIT
 DEB_IDEVICERESTORE_V   ?= $(IDEVICERESTORE_VERSION)
 
 idevicerestore-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/idevicerestore-$(IDEVICERESTORE_COMMIT).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/idevicerestore-$(IDEVICERESTORE_COMMIT).tar.gz \
-			https://github.com/libimobiledevice/idevicerestore/archive/$(IDEVICERESTORE_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,libimobiledevice,idevicerestore,$(IDEVICERESTORE_COMMIT),$(IDEVICERESTORE_COMMIT))
 	$(call EXTRACT_TAR,idevicerestore-$(IDEVICERESTORE_COMMIT).tar.gz,idevicerestore-$(IDEVICERESTORE_COMMIT),idevicerestore)
 
 ifneq ($(wildcard $(BUILD_WORK)/idevicerestore/.build_complete),)

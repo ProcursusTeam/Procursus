@@ -38,7 +38,7 @@ libtool-package: libtool-stage
 		$(BUILD_DIST)/libtool-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
 		$(BUILD_DIST)/libltdl7/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libltdl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share/{libtool,aclocal}}
-	
+
 	# libtool.mk Prep libtool
 	cp -a $(BUILD_STAGE)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/glibtoolize $(BUILD_DIST)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/glibtoolize.1 $(BUILD_DIST)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
@@ -56,18 +56,18 @@ libtool-package: libtool-stage
 	cp -a $(BUILD_STAGE)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libltdl.7.dylib) $(BUILD_DIST)/libltdl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal/ltdl.m4 $(BUILD_DIST)/libltdl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal
 	cp -a $(BUILD_STAGE)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/libtool/!(build-aux) $(BUILD_DIST)/libltdl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/libtool
-	
+
 	# libtool.mk Sign
 	$(call SIGN,libtool,general.xml)
 	$(call SIGN,libtool-bin,general.xml)
 	$(call SIGN,libltdl7,general.xml)
-	
+
 	# libtool.mk Make .debs
 	$(call PACK,libtool,DEB_LIBTOOL_V)
 	$(call PACK,libtool-bin,DEB_LIBTOOL_V)
 	$(call PACK,libltdl7,DEB_LIBTOOL_V)
 	$(call PACK,libltdl-dev,DEB_LIBTOOL_V)
-	
+
 	# libtool.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libtool{,-bin} $(BUILD_DIST)/libltdl{7,-dev}
 

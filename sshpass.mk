@@ -29,16 +29,16 @@ endif
 sshpass-package: sshpass-stage
 	# sshpass.mk Package Structure
 	rm -rf $(BUILD_DIST)/sshpass
-	
+
 	# sshpass.mk Prep sshpass
 	cp -a $(BUILD_STAGE)/sshpass $(BUILD_DIST)
-	
+
 	# sshpass.mk Sign
 	$(call SIGN,sshpass,general.xml)
-	
+
 	# sshpass.mk Make .debs
 	$(call PACK,sshpass,DEB_SSHPASS_V)
-	
+
 	# sshpass.mk Build cleanup
 	rm -rf $(BUILD_DIST)/sshpass
 
