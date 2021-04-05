@@ -40,23 +40,23 @@ endif
 libtermkey-package: libtermkey-stage
 	# libtermkey.mk Package Structure
 	rm -rf $(BUILD_DIST)/libtermkey{-dev,1}
-	mkdir -p $(BUILD_DIST)/libtermkey{1,-dev}$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+	mkdir -p $(BUILD_DIST)/libtermkey{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# libtermkey.mk Prep libtermkey-dev
-	cp -a $(BUILD_STAGE)/libtermkey$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libtermkey-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libtermkey$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libtermkey.{a,dylib}} $(BUILD_DIST)/libtermkey-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+	cp -a $(BUILD_STAGE)/libtermkey/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libtermkey-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libtermkey/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libtermkey.{a,dylib}} $(BUILD_DIST)/libtermkey-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# libtermkey.mk Prep libtermkey1
-	cp -a $(BUILD_STAGE)/libtermkey$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libtermkey.1.dylib $(BUILD_DIST)/libtermkey1$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+	cp -a $(BUILD_STAGE)/libtermkey/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libtermkey.1.dylib $(BUILD_DIST)/libtermkey1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# libtermkey.mk Sign
 	$(call SIGN,libtermkey1,general.xml)
-	
+
 	# libtermkey.mk Make .debs
 	$(call PACK,libtermkey-dev,DEB_LIBTERMKEY_V)
 	$(call PACK,libtermkey1,DEB_LIBTERMKEY_V)
-	
+
 	# libtermkey.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libtermkey{-dev,1}
-	
+
 .PHONY: libtermkey libtermkey-package

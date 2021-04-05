@@ -12,9 +12,7 @@ POJAVLAUNCHER_VERSION   := 1.1+git20210304.$(shell echo $(POJAVLAUNCHER_COMMIT) 
 DEB_POJAVLAUNCHER_V     ?= $(POJAVLAUNCHER_VERSION)
 
 pojavlauncher-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/PojavLauncher_iOS-$(POJAVLAUNCHER_COMMIT).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/PojavLauncher_iOS-$(POJAVLAUNCHER_COMMIT).tar.gz \
-			https://github.com/PojavLauncherTeam/PojavLauncher_iOS/archive/$(POJAVLAUNCHER_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,PojavLauncherTeam,PojavLauncher_iOS,$(POJAVLAUNCHER_COMMIT),$(POJAVLAUNCHER_COMMIT))
 	$(call EXTRACT_TAR,PojavLauncher_iOS-$(POJAVLAUNCHER_COMMIT).tar.gz,PojavLauncher_iOS-$(POJAVLAUNCHER_COMMIT),pojavlauncher)
 	mkdir -p $(BUILD_STAGE)/pojavlauncher/{Applications,var/mobile/Documents/minecraft,var/mobile/Documents/.pojavlauncher}
 

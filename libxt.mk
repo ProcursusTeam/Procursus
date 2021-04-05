@@ -40,10 +40,10 @@ libxt-package: libxt-stage
 		$(BUILD_DIST)/libxt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxt.mk Prep libxt6
-	cp -a $(BUILD_STAGE)/libxt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXt.6.dylib $(BUILD_DIST)/libxt6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXt.6*.dylib $(BUILD_DIST)/libxt6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxt.mk Prep libxt-dev
-	cp -a $(BUILD_STAGE)/libxt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libXt.6.dylib) $(BUILD_DIST)/libxt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libXt.6*.dylib) $(BUILD_DIST)/libxt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libxt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libxt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
 
 	# libxt.mk Sign

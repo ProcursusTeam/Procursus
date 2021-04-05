@@ -8,9 +8,7 @@ ZSIGN_VERSION := 0~20210202.$(shell echo $(ZSIGN_COMMIT) | cut -c -7)
 DEB_ZSIGN_V   := $(ZSIGN_VERSION)-1
 
 zsign-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/zsign-$(ZSIGN_COMMIT).tar.gz" ] \
-		&& wget -nc -O$(BUILD_SOURCE)/zsign-$(ZSIGN_COMMIT).tar.gz \
-			https://github.com/zhlynn/zsign/archive/$(ZSIGN_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,zhlynn,zsign,$(ZSIGN_COMMIT),$(ZSIGN_COMMIT))
 	$(call EXTRACT_TAR,zsign-$(ZSIGN_COMMIT).tar.gz,zsign-$(ZSIGN_COMMIT)*,zsign)
 
 ifneq ($(wildcard $(BUILD_WORK)/zsign/.build_complete),)
@@ -47,4 +45,3 @@ zsign-package: zsign-stage
 	rm -rf $(BUILD_DIST)/zsign
 
 .PHONY: zsign zsign-package
- 

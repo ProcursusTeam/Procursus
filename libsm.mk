@@ -19,7 +19,7 @@ libsm: libsm-setup xtrans libice uuid
 	cd $(BUILD_WORK)/libsm && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUBPREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--localstatedir=$(MEMO_PREFIX)/var \
 		--enable-malloc0returnsnull=no \
@@ -35,15 +35,15 @@ endif
 libsm-package: libsm-stage
 	# libsm.mk Package Structure
 	rm -rf $(BUILD_DIST)/libsm{6,-dev}
-	mkdir -p $(BUILD_DIST)/libsm6/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib \
-		$(BUILD_DIST)/libsm-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/{include,lib}
+	mkdir -p $(BUILD_DIST)/libsm6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libsm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib}
 
 	# libsm.mk Prep libsm6
-	cp -a $(BUILD_STAGE)/libsm/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/libSM.6.dylib $(BUILD_DIST)/libsm6/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
+	cp -a $(BUILD_STAGE)/libsm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libSM.6.dylib $(BUILD_DIST)/libsm6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libsm.mk Prep libsm-dev
-	cp -a $(BUILD_STAGE)/libsm/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib/!(libSM.6.dylib) $(BUILD_DIST)/libsm-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/lib
-	cp -a $(BUILD_STAGE)/libsm/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/include $(BUILD_DIST)/libsm-dev/$(MEMO_PREFIX)$(MEMO_SUBPREFIX)
+	cp -a $(BUILD_STAGE)/libsm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libSM.6.dylib) $(BUILD_DIST)/libsm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libsm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libsm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libsm.mk Sign
 	$(call SIGN,libsm6,general.xml)

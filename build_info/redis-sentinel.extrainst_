@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [[ $1 == upgrade ]]; then
+    /bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/io.redis.redis-sentinel.plist
+    /bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/io.redis.redis-sentinel.plist
+fi
+
+if [[ $1 == install ]]; then
+    /bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/io.redis.redis-sentinel.plist
+fi
+
+exit 0

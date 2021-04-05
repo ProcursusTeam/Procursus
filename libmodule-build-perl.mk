@@ -37,13 +37,13 @@ endif
 libmodule-build-perl-package: libmodule-build-perl-stage
 	# libmodule-build-perl.mk Package Structure
 	rm -rf $(BUILD_DIST)/libmodule-build-perl
-	
+
 	# libmodule-build-perl.mk Prep libmodule-build-perl
 	cp -a $(BUILD_STAGE)/libmodule-build-perl $(BUILD_DIST)
-	
+
 	# libmodule-build-perl.mk Make .debs
 	$(call PACK,libmodule-build-perl,DEB_LIBMODULE-BUILD-PERL_V)
-	
+
 	# libmodule-build-perl.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libmodule-build-perl
 

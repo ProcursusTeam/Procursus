@@ -29,7 +29,7 @@ libx11: libx11-setup xorgproto libxcb xtrans
 		--enable-xthreads \
 		--enable-specs=no \
 		--enable-malloc0returnsnull=no \
-		--with-keysymdefdir=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/X11
+		--with-keysymdefdir=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/X11
 	+$(MAKE) -C $(BUILD_WORK)/libx11 V=1
 	+$(MAKE) -C $(BUILD_WORK)/libx11 install \
 		DESTDIR=$(BUILD_STAGE)/libx11

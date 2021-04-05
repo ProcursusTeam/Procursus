@@ -8,9 +8,7 @@ SUBPROJECTS        += libucontext
 LIBUCONTEXT_COMMIT := 455ecd495f706d5b57be3ff5b572c120c2a7a5a2
 
 libucontext-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/libucontext-$(LIBUCONTEXT_COMMIT).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/libucontext-$(LIBUCONTEXT_COMMIT).tar.gz \
-			https://github.com/utmapp/libucontext/archive/$(LIBUCONTEXT_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,utmapp,libucontext,$(LIBUCONTEXT_COMMIT),$(LIBUCONTEXT_COMMIT))
 	$(call EXTRACT_TAR,libucontext-$(LIBUCONTEXT_COMMIT).tar.gz,libucontext-$(LIBUCONTEXT_COMMIT),libucontext)
 
 ifneq ($(wildcard $(BUILD_WORK)/libucontext/.build_complete),)

@@ -33,16 +33,16 @@ endif
 ed-package: ed-stage
 	# ed.mk Package Structure
 	rm -rf $(BUILD_DIST)/ed
-	
+
 	# ed.mk Prep ed
 	cp -a $(BUILD_STAGE)/ed $(BUILD_DIST)
-	
+
 	# ed.mk Sign
 	$(call SIGN,ed,general.xml)
-	
+
 	# ed.mk Make .debs
 	$(call PACK,ed,DEB_ED_V)
-	
+
 	# ed.mk Build cleanup
 	rm -rf $(BUILD_DIST)/ed
 

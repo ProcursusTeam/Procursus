@@ -7,9 +7,7 @@ LIBMPACK-LUA_VERSION := 1.0.8
 DEB_LIBMPACK-LUA_V   ?= $(LIBMPACK-LUA_VERSION)
 
 libmpack-lua-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/libmpack-lua-$(LIBMPACK-LUA_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/libmpack-lua-$(LIBMPACK-LUA_VERSION).tar.gz \
-			https://github.com/libmpack/libmpack-lua/archive/$(LIBMPACK-LUA_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,libmpack,libmpack-lua,$(LIBMPACK-LUA_VERSION),$(LIBMPACK-LUA_VERSION))
 	$(call EXTRACT_TAR,libmpack-lua-$(LIBMPACK-LUA_VERSION).tar.gz,libmpack-lua-$(LIBMPACK-LUA_VERSION),libmpack-lua/build51)
 	$(call EXTRACT_TAR,libmpack-lua-$(LIBMPACK-LUA_VERSION).tar.gz,libmpack-lua-$(LIBMPACK-LUA_VERSION),libmpack-lua/build51/bundle)
 	$(call EXTRACT_TAR,libmpack-lua-$(LIBMPACK-LUA_VERSION).tar.gz,libmpack-lua-$(LIBMPACK-LUA_VERSION),libmpack-lua/build52)
@@ -63,16 +61,16 @@ libmpack-lua-package: libmpack-lua-stage
 	# libmpack-lua.mk Package Structure
 	rm -rf $(BUILD_DIST)/lua-mpack
 	mkdir -p $(BUILD_DIST)/lua-mpack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libmpack-lua.mk Prep lua-mpack
 	cp -a $(BUILD_STAGE)/libmpack-lua/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{liblua*5.*-mpack.*.dylib,lua} $(BUILD_DIST)/lua-mpack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libmpack-lua.mk Sign
 	$(call SIGN,lua-mpack,general.xml)
-	
+
 	# libmpack-lua.mk Make .debs
 	$(call PACK,lua-mpack,DEB_LIBMPACK-LUA_V)
-	
+
 	# libmpack-lua.mk Build cleanup
 	rm -rf $(BUILD_DIST)/lua-mpack
 
