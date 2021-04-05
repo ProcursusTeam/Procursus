@@ -16,7 +16,7 @@ index d2d0265b..4e4c0f09 100644
  	${XSERVERLIBS_CFLAGS}
  
 -libvnc_la_LDFLAGS = -module -avoid-version -Wl,-z,now
-+libvnc_la_LDFLAGS = -module -avoid-version -Wl
++libvnc_la_LDFLAGS = -module -avoid-version
  
  libvnc_la_LIBADD = libvnccommon.la $(COMMON_LIBS)
  
