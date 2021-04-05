@@ -41,4 +41,4 @@ zpaq-package: zpaq-stage
 	# zpaq.mk Build cleanup
 	rm -rf $(BUILD_DIST)/zpaq
 
-	.PHONY: zpaq zpaq-package
+.PHONY: zpaq zpaq-package
