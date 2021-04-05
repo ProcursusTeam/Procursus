@@ -1,0 +1,13 @@
+Package: autoconf-archive
+Version: @DEB_AUTOCONF-ARCHIVE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Recommends: autoconf
+Enhances: autoconf
+Section: Development
+Priority: optional
+Description: Autoconf Macro Archive
+ Autoconf Macro Archive aims to provide a central repository of
+ useful and tested Autoconf macros for software developers around the
+ world. This package contains the complete content of the Autoconf
+ Macro Archive as found at http://www.gnu.org/software/autoconf-archive/.

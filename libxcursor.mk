@@ -17,10 +17,11 @@ libxcursor:
 else
 libxcursor: libxcursor-setup libx11 libxfixes libxrender util-macros
 	cd $(BUILD_WORK)/libxcursor && unset CPP CPPFLAGS && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
+		--localstatedir=$(MEMO_PREFIX)/var
 	+$(MAKE) -C $(BUILD_WORK)/libxcursor
 	+$(MAKE) -C $(BUILD_WORK)/libxcursor install \
 		DESTDIR=$(BUILD_STAGE)/libxcursor
@@ -32,24 +33,24 @@ endif
 libxcursor-package: libxcursor-stage
 	# libxcursor.mk Package Structure
 	rm -rf $(BUILD_DIST)/libxcursor{1,-dev}
-	mkdir -p $(BUILD_DIST)/libxcursor1/usr/lib \
-		$(BUILD_DIST)/libxcursor-dev/usr/lib \
-		$(BUILD_DIST)/libxcursor1/usr/lib
-	
+	mkdir -p $(BUILD_DIST)/libxcursor1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libxcursor-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libxcursor1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# libxcursor.mk Prep libxcursor1
-	cp -a $(BUILD_STAGE)/libxcursor/usr/lib/libXcursor.1.dylib $(BUILD_DIST)/libxcursor1/usr/lib
+	cp -a $(BUILD_STAGE)/libxcursor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXcursor.1.dylib $(BUILD_DIST)/libxcursor1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxcursor.mk Prep libxcursor-dev
-	cp -a $(BUILD_STAGE)/libxcursor/usr/lib/!(libXcursor.1.dylib) $(BUILD_DIST)/libxcursor-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libxcursor/usr/{include,share} $(BUILD_DIST)/libxcursor-dev/usr
-	
+	cp -a $(BUILD_STAGE)/libxcursor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libXcursor.1.dylib) $(BUILD_DIST)/libxcursor-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxcursor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libxcursor-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+
 	# libxcursor.mk Sign
 	$(call SIGN,libxcursor1,general.xml)
 
 	# libxcursor.mk Make .debs
 	$(call PACK,libxcursor1,DEB_LIBXCURSOR_V)
 	$(call PACK,libxcursor-dev,DEB_LIBXCURSOR_V)
-	
+
 	# libxcursor.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libxcursor{1,-dev}
 

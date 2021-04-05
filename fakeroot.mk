@@ -26,8 +26,9 @@ else
 fakeroot: fakeroot-setup
 	cd $(BUILD_WORK)/fakeroot && autoreconf -vi
 	cd $(BUILD_WORK)/fakeroot && ./configure -C \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-ipc=tcp \
 		ac_cv_func_openat=no \
 		ac_cv_func_fstatat=no
@@ -42,16 +43,16 @@ endif
 fakeroot-package: fakeroot-stage
 	# fakeroot.mk Package Structure
 	rm -rf $(BUILD_DIST)/fakeroot
-	
+
 	# fakeroot.mk Prep fakeroot
 	cp -a $(BUILD_STAGE)/fakeroot $(BUILD_DIST)
-	
+
 	# fakeroot.mk Sign
 	$(call SIGN,fakeroot,general.xml)
-	
+
 	# fakeroot.mk Make .debs
 	$(call PACK,fakeroot,DEB_FAKEROOT_V)
-	
+
 	# fakeroot.mk Build cleanup
 	rm -rf $(BUILD_DIST)/fakeroot
 

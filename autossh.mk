@@ -19,8 +19,9 @@ else
 autossh: autossh-setup
 	cd $(BUILD_WORK)/autossh && autoreconf -fi
 	cd $(BUILD_WORK)/autossh && ./configure \
+		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		CFLAGS="$(CFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/autossh
 	+$(MAKE) -C $(BUILD_WORK)/autossh install \
@@ -31,16 +32,16 @@ autossh-package: autossh-stage
 	# autossh.mk Package Structure
 	rm -rf $(BUILD_DIST)/autossh
 	mkdir -p $(BUILD_DIST)/autossh
-	
+
 	# autossh.mk Prep autossh
-	cp -a $(BUILD_STAGE)/autossh/usr $(BUILD_DIST)/autossh
-	
+	cp -a $(BUILD_STAGE)/autossh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/autossh
+
 	# autossh.mk Sign
 	$(call SIGN,autossh,general.xml)
-	
+
 	# autossh.mk Make .debs
 	$(call PACK,autossh,DEB_AUTOSSH_V)
-	
+
 	# autossh.mk Build cleanup
 	rm -rf $(BUILD_DIST)/autossh
 

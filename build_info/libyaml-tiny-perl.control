@@ -1,0 +1,12 @@
+Package: libyaml-tiny-perl
+Version: @DEB_LIBYAML-TINY-PERL_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Pre-Depends: perl (>= 5.32.1)
+Section: Perl
+Homepage: https://metacpan.org/release/YAML-Tiny
+Description: Perl module for reading and writing YAML files
+ YAML::Tiny is a pure Perl module that provides support for reading and
+ writing a usable subset of the full YAML specification. It aims to
+ minimize memory requirements and avoid XS while remaining relatively
+ fast.

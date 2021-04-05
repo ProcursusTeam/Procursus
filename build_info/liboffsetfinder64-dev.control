@@ -2,7 +2,7 @@ Package: liboffsetfinder64-dev
 Version: @DEB_LIBOFFSETFINDER64_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: liboffsetfinder64-0 (>= @DEB_LIBOFFSETFINDER64_V@), libgeneral-dev, libinsn-dev, libimg4tool-dev, libssl-dev
+Depends: liboffsetfinder64-0 (>= @DEB_LIBOFFSETFINDER64_V@), libgeneral-dev, libinsn-dev, libimg4tool-dev, libssl-dev, libplist-dev
 Section: Development
 Priority: optional
 Description: A 64bit offsetfinder. It finds offsets, patches, parses Mach-O and even supports IMG4 (development files)

@@ -1,0 +1,17 @@
+Package: libmatroska-dev
+Priority: optional
+Section: Development
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBMATROSKA_V@
+Depends: libmatroska7 (= @DEB_LIBMATROSKA_V@), libebml-dev (>= 1.4.2)
+Homepage: https://www.matroska.org/
+Description: extensible open standard audio/video container format (development files)
+ Matroska is aiming to become the standard of Multimedia
+ Container Formats one day. It is based on EBML (Extensible Binary
+ Meta Language), a kind of binary version of XML. This way the
+ significant advantages in terms of future format extensibility
+ are gained without breaking file support in old parsers.
+ .
+ This package contains the header files and static libraries needed to
+ compile applications that use libmatroska.

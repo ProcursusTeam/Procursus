@@ -1,0 +1,3 @@
+# smbd: service ACL account management support
+account required	pam_sacl.so sacl_service=smb allow_trustacct
+session required	pam_permit.so
