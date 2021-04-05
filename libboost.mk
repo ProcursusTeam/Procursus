@@ -5,7 +5,7 @@ endif
 SUBPROJECTS       += libboost
 LIBBOOST_FORMAT_V := 1_74_0
 LIBBOOST_VERSION  := 1.74.0
-DEB_LIBBOOST_V    ?= $(LIBBOOST_VERSION)
+DEB_LIBBOOST_V    ?= $(LIBBOOST_VERSION)-2
 
 ifneq (,$(findstring amd64,$(MEMO_TARGET)))
 LIBBOOST_CONFIGURE_ARGS := abi=sysv
@@ -53,6 +53,9 @@ endif
 	# F u boost!
 	for lib in $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_*.dylib $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_*.dylib; do \
 		$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/$$(basename $$lib .dylib).$(LIBBOOST_VERSION).dylib $$lib; \
+		for linked in $$(otool -L $$lib | grep @rpath | sed 's/\ .*$$//' | tr -d '\011\013\014\015\040'); do \
+			$(I_N_T) -change $$linked $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/$$(basename $$linked .dylib).$(LIBBOOST_VERSION).dylib $$lib; \
+		done; \
 		mv $$lib $$(dirname $$lib)/$$(basename $$lib .dylib).$(LIBBOOST_VERSION).dylib; \
 		ln -s $$(basename $$lib .dylib).$(LIBBOOST_VERSION).dylib $$lib; \
 	done
