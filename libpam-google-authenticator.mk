@@ -17,7 +17,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libpam-google-authenticator/.build_complete),)
 libpam-google-authenticator:
 	@echo "Using previously built libpam-google-authenticator."
 else
-libpam-google-authenticator: libpam-google-authenticator-setup
+libpam-google-authenticator: libpam-google-authenticator-setup libpam
 	cd $(BUILD_WORK)/libpam-google-authenticator && ./bootstrap.sh && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
