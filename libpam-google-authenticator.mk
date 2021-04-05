@@ -18,7 +18,7 @@ libpam-google-authenticator:
 	@echo "Using previously built libpam-google-authenticator."
 else
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-libpam-google-authenticator: libpam-google-authenticator-setup libpam
+libpam-google-authenticator: libpam-google-authenticator-setup openpam
 else # (,$(findstring darwin,$(MEMO_TARGET)))
 libpam-google-authenticator: libpam-google-authenticator-setup
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
