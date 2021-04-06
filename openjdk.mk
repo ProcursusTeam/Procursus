@@ -6,7 +6,18 @@ SUBPROJECTS      += openjdk
 OPENJDK_MAJOR_V  := 17
 OPENJDK_REVISION := 16
 OPENJDK_VERSION  := $(OPENJDK_MAJOR_V)+$(OPENJDK_REVISION)
-DEB_OPENJDK_V    ?= $(OPENJDK_VERSION)-3
+DEB_OPENJDK_V    ?= $(OPENJDK_VERSION)
+
+# Change "ea" to nothing on general availability...
+
+OPENJDK_VENDOR_ARGS := --with-version-pre=ea \
+		--without-version-opt \
+		--with-vendor-bug-url="https://github.com/ProcursusTeam/Procursus/issues" \
+		--with-vendor-name=Procursus \
+		--with-vendor-url="https://github.com/ProcursusTeam/Procursus" \
+		--with-vendor-version-string=Procursus \
+		--with-vendor-vm-bug-url="https://github.com/ProcursusTeam/Procursus/issues" \
+		--with-version-build="$(OPENJDK_REVISION)" \
 
 ###
 # The patches are still horribly ugly, please pay no mind.
@@ -69,14 +80,7 @@ openjdk: openjdk-setup libx11 libxext libxi libxrender libxrandr libxtst freetyp
 		--with-extra-cxxflags="$(CXXFLAGS) -DTARGET_OS_OSX" \
 		--with-extra-ldflags="$(LDFLAGS) -headerpad_max_install_names" \
 		--with-sysroot="$(TARGET_SYSROOT)" \
-		--without-version-pre \
-		--without-version-opt \
-		--with-vendor-bug-url="https://github.com/ProcursusTeam/Procursus/issues" \
-		--with-vendor-name=Procursus \
-		--with-vendor-url="https://github.com/ProcursusTeam/Procursus" \
-		--with-vendor-version-string=Procursus \
-		--with-vendor-vm-bug-url="https://github.com/ProcursusTeam/Procursus/issues" \
-		--with-version-build="$(OPENJDK_VERSION)" \
+		$(OPENJDK_VENDOR_ARGS) \
 		--with-boot-jdk="$(BUILD_WORK)/boot-jdk.jdk/Contents/Home" \
 		--with-debug-level=release \
 		--with-native-debug-symbols=none \

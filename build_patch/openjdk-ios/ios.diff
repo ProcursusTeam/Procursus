@@ -155,7 +155,7 @@ diff -urN openjdk/make/modules/jdk.jpackage/Lib.gmk.orig openjdk/make/modules/jd
      LDFLAGS := $(LDFLAGS_JDKEXE), \
 -    LIBS_macosx := $(LIBCXX) -framework Cocoa, \
 +    LIBS_macosx := $(LIBCXX) -framework Foundation, \
-     LIBS := $(LIBCXX), \
+     LIBS_windows := $(LIBCXX), \
      LIBS_linux := -ldl, \
  ))
 diff -urN  openjdk/make/modules/java.security.jgss/Lib.gmk.orig openjdk/make/modules/java.security.jgss/Lib.gmk
