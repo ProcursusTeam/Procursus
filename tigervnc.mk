@@ -34,6 +34,7 @@ tigervnc: tigervnc-setup libx11 libxau libxmu xorgproto libpixman
 		DESTDIR=$(BUILD_BASE)
 	$(call EXTRACT_TAR,xorg-server-$(XORG-SERVER_VERSION).tar.gz,xorg-server-$(XORG-SERVER_VERSION),xorg-server-vnc)
 	cp -R $(BUILD_WORK)/xorg-server-vnc/. $(BUILD_WORK)/tigervnc/unix/xserver
+	wget -q -nc -P $(BUILD_BASE)/usr/include https://opensource.apple.com/source/X11/X11-0.40.2/xc/programs/Xserver/hw/darwin/quartz/xpr/Xplugin.h
 	cd $(BUILD_WORK)/tigervnc/unix/xserver && patch -p1 < $(BUILD_WORK)/tigervnc/unix/xserver$(XORG_VERSION).patch && export ACLOCAL='aclocal -I $(BUILD_BASE)/usr/share/aclocal' && export gcc=cc && autoreconf -fiv && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
