@@ -18,7 +18,7 @@ openjdk-setup: setup
 		https://github.com/apple/cups/releases/download/v2.3.3/cups-2.3.3-source.tar.gz \
 		https://download.java.net/java/GA/jdk15/779bf45e88a44cbd9ea6621d33e33db1/36/GPL/openjdk-15_osx-x64_bin.tar.gz
 		#https://download.java.net/java/GA/jdk15/779bf45e88a44cbd9ea6621d33e33db1/36/GPL/openjdk-15_linux-x64_bin.tar.gz
-	$(call EXTRACT_TAR,jdk-$(OPENJDK_MAJOR_V)-ga.tar.gz,jdk-$(OPENJDK_MAJOR_V)-ga,openjdk)
+	$(call EXTRACT_TAR,jdk-$(OPENJDK_MAJOR_V)-ga.tar.gz,jdk-jdk-$(OPENJDK_MAJOR_V)-ga,openjdk)
 	$(call EXTRACT_TAR,cups-2.3.3-source.tar.gz,cups-2.3.3,apple-cups)
 	$(call EXTRACT_TAR,openjdk-15_osx-x64_bin.tar.gz,jdk-15.jdk,boot-jdk.jdk) # Change this to use the Linux one on Linux
 	$(call DO_PATCH,openjdk,openjdk,-p1)
