@@ -16,10 +16,11 @@ ifneq ($(wildcard $(BUILD_WORK)/tcsh/.build_complete),)
 tcsh:
 	@echo "Using previously built tcsh."
 else
-tcsh: tcsh-setup
+tcsh: tcsh-setup ncurses
 	cd $(BUILD_WORK)/tcsh && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		LDFLAGS="$(LDFLAGS) -lncursesw"
 
 	+$(MAKE) -C $(BUILD_WORK)/tcsh
 	+$(MAKE) -C $(BUILD_WORK)/tcsh install \
