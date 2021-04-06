@@ -2,13 +2,13 @@ diff -urN openjdk/src/hotspot/os_cpu/bsd_aarch64/os_bsd_aarch64.cpp.orig openjdk
 --- openjdk/src/hotspot/os_cpu/bsd_aarch64/os_bsd_aarch64.cpp.orig	2021-04-06 01:48:01.140932272 -0400
 +++ openjdk/src/hotspot/os_cpu/bsd_aarch64/os_bsd_aarch64.cpp	2021-04-06 01:48:11.383681637 -0400
 @@ -79,6 +79,7 @@
-
  #if !defined(__APPLE__) && !defined(__NetBSD__)
  # include <pthread_np.h>
-+# include "tcg-apple-jit.h"
  #endif
++# include "tcg-apple-jit.h"
 
  #define SPELL_REG_SP "sp"
+ #define SPELL_REG_FP "fp"
 @@ -124,6 +125,11 @@
  #endif
  }
