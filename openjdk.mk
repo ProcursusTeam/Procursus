@@ -52,9 +52,6 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	done
 	cp $(BUILD_WORK)/openjdk/make/data/charsetmapping/stdcs-linux $(BUILD_WORK)/openjdk/make/data/charsetmapping/stdcs-macosx
 	rm -rf $(BUILD_WORK)/openjdk/src/java.desktop/macosx/
-ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
-	$(call DO_PATCH,openjdk-pre1700,openjdk,-p1)
-endif
 endif
 
 ifneq ($(wildcard $(BUILD_WORK)/openjdk/.build_complete),)
