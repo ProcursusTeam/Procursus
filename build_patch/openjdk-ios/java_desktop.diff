@@ -224,9 +224,9 @@ diff -urN openjdk/make/modules/java.desktop/lib/Awt2dLibraries.gmk openjdk/make/
  
 -ifeq ($(call isTargetOs, macosx), true)
 +ifeq (false, true)
- 
-   $(eval $(call SetupJdkLibrary, BUILD_LIBOSXUI, \
-       NAME := osxui, \
+   SHADERS_SRC := $(TOPDIR)/src/java.desktop/macosx/native/libawt_lwawt/java2d/metal/shaders.metal
+   SHADERS_SUPPORT_DIR := $(SUPPORT_OUTPUTDIR)/native/java.desktop/libosxui
+   SHADERS_AIR := $(SHADERS_SUPPORT_DIR)/shaders.air
 diff -urN openjdk/make/modules/java.desktop/gensrc/GensrcIcons.gmk.orig openjdk/make/modules/java.desktop/gensrc/GensrcIcons.gmk      
 --- openjdk/make/modules/java.desktop/gensrc/GensrcIcons.gmk	2020-12-29 18:22:52.000000000 -0500
 +++ openjdk/make/modules/java.desktop/gensrc/GensrcIcons.gmk	2020-12-29 18:22:21.000000000 -0500
