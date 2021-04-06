@@ -42,7 +42,8 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(BUILD_WORK)/openjdk/src/java.desktop/macosx/native/libawt_lwawt/awt/ApplicationDelegate.h \
 	$(BUILD_WORK)/openjdk/src/java.desktop/macosx/native/libawt_lwawt/awt/CDataTransferer.h \
 	$(BUILD_WORK)/openjdk/src/java.desktop/macosx/native/libawt_lwawt/java2d/opengl/J2D_GL/cglext.h \
-	$(BUILD_WORK)/openjdk/src/java.security.jgss/macosx/native/libosxkrb5/SCDynamicStoreConfig.m; do \
+	$(BUILD_WORK)/openjdk/src/java.security.jgss/macosx/native/libosxkrb5/SCDynamicStoreConfig.m \
+	$(BUILD_WORK)/openjdk/src/java.base/macosx/native/libosxsecurity/KeystoreImpl.m; do \
 		$(SED) -i 's|<Cocoa/Cocoa.h>|<Foundation/Foundation.h>|' $$file; \
 	done
 	for file in $(BUILD_WORK)/openjdk/src/java.desktop/share/native/libfontmanager/hb-jdk-font.c \
@@ -69,7 +70,7 @@ ifneq ($(wildcard $(BUILD_WORK)/openjdk/.build_complete),)
 openjdk:
 	@echo "Using previously built openjdk."
 else
-openjdk: openjdk-setup libx11 libxext libxi libxrender libxrandr libxtst freetype libgif harfbuzz lcms2 libpng16
+openjdk: openjdk-setup libx11 libxext libxi libxrender libxrandr libxtst freetype libgif harfbuzz lcms2 libpng16 xorgproto
 	rm -rf $(BUILD_STAGE)/openjdk
 	mkdir -p $(BUILD_STAGE)/openjdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm
 	chmod 0755 $(BUILD_WORK)/openjdk/configure

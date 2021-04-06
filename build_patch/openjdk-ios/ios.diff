@@ -97,6 +97,16 @@ diff -urN openjdk/make/modules/java.base/Lib.gmk.orig openjdk/make/modules/java.
  ))
  
  $(BUILD_LIBNET): $(BUILD_LIBJAVA)
+@@ -95,7 +95,7 @@
+ ################################################################################
+ # Create the macosx security library
+
+-ifeq ($(call isTargetOs, macosx), true)
++ifeq (false, true)
+
+     $(eval $(call SetupJdkLibrary, BUILD_LIBOSXSECURITY, \
+         NAME := osxsecurity, \
+h
 diff -urN openjdk/make/modules/java.base/lib/CoreLibraries.gmk.orig openjdk/make/modules/java.base/lib/CoreLibraries.gmk
 --- openjdk/make/modules/java.base/lib/CoreLibraries.gmk	2020-12-27 08:18:11.000000000 -0500
 +++ openjdk/make/modules/java.base/lib/CoreLibraries.gmk	2020-12-27 08:18:20.000000000 -0500
