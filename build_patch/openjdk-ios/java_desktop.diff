@@ -288,3 +288,23 @@ diff -urN openjdk/make/modules/java.desktop/Gensrc.gmk.orig openjdk/make/modules
    PROP_SRC_DIRS += \
        $(TOPDIR)/src/java.desktop/macosx/classes/com/apple/laf/resources \
        $(TOPDIR)/src/java.desktop/macosx/classes/sun/awt/resources \
+--- openjdk/make/modules/java.desktop/Java.gmk.orig	2021-04-06 00:55:42.523504604 -0400
++++ openjdk/make/modules/java.desktop/Java.gmk	2021-04-06 00:56:57.706985954 -0400
+@@ -64,7 +64,7 @@
+     .template \
+     #
+
+-ifeq ($(call isTargetOs, macosx), true)
++ifeq (false, true)
+   # exclude all X11 on Mac.
+   EXCLUDES += \
+       sun/awt/X11 \
+@@ -130,7 +130,7 @@
+   EXCLUDES += com/sun/java/swing/plaf/gtk
+ endif
+
+-ifeq ($(call isTargetOs, windows macosx), false)
++ifeq ($(call isTargetOs, windows), false)
+   EXCLUDE_FILES += sun/awt/AWTCharset.java
+ endif
+

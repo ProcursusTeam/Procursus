@@ -61,7 +61,7 @@ ifneq ($(wildcard $(BUILD_WORK)/openjdk/.build_complete),)
 openjdk:
 	@echo "Using previously built openjdk."
 else
-openjdk: openjdk-setup libx11 libxext libxi libxrender libxtst freetype libgif harfbuzz lcms2 libpng16
+openjdk: openjdk-setup libx11 libxext libxi libxrender libxrandr libxtst freetype libgif harfbuzz lcms2 libpng16
 	rm -rf $(BUILD_STAGE)/openjdk
 	mkdir -p $(BUILD_STAGE)/openjdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm
 	chmod 0755 $(BUILD_WORK)/openjdk/configure
@@ -74,6 +74,12 @@ openjdk: openjdk-setup libx11 libxext libxi libxrender libxtst freetype libgif h
 		--with-sysroot="$(TARGET_SYSROOT)" \
 		--without-version-pre \
 		--without-version-opt \
+		--with-vendor-bug-url="https://github.com/ProcursusTeam/Procursus/issues" \
+		--with-vendor-name=Procursus \
+		--with-vendor-url="https://github.com/ProcursusTeam/Procursus" \
+		--with-vendor-version-string=Procursus \
+		--with-vendor-vm-bug-url="https://github.com/ProcursusTeam/Procursus/issues" \
+		--with-version-build="$(OPENJDK_VERSION)" \
 		--with-boot-jdk="$(BUILD_WORK)/boot-jdk.jdk/Contents/Home" \
 		--with-debug-level=release \
 		--with-native-debug-symbols=none \

@@ -2,7 +2,7 @@ Package: openjdk-16-jre
 Version: @DEB_OPENJDK_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libx11-6, libxext6, libxi6, libxrender1, libxtst6, libfreetype6, libgif7, libharfbuzz0b, liblcms2-2, libpng16-16
+Depends: libx11-6, libxext6, libxi6, libxrender1, libxrandr2, libxtst6, libfreetype6, libgif7, libharfbuzz0b, liblcms2-2, libpng16-16
 Section: Development
 Priority: optional
 Homepage: https://github.com/openjdk/aarch64-port/tree/jdk-macos
