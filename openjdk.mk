@@ -3,27 +3,25 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += openjdk
-OPENJDK_COMMIT  := 8383f41ca7faa59dab17f6bb47fecd5a93ab72e3
 OPENJDK_MAJOR_V := 16
-OPENJDK_VERSION := $(OPENJDK_MAJOR_V).0.0+git20201217.$(shell echo $(OPENJDK_COMMIT) | cut -c -7)
-DEB_OPENJDK_V   ?= $(OPENJDK_VERSION)-2
+OPENJDK_VERSION := $(OPENJDK_MAJOR_V).0.0
+DEB_OPENJDK_V   ?= $(OPENJDK_VERSION)-3ga
 
 ###
-#
-# The patches are horribly ugly, pay no mind.
+# The patches are still horribly ugly, please pay no mind.
 # TODO: Try and get libjsound working.
-#
 ###
 
 openjdk-setup: setup
-	$(call GITHUB_ARCHIVE,openjdk,aarch64-port,$(OPENJDK_COMMIT),$(OPENJDK_COMMIT),openjdk)
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/openjdk/jdk/archive/refs/tags/jdk-$(OPENJDK_MAJOR_V)-ga.tar.gz
 	wget -q -nc -P $(BUILD_SOURCE) \
 		https://github.com/apple/cups/releases/download/v2.3.3/cups-2.3.3-source.tar.gz \
 		https://download.java.net/java/GA/jdk15/779bf45e88a44cbd9ea6621d33e33db1/36/GPL/openjdk-15_osx-x64_bin.tar.gz
 		#https://download.java.net/java/GA/jdk15/779bf45e88a44cbd9ea6621d33e33db1/36/GPL/openjdk-15_linux-x64_bin.tar.gz
-	$(call EXTRACT_TAR,openjdk-$(OPENJDK_COMMIT).tar.gz,aarch64-port-$(OPENJDK_COMMIT),openjdk)
+	$(call EXTRACT_TAR,jdk-$(OPENJDK_MAJOR_V)-ga.tar.gz,jdk-$(OPENJDK_MAJOR_V)-ga,openjdk)
 	$(call EXTRACT_TAR,cups-2.3.3-source.tar.gz,cups-2.3.3,apple-cups)
 	$(call EXTRACT_TAR,openjdk-15_osx-x64_bin.tar.gz,jdk-15.jdk,boot-jdk.jdk) # Change this to use the Linux one on Linux
+	$(call DO_PATCH,openjdk,openjdk,-p1)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call DO_PATCH,openjdk-ios,openjdk,-p1)
 	$(SED) -i '/<CoreServices\/CoreServices.h>/a #include <CFNetwork/CFNetwork.h>' $(BUILD_WORK)/openjdk/src/java.base/macosx/native/libnet/DefaultProxySelector.c
@@ -125,14 +123,14 @@ openjdk-package: openjdk-stage
 
 	# openjdk.mk Prep openjdk-jre
 	for bin in java jfr keytool rmid rmiregistry; do \
-		ln -sf ../lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/bin/$${bin} $(BUILD_DIST)/openjdk-jre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$${bin}; \
-		ln -sf ../../../lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/man/man1/$${bin}.1 $(BUILD_DIST)/openjdk-jre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$${bin}.1; \
+		ln -sf $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/bin/$${bin} $(BUILD_DIST)/openjdk-jre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$${bin}; \
+		ln -sf $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/man/man1/$${bin}.1 $(BUILD_DIST)/openjdk-jre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$${bin}.1; \
 	done
 
 	# openjdk.mk Prep openjdk-jdk
 	for bin in jar jarsigner javac javadoc javap jcmd jconsole jdb jdeprscan jdeps jhsdb jimage jinfo jlink jmap jmod jpackage jps jrunscript jshell jstack jstat jstatd serialver; do \
-		ln -sf ../lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/bin/$${bin} $(BUILD_DIST)/openjdk-jdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$${bin}; \
-		ln -sf ../../../lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/man/man1/$${bin}.1 $(BUILD_DIST)/openjdk-jdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$${bin}.1; \
+		ln -sf $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/bin/$${bin} $(BUILD_DIST)/openjdk-jdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$${bin}; \
+		ln -sf $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/man/man1/$${bin}.1 $(BUILD_DIST)/openjdk-jdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$${bin}.1; \
 	done
 
 	# openjdk.mk Prep openjdk-$(OPENJDK_MAJOR_V)-jdk
