@@ -376,12 +376,6 @@ PACK = -if [ -z $(4) ]; then \
 	echo "Installed-Size: $$SIZE" >> $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	find $(BUILD_DIST)/$(1) -name '.DS_Store' -type f -delete; \
 	$(FAKEROOT) $(DPKG_DEB) -b $(BUILD_DIST)/$(1) $(BUILD_DIST)/$$(grep Package: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ')_$($(2))_$$(grep Architecture: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ').deb
-	if [ "$(TO_INSTALL)" = "1" ]; then \
-		rsync -vz -e "ssh -p $(MEMO_DEVICE_PORT)" $(BUILD_DIST)/$(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d ' ')_$($(2))_$(DEB_ARCH).deb root@$(MEMO_DEVICE_IP):/tmp/$(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d ' ')_$($(2))_$(DEB_ARCH).deb; \
-		ssh -p $(MEMO_DEVICE_PORT) root@$(MEMO_DEVICE_IP) 'apt-get update'; \
-		ssh -p $(MEMO_DEVICE_PORT) root@$(MEMO_DEVICE_IP) 'apt-get reinstall /tmp/$(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d ' ')_$($(2))_$(DEB_ARCH).deb'; \
-		ssh -p $(MEMO_DEVICE_PORT) root@$(MEMO_DEVICE_IP) 'rm /tmp/$(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d ' ')_$($(2))_$(DEB_ARCH).deb'; \
-	fi
 
 PACK_LOCALE = mkdir -p $(BUILD_DIST)/$(1)-locale/{DEBIAN,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share}; \
 	$(CP) -af $(BUILD_DIST)/$(1)-locales $(BUILD_DIST)/$(1)-locale/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale; \
@@ -746,8 +740,15 @@ bootstrap-device: bootstrap
 	rm -f $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev)
 	touch $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev)
 	mkdir -p $(BUILD_DIST)
-%-install:
-	+TO_INSTALL=1 $(MAKE) $(shell echo $@ | $(SED) 's/-install//')-package
+%-install:: export BUILD_DIST=$(BUILD_ROOT)/build_dist/$(MEMO_TARGET)/$(MEMO_CFVER)/stageinstall
+%-install: %
+	+$(MAKE) $$(echo $@ | $(SED) 's/-install//')-package
+	temp=$$(ssh -p $(MEMO_DEVICE_PORT) root@$(MEMO_DEVICE_IP) 'mktemp -d'); \
+	rsync -z -e "ssh -p $(MEMO_DEVICE_PORT)" $(BUILD_DIST)/*.deb root@$(MEMO_DEVICE_IP):$$temp; \
+	ssh -p $(MEMO_DEVICE_PORT) root@$(MEMO_DEVICE_IP) 'apt-get update'; \
+	ssh -p $(MEMO_DEVICE_PORT) root@$(MEMO_DEVICE_IP) "apt-get reinstall $$temp/*.deb"; \
+	ssh -p $(MEMO_DEVICE_PORT) root@$(MEMO_DEVICE_IP) "rm -rf $$temp"; \
+	mv $(BUILD_DIST)/*.deb $(BUILD_DIST)/..
 
 REPROJ=$(shell echo $@ | cut -f2- -d"-")
 REPROJ2=$(shell echo $(REPROJ) | $(SED) 's/-package//' | $(SED) 's/-setup//')
