@@ -2,10 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS     += openjdk
-OPENJDK_MAJOR_V := 16
-OPENJDK_VERSION := $(OPENJDK_MAJOR_V).0.0
-DEB_OPENJDK_V   ?= $(OPENJDK_VERSION)-3ga
+SUBPROJECTS      += openjdk
+OPENJDK_MAJOR_V  := 17
+OPENJDK_REVISION := 16
+OPENJDK_VERSION  := $(OPENJDK_MAJOR_V)+$(OPENJDK_REVISION)
+DEB_OPENJDK_V    ?= $(OPENJDK_VERSION)-3
 
 ###
 # The patches are still horribly ugly, please pay no mind.
@@ -13,15 +14,14 @@ DEB_OPENJDK_V   ?= $(OPENJDK_VERSION)-3ga
 ###
 
 openjdk-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/openjdk/jdk/archive/refs/tags/jdk-$(OPENJDK_MAJOR_V)-ga.tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/openjdk/jdk/archive/refs/tags/jdk-$(OPENJDK_VERSION).tar.gz
 	wget -q -nc -P $(BUILD_SOURCE) \
 		https://github.com/apple/cups/releases/download/v2.3.3/cups-2.3.3-source.tar.gz \
 		https://download.java.net/java/GA/jdk15/779bf45e88a44cbd9ea6621d33e33db1/36/GPL/openjdk-15_osx-x64_bin.tar.gz
 		#https://download.java.net/java/GA/jdk15/779bf45e88a44cbd9ea6621d33e33db1/36/GPL/openjdk-15_linux-x64_bin.tar.gz
-	$(call EXTRACT_TAR,jdk-$(OPENJDK_MAJOR_V)-ga.tar.gz,jdk-jdk-$(OPENJDK_MAJOR_V)-ga,openjdk)
+	$(call EXTRACT_TAR,jdk-$(OPENJDK_VERSION).tar.gz,jdk-jdk-$(OPENJDK_MAJOR_V)-$(OPENJDK_REVISION),openjdk)
 	$(call EXTRACT_TAR,cups-2.3.3-source.tar.gz,cups-2.3.3,apple-cups)
 	$(call EXTRACT_TAR,openjdk-15_osx-x64_bin.tar.gz,jdk-15.jdk,boot-jdk.jdk) # Change this to use the Linux one on Linux
-	$(call DO_PATCH,openjdk,openjdk,-p1)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call DO_PATCH,openjdk-ios,openjdk,-p1)
 	$(SED) -i '/<CoreServices\/CoreServices.h>/a #include <CFNetwork/CFNetwork.h>' $(BUILD_WORK)/openjdk/src/java.base/macosx/native/libnet/DefaultProxySelector.c
@@ -66,7 +66,6 @@ openjdk: openjdk-setup libx11 libxext libxi libxrender libxtst freetype libgif h
 	mkdir -p $(BUILD_STAGE)/openjdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm
 	chmod 0755 $(BUILD_WORK)/openjdk/configure
 	cd $(BUILD_WORK)/openjdk && ./configure \
-		--build=$$($(BUILD_MISC)/config.guess) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		--openjdk-target=$(GNU_HOST_TRIPLE) \
 		--with-extra-cflags="$(CFLAGS) -DTARGET_OS_OSX" \
