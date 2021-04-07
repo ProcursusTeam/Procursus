@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS   += gettext
 GETTEXT_VERSION := 0.21
-DEB_GETTEXT_V   ?= $(GETTEXT_VERSION)-3
+DEB_GETTEXT_V   ?= $(GETTEXT_VERSION)-4
 
 gettext-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gettext/gettext-$(GETTEXT_VERSION).tar.xz{,.sig}
