@@ -10,7 +10,7 @@ python-psutil-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/psutil-$(PYTHON-PSUTIL_VERSION).tar.gz" ] && \
 	wget -q -nc -O$(BUILD_SOURCE)/psutil-$(PYTHON-PSUTIL_VERSION).tar.gz \
 		 https://github.com/giampaolo/psutil/archive/refs/tags/release-$(PYTHON-PSUTIL_VERSION).tar.gz
-	$(call EXTRACT_TAR,psutil-$(PSUTIL_VERSION).tar.gz,psutil-release-$(PYTHON-PSUTIL_VERSION),python-psutil)
+	$(call EXTRACT_TAR,psutil-$(PYTHON-PSUTIL_VERSION).tar.gz,psutil-$(PYTHON-PSUTIL_VERSION),python-psutil)
 
 ifneq ($(wildcard $(BUILD_WORK)/python-psutil/.build_complete),)
 python-psutil:
