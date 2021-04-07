@@ -21,11 +21,9 @@ tcsh: tcsh-setup ncurses
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		LDFLAGS="$(LDFLAGS) -lncursesw"
-
 	+$(MAKE) -C $(BUILD_WORK)/tcsh
 	+$(MAKE) -C $(BUILD_WORK)/tcsh install \
 		DESTDIR=$(BUILD_STAGE)/tcsh
-
 	touch $(BUILD_WORK)/tcsh/.build_complete
 endif
 tcsh-package: tcsh-stage
