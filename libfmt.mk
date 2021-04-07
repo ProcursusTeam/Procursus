@@ -7,9 +7,7 @@ LIBFMT_VERSION  := 7.1.3
 DEB_LIBFMT_V    ?= $(LIBFMT_VERSION)
 
 libfmt-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/libfmt-$(LIBFMT_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/libfmt-$(LIBFMT_VERSION).tar.gz \
-			https://github.com/fmtlib/fmt/archive/$(LIBFMT_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,fmtlib,fmt,$(LIBFMT_VERSION),$(LIBFMT_VERSION),libfmt)
 	$(call EXTRACT_TAR,libfmt-$(LIBFMT_VERSION).tar.gz,fmt-$(LIBFMT_VERSION),libfmt)
 
 ifneq ($(wildcard $(BUILD_WORK)/libfmt/.build_complete),)

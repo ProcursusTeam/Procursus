@@ -7,9 +7,7 @@ JBIG2DEC_VERSION := 0.19
 DEB_JBIG2DEC_V   ?= $(JBIG2DEC_VERSION)
 
 jbig2dec-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/jbig2dec-$(JBIG2DEC_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/jbig2dec-$(JBIG2DEC_VERSION).tar.gz \
-			https://github.com/ArtifexSoftware/jbig2dec/archive/$(JBIG2DEC_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,ArtifexSoftware,jbig2dec,$(JBIG2DEC_VERSION),$(JBIG2DEC_VERSION))
 	$(call EXTRACT_TAR,jbig2dec-$(JBIG2DEC_VERSION).tar.gz,jbig2dec-$(JBIG2DEC_VERSION),jbig2dec)
 
 ifneq ($(wildcard $(BUILD_WORK)/jbig2dec/.build_complete),)

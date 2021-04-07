@@ -7,9 +7,7 @@ NEOVIM_VERSION := 0.4.4
 DEB_NEOVIM_V   ?= $(NEOVIM_VERSION)
 
 neovim-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/neovim-$(NEOVIM_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/neovim-$(NEOVIM_VERSION).tar.gz \
-			https://github.com/neovim/neovim/archive/v$(NEOVIM_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,neovim,neovim,$(NEOVIM_VERSION),v$(NEOVIM_VERSION))
 	$(call EXTRACT_TAR,neovim-$(NEOVIM_VERSION).tar.gz,neovim-$(NEOVIM_VERSION),neovim)
 	$(call DO_PATCH,neovim,neovim,-p1)
 	mkdir -p $(BUILD_WORK)/neovim/build

@@ -7,9 +7,7 @@ ZSH-AUTOSUGGESTIONS_VERSION := 0.6.4
 DEB_ZSH-AUTOSUGGESTIONS_V   ?= $(ZSH-AUTOSUGGESTIONS_VERSION)
 
 zsh-autosuggestions-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/zsh-autosuggestions-$(ZSH-AUTOSUGGESTIONS_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/zsh-autosuggestions-$(ZSH-AUTOSUGGESTIONS_VERSION).tar.gz \
-			https://github.com/zsh-users/zsh-autosuggestions/archive/v$(ZSH-AUTOSUGGESTIONS_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,zsh-users,zsh-autosuggestions,$(ZSH-AUTOSUGGESTIONS_VERSION),v$(ZSH-AUTOSUGGESTIONS_VERSION))
 	$(call EXTRACT_TAR,zsh-autosuggestions-$(ZSH-AUTOSUGGESTIONS_VERSION).tar.gz,zsh-autosuggestions-$(ZSH-AUTOSUGGESTIONS_VERSION),zsh-autosuggestions)
 
 ifneq ($(wildcard $(BUILD_WORK)/zsh-autosuggestions/.build_complete),)

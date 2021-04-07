@@ -7,8 +7,8 @@ PZB_VERSION := 36
 DEB_PZB_V   ?= $(PZB_VERSION)-1
 
 pzb-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tihmstar/partialZipBrowser/archive/$(PZB_VERSION).tar.gz
-	$(call EXTRACT_TAR,$(PZB_VERSION).tar.gz,partialZipBrowser-$(PZB_VERSION),pzb)
+	$(call GITHUB_ARCHIVE,tihmstar,partialZipBrowser,$(PZB_VERSION),$(PZB_VERSION))
+	$(call EXTRACT_TAR,partialZipBrowser-$(PZB_VERSION).tar.gz,partialZipBrowser-$(PZB_VERSION),pzb)
 
 ifneq ($(wildcard $(BUILD_WORK)/pzb/.build_complete),)
 pzb:

@@ -34,10 +34,9 @@ endif
 
 util-macros-package: util-macros-stage
 	rm -rf $(BUILD_DIST)/xorg-util-macros
-	mkdir -p $(BUILD_DIST)/xorg-util-macros
 
 	# util-macros.mk Prep util-macros
-	cp -a $(BUILD_STAGE)/util-macros/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/xorg-util-macros
+	cp -a $(BUILD_STAGE)/util-macros $(BUILD_DIST)/xorg-util-macros
 
 	# util-macros.mk Sign
 	$(call SIGN,xorg-util-macros,general.xml)

@@ -7,9 +7,7 @@ OPENJPEG_VERSION := 2.3.1
 DEB_OPENJPEG_V   ?= $(OPENJPEG_VERSION)
 
 openjpeg-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/openjpeg-$(OPENJPEG_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/openjpeg-$(OPENJPEG_VERSION).tar.gz \
-			https://github.com/uclouvain/openjpeg/archive/v$(OPENJPEG_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,uclouvain,openjpeg,$(OPENJPEG_VERSION),v$(OPENJPEG_VERSION))
 	$(call EXTRACT_TAR,openjpeg-$(OPENJPEG_VERSION).tar.gz,openjpeg-$(OPENJPEG_VERSION),openjpeg)
 
 ifneq ($(wildcard $(BUILD_WORK)/openjpeg/.build_complete),)
