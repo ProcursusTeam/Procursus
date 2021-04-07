@@ -740,15 +740,14 @@ bootstrap-device: bootstrap
 	rm -f $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev)
 	touch $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev)
 	mkdir -p $(BUILD_DIST)
-%-install:: export BUILD_DIST=$(BUILD_ROOT)/build_dist/$(MEMO_TARGET)/$(MEMO_CFVER)/stageinstall
-%-install: %
-	+$(MAKE) $$(echo $@ | $(SED) 's/-install//')-package
+%-install:: export BUILD_DIST=$(BUILD_ROOT)/build_dist/$(MEMO_TARGET)/$(MEMO_CFVER)/%
+%-install: %-package
 	temp=$$(ssh -p $(MEMO_DEVICE_PORT) root@$(MEMO_DEVICE_IP) 'mktemp -d'); \
 	rsync -z -e "ssh -p $(MEMO_DEVICE_PORT)" $(BUILD_DIST)/*.deb root@$(MEMO_DEVICE_IP):$$temp; \
 	ssh -p $(MEMO_DEVICE_PORT) root@$(MEMO_DEVICE_IP) 'apt-get update'; \
 	ssh -p $(MEMO_DEVICE_PORT) root@$(MEMO_DEVICE_IP) "apt-get reinstall $$temp/*.deb"; \
 	ssh -p $(MEMO_DEVICE_PORT) root@$(MEMO_DEVICE_IP) "rm -rf $$temp"; \
-	mv $(BUILD_DIST)/*.deb $(BUILD_DIST)/..
+	rm -rf $(BUILD_DIST)
 
 REPROJ=$(shell echo $@ | cut -f2- -d"-")
 REPROJ2=$(shell echo $(REPROJ) | $(SED) 's/-package//' | $(SED) 's/-setup//')
