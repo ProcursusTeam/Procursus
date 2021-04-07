@@ -25,6 +25,9 @@ bsdgames: bsdgames-setup ncurses flex openssl
 		LIBFLA="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libfl.2.dylib" \
 		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw"
 	+$(MAKE) -C $(BUILD_WORK)/bsdgames install \
+		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+		LOCALSTATEDIR="$(MEMO_PREFIX)/var" \
+		SYSCONFDIR="$(MEMO_PREFIX)/etc" \
 		DESTDIR="$(BUILD_STAGE)/bsdgames" \
 		GINSTALL="$(GINSTALL)" \
 		LN="$(LN)"
