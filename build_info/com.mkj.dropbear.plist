@@ -10,7 +10,7 @@
   <string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/dropbear-wrapper</string>
   <key>ProgramArguments</key>
   <array>
-    <string>/usr/libexec/dropbear-wrapper</string>
+    <string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/dropbear-wrapper</string>
     <string>44</string>
     <string>-i</string>
   </array>
