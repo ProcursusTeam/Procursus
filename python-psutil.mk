@@ -7,17 +7,15 @@ PYTHON-PSUTIL_VERSION := 5.8.0
 DEB_PYTHON-PSUTIL_V   ?= $(PYTHON-PSUTIL_VERSION)
 
 python-psutil-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/psutil-$(PYTHON-PSUTIL_VERSION).tar.gz" ] && \
-	wget -q -nc -O$(BUILD_SOURCE)/psutil-$(PYTHON-PSUTIL_VERSION).tar.gz \
-		 https://github.com/giampaolo/psutil/archive/refs/tags/release-$(PYTHON-PSUTIL_VERSION).tar.gz
-	$(call EXTRACT_TAR,psutil-$(PYTHON-PSUTIL_VERSION).tar.gz,psutil-$(PYTHON-PSUTIL_VERSION),python-psutil)
+	wget -q -nc -P $(BUILD_SOURCE)  https://github.com/giampaolo/psutil/archive/refs/tags/release-$(PYTHON-PSUTIL_VERSION).tar.gz
+	$(call EXTRACT_TAR,release-$(PYTHON-PSUTIL_VERSION).tar.gz,psutil-release-$(PYTHON-PSUTIL_VERSION),python-psutil)
 
 ifneq ($(wildcard $(BUILD_WORK)/python-psutil/.build_complete),)
 python-psutil:
 	@echo "Using previously built python-psutil."
 else
 python-psutil: python-psutil-setup python3
-	cd $(BUILD_WORK)/python-psutil && python3 ./setup.py install --install-layout=deb --root $(BUILD_STAGE)/python-psutil
+	cd $(BUILD_WORK)/python-psutil && python3 ./setup.py install  --root $(BUILD_STAGE)/python-psutil
 
 	touch $(BUILD_WORK)/psutil/.build_complete
 endif
