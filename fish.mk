@@ -33,6 +33,8 @@ fish: fish-setup ncurses gettext pcre2
 		-DCURSES_INCLUDE_PATH="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw" \
 		-DSYS_PCRE2_LIB="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpcre2-32.dylib" \
  		-DSYS_PCRE2_INCLUDE_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pcre2" \
+		-DIntl_LIBRARY="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libintl.dylib" \
+		-DIntl_INCLUDE_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
  		-DSED=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$(GNU_PREFIX)sed \
 		-DCMAKE_INSTALL_SYSCONFDIR=$(MEMO_PREFIX)/etc \
 		-Dextra_functionsdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/fish/vendor_functions.d \
