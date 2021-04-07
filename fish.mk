@@ -11,6 +11,7 @@ fish-setup: setup
 	$(call PGP_VERIFY,fish-$(FISH_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,fish-$(FISH_VERSION).tar.gz,fish-$(FISH_VERSION),fish)
 	$(SED) -i -e '168,180d' -e '/codesign/Id' $(BUILD_WORK)/fish/CMakeLists.txt
+	$(call DO_PATCH,fish,fish,-p0)
 
 ifneq ($(wildcard $(BUILD_WORK)/fish/.build_complete),)
 fish:
