@@ -27,7 +27,7 @@ apr-util: apr-util-setup apr
 		DESTDIR=$(BUILD_STAGE)/apr-util
 	+$(MAKE) -C $(BUILD_WORK)/apr-util install \
 		DESTDIR="$(BUILD_BASE)"
-	ln -s $(BUILD_STAGE)/apr-tuil/$MEMO_PREFIX)$MEMO_SUB_PREFIX)/apu-1-config $(BUILD_STAGE)/apr-tuil/$MEMO_PREFIX)$MEMO_SUB_PREFIX)/apu-config
+	ln -s $(BUILD_STAGE)/apr-tuil/$MEMO_PREFIX)$MEMO_SUB_PREFIX)/apu-1-config $(BUILD_STAGE)/apr-util/$MEMO_PREFIX)$MEMO_SUB_PREFIX)/apu-config
 	touch $(BUILD_WORK)/apr-util/.build_complete
 endif
 apr-util-package: apr-util-stage
@@ -36,13 +36,14 @@ apr-util-package: apr-util-stage
 	mkdir -p  $(BUILD_DIST)/libaprutil1{,-dev}
 	
 	# apr-util.mk Prep libaprutil1
-	cp -a $(BUILD_STAGE)/apr-util$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib $(BUILD_DIST)/libaprutil1/
+	cp -a $(BUILD_STAGE)/apr-util/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libaprutil.1.dylib $(BUILD_DIST)/libaprutil1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# apr-util.mk Prep libaprutil1-dev
-	cp -a $(BUILD_STAGE)/apr-util$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include} $(BUILD_DIST)/libaprutil1-dev/
+	cp -a $(BUILD_STAGE)/apr-util/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include} $(BUILD_DIST)/libaprutil1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	
 	# apr-util.mk Sign
-	$(call SIGN,libaprutil1-dev,general.xml)
+	$(call SIGN,libaprutil1,general.xml)
 	
 	# apr-util.mk Make .debs
 	$(call PACK,libaprutil1,DEB_APR-UTIL_V)
