@@ -8,10 +8,10 @@ DEB_FISH_V    ?= $(FISH_VERSION)
 
 fish-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/fish-shell/fish-shell/releases/download/$(FISH_VERSION)/fish-$(FISH_VERSION).tar.xz{,.asc}
- 	$(call PGP_VERIFY,fish-$(FISH_VERSION).tar.xz,asc)
- 	$(call EXTRACT_TAR,fish-$(FISH_VERSION).tar.xz,fish-$(FISH_VERSION),fish)
- 	$(SED) -i '/codesign_on_mac/d' $(BUILD_WORK)/fish/CMakeLists.txt
-  $(call DO_PATCH,fish,fish,-p0)
+	$(call PGP_VERIFY,fish-$(FISH_VERSION).tar.xz,asc)
+	$(call EXTRACT_TAR,fish-$(FISH_VERSION).tar.xz,fish-$(FISH_VERSION),fish)
+	$(SED) -i '/codesign_on_mac/d' $(BUILD_WORK)/fish/CMakeLists.txt
+	$(call DO_PATCH,fish,fish,-p0)
 
 ifneq ($(wildcard $(BUILD_WORK)/fish/.build_complete),)
 fish:
@@ -42,7 +42,6 @@ fish: fish-setup ncurses gettext pcre2
 	+$(MAKE) -C $(BUILD_WORK)/fish
 	+$(MAKE) -C $(BUILD_WORK)/fish install \
 		DESTDIR=$(BUILD_STAGE)/fish
-
 	touch $(BUILD_WORK)/fish/.build_complete
 endif
 
