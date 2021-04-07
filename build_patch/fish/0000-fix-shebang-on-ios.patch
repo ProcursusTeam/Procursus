@@ -1,0 +1,65 @@
+--- src/exec.cpp	2021-03-17 22:05:28.000000000 -0500
++++ src/exec.cpp	2021-04-07 12:33:16.000000000 -0500
+@@ -87,7 +87,61 @@
+         ssize_t amt_read = read(fd, begin, 1);
+         close(fd);
+ 
+-        if ((amt_read == 1) && (begin[0] == ':')) {
++        // iOS does not allow executing scripts with shebangs for some asinine reason
++	
++        if ((amt_read == 1) && (begin[0] == '#') && err == EPERM) {
++            char firstline[512];
++            FILE* cmdptr = fopen(actual_cmd, "r");	
++            fread(firstline, 1, 512, cmdptr);
++            fclose(cmdptr);
++
++            if (firstline[0] == '#' && firstline[1] == '!') {
++                bool is_valid_cmdname = true;
++                // Check if valid command and trim newlines as well.
++                for (size_t i = 0; i < strlen(firstline) - 1; i++) {
++
++                    if (firstline[i] == '\n') {
++                        firstline[i] = '\0';
++                        break;
++                    }
++
++                    if (iscntrl(firstline[i])) {
++                        is_valid_cmdname = false;
++                        break;
++                    }
++                }
++
++                if (is_valid_cmdname) {
++                    char cmdname[512];
++                    char shebang_arg[48] = {0};
++
++                    char* argv2[128];
++                    // not good
++                    sscanf(firstline + 2, "%s %s", cmdname, shebang_arg);
++                    argv2[0] = cmdname;
++
++                    // Check if argument was passed to shebang. If so, tack it onto argv2.
++                    size_t offset;
++                    if (shebang_arg[0] != '\0') {
++                        argv2[1] = shebang_arg;
++                        offset = 2;
++                    }
++
++                    else {
++                        offset = 1;
++                    }
++
++                    for (size_t i = offset; i < sizeof argv2 / sizeof *argv2; i++) {
++                        argv2[i] = argv[i - offset];
++                        if (argv2[i] == nullptr) break;
++                    }
++
++                    execve(cmdname, argv2, envv);
++                }
++            }
++        }
++
++        else if ((amt_read == 1) && (begin[0] == ':')) {
+             // Relaunch it with /bin/sh. Don't allocate memory, so if you have more args than this,
+             // update your silly script! Maybe this should be changed to be based on ARG_MAX
+             // somehow.
