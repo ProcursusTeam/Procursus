@@ -7,6 +7,7 @@ RC_VERSION  := 1.7.4
 DEB_RC_V    ?= $(RC_VERSION)
 
 rc-setup: setup
+	## Convert this to the GITHUB_ARCHIVE function.
 	wget -O $(BUILD_SOURCE)/rc-$(RC_VERSION).tar.gz https://github.com/rakitzis/rc/archive/refs/tags/v$(RC_VERSION).tar.gz
 	$(call EXTRACT_TAR,rc-$(RC_VERSION).tar.gz,rc-$(RC_VERSION),rc)
 	$(call DO_PATCH,rc,rc,-p1)
