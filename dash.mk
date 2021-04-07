@@ -5,11 +5,12 @@ endif
 
 SUBPROJECTS   += dash
 DASH_VERSION  := 0.5.11.3
-DEB_DASH_V    ?= $(DASH_VERSION)
+DEB_DASH_V    ?= $(DASH_VERSION)-1
 
 dash-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://git.kernel.org/pub/scm/utils/dash/dash.git/snapshot/dash-$(DASH_VERSION).tar.gz
 	$(call EXTRACT_TAR,dash-$(DASH_VERSION).tar.gz,dash-$(DASH_VERSION),dash)
+	$(SED) -i 's/errno == ENOEXEC)/errno == ENOEXEC || errno == EPERM)/' $(BUILD_WORK)/dash/src/exec.c
 
 ifneq ($(wildcard $(BUILD_WORK)/dash/.build_complete),)
 dash:
@@ -34,7 +35,6 @@ endif
 dash-package: dash-stage
 	# dash.mk Package Structure
 	rm -rf $(BUILD_DIST)/dash
-	mkdir -p $(BUILD_DIST)/dash
 	
 	# dash.mk Prep dash
 	cp -a $(BUILD_STAGE)/dash $(BUILD_DIST)
