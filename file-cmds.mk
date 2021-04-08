@@ -4,7 +4,7 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
-SUBPROJECTS       += file-cmds
+STRAPPROJECTS       += file-cmds
 # Don't upgrade file-cmds, as any future version includes APIs introduced in iOS 13+.
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 FILE-CMDS_VERSION := 272.250.1
