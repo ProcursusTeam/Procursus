@@ -716,7 +716,6 @@ URIs: https://apt.procurs.us/\n\
 Suites: $(MEMO_TARGET)/$(MEMO_CFVER)\n\
 Components: main\n" > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
 endif
-	cp $(BUILD_MISC)/prep_bootstrap.sh $(BUILD_STRAP)/strap/$(MEMO_PREFIX)
 	export FAKEROOT='fakeroot -i $(BUILD_STAGE)/.fakeroot_bootstrap -s $(BUILD_STAGE)/.fakeroot_bootstrap --'; \
 	cd $(BUILD_STRAP)/strap && $$FAKEROOT $(TAR) -cf ../bootstrap.tar .
 	@if [[ "$(SSH_STRAP)" = 1 ]]; then \

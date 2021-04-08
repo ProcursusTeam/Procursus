@@ -1,4 +1,6 @@
 #!/bin/sh
+
+/usr/libexec/firmware
 /Library/dpkg/info/system-cmds.postinst
 /Library/dpkg/info/debianutils.postinst configure 99999
 /Library/dpkg/info/apt.postinst configure 999999
