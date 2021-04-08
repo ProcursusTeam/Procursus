@@ -1,7 +1,8 @@
 Package: haydenfetch
 Architecture: @DEB_ARCH@
 Version: @DEB_HAYDENFETCH_V@
-Depends: jp2a, coreutils, neofetch
+Pre-Depends: coreutils
+Depends: jp2a, neofetch
 Suggests: imagemagick
 Description: neofetch but with haydens
 Maintainer: @DEB_MAINTAINER@
