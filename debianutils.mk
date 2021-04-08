@@ -3,10 +3,8 @@ $(error Use the main Makefile)
 endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+
 STRAPPROJECTS       += debianutils
-else # ($(MEMO_TARGET),darwin-\*)
-SUBPROJECTS         += debianutils
-endif # ($(MEMO_TARGET),darwin-\*)
 DEBIANUTILS_VERSION := 4.11.2
 DEB_DEBIANUTILS_V   ?= $(DEBIANUTILS_VERSION)
 
@@ -45,7 +43,7 @@ debianutils-package: debianutils-stage
 	# debianutils.mk Prep debianutils
 	cp -a $(BUILD_STAGE)/debianutils $(BUILD_DIST)
 ifneq ($(MEMO_SUB_PREFIX),)
-	ln -s /usr/bin/run-parts $(BUILD_DIST)/debianutils/$(MEMO_PREFIX)/bin
+	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/run-parts $(BUILD_DIST)/debianutils/$(MEMO_PREFIX)/bin
 endif
 
 	# debianutils.mk Sign
@@ -58,3 +56,5 @@ endif
 	rm -rf $(BUILD_DIST)/debianutils
 
 .PHONY: debianutils debianutils-package
+
+endif

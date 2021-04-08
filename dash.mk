@@ -11,6 +11,7 @@ dash-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://git.kernel.org/pub/scm/utils/dash/dash.git/snapshot/dash-$(DASH_VERSION).tar.gz
 	$(call EXTRACT_TAR,dash-$(DASH_VERSION).tar.gz,dash-$(DASH_VERSION),dash)
 	$(SED) -i 's/errno == ENOEXEC)/errno == ENOEXEC || errno == EPERM)/' $(BUILD_WORK)/dash/src/exec.c
+	mkdir -p $(BUILD_STAGE)/dash/$(MEMO_PREFIX)/bin
 
 ifneq ($(wildcard $(BUILD_WORK)/dash/.build_complete),)
 dash:
@@ -29,6 +30,8 @@ dash: dash-setup libedit
 	+$(MAKE) -C $(BUILD_WORK)/dash
 	+$(MAKE) -C $(BUILD_WORK)/dash install \
 		DESTDIR=$(BUILD_STAGE)/dash
+	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dash $(BUILD_STAGE)/dash/$(MEMO_PREFIX)/bin/sh
+	ln -sf $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dash $(BUILD_STAGE)/dash/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sh
 	touch $(BUILD_WORK)/dash/.build_complete
 endif
 
