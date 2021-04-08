@@ -17,12 +17,8 @@ tor:
 else
 tor: tor-setup libevent openssl xz zstd libscrypt
 	cd $(BUILD_WORK)/tor && ./configure \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--host=$(GNU_HOST_TRIPLE) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-tool-name-check \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var \
 		--enable-zstd \
 		--disable-html-manual \
 		--enable-lzma \

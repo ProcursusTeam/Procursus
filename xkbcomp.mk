@@ -17,11 +17,7 @@ xkbcomp:
 else
 xkbcomp: xkbcomp-setup libx11 xorgproto libxkbfile
 	cd $(BUILD_WORK)/xkbcomp && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/xkbcomp
 	+$(MAKE) -C $(BUILD_WORK)/xkbcomp install \
 		DESTDIR=$(BUILD_STAGE)/xkbcomp

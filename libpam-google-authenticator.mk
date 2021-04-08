@@ -23,9 +23,7 @@ else # (,$(findstring darwin,$(MEMO_TARGET)))
 libpam-google-authenticator: libpam-google-authenticator-setup
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	cd $(BUILD_WORK)/libpam-google-authenticator && ./bootstrap.sh && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libpam-google-authenticator
 	+$(MAKE) -C $(BUILD_WORK)/libpam-google-authenticator install \
 		DESTDIR="$(BUILD_STAGE)/libpam-google-authenticator"

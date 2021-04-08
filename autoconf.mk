@@ -19,9 +19,7 @@ autoconf:
 else
 autoconf: autoconf-setup
 	cd $(BUILD_WORK)/autoconf && PERL="$(shell which perl)" ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/autoconf
 	+$(MAKE) -C $(BUILD_WORK)/autoconf install \
 		DESTDIR=$(BUILD_STAGE)/autoconf

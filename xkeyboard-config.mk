@@ -16,11 +16,7 @@ xkeyboard-config:
 else
 xkeyboard-config: xkeyboard-config-setup xorgproto
 	cd $(BUILD_WORK)/xkeyboard-config && ./configure \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var 
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/xkeyboard-config
 	+$(MAKE) -C $(BUILD_WORK)/xkeyboard-config install \
 		DESTDIR=$(BUILD_STAGE)/xkeyboard-config

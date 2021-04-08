@@ -17,9 +17,7 @@ else
 libspeex: libspeex-setup libogg
 	cd $(BUILD_WORK)/libspeex && autoreconf -fi
 	cd $(BUILD_WORK)/libspeex && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-binaries \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/libspeex

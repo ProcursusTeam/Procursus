@@ -16,10 +16,7 @@ bash-completion:
 else
 bash-completion: bash-completion-setup bash
 	cd $(BUILD_WORK)/bash-completion && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/bash-completion
 	+$(MAKE) -C $(BUILD_WORK)/bash-completion install \
 		DESTDIR=$(BUILD_STAGE)/bash-completion
