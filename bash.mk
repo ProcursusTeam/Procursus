@@ -9,7 +9,7 @@ SUBPROJECTS   += bash
 endif # ($(MEMO_TARGET),darwin-\*)
 BASH_VERSION  := 5.1
 BASH_SUB_V    := 004
-DEB_BASH_V    ?= $(BASH_VERSION).$(BASH_SUB_V)-2
+DEB_BASH_V    ?= $(BASH_VERSION).$(BASH_SUB_V)-3
 
 bash-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION).tar.gz{,.sig}
