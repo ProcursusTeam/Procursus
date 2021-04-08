@@ -9,6 +9,7 @@ DEB_HAYDENFETCH_V   ?= $(HAYDENFETCH_VERSION)
 haydenfetch-setup: setup
 	if [ ! -d "$(BUILD_WORK)/haydenfetch" ]; then \
 	git clone https://github.com/asdfugil/haydenfetch.git  $(BUILD_WORK)/haydenfetch; \
+	cd $(BUILD_WORK)/haydenfetch; \
 	git fetch origin; \
 	git reset --hard origin/master; \
 	git checkout "3d16901a8d0e8699b7d1484f135d7c2aad402ade"; \
