@@ -7,4 +7,7 @@
 /Library/dpkg/info/zsh.postinst configure 999999
 /Library/dpkg/info/bash.postinst configure 999999
 
+chsh -s /bin/zsh mobile
+chsh -s /bin/zsh root
+
 rm -f /prep_bootstrap.sh
