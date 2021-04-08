@@ -40,21 +40,12 @@ apt:
 else
 apt: apt-setup libgcrypt berkeleydb lz4 xxhash xz zstd
 	cd $(BUILD_WORK)/apt/build && cmake . \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DSTATE_DIR=$(MEMO_PREFIX)/var/lib/apt \
 		-DCACHE_DIR=$(MEMO_PREFIX)/var/cache/apt \
 		-DLOG_DIR=$(MEMO_PREFIX)/var/log/apt \
 		-DCONF_DIR=$(MEMO_PREFIX)/etc/apt \
 		-DROOT_GROUP=wheel \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
 		-DCMAKE_SHARED_LINKER_FLAGS="-lresolv -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
 		-DCURRENT_VENDOR=debian \
 		-DCOMMON_ARCH=$(DEB_ARCH) \
@@ -62,7 +53,6 @@ apt: apt-setup libgcrypt berkeleydb lz4 xxhash xz zstd
 		-DWITH_DOC=0 \
 		-DWITH_TESTS=0 \
 		-DDOCBOOK_XSL=$(DOCBOOK_XSL) \
-		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
 		-DDPKG_DATADIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/dpkg \
 		$(APT_CMAKE_ARGS) \
 		..
