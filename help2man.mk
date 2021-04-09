@@ -43,4 +43,4 @@ help2man-package: help2man-stage
 	# help2man.mk Build cleanup
 	rm -rf $(BUILD_DIST)/help2man
 
-	.PHONY: help2man help2man-package
+.PHONY: help2man help2man-package
