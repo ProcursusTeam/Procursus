@@ -8,7 +8,7 @@ DEB_HAYDENFETCH_V   ?= $(HAYDENFETCH_VERSION)
 
 haydenfetch-setup: setup
 	$(call GITHUB_ARCHIVE,asdfugil,haydenfetch,$(HAYDENFETCH_VERSION),v$(HAYDENFETCH_VERSION))
-	$(call EXTRACT_TAR,v$(HAYDENFETCH_VERSION).tar.gz,haydenfetch-$(HAYDENFETCH_VERSION),haydenfetch)
+	$(call EXTRACT_TAR,haydenfetch-$(HAYDENFETCH_VERSION).tar.gz,haydenfetch-$(HAYDENFETCH_VERSION),haydenfetch)
 
 ifneq ($(wildcard $(BUILD_WORK)/haydenfetch/.build_complete),)
 haydenfetch:
