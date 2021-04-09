@@ -2,9 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS += tcsh
+SUBPROJECTS   += tcsh
 TCSH_VERSION  := 6.22.03
-DEB_TCSH_V    ?= $(TCSH_VERSION)
+DEB_TCSH_V    ?= $(TCSH_VERSION)-1
 
 tcsh-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) ftp://ftp.astron.com/pub/tcsh/tcsh-$(TCSH_VERSION).tar.gz{,.asc}

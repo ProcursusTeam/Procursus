@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 
-SUBPROJECTS   += dash
+STRAPPROJECTS += dash
 DASH_VERSION  := 0.5.11.3
 DEB_DASH_V    ?= $(DASH_VERSION)-1
 

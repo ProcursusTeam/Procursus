@@ -9,7 +9,7 @@ DEB_LIBSOXR_V   ?= $(LIBSOXR_VERSION)
 libsoxr-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://downloads.sourceforge.net/project/soxr/soxr-$(LIBSOXR_VERSION)-Source.tar.xz
 	$(call EXTRACT_TAR,soxr-$(LIBSOXR_VERSION)-Source.tar.xz,soxr-$(LIBSOXR_VERSION)-Source,libsoxr)
-	mkdir $(BUILD_WORK)/libsoxr/build
+	mkdir -p $(BUILD_WORK)/libsoxr/build
 
 ifneq ($(wildcard $(BUILD_WORK)/libsoxr/.build_complete),)
 libsoxr:
