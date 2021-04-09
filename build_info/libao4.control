@@ -1,0 +1,18 @@
+Package: libao4
+Version: @DEB_LIBAO_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libao-common
+Section: Libraries
+Priority: optional
+Description: Cross Platform Audio Output Library
+ Libao is a cross-platform audio library that allows programs to output audio
+ using a simple API on a wide variety of platforms. It currently supports:
+ .
+  * Null output (handy for testing without a sound device)
+  * WAV files
+  * AU files
+  * OSS (Open Sound System, used on Linux and FreeBSD)
+  * ALSA (Advanced Linux Sound Architecture)
+  * PulseAudio (next generation GNOME sound server)
+  * and several others.
