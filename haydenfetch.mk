@@ -7,7 +7,7 @@ HAYDENFETCH_VERSION := 1.0-2
 DEB_HAYDENFETCH_V   ?= $(HAYDENFETCH_VERSION)
 
 haydenfetch-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/asdfugil/haydenfetch/archive/refs/tags/v$(HAYDENFETCH_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,asdfugil,haydenfetch,$(HAYDENFETCH_VERSION),v$(HAYDENFETCH_VERSION))
 	$(call EXTRACT_TAR,v$(HAYDENFETCH_VERSION).tar.gz,haydenfetch-$(HAYDENFETCH_VERSION),haydenfetch)
 
 ifneq ($(wildcard $(BUILD_WORK)/haydenfetch/.build_complete),)
