@@ -63,7 +63,7 @@ ccache-package: ccache-stage
 
 	# ccache.mk Prep ccache
 	cp -a $(BUILD_STAGE)/ccache/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share,libexec} $(BUILD_DIST)/ccache/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# ccache.mk Sign
 	$(call SIGN,ccache,general.xml)
 
