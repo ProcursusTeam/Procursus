@@ -15,9 +15,13 @@ python-psutil:
 	@echo "Using previously built python-psutil."
 else
 python-psutil: python-psutil-setup python3
-	cd $(BUILD_WORK)/python-psutil && python3 ./setup.py install  --root $(BUILD_STAGE)/python-psutil
-
-	touch $(BUILD_WORK)/psutil/.build_complete
+	cd $(BUILD_WORK)/python-psutil && unset MACOSX_DEPLOYMENT_TARGET && python3 ./setup.py \
+		install \
+		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/python-psutil" \
+		--root="$(BUILD_STAGE)/python-psutil" \
+		--install-layout=deb
+	find $(BUILD_STAGE)/python-psutil -name __pycache__ -delete
+	touch $(BUILD_WORK)/python-psutil/.build_complete
 endif
 
 python-psutil-package: python-psutil-stage
@@ -26,13 +30,13 @@ python-psutil-package: python-psutil-stage
 	mkdir -p $(BUILD_DIST)/python-psutil
 
 	# python-psutil.mk Prep python-psutil
-	cp -a $(BUILD_STAGE)/python-psutil/usr $(BUILD_DIST)/python-psutil
+	cp -a $(BUILD_STAGE)/python-psutil/{bin,share,lib} $(BUILD_DIST)/python-psutil
 
 	# python-psutil.mk Sign
 	$(call SIGN,python-psutil,general.xml)
 
 	# python-psutil.mk Make .debs
-	call PACK,python-psutil,DEB_PYTHON-PSUTIL_V)
+	$(call PACK,python-psutil,DEB_PYTHON-PSUTIL_V)
 
 	# python-psutil.mk Build cleanup
 	rm -rf $(BUILD_DIST)/psutil
