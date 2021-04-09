@@ -2,18 +2,13 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS      += haydenfetch
-HAYDENFETCH_VERSION := 1.0.0
+SUBPROJECTS         += haydenfetch
+HAYDENFETCH_VERSION := 1.0-2
 DEB_HAYDENFETCH_V   ?= $(HAYDENFETCH_VERSION)
 
 haydenfetch-setup: setup
-	if [ ! -d "$(BUILD_WORK)/haydenfetch" ]; then \
-	git clone https://github.com/asdfugil/haydenfetch.git  $(BUILD_WORK)/haydenfetch; \
-	cd $(BUILD_WORK)/haydenfetch; \
-	git fetch origin; \
-	git reset --hard origin/master; \
-	git checkout "3d16901a8d0e8699b7d1484f135d7c2aad402ade"; \
-	fi
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/asdfugil/haydenfetch/archive/refs/tags/v$(HAYDENFETCH_VERSION).tar.gz
+	$(call EXTRACT_TAR,v$(HAYDENFETCH_VERSION).tar.gz,haydenfetch-$(HAYDENFETCH_VERSION),haydenfetch)
 
 ifneq ($(wildcard $(BUILD_WORK)/haydenfetch/.build_complete),)
 haydenfetch:
@@ -21,7 +16,7 @@ haydenfetch:
 else
 haydenfetch: haydenfetch-setup
 	+$(MAKE) -C $(BUILD_WORK)/haydenfetch install \
-		PREFIX=/usr \
+		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR=$(BUILD_STAGE)/haydenfetch
 	touch $(BUILD_WORK)/haydenfetch/.build_complete
 endif
