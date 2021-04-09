@@ -17,11 +17,7 @@ libxmu:
 else
 libxmu: libxmu-setup libxext libxt
 	cd $(BUILD_WORK)/libxmu && unset CPP CPPFLAGS && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-malloc0returnsnull=no \
 		--enable-specs=no \
 		--disable-silent-rules

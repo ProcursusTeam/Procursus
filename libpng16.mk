@@ -18,9 +18,7 @@ libpng16:
 else
 libpng16: libpng16-setup
 	cd $(BUILD_WORK)/libpng16 && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libpng16
 	+$(MAKE) -C $(BUILD_WORK)/libpng16 install \
 		DESTDIR=$(BUILD_STAGE)/libpng16

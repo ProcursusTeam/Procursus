@@ -22,9 +22,7 @@ file: file-setup xz
 		cd $(BUILD_WORK)/file/native && $(BUILD_WORK)/file/configure; \
 		$(MAKE) -C $(BUILD_WORK)/file/native
 	cd $(BUILD_WORK)/file && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-libseccomp \
 		--enable-fsect-man5
 	+$(MAKE) -C $(BUILD_WORK)/file \

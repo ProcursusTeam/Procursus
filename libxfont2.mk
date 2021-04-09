@@ -17,13 +17,9 @@ libxfont2:
 else
 libxfont2: libxfont2-setup xorgproto xtrans util-macros freetype libfontenc
 	cd $(BUILD_WORK)/libxfont2 && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-silent-rules \
 		--disable-dependency-tracking \
-		--localstatedir=$(MEMO_PREFIX)/var \
 		--enable-devel-docs=no \
 		--with-bzip2 \
 		FREETYPE_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/freetype2" \

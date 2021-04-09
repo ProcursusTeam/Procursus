@@ -18,9 +18,7 @@ debianutils:
 else
 debianutils: debianutils-setup
 	cd $(BUILD_WORK)/debianutils && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/debianutils install \
 		DESTDIR=$(BUILD_STAGE)/debianutils

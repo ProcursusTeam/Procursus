@@ -17,9 +17,7 @@ lcms2:
 else
 lcms2: lcms2-setup libjpeg-turbo libtiff
 	cd $(BUILD_WORK)/lcms2 && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/lcms2
 	+$(MAKE) -C $(BUILD_WORK)/lcms2 install \
 		DESTDIR="$(BUILD_STAGE)/lcms2"

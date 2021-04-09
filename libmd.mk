@@ -17,9 +17,7 @@ libmd:
 else
 libmd: libmd-setup
 	cd $(BUILD_WORK)/libmd && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libmd
 	+$(MAKE) -C $(BUILD_WORK)/libmd install \
 		DESTDIR=$(BUILD_STAGE)/libmd

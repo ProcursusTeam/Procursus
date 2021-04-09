@@ -19,9 +19,7 @@ cwidget: cwidget-setup gettext ncurses libsigcplusplus
 	rm -rf $(BUILD_WORK)/cwidget/m4/{libtool,lt*}.m4
 	$(SED) -i 's/libtoolize/$(LIBTOOLIZE)/' $(BUILD_WORK)/cwidget/autogen.sh
 	cd $(BUILD_WORK)/cwidget && ./autogen.sh \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-werror \
 		CXXFLAGS="-std=c++11 $(CXXFLAGS) -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sigc++-2.0 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/sigc++-2.0/include -DNCURSES_WIDECHAR"
 	+$(MAKE) -C $(BUILD_WORK)/cwidget \

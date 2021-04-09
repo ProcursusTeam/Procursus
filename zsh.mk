@@ -30,9 +30,7 @@ else
 zsh: zsh-setup pcre ncurses
 	## So many flags are needed because zsh's configure script sucks! I also suck but it's cool.
 	cd $(BUILD_WORK)/zsh && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-fndir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/functions \
 		--enable-scriptdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/scripts \
 		--enable-site-fndir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/site-functions \

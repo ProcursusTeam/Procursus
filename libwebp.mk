@@ -19,9 +19,7 @@ libwebp:
 else
 libwebp: libwebp-setup libpng16 libgif libtiff libjpeg-turbo
 	cd $(BUILD_WORK)/libwebp && ./autogen.sh && ./configure \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-{sdl,gl} \
 		--enable-libwebp{mux,demux,decoder,extras}
 	+$(MAKE) -C $(BUILD_WORK)/libwebp
