@@ -26,10 +26,12 @@ libjson-c: libjson-c-setup
 		-DCMAKE_C_FLAGS="$(CFLAGS)" \
 		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
 		.
-	+$(MAKE) -C $(BUILD_WORK)/libjson-c \
-		DESTDIR=$(BUILD_STAGE)/libjson-c
 	+$(MAKE) -C $(BUILD_WORK)/libjson-c install \
 		DESTDIR=$(BUILD_STAGE)/libjson-c
+	+$(MAKE) -C $(BUILD_WORK)/libjson-c install \
+		DESTDIR=$(BUILD_BASE)
+	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjson-c.5.dylib $(BUILD_STAGE)/libjson-c/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjson-c.5.dylib
+	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjson-c.5.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjson-c.5.dylib
 	touch $(BUILD_WORK)/libjson-c/.build_complete
 endif
 

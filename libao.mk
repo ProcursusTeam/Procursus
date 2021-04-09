@@ -24,7 +24,6 @@ libao: libao-setup libsoundio
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-
 	# fails on ios Otherwise
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	sed -i 's/-framework AudioUnit//' $(BUILD_WORK)/libao/src/plugins/macosx/Makefile
