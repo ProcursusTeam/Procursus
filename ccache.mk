@@ -49,14 +49,13 @@ ccache: ccache-setup zstd
 	+$(MAKE) -C $(BUILD_WORK)/ccache
 	+$(MAKE) -C $(BUILD_WORK)/ccache install \
 		DESTDIR="$(BUILD_STAGE)/ccache"
+	mkdir -p $(BUILD_STAGE)/ccache/usr/libexec/ccache/
 	touch $(BUILD_WORK)/ccache/.build_complete
 endif
 
 ccache-package: ccache-stage
 	# ccache.mk Package Structure
 	rm -rf $(BUILD_DIST)/ccache
-	rm -rf $(BUILD_DIST)/ccache/usr/
-	mkdir -p $(BUILD_STAGE)/ccache/usr/libexec/ccache/
 	mkdir -p $(BUILD_DIST)/ccache/usr/libexec/ccache/
 	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{clang,clang++,cc,gcc,gcc2,gcc3,gcc-3.3,gcc-4.0,gcc-4.2,gcc-4.3,gcc-4.4,gcc-4.5,gcc-4.6,gcc-4.7,gcc-4.8,gcc-4.9,gcc-5,gcc-6,gcc-7,gcc-8,gcc-9,gcc-10,c++,c++3,c++-3.3,c++-4.0,c++-4.2,c++-4.3,c++-4.4,c++-4.5,c++-4.6,c++-4.7,c++-4.8,c++-4.9,c++-5,c++-6,c++-7,c++-8,c++-9,c++-10,g++,g++2,g++3,g++-3.3,g++-4.0,g++-4.2,g++-4.3,g++-4.4,g++-4.5,g++-4.6,g++-4.7,g++-4.8,g++-4.9,g++-5,g++-6,g++-7,g++-8,g++-9,g++-10} $(BUILD_DIST)/ccache/usr/libexec/ccache/
 	mkdir -p $(BUILD_DIST)/ccache/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
