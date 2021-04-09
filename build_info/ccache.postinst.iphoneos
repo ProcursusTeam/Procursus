@@ -1,6 +1,0 @@
-#!/bin/sh
-
-set -eu
-
-echo "To install symlinks for compilers that will automatically use
-      ccache, prepend this directory to your PATH: /usr/libexec/ccache/"
