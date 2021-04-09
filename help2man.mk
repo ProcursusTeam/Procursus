@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/help2man/.build_complete),)
 help2man:
 	@echo "Using previously built help2man."
 else
-help2man: help2man-setup
+help2man: help2man-setup gettext
 	cd $(BUILD_WORK)/help2man && ./configure -C \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
