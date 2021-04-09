@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS     += libedit
+STRAPPROJECTS   += libedit
 LIBEDIT_VERSION := 3.1
 LIBEDIT_DATE    := 20191231
 DEB_LIBEDIT_V   ?= $(LIBEDIT_VERSION)-$(LIBEDIT_DATE)

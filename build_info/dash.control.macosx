@@ -1,13 +1,10 @@
 Package: dash
-Essential: yes
 Version: @DEB_DASH_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Pre-Depends: debianutils (>= 4.11.2)
-Depends: libedit0, debianutils (>= 4.11.2)
+Depends: libedit0
 Provides: sh
 Section: Terminal_Support
-Priority: required
 Homepage: http://gondor.apana.org.au/~herbert/dash/
 Description: POSIX-compliant shell
  The Debian Almquist Shell (dash) is a POSIX-compliant shell derived

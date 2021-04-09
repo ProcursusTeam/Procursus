@@ -9,7 +9,7 @@ DEB_LIBXMU_V   ?= $(LIBXMU_VERSION)
 libxmu-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXmu-$(LIBXMU_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,libXmu-$(LIBXMU_VERSION).tar.bz2)
-	$(call EXTRACT_TAR,libXmu-$(LIBXMU_VERSION).tar.bz2,libXmu-$(LIBXMU_VERSION),libXmu)
+	$(call EXTRACT_TAR,libXmu-$(LIBXMU_VERSION).tar.bz2,libXmu-$(LIBXMU_VERSION),libxmu)
 
 ifneq ($(wildcard $(BUILD_WORK)/libxmu/.build_complete),)
 libxmu:

@@ -17,7 +17,7 @@ cowsay:
 	@echo "Using previously built cowsay."
 else
 cowsay: cowsay-setup
-	$(SED) -i -e 's|%BANGPERL%|!/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl|' -e 's|%PREFIX%|/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|' $(BUILD_WORK)/cowsay/cowsay $(BUILD_WORK)/cowsay/cowsay.1
+	$(SED) -i -e 's|%BANGPERL%|!/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl|' -e 's|%PREFIX%|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|' $(BUILD_WORK)/cowsay/cowsay $(BUILD_WORK)/cowsay/cowsay.1
 	cp -a $(BUILD_WORK)/cowsay/cowsay $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/games
 	cp -a $(BUILD_WORK)/cowsay/cowsay.1 $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_WORK)/cowsay/cows $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
