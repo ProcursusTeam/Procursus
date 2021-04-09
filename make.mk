@@ -14,6 +14,7 @@ make-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/make/make-$(MAKE_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,make-$(MAKE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,make-$(MAKE_VERSION).tar.gz,make-$(MAKE_VERSION),make)
+	$(call DO_PATCH,make,make,-p0)
 
 ifneq ($(wildcard $(BUILD_WORK)/make/.build_complete),)
 make:
