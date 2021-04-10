@@ -12,7 +12,7 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += openssh
 endif
 OPENSSH_VERSION := 8.5p1
-DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)
+DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)-1
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
 OPENSSH_CONFIGURE_ARGS += ac_cv_func_strtonum=no
@@ -32,10 +32,10 @@ openssh:
 	@echo "Using previously built openssh."
 else
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-openssh: openssh-setup openssl libxcrypt openpam
+openssh: openssh-setup openssl libxcrypt openpam libmd
 else # (,$(findstring darwin,$(MEMO_TARGET)))
 OPENSSH_CONFIGURE_ARGS += --with-keychain=apple
-openssh: openssh-setup openssl
+openssh: openssh-setup openssl libmd
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	if ! [ -f $(BUILD_WORK)/openssh/configure ]; then \
 		cd $(BUILD_WORK)/openssh && autoreconf; \
@@ -88,6 +88,7 @@ endif
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/sshd-keygen-wrapper $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5/{moduli.5,sshd_config.5} $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/sshd.8 $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
+	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/Library $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)
 
 	# openssh.mk Prep openssh-sftp-server
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/sftp-server $(BUILD_DIST)/openssh-sftp-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/
