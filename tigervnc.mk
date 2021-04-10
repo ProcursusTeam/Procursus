@@ -5,6 +5,7 @@ endif
 SUBPROJECTS    += tigervnc
 TIGERVNC_VERSION := 1.11.0
 XORG_VERSION := 120
+XORG-SERVER_VERSION := 1.20.10
 DEB_TIGERVNC_V   ?= $(TIGERVNC_VERSION)
 
 tigervnc-setup: setup
@@ -16,7 +17,7 @@ ifneq ($(wildcard $(BUILD_WORK)/tigervnc/.build_complete),)
 tigervnc:
 	@echo "Using previously built tigervnc."
 else
-tigervnc: tigervnc-setup libx11 libxau libxmu xorgproto libpixman
+tigervnc: tigervnc-setup libx11 libxau libxmu xorgproto libpixman gnutls libjpeg-turbo openpam libxdamage libxfixes libxtst libxrandr libxfont2 mesa libgeneral
 	cd $(BUILD_WORK)/tigervnc && cmake . \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
@@ -32,6 +33,8 @@ tigervnc: tigervnc-setup libx11 libxau libxmu xorgproto libpixman
 		DESTDIR=$(BUILD_STAGE)/tigervnc
 	+$(MAKE) -C $(BUILD_WORK)/tigervnc install \
 		DESTDIR=$(BUILD_BASE)
+	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive//individual/xserver/xorg-server-$(XORG-SERVER_VERSION).tar.gz{,.sig}
+	$(call PGP_VERIFY,xorg-server-$(XORG-SERVER_VERSION).tar.gz)
 	$(call EXTRACT_TAR,xorg-server-$(XORG-SERVER_VERSION).tar.gz,xorg-server-$(XORG-SERVER_VERSION),xorg-server-vnc)
 	cp -R $(BUILD_WORK)/xorg-server-vnc/. $(BUILD_WORK)/tigervnc/unix/xserver
 	wget -q -nc -P $(BUILD_BASE)/usr/include https://opensource.apple.com/source/X11/X11-0.40.2/xc/programs/Xserver/hw/darwin/quartz/xpr/Xplugin.h
