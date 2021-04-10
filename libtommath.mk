@@ -23,9 +23,7 @@ libtommath: libtommath-setup
 	# libtommath.mk Make libtool executable
 	cd $(BUILD_WORK)/libtommath/libtool && LIBTOOLIZE="$(LIBTOOLIZE) -i" autoreconf -fi
 	cd $(BUILD_WORK)/libtommath/libtool && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libtommath -f makefile.shared \
 		LIBTOOL="$(BUILD_WORK)/libtommath/libtool/libtool"
 	+$(MAKE) -C $(BUILD_WORK)/libtommath -f makefile.shared install \

@@ -25,9 +25,7 @@ sed:
 else
 sed: sed-setup gettext
 	cd $(BUILD_WORK)/sed && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
 		$(SED_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/sed

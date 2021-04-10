@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += mesa
-MESA_VERSION := 20.3.4
+MESA_VERSION := 21.0.0
 DEB_MESA_V   ?= $(MESA_VERSION)
 
 mesa-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://mesa.freedesktop.org/archive/mesa-$(MESA_VERSION).tar.xz{,.sig}   
+	wget -q -nc -P $(BUILD_SOURCE) https://mesa.freedesktop.org/archive/mesa-$(MESA_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,mesa-$(MESA_VERSION).tar.xz)
 	$(call EXTRACT_TAR,mesa-$(MESA_VERSION).tar.xz,mesa-$(MESA_VERSION),mesa)
 	$(SED) -i -e "s/with_dri_platform = 'apple'/with_dri_platform = 'none'/" \
@@ -23,13 +23,13 @@ mesa-setup: setup
 	[properties]\n \
 	root = '$(BUILD_BASE)'\n \
 	[paths]\n \
-	prefix ='/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
+	prefix ='$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
 	[binaries]\n \
 	c = '$(CC)'\n \
 	cpp = '$(CXX)'\n" > $(BUILD_WORK)/mesa/build/cross.txt
 
 	@echo "You need to install Mako with pip3 before building."
-	@echo "/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pip3 install mako --user"
+	@echo "/usr/bin/pip3 install mako --user"
 
 ifneq ($(wildcard $(BUILD_WORK)/mesa/.build_complete),)
 mesa:

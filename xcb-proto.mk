@@ -18,18 +18,16 @@ xcb-proto:
 else
 xcb-proto: xcb-proto-setup
 	cd $(BUILD_WORK)/xcb-proto && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-static \
 		am_cv_python_pythondir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3/dist-packages \
 		PYTHON=$(shell which python3)
 	+$(MAKE) -C $(BUILD_WORK)/xcb-proto install \
-		DESTDIR=$(BUILD_STAGE)/xcb-proto
+		DESTDIR=$(BUILD_STAGE)/xcb-proto \
+		PYTHON=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/python3
 	+$(MAKE) -C $(BUILD_WORK)/xcb-proto install \
-		DESTDIR=$(BUILD_BASE)
+		DESTDIR=$(BUILD_STAGE)/xcb-proto \
+		PYTHON=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/python3
 	touch $(BUILD_WORK)/xcb-proto/.build_complete
 endif
 

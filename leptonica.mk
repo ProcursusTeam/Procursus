@@ -16,9 +16,7 @@ leptonica:
 else
 leptonica: leptonica-setup libgif libjpeg-turbo libpng16 libtiff openjpeg libwebp
 	cd $(BUILD_WORK)/leptonica && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-libwebp \
 		--with-libopenjpeg \
 		LIBJP2K_CFLAGS="-I$(BUILD_STAGE)/openjpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/openjpeg-2.3"

@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS   += gettext
 GETTEXT_VERSION := 0.21
-DEB_GETTEXT_V   ?= $(GETTEXT_VERSION)-3
+DEB_GETTEXT_V   ?= $(GETTEXT_VERSION)-4
 
 gettext-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gettext/gettext-$(GETTEXT_VERSION).tar.xz{,.sig}
@@ -18,9 +18,7 @@ else
 gettext: .SHELLFLAGS=-O extglob -c
 gettext: gettext-setup ncurses libunistring
 	cd $(BUILD_WORK)/gettext && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-java \
 		--disable-csharp \
 		--without-libintl-prefix

@@ -40,16 +40,12 @@ mariadb:
 else
 mariadb: mariadb-import-executables openssl ncurses readline libevent curl lz4 libsnappy libunistring
 	cd $(BUILD_WORK)/mariadb && LIBTOOL=$(GNU_HOST_TRIPLE)-libtool cmake . \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DCOMPILATION_COMMENT="Procursus" \
 		-Wno-dev \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
 		-DINSTALL_SYSCONFDIR=$(MEMO_PREFIX)/etc \
 		-DINSTALL_SYSCONF2DIR=$(MEMO_PREFIX)/etc/my.cnf.d \
 		-DINSTALL_UNIX_ADDRDIR=$(MEMO_PREFIX)/var/run/mysqld/mysqld.sock \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-DINSTALL_SCRIPTDIR=bin \
 		-DINSTALL_INCLUDEDIR=include/mysql \
 		-DINSTALL_PLUGINDIR=lib/mysql/plugin \
@@ -76,13 +72,9 @@ mariadb: mariadb-import-executables openssl ncurses readline libevent curl lz4 l
 		-DWITH_SYSTEMD=no \
 		-DWITH_UNIT_TESTS=OFF \
 		-DWITH_ZLIB=system \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
 		-DCMAKE_EXE_LINKER_FLAGS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(TARGET_SYSROOT)/usr/lib -liconv -lsnappy -lxml2" \
 		-DCMAKE_MODULE_LINKER_FLAGS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(TARGET_SYSROOT)/usr/lib -liconv -lsnappy -lxml2" \
 		-DCMAKE_SHARED_LINKER_FLAGS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(TARGET_SYSROOT)/usr/lib -liconv -lsnappy -lxml2" \
-		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
 		-DSTACK_DIRECTION=1 \
 		-DHAVE_IB_GCC_ATOMIC_BUILTINS=1 \
 		-DREADLINE_LIBRARY=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libreadline.dylib \

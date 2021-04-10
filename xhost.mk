@@ -17,11 +17,7 @@ xhost:
 else
 xhost: xhost-setup libx11 libxau libxmu xorgproto xxhash
 	cd $(BUILD_WORK)/xhost && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/xhost
 	+$(MAKE) -C $(BUILD_WORK)/xhost install \
 		DESTDIR=$(BUILD_STAGE)/xhost

@@ -19,10 +19,7 @@ else
 screen: screen-setup ncurses libxcrypt
 	cd $(BUILD_WORK)/screen && ./autogen.sh
 	cd $(BUILD_WORK)/screen && ./configure \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--mandir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-colors256 \
 		--disable-pam \
 		--with-sys-screenrc=$(MEMO_PREFIX)/etc/screenrc

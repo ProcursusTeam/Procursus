@@ -16,17 +16,8 @@ openjpeg:
 else
 openjpeg: openjpeg-setup libpng16 libtiff lcms2
 	cd $(BUILD_WORK)/openjpeg && cmake . \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
-		-DCOMMON_ARCH=$(DEB_ARCH) \
-		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE)
+		$(DEFAULT_CMAKE_FLAGS) \
+		-DCOMMON_ARCH=$(DEB_ARCH)
 	+$(MAKE) -C $(BUILD_WORK)/openjpeg
 	+$(MAKE) -C $(BUILD_WORK)/openjpeg install \
 		DESTDIR="$(BUILD_STAGE)/openjpeg"
