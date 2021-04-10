@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += libxt
-LIBXT_VERSION := 1.2.1
+LIBXT_VERSION := 1.2.0
 DEB_LIBXT_V   ?= $(LIBXT_VERSION)
 
 libxt-setup: setup
@@ -17,11 +17,10 @@ libxt:
 else
 libxt: libxt-setup libx11 libice libsm
 	cd $(BUILD_WORK)/libxt && unset CPP CPPFLAGS && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
 		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--localstatedir=/var \
 		--enable-malloc0returnsnull=no \
 		--enable-specs=no \
 		--disable-silent-rules
@@ -36,23 +35,23 @@ endif
 libxt-package: libxt-stage
 	# libxt.mk Package Structure
 	rm -rf $(BUILD_DIST)/libxt{6,-dev}
-	mkdir -p $(BUILD_DIST)/libxt6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libxt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-
+	mkdir -p $(BUILD_DIST)/libxt6/usr/lib \
+		$(BUILD_DIST)/libxt-dev/usr/lib
+	
 	# libxt.mk Prep libxt6
-	cp -a $(BUILD_STAGE)/libxt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXt.6*.dylib $(BUILD_DIST)/libxt6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxt/usr/lib/libXt.6.dylib $(BUILD_DIST)/libxt6/usr/lib
 
 	# libxt.mk Prep libxt-dev
-	cp -a $(BUILD_STAGE)/libxt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libXt.6*.dylib) $(BUILD_DIST)/libxt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libxt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libxt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
-
+	cp -a $(BUILD_STAGE)/libxt/usr/lib/!(libXt.6.dylib) $(BUILD_DIST)/libxt-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libxt/usr/{include,share} $(BUILD_DIST)/libxt-dev/usr
+	
 	# libxt.mk Sign
 	$(call SIGN,libxt6,general.xml)
-
+	
 	# libxt.mk Make .debs
 	$(call PACK,libxt6,DEB_LIBXT_V)
 	$(call PACK,libxt-dev,DEB_LIBXT_V)
-
+	
 	# libxt.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libxt{6,-dev}
 
