@@ -13,7 +13,7 @@ tsschecker-setup: setup
 	$(call EXTRACT_TAR,tsschecker-$(TSSCHECKER_COMMIT).tar.gz,tsschecker-$(TSSCHECKER_COMMIT),tsschecker)
 	# so EXTRACT_TAR wont fail
 	-rmdir $(BUILD_WORK)/tsschecker/external/jssy
-	$(call EXTRACT_TAR,jssy-master.tar.gz,tihmstar-jssy-*,tsschecker/external/jssy)
+	$(call EXTRACT_TAR,jssy-master.tar.gz,jssy-master,tsschecker/external/jssy)
 	$(call DO_PATCH,tsschecker,tsschecker,-p1) # Remove when PR 165 merged upstream.
 
 

@@ -13,8 +13,8 @@ libipatcher-setup: setup
 	$(call GITHUB_ARCHIVE,tihmstar,iBoot32Patcher,master,master)
 	$(call GITHUB_ARCHIVE,tihmstar,jssy,master,master)
 	rm -rf $(BUILD_WORK)/libipatcher/external/{jssy,iBoot32Patcher}
-	$(call EXTRACT_TAR,jssy-master.tar.gz,tihmstar-jssy-*,libipatcher/external/jssy)
-	$(call EXTRACT_TAR,iBoot32Patcher-master.tar.gz,tihmstar-iBoot32Patcher-*,libipatcher/external/iBoot32Patcher)
+	$(call EXTRACT_TAR,jssy-master.tar.gz,jssy-master,libipatcher/external/jssy)
+	$(call EXTRACT_TAR,iBoot32Patcher-master.tar.gz,iBoot32Patcher-master,libipatcher/external/iBoot32Patcher)
 
 	$(SED) -i '/AC_FUNC_MALLOC/d' $(BUILD_WORK)/libipatcher/configure.ac
 	$(SED) -i '/AC_FUNC_REALLOC/d' $(BUILD_WORK)/libipatcher/configure.ac
