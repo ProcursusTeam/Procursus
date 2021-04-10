@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += python-psutil
+SUBPROJECTS           += python-psutil
 PYTHON-PSUTIL_VERSION := 5.8.0
 DEB_PYTHON-PSUTIL_V   ?= $(PYTHON-PSUTIL_VERSION)
 
@@ -20,7 +20,7 @@ python-psutil: python-psutil-setup python3
 		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/python-psutil" \
 		--root="$(BUILD_STAGE)/python-psutil" \
 		--install-layout=deb
-	find $(BUILD_STAGE)/python-psutil -name __pycache__ -delete
+	find $(BUILD_STAGE)/python-psutil -name __pycache__ -exec rm -rf {} +
 	touch $(BUILD_WORK)/python-psutil/.build_complete
 endif
 
@@ -30,7 +30,7 @@ python-psutil-package: python-psutil-stage
 	mkdir -p $(BUILD_DIST)/python-psutil
 
 	# python-psutil.mk Prep python-psutil
-	cp -a $(BUILD_STAGE)/python-psutil/{bin,share,lib} $(BUILD_DIST)/python-psutil
+	cp -a $(BUILD_STAGE)/python-psutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/python-psutil
 
 	# python-psutil.mk Sign
 	$(call SIGN,python-psutil,general.xml)
@@ -39,6 +39,6 @@ python-psutil-package: python-psutil-stage
 	$(call PACK,python-psutil,DEB_PYTHON-PSUTIL_V)
 
 	# python-psutil.mk Build cleanup
-	rm -rf $(BUILD_DIST)/psutil
+	rm -rf $(BUILD_DIST)/python-psutil
 
 .PHONY: python-psutil python-psutil-package
