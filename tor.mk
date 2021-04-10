@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += tor
-TOR_VERSION  := 0.4.5.6
+TOR_VERSION  := 0.4.5.7
 DEB_TOR_V    ?= $(TOR_VERSION)
 
 tor-setup: setup
@@ -31,8 +31,8 @@ tor: tor-setup libevent openssl xz zstd libscrypt
 		LFLAGS2="$(CFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/tor install \
 		DESTDIR="$(BUILD_STAGE)/tor"
-	mkdir -p $(BUILD_STAGE)/tor/{Library/LaunchDaemons,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec}
-	cp -a $(BUILD_INFO)/org.torproject.tor.plist $(BUILD_STAGE)/tor/Library/LaunchDaemons
+	mkdir -p $(BUILD_STAGE)/tor/$(MEMO_PREFIX){/Library/LaunchDaemons,$(MEMO_SUB_PREFIX)/libexec}
+	cp -a $(BUILD_INFO)/org.torproject.tor.plist $(BUILD_STAGE)/tor/$(MEMO_PREFIX)/Library/LaunchDaemons
 	cp -a $(BUILD_INFO)/tor-wrapper $(BUILD_STAGE)/tor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
 	touch $(BUILD_WORK)/tor/.build_complete
 endif
