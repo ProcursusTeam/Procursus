@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += apt
 APT_VERSION   := 2.3.0
-DEB_APT_V     ?= $(APT_VERSION)
+DEB_APT_V     ?= $(APT_VERSION)-1
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
 APT_CMAKE_ARGS += -DHAVE_PTSNAME_R=0
@@ -38,7 +38,7 @@ ifneq ($(wildcard $(BUILD_WORK)/apt/.build_complete),)
 apt:
 	@echo "Using previously built apt."
 else
-apt: apt-setup libgcrypt berkeleydb lz4 xxhash xz zstd
+apt: apt-setup libgcrypt berkeleydb lz4 xxhash xz zstd gnutls
 	cd $(BUILD_WORK)/apt/build && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DSTATE_DIR=$(MEMO_PREFIX)/var/lib/apt \
@@ -46,7 +46,6 @@ apt: apt-setup libgcrypt berkeleydb lz4 xxhash xz zstd
 		-DLOG_DIR=$(MEMO_PREFIX)/var/log/apt \
 		-DCONF_DIR=$(MEMO_PREFIX)/etc/apt \
 		-DROOT_GROUP=wheel \
-		-DCMAKE_SHARED_LINKER_FLAGS="-lresolv -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
 		-DCURRENT_VENDOR=debian \
 		-DCOMMON_ARCH=$(DEB_ARCH) \
 		-DUSE_NLS=0 \
