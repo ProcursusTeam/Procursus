@@ -30,18 +30,8 @@ ccache:
 	@echo "Using previously built ccache."
 else
 ccache: ccache-setup
-	cd $(BUILD_WORK)/ccache && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
-		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
-		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
+	cd $(BUILD_WORK)/ccache && cmake . \
+		$(DEFAULT_CMAKE_FLAGS) \
 		$(CCACHE_CMAKE_ARGS) \
 		.
 	+$(MAKE) -C $(BUILD_WORK)/ccache

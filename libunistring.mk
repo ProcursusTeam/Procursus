@@ -17,9 +17,7 @@ libunistring:
 else
 libunistring: libunistring-setup
 	cd $(BUILD_WORK)/libunistring && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libunistring
 	+$(MAKE) -C $(BUILD_WORK)/libunistring install \
 		DESTDIR=$(BUILD_STAGE)/libunistring

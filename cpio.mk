@@ -18,9 +18,7 @@ cpio:
 else
 cpio: cpio-setup gettext
 	cd $(BUILD_WORK)/cpio && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/cpio
 	+$(MAKE) -C $(BUILD_WORK)/cpio install \
 		DESTDIR=$(BUILD_STAGE)/cpio

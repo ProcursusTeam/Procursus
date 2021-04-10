@@ -7,9 +7,7 @@ LUA-INSPECT_VERSION := 3.1.1
 DEB_LUA-INSPECT_V   ?= $(LUA-INSPECT_VERSION)
 
 lua-inspect-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/inspect.lua-$(LUA-INSPECT_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/inspect.lua-$(LUA-INSPECT_VERSION).tar.gz \
-			https://github.com/kikito/inspect.lua/archive/v$(LUA-INSPECT_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,kikito,inspect.lua,$(LUA-INSPECT_VERSION),v$(LUA-INSPECT_VERSION))
 	$(call EXTRACT_TAR,inspect.lua-$(LUA-INSPECT_VERSION).tar.gz,inspect.lua-$(LUA-INSPECT_VERSION),lua-inspect)
 	mkdir -p $(BUILD_STAGE)/lua-inspect/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/lua/5.{1..3}
 

@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += pinentry
-PINENTRY_VERSION := 1.1.0
-DEB_PINENTRY_V   ?= $(PINENTRY_VERSION)-3
+PINENTRY_VERSION := 1.1.1
+DEB_PINENTRY_V   ?= $(PINENTRY_VERSION)
 
 pinentry-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.gnupg.org/ftp/gcrypt/pinentry/pinentry-$(PINENTRY_VERSION).tar.bz2{,.sig}
@@ -17,9 +17,7 @@ pinentry:
 else
 pinentry: pinentry-setup libgpg-error libassuan ncurses
 	cd $(BUILD_WORK)/pinentry && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-pinentry-fltk \
 		--disable-pinentry-gnome3 \
 		--disable-pinentry-gtk2 \
@@ -37,10 +35,10 @@ endif
 pinentry-package: pinentry-stage
 	# pinentry.mk Package Structure
 	rm -rf $(BUILD_DIST)/pinentry
-	mkdir -p $(BUILD_DIST)/pinentry
+	mkdir -p $(BUILD_DIST)/pinentry/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# pinentry.mk Prep pinentry
-	cp -a $(BUILD_STAGE)/pinentry/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/pinentry
+	cp -a $(BUILD_STAGE)/pinentry/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/pinentry/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# pinentry.mk Sign
 	$(call SIGN,pinentry,general.xml)
@@ -52,3 +50,4 @@ pinentry-package: pinentry-stage
 	rm -rf $(BUILD_DIST)/pinentry
 
 .PHONY: pinentry pinentry-package
+

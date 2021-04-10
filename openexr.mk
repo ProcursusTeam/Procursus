@@ -7,26 +7,15 @@ OPENEXR_VERSION := 2.5.3
 DEB_OPENEXR_V   ?= $(OPENEXR_VERSION)-1
 
 openexr-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/openexr-$(OPENEXR_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/openexr-$(OPENEXR_VERSION).tar.gz \
-			https://github.com/openexr/openexr/archive/v$(OPENEXR_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,openexr,openexr,$(OPENEXR_VERSION),v$(OPENEXR_VERSION))
 	$(call EXTRACT_TAR,openexr-$(OPENEXR_VERSION).tar.gz,openexr-$(OPENEXR_VERSION),openexr) 
 ifneq ($(wildcard $(BUILD_WORK)/openexr/.build_complete),)
 openexr:
 	@echo "Using previously built openexr."
 else
 openexr: openexr-setup
-	cd $(BUILD_WORK)/openexr/IlmBase && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
+	cd $(BUILD_WORK)/openexr/IlmBase && cmake . \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DBUILD_TESTING=OFF \
 		.
 	+$(MAKE) -C $(BUILD_WORK)/openexr/IlmBase install \
@@ -34,17 +23,8 @@ openexr: openexr-setup
 	+$(MAKE) -C $(BUILD_WORK)/openexr/IlmBase install \
 		DESTDIR="$(BUILD_BASE)"
 
-	cd $(BUILD_WORK)/openexr/OpenEXR && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
+	cd $(BUILD_WORK)/openexr/OpenEXR && cmake . \
+		$(DEFAULT_CMAKE_FLAGS) \
 		.
 	+$(MAKE) -C $(BUILD_WORK)/openexr/OpenEXR install \
 		DESTDIR="$(BUILD_STAGE)/openexr"

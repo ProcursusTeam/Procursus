@@ -7,9 +7,7 @@ TAPI_VERSION   := 1100.0.11
 DEB_TAPI_V     ?= $(TAPI_VERSION)
 
 tapi-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/tapi-$(TAPI_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/tapi-$(TAPI_VERSION).tar.gz \
-			https://github.com/Diatrus/apple-libtapi/archive/v$(TAPI_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,Diatrus,apple-libtapi,$(TAPI_VERSION),v$(TAPI_VERSION),tapi)
 	$(call EXTRACT_TAR,tapi-$(TAPI_VERSION).tar.gz,apple-libtapi-$(TAPI_VERSION),tapi)
 	mkdir -p $(BUILD_WORK)/tapi/build
 
@@ -19,17 +17,8 @@ tapi:
 else
 tapi: tapi-setup
 	ln -sf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcurses.dylib
-	cd $(BUILD_WORK)/tapi/build && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_OSX_ARCHITECTURES="$(MEMO_ARCH)" \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
+	cd $(BUILD_WORK)/tapi/build && cmake . \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
 		-DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
 		-DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \

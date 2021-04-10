@@ -37,7 +37,7 @@ top-package: top-stage
 	mkdir -p $(BUILD_DIST)/top
 
 	# top.mk Prep top
-	cp -a $(BUILD_STAGE)/top/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/top
+	cp -a $(BUILD_STAGE)/top $(BUILD_DIST)
 
 	# top.mk Sign
 	$(call SIGN,top,top.xml)

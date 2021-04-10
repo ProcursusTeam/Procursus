@@ -33,11 +33,7 @@ base-bsd-darwin-arm64e		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
 endif
 	cd $(BUILD_WORK)/dpkg && ./autogen
 	cd $(BUILD_WORK)/dpkg && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--localstatedir=$(MEMO_PREFIX)/var \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-admindir=$(MEMO_PREFIX)/Library/dpkg \
 		--with-logdir=$(MEMO_PREFIX)/var/log \
 		--disable-start-stop-daemon \

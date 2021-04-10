@@ -1,12 +1,18 @@
 #!/bin/sh
 
-if [[ $1 == upgrade ]]; then
-    /usr/bin/launchctl unload /Library/LaunchDaemons/org.torproject.tor.plist
-    /usr/bin/launchctl load /Library/LaunchDaemons/org.torproject.tor.plist
-fi
+set -e
 
-if [[ $1 == install ]]; then
-    /usr/bin/launchctl load -w /Library/LaunchDaemons/org.torproject.tor.plist
-fi
+case "$1" in
+    (install)
+    /bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/org.torproject.tor.plist
+    ;;
+	(upgrade)
+	/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/org.torproject.tor.plist
+    /bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/org.torproject.tor.plist
+	;;
+	(*)
+	exit 0
+	;;
+esac
 
 exit 0

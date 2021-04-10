@@ -8,9 +8,7 @@ LIBINSN_COMMIT  := 64124fd2b1b57d7b76a0e2b0c06434a7048758d2
 DEB_LIBINSN_V   ?= $(LIBINSN_VERSION)-1
 
 libinsn-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/libinsn-$(LIBINSN_COMMIT).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/libinsn-$(LIBINSN_COMMIT).tar.gz \
-			https://github.com/tihmstar/libinsn/archive/$(LIBINSN_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,tihmstar,libinsn,$(LIBINSN_COMMIT),$(LIBINSN_COMMIT))
 	$(call EXTRACT_TAR,libinsn-$(LIBINSN_COMMIT).tar.gz,libinsn-$(LIBINSN_COMMIT),libinsn)
 
 ifneq ($(wildcard $(BUILD_WORK)/libinsn/.build_complete),)
@@ -19,9 +17,7 @@ libinsn:
 else
 libinsn: libinsn-setup libgeneral
 	cd $(BUILD_WORK)/libinsn && ./autogen.sh \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) 
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libinsn
 	+$(MAKE) -C $(BUILD_WORK)/libinsn install \
 		DESTDIR="$(BUILD_STAGE)/libinsn"

@@ -7,7 +7,7 @@ ZLIB-NG_VERSION  := 2.0.2
 DEB_ZLIB-NG_V    ?= $(ZLIB-NG_VERSION)
 
 zlib-ng-setup: setup
-	-wget -q -nc -O$(BUILD_SOURCE)/zlib-ng-$(ZLIB-NG_VERSION).tar.gz https://github.com/zlib-ng/zlib-ng/archive/refs/tags/$(ZLIB-NG_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,zlib-ng,zlib-ng,$(ZLIB-NG_VERSION),$(ZLIB-NG_VERSION))
 	$(call EXTRACT_TAR,zlib-ng-$(ZLIB-NG_VERSION).tar.gz,zlib-ng-$(ZLIB-NG_VERSION),zlib-ng)
 ifneq ($(wildcard $(BUILD_WORK)/zlib-ng/.build_complete),)
 zlib-ng:
@@ -15,17 +15,7 @@ zlib-ng:
 else
 zlib-ng: zlib-ng-setup
 	cd $(BUILD_WORK)/zlib-ng && cmake . \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
-		-DCMAKE_OSX_ARCHITECTURES="$(MEMO_ARCH)" \
+		$(DEFAULT_CMAKE_FLAGS) \
 		.
 	+$(MAKE) -C $(BUILD_WORK)/zlib-ng
 	+$(MAKE) -C $(BUILD_WORK)/zlib-ng install \

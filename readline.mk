@@ -21,9 +21,7 @@ readline:
 else
 readline: readline-setup ncurses
 	cd $(BUILD_WORK)/readline && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		ac_cv_type_sig_atomic_t=no \
 		LDFLAGS="$(CLFLAGS) $(LDFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/readline \

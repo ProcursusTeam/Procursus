@@ -16,9 +16,7 @@ libde265:
 else
 libde265: libde265-setup
 	cd $(BUILD_WORK)/libde265 && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-sherlock265
 	+$(MAKE) -C $(BUILD_WORK)/libde265
 	+$(MAKE) -C $(BUILD_WORK)/libde265 install \

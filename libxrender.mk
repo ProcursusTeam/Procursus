@@ -17,11 +17,7 @@ libxrender:
 else
 libxrender: libxrender-setup libx11 xorgproto
 	cd $(BUILD_WORK)/libxrender && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-malloc0returnsnull=no
 	+$(MAKE) -C $(BUILD_WORK)/libxrender
 	+$(MAKE) -C $(BUILD_WORK)/libxrender install \

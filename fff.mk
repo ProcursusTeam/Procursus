@@ -7,8 +7,9 @@ FFF_VERSION := 2.2
 DEB_FFF_V   ?= $(FFF_VERSION)
 
 fff-setup: setup
+	$(call GITHUB_ARCHIVE,dylanaraps,fff,$(FFF_VERSION),$(FFF_VERSION))
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/dylanaraps/fff/archive/$(FFF_VERSION).tar.gz
-	$(call EXTRACT_TAR,$(FFF_VERSION).tar.gz,fff-$(FFF_VERSION),fff)
+	$(call EXTRACT_TAR,fff-$(FFF_VERSION).tar.gz,fff-$(FFF_VERSION),fff)
 
 ifneq ($(wildcard $(BUILD_WORK)/fff/.build_complete),)
 fff:

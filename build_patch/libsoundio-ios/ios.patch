@@ -1,0 +1,86 @@
+diff -ruN libsoundio-2.0.0/CMakeLists.txt libsoundio/CMakeLists.txt
+--- libsoundio-2.0.0/CMakeLists.txt	2019-02-20 21:25:44.000000000 +0800
++++ libsoundio/CMakeLists.txt	2021-04-01 21:57:51.156441417 +0800
+@@ -107,7 +107,7 @@
+         include_directories(${COREFOUNDATION_INCLUDE_DIR})
+ 
+         find_path(AUDIOUNIT_INCLUDE_DIR NAMES AudioUnit.h)
+-        find_library(AUDIOUNIT_LIBRARY NAMES AudioUnit)
++        find_library(AUDIOUNIT_LIBRARY NAMES AudioToolbox)
+         include_directories(${AUDIOUNIT_INCLUDE_DIR})
+     else()
+         set(STATUS_COREAUDIO "not found")
+diff -ruN libsoundio-2.0.0/src/coreaudio.c libsoundio/src/coreaudio.c
+--- libsoundio-2.0.0/src/coreaudio.c	2019-02-20 21:25:44.000000000 +0800
++++ libsoundio/src/coreaudio.c	2021-04-01 21:59:14.698172505 +0800
+@@ -967,7 +967,7 @@
+ 
+     AudioComponentDescription desc = {0};
+     desc.componentType = kAudioUnitType_Output;
+-    desc.componentSubType = kAudioUnitSubType_HALOutput;
++    desc.componentSubType = kAudioUnitSubType_RemoteIO;
+     desc.componentManufacturer = kAudioUnitManufacturer_Apple;
+ 
+     AudioComponent component = AudioComponentFindNext(NULL, &desc);
+@@ -1000,13 +1000,6 @@
+     format.mBytesPerFrame = outstream->bytes_per_frame;
+     format.mChannelsPerFrame = outstream->layout.channel_count;
+ 
+-    if ((os_err = AudioUnitSetProperty(osca->instance, kAudioOutputUnitProperty_CurrentDevice,
+-        kAudioUnitScope_Input, OUTPUT_ELEMENT, &dca->device_id, sizeof(AudioDeviceID))))
+-    {
+-        outstream_destroy_ca(si, os);
+-        return SoundIoErrorOpeningDevice;
+-    }
+-
+     if ((os_err = AudioUnitSetProperty(osca->instance, kAudioUnitProperty_StreamFormat,
+         kAudioUnitScope_Input, OUTPUT_ELEMENT, &format, sizeof(AudioStreamBasicDescription))))
+     {
+@@ -1045,11 +1038,6 @@
+         return SoundIoErrorOpeningDevice;
+     }
+ 
+-	if ((os_err = AudioUnitGetParameter (osca->instance, kHALOutputParam_Volume, kAudioUnitScope_Global, 0, &outstream->volume))) {
+-		outstream_destroy_ca(si, os);
+-		return SoundIoErrorOpeningDevice;
+-	}
+-
+     osca->hardware_latency = dca->latency_frames / (double)outstream->sample_rate;
+ 
+     return 0;
+@@ -1255,7 +1243,7 @@
+ 
+     AudioComponentDescription desc = {0};
+     desc.componentType = kAudioUnitType_Output;
+-    desc.componentSubType = kAudioUnitSubType_HALOutput;
++    desc.componentSubType = kAudioUnitSubType_RemoteIO;
+     desc.componentManufacturer = kAudioUnitManufacturer_Apple;
+ 
+     AudioComponent component = AudioComponentFindNext(NULL, &desc);
+@@ -1269,11 +1257,6 @@
+         return SoundIoErrorOpeningDevice;
+     }
+ 
+-    if ((os_err = AudioUnitInitialize(isca->instance))) {
+-        instream_destroy_ca(si, is);
+-        return SoundIoErrorOpeningDevice;
+-    }
+-
+     UInt32 enable_io = 1;
+     if ((os_err = AudioUnitSetProperty(isca->instance, kAudioOutputUnitProperty_EnableIO,
+         kAudioUnitScope_Input, INPUT_ELEMENT, &enable_io, sizeof(UInt32))))
+@@ -1290,14 +1273,6 @@
+         return SoundIoErrorOpeningDevice;
+     }
+ 
+-    if ((os_err = AudioUnitSetProperty(isca->instance, kAudioOutputUnitProperty_CurrentDevice,
+-        kAudioUnitScope_Output, INPUT_ELEMENT, &dca->device_id, sizeof(AudioDeviceID))))
+-    {
+-        instream_destroy_ca(si, is);
+-        return SoundIoErrorOpeningDevice;
+-    }
+-
+-
+     AudioStreamBasicDescription format = {0};
+     format.mSampleRate = instream->sample_rate;
+     format.mFormatID = kAudioFormatLinearPCM;

@@ -7,9 +7,7 @@ LZ4_VERSION   := 1.9.2
 DEB_LZ4_V     ?= $(LZ4_VERSION)-2
 
 lz4-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/lz4-$(LZ4_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/lz4-$(LZ4_VERSION).tar.gz \
-			https://github.com/lz4/lz4/archive/v$(LZ4_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,lz4,lz4,$(LZ4_VERSION),v$(LZ4_VERSION))
 	$(call EXTRACT_TAR,lz4-$(LZ4_VERSION).tar.gz,lz4-$(LZ4_VERSION),lz4)
 
 ifneq ($(wildcard $(BUILD_WORK)/lz4/.build_complete),)

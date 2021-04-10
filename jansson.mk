@@ -16,9 +16,7 @@ jansson:
 else
 jansson: jansson-setup
 	cd $(BUILD_WORK)/jansson && ./configure \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/jansson
 	+$(MAKE) -C $(BUILD_WORK)/jansson install \
 		DESTDIR="$(BUILD_STAGE)/jansson"

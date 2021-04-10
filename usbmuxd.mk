@@ -6,7 +6,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS     += usbmuxd
 USBMUXD_VERSION := 1.1.1
-DEB_USBMUXD_V   ?= $(USBMUXD_VERSION)
+DEB_USBMUXD_V   ?= $(USBMUXD_VERSION)-1
 
 usbmuxd-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libimobiledevice/usbmuxd/releases/download/$(USBMUXD_VERSION)/usbmuxd-$(USBMUXD_VERSION).tar.bz2
@@ -18,9 +18,7 @@ usbmuxd:
 else
 usbmuxd: usbmuxd-setup libusb libimobiledevice libplist
 	cd $(BUILD_WORK)/usbmuxd && ./configure \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--without-systemd \
 		ac_cv_func_malloc_0_nonnull=yes \
 		ac_cv_func_realloc_0_nonnull=yes

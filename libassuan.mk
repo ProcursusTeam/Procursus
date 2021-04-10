@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS     += libassuan
-LIBASSUAN_VERSION := 2.5.4
+LIBASSUAN_VERSION := 2.5.5
 DEB_LIBASSUAN_V   ?= $(LIBASSUAN_VERSION)
 
 libassuan-setup: setup
@@ -17,9 +17,7 @@ libassuan:
 else
 libassuan: libassuan-setup libgpg-error
 	cd $(BUILD_WORK)/libassuan && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-gpg-error-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libassuan
 	+$(MAKE) -C $(BUILD_WORK)/libassuan install \
