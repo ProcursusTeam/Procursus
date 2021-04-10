@@ -6,7 +6,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS     += usbmuxd
 USBMUXD_VERSION := 1.1.1
-DEB_USBMUXD_V   ?= $(USBMUXD_VERSION)
+DEB_USBMUXD_V   ?= $(USBMUXD_VERSION)-1
 
 usbmuxd-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libimobiledevice/usbmuxd/releases/download/$(USBMUXD_VERSION)/usbmuxd-$(USBMUXD_VERSION).tar.bz2
