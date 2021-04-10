@@ -21,9 +21,7 @@ diffutils:
 else
 diffutils: diffutils-setup gettext
 	cd $(BUILD_WORK)/diffutils && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/diffutils
 	+$(MAKE) -C $(BUILD_WORK)/diffutils install \

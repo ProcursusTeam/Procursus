@@ -16,9 +16,7 @@ img4tool:
 else
 img4tool: img4tool-setup openssl libplist libgeneral
 	cd $(BUILD_WORK)/img4tool && ./autogen.sh \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/img4tool
 	+$(MAKE) -C $(BUILD_WORK)/img4tool install \
 		DESTDIR="$(BUILD_STAGE)/img4tool"

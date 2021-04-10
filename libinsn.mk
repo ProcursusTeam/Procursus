@@ -17,9 +17,7 @@ libinsn:
 else
 libinsn: libinsn-setup libgeneral
 	cd $(BUILD_WORK)/libinsn && ./autogen.sh \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) 
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libinsn
 	+$(MAKE) -C $(BUILD_WORK)/libinsn install \
 		DESTDIR="$(BUILD_STAGE)/libinsn"

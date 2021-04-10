@@ -16,9 +16,7 @@ flac:
 else
 flac: flac-setup libogg
 	cd $(BUILD_WORK)/flac && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
 		--disable-debug \
 		--enable-shared \

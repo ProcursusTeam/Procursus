@@ -19,9 +19,7 @@ else
 berkeleydb: berkeleydb-setup gettext openssl
 	cd $(BUILD_WORK)/berkeleydb/dist && ./s_config
 	cd $(BUILD_WORK)/berkeleydb/build_unix && ../dist/configure \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-cxx \
 		--enable-compat185 \
 		--enable-sql \

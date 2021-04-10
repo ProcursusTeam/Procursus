@@ -17,11 +17,7 @@ libxxf86vm:
 else
 libxxf86vm: libxxf86vm-setup xorgproto libx11 libxext
 	cd $(BUILD_WORK)/libxxf86vm && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-malloc0returnsnull=no
 	+$(MAKE) -C $(BUILD_WORK)/libxxf86vm
 	+$(MAKE) -C $(BUILD_WORK)/libxxf86vm install \

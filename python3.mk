@@ -31,9 +31,7 @@ python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm expat 
 endif
 	cd $(BUILD_WORK)/python3 && autoreconf -fi
 	cd $(BUILD_WORK)/python3 && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-ipv6 \
 		--without-ensurepip \
 		--with-system-ffi \

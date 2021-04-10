@@ -18,8 +18,7 @@ tcsh:
 else
 tcsh: tcsh-setup ncurses
 	cd $(BUILD_WORK)/tcsh && ./configure \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		LDFLAGS="$(LDFLAGS) -lncursesw"
 	+$(MAKE) -C $(BUILD_WORK)/tcsh
 	+$(MAKE) -C $(BUILD_WORK)/tcsh install \

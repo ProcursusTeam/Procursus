@@ -17,9 +17,7 @@ lame:
 else
 lame: lame-setup ncurses libsndfile
 	cd $(BUILD_WORK)/lame && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-dynamic-frontends \
 		--with-fileio=sndfile
 	$(SED) -i 's/-lncurses/-lncursesw/' $(BUILD_WORK)/lame/{,frontend/}Makefile

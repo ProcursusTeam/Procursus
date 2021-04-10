@@ -27,10 +27,7 @@ openpam:
 else
 openpam: openpam-setup libxcrypt
 	cd $(BUILD_WORK)/openpam && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFX)/etc \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-modules-dir=$(MEMO_PREFX)$(MEMO_SUB_PREFIX)/lib/pam \
 		--with-pam-unix \
 		CPPFLAGS="$(CPPFLAGS) -DSYSCONFDIR=\\\"$(MEMO_PREFIX)/etc\\\""

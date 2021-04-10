@@ -24,9 +24,7 @@ libuv1: libuv1-setup
 		cd $(BUILD_WORK)/libuv1 && ./autogen.sh; \
 	fi
 	cd $(BUILD_WORK)/libuv1 && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libuv1
 	+$(MAKE) -C $(BUILD_WORK)/libuv1 install \
 		DESTDIR="$(BUILD_STAGE)/libuv1"

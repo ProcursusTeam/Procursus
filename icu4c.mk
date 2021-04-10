@@ -22,10 +22,8 @@ icu4c: icu4c-setup
 		../source/configure; \
 		$(MAKE) -C $(BUILD_WORK)/icu4c/host
 	cd $(BUILD_WORK)/icu4c/source && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-cross-build=$(BUILD_WORK)/icu4c/host \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-samples \
 		--disable-tests
 	+$(MAKE) -C $(BUILD_WORK)/icu4c/source

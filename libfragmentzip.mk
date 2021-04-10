@@ -17,9 +17,7 @@ libfragmentzip:
 else
 libfragmentzip: libfragmentzip-setup libgeneral libzip curl
 	cd $(BUILD_WORK)/libfragmentzip && ./autogen.sh \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		zlib_LIBS="-L$(TARGET_SYSROOT)/usr/lib -lz" \
 		zlib_CFLAGS="-I$(TARGET_SYSROOT)/usr/include"
 	+$(MAKE) -C $(BUILD_WORK)/libfragmentzip

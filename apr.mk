@@ -16,11 +16,9 @@ apr:
 else
 apr: apr-setup
 	cd $(BUILD_WORK)/apr && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-        --includedir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/apr-1.0 \
-        --with-installbuilddir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/apr-1.0/build \
+		$(DEFAULT_CONFIGURE_FLAGS) \
+    --includedir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/apr-1.0 \
+    --with-installbuilddir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/apr-1.0/build \
 		ac_cv_file__dev_zero=yes \
 		ac_cv_func_setpgrp_void=yes \
 		apr_cv_process_shared_works=yes \

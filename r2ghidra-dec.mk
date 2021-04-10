@@ -26,16 +26,8 @@ r2ghidra-dec: r2ghidra-dec-setup radare2 openssl
 	+cd $(BUILD_WORK)/../../native/ghidra && unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS && cmake .; \
 	$(MAKE) -C $(BUILD_WORK)/../../native/ghidra sleighc
 	cd $(BUILD_WORK)/r2ghidra-dec && cmake . \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DRADARE2_INSTALL_PLUGDIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/radare2/$(RADARE2_VERSION) \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
 		-DRadare2_INCLUDE_DIRS="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libr"
 	+PATH="$(BUILD_WORK)/../../native/ghidra:$(PATH)" $(MAKE) -C $(BUILD_WORK)/r2ghidra-dec
 	$(MAKE) -C $(BUILD_WORK)/r2ghidra-dec install \

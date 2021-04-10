@@ -22,13 +22,7 @@ else
 lua-luv: lua-luv-setup libuv1 lua5.1 lua5.2 lua5.3 luajit
 	for ver in {1..3}; do \
 		cd $(BUILD_WORK)/lua-luv/build5$$ver && cmake \
-			-DCMAKE_BUILD_TYPE=Release \
-			-DCMAKE_SYSTEM_NAME=Darwin \
-			-DCMAKE_CROSSCOMPILING=true \
-			-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-			-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-			-DCMAKE_C_FLAGS="$(CFLAGS)" \
-			-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
+		$(DEFAULT_CMAKE_FLAGS) \
 			-DLUA_BUILD_TYPE=System \
 			-DWITH_SHARED_LIBUV=ON \
 			-DBUILD_MODULE=OFF \
@@ -58,13 +52,7 @@ lua-luv: lua-luv-setup libuv1 lua5.1 lua5.2 lua5.3 luajit
 		mv $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/libluv.pc $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/lua5.$$ver-luv.pc; \
 		sed -i "s/-lluv/-llua5.$$ver-luv/" $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/lua5.$$ver-luv.pc; \
 		cd $(BUILD_WORK)/lua-luv/bundle/build5$$ver && LDFLAGS="$(LDFLAGS) -undefined dynamic_lookup" cmake \
-			-DCMAKE_BUILD_TYPE=Release \
-			-DCMAKE_SYSTEM_NAME=Darwin \
-			-DCMAKE_CROSSCOMPILING=true \
-			-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-			-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-			-DCMAKE_C_FLAGS="$(CFLAGS)" \
-			-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
+			$(DEFAULT_CMAKE_FLAGS) \
 			-DLUA_BUILD_TYPE=System \
 			-DWITH_SHARED_LIBUV=ON \
 			-DBUILD_MODULE=ON \
@@ -78,13 +66,7 @@ lua-luv: lua-luv-setup libuv1 lua5.1 lua5.2 lua5.3 luajit
 			DESTDIR="$(BUILD_STAGE)/lua-luv"; \
 	done
 	cd $(BUILD_WORK)/lua-luv/buildjit && cmake \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DLUA_BUILD_TYPE=System \
 		-DWITH_SHARED_LIBUV=ON \
 		-DBUILD_MODULE=OFF \

@@ -17,8 +17,7 @@ ed:
 else
 ed: ed-setup
 	cd $(BUILD_WORK)/ed && ./configure \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		CC=$(CC) \
 		CFLAGS="$(CCFLAGS)" \
 		CPPFLAGS="$(CPPFLAGS)" \

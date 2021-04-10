@@ -17,10 +17,7 @@ freetype:
 else
 freetype: freetype-setup brotli libpng16
 	cd $(BUILD_WORK)/freetype && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--without-harfbuzz
 	+$(MAKE) -C $(BUILD_WORK)/freetype
 	+$(MAKE) -C $(BUILD_WORK)/freetype install \

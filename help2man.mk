@@ -17,9 +17,7 @@ help2man:
 else
 help2man: help2man-setup gettext
 	cd $(BUILD_WORK)/help2man && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/help2man
 	+$(MAKE) -C $(BUILD_WORK)/help2man install \
 		DESTDIR=$(BUILD_STAGE)/help2man

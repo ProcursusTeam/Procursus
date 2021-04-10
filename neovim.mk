@@ -22,16 +22,7 @@ else
 neovim: neovim-setup gettext lua-luv libuv1 msgpack libvterm libtermkey unibilium luajit
 	@echo "Install neovim before building"
 	cd $(BUILD_WORK)/neovim/build && cmake . \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DXGETTEXT_PRG="`which xgettext`" \
 		-DGETTEXT_MSGFMT_EXECUTABLE="`which msgfmt`" \
 		-DGETTEXT_MSGMERGE_EXECUTABLE="`which msgmerge`" \

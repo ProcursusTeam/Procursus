@@ -17,11 +17,7 @@ libdmx:
 else
 libdmx: libdmx-setup libx11 libxext
 	cd $(BUILD_WORK)/libdmx && unset CPP CPPFLAGS && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-malloc0returnsnull=no \
 		--disable-silent-rules
 	+$(MAKE) -C $(BUILD_WORK)/libdmx

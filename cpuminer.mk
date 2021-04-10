@@ -16,9 +16,7 @@ cpuminer:
 else
 cpuminer: cpuminer-setup curl jansson
 	cd $(BUILD_WORK)/cpuminer && ./configure \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-assembly
 	+$(MAKE) -C $(BUILD_WORK)/cpuminer install \
 		DESTDIR="$(BUILD_STAGE)/cpuminer"

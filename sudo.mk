@@ -30,11 +30,7 @@ else
 sudo: sudo-setup gettext
 endif
 	cd $(BUILD_WORK)/sudo && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--localstatedir=$(MEMO_PREFIX)/var \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-pam \
 		--enable-static-sudoers \
 		--with-all-insults \

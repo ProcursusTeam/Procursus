@@ -19,8 +19,7 @@ PATH := $(BUILD_WORK)/ucl/workaround:$(PATH)
 ucl: ucl-setup
 	cd $(BUILD_WORK)/ucl && autoreconf -fi
 	cd $(BUILD_WORK)/ucl && ./configure \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
 		--enable-shared \
 		--enable-static
