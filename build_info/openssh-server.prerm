@@ -4,7 +4,7 @@ set -e
 
 case "$1" in
 	(remove|purge)
-	@MEMO_PREFIX@/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/com.openssh.sshd.plist
+	/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/com.openssh.sshd.plist
 	;;
 	(*)
 	exit 0
