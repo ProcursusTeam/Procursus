@@ -3,15 +3,18 @@ $(error Use the main Makefile)
 endif
 SUBPROJECTS    += golang
 GOLANG_MAJOR_V := 1.16
-GOLANG_VERSION := $(GOLANG_MAJOR_V).2
+GOLANG_VERSION := $(GOLANG_MAJOR_V).3
 DEB_GOLANG_V   ?= $(GOLANG_VERSION)
 
 ifneq (,$(findstring arm64,$(MEMO_TARGET)))
 GO_ARGS := GOARCH=arm64 \
-        GOOS=ios 
+        GOOS=ios
+GO_EXPORT_ARGS := export PATH="$(BUILD_WORK)/golang/superbin:$(PATH)";
+GO_CP_ARGS := ios_arm64/go{,fmt}
 else
 GO_ARGS := GOARCH=amd64 \
-        GOOS=darwin 
+        GOOS=darwin \
+	SDKROOT=$(shell xcrun --sdk macosx --show-sdk-path)
 endif
 
 golang-setup: setup
@@ -29,17 +32,17 @@ golang:
 	@echo "Using previously built golang."
 else
 golang: golang-setup
-	export PATH="$(BUILD_WORK)/golang/superbin:$(PATH)"; \
-		cd $(BUILD_WORK)/golang/src && \
-			CGO_ENABLED=1 \
-			GOROOT_FINAL=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V) \
-			GOROOT_BOOTSTRAP=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-			GOHOSTARCH= \
-			GOHOSTOS=darwin \
-			$(GO_ARGS) \
-			CC=cc \
-			CC_FOR_TARGET=clang \
-			./make.bash
+	$(GO_EXPORT_ARGS) \
+	cd $(BUILD_WORK)/golang/src && \
+		CGO_ENABLED=1 \
+		GOROOT_FINAL=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V) \
+		GOROOT_BOOTSTRAP=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		GOHOSTARCH= \
+		GOHOSTOS=darwin \
+		$(GO_ARGS) \
+		CC=cc \
+		CC_FOR_TARGET=clang \
+		./make.bash
 	cp -a $(BUILD_WORK)/golang/* $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)
 ifneq (,$(findstring arm64,$(MEMO_TARGET)))
 	-find $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V) -name darwin_amd64 -type d -exec rm -rf {} \;
@@ -57,24 +60,24 @@ golang-package: golang-stage
 		$(BUILD_DIST)/golang-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib}
 	# golang.mk Prep golang-$(GOLANG_MAJOR_V)-src
 	cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/{api,misc,src,test} $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-src/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)
-	
+
 	# golang.mk Prep golang-$(GOLANG_MAJOR_V)-go
 	cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/VERSION $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)
-	cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/bin/ios_arm64/go{,fmt} $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/bin
+	cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/bin/$(GO_CP_ARGS) $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/bin
 	cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg/{*_*,include,tool} $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg
-	
+
 	# golang.mk Prep golang-go
 	ln -s ../lib/go-$(GOLANG_MAJOR_V)/bin/go $(BUILD_DIST)/golang-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/go
 	ln -s ../lib/go-$(GOLANG_MAJOR_V)/bin/gofmt $(BUILD_DIST)/golang-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gofmt
 	ln -s ../lib/go-$(GOLANG_MAJOR_V) $(BUILD_DIST)/golang-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go
 	# golang.mk Sign
 	$(call SIGN,golang-$(GOLANG_MAJOR_V)-go,general.xml)
-	
+
 	# golang.mk Make .debs
 	$(call PACK,golang-$(GOLANG_MAJOR_V)-src,DEB_GOLANG_V)
 	$(call PACK,golang-$(GOLANG_MAJOR_V)-go,DEB_GOLANG_V)
 	$(call PACK,golang-go,DEB_GOLANG_V)
-	
+
 	# golang.mk Build cleanup
 	rm -rf $(BUILD_DIST)/golang{,-$(GOLANG_MAJOR_V)}-{src,go}
 .PHONY: golang golang-package
