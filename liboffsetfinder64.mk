@@ -10,6 +10,8 @@ DEB_LIBOFFSETFINDER64_V   ?= $(LIBOFFSETFINDER64_VERSION)
 liboffsetfinder64-setup: setup
 	$(call GITHUB_ARCHIVE,tihmstar,liboffsetfinder64,$(LIBOFFSETFINDER64_COMMIT),$(LIBOFFSETFINDER64_COMMIT))
 	$(call EXTRACT_TAR,liboffsetfinder64-$(LIBOFFSETFINDER64_COMMIT).tar.gz,liboffsetfinder64-$(LIBOFFSETFINDER64_COMMIT),liboffsetfinder64)
+	$(SED) -i 's/git rev\-list \-\-count HEAD/printf ${LIBOFFSETFINDER64_VERSION}/g' $(BUILD_WORK)/liboffsetfinder64/configure.ac
+	$(SED) -i 's/git rev\-parse HEAD/printf ${LIBOFFSETFINDER64_COMMIT}/g' $(BUILD_WORK)/liboffsetfinder64/configure.ac
 
 ifneq ($(wildcard $(BUILD_WORK)/liboffsetfinder64/.build_complete),)
 liboffsetfinder64:

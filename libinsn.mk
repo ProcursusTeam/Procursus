@@ -10,6 +10,8 @@ DEB_LIBINSN_V   ?= $(LIBINSN_VERSION)-1
 libinsn-setup: setup
 	$(call GITHUB_ARCHIVE,tihmstar,libinsn,$(LIBINSN_COMMIT),$(LIBINSN_COMMIT))
 	$(call EXTRACT_TAR,libinsn-$(LIBINSN_COMMIT).tar.gz,libinsn-$(LIBINSN_COMMIT),libinsn)
+	$(SED) -i 's/git rev\-list \-\-count HEAD/printf ${LIBINSN_VERSION}/g' $(BUILD_WORK)/libinsn/configure.ac
+	$(SED) -i 's/git rev\-parse HEAD/printf ${LIBINSN_COMMIT}/g' $(BUILD_WORK)/libinsn/configure.ac
 
 ifneq ($(wildcard $(BUILD_WORK)/libinsn/.build_complete),)
 libinsn:
