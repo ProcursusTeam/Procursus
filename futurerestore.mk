@@ -28,7 +28,6 @@ futurerestore: futurerestore-setup libirecovery openssl libusbmuxd libimobiledev
 	cd $(BUILD_WORK)/futurerestore && ./autogen.sh \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-silent-rules \
-		LDFLAGS="-framework CoreFoundation -framework IOKit -L$(TARGET_SYSROOT)/usr/lib -lbz2 -lcompression -L$(BUILD_BASE)/opt/procursus/lib -lzstd -lidn2 -lldap -lssh2 -lusb-1.0 -llzma -lnghttp2 -lusbmuxd-2.0" \
 		zlib_LIBS="-L$(TARGET_SYSROOT)/usr/lib -lz" \
 		zlib_CFLAGS="-I$(TARGET_SYSROOT)/usr/include"
 	+$(MAKE) -C $(BUILD_WORK)/futurerestore
