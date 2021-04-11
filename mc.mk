@@ -14,14 +14,13 @@ ifneq ($(wildcard $(BUILD_WORK)/mc/.build_complete),)
 mc:
 	@echo "Using previously built mc."
 else
-mc: mc-setup slang2 glib2.0 gettext
+mc: mc-setup slang2 glib2.0 gettext libssh2
 	cd $(BUILD_WORK)/mc && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		PKG_CONFIG="pkg-config --define-prefix"
 	+$(MAKE) -C $(BUILD_WORK)/mc
 	+$(MAKE) -C $(BUILD_WORK)/mc install \
 		DESTDIR=$(BUILD_STAGE)/mc
-	+$(MAKE) -C $(BUILD_WORK)/mc install \
-		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/mc/.build_complete
 endif
 
