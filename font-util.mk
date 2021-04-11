@@ -17,10 +17,7 @@ font-util:
 else
 font-util: font-util-setup
 	cd $(BUILD_WORK)/font-util && ./configure -C \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/font-util
 	+$(MAKE) -C $(BUILD_WORK)/font-util install \
 		DESTDIR=$(BUILD_STAGE)/font-util
