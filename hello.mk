@@ -9,6 +9,7 @@ DEB_HELLO_V   ?= $(HELLO_VERSION)
 hello-setup: setup
 	wget -q -nc -P$(BUILD_SOURCE) http://ftpmirror.gnu.org/gnu/hello/hello-$(HELLO_VERSION).tar.gz
 	$(call EXTRACT_TAR,hello-$(HELLO_VERSION).tar.gz,hello-$(HELLO_VERSION),hello)
+	$(call DO_PATCH,hello,hello,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/hello/.build_complete),)
 hello:
