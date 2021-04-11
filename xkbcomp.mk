@@ -27,19 +27,19 @@ xkbcomp: xkbcomp-setup libx11 xorgproto libxkbfile
 endif
 
 xkbcomp-package: xkbcomp-stage
-# xkbcomp.mk Package Structure
+	# xkbcomp.mk Package Structure
 	rm -rf $(BUILD_DIST)/xkbcomp
 
-# xkbcomp.mk Prep xkbcomp
+	# xkbcomp.mk Prep xkbcomp
 	cp -a $(BUILD_STAGE)/xkbcomp $(BUILD_DIST)
 
-# xkbcomp.mk Sign
+	# xkbcomp.mk Sign
 	$(call SIGN,xkbcomp,general.xml)
 
-# xkbcomp.mk Make .debs
+	# xkbcomp.mk Make .debs
 	$(call PACK,xkbcomp,DEB_XKBCOMP_V)
 
-# xkbcomp.mk Build cleanup
+	# xkbcomp.mk Build cleanup
 	rm -rf $(BUILD_DIST)/xkbcomp
 
 .PHONY: xkbcomp xkbcomp-package

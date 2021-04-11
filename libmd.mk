@@ -34,7 +34,7 @@ libmd-package: libmd-stage
 	# libmd.mk Prep libmd0
 	cp -a $(BUILD_STAGE)/libmd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libmd.0.dylib $(BUILD_DIST)/libmd0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-# libmd.mk Prep libmd-dev
+	# libmd.mk Prep libmd-dev
 	cp -a $(BUILD_STAGE)/libmd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libmd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/libmd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libmd.a,libmd.dylib} $(BUILD_DIST)/libmd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	for manpage in $(BUILD_DIST)/libmd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3/*; do \

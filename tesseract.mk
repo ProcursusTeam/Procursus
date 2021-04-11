@@ -33,22 +33,22 @@ tesseract: tesseract-setup leptonica libarchive curl
 endif
 
 tesseract-package: tesseract-stage
-  # tesseract.mk Package Structure
+	 tesseract.mk Package Structure
 	rm -rf $(BUILD_DIST)/libtesseract4 $(BUILD_DIST)/libtesseract-dev $(BUILD_DIST)/tesseract-ocr
 	mkdir -p \
 		$(BUILD_DIST)/libtesseract-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/tesseract-ocr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		$(BUILD_DIST)/libtesseract4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share}
 
-  # tesseract.mk Prep libtesseract-dev
+	 tesseract.mk Prep libtesseract-dev
 	cp -a $(BUILD_STAGE)/tesseract/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libtesseract-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/tesseract/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libtesseract.4.dylib) $(BUILD_DIST)/libtesseract-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-  # tesseract.mk Prep tesseract-ocr
+	 tesseract.mk Prep tesseract-ocr
 	cp -a $(BUILD_STAGE)/tesseract/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/tesseract-ocr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/tesseract/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/tesseract-ocr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
-  # tesseract.mk Prep libtesseract4
+	 tesseract.mk Prep libtesseract4
 	cp -a $(BUILD_STAGE)/tesseract/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libtesseract.4.dylib $(BUILD_DIST)/libtesseract4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/tesseract/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tessdata $(BUILD_DIST)/libtesseract4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	# Just bundle eng and osd with the library.
@@ -56,16 +56,16 @@ tesseract-package: tesseract-stage
 		https://github.com/tesseract-ocr/tessdata_fast/raw/4.0.0/eng.traineddata \
 		https://github.com/tesseract-ocr/tessdata_fast/raw/4.0.0/osd.traineddata
 
-  # tesseract.mk Sign
+	 tesseract.mk Sign
 	$(call SIGN,libtesseract4,general.xml)
 	$(call SIGN,tesseract-ocr,general.xml)
 
-  # tesseract.mk Make .debs
+	 tesseract.mk Make .debs
 	$(call PACK,libtesseract-dev,DEB_TESSERACT_V)
 	$(call PACK,tesseract-ocr,DEB_TESSERACT_V)
 	$(call PACK,libtesseract4,DEB_TESSERACT_V)
 
-  # tesseract.mk Build cleanup
+	 tesseract.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libtesseract4 $(BUILD_DIST)/libtesseract-dev $(BUILD_DIST)/tesseract-ocr
 
 .PHONY: tesseract tesseract-package

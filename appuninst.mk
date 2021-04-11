@@ -7,7 +7,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 SUBPROJECTS       += appuninst
 APPUNINST_VERSION := 1.0.0
 DEB_APPUNINST_V   ?= $(APPUNINST_VERSION)
-APPUNINST_LIBS    := -framework Foundation -framework CoreServices
+APPUNINST_LIBS		:= -framework Foundation -framework CoreServices
 
 appuninst-setup: setup
 	$(call GITHUB_ARCHIVE,quiprr,appuninst,$(APPUNINST_VERSION),v$(APPUNINST_VERSION))

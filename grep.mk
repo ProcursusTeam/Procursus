@@ -1,4 +1,4 @@
- ifneq ($(PROCURSUS),1)
+ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 

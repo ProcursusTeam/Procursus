@@ -588,9 +588,9 @@ else
 DPKG_TYPE ?= gzip
 endif
 ifeq ($(call HAS_COMMAND,dpkg-deb),1)
-DPKG_DEB := dpkg-deb -Z$(DPKG_TYPE) 
+DPKG_DEB := dpkg-deb -Z$(DPKG_TYPE)
 else ifeq ($(call HAS_COMMAND,dm.pl),1)
-DPKG_DEB := dm.pl -Z$(DPKG_TYPE) 
+DPKG_DEB := dm.pl -Z$(DPKG_TYPE)
 else
 $(error Install dpkg-deb)
 endif
@@ -794,7 +794,8 @@ REPROJ2=$(shell echo $(REPROJ) | $(SED) 's/-package//' | $(SED) 's/-setup//')
 rebuild-%:
 	@echo Rebuild $(REPROJ2)
 	-if [ $(REPROJ) = "all" ] || [ $(REPROJ) = "package" ]; then \
-		rm -rf $(BUILD_WORK) $(BUILD_STAGE); \mongodb 
+		rm -rf $(BUILD_WORK) $(BUILD_STAGE); \
+	fi
 	rm -rf {$(BUILD_WORK),$(BUILD_STAGE)}/$(REPROJ2)
 	rm -rf $(BUILD_WORK)/$(REPROJ2)*patches
 	rm -rf $(BUILD_STAGE)/$(REPROJ2)

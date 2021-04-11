@@ -27,19 +27,19 @@ xhost: xhost-setup libx11 libxau libxmu xorgproto xxhash
 endif
 
 xhost-package: xhost-stage
-# xhost.mk Package Structure
+	# xhost.mk Package Structure
 	rm -rf $(BUILD_DIST)/xhost
 
-# xhost.mk Prep xhost
+	# xhost.mk Prep xhost
 	cp -a $(BUILD_STAGE)/xhost $(BUILD_DIST)
 
-# xhost.mk Sign
+	# xhost.mk Sign
 	$(call SIGN,xhost,general.xml)
 
-# xhost.mk Make .debs
+	# xhost.mk Make .debs
 	$(call PACK,xhost,DEB_XHOST_V)
 
-# xhost.mk Build cleanup
+	# xhost.mk Build cleanup
 	rm -rf $(BUILD_DIST)/xhost
 
 .PHONY: xhost xhost-package

@@ -27,32 +27,32 @@ openjpeg: openjpeg-setup libpng16 libtiff lcms2
 endif
 
 openjpeg-package: openjpeg-stage
-  # openjpeg.mk Package Structure
+	 openjpeg.mk Package Structure
 	rm -rf $(BUILD_DIST)/libopenjp2-{7{,-dev},tools}
 	mkdir -p \
 		$(BUILD_DIST)/libopenjp2-7{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libopenjp2-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
-  # openjpeg.mk Prep libopenjp2-7-dev
+	 openjpeg.mk Prep libopenjp2-7-dev
 	cp -a $(BUILD_STAGE)/openjpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libopenjp2-7-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/openjpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libopenjp2.*.dylib) $(BUILD_DIST)/libopenjp2-7-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-  # openjpeg.mk Prep libopenjp2-tools
+	 openjpeg.mk Prep libopenjp2-tools
 	cp -a $(BUILD_STAGE)/openjpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/libopenjp2-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
-  # openjpeg.mk Prep libopenjp2-7
+	 openjpeg.mk Prep libopenjp2-7
 	cp -a $(BUILD_STAGE)/openjpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libopenjp2.{7,$(OPENJPEG_VERSION)}.dylib $(BUILD_DIST)/libopenjp2-7/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-  # openjpeg.mk Sign
+	 openjpeg.mk Sign
 	$(call SIGN,libopenjp2-7,general.xml)
 	$(call SIGN,libopenjp2-tools,general.xml)
 
-  # openjpeg.mk Make .debs
+	 openjpeg.mk Make .debs
 	$(call PACK,libopenjp2-7-dev,DEB_OPENJPEG_V)
 	$(call PACK,libopenjp2-tools,DEB_OPENJPEG_V)
 	$(call PACK,libopenjp2-7,DEB_OPENJPEG_V)
 
-  # openjpeg.mk Build cleanup
+	 openjpeg.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libopenjp2-{7{,-dev},tools}
 
 .PHONY: openjpeg openjpeg-package
