@@ -31,7 +31,7 @@ libwebp: libwebp-setup libpng16 libgif libtiff libjpeg-turbo
 endif
 
 libwebp-package: libwebp-stage
-  # libwebp.mk Package Structure
+	# libwebp.mk Package Structure
 	rm -rf \
 		$(BUILD_DIST)/libwebp{7,-dev} \
 		$(BUILD_DIST)/libwebp{demux2,mux3} \
@@ -41,7 +41,7 @@ libwebp-package: libwebp-stage
 		$(BUILD_DIST)/libwebp{7,demux2,mux3}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/webp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
-  # libwebp.mk Prep libwebp-dev
+	# libwebp.mk Prep libwebp-dev
 	cp -a $(BUILD_STAGE)/libwebp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libwebp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/libwebp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/*.a $(BUILD_DIST)/libwebp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libwebp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libwebp{,decoder,demux,mux}.dylib $(BUILD_DIST)/libwebp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
@@ -59,21 +59,21 @@ libwebp-package: libwebp-stage
 	# libwebp.mk Prep webp
 	cp -a $(BUILD_STAGE)/libwebp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/webp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
-  # libwebp.mk Sign
+	# libwebp.mk Sign
 	$(call SIGN,libwebp-dev,general.xml)
 	$(call SIGN,libwebp7,general.xml)
 	$(call SIGN,libwebpdemux2,general.xml)
 	$(call SIGN,libwebpmux3,general.xml)
 	$(call SIGN,webp,general.xml)
 
-  # libwebp.mk Make .debs
+	# libwebp.mk Make .debs
 	$(call PACK,libwebp-dev,DEB_LIBWEBP_V)
 	$(call PACK,libwebp7,DEB_LIBWEBP_V)
 	$(call PACK,libwebpdemux2,DEB_LIBWEBP_V)
 	$(call PACK,libwebpmux3,DEB_LIBWEBP_V)
 	$(call PACK,webp,DEB_LIBWEBP_V)
 
-  # libwebp.mk Build cleanup
+	# libwebp.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libwebp{7,-dev,demux2,mux3} $(BUILD_DIST)/webp
 
 .PHONY: libwebp libwebp-package

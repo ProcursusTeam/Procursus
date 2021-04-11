@@ -18,25 +18,7 @@ libapt-pkg-perl:
 else
 libapt-pkg-perl: libapt-pkg-perl-setup perl apt
 	cd $(BUILD_WORK)/libapt-pkg-perl && $(shell which perl) Makefile.PL \
-		INSTALLSITEARCH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
-		INSTALLARCHLIB=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
-		INSTALLVENDORARCH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
-		INSTALLPRIVLIB=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 \
-		INSTALLSITELIB=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 \
-		INSTALLVENDORLIB=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 \
-		PERL_LIB=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
-		PERL_ARCHLIB=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
-		PERL_ARCHLIBDEP=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
-		PERL_INC=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR)/CORE \
-		PERL_INCDEP=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR)/CORE \
-		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		INSTALLMAN1DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 \
-		INSTALLSITEMAN1DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 \
-		INSTALLVENDORMAN1DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 \
-		INSTALLMAN3DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 \
-		INSTALLSITEMAN3DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 \
-		INSTALLVENDORMAN3DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 \
-		PERL="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl"
+		$(DEFAULT_PERL_MAKE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libapt-pkg-perl \
 		CC="$(CXX)" \
 		CCFLAGS="-std=c++11 $(CXXFLAGS) -Denviron" \
@@ -51,16 +33,16 @@ endif
 libapt-pkg-perl-package: libapt-pkg-perl-stage
 	# libapt-pkg-perl.mk Package Structure
 	rm -rf $(BUILD_DIST)/libapt-pkg-perl
-	
+
 	# libapt-pkg-perl.mk Prep libapt-pkg-perl
 	cp -a $(BUILD_STAGE)/libapt-pkg-perl $(BUILD_DIST)
 
 	# libapt-pkg-perl.mk Sign
 	$(call SIGN,libapt-pkg-perl,general.xml)
-	
+
 	# libapt-pkg-perl.mk Make .debs
 	$(call PACK,libapt-pkg-perl,DEB_LIBAPT-PKG-PERL_V)
-	
+
 	# libapt-pkg-perl.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libapt-pkg-perl
 

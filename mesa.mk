@@ -42,8 +42,6 @@ mesa: mesa-setup libx11 libxext libxcb libxdamage libxxf86vm gettext expat zstd
 		-Dbsymbolic_functions=false \
 		-Ddtrace=false \
 		-Db_ndebug=true \
-		-Ddri-drivers=swrast \
-		-Dgallium-drivers= \
 		-Dplatforms=x11 \
 		-Dgles1=disabled \
 		..

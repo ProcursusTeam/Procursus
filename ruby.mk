@@ -43,22 +43,21 @@ endif
 
 	# Future reference: coroutine should be "arm64" on M1 macs
 	cd $(BUILD_WORK)/ruby && LIBS="$(RUBY_EXTRA_LIBS)" PKG_CONFIG="pkg-config --define-prefix" \
-		 ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS) \
-		--target=$(GNU_HOST_TRIPLE) \
-		--with-arch=$(MEMO_ARCH) \
-		--with-jemalloc \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--enable-shared \
-		--program-suffix=$(RUBY_VERSION) \
-		--with-soname=ruby-$(RUBY_VERSION) \
-		--with-sitedir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/ruby/site_ruby \
-    --with-vendordir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ruby/vendor_ruby \
-		--runstatedir=$(MEMO_PREFIX)/var/run \
-		--disable-dtrace \
-		--enable-ipv6 \
-		--with-baseruby="$(BUILD_WORK)/ruby/nativebuild/install/bin/ruby" \
-		$(RUBY_CONFIGURE_ARGS)
+		./configure -C \
+			$(DEFAULT_CONFIGURE_FLAGS) \
+			--target=$(GNU_HOST_TRIPLE) \
+			--with-arch=$(MEMO_ARCH) \
+			--with-jemalloc \
+			--enable-shared \
+			--program-suffix=$(RUBY_VERSION) \
+			--with-soname=ruby-$(RUBY_VERSION) \
+			--with-sitedir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/ruby/site_ruby \
+			--with-vendordir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ruby/vendor_ruby \
+			--runstatedir=$(MEMO_PREFIX)/var/run \
+			--disable-dtrace \
+			--enable-ipv6 \
+			--with-baseruby="$(BUILD_WORK)/ruby/nativebuild/install/bin/ruby" \
+			$(RUBY_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/ruby
 	+$(MAKE) -C $(BUILD_WORK)/ruby install \
 		DESTDIR="$(BUILD_STAGE)/ruby"

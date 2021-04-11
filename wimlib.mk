@@ -20,7 +20,7 @@ wimlib: wimlib-setup openssl
 		--disable-debug \
 		--disable-dependency-tracking \
 		--without-fuse \
-    	--without-ntfs-3g \
+		--without-ntfs-3g \
 		LIBXML2_CFLAGS=-I$(TARGET_SYSROOT)/usr/include \
 		LIBXML2_LIBS="-L$(TARGET_SYSROOT)/usr/lib -lxml2"
 	+$(MAKE) -C $(BUILD_WORK)/wimlib

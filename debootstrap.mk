@@ -27,13 +27,13 @@ endif
 debootstrap-package: debootstrap-stage
 	# debootstrap.mk Package Structure
 	rm -rf $(BUILD_DIST)/debootstrap
-	
+
 	# debootstrap.mk Prep debootstrap
 	cp -a $(BUILD_STAGE)/debootstrap $(BUILD_DIST)
-	
+
 	# debootstrap.mk Make .debs
 	$(call PACK,debootstrap,DEB_DEBOOTSTRAP_V)
-	
+
 	# debootstrap.mk Build cleanup
 	rm -rf $(BUILD_DIST)/debootstrap
 

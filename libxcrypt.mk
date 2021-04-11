@@ -24,7 +24,7 @@ libxcrypt: libxcrypt-setup
 	+$(MAKE) -C $(BUILD_WORK)/libxcrypt install \
 		DESTDIR=$(BUILD_STAGE)/libxcrypt
 	+$(MAKE) -C $(BUILD_WORK)/libxcrypt install \
-		DESTDIR=$(BUILD_BASE)	
+		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libxcrypt/.build_complete
 endif
 

@@ -21,7 +21,7 @@ libffi: libffi-setup
 	+$(MAKE) -C $(BUILD_WORK)/libffi install \
 		DESTDIR=$(BUILD_STAGE)/libffi
 	+$(MAKE) -C $(BUILD_WORK)/libffi install \
-                DESTDIR=$(BUILD_BASE)
+		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libffi/.build_complete
 endif
 

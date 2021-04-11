@@ -28,16 +28,16 @@ endif
 rsync-package: rsync-stage
 	# rsync.mk Package Structure
 	rm -rf $(BUILD_DIST)/rsync
-	
+
 	# rsync.mk Prep rsync
 	cp -a $(BUILD_STAGE)/rsync $(BUILD_DIST)
 
 	# rsync.mk Sign
 	$(call SIGN,rsync,general.xml)
-	
+
 	# rsync.mk Make .debs
 	$(call PACK,rsync,DEB_RSYNC_V)
-	
+
 	# rsync.mk Build cleanup
 	rm -rf $(BUILD_DIST)/rsync
 
