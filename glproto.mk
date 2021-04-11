@@ -16,10 +16,7 @@ glproto:
 else
 glproto: glproto-setup libx11 libxau libxmu xorgproto
 	cd $(BUILD_WORK)/glproto && ./configure -C \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/glproto
 	+$(MAKE) -C $(BUILD_WORK)/glproto install \
 		DESTDIR=$(BUILD_STAGE)/glproto
