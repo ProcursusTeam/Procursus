@@ -4,12 +4,13 @@ endif
 
 SUBPROJECTS    += lua5.2
 LUA5.2_VERSION := 5.2.4
-DEB_LUA5.2_V   ?= $(LUA5.2_VERSION)
+DEB_LUA5.2_V   ?= $(LUA5.2_VERSION)-1
 
 lua5.2-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.lua.org/ftp/lua-$(LUA5.2_VERSION).tar.gz 
+	wget -q -nc -P $(BUILD_SOURCE) https://www.lua.org/ftp/lua-$(LUA5.2_VERSION).tar.gz
 	$(call EXTRACT_TAR,lua-$(LUA5.2_VERSION).tar.gz,lua-$(LUA5.2_VERSION),lua5.2)
 	$(call DO_PATCH,lua5.2,lua5.2,-p1)
+	$(SED) -i -e ':a; s|@MEMO_PREFIX@|$(MEMO_PREFIX)|g; ta' -e ':a; s|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g; ta' $(BUILD_WORK)/lua5.2/src/luaconf.h
 
 ifneq ($(wildcard $(BUILD_WORK)/lua5.2/.build_complete),)
 lua5.2:
@@ -18,9 +19,8 @@ else
 lua5.2: lua5.2-setup readline
 	+$(MAKE) -C $(BUILD_WORK)/lua5.2 macosx \
 		CC="$(CC)" \
-		CFLAGS="$(CFLAGS) -fPIC" \
-		CXXFLAGS="$(CXXFLAGS) -fPIC" \
-		LDFLAGS="$(LDFLAGS)" \
+		MYCFLAGS="$(CFLAGS) -fPIC" \
+		MYLDFLAGS="$(LDFLAGS)" \
 		AR="$(AR) rcu" \
 		RANLIB="$(RANLIB)" \
 		LUA_T="lua5.2" \
@@ -52,8 +52,8 @@ lua5.2-package: lua5.2-stage
 
 	# lua5.2.mk Prep lua5.2
 	cp -a $(BUILD_STAGE)/lua5.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/lua5.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	$(GINSTALL) -Dm644 $(BUILD_STAGE)/lua5.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/lua.1 $(BUILD_DIST)/lua5.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man2/lua5.2.1
-	$(GINSTALL) -Dm644 $(BUILD_STAGE)/lua5.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/luac.1 $(BUILD_DIST)/lua5.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man2/luac5.2.1
+	$(GINSTALL) -Dm644 $(BUILD_STAGE)/lua5.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/lua.1 $(BUILD_DIST)/lua5.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/lua5.2.1
+	$(GINSTALL) -Dm644 $(BUILD_STAGE)/lua5.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/luac.1 $(BUILD_DIST)/lua5.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/luac5.2.1
 
 	# lua5.2.mk Prep liblua5.2-0
 	$(GINSTALL) -Dm755 $(BUILD_STAGE)/lua5.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.2.0.dylib $(BUILD_DIST)/liblua5.2-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.2.0.dylib

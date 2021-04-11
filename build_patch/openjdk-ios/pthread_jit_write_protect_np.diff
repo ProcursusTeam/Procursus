@@ -1,14 +1,14 @@
 diff -urN openjdk/src/hotspot/os_cpu/bsd_aarch64/os_bsd_aarch64.cpp.orig openjdk/src/hotspot/os_cpu/bsd_aarch64/os_bsd_aarch64.cpp
---- openjdk/src/hotspot/os_cpu/bsd_aarch64/os_bsd_aarch64.cpp	2020-12-27 17:52:28.000000000 -0500
-+++ openjdk/src/hotspot/os_cpu/bsd_aarch64/os_bsd_aarch64.cpp	2020-12-27 19:00:38.000000000 -0500
-@@ -87,6 +87,7 @@
- # include <errno.h>
- # include <sys/types.h>
- # include <sys/sysctl.h>
-+# include "tcg-apple-jit.h"
- # define DEFAULT_MAIN_THREAD_STACK_PAGES 2048
- # define OS_X_10_9_0_KERNEL_MAJOR_VERSION 13
+--- openjdk/src/hotspot/os_cpu/bsd_aarch64/os_bsd_aarch64.cpp.orig	2021-04-06 01:48:01.140932272 -0400
++++ openjdk/src/hotspot/os_cpu/bsd_aarch64/os_bsd_aarch64.cpp	2021-04-06 01:48:11.383681637 -0400
+@@ -79,6 +79,7 @@
+ #if !defined(__APPLE__) && !defined(__NetBSD__)
+ # include <pthread_np.h>
  #endif
++# include "tcg-apple-jit.h"
+
+ #define SPELL_REG_SP "sp"
+ #define SPELL_REG_FP "fp"
 @@ -124,6 +125,11 @@
  #endif
  }
@@ -21,33 +21,13 @@ diff -urN openjdk/src/hotspot/os_cpu/bsd_aarch64/os_bsd_aarch64.cpp.orig openjdk
  char* os::non_memory_address_word() {
    // Must never look like an address returned by reserve_memory,
    // even in its subfields (as defined by the CPU immediate fields,
-@@ -362,7 +368,8 @@
- 
-     if (pc != addr && uc->context_esr == 0x9200004F) { //TODO: figure out what this value means
-       // We are faulting trying to write a R-X page
--      pthread_jit_write_protect_np(false);
-+      //pthread_jit_write_protect_np(false);
-+        tb_exec_change(false);
- 
-       log_debug(os)("Writing protection violation "
-                     "at " INTPTR_FORMAT
-@@ -375,7 +382,8 @@
-       // We are faulting trying to execute a RW- page
- 
-       if (addr != last_addr) {
--        pthread_jit_write_protect_np(true);
-+        //pthread_jit_write_protect_np(true);
-+          tb_exec_change(true);
- 
-         log_debug(os)("Execution protection violation "
-                       "at " INTPTR_FORMAT
 @@ -662,7 +670,8 @@
  }
  
- void os::current_thread_enable_wx_impl(WXMode mode) {
+ void os::current_thread_enable_wx(WXMode mode) {
 -  pthread_jit_write_protect_np(mode == WXExec);
 +  //pthread_jit_write_protect_np(mode == WXExec);
-+    tb_exec_change(mode == WXExec);
++  tb_exec_change(mode == WXExec);
  }
  
  extern "C" {

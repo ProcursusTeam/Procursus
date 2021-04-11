@@ -29,16 +29,16 @@ endif
 snaprestore-package: snaprestore-stage
 	# snaprestore.mk Package Structure
 	rm -rf $(BUILD_DIST)/snaprestore
-	
+
 	# snaprestore.mk Prep snaprestore
 	cp -a $(BUILD_STAGE)/snaprestore $(BUILD_DIST)
 
 	# snaprestore.mk Sign
 	$(call SIGN,snaprestore,snaprestore.xml)
-	
+
 	# snaprestore.mk Make .debs
 	$(call PACK,snaprestore,DEB_SNAPRESTORE_V)
-	
+
 	# snaprestore.mk Build cleanup
 	rm -rf $(BUILD_DIST)/snaprestore
 

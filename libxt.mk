@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += libxt
-LIBXT_VERSION := 1.2.0
+LIBXT_VERSION := 1.2.1
 DEB_LIBXT_V   ?= $(LIBXT_VERSION)
 
 libxt-setup: setup
@@ -17,10 +17,7 @@ libxt:
 else
 libxt: libxt-setup libx11 libice libsm
 	cd $(BUILD_WORK)/libxt && unset CPP CPPFLAGS && ./configure -C \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-malloc0returnsnull=no \
 		--enable-specs=no \
 		--disable-silent-rules

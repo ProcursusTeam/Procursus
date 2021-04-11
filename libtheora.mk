@@ -17,9 +17,7 @@ libtheora:
 else
 libtheora: libtheora-setup libogg
 	cd $(BUILD_WORK)/libtheora && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
 		--disable-oggtest \
 		--disable-vorbistest \

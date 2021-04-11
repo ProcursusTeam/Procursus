@@ -16,10 +16,7 @@ bash-completion:
 else
 bash-completion: bash-completion-setup bash
 	cd $(BUILD_WORK)/bash-completion && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/bash-completion
 	+$(MAKE) -C $(BUILD_WORK)/bash-completion install \
 		DESTDIR=$(BUILD_STAGE)/bash-completion
@@ -34,10 +31,10 @@ bash-completion-package: bash-completion-stage
 	# bash-completion.mk Prep bash-completion
 	cp -a $(BUILD_STAGE)/bash-completion/$(MEMO_PREFIX)/etc $(BUILD_DIST)/bash-completion/$(MEMO_PREFIX)
 	cp -a $(BUILD_STAGE)/bash-completion/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/bash-completion/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# bash-completion.mk Make .debs
 	$(call PACK,bash-completion,DEB_BASH-COMPLETION_V)
-	
+
 	# bash-completion.mk Build cleanup
 	rm -rf $(BUILD_DIST)/bash-completion
 

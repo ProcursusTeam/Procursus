@@ -2,26 +2,35 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS     += openjdk
-OPENJDK_COMMIT  := 8383f41ca7faa59dab17f6bb47fecd5a93ab72e3
-OPENJDK_MAJOR_V := 16
-OPENJDK_VERSION := $(OPENJDK_MAJOR_V).0.0+git20201217.$(shell echo $(OPENJDK_COMMIT) | cut -c -7)
-DEB_OPENJDK_V   ?= $(OPENJDK_VERSION)-2
+SUBPROJECTS      += openjdk
+OPENJDK_MAJOR_V  := 17
+OPENJDK_REVISION := 16
+OPENJDK_VERSION  := $(OPENJDK_MAJOR_V)+$(OPENJDK_REVISION)
+DEB_OPENJDK_V    ?= $(OPENJDK_VERSION)
+
+# Change "ea" to nothing on general availability...
+
+OPENJDK_VENDOR_ARGS := --with-version-pre=ea \
+		--without-version-opt \
+		--with-vendor-bug-url="https://github.com/ProcursusTeam/Procursus/issues" \
+		--with-vendor-name=Procursus \
+		--with-vendor-url="https://github.com/ProcursusTeam/Procursus" \
+		--with-vendor-version-string=Procursus \
+		--with-vendor-vm-bug-url="https://github.com/ProcursusTeam/Procursus/issues" \
+		--with-version-build="$(OPENJDK_REVISION)" \
 
 ###
-#
-# The patches are horribly ugly, pay no mind.
+# The patches are still horribly ugly, please pay no mind.
 # TODO: Try and get libjsound working.
-#
 ###
 
 openjdk-setup: setup
-	$(call GITHUB_ARCHIVE,openjdk,aarch64-port,$(OPENJDK_COMMIT),$(OPENJDK_COMMIT),openjdk)
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/openjdk/jdk/archive/refs/tags/jdk-$(OPENJDK_VERSION).tar.gz
 	wget -q -nc -P $(BUILD_SOURCE) \
 		https://github.com/apple/cups/releases/download/v2.3.3/cups-2.3.3-source.tar.gz \
 		https://download.java.net/java/GA/jdk15/779bf45e88a44cbd9ea6621d33e33db1/36/GPL/openjdk-15_osx-x64_bin.tar.gz
 		#https://download.java.net/java/GA/jdk15/779bf45e88a44cbd9ea6621d33e33db1/36/GPL/openjdk-15_linux-x64_bin.tar.gz
-	$(call EXTRACT_TAR,openjdk-$(OPENJDK_COMMIT).tar.gz,aarch64-port-$(OPENJDK_COMMIT),openjdk)
+	$(call EXTRACT_TAR,jdk-$(OPENJDK_VERSION).tar.gz,jdk-jdk-$(OPENJDK_MAJOR_V)-$(OPENJDK_REVISION),openjdk)
 	$(call EXTRACT_TAR,cups-2.3.3-source.tar.gz,cups-2.3.3,apple-cups)
 	$(call EXTRACT_TAR,openjdk-15_osx-x64_bin.tar.gz,jdk-15.jdk,boot-jdk.jdk) # Change this to use the Linux one on Linux
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
@@ -33,7 +42,8 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(BUILD_WORK)/openjdk/src/java.desktop/macosx/native/libawt_lwawt/awt/ApplicationDelegate.h \
 	$(BUILD_WORK)/openjdk/src/java.desktop/macosx/native/libawt_lwawt/awt/CDataTransferer.h \
 	$(BUILD_WORK)/openjdk/src/java.desktop/macosx/native/libawt_lwawt/java2d/opengl/J2D_GL/cglext.h \
-	$(BUILD_WORK)/openjdk/src/java.security.jgss/macosx/native/libosxkrb5/SCDynamicStoreConfig.m; do \
+	$(BUILD_WORK)/openjdk/src/java.security.jgss/macosx/native/libosxkrb5/SCDynamicStoreConfig.m \
+	$(BUILD_WORK)/openjdk/src/java.base/macosx/native/libosxsecurity/KeystoreImpl.m; do \
 		$(SED) -i 's|<Cocoa/Cocoa.h>|<Foundation/Foundation.h>|' $$file; \
 	done
 	for file in $(BUILD_WORK)/openjdk/src/java.desktop/share/native/libfontmanager/hb-jdk-font.c \
@@ -54,29 +64,24 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	done
 	cp $(BUILD_WORK)/openjdk/make/data/charsetmapping/stdcs-linux $(BUILD_WORK)/openjdk/make/data/charsetmapping/stdcs-macosx
 	rm -rf $(BUILD_WORK)/openjdk/src/java.desktop/macosx/
-ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
-	$(call DO_PATCH,openjdk-pre1700,openjdk,-p1)
-endif
 endif
 
 ifneq ($(wildcard $(BUILD_WORK)/openjdk/.build_complete),)
 openjdk:
 	@echo "Using previously built openjdk."
 else
-openjdk: openjdk-setup libx11 libxext libxi libxrender libxtst freetype libgif harfbuzz lcms2 libpng16
+openjdk: openjdk-setup libx11 libxext libxi libxrender libxrandr libxtst freetype libgif harfbuzz lcms2 libpng16 xorgproto
 	rm -rf $(BUILD_STAGE)/openjdk
 	mkdir -p $(BUILD_STAGE)/openjdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm
 	chmod 0755 $(BUILD_WORK)/openjdk/configure
 	cd $(BUILD_WORK)/openjdk && ./configure \
-		--build=$$($(BUILD_MISC)/config.guess) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		--openjdk-target=$(GNU_HOST_TRIPLE) \
 		--with-extra-cflags="$(CFLAGS) -DTARGET_OS_OSX" \
 		--with-extra-cxxflags="$(CXXFLAGS) -DTARGET_OS_OSX" \
 		--with-extra-ldflags="$(LDFLAGS) -headerpad_max_install_names" \
 		--with-sysroot="$(TARGET_SYSROOT)" \
-		--without-version-pre \
-		--without-version-opt \
+		$(OPENJDK_VENDOR_ARGS) \
 		--with-boot-jdk="$(BUILD_WORK)/boot-jdk.jdk/Contents/Home" \
 		--with-debug-level=release \
 		--with-native-debug-symbols=none \
@@ -125,14 +130,14 @@ openjdk-package: openjdk-stage
 
 	# openjdk.mk Prep openjdk-jre
 	for bin in java jfr keytool rmid rmiregistry; do \
-		ln -sf ../lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/bin/$${bin} $(BUILD_DIST)/openjdk-jre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$${bin}; \
-		ln -sf ../../../lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/man/man1/$${bin}.1 $(BUILD_DIST)/openjdk-jre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$${bin}.1; \
+		ln -sf $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/bin/$${bin} $(BUILD_DIST)/openjdk-jre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$${bin}; \
+		ln -sf $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/man/man1/$${bin}.1 $(BUILD_DIST)/openjdk-jre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$${bin}.1; \
 	done
 
 	# openjdk.mk Prep openjdk-jdk
 	for bin in jar jarsigner javac javadoc javap jcmd jconsole jdb jdeprscan jdeps jhsdb jimage jinfo jlink jmap jmod jpackage jps jrunscript jshell jstack jstat jstatd serialver; do \
-		ln -sf ../lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/bin/$${bin} $(BUILD_DIST)/openjdk-jdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$${bin}; \
-		ln -sf ../../../lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/man/man1/$${bin}.1 $(BUILD_DIST)/openjdk-jdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$${bin}.1; \
+		ln -sf $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/bin/$${bin} $(BUILD_DIST)/openjdk-jdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$${bin}; \
+		ln -sf $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/man/man1/$${bin}.1 $(BUILD_DIST)/openjdk-jdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$${bin}.1; \
 	done
 
 	# openjdk.mk Prep openjdk-$(OPENJDK_MAJOR_V)-jdk

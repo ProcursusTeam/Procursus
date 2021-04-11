@@ -2,7 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 SUBPROJECTS       += diffutils
+else
+STRAPPROJECTS     += diffutils
+endif
 DIFFUTILS_VERSION := 3.7
 DEB_DIFFUTILS_V   ?= $(DIFFUTILS_VERSION)-2
 
@@ -17,9 +21,7 @@ diffutils:
 else
 diffutils: diffutils-setup gettext
 	cd $(BUILD_WORK)/diffutils && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/diffutils
 	+$(MAKE) -C $(BUILD_WORK)/diffutils install \

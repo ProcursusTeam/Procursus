@@ -20,9 +20,7 @@ mtree-netbsd:
 else
 mtree-netbsd: mtree-netbsd-setup libmd
 	cd $(BUILD_WORK)/mtree-netbsd && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--sbindir=\$${prefix}/bin \
 		LIBS="-lmd" \
 		ac_cv_func_fnmatch_works="yes"

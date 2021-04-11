@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS     += libedit
+STRAPPROJECTS   += libedit
 LIBEDIT_VERSION := 3.1
 LIBEDIT_DATE    := 20191231
 DEB_LIBEDIT_V   ?= $(LIBEDIT_VERSION)-$(LIBEDIT_DATE)
@@ -17,9 +17,7 @@ libedit:
 else
 libedit: libedit-setup ncurses
 	cd $(BUILD_WORK)/libedit && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-examples=no
 	+$(MAKE) -C $(BUILD_WORK)/libedit \
 		LIBS=-lncursesw

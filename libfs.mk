@@ -17,11 +17,7 @@ libfs:
 else
 libfs: libfs-setup xorgproto xtrans
 	cd $(BUILD_WORK)/libfs && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-malloc0returnsnull=no
 	+$(MAKE) -C $(BUILD_WORK)/libfs
 	+$(MAKE) -C $(BUILD_WORK)/libfs install \

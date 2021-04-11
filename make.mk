@@ -23,9 +23,7 @@ make: make-setup gettext
 	$(SED) -i '/case ENOEXEC:/a \ \ \ \ case EPERM:' $(BUILD_WORK)/make/src/job.c
 	$(SED) -i 's/defined (__arm) ||//' $(BUILD_WORK)/make/src/makeint.h
 	cd $(BUILD_WORK)/make && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-guile=no \
 		$(MAKE_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/make \
