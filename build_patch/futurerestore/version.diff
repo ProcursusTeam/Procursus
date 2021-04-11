@@ -1,0 +1,26 @@
+diff --git a/configure.ac b/configure.ac
+index 15f7193c..2a7ee585 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1,5 +1,5 @@
+ AC_PREREQ([2.69])
+-AC_INIT([futurerestore], m4_esyscmd([git rev-list --count HEAD | tr -d '\n']), [tihmstar@gmail.com])
++AC_INIT([futurerestore], m4_esyscmd([printf "195" | tr -d '\n']), [tihmstar@gmail.com])
+ 
+ AC_CANONICAL_SYSTEM
+ AC_CANONICAL_HOST
+@@ -9,10 +9,10 @@ AC_CONFIG_HEADERS([config.h])
+ AC_CONFIG_MACRO_DIRS([m4])
+ 
+ # Versioning.
+-AC_DEFINE([VERSION_COMMIT_COUNT], "m4_esyscmd([git rev-list --count HEAD | tr -d '\n'])", [Git commit count])
+-AC_DEFINE([VERSION_COMMIT_SHA], "m4_esyscmd([git rev-parse HEAD | tr -d '\n'])", [Git commit sha])
+-AC_SUBST([VERSION_COMMIT_COUNT], ["m4_esyscmd([git rev-list --count HEAD | tr -d '\n'])"])
+-AC_SUBST([VERSION_COMMIT_SHA], ["m4_esyscmd([git rev-parse HEAD | tr -d '\n'])"])
++AC_DEFINE([VERSION_COMMIT_COUNT], "m4_esyscmd([echo "195" | tr -d '\n'])", [Git commit count])
++AC_DEFINE([VERSION_COMMIT_SHA], "m4_esyscmd([echo "55db758b5d4d6c08daa48af9aad1abf2b6466f36" | tr -d '\n'])", [Git commit sha])
++AC_SUBST([VERSION_COMMIT_COUNT], ["m4_esyscmd([echo "195" | tr -d '\n'])"])
++AC_SUBST([VERSION_COMMIT_SHA], ["m4_esyscmd([echo "55db758b5d4d6c08daa48af9aad1abf2b6466f36" | tr -d '\n'])"])
+ 
+ # Checks for programs.
+ AC_PROG_CXX

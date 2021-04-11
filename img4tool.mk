@@ -3,12 +3,14 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += img4tool
+#don't forget to update version.diff
 IMG4TOOL_VERSION := 197
 DEB_IMG4TOOL_V   ?= $(IMG4TOOL_VERSION)
 
 img4tool-setup: setup
 	$(call GITHUB_ARCHIVE,tihmstar,img4tool,$(IMG4TOOL_VERSION),$(IMG4TOOL_VERSION))
 	$(call EXTRACT_TAR,img4tool-$(IMG4TOOL_VERSION).tar.gz,img4tool-$(IMG4TOOL_VERSION),img4tool)
+	$(call DO_PATCH,img4tool,img4tool,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/img4tool/.build_complete),)
 img4tool:
