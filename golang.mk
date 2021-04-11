@@ -15,6 +15,7 @@ else
 GO_ARGS := GOARCH=amd64 \
         GOOS=darwin \
 	SDKROOT=$(shell xcrun --sdk macosx --show-sdk-path)
+GO_CP_ARGS := go{,fmt}
 endif
 
 golang-setup: setup
