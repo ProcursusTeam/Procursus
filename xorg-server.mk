@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += xorg-server
+SUBPROJECTS         += xorg-server
 XORG-SERVER_VERSION := 1.20.10
 DEB_XORG-SERVER_V   ?= $(XORG-SERVER_VERSION)
 
@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/xorg-server/.build_complete),)
 xorg-server:
 	@echo "Using previously built xorg-server."
 else
-xorg-server: xorg-server-setup libx11 libxau libxmu xorgproto font-util libpixman libpng16 mesa libxfont2 libxkbfile glproto 
+xorg-server: xorg-server-setup libx11 libxau libxmu xorgproto font-util libpixman libpng16 mesa libxfont2 libxkbfile 
 	cd $(BUILD_WORK)/xorg-server && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-xorg \
