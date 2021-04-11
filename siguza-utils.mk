@@ -9,8 +9,8 @@ MISC_VERSION    := 1.0+git20210410.$(shell echo $(MISC_COMMIT) | cut -c -7)
 DEB_MISC_V      ?= $(MISC_VERSION)
 
 siguza-utils-setup: setup
-	$(call GITHUB_ARCHIVE,Siguza,misc,$(MISC_COMMIT),$(MISC_COMMIT))
-	$(call EXTRACT_TAR,misc-$(MISC_COMMIT).tar.gz,misc-$(MISC_COMMIT),misc)
+	$(call GITHUB_ARCHIVE,Siguza,misc,$(MISC_COMMIT),$(MISC_COMMIT),siguza-utils)
+	$(call EXTRACT_TAR,siguza-utils-$(MISC_COMMIT).tar.gz,misc-$(MISC_COMMIT),siguza-utils)
 	mkdir -p $(BUILD_STAGE)/siguza-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 ifneq ($(wildcard $(BUILD_WORK)/siguza-utils/.build_complete),)
@@ -20,7 +20,6 @@ else
 siguza-utils: siguza-utils-setup
 	# Delete mesu, it's broken afaik
 	rm -rf $(BUILD_WORK)/siguza-utils/mesu.c
-	mv $(BUILD_WORK)/misc $(BUILD_WORK)/siguza-utils
 
 	# Compile bindump.c
 	$(CC) $(CFLAGS) \
