@@ -26,28 +26,28 @@ libredwg: libredwg-setup
 endif
 
 libredwg-package: libredwg-stage
-	 libredwg.mk Package Structure
+	# libredwg.mk Package Structure
 	rm -rf $(BUILD_DIST)/libredwg{0,-dev,-utils}
 	mkdir -p $(BUILD_DIST)/libredwg0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 			$(BUILD_DIST)/libredwg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 			$(BUILD_DIST)/libredwg-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
-	 libredwg.mk Prep libredwg
+	# libredwg.mk Prep libredwg
 	cp -a $(BUILD_STAGE)/libredwg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libredwg.0.dylib $(BUILD_DIST)/libredwg0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libredwg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/libredwg-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/libredwg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libredwg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/libredwg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libredwg.{a,dylib}} $(BUILD_DIST)/libredwg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-	 libredwg.mk Sign
+	# libredwg.mk Sign
 	$(call SIGN,libredwg-utils,general.xml)
 	$(call SIGN,libredwg0,general.xml)
 
-	 libredwg.mk Make .debs
+	# libredwg.mk Make .debs
 	$(call PACK,libredwg0,DEB_LIBREDWG_V)
 	$(call PACK,libredwg-dev,DEB_LIBREDWG_V)
 	$(call PACK,libredwg-utils,DEB_LIBREDWG_V)
 
-	 libredwg.mk Build cleanup
+	# libredwg.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libredwg{0,-dev,-utils}
 
 .PHONY: libredwg libredwg-package
