@@ -7,9 +7,7 @@ LIBMPACK_VERSION := 1.0.5
 DEB_LIBMPACK_V   ?= $(LIBMPACK_VERSION)
 
 libmpack-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/libmpack-$(LIBMPACK_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/libmpack-$(LIBMPACK_VERSION).tar.gz \
-			https://github.com/libmpack/libmpack/archive/$(LIBMPACK_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,libmpack,libmpack,$(LIBMPACK_VERSION),$(LIBMPACK_VERSION))
 	$(call EXTRACT_TAR,libmpack-$(LIBMPACK_VERSION).tar.gz,libmpack-$(LIBMPACK_VERSION),libmpack)
 
 ifneq ($(wildcard $(BUILD_WORK)/libmpack/.build_complete),)

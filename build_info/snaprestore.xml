@@ -1,0 +1,17 @@
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>platform-application</key>
+	<true/>
+	<key>com.apple.private.security.no-container</key>
+	<true/>
+	<key>com.apple.private.skip-library-validation</key>
+	<true/>
+	<key>com.apple.private.apfs.revert-to-snapshot</key>
+	<true/>
+	<key>com.apple.private.security.disk-device-access</key>
+	<true/>
+	<key>com.apple.private.vfs.snapshot</key>
+	<true/>
+</dict>
+</plist>

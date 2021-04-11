@@ -8,7 +8,7 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += zsh
 endif # ($(MEMO_TARGET),darwin-\*)
 ZSH_VERSION   := 5.8
-DEB_ZSH_V     ?= $(ZSH_VERSION)-3
+DEB_ZSH_V     ?= $(ZSH_VERSION)-4
 
 zsh-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.zsh.org/pub/zsh-$(ZSH_VERSION).tar.xz{,.asc}
@@ -30,14 +30,12 @@ else
 zsh: zsh-setup pcre ncurses
 	## So many flags are needed because zsh's configure script sucks! I also suck but it's cool.
 	cd $(BUILD_WORK)/zsh && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--enable-fndir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/functions \
-		--enable-scriptdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/scripts \
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		--enable-fndir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/functions \
+		--enable-scriptdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/scripts \
 		--enable-site-fndir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/site-functions \
 		--enable-site-scriptdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/site-scripts \
-		--enable-runhelpdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/help \
+		--enable-runhelpdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/help \
 		--enable-cap \
 		--enable-pcre \
 		--enable-multibyte \

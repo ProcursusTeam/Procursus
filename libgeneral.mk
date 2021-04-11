@@ -7,8 +7,8 @@ LIBGENERAL_VERSION := 54
 DEB_LIBGENERAL_V   ?= $(LIBGENERAL_VERSION)
 
 libgeneral-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tihmstar/libgeneral/archive/$(LIBGENERAL_VERSION).tar.gz
-	$(call EXTRACT_TAR,$(LIBGENERAL_VERSION).tar.gz,libgeneral-$(LIBGENERAL_VERSION),libgeneral)
+	$(call GITHUB_ARCHIVE,tihmstar,libgeneral,$(LIBGENERAL_VERSION),$(LIBGENERAL_VERSION))
+	$(call EXTRACT_TAR,libgeneral-$(LIBGENERAL_VERSION).tar.gz,libgeneral-$(LIBGENERAL_VERSION),libgeneral)
 
 ifneq ($(wildcard $(BUILD_WORK)/libgeneral/.build_complete),)
 libgeneral:
@@ -16,9 +16,7 @@ libgeneral:
 else
 libgeneral: libgeneral-setup
 	cd $(BUILD_WORK)/libgeneral && ./autogen.sh \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) 
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libgeneral
 	+$(MAKE) -C $(BUILD_WORK)/libgeneral install \
 		DESTDIR="$(BUILD_STAGE)/libgeneral"

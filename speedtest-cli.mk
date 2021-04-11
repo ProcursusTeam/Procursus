@@ -7,16 +7,14 @@ SPEEDTEST-CLI_VERSION := 2.1.2
 DEB_SPEEDTEST-CLI_V   ?= $(SPEEDTEST-CLI_VERSION)-1
 
 speedtest-cli-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/speedtest-cli-$(SPEEDTEST-CLI_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/speedtest-cli-$(SPEEDTEST-CLI_VERSION).tar.gz \
-			https://github.com/sivel/speedtest-cli/archive/v$(SPEEDTEST-CLI_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,sivel,speedtest-cli,$(SPEEDTEST-CLI_VERSION),v$(SPEEDTEST-CLI_VERSION))
 	$(call EXTRACT_TAR,speedtest-cli-$(SPEEDTEST-CLI_VERSION).tar.gz,speedtest-cli-$(SPEEDTEST-CLI_VERSION),speedtest-cli)
 
 ifneq ($(wildcard $(BUILD_WORK)/speedtest-cli/.build_complete),)
 speedtest-cli:
 	@echo "Using previously built speedtest-cli."
 else
-speedtest-cli: speedtest-cli-setup 
+speedtest-cli: speedtest-cli-setup
 	$(GINSTALL) -Dm 755 $(BUILD_WORK)/speedtest-cli/speedtest.py "$(BUILD_STAGE)/speedtest-cli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/speedtest-cli"
 	ln -s speedtest-cli $(BUILD_STAGE)/speedtest-cli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/speedtest
 	$(GINSTALL) -Dm 644 $(BUILD_WORK)/speedtest-cli/speedtest-cli.1 -t "$(BUILD_STAGE)/speedtest-cli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1"

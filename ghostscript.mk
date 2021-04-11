@@ -18,8 +18,7 @@ ghostscript:
 else
 ghostscript: ghostscript-setup libtiff libpng16 jbig2dec libjpeg-turbo lcms2 libpaper fontconfig freetype openjpeg expat
 	cd $(BUILD_WORK)/ghostscript && unset CPP && PKGCONFIG="pkg-config --define-prefix" ./autogen.sh -C \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--without-pcl \
 		--with-system-libtiff \
 		--enable-dynamic \

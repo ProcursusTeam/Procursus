@@ -9,7 +9,7 @@ DEB_LIBXMU_V   ?= $(LIBXMU_VERSION)
 libxmu-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXmu-$(LIBXMU_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,libXmu-$(LIBXMU_VERSION).tar.bz2)
-	$(call EXTRACT_TAR,libXmu-$(LIBXMU_VERSION).tar.bz2,libXmu-$(LIBXMU_VERSION),libXmu)
+	$(call EXTRACT_TAR,libXmu-$(LIBXMU_VERSION).tar.bz2,libXmu-$(LIBXMU_VERSION),libxmu)
 
 ifneq ($(wildcard $(BUILD_WORK)/libxmu/.build_complete),)
 libxmu:
@@ -17,11 +17,7 @@ libxmu:
 else
 libxmu: libxmu-setup libxext libxt
 	cd $(BUILD_WORK)/libxmu && unset CPP CPPFLAGS && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-malloc0returnsnull=no \
 		--enable-specs=no \
 		--disable-silent-rules

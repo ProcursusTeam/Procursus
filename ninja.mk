@@ -7,9 +7,7 @@ NINJA_VERSION := 1.10.0
 DEB_NINJA_V   ?= $(NINJA_VERSION)
 
 ninja-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/ninja-$(NINJA_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/ninja-$(NINJA_VERSION).tar.gz \
-			https://github.com/ninja-build/ninja/archive/v$(NINJA_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,ninja-build,ninja,$(NINJA_VERSION),v$(NINJA_VERSION))
 	$(call EXTRACT_TAR,ninja-$(NINJA_VERSION).tar.gz,ninja-$(NINJA_VERSION),ninja)
 	mkdir -p $(BUILD_WORK)/ninja/build $(BUILD_STAGE)/ninja/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
@@ -19,11 +17,7 @@ ninja:
 else
 ninja: ninja-setup
 	cd $(BUILD_WORK)/ninja/build && cmake . \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_OSX_ARCHITECTURES="$(MEMO_ARCH)" \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
+		$(DEFAULT_CMAKE_FLAGS) \
 		..
 	+$(MAKE) -C $(BUILD_WORK)/ninja/build
 	cp $(BUILD_WORK)/ninja/build/ninja $(BUILD_STAGE)/ninja/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/

@@ -5,7 +5,18 @@ endif
 SUBPROJECTS       += libboost
 LIBBOOST_FORMAT_V := 1_74_0
 LIBBOOST_VERSION  := 1.74.0
-DEB_LIBBOOST_V    ?= $(LIBBOOST_VERSION)-1
+DEB_LIBBOOST_V    ?= $(LIBBOOST_VERSION)-2
+
+ifneq (,$(findstring amd64,$(MEMO_TARGET)))
+LIBBOOST_CONFIGURE_ARGS := abi=sysv
+else
+LIBBOOST_CONFIGURE_ARGS := abi=aapcs
+endif
+
+###
+# Add libicu next release (1.76.0)
+# NEVER FORGET TO CHECK IF THERE ARE NEW/REMOVED LIBS
+###
 
 libboost-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://dl.bintray.com/boostorg/release/$(LIBBOOST_VERSION)/source/boost_$(LIBBOOST_FORMAT_V).tar.bz2
@@ -20,24 +31,31 @@ libboost: libboost-setup xz zstd
 	cd $(BUILD_WORK)/libboost && unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS SYSROOT && ./bootstrap.sh \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--without-icu
+ifneq (,$(findstring amd64,$(MEMO_TARGET)))
+	echo 'using clang-darwin : x86 : $(CXX) : <compileflags>"$(CPPFLAGS)" <cflags>"$(CFLAGS)" <cxxflags>"$(CXXFLAGS)" <linkflags>"$(LDFLAGS)" ;' > $(BUILD_WORK)/libboost/tools/build/src/user-config.jam
+else
 	echo 'using clang-darwin : arm : $(CXX) : <compileflags>"$(CPPFLAGS)" <cflags>"$(CFLAGS)" <cxxflags>"$(CXXFLAGS)" <linkflags>"$(LDFLAGS)" ;' > $(BUILD_WORK)/libboost/tools/build/src/user-config.jam
+endif
 	cd $(BUILD_WORK)/libboost && ./b2 \
 		--prefix=$(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--without-python \
 		threading=multi \
 		variant=release \
-		abi=aapcs \
+		$(LIBBOOST_CONFIGURE_ARGS) \
 		install
 	cd $(BUILD_WORK)/libboost && ./b2 \
-		--prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--prefix=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--without-python \
 		threading=multi \
 		variant=release \
-		abi=aapcs \
+		$(LIBBOOST_CONFIGURE_ARGS) \
 		install
 	# F u boost!
-	for lib in $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_*.dylib $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_*.dylib; do \
-		$(I_N_T) -id /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/$$(basename $$lib .dylib).$(LIBBOOST_VERSION).dylib $$lib; \
+	for lib in $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_*.dylib $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_*.dylib; do \
+		$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/$$(basename $$lib .dylib).$(LIBBOOST_VERSION).dylib $$lib; \
+		for linked in $$(otool -L $$lib | grep @rpath | sed 's/\ .*$$//' | tr -d '\011\013\014\015\040'); do \
+			$(I_N_T) -change $$linked $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/$$(basename $$linked .dylib).$(LIBBOOST_VERSION).dylib $$lib; \
+		done; \
 		mv $$lib $$(dirname $$lib)/$$(basename $$lib .dylib).$(LIBBOOST_VERSION).dylib; \
 		ln -s $$(basename $$lib .dylib).$(LIBBOOST_VERSION).dylib $$lib; \
 	done

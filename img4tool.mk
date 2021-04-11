@@ -7,8 +7,8 @@ IMG4TOOL_VERSION := 197
 DEB_IMG4TOOL_V   ?= $(IMG4TOOL_VERSION)
 
 img4tool-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tihmstar/img4tool/archive/$(IMG4TOOL_VERSION).tar.gz
-	$(call EXTRACT_TAR,$(IMG4TOOL_VERSION).tar.gz,img4tool-$(IMG4TOOL_VERSION),img4tool)
+	$(call GITHUB_ARCHIVE,tihmstar,img4tool,$(IMG4TOOL_VERSION),$(IMG4TOOL_VERSION))
+	$(call EXTRACT_TAR,img4tool-$(IMG4TOOL_VERSION).tar.gz,img4tool-$(IMG4TOOL_VERSION),img4tool)
 
 ifneq ($(wildcard $(BUILD_WORK)/img4tool/.build_complete),)
 img4tool:
@@ -16,9 +16,7 @@ img4tool:
 else
 img4tool: img4tool-setup openssl libplist libgeneral
 	cd $(BUILD_WORK)/img4tool && ./autogen.sh \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/img4tool
 	+$(MAKE) -C $(BUILD_WORK)/img4tool install \
 		DESTDIR="$(BUILD_STAGE)/img4tool"

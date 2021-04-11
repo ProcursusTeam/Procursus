@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS   += gpgme
 GPGME_VERSION := 1.15.1
-DEB_GPGME_V   ?= $(GPGME_VERSION)
+DEB_GPGME_V   ?= $(GPGME_VERSION)-1
 
 gpgme-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/gpgme/gpgme-$(GPGME_VERSION).tar.bz2{,.sig}
@@ -17,9 +17,7 @@ gpgme:
 else
 gpgme: gpgme-setup gnupg libassuan libgpg-error
 	cd $(BUILD_WORK)/gpgme && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-libassuan-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-libgpg-error-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/gpgme

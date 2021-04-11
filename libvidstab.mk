@@ -7,9 +7,7 @@ LIBVIDSTAB_VERSION := 1.1.0
 DEB_LIBVIDSTAB_V   ?= $(LIBVIDSTAB_VERSION)
 
 libvidstab-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/vid.stab-$(LIBVIDSTAB_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/vid.stab-$(LIBVIDSTAB_VERSION).tar.gz \
-			https://github.com/georgmartius/vid.stab/archive/v$(LIBVIDSTAB_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,georgmartius,vid.stab,$(LIBVIDSTAB_VERSION),v$(LIBVIDSTAB_VERSION))
 	$(call EXTRACT_TAR,vid.stab-$(LIBVIDSTAB_VERSION).tar.gz,vid.stab-$(LIBVIDSTAB_VERSION),libvidstab)
 
 ifneq ($(wildcard $(BUILD_WORK)/libvidstab/.build_complete),)
@@ -18,16 +16,7 @@ libvidstab:
 else
 libvidstab: libvidstab-setup
 	cd $(BUILD_WORK)/libvidstab && cmake . \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
-		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DUSE_OMP=OFF \
 		-DSSE2_FOUND=FALSE
 	+$(MAKE) -C $(BUILD_WORK)/libvidstab

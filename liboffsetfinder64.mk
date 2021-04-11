@@ -8,9 +8,7 @@ LIBOFFSETFINDER64_COMMIT  := 35d3411bf675a83bdb768bc0ec26fe2344be16f3
 DEB_LIBOFFSETFINDER64_V   ?= $(LIBOFFSETFINDER64_VERSION)
 
 liboffsetfinder64-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/liboffsetfinder64-$(LIBOFFSETFINDER64_COMMIT).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/liboffsetfinder64-$(LIBOFFSETFINDER64_COMMIT).tar.gz \
-			https://github.com/tihmstar/liboffsetfinder64/archive/$(LIBOFFSETFINDER64_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,tihmstar,liboffsetfinder64,$(LIBOFFSETFINDER64_COMMIT),$(LIBOFFSETFINDER64_COMMIT))
 	$(call EXTRACT_TAR,liboffsetfinder64-$(LIBOFFSETFINDER64_COMMIT).tar.gz,liboffsetfinder64-$(LIBOFFSETFINDER64_COMMIT),liboffsetfinder64)
 
 ifneq ($(wildcard $(BUILD_WORK)/liboffsetfinder64/.build_complete),)
@@ -19,9 +17,7 @@ liboffsetfinder64:
 else
 liboffsetfinder64: liboffsetfinder64-setup libgeneral libinsn img4tool openssl libplist
 	cd $(BUILD_WORK)/liboffsetfinder64 && ./autogen.sh \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) 
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/liboffsetfinder64
 	+$(MAKE) -C $(BUILD_WORK)/liboffsetfinder64 install \
 		DESTDIR="$(BUILD_STAGE)/liboffsetfinder64"

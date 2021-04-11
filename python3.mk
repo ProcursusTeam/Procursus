@@ -31,9 +31,7 @@ python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm expat 
 endif
 	cd $(BUILD_WORK)/python3 && autoreconf -fi
 	cd $(BUILD_WORK)/python3 && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-ipv6 \
 		--without-ensurepip \
 		--with-system-ffi \
@@ -93,7 +91,7 @@ python3-package: python3-stage
 	$(call PACK,python$(PYTHON3_MAJOR_V),DEB_PYTHON3_V)
 	$(call PACK,libpython$(PYTHON3_MAJOR_V),DEB_PYTHON3_V)
 	$(call PACK,libpython$(PYTHON3_MAJOR_V)-dev,DEB_PYTHON3_V)
-	$(call PACK,python3,DEB_PYTHON3_V)	
+	$(call PACK,python3,DEB_PYTHON3_V)
 
 	# python3.mk Build cleanup
 	rm -rf $(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3} $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V){,-dev}

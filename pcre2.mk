@@ -17,9 +17,7 @@ pcre2:
 else
 pcre2: pcre2-setup readline
 	cd $(BUILD_WORK)/pcre2 && unset MACOSX_DEPLOYMENT_TARGET && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
 		--enable-pcre2-16 \
 		--enable-pcre2-32 \

@@ -7,8 +7,8 @@ LIBUSBMUXD_VERSION := 2.0.2
 DEB_LIBUSBMUXD_V   ?= $(LIBUSBMUXD_VERSION)
 
 libusbmuxd-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libimobiledevice/libusbmuxd/archive/$(LIBUSBMUXD_VERSION).tar.gz
-	$(call EXTRACT_TAR,$(LIBUSBMUXD_VERSION).tar.gz,libusbmuxd-$(LIBUSBMUXD_VERSION),libusbmuxd)
+	$(call GITHUB_ARCHIVE,libimobiledevice,libusbmuxd,$(LIBUSBMUXD_VERSION),$(LIBUSBMUXD_VERSION))
+	$(call EXTRACT_TAR,libusbmuxd-$(LIBUSBMUXD_VERSION).tar.gz,libusbmuxd-$(LIBUSBMUXD_VERSION),libusbmuxd)
 
 ifneq ($(wildcard $(BUILD_WORK)/libusbmuxd/.build_complete),)
 libusbmuxd:
@@ -16,9 +16,7 @@ libusbmuxd:
 else
 libusbmuxd: libusbmuxd-setup libplist
 	cd $(BUILD_WORK)/libusbmuxd && ./autogen.sh \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libusbmuxd
 	+$(MAKE) -C $(BUILD_WORK)/libusbmuxd install \
 		DESTDIR="$(BUILD_STAGE)/libusbmuxd"

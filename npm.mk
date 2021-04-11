@@ -19,7 +19,7 @@ npm: npm-setup
 	cp -a $(BUILD_WORK)/npm $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	node $(BUILD_WORK)/npm/bin/npm-cli.js install \
 		-ddd --global \
-        --prefix="$(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+		--prefix="$(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		$(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/npm
 	@echo "# DO NOT MODIFY THIS FILE - use /etc/npmrc instead.\n\
 globalconfig=$(MEMO_PREFIX)/etc/npmrc\n\

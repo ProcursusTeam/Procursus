@@ -17,9 +17,7 @@ else
 libpaper: libpaper-setup
 	cd $(BUILD_WORK)/libpaper && autoreconf -fi
 	cd $(BUILD_WORK)/libpaper && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libpaper
 	+$(MAKE) -C $(BUILD_WORK)/libpaper install \
 		DESTDIR="$(BUILD_STAGE)/libpaper"

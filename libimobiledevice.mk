@@ -19,9 +19,7 @@ libimobiledevice:
 else
 libimobiledevice: libimobiledevice-setup libusbmuxd libplist openssl
 	cd $(BUILD_WORK)/libimobiledevice && ./autogen.sh \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--without-cython
 	+$(MAKE) -C $(BUILD_WORK)/libimobiledevice
 	+$(MAKE) -C $(BUILD_WORK)/libimobiledevice install \

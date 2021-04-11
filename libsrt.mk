@@ -7,9 +7,7 @@ LIBSRT_VERSION := 1.4.2
 DEB_LIBSRT_V   ?= $(LIBSRT_VERSION)-1
 
 libsrt-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/libsrt-$(LIBSRT_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/libsrt-$(LIBSRT_VERSION).tar.gz \
-			https://github.com/Haivision/srt/archive/v$(LIBSRT_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,Haivision,srt,$(LIBSRT_VERSION),v$(LIBSRT_VERSION),libsrt)
 	$(call EXTRACT_TAR,libsrt-$(LIBSRT_VERSION).tar.gz,srt-$(LIBSRT_VERSION),libsrt)
 
 ifneq ($(wildcard $(BUILD_WORK)/libsrt/.build_complete),)
@@ -18,18 +16,8 @@ libsrt:
 else
 libsrt: libsrt-setup openssl
 	cd $(BUILD_WORK)/libsrt && cmake . \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DCOMMON_ARCH=$(DEB_ARCH) \
-		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
 		-DBUILD_SHARED_LIBS=true \
 		-DWITH_OPENSSL_INCLUDEDIR=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/openssl \
 		-DWITH_OPENSSL_LIBDIR=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
