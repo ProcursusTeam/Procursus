@@ -2,9 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += mc
-MC_VERSION := 4.8.26
-DEB_MC_V   ?= $(MC_VERSION)
+SUBPROJECTS += mc
+MC_VERSION  := 4.8.26
+DEB_MC_V    ?= $(MC_VERSION)
 
 mc-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) http://ftp.midnight-commander.org/mc-$(MC_VERSION).tar.xz
