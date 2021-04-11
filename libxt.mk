@@ -32,23 +32,23 @@ endif
 libxt-package: libxt-stage
 	# libxt.mk Package Structure
 	rm -rf $(BUILD_DIST)/libxt{6,-dev}
-	mkdir -p $(BUILD_DIST)/libxt6/usr/lib \
-		$(BUILD_DIST)/libxt-dev/usr/lib
-	
+	mkdir -p $(BUILD_DIST)/libxt6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libxt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# libxt.mk Prep libxt6
-	cp -a $(BUILD_STAGE)/libxt/usr/lib/libXt.6.dylib $(BUILD_DIST)/libxt6/usr/lib
+	cp -a $(BUILD_STAGE)/libxt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXt.6*.dylib $(BUILD_DIST)/libxt6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxt.mk Prep libxt-dev
-	cp -a $(BUILD_STAGE)/libxt/usr/lib/!(libXt.6.dylib) $(BUILD_DIST)/libxt-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libxt/usr/{include,share} $(BUILD_DIST)/libxt-dev/usr
-	
+	cp -a $(BUILD_STAGE)/libxt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libXt.6*.dylib) $(BUILD_DIST)/libxt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libxt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
+
 	# libxt.mk Sign
 	$(call SIGN,libxt6,general.xml)
-	
+
 	# libxt.mk Make .debs
 	$(call PACK,libxt6,DEB_LIBXT_V)
 	$(call PACK,libxt-dev,DEB_LIBXT_V)
-	
+
 	# libxt.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libxt{6,-dev}
 
