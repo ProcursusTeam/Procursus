@@ -18,7 +18,7 @@ liblocale-gettext-perl:
 else
 liblocale-gettext-perl: liblocale-gettext-perl-setup perl gettext
 	cd $(BUILD_WORK)/liblocale-gettext-perl && /opt/procursus/bin/perl Makefile.PL \
-		$(DEFAULT_PERL_FLAGS)
+		$(DEFAULT_PERL_MAKE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/liblocale-gettext-perl
 	+$(MAKE) -C $(BUILD_WORK)/liblocale-gettext-perl install \
 		DESTDIR="$(BUILD_STAGE)/liblocale-gettext-perl"

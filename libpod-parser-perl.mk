@@ -18,7 +18,7 @@ libpod-parser-perl:
 else
 libpod-parser-perl: libpod-parser-perl-setup perl
 	cd $(BUILD_WORK)/libpod-parser-perl && /opt/procursus/bin/perl Makefile.PL \
-		$(DEFAULT_PERL_FLAGS)
+		$(DEFAULT_PERL_MAKE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libpod-parser-perl
 	+$(MAKE) -C $(BUILD_WORK)/libpod-parser-perl install \
 		DESTDIR="$(BUILD_STAGE)/libpod-parser-perl"

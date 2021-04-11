@@ -24,7 +24,7 @@ libterm-readkey-perl:
 else
 libterm-readkey-perl: libterm-readkey-perl-setup perl
 	cd $(BUILD_WORK)/libterm-readkey-perl && /opt/procursus/bin/perl Makefile.PL \
-		$(DEFAULT_PERL_FLAGS)
+		$(DEFAULT_PERL_MAKE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libterm-readkey-perl install \
 		FULLPERLRUNINST="/opt/procursus/bin/perl -I/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR)" \
 		DESTDIR="$(BUILD_STAGE)/libterm-readkey-perl"

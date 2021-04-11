@@ -18,7 +18,7 @@ libyaml-tiny-perl:
 else
 libyaml-tiny-perl: libyaml-tiny-perl-setup
 	cd $(BUILD_WORK)/libyaml-tiny-perl && /opt/procursus/bin/perl Makefile.PL \
-		$(DEFAULT_PERL_FLAGS)
+		$(DEFAULT_PERL_MAKE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libyaml-tiny-perl
 	+$(MAKE) -C $(BUILD_WORK)/libyaml-tiny-perl install \
 		DESTDIR="$(BUILD_STAGE)/libyaml-tiny-perl"

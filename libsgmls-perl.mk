@@ -19,7 +19,7 @@ libsgmls-perl:
 else
 libsgmls-perl: libsgmls-perl-setup perl
 	cd $(BUILD_WORK)/libsgmls-perl && /opt/procursus/bin/perl Makefile.PL \
-		$(DEFAULT_PERL_FLAGS)
+		$(DEFAULT_PERL_MAKE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libsgmls-perl
 	+$(MAKE) -C $(BUILD_WORK)/libsgmls-perl install \
 		DESTDIR="$(BUILD_STAGE)/libsgmls-perl"

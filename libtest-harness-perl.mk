@@ -18,7 +18,7 @@ libtest-harness-perl:
 else
 libtest-harness-perl: libtest-harness-perl-setup perl
 	cd $(BUILD_WORK)/libtest-harness-perl && /opt/procursus/bin/perl Makefile.PL \
-		$(DEFAULT_PERL_FLAGS)
+		$(DEFAULT_PERL_MAKE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libtest-harness-perl
 	+$(MAKE) -C $(BUILD_WORK)/libtest-harness-perl install \
 		DESTDIR="$(BUILD_STAGE)/libtest-harness-perl"
