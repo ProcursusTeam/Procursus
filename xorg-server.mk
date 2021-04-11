@@ -21,7 +21,8 @@ xorg-server: xorg-server-setup libx11 libxau libxmu xorgproto font-util libpixma
 		--enable-xorg \
 		--with-default-font-path \
 		--enable-xephyr \
-		--disable-glamor
+		--disable-glamor \
+		PKG_CONFIG="pkg-config --define-prefix"
 	+$(MAKE) -C $(BUILD_WORK)/xorg-server
 	+$(MAKE) -C $(BUILD_WORK)/xorg-server install \
 		DESTDIR=$(BUILD_STAGE)/xorg-server
