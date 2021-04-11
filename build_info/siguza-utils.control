@@ -5,7 +5,6 @@ Maintainer: @DEB_MAINTAINER@
 Author: Siguza
 Section: Utilities
 Priority: optional
-Tag: purpose::console, role::hacker
 Homepage: https://www.github.com/Siguza/misc
 Description: Various C written tools.
  This package provides specific C written tools designed by Siguza that do specific things.

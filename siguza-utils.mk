@@ -3,8 +3,6 @@ $(error Use the main Makefile)
 endif
 
 SUPROJECTS      += siguza-utils
-STRERROR_LIBS   := -framework CoreFoundation -framework Security
-
 # Don't change the version, just the date and git hash
 MISC_COMMIT     := 43852780a20ebf2c990681aa1ab42577ae630555
 MISC_VERSION    := 1.0+git20210410.$(shell echo $(MISC_COMMIT) | cut -c -7)
@@ -47,7 +45,7 @@ siguza-utils: siguza-utils-setup
 	# Compile strerror.c
 	$(CC) $(CFLAGS) \
 		$(BUILD_WORK)/siguza-utils/strerror.c \
-		-o $(BUILD_STAGE)/siguza-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/strerror $(LDFLAGS) $(STRERROR_LIBS)
+		-o $(BUILD_STAGE)/siguza-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/strerror $(LDFLAGS) -framework CoreFoundation -framework Security
 
 	# Compile vmacho.c
 	$(CC) $(CFLAGS) \
