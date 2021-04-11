@@ -17,10 +17,7 @@ libXres:
 else
 libXres: libXres-setup libx11 libxau libxmu xorgproto xxhash
 	cd $(BUILD_WORK)/libXres && ./configure -C \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libXres
 	+$(MAKE) -C $(BUILD_WORK)/libXres install \
 		DESTDIR=$(BUILD_STAGE)/libXres
