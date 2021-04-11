@@ -17,14 +17,11 @@ xorg-server:
 else
 xorg-server: xorg-server-setup libx11 libxau libxmu xorgproto font-util libpixman libpng16 mesa libxfont2 libxkbfile glproto 
 	cd $(BUILD_WORK)/xorg-server && ./configure -C \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-xorg \
 		--with-default-font-path \
 		--enable-xephyr
-	+$(MAKE) -v -C $(BUILD_WORK)/xorg-server
+	+$(MAKE) -C $(BUILD_WORK)/xorg-server
 	+$(MAKE) -C $(BUILD_WORK)/xorg-server install \
 		DESTDIR=$(BUILD_STAGE)/xorg-server
 	+$(MAKE) -C $(BUILD_WORK)/xorg-server install \
