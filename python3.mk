@@ -91,7 +91,7 @@ python3-package: python3-stage
 	$(call PACK,python$(PYTHON3_MAJOR_V),DEB_PYTHON3_V)
 	$(call PACK,libpython$(PYTHON3_MAJOR_V),DEB_PYTHON3_V)
 	$(call PACK,libpython$(PYTHON3_MAJOR_V)-dev,DEB_PYTHON3_V)
-	$(call PACK,python3,DEB_PYTHON3_V)	
+	$(call PACK,python3,DEB_PYTHON3_V)
 
 	# python3.mk Build cleanup
 	rm -rf $(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3} $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V){,-dev}

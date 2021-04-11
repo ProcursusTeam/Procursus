@@ -31,16 +31,16 @@ endif
 rc-package: rc-stage
 	# rc.mk Package Structure
 	rm -rf $(BUILD_DIST)/rc
-	
+
 	# rc.mk Prep rc
 	cp -a $(BUILD_STAGE)/rc $(BUILD_DIST)
-	
+
 	# rc.mk Sign
 	$(call SIGN,rc,general.xml)
-	
+
 	# rc.mk Make .debs
 	$(call PACK,rc,DEB_RC_V)
-	
+
 	# rc.mk Build cleanup
 	rm -rf $(BUILD_DIST)/rc
 

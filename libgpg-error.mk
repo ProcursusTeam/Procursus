@@ -7,13 +7,13 @@ LIBGPG-ERROR_VERSION := 1.42
 DEB_LIBGPG-ERROR_V   ?= $(LIBGPG-ERROR_VERSION)
 
 ifneq (,$(findstring aarch64,$(GNU_HOST_TRIPLE)))
-        GPG_SCHEME := aarch64-apple-darwin
+	GPG_SCHEME := aarch64-apple-darwin
 else ifneq (,$(findstring arm,$(GNU_HOST_TRIPLE)))
-        GPG_SCHEME := arm-apple-darwin
+	GPG_SCHEME := arm-apple-darwin
 else ifneq (,$(findstring x86_64,$(GNU_HOST_TRIPLE)))
-        GPG_SCHEME := x86_64-apple-darwin
+	GPG_SCHEME := x86_64-apple-darwin
 else
-        $(error Host triple $(GNU_HOST_TRIPLE) isn't supported)
+	$(error Host triple $(GNU_HOST_TRIPLE) isn't supported)
 endif
 
 libgpg-error-setup: setup

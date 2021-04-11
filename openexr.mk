@@ -8,7 +8,7 @@ DEB_OPENEXR_V   ?= $(OPENEXR_VERSION)-1
 
 openexr-setup: setup
 	$(call GITHUB_ARCHIVE,openexr,openexr,$(OPENEXR_VERSION),v$(OPENEXR_VERSION))
-	$(call EXTRACT_TAR,openexr-$(OPENEXR_VERSION).tar.gz,openexr-$(OPENEXR_VERSION),openexr) 
+	$(call EXTRACT_TAR,openexr-$(OPENEXR_VERSION).tar.gz,openexr-$(OPENEXR_VERSION),openexr)
 ifneq ($(wildcard $(BUILD_WORK)/openexr/.build_complete),)
 openexr:
 	@echo "Using previously built openexr."

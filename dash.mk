@@ -34,16 +34,16 @@ endif
 dash-package: dash-stage
 	# dash.mk Package Structure
 	rm -rf $(BUILD_DIST)/dash
-	
+
 	# dash.mk Prep dash
 	cp -a $(BUILD_STAGE)/dash $(BUILD_DIST)
-	
+
 	# dash.mk Sign
 	$(call SIGN,dash,general.xml)
-	
+
 	# dash.mk Make .debs
 	$(call PACK,dash,DEB_DASH_V)
-	
+
 	# dash.mk Build cleanup
 	rm -rf $(BUILD_DIST)/dash
 

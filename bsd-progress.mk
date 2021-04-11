@@ -29,16 +29,16 @@ endif
 bsd-progress-package: bsd-progress-stage
 	# bsd-progress.mk Package Structure
 	rm -rf $(BUILD_DIST)/bsd-progress
-	
+
 	# bsd-progress.mk Prep bsd-progress
 	cp -a $(BUILD_STAGE)/bsd-progress $(BUILD_DIST)
-	
+
 	# bsd-progress.mk Sign
 	$(call SIGN,bsd-progress,general.xml)
-	
+
 	# bsd-progress.mk Make .debs
 	$(call PACK,bsd-progress,DEB_BSD_PROGRESS_V)
-	
+
 	# bsd-progress.mk Build cleanup
 	rm -rf $(BUILD_DIST)/bsd-progress
 

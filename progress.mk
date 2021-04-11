@@ -34,16 +34,16 @@ endif
 progress-package: progress-stage
 	# progress.mk Package Structure
 	rm -rf $(BUILD_DIST)/progress
-	
+
 	# progress.mk Prep progress
 	cp -a $(BUILD_STAGE)/progress $(BUILD_DIST)
-	
+
 	# progress.mk Sign
 	$(call SIGN,progress,general.xml)
-	
+
 	# progress.mk Make .debs
 	$(call PACK,progress,DEB_PROGRESS_V)
-	
+
 	# progress.mk Build cleanup
 	rm -rf $(BUILD_DIST)/progress
 
