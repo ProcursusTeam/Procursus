@@ -5,7 +5,7 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Terminal_Support
 Priority: standard
-Depends: libintl8, libslang2, libslang2-modules, libglib2.0-0
+Depends: gettext, libslang2, libslang2-modules, libglib2.0-0
 Description: Midnight Commander - a powerful file manager
  GNU Midnight Commander is a text-mode full-screen file manager. It
  uses a two panel interface and a subshell for command execution. It
