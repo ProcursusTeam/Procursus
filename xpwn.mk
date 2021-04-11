@@ -29,10 +29,10 @@ xpwn: xpwn-setup libpng16 openssl
 	+$(MAKE) -C $(BUILD_WORK)/xpwn install \
 		DESTDIR=$(BUILD_STAGE)/xpwn
 	mkdir -p {$(BUILD_BASE),$(BUILD_STAGE)/xpwn}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include/xpwn,lib/xpwn}
-	cp -a $(BUILD_WORK)/xpwn/includes/* $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpwn
-	cp -a $(BUILD_WORK)/xpwn/includes/* $(BUILD_STAGE)/xpwn/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpwn
-	cp -a $(BUILD_WORK)/xpwn/{ipsw-patch/libxpwn,minizip/libminizip,common/libcommon,hfs/libhfs,dmg/libdmg}.a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xpwn
-	cp -a $(BUILD_WORK)/xpwn/{ipsw-patch/libxpwn,minizip/libminizip,common/libcommon,hfs/libhfs,dmg/libdmg}.a $(BUILD_STAGE)/xpwn/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xpwn
+	cp -a $(BUILD_WORK)/xpwn/includes/* $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_WORK)/xpwn/includes/* $(BUILD_STAGE)/xpwn/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_WORK)/xpwn/{ipsw-patch/libxpwn,minizip/libminizip,common/libcommon,hfs/libhfs,dmg/libdmg}.a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_WORK)/xpwn/{ipsw-patch/libxpwn,minizip/libminizip,common/libcommon,hfs/libhfs,dmg/libdmg}.a $(BUILD_STAGE)/xpwn/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	touch $(BUILD_WORK)/xpwn/.build_complete
 endif
 
