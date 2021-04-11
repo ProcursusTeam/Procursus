@@ -40,22 +40,22 @@ apr-package: apr-stage
 	# apr.mk Package Structure
 	rm -rf $(BUILD_DIST)/libapr1{,-dev}
 	mkdir -p $(BUILD_DIST)/libapr1{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# apr.mk Prep libapr1
 	cp -a $(BUILD_STAGE)/apr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libapr-1.0.dylib $(BUILD_DIST)/libapr1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# apr.mk Prep libapr1-dev
 	cp -a $(BUILD_STAGE)/apr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include,share} $(BUILD_DIST)/libapr1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/apr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libapr-1.0.dylib) $(BUILD_DIST)/libapr1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# apr.mk Sign
 	$(call SIGN,libapr1,general.xml)
 	$(call SIGN,libapr1-dev,general.xml)
-	
+
 	# apr.mk Make .debs
 	$(call PACK,libapr1,DEB_APR_V)
 	$(call PACK,libapr1-dev,DEB_APR_V)
-	
+
 	# apr.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libapr1{,-dev}
 

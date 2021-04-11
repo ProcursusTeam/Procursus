@@ -56,7 +56,7 @@ cctools-package: cctools-stage
 
 	# cctools.mk Sign
 	$(call SIGN,cctools,general.xml)
-	$(call SIGN,ld64,general.xml)	
+	$(call SIGN,ld64,general.xml)
 
 	# cctools.mk Make .debs
 	$(call PACK,cctools,DEB_CCTOOLS_V)

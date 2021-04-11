@@ -33,16 +33,16 @@ endif
 libapt-pkg-perl-package: libapt-pkg-perl-stage
 	# libapt-pkg-perl.mk Package Structure
 	rm -rf $(BUILD_DIST)/libapt-pkg-perl
-	
+
 	# libapt-pkg-perl.mk Prep libapt-pkg-perl
 	cp -a $(BUILD_STAGE)/libapt-pkg-perl $(BUILD_DIST)
 
 	# libapt-pkg-perl.mk Sign
 	$(call SIGN,libapt-pkg-perl,general.xml)
-	
+
 	# libapt-pkg-perl.mk Make .debs
 	$(call PACK,libapt-pkg-perl,DEB_LIBAPT-PKG-PERL_V)
-	
+
 	# libapt-pkg-perl.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libapt-pkg-perl
 

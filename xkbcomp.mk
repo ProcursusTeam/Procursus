@@ -29,16 +29,16 @@ endif
 xkbcomp-package: xkbcomp-stage
 # xkbcomp.mk Package Structure
 	rm -rf $(BUILD_DIST)/xkbcomp
-	
+
 # xkbcomp.mk Prep xkbcomp
 	cp -a $(BUILD_STAGE)/xkbcomp $(BUILD_DIST)
-	
+
 # xkbcomp.mk Sign
 	$(call SIGN,xkbcomp,general.xml)
-	
+
 # xkbcomp.mk Make .debs
 	$(call PACK,xkbcomp,DEB_XKBCOMP_V)
-	
+
 # xkbcomp.mk Build cleanup
 	rm -rf $(BUILD_DIST)/xkbcomp
 

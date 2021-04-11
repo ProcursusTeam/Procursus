@@ -28,7 +28,7 @@ zlib-ng-package: zlib-ng-stage
 	# zlib-ng.mk Package Structure
 	rm -rf $(BUILD_DIST)/libz-ng{2,-dev}
 	mkdir -p $(BUILD_DIST)/libz-ng{2,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-		
+
 	# zlib-ng.mk Prep libz-ng2
 	cp -a $(BUILD_STAGE)/zlib-ng/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libz-ng.2*.dylib $(BUILD_DIST)/libz-ng2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 

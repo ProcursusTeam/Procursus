@@ -28,16 +28,16 @@ endif
 tcsh-package: tcsh-stage
 	# tcsh.mk Package Structure
 	rm -rf $(BUILD_DIST)/tcsh
-	
+
 	# tcsh.mk Prep tcsh
 	cp -a $(BUILD_STAGE)/tcsh $(BUILD_DIST)
-	
+
 	# tcsh.mk Sign
 	$(call SIGN,tcsh,general.xml)
-	
+
 	# tcsh.mk Make .debs
 	$(call PACK,tcsh,DEB_TCSH_V)
-	
+
 	# tcsh.mk Build cleanup
 	rm -rf $(BUILD_DIST)/tcsh
 

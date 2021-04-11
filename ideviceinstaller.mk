@@ -28,16 +28,16 @@ endif
 ideviceinstaller-package: ideviceinstaller-stage
     # ideviceinstaller.mk Package Structure
 	rm -rf $(BUILD_DIST)/ideviceinstaller
-    
+
     # ideviceinstaller.mk Prep ideviceinstaller
 	cp -a $(BUILD_STAGE)/ideviceinstaller $(BUILD_DIST)
-    
+
     # ideviceinstaller.mk Sign
 	$(call SIGN,ideviceinstaller,general.xml)
-    
+
     # ideviceinstaller.mk Make .debs
 	$(call PACK,ideviceinstaller,DEB_IDEVICEINSTALLER_V)
-    
+
     # ideviceinstaller.mk Build cleanup
 	rm -rf $(BUILD_DIST)/ideviceinstaller
 

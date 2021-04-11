@@ -28,16 +28,16 @@ endif
 xkeyboard-config-package: xkeyboard-config-stage
 # xkeyboard-config.mk Package Structure
 	rm -rf $(BUILD_DIST)/xkeyboard-config
-	
+
 # xkeyboard-config.mk Prep xkeyboard-config
 	cp -a $(BUILD_STAGE)/xkeyboard-config $(BUILD_DIST)
-	
+
 # xkeyboard-config.mk Sign
 	$(call SIGN,xkeyboard-config,general.xml)
-	
+
 # xkeyboard-config.mk Make .debs
 	$(call PACK,xkeyboard-config,DEB_XKEYBOARD-CONFIG_V)
-	
+
 # xkeyboard-config.mk Build cleanup
 	rm -rf $(BUILD_DIST)/xkeyboard-config
 

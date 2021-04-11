@@ -18,7 +18,7 @@ ifneq ($(wildcard $(BUILD_WORK)/appuninst/.build_complete),)
 appuninst:
 	@echo "Using previously built appuninst."
 else
-appuninst: appuninst-setup 
+appuninst: appuninst-setup
 	$(CC) $(CFLAGS) -fobjc-arc \
 		$(BUILD_WORK)/appuninst/Sources/appuninst.m \
 		-o $(BUILD_STAGE)/appuninst/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/appuninst \

@@ -7,7 +7,7 @@ TESSERACT_VERSION := 4.1.1
 DEB_TESSERACT_V   ?= $(TESSERACT_VERSION)
 
 ###
-# TODO: 
+# TODO:
 # tesseract-lang package with the rest of the languages.
 ###
 
