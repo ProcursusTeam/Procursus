@@ -8,8 +8,8 @@ diff --color -urN lua-5.0.3/Makefile lua50/Makefile
 -	ld -o lib/liblua.so.$V -shared src/*.o
 -	ld -o lib/liblualib.so.$V -shared src/lib/*.o
 -	cd lib; ln -fs liblua.so.$V liblua.so; ln -fs liblualib.so.$V liblualib.so
-+	$(CC) $(LDFLAGS) -o lib/liblua50.5.dylib -dynamiclib -install_name /usr/lib/liblua50.5.dylib src/*.o
-+	$(CC) $(LDFLAGS) -o lib/liblualib50.5.dylib -dynamiclib -install_name /usr/lib/liblualib50.5.dylib src/lib/*.o lib/liblua.a
++	$(CC) $(LDFLAGS) -o lib/liblua50.5.dylib -dynamiclib -install_name $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua50.5.dylib src/*.o
++	$(CC) $(LDFLAGS) -o lib/liblualib50.5.dylib -dynamiclib -install_name $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblualib50.5.dylib src/lib/*.o lib/liblua.a
 +	cd lib; ln -fs liblua50.5.dylib liblua50.dylib; ln -fs liblualib50.5.dylib liblualib50.dylib; ln -fs liblua50.5.dylib liblua50.5.0.dylib; ln -fs liblualib50.5.dylib liblualib50.5.0.dylib
  
  # binaries using shared libraries

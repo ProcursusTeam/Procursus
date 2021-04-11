@@ -1,0 +1,32 @@
+diff -u 2/Makefile.in 1/Makefile.in
+--- Makefile.in	2020-11-18 11:34:01.000000000 -0600
++++ Makefile.in	2021-03-22 11:02:17.000000000 -0500
+@@ -31,6 +31,7 @@
+ 
+ # This is set by autoconf:
+ CFLAGS = @CFLAGS@
++CFLAGS += -DHASHBANG
+ # debug:
+ #CFLAGS= -g
+ # production:
+@@ -448,7 +449,7 @@
+ 
+ gethost:  gethost.c sh.err.h tc.const.h sh.h
+ 	rm -f gethost
+-	${CC_FOR_GETHOST} -o gethost ${CPPFLAGS} ${CFLAGS} ${LDFLAGS} $(srcdir)/gethost.c
++	${CC_FOR_GETHOST} -o gethost ${CPPFLAGS} $(srcdir)/gethost.c
+ 
+ tc.defs.c:	gethost host.defs
+ 	@rm -f $@.tmp
+diff -u 2/Makefile.std 1/Makefile.std
+--- Makefile.std	2020-11-18 11:34:01.000000000 -0600
++++ Makefile.std	2021-03-22 11:03:12.000000000 -0500
+@@ -349,7 +349,7 @@
+ 
+ gethost:  gethost.c sh.err.h tc.const.h sh.h
+ 	rm -f gethost
+-	${CC} -o gethost ${LDFLAGS} ${CFLAGS} ${DFLAGS} $(srcdir)/gethost.c ${LIBES} ${EXTRALIBS}
++	${CC} -o gethost ${DFLAGS} $(srcdir)/gethost.c ${LIBES} ${EXTRALIBS}
+ 
+ tc.defs.c:	gethost host.defs
+ 	@rm -f $@

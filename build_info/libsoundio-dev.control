@@ -1,0 +1,20 @@
+Package: libsoundio-dev
+Version: @DEB_LIBSOUNDIO_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libsoundio2
+Section: Development
+Priority: standard
+Description: cross-platform audio input and output library
+ libsoundio is a lightweight abstraction over various sound drivers. It provides
+ a well-documented API that operates consistently regardless of the sound driver
+ it connects to. It performs no buffering or processing on your behalf; instead
+ exposing the raw power of the underlying backend.
+ .
+ libsoundio is appropriate for games, music players, digital audio workstations,
+ and various utilities.
+ .
+ libsoundio is serious about robustness. It even handles out of memory
+ conditions correctly.
+ .
+ This package contains the development files.

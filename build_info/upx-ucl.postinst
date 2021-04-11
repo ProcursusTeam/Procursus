@@ -1,0 +1,22 @@
+#!/bin/sh
+
+set -e
+
+update_alt()
+{
+# arguments: link program priority
+  if ! update-alternatives --display "$1" | grep -q "^@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/$2" ; then
+       update-alternatives --install "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/$1" "$1" "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/$2" "$3" \
+		--slave "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/$1.1.zst" "$1.1.zst" \
+					"@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/$2.1.zst"
+  fi
+}
+
+
+if [ "$1" = "configure" ] ; then
+	update_alt upx upx-ucl 30
+fi
+
+#DEBHELPER#
+
+exit 0

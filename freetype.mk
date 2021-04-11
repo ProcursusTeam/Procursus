@@ -17,10 +17,7 @@ freetype:
 else
 freetype: freetype-setup brotli libpng16
 	cd $(BUILD_WORK)/freetype && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=/etc \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--without-harfbuzz
 	+$(MAKE) -C $(BUILD_WORK)/freetype
 	+$(MAKE) -C $(BUILD_WORK)/freetype install \
@@ -33,22 +30,22 @@ endif
 freetype-package: freetype-stage
 	# freetype.mk Package Structure
 	rm -rf $(BUILD_DIST)/libfreetype{6,-dev}
-	mkdir -p $(BUILD_DIST)/libfreetype{6,-dev}/usr/lib
-	
+	mkdir -p $(BUILD_DIST)/libfreetype{6,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# freetype.mk Prep freetype6
-	cp -a $(BUILD_STAGE)/freetype/usr/lib/libfreetype.6.dylib $(BUILD_DIST)/libfreetype6/usr/lib
-	
+	cp -a $(BUILD_STAGE)/freetype/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libfreetype.6.dylib $(BUILD_DIST)/libfreetype6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# freetype.mk Prep freetype6-dev
-	cp -a $(BUILD_STAGE)/freetype/usr/lib/{libfreetype.{a,dylib},pkgconfig} $(BUILD_DIST)/libfreetype-dev/usr/lib
-	cp -a $(BUILD_STAGE)/freetype/usr/{include,share} $(BUILD_DIST)/libfreetype-dev/usr
-	
+	cp -a $(BUILD_STAGE)/freetype/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libfreetype.{a,dylib},pkgconfig} $(BUILD_DIST)/libfreetype-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/freetype/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libfreetype-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+
 	# freetype.mk Sign
 	$(call SIGN,libfreetype6,general.xml)
-	
+
 	# freetype.mk Make .debs
 	$(call PACK,libfreetype6,DEB_FREETYPE_V)
 	$(call PACK,libfreetype-dev,DEB_FREETYPE_V)
-	
+
 	# freetype.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libfreetype{6,-dev}
 

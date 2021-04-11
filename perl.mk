@@ -42,8 +42,8 @@ perl-setup: setup
 	libperl='libperl.dylib'" > $(BUILD_WORK)/perl/cnf/hints/darwin
 
 	mkdir -p $(BUILD_WORK)/perl/include
-ifneq (,$(wildcard $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h))
-	cp -a $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h $(BUILD_WORK)/perl/include
+ifneq (,$(wildcard $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h))
+	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h $(BUILD_WORK)/perl/include
 endif
 
 ifneq ($(wildcard $(BUILD_WORK)/perl/.build_complete),)
@@ -53,10 +53,7 @@ else
 perl: perl-setup
 	@# Don't use $$(CFLAGS) here because, in the case BerkeleyDB was made before perl, it will look at the db.h in $$(BUILD_BASE).
 	cd $(BUILD_WORK)/perl && CC='$(CC)' AR='$(AR)' NM='$(NM)' OBJDUMP='objdump' CFLAGS='-DPERL_DARWIN -DPERL_USE_SAFE_PUTENV -DTIME_HIRES_CLOCKID_T -O2 -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_WORK)/perl/include $(PLATFORM_VERSION_MIN)' ./configure \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--target=$(GNU_HOST_TRIPLE) \
-		--sysroot=$(TARGET_SYSROOT) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		-Duseshrplib \
 		-Dusevendorprefix \
 		-Dvendorprefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
@@ -76,16 +73,16 @@ endif
 perl-package: perl-stage
 	# perl.mk Package Structure
 	rm -rf $(BUILD_DIST)/perl
-	
+
 	# perl.mk Prep perl
 	cp -a $(BUILD_STAGE)/perl $(BUILD_DIST)
-	
+
 	# perl.mk Sign
 	$(call SIGN,perl,general.xml)
-	
+
 	# perl.mk Make .debs
 	$(call PACK,perl,DEB_PERL_V)
-	
+
 	# perl.mk Build cleanup
 	rm -rf $(BUILD_DIST)/perl
 

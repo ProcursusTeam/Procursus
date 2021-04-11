@@ -17,15 +17,7 @@ libssh:
 else
 libssh: libssh-setup openssl
 	cd $(BUILD_WORK)/libssh/build && cmake . \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)/ \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DBUILD_STATIC_LIB=ON \
 		-DUNIT_TESTING=OFF \
 		..
@@ -41,21 +33,21 @@ libssh-package: libssh-stage
 	# libssh.mk Package Structure
 	rm -rf $(BUILD_DIST)/libssh-{4,dev}
 	mkdir -p $(BUILD_DIST)/libssh-{4,dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libssh.mk Prep libssh-4
 	cp -a $(BUILD_STAGE)/libssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libssh.4*.dylib $(BUILD_DIST)/libssh-4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libssh.mk Prep liblibssh-dev
 	cp -a $(BUILD_STAGE)/libssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libssh.dylib,pkgconfig,cmake} $(BUILD_DIST)/libssh-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libssh-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libssh.mk Sign
 	$(call SIGN,libssh-4,general.xml)
-	
+
 	# libssh.mk Make .debs
 	$(call PACK,libssh-4,DEB_LIBSSH_V)
 	$(call PACK,libssh-dev,DEB_LIBSSH_V)
-	
+
 	# libssh.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libssh-{4,dev}
 

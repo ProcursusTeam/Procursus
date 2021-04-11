@@ -16,9 +16,7 @@ libde265:
 else
 libde265: libde265-setup
 	cd $(BUILD_WORK)/libde265 && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-sherlock265
 	+$(MAKE) -C $(BUILD_WORK)/libde265
 	+$(MAKE) -C $(BUILD_WORK)/libde265 install \
@@ -31,28 +29,28 @@ endif
 libde265-package: libde265-stage
 	# libde265.mk Package Structure
 	rm -rf $(BUILD_DIST)/libde265-{0,dev,examples}
-	mkdir -p $(BUILD_DIST)/libde265-{0,dev}/usr/lib \
-		$(BUILD_DIST)/libde265-examples/usr/bin
-	
+	mkdir -p $(BUILD_DIST)/libde265-{0,dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libde265-examples/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+
 	# libde265.mk Prep libde265-0
-	cp -a $(BUILD_STAGE)/libde265/usr/lib/libde265.0.dylib $(BUILD_DIST)/libde265-0/usr/lib
-	
+	cp -a $(BUILD_STAGE)/libde265/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libde265.0.dylib $(BUILD_DIST)/libde265-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# libde265.mk Prep libde265-dev
-	cp -a $(BUILD_STAGE)/libde265/usr/lib/{libde265.{dylib,a},pkgconfig} $(BUILD_DIST)/libde265-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libde265/usr/include $(BUILD_DIST)/libde265-dev/usr
-	
+	cp -a $(BUILD_STAGE)/libde265/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libde265.{dylib,a},pkgconfig} $(BUILD_DIST)/libde265-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libde265/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libde265-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+
 	# libde265.mk Prep libde265-examples
-	cp -a $(BUILD_STAGE)/libde265/usr/bin/dec265 $(BUILD_DIST)/libde265-examples/usr/bin/libde265-dec265
-	
+	cp -a $(BUILD_STAGE)/libde265/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dec265 $(BUILD_DIST)/libde265-examples/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/libde265-dec265
+
 	# libde265.mk Sign
 	$(call SIGN,libde265-0,general.xml)
 	$(call SIGN,libde265-examples,general.xml)
-	
+
 	# libde265.mk Make .debs
 	$(call PACK,libde265-0,DEB_LIBDE265_V)
 	$(call PACK,libde265-dev,DEB_LIBDE265_V)
 	$(call PACK,libde265-examples,DEB_LIBDE265_V)
-	
+
 	# libde265.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libde265-{0,dev,examples}
 

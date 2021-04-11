@@ -2,10 +2,10 @@ Package: openjdk-jre
 Version: @DEB_OPENJDK_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: openjdk-16-jre
-Section: Development
+Depends: openjdk-17-jre
+Section: System
 Priority: optional
-Homepage: https://github.com/openjdk/aarch64-port/tree/jdk-macos
+Homepage: https://github.com/openjdk/jdk
 Description: OpenJDK Java runtime, using Hotspot JIT
  Minimal Java runtime - needed for executing non GUI Java programs,
  using Hotspot JIT.

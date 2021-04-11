@@ -16,7 +16,7 @@ base-package: base-stage
 	# base.mk Package Structure
 	rm -rf $(BUILD_DIST)/base
 	mkdir -p $(BUILD_DIST)/base
-	
+
 	# base.mk Prep base
 	cp -a $(BUILD_STAGE)/base/* $(BUILD_DIST)/base
 
@@ -34,7 +34,7 @@ base-package: base-stage
 
 	# base.mk Make .debs
 	$(call PACK,base,DEB_BASE_V,2)
-	
+
 	# base.mk Build cleanup
 	rm -rf $(BUILD_DIST)/base
 

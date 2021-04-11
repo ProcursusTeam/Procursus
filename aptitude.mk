@@ -21,29 +21,26 @@ aptitude: aptitude-setup ncurses libboost xapian cwidget apt googletest
 		$(BUILD_WORK)/aptitude/doc/aptitude-{txt,man,html}.xsl \
 		$(BUILD_WORK)/aptitude/doc/{de,nl,it,es,ja,en,ru,fr,pl,fi,cs}/Makefile.in
 	cd $(BUILD_WORK)/aptitude && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/$(MEMO_PREIFX)/$(MEMO_SUB_PREFIX) \
-		--sysconfdir=/$(MEMO_PREIFX)/etc \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-qt \
 		--disable-gtk \
-		--with-boost-libdir="$(BUILD_BASE)/$(MEMO_PREIFX)/$(MEMO_SUB_PREFIX)/lib" \
+		--with-boost-libdir="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
 		--disable-boost-lib-checks \
 		--disable-tests \
 		--program-transform='s&aptitude$$&aptitude-curses&' \
-		XAPIAN_CONFIG="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/xapian-config" \
-		SIGC_CFLAGS="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sigc++-2.0 -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/sigc++-2.0/include" \
-		CWIDGET_CFLAGS="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/cwidget -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/cwidget -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sigc++-2.0 -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/sigc++-2.0/include" \
+		XAPIAN_CONFIG="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/xapian-config" \
+		SIGC_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sigc++-2.0 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/sigc++-2.0/include" \
+		CWIDGET_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/cwidget -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/cwidget -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sigc++-2.0 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/sigc++-2.0/include" \
 		CXXFLAGS="-std=gnu++17 $(CXXFLAGS) -D_XOPEN_SOURCE_EXTENDED" \
 		CFLAGS="$(CFLAGS) -D_XOPEN_SOURCE_EXTENDED" \
-		LIBS=" -lapt-pkg -lncursesw -lsigc-2.0 -lcwidget -lncursesw -lsigc-2.0 -lsqlite3 -lboost_iostreams.1.74.0 -lboost_system -lxapian -lpthread" \
+		LIBS=" -lapt-pkg -lncursesw -lsigc-2.0 -lcwidget -lncursesw -lsigc-2.0 -lboost_iostreams.1.74.0 -lboost_system -lxapian -lpthread" \
 		pkgdata_DATA="" \
 		DOCBOOK_TARGETS="docbook-man"
 	+$(MAKE) -C $(BUILD_WORK)/aptitude \
 		AR=$(AR) \
 		FILESYSTEM_LDFLAGS="" \
 		README="" \
-		LIBS=" -lapt-pkg -lncursesw -lsigc-2.0 -lcwidget -lncursesw -lsigc-2.0 -lsqlite3 -lboost_iostreams.1.74.0 -lboost_system -lxapian -lpthread" \
+		LIBS=" -lapt-pkg -lncursesw -lsigc-2.0 -lcwidget -lncursesw -lsigc-2.0 -lboost_iostreams.1.74.0 -lboost_system -lxapian -lpthread" \
 		DOCBOOK_TARGETS="docbook-man"
 	+$(MAKE) -C $(BUILD_WORK)/aptitude install \
 		DESTDIR=$(BUILD_STAGE)/aptitude \
@@ -57,16 +54,16 @@ aptitude-package: aptitude-stage
 	# aptitude.mk Package Structure
 	rm -rf $(BUILD_DIST)/aptitude
 	mkdir -p $(BUILD_DIST)/aptitude
-	
+
 	# aptitude.mk Prep aptitude
 	cp -a $(BUILD_STAGE)/aptitude $(BUILD_DIST)
-	
+
 	# aptitude.mk Sign
 	$(call SIGN,aptitude,general.xml)
-	
+
 	# aptitude.mk Make .debs
 	$(call PACK,aptitude,DEB_APTITUDE_V)
-	
+
 	# aptitude.mk Build cleanup
 	rm -rf $(BUILD_DIST)/aptitude
 
