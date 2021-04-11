@@ -17,10 +17,7 @@ libXaw:
 else
 libXaw: libXaw-setup libx11 libxau libxmu xorgproto libxpm
 	cd $(BUILD_WORK)/libXaw && ./configure -C \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libXaw
 	+$(MAKE) -C $(BUILD_WORK)/libXaw install \
 		DESTDIR=$(BUILD_STAGE)/libXaw
