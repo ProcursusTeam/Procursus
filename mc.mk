@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/mc/.build_complete),)
 mc:
 	@echo "Using previously built mc."
 else
-mc: mc-setup slang2 glib2.0 libinitl
+mc: mc-setup slang2 glib2.0 gettext
 	cd $(BUILD_WORK)/mc && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/mc
