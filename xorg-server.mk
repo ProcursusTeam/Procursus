@@ -15,6 +15,14 @@ xorg-server-setup: setup
 
 #   --enable-glamor needs GBM and libepoxy
 
+###
+# No package 'xcb-renderutil' found
+# No package 'xcb-aux' found
+# No package 'xcb-image' found
+# No package 'xcb-icccm' found
+# No package 'xcb-keysyms' found
+###
+
 ifneq ($(wildcard $(BUILD_WORK)/xorg-server/.build_complete),)
 xorg-server:
 	@echo "Using previously built xorg-server."
@@ -25,11 +33,11 @@ xorg-server: xorg-server-setup libx11 libxau libxmu xorgproto font-util libpixma
 		--enable-xorg \
 		--with-default-font-path \
 		--enable-dmx \
+		--enable-xephyr \
+		--enable-kdrive \
 		--disable-glamor \
 		--disable-xquartz \
 		PKG_CONFIG="pkg-config --define-prefix"
-		#--enable-xephyr \
-		#--enable-kdrive
 	$(SED) -i 's|panoramiX.\$$(OBJEXT)||' $(BUILD_WORK)/xorg-server/hw/dmx/Makefile
 #   ^^ Wtf
 	+$(MAKE) -C $(BUILD_WORK)/xorg-server
