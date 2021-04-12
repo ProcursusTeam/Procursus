@@ -2,11 +2,13 @@ Package: libgpg-error0
 Version: @DEB_LIBGPG-ERROR_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Depends: libintl8
 Section: Libraries
 Priority: optional
-Multi-Arch: foreign
-Description: GnuPG's error management library (Library)
-Name: GnuPG Errors
-Replaces: libgpg-error
-Conflicts: libgpg-error (<<1:0)
-Provides: libgpg-error (=@DEB_LIBGPG-ERROR_V@)
+Description: GnuPG development runtime library
+ Library that defines common error values, messages, and common
+ runtime functionality for all GnuPG components.  Among these are GPG,
+ GPGSM, GPGME, GPG-Agent, libgcrypt, pinentry, SmartCard Daemon and
+ possibly more in the future.
+ .
+ It will likely be renamed "gpgrt" in the future.

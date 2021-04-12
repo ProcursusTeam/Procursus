@@ -2,8 +2,9 @@ Package: shell-cmds
 Version: @DEB_SHELL-CMDS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Depends: libpam2
+Conflicts: coreutils (<< 8.32-9)
 Provides: killall, which
 Section: Administration
 Priority: important
-Description: killall, renice, script, time, which, getopt, what, hexdump
-Tag: purpose::console, role::hacker
+Description: killall, renice, script, time, which, getopt, what, hexdump, su

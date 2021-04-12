@@ -1,0 +1,10 @@
+Package: bash
+Version: @DEB_BASH_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Pre-Depends: libreadline8 (>= 8.0)
+Depends: libncursesw6, libreadline8
+Section: Terminal_Support
+Priority: optional
+Homepage: http://www.gnu.org/software/bash/
+Description: the best shell ever written by Brian Fox

@@ -3,12 +3,12 @@
 set -e
 
 if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ]; then
-    update-alternatives --install /usr/bin/editor editor /usr/bin/nano 40 \
-      --slave /usr/share/man/man1/editor.1.zst editor.1.zst \
-      /usr/share/man/man1/nano.1.zst
-    update-alternatives --install /usr/bin/pico pico /usr/bin/nano 10 \
-      --slave /usr/share/man/man1/pico.1.zst pico.1.zst \
-      /usr/share/man/man1/nano.1.zst
+    update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/editor editor @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/nano 40 \
+      --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/editor.1.zst editor.1.zst \
+      @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/nano.1.zst
+    update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/pico pico @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/nano 10 \
+      --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/pico.1.zst pico.1.zst \
+      @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/nano.1.zst
 fi
 
 

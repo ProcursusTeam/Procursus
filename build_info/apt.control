@@ -4,8 +4,8 @@ Section: Packaging
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_APT_V@
-Pre-Depends: dpkg (>= 1.14.25-8)
-Depends: libapt-pkg6.0 (= @DEB_APT_V@), gpgv, dpkg (>= 1.19.0)
+Pre-Depends: dpkg (>= 1.14.25-8), system-cmds (>= 854.40.2-2)
+Depends: libapt-pkg6.0 (= @DEB_APT_V@), libgnutls30, gpgv, dpkg (>= 1.19.0), coreutils
 Replaces: apt1.8, apt1.4, libapt, libapt-pkg5.0, apt-lib, apt-key
 Conflicts: apt7 (<<1:0), apt1.4 (<<1:0), apt1.8, libapt-pkg5.0 (<<1:0), libapt (<<1:0), apt-key (<<1:0)
 Provides: apt1.8 (= 1:0), apt-lib (= 1:0), libapt (=1:0), apt-key (= 1:0)

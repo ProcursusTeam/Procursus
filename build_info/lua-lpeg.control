@@ -1,0 +1,14 @@
+Package: lua-lpeg
+Version: @DEB_LUA-LPEG_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: liblua5.1-0, liblua5.2-0, liblua5.3-0, libluajit-5.1-2
+Section: Lua 
+Priority: optional
+Description: LPeg library for the Lua language
+ LPeg is a new pattern-matching library for Lua, based on Parsing Expression
+ Grammars (PEGs). PEGs look similar to regular expressions or context-free
+ grammars in Backus-Naur form (BNF) notation. PEGs make a good replacement for
+ regular expressions, because they are strictly more powerful. For example, a
+ regular expression inherently cannot find matched pairs of parentheses, because
+ it is not recursive, but a PEG can.

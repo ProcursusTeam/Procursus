@@ -4,7 +4,7 @@ set -e
 
 case "$1" in
   remove)
-    update-alternatives --quiet --remove pager /usr/bin/less
+    update-alternatives --quiet --remove pager @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/less
   ;;
   upgrade|failed-upgrade|deconfigure)
   ;;
