@@ -17,7 +17,7 @@ xorg-server:
 	@echo "Using previously built xorg-server."
 else
 xorg-server: xorg-server-setup libx11 libxau libxmu xorgproto font-util libpixman libpng16 mesa libxfont2 libxkbfile libxdamage
-	cd $(BUILD_WORK)/xorg-server && ./configure -C \
+	cd $(BUILD_WORK)/xorg-server && ./autogen.sh -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-xorg \
 		--with-default-font-path \
