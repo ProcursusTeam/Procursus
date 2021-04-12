@@ -26,7 +26,7 @@ xcb-proto: xcb-proto-setup
 		DESTDIR=$(BUILD_STAGE)/xcb-proto \
 		PYTHON=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/python3
 	+$(MAKE) -C $(BUILD_WORK)/xcb-proto install \
-		DESTDIR=$(BUILD_STAGE)/xcb-proto \
+		DESTDIR=$(BUILD_BASE) \
 		PYTHON=$(MEMO_PREFIX)$(MEMO_SUBPREFIX)/bin/python3
 	touch $(BUILD_WORK)/xcb-proto/.build_complete
 endif
