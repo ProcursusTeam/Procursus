@@ -2,44 +2,44 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += libXaw
+SUBPROJECTS    += libxaw
 LIBXAW_VERSION := 1.0.13
 DEB_lLIBXAW_V   ?= $(LIBXAW_VERSION)
 
-libXaw-setup: setup
+libxaw-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/lib/libXaw-$(LIBXAW_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,libXaw-$(LIBXAW_VERSION).tar.gz)
-	$(call EXTRACT_TAR,libXaw-$(LIBXAW_VERSION).tar.gz,libXaw-$(LIBXAW_VERSION),libXaw)
+	$(call EXTRACT_TAR,libXaw-$(LIBXAW_VERSION).tar.gz,libXaw-$(LIBXAW_VERSION),libxaw)
 
-ifneq ($(wildcard $(BUILD_WORK)/libXaw/.build_complete),)
-libXaw:
-	@echo "Using previously built libXaw."
+ifneq ($(wildcard $(BUILD_WORK)/libxaw/.build_complete),)
+libxaw:
+	@echo "Using previously built libxaw."
 else
-libXaw: libXaw-setup libx11 libxau libxmu xorgproto libxpm
-	cd $(BUILD_WORK)/libXaw && ./configure -C \
+libxaw: libxaw-setup libx11 libxau libxmu xorgproto libxpm libxt libxext
+	cd $(BUILD_WORK)/libxaw && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/libXaw
-	+$(MAKE) -C $(BUILD_WORK)/libXaw install \
-		DESTDIR=$(BUILD_STAGE)/libXaw
-	+$(MAKE) -C $(BUILD_WORK)/libXaw install \
+	+$(MAKE) -C $(BUILD_WORK)/libxaw
+	+$(MAKE) -C $(BUILD_WORK)/libxaw install \
+		DESTDIR=$(BUILD_STAGE)/libxaw
+	+$(MAKE) -C $(BUILD_WORK)/libxaw install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libXaw/.build_complete
+	touch $(BUILD_WORK)/libxaw/.build_complete
 endif
 
-libXaw-package: libXaw-stage
-# libXaw.mk Package Structure
-	rm -rf $(BUILD_DIST)/libXaw
+libxaw-package: libxaw-stage
+# libxaw.mk Package Structure
+	rm -rf $(BUILD_DIST)/libxaw
 	
-# libXaw.mk Prep libXaw
-	cp -a $(BUILD_STAGE)/libXaw $(BUILD_DIST)
+# libxaw.mk Prep libxaw
+	cp -a $(BUILD_STAGE)/libxaw $(BUILD_DIST)
 	
-# libXaw.mk Sign
-	$(call SIGN,libXaw,general.xml)
+# libxaw.mk Sign
+	$(call SIGN,libxaw,general.xml)
 	
-# libXaw.mk Make .debs
-	$(call PACK,libXaw,DEB_LIBXAW_V)
+# libxaw.mk Make .debs
+	$(call PACK,libxaw,DEB_LIBXAW_V)
 	
-# libXaw.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libXaw
+# libxaw.mk Build cleanup
+	rm -rf $(BUILD_DIST)/libxaw
 
-.PHONY: libXaw libXaw-package
+.PHONY: libxaw libxaw-package
