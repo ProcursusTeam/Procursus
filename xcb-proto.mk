@@ -7,7 +7,7 @@ XCBPROTO_VERSION := 1.14.1
 DEB_XCBPROTO_V   ?= $(XCBPROTO_VERSION)
 
 xcb-proto-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://xorg.freedesktop.org/archive/individual/proto/xcb-proto-$(XCBPROTO_VERSION).tar.gz{,.sig}   
+	wget -q -nc -P $(BUILD_SOURCE) http://xorg.freedesktop.org/archive/individual/proto/xcb-proto-$(XCBPROTO_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,xcb-proto-$(XCBPROTO_VERSION).tar.gz)
 	$(call EXTRACT_TAR,xcb-proto-$(XCBPROTO_VERSION).tar.gz,xcb-proto-$(XCBPROTO_VERSION),xcb-proto)
 	$(call DO_PATCH,xcb-proto,xcb-proto,-p1)

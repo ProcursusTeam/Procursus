@@ -48,4 +48,4 @@ libpam-google-authenticator-package: libpam-google-authenticator-stage
 	rm -rf $(BUILD_DIST)/libpam-google-authenticator
 
 .PHONY: libpam-google-authenticator libpam-google-authenticator-package
-	
+

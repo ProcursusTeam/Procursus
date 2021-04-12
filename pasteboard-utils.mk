@@ -16,7 +16,7 @@ ifneq ($(wildcard $(BUILD_WORK)/pasteboard-utils/.build_complete),)
 pasteboard-utils:
 	@echo "Using previously built pasteboard-utils."
 else
-pasteboard-utils: pasteboard-utils-setup 
+pasteboard-utils: pasteboard-utils-setup
 	$(CC) $(CFLAGS) -fobjc-arc \
 		$(BUILD_WORK)/pasteboard-utils/pbupload/pbupload.m \
 		-o $(BUILD_STAGE)/pasteboard-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pbupload \
