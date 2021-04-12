@@ -17,7 +17,6 @@ xorg-server-setup: setup
 
 ###
 # No package 'xcb-renderutil' found
-# No package 'xcb-aux' found
 # No package 'xcb-image' found
 # No package 'xcb-icccm' found
 # No package 'xcb-keysyms' found
@@ -27,7 +26,7 @@ ifneq ($(wildcard $(BUILD_WORK)/xorg-server/.build_complete),)
 xorg-server:
 	@echo "Using previously built xorg-server."
 else
-xorg-server: xorg-server-setup libx11 libxau libxmu xorgproto font-util libpixman libpng16 mesa libxfont2 libxkbfile libxdamage libxt libxpm libxaw libxres libxext
+xorg-server: xorg-server-setup libx11 libxau libxmu xorgproto font-util libpixman libpng16 mesa libxfont2 libxkbfile libxdamage libxt libxpm libxaw libxres libxext xcb-util
 	cd $(BUILD_WORK)/xorg-server && ./autogen.sh -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-xorg \
