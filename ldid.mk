@@ -3,8 +3,9 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += ldid
-LDID_COMMIT   := c2f8abf013b22c335f44241a6a552a7767e73419
-LDID_VERSION  := 2.1.2+20210222.$(shell echo $(LDID_COMMIT) | cut -c -7)
+LDID_COMMIT   := 2edb2a9307f1bd3909dadc20e80857c6e40c00c5
+LDID_VERSION  := 2.1.4
+#LDID_VERSION  := 2.1.2+20210222.$(shell echo $(LDID_COMMIT) | cut -c -7)
 DEB_LDID_V    ?= $(LDID_VERSION)
 
 ldid-setup: setup
