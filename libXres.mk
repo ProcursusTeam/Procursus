@@ -15,9 +15,10 @@ ifneq ($(wildcard $(BUILD_WORK)/libxres/.build_complete),)
 libxres:
 	@echo "Using previously built libxres."
 else
-libxres: libxres-setup libx11 libxau libxmu xorgproto xxhash
+libxres: libxres-setup libx11 libxext
 	cd $(BUILD_WORK)/libxres && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		--enable-malloc0returnsnull=no
 	+$(MAKE) -C $(BUILD_WORK)/libxres
 	+$(MAKE) -C $(BUILD_WORK)/libxres install \
 		DESTDIR=$(BUILD_STAGE)/libxres
