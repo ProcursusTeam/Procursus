@@ -27,19 +27,26 @@ libxft: libxft-setup libx11 libxau libxmu xorgproto fontconfig freetype
 endif
 
 libxft-package: libxft-stage
-# libxft.mk Package Structure
-	rm -rf $(BUILD_DIST)/libxft
-	
-# libxft.mk Prep libxft
-	cp -a $(BUILD_STAGE)/libxft $(BUILD_DIST)
-	
-# libxft.mk Sign
-	$(call SIGN,libxft,general.xml)
-	
-# libxft.mk Make .debs
-	$(call PACK,libxft,DEB_LIBXFT_V)
-	
-# libxft.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libxft
+	# libxft.mk Package Structure
+	rm -rf $(BUILD_DIST)/libxft{2,-dev}
+	mkdir -p $(BUILD_DIST)/libxft2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libxft-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
+	# libxft.mk Prep libxft2
+	cp -a $(BUILD_STAGE)/libxft/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXft.2*.dylib $(BUILD_DIST)/libxft2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
+	# libxft.mk Prep libxft-dev
+	cp -a $(BUILD_STAGE)/libxft/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libXft.2*.dylib) $(BUILD_DIST)/libxft-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxft/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libxft-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
+
+	# libxft.mk Sign
+	$(call SIGN,libxft2,general.xml)
+
+	# libxft.mk Make .debs
+	$(call PACK,libxft2,DEB_LIBXFT_V)
+	$(call PACK,libxft-dev,DEB_LIBXFT_V)
+
+	# libxft.mk Build cleanup
+	rm -rf $(BUILD_DIST)/libxft{2,-dev}
 
 .PHONY: libxft libxft-package
