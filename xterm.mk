@@ -2,13 +2,13 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += xterm
-XTERM_VERSION := 0.52.1
+SUBPROJECTS   += xterm
+XTERM_VERSION := 367
 DEB_XTERM_V   ?= $(XTERM_VERSION)
 
 xterm-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://invisible-island.net/datafiles/release/xterm.tar.gz
-	$(call EXTRACT_TAR,xterm.tar.gz,xterm-366,xterm)
+	wget -q -nc -P $(BUILD_SOURCE) https://invisible-mirror.net/archives/xterm/xterm-$(XTERM_VERSION).tgz
+	$(call EXTRACT_TAR,xterm-$(XTERM_VERSION).tgz,xterm-$(XTERM_VERSION),xterm)
 
 ifneq ($(wildcard $(BUILD_WORK)/xterm/.build_complete),)
 xterm:
@@ -20,8 +20,6 @@ xterm: xterm-setup libx11 libxau libxmu xorgproto xbitmaps gettext libXaw libxt 
 	+$(MAKE) -C $(BUILD_WORK)/xterm
 	+$(MAKE) -C $(BUILD_WORK)/xterm install \
 		DESTDIR=$(BUILD_STAGE)/xterm
-	+$(MAKE) -C $(BUILD_WORK)/xterm install \
-		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/xterm/.build_complete
 endif
 
