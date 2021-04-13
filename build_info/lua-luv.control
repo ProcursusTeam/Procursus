@@ -2,7 +2,7 @@ Package: lua-luv
 Version: @DEB_LUA-LUV_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libuv1
+Depends: libuv1, liblua5.1-0, liblua5.2-0, liblua5.3-0, libluajit-5.1-2
 Section: Libraries 
 Priority: optional
 Description: libuv bindings for Lua

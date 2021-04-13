@@ -17,9 +17,7 @@ npth:
 else
 npth: npth-setup
 	cd $(BUILD_WORK)/npth && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/npth
 	+$(MAKE) -C $(BUILD_WORK)/npth install \
 		DESTDIR=$(BUILD_STAGE)/npth
@@ -32,22 +30,22 @@ npth-package: npth-stage
 	# npth.mk Package Structure
 	rm -rf $(BUILD_DIST)/libnpth0{,-dev}
 	mkdir -p $(BUILD_DIST)/libnpth0{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# npth.mk Prep libnpth0
 	cp -a $(BUILD_STAGE)/npth/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libnpth.0.dylib $(BUILD_DIST)/libnpth0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# npth.mk Prep libnpth0-dev
 	cp -a $(BUILD_STAGE)/npth/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libnpth.dylib $(BUILD_DIST)/libnpth0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/npth/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include,share} $(BUILD_DIST)/libnpth0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# npth.mk Sign
 	$(call SIGN,libnpth0,general.xml)
 	$(call SIGN,libnpth0-dev,general.xml)
-	
+
 	# npth.mk Make .debs
 	$(call PACK,libnpth0,DEB_NPTH_V)
 	$(call PACK,libnpth0-dev,DEB_NPTH_V)
-	
+
 	# npth.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libnpth0{,-dev}
 

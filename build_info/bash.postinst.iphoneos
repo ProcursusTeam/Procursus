@@ -1,0 +1,27 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+	(configure)
+	add-shell @MEMO_PREFIX@/bin/bash
+	add-shell @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/bash
+	if dpkg --compare-versions "$2" lt 5.1.004-2; then
+		rm -f @MEMO_PREFIX@/bin/sh.disabled
+		dpkg-divert --remove --package dash --rename \
+				@MEMO_PREFIX@/bin/sh
+		rm -f @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/sh.disabled
+		dpkg-divert --remove --package dash --rename \
+				@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/sh
+	fi
+	;;
+	(abort-upgrade|abort-remove|abort-deconfigure)
+	exit 0
+	;;
+	(*)
+	echo "postinst called with unknown argument \`$1'" >&2
+	exit 0
+	;;
+esac
+
+exit 0

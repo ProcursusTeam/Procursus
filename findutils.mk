@@ -25,9 +25,7 @@ findutils:
 else
 findutils: findutils-setup gettext
 	cd $(BUILD_WORK)/findutils && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--localstatedir=$(MEMO_PREFIX)/var/cache/locate \
 		--disable-dependency-tracking \
 		--disable-debug \
@@ -46,7 +44,7 @@ endif
 findutils-package: findutils-stage
 	# findutils.mk Package Structure
 	rm -rf $(BUILD_DIST)/findutils
-	
+
 	# findutils.mk Prep findutils
 	cp -a $(BUILD_STAGE)/findutils $(BUILD_DIST)
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
@@ -55,13 +53,13 @@ ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 		ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(echo $$bin | rev | cut -d/ -f1 | rev) $(BUILD_DIST)/findutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $$bin | rev | cut -d/ -f1 | rev | cut -c2-); \
 	done
 endif
-	
+
 	# findutils.mk Sign
 	$(call SIGN,findutils,general.xml)
-	
+
 	# findutils.mk Make .debs
 	$(call PACK,findutils,DEB_FINDUTILS_V)
-	
+
 	# findutils.mk Build cleanup
 	rm -rf $(BUILD_DIST)/findutils
 

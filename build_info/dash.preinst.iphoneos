@@ -1,0 +1,29 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+    upgrade)
+    if dpkg --compare-versions "$2" lt 0.5.11.3-1; then
+		dpkg-divert --add --package dash --rename \
+			--divert @MEMO_PREFIX@/bin/sh.disabled \
+				@MEMO_PREFIX@/bin/sh
+		dpkg-divert --add --package dash --rename \
+			--divert @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/sh.disabled \
+				@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/sh
+    fi
+    ;;
+	install)
+	dpkg-divert --add --package dash --rename \
+			--divert @MEMO_PREFIX@/bin/sh.disabled \
+				@MEMO_PREFIX@/bin/sh
+	dpkg-divert --add --package dash --rename \
+			--divert @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/sh.disabled \
+				@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/sh
+    ;;  
+    *)
+        exit 0
+    ;;
+esac
+
+exit 0

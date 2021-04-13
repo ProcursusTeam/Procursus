@@ -1,0 +1,15 @@
+Package: libwim15
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_WIMLIB_V@
+Depends: libssl1.1
+Section: Libraries
+Priority: optional
+Description: Library for manipulating Windows Imaging files
+ wimlib is a C library for extracting, creating, modifying, and
+ mounting WIM (Windows Imaging) files.
+ .
+ WIM is an archive format designed primarily for archiving Windows
+ filesystems. It features single-instancing and LZ77-based
+ compression, and is used by Microsoft to distribute and deploy
+ Windows Vista and later.

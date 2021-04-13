@@ -16,12 +16,9 @@ gnupg:
 else
 gnupg: gnupg-setup readline libgpg-error libgcrypt libassuan libksba npth gettext gnutls libusb
 	cd $(BUILD_WORK)/gnupg && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		$(foreach x, libgpg-error libgcrypt libassuan ksba npth, --with-$x-prefix=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)) \
-		--with-bzip2 \
-		--sysconfdir=/etc
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		$(foreach x, libgpg-error libgcrypt libassuan ksba npth, --with-$x-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)) \
+		--with-bzip2
 	+$(MAKE) -C $(BUILD_WORK)/gnupg
 	+$(MAKE) -C $(BUILD_WORK)/gnupg install \
 		DESTDIR=$(BUILD_STAGE)/gnupg
@@ -44,7 +41,7 @@ gnupg-package: gnupg-stage
 		$(BUILD_DIST)/gpgsm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
 		$(BUILD_DIST)/gpgv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
 		$(BUILD_DIST)/scdaemon/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{libexec,share/man/man1}
-	
+
 	# gnupg.mk Prep dirmngr
 	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dirmngr* $(BUILD_DIST)/dirmngr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/gnupg/sks-keyservers.netCA.pem $(BUILD_DIST)/dirmngr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/gnupg
@@ -106,7 +103,7 @@ gnupg-package: gnupg-stage
 	$(call SIGN,gpgsm,general.xml)
 	$(call SIGN,gpgv,general.xml)
 	$(call SIGN,scdaemon,general.xml)
-	
+
 	# gnupg.mk Make .debs
 	$(call PACK,gnupg,DEB_GNUPG_V)
 	$(call PACK,dirmngr,DEB_GNUPG_V)
@@ -119,7 +116,7 @@ gnupg-package: gnupg-stage
 	$(call PACK,gpgsm,DEB_GNUPG_V)
 	$(call PACK,gpgv,DEB_GNUPG_V)
 	$(call PACK,scdaemon,DEB_GNUPG_V)
-	
+
 	# gnupg.mk Build cleanup
 	rm -rf $(BUILD_DIST)/dirmngr $(BUILD_DIST)/gnupg{,-utils} $(BUILD_DIST)/gpg{,-agent,-wks-{client,server},conf,sm,v} $(BUILD_DIST)/scdaemon
 

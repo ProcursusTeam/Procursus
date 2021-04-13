@@ -7,9 +7,7 @@ XXHASH_VERSION := 0.8.0
 DEB_XXHASH_V   ?= $(XXHASH_VERSION)
 
 xxhash-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/xxhash-$(XXHASH_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/xxhash-$(XXHASH_VERSION).tar.gz \
-			https://github.com/Cyan4973/xxhash/archive/v$(XXHASH_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,Cyan4973,xxhash,$(XXHASH_VERSION),v$(XXHASH_VERSION))
 	$(call EXTRACT_TAR,xxhash-$(XXHASH_VERSION).tar.gz,xxHash-$(XXHASH_VERSION),xxhash)
 	$(SED) -i 's/UNAME :=/UNAME ?=/' $(BUILD_WORK)/xxhash/Makefile
 
