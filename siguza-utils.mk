@@ -4,8 +4,8 @@ endif
 
 SUBPROJECTS             += siguza-utils
 # Don't change the version, just the date and git hash
-SIGUZA-UTILS_COMMIT     := 43852780a20ebf2c990681aa1ab42577ae630555
-SIGUZA-UTILS_VERSION    := 1.0+git20210410.$(shell echo $(SIGUZA-UTILS_COMMIT) | cut -c -7)
+SIGUZA-UTILS_COMMIT     := c67cb07b365f8e3e473f1ed306c8ca82370285a7
+SIGUZA-UTILS_VERSION    := 1.0+git20210413.$(shell echo $(SIGUZA-UTILS_COMMIT) | cut -c -7)
 DEB_SIGUZA-UTILS_V      ?= $(SIGUZA-UTILS_VERSION)
 
 siguza-utils-setup: setup
