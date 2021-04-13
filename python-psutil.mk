@@ -25,12 +25,12 @@ python-psutil: python-psutil-setup python3
 endif
 
 python-psutil-package: python-psutil-stage
-    # python-psutil.mk Package Structure
+	# python-psutil.mk Package Structure
 	rm -rf $(BUILD_DIST)/python-psutil
 	mkdir -p $(BUILD_DIST)/python-psutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# python-psutil.mk Prep python-psutil
-	cp -a $(BUILD_STAGE)/python-psutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/python-psutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/python-psutil$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib $(BUILD_DIST)/python-psutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# python-psutil.mk Sign
 	$(call SIGN,python-psutil,general.xml)
