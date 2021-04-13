@@ -16,11 +16,9 @@ xcb-util-keysyms:
 else
 xcb-util-keysyms: xcb-util-keysyms-setup libxcb
 	cd $(BUILD_WORK)/xcb-util-keysyms && ./configure -C \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var 
-	+$(MAKE) CFLAGS='-std=gnu99' -C $(BUILD_WORK)/xcb-util-keysyms
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		CFLAGS="-std=gnu99 $(CFLAGS)"
+	+$(MAKE) -C $(BUILD_WORK)/xcb-util-keysyms
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-keysyms install \
 		DESTDIR=$(BUILD_STAGE)/xcb-util-keysyms
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-keysyms install \
