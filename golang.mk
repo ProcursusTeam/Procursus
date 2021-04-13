@@ -6,15 +6,18 @@ GOLANG_MAJOR_V := 1.16
 GOLANG_VERSION := $(GOLANG_MAJOR_V).3
 DEB_GOLANG_V   ?= $(GOLANG_VERSION)
 
-ifneq (,$(findstring arm64,$(MEMO_TARGET)))
+ifneq (,$(findstring iphoneos-arm64,$(MEMO_TARGET)))
 GO_ARGS := GOARCH=arm64 \
         GOOS=ios
 GO_EXPORT_ARGS := export PATH="$(BUILD_WORK)/golang/superbin:$(PATH)";
 GO_CP_ARGS := ios_arm64/go{,fmt}
-else
+else ifneq (,$(findstring darwin-amd64,$(MEMO_TARGET)))
 GO_ARGS := GOARCH=amd64 \
-        GOOS=darwin \
-	SDKROOT=$(shell xcrun --sdk macosx --show-sdk-path)
+        GOOS=darwin
+GO_CP_ARGS := go{,fmt}
+else ifneq (,$(findstring darwin-arm64,$(MEMO_TARGET)))
+GO_ARGS := GOARCH=arm64 \
+        GOOS=darwin
 GO_CP_ARGS := go{,fmt}
 endif
 
