@@ -32,7 +32,7 @@ ccache: ccache-setup zstd
 	cd $(BUILD_WORK)/ccache && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DZSTD_INCLUDE_DIR=$(BUILD_STAGE)/zstd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include \
-		-DZSTD_LIBRARY=$(BUILD_STAGE)/zstd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libzstd.1.dylib \
+		-DZSTD_LIBRARY=$(BUILD_STAGE)/zstd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libzstd.dylib \
 		$(CCACHE_CMAKE_ARGS) \
 		.
 	+$(MAKE) -C $(BUILD_WORK)/ccache
