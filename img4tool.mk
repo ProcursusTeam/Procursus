@@ -5,11 +5,12 @@ endif
 SUBPROJECTS      += img4tool
 IMG4TOOL_VERSION := 197
 IMG4TOOL_COMMIT  := aca6cf005c94caf135023263cbb5c61a0081804f
-DEB_IMG4TOOL_V   ?= $(IMG4TOOL_VERSION)
+DEB_IMG4TOOL_V   ?= $(IMG4TOOL_VERSION)-1
 
 img4tool-setup: setup
 	$(call GITHUB_ARCHIVE,tihmstar,img4tool,$(IMG4TOOL_VERSION),$(IMG4TOOL_VERSION))
 	$(call EXTRACT_TAR,img4tool-$(IMG4TOOL_VERSION).tar.gz,img4tool-$(IMG4TOOL_VERSION),img4tool)
+	
 	$(SED) -i 's/git rev\-list \-\-count HEAD/printf ${IMG4TOOL_VERSION}/g' $(BUILD_WORK)/img4tool/configure.ac
 	$(SED) -i 's/git rev\-parse HEAD/printf ${IMG4TOOL_COMMIT}/g' $(BUILD_WORK)/img4tool/configure.ac
 
