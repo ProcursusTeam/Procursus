@@ -2,8 +2,8 @@ Package: libxft2
 Version: @DEB_LIBXFT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libfontconfig1 (>= 2.12.6), libfreetype6 (>= 2.3.5), libx11-6, libxrender1
-Section: libs
+Depends: libfontconfig1, libfreetype6, libx11-6, libxrender1
+Section: Libraries
 Priority: optional
 Description: FreeType-based font drawing library for X
  Xft provides a client-side font API for X applications, making the FreeType
