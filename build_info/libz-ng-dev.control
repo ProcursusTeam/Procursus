@@ -1,0 +1,11 @@
+Package: libz-ng-dev
+Version: @DEB_ZLIB-NG_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libz-ng2 (= @DEB_ZLIB-NG_V@)
+Section: Development
+Priority: optional
+Description: next gen compression library - development
+ next generation zlib library implementing the deflate compression method
+ found in gzip and PKZIP. This package includes the development support
+ files.
