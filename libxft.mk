@@ -17,7 +17,9 @@ libxft:
 else
 libxft: libxft-setup libx11 libxrender xorgproto fontconfig freetype
 	cd $(BUILD_WORK)/libxft && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		FREETYPE_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/freetype2" \
+		FREETYPE_LIBS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -lfreetype"
 	+$(MAKE) -C $(BUILD_WORK)/libxft
 	+$(MAKE) -C $(BUILD_WORK)/libxft install \
 		DESTDIR=$(BUILD_STAGE)/libxft
