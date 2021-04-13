@@ -17,7 +17,7 @@ else
 python-psutil: python-psutil-setup python3
 	cd $(BUILD_WORK)/python-psutil && unset MACOSX_DEPLOYMENT_TARGET && python3 ./setup.py \
 		install \
-		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/python-psutil" \
+		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		--root="$(BUILD_STAGE)/python-psutil" \
 		--install-layout=deb
 	find $(BUILD_STAGE)/python-psutil -name __pycache__ -exec rm -rf {} +
@@ -27,10 +27,10 @@ endif
 python-psutil-package: python-psutil-stage
     # python-psutil.mk Package Structure
 	rm -rf $(BUILD_DIST)/python-psutil
-	mkdir -p $(BUILD_DIST)/python-psutil
+	mkdir -p $(BUILD_DIST)/python-psutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# python-psutil.mk Prep python-psutil
-	cp -a $(BUILD_STAGE)/python-psutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/python-psutil
+	cp -a $(BUILD_STAGE)/python-psutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/python-psutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# python-psutil.mk Sign
 	$(call SIGN,python-psutil,general.xml)
