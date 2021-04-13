@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += xcb-util-image
+SUBPROJECTS            += xcb-util-image
 XCB-UTIL-IMAGE_VERSION := 0.4.0
 DEB_XCB-UTIL-IMAGE_V   ?= $(XCB-UTIL-IMAGE_VERSION)
 
@@ -16,10 +16,7 @@ xcb-util-image:
 else
 xcb-util-image: xcb-util-image-setup libxcb
 	cd $(BUILD_WORK)/xcb-util-image && ./configure -C \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var 
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-image
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-image install \
 		DESTDIR=$(BUILD_STAGE)/xcb-util-image
