@@ -4,7 +4,7 @@ Section: Utilities
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_MKVTOOLNIX_V@
-Depends: libboost-filesystem1.74.0, libboost-system1.74.0, libflac8, libfmt7, gettext, libebml5, libmagic1, libvorbis0a, libpcre2-8-0, libpugixml1
+Depends: libboost-filesystem1.74.0, libmatroska7, libflac8, libfmt7, gettext, libebml5, libmagic1, libvorbis0a, libpcre2-8-0, libpugixml1
 Homepage: https://mkvtoolnix.download/index.html
 Description: Set of command-line tools to work with Matroska files
  Matroska is a new multimedia container format, based on EBML (Extensible
