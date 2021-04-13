@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += font-util
+SUBPROJECTS       += font-util
 FONT-UTIL_VERSION := 1.3.2
 DEB_FONT-UTIL_V   ?= $(FONT-UTIL_VERSION)
 
