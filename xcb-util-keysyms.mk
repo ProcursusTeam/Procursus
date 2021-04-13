@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += xcb-util-keysyms
+SUBPROJECTS              += xcb-util-keysyms
 XCB-UTIL-KEYSYMS_VERSION := 0.4.0
 DEB_XCB-UTIL-KEYSYMS_V   ?= $(XCB-UTIL-KEYSYMS_VERSION)
 
@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/xcb-util-keysyms/.build_complete),)
 xcb-util-keysyms:
 	@echo "Using previously built xcb-util-keysyms."
 else
-xcb-util-keysyms: xcb-util-keysyms-setup libxcb
+xcb-util-keysyms: xcb-util-keysyms-setup libxcb xcb-util
 	cd $(BUILD_WORK)/xcb-util-keysyms && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		CFLAGS="-std=gnu99 $(CFLAGS)"

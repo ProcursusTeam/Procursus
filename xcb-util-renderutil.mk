@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += xcb-util-renderutil
+SUBPROJECTS                 += xcb-util-renderutil
 XCB-UTIL-RENDERUTIL_VERSION := 0.3.9
 DEB_XCB-UTIL-RENDERUTIL_V   ?= $(XCB-UTIL-RENDERUTIL_VERSION)
 
@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/xcb-util-renderutil/.build_complete),)
 xcb-util-renderutil:
 	@echo "Using previously built xcb-util-renderutil."
 else
-xcb-util-renderutil: xcb-util-renderutil-setup libxcb libXres
+xcb-util-renderutil: xcb-util-renderutil-setup libxcb xcb-util
 	cd $(BUILD_WORK)/xcb-util-renderutil && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-renderutil

@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += xcb-util-wm
+SUBPROJECTS         += xcb-util-wm
 XCB-UTIL-WM_VERSION := 0.4.0
 DEB_XCB-UTIL-WM_V   ?= $(XCB-UTIL-WM_VERSION)
 
@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/xcb-util-wm/.build_complete),)
 xcb-util-wm:
 	@echo "Using previously built xcb-util-wm."
 else
-xcb-util-wm: xcb-util-wm-setup libxcb
+xcb-util-wm: xcb-util-wm-setup libxcb xcb-util
 	cd $(BUILD_WORK)/xcb-util-wm && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-wm

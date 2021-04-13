@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += xcb-util-xrm
+SUBPROJECTS          += xcb-util-xrm
 XCB-UTIL-XRM_VERSION := 1.3
 DEB_XCB-UTIL-XRM_V   ?= $(XCB-UTIL-XRM_VERSION)
 
@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/xcb-util-xrm/.build_complete),)
 xcb-util-xrm:
 	@echo "Using previously built xcb-util-xrm."
 else
-xcb-util-xrm: xcb-util-xrm-setup libxcb
+xcb-util-xrm: xcb-util-xrm-setup libxcb xcb-util
 	cd $(BUILD_WORK)/xcb-util-xrm && ./configure -C \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=/usr \
