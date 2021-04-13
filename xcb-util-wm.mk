@@ -16,10 +16,7 @@ xcb-util-wm:
 else
 xcb-util-wm: xcb-util-wm-setup libxcb
 	cd $(BUILD_WORK)/xcb-util-wm && ./configure -C \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-wm
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-wm install \
 		DESTDIR=$(BUILD_STAGE)/xcb-util-wm
