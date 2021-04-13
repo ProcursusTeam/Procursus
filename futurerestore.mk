@@ -3,7 +3,6 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS           += futurerestore
-#don't forget to update version.diff
 FUTURERESTORE_VERSION := 195
 DEB_FUTURERESTORE_V   ?= $(FUTURERESTORE_VERSION)
 

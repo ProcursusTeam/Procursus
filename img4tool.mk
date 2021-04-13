@@ -3,7 +3,6 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += img4tool
-#don't forget to update version.diff
 IMG4TOOL_VERSION := 197
 IMG4TOOL_COMMIT  := aca6cf005c94caf135023263cbb5c61a0081804f
 DEB_IMG4TOOL_V   ?= $(IMG4TOOL_VERSION)
