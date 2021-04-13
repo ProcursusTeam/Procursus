@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS   += redis
 REDIS_VERSION := 6.2.1
-DEB_REDIS_V   ?= $(REDIS_VERSION)
+DEB_REDIS_V   ?= $(REDIS_VERSION)-2
 
 ###
 # Dynamic link lua5.1 in the future.

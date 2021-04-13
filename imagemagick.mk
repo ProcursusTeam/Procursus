@@ -22,11 +22,8 @@ imagemagick:
 else
 imagemagick: imagemagick-setup openexr fontconfig freetype glib2.0 ghostscript libheif gettext jbigkit libjemalloc lcms2 liblqr xz openmp openjpeg libpng16 libtiff libwebp libzip libtool
 	cd $(BUILD_WORK)/imagemagick && PKG_CONFIG="pkg-config --define-prefix" ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-osx-universal-binary=no \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--disable-dependency-tracking \
 		--disable-silent-rules \
 		--enable-shared \

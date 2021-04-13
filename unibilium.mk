@@ -23,8 +23,7 @@ else
 unibilium: unibilium-setup
 	cd $(BUILD_WORK)/unibilium/libtool && LIBTOOLIZE="$(LIBTOOLIZE) -i" autoreconf -fi
 	cd $(BUILD_WORK)/unibilium/libtool && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/unibilium \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		LIBTOOL="$(BUILD_WORK)/unibilium/libtool/libtool" \

@@ -7,7 +7,7 @@ UTILMACROS_VERSION := 1.19.2
 DEB_UTILMACROS_V   ?= $(UTILMACROS_VERSION)
 
 util-macros-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://xorg.freedesktop.org/releases/individual/util/util-macros-$(UTILMACROS_VERSION).tar.bz2{,.sig}   
+	wget -q -nc -P $(BUILD_SOURCE) http://xorg.freedesktop.org/releases/individual/util/util-macros-$(UTILMACROS_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,util-macros-$(UTILMACROS_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,util-macros-$(UTILMACROS_VERSION).tar.bz2,util-macros-$(UTILMACROS_VERSION),util-macros)
 
@@ -17,11 +17,7 @@ util-macros:
 else
 util-macros: util-macros-setup
 	cd $(BUILD_WORK)/util-macros && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-static
 	+$(MAKE) -C $(BUILD_WORK)/util-macros
 	+$(MAKE) -C $(BUILD_WORK)/util-macros install \

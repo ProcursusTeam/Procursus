@@ -17,9 +17,7 @@ libgmp10:
 else
 libgmp10: libgmp10-setup
 	cd $(BUILD_WORK)/libgmp10 && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-assembly
 	+$(MAKE) -C $(BUILD_WORK)/libgmp10
 	+$(MAKE) -C $(BUILD_WORK)/libgmp10 install \

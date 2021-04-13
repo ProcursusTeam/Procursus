@@ -15,5 +15,3 @@ Description: GNU privacy guard - a free PGP replacement
  .
  This package contains the full suite of GnuPG tools for cryptographic
  communications and data storage.
-Name: GnuPG
-

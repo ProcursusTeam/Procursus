@@ -17,11 +17,7 @@ xhost:
 else
 xhost: xhost-setup libx11 libxau libxmu xorgproto xxhash
 	cd $(BUILD_WORK)/xhost && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/xhost
 	+$(MAKE) -C $(BUILD_WORK)/xhost install \
 		DESTDIR=$(BUILD_STAGE)/xhost
@@ -31,19 +27,19 @@ xhost: xhost-setup libx11 libxau libxmu xorgproto xxhash
 endif
 
 xhost-package: xhost-stage
-# xhost.mk Package Structure
+	# xhost.mk Package Structure
 	rm -rf $(BUILD_DIST)/xhost
-	
-# xhost.mk Prep xhost
+
+	# xhost.mk Prep xhost
 	cp -a $(BUILD_STAGE)/xhost $(BUILD_DIST)
-	
-# xhost.mk Sign
+
+	# xhost.mk Sign
 	$(call SIGN,xhost,general.xml)
-	
-# xhost.mk Make .debs
+
+	# xhost.mk Make .debs
 	$(call PACK,xhost,DEB_XHOST_V)
-	
-# xhost.mk Build cleanup
+
+	# xhost.mk Build cleanup
 	rm -rf $(BUILD_DIST)/xhost
 
 .PHONY: xhost xhost-package

@@ -19,9 +19,7 @@ else
 libtool: libtool-setup
 	cd $(BUILD_WORK)/libtool && autoreconf -f
 	cd $(BUILD_WORK)/libtool && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--program-prefix=g \
 		--enable-ltdl-install
 	+$(MAKE) -C $(BUILD_WORK)/libtool

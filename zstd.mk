@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += zstd
 ZSTD_VERSION  := 1.4.9
-DEB_ZSTD_V    ?= $(ZSTD_VERSION)
+DEB_ZSTD_V    ?= $(ZSTD_VERSION)-1
 
 zstd-setup: setup
 	$(call GITHUB_ARCHIVE,facebook,zstd,$(ZSTD_VERSION),v$(ZSTD_VERSION))

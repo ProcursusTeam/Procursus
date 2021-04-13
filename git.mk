@@ -28,9 +28,7 @@ else
 git: git-setup openssl curl pcre2 gettext libidn2
 	+cd $(BUILD_WORK)/git && $(MAKE) configure
 	cd $(BUILD_WORK)/git && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--without-tcltk \
 		--with-libpcre2 \
 		ac_cv_iconv_omits_bom=no \

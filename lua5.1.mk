@@ -4,12 +4,13 @@ endif
 
 SUBPROJECTS    += lua5.1
 LUA5.1_VERSION := 5.1.5
-DEB_LUA5.1_V   ?= $(LUA5.1_VERSION)
+DEB_LUA5.1_V   ?= $(LUA5.1_VERSION)-1
 
 lua5.1-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.lua.org/ftp/lua-$(LUA5.1_VERSION).tar.gz 
+	wget -q -nc -P $(BUILD_SOURCE) https://www.lua.org/ftp/lua-$(LUA5.1_VERSION).tar.gz
 	$(call EXTRACT_TAR,lua-$(LUA5.1_VERSION).tar.gz,lua-$(LUA5.1_VERSION),lua5.1)
 	$(call DO_PATCH,lua5.1,lua5.1,-p1)
+	$(SED) -i -e ':a; s|@MEMO_PREFIX@|$(MEMO_PREFIX)|g; ta' -e ':a; s|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g; ta' $(BUILD_WORK)/lua5.1/src/luaconf.h
 
 ifneq ($(wildcard $(BUILD_WORK)/lua5.1/.build_complete),)
 lua5.1:
@@ -18,9 +19,8 @@ else
 lua5.1: lua5.1-setup readline
 	+$(MAKE) -C $(BUILD_WORK)/lua5.1 macosx \
 		CC="$(CC)" \
-		CFLAGS="$(CFLAGS) -fPIC" \
-		CXXFLAGS="$(CXXFLAGS) -fPIC" \
-		LDFLAGS="$(LDFLAGS)" \
+		MYCFLAGS="$(CFLAGS) -fPIC" \
+		MYLDFLAGS="$(LDFLAGS)" \
 		AR="$(AR) rcu" \
 		RANLIB="$(RANLIB)" \
 		LUA_T="lua5.1" \

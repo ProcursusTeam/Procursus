@@ -7,7 +7,8 @@ LIBSPEEX_VERSION := 1.2.0
 DEB_LIBSPEEX_V   ?= $(LIBSPEEX_VERSION)
 
 libspeex-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftp.osuosl.org/pub/xiph/releases/speex/speex-$(LIBSPEEX_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) \
+		https://downloads.us.xiph.org/releases/speex/speex-$(LIBSPEEX_VERSION).tar.gz
 	$(call EXTRACT_TAR,speex-$(LIBSPEEX_VERSION).tar.gz,speex-$(LIBSPEEX_VERSION),libspeex)
 
 ifneq ($(wildcard $(BUILD_WORK)/libspeex/.build_complete),)
@@ -17,9 +18,7 @@ else
 libspeex: libspeex-setup libogg
 	cd $(BUILD_WORK)/libspeex && autoreconf -fi
 	cd $(BUILD_WORK)/libspeex && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-binaries \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/libspeex
