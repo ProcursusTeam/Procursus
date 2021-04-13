@@ -1,0 +1,20 @@
+Package: xnest
+Version: @DEB_XORG-SERVER_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: xserver-common (>= 2:1.20.4-1+deb10u2), libaudit1 (>= 1:2.2.1), libbsd0 (>= 0.7.0), libc6 (>= 2.17), libgcrypt20 (>= 1.8.0), libgl1, libpixman-1-0 (>= 0.13.2), libselinux1 (>= 2.0.82), libsystemd0, libunwind8, libx11-6, libxau6, libxdmcp6, libxext6, libxfont2 (>= 1:2.0.1), libxshmfence1
+Recommends: libgl1-mesa-dri (>= 7.1~rc1)
+Provides: xserver
+Section: x11
+Description: Nested X server
+ Xnest is a nested X server that simply relays all its requests to another
+ X server, where it runs as a client.  This means that it appears as another
+ window in your current X session.  Xnest relies upon its parent X server
+ for font services.
+ .
+ Use of the Xephyr X server instead of Xnest is recommended.
+ .
+ More information about X.Org can be found at:
+ <URL:https://www.x.org>
+ .
+ This package is built from the X.org xserver module.
