@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libxft/.build_complete),)
 libxft:
 	@echo "Using previously built libxft."
 else
-libxft: libxft-setup libx11 libxau libxmu xorgproto fontconfig freetype
+libxft: libxft-setup libx11 libxrender xorgproto fontconfig freetype
 	cd $(BUILD_WORK)/libxft && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libxft
