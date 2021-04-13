@@ -2,8 +2,8 @@ Package: xterm
 Version: @DEB_XTERM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: xbitmaps, libfontconfig1, libfreetype6, libice6, libxaw7, libxext6, libxft2, libxmu6, libxpm4, libxt6
-Section: x11
+Depends: libfontconfig1, libfreetype6, libice6, libxaw7, libxext6, libxft2, libxmu6, libxpm4, libxt6, libxinerama1
+Section: X11
 Priority: optional
 Description: X terminal emulator
  xterm is a terminal emulator for the X Window System.  It provides DEC VT102
