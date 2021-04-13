@@ -1,5 +1,5 @@
 Package: siguza-utils
-Version: @DEB_MISC_V@
+Version: @DEB_SIGUZA-UTILS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Author: Siguza

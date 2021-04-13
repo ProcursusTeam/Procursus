@@ -2,15 +2,15 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUPROJECTS      += siguza-utils
+SUBPROJECTS             += siguza-utils
 # Don't change the version, just the date and git hash
-MISC_COMMIT     := 43852780a20ebf2c990681aa1ab42577ae630555
-MISC_VERSION    := 1.0+git20210410.$(shell echo $(MISC_COMMIT) | cut -c -7)
-DEB_MISC_V      ?= $(MISC_VERSION)
+SIGUZA-UTILS_COMMIT     := 43852780a20ebf2c990681aa1ab42577ae630555
+SIGUZA-UTILS_VERSION    := 1.0+git20210410.$(shell echo $(SIGUZA-UTILS_COMMIT) | cut -c -7)
+DEB_SIGUZA-UTILS_V      ?= $(SIGUZA-UTILS_VERSION)
 
 siguza-utils-setup: setup
-	$(call GITHUB_ARCHIVE,Siguza,misc,$(MISC_COMMIT),$(MISC_COMMIT),siguza-utils)
-	$(call EXTRACT_TAR,siguza-utils-$(MISC_COMMIT).tar.gz,misc-$(MISC_COMMIT),siguza-utils)
+	$(call GITHUB_ARCHIVE,Siguza,misc,$(SIGUZA-UTILS_COMMIT),$(SIGUZA-UTILS_COMMIT),siguza-utils)
+	$(call EXTRACT_TAR,siguza-utils-$(SIGUZA-UTILS_COMMIT).tar.gz,misc-$(SIGUZA-UTILS_COMMIT),siguza-utils)
 	mkdir -p $(BUILD_STAGE)/siguza-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 ifneq ($(wildcard $(BUILD_WORK)/siguza-utils/.build_complete),)
@@ -74,7 +74,7 @@ siguza-utils-package: siguza-utils-stage
 	$(call SIGN,siguza-utils,general.xml)
 
 	# siguza-utils.mk Make .debs
-	$(call PACK,siguza-utils,DEB_MISC_V)
+	$(call PACK,siguza-utils,DEB_SIGUZA-UTILS_V)
 
 	# siguza-utils.mk Build cleanup
 	rm -rf $(BUILD_DIST)/siguza-utils
