@@ -4,7 +4,8 @@ endif
 
 SUBPROJECTS         += libipatcher
 LIBIPATCHER_VERSION := 81
-DEB_LIBIPATCHER_V   ?= $(LIBIPATCHER_VERSION)
+LIBIPATCHER_COMMIT  := ad44d0da23f5120c3c77a72062bd627c50f37e71
+DEB_LIBIPATCHER_V   ?= $(LIBIPATCHER_VERSION)-1
 
 libipatcher-setup: setup
 	$(call GITHUB_ARCHIVE,tihmstar,libipatcher,$(LIBIPATCHER_VERSION),$(LIBIPATCHER_VERSION))
@@ -19,6 +20,8 @@ libipatcher-setup: setup
 	$(SED) -i '/AC_FUNC_MALLOC/d' $(BUILD_WORK)/libipatcher/configure.ac
 	$(SED) -i '/AC_FUNC_REALLOC/d' $(BUILD_WORK)/libipatcher/configure.ac
 	$(SED) -i 's|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/lib/|$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib|g' $(BUILD_WORK)/libipatcher/libipatcher/Makefile.am
+	$(SED) -i 's/git rev\-list \-\-count HEAD/printf ${LIBIPATCHER_VERSION}/g' $(BUILD_WORK)/libipatcher/configure.ac
+	$(SED) -i 's/git rev\-parse HEAD/printf ${LIBIPATCHER_COMMIT}/g' $(BUILD_WORK)/libipatcher/configure.ac
 
 ifneq ($(wildcard $(BUILD_WORK)/libipatcher/.build_complete),)
 libipatcher:
