@@ -16,10 +16,7 @@ xcb-util-renderutil:
 else
 xcb-util-renderutil: xcb-util-renderutil-setup libxcb libXres
 	cd $(BUILD_WORK)/xcb-util-renderutil && ./configure -C \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-renderutil
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-renderutil install \
 		DESTDIR=$(BUILD_STAGE)/xcb-util-renderutil
