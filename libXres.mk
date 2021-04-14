@@ -28,19 +28,26 @@ libxres: libxres-setup libx11 libxext
 endif
 
 libxres-package: libxres-stage
-# libxres.mk Package Structure
-	rm -rf $(BUILD_DIST)/libxres
-	
-# libxres.mk Prep libxres
-	cp -a $(BUILD_STAGE)/libxres $(BUILD_DIST)
-	
-# libxres.mk Sign
-	$(call SIGN,libxres,general.xml)
-	
-# libxres.mk Make .debs
-	$(call PACK,libxres,DEB_XRES_V)
-	
-# libxres.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libxres
+	# libxres.mk Package Structure
+	rm -rf $(BUILD_DIST)/libxres{1,-dev}
+	mkdir -p $(BUILD_DIST)/libxres1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libxres-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
+	# libxres.mk Prep libxres1
+	cp -a $(BUILD_STAGE)/libxres/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libxres.1*.dylib $(BUILD_DIST)/libxres1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
+	# libxres.mk Prep libxres-dev
+	cp -a $(BUILD_STAGE)/libxres/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libxres.1*.dylib) $(BUILD_DIST)/libxres-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxres/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libxres-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
+
+	# libxres.mk Sign
+	$(call SIGN,libxres1,general.xml)
+
+	# libxres.mk Make .debs
+	$(call PACK,libxres1,DEB_LIBXRES_V)
+	$(call PACK,libxres-dev,DEB_LIBXRES_V)
+
+	# libxres.mk Build cleanup
+	rm -rf $(BUILD_DIST)/libxres{1,-dev}
 
 .PHONY: libxres libxres-package
