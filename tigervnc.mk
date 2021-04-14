@@ -19,14 +19,7 @@ tigervnc:
 else
 tigervnc: tigervnc-setup libx11 libxau libxmu xorgproto libpixman gnutls libjpeg-turbo openpam libxdamage libxfixes libxtst libxrandr libxfont2 mesa libgeneral
 	cd $(BUILD_WORK)/tigervnc && cmake . \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
-		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DBUILD_VIEWER=NO
 	+$(MAKE) -C $(BUILD_WORK)/tigervnc
 	+$(MAKE) -C $(BUILD_WORK)/tigervnc install \
@@ -39,10 +32,7 @@ tigervnc: tigervnc-setup libx11 libxau libxmu xorgproto libpixman gnutls libjpeg
 	cp -R $(BUILD_WORK)/xorg-server-vnc/. $(BUILD_WORK)/tigervnc/unix/xserver
 	wget -q -nc -P $(BUILD_BASE)/usr/include https://opensource.apple.com/source/X11/X11-0.40.2/xc/programs/Xserver/hw/darwin/quartz/xpr/Xplugin.h
 	cd $(BUILD_WORK)/tigervnc/unix/xserver && patch -p1 < $(BUILD_WORK)/tigervnc/unix/xserver$(XORG_VERSION).patch && export ACLOCAL='aclocal -I $(BUILD_BASE)/usr/share/aclocal' && export gcc=cc && autoreconf -fiv && ./configure -C \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-pic \
 		--without-dtrace \
 		--disable-static \
