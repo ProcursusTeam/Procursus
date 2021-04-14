@@ -6,12 +6,6 @@ STRAPPROJECTS  += dpkg
 DPKG_VERSION   := 1.20.9
 DEB_DPKG_V     ?= $(DPKG_VERSION)
 
-ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-DPKG_TAR := gtar
-else
-DPKG_TAR := tar
-endif
-
 dpkg-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_$(DPKG_VERSION).tar.xz
 	$(call EXTRACT_TAR,dpkg_$(DPKG_VERSION).tar.xz,dpkg-$(DPKG_VERSION),dpkg)
@@ -28,8 +22,7 @@ dpkg:
 else
 dpkg: dpkg-setup gettext xz zstd
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(SED) -i '/base-bsd-darwin/a base-bsd-darwin-arm64		$(DEB_ARCH) \
-base-bsd-darwin-arm64e		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
+	$(SED) -i '/base-bsd-darwin/a base-bsd-darwin-arm64		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
 endif
 	cd $(BUILD_WORK)/dpkg && ./autogen
 	cd $(BUILD_WORK)/dpkg && ./configure -C \
@@ -42,7 +35,7 @@ endif
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
 		PERL_LIBDIR='$$(prefix)/share/perl5' \
 		PERL="$(shell which perl)" \
-		TAR=$(DPKG_TAR) \
+		TAR=$(GNU_PREFIX)tar \
 		LZMA_LIBS='$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/liblzma.dylib'
 	+$(MAKE) -C $(BUILD_WORK)/dpkg \
 		PERL="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl"
