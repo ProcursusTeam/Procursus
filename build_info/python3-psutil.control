@@ -1,5 +1,5 @@
-Package: python-psutil
-Version: @DEB_PYTHON-PSUTIL_V@
+Package: python3-psutil
+Version: @DEB_PYTHON3-PSUTIL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Utilities
