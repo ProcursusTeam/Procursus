@@ -2,7 +2,7 @@ Package: xserver-xorg-core
 Version: @DEB_XORG-SERVER_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libegl1-mesa-dri, libepoxy0 (>= 1.4.3), libgcrypt20 (>= 1.8.0), libpixman-1-0 (>= 0.30.0), libxau6, libxdmcp6, libxfont2 (>= 1:2.0.1), libxshmfence1, libegl1-mesa-glx
+Depends: libegl1-mesa-dri, libepoxy0 (>= 1.4.3), libgcrypt20 (>= 1.8.0), libpixman-1-0 (>= 0.30.0), libxau6, libxdmcp6, libxfont2 (>= 1:2.0.1), libegl1-mesa-glx, xkeyboard-config, xkbcomp
 Conflicts: xserver-xorg-input-evtouch, xserver-xorg-video-modesetting
 Breaks: libgl1-mesa-dri (<< 18.0.5), systemd (<< 226-4~), xserver-xorg (<< 1:7.7+10~)
 Replaces: xserver-xorg (<< 1:7.7+10~), xserver-xorg-video-modesetting
