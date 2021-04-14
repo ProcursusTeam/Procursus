@@ -2,7 +2,7 @@ Package: xnest
 Version: @DEB_XORG-SERVER_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libgcrypt20 (>= 1.8.0), libpixman-1-0 (>= 0.13.2), libx11-6, libxau6, libxdmcp6, libxext6, libxfont2 (>= 1:2.0.1)
+Depends: libgcrypt20 (>= 1.8.0), libpixman-1-0 (>= 0.13.2), libx11-6, libxau6, libxdmcp6, libxext6, libxfont2 (>= 1:2.0.1), xkeyboard-config, xkbcomp
 Recommends: libgl1-mesa-dri (>= 7.1~rc1)
 Provides: xserver
 Section: x11
