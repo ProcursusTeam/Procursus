@@ -477,6 +477,10 @@ ifneq ($(call HAS_COMMAND,wget),1)
 $(error Install wget)
 endif
 
+ifneq ($(call HAS_COMMAND,triehash),1)
+$(error Install triehash)
+endif
+
 ifeq ($(call HAS_COMMAND,gmake),1)
 # Fix this check.
 endif
