@@ -20,7 +20,7 @@ ifneq ($(wildcard $(BUILD_WORK)/dpkg/.build_complete),)
 dpkg:
 	@echo "Using previously built dpkg."
 else
-dpkg: dpkg-setup gettext xz zstd
+dpkg: dpkg-setup gettext xz zstd libmd
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(SED) -i '/base-bsd-darwin/a base-bsd-darwin-arm64		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
 endif
