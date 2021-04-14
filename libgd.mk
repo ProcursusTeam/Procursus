@@ -18,17 +18,7 @@ libgd:
 else
 libgd: libgd-setup fontconfig freetype libjpeg-turbo libpng16 libtiff libwebp libxpm
 	cd $(BUILD_WORK)/libgd && cmake . \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/ \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
-		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DBUILD_SHARED_LIBS=1 \
 		-DENABLE_FONTCONFIG=ON \
 		-DENABLE_FREETYPE=ON \
@@ -66,7 +56,7 @@ libgd-package: libgd-stage
 
 	# libgd.mk Prep libgd-tools
 	cp -a $(BUILD_STAGE)/libgd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/libgd-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libgd.mk Sign
 	$(call SIGN,libgd3,general.xml)
 	$(call SIGN,libgd-tools,general.xml)

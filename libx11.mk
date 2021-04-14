@@ -18,9 +18,7 @@ else
 libx11: libx11-setup xorgproto libxcb xtrans
 	unset MACOSX_DEPLOYMENT_TARGET && \
 	cd $(BUILD_WORK)/libx11 && unset MACOSX_DEPLOYMENT_TARGET && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-unix-transport \
 		--enable-tcp-transport \
 		--enable-ipv6 \
@@ -29,7 +27,7 @@ libx11: libx11-setup xorgproto libxcb xtrans
 		--enable-xthreads \
 		--enable-specs=no \
 		--enable-malloc0returnsnull=no \
-		--with-keysymdefdir=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/X11
+		--with-keysymdefdir=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/X11
 	+$(MAKE) -C $(BUILD_WORK)/libx11 V=1
 	+$(MAKE) -C $(BUILD_WORK)/libx11 install \
 		DESTDIR=$(BUILD_STAGE)/libx11

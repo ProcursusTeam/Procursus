@@ -17,12 +17,11 @@ lzip:
 else
 lzip: lzip-setup
 	cd $(BUILD_WORK)/lzip && ./configure \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-        	CXX=$(CXX) \
-        	CXXFLAGS="$(CXXFLAGS)" \
-        	CPPFLAGS="$(CPPFLAGS)" \
-        	LDFLAGS="$(LDFLAGS)"
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		CXX=$(CXX) \
+		CXXFLAGS="$(CXXFLAGS)" \
+		CPPFLAGS="$(CPPFLAGS)" \
+		LDFLAGS="$(LDFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/lzip
 	+$(MAKE) -C $(BUILD_WORK)/lzip install -j1 \
 		DESTDIR="$(BUILD_STAGE)/lzip"
@@ -33,16 +32,16 @@ endif
 lzip-package: lzip-stage
 	# lzip.mk Package Structure
 	rm -rf $(BUILD_DIST)/lzip
-	
+
 	# lzip.mk Prep lzip
 	cp -a $(BUILD_STAGE)/lzip $(BUILD_DIST)
-	
+
 	# lzip.mk Sign
 	$(call SIGN,lzip,general.xml)
-	
+
 	#lzip.mk Make .debs
 	$(call PACK,lzip,DEB_LZIP_V)
-	
+
 	# lzip.mk Build cleanup
 	rm -rf $(BUILD_DIST)/lzip
 

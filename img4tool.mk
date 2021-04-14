@@ -4,11 +4,15 @@ endif
 
 SUBPROJECTS      += img4tool
 IMG4TOOL_VERSION := 197
-DEB_IMG4TOOL_V   ?= $(IMG4TOOL_VERSION)
+IMG4TOOL_COMMIT  := aca6cf005c94caf135023263cbb5c61a0081804f
+DEB_IMG4TOOL_V   ?= $(IMG4TOOL_VERSION)-1
 
 img4tool-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tihmstar/img4tool/archive/$(IMG4TOOL_VERSION).tar.gz
-	$(call EXTRACT_TAR,$(IMG4TOOL_VERSION).tar.gz,img4tool-$(IMG4TOOL_VERSION),img4tool)
+	$(call GITHUB_ARCHIVE,tihmstar,img4tool,$(IMG4TOOL_VERSION),$(IMG4TOOL_VERSION))
+	$(call EXTRACT_TAR,img4tool-$(IMG4TOOL_VERSION).tar.gz,img4tool-$(IMG4TOOL_VERSION),img4tool)
+	
+	$(SED) -i 's/git rev\-list \-\-count HEAD/printf ${IMG4TOOL_VERSION}/g' $(BUILD_WORK)/img4tool/configure.ac
+	$(SED) -i 's/git rev\-parse HEAD/printf ${IMG4TOOL_COMMIT}/g' $(BUILD_WORK)/img4tool/configure.ac
 
 ifneq ($(wildcard $(BUILD_WORK)/img4tool/.build_complete),)
 img4tool:
@@ -16,9 +20,7 @@ img4tool:
 else
 img4tool: img4tool-setup openssl libplist libgeneral
 	cd $(BUILD_WORK)/img4tool && ./autogen.sh \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/img4tool
 	+$(MAKE) -C $(BUILD_WORK)/img4tool install \
 		DESTDIR="$(BUILD_STAGE)/img4tool"
@@ -31,7 +33,7 @@ img4tool-package: img4tool-stage
 	# img4tool.mk Package Structure
 	rm -rf $(BUILD_DIST)/*img4tool*/
 	mkdir -p $(BUILD_DIST)/{img4tool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin,libimg4tool0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib,libimg4tool-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pkgconfig,include}}
-	
+
 	# img4tool.mk Prep img4tool
 	cp -a $(BUILD_STAGE)/img4tool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/img4tool $(BUILD_DIST)/img4tool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 

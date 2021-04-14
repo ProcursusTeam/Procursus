@@ -17,11 +17,7 @@ libxpm:
 else
 libxpm: libxpm-setup libx11 xorgproto libxt libxext gettext
 	cd $(BUILD_WORK)/libxpm && unset CPP CPPFLAGS && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libxpm
 	+$(MAKE) -C $(BUILD_WORK)/libxpm install \
 		DESTDIR=$(BUILD_STAGE)/libxpm

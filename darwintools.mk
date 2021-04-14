@@ -8,9 +8,7 @@ ZBRFIRMWARE_COMMIT  := 09e2673391e03a0405838f7ebdf02fa1020c88fd
 DEB_DARWINTOOLS_V   ?= $(DARWINTOOLS_VERSION)-2
 
 darwintools-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/Firmware-$(ZBRFIRMWARE_COMMIT).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/Firmware-$(ZBRFIRMWARE_COMMIT).tar.gz \
-			https://github.com/zbrateam/Firmware/archive/$(ZBRFIRMWARE_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,zbrateam,Firmware,$(ZBRFIRMWARE_COMMIT),$(ZBRFIRMWARE_COMMIT))
 	$(call EXTRACT_TAR,Firmware-$(ZBRFIRMWARE_COMMIT).tar.gz,Firmware-$(ZBRFIRMWARE_COMMIT),darwintools)
 
 ifneq ($(wildcard $(BUILD_WORK)/darwintools/.build_complete),)
@@ -34,16 +32,16 @@ endif
 darwintools-package: darwintools-stage
 	# darwintools.mk Package Structure
 	rm -rf $(BUILD_DIST)/darwintools
-	
+
 	# darwintools.mk Prep darwintools
 	cp -a $(BUILD_STAGE)/darwintools $(BUILD_DIST)
-	
+
 	# darwintools.mk Sign
 	$(call SIGN,darwintools,general.xml)
-	
+
 	# darwintools.mk Make .debs
 	$(call PACK,darwintools,DEB_DARWINTOOLS_V)
-	
+
 	# darwintools.mk Build cleanup
 	rm -rf $(BUILD_DIST)/darwintools
 

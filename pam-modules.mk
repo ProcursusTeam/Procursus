@@ -17,7 +17,7 @@ pam-modules-setup: setup
 	$(call EXTRACT_TAR,pam_modules-$(PAM-MODULES_VERSION).tar.gz,pam_modules-$(PAM-MODULES_VERSION),pam-modules)
 	$(SED) -i 's/__APPLE__/NOTDEFINED/' $(BUILD_WORK)/pam-modules/modules/pam_group/pam_group.c
 	mkdir -p $(BUILD_STAGE)/pam-modules/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pam
-	
+
 ifneq ($(wildcard $(BUILD_WORK)/pam-modules/.build_complete),)
 pam-modules:
 	@echo "Using previously built pam-modules."
@@ -40,16 +40,16 @@ endif
 pam-modules-package: pam-modules-stage
 	# pam-modules.mk Package Structure
 	rm -rf $(BUILD_DIST)/libpam-modules
-	
+
 	# pam-modules.mk Prep libpam-modules
 	cp -a $(BUILD_STAGE)/pam-modules $(BUILD_DIST)/libpam-modules
-	
+
 	# pam-modules.mk Sign
 	$(call SIGN,libpam-modules,general.xml)
-	
+
 	# pam-modules.mk Make .debs
 	$(call PACK,libpam-modules,DEB_PAM-MODULES_V)
-	
+
 	# pam-modules.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libpam-modules
 

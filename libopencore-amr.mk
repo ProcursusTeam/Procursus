@@ -16,9 +16,7 @@ libopencore-amr:
 else
 libopencore-amr: libopencore-amr-setup
 	cd $(BUILD_WORK)/libopencore-amr && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/libopencore-amr
 	+$(MAKE) -C $(BUILD_WORK)/libopencore-amr install \
@@ -31,33 +29,33 @@ endif
 libopencore-amr-package: libopencore-amr-stage
 	# libopencore-amr.mk Package Structure
 	rm -rf $(BUILD_DIST)/libopencore-amr{n,w}b{0,-dev}
-	mkdir -p $(BUILD_DIST)/libopencore-amr{n,w}b{0,-dev}/usr/lib \
-		$(BUILD_DIST)/libopencore-amr{n,w}b-dev/usr/include
+	mkdir -p $(BUILD_DIST)/libopencore-amr{n,w}b{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libopencore-amr{n,w}b-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 
 	# libopencore-amr.mk Prep libopencore-amrnb0
-	cp -a $(BUILD_STAGE)/libopencore-amr/usr/lib/libopencore-amrnb.0.dylib $(BUILD_DIST)/libopencore-amrnb0/usr/lib
+	cp -a $(BUILD_STAGE)/libopencore-amr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libopencore-amrnb.0.dylib $(BUILD_DIST)/libopencore-amrnb0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libopencore-amr.mk Prep libopencore-amrnb-dev
-	cp -a $(BUILD_STAGE)/libopencore-amr/usr/lib/libopencore-amrnb.{dylib,a} $(BUILD_DIST)/libopencore-amrnb-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libopencore-amr/usr/include/opencore-amrnb $(BUILD_DIST)/libopencore-amrnb-dev/usr/include
+	cp -a $(BUILD_STAGE)/libopencore-amr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libopencore-amrnb.{dylib,a} $(BUILD_DIST)/libopencore-amrnb-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libopencore-amr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/opencore-amrnb $(BUILD_DIST)/libopencore-amrnb-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 
 	# libopencore-amr.mk Prep libopencore-amrwb0
-	cp -a $(BUILD_STAGE)/libopencore-amr/usr/lib/libopencore-amrwb.0.dylib $(BUILD_DIST)/libopencore-amrwb0/usr/lib
+	cp -a $(BUILD_STAGE)/libopencore-amr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libopencore-amrwb.0.dylib $(BUILD_DIST)/libopencore-amrwb0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libopencore-amr.mk Prep libopencore-amrwb-dev
-	cp -a $(BUILD_STAGE)/libopencore-amr/usr/lib/libopencore-amrwb.{dylib,a} $(BUILD_DIST)/libopencore-amrwb-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libopencore-amr/usr/include/opencore-amrwb $(BUILD_DIST)/libopencore-amrwb-dev/usr/include
+	cp -a $(BUILD_STAGE)/libopencore-amr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libopencore-amrwb.{dylib,a} $(BUILD_DIST)/libopencore-amrwb-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libopencore-amr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/opencore-amrwb $(BUILD_DIST)/libopencore-amrwb-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 
 	# libopencore-amr.mk Sign
 	$(call SIGN,libopencore-amrnb0,general.xml)
 	$(call SIGN,libopencore-amrwb0,general.xml)
-	
+
 	# libopencore-amr.mk Make .debs
 	$(call PACK,libopencore-amrnb0,DEB_LIBOPENCORE-AMR_V)
 	$(call PACK,libopencore-amrnb-dev,DEB_LIBOPENCORE-AMR_V)
 	$(call PACK,libopencore-amrwb0,DEB_LIBOPENCORE-AMR_V)
 	$(call PACK,libopencore-amrwb-dev,DEB_LIBOPENCORE-AMR_V)
-	
+
 	# libopencore-amr.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libopencore-amr{n,w}b{0,-dev}
 

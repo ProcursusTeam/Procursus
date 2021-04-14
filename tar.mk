@@ -25,9 +25,7 @@ tar:
 else
 tar: tar-setup gettext
 	cd $(BUILD_WORK)/tar && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		$(TAR_CONFIGURE_ARGS)
 
 	+$(MAKE) -C $(BUILD_WORK)/tar
@@ -39,7 +37,7 @@ endif
 tar-package: tar-stage
 	# tar.mk Package Structure
 	rm -rf $(BUILD_DIST)/tar
-	
+
 	# tar.mk Prep tar
 	cp -a $(BUILD_STAGE)/tar $(BUILD_DIST)
 ifneq ($(MEMO_SUB_PREFIX),)
@@ -52,13 +50,13 @@ ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 		ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(echo $$bin | rev | cut -d/ -f1 | rev) $(BUILD_DIST)/tar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $$bin | rev | cut -d/ -f1 | rev | cut -c2-); \
 	done
 endif
-	
+
 	# tar.mk Sign
 	$(call SIGN,tar,general.xml)
-	
+
 	# tar.mk Make .debs
 	$(call PACK,tar,DEB_TAR_V)
-	
+
 	# tar.mk Build cleanup
 	rm -rf $(BUILD_DIST)/tar
 

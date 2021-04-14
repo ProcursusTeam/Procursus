@@ -45,9 +45,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	mv $(BUILD_WORK)/coreutils/bsdcp/cp.1 $(BUILD_WORK)/coreutils/bsdcp/bsdcp.1
 endif
 	cd $(BUILD_WORK)/coreutils && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--without-gmp \
 		$(COREUTILS_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/coreutils
@@ -67,14 +65,14 @@ coreutils-package: coreutils-stage
 	# coreutils.mk Package Structure
 	rm -rf $(BUILD_DIST)/coreutils
 	mkdir -p $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/{bin,$(MEMO_SUB_PREFIX)/sbin}
-	
+
 	# coreutils.mk Prep coreutils
 	cp -a $(BUILD_STAGE)/coreutils $(BUILD_DIST)
 	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/chown $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/chroot $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 ifneq ($(MEMO_SUB_PREFIX),)
 	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/chown $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/bin
-	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{cat,chgrp,cp,date,dd,dir,echo,false,kill,ln,ls,mkdir,mknod,mktemp,mv,pwd,readlink,rm,rmdir,sleep,stty,touch,true,uname,vdir} $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/bin
+	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{cat,chgrp,cp,date,dd,dir,echo,false,kill,ln,ls,mkdir,mknod,mktemp,mv,pwd,readlink,rm,rmdir,sleep,stty,su,touch,true,uname,vdir} $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/bin
 	mkdir -p $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/etc/profile.d
 	cp $(BUILD_INFO)/coreutils.sh $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/etc/profile.d
 endif
@@ -95,7 +93,7 @@ endif
 
 	# coreutils.mk Make .debs
 	$(call PACK,coreutils,DEB_COREUTILS_V)
-	
+
 	# coreutils.mk Build cleanup
 	rm -rf $(BUILD_DIST)/coreutils
 

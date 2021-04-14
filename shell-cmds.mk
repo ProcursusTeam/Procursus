@@ -6,7 +6,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS      += shell-cmds
 SHELL-CMDS_VERSION := 207.40.1
-DEB_SHELL-CMDS_V   ?= $(SHELL-CMDS_VERSION)-1
+DEB_SHELL-CMDS_V   ?= $(SHELL-CMDS_VERSION)-2
 
 shell-cmds-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/shell_cmds/shell_cmds-$(SHELL-CMDS_VERSION).tar.gz
@@ -25,7 +25,7 @@ shell-cmds: shell-cmds-setup openpam
 	cp -a su/su.1 $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
 	cp -a $(BUILD_MISC)/pam/su $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)/etc/pam.d; \
 	for bin in killall renice script time which getopt what; do \
-    	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -save-temps; \
+		$(CC) $(CFLAGS) -o $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -save-temps; \
 		cp -a $$bin/$$bin.1 $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 2>/dev/null; \
 		cp -a $$bin/$$bin.8 $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8 2>/dev/null; \
 	done
@@ -35,7 +35,7 @@ endif
 shell-cmds-package: shell-cmds-stage
 	# shell-cmds.mk Package Structure
 	rm -rf $(BUILD_DIST)/shell-cmds
-	
+
 	# shell-cmds.mk Prep shell-cmds
 	cp -a $(BUILD_STAGE)/shell-cmds $(BUILD_DIST)
 ifneq ($(MEMO_SUB_PREFIX),)
@@ -44,6 +44,8 @@ endif
 
 	# shell-cmds.mk Sign
 	$(call SIGN,shell-cmds,general.xml)
+	$(LDID) -S$(BUILD_INFO)/pam.xml $(BUILD_DIST)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/su
+	find $(BUILD_DIST)/shell-cmds -name '.ldid*' -type f -delete
 
 	# shell-cmds.mk Permissions
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
@@ -52,7 +54,7 @@ endif
 
 	# shell-cmds.mk Make .debs
 	$(call PACK,shell-cmds,DEB_SHELL-CMDS_V)
-	
+
 	# shell-cmds.mk Build cleanup
 	rm -rf $(BUILD_DIST)/shell-cmds
 

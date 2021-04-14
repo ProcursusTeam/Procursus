@@ -7,7 +7,8 @@ LIBSPEEX_VERSION := 1.2.0
 DEB_LIBSPEEX_V   ?= $(LIBSPEEX_VERSION)
 
 libspeex-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftp.osuosl.org/pub/xiph/releases/speex/speex-$(LIBSPEEX_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) \
+		https://downloads.us.xiph.org/releases/speex/speex-$(LIBSPEEX_VERSION).tar.gz
 	$(call EXTRACT_TAR,speex-$(LIBSPEEX_VERSION).tar.gz,speex-$(LIBSPEEX_VERSION),libspeex)
 
 ifneq ($(wildcard $(BUILD_WORK)/libspeex/.build_complete),)
@@ -17,9 +18,7 @@ else
 libspeex: libspeex-setup libogg
 	cd $(BUILD_WORK)/libspeex && autoreconf -fi
 	cd $(BUILD_WORK)/libspeex && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-binaries \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/libspeex
@@ -34,29 +33,29 @@ libspeex-package: libspeex-stage
 	# libspeex.mk Package Structure
 	rm -rf $(BUILD_DIST)/libspeex{1,-dev} \
 		$(BUILD_DIST)/speex
-	mkdir -p $(BUILD_DIST)/libspeex{1,-dev}/usr/lib \
-		$(BUILD_DIST)/speex/usr/share
-	
+	mkdir -p $(BUILD_DIST)/libspeex{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/speex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+
 	# libspeex.mk Prep speex
-	cp -a $(BUILD_STAGE)/libspeex/usr/bin $(BUILD_DIST)/speex/usr
-	cp -a $(BUILD_STAGE)/libspeex/usr/share/man $(BUILD_DIST)/speex/usr/share
-	
+	cp -a $(BUILD_STAGE)/libspeex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/speex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libspeex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/speex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+
 	# libspeex.mk Prep libspeex1
-	cp -a $(BUILD_STAGE)/libspeex/usr/lib/libspeex.1.dylib $(BUILD_DIST)/libspeex1/usr/lib
-	
+	cp -a $(BUILD_STAGE)/libspeex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libspeex.1.dylib $(BUILD_DIST)/libspeex1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# libspeex.mk Prep libspeex-dev
-	cp -a $(BUILD_STAGE)/libspeex/usr/lib/{libspeex.{a,dylib},pkgconfig} $(BUILD_DIST)/libspeex-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libspeex/usr/include $(BUILD_DIST)/libspeex-dev/usr
-	
+	cp -a $(BUILD_STAGE)/libspeex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libspeex.{a,dylib},pkgconfig} $(BUILD_DIST)/libspeex-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libspeex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libspeex-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+
 	# libspeex.mk Sign
 	$(call SIGN,speex,general.xml)
 	$(call SIGN,libspeex1,general.xml)
-	
+
 	# libspeex.mk Make .debs
 	$(call PACK,speex,DEB_LIBSPEEX_V)
 	$(call PACK,libspeex1,DEB_LIBSPEEX_V)
 	$(call PACK,libspeex-dev,DEB_LIBSPEEX_V)
-	
+
 	# libspeex.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libspeex{1,-dev} \
 		$(BUILD_DIST)/speex

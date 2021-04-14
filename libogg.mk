@@ -22,9 +22,7 @@ libogg:
 else
 libogg: libogg-setup
 	cd $(BUILD_WORK)/libogg && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/libogg
 	+$(MAKE) -C $(BUILD_WORK)/libogg install \
@@ -39,7 +37,7 @@ libogg-package: libogg-stage
 	rm -rf $(BUILD_DIST)/libogg{0,-dev}
 	mkdir -p $(BUILD_DIST)/libogg{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	mkdir -p $(BUILD_DIST)/libogg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	
+
 	# libogg.mk Prep libogg0
 	cp -a $(BUILD_STAGE)/libogg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libogg.0.dylib $(BUILD_DIST)/libogg0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
@@ -48,14 +46,14 @@ libogg-package: libogg-stage
 	cp -a $(BUILD_STAGE)/libogg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libogg.{dylib,a} $(BUILD_DIST)/libogg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libogg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libogg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/libogg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal $(BUILD_DIST)/libogg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	
+
 	# libogg.mk Sign
 	$(call SIGN,libogg0,general.xml)
-	
+
 	# libogg.mk Make .debs
 	$(call PACK,libogg0,DEB_LIBOGG_V)
 	$(call PACK,libogg-dev,DEB_LIBOGG_V)
-	
+
 	# libogg.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libogg{0,-dev}
 

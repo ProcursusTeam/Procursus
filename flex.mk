@@ -20,11 +20,9 @@ flex:
 	@echo "Using previously built flex."
 else
 flex: flex-setup gettext
-	cd $(BUILD_WORK)/flex && ./autogen.sh 
+	cd $(BUILD_WORK)/flex && ./autogen.sh
 	cd $(BUILD_WORK)/flex && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		ac_cv_func_malloc_0_nonnull=yes \
 		ac_cv_func_realloc_0_nonnull=yes
 	+$(MAKE) -C $(BUILD_WORK)/flex \
@@ -43,7 +41,7 @@ flex-package: flex-stage
 	rm -rf $(BUILD_DIST)/flex $(BUILD_DIST)/libfl{2,-dev}
 	mkdir -p $(BUILD_DIST)/flex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		$(BUILD_DIST)/libfl{2,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-	
+
 	# flex.mk Prep flex
 	cp -a $(BUILD_STAGE)/flex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/flex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
@@ -53,17 +51,17 @@ flex-package: flex-stage
 	# flex.mk Prep libfl-dev
 	cp -a $(BUILD_STAGE)/flex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libfl.2.dylib) $(BUILD_DIST)/libfl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/flex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libfl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# flex.mk Sign
 	$(call SIGN,flex,general.xml)
 	$(call SIGN,libfl2,general.xml)
-	
+
 	# flex.mk Make .debs
 	$(call PACK,flex,DEB_FLEX_V)
 	$(call PACK,libfl2,DEB_FLEX_V)
 	$(call PACK,libfl-dev,DEB_FLEX_V)
-	
+
 	# flex.mk Build cleanup
 	rm -rf $(BUILD_DIST)/flex $(BUILD_DIST)/libfl{2,-dev}
-	
+
 .PHONY: flex flex-package
