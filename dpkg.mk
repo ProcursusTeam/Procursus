@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS  += dpkg
-DPKG_VERSION   := 1.20.7.1
-DEB_DPKG_V     ?= $(DPKG_VERSION)-1
+DPKG_VERSION   := 1.20.9
+DEB_DPKG_V     ?= $(DPKG_VERSION)
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 DPKG_TAR := gtar
