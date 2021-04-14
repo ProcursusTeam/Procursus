@@ -7,9 +7,7 @@ LIBSNAPPY_VERSION := 1.1.8
 DEB_LIBSNAPPY_V   ?= $(LIBSNAPPY_VERSION)
 
 libsnappy-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/libsnappy-$(LIBSNAPPY_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/libsnappy-$(LIBSNAPPY_VERSION).tar.gz \
-			https://github.com/google/snappy/archive/$(LIBSNAPPY_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,google,snappy,$(LIBSNAPPY_VERSION),$(LIBSNAPPY_VERSION),libsnappy)
 	$(call EXTRACT_TAR,libsnappy-$(LIBSNAPPY_VERSION).tar.gz,snappy-$(LIBSNAPPY_VERSION),libsnappy)
 	$(call DO_PATCH,libsnappy,libsnappy,-p1)
 
@@ -19,18 +17,8 @@ libsnappy:
 else
 libsnappy: libsnappy-setup
 	cd $(BUILD_WORK)/libsnappy && cmake . \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX) \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DCOMMON_ARCH=$(DEB_ARCH) \
-		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
 		-DBUILD_SHARED_LIBS=true \
 		-DSNAPPY_BUILD_TESTS=false
 	+$(MAKE) -C $(BUILD_WORK)/libsnappy all

@@ -20,9 +20,7 @@ expat:
 else
 expat: expat-setup
 	cd $(BUILD_WORK)/expat && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/expat
 	+$(MAKE) -C $(BUILD_WORK)/expat install \
 		DESTDIR=$(BUILD_STAGE)/expat

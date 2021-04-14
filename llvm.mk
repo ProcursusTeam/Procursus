@@ -34,8 +34,8 @@ endif
 
 llvm-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/apple/llvm-project/archive/swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz
-	-[ ! -e "$(BUILD_SOURCE)/swift-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz" ] && wget -O $(BUILD_SOURCE)/swift-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz https://github.com/apple/swift/archive/swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz
-	-[ ! -e "$(BUILD_SOURCE)/swift-cmark-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz" ] && wget -O $(BUILD_SOURCE)/swift-cmark-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz https://github.com/apple/cmark/archive/swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz
+	$(call GITHUB_ARCHIVE,apple,swift,$(SWIFT_VERSION)-$(SWIFT_SUFFIX),swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),swift-swift)
+	$(call GITHUB_ARCHIVE,apple,cmark,$(SWIFT_VERSION)-$(SWIFT_SUFFIX),swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),swift-cmark)
 	$(call EXTRACT_TAR,swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz,llvm-project-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),llvm)
 	$(call EXTRACT_TAR,swift-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz,swift-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),llvm/swift)
 	$(call EXTRACT_TAR,swift-cmark-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz,swift-cmark-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),llvm/cmark)
@@ -55,7 +55,7 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 	ln -sf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpanelw.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpanel.dylib
 	mv $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h.old
 
-	mkdir -p $(BUILD_WORK)/llvm/build/NATIVE && cd $(BUILD_WORK)/llvm/build/NATIVE && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	mkdir -p $(BUILD_WORK)/llvm/build/NATIVE && cd $(BUILD_WORK)/llvm/build/NATIVE && cmake . \
 		-DCMAKE_C_COMPILER=cc \
 		-DCMAKE_CXX_COMPILER=c++ \
 		-DCMAKE_OSX_SYSROOT="$(MACOSX_SYSROOT)" \
@@ -73,7 +73,7 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		../../llvm
 	+$(MAKE) -C $(BUILD_WORK)/llvm/build/NATIVE swift lldb-tblgen
 
-	cd $(BUILD_WORK)/llvm/build && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
+	cd $(BUILD_WORK)/llvm/build && cmake . \
 		-DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_SYSTEM_NAME=Darwin \
 		-DCMAKE_CROSSCOMPILING=true \

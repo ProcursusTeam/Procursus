@@ -21,22 +21,13 @@ aom:
 	@echo "Using previously built aom."
 else
 aom: aom-setup
-	cd $(BUILD_WORK)/aom/build && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
+	cd $(BUILD_WORK)/aom/build && cmake . \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DBUILD_SHARED_LIBS=1 \
 		-DCONFIG_RUNTIME_CPU_DETECT=0 \
 		-DENABLE_TESTS=0 \
 		-DGIT_EXECUTABLE=/non-existant-binary \
 		-DAOM_TARGET_CPU="$(MEMO_ARCH)" \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX) \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		..
 	+$(MAKE) -C $(BUILD_WORK)/aom/build
 	+$(MAKE) -C $(BUILD_WORK)/aom/build install \

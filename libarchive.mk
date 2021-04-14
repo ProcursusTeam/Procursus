@@ -16,9 +16,7 @@ libarchive:
 else
 libarchive: libarchive-setup lz4 liblzo2 zstd xz nettle
 	cd $(BUILD_WORK)/libarchive && ./configure \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
 		--without-openssl \
 		--with-nettle \

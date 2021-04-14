@@ -18,8 +18,7 @@ xz:
 else
 xz: xz-setup gettext
 	cd $(BUILD_WORK)/xz && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX) \
 		--enable-threads \
 		--disable-xzdec \
@@ -30,8 +29,7 @@ xz: xz-setup gettext
 		DESTDIR=$(BUILD_BASE)
 
 	cd $(BUILD_WORK)/xz && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX) \
 		--disable-shared \
 		--disable-nls \

@@ -17,11 +17,7 @@ libsm:
 else
 libsm: libsm-setup xtrans libice uuid
 	cd $(BUILD_WORK)/libsm && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-malloc0returnsnull=no \
 		--enable-docs=no
 	+$(MAKE) -C $(BUILD_WORK)/libsm

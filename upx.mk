@@ -7,8 +7,8 @@ UPX_VERSION := 3.96
 DEB_UPX_V   ?= $(UPX_VERSION)
 
 upx-setup: setup
-	wget -O $(BUILD_SOURCE)/upx-$(UPX_VERSION).tar.gz https://github.com/upx/upx/archive/refs/tags/v$(UPX_VERSION).tar.gz
-	wget -O $(BUILD_SOURCE)/upx-lzma-sdk-$(UPX_VERSION).tar.gz https://github.com/upx/upx-lzma-sdk/archive/refs/tags/v$(UPX_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,upx,upx,$(UPX_VERSION),v$(UPX_VERSION))
+	$(call GITHUB_ARCHIVE,upx,upx-lzma-sdk,$(UPX_VERSION),v$(UPX_VERSION))
 	$(call EXTRACT_TAR,upx-$(UPX_VERSION).tar.gz,upx-$(UPX_VERSION),upx)
 	rm -rf $(BUILD_WORK)/upx/src/lzma-sdk
 	$(call EXTRACT_TAR,upx-lzma-sdk-$(UPX_VERSION).tar.gz,upx-lzma-sdk-$(UPX_VERSION),upx/src/lzma-sdk/)
@@ -23,12 +23,9 @@ upx: upx-setup ucl
 		CHECK_WHITESPACE="$(shell which true)" \
 		UPX_LZMA_VERSION=0x465 \
 		all
-
 	+$(MAKE) -C $(BUILD_WORK)/upx all
-
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/upx/src/upx.out $(BUILD_STAGE)/upx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/upx-ucl
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/upx/doc/upx.1 $(BUILD_STAGE)/upx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/upx-ucl.1
-
 	touch $(BUILD_WORK)/upx/.build_complete
 endif
 

@@ -8,9 +8,7 @@ VIM_VERSION := 8.2.1800
 DEB_VIM_V   ?= $(VIM_VERSION)
 
 vim-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/vim-$(VIM_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/vim-$(VIM_VERSION).tar.gz \
-			https://github.com/vim/vim/archive/v$(VIM_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,vim,vim,$(VIM_VERSION),v$(VIM_VERSION))
 	$(call EXTRACT_TAR,vim-$(VIM_VERSION).tar.gz,vim-$(VIM_VERSION),vim)
 
 ifneq ($(wildcard $(BUILD_WORK)/vim/.build_complete),)
@@ -22,9 +20,7 @@ vim: vim-setup ncurses gettext
 	$(SED) -i 's/AC_TRY_LINK(\[]/AC_TRY_LINK(\[#include <termcap.h>]/g' $(BUILD_WORK)/vim/src/configure.ac # This is so stupid, I cannot believe this is necessary.
 	cd $(BUILD_WORK)/vim/src && autoconf -f
 	cd $(BUILD_WORK)/vim && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-gui=no \
 		--with-tlib=ncursesw \
 		--without-x \
