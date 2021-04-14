@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += apt
 APT_VERSION   := 2.3.0
-DEB_APT_V     ?= $(APT_VERSION)-1
+DEB_APT_V     ?= $(APT_VERSION)-2
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
 APT_CMAKE_ARGS += -DHAVE_PTSNAME_R=0
@@ -32,6 +32,7 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	if [ -f "$(BUILD_WORK)/apt/apt-pkg/algorithms.cc" ]; then \
 		mv -f $(BUILD_WORK)/apt/apt-pkg/algorithms.{cc,mm}; \
 	fi
+	cp $(BUILD_WORK)/apt/apt-pkg/memrchr.cc $(BUILD_WORK)/apt/ftparchive
 	mkdir -p $(BUILD_WORK)/apt/build
 
 ifneq ($(wildcard $(BUILD_WORK)/apt/.build_complete),)
