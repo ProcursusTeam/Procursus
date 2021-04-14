@@ -3,23 +3,17 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += apt
-APT_VERSION   := 2.3.0
-DEB_APT_V     ?= $(APT_VERSION)-2
+APT_VERSION   := 2.3.1
+DEB_APT_V     ?= $(APT_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
 APT_CMAKE_ARGS += -DHAVE_PTSNAME_R=0
 endif
 
-###
-#
-# TODO: Make our own vendor configuration instead of using debian.
-#
-###
-
 apt-setup: setup
 	# Change this to a git release download sometime.
-	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/a/apt/apt_$(APT_VERSION).tar.xz
-	$(call EXTRACT_TAR,apt_$(APT_VERSION).tar.xz,apt-$(APT_VERSION),apt)
+	wget -q -nc -P $(BUILD_SOURCE) https://salsa.debian.org/apt-team/apt/-/archive/$(APT_VERSION)/apt-$(APT_VERSION).tar.bz2
+	$(call EXTRACT_TAR,apt-$(APT_VERSION).tar.bz2,apt-$(APT_VERSION),apt)
 	$(call DO_PATCH,apt,apt,-p1)
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call DO_PATCH,apt-macos,apt,-p1)
@@ -47,7 +41,7 @@ apt: apt-setup libgcrypt berkeleydb lz4 xxhash xz zstd gnutls
 		-DLOG_DIR=$(MEMO_PREFIX)/var/log/apt \
 		-DCONF_DIR=$(MEMO_PREFIX)/etc/apt \
 		-DROOT_GROUP=wheel \
-		-DCURRENT_VENDOR=debian \
+		-DCURRENT_VENDOR=procursus \
 		-DCOMMON_ARCH=$(DEB_ARCH) \
 		-DUSE_NLS=0 \
 		-DWITH_DOC=0 \
