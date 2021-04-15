@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += golang
-GOLANG_MAJOR_V := 1.15
-GOLANG_VERSION := $(GOLANG_MAJOR_V).7
+GOLANG_MAJOR_V := 1.16
+GOLANG_VERSION := $(GOLANG_MAJOR_V).3
 DEB_GOLANG_V   ?= $(GOLANG_VERSION)
 
 golang-setup: setup
@@ -32,7 +32,7 @@ golang: golang-setup
 			GOHOSTARCH=amd64 \
 			GOHOSTOS=darwin \
 			GOARCH=arm64 \
-			GOOS=darwin \
+			GOOS=ios \
 			CC=cc \
 			CC_FOR_TARGET=clang \
 			./make.bash
@@ -50,10 +50,10 @@ golang-package: golang-stage
 
 	# golang.mk Prep golang-$(GOLANG_MAJOR_V)-src
 	cp -a $(BUILD_STAGE)/golang/usr/lib/go-$(GOLANG_MAJOR_V)/{api,misc,src,test} $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-src/usr/lib/go-$(GOLANG_MAJOR_V)
-	
+
 	# golang.mk Prep golang-$(GOLANG_MAJOR_V)-go
 	cp -a $(BUILD_STAGE)/golang/usr/lib/go-$(GOLANG_MAJOR_V)/VERSION $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/usr/lib/go-$(GOLANG_MAJOR_V)
-	cp -a $(BUILD_STAGE)/golang/usr/lib/go-$(GOLANG_MAJOR_V)/bin/darwin_arm64/go{,fmt} $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/usr/lib/go-$(GOLANG_MAJOR_V)/bin
+	cp -a $(BUILD_STAGE)/golang/usr/lib/go-$(GOLANG_MAJOR_V)/bin/ios_arm64/go{,fmt} $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/usr/lib/go-$(GOLANG_MAJOR_V)/bin
 	cp -a $(BUILD_STAGE)/golang/usr/lib/go-$(GOLANG_MAJOR_V)/pkg/{*_*,include,tool} $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/usr/lib/go-$(GOLANG_MAJOR_V)/pkg
 	
 	# golang.mk Prep golang-go
