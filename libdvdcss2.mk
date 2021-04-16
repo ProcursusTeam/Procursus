@@ -12,7 +12,6 @@ libdvdcss2-setup: setup
 	$(call EXTRACT_TAR,libdvdcss2-$(LIBDVDCSS2_VERSION).tar.bz2,libdvdcss2-$(LIBDVDCSS2_VERSION),libdvdcss2)
 	rm -rf $(BUILD_WORK)/libdvdcss2
 	mv $(BUILD_WORK)/libdvdcss-$(LIBDVDCSS2_VERSION) $(BUILD_WORK)/libdvdcss2
-	#$(call DO_PATCH,libdvdcss2,libdvdcss2,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/libdvdcss2/.build_complete),)
 libdvdcss2:
@@ -30,16 +29,21 @@ endif
 libdvdcss2-package: libdvdcss2-stage
 	# libdvdcss2.mk Package Structure
 	rm -rf $(BUILD_DIST)/libdvdcss2
-	mkdir -p $(BUILD_DIST)/libdvdcss2
+	mkdir -p $(BUILD_DIST)/libdvdcss{2,-dev}/usr/lib
 	
 	# libdvdcss2.mk Prep libdvdcss2
-	cp -a $(BUILD_STAGE)/libdvdcss2 $(BUILD_DIST)
+	cp -a $(BUILD_STAGE)/libdvdcss2/usr/lib/*.dylib $(BUILD_DIST)/libdvdcss2/usr/lib
+
+	# libdvdcss2.mk Prep libdvdcss-dev
+	cp -a $(BUILD_STAGE)/libdvdcss2/usr/include $(BUILD_DIST)/libdvdcss-dev/usr
+	cp -a $(BUILD_STAGE)/libdvdcss2/usr/lib/{*.a,pkgconfig} $(BUILD_DIST)/libdvdcss-dev/usr/lib
 	
 	# libdvdcss2.mk Sign
 	$(call SIGN,libdvdcss2,general.xml)
 	
 	# libdvdcss2.mk Make .debs
 	$(call PACK,libdvdcss2,DEB_LIBDVDCSS2_V)
+	$(call PACK,libdvdcss-dev,DEB_LIBDVDCSS2_V)
 	
 	# libdvdcss2.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libdvdcss2
