@@ -26,4 +26,5 @@ diff -urN pacman-5.2.2/meson.build pacman/meson.build
  elif conf.has('HAVE_STRUCT_STATFS_F_FLAGS')
    conf.set('FSSTATSTYPE', 'struct statfs')
  endif
+
 	
