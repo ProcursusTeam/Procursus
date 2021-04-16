@@ -10,7 +10,8 @@ DEB_CARTHAGE_V     ?= $(CARTHAGE_VERSION)
 
 carthage-setup: setup
 	wget -q -O $(BUILD_SOURCE)/Carthage-$(CARTHAGE_VERSION).tar.gz https://github.com/Carthage/Carthage/archive/$(CARTHAGE_VERSION).tar.gz
-	$(call EXTRACT_TAR,carthage-$(CARTHAGE_VERSION).tar.gz,carthage-$(CARTHAGE_VERSION),carthage)
+	$(call GITHUB_ARCHIVE,Carthage,Carthage,$(CARTHAGE_VERSION),$(CARTHAGE_VERSION))
+	$(call EXTRACT_TAR,Carthage-$(CARTHAGE_VERSION).tar.gz,Carthage-$(CARTHAGE_VERSION),carthage)
 
 ifneq ($(wildcard $(BUILD_WORK)/carthage/.build_complete),)
 carthage:
