@@ -37,6 +37,7 @@ pacman: pacman-setup libarchive openssl curl gettext gpgme bash-completion
 		-D i18n=false \
 		-D doc=disabled \
 		-D crypto=openssl \
+		-D b_bitcode=true \
 		..
 	+ninja -C $(BUILD_WORK)/pacman/build
 	+DESTDIR="$(BUILD_STAGE)/pacman" ninja -C $(BUILD_WORK)/pacman/build install
@@ -51,6 +52,9 @@ pacman-package: pacman-stage
 
 	# pacman.mk Prep pacman
 	cp -a $(BUILD_STAGE)/pacman $(BUILD_DIST)
+	rm -rf $(BUILD_DIST)/pacman/bash-completion/completions/makepkg
+	ln -s $(BUILD_STAGE)/bash-completion/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/makepkg pacman
+	rm -rf pacman 
 
 	# pacman.mk Sign
 	$(call SIGN,pacman,general.xml)

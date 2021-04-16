@@ -3,7 +3,7 @@ Version: @DEB_PACMAN_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Utilities
-Depends: libarchive13, libarchive-tools, openssl, libcurl4, libzstd1, tar, libintl8
+Depends: libarchive13, libarchive-tools, openssl, libcurl4, libzstd1, tar, libintl8, bash-completion
 Priority: optional
 Description: A library-based package manager with dependency support
 Name: makepkg
