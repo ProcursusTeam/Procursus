@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS           += speedtest-cli
-SPEEDTEST-CLI_VERSION := 2.1.2
-DEB_SPEEDTEST-CLI_V   ?= $(SPEEDTEST-CLI_VERSION)-1
+SPEEDTEST-CLI_VERSION := 2.1.3
+DEB_SPEEDTEST-CLI_V   ?= $(SPEEDTEST-CLI_VERSION)
 
 speedtest-cli-setup: setup
 	$(call GITHUB_ARCHIVE,sivel,speedtest-cli,$(SPEEDTEST-CLI_VERSION),v$(SPEEDTEST-CLI_VERSION))
