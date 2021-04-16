@@ -34,7 +34,7 @@ chezmoi: chezmoi-setup
 		CGO_CFLAGS="$(CFLAGS)" \
 		CGO_CPPFLAGS="$(CPPFLAGS)" \
 		CGO_LDFLAGS="$(LDFLAGS)" \
-		CC=cc \
+		CC="$(CC)" \
 		$(GO_ARGS) \
 		go build
 	cp -a $(BUILD_WORK)/chezmoi/chezmoi $(BUILD_STAGE)/chezmoi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/usr/bin
