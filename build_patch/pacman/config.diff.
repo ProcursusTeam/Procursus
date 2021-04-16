@@ -1,17 +1,10 @@
 diff -urN pacman-5.2.2/lib/libalpm/diskspace.c pacman/lib/libalpm/diskspace.c
 --- pacman-5.2.2/lib/libalpm/diskspace.c	2020-06-25 22:04:50.000000000 -0700
 +++ pacman/lib/libalpm/diskspace.c	2021-03-25 11:10:58.000000000 -0700
-@@ -49,6 +49,7 @@
- #include "log.h"
- #include "trans.h"
- #include "handle.h"
-+#include "sys/statvfs.h"
- 
- static int mount_point_cmp(const void *p1, const void *p2)
- {
+
 @@ -82,7 +83,7 @@
  	}
- 
+
  	_alpm_log(handle, ALPM_LOG_DEBUG, "loading fsinfo for %s\n", mountpoint->mount_dir);
 -	mountpoint->read_only = mountpoint->fsp.f_flag & ST_RDONLY;
 +	mountpoint->read_only = mountpoint->fsp.f_flags & ST_RDONLY;
@@ -21,24 +14,16 @@ diff -urN pacman-5.2.2/lib/libalpm/diskspace.c pacman/lib/libalpm/diskspace.c
 diff -urN pacman-5.2.2/meson.build pacman/meson.build
 --- pacman-5.2.2/meson.build	2020-06-25 22:04:50.000000000 -0700
 +++ pacman/meson.build	2021-03-25 10:47:29.000000000 -0700
-@@ -150,7 +150,7 @@
- 
- foreach member : [
-     ['struct stat', 'st_blksize', '''#include <sys/stat.h>'''],
--    ['struct statvfs', 'f_flag', '''#include <sys/statvfs.h>'''],
-+    ['struct statfs', 'f_flags', '''#include <sys/mount.h>'''],
-     ['struct statfs', 'f_flags', '''#include <sys/param.h>
-                                     #include <sys/mount.h>'''],
-   ]
+
 @@ -173,8 +173,8 @@
    endif
  endforeach
- 
+
 -if conf.has('HAVE_STRUCT_STATVFS_F_FLAG')
 -  conf.set('FSSTATSTYPE', 'struct statvfs')
-+if conf.has('HAVE_STRUCT_STATVS_F_FLAG')
++if conf.has('HAVE_STRUCT_STATFS_F_FLAG')
 +  conf.set('FSSTATSTYPE', 'struct statfs')
  elif conf.has('HAVE_STRUCT_STATFS_F_FLAGS')
    conf.set('FSSTATSTYPE', 'struct statfs')
  endif
-
+	
