@@ -1,0 +1,12 @@
+Package: libdvdcss2
+Version: @DEB_LIBDVDCSS2_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Replaces: libdvdcss-dev (<= 0.0.3-3), libdvdcss0 (<= 1.0.0-0.0), libdvdcss2-dev (<= 1.2.10-0.0)
+Provides: libdvdcss
+Section: Multimedia
+Priority: optional
+Homepage: http://download.videolan.org/
+Description: Simple foundation for reading DVDs - runtime libraries
+ To allow applications to access some of the more advanced features
+ of the DVD format.
