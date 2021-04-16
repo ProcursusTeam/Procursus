@@ -1,0 +1,7 @@
+Package: docbook
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_DOCBOOK_V@
+Section: Development
+Priority: standard
+Description: Standard SGML representation system for technical documents
