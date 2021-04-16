@@ -262,8 +262,9 @@ ACLOCAL_PATH        := $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/acloc
 
 DEFAULT_CMAKE_FLAGS := \
 	-DCMAKE_BUILD_TYPE=Release \
-	-DCMAKE_SYSTEM_NAME=Darwin \
 	-DCMAKE_CROSSCOMPILING=true \
+	-DCMAKE_SYSTEM_NAME=Darwin \
+	-DCMAKE_SYSTEM_PROCESSOR=$(shell echo $(GNU_HOST_TRIPLE) | cut -f1 -d-) \
 	-DCMAKE_C_FLAGS="$(CFLAGS)" \
 	-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
 	-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
@@ -474,6 +475,10 @@ GITHUB_ARCHIVE = -if [ $(5) ]; then \
 
 ifneq ($(call HAS_COMMAND,wget),1)
 $(error Install wget)
+endif
+
+ifneq ($(call HAS_COMMAND,triehash),1)
+$(error Install triehash)
 endif
 
 ifeq ($(call HAS_COMMAND,gmake),1)

@@ -5,7 +5,7 @@ endif
 SUBPROJECTS        += tsschecker
 TSSCHECKER_VERSION := 320
 TSSCHECKER_COMMIT  := 10440005e2ab5f950f76368a0456ad69677da71b
-DEB_TSSCHECKER_V   ?= $(TSSCHECKER_VERSION)-1
+DEB_TSSCHECKER_V   ?= $(TSSCHECKER_VERSION)-2
 
 tsschecker-setup: setup
 	$(call GITHUB_ARCHIVE,tihmstar,tsschecker,$(TSSCHECKER_COMMIT),$(TSSCHECKER_COMMIT))
@@ -15,6 +15,9 @@ tsschecker-setup: setup
 	-rmdir $(BUILD_WORK)/tsschecker/external/jssy
 	$(call EXTRACT_TAR,jssy-master.tar.gz,jssy-master,tsschecker/external/jssy)
 	$(call DO_PATCH,tsschecker,tsschecker,-p1) # Remove when PR 165 merged upstream.
+
+	$(SED) -i 's/git rev\-list \-\-count HEAD/printf ${TSSCHECKER_VERSION}/g' $(BUILD_WORK)/tsschecker/configure.ac
+	$(SED) -i 's/git rev\-parse HEAD/printf ${TSSCHECKER_COMMIT}/g' $(BUILD_WORK)/tsschecker/configure.ac
 
 
 ifneq ($(wildcard $(BUILD_WORK)/tsschecker/.build_complete),)
