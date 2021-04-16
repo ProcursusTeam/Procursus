@@ -28,12 +28,16 @@ checkbuild() {
 }
 
 downloadlink() {
-	if echo "${1}" | rev | cut -d'/' -f1 | rev | ${SED} 's/\.tar.*//g' | ${SED} "s/${2}//g" | grep "${3}" &>/dev/null; then
-		echo -e "\twget -q -nc -P\$(BUILD_SOURCE) $(${SED} "s/${2}/\$(${4}_VERSION)/g" <<< "$1")"
+	if [ "$(${SED} 's|^.*://||' <<< "${1}" | cut -d'/' -f1)" = "github.com" ]; then
+		echo -e "\t$\(call GITHUB_ARCHIVE,$(${SED} 's|^.*://||' <<< "${1}" | cut -d'/' -f2),$(${SED} 's|^.*://||' <<< "${1}" | cut -d'/' -f3),$\(${4}_VERSION\),$(echo "${1}" | rev | cut -d'/' -f1 | rev | ${SED} 's/\.tar.*//g' | ${SED} "s/${2}//g")$\(${4}_VERSION\)\)"
 	else
-		echo -e "\t-[ ! -f "$\(BUILD_SOURCE\)/${3}-$\(${4}_VERSION\).tar.$(rev <<< "$download" | cut -d'.' -f1 | rev)" ] \&\& \\
-\t\twget -q -nc -O\$(BUILD_SOURCE)/${3}-\$(${4}_VERSION).tar.$(rev <<< "$download" | cut -d'.' -f1 | rev) \\
-\t\t\t$(${SED} "s/${2}/\$(${4}_VERSION)/g" <<< "$1")"
+		if echo "${1}" | rev | cut -d'/' -f1 | rev | ${SED} 's/\.tar.*//g' | ${SED} "s/${2}//g" | grep "${3}" &>/dev/null; then
+			echo -e "\twget -q -nc -P\$(BUILD_SOURCE) $(${SED} "s/${2}/\$(${4}_VERSION)/g" <<< "$1")"
+		else
+			echo -e "\t-[ ! -f "$\(BUILD_SOURCE\)/${3}-$\(${4}_VERSION\).tar.$(rev <<< "$download" | cut -d'.' -f1 | rev)" ] \&\& \\
+\t	\twget -q -nc -O\$(BUILD_SOURCE)/${3}-\$(${4}_VERSION).tar.$(rev <<< "$download" | cut -d'.' -f1 | rev) \\
+\t	\t\t$(${SED} "s/${2}/\$(${4}_VERSION)/g" <<< "$1")"
+		fi
 	fi
 }
 

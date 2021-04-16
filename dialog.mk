@@ -17,9 +17,7 @@ dialog:
 else
 dialog: dialog-setup ncurses gettext
 	cd $(BUILD_WORK)/dialog && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-ncursesw \
 		--enable-nls
 	+$(MAKE) -C $(BUILD_WORK)/dialog
@@ -35,7 +33,7 @@ dialog-package: dialog-stage
 
 	# dialog.mk Prep dialog
 	# To keep parity with debian, dialog is not
-	# being split, it also is only having a static 
+	# being split, it also is only having a static
 	# lib. I can't install the headers without
 	# dialog-config so that gets deleted here.
 	cp -a $(BUILD_STAGE)/dialog $(BUILD_DIST)

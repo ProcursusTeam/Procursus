@@ -18,9 +18,7 @@ inetutils:
 else
 inetutils: inetutils-setup ncurses readline
 	cd $(BUILD_WORK)/inetutils && ./configure \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-ifconfig \
 		--disable-ping6 \
 		--disable-syslogd \

@@ -7,13 +7,13 @@ LIBGPG-ERROR_VERSION := 1.42
 DEB_LIBGPG-ERROR_V   ?= $(LIBGPG-ERROR_VERSION)
 
 ifneq (,$(findstring aarch64,$(GNU_HOST_TRIPLE)))
-        GPG_SCHEME := aarch64-apple-darwin
+	GPG_SCHEME := aarch64-apple-darwin
 else ifneq (,$(findstring arm,$(GNU_HOST_TRIPLE)))
-        GPG_SCHEME := arm-apple-darwin
+	GPG_SCHEME := arm-apple-darwin
 else ifneq (,$(findstring x86_64,$(GNU_HOST_TRIPLE)))
-        GPG_SCHEME := x86_64-apple-darwin
+	GPG_SCHEME := x86_64-apple-darwin
 else
-        $(error Host triple $(GNU_HOST_TRIPLE) isn't supported)
+	$(error Host triple $(GNU_HOST_TRIPLE) isn't supported)
 endif
 
 libgpg-error-setup: setup
@@ -29,9 +29,7 @@ else
 libgpg-error: libgpg-error-setup gettext
 	$(SED) -i '/{"armv7-unknown-linux-gnueabihf"  },/a \ \ \ \ {"$(GNU_HOST_TRIPLE)",  "$(GPG_SCHEME)" },' $(BUILD_WORK)/libgpg-error/src/mkheader.c
 	cd $(BUILD_WORK)/libgpg-error && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libgpg-error install \
 		DESTDIR=$(BUILD_STAGE)/libgpg-error \
 		TESTS=""

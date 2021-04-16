@@ -38,21 +38,6 @@ diff -urN apt-2.1.11/CMakeLists.txt apt/CMakeLists.txt
  
  # Include stuff
  include(Misc)
-@@ -85,10 +85,10 @@
-   set(HAVE_BDB 1)
- endif()
- 
--find_package(GnuTLS REQUIRED)
--if (GNUTLS_FOUND)
--  set(HAVE_GNUTLS 1)
--endif()
-+#find_package(GnuTLS REQUIRED)
-+#if (GNUTLS_FOUND)
-+#  set(HAVE_GNUTLS 1)
-+#endif()
- 
- # (De)Compressor libraries
- find_package(ZLIB REQUIRED)
 @@ -119,20 +119,20 @@
  endif()
  
@@ -129,18 +114,6 @@ diff -urN apt-2.1.11/apt-pkg/acquire.cc apt/apt-pkg/acquire.cc
  }
  bool pkgAcquireStatus::Pulse(pkgAcquire *Owner)
  {
-diff -urN apt-2.1.11/apt-pkg/cachefilter-patterns.cc apt/apt-pkg/cachefilter-patterns.cc
---- apt-2.1.11/apt-pkg/cachefilter-patterns.cc	2020-10-21 05:53:18.000000000 -0400
-+++ apt/apt-pkg/cachefilter-patterns.cc	2020-11-22 18:23:41.692439841 -0500
-@@ -501,7 +501,7 @@
- }
- bool BaseRegexMatcher::operator()(const char *string)
- {
--   if (unlikely(pattern == nullptr) || string == nullptr)
-+   if (unlikely(pattern == NULL))
-       return false;
-    else
-       return regexec(pattern, string, 0, 0, 0) == 0;
 diff -urN apt-2.1.11/apt-pkg/contrib/fileutl.cc apt/apt-pkg/contrib/fileutl.cc
 --- apt-2.1.11/apt-pkg/contrib/fileutl.cc	2020-10-21 05:53:18.000000000 -0400
 +++ apt/apt-pkg/contrib/fileutl.cc	2020-11-22 18:23:41.693439838 -0500
@@ -356,15 +329,16 @@ diff -urN apt-2.1.11/apt-pkg/endian.h apt/apt-pkg/endian.h
 diff -urN apt-2.1.11/apt-pkg/getservbyport_r.cc apt/apt-pkg/getservbyport_r.cc
 --- apt-2.1.11/apt-pkg/getservbyport_r.cc	1969-12-31 19:00:00.000000000 -0500
 +++ apt/apt-pkg/getservbyport_r.cc	2020-11-22 18:23:41.694439835 -0500
-@@ -0,0 +1,59 @@
+@@ -0,0 +1,64 @@
 +#define _GNU_SOURCE
-+#include <sys/types.h>
 +#include <sys/socket.h>
 +#include <netinet/in.h>
 +#include <netdb.h>
 +#include <inttypes.h>
 +#include <errno.h>
 +#include <string.h>
++#include <stdlib.h>
++#include <config.h>
 +
 +#ifndef HAVE_GETSERVBYPORT_R
 +
@@ -382,6 +356,7 @@ diff -urN apt-2.1.11/apt-pkg/getservbyport_r.cc apt/apt-pkg/getservbyport_r.cc
 +		if (r) r = getservbyport_r(port, "udp", se, buf, buflen, res);
 +		return r;
 +	}
++	*res = 0;
 +
 +	/* Align buffer */
 +	i = (uintptr_t)buf & sizeof(char *)-1;
@@ -401,7 +376,7 @@ diff -urN apt-2.1.11/apt-pkg/getservbyport_r.cc apt/apt-pkg/getservbyport_r.cc
 +	se->s_aliases[1] = 0;
 +	se->s_aliases[0] = se->s_name = buf;
 +
-+	switch (getnameinfo((const struct sockaddr *) &sin, sizeof sin, 0, 0, buf, buflen,
++	switch (getnameinfo((const struct sockaddr *)&sin, sizeof sin, 0, 0, buf, buflen,
 +		strcmp(prots, "udp") ? 0 : NI_DGRAM)) {
 +	case EAI_MEMORY:
 +	case EAI_SYSTEM:
@@ -412,10 +387,13 @@ diff -urN apt-2.1.11/apt-pkg/getservbyport_r.cc apt/apt-pkg/getservbyport_r.cc
 +		break;
 +	}
 +
++	/* A numeric port string is not a service record. */
++	if (strtol(buf, 0, 10)==ntohs(port)) return ENOENT;
++
 +	*res = se;
 +	return 0;
 +}
-+#endif
++#endif // HAVE_GETSERVBYPORT_R
 diff -urN apt-2.1.11/apt-pkg/indexfile.cc apt/apt-pkg/indexfile.cc
 --- apt-2.1.11/apt-pkg/indexfile.cc	2020-10-21 05:53:18.000000000 -0400
 +++ apt/apt-pkg/indexfile.cc	2020-11-22 18:23:41.694439835 -0500
@@ -431,169 +409,56 @@ diff -urN apt-2.1.11/apt-pkg/indexfile.cc apt/apt-pkg/indexfile.cc
 diff -urN apt-2.1.11/apt-pkg/memrchr.cc apt/apt-pkg/memrchr.cc
 --- apt-2.1.11/apt-pkg/memrchr.cc	1969-12-31 19:00:00.000000000 -0500
 +++ apt/apt-pkg/memrchr.cc	2020-11-22 18:23:41.695439833 -0500
-@@ -0,0 +1,158 @@
-+/* memrchr -- find the last occurrence of a byte in a memory block
+@@ -0,0 +1,45 @@
++/*	$OpenBSD: memrchr.c,v 1.2 2007/11/27 16:22:12 martynas Exp $	*/
 +
-+   Copyright (C) 1991, 1993, 1996-1997, 1999-2000, 2003-2015 Free Software
-+   Foundation, Inc.
++/*
++ * Copyright (c) 2007 Todd C. Miller <Todd.Miller@courtesan.com>
++ *
++ * Permission to use, copy, modify, and distribute this software for any
++ * purpose with or without fee is hereby granted, provided that the above
++ * copyright notice and this permission notice appear in all copies.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
++ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
++ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
++ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
++ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
++ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
++ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
++ *
++ * $FreeBSD$
++ */
 +
-+   Based on strlen implementation by Torbjorn Granlund (tege@sics.se),
-+   with help from Dan Sahlin (dan@sics.se) and
-+   commentary by Jim Blandy (jimb@ai.mit.edu);
-+   adaptation to memchr suggested by Dick Karpinski (dick@cca.ucsf.edu),
-+   and implemented by Roland McGrath (roland@ai.mit.edu).
-+
-+   This program is free software: you can redistribute it and/or modify
-+   it under the terms of the GNU General Public License as published by
-+   the Free Software Foundation; either version 3 of the License, or
-+   (at your option) any later version.
-+
-+   This program is distributed in the hope that it will be useful,
-+   but WITHOUT ANY WARRANTY; without even the implied warranty of
-+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+   GNU General Public License for more details.
-+
-+   You should have received a copy of the GNU General Public License
-+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
-+
++#include <string.h>
++#include <apt-pkg/missing.h>
 +#include <config.h>
 +
 +#ifndef HAVE_MEMRCHR
-+#define reg_char char
 +
-+#include <string.h>
-+#include <limits.h>
-+#include <apt-pkg/missing.h>
-+
-+#undef __memrchr
-+#ifdef _LIBC
-+# undef memrchr
-+#endif
-+
-+#ifndef weak_alias
-+# define __memrchr memrchr
-+#endif
-+
-+/* Search no more than N bytes of S for C.  */
++/*
++ * Reverse memchr()
++ * Find the last occurrence of 'c' in the buffer 's' of size 'n'.
++ */
 +extern "C" void *
-+memrchr (const void *s, int c_in, size_t n)
++memrchr(const void *s, int c, size_t n)
 +{
-+  /* On 32-bit hardware, choosing longword to be a 32-bit unsigned
-+     long instead of a 64-bit uintmax_t tends to give better
-+     performance.  On 64-bit hardware, unsigned long is generally 64
-+     bits already.  Change this typedef to experiment with
-+     performance.  */
-+  typedef unsigned long int longword;
++const unsigned char *cp;
 +
-+  const unsigned char *char_ptr;
-+  const longword *longword_ptr;
-+  longword repeated_one;
-+  longword repeated_c;
-+  unsigned reg_char c;
-+
-+  c = (unsigned char) c_in;
-+
-+  /* Handle the last few bytes by reading one byte at a time.
-+     Do this until CHAR_PTR is aligned on a longword boundary.  */
-+  for (char_ptr = (const unsigned char *) s + n;
-+       n > 0 && (size_t) char_ptr % sizeof (longword) != 0;
-+       --n)
-+    if (*--char_ptr == c)
-+      return (void *) char_ptr;
-+
-+  longword_ptr = (const longword *) char_ptr;
-+
-+  /* All these elucidatory comments refer to 4-byte longwords,
-+     but the theory applies equally well to any size longwords.  */
-+
-+  /* Compute auxiliary longword values:
-+     repeated_one is a value which has a 1 in every byte.
-+     repeated_c has c in every byte.  */
-+  repeated_one = 0x01010101;
-+  repeated_c = c | (c << 8);
-+  repeated_c |= repeated_c << 16;
-+  if (0xffffffffU < (longword) -1)
-+    {
-+      repeated_one |= repeated_one << 31 << 1;
-+      repeated_c |= repeated_c << 31 << 1;
-+      if (8 < sizeof (longword))
-+        {
-+          size_t i;
-+
-+          for (i = 64; i < sizeof (longword) * 8; i *= 2)
-+            {
-+              repeated_one |= repeated_one << i;
-+              repeated_c |= repeated_c << i;
-+            }
-+        }
-+    }
-+
-+  /* Instead of the traditional loop which tests each byte, we will test a
-+     longword at a time.  The tricky part is testing if *any of the four*
-+     bytes in the longword in question are equal to c.  We first use an xor
-+     with repeated_c.  This reduces the task to testing whether *any of the
-+     four* bytes in longword1 is zero.
-+
-+     We compute tmp =
-+       ((longword1 - repeated_one) & ~longword1) & (repeated_one << 7).
-+     That is, we perform the following operations:
-+       1. Subtract repeated_one.
-+       2. & ~longword1.
-+       3. & a mask consisting of 0x80 in every byte.
-+     Consider what happens in each byte:
-+       - If a byte of longword1 is zero, step 1 and 2 transform it into 0xff,
-+         and step 3 transforms it into 0x80.  A carry can also be propagated
-+         to more significant bytes.
-+       - If a byte of longword1 is nonzero, let its lowest 1 bit be at
-+         position k (0 <= k <= 7); so the lowest k bits are 0.  After step 1,
-+         the byte ends in a single bit of value 0 and k bits of value 1.
-+         After step 2, the result is just k bits of value 1: 2^k - 1.  After
-+         step 3, the result is 0.  And no carry is produced.
-+     So, if longword1 has only non-zero bytes, tmp is zero.
-+     Whereas if longword1 has a zero byte, call j the position of the least
-+     significant zero byte.  Then the result has a zero at positions 0, ...,
-+     j-1 and a 0x80 at position j.  We cannot predict the result at the more
-+     significant bytes (positions j+1..3), but it does not matter since we
-+     already have a non-zero bit at position 8*j+7.
-+
-+     So, the test whether any byte in longword1 is zero is equivalent to
-+     testing whether tmp is nonzero.  */
-+
-+  while (n >= sizeof (longword))
-+    {
-+      longword longword1 = *--longword_ptr ^ repeated_c;
-+
-+      if ((((longword1 - repeated_one) & ~longword1)
-+           & (repeated_one << 7)) != 0)
-+        {
-+          longword_ptr++;
-+          break;
-+        }
-+      n -= sizeof (longword);
-+    }
-+
-+  char_ptr = (const unsigned char *) longword_ptr;
-+
-+  /* At this point, we know that either n < sizeof (longword), or one of the
-+     sizeof (longword) bytes starting at char_ptr is == c.  On little-endian
-+     machines, we could determine the first such byte without any further
-+     memory accesses, just by looking at the tmp result from the last loop
-+     iteration.  But this does not work on big-endian machines.  Choose code
-+     that works in both cases.  */
-+
-+  while (n-- > 0)
-+    {
-+      if (*--char_ptr == c)
-+        return (void *) char_ptr;
-+    }
-+
-+  return NULL;
++	if (n != 0) {
++		cp = (unsigned char *)s + n;
++		do {
++			if (*(--cp) == (unsigned char)c)
++				return((void *)cp);
++		} while (--n != 0);
++	}
++	return(NULL);
 +}
-+#endif
++#endif // HAVE_MEMRCHR
 diff -urN apt-2.1.11/apt-pkg/missing.h apt/apt-pkg/missing.h
 --- apt-2.1.11/apt-pkg/missing.h	1969-12-31 19:00:00.000000000 -0500
 +++ apt/apt-pkg/missing.h	2020-11-22 18:23:41.695439833 -0500
-@@ -0,0 +1,25 @@
+@@ -0,0 +1,22 @@
 +#define _GNU_SOURCE
 +#include <sys/socket.h>
 +#include <netinet/in.h>
@@ -601,14 +466,12 @@ diff -urN apt-2.1.11/apt-pkg/missing.h apt/apt-pkg/missing.h
 +#include <inttypes.h>
 +#include <errno.h>
 +#include <string.h>
-+#include <apt-pkg/macros.h>
 +
 +#ifndef PKGLIB_MISSING_H
 +#define PKGLIB_MISSING_H
 +
 +extern "C" {
-+	APT_PUBLIC void *memrchr(const void *s, int c, size_t n);
-+	void *rawmemchr(const void *s, int c);
++	void *memrchr(const void *s, int c, size_t n);
 +	char *strchrnul(const char *s, int c);
 +	int getservbyport_r(int port, const char *prots, struct servent *se, char *buf, size_t buflen, struct servent **res);
 +}
@@ -810,300 +673,73 @@ diff -urN apt-2.1.11/apt-pkg/nameser_compat.h apt/apt-pkg/nameser_compat.h
 +
 +#endif /* _ARPA_NAMESER_COMPAT_ */
 +/*! \file */
-diff -urN apt-2.1.11/apt-pkg/rawmemchr.cc apt/apt-pkg/rawmemchr.cc
---- apt-2.1.11/apt-pkg/rawmemchr.cc	1969-12-31 19:00:00.000000000 -0500
-+++ apt/apt-pkg/rawmemchr.cc	2020-11-22 18:23:41.695439833 -0500
-@@ -0,0 +1,139 @@
-+/* Searching in a string.
-+   Copyright (C) 2008-2015 Free Software Foundation, Inc.
-+
-+   This program is free software: you can redistribute it and/or modify
-+   it under the terms of the GNU General Public License as published by
-+   the Free Software Foundation; either version 3 of the License, or
-+   (at your option) any later version.
-+
-+   This program is distributed in the hope that it will be useful,
-+   but WITHOUT ANY WARRANTY; without even the implied warranty of
-+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+   GNU General Public License for more details.
-+
-+   You should have received a copy of the GNU General Public License
-+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
-+
-+#include <config.h>
-+
-+#ifndef HAVE_RAWMEMCHR
-+
-+/* Specification.  */
-+#include <string.h>
-+
-+/* Find the first occurrence of C in S.  */
-+extern "C" void *
-+rawmemchr (const void *s, int c_in)
-+{
-+  /* On 32-bit hardware, choosing longword to be a 32-bit unsigned
-+     long instead of a 64-bit uintmax_t tends to give better
-+     performance.  On 64-bit hardware, unsigned long is generally 64
-+     bits already.  Change this typedef to experiment with
-+     performance.  */
-+  typedef unsigned long int longword;
-+
-+  const unsigned char *char_ptr;
-+  const longword *longword_ptr;
-+  longword repeated_one;
-+  longword repeated_c;
-+  unsigned char c;
-+
-+  c = (unsigned char) c_in;
-+
-+  /* Handle the first few bytes by reading one byte at a time.
-+     Do this until CHAR_PTR is aligned on a longword boundary.  */
-+  for (char_ptr = (const unsigned char *) s;
-+       (size_t) char_ptr % sizeof (longword) != 0;
-+       ++char_ptr)
-+    if (*char_ptr == c)
-+      return (void *) char_ptr;
-+
-+  longword_ptr = (const longword *) char_ptr;
-+
-+  /* All these elucidatory comments refer to 4-byte longwords,
-+     but the theory applies equally well to any size longwords.  */
-+
-+  /* Compute auxiliary longword values:
-+     repeated_one is a value which has a 1 in every byte.
-+     repeated_c has c in every byte.  */
-+  repeated_one = 0x01010101;
-+  repeated_c = c | (c << 8);
-+  repeated_c |= repeated_c << 16;
-+  if (0xffffffffU < (longword) -1)
-+    {
-+      repeated_one |= repeated_one << 31 << 1;
-+      repeated_c |= repeated_c << 31 << 1;
-+      if (8 < sizeof (longword))
-+        {
-+          size_t i;
-+
-+          for (i = 64; i < sizeof (longword) * 8; i *= 2)
-+            {
-+              repeated_one |= repeated_one << i;
-+              repeated_c |= repeated_c << i;
-+            }
-+        }
-+    }
-+
-+  /* Instead of the traditional loop which tests each byte, we will
-+     test a longword at a time.  The tricky part is testing if *any of
-+     the four* bytes in the longword in question are equal to NUL or
-+     c.  We first use an xor with repeated_c.  This reduces the task
-+     to testing whether *any of the four* bytes in longword1 is zero.
-+
-+     We compute tmp =
-+       ((longword1 - repeated_one) & ~longword1) & (repeated_one << 7).
-+     That is, we perform the following operations:
-+       1. Subtract repeated_one.
-+       2. & ~longword1.
-+       3. & a mask consisting of 0x80 in every byte.
-+     Consider what happens in each byte:
-+       - If a byte of longword1 is zero, step 1 and 2 transform it into 0xff,
-+         and step 3 transforms it into 0x80.  A carry can also be propagated
-+         to more significant bytes.
-+       - If a byte of longword1 is nonzero, let its lowest 1 bit be at
-+         position k (0 <= k <= 7); so the lowest k bits are 0.  After step 1,
-+         the byte ends in a single bit of value 0 and k bits of value 1.
-+         After step 2, the result is just k bits of value 1: 2^k - 1.  After
-+         step 3, the result is 0.  And no carry is produced.
-+     So, if longword1 has only non-zero bytes, tmp is zero.
-+     Whereas if longword1 has a zero byte, call j the position of the least
-+     significant zero byte.  Then the result has a zero at positions 0, ...,
-+     j-1 and a 0x80 at position j.  We cannot predict the result at the more
-+     significant bytes (positions j+1..3), but it does not matter since we
-+     already have a non-zero bit at position 8*j+7.
-+
-+     The test whether any byte in longword1 is zero is equivalent
-+     to testing whether tmp is nonzero.
-+
-+     This test can read beyond the end of a string, depending on where
-+     C_IN is encountered.  However, this is considered safe since the
-+     initialization phase ensured that the read will be aligned,
-+     therefore, the read will not cross page boundaries and will not
-+     cause a fault.  */
-+
-+  while (1)
-+    {
-+      longword longword1 = *longword_ptr ^ repeated_c;
-+
-+      if ((((longword1 - repeated_one) & ~longword1)
-+           & (repeated_one << 7)) != 0)
-+        break;
-+      longword_ptr++;
-+    }
-+
-+  char_ptr = (const unsigned char *) longword_ptr;
-+
-+  /* At this point, we know that one of the sizeof (longword) bytes
-+     starting at char_ptr is == c.  On little-endian machines, we
-+     could determine the first such byte without any further memory
-+     accesses, just by looking at the tmp result from the last loop
-+     iteration.  But this does not work on big-endian machines.
-+     Choose code that works in both cases.  */
-+
-+  char_ptr = (unsigned char *) longword_ptr;
-+  while (*char_ptr != c)
-+    char_ptr++;
-+  return (void *) char_ptr;
-+}
-+#endif
 diff -urN apt-2.1.11/apt-pkg/strchrnul.cc apt/apt-pkg/strchrnul.cc
 --- apt-2.1.11/apt-pkg/strchrnul.cc	1969-12-31 19:00:00.000000000 -0500
 +++ apt/apt-pkg/strchrnul.cc	2020-11-22 18:23:41.695439833 -0500
-@@ -0,0 +1,147 @@
-+/* Searching in a string.
-+   Copyright (C) 2003, 2007-2015 Free Software Foundation, Inc.
+@@ -0,0 +1,63 @@
++/*-
++ * SPDX-License-Identifier: MIT
++ *
++ * Copyright (c) 2005-2014 Rich Felker, et al.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining
++ * a copy of this software and associated documentation files (the
++ * "Software"), to deal in the Software without restriction, including
++ * without limitation the rights to use, copy, modify, merge, publish,
++ * distribute, sublicense, and/or sell copies of the Software, and to
++ * permit persons to whom the Software is furnished to do so, subject to
++ * the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be
++ * included in all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
++ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
++ * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
++ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
++ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ */
++#include <sys/cdefs.h>
++__FBSDID("$FreeBSD$");
 +
-+   This program is free software: you can redistribute it and/or modify
-+   it under the terms of the GNU General Public License as published by
-+   the Free Software Foundation; either version 3 of the License, or
-+   (at your option) any later version.
-+
-+   This program is distributed in the hope that it will be useful,
-+   but WITHOUT ANY WARRANTY; without even the implied warranty of
-+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+   GNU General Public License for more details.
-+
-+   You should have received a copy of the GNU General Public License
-+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
-+
++#include <limits.h>
++#include <stdint.h>
++#include <string.h>
++#include <apt-pkg/missing.h>
 +#include <config.h>
++
++#define ALIGN (sizeof(size_t))
++#define ONES ((size_t)-1 / UCHAR_MAX)
++#define HIGHS (ONES * (UCHAR_MAX / 2 + 1))
++#define HASZERO(x) (((x)-ONES) & ~(x)&HIGHS)
 +
 +#ifndef HAVE_STRCHRNUL
 +
-+/* Specification.  */
-+#include <string.h>
-+
-+#include <apt-pkg/missing.h>
-+
-+/* Find the first occurrence of C in S or the final NUL byte.  */
 +extern "C" char *
-+strchrnul (const char *s, int c_in)
++strchrnul(const char *s, int c)
 +{
-+  /* On 32-bit hardware, choosing longword to be a 32-bit unsigned
-+     long instead of a 64-bit uintmax_t tends to give better
-+     performance.  On 64-bit hardware, unsigned long is generally 64
-+     bits already.  Change this typedef to experiment with
-+     performance.  */
-+  typedef unsigned long int longword;
++	c = (unsigned char)c;
++	if (!c)
++		return (char *)s + strlen(s);
 +
-+  const unsigned char *char_ptr;
-+  const longword *longword_ptr;
-+  longword repeated_one;
-+  longword repeated_c;
-+  unsigned char c;
-+
-+  c = (unsigned char) c_in;
-+  if (!c)
-+    return (char*) rawmemchr (s, 0);
-+
-+  /* Handle the first few bytes by reading one byte at a time.
-+     Do this until CHAR_PTR is aligned on a longword boundary.  */
-+  for (char_ptr = (const unsigned char *) s;
-+       (size_t) char_ptr % sizeof (longword) != 0;
-+       ++char_ptr)
-+    if (!*char_ptr || *char_ptr == c)
-+      return (char *) char_ptr;
-+
-+  longword_ptr = (const longword *) char_ptr;
-+
-+  /* All these elucidatory comments refer to 4-byte longwords,
-+     but the theory applies equally well to any size longwords.  */
-+
-+  /* Compute auxiliary longword values:
-+     repeated_one is a value which has a 1 in every byte.
-+     repeated_c has c in every byte.  */
-+  repeated_one = 0x01010101;
-+  repeated_c = c | (c << 8);
-+  repeated_c |= repeated_c << 16;
-+  if (0xffffffffU < (longword) -1)
-+    {
-+      repeated_one |= repeated_one << 31 << 1;
-+      repeated_c |= repeated_c << 31 << 1;
-+      if (8 < sizeof (longword))
-+        {
-+          size_t i;
-+
-+          for (i = 64; i < sizeof (longword) * 8; i *= 2)
-+            {
-+              repeated_one |= repeated_one << i;
-+              repeated_c |= repeated_c << i;
-+            }
-+        }
-+    }
-+
-+  /* Instead of the traditional loop which tests each byte, we will
-+     test a longword at a time.  The tricky part is testing if *any of
-+     the four* bytes in the longword in question are equal to NUL or
-+     c.  We first use an xor with repeated_c.  This reduces the task
-+     to testing whether *any of the four* bytes in longword1 or
-+     longword2 is zero.
-+
-+     Let's consider longword1.  We compute tmp =
-+       ((longword1 - repeated_one) & ~longword1) & (repeated_one << 7).
-+     That is, we perform the following operations:
-+       1. Subtract repeated_one.
-+       2. & ~longword1.
-+       3. & a mask consisting of 0x80 in every byte.
-+     Consider what happens in each byte:
-+       - If a byte of longword1 is zero, step 1 and 2 transform it into 0xff,
-+         and step 3 transforms it into 0x80.  A carry can also be propagated
-+         to more significant bytes.
-+       - If a byte of longword1 is nonzero, let its lowest 1 bit be at
-+         position k (0 <= k <= 7); so the lowest k bits are 0.  After step 1,
-+         the byte ends in a single bit of value 0 and k bits of value 1.
-+         After step 2, the result is just k bits of value 1: 2^k - 1.  After
-+         step 3, the result is 0.  And no carry is produced.
-+     So, if longword1 has only non-zero bytes, tmp is zero.
-+     Whereas if longword1 has a zero byte, call j the position of the least
-+     significant zero byte.  Then the result has a zero at positions 0, ...,
-+     j-1 and a 0x80 at position j.  We cannot predict the result at the more
-+     significant bytes (positions j+1..3), but it does not matter since we
-+     already have a non-zero bit at position 8*j+7.
-+
-+     The test whether any byte in longword1 or longword2 is zero is equivalent
-+     to testing whether tmp1 is nonzero or tmp2 is nonzero.  We can combine
-+     this into a single test, whether (tmp1 | tmp2) is nonzero.
-+
-+     This test can read more than one byte beyond the end of a string,
-+     depending on where the terminating NUL is encountered.  However,
-+     this is considered safe since the initialization phase ensured
-+     that the read will be aligned, therefore, the read will not cross
-+     page boundaries and will not cause a fault.  */
-+
-+  while (1)
-+    {
-+      longword longword1 = *longword_ptr ^ repeated_c;
-+      longword longword2 = *longword_ptr;
-+
-+      if (((((longword1 - repeated_one) & ~longword1)
-+            | ((longword2 - repeated_one) & ~longword2))
-+           & (repeated_one << 7)) != 0)
-+        break;
-+      longword_ptr++;
-+    }
-+
-+  char_ptr = (const unsigned char *) longword_ptr;
-+
-+  /* At this point, we know that one of the sizeof (longword) bytes
-+     starting at char_ptr is == 0 or == c.  On little-endian machines,
-+     we could determine the first such byte without any further memory
-+     accesses, just by looking at the tmp result from the last loop
-+     iteration.  But this does not work on big-endian machines.
-+     Choose code that works in both cases.  */
-+
-+  char_ptr = (unsigned char *) longword_ptr;
-+  while (*char_ptr && (*char_ptr != c))
-+    char_ptr++;
-+  return (char *) char_ptr;
-+}
++#ifdef __GNU__
++	typedef size_t __attribute__((__may_alias__)) word;
++	const word *w;
++	for (; (uintptr_t)s % ALIGN; s++)
++		if (!*s || *(unsigned char *)s == c)
++			return (char *)s;
++	size_t k = ONES * c;
++	for (w = (const word *)s; !HASZERO(*w) && !HASZERO(*w ^ k); w++)
++		;
++	s = (const char *)w;
 +#endif
++	for (; *s && *(unsigned char *)s != c; s++)
++		;
++	return (char *)s;
++}
++#endif // HAVE_STRCHRNUL
 diff -urN apt-2.1.11/apt-private/CMakeLists.txt apt/apt-private/CMakeLists.txt
 --- apt-2.1.11/apt-private/CMakeLists.txt	2020-10-21 05:53:18.000000000 -0400
 +++ apt/apt-private/CMakeLists.txt	2020-11-22 18:23:41.695439833 -0500
@@ -1159,362 +795,15 @@ diff -urN apt-2.1.11/ftparchive/cachedb.cc apt/ftparchive/cachedb.cc
  
  #include <ctype.h>
  #include <netinet/in.h> // htonl, etc
-diff -urN apt-2.1.11/methods/CMakeLists.txt apt/methods/CMakeLists.txt
---- apt-2.1.11/methods/CMakeLists.txt	2020-10-21 05:53:18.000000000 -0400
-+++ apt/methods/CMakeLists.txt	2020-11-22 18:23:41.696439830 -0500
-@@ -2,35 +2,37 @@
- include_directories($<$<BOOL:${SECCOMP_FOUND}>:${SECCOMP_INCLUDE_DIR}>)
- link_libraries(apt-pkg $<$<BOOL:${SECCOMP_FOUND}>:${SECCOMP_LIBRARIES}>)
- 
--add_library(connectlib OBJECT connect.cc rfc2553emu.cc)
-+#add_library(connectlib OBJECT connect.cc rfc2553emu.cc)
- 
- add_executable(file file.cc)
- add_executable(copy copy.cc)
- add_executable(store store.cc)
- add_executable(gpgv gpgv.cc)
- add_executable(cdrom cdrom.cc)
--add_executable(http http.cc basehttp.cc $<TARGET_OBJECTS:connectlib>)
-+#add_executable(http http.cc basehttp.cc $<TARGET_OBJECTS:connectlib>)
-+add_executable(https nshttp.mm)
- add_executable(mirror mirror.cc)
--add_executable(ftp ftp.cc $<TARGET_OBJECTS:connectlib>)
-+#add_executable(ftp ftp.cc $<TARGET_OBJECTS:connectlib>)
- add_executable(rred rred.cc)
- add_executable(rsh rsh.cc)
- 
--target_compile_definitions(connectlib PRIVATE ${GNUTLS_DEFINITIONS})
--target_include_directories(connectlib PRIVATE ${GNUTLS_INCLUDE_DIR})
--target_include_directories(http PRIVATE $<$<BOOL:${SYSTEMD_FOUND}>:${SYSTEMD_INCLUDE_DIRS}>)
-+#target_compile_definitions(connectlib PRIVATE ${GNUTLS_DEFINITIONS})
-+#target_include_directories(connectlib PRIVATE ${GNUTLS_INCLUDE_DIR})
-+#target_include_directories(http PRIVATE $<$<BOOL:${SYSTEMD_FOUND}>:${SYSTEMD_INCLUDE_DIRS}>)
- 
- # Additional libraries to link against for networked stuff
--target_link_libraries(http ${GNUTLS_LIBRARIES} $<$<BOOL:${SYSTEMD_FOUND}>:${SYSTEMD_LIBRARIES}>)
--target_link_libraries(ftp ${GNUTLS_LIBRARIES})
-+#target_link_libraries(http ${GNUTLS_LIBRARIES} $<$<BOOL:${SYSTEMD_FOUND}>:${SYSTEMD_LIBRARIES}>)
-+target_link_libraries(https "-framework Foundation")
-+#target_link_libraries(ftp ${GNUTLS_LIBRARIES})
+diff -urN apt/methods/connect.cc apt/methods/connect.cc
+--- apt/methods/connect.cc	2021-03-08 05:50:31.000000000 -0500
++++ apt/methods/connect.cc	2021-04-09 18:31:38.545621755 -0400
+@@ -274,7 +274,7 @@
+    struct timeval tv = {
+       // Split our millisecond timeout into seconds and microseconds
+       .tv_sec = TimeoutMsec / 1000,
+-      .tv_usec = (TimeoutMsec % 1000) * 1000,
++      .tv_usec = static_cast<__darwin_suseconds_t>((TimeoutMsec % 1000) * 1000),
+    };
 
- target_link_libraries(rred apt-private)
- 
- # Install the library
--install(TARGETS file copy store gpgv cdrom http ftp rred rsh mirror
-+install(TARGETS file copy store https gpgv cdrom rred rsh mirror
-         RUNTIME DESTINATION ${CMAKE_INSTALL_LIBEXECDIR}/apt/methods)
- 
- add_links(${CMAKE_INSTALL_LIBEXECDIR}/apt/methods mirror mirror+ftp mirror+http mirror+https mirror+file mirror+copy)
- add_links(${CMAKE_INSTALL_LIBEXECDIR}/apt/methods rsh ssh)
- 
- 
--add_links(${CMAKE_INSTALL_LIBEXECDIR}/apt/methods http https)
-+add_links(${CMAKE_INSTALL_LIBEXECDIR}/apt/methods https http)
-diff -urN apt-2.1.11/methods/nshttp.h apt/methods/nshttp.h
---- apt-2.1.11/methods/nshttp.h	1969-12-31 19:00:00.000000000 -0500
-+++ apt/methods/nshttp.h	2020-11-22 18:23:41.696439830 -0500
-@@ -0,0 +1,40 @@
-+// -*- mode: cpp; mode: fold -*-
-+// Description								/*{{{*/
-+/* ######################################################################
-+
-+   HTTP method - Transfer files via rsh compatible program
-+
-+   ##################################################################### */
-+									/*}}}*/
-+#ifndef APT_NSHTTP_H
-+#define APT_NSHTTP_H
-+
-+#include <string>
-+#include <time.h>
-+
-+#include <apt-pkg/strutl.h>
-+#include <Foundation/Foundation.h>
-+
-+class Hashes;
-+class FileFd;
-+
-+#include "aptmethod.h"
-+
-+class HttpMethod : public aptMethod
-+{
-+   virtual bool Fetch(FetchItem *Itm) APT_OVERRIDE;
-+   virtual bool Configuration(std::string Message) APT_OVERRIDE;
-+
-+   NSURLSession *session;
-+
-+   static std::string FailFile;
-+   static int FailFd;
-+   static time_t FailTime;
-+   static APT_NORETURN void SigTerm(int);
-+
-+   public:
-+
-+   explicit HttpMethod(std::string &&Prog);
-+};
-+
-+#endif
-diff -urN apt-2.1.11/methods/nshttp.mm apt/methods/nshttp.mm
---- apt-2.1.11/methods/nshttp.mm	1969-12-31 19:00:00.000000000 -0500
-+++ apt/methods/nshttp.mm	2020-11-22 18:23:41.697439827 -0500
-@@ -0,0 +1,260 @@
-+// -*- mode: cpp; mode: fold -*-
-+// Description								/*{{{*/
-+/* ######################################################################
-+
-+   RSH method - Transfer files via rsh compatible program
-+
-+   Written by Ben Collins <bcollins@debian.org>, Copyright (c) 2000
-+   Licensed under the GNU General Public License v2 [no exception clauses]
-+
-+   ##################################################################### */
-+									/*}}}*/
-+// Include Files							/*{{{*/
-+#include <config.h>
-+
-+#include <apt-pkg/configuration.h>
-+#include <apt-pkg/error.h>
-+#include <apt-pkg/fileutl.h>
-+#include <apt-pkg/hashes.h>
-+#include <apt-pkg/strutl.h>
-+
-+#include "nshttp.h"
-+#include <errno.h>
-+#include <signal.h>
-+#include <stdarg.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/stat.h>
-+#include <sys/time.h>
-+#include <unistd.h>
-+#include <dlfcn.h>
-+#include <Foundation/Foundation.h>
-+#include <sys/types.h>
-+#include <sys/sysctl.h>
-+
-+#include <apti18n.h>
-+
-+extern "C" NSDictionary *_CFCopyServerVersionDictionary();
-+
-+@interface NSDevice : NSObject
-++ (NSString *)_uniqueIdentifier;
-++ (NSString *)_platform;
-++ (NSUUID *)_uniqueIdentifierUUID;
-+@end
-+
-+@implementation NSDevice
-+
-++ (NSString *)_uniqueIdentifier {
-+    void *gestalt = dlopen("/usr/lib/libMobileGestalt.dylib", RTLD_GLOBAL | RTLD_LAZY);
-+    CFStringRef (*MGCopyAnswer)(CFStringRef) = (CFStringRef (*)(CFStringRef))(dlsym(gestalt, "MGCopyAnswer"));
-+    return CFBridgingRelease(MGCopyAnswer(CFSTR("UniqueDeviceID")));
-+}
-+
-++ (NSString *)_platform {
-+    size_t size;
-+    sysctlbyname("hw.machine", NULL, &size, NULL, 0);
-+    char *machine = (char *)malloc(size);
-+    sysctlbyname("hw.machine", machine, &size, NULL, 0);
-+    return [NSString stringWithCString:machine encoding:NSUTF8StringEncoding];
-+}
-+
-++ (NSString *)systemVersion {
-+   NSDictionary *dict = _CFCopyServerVersionDictionary();
-+   return [dict objectForKey:@"ProductVersion"];
-+}
-+
-+@end
-+
-+unsigned long TimeOut = 30;
-+Configuration::Item const *HttpOptions = 0;
-+time_t HttpMethod::FailTime = 0;
-+
-+// HttpMethod::HttpMethod - Constructor					/*{{{*/
-+HttpMethod::HttpMethod(std::string &&pProg) : aptMethod(std::move(pProg),"1.0",SendConfig)
-+{
-+   signal(SIGTERM,SigTerm);
-+   signal(SIGINT,SigTerm);
-+}
-+									/*}}}*/
-+// HttpMethod::Configuration - Handle a configuration message		/*{{{*/
-+// ---------------------------------------------------------------------
-+bool HttpMethod::Configuration(std::string Message)
-+{
-+   // enabling privilege dropping for this method requires configuration…
-+   // … which is otherwise lifted straight from root, so use it by default.
-+   _config->Set(std::string("Binary::") + Binary + "::APT::Sandbox::User", "");
-+
-+   if (aptMethod::Configuration(Message) == false)
-+      return false;
-+
-+   std::string const timeconf = std::string("Acquire::") + Binary + "::Timeout";
-+   TimeOut = _config->FindI(timeconf, TimeOut);
-+   std::string const optsconf = std::string("Acquire::") + Binary + "::Options";
-+   HttpOptions = _config->Tree(optsconf.c_str());
-+
-+   return true;
-+}
-+									/*}}}*/
-+// HttpMethod::SigTerm - Clean up and timestamp the files on exit	/*{{{*/
-+// ---------------------------------------------------------------------
-+/* */
-+void HttpMethod::SigTerm(int)
-+{
-+   _exit(100);
-+}
-+									/*}}}*/
-+// HttpMethod::Fetch - Fetch a URI					/*{{{*/
-+// ---------------------------------------------------------------------
-+/* */
-+bool HttpMethod::Fetch(FetchItem *Itm)
-+{
-+   URI Get(Itm->Uri);
-+   std::string cppGet = Get;
-+   NSURL *URL = [NSURL URLWithString:[NSString stringWithUTF8String:cppGet.c_str()]];
-+   __block FetchResult Res;
-+   Res.Filename = Itm->DestFile;
-+   Res.IMSHit = false;
-+
-+   __block BOOL success = NO;
-+   __block BOOL proceed = NO;
-+
-+   dispatch_semaphore_t sem = dispatch_semaphore_create(0);
-+
-+   NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:URL cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:TimeOut];
-+   [request setHTTPMethod:@"HEAD"];
-+
-+   NSOperatingSystemVersion firmwareVersion = [[NSProcessInfo processInfo] operatingSystemVersion];
-+   NSString *coreFoundationVersion = [NSString stringWithFormat:@"%.3f", kCFCoreFoundationVersionNumber];
-+   [request setValue:[NSString stringWithFormat:@"Procursus APT-HTTP/1.3 (%@) %@/%@", @PACKAGE_VERSION, @"CoreFoundation", coreFoundationVersion] forHTTPHeaderField:@"User-Agent"];
-+
-+   [request setValue:[NSDevice _platform] forHTTPHeaderField:@"X-Machine"];
-+   [request setValue:[NSDevice _uniqueIdentifier] forHTTPHeaderField:@"X-Unique-ID"];
-+   if (firmwareVersion.patchVersion != 0) {
-+       [request setValue:[NSString stringWithFormat:@"%d.%d.%d", firmwareVersion.majorVersion, firmwareVersion.minorVersion, firmwareVersion.patchVersion] forHTTPHeaderField:@"X-Firmware"];
-+   } else {
-+       [request setValue:[NSString stringWithFormat:@"%d.%d", firmwareVersion.majorVersion, firmwareVersion.minorVersion] forHTTPHeaderField:@"X-Firmware"];
-+   }
-+   if (DebugEnabled() == true)
-+      NSLog(@"\n%@", [request allHTTPHeaderFields]);
-+
-+   [[[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData *, NSURLResponse *response, NSError *error){
-+      NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-+      if (DebugEnabled() == true)
-+         NSLog(@"\nResponse status code: %ld", (long)[httpResponse statusCode]);
-+      if (error != nil) {
-+         if ([error localizedDescription] != nil) {
-+            Fail(std::string([error localizedDescription].UTF8String));
-+         } else {
-+            Fail();
-+         }
-+      } else if (httpResponse.statusCode == 304) {
-+         Res.IMSHit = true;
-+         Res.LastModified = Itm->LastModified;
-+         URIDone(Res);
-+         success = YES;
-+      } else if (httpResponse.statusCode < 200 || httpResponse.statusCode >= 400) {
-+         Fail(std::string([NSString stringWithFormat:@"HTTP %li", (long)httpResponse.statusCode].UTF8String));
-+         success = YES;
-+      } else {
-+         if (httpResponse.expectedContentLength != NSURLResponseUnknownLength)
-+            Res.Size = httpResponse.expectedContentLength;
-+         NSString *dateModified = httpResponse.allHeaderFields[@"Date"];
-+         if (dateModified){
-+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-+            [formatter setLocale:[NSLocale localeWithLocaleIdentifier:@"en"]];
-+            [formatter setDateFormat:@"EEEE, dd LLL yyyy HH:mm:ss zzz"];
-+            NSDate *date = [formatter dateFromString:dateModified];
-+            this->FailTime = [date timeIntervalSince1970];
-+            [formatter release];
-+         }
-+         success = YES;
-+         proceed = YES;
-+      }
-+      dispatch_semaphore_signal(sem);
-+   }] resume];
-+
-+   Status(_("Connecting to %s"), Get.Host.c_str());
-+   dispatch_semaphore_wait(sem, dispatch_time(DISPATCH_TIME_NOW, TimeOut * NSEC_PER_SEC));
-+
-+   // Get the files information
-+   if (!proceed)
-+   {
-+      return success;
-+   }
-+
-+   // See if it is an IMS hit
-+   if (Itm->LastModified == FailTime) {
-+      Res.Size = 0;
-+      Res.IMSHit = true;
-+      URIDone(Res);
-+      return true;
-+   }
-+
-+   // See if the file exists
-+   struct stat Buf;
-+   if (stat(Itm->DestFile.c_str(),&Buf) == 0) {
-+      if (Res.Size == (unsigned long long)Buf.st_size && FailTime == Buf.st_mtime) {
-+         Res.Size = Buf.st_size;
-+         Res.LastModified = Buf.st_mtime;
-+         Res.ResumePoint = Buf.st_size;
-+         URIDone(Res);
-+         return true;
-+      }
-+
-+      // Resume?
-+      if (FailTime == Buf.st_mtime && Res.Size > (unsigned long long)Buf.st_size)
-+         Res.ResumePoint = Buf.st_size;
-+   }
-+
-+   // Open the file
-+   Hashes Hash(Itm->ExpectedHashes);
-+   {
-+      [request setHTTPMethod:@"GET"];
-+
-+      NSURLSessionDownloadTask *task = [[NSURLSession sharedSession] downloadTaskWithRequest:request completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error){
-+         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-+         if (httpResponse.statusCode == 200 && !error){
-+            NSString *destFile = [NSString stringWithUTF8String:Itm->DestFile.c_str()];
-+            [[NSFileManager defaultManager] removeItemAtPath:destFile error:nil];
-+            success = [[NSFileManager defaultManager] moveItemAtPath:location.path toPath:destFile error:&error];
-+            if (error){
-+               success = NO;
-+            }
-+         }
-+         dispatch_semaphore_signal(sem);
-+      }];
-+      [task resume];
-+      dispatch_semaphore_wait(sem, dispatch_time(DISPATCH_TIME_NOW, TimeOut * NSEC_PER_SEC));
-+
-+      if (!success){
-+         Fail();
-+         return true;
-+      }
-+
-+      FileFd Fd(Itm->DestFile,FileFd::WriteExists);
-+      Hash.AddFD(Fd,Hashes::UntilEOF);
-+
-+      URIStart(Res);
-+
-+      Res.Size = Fd.Size();
-+      struct timeval times[2];
-+      times[0].tv_sec = FailTime;
-+      times[1].tv_sec = FailTime;
-+      times[0].tv_usec = times[1].tv_usec = 0;
-+      utimes(Fd.Name().c_str(), times);
-+   }
-+
-+   Res.LastModified = FailTime;
-+   Res.TakeHashes(Hash);
-+
-+   URIDone(Res);
-+
-+   return true;
-+}
-+									/*}}}*/
-+
-+int main(int, const char *argv[])
-+{
-+   return HttpMethod(flNotDir(argv[0])).Run();
-+}
+    // We will return once we have no more connections, a time out, or

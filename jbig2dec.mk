@@ -16,8 +16,7 @@ jbig2dec:
 else
 jbig2dec: jbig2dec-setup libpng16
 	cd $(BUILD_WORK)/jbig2dec && ./autogen.sh -C \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/jbig2dec
 	+$(MAKE) -C $(BUILD_WORK)/jbig2dec install \
 		DESTDIR="$(BUILD_STAGE)/jbig2dec"

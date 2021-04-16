@@ -4,12 +4,16 @@ endif
 
 SUBPROJECTS            += libfragmentzip
 LIBFRAGMENTZIP_VERSION := 60
-DEB_LIBFRAGMENTZIP_V   ?= $(LIBFRAGMENTZIP_VERSION)-2
+LIBFRAGMENTZIP_COMMIT  := 120447d0f410dffb49948fa155467fc5d91ca3c8
+DEB_LIBFRAGMENTZIP_V   ?= $(LIBFRAGMENTZIP_VERSION)-3
 
 libfragmentzip-setup: setup
 	$(call GITHUB_ARCHIVE,tihmstar,libfragmentzip,$(LIBFRAGMENTZIP_VERSION),$(LIBFRAGMENTZIP_VERSION))
 	$(call EXTRACT_TAR,libfragmentzip-$(LIBFRAGMENTZIP_VERSION).tar.gz,libfragmentzip-$(LIBFRAGMENTZIP_VERSION),libfragmentzip)
+	
 	$(SED) -i 's/@libz_requires@//;s/\(Libs:.*\)/\1 -lz/' $(BUILD_WORK)/libfragmentzip/libfragmentzip.pc.in
+	$(SED) -i 's/git rev\-list \-\-count HEAD/printf ${LIBFRAGMENTZIP_VERSION}/g' $(BUILD_WORK)/libfragmentzip/configure.ac
+	$(SED) -i 's/git rev\-parse HEAD/printf ${LIBFRAGMENTZIP_COMMIT}/g' $(BUILD_WORK)/libfragmentzip/configure.ac
 
 ifneq ($(wildcard $(BUILD_WORK)/libfragmentzip/.build_complete),)
 libfragmentzip:
@@ -17,9 +21,7 @@ libfragmentzip:
 else
 libfragmentzip: libfragmentzip-setup libgeneral libzip curl
 	cd $(BUILD_WORK)/libfragmentzip && ./autogen.sh \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		zlib_LIBS="-L$(TARGET_SYSROOT)/usr/lib -lz" \
 		zlib_CFLAGS="-I$(TARGET_SYSROOT)/usr/include"
 	+$(MAKE) -C $(BUILD_WORK)/libfragmentzip

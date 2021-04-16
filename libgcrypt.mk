@@ -25,9 +25,7 @@ libgcrypt:
 else
 libgcrypt: libgcrypt-setup libgpg-error
 	cd $(BUILD_WORK)/libgcrypt && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-gpg-error-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libgcrypt
 	+$(MAKE) -C $(BUILD_WORK)/libgcrypt install \

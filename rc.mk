@@ -18,19 +18,16 @@ rc:
 else
 rc: rc-setup readline ncurses
 	cd $(BUILD_WORK)/rc && autoreconf -fi && ac_cv_func_setpgrp_void=yes ./configure \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-edit=readline
-
 	sed -i 's/HAVE_SYSV_SIGCLD\ 1/HAVE_SYSV_SIGCLD\ 0/g' $(BUILD_WORK)/rc/config.h
-
 	+$(MAKE) -C $(BUILD_WORK)/rc \
 		LIBS="-lreadline -lncursesw"
 	+$(MAKE) -C $(BUILD_WORK)/rc install \
 		DESTDIR=$(BUILD_STAGE)/rc
-
 	touch $(BUILD_WORK)/rc/.build_complete
 endif
+
 rc-package: rc-stage
 	# rc.mk Package Structure
 	rm -rf $(BUILD_DIST)/rc

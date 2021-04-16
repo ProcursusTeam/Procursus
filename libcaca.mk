@@ -16,14 +16,12 @@ libcaca:
 else
 libcaca: libcaca-setup imlib2 slang2 ncurses
 	cd $(BUILD_WORK)/libcaca && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-plugins \
 		--disable-doc \
-    	--disable-java \
-    	--disable-csharp \
-    	--disable-ruby \
+		--disable-java \
+		--disable-csharp \
+		--disable-ruby \
 		--disable-python \
 		ac_cv_header_endian_h=false
 	+$(MAKE) -C $(BUILD_WORK)/libcaca
