@@ -9,9 +9,7 @@ DEB_LIBDVDCSS2_V   ?= $(LIBDVDCSS2_VERSION)
 libdvdcss2-setup: setup
 	-[ ! -f $(BUILD_SOURCE)/libdvdcss2-$(LIBDVDCSS2_VERSION).tar.bz2 ] && 
 			wget -q -nc -O$(BUILD_SOURCE)/libdvdcss2-$(LIBDVDCSS2_VERSION).tar.bz2  https://download.videolan.org/pub/libdvdcss/$(LIBDVDCSS2_VERSION)/libdvdcss-$(LIBDVDCSS2_VERSION).tar.bz2
-	$(call EXTRACT_TAR,libdvdcss2-$(LIBDVDCSS2_VERSION).tar.bz2,libdvdcss2-$(LIBDVDCSS2_VERSION),libdvdcss2)
-	rm -rf $(BUILD_WORK)/libdvdcss2
-	mv $(BUILD_WORK)/libdvdcss-$(LIBDVDCSS2_VERSION) $(BUILD_WORK)/libdvdcss2
+	$(call EXTRACT_TAR,libdvdcss2-$(LIBDVDCSS2_VERSION).tar.bz2,libdvdcss-$(LIBDVDCSS2_VERSION),libdvdcss2)
 
 ifneq ($(wildcard $(BUILD_WORK)/libdvdcss2/.build_complete),)
 libdvdcss2:
