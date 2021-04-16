@@ -4,7 +4,7 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Replaces: libdvdcss0 (<= 1.0.0-0.0)
 Provides: libdvdcss
-Section: Multimedia
+Section: Libraries
 Priority: optional
 Homepage: http://download.videolan.org/
 Description: Simple foundation for reading DVDs - runtime libraries
