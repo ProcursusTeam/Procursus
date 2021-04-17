@@ -2,14 +2,14 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS       += font-util
-FONT-UTIL_VERSION := 1.3.2
-DEB_FONT-UTIL_V   ?= $(FONT-UTIL_VERSION)
+SUBPROJECTS    += font-util
+FONTUTIL_VERSION := 1.3.2
+DEB_FONTUTIL_V   ?= $(FONTUTIL_VERSION)
 
 font-util-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive//individual/font/font-util-$(FONT-UTIL_VERSION).tar.gz{,.sig}
-	$(call PGP_VERIFY,font-util-$(FONT-UTIL_VERSION).tar.gz)
-	$(call EXTRACT_TAR,font-util-$(FONT-UTIL_VERSION).tar.gz,font-util-$(FONT-UTIL_VERSION),font-util)
+	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive//individual/font/font-util-$(FONTUTIL_VERSION).tar.gz{,.sig}
+	$(call PGP_VERIFY,font-util-$(FONTUTIL_VERSION).tar.gz)
+	$(call EXTRACT_TAR,font-util-$(FONTUTIL_VERSION).tar.gz,font-util-$(FONTUTIL_VERSION),font-util)
 
 ifneq ($(wildcard $(BUILD_WORK)/font-util/.build_complete),)
 font-util:
@@ -28,18 +28,18 @@ endif
 
 font-util-package: font-util-stage
 # font-util.mk Package Structure
-	rm -rf $(BUILD_DIST)/font-util
+	rm -rf $(BUILD_DIST)/xfonts-utils
 	
 # font-util.mk Prep font-util
-	cp -a $(BUILD_STAGE)/font-util $(BUILD_DIST)
+	cp -a $(BUILD_STAGE)/font-util $(BUILD_DIST)/xfonts-utils
 	
 # font-util.mk Sign
-	$(call SIGN,font-util,general.xml)
+	$(call SIGN,xfonts-utils,general.xml)
 	
 # font-util.mk Make .debs
-	$(call PACK,font-util,DEB_font-util_V)
+	$(call PACK,xfonts-utils,DEB_FONTUTIL_V)
 	
 # font-util.mk Build cleanup
-	rm -rf $(BUILD_DIST)/font-util
+	rm -rf $(BUILD_DIST)/xfonts-utils
 
 .PHONY: font-util font-util-package
