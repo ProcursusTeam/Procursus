@@ -2,7 +2,7 @@ ifeq ($(firstword $(subst ., ,$(MAKE_VERSION))),3)
 $(error Install latest make from Homebrew - brew install make)
 endif
 
-ifeq ($(shell /usr/bin/env bash --version | grep -iq 'version 5' && echo 1),1)
+ifeq ($(shell LANG=C /usr/bin/env bash --version | grep -iq 'version 5' && echo 1),1)
 SHELL := /usr/bin/env bash
 else
 $(error Install bash 5.0)
@@ -262,9 +262,9 @@ ACLOCAL_PATH        := $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/acloc
 
 DEFAULT_CMAKE_FLAGS := \
 	-DCMAKE_BUILD_TYPE=Release \
-	-DCMAKE_SYSTEM=Darwin \
-	-DCMAKE_SYSTEM_NAME=Darwin \
 	-DCMAKE_CROSSCOMPILING=true \
+	-DCMAKE_SYSTEM_NAME=Darwin \
+	-DCMAKE_SYSTEM_PROCESSOR=$(shell echo $(GNU_HOST_TRIPLE) | cut -f1 -d-) \
 	-DCMAKE_C_FLAGS="$(CFLAGS)" \
 	-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
 	-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
@@ -365,8 +365,14 @@ DO_PATCH    = -cd $(BUILD_PATCH)/$(1); \
 	done
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-SIGN = find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \; &> /dev/null; \
-	find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
+SIGN = 	for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
+			if [ $${file\#\#*.} = "dylib" ] || [ $${file\#\#*.} = "bundle" ] || [ $${file\#\#*.} = "so" ]; then \
+				$(LDID) -S $$file; \
+			else \
+				$(LDID) -S$(BUILD_INFO)/$(2) $$file; \
+			fi; \
+		done; \
+		find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
 else
 SIGN = find $(BUILD_DIST)/$(1) -type f -exec codesign --remove {} \; &> /dev/null; \
 	find $(BUILD_DIST)/$(1) -type f -exec codesign --sign $(CODESIGN_IDENTITY) --force --preserve-metadata=entitlements,requirements,flags,runtime {} \; &> /dev/null
@@ -475,6 +481,10 @@ GITHUB_ARCHIVE = -if [ $(5) ]; then \
 
 ifneq ($(call HAS_COMMAND,wget),1)
 $(error Install wget)
+endif
+
+ifneq ($(call HAS_COMMAND,triehash),1)
+$(error Install triehash)
 endif
 
 ifeq ($(call HAS_COMMAND,gmake),1)
@@ -619,15 +629,15 @@ endif
 
 ifneq ($(LEAVE_ME_ALONE),1)
 
-ifneq (,$(wildcard $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl))
-DOCBOOK_XSL := $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl
-export XML_CATALOG_FILES=$(shell brew --prefix)/etc/xml/catalog
-else ifneq (,$(wildcard /usr/share/xml/docbook/stylesheet/docbook-xsl))
+ifneq (,$(wildcard /usr/share/xml/docbook/stylesheet/docbook-xsl))
 DOCBOOK_XSL := /usr/share/xml/docbook/stylesheet/docbook-xsl
 else ifneq (,$(wildcard /usr/share/xsl/docbook))
 DOCBOOK_XSL := /usr/share/xsl/docbook
 else ifneq (,$(wildcard /usr/share/xml/docbook/xsl-stylesheets-1.79.2))
 DOCBOOK_XSL := /usr/share/xml/docbook/xsl-stylesheets-1.79.2
+else ifneq (,$(wildcard $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl))
+DOCBOOK_XSL := $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl
+export XML_CATALOG_FILES=$(shell brew --prefix)/etc/xml/catalog
 else
 $(error Install docbook-xsl)
 endif
