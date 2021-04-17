@@ -21,7 +21,7 @@ libdvdcss2: libdvdcss2-setup
 	+$(MAKE) -C $(BUILD_WORK)/libdvdcss2 install \
 		DESTDIR=$(BUILD_STAGE)/libdvdcss2
 	+$(MAKE) -C $(BUILD_WORK)/libdvdcss2 install \
-                DESTDIR=$(BUILD_BASE)
+		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libdvdcss2/.build_complete
 endif
 
