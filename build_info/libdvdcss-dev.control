@@ -3,8 +3,6 @@ Version: @DEB_LIBDVDCSS2_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: libdvdcss2 (= @DEB_LIBDVDCSS2_V@)
-Conflicts: libdvdcss2-dev
-Replaces: libdvdcss2-dev
 Section: Development
 Priority: optional
 Homepage: http://download.videolan.org/

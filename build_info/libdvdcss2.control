@@ -2,8 +2,6 @@ Package: libdvdcss2
 Version: @DEB_LIBDVDCSS2_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Replaces: libdvdcss0 (<= 1.0.0-0.0)
-Provides: libdvdcss
 Section: Libraries
 Priority: optional
 Homepage: http://download.videolan.org/
