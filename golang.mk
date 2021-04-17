@@ -27,7 +27,7 @@ golang: golang-setup
 	cd $(BUILD_WORK)/golang/src && \
 		CGO_ENABLED=1 \
 		GOROOT_FINAL=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V) \
-        GOOS=$(shell echo $(RUST_TARGET) | cut -f3 -d-) \
+		GOOS=$(shell echo $(RUST_TARGET) | cut -f3 -d-) \
 		GOARCH=$(shell echo $(MEMO_TARGET) | cut -f2 -d-) \
 		CC=$(shell which cc) \
 		CC_FOR_TARGET="$(CC)" \
