@@ -2,7 +2,7 @@ ifeq ($(firstword $(subst ., ,$(MAKE_VERSION))),3)
 $(error Install latest make from Homebrew - brew install make)
 endif
 
-ifeq ($(shell /usr/bin/env bash --version | grep -iq 'version 5' && echo 1),1)
+ifeq ($(shell LANG=C /usr/bin/env bash --version | grep -iq 'version 5' && echo 1),1)
 SHELL := /usr/bin/env bash
 else
 $(error Install bash 5.0)
@@ -262,8 +262,9 @@ ACLOCAL_PATH        := $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/acloc
 
 DEFAULT_CMAKE_FLAGS := \
 	-DCMAKE_BUILD_TYPE=Release \
-	-DCMAKE_SYSTEM_NAME=Darwin \
 	-DCMAKE_CROSSCOMPILING=true \
+	-DCMAKE_SYSTEM_NAME=Darwin \
+	-DCMAKE_SYSTEM_PROCESSOR=$(shell echo $(GNU_HOST_TRIPLE) | cut -f1 -d-) \
 	-DCMAKE_C_FLAGS="$(CFLAGS)" \
 	-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
 	-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
@@ -474,6 +475,10 @@ GITHUB_ARCHIVE = -if [ $(5) ]; then \
 
 ifneq ($(call HAS_COMMAND,wget),1)
 $(error Install wget)
+endif
+
+ifneq ($(call HAS_COMMAND,triehash),1)
+$(error Install triehash)
 endif
 
 ifeq ($(call HAS_COMMAND,gmake),1)
