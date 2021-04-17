@@ -623,15 +623,15 @@ endif
 
 ifneq ($(LEAVE_ME_ALONE),1)
 
-ifneq (,$(wildcard $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl))
-DOCBOOK_XSL := $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl
-export XML_CATALOG_FILES=$(shell brew --prefix)/etc/xml/catalog
-else ifneq (,$(wildcard /usr/share/xml/docbook/stylesheet/docbook-xsl))
+ifneq (,$(wildcard /usr/share/xml/docbook/stylesheet/docbook-xsl))
 DOCBOOK_XSL := /usr/share/xml/docbook/stylesheet/docbook-xsl
 else ifneq (,$(wildcard /usr/share/xsl/docbook))
 DOCBOOK_XSL := /usr/share/xsl/docbook
 else ifneq (,$(wildcard /usr/share/xml/docbook/xsl-stylesheets-1.79.2))
 DOCBOOK_XSL := /usr/share/xml/docbook/xsl-stylesheets-1.79.2
+else ifneq (,$(wildcard $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl))
+DOCBOOK_XSL := $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl
+export XML_CATALOG_FILES=$(shell brew --prefix)/etc/xml/catalog
 else
 $(error Install docbook-xsl)
 endif
