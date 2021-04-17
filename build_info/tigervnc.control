@@ -1,7 +1,20 @@
 Package: tigervnc
+Name: Tiger Vnc
 Version: @DEB_TIGERVNC_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libx11-6, libgeneral0, libxfont2, libgnutls30, libxau6, libpixman-1-0, libgl1-mesa-glx, libxdmcp6, libjpeg62-turbo, libxdamage1, libxkbfile1, xkbcomp, xkeyboard-config
-Description: Virtual Network Computing (VNC) is a remote display system which allows you to view and interact with a virtual desktop environment that is running on another computer on the network. Using VNC, you can run graphical applications on a remote machine and send only the display from these applications to your local machine. VNC is platform-independent and supports a wide variety of operating systems and architectures as both servers and clients.
- TigerVNC is a high-speed version of VNC based on the RealVNC 4 and X.org code bases. TigerVNC started as a next-generation development effort for TightVNC on Unix and Linux platforms, but it split from its parent project in early 2009 so that TightVNC could focus on Windows platforms. TigerVNC supports a variant of Tight encoding that is greatly accelerated by the use of the libjpeg-turbo JPEG codec.
+Depends: xauth, libgcrypt20 (>= 1.8.0), libgnutls30 (>= 3.6.6), libjpeg62-turbo (>= 1.3.1), libpam2, libpixman-1-0 (>= 0.30.0), libx11-6, libxau6, libxdmcp6, libxfont2 (>= 1:2.0.1), perl:any
+Recommends: libgl1-mesa-dri (>= 7.1~rc1)
+Section: x11
+Description:
+ VNC stands for Virtual Network Computing. It is, in essence, a remote
+ display system which allows you to view a computing `desktop' environment
+ not only on the machine where it is running, but from anywhere on the
+ Internet and from a wide variety of machine architectures.
+ .
+ This package provides a standalone VNC server to which clients can connect.
+ The server generates a display that can be viewed with a vncviewer.
+ .
+ Note: This server does not need a display. You need a VNC viewer to see
+ something. This viewer may also be on a computer running other operating
+ systems.
