@@ -1,0 +1,9 @@
+Package: emacs
+Version: @DEB_EMACS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Text_Editors
+Priority: optional
+Homepage: https://www.gnu.org/software/emacs/
+Description: GNU Emacs editor.
+ GNU Emacs, the extensible, customizable, self-documenting real-time display editor.
