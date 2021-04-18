@@ -1,5 +1,5 @@
 Package: libdvdnav4
-Version: @DEB_LIBDVDNAV4_V@
+Version: @DEB_LIBDVDNAV_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: libdvdread4
