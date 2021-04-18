@@ -1,0 +1,13 @@
+Package: libfox-1.6-dev
+Version: @DEB_FOX_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends:  libfox-1.6-0 (= 1.6.57-1), libjpeg-dev, libpng-dev, libx11-dev, libgl1-mesa-dev, libglu1-mesa-dev, libtiff5-dev, libxcursor-dev, libxft-dev, libxext-dev
+Conflicts: libfox1.0-dev, libfox1.2-dev, libfox1.4-dev
+Section: Development
+Description: FOX C++ GUI Toolkit - development headers
+ FOX is a C++ based Toolkit for developing Graphical User Interfaces
+ easily and effectively. It offers a wide collection of controls and
+ provides state of the art facilities.
+ .
+ This package contains the development header files of the FOX Toolkit.

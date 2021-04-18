@@ -1,0 +1,13 @@
+Package: libfox-1.6-0
+Version: @DEB_FOX_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libfontconfig1 (>= 2.12.6), libfreetype6 (>= 2.2.1), libjpeg62-turbo (>= 1.3.1), libpng16-16 (>= 1.6.2-1), libtiff5 (>= 4.0.3), libx11-6, libxcursor1 (>> 1.1.2), libxext6, libxft2 (>> 2.1.1)
+Section: Libraries
+Description: FOX C++ GUI Toolkit - runtime library
+ FOX is a C++ based Toolkit for developing Graphical User Interfaces
+ easily and effectively. It offers a wide collection of Controls and
+ provides state of the art facilities such as drag and drop, selection,
+ as well as OpenGL widgets for 3D graphical manipulation. FOX also
+ implements icons, images, and user-convenience features such as status
+ line help, and tooltips. Tooltips may even be used for 3D objects!
