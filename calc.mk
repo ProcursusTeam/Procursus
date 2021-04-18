@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += calc
-CALC_VERSION := 2.12.8.1
+CALC_VERSION := 2.13.0.1
 DEB_CALC_V   ?= $(CALC_VERSION)
 
 calc-setup: setup
