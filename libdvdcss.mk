@@ -3,12 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += libdvdcss
-LIBDVDCSS2_VERSION := 1.4.2
-DEB_LIBDVDCSS2_V   ?= $(LIBDVDCSS2_VERSION)
+LIBDVDCSS_VERSION := 1.4.2
+DEB_LIBDVDCSS_V   ?= $(LIBDVDCSS_VERSION)
 
 libdvdcss-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://download.videolan.org/pub/libdvdcss/$(LIBDVDCSS2_VERSION)/libdvdcss-$(LIBDVDCSS2_VERSION).tar.bz2
-	$(call EXTRACT_TAR,libdvdcss-$(LIBDVDCSS2_VERSION).tar.bz2,libdvdcss-$(LIBDVDCSS2_VERSION),libdvdcss)
+	wget -q -nc -P $(BUILD_SOURCE) https://download.videolan.org/pub/libdvdcss/$(LIBDVDCSS_VERSION)/libdvdcss-$(LIBDVDCSS_VERSION).tar.bz2
+	$(call EXTRACT_TAR,libdvdcss-$(LIBDVDCSS_VERSION).tar.bz2,libdvdcss-$(LIBDVDCSS_VERSION),libdvdcss)
 
 ifneq ($(wildcard $(BUILD_WORK)/libdvdcss/.build_complete),)
 libdvdcss:
@@ -41,8 +41,8 @@ libdvdcss-package: libdvdcss-stage
 	$(call SIGN,libdvdcss2,general.xml)
 	
 	# libdvdcss.mk Make .debs
-	$(call PACK,libdvdcss2,DEB_LIBDVDCSS2_V)
-	$(call PACK,libdvdcss-dev,DEB_LIBDVDCSS2_V)
+	$(call PACK,libdvdcss2,DEB_LIBDVDCSS_V)
+	$(call PACK,libdvdcss-dev,DEB_LIBDVDCSS_V)
 	
 	# libdvdcss.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libdvdcss{2,-dev}
