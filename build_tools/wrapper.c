@@ -7,8 +7,7 @@
 #include <unistd.h>
 #include <limits.h>
 
-char *get_executable_path(char *epath, size_t buflen)
-{
+char *get_executable_path(char *epath, size_t buflen) {
     char *p;
     ssize_t l = readlink("/proc/self/exe", epath, buflen - 1);
     if (l > 0) epath[l] = '\0';
@@ -19,14 +18,12 @@ char *get_executable_path(char *epath, size_t buflen)
     return epath;
 }
 
-char *get_filename(char *str)
-{
+char *get_filename(char *str) {
     char *p = strrchr(str, '/');
     return p ? &p[1] : str;
 }
 
-void target_info(char *argv[], char **triple, char **compiler)
-{
+void target_info(char *argv[], char **triple, char **compiler) {
     char *p = get_filename(argv[0]);
     char *x = strrchr(p, '-');
     if (!x) abort();
@@ -35,20 +32,17 @@ void target_info(char *argv[], char **triple, char **compiler)
     *triple = p;
 }
 
-void env(char **p, const char *name, char *fallback)
-{
+void env(char **p, const char *name, char *fallback) {
     char *ev = getenv(name);
     if (ev) { *p = ev; return; }
     *p = fallback;
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     char **args = alloca(sizeof(char*) * (argc+12));
     int i, j;
 
     char execpath[PATH_MAX+1];
-    char sdkpath[PATH_MAX+1];
     char osvermin[64];
 
     char *compiler;
@@ -64,10 +58,8 @@ int main(int argc, char *argv[])
     env(&cpu, "MEMO_ARCH", NULL);
     env(&osvermin, "PLATFORM_VERSION_MIN", NULL);
 
-    for (i = 1; i < argc; ++i)
-    {
-        if (!strcmp(argv[i], "-arch"))
-        {
+    for (i = 1; i < argc; ++i) {
+        if (!strcmp(argv[i], "-arch")) {
             cpu = NULL;
             break;
         }
@@ -80,14 +72,13 @@ int main(int argc, char *argv[])
     args[i++] = "-target";
     args[i++] = target;
 
-    if (sdk)
-    {
-      args[i++] = "-isysroot";
-      args[i++] = sdk;
+
+    if (sdk) {
+        args[i++] = "-isysroot";
+        args[i++] = sdk;
     }
 
-    if (cpu)
-    {
+    if (cpu) {
         args[i++] = "-arch";
         args[i++] = cpu;
     }
