@@ -3,6 +3,7 @@ Version: @DEB_PYTHON3-PSUTIL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Utilities
+Depends: python3, python3.9
 Description: module providing convenience functions for managing processes (Python3)
  psutil is a module providing an interface for retrieving information on
  running processes and system utilization (CPU, memory) in a portable way
