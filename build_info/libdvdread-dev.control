@@ -1,0 +1,16 @@
+Package: libdvdread-dev
+Version: @DEB_LIBDVDREAD4_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libdvdread4 (= @DEB_LIBDVDREAD4_V@), pkg-config
+Recommends: libdvdnav-dev
+Suggests: libdvdcss-dev
+Section: libdevel
+Priority: optional
+Homepage: http://dvdnav.mplayerhq.hu/
+Description: library for reading DVDs (development)
+ libdvdread provides the functionality that is required to access many DVDs. It
+ parses IFO files, reads NAV-blocks, and performs CSS authentication and
+ descrambling.
+ .
+ This package contains the development files.
