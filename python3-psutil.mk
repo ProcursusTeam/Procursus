@@ -10,12 +10,16 @@ python3-psutil-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE)  https://github.com/giampaolo/psutil/archive/refs/tags/release-$(PYTHON3-PSUTIL_VERSION).tar.gz
 	$(call EXTRACT_TAR,release-$(PYTHON3-PSUTIL_VERSION).tar.gz,psutil-release-$(PYTHON3-PSUTIL_VERSION),python3-psutil)
 
+ifeq ($(MEMO_TARGET),iphoneos-arm64)
+	$(call DO_PATCH,python3-psutil,python3-psutil,-p1)
+endif
+
 ifneq ($(wildcard $(BUILD_WORK)/python3-psutil/.build_complete),)
 python3-psutil:
 	@echo "Using previously built python3-psutil."
 else
 python3-psutil: python3-psutil-setup python3
-	cd $(BUILD_WORK)/python3-psutil && unset MACOSX_DEPLOYMENT_TARGET && python3 ./setup.py \
+	cd $(BUILD_WORK)/python3-psutil && unset MACOSX_DEPLOYMENT_TARGET && unset MACOSX_SYSROOT && ARCHFLAGS="-arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT)" python3 ./setup.py \
 		install \
 		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		--root="$(BUILD_STAGE)/python3-psutil" \

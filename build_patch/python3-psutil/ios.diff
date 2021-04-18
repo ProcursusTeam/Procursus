@@ -1,0 +1,49 @@
+diff --git a/setup.py b/setup.py
+index 90c79c7..4d21bae 100755
+--- a/setup.py
++++ b/setup.py
+@@ -18,6 +18,8 @@ import subprocess
+ import sys
+ import tempfile
+ import warnings
++import distutils.sysconfig
++import _osx_support
+ 
+ with warnings.catch_warnings():
+     warnings.simplefilter("ignore")
+@@ -48,6 +50,35 @@ from _compat import PY3  # NOQA
+ from _compat import which  # NOQA
+ 
+ 
++if os.getenv('MEMO_ARCH') != '':
++    print('TEST 1: %s' % (distutils.sysconfig.get_config_vars()['CONFIGURE_LDFLAGS']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), 'BLDSHARED', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', '-arch arm64', distutils.sysconfig.get_config_vars()['BLDSHARED']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), 'CFLAGS', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', '-arch arm64', distutils.sysconfig.get_config_vars()['CFLAGS']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), 'CONFIGURE_CFLAGS', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', '-arch arm64', distutils.sysconfig.get_config_vars()['CONFIGURE_CFLAGS']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), 'CONFIGURE_CPPFLAGS', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', '-arch arm64', distutils.sysconfig.get_config_vars()['CONFIGURE_CPPFLAGS']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), 'CONFIGURE_LDFLAGS', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', '-arch arm64', distutils.sysconfig.get_config_vars()['CONFIGURE_LDFLAGS']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), 'CONFIG_ARGS', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', '-arch arm64', distutils.sysconfig.get_config_vars()['CONFIG_ARGS']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), 'CPPFLAGS', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', '-arch arm64', distutils.sysconfig.get_config_vars()['CPPFLAGS']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), 'LDFLAGS', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', ' -arch arm64 -isysroot ', distutils.sysconfig.get_config_vars()['LDFLAGS']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), 'LDSHARED', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', '-arch arm64', distutils.sysconfig.get_config_vars()['LDSHARED']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), 'PY_BUILTIN_MODULE_CFLAGS', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', '-arch arm64', distutils.sysconfig.get_config_vars()['PY_BUILTIN_MODULE_CFLAGS']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), 'PY_CFLAGS', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', '-arch arm64', distutils.sysconfig.get_config_vars()['PY_CFLAGS']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), 'PY_CORE_CFLAGS', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', '-arch arm64', distutils.sysconfig.get_config_vars()['PY_CORE_CFLAGS']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), 'PY_CORE_LDFLAGS', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', '-arch arm64', distutils.sysconfig.get_config_vars()['PY_CORE_LDFLAGS']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), 'PY_CPPFLAGS', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', '-arch arm64', distutils.sysconfig.get_config_vars()['PY_CPPFLAGS']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), 'PY_LDFLAGS', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', '-arch arm64', distutils.sysconfig.get_config_vars()['PY_LDFLAGS']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), 'PY_STDMODULE_CFLAGS', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', '-arch arm64', distutils.sysconfig.get_config_vars()['PY_STDMODULE_CFLAGS']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), '_OSX_SUPPORT_INITIAL_CFLAGS', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', '-arch arm64', distutils.sysconfig.get_config_vars()['_OSX_SUPPORT_INITIAL_CFLAGS']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), '_OSX_SUPPORT_INITIAL_LDFLAGS', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', '-arch arm64', distutils.sysconfig.get_config_vars()['_OSX_SUPPORT_INITIAL_LDFLAGS']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), '_OSX_SUPPORT_INITIAL_CPPFLAGS', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', '-arch arm64', distutils.sysconfig.get_config_vars()['_OSX_SUPPORT_INITIAL_CPPFLAGS']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), '_OSX_SUPPORT_INITIAL_BLDSHARED', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', '-arch arm64', distutils.sysconfig.get_config_vars()['_OSX_SUPPORT_INITIAL_BLDSHARED']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), '_OSX_SUPPORT_INITIAL_LDSHARED', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', '-arch arm64', distutils.sysconfig.get_config_vars()['_OSX_SUPPORT_INITIAL_LDSHARED']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), '_OSX_SUPPORT_INITIAL_PY_CFLAGS', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', '-arch arm64', distutils.sysconfig.get_config_vars()['_OSX_SUPPORT_INITIAL_PY_CFLAGS']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), '_OSX_SUPPORT_INITIAL_PY_LDFLAGS', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', ' -arch arm64', distutils.sysconfig.get_config_vars()['_OSX_SUPPORT_INITIAL_PY_LDFLAGS']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), '_OSX_SUPPORT_INITIAL_PY_CPPFLAGS', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', '-arch arm64', distutils.sysconfig.get_config_vars()['_OSX_SUPPORT_INITIAL_PY_CPPFLAGS']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), '_OSX_SUPPORT_INITIAL_PY_CORE_CFLAGS', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', '-arch arm64', distutils.sysconfig.get_config_vars()['_OSX_SUPPORT_INITIAL_PY_CORE_CFLAGS']))
++    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), '_OSX_SUPPORT_INITIAL_PY_CORE_LDFLAGS', re.sub('( \-arch x86_64 )|( \-mmacosx\-version\-min=.* )|(\-isysroot .*Mac.*)', '-arch arm64', distutils.sysconfig.get_config_vars()['_OSX_SUPPORT_INITIAL_PY_CORE_LDFLAGS']))
++    print('TEST 2: %s' % (distutils.sysconfig.get_config_vars()['CONFIGURE_LDFLAGS']))
+ PYPY = '__pypy__' in sys.builtin_module_names
+ macros = []
+ if POSIX:
