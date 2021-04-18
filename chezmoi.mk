@@ -9,8 +9,7 @@ DEB_CHEZMOI_V   ?= $(CHEZMOI_VERSION)
 chezmoi-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/twpayne/chezmoi/archive/refs/tags/v$(CHEZMOI_VERSION).tar.gz
 	$(call EXTRACT_TAR,v$(CHEZMOI_VERSION).tar.gz,chezmoi-$(CHEZMOI_VERSION),chezmoi)
-	mkdir -p $(BUILD_STAGE)/chezmoi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/usr/bin
-
+	mkdir -p $(BUILD_STAGE)/chezmoi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 ifneq ($(wildcard $(BUILD_WORK)/chezmoi/.build_complete),)
 chezmoi:
@@ -21,7 +20,7 @@ chezmoi: chezmoi-setup
 	cd $(BUILD_WORK)/chezmoi && \
 		$(DEFAULT_GOLANG_FLAGS) \
 		go build
-	cp -a $(BUILD_WORK)/chezmoi/chezmoi $(BUILD_STAGE)/chezmoi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/usr/bin
+	cp -a $(BUILD_WORK)/chezmoi/chezmoi $(BUILD_STAGE)/chezmoi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	touch $(BUILD_WORK)/chezmoi/.build_complete
 endif
 
