@@ -1,8 +1,8 @@
 Package: libdvdcss-dev
-Version: @DEB_LIBDVDCSS2_V@
+Version: @DEB_LIBDVDCSS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libdvdcss2 (= @DEB_LIBDVDCSS2_V@)
+Depends: libdvdcss2 (= @DEB_LIBDVDCSS_V@)
 Section: Development
 Priority: optional
 Homepage: http://download.videolan.org/
