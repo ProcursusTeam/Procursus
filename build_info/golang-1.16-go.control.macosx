@@ -1,8 +1,8 @@
-Package: golang-1.15-go
+Package: golang-1.16-go
 Version: @DEB_GOLANG_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: golang-1.15-src (>= @DEB_GOLANG_V@), clang
+Depends: golang-1.16-src (>= @DEB_GOLANG_V@)
 Section: Development
 Priority: optional
 Homepage: https://golang.org
