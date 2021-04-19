@@ -2,7 +2,6 @@ Package: xserver-common
 Version: @DEB_XORG-SERVER_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends:
 Recommends: xauth
 Section: X11
 Priority: optional
