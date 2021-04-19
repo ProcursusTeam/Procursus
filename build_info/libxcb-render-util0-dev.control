@@ -2,7 +2,7 @@ Package: libxcb-render-util0-dev
 Version: @DEB_XCB-UTIL-RENDERUTIL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libxcb-render-util0 (= 0.3.9-1+b1), libxcb1-dev, libxcb-render0-dev
+Depends: libxcb-render-util0 (= @DEB_XCB-UTIL-RENDERUTIL_V@), libxcb1-dev, libxcb-render0-dev
 Section: Development
 Description: utility libraries for X C Binding -- render-util
  This package contains the header and library files needed to build software
