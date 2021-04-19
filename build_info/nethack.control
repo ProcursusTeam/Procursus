@@ -1,0 +1,14 @@
+Package: nethack
+Version: @DEB_NETHACK_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Games
+Priority: optional
+Homepage: https://nethack.org/
+Description: roguelike inspired by hack
+  NetHack is a wonderfully silly, yet quite addictive, Dungeons &
+  Dragons-style adventure game. You play a character from one of many
+  classes (such as wizard, ranger, or tourist), fighting your way down to
+  retrieve the Amulet of Yendor for your god. On the way, you might 
+  encounter a quantum mechanic or two, or perhaps King Arthur, or - 
+  if you're REALLY lucky - the Ravenous Bugblatter Beast of Traal.
