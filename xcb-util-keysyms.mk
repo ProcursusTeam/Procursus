@@ -30,21 +30,21 @@ xcb-util-keysyms-package: xcb-util-keysyms-stage
 	rm -rf $(BUILD_DIST)/libxcb-keysyms{1,-dev}
 	mkdir -p $(BUILD_DIST)/libxcb-keysyms{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-	# util-xrm-xrm.mk Prep libutil-xrm1
-	cp -a $(BUILD_STAGE)/libxcb-keysyms/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/lib-xrm.1.dylib $(BUILD_DIST)/libxcb-keysyms1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	# util-xrm-keysyms.mk Prep libxcb-keysyms
+	cp -a $(BUILD_STAGE)/xcb-util-keysyms/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libxcb-keysyms.1.dylib $(BUILD_DIST)/libxcb-keysyms1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-	# libxcb-keysyms.mk Prep libxcb-keysyms-dev
-	cp -a $(BUILD_STAGE)/libxcb-keysyms/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libxcb-keysyms.1.dylib) $(BUILD_DIST)/libxcb-keysyms-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libxcb-keysyms/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libxcb-keysyms-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	# util-xrm-keysyms.mk Prep libxcb-keysyms-dev
+	cp -a $(BUILD_STAGE)/xcb-util-keysyms/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libxcb-keysyms.1.dylib) $(BUILD_DIST)/libxcb-keysyms-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/xcb-util-keysyms/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libxcb-keysyms-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
-	# libxcb.mk Sign
+	# util-xrm-keysyms.mk Sign
 	$(call SIGN,libxcb-keysyms1,general.xml)
 
-	# libxcb-keysyms.mk Make .debs
-	$(call PACK,libxcb-keysyms1,DEB_xcb-keysyms_V)
-	$(call PACK,libxcb-keysyms-dev,DEB_xcb-keysyms_V)
+	# util-xrm-keysyms.mk Make .debs
+	$(call PACK,libxcb-keysyms1,DEB_XCB-UTIL-KEYSYMS_V)
+	$(call PACK,libxcb-keysyms-dev,DEB_XCB-UTIL-KEYSYMS_V)
 
-	# libxcb-keysyms.mk Build cleanup
+	# util-xrm-keysyms.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libxcb-keysyms{1,-dev}
 
 .PHONY: xcb-util-keysyms xcb-util-keysyms-package
