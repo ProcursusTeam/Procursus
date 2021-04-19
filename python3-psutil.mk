@@ -19,7 +19,11 @@ python3-psutil:
 	@echo "Using previously built python3-psutil."
 else
 python3-psutil: python3-psutil-setup python3
-	cd $(BUILD_WORK)/python3-psutil && unset MACOSX_DEPLOYMENT_TARGET && unset MACOSX_SYSROOT && ARCHFLAGS="${CFLAGS}" python3 ./setup.py \
+ifeq ($(MEMO_TARGET),iphoneos-arm64)
+		unset MACOSX_DEPLOYMENT_TARGET && \
+		unset MACOSX_SYSROOT
+endif
+	cd $(BUILD_WORK)/python3-psutil && ARCHFLAGS="${CFLAGS}" PROCURSUS_DEBUG='0' python3 ./setup.py \
 		install \
 		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		--root="$(BUILD_STAGE)/python3-psutil" \

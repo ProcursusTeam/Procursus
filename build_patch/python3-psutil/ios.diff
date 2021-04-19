@@ -1,5 +1,5 @@
 diff --git a/setup.py b/setup.py
-index 90c79c7..30f7332 100755
+index 90c79c7..44d5917 100755
 --- a/setup.py
 +++ b/setup.py
 @@ -18,6 +18,8 @@ import subprocess
@@ -11,7 +11,7 @@ index 90c79c7..30f7332 100755
  
  with warnings.catch_warnings():
      warnings.simplefilter("ignore")
-@@ -47,7 +49,87 @@ from _common import WINDOWS  # NOQA
+@@ -47,7 +49,91 @@ from _common import WINDOWS  # NOQA
  from _compat import PY3  # NOQA
  from _compat import which  # NOQA
  
@@ -61,15 +61,19 @@ index 90c79c7..30f7332 100755
 +    newFlagStr = re.sub(reg, '', newFlagStr)
 +    _osx_support._save_modified_value(distutils.sysconfig.get_config_vars(), flagName, newFlagStr)
 +
++procDebug = str(os.getenv('PROCURSUS_DEBUG'))
 +def printFlag(flagName):
 +    print('DEBUG: Replaced flags for: %s: %s\n' % (flagName, distutils.sysconfig.get_config_vars()[flagName]))
 +
 +def doFlag(flagName):
-+    # printFlag(flagName)
++    if(procDebug == '1'):
++        printFlag(flagName)
 +    replaceFlags(flagName)
-+    # printFlag(flagName)
++    if(procDebug == '1'):
++        printFlag(flagName)
 +
-+print('MEMO_ARCH: %s' % (os.getenv('MEMO_ARCH')))
++if(procDebug == '1'):
++    print('DEBUG: MEMO_ARCH: %s' % (os.getenv('MEMO_ARCH')))
 +if os.getenv('MEMO_ARCH') != 'x86_64':
 +    doFlag('BLDSHARED')
 +    doFlag('CFLAGS')

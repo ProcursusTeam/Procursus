@@ -10,6 +10,6 @@ Description: module providing convenience functions for managing processes (Pyth
  by using Python, implementing many functionalities offered by tools like
  ps, top and Windows task manager.
  .
- It currently supports Linux, OS X, FreeBSD and Windows.
+ It currently supports Linux, OS X, iOS, FreeBSD and Windows.
  .
  This package contains the Python 3 version of psutil.
