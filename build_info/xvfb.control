@@ -5,7 +5,7 @@ Maintainer: @DEB_MAINTAINER@
 Depends: libgcrypt20, libpixman-1-0, libxau6, libxdmcp6, libxfont2
 Recommends: xauth
 Provides: xserver
-Section: x11
+Section: X11
 Priority: optional
 Description: Virtual Framebuffer 'fake' X server
  Xvfb provides an X server that can run on machines with no display hardware
