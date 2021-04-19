@@ -26,24 +26,24 @@ xcb-util-renderutil: xcb-util-renderutil-setup libxcb xcb-util
 endif
 
 xcb-util-renderutil-package: xcb-util-renderutil-stage
-	rm -rf $(BUILD_DIST)/libxcb-renderutil{1,-dev}
-	mkdir -p $(BUILD_DIST)/libxcb-renderutil{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	rm -rf $(BUILD_DIST)/libxcb-render-util{0,-dev}
+	mkdir -p $(BUILD_DIST)/libxcb-render-util{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# xcb-util-renderutil.mk Prep libutil-xrm1
-	cp -a $(BUILD_STAGE)/libxcb-renderutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/lib-xrm.1.dylib $(BUILD_DIST)/libxcb-renderutil1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/xcb-util-renderutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libxcb-render-util.0.dylib $(BUILD_DIST)/libxcb-render-util0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxcb-renderutil.mk Prep libxcb-renderutil-dev
-	cp -a $(BUILD_STAGE)/libxcb-renderutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libxcb-renderutil.1.dylib) $(BUILD_DIST)/libxcb-renderutil-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libxcb-renderutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libxcb-renderutil-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/xcb-util-renderutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libxcb-render-util.0.dylib) $(BUILD_DIST)/libxcb-render-util-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/xcb-util-renderutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libxcb-render-util-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libxcb.mk Sign
-	$(call SIGN,libxcb-renderutil1,general.xml)
+	$(call SIGN,libxcb-render-util0,general.xml)
 
 	# libxcb-renderutil.mk Make .debs
-	$(call PACK,libxcb-renderutil1,DEB_xcb-renderutil_V)
-	$(call PACK,libxcb-renderutil-dev,DEB_xcb-renderutil_V)
+	$(call PACK,libxcb-render-util0,DEB_XCB-UTIL-RENDERUTIL_V)
+	$(call PACK,libxcb-render-util-dev,DEB_XCB-UTIL-RENDERUTIL_V)
 
 	# libxcb-renderutil.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libxcb-renderutil{1,-dev}
+	rm -rf $(BUILD_DIST)/libxcb-render-util{0,-dev}
 
 .PHONY: xcb-util-renderutil xcb-util-renderutil-package
