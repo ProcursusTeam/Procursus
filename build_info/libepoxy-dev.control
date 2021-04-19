@@ -2,7 +2,7 @@ Package: libepoxy-dev
 Version: @DEB_LIBEPOXY_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libepoxy0 (= 1.2-1)
+Depends: libepoxy0
 Section: Development
 Priority: optional
 Description: OpenGL function pointer management library- development
