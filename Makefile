@@ -1,5 +1,5 @@
 ifeq ($(firstword $(subst ., ,$(MAKE_VERSION))),3)
-$(error Install latest make from Homebrew - brew install make)
+$(error Install latest make from Procursus - sudo apt install make)
 endif
 
 ifeq ($(shell LANG=C /usr/bin/env bash --version | grep -iq 'version 5' && echo 1),1)
