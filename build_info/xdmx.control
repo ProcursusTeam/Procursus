@@ -2,7 +2,7 @@ Package: xdmx
 Version: @DEB_XORG-SERVER_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libgcrypt20 (>= 1.8.0), libpixman-1-0 (>= 0.30.0), libx11-6 (>= 2:1.6.0), libxau6, libxdmcp6, libxext6, libxfixes3, libxfont2 (>= 1:2.0.1), libxi6, libxmuu1, libxrender1
+Depends: libmd0, libpixman-1-0, libx11-6, libxau6, libxdmcp6, libxext6, libxfixes3, libxfont2, libxi6, libxmuu1, libxrender1, xserver-common
 Section: X11
 Priority: optional
 Homepage: https://www.x.org/
