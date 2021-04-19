@@ -41,21 +41,24 @@ libepoxy: libepoxy-setup libx11 mesa
 endif
 
 libepoxy-package: libepoxy-stage
-	# libepoxy.mk Package Structure
-	rm -rf $(BUILD_DIST)/libepoxy
-	mkdir -p $(BUILD_DIST)/libepoxy
-	
-	# libepoxy.mk Prep libepoxy
-	cp -a $(BUILD_STAGE)/libepoxy $(BUILD_DIST)
-	
+	rm -rf $(BUILD_DIST)/libepoxy{0,-dev}
+	mkdir -p $(BUILD_DIST)/libepoxy{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
+	#libepoxy.mk Prep libepxoy0
+	cp -a $(BUILD_STAGE)/libepoxy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libepoxy{.0}.dylib $(BUILD_DIST)/libepoxy0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
+	# libepoxy.mk Prep libepoxy-dev
+	cp -a $(BUILD_STAGE)/libepoxy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libepoxy-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libepoxy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libepoxy-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+
 	# libepoxy.mk Sign
-	$(call SIGN,libepoxy,general.xml)
-	
+	$(call SIGN,libepoxy0,general.xml)
+
 	# libepoxy.mk Make .debs
-	$(call PACK,libepoxy,DEB_LIBEPOXY_V)
-	
+	$(call PACK,libepoxy0,DEB_LIBEPOXY_V)
+	$(call PACK,libepoxy-dev,DEB_LIBEPOXY_V)
+
 	# libepoxy.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libepoxy
+	rm -rf $(BUILD_DIST)/libepoxy{0,-dev}
 
 .PHONY: libepoxy libepoxy-package
-
