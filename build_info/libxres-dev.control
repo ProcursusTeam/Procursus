@@ -2,7 +2,7 @@ Package: libxres-dev
 Version: @DEB_LIBXRES_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libxres1, libx11-dev, libxext-dev, x11proto-resource-dev
+Depends: libxres1, libx11-dev, libxext-dev, x11proto-dev
 Section: Development
 Priority: optional
 Description: X11 Resource extension library (development headers)
