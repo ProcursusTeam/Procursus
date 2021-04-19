@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS  += make
 MAKE_VERSION := 4.3
-DEB_MAKE_V   ?= $(MAKE_VERSION)-2
+DEB_MAKE_V   ?= $(MAKE_VERSION)-3
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 MAKE_CONFIGURE_ARGS := --program-prefix=$(GNU_PREFIX)
@@ -40,9 +40,7 @@ make-package: make-stage
 	mkdir -p $(BUILD_DIST)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include,share/man/man1}
 
 	# make.mk Prep make
-	cp -a $(BUILD_STAGE)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ $(BUILD_DIST)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ $(BUILD_DIST)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	cp -a $(BUILD_STAGE)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/ $(BUILD_DIST)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include,share} $(BUILD_DIST)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 	mkdir -p $(BUILD_DIST)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin
