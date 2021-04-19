@@ -5,6 +5,7 @@ Maintainer: @DEB_MAINTAINER@
 Section: Games
 Priority: optional
 Homepage: https://nethack.org/
+Depends: libncursesw6
 Description: roguelike inspired by hack
   NetHack is a wonderfully silly, yet quite addictive, Dungeons &
   Dragons-style adventure game. You play a character from one of many
