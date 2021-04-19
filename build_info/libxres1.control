@@ -2,7 +2,7 @@ Package: libxres1
 Version: @DEB_LIBXRES_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libx11-6 (>= 2:1.6.0), libxext6
+Depends: libx11-6, libxext6
 Section: Libraries
 Priority: optional
 Description: X11 Resource extension library
