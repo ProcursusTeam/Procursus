@@ -4,7 +4,7 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: libepoxy0 (>= 1.0), libgcrypt20 (>= 1.8.0), libpixman-1-0 (>= 0.30.0), libx11-6, libx11-xcb1, libxau6, libxcb-glx0, libxcb-icccm4 (>= 0.4.1), libxcb-image0 (>= 0.2.1), libxcb-keysyms1 (>= 0.4.0), libxcb-randr0 (>= 1.1), libxcb-render-util0, libxcb-render0, libxcb-shape0, libxcb-shm0 (>= 1.10), libxcb-util0 (>= 0.3.8), libxcb-xf86dri0, libxcb-xkb1, libxcb1 (>= 1.8), libxdmcp6, libxfont2 (>= 1:2.0.1), xkeyboard-config, xkbcomp
 Recommends: libgl1-mesa-dri (>= 7.1~rc1)
-Section: x11
+Section: X11
 Priority: optional
 Description: nested X server
  Xephyr is an X server that can be run inside another X server,
