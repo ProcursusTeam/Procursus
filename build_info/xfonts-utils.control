@@ -2,7 +2,7 @@ Package: xfonts-utils
 Version: @DEB_FONTUTIL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Section: x11
+Section: X11
 Priority: optional
 Description: X Window System font utility programs
  xfonts-utils provides a set of utility programs shipped with the X Window
