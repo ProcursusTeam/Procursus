@@ -2,7 +2,7 @@ Package: libxcb-image0
 Version: @DEB_XCB-UTIL-IMAGE_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libxcb-shm0, libxcb-util0 (>= 0.3.8), libxcb1
+Depends: libxcb-shm0, libxcb-util1 (>= 0.3.8), libxcb1
 Section: Libraries
 Description: utility libraries for X C Binding -- image
  This package contains the library files needed to run software using
