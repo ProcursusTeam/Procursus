@@ -1,0 +1,15 @@
+Package: x11-session-utils
+Version: @DEB_x11-SESSION-UTILS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libice6, libsm6, libx11-6, libxaw7, libxmuu1, libxt6
+Section: X11
+Description: X session utilities
+ This package provides the X session manager and related tools:
+  - rstart;
+  - smproxy, a session manager proxy for X clients that do not use the X
+    session manager protocol;
+  - xsm, a session manager for X sessions;
+ Installation of an rsh or ssh daemon (server) is necessary if rstartd is
+ to be used, and installation of an rsh or ssh client is necessary if
+ rstart is to be used.
