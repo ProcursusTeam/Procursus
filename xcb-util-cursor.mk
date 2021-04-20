@@ -38,7 +38,7 @@ xcb-util-cursor-package: xcb-util-cursor-stage
 	cp -a $(BUILD_STAGE)/xcb-util-cursor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libxcb-cursor-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# xcb-util-cursor.mk Sign
-	$(call SIGN,libxcb-cursor1,general.xml)
+	$(call SIGN,libxcb-cursor0,general.xml)
 
 	# xcb-util-cursor.mk Make .debs
 	$(call PACK,libxcb-cursor0,DEB_XCB-UTIL-CURSOR_V)
