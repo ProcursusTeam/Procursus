@@ -17,7 +17,8 @@ libxaw:
 else
 libxaw: libxaw-setup libx11 libxau libxmu xorgproto libxpm libxt libxext
 	cd $(BUILD_WORK)/libxaw && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		--disable-xaw6
 	+$(MAKE) -C $(BUILD_WORK)/libxaw
 	+$(MAKE) -C $(BUILD_WORK)/libxaw install \
 		DESTDIR=$(BUILD_STAGE)/libxaw
