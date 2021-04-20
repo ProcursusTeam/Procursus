@@ -1,8 +1,8 @@
 Package: libfox-1.6-0
-Version: @DEB_FOX_V@
+Version: @DEB_FOX1.6_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libfontconfig1 (>= 2.12.6), libfreetype6 (>= 2.2.1), libjpeg62-turbo (>= 1.3.1), libpng16-16 (>= 1.6.2-1), libtiff5 (>= 4.0.3), libx11-6, libxcursor1 (>> 1.1.2), libxext6, libxft2 (>> 2.1.1)
+Depends: libfontconfig1, libfreetype6, libjpeg62-turbo, libpng16-16, libtiff5, libx11-6, libxcursor1, libxext6, libxft2, libxrender1, libxrandr2, libxfixes3, libxi6, libgl1, libglu1
 Section: Libraries
 Description: FOX C++ GUI Toolkit - runtime library
  FOX is a C++ based Toolkit for developing Graphical User Interfaces
