@@ -36,7 +36,7 @@ libglu-package: libglu-stage
 	cp -a $(BUILD_STAGE)/libglu/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libGLU.1.dylib $(BUILD_DIST)/libglu1-mesa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libglu.mk Prep libglu1-mesa-dev
-	cp -a $(BUILD_STAGE)/libglu/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libGLU.1.dylib $(BUILD_DIST)/libglu1-mesa-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libglu/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libGLU.1.dylib) $(BUILD_DIST)/libglu1-mesa-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libglu/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libglu1-mesa-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libglu.mk Sign
