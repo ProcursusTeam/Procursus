@@ -2,7 +2,7 @@ Package: xserver-common
 Version: @DEB_XORG-SERVER_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: xkbcomp
+Depends: xkbcomp,  xkeyboard-config
 Recommends: xauth
 Section: X11
 Priority: optional
