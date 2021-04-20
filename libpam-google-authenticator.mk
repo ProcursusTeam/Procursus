@@ -9,7 +9,7 @@ DEB_LIBPAM-GOOGLE-AUTHENTICATOR_V   := $(LIBPAM-GOOGLE-AUTHENTICATOR_VERSION)
 
 libpam-google-authenticator-setup: setup
 	$(call GITHUB_ARCHIVE,google,google-authenticator-libpam,$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT),$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT))
-	$(call EXTRACT_TAR,libpam-google-authenticator-$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT).tar.gz,google-authenticator-libpam-$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT),libpam-google-authenticator)
+	$(call EXTRACT_TAR,google-authenticator-libpam-$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT).tar.gz,google-authenticator-libpam-$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT),libpam-google-authenticator)
 
 ifneq ($(wildcard $(BUILD_WORK)/libpam-google-authenticator/.build_complete),)
 libpam-google-authenticator:
