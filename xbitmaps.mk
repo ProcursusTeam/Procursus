@@ -32,9 +32,6 @@ xbitmaps-package: xbitmaps-stage
 # xbitmaps.mk Prep xbitmaps
 	cp -a $(BUILD_STAGE)/xbitmaps $(BUILD_DIST)
 	
-# xbitmaps.mk Sign
-	$(call SIGN,xbitmaps,general.xml)
-	
 # xbitmaps.mk Make .debs
 	$(call PACK,xbitmaps,DEB_XBITMAPS_V)
 	
