@@ -26,7 +26,7 @@ xcb-util-wm: xcb-util-wm-setup libxcb xcb-util
 endif
 
 xcb-util-wm-package: xcb-util-wm-stage
-	rm -rf $(BUILD_DIST)/libxcb-ewmh{2,-dev} $(BUILD_DIST)/libxcb-icccm4{-dev}
+	rm -rf $(BUILD_DIST)/libxcb-ewmh{2,-dev} $(BUILD_DIST)/libxcb-icccm4{,-dev}
 	mkdir -p $(BUILD_DIST)/libxcb-ewmh2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	mkdir -p $(BUILD_DIST)/libxcb-ewmh-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pkgconfig,include/xcb}
 	mkdir -p $(BUILD_DIST)/libxcb-icccm4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
@@ -59,6 +59,6 @@ xcb-util-wm-package: xcb-util-wm-stage
 	$(call PACK,libxcb-icccm4-dev,DEB_XCB-UTIL-WM_V)
 
 	# libxcb-wm.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libxcb-ewmh{2,-dev} $(BUILD_DIST)/libxcb-icccm4{-dev}
+	rm -rf $(BUILD_DIST)/libxcb-ewmh{2,-dev} $(BUILD_DIST)/libxcb-icccm4{,-dev}
 
 .PHONY: xcb-util-wm xcb-util-wm-package
