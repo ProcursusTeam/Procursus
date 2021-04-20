@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS += smartmontools 
+SUBPROJECT             += smartmontools 
 SMARTMONTOOLS_VERSION  := 7.2
 DEB_SMARTMONTOOLS_V    ?= $(SMARTMONTOOLS_VERSION)
 
@@ -16,9 +16,9 @@ smartmontools:
 else
 smartmontools: smartmontools-setup
 	cd $(BUILD_WORK)/smartmontools && ./configure -C \
-		--with-savestates \
-		--with-attributelog \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		--with-savestates \
+		--with-attributelog
 	+$(MAKE) -C $(BUILD_WORK)/smartmontools
 	+$(MAKE) -C $(BUILD_WORK)/smartmontools install \
 		DESTDIR=$(BUILD_STAGE)/smartmontools
@@ -28,10 +28,9 @@ endif
 smartmontools-package: smartmontools-stage
 	# smartmontools.mk Package Structure
 	rm -rf $(BUILD_DIST)/smartmontools
-	mkdir -p $(BUILD_DIST)/smartmontools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
 	
 	# smartmontools.mk Prep smartmontools
-	cp -a $(BUILD_STAGE)/smartmontools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/* $(BUILD_DIST)/smartmontools$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
+	cp -a $(BUILD_STAGE)/smartmontools/* $(BUILD_DIST)/smartmontools/
 	
 	# smartmontools.mk Sign
 	$(call SIGN,smartmontools,apfs.xml)
