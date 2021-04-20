@@ -15,11 +15,12 @@ xfe:
 	@echo "Using previously built xfe."
 else
 xfe: xfe-setup 
-	cd $(BUILD_WORK)/xfe && export ac_cv_func_malloc_0_nonnull=yes && ./configure -C \
+	cd $(BUILD_WORK)/xfe && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-x \
 		--disable-sn \
-		--with-xrandr
+		--with-xrandr \
+		ac_cv_func_malloc_0_nonnull=yes
 	+$(MAKE) -C $(BUILD_WORK)/xfe
 	+$(MAKE) -C $(BUILD_WORK)/xfe install \
 		DESTDIR=$(BUILD_STAGE)/xfe
