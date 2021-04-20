@@ -26,24 +26,24 @@ xcb-util-image: xcb-util-image-setup libxcb xcb-util
 endif
 
 xcb-util-image-package: xcb-util-image-stage
-	rm -rf $(BUILD_DIST)/libxcb-image{0,-dev}
-	mkdir -p $(BUILD_DIST)/libxcb-image{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	rm -rf $(BUILD_DIST)/libxcb-image0{,-dev}
+	mkdir -p $(BUILD_DIST)/libxcb-image0{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# xcb-util-image.mk Prep libxcb-image9
-	cp -a $(BUILD_STAGE)/xcb-util-image/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libxcb-image.0.dylib $(BUILD_DIST)/libxcb-image1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/xcb-util-image/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libxcb-image.0.dylib $(BUILD_DIST)/libxcb-image0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# xcb-util-image.mk Prep libxcb-image-dev
-	cp -a $(BUILD_STAGE)/xcb-util-image/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libxcb-image.0.dylib) $(BUILD_DIST)/libxcb-image-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/xcb-util-image/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libxcb-image-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/xcb-util-image/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libxcb-image.0.dylib) $(BUILD_DIST)/libxcb-image0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/xcb-util-image/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libxcb-image0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# xcb-util-image.mk Sign
 	$(call SIGN,libxcb-image0,general.xml)
 
 	# xcb-util-image.mk Make .debs
 	$(call PACK,libxcb-image0,DEB_XCB-UTIL-IMAGE_V)
-	$(call PACK,libxcb-image-dev,DEB_XCB-UTIL-IMAGE_V)
+	$(call PACK,libxcb-image0-dev,DEB_XCB-UTIL-IMAGE_V)
 
 	# xcb-util-image.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libxcb-image{0,-dev}
+	rm -rf $(BUILD_DIST)/libxcb-image0{,-dev}
 
 .PHONY: xcb-util-image xcb-util-image-package
