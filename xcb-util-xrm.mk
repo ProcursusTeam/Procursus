@@ -30,7 +30,7 @@ xcb-util-xrm-package: xcb-util-xrm-stage
 	mkdir -p $(BUILD_DIST)/libxcb-xrm{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# xcb-util-xrm.mk Prep libxcb-xrm0
-	cp -a $(BUILD_STAGE)/xcb-util-xrm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/lib-xrm.0.dylib $(BUILD_DIST)/libxcb-xrm0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/xcb-util-xrm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libxcb-xrm.0.dylib $(BUILD_DIST)/libxcb-xrm0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxcb-xrm.mk Prep libxcb-xrm-dev
 	cp -a $(BUILD_STAGE)/xcb-util-xrm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libxcb-xrm.0.dylib) $(BUILD_DIST)/libxcb-xrm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
