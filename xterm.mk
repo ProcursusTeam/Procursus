@@ -10,13 +10,20 @@ xterm-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://invisible-mirror.net/archives/xterm/xterm-$(XTERM_VERSION).tgz
 	$(call EXTRACT_TAR,xterm-$(XTERM_VERSION).tgz,xterm-$(XTERM_VERSION),xterm)
 
+## Add sixel support when someone adds libsixel
+
 ifneq ($(wildcard $(BUILD_WORK)/xterm/.build_complete),)
 xterm:
 	@echo "Using previously built xterm."
 else
-xterm: xterm-setup libx11 libxau libxmu xorgproto xbitmaps gettext ncurses libxaw libxt libxext libxinerama libice libxpm xbitmaps fontconfig freetype
-	cd $(BUILD_WORK)/xterm && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
+xterm: xterm-setup libx11 libxau libxmu xorgproto xbitmaps gettext ncurses libxaw libxt libxext libxinerama libice libxpm xbitmaps fontconfig freetype pcre2
+	cd $(BUILD_WORK)/xterm && \
+	TERMINFO=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo \
+	./configure -C \
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		--with-pcre2 \
+		cf_cv_lib_part_tgetent=-lncursesw \
+		ac_cv_path_PKG_CONFIG="$(shell which pkg-config) --define-prefix"
 	+$(MAKE) -C $(BUILD_WORK)/xterm
 	+$(MAKE) -C $(BUILD_WORK)/xterm install \
 		DESTDIR=$(BUILD_STAGE)/xterm
