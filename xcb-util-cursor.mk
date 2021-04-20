@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/xcb-util-cursor/.build_complete),)
 xcb-util-cursor:
 	@echo "Using previously built xcb-util-cursor."
 else
-xcb-util-cursor: xcb-util-cursor-setup libxcb xcb-util
+xcb-util-cursor: xcb-util-cursor-setup libxcb xcb-util xcb-renderutil
 	cd $(BUILD_WORK)/xcb-util-cursor && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-cursor
