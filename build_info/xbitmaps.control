@@ -2,7 +2,7 @@ Package: xbitmaps
 Version: @DEB_XBITMAPS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Section: x11
+Section: X11
 Priority: optional
 Depends:
 Description: Base X bitmaps
