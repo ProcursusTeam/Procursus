@@ -19,7 +19,7 @@ ifneq ($(wildcard $(BUILD_WORK)/xorg-server/.build_complete),)
 xorg-server:
 	@echo "Using previously built xorg-server."
 else
-xorg-server: xorg-server-setup libmd libx11 libxau libxmu xorgproto font-util libpixman libpng16 mesa libxfont2 libxkbfile libxdamage libxt libxpm libxaw libxres libxext xcb-util xcb-util-renderutil xcb-util-image xcb-util-wm xcb-util-keysyms libdmx libxdmcp
+xorg-server: xorg-server-setup libmd libx11 libxau libxmu xorgproto font-util libpixman libpng16 mesa libxfont2 libxkbfile libxdamage libxt libxpm libxaw libxres libxext xcb-util xcb-util-renderutil xcb-util-image xcb-util-wm xcb-util-keysyms libdmx libxdmcp libxfixes
 	cd $(BUILD_WORK)/xorg-server && ./autogen.sh -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-xorg \
