@@ -2,7 +2,6 @@ Package: smartmontools
 Version: @DEB_SMARTMONTOOLS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: 
 Section: Utilities
 Priority: optional
 Description: smartmontools contains utility programs (smartctl, smartd) to control/monitor storage systems using the Self-Monitoring, Analysis and Reporting Technology System (S.M.A.R.T.) built into most modern ATA and SCSI disks. It is derived from smartsuite.

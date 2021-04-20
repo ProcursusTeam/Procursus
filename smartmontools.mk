@@ -7,7 +7,7 @@ SMARTMONTOOLS_VERSION  := 7.2
 DEB_SMARTMONTOOLS_V    ?= $(SMARTMONTOOLS_VERSION)
 
 smartmontools-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://managedway.dl.sourceforge.net/project/smartmontools/smartmontools/7.2/smartmontools-$(SMARTMONTOOLS_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://managedway.dl.sourceforge.net/project/smartmontools/smartmontools/$(SMARTMONTOOLS_VERSION)/smartmontools-$(SMARTMONTOOLS_VERSION).tar.gz
 	$(call EXTRACT_TAR,smartmontools-$(SMARTMONTOOLS_VERSION).tar.gz,smartmontools-$(SMARTMONTOOLS_VERSION),smartmontools)
 
 ifneq ($(wildcard $(BUILD_WORK)/smartmontools/.build_complete),)
