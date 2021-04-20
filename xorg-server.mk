@@ -46,7 +46,7 @@ xorg-server-package: xorg-server-stage
 	rm -rf $(BUILD_DIST)/xserver-xorg-{core,dev} $(BUILD_DIST)/xvfb \
 		$(BUILD_DIST)/xnest $(BUILD_DIST)/xdmx{-tools} $(BUILD_DIST)/xserver-{common,xephyr}
 
-	mkdir -p $(BUILD_DIST)/xserver-xorg-core/usr/lib \
+	mkdir -p $(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/xdmx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
 		$(BUILD_DIST)/xdmx-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
 		$(BUILD_DIST)/xserver-xephyr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
