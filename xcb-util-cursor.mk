@@ -17,7 +17,7 @@ else
 xcb-util-cursor: xcb-util-cursor-setup libxcb xcb-util xcb-util-renderutil xcb-util-image
 	cd $(BUILD_WORK)/xcb-util-cursor && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		CFLAGS="-std=gnu99 $(CFLAGS)"
+		CFLAGS="$(CFLAGS) -DHAVE_LIBKERN_OSBYTEORDER_H"
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-cursor
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-cursor install \
 		DESTDIR=$(BUILD_STAGE)/xcb-util-cursor
