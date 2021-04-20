@@ -10,8 +10,6 @@ xterm-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://invisible-mirror.net/archives/xterm/xterm-$(XTERM_VERSION).tgz
 	$(call EXTRACT_TAR,xterm-$(XTERM_VERSION).tgz,xterm-$(XTERM_VERSION),xterm)
 
-## Add sixel support when someone adds libsixel
-
 ifneq ($(wildcard $(BUILD_WORK)/xterm/.build_complete),)
 xterm:
 	@echo "Using previously built xterm."
