@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/xbitmaps/.build_complete),)
 xbitmaps:
 	@echo "Using previously built xbitmaps."
 else
-xbitmaps: xbitmaps-setup libx11 libxau libxmu xorgproto
+xbitmaps: xbitmaps-setup xorgproto
 	cd $(BUILD_WORK)/xbitmaps && autoreconf -fiv && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/xbitmaps
