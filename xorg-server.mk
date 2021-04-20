@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS         += xorg-server
 XORG-SERVER_VERSION := 1.20.10
-DEB_XORG-SERVER_V   ?= $(XORG-SERVER_VERSION)
+DEB_XORG-SERVER_V   ?= $(XORG-SERVER_VERSION)-1
 
 xorg-server-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive//individual/xserver/xorg-server-$(XORG-SERVER_VERSION).tar.gz{,.sig}
