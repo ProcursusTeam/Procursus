@@ -52,7 +52,7 @@ xorg-server-package: xorg-server-stage
 		$(BUILD_DIST)/xserver-xephyr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
 		$(BUILD_DIST)/xserver-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/xorg,share/{man/man1,X11/xkb/compiled}} \
 		$(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib/xorg/modules/extensions,share/man/{man5,man1}} \
-		$(BUILD_DIST)/xserver-xorg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/pkgconfig,share/aclocal} \
+		$(BUILD_DIST)/xserver-xorg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pkgconfig,share/aclocal} \
 		$(BUILD_DIST)/xvfb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
 		$(BUILD_DIST)/xnest/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 	
