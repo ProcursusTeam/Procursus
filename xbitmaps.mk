@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += xbitmaps
+SUBPROJECTS      += xbitmaps
 XBITMAPS_VERSION := 1.1.0
 DEB_XBITMAPS_V   ?= $(XBITMAPS_VERSION)
 
