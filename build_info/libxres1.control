@@ -1,0 +1,19 @@
+Package: libxres1
+Version: @DEB_LIBXRES_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libx11-6, libxext6
+Section: Libraries
+Priority: optional
+Description: X11 Resource extension library
+ libXRes provides an X Window System client interface to the Resource
+ extension to the X protocol.
+ .
+ The Resource extension allows for X clients to see and monitor the X resource
+ usage of various clients (pixmaps, et al).
+ .
+ More information about X.Org can be found at:
+ <URL:http://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libXRes

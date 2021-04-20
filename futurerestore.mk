@@ -24,7 +24,7 @@ ifneq ($(wildcard $(BUILD_WORK)/futurerestore/.build_complete),)
 futurerestore:
 	@echo "Using previously built futurerestore."
 else
-futurerestore: futurerestore-setup libirecovery openssl libusbmuxd libimobiledevice img4tool libgeneral libipatcher libzip
+futurerestore: futurerestore-setup libirecovery openssl libusbmuxd libimobiledevice img4tool libgeneral libzip libfragmentzip libipatcher
 	cd $(BUILD_WORK)/futurerestore && ./autogen.sh \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-silent-rules \
