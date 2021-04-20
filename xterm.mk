@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/xterm/.build_complete),)
 xterm:
 	@echo "Using previously built xterm."
 else
-xterm: xterm-setup libx11 libxau libxmu xorgproto xbitmaps gettext libXaw libxt libice libxpm xbitmaps
+xterm: xterm-setup libx11 libxau libxmu xorgproto xbitmaps gettext ncurses libxaw libxt libxext libxinerama libice libxpm xbitmaps fontconfig freetype
 	cd $(BUILD_WORK)/xterm && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/xterm
