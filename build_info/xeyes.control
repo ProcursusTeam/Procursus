@@ -2,6 +2,6 @@ Package: xeyes
 Version: @DEB_XEYES_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libxcb1
+Depends: libxmu6, libx11, libxt6, libxrender1, libxext6
 Section: X11
 Description: xeyes - a follow the mouse X demo
