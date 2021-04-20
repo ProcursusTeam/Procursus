@@ -2,7 +2,7 @@ Package: xfe
 Version: @DEB_XFE_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libfontconfig1 (>= 2.11), libfox-1.6-0, libfreetype6 (>= 2.2.1), libpng16-16 (>= 1.6.2-1), libx11-6, libxft2 (>> 2.1.1)
+Depends: libintl8, libfontconfig1, libfox-1.6-0, libfreetype6, libpng16-16, libx11-6, libxft2, libxrandr2
 Section: X11
 Priority: optional
 Description: lightweight file manager for X11
