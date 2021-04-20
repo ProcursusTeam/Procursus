@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS     += libxres
 LIBXRES_VERSION := 1.2.1
-DEB_LIBXRES_V   ?= $(XRES_VERSION)
+DEB_LIBXRES_V   ?= $(LIBXRES_VERSION)
 
 libxres-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/lib/libXres-$(LIBXRES_VERSION).tar.gz{,.sig}
