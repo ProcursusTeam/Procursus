@@ -8,9 +8,7 @@ NEKOFETCH_VERSION := 1.4+git20210404.$(shell echo $(NEKOFETCH_COMMIT) | cut -c -
 DEB_NEKOFETCH_V   ?= $(NEKOFETCH_VERSION)
 
 nekofetch-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/nekofetch-$(NEKOFETCH_COMMIT).tar.gz" ] && \
-		wget -q -nc -O $(BUILD_SOURCE)/nekofetch-$(NEKOFETCH_COMMIT).tar.gz \
-			https://github.com/proprdev/nekofetch/archive/$(NEKOFETCH_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,proprdev,nekofetch,$(NEKOFETCH_COMMIT),$(NEKOFETCH_COMMIT))
 	$(call EXTRACT_TAR,nekofetch-$(NEKOFETCH_COMMIT).tar.gz,nekofetch-$(NEKOFETCH_COMMIT),nekofetch)
 
 ifneq ($(wildcard $(BUILD_WORK)/nekofetch/.build_complete),)

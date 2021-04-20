@@ -7,7 +7,7 @@ MSGPACK_VERSION := 3.3.0
 DEB_MSGPACK_V   ?= $(MSGPACK_VERSION)
 
 msgpack-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/msgpack/msgpack-c/releases/download/cpp-3.3.0/msgpack-$(MSGPACK_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/msgpack/msgpack-c/releases/download/cpp-$(MSGPACK_VERSION)/msgpack-$(MSGPACK_VERSION).tar.gz
 	$(call EXTRACT_TAR,msgpack-$(MSGPACK_VERSION).tar.gz,msgpack-$(MSGPACK_VERSION),msgpack)
 
 ifneq ($(wildcard $(BUILD_WORK)/msgpack/.build_complete),)

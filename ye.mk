@@ -7,8 +7,8 @@ YE_VERSION  := 1.0
 DEB_YE_V    ?= $(YE_VERSION)
 
 ye-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/BBaoVanC/ye/archive/v$(YE_VERSION).tar.gz
-	$(call EXTRACT_TAR,v$(YE_VERSION).tar.gz,ye-$(YE_VERSION),ye)
+	$(call GITHUB_ARCHIVE,BBaoVanC,ye,$(YE_VERSION),v$(YE_VERSION))
+	$(call EXTRACT_TAR,ye-$(YE_VERSION).tar.gz,ye-$(YE_VERSION),ye)
 
 ifneq ($(wildcard $(BUILD_WORK)/ye/.build_complete),)
 ye:

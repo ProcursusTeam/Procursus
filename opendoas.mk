@@ -7,9 +7,7 @@ OPENDOAS_VERSION := 6.8.1
 DEB_OPENDOAS_V   ?= $(OPENDOAS_VERSION)-1
 
 opendoas-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/OpenDoas-$(OPENDOAS_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/OpenDoas-$(OPENDOAS_VERSION).tar.gz \
-			https://github.com/Duncaen/OpenDoas/archive/v$(OPENDOAS_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,Duncaen,OpenDoas,$(OPENDOAS_VERSION),v$(OPENDOAS_VERSION))
 	$(call EXTRACT_TAR,OpenDoas-$(OPENDOAS_VERSION).tar.gz,OpenDoas-$(OPENDOAS_VERSION),opendoas)
 	$(call DO_PATCH,opendoas,opendoas,-p1)
 
