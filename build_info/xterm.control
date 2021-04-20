@@ -2,7 +2,7 @@ Package: xterm
 Version: @DEB_XTERM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libncursesw6, libpcre2-posix2, libfontconfig1, libfreetype6, libice6, libxaw7, libxext6, libxft2, libxmu6, libxpm4, libxt6, libxinerama1, xbitmaps
+Depends: libsixel1, libncursesw6, libpcre2-posix2, libfontconfig1, libfreetype6, libice6, libxaw7, libxext6, libxft2, libxmu6, libxpm4, libxt6, libxinerama1, xbitmaps
 Section: X11
 Priority: optional
 Description: X terminal emulator
