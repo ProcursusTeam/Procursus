@@ -22,24 +22,24 @@ lsdtrip: lsdtrip-setup
 		-o $(BUILD_WORK)/lsdtrip/lsdtrip \
 		-lobjc -framework Foundation -framework MobileCoreServices
 	$(STRIP) $(BUILD_WORK)/lsdtrip/lsdtrip
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/lsdtrip/lsdtrip $(BUILD_STAGE)/lsdtrip/usr/bin/lsdtrip
+	$(GINSTALL) -Dm755 $(BUILD_WORK)/lsdtrip/lsdtrip $(BUILD_STAGE)/lsdtrip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsdtrip
 	touch $(BUILD_WORK)/lsdtrip/.build_complete
 endif
 
 lsdtrip-package: lsdtrip-stage
 	# lsdtrip.mk Package Structure
 	rm -rf $(BUILD_DIST)/lsdtrip
-	
+
 	# lsdtrip.mk Prep lsdtrip
 	cp -a $(BUILD_STAGE)/lsdtrip $(BUILD_DIST)/lsdtrip
-	
+
 	# lsdtrip.mk Sign
 	$(call SIGN,lsdtrip,general.xml)
-	$(LDID) -M$(BUILD_WORK)/lsdtrip/ls.ent $(BUILD_DIST)/lsdtrip/usr/bin/lsdtrip
-	
+	$(LDID) -M$(BUILD_WORK)/lsdtrip/ls.ent $(BUILD_DIST)/lsdtrip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsdtrip
+
 	# lsdtrip.mk Make .debs
 	$(call PACK,lsdtrip,DEB_LSDTRIP_V)
-	
+
 	# lsdtrip.mk Build cleanup
 	rm -rf $(BUILD_DIST)/lsdtrip
 

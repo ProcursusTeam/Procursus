@@ -1,0 +1,7 @@
+# login: auth account password session
+auth       required       pam_unix.so try_first_pass
+account    required       pam_nologin.so
+account    required       pam_unix.so
+password   required       pam_unix.so
+session    required       pam_launchd.so
+session    required       pam_uwtmp.so

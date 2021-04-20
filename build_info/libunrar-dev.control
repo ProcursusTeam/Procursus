@@ -1,0 +1,11 @@
+Package: libunrar-dev
+Version: @DEB_UNRAR_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libunrar5 (= @DEB_UNRAR_V@)
+Section: Development
+Priority: optional
+Multi-Arch: foreign
+Homepage: http://www.rarlab.com/rar_add.htm
+Description: Unarchiver for .rar files (non-free version) - development files
+ This package contains the static library for the libunrar library.

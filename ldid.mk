@@ -3,14 +3,14 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += ldid
-LDID_VERSION  := 2.1.2
-DEB_LDID_V    ?= $(LDID_VERSION)-1
+LDID_COMMIT   := 2edb2a9307f1bd3909dadc20e80857c6e40c00c5
+LDID_VERSION  := 2.1.4
+#LDID_VERSION  := 2.1.2+20210222.$(shell echo $(LDID_COMMIT) | cut -c -7)
+DEB_LDID_V    ?= $(LDID_VERSION)
 
 ldid-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/ldid-$(LDID_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/ldid-$(LDID_VERSION).tar.gz \
-			https://github.com/Diatrus/saurik-ldid/archive/v$(LDID_VERSION).tar.gz
-	$(call EXTRACT_TAR,ldid-$(LDID_VERSION).tar.gz,saurik-ldid-$(LDID_VERSION),ldid)
+	$(call GITHUB_ARCHIVE,Diatrus,saurik-ldid,$(LDID_COMMIT),$(LDID_COMMIT))
+	$(call EXTRACT_TAR,saurik-ldid-$(LDID_COMMIT).tar.gz,saurik-ldid-$(LDID_COMMIT),ldid)
 	mkdir -p $(BUILD_STAGE)/ldid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 ifneq ($(wildcard $(BUILD_WORK)/ldid/.build_complete),)

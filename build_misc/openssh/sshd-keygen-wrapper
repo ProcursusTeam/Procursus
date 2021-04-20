@@ -1,0 +1,9 @@
+#!/bin/sh
+SSHDIR=/etc/ssh
+
+[ ! -f ${SSHDIR}/ssh_host_rsa_key ] && ssh-keygen -q -t rsa  -f ${SSHDIR}/ssh_host_rsa_key -N "" -C "" < /dev/null > /dev/null 2> /dev/null
+[ ! -f ${SSHDIR}/ssh_host_dsa_key ] && ssh-keygen -q -t dsa  -f ${SSHDIR}/ssh_host_dsa_key -N "" -C "" < /dev/null > /dev/null 2> /dev/null
+[ ! -f ${SSHDIR}/ssh_host_ecdsa_key ] && ssh-keygen -q -t ecdsa  -f ${SSHDIR}/ssh_host_ecdsa_key -N "" -C "" < /dev/null > /dev/null 2> /dev/null
+[ ! -f ${SSHDIR}/ssh_host_ed25519_key ] && ssh-keygen -q -t ed25519  -f ${SSHDIR}/ssh_host_ed25519_key -N "" -C "" < /dev/null > /dev/null 2> /dev/null
+
+exec /usr/sbin/sshd $@

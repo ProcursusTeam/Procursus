@@ -7,8 +7,8 @@ LIBPLIST_VERSION  := 2.2.0
 DEB_LIBPLIST_V    ?= $(LIBPLIST_VERSION)
 
 libplist-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libimobiledevice/libplist/archive/$(LIBPLIST_VERSION).tar.gz
-	$(call EXTRACT_TAR,$(LIBPLIST_VERSION).tar.gz,libplist-$(LIBPLIST_VERSION),libplist)
+	$(call GITHUB_ARCHIVE,libimobiledevice,libplist,$(LIBPLIST_VERSION),$(LIBPLIST_VERSION))
+	$(call EXTRACT_TAR,libplist-$(LIBPLIST_VERSION).tar.gz,libplist-$(LIBPLIST_VERSION),libplist)
 
 ifneq ($(wildcard $(BUILD_WORK)/libplist/.build_complete),)
 libplist:
@@ -16,9 +16,7 @@ libplist:
 else
 libplist: libplist-setup
 	cd $(BUILD_WORK)/libplist && ./autogen.sh \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--without-cython
 	+$(MAKE) -C $(BUILD_WORK)/libplist
 	+$(MAKE) -C $(BUILD_WORK)/libplist install \

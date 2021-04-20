@@ -21,23 +21,23 @@ term-fireworks: term-fireworks-setup
 		--release \
 		--target=$(RUST_TARGET)
 	$(GINSTALL) -Dm775 $(BUILD_WORK)/term-fireworks/target/$(RUST_TARGET)/release/fireworks \
-		$(BUILD_STAGE)/term-fireworks/usr/bin/fireworks
+		$(BUILD_STAGE)/term-fireworks/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/fireworks
 	touch $(BUILD_WORK)/term-fireworks/.build_complete
 endif
 
 term-fireworks-package: term-fireworks-stage
 	# term-fireworks.mk Package Structure
 	rm -rf $(BUILD_DIST)/term-fireworks
-	
+
 	# term-fireworks.mk Prep term-fireworks
 	cp -a $(BUILD_STAGE)/term-fireworks $(BUILD_DIST)
-	
+
 	# term-fireworks.mk Sign
 	$(call SIGN,term-fireworks,general.xml)
-	
+
 	# term-fireworks.mk Make .debs
 	$(call PACK,term-fireworks,DEB_TERM-FIREWORKS_V)
-	
+
 	# term-fireworks.mk Build cleanup
 	rm -rf $(BUILD_DIST)/term-fireworks
 

@@ -1,0 +1,8 @@
+Package: libdimentio0
+Author: 0x7ff
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_DIMENTIO_V@
+Section: Libraries
+Priority: optional
+Description: PoC tool for setting nonce without triggering KPP/KTRR/PAC. (Runtime libraries)

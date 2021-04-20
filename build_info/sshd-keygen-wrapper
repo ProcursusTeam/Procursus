@@ -1,7 +1,0 @@
-#!/bin/sh
-
-[ ! -f /etc/ssh/ssh_host_key ]     && ssh-keygen -q -t rsa1 -f /etc/ssh/ssh_host_key     -N "" -C "" < /dev/null > /dev/null 2> /dev/null
-[ ! -f /etc/ssh/ssh_host_rsa_key ] && ssh-keygen -q -t rsa  -f /etc/ssh/ssh_host_rsa_key -N "" -C "" < /dev/null > /dev/null 2> /dev/null
-[ ! -f /etc/ssh/ssh_host_dsa_key ] && ssh-keygen -q -t dsa  -f /etc/ssh/ssh_host_dsa_key -N "" -C "" < /dev/null > /dev/null 2> /dev/null
-
-exec /usr/sbin/sshd $@
