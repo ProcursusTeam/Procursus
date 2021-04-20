@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += libxaw
 LIBXAW_VERSION := 1.0.13
-DEB_lLIBXAW_V  ?= $(LIBXAW_VERSION)
+DEB_LIBXAW_V  ?= $(LIBXAW_VERSION)
 
 libxaw-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/lib/libXaw-$(LIBXAW_VERSION).tar.gz{,.sig}
