@@ -33,7 +33,7 @@ libxaw-package: libxaw-stage
 	mkdir -p $(BUILD_DIST)/libxaw7{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxaw.mk Prep libxaw7
-	cp -a $(BUILD_STAGE)/libxaw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXaw*7*.dylib $(BUILD_DIST)/libxaw7/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxaw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXaw{7,}.7.dylib $(BUILD_DIST)/libxaw7/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxaw.mk Prep libxaw7-dev
 	cp -a $(BUILD_STAGE)/libxaw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXaw7.{a,dylib} $(BUILD_DIST)/libxaw7-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
