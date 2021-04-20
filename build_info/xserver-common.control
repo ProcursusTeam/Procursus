@@ -1,6 +1,6 @@
 Package: xserver-common
 Version: @DEB_XORG-SERVER_V@
-Architecture: @DEB_ARCH@
+Architecture: all
 Maintainer: @DEB_MAINTAINER@
 Depends: xkbcomp,  xkeyboard-config
 Recommends: xauth
