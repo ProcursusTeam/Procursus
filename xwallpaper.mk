@@ -16,8 +16,9 @@ xwallpaper:
 	@echo "Using previously built xwallpaper."
 else
 xwallpaper: xwallpaper-setup libx11 libxau libxmu xorgproto libice
-	cd $(BUILD_WORK)/xwallpaper && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
+	cd $(BUILD_WORK)/xwallpaper && ./autogen.sh -C \
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		--without-seccomp
 	+$(MAKE) -C $(BUILD_WORK)/xwallpaper
 	+$(MAKE) -C $(BUILD_WORK)/xwallpaper install \
 		DESTDIR=$(BUILD_STAGE)/xwallpaper
