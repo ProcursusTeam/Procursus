@@ -1,0 +1,13 @@
+Package: iceauth
+Version: @DEB_ICEAUTH_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libxau6, libxmuu1, libxext6, libx11-6, libice6
+Section: X11
+Description:
+ The  iceauth  program  is  used  to  edit and display the authorization
+ information used in connecting with ICE.  This program is usually  used
+ to  extract authorization records from one machine and merge them in on
+ another (as is the case when using remote logins or granting access  to
+ other users).  Commands (described below) may be entered interactively,
+ on the iceauth command line, or in scripts.
