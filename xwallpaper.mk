@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += xwallpaper
+SUBPROJECTS        += xwallpaper
 XWALLPAPER_VERSION := 0.6.6
 DEB_XWALLPAPER_V   ?= $(XWALLPAPER_VERSION)
 
