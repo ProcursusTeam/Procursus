@@ -1,0 +1,15 @@
+Package: libsixel-bin
+Version: @DEB_LIBSIXEL_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libsixel1 (= @DEB_LIBSIXEL_V@), libcurl4, libpng16-16, libjpeg62-turbo, libgd3
+Section: Utilities
+Homepage: https://github.com/saitoha/libsixel
+Description: DEC SIXEL graphics codec implementation (binary)
+ SIXEL is one of image formats for printer and terminal imaging
+ introduced by Digital Equipment Corp. (DEC). Its data scheme is
+ represented as a terminal-friendly escape sequence. 
+ So if you want to view a SIXEL image file, all you have to do
+ is "cat" it to your terminal.
+ .
+ The package contains execution binaries.
