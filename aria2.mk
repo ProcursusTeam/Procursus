@@ -16,9 +16,7 @@ aria2:
 else
 aria2: aria2-setup openssl libjemalloc libuv1 libssh2 libc-ares
 	cd $(BUILD_WORK)/aria2 && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-debug \
 		--enable-libaria2 \
 		--with-openssl \
@@ -42,26 +40,26 @@ aria2-package: aria2-stage
 		$(BUILD_DIST)/libaria2-0{,-dev}
 	mkdir -p $(BUILD_DIST)/aria2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		$(BUILD_DIST)/libaria2-0{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# aria2.mk Prep aria2
 	cp -a $(BUILD_STAGE)/aria2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/aria2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# aria2.mk Prep libaria2-0
 	cp -a $(BUILD_STAGE)/aria2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libaria2.0.dylib $(BUILD_DIST)/libaria2-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# aria2.mk Prep libaria2-0-dev
 	cp -a $(BUILD_STAGE)/aria2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libaria2.dylib,pkgconfig} $(BUILD_DIST)/libaria2-0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/aria2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libaria2-0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# aria2.mk Sign
 	$(call SIGN,aria2,general.xml)
 	$(call SIGN,libaria2-0,general.xml)
-	
+
 	# aria2.mk Make .debs
 	$(call PACK,aria2,DEB_ARIA2_V)
 	$(call PACK,libaria2-0,DEB_ARIA2_V)
 	$(call PACK,libaria2-0-dev,DEB_ARIA2_V)
-	
+
 	# aria2.mk Build cleanup
 	rm -rf $(BUILD_DIST)/aria2 \
 		$(BUILD_DIST)/libaria2-0{,-dev}

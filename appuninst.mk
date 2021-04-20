@@ -7,12 +7,10 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 SUBPROJECTS       += appuninst
 APPUNINST_VERSION := 1.0.0
 DEB_APPUNINST_V   ?= $(APPUNINST_VERSION)
-APPUNINST_LIBS    := -framework Foundation -framework CoreServices
+APPUNINST_LIBS		:= -framework Foundation -framework CoreServices
 
 appuninst-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/appuninst-$(APPUNINST_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/appuninst-$(APPUNINST_VERSION).tar.gz \
-			https://github.com/quiprr/appuninst/archive/v$(APPUNINST_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,quiprr,appuninst,$(APPUNINST_VERSION),v$(APPUNINST_VERSION))
 	$(call EXTRACT_TAR,appuninst-$(APPUNINST_VERSION).tar.gz,appuninst-$(APPUNINST_VERSION),appuninst)
 	mkdir -p $(BUILD_STAGE)/appuninst/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
@@ -20,13 +18,13 @@ ifneq ($(wildcard $(BUILD_WORK)/appuninst/.build_complete),)
 appuninst:
 	@echo "Using previously built appuninst."
 else
-appuninst: appuninst-setup 
+appuninst: appuninst-setup
 	$(CC) $(CFLAGS) -fobjc-arc \
 		$(BUILD_WORK)/appuninst/Sources/appuninst.m \
 		-o $(BUILD_STAGE)/appuninst/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/appuninst \
 		$(LDFLAGS) \
 		$(APPUNINST_LIBS)
-	
+
 	touch $(BUILD_WORK)/appuninst/.build_complete
 endif
 

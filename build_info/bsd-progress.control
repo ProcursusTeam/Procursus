@@ -1,0 +1,8 @@
+Package: bsd-progress
+Version: @DEB_BSD_PROGRESS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Description: feed input to a command, displaying a progress bar
+ Installed as bsd-progress

@@ -1,0 +1,16 @@
+Package: libxcb-icccm4
+Version: @DEB_XCB-UTIL-WM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libxcb1
+Section: Libraries
+Description: utility libraries for X C Binding -- icccm
+ This package contains the library files needed to run software using
+ libxcb-icccm, providing client and window-manager helpers for ICCCM.
+ .
+ The xcb-util module provides a number of libraries which sit on top of
+ libxcb, the core X protocol library, and some of the extension
+ libraries. These experimental libraries provide convenience functions
+ and interfaces which make the raw X protocol more usable. Some of the
+ libraries also provide client-side code which is not strictly part of
+ the X protocol but which have traditionally been provided by Xlib.

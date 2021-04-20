@@ -22,7 +22,9 @@ if [ "$1" = 'configure' ]; then
         dscl . -create /Users/_apt UserShell /usr/bin/false
         dscl . -create /Users/_apt NSFHomeDirectory /var/empty
         dscl . -create /Users/_apt PrimaryGroupID -1
-        sudo dscl . -create /Users/_apt UniqueID $(getHiddenUserUid)
+        dscl . -create /Users/_apt UniqueID $(getHiddenUserUid)
         dscl . -create /Users/_apt RealName "APT Sandbox User"
     fi
 fi
+
+rm -f @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/apt*.dpkg-tmp

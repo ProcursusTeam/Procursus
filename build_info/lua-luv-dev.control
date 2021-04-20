@@ -2,7 +2,7 @@ Package: lua-luv-dev
 Version: @DEB_LUA-LUV_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libuv1-dev
+Depends: libuv1-dev, liblua5.1-dev, liblua5.2-dev, liblua5.3-dev
 Section: Development
 Priority: optional
 Description: libuv bindings for Lua (development files)

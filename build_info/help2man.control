@@ -1,0 +1,14 @@
+Package: help2man
+Version: @DEB_HELP2MAN_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libintl8
+Section: Development
+Priority: optional
+Description: Automatic manpage generator
+ Program to create simple man pages from the --help and
+ --version output of other programs.
+ .
+ Since most GNU documentation is now in info format, this provides a
+ way to generate a placeholder man page pointing to that resource while
+ still providing some useful information.

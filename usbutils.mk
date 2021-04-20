@@ -16,12 +16,10 @@ usbutils:
 else
 usbutils: usbutils-setup libusb
 	cd $(BUILD_WORK)/usbutils && ./configure \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/usbutils install \
 		DESTDIR="$(BUILD_STAGE)/usbutils" \
-		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libusb-1.0" \
+		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libusb-1.0" \
 		AM_LDFLAGS="" \
 		SUBDIRS="" \
 		bin_SCRIPTS="" \
