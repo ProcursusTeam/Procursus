@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECT             += smartmontools 
+SUBPROJECTS            += smartmontools 
 SMARTMONTOOLS_VERSION  := 7.2
 DEB_SMARTMONTOOLS_V    ?= $(SMARTMONTOOLS_VERSION)
 
