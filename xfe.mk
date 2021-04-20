@@ -17,6 +17,7 @@ else
 xfe: xfe-setup 
 	cd $(BUILD_WORK)/xfe && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		--enable-release \
 		--with-x \
 		--disable-sn \
 		--with-xrandr \
