@@ -16,8 +16,7 @@ xcb-util-cursor:
 else
 xcb-util-cursor: xcb-util-cursor-setup libxcb xcb-util
 	cd $(BUILD_WORK)/xcb-util-cursor && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS) \
-		CFLAGS="-std=gnu99 $(CFLAGS)" 
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-cursor
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-cursor install \
 		DESTDIR=$(BUILD_STAGE)/xcb-util-cursor
