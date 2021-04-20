@@ -29,7 +29,7 @@ xcb-util-image-package: xcb-util-image-stage
 	rm -rf $(BUILD_DIST)/libxcb-image0{,-dev}
 	mkdir -p $(BUILD_DIST)/libxcb-image0{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-	# xcb-util-image.mk Prep libxcb-image9
+	# xcb-util-image.mk Prep libxcb-image0
 	cp -a $(BUILD_STAGE)/xcb-util-image/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libxcb-image.0.dylib $(BUILD_DIST)/libxcb-image0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# xcb-util-image.mk Prep libxcb-image-dev
