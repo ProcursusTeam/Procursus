@@ -14,14 +14,16 @@ ifneq ($(wildcard $(BUILD_WORK)/xfe/.build_complete),)
 xfe:
 	@echo "Using previously built xfe."
 else
-xfe: xfe-setup 
+xfe: xfe-setup fox1.6
 	cd $(BUILD_WORK)/xfe && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-release \
 		--with-x \
 		--disable-sn \
 		--with-xrandr \
-		ac_cv_func_malloc_0_nonnull=yes
+		ac_cv_func_malloc_0_nonnull=yes \
+		FOX_CONFIG="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/fox-config" \
+		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/fox-1.6"
 	+$(MAKE) -C $(BUILD_WORK)/xfe
 	+$(MAKE) -C $(BUILD_WORK)/xfe install \
 		DESTDIR=$(BUILD_STAGE)/xfe
