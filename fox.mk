@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/fox/.build_complete),)
 fox:
 	@echo "Using previously built fox."
 else
-fox: fox-setup libxft mesa libx11 libxcursor libxext libxrender libxrandr libxfixes libpng16 libtiff libjpeg-turbo libxi freetype fontconfig
+fox: fox-setup libxft mesa libglu libx11 libxcursor libxext libxrender libxrandr libxfixes libpng16 libtiff libjpeg-turbo libxi freetype fontconfig
 	cd $(BUILD_WORK)/fox && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-release \
