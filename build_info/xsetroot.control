@@ -1,0 +1,7 @@
+Package: xsetroot
+Version: @DEB_XSETROOT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libxau6, libxmuu1, libx11-6, libxcursor1
+Section: X11
+Description: xsetroot - root window parameter setting utility for X
