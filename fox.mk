@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += fox
+SUBPROJECTS += fox
 FOX_VERSION := 1.6.56
 DEB_FOX_V   ?= $(FOX_VERSION)
 
@@ -18,7 +18,6 @@ else
 fox: fox-setup slang2 glib2.0 gettext libxft mesa libx11
 	cd $(BUILD_WORK)/fox && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--with-sysroot=$(BUILD_BASE) \
 		--with-x \
 		--with-xft \
 		--with-xshm \
@@ -29,9 +28,7 @@ fox: fox-setup slang2 glib2.0 gettext libxft mesa libx11
 		--with-opengl=no \
 		--with-xim \
 		--with-xinput \
-		--with-xfixes \
-		--x-libraries=$(BUILD_BASE)/usr/lib \
-		--x-includes=$(BUILD_BASE)/usr/include 
+		--with-xfixes
 	+$(MAKE) -C $(BUILD_WORK)/fox
 	+$(MAKE) -C $(BUILD_WORK)/fox install \
  		DESTDIR=$(BUILD_STAGE)/fox
