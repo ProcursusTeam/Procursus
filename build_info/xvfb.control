@@ -2,7 +2,7 @@ Package: xvfb
 Version: @DEB_XORG-SERVER_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libgcrypt20, libpixman-1-0, libxau6, libxdmcp6, libxfont2
+Depends: libmd0, libpixman-1-0, libxau6, libxdmcp6, libxfont2
 Recommends: xauth
 Provides: xserver
 Section: X11
