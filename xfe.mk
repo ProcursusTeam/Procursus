@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += xfe
+SUBPROJECTS += xfe
 XFE_VERSION := 1.44
 DEB_XFE_V   ?= $(XFE_VERSION)
 
