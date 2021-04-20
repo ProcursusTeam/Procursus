@@ -16,11 +16,8 @@ xcb-util-xrm:
 else
 xcb-util-xrm: xcb-util-xrm-setup libxcb xcb-util
 	cd $(BUILD_WORK)/xcb-util-xrm && ./configure -C \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var 
-	+$(MAKE) CFLAGS='-std=gnu99' -C $(BUILD_WORK)/xcb-util-xrm
+		$(DEFAULT_CONFIGURE_FLAGS)
+	+$(MAKE) -C $(BUILD_WORK)/xcb-util-xrm
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-xrm install \
 		DESTDIR=$(BUILD_STAGE)/xcb-util-xrm
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-xrm install \
