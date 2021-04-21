@@ -1,7 +1,8 @@
-Package: libboost-date-time1.74.0
+Package: libboost-iostreams1.76.0
 Version: @DEB_LIBBOOST_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Depends: libzstd1, liblzma5 (>= 5.2.5)
 Section: Libraries
 Priority: optional
-Description: set of date-time libraries based on generic programming concepts
+Description: Boost.Iostreams Library
