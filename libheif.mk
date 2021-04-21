@@ -9,7 +9,7 @@ DEB_LIBHEIF_V   ?= $(LIBHEIF_VERSION)
 libheif-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/strukturag/libheif/releases/download/v$(LIBHEIF_VERSION)/libheif-$(LIBHEIF_VERSION).tar.gz
 	$(call EXTRACT_TAR,libheif-$(LIBHEIF_VERSION).tar.gz,libheif-$(LIBHEIF_VERSION),libheif)
-	$(call DO_PATCH,libheif,libheif,-p1)	
+	$(call DO_PATCH,libheif,libheif,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/libheif/.build_complete),)
 libheif:
@@ -17,9 +17,7 @@ libheif:
 else
 libheif: libheif-setup x265 libde265 aom rav1e dav1d
 	cd $(BUILD_WORK)/libheif && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-tests \
 		--disable-examples
 	+$(MAKE) -C $(BUILD_WORK)/libheif

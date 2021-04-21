@@ -17,7 +17,7 @@ iokittools-setup: setup
 	cp -a $(MACOSX_SYSROOT)/usr/include/libkern $(BUILD_WORK)/iokittools/include
 
 	wget -q -nc -P $(BUILD_WORK)/iokittools/include/IOKit \
-		https://opensource.apple.com/source/IOKitUser/IOKitUser-1726.11.1/IOKitLibPrivate.h 
+		https://opensource.apple.com/source/IOKitUser/IOKitUser-1726.11.1/IOKitLibPrivate.h
 
 ifneq ($(wildcard $(BUILD_WORK)/iokittools/.build_complete),)
 iokittools:

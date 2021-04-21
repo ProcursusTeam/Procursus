@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += file
-FILE_VERSION   := 5.39
-DEB_FILE_V     ?= $(FILE_VERSION)-1
+FILE_VERSION   := 5.40
+DEB_FILE_V     ?= $(FILE_VERSION)
 
 file-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) ftp://ftp.astron.com/pub/file/file-$(FILE_VERSION).tar.gz{,.asc}
@@ -16,19 +16,17 @@ file:
 	@echo "Using previously built file."
 else
 file: file-setup xz
-	rm -rf $(BUILD_WORK)/../../native/file
-	mkdir -p $(BUILD_WORK)/../../native/file
+	rm -rf $(BUILD_WORK)/file/native
+	mkdir -p $(BUILD_WORK)/file/native
 	+unset CC CFLAGS CXXFLAGS CPPFLAGS LDFLAGS; \
-		cd $(BUILD_WORK)/../../native/file && $(BUILD_WORK)/file/configure; \
-		$(MAKE) -C $(BUILD_WORK)/../../native/file
+		cd $(BUILD_WORK)/file/native && $(BUILD_WORK)/file/configure; \
+		$(MAKE) -C $(BUILD_WORK)/file/native
 	cd $(BUILD_WORK)/file && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-libseccomp \
 		--enable-fsect-man5
 	+$(MAKE) -C $(BUILD_WORK)/file \
-		FILE_COMPILE="$(BUILD_WORK)/../../native/file/src/file"
+		FILE_COMPILE="$(BUILD_WORK)/file/native/src/file"
 	+$(MAKE) -C $(BUILD_WORK)/file install \
 		DESTDIR="$(BUILD_STAGE)/file"
 	+$(MAKE) -C $(BUILD_WORK)/file install \

@@ -21,9 +21,7 @@ radare2:
 else
 radare2: radare2-setup libuv1 libzip openssl
 	cd $(BUILD_WORK)/radare2 && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-openssl \
 		--with-syszip
 	+$(MAKE) -C $(BUILD_WORK)/radare2 \

@@ -27,13 +27,13 @@ endif
 nekofetch-package: nekofetch-stage
 	# nekofetch.mk Package Structure
 	rm -rf $(BUILD_DIST)/nekofetch
-	
+
 	# nekofetch.mk Prep nekofetch
 	cp -a $(BUILD_STAGE)/nekofetch $(BUILD_DIST)
-	
+
 	# nekofetch.mk Make .debs
 	$(call PACK,nekofetch,DEB_NEKOFETCH_V)
-	
+
 	# nekofetch.mk Build cleanup
 	rm -rf $(BUILD_DIST)/nekofetch
 

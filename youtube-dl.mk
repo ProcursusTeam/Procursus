@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/youtube-dl/.build_complete),)
 youtube-dl:
 	@echo "Using previously built youtube-dl."
 else
-youtube-dl: youtube-dl-setup 
+youtube-dl: youtube-dl-setup
 	+$(MAKE) -C $(BUILD_WORK)/youtube-dl install \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		MANDIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \

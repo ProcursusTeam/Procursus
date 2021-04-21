@@ -16,9 +16,8 @@ libvpx:
 else
 libvpx: libvpx-setup
 	cd $(BUILD_WORK)/libvpx && ./configure \
-		--build=$$($(BUILD_MISC)/config.guess) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--target=arm64-darwin-gcc \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--enable-shared \
 		--disable-unit-tests \
