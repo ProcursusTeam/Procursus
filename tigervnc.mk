@@ -30,7 +30,7 @@ tigervnc: tigervnc-setup libx11 libxau libxmu xorgproto libpixman gnutls libjpeg
 	$(call PGP_VERIFY,xorg-server-$(XORG-SERVER_VERSION).tar.gz)
 	$(call EXTRACT_TAR,xorg-server-$(XORG-SERVER_VERSION).tar.gz,xorg-server-$(XORG-SERVER_VERSION),xorg-server-vnc)
 	cp -R $(BUILD_WORK)/xorg-server-vnc/. $(BUILD_WORK)/tigervnc/unix/xserver
-	wget -q -nc -P $(BUILD_BASE)/usr/include https://opensource.apple.com/source/X11/X11-0.40.2/xc/programs/Xserver/hw/darwin/quartz/xpr/Xplugin.h
+	$(SED) -i 's/__APPLE__/__PEAR__/' $(BUILD_WORK)/tigervnc/unix/xserver/miext/rootless/rootlessWindow.c
 	cd $(BUILD_WORK)/tigervnc/unix/xserver && patch -p1 < $(BUILD_WORK)/tigervnc/unix/xserver$(XORG_VERSION).patch && export ACLOCAL='aclocal -I $(BUILD_BASE)/usr/share/aclocal' && export gcc=cc && autoreconf -fiv && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-pic \
@@ -44,6 +44,7 @@ tigervnc: tigervnc-setup libx11 libxau libxmu xorgproto libpixman gnutls libjpeg
 		--disable-dmx \
 		--disable-xwin \
 		--disable-xephyr \
+		--disable-xquartz \
 		--disable-kdrive \
 		--disable-config-dbus \
 		--disable-config-hal \
@@ -51,18 +52,16 @@ tigervnc: tigervnc-setup libx11 libxau libxmu xorgproto libpixman gnutls libjpeg
 		--disable-dri2 \
 		--enable-install-libxf86config \
 		--enable-glx \
-		--with-default-font-path="catalogue:/etc/X11/fontpath.d,built-ins" \
-		--with-fontdir=/usr/share/X11/fonts \
-		--with-xkb-path=/usr/share/X11/xkb \
-		--with-xkb-output=/var/lib/xkb \
-		--with-xkb-bin-directory=/usr/bin \
-		--with-serverconfig-path=/usr/lib/xorg \
-		--with-dri-driver-path=/usr/lib/dri
+		--with-default-font-path="catalogue:$(MEMO_PREFIX)/etc/X11/fontpath.d,built-ins" \
+		--with-fontdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/X11/fonts \
+		--with-xkb-path=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/X11/xkb \
+		--with-xkb-output=$(MEMO_PREFIX)/var/lib/xkb \
+		--with-xkb-bin-directory=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
+		--with-serverconfig-path=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg \
+		--with-dri-driver-path=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/dri
 	cd $(BUILD_WORK)/tigervnc/unix/xserver && $(MAKE) TIGERVNC_SRCDIR=$(BUILD_WORK)/tigervnc
 	+$(MAKE) -C $(BUILD_WORK)/tigervnc/unix/xserver install \
 		DESTDIR=$(BUILD_STAGE)/tigervnc
-	+$(MAKE) -C $(BUILD_WORK)/tigervnc/unix/xserver install \
-		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/tigervnc/.build_complete
 endif
 
@@ -71,8 +70,8 @@ tigervnc-package: tigervnc-stage
 	rm -rf $(BUILD_DIST)/tigervnc
 	
 # tigervnc.mk Prep tigervnc
-	rm -rf $(BUILD_STAGE)/tigervnc/usr/lib/xorg/protocol.txt
-	rm -rf $(BUILD_STAGE)/tigervnc/usr/share/man1/Xserver.1
+	rm -rf $(BUILD_STAGE)/tigervnc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg/protocol.txt
+	rm -rf $(BUILD_STAGE)/tigervnc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man1/Xserver.1
 	cp -a $(BUILD_STAGE)/tigervnc $(BUILD_DIST)
 
 # tigervnc.mk Sign
