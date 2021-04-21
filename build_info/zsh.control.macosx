@@ -1,0 +1,9 @@
+Package: zsh
+Version: @DEB_ZSH_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libncursesw6, libpcre1
+Section: Terminal_Support
+Priority: standard
+Description: a shell with interactive features
+Name: Z Shell

@@ -16,8 +16,7 @@ libpthread-stubs:
 else
 libpthread-stubs: libpthread-stubs-setup
 	cd $(BUILD_WORK)/libpthread-stubs && ./configure -C \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libpthread-stubs
 	+$(MAKE) -C $(BUILD_WORK)/libpthread-stubs install \
 		DESTDIR=$(BUILD_STAGE)/libpthread-stubs
@@ -30,9 +29,9 @@ libpthread-stubs-package: libpthread-stubs-stage
 	# libpthread-stubs.mk Package Structure
 	rm -rf $(BUILD_DIST)/libpthread-stubs0-dev
 	mkdir -p $(BUILD_DIST)/libpthread-stubs0-dev
-	
+
 	# libpthread-stubs.mk Prep libpthread-stubs0-dev
-	cp -a $(BUILD_STAGE)/libpthread-stubs/usr $(BUILD_DIST)/libpthread-stubs0-dev
+	cp -a $(BUILD_STAGE)/libpthread-stubs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/libpthread-stubs0-dev
 
 	# libpthread-stubs.mk Make .debs
 	$(call PACK,libpthread-stubs0-dev,DEB_LIBPTHREAD-STUBS_V)

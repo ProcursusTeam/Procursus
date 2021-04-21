@@ -1,0 +1,8 @@
+Package: openssh-server
+Version: @DEB_OPENSSH_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libssl1.1, openssh-client (= @DEB_OPENSSH_V@), openssh-sftp-server, libmd0
+Section: Networking
+Priority: important
+Description: secure shell (SSH) server, for secure access from remote machines
