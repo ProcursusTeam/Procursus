@@ -17,9 +17,7 @@ pcre2:
 else
 pcre2: pcre2-setup readline
 	cd $(BUILD_WORK)/pcre2 && unset MACOSX_DEPLOYMENT_TARGET && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
 		--enable-pcre2-16 \
 		--enable-pcre2-32 \
@@ -40,7 +38,7 @@ pcre2-package: pcre2-stage
 	mkdir -p $(BUILD_DIST)/libpcre2-{{8,16,32}-0,posix2}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libpcre2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib,share/man/man1} \
 		$(BUILD_DIST)/pcre2-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
-	
+
 	# pcre2.mk Prep pcre2-utils
 	cp -a $(BUILD_STAGE)/pcre2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/!(pcre2-config) $(BUILD_DIST)/pcre2-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/pcre2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/!(pcre2-config.1) $(BUILD_DIST)/pcre2-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
@@ -59,14 +57,14 @@ pcre2-package: pcre2-stage
 	cp -a $(BUILD_STAGE)/pcre2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/pcre2-config.1 $(BUILD_DIST)/libpcre2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_STAGE)/pcre2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libpcre2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	cp -a $(BUILD_STAGE)/pcre2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libpcre2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# pcre2.mk Sign
 	$(call SIGN,libpcre2-8-0,general.xml)
 	$(call SIGN,libpcre2-16-0,general.xml)
 	$(call SIGN,libpcre2-32-0,general.xml)
 	$(call SIGN,libpcre2-posix2,general.xml)
 	$(call SIGN,pcre2-utils,general.xml)
-	
+
 	# pcre2.mk Make .debs
 	$(call PACK,libpcre2-8-0,DEB_PCRE2_V)
 	$(call PACK,libpcre2-16-0,DEB_PCRE2_V)
@@ -74,7 +72,7 @@ pcre2-package: pcre2-stage
 	$(call PACK,libpcre2-posix2,DEB_PCRE2_V)
 	$(call PACK,libpcre2-dev,DEB_PCRE2_V)
 	$(call PACK,pcre2-utils,DEB_PCRE2_V)
-	
+
 	# pcre2.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libpcre2-{{8,16,32}-0,dev,posix2} $(BUILD_DIST)/pcre2-utils
 

@@ -2,10 +2,12 @@ Package: libassuan-dev
 Version: @DEB_LIBASSUAN_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libgpg-error-dev, libassuan0 (= @DEB_LIBASSUAN_V@)
-Replaces: libassuan (<< @DEB_LIBASSUAN_V@)
-Conflicts: libassuan (<< @DEB_LIBASSUAN_V@)
+Depends: libassuan0 (= @DEB_LIBASSUAN_V@), libgpg-error-dev
 Section: Development
 Priority: optional
-Multi-Arch: foreign
 Description: IPC library for the GnuPG components -- header files
+ Libassuan is a small library implementing the so-called "Assuan
+ protocol". This protocol is used for IPC between most newer GnuPG
+ components. Both server and client side functions are provided.
+ .
+ This package contains header files and static libraries for libassuan.

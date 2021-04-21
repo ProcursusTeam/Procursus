@@ -1,0 +1,9 @@
+Package: hello 
+Version: @DEB_HELLO_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Description: example package based on GNU hello
+ The GNU hello program produces a familiar, friendly greeting. It allows non-programmers to use a classic computer science tool which would otherwise be unavailable to them.
+ Seriously, though: this is an example of how to do a Procursus package. It is the Procursus version of the GNU Project's `hello world' program (which is itself an example for the GNU Project).

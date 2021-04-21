@@ -8,9 +8,7 @@ LIBIMOBILEDEVICE_VERSION := 1.3.0+git20210304.$(shell echo $(LIBIMOBILEDEVICE_CO
 DEB_LIBIMOBILEDEVICE_V   ?= $(LIBIMOBILEDEVICE_VERSION)
 
 libimobiledevice-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/libimobiledevice-$(LIBIMOBILEDEVICE_COMMIT).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/libimobiledevice-$(LIBIMOBILEDEVICE_COMMIT).tar.gz \
-			https://github.com/libimobiledevice/libimobiledevice/archive/$(LIBIMOBILEDEVICE_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,libimobiledevice,libimobiledevice,$(LIBIMOBILEDEVICE_COMMIT),$(LIBIMOBILEDEVICE_COMMIT))
 	$(call EXTRACT_TAR,libimobiledevice-$(LIBIMOBILEDEVICE_COMMIT).tar.gz,libimobiledevice-$(LIBIMOBILEDEVICE_COMMIT),libimobiledevice)
 
 ifneq ($(wildcard $(BUILD_WORK)/libimobiledevice/.build_complete),)
@@ -19,9 +17,7 @@ libimobiledevice:
 else
 libimobiledevice: libimobiledevice-setup libusbmuxd libplist openssl
 	cd $(BUILD_WORK)/libimobiledevice && ./autogen.sh \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--without-cython
 	+$(MAKE) -C $(BUILD_WORK)/libimobiledevice
 	+$(MAKE) -C $(BUILD_WORK)/libimobiledevice install \

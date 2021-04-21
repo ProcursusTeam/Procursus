@@ -7,11 +7,9 @@ GH_VERSION  := 1.3.0
 DEB_GH_V    ?= $(GH_VERSION)
 
 gh-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/gh-$(GH_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/gh-$(GH_VERSION).tar.gz \
-			https://github.com/cli/cli/archive/v$(GH_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,cli,cli,$(GH_VERSION),v$(GH_VERSION),gh)
 	$(call EXTRACT_TAR,gh-$(GH_VERSION).tar.gz,cli-$(GH_VERSION),gh)
-	mkdir -p $(BUILD_STAGE)/gh/usr/bin
+	mkdir -p $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(SED) -i 's/exe := "open"/exe := "uiopen"/' $(BUILD_WORK)/gh/pkg/browser/browser.go
@@ -34,18 +32,18 @@ gh: gh-setup
 		CGO_ENABLED=1 \
 		CC="$(CC)"
 	+unset CC CXX CFLAGS CPPFLAGS LDFLAGS && $(MAKE) -C $(BUILD_WORK)/gh manpages
-	$(CP) -a $(BUILD_WORK)/gh/bin/gh $(BUILD_STAGE)/gh/usr/bin
-	$(CP) -a $(BUILD_WORK)/gh/share $(BUILD_STAGE)/gh/usr
+	$(CP) -a $(BUILD_WORK)/gh/bin/gh $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	$(CP) -a $(BUILD_WORK)/gh/share $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	touch $(BUILD_WORK)/gh/.build_complete
 endif
 
 gh-package: gh-stage
 	# gh.mk Package Structure
 	rm -rf $(BUILD_DIST)/gh
-	mkdir -p $(BUILD_DIST)/gh/usr
+	mkdir -p $(BUILD_DIST)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# gh.mk Prep gh
-	cp -a $(BUILD_STAGE)/gh/usr/{bin,share} $(BUILD_DIST)/gh/usr
+	cp -a $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# gh.mk Sign
 	$(call SIGN,gh,general.xml)

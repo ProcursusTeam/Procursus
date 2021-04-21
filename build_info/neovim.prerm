@@ -4,14 +4,14 @@ set -e
 
 case "$1" in
   remove|deconfigure)
-    update-alternatives --remove editor /usr/bin/nvim
-    update-alternatives --remove ex /usr/libexec/neovim/ex
-    update-alternatives --remove rvim /usr/libexec/neovim/rvim
-    update-alternatives --remove rview /usr/libexec/neovim/rview
-    update-alternatives --remove vi /usr/bin/nvim
-    update-alternatives --remove vim /usr/bin/nvim
-    update-alternatives --remove view /usr/libexec/neovim/view
-    update-alternatives --remove vimdiff /usr/libexec/neovim/vimdiff
+    update-alternatives --remove editor @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/nvim
+    update-alternatives --remove ex @MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/neovim/ex
+    update-alternatives --remove rvim @MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/neovim/rvim
+    update-alternatives --remove rview @MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/neovim/rview
+    update-alternatives --remove vi @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/nvim
+    update-alternatives --remove vim @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/nvim
+    update-alternatives --remove view @MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/neovim/view
+    update-alternatives --remove vimdiff @MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/neovim/vimdiff
     ;;
 
   upgrade|failed-upgrade)
