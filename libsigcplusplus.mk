@@ -16,9 +16,7 @@ libsigcplusplus:
 else
 libsigcplusplus: libsigcplusplus-setup
 	cd $(BUILD_WORK)/libsigcplusplus && ./configure -C \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=/etc \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
 		--enable-shared
 	+$(MAKE) -C $(BUILD_WORK)/libsigcplusplus
@@ -32,22 +30,22 @@ endif
 libsigcplusplus-package: libsigcplusplus-stage
 	# libsigcplusplus.mk Package Structure
 	rm -rf $(BUILD_DIST)/libsigc++-2.0-{0v5,dev}
-	mkdir -p $(BUILD_DIST)/libsigc++-2.0-{0v5,dev}/usr/lib
-	
+	mkdir -p $(BUILD_DIST)/libsigc++-2.0-{0v5,dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# libsigcplusplus.mk Prep libsigc++-2.0-0v5
-	cp -a $(BUILD_STAGE)/libsigcplusplus/usr/lib/libsigc-2.0.0.dylib $(BUILD_DIST)/libsigc++-2.0-0v5/usr/lib
-	
+	cp -a $(BUILD_STAGE)/libsigcplusplus/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsigc-2.0.0.dylib $(BUILD_DIST)/libsigc++-2.0-0v5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# libsigcplusplus.mk Prep libsigc++-2.0-dev
-	cp -a $(BUILD_STAGE)/libsigcplusplus/usr/include $(BUILD_DIST)/libsigc++-2.0-dev/usr
-	cp -a $(BUILD_STAGE)/libsigcplusplus/usr/lib/!(libsigc-2.0.0.dylib) $(BUILD_DIST)/libsigc++-2.0-dev/usr/lib
-	
+	cp -a $(BUILD_STAGE)/libsigcplusplus/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libsigc++-2.0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libsigcplusplus/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libsigc-2.0.0.dylib) $(BUILD_DIST)/libsigc++-2.0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# libsigcplusplus.mk Sign
 	$(call SIGN,libsigc++-2.0-0v5,general.xml)
-	
+
 	# libsigcplusplus.mk Make .debs
 	$(call PACK,libsigc++-2.0-0v5,DEB_LIBSIGCPLUSPLUS_V)
 	$(call PACK,libsigc++-2.0-dev,DEB_LIBSIGCPLUSPLUS_V)
-	
+
 	# libsigcplusplus.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libsigc++-2.0-{0v5,dev}
 

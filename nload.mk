@@ -7,9 +7,7 @@ NLOAD_VERSION := 0.7.4
 DEB_NLOAD_V   ?= $(NLOAD_VERSION)-1
 
 nload-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/nload-$(NLOAD_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/nload-$(NLOAD_VERSION).tar.gz \
-			https://github.com/rolandriegel/nload/archive/v$(NLOAD_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,rolandriegel,nload,$(NLOAD_VERSION),v$(NLOAD_VERSION))
 	$(call EXTRACT_TAR,nload-$(NLOAD_VERSION).tar.gz,nload-$(NLOAD_VERSION),nload)
 	$(call DO_PATCH,nload,nload,-p1)
 
@@ -19,8 +17,7 @@ nload:
 else
 nload: nload-setup ncurses
 	cd $(BUILD_WORK)/nload &&./run_autotools && ./configure \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking
 	+$(MAKE) -C $(BUILD_WORK)/nload \
 		LIBS="-lformw -lncursesw"

@@ -3,61 +3,53 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS           += futurerestore
-FUTURERESTORE_VERSION := 180
+FUTURERESTORE_VERSION := 195
+FUTURERESTORE_COMMIT  := 55db758b5d4d6c08daa48af9aad1abf2b6466f36
+FUTURERESTORE_IDEVICERESTORE_COMMIT := d7d9996b3910902a56462fa8d9dc5909fcf8f4c9
 DEB_FUTURERESTORE_V   ?= $(FUTURERESTORE_VERSION)-1
 
-IDEVICERESTORE_COMMIT := 12667e70defe51fec607ff3006729d0cb5a6aaa8
-
 futurerestore-setup: setup tsschecker-setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tihmstar/futurerestore/archive/$(FUTURERESTORE_VERSION).tar.gz
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/marijuanARM/idevicerestore/archive/$(IDEVICERESTORE_COMMIT).tar.gz
-	$(call EXTRACT_TAR,$(FUTURERESTORE_VERSION).tar.gz,futurerestore-$(FUTURERESTORE_VERSION),futurerestore)
-	
-	-$(RMDIR) $(BUILD_WORK)/futurerestore/external/{idevicerestore,tsschecker}
-	$(call EXTRACT_TAR,$(IDEVICERESTORE_COMMIT).tar.gz,idevicerestore-$(IDEVICERESTORE_COMMIT),futurerestore/external/idevicerestore)
+	$(call GITHUB_ARCHIVE,marijuanARM,futurerestore,$(FUTURERESTORE_COMMIT),$(FUTURERESTORE_COMMIT))
+	$(call GITHUB_ARCHIVE,marijuanARM,idevicerestore,$(FUTURERESTORE_IDEVICERESTORE_COMMIT),$(FUTURERESTORE_IDEVICERESTORE_COMMIT))
+	$(call EXTRACT_TAR,futurerestore-$(FUTURERESTORE_COMMIT).tar.gz,futurerestore-$(FUTURERESTORE_COMMIT),futurerestore)
+
+	-rmdir $(BUILD_WORK)/futurerestore/external/{idevicerestore,tsschecker}
+	$(call EXTRACT_TAR,idevicerestore-$(FUTURERESTORE_IDEVICERESTORE_COMMIT).tar.gz,idevicerestore-$(FUTURERESTORE_IDEVICERESTORE_COMMIT),futurerestore/external/idevicerestore)
 	cp -R $(BUILD_WORK)/tsschecker $(BUILD_WORK)/futurerestore/external
 
-	$(SED) -i 's/libplist /libplist-2.0 /g' $(BUILD_WORK)/futurerestore/configure.ac
-	$(SED) -i 's/libirecovery /libirecovery-1.0 /g' $(BUILD_WORK)/futurerestore/configure.ac
-	$(SED) -i '/AC_FUNC_MALLOC/d' $(BUILD_WORK)/futurerestore/configure.ac
-	$(SED) -i '/AC_FUNC_REALLOC/d' $(BUILD_WORK)/futurerestore/configure.ac
-
-	$(SED) -i 's/libplist /libplist-2.0 /g' $(BUILD_WORK)/futurerestore/external/idevicerestore/configure.ac
-	$(SED) -i 's/libirecovery /libirecovery-1.0 /g' $(BUILD_WORK)/futurerestore/external/idevicerestore/configure.ac
-	$(SED) -i 's/LIBPLIST_VERSION=1.12/LIBPLIST_VERSION=2.2.0/' $(BUILD_WORK)/futurerestore/external/idevicerestore/configure.ac
-	$(SED) -i 's/LIBIRECOVERY_VERSION=0.2.0/LIBIRECOVERY_VERSION=1.0.0/' $(BUILD_WORK)/futurerestore/external/idevicerestore/configure.ac
-
-	$(SED) -i 's/libipatcher::version().c_str()/libipatcher::version()/' $(BUILD_WORK)/futurerestore/futurerestore/main.cpp
+	$(SED) -i 's/git rev\-list \-\-count HEAD/printf ${FUTURERESTORE_VERSION}/g' $(BUILD_WORK)/futurerestore/configure.ac
+	$(SED) -i 's/git rev\-parse HEAD/printf ${FUTURERESTORE_COMMIT}/g' $(BUILD_WORK)/futurerestore/configure.ac
 
 ifneq ($(wildcard $(BUILD_WORK)/futurerestore/.build_complete),)
 futurerestore:
 	@echo "Using previously built futurerestore."
 else
-futurerestore: futurerestore-setup tsschecker libirecovery openssl libusbmuxd libimobiledevice img4tool libgeneral libipatcher libzip
+futurerestore: futurerestore-setup libirecovery openssl libusbmuxd libimobiledevice img4tool libgeneral libzip libfragmentzip libipatcher
 	cd $(BUILD_WORK)/futurerestore && ./autogen.sh \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		--disable-silent-rules \
+		zlib_LIBS="-L$(TARGET_SYSROOT)/usr/lib -lz" \
+		zlib_CFLAGS="-I$(TARGET_SYSROOT)/usr/include"
 	+$(MAKE) -C $(BUILD_WORK)/futurerestore
 	+$(MAKE) -C $(BUILD_WORK)/futurerestore install \
 		DESTDIR="$(BUILD_STAGE)/futurerestore"
-	rm -f $(BUILD_STAGE)/futurerestore/usr/share/man/man1/idevicerestore.1
 	touch $(BUILD_WORK)/futurerestore/.build_complete
 endif
 
 futurerestore-package: futurerestore-stage
 	# futurerestore.mk Package Structure
 	rm -rf $(BUILD_DIST)/futurerestore
-	mkdir -p $(BUILD_DIST)/futurerestore/usr
-	
+	mkdir -p $(BUILD_DIST)/futurerestore/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+
 	# futurerestore.mk Prep futurerestore
-	cp -a $(BUILD_STAGE)/futurerestore/usr/{bin,share} $(BUILD_DIST)/futurerestore/usr
-	
+	cp -a $(BUILD_STAGE)/futurerestore/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/futurerestore/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+
 	# futurerestore.mk Sign
 	$(call SIGN,futurerestore,general.xml)
-	
+
 	# futurerestore.mk Make .debs
 	$(call PACK,futurerestore,DEB_FUTURERESTORE_V)
-	
+
 	# futurerestore.mk Build cleanup
 	rm -rf $(BUILD_DIST)/futurerestore
 

@@ -16,10 +16,7 @@ xorgproto:
 else
 xorgproto: xorgproto-setup
 	cd $(BUILD_WORK)/xorgproto && ./configure \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/xorgproto install \
 		DESTDIR="$(BUILD_STAGE)/xorgproto"
 	+$(MAKE) -C $(BUILD_WORK)/xorgproto install \
@@ -30,14 +27,13 @@ endif
 xorgproto-package: xorgproto-stage
 	# xorgproto.mk Package Structure
 	rm -rf $(BUILD_DIST)/x11proto-dev
-	mkdir -p $(BUILD_DIST)/x11proto-dev
-	
+
 	# xorgproto.mk Prep xorgproto
-	cp -a $(BUILD_STAGE)/xorgproto/usr $(BUILD_DIST)/x11proto-dev
-	
+	cp -a $(BUILD_STAGE)/xorgproto $(BUILD_DIST)/x11proto-dev
+
 	# xorgproto.mk Make .debs
 	$(call PACK,x11proto-dev,DEB_XORGPROTO_V)
-	
+
 	# xorgproto.mk Build cleanup
 	rm -rf $(BUILD_DIST)/x11proto-dev
 
