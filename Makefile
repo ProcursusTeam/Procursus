@@ -356,11 +356,11 @@ PGP_VERIFY  = KEY=$$(gpg --verify --status-fd 1 $(BUILD_SOURCE)/$(1).$(if $(2),$
 endif
 
 CHECKSUM_VERIFY = if [ "$(1)" = "sha1" ]; then \
-		HASH=$$(shasum -a 1 "$(2)"); \
+		HASH=$$(openssl sha1 "$(2)" | tr -d ' ' | cut -d= -f2); \
 		elif [ "$(1)" = "sha256" ]; then \
-		HASH=$$(shasum -a 256 "$(2)"); \
+		HASH=$$(openssl sha256 "$(2)" | tr -d ' ' | cut -d= -f2); \
 		elif [ "$(1)" = "sha512" ]; then \
-		HASH=$$(shasum -a 512 "$(2)"); \
+		HASH=$$(openssl sha512 "$(2)" | tr -d ' ' | cut -d= -f2); \
 		fi; \
 		HASH=$$(echo "$$HASH" | cut -d " " -f 1); \
 		[ "$(3)" = "$$HASH" ]
