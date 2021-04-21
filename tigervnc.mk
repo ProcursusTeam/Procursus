@@ -2,11 +2,10 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += tigervnc
-TIGERVNC_VERSION := 1.11.0
-XORG_VERSION := 120
-XORG-SERVER_VERSION := 1.20.10
-DEB_TIGERVNC_V   ?= $(TIGERVNC_VERSION)
+SUBPROJECTS         += tigervnc
+TIGERVNC_VERSION    := 1.11.0
+XORG_VERSION        := 120
+DEB_TIGERVNC_V      ?= $(TIGERVNC_VERSION)
 
 tigervnc-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/TigerVNC/tigervnc/archive/refs/tags/v1.11.0.tar.gz
@@ -17,10 +16,11 @@ ifneq ($(wildcard $(BUILD_WORK)/tigervnc/.build_complete),)
 tigervnc:
 	@echo "Using previously built tigervnc."
 else
-tigervnc: tigervnc-setup libx11 libxau libxmu xorgproto libpixman gnutls libjpeg-turbo openpam libxdamage libxfixes libxtst libxrandr libxfont2 mesa libgeneral
+tigervnc: tigervnc-setup libmd libx11 libxau libxmu xorgproto libpixman gnutls libjpeg-turbo openpam libxdamage libxfixes libxtst libxrandr libxfont2 mesa libgeneral libxdmcp libxdamage
 	cd $(BUILD_WORK)/tigervnc && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
-		-DBUILD_VIEWER=NO
+		-DBUILD_VIEWER=NO \
+		-DGETTEXT_MSGFMT_EXECUTABLE=$(shell which msgfmt)
 	+$(MAKE) -C $(BUILD_WORK)/tigervnc
 	+$(MAKE) -C $(BUILD_WORK)/tigervnc install \
 		DESTDIR=$(BUILD_STAGE)/tigervnc
@@ -31,7 +31,9 @@ tigervnc: tigervnc-setup libx11 libxau libxmu xorgproto libpixman gnutls libjpeg
 	$(call EXTRACT_TAR,xorg-server-$(XORG-SERVER_VERSION).tar.gz,xorg-server-$(XORG-SERVER_VERSION),xorg-server-vnc)
 	cp -R $(BUILD_WORK)/xorg-server-vnc/. $(BUILD_WORK)/tigervnc/unix/xserver
 	$(SED) -i 's/__APPLE__/__PEAR__/' $(BUILD_WORK)/tigervnc/unix/xserver/miext/rootless/rootlessWindow.c
-	cd $(BUILD_WORK)/tigervnc/unix/xserver && patch -p1 < $(BUILD_WORK)/tigervnc/unix/xserver$(XORG_VERSION).patch && export ACLOCAL='aclocal -I $(BUILD_BASE)/usr/share/aclocal' && export gcc=cc && autoreconf -fiv && ./configure -C \
+	cd $(BUILD_WORK)/tigervnc/unix/xserver && patch -p1 < $(BUILD_WORK)/tigervnc/unix/xserver$(XORG_VERSION).patch && \
+	export ACLOCAL='aclocal -I $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal' && \
+	export gcc=cc && autoreconf -fiv && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-pic \
 		--without-dtrace \
@@ -52,16 +54,20 @@ tigervnc: tigervnc-setup libx11 libxau libxmu xorgproto libpixman gnutls libjpeg
 		--disable-dri2 \
 		--enable-install-libxf86config \
 		--enable-glx \
+		--with-sha1=libmd \
 		--with-default-font-path="catalogue:$(MEMO_PREFIX)/etc/X11/fontpath.d,built-ins" \
 		--with-fontdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/X11/fonts \
 		--with-xkb-path=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/X11/xkb \
 		--with-xkb-output=$(MEMO_PREFIX)/var/lib/xkb \
 		--with-xkb-bin-directory=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
 		--with-serverconfig-path=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg \
-		--with-dri-driver-path=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/dri
-	cd $(BUILD_WORK)/tigervnc/unix/xserver && $(MAKE) TIGERVNC_SRCDIR=$(BUILD_WORK)/tigervnc
+		--with-dri-driver-path=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/dri \
+		LIBS=-lz
+	+cd $(BUILD_WORK)/tigervnc/unix/xserver && $(MAKE) TIGERVNC_SRCDIR=$(BUILD_WORK)/tigervnc
 	+$(MAKE) -C $(BUILD_WORK)/tigervnc/unix/xserver install \
 		DESTDIR=$(BUILD_STAGE)/tigervnc
+	rm -f $(BUILD_STAGE)/tigervnc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg/protocol.txt
+	rm -f $(BUILD_STAGE)/tigervnc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man1/Xserver.1
 	touch $(BUILD_WORK)/tigervnc/.build_complete
 endif
 
@@ -70,8 +76,6 @@ tigervnc-package: tigervnc-stage
 	rm -rf $(BUILD_DIST)/tigervnc
 	
 # tigervnc.mk Prep tigervnc
-	rm -rf $(BUILD_STAGE)/tigervnc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg/protocol.txt
-	rm -rf $(BUILD_STAGE)/tigervnc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man1/Xserver.1
 	cp -a $(BUILD_STAGE)/tigervnc $(BUILD_DIST)
 
 # tigervnc.mk Sign
