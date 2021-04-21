@@ -19,12 +19,13 @@ else
 tigervnc: tigervnc-setup libmd libx11 libxau libxmu xorgproto libpixman gnutls libjpeg-turbo openpam libxdamage libxfixes libxtst libxrandr libxfont2 mesa libgeneral libxdmcp libxdamage
 	cd $(BUILD_WORK)/tigervnc && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
-		-DBUILD_VIEWER=NO \
+		-DBUILD_VIEWER=FALSE \
+		-DUSE_JAVA=TRUE \
 		-DGETTEXT_MSGFMT_EXECUTABLE=$(shell which msgfmt)
-	+$(MAKE) -C $(BUILD_WORK)/tigervnc
-	+$(MAKE) -C $(BUILD_WORK)/tigervnc install \
+	+$(MAKE) -i -C $(BUILD_WORK)/tigervnc
+	+$(MAKE) -i -C $(BUILD_WORK)/tigervnc install \
 		DESTDIR=$(BUILD_STAGE)/tigervnc
-	+$(MAKE) -C $(BUILD_WORK)/tigervnc install \
+	+$(MAKE) -i -C $(BUILD_WORK)/tigervnc install \
 		DESTDIR=$(BUILD_BASE)
 	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive//individual/xserver/xorg-server-$(XORG-SERVER_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,xorg-server-$(XORG-SERVER_VERSION).tar.gz)
