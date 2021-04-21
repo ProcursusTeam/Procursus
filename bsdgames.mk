@@ -17,7 +17,7 @@ ifneq ($(wildcard $(BUILD_WORK)/bsdgames/.build_complete),)
 bsdgames:
 	@echo "Using previously built bsdgames."
 else
-bsdgames: bsdgames-setup ncurses flex openssl
+bsdgames: bsdgames-setup ncurses flex openssl gettext
 	+$(MAKE) -C $(BUILD_WORK)/bsdgames \
 		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		LOCALSTATEDIR="$(MEMO_PREFIX)/var" \
