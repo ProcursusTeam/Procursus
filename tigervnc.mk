@@ -61,7 +61,7 @@ tigervnc: tigervnc-setup libmd libx11 libxau libxmu xorgproto libpixman gnutls l
 		--with-xkb-output=$(MEMO_PREFIX)/var/lib/xkb \
 		--with-xkb-bin-directory=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
 		--with-serverconfig-path=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg \
-		--with-dri-driver-path=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/dri \
+		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pixman-1" \
 		LIBS=-lz
 	+cd $(BUILD_WORK)/tigervnc/unix/xserver && $(MAKE) TIGERVNC_SRCDIR=$(BUILD_WORK)/tigervnc
 	+$(MAKE) -C $(BUILD_WORK)/tigervnc/unix/xserver install \
