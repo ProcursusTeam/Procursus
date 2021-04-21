@@ -6,14 +6,6 @@ SUBPROJECTS    += imlib2
 IMLIB2_VERSION := 1.7.1
 DEB_IMLIB2_V   ?= $(IMLIB2_VERSION)
 
-ifneq (,$(findstring amd64,$(MEMO_TARGET)))
-IMLIB2_CONFIGURE_ARGS := --enable-amd64=yes
-else
-IMLIB2_CONFIGURE_ARGS := --enable-amd64=no
-endif
-
-IMLIB2_CONFIGURE_ARGS += --without-id3
-
 imlib2-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://downloads.sourceforge.net/project/enlightenment/imlib2-src/$(IMLIB2_VERSION)/imlib2-$(IMLIB2_VERSION).tar.bz2
 	$(call EXTRACT_TAR,imlib2-$(IMLIB2_VERSION).tar.bz2,imlib2-$(IMLIB2_VERSION),imlib2)
@@ -25,7 +17,8 @@ else
 imlib2: imlib2-setup freetype libgif libjpeg-turbo libpng16 libtiff libx11 libxcb libxext
 	cd $(BUILD_WORK)/imlib2 && PKG_CONFIG="pkg-config --define-prefix" ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		$(IMLIB2_CONFIGURE_ARGS)
+		--without-id3 \
+		--enable-amd64=no
 	+$(MAKE) -C $(BUILD_WORK)/imlib2
 	+$(MAKE) -C $(BUILD_WORK)/imlib2 install \
 		DESTDIR=$(BUILD_STAGE)/imlib2
