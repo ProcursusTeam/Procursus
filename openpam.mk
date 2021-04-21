@@ -10,7 +10,7 @@ DEB_OPENPAM_V   ?= $(OPENPAM_VERSION)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 openpam-setup: setup
-	-wget -q -nc -O$(BUILD_SOURCE)/openpam-$(OPENPAM_VERSION).tar.gz https://www.openpam.org/downloads/$(OPENPAM_URL_V)
+	-wget -q -nc -O $(BUILD_SOURCE)/openpam-$(OPENPAM_VERSION).tar.gz https://www.openpam.org/downloads/$(OPENPAM_URL_V)
 	$(call EXTRACT_TAR,openpam-$(OPENPAM_VERSION).tar.gz,openpam-$(OPENPAM_VERSION),openpam)
 	$(call DO_PATCH,openpam,openpam,-p0)
 	# The below line is only if you need to debug PAM with detailed syslogs.
