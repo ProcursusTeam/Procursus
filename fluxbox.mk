@@ -16,7 +16,7 @@ ifneq ($(wildcard $(BUILD_WORK)/fluxbox/.build_complete),)
 fluxbox:
 	@echo "Using previously built fluxbox."
 else
-fluxbox: fluxbox-setup imlib2 libx11 libxext libxft libxinerama libxpm libxrandr libxrender fontconfig freetype
+fluxbox: fluxbox-setup imlib2 libx11 libxext libxft libxinerama libxpm libxrandr libxrender fontconfig freetype libfribidi
 	cd $(BUILD_WORK)/fluxbox && autoreconf -fi
 	cd $(BUILD_WORK)/fluxbox && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
