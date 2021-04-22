@@ -3,41 +3,25 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += gobject-introspection
-GOBJECT-INTROSPECTION_VERSION := 1.68.0
+GOBJECT-INTROSPECTION_VERSION := 1.60.2
 DEB_GOBJECT-INTROSPECTION_V   ?= $(GOBJECT-INTROSPECTION_VERSION)
 
 gobject-introspection-setup: setup bison glib2.0
-	wget -q -nc -P$(BUILD_SOURCE) https://download.gnome.org/sources/gobject-introspection/1.68/gobject-introspection-1.68.0.tar.xz
+	wget -q -nc -P$(BUILD_SOURCE) https://download-fallback.gnome.org/sources/gobject-introspection/1.60/gobject-introspection-1.60.2.tar.xz
 	$(call EXTRACT_TAR,gobject-introspection-$(GOBJECT-INTROSPECTION_VERSION).tar.xz,gobject-introspection-$(GOBJECT-INTROSPECTION_VERSION),gobject-introspection)
-	mkdir -p $(BUILD_WORK)/gobject-introspection/build
-	echo -e "[host_machine]\n \
-	system = 'darwin'\n \
-	cpu_family = '$(shell echo $(GNU_HOST_TRIPLE) | cut -d- -f1)'\n \
-	cpu = '$(MEMO_ARCH)'\n \
-	endian = 'little'\n \
-	[properties]\n \
-	root = '$(BUILD_BASE)'\n \
-	[paths]\n \
-	prefix ='$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
-	sysconfdir='$(MEMO_PREFIX)/etc'\n \
-	localstatedir='$(MEMO_PREFIX)/var'\n \
-	[binaries]\n \
-	c = '$(CC)'\n \
-	cpp = '$(CXX)'\n" > $(BUILD_WORK)/gobject-introspection/build/cross.txt
 
 ifneq ($(wildcard $(BUILD_WORK)/gobject-introspection/.build_complete),)
 gobject-introspection:
 	@echo "Using previously built gobject-introspection."
 else
 gobject-introspection: gobject-introspection-setup libx11 mesa
-	cd $(BUILD_WORK)/gobject-introspection/build && PKG_CONFIG="pkg-config" meson \
-		--cross-file cross.txt \
-		-Dbuild_introspection_data=true \
-		-Dgi_cross_use_prebuilt_gi=true \
-		..
-	+ninja -C $(BUILD_WORK)/gobject-introspection/build
-	+DESTDIR="$(BUILD_STAGE)/gobject-introspection" ninja -C $(BUILD_WORK)/gobject-introspection/build install
-	+DESTDIR="$(BUILD_BASE)" ninja -C $(BUILD_WORK)/gobject-introspection/build install
+	cd $(BUILD_WORK)/gobject-introspection && ./autogen.sh -C \
+		$(DEFAULT_CONFIGURE_FLAGS)
+	+$(MAKE) -C $(BUILD_WORK)/gobject-introspection
+	+$(MAKE) -C $(BUILD_WORK)/gobject-introspection install \
+		DESTDIR=$(BUILD_STAGE)/gobject-introspection
+	+$(MAKE) -C $(BUILD_WORK)/gobject-introspection install \
+		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/gobject-introspection/.build_complete
 endif
 
