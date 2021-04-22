@@ -17,8 +17,8 @@ else
 imlib2: imlib2-setup freetype libgif libjpeg-turbo libpng16 libtiff libx11 libxcb libxext
 	cd $(BUILD_WORK)/imlib2 && PKG_CONFIG="pkg-config --define-prefix" ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--enable-amd64=no \
-		--without-id3
+		--without-id3 \
+		--enable-amd64=no
 	+$(MAKE) -C $(BUILD_WORK)/imlib2
 	+$(MAKE) -C $(BUILD_WORK)/imlib2 install \
 		DESTDIR=$(BUILD_STAGE)/imlib2
