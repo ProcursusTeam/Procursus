@@ -30,7 +30,7 @@ libboost: libboost-setup xz zstd icu4c
 	rm -rf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_*
 	cd $(BUILD_WORK)/libboost && unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS SYSROOT && ./bootstrap.sh \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--with-icu=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		--without-icu
 ifneq (,$(findstring amd64,$(MEMO_TARGET)))
 	echo 'using clang-darwin : x86 : $(CXX) : <compileflags>"$(CPPFLAGS)" <cflags>"$(CFLAGS)" <cxxflags>"$(CXXFLAGS)" <linkflags>"$(LDFLAGS)" ;' > $(BUILD_WORK)/libboost/tools/build/src/user-config.jam
 else
@@ -50,7 +50,7 @@ endif
 		variant=release \
 		$(LIBBOOST_CONFIGURE_ARGS) \
 		install
-	# F u boost
+	# F u boost!
 	for lib in $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_*.dylib $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_*.dylib; do \
 		$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/$$(basename $$lib .dylib).$(LIBBOOST_VERSION).dylib $$lib; \
 		for linked in $$(otool -L $$lib | grep @rpath | sed 's/\ .*$$//' | tr -d '\011\013\014\015\040'); do \
@@ -66,7 +66,7 @@ libboost-package: libboost-stage
 	# libboost.mk Package Structure
 	rm -rf $(BUILD_DIST)/libboost*/
 	mkdir -p $(BUILD_DIST)/libboost-all-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libboost-{atomic,chrono,container,context,contract,coroutine,date-time,filesystem,graph,iostreams,locale,log,program-options,random,regex,serialization,stacktrace,system,test,thread,timer,type-erasure,wave}$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libboost-{atomic,chrono,container,context,contract,coroutine,date-time,filesystem,graph,iostreams,locale,log,math,program-options,random,regex,serialization,stacktrace,system,test,thread,timer,type-erasure,wave}$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libboost$(LIBBOOST_VERSION)-all
 
 	# libboost.mk Prep libboost-all-dev
@@ -86,6 +86,7 @@ libboost-package: libboost-stage
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_iostreams.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-iostreams$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_locale.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-locale$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_log{,_setup}.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-log$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_math_*.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-math$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_program_options.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-program-options$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_random.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-random$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_regex.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-regex$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
@@ -111,6 +112,7 @@ libboost-package: libboost-stage
 	$(call SIGN,libboost-iostreams$(LIBBOOST_VERSION),general.xml)
 	$(call SIGN,libboost-locale$(LIBBOOST_VERSION),general.xml)
 	$(call SIGN,libboost-log$(LIBBOOST_VERSION),general.xml)
+	$(call SIGN,libboost-math$(LIBBOOST_VERSION),general.xml)
 	$(call SIGN,libboost-program-options$(LIBBOOST_VERSION),general.xml)
 	$(call SIGN,libboost-random$(LIBBOOST_VERSION),general.xml)
 	$(call SIGN,libboost-regex$(LIBBOOST_VERSION),general.xml)
@@ -138,6 +140,7 @@ libboost-package: libboost-stage
 	$(call PACK,libboost-iostreams$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
 	$(call PACK,libboost-locale$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
 	$(call PACK,libboost-log$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
+	$(call PACK,libboost-math$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
 	$(call PACK,libboost-program-options$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
 	$(call PACK,libboost-random$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
 	$(call PACK,libboost-regex$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
