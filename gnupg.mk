@@ -3,8 +3,13 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += gnupg
-GNUPG_VERSION := 2.2.27
-DEB_GNUPG_V   ?= $(GNUPG_VERSION)-1
+GNUPG_VERSION := 2.3.1
+DEB_GNUPG_V   ?= $(GNUPG_VERSION)
+
+ifneq (,$(findstring iphoneos,$(MEMO_TARGET)))
+LIBGCRYPT_CONF_ARGS = --disable-jent-support \
+		      --enable-random=unix
+endif
 
 gnupg-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/gnupg/gnupg-$(GNUPG_VERSION).tar.bz2

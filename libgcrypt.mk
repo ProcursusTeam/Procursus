@@ -3,8 +3,13 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS     += libgcrypt
-LIBGCRYPT_VERSION := 1.9.2
+LIBGCRYPT_VERSION := 1.9.3
 DEB_LIBGCRYPT_V   ?= $(LIBGCRYPT_VERSION)
+
+ifneq (,$(findstring iphoneos,$(MEMO_TARGET)))
+LIBGCRYPT_CONF_ARGS = --disable-jent-support \
+					  --enable-random=unix
+endif
 
 libgcrypt-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-$(LIBGCRYPT_VERSION).tar.bz2{,.sig}
@@ -26,7 +31,8 @@ else
 libgcrypt: libgcrypt-setup libgpg-error
 	cd $(BUILD_WORK)/libgcrypt && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--with-gpg-error-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		--with-gpg-error-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(LIBGCRYPT_CONF_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/libgcrypt
 	+$(MAKE) -C $(BUILD_WORK)/libgcrypt install \
 		DESTDIR=$(BUILD_STAGE)/libgcrypt
