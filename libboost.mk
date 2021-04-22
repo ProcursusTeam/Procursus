@@ -30,7 +30,7 @@ libboost: libboost-setup xz zstd icu4c
 	rm -rf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_*
 	cd $(BUILD_WORK)/libboost && unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS SYSROOT && ./bootstrap.sh \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--without-icu
+		--show-libraries
 ifneq (,$(findstring amd64,$(MEMO_TARGET)))
 	echo 'using clang-darwin : x86 : $(CXX) : <compileflags>"$(CPPFLAGS)" <cflags>"$(CFLAGS)" <cxxflags>"$(CXXFLAGS)" <linkflags>"$(LDFLAGS)" ;' > $(BUILD_WORK)/libboost/tools/build/src/user-config.jam
 else
@@ -38,14 +38,14 @@ else
 endif
 	cd $(BUILD_WORK)/libboost && ./b2 \
 		--prefix=$(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--without-python \
+		--with-icu \
 		threading=multi \
 		variant=release \
 		$(LIBBOOST_CONFIGURE_ARGS) \
 		install
 	cd $(BUILD_WORK)/libboost && ./b2 \
 		--prefix=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--without-python \
+		--with-icu \
 		threading=multi \
 		variant=release \
 		$(LIBBOOST_CONFIGURE_ARGS) \
