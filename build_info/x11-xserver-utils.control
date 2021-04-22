@@ -1,5 +1,5 @@
 Package: x11-xserver-utils
-Version: @DEB_X11-XSERVER-UTILS_V@
+Version: @DEB_X11_XSERVER_UTILS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: libice6, libx11-6, libxaw7, libxcursor1, libxext6, libxi6, libxmu6, libxmuu1, libxrandr2, libxrender1, libxt6, libxxf86vm1
