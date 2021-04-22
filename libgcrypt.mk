@@ -7,8 +7,7 @@ LIBGCRYPT_VERSION := 1.9.3
 DEB_LIBGCRYPT_V   ?= $(LIBGCRYPT_VERSION)
 
 ifneq (,$(findstring iphoneos,$(MEMO_TARGET)))
-LIBGCRYPT_CONF_ARGS = --disable-jent-support \
-		      --enable-random=unix
+LIBGCRYPT_CONF_ARGS =  --enable-random=unix
 endif
 
 libgcrypt-setup: setup
