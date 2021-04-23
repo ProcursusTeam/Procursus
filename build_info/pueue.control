@@ -1,0 +1,9 @@
+Package: pueue
+Version: @DEB_PUEUE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Description: Manage your shell commands.
+ Pueue is a command-line task management tool for sequential and parallel execution of long-running tasks.
+ Simply put, it's a tool that processes a queue of shell commands. On top of that, thre are a lot of convinient features and abstractions.
