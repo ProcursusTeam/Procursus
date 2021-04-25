@@ -1,0 +1,29 @@
+Package: dwm
+Version: @DEB_DWM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libfontconfig1 (>= 2.12.6), libx11-6, libxft2 (>> 2.1.1)
+Recommends: x-terminal-emulator
+Provides: x-window-manager
+Section: X11
+Priority: optional
+Homepage: http://dwm.suckless.org/
+Description: dynamic window manager
+ dwm is a minimalistic window manager. It manages windows in tiling and floating
+ modes. Either mode can be applied dynamically, depending on the application in
+ use and the task performed.
+ .
+ In tiling mode windows are managed in a master and stacking column. The master
+ column contains the window which needs most attention at a time, whereas the
+ stacking column contains all other windows in a stack. Dialog windows are
+ managed floating, however.
+ .
+ In floating mode windows can be resized and moved freely. Windows are grouped
+ by tags. All windows with a specific tag can be viewed at a time. But each
+ window may contain more than one tag, which makes it visible in several views.
+ .
+ Please notice that dwm is currently customized through editing its source code,
+ so you probably want to build your own dwm packages. This package is compiled
+ with the default configuration and should just give you an idea about what dwm
+ brings to your desktop.
+

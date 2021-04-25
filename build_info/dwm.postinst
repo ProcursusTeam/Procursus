@@ -1,0 +1,49 @@
+#!/bin/sh
+
+set -e
+
+ALTERNATIVES="maintainer web winkey "
+
+case "${1}" in
+	configure)
+		update-alternatives --quiet --install /usr/bin/dwm dwm /usr/bin/dwm.default 100
+
+		for ALTERNATIVE in ${ALTERNATIVES}
+		do
+			update-alternatives --quiet --install /usr/bin/dwm dwm /usr/bin/dwm.${ALTERNATIVE} 50
+		done
+		;;
+
+	abort-upgrade|abort-remove|abort-deconfigure)
+
+		;;
+
+	*)
+		echo "postinst called with unknown argument \`${1}'" >&2
+		exit 1
+		;;
+esac
+
+# Automatically added by dh_installmenu/11.3.5
+if [ "$1" = "configure" ] && [ -x "`which update-menus 2>/dev/null`" ]; then
+	update-menus
+fi
+# End automatically added section
+# Automatically added by dh_icons/11.3.5
+if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ] || [ "$1" = "abort-deconfigure" ] || [ "$1" = "abort-remove" ] ; then
+	if which update-icon-caches >/dev/null 2>&1 ; then
+		update-icon-caches /usr/share/icons/dwm.png
+	fi
+fi
+# End automatically added section
+# Automatically added by dh_installwm/11.3.5
+if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ] || [ "$1" = "abort-deconfigure" ] || [ "$1" = "abort-remove" ]; then
+	update-alternatives --install /usr/bin/x-window-manager \
+		x-window-manager /usr/bin/dwm 20 \
+		--slave /usr/share/man/man1/x-window-manager.1.gz \
+		x-window-manager.1.gz /usr/share/man/man1/dwm.1.gz
+fi
+# End automatically added section
+
+
+exit 0

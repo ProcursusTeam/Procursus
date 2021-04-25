@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+# Automatically added by dh_icons/11.3.5
+if which update-icon-caches >/dev/null 2>&1 ; then
+	update-icon-caches /usr/share/icons/dwm.png
+fi
+# End automatically added section
+# Automatically added by dh_installmenu/11.3.5
+if [ -x "`which update-menus 2>/dev/null`" ]; then update-menus ; fi
+# End automatically added section
