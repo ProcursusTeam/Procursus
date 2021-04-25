@@ -17,6 +17,8 @@ dwm-setup: setup
 	$(SED) -i 's/XINERAMALIBS  = -lXinerama//g' $(BUILD_WORK)/dwm/config.mk
 	$(SED) -i 's/XINERAMAFLAGS = -DXINERAMA//g' $(BUILD_WORK)/dwm/config.mk
 	$(SED) -i 's@snprintf@// snprintf@g' $(BUILD_WORK)/dwm/dwm.c
+	$(SED) -i '30 a #define TARGET_OS_IPHONE' $(BUILD_WORK)/dwm/dwm.c
+	$(SED) -i '3 a #define TARGET_OS_IPHONE' $(BUILD_WORK)/dwm/drw.c
 
 ifneq ($(wildcard $(BUILD_WORK)/dwm/.build_complete),)
 dwm:
