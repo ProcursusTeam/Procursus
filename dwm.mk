@@ -16,6 +16,7 @@ dwm-setup: setup
 	$(SED) -i 's@/usr/X11R6/lib@$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib@g' $(BUILD_WORK)/dwm/config.mk
 	$(SED) -i 's/XINERAMALIBS  = -lXinerama//g' $(BUILD_WORK)/dwm/config.mk
 	$(SED) -i 's/XINERAMAFLAGS = -DXINERAMA//g' $(BUILD_WORK)/dwm/config.mk
+	$(SED) -i 's@snprintf@// snprintf@g' $(BUILD_WORK)/dwm/dwm.c
 
 ifneq ($(wildcard $(BUILD_WORK)/dwm/.build_complete),)
 dwm:
