@@ -1,0 +1,40 @@
+From de45c6206fb76c448698b4c3e200629c639916c3 Mon Sep 17 00:00:00 2001
+From: "Jay Freeman (saurik)" <saurik@saurik.com>
+Date: Wed, 30 Nov 2016 00:51:55 -0800
+Subject: For speed, you *need* multiple downloads per host.
+
+---
+ apt-pkg/acquire.cc | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/apt-pkg/acquire.cc b/apt-pkg/acquire.cc
+index 541785b03..b0c96f2d7 100644
+--- a/apt-pkg/acquire.cc
++++ b/apt-pkg/acquire.cc
+@@ -450,6 +450,24 @@ string pkgAcquire::QueueName(string Uri,MethodConfig const *&Config)
+    } else
+    {
+       FullQueueName = AccessSchema + U.Host;
++
++      int parallel(_config->FindI("Acquire::"+U.Access+"::MaxParallel",8));
++      if (parallel > 0) {
++	 typedef map<string, int> indexmap;
++	 static indexmap indices;
++
++	 pair<indexmap::iterator, bool> cache(indices.insert(indexmap::value_type(FullQueueName, -1)));
++	 if (cache.second || cache.first->second == -1) {
++	    int &index(indices[U.Access]);
++	    if (index >= parallel)
++	       index = 0;
++	    cache.first->second = index++;
++	 }
++
++	 ostringstream value;
++	 value << U.Access << "::" << cache.first->second;
++	 FullQueueName = value.str();
++      }
+    }
+    unsigned int Instances = 0, SchemaLength = AccessSchema.length();
+ 
+-- 
+cgit v1.2.1
