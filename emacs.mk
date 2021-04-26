@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += emacs
-EMACS_VERSION := 27.1
+EMACS_VERSION := 27.2
 DEB_EMACS_V   ?= $(EMACS_VERSION)
 
 emacs-setup: setup
