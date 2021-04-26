@@ -1,0 +1,8 @@
+Package: bottom-rs
+Version: @DEB_BOTTOM-RS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: bottom-software-foundation, Kaylynn
+Section: Utilities
+Homepage: https://github.com/bottom-software-foundation/bottom-rs
+Description: bottom encodes UTF-8 text into a sequence comprised of bottom emoji
