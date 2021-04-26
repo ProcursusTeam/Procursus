@@ -7,7 +7,8 @@ EMACS_VERSION := 27.1
 DEB_EMACS_V   ?= $(EMACS_VERSION)
 
 emacs-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://ftp.gnu.org/gnu/emacs/emacs-27.1.tar.xz
+	wget -q -nc -P $(BUILD_SOURCE) https://ftp.gnu.org/gnu/emacs/emacs-$(EMACS_VERSION).tar.xz{,.sig}
+	$(call PGP_VERIFY,emacs-$(EMACS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,emacs-$(EMACS_VERSION).tar.xz,emacs-$(EMACS_VERSION),emacs)
 	$(call DO_PATCH,emacs,emacs,-p1)
 

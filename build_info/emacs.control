@@ -2,6 +2,7 @@ Package: emacs
 Version: @DEB_EMACS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Depends: libx11-6, libxau6, libxmu6, x11proto-dev, xxhash
 Section: Text_Editors
 Priority: optional
 Homepage: https://www.gnu.org/software/emacs/
