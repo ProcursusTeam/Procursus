@@ -1,0 +1,10 @@
+--- a/configure.ac	2020-12-08 17:13:02.000000000 -0800
++++ b/configure.ac	2020-12-08 17:13:27.000000000 -0800
+@@ -5228,6 +5228,7 @@
+ AC_SUBST(configuration)
+ ## Unused?
+ AC_SUBST(canonical)
++AC_SUBST(cross_compiling)
+ AC_SUBST(srcdir)
+ AC_SUBST(prefix)
+ AC_SUBST(exec_prefix)
