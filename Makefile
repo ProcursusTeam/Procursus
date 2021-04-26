@@ -293,7 +293,8 @@ DEFAULT_CONFIGURE_FLAGS := \
 	--localstatedir=$(MEMO_PREFIX)/var \
 	--sysconfdir=$(MEMO_PREFIX)/etc \
 	--bindir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
-	--mandir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+	--mandir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
+	--disable-dependency-tracking
 
 DEFAULT_PERL_MAKE_FLAGS := \
 	INSTALLSITEARCH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
