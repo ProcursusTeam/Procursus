@@ -7,7 +7,7 @@ PUEUE_VERSION := 0.12.2
 DEB_PUEUE_V   ?= $(PUEUE_VERSION)
 
 pueue-setup: setup
-	$(call GITHUB_ARCHIVE,Nukerson,pueue,$(PUEUE_VERSION),v$(PUEUE_VERSION))
+	$(call GITHUB_ARCHIVE,Nukesor,pueue,$(PUEUE_VERSION),v$(PUEUE_VERSION))
 	$(call EXTRACT_TAR,pueue-$(PUEUE_VERSION).tar.gz,pueue-$(PUEUE_VERSION),pueue)
 
 ifneq ($(wildcard $(BUILD_WORK)/pueue/.build_complete),)
@@ -19,8 +19,8 @@ pueue: pueue-setup
 		build \
 		--release \
 		--target=$(RUST_TARGET)
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/bat/target/$(RUST_TARGET)/release/pueue \
-		$(BUILD_STAGE)/bat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bat
+	$(GINSTALL) -Dm755 $(BUILD_WORK)/pueue/target/$(RUST_TARGET)/release/pueue \
+		$(BUILD_STAGE)/pueue/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pueue
 	touch $(BUILD_WORK)/pueue/.build_complete
 endif
 
