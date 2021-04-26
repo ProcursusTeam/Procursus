@@ -1,0 +1,18 @@
+diff -urN tcc/lib/Makefile.orig tcc/lib/Makefile
+--- tcc/lib/Makefile.orig	2021-04-26 17:36:48.498291437 -0400
++++ tcc/lib/Makefile	2021-04-26 17:38:40.176315293 -0400
+@@ -8,8 +8,13 @@
+ T = $(or $(CROSS_TARGET),$(NATIVE_TARGET),unknown)
+ X = $(if $(CROSS_TARGET),$(CROSS_TARGET)-)
+
+-XTCC ?= $(TOP)/$(X)tcc$(EXESUF)
+-XCC = $(XTCC)
++ifeq ($(X),)
++XTCC ?= /opt/procursus/bin/$(MEMO_ARCH)-osx-tcc$(EXESUF)
++XCC = $(XTCC) -I$(TARGET_SYSROOT)/usr/include -L$(TARGET_SYSROOT)/usr/lib
++else
++XTCC ?= /opt/procursus/bin/$(X)tcc$(EXESUF)
++XCC = $(XTCC)
++endif
+ XAR = $(XTCC) -ar
+ XFLAGS-unx = -B$(TOPSRC)
