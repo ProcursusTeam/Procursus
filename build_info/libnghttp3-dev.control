@@ -1,0 +1,14 @@
+Package: libnghttp3-dev
+Version: @DEB_NGHTTP3_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libnghttp3-0 (= @DEB_NGHTTP3_V@)
+Section: Development
+Priority: standard
+Homepage: https://nghttp2.org/nghttp3/
+Description: library implementing HTTP/3 protocol (development files)
+ This is an implementation of the Hypertext Transfer Protocol version
+ 3 in C. The framing layer of HTTP/3 is implemented as a reusable C
+ library.
+ .
+ This package installs development files.
