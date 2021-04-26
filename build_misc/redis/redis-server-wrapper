@@ -1,3 +1,2 @@
 #!/bin/sh
-cd /
 exec @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/redis-server $@

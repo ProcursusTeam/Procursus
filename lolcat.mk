@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/lolcat/.build_complete),)
 lolcat:
 	@echo "Using previously built lolcat."
 else
-lolcat: lolcat-setup 
+lolcat: lolcat-setup
 	+$(MAKE) -C $(BUILD_WORK)/lolcat
 	+$(MAKE) -C $(BUILD_WORK)/lolcat install \
 		DESTDIR=$(BUILD_STAGE)/lolcat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin

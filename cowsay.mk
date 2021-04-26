@@ -7,8 +7,7 @@ COWSAY_VERSION := 3.04
 DEB_COWSAY_V   ?= $(COWSAY_VERSION)
 
 cowsay-setup: setup
-	$(call,GITHUB_ARCHIVE,tnalpgge,rank-amateur-cowsay,$(COWSAY_VERSION),$(COWSAY_VERSION),cowsay)
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tnalpgge/rank-amateur-cowsay/archive/cowsay-$(COWSAY_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,tnalpgge,rank-amateur-cowsay,$(COWSAY_VERSION),cowsay-$(COWSAY_VERSION),cowsay)
 	$(call EXTRACT_TAR,cowsay-$(COWSAY_VERSION).tar.gz,rank-amateur-cowsay-cowsay-$(COWSAY_VERSION),cowsay)
 	mkdir -p $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{games,share/man/man1}
 
@@ -17,7 +16,7 @@ cowsay:
 	@echo "Using previously built cowsay."
 else
 cowsay: cowsay-setup
-	$(SED) -i -e 's|%BANGPERL%|!/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl|' -e 's|%PREFIX%|/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|' $(BUILD_WORK)/cowsay/cowsay $(BUILD_WORK)/cowsay/cowsay.1
+	$(SED) -i -e 's|%BANGPERL%|!/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl|' -e 's|%PREFIX%|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|' $(BUILD_WORK)/cowsay/cowsay $(BUILD_WORK)/cowsay/cowsay.1
 	cp -a $(BUILD_WORK)/cowsay/cowsay $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/games
 	cp -a $(BUILD_WORK)/cowsay/cowsay.1 $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_WORK)/cowsay/cows $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share

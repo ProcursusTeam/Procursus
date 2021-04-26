@@ -1,0 +1,15 @@
+Package: libjson-c-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_JSON-C_V@
+Depends: libjson-c5
+Section: Development
+Priority: optional
+Homepage: https://github.com/json-c/json-c/wiki
+Description: JSON manipulation library - shared library
+ This library allows you to easily construct JSON objects in C,
+ output them as JSON formatted strings and parse JSON formatted
+ strings back into the C representation of JSON objects.
+ .
+ The development headers for compiling programs that use libjson-c
+ are provided by this package.

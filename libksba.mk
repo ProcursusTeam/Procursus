@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += libksba
 KSBA_VERSION  := 1.5.0
-DEB_KSBA_V    ?= $(KSBA_VERSION)
+DEB_KSBA_V    ?= $(KSBA_VERSION)-1
 
 libksba-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/libksba/libksba-$(KSBA_VERSION).tar.bz2{,.sig}
@@ -17,9 +17,7 @@ libksba:
 else
 libksba: libksba-setup libgpg-error
 	cd $(BUILD_WORK)/libksba && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-gpg-error-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libksba
 	+$(MAKE) -C $(BUILD_WORK)/libksba install \

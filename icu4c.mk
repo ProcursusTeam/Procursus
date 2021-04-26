@@ -22,10 +22,8 @@ icu4c: icu4c-setup
 		../source/configure; \
 		$(MAKE) -C $(BUILD_WORK)/icu4c/host
 	cd $(BUILD_WORK)/icu4c/source && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-cross-build=$(BUILD_WORK)/icu4c/host \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-samples \
 		--disable-tests
 	+$(MAKE) -C $(BUILD_WORK)/icu4c/source
@@ -36,18 +34,18 @@ icu4c: icu4c-setup
 	touch $(BUILD_WORK)/icu4c/.build_complete
 
 	for lib in $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicu*.68.2.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicu*.68.2.dylib; do \
-		$(I_N_T) -id /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/$$(echo $$lib | rev | cut -d. -f4 | cut -d/ -f1 | rev).68.dylib $$lib; \
+		$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/$$(echo $$lib | rev | cut -d. -f4 | cut -d/ -f1 | rev).68.dylib $$lib; \
 		ln -sf $$(echo $$lib | rev | cut -d. -f4 | cut -d/ -f1 | rev).68.2.dylib $$(echo $$lib | rev | cut -d. -f4 | rev).68.dylib; \
 		ln -sf $$(echo $$lib | rev | cut -d. -f4 | cut -d/ -f1 | rev).68.dylib $$(echo $$lib | rev | cut -d. -f4 | rev).dylib; \
 	done
 
 	for stuff in $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicu*.68.2.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicu*.68.2.dylib $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
-		$(I_N_T) -change libicudata.68.dylib /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicudata.68.dylib $$stuff; \
-		$(I_N_T) -change libicui18n.68.dylib /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicui18n.68.dylib $$stuff; \
-		$(I_N_T) -change libicuio.68.dylib /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicuio.68.dylib $$stuff; \
-		$(I_N_T) -change libicutest.68.dylib /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicutest.68.dylib $$stuff; \
-		$(I_N_T) -change libicutu.68.dylib /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicutu.68.dylib $$stuff; \
-		$(I_N_T) -change libicuuc.68.dylib /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicuuc.68.dylib $$stuff; \
+		$(I_N_T) -change libicudata.68.dylib $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicudata.68.dylib $$stuff; \
+		$(I_N_T) -change libicui18n.68.dylib $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicui18n.68.dylib $$stuff; \
+		$(I_N_T) -change libicuio.68.dylib $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicuio.68.dylib $$stuff; \
+		$(I_N_T) -change libicutest.68.dylib $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicutest.68.dylib $$stuff; \
+		$(I_N_T) -change libicutu.68.dylib $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicutu.68.dylib $$stuff; \
+		$(I_N_T) -change libicuuc.68.dylib $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicuuc.68.dylib $$stuff; \
 	done
 endif
 
@@ -67,7 +65,7 @@ icu4c-package: icu4c-stage
 	cp -a $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,icu} $(BUILD_DIST)/libicu-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/icu $(BUILD_DIST)/libicu-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
-	# icu4c.mk Prep icu-devtools 
+	# icu4c.mk Prep icu-devtools
 	cp -a $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{sbin,bin,share} $(BUILD_DIST)/icu-devtools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	rm -f $(BUILD_DIST)/icu-devtools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/icu-config
 	rm -f $(BUILD_DIST)/icu-devtools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/icu-config.1

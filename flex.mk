@@ -20,11 +20,9 @@ flex:
 	@echo "Using previously built flex."
 else
 flex: flex-setup gettext
-	cd $(BUILD_WORK)/flex && ./autogen.sh 
+	cd $(BUILD_WORK)/flex && ./autogen.sh
 	cd $(BUILD_WORK)/flex && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		ac_cv_func_malloc_0_nonnull=yes \
 		ac_cv_func_realloc_0_nonnull=yes
 	+$(MAKE) -C $(BUILD_WORK)/flex \

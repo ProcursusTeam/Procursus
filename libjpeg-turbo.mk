@@ -19,18 +19,8 @@ libjpeg-turbo:
 else
 libjpeg-turbo: libjpeg-turbo-setup
 	cd $(BUILD_WORK)/libjpeg-turbo && cmake . \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_SYSTEM_PROCESSOR=arm64 \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
-		-DCOMMON_ARCH=$(DEB_ARCH) \
-		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE)
+		$(DEFAULT_CMAKE_FLAGS) \
+		-DCOMMON_ARCH=$(DEB_ARCH)
 	+$(MAKE) -C $(BUILD_WORK)/libjpeg-turbo
 	+$(MAKE) -C $(BUILD_WORK)/libjpeg-turbo install \
 		DESTDIR="$(BUILD_STAGE)/libjpeg-turbo"
@@ -40,7 +30,7 @@ libjpeg-turbo: libjpeg-turbo-setup
 endif
 
 libjpeg-turbo-package: libjpeg-turbo-stage
-  # libjpeg-turbo.mk Package Structure
+	# libjpeg-turbo.mk Package Structure
 	rm -rf \
 		$(BUILD_DIST)/libjpeg62-{turbo,turbo-dev} \
 		$(BUILD_DIST)/{libjpeg-turbo-progs,libturbojpeg0{,-dev}}
@@ -70,21 +60,21 @@ libjpeg-turbo-package: libjpeg-turbo-stage
 	# libjpeg-turbo.mk Prep libturbojpeg0
 	cp -a $(BUILD_STAGE)/libjpeg-turbo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libturbojpeg.0*.dylib $(BUILD_DIST)/libturbojpeg0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-  # libjpeg-turbo.mk Sign
+	# libjpeg-turbo.mk Sign
 	$(call SIGN,libjpeg-turbo-progs,general.xml)
 	$(call SIGN,libjpeg62-turbo-dev,general.xml)
 	$(call SIGN,libjpeg62-turbo,general.xml)
 	$(call SIGN,libturbojpeg0-dev,general.xml)
 	$(call SIGN,libturbojpeg0,general.xml)
 
-  # libjpeg-turbo.mk Make .debs
+	# libjpeg-turbo.mk Make .debs
 	$(call PACK,libjpeg-turbo-progs,DEB_LIBJPEG_TURBO_V)
 	$(call PACK,libjpeg62-turbo-dev,DEB_LIBJPEG_TURBO_V)
 	$(call PACK,libjpeg62-turbo,DEB_LIBJPEG_TURBO_V)
 	$(call PACK,libturbojpeg0-dev,DEB_LIBJPEG_TURBO_V)
 	$(call PACK,libturbojpeg0,DEB_LIBJPEG_TURBO_V)
 
-  # libjpeg-turbo.mk Build cleanup
+	# libjpeg-turbo.mk Build cleanup
 	rm -rf \
 		$(BUILD_DIST)/libjpeg62-{turbo,turbo-dev} \
 		$(BUILD_DIST)/{libjpeg-turbo-progs,libturbojpeg0{,-dev}}

@@ -16,17 +16,8 @@ openjpeg:
 else
 openjpeg: openjpeg-setup libpng16 libtiff lcms2
 	cd $(BUILD_WORK)/openjpeg && cmake . \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
-		-DCOMMON_ARCH=$(DEB_ARCH) \
-		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE)
+		$(DEFAULT_CMAKE_FLAGS) \
+		-DCOMMON_ARCH=$(DEB_ARCH)
 	+$(MAKE) -C $(BUILD_WORK)/openjpeg
 	+$(MAKE) -C $(BUILD_WORK)/openjpeg install \
 		DESTDIR="$(BUILD_STAGE)/openjpeg"
@@ -36,32 +27,32 @@ openjpeg: openjpeg-setup libpng16 libtiff lcms2
 endif
 
 openjpeg-package: openjpeg-stage
-  # openjpeg.mk Package Structure
+	# openjpeg.mk Package Structure
 	rm -rf $(BUILD_DIST)/libopenjp2-{7{,-dev},tools}
 	mkdir -p \
 		$(BUILD_DIST)/libopenjp2-7{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libopenjp2-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
-  # openjpeg.mk Prep libopenjp2-7-dev
+	# openjpeg.mk Prep libopenjp2-7-dev
 	cp -a $(BUILD_STAGE)/openjpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libopenjp2-7-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/openjpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libopenjp2.*.dylib) $(BUILD_DIST)/libopenjp2-7-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-  # openjpeg.mk Prep libopenjp2-tools
+	# openjpeg.mk Prep libopenjp2-tools
 	cp -a $(BUILD_STAGE)/openjpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/libopenjp2-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
-  # openjpeg.mk Prep libopenjp2-7
+	# openjpeg.mk Prep libopenjp2-7
 	cp -a $(BUILD_STAGE)/openjpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libopenjp2.{7,$(OPENJPEG_VERSION)}.dylib $(BUILD_DIST)/libopenjp2-7/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-  # openjpeg.mk Sign
+	# openjpeg.mk Sign
 	$(call SIGN,libopenjp2-7,general.xml)
 	$(call SIGN,libopenjp2-tools,general.xml)
 
-  # openjpeg.mk Make .debs
+	# openjpeg.mk Make .debs
 	$(call PACK,libopenjp2-7-dev,DEB_OPENJPEG_V)
 	$(call PACK,libopenjp2-tools,DEB_OPENJPEG_V)
 	$(call PACK,libopenjp2-7,DEB_OPENJPEG_V)
 
-  # openjpeg.mk Build cleanup
+	# openjpeg.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libopenjp2-{7{,-dev},tools}
 
 .PHONY: openjpeg openjpeg-package

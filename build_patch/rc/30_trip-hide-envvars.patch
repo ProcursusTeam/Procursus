@@ -1,0 +1,18 @@
+Description: hide environment variables from the test suite output
+ It might not be desirable to expose environment variables in the build log.
+ Hide them from the test suite output.
+Author: Jakub Wilk <jwilk@debian.org>
+Forwarded: not-needed
+Last-Update: 2014-01-28
+
+--- a/trip.rc
++++ b/trip.rc
+@@ -287,7 +287,7 @@
+ whatis -s
+ 
+ expect list of variables and functions
+-whatis
++whatis > /dev/null
+ 
+ submatch 'whatis -x' 'whatis: bad option: -x' 'bad option to whatis'
+ 
