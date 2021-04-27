@@ -7,10 +7,9 @@ LIBSOUNDIO_VERSION := 2.0.0
 DEB_LIBSOUNDIO_V   ?= $(LIBSOUNDIO_VERSION)
 
 libsoundio-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/libsoundio-$(LIBSOUNDIO_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/libsoundio-$(LIBSOUNDIO_VERSION).tar.gz \
-			https://github.com/andrewrk/libsoundio/archive/$(LIBSOUNDIO_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,andrewrk,libsoundio,$(LIBSOUNDIO_VERSION),$(LIBSOUNDIO_VERSION))
 	$(call EXTRACT_TAR,libsoundio-$(LIBSOUNDIO_VERSION).tar.gz,libsoundio-$(LIBSOUNDIO_VERSION),libsoundio)
+
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call DO_PATCH,libsoundio-ios,libsoundio,-p1)
 endif

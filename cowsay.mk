@@ -7,8 +7,7 @@ COWSAY_VERSION := 3.04
 DEB_COWSAY_V   ?= $(COWSAY_VERSION)
 
 cowsay-setup: setup
-	$(call,GITHUB_ARCHIVE,tnalpgge,rank-amateur-cowsay,$(COWSAY_VERSION),$(COWSAY_VERSION),cowsay)
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tnalpgge/rank-amateur-cowsay/archive/cowsay-$(COWSAY_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,tnalpgge,rank-amateur-cowsay,$(COWSAY_VERSION),cowsay-$(COWSAY_VERSION),cowsay)
 	$(call EXTRACT_TAR,cowsay-$(COWSAY_VERSION).tar.gz,rank-amateur-cowsay-cowsay-$(COWSAY_VERSION),cowsay)
 	mkdir -p $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{games,share/man/man1}
 

@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += xhost
+SUBPROJECTS   += xhost
 XHOST_VERSION := 1.0.8
 DEB_XHOST_V   ?= $(XHOST_VERSION)
 
