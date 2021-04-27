@@ -10,6 +10,12 @@ libgcrypt-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-$(LIBGCRYPT_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,libgcrypt-$(LIBGCRYPT_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libgcrypt-$(LIBGCRYPT_VERSION).tar.bz2,libgcrypt-$(LIBGCRYPT_VERSION),libgcrypt)
+
+ifneq ($(wildcard $(BUILD_WORK)/libgcrypt/.build_complete),)
+libgcrypt:
+	@echo "Using previously built libgcrypt."
+else
+libgcrypt: libgcrypt-setup libgpg-error
 	for ASM in $(BUILD_WORK)/libgcrypt/mpi/aarch64/*.S; do \
 		$(SED) -i '/.type/d' $$ASM; \
 		$(SED) -i '/.size/d' $$ASM; \
@@ -18,12 +24,6 @@ libgcrypt-setup: setup
 	for ASM in $(BUILD_WORK)/libgcrypt/mpi/amd64/*.S; do \
 		$(SED) -i 's/_gcry/__gcry/g' $$ASM; \
 	done
-
-ifneq ($(wildcard $(BUILD_WORK)/libgcrypt/.build_complete),)
-libgcrypt:
-	@echo "Using previously built libgcrypt."
-else
-libgcrypt: libgcrypt-setup libgpg-error
 	cd $(BUILD_WORK)/libgcrypt && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-gpg-error-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
