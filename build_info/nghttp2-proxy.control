@@ -2,7 +2,7 @@ Package: nghttp2-proxy
 Version: @DEB_NGHTTP2_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libnghttp2-14 (>=@DEB_NGHTTP2_V@), libc-ares2, libev4, libjansson4, libjemalloc2, libssl1.1
+Depends: libnghttp2-14 (= @DEB_NGHTTP2_V@), libc-ares2, libev4, libjansson4, libjemalloc2, libssl1.1
 Section: Networking
 Priority: standard
 Homepage: https://nghttp2.org/
