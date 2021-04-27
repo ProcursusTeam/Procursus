@@ -10,12 +10,15 @@ dwm-setup: setup
 	wget -q -nc -P$(BUILD_SOURCE) https://dl.suckless.org/dwm/dwm-6.2.tar.gz
 	$(call EXTRACT_TAR,dwm-$(DWM_VERSION).tar.gz,dwm-$(DWM_VERSION),dwm)
 	$(SED) -i 's@/usr/local@$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)@g' $(BUILD_WORK)/dwm/config.mk
-	$(SED) -i 's@cc@$(GNU_HOST_TRIPLE)-clang@g' $(BUILD_WORK)/dwm/config.mk
+	$(SED) -i 's@cc@$(CC)@g' $(BUILD_WORK)/dwm/config.mk
 	$(SED) -i 's@/usr/include@$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include@g' $(BUILD_WORK)/dwm/config.mk
 	$(SED) -i 's@/usr/X11R6/include@$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include@g' $(BUILD_WORK)/dwm/config.mk
 	$(SED) -i 's@/usr/X11R6/lib@$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib@g' $(BUILD_WORK)/dwm/config.mk
 	$(SED) -i 's/XINERAMALIBS  = -lXinerama//g' $(BUILD_WORK)/dwm/config.mk
 	$(SED) -i 's/XINERAMAFLAGS = -DXINERAMA//g' $(BUILD_WORK)/dwm/config.mk
+	$(SED) -i 's@snprintf@// snprintf@g' $(BUILD_WORK)/dwm/dwm.c
+	#$(SED) -i '30 a #define TARGET_OS_IPHONE' $(BUILD_WORK)/dwm/dwm.c
+	#$(SED) -i '3 a #define TARGET_OS_IPHONE' $(BUILD_WORK)/dwm/drw.c
 
 ifneq ($(wildcard $(BUILD_WORK)/dwm/.build_complete),)
 dwm:
