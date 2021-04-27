@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += youtube-dl
-YOUTUBE-DL_VERSION := 2021.04.17
+YOUTUBE-DL_VERSION := 2021.04.26
 DEB_YOUTUBE-DL_V   ?= $(YOUTUBE-DL_VERSION)
 
 youtube-dl-setup: setup
