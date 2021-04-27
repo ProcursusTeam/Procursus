@@ -1,0 +1,67 @@
+From 97bb6ccc9ed75f38e339728642a9154004a93647 Mon Sep 17 00:00:00 2001
+From: Gary Palter <palter@clozure.com>
+Date: Sat, 28 Nov 2020 23:01:17 -0500
+Subject: [PATCH] Minimal changes to build on Apple silicon (i.e., new Apple M1
+ Macs)
+
+---
+ lisp/core.c   | 2 +-
+ lisp/math.c   | 2 +-
+ lisp/mp/mpi.c | 2 +-
+ lisp/read.c   | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/lisp/core.c b/lisp/core.c
+index 46930a2..af40fea 100644
+--- a/lisp/core.c
++++ b/lisp/core.c
+@@ -62,7 +62,7 @@ typedef struct _SeqInfo {
+ 	    break;							\
+     }
+ 
+-#ifdef __UNIXOS2__
++#if defined(__UNIXOS2__) || defined(__APPLE__)
+ # define finite(x) isfinite(x)
+ #endif
+ 
+diff --git a/lisp/math.c b/lisp/math.c
+index bdca034..bba21cd 100644
+--- a/lisp/math.c
++++ b/lisp/math.c
+@@ -32,7 +32,7 @@
+ #include "lisp/math.h"
+ #include "lisp/private.h"
+ 
+-#ifdef __UNIXOS2__
++#if defined(__UNIXOS2__) || defined(__APPLE__)
+ # define finite(x) isfinite(x)
+ #endif
+ 
+diff --git a/lisp/mp/mpi.c b/lisp/mp/mpi.c
+index 447bd23..28319b0 100644
+--- a/lisp/mp/mpi.c
++++ b/lisp/mp/mpi.c
+@@ -31,7 +31,7 @@
+ 
+ #include "mp.h"
+ 
+-#ifdef __UNIXOS2__
++#if defined(__UNIXOS2__) || defined(__APPLE__)
+ # define finite(x) isfinite(x)
+ #endif
+ 
+diff --git a/lisp/read.c b/lisp/read.c
+index 02f71f6..f24a292 100644
+--- a/lisp/read.c
++++ b/lisp/read.c
+@@ -62,7 +62,7 @@
+ #define READ_ERROR_FIXNUM()	READ_ERROR0("number is not a fixnum")
+ #define READ_ERROR_INVARG()	READ_ERROR0("invalid argument")
+ 
+-#ifdef __UNIXOS2__
++#if defined(__UNIXOS2__) || defined(__APPLE__)
+ # define finite(x) isfinite(x)
+ #endif
+ 
+-- 
+GitLab

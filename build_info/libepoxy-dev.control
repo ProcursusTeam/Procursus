@@ -1,0 +1,15 @@
+Package: libepoxy-dev
+Version: @DEB_LIBEPOXY_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libepoxy0
+Section: Development
+Priority: optional
+Description: OpenGL function pointer management library- development
+ It hides the complexity of dlopen(), dlsym(), glXGetProcAddress(),
+ eglGetProcAddress(), etc. from the app developer, with very little
+ knowledge needed on their part.  They get to read GL specs and write
+ code using undecorated function names like glCompileShader().
+ .
+ This package contains the development headers for the library found in
+ libepoxy0. Non-developers likely have little use for this package.

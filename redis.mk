@@ -11,8 +11,8 @@ DEB_REDIS_V   ?= $(REDIS_VERSION)-2
 ###
 
 redis-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/redis/redis/archive/$(REDIS_VERSION).tar.gz
-	$(call EXTRACT_TAR,$(REDIS_VERSION).tar.gz,redis-$(REDIS_VERSION),redis)
+	$(call GITHUB_ARCHIVE,redis,redis,$(REDIS_VERSION),$(REDIS_VERSION))
+	$(call EXTRACT_TAR,redis-$(REDIS_VERSION).tar.gz,redis-$(REDIS_VERSION),redis)
 	$(call DO_PATCH,redis,redis,-p1)
 	# Please don't ask why
 	sed -i 's/$$.AR./$(AR)/g' $(BUILD_WORK)/redis/deps/hiredis/Makefile
