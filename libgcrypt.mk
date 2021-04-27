@@ -6,14 +6,11 @@ STRAPPROJECTS     += libgcrypt
 LIBGCRYPT_VERSION := 1.9.3
 DEB_LIBGCRYPT_V   ?= $(LIBGCRYPT_VERSION)
 
-ifneq (,$(findstring iphoneos,$(MEMO_TARGET)))
-LIBGCRYPT_CONF_ARGS =  --enable-random=unix
-endif
-
 libgcrypt-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-$(LIBGCRYPT_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,libgcrypt-$(LIBGCRYPT_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libgcrypt-$(LIBGCRYPT_VERSION).tar.bz2,libgcrypt-$(LIBGCRYPT_VERSION),libgcrypt)
+	$(call DO_PATCH,libgcrypt,libgcrypt,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/libgcrypt/.build_complete),)
 libgcrypt:
