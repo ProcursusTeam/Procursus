@@ -1,0 +1,7 @@
+Package: opendircolors
+Version: @DEB_opendircolors_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilites
+Priority: optional
+Description: A GNU dircolors(1) replacement with BSD/MacOS support
