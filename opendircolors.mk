@@ -2,8 +2,6 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-
 SUBPROJECTS           += opendircolors
 opendircolors_VERSION := 0.0.1
 DEB_opendircolors_V   ?= $(opendircolors_VERSION)
@@ -24,7 +22,10 @@ opendircolors: opendircolors-setup
 	$(CC) $(LDFLAGS) -o $(BUILD_STAGE)/opendircolors/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/opendircolors $(BUILD_WORK)/opendircolors/{opendircolors,common}.o
 	$(CC) $(LDFLAGS) -o $(BUILD_STAGE)/opendircolors/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dirconvert $(BUILD_WORK)/opendircolors/{dirconvert,common}.o
 	cp -a $(BUILD_WORK)/opendircolors/*.1 $(BUILD_STAGE)/opendircolors/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/
-	$(LN) -s opendircolors.1 $(BUILD_STAGE)/opendircolors/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/dircolors.1
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+	$(LN) -s opendircolors.1.zst $(BUILD_STAGE)/opendircolors/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/dircolors.1.zst
+	$(LN) -s opendircolors $(BUILD_STAGE)/opendircolors/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dircolors
+endif
 	touch $(BUILD_WORK)/opendircolors/.build_complete
 endif
 
@@ -46,5 +47,3 @@ opendircolors-package: opendircolors-stage
 	rm -rf $(BUILD_DIST)/opendircolors
 
 .PHONY: opendircolors opendircolors-package
-
-endif #(,$(findstring darwin,$(MEMO_TARGET)))
