@@ -17,9 +17,7 @@ else
 libsamplerate: libsamplerate-setup
 	cd $(BUILD_WORK)/libsamplerate && autoreconf -fi
 	cd $(BUILD_WORK)/libsamplerate && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libsamplerate \
 		SUBDIRS="M4 src"
 	+$(MAKE) -C $(BUILD_WORK)/libsamplerate install \

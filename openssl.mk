@@ -25,7 +25,7 @@ ifneq (,$(findstring aarch64,$(GNU_HOST_TRIPLE)))
 else ifneq (,$(findstring arm,$(GNU_HOST_TRIPLE)))
 	SSL_SCHEME := arm-apple-darwin
 else ifneq (,$(findstring x86_64,$(GNU_HOST_TRIPLE)))
-    SSL_SCHEME := darwin64-x86_64-cc
+	SSL_SCHEME := darwin64-x86_64-cc
 else
 	$(error Host triple $(GNU_HOST_TRIPLE) isn't supported)
 endif

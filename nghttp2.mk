@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += nghttp2
-NGHTTP2_VERSION := 1.41.0
+NGHTTP2_VERSION := 1.43.0
 DEB_NGHTTP2_V   ?= $(NGHTTP2_VERSION)
 
 ##### EVALUATE WHETHER THIS NEEDS LAUNCHDAEMONS AT A LATER DATE #####
@@ -18,9 +18,7 @@ nghttp2:
 else
 nghttp2: nghttp2-setup openssl libc-ares libev jansson libjemalloc libevent
 	cd $(BUILD_WORK)/nghttp2 && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
 		--without-systemd \
 		--enable-python-bindings=no \

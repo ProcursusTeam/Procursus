@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/tree/.build_complete),)
 tree:
 	@echo "Using previously built tree."
 else
-tree: tree-setup 
+tree: tree-setup
 	+$(MAKE) -C $(BUILD_WORK)/tree
 	+$(MAKE) -C $(BUILD_WORK)/tree install \
 		prefix=$(BUILD_STAGE)/tree/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)

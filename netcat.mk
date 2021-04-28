@@ -17,10 +17,7 @@ netcat:
 else
 netcat: netcat-setup gettext
 	cd $(BUILD_WORK)/netcat && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--mandir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/netcat install \
 		DESTDIR="$(BUILD_STAGE)/netcat"
 	rm -rf $(BUILD_STAGE)/netcat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/info

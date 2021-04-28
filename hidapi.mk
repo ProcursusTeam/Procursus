@@ -7,7 +7,7 @@ HIDAPI_VERSION := 0.9.0
 DEB_HIDAPI_V   ?= $(HIDAPI_VERSION)
 
 hidapi-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libusb/hidapi/archive/hidapi-$(HIDAPI_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,libusb,hidapi,$(HIDAPI_VERSION),hidapi-$(HIDAPI_VERSION))
 	$(call EXTRACT_TAR,hidapi-$(HIDAPI_VERSION).tar.gz,hidapi-hidapi-$(HIDAPI_VERSION),hidapi)
 
 ifneq ($(wildcard $(BUILD_WORK)/hidapi/.build_complete),)
@@ -17,9 +17,7 @@ else
 hidapi: hidapi-setup
 	cd $(BUILD_WORK)/hidapi && ./bootstrap
 	cd $(BUILD_WORK)/hidapi && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/hidapi install \
 		CFLAGS="$(CFLAGS) -D__OPEN_SOURCE__ -DMAC_OS_X_VERSION_MIN_REQUIRED=101500" \
 		DESTDIR="$(BUILD_STAGE)/hidapi"

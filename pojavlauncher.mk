@@ -7,16 +7,18 @@ ifeq ($(UNAME),Darwin)
 ifeq ($(filter $(shell uname -m | cut -c -4), iPad iPho),)
 
 SUBPROJECTS             += pojavlauncher
-POJAVLAUNCHER_COMMIT    := 6423825f3106c107d806c39159e8b6aa1868c677
-POJAVLAUNCHER_VERSION   := 1.1+git20210304.$(shell echo $(POJAVLAUNCHER_COMMIT) | cut -c -7)
+POJAVLAUNCHER_COMMIT    := f9198b4a91ce695ffa6c809d7330ff558a144a6d
+POJAVLAUNCHER_VERSION   := 1.1+git20210417.$(shell echo $(POJAVLAUNCHER_COMMIT) | cut -c -7)
 DEB_POJAVLAUNCHER_V     ?= $(POJAVLAUNCHER_VERSION)
 
 pojavlauncher-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/PojavLauncher_iOS-$(POJAVLAUNCHER_COMMIT).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/PojavLauncher_iOS-$(POJAVLAUNCHER_COMMIT).tar.gz \
-			https://github.com/PojavLauncherTeam/PojavLauncher_iOS/archive/$(POJAVLAUNCHER_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,PojavLauncherTeam,PojavLauncher_iOS,$(POJAVLAUNCHER_COMMIT),$(POJAVLAUNCHER_COMMIT))
 	$(call EXTRACT_TAR,PojavLauncher_iOS-$(POJAVLAUNCHER_COMMIT).tar.gz,PojavLauncher_iOS-$(POJAVLAUNCHER_COMMIT),pojavlauncher)
 	mkdir -p $(BUILD_STAGE)/pojavlauncher/{Applications,var/mobile/Documents/minecraft,var/mobile/Documents/.pojavlauncher}
+#	for file in $(BUILD_WORK)/pojavlauncher/Natives/JavaLauncher.c \
+#	$(BUILD_WORK)/pojavlauncher/JavaApp/src/main/java/net/kdt/pojavlaunch/Tools.java; do \
+#		$(SED) -i 's/java-16-openjdk/java-17-openjdk/' $$file; \
+#	done
 
 ifneq ($(wildcard $(BUILD_WORK)/pojavlauncher/.build_complete),)
 pojavlauncher:

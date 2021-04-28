@@ -8,9 +8,7 @@ IMG4LIB_VERSION := 1.0+git20201209.$(shell echo $(IMG4LIB_COMMIT) | cut -c -7)
 DEB_IMG4LIB_V   ?= $(IMG4LIB_VERSION)-1
 
 img4lib-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/img4lib-v$(IMG4LIB_COMMIT).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/img4lib-v$(IMG4LIB_COMMIT).tar.gz \
-			https://github.com/xerub/img4lib/archive/$(IMG4LIB_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,xerub,img4lib,v$(IMG4LIB_COMMIT),$(IMG4LIB_COMMIT))
 	$(call EXTRACT_TAR,img4lib-v$(IMG4LIB_COMMIT).tar.gz,img4lib-$(IMG4LIB_COMMIT),img4lib)
 	$(SED) -i 's/CFLAGS =/CFLAGS ?=/' $(BUILD_WORK)/img4lib/Makefile
 	$(SED) -i 's/LDFLAGS =/LDFLAGS ?=/' $(BUILD_WORK)/img4lib/Makefile

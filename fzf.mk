@@ -7,9 +7,7 @@ FZF_VERSION  := 0.25.0
 DEB_FZF_V    ?= $(FZF_VERSION)
 
 fzf-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/fzf-$(FZF_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/fzf-$(FZF_VERSION).tar.gz \
-			https://github.com/junegunn/fzf/archive/$(FZF_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,junegunn,fzf,$(FZF_VERSION),$(FZF_VERSION))
 	$(call EXTRACT_TAR,fzf-$(FZF_VERSION).tar.gz,fzf-$(FZF_VERSION),fzf)
 	mkdir -p $(BUILD_STAGE)/fzf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 

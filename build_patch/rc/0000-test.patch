@@ -1,0 +1,31 @@
+diff -u --recursive -N 0/Makefile.am 1/Makefile.am
+--- 0/Makefile.am	2015-05-16 15:23:26.000000000 -0500
++++ 1/Makefile.am	2021-03-22 13:18:04.000000000 -0500
+@@ -36,6 +36,7 @@
+ EXTRA_DIST = EXAMPLES addon.c addon.h history.1 parse.y rc.1 trip.rc
+ 
+ sigmsgs.c sigmsgs.h: mksignal
++	$(CC) mksignal.c -o mksignal
+ 	./mksignal
+ 
+ # Newer automake's buildtime dependency tracking can't seem to figure
+@@ -43,6 +44,7 @@
+ status.o: statval.h
+ 
+ statval.h: mkstatval
++	$(CC) mkstatval.c -o mkstatval
+ 	./mkstatval > statval.h
+ 
+ DISTCLEANFILES = sigmsgs.c sigmsgs.h statval.h
+diff -u --recursive -N 0/fn.c 1/fn.c
+--- 0/fn.c	2015-05-16 15:23:26.000000000 -0500
++++ 1/fn.c	2021-03-22 13:20:04.000000000 -0500
+@@ -30,7 +30,7 @@
+ 	null.u[0].p = null.u[1].p = NULL;
+ 	for (i = 1; i < NUMOFSIGNALS; i++)
+ #if HAVE_SYSV_SIGCLD
+-		if (i != SIGCLD)
++		if (i != SIGCHLD)
+ #endif
+ 		if (sighandlers[i] == SIG_IGN)
+ 			fnassign(signals[i].name, NULL); /* ignore incoming ignored signals */

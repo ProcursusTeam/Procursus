@@ -5,17 +5,15 @@ endif
 ifneq (,$(findstring arm64,$(MEMO_TARGET)))
 
 SUBPROJECTS        += dimentio
-DIMENTIO_COMMIT    := 7ffffff47bfd28a56270805d26f6171a23effd58
-DIMENTIO_VERSION   := 1.0.3+git20210401.$(shell echo $(DIMENTIO_COMMIT) | cut -c -7)
+DIMENTIO_COMMIT    := 7ffffff8367f5c8fccd4e76803c94a05e1c07fa1
+DIMENTIO_VERSION   := 1.0.3+git20210403.$(shell echo $(DIMENTIO_COMMIT) | cut -c -7)
 DEB_DIMENTIO_V     ?= $(DIMENTIO_VERSION)
 
 DIMENTIO_SOVERSION := 0
 DIMENTIO_LIBS      := -framework CoreFoundation -framework IOKit -lcompression
 
 dimentio-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/dimentio-v$(DIMENTIO_COMMIT).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/dimentio-v$(DIMENTIO_COMMIT).tar.gz \
-			https://github.com/0x7ff/dimentio/archive/$(DIMENTIO_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,0x7ff,dimentio,v$(DIMENTIO_COMMIT),$(DIMENTIO_COMMIT))
 	$(call EXTRACT_TAR,dimentio-v$(DIMENTIO_COMMIT).tar.gz,dimentio-$(DIMENTIO_COMMIT),dimentio)
 	mkdir -p $(BUILD_STAGE)/dimentio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib,include}
 

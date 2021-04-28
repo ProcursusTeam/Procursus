@@ -7,9 +7,7 @@ PBZX_VERSION   := 1.0.2
 DEB_PBZX_V     ?= $(PBZX_VERSION)
 
 pbzx-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/pbzx-$(PBZX_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/pbzx-$(PBZX_VERSION).tar.gz \
-			https://github.com/NiklasRosenstein/pbzx/archive/v$(PBZX_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,NiklasRosenstein,pbzx,$(PBZX_VERSION),v$(PBZX_VERSION))
 	$(call EXTRACT_TAR,pbzx-$(PBZX_VERSION).tar.gz,pbzx-$(PBZX_VERSION),pbzx)
 
 ifneq ($(wildcard $(BUILD_WORK)/pbzx/.build_complete),)

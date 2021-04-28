@@ -1,0 +1,8 @@
+Package: ye
+Version: @DEB_YE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Homepage: https://github.com/BBaoVanC/ye
+Description: yes, but without a newline

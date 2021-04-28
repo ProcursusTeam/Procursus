@@ -19,7 +19,7 @@ dav1d-setup: setup
 	[properties]\n \
 	root = '$(BUILD_BASE)'\n \
 	[paths]\n \
-	prefix ='/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
+	prefix ='$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
 	[binaries]\n \
 	c = '$(CC)'\n \
 	cpp = '$(CXX)'\n" > $(BUILD_WORK)/dav1d/build/cross.txt

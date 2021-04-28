@@ -1,0 +1,18 @@
+Package: siguza-utils
+Version: @DEB_SIGUZA-UTILS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: Siguza
+Section: Utilities
+Priority: optional
+Homepage: https://www.github.com/Siguza/misc
+Description: Various C written tools.
+ This package provides specific C written tools designed by Siguza that do specific things.
+ This software and all its binaries, which are listed below, is provided without any kind of warranty and as-is. Use at your own risk.
+ - bindump: Prints a 64-bit command line arg in binary
+ - clz: Clang's __builtin_clz, but for the command line
+ - dsc_syms: Prints symbol addresses of a dyld_shared_cache in radare2 format
+ - rand: Generates random numbers or strings
+ - strerror: Prints description for a Darwin error code. Simply calls strerror, mach_error_string, or SecCopyErrorMessageString with the given command line argument
+ - vmacho: Extracts a Mach-O into a raw, headless binary
+ - xref: Parses an arm64 Mach-O and tries to find xrefs to a specific address
