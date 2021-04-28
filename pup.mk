@@ -23,13 +23,7 @@ else
 pup: pup-setup
 	cd $(BUILD_WORK)/pup && go get -d -v .
 	cd $(BUILD_WORK)/pup && \
-		GOARCH=arm64 \
-		GOOS=darwin \
-		CGO_CFLAGS="$(CFLAGS)" \
-		CGO_CPPFLAGS="$(CPPFLAGS)" \
-		CGO_LDFLAGS="$(LDFLAGS)" \
-		CGO_ENABLED=1 \
-		CC="$(CC)" \
+		$(DEFAULT_GOLANG_FLAGS) \
 		go build
 	cp -a $(BUILD_WORK)/pup/pup $(BUILD_STAGE)/pup/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	touch $(BUILD_WORK)/pup/.build_complete
