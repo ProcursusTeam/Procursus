@@ -32,7 +32,6 @@ endif
 opendircolors-package: opendircolors-stage
 	# opendircolors.mk Package Structure
 	rm -rf $(BUILD_DIST)/opendircolors
-	mkdir -p $(BUILD_DIST)/opendircolors
 	
 	# opendircolors.mk Prep opendircolors
 	cp -a $(BUILD_STAGE)/opendircolors $(BUILD_DIST)
