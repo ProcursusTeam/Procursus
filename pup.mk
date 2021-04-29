@@ -3,14 +3,13 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += pup
-PUP_VERSION := 0.4.0
+PUP_COMMIT  := 681d7bb639334bf485476f5872c5bdab10931f9a
+PUP_VERSION := 0.4.0.$(shell echo $(PUP_COMMIT) | cut -c -7)
 DEB_PUP_V   ?= $(PUP_VERSION)
 
 pup-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/pup-$(PUP_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/pup-$(PUP_VERSION).tar.gz \
-			https://github.com/ericchiang/pup/archive/v$(PUP_VERSION).tar.gz
-	$(call EXTRACT_TAR,pup-$(PUP_VERSION).tar.gz,pup-$(PUP_VERSION),pup)
+	$(call GITHUB_ARCHIVE,ericchiang,pup,$(PUP_COMMIT),$(PUP_COMMIT))
+	$(call EXTRACT_TAR,pup-$(PUP_COMMIT).tar.gz,pup-$(PUP_COMMIT),pup)
 	mkdir -p $(BUILD_STAGE)/pup/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 ifneq ($(MEMO_ARCH),arm64)
@@ -34,7 +33,7 @@ pup-package: pup-stage
 	rm -rf $(BUILD_DIST)/pup
 	
 	# pup.mk Prep pup
-	cp -a $(BUILD_STAGE)/pup $(BUILD_DIST)/
+	cp -a $(BUILD_STAGE)/pup $(BUILD_DIST)
 	
 	# pup.mk Sign
 	$(call SIGN,pup,general.xml)
