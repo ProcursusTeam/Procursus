@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS += libsystem-man
-LIBSYSTEM-MAN_VERSION  := 1.0
+LIBSYSTEM-MAN_VERSION  := 1.1
 DEB_LIBSYSTEM-MAN_V    ?= $(LIBSYSTEM-MAN_VERSION)
 
 libsystem-man-setup: setup
