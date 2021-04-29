@@ -25,7 +25,6 @@ libsystem-man:
 else
 libsystem-man: libsystem-man-setup
 	mkdir -p $(BUILD_STAGE)/libsystem-man/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/
-	zstd --rm --exclude-compressed -r $(BUILD_WORK)/libsystem-man
 	find $(BUILD_WORK)/libsystem-man -type l -exec sh -c 'd=$$(readlink {}); unlink {}; ln -s "$$d.zst" {}' \;
 	$(CP) -a $(BUILD_WORK)/libsystem-man $(BUILD_STAGE)/libsystem-man/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	touch $(BUILD_WORK)/libsystem-man/.build_complete
