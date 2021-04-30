@@ -9,6 +9,7 @@ DEB_LIBLOUIS_V    ?= $(LIBLOUIS_VERSION)
 liblouis-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/liblouis/liblouis/releases/download/v$(LIBLOUIS_VERSION)/liblouis-$(LIBLOUIS_VERSION).tar.gz
 	$(call EXTRACT_TAR,liblouis-$(LIBLOUIS_VERSION).tar.gz,liblouis-$(LIBLOUIS_VERSION),liblouis)
+
 ifneq ($(wildcard $(BUILD_WORK)/liblouis/.build_complete),)
 liblouis:
 	@echo "Using previously built liblouis."
