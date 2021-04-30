@@ -13,32 +13,36 @@ ifneq ($(wildcard $(BUILD_WORK)/liblouis/.build_complete),)
 liblouis:
 	@echo "Using previously built liblouis."
 else
-liblouis: liblouis-setup
+liblouis: liblouis-setup libyaml
 	cd $(BUILD_WORK)/liblouis && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/liblouis all
 	+$(MAKE) -C $(BUILD_WORK)/liblouis install \
 		DESTDIR=$(BUILD_STAGE)/liblouis
-		touch $(BUILD_WORK)/liblouis/.build_complete
+	+$(MAKE) -C $(BUILD_WORK)/liblouis install \
+		DESTDIR=$(BUILD_BASE)
+	touch $(BUILD_WORK)/liblouis/.build_complete
 endif
 liblouis-package: liblouis-stage
 	# liblouis.mk Package Structure
-	rm -rf $(BUILD_DIST)/liblouis
-		rm -rf $(BUILD_DIST)/liblouis-dev
-		mkdir -p  $(BUILD_DIST)/liblouis20/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-		mkdir -p  $(BUILD_DIST)/liblouis-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	rm -rf $(BUILD_DIST)/liblouis{20,-dev}
+	mkdir -p  $(BUILD_DIST)/liblouis{20,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 		
-	# liblouis.mk Prep liblouis
-	cp -a $(BUILD_STAGE)/liblouis $(BUILD_DIST)/liblouis
+	# liblouis.mk Prep liblouis20
+	cp -a $(BUILD_STAGE)/liblouis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblouis.20.dylib $(BUILD_DIST)/liblouis20/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
+	# liblouis.mk Prep liblouis-dev
+	cp -a $(BUILD_STAGE)/liblouis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(liblouis.20.dylib) $(BUILD_DIST)/liblouis-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/liblouis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/liblouis-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+
 	# liblouis.mk Sign
-	$(call SIGN,liblouis,general.xml)
+	$(call SIGN,liblouis20,general.xml)
 	
 	# liblouis.mk Make .debs
-	$(call PACK,liblouis,DEB_LIBLOUIS_V)
+	$(call PACK,liblouis20,DEB_LIBLOUIS_V)
+	$(call PACK,liblouis-dev,DEB_LIBLOUIS_V)
 	
 	# liblouis.mk Build cleanup
-	rm -rf $(BUILD_DIST)/liblouis
+	rm -rf $(BUILD_DIST)/liblouis{20,-dev}
 
 	.PHONY: liblouis liblouis-package
