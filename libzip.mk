@@ -16,18 +16,8 @@ libzip:
 else
 libzip: libzip-setup xz openssl
 	cd $(BUILD_WORK)/libzip && cmake . \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)/ \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DCOMMON_ARCH=$(DEB_ARCH) \
-		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
 		-DENABLE_COMMONCRYPTO=OFF \
 		-DENABLE_GNUTLS=OFF \
 		-DENABLE_MBEDTLS=OFF \
@@ -61,7 +51,7 @@ libzip-package: libzip-stage
 		cp -a $(BUILD_STAGE)/libzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $(BUILD_DIST)/$$bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \
 		cp -a $(BUILD_STAGE)/libzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$$bin.1 $(BUILD_DIST)/$$bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
 	done
-	
+
 	# libzip.mk Sign
 	$(call SIGN,libzip5,general.xml)
 	$(call SIGN,zipcmp,general.xml)

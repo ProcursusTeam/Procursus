@@ -24,9 +24,7 @@ groff:
 else
 groff: groff-setup
 	cd $(BUILD_WORK)/groff && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-x=no \
 		--without-uchardet
 	+$(MAKE) -C $(BUILD_WORK)/groff \
@@ -41,16 +39,16 @@ endif
 groff-package: groff-stage
 	# groff.mk Package Structure
 	rm -rf $(BUILD_DIST)/groff
-	
+
 	# groff.mk Prep groff
 	cp -a $(BUILD_STAGE)/groff $(BUILD_DIST)
-	
+
 	# groff.mk Sign
 	$(call SIGN,groff,general.xml)
-	
+
 	# groff.mk Make .debs
 	$(call PACK,groff,DEB_GROFF_V)
-	
+
 	# groff.mk Build cleanup
 	rm -rf $(BUILD_DIST)/groff
 

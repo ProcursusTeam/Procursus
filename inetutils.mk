@@ -18,9 +18,7 @@ inetutils:
 else
 inetutils: inetutils-setup ncurses readline
 	cd $(BUILD_WORK)/inetutils && ./configure \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-ifconfig \
 		--disable-ping6 \
 		--disable-syslogd \
@@ -39,20 +37,20 @@ endif
 inetutils-package: inetutils-stage
 	# inetutils.mk Package Structure
 	rm -rf $(BUILD_DIST)/inetutils
-	
+
 	# inetutils.mk Prep inetutils
 	cp -a $(BUILD_STAGE)/inetutils $(BUILD_DIST)
-	
+
 	# inetutils.mk Sign
 	$(call SIGN,inetutils,general.xml)
 
 	# inetutils.mk Permissions
 	$(FAKEROOT) chmod 0755 $(BUILD_DIST)/inetutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
 	$(FAKEROOT) chmod 4755 $(BUILD_DIST)/inetutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{ping,rcp,rlogin,rsh}
-	
+
 	# inetutils.mk Make .debs
 	$(call PACK,inetutils,DEB_INETUTILS_V)
-	
+
 	# inetutils.mk Build cleanup
 	rm -rf $(BUILD_DIST)/inetutils
 

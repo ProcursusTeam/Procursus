@@ -17,10 +17,7 @@ wget2:
 else
 wget2: wget2-setup openssl pcre2 xz zstd nghttp2 libidn2 gettext
 	cd $(BUILD_WORK)/wget2 && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-ssl=openssl \
 		--with-openssl \
 		--without-libpsl
@@ -35,16 +32,16 @@ wget2-package: wget2-stage
 	# wget2.mk Package Structure
 	rm -rf $(BUILD_DIST)/wget2
 	mkdir -p $(BUILD_DIST)/wget2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib,bin,share/man/man1}
-	
+
 	# wget2.mk Prep wget2
 	cp -a $(BUILD_STAGE)/wget2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include,lib,share} $(BUILD_DIST)/wget2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# wget2.mk Sign
 	$(call SIGN,wget2,general.xml)
-	
+
 	# wget2.mk Make .debs
 	$(call PACK,wget2,DEB_WGET2_V)
-	
+
 	# wget2.mk Build cleanup
 	rm -rf $(BUILD_DIST)/wget2
 

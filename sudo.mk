@@ -8,7 +8,7 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += sudo
 endif # ($(MEMO_TARGET),darwin-\*)
 SUDO_VERSION  := 1.9.6p1
-DEB_SUDO_V    ?= $(SUDO_VERSION)-1
+DEB_SUDO_V    ?= $(SUDO_VERSION)-3
 
 sudo-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.sudo.ws/dist/sudo-$(SUDO_VERSION).tar.gz{,.sig}
@@ -30,11 +30,7 @@ else
 sudo: sudo-setup gettext
 endif
 	cd $(BUILD_WORK)/sudo && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--localstatedir=$(MEMO_PREFIX)/var \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-pam \
 		--enable-static-sudoers \
 		--with-all-insults \
@@ -54,25 +50,28 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 endif
 	cp -a $(BUILD_MISC)/procursus.sudoers $(BUILD_STAGE)/sudo/$(MEMO_PREFIX)/etc/sudoers.d/procursus
 	touch $(BUILD_WORK)/sudo/.build_complete
-endif 
+endif
 
 sudo-package: sudo-stage
 	# sudo.mk Package Structure
 	rm -rf $(BUILD_DIST)/sudo
-	
+
 	# sudo.mk Prep sudo
 	cp -a $(BUILD_STAGE)/sudo $(BUILD_DIST)
-	
+
 	# sudo.mk Sign
 	$(call SIGN,sudo,general.xml)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+	$(LDID) -S$(BUILD_INFO)/pam.xml $(BUILD_DIST)/sudo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sudo
+	find $(BUILD_DIST)/sudo -name '.ldid*' -type f -delete
+endif
 
 	# sudo.mk Permissions
 	$(FAKEROOT) chmod u+s $(BUILD_DIST)/sudo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sudo
-	$(FAKEROOT) chmod -R 0440 $(BUILD_DIST)/sudo/$(MEMO_PREFIX)/etc/sudoers.d
-	
+
 	# sudo.mk Make .debs
 	$(call PACK,sudo,DEB_SUDO_V)
-	
+
 	# sudo.mk Build cleanup
 	rm -rf $(BUILD_DIST)/sudo
 

@@ -17,13 +17,10 @@ netcat:
 else
 netcat: netcat-setup gettext
 	cd $(BUILD_WORK)/netcat && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--mandir=/usr/share/man
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/netcat install \
 		DESTDIR="$(BUILD_STAGE)/netcat"
-	rm -rf $(BUILD_STAGE)/netcat/usr/info
+	rm -rf $(BUILD_STAGE)/netcat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/info
 	touch $(BUILD_WORK)/netcat/.build_complete
 endif
 
@@ -31,16 +28,16 @@ netcat-package: netcat-stage
 	# netcat.mk Package Structure
 	rm -rf $(BUILD_DIST)/netcat
 	mkdir -p $(BUILD_DIST)/netcat
-	
+
 	# netcat.mk Prep netcat
-	cp -a $(BUILD_STAGE)/netcat/usr $(BUILD_DIST)/netcat
-	
+	cp -a $(BUILD_STAGE)/netcat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/netcat
+
 	# netcat.mk Sign
 	$(call SIGN,netcat,general.xml)
-	
+
 	# netcat.mk Make .debs
 	$(call PACK,netcat,DEB_NETCAT_V)
-	
+
 	# netcat.mk Build cleanup
 	rm -rf $(BUILD_DIST)/netcat
 

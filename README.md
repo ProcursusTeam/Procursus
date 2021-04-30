@@ -65,21 +65,27 @@ brew install make bash wget gnu-tar gnu-sed gnupg ldid cmake automake groff gpat
 | `make clean`                           | Clean out $(BUILD_STAGE), $(BUILD_BASE), and $(BUILD_WORK).                                                        |
 | `make extreme-clean`                   | Resets the entire git repository.                                                                                  |
 | `make env`                             | Print the `proenv` shell function to STDOUT to give a cross-compilation environment in your POSIX shell (`make env >> ~/.zshrc`) |
+| `make (tool)-deps`                     | Print the dylibs linked by (tool)                                                                                  |
 
 There are very few variables you'll need to pay attention to/change to get building working well.
 
 | Variable       | Function                                                                                                                                                             |
 |:--------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| MEMO_TARGET    | Can be set to any of the supported host systems. Pretty self explainatory. (Defaults to iphoneos-arm64)                                                              |
-| MEMO_CFVER     | Used to set minimum *OS version to compile for. Use the CoreFoundation version that coresponds to the OS version you're compiling for. (Defaults to 1600 for iOS 13) |
+| MEMO_TARGET    | Can be set to any of the supported host systems. Pretty self explainatory. (Defaults to darwin-arm64)                                                                |
+| MEMO_CFVER     | Used to set minimum *OS version to compile for. Use the CoreFoundation version that coresponds to the OS version you're compiling for. (Defaults to 1700 for iOS 14) |
 | NO_PGP         | Set to 1 if you want to bypass verifying tarballs with gpg. Useful if you just want a quick build without importing everyone's public keys.                          |
 | TARGET_SYSROOT | Path to your chosen iPhone SDK. (Defaults to Xcode default path on macOS and the cctools-port default path on Linux.)                                                |
 | MACOSX_SYSROOT | Path to your chosen macOS SDK. (Defaults to Xcode default path on macOS and the cctools-port default path on Linux.)                                                 |
 | BUILD_ROOT     | If you have this repo in one place, but want to build everything in a different place, set BUILD_ROOT to said different place. (Untested but should work fine.)      |
+| MEMO_QUIET     | Mute unnecessary warnings and echos.                                                                                                                                 |
 
 ## Contributing and/or Issues
 
 Contributions in the form of Issues or Pull Requests are welcome with open arms. See the [CONTRIBUTING.md](https://github.com/ProcursusTeam/Procursus/blob/master/CONTRIBUTING.md).
+
+## Merchandise
+
+Procursus clothing, mugs, phone cases and more are now available here: https://procursus.creator-spring.com/
 
 ## Credits
 
