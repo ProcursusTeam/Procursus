@@ -12,7 +12,7 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += openssh
 endif
 OPENSSH_VERSION := 8.5p1
-DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)-1
+DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)-2
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
 OPENSSH_CONFIGURE_ARGS += ac_cv_func_strtonum=no
@@ -95,9 +95,9 @@ endif
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/sftp-server.8 $(BUILD_DIST)/openssh-sftp-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
 
 	# openssh.mk Sign
-	$(call SIGN,openssh-client,general.xml)
-	$(call SIGN,openssh-server,general.xml)
-	$(call SIGN,openssh-sftp-server,general.xml)
+	$(call SIGN,openssh-client,pam.xml)
+	$(call SIGN,openssh-server,pam.xml)
+	$(call SIGN,openssh-sftp-server,pam.xml)
 
 	# openssh.mk Make .debs
 	$(call PACK,openssh,DEB_OPENSSH_V)

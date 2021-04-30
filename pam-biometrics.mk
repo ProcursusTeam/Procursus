@@ -6,7 +6,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS            += pam-biometrics
 PAM-BIOMETRICS_VERSION := 1.1.2
-DEB_PAM-BIOMETRICS_V   ?= $(PAM-BIOMETRICS_VERSION)
+DEB_PAM-BIOMETRICS_V   ?= $(PAM-BIOMETRICS_VERSION)-1
 
 pam-biometrics-setup: setup
 	$(call GITHUB_ARCHIVE,ProcursusTeam,pam-biometrics,$(PAM-BIOMETRICS_VERSION),$(PAM-BIOMETRICS_VERSION))
@@ -34,7 +34,7 @@ pam-biometrics-package: pam-biometrics-stage
 	cp -a $(BUILD_STAGE)/pam-biometrics $(BUILD_DIST)/libpam-biometrics
 
 	# pam-biometrics.mk Sign
-	$(call SIGN,libpam-biometrics,general.xml)
+	$(call SIGN,libpam-biometrics,pam.xml)
 
 	# pam-biometrics.mk Make .debs
 	$(call PACK,libpam-biometrics,DEB_PAM-BIOMETRICS_V)
