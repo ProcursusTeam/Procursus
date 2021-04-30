@@ -34,7 +34,7 @@ pam-biometrics-package: pam-biometrics-stage
 	cp -a $(BUILD_STAGE)/pam-biometrics $(BUILD_DIST)/libpam-biometrics
 
 	# pam-biometrics.mk Sign
-	$(call SIGN,libpam-biometrics,pam.xml)
+	$(call SIGN,libpam-biometrics,general.xml)
 
 	# pam-biometrics.mk Make .debs
 	$(call PACK,libpam-biometrics,DEB_PAM-BIOMETRICS_V)
