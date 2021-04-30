@@ -16,7 +16,8 @@ liblouis:
 else
 liblouis: liblouis-setup libyaml
 	cd $(BUILD_WORK)/liblouis && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		--enable-ucs4
 	+$(MAKE) -C $(BUILD_WORK)/liblouis all
 	+$(MAKE) -C $(BUILD_WORK)/liblouis install \
 		DESTDIR=$(BUILD_STAGE)/liblouis
