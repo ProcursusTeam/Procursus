@@ -60,7 +60,7 @@ sudo-package: sudo-stage
 	cp -a $(BUILD_STAGE)/sudo $(BUILD_DIST)
 
 	# sudo.mk Sign
-	$(call SIGN,sudo,pam.xml)
+	$(call SIGN,sudo,general.xml)
 	$(LDID) -S$(BUILD_INFO)/pam.xml $(BUILD_DIST)/sudo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sudo
 	find $(BUILD_DIST)/sudo -name '.ldid*' -type f -delete
 
