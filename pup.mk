@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS += pup
 PUP_COMMIT  := 681d7bb639334bf485476f5872c5bdab10931f9a
-PUP_VERSION := 0.4.0.$(shell echo $(PUP_COMMIT) | cut -c -7)
+PUP_VERSION := 0.4.0+git20190919.$(shell echo $(PUP_COMMIT) | cut -c -7)
 DEB_PUP_V   ?= $(PUP_VERSION)
 
 pup-setup: setup
