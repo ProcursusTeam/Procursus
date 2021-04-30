@@ -12,10 +12,7 @@ pup-setup: setup
 	$(call EXTRACT_TAR,pup-$(PUP_COMMIT).tar.gz,pup-$(PUP_COMMIT),pup)
 	mkdir -p $(BUILD_STAGE)/pup/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
-ifneq ($(MEMO_ARCH),arm64)
-pup:
-	@echo "Unsupported target $(MEMO_TARGET)"
-else ifneq ($(wildcard $(BUILD_WORK)/pup/.build_complete),)
+ifneq ($(wildcard $(BUILD_WORK)/pup/.build_complete),)
 pup:
 	@echo "Using previously built pup."
 else
