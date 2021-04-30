@@ -1,65 +1,105 @@
---- src/exec.cpp	2021-03-17 22:05:28.000000000 -0500
-+++ src/exec.cpp	2021-04-07 12:33:16.000000000 -0500
-@@ -87,7 +87,61 @@
-         ssize_t amt_read = read(fd, begin, 1);
-         close(fd);
- 
--        if ((amt_read == 1) && (begin[0] == ':')) {
-+        // iOS does not allow executing scripts with shebangs for some asinine reason
-+	
-+        if ((amt_read == 1) && (begin[0] == '#') && err == EPERM) {
-+            char firstline[512];
-+            FILE* cmdptr = fopen(actual_cmd, "r");	
-+            fread(firstline, 1, 512, cmdptr);
-+            fclose(cmdptr);
+--- src/exec.cpp	2021-04-07 07:31:43.000000000 -0500
++++ src/exec.cpp	2021-04-30 16:56:56.000000000 -0500
+@@ -65,6 +65,93 @@
+ /// This function is executed by the child process created by a call to fork(). It should be called
+ /// after \c child_setup_process. It calls execve to replace the fish process image with the command
+ /// specified in \c p. It never returns. Called in a forked child! Do not allocate memory, etc.
 +
-+            if (firstline[0] == '#' && firstline[1] == '!') {
-+                bool is_valid_cmdname = true;
-+                // Check if valid command and trim newlines as well.
-+                for (size_t i = 0; i < strlen(firstline) - 1; i++) {
++#include <ctype.h>
++#include <stdbool.h>
++#include <string.h>
++#include <errno.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <unistd.h>
 +
-+                    if (firstline[i] == '\n') {
-+                        firstline[i] = '\0';
-+                        break;
-+                    }
++#define STRINGS_ARE_NOT_EQUAL(x, y, len) strncmp(x, y, len)
 +
-+                    if (iscntrl(firstline[i])) {
-+                        is_valid_cmdname = false;
-+                        break;
-+                    }
-+                }
-+
-+                if (is_valid_cmdname) {
-+                    char cmdname[512];
-+                    char shebang_arg[48] = {0};
-+
-+                    char* argv2[128];
-+                    // not good
-+                    sscanf(firstline + 2, "%s %s", cmdname, shebang_arg);
-+                    argv2[0] = cmdname;
-+
-+                    // Check if argument was passed to shebang. If so, tack it onto argv2.
-+                    size_t offset;
-+                    if (shebang_arg[0] != '\0') {
-+                        argv2[1] = shebang_arg;
-+                        offset = 2;
-+                    }
-+
-+                    else {
-+                        offset = 1;
-+                    }
-+
-+                    for (size_t i = offset; i < sizeof argv2 / sizeof *argv2; i++) {
-+                        argv2[i] = argv[i - offset];
-+                        if (argv2[i] == nullptr) break;
-+                    }
-+
-+                    execve(cmdname, argv2, envv);
-+                }
-+            }
++static inline bool has_non_printable_char(char* str, size_t n) {
++    for (int i = 0; i < n; i++) {
++        if (!isprint(str[i])) {
++                return true;
 +        }
++    }
 +
-+        else if ((amt_read == 1) && (begin[0] == ':')) {
-             // Relaunch it with /bin/sh. Don't allocate memory, so if you have more args than this,
-             // update your silly script! Maybe this should be changed to be based on ARG_MAX
-             // somehow.
++    return false;
++} 
++
++int ___execve(const char* path, char* const argv[], char* const envp[]) {
++    execve(path, argv, envp);
++    int execve_ret = errno;
++
++    if (execve_ret != EPERM) {
++        return -1;
++    }
++
++    char* first_line = NULL;
++    size_t read_amount = 0;
++    
++    FILE* ptr = fopen(path, "r");
++    if (!ptr) {
++        return -1;
++    }
++
++    // If the line cannot be retrieved/is empty return the errno value/ENOEXEC
++    if (getline(&first_line, &read_amount, ptr) == 0) {
++        return -1;
++    }
++
++    size_t first_line_len = strlen(first_line);
++
++    // Strip the newline off the end of the string.
++    first_line[first_line_len - 1] = '\0';
++    first_line_len--;
++
++    if (STRINGS_ARE_NOT_EQUAL("#!", first_line, 2)) {
++        return -1;
++    }
++
++    if (has_non_printable_char(first_line, first_line_len)) {
++        return -1;
++    }
++
++    // Remove the shebang from the line, for parsing. 
++    char* freeme = first_line;
++    first_line += 2;
++    
++    char* state;
++    char* token = strtok_r(first_line, " ", &state);
++    char* interp = token;
++    char* arg_to_interpreter = strtok_r(NULL, "", &state);
++
++    char* argv_new[1024];
++    int offset = 0; 
++
++    argv_new[0] = interp;
++    if (arg_to_interpreter != NULL) {
++        argv_new[1] = arg_to_interpreter;
++        offset++;
++    }
++
++    size_t argcount = 0;
++    while(argv[argcount]) argcount++;
++
++    for (int i = 0; i < argcount; i++) {
++        argv_new[offset + i + 1] = argv[i];
++    }
++    argv_new[offset + argcount + 1] = NULL;
++
++    int ret = execve(interp, argv_new, envp);
++    free(freeme);
++    return ret;
++}
++
+ [[noreturn]] static void safe_launch_process(process_t *p, const char *actual_cmd,
+                                              const char *const *cargv, const char *const *cenvv) {
+     UNUSED(p);
+@@ -74,7 +161,7 @@
+     const auto envv = const_cast<char *const *>(cenvv);
+     const auto argv = const_cast<char *const *>(cargv);
+ 
+-    execve(actual_cmd, argv, envv);
++    ___execve(actual_cmd, argv, envv);
+     err = errno;
+ 
+     // Something went wrong with execve, check for a ":", and run /bin/sh if encountered. This is a
