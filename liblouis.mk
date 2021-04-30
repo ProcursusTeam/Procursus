@@ -27,7 +27,7 @@ endif
 liblouis-package: liblouis-stage
 	# liblouis.mk Package Structure
 	rm -rf $(BUILD_DIST)/liblouis{20,-dev}
-	mkdir -p  $(BUILD_DIST)/liblouis{20,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/liblouis{20,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 		
 	# liblouis.mk Prep liblouis20
 	cp -a $(BUILD_STAGE)/liblouis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblouis.20.dylib $(BUILD_DIST)/liblouis20/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
