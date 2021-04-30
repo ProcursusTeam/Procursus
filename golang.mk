@@ -4,7 +4,7 @@ endif
 SUBPROJECTS    += golang
 GOLANG_MAJOR_V := 1.16
 GOLANG_VERSION := $(GOLANG_MAJOR_V).3
-DEB_GOLANG_V   ?= $(GOLANG_VERSION)
+DEB_GOLANG_V   ?= $(GOLANG_VERSION)-1
 
 golang-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://golang.org/dl/go$(GOLANG_VERSION).src.tar.gz
