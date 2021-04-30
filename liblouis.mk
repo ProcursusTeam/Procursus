@@ -46,4 +46,4 @@ liblouis-package: liblouis-stage
 	# liblouis.mk Build cleanup
 	rm -rf $(BUILD_DIST)/liblouis{20,-dev}
 
-	.PHONY: liblouis liblouis-package
+.PHONY: liblouis liblouis-package
