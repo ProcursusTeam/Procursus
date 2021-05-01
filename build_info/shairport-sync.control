@@ -1,0 +1,13 @@
+Package: shairport-sync
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_SHAIRPORT-SYNC_V@
+Section: Utilities
+Description: AirPlay audio player
+ Plays audio streamed from iTunes, iOS devices and third-party AirPlay
+ sources such as ForkedDaapd and others. Audio played by a Shairport
+ Sync-powered device stays synchronised with the source and hence with
+ similar devices playing the same source. In this way, synchronised
+ multi-room audio is possible without difficulty.
+ .
+ Shairport Sync does not support AirPlay video or photo streaming.
