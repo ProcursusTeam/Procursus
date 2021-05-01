@@ -9,7 +9,7 @@
              # Parse the SystemVersion.plist file to grab the macOS
              # version. The file is in the following format:
              #
-@@ -231,24 +231,40 @@
+@@ -231,24 +231,41 @@
                      ;;
                  esac
              done < /System/Library/CoreServices/SystemVersion.plist
@@ -59,7 +59,8 @@
 +            esac
 +            case $product_name in
 +                (iPhone*)      distro='iOS' ;;
-+                
++                (Apple*)      distro='TvOS' ;;
++          
              esac
  
              distro="$distro $mac_version"
