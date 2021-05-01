@@ -8,7 +8,7 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += sudo
 endif # ($(MEMO_TARGET),darwin-\*)
 SUDO_VERSION  := 1.9.6p1
-DEB_SUDO_V    ?= $(SUDO_VERSION)-2
+DEB_SUDO_V    ?= $(SUDO_VERSION)-3
 
 sudo-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.sudo.ws/dist/sudo-$(SUDO_VERSION).tar.gz{,.sig}
@@ -61,6 +61,10 @@ sudo-package: sudo-stage
 
 	# sudo.mk Sign
 	$(call SIGN,sudo,general.xml)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+	$(LDID) -S$(BUILD_INFO)/pam.xml $(BUILD_DIST)/sudo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sudo
+	find $(BUILD_DIST)/sudo -name '.ldid*' -type f -delete
+endif
 
 	# sudo.mk Permissions
 	$(FAKEROOT) chmod u+s $(BUILD_DIST)/sudo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sudo
