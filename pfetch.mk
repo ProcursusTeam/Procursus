@@ -9,6 +9,7 @@ DEB_PFETCH_V   ?= $(PFETCH_VERSION)
 pfetch-setup: setup
 	$(call GITHUB_ARCHIVE,dylanaraps,pfetch,$(PFETCH_VERSION),$(PFETCH_VERSION))
 	$(call EXTRACT_TAR,pfetch-$(PFETCH_VERSION).tar.gz,pfetch-$(PFETCH_VERSION),pfetch)
+	$(call DO_PATCH,pfetch,pfetch,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/pfetch/.build_complete),)
 pfetch:
