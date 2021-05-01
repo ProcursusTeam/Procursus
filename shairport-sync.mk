@@ -31,6 +31,20 @@ shairport-sync: shairport-sync-setup openssl libsoundio libsoxr popt libconfig a
 	+$(MAKE) -C $(BUILD_WORK)/shairport-sync
 	+$(MAKE) -C $(BUILD_WORK)/shairport-sync install \
 		DESTDIR=$(BUILD_STAGE)/shairport-sync
+
+	mkdir -p $(BUILD_STAGE)/shairport-sync/$(MEMO_PREFIX)/Library/LaunchDaemons
+	cp -a $(BUILD_MISC)/shairport-sync/*.plist $(BUILD_STAGE)/shairport-sync/$(MEMO_PREFIX)/Library/LaunchDaemons
+
+	mkdir -p $(BUILD_STAGE)/shairport-sync/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_MISC)/shairport-sync/shairport-sync-wrapper $(BUILD_STAGE)/shairport-sync/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+
+	for file in $(BUILD_STAGE)/shairport-sync/$(MEMO_PREFIX)/Library/LaunchDaemons/* \
+		$(BUILD_STAGE)/shairport-sync/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
+			$(SED) -i 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' $$file; \
+			$(SED) -i 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $$file; \
+	done
+
+
 	touch $(BUILD_WORK)/shairport-sync/.build_complete
 endif
 
@@ -40,7 +54,7 @@ shairport-sync-package: shairport-sync-stage
 	mkdir -p $(BUILD_DIST)/shairport-sync
 
 	# shairport-sync.mk Prep shairport-sync
-	cp -a $(BUILD_STAGE)/shairport-sync/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/shairport-sync
+	cp -a $(BUILD_STAGE)/shairport-sync $(BUILD_DIST)
 
 	# shairport-sync.mk Sign
 	$(call SIGN,shairport-sync,audio.xml)

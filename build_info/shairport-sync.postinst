@@ -1,0 +1,31 @@
+#!/bin/sh
+
+set -eu
+
+USER="shairport-sync"
+
+Setup_dir () {
+	DIR="${1}"
+	MODE="${2}"
+	GROUP="${3}"
+
+	mkdir -p ${DIR}
+
+	if ! @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/dpkg-statoverride --list ${DIR} >/dev/null 2>&1
+	then
+		chown ${USER}:${GROUP} ${DIR}
+		chmod ${MODE} ${DIR}
+	fi
+}
+
+if [ "$1" = "configure" ]
+then
+	pw groupadd -n ${USER} &>/dev/null || true
+	pw useradd -n ${USER} -d @MEMO_PREFIX@/run/shairport-sync -g ${USER} -s @MEMO_PREFIX@@MEMO_SUB_PREFIX@/sbin/nologin &>/dev/null || true
+
+	Setup_dir @MEMO_PREFIX@/run/shairport-sync 750 ${USER}
+fi
+
+#DEBHELPER#
+
+exit 0
