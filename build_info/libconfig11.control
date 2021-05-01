@@ -1,0 +1,13 @@
+Package: libconfig11
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBCONFIG_V@
+Section: Libraries
+Description: parsing/manipulation of structured configuration files
+ This library features a fully reentrant parser and includes bindings for
+ both the C and C++ programming languages. It runs on modern POSIX-compliant
+ systems such as Linux, Solaris, and Mac OS X (Darwin), as well as on
+ Microsoft Windows 2000/XP and later (Visual Studio or MinGW).
+ .
+ This library allows parsing, manipulating and writing structured configuration
+ files.
