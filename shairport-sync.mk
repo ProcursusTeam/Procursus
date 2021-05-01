@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/shairport-sync/.build_complete),)
 shairport-sync:
 	@echo "Using previously built shairport-sync."
 else
-shairport-sync: shairport-sync-setup openssl libsoundio libsoxr popt libconfig alac
+shairport-sync: shairport-sync-setup openssl libsoundio libao libsoxr popt libconfig alac
 	cd $(BUILD_WORK)/shairport-sync && autoreconf -fi && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-os=darwin \
@@ -26,6 +26,7 @@ shairport-sync: shairport-sync-setup openssl libsoundio libsoxr popt libconfig a
 		--with-ssl=openssl \
 		--with-soxr \
 		--with-metadata \
+		--with-ao \
 		--with-soundio \
 		--with-dns_sd
 	+$(MAKE) -C $(BUILD_WORK)/shairport-sync
