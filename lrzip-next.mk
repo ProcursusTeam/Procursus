@@ -12,7 +12,7 @@ ifneq ($(wildcard $(BUILD_WORK)/lrzip-next/.build_complete),)
 lrzip-next:
 	@echo "Using previously built lrzip-next."
 else
-lrzip-next: lrzip-next-setup
+lrzip-next: lrzip-next-setup bzip2 lz4 liblzo2
 	cd $(BUILD_WORK)/lrzip-next && ./autogen.sh && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/lrzip-next
@@ -31,5 +31,5 @@ lrzip-next-package: lrzip-next-stage
 	# lrzip-next.mk Make .debs
 	$(call PACK,lrzip-next,DEB_LRZIP_NEXT_V)
 	# lrzip-next.mk Build cleanup
-	rm -rf $(BUILD_DIST)/lrzip-next
+rm -rf $(BUILD_DIST)/lrzip-next
 		.PHONY: lrzip-next lrzip-next-package
