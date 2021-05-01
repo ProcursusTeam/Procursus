@@ -2,7 +2,6 @@ Package: pfetch
 Version: @DEB_PFETCH_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: inetutils
 Section: Utilities
 Priority: optional
 Description: A pretty system information tool written in POSIX sh
