@@ -19,7 +19,7 @@ endif
 ###
 
 libboost-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://dl.bintray.com/boostorg/release/$(LIBBOOST_VERSION)/source/boost_$(LIBBOOST_FORMAT_V).tar.bz2
+	wget -q -nc -P $(BUILD_SOURCE) https://boostorg.jfrog.io/artifactory/main/release/$(LIBBOOST_VERSION)/source/boost_$(LIBBOOST_FORMAT_V).tar.bz2
 	$(call EXTRACT_TAR,boost_$(LIBBOOST_FORMAT_V).tar.bz2,boost_$(LIBBOOST_FORMAT_V),libboost)
 
 ifneq ($(wildcard $(BUILD_WORK)/libboost/.build_complete),)
