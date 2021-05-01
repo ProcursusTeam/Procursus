@@ -26,7 +26,8 @@ shairport-sync: shairport-sync-setup openssl libsoundio libsoxr popt libconfig a
 		--with-ssl=openssl \
 		--with-soxr \
 		--with-metadata \
-		--with-soundio
+		--with-soundio \
+		--with-dns_sd
 	+$(MAKE) -C $(BUILD_WORK)/shairport-sync
 	+$(MAKE) -C $(BUILD_WORK)/shairport-sync install \
 		DESTDIR=$(BUILD_STAGE)/shairport-sync
@@ -42,7 +43,7 @@ shairport-sync-package: shairport-sync-stage
 	cp -a $(BUILD_STAGE)/shairport-sync/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/shairport-sync
 
 	# shairport-sync.mk Sign
-	$(call SIGN,shairport-sync,general.xml)
+	$(call SIGN,shairport-sync,audio.xml)
 
 	# shairport-sync.mk Make .debs
 	$(call PACK,shairport-sync,DEB_SHAIRPORT-SYNC_V)
