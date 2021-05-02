@@ -7,7 +7,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS       += system-cmds
 SYSTEM-CMDS_VERSION := 854.40.2
 PWDARWIN_COMMIT     := f3dab068fce37270e5e4e1a00e5a44e30f00baf7
-DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-8
+DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-9
 
 system-cmds-setup: setup libxcrypt
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/system_cmds/system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz
