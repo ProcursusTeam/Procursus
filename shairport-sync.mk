@@ -33,6 +33,8 @@ shairport-sync: shairport-sync-setup openssl libsoundio libao libsoxr popt libco
 	+$(MAKE) -C $(BUILD_WORK)/shairport-sync install \
 		DESTDIR=$(BUILD_STAGE)/shairport-sync
 
+	rm -rf $(BUILD_STAGE)/shairport-sync/$(MEMO_PREFIX)/etc/shairport-sync.conf.sample
+
 	mkdir -p $(BUILD_STAGE)/shairport-sync/$(MEMO_PREFIX)/Library/LaunchDaemons
 	cp -a $(BUILD_MISC)/shairport-sync/*.plist $(BUILD_STAGE)/shairport-sync/$(MEMO_PREFIX)/Library/LaunchDaemons
 
