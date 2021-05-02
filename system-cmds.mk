@@ -6,7 +6,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS       += system-cmds
 SYSTEM-CMDS_VERSION := 854.40.2
-PWDARWIN_COMMIT     := d0c36b7ba551609dd9355c6791f1ae9b55f1bc33
+PWDARWIN_COMMIT     := f3dab068fce37270e5e4e1a00e5a44e30f00baf7
 DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-8
 
 system-cmds-setup: setup libxcrypt
@@ -14,17 +14,7 @@ system-cmds-setup: setup libxcrypt
 	$(call EXTRACT_TAR,system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz,system_cmds-$(SYSTEM-CMDS_VERSION),system-cmds)
 	$(call DO_PATCH,system-cmds,system-cmds,-p1)
 
-	# Apple's chpass won't build so we used a modified freebsd version.
-	rm -rf $(BUILD_WORK)/system-cmds/chpass.tproj && mkdir -p $(BUILD_WORK)/system-cmds/chpass.tproj
-	wget -q -nc -P $(BUILD_WORK)/system-cmds/chpass.tproj \
-		https://raw.githubusercontent.com/coolstar/freebsd-ports-ios/master/lib/libutil/libutil.h \
-		https://raw.githubusercontent.com/coolstar/freebsd-ports-ios/master/lib/libutil/pw_util.c \
-		https://raw.githubusercontent.com/coolstar/freebsd-ports-ios/master/lib/libutil/flopen.c \
-		https://raw.githubusercontent.com/coolstar/freebsd-ports-ios/master/lib/libc/gen/pw_scan.{c,h} \
-		https://raw.githubusercontent.com/coolstar/freebsd-ports-ios/master/usr.bin/chpass/{chpass{.h,.c,.1},edit.c,field.c,table.c,util.c}
-
 	$(SED) -i '/#include <stdio.h>/a #include <crypt.h>' $(BUILD_WORK)/system-cmds/login.tproj/login.c
-	$(SED) -i '/#include <libutil.h>/a #include <crypt.h>' $(BUILD_WORK)/system-cmds/chpass.tproj/chpass.c
 	$(call GITHUB_ARCHIVE,CRKatri,pw-darwin,$(PWDARWIN_COMMIT),$(PWDARWIN_COMMIT))
 	$(call EXTRACT_TAR,pw-darwin-$(PWDARWIN_COMMIT).tar.gz,pw-darwin-$(PWDARWIN_COMMIT),system-cmds/pw-darwin)
 
@@ -40,13 +30,11 @@ system-cmds: system-cmds-setup
 	for gperf in $(BUILD_WORK)/system-cmds/getconf.tproj/*.gperf; do \
 		LC_ALL=C awk -f $(BUILD_WORK)/system-cmds/getconf.tproj/fake-gperf.awk < $$gperf > $(BUILD_WORK)/system-cmds/getconf.tproj/"$$(basename $$gperf .gperf).c" ; \
 	done
-
 	rm -f $(BUILD_WORK)/system-cmds/passwd.tproj/{od,nis}_passwd.c
 	cd $(BUILD_WORK)/system-cmds && $(CC) $(CFLAGS) -o passwd passwd.tproj/*.c $(LDFLAGS) -lcrypt # -DINFO_PAM=2 -lpam
 	cd $(BUILD_WORK)/system-cmds && $(CC) $(CFLAGS) -o dmesg dmesg.tproj/*.c $(LDFLAGS)
 	cd $(BUILD_WORK)/system-cmds && $(CC) $(CFLAGS) -o sysctl sysctl.tproj/sysctl.c $(LDFLAGS)
 	cd $(BUILD_WORK)/system-cmds && $(CC) $(CFLAGS) -o arch arch.tproj/*.c $(LDFLAGS) -framework CoreFoundation -framework Foundation -lobjc
-
 	cd $(BUILD_WORK)/system-cmds; \
 	for tproj in ac accton chpass dynamic_pager getconf getty hostinfo iostat login mkfile pwd_mkdb reboot sync vifs vipw zdump zic nologin; do \
 		CFLAGS=; \
@@ -60,12 +48,9 @@ system-cmds: system-cmds-setup
 		echo "$$tproj" ; \
 		$(CC) $(CFLAGS) -o $$tproj $$tproj.tproj/*.c $$EXTRA -D'__FBSDID(x)=' $$CFLAGS $(LDFLAGS) -framework CoreFoundation -framework IOKit $$LDFLAGS; \
 	done
-
 	mkdir -p $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX){/etc/pam.d,/bin,/sbin,$(MEMO_SUB_PREFIX)/bin,$(MEMO_SUB_PREFIX)/sbin,$(MEMO_SUB_PREFIX)/share/man/man{1,5,8}}
-
 	cp -a $(BUILD_WORK)/system-cmds/{reboot,nologin} $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 	cp -a $(BUILD_WORK)/system-cmds/pagesize.tproj/pagesize.sh $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pagesize
-
 	cp -a $(BUILD_WORK)/system-cmds/sync $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/bin
 	cp -a $(BUILD_WORK)/system-cmds/{dmesg,dynamic_pager} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/sbin
 ifneq ($(MEMO_SUB_PREFIX),)
@@ -79,12 +64,11 @@ endif
 	cp -a $(BUILD_WORK)/system-cmds/{getty,nologin,sysctl}.tproj/*.5 $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5/
 	cp -a $(BUILD_WORK)/system-cmds/{ac,accton,dmesg,dynamic_pager,getty,hostinfo,iostat,mkfile,nologin,pwd_mkdb,reboot,sync,sysctl,vifs,vipw,zdump,zic}.tproj/*.8 $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/
 	$(LN) -sf reboot.8.zst $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/halt.8.zst
-	$(LN) -sf chpass.1.zst $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/chfn.1.zst
-	$(LN) -sf chpass.1.zst $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/chsh.1.zst
 	cp -a $(BUILD_MISC)/pam/{login{,.term},passwd} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/etc/pam.d
-
 	+$(MAKE) -C $(BUILD_WORK)/system-cmds/pw-darwin install \
 		DESTDIR="$(BUILD_STAGE)/system-cmds/"
+	$(LN) -sf chpass.1.zst $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/chfn.1.zst
+	$(LN) -sf chpass.1.zst $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/chsh.1.zst
 	touch $(BUILD_WORK)/system-cmds/.build_complete
 endif
 
@@ -101,7 +85,6 @@ system-cmds-package: system-cmds-stage
 	# system-cmds.mk Permissions
 	$(FAKEROOT) chmod u+s $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{passwd,login}
 	$(FAKEROOT) chmod a+x $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pagesize
-	$(FAKEROOT) chmod 4555 $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/chpass
 
 	# system-cmds.mk Make .debs
 	$(call PACK,system-cmds,DEB_SYSTEM-CMDS_V)
