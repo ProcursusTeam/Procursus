@@ -193,6 +193,31 @@ OTOOL    := $(GNU_HOST_TRIPLE)-otool
 EXTRA    := INSTALL="/usr/bin/install -c --strip-program=$(STRIP)"
 LIBTOOL  := $(GNU_HOST_TRIPLE)-libtool
 
+else ifeq ($(UNAME),FreeBSD)
+$(warning Building on FreeBSD)
+TARGET_SYSROOT  ?= $(HOME)/cctools/SDK/iPhoneOS13.2.sdk
+MACOSX_SYSROOT  ?= $(HOME)/cctools/SDK/MacOSX.sdk
+
+CC       := $(GNU_HOST_TRIPLE)-clang
+CXX      := $(GNU_HOST_TRIPLE)-clang++
+CPP      := $(GNU_HOST_TRIPLE)-clang -E
+AR       := $(GNU_HOST_TRIPLE)-ar
+LD       := $(GNU_HOST_TRIPLE)-ld 
+RANLIB   := $(GNU_HOST_TRIPLE)-ranlib   
+STRIP    := $(GNU_HOST_TRIPLE)-strip
+I_N_T    := $(GNU_HOST_TRIPLE)-install_name_tool
+NM       := $(GNU_HOST_TRIPLE)-nm
+LIPO     := $(GNU_HOST_TRIPLE)-lipo
+OTOOL    := $(GNU_HOST_TRIPLE)-otool
+EXTRA    := INSTALL="/usr/bin/install -c --strip-program=$(STRIP)"
+LIBTOOL  := $(GNU_HOST_TRIPLE)-libtool
+MAKE     := gmake
+SED      := gsed
+CP       := gcp
+MV       := gmv
+FIND     := gfind
+PATH     := /home/nick/procursus_utils/cctools-src/usage_examples/ios_toolchain/target/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:/rescue
+
 else ifeq ($(UNAME),Darwin)
 ifeq ($(filter $(shell uname -m | cut -c -4), iPad iPho iPod),)
 ifneq ($(MEMO_QUIET),1)
@@ -229,7 +254,7 @@ EXTRA           :=
 LIBTOOL         := libtool
 
 else
-$(error Please use Linux or MacOS to build)
+$(error Please use Linux or MacOS, or FreeBSD to build)
 endif
 
 DEB_MAINTAINER    ?= Hayden Seay <me@diatr.us>
@@ -522,13 +547,13 @@ endif
 
 TAR  := tar
 
-ifneq ($(shell PATH=$(PATH) tar --version | grep -q GNU && echo 1),1)
+ifneq ($(shell PATH=$(PATH) gtar --version | grep -q GNU && echo 1),1)
 $(error Install GNU tar)
 endif
 
 SED  := sed
 
-ifneq ($(shell PATH=$(PATH) sed --version | grep -q GNU && echo 1),1)
+ifneq ($(shell PATH=$(PATH) gsed --version | grep -q GNU && echo 1),1)
 $(error Install GNU sed)
 endif
 
@@ -588,39 +613,39 @@ ifneq ($(shell PATH=$(PATH) groff --version | grep -q 'version 1.2' && echo 1),1
 $(error Install newer groff)
 endif
 
-ifneq ($(shell PATH=$(PATH) patch --version | grep -q 'GNU patch' && echo 1),1)
+ifneq ($(shell PATH=$(PATH) gpatch --version | grep -q 'GNU patch' && echo 1),1)
 $(error Install GNU patch)
 endif
 
-ifneq ($(shell PATH=$(PATH) find --version | grep -q 'GNU find' && echo 1),1)
+ifneq ($(shell PATH=$(PATH) gfind --version | grep -q 'GNU find' && echo 1),1)
 $(error Install GNU findutils)
 endif
 
-ifneq ($(shell PATH=$(PATH) rmdir --version | grep -q 'GNU coreutils' && echo 1),1)
+ifneq ($(shell PATH=$(PATH) grmdir --version | grep -q 'GNU coreutils' && echo 1),1)
 $(error Install GNU coreutils)
 endif
 
-ifeq ($(shell PATH=$(PATH) install --version | grep -q 'GNU coreutils' && echo 1),1)
+ifeq ($(shell PATH=$(PATH) ginstall --version | grep -q 'GNU coreutils' && echo 1),1)
 GINSTALL := install
 else
 $(error Install GNU coreutils)
 endif
 export GINSTALL
 
-ifeq ($(shell PATH=$(PATH) wc --version | grep -q 'GNU coreutils' && echo 1),1)
+ifeq ($(shell PATH=$(PATH) gwc --version | grep -q 'GNU coreutils' && echo 1),1)
 WC := wc
 else
 $(error Install GNU coreutils)
 endif
 
-ifeq ($(shell PATH=$(PATH) cp --version | grep -q 'GNU coreutils' && echo 1),1)
+ifeq ($(shell PATH=$(PATH) gcp --version | grep -q 'GNU coreutils' && echo 1),1)
 CP := cp
 else
 $(error Install GNU coreutils)
 endif
 export CP
 
-ifeq ($(shell PATH=$(PATH) ln --version | grep -q 'GNU coreutils' && echo 1),1)
+ifeq ($(shell PATH=$(PATH) gln --version | grep -q 'GNU coreutils' && echo 1),1)
 LN := ln
 else
 $(error Install GNU coreutils)
@@ -658,12 +683,12 @@ endif
 
 ifneq ($(LEAVE_ME_ALONE),1)
 
-ifneq (,$(wildcard /usr/share/xml/docbook/stylesheet/docbook-xsl))
-DOCBOOK_XSL := /usr/share/xml/docbook/stylesheet/docbook-xsl
-else ifneq (,$(wildcard /usr/share/xsl/docbook))
+ifneq (,$(wildcard /usr/local/share/xml/docbook/stylesheet/docbook-xsl))
+DOCBOOK_XSL := /usr/local/share/xml/docbook/stylesheet/docbook-xsl
+else ifneq (,$(wildcard /usr/local/share/xsl/docbook))
 DOCBOOK_XSL := /usr/share/xsl/docbook
-else ifneq (,$(wildcard /usr/share/xml/docbook/xsl-stylesheets-1.79.2))
-DOCBOOK_XSL := /usr/share/xml/docbook/xsl-stylesheets-1.79.2
+else ifneq (,$(wildcard /usr/local/share/xml/docbook/xsl-stylesheets-1.79.2))
+DOCBOOK_XSL := /usr/local/share/xml/docbook/xsl-stylesheets-1.79.2
 else ifneq (,$(wildcard $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl))
 DOCBOOK_XSL := $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl
 export XML_CATALOG_FILES=$(shell brew --prefix)/etc/xml/catalog
