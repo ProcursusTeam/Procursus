@@ -18,8 +18,7 @@ m4:
 else
 m4: m4-setup
 	cd $(BUILD_WORK)/m4 && ./configure -C \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/m4
 	+$(MAKE) -C $(BUILD_WORK)/m4 install \
 		DESTDIR=$(BUILD_STAGE)/m4
@@ -30,17 +29,16 @@ endif
 m4-package: m4-stage
 	# m4.mk Package Structure
 	rm -rf $(BUILD_DIST)/m4
-	mkdir -p $(BUILD_DIST)/m4
-	
+
 	# m4.mk Prep m4
-	cp -a $(BUILD_STAGE)/m4/usr $(BUILD_DIST)/m4
-	
+	cp -a $(BUILD_STAGE)/m4 $(BUILD_DIST)
+
 	# m4.mk Sign
 	$(call SIGN,m4,general.xml)
-	
+
 	# m4.mk Make .debs
 	$(call PACK,m4,DEB_M4_V)
-	
+
 	# m4.mk Build cleanup
 	rm -rf $(BUILD_DIST)/m4
 

@@ -1,0 +1,17 @@
+Package: geoip-bin
+Section: Networking
+Version: @DEB_LIBGEOIP_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Priority: optional
+Depends: libgeoip1, geoip-bin
+Description: IP lookup command line tools that use the GeoIP library
+ GeoIP is a C library that enables the user to find the country that any
+ IP address or hostname originates from. It uses a file based database.
+ .
+ This database simply contains IP blocks as keys, and countries as values and
+ it should be more complete and accurate than using reverse DNS lookups.
+ .
+ This package contains the command line utilities to resolve the IP numbers
+ using the GeoIP library.
+Tag: purpose::console, role::developer

@@ -5,7 +5,7 @@ Maintainer: @DEB_MAINTAINER@
 Section: Utilities
 Priority: standard
 Provides: lua
-Depends: libreadline8
+Depends: liblua5.3-0 (= @DEB_LUA5.3_V@), libreadline8
 Description: Simple, extensible, embeddable programming language
  Lua is a powerful, light-weight programming language designed for extending
  applications.  The language engine is accessible as a library, having a C

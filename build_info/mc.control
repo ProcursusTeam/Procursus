@@ -1,0 +1,15 @@
+Package: mc
+Name: Midnight Commander
+Version: @DEB_MC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Terminal_Support
+Priority: standard
+Depends: libintl8, libslang2, libslang2-modules, libglib2.0-0, libssh2-1
+Description: Midnight Commander - a powerful file manager
+ GNU Midnight Commander is a text-mode full-screen file manager. It
+ uses a two panel interface and a subshell for command execution. It
+ includes an internal editor with syntax highlighting and an internal
+ viewer with support for binary files. Also included is Virtual
+ Filesystem (VFS), that allows files on remote systems (e.g. FTP, SSH
+ servers) and files inside archives to be manipulated like real files.

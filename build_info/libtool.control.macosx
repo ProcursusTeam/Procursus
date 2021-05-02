@@ -1,0 +1,16 @@
+Package: libtool
+Version: @DEB_LIBTOOL_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: file
+Section: Development
+Priority: optional
+Description: Generic library support script
+ This is GNU libtool, a generic library support script.  Libtool hides
+ the complexity of generating special library types (such as shared
+ libraries) behind a consistent interface.  To use libtool, add the
+ new generic library building commands to your Makefile, Makefile.in,
+ or Makefile.am.  See the documentation for details.  Libtool supports
+ building static libraries on all platforms.
+ .
+ Libtool supports generation of C, C++, Fortran and Java libraries.

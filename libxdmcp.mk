@@ -16,10 +16,7 @@ libxdmcp:
 else
 libxdmcp: libxdmcp-setup xorgproto
 	cd $(BUILD_WORK)/libxdmcp && ./configure \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-docs=no
 	+$(MAKE) -C $(BUILD_WORK)/libxdmcp install \
 		DESTDIR="$(BUILD_STAGE)/libxdmcp"
@@ -31,22 +28,22 @@ endif
 libxdmcp-package: libxdmcp-stage
 	# libxdmcp.mk Package Structure
 	rm -rf $(BUILD_DIST)/libxdmcp{6,-dev}
-	mkdir -p $(BUILD_DIST)/libxdmcp{6,-dev}/usr/lib
-	
+	mkdir -p $(BUILD_DIST)/libxdmcp{6,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# libxdmcp.mk Prep libxdmcp6
-	cp -a $(BUILD_STAGE)/libxdmcp/usr/lib/libXdmcp.6.dylib $(BUILD_DIST)/libxdmcp6/usr/lib
+	cp -a $(BUILD_STAGE)/libxdmcp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXdmcp.6.dylib $(BUILD_DIST)/libxdmcp6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxdmcp.mk Prep libxdmcp-dev
-	cp -a $(BUILD_STAGE)/libxdmcp/usr/lib/!(libXdmcp.6.dylib) $(BUILD_DIST)/libxdmcp-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libxdmcp/usr/include $(BUILD_DIST)/libxdmcp-dev/usr
+	cp -a $(BUILD_STAGE)/libxdmcp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libXdmcp.6.dylib) $(BUILD_DIST)/libxdmcp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxdmcp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libxdmcp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libxdmcp.mk Sign
 	$(call SIGN,libxdmcp6,general.xml)
-	
+
 	# libxdmcp.mk Make .debs
 	$(call PACK,libxdmcp6,DEB_LIBXDMCP_V)
 	$(call PACK,libxdmcp-dev,DEB_LIBXDMCP_V)
-	
+
 	# libxdmcp.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libxdmcp{6,-dev}
 

@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+
 STRAPPROJECTS += base
 BASE_VERSION  := 1-5
 DEB_BASE_V    ?= $(BASE_VERSION)
@@ -14,7 +16,7 @@ base-package: base-stage
 	# base.mk Package Structure
 	rm -rf $(BUILD_DIST)/base
 	mkdir -p $(BUILD_DIST)/base
-	
+
 	# base.mk Prep base
 	cp -a $(BUILD_STAGE)/base/* $(BUILD_DIST)/base
 
@@ -32,8 +34,10 @@ base-package: base-stage
 
 	# base.mk Make .debs
 	$(call PACK,base,DEB_BASE_V,2)
-	
+
 	# base.mk Build cleanup
 	rm -rf $(BUILD_DIST)/base
 
 .PHONY: base base-package
+
+endif # ($(MEMO_TARGET),darwin-\*)

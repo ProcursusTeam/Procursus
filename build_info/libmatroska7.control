@@ -1,0 +1,17 @@
+Package: libmatroska7
+Priority: optional
+Section: Libraries
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBMATROSKA_V@
+Depends: libebml5 (>= 1.4.2)
+Homepage: https://www.matroska.org/
+Description: extensible open standard audio/video container format (shared library)
+ Matroska is aiming to become the standard of Multimedia
+ Container Formats one day. It is based on EBML (Extensible Binary
+ Meta Language), a kind of binary version of XML. This way the
+ significant advantages in terms of future format extensibility
+ are gained without breaking file support in old parsers.
+ .
+ This package contains the shared library needed to run applications that
+ use libmatroska.

@@ -1,0 +1,40 @@
+From 0015d63685888d0681ef9c61bbf91d84352cb72b Mon Sep 17 00:00:00 2001
+From: aspen <aspenuwu@protonmail.com>
+Date: Tue, 30 Mar 2021 11:24:34 -0400
+Subject: [PATCH] Switch sys-info to iOS-compatible fork
+
+---
+ Cargo.lock | 3 +--
+ Cargo.toml | 2 +-
+ 2 files changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/Cargo.lock b/Cargo.lock
+index 1e4eded..b07743a 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -1690,8 +1690,7 @@ dependencies = [
+ [[package]]
+ name = "sys-info"
+ version = "0.8.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "3f3e7ba888a12ddcf0084e36ae4609b055845f38022d1946b67356fbc27d5795"
++source = "git+https://github.com/aspenluxxxy/sys-info-rs?rev=20cc60200fb0c4d95f55e1e6aff9fc9fde8c9b65#20cc60200fb0c4d95f55e1e6aff9fc9fde8c9b65"
+ dependencies = [
+  "cc",
+  "libc",
+diff --git a/Cargo.toml b/Cargo.toml
+index 02a1461..622a04c 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -46,7 +46,7 @@ unicode-segmentation = "1.7.1"
+ gethostname = "0.2.1"
+ once_cell = "1.7.2"
+ chrono = "0.4.19"
+-sys-info = "0.8.0"
++sys-info = { git = "https://github.com/aspenluxxxy/sys-info-rs", rev = "20cc60200fb0c4d95f55e1e6aff9fc9fde8c9b65" }
+ byte-unit = "4.0.10"
+ starship_module_config_derive = { version = "0.1.2", path = "starship_module_config_derive" }
+ yaml-rust = "0.4.5"
+-- 
+2.31.1
+

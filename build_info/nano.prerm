@@ -3,8 +3,8 @@
 set -e
 
 if [ "$1" != "upgrade" ]; then
-    update-alternatives --remove editor /usr/bin/nano
-    update-alternatives --remove pico /usr/bin/nano
+    update-alternatives --remove editor @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/nano
+    update-alternatives --remove pico @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/nano
 fi
 
 

@@ -1,0 +1,7 @@
+Package: snaprestore
+Section: Utilities
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_SNAPRESTORE_V@
+Description: Easily restore rootfs from the command line
+	Usage: snaprestore [volume] [snapshot]

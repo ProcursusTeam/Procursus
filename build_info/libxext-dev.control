@@ -3,7 +3,7 @@ Version: @DEB_LIBXEXT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: libxext6 (= @DEB_LIBXEXT_V@),  libx11-dev, x11proto-dev
-Section: Libraries
+Section: Development
 Priority: optional
 Description: X11 miscellaneous extension library (development headers)
  libXext provides an X Window System client interface to several extensions to

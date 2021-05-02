@@ -6,5 +6,6 @@ Section: Archiving
 Priority: optional
 Multi-Arch: foreign
 Homepage: http://www.rarlab.com/rar_add.htm
-Description: de-compresses files in rar format
-Tag: purpose::console, role::hacker
+Description: Unarchiver for .rar files (non-free version)
+ Unrar can extract files from .rar archives. If you want to create .rar
+ archives, install package rar.

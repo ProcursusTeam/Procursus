@@ -20,8 +20,8 @@ dpkg-repack: dpkg-repack-setup
 		--center='dpkg suite' \
 		--release='$(DEB_DPKG_REPACK_V)' \
 		< dpkg-repack.pod > dpkg-repack.1
-	$(GINSTALL) -Dm0755 $(BUILD_WORK)/dpkg-repack/dpkg-repack $(BUILD_STAGE)/dpkg-repack/usr/bin/dpkg-repack
-	$(GINSTALL) -Dm0644 $(BUILD_WORK)/dpkg-repack/dpkg-repack.1 $(BUILD_STAGE)/dpkg-repack/usr/share/man/man1/dpkg-repack.1
+	$(GINSTALL) -Dm0755 $(BUILD_WORK)/dpkg-repack/dpkg-repack $(BUILD_STAGE)/dpkg-repack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dpkg-repack
+	$(GINSTALL) -Dm0644 $(BUILD_WORK)/dpkg-repack/dpkg-repack.1 $(BUILD_STAGE)/dpkg-repack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/dpkg-repack.1
 	touch $(BUILD_WORK)/dpkg-repack/.build_complete
 endif
 
@@ -29,13 +29,13 @@ dpkg-repack-package: dpkg-repack-stage
 	# dpkg-repack.mk Package Structure
 	rm -rf $(BUILD_DIST)/dpkg-repack
 	mkdir -p $(BUILD_DIST)/dpkg-repack
-	
+
 	# dpkg-repack.mk Prep dpkg-repack
 	cp -a $(BUILD_STAGE)/dpkg-repack $(BUILD_DIST)
-	
+
 	# dpkg-repack.mk Make .debs
 	$(call PACK,dpkg-repack,DEB_DPKG_REPACK_V)
-	
+
 	# dpkg-repack.mk Build cleanup
 	rm -rf $(BUILD_DIST)/dpkg-repack
 

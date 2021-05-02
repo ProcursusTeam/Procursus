@@ -4,7 +4,6 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Libraries
 Priority: standard
-Depends: liblualib50 (= @DEB_LUA50_V@), liblua50 (= @DEB_LUA50_V@)
 Description: Main interpreter library for the Lua 5.0 programming language
  Lua is a powerful language which can be included in your C/C++ projects
  using this library.

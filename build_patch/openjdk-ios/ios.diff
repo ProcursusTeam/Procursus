@@ -1,15 +1,15 @@
 diff -urN openjdk/make/autoconf/flags-ldflags.m4.orig openjdk/make/autoconf/flags-ldflags.m4
---- openjdk/make/autoconf/flags-ldflags.m4	2020-12-27 05:18:10.000000000 -0500
-+++ openjdk/make/autoconf/flags-ldflags.m4	2020-12-27 05:18:45.000000000 -0500
+--- openjdk/make/autoconf/flags-ldflags.m4.orig	2021-04-06 00:59:09.777595003 -0400
++++ openjdk/make/autoconf/flags-ldflags.m4	2021-04-06 00:59:29.451506097 -0400
 @@ -106,7 +106,7 @@
        # Assume clang or gcc.
        # FIXME: We should really generalize SET_SHARED_LIBRARY_ORIGIN instead.
        OS_LDFLAGS_JVM_ONLY="-Wl,-rpath,@loader_path/. -Wl,-rpath,@loader_path/.."
--      OS_LDFLAGS_JDK_ONLY="-mmacosx-version-min=$MACOSX_VERSION_MIN"
-+      #OS_LDFLAGS_JDK_ONLY="-mmacosx-version-min=$MACOSX_VERSION_MIN"
+-      OS_LDFLAGS="-mmacosx-version-min=$MACOSX_VERSION_MIN"
++      #OS_LDFLAGS="-mmacosx-version-min=$MACOSX_VERSION_MIN"
      fi
-   fi
- 
+     if test "x$OPENJDK_TARGET_OS" = xlinux; then
+       # Hotspot needs to link librt to get the clock_* functions.
 diff -urN openjdk/make/autoconf/flags-cflags.m4.orig openjdk/make/autoconf/flags-cflags.m4 
 --- openjdk/make/autoconf/flags-cflags.m4	2020-12-27 05:17:00.000000000 -0500
 +++ openjdk/make/autoconf/flags-cflags.m4	2020-12-27 05:17:47.000000000 -0500
@@ -97,67 +97,16 @@ diff -urN openjdk/make/modules/java.base/Lib.gmk.orig openjdk/make/modules/java.
  ))
  
  $(BUILD_LIBNET): $(BUILD_LIBJAVA)
-@@ -95,33 +95,33 @@
+@@ -95,7 +95,7 @@
  ################################################################################
  # Create the macosx security library
- 
+
 -ifeq ($(call isTargetOs, macosx), true)
--  # JavaNativeFoundation framework not supported in static builds
--  ifneq ($(STATIC_BUILD), true)
--
--    $(eval $(call SetupJdkLibrary, BUILD_LIBOSXSECURITY, \
--        NAME := osxsecurity, \
--        OPTIMIZATION := LOW, \
--        CFLAGS := $(CFLAGS_JDKLIB), \
--        DISABLED_WARNINGS_clang := deprecated-declarations \
--            missing-method-return-type, \
--        LDFLAGS := $(LDFLAGS_JDKLIB) \
--            -L$(SUPPORT_OUTPUTDIR)/modules_libs/java.base \
--            $(call SET_SHARED_LIBRARY_ORIGIN), \
--        LIBS := \
--            -lobjc \
--            -framework JavaNativeFoundation \
--            -framework CoreServices \
--            -framework Security \
--            $(JDKLIB_LIBS), \
--    ))
--
--    $(BUILD_LIBOSXSECURITY): $(BUILD_LIBJAVA)
--
--    TARGETS += $(BUILD_LIBOSXSECURITY)
--
--  endif
--endif
-+#ifeq ($(call isTargetOs, macosx), true)
-+#  # JavaNativeFoundation framework not supported in static builds
-+#  ifneq ($(STATIC_BUILD), true)
-+#
-+#    $(eval $(call SetupJdkLibrary, BUILD_LIBOSXSECURITY, \
-+#        NAME := osxsecurity, \
-+#        OPTIMIZATION := LOW, \
-+#        CFLAGS := $(CFLAGS_JDKLIB), \
-+#        DISABLED_WARNINGS_clang := deprecated-declarations \
-+#            missing-method-return-type, \
-+#        LDFLAGS := $(LDFLAGS_JDKLIB) \
-+#            -L$(SUPPORT_OUTPUTDIR)/modules_libs/java.base \
-+#            $(call SET_SHARED_LIBRARY_ORIGIN), \
-+#        LIBS := \
-+#            -lobjc \
-+#            -framework JavaNativeFoundation \
-+#            -framework CoreServices \
-+#            -framework Security \
-+#            $(JDKLIB_LIBS), \
-+#    ))
-+#
-+#    $(BUILD_LIBOSXSECURITY): $(BUILD_LIBJAVA)
-+#
-+#    TARGETS += $(BUILD_LIBOSXSECURITY)
-+#
-+#  endif
-+#endif
- 
- ################################################################################
- # Create the jsig library
++ifeq (false, true)
+
+     $(eval $(call SetupJdkLibrary, BUILD_LIBOSXSECURITY, \
+         NAME := osxsecurity, \
+h
 diff -urN openjdk/make/modules/java.base/lib/CoreLibraries.gmk.orig openjdk/make/modules/java.base/lib/CoreLibraries.gmk
 --- openjdk/make/modules/java.base/lib/CoreLibraries.gmk	2020-12-27 08:18:11.000000000 -0500
 +++ openjdk/make/modules/java.base/lib/CoreLibraries.gmk	2020-12-27 08:18:20.000000000 -0500
@@ -211,12 +160,12 @@ diff -urN openjdk/make/modules/jdk.jpackage/Lib.gmk.orig openjdk/make/modules/jd
 --- openjdk/make/modules/jdk.jpackage/Lib.gmk	2020-12-27 09:49:08.000000000 -0500
 +++ openjdk/make/modules/jdk.jpackage/Lib.gmk	2020-12-27 09:49:21.000000000 -0500
 @@ -57,7 +57,7 @@
-         $(addprefix -I, $(JPACKAGE_APPLAUNCHER_SRC)), \
      CXXFLAGS_windows := $(JPACKAGE_CXXFLAGS_windows), \
+     CFLAGS_windows := $(JPACKAGE_CFLAGS_windows), \
      LDFLAGS := $(LDFLAGS_JDKEXE), \
--    LIBS_macosx := -framework Cocoa, \
-+    LIBS_macosx := -framework Foundation, \
-     LIBS := $(LIBCXX), \
+-    LIBS_macosx := $(LIBCXX) -framework Cocoa, \
++    LIBS_macosx := $(LIBCXX) -framework Foundation, \
+     LIBS_windows := $(LIBCXX), \
      LIBS_linux := -ldl, \
  ))
 diff -urN  openjdk/make/modules/java.security.jgss/Lib.gmk.orig openjdk/make/modules/java.security.jgss/Lib.gmk

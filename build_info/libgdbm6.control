@@ -7,7 +7,7 @@ Conflicts: libgdbm (<< @DEB_LIBGDBM_V@)
 Replaces: libgdbm (<< @DEB_LIBGDBM_V@)
 Provides: libgdbm (= @DEB_LIBGDBM_V@)
 Section: Libraries
-Suggests: gdbm-l10n
+Suggests: libgdbm6-locale
 Description: GNU dbm database routines (runtime version) 
  GNU dbm ('gdbm') is a library of database functions that use extendible
  hashing and works similarly to the standard UNIX 'dbm' functions.

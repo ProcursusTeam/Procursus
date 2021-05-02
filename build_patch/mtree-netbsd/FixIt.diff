@@ -1,0 +1,367 @@
+diff --color -urN mtree-netbsd-debian-20180822-6/compare.c mtree-netbsd/compare.c
+--- mtree-netbsd-debian-20180822-6/compare.c	2021-01-12 10:49:06.000000000 -0500
++++ mtree-netbsd/compare.c	2021-03-31 14:24:13.620831383 -0400
+@@ -36,7 +36,6 @@
+ #include "nbtool_config.h"
+ #endif
+ 
+-#include <nbcompat.h>
+ #if HAVE_SYS_CDEFS_H
+ #include <sys/cdefs.h>
+ #endif
+@@ -89,11 +88,15 @@
+ #ifndef NO_SHA2
+ #if HAVE_SHA2_H && HAVE_SHA512_FILE
+ #include <sha2.h>
++#include <sha256.h>
++#include <sha512.h>
+ #else
+ #include <nbcompat/sha2.h>
+ #endif
+ #endif
+ 
++#include <sys/stat.h>
++#include <sys/time.h>
+ 
+ #include "extern.h"
+ 
+diff --color -urN mtree-netbsd-debian-20180822-6/crc.c mtree-netbsd/crc.c
+--- mtree-netbsd-debian-20180822-6/crc.c	2021-01-12 10:49:06.000000000 -0500
++++ mtree-netbsd/crc.c	2021-03-31 14:22:50.892998740 -0400
+@@ -39,7 +39,6 @@
+ #include "nbtool_config.h"
+ #endif
+ 
+-#include <nbcompat.h>
+ #if HAVE_SYS_CDEFS_H
+ #include <sys/cdefs.h>
+ #endif
+diff --color -urN mtree-netbsd-debian-20180822-6/create.c mtree-netbsd/create.c
+--- mtree-netbsd-debian-20180822-6/create.c	2021-01-12 10:49:06.000000000 -0500
++++ mtree-netbsd/create.c	2021-03-31 14:23:24.416929025 -0400
+@@ -36,7 +36,6 @@
+ #include "nbtool_config.h"
+ #endif
+ 
+-#include <nbcompat.h>
+ #if HAVE_SYS_CDEFS_H
+ #include <sys/cdefs.h>
+ #endif
+@@ -110,6 +109,8 @@
+ #ifndef NO_SHA2
+ #if HAVE_SHA2_H && HAVE_SHA512_FILE
+ #include <sha2.h>
++#include <sha256.h>
++#include <sha512.h>
+ #else
+ #include <nbcompat/sha2.h>
+ #endif
+diff --color -urN mtree-netbsd-debian-20180822-6/excludes.c mtree-netbsd/excludes.c
+--- mtree-netbsd-debian-20180822-6/excludes.c	2021-01-12 10:49:06.000000000 -0500
++++ mtree-netbsd/excludes.c	2021-03-31 14:22:50.892998740 -0400
+@@ -36,7 +36,6 @@
+ #include "nbtool_config.h"
+ #endif
+ 
+-#include <nbcompat.h>
+ #if HAVE_SYS_CDEFS_H
+ #include <sys/cdefs.h>
+ #endif
+diff --color -urN mtree-netbsd-debian-20180822-6/extern.h mtree-netbsd/extern.h
+--- mtree-netbsd-debian-20180822-6/extern.h	2021-01-12 10:49:06.000000000 -0500
++++ mtree-netbsd/extern.h	2021-03-31 14:22:50.892998740 -0400
+@@ -44,7 +44,6 @@
+ #endif
+ #endif
+  
+-#include <nbcompat.h>
+ #if HAVE_ERR_H
+ #include <err.h> 
+ #endif
+diff --color -urN mtree-netbsd-debian-20180822-6/getid.c mtree-netbsd/getid.c
+--- mtree-netbsd-debian-20180822-6/getid.c	2021-01-12 10:49:06.000000000 -0500
++++ mtree-netbsd/getid.c	2021-03-31 14:22:50.892998740 -0400
+@@ -74,7 +74,6 @@
+ #include "nbtool_config.h"
+ #endif
+ 
+-#include <nbcompat.h>
+ #if HAVE_SYS_PARAM_H
+ #include <sys/param.h>
+ #endif
+diff --color -urN mtree-netbsd-debian-20180822-6/Makefile.in mtree-netbsd/Makefile.in
+--- mtree-netbsd-debian-20180822-6/Makefile.in	2021-01-12 10:49:06.000000000 -0500
++++ mtree-netbsd/Makefile.in	2021-03-31 14:10:17.499824482 -0400
+@@ -22,7 +22,7 @@
+ PROG=		mtree
+ 
+ OBJS=	compare.o crc.o create.o excludes.o misc.o mtree.o spec.o verify.o \
+-	getid.o stat_flags.o pack_dev.o
++	getid.o stat_flags.o pack_dev.o pwcache.o
+ 
+ all: $(PROG)
+ 
+diff --color -urN mtree-netbsd-debian-20180822-6/misc.c mtree-netbsd/misc.c
+--- mtree-netbsd-debian-20180822-6/misc.c	2021-01-12 10:49:06.000000000 -0500
++++ mtree-netbsd/misc.c	2021-03-31 14:22:50.892998740 -0400
+@@ -38,7 +38,6 @@
+ #include "nbtool_config.h"
+ #endif
+ 
+-#include <nbcompat.h>
+ #if HAVE_SYS_CDEFS_H
+ #include <sys/cdefs.h>
+ #endif
+diff --color -urN mtree-netbsd-debian-20180822-6/mtree.c mtree-netbsd/mtree.c
+--- mtree-netbsd-debian-20180822-6/mtree.c	2021-01-12 10:49:06.000000000 -0500
++++ mtree-netbsd/mtree.c	2021-03-31 14:22:50.892998740 -0400
+@@ -36,7 +36,6 @@
+ #include "nbtool_config.h"
+ #endif
+ 
+-#include <nbcompat.h>
+ #if HAVE_SYS_CDEFS_H
+ #include <sys/cdefs.h>
+ #endif
+diff --color -urN mtree-netbsd-debian-20180822-6/pack_dev.c mtree-netbsd/pack_dev.c
+--- mtree-netbsd-debian-20180822-6/pack_dev.c	2021-01-12 10:49:06.000000000 -0500
++++ mtree-netbsd/pack_dev.c	2021-03-31 14:23:47.628882290 -0400
+@@ -43,7 +43,6 @@
+ #include "nbtool_config.h"
+ #endif
+ 
+-#include <nbcompat.h>
+ #if HAVE_SYS_CDEFS_H
+ #include <sys/cdefs.h>
+ #endif
+@@ -59,7 +58,7 @@
+ #endif
+ 
+ /* Linux libc has these here */
+-#include <sys/sysmacros.h>
++#include <sys/types.h>
+ 
+ #if HAVE_LIMITS_H
+ #include <limits.h>
+diff --color -urN mtree-netbsd-debian-20180822-6/pwcache.c mtree-netbsd/pwcache.c
+--- mtree-netbsd-debian-20180822-6/pwcache.c	2021-03-31 14:21:57.101116542 -0400
++++ mtree-netbsd/pwcache.c	2021-03-31 14:22:50.892998740 -0400
+@@ -65,8 +65,6 @@
+  * XXX Undefine the renames of these functions so that we don't
+  * XXX rename the versions found in the host's <pwd.h> by mistake!
+  */
+-#undef group_from_gid
+-#undef user_from_uid
+ #endif
+ 
+ #include <sys/cdefs.h>
+@@ -78,8 +76,6 @@
+ #endif
+ #endif /* LIBC_SCCS and not lint */
+ 
+-#include "namespace.h"
+-
+ #include <sys/types.h>
+ #include <sys/param.h>
+ 
+@@ -93,13 +89,9 @@
+ 
+ #if HAVE_NBTOOL_CONFIG_H
+ /* XXX Now, re-apply the renaming that we undid above. */
+-#define	group_from_gid	__nbcompat_group_from_gid
+-#define	user_from_uid	__nbcompat_user_from_uid
+ #endif
+ 
+ #ifdef __weak_alias
+-__weak_alias(user_from_uid,_user_from_uid)
+-__weak_alias(group_from_gid,_group_from_gid)
+ __weak_alias(pwcache_groupdb,_pwcache_groupdb)
+ #endif
+ 
+@@ -154,7 +146,7 @@
+ {
+ 	u_int key = 0;
+ 
+-	_DIAGASSERT(name != NULL);
++	(void)(name != NULL);
+ 
+ 	while (len--) {
+ 		key += *name++;
+@@ -249,144 +241,6 @@
+ }
+ 
+ /*
+- * user_from_uid()
+- *	caches the name (if any) for the uid. If noname clear, we always
+- *	return the stored name (if valid or invalid match).
+- *	We use a simple hash table.
+- * Return
+- *	Pointer to stored name (or a empty string)
+- */
+-const char *
+-user_from_uid(uid_t uid, int noname)
+-{
+-	struct passwd *pw;
+-	UIDC *ptr, **pptr;
+-
+-	if ((uidtb == NULL) && (uidtb_start() < 0))
+-		return (NULL);
+-
+-	/*
+-	 * see if we have this uid cached
+-	 */
+-	pptr = uidtb + (uid % UID_SZ);
+-	ptr = *pptr;
+-
+-	if ((ptr != NULL) && (ptr->valid > 0) && (ptr->uid == uid)) {
+-		/*
+-		 * have an entry for this uid
+-		 */
+-		if (!noname || (ptr->valid == VALID))
+-			return (ptr->name);
+-		return (NULL);
+-	}
+-
+-	/*
+-	 * No entry for this uid, we will add it
+-	 */
+-	if (!pwopn) {
+-		if (_pwcache_setpassent != NULL)
+-			(*_pwcache_setpassent)(1);
+-		++pwopn;
+-	}
+-
+-	if (ptr == NULL)
+-		*pptr = ptr = (UIDC *)malloc(sizeof(UIDC));
+-
+-	if ((pw = (*_pwcache_getpwuid)(uid)) == NULL) {
+-		/*
+-		 * no match for this uid in the local password file
+-		 * a string that is the uid in numeric format
+-		 */
+-		if (ptr == NULL)
+-			return (NULL);
+-		ptr->uid = uid;
+-		(void)snprintf(ptr->name, UNMLEN, "%lu", (long) uid);
+-		ptr->valid = INVALID;
+-		if (noname)
+-			return (NULL);
+-	} else {
+-		/*
+-		 * there is an entry for this uid in the password file
+-		 */
+-		if (ptr == NULL)
+-			return (pw->pw_name);
+-		ptr->uid = uid;
+-		(void)strlcpy(ptr->name, pw->pw_name, UNMLEN);
+-		ptr->valid = VALID;
+-	}
+-	return (ptr->name);
+-}
+-
+-/*
+- * group_from_gid()
+- *	caches the name (if any) for the gid. If noname clear, we always
+- *	return the stored name (if valid or invalid match).
+- *	We use a simple hash table.
+- * Return
+- *	Pointer to stored name (or a empty string)
+- */
+-const char *
+-group_from_gid(gid_t gid, int noname)
+-{
+-	struct group *gr;
+-	GIDC *ptr, **pptr;
+-
+-	if ((gidtb == NULL) && (gidtb_start() < 0))
+-		return (NULL);
+-
+-	/*
+-	 * see if we have this gid cached
+-	 */
+-	pptr = gidtb + (gid % GID_SZ);
+-	ptr = *pptr;
+-
+-	if ((ptr != NULL) && (ptr->valid > 0) && (ptr->gid == gid)) {
+-		/*
+-		 * have an entry for this gid
+-		 */
+-		if (!noname || (ptr->valid == VALID))
+-			return (ptr->name);
+-		return (NULL);
+-	}
+-
+-	/*
+-	 * No entry for this gid, we will add it
+-	 */
+-	if (!gropn) {
+-		if (_pwcache_setgroupent != NULL)
+-			(*_pwcache_setgroupent)(1);
+-		++gropn;
+-	}
+-
+-	if (ptr == NULL)
+-		*pptr = ptr = (GIDC *)malloc(sizeof(GIDC));
+-
+-	if ((gr = (*_pwcache_getgrgid)(gid)) == NULL) {
+-		/*
+-		 * no match for this gid in the local group file, put in
+-		 * a string that is the gid in numberic format
+-		 */
+-		if (ptr == NULL)
+-			return (NULL);
+-		ptr->gid = gid;
+-		(void)snprintf(ptr->name, GNMLEN, "%lu", (long) gid);
+-		ptr->valid = INVALID;
+-		if (noname)
+-			return (NULL);
+-	} else {
+-		/*
+-		 * there is an entry for this group in the group file
+-		 */
+-		if (ptr == NULL)
+-			return (gr->gr_name);
+-		ptr->gid = gid;
+-		(void)strlcpy(ptr->name, gr->gr_name, GNMLEN);
+-		ptr->valid = VALID;
+-	}
+-	return (ptr->name);
+-}
+-
+-/*
+  * uid_from_user()
+  *	caches the uid for a given user name. We use a simple hash table.
+  * Return
+diff --color -urN mtree-netbsd-debian-20180822-6/spec.c mtree-netbsd/spec.c
+--- mtree-netbsd-debian-20180822-6/spec.c	2021-01-12 10:49:06.000000000 -0500
++++ mtree-netbsd/spec.c	2021-03-31 14:22:50.892998740 -0400
+@@ -72,7 +72,6 @@
+ #include "nbtool_config.h"
+ #endif
+ 
+-#include <nbcompat.h>
+ #if HAVE_SYS_CDEFS_H
+ #include <sys/cdefs.h>
+ #endif
+diff --color -urN mtree-netbsd-debian-20180822-6/stat_flags.c mtree-netbsd/stat_flags.c
+--- mtree-netbsd-debian-20180822-6/stat_flags.c	2021-01-12 10:49:06.000000000 -0500
++++ mtree-netbsd/stat_flags.c	2021-03-31 14:22:50.892998740 -0400
+@@ -40,7 +40,6 @@
+ #endif
+ #endif
+ 
+-#include <nbcompat.h>
+ #if HAVE_SYS_CDEFS_H
+ #include <sys/cdefs.h>
+ #endif
+diff --color -urN mtree-netbsd-debian-20180822-6/verify.c mtree-netbsd/verify.c
+--- mtree-netbsd-debian-20180822-6/verify.c	2021-01-12 10:49:06.000000000 -0500
++++ mtree-netbsd/verify.c	2021-03-31 14:22:50.892998740 -0400
+@@ -36,7 +36,6 @@
+ #include "nbtool_config.h"
+ #endif
+ 
+-#include <nbcompat.h>
+ #if HAVE_SYS_CDEFS_H
+ #include <sys/cdefs.h>
+ #endif

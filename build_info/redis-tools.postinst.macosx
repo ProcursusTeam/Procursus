@@ -1,0 +1,72 @@
+#!/bin/bash
+
+set -eu
+
+USER="redis"
+
+getHiddenUserPGid()
+{
+    local __PGIDS=$(dscl . -list /Users PrimaryGroupID | awk '{print $2}' | sort -ugr)
+
+    local __NewPGID
+    for __NewPGID in $__PGIDS
+    do
+        if [[ $__NewPGID -lt 499 ]]; then
+            break;
+        fi
+    done
+
+    echo $((__NewPGID+1))
+}
+
+getHiddenUserUid()
+{
+    local __UIDS=$(dscl . -list /Users UniqueID | awk '{print $2}' | sort -ugr)
+
+    local __NewUID
+    for __NewUID in $__UIDS
+    do
+        if [[ $__NewUID -lt 499 ]] ; then
+            break;
+        fi
+    done
+
+    echo $((__NewUID+1))
+}
+
+Setup_dir () {
+	DIR="${1}"
+	MODE="${2}"
+	GROUP="${3}"
+
+	mkdir -p ${DIR}
+
+	if ! dpkg-statoverride --list ${DIR} >/dev/null 2>&1
+	then
+		chown ${USER}:${GROUP} ${DIR}
+		chmod ${MODE} ${DIR}
+	fi
+}
+
+if [ "$1" = "configure" ]
+then
+	if ! id redis &>/dev/null; then
+		GROUPID=$(getHiddenUserPGid)
+		dscl . -create /Users/redis UserShell /usr/bin/false
+		dscl . -create /Users/redis NSFHomeDirectory @MEMO_PREFIX@/var/lib/redis
+		dscl . -create /Users/redis UniqueID $(getHiddenUserUid)
+		dscl . -create /Users/redis PrimaryGroupID $GROUPID
+		dscl . -create /Users/redis RealName "Redis User"
+
+		dscl . -create /Groups/redis gid $GROUPID
+		dscl . -create /Groups/redis RealName "Redis Group"
+	fi
+
+	#Setup_dir @MEMO_PREFIX@/var/log/redis 2750 adm
+	Setup_dir @MEMO_PREFIX@/var/lib/redis 750 ${USER}
+	Setup_dir @MEMO_PREFIX@/etc/redis 2770 ${USER}
+fi
+
+#DEBHELPER#
+
+exit 0

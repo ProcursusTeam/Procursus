@@ -1,0 +1,15 @@
+--- mariadb-10.5.5/include/my_global.h.old     2020-07-23 13:11:59.711440789 +0800
++++ mariadb/include/my_global.h 2020-07-23 13:12:31.151449719 +0800
+@@ -156,10 +156,10 @@
+ #  define SIZEOF_INT 4
+ #  define SIZEOF_LONG_LONG 8
+ #  define SIZEOF_OFF_T 8
+-#  if defined(__i386__) || defined(__ppc__)
++#  if defined(__i386__) || defined(__ppc__) || defined(__arm__)
+ #    define SIZEOF_CHARP 4
+ #    define SIZEOF_LONG 4
+-#  elif defined(__x86_64__) || defined(__ppc64__)
++#  elif defined(__x86_64__) || defined(__ppc64__) || defined(__arm__) || defined(__arm64__)
+ #    define SIZEOF_CHARP 8
+ #    define SIZEOF_LONG 8
+ #  else

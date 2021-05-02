@@ -1,0 +1,20 @@
+Package: xfe
+Version: @DEB_XFE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libintl8, libfontconfig1, libfox-1.6-0, libfreetype6, libpng16-16, libx11-6, libxft2, libxrandr2
+Section: X11
+Priority: optional
+Description: lightweight file manager for X11
+ Xfe is based on the popular but discontinued X Win Commander. It is
+ desktop independent and is written using the C++ Fox Toolkit. Its
+ appearance is similar to the Windows file-manager Total Commander
+ or Windows Explorer. It is very fast and simple.
+ .
+ The main features are: file associations, mount/umount devices,
+ directory tree for quick cd, change file attributes, auto save
+ registry, compressed archives view/creation/extraction, compatibility
+ with GNOME/KDE/Xfce, and much more.
+ .
+ Containing a simple text editor (Xfwrite), image viewer (Xfimage) and
+ package manager (Xfpack).

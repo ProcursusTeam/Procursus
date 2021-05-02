@@ -1,0 +1,76 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 634cc4f..79fa3d3 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -25,8 +25,8 @@ add_subdirectory (dfu-util)
+ add_subdirectory (xpwn)
+ add_subdirectory (idevice)
+ 
+-install(FILES README.markdown DESTINATION . RENAME README.txt)
+-install(FILES LICENSE DESTINATION . RENAME LICENSE.txt)
++install(FILES README.markdown DESTINATION ${CMAKE_INSTALL_PREFIX}/share/xpwn RENAME README.txt)
++install(FILES LICENSE DESTINATION ${CMAKE_INSTALL_PREFIX}/share/xpwn RENAME LICENSE.txt)
+ 
+ IF(WIN32 OR APPLE)
+ 	SET(CPACK_GENERATOR "ZIP")
+diff --git a/dmg/CMakeLists.txt b/dmg/CMakeLists.txt
+index 4f7c315..08463ab 100644
+--- a/dmg/CMakeLists.txt
++++ b/dmg/CMakeLists.txt
+@@ -34,5 +34,5 @@ target_link_libraries (dmg-bin dmg)
+ 
+ set_target_properties(dmg-bin PROPERTIES OUTPUT_NAME "dmg")
+ 
+-install(TARGETS dmg-bin DESTINATION .)
++install(TARGETS dmg-bin DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+ 
+diff --git a/hdutil/CMakeLists.txt b/hdutil/CMakeLists.txt
+index 4c1750a..4adfaf5 100644
+--- a/hdutil/CMakeLists.txt
++++ b/hdutil/CMakeLists.txt
+@@ -4,5 +4,5 @@ add_executable(hdutil hdutil.c)
+ 
+ target_link_libraries (hdutil dmg hfs common)
+ 
+-install(TARGETS hdutil DESTINATION .)
++install(TARGETS hdutil DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+ 
+diff --git a/hfs/CMakeLists.txt b/hfs/CMakeLists.txt
+index 1f88361..cb8ca1c 100644
+--- a/hfs/CMakeLists.txt
++++ b/hfs/CMakeLists.txt
+@@ -14,5 +14,5 @@ target_link_libraries(hfs common z)
+ add_executable(hfsplus hfs.c)
+ target_link_libraries (hfsplus hfs dmg)
+ 
+-install(TARGETS hfsplus DESTINATION .)
++install(TARGETS hfsplus DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+ 
+diff --git a/ipsw-patch/CMakeLists.txt b/ipsw-patch/CMakeLists.txt
+index 4ae52c4..9b23ee1 100644
+--- a/ipsw-patch/CMakeLists.txt
++++ b/ipsw-patch/CMakeLists.txt
+@@ -104,7 +104,7 @@ IF(WIN32)
+ 	install(TARGETS itunespwn RUNTIME DESTINATION .)
+ ENDIF(WIN32)
+ 
+-install(TARGETS ipsw xpwntool validate ticket RUNTIME DESTINATION .)
+-install(DIRECTORY FirmwareBundles/ DESTINATION FirmwareBundles)
+-install(DIRECTORY bundles/ DESTINATION bundles)
++install(TARGETS ipsw xpwntool validate ticket RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
++install(DIRECTORY FirmwareBundles/ DESTINATION ${CMAKE_INSTALL_PREFIX}/share/xpwn/FirmwareBundles)
++install(DIRECTORY bundles/ DESTINATION ${CMAKE_INSTALL_PREFIX}/share/xpwn/bundles)
+ 
+diff --git a/ipsw-patch/main.c b/ipsw-patch/main.c
+index a41f11b..00255e5 100644
+--- a/ipsw-patch/main.c
++++ b/ipsw-patch/main.c
+@@ -147,7 +147,7 @@ int main(int argc, char* argv[]) {
+ 	OutputState* outputState;
+ 
+ 	char* bundlePath;
+-	char* bundleRoot = "FirmwareBundles/";
++    char* bundleRoot = "${CMAKE_INSTALL_PREFIX}/share/xpwn/FirmwareBundles";
+ 
+ 	int mergePaths;
+ 	char* outputIPSW;

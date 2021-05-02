@@ -1,0 +1,460 @@
+Description: improve typography in the manual page
+Author: Jakub Wilk <jwilk@debian.org>
+Date: 2014-01-29
+Forwarded: no
+Last-Update: 2014-01-29
+
+--- a/rc.1
++++ b/rc.1
+@@ -194,7 +194,7 @@
+ .Cr $* .
+ Thus:
+ .Ds
+-.Cr "rc -c 'echo $*' 1 2 3"
++.Cr "rc \-c \(aqecho $*\(aq 1 2 3"
+ .De
+ .TP
+ \&
+@@ -393,28 +393,28 @@
+ automatically terminate words.
+ The following characters are special:
+ .Ds
+-.Cr "# ; & | ^ $ = \` ' { } ( ) < >"
++.Cr "# ; & | ^ $ = \` \(aq { } ( ) < >"
+ .De
+ .PP
+ The single quote
+-.Rc ( ' )
++.Rc ( \(aq )
+ prevents special treatment of any character other than itself.
+ All characters, including control characters, newlines,
+ and backslashes between two quote characters are treated as an
+ uninterpreted string.
+ A quote character itself may be quoted by placing two quotes in a row.
+ The minimal sequence needed to enter the quote character is
+-.Cr '''' .
++.Cr \(aq\(aq\(aq\(aq .
+ The empty string is represented by
+-.Cr '' .
++.Cr \(aq\(aq .
+ Thus:
+ .Ds
+-.Cr "echo 'What''s the plan, Stan?'"
++.Cr "echo \(aqWhat\(aq\(aqs the plan, Stan?\(aq"
+ .De
+ .PP
+ prints out
+ .Ds
+-.Cr "What's the plan, Stan?"
++.Cr "What\(aqs the plan, Stan?"
+ .De
+ .PP
+ The number sign
+@@ -427,9 +427,9 @@
+ the backslash is ignored along with everything else.
+ .SS Grouping
+ Zero or more commands may be grouped within braces
+-.Rc (`` { ''
++.Rc (\(lq { \(rq
+ and
+-.Rc `` } ''),
++.Rc \(lq } \(rq),
+ and are then treated as one command.
+ Braces do not otherwise define scope;
+ they are used only for command grouping.
+@@ -532,11 +532,11 @@
+ .PP
+ If the file does not exist, then it is created.
+ .PP
+-``Here documents'' are supported as in
++\(lqHere documents\(rq are supported as in
+ .I sh
+ with the use of
+ .Ds
+-.Cr "command << 'eof-marker'"
++.Cr "command << \(aqeof-marker\(aq"
+ .De
+ .PP
+ Subsequent lines form the standard input of
+@@ -567,11 +567,11 @@
+ .PP
+ Additionally,
+ .I rc
+-supports ``here strings'', which are like here documents,
++supports \(lqhere strings\(rq, which are like here documents,
+ except that input is taken directly from a string on the command line.
+ Their use is illustrated here:
+ .Ds
+-.Cr "cat <<< 'this is a here string' | wc"
++.Cr "cat <<< \(aqthis is a here string\(aq | wc"
+ .De
+ .PP
+ (This feature enables
+@@ -643,7 +643,7 @@
+ .IR tee (1)
+ and the output version of this notation:
+ .Ds
+-.Cr "echo hi there | tee >{sed 's/^/p1 /'} >{sed 's/^/p2 /'}"
++.Cr "echo hi there | tee >{sed \(aqs/^/p1 /\(aq} >{sed \(aqs/^/p2 /\(aq}"
+ .De
+ .SH "CONTROL STRUCTURES"
+ The following may be used for control flow in
+@@ -693,8 +693,8 @@
+ (which may contain variables and backquote substitutions) and runs
+ .IR cmd .
+ If
+-.Rc `` in
+-.IR list ''
++.Rc \(lq in
++.IR list \(rq
+ is omitted, then
+ .I rc
+ will set
+@@ -703,7 +703,7 @@
+ .Cr $* .
+ For example:
+ .Ds
+-.Cr "for (i in \`{ls -F | grep '\e*$' | sed 's/\e*$//'}) { commands }"
++.Cr "for (i in \`{ls \-F | grep \(aq\e*$\(aq | sed \(aqs/\e*$//\(aq}) { commands }"
+ .De
+ .TP
+ \&
+@@ -747,13 +747,13 @@
+ .De
+ .PP
+ executes the first command and then executes the second command if and only if
+-the first command exits with a zero exit status (``true'' in Unix).
++the first command exits with a zero exit status (\(lqtrue\(rq in Unix).
+ .Ds
+ .Cr "command || command"
+ .De
+ .PP
+ executes the first command and then executes the second command if and only if
+-the first command exits with a nonzero exit status (``false'' in Unix).
++the first command exits with a nonzero exit status (\(lqfalse\(rq in Unix).
+ .Ds
+ .Cr "! command"
+ .De
+@@ -783,7 +783,7 @@
+ literally in the input.
+ Thus,
+ .Ds
+-.Cr "foo='*'"
++.Cr "foo=\(aq*\(aq"
+ .Cr "echo $foo"
+ .De
+ .PP
+@@ -907,14 +907,14 @@
+ .De
+ .PP
+ Note that the null string,
+-.Cr "''" ,
++.Cr "\(aq\(aq" ,
+ and the null list,
+ .Cr "()" ,
+ are two very different things.
+ Assigning the null string to a variable is a valid operation, but it
+ does not remove its definition.
+ .Ds
+-.Cr "null = '' empty = () echo $#null $#empty"
++.Cr "null = \(aq\(aq empty = () echo $#null $#empty"
+ .De
+ .PP
+ produces the output
+@@ -968,7 +968,7 @@
+ .PP
+ .I rc
+ takes care to insert a free-caret between the
+-.Rc `` \- ''
++.Rc \(lq \- \(rq
+ and
+ .Cr "$opts" ,
+ as well
+@@ -1031,7 +1031,7 @@
+ .Ic var =()
+ .De
+ .PP
+-For ``free careting'' to work correctly,
++For \(lqfree careting\(rq to work correctly,
+ .I rc
+ must make certain assumptions
+ about what characters may appear in a variable name.
+@@ -1045,7 +1045,7 @@
+ characters in its name, quote the variable name.
+ Thus:
+ .Ds
+-.Cr "echo $'we$Ird:Variab!le'"
++.Cr "echo $\(aqwe$Ird:Variab!le\(aq"
+ .De
+ .SS "Local Variables"
+ Any number of variable assignments may be made local to a single
+@@ -1112,7 +1112,7 @@
+ .IR rc 's
+ list operations:
+ .Ds
+-.Cr "$var(\`{awk 'BEGIN{for(i=1;i<=10;i++)print i;exit; }'})"
++.Cr "$var(\`{awk \(aqBEGIN{for(i=1;i<=10;i++)print i;exit; }\(aq})"
+ .De
+ .PP
+ returns the first 10 elements of
+@@ -1208,13 +1208,13 @@
+ Several variables are known to
+ .I rc
+ and are treated specially.
+-In the following list, ``default'' indicates that
++In the following list, \(lqdefault\(rq indicates that
+ .I rc
+-gives the variable a default value on startup; ``no-export'' indicates
+-that the variable is never exported; and ``read-only'' indicates that
++gives the variable a default value on startup; \(lqno-export\(rq indicates
++that the variable is never exported; and \(lqread-only\(rq indicates that
+ an attempt to set the variable will silently have no effect.
+ .PP
+-Also, ``alias'' means that the variable is aliased to the same name in
++Also, \(lqalias\(rq means that the variable is aliased to the same name in
+ capitals.
+ For example, an assignment to
+ .Cr $cdpath
+@@ -1300,7 +1300,7 @@
+ \&
+ whereas
+ .Ds
+-.Cr "x=`{echo foo |grep bar}; whatis bqstatus"
++.Cr "x=\`{echo foo |grep bar}; whatis bqstatus"
+ .De
+ .TP
+ \&
+@@ -1387,7 +1387,7 @@
+ sets
+ .Cr $prompt
+ to
+-.Cr "('; ' '')"
++.Cr "(\(aq; \(aq \(aq\(aq)"
+ by default.
+ The reason for this is that it enables an
+ .I rc
+@@ -1420,7 +1420,7 @@
+ If the command exited with a numeric value, that number is the status.
+ If the command died with a signal, the status is the name of that signal;
+ if a core file was created, the string
+-.Rc `` +core ''
++.Rc \(lq +core \(rq
+ is appended.
+ The value of
+ .Cr $status
+@@ -1481,12 +1481,12 @@
+ .IR ls (1),
+ could be:
+ .Ds
+-.Cr "fn l { ls -FC $* }"
++.Cr "fn l { ls \-FC $* }"
+ .De
+ .PP
+ but not
+ .Ds
+-.Cr "fn l { ls -FC } # WRONG"
++.Cr "fn l { ls \-FC } # WRONG"
+ .De
+ .SH "INTERRUPTS AND SIGNALS"
+ .I rc
+@@ -1575,7 +1575,7 @@
+ .De
+ .TP
+ \&
+-does the ``right thing''.
++does the \(lqright thing\(rq.
+ .TP
+ .B break
+ Breaks from the innermost
+@@ -1599,7 +1599,7 @@
+ same names as builtins to use the underlying builtin or binary.
+ For example:
+ .Ds
+-.Cr "fn ls { builtin ls -FC $* }"
++.Cr "fn ls { builtin ls \-FC $* }"
+ .De
+ .TP
+ \&
+@@ -1607,7 +1607,7 @@
+ .Cr ls (1),
+ whereas
+ .Ds
+-.Cr "fn ls { ls -FC $* } # WRONG"
++.Cr "fn ls { ls \-FC $* } # WRONG"
+ .De
+ .TP
+ \&
+@@ -1708,7 +1708,7 @@
+ disables core dumps.
+ To set a soft limit equal to the hard limit:
+ .Ds
+-.Cr "limit `{limit -h datasize}"
++.Cr "limit \`{limit \-h datasize}"
+ .De
+ .TP
+ .B newpgrp
+@@ -1794,7 +1794,7 @@
+ Without arguments,
+ .Cr whatis
+ is equivalent to
+-.Cr "whatis -fv" ,
++.Cr "whatis \-fv" ,
+ and prints the values of all shell variables and functions.
+ .TP
+ \&
+@@ -1810,7 +1810,7 @@
+ .Cr .
+ command.
+ Another note:
+-.Cr "whatis -s > file"
++.Cr "whatis \-s > file"
+ cannot be used to store the state of
+ .IR rc 's
+ signal handlers in a file, because builtins with redirections
+@@ -1866,9 +1866,9 @@
+ .Cr "fn lflat {"
+ .Cr "  lflat=$*; *=$$1"
+ .Cr "  while () {"
+-.Cr "    echo -n $1; shift"
++.Cr "    echo \-n $1; shift"
+ .Cr "    ~ $#* 0 && break"
+-.Cr "    echo -n $lflat(2)"
++.Cr "    echo \-n $lflat(2)"
+ .Cr "}"
+ .De
+ .PP
+@@ -1907,11 +1907,11 @@
+ %term ANDAND BACKBACK BANG CASE COUNT DUP ELSE END FLAT FN FOR IF IN
+ %term OROR PIPE REDIR SUB SUBSHELL SWITCH TWIDDLE WHILE WORD HUH
+ 
+-%left WHILE ')' ELSE
+-%left ANDAND OROR '\en'
++%left WHILE \(aq)\(aq ELSE
++%left ANDAND OROR \(aq\en\(aq
+ %left BANG SUBSHELL
+ %left PIPE
+-%right '$'
++%right \(aq$\(aq
+ %left SUB
+ 
+ %start rc
+@@ -1921,27 +1921,27 @@
+ rc: line end
+ 	| error end
+ 
+-end: END /* EOF */ | '\en'
++end: END /* EOF */ | \(aq\en\(aq
+ 
+-cmdsa: cmd ';' | cmd '&'
++cmdsa: cmd \(aq;\(aq | cmd \(aq&\(aq
+ 
+ line: cmd | cmdsa line
+ 
+ body: cmd | cmdsan body
+ 
+-cmdsan: cmdsa | cmd '\en'
++cmdsan: cmdsa | cmd \(aq\en\(aq
+ 
+-brace: '{' body '}'
++brace: \(aq{\(aq body \(aq}\(aq
+ 
+-paren: '(' body ')'
++paren: \(aq(\(aq body \(aq)\(aq
+ 
+-assign: first '=' word
++assign: first \(aq=\(aq word
+ 
+ epilog: /* empty */ | redir epilog
+ 
+ redir: DUP | REDIR word
+ 
+-case: CASE words ';' | CASE words '\en'
++case: CASE words \(aq;\(aq | CASE words \(aq\en\(aq
+ 
+ cbody: cmd | case cbody | cmdsan cbody
+ 
+@@ -1952,10 +1952,10 @@
+ 	| simple
+ 	| brace epilog
+ 	| IF paren optnl iftail
+-	| FOR '(' word IN words ')' optnl cmd
+-	| FOR '(' word ')' optnl cmd
++	| FOR \(aq(\(aq word IN words \(aq)\(aq optnl cmd
++	| FOR \(aq(\(aq word \(aq)\(aq optnl cmd
+ 	| WHILE paren optnl cmd	
+-	| SWITCH '(' word ')' optnl '{' cbody '}'
++	| SWITCH \(aq(\(aq word \(aq)\(aq optnl \(aq{\(aq cbody \(aq}\(aq
+ 	| TWIDDLE optcaret word words
+ 	| cmd ANDAND optnl cmd
+ 	| cmd OROR optnl cmd
+@@ -1967,24 +1967,24 @@
+ 	| FN words brace
+ 	| FN words
+ 
+-optcaret: /* empty */ | '^'
++optcaret: /* empty */ | \(aq^\(aq
+ 
+ simple: first | simple word | simple redir
+ 
+-first: comword | first '^' sword
++first: comword | first \(aq^\(aq sword
+ 
+ sword: comword | keyword
+ 
+-word: sword | word '^' sword
++word: sword | word \(aq^\(aq sword
+ 
+-comword: '$' sword
+-	| '$' sword SUB words ')'
++comword: \(aq$\(aq sword
++	| \(aq$\(aq sword SUB words \(aq)\(aq
+ 	| COUNT sword
+ 	| FLAT sword
+-	| '`' sword
+-	| '`' brace
++	| \(aq\`\(aq sword
++	| \(aq\`\(aq brace
+ 	| BACKBACK word	brace | BACKBACK word sword
+-	| '(' words ')'
++	| \(aq(\(aq words \(aq)\(aq
+ 	| REDIR brace
+ 	| WORD
+ 
+@@ -1993,7 +1993,7 @@
+ 
+ words: /* empty */ | words word
+ 
+-optnl: /* empty */ | optnl '\en'
++optnl: /* empty */ | optnl \(aq\en\(aq
+ .ft R
+ .De
+ .SH FILES
+@@ -2052,7 +2052,7 @@
+ expression are a syntax error.
+ Thus, this code is illegal.
+ .Ds
+-.Cr "while ((~ $1 -*) && (! ~ $1 --)) { ..."
++.Cr "while ((~ $1 \-*) && (! ~ $1 \-\-)) { ..."
+ .De
+ .TP
+ The redundant inner parentheses must be omitted.
+@@ -2067,8 +2067,8 @@
+ consecutive occurrences of the separator are treated the same as a
+ single occurrence.
+ .Ds
+-.Cr "ifs=! { x = `{echo -n a!!b}; whatis x }"
+-.Cr "x=(a b) # NOT x=(a '' b)"
++.Cr "ifs=! { x = \`{echo -n a!!b}; whatis x }"
++.Cr "x=(a b) # NOT x=(a \(aq\(aq b)"
+ .PP
+ Bug reports should be mailed to
+ .Cr "<toby@paccrat.org>" .
+@@ -2152,7 +2152,7 @@
+ to the name of a function being executed/file
+ being sourced.
+ .SH "SEE ALSO"
+-``rc \(em A Shell for Plan 9 and UNIX Systems'',
++\(lqrc \(em A Shell for Plan 9 and UNIX Systems\(rq,
+ Unix Research System,
+ Tenth Edition,
+ Volume 2. (Saunders College Publishing)

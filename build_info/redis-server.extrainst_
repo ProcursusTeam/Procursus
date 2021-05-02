@@ -1,0 +1,18 @@
+#!/bin/sh
+
+set -e 
+
+case "$1" in
+    (install)
+    /bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/io.redis.redis-server.plist
+    ;;
+	(upgrade)
+	/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/io.redis.redis-server.plist
+    /bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/io.redis.redis-server.plist
+	;;
+	(*)
+	exit 0
+	;;
+esac
+
+exit 0

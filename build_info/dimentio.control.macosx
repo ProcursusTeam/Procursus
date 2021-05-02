@@ -1,0 +1,9 @@
+Package: dimentio
+Author: 0x7ff
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_DIMENTIO_V@
+Depends: libdimentio0
+Section: Utilities
+Priority: optional
+Description: PoC tool for setting nonce without triggering KPP/KTRR/PAC.

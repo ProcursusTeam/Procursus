@@ -1,0 +1,15 @@
+Package: wimtools
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_WIMLIB_V@
+Depends: libssl1.1, libwim15
+Section: Utilities
+Priority: optional
+Description: Tools for manipulating Windows Imaging files
+ WIM is an archive format designed primarily for archiving Windows
+ filesystems. It features single-instancing and LZ77-based
+ compression, and is used by Microsoft to distribute and deploy
+ Windows Vista and later.
+ .
+ This package contains a free implementation of the ImageX utility
+ that is used to create WIM files on Windows.

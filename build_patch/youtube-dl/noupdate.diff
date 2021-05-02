@@ -1,19 +1,19 @@
 diff --git a/README.md b/README.md
-index cd88568..54b40af 100644
+index 94c34d8..50b0e4a 100644
 --- a/README.md
 +++ b/README.md
-@@ -53,9 +53,6 @@ Alternatively, refer to the [developer instructions](#developer-instructions) fo
+@@ -54,9 +54,6 @@ Alternatively, refer to the [developer instructions](#developer-instructions) fo
  # OPTIONS
-     -h, --help                       Print this help text and exit
-     --version                        Print program version and exit
--    -U, --update                     Update this program to latest version. Make
--                                     sure that you have sufficient permissions
--                                     (run with sudo if needed)
-     -i, --ignore-errors              Continue on download errors, for example to
-                                      skip unavailable videos in a playlist
-     --abort-on-error                 Abort downloading of further videos (in the
+     -h, --help                           Print this help text and exit
+     --version                            Print program version and exit
+-    -U, --update                         Update this program to latest version.
+-                                         Make sure that you have sufficient
+-                                         permissions (run with sudo if needed)
+     -i, --ignore-errors                  Continue on download errors, for
+                                          example to skip unavailable videos in a
+                                          playlist
 diff --git a/youtube_dl/__init__.py b/youtube_dl/__init__.py
-index 9a659fc..7f706d3 100644
+index e1bd679..28327b5 100644
 --- a/youtube_dl/__init__.py
 +++ b/youtube_dl/__init__.py
 @@ -36,7 +36,6 @@ from .utils import (
@@ -24,7 +24,7 @@ index 9a659fc..7f706d3 100644
  from .downloader import (
      FileDownloader,
  )
-@@ -441,7 +440,12 @@ def _real_main(argv=None):
+@@ -442,7 +441,12 @@ def _real_main(argv=None):
      with YoutubeDL(ydl_opts) as ydl:
          # Update version
          if opts.update_self:
@@ -39,7 +39,7 @@ index 9a659fc..7f706d3 100644
          # Remove cache dir
          if opts.rm_cachedir:
 diff --git a/youtube_dl/options.py b/youtube_dl/options.py
-index 6d5ac62..bfaad24 100644
+index 241cf11..b5f3a45 100644
 --- a/youtube_dl/options.py
 +++ b/youtube_dl/options.py
 @@ -140,7 +140,7 @@ def parseOpts(overrideArguments=None):

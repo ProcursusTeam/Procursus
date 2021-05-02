@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = remove ]
+    then
+    dpkg-divert --package libtest-harness-perl --remove --rename \
+	--divert @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/prove.diverted @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/prove
+fi

@@ -22,8 +22,7 @@ else
 x264: x264-setup
 	rm -rf $(BUILD_STAGE)/x264
 	cd $(BUILD_WORK)/x264 && AS="$(BUILD_WORK)/x264/gas-preprocessor.pl -arch aarch64 -- $(CC) $(CFLAGS)" ./configure \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-lsmash \
 		--disable-swscale \
 		--disable-ffms \
@@ -43,29 +42,29 @@ endif
 x264-package: x264-stage
 	# x264.mk Package Structure
 	rm -rf $(BUILD_DIST)/libx264-{$(X264_SOVERSION),dev} $(BUILD_DIST)/x264
-	mkdir -p $(BUILD_DIST)/libx264-$(X264_SOVERSION)/usr/lib \
-		$(BUILD_DIST)/libx264-dev/usr/lib \
-		$(BUILD_DIST)/x264/usr/bin
-	
+	mkdir -p $(BUILD_DIST)/libx264-$(X264_SOVERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libx264-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/x264/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+
 	# x264.mk Prep libx264-$(X264_SOVERSION)
-	cp -a $(BUILD_STAGE)/x264/usr/lib/libx264.$(X264_SOVERSION).dylib $(BUILD_DIST)/libx264-$(X264_SOVERSION)/usr/lib
+	cp -a $(BUILD_STAGE)/x264/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libx264.$(X264_SOVERSION).dylib $(BUILD_DIST)/libx264-$(X264_SOVERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# x264.mk Prep libx264-dev
-	cp -a $(BUILD_STAGE)/x264/usr/lib/!(*.$(X264_SOVERSION)*) $(BUILD_DIST)/libx264-dev/usr/lib
-	cp -a $(BUILD_STAGE)/x264/usr/include $(BUILD_DIST)/libx264-dev/usr
+	cp -a $(BUILD_STAGE)/x264/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(*.$(X264_SOVERSION)*) $(BUILD_DIST)/libx264-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/x264/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libx264-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# x264.mk Prep x264
-	cp -a $(BUILD_STAGE)/x264/usr/bin/x264 $(BUILD_DIST)/x264/usr/bin
-	
+	cp -a $(BUILD_STAGE)/x264/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/x264 $(BUILD_DIST)/x264/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+
 	# x264.mk Sign
 	$(call SIGN,libx264-$(X264_SOVERSION),general.xml)
 	$(call SIGN,x264,general.xml)
-	
+
 	# x264.mk Make .debs
 	$(call PACK,libx264-$(X264_SOVERSION),DEB_X264_V)
 	$(call PACK,libx264-dev,DEB_X264_V)
 	$(call PACK,x264,DEB_X264_V)
-	
+
 	# x264.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libx264-{$(X264_SOVERSION),dev} $(BUILD_DIST)/x264
 

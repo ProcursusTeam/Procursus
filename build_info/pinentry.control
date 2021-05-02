@@ -2,7 +2,7 @@ Package: pinentry
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_PINENTRY_V@
-Depends: libassuan0, libgpg-error, libncursesw6
+Depends: libassuan0, libgpg-error0, libncursesw6
 Section: Security
 Priority: standard
 Description: Passphrase entry dialog utilizing the Assuan protocol

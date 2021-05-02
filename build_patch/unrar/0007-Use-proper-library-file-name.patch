@@ -1,0 +1,15 @@
+diff --git a/makefile b/makefile
+index 2900c8f..9a54f4a 100644
+--- a/makefile
++++ b/makefile
+@@ -159,7 +159,9 @@ lib:	WHAT=RARDLL
+ lib:	CXXFLAGS+=$(LIBFLAGS)
+ lib:	clean $(OBJECTS) $(LIB_OBJ)
+ 	@rm -f libunrar.*
+-	$(LINK) -shared -o libunrar.so $(LDFLAGS) $(OBJECTS) $(LIB_OBJ)
++	$(LINK) -Wl,-install_name,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libunrar.5.dylib -shared -o libunrar.5.0.dylib $(LDFLAGS) $(OBJECTS) $(LIB_OBJ)
++	ln -s libunrar.5.0.dylib libunrar.5.dylib
++	ln -s libunrar.5.dylib libunrar.dylib
+ 	$(AR) rcs libunrar.a $(OBJECTS) $(LIB_OBJ)
+ 
+ install-unrar:

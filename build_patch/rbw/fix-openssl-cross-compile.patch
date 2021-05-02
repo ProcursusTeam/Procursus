@@ -1,0 +1,11 @@
+--- rbw/Cargo.toml	2021-02-28 22:20:54.084058350 -0600
++++ rbw/Cargo.toml	2021-02-28 22:20:38.822312716 -0600
+@@ -28,7 +28,7 @@
+ log = "0.4"
+ nix = "0.19"
+ oath = "0.10"
+-openssl = "0.10"
++openssl = { version = "0.10", features = ["vendored"]}
+ paw = "1.0"
+ percent-encoding = "2.1"
+ rand = "0.8"

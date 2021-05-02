@@ -1,0 +1,11 @@
+Package: libucl1
+Version: @DEB_UCL_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: standard
+Description: Portable compression library - runtime
+ UCL is a portable lossless data compression library written in ANSI C,
+ implementing a number of compression algorithms that achieve an
+ excellent compression ratio while allowing *very* fast decompression.
+ Decompression requires no additional memory.

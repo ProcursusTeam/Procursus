@@ -21,23 +21,23 @@ jlutil: jlutil-setup
 	$(CC) $(CFLAGS) $(LDFLAGS) -DWANT_MAIN $(BUILD_WORK)/jlutil/*.c \
 		-o $(BUILD_WORK)/jlutil/jlutil
 	$(STRIP) $(BUILD_WORK)/jlutil/jlutil
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/jlutil/jlutil $(BUILD_STAGE)/jlutil/usr/bin/jlutil
+	$(GINSTALL) -Dm755 $(BUILD_WORK)/jlutil/jlutil $(BUILD_STAGE)/jlutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/jlutil
 	touch $(BUILD_WORK)/jlutil/.build_complete
 endif
 
 jlutil-package: jlutil-stage
 	# jlutil.mk Package Structure
 	rm -rf $(BUILD_DIST)/jlutil
-	
+
 	# jlutil.mk Prep jlutil
 	cp -a $(BUILD_STAGE)/jlutil $(BUILD_DIST)/jlutil
-	
+
 	# jlutil.mk Sign
 	$(call SIGN,jlutil,general.xml)
-	
+
 	# jlutil.mk Make .debs
 	$(call PACK,jlutil,DEB_JLUTIL_V)
-	
+
 	# jlutil.mk Build cleanup
 	rm -rf $(BUILD_DIST)/jlutil
 

@@ -1,0 +1,8 @@
+Package: xhost
+Version: @DEB_XHOST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libxau6, libxmuu1, libxext6, libx11-6
+Section: X11
+Description: Server access control program for X11
+ The xhost program is used to add and delete host names or user names to the list allowed to make connections to the X server.

@@ -2,7 +2,7 @@
 set -e
 
 if [ "$1" != "upgrade" ]; then
-	update-alternatives --remove lua-compiler /usr/bin/luac50
-	update-alternatives --remove lua-interpreter /usr/bin/lua50
+	update-alternatives --remove lua-compiler @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/luac50
+	update-alternatives --remove lua-interpreter @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/lua50
 fi
 

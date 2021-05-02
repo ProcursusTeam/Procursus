@@ -34,5 +34,5 @@ A small list of things to keep in mind:
 
 Package update contributions are always welcome, as we can't know everytime one of these many packages has a new version. In this case, there are two options:
 
-* **Fork and pull request.** Most of the time, updating a package is as simple as updating the version number in the .mk file and recompiling. If you have the ability to tes the new version, feel free to go this route. Otherwise...
+* **Fork and pull request.** Most of the time, updating a package is as simple as updating the version number in the .mk file and recompiling. If you have the ability to test the new version, feel free to go this route. Otherwise...
 * **Submit an issue.** Tell us that there's a new version of x package and we will do our best to update it.

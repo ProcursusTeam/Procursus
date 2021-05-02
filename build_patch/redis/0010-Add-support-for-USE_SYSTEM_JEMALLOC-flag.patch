@@ -1,0 +1,123 @@
+From: Chris Lamb <lamby@debian.org>
+Date: Sat, 25 Aug 2018 17:52:13 +0200
+Subject: Add support for USE_SYSTEM_JEMALLOC flag.
+
+https://github.com/antirez/redis/pull/5279
+---
+ deps/Makefile |  2 ++
+ src/Makefile  |  5 +++++
+ src/debug.c   |  4 ++++
+ src/object.c  |  5 +++++
+ src/zmalloc.c | 10 ++++++++++
+ src/zmalloc.h |  4 ++++
+ 6 files changed, 30 insertions(+)
+
+diff --git a/deps/Makefile b/deps/Makefile
+index ff16ee9..7af01ad 100644
+--- a/deps/Makefile
++++ b/deps/Makefile
+@@ -36,7 +36,9 @@ distclean:
+ 	-(cd hiredis && $(MAKE) clean) > /dev/null || true
+ 	-(cd linenoise && $(MAKE) clean) > /dev/null || true
+ 	-(cd lua && $(MAKE) clean) > /dev/null || true
++ifneq ($(USE_SYSTEM_JEMALLOC),yes)
+ 	-(cd jemalloc && [ -f Makefile ] && $(MAKE) distclean) > /dev/null || true
++endif
+ 	-(cd hdr_histogram && $(MAKE) clean) > /dev/null || true
+ 	-(rm -f .make-*)
+ 
+diff --git a/src/Makefile b/src/Makefile
+index 42da739..bf0fd2b 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -228,10 +228,15 @@ ifeq ($(MALLOC),tcmalloc_minimal)
+ endif
+ 
+ ifeq ($(MALLOC),jemalloc)
++ifeq ($(USE_SYSTEM_JEMALLOC),yes)
++	FINAL_CFLAGS+= -DUSE_JEMALLOC -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/jemalloc/include
++	FINAL_LIBS := -ljemalloc $(FINAL_LIBS)
++else
+ 	DEPENDENCY_TARGETS+= jemalloc
+ 	FINAL_CFLAGS+= -DUSE_JEMALLOC -I../deps/jemalloc/include
+ 	FINAL_LIBS := ../deps/jemalloc/lib/libjemalloc.a $(FINAL_LIBS)
+ endif
++endif
+ 
+ ifeq ($(BUILD_TLS),yes)
+ 	FINAL_CFLAGS+=-DUSE_OPENSSL $(OPENSSL_CFLAGS)
+diff --git a/src/debug.c b/src/debug.c
+index a725e5a..4793ca8 100644
+--- a/src/debug.c
++++ b/src/debug.c
+@@ -64,6 +64,10 @@ void printCrashReport(void);
+ void bugReportEnd(int killViaSignal, int sig);
+ void logStackTrace(void *eip, int uplevel);
+ 
++#if defined(USE_JEMALLOC) && (USE_SYSTEM_JEMALLOC == yes)
++#define je_mallctl mallctl
++#endif
++
+ /* ================================= Debugging ============================== */
+ 
+ /* Compute the sha1 of string at 's' with 'len' bytes long.
+diff --git a/src/object.c b/src/object.c
+index ce2f3dc..8e171a7 100644
+--- a/src/object.c
++++ b/src/object.c
+@@ -36,6 +36,11 @@
+ #define strtold(a,b) ((long double)strtod((a),(b)))
+ #endif
+ 
++#if defined(USE_JEMALLOC) && (USE_SYSTEM_JEMALLOC == yes)
++#define je_mallctl mallctl
++#define je_malloc_stats_print malloc_stats_print
++#endif
++
+ /* ===================== Creation and parsing of objects ==================== */
+ 
+ robj *createObject(int type, void *ptr) {
+diff --git a/src/zmalloc.c b/src/zmalloc.c
+index c8d6c82..31c405b 100644
+--- a/src/zmalloc.c
++++ b/src/zmalloc.c
+@@ -70,6 +70,15 @@ void zlibc_free(void *ptr) {
+ #define realloc(ptr,size) tc_realloc(ptr,size)
+ #define free(ptr) tc_free(ptr)
+ #elif defined(USE_JEMALLOC)
++#if USE_SYSTEM_JEMALLOC == yes
++#define malloc(size) malloc(size)
++#define calloc(count,size) calloc(count,size)
++#define realloc(ptr,size) realloc(ptr,size)
++#define free(ptr) free(ptr)
++#define mallocx(size,flags) mallocx(size,flags)
++#define dallocx(ptr,flags) dallocx(ptr,flags)
++#define je_mallctl mallctl
++#else
+ #define malloc(size) je_malloc(size)
+ #define calloc(count,size) je_calloc(count,size)
+ #define realloc(ptr,size) je_realloc(ptr,size)
+@@ -77,6 +86,7 @@ void zlibc_free(void *ptr) {
+ #define mallocx(size,flags) je_mallocx(size,flags)
+ #define dallocx(ptr,flags) je_dallocx(ptr,flags)
+ #endif
++#endif
+ 
+ #define update_zmalloc_stat_alloc(__n) atomicIncr(used_memory,(__n))
+ #define update_zmalloc_stat_free(__n) atomicDecr(used_memory,(__n))
+diff --git a/src/zmalloc.h b/src/zmalloc.h
+index 64bc9fc..724998f 100644
+--- a/src/zmalloc.h
++++ b/src/zmalloc.h
+@@ -50,7 +50,11 @@
+ #include <jemalloc/jemalloc.h>
+ #if (JEMALLOC_VERSION_MAJOR == 2 && JEMALLOC_VERSION_MINOR >= 1) || (JEMALLOC_VERSION_MAJOR > 2)
+ #define HAVE_MALLOC_SIZE 1
++#if USE_SYSTEM_JEMALLOC == yes
++#define zmalloc_size(p) malloc_usable_size(p)
++#else
+ #define zmalloc_size(p) je_malloc_usable_size(p)
++#endif
+ #else
+ #error "Newer version of jemalloc required"
+ #endif

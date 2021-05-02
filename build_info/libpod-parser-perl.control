@@ -1,0 +1,38 @@
+Package: libpod-parser-perl
+Version: @DEB_LIBPOD-PARSER-PERL_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Pre-Depends: perl (>= 5.32.1)
+Section: Perl
+Homepage: https://metacpan.org/release/Pod-Parser
+Description: modules for parsing/translating POD format documents
+ This package contains the following mdoules for using Perl5 "pod" (Plain Old
+ Documentation).
+ .
+ "Pod::Parser", which provides a base class for parsing and selecting sections
+ of POD documentation from an input stream.
+ .
+ "Pod::Select", which provides a subclass of Pod::Parser and an exported
+ function named "podselect()" to dump selected sections of raw pod
+ documentation from an input stream.
+ .
+ "Pod::PlainText", which is a replacement for "Pod::Text" and the
+ corresponding "pod2text()" function. It is derived from the Pod::Parser
+ class. As of perl 5.00_58, Pod::PlainText has been re-written by Russ
+ Allbery, and has been renamed to Pod::Text in the core Perl distribution
+ (replacing the previous implementation of Pod::Text). The Pod::PlainText
+ module is still provided with Pod::Parser solely for backward
+ compatibility.
+ .
+ "Pod::InputObjects": Some input objects needed by Pod::Parser, and for
+ advanced users of Pod::Parser that need more about a command besides its name
+ and text.
+ .
+ "Pod::ParseUtils", a module with several object-oriented helpers for POD
+ parsing and processing. Probably the most important is Pod::Hyperlink for
+ parsing and expanding POD hyperlinks L<...>.
+ .
+ This distribution is considered to be legacy - it has been superseded by
+ Pod::Simple which brings more robustness, unicode and various other benefits.
+ It has been removed from perl core after 5.31.0, and is packaged only for
+ backward compatibility.

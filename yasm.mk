@@ -16,8 +16,7 @@ yasm:
 else
 yasm: yasm-setup
 	cd $(BUILD_WORK)/yasm && ./configure -C \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-python \
 		--disable-debug
 	+$(MAKE) -C $(BUILD_WORK)/yasm
@@ -31,21 +30,21 @@ endif
 yasm-package: yasm-stage
 	# yasm.mk Package Structure
 	rm -rf $(BUILD_DIST)/yasm $(BUILD_DIST)/libyasm-dev
-	mkdir -p $(BUILD_DIST)/{yasm/usr,libyasm-dev/usr}
-	
+	mkdir -p $(BUILD_DIST)/{yasm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX),libyasm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)}
+
 	# yasm.mk Prep yasm
-	cp -a $(BUILD_STAGE)/yasm/usr/bin $(BUILD_DIST)/yasm/usr
+	cp -a $(BUILD_STAGE)/yasm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/yasm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# yasm.mk Prep libyasm-dev
-	cp -a $(BUILD_STAGE)/yasm/usr/{include,lib} $(BUILD_DIST)/libyasm-dev/usr
-	
+	cp -a $(BUILD_STAGE)/yasm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib} $(BUILD_DIST)/libyasm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+
 	# yasm.mk Sign
 	$(call SIGN,yasm,general.xml)
-	
+
 	# yasm.mk Make .debs
 	$(call PACK,yasm,DEB_YASM_V)
 	$(call PACK,libyasm-dev,DEB_YASM_V)
-	
+
 	# yasm.mk Build cleanup
 	rm -rf $(BUILD_DIST)/yasm $(BUILD_DIST)/libyasm-dev
 

@@ -18,16 +18,25 @@ diff --color -urN lua-5.3.3/src/Makefile lua/src/Makefile
  ALL_A= $(LUA_A)
  
  # Targets start here.
-@@ -59,6 +60,9 @@
+@@ -59,11 +60,14 @@
  	$(AR) $@ $(BASE_O)
  	$(RANLIB) $@
- 
+
+-$(LUA_T): $(LUA_O) $(LUA_A)
+-	$(CC) -o $@ $(LDFLAGS) $(LUA_O) $(LUA_A) $(LIBS)
 +$(LUA_SO): $(CORE_O) $(LIB_O)
-+	$(CC) -dynamiclib -install_name /usr/lib/liblua$(LUAVER).$(SOVER).dylib -o $@ $? $(LDFLAGS)
++	$(CC) -dynamiclib -install_name $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua$(LUAVER).$(SOVER).dylib -o $@ $? $(LDFLAGS)
+
+-$(LUAC_T): $(LUAC_O) $(LUA_A)
+-	$(CC) -o $@ $(LDFLAGS) $(LUAC_O) $(LUA_A) $(LIBS)
++$(LUA_T): $(LUA_O) $(LUA_SO)
++	$(CC) -o $@ $(LDFLAGS) $(LUA_O) $(LUA_SO) $(LIBS)
 +
- $(LUA_T): $(LUA_O) $(LUA_A)
- 	$(CC) -o $@ $(LDFLAGS) $(LUA_O) $(LUA_A) $(LIBS)
- 
++$(LUAC_T): $(LUAC_O) $(LUA_SO)
++	$(CC) -o $@ $(LDFLAGS) $(LUAC_O) $(LUA_SO) $(LIBS)
+
+ clean:
+ 	$(RM) $(ALL_T) $(ALL_O)
 @@ -110,7 +114,7 @@
  	$(MAKE) $(ALL) SYSCFLAGS="-DLUA_USE_LINUX" SYSLIBS="-Wl,-E -ldl -lreadline"
  
@@ -45,7 +54,7 @@ diff --color -urN lua-5.3.3/src/luaconf.h lua/src/luaconf.h
  #else			/* }{ */
  
 -#define LUA_ROOT	"/usr/local/"
-+#define LUA_ROOT	"/usr"
++#define LUA_ROOT	"@MEMO_PREFIX@@MEMO_SUB_PREFIX@/"
  #define LUA_LDIR	LUA_ROOT "share/lua/" LUA_VDIR "/"
  #define LUA_CDIR	LUA_ROOT "lib/lua/" LUA_VDIR "/"
  #define LUA_PATH_DEFAULT  \

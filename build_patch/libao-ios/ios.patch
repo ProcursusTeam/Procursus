@@ -1,0 +1,21 @@
+diff -ruN libao-1.2.2/src/plugins/macosx/ao_macosx.c libao/src/plugins/macosx/ao_macosx.c
+--- libao-1.2.2/src/plugins/macosx/ao_macosx.c	2016-11-14 16:03:30.000000000 +0800
++++ libao/src/plugins/macosx/ao_macosx.c	2021-04-01 22:16:47.961978411 +0800
+@@ -74,7 +74,7 @@
+ {
+   /* Stuff describing the CoreAudio device */
+   AudioDeviceID                outputDevice;
+-  ComponentInstance            outputAudioUnit;
++  AudioComponentInstance       outputAudioUnit;
+   int                          output_p;
+ 
+   /* Keep track of whether the output stream has actually been
+@@ -418,7 +418,7 @@
+ 
+   /* Locate the default output audio unit */
+   desc.componentType = kAudioUnitType_Output;
+-  desc.componentSubType = kAudioUnitSubType_HALOutput;
++  desc.componentSubType = kAudioUnitSubType_RemoteIO;
+   desc.componentManufacturer = kAudioUnitManufacturer_Apple;
+   desc.componentFlags = 0;
+   desc.componentFlagsMask = 0;

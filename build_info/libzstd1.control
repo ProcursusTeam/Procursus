@@ -3,7 +3,9 @@ Section: Libraries
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_ZSTD_V@
-Replaces: zstd (<< 1.4.5-2)
-Conflicts: zstd (<< @DEB_ZSTD_V@)
 Depends: liblz4-1, liblzma5 (>= 5.2.5)
 Description: fast lossless compression algorithm
+ Zstd, short for Zstandard, is a fast lossless compression algorithm, targeting
+ real-time compression scenarios at zlib-level compression ratio.
+ .
+ This package contains the shared library.

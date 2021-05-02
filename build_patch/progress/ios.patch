@@ -1,0 +1,55 @@
+diff --color -urN progress-0.16/Makefile progress/Makefile
+--- progress-0.16/Makefile	2021-03-04 05:26:40.000000000 -0500
++++ progress/Makefile	2021-03-29 16:01:34.470091563 -0400
+@@ -1,8 +1,7 @@
+ OBJ = progress
+ CFLAGS ?= -g
+-override CFLAGS += -Wall -D_FILE_OFFSET_BITS=64
++override CFLAGS += -Wall -D_FILE_OFFSET_BITS=64 -I.
+ override LDFLAGS += -lm
+-UNAME := $(shell uname)
+ PKG_CONFIG ?= pkg-config
+ ifeq ($(UNAME), Linux)
+     ifeq (, $(shell which $(PKG_CONFIG) 2> /dev/null))
+@@ -23,7 +22,7 @@
+ BINDIR = $(PREFIX)/bin
+ MANDIR = $(PREFIX)/share/man/man1
+ 
+-$(OBJ) : progress.o sizes.o hlist.o
++$(OBJ) : progress.o sizes.o hlist.o wordexp.o
+ 	$(CC) -Wall $^ -o $@ $(LDFLAGS)
+ %.o : %.c
+ 	$(CC) $(CFLAGS) -c $^
+diff --color -urN progress-0.16/wordexp.c progress/wordexp.c
+--- progress-0.16/wordexp.c	2021-03-29 16:01:03.994022182 -0400
++++ progress/wordexp.c	2021-03-29 16:01:22.382064044 -0400
+@@ -26,7 +26,6 @@
+  * SUCH DAMAGE.
+  */
+ 
+-#include "namespace.h"
+ #include <sys/cdefs.h>
+ #include <sys/types.h>
+ #include <assert.h>
+@@ -39,6 +38,9 @@
+ #include <unistd.h>
+ #include <wordexp.h>
+ 
++#define __static_cast(x,y) (x)y
++#define _DIAGASSERT(e) (__static_cast(void,0))
++
+ #if defined(LIBC_SCCS) && !defined(lint)
+ #if 0
+ __FBSDID("$FreeBSD: /repoman/r/ncvs/src/lib/libc/gen/wordexp.c,v 1.5 2004/04/09 11:32:32 tjr Exp $");
+diff --color -urN progress-0.16/wordexp.h progress/wordexp.h
+--- progress-0.16/wordexp.h	2021-03-29 16:01:14.274045586 -0400
++++ progress/wordexp.h	2021-03-29 16:01:22.382064044 -0400
+@@ -32,8 +32,6 @@
+ #define	_WORDEXP_H_
+ 
+ #include <sys/cdefs.h>
+-#include <sys/featuretest.h>
+-#include <machine/ansi.h>
+ 
+ #ifdef	_BSD_SIZE_T_
+ typedef	_BSD_SIZE_T_	size_t;

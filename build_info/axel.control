@@ -1,0 +1,19 @@
+Package: axel
+Version: @DEB_AXEL_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Depends: libssl1.1 (>= 1.1.0)
+Description: A light command line download accelerator
+ Axel tries to accelerate the downloading process by using multiple
+ connections for one file, similar to DownThemAll and other famous
+ programs. It can also use multiple mirrors for one download.
+ .
+ Using Axel, you will get files faster from the Internet. So, Axel can speed up
+ a download up to 60% (approximately, according to some tests).
+ .
+ Axel supports HTTP, HTTPS, FTP and FTPS protocols.
+ .
+ Axel tries to be as light as possible, so it might be useful as a wget
+ clone (and other console based programs) on byte-critical systems.

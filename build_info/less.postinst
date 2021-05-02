@@ -4,10 +4,9 @@ set -e
 
 case "$1" in
   configure)
-    update-alternatives --quiet --install /usr/bin/pager pager \
-      /usr/bin/less 77 --slave /usr/share/man/man1/pager.1.zst \
-      pager.1.zst /usr/share/man/man1/less.1.zst
-    update-alternatives --quiet --remove pager /bin/less
+    update-alternatives --quiet --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/pager pager \
+      @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/less 77 --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/pager.1.zst \
+      pager.1.zst @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/less.1.zst
   ;;
   abort-upgrade|abort-remove|abort-deconfigure)
   ;;

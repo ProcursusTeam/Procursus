@@ -1,0 +1,12 @@
+Package: sgmlspl
+Version: @DEB_LIBSGMLS-PERL_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Pre-Depends: perl (>= 5.32.1)
+Depends: libsgmls-perl (= @DEB_LIBSGMLS-PERL_V@)
+Section: Perl
+Homepage: https://metacpan.org/release/SGMLSpm
+Description: SGMLS-based example Perl script for processing SGML parser output
+ This is an example of a Perl script to post-process SGML parser output
+ using the SGMLS Perl modules.  To make sensible use of this package
+ you will need to install a suitable SGML parser as well.

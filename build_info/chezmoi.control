@@ -1,0 +1,12 @@
+Package: chezmoi
+Version: @DEB_CHEZMOI_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Homepage: https://github.com/twpayne/chezmoi
+Description: securely manage your dotfiles across multiple machines
+ chezmoi helps you manage your personal configuration files (like ~/.zshrc) across multiple machines.
+ chezmoi is helpful if you have spent time customizing the tools you use and want to keep machines in sync.
+ chezmoi has support for securely managing secrets (e.g. private keys) by encrypting files with gpg.
+ chezmoi's documentation and source can be found here: https://github.com/twpayne/chezmoi

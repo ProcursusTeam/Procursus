@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+echo "Using 'starship eval ...' normally will NOT WORK!"
+echo ""
+echo "You need to put the contents of 'starship init [shell] --print-full-init' in your bashrc/zshrc,"
+echo "or in a file that you source in bashrc/zshrc!"
+echo ""
+echo "EXAMPLE:"
+echo "% starship init zsh --print-full-init > .zstarship"
+echo "% chmod +x .zstarship"
+echo "% echo \"source ~/.zstarship\" >> ~/.zshrc"
+
+exit 0

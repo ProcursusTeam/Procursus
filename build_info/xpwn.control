@@ -1,0 +1,8 @@
+Package: xpwn
+Version: @DEB_XPWN_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libssl1.1
+Section: Development
+Priority: optional
+Description: portable, barebones PwnageTool implementation

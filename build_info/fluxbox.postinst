@@ -1,0 +1,36 @@
+#!/bin/sh
+#
+#  fluxbox postinst
+#
+#  Shamelessly ripped off of Marcelo Magallon's script
+#     by Brent Fulgham <bfulgham@debian.org>
+#
+# Ripped off blackbox's postinst, by Matt Hope <dopey@debian.org>
+#
+set -e
+
+manager=@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/startfluxbox
+
+add_wm_entry ()
+{
+    update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/x-window-manager \
+        x-window-manager $manager 50 \
+          --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/x-window-manager.1.zst \
+        x-window-manager.1.zst @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/fluxbox.1.zst
+}
+
+case "$1" in
+    configure)
+        add_wm_entry
+    ;;
+
+    abort-*)
+        # how did we get here?  Force a non-zero exit code
+        exit 1
+    ;;
+
+    *)
+    ;;
+esac
+
+#DEBHELPER#

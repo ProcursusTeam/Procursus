@@ -1,0 +1,13 @@
+Package: libapr1-dev
+Version: @DEB_APR_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Depends: libapr1 (=@DEB_APR_V@), python3:any
+Description: Apache Portable Runtime Library - Development Headers
+ APR is Apache's Portable Runtime Library, designed to be a support library
+ that provides a predictable and consistent interface to underlying
+ platform-specific implementations.
+ .
+ This package contains development headers for APR.

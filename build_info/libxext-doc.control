@@ -2,7 +2,7 @@ Package: libxext-doc
 Maintainer: @DEB_MAINTAINER@
 Architecture: all
 Version: @DEB_LIBXEXT_V@
-Section: X_Window
+Section: X11
 Priority: optional
 Description: X11 miscellaneous extensions library (documentation)
  libXext provides an X Window System client interface to several extensions to

@@ -1,0 +1,10 @@
+Package: pojavlauncher
+Author: DuyKhanhTran
+Version: @DEB_POJAVLAUNCHER_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: openjdk-16-jre
+Section: Games
+Priority: optional
+Description: Minecraft: Java Edition launcher for iOS, based on PojavLauncher Android.
+Name: PojavLauncher iOS

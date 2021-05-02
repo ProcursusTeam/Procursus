@@ -2,10 +2,9 @@ Package: openssh-server
 Version: @DEB_OPENSSH_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libssl1.1, openssh-client (= @DEB_OPENSSH_V@), openssh-sftp-server, libcrypt2
+Depends: libssl1.1, openssh-client (= @DEB_OPENSSH_V@), openssh-sftp-server, libcrypt2, libpam2, libmd0
 Replaces: openssh (<< 1:0)
 Conflicts: com.midnightchips.localhostssh, openssh (<< 1:0)
 Section: Networking
 Priority: important
 Description: secure shell (SSH) server, for secure access from remote machines
-Name: OpenSSH Server

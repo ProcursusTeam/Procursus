@@ -3,6 +3,9 @@ Section: Development
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_ZSTD_V@
-Conflicts: zstd (<< @DEB_ZSTD_V@)
-Depends: libzstd1 (= @DEB_ZSTD_V@)
+Depends: libzstd1 (= @DEB_ZSTD_V@), liblzma-dev, liblz4-dev
 Description: fast lossless compression algorithm -- development files
+ Zstd, short for Zstandard, is a fast lossless compression algorithm, targeting
+ real-time compression scenarios at zlib-level compression ratio.
+ .
+ This package contains the headers and static library.

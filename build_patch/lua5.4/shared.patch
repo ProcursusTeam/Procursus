@@ -18,16 +18,25 @@ diff --color -urN lua-5.4.2/src/Makefile lua-5.4-dylib/src/Makefile
  ALL_A= $(LUA_A)
  
  # Targets start here.
-@@ -60,6 +61,9 @@
+@@ -60,11 +61,14 @@
  	$(AR) $@ $(BASE_O)
  	$(RANLIB) $@
- 
+
+-$(LUA_T): $(LUA_O) $(LUA_A)
+-	$(CC) -o $@ $(LDFLAGS) $(LUA_O) $(LUA_A) $(LIBS)
 +$(LUA_SO): $(CORE_O) $(LIB_O)
-+	$(CC) -dynamiclib -install_name /usr/lib/liblua$(LUAVER).$(SOVER).dylib -o $@ $? $(LDFLAGS)
++	$(CC) -dynamiclib -install_name $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua$(LUAVER).$(SOVER).dylib -o $@ $? $(LDFLAGS)
+
+-$(LUAC_T): $(LUAC_O) $(LUA_A)
+-	$(CC) -o $@ $(LDFLAGS) $(LUAC_O) $(LUA_A) $(LIBS)
++$(LUA_T): $(LUA_O) $(LUA_SO)
++	$(CC) -o $@ $(LDFLAGS) $(LUA_O) $(LUA_SO) $(LIBS)
 +
- $(LUA_T): $(LUA_O) $(LUA_A)
- 	$(CC) -o $@ $(LDFLAGS) $(LUA_O) $(LUA_A) $(LIBS)
- 
++$(LUAC_T): $(LUAC_O) $(LUA_SO)
++	$(CC) -o $@ $(LDFLAGS) $(LUAC_O) $(LUA_SO) $(LIBS)
+
+ test:
+ 	./lua -v
 diff --color -urN lua-5.4.2/src/luaconf.h lua-5.4-dylib/src/luaconf.h
 --- lua-5.4.2/src/luaconf.h	2020-11-13 10:32:02.000000000 -0500
 +++ lua-5.4-dylib/src/luaconf.h	2021-01-14 14:24:49.437766947 -0500
@@ -36,7 +45,7 @@ diff --color -urN lua-5.4.2/src/luaconf.h lua-5.4-dylib/src/luaconf.h
  #else			/* }{ */
  
 -#define LUA_ROOT	"/usr/local/"
-+#define LUA_ROOT	"/usr"
++#define LUA_ROOT	"@MEMO_PREFIX@@MEMO_SUB_PREFIX@/"
  #define LUA_LDIR	LUA_ROOT "share/lua/" LUA_VDIR "/"
  #define LUA_CDIR	LUA_ROOT "lib/lua/" LUA_VDIR "/"
  

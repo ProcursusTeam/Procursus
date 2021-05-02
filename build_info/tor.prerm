@@ -1,7 +1,14 @@
 #!/bin/sh
 
-if [[ $1 == remove || $1 == purge ]]; then
-    /usr/bin/launchctl unload /Library/LaunchDaemons/org.torproject.tor.plist
-fi
+set -e
+
+case "$1" in
+	(remove|purge)
+	/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/org.torproject.tor.plist
+	;;
+	(*)
+	exit 0
+	;;
+esac
 
 exit 0

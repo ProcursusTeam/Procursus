@@ -2,12 +2,8 @@ Package: ca-certificates
 Version: @DEB_CACERTS_V@
 Architecture: all
 Maintainer: @DEB_MAINTAINER@
-Depends: firmware (>= 2.0)
-Conflicts: org.thebigboss.cacerts, openssl (<< 1.0.2r)
-Replaces: org.thebigboss.cacerts
-Provides: org.thebigboss.cacerts
 Section: Utilities
 Priority: optional
 Multi-Arch: foreign
 Description: CA certs for curl, wget, git.
-Name: CA Certs
+Name: CA Certificates

@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -eu
+
+if [ "${1}" = "purge" ]
+then
+	rmuser -y redis || true
+	pw group del redis || true
+	rm -rf @MEMO_PREFIX@/var/lib/redis @MEMO_PREFIX@/var/log/redis @MEMO_PREFIX@/etc/redis
+fi
+
+#DEBHELPER#
+
+exit 0

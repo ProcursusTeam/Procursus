@@ -1,0 +1,16 @@
+Package: libglu1-mesa-dev
+Version: @DEB_LIBGLU_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Provides: libglu-dev
+Conflicts: libglu-dev
+Replaces: libglu-dev
+Depends: libglu1-mesa (= @DEB_LIBGLU_V@), libgl-dev
+Priority: optional
+Homepage: https://mesa3d.org/
+Description: Mesa OpenGL utility library -- development files
+ Includes headers and static libraries for compiling programs with GLU.
+ .
+ For a complete description of GLU, please look at the libglu1-mesa
+ package.

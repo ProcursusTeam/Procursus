@@ -1,0 +1,20 @@
+#!/bin/sh
+
+set -eu
+
+CONFFILE="@MEMO_PREFIX@/etc/redis/redis.conf"
+
+case "$1" in
+	(remove)
+	/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/io.redis.redis-server.plist
+	;;
+    (purge)
+    /bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/io.redis.redis-server.plist
+    @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/dpkg-statoverride --remove ${CONFFILE} || test $? -eq 2
+    ;;
+	(*)
+	exit 0
+	;;
+esac
+
+exit 0

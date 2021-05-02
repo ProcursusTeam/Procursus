@@ -1,0 +1,19 @@
+Package: libmd-dev
+Version: @DEB_LIBMD_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Depends: libmd0 (= @DEB_LIBMD_V@)
+Description: message digest functions from BSD systems - development files
+ This package contains the header files and static library needed to
+ compile applications that use libmd.
+ .
+ The currently provided hashing algorithms are:
+ .
+  * MD2
+  * MD4
+  * MD5
+  * RIPEMD-160
+  * SHA-1
+  * SHA-2 (SHA-256, SHA-384 and SHA-512)

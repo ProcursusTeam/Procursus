@@ -1,0 +1,53 @@
+diff -urN a/hw/dmx/glxProxy/global.c.orig b/hw/dmx/glxProxy/global.c
+--- a/hw/dmx/glxProxy/global.c.orig	2021-04-12 02:49:41.138140656 -0400
++++ b/hw/dmx/glxProxy/global.c	2021-04-12 02:51:16.691165835 -0400
+@@ -34,26 +34,26 @@
+ ** The last context used by the server.  It is the context that is current
+ ** from the server's perspective.
+ */
+-__GLXcontext *__glXLastContext;
++__GLXcontext *__glXLastContext = 0;
+
+ /*
+ ** X resources.
+ */
+-RESTYPE __glXContextRes;
+-RESTYPE __glXClientRes;
+-RESTYPE __glXPixmapRes;
+-RESTYPE __glXWindowRes;
+-RESTYPE __glXPbufferRes;
++RESTYPE __glXContextRes = 0;
++RESTYPE __glXClientRes = 0;
++RESTYPE __glXPixmapRes = 0;
++RESTYPE __glXWindowRes = 0;
++RESTYPE __glXPbufferRes = 0;
+
+ /*
+ ** Error codes with the extension error base already added in.
+ */
+-int __glXerrorBase;
+-int __glXBadContext, __glXBadContextState, __glXBadDrawable, __glXBadPixmap;
+-int __glXBadContextTag, __glXBadCurrentWindow;
+-int __glXBadRenderRequest, __glXBadLargeRequest;
+-int __glXUnsupportedPrivateRequest;
+-int __glXBadFBConfig, __glXBadPbuffer;
++int __glXerrorBase = 0;
++int __glXBadContext = 0, __glXBadContextState = 0, __glXBadDrawable = 0, __glXBadPixmap = 0;
++int __glXBadContextTag = 0, __glXBadCurrentWindow = 0;
++int __glXBadRenderRequest = 0, __glXBadLargeRequest = 0;
++int __glXUnsupportedPrivateRequest = 0;
++int __glXBadFBConfig = 0, __glXBadPbuffer = 0;
+
+ /*
+ ** Reply for most singles.
+@@ -64,7 +64,7 @@
+ ** A set of state for each client.  The 0th one is unused because client
+ ** indices start at 1, not 0.
+ */
+-__GLXclientState *__glXClients[MAXCLIENTS + 1];
++__GLXclientState *__glXClients[MAXCLIENTS + 1] = {0};
+
+-int __glXVersionMajor;
+-int __glXVersionMinor;
++int __glXVersionMajor = 0;
++int __glXVersionMinor = 0;

@@ -1,0 +1,15 @@
+Package: ruby3.0
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_RUBY_V@
+Depends: libruby3.0 (= @DEB_RUBY_V@), libjemalloc2, libgmp10
+Section: Scripting
+Priority: optional
+Description: Interpreter of object-oriented scripting language Ruby
+ Ruby is the interpreted scripting language for quick and easy
+ object-oriented programming.  It has many features to process text
+ files and to do system management tasks (as in perl).  It is simple,
+ straight-forward, and extensible.
+ .
+ In the name of this package, `3.0' indicates the Ruby library compatibility
+ version. This package currently provides the `3.0.x' branch of Ruby.

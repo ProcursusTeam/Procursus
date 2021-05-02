@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -e
+
+getHiddenUserUid()
+{
+    local __UIDS=$(dscl . -list /Users UniqueID | awk '{print $2}' | sort -ugr)
+
+    local __NewUID
+    for __NewUID in $__UIDS
+    do
+        if [[ $__NewUID -lt 499 ]] ; then
+            break;
+        fi
+    done
+
+    echo $((__NewUID+1))
+}
+
+if [ "$1" = 'configure' ]; then
+    if ! id _apt &>/dev/null; then
+        # add unprivileged user for the apt methods
+        dscl . -create /Users/_apt UserShell /usr/bin/false
+        dscl . -create /Users/_apt NSFHomeDirectory /var/empty
+        dscl . -create /Users/_apt PrimaryGroupID -1
+        dscl . -create /Users/_apt UniqueID $(getHiddenUserUid)
+        dscl . -create /Users/_apt RealName "APT Sandbox User"
+    fi
+fi
+
+rm -f @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/apt*.dpkg-tmp

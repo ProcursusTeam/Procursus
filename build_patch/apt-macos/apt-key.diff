@@ -1,0 +1,39 @@
+diff -urN apt-2.2.0/cmdline/apt-key.in apt/cmdline/apt-key.in
+--- apt-2.2.0/cmdline/apt-key.in	2021-01-13 11:37:30.000000000 -0500
++++ apt/cmdline/apt-key.in	2021-02-23 22:28:00.000000000 -0500
+@@ -73,7 +73,7 @@
+ 	    unset TMPDIR
+ 	fi
+     fi
+-    GPGHOMEDIR="$(mktemp --directory --tmpdir 'apt-key-gpghome.XXXXXXXXXX')"
++    GPGHOMEDIR="$(gmktemp --directory --tmpdir 'apt-key-gpghome.XXXXXXXXXX')"
+     CURRENTTRAP="${CURRENTTRAP} cleanup_gpg_home;"
+     trap "${CURRENTTRAP}" 0 HUP INT QUIT ILL ABRT FPE SEGV PIPE TERM
+     if [ -z "$GPGHOMEDIR" ]; then
+@@ -287,7 +287,7 @@
+ 	# we can't just modify pointed to files as these might be in /usr or something
+ 	local REALTARGET
+ 	if [ -L "$DEARMOR" ]; then
+-	    REALTARGET="$(readlink -f "$DEARMOR")"
++	    REALTARGET="$(greadlink -f "$DEARMOR")"
+ 	    mv -f "$DEARMOR" "${DEARMOR}.dpkg-tmp"
+ 	    cp -a "$REALTARGET" "$DEARMOR"
+ 	fi
+@@ -359,7 +359,7 @@
+ 	local TRUSTEDPARTS="/etc/apt/trusted.gpg.d"
+ 	eval "$(apt-config shell TRUSTEDPARTS Dir::Etc::TrustedParts/d)"
+ 	if [ -d "$TRUSTEDPARTS" ]; then
+-	    TRUSTEDPARTS="$(readlink -f "$TRUSTEDPARTS")"
++	    TRUSTEDPARTS="$(greadlink -f "$TRUSTEDPARTS")"
+ 	    local TRUSTEDPARTSLIST="$(cd /; find "$TRUSTEDPARTS" -mindepth 1 -maxdepth 1 \( -name '*.gpg' -o -name '*.asc' \))"
+ 	    for trusted in $(echo "$TRUSTEDPARTSLIST" | sort); do
+ 		if accessible_file_exists "$trusted" && is_supported_keyring "$trusted"; then
+@@ -487,7 +487,7 @@
+     # does the same as:
+     # foreach_keyring_do 'import_keys_from_keyring' "${GPGHOMEDIR}/pubring.gpg"
+     # but without using gpg, just cat and find
+-    local PUBRING="$(readlink -f "${GPGHOMEDIR}")/pubring.gpg"
++    local PUBRING="$(greadlink -f "${GPGHOMEDIR}")/pubring.gpg"
+     rm -f "$PUBRING"
+     touch "$PUBRING"
+     foreach_keyring_do 'catfile' "$PUBRING"

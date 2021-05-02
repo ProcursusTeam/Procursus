@@ -1,0 +1,20 @@
+Description: improve error handling in the which() function
+Author: Jakub Wilk <jwilk@debian.org>
+Forwarded: yes
+Last-Update: 2014-02-06
+
+--- a/which.c
++++ b/which.c
+@@ -109,7 +109,11 @@
+ #endif
+ 		if (ngroups) {	
+ 			gidset = ealloc(ngroups * sizeof(GETGROUPS_T));
+-			getgroups(ngroups, gidset);
++			ngroups = getgroups(ngroups, gidset);
++			if (ngroups < 0) {
++				uerror("getgroups");
++				rc_exit(1);
++			}
+ 		}
+ #endif
+ 	}

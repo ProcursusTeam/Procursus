@@ -19,15 +19,13 @@ else
 screen: screen-setup ncurses libxcrypt
 	cd $(BUILD_WORK)/screen && ./autogen.sh
 	cd $(BUILD_WORK)/screen && ./configure \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
-		--mandir=/usr/share/man \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-colors256 \
 		--disable-pam \
-		--with-sys-screenrc=/etc/screenrc
+		--with-sys-screenrc=$(MEMO_PREFIX)/etc/screenrc
 	+$(MAKE) -C $(BUILD_WORK)/screen install \
 		DESTDIR="$(BUILD_STAGE)/screen"
-	rm -f $(BUILD_STAGE)/screen/usr/bin/screen && mv $(BUILD_STAGE)/screen/usr/bin/screen{-$(SCREEN_VERSION),}
+	rm -f $(BUILD_STAGE)/screen/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/screen && mv $(BUILD_STAGE)/screen/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/screen{-$(SCREEN_VERSION),}
 	mkdir -p $(BUILD_STAGE)/screen/etc
 	cp -a $(BUILD_WORK)/screen/etc/etcscreenrc $(BUILD_STAGE)/screen/etc/screenrc
 	touch $(BUILD_WORK)/screen/.build_complete
@@ -36,16 +34,16 @@ endif
 screen-package: screen-stage
 	# screen.mk Package Structure
 	rm -rf $(BUILD_DIST)/screen
-	
+
 	# screen.mk Prep screen
 	cp -a $(BUILD_STAGE)/screen $(BUILD_DIST)
-	
+
 	# screen.mk Sign
 	$(call SIGN,screen,general.xml)
-	
+
 	# screen.mk Make .debs
 	$(call PACK,screen,DEB_SCREEN_V)
-	
+
 	# screen.mk Build cleanup
 	rm -rf $(BUILD_DIST)/screen
 

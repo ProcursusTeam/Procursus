@@ -1,0 +1,12 @@
+Package: libapt-pkg-perl
+Version: @DEB_LIBAPT-PKG-PERL_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Pre-Depends: perl (>= 5.32.1)
+Depends: libapt-pkg6.0 (>= 2.3.0)
+Section: Perl
+Homepage: https://salsa.debian.org/bod/libapt-pkg-perl
+Description: Perl interface to libapt-pkg
+ A Perl interface to APT's libapt-pkg which provides modules for configuration
+ file/command line parsing, version comparison, inspection of the binary
+ package cache and source package details.

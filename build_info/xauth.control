@@ -1,0 +1,10 @@
+Package: xauth
+Version: @DEB_XAUTH_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libxau6, libxmuu1, libxext6, libx11-6
+Section: X11
+Description: X authentication utility
+ xauth is a small utility to read and manipulate Xauthority files, which
+ are used by servers and clients alike to control authentication and access
+ to X sessions.

@@ -1,0 +1,15 @@
+$NetBSD: patch-modules_pam__unix_Makefile.in,v 1.1 2020/01/30 11:17:05 triaxx Exp $
+
+Make pam_unix.so module linked to libcrypt (PR pkg/54907).
+
+--- modules/pam_unix/Makefile.in.orig	2019-02-24 20:21:23.000000000 +0000
++++ modules/pam_unix/Makefile.in
+@@ -340,7 +340,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/include
+ module_LTLIBRARIES = pam_unix.la
+ pam_unix_la_SOURCES = pam_unix.c
+ pam_unix_la_LDFLAGS = -no-undefined -module -version-info $(LIB_MAJ) \
+-	-export-symbols-regex '^pam_sm_'
++	-export-symbols-regex '^pam_sm_' $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcrypt.a
+ 
+ @WITH_SYSTEM_LIBPAM_FALSE@pam_unix_la_LIBADD = $(top_builddir)/lib/libpam/libpam.la $(CRYPT_LIBS)
+ @WITH_SYSTEM_LIBPAM_TRUE@pam_unix_la_LIBADD = $(SYSTEM_LIBPAM)

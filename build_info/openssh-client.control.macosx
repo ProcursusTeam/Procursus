@@ -1,0 +1,8 @@
+Package: openssh-client
+Version: @DEB_OPENSSH_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libssl1.1, libmd0
+Section: Networking
+Priority: important
+Description: secure shell (SSH) client, for secure access to remote machines

@@ -1,0 +1,13 @@
+Package: doas
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_OPENDOAS_V@
+Section: Administration
+Priority: optional
+Homepage: https://github.com/Duncaen/OpenDoas
+Description: minimal replacement for sudo
+ OpenDoas: a portable version of OpenBSD's doas command
+ doas is a minimal replacement for the venerable sudo. It was initially written
+ by Ted Unangst of the OpenBSD project to provide 95% of the features of sudo
+ with a fraction of the codebase.
+Tag: purpose::console, role::hacker

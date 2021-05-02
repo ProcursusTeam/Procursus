@@ -1,0 +1,13 @@
+Package: fluxbox
+Version: @DEB_FLUXBOX_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Provides: x-window-manager
+Depends: libimlib2-1, libx11-6, libxext6, libxft2, libxinerama1, libxpm4, libxrandr2, libxrender1, libfontconfig1, libfreetype6, libfribidi0
+Description: Highly configurable and low resource X11 Window manager
+ Fairly similar to blackbox, from which it is derived, but has been
+ extended with features such as pwm-style window tabs, configurable
+ key bindings, toolbar, and an iconbar. It also includes some cosmetic
+ fixes over blackbox.
+ .
+ This package doesn't currently contain support for GNOME and KDE.

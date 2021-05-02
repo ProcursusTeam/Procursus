@@ -1,0 +1,19 @@
+Package: libmpack0
+Version: @DEB_LIBMPACK_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Homepage: https://github.com/libmpack/libmpack
+Description: small binary serialization/RPC library
+ libmpack is a small binary serialization/RPC library that implements both the
+ msgpack and msgpack-rpc specifications.
+ .
+ Differences from msgpack-c:
+ .
+  * Callback-based API to simplify (de)serialization directly to/from
+    application-specific objects.
+  * C89 compatible code
+  * No allocation performed by the library, but helpers to simplify dynamic
+    allocation if the application needs it.
+  * Non-backtracking, incremental/iterative parse/serialization API

@@ -3,7 +3,6 @@ Essental: yes
 Version: @DEB_GETTEXT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Conflicts: gettext (<< @DEB_GETTEXT_V@)
 Section: System
 Homepage: http://www.gnu.org/software/gettext/
 Description: internationalization helper for strings

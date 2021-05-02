@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+
+mandir=@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man
+
+if [ "$1" = "configure" ]
+then
+  update-alternatives \
+    --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/progress progress @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/cv-progress 30 \
+    --slave $mandir/man1/progress.1.zst progress.1.zst $mandir/man1/cv-progress.1.zst
+fi

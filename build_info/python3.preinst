@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+major=3
+minor=9
+
+update-alternatives --remove 2to3 @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/2to3-${major}.${minor}
+update-alternatives --remove idle${major} @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/idle${major}.${minor}
+update-alternatives --remove python${major} @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/python${major}.${minor}
+update-alternatives --remove python @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/python${major}.${minor}
+update-alternatives --remove python${major}-config @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/python${major}.${minor}-config
+
+
+exit 0

@@ -3,6 +3,7 @@ Author: 0x7ff
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_DIMENTIO_V@
+Depends: firmware (<< 14.0) | org.coolstar.libkernrw | libkrw
 Conflicts: com.michael.dimentio, com.kasiimh1.dimentio
 Section: Libraries
 Priority: optional

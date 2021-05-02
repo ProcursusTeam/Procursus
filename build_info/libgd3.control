@@ -1,0 +1,14 @@
+Package: libgd3
+Version: @DEB_LIBGD_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Depends: libfontconfig1, libfreetype6, libjpeg62-turbo, libpng16-16, libtiff5, libwebp7, libxpm4
+Description: GD Graphics Library
+ GD is a graphics library. It allows your code to quickly draw images
+ complete with lines, arcs, text, multiple colours, cut and paste from
+ other images, flood fills, and write out the result as a PNG file.
+ This is particularly useful in World Wide Web applications, where PNG is
+ one of the formats accepted for inline images by most browsers.
+ .
+ This is the runtime package of the library.

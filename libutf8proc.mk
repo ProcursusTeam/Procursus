@@ -7,9 +7,7 @@ LIBUTF8PROC_VERSION := 2.5.0
 DEB_LIBUTF8PROC_V   ?= $(LIBUTF8PROC_VERSION)-2
 
 libutf8proc-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/libutf8proc-$(LIBUTF8PROC_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/libutf8proc-$(LIBUTF8PROC_VERSION).tar.gz \
-			https://github.com/JuliaStrings/utf8proc/archive/v$(LIBUTF8PROC_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,JuliaStrings,utf8proc,$(LIBUTF8PROC_VERSION),v$(LIBUTF8PROC_VERSION),libutf8proc)
 	$(call EXTRACT_TAR,libutf8proc-$(LIBUTF8PROC_VERSION).tar.gz,utf8proc-$(LIBUTF8PROC_VERSION),libutf8proc)
 
 ifneq ($(wildcard $(BUILD_WORK)/libutf8proc/.build_complete),)
@@ -19,11 +17,11 @@ else
 libutf8proc: libutf8proc-setup
 	+$(MAKE) -C $(BUILD_WORK)/libutf8proc install \
 		OS=Darwin \
-		prefix=/usr \
+		prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR="$(BUILD_STAGE)/libutf8proc"
 	+$(MAKE) -C $(BUILD_WORK)/libutf8proc install \
 		OS=Darwin \
-		prefix=/usr \
+		prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/libutf8proc/.build_complete
 endif
@@ -31,14 +29,14 @@ endif
 libutf8proc-package: libutf8proc-stage
 	# libutf8proc.mk Package Structure
 	rm -rf $(BUILD_DIST)/libutf8proc{2,-dev}
-	mkdir -p $(BUILD_DIST)/libutf8proc{2,-dev}/usr/lib
+	mkdir -p $(BUILD_DIST)/libutf8proc{2,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libutf8proc.mk Prep libutf8proc-dev
-	cp -a $(BUILD_STAGE)/libutf8proc/usr/include $(BUILD_DIST)/libutf8proc-dev/usr
-	cp -a $(BUILD_STAGE)/libutf8proc/usr/lib/{pkgconfig,libutf8proc.{a,dylib}} $(BUILD_DIST)/libutf8proc-dev/usr/lib
+	cp -a $(BUILD_STAGE)/libutf8proc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libutf8proc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libutf8proc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libutf8proc.{a,dylib}} $(BUILD_DIST)/libutf8proc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libutf8proc.mk Prep libutf8proc2
-	cp -a $(BUILD_STAGE)/libutf8proc/usr/lib/libutf8proc.2.dylib $(BUILD_DIST)/libutf8proc2/usr/lib
+	cp -a $(BUILD_STAGE)/libutf8proc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libutf8proc.2.dylib $(BUILD_DIST)/libutf8proc2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libutf8proc.mk Sign
 	$(call SIGN,libutf8proc-dev,general.xml)

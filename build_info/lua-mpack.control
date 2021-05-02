@@ -1,0 +1,12 @@
+Package: lua-mpack
+Version: @DEB_LIBMPACK-LUA_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libmpack0, liblua5.1-0, liblua5.2-0, liblua5.3-0, libluajit-5.1-2
+Section: Lua 
+Priority: optional
+Description: libmpack binding for the Lua language
+ libmpack is a small binary serialization/RPC library that implements both the
+ msgpack and msgpack-rpc specifications.
+ .
+ This package provides the Lua bindings based on libmpack.

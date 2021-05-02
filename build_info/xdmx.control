@@ -1,0 +1,23 @@
+Package: xdmx
+Version: @DEB_XORG-SERVER_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Provides: xserver
+Depends: libmd0, libpixman-1-0, libx11-6, libxau6, libxdmcp6, libxext6, libxfixes3, libxfont2, libxi6, libxmuu1, libxrender1, xserver-common
+Section: X11
+Priority: optional
+Homepage: https://www.x.org/
+Description: distributed multihead X server
+ Xdmx is a proxy X server that uses one or more other X servers as its
+ display device(s). It provides multi-head X functionality for displays that
+ might be located on different machines. Xdmx functions as a front-end X server
+ that acts as a proxy to a set of back-end X servers. All of the visible
+ rendering is passed to the back-end X servers. Clients connect to the Xdmx
+ front-end, and everything appears as it would in a regular multi-head
+ configuration. If Xinerama is enabled (e.g., with +xinerama on the command
+ line), the clients see a single large screen.
+ .
+ More information about X.Org can be found at:
+ <URL:https://www.x.org>
+ .
+ This package is built from the X.org xserver module.

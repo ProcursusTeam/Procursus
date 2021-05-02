@@ -1,0 +1,24 @@
+Package: libglu1-mesa
+Version: @DEB_LIBGLU_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Provides: libglu1
+Conflicts: libglu1
+Replaces: libglu1
+Depends: libgl1
+Priority: optional
+Homepage: https://mesa3d.org/
+Description: Mesa OpenGL utility library (GLU)
+ GLU offers simple interfaces for building mipmaps; checking for the
+ presence of extensions in the OpenGL (or other libraries which follow
+ the same conventions for advertising extensions); drawing
+ piecewise-linear curves, NURBS, quadrics and other primitives
+ (including, but not limited to, teapots); tesselating surfaces; setting
+ up projection matrices and unprojecting screen coordinates to world
+ coordinates.
+ .
+ On Darwin, this library is also known as libGLU or libGLU.1.dylib.
+ .
+ This package provides the SGI implementation of GLU provided by the
+ Mesa project (ergo the "-mesa" suffix).

@@ -1,0 +1,24 @@
+Description: mark panic() with attribute noreturn
+ Mark the panic() function with attribute noreturn.
+ .
+ This is to avoid false-positive warning:
+   ../open.c:24:13: warning: array subscript is above array bounds [-Warray-bounds]
+Author: Jakub Wilk <jwilk@debian.org>
+Forwarded: not-needed
+Last-Update: 2012-06-09
+
+--- a/rc.h
++++ b/rc.h
+@@ -379,7 +379,11 @@
+ extern int mvfd(int, int);
+ extern int starstrcmp(const void *, const void *);
+ extern void pr_error(char *, int);
+-extern void panic(char *);
++extern void panic(char *)
++#ifdef __GNUC__
++__attribute__((noreturn))
++#endif
++;
+ extern void uerror(char *);
+ 
+ /* wait.c */

@@ -2,16 +2,16 @@
 
 set -e
 
-update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 30 \
-                    --slave /usr/share/man/man1/editor.1.zst editor.1.zst \
-                            /usr/share/man/man1/nvim.1.zst
-update-alternatives --install /usr/bin/ex ex /usr/libexec/neovim/ex 30
-update-alternatives --install /usr/bin/rvim rvim /usr/libexec/neovim/rvim 30
-update-alternatives --install /usr/bin/rview rview /usr/libexec/neovim/rview 30
-update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 30
-update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 30
-update-alternatives --install /usr/bin/view view /usr/libexec/neovim/view 30
-update-alternatives --install /usr/bin/vimdiff vimdiff /usr/libexec/neovim/vimdiff 30
+update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/editor editor @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/nvim 30 \
+                    --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/editor.1.zst editor.1.zst \
+                            @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/nvim.1.zst
+update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/ex ex @MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/neovim/ex 30
+update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/rvim rvim @MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/neovim/rvim 30
+update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/rview rview @MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/neovim/rview 30
+update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/vi vi @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/nvim 30
+update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/vim vim @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/nvim 30
+update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/view view @MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/neovim/view 30
+update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/vimdiff vimdiff @MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/neovim/vimdiff 30
 
 #DEBHELPER#
 

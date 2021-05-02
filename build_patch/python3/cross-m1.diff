@@ -1,0 +1,13 @@
+diff -urN python3/configure.ac python3/configure.ac
+--- python3/configure.ac	2021-03-11 06:27:32.000000000 -0500
++++ python3/configure.ac	2021-03-11 06:26:52.000000000 -0500
+@@ -2489,6 +2489,9 @@
+     	ppc)
+     		MACOSX_DEFAULT_ARCH="ppc"
+     		;;
++	arm64)
++                MACOSX_DEFAULT_ARCH="arm64"
++                ;;
+     	*)
+     		AC_MSG_ERROR([Unexpected output of 'arch' on macOS])
+     		;;

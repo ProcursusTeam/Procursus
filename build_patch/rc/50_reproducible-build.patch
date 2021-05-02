@@ -1,0 +1,20 @@
+Description: Make the build reproducible
+Author: Chris Lamb <lamby@debian.org>
+Last-Update: 2016-08-04
+Bug-Debian: https://bugs.debian.org/833441
+
+--- a/configure.ac
++++ b/configure.ac
+@@ -2,7 +2,11 @@
+ AC_INIT([rc], [1.7.4])
+ 
+ dnl ... and release date
+-RELDATE=`date -I`
++if test -n "$SOURCE_DATE_EPOCH"; then
++     RELDATE=`date --utc -I --date="@$SOURCE_DATE_EPOCH"`
++else
++     RELDATE=`date -I`
++fi
+ AC_DEFINE_UNQUOTED(RELDATE, "$RELDATE", [Release date])
+ 
+ dnl Get things going...

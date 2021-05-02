@@ -2,7 +2,7 @@ Package: libxfont2
 Version: @DEB_LIBXFONT2_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libfreetype2, libfontenc1
+Depends: libfreetype6, libfontenc1
 Section: Libraries
 Priority: optional
 Description: X11 font rasterisation library

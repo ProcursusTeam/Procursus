@@ -1,0 +1,12 @@
+haydenseay@Haydens-MacBook-Pro Procursus % diff -urN fluxbox/util/fluxbox-remote.cc.old fluxbox/util/fluxbox-remote.cc
+--- fluxbox/util/fluxbox-remote.cc.old	2021-04-21 16:13:27.882895757 -0400
++++ fluxbox/util/fluxbox-remote.cc	2021-04-21 16:15:29.032673065 -0400
+@@ -73,7 +73,7 @@
+     if (strcmp(cmd, "result") == 0) {
+         XTextProperty text_prop;
+         if (XGetTextProperty(disp, root, &text_prop, atom_result) != 0
+-            && text_prop.value > 0
++            && text_prop.value > (void *)0
+             && text_prop.nitems > 0) {
+
+             printf("%s", text_prop.value);

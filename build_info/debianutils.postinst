@@ -1,0 +1,20 @@
+#!/bin/sh -e
+
+if test ! -f @MEMO_PREFIX@/etc/shells
+then
+        cp -p @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/debianutils/shells @MEMO_PREFIX@/etc/shells
+fi
+
+case "$1" in
+    configure)
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac

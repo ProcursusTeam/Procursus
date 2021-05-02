@@ -1,0 +1,22 @@
+Package: patchutils
+Version: @DEB_PATCHUTILS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Multi-Arch: foreign
+Depends: libpcre2-posix2, perl, bash, patch
+Description: Utilities to work with patches
+ This package includes the following utilities:
+  - combinediff creates a cumulative patch from two incremental patches
+  - dehtmldiff extracts a diff from an HTML page
+  - filterdiff extracts or excludes diffs from a diff file
+  - fixcvsdiff fixes diff files created by CVS that "patch" mis-interprets
+  - flipdiff exchanges the order of two patches
+  - grepdiff shows which files are modified by a patch matching a regex
+  - interdiff shows differences between two unified diff files
+  - lsdiff shows which files are modified by a patch
+  - recountdiff recomputes counts and offsets in unified context diffs
+  - rediff and editdiff fix offsets and counts of a hand-edited diff
+  - splitdiff separates out incremental patches
+  - unwrapdiff demangles patches that have been word-wrapped

@@ -5,5 +5,8 @@ Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_ZSTD_V@
 Depends: libzstd1 (>= @DEB_ZSTD_V@), liblz4-1, liblzma5 (>= 5.2.5)
-Description: fast lossless compression algorithm -- CLI tool 
-Name: Zstandard
+Description: fast lossless compression algorithm -- CLI tool
+ Zstd, short for Zstandard, is a fast lossless compression algorithm, targeting
+ real-time compression scenarios at zlib-level compression ratio.
+ .
+ This package contains the CLI program implementing zstd.

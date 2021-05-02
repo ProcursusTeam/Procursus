@@ -7,8 +7,8 @@ PZB_VERSION := 36
 DEB_PZB_V   ?= $(PZB_VERSION)-1
 
 pzb-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tihmstar/partialZipBrowser/archive/$(PZB_VERSION).tar.gz
-	$(call EXTRACT_TAR,$(PZB_VERSION).tar.gz,partialZipBrowser-$(PZB_VERSION),pzb)
+	$(call GITHUB_ARCHIVE,tihmstar,partialZipBrowser,$(PZB_VERSION),$(PZB_VERSION))
+	$(call EXTRACT_TAR,partialZipBrowser-$(PZB_VERSION).tar.gz,partialZipBrowser-$(PZB_VERSION),pzb)
 
 ifneq ($(wildcard $(BUILD_WORK)/pzb/.build_complete),)
 pzb:
@@ -16,8 +16,7 @@ pzb:
 else
 pzb: pzb-setup libfragmentzip
 	cd $(BUILD_WORK)/pzb && ./autogen.sh \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/pzb
 	+$(MAKE) -C $(BUILD_WORK)/pzb install \
 		DESTDIR="$(BUILD_STAGE)/pzb"
@@ -27,17 +26,16 @@ endif
 pzb-package: pzb-stage
 	# pzb.mk Package Structure
 	rm -rf $(BUILD_DIST)/pzb
-	mkdir -p $(BUILD_DIST)/pzb
-	
+
 	# pzb.mk Prep pzb
-	cp -a $(BUILD_STAGE)/pzb/usr $(BUILD_DIST)/pzb
-	
+	cp -a $(BUILD_STAGE)/pzb $(BUILD_DIST)
+
 	# pzb.mk Sign
 	$(call SIGN,pzb,general.xml)
-	
+
 	# pzb.mk Make .debs
 	$(call PACK,pzb,DEB_PZB_V)
-	
+
 	# pzb.mk Build cleanup
 	rm -rf $(BUILD_DIST)/pzb
 

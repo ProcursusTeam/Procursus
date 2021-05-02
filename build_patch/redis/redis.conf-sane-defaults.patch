@@ -1,0 +1,12 @@
+
+diff -ruN redis-6.0.8/redis.conf redis/redis.conf
+--- redis-6.0.8/redis.conf	2020-09-10 19:09:00.000000000 +0800
++++ redis/redis.conf	2020-09-30 02:15:57.629677425 +0800
+@@ -362,7 +362,7 @@
+ # The Append Only File will also be created inside this directory.
+ #
+ # Note that you must specify a directory here, not a file name.
+-dir ./
++dir @MEMO_PREFIX@/var/lib/redis/
+ 
+ ################################# REPLICATION #################################

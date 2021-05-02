@@ -1,12 +1,18 @@
 #!/bin/sh
 
-if [[ $1 == upgrade ]]; then
-    /usr/bin/launchctl unload /Library/LaunchDaemons/com.corellium.usbfluxd.plist
-    /usr/bin/launchctl load /Library/LaunchDaemons/com.corellium.usbfluxd.plist
-fi
+set -e
 
-if [[ $1 == install ]]; then
-    /usr/bin/launchctl load -w /Library/LaunchDaemons/com.corellium.usbfluxd.plist
-fi
+case "$1" in
+    (install)
+    /bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/com.corellium.usbfluxd.plist
+    ;;
+	(upgrade)
+	/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/com.corellium.usbfluxd.plist
+    /bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/com.corellium.usbfluxd.plist
+	;;
+	(*)
+	exit 0
+	;;
+esac
 
 exit 0

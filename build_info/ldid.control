@@ -2,7 +2,7 @@ Package: ldid
 Version: @DEB_LDID_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libssl1.1, libplist (>= 2.2.0)
+Depends: libssl1.1, libplist3 (>= 2.2.0)
 Section: Development
 Priority: optional
 Description: pseudo-codesign Mach-O files

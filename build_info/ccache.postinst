@@ -1,0 +1,6 @@
+#!/bin/sh
+
+set -eu
+
+echo "To install symlinks for compilers that will automatically use ccache, prepend this directory to your PATH:" @MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/ccache/
+echo "NOTE: ccache can prevent some software from compiling."

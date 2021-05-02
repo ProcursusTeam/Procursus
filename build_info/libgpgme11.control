@@ -2,6 +2,6 @@ Package: libgpgme11
 Version: @DEB_GPGME_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: gpg | gnupg, libassuan, libgpg-error0
+Depends: gpg | gnupg, libassuan0, libgpg-error0
 Section: Libraries
 Description: GPGME is a wrapper library which provides a C API to access some of the GnuPG functions, such as encrypt, decrypt, sign, verify, etc. (Libraries)
