@@ -216,7 +216,7 @@ SED      := gsed
 CP       := gcp
 MV       := gmv
 FIND     := gfind
-PATH     := /home/nick/procursus_utils/cctools-src/usage_examples/ios_toolchain/target/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:/rescue
+PATH     := $(BUILD_DIR)/cctools-src/usage_examples/ios_toolchain/target/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:/rescue
 
 else ifeq ($(UNAME),Darwin)
 ifeq ($(filter $(shell uname -m | cut -c -4), iPad iPho iPod),)
