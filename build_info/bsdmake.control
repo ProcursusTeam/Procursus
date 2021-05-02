@@ -1,0 +1,7 @@
+Package: bsdmake
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_BSDMAKE_V@
+Section: Development
+Priority: optional
+Description: maintain program dependencies
