@@ -2,7 +2,7 @@ Package: libiosexec-dev
 Version: @DEB_LIBIOSEXEC_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libiosexec1
+Depends: libiosexec1 (= @DEB_LIBIOSEXEC_V@)
 Section: Development
 Priority: optional
 Description: development files for libiosexec
