@@ -13,14 +13,19 @@ wget -O triehash https://raw.githubusercontent.com/julian-klode/triehash/main/tr
 gsed -i 's@#!/usr/bin/perl -w@#!/usr/bin/env perl -w@g' triehash
 sudo mv triehash /usr/local/bin
 ```
-3. Run iOS toolchain installer script
+3. Run iOS toolchain [installer script](https://gist.github.com/asdfugil/71cdfca5aa1bc0d59de06518cd1c530c)
 ```
 wget https://gist.githubusercontent.com/asdfugil/71cdfca5aa1bc0d59de06518cd1c530c/raw/d1c87a29c2659c6a6ad090638de3053934ad477e/procursus-utils-fbsd.sh
 bash procursus-utils-fbsd.sh
 ```
-4. set up environment on every login
+4. Set up environment on every login
 ```
 echo 'source procursus-utils-fbsd.sh' > .profile
+```
+
+5. Make it usable immediately
+```
+source procursus-utils.sh
 ```
 Now you can build Procursus packages! 
 
