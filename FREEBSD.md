@@ -30,3 +30,11 @@ source procursus-utils-fbsd.sh
 Now you can build Procursus packages! 
 
 If you used a different SDK, you need to set `TARGET_SYSROOT=$(HOME)/cctools/SDK/YOUR_SDK_HERE.` Ideally, you should set it inside your .profile, .bashrc, or .zshrc. Then, open a new shell or use `source` again.
+
+Test your toolchain by trying to build libmd: 
+
+```make libmd```
+
+This will build libmd quickly, so you can test if your toolchain works. If it does, congratulations! 
+You should now be able to compile some packages in Procursus with FreeBSD.
+Quite some packages only builds under Linux and macOS, and not on FreeBSD.
