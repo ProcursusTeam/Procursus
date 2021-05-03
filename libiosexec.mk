@@ -23,11 +23,11 @@ libiosexec: libiosexec-setup
 	$(MAKE) -C $(BUILD_WORK)/libiosexec static
 
 	$(CP) -a $(BUILD_WORK)/libiosexec/libiosexec.$(LIBIOSEXEC_SOVER).dylib $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	$(LN) -sf $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.$(LIBIOSEXEC_SOVER).dylib $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.dylib
+	$(LN) -sf libiosexec.$(LIBIOSEXEC_SOVER).dylib $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.dylib
 	$(CP) -a $(BUILD_WORK)/libiosexec/libiosexec.a $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	$(CP) -a $(BUILD_WORK)/libiosexec/libiosexec.$(LIBIOSEXEC_SOVER).dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
-	$(LN) -sf $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.$(LIBIOSEXEC_SOVER).dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.dylib
+	$(LN) -sf libiosexec.$(LIBIOSEXEC_SOVER).dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.dylib
 
 	touch $(BUILD_WORK)/libiosexec/.build_complete
 endif
