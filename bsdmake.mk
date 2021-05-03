@@ -11,8 +11,9 @@ DEB_BSDMAKE_V   ?= $(BSDMAKE_VERSION)
 bsdmake-setup: setup
 	wget -q -nc -P$(BUILD_SOURCE) https://opensource.apple.com/tarballs/bsdmake/bsdmake-$(BSDMAKE_VERSION).tar.gz
 	$(call EXTRACT_TAR,bsdmake-$(BSDMAKE_VERSION).tar.gz,bsdmake-$(BSDMAKE_VERSION),bsdmake)
-	$(SED) -i -e '/NO_WERROR/,+2d' $(BUILD_WORK)/bsdmake/Makefile
-	find $(BUILD_WORK)/bsdmake -exec $(SED) -i -e 's|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' {} \;
+	$(call EXTRACT_TAR,bsdmake-$(BSDMAKE_VERSION).tar.gz,bsdmake-$(BSDMAKE_VERSION),bsdmake/native)
+	$(SED) -i -e '/NO_WERROR/,+2d' $(BUILD_WORK)/bsdmake/{,native/}Makefile
+	find $(BUILD_WORK)/bsdmake -type f -exec $(SED) -i -e 's|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' {} \;
 
 ifneq ($(wildcard $(BUILD_WORK)/bsdmake/.build_complete),)
 bsdmake:
@@ -20,10 +21,16 @@ bsdmake:
 else
 bsdmake: bsdmake-setup
 	mkdir -p $(BUILD_STAGE)/bsdmake/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
-	+bsdmake -C $(BUILD_WORK)/bsdmake \
-		-m $(BUILD_WORK)/bsdmake/mk
-	+bsdmake -C $(BUILD_WORK)/bsdmake \
+	cd $(BUILD_WORK)/bsdmake/native && \
+		cc *.c -o make -DDEFSHELLNAME=\"sh\"
+	+unset MAKEFLAGS && \
+		$(BUILD_WORK)/bsdmake/native/make \
 		-m $(BUILD_WORK)/bsdmake/mk \
+		-C $(BUILD_WORK)/bsdmake
+	+unset MAKEFLAGS && \
+		$(BUILD_WORK)/bsdmake/native/make \
+		-m $(BUILD_WORK)/bsdmake/mk \
+		-C $(BUILD_WORK)/bsdmake \
 		install \
 		STRIP='-s --strip-program=$(STRIP)' \
 		INSTALL='$(GINSTALL)' \
@@ -33,6 +40,7 @@ bsdmake: bsdmake-setup
 		MANGRP="$$(id -gn)" \
 		MANDIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man \
 		BINDIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
+		PROGNAME=bsdmake \
 		DESTDIR=$(BUILD_STAGE)/bsdmake
 	gzip -dc $(BUILD_STAGE)/bsdmake/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/make.1.gz > \
 		$(BUILD_STAGE)/bsdmake/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/bsdmake.1
