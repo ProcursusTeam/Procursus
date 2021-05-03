@@ -18,7 +18,7 @@ libiosexec:
 	@echo "Using previously built libiosexec."
 else
 libiosexec: libiosexec-setup
-	mkdir -p $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include}
 	$(MAKE) -C $(BUILD_WORK)/libiosexec
 	$(MAKE) -C $(BUILD_WORK)/libiosexec static
 
