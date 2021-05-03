@@ -33,16 +33,15 @@ endif
 
 libiosexec-package: libiosexec-stage
 	# libiosexec.mk Package Structure
-	rm -rf $(BUILD_DIST)/libiosexec
+	rm -rf $(BUILD_DIST)/libiosexec{$(SONAME),-dev}
+	mkdir -p $(BUILD_DIST)/libiosexec{$(SONAME),-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-	# libiosexec1 Prep libiosexec
-	mkdir -p $(BUILD_DIST)/libiosexec1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
-	cp -a $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.$(SONAME).dylib $(BUILD_DIST)/libiosexec1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
+	# libiosexec1 Prep libiosexec$(SONAME)
+	mkdir -p $(BUILD_DIST)/libiosexec$(SONAME)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
+	cp -a $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.$(SONAME).dylib $(BUILD_DIST)/libiosexec$(SONAME)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libiosexec-dev Prep libiosexec-dev
-	mkdir -p $(BUILD_DIST)/libiosexec-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
-	$(LN) -sf $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.$(SONAME).dylib $(BUILD_DIST)/libiosexec-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.dylib 
-	$(CP) $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.a $(BUILD_DIST)/libiosexec-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
+	cp -a $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libiosexec.$(SONAME)).dylib $(BUILD_DIST)/libiosexec-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libiosexec-1 sign
 	$(call SIGN,libiosexec1,general.xml)
@@ -52,7 +51,7 @@ libiosexec-package: libiosexec-stage
 	$(call PACK,libiosexec-dev,DEB_LIBIOSEXEC_V)
 
 	# libiosexec.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libiosexec
+	rm -rf $(BUILD_DIST)/libiosexec{$(SONAME),-dev}
 
 .PHONY: libiosexec libiosexec-package
 
