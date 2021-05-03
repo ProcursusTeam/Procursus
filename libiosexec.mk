@@ -25,9 +25,11 @@ libiosexec: libiosexec-setup
 	$(CP) -a $(BUILD_WORK)/libiosexec/libiosexec.$(LIBIOSEXEC_SOVER).dylib $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	$(LN) -sf libiosexec.$(LIBIOSEXEC_SOVER).dylib $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.dylib
 	$(CP) -a $(BUILD_WORK)/libiosexec/libiosexec.a $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	$(CP) -a $(BUILD_WORK)/libiosexec/libiosexec.h $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 
 	$(CP) -a $(BUILD_WORK)/libiosexec/libiosexec.$(LIBIOSEXEC_SOVER).dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 	$(LN) -sf libiosexec.$(LIBIOSEXEC_SOVER).dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.dylib
+	$(CP) -a $(BUILD_WORK)/libiosexec/libiosexec.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 
 	touch $(BUILD_WORK)/libiosexec/.build_complete
 endif
@@ -43,6 +45,7 @@ libiosexec-package: libiosexec-stage
 
 	# libiosexec-dev Prep libiosexec-dev
 	cp -a $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libiosexec.$(LIBIOSEXEC_SOVER).dylib) $(BUILD_DIST)/libiosexec-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libiosexec-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libiosexec-1 sign
 	$(call SIGN,libiosexec1,general.xml)
