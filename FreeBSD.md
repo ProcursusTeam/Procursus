@@ -5,7 +5,7 @@ This assumes you have sudo installed and configured.
 
 1. install packages
 ```
-sudo pkg install findutils git gmake patch gnugrep po4a docbook-xsl ncurses autoconf automake gettext libtool pkgconf dpkg fakeroot zstd python39 coreutils bash cmake gnupg openssl gsed gtar perl5 wget
+sudo pkg install findutils git gmake patch gnugrep po4a docbook-xsl ncurses autoconf automake gettext libtool pkgconf dpkg fakeroot zstd python39 coreutils bash cmake gnupg openssl gsed gtar perl5 wget gcc
 ```
 2. get triehash
 ```
@@ -31,10 +31,10 @@ Now you can build Procursus packages!
 
 If you used a different SDK, you need to set `TARGET_SYSROOT=$(HOME)/cctools/SDK/YOUR_SDK_HERE.` Ideally, you should set it inside your .profile, .bashrc, or .zshrc. Then, open a new shell or use `source` again.
 
-Test your toolchain by trying to build libmd: 
+Test your toolchain by trying to build bash: 
 
-```make libmd```
+```make bash```
 
-This will build libmd quickly, so you can test if your toolchain works. If it does, congratulations! 
+This will build bash quickly, so you can test if your toolchain works. If it does, congratulations! 
 You should now be able to compile most packages in Procursus. 
 Some packages, like golang and nodejs, will require an actual macOS system to build, but most won't.
