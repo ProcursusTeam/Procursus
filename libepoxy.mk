@@ -33,6 +33,8 @@ libepoxy: libepoxy-setup libx11 mesa
 	cd $(BUILD_WORK)/libepoxy/build && PKG_CONFIG="pkg-config" meson \
 		--cross-file cross.txt \
 		-Dtests=false \
+		-Dx11=true \
+		-Dglx=yes \
 		..
 	+ninja -C $(BUILD_WORK)/libepoxy/build
 	+DESTDIR="$(BUILD_STAGE)/libepoxy" ninja -C $(BUILD_WORK)/libepoxy/build install
