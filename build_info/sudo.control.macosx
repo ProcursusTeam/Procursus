@@ -1,9 +1,8 @@
 Package: sudo
-Essential: yes
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_SUDO_V@
-Depends: libintl8, libpam2, libiosexec1
+Depends: libintl8
 Section: Administration
-Priority: required
+Priority: optional
 Description: temporarily assume root priviledges

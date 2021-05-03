@@ -8,26 +8,28 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += sudo
 endif # ($(MEMO_TARGET),darwin-\*)
 SUDO_VERSION  := 1.9.6p1
-DEB_SUDO_V    ?= $(SUDO_VERSION)-3
+DEB_SUDO_V    ?= $(SUDO_VERSION)-4
+
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+SUDO_CONFIGURE_ARGS := LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -liosexec -lreadline -lncursesw"
+else
+SUDO_CONFIGURE_ARGS :=
+endif
 
 sudo-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.sudo.ws/dist/sudo-$(SUDO_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,sudo-$(SUDO_VERSION).tar.gz)
 	$(call EXTRACT_TAR,sudo-$(SUDO_VERSION).tar.gz,sudo-$(SUDO_VERSION),sudo)
+	$(call DO_PATCH,sudo,sudo,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/sudo/.build_complete),)
 sudo:
 	@echo "Using previously built sudo."
 else
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-sudo: sudo-setup gettext libxcrypt openpam
-	$(SED) -i 's/errno == ENOEXEC)/(errno == ENOEXEC || errno == EPERM))/g' $(BUILD_WORK)/sudo/src/exec_common.c
-	$(SED) -i 's/+ 2/+ 4/g' $(BUILD_WORK)/sudo/src/exec_common.c
-	$(SED) -i 's/nargv\[1\] = (char \*)path;/nargv\[1\] = "-c";/g' $(BUILD_WORK)/sudo/src/exec_common.c
-	$(SED) -i '/nargv\[1\]/a \	\	nargv[2] = "exec \\"$$0\\" \\"$$@\\"";\
-\	\	nargv[3] = (char *)path;' $(BUILD_WORK)/sudo/src/exec_common.c
-else
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 sudo: sudo-setup gettext
+else
+sudo: sudo-setup gettext openpam libiosexec
 endif
 	cd $(BUILD_WORK)/sudo && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
@@ -39,7 +41,8 @@ endif
 		--with-timeout=15 \
 		--with-password-timeout=0 \
 		--with-passprompt="[sudo] password for %p: " \
-		sudo_cv___func__=yes
+		sudo_cv___func__=yes \
+		$(SUDO_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/sudo
 	+$(MAKE) -C $(BUILD_WORK)/sudo install \
 		DESTDIR=$(BUILD_STAGE)/sudo \
