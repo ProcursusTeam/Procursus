@@ -46,6 +46,7 @@ bsdmake: bsdmake-setup
 	rm -f $(BUILD_STAGE)/bsdmake/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/make.1.gz
 	cp -a $(BUILD_WORK)/bsdmake/mk \
 		$(BUILD_STAGE)/bsdmake/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/mk
+	rm -f $(BUILD_STAGE)/bsdmake/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/mk/{Makefile,bsd.pkg.mk}
 	touch $(BUILD_WORK)/bsdmake/.build_complete
 endif
 
