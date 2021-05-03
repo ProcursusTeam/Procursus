@@ -1,0 +1,8 @@
+Package: libiosexec-dev
+Version: @DEB_LIBIOSEXEC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libiosexec
+Section: Development
+Priority: optional
+Description: development files for libiosexec
