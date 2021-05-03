@@ -11,8 +11,7 @@ DEB_BSDMAKE_V   ?= $(BSDMAKE_VERSION)
 bsdmake-setup: setup
 	wget -q -nc -P$(BUILD_SOURCE) https://opensource.apple.com/tarballs/bsdmake/bsdmake-$(BSDMAKE_VERSION).tar.gz
 	$(call EXTRACT_TAR,bsdmake-$(BSDMAKE_VERSION).tar.gz,bsdmake-$(BSDMAKE_VERSION),bsdmake)
-	$(call EXTRACT_TAR,bsdmake-$(BSDMAKE_VERSION).tar.gz,bsdmake-$(BSDMAKE_VERSION),bsdmake/native)
-	$(SED) -i -e '/NO_WERROR/,+2d' $(BUILD_WORK)/bsdmake/{,native/}Makefile
+	$(SED) -i -e '/NO_WERROR/,+2d' $(BUILD_WORK)/bsdmake/Makefile
 	find $(BUILD_WORK)/bsdmake -type f -exec $(SED) -i -e 's|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' {} \;
 
 ifneq ($(wildcard $(BUILD_WORK)/bsdmake/.build_complete),)
@@ -21,14 +20,14 @@ bsdmake:
 else
 bsdmake: bsdmake-setup
 	mkdir -p $(BUILD_STAGE)/bsdmake/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
-	cd $(BUILD_WORK)/bsdmake/native && \
-		cc *.c -o make -DDEFSHELLNAME=\"sh\"
+	cd $(BUILD_WORK)/bsdmake && \
+		cc *.c -o make-native -DDEFSHELLNAME=\"sh\"
 	+unset MAKEFLAGS && \
-		$(BUILD_WORK)/bsdmake/native/make \
+		$(BUILD_WORK)/bsdmake/make-native \
 		-m $(BUILD_WORK)/bsdmake/mk \
 		-C $(BUILD_WORK)/bsdmake
 	+unset MAKEFLAGS && \
-		$(BUILD_WORK)/bsdmake/native/make \
+		$(BUILD_WORK)/bsdmake/make-native \
 		-m $(BUILD_WORK)/bsdmake/mk \
 		-C $(BUILD_WORK)/bsdmake \
 		install \
