@@ -681,8 +681,8 @@ ifneq ($(LEAVE_ME_ALONE),1)
 
 ifneq (,$(wildcard /usr/share/xml/docbook/stylesheet/docbook-xsl))
 DOCBOOK_XSL := /usr/share/xml/docbook/stylesheet/docbook-xsl
-else ifneq(,$(wildcard /usr/local/share/xml/docbook/stylesheet/docbook-xsl))
-DOCBOOK_XSL := /usr/local/share/xml/docbook/stylesheet/docbook-xsl
+else ifneq (,$(wildcard /usr/local/share/xsl/docbook))
+DOCBOOK_XSL := /usr/local/share/xsl/docbook
 else ifneq (,$(wildcard /usr/share/xsl/docbook))
 DOCBOOK_XSL := /usr/share/xsl/docbook
 else ifneq (,$(wildcard /usr/share/xml/docbook/xsl-stylesheets-1.79.2))
