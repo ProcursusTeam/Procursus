@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS      += libepoxy
 LIBEPOXY_VERSION := 1.5.5
-DEB_LIBEPOXY_V   ?= $(LIBEPOXY_VERSION)
+DEB_LIBEPOXY_V   ?= $(LIBEPOXY_VERSION)-1
 
 libepoxy-setup: setup
 	wget -q -nc -P$(BUILD_SOURCE) https://download.gnome.org/sources/libepoxy/$(shell echo $(LIBEPOXY_VERSION) | cut -d. -f-2)/libepoxy-$(LIBEPOXY_VERSION).tar.xz
