@@ -25,7 +25,7 @@ echo 'source procursus-utils-fbsd.sh' > .profile
 
 5. Make it usable immediately
 ```
-source procursus-utils.sh
+source procursus-utils-fbsd.sh
 ```
 Now you can build Procursus packages! 
 
