@@ -6,7 +6,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS        += libiosexec
 LIBIOSEXEC_VERSION := 1.0.3
-SONAME             := 1
+LIBIOSEXEC_SOVER   := 1
 DEB_LIBIOSEXEC_V   ?= $(LIBIOSEXEC_VERSION)
 
 libiosexec-setup: setup
@@ -22,26 +22,26 @@ libiosexec: libiosexec-setup
 	$(MAKE) -C $(BUILD_WORK)/libiosexec
 	$(MAKE) -C $(BUILD_WORK)/libiosexec static
 
-	$(CP) -a $(BUILD_WORK)/libiosexec/libiosexec.$(SONAME).dylib $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	$(CP) -a $(BUILD_WORK)/libiosexec/libiosexec.$(LIBIOSEXEC_SOVER).dylib $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	$(CP) -a $(BUILD_WORK)/libiosexec/libiosexec.a $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-	$(CP) -a $(BUILD_WORK)/libiosexec/libiosexec.$(SONAME).dylib $(BUILD_BASE)/usr/lib/
-	$(LN) -sf $(BUILD_BASE)/usr/lib/libiosexec.$(SONAME).dylib $(BUILD_BASE)/usr/lib/libiosexec.dylib
+	$(CP) -a $(BUILD_WORK)/libiosexec/libiosexec.$(LIBIOSEXEC_SOVER).dylib $(BUILD_BASE)/usr/lib/
+	$(LN) -sf $(BUILD_BASE)/usr/lib/libiosexec.$(LIBIOSEXEC_SOVER).dylib $(BUILD_BASE)/usr/lib/libiosexec.dylib
 
 	touch $(BUILD_WORK)/libiosexec/.build_complete
 endif
 
 libiosexec-package: libiosexec-stage
 	# libiosexec.mk Package Structure
-	rm -rf $(BUILD_DIST)/libiosexec{$(SONAME),-dev}
-	mkdir -p $(BUILD_DIST)/libiosexec{$(SONAME),-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	rm -rf $(BUILD_DIST)/libiosexec{$(LIBIOSEXEC_SOVER),-dev}
+	mkdir -p $(BUILD_DIST)/libiosexec{$(LIBIOSEXEC_SOVER),-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-	# libiosexec1 Prep libiosexec$(SONAME)
-	mkdir -p $(BUILD_DIST)/libiosexec$(SONAME)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
-	cp -a $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.$(SONAME).dylib $(BUILD_DIST)/libiosexec$(SONAME)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	# libiosexec1 Prep libiosexec$(LIBIOSEXEC_SOVER)
+	mkdir -p $(BUILD_DIST)/libiosexec$(LIBIOSEXEC_SOVER)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
+	cp -a $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.$(LIBIOSEXEC_SOVER).dylib $(BUILD_DIST)/libiosexec$(LIBIOSEXEC_SOVER)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libiosexec-dev Prep libiosexec-dev
-	cp -a $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libiosexec.$(SONAME)).dylib $(BUILD_DIST)/libiosexec-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libiosexec.$(LIBIOSEXEC_SOVER)).dylib $(BUILD_DIST)/libiosexec-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libiosexec-1 sign
 	$(call SIGN,libiosexec1,general.xml)
@@ -51,7 +51,7 @@ libiosexec-package: libiosexec-stage
 	$(call PACK,libiosexec-dev,DEB_LIBIOSEXEC_V)
 
 	# libiosexec.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libiosexec{$(SONAME),-dev}
+	rm -rf $(BUILD_DIST)/libiosexec{$(LIBIOSEXEC_SOVER),-dev}
 
 .PHONY: libiosexec libiosexec-package
 
