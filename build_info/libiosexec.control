@@ -5,5 +5,5 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Libraries
 Priority: required
-Homepage: http://gondor.apana.org.au/~herbert/dash/
+Homepage: http://github.com/ProcursusTeam/libiosexec
 Description: shim for execve w/ shell script support
