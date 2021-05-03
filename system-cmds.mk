@@ -6,17 +6,18 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS       += system-cmds
 SYSTEM-CMDS_VERSION := 854.40.2
-PWDARWIN_COMMIT     := f3dab068fce37270e5e4e1a00e5a44e30f00baf7
+PWDARWIN_COMMIT     := a7ab628cc9c2656a3d2f7d8c2b1fae9aeafae272
 DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-9
 
 system-cmds-setup: setup libxcrypt
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/system_cmds/system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz
 	$(call EXTRACT_TAR,system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz,system_cmds-$(SYSTEM-CMDS_VERSION),system-cmds)
 	$(call DO_PATCH,system-cmds,system-cmds,-p1)
-
 	$(SED) -i '/#include <stdio.h>/a #include <crypt.h>' $(BUILD_WORK)/system-cmds/login.tproj/login.c
 	$(call GITHUB_ARCHIVE,CRKatri,pw-darwin,$(PWDARWIN_COMMIT),$(PWDARWIN_COMMIT))
 	$(call EXTRACT_TAR,pw-darwin-$(PWDARWIN_COMMIT).tar.gz,pw-darwin-$(PWDARWIN_COMMIT),system-cmds/pw-darwin)
+	wget -q -nc -P $(BUILD_WORK)/system-cmds/include \
+		https://opensource.apple.com/source/launchd/launchd-328/launchd/src/reboot2.h
 
 ###
 # TODO: Once I implement pam_chauthtok() in pam_unix.so, use PAM for passwd
@@ -26,7 +27,7 @@ ifneq ($(wildcard $(BUILD_WORK)/system-cmds/.build_complete),)
 system-cmds:
 	@echo "Using previously built system-cmds."
 else
-system-cmds: system-cmds-setup
+system-cmds: system-cmds-setup libxcrypt openpam
 	for gperf in $(BUILD_WORK)/system-cmds/getconf.tproj/*.gperf; do \
 		LC_ALL=C awk -f $(BUILD_WORK)/system-cmds/getconf.tproj/fake-gperf.awk < $$gperf > $(BUILD_WORK)/system-cmds/getconf.tproj/"$$(basename $$gperf .gperf).c" ; \
 	done
@@ -36,17 +37,16 @@ system-cmds: system-cmds-setup
 	cd $(BUILD_WORK)/system-cmds && $(CC) $(CFLAGS) -o sysctl sysctl.tproj/sysctl.c $(LDFLAGS)
 	cd $(BUILD_WORK)/system-cmds && $(CC) $(CFLAGS) -o arch arch.tproj/*.c $(LDFLAGS) -framework CoreFoundation -framework Foundation -lobjc
 	cd $(BUILD_WORK)/system-cmds; \
-	for tproj in ac accton chpass dynamic_pager getconf getty hostinfo iostat login mkfile pwd_mkdb reboot sync vifs vipw zdump zic nologin; do \
+	for tproj in ac accton dynamic_pager getconf getty hostinfo iostat login mkfile pwd_mkdb reboot sync vifs vipw zdump zic nologin; do \
 		CFLAGS=; \
 		EXTRA=; \
 		case $$tproj in \
-			chpass) CFLAGS="-Ichpass.tproj" LDFLAGS="-lcrypt";; \
 			login) CFLAGS="-DUSE_PAM=1" LDFLAGS="-lpam";; \
 			dynamic_pager) CFLAGS="-Idynamic_pager.tproj";; \
 			pwd_mkdb) CFLAGS="-D_PW_NAME_LEN=MAXLOGNAME -D_PW_YPTOKEN=\"__YP!\"";; \
 		esac ; \
 		echo "$$tproj" ; \
-		$(CC) $(CFLAGS) -o $$tproj $$tproj.tproj/*.c $$EXTRA -D'__FBSDID(x)=' $$CFLAGS $(LDFLAGS) -framework CoreFoundation -framework IOKit $$LDFLAGS; \
+		$(CC) $(CFLAGS) -I$(BUILD_WORK)/system-cmds/include -o $$tproj $$tproj.tproj/*.c $$EXTRA -D'__FBSDID(x)=' $$CFLAGS $(LDFLAGS) -framework CoreFoundation -framework IOKit $$LDFLAGS; \
 	done
 	mkdir -p $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX){/etc/pam.d,/bin,/sbin,$(MEMO_SUB_PREFIX)/bin,$(MEMO_SUB_PREFIX)/sbin,$(MEMO_SUB_PREFIX)/share/man/man{1,5,8}}
 	cp -a $(BUILD_WORK)/system-cmds/{reboot,nologin} $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
@@ -56,19 +56,15 @@ system-cmds: system-cmds-setup
 ifneq ($(MEMO_SUB_PREFIX),)
 	$(LN) -sf $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/reboot $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/sbin/halt
 endif
-	cp -a $(BUILD_WORK)/system-cmds/{arch,chpass,getconf,getty,hostinfo,login,passwd} $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	$(LN) -sf chpass $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/chfn
-	$(LN) -sf chpass $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/chsh
+	cp -a $(BUILD_WORK)/system-cmds/{arch,getconf,getty,hostinfo,login,passwd} $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_WORK)/system-cmds/{ac,accton,iostat,mkfile,pwd_mkdb,sysctl,vifs,vipw,zdump,zic} $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
-	cp -a $(BUILD_WORK)/system-cmds/{arch,chpass,getconf,login,passwd}.tproj/*.1 $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/
+	cp -a $(BUILD_WORK)/system-cmds/{arch,getconf,login,passwd}.tproj/*.1 $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/
 	cp -a $(BUILD_WORK)/system-cmds/{getty,nologin,sysctl}.tproj/*.5 $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5/
 	cp -a $(BUILD_WORK)/system-cmds/{ac,accton,dmesg,dynamic_pager,getty,hostinfo,iostat,mkfile,nologin,pwd_mkdb,reboot,sync,sysctl,vifs,vipw,zdump,zic}.tproj/*.8 $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/
 	$(LN) -sf reboot.8.zst $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/halt.8.zst
 	cp -a $(BUILD_MISC)/pam/{login{,.term},passwd} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/etc/pam.d
 	+$(MAKE) -C $(BUILD_WORK)/system-cmds/pw-darwin install \
 		DESTDIR="$(BUILD_STAGE)/system-cmds/"
-	$(LN) -sf chpass.1.zst $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/chfn.1.zst
-	$(LN) -sf chpass.1.zst $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/chsh.1.zst
 	touch $(BUILD_WORK)/system-cmds/.build_complete
 endif
 
