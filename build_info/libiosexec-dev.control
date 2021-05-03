@@ -5,4 +5,5 @@ Maintainer: @DEB_MAINTAINER@
 Depends: libiosexec1 (= @DEB_LIBIOSEXEC_V@)
 Section: Development
 Priority: optional
+Homepage: http://github.com/ProcursusTeam/libiosexec
 Description: development files for libiosexec
