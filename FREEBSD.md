@@ -5,7 +5,7 @@ This assumes you have sudo installed and configured.
 
 1. install packages
 ```
-sudo pkg install findutils llvm12 git gmake patch gnugrep po4a docbook-xsl ncurses autoconf automake gettext libtool pkgconf dpkg fakeroot zstd python39 coreutils bash cmake gnupg openssl gsed gtar perl5 wget
+sudo pkg install findutils git gmake patch gnugrep po4a docbook-xsl ncurses autoconf automake gettext libtool pkgconf dpkg fakeroot zstd python39 coreutils bash cmake gnupg openssl gsed gtar perl5 wget
 ```
 2. get triehash
 ```
