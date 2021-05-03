@@ -1,4 +1,4 @@
-Package: libiosexec
+Package: libiosexec1
 Essential: yes
 Version: @DEB_LIBIOSEXEC_V@
 Architecture: @DEB_ARCH@
