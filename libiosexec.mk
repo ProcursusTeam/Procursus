@@ -6,7 +6,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS        += libiosexec
 LIBIOSEXEC_VERSION := 1.0.3
-SONAME			   := 1
+SONAME             := 1
 DEB_LIBIOSEXEC_V   ?= $(LIBIOSEXEC_VERSION)
 
 libiosexec-setup: setup
