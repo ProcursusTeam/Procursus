@@ -36,5 +36,5 @@ Test your toolchain by trying to build libmd:
 ```make libmd```
 
 This will build libmd quickly, so you can test if your toolchain works. If it does, congratulations! 
-You should now be able to compile some packages in Procursus with FreeBSD.
-Quite some packages only builds under Linux and macOS, and not on FreeBSD.
+You should now be able to compile most packages in Procursus. 
+Some packages, like golang and nodejs, will require an actual macOS system to build, but most won't.
