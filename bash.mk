@@ -44,7 +44,11 @@ ifneq ($(wildcard $(BUILD_WORK)/bash/.build_complete),)
 bash:
 	@echo "Using previously built bash."
 else
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 bash: bash-setup ncurses readline
+else
+bash: bash-setup ncurses readline libiosexec
+endif
 	cd $(BUILD_WORK)/bash && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-nls \
