@@ -6,7 +6,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS       += system-cmds
 SYSTEM-CMDS_VERSION := 854.40.2
-PWDARWIN_COMMIT     := a7ab628cc9c2656a3d2f7d8c2b1fae9aeafae272
+PWDARWIN_COMMIT     := 5d48a8af168d8ffb24021d32385d3ecfa699e51d
 DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-9
 
 system-cmds-setup: setup libxcrypt
