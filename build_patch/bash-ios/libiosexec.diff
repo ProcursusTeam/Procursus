@@ -1,0 +1,14 @@
+diff -urN bash/execute_cmd.h.old bash/execute_cmd.h
+--- bash/execute_cmd.h.old	2020-03-03 11:39:04.000000000 -0500
++++ bash/execute_cmd.h	2021-05-03 20:17:53.254540384 -0400
+@@ -23,6 +23,10 @@
+
+ #include "stdc.h"
+
++/* wrapper functions to make iOS shell scripts function correctly */
++#define ENABLE_IOSEXEC
++#include <libiosexec.h>
++
+ #if defined (ARRAY_VARS)
+ struct func_array_state
+   {
