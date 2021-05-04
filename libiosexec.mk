@@ -4,7 +4,7 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
-SUBPROJECTS        += libiosexec
+STRAPPROJECTS      += libiosexec
 LIBIOSEXEC_VERSION := 1.0.6
 LIBIOSEXEC_SOVER   := 1
 DEB_LIBIOSEXEC_V   ?= $(LIBIOSEXEC_VERSION)
