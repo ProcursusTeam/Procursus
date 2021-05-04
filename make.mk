@@ -22,7 +22,11 @@ ifneq ($(wildcard $(BUILD_WORK)/make/.build_complete),)
 make:
 	@echo "Using previously built make."
 else
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 make: make-setup gettext
+else
+make: make-setup gettext libiosexec
+endif
 	cd $(BUILD_WORK)/make && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-guile=no \

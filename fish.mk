@@ -23,7 +23,11 @@ ifneq ($(wildcard $(BUILD_WORK)/fish/.build_complete),)
 fish:
 	@echo "Using previously built fish"
 else
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 fish: fish-setup ncurses gettext pcre2
+else
+fish: fish-setup ncurses gettext pcre2 libiosexec
+endif
 	cd $(BUILD_WORK)/fish && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DBUILD_DOCS=OFF \

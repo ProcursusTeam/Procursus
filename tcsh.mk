@@ -22,7 +22,11 @@ ifneq ($(wildcard $(BUILD_WORK)/tcsh/.build_complete),)
 tcsh:
 	@echo "Using previously built tcsh."
 else
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 tcsh: tcsh-setup ncurses
+else
+tcsh: tcsh-setup ncurses libiosexec
+endif
 	cd $(BUILD_WORK)/tcsh && ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		LDFLAGS="$(LDFLAGS) -lncursesw" \
