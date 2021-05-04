@@ -381,14 +381,10 @@ EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 	fi; \
 	find $(BUILD_BASE)$(MEMO_PREFIX) -name "*.la" -type f -delete
 
-DO_PATCH    = -cd $(BUILD_PATCH)/$(1); \
-	rm -f ./series; \
+DO_PATCH    = cd $(BUILD_PATCH)/$(1); \
 	for PATCHFILE in *; do \
 		if [ ! -f $(BUILD_WORK)/$(2)/$(notdir $$PATCHFILE).done ]; then \
-			patch -sN -d $(BUILD_WORK)/$(2) $(3) < $$PATCHFILE; \
-			if [ $(4) ]; then \
-				patch -sN -d $(BUILD_WORK)/$(2) $(4) < $$PATCHFILE; \
-			fi; \
+			patch -sN -d $(BUILD_WORK)/$(2) $(3) < $$PATCHFILE && \
 			touch $(BUILD_WORK)/$(2)/$(notdir $$PATCHFILE).done; \
 		fi; \
 	done
