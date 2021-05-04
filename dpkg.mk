@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS  += dpkg
 DPKG_VERSION   := 1.20.9
-DEB_DPKG_V     ?= $(DPKG_VERSION)
+DEB_DPKG_V     ?= $(DPKG_VERSION)-1
 
 dpkg-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_$(DPKG_VERSION).tar.xz
@@ -12,8 +12,12 @@ dpkg-setup: setup
 	$(call DO_PATCH,dpkg,dpkg,-p1)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call DO_PATCH,dpkg-ios,dpkg,-p1)
+
+DPKG_LIBS := LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -liosexec"
 else
 	$(call DO_PATCH,dpkg-macos,dpkg,-p1)
+
+DPKG_LIBS :=
 endif
 
 ifneq ($(wildcard $(BUILD_WORK)/dpkg/.build_complete),)
@@ -36,7 +40,8 @@ endif
 		PERL_LIBDIR='$$(prefix)/share/perl5' \
 		PERL="$(shell which perl)" \
 		TAR=$(GNU_PREFIX)tar \
-		LZMA_LIBS='$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/liblzma.dylib'
+		LZMA_LIBS='$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/liblzma.dylib' \
+		$(DPKG_LIBS)
 	+$(MAKE) -C $(BUILD_WORK)/dpkg \
 		PERL="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl"
 	+$(MAKE) -C $(BUILD_WORK)/dpkg install \
