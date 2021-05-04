@@ -52,6 +52,7 @@ bash: bash-setup ncurses readline
 		CFLAGS="$(CFLAGS) -DSSH_SOURCE_BASHRC" \
 		$(BASH_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/bash \
+		CC_FOR_BUILD='clang' \
 		TERMCAP_LIB=-lncursesw
 	+$(MAKE) -C $(BUILD_WORK)/bash install \
 		DESTDIR="$(BUILD_STAGE)/bash"
