@@ -37,7 +37,6 @@ BASH_CONFIGURE_ARGS := ac_cv_c_stack_direction=-1 \
 	bash_cv_sys_named_pipes=present \
 	bash_cv_sys_siglist=yes \
 	gt_cv_int_divbyzero_sigfpe=no \
-	ac_cv_sys_interpreter=no \
 	LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -liosexec"
 endif
 
