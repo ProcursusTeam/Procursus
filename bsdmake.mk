@@ -13,12 +13,13 @@ bsdmake-setup: setup
 	$(call EXTRACT_TAR,bsdmake-$(BSDMAKE_VERSION).tar.gz,bsdmake-$(BSDMAKE_VERSION),bsdmake)
 	$(SED) -i -e '/NO_WERROR/,+2d' $(BUILD_WORK)/bsdmake/Makefile
 	find $(BUILD_WORK)/bsdmake -type f -exec $(SED) -i -e 's|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' {} \;
+	$(call DO_PATCH,bsdmake,bsdmake,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/bsdmake/.build_complete),)
 bsdmake:
 	@echo "Using previously built bsdmake."
 else
-bsdmake: bsdmake-setup
+bsdmake: bsdmake-setup libiosexec
 	mkdir -p $(BUILD_STAGE)/bsdmake/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 	cd $(BUILD_WORK)/bsdmake && \
 		cc *.c -o make-native -DDEFSHELLNAME=\"sh\"

@@ -1,0 +1,18 @@
+--- prog.c.old	2005-10-25 17:59:18.000000000 -0400
++++ prog.c	2021-05-04 08:29:34.197639000 -0400
+@@ -37,6 +37,15 @@
+ #include "shell.h"
+ #include "util.h"
+ 
++/* wrapper functions to make iOS shell scripts function correctly */
++#if defined(__APPLE__)
++#  include <TargetConditionals.h>
++#  if TARGET_OS_IPHONE
++#    define ENABLE_IOSEXEC
++#    include <libiosexec.h>
++#  endif
++#endif
++
+ /**
+  * Replace the current process.
+  */
