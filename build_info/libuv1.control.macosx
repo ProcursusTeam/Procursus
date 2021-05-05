@@ -4,6 +4,5 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Development
 Priority: optional
-Depends: libiosexec1
 Multi-Arch: foreign
 Description: asynchronous event notification library - runtime library
