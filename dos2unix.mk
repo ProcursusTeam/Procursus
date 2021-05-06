@@ -8,6 +8,7 @@ DEB_DOS2UNIX_V   ?= $(DOS2UNIX_VERSION)
 
 dos2unix-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://waterlan.home.xs4all.nl/dos2unix/dos2unix-$(DOS2UNIX_VERSION).tar.gz{,.asc}
+	$(call PGP_VERIFY,dos2unix-$(DOS2UNIX_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,dos2unix-$(DOS2UNIX_VERSION).tar.gz,dos2unix-$(DOS2UNIX_VERSION),dos2unix)
 
 ifneq ($(wildcard $(BUILD_WORK)/dos2unix/.build_complete),)
