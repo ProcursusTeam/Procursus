@@ -5,7 +5,7 @@ endif
 STRAPPROJECTS       += coreutils
 COREUTILS_VERSION   := 8.32
 GETENTDARWIN_COMMIT := 1ad0e39ee51181ea6c13b3d1d4e9c6005ee35b5e
-DEB_COREUTILS_V     ?= $(COREUTILS_VERSION)-9
+DEB_COREUTILS_V     ?= $(COREUTILS_VERSION)-10
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 COREUTILS_CONFIGURE_ARGS += ac_cv_func_rpmatch=no

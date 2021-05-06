@@ -8,7 +8,7 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS       += findutils
 endif # ($(MEMO_TARGET),darwin-\*)
 FINDUTILS_VERSION := 4.8.0
-DEB_FINDUTILS_V   ?= $(FINDUTILS_VERSION)
+DEB_FINDUTILS_V   ?= $(FINDUTILS_VERSION)-1
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 FINDUTILS_CONFIGURE_ARGS += --program-prefix=$(GNU_PREFIX)
