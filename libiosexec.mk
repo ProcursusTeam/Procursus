@@ -33,6 +33,7 @@ libiosexec: libiosexec-setup
 
 	$(CP) -a $(BUILD_WORK)/libiosexec/libiosexec.$(LIBIOSEXEC_SOVER).dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 	$(LN) -sf libiosexec.$(LIBIOSEXEC_SOVER).dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.dylib
+	$(CP) -a $(BUILD_WORK)/libiosexec/libiosexec.a $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	$(CP) -a $(BUILD_WORK)/libiosexec/libiosexec.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 
 	touch $(BUILD_WORK)/libiosexec/.build_complete
