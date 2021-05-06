@@ -17,8 +17,8 @@ bash-setup: setup
 	$(call EXTRACT_TAR,bash-$(BASH_VERSION).tar.gz,bash-$(BASH_VERSION),bash)
 	mkdir -p $(BUILD_STAGE)/bash/$(MEMO_PREFIX)/bin
 	$(call DO_PATCH,bash,bash,-p0)
+	$(SED) -i '1s/^/#include <libiosexec.h>\n/' $(BUILD_WORK)/bash/execute_cmd.h
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(call DO_PATCH,bash-ios,bash,-p1)
 BASH_CONFIGURE_ARGS := ac_cv_c_stack_direction=-1 \
 	ac_cv_func_mmap_fixed_mapped=yes \
 	ac_cv_func_setvbuf_reversed=no \
