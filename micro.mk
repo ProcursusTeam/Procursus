@@ -11,7 +11,10 @@ micro-setup: setup
 	$(call EXTRACT_TAR,micro-$(MICRO_VERSION).tar.gz,micro-$(MICRO_VERSION),micro)
 	mkdir -p $(BUILD_STAGE)/micro/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
-ifneq ($(wildcard $(BUILD_WORK)/micro/.build_complete),)
+ifeq (,$(shell which go))
+micro:
+	@echo "go needs to be installed in order to compile micro. Please install go and try again."
+else ifneq ($(wildcard $(BUILD_WORK)/micro/.build_complete),)
 micro:
 	@echo "Using previously built micro."
 else
