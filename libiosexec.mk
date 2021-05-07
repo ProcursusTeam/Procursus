@@ -23,15 +23,8 @@ libiosexec: libiosexec-setup
 		CC="$(CC)" \
 		CFLAGS="$(CFLAGS)"
 
-	$(CP) -a $(BUILD_WORK)/libiosexec/libiosexec.$(LIBIOSEXEC_SOVER).dylib $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	$(LN) -sf libiosexec.$(LIBIOSEXEC_SOVER).dylib $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.dylib
-	$(CP) -a $(BUILD_WORK)/libiosexec/libiosexec.a $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	$(CP) -a $(BUILD_WORK)/libiosexec/libiosexec.h $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-
-	$(CP) -a $(BUILD_WORK)/libiosexec/libiosexec.$(LIBIOSEXEC_SOVER).dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
-	$(LN) -sf libiosexec.$(LIBIOSEXEC_SOVER).dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.dylib
-	$(CP) -a $(BUILD_WORK)/libiosexec/libiosexec.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-
+		$(MAKE) -C $(BUILD_WORK)/libiosexec install DESTDIR=$(BUILD_BASE)
+		$(MAKE) -C $(BUILD_WORK)/libiosexec install DESTDIR=$(BUILD_STAGE)/libiosexec
 	touch $(BUILD_WORK)/libiosexec/.build_complete
 endif
 
