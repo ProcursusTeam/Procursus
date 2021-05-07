@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS  += flex
 FLEX_VERSION := 2.6.4
-DEB_FLEX_V   ?= $(FLEX_VERSION)-1
+DEB_FLEX_V   ?= $(FLEX_VERSION)-2
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 FLEX_LDFLAGS := -Wl,-flat_namespace -Wl,-undefined -Wl,suppress
@@ -24,7 +24,8 @@ flex: flex-setup gettext
 	cd $(BUILD_WORK)/flex && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		ac_cv_func_malloc_0_nonnull=yes \
-		ac_cv_func_realloc_0_nonnull=yes
+		ac_cv_func_realloc_0_nonnull=yes \
+		ac_cv_path_M4="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/m4"
 	+$(MAKE) -C $(BUILD_WORK)/flex \
 		LIBS="-lm -lintl -Wl,-framework -Wl,CoreFoundation" \
 		LDFLAGS="$(LDFLAGS) $(FLEX_LDFLAGS)"

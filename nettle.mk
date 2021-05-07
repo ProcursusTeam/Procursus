@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += nettle
+STRAPPROJECTS  += nettle
 NETTLE_VERSION := 3.7.1
 DEB_NETTLE_V   ?= $(NETTLE_VERSION)
 

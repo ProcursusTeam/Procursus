@@ -3,11 +3,17 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += apt
-APT_VERSION   := 2.3.1
+APT_VERSION   := 2.3.3
 DEB_APT_V     ?= $(APT_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
-APT_CMAKE_ARGS += -DHAVE_PTSNAME_R=0
+APT_CMAKE_ARGS := -DHAVE_PTSNAME_R=0
+else
+APT_CMAKE_ARGS :=
+endif
+
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+APT_CMAKE_ARGS += -DUSE_IOSEXEC=true
 endif
 
 apt-setup: setup
@@ -17,8 +23,6 @@ apt-setup: setup
 	$(call DO_PATCH,apt,apt,-p1)
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call DO_PATCH,apt-macos,apt,-p1)
-else
-	$(call DO_PATCH,apt-ios,apt,-p1)
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	if [ -f "$(BUILD_WORK)/apt/apt-private/private-output.cc" ]; then \
 		mv -f $(BUILD_WORK)/apt/apt-private/private-output.{cc,mm}; \
@@ -33,7 +37,11 @@ ifneq ($(wildcard $(BUILD_WORK)/apt/.build_complete),)
 apt:
 	@echo "Using previously built apt."
 else
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 apt: apt-setup libgcrypt berkeleydb lz4 xxhash xz zstd gnutls
+else
+apt: apt-setup libgcrypt berkeleydb lz4 xxhash xz zstd gnutls libiosexec
+endif
 	cd $(BUILD_WORK)/apt/build && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DSTATE_DIR=$(MEMO_PREFIX)/var/lib/apt \
