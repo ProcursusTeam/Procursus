@@ -4,7 +4,13 @@ endif
 
 SUBPROJECTS += rc
 RC_VERSION  := 1.7.4
-DEB_RC_V    ?= $(RC_VERSION)
+DEB_RC_V    ?= $(RC_VERSION)-1
+
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+RC_CONFIGURE_ARGS := LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -liosexec -lreadline -lncursesw"
+else
+RC_CONFIGURE_ARGS := LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -lreadline -lncursesw"
+endif
 
 rc-setup: setup
 	$(call GITHUB_ARCHIVE,rakitzis,rc,$(RC_VERSION),v$(RC_VERSION))
@@ -15,13 +21,17 @@ ifneq ($(wildcard $(BUILD_WORK)/rc/.build_complete),)
 rc:
 	@echo "Using previously built rc."
 else
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 rc: rc-setup readline ncurses
+else
+rc: rc-setup readline ncurses libiosexec
+endif
 	cd $(BUILD_WORK)/rc && autoreconf -fi && ac_cv_func_setpgrp_void=yes ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--with-edit=readline
-	sed -i 's/HAVE_SYSV_SIGCLD\ 1/HAVE_SYSV_SIGCLD\ 0/g' $(BUILD_WORK)/rc/config.h
-	+$(MAKE) -C $(BUILD_WORK)/rc \
-		LIBS="-lreadline -lncursesw"
+		--with-edit=readline \
+		rc_cv_sysv_sigcld=false \
+		$(RC_CONFIGURE_ARGS)
+	+$(MAKE) -C $(BUILD_WORK)/rc
 	+$(MAKE) -C $(BUILD_WORK)/rc install \
 		DESTDIR=$(BUILD_STAGE)/rc
 	touch $(BUILD_WORK)/rc/.build_complete

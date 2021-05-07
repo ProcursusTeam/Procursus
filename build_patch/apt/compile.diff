@@ -98,7 +98,7 @@ diff -urN apt-2.1.11/apt-pkg/CMakeLists.txt apt/apt-pkg/CMakeLists.txt
                               ${ICONV_LIBRARIES}
                               $<$<BOOL:${GCRYPT_FOUND}>:${GCRYPT_LIBRARIES}>
                               $<$<BOOL:${XXHASH_FOUND}>:${XXHASH_LIBRARIES}>
-+                             "-framework Foundation"
++                             $<$<BOOL:${USE_IOSEXEC}>:iosexec> "-framework Foundation"
  )
  set_target_properties(apt-pkg PROPERTIES VERSION ${MAJOR}.${MINOR})
  set_target_properties(apt-pkg PROPERTIES SOVERSION ${MAJOR})
@@ -756,7 +756,7 @@ diff -urN apt-2.1.11/apt-private/CMakeLists.txt apt/apt-private/CMakeLists.txt
  
  # Link the library and set the SONAME
 -target_link_libraries(apt-private PUBLIC apt-pkg)
-+target_link_libraries(apt-private PUBLIC apt-pkg "-framework Foundation")
++target_link_libraries(apt-private PUBLIC apt-pkg $<$<BOOL:${USE_IOSEXEC}>:iosexec> "-framework Foundation")
  set_target_properties(apt-private PROPERTIES VERSION ${MAJOR}.${MINOR})
  set_target_properties(apt-private PROPERTIES SOVERSION ${MAJOR})
  set_target_properties(apt-private PROPERTIES CXX_VISIBILITY_PRESET hidden)
@@ -807,3 +807,14 @@ diff -urN apt/methods/connect.cc apt/methods/connect.cc
     };
 
     // We will return once we have no more connections, a time out, or
+diff -urN apt/methods/CMakeLists.txt apt/methods/CMakeLists.txt
+--- apt/methods/CMakeLists.txt	2021-04-29 04:45:32.000000000 -0400
++++ apt/methods/CMakeLists.txt	2021-05-03 23:00:24.918079696 -0400
+@@ -1,6 +1,6 @@
+ # Create the executable targets
+ include_directories($<$<BOOL:${SECCOMP_FOUND}>:${SECCOMP_INCLUDE_DIR}>)
+-link_libraries(apt-pkg $<$<BOOL:${SECCOMP_FOUND}>:${SECCOMP_LIBRARIES}>)
++link_libraries(apt-pkg $<$<BOOL:${SECCOMP_FOUND}>:${SECCOMP_LIBRARIES}> $<$<BOOL:${USE_IOSEXEC}>:iosexec>)
+
+ add_library(connectlib OBJECT connect.cc rfc2553emu.cc)
+
