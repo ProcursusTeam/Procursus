@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS      += libiosexec
-LIBIOSEXEC_VERSION := 1.0.14
+LIBIOSEXEC_VERSION := 1.0.15
 LIBIOSEXEC_SOVER   := 1
 DEB_LIBIOSEXEC_V   ?= $(LIBIOSEXEC_VERSION)
 
@@ -20,9 +20,6 @@ else
 libiosexec: libiosexec-setup
 	mkdir -p $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include}
 	$(MAKE) -C $(BUILD_WORK)/libiosexec \
-		CC="$(CC)" \
-		CFLAGS="$(CFLAGS)"
-	$(MAKE) -C $(BUILD_WORK)/libiosexec static \
 		CC="$(CC)" \
 		CFLAGS="$(CFLAGS)"
 
