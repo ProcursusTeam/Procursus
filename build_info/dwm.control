@@ -26,4 +26,3 @@ Description: dynamic window manager
  so you probably want to build your own dwm packages. This package is compiled
  with the default configuration and should just give you an idea about what dwm
  brings to your desktop.
-
