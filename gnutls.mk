@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += gnutls
+STRAPPROJECTS  += gnutls
 GNUTLS_VERSION := 3.7.1
 DEB_GNUTLS_V   ?= $(GNUTLS_VERSION)
 
