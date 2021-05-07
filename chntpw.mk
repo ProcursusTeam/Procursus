@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += chntpw
+SUBPROJECTS    += chntpw
 CHNTPW_VERSION := 1.0
 DEB_CHNTPW_V   ?= $(CHNTPW_VERSION)
 
