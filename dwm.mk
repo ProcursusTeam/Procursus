@@ -19,7 +19,6 @@ dwm-setup: setup
 	$(SED) -i 's@snprintf@// snprintf@g' $(BUILD_WORK)/dwm/dwm.c
 	$(SED) -i '3 a #include <TargetConditionals.h>' $(BUILD_WORK)/dwm/drw.c $(BUILD_WORK)/dwm/dwm.c
 	$(SED) -i 's/{ "st", NULL };/{ "xterm", "-bg", "black", "-fg", "lightgray", NULL };/g' $(BUILD_WORK)/dwm/config.def.h
-	$(SED) -i 's/#005577/#005377/g' $(BUILD_WORK)/dwm/config.def.h
 
 ifneq ($(wildcard $(BUILD_WORK)/dwm/.build_complete),)
 dwm:
