@@ -26,7 +26,6 @@ dwm:
 	@echo "Using previously built dwm."
 else
 dwm: libx11 libxft fontconfig freetype dwm-setup
-	cd $(BUILD_WORK)/dwm; \
 	$(MAKE) -C $(BUILD_WORK)/dwm
 	$(MAKE) -C $(BUILD_WORK)/dwm install \
 		DESTDIR=$(BUILD_STAGE)/dwm
