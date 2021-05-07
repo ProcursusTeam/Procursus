@@ -6,11 +6,11 @@ ALTERNATIVES="maintainer web winkey "
 
 case "${1}" in
 	remove|deconfigure)
-		update-alternatives --quiet --remove dwm @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/dwm.default
+		#update-alternatives --quiet --remove dwm @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/dwm.default
 
 		for ALTERNATIVE in ${ALTERNATIVES}
-		do
-			update-alternatives --quiet --remove dwm @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/dwm.${ALTERNATIVE}
+		do true
+		#	update-alternatives --quiet --remove dwm @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/dwm.${ALTERNATIVE}
 		done
 		;;
 

@@ -6,11 +6,11 @@ ALTERNATIVES="maintainer web winkey "
 
 case "${1}" in
 	configure)
-		update-alternatives --quiet --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/dwm dwm @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/dwm.default 100
+		#update-alternatives --quiet --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/dwm dwm @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/dwm.default 100
 
 		for ALTERNATIVE in ${ALTERNATIVES}
-		do
-			update-alternatives --quiet --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/dwm dwm @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/dwm.${ALTERNATIVE} 50
+		do true
+		#	update-alternatives --quiet --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/dwm dwm @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/dwm.${ALTERNATIVE} 50
 		done
 		;;
 
