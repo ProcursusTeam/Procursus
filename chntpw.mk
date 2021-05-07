@@ -12,7 +12,7 @@ chntpw-setup: setup
 	$(SED) -i 's@/usr@$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)@g' $(BUILD_WORK)/chntpw/Makefile
 	$(SED) -i 's/gcc/$(CC)/g' $(BUILD_WORK)/chntpw/Makefile
 	$(SED) -i 's/-m32//g' $(BUILD_WORK)/chntpw/Makefile
-	#$(call DO_PATCH,chntpw,chntpw,-p1)
+	$(SED) -i '1 i\#include <TargetConditionals.h>' $(BUILD_WORK)/chntpw/{cpnt,chntpw,sampasswd,samusrgrp}.c
 
 ifneq ($(wildcard $(BUILD_WORK)/chntpw/.build_complete),)
 chntpw:
