@@ -14,8 +14,6 @@ dwm-setup: setup
 	$(SED) -i 's@/usr/include@$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include@g' $(BUILD_WORK)/dwm/config.mk
 	$(SED) -i 's@/usr/X11R6/include@$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include@g' $(BUILD_WORK)/dwm/config.mk
 	$(SED) -i 's@/usr/X11R6/lib@$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib@g' $(BUILD_WORK)/dwm/config.mk
-	$(SED) -i 's/XINERAMALIBS  = -lXinerama//g' $(BUILD_WORK)/dwm/config.mk
-	$(SED) -i 's/XINERAMAFLAGS = -DXINERAMA//g' $(BUILD_WORK)/dwm/config.mk
 	$(SED) -i 's@snprintf@// snprintf@g' $(BUILD_WORK)/dwm/dwm.c
 	$(SED) -i '3 a #include <TargetConditionals.h>' $(BUILD_WORK)/dwm/drw.c $(BUILD_WORK)/dwm/dwm.c
 	$(SED) -i 's/{ "st", NULL };/{ "xterm", "-bg", "black", "-fg", "lightgray", NULL };/g' $(BUILD_WORK)/dwm/config.def.h
@@ -24,7 +22,7 @@ ifneq ($(wildcard $(BUILD_WORK)/dwm/.build_complete),)
 dwm:
 	@echo "Using previously built dwm."
 else
-dwm: libx11 libxft fontconfig freetype dwm-setup
+dwm: libx11 libxft fontconfig freetype libxinerama dwm-setup
 	$(MAKE) -C $(BUILD_WORK)/dwm
 	$(MAKE) -C $(BUILD_WORK)/dwm install \
 		DESTDIR=$(BUILD_STAGE)/dwm
