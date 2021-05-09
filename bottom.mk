@@ -7,8 +7,8 @@ BOTTOM_VERSION := 1.2.0
 DEB_BOTTOM_V   ?= $(BOTTOM_VERSION)
 
 bottom-setup: setup
-	$(call GITHUB_ARCHIVE,bottom-software-foundation,bottom-rs,$(BOTTOM_VERSION),need_top)
-	$(call EXTRACT_TAR,bottom-rs-$(BOTTOM_VERSION).tar.gz,bottom-rs-need_top,bottom)
+	$(call GITHUB_ARCHIVE,bottom-software-foundation,bottom-rs,$(BOTTOM_VERSION),need_top,bottom)
+	$(call EXTRACT_TAR,bottom-$(BOTTOM_VERSION).tar.gz,bottom-rs-need_top,bottom)
 
 ifneq ($(wildcard $(BUILD_WORK)/bottom/.build_complete),)
 bottom:
