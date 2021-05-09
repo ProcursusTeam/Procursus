@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS      += libtasn1
+STRAPPROJECTS    += libtasn1
 LIBTASN1_VERSION := 4.16.0
 DEB_LIBTASN1_V   ?= $(LIBTASN1_VERSION)-2
 

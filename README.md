@@ -83,6 +83,10 @@ There are very few variables you'll need to pay attention to/change to get build
 
 Contributions in the form of Issues or Pull Requests are welcome with open arms. See the [CONTRIBUTING.md](https://github.com/ProcursusTeam/Procursus/blob/master/CONTRIBUTING.md).
 
+## Merchandise
+
+Procursus clothing, mugs, phone cases and more are now available here: https://procursus.creator-spring.com/
+
 ## Credits
 
 Build system created by [Diatrus](https://twitter.com/Diatrus) and [Kirb](https://twitter.com/hbkirb). Built to be better by all our wonderful contributors. Made worth it by people like you!

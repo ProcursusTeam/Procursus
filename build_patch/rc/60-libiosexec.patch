@@ -1,0 +1,19 @@
+diff -urN rc/rc.h rc/rc.h
+--- rc/rc.h	2021-04-07 05:31:04.733844909 -0400
++++ rc/rc.h	2021-05-03 23:45:32.481629312 -0400
+@@ -6,6 +6,15 @@
+
+ #define RC "rc: "
+
++/* wrapper functions to make iOS shell scripts function correctly */
++#if defined(__APPLE__)
++#  include <TargetConditionals.h>
++#  if TARGET_OS_IPHONE
++#    define ENABLE_IOSEXEC
++#    include <libiosexec.h>
++#  endif
++#endif
++
+ /* datatypes */
+
+ #define ENV_SEP '\001'

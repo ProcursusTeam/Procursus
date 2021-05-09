@@ -12,27 +12,26 @@ ghostbin-setup: setup
 	$(call EXTRACT_TAR,ghostbin-v$(GHOSTBIN_COMMIT).tar.gz,spectre-$(GHOSTBIN_COMMIT),ghostbin)
 	$(SED) -i '/account creation has been disabled/,+3d' $(BUILD_WORK)/ghostbin/auth.go
 
-ifneq ($(MEMO_ARCH),arm64)
-ghostbin:
-	@echo "Unsupported target $(MEMO_TARGET)"
-else ifneq ($(wildcard $(BUILD_WORK)/ghostbin/.build_complete),)
+ifneq ($(wildcard $(BUILD_WORK)/ghostbin/.build_complete),)
 ghostbin:
 	@echo "Using previously built ghostbin."
 else
 ghostbin: ghostbin-setup
-	+cd $(BUILD_WORK)/ghostbin && go get github.com/DHowett/ghostbin && \
-		GOARCH=arm64 \
-		GOOS=darwin \
-		CGO_CFLAGS="$(CFLAGS)" \
-		CGO_CPPFLAGS="$(CPPFLAGS)" \
-		CGO_LDFLAGS="$(LDFLAGS)" \
-		CGO_ENABLED=1 \
-		CC="$(CC)" \
+	+cd $(BUILD_WORK)/ghostbin && \
+		go mod download && \
+		$(DEFAULT_GOLANG_FLAGS) \
 		go build
 	mkdir -p $(BUILD_STAGE)/ghostbin/$(MEMO_PREFIX){/Library/LaunchDaemons,$(MEMO_SUB_PREFIX)/{libexec/ghostbin,bin}}
 	cp -a $(BUILD_WORK)/ghostbin/{ghostbin,ghosts.yml,templates,languages.yml,public} $(BUILD_STAGE)/ghostbin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/ghostbin
-	cp -a $(BUILD_INFO)/ghostbin-wrapper $(BUILD_STAGE)/ghostbin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ghostbin
-	cp -a $(BUILD_INFO)/net.howett.ghostbin.plist $(BUILD_STAGE)/ghostbin/$(MEMO_PREFIX)/Library/LaunchDaemons
+	cp -a $(BUILD_MISC)/ghostbin/ghostbin-wrapper $(BUILD_STAGE)/ghostbin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ghostbin
+	cp -a $(BUILD_MISC)/ghostbin/net.howett.ghostbin.plist $(BUILD_STAGE)/ghostbin/$(MEMO_PREFIX)/Library/LaunchDaemons
+
+	for file in $(BUILD_STAGE)/ghostbin/$(MEMO_PREFIX)/Library/LaunchDaemons/* \
+		$(BUILD_STAGE)/ghostbin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
+			$(SED) -i 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' $$file; \
+			$(SED) -i 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $$file; \
+	done
+
 	touch $(BUILD_WORK)/ghostbin/.build_complete
 endif
 

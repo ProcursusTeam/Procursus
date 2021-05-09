@@ -1,0 +1,61 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	5.1
+Patch-ID:	bash51-008
+
+Bug-Reported-by:	Michael Felt <aixtools@gmail.com>
+Bug-Reference-ID:	<b82d9a2f-5d8a-ffb2-4115-420c09272da5@felt.demon.nl>
+Bug-Reference-URL:	https://lists.gnu.org/archive/html/bug-bash/2021-03/msg00028.html
+
+Bug-Description:
+
+Process substitution FIFOs opened by child processes as targets of redirections
+were not removed appropriately, leaving remnants in the file system.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-5.1-patched/execute_cmd.c	2020-10-12 10:16:13.000000000 -0400
+--- execute_cmd.c	2021-05-04 11:12:39.000000000 -0400
+***************
+*** 5557,5565 ****
+  	  /* Try to remove named pipes that may have been created as the
+  	     result of redirections. */
+! 	  unlink_fifo_list ();
+  #endif /* PROCESS_SUBSTITUTION */
+  	  exit (EXECUTION_FAILURE);
+  	}
+  
+        if (async)
+  	interactive = old_interactive;
+--- 5557,5571 ----
+  	  /* Try to remove named pipes that may have been created as the
+  	     result of redirections. */
+! 	  unlink_all_fifos ();
+  #endif /* PROCESS_SUBSTITUTION */
+  	  exit (EXECUTION_FAILURE);
+  	}
+  
++ #if defined (PROCESS_SUBSTITUTION) && !defined (HAVE_DEV_FD)
++       /* This should only contain FIFOs created as part of redirection
++ 	 expansion. */
++       unlink_all_fifos ();
++ #endif
++ 
+        if (async)
+  	interactive = old_interactive;
+*** ../bash-5.1/patchlevel.h	2020-06-22 14:51:03.000000000 -0400
+--- patchlevel.h	2020-10-01 11:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 7
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 8
+  
+  #endif /* _PATCHLEVEL_H_ */

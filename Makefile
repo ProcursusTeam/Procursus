@@ -1,5 +1,5 @@
 ifeq ($(firstword $(subst ., ,$(MAKE_VERSION))),3)
-$(error Install latest make from Homebrew - brew install make)
+$(error Install latest make from Procursus - sudo apt install make)
 endif
 
 ifeq ($(shell LANG=C /usr/bin/env bash --version | grep -iq 'version 5' && echo 1),1)
@@ -83,6 +83,7 @@ MEMO_PREFIX          ?=
 MEMO_SUB_PREFIX      ?= /usr
 MEMO_ALT_PREFIX      ?= /local
 GNU_PREFIX           :=
+ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
 export IPHONEOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),appletvos-arm64)
@@ -99,6 +100,7 @@ MEMO_PREFIX          ?=
 MEMO_SUB_PREFIX      ?= /usr
 MEMO_ALT_PREFIX      ?= /local
 GNU_PREFIX           :=
+ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
 export APPLETVOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),watchos-arm64_32)
@@ -115,6 +117,7 @@ MEMO_PREFIX          ?=
 MEMO_SUB_PREFIX      ?= /usr
 MEMO_ALT_PREFIX      ?= /local
 GNU_PREFIX           :=
+ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/WatchOS.sdk
 export WATCHOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),darwin-arm64e)
@@ -131,6 +134,7 @@ MEMO_PREFIX          ?= /opt/procursus
 MEMO_SUB_PREFIX      ?=
 MEMO_ALT_PREFIX      ?=
 GNU_PREFIX           := g
+ON_DEVICE_SDK_PATH   := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
 else ifeq ($(MEMO_TARGET),darwin-arm64)
 ifneq ($(MEMO_QUIET),1)
@@ -146,6 +150,7 @@ MEMO_PREFIX          ?= /opt/procursus
 MEMO_SUB_PREFIX      ?=
 MEMO_ALT_PREFIX      ?=
 GNU_PREFIX           := g
+ON_DEVICE_SDK_PATH   := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
 else ifeq ($(MEMO_TARGET),darwin-amd64)
 ifneq ($(MEMO_QUIET),1)
@@ -161,6 +166,7 @@ MEMO_PREFIX          ?= /opt/procursus
 MEMO_SUB_PREFIX      ?=
 MEMO_ALT_PREFIX      ?=
 GNU_PREFIX           := g
+ON_DEVICE_SDK_PATH   := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
 else
 $(error Platform not supported)
@@ -252,10 +258,20 @@ BUILD_STRAP    := $(BUILD_ROOT)/build_strap/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Extra scripts for the buildsystem
 BUILD_TOOLS    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_tools
 
-CFLAGS              := -O2 -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)$(MEMO_PREFIX)/Library/Frameworks
+ifeq ($(DEBUG),1)
+CFLAGS   := -g -O0
+CPPFLAGS := -g -O0
+LDFLAGS  := -g -O0
+else
+CFLAGS   := -O2
+CPPFLAGS := -O2
+LDFLAGS  := -O2
+endif
+
+CFLAGS              += -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)$(MEMO_PREFIX)/Library/Frameworks
 CXXFLAGS            := $(CFLAGS)
-CPPFLAGS            := -O2 -arch $(MEMO_ARCH) $(PLATFORM_VERSION_MIN) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include -Wno-error-implicit-function-declaration
-LDFLAGS             := -O2 -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)$(MEMO_PREFIX)/Library/Frameworks
+CPPFLAGS            += -arch $(MEMO_ARCH) $(PLATFORM_VERSION_MIN) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include -Wno-error-implicit-function-declaration
+LDFLAGS             += -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)$(MEMO_PREFIX)/Library/Frameworks
 PKG_CONFIG_PATH     := $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig:$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/pkgconfig:$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/pkgconfig:$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/share/pkgconfig
 PKG_CONFIG_LIBDIR   := $(PKG_CONFIG_PATH)
 ACLOCAL_PATH        := $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal
@@ -283,7 +299,8 @@ DEFAULT_CONFIGURE_FLAGS := \
 	--localstatedir=$(MEMO_PREFIX)/var \
 	--sysconfdir=$(MEMO_PREFIX)/etc \
 	--bindir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
-	--mandir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+	--mandir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
+	--disable-dependency-tracking
 
 DEFAULT_PERL_MAKE_FLAGS := \
 	INSTALLSITEARCH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
@@ -321,12 +338,24 @@ DEFAULT_PERL_BUILD_FLAGS := \
 	install_path=bindoc=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 \
 	install_path=html=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/perl5
 
+DEFAULT_GOLANG_FLAGS := \
+	GOOS=$(shell echo $(RUST_TARGET) | cut -f3 -d-) \
+	GOARCH=$(shell echo $(MEMO_TARGET) | cut -f2 -d-) \
+	CGO_CFLAGS="$(CFLAGS)" \
+	CGO_CXXFLAGS="$(CXXFLAGS)" \
+	CGO_CPPFLAGS="$(CPPFLAGS)" \
+	CGO_LDFLAGS="$(LDFLAGS)" \
+	CGO_ENABLED=1 \
+	CC="$(CC)" \
+	CXX="$(CXX)" \
+	CPP="$(CPP)"
+
 export PLATFORM MEMO_ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE MEMO_PREFIX MEMO_SUB_PREFIX MEMO_ALT_PREFIX
 export CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T EXTRA SED
 export BUILD_ROOT BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP BUILD_TOOLS
 export DEB_ARCH DEB_ORIGIN DEB_MAINTAINER
 export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS PKG_CONFIG_PATH PKG_CONFIG_LIBDIR ACLOCAL_PATH
-export DEFAULT_CMAKE_FLAGS DEFAULT_CONFIGURE_FLAGS DEFAULT_PERL_MAKE_FLAGS DEFAULT_PERL_BUILD_FLAGS
+export DEFAULT_CMAKE_FLAGS DEFAULT_CONFIGURE_FLAGS DEFAULT_PERL_MAKE_FLAGS DEFAULT_PERL_BUILD_FLAGS DEFAULT_GOLANG_FLAGS
 
 HAS_COMMAND = $(shell type $(1) >/dev/null 2>&1 && echo 1)
 ifeq ($(NO_PGP),1)
@@ -352,21 +381,23 @@ EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 	fi; \
 	find $(BUILD_BASE)$(MEMO_PREFIX) -name "*.la" -type f -delete
 
-DO_PATCH    = -cd $(BUILD_PATCH)/$(1); \
-	rm -f ./series; \
+DO_PATCH    = cd $(BUILD_PATCH)/$(1); \
 	for PATCHFILE in *; do \
 		if [ ! -f $(BUILD_WORK)/$(2)/$(notdir $$PATCHFILE).done ]; then \
-			patch -sN -d $(BUILD_WORK)/$(2) $(3) < $$PATCHFILE; \
-			if [ $(4) ]; then \
-				patch -sN -d $(BUILD_WORK)/$(2) $(4) < $$PATCHFILE; \
-			fi; \
+			patch -sN -d $(BUILD_WORK)/$(2) $(3) < $$PATCHFILE && \
 			touch $(BUILD_WORK)/$(2)/$(notdir $$PATCHFILE).done; \
 		fi; \
 	done
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-SIGN = find $(BUILD_DIST)/$(1) -type f -exec $(LDID) -S$(BUILD_INFO)/$(2) {} \; &> /dev/null; \
-	find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
+SIGN = 	for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
+			if [ $${file\#\#*.} = "dylib" ] || [ $${file\#\#*.} = "bundle" ] || [ $${file\#\#*.} = "so" ]; then \
+				$(LDID) -S $$file; \
+			else \
+				$(LDID) -S$(BUILD_INFO)/$(2) $$file; \
+			fi; \
+		done; \
+		find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
 else
 SIGN = find $(BUILD_DIST)/$(1) -type f -exec codesign --remove {} \; &> /dev/null; \
 	find $(BUILD_DIST)/$(1) -type f -exec codesign --sign $(CODESIGN_IDENTITY) --force --preserve-metadata=entitlements,requirements,flags,runtime {} \; &> /dev/null
@@ -623,15 +654,15 @@ endif
 
 ifneq ($(LEAVE_ME_ALONE),1)
 
-ifneq (,$(wildcard $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl))
-DOCBOOK_XSL := $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl
-export XML_CATALOG_FILES=$(shell brew --prefix)/etc/xml/catalog
-else ifneq (,$(wildcard /usr/share/xml/docbook/stylesheet/docbook-xsl))
+ifneq (,$(wildcard /usr/share/xml/docbook/stylesheet/docbook-xsl))
 DOCBOOK_XSL := /usr/share/xml/docbook/stylesheet/docbook-xsl
 else ifneq (,$(wildcard /usr/share/xsl/docbook))
 DOCBOOK_XSL := /usr/share/xsl/docbook
 else ifneq (,$(wildcard /usr/share/xml/docbook/xsl-stylesheets-1.79.2))
 DOCBOOK_XSL := /usr/share/xml/docbook/xsl-stylesheets-1.79.2
+else ifneq (,$(wildcard $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl))
+DOCBOOK_XSL := $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl
+export XML_CATALOG_FILES=$(shell brew --prefix)/etc/xml/catalog
 else
 $(error Install docbook-xsl)
 endif
@@ -707,9 +738,9 @@ bootstrap:: strapprojects
 	mkdir -p $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/info
 	touch $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/status
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	cd $(BUILD_STRAP) && rm -f !(apt_*|base_*|bash_*|ca-certificates_*|coreutils_*|darwintools_*|dash_*|debianutils_*|diffutils_*|diskdev-cmds_*|dpkg_*|essential_*|file-cmds_*|findutils_*|firmware-sbin_*|gpgv_*|grep_*|launchctl_*|libapt-pkg6.0_*|libcrypt2_*|libedit0_*|libgcrypt20_*|libgpg-error0_*|libintl8_*|liblz4-1_*|liblzma5_*|libncursesw6_*|libpam-modules_*|libpam2_*|libpcre1_*|libreadline8_*|libssl1.1_*|libxxhash0_*|libzstd1_*|ncurses-bin_*|ncurses-term_*|openssh_*|openssh-client_*|openssh-server_*|openssh-sftp-server_*|procursus-keyring_*|profile.d_*|sed_*|shell-cmds_*|snaputil_*|sudo_*|system-cmds_*|tar_*|uikittools_*|zsh_*).deb
+	cd $(BUILD_STRAP) && rm -f !(apt_*|base_*|bash_*|ca-certificates_*|coreutils_*|darwintools_*|dash_*|debianutils_*|diffutils_*|diskdev-cmds_*|dpkg_*|essential_*|file-cmds_*|findutils_*|firmware-sbin_*|gpgv_*|grep_*|launchctl_*|libapt-pkg6.0_*|libassuan0_*|libcrypt2_*|libedit0_*|libffi7_*|libgcrypt20_*|libgmp10_*|libgnutls30_*|libgpg-error0_*|libhogweed6_*|libidn2-0_*|libintl8_*|libiosexec1_*|liblz4-1_*|liblzma5_*|libmd0_*|libncursesw6_*|libnettle8_*|libnpth0_*|libp11-kit0_*|libpam-modules_*|libpam2_*|libpcre1_*|libreadline8_*|libssl1.1_*|libtasn1-6_*|libunistring2_*|libxxhash0_*|libzstd1_*|ncurses-bin_*|ncurses-term_*|openssh_*|openssh-client_*|openssh-server_*|openssh-sftp-server_*|procursus-keyring_*|profile.d_*|sed_*|shell-cmds_*|snaputil_*|sudo_*|system-cmds_*|tar_*|uikittools_*|zsh_*).deb
 else # $(MEMO_TARGET),darwin-*
-	cd $(BUILD_STRAP) && rm -f !(apt_*|coreutils_*|darwintools_*|dpkg_*|gpgv_*|libapt-pkg6.0_*|libgcrypt20_*|libgpg-error0_*|libintl8_*|liblz4-1_*|liblzma5_*|libxxhash0_*|libzstd1_*|procursus-keyring_*|tar_*).deb
+	cd $(BUILD_STRAP) && rm -f !(apt_*|ca-certificates_*|coreutils_*|darwintools_*|dpkg_*|gpgv_*|libapt-pkg6.0_*|libassuan0_*|libffi7_*|libgcrypt20_*|libgmp10_*|libgnutls30_*|libgpg-error0_*|libhogweed6_*|libidn2-0_*|libintl8_*|liblz4-1_*|liblzma5_*|libmd0_*|libnettle8_*|libnpth0_*|libp11-kit0_*|libtasn1-6_*|libunistring2_*|libxxhash0_*|libzstd1_*|procursus-keyring_*|tar_*).deb
 endif # $(MEMO_TARGET),darwin-*
 	-for DEB in $(BUILD_STRAP)/*.deb; do \
 		PKGNAME=$$(basename $$DEB | cut -f1 -d"_"); \
@@ -846,7 +877,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	@# Copy headers from MacOSX.sdk
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{arpa,bsm,net,xpc,netinet,servers} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/objc/objc-runtime.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/objc
-	$(CP) -af $(MACOSX_SYSROOT)/usr/include/libkern/OSTypes.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern
+	$(CP) -af $(MACOSX_SYSROOT)/usr/include/libkern/* $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,proc*,ptrace,kern*,random,reboot,user,vnode}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys
 	$(CP) -af $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit
 	$(CP) -af $(MACOSX_SYSROOT)/usr/include/{ar,bootstrap,launch,libc,libcharset,localcharset,libproc,NSSystemDirectories,tzfile,vproc}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include

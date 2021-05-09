@@ -7,11 +7,9 @@ MTREE_NETBSD_VERSION := 20180822-6
 DEB_MTREE_NETBSD_V   ?= $(MTREE_NETBSD_VERSION)
 
 mtree-netbsd-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/mtree-netbsd-$(LUAJIT_COMMIT).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/mtree-netbsd-$(MTREE_NETBSD_VERSION).tar.gz \
-			https://github.com/jgoerzen/mtree-netbsd/archive/refs/tags/debian/$(MTREE_NETBSD_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,jgoerzen,mtree-netbsd,$(MTREE_NETBSD_VERSION),debian/$(MTREE_NETBSD_VERSION))
 	$(call EXTRACT_TAR,mtree-netbsd-$(MTREE_NETBSD_VERSION).tar.gz,mtree-netbsd-debian-$(MTREE_NETBSD_VERSION),mtree-netbsd)
-	wget -q -nc -P$(BUILD_WORK)/mtree-netbsd https://raw.githubusercontent.com/NetBSD/src/trunk/lib/libc/gen/pwcache.{c,h}
+	wget -q -nc -P $(BUILD_WORK)/mtree-netbsd https://raw.githubusercontent.com/NetBSD/src/trunk/lib/libc/gen/pwcache.{c,h}
 	$(call DO_PATCH,mtree-netbsd,mtree-netbsd,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/mtree-netbsd/.build_complete),)

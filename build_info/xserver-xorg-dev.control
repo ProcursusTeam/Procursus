@@ -1,0 +1,21 @@
+Package: xserver-xorg-dev
+Version: @DEB_XORG-SERVER_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libpixman-1-dev, x11proto-dev, libxfont-dev, libxkbfile-dev, mesa-common-dev
+Section: Development
+Priority: optional
+Description: Xorg X server - development files
+ This package provides development files for the X.Org ('Xorg') X server.
+ This is not quite the same as the DDK (Driver Development Kit) from the
+ XFree86 4.x and X.Org 6.7, 6.8 and 6.9 series of servers; it provides
+ headers and a pkg-config file for drivers using autotools to build
+ against.
+ .
+ Unless you are developing or building a driver, you probably want
+ xserver-xorg and/or xserver-xorg-core instead.
+ .
+ More information about X.Org can be found at:
+ <URL:https://www.x.org>
+ .
+ This package is built from the X.org xserver module.
