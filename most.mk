@@ -32,10 +32,9 @@ endif
 most-package: most-stage
 	# most.mk Package Structure
 	rm -rf $(BUILD_DIST)/most
-	mkdir -p $(BUILD_DIST)/most/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# most.mk Prep most-utils
-	cp -a $(BUILD_STAGE)/most/. $(BUILD_DIST)/most/
+	cp -a $(BUILD_STAGE)/most $(BUILD_DIST)
 
 	# most.mk Sign
 	$(call SIGN,most,general.xml)
