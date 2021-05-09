@@ -7,25 +7,23 @@ WPTC_TRACK_VERSION := 2020.09.26
 DEB_WPTC_TRACK_V   ?= $(WPTC_TRACK_VERSION)
 
 wptc-track-setup: setup
-	if [ ! -d "$(BUILD_WORK)/wptc-track" ]; then \
-	git clone https://github.com/titoxd/wptc-track "$(BUILD_WORK)/wptc-track"; \
-	cd "$(BUILD_WORK)/wptc-track"; \
-	git fetch origin; \
-	git reset --hard origin/master; \
-	git checkout "69bfe15eef70be9da64339eba41de1d00b0a6ec9"; \
-	fi
+	$(call GITHUB_ARCHIVE,titoxd,wptc-track,$(WPTC_TRACK_VERSION),69bfe15eef70be9da64339eba41de1d00b0a6ec9)
+	$(call EXTRACT_TAR,wptc-track-$(WPTC_TRACK_VERSION).tar.gz,wptc-track-69bfe15eef70be9da64339eba41de1d00b0a6ec9,wptc-track)
+	$(SED) -i 's@../data@$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/wptc-track/data@g' $(BUILD_WORK)/wptc-track/tracks/{refresh-nhc,track.c}
+	$(SED) -i 's@../png/output.png@./track.png@g' $(BUILD_WORK)/wptc-track/tracks/track.c
+
 ifneq ($(wildcard $(BUILD_WORK)/wptc-track/.build_complete),)
 wptc-track:
 	@echo "Using previously built wptc-track."
 else
 wptc-track: wptc-track-setup pcre cairo
-	cd $(BUILD_WORK)/wptc-track/tracks && ./autogen.sh -C \
-	$(DEFAULT_CONFIGURE_FLAGS) \
-	--with-tracks-data=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/wptc-track/data \
-	--datadir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/wptc-track
-	+$(MAKE) -C $(BUILD_WORK)/wptc-track
-	+$(MAKE) -C $(BUILD_WORK)/wptc-track install \
-		DESTDIR=$(BUILD_STAGE)/wptc-track
+	cd $(BUILD_WORK)/wptc-track/tracks \
+	$(CC)  -g -Wall scales.c template.c tab.c track.c tcr.c atcf.c hurdat2.c hurdat.c md.c $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcairo.dylib -o track -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/cairo
+	mkdir -p $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{share,bin,sbin}
+	mkdir -p $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/wptc-track
+	$(GINSTALL) -Dm755 $(BUILD_WORK)/wptc-track/tracks/track $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/track
+	$(GINSTALL) -Dm755 $(BUILD_WORK)/wptc-track/tracks/refresh-nhc $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
+	$(GINSTALL) -Dm644 $(BUILD_WORK)/wptc-track/data $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/wptc-track
 	touch $(BUILD_WORK)/wptc-track/.build_complete
 endif
 
