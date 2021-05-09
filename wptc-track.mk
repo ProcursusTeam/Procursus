@@ -9,7 +9,7 @@ DEB_WPTC_TRACK_V   ?= $(WPTC_TRACK_VERSION)
 wptc-track-setup: setup
 	$(call GITHUB_ARCHIVE,titoxd,wptc-track,$(WPTC_TRACK_VERSION),69bfe15eef70be9da64339eba41de1d00b0a6ec9)
 	$(call EXTRACT_TAR,wptc-track-$(WPTC_TRACK_VERSION).tar.gz,wptc-track-69bfe15eef70be9da64339eba41de1d00b0a6ec9,wptc-track)
-	$(SED) -i 's@../data@$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/wptc-track/data@g' $(BUILD_WORK)/wptc-track/tracks/{refresh-nhc,track.c}
+	$(SED) -i 's@../data@$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/wptc-track@g' $(BUILD_WORK)/wptc-track/tracks/{refresh-nhc,track.c}
 	$(SED) -i 's@../png/output.png@./track.png@g' $(BUILD_WORK)/wptc-track/tracks/track.c
 
 ifneq ($(wildcard $(BUILD_WORK)/wptc-track/.build_complete),)
@@ -18,12 +18,12 @@ wptc-track:
 else
 wptc-track: wptc-track-setup pcre cairo
 	cd $(BUILD_WORK)/wptc-track/tracks; \
-	$(CC) -arch arm64 -g -Wall scales.c template.c tab.c track.c tcr.c atcf.c hurdat2.c hurdat.c md.c $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcairo.dylib -o track -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/cairo
+	$(CC) -arch $(MEMO_ARCH) $(CFLAGS) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -DPLATFORM_iPhoneOS -g -Wall scales.c template.c tab.c track.c tcr.c atcf.c hurdat2.c hurdat.c md.c $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcairo.dylib -o track -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/cairo
 	mkdir -p $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{share,bin,sbin}
 	mkdir -p $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/wptc-track
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/wptc-track/tracks/track $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/track
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/wptc-track/tracks/refresh-nhc $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/wptc-track/data $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/wptc-track
+	$(CP) -a $(BUILD_WORK)/wptc-track/data $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/wptc-track
 	touch $(BUILD_WORK)/wptc-track/.build_complete
 endif
 
