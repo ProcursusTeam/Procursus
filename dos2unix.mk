@@ -25,10 +25,9 @@ endif
 dos2unix-package: dos2unix-stage
 	# dos2unix.mk Package Structure
 	rm -rf $(BUILD_DIST)/dos2unix
-	mkdir -p $(BUILD_DIST)/dos2unix/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# dos2unix.mk Prep dos2unix-utils
-	cp -a $(BUILD_STAGE)/dos2unix/. $(BUILD_DIST)/dos2unix/
+	cp -a $(BUILD_STAGE)/dos2unix $(BUILD_DIST)
 
 	# dos2unix.mk Sign
 	$(call SIGN,dos2unix,general.xml)
