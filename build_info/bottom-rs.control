@@ -1,8 +1,11 @@
-Package: bottom-rs
-Version: @DEB_BOTTOM-RS_V@
+Package: bottom
+Version: @DEB_BOTTOM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Author: bottom-software-foundation, Kaylynn
+Author: Kaylynn, Bottom Software Foundation
 Section: Utilities
+Priority: optional
 Homepage: https://github.com/bottom-software-foundation/bottom-rs
-Description: bottom encodes UTF-8 text into a sequence comprised of bottom emoji
+Description: The most beneficial CLI for that specific situation.
+ bottom allows users to encode UTF-8 text into a sequence comprised of bottom emojis, while also
+ providing a fantastic (maybe) CLI for translating between bottom and human-readable text.

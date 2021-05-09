@@ -2,43 +2,39 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS       += bottom-rs
-BOTTOM-RS_COMMIT  := 3451cdadd7c4e64fe8e7f43e986a18628a741dec
-BOTTOM-RS_VERSION := 1.2.0
-DEB_BOTTOM-RS_V   := $(BOTTOM-RS_VERSION)
+SUBPROJECTS    += bottom
+BOTTOM_VERSION := 1.2.0
+DEB_BOTTOM_V   ?= $(BOTTOM_VERSION)
 
-bottom-rs-setup: setup
-	$(call GITHUB_ARCHIVE,bottom-software-foundation,bottom-rs,$(BOTTOM-RS_COMMIT),$(BOTTOM-RS_COMMIT))
-	$(call EXTRACT_TAR,bottom-$(BOTTOM-RS_COMMIT).tar.gz,bottom-$(BOTTOM-RS_COMMIT),bottom-rs)
+bottom-setup: setup
+	$(call GITHUB_ARCHIVE,bottom-software-foundation,bottom-rs,$(BOTTOM_VERSION),need_top)
+	$(call EXTRACT_TAR,bottom-rs-$(BOTTOM_VERSION).tar.gz,bottom-rs-need_top,bottom)
 
-ifneq ($(wildcard $(BUILD_WORK)/bottom-rs/.build_complete),)
-bottom-rs:
-	@echo "Using previously built bottom-rs."
+ifneq ($(wildcard $(BUILD_WORK)/bottom/.build_complete),)
+bottom:
+	@echo "Using previously built bottom."
 else
-bottom-rs: bottom-rs-setup
-	cd $(BUILD_WORK)/bottom-rs/ && cargo install \
-	--target $(RUST_TARGET) \
-	--root $(BUILD_STAGE)/bottom-rs$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/ \
-	--path .
-
-	touch $(BUILD_WORK)/bottom-rs/.build_complete
+bottom: bottom-setup
+	cd $(BUILD_WORK)/bottom && SDKROOT="$(TARGET_SYSROOT)" cargo build \
+		--release \
+		--target=$(RUST_TARGET)
+	$(GINSTALL) -Dm755 $(BUILD_WORK)/bottom/target/$(RUST_TARGET)/release/bottomify \
+		$(BUILD_STAGE)/bottom/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bottomify
+	touch $(BUILD_WORK)/bottom/.build_complete
 endif
 
-bottom-rs-package: bottom-rs-stage
-	# bottom-rs.mk Package Structure
-	rm -rf $(BUILD_DIST)/bottom-rs
-	mkdir -p $(BUILD_DIST)//bottom-rs$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
+bottom-package: bottom-stage
+	# bottom.mk Package Structure
+	mkdir -p $(BUILD_DIST)/bottom
+	cp -a $(BUILD_STAGE)/bottom $(BUILD_DIST)
 
-	# bottom-rs.mk Prep bottom-rs
-	cp -a $(BUILD_STAGE)//bottom-rs$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/* $(BUILD_DIST)/bottom-rs$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
+	# bottom.mk Sign
+	$(call SIGN,bottom,general.xml)
 
-	# bottom-rs.mk Sign
-	$(call SIGN,bottom-rs,general.xml)
+	# bottom.mk Make .debs
+	$(call PACK,bottom,DEB_BOTTOM_V)
 
-	# bottom-rs.mk Make .debs
-	$(call PACK,bottom-rs,DEB_BOTTOM-RS_V)
+	# bottom.mk Build cleanup
+	rm -rf $(BUILD_DIST)/bottom
 
-	# bottom-rs.mk Build cleanup
-	rm -rf $(BUILD_DIST)/bottom-rs
-
-.PHONY: bottom-rs bottom-rs-package
+.PHONY: bottom bottom-package
