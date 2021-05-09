@@ -17,8 +17,8 @@ wptc-track:
 	@echo "Using previously built wptc-track."
 else
 wptc-track: wptc-track-setup pcre cairo
-	cd $(BUILD_WORK)/wptc-track/tracks \
-	$(CC)  -g -Wall scales.c template.c tab.c track.c tcr.c atcf.c hurdat2.c hurdat.c md.c $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcairo.dylib -o track -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/cairo
+	cd $(BUILD_WORK)/wptc-track/tracks; \
+	$(CC) -arch arm64 -g -Wall scales.c template.c tab.c track.c tcr.c atcf.c hurdat2.c hurdat.c md.c $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcairo.dylib -o track -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/cairo
 	mkdir -p $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{share,bin,sbin}
 	mkdir -p $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/wptc-track
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/wptc-track/tracks/track $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/track
