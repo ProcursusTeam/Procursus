@@ -529,17 +529,11 @@ ifneq ($(shell PATH=$(PATH) sed --version | grep -q GNU && echo 1),1)
 $(error Install GNU sed)
 endif
 
-ifeq ($(call HAS_COMMAND,ldid2),1)
-LDID := ldid2
-else ifeq ($(call HAS_COMMAND,ldid),1)
-ifneq ($(MEMO_QUIET),1)
-$(warning Using ldid. Abort now and install ldid2 if this ldid does not support SHA256)
-endif # ($(MEMO_QUIET),1)
-LDID := ldid
+ifeq ($(call HAS_COMMAND,ldid),1)
+export LDID := ldid
 else
-$(error Install ldid2)
+$(error Install ldid)
 endif
-export LDID
 
 ifeq ($(call HAS_COMMAND,libtoolize),1)
 LIBTOOLIZE := libtoolize
