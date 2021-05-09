@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS  += dos2unix
+SUBPROJECTS      += dos2unix
 DOS2UNIX_VERSION := 7.4.2
 DEB_DOS2UNIX_V   ?= $(DOS2UNIX_VERSION)
 
