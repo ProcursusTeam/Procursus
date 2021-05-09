@@ -19,8 +19,8 @@ micro:
 	@echo "Using previously built micro."
 else
 micro: micro-setup
-	cd $(BUILD_WORK)/micro && \
-		make build $(DEFAULT_GOLANG_FLAGS) \
+	$(MAKE) -C $(BUILD_WORK)/micro build \
+		$(DEFAULT_GOLANG_FLAGS)
 
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/micro/micro $(BUILD_STAGE)/micro/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/micro
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/micro/assets/packaging/micro.1 $(BUILD_STAGE)/micro/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/micro.1
