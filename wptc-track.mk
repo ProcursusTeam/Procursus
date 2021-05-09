@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += wptc-track
+SUBPROJECTS        += wptc-track
 WPTC_TRACK_VERSION := 2020.09.26
 DEB_WPTC_TRACK_V   ?= $(WPTC_TRACK_VERSION)
 
