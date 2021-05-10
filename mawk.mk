@@ -39,4 +39,5 @@ mawk-package: mawk-stage
 	
 	# mawk.mk Build cleanup
 	rm -rf $(BUILD_DIST)/mawk
-	.PHONY: mawk mawk-package
+
+.PHONY: mawk mawk-package
