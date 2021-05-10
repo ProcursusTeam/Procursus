@@ -1,0 +1,14 @@
+Package: liblouis20
+Version: @DEB_LIBLOUIS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Depends: liblouis-data (= @DEB_LIBLOUIS_V@), libyaml-0-2
+Priority: optional
+Description: Braille translation library - shared libs
+ Liblouis is a braille translator and back-translator.  It features support for
+ computer and literary braille, supports contracted and uncontracted translation
+ for many languages and has support for hyphenation.  Liblouis also supports
+ math braille (Nemeth and Marburg).
+ .
+ This package contains shared libraries.
