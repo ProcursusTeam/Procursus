@@ -2,8 +2,9 @@ Package: mawk
 Version: @DEB_MAWK_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Provides: awk
 Section: Utilities
-Priority:   optional
+Priority: optional
 Description: Pattern scanning and text processing language
  Mawk is an interpreter for the AWK Programming Language. The AWK
  language is useful for manipulation of data files, text retrieval and
