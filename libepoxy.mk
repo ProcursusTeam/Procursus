@@ -23,14 +23,15 @@ libepoxy-setup: setup
 	localstatedir='$(MEMO_PREFIX)/var'\n \
 	[binaries]\n \
 	c = '$(CC)'\n \
-	cpp = '$(CXX)'\n" > $(BUILD_WORK)/libepoxy/build/cross.txt
+	cpp = '$(CXX)'\n \
+	pkgconfig = '$(BUILD_TOOLS)/cross-pkg-config'\n" > $(BUILD_WORK)/libepoxy/build/cross.txt
 
 ifneq ($(wildcard $(BUILD_WORK)/libepoxy/.build_complete),)
 libepoxy:
 	@echo "Using previously built libepoxy."
 else
 libepoxy: libepoxy-setup libx11 mesa
-	cd $(BUILD_WORK)/libepoxy/build && PKG_CONFIG="pkg-config" meson \
+	cd $(BUILD_WORK)/libepoxy/build && meson \
 		--cross-file cross.txt \
 		-Dtests=false \
 		..

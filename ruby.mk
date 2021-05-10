@@ -43,7 +43,7 @@ endif
 		-e 's/\bncurses\b/ncursesw/' $(BUILD_WORK)/ruby/ext/readline/extconf.rb
 
 #	Future reference: coroutine should be "arm64" on M1 macs
-	cd $(BUILD_WORK)/ruby && LIBS="$(RUBY_EXTRA_LIBS)" PKG_CONFIG="pkg-config --define-prefix" \
+	cd $(BUILD_WORK)/ruby && LIBS="$(RUBY_EXTRA_LIBS)" \
 		./configure -C \
 			$(DEFAULT_CONFIGURE_FLAGS) \
 			--target=$(GNU_HOST_TRIPLE) \
