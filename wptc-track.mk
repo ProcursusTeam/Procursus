@@ -16,7 +16,7 @@ ifneq ($(wildcard $(BUILD_WORK)/wptc-track/.build_complete),)
 wptc-track:
 	@echo "Using previously built wptc-track."
 else
-wptc-track: wptc-track-setup pcre cairo
+wptc-track: wptc-track-setup cairo
 	cd $(BUILD_WORK)/wptc-track/tracks; \
 	$(CC) $(CFLAGS) -g -Wall scales.c template.c tab.c track.c tcr.c atcf.c hurdat2.c hurdat.c md.c $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcairo.dylib -o track -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/cairo
 	mkdir -p $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{share,bin,sbin}
