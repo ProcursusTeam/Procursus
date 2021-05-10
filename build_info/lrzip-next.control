@@ -4,5 +4,5 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Utilities
 Priority: optional
-Depends: libbz2-1.0, liblz4-1, liblzo2-2
+Depends: liblz4-1, liblzo2-2
 Description: Long Range Zip. An updated and Enhanced version of ckolivas' lrzip project. Lrzip Next Includes updated SDKs, Filtering, Improved output, an ASM Disassembler, and many other features not in the mainline.
