@@ -3,7 +3,7 @@ Version: @DEB_LIBLOUIS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Libraries
-Depends: liblouis-data
+Depends: liblouis-data (= @DEB_LIBLOUIS_V@)
 Priority: optional
 Description: Braille translation library - shared libs
  Liblouis is a braille translator and back-translator.  It features support for
