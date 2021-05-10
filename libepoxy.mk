@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += libepoxy
-LIBEPOXY_VERSION := 1.5.5
+LIBEPOXY_VERSION := 1.5.7
 DEB_LIBEPOXY_V   ?= $(LIBEPOXY_VERSION)
 
 libepoxy-setup: setup
@@ -34,6 +34,8 @@ libepoxy: libepoxy-setup libx11 mesa
 	cd $(BUILD_WORK)/libepoxy/build && meson \
 		--cross-file cross.txt \
 		-Dtests=false \
+		-Dx11=true \
+ 		-Dglx=yes \
 		..
 	+ninja -C $(BUILD_WORK)/libepoxy/build
 	+DESTDIR="$(BUILD_STAGE)/libepoxy" ninja -C $(BUILD_WORK)/libepoxy/build install
