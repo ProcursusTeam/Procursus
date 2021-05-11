@@ -1,16 +1,25 @@
-From 5f9f7a664d068954d64a48b6511be6437dd6b806 Mon Sep 17 00:00:00 2001
+From 54390ee819421647e076e795e66d0695a68f4bb5 Mon Sep 17 00:00:00 2001
 From: Hayden <pinseeker75@outlook.com>
-Date: Mon, 10 May 2021 20:18:43 -0400
+Date: Mon, 10 May 2021 20:54:04 -0400
 Subject: [PATCH] Update Cargo.toml
 
 ---
- Cargo.toml | 3 +++
- 1 file changed, 3 insertions(+)
+ Cargo.toml | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/Cargo.toml b/Cargo.toml
-index f0eb26c0..ea56a81a 100644
+index f0eb26c0..4d88f27a 100644
 --- a/Cargo.toml
 +++ b/Cargo.toml
+@@ -49,7 +49,7 @@ serde_yaml = "0.8"
+ semver = "0.11"
+ path_abs = { version = "0.5", default-features = false }
+ clircle = "0.3"
+-bugreport = "0.3"
++bugreport = "0.4"
+ dirs-next = { version = "2.0.0", optional = true }
+ 
+ [dependencies.git2]
 @@ -88,3 +88,6 @@ clap = { version = "2.33", optional = true }
  [profile.release]
  lto = true
