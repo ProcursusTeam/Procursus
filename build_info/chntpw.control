@@ -2,7 +2,7 @@ Package: chntpw
 Version: @DEB_CHNTPW_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Section: admin
+Section: Administration
 Priority: optional
 Homepage: http://pogostick.net/~pnh/ntpasswd/
 Description: NT SAM password recovery utility
