@@ -1,0 +1,20 @@
+From 5f9f7a664d068954d64a48b6511be6437dd6b806 Mon Sep 17 00:00:00 2001
+From: Hayden <pinseeker75@outlook.com>
+Date: Mon, 10 May 2021 20:18:43 -0400
+Subject: [PATCH] Update Cargo.toml
+
+---
+ Cargo.toml | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/Cargo.toml b/Cargo.toml
+index f0eb26c0..ea56a81a 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -88,3 +88,6 @@ clap = { version = "2.33", optional = true }
+ [profile.release]
+ lto = true
+ codegen-units = 1
++
++[patch.crates-io]
++sys-info = { git = "https://github.com/aspenluxxxy/sys-info-rs", rev = "70a7aed786347bb2e5f7c6eb26efc52ff3328437" }
