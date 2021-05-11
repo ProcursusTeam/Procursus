@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS         += libdvdnav
+SUBPROJECTS       += libdvdnav
 LIBDVDNAV_VERSION := 6.1.0
 DEB_LIBDVDNAV_V   ?= $(LIBDVDNAV_VERSION)
 

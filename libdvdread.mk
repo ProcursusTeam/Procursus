@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS         += libdvdread
+SUBPROJECTS        += libdvdread
 LIBDVDREAD_VERSION := 6.1.1
 DEB_LIBDVDREAD_V   ?= $(LIBDVDREAD_VERSION)
 
