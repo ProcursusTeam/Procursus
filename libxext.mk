@@ -17,7 +17,7 @@ libxext:
 else
 libxext: libxext-setup libx11 xorgproto
 	cd $(BUILD_WORK)/libxext && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)/ \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-silent-rules \
 		--disable-dependency-tracking \
 		--enable-malloc0returnsnull=no \

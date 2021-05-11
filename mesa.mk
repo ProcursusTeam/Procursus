@@ -28,7 +28,8 @@ mesa-setup: setup
 	localstatedir='$(MEMO_PREFIX)/var'\n \
 	[binaries]\n \
 	c = '$(CC)'\n \
-	cpp = '$(CXX)'\n" > $(BUILD_WORK)/mesa/build/cross.txt
+	cpp = '$(CXX)'\n \
+	pkgconfig = '$(BUILD_TOOLS)/cross-pkg-config'\n" > $(BUILD_WORK)/mesa/build/cross.txt
 
 	@echo "You need to install Mako with pip3 before building."
 	@echo "/usr/bin/pip3 install mako --user"
@@ -40,7 +41,7 @@ mesa:
 	@echo "Using previously built mesa."
 else
 mesa: mesa-setup libx11 libxext libxcb libxdamage libxxf86vm gettext expat zstd
-	cd $(BUILD_WORK)/mesa/build && PKG_CONFIG="pkg-config" meson \
+	cd $(BUILD_WORK)/mesa/build && meson \
 		--cross-file cross.txt \
 		-Dbuildtype=release \
 		-Diconv=auto \
