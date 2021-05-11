@@ -24,14 +24,15 @@ glib2.0-setup: setup
 	[binaries]\n \
 	c = '$(CC)'\n \
 	objc = '$(CC)'\n \
-	cpp = '$(CXX)'\n" > $(BUILD_WORK)/glib2.0/build/cross.txt
+	cpp = '$(CXX)'\n \
+	pkgconfig = '$(BUILD_TOOLS)/cross-pkg-config'\n" > $(BUILD_WORK)/glib2.0/build/cross.txt
 
 ifneq ($(wildcard $(BUILD_WORK)/glib2.0/.build_complete),)
 glib2.0:
 	@echo "Using previously built glib2.0."
 else
 glib2.0: glib2.0-setup gettext pcre libffi
-	cd $(BUILD_WORK)/glib2.0/build && PKG_CONFIG="pkg-config" meson \
+	cd $(BUILD_WORK)/glib2.0/build && meson \
 		--cross-file cross.txt \
 		-Diconv=auto \
 		-Dbsymbolic_functions=false \

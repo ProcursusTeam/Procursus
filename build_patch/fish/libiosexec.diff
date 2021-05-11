@@ -1,0 +1,19 @@
+diff -urN fish/src/exec.h fish/src/exec.h
+--- fish/src/exec.h	2021-04-07 08:31:43.000000000 -0400
++++ fish/src/exec.h	2021-05-03 23:12:01.407120384 -0400
+@@ -9,6 +9,15 @@
+ #include "common.h"
+ #include "proc.h"
+
++/* wrapper functions to make iOS shell scripts function correctly */
++#if defined(__APPLE__)
++#  include <TargetConditionals.h>
++#  if TARGET_OS_IPHONE
++#    define ENABLE_IOSEXEC
++#    include <libiosexec.h>
++#  endif
++#endif
++
+ /// Execute the processes specified by \p j in the parser \p.
+ /// On a true return, the job was successfully launched and the parser will take responsibility for
+ /// cleaning it up. On a false return, the job could not be launched and the caller must clean it

@@ -20,7 +20,7 @@ jtool2: jtool2-setup
 	mkdir -p $(BUILD_STAGE)/jtool2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin; \
 	$(LIPO) $(BUILD_WORK)/jtool2/jtool2 -thin $$LIPO_OUTPUT_TARGET -output $(BUILD_STAGE)/jtool2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/jtool2; \
 	$(LIPO) $(BUILD_WORK)/jtool2/disarm -thin $$LIPO_OUTPUT_TARGET -output $(BUILD_STAGE)/jtool2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/disarm; \
-	[ $$LIPO_OUTPUT_TARGET = "arm64" ] && \
+	[ $(MEMO_TARGET) = "darwin-arm64" ] && \
 		vtool -arch arm64 -remove-build-version ios -output $(BUILD_STAGE)/jtool2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/jtool2 $(BUILD_STAGE)/jtool2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/jtool2 && \
 		vtool -arch arm64 -remove-build-version ios -output $(BUILD_STAGE)/jtool2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/disarm $(BUILD_STAGE)/jtool2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/disarm
 	touch $(BUILD_WORK)/jtool2/.build_complete

@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS        += libdvdcss
+SUBPROJECTS       += libdvdcss
 LIBDVDCSS_VERSION := 1.4.2
 DEB_LIBDVDCSS_V   ?= $(LIBDVDCSS_VERSION)
 
