@@ -1,0 +1,18 @@
+diff -urN a/configure.ac b/configure.ac
+--- a/configure.ac	2021-04-05 22:12:22.000000000 +0800
++++ b/configure.ac	2021-05-11 21:29:21.481708422 +0800
+@@ -173,14 +173,6 @@
+   LIBS="$saved_LIBS"
+ ])
+ 
+-dnl libxml2 for metadata parser
+-AS_IF([test "x$with_libxml2" != "xno"], [
+-  PKG_CHECK_MODULES([LIBXML2], [libxml-2.0 >= 2.6],
+-    [with_libxml2=yes; AC_DEFINE([HAVE_LIBXML2], [1],
+-        [Define to 1 if libxml2 is to be used for metadata parsing])])
+-  PACKAGES="$PACKAGES libxml-2.0 >= 2.6"
+-])
+-
+ dnl FreeType2
+ AS_IF([test "x$with_freetype" != "xno"], [
+   PKG_CHECK_MODULES([FT2], [freetype2],
