@@ -4,7 +4,7 @@ endif
 SUBPROJECTS    += golang
 GOLANG_MAJOR_V := 1.16
 GOLANG_VERSION := $(GOLANG_MAJOR_V).3
-DEB_GOLANG_V   ?= $(GOLANG_VERSION)
+DEB_GOLANG_V   ?= $(GOLANG_VERSION)-1
 
 golang-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://golang.org/dl/go$(GOLANG_VERSION).src.tar.gz
@@ -15,10 +15,7 @@ ifneq (,$(findstring ios,$(shell echo $(RUST_TARGET) | cut -f3 -d-)))
 	cp -a $(BUILD_WORK)/golang/misc/ios/clangwrap.sh $(BUILD_WORK)/golang/superbin/$(CC)
 endif
 
-ifneq ($(UNAME),Darwin)
-golang:
-	@echo "golang building only supported on macOS"
-else ifneq ($(wildcard $(BUILD_WORK)/golang/.build_complete),)
+ifneq ($(wildcard $(BUILD_WORK)/golang/.build_complete),)
 golang:
 	@echo "Using previously built golang."
 else
@@ -38,6 +35,9 @@ ifneq (,$(findstring arm64,$(MEMO_TARGET)))
 else
 	-find $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V) -name darwin_arm64 -type d -exec rm -rf {} \;
 endif
+	if [ -d "$(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/bin/$(shell echo $(RUST_TARGET) | cut -f3 -d-)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)" ]; then \
+		cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/bin/$(shell echo $(RUST_TARGET) | cut -f3 -d-)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)/go{,fmt} $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/bin; \
+	fi
 	touch $(BUILD_WORK)/golang/.build_complete
 endif
 
@@ -52,11 +52,7 @@ golang-package: golang-stage
 
 	# golang.mk Prep golang-$(GOLANG_MAJOR_V)-go
 	cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/VERSION $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)
-ifneq ($(wildcard $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/bin/$(shell echo $(RUST_TARGET) | cut -f3 -d-)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)/.*),)
-	cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/bin/$(shell echo $(RUST_TARGET) | cut -f3 -d-)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)/go{,fmt} $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/bin
-else
 	cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/bin/go{,fmt} $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/bin
-endif
 	cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg/{*_*,include,tool} $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg
 
 	# golang.mk Prep golang-go

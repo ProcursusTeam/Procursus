@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+
 SUBPROJECTS  += lsof
 LSOF_VERSION := 62
 DEB_LSOF_V   ?= $(LSOF_VERSION)
@@ -58,3 +60,5 @@ lsof-package: lsof-stage
 	rm -rf $(BUILD_DIST)/lsof
 
 .PHONY: lsof lsof-package
+
+endif

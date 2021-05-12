@@ -83,6 +83,7 @@ MEMO_PREFIX          ?=
 MEMO_SUB_PREFIX      ?= /usr
 MEMO_ALT_PREFIX      ?= /local
 GNU_PREFIX           :=
+ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
 export IPHONEOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),appletvos-arm64)
@@ -99,6 +100,7 @@ MEMO_PREFIX          ?=
 MEMO_SUB_PREFIX      ?= /usr
 MEMO_ALT_PREFIX      ?= /local
 GNU_PREFIX           :=
+ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
 export APPLETVOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),watchos-arm64_32)
@@ -115,6 +117,7 @@ MEMO_PREFIX          ?=
 MEMO_SUB_PREFIX      ?= /usr
 MEMO_ALT_PREFIX      ?= /local
 GNU_PREFIX           :=
+ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/WatchOS.sdk
 export WATCHOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),darwin-arm64e)
@@ -131,6 +134,7 @@ MEMO_PREFIX          ?= /opt/procursus
 MEMO_SUB_PREFIX      ?=
 MEMO_ALT_PREFIX      ?=
 GNU_PREFIX           := g
+ON_DEVICE_SDK_PATH   := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
 else ifeq ($(MEMO_TARGET),darwin-arm64)
 ifneq ($(MEMO_QUIET),1)
@@ -146,6 +150,7 @@ MEMO_PREFIX          ?= /opt/procursus
 MEMO_SUB_PREFIX      ?=
 MEMO_ALT_PREFIX      ?=
 GNU_PREFIX           := g
+ON_DEVICE_SDK_PATH   := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
 else ifeq ($(MEMO_TARGET),darwin-amd64)
 ifneq ($(MEMO_QUIET),1)
@@ -161,6 +166,7 @@ MEMO_PREFIX          ?= /opt/procursus
 MEMO_SUB_PREFIX      ?=
 MEMO_ALT_PREFIX      ?=
 GNU_PREFIX           := g
+ON_DEVICE_SDK_PATH   := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
 else
 $(error Platform not supported)
@@ -266,8 +272,8 @@ CFLAGS              += -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM
 CXXFLAGS            := $(CFLAGS)
 CPPFLAGS            += -arch $(MEMO_ARCH) $(PLATFORM_VERSION_MIN) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include -Wno-error-implicit-function-declaration
 LDFLAGS             += -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)$(MEMO_PREFIX)/Library/Frameworks
-PKG_CONFIG_PATH     := $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig:$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/pkgconfig:$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/pkgconfig:$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/share/pkgconfig
-PKG_CONFIG_LIBDIR   := $(PKG_CONFIG_PATH)
+#PKG_CONFIG_PATH     := $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig:$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/pkgconfig:$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/pkgconfig:$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/share/pkgconfig
+#PKG_CONFIG_LIBDIR   := $(PKG_CONFIG_PATH)
 ACLOCAL_PATH        := $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal
 
 DEFAULT_CMAKE_FLAGS := \
@@ -293,7 +299,8 @@ DEFAULT_CONFIGURE_FLAGS := \
 	--localstatedir=$(MEMO_PREFIX)/var \
 	--sysconfdir=$(MEMO_PREFIX)/etc \
 	--bindir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
-	--mandir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+	--mandir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
+	--disable-dependency-tracking
 
 DEFAULT_PERL_MAKE_FLAGS := \
 	INSTALLSITEARCH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
@@ -347,7 +354,7 @@ export PLATFORM MEMO_ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE MEMO_PRE
 export CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T EXTRA SED
 export BUILD_ROOT BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP BUILD_TOOLS
 export DEB_ARCH DEB_ORIGIN DEB_MAINTAINER
-export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS PKG_CONFIG_PATH PKG_CONFIG_LIBDIR ACLOCAL_PATH
+export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS ACLOCAL_PATH #PKG_CONFIG_PATH PKG_CONFIG_LIBDIR
 export DEFAULT_CMAKE_FLAGS DEFAULT_CONFIGURE_FLAGS DEFAULT_PERL_MAKE_FLAGS DEFAULT_PERL_BUILD_FLAGS DEFAULT_GOLANG_FLAGS
 
 HAS_COMMAND = $(shell type $(1) >/dev/null 2>&1 && echo 1)
@@ -374,14 +381,10 @@ EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 	fi; \
 	find $(BUILD_BASE)$(MEMO_PREFIX) -name "*.la" -type f -delete
 
-DO_PATCH    = -cd $(BUILD_PATCH)/$(1); \
-	rm -f ./series; \
+DO_PATCH    = cd $(BUILD_PATCH)/$(1); \
 	for PATCHFILE in *; do \
 		if [ ! -f $(BUILD_WORK)/$(2)/$(notdir $$PATCHFILE).done ]; then \
-			patch -sN -d $(BUILD_WORK)/$(2) $(3) < $$PATCHFILE; \
-			if [ $(4) ]; then \
-				patch -sN -d $(BUILD_WORK)/$(2) $(4) < $$PATCHFILE; \
-			fi; \
+			patch -sN -d $(BUILD_WORK)/$(2) $(3) < $$PATCHFILE && \
 			touch $(BUILD_WORK)/$(2)/$(notdir $$PATCHFILE).done; \
 		fi; \
 	done
@@ -427,7 +430,7 @@ PACK = -if [ -z $(4) ]; then \
 		$(CP) -af $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale $(BUILD_DIST)/$(1)-locales; \
 		rm -rf $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale; \
 	fi; \
-	SIZE=$$(du -s $(BUILD_DIST)/$(1) | cut -f 1); \
+	SIZE=$$(du -sk $(BUILD_DIST)/$(1) | cut -f 1); \
 	mkdir -p $(BUILD_DIST)/$(1)/DEBIAN; \
 	$(CP) $(BUILD_INFO)/$(1).control $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	$(CP) $(BUILD_INFO)/$(1).control.$(PLATFORM) $(BUILD_DIST)/$(1)/DEBIAN/control; \
@@ -452,6 +455,7 @@ PACK = -if [ -z $(4) ]; then \
 		$(SED) -i ':a; s|@MEMO_ALT_PREFIX@|$(MEMO_ALT_PREFIX)|g; ta' $(BUILD_DIST)/$(1)/DEBIAN/$$i; \
 		$(SED) -i ':a; s|@GNU_PREFIX@|$(GNU_PREFIX)|g; ta' $(BUILD_DIST)/$(1)/DEBIAN/$$i; \
 	done; \
+	sed -i -e '$$a\' $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	if [ -d "$(BUILD_DIST)/$(1)-locales" ]; then \
 		$(call PACK_LOCALE,$(1)); \
 	fi; \
@@ -521,17 +525,11 @@ ifneq ($(shell PATH=$(PATH) sed --version | grep -q GNU && echo 1),1)
 $(error Install GNU sed)
 endif
 
-ifeq ($(call HAS_COMMAND,ldid2),1)
-LDID := ldid2
-else ifeq ($(call HAS_COMMAND,ldid),1)
-ifneq ($(MEMO_QUIET),1)
-$(warning Using ldid. Abort now and install ldid2 if this ldid does not support SHA256)
-endif # ($(MEMO_QUIET),1)
-LDID := ldid
+ifeq ($(call HAS_COMMAND,ldid),1)
+export LDID := ldid
 else
-$(error Install ldid2)
+$(error Install ldid)
 endif
-export LDID
 
 ifeq ($(call HAS_COMMAND,libtoolize),1)
 LIBTOOLIZE := libtoolize
@@ -704,12 +702,12 @@ env:
 	@echo -e "\tCXXFLAGS='$(CXXFLAGS)'"
 	@echo -e "\tCPPFLAGS='$(CPPFLAGS)'"
 	@echo -e "\tLDFLAGS='$(LDFLAGS)'"
-	@echo -e "\tPKG_CONFIG_PATH='$(PKG_CONFIG_PATH)'"
+#	@echo -e "\tPKG_CONFIG_PATH='$(PKG_CONFIG_PATH)'"
 	@echo -e "\texport MEMO_TARGET PLATFORM MEMO_ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE"
 	@echo -e "\texport CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T EXTRA SED LDID GINSTALL LN CP"
 	@echo -e "\texport BUILD_ROOT BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP BUILD_TOOLS"
 	@echo -e "\texport DEB_ARCH DEB_ORIGIN DEB_MAINTAINER"
-	@echo -e "\texport CFLAGS CXXFLAGS CPPFLAGS LDFLAGS PKG_CONFIG_PATH"
+	@echo -e "\texport CFLAGS CXXFLAGS CPPFLAGS LDFLAGS"
 	@echo -e "}"
 
 viewenv:
@@ -731,9 +729,9 @@ bootstrap:: strapprojects
 	mkdir -p $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/info
 	touch $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/status
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	cd $(BUILD_STRAP) && rm -f !(apt_*|base_*|bash_*|ca-certificates_*|coreutils_*|darwintools_*|dash_*|debianutils_*|diffutils_*|diskdev-cmds_*|dpkg_*|essential_*|file-cmds_*|findutils_*|firmware-sbin_*|gpgv_*|grep_*|launchctl_*|libapt-pkg6.0_*|libcrypt2_*|libedit0_*|libgcrypt20_*|libgpg-error0_*|libintl8_*|liblz4-1_*|liblzma5_*|libncursesw6_*|libpam-modules_*|libpam2_*|libpcre1_*|libreadline8_*|libssl1.1_*|libxxhash0_*|libzstd1_*|ncurses-bin_*|ncurses-term_*|openssh_*|openssh-client_*|openssh-server_*|openssh-sftp-server_*|procursus-keyring_*|profile.d_*|sed_*|shell-cmds_*|snaputil_*|sudo_*|system-cmds_*|tar_*|uikittools_*|zsh_*).deb
+	cd $(BUILD_STRAP) && rm -f !(apt_*|base_*|bash_*|ca-certificates_*|coreutils_*|darwintools_*|dash_*|debianutils_*|diffutils_*|diskdev-cmds_*|dpkg_*|essential_*|file-cmds_*|findutils_*|firmware-sbin_*|gpgv_*|grep_*|launchctl_*|libapt-pkg6.0_*|libassuan0_*|libcrypt2_*|libedit0_*|libffi7_*|libgcrypt20_*|libgmp10_*|libgnutls30_*|libgpg-error0_*|libhogweed6_*|libidn2-0_*|libintl8_*|libiosexec1_*|liblz4-1_*|liblzma5_*|libmd0_*|libncursesw6_*|libnettle8_*|libnpth0_*|libp11-kit0_*|libpam-modules_*|libpam2_*|libpcre1_*|libreadline8_*|libssl1.1_*|libtasn1-6_*|libunistring2_*|libxxhash0_*|libzstd1_*|ncurses-bin_*|ncurses-term_*|openssh_*|openssh-client_*|openssh-server_*|openssh-sftp-server_*|procursus-keyring_*|profile.d_*|sed_*|shell-cmds_*|snaputil_*|sudo_*|system-cmds_*|tar_*|uikittools_*|zsh_*).deb
 else # $(MEMO_TARGET),darwin-*
-	cd $(BUILD_STRAP) && rm -f !(apt_*|coreutils_*|darwintools_*|dpkg_*|gpgv_*|libapt-pkg6.0_*|libgcrypt20_*|libgpg-error0_*|libintl8_*|liblz4-1_*|liblzma5_*|libxxhash0_*|libzstd1_*|procursus-keyring_*|tar_*).deb
+	cd $(BUILD_STRAP) && rm -f !(apt_*|ca-certificates_*|coreutils_*|darwintools_*|dpkg_*|gpgv_*|libapt-pkg6.0_*|libassuan0_*|libffi7_*|libgcrypt20_*|libgmp10_*|libgnutls30_*|libgpg-error0_*|libhogweed6_*|libidn2-0_*|libintl8_*|liblz4-1_*|liblzma5_*|libmd0_*|libnettle8_*|libnpth0_*|libp11-kit0_*|libtasn1-6_*|libunistring2_*|libxxhash0_*|libzstd1_*|procursus-keyring_*|tar_*).deb
 endif # $(MEMO_TARGET),darwin-*
 	-for DEB in $(BUILD_STRAP)/*.deb; do \
 		PKGNAME=$$(basename $$DEB | cut -f1 -d"_"); \
