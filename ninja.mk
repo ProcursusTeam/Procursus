@@ -30,7 +30,7 @@ ninja-package: ninja-stage
 	mkdir -p $(BUILD_DIST)/ninja
 
 	# ninja.mk Prep ninja
-	cp -a $(BUILD_STAGE)/ninja/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/ninja
+	cp -a $(BUILD_STAGE)/ninja $(BUILD_DIST)
 
 	# ninja.mk Sign
 	$(call SIGN,ninja,general.xml)
