@@ -9,12 +9,14 @@ DEB_TMUX_V     ?= $(TMUX_VERSION)
 tmux-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tmux/tmux/releases/download/$(TMUX_VERSION)/tmux-$(TMUX_VERSION).tar.gz
 	$(call EXTRACT_TAR,tmux-$(TMUX_VERSION).tar.gz,tmux-$(TMUX_VERSION),tmux)
+	$(call DO_PATCH,tmux,tmux,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/tmux/.build_complete),)
 tmux:
 	@echo "Using previously built tmux."
 else
 tmux: tmux-setup ncurses libevent libutf8proc
+	cd $(BUILD_WORK)/tmux && autoreconf -fi
 	cd $(BUILD_WORK)/tmux && ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-utf8proc \
