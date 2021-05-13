@@ -2,6 +2,7 @@ Package: exa
 Version: @DEB_EXA_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Author: Benjamin Sago <auto@bsago.me>
 Section: Utilities
 Priority: optional
 Description: Modern replacement for ls.

@@ -15,11 +15,12 @@ exa:
 	@echo "Using previously built exa."
 else
 exa: exa-setup
-	# Patch Cargo.toml to use aspen's branch for Rust packages on iOS.
-	$(SED) -i 's+users = "0.11"+users = { git = "https://github.com/aspenluxxxy/rust-users", branch = "ios"}+g' \
+	# Patch Cargo.toml to use aspen's fork of users /w iOS support
+	$(SED) -i 's+users = "0.11"+users = {git = "https://github.com/aspenluxxxy/rust-users", branch = "ios"}+g' \
 		$(BUILD_WORK)/exa/Cargo.toml
 	cd $(BUILD_WORK)/exa && SDKROOT="$(TARGET_SYSROOT)" cargo build \
 		--release \
+		--no-default-features \
 		--target=$(RUST_TARGET)
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/exa/target/$(RUST_TARGET)/release/exa \
 		$(BUILD_STAGE)/exa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/exa
