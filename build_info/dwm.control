@@ -2,7 +2,7 @@ Package: dwm
 Version: @DEB_DWM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libfontconfig1 (>= 2.12.6), libx11-6, libxft2 (>> 2.1.1)
+Depends: libfontconfig1 (>= 2.12.6), libx11-6, libxft2 (>> 2.1.1), libxinerama1
 Recommends: x-terminal-emulator
 Provides: x-window-manager
 Section: X11
