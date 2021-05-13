@@ -1,8 +1,0 @@
-Package: libiconv
-Version: @DEB_LIBICONV_V@
-Architecture: @DEB_ARCH@
-Maintainer: @DEB_MAINTAINER@
-Section: Libraries
-Homepage: https://www.gnu.org/software/libiconv/
-Description: This library provides an iconv() implementation, for use on systems which don't have one, or whose implementation cannot convert from/to Unicode.
-Name: libiconv
