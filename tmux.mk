@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += tmux
-TMUX_VERSION   := 3.1c
-DEB_TMUX_V     ?= $(TMUX_VERSION)-1
+TMUX_VERSION   := 3.2
+DEB_TMUX_V     ?= $(TMUX_VERSION)
 
 tmux-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tmux/tmux/releases/download/$(TMUX_VERSION)/tmux-$(TMUX_VERSION).tar.gz
