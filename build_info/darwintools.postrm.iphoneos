@@ -1,11 +1,11 @@
 #!/bin/sh
-prod="$(sw_vers -productName)"
+#prod="$(sw_vers -productName)"
 
-if [ "${prod}" = "Apple TVOS" ]; then
-    target="/usr/libexec/nito/firmware.sh"
-else
+#if [ "${prod}" = "Apple TVOS" ]; then
+#    target="/usr/libexec/nito/firmware.sh"
+#else
     target="/usr/libexec/cydia/firmware.sh"
-fi
+#fi
 
 if [ remove = "$1" -o abort-install = "$1" -o disappear = "$1" ]; then
     if [ -L ${target} ]; then rm -f ${target}; fi

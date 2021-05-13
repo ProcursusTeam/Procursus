@@ -8,7 +8,7 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += bash
 endif # ($(MEMO_TARGET),darwin-\*)
 BASH_VERSION  := 5.1
-BASH_SUB_V    := 004
+BASH_SUB_V    := 008
 DEB_BASH_V    ?= $(BASH_VERSION).$(BASH_SUB_V)
 
 bash-setup: setup
@@ -18,7 +18,7 @@ bash-setup: setup
 	mkdir -p $(BUILD_STAGE)/bash/$(MEMO_PREFIX)/bin
 	$(call DO_PATCH,bash,bash,-p0)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(SED) -i "s/ENOEXEC)/ENOEXEC \&\& i != EPERM)/" $(BUILD_WORK)/bash/execute_cmd.c
+	$(SED) -i '1s/^/#include <libiosexec.h>\n/' $(BUILD_WORK)/bash/execute_cmd.h
 BASH_CONFIGURE_ARGS := ac_cv_c_stack_direction=-1 \
 	ac_cv_func_mmap_fixed_mapped=yes \
 	ac_cv_func_setvbuf_reversed=no \
@@ -37,20 +37,22 @@ BASH_CONFIGURE_ARGS := ac_cv_c_stack_direction=-1 \
 	bash_cv_sys_named_pipes=present \
 	bash_cv_sys_siglist=yes \
 	gt_cv_int_divbyzero_sigfpe=no \
-	ac_cv_sys_interpreter=no
+	LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -liosexec"
 endif
 
 ifneq ($(wildcard $(BUILD_WORK)/bash/.build_complete),)
 bash:
 	@echo "Using previously built bash."
 else
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 bash: bash-setup ncurses readline
+else
+bash: bash-setup ncurses readline libiosexec
+endif
 	cd $(BUILD_WORK)/bash && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-nls \
-		--with-installed-readline=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		--with-installed-readline=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		CFLAGS="$(CFLAGS) -DSSH_SOURCE_BASHRC" \
 		$(BASH_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/bash \
@@ -58,11 +60,7 @@ bash: bash-setup ncurses readline
 	+$(MAKE) -C $(BUILD_WORK)/bash install \
 		DESTDIR="$(BUILD_STAGE)/bash"
 ifneq ($(MEMO_SUB_PREFIX),)
-	ln -s ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bash $(BUILD_STAGE)/bash/bin/bash
-	ln -s ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bash $(BUILD_STAGE)/bash/bin/sh
-endif
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	ln -s bash $(BUILD_STAGE)/bash/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sh
+	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bash $(BUILD_STAGE)/bash/$(MEMO_PREFIX)/bin/bash
 endif
 	touch $(BUILD_WORK)/bash/.build_complete
 endif

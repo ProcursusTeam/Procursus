@@ -3,7 +3,8 @@ Essential: yes
 Version: @DEB_ZSH_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libncursesw6, libpcre1
+Depends: libiosexec1, libncursesw6, libpcre1, debianutils (>= 4.11.2)
+Pre-Depends: debianutils (>= 4.11.2)
 Section: Terminal_Support
 Priority: required
 Description: a shell with interactive features

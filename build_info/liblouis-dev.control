@@ -1,0 +1,14 @@
+Package: liblouis-dev
+Version: @DEB_LIBLOUIS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Depends: liblouis20 (= @DEB_LIBLOUIS_V@)
+Description: Braille translation library - static libs and headers
+ Liblouis is a braille translator and back-translator.  It features support for
+ computer and literary braille, supports contracted and uncontracted translation
+ for many languages and has support for hyphenation.  Liblouis also supports
+ math braille (Nemeth and Marburg).
+ .
+ This package contains static libraries and development headers.

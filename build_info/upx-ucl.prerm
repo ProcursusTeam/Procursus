@@ -1,0 +1,9 @@
+#!/bin/sh
+#
+set -e
+
+[ "$1" = "remove" ] && update-alternatives --remove upx @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/upx-ucl
+
+#DEBHELPER#
+
+exit 0

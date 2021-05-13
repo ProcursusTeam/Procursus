@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cd @MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/ghostbin
+./ghostbin $@

@@ -1,0 +1,16 @@
+#!/bin/sh
+
+set -eu
+
+if [ "${1}" = "purge" ]
+then
+	if id redis &>/dev/null; then
+		dscl . -delete /Users/redis
+		dscl . -delete /Groups/redis
+	fi
+	rm -rf @MEMO_PREFIX@/var/lib/redis @MEMO_PREFIX@/var/log/redis @MEMO_PREFIX@/etc/redis
+fi
+
+#DEBHELPER#
+
+exit 0
