@@ -17,8 +17,7 @@ libiconv:
 else
 libiconv: libiconv-setup gettext
 	cd $(BUILD_WORK)/libiconv && ./configure -C \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libiconv
 	+$(MAKE) -C $(BUILD_WORK)/libiconv install \
 		DESTDIR=$(BUILD_STAGE)/libiconv
@@ -33,13 +32,13 @@ libiconv-package: libiconv-stage
 
 	# libiconv.mk Prep libiconv
 	cp -a $(BUILD_STAGE)/libiconv $(BUILD_DIST)
-	
+
 	# libiconv.mk Sign
 	$(call SIGN,libiconv,general.xml)
-	
+
 	# libiconv.mk Make .debs
 	$(call PACK,libiconv,DEB_LIBICONV_V)
-	
+
 	# libiconv.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libiconv
 
