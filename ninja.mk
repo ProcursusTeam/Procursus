@@ -27,7 +27,6 @@ endif
 ninja-package: ninja-stage
 	# ninja.mk Package Structure
 	rm -rf $(BUILD_DIST)/ninja
-	mkdir -p $(BUILD_DIST)/ninja
 
 	# ninja.mk Prep ninja
 	cp -a $(BUILD_STAGE)/ninja $(BUILD_DIST)
