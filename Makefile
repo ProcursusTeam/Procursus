@@ -210,10 +210,10 @@ CXX             := c++
 CPP             := cc -E
 PATH            := /opt/procursus/bin:/opt/procursus/libexec/gnubin:/usr/bin:$(PATH)
 
-BUILD_CFLAGS   := -arch $(shell arch) -mmacosx-version-min=$(shell sw_vers -productVersion)
-BUILD_CPPFLAGS := -arch $(shell arch) -mmacosx-version-min=$(shell sw_vers -productVersion)
-BUILD_CXXFLAGS := -arch $(shell arch) -mmacosx-version-min=$(shell sw_vers -productVersion)
-BUILD_LDFLAGS  := -arch $(shell arch) -mmacosx-version-min=$(shell sw_vers -productVersion)
+BUILD_CFLAGS   := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion)
+BUILD_CPPFLAGS := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion)
+BUILD_CXXFLAGS := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion)
+BUILD_LDFLAGS  := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion)
 
 else
 ifneq ($(MEMO_QUIET),1)
@@ -226,10 +226,10 @@ CXX             := clang++
 CPP             := clang -E
 PATH            := /usr/bin:$(PATH)
 
-BUILD_CFLAGS   := -arch $(shell arch) -miphoneos-version-min=$(shell sw_vers -productVersion)
-BUILD_CPPFLAGS := -arch $(shell arch) -miphoneos-version-min=$(shell sw_vers -productVersion)
-BUILD_CXXFLAGS := -arch $(shell arch) -miphoneos-version-min=$(shell sw_vers -productVersion)
-BUILD_LDFLAGS  := -arch $(shell arch) -miphoneos-version-min=$(shell sw_vers -productVersion)
+BUILD_CFLAGS   := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
+BUILD_CPPFLAGS := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
+BUILD_CXXFLAGS := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
+BUILD_LDFLAGS  := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
 
 endif
 AR              := ar
