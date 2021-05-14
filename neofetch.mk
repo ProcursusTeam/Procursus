@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS      += neofetch
 NEOFETCH_VERSION := 7.1.0
-DEB_NEOFETCH_V   ?= $(NEOFETCH_VERSION)-1
+DEB_NEOFETCH_V   ?= $(NEOFETCH_VERSION)-2
 
 neofetch-setup: setup
 	$(call GITHUB_ARCHIVE,dylanaraps,neofetch,$(NEOFETCH_VERSION),$(NEOFETCH_VERSION))
