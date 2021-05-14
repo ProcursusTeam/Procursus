@@ -1,0 +1,21 @@
+Package: triehash
+Version: @DEB_TRIEHASH_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Depends: perl
+Section: Development
+Homepage: https://github.com/julian-klode/triehash
+Description: Generates perfect hash functions as native machine code
+ TrieHash generates perfect hash functions as C code which then gets
+ compiled into optimal machine code as part of the usual program compilation.
+ .
+ TrieHash works by translating a list of strings to a trie, and then converting
+ the trie to a set of recursive switch statements; first switching by length,
+ and then switching by bytes.
+ .
+ TrieHash has various optimizations such as processing multiple bytes at once
+ (on GNU C), and shortcuts for reducing the complexity of case-insensitive
+ matching (ASCII only). Generated code performs substantially faster than
+ gperf, but is larger.
+ .
+ TrieHash was written for use in APT.

@@ -2,10 +2,9 @@ Package: bash
 Version: @DEB_BASH_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Pre-Depends: libreadline8 (>= 8.0), profile.d (>= 0-5)
-Depends: grep, libncursesw6, libreadline8, sed
+Pre-Depends: dash (>= 0.5.11.3-1), libreadline8 (>= 8.0), profile.d (>= 0-5), debianutils (>= 4.11.2)
+Depends: grep, libiosexec1, libncursesw6, libreadline8, sed, debianutils (>= 4.11.2)
 Section: Terminal_Support
 Priority: optional
 Homepage: http://www.gnu.org/software/bash/
 Description: the best shell ever written by Brian Fox
-Name: Bourne-Again SHell

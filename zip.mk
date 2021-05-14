@@ -34,16 +34,16 @@ zip-package: zip-stage
 	# zip.mk Package Structure
 	rm -rf $(BUILD_DIST)/zip
 	mkdir -p $(BUILD_DIST)/zip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# zip.mk Prep zip
 	cp -a $(BUILD_STAGE)/zip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/* $(BUILD_DIST)/zip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# zip.mk Sign
 	$(call SIGN,zip,general.xml)
-	
+
 	# zip.mk Make .debs
 	$(call PACK,zip,DEB_ZIP_V)
-	
+
 	# zip.mk Build cleanup
 	rm -rf $(BUILD_DIST)/zip
 

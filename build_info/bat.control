@@ -2,6 +2,7 @@ Package: bat
 Version: @DEB_BAT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Depends: libgit2-1.1
 Section: Utilities
 Priority: standard
 Description: cat(1) clone with syntax highlighting and git integration

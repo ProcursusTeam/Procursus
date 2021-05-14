@@ -2,7 +2,8 @@ Package: fish
 Version: @DEB_FISH_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libncursesw6, libintl8, libpcre2-32-0
+Depends: libiosexec1, libncursesw6, libintl8, libpcre2-32-0, debianutils (>= 4.11.2)
+Pre-Depends: debianutils (>= 4.11.2)
 Recommends: python3, lynx, man-db
 Section: Terminal_Support
 Priority: optional

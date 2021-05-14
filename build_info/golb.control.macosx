@@ -1,0 +1,7 @@
+Package: golb
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_GOLB_V@
+Section: Utilities
+Priority: optional
+Description: Mapping physical memory to user space (EL0) on iOS. (+ AES PoC)

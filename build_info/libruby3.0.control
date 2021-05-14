@@ -2,7 +2,7 @@ Package: libruby3.0
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_RUBY_V@
-Depends: libjemalloc2, libgmp10, libcrypt2, libffi7, libgdbm6, libncursesw6, libreadline8, libssl1.1, libyaml-0-2
+Depends: libjemalloc2, libgmp10, libcrypt2, libffi7, libgdbm6, libncursesw6, libreadline8, libssl1.1, libyaml-0-2, libiosexec1
 Section: Libraries
 Priority: optional
 Description: Libraries necessary to run Ruby 3.0

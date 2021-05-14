@@ -3,9 +3,7 @@ Essential: yes
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_SUDO_V@
-Depends: libintl8, libcrypt2
+Depends: libintl8, libpam2, libiosexec1
 Section: Administration
 Priority: required
 Description: temporarily assume root priviledges
-Name: Sudo
-Tag: purpose::console, role::hacker

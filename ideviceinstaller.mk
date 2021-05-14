@@ -18,9 +18,7 @@ else
 ideviceinstaller: ideviceinstaller-setup libzip libplist libimobiledevice
 	cd $(BUILD_WORK)/ideviceinstaller && autoreconf -fi
 	cd $(BUILD_WORK)/ideviceinstaller && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/ideviceinstaller V=1
 	+$(MAKE) -C $(BUILD_WORK)/ideviceinstaller install \
 		DESTDIR=$(BUILD_STAGE)/ideviceinstaller
@@ -28,19 +26,19 @@ ideviceinstaller: ideviceinstaller-setup libzip libplist libimobiledevice
 endif
 
 ideviceinstaller-package: ideviceinstaller-stage
-    # ideviceinstaller.mk Package Structure
+	# ideviceinstaller.mk Package Structure
 	rm -rf $(BUILD_DIST)/ideviceinstaller
-    
-    # ideviceinstaller.mk Prep ideviceinstaller
+
+	# ideviceinstaller.mk Prep ideviceinstaller
 	cp -a $(BUILD_STAGE)/ideviceinstaller $(BUILD_DIST)
-    
-    # ideviceinstaller.mk Sign
+
+	# ideviceinstaller.mk Sign
 	$(call SIGN,ideviceinstaller,general.xml)
-    
-    # ideviceinstaller.mk Make .debs
+
+	# ideviceinstaller.mk Make .debs
 	$(call PACK,ideviceinstaller,DEB_IDEVICEINSTALLER_V)
-    
-    # ideviceinstaller.mk Build cleanup
+
+	# ideviceinstaller.mk Build cleanup
 	rm -rf $(BUILD_DIST)/ideviceinstaller
 
 .PHONY: ideviceinstaller ideviceinstaller-package

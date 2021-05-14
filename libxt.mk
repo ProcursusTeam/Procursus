@@ -17,11 +17,7 @@ libxt:
 else
 libxt: libxt-setup libx11 libice libsm
 	cd $(BUILD_WORK)/libxt && unset CPP CPPFLAGS && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-malloc0returnsnull=no \
 		--enable-specs=no \
 		--disable-silent-rules
@@ -40,10 +36,10 @@ libxt-package: libxt-stage
 		$(BUILD_DIST)/libxt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxt.mk Prep libxt6
-	cp -a $(BUILD_STAGE)/libxt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXt.6.dylib $(BUILD_DIST)/libxt6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXt.6*.dylib $(BUILD_DIST)/libxt6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxt.mk Prep libxt-dev
-	cp -a $(BUILD_STAGE)/libxt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libXt.6.dylib) $(BUILD_DIST)/libxt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libXt.6*.dylib) $(BUILD_DIST)/libxt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libxt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libxt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
 
 	# libxt.mk Sign
