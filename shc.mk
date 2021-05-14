@@ -19,7 +19,7 @@ shc: shc-setup
 	cd $(BUILD_WORK)/shc && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 			ac_cv_func_malloc_0_nonnull=yes \
-				ac_cv_func_realloc_0_nonnull=yes
+			ac_cv_func_realloc_0_nonnull=yes
 	+$(MAKE) -C $(BUILD_WORK)/shc
 	+$(MAKE) -C $(BUILD_WORK)/shc install \
 		DESTDIR=$(BUILD_STAGE)/shc
