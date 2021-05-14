@@ -206,6 +206,32 @@ BUILD_CPPFLAGS :=
 BUILD_CXXFLAGS :=
 BUILD_LDFLAGS  :=
 
+else ifeq ($(UNAME),FreeBSD)
+ifneq ($(MEMO_QUIET),1)
+$(warning Building on FreeBSD)
+endif # ($(MEMO_QUIET),1)
+TARGET_SYSROOT  ?= $(HOME)/cctools/SDK/iPhoneOS13.2.sdk
+MACOSX_SYSROOT  ?= $(HOME)/cctools/SDK/MacOSX.sdk
+CC      := $(GNU_HOST_TRIPLE)-clang
+CXX     := $(GNU_HOST_TRIPLE)-clang++
+CPP     := $(GNU_HOST_TRIPLE)-clang -E
+AR      := $(GNU_HOST_TRIPLE)-ar
+LD      := $(GNU_HOST_TRIPLE)-ld 
+RANLIB  := $(GNU_HOST_TRIPLE)-ranlib   
+STRIP   := $(GNU_HOST_TRIPLE)-strip
+I_N_T   := $(GNU_HOST_TRIPLE)-install_name_tool
+NM      := $(GNU_HOST_TRIPLE)-nm
+LIPO    := $(GNU_HOST_TRIPLE)-lipo
+OTOOL   := $(GNU_HOST_TRIPLE)-otool
+EXTRA   := INSTALL="/usr/local/bin/ginstall -c --strip-program=$(STRIP)"
+LIBTOOL := $(GNU_HOST_TRIPLE)-libtool
+PATH    := $(GNUBINDIR):$(PATH)
+
+BUILD_CFLAGS   :=
+BUILD_CPPFLAGS :=
+BUILD_CXXFLAGS :=
+BUILD_LDFLAGS  :=
+
 else ifeq ($(UNAME),Darwin)
 ifeq ($(shell sw_vers -productName),macOS)
 ifneq ($(MEMO_QUIET),1)
@@ -698,7 +724,6 @@ DOCBOOK_XSL := /opt/procursus/share/xml/docbook/stylesheet/docbook-xsl
 export XML_CATALOG_FILES=/opt/procursus/etc/xml/catalog
 else ifneq (,$(wildcard /usr/share/xml/docbook/stylesheet/docbook-xsl))
 DOCBOOK_XSL := /usr/share/xml/docbook/stylesheet/docbook-xsl
-export XML_CATALOG_FILES=/etc/xml/catalog
 else ifneq (,$(wildcard /usr/local/share/xsl/docbook))
 DOCBOOK_XSL := /usr/local/share/xsl/docbook
 else ifneq (,$(wildcard /usr/share/xsl/docbook))
