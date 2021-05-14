@@ -193,6 +193,11 @@ OTOOL    := $(GNU_HOST_TRIPLE)-otool
 EXTRA    := INSTALL="/usr/bin/install -c --strip-program=$(STRIP)"
 LIBTOOL  := $(GNU_HOST_TRIPLE)-libtool
 
+BUILD_CFLAGS   :=
+BUILD_CPPFLAGS :=
+BUILD_CXXFLAGS :=
+BUILD_LDFLAGS  :=
+
 else ifeq ($(UNAME),Darwin)
 ifeq ($(filter $(shell uname -m | cut -c -4), iPad iPho iPod),)
 ifneq ($(MEMO_QUIET),1)
@@ -205,6 +210,11 @@ CXX             := c++
 CPP             := cc -E
 PATH            := /opt/procursus/bin:/opt/procursus/libexec/gnubin:/usr/bin:$(PATH)
 
+BUILD_CFLAGS   := -arch $(shell arch) -mmacosx-version-min=$(shell sw_vers -productVersion)
+BUILD_CPPFLAGS := -arch $(shell arch) -mmacosx-version-min=$(shell sw_vers -productVersion)
+BUILD_CXXFLAGS := -arch $(shell arch) -mmacosx-version-min=$(shell sw_vers -productVersion)
+BUILD_LDFLAGS  := -arch $(shell arch) -mmacosx-version-min=$(shell sw_vers -productVersion)
+
 else
 ifneq ($(MEMO_QUIET),1)
 $(warning Building on iOS)
@@ -215,6 +225,11 @@ CC              := clang
 CXX             := clang++
 CPP             := clang -E
 PATH            := /usr/bin:$(PATH)
+
+BUILD_CFLAGS   := -arch $(shell arch) -miphoneos-version-min=$(shell sw_vers -productVersion)
+BUILD_CPPFLAGS := -arch $(shell arch) -miphoneos-version-min=$(shell sw_vers -productVersion)
+BUILD_CXXFLAGS := -arch $(shell arch) -miphoneos-version-min=$(shell sw_vers -productVersion)
+BUILD_LDFLAGS  := -arch $(shell arch) -miphoneos-version-min=$(shell sw_vers -productVersion)
 
 endif
 AR              := ar
