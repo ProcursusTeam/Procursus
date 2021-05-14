@@ -1,0 +1,20 @@
+Package: libbluray-dev
+Version: @DEB_LIBBLURAY_V@
+Priority: optional
+Architecture: @DEB_ARCH@
+Section: Development
+Maintainer: @DEB_MAINTAINER@
+Depends: libbluray2 (= @DEB_LIBBLURAY_V@), libfreetype-dev, libfontconfig-dev
+Homepage: http://www.videolan.org/developers/libbluray.html
+Tag: devel::library, role::devel-lib
+APT-Sources: https://mirror.xtom.com.hk/debian buster/main amd64 Packages
+Description: Blu-ray disc playback support library (development files)
+ libbluray is an open-source library designed for Blu-Ray Discs playback for
+ media players, like VLC or MPlayer. This research project is developed by an
+ international team of developers from Doom9. libbluray integrates navigation,
+ playlist parsing, menus, and BD-J.
+ .
+ NB: Most commercial Blu-Ray are restricted by AACS or BD+ technologies and this
+ library is not enough to playback those discs.
+ .
+ This package provides the necessary files needed for development.

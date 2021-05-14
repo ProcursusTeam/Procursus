@@ -1,0 +1,21 @@
+Package: libbluray2
+Version: @DEB_LIBBLURAY_V@
+Architecture: @DEB_ARCH@
+Priority: optional
+Section: Libraries
+Maintainer: @DEB_MAINTAINER@
+Depends: libfontconfig1 (>= 2.12.6), libfreetype6 (>= 2.2.1)
+Recommends: libaacs0
+Suggests: libbluray-bdj
+Homepage: http://www.videolan.org/developers/libbluray.html
+Tag: role::shared-lib
+Description: Blu-ray disc playback support library (shared library)
+ libbluray is an open-source library designed for Blu-Ray Discs playback for
+ media players, like VLC or MPlayer. This research project is developed by an
+ international team of developers from Doom9. libbluray integrates navigation,
+ playlist parsing, menus, and BD-J.
+ .
+ NB: Most commercial Blu-Ray are restricted by AACS or BD+ technologies and this
+ library is not enough to playback those discs.
+ .
+ This package provides the shared library.
