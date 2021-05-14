@@ -11,7 +11,10 @@ libbluray-setup: setup
 	$(call EXTRACT_TAR,libbluray-$(LIBBLURAY_VERSION).tar.bz2,libbluray-$(LIBBLURAY_VERSION),libbluray)
 	$(call DO_PATCH,libbluray,libbluray,-p1)
 
-ifneq ($(wildcard $(BUILD_WORK)/libbluray/.build_complete),)
+ifneq ($(call HAS_COMMAND,ant),1)
+libbluray:
+	@echo "Install ant. Stop."
+else ifneq ($(wildcard $(BUILD_WORK)/libbluray/.build_complete),)
 libbluray:
 	@echo "Using previously built libbluray."
 else
