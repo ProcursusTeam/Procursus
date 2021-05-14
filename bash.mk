@@ -56,7 +56,7 @@ endif
 		CFLAGS="$(CFLAGS) -DSSH_SOURCE_BASHRC" \
 		$(BASH_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/bash \
-		CC_FOR_BUILD='clang' \
+		CC_FOR_BUILD='$(shell which cc)' \
 		TERMCAP_LIB=-lncursesw
 	+$(MAKE) -C $(BUILD_WORK)/bash install \
 		DESTDIR="$(BUILD_STAGE)/bash"
