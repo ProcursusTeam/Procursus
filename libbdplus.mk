@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += libbdplus
+SUBPROJECTS       += libbdplus
 LIBBDPLUS_VERSION := 0.1.2
 DEB_LIBBDPLUS_V   ?= $(LIBBDPLUS_VERSION)
 
@@ -47,10 +47,10 @@ libbdplus-package: libbdplus-stage
 	rm -rf $(BUILD_DIST)/libbdplus{0,-dev}
 	mkdir -p $(BUILD_DIST)/libbdplus{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
-	# libbdplus.mk Prep libbdplus
+	# libbdplus.mk Prep libbdplus0
 	cp -a $(BUILD_STAGE)/libbdplus/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libbdplus.0.dylib $(BUILD_DIST)/libbdplus0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
-	# libbdplus.mk Prep libbdplus
+	# libbdplus.mk Prep libbdplus-dev
 	cp -a $(BUILD_STAGE)/libbdplus/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libbdplus.{a,la,dylib},pkgconfig} $(BUILD_DIST)/libbdplus-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libbdplus/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libbdplus-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 

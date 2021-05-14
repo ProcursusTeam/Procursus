@@ -1,0 +1,21 @@
+Package: libbdplus0
+Version: @DEB_LIBBDPLUS_V@
+Architecture: @DEB_ARCH@
+Priority: optional
+Section: Libraries
+Maintainer: @DEB_MAINTAINER@
+Depends: libgcrypt20 (>= 1.8.0), libgpg-error0 (>= 1.14)
+Recommends: libaacs0
+Enhances: libbluray2
+Homepage: https://www.videolan.org/developers/libbdplus.html
+Tag: role::shared-lib
+Description: implementation of BD+ for reading Blu-ray Discs
+ libbdplus is a research project to implement the BD+ System Specifications.
+ It provides, through an open-source library, a way to understand how the BD+
+ works.
+ .
+ This package DOES NOT provide any key, certificate, configuration
+ file or virtual machine that could be used to decode encrypted
+ copyrighted material.
+ .
+ This package provides the shared library.
