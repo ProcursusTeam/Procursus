@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+
 SUBPROJECTS       += libbluray
 LIBBLURAY_VERSION := 1.3.0
 DEB_LIBBLURAY_V   ?= $(LIBBLURAY_VERSION)
@@ -65,3 +67,5 @@ libbluray-package: libbluray-stage
 	rm -rf $(BUILD_DIST)/libbluray{2,-dev,-bin,-bdj}
 
 .PHONY: libbluray libbluray-package
+
+endif
