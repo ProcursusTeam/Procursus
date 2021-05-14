@@ -10,7 +10,6 @@ DEB_LIBAACS_V   ?= $(LIBAACS_VERSION)
 libaacs-setup: setup
 	wget -q -nc -P$(BUILD_SOURCE) https://download.videolan.org/pub/videolan/libaacs/$(LIBAACS_VERSION)/libaacs-$(LIBAACS_VERSION).tar.bz2
 	$(call EXTRACT_TAR,libaacs-$(LIBAACS_VERSION).tar.bz2,libaacs-$(LIBAACS_VERSION),libaacs)
-	$(SED) -i 's/-framework,Cocoa,/-framework,CoreFoundation,/g' $(BUILD_WORK)/libaacs/configure.ac
 
 ifneq ($(wildcard $(BUILD_WORK)/libaacs/.build_complete),)
 libaacs:
