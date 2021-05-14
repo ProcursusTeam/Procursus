@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS         += fortune-mod
-FORTUNE-MOD_VERSION := 3.4.1
+FORTUNE-MOD_VERSION := 3.6.0
 DEB_FORTUNE-MOD_V   ?= $(FORTUNE-MOD_VERSION)
 
 fortune-mod-setup: setup

@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += starship
-STARSHIP_VERSION := 0.51.0
+STARSHIP_VERSION := 0.53.0
 DEB_STARSHIP_V   ?= $(STARSHIP_VERSION)
 
 starship-setup: setup

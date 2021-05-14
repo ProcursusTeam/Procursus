@@ -193,6 +193,11 @@ OTOOL    := $(GNU_HOST_TRIPLE)-otool
 EXTRA    := INSTALL="/usr/bin/install -c --strip-program=$(STRIP)"
 LIBTOOL  := $(GNU_HOST_TRIPLE)-libtool
 
+BUILD_CFLAGS   :=
+BUILD_CPPFLAGS :=
+BUILD_CXXFLAGS :=
+BUILD_LDFLAGS  :=
+
 else ifeq ($(UNAME),FreeBSD)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building on FreeBSD)
@@ -214,6 +219,11 @@ EXTRA   := INSTALL="/usr/local/bin/ginstall -c --strip-program=$(STRIP)"
 LIBTOOL := $(GNU_HOST_TRIPLE)-libtool
 PATH    := $(GNUBINDIR):$(PATH)
 
+BUILD_CFLAGS   :=
+BUILD_CPPFLAGS :=
+BUILD_CXXFLAGS :=
+BUILD_LDFLAGS  :=
+
 else ifeq ($(UNAME),Darwin)
 ifeq ($(filter $(shell uname -m | cut -c -4), iPad iPho iPod),)
 ifneq ($(MEMO_QUIET),1)
@@ -226,6 +236,11 @@ CXX             := c++
 CPP             := cc -E
 PATH            := /opt/procursus/bin:/opt/procursus/libexec/gnubin:/usr/bin:$(PATH)
 
+BUILD_CFLAGS   := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion)
+BUILD_CPPFLAGS := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion)
+BUILD_CXXFLAGS := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion)
+BUILD_LDFLAGS  := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion)
+
 else
 ifneq ($(MEMO_QUIET),1)
 $(warning Building on iOS)
@@ -236,6 +251,11 @@ CC              := clang
 CXX             := clang++
 CPP             := clang -E
 PATH            := /usr/bin:$(PATH)
+
+BUILD_CFLAGS   := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
+BUILD_CPPFLAGS := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
+BUILD_CXXFLAGS := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
+BUILD_LDFLAGS  := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
 
 endif
 AR              := ar
@@ -293,8 +313,8 @@ CFLAGS              += -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM
 CXXFLAGS            := $(CFLAGS)
 CPPFLAGS            += -arch $(MEMO_ARCH) $(PLATFORM_VERSION_MIN) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include -Wno-error-implicit-function-declaration
 LDFLAGS             += -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)$(MEMO_PREFIX)/Library/Frameworks
-PKG_CONFIG_PATH     := $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig:$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/pkgconfig:$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/pkgconfig:$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/share/pkgconfig
-PKG_CONFIG_LIBDIR   := $(PKG_CONFIG_PATH)
+#PKG_CONFIG_PATH     := $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig:$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/pkgconfig:$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/pkgconfig:$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/share/pkgconfig
+#PKG_CONFIG_LIBDIR   := $(PKG_CONFIG_PATH)
 ACLOCAL_PATH        := $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal
 
 DEFAULT_CMAKE_FLAGS := \
@@ -375,7 +395,7 @@ export PLATFORM MEMO_ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE MEMO_PRE
 export CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T EXTRA SED
 export BUILD_ROOT BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP BUILD_TOOLS
 export DEB_ARCH DEB_ORIGIN DEB_MAINTAINER
-export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS PKG_CONFIG_PATH PKG_CONFIG_LIBDIR ACLOCAL_PATH
+export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS ACLOCAL_PATH #PKG_CONFIG_PATH PKG_CONFIG_LIBDIR
 export DEFAULT_CMAKE_FLAGS DEFAULT_CONFIGURE_FLAGS DEFAULT_PERL_MAKE_FLAGS DEFAULT_PERL_BUILD_FLAGS DEFAULT_GOLANG_FLAGS
 
 HAS_COMMAND = $(shell type $(1) >/dev/null 2>&1 && echo 1)
@@ -451,7 +471,7 @@ PACK = -if [ -z $(4) ]; then \
 		$(CP) -af $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale $(BUILD_DIST)/$(1)-locales; \
 		rm -rf $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale; \
 	fi; \
-	SIZE=$$(du -s $(BUILD_DIST)/$(1) | cut -f 1); \
+	SIZE=$$(du -sk $(BUILD_DIST)/$(1) | cut -f 1); \
 	mkdir -p $(BUILD_DIST)/$(1)/DEBIAN; \
 	$(CP) $(BUILD_INFO)/$(1).control $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	$(CP) $(BUILD_INFO)/$(1).control.$(PLATFORM) $(BUILD_DIST)/$(1)/DEBIAN/control; \
@@ -476,6 +496,7 @@ PACK = -if [ -z $(4) ]; then \
 		$(SED) -i ':a; s|@MEMO_ALT_PREFIX@|$(MEMO_ALT_PREFIX)|g; ta' $(BUILD_DIST)/$(1)/DEBIAN/$$i; \
 		$(SED) -i ':a; s|@GNU_PREFIX@|$(GNU_PREFIX)|g; ta' $(BUILD_DIST)/$(1)/DEBIAN/$$i; \
 	done; \
+	sed -i -e '$$a\' $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	if [ -d "$(BUILD_DIST)/$(1)-locales" ]; then \
 		$(call PACK_LOCALE,$(1)); \
 	fi; \
@@ -549,17 +570,11 @@ ifneq ($(shell PATH=$(PATH) sed --version | grep -q GNU && echo 1),1)
 $(error Install GNU sed)
 endif
 
-ifeq ($(call HAS_COMMAND,ldid2),1)
-LDID := ldid2
-else ifeq ($(call HAS_COMMAND,ldid),1)
-ifneq ($(MEMO_QUIET),1)
-$(warning Using ldid. Abort now and install ldid2 if this ldid does not support SHA256)
-endif # ($(MEMO_QUIET),1)
-LDID := ldid
+ifeq ($(call HAS_COMMAND,ldid),1)
+export LDID := ldid
 else
-$(error Install ldid2)
+$(error Install ldid)
 endif
-export LDID
 
 ifeq ($(call HAS_COMMAND,libtoolize),1)
 LIBTOOLIZE := libtoolize
@@ -734,12 +749,12 @@ env:
 	@echo -e "\tCXXFLAGS='$(CXXFLAGS)'"
 	@echo -e "\tCPPFLAGS='$(CPPFLAGS)'"
 	@echo -e "\tLDFLAGS='$(LDFLAGS)'"
-	@echo -e "\tPKG_CONFIG_PATH='$(PKG_CONFIG_PATH)'"
+#	@echo -e "\tPKG_CONFIG_PATH='$(PKG_CONFIG_PATH)'"
 	@echo -e "\texport MEMO_TARGET PLATFORM MEMO_ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE"
 	@echo -e "\texport CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T EXTRA SED LDID GINSTALL LN CP"
 	@echo -e "\texport BUILD_ROOT BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP BUILD_TOOLS"
 	@echo -e "\texport DEB_ARCH DEB_ORIGIN DEB_MAINTAINER"
-	@echo -e "\texport CFLAGS CXXFLAGS CPPFLAGS LDFLAGS PKG_CONFIG_PATH"
+	@echo -e "\texport CFLAGS CXXFLAGS CPPFLAGS LDFLAGS"
 	@echo -e "}"
 
 viewenv:
