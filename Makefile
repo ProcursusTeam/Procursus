@@ -206,31 +206,6 @@ BUILD_CPPFLAGS :=
 BUILD_CXXFLAGS :=
 BUILD_LDFLAGS  :=
 
-else ifeq ($(UNAME),FreeBSD)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building on FreeBSD)
-endif # ($(MEMO_QUIET),1)
-TARGET_SYSROOT  ?= $(HOME)/cctools/SDK/$(BARE_PLATFORM).sdk
-MACOSX_SYSROOT  ?= $(HOME)/cctools/SDK/MacOSX.sdk
-CC      := $(GNU_HOST_TRIPLE)-clang
-CXX     := $(GNU_HOST_TRIPLE)-clang++
-CPP     := $(GNU_HOST_TRIPLE)-clang -E
-AR      := $(GNU_HOST_TRIPLE)-ar
-LD      := $(GNU_HOST_TRIPLE)-ld 
-RANLIB  := $(GNU_HOST_TRIPLE)-ranlib   
-STRIP   := $(GNU_HOST_TRIPLE)-strip
-I_N_T   := $(GNU_HOST_TRIPLE)-install_name_tool
-NM      := $(GNU_HOST_TRIPLE)-nm
-LIPO    := $(GNU_HOST_TRIPLE)-lipo
-OTOOL   := $(GNU_HOST_TRIPLE)-otool
-LIBTOOL := $(GNU_HOST_TRIPLE)-libtool
-PATH    := $(GNUBINDIR):$(PATH)
-
-BUILD_CFLAGS   :=
-BUILD_CPPFLAGS :=
-BUILD_CXXFLAGS :=
-BUILD_LDFLAGS  :=
-
 else ifeq ($(UNAME),Darwin)
 ifeq ($(shell sw_vers -productName),macOS)
 ifneq ($(MEMO_QUIET),1)
@@ -243,10 +218,10 @@ CXX             := $(shell xcrun --sdk $(PLATFORM) --find c++)
 CPP             := $(shell xcrun --sdk $(PLATFORM) --find cc) -E
 PATH            := /opt/procursus/bin:/opt/procursus/libexec/gnubin:/usr/bin:$(PATH)
 
-BUILD_CFLAGS   := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
-BUILD_CPPFLAGS := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
-BUILD_CXXFLAGS := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
-BUILD_LDFLAGS  := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
+BUILD_CFLAGS   := -arch $(shell arch) -mmacosx-version-min=$(shell sw_vers -productVersion)
+BUILD_CPPFLAGS := -arch $(shell arch) -mmacosx-version-min=$(shell sw_vers -productVersion)
+BUILD_CXXFLAGS := -arch $(shell arch) -mmacosx-version-min=$(shell sw_vers -productVersion)
+BUILD_LDFLAGS  := -arch $(shell arch) -mmacosx-version-min=$(shell sw_vers -productVersion)
 
 else
 ifneq ($(MEMO_QUIET),1)
@@ -259,10 +234,10 @@ CXX             := $(shell which c++)
 CPP             := $(shell which cc) -E
 PATH            := /usr/bin:$(PATH)
 
-BUILD_CFLAGS   := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion) -isysroot /usr/share/SDKs/iPhoneOS.sdk
-BUILD_CPPFLAGS := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion) -isysroot /usr/share/SDKs/iPhoneOS.sdk
-BUILD_CXXFLAGS := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion) -isysroot /usr/share/SDKs/iPhoneOS.sdk
-BUILD_LDFLAGS  := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion) -isysroot /usr/share/SDKs/iPhoneOS.sdk
+BUILD_CFLAGS   := -arch $(shell arch) -miphoneos-version-min=$(shell sw_vers -productVersion)
+BUILD_CPPFLAGS := -arch $(shell arch) -miphoneos-version-min=$(shell sw_vers -productVersion)
+BUILD_CXXFLAGS := -arch $(shell arch) -miphoneos-version-min=$(shell sw_vers -productVersion)
+BUILD_LDFLAGS  := -arch $(shell arch) -miphoneos-version-min=$(shell sw_vers -productVersion)
 
 endif
 AR              := $(shell which ar)
