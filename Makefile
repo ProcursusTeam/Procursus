@@ -198,6 +198,32 @@ BUILD_CPPFLAGS :=
 BUILD_CXXFLAGS :=
 BUILD_LDFLAGS  :=
 
+else ifeq ($(UNAME),FreeBSD)
+ifneq ($(MEMO_QUIET),1)
+$(warning Building on FreeBSD)
+endif # ($(MEMO_QUIET),1)
+TARGET_SYSROOT  ?= $(HOME)/cctools/SDK/iPhoneOS13.2.sdk
+MACOSX_SYSROOT  ?= $(HOME)/cctools/SDK/MacOSX.sdk
+CC      := $(GNU_HOST_TRIPLE)-clang
+CXX     := $(GNU_HOST_TRIPLE)-clang++
+CPP     := $(GNU_HOST_TRIPLE)-clang -E
+AR      := $(GNU_HOST_TRIPLE)-ar
+LD      := $(GNU_HOST_TRIPLE)-ld 
+RANLIB  := $(GNU_HOST_TRIPLE)-ranlib   
+STRIP   := $(GNU_HOST_TRIPLE)-strip
+I_N_T   := $(GNU_HOST_TRIPLE)-install_name_tool
+NM      := $(GNU_HOST_TRIPLE)-nm
+LIPO    := $(GNU_HOST_TRIPLE)-lipo
+OTOOL   := $(GNU_HOST_TRIPLE)-otool
+EXTRA   := INSTALL="/usr/local/bin/ginstall -c --strip-program=$(STRIP)"
+LIBTOOL := $(GNU_HOST_TRIPLE)-libtool
+PATH    := $(GNUBINDIR):$(PATH)
+
+BUILD_CFLAGS   :=
+BUILD_CPPFLAGS :=
+BUILD_CXXFLAGS :=
+BUILD_LDFLAGS  :=
+
 else ifeq ($(UNAME),Darwin)
 ifeq ($(filter $(shell uname -m | cut -c -4), iPad iPho iPod),)
 ifneq ($(MEMO_QUIET),1)
@@ -244,7 +270,7 @@ EXTRA           :=
 LIBTOOL         := libtool
 
 else
-$(error Please use Linux or MacOS to build)
+$(error Please use Linux, MacOS or FreeBSD to build)
 endif
 
 DEB_MAINTAINER    ?= Hayden Seay <me@diatr.us>
@@ -666,6 +692,8 @@ ifneq ($(LEAVE_ME_ALONE),1)
 
 ifneq (,$(wildcard /usr/share/xml/docbook/stylesheet/docbook-xsl))
 DOCBOOK_XSL := /usr/share/xml/docbook/stylesheet/docbook-xsl
+else ifneq (,$(wildcard /usr/local/share/xsl/docbook))
+DOCBOOK_XSL := /usr/local/share/xsl/docbook
 else ifneq (,$(wildcard /usr/share/xsl/docbook))
 DOCBOOK_XSL := /usr/share/xsl/docbook
 else ifneq (,$(wildcard /usr/share/xml/docbook/xsl-stylesheets-1.79.2))
@@ -882,6 +910,11 @@ setup:
 		https://opensource.apple.com/source/xnu/xnu-6153.81.5/bsd/bsm/audit_kevents.h
 
 	cp -a $(BUILD_MISC)/zlib.pc $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
+
+ifeq ($(UNAME),FreeBSD)
+	@# FreeBSD does not have stdbool.h and stdarg.h
+	$(CP) -af $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Headers/{stdbool.h,stdarg.h} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	@# Copy headers from MacOSX.sdk
