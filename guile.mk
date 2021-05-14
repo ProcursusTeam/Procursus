@@ -3,12 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += guile
-GUILE_VERSION := 3.0.5
+GUILE_VERSION := 3.0.7
 DEB_GUILE_V   ?= $(GUILE_VERSION)
 
 guile-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://mirror.its.dal.ca/gnu/guile/guile-$(GUILE_VERSION).tar.gz{,.sig}
-	$(call PGP_VERIFY,guile-$(GUILE_VERSION).tar.gz)
+	wget -q -nc -P $(BUILD_SOURCE) https://ftp.gnu.org/gnu/guile/guile-$(GUILE_VERSION).tar.gz{,.sig}
+	$(call PGP_VERIFY,guile-$(GUILE_VERSION).tar.gz{,.sig})
 	$(call EXTRACT_TAR,guile-$(GUILE_VERSION).tar.gz,guile-$(GUILE_VERSION),guile)
 
 ifneq ($(wildcard $(BUILD_WORK)/guile/.build_complete),)
