@@ -20,7 +20,7 @@ In the iOS jailbreak scene, it also attempts to address an odd fragmentation pro
 
 ## Building
 
-Building has been made to be simple, yet get the job done properly.FreeBSD, macOS and Linux are supported build systems. FreeBSD and Linux are not, however, fully supported, and not *all* packages are compilable there; MacOS is the main system you'll want to be building with. 
+Building has been made to be simple, yet get the job done properly. MacOS, iOS, FreeBSD and Linux are supported build systems. FreeBSD and Linux are not, however, fully supported, and not *all* packages are compilable there; MacOS is the main system you'll want to be building with. 
 
 Supported host systems as of 06/04/2020 are iphoneos-arm64, iphoneos-arm, appletvos-arm64, watchos-arm64, and watchos-arm.
 
