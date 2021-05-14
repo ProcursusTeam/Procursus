@@ -64,7 +64,7 @@ glib2.0-package: glib2.0-stage
 	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/glib-2.0/{gdb,schemas,valgrind} $(BUILD_DIST)/libglib2.0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/glib-2.0
 
 	# glib2.0.mk Prep libglib2.0-bin
-	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{gdbus,gio,gresource,gsettings} $(BUILD_DIST)/libglib2.0-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{gdbus,gio,gresource,gsettings,glib-compile-schemas} $(BUILD_DIST)/libglib2.0-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion $(BUILD_DIST)/libglib2.0-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
 	# glib2.0.mk Prep libglib2.0-dev-bin
