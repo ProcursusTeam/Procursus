@@ -8,7 +8,6 @@ Depends: libgcrypt20 (>= 1.8.0), libgpg-error0 (>= 1.14)
 Recommends: libbdplus0
 Enhances: libbluray2
 Homepage: https://www.videolan.org/developers/libaacs.html
-Tag: role::shared-lib
 Description: free-and-libre implementation of AACS
  libaacs is a research project to implement the Advanced Access Content
  System specification. It provides, through an open-source library, a

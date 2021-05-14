@@ -6,7 +6,6 @@ Section: Development
 Maintainer: @DEB_MAINTAINER@
 Depends: libbdplus0 (= @DEB_LIBBDPLUS_V@)
 Homepage: https://www.videolan.org/developers/libbdplus.html
-Tag: role::shared-lib
 Description: implementation of BD+ for reading Blu-ray Discs
  libbdplus is a research project to implement the BD+ System Specifications.
  It provides, through an open-source library, a way to understand how the BD+

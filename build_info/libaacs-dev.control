@@ -6,7 +6,6 @@ Section: Development
 Maintainer: @DEB_MAINTAINER@
 Depends: libaacs0 (= @DEB_LIBAACS_V@) 
 Homepage: https://www.videolan.org/developers/libaacs.html
-Tag: role::shared-lib
 Description: free-and-libre implementation of AACS
  libaacs is a research project to implement the Advanced Access Content
  System specification. It provides, through an open-source library, a

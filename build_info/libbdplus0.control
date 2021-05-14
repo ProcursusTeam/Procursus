@@ -8,7 +8,6 @@ Depends: libgcrypt20 (>= 1.8.0), libgpg-error0 (>= 1.14)
 Recommends: libaacs0
 Enhances: libbluray2
 Homepage: https://www.videolan.org/developers/libbdplus.html
-Tag: role::shared-lib
 Description: implementation of BD+ for reading Blu-ray Discs
  libbdplus is a research project to implement the BD+ System Specifications.
  It provides, through an open-source library, a way to understand how the BD+

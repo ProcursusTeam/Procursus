@@ -18,8 +18,8 @@ else
 libaacs: libgcrypt gnupg libaacs-setup
 	cd $(BUILD_WORK)/libaacs && ./bootstrap && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-	--with-libgcrypt-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-	--with-libgpg-error-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		--with-libgcrypt-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--with-libgpg-error-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libaacs
 	+$(MAKE) -C $(BUILD_WORK)/libaacs install \
 		DESTDIR=$(BUILD_STAGE)/libaacs
@@ -38,7 +38,7 @@ libaacs-package: libaacs-stage
 	cp -a $(BUILD_STAGE)/libaacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/libaacs0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libaacs.mk Prep libaacs-dev
-	cp -a $(BUILD_STAGE)/libaacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libaacs.{a,la,dylib},pkgconfig} $(BUILD_DIST)/libaacs-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libaacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libaacs.{a,dylib},pkgconfig} $(BUILD_DIST)/libaacs-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libaacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libaacs-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libaacs.mk Sign
