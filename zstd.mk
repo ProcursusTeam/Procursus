@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += zstd
-ZSTD_VERSION  := 1.4.9
-DEB_ZSTD_V    ?= $(ZSTD_VERSION)-1
+ZSTD_VERSION  := 1.5.0
+DEB_ZSTD_V    ?= $(ZSTD_VERSION)
 
 zstd-setup: setup
 	$(call GITHUB_ARCHIVE,facebook,zstd,$(ZSTD_VERSION),v$(ZSTD_VERSION))
