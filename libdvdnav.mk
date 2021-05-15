@@ -11,7 +11,7 @@ libdvdnav-setup: setup
 	$(call EXTRACT_TAR,libdvdnav-$(LIBDVDNAV_VERSION).tar.bz2,libdvdnav-$(LIBDVDNAV_VERSION),libdvdnav)
 
 ifneq ($(wildcard $(BUILD_WORK)/libdvdnav/.build_complete),)
-libdvdnav: libdvdcss libdvdread
+libdvdnav:
 	@echo "Using previously built libdvdnav."
 else
 libdvdnav: libdvdnav-setup libdvdread
