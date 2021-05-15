@@ -2,7 +2,7 @@ Package: libdvdnav4
 Version: @DEB_LIBDVDNAV_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libdvdread4
+Depends: libdvdread8
 Suggests: libdvdcss2
 Section: Libraries
 Priority: optional

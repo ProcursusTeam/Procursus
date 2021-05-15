@@ -1,4 +1,4 @@
-Package: libdvdread4
+Package: libdvdread8
 Version: @DEB_LIBDVDREAD_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
