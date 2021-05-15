@@ -16,7 +16,7 @@ minizip-ng:
 else
 minizip-ng: minizip-ng-setup zlib-ng xz zstd openssl
 	cd $(BUILD_WORK)/minizip-ng && cmake . \
-		$(DEFAULT_CMAKE_ARGS) \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DBUILD_SHARED_LIBS=OFF \
 		-DMZ_COMPAT=OFF \
 		-DMZ_OPENSSL=ON \
@@ -30,7 +30,7 @@ minizip-ng: minizip-ng-setup zlib-ng xz zstd openssl
 		DESTDIR=$(BUILD_BASE)
 
 	cd $(BUILD_WORK)/minizip-ng && cmake . \
-		$(DEFAULT_CMAKE_ARGS) \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DBUILD_SHARED_LIBS=ON \
 		-DMZ_COMPAT=OFF \
 		-DMZ_LIBCOMP=OFF \
