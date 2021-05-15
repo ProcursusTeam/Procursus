@@ -11,7 +11,7 @@ libdvdread-setup: setup
 	$(call EXTRACT_TAR,libdvdread-$(LIBDVDREAD_VERSION).tar.bz2,libdvdread-$(LIBDVDREAD_VERSION),libdvdread)
 
 ifneq ($(wildcard $(BUILD_WORK)/libdvdread/.build_complete),)
-libdvdread: libdvdcss
+libdvdread:
 	@echo "Using previously built libdvdread."
 else
 libdvdread: libdvdread-setup
