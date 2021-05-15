@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += minizip-ng
-MINIZIP-NG_VERSION := 3.0.1
+MINIZIP-NG_VERSION := 3.0.2
 DEB_MINIZIP-NG_V   ?= $(MINIZIP-NG_VERSION)
 
 minizip-ng-setup: setup
