@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libdvdnav/.build_complete),)
 libdvdnav: libdvdcss libdvdread
 	@echo "Using previously built libdvdnav."
 else
-libdvdnav: libdvdnav-setup
+libdvdnav: libdvdnav-setup libdvdread
 	cd $(BUILD_WORK)/libdvdnav && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libdvdnav
