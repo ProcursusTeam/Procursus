@@ -10,7 +10,6 @@ lua-luv-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/lua-luv-$(LUA-LUV_VERSION).tar.gz" ] && \
 		wget -q -nc -O$(BUILD_SOURCE)/lua-luv-$(LUA-LUV_VERSION).tar.gz \
 			https://github.com/luvit/luv/releases/download/$(LUA-LUV_VERSION)-0/luv-$(LUA-LUV_VERSION)-0.tar.gz
-	$(call EXTRACT_TAR,lua-luv-$(LUA-LUV_VERSION).tar.gz,luv-$(LUA-LUV_VERSION)-0,lua-luv)
 	$(call EXTRACT_TAR,lua-luv-$(LUA-LUV_VERSION).tar.gz,luv-$(LUA-LUV_VERSION)-0,lua-luv/bundle)
 	$(call DO_PATCH,lua-luv,lua-luv,-p1)
 	mkdir -p $(BUILD_WORK)/lua-luv/{,bundle/}build5{1..3}
@@ -23,13 +22,7 @@ else
 lua-luv: lua-luv-setup libuv1 lua5.1 lua5.2 lua5.3 luajit
 	for ver in {1..3}; do \
 		cd $(BUILD_WORK)/lua-luv/build5$$ver && cmake \
-			-DCMAKE_BUILD_TYPE=Release \
-			-DCMAKE_SYSTEM_NAME=Darwin \
-			-DCMAKE_CROSSCOMPILING=true \
-			-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-			-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-			-DCMAKE_C_FLAGS="$(CFLAGS)" \
-			-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
+		$(DEFAULT_CMAKE_FLAGS) \
 			-DLUA_BUILD_TYPE=System \
 			-DWITH_SHARED_LIBUV=ON \
 			-DBUILD_MODULE=OFF \
@@ -59,13 +52,7 @@ lua-luv: lua-luv-setup libuv1 lua5.1 lua5.2 lua5.3 luajit
 		mv $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/libluv.pc $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/lua5.$$ver-luv.pc; \
 		sed -i "s/-lluv/-llua5.$$ver-luv/" $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/lua5.$$ver-luv.pc; \
 		cd $(BUILD_WORK)/lua-luv/bundle/build5$$ver && LDFLAGS="$(LDFLAGS) -undefined dynamic_lookup" cmake \
-			-DCMAKE_BUILD_TYPE=Release \
-			-DCMAKE_SYSTEM_NAME=Darwin \
-			-DCMAKE_CROSSCOMPILING=true \
-			-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-			-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-			-DCMAKE_C_FLAGS="$(CFLAGS)" \
-			-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
+			$(DEFAULT_CMAKE_FLAGS) \
 			-DLUA_BUILD_TYPE=System \
 			-DWITH_SHARED_LIBUV=ON \
 			-DBUILD_MODULE=ON \
@@ -79,13 +66,7 @@ lua-luv: lua-luv-setup libuv1 lua5.1 lua5.2 lua5.3 luajit
 			DESTDIR="$(BUILD_STAGE)/lua-luv"; \
 	done
 	cd $(BUILD_WORK)/lua-luv/buildjit && cmake \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DLUA_BUILD_TYPE=System \
 		-DWITH_SHARED_LIBUV=ON \
 		-DBUILD_MODULE=OFF \
@@ -121,21 +102,21 @@ lua-luv-package: lua-luv-stage
 	# lua-luv.mk Package Structure
 	rm -rf $(BUILD_DIST)/lua-luv{,-dev}
 	mkdir -p $(BUILD_DIST)/lua-luv{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# lua-luv.mk Prep lua-luv
-	cp -a $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{liblua*5*.*-luv.*.dylib,lua} $(BUILD_DIST)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+	cp -a $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{liblua*5.*-luv.*.dylib,lua} $(BUILD_DIST)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# lua-luv.mk Prep lua-luv-dev
 	cp -a $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/lua-luv-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{liblua*5.*-luv.dylib,pkgconfig} $(BUILD_DIST)/lua-luv-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# lua-luv.mk Sign
 	$(call SIGN,lua-luv,general.xml)
-	
+
 	# lua-luv.mk Make .debs
 	$(call PACK,lua-luv,DEB_LUA-LUV_V)
 	$(call PACK,lua-luv-dev,DEB_LUA-LUV_V)
-	
+
 	# lua-luv.mk Build cleanup
 	rm -rf $(BUILD_DIST)/lua-luv{,-dev}
 

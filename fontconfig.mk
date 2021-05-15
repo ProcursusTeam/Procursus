@@ -18,13 +18,10 @@ fontconfig:
 else
 fontconfig: fontconfig-setup gettext freetype uuid expat
 	cd $(BUILD_WORK)/fontconfig && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-add-fonts="/System/Library/Fonts,~/Library/UserFonts" \
-		FREETYPE_CFLAGS="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/freetype2 -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libpng16"
+		FREETYPE_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/freetype2 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libpng16" \
+		FREETYPE_LIBS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -lfreetype"
 	+$(MAKE) -C $(BUILD_WORK)/fontconfig
 	+$(MAKE) -C $(BUILD_WORK)/fontconfig install \
 		DESTDIR=$(BUILD_STAGE)/fontconfig

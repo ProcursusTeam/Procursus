@@ -5,7 +5,7 @@ endif
 STRAPPROJECTS       += coreutils
 COREUTILS_VERSION   := 8.32
 GETENTDARWIN_COMMIT := 1ad0e39ee51181ea6c13b3d1d4e9c6005ee35b5e
-DEB_COREUTILS_V     ?= $(COREUTILS_VERSION)-9
+DEB_COREUTILS_V     ?= $(COREUTILS_VERSION)-10
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 COREUTILS_CONFIGURE_ARGS += ac_cv_func_rpmatch=no
@@ -45,9 +45,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	mv $(BUILD_WORK)/coreutils/bsdcp/cp.1 $(BUILD_WORK)/coreutils/bsdcp/bsdcp.1
 endif
 	cd $(BUILD_WORK)/coreutils && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--without-gmp \
 		$(COREUTILS_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/coreutils
@@ -67,7 +65,7 @@ coreutils-package: coreutils-stage
 	# coreutils.mk Package Structure
 	rm -rf $(BUILD_DIST)/coreutils
 	mkdir -p $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/{bin,$(MEMO_SUB_PREFIX)/sbin}
-	
+
 	# coreutils.mk Prep coreutils
 	cp -a $(BUILD_STAGE)/coreutils $(BUILD_DIST)
 	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/chown $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
@@ -95,7 +93,7 @@ endif
 
 	# coreutils.mk Make .debs
 	$(call PACK,coreutils,DEB_COREUTILS_V)
-	
+
 	# coreutils.mk Build cleanup
 	rm -rf $(BUILD_DIST)/coreutils
 

@@ -19,8 +19,7 @@ PATH := $(BUILD_WORK)/ucl/workaround:$(PATH)
 ucl: ucl-setup
 	cd $(BUILD_WORK)/ucl && autoreconf -fi
 	cd $(BUILD_WORK)/ucl && ./configure \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
 		--enable-shared \
 		--enable-static
@@ -36,21 +35,21 @@ ucl-package: ucl-stage
 	# ucl.mk Package Structure
 	rm -rf $(BUILD_DIST)/libucl{1,-dev}
 	mkdir -p $(BUILD_DIST)/libucl{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# ucl.mk Prep libucl1
 	cp -a $(BUILD_STAGE)/ucl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libucl.1.dylib $(BUILD_DIST)/libucl1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# ucl.mk Prep ucl-dev
 	cp -a $(BUILD_STAGE)/ucl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libucl.1.dylib) $(BUILD_DIST)/libucl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/ucl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libucl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# ucl.mk Sign
 	$(call SIGN,libucl1,general.xml)
-	
+
 	# ucl.mk Make .debs
 	$(call PACK,libucl1,DEB_UCL_V)
 	$(call PACK,libucl-dev,DEB_UCL_V)
-	
+
 	# ucl.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libucl{1,-dev}
 

@@ -7,7 +7,7 @@ MSGPACK_VERSION := 3.3.0
 DEB_MSGPACK_V   ?= $(MSGPACK_VERSION)
 
 msgpack-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/msgpack/msgpack-c/releases/download/cpp-3.3.0/msgpack-$(MSGPACK_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/msgpack/msgpack-c/releases/download/cpp-$(MSGPACK_VERSION)/msgpack-$(MSGPACK_VERSION).tar.gz
 	$(call EXTRACT_TAR,msgpack-$(MSGPACK_VERSION).tar.gz,msgpack-$(MSGPACK_VERSION),msgpack)
 
 ifneq ($(wildcard $(BUILD_WORK)/msgpack/.build_complete),)
@@ -16,16 +16,7 @@ msgpack:
 else
 msgpack: msgpack-setup
 	cd $(BUILD_WORK)/msgpack && cmake . \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DMSGPACK_BUILD_TESTS=OFF \
 		-DMSGPACK_ENABLE_CXX=ON
 	+$(MAKE) -C $(BUILD_WORK)/msgpack
@@ -39,22 +30,22 @@ endif
 msgpack-package: msgpack-stage
 	# msgpack.mk Package Structure
 	rm -rf $(BUILD_DIST)/libmsgpack{-dev,c2}
-	mkdir -p $(BUILD_DIST)/libmsgpack{-dev,c2}$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+	mkdir -p $(BUILD_DIST)/libmsgpack{-dev,c2}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# msgpack.mk Prep libmsgpack-dev
-	cp -a $(BUILD_STAGE)/msgpack$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ $(BUILD_DIST)/libmsgpack-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/msgpack$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libmsgpackc.{a,dylib},pkgconfig,cmake} $(BUILD_DIST)/libmsgpack-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+	cp -a $(BUILD_STAGE)/msgpack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ $(BUILD_DIST)/libmsgpack-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/msgpack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libmsgpackc.{a,dylib},pkgconfig,cmake} $(BUILD_DIST)/libmsgpack-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# msgpack.mk Prep libmsgpackc2
-	cp -a $(BUILD_STAGE)/msgpack$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libmsgpackc.2*.dylib $(BUILD_DIST)/libmsgpackc2$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+	cp -a $(BUILD_STAGE)/msgpack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libmsgpackc.2*.dylib $(BUILD_DIST)/libmsgpackc2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# msgpack.mk Sign
 	$(call SIGN,libmsgpackc2,general.xml)
-	
+
 	# msgpack.mk Make .debs
 	$(call PACK,libmsgpack-dev,DEB_MSGPACK_V)
 	$(call PACK,libmsgpackc2,DEB_MSGPACK_V)
-	
+
 	# msgpack.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libmsgpack{-dev,c2}
 

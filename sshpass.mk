@@ -16,9 +16,7 @@ sshpass:
 else
 sshpass: sshpass-setup
 	cd $(BUILD_WORK)/sshpass && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		ac_cv_func_malloc_0_nonnull=yes
 	+$(MAKE) -C $(BUILD_WORK)/sshpass
 	+$(MAKE) -C $(BUILD_WORK)/sshpass install \
@@ -29,16 +27,16 @@ endif
 sshpass-package: sshpass-stage
 	# sshpass.mk Package Structure
 	rm -rf $(BUILD_DIST)/sshpass
-	
+
 	# sshpass.mk Prep sshpass
 	cp -a $(BUILD_STAGE)/sshpass $(BUILD_DIST)
-	
+
 	# sshpass.mk Sign
 	$(call SIGN,sshpass,general.xml)
-	
+
 	# sshpass.mk Make .debs
 	$(call PACK,sshpass,DEB_SSHPASS_V)
-	
+
 	# sshpass.mk Build cleanup
 	rm -rf $(BUILD_DIST)/sshpass
 

@@ -1,0 +1,8 @@
+Package: libuvwasi0
+Version: @DEB_UVWASI_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Depends: libuv1
+Description: WASI syscall API built atop libuv - runtime library

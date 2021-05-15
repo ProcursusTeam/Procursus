@@ -17,10 +17,7 @@ xauth:
 else
 xauth: xauth-setup libx11 libxau libxext libxmu xorgproto
 	cd $(BUILD_WORK)/xauth && ./configure -C \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--localstatedir=$(MEMO_PREFIX)/var
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/xauth
 	+$(MAKE) -C $(BUILD_WORK)/xauth install \
 		DESTDIR=$(BUILD_STAGE)/xauth
@@ -32,16 +29,16 @@ endif
 xauth-package: xauth-stage
 	# xauth.mk Package Structure
 	rm -rf $(BUILD_DIST)/xauth
-	
+
 	# xauth.mk Prep xauth
 	cp -a $(BUILD_STAGE)/xauth $(BUILD_DIST)
-	
+
 	# xauth.mk Sign
 	$(call SIGN,xauth,general.xml)
-	
+
 	# xauth.mk Make .debs
 	$(call PACK,xauth,DEB_XAUTH_V)
-	
+
 	# xauth.mk Build cleanup
 	rm -rf $(BUILD_DIST)/xauth
 
