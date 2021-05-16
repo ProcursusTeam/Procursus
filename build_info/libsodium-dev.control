@@ -1,0 +1,8 @@
+Package: libsodium-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBSODIUM_V@
+Depends: libsodium
+Section: Development
+Description: Network communication, cryptography and signaturing library - headers
+Homepage: https://doc.libsodium.org/
