@@ -531,14 +531,20 @@ PACK_LOCALE = mkdir -p $(BUILD_DIST)/$(1)-locale/{DEBIAN,$(MEMO_PREFIX)$(MEMO_SU
 	rm -rf $(BUILD_DIST)/$(1)-locale
 
 GITHUB_ARCHIVE = -if [ $(5) ]; then \
-		[ ! -f "$(BUILD_SOURCE)/$(5)-$(3).tar.gz" ] && \
-			wget -q -nc -O$(BUILD_SOURCE)/$(5)-$(3).tar.gz \
-				https://github.com/$(1)/$(2)/archive/$(4).tar.gz; \
-	else \
-		[ ! -f "$(BUILD_SOURCE)/$(2)-$(3).tar.gz" ] && \
-			wget -q -nc -O$(BUILD_SOURCE)/$(2)-$(3).tar.gz \
-				https://github.com/$(1)/$(2)/archive/$(4).tar.gz; \
-	fi
+					[ ! -f "$(BUILD_SOURCE)/$(5)-$(3).tar.gz" ] && \
+						wget -q -nc -O$(BUILD_SOURCE)/$(5)-$(3).tar.gz \
+							https://github.com/$(1)/$(2)/archive/$(4).tar.gz; \
+				else \
+					[ ! -f "$(BUILD_SOURCE)/$(2)-$(3).tar.gz" ] && \
+						wget -q -nc -O$(BUILD_SOURCE)/$(2)-$(3).tar.gz \
+							https://github.com/$(1)/$(2)/archive/$(4).tar.gz; \
+				fi
+
+GIT_CLONE = if [ ! -d "$(BUILD_WORK)/$(3)" ]; then \
+				git clone --depth 1 --branch "$(2)" "$(1)" "$(BUILD_WORK)/$(3)"; \
+				cd "$(BUILD_WORK)/$(3)"; \
+				git submodule update --init; \
+			fi
 
 ###
 #
