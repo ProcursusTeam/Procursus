@@ -541,9 +541,7 @@ GITHUB_ARCHIVE = -if [ $(5) ]; then \
 				fi
 
 GIT_CLONE = if [ ! -d "$(BUILD_WORK)/$(3)" ]; then \
-				git clone --depth 1 --branch "$(2)" "$(1)" "$(BUILD_WORK)/$(3)"; \
-				cd "$(BUILD_WORK)/$(3)"; \
-				git submodule update --init; \
+				git clone -c advice.detachedHead=false --depth 1 --branch "$(2)" --recursive "$(1)" "$(BUILD_WORK)/$(3)"; \
 			fi
 
 ###
