@@ -282,8 +282,7 @@ endif
 CC_FOR_BUILD  := $(shell which cc) $(BUILD_CFLAGS)
 CPP_FOR_BUILD := $(shell which cc) -E $(BUILD_CPPFLAGS)
 CXX_FOR_BUILD := $(shell which c++) $(BUILD_CXXFLAGS)
-AR_FOR_BUILD  := $(shell which ar)
-export CC_FOR_BUILD CPP_FOR_BUILD CXX_FOR_BUILD AR_FOR_BUILD
+export CC_FOR_BUILD CPP_FOR_BUILD CXX_FOR_BUILD
 
 DEB_MAINTAINER    ?= Hayden Seay <me@diatr.us>
 CODESIGN_IDENTITY ?= -
@@ -664,7 +663,7 @@ endif
 
 ifeq ($(shell PATH=$(PATH) install --version | grep -q 'GNU coreutils' && echo 1),1)
 export GINSTALL := install # TODO: remove
-export INSTALL  := $(shell PATH=$(PATH) which install) -c --strip-program=$(STRIP)
+export INSTALL  := $(shell PATH=$(PATH) which install) --strip-program=$(STRIP)
 else
 $(error Install GNU coreutils)
 endif
