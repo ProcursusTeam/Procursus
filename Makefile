@@ -664,7 +664,7 @@ endif
 
 ifeq ($(shell PATH=$(PATH) install --version | grep -q 'GNU coreutils' && echo 1),1)
 export GINSTALL := install # TODO: remove
-export INSTALL  := install -s --strip-program=$(STRIP)
+export INSTALL  := $(shell PATH=$(PATH) which install) -c --strip-program=$(STRIP)
 else
 $(error Install GNU coreutils)
 endif
