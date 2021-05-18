@@ -223,7 +223,6 @@ I_N_T   := $(GNU_HOST_TRIPLE)-install_name_tool
 NM      := $(GNU_HOST_TRIPLE)-nm
 LIPO    := $(GNU_HOST_TRIPLE)-lipo
 OTOOL   := $(GNU_HOST_TRIPLE)-otool
-EXTRA   := INSTALL="/usr/local/bin/ginstall -c --strip-program=$(STRIP)"
 LIBTOOL := $(GNU_HOST_TRIPLE)-libtool
 PATH    := $(GNUBINDIR):$(PATH)
 
@@ -266,15 +265,15 @@ BUILD_CXXFLAGS := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers
 BUILD_LDFLAGS  := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
 
 endif
-AR              := $(shell which ar)
-LD              := $(shell which ld)
-RANLIB          := $(shell which ranlib)
-STRIP           := $(shell which strip)
-NM              := $(shell which nm)
-LIPO            := $(shell which lipo)
-OTOOL           := $(shell which otool)
-I_N_T           := $(shell which install_name_tool)
-LIBTOOL         := $(shell which libtool)
+AR              := ar
+LD              := ld
+RANLIB          := ranlib
+STRIP           := strip
+NM              := nm
+LIPO            := lipo
+OTOOL           := otool
+I_N_T           := install_name_tool
+LIBTOOL         := libtool
 
 else
 $(error Please use Linux, MacOS or FreeBSD to build)
@@ -665,7 +664,7 @@ endif
 
 ifeq ($(shell PATH=$(PATH) install --version | grep -q 'GNU coreutils' && echo 1),1)
 export GINSTALL := install # TODO: remove
-export INSTALL  := $(shell PATH=$(PATH) which install) --strip-program=$(STRIP)
+export INSTALL  := install -s --strip-program=$(STRIP)
 else
 $(error Install GNU coreutils)
 endif
