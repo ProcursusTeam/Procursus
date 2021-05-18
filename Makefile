@@ -722,6 +722,7 @@ DOCBOOK_XSL := /opt/procursus/share/xml/docbook/stylesheet/docbook-xsl
 export XML_CATALOG_FILES=/opt/procursus/etc/xml/catalog
 else ifneq (,$(wildcard /usr/share/xml/docbook/stylesheet/docbook-xsl))
 DOCBOOK_XSL := /usr/share/xml/docbook/stylesheet/docbook-xsl
+export XML_CATALOG_FILES=/etc/xml/catalog
 else ifneq (,$(wildcard /usr/local/share/xsl/docbook))
 DOCBOOK_XSL := /usr/local/share/xsl/docbook
 else ifneq (,$(wildcard /usr/share/xsl/docbook))
