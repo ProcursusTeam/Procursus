@@ -312,16 +312,16 @@ BUILD_STRAP    := $(BUILD_ROOT)/build_strap/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Extra scripts for the buildsystem
 BUILD_TOOLS    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_tools
 
+OPTIMIZATION_FLAGS  ?= -flto=thin -Os
 
 ifeq ($(DEBUG),1)
-OPTIMIZATION_FLAGS := -g -O0
+CFLAGS              := -g -O0
+CPPFLAGS            := -g -O0
+LDFLAGS             := -g -O0
 else
-OPTIMIZATION_FLAGS := -Os
-ifeq ($(UNAME),Darwin)
-ifeq ($(shell sw_vers -productName),macOS)
-OPTIMIZATION_FLAGS += -flto=thin
-endif
-endif
+CFLAGS              := $(OPTIMIZATION_FLAGS)
+CPPFLAGS            :=
+LDFLAGS             := $(OPTIMIZATION_FLAGS)
 endif
 
 CFLAGS              := $(OPTIMIZATION_FLAGS) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)$(MEMO_PREFIX)/Library/Frameworks
