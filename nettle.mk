@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS  += nettle
-NETTLE_VERSION := 3.7.1
+NETTLE_VERSION := 3.7.2
 DEB_NETTLE_V   ?= $(NETTLE_VERSION)
 
 nettle-setup: setup
