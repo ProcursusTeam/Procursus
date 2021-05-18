@@ -20,7 +20,6 @@ dmg2img: dmg2img-setup openssl
 		CC="$(CC) $(LDFLAGS)" \
 		CFLAGS="$(CFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/dmg2img install \
-		GINSTALL="$(GINSTALL)" \
 		DESTDIR="$(BUILD_STAGE)/dmg2img"
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/dmg2img/vfdecrypt.1 $(BUILD_STAGE)/dmg2img/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/vfdecrypt.1
 	$(GINSTALL) -Dm644 $(BUILD_INFO)/dmg2img.1 $(BUILD_STAGE)/dmg2img/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/dmg2img.1
@@ -30,7 +29,6 @@ endif
 dmg2img-package: dmg2img-stage
 	# dmg2img.mk Package Structure
 	rm -rf $(BUILD_DIST)/dmg2img
-	mkdir -p $(BUILD_DIST)/dmg2img
 
 	# dmg2img.mk Prep dmg2img
 	cp -a $(BUILD_STAGE)/dmg2img $(BUILD_DIST)

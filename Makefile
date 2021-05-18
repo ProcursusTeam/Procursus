@@ -174,7 +174,7 @@ endif
 
 ifeq ($(UNAME),Linux)
 ifneq ($(MEMO_QUIET),1)
-$(warning Building on Linux)
+$(warning Building on GNU Linux)
 endif # ($(MEMO_QUIET),1)
 TARGET_SYSROOT  ?= $(HOME)/cctools/SDK/iPhoneOS13.2.sdk
 MACOSX_SYSROOT  ?= $(HOME)/cctools/SDK/MacOSX.sdk
@@ -190,7 +190,6 @@ I_N_T    := $(GNU_HOST_TRIPLE)-install_name_tool
 NM       := $(GNU_HOST_TRIPLE)-nm
 LIPO     := $(GNU_HOST_TRIPLE)-lipo
 OTOOL    := $(GNU_HOST_TRIPLE)-otool
-EXTRA    := INSTALL="/usr/bin/install -c --strip-program=$(STRIP)"
 LIBTOOL  := $(GNU_HOST_TRIPLE)-libtool
 
 BUILD_CFLAGS   :=
@@ -215,7 +214,6 @@ I_N_T   := $(GNU_HOST_TRIPLE)-install_name_tool
 NM      := $(GNU_HOST_TRIPLE)-nm
 LIPO    := $(GNU_HOST_TRIPLE)-lipo
 OTOOL   := $(GNU_HOST_TRIPLE)-otool
-EXTRA   := INSTALL="/usr/local/bin/ginstall -c --strip-program=$(STRIP)"
 LIBTOOL := $(GNU_HOST_TRIPLE)-libtool
 PATH    := $(GNUBINDIR):$(PATH)
 
@@ -266,7 +264,6 @@ NM              := nm
 LIPO            := lipo
 OTOOL           := otool
 I_N_T           := install_name_tool
-EXTRA           :=
 LIBTOOL         := libtool
 
 else
@@ -394,7 +391,7 @@ DEFAULT_GOLANG_FLAGS := \
 	CPP="$(CPP)"
 
 export PLATFORM MEMO_ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE MEMO_PREFIX MEMO_SUB_PREFIX MEMO_ALT_PREFIX
-export CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T EXTRA SED
+export CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T INSTALL
 export BUILD_ROOT BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP BUILD_TOOLS
 export DEB_ARCH DEB_ORIGIN DEB_MAINTAINER
 export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS ACLOCAL_PATH #PKG_CONFIG_PATH PKG_CONFIG_LIBDIR
@@ -564,13 +561,13 @@ ifeq ($(call HAS_COMMAND,gmake),1)
 # Fix this check.
 endif
 
-TAR  := tar
+TAR  := tar # TODO: remove
 
 ifneq ($(shell PATH=$(PATH) tar --version | grep -q GNU && echo 1),1)
 $(error Install GNU tar)
 endif
 
-SED  := sed
+SED  := sed # TODO: remove
 
 ifneq ($(shell PATH=$(PATH) sed --version | grep -q GNU && echo 1),1)
 $(error Install GNU sed)
@@ -639,11 +636,11 @@ $(error Install GNU coreutils)
 endif
 
 ifeq ($(shell PATH=$(PATH) install --version | grep -q 'GNU coreutils' && echo 1),1)
-GINSTALL := install
+export GINSTALL := install # TODO: remove
+export INSTALL  := install -s --strip-program=$(STRIP)
 else
 $(error Install GNU coreutils)
 endif
-export GINSTALL
 
 ifeq ($(shell PATH=$(PATH) wc --version | grep -q 'GNU coreutils' && echo 1),1)
 WC := wc
