@@ -2,6 +2,7 @@ Package: docbook-xsl-ns
 Version: @DEB_DOCBOOK-XSL_V@
 Architecture: all
 Maintainer: @DEB_MAINTAINER@
+Recommends: docbook5-xml
 Depends: libxml2-utils
 Section: XML
 Priority: optional
