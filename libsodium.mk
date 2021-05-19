@@ -25,25 +25,24 @@ endif
 
 libsodium-package: libsodium-stage
 	# libsodium.mk Package Structure
-	rm -rf $(BUILD_DIST)/libsodium{,-dev}
-	mkdir -p $(BUILD_DIST)/libsodium{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	rm -rf $(BUILD_DIST)/libsodium{23,-dev}
+	mkdir -p $(BUILD_DIST)/libsodium{23,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libsodium.mk Prep libsodium
-	cp -a $(BUILD_STAGE)/libsodium/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsodium.*.dylib $(BUILD_DIST)/libsodium/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libsodium/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsodium.23.dylib $(BUILD_DIST)/libsodium23/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libsodium.mk Prep libsodium-dev
 	cp -a $(BUILD_STAGE)/libsodium/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libsodium-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libsodium/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsodium.{dylib,a} $(BUILD_DIST)/libsodium-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libsodium/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libsodium-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libsodium/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libsodium.23.dylib) $(BUILD_DIST)/libsodium-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libsodium.mk Sign
-	$(call SIGN,libsodium,general.xml)
+	$(call SIGN,libsodium23,general.xml)
 
 	# libsodium.mk Make .debs
-	$(call PACK,libsodium,DEB_LIBSODIUM_V)
+	$(call PACK,libsodium23,DEB_LIBSODIUM_V)
 	$(call PACK,libsodium-dev,DEB_LIBSODIUM_V)
 
 	# libsodium.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libsodium{,-dev}
+	rm -rf $(BUILD_DIST)/libsodium{23,-dev}
 
 .PHONY: libsodium libsodium-package
