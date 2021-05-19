@@ -18,8 +18,7 @@ mediacli: mediacli-setup
 	+$(MAKE) -C $(BUILD_WORK)/mediacli
 	+$(MAKE) -C $(BUILD_WORK)/mediacli install \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		DESTDIR=$(BUILD_STAGE)/mediacli \
-		INSTALL=$(GINSTALL)
+		DESTDIR=$(BUILD_STAGE)/mediacli
 	touch $(BUILD_WORK)/mediacli/.build_complete
 endif
 

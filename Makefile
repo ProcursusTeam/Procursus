@@ -174,7 +174,7 @@ endif
 
 ifeq ($(UNAME),Linux)
 ifneq ($(MEMO_QUIET),1)
-$(warning Building on Linux)
+$(warning Building on GNU Linux)
 endif # ($(MEMO_QUIET),1)
 TARGET_SYSROOT  ?= $(HOME)/cctools/SDK/iPhoneOS13.2.sdk
 MACOSX_SYSROOT  ?= $(HOME)/cctools/SDK/MacOSX.sdk
@@ -190,7 +190,6 @@ I_N_T    := $(GNU_HOST_TRIPLE)-install_name_tool
 NM       := $(GNU_HOST_TRIPLE)-nm
 LIPO     := $(GNU_HOST_TRIPLE)-lipo
 OTOOL    := $(GNU_HOST_TRIPLE)-otool
-EXTRA    := INSTALL="/usr/bin/install -c --strip-program=$(STRIP)"
 LIBTOOL  := $(GNU_HOST_TRIPLE)-libtool
 
 BUILD_CFLAGS   :=
@@ -215,7 +214,6 @@ I_N_T   := $(GNU_HOST_TRIPLE)-install_name_tool
 NM      := $(GNU_HOST_TRIPLE)-nm
 LIPO    := $(GNU_HOST_TRIPLE)-lipo
 OTOOL   := $(GNU_HOST_TRIPLE)-otool
-EXTRA   := INSTALL="/usr/local/bin/ginstall -c --strip-program=$(STRIP)"
 LIBTOOL := $(GNU_HOST_TRIPLE)-libtool
 PATH    := $(GNUBINDIR):$(PATH)
 
@@ -266,12 +264,16 @@ NM              := nm
 LIPO            := lipo
 OTOOL           := otool
 I_N_T           := install_name_tool
-EXTRA           :=
 LIBTOOL         := libtool
 
 else
 $(error Please use Linux, MacOS or FreeBSD to build)
 endif
+
+CC_FOR_BUILD  := $(shell which cc) $(BUILD_CFLAGS)
+CPP_FOR_BUILD := $(shell which cc) -E $(BUILD_CPPFLAGS)
+CXX_FOR_BUILD := $(shell which c++) $(BUILD_CXXFLAGS)
+export CC_FOR_BUILD CPP_FOR_BUILD CXX_FOR_BUILD
 
 DEB_MAINTAINER    ?= Hayden Seay <me@diatr.us>
 CODESIGN_IDENTITY ?= -
@@ -299,14 +301,20 @@ BUILD_STRAP    := $(BUILD_ROOT)/build_strap/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Extra scripts for the buildsystem
 BUILD_TOOLS    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_tools
 
-ifeq ($(DEBUG),1)
-CFLAGS   := -g -O0
-CPPFLAGS := -g -O0
-LDFLAGS  := -g -O0
+ifeq ($(UNAME),Darwin)
+OPTIMIZATION_FLAGS ?= -flto=thin -Os
 else
-CFLAGS   := -O2
-CPPFLAGS := -O2
-LDFLAGS  := -O2
+OPTIMIZATION_FLAGS ?= -Os
+endif
+
+ifeq ($(DEBUG),1)
+CFLAGS              := -g -O0
+CPPFLAGS            := -g -O0
+LDFLAGS             := -g -O0
+else
+CFLAGS              := $(OPTIMIZATION_FLAGS)
+CPPFLAGS            :=
+LDFLAGS             := $(OPTIMIZATION_FLAGS)
 endif
 
 CFLAGS              += -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)$(MEMO_PREFIX)/Library/Frameworks
@@ -392,7 +400,7 @@ DEFAULT_GOLANG_FLAGS := \
 	CPP="$(CPP)"
 
 export PLATFORM MEMO_ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE MEMO_PREFIX MEMO_SUB_PREFIX MEMO_ALT_PREFIX
-export CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T EXTRA SED
+export CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T INSTALL
 export BUILD_ROOT BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP BUILD_TOOLS
 export DEB_ARCH DEB_ORIGIN DEB_MAINTAINER
 export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS ACLOCAL_PATH #PKG_CONFIG_PATH PKG_CONFIG_LIBDIR
@@ -432,6 +440,7 @@ DO_PATCH    = cd $(BUILD_PATCH)/$(1); \
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 SIGN = 	for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
+			$(STRIP) -x $$file; \
 			if [ $${file\#\#*.} = "dylib" ] || [ $${file\#\#*.} = "bundle" ] || [ $${file\#\#*.} = "so" ]; then \
 				$(LDID) -S $$file; \
 			else \
@@ -440,8 +449,11 @@ SIGN = 	for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}
 		done; \
 		find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
 else
-SIGN = find $(BUILD_DIST)/$(1) -type f -exec codesign --remove {} \; &> /dev/null; \
-	find $(BUILD_DIST)/$(1) -type f -exec codesign --sign $(CODESIGN_IDENTITY) --force --preserve-metadata=entitlements,requirements,flags,runtime {} \; &> /dev/null
+SIGN = 	for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
+			$(STRIP) -x $$file; \
+			codesign --remove $$file &> /dev/null; \
+			codesign --sign $(CODESIGN_IDENTITY) --force --preserve-metadata=entitlements,requirements,flags,runtime $$file &> /dev/null; \
+		done
 endif
 
 ###
@@ -531,14 +543,18 @@ PACK_LOCALE = mkdir -p $(BUILD_DIST)/$(1)-locale/{DEBIAN,$(MEMO_PREFIX)$(MEMO_SU
 	rm -rf $(BUILD_DIST)/$(1)-locale
 
 GITHUB_ARCHIVE = -if [ $(5) ]; then \
-		[ ! -f "$(BUILD_SOURCE)/$(5)-$(3).tar.gz" ] && \
-			wget -q -nc -O$(BUILD_SOURCE)/$(5)-$(3).tar.gz \
-				https://github.com/$(1)/$(2)/archive/$(4).tar.gz; \
-	else \
-		[ ! -f "$(BUILD_SOURCE)/$(2)-$(3).tar.gz" ] && \
-			wget -q -nc -O$(BUILD_SOURCE)/$(2)-$(3).tar.gz \
-				https://github.com/$(1)/$(2)/archive/$(4).tar.gz; \
-	fi
+					[ ! -f "$(BUILD_SOURCE)/$(5)-$(3).tar.gz" ] && \
+						wget -q -nc -O$(BUILD_SOURCE)/$(5)-$(3).tar.gz \
+							https://github.com/$(1)/$(2)/archive/$(4).tar.gz; \
+				else \
+					[ ! -f "$(BUILD_SOURCE)/$(2)-$(3).tar.gz" ] && \
+						wget -q -nc -O$(BUILD_SOURCE)/$(2)-$(3).tar.gz \
+							https://github.com/$(1)/$(2)/archive/$(4).tar.gz; \
+				fi
+
+GIT_CLONE = if [ ! -d "$(BUILD_WORK)/$(3)" ]; then \
+				git clone -c advice.detachedHead=false --depth 1 --branch "$(2)" --recursive "$(1)" "$(BUILD_WORK)/$(3)"; \
+			fi
 
 ###
 #
@@ -558,13 +574,13 @@ ifeq ($(call HAS_COMMAND,gmake),1)
 # Fix this check.
 endif
 
-TAR  := tar
+TAR  := tar # TODO: remove
 
 ifneq ($(shell PATH=$(PATH) tar --version | grep -q GNU && echo 1),1)
 $(error Install GNU tar)
 endif
 
-SED  := sed
+SED  := sed # TODO: remove
 
 ifneq ($(shell PATH=$(PATH) sed --version | grep -q GNU && echo 1),1)
 $(error Install GNU sed)
@@ -633,11 +649,11 @@ $(error Install GNU coreutils)
 endif
 
 ifeq ($(shell PATH=$(PATH) install --version | grep -q 'GNU coreutils' && echo 1),1)
-GINSTALL := install
+export GINSTALL := install # TODO: remove
+export INSTALL  := $(shell PATH=$(PATH) which install) --strip-program=$(STRIP)
 else
 $(error Install GNU coreutils)
 endif
-export GINSTALL
 
 ifeq ($(shell PATH=$(PATH) wc --version | grep -q 'GNU coreutils' && echo 1),1)
 WC := wc
@@ -688,19 +704,18 @@ ifneq ($(shell tic -V | grep -q 'ncurses 6' && echo 1),1)
 $(error Install ncurses 6)
 endif
 
-ifneq ($(LEAVE_ME_ALONE),1)
-
-ifneq (,$(wildcard /usr/share/xml/docbook/stylesheet/docbook-xsl))
+ifneq (,$(wildcard /opt/procursus/share/xml/docbook/stylesheet/docbook-xsl))
+DOCBOOK_XSL := /opt/procursus/share/xml/docbook/stylesheet/docbook-xsl
+export XML_CATALOG_FILES=/opt/procursus/etc/xml/catalog
+else ifneq (,$(wildcard /usr/share/xml/docbook/stylesheet/docbook-xsl))
 DOCBOOK_XSL := /usr/share/xml/docbook/stylesheet/docbook-xsl
+export XML_CATALOG_FILES=/etc/xml/catalog
 else ifneq (,$(wildcard /usr/local/share/xsl/docbook))
 DOCBOOK_XSL := /usr/local/share/xsl/docbook
 else ifneq (,$(wildcard /usr/share/xsl/docbook))
 DOCBOOK_XSL := /usr/share/xsl/docbook
 else ifneq (,$(wildcard /usr/share/xml/docbook/xsl-stylesheets-1.79.2))
 DOCBOOK_XSL := /usr/share/xml/docbook/xsl-stylesheets-1.79.2
-else ifneq (,$(wildcard $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl))
-DOCBOOK_XSL := $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl
-export XML_CATALOG_FILES=$(shell brew --prefix)/etc/xml/catalog
 else
 $(error Install docbook-xsl)
 endif
@@ -715,8 +730,6 @@ endif
 
 ifneq ($(call HAS_COMMAND,po4a),1)
 $(error Install po4a)
-endif
-
 endif
 
 PATH := $(BUILD_TOOLS):$(PATH)
