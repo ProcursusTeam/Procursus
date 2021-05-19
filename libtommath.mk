@@ -25,6 +25,7 @@ libtommath: libtommath-setup
 	cd $(BUILD_WORK)/libtommath/libtool && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libtommath -f makefile.shared \
+		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		LIBTOOL="$(BUILD_WORK)/libtommath/libtool/libtool"
 	+$(MAKE) -C $(BUILD_WORK)/libtommath -f makefile.shared install \
 		LIBTOOL="$(BUILD_WORK)/libtommath/libtool/libtool" \

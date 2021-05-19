@@ -24,6 +24,7 @@ libtomcrypt: libtomcrypt-setup libgmp10 libtommath
 	cd $(BUILD_WORK)/libtomcrypt/libtool && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libtomcrypt -f makefile.shared \
+		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		EXTRALIBS="-lgmp -ltommath" \
 		LIBTOOL="$(BUILD_WORK)/libtommath/libtool/libtool" \
 		CFLAGS="$(CFLAGS) -DGMP_DESC -DLTM_DESC -DUSE_LTM"
