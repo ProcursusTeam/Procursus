@@ -301,7 +301,11 @@ BUILD_STRAP    := $(BUILD_ROOT)/build_strap/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Extra scripts for the buildsystem
 BUILD_TOOLS    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_tools
 
-OPTIMIZATION_FLAGS  ?= -flto=thin -Os
+ifeq ($(UNAME),Darwin)
+OPTIMIZATION_FLAGS ?= -flto=thin -Os
+else
+OPTIMIZATION_FLAGS ?= -Os
+endif
 
 ifeq ($(DEBUG),1)
 CFLAGS              := -g -O0
