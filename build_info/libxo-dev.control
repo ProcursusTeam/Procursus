@@ -5,5 +5,5 @@ Maintainer: @DEB_MAINTAINER@
 Homepage: https://github.com/Juniper/libxo
 Section: Development
 Priority: optional
-Depends: libintl-dev, libxo (= @DEB_LIBXO_V@)
+Depends: libintl-dev, libxo0 (= @DEB_LIBXO_V@)
 Description: The Easy Way to Generate text, XML, JSON, and HTML output - devel

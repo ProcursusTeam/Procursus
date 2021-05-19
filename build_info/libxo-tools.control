@@ -5,5 +5,5 @@ Maintainer: @DEB_MAINTAINER@
 Homepage: https://github.com/Juniper/libxo
 Section: Utilites
 Priority: optional
-Depends: libintl8, perl, libxo (= @DEB_LIBXO_V@)
+Depends: libintl8, perl, libxo0 (= @DEB_LIBXO_V@)
 Description: The Easy Way to Generate text, XML, JSON, and HTML output - tools
