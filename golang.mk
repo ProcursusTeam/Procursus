@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 SUBPROJECTS    += golang
 GOLANG_MAJOR_V := 1.16
-GOLANG_VERSION := $(GOLANG_MAJOR_V).3
-DEB_GOLANG_V   ?= $(GOLANG_VERSION)-1
+GOLANG_VERSION := $(GOLANG_MAJOR_V).4
+DEB_GOLANG_V   ?= $(GOLANG_VERSION)
 
 golang-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://golang.org/dl/go$(GOLANG_VERSION).src.tar.gz
