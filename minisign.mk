@@ -16,7 +16,7 @@ minisign:
 	@echo "Using previously built minisign."
 else
 minisign: minisign-setup libsodium
-	mkdir -p $(BUILD_STAGE)/minisign/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	mkdir -p $(BUILD_STAGE)/minisign/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 	cd $(BUILD_WORK)/minisign/build && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DSODIUM_INCLUDE_DIR:FILEPATH="$(BUILD_STAGE)/libsodium/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
@@ -24,6 +24,7 @@ minisign: minisign-setup libsodium
 		..
 	+$(MAKE) -C $(BUILD_WORK)/minisign/build
 	cp $(BUILD_WORK)/minisign/build/minisign $(BUILD_STAGE)/minisign/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
+	cp $(BUILD_WORK)/minisign/share/man/man1/* $(BUILD_STAGE)/minisign/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	touch $(BUILD_WORK)/minisign/.build_complete
 endif
 
