@@ -16,12 +16,10 @@ libpixman:
 else
 libpixman: libpixman-setup
 	cd $(BUILD_WORK)/libpixman && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
 		--disable-gtk \
-		--disable-silent-rules 
+		--disable-silent-rules
 	+$(MAKE) -C $(BUILD_WORK)/libpixman
 	+$(MAKE) -C $(BUILD_WORK)/libpixman install \
 		DESTDIR=$(BUILD_STAGE)/libpixman

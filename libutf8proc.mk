@@ -7,9 +7,7 @@ LIBUTF8PROC_VERSION := 2.5.0
 DEB_LIBUTF8PROC_V   ?= $(LIBUTF8PROC_VERSION)-2
 
 libutf8proc-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/libutf8proc-$(LIBUTF8PROC_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/libutf8proc-$(LIBUTF8PROC_VERSION).tar.gz \
-			https://github.com/JuliaStrings/utf8proc/archive/v$(LIBUTF8PROC_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,JuliaStrings,utf8proc,$(LIBUTF8PROC_VERSION),v$(LIBUTF8PROC_VERSION),libutf8proc)
 	$(call EXTRACT_TAR,libutf8proc-$(LIBUTF8PROC_VERSION).tar.gz,utf8proc-$(LIBUTF8PROC_VERSION),libutf8proc)
 
 ifneq ($(wildcard $(BUILD_WORK)/libutf8proc/.build_complete),)

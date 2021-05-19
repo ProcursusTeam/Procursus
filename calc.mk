@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += calc
-CALC_VERSION := 2.12.8.1
+CALC_VERSION := 2.13.0.1
 DEB_CALC_V   ?= $(CALC_VERSION)
 
 calc-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://www.isthe.com/chongo/src/calc/calc-$(CALC_VERSION).tar.bz2
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/lcn2/calc/releases/download/v$(CALC_VERSION)/calc-$(CALC_VERSION).tar.bz2
 	$(call EXTRACT_TAR,calc-$(CALC_VERSION).tar.bz2,calc-$(CALC_VERSION),calc)
 	$(SED) -i '/#include <stdio.h>/a #include <string.h>' $(BUILD_WORK)/calc/have_memmv.c
 	$(SED) -i '/#include <stdio.h>/a #include <string.h>' $(BUILD_WORK)/calc/have_newstr.c

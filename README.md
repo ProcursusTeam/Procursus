@@ -20,15 +20,15 @@ In the iOS jailbreak scene, it also attempts to address an odd fragmentation pro
 
 ## Building
 
-Building has been made to be simple, yet get the job done properly. Both macOS and Linux are supported build systems. Linux is not, however, fully supported, and not *all* packages are compilable there; MacOS is the main system you'll want to be building with. 
+Building has been made to be simple, yet get the job done properly. MacOS, iOS, FreeBSD and Linux are supported build systems. FreeBSD and Linux are not, however, fully supported, and not *all* packages are compilable there; MacOS is the main system you'll want to be building with. 
 
 Supported host systems as of 06/04/2020 are iphoneos-arm64, iphoneos-arm, appletvos-arm64, watchos-arm64, and watchos-arm.
 
 |                     Requirements                                  |
 |:-----------------------------------------------------------------:|
 | Xcode + Xcode Commandline Tools + Homebrew (on macOS)             |
-| [An iOS toolchain, cctools-port recommended (on Linux)](LINUX.md) |
-| GNU make (On macOS you'll have to run `gmake`)                    |
+| An iOS toolchain, [cctools-port](https://github.com/tpoechtrager/cctools-port) recommended (on [Linux](LINUX.md) and [FreeBSD](FreeBSD.md)) |
+| GNU make (On macOS and FreeBSD you'll have to run `gmake`)        |
 | GNU coreutils                                                     |
 | GNU findutils                                                     |
 | GNU sed (gnu-sed in Homebrew)                                     |
@@ -65,21 +65,27 @@ brew install make bash wget gnu-tar gnu-sed gnupg ldid cmake automake groff gpat
 | `make clean`                           | Clean out $(BUILD_STAGE), $(BUILD_BASE), and $(BUILD_WORK).                                                        |
 | `make extreme-clean`                   | Resets the entire git repository.                                                                                  |
 | `make env`                             | Print the `proenv` shell function to STDOUT to give a cross-compilation environment in your POSIX shell (`make env >> ~/.zshrc`) |
+| `make (tool)-deps`                     | Print the dylibs linked by (tool)                                                                                  |
 
 There are very few variables you'll need to pay attention to/change to get building working well.
 
 | Variable       | Function                                                                                                                                                             |
 |:--------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| MEMO_TARGET    | Can be set to any of the supported host systems. Pretty self explainatory. (Defaults to iphoneos-arm64)                                                              |
-| MEMO_CFVER     | Used to set minimum *OS version to compile for. Use the CoreFoundation version that coresponds to the OS version you're compiling for. (Defaults to 1600 for iOS 13) |
+| MEMO_TARGET    | Can be set to any of the supported host systems. Pretty self explainatory. (Defaults to darwin-arm64)                                                                |
+| MEMO_CFVER     | Used to set minimum *OS version to compile for. Use the CoreFoundation version that coresponds to the OS version you're compiling for. (Defaults to 1700 for iOS 14) |
 | NO_PGP         | Set to 1 if you want to bypass verifying tarballs with gpg. Useful if you just want a quick build without importing everyone's public keys.                          |
 | TARGET_SYSROOT | Path to your chosen iPhone SDK. (Defaults to Xcode default path on macOS and the cctools-port default path on Linux.)                                                |
 | MACOSX_SYSROOT | Path to your chosen macOS SDK. (Defaults to Xcode default path on macOS and the cctools-port default path on Linux.)                                                 |
 | BUILD_ROOT     | If you have this repo in one place, but want to build everything in a different place, set BUILD_ROOT to said different place. (Untested but should work fine.)      |
+| MEMO_QUIET     | Mute unnecessary warnings and echos.                                                                                                                                 |
 
 ## Contributing and/or Issues
 
 Contributions in the form of Issues or Pull Requests are welcome with open arms. See the [CONTRIBUTING.md](https://github.com/ProcursusTeam/Procursus/blob/master/CONTRIBUTING.md).
+
+## Merchandise
+
+Procursus clothing, mugs, phone cases and more are now available here: https://procursus.creator-spring.com/
 
 ## Credits
 

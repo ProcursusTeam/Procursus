@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS   += libgd
 LIBGD_VERSION := 2.3.2
-DEB_LIBGD_V   ?= $(LIBGD_VERSION)
+DEB_LIBGD_V   ?= $(LIBGD_VERSION)-1
 
 libgd-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) \
@@ -18,17 +18,7 @@ libgd:
 else
 libgd: libgd-setup fontconfig freetype libjpeg-turbo libpng16 libtiff libwebp libxpm
 	cd $(BUILD_WORK)/libgd && cmake . \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/ \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
-		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DBUILD_SHARED_LIBS=1 \
 		-DENABLE_FONTCONFIG=ON \
 		-DENABLE_FREETYPE=ON \
@@ -58,10 +48,10 @@ libgd-package: libgd-stage
 		$(BUILD_DIST)/libgd-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libgd.mk Prep libgd3
-	cp -a $(BUILD_STAGE)/libgd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgd.3.*.dylib $(BUILD_DIST)/libgd3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libgd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgd.3*.dylib $(BUILD_DIST)/libgd3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libgd.mk Prep libgd-dev
-	cp -a $(BUILD_STAGE)/libgd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libgd.3.*.dylib) $(BUILD_DIST)/libgd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libgd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libgd.3*.dylib) $(BUILD_DIST)/libgd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libgd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libgd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libgd.mk Prep libgd-tools

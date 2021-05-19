@@ -2,12 +2,12 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += gnutls
-GNUTLS_VERSION := 3.7.0
+STRAPPROJECTS  += gnutls
+GNUTLS_VERSION := 3.7.1
 DEB_GNUTLS_V   ?= $(GNUTLS_VERSION)
 
 gnutls-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.gnupg.org/ftp/gcrypt/gnutls/v3.7/gnutls-$(GNUTLS_VERSION).tar.xz
+	wget -q -nc -P $(BUILD_SOURCE) https://www.gnupg.org/ftp/gcrypt/gnutls/v$(shell echo $(GNUTLS_VERSION) | cut -d. -f-2)/gnutls-$(GNUTLS_VERSION).tar.xz
 	$(call EXTRACT_TAR,gnutls-$(GNUTLS_VERSION).tar.xz,gnutls-$(GNUTLS_VERSION),gnutls)
 
 ifneq ($(wildcard $(BUILD_WORK)/gnutls/.build_complete),)
@@ -19,18 +19,14 @@ gnutls: gnutls-setup readline gettext libgcrypt libgmp10 libidn2 libunistring ne
 	cd $(BUILD_WORK)/gnutls && autoreconf -f -i
 ifeq ($(MEMO_TARGET),watchos-arm64)
 	cd $(BUILD_WORK)/gnutls && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--disable-hardware-acceleration \
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		--disable-guile \
 		--enable-local-libopts \
 		--with-default-trust-store-file=$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem \
- 		P11_KIT_CFLAGS=-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/p11-kit-1
+		P11_KIT_CFLAGS=-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/p11-kit-1
 else
 	cd $(BUILD_WORK)/gnutls && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-local-libopts \
 		--with-default-trust-store-file=$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem \
 		P11_KIT_CFLAGS=-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/p11-kit-1

@@ -3,12 +3,13 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += bat
-BAT_VERSION := 0.17.1
+BAT_VERSION := 0.18.0
 DEB_BAT_V   ?= $(BAT_VERSION)
 
 bat-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/bat-$(BAT_VERSION).tar.gz" ] && wget -q -nc -O$(BUILD_SOURCE)/bat-$(BAT_VERSION).tar.gz https://github.com/sharkdp/bat/archive/v$(BAT_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,sharkdp,bat,$(BAT_VERSION),v$(BAT_VERSION))
 	$(call EXTRACT_TAR,bat-$(BAT_VERSION).tar.gz,bat-$(BAT_VERSION),bat)
+	$(call DO_PATCH,bat,bat,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/bat/.build_complete),)
 bat:
@@ -16,7 +17,7 @@ bat:
 else
 bat: bat-setup libgit2
 	cd $(BUILD_WORK)/bat && cargo update
-	cd $(BUILD_WORK)/bat && SDKROOT="$(TARGET_SYSROOT)" cargo \
+	cd $(BUILD_WORK)/bat && SDKROOT="$(TARGET_SYSROOT)" PKG_CONFIG="$(RUST_TARGET)-pkg-config" cargo \
 		build \
 		--release \
 		--target=$(RUST_TARGET)
@@ -45,3 +46,4 @@ bat-package: bat-stage
 	rm -rf $(BUILD_DIST)/bat
 
 .PHONY: bat bat-package
+

@@ -7,8 +7,7 @@ LOLCAT_VERSION := 1.2
 DEB_LOLCAT_V   ?= $(LOLCAT_VERSION)
 
 lolcat-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/lolcat-$(LOLCAT_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/lolcat-$(LOLCAT_VERSION).tar.gz https://github.com/jaseg/lolcat/archive/v$(LOLCAT_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,jaseg,lolcat,$(LOLCAT_VERSION),v$(LOLCAT_VERSION))
 	$(call EXTRACT_TAR,lolcat-$(LOLCAT_VERSION).tar.gz,lolcat-$(LOLCAT_VERSION),lolcat)
 	mkdir -p $(BUILD_STAGE)/lolcat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
@@ -16,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/lolcat/.build_complete),)
 lolcat:
 	@echo "Using previously built lolcat."
 else
-lolcat: lolcat-setup 
+lolcat: lolcat-setup
 	+$(MAKE) -C $(BUILD_WORK)/lolcat
 	+$(MAKE) -C $(BUILD_WORK)/lolcat install \
 		DESTDIR=$(BUILD_STAGE)/lolcat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin

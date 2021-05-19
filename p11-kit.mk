@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += p11-kit
+STRAPPROJECTS += p11-kit
 P11_VERSION   := 0.23.21
 DEB_P11_V     ?= $(P11_VERSION)
 
@@ -17,10 +17,7 @@ p11-kit:
 else
 p11-kit: p11-kit-setup gettext libtasn1 libffi
 	cd $(BUILD_WORK)/p11-kit && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-trust-paths=$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem \
 		--without-systemd
 	+$(MAKE) -C $(BUILD_WORK)/p11-kit

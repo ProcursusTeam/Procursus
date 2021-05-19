@@ -2,12 +2,14 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+
 SUBPROJECTS      += bender
 BENDER_VERSION   := 1.1.1
 DEB_BENDER_V     ?= $(BENDER_VERSION)
 
 bender-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/bender-$(BENDER_VERSION).tar.gz" ] && wget -q -nc -O$(BUILD_SOURCE)/bender-$(BENDER_VERSION).tar.gz https://github.com/aspenluxxxy/bender/archive/v$(BENDER_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,aspenluxxxy,bender,$(BENDER_VERSION),v$(BENDER_VERSION))
 	$(call EXTRACT_TAR,bender-$(BENDER_VERSION).tar.gz,bender-$(BENDER_VERSION),bender)
 
 ifneq ($(wildcard $(BUILD_WORK)/bender/.build_complete),)
@@ -40,3 +42,5 @@ bender-package: bender-stage
 	rm -rf $(BUILD_DIST)/bender
 
 .PHONY: bender bender-package
+
+endif

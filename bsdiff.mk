@@ -2,14 +2,12 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS 	 += bsdiff
+SUBPROJECTS    += bsdiff
 BSDIFF_VERSION := 4.3
 DEB_BSDIFF_V   ?= $(BSDIFF_VERSION)
 
 bsdiff-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/bsdiff-$(BSDIFF_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/bsdiff-$(BSDIFF_VERSION).tar.gz \
-			https://github.com/mendsley/bsdiff/archive/v$(BSDIFF_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,mendsley,bsdiff,$(BSDIFF_VERSION),v$(BSDIFF_VERSION))
 	$(call EXTRACT_TAR,bsdiff-$(BSDIFF_VERSION).tar.gz,bsdiff-$(BSDIFF_VERSION),bsdiff)
 	$(call DO_PATCH,bsdiff,bsdiff)
 
@@ -23,8 +21,7 @@ bsdiff: bsdiff-setup
 	mkdir -p $(BUILD_STAGE)/bsdiff/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 
 	+$(MAKE) -C $(BUILD_WORK)/bsdiff install \
-		PREFIX="$(BUILD_STAGE)/bsdiff/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
-		INSTALL=install
+		PREFIX="$(BUILD_STAGE)/bsdiff/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
 	touch $(BUILD_WORK)/bsdiff/.build_complete
 endif
 

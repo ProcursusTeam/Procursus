@@ -18,9 +18,7 @@ uuid:
 else
 uuid: uuid-setup
 	cd $(BUILD_WORK)/uuid && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		ac_cv_va_copy=yes \
 		CC="$(CC) $(CFLAGS)" \
 		CXX="$(CXX) $(CXXFLAGS)"

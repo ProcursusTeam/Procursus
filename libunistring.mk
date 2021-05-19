@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS       += libunistring
+STRAPPROJECTS     += libunistring
 UNISTRING_VERSION := 0.9.10
 DEB_UNISTRING_V   ?= $(UNISTRING_VERSION)-2
 
@@ -17,9 +17,7 @@ libunistring:
 else
 libunistring: libunistring-setup
 	cd $(BUILD_WORK)/libunistring && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libunistring
 	+$(MAKE) -C $(BUILD_WORK)/libunistring install \
 		DESTDIR=$(BUILD_STAGE)/libunistring

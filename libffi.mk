@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += libffi
+STRAPPROJECTS  += libffi
 LIBFFI_VERSION := 3.3
 DEB_LIBFFI_V   ?= $(LIBFFI_VERSION)-1
 
@@ -16,14 +16,12 @@ libffi:
 else
 libffi: libffi-setup
 	cd $(BUILD_WORK)/libffi && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libffi
 	+$(MAKE) -C $(BUILD_WORK)/libffi install \
 		DESTDIR=$(BUILD_STAGE)/libffi
 	+$(MAKE) -C $(BUILD_WORK)/libffi install \
-                DESTDIR=$(BUILD_BASE)
+		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libffi/.build_complete
 endif
 

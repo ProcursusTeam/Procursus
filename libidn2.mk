@@ -2,9 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS  += libidn2
-IDN2_VERSION := 2.3.0
-DEB_IDN2_V   ?= $(IDN2_VERSION)-3
+STRAPPROJECTS += libidn2
+IDN2_VERSION  := 2.3.0
+DEB_IDN2_V    ?= $(IDN2_VERSION)-3
 
 libidn2-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/libidn/libidn2-$(IDN2_VERSION).tar.gz{,.sig}
@@ -17,9 +17,7 @@ libidn2:
 else
 libidn2: libidn2-setup gettext libunistring
 	cd $(BUILD_WORK)/libidn2 && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libidn2
 	+$(MAKE) -C $(BUILD_WORK)/libidn2 install \
 		DESTDIR=$(BUILD_STAGE)/libidn2

@@ -8,7 +8,7 @@ STRAPPROJECTS     += essential
 ESSENTIAL_VERSION := 0-4
 DEB_ESSENTIAL_V   ?= $(ESSENTIAL_VERSION)
 
-essential:
+essential: setup
 	@echo "Essential is just a control file."
 
 essential-package: essential-stage

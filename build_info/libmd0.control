@@ -1,0 +1,10 @@
+Package: libmd0
+Version: @DEB_LIBMD_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Description: message digest functions from BSD systems - shared library
+ The libmd library provides various message digest ("hash") functions,
+ as found on various BSDs on a library with the same name and with a
+ compatible API.

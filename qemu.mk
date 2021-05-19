@@ -15,9 +15,8 @@ qemu:
 	@echo "Using previously built qemu."
 else
 qemu: qemu-setup glib2.0 gnutls libjpeg-turbo libpng16 libssh libusb liblzo2 ncurses nettle libpixman libsnappy lzfse gnutls curl libvde
-	cd $(BUILD_WORK)/qemu && QEMU_PKG_CONFIG_FLAGS="--define-prefix" STRIP="strip -x" CFLAGS+=" -DNCURSES_WIDECHAR=1 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pixman-1" ./configure \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
+	cd $(BUILD_WORK)/qemu && STRIP="strip -x" CFLAGS+=" -DNCURSES_WIDECHAR=1 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pixman-1" ./configure \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--cpu=aarch64 \
 		--cross-prefix="" \
 		--cc=$(CC) \

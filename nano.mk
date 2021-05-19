@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += nano
-NANO_VERSION := 5.6.1
+NANO_VERSION := 5.7
 DEB_NANO_V   ?= $(NANO_VERSION)
 
 nano-setup: setup
@@ -18,11 +18,8 @@ nano:
 else
 nano: nano-setup ncurses gettext file
 	cd $(BUILD_WORK)/nano && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-debug \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--disable-dependency-tracking \
 		--enable-color \
 		--enable-extra \

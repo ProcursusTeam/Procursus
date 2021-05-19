@@ -17,9 +17,7 @@ else
 weechat: weechat-setup ncurses gettext gnutls curl libgcrypt
 	cd $(BUILD_WORK)/weechat && ./autogen.sh
 	cd $(BUILD_WORK)/weechat && ./configure \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=${GNU_HOST_TRIPLE} \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
 		--disable-static \
 		--disable-alias \

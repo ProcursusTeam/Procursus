@@ -1,0 +1,9 @@
+Package: jtool2
+Version: @DEB_JTOOL2_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: Jonathan Levin
+Section: Development
+Priority: optional
+Homepage: http://newosxbook.com/tools/jtool.html
+Description: otool, but better (non-opensource)

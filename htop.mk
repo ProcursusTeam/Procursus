@@ -7,7 +7,7 @@ HTOP_VERSION := 3.0.5
 DEB_HTOP_V   ?= $(HTOP_VERSION)
 
 htop-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/htop-$(HTOP_VERSION).tar.gz" ] && wget -q -nc -O$(BUILD_SOURCE)/htop-$(HTOP_VERSION).tar.gz https://github.com/htop-dev/htop/archive/$(HTOP_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,htop-dev,htop,$(HTOP_VERSION),$(HTOP_VERSION))
 	$(call EXTRACT_TAR,htop-$(HTOP_VERSION).tar.gz,htop-$(HTOP_VERSION),htop)
 
 ifneq ($(wildcard $(BUILD_WORK)/htop/.build_complete),)
@@ -17,13 +17,10 @@ else
 htop: htop-setup ncurses
 	cd $(BUILD_WORK)/htop && ./autogen.sh
 	cd $(BUILD_WORK)/htop && ./configure \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-linux-affinity \
 		ac_cv_lib_ncursesw_addnwstr=yes
 	+$(MAKE) -C $(BUILD_WORK)/htop install \
-		CFLAGS="$(CFLAGS) -U_XOPEN_SOURCE" \
 		DESTDIR=$(BUILD_STAGE)/htop
 	rm -rf $(BUILD_STAGE)/htop/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{applications,pixmaps}
 	touch $(BUILD_WORK)/htop/.build_complete

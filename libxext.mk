@@ -17,13 +17,9 @@ libxext:
 else
 libxext: libxext-setup libx11 xorgproto
 	cd $(BUILD_WORK)/libxext && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/ \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-silent-rules \
 		--disable-dependency-tracking \
-		--localstatedir=$(MEMO_PREFIX)/var \
 		--enable-malloc0returnsnull=no \
 		--enable-specs=no
 	+$(MAKE) -C $(BUILD_WORK)/libxext

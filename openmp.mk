@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += openmp
-OPENMP_VERSION := 11.0.0
+OPENMP_VERSION := 12.0.0
 DEB_OPENMP_V   ?= $(OPENMP_VERSION)
 
 openmp-setup: setup
@@ -17,17 +17,8 @@ openmp:
 else
 openmp: openmp-setup
 	# Shared lib
-	cd $(BUILD_WORK)/openmp && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
+	cd $(BUILD_WORK)/openmp && cmake . \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DLIBOMP_INSTALL_ALIASES=OFF \
 		-DLIBOMP_LIB_NAME=libomp.1 \
 		.
@@ -41,17 +32,8 @@ openmp: openmp-setup
 	ln -sf libomp.1.dylib $(BUILD_STAGE)/openmp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libomp.dylib
 
 	# Static lib
-	cd $(BUILD_WORK)/openmp && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
+	cd $(BUILD_WORK)/openmp && cmake . \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DLIBOMP_INSTALL_ALIASES=OFF \
 		-DLIBOMP_ENABLE_SHARED=OFF \
 		-DLIBOMP_LIB_NAME=libomp \

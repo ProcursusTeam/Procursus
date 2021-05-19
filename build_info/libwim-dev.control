@@ -1,0 +1,12 @@
+Package: libwim-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_WIMLIB_V@
+Depends: libssl1.1, libwim15
+Section: Development
+Priority: optional
+Description: Library for manipulating Windows Imaging files - development files
+ wimlib is a C library for extracting, creating, modifying, and
+ mounting WIM (Windows Imaging) files.
+ .
+ This package contains the static library and header files

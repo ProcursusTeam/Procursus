@@ -7,9 +7,7 @@ LIBLQR_VERSION := 0.4.2
 DEB_LIBLQR_V   ?= $(LIBLQR_VERSION)
 
 liblqr-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/liblqr-$(LIBLQR_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/liblqr-$(LIBLQR_VERSION).tar.gz \
-			https://github.com/carlobaldassi/liblqr/archive/v$(LIBLQR_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,carlobaldassi,liblqr,$(LIBLQR_VERSION),v$(LIBLQR_VERSION))
 	$(call EXTRACT_TAR,liblqr-$(LIBLQR_VERSION).tar.gz,liblqr-$(LIBLQR_VERSION),liblqr)
 	$(call DO_PATCH,liblqr,liblqr,-p1)
 
@@ -19,9 +17,7 @@ liblqr:
 else
 liblqr: liblqr-setup glib2.0 gettext
 	cd $(BUILD_WORK)/liblqr && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
 		--enable-install-man \
 		GLIB_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/glib-2.0 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/glib-2.0/include -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/glib-2.0/include"

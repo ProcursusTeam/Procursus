@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS         += fortune-mod
-FORTUNE-MOD_VERSION := 3.4.1
+FORTUNE-MOD_VERSION := 3.6.0
 DEB_FORTUNE-MOD_V   ?= $(FORTUNE-MOD_VERSION)
 
 fortune-mod-setup: setup
@@ -20,16 +20,7 @@ fortune-mod: fortune-mod-setup librecode
 	$(SED) -i -e 's|{CMAKE_CURRENT_SOURCE_DIR}/fortune|{CMAKE_CURRENT_SOURCE_DIR}/fortunestuff|' -e 's|fortune/|fortunestuff/|' $(BUILD_WORK)/fortune-mod/CMakeLists.txt
 	mv $(BUILD_WORK)/fortune-mod/fortune $(BUILD_WORK)/fortune-mod/fortunestuff
 	cd $(BUILD_WORK)/fortune-mod && cmake . \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DLOCALDIR="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/games/fortunes" \
 		-DLOCALODIR="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/games/fortunes/off"
 	+$(MAKE) -C $(BUILD_WORK)/fortune-mod strfile rot

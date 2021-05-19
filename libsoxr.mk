@@ -9,21 +9,15 @@ DEB_LIBSOXR_V   ?= $(LIBSOXR_VERSION)
 libsoxr-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://downloads.sourceforge.net/project/soxr/soxr-$(LIBSOXR_VERSION)-Source.tar.xz
 	$(call EXTRACT_TAR,soxr-$(LIBSOXR_VERSION)-Source.tar.xz,soxr-$(LIBSOXR_VERSION)-Source,libsoxr)
-	mkdir $(BUILD_WORK)/libsoxr/build
+	mkdir -p $(BUILD_WORK)/libsoxr/build
 
 ifneq ($(wildcard $(BUILD_WORK)/libsoxr/.build_complete),)
 libsoxr:
 	@echo "Using previously built libsoxr."
 else
 libsoxr: libsoxr-setup
-	cd $(BUILD_WORK)/libsoxr/build && cmake . -j$(shell $(GET_LOGICAL_CORES)) \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
+	cd $(BUILD_WORK)/libsoxr/build && cmake . \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DBUILD_TESTS=0 \
 		-DBUILD_EXAMPLES=0 \
 		-DBUILD_SHARED_LIBS=1 \
