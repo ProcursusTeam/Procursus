@@ -2,7 +2,7 @@ Package: xtrace
 Version: @DEB_XTRACE_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: xauth
+Recommends: xauth
 Section: X11
 Priority: optional
 Description: trace communication between X client and server
