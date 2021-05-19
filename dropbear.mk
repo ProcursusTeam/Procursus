@@ -23,7 +23,7 @@ else # (,$(findstring darwin,$(MEMO_TARGET)))
 dropbear: dropbear-setup libtommath libtomcrypt
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	if ! [ -f $(BUILD_WORK)/dropbear/configure ]; then \
-		cd $(BUILD_WORK)/dropbear && autoreconf; \
+		cd $(BUILD_WORK)/dropbear && autoreconf -i; \
 	fi
 	cd $(BUILD_WORK)/dropbear && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
@@ -42,11 +42,11 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	+$(MAKE) -C $(BUILD_WORK)/dropbear install \
 		DESTDIR=$(BUILD_STAGE)/dropbear
 	mkdir -p $(BUILD_STAGE)/dropbear/$(MEMO_PREFIX)/Library/LaunchDaemons
-	cp $(BUILD_INFO)/com.mkj.dropbear.plist $(BUILD_STAGE)/dropbear/$(MEMO_PREFIX)/Library/LaunchDaemons
+	cp $(BUILD_MISC)/dropbear/com.mkj.dropbear.plist $(BUILD_STAGE)/dropbear/$(MEMO_PREFIX)/Library/LaunchDaemons
 	$(SED) -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
 		$(BUILD_STAGE)/dropbear/$(MEMO_PREFIX)/Library/LaunchDaemons/com.mkj.dropbear.plist
 	mkdir -p $(BUILD_STAGE)/dropbear/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
-	cp $(BUILD_INFO)/dropbear-wrapper $(BUILD_STAGE)/dropbear/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
+	cp $(BUILD_MISC)/dropbear/dropbear-wrapper $(BUILD_STAGE)/dropbear/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
 	$(SED) -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
 		$(BUILD_STAGE)/dropbear/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/dropbear-wrapper
 	touch $(BUILD_WORK)/dropbear/.build_complete
