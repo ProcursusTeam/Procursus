@@ -18,8 +18,9 @@ else
 libxo: libxo-setup
 	cd $(BUILD_WORK)/libxo && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--with-gettext=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	$(SED) -i'' '/rpl_/d' $(BUILD_WORK)/libxo/libxo/xo_config.h
+		--with-gettext=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		ac_cv_func_malloc_0_nonnull=yes \
+		ac_cv_func_realloc_0_nonnull=yes
 	+$(MAKE) -C $(BUILD_WORK)/libxo \
 		LIBTOOL='$(BUILD_WORK)/libxo/libtool'
 	+$(MAKE) -C $(BUILD_WORK)/libxo install \
