@@ -2,9 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS += allahcalc
+SUBPROJECTS       += allahcalc
 ALLAHCALC_VERSION := 1.1
-DEB_ALLAHCALC_V ?= $(ALLAHCALC_VERSION)
+DEB_ALLAHCALC_V   ?= $(ALLAHCALC_VERSION)
 
 allahcalc-setup: setup
 	wget -q -nc -P (BUILD_SOURCE) https://github.com/clyde37/allah-calculator/releases/download/$(ALLAHCALC_VERSION)/allah_calculator_generator.cpp
