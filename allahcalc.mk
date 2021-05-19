@@ -16,7 +16,7 @@ else
 allahcalc: allahcalc-setup
     clang++ allah_calculator_generator.cpp -o allahcalc/allah_calculator_generator
     ./allah_calculator_generator
-    gcc allah_calculator_final.mp4_custom.c -o allahcalc/allahcalc
+    clang allah_calculator_final.mp4_custom.c -o allahcalc/allahcalc
 endif
 
 allahcalc-package: allahcalc-stage
