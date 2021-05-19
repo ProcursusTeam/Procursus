@@ -1,0 +1,8 @@
+Package: allahcalc
+Version: @DEB_ALLAHCALC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Description: Calculate the way allah intended.
+Tag: purpose::console

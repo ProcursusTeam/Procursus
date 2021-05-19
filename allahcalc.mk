@@ -15,13 +15,18 @@ allahcalc:
 	@echo "Using previously built allahcalc."
 else
 allahcalc: allahcalc-setup
-    $(CC)++ allah_calculator_generator.cpp -o allahcalc/allah_calculator_generator
-    ./allah_calculator_generator
-    $(CC) allah_calculator_final.mp4_custom.c -o allahcalc/allahcalc
+	cd $(BUILD_WORK)/allahcalc
+	$(CC)++ allah_calculator_generator.cpp -o allahcalc/allah_calculator_generator
+	./allah_calculator_generator
+	$(CC) allah_calculator_final.mp4_custom.c \
+		-o $(BUILD_STAGE)/allahcalc
 endif
 
 allahcalc-package: allahcalc-stage
-    $(call PACK,allahcalc,DEB_ALLAHCALC_V)
-    rm -rf allahcalc
+	rm -rf $(BUILD_DIST)/allahcalc
+	cp -a $(BUILD_STAGE)/allahcalc $(BUILD_DIST)
+	$(call SIGN,allahcalc)
+	$(call PACK,allahcalc,DEB_ALLAHCALC_V)
+	rm -rf $(BUILD_DIST)/allahcalc
 
 .PHONY: allahcalc allahcalc-package
