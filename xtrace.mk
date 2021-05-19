@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/xtrace/.build_complete),)
 xtrace:
 	@echo "Using previously built xtrace."
 else
-xtrace: xtrace-setup xauth
+xtrace: xtrace-setup
 	cd $(BUILD_WORK)/xtrace && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/xtrace
