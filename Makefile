@@ -8,6 +8,9 @@ else
 $(error Install bash 5.0)
 endif
 
+# Unset sysroot, we manage that ourselves.
+SYSROOT :=
+
 UNAME           := $(shell uname -s)
 SUBPROJECTS     += $(STRAPPROJECTS)
 
