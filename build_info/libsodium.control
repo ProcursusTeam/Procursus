@@ -1,7 +1,0 @@
-Package: libsodium
-Maintainer: @DEB_MAINTAINER@
-Architecture: @DEB_ARCH@
-Version: @DEB_LIBSODIUM_V@
-Section: Libraries
-Description: Network communication, cryptography and signaturing library
-Homepage: https://doc.libsodium.org/

@@ -20,6 +20,8 @@ libsodium: libsodium-setup
 	+$(MAKE) -C $(BUILD_WORK)/libsodium
 	+$(MAKE) -C $(BUILD_WORK)/libsodium install \
 		DESTDIR=$(BUILD_STAGE)/libsodium
+	+$(MAKE) -C $(BUILD_WORK)/libsodium install \
+		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libsodium/.build_complete
 endif
 

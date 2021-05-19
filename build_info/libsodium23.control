@@ -1,10 +1,9 @@
-Package: libsodium-dev
+Package: libsodium23
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LIBSODIUM_V@
-Depends: libsodium23 (= @DEB_LIBSODIUM_V@)
-Section: Development
-Description: Network communication, cryptography and signaturing library - headers
+Section: Libraries
+Description: Network communication, cryptography and signaturing library
  NaCl (pronounced "salt") is a new easy-to-use high-speed software library for
  network communication, encryption, decryption, signatures, etc.
  .
@@ -13,7 +12,4 @@ Description: Network communication, cryptography and signaturing library - heade
  .
  Sodium is a portable, cross-compilable, installable, packageable fork of NaCl,
  with a compatible API.
- .
- This package provides development headers needed for applications that use
- libsodium.
 Homepage: https://doc.libsodium.org/
