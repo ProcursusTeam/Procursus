@@ -240,7 +240,7 @@ TARGET_SYSROOT  ?= $(shell xcrun --sdk $(PLATFORM) --show-sdk-path)
 MACOSX_SYSROOT  ?= $(shell xcrun --show-sdk-path)
 CC              := $(shell xcrun --sdk $(PLATFORM) --find cc)
 CXX             := $(shell xcrun --sdk $(PLATFORM) --find c++)
-CPP             := $(shell xcrun --sdk $(PLATFORM) --find cpp)
+CPP             := $(shell xcrun --sdk $(PLATFORM) --find cc) -E
 PATH            := /opt/procursus/bin:/opt/procursus/libexec/gnubin:/usr/bin:$(PATH)
 
 BUILD_CFLAGS   := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
