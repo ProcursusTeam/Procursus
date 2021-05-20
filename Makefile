@@ -240,7 +240,7 @@ TARGET_SYSROOT  ?= $(shell xcrun --sdk $(PLATFORM) --show-sdk-path)
 MACOSX_SYSROOT  ?= $(shell xcrun --show-sdk-path)
 CC              := $(shell xcrun --sdk $(PLATFORM) --find cc)
 CXX             := $(shell xcrun --sdk $(PLATFORM) --find c++)
-CPP             := $(shell xcrun --sdk $(PLATFORM) --find cc) -E
+CPP             := $(shell xcrun --sdk $(PLATFORM) --find cpp)
 PATH            := /opt/procursus/bin:/opt/procursus/libexec/gnubin:/usr/bin:$(PATH)
 
 BUILD_CFLAGS   := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
@@ -254,9 +254,9 @@ $(warning Building on iOS)
 endif # ($(MEMO_QUIET),1)
 TARGET_SYSROOT  ?= /usr/share/SDKs/$(BARE_PLATFORM).sdk
 MACOSX_SYSROOT  ?= /usr/share/SDKs/MacOSX.sdk
-CC              := $(shell which cc)
-CXX             := $(shell which c++)
-CPP             := $(shell which cc) -E
+CC              := cc
+CXX             := c++
+CPP             := cc -E
 PATH            := /usr/bin:$(PATH)
 
 BUILD_CFLAGS   := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion) -isysroot /usr/share/SDKs/iPhoneOS.sdk
