@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += neovim
 NEOVIM_VERSION := 0.4.4
-DEB_NEOVIM_V   ?= $(NEOVIM_VERSION)-1
+DEB_NEOVIM_V   ?= $(NEOVIM_VERSION)-2
 
 neovim-setup: setup
 	$(call GITHUB_ARCHIVE,neovim,neovim,$(NEOVIM_VERSION),v$(NEOVIM_VERSION))
