@@ -210,7 +210,7 @@ else ifeq ($(UNAME),FreeBSD)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building on FreeBSD)
 endif # ($(MEMO_QUIET),1)
-TARGET_SYSROOT  ?= $(HOME)/cctools/SDK/iPhoneOS13.2.sdk
+TARGET_SYSROOT  ?= $(HOME)/cctools/SDK/$(BARE_PLATFORM).sdk
 MACOSX_SYSROOT  ?= $(HOME)/cctools/SDK/MacOSX.sdk
 CC      := $(GNU_HOST_TRIPLE)-clang
 CXX     := $(GNU_HOST_TRIPLE)-clang++
