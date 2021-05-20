@@ -12,9 +12,9 @@ golang-setup: setup
 	$(call EXTRACT_TAR,go$(GOLANG_VERSION).src.tar.gz,go,golang)
 	mkdir -p $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)
 	mkdir -p $(BUILD_WORK)/golang/superbin
-	echo -e "#!/bin/sh\nexec $$(which $(CC)) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) \"\$$@\"" > $(BUILD_WORK)/golang/superbin/cc2
-	echo -e "#!/bin/sh\nexec $(CC_FOR_BUILD) \"\$$@\"" > $(BUILD_WORK)/golang/superbin/cc
-	chmod 0755 $(BUILD_WORK)/golang/superbin/cc{,2}
+	echo -e "#!/bin/sh\nexec $$(which $(CC)) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) \"\$$@\"" > $(BUILD_WORK)/golang/superbin/cc
+	echo -e "#!/bin/sh\nexec $(CC_FOR_BUILD) \"\$$@\"" > $(BUILD_WORK)/golang/superbin/clang
+	chmod 0755 $(BUILD_WORK)/golang/superbin/{cc,clang}
 
 ifneq ($(wildcard $(BUILD_WORK)/golang/.build_complete),)
 golang:
@@ -27,8 +27,8 @@ golang: golang-setup
 		GOROOT_FINAL=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V) \
 		GOOS=$(shell echo $(RUST_TARGET) | cut -f3 -d-) \
 		GOARCH=$(shell echo $(MEMO_TARGET) | cut -f2 -d-) \
-		CC="cc" \
-		CC_FOR_TARGET="cc2" \
+		CC="clang" \
+		CC_FOR_TARGET="cc" \
 		./make.bash
 	cp -a $(BUILD_WORK)/golang/* $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)
 	VAR=$$(ls $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg/tool | grep -v $(shell echo $(RUST_TARGET) | cut -f3 -d-)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)); \
