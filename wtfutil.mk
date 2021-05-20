@@ -14,7 +14,11 @@ ifneq ($(wildcard $(BUILD_WORK)/wtfutil/.build_complete),)
 wtfutil:
 	@echo "Using previously built wtfutil."
 else
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 wtfutil: wtfutil-setup
+else
+wtfutil: wtfutil-setup libiosexec
+endif
 	cd $(BUILD_WORK)/wtfutil && \
 		$(DEFAULT_GOLANG_FLAGS) \
 		go build -trimpath \

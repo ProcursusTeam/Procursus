@@ -15,7 +15,11 @@ ifneq ($(wildcard $(BUILD_WORK)/chezmoi/.build_complete),)
 chezmoi:
 	@echo "Using previously built chezmoi."
 else
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 chezmoi: chezmoi-setup
+else
+chezmoi: chezmoi-setup libiosexec
+endif
 	cd $(BUILD_WORK)/chezmoi && go get -d -v .
 	cd $(BUILD_WORK)/chezmoi && \
 		$(DEFAULT_GOLANG_FLAGS) \

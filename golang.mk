@@ -10,9 +10,10 @@ DEB_GOLANG_V   ?= $(GOLANG_VERSION)
 golang-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://golang.org/dl/go$(GOLANG_VERSION).src.tar.gz
 	$(call EXTRACT_TAR,go$(GOLANG_VERSION).src.tar.gz,go,golang)
+	$(call DO_PATCH,golang,golang,-p1)
 	mkdir -p $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)
 	mkdir -p $(BUILD_WORK)/golang/superbin
-	echo -e "#!/bin/sh\nexec $$(which $(CC)) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) \"\$$@\"" > $(BUILD_WORK)/golang/superbin/cc
+	echo -e "#!/bin/sh\nexec $$(which $(CC)) $(shell echo $(CFLAGS) | sed 's/$(OPTIMIZATION_FLAGS)//') \"\$$@\"" > $(BUILD_WORK)/golang/superbin/cc
 	echo -e "#!/bin/sh\nexec $(CC_FOR_BUILD) \"\$$@\"" > $(BUILD_WORK)/golang/superbin/clang
 	chmod 0755 $(BUILD_WORK)/golang/superbin/{cc,clang}
 
@@ -20,7 +21,11 @@ ifneq ($(wildcard $(BUILD_WORK)/golang/.build_complete),)
 golang:
 	@echo "Using previously built golang."
 else
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 golang: golang-setup
+else
+golang: golang-setup libiosexec
+endif
 	export PATH="$(BUILD_WORK)/golang/superbin:$(PATH)"; \
 	cd $(BUILD_WORK)/golang/src && \
 		CGO_ENABLED=1 \
@@ -29,6 +34,11 @@ golang: golang-setup
 		GOARCH=$(shell echo $(MEMO_TARGET) | cut -f2 -d-) \
 		CC="clang" \
 		CC_FOR_TARGET="cc" \
+		CXX_FOR_TARGET="c++" \
+		CGO_CFLAGS="-Os" \
+		CGO_CXXFLAGS="-Os" \
+		CGO_FFLAGS="-Os" \
+		CGO_LDFLAGS="-Os -L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
 		./make.bash
 	cp -a $(BUILD_WORK)/golang/* $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)
 	VAR=$$(ls $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg/tool | grep -v $(shell echo $(RUST_TARGET) | cut -f3 -d-)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)); \
