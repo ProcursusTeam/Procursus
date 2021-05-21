@@ -21,7 +21,7 @@ libdvdnav: libdvdnav-setup libdvdread
 	+$(MAKE) -C $(BUILD_WORK)/libdvdnav install \
 		DESTDIR=$(BUILD_STAGE)/libdvdnav
 	+$(MAKE) -C $(BUILD_WORK)/libdvdnav install \
-		DESTDIR=$(BUILD_WORK)
+		DESTDIR=$(BUILD_BASE)
 
 	touch $(BUILD_WORK)/libdvdnav/.build_complete
 endif
