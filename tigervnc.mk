@@ -14,7 +14,7 @@ MIT-SHM := --enable-mitshm
 endif
 
 tigervnc-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/TigerVNC/tigervnc/archive/refs/tags/v1.11.0.tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/TigerVNC/tigervnc/archive/refs/tags/v$(TIGERVNC_VERSION).tar.gz
 	$(call EXTRACT_TAR,v$(TIGERVNC_VERSION).tar.gz,tigervnc-$(TIGERVNC_VERSION),tigervnc)
 	$(call DO_PATCH,tigervnc,tigervnc,-p1)
 
