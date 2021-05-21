@@ -1,5 +1,5 @@
 Package: xclip
-Version: 0.13
+Version: @DEB_XCLIP_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: libx11-6, libxmu6
