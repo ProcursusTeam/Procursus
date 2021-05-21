@@ -7,40 +7,37 @@ LIBBDPLUS_VERSION := 0.1.2
 DEB_LIBBDPLUS_V   ?= $(LIBBDPLUS_VERSION)
 
 libbdplus-setup: setup
-	wget -q -nc -P$(BUILD_SOURCE) http://download.videolan.org/pub/videolan/libbdplus/$(LIBBDPLUS_VERSION)/libbdplus-$(LIBBDPLUS_VERSION).tar.bz2
+	wget -q -nc -P $(BUILD_SOURCE) http://download.videolan.org/pub/videolan/libbdplus/$(LIBBDPLUS_VERSION)/libbdplus-$(LIBBDPLUS_VERSION).tar.bz2
 	$(call EXTRACT_TAR,libbdplus-$(LIBBDPLUS_VERSION).tar.bz2,libbdplus-$(LIBBDPLUS_VERSION),libbdplus)
+
+# This makes it easier to define dependencies later
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+LIBBDPLUS_DEPS := libgcrypt gnupg libaacs
+LIBBDPLUS_OPTS := --with-libaacs
+else
+LIBBDPLUS_DEPS := libgcrypt gnupg
+LIBBDPLUS_OPTS := --without-libaacs
+endif
 
 ifneq ($(wildcard $(BUILD_WORK)/libbdplus/.build_complete),)
 libbdplus:
 	@echo "Using previously built libbdplus."
-else ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-libbdplus: libgcrypt gnupg libaacs libbdplus-setup
-	cd $(BUILD_WORK)/libbdplus && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS) \
-		--with-libgcrypt-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--with-gpg-error-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--with-libaacs
-	+$(MAKE) -C $(BUILD_WORK)/libbdplus
-	+$(MAKE) -C $(BUILD_WORK)/libbdplus install \
-		DESTDIR=$(BUILD_STAGE)/libbdplus
-	+$(MAKE) -C $(BUILD_WORK)/libbdplus install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libbdplus/.build_complete
 else
-libbdplus: libgcrypt gnupg libbdplus-setup
+libbdplus: libbdplus-setup $(LIBBDPLUS_DEPS)
 	cd $(BUILD_WORK)/libbdplus && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		$(LIBBDPLUS_OPTS) \
 		--with-libgcrypt-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--with-gpg-error-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--without-libaacs
+		--with-gpg-error-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libbdplus
 	+$(MAKE) -C $(BUILD_WORK)/libbdplus install \
 		DESTDIR=$(BUILD_STAGE)/libbdplus
+	# Build this thing twice so it can be detected by other packages
 	+$(MAKE) -C $(BUILD_WORK)/libbdplus install \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libbdplus/.build_complete
-
 endif
+
 libbdplus-package: libbdplus-stage
 	# libbdplus.mk Package Structure
 	rm -rf $(BUILD_DIST)/libbdplus{0,-dev}
