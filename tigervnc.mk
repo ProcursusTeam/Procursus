@@ -7,6 +7,12 @@ TIGERVNC_VERSION    := 1.11.0
 XORG_VERSION        := 120
 DEB_TIGERVNC_V      ?= $(TIGERVNC_VERSION)
 
+ifeq ($(MEMO_TARGET),iphoneos-arm64)
+MIT-SHM := --disable-mitshm
+else
+MIT-SHM := --enable-mitshm
+endif
+
 tigervnc-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/TigerVNC/tigervnc/archive/refs/tags/v1.11.0.tar.gz
 	$(call EXTRACT_TAR,v$(TIGERVNC_VERSION).tar.gz,tigervnc-$(TIGERVNC_VERSION),tigervnc)
@@ -20,7 +26,7 @@ tigervnc: tigervnc-setup libmd libx11 libxau libxmu xorgproto libpixman gnutls l
 	cd $(BUILD_WORK)/tigervnc && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DBUILD_VIEWER=FALSE \
-		-DUSE_JAVA=TRUE \
+		-DUSE_JAVA=FALSE \
 		-DGETTEXT_MSGFMT_EXECUTABLE=$(shell which msgfmt)
 	+$(MAKE) -i -C $(BUILD_WORK)/tigervnc
 	+$(MAKE) -i -C $(BUILD_WORK)/tigervnc install \
@@ -36,6 +42,7 @@ tigervnc: tigervnc-setup libmd libx11 libxau libxmu xorgproto libpixman gnutls l
 	export ACLOCAL='aclocal -I $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal' && \
 	export gcc=cc && autoreconf -fiv && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		$(MIT-SHM) \
 		--with-pic \
 		--without-dtrace \
 		--disable-static \
@@ -74,18 +81,41 @@ endif
 
 tigervnc-package: tigervnc-stage
 # tigervnc.mk Package Structure
-	rm -rf $(BUILD_DIST)/tigervnc
+	rm -rf $(BUILD_DIST)/tigervnc-{standalone-server,xorg-extension,scraping-server,common}
+	mkdir -p $(BUILD_DIST)/tigervnc-standalone-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	mkdir -p $(BUILD_DIST)/tigervnc-common/{$(MEMO_PREFIX)/etc, $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin}
+	mkdir -p $(BUILD_DIST)/tigervnc-scraping-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{libexec,bin}
+	mkdir -p $(BUILD_DIST)/tigervnc-xorg-extension/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg/modules/extensions
 	
-# tigervnc.mk Prep tigervnc
-	cp -a $(BUILD_STAGE)/tigervnc $(BUILD_DIST)
+# tigervnc.mk Prep tigervnc-standalone-server
+	rm -rf $(BUILD_STAGE)/tigervnc/usr/lib/xorg/protocol.txt
+	rm -rf $(BUILD_STAGE)/tigervnc/usr/share/man/man1/Xserver.1
+	cp -a $(BUILD_STAGE)/tigervnc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/Xvnc $(BUILD_DIST)/tigervnc-standalone-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+
+# tigervnc.mk Prep tigervnc-common
+	cp -a $(BUILD_STAGE)/tigervnc/$(MEMO_PREFIX)/etc $(BUILD_DIST)/tigervnc-common$(MEMO_PREFIX)/etc
+	cp -a $(BUILD_STAGE)/tigervnc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{vncconfig,vncpasswd} $(BUILD_DIST)/tigervnc-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+
+# tigervnc.mk Prep tigervnc-xorg-extension
+	cp -a $(BUILD_STAGE)/tigervnc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg/modules/extensions/libvnc.so $(BUILD_DIST)/tigervnc-xorg-extension/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg/modules/extensions
+
+# tigervnc.mk Prep tigervnc-standalone-server
+	cp -a $(BUILD_STAGE)/tigervnc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/x0vncserver $(BUILD_DIST)tigervnc-standalone-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
+	cp -a $(BUILD_STAGE)/tigervnc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec $(BUILD_DIST)tigervnc-standalone-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
 
 # tigervnc.mk Sign
-	$(call SIGN,tigervnc,general.xml)
+	$(call SIGN,tigervnc-standalone-server,general.xml)
+	$(call SIGN,tigervnc-xorg-extension,general.xml)
+	$(call SIGN,tigervnc-scraping-server,general.xml)
+	$(call SIGN,tigervnc-common,general.xml)
 	
 # tigervnc.mk Make .debs
-	$(call PACK,tigervnc,DEB_TIGERVNC_V)
+	$(call PACK,tigervnc-standalone-server,DEB_TIGERVNC_V)
+	$(call PACK,tigervnc-xorg-extension,DEB_TIGERVNC_V)
+	$(call PACK,tigervnc-scraping-server,DEB_TIGERVNC_V)
+	$(call PACK,tigervnc-common,DEB_TIGERVNC_V)
 	
 # tigervnc.mk Build cleanup
-	rm -rf $(BUILD_DIST)/tigervnc
+	rm -rf $(BUILD_DIST)/tigervnc-{standalone-server,xorg-extension,scraping-server,common}
 
 .PHONY: tigervnc tigervnc-package
