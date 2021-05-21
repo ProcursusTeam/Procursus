@@ -2,7 +2,7 @@ Package: tigervnc-standalone-server
 Version: @DEB_TIGERVNC_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: xauth, libgl1, libgeneral0, libmd0, libgnutls30, libjpeg62-turbo, libpam2, libpixman-1-0, libx11-6, libxau6, libxdmcp6, libxdamage1, libxfont2, perl, xkbcomp, xkeyboard-config, tigervnc-common
+Depends: xauth, libgl1, libgeneral0, libmd0, libgnutls30, libjpeg62-turbo, libpam2, libpixman-1-0, libx11-6, libxau6, libxdmcp6, libxdamage1, libxfont2, xkbcomp, xkeyboard-config, tigervnc-common, tigervnc-xorg-extension
 Section: X11
 Provides: vnc-server, xserver
 Description: Standalone virtual network computing server
