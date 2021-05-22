@@ -15,7 +15,11 @@ ifneq ($(wildcard $(BUILD_WORK)/rclone/.build_complete),)
 rclone:
 	@echo "Using previously built rclone."
 else
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 rclone: rclone-setup
+else
+rclone: rclone-setup libiosexec
+endif
 	cd $(BUILD_WORK)/rclone && \
 		$(DEFAULT_GOLANG_FLAGS) \
 		go build \
