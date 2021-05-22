@@ -1,0 +1,21 @@
+Package: docbook-xsl
+Version: @DEB_DOCBOOK-XSL_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Recommends: docbook-xml
+Depends: libxml2-utils
+Section: XML
+Priority: optional
+Homepage: https://github.com/docbook/wiki/wiki/DocBookXslStylesheets
+Description: stylesheets for processing DocBook XML to various output formats
+ These are modular XSL stylesheets for processing documents composed
+ with the DocBook XML DTD and its derivatives ("Simplified" DocBook
+ XML, JRefEntry DTD, etc.).
+ .
+ The stylesheets provide XSLT transformations for (X)HTML, WordML, HTML Help,
+ JavaHelp, Man page (nroff), Website, Eclipse Platform Help file and XSL
+ Formatting Object (XSL-FO) output. The latter can be further processed to
+ a number of print formats using FOP or TeX-based tools.
+ .
+ The stylesheets are modular in the sense that you can extend and, to some
+ extent, customize them. The documentation is included in a separate package.

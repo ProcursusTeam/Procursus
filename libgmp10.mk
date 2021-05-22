@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += libgmp10
 GMP_VERSION   := 6.2.1
-DEB_GMP_V     ?= $(GMP_VERSION)-2
+DEB_GMP_V     ?= $(GMP_VERSION)-3
 
 libgmp10-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://gmplib.org/download/gmp/gmp-$(GMP_VERSION).tar.xz{,.sig}
@@ -16,9 +16,12 @@ libgmp10:
 	@echo "Using previously built libgmp10."
 else
 libgmp10: libgmp10-setup
+#	Disable assembly because of
+#	https://github.com/ProcursusTeam/Procursus/issues/750
 	cd $(BUILD_WORK)/libgmp10 && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-cxx \
+		--disable-assembly \
 		CC_FOR_BUILD='$(shell which cc) $(BUILD_CFLAGS)' \
 		CPP_FOR_BUILD='$(shell which cc) -E $(BUILD_CPPFLAGS)'
 	+$(MAKE) -C $(BUILD_WORK)/libgmp10
