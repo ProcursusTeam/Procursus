@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+
 SUBPROJECTS   += top
 TOP_VERSION   := 125
 DEB_TOP_V     ?= $(TOP_VERSION)
@@ -52,3 +54,5 @@ top-package: top-stage
 	rm -rf $(BUILD_DIST)/top
 
 .PHONY: top top-package
+
+endif

@@ -1,0 +1,16 @@
+Package: libxcb-render-util0
+Version: @DEB_XCB-UTIL-RENDERUTIL_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libxcb-render0, libxcb1
+Section: Libraries
+Description: utility libraries for X C Binding -- render-util
+ This package contains the library files needed to run software using
+ libxcb-render-util, providing convenience functions for the Render extension.
+ .
+ The xcb-util module provides a number of libraries which sit on top of
+ libxcb, the core X protocol library, and some of the extension
+ libraries. These experimental libraries provide convenience functions
+ and interfaces which make the raw X protocol more usable. Some of the
+ libraries also provide client-side code which is not strictly part of
+ the X protocol but which have traditionally been provided by Xlib.

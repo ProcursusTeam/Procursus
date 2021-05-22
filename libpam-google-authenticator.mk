@@ -8,10 +8,8 @@ LIBPAM-GOOGLE-AUTHENTICATOR_VERSION := 0~20210222.$(shell echo $(LIBPAM-GOOGLE-A
 DEB_LIBPAM-GOOGLE-AUTHENTICATOR_V   := $(LIBPAM-GOOGLE-AUTHENTICATOR_VERSION)
 
 libpam-google-authenticator-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/libpam-google-authenticator-$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/libpam-google-authenticator-$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT).tar.gz \
-			https://github.com/google/google-authenticator-libpam/archive/$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT).tar.gz
-	$(call EXTRACT_TAR,libpam-google-authenticator-$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT).tar.gz,google-authenticator-libpam-$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT),libpam-google-authenticator)
+	$(call GITHUB_ARCHIVE,google,google-authenticator-libpam,$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT),$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT))
+	$(call EXTRACT_TAR,google-authenticator-libpam-$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT).tar.gz,google-authenticator-libpam-$(LIBPAM-GOOGLE-AUTHENTICATOR_COMMIT),libpam-google-authenticator)
 
 ifneq ($(wildcard $(BUILD_WORK)/libpam-google-authenticator/.build_complete),)
 libpam-google-authenticator:
@@ -48,4 +46,4 @@ libpam-google-authenticator-package: libpam-google-authenticator-stage
 	rm -rf $(BUILD_DIST)/libpam-google-authenticator
 
 .PHONY: libpam-google-authenticator libpam-google-authenticator-package
-	
+

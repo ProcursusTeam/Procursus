@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += rclone
-RCLONE_VERSION := 1.53.3
+RCLONE_VERSION := 1.55.0
 DEB_RCLONE_V   ?= $(RCLONE_VERSION)
 
 rclone-setup: setup
@@ -11,22 +11,17 @@ rclone-setup: setup
 	$(call EXTRACT_TAR,rclone-$(RCLONE_VERSION).tar.gz,rclone-$(RCLONE_VERSION),rclone)
 	mkdir -p $(BUILD_STAGE)/rclone/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 
-ifneq ($(MEMO_ARCH),arm64)
-rclone:
-	@echo "Unsupported target $(MEMO_TARGET)"
-else ifneq ($(wildcard $(BUILD_WORK)/rclone/.build_complete),)
+ifneq ($(wildcard $(BUILD_WORK)/rclone/.build_complete),)
 rclone:
 	@echo "Using previously built rclone."
 else
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 rclone: rclone-setup
+else
+rclone: rclone-setup libiosexec
+endif
 	cd $(BUILD_WORK)/rclone && \
-		GOARCH=arm64 \
-		GOOS=darwin \
-		CGO_CFLAGS="$(CFLAGS)" \
-		CGO_CPPFLAGS="$(CPPFLAGS)" \
-		CGO_LDFLAGS="$(LDFLAGS)" \
-		CGO_ENABLED=1 \
-		CC="$(CC)" \
+		$(DEFAULT_GOLANG_FLAGS) \
 		go build \
 			--ldflags "-s -X github.com/rclone/rclone/fs.Version=$(RCLONE_VERSION)"
 	cp -a $(BUILD_WORK)/rclone/rclone $(BUILD_STAGE)/rclone/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin

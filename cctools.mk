@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+
 #SUBPROJECTS    += cctools
 CCTOOLS_VERSION := 949.0.1
 LD64_VERSION    := 530
@@ -56,7 +58,7 @@ cctools-package: cctools-stage
 
 	# cctools.mk Sign
 	$(call SIGN,cctools,general.xml)
-	$(call SIGN,ld64,general.xml)	
+	$(call SIGN,ld64,general.xml)
 
 	# cctools.mk Make .debs
 	$(call PACK,cctools,DEB_CCTOOLS_V)
@@ -66,3 +68,5 @@ cctools-package: cctools-stage
 	rm -rf $(BUILD_DIST)/{cctools,ld64}
 
 .PHONY: cctools cctools-package
+
+endif

@@ -8,17 +8,17 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += zsh
 endif # ($(MEMO_TARGET),darwin-\*)
 ZSH_VERSION   := 5.8
-DEB_ZSH_V     ?= $(ZSH_VERSION)-4
+DEB_ZSH_V     ?= $(ZSH_VERSION)-5
 
 zsh-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.zsh.org/pub/zsh-$(ZSH_VERSION).tar.xz{,.asc}
 	$(call EXTRACT_TAR,zsh-$(ZSH_VERSION).tar.xz,zsh-$(ZSH_VERSION),zsh)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(SED) -i 's/|| eno == ENOENT)/|| eno == ENOENT || eno == EPERM)/' $(BUILD_WORK)/zsh/Src/exec.c
-	$(SED) -i 's/(eno == ENOEXEC)/(eno == ENOEXEC || eno == EPERM)/' $(BUILD_WORK)/zsh/Src/exec.c
+	$(call DO_PATCH,zsh-ios,zsh,-p1)
 ZSH_CONFIGURE_ARGS := --enable-etcdir=$(MEMO_PREFIX)/etc \
 		zsh_cv_path_utmpx=/var/run/utmpx \
-		zsh_cv_path_utmp=no
+		zsh_cv_path_utmp=no \
+		LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -liosexec"
 else
 ZSH_CONFIGURE_ARGS := --enable-etcdir=$(MEMO_PREFIX)/etc
 endif
@@ -27,7 +27,11 @@ ifneq ($(wildcard $(BUILD_WORK)/zsh/.build_complete),)
 zsh:
 	@echo "Using previously built zsh."
 else
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 zsh: zsh-setup pcre ncurses
+else
+zsh: zsh-setup pcre ncurses libiosexec
+endif
 	## So many flags are needed because zsh's configure script sucks! I also suck but it's cool.
 	cd $(BUILD_WORK)/zsh && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \

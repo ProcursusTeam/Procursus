@@ -3,14 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS  += dpkg
-DPKG_VERSION   := 1.20.7.1
-DEB_DPKG_V     ?= $(DPKG_VERSION)
-
-ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-DPKG_TAR := gtar
-else
-DPKG_TAR := tar
-endif
+DPKG_VERSION   := 1.20.9
+DEB_DPKG_V     ?= $(DPKG_VERSION)-1
 
 dpkg-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_$(DPKG_VERSION).tar.xz
@@ -18,18 +12,23 @@ dpkg-setup: setup
 	$(call DO_PATCH,dpkg,dpkg,-p1)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call DO_PATCH,dpkg-ios,dpkg,-p1)
+
+DPKG_LIBS := LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -liosexec"
 else
 	$(call DO_PATCH,dpkg-macos,dpkg,-p1)
+
+DPKG_LIBS :=
 endif
 
 ifneq ($(wildcard $(BUILD_WORK)/dpkg/.build_complete),)
 dpkg:
 	@echo "Using previously built dpkg."
 else
-dpkg: dpkg-setup gettext xz zstd
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(SED) -i '/base-bsd-darwin/a base-bsd-darwin-arm64		$(DEB_ARCH) \
-base-bsd-darwin-arm64e		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+dpkg: dpkg-setup gettext xz zstd libmd
+else
+dpkg: dpkg-setup gettext xz zstd libmd libiosexec
+	$(SED) -i '/base-bsd-darwin/a base-bsd-darwin-arm64		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
 endif
 	cd $(BUILD_WORK)/dpkg && ./autogen
 	cd $(BUILD_WORK)/dpkg && ./configure -C \
@@ -42,8 +41,9 @@ endif
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
 		PERL_LIBDIR='$$(prefix)/share/perl5' \
 		PERL="$(shell which perl)" \
-		TAR=$(DPKG_TAR) \
-		LZMA_LIBS='$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/liblzma.dylib'
+		TAR=$(GNU_PREFIX)tar \
+		LZMA_LIBS='$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/liblzma.dylib' \
+		$(DPKG_LIBS)
 	+$(MAKE) -C $(BUILD_WORK)/dpkg \
 		PERL="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl"
 	+$(MAKE) -C $(BUILD_WORK)/dpkg install \
@@ -68,6 +68,9 @@ dpkg-package: dpkg-stage
 	rm -rf $(BUILD_DIST)/dpkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/{,??}/man{2..8}
 	rm -f $(BUILD_DIST)/dpkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale/*/LC_MESSAGES/!(dpkg.mo)
 	cp -a $(BUILD_STAGE)/dpkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/dpkg/{{abi,cpu,os,tuple}table,sh} $(BUILD_DIST)/dpkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/dpkg
+	mkdir -p $(BUILD_DIST)/dpkg/$(MEMO_PREFIX)/etc/dpkg/origins/
+	echo -e "Vendor: Procursus\nVendor-URL: https://github.com/ProcursusTeam/Procursus/\nBugs: mailto://me@diatrus.com" > $(BUILD_DIST)/dpkg/$(MEMO_PREFIX)/etc/dpkg/origins/procursus
+	$(LN) -s procursus $(BUILD_DIST)/dpkg/$(MEMO_PREFIX)/etc/dpkg/origins/default
 
 	# dpkg.mk Prep dpkg-dev
 	cp -a $(BUILD_STAGE)/dpkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dpkg-{architecture,buildflags,buildpackage,checkbuilddeps,distaddfile,genbuildinfo,genchanges,gencontrol,gensymbols,mergechangelogs,name,parsechangelog,scanpackages,scansources,shlibdeps,source,vendor} $(BUILD_DIST)/dpkg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin

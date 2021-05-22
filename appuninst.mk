@@ -7,7 +7,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 SUBPROJECTS       += appuninst
 APPUNINST_VERSION := 1.0.0
 DEB_APPUNINST_V   ?= $(APPUNINST_VERSION)
-APPUNINST_LIBS    := -framework Foundation -framework CoreServices
+APPUNINST_LIBS		:= -framework Foundation -framework CoreServices
 
 appuninst-setup: setup
 	$(call GITHUB_ARCHIVE,quiprr,appuninst,$(APPUNINST_VERSION),v$(APPUNINST_VERSION))
@@ -18,7 +18,7 @@ ifneq ($(wildcard $(BUILD_WORK)/appuninst/.build_complete),)
 appuninst:
 	@echo "Using previously built appuninst."
 else
-appuninst: appuninst-setup 
+appuninst: appuninst-setup
 	$(CC) $(CFLAGS) -fobjc-arc \
 		$(BUILD_WORK)/appuninst/Sources/appuninst.m \
 		-o $(BUILD_STAGE)/appuninst/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/appuninst \

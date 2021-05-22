@@ -31,12 +31,11 @@ bash-completion-package: bash-completion-stage
 	# bash-completion.mk Prep bash-completion
 	cp -a $(BUILD_STAGE)/bash-completion/$(MEMO_PREFIX)/etc $(BUILD_DIST)/bash-completion/$(MEMO_PREFIX)
 	cp -a $(BUILD_STAGE)/bash-completion/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/bash-completion/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# bash-completion.mk Make .debs
 	$(call PACK,bash-completion,DEB_BASH-COMPLETION_V)
-	
+
 	# bash-completion.mk Build cleanup
 	rm -rf $(BUILD_DIST)/bash-completion
 
 .PHONY: bash-completion bash-completion-package
-

@@ -1,0 +1,8 @@
+Package: tmux
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_TMUX_V@
+Depends: libevent-2.1-7, libutf8proc2, libncursesw6
+Section: Terminal_Support
+Priority: important
+Description: multiplexes a terminal into many

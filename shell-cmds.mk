@@ -25,7 +25,7 @@ shell-cmds: shell-cmds-setup openpam
 	cp -a su/su.1 $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
 	cp -a $(BUILD_MISC)/pam/su $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)/etc/pam.d; \
 	for bin in killall renice script time which getopt what; do \
-    	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -save-temps; \
+		$(CC) $(CFLAGS) -o $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -save-temps; \
 		cp -a $$bin/$$bin.1 $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 2>/dev/null; \
 		cp -a $$bin/$$bin.8 $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8 2>/dev/null; \
 	done
@@ -35,7 +35,7 @@ endif
 shell-cmds-package: shell-cmds-stage
 	# shell-cmds.mk Package Structure
 	rm -rf $(BUILD_DIST)/shell-cmds
-	
+
 	# shell-cmds.mk Prep shell-cmds
 	cp -a $(BUILD_STAGE)/shell-cmds $(BUILD_DIST)
 ifneq ($(MEMO_SUB_PREFIX),)
@@ -54,7 +54,7 @@ endif
 
 	# shell-cmds.mk Make .debs
 	$(call PACK,shell-cmds,DEB_SHELL-CMDS_V)
-	
+
 	# shell-cmds.mk Build cleanup
 	rm -rf $(BUILD_DIST)/shell-cmds
 

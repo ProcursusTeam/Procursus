@@ -7,7 +7,7 @@ UTILMACROS_VERSION := 1.19.2
 DEB_UTILMACROS_V   ?= $(UTILMACROS_VERSION)
 
 util-macros-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://xorg.freedesktop.org/releases/individual/util/util-macros-$(UTILMACROS_VERSION).tar.bz2{,.sig}   
+	wget -q -nc -P $(BUILD_SOURCE) http://xorg.freedesktop.org/releases/individual/util/util-macros-$(UTILMACROS_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,util-macros-$(UTILMACROS_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,util-macros-$(UTILMACROS_VERSION).tar.bz2,util-macros-$(UTILMACROS_VERSION),util-macros)
 

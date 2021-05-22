@@ -7,7 +7,7 @@ LZFSE_VERSION := 1.0
 DEB_LZFSE_V   ?= $(LZFSE_VERSION)-1
 
 lzfse-setup: setup
-	$(call GITHUB_ARCHIVE,lzfse,lzfse,$(LZFSE_VERSION),$(LZFSE_VERSION))
+	$(call GITHUB_ARCHIVE,lzfse,lzfse,$(LZFSE_VERSION),lzfse-$(LZFSE_VERSION),lzfse)
 	$(call EXTRACT_TAR,lzfse-$(LZFSE_VERSION).tar.gz,lzfse-lzfse-$(LZFSE_VERSION),lzfse)
 
 ifneq ($(wildcard $(BUILD_WORK)/lzfse/.build_complete),)

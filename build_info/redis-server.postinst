@@ -8,9 +8,9 @@ CONFFILE="@MEMO_PREFIX@/etc/redis/redis.conf"
 
 if [ "$1" = "configure" ]
 then
-	if ! dpkg-statoverride --list ${CONFFILE} >/dev/null 2>&1
+	if ! @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/dpkg-statoverride --list ${CONFFILE} >/dev/null 2>&1
 	then
-		dpkg-statoverride --update --add ${USER} ${GROUP} 640 ${CONFFILE}
+		@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/dpkg-statoverride --update --add ${USER} ${GROUP} 640 ${CONFFILE}
 	fi
 fi
 
@@ -18,7 +18,7 @@ fi
 
 if [ "$1" = "configure" ]
 then
-	@GNU_PREFIX@find @MEMO_PREFIX@/etc/redis -maxdepth 1 -type d -name 'redis-server.*.d' -empty -delete
+	@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/@GNU_PREFIX@find @MEMO_PREFIX@/etc/redis -maxdepth 1 -type d -name 'redis-server.*.d' -empty -delete
 fi
 
 exit 0

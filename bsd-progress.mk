@@ -8,9 +8,7 @@ BSD_PROGRESS_COMMIT  := a9bda63998e2f358b07a50a8dd4ed48100f9a9ee
 DEB_BSD_PROGRESS_V   ?= $(BSD_PROGRESS_VERSION)
 
 bsd-progress-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/bsd-progress-$(BSD_PROGRESS_VERSION).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/bsd-progress-$(BSD_PROGRESS_VERSION).tar.gz \
-			https://github.com/CRKatri/bsd-progress/archive/$(BSD_PROGRESS_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,CRKatri,bsd-progress,$(BSD_PROGRESS_VERSION),$(BSD_PROGRESS_COMMIT))
 	$(call EXTRACT_TAR,bsd-progress-$(BSD_PROGRESS_VERSION).tar.gz,bsd-progress-$(BSD_PROGRESS_COMMIT),bsd-progress)
 
 ifneq ($(wildcard $(BUILD_WORK)/bsd-progress/.build_complete),)
@@ -29,16 +27,16 @@ endif
 bsd-progress-package: bsd-progress-stage
 	# bsd-progress.mk Package Structure
 	rm -rf $(BUILD_DIST)/bsd-progress
-	
+
 	# bsd-progress.mk Prep bsd-progress
 	cp -a $(BUILD_STAGE)/bsd-progress $(BUILD_DIST)
-	
+
 	# bsd-progress.mk Sign
 	$(call SIGN,bsd-progress,general.xml)
-	
+
 	# bsd-progress.mk Make .debs
 	$(call PACK,bsd-progress,DEB_BSD_PROGRESS_V)
-	
+
 	# bsd-progress.mk Build cleanup
 	rm -rf $(BUILD_DIST)/bsd-progress
 

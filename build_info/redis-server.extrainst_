@@ -1,12 +1,18 @@
 #!/bin/sh
 
-if [[ $1 == upgrade ]]; then
-    /bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/io.redis.redis-server.plist
-    /bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/io.redis.redis-server.plist
-fi
+set -e 
 
-if [[ $1 == install ]]; then
+case "$1" in
+    (install)
     /bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/io.redis.redis-server.plist
-fi
+    ;;
+	(upgrade)
+	/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/io.redis.redis-server.plist
+    /bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/io.redis.redis-server.plist
+	;;
+	(*)
+	exit 0
+	;;
+esac
 
 exit 0
