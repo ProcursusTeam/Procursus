@@ -436,8 +436,7 @@ EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 		mkdir -p $(3); \
 		$(CP) -af $(2)/. $(3); \
 		rm -rf $(2); \
-	fi; \
-	find $(BUILD_BASE) -name '*.la' -type f -delete
+	fi
 
 DO_PATCH    = cd $(BUILD_PATCH)/$(1); \
 	for PATCHFILE in *; do \
