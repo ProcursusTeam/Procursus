@@ -26,7 +26,6 @@ endif
 xclip-package: xclip-stage
 	# xclip.mk Package Structure
 	rm -rf $(BUILD_DIST)/xclip
-	mkdir -p $(BUILD_DIST)/xclip
 
 	# xclip.mk Prep xclip
 	cp -a $(BUILD_STAGE)/xclip $(BUILD_DIST)
