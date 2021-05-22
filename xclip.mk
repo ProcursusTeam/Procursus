@@ -16,10 +16,12 @@ xclip:
 	@echo "Using previously built xclip."
 else
 xclip: xclip-setup libxmu
-	cd $(BUILD_WORK)/xclip && autoreconf -fi && ./configure \
-			$(DEFAULT_CONFIGURE_FLAGS)
+	cd $(BUILD_WORK)/xclip && autoreconf -fi
+	cd $(BUILD_WORK)/xclip && ./configure \
+		$(DEFAULT_CONFIGURE_FLAGS)
 	$(MAKE) -C $(BUILD_WORK)/xclip
-	$(MAKE) -C $(BUILD_WORK)/xclip DESTDIR=$(BUILD_STAGE)/xclip install
+	$(MAKE) -C $(BUILD_WORK)/xclip install \
+		DESTDIR=$(BUILD_STAGE)/xclip
 	touch $(BUILD_WORK)/xclip/.build_complete
 endif
 
