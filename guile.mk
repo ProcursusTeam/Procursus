@@ -17,7 +17,8 @@ guile:
 else
 guile: guile-setup libgmp10 libunistring libgc libffi readline gettext libtool
 	cd $(BUILD_WORK)/guile && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		--enable-mini-gmp
 	+$(MAKE) -C $(BUILD_WORK)/guile
 	+$(MAKE) -C $(BUILD_WORK)/guile install \
 		DESTDIR=$(BUILD_STAGE)/guile
