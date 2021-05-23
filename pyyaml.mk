@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += pyyaml
-PYYAML_VERSION := 5.3.1
+PYYAML_VERSION := 5.4.1.1
 DEB_PYYAML_V   ?= $(PYYAML_VERSION)
 
 pyyaml-setup: setup
@@ -14,15 +14,15 @@ ifneq ($(wildcard $(BUILD_WORK)/pyyaml/.build_complete),)
 pyyaml:
 	@echo "Using previously built pyyaml."
 else
-pyyaml: pyyaml-setup libyaml
-	cd $(BUILD_WORK)/pyyaml && unset MACOSX_DEPLOYMENT_TARGET && python$(PYTHON3_MAJOR_V) ./setup.py \
+pyyaml: pyyaml-setup libyaml python3
+	cd $(BUILD_WORK)/pyyaml && unset MACOSX_DEPLOYMENT_TARGET && CFLAGS="$(CFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/python$(PYTHON3_MAJOR_V)" python$(PYTHON3_MAJOR_V) ./setup.py \
 		--with-libyaml \
 		install \
-		--prefix="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		--root="$(BUILD_STAGE)/pyyaml"
 	rm -rf $(BUILD_STAGE)/pyyaml/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/site-packages/yaml/__pycache__
-	mv $(BUILD_STAGE)/pyyaml/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/site-packages/PyYAML-5.3.1-py$(PYTHON3_MAJOR_V).egg-info \
-		$(BUILD_STAGE)/pyyaml/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/site-packages/PyYAML-5.3.1.egg-info
+	mv $(BUILD_STAGE)/pyyaml/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/site-packages/PyYAML-5.4.1-py$(PYTHON3_MAJOR_V).egg-info \
+		$(BUILD_STAGE)/pyyaml/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/site-packages/PyYAML-5.4.1.egg-info
 	touch $(BUILD_WORK)/pyyaml/.build_complete
 endif
 pyyaml-package: pyyaml-stage
