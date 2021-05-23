@@ -7,10 +7,10 @@ TIGERVNC_VERSION    := 1.11.0
 XORG_VERSION        := 120
 DEB_TIGERVNC_V      ?= $(TIGERVNC_VERSION)
 
-ifeq ($(MEMO_TARGET),iphoneos-arm64)
-MIT-SHM := --disable-mitshm
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+TIGERVNC_CONFIGURE_FLAGS := --disable-mitshm
 else
-MIT-SHM := --enable-mitshm
+TIGERVNC_CONFIGURE_FLAGS := --enable-mitshm
 endif
 
 tigervnc-setup: setup
@@ -22,7 +22,11 @@ ifneq ($(wildcard $(BUILD_WORK)/tigervnc/.build_complete),)
 tigervnc:
 	@echo "Using previously built tigervnc."
 else
-tigervnc: tigervnc-setup libmd libx11 libxau libxmu xorgproto libpixman gnutls libjpeg-turbo openpam libxdamage libxfixes libxtst libxrandr libxfont2 mesa libgeneral libxdmcp libxdamage
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+tigervnc: tigervnc-setup libmd libx11 libxau libxmu xorgproto libpixman gnutls libjpeg-turbo libxdamage libxfixes libxtst libxrandr libxfont2 mesa libgeneral libxdmcp libxdamage
+else
+tigervnc: tigervnc-setup libmd libx11 libxau libxmu xorgproto libpixman gnutls libjpeg-turbo libxdamage libxfixes libxtst libxrandr libxfont2 mesa libgeneral libxdmcp libxdamage openpam
+endif
 	cd $(BUILD_WORK)/tigervnc && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DBUILD_VIEWER=FALSE \
@@ -42,7 +46,6 @@ tigervnc: tigervnc-setup libmd libx11 libxau libxmu xorgproto libpixman gnutls l
 	export ACLOCAL='aclocal -I $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal' && \
 	export gcc=cc && autoreconf -fiv && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		$(MIT-SHM) \
 		--with-pic \
 		--without-dtrace \
 		--disable-static \
@@ -69,6 +72,7 @@ tigervnc: tigervnc-setup libmd libx11 libxau libxmu xorgproto libpixman gnutls l
 		--with-xkb-output=$(MEMO_PREFIX)/var/lib/xkb \
 		--with-xkb-bin-directory=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
 		--with-serverconfig-path=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg \
+		$(TIGERVNC_CONFIGURE_FLAGS) \
 		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pixman-1" \
 		LIBS=-lz
 	+cd $(BUILD_WORK)/tigervnc/unix/xserver && $(MAKE) TIGERVNC_SRCDIR=$(BUILD_WORK)/tigervnc
