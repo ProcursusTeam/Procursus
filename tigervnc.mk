@@ -87,7 +87,7 @@ tigervnc-package: tigervnc-stage
 # tigervnc.mk Package Structure
 	rm -rf $(BUILD_DIST)/tigervnc-{standalone-server,xorg-extension,scraping-server,common}
 	mkdir -p $(BUILD_DIST)/tigervnc-standalone-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	mkdir -p $(BUILD_DIST)/tigervnc-common/{$(MEMO_PREFIX)/etc, $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin}
+	mkdir -p $(BUILD_DIST)/tigervnc-common/{$(MEMO_PREFIX)/etc,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin}
 	mkdir -p $(BUILD_DIST)/tigervnc-scraping-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{libexec,bin}
 	mkdir -p $(BUILD_DIST)/tigervnc-xorg-extension/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg/modules/extensions
 	
