@@ -21,14 +21,18 @@ meson: meson-setup
 		--root="$(BUILD_STAGE)/meson"
 	# Do some pre-preparation stuff
 	mkdir -p $(BUILD_STAGE)/meson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3/
-	rm -rf $(BUILD_STAGE)/meson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/site-packages/mesonbuild/__pycache__
-	mv $(BUILD_STAGE)/meson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/site-packages \
+	find $(BUILD_STAGE)/meson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3.*/site-packages -name __pycache__ -prune -exec rm -rf {} \;
+	mv $(BUILD_STAGE)/meson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3.*/site-packages \
 		$(BUILD_STAGE)/meson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3/dist-packages
-	rm -rf $(BUILD_STAGE)/meson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)
+	rm -rf $(BUILD_STAGE)/meson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3.*
+	$(SED) -i "s|#!.*|#!$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/meson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/meson
 	touch $(BUILD_WORK)/meson/.build_complete
 endif
 
 meson-package: meson-stage
+	# meson.mk Build Cleanup
+	rm -rf $(BUILD_DIST)/meson
+
 	# meson.mk Package Structure
 	cp -a $(BUILD_STAGE)/meson $(BUILD_DIST)
 

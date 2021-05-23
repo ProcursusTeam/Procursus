@@ -1,9 +1,9 @@
 Package: meson
 Version: @DEB_MESON_V@
-Architecture: @DEB_ARCH@
+Architecture: all
 Maintainer: @DEB_MAINTAINER@
 Depends: python3, ninja
-Section: Utilities
+Section: Development
 Priority: optional
 Homepage: https://www.mesonbuild.com/
 Description: The Meson Build System.
