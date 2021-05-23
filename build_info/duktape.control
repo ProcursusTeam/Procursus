@@ -1,0 +1,34 @@
+Package: duktape
+Version: @DEB_DUKTAPE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: interpreters
+Priority: optional
+Homepage: https://duktape.org
+Description: embeddable Javascript engine
+ Duktape is an embeddable Javascript engine, with a focus on portability
+ and compact footprint.
+ .
+ Duktape is easy to integrate into a C/C++ project: add duktape.c, duktape.h,
+ and duk_config.h to your build, and use the Duktape API to call Ecmascript
+ functions from C code and vice versa.
+ .
+ The main features are
+    - Embeddable, portable, compact: can run on platforms with
+      256kB flash and 64kB system RAM
+    - Ecmascript E5/E5.1 compliant, some features borrowed from
+      Ecmascript E6
+    - Khronos/ES6 TypedArray and Node.js Buffer bindings
+    - Built-in debugger
+    - Built-in regular expression engine
+    - Built-in Unicode support
+    - Minimal platform dependencies
+    - Combined reference counting and mark-and-sweep garbage
+      collection with finalization
+    - Custom features like coroutines, built-in logging framework,
+      and built-in CommonJS-based module loading framework
+    - Property virtualization using a subset of Ecmascript E6 Proxy
+      object
+    - Bytecode dump/load for caching compiled functions
+ .
+ This package contains a commandline duk interpreter

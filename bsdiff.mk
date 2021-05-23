@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS 	 += bsdiff
+SUBPROJECTS    += bsdiff
 BSDIFF_VERSION := 4.3
 DEB_BSDIFF_V   ?= $(BSDIFF_VERSION)
 
@@ -21,8 +21,7 @@ bsdiff: bsdiff-setup
 	mkdir -p $(BUILD_STAGE)/bsdiff/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 
 	+$(MAKE) -C $(BUILD_WORK)/bsdiff install \
-		PREFIX="$(BUILD_STAGE)/bsdiff/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
-		INSTALL=install
+		PREFIX="$(BUILD_STAGE)/bsdiff/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
 	touch $(BUILD_WORK)/bsdiff/.build_complete
 endif
 

@@ -1,0 +1,22 @@
+Package: libxaw7-dev
+Version: @DEB_LIBXAW_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libxaw7, libx11-dev, libxmu-dev, libxpm-dev
+Section: Development
+Priority: optional
+Description: X11 Athena Widget library (development headers)
+ libXaw7 provides the second version of Xaw, the Athena Widgets toolkit,
+ which is largely used by legacy X applications.  This version is the
+ most common version, as version 6 is considered deprecated, and version
+ 8, which adds Xprint support, is unsupported and not widely used.
+ In general, use of a more modern toolkit such as GTK+ is recommended.
+ .
+ This package contains the development headers for the library found in
+ libxaw7.  Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at:
+ <URL:http://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libXaw

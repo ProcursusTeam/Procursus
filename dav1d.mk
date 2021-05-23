@@ -22,7 +22,8 @@ dav1d-setup: setup
 	prefix ='$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
 	[binaries]\n \
 	c = '$(CC)'\n \
-	cpp = '$(CXX)'\n" > $(BUILD_WORK)/dav1d/build/cross.txt
+	cpp = '$(CXX)'\n \
+	pkgconfig = '$(BUILD_TOOLS)/cross-pkg-config'\n" > $(BUILD_WORK)/dav1d/build/cross.txt
 
 ifneq ($(wildcard $(BUILD_WORK)/dav1d/.build_complete),)
 dav1d:

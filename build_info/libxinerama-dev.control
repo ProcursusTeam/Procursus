@@ -1,0 +1,23 @@
+Package: libxinerama-dev
+Version: @DEB_LIBXINERAMA_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libxinerama1 (= @DEB_LIBXINERAMA_V@), libx11-dev, libxext-dev, x11proto-dev
+Section: Development
+Priority: optional
+Description: X11 Xinerama extension library (development headers)
+ libXinerama provides an X Window System client interface to the XINERAMA
+ extension to the X protocol.
+ .
+ The Xinerama (also known as panoramiX) extension allows for multiple screens
+ attached to a single display to be treated as belonging together, and to give
+ desktop applications a better idea of the monitor layout.
+ .
+ This package contains the development headers for the library found in
+ libxinerama1.  Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at:
+ <URL:http://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libXinerama

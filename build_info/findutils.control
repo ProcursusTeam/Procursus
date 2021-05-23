@@ -4,10 +4,9 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Replaces: shell-cmds (<< 207.40.1)
 Conflicts: shell-cmds (<< 207.40.1)
-Depends: bash, sed, shell-cmds, libintl8
+Depends: sh, sed, shell-cmds, libintl8
 Section: Utilities
 Priority: important
 Multi-Arch: foreign
 Homepage: http://www.gnu.org/software/findutils/
 Description: indexes and searches filesystems
-Name: Find Utilities
