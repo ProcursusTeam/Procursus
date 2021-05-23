@@ -254,9 +254,9 @@ $(warning Building on iOS)
 endif # ($(MEMO_QUIET),1)
 TARGET_SYSROOT  ?= /usr/share/SDKs/$(BARE_PLATFORM).sdk
 MACOSX_SYSROOT  ?= /usr/share/SDKs/MacOSX.sdk
-CC              := cc
-CXX             := c++
-CPP             := cc -E
+CC              := $(shell which cc)
+CXX             := $(shell which c++)
+CPP             := $(shell which cc) -E
 PATH            := /usr/bin:$(PATH)
 
 BUILD_CFLAGS   := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion) -isysroot /usr/share/SDKs/iPhoneOS.sdk
