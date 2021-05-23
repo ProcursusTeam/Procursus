@@ -26,7 +26,7 @@ Supported host systems as of 06/04/2020 are iphoneos-arm64, iphoneos-arm, applet
 
 |                     Requirements                                  |
 |:-----------------------------------------------------------------:|
-| Xcode + Xcode Commandline Tools + Homebrew (on macOS)             |
+| Xcode + Xcode Commandline Tools + Procursus (on macOS)            |
 | An iOS toolchain, [cctools-port](https://github.com/tpoechtrager/cctools-port) recommended (on [Linux](LINUX.md) and [FreeBSD](FreeBSD.md)) |
 | GNU make (On macOS and FreeBSD you'll have to run `gmake`)        |
 | GNU coreutils                                                     |
@@ -51,7 +51,7 @@ Supported host systems as of 06/04/2020 are iphoneos-arm64, iphoneos-arm, applet
 | python 3.9                                                        |
 On macOS, all the build requirements can be installed with the following command.
 ```
-brew install make bash wget gnu-tar gnu-sed gnupg ldid cmake automake groff gpatch findutils coreutils fakeroot zstd dpkg ncurses docbook-xsl python3
+sudo apt install make bash wget tar sed gnupg ldid cmake automake autoconf groff patch findutils coreutils fakeroot zstd dpkg ncurses docbook-xsl python3 po4a triehash libtool libtool-bin xz-utils dirmngr pkg-config m4 autopoint dpkg ncurses bison flex
 ```
 
 | Supported commands    | Function                                                                                                                            |
