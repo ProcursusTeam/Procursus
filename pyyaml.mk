@@ -23,6 +23,7 @@ pyyaml: pyyaml-setup libyaml python3
 	rm -rf $(BUILD_STAGE)/pyyaml/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/site-packages/yaml/__pycache__
 	mv $(BUILD_STAGE)/pyyaml/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/site-packages/PyYAML-5.4.1-py$(PYTHON3_MAJOR_V).egg-info \
 		$(BUILD_STAGE)/pyyaml/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/site-packages/PyYAML-5.4.1.egg-info
+	find $(BUILD_STAGE)/pyyaml/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/site-packages -name __pycache__ -prune -exec rm -rf {} \;
 	touch $(BUILD_WORK)/pyyaml/.build_complete
 endif
 pyyaml-package: pyyaml-stage
