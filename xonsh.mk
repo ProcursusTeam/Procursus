@@ -21,16 +21,13 @@ ifneq ($(wildcard $(BUILD_WORK)/xonsh/.build_complete),)
 xonsh:
 	@echo "Using previously built xonsh."
 else
-xonsh: xonsh-setup
-	cd $(BUILD_WORK)/xonsh && BINDIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin python$(PYTHON3_MAJOR_V) ./setup.py install \
+xonsh: xonsh-setup python3
+	cd $(BUILD_WORK)/xonsh && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py install \
 		--root=$(BUILD_STAGE)/xonsh \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--install-layout=deb
 	$(SED) -i "s|$$(cat $(BUILD_STAGE)/xonsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/xonsh | grep \#! | sed 's/#!//')|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/xonsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
-	# Move nessesary files, delete garbage we don't need.
-	find $(BUILD_STAGE)/xonsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/site-packages -name __pycache__ -prune -exec rm -rf {} \;
-	mv $(BUILD_STAGE)/xonsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/site-packages \
-		$(BUILD_STAGE)/xonsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3/dist-packages
-	rm -rf $(BUILD_STAGE)/xonsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)
+	find $(BUILD_STAGE)/xonsh -name __pycache__ -prune -exec rm -rf {} \;
 	touch $(BUILD_WORK)/xonsh/.build_complete
 endif
 
