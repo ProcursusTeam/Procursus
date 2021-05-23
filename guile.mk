@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/guile/.build_complete),)
 guile:
 	@echo "Using previously built guile."
 else
-guile: guile-setup libgmp10 libunistring libgc libffi readline gettext libtool libgmp10
+guile: guile-setup libunistring libgc libffi readline gettext libtool libgmp10
 	mkdir -p $(BUILD_WORK)/guile/native
 	+unset CC CXX CPP CFLAGS CXXFLAGS CPPFLAGS LDFLAGS; \
 		cd $(BUILD_WORK)/guile/native && $(BUILD_WORK)/guile/configure --enable-mini-gmp; \
