@@ -2,13 +2,13 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS      += x11-xserver-utils
-X11_XSERVER_UTILS_VERSION := 7.7+8
-DEB_X11_XSERVER_UTILS_V   ?= $(X11_XSERVER_UTILS_VERSION)
+SUBPROJECTS               += x11-xserver-utils
+X11-XSERVER-UTILS-VERSION := 7.7+8
+DEB_X11-XSERVER-UTILS_V   ?= $(X11-XSERVER-UTILS-VERSION)
 
 x11-xserver-utils-setup: setup
-	wget -q -nc -P$(BUILD_SOURCE) https://salsa.debian.org/xorg-team/app/x11-xserver-utils/-/archive/x11-xserver-utils-$(X11_XSERVER_UTILS_VERSION)/x11-xserver-utils-x11-xserver-utils-$(X11_XSERVER_UTILS_VERSION).tar.gz
-	$(call EXTRACT_TAR,x11-xserver-utils-x11-xserver-utils-$(X11_XSERVER_UTILS_VERSION).tar.gz,x11-xserver-utils-x11-xserver-utils-$(X11_XSERVER_UTILS_VERSION),x11-xserver-utils)
+	wget -q -nc -P$(BUILD_SOURCE) https://salsa.debian.org/xorg-team/app/x11-xserver-utils/-/archive/x11-xserver-utils-$(X11-XSERVER-UTILS-VERSION)/x11-xserver-utils-x11-xserver-utils-$(X11-XSERVER-UTILS-VERSION).tar.gz
+	$(call EXTRACT_TAR,x11-xserver-utils-x11-xserver-utils-$(X11-XSERVER-UTILS-VERSION).tar.gz,x11-xserver-utils-x11-xserver-utils-$(X11-XSERVER-UTILS-VERSION),x11-xserver-utils)
 
 ifneq ($(wildcard $(BUILD_WORK)/x11-xserver-utils/.build_complete),)
 x11-xserver-utils:
@@ -39,7 +39,7 @@ x11-xserver-utils-package: x11-xserver-utils-stage
 	$(call SIGN,x11-xserver-utils,general.xml)
 	
 	# x11-xserver-utils.mk Make .debs
-	$(call PACK,x11-xserver-utils,DEB_X11_XSERVER_UTILS_V)
+	$(call PACK,x11-xserver-utils,DEB_X11-XSERVER-UTILS_V)
 	
 	# x11-xserver-utils.mk Build cleanup
 	rm -rf $(BUILD_DIST)/x11-xserver-utils
