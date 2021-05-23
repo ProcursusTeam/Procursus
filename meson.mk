@@ -14,17 +14,13 @@ ifneq ($(wildcard $(BUILD_WORK)/meson/.build_complete),)
 meson:
 	@echo "Using previously built meson."
 else
-meson: meson-setup
-	cd $(BUILD_WORK)/meson && python3 ./setup.py \
+meson: meson-setup python3
+	cd $(BUILD_WORK)/meson && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py \
 		install \
 		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
-		--root="$(BUILD_STAGE)/meson"
-	# Do some pre-preparation stuff
-	mkdir -p $(BUILD_STAGE)/meson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3/
-	find $(BUILD_STAGE)/meson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3.*/site-packages -name __pycache__ -prune -exec rm -rf {} \;
-	mv $(BUILD_STAGE)/meson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3.*/site-packages \
-		$(BUILD_STAGE)/meson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3/dist-packages
-	rm -rf $(BUILD_STAGE)/meson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3.*
+		--root="$(BUILD_STAGE)/meson" \
+		--install-layout=deb
+	find $(BUILD_STAGE)/meson -name __pycache__ -prune -exec rm -rf {} \;
 	$(SED) -i "s|#!.*|#!$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/meson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/meson
 	touch $(BUILD_WORK)/meson/.build_complete
 endif
