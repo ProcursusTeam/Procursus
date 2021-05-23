@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS      += python3
 PYTHON3_MAJOR_V  := 3.9
-PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).2
+PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).5
 DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)
 
 ifneq ($(call HAS_COMMAND,python$(PYTHON3_MAJOR_V)),1)
@@ -40,14 +40,13 @@ endif
 		--with-lto \
 		ac_cv_file__dev_ptmx=no \
 		ac_cv_file__dev_ptc=no \
-		ac_cv_func_sendfile=no
+		ac_cv_func_sendfile=no \
+		ax_cv_c_float_words_bigendian=no
 	+$(MAKE) -C $(BUILD_WORK)/python3
 	+$(MAKE) -C $(BUILD_WORK)/python3 install \
 		DESTDIR=$(BUILD_STAGE)/python3
 	mkdir -p $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3/dist-packages $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/dist-packages
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(SED) -i -e 's|$(TARGET_SYSROOT)|/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/$(BARE_PLATFORM).sdk|' -e 's|$(BUILD_BASE)||' $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python*/_sysconfigdata*.py
-endif
+	$(SED) -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < $(BUILD_MISC)/python3/_sysconfigdata__darwin_darwin.py > $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/_sysconfigdata__darwin_darwin.py
 	rm -f $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}/!(*$(PYTHON3_MAJOR_V)*)
 	touch $(BUILD_WORK)/python3/.build_complete
 endif
