@@ -6,6 +6,8 @@ SUBPROJECTS   += xonsh
 XONSH_VERSION := 0.9.27
 DEB_XONSH_V   ?= $(XONSH_VERSION)
 
+### TODO: prompt_toolkit dependency :)
+
 xonsh-setup: setup
 	# Download main branch instead of tag for 0.9.27
 	# Versions were not changed before making the version tag.
