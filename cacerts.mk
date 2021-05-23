@@ -13,7 +13,7 @@ else
 cacerts: setup curl-setup
 	mkdir -p $(BUILD_WORK)/cacerts
 	cd $(BUILD_WORK)/cacerts && $(BUILD_WORK)/curl/lib/mk-ca-bundle.pl
-	echo -e "## git ##\ngit config --global http.sslCAInfo /$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem >/dev/null 2>&1" > $(BUILD_WORK)/cacerts/cacerts.bootstrap.sh
+	echo -e "## git ##\ngit config --global http.sslCAInfo $(MEMO_PREFIX)/etc/ssl/certs/cacert.pem >/dev/null 2>&1" > $(BUILD_WORK)/cacerts/cacerts.bootstrap.sh
 	mkdir -p $(BUILD_STAGE)/cacerts/$(MEMO_PREFIX)/etc/{profile.d,ssl/certs}
 	cp $(BUILD_WORK)/cacerts/cacerts.bootstrap.sh $(BUILD_STAGE)/cacerts/$(MEMO_PREFIX)/etc/profile.d
 	cp $(BUILD_WORK)/cacerts/ca-bundle.crt $(BUILD_STAGE)/cacerts/$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem

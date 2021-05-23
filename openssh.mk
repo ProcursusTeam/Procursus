@@ -41,7 +41,7 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 		cd $(BUILD_WORK)/openssh && autoreconf; \
 	fi
 	$(SED) -i '/HAVE_ENDIAN_H/d' $(BUILD_WORK)/openssh/config.h.in
-	cd $(BUILD_WORK)/openssh && $(EXTRA) ./configure -C \
+	cd $(BUILD_WORK)/openssh && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--sysconfdir=$(MEMO_PREFIX)/etc/ssh \
 		--with-xauth=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/xauth \

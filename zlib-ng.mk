@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += zlib-ng
-ZLIB-NG_VERSION  := 2.0.2
+ZLIB-NG_VERSION  := 2.0.3
 DEB_ZLIB-NG_V    ?= $(ZLIB-NG_VERSION)
 
 zlib-ng-setup: setup
