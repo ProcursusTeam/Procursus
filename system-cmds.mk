@@ -42,12 +42,15 @@ system-cmds: system-cmds-setup libxcrypt openpam libiosexec
 		CFLAGS=; \
 		EXTRA=; \
 		case $$tproj in \
-			login) CFLAGS="-DUSE_PAM=1" LDFLAGS="-lpam -liosexec";; \
-			dynamic_pager) CFLAGS="-Idynamic_pager.tproj";; \
+			login) CFLAGS="$(CFLAGS) -DUSE_PAM=1" LDFLAGS="-lpam -liosexec";; \
+			dynamic_pager) CFLAGS="$(CFLAGS) -Idynamic_pager.tproj";; \
 			pwd_mkdb) CFLAGS="-D_PW_NAME_LEN=MAXLOGNAME -D_PW_YPTOKEN=\"__YP!\"";; \
+			iostat) CFLAGS="$(CFLAGS)";; \
+			reboot) CFLAGS="$(CFLAGS)";; \
+			zic) CFLAGS="$(CFLAGS)";; \
 		esac ; \
 		echo "$$tproj" ; \
-		$(CC) $(CFLAGS) -I$(BUILD_WORK)/system-cmds/include -o $$tproj $$tproj.tproj/*.c $$EXTRA -D'__FBSDID(x)=' $$CFLAGS $(LDFLAGS) -framework CoreFoundation -framework IOKit $$LDFLAGS; \
+		$(CC) -I$(BUILD_WORK)/system-cmds/include -o $$tproj $$tproj.tproj/*.c $$EXTRA -D'__FBSDID(x)=' $$CFLAGS $(LDFLAGS) -framework CoreFoundation -framework IOKit $$LDFLAGS; \
 	done
 	mkdir -p $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX){/etc/pam.d,/bin,/sbin,$(MEMO_SUB_PREFIX)/bin,$(MEMO_SUB_PREFIX)/sbin,$(MEMO_SUB_PREFIX)/share/man/man{1,5,8}}
 	cp -a $(BUILD_WORK)/system-cmds/{reboot,nologin} $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
