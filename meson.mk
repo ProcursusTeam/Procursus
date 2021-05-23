@@ -15,7 +15,7 @@ meson:
 	@echo "Using previously built meson."
 else
 meson: meson-setup python3 ninja
-	cd $(BUILD_WORK)/meson && python$(PYTHON3_MAJOR_V) ./setup.py \
+	cd $(BUILD_WORK)/meson && python3 ./setup.py \
 		install \
 		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		--root="$(BUILD_STAGE)/meson"
