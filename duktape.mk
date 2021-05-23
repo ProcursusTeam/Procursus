@@ -50,11 +50,9 @@ duktape-package: duktape-stage
 	# duktape.mk Prep duktape-dev
 	cp -a $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/{duk_config.h,duktape.h} \
 		$(BUILD_DIST)/duktape-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	cp -a $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig \
-		$(BUILD_DIST)/duktape-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 	cp -a $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include \
 		$(BUILD_DIST)/duktape-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/duktape
-	cp -a $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libduktaped{.so,.206.so,.206.20600.so} \
+	cp -a $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libduktaped{.so,.206.so,.206.20600.so},pkgconfig} \
 		$(BUILD_DIST)/duktape-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# duktape.mk Prep libduktape206
