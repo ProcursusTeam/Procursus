@@ -8,15 +8,6 @@ SUBPROJECTS             += build-essential
 BUILD-ESSENTIAL_VERSION := 1
 DEB_BUILD-ESSENTIAL_V   ?= $(BUILD-ESSENTIAL_VERSION)
 
-ifeq ($(PLATFORM),iphoneos)
-BARE_PLATFORM := iPhoneOS
-else ifeq ($(PLATFORM),appletvos)
-BARE_PLATFORM := AppleTVOS
-else ifeq ($(PLATFORM),watchos)
-BARE_PLATFORM := WatchOS
-$(error Unsupported platform $(PLATFORM))
-endif
-
 ifneq ($(wildcard $(BUILD_WORK)/build-essential/.build_complete),)
 build-essential:
 	@echo "Using previously built build-essential."

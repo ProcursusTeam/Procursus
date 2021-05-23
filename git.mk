@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS += git
 GIT_VERSION := 2.31.1
-DEB_GIT_V   ?= $(GIT_VERSION)
+DEB_GIT_V   ?= $(GIT_VERSION)-1
 
 GIT_ARGS += uname_S=Darwin \
 	HOST_CPU=$(GNU_HOST_TRIPLE) \
@@ -20,12 +20,20 @@ GIT_ARGS += uname_S=Darwin \
 git-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://mirrors.edge.kernel.org/pub/software/scm/git/git-$(GIT_VERSION).tar.xz
 	$(call EXTRACT_TAR,git-$(GIT_VERSION).tar.xz,git-$(GIT_VERSION),git)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+	$(call DO_PATCH,git-ios,git,-p1)
+	$(SED) -i 's|EXTLIBS =|EXTLIBS = -liosexec|' $(BUILD_WORK)/git/Makefile
+endif
 
 ifneq ($(wildcard $(BUILD_WORK)/git/.build_complete),)
 git:
 	@echo "Using previously built git."
 else
-git: git-setup openssl curl pcre2 gettext libidn2
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+git: git-setup openssl curl pcre2 gettext libidn2 expat
+else
+git: git-setup openssl curl pcre2 gettext libidn2 expat libiosexec
+endif
 	+cd $(BUILD_WORK)/git && $(MAKE) configure
 	cd $(BUILD_WORK)/git && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
@@ -36,19 +44,6 @@ git: git-setup openssl curl pcre2 gettext libidn2
 		ac_cv_snprintf_returns_bogus=yes \
 		ac_cv_header_libintl_h=yes \
 		CURL_CONFIG=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/curl-config
-ifeq (,$(findstring darwin,$(GNU_HOST_TRIPLE)))
-	$(SED) -i s/'errno == ENOEXEC)'/'errno == ENOEXEC || errno == EPERM) {'/ $(BUILD_WORK)/git/run-command.c
-	$(SED) -i '/execve(argv.argv\[0/,+1 d' $(BUILD_WORK)/git/run-command.c
-	$(SED) -i '/errno == ENOEXEC || errno == EPERM/a			struct strvec args = STRVEC_INIT; \
-			strvec_push(&args, SHELL_PATH); \
-			strvec_push(&args, "-c"); \
-			strvec_push(&args, "\\"$$@\\""); \
-			strvec_push(&args, SHELL_PATH); // unused $$0 \
-			strvec_pushv(&args, cmd->argv); \
-			execve(SHELL_PATH, (char *const *) args.v, \
- 			       (char *const *) childenv); \
-		}' $(BUILD_WORK)/git/run-command.c
-endif
 	+$(MAKE) -C $(BUILD_WORK)/git all \
 		$(GIT_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/git/Documentation man install \

@@ -1,0 +1,28 @@
+Package: docbook-xml
+Version: @DEB_DOCBOOK-XML_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Suggests: docbook-xsl
+Depends: libxml2-utils
+Section: XML
+Priority: optional
+Homepage: https://github.com/docbook/wiki/wiki/DocBookXslStylesheets
+Description: standard XML documentation system for software and systems
+ DocBook is an XML document type definition (DTD).  That is, it
+ contains the "DocBook" document structure.  This is used by authors
+ or editors writing documents in the DocBook XML format.  DocBook was
+ designed for books, articles, or reference documentation about
+ technical matters or software.  It has emerged as an open, standard
+ DTD in the software industry, and is the documentation system of
+ choice for many free software projects.
+ .
+ This package contains the XML DTD for DocBook, which describes the
+ formal structure for documents following this format.  If you wish to
+ author DocBook documents using SGML rather than XML, use the
+ 'docbook' package.  You will need other packages in order to edit
+ (psgml), validate (opensp, libxml2-utils) or format (docbook-xsl,
+ docbook-dsssl) DocBook documents.
+ .
+ This package ships with the latest DocBook 4.5 XML DTD, as well as a
+ selected set of legacy DTDs for use with older documents, including
+ 4.2, 4.3 and 4.4.

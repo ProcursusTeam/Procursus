@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS       += libunistring
+STRAPPROJECTS     += libunistring
 UNISTRING_VERSION := 0.9.10
 DEB_UNISTRING_V   ?= $(UNISTRING_VERSION)-2
 
