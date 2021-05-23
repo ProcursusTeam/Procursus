@@ -15,10 +15,9 @@ ifneq ($(wildcard $(BUILD_WORK)/guile/.build_complete),)
 guile:
 	@echo "Using previously built guile."
 else
-guile: guile-setup libgmp10 libunistring libgc libffi readline gettext libtool
+guile: guile-setup libgmp10 libunistring libgc libffi readline gettext libtool libgmp10
 	cd $(BUILD_WORK)/guile && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS) \
-		--enable-mini-gmp
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/guile
 	+$(MAKE) -C $(BUILD_WORK)/guile install \
 		DESTDIR=$(BUILD_STAGE)/guile
