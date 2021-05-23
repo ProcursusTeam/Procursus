@@ -266,14 +266,14 @@ BUILD_LDFLAGS  := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers
 
 endif
 AR              := $(shell which ar)
-LD              := ld
-RANLIB          := ranlib
-STRIP           := strip
-NM              := nm
-LIPO            := lipo
-OTOOL           := otool
-I_N_T           := install_name_tool
-LIBTOOL         := libtool
+LD              := $(shell which ld)
+RANLIB          := $(shell which ranlib)
+STRIP           := $(shell which strip)
+NM              := $(shell which nm)
+LIPO            := $(shell which lipo)
+OTOOL           := $(shell which otool)
+I_N_T           := $(shell which install_name_tool)
+LIBTOOL         := $(shell which libtool)
 
 else
 $(error Please use Linux, MacOS or FreeBSD to build)
