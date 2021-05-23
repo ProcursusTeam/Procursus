@@ -8,8 +8,8 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += bash
 endif # ($(MEMO_TARGET),darwin-\*)
 BASH_VERSION  := 5.1
-BASH_SUB_V    := 004
-DEB_BASH_V    ?= $(BASH_VERSION).$(BASH_SUB_V)-4
+BASH_SUB_V    := 008
+DEB_BASH_V    ?= $(BASH_VERSION).$(BASH_SUB_V)
 
 bash-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION).tar.gz{,.sig}
@@ -18,7 +18,7 @@ bash-setup: setup
 	mkdir -p $(BUILD_STAGE)/bash/$(MEMO_PREFIX)/bin
 	$(call DO_PATCH,bash,bash,-p0)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(call DO_PATCH,bash-ios,bash,-p1)
+	$(SED) -i '1s/^/#include <libiosexec.h>\n/' $(BUILD_WORK)/bash/execute_cmd.h
 BASH_CONFIGURE_ARGS := ac_cv_c_stack_direction=-1 \
 	ac_cv_func_mmap_fixed_mapped=yes \
 	ac_cv_func_setvbuf_reversed=no \
@@ -56,6 +56,7 @@ endif
 		CFLAGS="$(CFLAGS) -DSSH_SOURCE_BASHRC" \
 		$(BASH_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/bash \
+		CC_FOR_BUILD='$(shell which cc)' \
 		TERMCAP_LIB=-lncursesw
 	+$(MAKE) -C $(BUILD_WORK)/bash install \
 		DESTDIR="$(BUILD_STAGE)/bash"

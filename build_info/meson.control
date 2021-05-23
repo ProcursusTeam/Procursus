@@ -1,0 +1,10 @@
+Package: meson
+Version: @DEB_MESON_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Depends: python3, ninja
+Section: Development
+Priority: optional
+Homepage: https://www.mesonbuild.com/
+Description: The Meson Build System.
+ Meson is a project used to create the best possible next generation build system.

@@ -1,4 +1,4 @@
-Package: libaom2
+Package: libaom3
 Version: @DEB_AOM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
