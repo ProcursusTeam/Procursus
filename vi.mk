@@ -20,7 +20,6 @@ vi: vi-setup ncurses
 	$(SED) -i '/size ex/d' $(BUILD_WORK)/vi/Makefile
 	$(SED) -i 's/ar /$(AR) /g' $(BUILD_WORK)/vi/libuxre/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/vi install \
-		$(EXTRA) \
 		PREFIX="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		TERMLIB=ncursesw \
 		PRESERVEDIR="/var/lib/ex" \

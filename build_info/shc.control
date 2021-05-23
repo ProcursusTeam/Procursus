@@ -1,0 +1,22 @@
+Package: shc
+Version: @DEB_SHC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Description: Shell script compiler
+ SHC is a generic shell script compiler.
+ It takes a script, which is specified on the command line and produces
+ C source code. The generated source code is then compiled and linked to
+ produce a stripped binary.
+ .
+ The compiled binary will still be dependent on the shell specified in
+ the first line of the shell code, thus shc does not create completely
+ independent binaries.
+ .
+ shc itself is not a compiler such as cc,
+ it rather encodes and encrypts a shell script and generates C source
+ code with the added expiration capability. It then uses the system
+ compiler to compile a stripped binary which behaves exactly like the
+ original script. Upon execution, the compiled binary will decrypt and
+ execute the code with the shells' -c option.

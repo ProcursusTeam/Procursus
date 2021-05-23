@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS         += xorg-server
-XORG-SERVER_VERSION := 1.20.10
+XORG-SERVER_VERSION := 1.20.11
 DEB_XORG-SERVER_V   ?= $(XORG-SERVER_VERSION)
 
 xorg-server-setup: setup
@@ -30,7 +30,8 @@ xorg-server: xorg-server-setup libmd libx11 libxau libxmu xorgproto font-util li
 		--disable-glamor \
 		--disable-xquartz \
 		--with-sha1=libmd \
-		PKG_CONFIG="pkg-config --define-prefix"
+		--disable-glx \
+		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pixman-1"
 	$(SED) -i 's|panoramiX.\$$(OBJEXT)||' $(BUILD_WORK)/xorg-server/hw/dmx/Makefile
 #   ^^ Wtf
 	+$(MAKE) -C $(BUILD_WORK)/xorg-server

@@ -2,6 +2,8 @@ Package: flex
 Version: @DEB_FLEX_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Recommends: libfl-dev
+Depends: m4
 Section: Development
 Priority: optional
 Description: fast lexical analyzer generator

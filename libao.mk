@@ -7,10 +7,9 @@ LIBAO_VERSION := 1.2.2
 DEB_LIBAO_V   ?= $(LIBAO_VERSION)
 
 libao-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/libao-$(LIBAO_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/libao-$(LIBAO_VERSION).tar.gz \
-			https://github.com/xiph/libao/archive/refs/tags/$(LIBAO_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,xiph,libao,$(LIBAO_VERSION),$(LIBAO_VERSION))
 	$(call EXTRACT_TAR,libao-$(LIBAO_VERSION).tar.gz,libao-$(LIBAO_VERSION),libao)
+
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call DO_PATCH,libao-ios,libao,-p1)
 endif
