@@ -1,0 +1,18 @@
+From: Guilhem Moulin <guilhem@debian.org>
+Date: Mon, 10 Dec 2018 14:52:10 +0100
+Subject: Custom options (overriding those defined in default_options.h)
+
+Cf. upstream's INSTALL file.
+
+---
+ localoptions.h |    4 ++++
+ 1 file changed, 4 insertions(+)
+ create mode 100644 local_options.h
+
+--- /dev/null
++++ b/localoptions.h
+@@ -0,0 +1,4 @@
++/* Enable running an OpenSSH's sftp server (the sftp server program is
++ * not provided by Dropbear itself) */
++#define DROPBEAR_SFTPSERVER 1
++#define SFTPSERVER_PATH "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/sftp-server"
