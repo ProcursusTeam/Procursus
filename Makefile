@@ -265,7 +265,7 @@ BUILD_CXXFLAGS := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers
 BUILD_LDFLAGS  := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion) -isysroot /usr/share/SDKs/iPhoneOS.sdk
 
 endif
-AR              := ar
+AR              := $(shell which ar)
 LD              := ld
 RANLIB          := ranlib
 STRIP           := strip
@@ -282,7 +282,8 @@ endif
 CC_FOR_BUILD  := $(shell which cc) $(BUILD_CFLAGS)
 CPP_FOR_BUILD := $(shell which cc) -E $(BUILD_CPPFLAGS)
 CXX_FOR_BUILD := $(shell which c++) $(BUILD_CXXFLAGS)
-export CC_FOR_BUILD CPP_FOR_BUILD CXX_FOR_BUILD
+AR_FOR_BUILD  := $(shell which ar)
+export CC_FOR_BUILD CPP_FOR_BUILD CXX_FOR_BUILD AR_FOR_BUILD
 
 DEB_MAINTAINER    ?= Hayden Seay <me@diatr.us>
 CODESIGN_IDENTITY ?= -
