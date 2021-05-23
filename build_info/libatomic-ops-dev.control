@@ -5,4 +5,3 @@ Maintainer: @DEB_MAINTAINER@
 Section: Development
 Homepage: https://github.com/ivmai/libatomic_ops
 Description: This package provides semi-portable access to hardware-provided atomic memory update operations on a number of architectures.
-Name: libatomic-ops-dev
