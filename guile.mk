@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS  += guile
+SUBPROJECTS   += guile
 GUILE_VERSION := 3.0.7
 DEB_GUILE_V   ?= $(GUILE_VERSION)
 
@@ -16,6 +16,10 @@ guile:
 	@echo "Using previously built guile."
 else
 guile: guile-setup libgmp10 libunistring libgc libffi readline gettext libtool libgmp10
+	mkdir -p $(BUILD_WORK)/guile/native
+	+unset CC CXX CPP CFLAGS CXXFLAGS CPPFLAGS LDFLAGS; \
+		cd $(BUILD_WORK)/guile/native && $(BUILD_WORK)/guile/configure --enable-mini-gmp; \
+		$(MAKE) -C $(BUILD_WORK)/guile/native
 	cd $(BUILD_WORK)/guile && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/guile
