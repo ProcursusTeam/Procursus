@@ -3,19 +3,19 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += bpytop
-BPYTOP_VERSION := 1.0.63
+BPYTOP_VERSION := 1.0.65
 DEB_BPYTOP_V   ?= $(BPYTOP_VERSION)
 
 bpytop-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE)  https://github.com/aristocratos/bpytop/archive/refs/tags/v$(BPYTOP_VERSION).tar.gz
-	$(call EXTRACT_TAR,v$(BPYTOP_VERSION).tar.gz,bpytop-$(BPYTOP_VERSION),bpytop)
+	$(call GITHUB_ARCHIVE,aristocratos,bpytop,$(BPYTOP_VERSION),v$(BPYTOP_VERSION))
+	$(call EXTRACT_TAR,bpytop-$(BPYTOP_VERSION).tar.gz,bpytop-$(BPYTOP_VERSION),bpytop)
 
 ifneq ($(wildcard $(BUILD_WORK)/bpytop/.build_complete),)
 bpytop:
 	@echo "Using previously built bpytop."
 else
 bpytop: bpytop-setup python3
-	+$(MAKE) -C $(BUILD_WORK)/bpytop
+	+$(MAKE) -C $(BUILD_WORK)/bpytop \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		CC="$(CC)" \
 		CXX="$(CXX)"
