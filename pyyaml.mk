@@ -15,7 +15,7 @@ pyyaml:
 	@echo "Using previously built pyyaml."
 else
 pyyaml: pyyaml-setup libyaml python3
-	cd $(BUILD_WORK)/pyyaml && unset MACOSX_DEPLOYMENT_TARGET && CFLAGS="$(CFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/python$(PYTHON3_MAJOR_V)" python$(PYTHON3_MAJOR_V) ./setup.py \
+	cd $(BUILD_WORK)/pyyaml && CFLAGS="$(CFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/python$(PYTHON3_MAJOR_V)" python$(PYTHON3_MAJOR_V) ./setup.py \
 		--with-libyaml \
 		install \
 		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
