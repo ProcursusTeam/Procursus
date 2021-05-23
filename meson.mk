@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/meson/.build_complete),)
 meson:
 	@echo "Using previously built meson."
 else
-meson: meson-setup python3 ninja
+meson: meson-setup
 	cd $(BUILD_WORK)/meson && python3 ./setup.py \
 		install \
 		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
