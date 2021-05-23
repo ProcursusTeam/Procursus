@@ -18,7 +18,11 @@ else ifneq ($(wildcard $(BUILD_WORK)/micro/.build_complete),)
 micro:
 	@echo "Using previously built micro."
 else
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 micro: micro-setup
+else
+micro: micro-setup libiosexec
+endif
 	$(MAKE) -C $(BUILD_WORK)/micro build \
 		$(DEFAULT_GOLANG_FLAGS)
 

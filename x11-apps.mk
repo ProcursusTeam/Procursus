@@ -20,8 +20,7 @@ x11-apps: x11-apps-setup libsm libx11 libxaw libxcursor libxext libxft libxmu li
 		if [ -f $$dir/configure ]; then \
 			cd $$dir && ./configure -C \
 				$(DEFAULT_CONFIGURE_FLAGS) \
-				--with-appdefaultdir=$(MEMO_PREFIX)/etc/X11/app-defaults \
-				PKG_CONFIG="pkg-config --define-prefix"; \
+				--with-appdefaultdir=$(MEMO_PREFIX)/etc/X11/app-defaults; \
 			$(MAKE) -C $$dir; \
 			$(MAKE) -C $$dir install \
 				DESTDIR=$(BUILD_STAGE)/x11-apps; \

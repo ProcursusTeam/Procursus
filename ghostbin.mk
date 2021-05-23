@@ -16,7 +16,11 @@ ifneq ($(wildcard $(BUILD_WORK)/ghostbin/.build_complete),)
 ghostbin:
 	@echo "Using previously built ghostbin."
 else
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 ghostbin: ghostbin-setup
+else
+ghostbin: ghostbin-setup libiosexec
+endif
 	+cd $(BUILD_WORK)/ghostbin && \
 		go mod download && \
 		$(DEFAULT_GOLANG_FLAGS) \

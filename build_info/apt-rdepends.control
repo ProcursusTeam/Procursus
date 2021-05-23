@@ -1,0 +1,10 @@
+Package: apt-rdepends
+Section: Packaging
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_APT-RDEPENDS_V@
+Depends: libapt-pkg-perl, perl
+Description: recursively lists package dependencies
+  This utility can recursively list package dependencies, either forwards or in reverse. 
+  It also lists forward build-dependencies. The output format closely resembles that of `apt-cache depends`. 
+  As well, it can generate .dot graphs, much like apt-cache in dotty mode. 

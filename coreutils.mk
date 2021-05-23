@@ -5,7 +5,7 @@ endif
 STRAPPROJECTS       += coreutils
 COREUTILS_VERSION   := 8.32
 GETENTDARWIN_COMMIT := 1ad0e39ee51181ea6c13b3d1d4e9c6005ee35b5e
-DEB_COREUTILS_V     ?= $(COREUTILS_VERSION)-10
+DEB_COREUTILS_V     ?= $(COREUTILS_VERSION)-11
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 COREUTILS_CONFIGURE_ARGS += ac_cv_func_rpmatch=no
@@ -35,9 +35,9 @@ coreutils:
 	@echo "Using previously built coreutils."
 else
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-coreutils: coreutils-setup gettext libxcrypt
+coreutils: coreutils-setup gettext libgmp10 libxcrypt
 else # (,$(findstring darwin,$(MEMO_TARGET)))
-coreutils: coreutils-setup gettext
+coreutils: coreutils-setup gettext libgmp10
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	cd $(BUILD_WORK)/coreutils/rev && $(CC) $(CFLAGS) rev.c -o rev -D'__FBSDID(x)='
@@ -46,7 +46,6 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 endif
 	cd $(BUILD_WORK)/coreutils && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--without-gmp \
 		$(COREUTILS_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/coreutils
 	+$(MAKE) -C $(BUILD_WORK)/coreutils install \

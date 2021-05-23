@@ -21,7 +21,11 @@ libtool: libtool-setup
 	cd $(BUILD_WORK)/libtool && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--program-prefix=g \
-		--enable-ltdl-install
+		--enable-ltdl-install \
+		SED="sed" \
+		GREP="grep" \
+		EGREP="grep -E" \
+		FGREP="grep -F"
 	+$(MAKE) -C $(BUILD_WORK)/libtool
 	+$(MAKE) -C $(BUILD_WORK)/libtool install \
 		DESTDIR=$(BUILD_STAGE)/libtool
