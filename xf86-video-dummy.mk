@@ -6,7 +6,7 @@ SUBPROJECTS   += xf86-video-dummy
 DUMMY_VERSION := 0.3.8
 DEB_DUMMY_V   ?= $(DUMMY_VERSION)
 
-xf86-video-dummy-setup: setup xorg-server libpixman
+xf86-video-dummy-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/driver/xf86-video-dummy-$(DUMMY_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,xf86-video-dummy-$(DUMMY_VERSION).tar.gz)
 	$(call EXTRACT_TAR,xf86-video-dummy-$(DUMMY_VERSION).tar.gz,xf86-video-dummy-$(DUMMY_VERSION),xf86-video-dummy)
@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/xf86-video-dummy/.build_complete),)
 xf86-video-dummy:
 	@echo "Using previously built xf86-video-dummy."
 else
-xf86-video-dummy: xf86-video-dummy-setup xorg-server libpixman
+xf86-video-dummy: xf86-video-dummy-setup
 	cd $(BUILD_WORK)/xf86-video-dummy && ./autogen.sh -C \
 	$(DEFAULT_CONFIGURE_FLAGS) \
 	CFLAGS="$(CFLAGS) -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/{pixman-1,xorg}"
