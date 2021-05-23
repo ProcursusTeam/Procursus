@@ -11,6 +11,7 @@ xonsh-setup: setup
 	# Versions were not changed before making the version tag.
 	$(call GITHUB_ARCHIVE,xonsh,xonsh,$(XONSH_VERSION),main)
 	$(call EXTRACT_TAR,xonsh-$(XONSH_VERSION).tar.gz,xonsh-main,xonsh)
+	$(call DO_PATCH,xonsh,xonsh,-p1) # Remove next version.
 	# Pre-prepare this directory ahead of time; reduces package size (?)
 	mkdir -p $(BUILD_STAGE)/xonsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3/
 
