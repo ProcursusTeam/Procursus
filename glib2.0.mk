@@ -22,6 +22,7 @@ glib2.0-setup: setup
 	system = 'darwin'\n \
 	[properties]\n \
 	root = '$(BUILD_BASE)'\n \
+	needs_exe_wrapper = true\n \
 	[paths]\n \
 	prefix ='$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
 	[binaries]\n \
