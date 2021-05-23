@@ -432,8 +432,7 @@ EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 		mkdir -p $(3); \
 		$(CP) -af $(2)/. $(3); \
 		rm -rf $(2); \
-	fi; \
-	find $(BUILD_BASE)$(MEMO_PREFIX) -name "*.la" -type f -delete
+	fi
 
 DO_PATCH    = cd $(BUILD_PATCH)/$(1); \
 	for PATCHFILE in *; do \
@@ -589,6 +588,10 @@ SED  := sed # TODO: remove
 
 ifneq ($(shell PATH=$(PATH) sed --version | grep -q GNU && echo 1),1)
 $(error Install GNU sed)
+endif
+
+ifneq ($(shell PATH=$(PATH) grep --version | grep -q GNU && echo 1),1)
+$(error Install GNU grep)
 endif
 
 ifeq ($(call HAS_COMMAND,ldid),1)
@@ -883,10 +886,6 @@ endif
 	echo "$(BUILD_STRAP)/$${BOOTSTRAP}"
 endif # ($(MEMO_PREFIX),)
 
-bootstrap-device: bootstrap
-	@echo "********** Bootstrapping device. This may take a while! **********"
-	$(BUILD_TOOLS)/bootstrap_device.sh
-
 %-package: FAKEROOT=fakeroot -i $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev) -s $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev) --
 %-package: .SHELLFLAGS=-O extglob -c
 %-stage: %
@@ -969,8 +968,5 @@ endif # ($(MEMO_QUIET),1)
 
 clean::
 	rm -rf $(BUILD_WORK) $(BUILD_BASE) $(BUILD_STAGE)
-
-extreme-clean:: clean
-	git clean -xfd && git reset
 
 .PHONY: clean setup
