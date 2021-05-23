@@ -18,7 +18,8 @@ else
 freetype: freetype-setup brotli libpng16
 	cd $(BUILD_WORK)/freetype && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--without-harfbuzz
+		--without-harfbuzz \
+		CC_BUILD="$(CC_FOR_BUILD)"
 	+$(MAKE) -C $(BUILD_WORK)/freetype
 	+$(MAKE) -C $(BUILD_WORK)/freetype install \
 		DESTDIR=$(BUILD_STAGE)/freetype

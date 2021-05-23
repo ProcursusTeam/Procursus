@@ -15,7 +15,11 @@ ifneq ($(wildcard $(BUILD_WORK)/gh/.build_complete),)
 gh:
 	@echo "Using previously built gh."
 else
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 gh: gh-setup
+else
+gh: gh-setup libiosexec
+endif
 	+$(MAKE) -C $(BUILD_WORK)/gh bin/gh \
 		$(DEFAULT_GOLANG_FLAGS)
 	+unset CC CXX CFLAGS CPPFLAGS LDFLAGS && $(MAKE) -C $(BUILD_WORK)/gh manpages

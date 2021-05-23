@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += ninja
-NINJA_VERSION := 1.10.0
+NINJA_VERSION := 1.10.2
 DEB_NINJA_V   ?= $(NINJA_VERSION)
 
 ninja-setup: setup
@@ -27,10 +27,9 @@ endif
 ninja-package: ninja-stage
 	# ninja.mk Package Structure
 	rm -rf $(BUILD_DIST)/ninja
-	mkdir -p $(BUILD_DIST)/ninja
 
 	# ninja.mk Prep ninja
-	cp -a $(BUILD_STAGE)/ninja/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/ninja
+	cp -a $(BUILD_STAGE)/ninja $(BUILD_DIST)
 
 	# ninja.mk Sign
 	$(call SIGN,ninja,general.xml)
