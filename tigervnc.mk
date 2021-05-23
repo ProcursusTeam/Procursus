@@ -61,7 +61,7 @@ tigervnc: tigervnc-setup libmd libx11 libxau libxmu xorgproto libpixman gnutls l
 		--disable-config-udev \
 		--disable-dri2 \
 		--enable-install-libxf86config \
-		--enable-glx \
+		--disable-glx \
 		--with-sha1=libmd \
 		--with-default-font-path="catalogue:$(MEMO_PREFIX)/etc/X11/fontpath.d,built-ins" \
 		--with-fontdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/X11/fonts \
