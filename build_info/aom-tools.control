@@ -3,7 +3,7 @@ Version: @DEB_AOM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Utilities
-Depends: libaom2
+Depends: libaom3
 Priority: optional
 Description: AV1 Video Codec Library -- Tools
  AOMedia Video 1 (AV1) is an open and royalty free video encoding format
