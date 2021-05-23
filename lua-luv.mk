@@ -75,7 +75,7 @@ lua-luv: lua-luv-setup libuv1 lua5.1 lua5.2 lua5.3 luajit
 		-DLUAJIT_INCLUDE_DIR="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/luajit-2.1" \
 		-DLUA_LIBRARIES="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit-5.1.dylib" \
 		-DSHAREDLIBS_INSTALL_INC_DIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/luajit-2.1/luv" \
-		..
+		../bundle
 	$(MAKE) -C $(BUILD_WORK)/lua-luv/buildjit
 	$(MAKE) -C $(BUILD_WORK)/lua-luv/buildjit install \
 		DESTDIR="$(BUILD_STAGE)/lua-luv"

@@ -16,21 +16,12 @@ gnutls:
 else
 gnutls: gnutls-setup readline gettext libgcrypt libgmp10 libidn2 libunistring nettle p11-kit
 	find $(BUILD_BASE) -name "*.la" -type f -delete
-	cd $(BUILD_WORK)/gnutls && autoreconf -f -i
-ifeq ($(MEMO_TARGET),watchos-arm64)
 	cd $(BUILD_WORK)/gnutls && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-guile \
 		--enable-local-libopts \
 		--with-default-trust-store-file=$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem \
 		P11_KIT_CFLAGS=-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/p11-kit-1
-else
-	cd $(BUILD_WORK)/gnutls && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS) \
-		--enable-local-libopts \
-		--with-default-trust-store-file=$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem \
-		P11_KIT_CFLAGS=-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/p11-kit-1
-endif
 	+$(MAKE) -C $(BUILD_WORK)/gnutls
 	+$(MAKE) -C $(BUILD_WORK)/gnutls install \
 		DESTDIR=$(BUILD_STAGE)/gnutls

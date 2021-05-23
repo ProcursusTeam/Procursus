@@ -8,6 +8,9 @@ else
 $(error Install bash 5.0)
 endif
 
+# Unset sysroot, we manage that ourselves.
+SYSROOT :=
+
 UNAME           := $(shell uname -s)
 SUBPROJECTS     += $(STRAPPROJECTS)
 
@@ -84,6 +87,7 @@ MEMO_SUB_PREFIX      ?= /usr
 MEMO_ALT_PREFIX      ?= /local
 GNU_PREFIX           :=
 ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
+BARE_PLATFORM        := iPhoneOS
 export IPHONEOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),appletvos-arm64)
@@ -101,6 +105,7 @@ MEMO_SUB_PREFIX      ?= /usr
 MEMO_ALT_PREFIX      ?= /local
 GNU_PREFIX           :=
 ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
+BARE_PLATFORM        := AppleTVOS
 export APPLETVOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),watchos-arm64_32)
@@ -118,6 +123,7 @@ MEMO_SUB_PREFIX      ?= /usr
 MEMO_ALT_PREFIX      ?= /local
 GNU_PREFIX           :=
 ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/WatchOS.sdk
+BARE_PLATFORM        := WatchOS
 export WATCHOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),darwin-arm64e)
@@ -135,6 +141,7 @@ MEMO_SUB_PREFIX      ?=
 MEMO_ALT_PREFIX      ?=
 GNU_PREFIX           := g
 ON_DEVICE_SDK_PATH   := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+BARE_PLATFORM        := MacOSX
 
 else ifeq ($(MEMO_TARGET),darwin-arm64)
 ifneq ($(MEMO_QUIET),1)
@@ -151,6 +158,7 @@ MEMO_SUB_PREFIX      ?=
 MEMO_ALT_PREFIX      ?=
 GNU_PREFIX           := g
 ON_DEVICE_SDK_PATH   := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+BARE_PLATFORM        := MacOSX
 
 else ifeq ($(MEMO_TARGET),darwin-amd64)
 ifneq ($(MEMO_QUIET),1)
@@ -167,6 +175,7 @@ MEMO_SUB_PREFIX      ?=
 MEMO_ALT_PREFIX      ?=
 GNU_PREFIX           := g
 ON_DEVICE_SDK_PATH   := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+BARE_PLATFORM        := MacOSX
 
 else
 $(error Platform not supported)
@@ -176,7 +185,7 @@ ifeq ($(UNAME),Linux)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building on GNU Linux)
 endif # ($(MEMO_QUIET),1)
-TARGET_SYSROOT  ?= $(HOME)/cctools/SDK/iPhoneOS13.2.sdk
+TARGET_SYSROOT  ?= $(HOME)/cctools/SDK/$(BARE_PLATFORM).sdk
 MACOSX_SYSROOT  ?= $(HOME)/cctools/SDK/MacOSX.sdk
 
 CC       := $(GNU_HOST_TRIPLE)-clang
@@ -201,7 +210,7 @@ else ifeq ($(UNAME),FreeBSD)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building on FreeBSD)
 endif # ($(MEMO_QUIET),1)
-TARGET_SYSROOT  ?= $(HOME)/cctools/SDK/iPhoneOS13.2.sdk
+TARGET_SYSROOT  ?= $(HOME)/cctools/SDK/$(BARE_PLATFORM).sdk
 MACOSX_SYSROOT  ?= $(HOME)/cctools/SDK/MacOSX.sdk
 CC      := $(GNU_HOST_TRIPLE)-clang
 CXX     := $(GNU_HOST_TRIPLE)-clang++
@@ -223,48 +232,48 @@ BUILD_CXXFLAGS :=
 BUILD_LDFLAGS  :=
 
 else ifeq ($(UNAME),Darwin)
-ifeq ($(filter $(shell uname -m | cut -c -4), iPad iPho iPod),)
+ifeq ($(shell sw_vers -productName),macOS)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building on MacOS)
 endif # ($(MEMO_QUIET),1)
 TARGET_SYSROOT  ?= $(shell xcrun --sdk $(PLATFORM) --show-sdk-path)
 MACOSX_SYSROOT  ?= $(shell xcrun --show-sdk-path)
-CC              := cc
-CXX             := c++
-CPP             := cc -E
+CC              := $(shell xcrun --sdk $(PLATFORM) --find cc)
+CXX             := $(shell xcrun --sdk $(PLATFORM) --find c++)
+CPP             := $(shell xcrun --sdk $(PLATFORM) --find cc) -E
 PATH            := /opt/procursus/bin:/opt/procursus/libexec/gnubin:/usr/bin:$(PATH)
 
-BUILD_CFLAGS   := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion)
-BUILD_CPPFLAGS := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion)
-BUILD_CXXFLAGS := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion)
-BUILD_LDFLAGS  := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion)
+BUILD_CFLAGS   := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
+BUILD_CPPFLAGS := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
+BUILD_CXXFLAGS := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
+BUILD_LDFLAGS  := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
 
 else
 ifneq ($(MEMO_QUIET),1)
 $(warning Building on iOS)
 endif # ($(MEMO_QUIET),1)
-TARGET_SYSROOT  ?= /usr/share/SDKs/iPhoneOS.sdk
+TARGET_SYSROOT  ?= /usr/share/SDKs/$(BARE_PLATFORM).sdk
 MACOSX_SYSROOT  ?= /usr/share/SDKs/MacOSX.sdk
-CC              := clang
-CXX             := clang++
-CPP             := clang -E
+CC              := $(shell which cc)
+CXX             := $(shell which c++)
+CPP             := $(shell which cc) -E
 PATH            := /usr/bin:$(PATH)
 
-BUILD_CFLAGS   := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
-BUILD_CPPFLAGS := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
-BUILD_CXXFLAGS := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
-BUILD_LDFLAGS  := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
+BUILD_CFLAGS   := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion) -isysroot /usr/share/SDKs/iPhoneOS.sdk
+BUILD_CPPFLAGS := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion) -isysroot /usr/share/SDKs/iPhoneOS.sdk
+BUILD_CXXFLAGS := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion) -isysroot /usr/share/SDKs/iPhoneOS.sdk
+BUILD_LDFLAGS  := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion) -isysroot /usr/share/SDKs/iPhoneOS.sdk
 
 endif
-AR              := ar
-LD              := ld
-RANLIB          := ranlib
-STRIP           := strip
-NM              := nm
-LIPO            := lipo
-OTOOL           := otool
-I_N_T           := install_name_tool
-LIBTOOL         := libtool
+AR              := $(shell which ar)
+LD              := $(shell which ld)
+RANLIB          := $(shell which ranlib)
+STRIP           := $(shell which strip)
+NM              := $(shell which nm)
+LIPO            := $(shell which lipo)
+OTOOL           := $(shell which otool)
+I_N_T           := $(shell which install_name_tool)
+LIBTOOL         := $(shell which libtool)
 
 else
 $(error Please use Linux, MacOS or FreeBSD to build)
@@ -273,7 +282,8 @@ endif
 CC_FOR_BUILD  := $(shell which cc) $(BUILD_CFLAGS)
 CPP_FOR_BUILD := $(shell which cc) -E $(BUILD_CPPFLAGS)
 CXX_FOR_BUILD := $(shell which c++) $(BUILD_CXXFLAGS)
-export CC_FOR_BUILD CPP_FOR_BUILD CXX_FOR_BUILD
+AR_FOR_BUILD  := $(shell which ar)
+export CC_FOR_BUILD CPP_FOR_BUILD CXX_FOR_BUILD AR_FOR_BUILD
 
 DEB_MAINTAINER    ?= Hayden Seay <me@diatr.us>
 CODESIGN_IDENTITY ?= -
@@ -301,22 +311,22 @@ BUILD_STRAP    := $(BUILD_ROOT)/build_strap/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Extra scripts for the buildsystem
 BUILD_TOOLS    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_tools
 
-OPTIMIZATION_FLAGS  ?= -flto=thin -Os
 
 ifeq ($(DEBUG),1)
-CFLAGS              := -g -O0
-CPPFLAGS            := -g -O0
-LDFLAGS             := -g -O0
+OPTIMIZATION_FLAGS := -g -O0
 else
-CFLAGS              := $(OPTIMIZATION_FLAGS)
-CPPFLAGS            :=
-LDFLAGS             := $(OPTIMIZATION_FLAGS)
+OPTIMIZATION_FLAGS := -Os
+ifeq ($(UNAME),Darwin)
+ifeq ($(shell sw_vers -productName),macOS)
+OPTIMIZATION_FLAGS += -flto=thin
+endif
+endif
 endif
 
-CFLAGS              += -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)$(MEMO_PREFIX)/Library/Frameworks
+CFLAGS              := $(OPTIMIZATION_FLAGS) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)$(MEMO_PREFIX)/Library/Frameworks
 CXXFLAGS            := $(CFLAGS)
-CPPFLAGS            += -arch $(MEMO_ARCH) $(PLATFORM_VERSION_MIN) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include -Wno-error-implicit-function-declaration
-LDFLAGS             += -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)$(MEMO_PREFIX)/Library/Frameworks
+CPPFLAGS            := -arch $(MEMO_ARCH) $(PLATFORM_VERSION_MIN) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include -Wno-error-implicit-function-declaration
+LDFLAGS             := $(OPTIMIZATION_FLAGS) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)$(MEMO_PREFIX)/Library/Frameworks
 #PKG_CONFIG_PATH     := $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig:$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/pkgconfig:$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/pkgconfig:$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/share/pkgconfig
 #PKG_CONFIG_LIBDIR   := $(PKG_CONFIG_PATH)
 ACLOCAL_PATH        := $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal
@@ -386,10 +396,10 @@ DEFAULT_PERL_BUILD_FLAGS := \
 DEFAULT_GOLANG_FLAGS := \
 	GOOS=$(shell echo $(RUST_TARGET) | cut -f3 -d-) \
 	GOARCH=$(shell echo $(MEMO_TARGET) | cut -f2 -d-) \
-	CGO_CFLAGS="$(CFLAGS)" \
-	CGO_CXXFLAGS="$(CXXFLAGS)" \
+	CGO_CFLAGS="$(shell echo $(CFLAGS) | sed 's/$(OPTIMIZATION_FLAGS)//')" \
+	CGO_CXXFLAGS="$(shell echo $(CXXFLAGS) | sed 's/$(OPTIMIZATION_FLAGS)//')" \
 	CGO_CPPFLAGS="$(CPPFLAGS)" \
-	CGO_LDFLAGS="$(LDFLAGS)" \
+	CGO_LDFLAGS="$(shell echo $(LDFLAGS) | sed 's/$(OPTIMIZATION_FLAGS)//')" \
 	CGO_ENABLED=1 \
 	CC="$(CC)" \
 	CXX="$(CXX)" \
@@ -423,8 +433,7 @@ EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 		mkdir -p $(3); \
 		$(CP) -af $(2)/. $(3); \
 		rm -rf $(2); \
-	fi; \
-	find $(BUILD_BASE)$(MEMO_PREFIX) -name "*.la" -type f -delete
+	fi
 
 DO_PATCH    = cd $(BUILD_PATCH)/$(1); \
 	for PATCHFILE in *; do \
@@ -582,6 +591,10 @@ ifneq ($(shell PATH=$(PATH) sed --version | grep -q GNU && echo 1),1)
 $(error Install GNU sed)
 endif
 
+ifneq ($(shell PATH=$(PATH) grep --version | grep -q GNU && echo 1),1)
+$(error Install GNU grep)
+endif
+
 ifeq ($(call HAS_COMMAND,ldid),1)
 export LDID := ldid
 else
@@ -700,19 +713,18 @@ ifneq ($(shell tic -V | grep -q 'ncurses 6' && echo 1),1)
 $(error Install ncurses 6)
 endif
 
-ifneq ($(LEAVE_ME_ALONE),1)
-
-ifneq (,$(wildcard /usr/share/xml/docbook/stylesheet/docbook-xsl))
+ifneq (,$(wildcard /opt/procursus/share/xml/docbook/stylesheet/docbook-xsl))
+DOCBOOK_XSL := /opt/procursus/share/xml/docbook/stylesheet/docbook-xsl
+export XML_CATALOG_FILES=/opt/procursus/etc/xml/catalog
+else ifneq (,$(wildcard /usr/share/xml/docbook/stylesheet/docbook-xsl))
 DOCBOOK_XSL := /usr/share/xml/docbook/stylesheet/docbook-xsl
+export XML_CATALOG_FILES=/etc/xml/catalog
 else ifneq (,$(wildcard /usr/local/share/xsl/docbook))
 DOCBOOK_XSL := /usr/local/share/xsl/docbook
 else ifneq (,$(wildcard /usr/share/xsl/docbook))
 DOCBOOK_XSL := /usr/share/xsl/docbook
 else ifneq (,$(wildcard /usr/share/xml/docbook/xsl-stylesheets-1.79.2))
 DOCBOOK_XSL := /usr/share/xml/docbook/xsl-stylesheets-1.79.2
-else ifneq (,$(wildcard $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl))
-DOCBOOK_XSL := $(shell brew --prefix)/opt/docbook-xsl/docbook-xsl
-export XML_CATALOG_FILES=$(shell brew --prefix)/etc/xml/catalog
 else
 $(error Install docbook-xsl)
 endif
@@ -727,8 +739,6 @@ endif
 
 ifneq ($(call HAS_COMMAND,po4a),1)
 $(error Install po4a)
-endif
-
 endif
 
 PATH := $(BUILD_TOOLS):$(PATH)
@@ -877,10 +887,6 @@ endif
 	echo "$(BUILD_STRAP)/$${BOOTSTRAP}"
 endif # ($(MEMO_PREFIX),)
 
-bootstrap-device: bootstrap
-	@echo "********** Bootstrapping device. This may take a while! **********"
-	$(BUILD_TOOLS)/bootstrap_device.sh
-
 %-package: FAKEROOT=fakeroot -i $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev) -s $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev) --
 %-package: .SHELLFLAGS=-O extglob -c
 %-stage: %
@@ -963,8 +969,5 @@ endif # ($(MEMO_QUIET),1)
 
 clean::
 	rm -rf $(BUILD_WORK) $(BUILD_BASE) $(BUILD_STAGE)
-
-extreme-clean:: clean
-	git clean -xfd && git reset
 
 .PHONY: clean setup
