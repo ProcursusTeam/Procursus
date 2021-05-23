@@ -14,9 +14,9 @@ duktape-setup: setup
 	mkdir -p $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pkgconfig,include}
 	cp $(BUILD_MISC)/duktape/duktape.pc $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/duktape.pc
 	$(SED) -i 's|prefix=|prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' \
-	$(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/duktape.pc
+		$(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/duktape.pc
 	$(SED) -i 's/Version:/Version: $(DUKTAPE_VERSION)/g' \
-	$(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/duktape.pc
+		$(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/duktape.pc
 
 
 ifneq ($(wildcard $(BUILD_WORK)/duktape/.build_complete),)
@@ -25,10 +25,10 @@ duktape:
 else
 duktape: duktape-setup
 	cd $(BUILD_WORK)/duktape && python2 tools/configure.py --output-directory \
-	$(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -UDUK_USE_ES6_PROXY
+		$(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -UDUK_USE_ES6_PROXY
 	+$(MAKE) -C $(BUILD_WORK)/duktape -f Makefile.sharedlibrary install \
-	CCOPTS="$(CFLAGS)" CCLIBS="$(LDFLAGS) -lm" \
-	INSTALL_PREFIX="$(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
+		CCOPTS="$(CFLAGS)" CCLIBS="$(LDFLAGS) -lm" \
+		INSTALL_PREFIX="$(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
 	+$(MAKE) -C $(BUILD_WORK)/duktape -f Makefile.cmdline
 	mkdir -p $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_WORK)/duktape/duk $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/duk
@@ -44,16 +44,22 @@ duktape-package: duktape-stage
 	mkdir -p $(BUILD_DIST)/libduktape206/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# duktape.mk Prep duktape
-	cp -a $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/duk $(BUILD_DIST)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/duk
+	cp -a $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/duk \
+		$(BUILD_DIST)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/duk
 
 	# duktape.mk Prep duktape-dev
-	cp -a $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/{duk_config.h,duktape.h} $(BUILD_DIST)/duktape-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	cp -a $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/duktape-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
-	cp -a $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/duktape-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/duktape
-	cp -a $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libduktaped{.so,.206.so,.206.20600.so} $(BUILD_DIST)/duktape-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/{duk_config.h,duktape.h} \
+		$(BUILD_DIST)/duktape-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig \
+		$(BUILD_DIST)/duktape-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
+	cp -a $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include \
+		$(BUILD_DIST)/duktape-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/duktape
+	cp -a $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libduktaped{.so,.206.so,.206.20600.so} \
+		$(BUILD_DIST)/duktape-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# duktape.mk Prep libduktape206
-	cp -a $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libduktape{.so,.206.so,.206.20600.so} $(BUILD_DIST)/libduktape206/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libduktape{.so,.206.so,.206.20600.so} \
+		$(BUILD_DIST)/libduktape206/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# duktape.mk Sign
 	$(call SIGN,duktape,general.xml)
