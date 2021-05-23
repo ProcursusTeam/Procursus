@@ -40,4 +40,3 @@ bash-completion-package: bash-completion-stage
 	rm -rf $(BUILD_DIST)/bash-completion
 
 .PHONY: bash-completion bash-completion-package
-

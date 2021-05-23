@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += libxmu
 LIBXMU_VERSION := 1.1.3
-DEB_LIBXMU_V   ?= $(LIBXMU_VERSION)
+DEB_LIBXMU_V   ?= $(LIBXMU_VERSION)-1
 
 libxmu-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXmu-$(LIBXMU_VERSION).tar.bz2{,.sig}
@@ -41,7 +41,7 @@ libxmu-package: libxmu-stage
 	cp -a $(BUILD_STAGE)/libxmu/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libXmuu.1.dylib $(BUILD_DIST)/libxmuu1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxmu.mk Prep libxmu-dev
-	cp -a $(BUILD_STAGE)/libxmu/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libXmu.6.dylib) $(BUILD_DIST)/libxmu-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxmu/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libXmu.6.dylib|libXmuu.1.dylib) $(BUILD_DIST)/libxmu-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libxmu/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libxmu-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libxmu.mk Sign

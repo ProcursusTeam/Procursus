@@ -1,0 +1,126 @@
+From 1bc221da0827ce885161da89bbce5d9ab83db8c1 Mon Sep 17 00:00:00 2001
+From: Hayden <me@diatr.us>
+Date: Sun, 9 May 2021 14:49:42 -0400
+Subject: [PATCH] Add option to use system libuv
+
+---
+ CMakeLists.txt        | 56 +++++++++++++++++++++++++++++--------------
+ cmake/FindLibUV.cmake | 15 ++++++++++++
+ 2 files changed, 53 insertions(+), 18 deletions(-)
+ create mode 100644 cmake/FindLibUV.cmake
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 939abfd..f006dca 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,6 +1,9 @@
+ cmake_minimum_required(VERSION 3.11)
+ project (uvwasi LANGUAGES C)
+ 
++# Point CMake at any custom modules we may ship
++list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
++
+ # This can be a commit hash or tag
+ set(LIBUV_VERSION v1.40.0)
+ 
+@@ -25,19 +28,27 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+   list(APPEND uvwasi_defines _GNU_SOURCE _POSIX_C_SOURCE=200112)
+ endif()
+ 
+-include(FetchContent)
+-## https://libuv.org
+-FetchContent_Declare(
+-        libuv
+-        GIT_REPOSITORY https://github.com/libuv/libuv.git
+-        GIT_TAG ${LIBUV_VERSION})
+-
+-FetchContent_GetProperties(libuv)
+-if(NOT libuv_POPULATED)
+-    FetchContent_Populate(libuv)
+-    include_directories("${libuv_SOURCE_DIR}/include")
+-    add_subdirectory(${libuv_SOURCE_DIR} ${libuv_BINARY_DIR} EXCLUDE_FROM_ALL)
+-endif()
++option(WITH_SYSTEM_LIBUV "Link to a system libuv library instead of bundling" OFF)
++
++if (WITH_SYSTEM_LIBUV)
++  find_package(LibUV REQUIRED)
++  include_directories(${LIBUV_INCLUDE_DIR})
++else (WITH_SYSTEM_LIBUV)
++  include(FetchContent)
++  ## https://libuv.org
++  FetchContent_Declare(
++          libuv
++          GIT_REPOSITORY https://github.com/libuv/libuv.git
++          GIT_TAG ${LIBUV_VERSION})
++  
++  FetchContent_GetProperties(libuv)
++  if(NOT libuv_POPULATED)
++      FetchContent_Populate(libuv)
++      include_directories("${libuv_SOURCE_DIR}/include")
++      add_subdirectory(${libuv_SOURCE_DIR} ${libuv_BINARY_DIR} EXCLUDE_FROM_ALL)
++  endif()
++  set(LIBUV_LIBRARIES uv_a)
++endif (WITH_SYSTEM_LIBUV)
+ 
+ ## uvwasi source code files.
+ set(uvwasi_sources
+@@ -87,9 +98,20 @@ target_compile_definitions(uvwasi_a PRIVATE ${uvwasi_defines})
+ target_compile_options(uvwasi_a PRIVATE ${uvwasi_cflags})
+ target_include_directories(uvwasi_a PRIVATE ${PROJECT_SOURCE_DIR}/include)
+ if(CODE_COVERAGE)
+-    target_link_libraries(uvwasi_a PUBLIC uv_a coverage_config)
++    target_link_libraries(uvwasi_a PUBLIC ${LIBUV_LIBRARIES} coverage_config)
++else()
++    target_link_libraries(uvwasi_a PRIVATE ${LIBUV_LIBRARIES})
++endif()
++
++## Shared library target.
++add_library(uvwasi SHARED ${uvwasi_sources})
++target_compile_definitions(uvwasi PRIVATE ${uvwasi_defines})
++target_compile_options(uvwasi PRIVATE ${uvwasi_cflags})
++target_include_directories(uvwasi PRIVATE ${PROJECT_SOURCE_DIR}/include)
++if(CODE_COVERAGE)
++    target_link_libraries(uvwasi PUBLIC ${LIBUV_LIBRARIES} coverage_config)
+ else()
+-    target_link_libraries(uvwasi_a PRIVATE uv_a)
++    target_link_libraries(uvwasi PRIVATE ${LIBUV_LIBRARIES})
+ endif()
+ 
+ 
+@@ -105,7 +127,7 @@ if(UVWASI_BUILD_TESTS)
+         target_include_directories(${test_name}
+                                     PRIVATE
+                                     ${PROJECT_SOURCE_DIR}/include)
+-        target_link_libraries(${test_name} PRIVATE uv_a uvwasi_a)
++        target_link_libraries(${test_name} PRIVATE ${LIBUV_LIBRARIES} uvwasi_a)
+         list(APPEND test_list ${test_name})
+     endforeach()
+ 
+@@ -122,6 +144,4 @@ message(STATUS "summary of uvwasi build options:
+     Compiler:
+       C compiler:    ${CMAKE_C_COMPILER}
+       CFLAGS:        ${CMAKE_C_FLAGS_${_build_type}} ${CMAKE_C_FLAGS}
+-    Libuv version:   ${LIBUV_VERSION}
+-    Libuv lib:       ${libuv_BINARY_DIR}
+ ")
+diff --git a/cmake/FindLibUV.cmake b/cmake/FindLibUV.cmake
+new file mode 100644
+index 0000000..6a531a8
+--- /dev/null
++++ b/cmake/FindLibUV.cmake
+@@ -0,0 +1,15 @@
++# Find libuv library
++# This module defines
++#  LIBUV_FOUND, if false, do not try to link to libuv
++#  LIBUV_LIBRARIES
++#  LIBUV_INCLUDE_DIR, where to find uv.h
++
++FIND_PATH(LIBUV_INCLUDE_DIR NAMES uv.h)
++FIND_LIBRARY(LIBUV_LIBRARIES NAMES uv libuv)
++
++if(WIN32)
++  list(APPEND LIBUV_LIBRARIES iphlpapi)
++  list(APPEND LIBUV_LIBRARIES psapi)
++  list(APPEND LIBUV_LIBRARIES userenv)
++  list(APPEND LIBUV_LIBRARIES ws2_32)
++endif()

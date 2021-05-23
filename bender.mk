@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+
 SUBPROJECTS      += bender
 BENDER_VERSION   := 1.1.1
 DEB_BENDER_V     ?= $(BENDER_VERSION)
@@ -40,3 +42,5 @@ bender-package: bender-stage
 	rm -rf $(BUILD_DIST)/bender
 
 .PHONY: bender bender-package
+
+endif
