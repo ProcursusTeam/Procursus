@@ -39,9 +39,9 @@ endif
 duktape-package: duktape-stage
 	# duktape.mk Package Structure
 	rm -rf $(BUILD_DIST)/{libduktape206,duktape,duktape-dev}
-	mkdir -p $(BUILD_DIST)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	mkdir -p $(BUILD_DIST)/duktape-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pkgconfig,include,share/duktape}
-	mkdir -p $(BUILD_DIST)/libduktape206/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
+		$(BUILD_DIST)/duktape-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pkgconfig,include,share/duktape} \
+		$(BUILD_DIST)/libduktape206/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# duktape.mk Prep duktape
 	cp -a $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/duk \
