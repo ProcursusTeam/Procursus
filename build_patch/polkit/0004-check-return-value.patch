@@ -1,0 +1,42 @@
+From e5ec64779eab3dfc773307279f2b80bef4b0a591 Mon Sep 17 00:00:00 2001
+From: Wu Xiaotian <yetist@gmail.com>
+Date: Sun, 22 Nov 2020 11:22:39 +0800
+Subject: [PATCH 04/13] check return value
+
+---
+ src/polkitbackend/polkitbackendduktapeauthority.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/src/polkitbackend/polkitbackendduktapeauthority.c b/src/polkitbackend/polkitbackendduktapeauthority.c
+index a54ed5b..1a7e6d3 100644
+--- a/src/polkitbackend/polkitbackendduktapeauthority.c
++++ b/src/polkitbackend/polkitbackendduktapeauthority.c
+@@ -656,7 +656,10 @@ push_action_and_details (duk_context               *cx,
+   gchar **keys;
+   guint n;
+ 
+-  duk_get_global_string (cx, "Action");
++  if (!duk_get_global_string (cx, "Action")) {
++    return FALSE;
++  }
++
+   duk_new (cx, 0);
+ 
+   set_property_str (cx, "id", action_id);
+@@ -699,7 +702,12 @@ polkit_backend_js_authority_get_admin_auth_identities (PolkitBackendInteractiveA
+   duk_context *cx = authority->priv->cx;
+ 
+   duk_set_top (cx, 0);
+-  duk_get_global_string (cx, "polkit");
++  if (!duk_get_global_string (cx, "polkit")) {
++      polkit_backend_authority_log (POLKIT_BACKEND_AUTHORITY (authority),
++                                    "Error deleting old rules, not loading new ones");
++      goto out;
++  }
++
+   duk_push_string (cx, "_runAdminRules");
+ 
+   if (!push_action_and_details (cx, action_id, details, &error))
+-- 
+2.24.3 (Apple Git-128)
+

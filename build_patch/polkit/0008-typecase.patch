@@ -1,0 +1,51 @@
+From 041f3e0cf73c0aa21251d63a0dd855a90e424443 Mon Sep 17 00:00:00 2001
+From: Wu Xiaotian <yetist@gmail.com>
+Date: Sun, 22 Nov 2020 18:04:27 +0800
+Subject: [PATCH 08/13] typecase
+
+---
+ src/polkitbackend/polkitbackendduktapeauthority.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/src/polkitbackend/polkitbackendduktapeauthority.c b/src/polkitbackend/polkitbackendduktapeauthority.c
+index d466c9d..237b1ad 100644
+--- a/src/polkitbackend/polkitbackendduktapeauthority.c
++++ b/src/polkitbackend/polkitbackendduktapeauthority.c
+@@ -915,8 +915,8 @@ spawn_cb (GObject       *source_object,
+           GAsyncResult  *res,
+           gpointer       user_data)
+ {
+-  SpawnData *data = user_data;
+-  data->res = g_object_ref (res);
++  SpawnData *data = (SpawnData *)user_data;
++  data->res = (GAsyncResult*)g_object_ref (res);
+   g_main_loop_quit (data->loop);
+ }
+ 
+@@ -1292,12 +1292,12 @@ utils_spawn (const gchar *const  *argv,
+   data->simple = g_simple_async_result_new (NULL,
+                                             callback,
+                                             user_data,
+-                                            utils_spawn);
++                                            (gpointer*)utils_spawn);
+   data->main_context = g_main_context_get_thread_default ();
+   if (data->main_context != NULL)
+     g_main_context_ref (data->main_context);
+ 
+-  data->cancellable = cancellable != NULL ? g_object_ref (cancellable) : NULL;
++  data->cancellable = cancellable != NULL ? (GCancellable*)g_object_ref (cancellable) : NULL;
+ 
+   data->child_stdout = g_string_new (NULL);
+   data->child_stderr = g_string_new (NULL);
+@@ -1397,7 +1397,7 @@ utils_spawn_finish (GAsyncResult   *res,
+   if (g_simple_async_result_propagate_error (simple, error))
+     goto out;
+ 
+-  data = g_simple_async_result_get_op_res_gpointer (simple);
++  data = (UtilsSpawnData*)g_simple_async_result_get_op_res_gpointer (simple);
+ 
+   if (data->timed_out)
+     {
+-- 
+2.24.3 (Apple Git-128)
+

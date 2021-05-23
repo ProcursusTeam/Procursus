@@ -1,0 +1,54 @@
+From 18dba597b78335094e427c759edbee9f7333a12c Mon Sep 17 00:00:00 2001
+From: Wu Xiaotian <yetist@gmail.com>
+Date: Sun, 22 Nov 2020 15:25:45 +0800
+Subject: [PATCH 10/13] some change
+
+---
+ .../polkitbackendduktapeauthority.c           | 24 +++++++++----------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/src/polkitbackend/polkitbackendduktapeauthority.c b/src/polkitbackend/polkitbackendduktapeauthority.c
+index fad9017..6fac3be 100644
+--- a/src/polkitbackend/polkitbackendduktapeauthority.c
++++ b/src/polkitbackend/polkitbackendduktapeauthority.c
+@@ -125,6 +125,18 @@ G_DEFINE_TYPE (PolkitBackendJsAuthority, polkit_backend_js_authority, POLKIT_BAC
+ 
+ /* ---------------------------------------------------------------------------------------------------- */
+ 
++static duk_ret_t js_polkit_log (duk_context *cx);
++static duk_ret_t js_polkit_spawn (duk_context *cx);
++static duk_ret_t js_polkit_user_is_in_netgroup (duk_context *cx);
++
++static const duk_function_list_entry js_polkit_functions[] =
++{
++  { "log", js_polkit_log, 1 },
++  { "spawn", js_polkit_spawn, 1 },
++  { "_userIsInNetGroup", js_polkit_user_is_in_netgroup, 2 },
++  { NULL, NULL, 0 },
++};
++
+ static void
+ polkit_backend_js_authority_init (PolkitBackendJsAuthority *authority)
+ {
+@@ -347,18 +359,6 @@ setup_file_monitors (PolkitBackendJsAuthority *authority)
+   authority->priv->dir_monitors = (GFileMonitor**) g_ptr_array_free (p, FALSE);
+ }
+ 
+-static duk_ret_t js_polkit_log (duk_context *cx);
+-static duk_ret_t js_polkit_spawn (duk_context *cx);
+-static duk_ret_t js_polkit_user_is_in_netgroup (duk_context *cx);
+-
+-static const duk_function_list_entry js_polkit_functions[] =
+-{
+-  { "log", js_polkit_log, 1 },
+-  { "spawn", js_polkit_spawn, 1 },
+-  { "_userIsInNetGroup", js_polkit_user_is_in_netgroup, 2 },
+-  { NULL, NULL, 0 },
+-};
+-
+ static void
+ polkit_backend_js_authority_constructed (GObject *object)
+ {
+-- 
+2.24.3 (Apple Git-128)
+

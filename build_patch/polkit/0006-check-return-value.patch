@@ -1,0 +1,26 @@
+From 3a872c9e2934598a107d2f35c23b45cf6e5d8b35 Mon Sep 17 00:00:00 2001
+From: Wu Xiaotian <yetist@gmail.com>
+Date: Sun, 22 Nov 2020 13:18:13 +0800
+Subject: [PATCH 06/13] check return value
+
+---
+ src/polkitbackend/polkitbackendduktapeauthority.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/polkitbackend/polkitbackendduktapeauthority.c b/src/polkitbackend/polkitbackendduktapeauthority.c
+index 3f1b32d..6294ad9 100644
+--- a/src/polkitbackend/polkitbackendduktapeauthority.c
++++ b/src/polkitbackend/polkitbackendduktapeauthority.c
+@@ -843,7 +843,8 @@ polkit_backend_js_authority_check_authorization_sync (PolkitBackendInteractiveAu
+  out:
+   if (!good)
+     ret = POLKIT_IMPLICIT_AUTHORIZATION_NOT_AUTHORIZED;
+-  g_free (ret_str);
++  if (ret_str != NULL)
++      g_free (ret_str);
+ 
+   return ret;
+ }
+-- 
+2.24.3 (Apple Git-128)
+
