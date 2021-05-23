@@ -18,8 +18,8 @@ ifneq ($(shell umask),0022)
 $(error Please run `umask 022` before running this)
 endif
 
-MEMO_TARGET          ?= iphoneos-arm64
-MEMO_CFVER           ?= 1600
+MEMO_TARGET          ?= darwin-arm64
+MEMO_CFVER           ?= 1700
 # iOS 13.0 == 1665.15.
 CFVER_WHOLE          := $(shell echo $(MEMO_CFVER) | cut -d. -f1)
 
@@ -574,6 +574,10 @@ GIT_CLONE = if [ ! -d "$(BUILD_WORK)/$(3)" ]; then \
 
 ifneq ($(call HAS_COMMAND,wget),1)
 $(error Install wget)
+endif
+
+ifneq ($(call HAS_COMMAND,triehash),1)
+$(error Install triehash)
 endif
 
 ifeq ($(call HAS_COMMAND,gmake),1)
