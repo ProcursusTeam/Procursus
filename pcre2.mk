@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += pcre2
-PCRE2_VERSION := 10.35
+PCRE2_VERSION := 10.36
 DEB_PCRE2_V   ?= $(PCRE2_VERSION)
 
 pcre2-setup: setup
@@ -19,11 +19,11 @@ pcre2: pcre2-setup readline
 	cd $(BUILD_WORK)/pcre2 && unset MACOSX_DEPLOYMENT_TARGET && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
+		--enable-jit \
 		--enable-pcre2-16 \
 		--enable-pcre2-32 \
-		--enable-jit \
 		--enable-pcre2grep-libz \
-		--enable-pcre2grep-libbz2
+		--enable-pcre2grep-libbz2 \
 	+$(MAKE) -C $(BUILD_WORK)/pcre2
 	+$(MAKE) -C $(BUILD_WORK)/pcre2 install \
 		DESTDIR=$(BUILD_STAGE)/pcre2

@@ -1,0 +1,17 @@
+Package: duktape-dev
+Version: @DEB_DUKTAPE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libduktape206
+Section: Development
+Priority: optional
+Homepage: https://duktape.org
+Description: embeddable Javascript engine, development files
+ Duktape is an embeddable Javascript engine, with a focus on portability
+ and compact footprint.
+ .
+ Duktape is easy to integrate into a C/C++ project: add duktape.c, duktape.h,
+ and duk_config.h to your build, and use the Duktape API to call Ecmascript
+ functions from C code and vice versa.
+ .
+ This package contains all source files to use in own projects.

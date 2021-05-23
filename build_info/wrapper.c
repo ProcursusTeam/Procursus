@@ -5,8 +5,8 @@
 #include <spawn.h>
 #include <sys/wait.h>
 
-#ifndef LD64
-#define LD64 "/usr/libexec/ld"
+#ifndef LINKER
+#define LINKER "/usr/libexec/ld"
 #endif
 
 #ifndef LDID
@@ -34,13 +34,13 @@ int main (int argc, char *argv[]) {
 
 	pid_t pid;
 	int status;
-	status = posix_spawn(&pid, LD64, NULL, NULL, argv, environ);
+	status = posix_spawn(&pid, LINKER, NULL, NULL, argv, environ);
 	if (status == 0) {
  		if (waitpid(pid, &status, 0) == -1) {
 			perror("waitpid");
 		}
 	} else {
-		printf("posix_spawn: Could not execute %s, %s\n", LD64, strerror(status));
+		printf("posix_spawn: Could not execute %s, %s\n", LINKER, strerror(status));
 		return 1;
 	}
 

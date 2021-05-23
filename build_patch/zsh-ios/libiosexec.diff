@@ -1,0 +1,14 @@
+diff -urN zsh/Src/exec.c.old zsh/Src/exec.c
+--- zsh/Src/exec.c.old	2020-03-03 11:39:04.000000000 -0500
++++ zsh/Src/exec.c	2021-05-03 20:17:53.254540384 -0400
+@@ -23,6 +23,10 @@
+ #include "zsh.mdh"
+ #include "exec.pro"
+
++/* wrapper functions to make iOS shell scripts function correctly */
++#define ENABLE_IOSEXEC
++#include <libiosexec.h>
++
+ /* Flags for last argument of addvars */
+ 
+ enum {

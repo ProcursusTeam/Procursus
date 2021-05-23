@@ -24,7 +24,8 @@ DEB_@PKG@_V   ?= $(@PKG@_VERSION)
 	localstatedir='$(MEMO_PREFIX)/var'\n \
 	[binaries]\n \
 	c = '$(CC)'\n \
-	cpp = '$(CXX)'\n" > $(BUILD_WORK)/@pkg@/build/cross.txt
+	cpp = '$(CXX)'\n \
+	pkgconfig = '$(BUILD_TOOLS)/cross-pkg-config'\n" > $(BUILD_WORK)/@pkg@/build/cross.txt
 
 ifneq ($(wildcard $(BUILD_WORK)/@pkg@/.build_complete),)
 @pkg@:

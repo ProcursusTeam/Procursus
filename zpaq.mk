@@ -7,8 +7,8 @@ ZPAQ_VERSION := 7.15
 DEB_ZPAQ_V   ?= $(ZPAQ_VERSION)
 
 zpaq-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/zpaq/zpaq/archive/refs/tags/$(ZPAQ_VERSION).tar.gz
-	$(call EXTRACT_TAR,$(ZPAQ_VERSION).tar.gz,zpaq-$(ZPAQ_VERSION),zpaq)
+	$(call GITHUB_ARCHIVE,zpaq,zpaq,$(ZPAQ_VERSION),$(ZPAQ_VERSION))
+	$(call EXTRACT_TAR,zpaq-$(ZPAQ_VERSION).tar.gz,zpaq-$(ZPAQ_VERSION),zpaq)
 
 ifneq ($(wildcard $(BUILD_WORK)/zpaq/.build_complete),)
 zpaq:
