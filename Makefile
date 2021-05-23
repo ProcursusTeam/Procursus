@@ -254,9 +254,9 @@ $(warning Building on iOS)
 endif # ($(MEMO_QUIET),1)
 TARGET_SYSROOT  ?= /usr/share/SDKs/$(BARE_PLATFORM).sdk
 MACOSX_SYSROOT  ?= /usr/share/SDKs/MacOSX.sdk
-CC              := cc
-CXX             := c++
-CPP             := cc -E
+CC              := $(shell which cc)
+CXX             := $(shell which c++)
+CPP             := $(shell which cc) -E
 PATH            := /usr/bin:$(PATH)
 
 BUILD_CFLAGS   := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion) -isysroot /usr/share/SDKs/iPhoneOS.sdk
@@ -265,15 +265,15 @@ BUILD_CXXFLAGS := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers
 BUILD_LDFLAGS  := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion) -isysroot /usr/share/SDKs/iPhoneOS.sdk
 
 endif
-AR              := ar
-LD              := ld
-RANLIB          := ranlib
-STRIP           := strip
-NM              := nm
-LIPO            := lipo
-OTOOL           := otool
-I_N_T           := install_name_tool
-LIBTOOL         := libtool
+AR              := $(shell which ar)
+LD              := $(shell which ld)
+RANLIB          := $(shell which ranlib)
+STRIP           := $(shell which strip)
+NM              := $(shell which nm)
+LIPO            := $(shell which lipo)
+OTOOL           := $(shell which otool)
+I_N_T           := $(shell which install_name_tool)
+LIBTOOL         := $(shell which libtool)
 
 else
 $(error Please use Linux, MacOS or FreeBSD to build)
@@ -282,7 +282,8 @@ endif
 CC_FOR_BUILD  := $(shell which cc) $(BUILD_CFLAGS)
 CPP_FOR_BUILD := $(shell which cc) -E $(BUILD_CPPFLAGS)
 CXX_FOR_BUILD := $(shell which c++) $(BUILD_CXXFLAGS)
-export CC_FOR_BUILD CPP_FOR_BUILD CXX_FOR_BUILD
+AR_FOR_BUILD  := $(shell which ar)
+export CC_FOR_BUILD CPP_FOR_BUILD CXX_FOR_BUILD AR_FOR_BUILD
 
 DEB_MAINTAINER    ?= Hayden Seay <me@diatr.us>
 CODESIGN_IDENTITY ?= -
