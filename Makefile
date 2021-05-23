@@ -254,9 +254,9 @@ $(warning Building on iOS)
 endif # ($(MEMO_QUIET),1)
 TARGET_SYSROOT  ?= /usr/share/SDKs/$(BARE_PLATFORM).sdk
 MACOSX_SYSROOT  ?= /usr/share/SDKs/MacOSX.sdk
-CC              := cc
-CXX             := c++
-CPP             := cc -E
+CC              := $(shell which cc)
+CXX             := $(shell which c++)
+CPP             := $(shell which cc) -E
 PATH            := /usr/bin:$(PATH)
 
 BUILD_CFLAGS   := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion) -isysroot /usr/share/SDKs/iPhoneOS.sdk
@@ -265,15 +265,15 @@ BUILD_CXXFLAGS := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers
 BUILD_LDFLAGS  := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion) -isysroot /usr/share/SDKs/iPhoneOS.sdk
 
 endif
-AR              := ar
-LD              := ld
-RANLIB          := ranlib
-STRIP           := strip
-NM              := nm
-LIPO            := lipo
-OTOOL           := otool
-I_N_T           := install_name_tool
-LIBTOOL         := libtool
+AR              := $(shell which ar)
+LD              := $(shell which ld)
+RANLIB          := $(shell which ranlib)
+STRIP           := $(shell which strip)
+NM              := $(shell which nm)
+LIPO            := $(shell which lipo)
+OTOOL           := $(shell which otool)
+I_N_T           := $(shell which install_name_tool)
+LIBTOOL         := $(shell which libtool)
 
 else
 $(error Please use Linux, MacOS or FreeBSD to build)
@@ -282,7 +282,8 @@ endif
 CC_FOR_BUILD  := $(shell which cc) $(BUILD_CFLAGS)
 CPP_FOR_BUILD := $(shell which cc) -E $(BUILD_CPPFLAGS)
 CXX_FOR_BUILD := $(shell which c++) $(BUILD_CXXFLAGS)
-export CC_FOR_BUILD CPP_FOR_BUILD CXX_FOR_BUILD
+AR_FOR_BUILD  := $(shell which ar)
+export CC_FOR_BUILD CPP_FOR_BUILD CXX_FOR_BUILD AR_FOR_BUILD
 
 DEB_MAINTAINER    ?= Hayden Seay <me@diatr.us>
 CODESIGN_IDENTITY ?= -
@@ -916,15 +917,15 @@ setup:
 		$(BUILD_SOURCE) $(BUILD_WORK) $(BUILD_STAGE) $(BUILD_STRAP)
 
 	wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include \
-		https://opensource.apple.com/source/xnu/xnu-6153.61.1/libsyscall/wrappers/spawn/spawn.h \
+		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libsyscall/wrappers/spawn/spawn.h \
 		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/bootstrap_priv.h \
 		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/vproc_priv.h
 
 	wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/machine \
-		https://opensource.apple.com/source/xnu/xnu-6153.81.5/osfmk/mach/machine/thread_state.h
+		https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/mach/machine/thread_state.h
 
 	wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/bsm \
-		https://opensource.apple.com/source/xnu/xnu-6153.81.5/bsd/bsm/audit_kevents.h
+		https://opensource.apple.com/source/xnu/xnu-7195.101.1/bsd/bsm/audit_kevents.h
 
 	cp -a $(BUILD_MISC)/zlib.pc $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 

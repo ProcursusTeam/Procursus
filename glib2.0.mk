@@ -3,13 +3,16 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += glib2.0
-GLIB2.0_MAJOR_V := 2.67
-GLIB2.0_VERSION := $(GLIB2.0_MAJOR_V).6
+GLIB2.0_MAJOR_V := 2.68
+GLIB2.0_VERSION := $(GLIB2.0_MAJOR_V).2
 DEB_GLIB2.0_V   ?= $(GLIB2.0_VERSION)
 
 glib2.0-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftp.gnome.org/pub/gnome/sources/glib/$(GLIB2.0_MAJOR_V)/glib-$(GLIB2.0_VERSION).tar.xz
 	$(call EXTRACT_TAR,glib-$(GLIB2.0_VERSION).tar.xz,glib-$(GLIB2.0_VERSION),glib2.0)
+	$(call DO_PATCH,glib2.0,glib2.0,-p1)
+	$(SED) -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
+		$(BUILD_WORK)/glib2.0/{gio/xdgmime/xdgmime.c,glib/gutils.c}
 	mkdir -p $(BUILD_WORK)/glib2.0/build
 
 	echo -e "[host_machine]\n \
@@ -19,6 +22,7 @@ glib2.0-setup: setup
 	system = 'darwin'\n \
 	[properties]\n \
 	root = '$(BUILD_BASE)'\n \
+	needs_exe_wrapper = true\n \
 	[paths]\n \
 	prefix ='$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
 	[binaries]\n \
@@ -64,7 +68,7 @@ glib2.0-package: glib2.0-stage
 	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/glib-2.0/{gdb,schemas,valgrind} $(BUILD_DIST)/libglib2.0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/glib-2.0
 
 	# glib2.0.mk Prep libglib2.0-bin
-	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{gdbus,gio,gresource,gsettings} $(BUILD_DIST)/libglib2.0-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{gdbus,gio,gresource,gsettings,glib-compile-schemas} $(BUILD_DIST)/libglib2.0-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion $(BUILD_DIST)/libglib2.0-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
 	# glib2.0.mk Prep libglib2.0-dev-bin
