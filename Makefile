@@ -760,7 +760,7 @@ all:: package
 	@echo "$(SUBPROJECTS)"
 	@MEMO_TARGET="$(MEMO_TARGET)" MEMO_CFVER="$(MEMO_CFVER)" '$(BUILD_TOOLS)/check_gettext.sh'
 
-env:
+exportenv:
 	@echo -e "proenv() {"
 	@echo -e "\tMEMO_TARGET='$(MEMO_TARGET)' PLATFORM='$(PLATFORM)' MEMO_ARCH='$(MEMO_ARCH)' TARGET_SYSROOT='$(TARGET_SYSROOT)' MACOSX_SYSROOT='$(MACOSX_SYSROOT)' GNU_HOST_TRIPLE='$(GNU_HOST_TRIPLE)'"
 	@echo -e "\tCC='$(CC)' CXX='$(CXX)' AR='$(AR)' LD='$(LD)' CPP='$(CPP)' RANLIB='$(RANLIB)' STRIP='$(STRIP)' NM='$(NM)' LIPO='$(LIPO)' OTOOL='$(OTOOL)' I_N_T='$(I_N_T)' EXTRA='$(EXTRA)' SED='$(SED)' LDID='$(LDID)' GINSTALL='$(GINSTALL)' LN='$(LN)' CP='$(CP)'"
@@ -778,8 +778,11 @@ env:
 	@echo -e "\texport CFLAGS CXXFLAGS CPPFLAGS LDFLAGS"
 	@echo -e "}"
 
-viewenv:
+env:
 	env
+
+%-setup: $(BUILD_WORK)/%
+	
 
 include *.mk
 
@@ -886,11 +889,16 @@ endif
 	echo "$(BUILD_STRAP)/$${BOOTSTRAP}"
 endif # ($(MEMO_PREFIX),)
 
-%-package: FAKEROOT=fakeroot -i $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev) -s $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev) --
+fuck:	
+	echo fuc kme
+
+fuck-package: fuck
+
+%-package: FAKEROOT=fakeroot -i $(BUILD_STAGE)/.fakeroot_% -s $(BUILD_STAGE)/.fakeroot_% --
 %-package: .SHELLFLAGS=-O extglob -c
-%-stage: %
-	rm -f $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev)
-	touch $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev)
+%-stage: $(BUILD_STAGE)/%
+	rm -f $(BUILD_STAGE)/.fakeroot_$*
+	touch $(BUILD_STAGE)/.fakeroot_$*
 	mkdir -p $(BUILD_DIST)
 
 REPROJ=$(shell echo $@ | cut -f2- -d"-")
@@ -906,7 +914,7 @@ rebuild-%:
 	+$(MAKE) $(REPROJ)
 
 %-deps: %
-	@${BUILD_TOOLS}/find_deps.sh $(BUILD_STAGE)/$^
+	@${BUILD_TOOLS}/find_deps.sh $(BUILD_STAGE)/$*
 
 .PHONY: $(SUBPROJECTS)
 

@@ -6,16 +6,14 @@ STRAPPROJECTS += npth
 NPTH_VERSION  := 1.6
 DEB_NPTH_V    ?= $(NPTH_VERSION)-2
 
-npth-setup: setup
+npth: $(BUILD_STAGE)/npth
+
+$(BUILD_WORK)/npth: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/npth/npth-$(NPTH_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,npth-$(NPTH_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,npth-$(NPTH_VERSION).tar.bz2,npth-$(NPTH_VERSION),npth)
 
-ifneq ($(wildcard $(BUILD_WORK)/npth/.build_complete),)
-npth:
-	@echo "Using previously built npth."
-else
-npth: npth-setup
+$(BUILD_STAGE)/npth: $(BUILD_WORK)/npth
 	cd $(BUILD_WORK)/npth && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/npth
@@ -23,8 +21,6 @@ npth: npth-setup
 		DESTDIR=$(BUILD_STAGE)/npth
 	+$(MAKE) -C $(BUILD_WORK)/npth install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/npth/.build_complete
-endif
 
 npth-package: npth-stage
 	# npth.mk Package Structure
@@ -48,5 +44,6 @@ npth-package: npth-stage
 
 	# npth.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libnpth0{,-dev}
+	echo $(FAKEROOT)
 
 .PHONY: npth npth-package
