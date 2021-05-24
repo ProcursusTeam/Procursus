@@ -10,7 +10,9 @@ duktape-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/svaarala/duktape/releases/download/v$(DUKTAPE_VERSION)/duktape-$(DUKTAPE_VERSION).tar.xz
 	$(call EXTRACT_TAR,duktape-$(DUKTAPE_VERSION).tar.xz,duktape-$(DUKTAPE_VERSION),duktape)
 	$(SED) -i 's/gcc/cc/g' $(BUILD_WORK)/duktape/Makefile.cmdline
+	$(SED) -i 's/gcc/cc/g' $(BUILD_WORK)/duktape/Makefile.sharedlibrary
 	$(SED) -i 's|$$(CCLIBS)|$$(CCLIBS) $(LDFLAGS) $(CFLAGS)|g' $(BUILD_WORK)/duktape/Makefile.cmdline
+	$(SED) -i 's|$$(CC)|$$(CC) $(LDFLAGS) $(CFLAGS)|g' $(BUILD_WORK)/duktape/Makefile.sharedlibrary
 	mkdir -p $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pkgconfig,include}
 	cp $(BUILD_MISC)/duktape/duktape.pc $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/duktape.pc
 	$(SED) -i 's|prefix=|prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' \
@@ -27,7 +29,6 @@ duktape: duktape-setup
 	cd $(BUILD_WORK)/duktape && python2 tools/configure.py --output-directory \
 		$(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -UDUK_USE_ES6_PROXY
 	+$(MAKE) -C $(BUILD_WORK)/duktape -f Makefile.sharedlibrary install \
-		CCOPTS="$(CFLAGS)" CCLIBS="$(LDFLAGS) -lm" \
 		INSTALL_PREFIX="$(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
 	+$(MAKE) -C $(BUILD_WORK)/duktape -f Makefile.cmdline
 	mkdir -p $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
