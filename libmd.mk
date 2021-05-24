@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += libmd
+STRAPPROJECTS += libmd
 LIBMD_VERSION := 1.0.3
 DEB_LIBMD_V   ?= $(LIBMD_VERSION)
 

@@ -5,7 +5,7 @@ Priority: optional
 Section: Utilities
 Maintainer: @DEB_MAINTAINER@
 Author: Dylan Araps <dylan.araps@gmail.com>
-Depends: bash (>= 5.0), gawk
+Depends: bash (>= 5.0), awk
 Replaces: com.matdev.neofetch-ios
 Conflicts: com.matdev.neofetch-ios
 Homepage: https://github.com/dylanaraps/neofetch

@@ -38,7 +38,7 @@ slang2-package: slang2-stage
 		$(BUILD_DIST)/libslang2{,-modules,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# slang2.mk Prep slsh
-	cp -a $(BUILD_STAGE)/slang2/etc $(BUILD_DIST)/slsh
+	cp -a $(BUILD_STAGE)/slang2/$(MEMO_PREFIX)/etc $(BUILD_DIST)/slsh/$(MEMO_PREFIX)
 	cp -a $(BUILD_STAGE)/slang2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/slsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# slang2.mk Prep libslang2
