@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += pacman
-PACMAN_VERSION := 5.2.2
-DEB_PACMAN_V   ?= $(PACMAN_VERSION)-3
+PACMAN_VERSION := 6.0.0
+DEB_PACMAN_V   ?= $(PACMAN_VERSION)
 
 pacman-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://git.archlinux.org/pacman.git/snapshot/pacman-$(PACMAN_VERSION).tar.gz
