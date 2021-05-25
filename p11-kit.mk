@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += p11-kit
+STRAPPROJECTS += p11-kit
 P11_VERSION   := 0.23.21
 DEB_P11_V     ?= $(P11_VERSION)
 

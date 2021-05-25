@@ -21,7 +21,6 @@ htop: htop-setup ncurses
 		--disable-linux-affinity \
 		ac_cv_lib_ncursesw_addnwstr=yes
 	+$(MAKE) -C $(BUILD_WORK)/htop install \
-		CFLAGS="$(CFLAGS) -U_XOPEN_SOURCE" \
 		DESTDIR=$(BUILD_STAGE)/htop
 	rm -rf $(BUILD_STAGE)/htop/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{applications,pixmaps}
 	touch $(BUILD_WORK)/htop/.build_complete

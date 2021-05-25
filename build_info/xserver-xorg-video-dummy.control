@@ -1,0 +1,16 @@
+Package: xserver-xorg-video-dummy
+Version: @DEB_DUMMY_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: xserver-xorg-core
+Provides: xorg-driver-video
+Section: X11
+Priority: optional
+Description: X.Org X server -- dummy display driver
+ This package provides a 'dummy' display driver, which does not actually
+ display anything.
+ .
+ More information about X.Org can be found at:
+ <URL:https://www.X.org>
+ .
+ This package is built from the X.org xf86-video-dummy driver module.

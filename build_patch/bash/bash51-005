@@ -1,0 +1,100 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	5.1
+Patch-ID:	bash51-005
+
+Bug-Reported-by:	Alexander Mescheryakov <alexander.s.m@gmail.com>,
+			konsolebox <konsolebox@gmail.com>   
+Bug-Reference-ID:	<5ffd7f3d.1c69fb81.dee25.166c@mx.google.com>,
+			<CAJnmqwaVs7M6NBqZzcHy5c2+yHkTEg7p+o8ZWuA7sN+6N1q4CA@mail.gmail.com>
+Bug-Reference-URL:	https://lists.gnu.org/archive/html/bug-bash/2021-01/msg00082.html,
+			https://lists.gnu.org/archive/html/bug-bash/2021-04/msg00160.html
+
+Bug-Description:
+
+Fix two memory leaks when assigning arrays using compound assignment syntax.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-5.1-patched/subst.c	2020-12-16 17:01:32.000000000 -0500
+--- subst.c	2021-01-24 17:48:40.000000000 -0500
+***************
+*** 11674,11677 ****
+--- 11674,11679 ----
+  
+    value = string_list (l);
++   dispose_words (l);
++ 
+    wlen = STRLEN (value);
+  
+*** ../bash-5.1-patched/arrayfunc.c	2020-12-16 17:01:32.000000000 -0500
+--- arrayfunc.c	2021-04-19 16:43:09.000000000 -0400
+***************
+*** 565,574 ****
+    WORD_LIST *list;
+    char *akey, *aval, *k, *v;
+-   int free_aval;
+  
+    for (list = nlist; list; list = list->next)
+      {
+-       free_aval = 0;
+- 
+        k = list->word->word;
+        v = list->next ? list->next->word->word : 0;
+--- 565,571 ----
+***************
+*** 578,583 ****
+  
+        akey = expand_assignment_string_to_string (k, 0);
+-       aval = expand_assignment_string_to_string (v, 0);
+- 
+        if (akey == 0 || *akey == 0)
+  	{
+--- 575,578 ----
+***************
+*** 586,599 ****
+  	  continue;
+  	}	      
+        if (aval == 0)
+  	{
+  	  aval = (char *)xmalloc (1);
+  	  aval[0] = '\0';	/* like do_assignment_internal */
+- 	  free_aval = 1;
+  	}
+  
+        bind_assoc_var_internal (var, h, akey, aval, flags);
+!       if (free_aval)
+! 	free (aval);
+      }
+  }
+--- 581,594 ----
+  	  continue;
+  	}	      
++ 
++       aval = expand_assignment_string_to_string (v, 0);
+        if (aval == 0)
+  	{
+  	  aval = (char *)xmalloc (1);
+  	  aval[0] = '\0';	/* like do_assignment_internal */
+  	}
+  
+        bind_assoc_var_internal (var, h, akey, aval, flags);
+!       free (aval);
+      }
+  }
+*** ../bash-5.1/patchlevel.h	2020-06-22 14:51:03.000000000 -0400
+--- patchlevel.h	2020-10-01 11:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 4
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 5
+  
+  #endif /* _PATCHLEVEL_H_ */

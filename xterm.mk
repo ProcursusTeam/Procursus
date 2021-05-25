@@ -21,8 +21,7 @@ xterm: xterm-setup libx11 libxau libxmu xorgproto xbitmaps gettext ncurses libxa
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-pcre2 \
 		--enable-sixel-graphics \
-		cf_cv_lib_part_tgetent=-lncursesw \
-		ac_cv_path_PKG_CONFIG="$(shell which pkg-config) --define-prefix"
+		cf_cv_lib_part_tgetent=-lncursesw
 	+$(MAKE) -C $(BUILD_WORK)/xterm
 	+$(MAKE) -C $(BUILD_WORK)/xterm install \
 		DESTDIR=$(BUILD_STAGE)/xterm

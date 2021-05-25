@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS    += profile.d
-PROFILED_VERSION := 0-6
+PROFILED_VERSION := 0-7
 DEB_PROFILED_V   ?= $(PROFILED_VERSION)
 
 ifneq ($(wildcard $(BUILD_STAGE)/profile.d/.build_complete),)
