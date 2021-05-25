@@ -975,4 +975,7 @@ endif # ($(MEMO_QUIET),1)
 clean::
 	rm -rf $(BUILD_WORK) $(BUILD_BASE) $(BUILD_STAGE)
 
+extreme-clean: clean
+	rm -rf $(BUILD_DIST)
+
 .PHONY: clean setup
