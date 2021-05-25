@@ -28,8 +28,8 @@ libboost:
 else
 libboost: libboost-setup xz zstd icu4c
 	rm -rf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_*
-	cd $(BUILD_WORK)/libboost && unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS SYSROOT && ./bootstrap.sh \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+	cd $(BUILD_WORK)/libboost && ./bootstrap.sh \
+		$(BUILD_CONFIGURE_FLAGS) \
 		--show-libraries
 ifneq (,$(findstring amd64,$(MEMO_TARGET)))
 	echo 'using clang-darwin : x86 : $(CXX) : <compileflags>"$(CPPFLAGS)" <cflags>"$(CFLAGS)" <cxxflags>"$(CXXFLAGS)" <linkflags>"$(LDFLAGS)" ;' > $(BUILD_WORK)/libboost/tools/build/src/user-config.jam
