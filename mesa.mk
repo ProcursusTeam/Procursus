@@ -44,9 +44,6 @@ mesa: mesa-setup libx11 libxext libxcb libxdamage libxxf86vm gettext expat zstd
 	cd $(BUILD_WORK)/mesa/build && meson \
 		--cross-file cross.txt \
 		-Dbuildtype=release \
-		-Diconv=auto \
-		-Dbsymbolic_functions=false \
-		-Ddtrace=false \
 		-Db_ndebug=true \
 		-Dplatforms=x11 \
 		-Dglx=gallium-xlib \

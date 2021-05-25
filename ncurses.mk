@@ -20,8 +20,7 @@ ncurses:
 	@echo "Using previously built ncurses."
 else
 ncurses: ncurses-setup
-	cd $(BUILD_WORK)/ncurses && $(EXTRA) \
-		./configure -C \
+	cd $(BUILD_WORK)/ncurses && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-build-cc="$(shell which cc)" \
 		--with-build-cpp="$(shell which cc) -E" \
