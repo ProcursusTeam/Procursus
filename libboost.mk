@@ -13,11 +13,6 @@ else
 LIBBOOST_CONFIGURE_ARGS := abi=aapcs
 endif
 
-###
-# Add libicu next release (1.76.0)
-# NEVER FORGET TO CHECK IF THERE ARE NEW/REMOVED LIBS
-###
-
 libboost-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://boostorg.jfrog.io/artifactory/main/release/$(LIBBOOST_VERSION)/source/boost_$(LIBBOOST_FORMAT_V).tar.bz2
 	$(call EXTRACT_TAR,boost_$(LIBBOOST_FORMAT_V).tar.bz2,boost_$(LIBBOOST_FORMAT_V),libboost)
@@ -28,22 +23,20 @@ libboost:
 else
 libboost: libboost-setup xz zstd icu4c
 	rm -rf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_*
-	cd $(BUILD_WORK)/libboost && ./bootstrap.sh \
-		$(BUILD_CONFIGURE_FLAGS) \
-		--show-libraries
+	$(BUILD_WORK)/libboost/tools/build/src/engine/build.sh --cxx="$(CXX_FOR_BUILD)" --cxxflags="-std=c++11 $(BUILD_CXXFLAGS)"
 ifneq (,$(findstring amd64,$(MEMO_TARGET)))
 	echo 'using clang-darwin : x86 : $(CXX) : <compileflags>"$(CPPFLAGS)" <cflags>"$(CFLAGS)" <cxxflags>"$(CXXFLAGS)" <linkflags>"$(LDFLAGS)" ;' > $(BUILD_WORK)/libboost/tools/build/src/user-config.jam
 else
 	echo 'using clang-darwin : arm : $(CXX) : <compileflags>"$(CPPFLAGS)" <cflags>"$(CFLAGS)" <cxxflags>"$(CXXFLAGS)" <linkflags>"$(LDFLAGS)" ;' > $(BUILD_WORK)/libboost/tools/build/src/user-config.jam
 endif
-	cd $(BUILD_WORK)/libboost && ./b2 \
+	cd $(BUILD_WORK)/libboost && $(BUILD_WORK)/libboost/tools/build/src/engine/b2 \
 		--prefix=$(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-icu \
 		threading=multi \
 		variant=release \
 		$(LIBBOOST_CONFIGURE_ARGS) \
 		install
-	cd $(BUILD_WORK)/libboost && ./b2 \
+	cd $(BUILD_WORK)/libboost && $(BUILD_WORK)/libboost/tools/build/src/engine/b2 \
 		--prefix=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-icu \
 		threading=multi \
