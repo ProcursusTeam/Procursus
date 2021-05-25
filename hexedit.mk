@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/hexedit/.build_complete),)
 hexedit:
 	@echo "Using previouly built hexedit."
 else
-hexedit: hexedit-setup
+hexedit: hexedit-setup ncurses
 	cd $(BUILD_WORK)/hexedit && ./autogen.sh && ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/hexedit LIBS=-lncursesw
