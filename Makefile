@@ -347,6 +347,18 @@ DEFAULT_CMAKE_FLAGS := \
 	-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 	-DCMAKE_OSX_ARCHITECTURES="$(MEMO_ARCH)"
 
+BUILD_CONFIGURE_FLAGS := \
+	--build=$$($(BUILD_MISC)/config.guess) \
+	--host=$$($(BUILD_MISC)/config.guess) \
+	--disable-dependency-tracking \
+	CC="$(CC_FOR_BUILD)" \
+	CXX="$(CXX_FOR_BUILD)" \
+	CPP="$(CPP_FOR_BUILD)" \
+	CFLAGS="$(BUILD_CFLAGS)" \
+	CXXFLAGS="$(BUILD_CXXFLAGS)" \
+	CPPFLAGS="$(BUILD_CPPFLAGS)" \
+	LDFLAGS="$(BUILD_LDFLAGS)"
+
 DEFAULT_CONFIGURE_FLAGS := \
 	--build=$$($(BUILD_MISC)/config.guess) \
 	--host=$(GNU_HOST_TRIPLE) \
