@@ -11,8 +11,8 @@ duktape-setup: setup
 	$(call EXTRACT_TAR,duktape-$(DUKTAPE_VERSION).tar.xz,duktape-$(DUKTAPE_VERSION),duktape)
 	$(SED) -i 's/gcc/cc/g' $(BUILD_WORK)/duktape/Makefile.cmdline
 	$(SED) -i 's/gcc/cc/g' $(BUILD_WORK)/duktape/Makefile.sharedlibrary
-	$(SED) -i 's|$$(CCLIBS)|$$(CCLIBS) $(LDFLAGS) $(CFLAGS)|g' $(BUILD_WORK)/duktape/Makefile.cmdline
-	$(SED) -i 's|$$(CC)|$$(CC) $(LDFLAGS) $(CFLAGS)|g' $(BUILD_WORK)/duktape/Makefile.sharedlibrary
+	$(SED) -i 's|\$$(CCLIBS)|\$$(CCLIBS) $(LDFLAGS) $(CFLAGS)|g' $(BUILD_WORK)/duktape/Makefile.cmdline
+	$(SED) -i 's|\$$(CC)|\$$(CC) $(LDFLAGS) $(CFLAGS)|g' $(BUILD_WORK)/duktape/Makefile.sharedlibrary
 	mkdir -p $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pkgconfig,include}
 	cp $(BUILD_MISC)/duktape/duktape.pc $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/duktape.pc
 	$(SED) -i 's|prefix=|prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' \
