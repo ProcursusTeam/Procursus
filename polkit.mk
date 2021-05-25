@@ -18,7 +18,12 @@ else
 polkit: polkit-setup libx11 libxau libxmu xorgproto xxhash
 	cd $(BUILD_WORK)/polkit && autoreconf -fiv && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--with-duktape
+		--with-duktape \
+		--enable-libelogind=no \
+		--enable-introspection=no \
+		--enable-libsystemd-login=no \
+		--disable-test
+	find $(BUILD_WORK)/polkit -type f -exec sed -i 's/-Wl,--as-needed/-Wl/g' {} \;
 	+$(MAKE) -C $(BUILD_WORK)/polkit
 	+$(MAKE) -C $(BUILD_WORK)/polkit install \
 		DESTDIR=$(BUILD_STAGE)/polkit
