@@ -16,6 +16,7 @@ ifneq ($(wildcard $(BUILD_WORK)/icu4c/.build_complete),)
 icu4c:
 	@echo "Using previously built icu4c."
 else
+icu4c: .SHELLFLAGS=-O extglob -c
 icu4c: icu4c-setup
 	cd $(BUILD_WORK)/icu4c/host && ../source/configure \
 			$(BUILD_CONFIGURE_FLAGS); \
@@ -24,7 +25,8 @@ icu4c: icu4c-setup
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-cross-build=$(BUILD_WORK)/icu4c/host \
 		--disable-samples \
-		--disable-tests
+		--disable-tests \
+		LDFLAGS="$(LDFLAGS) -headerpad_max_install_names"
 	+$(MAKE) -C $(BUILD_WORK)/icu4c/source
 	+$(MAKE) -C $(BUILD_WORK)/icu4c/source install \
 		DESTDIR=$(BUILD_STAGE)/icu4c
@@ -38,7 +40,7 @@ icu4c: icu4c-setup
 		ln -sf $$(echo $$lib | rev | cut -d. -f4 | cut -d/ -f1 | rev).$(shell echo $(ICU_VERSION) | cut -f1 -d.).dylib $$(echo $$lib | rev | cut -d. -f4 | rev).dylib; \
 	done
 
-	for stuff in $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicu*.$(ICU_VERSION).dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicu*.$(ICU_VERSION).dylib $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
+	for stuff in $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicu*.$(ICU_VERSION).dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicu*.$(ICU_VERSION).dylib $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/!(icu-config); do \
 		$(I_N_T) -change libicudata.$(shell echo $(ICU_VERSION) | cut -f1 -d.).dylib $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicudata.$(shell echo $(ICU_VERSION) | cut -f1 -d.).dylib $$stuff; \
 		$(I_N_T) -change libicui18n.$(shell echo $(ICU_VERSION) | cut -f1 -d.).dylib $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicui18n.$(shell echo $(ICU_VERSION) | cut -f1 -d.).dylib $$stuff; \
 		$(I_N_T) -change libicuio.$(shell echo $(ICU_VERSION) | cut -f1 -d.).dylib $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicuio.$(shell echo $(ICU_VERSION) | cut -f1 -d.).dylib $$stuff; \
