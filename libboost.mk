@@ -3,7 +3,6 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += libboost
-LIBBOOST_FORMAT_V := 1_76_0
 LIBBOOST_VERSION  := 1.76.0
 DEB_LIBBOOST_V    ?= $(LIBBOOST_VERSION)
 
@@ -14,8 +13,8 @@ LIBBOOST_CONFIGURE_ARGS := abi=aapcs
 endif
 
 libboost-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://boostorg.jfrog.io/artifactory/main/release/$(LIBBOOST_VERSION)/source/boost_$(LIBBOOST_FORMAT_V).tar.bz2
-	$(call EXTRACT_TAR,boost_$(LIBBOOST_FORMAT_V).tar.bz2,boost_$(LIBBOOST_FORMAT_V),libboost)
+	wget -q -nc -P $(BUILD_SOURCE) https://boostorg.jfrog.io/artifactory/main/release/$(LIBBOOST_VERSION)/source/boost_$(shell echo $(LIBBOOST_VERSION) | $(SED) 's/\./_/g').tar.bz2
+	$(call EXTRACT_TAR,boost_$(shell echo $(LIBBOOST_VERSION) | $(SED) 's/\./_/g').tar.bz2,boost_$(shell echo $(LIBBOOST_VERSION) | $(SED) 's/\./_/g'),libboost)
 
 ifneq ($(wildcard $(BUILD_WORK)/libboost/.build_complete),)
 libboost:
@@ -31,16 +30,16 @@ else
 endif
 	cd $(BUILD_WORK)/libboost && $(BUILD_WORK)/libboost/tools/build/src/engine/b2 \
 		--prefix=$(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--with-icu \
 		threading=multi \
 		variant=release \
+		cxxstd="14" \
 		$(LIBBOOST_CONFIGURE_ARGS) \
 		install
 	cd $(BUILD_WORK)/libboost && $(BUILD_WORK)/libboost/tools/build/src/engine/b2 \
 		--prefix=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--with-icu \
 		threading=multi \
 		variant=release \
+		cxxstd="14" \
 		$(LIBBOOST_CONFIGURE_ARGS) \
 		install
 	# F u boost!

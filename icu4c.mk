@@ -8,8 +8,8 @@ DEB_ICU_V    ?= $(ICU_VERSION)
 
 icu4c-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) \
-		https://github.com/unicode-org/icu/releases/download/release-$(shell echo $(ICU_VERSION) | $(SED) 's/\./-/')/icu4c-$(shell echo $(ICU_VERSION) | $(SED) 's/\./_/')-src.tgz
-	$(call EXTRACT_TAR,icu4c-$(shell echo $(ICU_VERSION) | $(SED) 's/\./_/')-src.tgz,icu,icu4c)
+		https://github.com/unicode-org/icu/releases/download/release-$(shell echo $(ICU_VERSION) | $(SED) 's/\./-/')/icu4c-$(shell echo $(ICU_VERSION) | $(SED) 's/\./_/g')-src.tgz
+	$(call EXTRACT_TAR,icu4c-$(shell echo $(ICU_VERSION) | $(SED) 's/\./_/g')-src.tgz,icu,icu4c)
 	mkdir -p $(BUILD_WORK)/icu4c/host
 
 ifneq ($(wildcard $(BUILD_WORK)/icu4c/.build_complete),)
