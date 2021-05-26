@@ -23,9 +23,10 @@ ifneq ($(wildcard $(BUILD_WORK)/img4lib/.build_complete),)
 img4lib:
 	@echo "Using previously built img4lib."
 else
-img4lib: img4lib-setup openssl lzfse
+img4lib: img4lib-setup lzfse
 	+$(MAKE) -C $(BUILD_WORK)/img4lib \
-		LD=$(CC)
+		LD=$(CC) \
+		COMMONCRYPTO=1
 	cp -a $(BUILD_WORK)/img4lib/img4 $(BUILD_STAGE)/img4lib/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_WORK)/img4lib/libDER/*.h $(BUILD_STAGE)/img4lib/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libDER
 	cp -a $(BUILD_WORK)/img4lib/libvfs/*.h $(BUILD_STAGE)/img4lib/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libvfs
