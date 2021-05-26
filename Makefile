@@ -331,6 +331,11 @@ LDFLAGS             := $(OPTIMIZATION_FLAGS) -arch $(MEMO_ARCH) -isysroot $(TARG
 #PKG_CONFIG_LIBDIR   := $(PKG_CONFIG_PATH)
 ACLOCAL_PATH        := $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal
 
+# Link everything to libiosexec, as it's preinstalled on every Procursus system.
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+LDFLAGS             += -liosexec
+endif
+
 DEFAULT_CMAKE_FLAGS := \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_CROSSCOMPILING=true \
@@ -346,6 +351,18 @@ DEFAULT_CMAKE_FLAGS := \
 	-DCMAKE_INSTALL_SYSCONFDIR=$(MEMO_PREFIX)/etc \
 	-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 	-DCMAKE_OSX_ARCHITECTURES="$(MEMO_ARCH)"
+
+BUILD_CONFIGURE_FLAGS := \
+	--build=$$($(BUILD_MISC)/config.guess) \
+	--host=$$($(BUILD_MISC)/config.guess) \
+	--disable-dependency-tracking \
+	CC="$(CC_FOR_BUILD)" \
+	CXX="$(CXX_FOR_BUILD)" \
+	CPP="$(CPP_FOR_BUILD)" \
+	CFLAGS="$(BUILD_CFLAGS)" \
+	CXXFLAGS="$(BUILD_CXXFLAGS)" \
+	CPPFLAGS="$(BUILD_CPPFLAGS)" \
+	LDFLAGS="$(BUILD_LDFLAGS)"
 
 DEFAULT_CONFIGURE_FLAGS := \
 	--build=$$($(BUILD_MISC)/config.guess) \
@@ -407,7 +424,9 @@ DEFAULT_GOLANG_FLAGS := \
 
 DEFAULT_SETUP_PY_ENV := \
 	unset MACOSX_DEPLOYMENT_TARGET && \
-	CFLAGS="$(CFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)"
+	CFLAGS="$(CFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)" \
+	CXXFLAGS="$(CXXFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)" \
+	CPPFLAGS="$(CPPFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)"
 
 export PLATFORM MEMO_ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE MEMO_PREFIX MEMO_SUB_PREFIX MEMO_ALT_PREFIX
 export CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T INSTALL
@@ -907,7 +926,6 @@ rebuild-%:
 		rm -rf $(BUILD_WORK) $(BUILD_STAGE); \
 	fi
 	rm -rf {$(BUILD_WORK),$(BUILD_STAGE)}/$(REPROJ2)
-	rm -rf $(BUILD_WORK)/$(REPROJ2)*patches
 	rm -rf $(BUILD_STAGE)/$(REPROJ2)
 	+$(MAKE) $(REPROJ)
 
@@ -965,6 +983,12 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/ucontext.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ucontext.h
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/signal.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/signal.h
 	$(SED) -E /'__API_UNAVAILABLE'/d < $(TARGET_SYSROOT)/usr/include/pthread.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pthread.h
+
+	@# Setup libiosexec
+	cp -a $(BUILD_MISC)/libiosexec/libiosexec.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_MISC)/libiosexec/libiosexec.1.tbd $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	ln -sf libiosexec.1.tbd $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.tbd
+	$(SED) -i '1s/^/#include <libiosexec.h>\n/' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h
 endif
 
 ifneq ($(MEMO_QUIET),1)

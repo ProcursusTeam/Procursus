@@ -16,7 +16,7 @@ ifneq ($(wildcard $(BUILD_WORK)/@pkg@/.build_complete),)
 	@echo "Using previously built @pkg@."
 else
 @pkg@: @pkg@-setup
-	cd $(BUILD_WORK)/@pkg@ && $(DEFAULT_SETUP_PY_ENV) && python3 ./setup.py \
+	cd $(BUILD_WORK)/@pkg@ && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py \
 		install \
 		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		--root="$(BUILD_STAGE)/@pkg@" \
