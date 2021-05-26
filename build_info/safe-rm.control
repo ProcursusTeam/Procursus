@@ -1,0 +1,17 @@
+Package: safe-rm
+Version: @DEB_SAFE-RM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Built-Using: rustc
+Section: Utilites
+Priority: optional
+Description: wrapper around the rm command to prevent accidental deletions
+ This package provides a tool intended to prevent the accidental deletion
+ of important files by replacing rm with a wrapper, which checks the
+ given arguments against a configurable list of exclusions for files and
+ directories that should never be removed.
+ .
+ Users who attempt to delete one of these protected files or directories will
+ not be able to do so and will be shown a warning message instead.
+ .
+ Protected paths can be set both at the site and user levels.
