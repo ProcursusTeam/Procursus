@@ -46,7 +46,7 @@ glib2.0: glib2.0-setup gettext pcre libffi
 	cd $(BUILD_WORK)/glib2.0/build; \
 		DESTDIR="$(BUILD_STAGE)/glib2.0" meson install; \
 		DESTDIR="$(BUILD_BASE)" meson install
-	$(SED) -i 's/zlib//;s/\(Libs\.private:.*\)/\1 -lz/' \
+	$(SED) -i 's/, zlib//;s/\(Libs\.private:.*\)/\1 -lz/' \
 		$(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/gio-2.0.pc \
 		$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/gio-2.0.pc
 	touch $(BUILD_WORK)/glib2.0/.build_complete
