@@ -33,6 +33,7 @@ dav1d: dav1d-setup
 	cd $(BUILD_WORK)/dav1d/build && meson \
 		--cross-file cross.txt \
 		..
+	$(SED) -i 's/HAVE_AS_FUNC 1/HAVE_AS_FUNC 0/' $(BUILD_WORK)/dav1d/build/config.h
 	+ninja -C $(BUILD_WORK)/dav1d/build
 	+DESTDIR=$(BUILD_STAGE)/dav1d ninja -C $(BUILD_WORK)/dav1d/build install
 	+DESTDIR=$(BUILD_BASE) ninja -C $(BUILD_WORK)/dav1d/build install
@@ -53,7 +54,7 @@ dav1d-package: dav1d-stage
 	cp -a $(BUILD_STAGE)/dav1d/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdav1d.5.dylib $(BUILD_DIST)/libdav1d5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# dav1d.mk Prep libdav1d-dev
-	cp -a $(BUILD_STAGE)/dav1d/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libdav1d.dylib,pkgconfig} $(BUILD_DIST)/libdav1d-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/dav1d/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libdav1d.5.dylib) $(BUILD_DIST)/libdav1d-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/dav1d/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libdav1d-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# dav1d.mk Sign
