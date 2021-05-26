@@ -31,6 +31,7 @@ endif
 	cd $(BUILD_WORK)/libboost && $(BUILD_WORK)/libboost/tools/build/src/engine/b2 \
 		--prefix=$(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--without-mpi \
+		--without-graph_parallel \
 		threading=multi \
 		variant=release \
 		cxxstd="14" \
@@ -39,6 +40,7 @@ endif
 	cd $(BUILD_WORK)/libboost && $(BUILD_WORK)/libboost/tools/build/src/engine/b2 \
 		--prefix=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--without-mpi \
+		--without-graph_parallel \
 		threading=multi \
 		variant=release \
 		cxxstd="14" \
