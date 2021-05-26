@@ -6,11 +6,6 @@ SUBPROJECTS   += dav1d
 DAV1D_VERSION := 0.9.0
 DEB_DAV1D_V   ?= $(DAV1D_VERSION)
 
-ifneq (,$(findstring arm64,$(MEMO_TARGET)))
-DAV1D_MESON_ARGS := -D enable_avx512=false \
--D enable_asm=false
-endif
-
 dav1d-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://downloads.videolan.org/pub/videolan/dav1d/$(DAV1D_VERSION)/dav1d-$(DAV1D_VERSION).tar.xz
 	$(call EXTRACT_TAR,dav1d-$(DAV1D_VERSION).tar.xz,dav1d-$(DAV1D_VERSION),dav1d)
@@ -37,8 +32,8 @@ else
 dav1d: dav1d-setup
 	cd $(BUILD_WORK)/dav1d/build && meson \
 		--cross-file cross.txt \
-		$(DAV1D_MESON_ARGS) \
 		..
+	$(SED) -i 's/HAVE_AS_FUNC 1/HAVE_AS_FUNC 0/' $(BUILD_WORK)/dav1d/build/config.h
 	+ninja -C $(BUILD_WORK)/dav1d/build
 	+DESTDIR=$(BUILD_STAGE)/dav1d ninja -C $(BUILD_WORK)/dav1d/build install
 	+DESTDIR=$(BUILD_BASE) ninja -C $(BUILD_WORK)/dav1d/build install
@@ -59,7 +54,7 @@ dav1d-package: dav1d-stage
 	cp -a $(BUILD_STAGE)/dav1d/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdav1d.5.dylib $(BUILD_DIST)/libdav1d5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# dav1d.mk Prep libdav1d-dev
-	cp -a $(BUILD_STAGE)/dav1d/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libdav1d.dylib,pkgconfig} $(BUILD_DIST)/libdav1d-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/dav1d/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libdav1d.5.dylib) $(BUILD_DIST)/libdav1d-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/dav1d/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libdav1d-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# dav1d.mk Sign
