@@ -30,6 +30,7 @@ else
 endif
 	cd $(BUILD_WORK)/libboost && $(BUILD_WORK)/libboost/tools/build/src/engine/b2 \
 		--prefix=$(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--without-mpi \
 		threading=multi,single \
 		variant=release \
 		cxxstd="14" \
@@ -37,6 +38,7 @@ endif
 		install
 	cd $(BUILD_WORK)/libboost && $(BUILD_WORK)/libboost/tools/build/src/engine/b2 \
 		--prefix=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--without-mpi \
 		threading=multi,single \
 		variant=release \
 		cxxstd="14" \
