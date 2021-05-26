@@ -23,7 +23,7 @@ ifneq ($(wildcard $(BUILD_WORK)/gobject-introspection/.build_complete),)
 gobject-introspection:
 	@echo "Using previously built gobject-introspection."
 else
-gobject-introspection: gobject-introspection-setup #glib2.0 libffi python3
+gobject-introspection: gobject-introspection-setup glib2.0 libffi python3
 	$(SED) -i 's|/usr/share|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share|g' $(BUILD_WORK)/gobject-introspection/giscanner/transformer.py
 	$(SED) -i -e "s|extra_giscanner_cflags = \[]|extra_giscanner_cflags = ['$(PLATFORM_VERSION_MIN)']|" \
 		-e "s|extra_giscanner_args = \[]|extra_giscanner_args = ['--cflags-begin'] + extra_giscanner_cflags + ['--cflags-end']|" $(BUILD_WORK)/gobject-introspection/meson.build

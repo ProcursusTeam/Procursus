@@ -926,7 +926,6 @@ rebuild-%:
 		rm -rf $(BUILD_WORK) $(BUILD_STAGE); \
 	fi
 	rm -rf {$(BUILD_WORK),$(BUILD_STAGE)}/$(REPROJ2)
-	rm -rf $(BUILD_WORK)/$(REPROJ2)*patches
 	rm -rf $(BUILD_STAGE)/$(REPROJ2)
 	+$(MAKE) $(REPROJ)
 
