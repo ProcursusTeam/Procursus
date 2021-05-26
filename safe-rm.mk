@@ -20,8 +20,8 @@ safe-rm: safe-rm-setup
 		build \
 		--release \
 		--target=$(RUST_TARGET)
-		$(GINSTALL) -Dm755 $(BUILD_WORK)/safe-rm/target/$(RUST_TARGET)/release/safe-rm \
-			$(BUILD_STAGE)/safe-rm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/safe-rm
+	$(GINSTALL) -Dm755 $(BUILD_WORK)/safe-rm/target/$(RUST_TARGET)/release/safe-rm \
+		$(BUILD_STAGE)/safe-rm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/safe-rm
 	touch $(BUILD_WORK)/safe-rm/.build_complete
 endif
 
