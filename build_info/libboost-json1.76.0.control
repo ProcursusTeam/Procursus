@@ -1,7 +1,8 @@
-Package: libboost-python1.74.0
+Package: libboost-json1.76.0
 Version: @DEB_LIBBOOST_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Depends: libboost-container1.76.0 (= @DEB_LIBBOOST_V@)
 Section: Libraries
 Priority: optional
-Description: python data types, operations, and memory ordering constraints
+Description: Boost.JSON Library
