@@ -31,16 +31,18 @@ aptitude: aptitude-setup ncurses libboost xapian cwidget apt googletest
 		XAPIAN_CONFIG="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/xapian-config" \
 		SIGC_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sigc++-2.0 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/sigc++-2.0/include" \
 		CWIDGET_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/cwidget -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/cwidget -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sigc++-2.0 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/sigc++-2.0/include" \
+		SQLITE3_CFLAGS="-I$(TARGET_SYSROOT)/usr/include" \
+		SQLITE3_LIBS="-L$(TARGET_SYSROOT)/usr/lib -lsqlite3" \
 		CXXFLAGS="-std=gnu++17 $(CXXFLAGS) -D_XOPEN_SOURCE_EXTENDED" \
 		CFLAGS="$(CFLAGS) -D_XOPEN_SOURCE_EXTENDED" \
-		LIBS=" -lapt-pkg -lncursesw -lsigc-2.0 -lcwidget -lncursesw -lsigc-2.0 -lboost_iostreams.1.76.0 -lboost_system -lxapian -lpthread" \
+		LIBS=" -lapt-pkg -lncursesw -lsigc-2.0 -lcwidget -lncursesw -lsigc-2.0 -lboost_iostreams.1.76.0 -lboost_system -lxapian -lpthread -lsqlite3" \
 		pkgdata_DATA="" \
 		DOCBOOK_TARGETS="docbook-man"
 	+$(MAKE) -C $(BUILD_WORK)/aptitude \
 		AR=$(AR) \
 		FILESYSTEM_LDFLAGS="" \
 		README="" \
-		LIBS=" -lapt-pkg -lncursesw -lsigc-2.0 -lcwidget -lncursesw -lsigc-2.0 -lboost_iostreams.1.76.0 -lboost_system -lxapian -lpthread" \
+		LIBS=" -lapt-pkg -lncursesw -lsigc-2.0 -lcwidget -lncursesw -lsigc-2.0 -lboost_iostreams.1.76.0 -lboost_system -lxapian -lpthread -lsqlite3" \
 		DOCBOOK_TARGETS="docbook-man"
 	+$(MAKE) -C $(BUILD_WORK)/aptitude install \
 		DESTDIR=$(BUILD_STAGE)/aptitude \
