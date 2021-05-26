@@ -2,7 +2,6 @@ Package: safe-rm
 Version: @DEB_SAFE-RM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Built-Using: rustc
 Section: Utilities
 Priority: optional
 Description: wrapper around the rm command to prevent accidental deletions
