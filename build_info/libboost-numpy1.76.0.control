@@ -6,3 +6,10 @@ Depends: libboost-python1.76.0 (= @DEB_LIBBOOST_V@)
 Section: Libraries
 Priority: optional
 Description: Boost.Python NumPy extensions
+ This package forms part of the Boost C++ Libraries collection.
+ .
+ The Boost Python library enables exporting a C++ library to Python.
+ The NumPy extensions lets the C++ code interact with NumPy types.
+ .
+ One of the python interpreter packages is required to use the
+ created extensions.

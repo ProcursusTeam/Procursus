@@ -5,3 +5,7 @@ Maintainer: @DEB_MAINTAINER@
 Section: Libraries
 Priority: optional
 Description: library to capture and print stack traces
+ This package forms part of the Boost C++ Libraries collection.
+ .
+ Boost.Stacktrace library is a simple C++03 library that provides
+ information about call sequence in a human-readable form.

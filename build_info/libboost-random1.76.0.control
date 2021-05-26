@@ -2,7 +2,11 @@ Package: libboost-random1.76.0
 Version: @DEB_LIBBOOST_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libboost-system1.76.0 (= @DEB_LIBBOOST_V@)
 Section: Libraries
 Priority: optional
 Description: Boost Random Number Library
+ This package forms part of the Boost C++ Libraries collection.
+ .
+ The Boost Random Number Library (Boost.Random for short) provides a
+ variety of generators and distributions to produce random numbers
+ having useful properties, such as uniform distribution.
