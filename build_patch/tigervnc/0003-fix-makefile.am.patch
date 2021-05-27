@@ -1,0 +1,24 @@
+From d3312e4283587111277dd1a80d7f5d01e639eaf9 Mon Sep 17 00:00:00 2001
+From: Gymxo <55960119+Gymxo@users.noreply.github.com>
+Date: Thu, 1 Apr 2021 13:40:06 -0400
+Subject: [PATCH 3/3] fix makefile.am
+
+---
+ unix/xserver/hw/vnc/Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/unix/xserver/hw/vnc/Makefile.am b/unix/xserver/hw/vnc/Makefile.am
+index d2d0265b..4e4c0f09 100644
+--- a/unix/xserver/hw/vnc/Makefile.am
++++ b/unix/xserver/hw/vnc/Makefile.am
+@@ -65,7 +65,7 @@ libvnc_la_CPPFLAGS = $(XVNC_CPPFLAGS) -I$(TIGERVNC_SRCDIR)/common -UHAVE_CONFIG_
+ 	-I$(top_srcdir)/include \
+ 	${XSERVERLIBS_CFLAGS}
+ 
+-libvnc_la_LDFLAGS = -module -avoid-version -Wl,-z,now
++libvnc_la_LDFLAGS = -module -avoid-version
+ 
+ libvnc_la_LIBADD = libvnccommon.la $(COMMON_LIBS)
+ 
+-- 
+2.24.3 (Apple Git-128)

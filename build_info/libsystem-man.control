@@ -1,0 +1,6 @@
+Package: libsystem-man
+Version: @DEB_LIBSYSTEM-MAN_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Documentation
+Description: Man pages for Darwin and libSystem, along with a few other things

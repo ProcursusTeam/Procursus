@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS   += libgd
 LIBGD_VERSION := 2.3.2
-DEB_LIBGD_V   ?= $(LIBGD_VERSION)
+DEB_LIBGD_V   ?= $(LIBGD_VERSION)-1
 
 libgd-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) \
@@ -48,10 +48,10 @@ libgd-package: libgd-stage
 		$(BUILD_DIST)/libgd-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libgd.mk Prep libgd3
-	cp -a $(BUILD_STAGE)/libgd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgd.3.*.dylib $(BUILD_DIST)/libgd3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libgd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgd.3*.dylib $(BUILD_DIST)/libgd3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libgd.mk Prep libgd-dev
-	cp -a $(BUILD_STAGE)/libgd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libgd.3.*.dylib) $(BUILD_DIST)/libgd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libgd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libgd.3*.dylib) $(BUILD_DIST)/libgd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libgd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libgd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libgd.mk Prep libgd-tools

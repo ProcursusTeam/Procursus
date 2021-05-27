@@ -6,8 +6,10 @@ SUBPROJECTS     += texinfo
 TEXINFO_VERSION := 6.7
 DEB_TEXINFO_V   ?= $(TEXINFO_VERSION)
 
+## This is super broken, someone should fix it
+
 texinfo-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/texinfo/texinfo-$(TEXINFO_VERSION).tar.xz{,.sig}
+	wget -q -nc -P $(BUILD_SOURCE) https://ftp.gnu.org/gnu/texinfo/texinfo-$(TEXINFO_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,texinfo-$(TEXINFO_VERSION).tar.xz)
 	$(call EXTRACT_TAR,texinfo-$(TEXINFO_VERSION).tar.xz,texinfo-$(TEXINFO_VERSION),texinfo)
 
@@ -18,8 +20,10 @@ else
 texinfo: texinfo-setup
 	cd $(BUILD_WORK)/texinfo && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--disable-debug \
-		--disable-dependency-tracking
+		PERL_EXT_CFLAGS="$(CFLAGS)" \
+		PERL_EXT_CPPFLAGS="$(CPPFLAGS)" \
+		PERL_EXT_LDFLAGS="$(LDFLAGS)" \
+		PERL_EXT_CC="$(CC)"
 	+$(MAKE) -C $(BUILD_WORK)/texinfo
 	+$(MAKE) -C $(BUILD_WORK)/texinfo install \
 		DESTDIR=$(BUILD_STAGE)/texinfo

@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS      += axel
+SUBPROJECTS  += axel
 AXEL_VERSION := 2.17.10
 DEB_AXEL_V   ?= $(AXEL_VERSION)
 

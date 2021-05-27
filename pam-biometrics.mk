@@ -5,8 +5,8 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS            += pam-biometrics
-PAM-BIOMETRICS_VERSION := 1.1.2
-DEB_PAM-BIOMETRICS_V   ?= $(PAM-BIOMETRICS_VERSION)
+PAM-BIOMETRICS_VERSION := 1.1.4
+DEB_PAM-BIOMETRICS_V   ?= $(PAM-BIOMETRICS_VERSION)-1
 
 pam-biometrics-setup: setup
 	$(call GITHUB_ARCHIVE,ProcursusTeam,pam-biometrics,$(PAM-BIOMETRICS_VERSION),$(PAM-BIOMETRICS_VERSION))

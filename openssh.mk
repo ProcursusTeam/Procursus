@@ -11,8 +11,8 @@ endif # ($(SSH_STRAP),1)
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += openssh
 endif
-OPENSSH_VERSION := 8.5p1
-DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)-1
+OPENSSH_VERSION := 8.6p1
+DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
 OPENSSH_CONFIGURE_ARGS += ac_cv_func_strtonum=no
@@ -41,7 +41,7 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 		cd $(BUILD_WORK)/openssh && autoreconf; \
 	fi
 	$(SED) -i '/HAVE_ENDIAN_H/d' $(BUILD_WORK)/openssh/config.h.in
-	cd $(BUILD_WORK)/openssh && $(EXTRA) ./configure -C \
+	cd $(BUILD_WORK)/openssh && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--sysconfdir=$(MEMO_PREFIX)/etc/ssh \
 		--with-xauth=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/xauth \
@@ -96,7 +96,7 @@ endif
 
 	# openssh.mk Sign
 	$(call SIGN,openssh-client,general.xml)
-	$(call SIGN,openssh-server,general.xml)
+	$(call SIGN,openssh-server,pam.xml)
 	$(call SIGN,openssh-sftp-server,general.xml)
 
 	# openssh.mk Make .debs

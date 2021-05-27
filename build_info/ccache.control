@@ -2,6 +2,7 @@ Package: ccache
 Version: @DEB_CCACHE_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Depends: libzstd1
 Section: Development
 Suggests: distcc | icecc
 Homepage: https://ccache.samba.org
