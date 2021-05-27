@@ -53,7 +53,7 @@ ifneq ($(wildcard $(BUILD_WORK)/gobject-introspection/.build_complete),)
 gobject-introspection:
 	@echo "Using previously built gobject-introspection."
 else
-gobject-introspection: gobject-introspection-setup #glib2.0 libffi python3
+gobject-introspection: gobject-introspection-setup glib2.0 libffi python3
 ifneq ($(MEMO_TARGET),darwin-amd64)
 else ifneq ($(MEMO_TARGET),darwin-arm64)
 	$(SED) -i 's|/usr/share|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share|g' $(BUILD_WORK)/gobject-introspection/giscanner/transformer.py
