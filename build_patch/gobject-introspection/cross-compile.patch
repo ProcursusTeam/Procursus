@@ -1,0 +1,207 @@
+--- ../tests/meson.build	2020-11-12 12:16:05.000000000 +0100
++++ ../tests/meson.build	2020-11-12 17:04:54.000000000 +0100
+@@ -45,13 +45,15 @@
+ 
+ install_data(installed_sources, install_dir: test_install_dir)
+ 
++test_girscanner = find_program('g-ir-scanner', native: true, required : false)
++test_gircompiler = find_program('g-ir-compiler', native: false, required : false)
++
+ # Generate everything.h and everything.c:
+ test_everything_files = custom_target('everything',
+   output: ['everything.h', 'everything.c'],
+   depends: typelibs,
+   command: [
+-    python,
+-    girscanner,
++    test_girscanner,
+     '--quiet',
+     '--generate-typelib-tests=Everything,@OUTPUT0@,@OUTPUT1@',
+     '--function-decoration=_GI_TEST_EXTERN',
+@@ -109,8 +111,7 @@
+     output: 'Everything-1.0.gir',
+     depends: [everything_lib] + typelibs,
+     command: [
+-      python,
+-      girscanner,
++      test_girscanner,
+       '--quiet',
+       '--output=@OUTPUT@',
+       '--no-libtool',
+@@ -135,8 +136,7 @@
+     output: 'GIMarshallingTests-1.0.gir',
+     depends: [gimarshallingtests_lib] + typelibs,
+     command: [
+-      python,
+-      girscanner,
++      test_girscanner,
+       '--quiet',
+       '--output=@OUTPUT@',
+       '--no-libtool',
+@@ -162,7 +162,7 @@
+       input: gir,
+       output: '@BASENAME@.typelib',
+       depends: [gobject_gir, ],
+-      command: [gircompiler, '-o', '@OUTPUT@', '@INPUT@',
++      command: [test_gircompiler, '-o', '@OUTPUT@', '@INPUT@',
+                 '--includedir', join_paths(build_root, 'gir'),
+                 '--includedir', meson.current_build_dir()
+       ],
+--- ../tests/offsets/meson.build	2020-11-12 12:19:24.000000000 +0100
++++ ../tests/offsets/meson.build	2020-11-12 17:06:04.000000000 +0100
+@@ -18,8 +18,7 @@
+     output: 'Offsets-1.0.gir',
+     depends: [test_offsets_lib] + typelibs,
+     command: [
+-      python,
+-      girscanner,
++      test_girscanner,
+       '--quiet',
+       '--output=@OUTPUT@',
+       '--no-libtool',
+@@ -45,7 +44,7 @@
+     input: test_offsets_gir,
+     output: '@BASENAME@.typelib',
+     depends: [gobject_gir, ],
+-    command: [gircompiler, '-o', '@OUTPUT@', '@INPUT@',
++    command: [test_gircompiler, '-o', '@OUTPUT@', '@INPUT@',
+               '--includedir', join_paths(meson.build_root(), 'gir'),
+               '--includedir', meson.current_build_dir()
+     ],
+--- ../tests/scanner/meson.build	2020-11-12 12:19:53.000000000 +0100
++++ ../tests/scanner/meson.build	2020-11-12 17:05:49.000000000 +0100
+@@ -105,7 +105,7 @@
+ python_path = run_command(python, ['-c', 'import sys; sys.stdout.write(sys.executable)']).stdout()
+ 
+ gircompiler_command = [
+-  gircompiler, '-o', '@OUTPUT@', '@INPUT@',
++  test_gircompiler, '-o', '@OUTPUT@', '@INPUT@',
+   '--includedir', join_paths(build_root, 'gir'),
+   '--includedir', meson.current_build_dir(),
+ ]
+@@ -116,8 +116,7 @@
+     output: 'Typedefs-1.0.gir',
+     depends: [typedef_lib] + typelibs,
+     command: [
+-      python,
+-      girscanner,
++      test_girscanner,
+       '--quiet',
+       '--output=@OUTPUT@',
+       '--no-libtool',
+@@ -156,8 +155,7 @@
+     output: 'Bar-1.0.gir',
+     depends: [barapp_lib] + typelibs,
+     command: [
+-      python,
+-      girscanner,
++      test_girscanner,
+       '--quiet',
+       '--output=@OUTPUT@',
+       '--no-libtool',
+@@ -195,8 +193,7 @@
+     output: 'SLetter-1.0.gir',
+     depends: [sletter_lib] + typelibs,
+     command: [
+-      python,
+-      girscanner,
++      test_girscanner,
+       '--quiet',
+       '--output=@OUTPUT@',
+       '--no-libtool',
+@@ -233,8 +230,7 @@
+     output: 'WarnLib-1.0.gir',
+     depends: [warnlib_lib] + typelibs,
+     command: [
+-      python,
+-      girscanner,
++      test_girscanner,
+       '--quiet',
+       '--output=@OUTPUT@',
+       '--no-libtool',
+@@ -269,8 +265,7 @@
+     output: 'Utility-1.0.gir',
+     depends: [utility_lib] + typelibs,
+     command: [
+-      python,
+-      girscanner,
++      test_girscanner,
+       '--quiet',
+       '--output=@OUTPUT@',
+       '--no-libtool',
+@@ -307,8 +302,7 @@
+     output: 'GtkFrob-1.0.gir',
+     depends: [gtkfrob_lib] + typelibs,
+     command: [
+-      python,
+-      girscanner,
++      test_girscanner,
+       '--quiet',
+       '--output=@OUTPUT@',
+       '--no-libtool',
+@@ -346,8 +340,7 @@
+     output: 'GetType-1.0.gir',
+     depends: [gettype_lib] + typelibs,
+     command: [
+-      python,
+-      girscanner,
++      test_girscanner,
+       '--quiet',
+       '--output=@OUTPUT@',
+       '--no-libtool',
+@@ -384,8 +377,7 @@
+     output: 'Symbolfilter-1.0.gir',
+     depends: typelibs,
+     command: [
+-      python,
+-      girscanner,
++      test_girscanner,
+       '--quiet',
+       '--output=@OUTPUT@',
+       '--no-libtool',
+@@ -412,8 +404,7 @@
+     output: 'Identfilter-1.0.gir',
+     depends: typelibs,
+     command: [
+-      python,
+-      girscanner,
++      test_girscanner,
+       '--quiet',
+       '--output=@OUTPUT@',
+       '--no-libtool',
+@@ -441,8 +432,7 @@
+     output: 'Headeronly-1.0.gir',
+     depends: typelibs,
+     command: [
+-      python,
+-      girscanner,
++      test_girscanner,
+       '--quiet',
+       '--output=@OUTPUT@',
+       '--no-libtool',
+@@ -477,8 +467,7 @@
+     output: 'Regress-1.0.gir',
+     depends: [regress_lib] + typelibs + [utility_gir],
+     command: [
+-      python,
+-      girscanner,
++      test_girscanner,
+       '--quiet',
+       '--output=@OUTPUT@',
+       '--no-libtool',
+--- ../gir/meson.build	2020-11-12 12:26:35.000000000 +0100
++++ ../gir/meson.build	2020-11-12 17:18:14.000000000 +0100
+@@ -433,10 +433,11 @@
+ )
+ 
+ typelibs = []
++local_gircompiler = find_program('g-ir-compiler', native: false, required : false)
+ if get_option('gi_cross_binary_wrapper') != ''
+-    gircompiler_command = [get_option('gi_cross_binary_wrapper'), gircompiler.full_path(), ]
++    gircompiler_command = [get_option('gi_cross_binary_wrapper'), local_gircompiler.full_path(), ]
+ else
+-    gircompiler_command = [gircompiler, ]
++    gircompiler_command = [local_gircompiler, ]
+ endif
+ 
+ gircompiler_command += [ '-o', '@OUTPUT@', '@INPUT@',
