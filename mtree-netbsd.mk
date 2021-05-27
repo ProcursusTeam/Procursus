@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS          += mtree-netbsd
 MTREE_NETBSD_VERSION := 20180822-6
-DEB_MTREE_NETBSD_V   ?= $(MTREE_NETBSD_VERSION)
+DEB_MTREE_NETBSD_V   ?= $(MTREE_NETBSD_VERSION)-1
 
 mtree-netbsd-setup: setup
 	$(call GITHUB_ARCHIVE,jgoerzen,mtree-netbsd,$(MTREE_NETBSD_VERSION),debian/$(MTREE_NETBSD_VERSION))
@@ -19,13 +19,16 @@ else
 mtree-netbsd: mtree-netbsd-setup libmd
 	cd $(BUILD_WORK)/mtree-netbsd && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--sbindir=\$${prefix}/bin \
 		LIBS="-lmd" \
 		ac_cv_func_fnmatch_works="yes"
 	echo "#define HAVE_SHA512_FILE 1" >> $(BUILD_WORK)/mtree-netbsd/config.h
 	+$(MAKE) -C $(BUILD_WORK)/mtree-netbsd
 	+$(MAKE) -C $(BUILD_WORK)/mtree-netbsd install \
 		DESTDIR=$(BUILD_STAGE)/mtree-netbsd
+	mv $(BUILD_STAGE)/mtree-netbsd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/mtree.8 \
+		$(BUILD_STAGE)/mtree-netbsd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/nmtree.8
+	mv $(BUILD_STAGE)/mtree-netbsd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/mtree \
+		$(BUILD_STAGE)/mtree-netbsd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/nmtree
 	touch $(BUILD_WORK)/mtree-netbsd/.build_complete
 endif
 

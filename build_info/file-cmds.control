@@ -2,7 +2,7 @@ Package: file-cmds
 Version: @DEB_FILE-CMDS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Conflicts: coreutils (<= 8.32-11), mtree-netbsd (<= 20180822-6)
 Section: Utilities
 Priority: important
 Description: chflags, compress, ipcrm, ipcs, pax
-Tag: purpose::console, role::hacker

@@ -5,7 +5,7 @@ endif
 STRAPPROJECTS       += coreutils
 COREUTILS_VERSION   := 8.32
 GETENTDARWIN_COMMIT := 1ad0e39ee51181ea6c13b3d1d4e9c6005ee35b5e
-DEB_COREUTILS_V     ?= $(COREUTILS_VERSION)-11
+DEB_COREUTILS_V     ?= $(COREUTILS_VERSION)-12
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 COREUTILS_CONFIGURE_ARGS += ac_cv_func_rpmatch=no
@@ -53,6 +53,10 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	cp $(BUILD_WORK)/coreutils/{rev/rev,bsdcp/bsdcp} $(BUILD_STAGE)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp $(BUILD_WORK)/coreutils/{rev/rev,bsdcp/bsdcp}.1 $(BUILD_STAGE)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	for bin in mknod mkfifo; do \
+		mv $(BUILD_STAGE)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $(BUILD_STAGE)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/g$$bin; \
+		mv $(BUILD_STAGE)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$$bin.1 $(BUILD_STAGE)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/g$$bin.1; \
+	done
 endif
 	+$(MAKE) -C $(BUILD_WORK)/coreutils/getent-darwin install \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
