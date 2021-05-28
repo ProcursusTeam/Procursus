@@ -8,7 +8,7 @@ LLVM_MAJOR_V   := 10
 SWIFT_VERSION  := 5.3.2
 SWIFT_SUFFIX   := RELEASE
 DEB_SWIFT_V    ?= $(SWIFT_VERSION)~$(SWIFT_SUFFIX)
-DEB_LLVM_V     ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)
+DEB_LLVM_V     ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)-1
 
 ifeq ($(MEMO_TARGET),iphoneos-arm64)
 LLVM_DEFAULT_TRIPLE := arm64-apple-ios12.0
@@ -30,6 +30,14 @@ else ifeq ($(MEMO_TARGET),watchos-arm)
 LLVM_DEFAULT_TRIPLE := armv7k-apple-watchos2.0
 SWIFT_VARIANT       := WATCHOS
 SWIFT_OLD           := ON
+else ifeq ($(MEMO_TARGET),darwin-arm64)
+LLVM_DEFAULT_TRIPLE := arm64-apple-darwin11
+SWIFT_VARIANT       := OSX
+SWIFT_OLD           := OFF
+else ifeq ($(MEMO_TARGET),darwin-amd64)
+LLVM_DEFAULT_TRIPLE := x86_64-apple-darwin11
+SWIFT_VARIANT       := OSX
+SWIFT_OLD           := OFF
 endif
 
 llvm-setup: setup
@@ -94,7 +102,11 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		-DCMAKE_MODULE_LINKER_FLAGS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
 		-DCMAKE_SHARED_LINKER_FLAGS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
 		-DCMAKE_STATIC_LINKER_FLAGS="" \
+		-DCMAKE_C_STANDARD_LIBRARIES="-liosexec" \
+		-DCMAKE_CXX_STANDARD_LIBRARIES="-liosexec" \
 		-DLLVM_ENABLE_FFI=ON \
+		-DLLVM_ENABLE_RTTI=ON \
+		-DLLVM_ENABLE_EH=ON \
 		-DLIBXML2_LIBRARY="$(TARGET_SYSROOT)/usr/lib/libxml2.tbd" \
 		-DLIBXML2_INCLUDE_DIR="$(TARGET_SYSROOT)/usr/include/libxml" \
 		-DLibEdit_INCLUDE_DIRS="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
@@ -113,7 +125,7 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		-DLLVM_VERSION_SUFFIX="" \
 		-DLLVM_DEFAULT_TARGET_TRIPLE=$(LLVM_DEFAULT_TRIPLE) \
 		-DLLVM_TARGETS_TO_BUILD="X86;ARM;AArch64" \
-		-DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;lldb;cmark;swift" \
+		-DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;lldb;cmark;swift;clang-tools-extra;lld;polly" \
 		-DLLVM_EXTERNAL_PROJECTS="cmark;swift" \
 		-DLLVM_EXTERNAL_SWIFT_SOURCE_DIR="$(BUILD_WORK)/llvm/swift" \
 		-DLLVM_EXTERNAL_CMARK_SOURCE_DIR="$(BUILD_WORK)/llvm/cmark" \
@@ -147,7 +159,7 @@ endif
 
 llvm-package: llvm-stage
 	# llvm.mk Package Structure
-	rm -rf $(BUILD_DIST)/{clang*,debugserver*,libc++*-dev,libclang-common-*-dev,libclang-cpp*,liblldb-*,libllvm*,liblto*,lldb*,dsymutil*,swift*}/
+	rm -rf $(BUILD_DIST)/{clang*,debugserver*,libc++*-dev,libclang-common-*-dev,libclang-cpp*,liblldb-*,libllvm*,liblto*,lldb*,dsymutil*,swift*,llvm-utils*}/
 
 	# llvm.mk Prep clang-$(LLVM_MAJOR_V)
 	mkdir -p $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib/llvm-$(LLVM_MAJOR_V)/{bin,lib/cmake,share/clang}}
@@ -184,6 +196,12 @@ llvm-package: llvm-stage
 	mkdir -p $(BUILD_DIST)/libc++-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/include/c++ $(BUILD_DIST)/libc++-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 
+	# llvm.mk Prep libllvm-polly$(LLVM_MAJOR_V)
+	mkdir -p $(BUILD_DIST)/libllvm-polly$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib}
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/include/polly $(BUILD_DIST)/libllvm-polly$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/{libPollyISL.a,LLVMPolly.so,libPollyPPCG.a,libPolly.a} $(BUILD_DIST)/libllvm-polly$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/cmake/polly $(BUILD_DIST)/libllvm-polly$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# llvm.mk Prep libclang-common-$(LLVM_MAJOR_V)-dev
 	mkdir -p $(BUILD_DIST)/libclang-common-$(LLVM_MAJOR_V)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{,llvm-$(LLVM_MAJOR_V)/lib/}clang
 	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/clang/$(LLVM_VERSION) $(BUILD_DIST)/libclang-common-$(LLVM_MAJOR_V)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/clang
@@ -213,6 +231,28 @@ llvm-package: llvm-stage
 	mkdir -p $(BUILD_DIST)/lldb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	for bin in lldb{,-argdumper,-instr,-server}; do \
 		ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/$$bin $(BUILD_DIST)/lldb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin; \
+	done
+
+	# llvm.mk Prep llvm-utils-$(LLVM_MAJOR_V)
+	mkdir -p $(BUILD_DIST)/llvm-utils-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/{llvm-*,llc,lli,obj2yaml,opt,sanstats,verify-uselistorder,yaml2obj} $(BUILD_DIST)/llvm-utils-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
+
+	# llvm.mk Prep llvm-utils
+	mkdir -p $(BUILD_DIST)/llvm-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	for file in $(BUILD_DIST)/llvm-utils-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/{llvm-*,llc,lli,obj2yaml,opt,sanstats,verify-uselistorder,yaml2obj}; do \
+		ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/$$(basename "$$file") $(BUILD_DIST)/llvm-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/; \
+	done
+
+	# llvm.mk Prep clang-tools-$(LLVM_MAJOR_V)
+	mkdir -p $(BUILD_DIST)/clang-tools-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/{c-index-test,clang-*,clangd,sancov,scan-build,scan-view} \
+			$(BUILD_DIST)/clang-tools-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
+	rm $(BUILD_DIST)/clang-tools-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/{clang-10,clang-cpp}
+
+	# llvm.mk Prep clang-tools
+	mkdir -p $(BUILD_DIST)/clang-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	for file in $(BUILD_DIST)/clang-tools-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/{c-index-test,clang-*,clangd,sancov,scan-build,scan-view}; do \
+		ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/$$(basename "$$file") $(BUILD_DIST)/clang-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/; \
 	done
 
 	# llvm.mk Prep dsymutil-$(LLVM_MAJOR_V)
@@ -253,6 +293,9 @@ llvm-package: llvm-stage
 	$(call SIGN,lldb-$(LLVM_MAJOR_V),general.xml)
 	$(call SIGN,dsymutil-$(LLVM_MAJOR_V),general.xml)
 	$(call SIGN,swift-$(SWIFT_VERSION),general.xml)
+	$(call SIGN,llvm-utils-$(LLVM_MAJOR_V),general.xml)
+	$(call SIGN,clang-tools-$(LLVM_MAJOR_V),general.xml)
+	$(call SIGN,libllvm-polly$(LLVM_MAJOR_V),general.xml)
 
 	# llvm.mk Make .debs
 	$(call PACK,clang-$(LLVM_MAJOR_V),DEB_LLVM_V)
@@ -272,6 +315,11 @@ llvm-package: llvm-stage
 	$(call PACK,dsymutil,DEB_LLVM_V)
 	$(call PACK,swift-$(SWIFT_VERSION),DEB_SWIFT_V)
 	$(call PACK,swift,DEB_SWIFT_V)
+	$(call PACK,llvm-utils-$(LLVM_MAJOR_V),DEB_LLVM_V)
+	$(call PACK,llvm-utils,DEB_LLVM_V)
+	$(call PACK,clang-tools-$(LLVM_MAJOR_V),DEB_LLVM_V)
+	$(call PACK,clang-tools,DEB_LLVM_V)
+	$(call PACK,libllvm-polly$(LLVM_MAJOR_V),DEB_LLVM_V)
 
 	# llvm.mk Build cleanup
 	rm -rf $(BUILD_DIST)/{clang*,debugserver*,libc++*-dev,libclang-common-*-dev,libclang-cpp*,liblldb-*,libllvm*,liblto*,lldb*,dsymutil*,swift*}/
