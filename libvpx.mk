@@ -3,8 +3,14 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += libvpx
-LIBVPX_VERSION := 1.9.0
+LIBVPX_VERSION := 1.10.0
 DEB_LIBVPX_V   ?= $(LIBVPX_VERSION)
+
+ifneq (,$(findstring arm64,$(MEMO_ARCH)))
+LIBVPX_CONFIGURE_FLAGS := --target=arm64-darwin-gcc
+else
+LIBVPX_CONFIGURE_FLAGS := --target=x86_64-darwin$(DARWIN_DEPLOYMENT_VERSION)-gcc
+endif
 
 libvpx-setup: setup
 	$(call GITHUB_ARCHIVE,webmproject,libvpx,$(LIBVPX_VERSION),v$(LIBVPX_VERSION))
@@ -16,8 +22,6 @@ libvpx:
 else
 libvpx: libvpx-setup
 	cd $(BUILD_WORK)/libvpx && ./configure \
-		$(DEFAULT_CONFIGURE_FLAGS) \
-		--target=arm64-darwin-gcc \
 		--disable-dependency-tracking \
 		--enable-shared \
 		--disable-unit-tests \
@@ -27,7 +31,8 @@ libvpx: libvpx-setup
 		--enable-temporal-denoising \
 		--enable-vp9-temporal-denoising \
 		--enable-vp9-postproc \
-		--enable-vp9-highbitdepth
+		--enable-vp9-highbitdepth \
+		$(LIBVPX_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libvpx
 	+$(MAKE) -C $(BUILD_WORK)/libvpx install \
 		DESTDIR=$(BUILD_STAGE)/libvpx
@@ -37,8 +42,8 @@ libvpx: libvpx-setup
 	for bin in $(BUILD_STAGE)/libvpx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
 		$(I_N_T) -change libvpx.6.dylib /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib $$bin; \
 	done
-	$(I_N_T) -id /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib $(BUILD_STAGE)/libvpx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib
-	$(I_N_T) -id /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib
+	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib $(BUILD_STAGE)/libvpx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib
+	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib
 	touch $(BUILD_WORK)/libvpx/.build_complete
 endif
 
