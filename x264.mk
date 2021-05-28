@@ -4,14 +4,13 @@ endif
 
 SUBPROJECTS    += x264
 X264_SOVERSION := 161
-X264_VERSION   := 0.$(X264_SOVERSION).3027+git4121277
+X264_COMMIT    := 55d517bc4569272a2c9a367a4106c234aba2ffbc
+X264_VERSION   := 0.$(X264_SOVERSION).3049+git$(shell echo $(X264_COMMIT) | cut -c -7)
 DEB_X264_V     ?= $(X264_VERSION)
 
-X264_COMMIT    := 4121277b40a667665d4eea1726aefdc55d12d110
-
 x264-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://code.videolan.org/videolan/x264/-/archive/master/x264-$(X264_COMMIT).tar.gz
-	$(call EXTRACT_TAR,x264-$(X264_COMMIT).tar.gz,x264-master-$(X264_COMMIT),x264)
+	$(call GIT_CLONE,https://code.videolan.org/videolan/x264.git,stable,x264)
+	cd $(BUILD_WORK)/x264 && git checkout $(X264_COMMIT)
 	wget -q -nc -P $(BUILD_WORK)/x264 https://raw.githubusercontent.com/libav/gas-preprocessor/master/gas-preprocessor.pl
 	chmod 0755 $(BUILD_WORK)/x264/gas-preprocessor.pl
 
@@ -20,7 +19,6 @@ x264:
 	@echo "Using previously built x264."
 else
 x264: x264-setup
-	rm -rf $(BUILD_STAGE)/x264
 	cd $(BUILD_WORK)/x264 && AS="$(BUILD_WORK)/x264/gas-preprocessor.pl -arch aarch64 -- $(CC) $(CFLAGS)" ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-lsmash \
