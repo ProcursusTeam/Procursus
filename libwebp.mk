@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += libwebp
-LIBWEBP_VERSION := 1.1.0
-DEB_LIBWEBP_V   ?= $(LIBWEBP_VERSION)-1
+LIBWEBP_VERSION := 1.2.0
+DEB_LIBWEBP_V   ?= $(LIBWEBP_VERSION)
 
 libwebp-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/libwebp-$(LIBWEBP_VERSION).tar.gz" ] && wget -q -nc -L -O$(BUILD_SOURCE)/libwebp-$(LIBWEBP_VERSION).tar.gz \
