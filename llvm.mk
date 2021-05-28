@@ -283,6 +283,15 @@ llvm-package: llvm-stage
 		ln -s ../llvm-$(LLVM_MAJOR_V)/lib/swift/$$lib $(BUILD_DIST)/swift/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/swift/$$lib; \
 	done
 
+	# llvm.mk Prep lld-$(LLVM_MAJOR_V)
+	mkdir -p $(BUILD_DIST)/lld-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/{ld.lld,ld64.lld,lld,lld-link,wasm-ld} $(BUILD_DIST)/lld-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
+
+	# llvm.mk Prep lld
+	mkdir -p $(BUILD_DIST)/lld/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	ln -s ../lib/llvm-$(LLVM_MAJOR_V)/bin/{ld.lld,ld64.lld,lld,lld-link,wasm-ld} $(BUILD_DIST)/lld/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
+
+
 	# llvm.mk Sign
 	$(call SIGN,clang-$(LLVM_MAJOR_V),general.xml)
 	$(call SIGN,debugserver-$(LLVM_MAJOR_V),debugserver.xml)
@@ -296,6 +305,7 @@ llvm-package: llvm-stage
 	$(call SIGN,llvm-utils-$(LLVM_MAJOR_V),general.xml)
 	$(call SIGN,clang-tools-$(LLVM_MAJOR_V),general.xml)
 	$(call SIGN,libllvm-polly$(LLVM_MAJOR_V),general.xml)
+	$(call SIGN,lld-$(LLVM_MAJOR_V),general.xml)
 
 	# llvm.mk Make .debs
 	$(call PACK,clang-$(LLVM_MAJOR_V),DEB_LLVM_V)
@@ -320,6 +330,8 @@ llvm-package: llvm-stage
 	$(call PACK,clang-tools-$(LLVM_MAJOR_V),DEB_LLVM_V)
 	$(call PACK,clang-tools,DEB_LLVM_V)
 	$(call PACK,libllvm-polly$(LLVM_MAJOR_V),DEB_LLVM_V)
+	$(call PACK,lld-$(LLVM_MAJOR_V),DEB_LLVM_V)
+	$(call PACK,lld,DEB_LLVM_V)
 
 	# llvm.mk Build cleanup
 	rm -rf $(BUILD_DIST)/{clang*,debugserver*,libc++*-dev,libclang-common-*-dev,libclang-cpp*,liblldb-*,libllvm*,liblto*,lldb*,dsymutil*,swift*}/
