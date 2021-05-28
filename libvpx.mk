@@ -7,7 +7,7 @@ LIBVPX_VERSION := 1.10.0
 DEB_LIBVPX_V   ?= $(LIBVPX_VERSION)
 
 ifneq (,$(findstring arm64,$(MEMO_TARGET)))
-ifneq (,$(findstring darwin-arm64,$(MEMO_TARGET)))
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 LIBVPX_CONFIGURE_FLAGS := --target=arm64-darwin$(DARWIN_DEPLOYMENT_VERSION)-gcc
 else
 LIBVPX_CONFIGURE_FLAGS := --target=arm64-darwin-gcc
