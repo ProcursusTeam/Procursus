@@ -9,17 +9,15 @@ X264_VERSION   := 0.$(X264_SOVERSION).3049+git$(shell echo $(X264_COMMIT) | cut 
 DEB_X264_V     ?= $(X264_VERSION)
 
 x264-setup: setup
+#	Clones latest from the stable branch. Update version/commit on compile.
 	$(call GIT_CLONE,https://code.videolan.org/videolan/x264.git,stable,x264)
-	cd $(BUILD_WORK)/x264 && git checkout $(X264_COMMIT)
-	wget -q -nc -P $(BUILD_WORK)/x264 https://raw.githubusercontent.com/libav/gas-preprocessor/master/gas-preprocessor.pl
-	chmod 0755 $(BUILD_WORK)/x264/gas-preprocessor.pl
 
 ifneq ($(wildcard $(BUILD_WORK)/x264/.build_complete),)
 x264:
 	@echo "Using previously built x264."
 else
 x264: x264-setup
-	cd $(BUILD_WORK)/x264 && AS="$(BUILD_WORK)/x264/gas-preprocessor.pl -arch aarch64 -- $(CC) $(CFLAGS)" ./configure \
+	cd $(BUILD_WORK)/x264 && ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-lsmash \
 		--disable-swscale \

@@ -4,14 +4,11 @@ endif
 
 SUBPROJECTS    += x265
 X265_SOVERSION := 192
-X265_VERSION   := 3.4
+X265_VERSION   := 3.5
 DEB_X265_V     ?= $(X265_VERSION)
 
 x265-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/x265-$(X265_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/x265-$(X265_VERSION).tar.gz \
-			https://bitbucket.org/multicoreware/x265_git/get/$(X265_VERSION).tar.gz
-	$(call EXTRACT_TAR,x265-$(X265_VERSION).tar.gz,multicoreware-x265_*,x265)
+	$(call GIT_CLONE,https://bitbucket.org/multicoreware/x265_git.git,$(X265_VERSION),x265)
 
 ifneq ($(wildcard $(BUILD_WORK)/x265/.build_complete),)
 x265:
