@@ -25,8 +25,7 @@ cairo: cairo-setup freetype gettext fontconfig glib2.0 libpng16 liblzo2 libpixma
 		--enable-svg \
 		--enable-xcb \
 		--enable-xlib \
-		--enable-gobject \
-		--enable-pthread
+		--enable-gobject
 	+$(MAKE) -C $(BUILD_WORK)/cairo \
 		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/glib-2.0/include"
 	+$(MAKE) -C $(BUILD_WORK)/cairo install \
