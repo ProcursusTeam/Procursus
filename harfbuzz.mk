@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += harfbuzz
-HARFBUZZ_VERSION := 2.7.4
-DEB_HARFBUZZ_V   ?= $(HARFBUZZ_VERSION)-1
+HARFBUZZ_VERSION := 2.8.1
+DEB_HARFBUZZ_V   ?= $(HARFBUZZ_VERSION)
 
 harfbuzz-setup: setup
 	$(call GITHUB_ARCHIVE,harfbuzz,harfbuzz,$(HARFBUZZ_VERSION),$(HARFBUZZ_VERSION))
@@ -24,7 +24,8 @@ harfbuzz: harfbuzz-setup cairo freetype glib2.0 graphite2 icu4c fontconfig
 		--with-gobject \
 		--with-icu \
 		--with-graphite2 \
-		--with-coretext
+		--with-coretext \
+		--enable-introspection=no # Remove this when introspection is proper.
 	+$(MAKE) -C $(BUILD_WORK)/harfbuzz
 	+$(MAKE) -C $(BUILD_WORK)/harfbuzz install \
 		DESTDIR="$(BUILD_STAGE)/harfbuzz"
