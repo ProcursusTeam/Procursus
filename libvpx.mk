@@ -22,6 +22,7 @@ libvpx:
 else
 libvpx: libvpx-setup
 	cd $(BUILD_WORK)/libvpx && ./configure \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--disable-dependency-tracking \
 		--enable-shared \
 		--disable-unit-tests \
