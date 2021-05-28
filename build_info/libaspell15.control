@@ -1,0 +1,13 @@
+Package: libaspell15
+Version: @DEB_ASPELL_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Multi-Arch: same
+Homepage: http://aspell.net/
+Description: GNU Aspell spell-checker runtime library
+ These are the runtime parts of the Aspell and pspell spell-checking
+ toolkits, needed by applications that use the toolkits at runtime.
+ .
+ For a standalone spell-checker, install aspell as well.
