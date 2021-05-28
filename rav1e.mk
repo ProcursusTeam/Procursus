@@ -9,6 +9,7 @@ DEB_RAV1E_V   ?= $(RAV1E_VERSION)
 rav1e-setup: setup
 	$(call GITHUB_ARCHIVE,xiph,rav1e,$(RAV1E_VERSION),v$(RAV1E_VERSION))
 	$(call EXTRACT_TAR,rav1e-$(RAV1E_VERSION).tar.gz,rav1e-$(RAV1E_VERSION),rav1e)
+	$(call DO_PATCH,rav1e,rav1e,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/rav1e/.build_complete),)
 rav1e:
@@ -17,35 +18,33 @@ else
 rav1e: rav1e-setup aom dav1d
 	cd $(BUILD_WORK)/rav1e && PKG_CONFIG="$(RUST_TARGET)-pkg-config" \
 	SDKROOT="$(TARGET_SYSROOT)" cargo \
-		cbuild \
-		--release \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--target=$(RUST_TARGET)
-	cd $(BUILD_WORK)/rav1e && PKG_CONFIG="$(RUST_TARGET)-pkg-config" \
-	SDKROOT="$(TARGET_SYSROOT)" cargo \
 		build \
 		--release \
 		--target=$(RUST_TARGET)
+	cd $(BUILD_WORK)/rav1e && PKG_CONFIG="$(RUST_TARGET)-pkg-config" \
+	SDKROOT="$(TARGET_SYSROOT)" cargo \
+		cbuild \
+		--release \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--target=$(RUST_TARGET) \
+		--library-type staticlib
 
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/rav1e $(BUILD_STAGE)/rav1e/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/rav1e
 
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.dylib $(BUILD_STAGE)/rav1e/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.0.dylib
+	$(CC) $(CFLAGS) -install_name $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.0.dylib -shared -o $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.0.dylib $(LDFLAGS) $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.a
+
+	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.0.dylib $(BUILD_STAGE)/rav1e/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.0.dylib
 
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.a $(BUILD_STAGE)/rav1e/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.a
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/rav1e.pc $(BUILD_STAGE)/rav1e/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/rav1e.pc
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/rav1e.h $(BUILD_STAGE)/rav1e/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/rav1e.h
 
-
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/rav1e $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/rav1e
-
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.0.dylib
+	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.0.dylib
 
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.a
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/rav1e.pc $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/rav1e.pc
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/rav1e.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/rav1e.h
 
-	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.0.dylib $(BUILD_STAGE)/rav1e/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.0.dylib
-	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.0.dylib
 	ln -sf librav1e.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.dylib
 
 	touch $(BUILD_WORK)/rav1e/.build_complete
