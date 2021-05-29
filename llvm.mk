@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 #SUBPROJECTS   += llvm
-LLVM_VERSION   := 10.0.0
-LLVM_MAJOR_V   := 10
+LLVM_VERSION   := 11.0.0
+LLVM_MAJOR_V   := 11
 SWIFT_VERSION  := 5.4.1
 SWIFT_SUFFIX   := RELEASE
 DEB_SWIFT_V    ?= $(SWIFT_VERSION)~$(SWIFT_SUFFIX)
