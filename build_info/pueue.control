@@ -5,8 +5,9 @@ Maintainer: @DEB_MAINTAINER@
 Author: Arne Beer <contact@arne.beer>
 Section: Utilities
 Priority: optional
+Homepage: https://github.com/Nukesor/pueue
 Description: Manage your shell commands.
- Pueue is a CL task management tool for sequential and parallel
+ Pueue is a task management tool for sequential and parallel
  execution of long-running tasks. Simply put, it's a tool that
  processes a queue of shell commands. On top of that, there are
  a lot of convinient features and abstractions.
