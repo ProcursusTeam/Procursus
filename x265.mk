@@ -3,9 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += x265
-X265_SOVERSION := 192
+X265_SOVERSION := 199
 X265_VERSION   := 3.5
 DEB_X265_V     ?= $(X265_VERSION)
+
+# aarch64 asm seems broken. try again next version.
 
 x265-setup: setup
 	$(call GIT_CLONE,https://bitbucket.org/multicoreware/x265_git.git,$(X265_VERSION),x265)
@@ -18,6 +20,7 @@ x265: x265-setup
 	mkdir -p $(BUILD_WORK)/x265/{8,10,12}bit
 	cd $(BUILD_WORK)/x265/10bit && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
+		-DENABLE_ASSEMBLY=OFF \
 		-DENABLE_HDR10_PLUS=ON \
 		-DHIGH_BIT_DEPTH=ON -DEXPORT_C_API=OFF \
 		-DENABLE_SHARED=OFF -DENABLE_CLI=OFF \
@@ -27,6 +30,7 @@ x265: x265-setup
 
 	cd $(BUILD_WORK)/x265/12bit && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
+		-DENABLE_ASSEMBLY=OFF \
 		-DMAIN12=ON \
 		-DHIGH_BIT_DEPTH=ON -DEXPORT_C_API=OFF \
 		-DENABLE_SHARED=OFF -DENABLE_CLI=OFF \
@@ -36,13 +40,13 @@ x265: x265-setup
 
 	cd $(BUILD_WORK)/x265/8bit && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
+		-DENABLE_ASSEMBLY=OFF \
 		-DLINKED_10BIT=ON -DLINKED_12BIT=ON \
 		-DEXTRA_LINK_FLAGS=-L. \
 		-DEXTRA_LIB="x265_main10.a;x265_main12.a" \
 		../source
 	+$(MAKE) -C $(BUILD_WORK)/x265/8bit
 	mv $(BUILD_WORK)/x265/8bit/libx265.a $(BUILD_WORK)/x265/8bit/libx265_main.a
-
 
 	cd $(BUILD_WORK)/x265/8bit && $(LIBTOOL) -static -o libx265.a \
 		libx265_main.a libx265_main10.a libx265_main12.a
