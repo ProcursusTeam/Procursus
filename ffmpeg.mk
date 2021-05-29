@@ -16,16 +16,20 @@ ffmpeg:
 else
 ffmpeg: ffmpeg-setup aom dav1d fontconfig freetype frei0r gnutls lame libass libsoxr libvidstab libvorbis libvpx libopencore-amr openjpeg libopus rav1e rtmpdump rubberband sdl2 libsnappy libspeex libsrt tesseract libtheora libwebp x264 x265 libxvidcore xz
 	cd $(BUILD_WORK)/ffmpeg && ./configure \
+		--cross-prefix="$(GNU_HOST_TRIPLE)-" \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--enable-shared \
 		--enable-pthreads \
 		--enable-version3 \
 		--enable-cross-compile \
+		--target-os=darwin \
+		--arch=$(MEMO_ARCH) \
 		--cc="$(CC)" \
-		--arch=arm64 \
-		--pkg-config-flags="--define-prefix" \
-		--host-cflags="$(CFLAGS)" \
-		--host-ldflags="$(LDFLAGS)" \
+		--cxx="$(CC)" \
+		--nm="$(NM)" \
+		--host-cc="$(CC_FOR_BUILD)" \
+		--host-cflags="$(BUILD_CFLAGS)" \
+		--host-ldflags="$(BUILD_LDFLAGS)" \
 		--enable-ffplay \
 		--enable-gnutls \
 		--enable-gpl \
