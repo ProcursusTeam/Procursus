@@ -18,7 +18,7 @@ ifneq ($(wildcard $(BUILD_WORK)/ffmpeg/.build_complete),)
 ffmpeg:
 	@echo "Using previously built ffmpeg."
 else
-ffmpeg: ffmpeg-setup aom dav1d fontconfig freetype frei0r gnutls lame libass libsoxr libvidstab libvorbis libvpx libopencore-amr openjpeg libopus rav1e rtmpdump rubberband sdl2 libsnappy libspeex libsrt tesseract libtheora libwebp x264 x265 libxvidcore xz libzmq
+ffmpeg: ffmpeg-setup aom dav1d fontconfig freetype frei0r gnutls lame libass libsoxr libvidstab libvorbis libvpx libopencore-amr openjpeg libopus rav1e rtmpdump rubberband sdl2 libsnappy libspeex libsrt tesseract libtheora libwebp x264 x265 libxvidcore xz libzmq libxcb
 	cd $(BUILD_WORK)/ffmpeg && ./configure \
 		--cross-prefix="$(GNU_HOST_TRIPLE)-" \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
