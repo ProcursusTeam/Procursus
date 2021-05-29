@@ -6,6 +6,10 @@ SUBPROJECTS    += ffmpeg
 FFMPEG_VERSION := 4.4
 DEB_FFMPEG_V   ?= $(FFMPEG_VERSION)
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+FFMPEG_CONFIGURE_FLAGS := --disable-audiotoolbox
+endif
+
 ffmpeg-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ffmpeg.org/releases/ffmpeg-$(FFMPEG_VERSION).tar.xz
 	$(call EXTRACT_TAR,ffmpeg-$(FFMPEG_VERSION).tar.xz,ffmpeg-$(FFMPEG_VERSION),ffmpeg)
@@ -65,10 +69,10 @@ ffmpeg: ffmpeg-setup aom dav1d fontconfig freetype frei0r gnutls lame libass lib
 		--enable-libsoxr \
 		--enable-videotoolbox \
 		--enable-libzmq \
-		--disable-audiotoolbox \
 		--disable-libbluray \
 		--disable-libjack \
-		--disable-indev=jack
+		--disable-indev=jack \
+		$(FFMPEG_CONFIGURE_FLAGS)
 	$(SED) -i 's/-lSDL2/-lSDL2 -lSDL2main/g' $(BUILD_WORK)/ffmpeg/ffbuild/config.mak
 	+$(MAKE) -C $(BUILD_WORK)/ffmpeg
 	+$(MAKE) -C $(BUILD_WORK)/ffmpeg install \
