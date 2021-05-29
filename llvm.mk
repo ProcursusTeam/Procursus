@@ -5,7 +5,7 @@ endif
 #SUBPROJECTS   += llvm
 LLVM_VERSION   := 10.0.0
 LLVM_MAJOR_V   := 10
-SWIFT_VERSION  := 5.3.2
+SWIFT_VERSION  := 5.4.1
 SWIFT_SUFFIX   := RELEASE
 DEB_SWIFT_V    ?= $(SWIFT_VERSION)~$(SWIFT_SUFFIX)
 DEB_LLVM_V     ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)-1
@@ -69,17 +69,16 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		-DCMAKE_OSX_SYSROOT="$(MACOSX_SYSROOT)" \
 		-DCMAKE_C_FLAGS="" \
 		-DCMAKE_CXX_FLAGS="" \
-		-DCMAKE_CXX_FLAGS="" \
 		-DCMAKE_EXE_LINKER_FLAGS="" \
 		-DSWIFT_INCLUDE_TESTS=OFF \
 		-DSWIFT_BUILD_RUNTIME_WITH_HOST_COMPILER=ON \
 		-DLLVM_TARGETS_TO_BUILD="X86;ARM;AArch64" \
-		-DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;lldb;cmark;swift" \
+		-DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;cmark;swift" \
  		-DLLVM_EXTERNAL_PROJECTS="cmark;swift" \
 		-DLLVM_EXTERNAL_SWIFT_SOURCE_DIR="$(BUILD_WORK)/llvm/swift" \
 		-DLLVM_EXTERNAL_CMARK_SOURCE_DIR="$(BUILD_WORK)/llvm/cmark" \
 		../../llvm
-	+$(MAKE) -C $(BUILD_WORK)/llvm/build/NATIVE swift lldb-tblgen
+	+$(MAKE) -C $(BUILD_WORK)/llvm/build/NATIVE swift-components lldb-tblgen
 
 	cd $(BUILD_WORK)/llvm/build && cmake . \
 		-DCMAKE_BUILD_TYPE=Release \
