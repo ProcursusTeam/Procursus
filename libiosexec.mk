@@ -5,26 +5,21 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS      += libiosexec
-LIBIOSEXEC_VERSION := 1.0.15
+LIBIOSEXEC_VERSION := 1.0.16
 LIBIOSEXEC_SOVER   := 1
 DEB_LIBIOSEXEC_V   ?= $(LIBIOSEXEC_VERSION)
 
 libiosexec-setup: setup
-		$(call GITHUB_ARCHIVE,ProcursusTeam,libiosexec,$(LIBIOSEXEC_VERSION),$(LIBIOSEXEC_VERSION))
-		$(call EXTRACT_TAR,libiosexec-$(LIBIOSEXEC_VERSION).tar.gz,libiosexec-$(LIBIOSEXEC_VERSION),libiosexec)
+	$(call GITHUB_ARCHIVE,ProcursusTeam,libiosexec,$(LIBIOSEXEC_VERSION),$(LIBIOSEXEC_VERSION))
+	$(call EXTRACT_TAR,libiosexec-$(LIBIOSEXEC_VERSION).tar.gz,libiosexec-$(LIBIOSEXEC_VERSION),libiosexec)
 
 ifneq ($(wildcard $(BUILD_WORK)/libiosexec/.build_complete),)
 libiosexec:
 	@echo "Using previously built libiosexec."
 else
 libiosexec: libiosexec-setup
-	mkdir -p $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include}
-	$(MAKE) -C $(BUILD_WORK)/libiosexec \
-		CC="$(CC)" \
-		CFLAGS="$(CFLAGS)"
-
-		$(MAKE) -C $(BUILD_WORK)/libiosexec install DESTDIR=$(BUILD_BASE)
-		$(MAKE) -C $(BUILD_WORK)/libiosexec install DESTDIR=$(BUILD_STAGE)/libiosexec
+	+$(MAKE) -C $(BUILD_WORK)/libiosexec install \
+		DESTDIR=$(BUILD_STAGE)/libiosexec
 	touch $(BUILD_WORK)/libiosexec/.build_complete
 endif
 
@@ -34,7 +29,6 @@ libiosexec-package: libiosexec-stage
 	mkdir -p $(BUILD_DIST)/libiosexec{$(LIBIOSEXEC_SOVER),-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libiosexec1 Prep libiosexec$(LIBIOSEXEC_SOVER)
-	mkdir -p $(BUILD_DIST)/libiosexec$(LIBIOSEXEC_SOVER)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 	cp -a $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.$(LIBIOSEXEC_SOVER).dylib $(BUILD_DIST)/libiosexec$(LIBIOSEXEC_SOVER)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libiosexec-dev Prep libiosexec-dev

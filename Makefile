@@ -28,42 +28,49 @@ IPHONEOS_DEPLOYMENT_TARGET  := 8.0
 APPLETVOS_DEPLOYMENT_TARGET := XXX
 WATCHOS_DEPLOYMENT_TARGET   := 1.0
 MACOSX_DEPLOYMENT_TARGET    := 10.10
+DARWIN_DEPLOYMENT_VERSION   := 14
 override MEMO_CFVER         := 1100
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1200 ] && [ "$(CFVER_WHOLE)" -lt 1300 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 9.0
 APPLETVOS_DEPLOYMENT_TARGET := 9.0
 WATCHOS_DEPLOYMENT_TARGET   := 2.0
 MACOSX_DEPLOYMENT_TARGET    := 10.11
+DARWIN_DEPLOYMENT_VERSION   := 15
 override MEMO_CFVER         := 1200
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1300 ] && [ "$(CFVER_WHOLE)" -lt 1400 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 10.0
 APPLETVOS_DEPLOYMENT_TARGET := 10.0
 WATCHOS_DEPLOYMENT_TARGET   := 3.0
 MACOSX_DEPLOYMENT_TARGET    := 10.12
+DARWIN_DEPLOYMENT_VERSION   := 16
 override MEMO_CFVER         := 1300
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1400 ] && [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 11.0
 APPLETVOS_DEPLOYMENT_TARGET := 11.0
 WATCHOS_DEPLOYMENT_TARGET   := 4.0
 MACOSX_DEPLOYMENT_TARGET    := 10.13
+DARWIN_DEPLOYMENT_VERSION   := 17
 override MEMO_CFVER         := 1400
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1500 ] && [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 12.0
 APPLETVOS_DEPLOYMENT_TARGET := 12.0
 WATCHOS_DEPLOYMENT_TARGET   := 5.0
 MACOSX_DEPLOYMENT_TARGET    := 10.14
+DARWIN_DEPLOYMENT_VERSION   := 18
 override MEMO_CFVER         := 1500
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 13.0
 APPLETVOS_DEPLOYMENT_TARGET := 13.0
 WATCHOS_DEPLOYMENT_TARGET   := 6.0
 MACOSX_DEPLOYMENT_TARGET    := 10.15
+DARWIN_DEPLOYMENT_VERSION   := 19
 override MEMO_CFVER         := 1600
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1700 ] && [ "$(CFVER_WHOLE)" -lt 1800 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 14.0
 APPLETVOS_DEPLOYMENT_TARGET := 14.0
 WATCHOS_DEPLOYMENT_TARGET   := 7.0
 MACOSX_DEPLOYMENT_TARGET    := 11.0
+DARWIN_DEPLOYMENT_VERSION   := 20
 MACOSX_SUITE_NAME           := big_sur
 override MEMO_CFVER         := 1700
 else
@@ -331,6 +338,11 @@ LDFLAGS             := $(OPTIMIZATION_FLAGS) -arch $(MEMO_ARCH) -isysroot $(TARG
 #PKG_CONFIG_LIBDIR   := $(PKG_CONFIG_PATH)
 ACLOCAL_PATH        := $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal
 
+# Link everything to libiosexec, as it's preinstalled on every Procursus system.
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+LDFLAGS             += -liosexec
+endif
+
 DEFAULT_CMAKE_FLAGS := \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_CROSSCOMPILING=true \
@@ -346,6 +358,18 @@ DEFAULT_CMAKE_FLAGS := \
 	-DCMAKE_INSTALL_SYSCONFDIR=$(MEMO_PREFIX)/etc \
 	-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 	-DCMAKE_OSX_ARCHITECTURES="$(MEMO_ARCH)"
+
+BUILD_CONFIGURE_FLAGS := \
+	--build=$$($(BUILD_MISC)/config.guess) \
+	--host=$$($(BUILD_MISC)/config.guess) \
+	--disable-dependency-tracking \
+	CC="$(CC_FOR_BUILD)" \
+	CXX="$(CXX_FOR_BUILD)" \
+	CPP="$(CPP_FOR_BUILD)" \
+	CFLAGS="$(BUILD_CFLAGS)" \
+	CXXFLAGS="$(BUILD_CXXFLAGS)" \
+	CPPFLAGS="$(BUILD_CPPFLAGS)" \
+	LDFLAGS="$(BUILD_LDFLAGS)"
 
 DEFAULT_CONFIGURE_FLAGS := \
 	--build=$$($(BUILD_MISC)/config.guess) \
@@ -407,7 +431,9 @@ DEFAULT_GOLANG_FLAGS := \
 
 DEFAULT_SETUP_PY_ENV := \
 	unset MACOSX_DEPLOYMENT_TARGET && \
-	CFLAGS="$(CFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)"
+	CFLAGS="$(CFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)" \
+	CXXFLAGS="$(CXXFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)" \
+	CPPFLAGS="$(CPPFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)"
 
 export PLATFORM MEMO_ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE MEMO_PREFIX MEMO_SUB_PREFIX MEMO_ALT_PREFIX
 export CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T INSTALL
@@ -907,7 +933,6 @@ rebuild-%:
 		rm -rf $(BUILD_WORK) $(BUILD_STAGE); \
 	fi
 	rm -rf {$(BUILD_WORK),$(BUILD_STAGE)}/$(REPROJ2)
-	rm -rf $(BUILD_WORK)/$(REPROJ2)*patches
 	rm -rf $(BUILD_STAGE)/$(REPROJ2)
 	+$(MAKE) $(REPROJ)
 
@@ -932,7 +957,7 @@ setup:
 	wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/bsm \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/bsd/bsm/audit_kevents.h
 
-	cp -a $(BUILD_MISC)/zlib.pc $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
+	cp -a $(BUILD_MISC)/{libxml-2.0,zlib}.pc $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 
 ifeq ($(UNAME),FreeBSD)
 	@# FreeBSD does not have stdbool.h and stdarg.h
@@ -965,6 +990,13 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/ucontext.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ucontext.h
 	$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/signal.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/signal.h
 	$(SED) -E /'__API_UNAVAILABLE'/d < $(TARGET_SYSROOT)/usr/include/pthread.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pthread.h
+
+	@# Setup libiosexec
+	cp -a $(BUILD_MISC)/libiosexec/libiosexec.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_MISC)/libiosexec/libiosexec.1.tbd $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	ln -sf libiosexec.1.tbd $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.tbd
+	rm -f $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.*.dylib
+	$(SED) -i '1s/^/#include <libiosexec.h>\n/' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h
 endif
 
 ifneq ($(MEMO_QUIET),1)
@@ -974,5 +1006,8 @@ endif # ($(MEMO_QUIET),1)
 
 clean::
 	rm -rf $(BUILD_WORK) $(BUILD_BASE) $(BUILD_STAGE)
+
+extreme-clean: clean
+	rm -rf $(BUILD_DIST)
 
 .PHONY: clean setup
