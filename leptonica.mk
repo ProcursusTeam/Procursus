@@ -18,8 +18,7 @@ leptonica: leptonica-setup libgif libjpeg-turbo libpng16 libtiff openjpeg libweb
 	cd $(BUILD_WORK)/leptonica && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-libwebp \
-		--with-libopenjpeg \
-		LIBJP2K_CFLAGS="-I$(BUILD_STAGE)/openjpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/openjpeg-2.3"
+		--with-libopenjpeg
 	+$(MAKE) -C $(BUILD_WORK)/leptonica
 	+$(MAKE) -C $(BUILD_WORK)/leptonica install \
 		DESTDIR="$(BUILD_STAGE)/leptonica"
