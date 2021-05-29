@@ -3,7 +3,7 @@ Version: @DEB_MESA_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Libraries
-Depends: libglapi-mesa (= @DEB_MESA_V@), firmware (>= 14.0) | libexpat1, libzstd1
+Depends: libglapi-mesa, firmware (>= 14.0) | libexpat1, libzstd1
 Priority: optional
 Homepage: https://mesa3d.org/
 Description: free implementation of the OpenGL API -- DRI modules
