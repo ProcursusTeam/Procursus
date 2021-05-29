@@ -1,0 +1,7 @@
+Package: tbd
+Version: @DEB_TBD_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Homepage: https://github.com/inoahdev/tbd
+Description: Create tbd files from MachO binaries
