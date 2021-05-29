@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS   += cairo
 CAIRO_VERSION := 1.16.0
-DEB_CAIRO_V   ?= $(CAIRO_VERSION)-1
+DEB_CAIRO_V   ?= $(CAIRO_VERSION)-2
 
 cairo-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://cairographics.org/releases/cairo-$(CAIRO_VERSION).tar.xz
@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/cairo/.build_complete),)
 cairo:
 	@echo "Using previously built cairo."
 else
-cairo: cairo-setup freetype fontconfig glib2.0 libpng16 liblzo2 libpixman
+cairo: cairo-setup freetype gettext fontconfig glib2.0 libpng16 liblzo2 libpixman libxcb libxrender libx11 libxext
 	cd $(BUILD_WORK)/cairo && ./autogen.sh \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-pdf \
@@ -23,15 +23,9 @@ cairo: cairo-setup freetype fontconfig glib2.0 libpng16 liblzo2 libpixman
 		--enable-tee \
 		--enable-pref-utils \
 		--enable-svg \
-		--disable-xcb \
-		--disable-xlib \
-		--enable-gobject \
-		FONTCONFIG_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/freetype2 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libpng16" \
-		FREETYPE_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/freetype2 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libpng16" \
-		GOBJECT_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/glib-2.0 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/glib-2.0/include" \
-		glib_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/glib-2.0 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/glib-2.0/include -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/glib-2.0/include" \
-		pixman_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pixman-1" \
-		png_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libpng16"
+		--enable-xcb \
+		--enable-xlib \
+		--enable-gobject
 	+$(MAKE) -C $(BUILD_WORK)/cairo \
 		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/glib-2.0/include"
 	+$(MAKE) -C $(BUILD_WORK)/cairo install \
