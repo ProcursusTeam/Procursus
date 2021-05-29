@@ -3,13 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += ffmpeg
-FFMPEG_VERSION := 4.3.1
+FFMPEG_VERSION := 4.4
 DEB_FFMPEG_V   ?= $(FFMPEG_VERSION)
 
 ffmpeg-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ffmpeg.org/releases/ffmpeg-$(FFMPEG_VERSION).tar.xz
 	$(call EXTRACT_TAR,ffmpeg-$(FFMPEG_VERSION).tar.xz,ffmpeg-$(FFMPEG_VERSION),ffmpeg)
-	$(call DO_PATCH,ffmpeg,ffmpeg,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/ffmpeg/.build_complete),)
 ffmpeg:
@@ -21,7 +20,6 @@ ffmpeg: ffmpeg-setup aom dav1d fontconfig freetype frei0r gnutls lame libass lib
 		--enable-shared \
 		--enable-pthreads \
 		--enable-version3 \
-		--enable-avresample \
 		--enable-cross-compile \
 		--cc="$(CC)" \
 		--arch=arm64 \
@@ -63,9 +61,7 @@ ffmpeg: ffmpeg-setup aom dav1d fontconfig freetype frei0r gnutls lame libass lib
 		--enable-videotoolbox \
 		--disable-libbluray \
 		--disable-libjack \
-		--disable-indev=jack \
-		--disable-doc
-		# I want manpages but the cross compiler is what compiles the manpage compiler. Have a look at this another time.
+		--disable-indev=jack
 	$(SED) -i 's/-lSDL2/-lSDL2 -lSDL2main/g' $(BUILD_WORK)/ffmpeg/ffbuild/config.mak
 	+$(MAKE) -C $(BUILD_WORK)/ffmpeg
 	+$(MAKE) -C $(BUILD_WORK)/ffmpeg install \
