@@ -15,10 +15,7 @@ ripgrep:
 	@echo "Using previously built ripgrep."
 else
 ripgrep: ripgrep-setup pcre2
-	cd $(BUILD_WORK)/ripgrep && SDKROOT="$(TARGET_SYSROOT)" \
-	PKG_CONFIG="$(RUST_TARGET)-pkg-config" \
-	cargo \
-		build \
+	cd $(BUILD_WORK)/ripgrep && $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \
 		--target=$(RUST_TARGET) \
 		--features pcre2

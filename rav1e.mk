@@ -21,16 +21,13 @@ rav1e:
 else
 rav1e: rav1e-setup aom dav1d
 	cd $(BUILD_WORK)/rav1e && cargo update
-	cd $(BUILD_WORK)/rav1e && SDKROOT="$(TARGET_SYSROOT)" cargo \
-		build \
+	cd $(BUILD_WORK)/rav1e && $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \
 		--target=$(RUST_TARGET)
-	cd $(BUILD_WORK)/rav1e && SDKROOT="$(TARGET_SYSROOT)" cargo \
-		cbuild \
+	cd $(BUILD_WORK)/rav1e && $(DEFAULT_RUST_FLAGS) cargo cbuild \
 		--release \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--target=$(RUST_TARGET)
-
+		--target=$(RUST_TARGET) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/rav1e $(BUILD_STAGE)/rav1e/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/rav1e
 
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.dylib $(BUILD_STAGE)/rav1e/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.0.dylib

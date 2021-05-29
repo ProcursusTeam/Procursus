@@ -4,7 +4,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS     += rbw
+SUBPROJECTS += rbw
 RBW_VERSION := 1.0.0
 DEB_RBW_V   ?= $(RBW_VERSION)
 
@@ -18,8 +18,7 @@ rbw:
 else
 rbw: rbw-setup
 	$(call DO_PATCH,rbw,rbw,-p1)
-	cd $(BUILD_WORK)/rbw && SDKROOT="$(TARGET_SYSROOT)" cargo \
-		build \
+	cd $(BUILD_WORK)/rbw && $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \
 		--target=$(RUST_TARGET)
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/rbw/target/$(RUST_TARGET)/release/rbw $(BUILD_STAGE)/rbw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/rbw
