@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS += tbd
+SUBPROJECTS  += tbd
 TBD_VERSION  := 2.2
 DEB_TBD_V    ?= $(TBD_VERSION)
 
