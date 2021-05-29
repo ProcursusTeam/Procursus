@@ -23,6 +23,7 @@ MEMO_CFVER           ?= 1700
 # iOS 13.0 == 1665.15.
 CFVER_WHOLE          := $(shell echo $(MEMO_CFVER) | cut -d. -f1)
 
+MEMO_REPO_URI ?= https://apt.procurs.us/
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1100 ] && [ "$(CFVER_WHOLE)" -lt 1200 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 8.0
 APPLETVOS_DEPLOYMENT_TARGET := XXX
@@ -223,8 +224,8 @@ CC      := $(GNU_HOST_TRIPLE)-clang
 CXX     := $(GNU_HOST_TRIPLE)-clang++
 CPP     := $(GNU_HOST_TRIPLE)-clang -E
 AR      := $(GNU_HOST_TRIPLE)-ar
-LD      := $(GNU_HOST_TRIPLE)-ld 
-RANLIB  := $(GNU_HOST_TRIPLE)-ranlib   
+LD      := $(GNU_HOST_TRIPLE)-ld
+RANLIB  := $(GNU_HOST_TRIPLE)-ranlib
 STRIP   := $(GNU_HOST_TRIPLE)-strip
 I_N_T   := $(GNU_HOST_TRIPLE)-install_name_tool
 NM      := $(GNU_HOST_TRIPLE)-nm
@@ -868,9 +869,12 @@ endif # $(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1
 	touch $(BUILD_STRAP)/strap/.procursus_strapped
 	touch $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procursus.sources
 	echo -e "Types: deb\n\
-URIs: https://apt.procurs.us/\n\
+URIs: $(MEMO_REPO_URI)\n\
 Suites: $(MEMO_TARGET)/$(MEMO_CFVER)\n\
 Components: main\n" > $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procursus.sources
+ifneq (,$(findstring 404,$(shell wget -qO- $(MEMO_REPO_URI)/dists/$(MEMO_TARGET)/$(MEMO_CFVER) --content-on-error; ([ "$$?" -eq 8 ] && true) || false)))
+	rm -f $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procursus.sources
+endif
 	cp $(BUILD_MISC)/prep_bootstrap.sh $(BUILD_STRAP)/strap
 	export FAKEROOT='fakeroot -i $(BUILD_STAGE)/.fakeroot_bootstrap -s $(BUILD_STAGE)/.fakeroot_bootstrap --'; \
 	$$FAKEROOT chown 0:80 $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library; \
@@ -895,15 +899,22 @@ else # ($(MEMO_PREFIX),)
 	touch $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 	echo -e "Types: deb\n\
-URIs: https://apt.procurs.us/\n\
+URIs: $(MEMO_REPO_URI)\n\
 Suites: $(MACOSX_SUITE_NAME)\n\
 Components: main\n" > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
 else
 	echo -e "Types: deb\n\
-URIs: https://apt.procurs.us/\n\
+URIs: $(MEMO_REPO_URI)\n\
 Suites: $(MEMO_TARGET)/$(MEMO_CFVER)\n\
 Components: main\n" > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
 endif
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+ifneq (,$(findstring 404,$(shell wget -qO- $(MEMO_REPO_URI)/dists/$(MACOSX_SUITE_NAME)/main --content-on-error; ([ "$$?" -eq "8" ] && true) || false)))
+	rm -f $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
+else ifneq (,$(findstring 404,$(shell wget -qO- $(MEMO_REPO_URI)/dists/$(MEMO_TARGET)/$(MEMO_CFVER) --content-on-error; ([ "$$?" -eq "8" ] && true) || false)))
+	rm -f $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
+endif # (,$(findstring 404,$(shell wget -qO- $(MEMO_REPO_URI)/dists/$(MACOSX_SUITE_NAME)/main --content-on-error; ([ "$$?" -eq "8" ] && true) || false)))
+endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	export FAKEROOT='fakeroot -i $(BUILD_STAGE)/.fakeroot_bootstrap -s $(BUILD_STAGE)/.fakeroot_bootstrap --'; \
 	cd $(BUILD_STRAP)/strap && $$FAKEROOT $(TAR) -cf ../bootstrap.tar .
 	@if [[ "$(SSH_STRAP)" = 1 ]]; then \
