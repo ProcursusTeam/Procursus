@@ -31,7 +31,7 @@ rav1e: rav1e-setup aom dav1d
 
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/rav1e $(BUILD_STAGE)/rav1e/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/rav1e
 
-	$(CC) $(CFLAGS) -install_name $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.0.dylib -shared -o $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.0.dylib $(LDFLAGS) -Wl,-all_load $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.a -Wl,-noall_load -lobjc -framework Security
+	$(CC) $(CFLAGS) -fPIC -install_name $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.0.dylib -shared -o $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.0.dylib $(LDFLAGS) -Wl,-force_load $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.a
 
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.0.dylib $(BUILD_STAGE)/rav1e/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.0.dylib
 
