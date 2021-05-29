@@ -13,4 +13,3 @@ Description: lightweight messaging kernel (development files)
  multiple transport protocols and more.
  .
  This package contains the ZeroMQ development libraries and header files.
- 
