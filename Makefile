@@ -331,6 +331,12 @@ LDFLAGS             := $(OPTIMIZATION_FLAGS) -arch $(MEMO_ARCH) -isysroot $(TARG
 #PKG_CONFIG_LIBDIR   := $(PKG_CONFIG_PATH)
 ACLOCAL_PATH        := $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal
 
+ifeq ($(UNAME),FreeBSD)
+CFLAGS   += -isystem /usr/lib/clang/$(shell clang -dumpversion)/include
+CPPFLAGS += -isystem /usr/lib/clang/$(shell clang -dumpversion)/include
+CXXFLAGS += -isystem /usr/lib/clang/$(shell clang -dumpversion)/include
+endif
+
 # Link everything to libiosexec, as it's preinstalled on every Procursus system.
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 LDFLAGS             += -liosexec
@@ -953,8 +959,8 @@ setup:
 	cp -a $(BUILD_MISC)/zlib.pc $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 
 ifeq ($(UNAME),FreeBSD)
-	@# FreeBSD does not have stdbool.h and stdarg.h
-	$(CP) -af $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Headers/{stdbool.h,stdarg.h} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	@# FreeBSD does not have stdbool.h stdatomic.h and stdarg.h
+	$(CP) -af $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Headers/{stdbool,stdatomic,stdarg}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))

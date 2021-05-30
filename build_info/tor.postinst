@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+set -e
+
+if [ "$1" = 'configure' ]; then
+	pw user add -n _tor -d @MEMO_PREFIX@/var/lib/tor -g _tor -s /usr/sbin/nologin >/dev/null 2>&1 || true
+
+	if ! [ -d @MEMO_PREFIX@/var/lib/tor ]; then
+		mkdir -p @MEMO_PREFIX@/var/lib/tor
+		chown _tor:_tor @MEMO_PREFIX@/var/lib/tor
+		chmod 0700 @MEMO_PREFIX@/var/lib/tor
+	fi
+fi

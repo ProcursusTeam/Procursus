@@ -7,7 +7,13 @@
     <key>ProgramArguments</key>
     <array>
       <string>/bin/sh</string>
-      <string>/usr/libexec/tor-wrapper</string>
+      <string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/tor-wrapper</string>
+      <string>--PidFile</string>
+      <string>@MEMO_PREFIX@/var/run/tor/tor.pid</string>
+      <string>--DataDirectory</string>
+      <string>@MEMO_PREFIX@/var/lib/tor</string>
+      <string>--User</string>
+      <string>_tor</string>
     </array>
     <key>RunAtLoad</key>
     <true/>

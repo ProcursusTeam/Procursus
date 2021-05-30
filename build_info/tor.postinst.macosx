@@ -1,0 +1,60 @@
+#!/bin/bash
+
+set -eu
+
+USER="_tor"
+
+getHiddenUserPGid()
+{
+    local __PGIDS=$(dscl . -list /Users PrimaryGroupID | awk '{print $2}' | sort -ugr)
+
+    local __NewPGID
+    for __NewPGID in $__PGIDS
+    do
+        if [[ $__NewPGID -lt 499 ]]; then
+            break;
+        fi
+    done
+
+    echo $((__NewPGID+1))
+}
+
+getHiddenUserUid()
+{
+    local __UIDS=$(dscl . -list /Users UniqueID | awk '{print $2}' | sort -ugr)
+
+    local __NewUID
+    for __NewUID in $__UIDS
+    do
+        if [[ $__NewUID -lt 499 ]] ; then
+            break;
+        fi
+    done
+
+    echo $((__NewUID+1))
+}
+
+if [ "$1" = "configure" ]
+then
+	if ! id _tor &>/dev/null; then
+		GROUPID=$(getHiddenUserPGid)
+		dscl . -create /Users/_tor UserShell /usr/bin/false
+		dscl . -create /Users/_tor NSFHomeDirectory @MEMO_PREFIX@/var/lib/tor
+		dscl . -create /Users/_tor UniqueID $(getHiddenUserUid)
+		dscl . -create /Users/_tor PrimaryGroupID $GROUPID
+		dscl . -create /Users/_tor RealName "Tor anonymizing router"
+
+		dscl . -create /Groups/_tor gid $GROUPID
+		dscl . -create /Groups/_tor RealName "Tor anonymizing router"
+	fi
+
+	if ! [ -d @MEMO_PREFIX@/var/lib/tor ]; then
+		mkdir -p @MEMO_PREFIX@/var/lib/tor
+		chown _tor:_tor @MEMO_PREFIX@/var/lib/tor
+		chmod 0700 @MEMO_PREFIX@/var/lib/tor
+	fi
+fi
+
+#DEBHELPER#
+
+exit 0
