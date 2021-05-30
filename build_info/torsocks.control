@@ -1,0 +1,16 @@
+Package: torsocks
+Version: @DEB_TOR_V@ 
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Networking
+Priority: optional
+Homepage: https://gitweb.torproject.org/torsocks.git
+Recommends: tor
+Description: use SOCKS-friendly applications with Tor
+ Torsocks allows you to redirect network traffic of individual SOCKS-friendly
+ applications through the Tor network. It also ensures DNS queries are handled
+ correctly and explicitly blocks all UDP traffic from the application in
+ question.
+ It is possible that a given application can leak user/system data at a level
+ that neither Tor nor torsocks can control, a 100% guarantee of being safe to
+ operate with Tor can not be given for applications.
