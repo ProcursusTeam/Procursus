@@ -912,7 +912,6 @@ ifneq (,$(findstring 404 Not Found,$(shell wget -qO- $(MEMO_REPO_URI)/dists/$(MA
 endif
 else ifneq (,$(findstring 404 Not Found,$(shell wget -qO- $(MEMO_REPO_URI)/dists/$(MEMO_TARGET)/$(MEMO_CFVER) --content-on-error || ([ "$$?" -eq "8" ] && true) || false)))
 	rm -f $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
-# (,$(findstring 404 Not Found,$(shell wget -qO- $(MEMO_REPO_URI)/dists/$(MACOSX_SUITE_NAME)/main --content-on-error || ([ "$$?" -eq "8" ] && true) || false)))
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	export FAKEROOT='fakeroot -i $(BUILD_STAGE)/.fakeroot_bootstrap -s $(BUILD_STAGE)/.fakeroot_bootstrap --'; \
 	cd $(BUILD_STRAP)/strap && $$FAKEROOT $(TAR) -cf ../bootstrap.tar .
