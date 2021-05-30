@@ -787,7 +787,6 @@ MAKEFLAGS += --jobs=$(shell $(GET_LOGICAL_CORES))
 endif
 
 PROCURSUS := 1
-
 all:: package
 	@echo "********** Successfully built debs for $(MEMO_TARGET) **********"
 	@echo "$(SUBPROJECTS)"
@@ -810,7 +809,6 @@ env:
 	@echo -e "\texport DEB_ARCH DEB_ORIGIN DEB_MAINTAINER"
 	@echo -e "\texport CFLAGS CXXFLAGS CPPFLAGS LDFLAGS"
 	@echo -e "}"
-
 viewenv:
 	env
 
@@ -872,7 +870,7 @@ endif # $(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1
 URIs: $(MEMO_REPO_URI)\n\
 Suites: $(MEMO_TARGET)/$(MEMO_CFVER)\n\
 Components: main\n" > $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procursus.sources
-ifneq (,$(findstring 404,$(shell wget -qO- $(MEMO_REPO_URI)/dists/$(MEMO_TARGET)/$(MEMO_CFVER) --content-on-error; ([ "$$?" -eq 8 ] && true) || false)))
+ifneq (,$(findstring 404 Not Found,$(shell wget -qO- $(MEMO_REPO_URI)/dists/$(MEMO_TARGET)/$(MEMO_CFVER) --content-on-error || ([ "$$?" -eq 8 ] && true) || false)))
 	rm -f $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procursus.sources
 endif
 	cp $(BUILD_MISC)/prep_bootstrap.sh $(BUILD_STRAP)/strap
@@ -909,11 +907,12 @@ Suites: $(MEMO_TARGET)/$(MEMO_CFVER)\n\
 Components: main\n" > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
 endif
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-ifneq (,$(findstring 404,$(shell wget -qO- $(MEMO_REPO_URI)/dists/$(MACOSX_SUITE_NAME)/main --content-on-error; ([ "$$?" -eq "8" ] && true) || false)))
+ifneq (,$(findstring 404 Not Found,$(shell wget -qO- $(MEMO_REPO_URI)/dists/$(MACOSX_SUITE_NAME)/main --content-on-error || ([ "$$?" -eq "8" ] && true) || false)))
 	rm -f $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
-else ifneq (,$(findstring 404,$(shell wget -qO- $(MEMO_REPO_URI)/dists/$(MEMO_TARGET)/$(MEMO_CFVER) --content-on-error; ([ "$$?" -eq "8" ] && true) || false)))
+endif
+else ifneq (,$(findstring 404 Not Found,$(shell wget -qO- $(MEMO_REPO_URI)/dists/$(MEMO_TARGET)/$(MEMO_CFVER) --content-on-error || ([ "$$?" -eq "8" ] && true) || false)))
 	rm -f $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
-endif # (,$(findstring 404,$(shell wget -qO- $(MEMO_REPO_URI)/dists/$(MACOSX_SUITE_NAME)/main --content-on-error; ([ "$$?" -eq "8" ] && true) || false)))
+# (,$(findstring 404 Not Found,$(shell wget -qO- $(MEMO_REPO_URI)/dists/$(MACOSX_SUITE_NAME)/main --content-on-error || ([ "$$?" -eq "8" ] && true) || false)))
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	export FAKEROOT='fakeroot -i $(BUILD_STAGE)/.fakeroot_bootstrap -s $(BUILD_STAGE)/.fakeroot_bootstrap --'; \
 	cd $(BUILD_STRAP)/strap && $$FAKEROOT $(TAR) -cf ../bootstrap.tar .
