@@ -5,14 +5,13 @@ endif
 SUBPROJECTS  += zpaq
 ZPAQ_VERSION := 7.15
 DEB_ZPAQ_V   ?= $(ZPAQ_VERSION)
-
 ZPAQ_CPPFLAGS= -Dunix
 
 zpaq-setup: setup
 	$(call GITHUB_ARCHIVE,zpaq,zpaq,$(ZPAQ_VERSION),$(ZPAQ_VERSION))
 	$(call EXTRACT_TAR,zpaq-$(ZPAQ_VERSION).tar.gz,zpaq-$(ZPAQ_VERSION),zpaq)
 
-ifeq ($(MEMO_ARCH),arm64)
+ifneq ($(MEMO_ARCH),amd64)
 ZPAQ_CPPFLAGS += -DNOJIT
 endif
 
@@ -32,11 +31,14 @@ zpaq: zpaq-setup
 	PREFIX=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	touch $(BUILD_WORK)/zpaq/.build_complete
 endif
+
 zpaq-package: zpaq-stage
+
 	# zpaq.mk Package Structure
 	rm -rf $(BUILD_DIST)/zpaq
 
 	# zpaq.mk Prep zpaq
+
 	cp -a $(BUILD_STAGE)/zpaq $(BUILD_DIST)
 
 	# zpaq.mk Sign
@@ -46,6 +48,7 @@ zpaq-package: zpaq-stage
 	$(call PACK,zpaq,DEB_ZPAQ_V)
 
 	# zpaq.mk Build cleanup
+
 	rm -rf $(BUILD_DIST)/zpaq
 
 	.PHONY: zpaq zpaq-package
