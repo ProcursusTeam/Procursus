@@ -6,9 +6,15 @@ SUBPROJECTS  += zpaq
 ZPAQ_VERSION := 7.15
 DEB_ZPAQ_V   ?= $(ZPAQ_VERSION)
 
+ZPAQ_CPPFLAGS= -Dunix
+
 zpaq-setup: setup
 	$(call GITHUB_ARCHIVE,zpaq,zpaq,$(ZPAQ_VERSION),$(ZPAQ_VERSION))
 	$(call EXTRACT_TAR,zpaq-$(ZPAQ_VERSION).tar.gz,zpaq-$(ZPAQ_VERSION),zpaq)
+
+ifeq ($(MEMO_ARCH),arm64)
+ZPAQ_CPPFLAGS += -DNOJIT
+endif
 
 ifneq ($(wildcard $(BUILD_WORK)/zpaq/.build_complete),)
 zpaq:
@@ -16,13 +22,14 @@ zpaq:
 else
 zpaq: zpaq-setup
 	+$(MAKE) -C $(BUILD_WORK)/zpaq \
-		CXX=$(CXX) \
-		CXXFLAGS="$(CXXFLAGS)" \
-		LDFLAGS="$(LDFLAGS)"
+	CXX=$(CXX) \
+	CPPFLAGS="$(CPPFLAGS) $(ZPAQ_CPPFLAGS)" \
+	CXXFLAGS="$(CXXFLAGS)" \
+	LDFLAGS="$(LDFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/zpaq install \
-		PREFIX=$(BUILD_STAGE)/zpaq/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	PREFIX=$(BUILD_STAGE)/zpaq/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/zpaq install \
-		PREFIX=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	PREFIX=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	touch $(BUILD_WORK)/zpaq/.build_complete
 endif
 zpaq-package: zpaq-stage
@@ -41,4 +48,4 @@ zpaq-package: zpaq-stage
 	# zpaq.mk Build cleanup
 	rm -rf $(BUILD_DIST)/zpaq
 
-.PHONY: zpaq zpaq-package
+	.PHONY: zpaq zpaq-package
