@@ -11,6 +11,8 @@ DEB_TESSERACT_V   ?= $(TESSERACT_VERSION)
 # tesseract-lang package with the rest of the languages.
 ###
 
+### Needs asciidoc
+
 tesseract-setup: setup
 	$(call GITHUB_ARCHIVE,tesseract-ocr,tesseract,$(TESSERACT_VERSION),$(TESSERACT_VERSION))
 	$(call EXTRACT_TAR,tesseract-$(TESSERACT_VERSION).tar.gz,tesseract-$(TESSERACT_VERSION),tesseract)
