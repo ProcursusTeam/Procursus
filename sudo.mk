@@ -7,8 +7,8 @@ STRAPPROJECTS += sudo
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += sudo
 endif # ($(MEMO_TARGET),darwin-\*)
-SUDO_VERSION  := 1.9.6p1
-DEB_SUDO_V    ?= $(SUDO_VERSION)-4
+SUDO_VERSION  := 1.9.7
+DEB_SUDO_V    ?= $(SUDO_VERSION)
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 SUDO_CONFIGURE_ARGS := LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -liosexec -lreadline -lncursesw"
@@ -42,8 +42,11 @@ endif
 		--with-password-timeout=0 \
 		--with-passprompt="[sudo] password for %p: " \
 		sudo_cv___func__=yes \
+		ac_cv_have_working_snprintf=yes \
+		ac_cv_have_working_vsnprintf=yes \
 		$(SUDO_CONFIGURE_ARGS)
-	+$(MAKE) -C $(BUILD_WORK)/sudo
+	+$(MAKE) -C $(BUILD_WORK)/sudo \
+		SUDO_LDFLAGS='$(LDFLAGS) -static' # sudo passes a flag to libtool twice, one of which is passed to the linker
 	+$(MAKE) -C $(BUILD_WORK)/sudo install \
 		DESTDIR=$(BUILD_STAGE)/sudo \
 		INSTALL_OWNER=''

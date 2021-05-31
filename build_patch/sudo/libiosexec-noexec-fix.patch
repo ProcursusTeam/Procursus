@@ -1,0 +1,32 @@
+diff --color=auto -urN sudo-1.9.7/src/sudo_noexec.c sudo/src/sudo_noexec.c
+--- sudo-1.9.7/src/sudo_noexec.c	2021-03-13 15:47:23.000000000 +0000
++++ sudo/src/sudo_noexec.c	2021-05-31 17:59:13.865618000 +0000
+@@ -37,7 +37,10 @@
+ #include <stddef.h>
+ #include <stdio.h>
+ #include <stdlib.h>
++/* We want to override the real and libiosexec functions */
++#define LIBIOSEXEC_INTERNAL
+ #include <unistd.h>
++#undef LIBIOSEXEC_INTERNAL
+ #ifdef HAVE_SPAWN_H
+ #include <spawn.h>
+ #endif
+@@ -139,6 +142,17 @@
+ #ifdef HAVE_EXECT
+ EXEC_REPL3(exect, const char *, char * const *, char * const *)
+ #endif
++
++/*
++ * libiosexec functions.
++ */
++EXEC_REPL_VA(ie_execl, const char *, const char *)
++EXEC_REPL_VA(ie_execle, const char *, const char *)
++EXEC_REPL_VA(ie_execlp, const char *, const char *)
++EXEC_REPL2(ie_execv, const char *, char * const *)
++EXEC_REPL2(ie_execvp, const char *, char * const *)
++EXEC_REPL3(ie_execve, const char *, char * const *, char * const *)
++EXEC_REPL3(ie_execvpe, const char *, char * const *, char * const *)
+ 
+ /*
+  * Not all systems support fexecve(2), posix_spawn(2) and posix_spawnp(2).
