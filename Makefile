@@ -283,7 +283,7 @@ I_N_T           := $(shell which install_name_tool)
 LIBTOOL         := $(shell which libtool)
 
 else
-$(error Please use Linux, MacOS or FreeBSD to build)
+$(error Please use macOS, iOS, Linux, or FreeBSD to build)
 endif
 
 CC_FOR_BUILD  := $(shell which cc) $(BUILD_CFLAGS)
