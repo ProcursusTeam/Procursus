@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += radare2
-RADARE2_VERSION := 4.5.0
+RADARE2_VERSION := 5.3.0
 DEB_RADARE2_V   ?= $(RADARE2_VERSION)-2
 ifeq ($(shell [[ "$(RADARE2_VERSION)" =~ '0'$$ ]] && echo 1),1)
 RADARE2_API_V   := $(shell echo "$(RADARE2_VERSION)" | rev | cut -c3- | rev)
@@ -12,8 +12,8 @@ RADARE2_API_V   := $(RADARE2_VERSION)
 endif
 
 radare2-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/radareorg/radare2/releases/download/$(RADARE2_VERSION)/radare2-src-$(RADARE2_VERSION).tar.gz
-	$(call EXTRACT_TAR,radare2-src-$(RADARE2_VERSION).tar.gz,radare2-$(RADARE2_VERSION),radare2)
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/radareorg/radare2/archive/refs/tags/$(RADARE2_VERSION).tar.gz
+	$(call EXTRACT_TAR,$(RADARE2_VERSION).tar.gz,radare2-$(RADARE2_VERSION),radare2)
 
 ifneq ($(wildcard $(BUILD_WORK)/radare2/.build_complete),)
 radare2:
@@ -23,6 +23,7 @@ radare2: radare2-setup libuv1 libzip openssl
 	cd $(BUILD_WORK)/radare2 && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-openssl \
+		--target=$(GNU_HOST_TRIPLE) \
 		--with-syszip
 	+$(MAKE) -C $(BUILD_WORK)/radare2 \
 		HAVE_LIBVERSION=1
@@ -71,4 +72,4 @@ radare2-package: radare2-stage
 	# radare2.mk Build cleanup
 	rm -rf $(BUILD_DIST)/{lib,}radare2{,-$(RADARE2_API_V),-common,-dev}
 
-.PHONY: radare2 radare2-package
+	.PHONY: radare2 radare2-package
