@@ -22,8 +22,8 @@ else
 ncurses: ncurses-setup
 	cd $(BUILD_WORK)/ncurses && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--with-build-cc="$(shell which cc)" \
-		--with-build-cpp="$(shell which cc) -E" \
+		--with-build-cc="$(CC_FOR_BUILD)" \
+		--with-build-cpp="$(CPP_FOR_BUILD)" \
 		--with-build-cflags="$(BUILD_CFLAGS)" \
 		--with-build-cppflags="$(BUILD_CPPFLAGS)" \
 		--with-build-ldflags="$(BUILD_LDFLAGS)" \
