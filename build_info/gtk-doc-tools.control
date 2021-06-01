@@ -1,0 +1,10 @@
+Package: gtk-doc-tools
+Maintainer: @DEB_MAINTAINER@
+Architecture: all
+Version: @DEB_GTK_DOC_V@
+Section: Utilities
+Depends: docbook-xml, docbook-xsl, pkg-config, python3, python3-pygments, libxml2-utils
+Homepage: https://gitlab.gnome.org/GNOME/gtk-doc/
+Description: GTK+ documentation tools
+ These tools extract documentation embedded in GNOME source code, and
+ produce pretty output via DocBook SGML.

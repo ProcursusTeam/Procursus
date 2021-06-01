@@ -5,7 +5,7 @@ diff -urN neofetch-7.1.0/neofetch neofetch/neofetch
              has port  && tot port installed && ((packages-=1))
              has brew  && dir /usr/local/Cellar/*
              has pkgin && tot pkgin list
-+	           has apt   && tot apt list
++            has dpkg  && tot dpkg-query -f '.\n' -W
  
              has nix-store && {
                  manager=nix-system && tot nix-store -q --requisites "/run/current-system/sw"

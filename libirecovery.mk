@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS          += libirecovery
-LIBIRECOVERY_COMMIT  := 11324701c89a2ef2ace1686fe25eeec9ad8adac8
-LIBIRECOVERY_VERSION := 1.0.0+git20210124.$(shell echo $(LIBIRECOVERY_COMMIT) | cut -c -7)
+LIBIRECOVERY_COMMIT  := 47934949e0015165a4562b08e824adb3f664c0ea
+LIBIRECOVERY_VERSION := 1.0.0+git20210526.$(shell echo $(LIBIRECOVERY_COMMIT) | cut -c -7)
 DEB_LIBIRECOVERY_V   ?= $(LIBIRECOVERY_VERSION)
 
 libirecovery-setup: setup

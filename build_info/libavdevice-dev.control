@@ -15,4 +15,4 @@ Description: FFmpeg library for handling input and output devices - development 
  output devices, including Video4Linux2, VfW, DShow, and ALSA.
  .
  This package contains the development files.
-Depends: libavdevice58 (= @DEB_FFMPEG_V@), libavfilter-dev (= @DEB_FFMPEG_V@), libswscale-dev (= @DEB_FFMPEG_V@), libpostproc-dev (= @DEB_FFMPEG_V@), libavformat-dev (= @DEB_FFMPEG_V@), libavcodec-dev (= @DEB_FFMPEG_V@), libswresample-dev (= @DEB_FFMPEG_V@), libavresample-dev (= @DEB_FFMPEG_V@), libavutil-dev (= @DEB_FFMPEG_V@)
+Depends: libavdevice58 (= @DEB_FFMPEG_V@), libavfilter-dev (= @DEB_FFMPEG_V@), libswscale-dev (= @DEB_FFMPEG_V@), libpostproc-dev (= @DEB_FFMPEG_V@), libavformat-dev (= @DEB_FFMPEG_V@), libavcodec-dev (= @DEB_FFMPEG_V@), libswresample-dev (= @DEB_FFMPEG_V@), libavutil-dev (= @DEB_FFMPEG_V@)

@@ -2,7 +2,7 @@ Package: python3-psutil
 Version: @DEB_PYTHON3-PSUTIL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Section: Utilities
+Section: Python
 Depends: python3
 Description: module providing convenience functions for managing processes (Python3)
  psutil is a module providing an interface for retrieving information on

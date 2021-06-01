@@ -1,0 +1,11 @@
+Package: libboost-date-time1.76.0
+Version: @DEB_LIBBOOST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Description: set of date-time libraries based on generic programming concepts
+ This package forms part of the Boost C++ Libraries collection.
+ .
+ These libraries are intended to make programming with dates and times
+ almost as simple and natural as programming with strings and integers.

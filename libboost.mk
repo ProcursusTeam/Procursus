@@ -3,9 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += libboost
-LIBBOOST_FORMAT_V := 1_74_0
-LIBBOOST_VERSION  := 1.74.0
-DEB_LIBBOOST_V    ?= $(LIBBOOST_VERSION)-2
+LIBBOOST_VERSION  := 1.76.0
+DEB_LIBBOOST_V    ?= $(LIBBOOST_VERSION)
 
 ifneq (,$(findstring amd64,$(MEMO_TARGET)))
 LIBBOOST_CONFIGURE_ARGS := abi=sysv
@@ -13,41 +12,38 @@ else
 LIBBOOST_CONFIGURE_ARGS := abi=aapcs
 endif
 
-###
-# Add libicu next release (1.76.0)
-# NEVER FORGET TO CHECK IF THERE ARE NEW/REMOVED LIBS
-###
-
 libboost-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://boostorg.jfrog.io/artifactory/main/release/$(LIBBOOST_VERSION)/source/boost_$(LIBBOOST_FORMAT_V).tar.bz2
-	$(call EXTRACT_TAR,boost_$(LIBBOOST_FORMAT_V).tar.bz2,boost_$(LIBBOOST_FORMAT_V),libboost)
+	wget -q -nc -P $(BUILD_SOURCE) https://boostorg.jfrog.io/artifactory/main/release/$(LIBBOOST_VERSION)/source/boost_$(shell echo $(LIBBOOST_VERSION) | $(SED) 's/\./_/g').tar.bz2
+	$(call EXTRACT_TAR,boost_$(shell echo $(LIBBOOST_VERSION) | $(SED) 's/\./_/g').tar.bz2,boost_$(shell echo $(LIBBOOST_VERSION) | $(SED) 's/\./_/g'),libboost)
 
 ifneq ($(wildcard $(BUILD_WORK)/libboost/.build_complete),)
 libboost:
 	@echo "Using previously built libboost."
 else
-libboost: libboost-setup xz zstd
+libboost: libboost-setup xz zstd icu4c
 	rm -rf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_*
-	cd $(BUILD_WORK)/libboost && unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS SYSROOT && ./bootstrap.sh \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--without-icu
+	$(BUILD_WORK)/libboost/tools/build/src/engine/build.sh --cxx="$(CXX_FOR_BUILD)" --cxxflags="-std=c++11 $(BUILD_CXXFLAGS)"
 ifneq (,$(findstring amd64,$(MEMO_TARGET)))
-	echo 'using clang-darwin : x86 : $(CXX) : <compileflags>"$(CPPFLAGS)" <cflags>"$(CFLAGS)" <cxxflags>"$(CXXFLAGS)" <linkflags>"$(LDFLAGS)" ;' > $(BUILD_WORK)/libboost/tools/build/src/user-config.jam
+	echo "using clang-darwin : x86 : $(CXX) : <compileflags>\"$(CPPFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)\" <cflags>\"$(CFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)\" <cxxflags>\"$(CXXFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)\" <linkflags>\"$(LDFLAGS)\" ;" > $(BUILD_WORK)/libboost/tools/build/src/user-config.jam
 else
-	echo 'using clang-darwin : arm : $(CXX) : <compileflags>"$(CPPFLAGS)" <cflags>"$(CFLAGS)" <cxxflags>"$(CXXFLAGS)" <linkflags>"$(LDFLAGS)" ;' > $(BUILD_WORK)/libboost/tools/build/src/user-config.jam
+	echo "using clang-darwin : arm : $(CXX) : <compileflags>\"$(CPPFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)\" <cflags>\"$(CFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)\" <cxxflags>\"$(CXXFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)\" <linkflags>\"$(LDFLAGS)\" ;" > $(BUILD_WORK)/libboost/tools/build/src/user-config.jam
 endif
-	cd $(BUILD_WORK)/libboost && ./b2 \
+	cd $(BUILD_WORK)/libboost && $(BUILD_WORK)/libboost/tools/build/src/engine/b2 \
 		--prefix=$(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--without-python \
+		--without-mpi \
+		--without-graph_parallel \
 		threading=multi \
 		variant=release \
+		cxxstd="14" \
 		$(LIBBOOST_CONFIGURE_ARGS) \
 		install
-	cd $(BUILD_WORK)/libboost && ./b2 \
+	cd $(BUILD_WORK)/libboost && $(BUILD_WORK)/libboost/tools/build/src/engine/b2 \
 		--prefix=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--without-python \
+		--without-mpi \
+		--without-graph_parallel \
 		threading=multi \
 		variant=release \
+		cxxstd="14" \
 		$(LIBBOOST_CONFIGURE_ARGS) \
 		install
 	# F u boost!
@@ -66,7 +62,7 @@ libboost-package: libboost-stage
 	# libboost.mk Package Structure
 	rm -rf $(BUILD_DIST)/libboost*/
 	mkdir -p $(BUILD_DIST)/libboost-all-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libboost-{atomic,chrono,container,context,contract,coroutine,date-time,filesystem,graph,iostreams,locale,log,math,program-options,random,regex,serialization,stacktrace,system,test,thread,timer,type-erasure,wave}$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libboost-{atomic,chrono,container,context,contract,coroutine,date-time,fiber,filesystem,graph,iostreams,json,locale,log,math,nowide,program-options,python,random,regex,serialization,stacktrace,system,test,thread,timer,type-erasure,wave}$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libboost$(LIBBOOST_VERSION)-all
 
 	# libboost.mk Prep libboost-all-dev
@@ -81,13 +77,17 @@ libboost-package: libboost-stage
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_contract.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-contract$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_coroutine.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-coroutine$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_date_time.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-date-time$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_fiber.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-fiber$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_filesystem.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-filesystem$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_graph.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-graph$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_iostreams.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-iostreams$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_json.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-json$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_locale.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-locale$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_log{,_setup}.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-log$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_math_*.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-math$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_nowide.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-nowide$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_program_options.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-program-options$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_python*.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-python$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_random.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-random$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_regex.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-regex$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_{,w}serialization.$(LIBBOOST_VERSION).dylib $(BUILD_DIST)/libboost-serialization$(LIBBOOST_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
@@ -107,13 +107,17 @@ libboost-package: libboost-stage
 	$(call SIGN,libboost-contract$(LIBBOOST_VERSION),general.xml)
 	$(call SIGN,libboost-coroutine$(LIBBOOST_VERSION),general.xml)
 	$(call SIGN,libboost-date-time$(LIBBOOST_VERSION),general.xml)
+	$(call SIGN,libboost-fiber$(LIBBOOST_VERSION),general.xml)
 	$(call SIGN,libboost-filesystem$(LIBBOOST_VERSION),general.xml)
 	$(call SIGN,libboost-graph$(LIBBOOST_VERSION),general.xml)
 	$(call SIGN,libboost-iostreams$(LIBBOOST_VERSION),general.xml)
+	$(call SIGN,libboost-json$(LIBBOOST_VERSION),general.xml)
 	$(call SIGN,libboost-locale$(LIBBOOST_VERSION),general.xml)
 	$(call SIGN,libboost-log$(LIBBOOST_VERSION),general.xml)
 	$(call SIGN,libboost-math$(LIBBOOST_VERSION),general.xml)
+	$(call SIGN,libboost-nowide$(LIBBOOST_VERSION),general.xml)
 	$(call SIGN,libboost-program-options$(LIBBOOST_VERSION),general.xml)
+	$(call SIGN,libboost-python$(LIBBOOST_VERSION),general.xml)
 	$(call SIGN,libboost-random$(LIBBOOST_VERSION),general.xml)
 	$(call SIGN,libboost-regex$(LIBBOOST_VERSION),general.xml)
 	$(call SIGN,libboost-serialization$(LIBBOOST_VERSION),general.xml)
@@ -135,13 +139,17 @@ libboost-package: libboost-stage
 	$(call PACK,libboost-contract$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
 	$(call PACK,libboost-coroutine$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
 	$(call PACK,libboost-date-time$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
+	$(call PACK,libboost-fiber$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
 	$(call PACK,libboost-filesystem$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
 	$(call PACK,libboost-graph$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
 	$(call PACK,libboost-iostreams$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
+	$(call PACK,libboost-json$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
 	$(call PACK,libboost-locale$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
 	$(call PACK,libboost-log$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
 	$(call PACK,libboost-math$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
+	$(call PACK,libboost-nowide$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
 	$(call PACK,libboost-program-options$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
+	$(call PACK,libboost-python$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
 	$(call PACK,libboost-random$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
 	$(call PACK,libboost-regex$(LIBBOOST_VERSION),DEB_LIBBOOST_V)
 	$(call PACK,libboost-serialization$(LIBBOOST_VERSION),DEB_LIBBOOST_V)

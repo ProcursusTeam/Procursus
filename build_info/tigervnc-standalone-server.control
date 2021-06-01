@@ -1,0 +1,19 @@
+Package: tigervnc-standalone-server
+Version: @DEB_TIGERVNC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: xauth, libgl1, libgeneral0, libmd0, libgnutls30, libjpeg62-turbo, libpam2, libpixman-1-0, libx11-6, libxau6, libxdmcp6, libxdamage1, libxfont2, xkbcomp, xkeyboard-config, tigervnc-common, tigervnc-xorg-extension
+Section: X11
+Provides: vnc-server, xserver
+Description: Standalone virtual network computing server
+ VNC stands for Virtual Network Computing. It is, in essence, a remote
+ display system which allows you to view a computing `desktop' environment
+ not only on the machine where it is running, but from anywhere on the
+ Internet and from a wide variety of machine architectures.
+ .
+ This package provides a standalone VNC server to which clients can connect.
+ The server generates a display that can be viewed with a vncviewer.
+ .
+ Note: This server does not need a display. You need a VNC viewer to see
+ something. This viewer may also be on a computer running other operating
+ systems.
