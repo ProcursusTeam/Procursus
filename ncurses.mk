@@ -37,6 +37,7 @@ ncurses: ncurses-setup
 		--without-x11-rgb \
 		--with-pkg-config-libdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig \
 		--enable-widec \
+		--with-default-terminfo-dir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/ncurses
 	+$(MAKE) -C $(BUILD_WORK)/ncurses install \

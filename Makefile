@@ -715,6 +715,10 @@ $(error Install GNU coreutils)
 endif
 export LN
 
+ifneq  ($(shell PATH=$(PATH) file -bi $(BUILD_MISC)/launchctl.1700 | grep -q 'x-mach-binary; charset=binary' && echo 1),1)
+$(error Install better file from Procursus - sudo apt install file)
+endif
+
 ifneq ($(call HAS_COMMAND,fakeroot),1)
 $(error Install fakeroot)
 endif

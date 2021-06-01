@@ -10,7 +10,7 @@ chntpw-setup: setup
 	wget -q -nc -P$(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/c/chntpw/chntpw_$(CHNTPW_VERSION).orig.tar.gz
 	$(call EXTRACT_TAR,chntpw_$(CHNTPW_VERSION).orig.tar.gz,chntpw-$(CHNTPW_VERSION),chntpw)
 	$(SED) -i 's@/usr@$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)@g' $(BUILD_WORK)/chntpw/Makefile
-	$(SED) -i 's/gcc/$(CC)/g' $(BUILD_WORK)/chntpw/Makefile
+	$(SED) -i 's|gcc|$(CC) $(CFLAGS)|g' $(BUILD_WORK)/chntpw/Makefile
 	$(SED) -i 's/-m32//g' $(BUILD_WORK)/chntpw/Makefile
 	$(SED) -i '1 i\#include <TargetConditionals.h>' $(BUILD_WORK)/chntpw/{cpnt,chntpw,sampasswd,samusrgrp}.c
 
