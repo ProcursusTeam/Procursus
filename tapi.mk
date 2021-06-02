@@ -3,12 +3,13 @@ $(error Use the main Makefile)
 endif
 
 #SUBPROJECTS   += tapi
+TAPI_COMMIT    := 664b8414f89612f2dfd35a9b679c345aa5389026
 TAPI_VERSION   := 1100.0.11
-DEB_TAPI_V     ?= $(TAPI_VERSION)
+DEB_TAPI_V     ?= $(TAPI_VERSION)-1
 
 tapi-setup: setup
-	$(call GITHUB_ARCHIVE,Diatrus,apple-libtapi,$(TAPI_VERSION),v$(TAPI_VERSION),tapi)
-	$(call EXTRACT_TAR,tapi-$(TAPI_VERSION).tar.gz,apple-libtapi-$(TAPI_VERSION),tapi)
+	$(call GITHUB_ARCHIVE,tpoechtrager,apple-libtapi,$(TAPI_VERSION),$(TAPI_COMMIT),tapi)
+	$(call EXTRACT_TAR,tapi-$(TAPI_VERSION).tar.gz,apple-libtapi-$(TAPI_COMMIT),tapi)
 	mkdir -p $(BUILD_WORK)/tapi/build
 
 ifneq ($(wildcard $(BUILD_WORK)/tapi/.build_complete),)
@@ -17,6 +18,19 @@ tapi:
 else
 tapi: tapi-setup
 	ln -sf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcurses.dylib
+
+	mkdir -p $(BUILD_WORK)/tapi/build/NATIVE && cd $(BUILD_WORK)/tapi/build/NATIVE && cmake . \
+        -DCMAKE_C_COMPILER=cc \
+        -DCMAKE_CXX_COMPILER=c++ \
+        -DCMAKE_OSX_SYSROOT="$(MACOSX_SYSROOT)" \
+        -DCMAKE_C_FLAGS="" \
+        -DCMAKE_CXX_FLAGS="" \
+        -DCMAKE_CXX_FLAGS="" \
+        -DCMAKE_EXE_LINKER_FLAGS="" \
+        -DLLVM_TARGETS_TO_BUILD="X86;ARM;AArch64" \
+        ../../src/llvm
+	+$(MAKE) -C $(BUILD_WORK)/tapi/build/NATIVE llvm-tblgen clang-tblgen
+
 	cd $(BUILD_WORK)/tapi/build && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
@@ -33,10 +47,12 @@ tapi: tapi-setup
 		-DLLVM_INCLUDE_TESTS=OFF \
 		-DTAPI_FULL_VERSION=$(TAPI_VERSION) \
 		-DTAPI_INCLUDE_TESTS=OFF \
+		-DLLVM_TABLEGEN="$(BUILD_WORK)/tapi/build/NATIVE/bin/llvm-tblgen" \
+		-DCLANG_TABLEGEN="$(BUILD_WORK)/tapi/build/NATIVE/bin/clang-tblgen" \
+		-DCLANG_TABLEGEN_EXE="$(BUILD_WORK)/tapi/build/NATIVE/bin/clang-tblgen" \
 		../src/llvm
-	+$(MAKE) -C $(BUILD_WORK)/tapi/build clangBasic
-	+$(MAKE) -C $(BUILD_WORK)/tapi/build libtapi
-	+$(MAKE) -C $(BUILD_WORK)/tapi/build install-libtapi install-tapi-headers \
+	+$(MAKE) -C $(BUILD_WORK)/tapi/build libtapi tapi
+	+$(MAKE) -C $(BUILD_WORK)/tapi/build install-libtapi install-tapi-headers install-tapi \
 		DESTDIR="$(BUILD_STAGE)/tapi"
 	rm -rf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcurses.dylib
 	touch $(BUILD_WORK)/tapi/.build_complete
@@ -45,16 +61,24 @@ endif
 tapi-package: tapi-stage
 	# tapi.mk Package Structure
 	rm -rf $(BUILD_DIST)/libtapi
-	mkdir -p $(BUILD_DIST)/libtapi
+	mkdir -p $(BUILD_DIST)/libtapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libtapi-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# tapi.mk Prep tapi
-	cp -a $(BUILD_STAGE)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/libtapi
+	cp -a $(BUILD_STAGE)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libtapi.dylib $(BUILD_DIST)/libtapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libtapi-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
+	cp -a $(BUILD_STAGE)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/tapi $(BUILD_DIST)/libtapi-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
 
 	# tapi.mk Sign
 	$(call SIGN,libtapi,general.xml)
+	$(call SIGN,tapi,general.xml)
 
 	# tapi.mk Make .debs
 	$(call PACK,libtapi,DEB_TAPI_V)
+	$(call PACK,libtapi-dev,DEB_TAPI_V)
+	$(call PACK,tapi,DEB_TAPI_V)
 
 	# tapi.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libtapi
