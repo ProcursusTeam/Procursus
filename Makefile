@@ -89,6 +89,7 @@ DEB_ARCH             := iphoneos-arm
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
 PLATFORM_VERSION_MIN := -miphoneos-version-min=$(IPHONEOS_DEPLOYMENT_TARGET)
 RUST_TARGET          := aarch64-apple-ios
+LLVM_TARGET          := arm64-apple-ios$(IPHONEOS_DEPLOYMENT_TARGET)
 MEMO_PREFIX          ?=
 MEMO_SUB_PREFIX      ?= /usr
 MEMO_ALT_PREFIX      ?= /local
@@ -107,6 +108,7 @@ DEB_ARCH             := appletvos-arm64
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
 PLATFORM_VERSION_MIN := -mappletvos-version-min=$(APPLETVOS_DEPLOYMENT_TARGET)
 RUST_TARGET          := aarch64-apple-tvos
+LLVM_TARGET          := arm64-apple-tvos$(APPLETVOS_DEPLOYMENT_TARGET)
 MEMO_PREFIX          ?=
 MEMO_SUB_PREFIX      ?= /usr
 MEMO_ALT_PREFIX      ?= /local
@@ -125,6 +127,7 @@ DEB_ARCH             := watchos-arm64_32
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
 PLATFORM_VERSION_MIN := -mwatchos-version-min=$(WATCHOS_DEPLOYMENT_TARGET)
 RUST_TARGET          := aarch64-apple-watchos
+LLVM_TARGET          := arm64-apple-watchos$(WATCHOS_DEPLOYMENT_TARGET)
 MEMO_PREFIX          ?=
 MEMO_SUB_PREFIX      ?= /usr
 MEMO_ALT_PREFIX      ?= /local
@@ -142,6 +145,7 @@ PLATFORM             := macosx
 DEB_ARCH             := darwin-arm64e
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
 RUST_TARGET          := $(GNU_HOST_TRIPLE)
+LLVM_TARGET          := arm64e-apple-darwin$(DARWIN_DEPLOYMENT_VERSION)
 PLATFORM_VERSION_MIN := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
 MEMO_PREFIX          ?= /opt/procursus
 MEMO_SUB_PREFIX      ?=
@@ -159,6 +163,7 @@ PLATFORM             := macosx
 DEB_ARCH             := darwin-arm64
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
 RUST_TARGET          := $(GNU_HOST_TRIPLE)
+LLVM_TARGET          := arm64-apple-darwin$(DARWIN_DEPLOYMENT_VERSION)
 PLATFORM_VERSION_MIN := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
 MEMO_PREFIX          ?= /opt/procursus
 MEMO_SUB_PREFIX      ?=
@@ -176,6 +181,7 @@ PLATFORM             := macosx
 DEB_ARCH             := darwin-amd64
 GNU_HOST_TRIPLE      := x86_64-apple-darwin
 RUST_TARGET          := $(GNU_HOST_TRIPLE)
+LLVM_TARGET          := x86_64-apple-darwin$(DARWIN_DEPLOYMENT_VERSION)
 PLATFORM_VERSION_MIN := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
 MEMO_PREFIX          ?= /opt/procursus
 MEMO_SUB_PREFIX      ?=
