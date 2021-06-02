@@ -5,8 +5,8 @@ endif
 ifneq (,$(findstring arm64,$(MEMO_TARGET)))
 
 SUBPROJECTS        += dimentio
-DIMENTIO_COMMIT    := 7ffffff8367f5c8fccd4e76803c94a05e1c07fa1
-DIMENTIO_VERSION   := 1.0.3+git20210403.$(shell echo $(DIMENTIO_COMMIT) | cut -c -7)
+DIMENTIO_COMMIT    := 7ffffff8bcdf303f991df3eb7cad8e67bb1c1e6b
+DIMENTIO_VERSION   := 1:0~20210524.$(shell echo $(DIMENTIO_COMMIT) | cut -c -7)
 DEB_DIMENTIO_V     ?= $(DIMENTIO_VERSION)
 
 DIMENTIO_SOVERSION := 0
