@@ -21,14 +21,7 @@
     <key>RunAtLoad</key>
     <true/>
 
-    <key>StartCalendarInterval</key>
-    <dict>
-        <key>Weekday</key>
-        <integer>7</integer>
-        <key>Hour</key>
-        <integer>3</integer>
-        <key>Minute</key>
-        <integer>15</integer>
-    </dict>
+    <key>StartInterval</key>
+    <integer>604800</integer>
 </dict>
 </plist>

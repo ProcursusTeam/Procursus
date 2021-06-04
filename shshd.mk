@@ -5,8 +5,8 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS   += shshd
-SHSHD_VERSION := 1.0
-DEB_SHSHD_V   ?= $(SHSHD_VERSION)
+SHSHD_VERSION := 1.0.1
+DEB_SHSHD_V   ?= $(SHSHD_VERSION)-1
 
 shshd-setup: setup
 	$(call GITHUB_ARCHIVE,Diatrus,SHSHDaemon,$(SHSHD_VERSION),v$(SHSHD_VERSION))
