@@ -109,7 +109,7 @@ diff -urN a/xbattbar.c b/xbattbar.c
  char *OFFOUT_C = "red";
  
 -char *EXTERNAL_CHECK = "/usr/lib/xbattbar/xbattbar-check-apm";
-+char *EXTERNAL_CHECK = "/usr/lib/xbattbar/xbattbar-check-darwin";
++char *EXTERNAL_CHECK = "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/xbattbar/xbattbar-check-darwin";
  char *EXTERNAL_CHECK_ACPI = "/usr/lib/xbattbar/xbattbar-check-acpi";
  char *EXTERNAL_CHECK_SYS = "/usr/lib/xbattbar/xbattbar-check-sys";
  

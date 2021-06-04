@@ -10,6 +10,7 @@ xbattbar-setup: setup
 	wget -q -nc -P$(BUILD_SOURCE) https://salsa.debian.org/debian/xbattbar/-/archive/master/xbattbar-master.tar.bz2
 	$(call EXTRACT_TAR,xbattbar-master.tar.bz2,xbattbar-master,xbattbar)
 	$(call DO_PATCH,xbattbar,xbattbar,-p1)
+	$(SED) -i 's|@MEMO_PREFIX@@MEMO_SUB_PREFIX@|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' $(BUILD_WORK)/xbattbar/xbattbar.c
 
 ifneq ($(wildcard $(BUILD_WORK)/xbattbar/.build_complete),)
 xbattbar:
