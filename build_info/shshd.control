@@ -14,4 +14,5 @@ Description: SHSH blob saving daemon
  visiting "https://tsssaver.1conan.com/shsh/(your ecid in decimal form)".
  .
  This should be compatible with all devices using Procursus, including
- A12+ devices, as it saves blobs with the entangled apnonce.
+ A12+ devices, as it saves blobs with the entangled apnonce. Requires
+ you to set nonce generator before using.
