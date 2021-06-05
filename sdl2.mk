@@ -9,9 +9,9 @@ DEB_SDL2_V    ?= $(SDL2_VERSION)
 ### Do X11 stuff with this later
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-LIBVPX_CONFIGURE_FLAGS :=
+SDL2_CONFIGURE_FLAGS :=
 else
-LIBVPX_CONFIGURE_FLAGS := --host=aarch64-ios-darwin \
+SDL2_CONFIGURE_FLAGS := --host=aarch64-ios-darwin \
 						CFLAGS="-DNDEBUG -DIOS_DYLIB -fPIC -fobjc-arc $(CFLAGS)" \
 						CPPFLAGS="-DNDEBUG -DIOS_DYLIB -fPIC -fobjc-arc $(CPPFLAGS)"
 endif
@@ -34,7 +34,7 @@ sdl2: sdl2-setup
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-hidapi \
 		--without-x \
-		$(LIBVPX_CONFIGURE_FLAGS)
+		$(SDL2_CONFIGURE_FLAGS)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	cp $(BUILD_WORK)/sdl2/include/SDL_config_iphoneos.h $(BUILD_WORK)/sdl2/include/SDL_config.h
 endif
