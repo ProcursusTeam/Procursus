@@ -1,9 +1,10 @@
 Package: shshd
+Essential: yes
 Author: Hayden Seay <me@diatr.us>
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_SHSHD_V@
-Depends: dimentio (>= 99), firmware (>= 12.2) | org.swift.libswift (>= 5.0)
+Depends: libdimentio0 (>= 99), firmware (>= 12.2) | org.swift.libswift (>= 5.0)
 Section: Administration
 Priority: important
 Description: SHSH blob saving daemon

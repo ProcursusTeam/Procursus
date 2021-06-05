@@ -4,9 +4,9 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
-SUBPROJECTS   += shshd
-SHSHD_VERSION := 1.0.1
-DEB_SHSHD_V   ?= $(SHSHD_VERSION)-1
+STRAPPROJECTS += shshd
+SHSHD_VERSION := 1.1.0
+DEB_SHSHD_V   ?= $(SHSHD_VERSION)
 
 shshd-setup: setup
 	$(call GITHUB_ARCHIVE,Diatrus,SHSHDaemon,$(SHSHD_VERSION),v$(SHSHD_VERSION))
@@ -17,9 +17,9 @@ ifneq ($(wildcard $(BUILD_WORK)/shshd/.build_complete),)
 shshd:
 	@echo "Using previously built shshd."
 else
-shshd: shshd-setup
+shshd: shshd-setup dimentio
 	cd $(BUILD_WORK)/shshd; \
-		swiftc --target=$(LLVM_TARGET) -sdk $(TARGET_SYSROOT) -import-objc-header Bridge.h -o $(BUILD_STAGE)/shshd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/shshd main.swift -lMobileGestalt
+		swiftc --target=$(LLVM_TARGET) -sdk $(TARGET_SYSROOT) -import-objc-header Bridge.h -o $(BUILD_STAGE)/shshd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/shshd main.swift -lMobileGestalt -L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -ldimentio
 		$(SED) -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < $(BUILD_MISC)/shshd/shshd-wrapper > $(BUILD_STAGE)/shshd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/shshd-wrapper
 		chmod 0755 $(BUILD_STAGE)/shshd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/shshd-wrapper
 		$(SED) -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < $(BUILD_MISC)/shshd/us.diatr.shshd.plist > $(BUILD_STAGE)/shshd/$(MEMO_PREFIX)/Library/LaunchDaemons/us.diatr.shshd.plist
@@ -34,7 +34,7 @@ shshd-package: shshd-stage
 	cp -a $(BUILD_STAGE)/shshd $(BUILD_DIST)
 
 	# shshd.mk Sign
-	$(call SIGN,shshd,general.xml)
+	$(call SIGN,shshd,dimentio.plist)
 
 	# shshd.mk Make .debs
 	$(call PACK,shshd,DEB_SHSHD_V)
