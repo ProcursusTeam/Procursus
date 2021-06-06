@@ -1036,7 +1036,7 @@ $(MAKE)-(tool)                 - Used to compile only a specified tool.
 $(MAKE) (tool)-package         - Used to compile only a specified tool and pack it into a debian package.
 $(MAKE) rebuild-(tool)         - Used to recompile only a specified tool after it's already been compiled before.
 $(MAKE) rebuild-(tool)-package - Used to recompile only a specified tool after it's already been compiled before and pack it into a debian package.
-$(MAKE) everything	       - Compiles the entire Procursus suite for every supported host platform and packs it into debian packages.
+$(MAKE) everything             - Compiles the entire Procursus suite for every supported host platform and packs it into debian packages.
 $(MAKE) clean                  - Clean out $(BUILD_STAGE), $(BUILD_BASE), and $(BUILD_WORK).
 $(MAKE) extreme-clean          - Resets the entire git repository.
 $(MAKE) env                    - Print the proenv shell function to STDOUT to give a cross-compilation environment in your POSIX shell (make env >> ~/.zshrc)
