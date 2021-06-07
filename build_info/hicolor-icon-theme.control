@@ -1,8 +1,8 @@
 Package: hicolor-icon-theme
 Version: @DEB_HICOLOR-ICON-THEME_V@
-Architecture: @DEB_ARCH@
+Architecture: all
 Maintainer: @DEB_MAINTAINER@
-Section:
+Section: Miscellaneous
 Priority: optional
 Description: default fallback theme for FreeDesktop.org icon themes
  This is the default fallback theme used by implementations of the
