@@ -1,0 +1,8 @@
+#! /bin/sh
+set -e
+
+if [ "$1" = "remove" ] || [ "$1" = "deconfigure" ] ; then
+  rm -f /usr/share/icons/hicolor/icon-theme.cache
+fi
+
+
