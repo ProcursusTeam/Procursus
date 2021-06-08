@@ -237,8 +237,8 @@ CC      := $(GNU_HOST_TRIPLE)-clang
 CXX     := $(GNU_HOST_TRIPLE)-clang++
 CPP     := $(GNU_HOST_TRIPLE)-clang -E
 AR      := $(GNU_HOST_TRIPLE)-ar
-LD      := $(GNU_HOST_TRIPLE)-ld 
-RANLIB  := $(GNU_HOST_TRIPLE)-ranlib   
+LD      := $(GNU_HOST_TRIPLE)-ld
+RANLIB  := $(GNU_HOST_TRIPLE)-ranlib
 STRIP   := $(GNU_HOST_TRIPLE)-strip
 I_N_T   := $(GNU_HOST_TRIPLE)-install_name_tool
 NM      := $(GNU_HOST_TRIPLE)-nm
@@ -968,10 +968,12 @@ setup:
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libsyscall/wrappers/spawn/spawn.h \
 		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/bootstrap_priv.h \
 		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/vproc_priv.h
+
 ifneq ($(MEMO_CFVER),1800)
 	wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/machine \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/mach/machine/thread_state.h
 endif
+
 	wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/bsm \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/bsd/bsm/audit_kevents.h
 
