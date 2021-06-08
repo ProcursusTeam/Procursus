@@ -5,8 +5,8 @@ endif
 ifneq (,$(findstring arm64,$(MEMO_TARGET)))
 
 SUBPROJECTS    += golb
-GOLB_COMMIT    := 7ffffff93cf753ba114da6e36bcf50a6cbcc96c4
-GOLB_VERSION   := 1.0.1+git20210403.$(shell echo $(GOLB_COMMIT) | cut -c -7)
+GOLB_COMMIT    := 7ffffff2f80cbee13709392367a01a37c50fc2cb
+GOLB_VERSION   := 1.0.1+git20210608.$(shell echo $(GOLB_COMMIT) | cut -c -7)
 DEB_GOLB_V     ?= $(GOLB_VERSION)
 
 golb-setup: setup
