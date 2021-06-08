@@ -4,7 +4,6 @@ endif
 
 SUBPROJECTS   += @pkg@
 @PKG@_VERSION := @PKG_VERSION@
-@PKG@_SOVER   := @SOVER@
 DEB_@PKG@_V   ?= $(@PKG@_VERSION)
 
 @pkg@-setup: setup
@@ -31,24 +30,24 @@ endif
 
 @pkg@-package: @pkg@-stage
 	# @pkg@.mk Package Structure
-	rm -rf $(BUILD_DIST)/@pkg@{$(@PKG@_SOVER),-dev}
-	mkdir -p $(BUILD_DIST)/@pkg@{$(@PKG@_SOVER),-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	rm -rf $(BUILD_DIST)/@pkg@{@SOVER@,-dev}
+	mkdir -p $(BUILD_DIST)/@pkg@{@SOVER@,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# @pkg@.mk Prep @pkg@@SOVER@
-	cp -a $(BUILD_STAGE)/@pkg@/$(MEMO_PREIFX)$(MEMO_SUB_PREFIX)/lib/@pkg@.$(@PKG@_SOVER).dylib $(BUILD_DIST)/@pkg@$(@PKG@_SOVER)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/@pkg@/$(MEMO_PREIFX)$(MEMO_SUB_PREFIX)/lib/@pkg@.@SOVER@.dylib $(BUILD_DIST)/@pkg@@SOVER@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# @pkg@.mk Prep @pkg@-dev
 	cp -a $(BUILD_STAGE)/@pkg@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/@pkg@-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/@pkg@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,@pkg@.{dylib,a}} $(BUILD_DIST)/@pkg@-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# @pkg@.mk Sign
-	$(call SIGN,@pkg@$(@PKG@_SOVER),general.xml)
+	$(call SIGN,@pkg@@SOVER@,general.xml)
 	
 	# @pkg@.mk Make .debs
-	$(call PACK,@pkg@$(@PKG@_SOVER),DEB_@PKG@_V)
+	$(call PACK,@pkg@@SOVER@,DEB_@PKG@_V)
 	$(call PACK,@pkg@-dev,DEB_@PKG@_V)
 	
 	# @pkg@.mk Build cleanup
-	rm -rf $(BUILD_DIST)/@pkg@{$(@PKG@_SOVER),-dev}
+	rm -rf $(BUILD_DIST)/@pkg@{@SOVER@,-dev}
 
 .PHONY: @pkg@ @pkg@-package
