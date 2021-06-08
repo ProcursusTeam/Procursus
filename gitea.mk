@@ -22,7 +22,7 @@ gitea:
 else
 gitea: gitea-setup
 	cd $(BUILD_WORK)/gitea && go mod vendor
-	+TAGS="bindata sqlite sqlite_unlock_notify" \
+	+TAGS="bindata pam sqlite sqlite_unlock_notify" \
 		$(MAKE) -C $(BUILD_WORK)/gitea build \
 		$(DEFAULT_GOLANG_FLAGS)
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/gitea/gitea $(BUILD_STAGE)/gitea/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gitea
