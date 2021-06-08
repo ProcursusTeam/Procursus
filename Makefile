@@ -1051,9 +1051,9 @@ TARGET_SYSROOT  Path to your chosen iPhone SDK. (Defaults to Xcode default path 
 MACOSX_SYSROOT  Path to your chosen macOS SDK. (Defaults to Xcode default path on macOS and the cctools-port default path on Linux.)
 BUILD_ROOT      If you have this repo in one place, but want to build everything in a different place, set BUILD_ROOT to said different place. (Untested but should work fine.)
 MEMO_QUIET      Mute unnecessary warnings and echos.
-SSH_STRAP       Whether the bootstrap being build should include ssh server. (useful to $(MAKE) bootstrap only)
 
-Report issues to https://github.com/ProcursusTeam/Procursus/issues
+Report issues to: https://github.com/ProcursusTeam/Procursus/issues
+For extra and updated help please refer to thr wiki: https://github.com/ProcursusTeam/Procursus/wiki
 
 This Makefile has super cow powers.
 endef
