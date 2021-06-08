@@ -10,9 +10,6 @@ gtk-doc-setup: setup
 	wget -q -nc -P$(BUILD_SOURCE) https://download.gnome.org/sources/gtk-doc/$(GTK_DOC_VERSION)/gtk-doc-$(GTK_DOC_VERSION).tar.xz
 	$(call EXTRACT_TAR,gtk-doc-$(GTK_DOC_VERSION).tar.xz,gtk-doc-$(GTK_DOC_VERSION),gtk-doc)
 
-	# fix pkg-config path, as it defaults to using the build environment's pkg-config
-	$(SED) -i "s|@PKG_CONFIG@|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pkg-config|" $(BUILD_WORK)/gtk-doc/gtkdoc/config.py.in
-
 ifneq ($(wildcard $(BUILD_WORK)/gtk-doc/.build_complete),)
 gtk-doc:
 	@echo "Using previously built gtk-doc."
@@ -25,6 +22,7 @@ gtk-doc: gtk-doc-setup
 	+$(MAKE) -C $(BUILD_WORK)/gtk-doc install \
 		DESTDIR=$(BUILD_STAGE)/gtk-doc
 	$(SED) -i "s|$$(cat $(BUILD_STAGE)/gtk-doc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gtkdoc-check | grep \#! | sed 's/#!//')|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/gtk-doc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
+	$(SED) -i "s|$(BUILD_TOOLS)/.*-pkg-config|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pkg-config|" $(BUILD_STAGE)/gtk-doc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin/gtkdoc-depscan,share/gtk-doc/python/gtkdoc/config.py}
 	touch $(BUILD_WORK)/gtk-doc/.build_complete
 endif
 
