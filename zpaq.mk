@@ -11,7 +11,7 @@ zpaq-setup: setup
 	$(call EXTRACT_TAR,zpaq-$(ZPAQ_VERSION).tar.gz,zpaq-$(ZPAQ_VERSION),zpaq)
 
 ifneq ($(MEMO_ARCH),x86_64)
-ZPAQ_CPPFLAGS += -DNOJIT
+ZPAQ_CPPFLAGS := -DNOJIT
 endif
 
 ifneq ($(wildcard $(BUILD_WORK)/zpaq/.build_complete),)
@@ -21,7 +21,7 @@ else
 zpaq: zpaq-setup
 	+$(MAKE) -C $(BUILD_WORK)/zpaq \
 		CXX=$(CXX) \
-		CPPFLAGS="$(CPPFLAGS) -Dunix" \
+		CPPFLAGS="$(CPPFLAGS) -Dunix $(ZPAQ_CPPFLAGS)" \
 		CXXFLAGS="$(CXXFLAGS)" \
 		LDFLAGS="$(LDFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/zpaq install \
