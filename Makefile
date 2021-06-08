@@ -73,6 +73,14 @@ MACOSX_DEPLOYMENT_TARGET    := 11.0
 DARWIN_DEPLOYMENT_VERSION   := 20
 MACOSX_SUITE_NAME           := big_sur
 override MEMO_CFVER         := 1700
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1800 ] && [ "$(CFVER_WHOLE)" -lt 1900 ] && echo 1),1)
+IPHONEOS_DEPLOYMENT_TARGET  := 15.0
+APPLETVOS_DEPLOYMENT_TARGET := 15.0
+WATCHOS_DEPLOYMENT_TARGET   := 8.0
+MACOSX_DEPLOYMENT_TARGET    := 12.0
+DARWIN_DEPLOYMENT_VERSION   := 21
+MACOSX_SUITE_NAME           := monterey
+override MEMO_CFVER         := 1800
 else
 $(error Unsupported CoreFoundation version)
 endif
@@ -960,10 +968,10 @@ setup:
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libsyscall/wrappers/spawn/spawn.h \
 		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/bootstrap_priv.h \
 		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/vproc_priv.h
-
+ifneq ($(MEMO_CFVER),1800)
 	wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/machine \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/mach/machine/thread_state.h
-
+endif
 	wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/bsm \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/bsd/bsm/audit_kevents.h
 
