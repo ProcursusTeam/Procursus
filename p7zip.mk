@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += p7zip
-P7ZIP_VERSION  := 17.03
+P7ZIP_VERSION  := 17.04
 DEB_P7ZIP_V    ?= $(P7ZIP_VERSION)
 
 p7zip-setup: setup
@@ -32,10 +32,9 @@ endif
 p7zip-package: p7zip-stage
 	# p7zip.mk Package Structure
 	rm -rf $(BUILD_DIST)/p7zip
-	mkdir -p $(BUILD_DIST)/p7zip
 
 	# p7zip.mk Prep p7zip
-	cp -a $(BUILD_STAGE)/p7zip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/p7zip
+	cp -a $(BUILD_STAGE)/p7zip $(BUILD_DIST)
 
 	# p7zip.mk Sign
 	$(call SIGN,p7zip,general.xml)

@@ -11,6 +11,8 @@ DEB_TESSERACT_V   ?= $(TESSERACT_VERSION)
 # tesseract-lang package with the rest of the languages.
 ###
 
+### Needs asciidoc
+
 tesseract-setup: setup
 	$(call GITHUB_ARCHIVE,tesseract-ocr,tesseract,$(TESSERACT_VERSION),$(TESSERACT_VERSION))
 	$(call EXTRACT_TAR,tesseract-$(TESSERACT_VERSION).tar.gz,tesseract-$(TESSERACT_VERSION),tesseract)
@@ -21,9 +23,9 @@ tesseract:
 else
 tesseract: tesseract-setup leptonica libarchive curl
 	cd $(BUILD_WORK)/tesseract && ./autogen.sh
+	rm -f $(BUILD_WORK)/tesseract/VERSION # This, amazingly enough, makes compiling on macOS not work. (Non-case-sensitive)
 	cd $(BUILD_WORK)/tesseract && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS) \
-		LEPTONICA_CFLAGS="-I$(BUILD_STAGE)/leptonica/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/leptonica"
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/tesseract
 	+$(MAKE) -C $(BUILD_WORK)/tesseract install \
 		DESTDIR="$(BUILD_STAGE)/tesseract"

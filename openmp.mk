@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += openmp
-OPENMP_VERSION := 11.0.0
+OPENMP_VERSION := 12.0.0
 DEB_OPENMP_V   ?= $(OPENMP_VERSION)
 
 openmp-setup: setup

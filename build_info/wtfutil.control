@@ -1,0 +1,19 @@
+Package: wtfutil
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_WTFUTIL_V@
+Section: Utilities
+Priority: optional
+Homepage: https://wtfutil.com/
+Description: personal information dashboard for terminal
+ wtfutil is a personal information dashboard for terminal, developed for
+ those who spend most of their day in the command line.
+ .
+ It allows you to monitor systems, services, and important information
+ that you otherwise might keep browser tabs open for, the kinds of things
+ you don’t always need visible, but do check in on every now and then.
+ .
+ Keep an eye on your OpsGenie schedules, Google Calendar, Git and GitHub
+ repositories, and New Relic deployments. See who’s away in BambooHR,
+ which Jira tickets are assigned to you, and what time it is in Barcelona.
+ It even has weather, clocks and Emoji.

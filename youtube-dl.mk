@@ -3,11 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += youtube-dl
-YOUTUBE-DL_VERSION := 2021.04.01
+YOUTUBE-DL_VERSION := 2021.05.16
 DEB_YOUTUBE-DL_V   ?= $(YOUTUBE-DL_VERSION)
 
 youtube-dl-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/ytdl-org/youtube-dl/releases/download/$(YOUTUBE-DL_VERSION)/youtube-dl-$(YOUTUBE-DL_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/ytdl-org/youtube-dl/releases/download/$(YOUTUBE-DL_VERSION)/youtube-dl-$(YOUTUBE-DL_VERSION).tar.gz{,.sig}
+	$(call PGP_VERIFY,youtube-dl-$(YOUTUBE-DL_VERSION).tar.gz)
 	$(call EXTRACT_TAR,youtube-dl-$(YOUTUBE-DL_VERSION).tar.gz,youtube-dl-$(YOUTUBE-DL_VERSION),youtube-dl)
 	$(call DO_PATCH,youtube-dl,youtube-dl,-p1)
 
