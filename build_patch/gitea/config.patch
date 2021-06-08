@@ -6,7 +6,7 @@ diff --color=auto -urN gitea-1.14.2/custom/conf/app.example.ini gitea/custom/con
  APP_NAME = Gitea: Git with a cup of tea
  ; Change it if you run locally
 -RUN_USER = git
-+RUN_USER = _gitea
++RUN_USER = gitea
  ; Application run mode, affects performance and debugging. Either "dev", "prod" or "test", default is "prod"
  RUN_MODE = prod
  

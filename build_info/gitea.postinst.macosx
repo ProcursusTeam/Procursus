@@ -18,10 +18,10 @@ getHiddenUserUid()
 
 if [ "$1" = 'configure' ]; then
     if ! id gitea &>/dev/null; then
-        dscl . -create /Users/_gitea UserShell /bin/sh
-        dscl . -create /Users/_gitea NSFHomeDirectory @MEMO_PREFIX@/var/lib/gitea
-        dscl . -create /Users/_gitea PrimaryGroupID -1
-        dscl . -create /Users/_gitea UniqueID $(getHiddenUserUid)
-        dscl . -create /Users/_gitea RealName "Gitea Sandbox User"
+        dscl . -create /Users/gitea UserShell /bin/sh
+        dscl . -create /Users/gitea NSFHomeDirectory @MEMO_PREFIX@/var/lib/gitea
+        dscl . -create /Users/gitea PrimaryGroupID -1
+        dscl . -create /Users/gitea UniqueID $(getHiddenUserUid)
+        dscl . -create /Users/gitea RealName "Gitea Server User"
     fi
 fi
