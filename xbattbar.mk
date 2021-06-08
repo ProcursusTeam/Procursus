@@ -3,12 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += xbattbar
-XBATTBAR_VERSION := 1.4.2
+XBATTBAR_VERSION := 1.4.9
 DEB_XBATTBAR_V   ?= $(XBATTBAR_VERSION)
 
 xbattbar-setup: setup
-	wget -q -nc -P$(BUILD_SOURCE) https://salsa.debian.org/debian/xbattbar/-/archive/master/xbattbar-master.tar.bz2
-	$(call EXTRACT_TAR,xbattbar-master.tar.bz2,xbattbar-master,xbattbar)
+	wget -q -nc -P$(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/x/xbattbar/xbattbar_$(XBATTBAR_VERSION).orig.tar.gz
+	$(call EXTRACT_TAR,xbattbar_$(XBATTBAR_VERSION).orig.tar.gz,xbattbar-$(XBATTBAR_VERSION),xbattbar)
 	$(call DO_PATCH,xbattbar,xbattbar,-p1)
 	$(SED) -i 's|@MEMO_PREFIX@@MEMO_SUB_PREFIX@|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' $(BUILD_WORK)/xbattbar/xbattbar.c
 
