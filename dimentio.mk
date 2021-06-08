@@ -4,7 +4,7 @@ endif
 
 ifneq (,$(findstring arm64,$(MEMO_TARGET)))
 
-SUBPROJECTS        += dimentio
+STRAPPROJECTS      += dimentio
 DIMENTIO_COMMIT    := 7fffffff0e2a634ef3f40f4e09fcb849432fc8eb
 DIMENTIO_VERSION   := 1:0~20210608.$(shell echo $(DIMENTIO_COMMIT) | cut -c -7)
 DEB_DIMENTIO_V     ?= $(DIMENTIO_VERSION)

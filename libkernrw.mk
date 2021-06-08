@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 ifeq ($(shell [ "$(MEMO_CFVER)" -ge 1700 ] && echo 1),1)
 
-SUBPROJECTS       += libkernrw
+STRAPPROJECTS     += libkernrw
 LIBKERNRW_VERSION := 1.0
 DEB_LIBKERNRW_V   ?= $(LIBKERNRW_VERSION)-1
 
