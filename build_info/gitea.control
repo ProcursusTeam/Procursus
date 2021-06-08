@@ -1,0 +1,9 @@
+Package: gitea
+Version: @DEB_GITEA_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Data_Storage
+Priority: optional
+Depends: git
+Pre-Depends: system-cmds (>= 854.40.2-2)
+Description: Git with a cup of tea, painless self-hosted git service

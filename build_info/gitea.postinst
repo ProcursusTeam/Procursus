@@ -1,0 +1,6 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = 'configure' ]; then
+	pw useradd -n _gitea -d @MEMO_PREFIX@/var/lib/gitea -s /bin/sh -m &>/dev/null || true
+fi

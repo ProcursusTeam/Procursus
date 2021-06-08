@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -e
+
+getHiddenUserUid()
+{
+    local __UIDS=$(dscl . -list /Users UniqueID | awk '{print $2}' | sort -ugr)
+
+    local __NewUID
+    for __NewUID in $__UIDS
+    do
+        if [[ $__NewUID -lt 499 ]] ; then
+            break;
+        fi
+    done
+
+    echo $((__NewUID+1))
+}
+
+if [ "$1" = 'configure' ]; then
+    if ! id gitea &>/dev/null; then
+        dscl . -create /Users/_gitea UserShell /bin/sh
+        dscl . -create /Users/_gitea NSFHomeDirectory @MEMO_PREFIX@/var/lib/gitea
+        dscl . -create /Users/_gitea PrimaryGroupID -1
+        dscl . -create /Users/_gitea UniqueID $(getHiddenUserUid)
+        dscl . -create /Users/_gitea RealName "Gitea Sandbox User"
+    fi
+fi
