@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cd @MEMO_PREFIX@/var/lib/gitea
+gitea $@

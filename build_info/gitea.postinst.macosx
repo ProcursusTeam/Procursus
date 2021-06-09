@@ -3,25 +3,27 @@ set -e
 
 getHiddenUserUid()
 {
-    local __UIDS=$(dscl . -list /Users UniqueID | awk '{print $2}' | sort -ugr)
+	local __UIDS=$(dscl . -list /Users UniqueID | awk '{print $2}' | sort -ugr)
 
-    local __NewUID
-    for __NewUID in $__UIDS
-    do
-        if [[ $__NewUID -lt 499 ]] ; then
-            break;
-        fi
-    done
+	local __NewUID
+	for __NewUID in $__UIDS; do
+	if [[ $__NewUID -lt 499 ]]; then
+		break;
+	fi
+	done
 
-    echo $((__NewUID+1))
+	echo $((__NewUID+1))
 }
 
 if [ "$1" = 'configure' ]; then
-    if ! id gitea &>/dev/null; then
-        dscl . -create /Users/gitea UserShell /bin/sh
-        dscl . -create /Users/gitea NSFHomeDirectory @MEMO_PREFIX@/var/lib/gitea
-        dscl . -create /Users/gitea PrimaryGroupID -1
-        dscl . -create /Users/gitea UniqueID $(getHiddenUserUid)
-        dscl . -create /Users/gitea RealName "Gitea Server User"
-    fi
+	if ! id gitea &>/dev/null; then
+		dscl . -create /Users/gitea UserShell /bin/sh
+		dscl . -create /Users/gitea NSFHomeDirectory @MEMO_PREFIX@/var/lib/gitea
+		dscl . -create /Users/gitea PrimaryGroupID -1
+		dscl . -create /Users/gitea UniqueID $(getHiddenUserUid)
+		dscl . -create /Users/gitea RealName "Gitea Server User"
+	fi
+	if ! dpkg-statoverride --list @MEMO_PREFIX@/etc/gitea.ini; then
+		dpkg-statoverride --update --add root gitea 660 @MEMO_PREFIX@/etc/gitea.ini
+	fi
 fi

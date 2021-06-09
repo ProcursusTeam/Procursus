@@ -3,4 +3,7 @@ set -e
 
 if [ "$1" = 'configure' ]; then
 	pw useradd -n gitea -d @MEMO_PREFIX@/var/lib/gitea -s /bin/sh -m &>/dev/null || true
+	if ! dpkg-statoverride --list @MEMO_PREFIX@/etc/gitea.ini; then
+		dpkg-statoverride --update --add root gitea 660 @MEMO_PREFIX@/etc/gitea.ini
+	fi
 fi
