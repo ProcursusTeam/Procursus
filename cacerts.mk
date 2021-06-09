@@ -2,9 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS   += cacerts
-CACERTS_VERSION := 0.0.4
-DEB_CACERTS_V   ?= $(CACERTS_VERSION)
+STRAPPROJECTS    += cacerts
 
 ifneq ($(wildcard $(BUILD_WORK)/cacerts/.build_complete),)
 cacerts:
@@ -28,13 +26,14 @@ cacerts-package: cacerts-stage
 
 	# cacerts.mk Prep ca-certificates
 	cp -a $(BUILD_STAGE)/cacerts/$(MEMO_PREFIX)/etc $(BUILD_DIST)/ca-certificates/$(MEMO_PREFIX)
-	ln -s /$(MEMO_PREFIX)/etc/ssl/certs $(BUILD_DIST)/ca-certificates/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ssl
-	ln -s /$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem $(BUILD_DIST)/ca-certificates/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ssl
+	ln -s $(MEMO_PREFIX)/etc/ssl/certs $(BUILD_DIST)/ca-certificates/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ssl
+	ln -s $(MEMO_PREFIX)/etc/ssl/certs/cacert.pem $(BUILD_DIST)/ca-certificates/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ssl
 
 	# cacerts.mk Permissions
 	$(FAKEROOT) chmod a+x $(BUILD_DIST)/ca-certificates/$(MEMO_PREFIX)/etc/profile.d/cacerts.bootstrap.sh
 
 	# cacerts.mk Make .debs
+	DEB_CACERTS_V=$$(date --date="$$(egrep -Eo '([a-zA-Z]+( [a-zA-Z]+)+)\s+(0?[1-9]|[12][0-9]|3[01])\s+[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{1,3})?\s+[0-9]+\s+[a-zA-Z]+' $(BUILD_STAGE)/cacerts/$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem)" +"%+4Y%m%d"); \
 	$(call PACK,ca-certificates,DEB_CACERTS_V)
 
 	# cacerts.mk Build cleanup
