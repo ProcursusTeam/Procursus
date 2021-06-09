@@ -1,0 +1,7 @@
+Package: tea
+Version: @DEB_TEA_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Description: command line tool to interact with Gitea
