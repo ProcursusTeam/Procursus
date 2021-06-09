@@ -527,15 +527,17 @@ PACK = if [ -z "$(4)" ]; then \
 	SIZE=$$(du -sk $(BUILD_DIST)/$(1) | cut -f 1); \
 	mkdir -p $(BUILD_DIST)/$(1)/DEBIAN; \
 	for i in control postinst preinst postrm prerm extrainst_ conffiles; do \
-		if [ -f "$(BUILD_INFO)/$(1).$$i" ]; then \
-			$(SED) -e ':a; s|@MEMO_PREFIX@|$(MEMO_PREFIX)|g; ta' \
-				-e ':a; s|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g; ta' \
-				-e ':a; s|@MEMO_ALT_PREFIX@|$(MEMO_ALT_PREFIX)|g; ta' \
-				-e ':a; s|@GNU_PREFIX@|$(GNU_PREFIX)|g; ta' \
-				-e ':a; s/@$(2)@/'"$${$(2)}"'/g; ta' \
-				-e ':a; s/@DEB_MAINTAINER@/$(DEB_MAINTAINER)/g; ta' \
-				-e ':a; s/@DEB_ARCH@/$(DEB_ARCH)/g; ta' < $(BUILD_INFO)/$(1).$$i > $(BUILD_DIST)/$(1)/DEBIAN/$$i; \
-		fi; \
+		for n in $$i $$i.$(PLATFORM); do \
+			if [ -f "$(BUILD_INFO)/$(1).$$n" ]; then \
+				$(SED) -e ':a; s|@MEMO_PREFIX@|$(MEMO_PREFIX)|g; ta' \
+					-e ':a; s|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g; ta' \
+					-e ':a; s|@MEMO_ALT_PREFIX@|$(MEMO_ALT_PREFIX)|g; ta' \
+					-e ':a; s|@GNU_PREFIX@|$(GNU_PREFIX)|g; ta' \
+					-e ':a; s/@$(2)@/$($(2))/g; ta' \
+					-e ':a; s/@DEB_MAINTAINER@/$(DEB_MAINTAINER)/g; ta' \
+					-e ':a; s/@DEB_ARCH@/$(DEB_ARCH)/g; ta' < $(BUILD_INFO)/$(1).$$n > $(BUILD_DIST)/$(1)/DEBIAN/$$i; \
+			fi; \
+		done; \
 	done; \
 	sed -i '$$a\' $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	if [ -d "$(BUILD_DIST)/$(1)-locales" ]; then \
@@ -548,7 +550,7 @@ PACK = if [ -z "$(4)" ]; then \
 	fi; \
 	echo "Installed-Size: $$SIZE" >> $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	find $(BUILD_DIST)/$(1) -name '.DS_Store' -type f -delete; \
-	$(FAKEROOT) $(DPKG_DEB) -b $(BUILD_DIST)/$(1) $(BUILD_DIST)/$$(grep Package: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ')_$${$(2)}_$$(grep Architecture: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ').deb
+	$(FAKEROOT) $(DPKG_DEB) -b $(BUILD_DIST)/$(1) $(BUILD_DIST)/$$(grep Package: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ')_$($(2))_$$(grep Architecture: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ').deb
 
 PACK_LOCALE = mkdir -p $(BUILD_DIST)/$(1)-locale/{DEBIAN,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share}; \
 	$(CP) -af $(BUILD_DIST)/$(1)-locales $(BUILD_DIST)/$(1)-locale/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale; \
