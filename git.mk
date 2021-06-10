@@ -3,13 +3,15 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += git
-GIT_VERSION := 2.31.1
-DEB_GIT_V   ?= $(GIT_VERSION)-1
+GIT_VERSION := 2.32.0
+DEB_GIT_V   ?= $(GIT_VERSION)
 
 GIT_ARGS += uname_S=Darwin \
 	HOST_CPU=$(GNU_HOST_TRIPLE) \
 	DESTDIR=$(BUILD_STAGE)/git \
 	MANDIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
+	PYTHON_PATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3
+	ASCIIDOC_PATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/asciidoc
 	NO_DARWIN_PORTS=1 \
 	NO_FINK=1 \
 	NO_APPLE_COMMON_CRYPTO=1 \
@@ -37,12 +39,12 @@ endif
 	+cd $(BUILD_WORK)/git && $(MAKE) configure
 	cd $(BUILD_WORK)/git && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--without-tcltk \
 		--with-libpcre2 \
 		ac_cv_iconv_omits_bom=no \
 		ac_cv_fread_reads_directories=no \
 		ac_cv_snprintf_returns_bogus=yes \
 		ac_cv_header_libintl_h=yes \
+		NO_TCLTK=1 \
 		CURL_CONFIG=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/curl-config
 	+$(MAKE) -C $(BUILD_WORK)/git all \
 		$(GIT_ARGS)
