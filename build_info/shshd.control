@@ -6,7 +6,7 @@ Architecture: @DEB_ARCH@
 Version: @DEB_SHSHD_V@
 Depends: libdimentio0 (>= 99), firmware (>= 12.2) | org.swift.libswift (>= 5.0)
 Section: Administration
-Priority: important
+Priority: standard
 Description: SHSH blob saving daemon
  After installing, this package will automatically save your blobs
  to 1Conan's TSSSaver. The link to your specific blobs can be retrieved
