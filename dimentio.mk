@@ -4,19 +4,16 @@ endif
 
 ifneq (,$(findstring arm64,$(MEMO_TARGET)))
 
-SUBPROJECTS        += dimentio
-# I'm not going to bump the version any higher than 1.0.3. Just change commit date/short hash.
-DIMENTIO_COMMIT    := 7ffffffa76ca12341369c785ed4281d276631438
-DIMENTIO_VERSION   := 1.0.3+git20210325.$(shell echo $(DIMENTIO_COMMIT) | cut -c -7)
+STRAPPROJECTS      += dimentio
+DIMENTIO_COMMIT    := 7fffffff0e2a634ef3f40f4e09fcb849432fc8eb
+DIMENTIO_VERSION   := 1:0~20210608.$(shell echo $(DIMENTIO_COMMIT) | cut -c -7)
 DEB_DIMENTIO_V     ?= $(DIMENTIO_VERSION)
 
 DIMENTIO_SOVERSION := 0
 DIMENTIO_LIBS      := -framework CoreFoundation -framework IOKit -lcompression
 
 dimentio-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/dimentio-v$(DIMENTIO_COMMIT).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/dimentio-v$(DIMENTIO_COMMIT).tar.gz \
-			https://github.com/0x7ff/dimentio/archive/$(DIMENTIO_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,0x7ff,dimentio,v$(DIMENTIO_COMMIT),$(DIMENTIO_COMMIT))
 	$(call EXTRACT_TAR,dimentio-v$(DIMENTIO_COMMIT).tar.gz,dimentio-$(DIMENTIO_COMMIT),dimentio)
 	mkdir -p $(BUILD_STAGE)/dimentio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib,include}
 
@@ -26,20 +23,13 @@ dimentio:
 else
 dimentio: dimentio-setup
 
-	###
-	# As of right now, -arch arm64e is prepended to the CFLAGS to allow for it to work properly on arm64e iPhones.
-	# Do not compile this for <= 1600 with XCode 12, and do not compile it for >= 1700 with Xcode << 12.
-	# 1.0.3+git20201124.7ffffff should be the last version (save for some emergency update) for CFVER <= 1600
-	# To make toolchain switching easier on me, I'm just going to compile this for >= 1700 from now on.
-	###
-
 	# libdimentio.o
-	$(CC) -arch arm64e $(CFLAGS) \
+	$(CC) $(CFLAGS) \
 		-c -o $(BUILD_WORK)/dimentio/libdimentio.o -x c \
 		$(BUILD_WORK)/dimentio/libdimentio.c
 
 	# libdimentio.dylib
-	$(CC) -arch arm64e $(CFLAGS) -dynamiclib \
+	$(CC) $(CFLAGS) -dynamiclib \
 		-install_name "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdimentio.$(DIMENTIO_SOVERSION).dylib" \
 		-o $(BUILD_WORK)/dimentio/libdimentio.$(DIMENTIO_SOVERSION).dylib \
 		$(BUILD_WORK)/dimentio/libdimentio.o \
@@ -51,12 +41,12 @@ dimentio: dimentio-setup
 		$(BUILD_WORK)/dimentio/libdimentio.o
 
 	# dimentio.o
-	$(CC) -arch arm64e $(CFLAGS) \
+	$(CC) $(CFLAGS) \
 		-c -o $(BUILD_WORK)/dimentio/dimentio.o -x c \
 		$(BUILD_WORK)/dimentio/dimentio.c
 
 	# dimentio
-	$(CC) -arch arm64e $(CFLAGS) \
+	$(CC) $(CFLAGS) \
 		-o $(BUILD_WORK)/dimentio/dimentio \
 		$(BUILD_WORK)/dimentio/dimentio.o \
 		$(BUILD_WORK)/dimentio/libdimentio.$(DIMENTIO_SOVERSION).dylib
@@ -66,6 +56,7 @@ dimentio: dimentio-setup
 	cp -a $(BUILD_WORK)/dimentio/libdimentio*.{a,dylib} $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_WORK)/dimentio/libdimentio.h $(BUILD_STAGE)/dimentio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	cp -a $(BUILD_WORK)/dimentio/libdimentio.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	ln -sf libdimentio.$(DIMENTIO_SOVERSION).dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdimentio.dylib
 	touch $(BUILD_WORK)/dimentio/.build_complete
 endif
 

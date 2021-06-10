@@ -16,13 +16,10 @@ myman:
 else
 myman: myman-setup ncurses
 	unset CC CFLAGS CXXFLAGS CPPFLAGS LDFLAGS && cd $(BUILD_WORK)/myman && ./configure \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+unset CC CFLAGS CXXFLAGS CPPFLAGS LDFLAGS && $(MAKE) -C $(BUILD_WORK)/myman install \
 		DESTDIR="$(BUILD_STAGE)/myman" \
 		RMDIR="rmdir" \
-		INSTALL="$(GINSTALL)" \
 		HOSTCC="$(CC)" \
 		HOSTCFLAGS="$(CFLAGS)" \
 		HOSTCPPFLAGS="$(CPPFLAGS)" \

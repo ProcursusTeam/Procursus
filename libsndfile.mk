@@ -3,11 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += libsndfile
-LIBSNDFILE_VERSION := 1.0.30
+LIBSNDFILE_VERSION := 1.0.31
 DEB_LIBSNDFILE_V   ?= $(LIBSNDFILE_VERSION)
 
 libsndfile-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/erikd/libsndfile/releases/download/v$(LIBSNDFILE_VERSION)/libsndfile-$(LIBSNDFILE_VERSION).tar.bz2
+	wget -q -nc -P $(BUILD_SOURCE) \
+		https://github.com/libsndfile/libsndfile/releases/download/$(LIBSNDFILE_VERSION)/libsndfile-$(LIBSNDFILE_VERSION).tar.bz2
 	$(call EXTRACT_TAR,libsndfile-$(LIBSNDFILE_VERSION).tar.bz2,libsndfile-$(LIBSNDFILE_VERSION),libsndfile)
 
 ifneq ($(wildcard $(BUILD_WORK)/libsndfile/.build_complete),)
@@ -16,10 +17,7 @@ libsndfile:
 else
 libsndfile: libsndfile-setup flac libogg libvorbis libopus
 	cd $(BUILD_WORK)/libsndfile && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--disable-dependency-tracking
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libsndfile
 	+$(MAKE) -C $(BUILD_WORK)/libsndfile install \
 		DESTDIR=$(BUILD_STAGE)/libsndfile
@@ -36,7 +34,7 @@ libsndfile-package: libsndfile-stage
 		$(BUILD_DIST)/sndfile-programs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
 	# libsndfile.mk Prep libsndfile1
-	cp -a $(BUILD_STAGE)/libsndfile/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsndfile.1{,.0.30}.dylib $(BUILD_DIST)/libsndfile1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libsndfile/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsndfile.1*.dylib $(BUILD_DIST)/libsndfile1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libsndfile.mk Prep libsndfile1-dev
 	cp -a $(BUILD_STAGE)/libsndfile/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsndfile.{dylib,a} $(BUILD_DIST)/libsndfile1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib

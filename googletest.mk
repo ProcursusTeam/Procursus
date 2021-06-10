@@ -7,8 +7,8 @@ GOOGLETEST_VERSION := 1.10.0
 DEB_GOOGLETEST_V   ?= $(GOOGLETEST_VERSION)
 
 googletest-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/google/googletest/archive/release-$(GOOGLETEST_VERSION).tar.gz
-	$(call EXTRACT_TAR,release-$(GOOGLETEST_VERSION).tar.gz,googletest-release-$(GOOGLETEST_VERSION),googletest)
+	$(call GITHUB_ARCHIVE,google,googletest,$(GOOGLETEST_VERSION),release-$(GOOGLETEST_VERSION))
+	$(call EXTRACT_TAR,googletest-$(GOOGLETEST_VERSION).tar.gz,googletest-release-$(GOOGLETEST_VERSION),googletest)
 
 ifneq ($(wildcard $(BUILD_WORK)/googletest/.build_complete),)
 googletest:
@@ -17,17 +17,7 @@ else
 googletest: googletest-setup
 	mkdir -p $(BUILD_WORK)/googletest/build
 	cd $(BUILD_WORK)/googletest/build && cmake . \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
-		-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DBUILD_SHARED_LIBS=ON \
 		-DCMAKE_INSTALL_LIBDIR=lib \
 		-Dgtest_build_tests=OFF \

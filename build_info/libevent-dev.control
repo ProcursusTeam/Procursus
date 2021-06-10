@@ -2,8 +2,6 @@ Package: libevent-dev
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LIBEVENT_V@
-Conflicts: libevent (<< @DEB_LIBEVENT_V@)
-Replaces: libevent (<< @DEB_LIBEVENT_V@)
 Section: Development
 Depends: libevent-2.1-7, libevent-core-2.1-7, libevent-extra-2.1-7, libevent-pthreads-2.1-7, libevent-openssl-2.1-7
 Description: Asynchronous event notification library (development files)

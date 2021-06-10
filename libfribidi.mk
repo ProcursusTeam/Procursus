@@ -16,12 +16,7 @@ libfribidi:
 else
 libfribidi: libfribidi-setup
 	cd $(BUILD_WORK)/libfribidi && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--disable-dependency-tracking \
-		--disable-silent-rules \
-		--disable-debug
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libfribidi
 	+$(MAKE) -C $(BUILD_WORK)/libfribidi install \
 		DESTDIR=$(BUILD_STAGE)/libfribidi

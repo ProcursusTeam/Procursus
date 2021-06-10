@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += starship
-STARSHIP_VERSION := 0.51.0
+STARSHIP_VERSION := 0.53.0
 DEB_STARSHIP_V   ?= $(STARSHIP_VERSION)
 
 starship-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/starship-$(STARSHIP_VERSION).tar.gz" ] && wget -q -nc -O$(BUILD_SOURCE)/starship-$(STARSHIP_VERSION).tar.gz https://github.com/starship/starship/archive/v$(STARSHIP_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,starship,starship,$(STARSHIP_VERSION),v$(STARSHIP_VERSION))
 	$(call EXTRACT_TAR,starship-$(STARSHIP_VERSION).tar.gz,starship-$(STARSHIP_VERSION),starship)
 	# remove this when the following upstream PRs are merged:
 	#  https://github.com/FillZpp/sys-info-rs/pull/88

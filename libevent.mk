@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS        += libevent
 LIBEVENT_VERSION   := 2.1.12
-DEB_LIBEVENT_V     ?= $(LIBEVENT_VERSION)-1
+DEB_LIBEVENT_V     ?= $(LIBEVENT_VERSION)-2
 
 libevent-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libevent/libevent/releases/download/release-$(LIBEVENT_VERSION)-stable/libevent-$(LIBEVENT_VERSION)-stable.tar.gz{,.asc}
@@ -17,16 +17,7 @@ libevent:
 else
 libevent: libevent-setup openssl
 	cd $(BUILD_WORK)/libevent && cmake . \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/ \
-		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DEVENT__LIBRARY_TYPE:STRING=BOTH \
 		.
 	+$(MAKE) -C $(BUILD_WORK)/libevent install \

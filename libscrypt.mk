@@ -7,9 +7,7 @@ LIBSCRYPT_VERSION := 1.21
 DEB_LIBSCRYPT_V   ?= $(LIBSCRYPT_VERSION)-1
 
 libscrypt-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/libscrypt-$(LIBSCRYPT_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/libscrypt-$(LIBSCRYPT_VERSION).tar.gz \
-			https://github.com/technion/libscrypt/archive/v$(LIBSCRYPT_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,technion,libscrypt,$(LIBSCRYPT_VERSION),v$(LIBSCRYPT_VERSION))
 	$(call EXTRACT_TAR,libscrypt-$(LIBSCRYPT_VERSION).tar.gz,libscrypt-$(LIBSCRYPT_VERSION),libscrypt)
 
 ifneq ($(wildcard $(BUILD_WORK)/libscrypt/.build_complete),)
@@ -17,6 +15,7 @@ libscrypt:
 	@echo "Using previously built libscrypt."
 else
 libscrypt: libscrypt-setup
+	$(SED) -i 's/install_name_tool/$(I_N_T)/g' $(BUILD_WORK)/libscrypt/Makefile
 	$(MAKE) -C $(BUILD_WORK)/libscrypt install-osx install-static \
 		DESTDIR=$(BUILD_STAGE)/libscrypt \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \

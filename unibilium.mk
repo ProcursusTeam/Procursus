@@ -7,9 +7,7 @@ UNIBILIUM_VERSION := 2.1.0
 DEB_UNIBILIUM_V   ?= $(UNIBILIUM_VERSION)
 
 unibilium-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/unibilium-$(UNIBILIUM_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/unibilium-$(UNIBILIUM_VERSION).tar.gz \
-			https://github.com/neovim/unibilium/archive/v$(UNIBILIUM_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,neovim,unibilium,$(UNIBILIUM_VERSION),v$(UNIBILIUM_VERSION))
 	$(call EXTRACT_TAR,unibilium-$(UNIBILIUM_VERSION).tar.gz,unibilium-$(UNIBILIUM_VERSION),unibilium)
 	$(call DO_PATCH,unibilium,unibilium)
 	mkdir -p $(BUILD_WORK)/unibilium/libtool
@@ -25,8 +23,7 @@ else
 unibilium: unibilium-setup
 	cd $(BUILD_WORK)/unibilium/libtool && LIBTOOLIZE="$(LIBTOOLIZE) -i" autoreconf -fi
 	cd $(BUILD_WORK)/unibilium/libtool && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/unibilium \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		LIBTOOL="$(BUILD_WORK)/unibilium/libtool/libtool" \

@@ -15,12 +15,10 @@ imlib2:
 	@echo "Using previously built imlib2."
 else
 imlib2: imlib2-setup freetype libgif libjpeg-turbo libpng16 libtiff libx11 libxcb libxext
-	cd $(BUILD_WORK)/imlib2 && PKG_CONFIG="pkg-config --define-prefix" ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--enable-amd64=no \
-		--without-id3
+	cd $(BUILD_WORK)/imlib2 && ./configure -C \
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		--without-id3 \
+		--enable-amd64=no
 	+$(MAKE) -C $(BUILD_WORK)/imlib2
 	+$(MAKE) -C $(BUILD_WORK)/imlib2 install \
 		DESTDIR=$(BUILD_STAGE)/imlib2

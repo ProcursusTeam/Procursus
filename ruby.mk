@@ -4,14 +4,19 @@ endif
 
 SUBPROJECTS      += ruby
 RUBY_VERSION     := 3.0
-RUBY_API_VERSION := $(RUBY_VERSION).0
-DEB_RUBY_V       ?= $(RUBY_API_VERSION)
+RUBY_API_VERSION := $(RUBY_VERSION).1
+DEB_RUBY_V       ?= $(RUBY_API_VERSION)-1
 
 ruby-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://cache.ruby-lang.org/pub/ruby/$(RUBY_VERSION)/ruby-$(RUBY_API_VERSION).tar.gz
 	$(call EXTRACT_TAR,ruby-$(RUBY_API_VERSION).tar.gz,ruby-$(RUBY_API_VERSION),ruby)
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(call DO_PATCH,ruby-ios,ruby,-p1)
+	$(call DO_PATCH,ruby,ruby,-p1)
+
+
+ifneq (,$(findstring amd64,$(MEMO_TARGET)))
+RUBY_CONFIGURE_ARGS := --with-coroutine=amd64
+else
+RUBY_CONFIGURE_ARGS := --with-coroutine=arm64
 endif
 
 ifneq ($(wildcard $(BUILD_WORK)/ruby/.build_complete),)
@@ -19,49 +24,36 @@ ruby:
 	@echo "Using previously built ruby."
 else
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-RUBY_EXTRA_LIBS     := -lcrypt -lucontext
-RUBY_CONFIGURE_ARGS := --with-coroutine=ucontext \
-	CFLAGS="$(CFLAGS) -I$(BUILD_STAGE)/libucontext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -D_STRUCT_UCONTEXT" \
-	LDFLAGS="$(LDFLAGS) -L$(BUILD_STAGE)/libucontext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib"
-ruby: ruby-setup libxcrypt libgmp10 libjemalloc ncurses readline openssl libyaml libffi libgdbm libucontext
-else
-ifneq (,$(findstring amd64,$(MEMO_TARGET)))
-RUBY_EXTRA_LIBS     :=
-RUBY_CONFIGURE_ARGS := --with-coroutine=amd64
+RUBY_EXTRA_LIBS     := -lcrypt
+ruby: ruby-setup libxcrypt libgmp10 libjemalloc ncurses readline openssl libyaml libffi libgdbm
 else
 RUBY_EXTRA_LIBS     :=
-RUBY_CONFIGURE_ARGS := --with-coroutine=ucontext
-endif
 ruby: ruby-setup libgmp10 libjemalloc ncurses readline openssl libyaml libffi libgdbm
 endif
-	mkdir -p $(BUILD_WORK)/ruby/nativebuild
-	cd $(BUILD_WORK)/ruby/nativebuild && env -i ../configure --prefix=$(BUILD_WORK)/ruby/nativebuild/install --disable-install-rdoc --disable-install-doc
-	+unset CC CXX CFLAGS CPPFLAGS LDFLAGS && $(MAKE) -C $(BUILD_WORK)/ruby/nativebuild install
+#	mkdir -p $(BUILD_WORK)/ruby/nativebuild
+#	cd $(BUILD_WORK)/ruby/nativebuild && env -i ../configure --prefix=$(BUILD_WORK)/ruby/nativebuild/install --disable-install-rdoc --disable-install-doc
+#	+unset CC CXX CFLAGS CPPFLAGS LDFLAGS && $(MAKE) -C $(BUILD_WORK)/ruby/nativebuild install
 
 	$(SED) -i -e 's/\bcurses\b/ncursesw/' \
 		-e 's/\bncurses\b/ncursesw/' $(BUILD_WORK)/ruby/ext/readline/extconf.rb
 
-	# Future reference: coroutine should be "arm64" on M1 macs
-	cd $(BUILD_WORK)/ruby && LIBS="$(RUBY_EXTRA_LIBS)" PKG_CONFIG="pkg-config --define-prefix" \
-		 ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--target=$(GNU_HOST_TRIPLE) \
-		--with-arch=$(MEMO_ARCH) \
-		--with-jemalloc \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--enable-shared \
-		--program-suffix=$(RUBY_VERSION) \
-		--with-soname=ruby-$(RUBY_VERSION) \
-		--with-sitedir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/ruby/site_ruby \
-    --with-vendordir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ruby/vendor_ruby \
-		--runstatedir=$(MEMO_PREFIX)/var/run \
-		--localstatedir=$(MEMO_PREFIX)/var \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
-		--disable-dtrace \
-		--enable-ipv6 \
-		--with-baseruby="$(BUILD_WORK)/ruby/nativebuild/install/bin/ruby" \
-		$(RUBY_CONFIGURE_ARGS)
+#	Future reference: coroutine should be "arm64" on M1 macs
+	cd $(BUILD_WORK)/ruby && LIBS="$(RUBY_EXTRA_LIBS)" \
+		./configure -C \
+			$(DEFAULT_CONFIGURE_FLAGS) \
+			--target=$(GNU_HOST_TRIPLE) \
+			--with-arch=$(MEMO_ARCH) \
+			--with-jemalloc \
+			--enable-shared \
+			--program-suffix=$(RUBY_VERSION) \
+			--with-soname=ruby-$(RUBY_VERSION) \
+			--with-sitedir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/ruby/site_ruby \
+			--with-vendordir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ruby/vendor_ruby \
+			--runstatedir=$(MEMO_PREFIX)/var/run \
+			--disable-dtrace \
+			--enable-ipv6 \
+			--with-baseruby="$(shell which ruby)" \
+			$(RUBY_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/ruby
 	+$(MAKE) -C $(BUILD_WORK)/ruby install \
 		DESTDIR="$(BUILD_STAGE)/ruby"

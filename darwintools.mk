@@ -3,14 +3,12 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS       += darwintools
-DARWINTOOLS_VERSION := 1.3
-ZBRFIRMWARE_COMMIT  := 09e2673391e03a0405838f7ebdf02fa1020c88fd
-DEB_DARWINTOOLS_V   ?= $(DARWINTOOLS_VERSION)-2
+DARWINTOOLS_VERSION := 1.4
+ZBRFIRMWARE_COMMIT  := 213f1051334fdf4e9e4989b8f55ef0714b6f2779
+DEB_DARWINTOOLS_V   ?= $(DARWINTOOLS_VERSION)
 
 darwintools-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/Firmware-$(ZBRFIRMWARE_COMMIT).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/Firmware-$(ZBRFIRMWARE_COMMIT).tar.gz \
-			https://github.com/zbrateam/Firmware/archive/$(ZBRFIRMWARE_COMMIT).tar.gz
+	$(call GITHUB_ARCHIVE,zbrateam,Firmware,$(ZBRFIRMWARE_COMMIT),$(ZBRFIRMWARE_COMMIT))
 	$(call EXTRACT_TAR,Firmware-$(ZBRFIRMWARE_COMMIT).tar.gz,Firmware-$(ZBRFIRMWARE_COMMIT),darwintools)
 
 ifneq ($(wildcard $(BUILD_WORK)/darwintools/.build_complete),)

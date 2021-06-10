@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += libass
-LIBASS_VERSION := 0.15.0
-DEB_LIBASS_V   ?= $(LIBASS_VERSION)-1
+LIBASS_VERSION := 0.15.1
+DEB_LIBASS_V   ?= $(LIBASS_VERSION)
 
 libass-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libass/libass/releases/download/$(LIBASS_VERSION)/libass-$(LIBASS_VERSION).tar.xz
@@ -16,13 +16,7 @@ libass:
 else
 libass: libass-setup freetype fontconfig libfribidi harfbuzz
 	cd $(BUILD_WORK)/libass && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		FONTCONFIG_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/freetype2 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libpng16" \
-		FREETYPE_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/freetype2 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libpng16" \
-		FRIBIDI_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/fribidi" \
-		HARFBUZZ_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/harfbuzz"
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libass
 	+$(MAKE) -C $(BUILD_WORK)/libass install \
 		DESTDIR="$(BUILD_STAGE)/libass"
@@ -40,7 +34,7 @@ libass-package: libass-stage
 	cp -a $(BUILD_STAGE)/libass/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libass.9.dylib $(BUILD_DIST)/libass9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libass.mk Prep libass-dev
-	cp -a $(BUILD_STAGE)/libass/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libass.{dylib,a},pkgconfig} $(BUILD_DIST)/libass-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libass/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libass.9.dylib) $(BUILD_DIST)/libass-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libass/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libass-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libass.mk Sign

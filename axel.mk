@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS      += axel
+SUBPROJECTS  += axel
 AXEL_VERSION := 2.17.10
 DEB_AXEL_V   ?= $(AXEL_VERSION)
 
@@ -16,9 +16,7 @@ axel:
 else
 axel: axel-setup gettext openssl
 	cd $(BUILD_WORK)/axel && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/axel install \
 		DESTDIR="$(BUILD_STAGE)/axel"
 	touch $(BUILD_WORK)/axel/.build_complete

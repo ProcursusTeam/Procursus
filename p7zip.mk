@@ -3,13 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += p7zip
-P7ZIP_VERSION  := 17.03
+P7ZIP_VERSION  := 17.04
 DEB_P7ZIP_V    ?= $(P7ZIP_VERSION)
 
 p7zip-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/p7zip-$(P7ZIP_VERSION).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/p7zip-$(P7ZIP_VERSION).tar.gz \
-			https://github.com/jinfeihan57/p7zip/archive/v$(P7ZIP_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,jinfeihan57,p7zip,$(P7ZIP_VERSION),v$(P7ZIP_VERSION))
 	$(call EXTRACT_TAR,p7zip-$(P7ZIP_VERSION).tar.gz,p7zip-$(P7ZIP_VERSION),p7zip)
 	$(call DO_PATCH,p7zip,p7zip,-p1) # Remove after next release.
 	chmod 0755 $(BUILD_WORK)/p7zip/install.sh
@@ -34,10 +32,9 @@ endif
 p7zip-package: p7zip-stage
 	# p7zip.mk Package Structure
 	rm -rf $(BUILD_DIST)/p7zip
-	mkdir -p $(BUILD_DIST)/p7zip
 
 	# p7zip.mk Prep p7zip
-	cp -a $(BUILD_STAGE)/p7zip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/p7zip
+	cp -a $(BUILD_STAGE)/p7zip $(BUILD_DIST)
 
 	# p7zip.mk Sign
 	$(call SIGN,p7zip,general.xml)

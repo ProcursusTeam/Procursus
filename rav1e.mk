@@ -3,15 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += rav1e
-RAV1E_VERSION := 0.3.4
-DEB_RAV1E_V   ?= $(RAV1E_VERSION)-1
+RAV1E_VERSION := 0.4.1
+DEB_RAV1E_V   ?= $(RAV1E_VERSION)
 
 rav1e-setup: setup
-ifeq (, $(shell which cargo-cbuild))
-	$(error "No cargo-cbuild in PATH, please run cargo install cargo-c")
-endif
-
-	-[ ! -f "$(BUILD_SOURCE)/rav1e-$(RAV1E_VERSION).tar.gz" ] && wget -q -nc -O$(BUILD_SOURCE)/rav1e-$(RAV1E_VERSION).tar.gz https://github.com/xiph/rav1e/archive/v$(RAV1E_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,xiph,rav1e,$(RAV1E_VERSION),v$(RAV1E_VERSION))
 	$(call EXTRACT_TAR,rav1e-$(RAV1E_VERSION).tar.gz,rav1e-$(RAV1E_VERSION),rav1e)
 	$(call DO_PATCH,rav1e,rav1e,-p1)
 
@@ -20,36 +16,35 @@ rav1e:
 	@echo "Using previously built rav1e."
 else
 rav1e: rav1e-setup aom dav1d
-	cd $(BUILD_WORK)/rav1e && cargo update
-	cd $(BUILD_WORK)/rav1e && SDKROOT="$(TARGET_SYSROOT)" cargo \
+	cd $(BUILD_WORK)/rav1e && PKG_CONFIG="$(RUST_TARGET)-pkg-config" \
+	SDKROOT="$(TARGET_SYSROOT)" cargo \
 		build \
 		--release \
 		--target=$(RUST_TARGET)
-	cd $(BUILD_WORK)/rav1e && SDKROOT="$(TARGET_SYSROOT)" cargo \
+	cd $(BUILD_WORK)/rav1e && PKG_CONFIG="$(RUST_TARGET)-pkg-config" \
+	SDKROOT="$(TARGET_SYSROOT)" cargo \
 		cbuild \
 		--release \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--target=$(RUST_TARGET)
+		--target=$(RUST_TARGET) \
+		--library-type staticlib
 
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/rav1e $(BUILD_STAGE)/rav1e/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/rav1e
 
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.dylib $(BUILD_STAGE)/rav1e/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.0.dylib
+	$(CC) $(CFLAGS) -fPIC -install_name $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.0.dylib -shared -o $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.0.dylib $(LDFLAGS) -Wl,-force_load $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.a -framework Security -lobjc
+
+	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.0.dylib $(BUILD_STAGE)/rav1e/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.0.dylib
 
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.a $(BUILD_STAGE)/rav1e/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.a
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/rav1e.pc $(BUILD_STAGE)/rav1e/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/rav1e.pc
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/rav1e.h $(BUILD_STAGE)/rav1e/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/rav1e.h
 
-
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/rav1e $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/rav1e
-
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.0.dylib
+	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.0.dylib
 
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/librav1e.a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.a
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/rav1e.pc $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/rav1e.pc
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/rav1e.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/rav1e.h
 
-	$(I_N_T) -id /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.0.dylib $(BUILD_STAGE)/rav1e/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.0.dylib
-	$(I_N_T) -id /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.0.dylib
 	ln -sf librav1e.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.dylib
 
 	touch $(BUILD_WORK)/rav1e/.build_complete
@@ -57,7 +52,7 @@ endif
 
 rav1e-package: rav1e-stage
 	# rav1e.mk Package Structure
-	rm -rf $(BUILD_DIST)/{rav1e,librav1e,librav1e-dev}
+	rm -rf $(BUILD_DIST)/{rav1e,librav1e0,librav1e-dev}
 	mkdir -p \
 		$(BUILD_DIST)/rav1e/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		$(BUILD_DIST)/librav1e0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \

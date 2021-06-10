@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += gnupg
-GNUPG_VERSION := 2.2.27
+GNUPG_VERSION := 2.3.1
 DEB_GNUPG_V   ?= $(GNUPG_VERSION)-1
 
 gnupg-setup: setup
@@ -16,12 +16,9 @@ gnupg:
 else
 gnupg: gnupg-setup readline libgpg-error libgcrypt libassuan libksba npth gettext gnutls libusb
 	cd $(BUILD_WORK)/gnupg && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		$(foreach x, libgpg-error libgcrypt libassuan ksba npth, --with-$x-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)) \
-		--with-bzip2 \
-		--sysconfdir=$(MEMO_PREFIX)/etc
+		--with-bzip2
 	+$(MAKE) -C $(BUILD_WORK)/gnupg
 	+$(MAKE) -C $(BUILD_WORK)/gnupg install \
 		DESTDIR=$(BUILD_STAGE)/gnupg

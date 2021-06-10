@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+	(remove)
+	remove-shell @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/dash
+	;;
+esac

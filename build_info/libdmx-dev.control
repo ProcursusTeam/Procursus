@@ -1,0 +1,25 @@
+Package: libdmx-dev
+Version: @DEB_LIBDMX_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libdmx1 (= @DEB_LIBDMX_V@), libx11-dev, libxext-dev, x11proto-dev
+Section: Development
+Priority: optional
+Description: X11 Distributed Multihead extension library (development headers)
+ libdmx is an interface to the DMX extension for X, which allows a single
+ server to be set up as a proxy spanning multiple servers -- not unlike
+ Xinerama across discrete physical machines.  It can be reconfigured
+ on the fly to change the layout, and it is presented as a single logical
+ display to clients.
+ .
+ libdmx allows clients to configure the layout of DMX servers by adding
+ and removing screens, input devices, et al.
+ .
+ This package contains the development headers for the library found in
+ libdmx1.  Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at:
+ <URL:https://www.X.org>
+ .
+ This module can be found at
+ https://gitlab.freedesktop.org/xorg/lib/libdmx

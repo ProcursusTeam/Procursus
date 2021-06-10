@@ -7,7 +7,7 @@ LUA50_VERSION := 5.0.3
 DEB_LUA50_V   ?= $(LUA50_VERSION)
 
 lua50-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.lua.org/ftp/lua-$(LUA50_VERSION).tar.gz 
+	wget -q -nc -P $(BUILD_SOURCE) https://www.lua.org/ftp/lua-$(LUA50_VERSION).tar.gz
 	$(call EXTRACT_TAR,lua-$(LUA50_VERSION).tar.gz,lua-$(LUA50_VERSION),lua50)
 	$(call DO_PATCH,lua50,lua50,-p1)
 

@@ -1,0 +1,9 @@
+Package: lrzip-next
+Version: @DEB_LRZIP_NEXT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Provides: lrzip
+Section: Archiving
+Priority: optional
+Depends: liblz4-1, liblzo2-2
+Description: Long Range Zip. An updated and Enhanced version of ckolivas' lrzip project. Lrzip Next Includes updated SDKs, Filtering, Improved output, an ASM Disassembler, and many other features not in the mainline.

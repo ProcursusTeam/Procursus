@@ -2,8 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += nettle
-NETTLE_VERSION := 3.7.1
+STRAPPROJECTS  += nettle
+NETTLE_VERSION := 3.7.2
 DEB_NETTLE_V   ?= $(NETTLE_VERSION)
 
 nettle-setup: setup
@@ -19,9 +19,9 @@ else
 nettle: nettle-setup libgmp10
 	cd $(BUILD_WORK)/nettle && autoreconf -iv
 	cd $(BUILD_WORK)/nettle && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		CC_FOR_BUILD='$(shell which cc) $(BUILD_CFLAGS)' \
+		CPP_FOR_BUILD='$(shell which cc) -E $(BUILD_CPPFLAGS)'
 	+$(MAKE) -C $(BUILD_WORK)/nettle
 	+$(MAKE) -C $(BUILD_WORK)/nettle install \
 		DESTDIR=$(BUILD_STAGE)/nettle

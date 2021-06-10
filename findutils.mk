@@ -8,7 +8,7 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS       += findutils
 endif # ($(MEMO_TARGET),darwin-\*)
 FINDUTILS_VERSION := 4.8.0
-DEB_FINDUTILS_V   ?= $(FINDUTILS_VERSION)
+DEB_FINDUTILS_V   ?= $(FINDUTILS_VERSION)-1
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 FINDUTILS_CONFIGURE_ARGS += --program-prefix=$(GNU_PREFIX)
@@ -25,9 +25,7 @@ findutils:
 else
 findutils: findutils-setup gettext
 	cd $(BUILD_WORK)/findutils && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--localstatedir=$(MEMO_PREFIX)/var/cache/locate \
 		--disable-dependency-tracking \
 		--disable-debug \

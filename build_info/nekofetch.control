@@ -1,0 +1,8 @@
+Package: nekofetch
+Architecture: @DEB_ARCH@
+Version: @DEB_NEKOFETCH_V@
+Section: Utilities
+Depends: curl, jq, jp2a, neofetch
+Recommends: imagemagick
+Description: neofetch but with nekos
+Maintainer: @DEB_MAINTAINER@

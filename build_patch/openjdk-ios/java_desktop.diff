@@ -17,7 +17,7 @@ diff -urN openjdk/make/modules/java.desktop/lib/Awt2dLibraries.gmk openjdk/make/
 -    LIBS_macosx := -lmlib_image \
 -        -framework Cocoa \
 -        -framework OpenGL \
--        -framework JavaNativeFoundation \
+-        -framework Metal \
 -        -framework JavaRuntimeSupport \
 -        -framework ApplicationServices \
 -        -framework AudioToolbox, \
@@ -54,7 +54,7 @@ diff -urN openjdk/make/modules/java.desktop/lib/Awt2dLibraries.gmk openjdk/make/
    LIBAWT_HEADLESS_EXTRA_SRC := \
        common/font \
 @@ -568,12 +561,11 @@
-     DISABLED_WARNINGS_clang := deprecated-declarations, \
+     DISABLED_WARNINGS_microsoft := $(HARFBUZZ_DISABLED_WARNINGS_microsoft), \
      LDFLAGS := $(subst -Xlinker -z -Xlinker defs,, \
          $(subst -Wl$(COMMA)-z$(COMMA)defs,,$(LDFLAGS_JDKLIB))) $(LDFLAGS_CXX_JDK) \
 -        $(call SET_SHARED_LIBRARY_ORIGIN), \
@@ -63,7 +63,7 @@ diff -urN openjdk/make/modules/java.desktop/lib/Awt2dLibraries.gmk openjdk/make/
      LDFLAGS_aix := -Wl$(COMMA)-berok, \
      LIBS := $(BUILD_LIBFONTMANAGER_FONTLIB), \
      LIBS_unix := -lawt -ljava -ljvm $(LIBM) $(LIBCXX), \
--    LIBS_macosx := -lawt_lwawt, \
+-    LIBS_macosx := -lawt_lwawt -framework CoreText -framework CoreFoundation -framework CoreGraphics, \
      LIBS_windows := $(WIN_JAVA_LIB) advapi32.lib user32.lib gdi32.lib \
          $(WIN_AWT_LIB), \
  ))
@@ -180,7 +180,7 @@ diff -urN openjdk/make/modules/java.desktop/lib/Awt2dLibraries.gmk openjdk/make/
 -        -framework Foundation \
 -        -framework Security \
 -        -framework Cocoa \
--        -framework JavaNativeFoundation
+-        -framework Metal
 -  else ifeq ($(call isTargetOs, windows), true)
 +  #ifeq ($(call isTargetOs, macosx), true)
 +  #  LIBSPLASHSCREEN_LIBS += \
@@ -189,7 +189,7 @@ diff -urN openjdk/make/modules/java.desktop/lib/Awt2dLibraries.gmk openjdk/make/
 +  #      -framework Foundation \
 +  #      -framework Security \
 +  #      -framework Cocoa \
-+  #      -framework JavaNativeFoundation
++  #      -framework Metal
 +  ifeq ($(call isTargetOs, windows), true)
      LIBSPLASHSCREEN_LIBS += kernel32.lib user32.lib gdi32.lib delayimp.lib $(WIN_JAVA_LIB) jvm.lib
    else
@@ -224,9 +224,9 @@ diff -urN openjdk/make/modules/java.desktop/lib/Awt2dLibraries.gmk openjdk/make/
  
 -ifeq ($(call isTargetOs, macosx), true)
 +ifeq (false, true)
- 
-   $(eval $(call SetupJdkLibrary, BUILD_LIBOSXUI, \
-       NAME := osxui, \
+   SHADERS_SRC := $(TOPDIR)/src/java.desktop/macosx/native/libawt_lwawt/java2d/metal/shaders.metal
+   SHADERS_SUPPORT_DIR := $(SUPPORT_OUTPUTDIR)/native/java.desktop/libosxui
+   SHADERS_AIR := $(SHADERS_SUPPORT_DIR)/shaders.air
 diff -urN openjdk/make/modules/java.desktop/gensrc/GensrcIcons.gmk.orig openjdk/make/modules/java.desktop/gensrc/GensrcIcons.gmk      
 --- openjdk/make/modules/java.desktop/gensrc/GensrcIcons.gmk	2020-12-29 18:22:52.000000000 -0500
 +++ openjdk/make/modules/java.desktop/gensrc/GensrcIcons.gmk	2020-12-29 18:22:21.000000000 -0500
@@ -288,3 +288,23 @@ diff -urN openjdk/make/modules/java.desktop/Gensrc.gmk.orig openjdk/make/modules
    PROP_SRC_DIRS += \
        $(TOPDIR)/src/java.desktop/macosx/classes/com/apple/laf/resources \
        $(TOPDIR)/src/java.desktop/macosx/classes/sun/awt/resources \
+--- openjdk/make/modules/java.desktop/Java.gmk.orig	2021-04-06 00:55:42.523504604 -0400
++++ openjdk/make/modules/java.desktop/Java.gmk	2021-04-06 00:56:57.706985954 -0400
+@@ -64,7 +64,7 @@
+     .template \
+     #
+
+-ifeq ($(call isTargetOs, macosx), true)
++ifeq (false, true)
+   # exclude all X11 on Mac.
+   EXCLUDES += \
+       sun/awt/X11 \
+@@ -130,7 +130,7 @@
+   EXCLUDES += com/sun/java/swing/plaf/gtk
+ endif
+
+-ifeq ($(call isTargetOs, windows macosx), false)
++ifeq ($(call isTargetOs, windows), false)
+   EXCLUDE_FILES += sun/awt/AWTCharset.java
+ endif
+

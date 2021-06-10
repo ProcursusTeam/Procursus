@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+
 SUBPROJECTS   += top
 TOP_VERSION   := 125
 DEB_TOP_V     ?= $(TOP_VERSION)
@@ -37,7 +39,7 @@ top-package: top-stage
 	mkdir -p $(BUILD_DIST)/top
 
 	# top.mk Prep top
-	cp -a $(BUILD_STAGE)/top/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/top
+	cp -a $(BUILD_STAGE)/top $(BUILD_DIST)
 
 	# top.mk Sign
 	$(call SIGN,top,top.xml)
@@ -52,3 +54,5 @@ top-package: top-stage
 	rm -rf $(BUILD_DIST)/top
 
 .PHONY: top top-package
+
+endif

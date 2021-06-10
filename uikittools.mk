@@ -11,9 +11,7 @@ UIKITTOOLS_VERSION := 2.0.3
 DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)
 
 uikittools-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/uikittools-ng-$(UIKITTOOLS_VERSION).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/uikittools-ng-$(UIKITTOOLS_VERSION).tar.gz \
-			https://github.com/Diatrus/uikittools-ng/archive/v$(UIKITTOOLS_VERSION).tar.gz
+	$(call GITHUB_ARCHIVE,Diatrus,uikittools-ng,$(UIKITTOOLS_VERSION),v$(UIKITTOOLS_VERSION))
 	$(call EXTRACT_TAR,uikittools-ng-$(UIKITTOOLS_VERSION).tar.gz,uikittools-ng-$(UIKITTOOLS_VERSION),uikittools)
 
 ifneq ($(wildcard $(BUILD_WORK)/uikittools/.build_complete),)

@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += cmake
-CMAKE_VERSION := 3.20.0
+CMAKE_VERSION := 3.20.2
 DEB_CMAKE_V   ?= $(CMAKE_VERSION)
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
@@ -20,14 +20,7 @@ cmake:
 else
 cmake: cmake-setup ncurses libuv1 curl libarchive expat xz nghttp2 zstd
 	cd $(BUILD_WORK)/cmake && cmake . \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_C_FLAGS="$(CFLAGS)" \
-		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DCMAKE_Fortran_COMPILER:FILEPATH=FALSE \
 		-DHAVE_POLL_FINE_EXITCODE=1 \
 		-DHAVE_POLL_FINE_EXITCODE__TRYRUN_OUTPUT=1 \

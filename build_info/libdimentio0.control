@@ -3,7 +3,9 @@ Author: 0x7ff
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_DIMENTIO_V@
-Conflicts: com.michael.dimentio, com.kasiimh1.dimentio
+Depends: firmware (<< 14.0) | libkernrw0 | libkrw
+Conflicts: com.michael.dimentio, com.kasiimh1.dimentio, com.0x7ff.dimentio
+Replaces: com.michael.dimentio, com.kasiimh1.dimentio, com.0x7ff.dimentio
 Section: Libraries
 Priority: optional
 Description: PoC tool for setting nonce without triggering KPP/KTRR/PAC. (Runtime libraries)

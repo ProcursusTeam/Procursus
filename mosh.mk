@@ -17,10 +17,7 @@ mosh:
 else
 mosh: mosh-setup libprotobuf openssl ncurses
 	cd $(BUILD_WORK)/mosh && ./configure \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-ncursesw \
 		--with-crypto-library=openssl \
 		--disable-dependency-tracking \
