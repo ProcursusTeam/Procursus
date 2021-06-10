@@ -1,0 +1,8 @@
+Package: @pkg@-dev
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_@PKG@_V@
+Depends: @pkg@@SOVER@ (= @DEB_@PKG@_V@)
+Section: Development
+Priority: optional
+Description: @DEB_DESCRIPTION@

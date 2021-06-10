@@ -1,0 +1,7 @@
+Package: @pkg@@SOVER@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_@PKG@_V@
+Section: Libraries
+Priority: optional
+Description: @DEB_DESCRIPTION@
