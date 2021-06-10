@@ -22,10 +22,6 @@ GIT_ARGS += uname_S=Darwin \
 git-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://mirrors.edge.kernel.org/pub/software/scm/git/git-$(GIT_VERSION).tar.xz
 	$(call EXTRACT_TAR,git-$(GIT_VERSION).tar.xz,git-$(GIT_VERSION),git)
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(call DO_PATCH,git-ios,git,-p1)
-	$(SED) -i 's|EXTLIBS =|EXTLIBS = -liosexec|' $(BUILD_WORK)/git/Makefile
-endif
 
 ifneq ($(wildcard $(BUILD_WORK)/git/.build_complete),)
 git:
@@ -36,7 +32,7 @@ git: git-setup openssl curl pcre2 gettext libidn2 expat
 else
 git: git-setup openssl curl pcre2 gettext libidn2 expat libiosexec
 endif
-	+cd $(BUILD_WORK)/git && $(MAKE) configure
+	+$(MAKE) -C $(BUILD_WORK)/git configure
 	cd $(BUILD_WORK)/git && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-libpcre2 \
