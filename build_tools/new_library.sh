@@ -1,28 +1,28 @@
 #!/usr/bin/env bash
 
 ask() {
-	[ -z ${1+x} ] && exit 1
-	if [ -z ${2+x} ]; then
+	[ -z "${1+x}" ] && exit 1
+	if [ -z "${2+x}" ]; then
 		read -p "${1}: " rc
 	else
-		rc=$2
+		rc="$2"
 	fi
 	echo "$rc"
 }
 
 checkpkg() {
 	if [ -f $1.mk ]; then
-		echo "$1.mk already exists."
+		>&2 echo "$1.mk already exists."
 		exit 1
 	elif grep -R "^$pkg:" *.mk &> /dev/null; then
-		echo "$1 already exists."
+		>&2 echo "$1 already exists."
 		exit 1
 	fi
 }
 
 checkbuild() {
 	if [ ! -f build_misc/templates/$1-lib.mk ]; then
-		echo "$1 is not a valid buildsystem"
+		>&2 echo "$1 is not a valid buildsystem"
 		exit 1
 	fi
 }
@@ -41,12 +41,25 @@ downloadlink() {
 	fi
 }
 
-createfromtemplate () {
+ask_extended_description() {
+if [ -z "$1" ]; then
+	ESCAPED_DESCRIPTION=""
+	>&2 echo "Extended Description (press ENTER then Ctrl+D when done):"
+	while read line
+        	do ESCAPED_DESCRIPTION="$ESCAPED_DESCRIPTION"" $line\n"
+	done
+else
+	ESCAPED_DESCRIPTION="$(echo "$1" | ${SED} '$!s/$/\\n/' | tr -d '\n' | ${SED} 's|^| |g')"
+	fi
+	echo "$ESCAPED_DESCRIPTION"
+}
+createfromtemplate() {
 	${SED} -e "s/@pkg@/${pkg}/g" \
 		-e "s/@PKG@/${formatpkg}/g" \
 		-e "s/@PKG_VERSION@/${ver}/g" \
 		-e "s/@SOVER@/${sover}/g" \
 		-e "s|@DEB_DESCRIPTION@|${description}|g" \
+		-e "s|@DEB_EXTENDED_DESCRIPTION@|${extended_description}|g" \
 		-e "s|@download@|$(downloadlink "$download" "$ver" "$pkg" "$formatpkg")|g" \
 		-e "s|@compression@|$(rev <<< "$download" | cut -d'.' -f1 | rev)|g" \
 		"$1" > "$2"
@@ -61,16 +74,19 @@ main() {
 	ver="$(ask "Package Version" $3)"
 	download="$(ask "Download Link" $4)"
 	sover="$(ask "SO Version" $5)"
-	description=$(ask "Description" $6)
+	description="$(ask "Description" "$6")"
+	extended_description="$(ask_extended_description "$7")"
+	echo "Writing out control and makefile"
 	createfromtemplate build_misc/templates/${build}-lib.mk ${pkg}.mk
 	createfromtemplate build_misc/templates/libpkg1.control build_info/${pkg}${sover}.control
 	createfromtemplate build_misc/templates/libpkg-dev.control build_info/${pkg}-dev.control
 }
 
-if which gsed &>/dev/null; then
+if command -v gsed &>/dev/null; then
 	SED=gsed
 else
 	SED=sed
 fi
 
-main $@
+main "$@"
+
