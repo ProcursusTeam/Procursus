@@ -18,8 +18,7 @@ else
 xwallpaper: xwallpaper-setup xorgproto libjpeg-turbo libpixman libpng16 libx11 xcb-util-image xcb-util libxcb libxpm
 	cd $(BUILD_WORK)/xwallpaper && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--without-seccomp \
-		PKG_CONFIG="pkg-config --define-prefix"
+		--without-seccomp
 	+$(MAKE) -C $(BUILD_WORK)/xwallpaper
 	+$(MAKE) -C $(BUILD_WORK)/xwallpaper install \
 		DESTDIR=$(BUILD_STAGE)/xwallpaper

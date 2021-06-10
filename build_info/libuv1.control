@@ -2,7 +2,8 @@ Package: libuv1
 Version: @DEB_LIBUV1_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Section: Development
+Section: Libraries
 Priority: optional
+Depends: libiosexec1
 Multi-Arch: foreign
 Description: asynchronous event notification library - runtime library

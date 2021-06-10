@@ -1,0 +1,13 @@
+Package: libboost-test1.76.0
+Version: @DEB_LIBBOOST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Description: components for writing and executing test suites
+ This package forms part of the Boost C++ Libraries collection.  The
+ library contains several components.
+ .
+  * Basic execution, error detection, and reporting facility.
+  * Facilities to monitor program execution and produce error reports.
+  * Unit test framework to simplify writing test cases.

@@ -5,7 +5,7 @@ endif
 STRAPPROJECTS       += coreutils
 COREUTILS_VERSION   := 8.32
 GETENTDARWIN_COMMIT := 1ad0e39ee51181ea6c13b3d1d4e9c6005ee35b5e
-DEB_COREUTILS_V     ?= $(COREUTILS_VERSION)-9
+DEB_COREUTILS_V     ?= $(COREUTILS_VERSION)-11
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 COREUTILS_CONFIGURE_ARGS += ac_cv_func_rpmatch=no
@@ -35,9 +35,9 @@ coreutils:
 	@echo "Using previously built coreutils."
 else
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-coreutils: coreutils-setup gettext libxcrypt
+coreutils: coreutils-setup gettext libgmp10 libxcrypt
 else # (,$(findstring darwin,$(MEMO_TARGET)))
-coreutils: coreutils-setup gettext
+coreutils: coreutils-setup gettext libgmp10
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	cd $(BUILD_WORK)/coreutils/rev && $(CC) $(CFLAGS) rev.c -o rev -D'__FBSDID(x)='
@@ -46,7 +46,6 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 endif
 	cd $(BUILD_WORK)/coreutils && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--without-gmp \
 		$(COREUTILS_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/coreutils
 	+$(MAKE) -C $(BUILD_WORK)/coreutils install \
@@ -72,7 +71,7 @@ coreutils-package: coreutils-stage
 	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/chroot $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 ifneq ($(MEMO_SUB_PREFIX),)
 	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/chown $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/bin
-	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{cat,chgrp,cp,date,dd,dir,echo,false,kill,ln,ls,mkdir,mknod,mktemp,mv,pwd,readlink,rm,rmdir,sleep,stty,su,touch,true,uname,vdir} $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/bin
+	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{cat,chgrp,cp,date,dd,dir,echo,false,kill,ln,ls,mkdir,mknod,mktemp,mv,pwd,readlink,rm,rmdir,sleep,stty,touch,true,uname,vdir} $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/bin
 	mkdir -p $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/etc/profile.d
 	cp $(BUILD_INFO)/coreutils.sh $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/etc/profile.d
 endif

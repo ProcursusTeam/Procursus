@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += libepoxy
-LIBEPOXY_VERSION := 1.5.5
+LIBEPOXY_VERSION := 1.5.7
 DEB_LIBEPOXY_V   ?= $(LIBEPOXY_VERSION)
 
 libepoxy-setup: setup
@@ -23,16 +23,19 @@ libepoxy-setup: setup
 	localstatedir='$(MEMO_PREFIX)/var'\n \
 	[binaries]\n \
 	c = '$(CC)'\n \
-	cpp = '$(CXX)'\n" > $(BUILD_WORK)/libepoxy/build/cross.txt
+	cpp = '$(CXX)'\n \
+	pkgconfig = '$(BUILD_TOOLS)/cross-pkg-config'\n" > $(BUILD_WORK)/libepoxy/build/cross.txt
 
 ifneq ($(wildcard $(BUILD_WORK)/libepoxy/.build_complete),)
 libepoxy:
 	@echo "Using previously built libepoxy."
 else
 libepoxy: libepoxy-setup libx11 mesa
-	cd $(BUILD_WORK)/libepoxy/build && PKG_CONFIG="pkg-config" meson \
+	cd $(BUILD_WORK)/libepoxy/build && meson \
 		--cross-file cross.txt \
 		-Dtests=false \
+		-Dx11=true \
+ 		-Dglx=yes \
 		..
 	+ninja -C $(BUILD_WORK)/libepoxy/build
 	+DESTDIR="$(BUILD_STAGE)/libepoxy" ninja -C $(BUILD_WORK)/libepoxy/build install

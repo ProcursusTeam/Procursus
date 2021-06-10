@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += curl
-CURL_VERSION := 7.76.0
+CURL_VERSION := 7.77.0
 DEB_CURL_V   ?= $(CURL_VERSION)
 
 curl-setup: setup
@@ -23,6 +23,7 @@ curl: curl-setup gettext openssl libssh2 nghttp2 libidn2 brotli zstd rtmpdump
 		--disable-debug \
 		--disable-dependency-tracking \
 		--with-libssh2 \
+		--with-openssl \
 		--with-nghttp2 \
 		--with-ca-bundle=$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem
 	+$(MAKE) -C $(BUILD_WORK)/curl

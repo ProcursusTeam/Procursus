@@ -3,8 +3,14 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += tcsh
-TCSH_VERSION  := 6.22.03
-DEB_TCSH_V    ?= $(TCSH_VERSION)-1
+TCSH_VERSION  := 6.22.04
+DEB_TCSH_V    ?= $(TCSH_VERSION)
+
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+TCSH_CONFIGURE_ARGS := LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -liosexec"
+else
+TCSH_CONFIGURE_ARGS :=
+endif
 
 tcsh-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) ftp://ftp.astron.com/pub/tcsh/tcsh-$(TCSH_VERSION).tar.gz{,.asc}
@@ -16,10 +22,15 @@ ifneq ($(wildcard $(BUILD_WORK)/tcsh/.build_complete),)
 tcsh:
 	@echo "Using previously built tcsh."
 else
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 tcsh: tcsh-setup ncurses
+else
+tcsh: tcsh-setup ncurses libiosexec
+endif
 	cd $(BUILD_WORK)/tcsh && ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		LDFLAGS="$(LDFLAGS) -lncursesw"
+		LDFLAGS="$(LDFLAGS) -lncursesw" \
+		$(TCSH_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/tcsh
 	+$(MAKE) -C $(BUILD_WORK)/tcsh install \
 		DESTDIR=$(BUILD_STAGE)/tcsh

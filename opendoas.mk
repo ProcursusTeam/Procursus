@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS      += opendoas
 OPENDOAS_VERSION := 6.8.1
-DEB_OPENDOAS_V   ?= $(OPENDOAS_VERSION)-1
+DEB_OPENDOAS_V   ?= $(OPENDOAS_VERSION)-2
 
 opendoas-setup: setup
 	$(call GITHUB_ARCHIVE,Duncaen,OpenDoas,$(OPENDOAS_VERSION),v$(OPENDOAS_VERSION))
@@ -21,7 +21,10 @@ else # (,$(findstring darwin,$(MEMO_TARGET)))
 opendoas: opendoas-setup
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	cd $(BUILD_WORK)/opendoas && ./configure \
-		$(DEFAULT_CONFIGURE_FLAGS) \
+		--build=$$($(BUILD_MISC)/config.guess) \
+		--host=$(GNU_HOST_TRIPLE) \
+		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--with-pam
 	+$(MAKE) -C $(BUILD_WORK)/opendoas
 	+$(MAKE) -C $(BUILD_WORK)/opendoas install \
@@ -40,7 +43,7 @@ opendoas-package: opendoas-stage
 	cp -a $(BUILD_STAGE)/opendoas $(BUILD_DIST)/doas
 
 	# opendoas.mk Sign
-	$(call SIGN,doas,general.xml)
+	$(call SIGN,doas,pam.xml)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(LDID) -S$(BUILD_INFO)/pam.xml $(BUILD_DIST)/doas/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/doas
 	find $(BUILD_DIST)/doas -name '.ldid*' -type f -delete

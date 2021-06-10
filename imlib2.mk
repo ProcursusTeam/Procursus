@@ -15,7 +15,7 @@ imlib2:
 	@echo "Using previously built imlib2."
 else
 imlib2: imlib2-setup freetype libgif libjpeg-turbo libpng16 libtiff libx11 libxcb libxext
-	cd $(BUILD_WORK)/imlib2 && PKG_CONFIG="pkg-config --define-prefix" ./configure -C \
+	cd $(BUILD_WORK)/imlib2 && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--without-id3 \
 		--enable-amd64=no

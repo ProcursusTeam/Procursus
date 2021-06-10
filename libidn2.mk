@@ -2,9 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS  += libidn2
-IDN2_VERSION := 2.3.0
-DEB_IDN2_V   ?= $(IDN2_VERSION)-3
+STRAPPROJECTS += libidn2
+IDN2_VERSION  := 2.3.0
+DEB_IDN2_V    ?= $(IDN2_VERSION)-3
 
 libidn2-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/libidn/libidn2-$(IDN2_VERSION).tar.gz{,.sig}
