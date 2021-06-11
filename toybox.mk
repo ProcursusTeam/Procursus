@@ -49,4 +49,3 @@ toybox-package: toybox-stage
 	rm -rf $(BUILD_DIST)/toybox
 
 .PHONY: toybox toybox-package
-
