@@ -3,12 +3,13 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS           += opendircolors
-opendircolors_VERSION := 0.0.1
-DEB_opendircolors_V   ?= $(opendircolors_VERSION)
+OPENDIRCOLORS_VERSION := 1.0
+DEB_OPENDIRCOLORS_V   ?= $(OPENDIRCOLORS_VERSION)
 
 opendircolors-setup: setup
-	$(call GITHUB_ARCHIVE,CRKatri,opendircolors,$(opendircolors_VERSION),v$(opendircolors_VERSION))
-	$(call EXTRACT_TAR,opendircolors-$(opendircolors_VERSION).tar.gz,opendircolors-$(opendircolors_VERSION),opendircolors)
+	wget -q -nc -P $(BUILD_SOURCE) \
+		https://git.cameronkatri.com/opendircolors/snapshot/opendircolors-$(OPENDIRCOLORS_VERSION).tar.zst
+	$(call EXTRACT_TAR,opendircolors-$(OPENDIRCOLORS_VERSION).tar.zst,opendircolors-$(OPENDIRCOLORS_VERSION),opendircolors)
 	mkdir -p $(BUILD_STAGE)/opendircolors/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 
 ifneq ($(wildcard $(BUILD_WORK)/opendircolors/.build_complete),)
@@ -40,7 +41,7 @@ opendircolors-package: opendircolors-stage
 	$(call SIGN,opendircolors,general.xml)
 	
 	# opendircolors.mk Make .debs
-	$(call PACK,opendircolors,DEB_opendircolors_V)
+	$(call PACK,opendircolors,DEB_OPENDIRCOLORS_V)
 	
 	# opendircolors.mk Build cleanup
 	rm -rf $(BUILD_DIST)/opendircolors
