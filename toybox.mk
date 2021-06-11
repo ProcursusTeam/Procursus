@@ -34,8 +34,11 @@ toybox-package: toybox-stage
 	mkdir -p $(BUILD_DIST)/toybox/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	
 	# toybox.mk Prep toybox
-	$(INSTALL) -m4755 $(BUILD_STAGE)/toybox/bin/toybox $(BUILD_DIST)/toybox/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	$(INSTALL) -m755 $(BUILD_STAGE)/toybox/bin/toybox $(BUILD_DIST)/toybox/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	
+	# toybox.mk Permissions
+	$(FAKEROOT) chmod u+s $(BUILD_DIST)/toybox/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/toybox
+
 	# toybox.mk Sign
 	$(call SIGN,toybox,dd.xml)
 	
@@ -46,3 +49,4 @@ toybox-package: toybox-stage
 	rm -rf $(BUILD_DIST)/toybox
 
 .PHONY: toybox toybox-package
+
