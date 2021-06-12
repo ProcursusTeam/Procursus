@@ -969,9 +969,11 @@ setup:
 		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/bootstrap_priv.h \
 		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/vproc_priv.h
 
-ifneq ($(MEMO_CFVER),1800)
+ifeq (,$(wildcard $(TARGET_SYSROOT)/usr/include/mach/machine/thread_state.h)))
 	wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/machine \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/mach/machine/thread_state.h
+else
+	rm -f $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/machine/thread_state.h
 endif
 
 	wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/bsm \
