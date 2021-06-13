@@ -29,12 +29,10 @@ gitea: gitea-setup
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/gitea/gitea $(BUILD_STAGE)/gitea/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gitea
 	$(GINSTALL) -Dm755 $(BUILD_MISC)/gitea/gitea-wrapper \
 		$(BUILD_STAGE)/gitea/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gitea-wrapper
-	$(GINSTALL) -Dm644 $(BUILD_MISC)/gitea/io.gitea.gitea.plist \
-		$(BUILD_STAGE)/gitea/$(MEMO_PREFIX)/Library/LaunchDaemons/io.gitea.gitea.plist
+	$(GINSTALL) -Dm644 $(BUILD_MISC)/gitea/io.gitea.web.plist \
+		$(BUILD_STAGE)/gitea/$(MEMO_PREFIX)/Library/LaunchDaemons/io.gitea.web.plist
 	$(SED) -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
-		$(BUILD_STAGE)/gitea/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gitea-wrapper
-	$(SED) -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
-		$(BUILD_STAGE)/gitea/$(MEMO_PREFIX)/Library/LaunchDaemons/io.gitea.gitea.plist
+		$(BUILD_STAGE)/gitea/$(MEMO_PREFIX)/Library/LaunchDaemons/io.gitea.web.plist
 	$(GINSTALL) -Dm644 $(BUILD_WORK)/gitea/custom/conf/app.example.ini $(BUILD_STAGE)/gitea/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/gitea/app.example.ini
 	$(GINSTALL) -Dm660 $(BUILD_WORK)/gitea/custom/conf/app.example.ini $(BUILD_STAGE)/gitea/$(MEMO_PREFIX)/etc/gitea.ini
 	touch $(BUILD_WORK)/gitea/.build_complete

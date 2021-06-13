@@ -17,5 +17,16 @@
     <true/>
     <key>KeepAlive</key>
     <true/>
+    <key>WorkingDirectory</key>
+    <string>@MEMO_PREFIX@/var/lib/gitea</string>
+    <key>StandardOutPath</key>
+    <string>@MEMO_PREFIX@/var/lib/gitea/log/stdout.log</string>
+    <key>StandardErrorPath</key>
+    <string>@MEMO_PREFIX@/var/lib/gitea/log/stderr.log</string>
+    <key>SoftResourceLimits</key>
+    <dict>
+        <key>NumberOfFiles</key>
+        <integer>8192</integer>
+    </dict>
 </dict>
 </plist>
