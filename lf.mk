@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += lf
-LF_COMMIT   := eaaf08e42504f5986b919ca4690d876424cee4e9
-LF_VERSION  := r22.$(shell echo $(LF_COMMIT) | cut -c -7)
+LF_COMMIT   := 9885c4be7a14342efb6f9eedabedf337a1e14fe5
+LF_VERSION  := r23.$(shell echo $(LF_COMMIT) | cut -c -7)
 DEB_LF_V    ?= 0~$(LF_VERSION)
 
 lf-setup: setup
