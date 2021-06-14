@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += bottom
 BOTTOM_VERSION := 1.2.0
-DEB_BOTTOM_V   ?= $(BOTTOM_VERSION)
+DEB_BOTTOM_V   ?= $(BOTTOM_VERSION)-1
 
 bottom-setup: setup
 	$(call GITHUB_ARCHIVE,bottom-software-foundation,bottom-rs,$(BOTTOM_VERSION),need_top,bottom)
@@ -15,11 +15,13 @@ bottom:
 	@echo "Using previously built bottom."
 else
 bottom: bottom-setup
-	cd $(BUILD_WORK)/bottom && SDKROOT="$(TARGET_SYSROOT)" cargo build \
+	# Edit package version number to match control version
+	$(SED) -i 's|.version(crate_version!())|.version("$(DEB_BOTTOM_V)")|g' $(BUILD_WORK)/bottom/src/main.rs
+	cd $(BUILD_WORK)/bottom && $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \
 		--target=$(RUST_TARGET)
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/bottom/target/$(RUST_TARGET)/release/bottomify \
-		$(BUILD_STAGE)/bottom/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bottomify
+		$(BUILD_STAGE)/bottom/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bottom
 	touch $(BUILD_WORK)/bottom/.build_complete
 endif
 
