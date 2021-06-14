@@ -16,8 +16,7 @@ term-fireworks:
 	@echo "Using previously built term-fireworks."
 else
 term-fireworks: term-fireworks-setup
-	cd $(BUILD_WORK)/term-fireworks && SDKROOT="$(TARGET_SYSROOT)" cargo \
-		build \
+	cd $(BUILD_WORK)/term-fireworks && $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \
 		--target=$(RUST_TARGET)
 	$(GINSTALL) -Dm775 $(BUILD_WORK)/term-fireworks/target/$(RUST_TARGET)/release/fireworks \

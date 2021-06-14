@@ -18,9 +18,7 @@ exa: exa-setup
 	# Patch Cargo.toml to use aspen's fork of users /w iOS support
 	$(SED) -i 's+users = "0.11"+users = {git = "https://github.com/aspenluxxxy/rust-users", branch = "ios"}+g' \
 		$(BUILD_WORK)/exa/Cargo.toml
-	cd $(BUILD_WORK)/exa && SDKROOT="$(TARGET_SYSROOT)" \
-	PKG_CONFIG="$(RUST_TARGET)-pkg-config" \
-	cargo build \
+	cd $(BUILD_WORK)/exa && $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \
 		--no-default-features \
 		--target=$(RUST_TARGET)
