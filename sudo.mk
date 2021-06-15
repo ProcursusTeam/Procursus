@@ -7,7 +7,7 @@ STRAPPROJECTS += sudo
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += sudo
 endif # ($(MEMO_TARGET),darwin-\*)
-SUDO_VERSION  := 1.9.7
+SUDO_VERSION  := 1.9.7p1
 DEB_SUDO_V    ?= $(SUDO_VERSION)
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
