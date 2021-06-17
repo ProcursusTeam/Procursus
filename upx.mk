@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS += upx
 UPX_VERSION := 3.96
-DEB_UPX_V   ?= $(UPX_VERSION)
+DEB_UPX_V   ?= $(UPX_VERSION)-1
 
 upx-setup: setup
 	$(call GITHUB_ARCHIVE,upx,upx,$(UPX_VERSION),v$(UPX_VERSION))
