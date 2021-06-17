@@ -9,8 +9,9 @@ SNAPRESTORE_VERSION := 0.3
 DEB_SNAPRESTORE_V   ?= $(SNAPRESTORE_VERSION)
 
 snaprestore-setup: setup
-	$(call GITHUB_ARCHIVE,CRKatri,snaprestore,$(SNAPRESTORE_VERSION),v$(SNAPRESTORE_VERSION))
-	$(call EXTRACT_TAR,snaprestore-$(SNAPRESTORE_VERSION).tar.gz,snaprestore-$(SNAPRESTORE_VERSION),snaprestore)
+	wget -q -nc -P $(BUILD_SOURCE) \
+		https://git.cameronkatri.com/snaprestore/snapshot/snaprestore-$(SNAPRESTORE_VERSION).tar.zst
+	$(call EXTRACT_TAR,snaprestore-$(SNAPRESTORE_VERSION).tar.zst,snaprestore-$(SNAPRESTORE_VERSION),snaprestore)
 
 ifneq ($(wildcard $(BUILD_WORK)/snaprestore/.build_complete),)
 snaprestore:

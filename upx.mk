@@ -4,12 +4,13 @@ endif
 
 SUBPROJECTS += upx
 UPX_VERSION := 3.96
-DEB_UPX_V   ?= $(UPX_VERSION)
+DEB_UPX_V   ?= $(UPX_VERSION)-1
 
 upx-setup: setup
 	$(call GITHUB_ARCHIVE,upx,upx,$(UPX_VERSION),v$(UPX_VERSION))
 	$(call GITHUB_ARCHIVE,upx,upx-lzma-sdk,$(UPX_VERSION),v$(UPX_VERSION))
 	$(call EXTRACT_TAR,upx-$(UPX_VERSION).tar.gz,upx-$(UPX_VERSION),upx)
+	$(call DO_PATCH,upx,upx,-p1)
 	rm -rf $(BUILD_WORK)/upx/src/lzma-sdk
 	$(call EXTRACT_TAR,upx-lzma-sdk-$(UPX_VERSION).tar.gz,upx-lzma-sdk-$(UPX_VERSION),upx/src/lzma-sdk/)
 
