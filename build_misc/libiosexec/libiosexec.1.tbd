@@ -1,0 +1,15 @@
+--- !tapi-tbd
+tbd-version:     4
+targets:         [ arm64-ios ]
+uuids:
+  - target:          arm64-ios
+    value:           7A1C6C19-AE18-3E3E-A149-A9B76BB01511
+flags:           [ not_app_extension_safe ]
+install-name:    '/usr/lib/libiosexec.1.dylib'
+current-version: 0
+compatibility-version: 0
+exports:
+  - targets:         [ arm64-ios ]
+    symbols:         [ _ie_execl, _ie_execle, _ie_execlp, _ie_execv, _ie_execve, 
+                       _ie_execvp, _ie_execvpe ]
+...

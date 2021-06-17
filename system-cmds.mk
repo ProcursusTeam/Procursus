@@ -7,15 +7,17 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS       += system-cmds
 SYSTEM-CMDS_VERSION := 854.40.2
 PWDARWIN_COMMIT     := 5d48a8af168d8ffb24021d32385d3ecfa699e51d
-DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-9
+DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-11
 
 system-cmds-setup: setup libxcrypt
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/system_cmds/system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz
 	$(call EXTRACT_TAR,system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz,system_cmds-$(SYSTEM-CMDS_VERSION),system-cmds)
 	$(call DO_PATCH,system-cmds,system-cmds,-p1)
 	$(SED) -i '/#include <stdio.h>/a #include <crypt.h>' $(BUILD_WORK)/system-cmds/login.tproj/login.c
-	$(call GITHUB_ARCHIVE,CRKatri,pw-darwin,$(PWDARWIN_COMMIT),$(PWDARWIN_COMMIT))
-	$(call EXTRACT_TAR,pw-darwin-$(PWDARWIN_COMMIT).tar.gz,pw-darwin-$(PWDARWIN_COMMIT),system-cmds/pw-darwin)
+	$(SED) -i '1 i\#include\ <libiosexec.h>' $(BUILD_WORK)/system-cmds/login.tproj/login.c
+	wget -q -nc -P $(BUILD_SOURCE) \
+		https://git.cameronkatri.com/pw-darwin/snapshot/pw-darwin-$(PWDARWIN_COMMIT).tar.zst
+	$(call EXTRACT_TAR,pw-darwin-$(PWDARWIN_COMMIT).tar.zst,pw-darwin-$(PWDARWIN_COMMIT),system-cmds/pw-darwin)
 	wget -q -nc -P $(BUILD_WORK)/system-cmds/include \
 		https://opensource.apple.com/source/launchd/launchd-328/launchd/src/reboot2.h
 
@@ -27,7 +29,7 @@ ifneq ($(wildcard $(BUILD_WORK)/system-cmds/.build_complete),)
 system-cmds:
 	@echo "Using previously built system-cmds."
 else
-system-cmds: system-cmds-setup libxcrypt openpam
+system-cmds: system-cmds-setup libxcrypt openpam libiosexec
 	for gperf in $(BUILD_WORK)/system-cmds/getconf.tproj/*.gperf; do \
 		LC_ALL=C awk -f $(BUILD_WORK)/system-cmds/getconf.tproj/fake-gperf.awk < $$gperf > $(BUILD_WORK)/system-cmds/getconf.tproj/"$$(basename $$gperf .gperf).c" ; \
 	done
@@ -41,7 +43,7 @@ system-cmds: system-cmds-setup libxcrypt openpam
 		CFLAGS=; \
 		EXTRA=; \
 		case $$tproj in \
-			login) CFLAGS="-DUSE_PAM=1" LDFLAGS="-lpam";; \
+			login) CFLAGS="-DUSE_PAM=1" LDFLAGS="-lpam -liosexec";; \
 			dynamic_pager) CFLAGS="-Idynamic_pager.tproj";; \
 			pwd_mkdb) CFLAGS="-D_PW_NAME_LEN=MAXLOGNAME -D_PW_YPTOKEN=\"__YP!\"";; \
 		esac ; \

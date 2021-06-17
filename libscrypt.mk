@@ -15,6 +15,7 @@ libscrypt:
 	@echo "Using previously built libscrypt."
 else
 libscrypt: libscrypt-setup
+	$(SED) -i 's/install_name_tool/$(I_N_T)/g' $(BUILD_WORK)/libscrypt/Makefile
 	$(MAKE) -C $(BUILD_WORK)/libscrypt install-osx install-static \
 		DESTDIR=$(BUILD_STAGE)/libscrypt \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \

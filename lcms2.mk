@@ -3,12 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += lcms2
-LCMS2_VERSION := 2.11
+LCMS2_VERSION := 2.12
 DEB_LCMS2_V   ?= $(LCMS2_VERSION)
 
 lcms2-setup: setup
 	wget -q -nc -L -P $(BUILD_SOURCE) \
-		https://downloads.sourceforge.net/project/lcms/lcms/$(LCMS2_VERSION)/lcms2-$(LCMS2_VERSION).tar.gz
+		https://downloads.sourceforge.net/lcms/lcms2-$(LCMS2_VERSION).tar.gz
 	$(call EXTRACT_TAR,lcms2-$(LCMS2_VERSION).tar.gz,lcms2-$(LCMS2_VERSION),lcms2)
 
 ifneq ($(wildcard $(BUILD_WORK)/lcms2/.build_complete),)

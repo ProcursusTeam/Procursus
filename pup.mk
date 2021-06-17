@@ -16,7 +16,11 @@ ifneq ($(wildcard $(BUILD_WORK)/pup/.build_complete),)
 pup:
 	@echo "Using previously built pup."
 else
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 pup: pup-setup
+else
+pup: pup-setup libiosexec
+endif
 	cd $(BUILD_WORK)/pup && go get -d -v .
 	cd $(BUILD_WORK)/pup && \
 		$(DEFAULT_GOLANG_FLAGS) \

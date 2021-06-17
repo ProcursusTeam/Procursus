@@ -1,0 +1,14 @@
+Package: libboost-contract1.76.0
+Version: @DEB_LIBBOOST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Description: Contract library for C++
+ This package forms part of the Boost C++ Libraries collection.
+ .
+ All contract programming features are supported: Subcontracting,
+ class invariants, postconditions (with old and return values),
+ preconditions, customizable actions on assertion failure (e.g.,
+ terminate or throw), optional compilation and checking of assertions,
+ etc.

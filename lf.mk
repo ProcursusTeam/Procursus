@@ -15,7 +15,11 @@ ifneq ($(wildcard $(BUILD_WORK)/lf/.build_complete),)
 lf:
 	@echo "Using previously built lf."
 else
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 lf: lf-setup
+else
+lf: lf-setup libiosexec
+endif
 	# Compile lf and move binaries
 	cd $(BUILD_WORK)/lf && $(DEFAULT_GOLANG_FLAGS) \
 		go build --ldflags="-s -w -X main.gVersion=$(LF_VERSION)" .

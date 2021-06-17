@@ -10,7 +10,6 @@ libtiff-setup: setup
 	wget -q -nc -L -P $(BUILD_SOURCE) \
 		https://download.osgeo.org/libtiff/tiff-$(LIBTIFF_VERSION).tar.gz
 	$(call EXTRACT_TAR,tiff-$(LIBTIFF_VERSION).tar.gz,tiff-$(LIBTIFF_VERSION),libtiff)
-	$(call DO_PATCH,libtiff,libtiff,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/libtiff/.build_complete),)
 libtiff:

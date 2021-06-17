@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += libheif
-LIBHEIF_VERSION := 1.10.0
+LIBHEIF_VERSION := 1.12.0
 DEB_LIBHEIF_V   ?= $(LIBHEIF_VERSION)
 
 libheif-setup: setup

@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += libsnappy
-LIBSNAPPY_VERSION := 1.1.8
+LIBSNAPPY_VERSION := 1.1.9
 DEB_LIBSNAPPY_V   ?= $(LIBSNAPPY_VERSION)
 
 libsnappy-setup: setup
@@ -20,6 +20,7 @@ libsnappy: libsnappy-setup
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DCOMMON_ARCH=$(DEB_ARCH) \
 		-DBUILD_SHARED_LIBS=true \
+		-DSNAPPY_BUILD_BENCHMARKS=false \
 		-DSNAPPY_BUILD_TESTS=false
 	+$(MAKE) -C $(BUILD_WORK)/libsnappy all
 	+$(MAKE) -C $(BUILD_WORK)/libsnappy install \
@@ -33,13 +34,14 @@ libsnappy-package: libsnappy-stage
 	# libsnappy.mk Package Structure
 	rm -rf $(BUILD_DIST)/libsnappy{1v5,-dev}
 	mkdir -p $(BUILD_DIST)/libsnappy{1v5,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	rm -rf $(BUILD_STAGE)/libsnappy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/usr/lib
 
 	# libsnappy.mk Prep libsnappy-dev
-	cp -a $(BUILD_STAGE)/libsnappy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libsnappy.{a,dylib},cmake,pkgconfig} $(BUILD_DIST)/libsnappy-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libsnappy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libsnappy.1*.dylib) $(BUILD_DIST)/libsnappy-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libsnappy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libsnappy-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libsnappy.mk Prep libsnappy1v5
-	cp -a $(BUILD_STAGE)/libsnappy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsnappy.*.dylib $(BUILD_DIST)/libsnappy1v5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libsnappy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsnappy.1*.dylib $(BUILD_DIST)/libsnappy1v5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 
 	# libsnappy.mk Sign

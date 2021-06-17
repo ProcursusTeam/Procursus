@@ -17,8 +17,7 @@ bat:
 else
 bat: bat-setup libgit2
 	cd $(BUILD_WORK)/bat && cargo update
-	cd $(BUILD_WORK)/bat && SDKROOT="$(TARGET_SYSROOT)" PKG_CONFIG="$(RUST_TARGET)-pkg-config" cargo \
-		build \
+	cd $(BUILD_WORK)/bat && $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \
 		--target=$(RUST_TARGET)
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/bat/target/$(RUST_TARGET)/release/bat $(BUILD_STAGE)/bat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bat
@@ -46,4 +45,3 @@ bat-package: bat-stage
 	rm -rf $(BUILD_DIST)/bat
 
 .PHONY: bat bat-package
-
