@@ -3,18 +3,17 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += tsschecker
-TSSCHECKER_VERSION := 320
-TSSCHECKER_COMMIT  := 10440005e2ab5f950f76368a0456ad69677da71b
-DEB_TSSCHECKER_V   ?= $(TSSCHECKER_VERSION)-2
+TSSCHECKER_VERSION := 333
+TSSCHECKER_COMMIT  := 6904e4a220358fd1fbaa134b0301ed2fc2e77130
+DEB_TSSCHECKER_V   ?= $(TSSCHECKER_VERSION)
 
 tsschecker-setup: setup
-	$(call GITHUB_ARCHIVE,tihmstar,tsschecker,$(TSSCHECKER_COMMIT),$(TSSCHECKER_COMMIT))
+	$(call GITHUB_ARCHIVE,1Conan,tsschecker,$(TSSCHECKER_COMMIT),$(TSSCHECKER_COMMIT))
 	$(call GITHUB_ARCHIVE,tihmstar,jssy,master,master)
 	$(call EXTRACT_TAR,tsschecker-$(TSSCHECKER_COMMIT).tar.gz,tsschecker-$(TSSCHECKER_COMMIT),tsschecker)
 	# so EXTRACT_TAR wont fail
 	-rmdir $(BUILD_WORK)/tsschecker/external/jssy
 	$(call EXTRACT_TAR,jssy-master.tar.gz,jssy-master,tsschecker/external/jssy)
-	$(call DO_PATCH,tsschecker,tsschecker,-p1) # Remove when PR 165 merged upstream.
 
 	$(SED) -i 's/git rev\-list \-\-count HEAD/printf ${TSSCHECKER_VERSION}/g' $(BUILD_WORK)/tsschecker/configure.ac
 	$(SED) -i 's/git rev\-parse HEAD/printf ${TSSCHECKER_COMMIT}/g' $(BUILD_WORK)/tsschecker/configure.ac
