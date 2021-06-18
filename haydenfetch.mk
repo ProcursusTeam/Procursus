@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS         += haydenfetch
-HAYDENFETCH_VERSION := 1.1.1
+HAYDENFETCH_VERSION := 1.1.2
 DEB_HAYDENFETCH_V   ?= $(HAYDENFETCH_VERSION)
 
 haydenfetch-setup: setup
