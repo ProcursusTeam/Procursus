@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += gitea
-GITEA_VERSION := 1.14.2
+GITEA_VERSION := 1.14.3
 DEB_GITEA_V   ?= $(GITEA_VERSION)
 
 gitea-setup: setup
