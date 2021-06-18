@@ -1,0 +1,28 @@
+From 51f69a20e0287904398bbf4c72ba2f809a0b0850 Mon Sep 17 00:00:00 2001
+From: John Reiser <jreiser@BitWagon.com>
+Date: Sun, 14 Feb 2021 13:23:19 -0800
+Subject: [PATCH] MacOS BigSur wants no MH_DYLDLINK for our MH_EXECUTE
+
+https://github.com/upx/upx/issues/434
+	modified:   p_mach.cpp
+---
+ src/p_mach.cpp | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/src/p_mach.cpp b/src/p_mach.cpp
+index b6d91b6bcabe753353b598844c2155200d3d5d8b..c8ce9db7ef866e977843f3560bca63512f31bd98 100644
+--- a/src/p_mach.cpp
++++ b/src/p_mach.cpp
+@@ -1194,7 +1194,11 @@ void PackMachBase<T>::pack1(OutputFile *const fo, Filter &/*ft*/)  // generate e
+     mhdro = mhdri;
+     if (my_filetype==Mach_header::MH_EXECUTE) {
+         memcpy(&mhdro, stub_main, sizeof(mhdro));
+-        mhdro.flags = mhdri.flags;
++        mhdro.flags = mhdri.flags & ~(
++              Mach_header::MH_DYLDLINK  // no dyld at this time
++            | Mach_header::MH_TWOLEVEL  // dyld-specific
++            | Mach_header::MH_BINDATLOAD  // dyld-specific
++            );
+         COMPILE_TIME_ASSERT(sizeof(mhdro.flags) == sizeof(unsigned))
+     }
+     unsigned pos = sizeof(mhdro);
