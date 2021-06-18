@@ -37,7 +37,7 @@ pojavlauncher: pojavlauncher-setup
 			cmake --build . --config Release --target pojavexec PojavLauncher; \
 			cd ../..; \
 			mkdir -p Natives/build/Release-iphoneos/PojavLauncher.app/Base.lproj; \
-                        xcrun actool Natives/Assets.xcassets --compile Natives/resources --platform iphoneos --minimum-deployment-target 12.0 --app-icon AppIcon --output-partial-info-plist /dev/null; \
+			xcrun actool Natives/Assets.xcassets --compile Natives/resources --platform iphoneos --minimum-deployment-target 12.0 --app-icon AppIcon --output-partial-info-plist /dev/null; \
 			ibtool --compile Natives/build/Release-iphoneos/PojavLauncher.app/Base.lproj/LaunchScreen.storyboardc Natives/en.lproj/LaunchScreen.storyboard; \
 			ibtool --compile Natives/build/Release-iphoneos/PojavLauncher.app/Base.lproj/MinecraftSurface.storyboardc Natives/en.lproj/MinecraftSurface.storyboard; \
 			mkdir -p Natives/build/Release-iphoneos/PojavLauncher.app/Frameworks; \
