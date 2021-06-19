@@ -333,6 +333,8 @@ ifeq ($(UNAME),Darwin)
 ifeq ($(shell sw_vers -productName),macOS)
 OPTIMIZATION_FLAGS += -flto=thin
 endif
+else ifeq ($(MEMO_FORCE_LTO),1)
+OPTIMIZATION_FLAGS += -flto=thin
 endif
 endif
 
