@@ -337,6 +337,9 @@ else ifeq ($(MEMO_FORCE_LTO),1)
 OPTIMIZATION_FLAGS += -flto=thin
 endif
 endif
+ifdef ($(MEMO_ALT_LTO_LIB))
+OPTIMIZATION_FLAGS += -lto_library $(MEMO_ALT_LTO_LIB)
+endif
 
 CFLAGS              := $(OPTIMIZATION_FLAGS) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)$(MEMO_PREFIX)/Library/Frameworks
 CXXFLAGS            := $(CFLAGS)
