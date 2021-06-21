@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += gh
-GH_VERSION  := 1.9.2
+GH_VERSION  := 1.11.0
 DEB_GH_V    ?= $(GH_VERSION)
 
 gh-setup: setup
@@ -31,10 +31,7 @@ endif
 gh-package: gh-stage
 	# gh.mk Package Structure
 	rm -rf $(BUILD_DIST)/gh
-	mkdir -p $(BUILD_DIST)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-
-	# gh.mk Prep gh
-	cp -a $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/gh $(BUILD_DIST)
 
 	# gh.mk Sign
 	$(call SIGN,gh,general.xml)
