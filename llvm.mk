@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 #SUBPROJECTS   += llvm
-LLVM_VERSION   := 11.0.0
+LLVM_VERSION   := 11.1.0
 LLVM_MAJOR_V   := 11
 SWIFT_VERSION  := 5.4.1
 SWIFT_SUFFIX   := RELEASE
@@ -70,10 +70,11 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		-DCMAKE_C_FLAGS="" \
 		-DCMAKE_CXX_FLAGS="" \
 		-DCMAKE_EXE_LINKER_FLAGS="" \
+		-DCMAKE_SHARED_LINKER_FLAGS="" \
 		-DSWIFT_INCLUDE_TESTS=OFF \
 		-DSWIFT_BUILD_RUNTIME_WITH_HOST_COMPILER=ON \
 		-DLLVM_TARGETS_TO_BUILD="X86;ARM;AArch64" \
-		-DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;cmark;swift" \
+		-DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;cmark;swift;lldb" \
  		-DLLVM_EXTERNAL_PROJECTS="cmark;swift" \
 		-DLLVM_EXTERNAL_SWIFT_SOURCE_DIR="$(BUILD_WORK)/llvm/swift" \
 		-DLLVM_EXTERNAL_CMARK_SOURCE_DIR="$(BUILD_WORK)/llvm/cmark" \
@@ -134,6 +135,7 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		-DCFLAGS_DEPLOYMENT_VERSION_IOS=12.0 \
 		-DCFLAGS_DEPLOYMENT_VERSION_TVOS=10.0 \
 		-DCFLAGS_DEPLOYMENT_VERSION_WATCHOS=4.0 \
+		-DCMAKE_OSX_DEPLOYMENT_TARGET="$(IPHONEOS_DEPLOYMENT_TARGET)" \
 		-DSWIFT_PRIMARY_VARIANT_SDK="$(SWIFT_VARIANT)" \
 		-DSWIFT_PRIMARY_VARIANT_ARCH="$(MEMO_ARCH)" \
 		-DSWIFT_HOST_VARIANT_SDK="$(SWIFT_VARIANT)" \
@@ -148,11 +150,16 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		-DCLANG_TABLEGEN_EXE="$(BUILD_WORK)/llvm/build/NATIVE/bin/clang-tblgen" \
 		-DLLDB_TABLEGEN="$(BUILD_WORK)/llvm/build/NATIVE/bin/lldb-tblgen" \
 		-DLLVM_VERSION_SUFFIX="" \
+		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_IOS="$(IPHONEOS_DEPLOYMENT_TARGET)" \
+		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_OSX="$(MACOSX_DEPLYMENT_TARGET)" \
+		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_WATCHOS="$(WATCHOS_DEPLOYMENT_TARGET)" \
+		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_TVOS="$(APPLETVOS_DEPLYMENT_TARGET)" \
 		../llvm
-	+$(MAKE) -C $(BUILD_WORK)/llvm/build install \
+	+$(MAKE) -C $(BUILD_WORK)/llvm/build swift-frontend install \
 		DESTDIR="$(BUILD_STAGE)/llvm"
 	rm -rf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcurses.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpanel.dylib
 	mv $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h.old $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h
+	$(INSTALL) -Dm755 $(BUILD_WORK)/llvm/build/bin/{obj2yaml,yaml2obj} $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/
 	touch $(BUILD_WORK)/llvm/.build_complete
 endif
 
@@ -203,12 +210,12 @@ llvm-package: llvm-stage
 
 	# llvm.mk Prep libclang-common-$(LLVM_MAJOR_V)-dev
 	mkdir -p $(BUILD_DIST)/libclang-common-$(LLVM_MAJOR_V)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{,llvm-$(LLVM_MAJOR_V)/lib/}clang
-	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/clang/$(LLVM_VERSION) $(BUILD_DIST)/libclang-common-$(LLVM_MAJOR_V)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/clang
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/clang/11.1.0 $(BUILD_DIST)/libclang-common-$(LLVM_MAJOR_V)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/clang
 	ln -s ../llvm-$(LLVM_MAJOR_V)/lib/clang/$(LLVM_VERSION) $(BUILD_DIST)/libclang-common-$(LLVM_MAJOR_V)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/clang
 
 	# llvm.mk Prep libclang-cpp$(LLVM_MAJOR_V)
 	mkdir -p $(BUILD_DIST)/libclang-cpp$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib
-	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/libclang-cpp.dylib $(BUILD_DIST)/libclang-cpp$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/libclang-cpp*.dylib $(BUILD_DIST)/libclang-cpp$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib
 
 	# llvm.mk Prep liblldb-$(LLVM_MAJOR_V)
 	mkdir -p $(BUILD_DIST)/liblldb-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib
@@ -246,7 +253,7 @@ llvm-package: llvm-stage
 	mkdir -p $(BUILD_DIST)/clang-tools-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
 	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/{c-index-test,clang-*,clangd,sancov,scan-build,scan-view} \
 			$(BUILD_DIST)/clang-tools-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
-	rm $(BUILD_DIST)/clang-tools-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/{clang-10,clang-cpp}
+	rm $(BUILD_DIST)/clang-tools-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/{clang-$(LLVM_MAJOR_V),clang-cpp}
 
 	# llvm.mk Prep clang-tools
 	mkdir -p $(BUILD_DIST)/clang-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin

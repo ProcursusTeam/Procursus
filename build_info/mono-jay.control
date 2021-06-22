@@ -1,0 +1,9 @@
+Package: mono-jay
+Version: @DEB_MONO_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Homepage: https://www.gnu.org/software/libidn/#libidn2
+Description: LALR(1) parser generator oriented to Java/CLI
+ Jay is a Yacc implementation oriented to Java-like input syntax. It takes a grammar, specified in BNF and augmented with semantic actions, and generates tables and an interpreter which recognizes the language defined by the grammar and executes the semantic actions as their corresponding phrases are recognized. 
