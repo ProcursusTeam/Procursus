@@ -17,8 +17,7 @@ libsndfile:
 else
 libsndfile: libsndfile-setup flac libogg libvorbis libopus
 	cd $(BUILD_WORK)/libsndfile && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS) \
-		--disable-dependency-tracking
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libsndfile
 	+$(MAKE) -C $(BUILD_WORK)/libsndfile install \
 		DESTDIR=$(BUILD_STAGE)/libsndfile

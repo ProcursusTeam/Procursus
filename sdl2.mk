@@ -2,21 +2,28 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-###
-# This Makefile needs major changes before supporting Apple Silicon
-###
-
 SUBPROJECTS   += sdl2
-SDL2_VERSION  := 2.0.12
+SDL2_VERSION  := 2.0.14
 DEB_SDL2_V    ?= $(SDL2_VERSION)
+
+### Do X11 stuff with this later
+
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+SDL2_CONFIGURE_FLAGS :=
+else
+SDL2_CONFIGURE_FLAGS := --host=aarch64-ios-darwin \
+						CFLAGS="-DNDEBUG -DIOS_DYLIB -fPIC -fobjc-arc $(CFLAGS)" \
+						CPPFLAGS="-DNDEBUG -DIOS_DYLIB -fPIC -fobjc-arc $(CPPFLAGS)"
+endif
 
 sdl2-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://libsdl.org/release/SDL2-$(SDL2_VERSION).tar.gz
 	$(call EXTRACT_TAR,SDL2-$(SDL2_VERSION).tar.gz,SDL2-$(SDL2_VERSION),sdl2)
-	$(call DO_PATCH,sdl2,sdl2,-p1)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(SED) -i -e 's/have_metal=no/have_metal=yes/' -e '/\ CheckMETAL/a CheckHIDAPI' \
-		-e '/framework,UIKit/a EXTRA_LDFLAGS="\$$EXTRA_LDFLAGS -Wl,-framework,IOKit"' $(BUILD_WORK)/sdl2/configure
+		-e '/framework,UIKit/a EXTRA_LDFLAGS="\$$EXTRA_LDFLAGS -Wl,-framework,IOKit -Wl,-framework,CoreHaptics"' $(BUILD_WORK)/sdl2/configure
 	$(SED) -i 's/#elif __MACOSX__/#elif __APPLE__/' $(BUILD_WORK)/sdl2/src/hidapi/SDL_hidapi.c
+endif
 
 ifneq ($(wildcard $(BUILD_WORK)/sdl2/.build_complete),)
 sdl2:
@@ -25,12 +32,12 @@ else
 sdl2: sdl2-setup
 	cd $(BUILD_WORK)/sdl2 && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--host=aarch64-ios-darwin \
-		--disable-dependency-tracking \
 		--enable-hidapi \
-		CFLAGS="-DNDEBUG -DIOS_DYLIB -g -O0 -pipe -fPIC -fobjc-arc $(CFLAGS)" \
-		CPPFLAGS="-DNDEBUG -DIOS_DYLIB -g -O0 -pipe -fPIC -fobjc-arc $(CPPFLAGS)"
+		--without-x \
+		$(SDL2_CONFIGURE_FLAGS)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	cp $(BUILD_WORK)/sdl2/include/SDL_config_iphoneos.h $(BUILD_WORK)/sdl2/include/SDL_config.h
+endif
 	+$(MAKE) -C $(BUILD_WORK)/sdl2 install \
 		DESTDIR=$(BUILD_STAGE)/sdl2
 	+$(MAKE) -C $(BUILD_WORK)/sdl2 install \
