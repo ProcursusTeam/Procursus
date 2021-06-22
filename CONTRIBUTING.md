@@ -17,13 +17,13 @@ While there isn't an overbaring policy on how to properly submit issues, please 
 4. Once all further changes have been met (if any) and your changes are approved, it will be merged to upstream and the APT repository shortly updated
 
 ### Adding a New Package
-Adding new packages to Procursus is fairly easy and simple. For most packages, you're likely to need 2 files, only: a ``.mk`` file and a ``.control`` file. For documented examples, take a look at the [grep template](./grep.mk.template) and its [control file](./grep.control).
+Adding new packages to Procursus is fairly easy and simple. For most packages, you're likely to need 2 files, only: a ``.mk`` file and a ``.control`` file. For documented examples, take a look at the [``grep.mk`` template](./grep.mk.template) and its [control file](./grep.control).
 
 Some things to keep in mind when adding a new package
 - Always ensure that the Architecture and Maintainer fields of your control file are populated with ``@DEB_ARCH@`` and ``@DEB_MAINTAINER@``, respectively
 - If you take advantage of already-made patchfiles from an external source, download them and implement them to your project. Check out it's done in [``bash.mk``](./bash.mk)
 - If the package you're adding only requires a few small edits, try taking advantage of ``sed`` in your packages' setup stage
-- Use designated functions found in the [documentation](https://github.com/ProcursusTeam/Procursus/wiki) to download, patch, or making other changes to your package
+- Use designated functions found in the [documentation](https://github.com/ProcursusTeam/Procursus/wiki) to download, patch, or make other changes to your package
 - **Always** test your changes on a physical device with a build of the package you're attempting to add
 
 ### Updating a Package
