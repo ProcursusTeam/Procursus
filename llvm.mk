@@ -30,7 +30,7 @@ llvm:
 	@echo "Using previously built llvm."
 else
 llvm: llvm-setup libffi libedit ncurses xz xar
-#	Temporary SED until swift can build on their own apple silicon (cmon mac)
+#	Temporary SED until swift can build on their own apple silicon (cmon apple)
 	$(SED) -i -e 's/aarch64|ARM64/aarch64|ARM64|arm64/' -e 's/SWIFT_HOST_VARIANT_ARCH_default "aarch64"/SWIFT_HOST_VARIANT_ARCH_default "arm64"/' $(BUILD_WORK)/llvm/swift/CMakeLists.txt
 	mkdir -p $(BUILD_WORK)/../../native/llvm && cd $(BUILD_WORK)/../../native/llvm && unset CC CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS && cmake . \
 		-DCMAKE_C_COMPILER=cc \
@@ -46,9 +46,9 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		-DLLVM_EXTERNAL_SWIFT_SOURCE_DIR="$(BUILD_WORK)/llvm/swift" \
 		-DLLVM_EXTERNAL_CMARK_SOURCE_DIR="$(BUILD_WORK)/llvm/cmark" \
 		-DSWIFT_BUILD_REMOTE_MIRROR=FALSE \
- 		-DSWIFT_BUILD_DYNAMIC_STDLIB=FALSE \
- 		-DSWIFT_BUILD_STDLIB_EXTRA_TOOLCHAIN_CONTENT=FALSE \
-		../llvm/llvm
+		-DSWIFT_BUILD_DYNAMIC_STDLIB=FALSE \
+		-DSWIFT_BUILD_STDLIB_EXTRA_TOOLCHAIN_CONTENT=FALSE \
+		$(BUILD_WORK)/llvm/llvm
 	+$(MAKE) -C $(BUILD_WORK)/../../native/llvm swift-components lldb-tblgen
 
 	cd $(BUILD_WORK)/llvm/build && cmake . \
@@ -101,8 +101,8 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_WATCHOS="$(WATCHOS_DEPLOYMENT_TARGET)" \
 		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_TVOS="$(APPLETVOS_DEPLYMENT_TARGET)" \
 		-DSWIFT_BUILD_REMOTE_MIRROR=FALSE \
- 		-DSWIFT_BUILD_DYNAMIC_STDLIB=FALSE \
- 		-DSWIFT_BUILD_STDLIB_EXTRA_TOOLCHAIN_CONTENT=FALSE \
+		-DSWIFT_BUILD_DYNAMIC_STDLIB=FALSE \
+		-DSWIFT_BUILD_STDLIB_EXTRA_TOOLCHAIN_CONTENT=FALSE \
 		../llvm
 	+$(MAKE) -C $(BUILD_WORK)/llvm/build swift-frontend install \
 		DESTDIR="$(BUILD_STAGE)/llvm"
