@@ -32,7 +32,7 @@ else
 llvm: llvm-setup libffi libedit ncurses xz xar
 #	Temporary SED until swift can build on their own apple silicon (cmon mac)
 	$(SED) -i -e 's/aarch64|ARM64/aarch64|ARM64|arm64/' -e 's/SWIFT_HOST_VARIANT_ARCH_default "aarch64"/SWIFT_HOST_VARIANT_ARCH_default "arm64"/' $(BUILD_WORK)/llvm/swift/CMakeLists.txt
-	mkdir -p $(BUILD_WORK)/llvm-native && cd $(BUILD_WORK)/llvm-native && unset CC CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS && cmake . \
+	mkdir -p $(BUILD_WORK)/../../native/llvm && cd $(BUILD_WORK)/../../native/llvm && unset CC CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS && cmake . \
 		-DCMAKE_C_COMPILER=cc \
 		-DCMAKE_CXX_COMPILER=c++ \
 		-DCMAKE_C_FLAGS="" \
@@ -49,7 +49,7 @@ llvm: llvm-setup libffi libedit ncurses xz xar
  		-DSWIFT_BUILD_DYNAMIC_STDLIB=FALSE \
  		-DSWIFT_BUILD_STDLIB_EXTRA_TOOLCHAIN_CONTENT=FALSE \
 		../llvm/llvm
-	+$(MAKE) -C $(BUILD_WORK)/llvm-native swift-components lldb-tblgen
+	+$(MAKE) -C $(BUILD_WORK)/../../native/llvm swift-components lldb-tblgen
 
 	cd $(BUILD_WORK)/llvm/build && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
@@ -87,15 +87,15 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		-DSWIFT_INCLUDE_TESTS=OFF \
 		-DSWIFT_TOOLS_ENABLE_LTO=THIN \
 		-DSWIFT_BUILD_RUNTIME_WITH_HOST_COMPILER=ON \
-		-DSWIFT_NATIVE_SWIFT_TOOLS_PATH="$(BUILD_WORK)/llvm-native/bin" \
-		-DSWIFT_NATIVE_CLANG_TOOLS_PATH="$(BUILD_WORK)/llvm-native/bin" \
-		-DSWIFT_NATIVE_LLVM_TOOLS_PATH="$(BUILD_WORK)/llvm-native/bin" \
-		-DLLVM_TABLEGEN="$(BUILD_WORK)/llvm-native/bin/llvm-tblgen" \
-		-DLLVM_TABLEGEN_EXE="$(BUILD_WORK)/llvm-native/bin/llvm-tblgen" \
-		-DCLANG_TABLEGEN="$(BUILD_WORK)/llvm-native/bin/clang-tblgen" \
-		-DCLANG_TABLEGEN_EXE="$(BUILD_WORK)/llvm-native/bin/clang-tblgen" \
-		-DLLDB_TABLEGEN="$(BUILD_WORK)/llvm-native/bin/lldb-tblgen" \
-		-DLLDB_TABLEGEN_EXE="$(BUILD_WORK)/llvm-native/bin/lldb-tblgen" \
+		-DSWIFT_NATIVE_SWIFT_TOOLS_PATH="$(BUILD_WORK)/../../native/llvm/bin" \
+		-DSWIFT_NATIVE_CLANG_TOOLS_PATH="$(BUILD_WORK)/../../native/llvm/bin" \
+		-DSWIFT_NATIVE_LLVM_TOOLS_PATH="$(BUILD_WORK)/../../native/llvm/bin" \
+		-DLLVM_TABLEGEN="$(BUILD_WORK)/../../native/llvm/bin/llvm-tblgen" \
+		-DLLVM_TABLEGEN_EXE="$(BUILD_WORK)/../../native/llvm/bin/llvm-tblgen" \
+		-DCLANG_TABLEGEN="$(BUILD_WORK)/../../native/llvm/bin/clang-tblgen" \
+		-DCLANG_TABLEGEN_EXE="$(BUILD_WORK)/../../native/llvm/bin/clang-tblgen" \
+		-DLLDB_TABLEGEN="$(BUILD_WORK)/../../native/llvm/bin/lldb-tblgen" \
+		-DLLDB_TABLEGEN_EXE="$(BUILD_WORK)/../../native/llvm/bin/lldb-tblgen" \
 		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_IOS="$(IPHONEOS_DEPLOYMENT_TARGET)" \
 		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_OSX="$(MACOSX_DEPLYMENT_TARGET)" \
 		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_WATCHOS="$(WATCHOS_DEPLOYMENT_TARGET)" \
