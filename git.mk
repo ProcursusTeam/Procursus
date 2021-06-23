@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += git
-GIT_VERSION := 2.31.1
-DEB_GIT_V   ?= $(GIT_VERSION)-1
+GIT_VERSION := 2.32.0
+DEB_GIT_V   ?= $(GIT_VERSION)
 
 GIT_ARGS += uname_S=Darwin \
 	HOST_CPU=$(GNU_HOST_TRIPLE) \
