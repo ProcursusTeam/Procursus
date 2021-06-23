@@ -10,22 +10,6 @@ SWIFT_SUFFIX   := RELEASE
 DEB_SWIFT_V    ?= $(SWIFT_VERSION)~$(SWIFT_SUFFIX)
 DEB_LLVM_V     ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)
 
-ifeq ($(MEMO_TARGET),iphoneos-arm64)
-SWIFT_VARIANT       := IOS
-else ifeq ($(MEMO_TARGET),iphoneos-arm)
-SWIFT_VARIANT       := IOS
-else ifeq ($(MEMO_TARGET),appletvos-arm64)
-SWIFT_VARIANT       := TVOS
-else ifeq ($(MEMO_TARGET),watchos-arm64
-SWIFT_VARIANT       := WATCHOS
-else ifeq ($(MEMO_TARGET),watchos-arm)
-SWIFT_VARIANT       := WATCHOS
-else ifeq ($(MEMO_TARGET),darwin-arm64)
-SWIFT_VARIANT       := OSX
-else ifeq ($(MEMO_TARGET),darwin-amd64)
-SWIFT_VARIANT       := OSX
-endif
-
 llvm-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/apple/llvm-project/archive/swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz
 	$(call GITHUB_ARCHIVE,apple,swift,$(SWIFT_VERSION)-$(SWIFT_SUFFIX),swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),swift-swift)
@@ -43,63 +27,35 @@ llvm:
 	@echo "Using previously built llvm."
 else
 llvm: llvm-setup libffi libedit ncurses xz xar
-	cp -a $(MACOSX_SYSROOT)/usr/include/kern $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	mv $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h.old
-
-	mkdir -p $(BUILD_WORK)/llvm/build/NATIVE && cd $(BUILD_WORK)/llvm/build/NATIVE && cmake . \
+#	Temporary SED until swift can build on their own apple silicon (cmon mac)
+	$(SED) -i 's/aarch64|ARM64/aarch64|ARM64|arm64/' $(BUILD_WORK)/llvm/swift/CMakeLists.txt
+	mkdir -p $(BUILD_WORK)/llvm-native && cd $(BUILD_WORK)/llvm-native && cmake . \
 		-DCMAKE_C_COMPILER=cc \
 		-DCMAKE_CXX_COMPILER=c++ \
 		-DCMAKE_OSX_SYSROOT="$(MACOSX_SYSROOT)" \
-		-DCMAKE_C_FLAGS="" \
-		-DCMAKE_CXX_FLAGS="" \
-		-DCMAKE_EXE_LINKER_FLAGS="" \
-		-DCMAKE_SHARED_LINKER_FLAGS="" \
+		-DCMAKE_C_FLAGS="$(BUILD_CFLAGS)" \
+		-DCMAKE_CXX_FLAGS="$(BUILD_CXXFLAGS)" \
+		-DCMAKE_EXE_LINKER_FLAGS="$(BUILD_LDFLAGS)" \
+		-DCMAKE_SHARED_LINKER_FLAGS="$(BUILD_LDFLAGS)" \
 		-DSWIFT_INCLUDE_TESTS=OFF \
 		-DSWIFT_BUILD_RUNTIME_WITH_HOST_COMPILER=ON \
 		-DLLVM_TARGETS_TO_BUILD="X86;ARM;AArch64" \
-		-DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;cmark;swift;lldb" \
- 		-DLLVM_EXTERNAL_PROJECTS="cmark;swift" \
+		-DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;lldb" \
+		-DLLVM_EXTERNAL_PROJECTS="cmark;swift" \
 		-DLLVM_EXTERNAL_SWIFT_SOURCE_DIR="$(BUILD_WORK)/llvm/swift" \
 		-DLLVM_EXTERNAL_CMARK_SOURCE_DIR="$(BUILD_WORK)/llvm/cmark" \
-		../../llvm
-	+$(MAKE) -C $(BUILD_WORK)/llvm/build/NATIVE swift-components lldb-tblgen
+		../llvm/llvm
+	+$(MAKE) -C $(BUILD_WORK)/llvm-native swift-components lldb-tblgen
 
 	cd $(BUILD_WORK)/llvm/build && cmake . \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_SYSTEM_NAME=Darwin \
-		-DCMAKE_CROSSCOMPILING=true \
-		-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
+		$(DEFAULT_CMAKE_FLAGS) \
 		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V) \
 		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib \
 		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V) \
-		-DCMAKE_OSX_ARCHITECTURES="$(MEMO_ARCH)" \
-		-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
-		-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
-		-DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
-		-DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
-		-DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \
-		-DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY \
-		-DCMAKE_C_FLAGS="-isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/include $(PLATFORM_VERSION_MIN)" \
-		-DCMAKE_CXX_FLAGS="-isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/include $(PLATFORM_VERSION_MIN)" \
-		-DCMAKE_EXE_LINKER_FLAGS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
-		-DCMAKE_MODULE_LINKER_FLAGS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
-		-DCMAKE_SHARED_LINKER_FLAGS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
-		-DCMAKE_STATIC_LINKER_FLAGS="" \
-		-DCMAKE_C_STANDARD_LIBRARIES="-liosexec" \
-		-DCMAKE_CXX_STANDARD_LIBRARIES="-liosexec" \
 		-DLLVM_ENABLE_FFI=ON \
 		-DLLVM_ENABLE_RTTI=ON \
 		-DLLVM_ENABLE_EH=ON \
-		-DLIBXML2_LIBRARY="$(TARGET_SYSROOT)/usr/lib/libxml2.tbd" \
-		-DLIBXML2_INCLUDE_DIR="$(TARGET_SYSROOT)/usr/include/libxml" \
-		-DLibEdit_INCLUDE_DIRS="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
-		-DLibEdit_LIBRARIES="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libedit.dylib" \
-		-DCORE_FOUNDATION_LIBRARY="$(TARGET_SYSROOT)/System/Library/Frameworks/CoreFoundation.framework" \
-		-DCORE_SERVICES_LIBRARY="$(TARGET_SYSROOT)/System/Library/Frameworks/CoreServices.framework" \
-		-DFOUNDATION_LIBRARY="$(TARGET_SYSROOT)/System/Library/Frameworks/Foundation.framework" \
-		-DFOUNDATION="$(TARGET_SYSROOT)/System/Library/Frameworks/Foundation.framework" \
-		-DSECURITY_LIBRARY="$(TARGET_SYSROOT)/System/Library/Frameworks/Security.framework" \
-		-DCROSS_TOOLCHAIN_FLAGS_NATIVE='-DCMAKE_C_COMPILER=cc;-DCMAKE_CXX_COMPILER=c++;-DCMAKE_OSX_SYSROOT="$(MACOSX_SYSROOT)";-DCMAKE_OSX_ARCHITECTURES="";-DCMAKE_C_FLAGS="";-DCMAKE_CXX_FLAGS="";-DCMAKE_EXE_LINKER_FLAGS=""' \
+		-DCROSS_TOOLCHAIN_FLAGS_NATIVE='-DCMAKE_C_COMPILER=cc;-DCMAKE_CXX_COMPILER=c++;-DCMAKE_OSX_SYSROOT="$(MACOSX_SYSROOT)";-DCMAKE_OSX_ARCHITECTURES="";-DCMAKE_C_FLAGS="$(BUILD_CFLAGS)";-DCMAKE_CXX_FLAGS="$(BUILD_CXXFLAGS)";-DCMAKE_EXE_LINKER_FLAGS="$(BUILD_LDFLAGS)"' \
 		-DCLANG_VERSION=$(LLVM_VERSION) \
 		-DLLVM_BUILD_LLVM_DYLIB=ON \
 		-DLLVM_LINK_LLVM_DYLIB=ON \
@@ -108,31 +64,29 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		-DLLVM_VERSION_SUFFIX="" \
 		-DLLVM_DEFAULT_TARGET_TRIPLE=$(LLVM_TARGET) \
 		-DLLVM_TARGETS_TO_BUILD="X86;ARM;AArch64" \
-		-DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;lldb;cmark;swift;clang-tools-extra;lld;polly" \
+		-DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;lldb;clang-tools-extra;lld;polly" \
 		-DLLVM_EXTERNAL_PROJECTS="cmark;swift" \
 		-DLLVM_EXTERNAL_SWIFT_SOURCE_DIR="$(BUILD_WORK)/llvm/swift" \
 		-DLLVM_EXTERNAL_CMARK_SOURCE_DIR="$(BUILD_WORK)/llvm/cmark" \
 		-DLLVM_INCLUDE_TESTS=OFF \
 		-DMIG_ARCHS=$(MEMO_ARCH) \
-		-DCFLAGS_SDK="$(SWIFT_VARIANT)" \
-		-DCFLAGS_DEPLOYMENT_VERSION_IOS=12.0 \
-		-DCFLAGS_DEPLOYMENT_VERSION_TVOS=10.0 \
-		-DCFLAGS_DEPLOYMENT_VERSION_WATCHOS=4.0 \
-		-DCMAKE_OSX_DEPLOYMENT_TARGET="$(IPHONEOS_DEPLOYMENT_TARGET)" \
-		-DSWIFT_PRIMARY_VARIANT_SDK="$(SWIFT_VARIANT)" \
+		-DCFLAGS_DEPLOYMENT_VERSION_IOS="$(IPHONEOS_DEPLOYMENT_TARGET)" \
+		-DCFLAGS_DEPLOYMENT_VERSION_TVOS="$(APPLETVOS_DEPLYMENT_TARGET)" \
+		-DCFLAGS_DEPLOYMENT_VERSION_WATCHOS="$(WATCHOS_DEPLOYMENT_TARGET)" \
 		-DSWIFT_PRIMARY_VARIANT_ARCH="$(MEMO_ARCH)" \
-		-DSWIFT_HOST_VARIANT_SDK="$(SWIFT_VARIANT)" \
 		-DSWIFT_HOST_VARIANT="$(PLATFORM)" \
 		-DSWIFT_HOST_VARIANT_ARCH="$(MEMO_ARCH)" \
+		-DSWIFT_HOST_VARIANT_SDK=IOS \
 		-DSWIFT_ENABLE_IOS32=OFF \
 		-DSWIFT_INCLUDE_TESTS=OFF \
 		-DSWIFT_BUILD_RUNTIME_WITH_HOST_COMPILER=ON \
-		-DSWIFT_NATIVE_SWIFT_TOOLS_PATH="$(BUILD_WORK)/llvm/build/NATIVE/bin" \
-		-DLLVM_TABLEGEN="$(BUILD_WORK)/llvm/build/NATIVE/bin/llvm-tblgen" \
-		-DCLANG_TABLEGEN="$(BUILD_WORK)/llvm/build/NATIVE/bin/clang-tblgen" \
-		-DCLANG_TABLEGEN_EXE="$(BUILD_WORK)/llvm/build/NATIVE/bin/clang-tblgen" \
-		-DLLDB_TABLEGEN="$(BUILD_WORK)/llvm/build/NATIVE/bin/lldb-tblgen" \
-		-DLLVM_VERSION_SUFFIX="" \
+		-DSWIFT_NATIVE_SWIFT_TOOLS_PATH="$(BUILD_WORK)/llvm-native/bin" \
+		-DLLVM_TABLEGEN="$(BUILD_WORK)/llvm-native/bin/llvm-tblgen" \
+		-DLLVM_TABLEGEN_EXE="$(BUILD_WORK)/llvm-native/bin/llvm-tblgen" \
+		-DCLANG_TABLEGEN="$(BUILD_WORK)/llvm-native/bin/clang-tblgen" \
+		-DCLANG_TABLEGEN_EXE="$(BUILD_WORK)/llvm-native/bin/clang-tblgen" \
+		-DLLDB_TABLEGEN="$(BUILD_WORK)/llvm-native/bin/lldb-tblgen" \
+		-DLLDB_TABLEGEN_EXE="$(BUILD_WORK)/llvm-native/bin/lldb-tblgen" \
 		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_IOS="$(IPHONEOS_DEPLOYMENT_TARGET)" \
 		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_OSX="$(MACOSX_DEPLYMENT_TARGET)" \
 		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_WATCHOS="$(WATCHOS_DEPLOYMENT_TARGET)" \
@@ -140,7 +94,6 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		../llvm
 	+$(MAKE) -C $(BUILD_WORK)/llvm/build swift-frontend install \
 		DESTDIR="$(BUILD_STAGE)/llvm"
-	mv $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h.old $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h
 	$(INSTALL) -Dm755 $(BUILD_WORK)/llvm/build/bin/{obj2yaml,yaml2obj} $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/
 	touch $(BUILD_WORK)/llvm/.build_complete
 endif
