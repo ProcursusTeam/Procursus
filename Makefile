@@ -123,7 +123,7 @@ $(warning Building for WatchOS)
 endif # ($(MEMO_QUIET),1)
 MEMO_ARCH            := arm64_32
 PLATFORM             := watchos
-DEB_ARCH             := watchos-arm64_32
+DEB_ARCH             := watchos-arm64-32
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
 PLATFORM_VERSION_MIN := -mwatchos-version-min=$(WATCHOS_DEPLOYMENT_TARGET)
 RUST_TARGET          := aarch64-apple-watchos
