@@ -16,7 +16,7 @@ else ifeq ($(MEMO_TARGET),iphoneos-arm)
 SWIFT_VARIANT       := IOS
 else ifeq ($(MEMO_TARGET),appletvos-arm64)
 SWIFT_VARIANT       := TVOS
-else ifeq ($(MEMO_TARGET),watchos-arm64
+else ifeq ($(MEMO_TARGET),watchos-arm64)
 SWIFT_VARIANT       := WATCHOS
 else ifeq ($(MEMO_TARGET),watchos-arm)
 SWIFT_VARIANT       := WATCHOS
