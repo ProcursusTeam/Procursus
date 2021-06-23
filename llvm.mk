@@ -97,6 +97,9 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_OSX="$(MACOSX_DEPLYMENT_TARGET)" \
 		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_WATCHOS="$(WATCHOS_DEPLOYMENT_TARGET)" \
 		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_TVOS="$(APPLETVOS_DEPLYMENT_TARGET)" \
+		-DSWIFT_BUILD_REMOTE_MIRROR=FALSE \
+ 		-DSWIFT_BUILD_DYNAMIC_STDLIB=FALSE \
+ 		-DSWIFT_BUILD_STDLIB_EXTRA_TOOLCHAIN_CONTENT=FALSE \
 		../llvm
 	+$(MAKE) -C $(BUILD_WORK)/llvm/build swift-frontend install \
 		DESTDIR="$(BUILD_STAGE)/llvm"
@@ -214,7 +217,7 @@ llvm-package: llvm-stage
 	# llvm.mk Prep swift-$(SWIFT_VERSION)
 	mkdir -p $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib/llvm-$(LLVM_MAJOR_V)/{bin,lib,share}}
 	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/share/swift $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/share
-	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/{swift,libswift*} $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/swift $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib
 	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/swift{,-frontend,c,-api-digester,-api-dump.py,-demangle,-syntax*} $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
 	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/sil-{func-extractor,llvm-gen,nm,passpipeline-dumper} $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
 	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/repl_swift $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
