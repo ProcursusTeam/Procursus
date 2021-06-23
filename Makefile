@@ -73,6 +73,14 @@ MACOSX_DEPLOYMENT_TARGET    := 11.0
 DARWIN_DEPLOYMENT_VERSION   := 20
 MACOSX_SUITE_NAME           := big_sur
 override MEMO_CFVER         := 1700
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1800 ] && [ "$(CFVER_WHOLE)" -lt 1900 ] && echo 1),1)
+IPHONEOS_DEPLOYMENT_TARGET  := 15.0
+APPLETVOS_DEPLOYMENT_TARGET := 15.0
+WATCHOS_DEPLOYMENT_TARGET   := 8.0
+MACOSX_DEPLOYMENT_TARGET    := 12.0
+DARWIN_DEPLOYMENT_VERSION   := 21
+MACOSX_SUITE_NAME           := monterey
+override MEMO_CFVER         := 1800
 else
 $(error Unsupported CoreFoundation version)
 endif
@@ -229,8 +237,8 @@ CC      := $(GNU_HOST_TRIPLE)-clang
 CXX     := $(GNU_HOST_TRIPLE)-clang++
 CPP     := $(GNU_HOST_TRIPLE)-clang -E
 AR      := $(GNU_HOST_TRIPLE)-ar
-LD      := $(GNU_HOST_TRIPLE)-ld 
-RANLIB  := $(GNU_HOST_TRIPLE)-ranlib   
+LD      := $(GNU_HOST_TRIPLE)-ld
+RANLIB  := $(GNU_HOST_TRIPLE)-ranlib
 STRIP   := $(GNU_HOST_TRIPLE)-strip
 I_N_T   := $(GNU_HOST_TRIPLE)-install_name_tool
 NM      := $(GNU_HOST_TRIPLE)-nm
