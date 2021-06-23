@@ -343,6 +343,10 @@ OPTIMIZATION_FLAGS += -flto=thin
 endif
 else ifeq ($(MEMO_FORCE_LTO),1)
 OPTIMIZATION_FLAGS += -flto=thin
+# This flag will prevent ld64 from deleting the object file needed for dsymutil to work.
+# I'm not setting this on macOS because I am unsure if it is needed.
+# See: clang(1)
+OPTIMIZATION_FLAGS += -Wl,-object_path_lto,/tmp/lto.o
 endif
 endif
 ifdef ($(MEMO_ALT_LTO_LIB))
