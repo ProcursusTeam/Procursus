@@ -51,6 +51,20 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		$(BUILD_WORK)/llvm/llvm
 	+$(MAKE) -C $(BUILD_WORK)/../../native/llvm swift-components lldb-tblgen
 
+	case $(MEMO_TARGET) in \
+	*"darwin"*) \
+		SWIFT_VARIANT=OSX \
+		;; \
+	*"iphoneos"*) \
+		SWIFT_VARIANT=IOS \
+		;; \
+	*"tvos"*) \
+		SWIFT_VARIANT=TVOS \
+		;; \
+	*"watchos"*) \
+		SWIFT_VARIANT=TVOS \
+		;; \
+	esac; \
 	cd $(BUILD_WORK)/llvm/build && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V) \
@@ -81,8 +95,8 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		-DSWIFT_PRIMARY_VARIANT_ARCH="$(MEMO_ARCH)" \
 		-DSWIFT_HOST_VARIANT="$(PLATFORM)" \
 		-DSWIFT_HOST_VARIANT_ARCH="$(MEMO_ARCH)" \
-		-DCFLAGS_SDK=IOS \
-		-DSWIFT_HOST_VARIANT_SDK=IOS \
+		-DCFLAGS_SDK=$${SWIFT_VARIANT} \
+		-DSWIFT_HOST_VARIANT_SDK=$${SWIFT_VARIANT} \
 		-DSWIFT_ENABLE_IOS32=OFF \
 		-DSWIFT_INCLUDE_TESTS=OFF \
 		-DSWIFT_TOOLS_ENABLE_LTO=THIN \
