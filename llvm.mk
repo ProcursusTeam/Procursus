@@ -18,6 +18,9 @@ llvm-setup: setup
 	$(call EXTRACT_TAR,swift-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz,swift-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),llvm/swift)
 	$(call EXTRACT_TAR,swift-cmark-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz,swift-cmark-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),llvm/cmark)
 	$(call DO_PATCH,llvm,llvm,-p1)
+	$(SED) -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
+		$(BUILD_WORK)/llvm/clang/lib/Frontend/InitHeaderSearch.cpp \
+		$(BUILD_WORK)/llvm/clang/lib/Driver/ToolChains/Darwin.cpp
 	$(call DO_PATCH,swift,llvm/swift,-p1)
 	mkdir -p $(BUILD_WORK)/llvm/build
 	$(SED) -i 's|isysroot $${CMAKE_OSX_SYSROOT}|isysroot $${CMAKE_FIND_ROOT_PATH}|' $(BUILD_WORK)/llvm/lldb/tools/debugserver/source/CMakeLists.txt
