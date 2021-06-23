@@ -1,5 +1,5 @@
 # Procursus
-[![Contributors](https://img.shields.io/github/contributors-anon/ProcursusTeam/Procursus)](https://github.com/ProcursusTeam/Procursus)
+[![Contributors](https://img.shields.io/github/contributors-anon/ProcursusTeam/Procursus)](https://github.com/ProcursusTeam/Procursus/graphs/contributors)
 
 A new, powerful cross-compilation system for *OS devices coupled with an APT repo.
 
