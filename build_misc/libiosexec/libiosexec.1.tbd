@@ -1,11 +1,16 @@
 --- !tapi-tbd
 tbd-version:     4
-targets:         [ arm64-ios, arm64-tvos ]
+targets:         [ arm64-ios, arm64-tvos, armv7k-watchos, arm64_32-watchos ]
 uuids:
   - target:          arm64-ios
     value:           7A1C6C19-AE18-3E3E-A149-A9B76BB01511
   - target:          arm64-tvos
     value:           159623A0-A465-4E2E-A3E7-DF02522C87FD
+  - target:          armv7k-watchos
+    value:           BAFC0040-639E-4187-B184-03FF6D457D74
+  - target:          arm64_32-watchos
+    value:           C56699DC-54CF-4191-9C7B-9C13927883B3
+
 flags:           [ not_app_extension_safe ]
 install-name:    '/usr/lib/libiosexec.1.dylib'
 current-version: 0
