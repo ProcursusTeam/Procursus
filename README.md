@@ -51,7 +51,7 @@ Supported host systems as of 06/04/2020 are iphoneos-arm64, iphoneos-arm, applet
 | python 3.9                                                        |
 On macOS, all the build requirements can be installed with the following command.
 ```
-sudo apt install make bash wget tar sed gnupg ldid cmake automake autoconf groff patch findutils coreutils fakeroot zstd dpkg ncurses docbook-xsl python3 po4a triehash libtool libtool-bin xz-utils dirmngr pkg-config m4 autopoint dpkg ncurses bison flex
+sudo apt install make bash wget tar sed gnupg ldid cmake automake autoconf groff patch findutils coreutils fakeroot zstd dpkg ncurses docbook-xsl python3 po4a triehash libtool libtool-bin xz-utils dirmngr pkg-config m4 autopoint dpkg ncurses bison flex libncurses-dev grep ncurses-bin
 ```
 
 | Supported commands    | Function                                                                                                                            |
