@@ -2,13 +2,13 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-#SUBPROJECTS   += llvm
-LLVM_VERSION   := 11.1.0
-LLVM_MAJOR_V   := 11
-SWIFT_VERSION  := 5.4.1
-SWIFT_SUFFIX   := RELEASE
-DEB_SWIFT_V    ?= $(SWIFT_VERSION)~$(SWIFT_SUFFIX)
-DEB_LLVM_V     ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)
+SUBPROJECTS   += llvm
+LLVM_VERSION  := 11.1.0
+LLVM_MAJOR_V  := 11
+SWIFT_VERSION := 5.4.1
+SWIFT_SUFFIX  := RELEASE
+DEB_SWIFT_V   ?= $(SWIFT_VERSION)~$(SWIFT_SUFFIX)
+DEB_LLVM_V    ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)
 
 llvm-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/apple/llvm-project/archive/swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz
