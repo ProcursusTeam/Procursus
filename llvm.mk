@@ -8,36 +8,22 @@ LLVM_MAJOR_V   := 11
 SWIFT_VERSION  := 5.4.1
 SWIFT_SUFFIX   := RELEASE
 DEB_SWIFT_V    ?= $(SWIFT_VERSION)~$(SWIFT_SUFFIX)
-DEB_LLVM_V     ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)-1
+DEB_LLVM_V     ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)
 
 ifeq ($(MEMO_TARGET),iphoneos-arm64)
-LLVM_DEFAULT_TRIPLE := arm64-apple-ios12.0
 SWIFT_VARIANT       := IOS
-SWIFT_OLD           := OFF
 else ifeq ($(MEMO_TARGET),iphoneos-arm)
-LLVM_DEFAULT_TRIPLE := arm-apple-ios8.0
 SWIFT_VARIANT       := IOS
-SWIFT_OLD           := ON
 else ifeq ($(MEMO_TARGET),appletvos-arm64)
-LLVM_DEFAULT_TRIPLE := arm64-apple-tvos10.0
 SWIFT_VARIANT       := TVOS
-SWIFT_OLD           := OFF
-else ifeq ($(MEMO_TARGET),watchos-arm64)
-LLVM_DEFAULT_TRIPLE := arm64-apple-watchos4.0
+else ifeq ($(MEMO_TARGET),watchos-arm64
 SWIFT_VARIANT       := WATCHOS
-SWIFT_OLD           := OFF
 else ifeq ($(MEMO_TARGET),watchos-arm)
-LLVM_DEFAULT_TRIPLE := armv7k-apple-watchos2.0
 SWIFT_VARIANT       := WATCHOS
-SWIFT_OLD           := ON
 else ifeq ($(MEMO_TARGET),darwin-arm64)
-LLVM_DEFAULT_TRIPLE := arm64-apple-darwin11
 SWIFT_VARIANT       := OSX
-SWIFT_OLD           := OFF
 else ifeq ($(MEMO_TARGET),darwin-amd64)
-LLVM_DEFAULT_TRIPLE := x86_64-apple-darwin11
 SWIFT_VARIANT       := OSX
-SWIFT_OLD           := OFF
 endif
 
 llvm-setup: setup
@@ -58,9 +44,6 @@ llvm:
 else
 llvm: llvm-setup libffi libedit ncurses xz xar
 	cp -a $(MACOSX_SYSROOT)/usr/include/kern $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	cp -a $(MACOSX_SYSROOT)/usr/include/histedit.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	ln -sf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcurses.dylib
-	ln -sf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpanelw.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpanel.dylib
 	mv $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h.old
 
 	mkdir -p $(BUILD_WORK)/llvm/build/NATIVE && cd $(BUILD_WORK)/llvm/build/NATIVE && cmake . \
@@ -123,7 +106,7 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		-DCLANG_LINK_CLANG_DYLIB=ON \
 		-DLIBCXX_OVERRIDE_DARWIN_INSTALL=ON \
 		-DLLVM_VERSION_SUFFIX="" \
-		-DLLVM_DEFAULT_TARGET_TRIPLE=$(LLVM_DEFAULT_TRIPLE) \
+		-DLLVM_DEFAULT_TARGET_TRIPLE=$(LLVM_TARGET) \
 		-DLLVM_TARGETS_TO_BUILD="X86;ARM;AArch64" \
 		-DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;lldb;cmark;swift;clang-tools-extra;lld;polly" \
 		-DLLVM_EXTERNAL_PROJECTS="cmark;swift" \
@@ -141,7 +124,7 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		-DSWIFT_HOST_VARIANT_SDK="$(SWIFT_VARIANT)" \
 		-DSWIFT_HOST_VARIANT="$(PLATFORM)" \
 		-DSWIFT_HOST_VARIANT_ARCH="$(MEMO_ARCH)" \
-		-DSWIFT_ENABLE_IOS32="$(SWIFT_OLD)" \
+		-DSWIFT_ENABLE_IOS32=OFF \
 		-DSWIFT_INCLUDE_TESTS=OFF \
 		-DSWIFT_BUILD_RUNTIME_WITH_HOST_COMPILER=ON \
 		-DSWIFT_NATIVE_SWIFT_TOOLS_PATH="$(BUILD_WORK)/llvm/build/NATIVE/bin" \
@@ -157,7 +140,6 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		../llvm
 	+$(MAKE) -C $(BUILD_WORK)/llvm/build swift-frontend install \
 		DESTDIR="$(BUILD_STAGE)/llvm"
-	rm -rf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcurses.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpanel.dylib
 	mv $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h.old $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h
 	$(INSTALL) -Dm755 $(BUILD_WORK)/llvm/build/bin/{obj2yaml,yaml2obj} $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/
 	touch $(BUILD_WORK)/llvm/.build_complete
@@ -210,7 +192,7 @@ llvm-package: llvm-stage
 
 	# llvm.mk Prep libclang-common-$(LLVM_MAJOR_V)-dev
 	mkdir -p $(BUILD_DIST)/libclang-common-$(LLVM_MAJOR_V)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{,llvm-$(LLVM_MAJOR_V)/lib/}clang
-	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/clang/11.1.0 $(BUILD_DIST)/libclang-common-$(LLVM_MAJOR_V)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/clang
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/clang/$(LLVM_VERSION) $(BUILD_DIST)/libclang-common-$(LLVM_MAJOR_V)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/clang
 	ln -s ../llvm-$(LLVM_MAJOR_V)/lib/clang/$(LLVM_VERSION) $(BUILD_DIST)/libclang-common-$(LLVM_MAJOR_V)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/clang
 
 	# llvm.mk Prep libclang-cpp$(LLVM_MAJOR_V)
