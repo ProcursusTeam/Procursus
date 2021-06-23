@@ -32,6 +32,9 @@ else
 llvm: llvm-setup libffi libedit ncurses xz xar
 #	Temporary SED until swift can build on their own apple silicon (cmon mac)
 	$(SED) -i -e 's/aarch64|ARM64/aarch64|ARM64|arm64/' -e 's/SWIFT_HOST_VARIANT_ARCH_default "aarch64"/SWIFT_HOST_VARIANT_ARCH_default "arm64"/' $(BUILD_WORK)/llvm/swift/CMakeLists.txt
+
+ifeq (0,1)
+#	Needed for swift stdlib compilation
 	mkdir -p $(BUILD_WORK)/llvm-native && cd $(BUILD_WORK)/llvm-native && unset CC CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS && cmake . \
 		-DCMAKE_C_COMPILER=cc \
 		-DCMAKE_CXX_COMPILER=c++ \
@@ -50,6 +53,7 @@ llvm: llvm-setup libffi libedit ncurses xz xar
  		-DSWIFT_BUILD_STDLIB_EXTRA_TOOLCHAIN_CONTENT=FALSE \
 		../llvm/llvm
 	+$(MAKE) -C $(BUILD_WORK)/llvm-native swift-components lldb-tblgen
+endif
 
 	cd $(BUILD_WORK)/llvm/build && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
@@ -87,6 +91,17 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		-DSWIFT_INCLUDE_TESTS=OFF \
 		-DSWIFT_TOOLS_ENABLE_LTO=THIN \
 		-DSWIFT_BUILD_RUNTIME_WITH_HOST_COMPILER=ON \
+		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_IOS="$(IPHONEOS_DEPLOYMENT_TARGET)" \
+		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_OSX="$(MACOSX_DEPLYMENT_TARGET)" \
+		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_WATCHOS="$(WATCHOS_DEPLOYMENT_TARGET)" \
+		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_TVOS="$(APPLETVOS_DEPLYMENT_TARGET)" \
+		-DSWIFT_BUILD_REMOTE_MIRROR=FALSE \
+ 		-DSWIFT_BUILD_DYNAMIC_STDLIB=FALSE \
+ 		-DSWIFT_BUILD_STDLIB_EXTRA_TOOLCHAIN_CONTENT=FALSE \
+		../llvm
+
+ifeq (0,1)
+# Flags needed for swift stdlib compilation
 		-DSWIFT_NATIVE_SWIFT_TOOLS_PATH="$(BUILD_WORK)/llvm-native/bin" \
 		-DSWIFT_NATIVE_CLANG_TOOLS_PATH="$(BUILD_WORK)/llvm-native/bin" \
 		-DSWIFT_NATIVE_LLVM_TOOLS_PATH="$(BUILD_WORK)/llvm-native/bin" \
@@ -96,14 +111,9 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 		-DCLANG_TABLEGEN_EXE="$(BUILD_WORK)/llvm-native/bin/clang-tblgen" \
 		-DLLDB_TABLEGEN="$(BUILD_WORK)/llvm-native/bin/lldb-tblgen" \
 		-DLLDB_TABLEGEN_EXE="$(BUILD_WORK)/llvm-native/bin/lldb-tblgen" \
-		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_IOS="$(IPHONEOS_DEPLOYMENT_TARGET)" \
-		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_OSX="$(MACOSX_DEPLYMENT_TARGET)" \
-		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_WATCHOS="$(WATCHOS_DEPLOYMENT_TARGET)" \
-		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_TVOS="$(APPLETVOS_DEPLYMENT_TARGET)" \
-		-DSWIFT_BUILD_REMOTE_MIRROR=FALSE \
- 		-DSWIFT_BUILD_DYNAMIC_STDLIB=FALSE \
- 		-DSWIFT_BUILD_STDLIB_EXTRA_TOOLCHAIN_CONTENT=FALSE \
-		../llvm
+
+endif
+
 	+$(MAKE) -C $(BUILD_WORK)/llvm/build swift-frontend install \
 		DESTDIR="$(BUILD_STAGE)/llvm"
 	$(INSTALL) -Dm755 $(BUILD_WORK)/llvm/build/bin/{obj2yaml,yaml2obj} $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/
