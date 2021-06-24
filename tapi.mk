@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-#SUBPROJECTS   += tapi
+SUBPROJECTS    += tapi
 TAPI_VERSION   := 1100.0.11
 DEB_TAPI_V     ?= $(TAPI_VERSION)
 
@@ -16,7 +16,6 @@ tapi:
 	@echo "Using previously built tapi."
 else
 tapi: tapi-setup
-	ln -sf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcurses.dylib
 	cd $(BUILD_WORK)/tapi/build && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
@@ -38,7 +37,6 @@ tapi: tapi-setup
 	+$(MAKE) -C $(BUILD_WORK)/tapi/build libtapi
 	+$(MAKE) -C $(BUILD_WORK)/tapi/build install-libtapi install-tapi-headers \
 		DESTDIR="$(BUILD_STAGE)/tapi"
-	rm -rf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcurses.dylib
 	touch $(BUILD_WORK)/tapi/.build_complete
 endif
 
