@@ -44,6 +44,7 @@ tapi: tapi-setup
 	+$(MAKE) -C $(BUILD_WORK)/tapi/build libtapi tapi
 	+$(MAKE) -C $(BUILD_WORK)/tapi/build install-libtapi install-tapi-headers install-tapi \
 		DESTDIR="$(BUILD_STAGE)/tapi"
+	$(INSTALL) -Dm644 $(BUILD_WORK)/tapi/src/libtapi/docs/man/*.1 $(BUILD_STAGE)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	touch $(BUILD_WORK)/tapi/.build_complete
 endif
 
@@ -52,14 +53,14 @@ tapi-package: tapi-stage
 	rm -rf $(BUILD_DIST)/libtapi
 	mkdir -p $(BUILD_DIST)/libtapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	mkdir -p $(BUILD_DIST)/libtapi-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	mkdir -p $(BUILD_DIST)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	mkdir -p $(BUILD_DIST)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
 	# tapi.mk Prep tapi
 	cp -a $(BUILD_STAGE)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libtapi.dylib $(BUILD_DIST)/libtapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libtapi-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
 	cp -a $(BUILD_STAGE)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/tapi $(BUILD_DIST)/libtapi-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
-	$(INSTALL) -Dm644 $(BUILD_WORK)/tapi/src/libtapi/docs/man/*.1 $(BUILD_DIST)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/
+	cp -a $(BUILD_STAGE)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
 	# tapi.mk Sign
 	$(call SIGN,libtapi,general.xml)
