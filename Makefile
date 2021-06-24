@@ -280,10 +280,10 @@ CXX             := $(shell which c++)
 CPP             := $(shell which cc) -E
 PATH            := /usr/bin:$(PATH)
 
-BUILD_CFLAGS   := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion) -isysroot /usr/share/SDKs/iPhoneOS.sdk
-BUILD_CPPFLAGS := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion) -isysroot /usr/share/SDKs/iPhoneOS.sdk
-BUILD_CXXFLAGS := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion) -isysroot /usr/share/SDKs/iPhoneOS.sdk
-BUILD_LDFLAGS  := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion) -isysroot /usr/share/SDKs/iPhoneOS.sdk
+BUILD_CFLAGS   := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
+BUILD_CPPFLAGS := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
+BUILD_CXXFLAGS := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
+BUILD_LDFLAGS  := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
 
 endif
 AR              := $(shell which ar)
