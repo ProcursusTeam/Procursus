@@ -131,7 +131,7 @@ $(warning Building for WatchOS)
 endif # ($(MEMO_QUIET),1)
 MEMO_ARCH            := arm64_32
 PLATFORM             := watchos
-DEB_ARCH             := watchos-arm64_32
+DEB_ARCH             := watchos-arm64-32
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
 PLATFORM_VERSION_MIN := -mwatchos-version-min=$(WATCHOS_DEPLOYMENT_TARGET)
 RUST_TARGET          := aarch64-apple-watchos
@@ -307,6 +307,7 @@ AR_FOR_BUILD  := $(shell which ar)
 export CC_FOR_BUILD CPP_FOR_BUILD CXX_FOR_BUILD AR_FOR_BUILD
 
 DEB_MAINTAINER    ?= Hayden Seay <me@diatr.us>
+MEMO_REPO_URI     ?= https://apt.procurs.us
 CODESIGN_IDENTITY ?= -
 
 # Root
@@ -886,7 +887,7 @@ endif # $(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1
 	touch $(BUILD_STRAP)/strap/.procursus_strapped
 	touch $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procursus.sources
 	echo -e "Types: deb\n\
-URIs: https://apt.procurs.us/\n\
+URIs: $(MEMO_REPO_URI)/\n\
 Suites: $(MEMO_TARGET)/$(MEMO_CFVER)\n\
 Components: main\n" > $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procursus.sources
 	cp $(BUILD_MISC)/prep_bootstrap.sh $(BUILD_STRAP)/strap
@@ -913,12 +914,12 @@ else # ($(MEMO_PREFIX),)
 	touch $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 	echo -e "Types: deb\n\
-URIs: https://apt.procurs.us/\n\
+URIs: $(MEMO_REPO_URI)/\n\
 Suites: $(MACOSX_SUITE_NAME)\n\
 Components: main\n" > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
 else
 	echo -e "Types: deb\n\
-URIs: https://apt.procurs.us/\n\
+URIs: $(MEMO_REPO_URI)/\n\
 Suites: $(MEMO_TARGET)/$(MEMO_CFVER)\n\
 Components: main\n" > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
 endif
