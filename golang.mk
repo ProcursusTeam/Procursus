@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += golang
 GOLANG_MAJOR_V := 1.16
-GOLANG_VERSION := $(GOLANG_MAJOR_V).4
+GOLANG_VERSION := $(GOLANG_MAJOR_V).5
 DEB_GOLANG_V   ?= $(GOLANG_VERSION)
 
 golang-setup: setup
@@ -21,11 +21,7 @@ ifneq ($(wildcard $(BUILD_WORK)/golang/.build_complete),)
 golang:
 	@echo "Using previously built golang."
 else
-ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 golang: golang-setup
-else
-golang: golang-setup libiosexec
-endif
 	export PATH="$(BUILD_WORK)/golang/superbin:$(PATH)"; \
 	cd $(BUILD_WORK)/golang/src && \
 		CGO_ENABLED=1 \
@@ -49,8 +45,8 @@ endif
 		cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/bin/$(shell echo $(RUST_TARGET) | cut -f3 -d-)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)/go{,fmt} $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/bin; \
 	fi
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	mv $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)//pkg/tool/$(shell echo $(RUST_TARGET) | cut -f3 -d-)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)/link $(BUILD_STAGE)/golang$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)//pkg/tool/$(shell echo $(RUST_TARGET) | cut -f3 -d-)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)/link2
-	$(CC) $(CFLAGS) -DLINKER="\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)//pkg/tool/$(shell echo $(RUST_TARGET) | cut -f3 -d-)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)/link2\"" -o $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)//pkg/tool/$(shell echo $(RUST_TARGET) | cut -f3 -d-)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)/link $(BUILD_MISC)/ld-wrapper/wrapper.c
+	mv $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg/tool/$(shell echo $(RUST_TARGET) | cut -f3 -d-)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)/link $(BUILD_STAGE)/golang$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg/tool/$(shell echo $(RUST_TARGET) | cut -f3 -d-)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)/link2
+	$(CC) $(CFLAGS) -DLINKER="\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg/tool/$(shell echo $(RUST_TARGET) | cut -f3 -d-)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)/link2\"" -o $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg/tool/$(shell echo $(RUST_TARGET) | cut -f3 -d-)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)/link $(BUILD_MISC)/ld-wrapper/wrapper.c
 endif
 	touch $(BUILD_WORK)/golang/.build_complete
 endif
