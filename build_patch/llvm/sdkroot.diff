@@ -1,0 +1,110 @@
+diff -urN llvm/clang/lib/Driver/ToolChains/Darwin.cpp.old llvm/clang/lib/Driver/ToolChains/Darwin.cpp
+--- llvm/clang/lib/Driver/ToolChains/Darwin.cpp.old	2021-06-23 16:31:00.000000000 -0400
++++ llvm/clang/lib/Driver/ToolChains/Darwin.cpp	2021-06-23 16:42:41.000000000 -0400
+@@ -1738,10 +1738,8 @@
+           << Triple.getOSName();
+     break;
+   case llvm::Triple::IOS:
+-    Triple.getiOSVersion(Major, Minor, Micro);
+-    break;
+   case llvm::Triple::TvOS:
+-    Triple.getOSVersion(Major, Minor, Micro);
++    Triple.getiOSVersion(Major, Minor, Micro);
+     break;
+   case llvm::Triple::WatchOS:
+     Triple.getWatchOSVersion(Major, Minor, Micro);
+@@ -1765,11 +1763,13 @@
+
+   StringRef MachOArchName = Toolchain.getMachOArchName(Args);
+   if (MachOArchName == "arm64" || MachOArchName == "arm64e") {
+-#if __arm64__
++#if (__arm64__) && (TARGET_OS_OSX)
+     // A clang running on an Apple Silicon mac defaults
+     // to building for mac when building for arm64 rather than
+     // defaulting to iOS.
+     OSTy = llvm::Triple::MacOSX;
++#elif (__arm64__) && (TARGET_OS_TVOS)
++    OSTy = llvm::Triple::TvOS;
+ #else
+     OSTy = llvm::Triple::IOS;
+ #endif
+@@ -1976,6 +1976,29 @@
+   if (Environment == MacABI)
+     NativeTargetVersion = OSTarget->getNativeTargetVersion();
+   setTarget(Platform, Environment, Major, Minor, Micro, NativeTargetVersion);
++
++  if (!Args.getLastArg(options::OPT_isysroot)) {
++    llvm::Triple DefaultTriple(LLVM_DEFAULT_TARGET_TRIPLE);
++    switch (Platform) {
++      case DarwinPlatformKind::MacOS:
++        if (DefaultTriple.getOS() != llvm::Triple::MacOSX)
++          Args.append(Args.MakeSeparateArg(nullptr, Opts.getOption(options::OPT_isysroot), "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/MacOSX.sdk"));
++        break;
++      case DarwinPlatformKind::IPhoneOS:
++        if (DefaultTriple.getOS() != llvm::Triple::IOS)
++          Args.append(Args.MakeSeparateArg(nullptr, Opts.getOption(options::OPT_isysroot), "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/iPhoneOS.sdk"));
++        break;
++      case DarwinPlatformKind::TvOS:
++        if (DefaultTriple.getOS() != llvm::Triple::TvOS)
++          Args.append(Args.MakeSeparateArg(nullptr, Opts.getOption(options::OPT_isysroot), "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/AppleTVOS.sdk"));
++        break;
++      case DarwinPlatformKind::WatchOS:
++        if (DefaultTriple.getOS() != llvm::Triple::WatchOS)
++          Args.append(Args.MakeSeparateArg(nullptr, Opts.getOption(options::OPT_isysroot), "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/WatchOS.sdk"));
++        break;
++    }
++  }
++
+
+   if (const Arg *A = Args.getLastArg(options::OPT_isysroot)) {
+     StringRef SDK = getSDKName(A->getValue());
+@@ -2069,6 +2069,21 @@
+     SmallString<128> P(Sysroot);
+     llvm::sys::path::append(P, "usr", "include");
+     addExternCSystemInclude(DriverArgs, CC1Args, P.str());
++    if (Sysroot == "/") {
++      switch (getTriple().getOS()) {
++        case llvm::Triple::IOS:
++          addExternCSystemInclude(DriverArgs, CC1Args, "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/iPhoneOS.sdk/usr/include");
++          break;
++        case llvm::Triple::TvOS:
++          addExternCSystemInclude(DriverArgs, CC1Args, "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/AppleTVOS.sdk/usr/include");
++          break;
++        case llvm::Triple::WatchOS:
++          addExternCSystemInclude(DriverArgs, CC1Args, "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/WatchOS.sdk/usr/include");
++          break;
++        default:
++          break;
++      }
++    }
+   }
+ }
+ 
+diff -urN llvm/clang/lib/Frontend/InitHeaderSearch.cpp.old llvm/clang/lib/Frontend/InitHeaderSearch.cpp
+--- llvm/clang/lib/Frontend/InitHeaderSearch.cpp.old	2021-06-23 16:45:54.000000000 -0400
++++ llvm/clang/lib/Frontend/InitHeaderSearch.cpp	2021-06-23 16:49:52.000000000 -0400
+@@ -446,6 +446,24 @@
+   if (triple.isOSDarwin()) {
+     if (HSOpts.UseStandardSystemIncludes) {
+       // Add the default framework include paths on Darwin.
++      if (!HasSysroot) {
++        switch (triple.getOS()) {
++          case llvm::Triple::IOS:
++            AddPath("@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/iPhoneOS.sdk/System/Library/Frameworks", System, true);
++            AddPath("@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/iPhoneOS.sdk/Library/Frameworks", System, true);
++            break;
++          case llvm::Triple::TvOS:
++            AddPath("@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/AppleTVOS.sdk/System/Library/Frameworks", System, true);
++            AddPath("@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/AppleTVOS.sdk/Library/Frameworks", System, true);
++            break;
++          case llvm::Triple::WatchOS:
++            AddPath("@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/WatchOS.sdk/System/Library/Frameworks", System, true);
++            AddPath("@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/WatchOS.sdk/Library/Frameworks", System, true);
++            break;
++          default:
++            break;
++        }
++      }
+       AddPath("/System/Library/Frameworks", System, true);
+       AddPath("/Library/Frameworks", System, true);
+     }
