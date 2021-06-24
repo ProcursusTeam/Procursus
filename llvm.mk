@@ -23,7 +23,9 @@ llvm-setup: setup
 		$(BUILD_WORK)/llvm/clang/lib/Driver/ToolChains/Darwin.cpp
 	$(call DO_PATCH,swift,llvm/swift,-p1)
 	mkdir -p $(BUILD_WORK)/llvm/build
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(SED) -i 's|isysroot $${CMAKE_OSX_SYSROOT}|isysroot $${CMAKE_FIND_ROOT_PATH}|' $(BUILD_WORK)/llvm/lldb/tools/debugserver/source/CMakeLists.txt
+endif
 
 ifneq ($(wildcard $(BUILD_WORK)/llvm/.build_complete),)
 llvm:
