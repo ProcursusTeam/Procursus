@@ -2,7 +2,8 @@
     <h1 align="center">Procursus</h1>
     <p align="center">
         <a href="https://github.com/ProcursusTeam/Procursus/wiki">Documentation</a> •
-        <a href="https://procursus.creator-spring.com/">Merchandise</a>
+        <a href="https://procursus.creator-spring.com/">Merchandise</a> •
+        <a href="https://github.com/ProcursusTeam/Procursus/graphs/contributors">Contributors</a>
     </p>
 </p>
 
