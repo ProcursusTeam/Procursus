@@ -7,8 +7,8 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 #SUBPROJECTS    += cctools
 CCTOOLS_VERSION := 949.0.1
 LD64_VERSION    := 530
-DEB_CCTOOLS_V   ?= $(CCTOOLS_VERSION)-2
-DEB_LD64_V      ?= $(LD64_VERSION)-3
+DEB_CCTOOLS_V   ?= $(CCTOOLS_VERSION)-3
+DEB_LD64_V      ?= $(LD64_VERSION)-4
 
 cctools-setup: setup
 	$(call GITHUB_ARCHIVE,Diatrus,cctools-port,$(CCTOOLS_VERSION)-ld64-$(LD64_VERSION),$(CCTOOLS_VERSION)-ld64-$(LD64_VERSION),cctools)
@@ -29,7 +29,7 @@ cctools: cctools-setup llvm uuid tapi xar
 		CFLAGS='$(CFLAGS) -DHAVE_XAR_XAR_H' \
 		CXXFLAGS='$(CXXFLAGS) -DHAVE_XAR_XAR_H' \
 		LDFLAGS='$(LDFLAGS) $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/libLTO.dylib'
-	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-10/include/llvm-c/{lto,ExternC}.h $(BUILD_WORK)/cctools/include/llvm-c
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-11/include/llvm-c/{lto,ExternC}.h $(BUILD_WORK)/cctools/include/llvm-c
 	+$(MAKE) -C $(BUILD_WORK)/cctools \
 		XAR_LIB="-lxar" \
 		UUID_LIB="-luuid" \
