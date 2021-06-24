@@ -14,6 +14,11 @@ DEB_LD64_V      ?= $(LD64_VERSION)
 cctools-setup: setup
 	$(call GITHUB_ARCHIVE,tpoechtrager,cctools-port,$(CCTOOLS_COMMIT),$(CCTOOLS_COMMIT),cctools)
 	$(call EXTRACT_TAR,cctools-$(CCTOOLS_COMMIT).tar.gz,cctools-port-$(CCTOOLS_COMMIT)/cctools,cctools)
+	$(call DO_PATCH,ld64,cctools,-p0)
+	$(SED) -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' \
+		-e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
+		-e 's|@BARE_PLATFORM@|$(BARE_PLATFORM)|g' \
+		$(BUILD_WORK)/cctools/ld64/src/ld/Options.cpp
 	rm -rf $(BUILD_WORK)/cctools-*
 
 ifneq ($(wildcard $(BUILD_WORK)/cctools/.build_complete),)
@@ -33,7 +38,10 @@ cctools: cctools-setup llvm uuid tapi xar
 	+$(MAKE) -C $(BUILD_WORK)/cctools install \
 		DESTDIR=$(BUILD_STAGE)/cctools
 	mv $(BUILD_STAGE)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ld $(BUILD_STAGE)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
-	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ld $(BUILD_INFO)/wrapper.c
+	$(CC) $(CFLAGS) -DLINKER="\""$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/ld"\"" \
+		-DLDID="\""$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ldid"\"" \
+		-DENTS="\""$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/entitlements/general.xml"\"" \
+		-o $(BUILD_STAGE)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ld $(BUILD_INFO)/wrapper.c
 	touch $(BUILD_WORK)/cctools/.build_complete
 endif
 
