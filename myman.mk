@@ -16,33 +16,31 @@ myman:
 else
 myman: myman-setup ncurses
 	unset CC CFLAGS CXXFLAGS CPPFLAGS LDFLAGS && cd $(BUILD_WORK)/myman && ./configure \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+unset CC CFLAGS CXXFLAGS CPPFLAGS LDFLAGS && $(MAKE) -C $(BUILD_WORK)/myman install \
 		DESTDIR="$(BUILD_STAGE)/myman" \
-		RMDIR="$(RMDIR)" \
-		INSTALL="$(GINSTALL)" \
+		RMDIR="rmdir" \
 		HOSTCC="$(CC)" \
 		HOSTCFLAGS="$(CFLAGS)" \
 		HOSTCPPFLAGS="$(CPPFLAGS)" \
 		HOSTLDFLAGS="$(LDFLAGS)" \
-		CURSESLIBS="-L$(BUILD_BASE)/usr/lib -lncursesw"
+		CURSESLIBS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -lncursesw"
 	touch $(BUILD_WORK)/myman/.build_complete
 endif
 
 myman-package: myman-stage
 	# myman.mk Package Structure
 	rm -rf $(BUILD_DIST)/myman
-	
+
 	# myman.mk Prep myman
 	cp -a $(BUILD_STAGE)/myman $(BUILD_DIST)
 
 	# myman.mk Sign
 	$(call SIGN,myman,general.xml)
-	
+
 	# myman.mk Make .debs
 	$(call PACK,myman,DEB_MYMAN_V)
-	
+
 	# myman.mk Build cleanup
 	rm -rf $(BUILD_DIST)/myman
 

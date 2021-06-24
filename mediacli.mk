@@ -17,25 +17,24 @@ else
 mediacli: mediacli-setup
 	+$(MAKE) -C $(BUILD_WORK)/mediacli
 	+$(MAKE) -C $(BUILD_WORK)/mediacli install \
-		PREFIX=/usr \
-		DESTDIR=$(BUILD_STAGE)/mediacli \
-		INSTALL=$(GINSTALL)
+		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		DESTDIR=$(BUILD_STAGE)/mediacli
 	touch $(BUILD_WORK)/mediacli/.build_complete
 endif
 
 mediacli-package: mediacli-stage
 	# mediacli.mk Package Structure
 	rm -rf $(BUILD_DIST)/mediacli
-	
+
 	# mediacli.mk Prep mediacli
 	cp -a $(BUILD_STAGE)/mediacli $(BUILD_DIST)
-	
+
 	# mediacli.mk Sign
 	$(call SIGN,mediacli,general.xml)
-	
+
 	# mediacli.mk Make .deb
 	$(call PACK,mediacli,DEB_MEDIACLI_V)
-	
+
 	# mediacli.mk Build cleanup
 	rm -rf $(BUILD_DIST)/mediacli
 

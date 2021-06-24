@@ -10,7 +10,6 @@ libtiff-setup: setup
 	wget -q -nc -L -P $(BUILD_SOURCE) \
 		https://download.osgeo.org/libtiff/tiff-$(LIBTIFF_VERSION).tar.gz
 	$(call EXTRACT_TAR,tiff-$(LIBTIFF_VERSION).tar.gz,tiff-$(LIBTIFF_VERSION),libtiff)
-	$(call DO_PATCH,libtiff,libtiff,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/libtiff/.build_complete),)
 libtiff:
@@ -18,8 +17,7 @@ libtiff:
 else
 libtiff: libtiff-setup libjpeg-turbo xz zstd
 	cd $(BUILD_WORK)/libtiff && ./configure -C \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-webp
 	+$(MAKE) -C $(BUILD_WORK)/libtiff
 	+$(MAKE) -C $(BUILD_WORK)/libtiff install \
@@ -30,48 +28,48 @@ libtiff: libtiff-setup libjpeg-turbo xz zstd
 endif
 
 libtiff-package: libtiff-stage
-  # libtiff.mk Package Structure
+	# libtiff.mk Package Structure
 	rm -rf $(BUILD_DIST)/libtiff{-dev,-doc-tools,5,xx5}
 	mkdir -p \
-		$(BUILD_DIST)/libtiff-dev/usr/{lib,share/man} \
-		$(BUILD_DIST)/libtiff-doc/usr/share \
-		$(BUILD_DIST)/libtiff-tools/usr/share/man \
-		$(BUILD_DIST)/libtiff{5,xx5}/usr/lib
+		$(BUILD_DIST)/libtiff-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share/man} \
+		$(BUILD_DIST)/libtiff-doc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share \
+		$(BUILD_DIST)/libtiff-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
+		$(BUILD_DIST)/libtiff{5,xx5}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-  # libtiff.mk Prep libtiff-dev
-	cp -a $(BUILD_STAGE)/libtiff/usr/include $(BUILD_DIST)/libtiff-dev/usr
-	cp -a $(BUILD_STAGE)/libtiff/usr/lib/libtiff{,xx}.{a,la,dylib} $(BUILD_DIST)/libtiff-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libtiff/usr/lib/pkgconfig $(BUILD_DIST)/libtiff-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libtiff/usr/share/man/man3 $(BUILD_DIST)/libtiff-dev/usr/share/man
+	# libtiff.mk Prep libtiff-dev
+	cp -a $(BUILD_STAGE)/libtiff/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libtiff-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libtiff/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libtiff{,xx}.{a,la,dylib} $(BUILD_DIST)/libtiff-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libtiff/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libtiff-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libtiff/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libtiff-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
-  # libtiff.mk Prep libtiff-doc
-	cp -a $(BUILD_STAGE)/libtiff/usr/share/doc $(BUILD_DIST)/libtiff-doc/usr/share
+	# libtiff.mk Prep libtiff-doc
+	cp -a $(BUILD_STAGE)/libtiff/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc $(BUILD_DIST)/libtiff-doc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
-  # libtiff.mk Prep libtiff-tools
-	cp -a $(BUILD_STAGE)/libtiff/usr/bin $(BUILD_DIST)/libtiff-tools/usr
-	cp -a $(BUILD_STAGE)/libtiff/usr/share/man/man1 $(BUILD_DIST)/libtiff-tools/usr/share/man
+	# libtiff.mk Prep libtiff-tools
+	cp -a $(BUILD_STAGE)/libtiff/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/libtiff-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libtiff/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/libtiff-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
-  # libtiff.mk Prep libtiff5
-	cp -a $(BUILD_STAGE)/libtiff/usr/lib/libtiff.*.dylib $(BUILD_DIST)/libtiff5/usr/lib
+	# libtiff.mk Prep libtiff5
+	cp -a $(BUILD_STAGE)/libtiff/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libtiff.*.dylib $(BUILD_DIST)/libtiff5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-  # libtiff.mk Prep libtiffxx5
-	cp -a $(BUILD_STAGE)/libtiff/usr/lib/libtiffxx.*.dylib $(BUILD_DIST)/libtiff5/usr/lib
+	# libtiff.mk Prep libtiffxx5
+	cp -a $(BUILD_STAGE)/libtiff/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libtiffxx.*.dylib $(BUILD_DIST)/libtiff5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 
-  # libtiff.mk Sign
+	# libtiff.mk Sign
 	$(call SIGN,libtiff-dev,general.xml)
 	$(call SIGN,libtiff-tools,general.xml)
 	$(call SIGN,libtiff5,general.xml)
 	$(call SIGN,libtiffxx5,general.xml)
 
-  # libtiff.mk Make .debs
+	# libtiff.mk Make .debs
 	$(call PACK,libtiff-dev,DEB_LIBTIFF_V)
 	$(call PACK,libtiff-doc,DEB_LIBTIFF_V)
 	$(call PACK,libtiff-tools,DEB_LIBTIFF_V)
 	$(call PACK,libtiff5,DEB_LIBTIFF_V)
 	$(call PACK,libtiffxx5,DEB_LIBTIFF_V)
 
-  # libtiff.mk Build cleanup
+	# libtiff.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libtiff{-dev,-doc,-tools,5,xx5}
 
 .PHONY: libtiff libtiff-package

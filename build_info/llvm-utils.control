@@ -1,0 +1,10 @@
+Package: llvm-utils
+Version: @DEB_LLVM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: llvm-utils-11
+Section: Development
+Priority: optional
+Homepage: https://www.llvm.org/
+Description: Extra LLVM Utilities (llc, lli, etc)
+Tag: purpose::console, role::developer

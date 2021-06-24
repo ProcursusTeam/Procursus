@@ -1,0 +1,12 @@
+Package: libpython3.9
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_PYTHON3_V@
+Conflicts: python3.9 (<< 3.9.5)
+Replaces: python3.9 (<< 3.9.5)
+Depends: libncursesw6 (>= 6.0), libreadline8 (>= 8.0), libssl1.1, libffi7, liblzma5 (>= 5.2.5), libgdbm6, libintl8, firmware (>= 14.0) | libexpat1, libcrypt2, libiosexec1
+Section: Libraries
+Priority: optional
+Description: Interpreted, interactive, object-oriented programming language. Contains the standard library and other shared libraries.
+Name: Python 3.9 (Libraries)
+Tag: purpose::console, role::hacker

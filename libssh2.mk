@@ -18,8 +18,7 @@ else
 libssh2: libssh2-setup openssl
 	find $(BUILD_BASE) -name "*.la" -type f -delete
 	cd $(BUILD_WORK)/libssh2 && ./configure -C \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=/usr \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-debug \
 		--disable-dependency-tracking \
 		--with-libz
@@ -34,22 +33,22 @@ endif
 libssh2-package: libssh2-stage
 	# libssh2.mk Package Structure
 	rm -rf $(BUILD_DIST)/libssh2-{1,dev}
-	mkdir -p $(BUILD_DIST)/libssh2-{1,dev}/usr/lib
-	
+	mkdir -p $(BUILD_DIST)/libssh2-{1,dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# libssh2.mk Prep libssh2-1
-	cp -a $(BUILD_STAGE)/libssh2/usr/lib/libssh2.1.dylib $(BUILD_DIST)/libssh2-1/usr/lib
-	
+	cp -a $(BUILD_STAGE)/libssh2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libssh2.1.dylib $(BUILD_DIST)/libssh2-1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# libssh2.mk Prep libssh2-dev
-	cp -a $(BUILD_STAGE)/libssh2/usr/lib/{pkgconfig,libssh2.{dylib,a}} $(BUILD_DIST)/libssh2-dev/usr/lib
-	cp -a $(BUILD_STAGE)/libssh2/usr/{include,share} $(BUILD_DIST)/libssh2-dev/usr/
-	
+	cp -a $(BUILD_STAGE)/libssh2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libssh2.{dylib,a}} $(BUILD_DIST)/libssh2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libssh2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libssh2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
+
 	# libssh2.mk Sign
 	$(call SIGN,libssh2-1,general.xml)
-	
+
 	# libssh2.mk Make .debs
 	$(call PACK,libssh2-1,DEB_LIBSSH2_V)
 	$(call PACK,libssh2-dev,DEB_LIBSSH2_V)
-	
+
 	# libssh2.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libssh2-{1,dev}
 

@@ -4,9 +4,8 @@ Architecture: @DEB_ARCH@
 Essential: yes
 Maintainer: @DEB_MAINTAINER@
 Pre-Depends: tar (>= 1.23), libintl8 (>= 0.20)
-Depends: bash, coreutils, diffutils, tar, liblzma5 (>= 5.2.5), libintl8, libzstd1
+Depends: sh, coreutils, diffutils, tar, liblzma5 (>= 5.2.5), libintl8, libzstd1, libmd0, libiosexec1
 Section: Packaging
 Priority: required
 Homepage: http://wiki.debian.org/Teams/Dpkg
 Description: package maintainance tools from Debian
-Name: Debian Packager

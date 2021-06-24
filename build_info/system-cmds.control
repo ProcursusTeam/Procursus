@@ -3,8 +3,10 @@ Version: @DEB_SYSTEM-CMDS_V@
 Architecture: @DEB_ARCH@
 Essential: yes
 Maintainer: @DEB_MAINTAINER@
-Depends: firmware-sbin, libcrypt2
+Pre-Depends: libiosexec1
+Depends: firmware-sbin, file-cmds, libcrypt2, libpam2
+Recommends: vi
 Provides: login, passwd, reboot
 Section: Administration
 Priority: required
-Description: iostat, login, passwd, sync, sysctl
+Description: iostat, login, passwd, sync, sysctl, pw

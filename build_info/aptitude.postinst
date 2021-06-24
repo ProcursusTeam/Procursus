@@ -5,7 +5,7 @@
 
 set -e
 
-mandir=/usr/share/man
+mandir=@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man
 
 if [ "$1" = "configure" ]
 then
@@ -14,7 +14,7 @@ then
     slaves="$slaves --slave $mandir/$lang/man8/aptitude.8.zst aptitude.$lang.8.zst $mandir/$lang/man8/aptitude-curses.8.zst"
   done
   update-alternatives \
-    --install /usr/bin/aptitude aptitude /usr/bin/aptitude-curses 30 $slaves
+    --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/aptitude aptitude @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/aptitude-curses 30 $slaves
 fi
 
 #DEBHELPER#

@@ -2,8 +2,7 @@ Package: fakeroot
 Version: @DEB_FAKEROOT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: shell-cmds (>= 118-8)
+Depends: sh
 Section: Development
 Priority: important
 Description: tool for simulating superuser privileges
-Tag: purpose::console, role::developer

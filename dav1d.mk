@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += dav1d
-DAV1D_VERSION := 0.8.1
+DAV1D_VERSION := 0.9.0
 DEB_DAV1D_V   ?= $(DAV1D_VERSION)
 
 dav1d-setup: setup
@@ -19,10 +19,11 @@ dav1d-setup: setup
 	[properties]\n \
 	root = '$(BUILD_BASE)'\n \
 	[paths]\n \
-	prefix ='/usr'\n \
+	prefix ='$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
 	[binaries]\n \
 	c = '$(CC)'\n \
-	cpp = '$(CXX)'\n" > $(BUILD_WORK)/dav1d/build/cross.txt
+	cpp = '$(CXX)'\n \
+	pkgconfig = '$(BUILD_TOOLS)/cross-pkg-config'\n" > $(BUILD_WORK)/dav1d/build/cross.txt
 
 ifneq ($(wildcard $(BUILD_WORK)/dav1d/.build_complete),)
 dav1d:
@@ -32,6 +33,7 @@ dav1d: dav1d-setup
 	cd $(BUILD_WORK)/dav1d/build && meson \
 		--cross-file cross.txt \
 		..
+	$(SED) -i 's/HAVE_AS_FUNC 1/HAVE_AS_FUNC 0/' $(BUILD_WORK)/dav1d/build/config.h
 	+ninja -C $(BUILD_WORK)/dav1d/build
 	+DESTDIR=$(BUILD_STAGE)/dav1d ninja -C $(BUILD_WORK)/dav1d/build install
 	+DESTDIR=$(BUILD_BASE) ninja -C $(BUILD_WORK)/dav1d/build install
@@ -42,28 +44,28 @@ dav1d-package: dav1d-stage
 	# dav1d.mk Package Structure
 	rm -rf $(BUILD_DIST)/dav1d \
 		$(BUILD_DIST)/libdav1d{-dev,5}
-	mkdir -p $(BUILD_DIST)/dav1d/usr/ \
-		$(BUILD_DIST)/libdav1d{5,-dev}/usr/lib
-	
+	mkdir -p $(BUILD_DIST)/dav1d/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/ \
+		$(BUILD_DIST)/libdav1d{5,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# dav1d.mk Prep dav1d
-	cp -a $(BUILD_STAGE)/dav1d/usr/bin $(BUILD_DIST)/dav1d/usr
-	
+	cp -a $(BUILD_STAGE)/dav1d/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/dav1d/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+
 	# dav1d.mk Prep libdav1d5
-	cp -a $(BUILD_STAGE)/dav1d/usr/lib/libdav1d.5.dylib $(BUILD_DIST)/libdav1d5/usr/lib
-	
+	cp -a $(BUILD_STAGE)/dav1d/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdav1d.5.dylib $(BUILD_DIST)/libdav1d5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# dav1d.mk Prep libdav1d-dev
-	cp -a $(BUILD_STAGE)/dav1d/usr/lib/{libdav1d.dylib,pkgconfig} $(BUILD_DIST)/libdav1d-dev/usr/lib
-	cp -a $(BUILD_STAGE)/dav1d/usr/include $(BUILD_DIST)/libdav1d-dev/usr
-	
+	cp -a $(BUILD_STAGE)/dav1d/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libdav1d.5.dylib) $(BUILD_DIST)/libdav1d-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/dav1d/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libdav1d-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+
 	# dav1d.mk Sign
 	$(call SIGN,dav1d,general.xml)
 	$(call SIGN,libdav1d5,general.xml)
-	
+
 	# dav1d.mk Make .debs
 	$(call PACK,dav1d,DEB_DAV1D_V)
 	$(call PACK,libdav1d5,DEB_DAV1D_V)
 	$(call PACK,libdav1d-dev,DEB_DAV1D_V)
-	
+
 	# dav1d.mk Build cleanup
 	rm -rf $(BUILD_DIST)/dav1d \
 		$(BUILD_DIST)/libdav1d{-dev,5}

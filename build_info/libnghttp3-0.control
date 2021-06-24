@@ -1,0 +1,10 @@
+Package: libnghttp3-0
+Version: @DEB_NGHTTP3_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: standard
+Homepage: https://nghttp2.org/nghttp3/
+Description: HTTP/3 library with QUIC and QPACK (library)
+ nghttp3 implements HTTP/3 functions in C. For now it supports several
+ HTTP actions like request, response and server push.

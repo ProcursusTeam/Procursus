@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+set -e
+
+if [ "$1" = 'configure' ]; then
+   # add unprivileged user for the apt methods
+   pw user add -n _apt -d /var/empty -g nogroup -s /usr/sbin/nologin >/dev/null 2>&1 || true
+fi

@@ -1,0 +1,820 @@
+diff -urN apt-2.1.11/CMake/Misc.cmake apt/CMake/Misc.cmake
+--- apt-2.1.11/CMake/Misc.cmake	2020-10-21 05:53:18.000000000 -0400
++++ apt/CMake/Misc.cmake	2020-11-22 18:23:41.695439833 -0500
+@@ -74,7 +74,7 @@
+                        COMMAND echo "${name} {global: *; };" > "${script}"
+                        VERBATIM )
+     add_custom_target(${target}-versionscript DEPENDS "${script}")
+-    target_link_libraries(${target} PRIVATE -Wl,-version-script="${script}")
++    #target_link_libraries(${target} PRIVATE -Wl,-version-script="${script}")
+     add_dependencies(${target} ${target}-versionscript)
+ endfunction()
+ 
+diff -urN apt-2.1.11/CMake/apti18n.h.in apt/CMake/apti18n.h.in
+--- apt-2.1.11/CMake/apti18n.h.in	2020-10-21 05:53:18.000000000 -0400
++++ apt/CMake/apti18n.h.in	2020-11-22 18:23:41.695439833 -0500
+@@ -22,7 +22,7 @@
+ # define N_(x) x
+ #else
+ // apt will not use any gettext
+-extern "C" inline char* setlocale(int, const char*) throw() { return nullptr; }
++// extern "C" inline char* setlocale(int, const char*) throw() { return nullptr; }
+ extern "C" inline char* textdomain(const char*) throw() { return nullptr; }
+ extern "C" inline char* bindtextdomain(const char*, const char*) throw() { return nullptr; }
+ extern "C" inline char* dgettext(const char*, const char* msg) throw() { return const_cast<char*>(msg); }
+diff -urN apt-2.1.11/CMakeLists.txt apt/CMakeLists.txt
+--- apt-2.1.11/CMakeLists.txt	2020-10-21 05:53:18.000000000 -0400
++++ apt/CMakeLists.txt	2020-11-22 18:24:03.107379080 -0500
+@@ -22,9 +22,9 @@
+ set(CMAKE_SHARED_LINKER_FLAGS_COVERAGE "-lgcov")
+ 
+ # Work around bug in GNUInstallDirs
+-if (EXISTS "/etc/debian_version")
+-  set(CMAKE_INSTALL_LIBEXECDIR "lib")
+-endif()
++#if (EXISTS "/etc/debian_version")
++#  set(CMAKE_INSTALL_LIBEXECDIR "lib")
++#endif()
+ 
+ # Include stuff
+ include(Misc)
+@@ -119,20 +119,20 @@
+ endif()
+ 
+ 
+-find_package(Udev)
+-if (UDEV_FOUND)
+-  set(HAVE_UDEV 1)
+-endif()
+-
+-find_package(Systemd)
+-if (SYSTEMD_FOUND)
+-  set(HAVE_SYSTEMD 1)
+-endif()
+-
+-find_package(SECCOMP)
+-if (SECCOMP_FOUND)
+-  set(HAVE_SECCOMP 1)
+-endif()
++#find_package(Udev)
++#if (UDEV_FOUND)
++#  set(HAVE_UDEV 1)
++#endif()
++
++#find_package(Systemd)
++#if (SYSTEMD_FOUND)
++#  set(HAVE_SYSTEMD 1)
++#endif()
++
++#find_package(SECCOMP)
++#if (SECCOMP_FOUND)
++#  set(HAVE_SECCOMP 1)
++#endif()
+ 
+ find_package(GCRYPT REQUIRED)
+ find_package(XXHASH REQUIRED)
+@@ -247,7 +247,7 @@
+ add_subdirectory(dselect)
+ add_subdirectory(ftparchive)
+ add_subdirectory(methods)
+-add_subdirectory(test)
++#add_subdirectory(test)
+ 
+ if (USE_NLS)
+ add_subdirectory(po)
+diff -urN apt-2.1.11/apt-pkg/CMakeLists.txt apt/apt-pkg/CMakeLists.txt
+--- apt-2.1.11/apt-pkg/CMakeLists.txt	2020-10-21 05:53:18.000000000 -0400
++++ apt/apt-pkg/CMakeLists.txt	2020-11-22 18:23:41.693439838 -0500
+@@ -32,7 +32,7 @@
+ # Definition of the C++ files used to build the library - note that this
+ # is expanded at CMake time, so you have to rerun cmake if you add or remove
+ # a file (you can just run cmake . in the build directory)
+-file(GLOB_RECURSE library "*.cc"  "${CMAKE_CURRENT_BINARY_DIR}/tagfile-keys.cc")
++file(GLOB_RECURSE library "*.cc" "*.mm" "${CMAKE_CURRENT_BINARY_DIR}/tagfile-keys.cc")
+ file(GLOB_RECURSE headers "*.h")
+ 
+ # Create a library using the C++ files
+@@ -50,6 +50,7 @@
+                              ${ICONV_LIBRARIES}
+                              $<$<BOOL:${GCRYPT_FOUND}>:${GCRYPT_LIBRARIES}>
+                              $<$<BOOL:${XXHASH_FOUND}>:${XXHASH_LIBRARIES}>
++                             $<$<BOOL:${USE_IOSEXEC}>:iosexec> "-framework Foundation"
+ )
+ set_target_properties(apt-pkg PROPERTIES VERSION ${MAJOR}.${MINOR})
+ set_target_properties(apt-pkg PROPERTIES SOVERSION ${MAJOR})
+diff -urN apt-2.1.11/apt-pkg/acquire.cc apt/apt-pkg/acquire.cc
+--- apt-2.1.11/apt-pkg/acquire.cc	2020-10-21 05:53:18.000000000 -0400
++++ apt/apt-pkg/acquire.cc	2020-11-22 18:23:41.692439841 -0500
+@@ -1263,7 +1263,7 @@
+    auto const Time = std::chrono::steady_clock::now().time_since_epoch();
+    auto const Time_sec = std::chrono::duration_cast<std::chrono::seconds>(Time);
+    auto const Time_usec = std::chrono::duration_cast<std::chrono::microseconds>(Time - Time_sec);
+-   return { Time_sec.count(), Time_usec.count() };
++   return { static_cast<__darwin_time_t>(Time_sec.count()), static_cast<__darwin_suseconds_t>(Time_usec.count()) };
+ }
+ bool pkgAcquireStatus::Pulse(pkgAcquire *Owner)
+ {
+diff -urN apt-2.1.11/apt-pkg/contrib/fileutl.cc apt/apt-pkg/contrib/fileutl.cc
+--- apt-2.1.11/apt-pkg/contrib/fileutl.cc	2020-10-21 05:53:18.000000000 -0400
++++ apt/apt-pkg/contrib/fileutl.cc	2020-11-22 18:23:41.693439838 -0500
+@@ -24,6 +24,7 @@
+ #include <apt-pkg/error.h>
+ #include <apt-pkg/fileutl.h>
+ #include <apt-pkg/macros.h>
++#include <apt-pkg/endian.h>
+ #include <apt-pkg/pkgsystem.h>
+ #include <apt-pkg/strutl.h>
+ 
+@@ -1847,12 +2008,12 @@
+ 	 // Drain compressed buffer as far as possible.
+ 	 ZSTD_inBuffer in = {
+ 	    .src = zstd_buffer.get(),
+-	    .size = zstd_buffer.size(),
++	    .size = static_cast<size_t>(zstd_buffer.size()),
+ 	    .pos = 0,
+ 	 };
+ 	 ZSTD_outBuffer out = {
+ 	    .dst = To,
+-	    .size = Size,
++	    .size = static_cast<size_t>(Size),
+ 	    .pos = 0,
+ 	 };
+ 
+@@ -1890,7 +2051,7 @@
+       };
+       ZSTD_inBuffer in = {
+ 	 .src = From,
+-	 .size = Size,
++	 .size = static_cast<size_t>(Size),
+ 	 .pos = 0,
+       };
+ 
+diff -urN apt-2.1.11/apt-pkg/contrib/progress.cc apt/apt-pkg/contrib/progress.cc
+--- apt-2.1.11/apt-pkg/contrib/progress.cc	2020-10-21 05:53:18.000000000 -0400
++++ apt/apt-pkg/contrib/progress.cc	2020-11-22 18:23:41.694439835 -0500
+@@ -122,7 +122,7 @@
+    auto const Now = std::chrono::steady_clock::now().time_since_epoch();
+    auto const Now_sec = std::chrono::duration_cast<std::chrono::seconds>(Now);
+    auto const Now_usec = std::chrono::duration_cast<std::chrono::microseconds>(Now - Now_sec);
+-   struct timeval NowTime = { Now_sec.count(), Now_usec.count() };
++   struct timeval NowTime = { static_cast<__darwin_time_t>(Now_sec.count()), static_cast<__darwin_suseconds_t>(Now_usec.count()) };
+ 
+    std::chrono::duration<decltype(Interval)> Delta =
+       std::chrono::seconds(NowTime.tv_sec - LastTime.tv_sec) +
+diff -urN apt-2.1.11/apt-pkg/contrib/srvrec.cc apt/apt-pkg/contrib/srvrec.cc
+--- apt-2.1.11/apt-pkg/contrib/srvrec.cc	2020-10-21 05:53:18.000000000 -0400
++++ apt/apt-pkg/contrib/srvrec.cc	2020-11-22 18:23:41.694439835 -0500
+@@ -11,6 +11,7 @@
+ #include <netdb.h>
+ 
+ #include <arpa/nameser.h>
++#include <apt-pkg/nameser_compat.h>
+ #include <arpa/inet.h>
+ #include <netinet/in.h>
+ #include <resolv.h>
+diff -urN apt-2.1.11/apt-pkg/contrib/string_view.h apt/apt-pkg/contrib/string_view.h
+--- apt-2.1.11/apt-pkg/contrib/string_view.h	2020-10-21 05:53:18.000000000 -0400
++++ apt/apt-pkg/contrib/string_view.h	2020-11-22 18:23:41.694439835 -0500
+@@ -12,6 +12,7 @@
+ #if !defined(APT_STRINGVIEW_H)
+ #define APT_STRINGVIEW_H
+ #include <apt-pkg/macros.h>
++#include <apt-pkg/missing.h>
+ #include <string>
+ #include <string.h>
+ 
+diff -urN apt-2.1.11/apt-pkg/deb/dpkgpm.cc apt/apt-pkg/deb/dpkgpm.cc
+--- apt-2.1.11/apt-pkg/deb/dpkgpm.cc	2020-10-21 05:53:18.000000000 -0400
++++ apt/apt-pkg/deb/dpkgpm.cc	2020-11-22 18:23:41.694439835 -0500
+@@ -1724,7 +1724,7 @@
+    bool dpkgProtectedField = debSystem::AssertFeature("protected-field");
+ 
+    // start pty magic before the loop
+-   StartPtyMagic();
++   //StartPtyMagic(); or not...
+ 
+    // Tell the progress that its starting and fork dpkg
+    d->progress->Start(d->master);
+@@ -2148,7 +2148,7 @@
+       }
+    }
+    // dpkg is done at this point
+-   StopPtyMagic();
++   //StopPtyMagic();
+    CloseLog();
+ 
+    if (d->dpkg_error.empty() == false)
+diff -urN apt-2.1.11/apt-pkg/endian.h apt/apt-pkg/endian.h
+--- apt-2.1.11/apt-pkg/endian.h	1969-12-31 19:00:00.000000000 -0500
++++ apt/apt-pkg/endian.h	2020-11-22 18:23:41.694439835 -0500
+@@ -0,0 +1,118 @@
++// "License": Public Domain
++// I, Mathias Panzenböck, place this file hereby into the public domain. Use it at your own risk for whatever you like.
++// In case there are jurisdictions that don't support putting things in the public domain you can also consider it to
++// be "dual licensed" under the BSD, MIT and Apache licenses, if you want to. This code is trivial anyway. Consider it
++// an example on how to get the endian conversion functions on different platforms.
++
++#ifndef PORTABLE_ENDIAN_H__
++#define PORTABLE_ENDIAN_H__
++
++#if (defined(_WIN16) || defined(_WIN32) || defined(_WIN64)) && !defined(__WINDOWS__)
++
++#	define __WINDOWS__
++
++#endif
++
++#if defined(__linux__) || defined(__CYGWIN__)
++
++#	include <endian.h>
++
++#elif defined(__APPLE__)
++
++#	include <libkern/OSByteOrder.h>
++
++#	define htobe16(x) OSSwapHostToBigInt16(x)
++#	define htole16(x) OSSwapHostToLittleInt16(x)
++#	define be16toh(x) OSSwapBigToHostInt16(x)
++#	define le16toh(x) OSSwapLittleToHostInt16(x)
++ 
++#	define htobe32(x) OSSwapHostToBigInt32(x)
++#	define htole32(x) OSSwapHostToLittleInt32(x)
++#	define be32toh(x) OSSwapBigToHostInt32(x)
++#	define le32toh(x) OSSwapLittleToHostInt32(x)
++ 
++#	define htobe64(x) OSSwapHostToBigInt64(x)
++#	define htole64(x) OSSwapHostToLittleInt64(x)
++#	define be64toh(x) OSSwapBigToHostInt64(x)
++#	define le64toh(x) OSSwapLittleToHostInt64(x)
++
++#	define __BYTE_ORDER    BYTE_ORDER
++#	define __BIG_ENDIAN    BIG_ENDIAN
++#	define __LITTLE_ENDIAN LITTLE_ENDIAN
++#	define __PDP_ENDIAN    PDP_ENDIAN
++
++#elif defined(__OpenBSD__)
++
++#	include <sys/endian.h>
++
++#elif defined(__NetBSD__) || defined(__FreeBSD__) || defined(__DragonFly__)
++
++#	include <sys/endian.h>
++
++#	define be16toh(x) betoh16(x)
++#	define le16toh(x) letoh16(x)
++
++#	define be32toh(x) betoh32(x)
++#	define le32toh(x) letoh32(x)
++
++#	define be64toh(x) betoh64(x)
++#	define le64toh(x) letoh64(x)
++
++#elif defined(__WINDOWS__)
++
++#	include <winsock2.h>
++#	include <sys/param.h>
++
++#	if BYTE_ORDER == LITTLE_ENDIAN
++
++#		define htobe16(x) htons(x)
++#		define htole16(x) (x)
++#		define be16toh(x) ntohs(x)
++#		define le16toh(x) (x)
++ 
++#		define htobe32(x) htonl(x)
++#		define htole32(x) (x)
++#		define be32toh(x) ntohl(x)
++#		define le32toh(x) (x)
++ 
++#		define htobe64(x) htonll(x)
++#		define htole64(x) (x)
++#		define be64toh(x) ntohll(x)
++#		define le64toh(x) (x)
++
++#	elif BYTE_ORDER == BIG_ENDIAN
++
++		/* that would be xbox 360 */
++#		define htobe16(x) (x)
++#		define htole16(x) __builtin_bswap16(x)
++#		define be16toh(x) (x)
++#		define le16toh(x) __builtin_bswap16(x)
++ 
++#		define htobe32(x) (x)
++#		define htole32(x) __builtin_bswap32(x)
++#		define be32toh(x) (x)
++#		define le32toh(x) __builtin_bswap32(x)
++ 
++#		define htobe64(x) (x)
++#		define htole64(x) __builtin_bswap64(x)
++#		define be64toh(x) (x)
++#		define le64toh(x) __builtin_bswap64(x)
++
++#	else
++
++#		error byte order not supported
++
++#	endif
++
++#	define __BYTE_ORDER    BYTE_ORDER
++#	define __BIG_ENDIAN    BIG_ENDIAN
++#	define __LITTLE_ENDIAN LITTLE_ENDIAN
++#	define __PDP_ENDIAN    PDP_ENDIAN
++
++#else
++
++#	error platform not supported
++
++#endif
++
++#endif
+diff -urN apt-2.1.11/apt-pkg/getservbyport_r.cc apt/apt-pkg/getservbyport_r.cc
+--- apt-2.1.11/apt-pkg/getservbyport_r.cc	1969-12-31 19:00:00.000000000 -0500
++++ apt/apt-pkg/getservbyport_r.cc	2020-11-22 18:23:41.694439835 -0500
+@@ -0,0 +1,64 @@
++#define _GNU_SOURCE
++#include <sys/socket.h>
++#include <netinet/in.h>
++#include <netdb.h>
++#include <inttypes.h>
++#include <errno.h>
++#include <string.h>
++#include <stdlib.h>
++#include <config.h>
++
++#ifndef HAVE_GETSERVBYPORT_R
++
++extern "C" int getservbyport_r(int port, const char *prots,
++	struct servent *se, char *buf, size_t buflen, struct servent **res)
++{
++	int i;
++	struct sockaddr_in sin = {
++		.sin_family = AF_INET,
++		.sin_port = (in_port_t) port,
++	};
++
++	if (!prots) {
++		int r = getservbyport_r(port, "tcp", se, buf, buflen, res);
++		if (r) r = getservbyport_r(port, "udp", se, buf, buflen, res);
++		return r;
++	}
++	*res = 0;
++
++	/* Align buffer */
++	i = (uintptr_t)buf & sizeof(char *)-1;
++	if (!i) i = sizeof(char *);
++	if (buflen < 3*sizeof(char *)-i)
++		return ERANGE;
++	buf += sizeof(char *)-i;
++	buflen -= sizeof(char *)-i;
++
++	if (strcmp(prots, "tcp") && strcmp(prots, "udp")) return EINVAL;
++
++	se->s_port = port;
++	se->s_proto = (char *)prots;
++	se->s_aliases = (char **)buf;
++	buf += 2*sizeof(char *);
++	buflen -= 2*sizeof(char *);
++	se->s_aliases[1] = 0;
++	se->s_aliases[0] = se->s_name = buf;
++
++	switch (getnameinfo((const struct sockaddr *)&sin, sizeof sin, 0, 0, buf, buflen,
++		strcmp(prots, "udp") ? 0 : NI_DGRAM)) {
++	case EAI_MEMORY:
++	case EAI_SYSTEM:
++		return ENOMEM;
++	default:
++		return ENOENT;
++	case 0:
++		break;
++	}
++
++	/* A numeric port string is not a service record. */
++	if (strtol(buf, 0, 10)==ntohs(port)) return ENOENT;
++
++	*res = se;
++	return 0;
++}
++#endif // HAVE_GETSERVBYPORT_R
+diff -urN apt-2.1.11/apt-pkg/indexfile.cc apt/apt-pkg/indexfile.cc
+--- apt-2.1.11/apt-pkg/indexfile.cc	2020-10-21 05:53:18.000000000 -0400
++++ apt/apt-pkg/indexfile.cc	2020-11-22 18:23:41.694439835 -0500
+@@ -174,6 +174,8 @@
+ 									/*}}}*/
+ std::string pkgDebianIndexTargetFile::ArchiveURI(std::string const &File) const/*{{{*/
+ {
++   if ((APT::String::Startswith(Target.Option(IndexTarget::REPO_URI), "http://") && APT::String::Startswith(File, "http://")) || APT::String::Startswith(File, "https://"))
++      return File;
+    return Target.Option(IndexTarget::REPO_URI) + File;
+ }
+ 									/*}}}*/
+diff -urN apt-2.1.11/apt-pkg/memrchr.cc apt/apt-pkg/memrchr.cc
+--- apt-2.1.11/apt-pkg/memrchr.cc	1969-12-31 19:00:00.000000000 -0500
++++ apt/apt-pkg/memrchr.cc	2020-11-22 18:23:41.695439833 -0500
+@@ -0,0 +1,45 @@
++/*	$OpenBSD: memrchr.c,v 1.2 2007/11/27 16:22:12 martynas Exp $	*/
++
++/*
++ * Copyright (c) 2007 Todd C. Miller <Todd.Miller@courtesan.com>
++ *
++ * Permission to use, copy, modify, and distribute this software for any
++ * purpose with or without fee is hereby granted, provided that the above
++ * copyright notice and this permission notice appear in all copies.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
++ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
++ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
++ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
++ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
++ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
++ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
++ *
++ * $FreeBSD$
++ */
++
++#include <string.h>
++#include <apt-pkg/missing.h>
++#include <config.h>
++
++#ifndef HAVE_MEMRCHR
++
++/*
++ * Reverse memchr()
++ * Find the last occurrence of 'c' in the buffer 's' of size 'n'.
++ */
++extern "C" void *
++memrchr(const void *s, int c, size_t n)
++{
++const unsigned char *cp;
++
++	if (n != 0) {
++		cp = (unsigned char *)s + n;
++		do {
++			if (*(--cp) == (unsigned char)c)
++				return((void *)cp);
++		} while (--n != 0);
++	}
++	return(NULL);
++}
++#endif // HAVE_MEMRCHR
+diff -urN apt-2.1.11/apt-pkg/missing.h apt/apt-pkg/missing.h
+--- apt-2.1.11/apt-pkg/missing.h	1969-12-31 19:00:00.000000000 -0500
++++ apt/apt-pkg/missing.h	2020-11-22 18:23:41.695439833 -0500
+@@ -0,0 +1,22 @@
++#define _GNU_SOURCE
++#include <sys/socket.h>
++#include <netinet/in.h>
++#include <netdb.h>
++#include <inttypes.h>
++#include <errno.h>
++#include <string.h>
++
++#ifndef PKGLIB_MISSING_H
++#define PKGLIB_MISSING_H
++
++extern "C" {
++	void *memrchr(const void *s, int c, size_t n);
++	char *strchrnul(const char *s, int c);
++	int getservbyport_r(int port, const char *prots, struct servent *se, char *buf, size_t buflen, struct servent **res);
++}
++
++typedef void (*sighandler_t)(int);
++
++#define AI_IDN 0x0040
++
++#endif
++
+diff -urN apt-2.1.11/apt-pkg/nameser_compat.h apt/apt-pkg/nameser_compat.h
+--- apt-2.1.11/apt-pkg/nameser_compat.h	1969-12-31 19:00:00.000000000 -0500
++++ apt/apt-pkg/nameser_compat.h	2020-11-22 18:23:41.695439833 -0500
+@@ -0,0 +1,187 @@
++/* Copyright (c) 1983, 1989
++ *    The Regents of the University of California.  All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in the
++ *    documentation and/or other materials provided with the distribution.
++ * 4. Neither the name of the University nor the names of its contributors
++ *    may be used to endorse or promote products derived from this software
++ *    without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
++ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++ * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
++ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
++ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
++ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
++ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
++ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
++ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
++ * SUCH DAMAGE.
++ */
++
++/*%
++ *      from nameser.h	8.1 (Berkeley) 6/2/93
++ *	$BINDId: nameser_compat.h,v 8.11 1999/01/02 08:00:58 vixie Exp $
++ */
++
++#ifndef _ARPA_NAMESER_COMPAT_
++#define	_ARPA_NAMESER_COMPAT_
++
++#define	__BIND		19950621	/*%< (DEAD) interface version stamp. */
++
++#include <apt-pkg/endian.h>
++
++/*%
++ * Structure for query header.  The order of the fields is machine- and
++ * compiler-dependent, depending on the byte/bit order and the layout
++ * of bit fields.  We use bit fields only in int variables, as this
++ * is all ANSI requires.  This requires a somewhat confusing rearrangement.
++ */
++
++typedef struct {
++	unsigned	id :16;		/*%< query identification number */
++#if BYTE_ORDER == BIG_ENDIAN
++			/* fields in third byte */
++	unsigned	qr: 1;		/*%< response flag */
++	unsigned	opcode: 4;	/*%< purpose of message */
++	unsigned	aa: 1;		/*%< authoritive answer */
++	unsigned	tc: 1;		/*%< truncated message */
++	unsigned	rd: 1;		/*%< recursion desired */
++			/* fields in fourth byte */
++	unsigned	ra: 1;		/*%< recursion available */
++	unsigned	unused :1;	/*%< unused bits (MBZ as of 4.9.3a3) */
++	unsigned	ad: 1;		/*%< authentic data from named */
++	unsigned	cd: 1;		/*%< checking disabled by resolver */
++	unsigned	rcode :4;	/*%< response code */
++#endif
++#if BYTE_ORDER == LITTLE_ENDIAN || BYTE_ORDER == PDP_ENDIAN
++			/* fields in third byte */
++	unsigned	rd :1;		/*%< recursion desired */
++	unsigned	tc :1;		/*%< truncated message */
++	unsigned	aa :1;		/*%< authoritive answer */
++	unsigned	opcode :4;	/*%< purpose of message */
++	unsigned	qr :1;		/*%< response flag */
++			/* fields in fourth byte */
++	unsigned	rcode :4;	/*%< response code */
++	unsigned	cd: 1;		/*%< checking disabled by resolver */
++	unsigned	ad: 1;		/*%< authentic data from named */
++	unsigned	unused :1;	/*%< unused bits (MBZ as of 4.9.3a3) */
++	unsigned	ra :1;		/*%< recursion available */
++#endif
++			/* remaining bytes */
++	unsigned	qdcount :16;	/*%< number of question entries */
++	unsigned	ancount :16;	/*%< number of answer entries */
++	unsigned	nscount :16;	/*%< number of authority entries */
++	unsigned	arcount :16;	/*%< number of resource entries */
++} HEADER;
++
++#define PACKETSZ	NS_PACKETSZ
++#define MAXDNAME	NS_MAXDNAME
++#define MAXCDNAME	NS_MAXCDNAME
++#define MAXLABEL	NS_MAXLABEL
++#define	HFIXEDSZ	NS_HFIXEDSZ
++#define QFIXEDSZ	NS_QFIXEDSZ
++#define RRFIXEDSZ	NS_RRFIXEDSZ
++#define	INT32SZ		NS_INT32SZ
++#define	INT16SZ		NS_INT16SZ
++#define INT8SZ		NS_INT8SZ
++#define	INADDRSZ	NS_INADDRSZ
++#define	IN6ADDRSZ	NS_IN6ADDRSZ
++#define	INDIR_MASK	NS_CMPRSFLGS
++#define NAMESERVER_PORT	NS_DEFAULTPORT
++
++#define S_ZONE		ns_s_zn
++#define S_PREREQ	ns_s_pr
++#define S_UPDATE	ns_s_ud
++#define S_ADDT		ns_s_ar
++
++#define QUERY		ns_o_query
++#define IQUERY		ns_o_iquery
++#define STATUS		ns_o_status
++#define	NS_NOTIFY_OP	ns_o_notify
++#define	NS_UPDATE_OP	ns_o_update
++
++#define NOERROR		ns_r_noerror
++#define FORMERR		ns_r_formerr
++#define SERVFAIL	ns_r_servfail
++#define NXDOMAIN	ns_r_nxdomain
++#define NOTIMP		ns_r_notimpl
++#define REFUSED		ns_r_refused
++#define YXDOMAIN	ns_r_yxdomain
++#define YXRRSET		ns_r_yxrrset
++#define NXRRSET		ns_r_nxrrset
++#define NOTAUTH		ns_r_notauth
++#define NOTZONE		ns_r_notzone
++/*#define BADSIG		ns_r_badsig*/
++/*#define BADKEY		ns_r_badkey*/
++/*#define BADTIME		ns_r_badtime*/
++
++
++#define DELETE		ns_uop_delete
++#define ADD		ns_uop_add
++
++#define T_A		ns_t_a
++#define T_NS		ns_t_ns
++#define T_MD		ns_t_md
++#define T_MF		ns_t_mf
++#define T_CNAME		ns_t_cname
++#define T_SOA		ns_t_soa
++#define T_MB		ns_t_mb
++#define T_MG		ns_t_mg
++#define T_MR		ns_t_mr
++#define T_NULL		ns_t_null
++#define T_WKS		ns_t_wks
++#define T_PTR		ns_t_ptr
++#define T_HINFO		ns_t_hinfo
++#define T_MINFO		ns_t_minfo
++#define T_MX		ns_t_mx
++#define T_TXT		ns_t_txt
++#define	T_RP		ns_t_rp
++#define T_AFSDB		ns_t_afsdb
++#define T_X25		ns_t_x25
++#define T_ISDN		ns_t_isdn
++#define T_RT		ns_t_rt
++#define T_NSAP		ns_t_nsap
++#define T_NSAP_PTR	ns_t_nsap_ptr
++#define	T_SIG		ns_t_sig
++#define	T_KEY		ns_t_key
++#define	T_PX		ns_t_px
++#define	T_GPOS		ns_t_gpos
++#define	T_AAAA		ns_t_aaaa
++#define	T_LOC		ns_t_loc
++#define	T_NXT		ns_t_nxt
++#define	T_EID		ns_t_eid
++#define	T_NIMLOC	ns_t_nimloc
++#define	T_SRV		ns_t_srv
++#define T_ATMA		ns_t_atma
++#define T_NAPTR		ns_t_naptr
++#define T_A6		ns_t_a6
++#define T_DNAME		ns_t_dname
++#define	T_TSIG		ns_t_tsig
++#define	T_IXFR		ns_t_ixfr
++#define T_AXFR		ns_t_axfr
++#define T_MAILB		ns_t_mailb
++#define T_MAILA		ns_t_maila
++#define T_ANY		ns_t_any
++
++#define C_IN		ns_c_in
++#define C_CHAOS		ns_c_chaos
++#define C_HS		ns_c_hs
++/* BIND_UPDATE */
++#define C_NONE		ns_c_none
++#define C_ANY		ns_c_any
++
++#define	GETSHORT		NS_GET16
++#define	GETLONG			NS_GET32
++#define	PUTSHORT		NS_PUT16
++#define	PUTLONG			NS_PUT32
++
++#endif /* _ARPA_NAMESER_COMPAT_ */
++/*! \file */
+diff -urN apt-2.1.11/apt-pkg/strchrnul.cc apt/apt-pkg/strchrnul.cc
+--- apt-2.1.11/apt-pkg/strchrnul.cc	1969-12-31 19:00:00.000000000 -0500
++++ apt/apt-pkg/strchrnul.cc	2020-11-22 18:23:41.695439833 -0500
+@@ -0,0 +1,63 @@
++/*-
++ * SPDX-License-Identifier: MIT
++ *
++ * Copyright (c) 2005-2014 Rich Felker, et al.
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining
++ * a copy of this software and associated documentation files (the
++ * "Software"), to deal in the Software without restriction, including
++ * without limitation the rights to use, copy, modify, merge, publish,
++ * distribute, sublicense, and/or sell copies of the Software, and to
++ * permit persons to whom the Software is furnished to do so, subject to
++ * the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be
++ * included in all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
++ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
++ * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
++ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
++ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ */
++#include <sys/cdefs.h>
++__FBSDID("$FreeBSD$");
++
++#include <limits.h>
++#include <stdint.h>
++#include <string.h>
++#include <apt-pkg/missing.h>
++#include <config.h>
++
++#define ALIGN (sizeof(size_t))
++#define ONES ((size_t)-1 / UCHAR_MAX)
++#define HIGHS (ONES * (UCHAR_MAX / 2 + 1))
++#define HASZERO(x) (((x)-ONES) & ~(x)&HIGHS)
++
++#ifndef HAVE_STRCHRNUL
++
++extern "C" char *
++strchrnul(const char *s, int c)
++{
++	c = (unsigned char)c;
++	if (!c)
++		return (char *)s + strlen(s);
++
++#ifdef __GNU__
++	typedef size_t __attribute__((__may_alias__)) word;
++	const word *w;
++	for (; (uintptr_t)s % ALIGN; s++)
++		if (!*s || *(unsigned char *)s == c)
++			return (char *)s;
++	size_t k = ONES * c;
++	for (w = (const word *)s; !HASZERO(*w) && !HASZERO(*w ^ k); w++)
++		;
++	s = (const char *)w;
++#endif
++	for (; *s && *(unsigned char *)s != c; s++)
++		;
++	return (char *)s;
++}
++#endif // HAVE_STRCHRNUL
+diff -urN apt-2.1.11/apt-private/CMakeLists.txt apt/apt-private/CMakeLists.txt
+--- apt-2.1.11/apt-private/CMakeLists.txt	2020-10-21 05:53:18.000000000 -0400
++++ apt/apt-private/CMakeLists.txt	2020-11-22 18:23:41.695439833 -0500
+@@ -5,14 +5,14 @@
+ # Definition of the C++ files used to build the library - note that this
+ # is expanded at CMake time, so you have to rerun cmake if you add or remove
+ # a file (you can just run cmake . in the build directory)
+-file(GLOB_RECURSE library "*.cc")
++file(GLOB_RECURSE library "*.cc" "*.mm")
+ file(GLOB_RECURSE headers "*.h")
+ 
+ # Create a library using the C++ files
+ add_library(apt-private SHARED ${library})
+ 
+ # Link the library and set the SONAME
+-target_link_libraries(apt-private PUBLIC apt-pkg)
++target_link_libraries(apt-private PUBLIC apt-pkg $<$<BOOL:${USE_IOSEXEC}>:iosexec> "-framework Foundation")
+ set_target_properties(apt-private PROPERTIES VERSION ${MAJOR}.${MINOR})
+ set_target_properties(apt-private PROPERTIES SOVERSION ${MAJOR})
+ set_target_properties(apt-private PROPERTIES CXX_VISIBILITY_PRESET hidden)
+diff -urN apt-2.1.11/ftparchive/apt-ftparchive.cc apt/ftparchive/apt-ftparchive.cc
+--- apt-2.1.11/ftparchive/apt-ftparchive.cc	2020-10-21 05:53:18.000000000 -0400
++++ apt/ftparchive/apt-ftparchive.cc	2020-11-22 18:23:41.696439830 -0500
+@@ -53,7 +53,7 @@
+    auto const Time = std::chrono::steady_clock::now().time_since_epoch();
+    auto const Time_sec = std::chrono::duration_cast<std::chrono::seconds>(Time);
+    auto const Time_usec = std::chrono::duration_cast<std::chrono::microseconds>(Time - Time_sec);
+-   return { Time_sec.count(), Time_usec.count() };
++   return { static_cast<__darwin_time_t>(Time_sec.count()), static_cast<__darwin_suseconds_t>(Time_usec.count()) };
+ }
+ 									/*}}}*/
+ static auto GetTimeDeltaSince(struct timeval StartTime)			/*{{{*/
+diff -urN apt-2.1.11/ftparchive/byhash.cc apt/ftparchive/byhash.cc
+--- apt-2.1.11/ftparchive/byhash.cc	2020-10-21 05:53:18.000000000 -0400
++++ apt/ftparchive/byhash.cc	2020-11-22 18:23:41.696439830 -0500
+@@ -17,6 +17,8 @@
+ #include <sys/stat.h>
+ #include <unistd.h>
+ 
++#define st_mtim st_mtimespec
++
+ #include "byhash.h"
+ #include <apt-pkg/fileutl.h>
+ #include <apt-pkg/hashes.h>
+diff -urN apt-2.1.11/ftparchive/cachedb.cc apt/ftparchive/cachedb.cc
+--- apt-2.1.11/ftparchive/cachedb.cc	2020-10-21 05:53:18.000000000 -0400
++++ apt/ftparchive/cachedb.cc	2020-11-22 18:23:41.696439830 -0500
+@@ -18,6 +18,7 @@
+ #include <apt-pkg/gpgv.h>
+ #include <apt-pkg/hashes.h>
+ #include <apt-pkg/strutl.h>
++#include <apt-pkg/missing.h>
+ 
+ #include <ctype.h>
+ #include <netinet/in.h> // htonl, etc
+diff -urN apt/methods/connect.cc apt/methods/connect.cc
+--- apt/methods/connect.cc	2021-03-08 05:50:31.000000000 -0500
++++ apt/methods/connect.cc	2021-04-09 18:31:38.545621755 -0400
+@@ -274,7 +274,7 @@
+    struct timeval tv = {
+       // Split our millisecond timeout into seconds and microseconds
+       .tv_sec = TimeoutMsec / 1000,
+-      .tv_usec = (TimeoutMsec % 1000) * 1000,
++      .tv_usec = static_cast<__darwin_suseconds_t>((TimeoutMsec % 1000) * 1000),
+    };
+
+    // We will return once we have no more connections, a time out, or
+diff -urN apt/methods/CMakeLists.txt apt/methods/CMakeLists.txt
+--- apt/methods/CMakeLists.txt	2021-04-29 04:45:32.000000000 -0400
++++ apt/methods/CMakeLists.txt	2021-05-03 23:00:24.918079696 -0400
+@@ -1,6 +1,6 @@
+ # Create the executable targets
+ include_directories($<$<BOOL:${SECCOMP_FOUND}>:${SECCOMP_INCLUDE_DIR}>)
+-link_libraries(apt-pkg $<$<BOOL:${SECCOMP_FOUND}>:${SECCOMP_LIBRARIES}>)
++link_libraries(apt-pkg $<$<BOOL:${SECCOMP_FOUND}>:${SECCOMP_LIBRARIES}> $<$<BOOL:${USE_IOSEXEC}>:iosexec>)
+
+ add_library(connectlib OBJECT connect.cc rfc2553emu.cc)
+
