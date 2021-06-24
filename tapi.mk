@@ -44,6 +44,7 @@ tapi: tapi-setup
 	+$(MAKE) -C $(BUILD_WORK)/tapi/build libtapi tapi
 	+$(MAKE) -C $(BUILD_WORK)/tapi/build install-libtapi install-tapi-headers install-tapi \
 		DESTDIR="$(BUILD_STAGE)/tapi"
+	mkdir -p $(BUILD_STAGE)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	$(INSTALL) -Dm644 $(BUILD_WORK)/tapi/src/libtapi/docs/man/*.1 $(BUILD_STAGE)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	touch $(BUILD_WORK)/tapi/.build_complete
 endif
