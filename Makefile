@@ -338,9 +338,7 @@ OPTIMIZATION_FLAGS := -g -O0
 else
 OPTIMIZATION_FLAGS := -Os
 ifeq ($(UNAME),Darwin)
-ifeq ($(shell sw_vers -productName),macOS)
 OPTIMIZATION_FLAGS += -flto=thin
-endif
 else ifeq ($(MEMO_FORCE_LTO),1)
 OPTIMIZATION_FLAGS += -flto=thin
 # This flag will prevent ld64 from deleting the object file needed for dsymutil to work.
