@@ -16,14 +16,10 @@ rav1e:
 	@echo "Using previously built rav1e."
 else
 rav1e: rav1e-setup aom dav1d
-	cd $(BUILD_WORK)/rav1e && PKG_CONFIG="$(RUST_TARGET)-pkg-config" \
-	SDKROOT="$(TARGET_SYSROOT)" cargo \
-		build \
+	cd $(BUILD_WORK)/rav1e && $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \
 		--target=$(RUST_TARGET)
-	cd $(BUILD_WORK)/rav1e && PKG_CONFIG="$(RUST_TARGET)-pkg-config" \
-	SDKROOT="$(TARGET_SYSROOT)" cargo \
-		cbuild \
+	cd $(BUILD_WORK)/rav1e && $(DEFAULT_RUST_FLAGS) cargo cbuild \
 		--release \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--target=$(RUST_TARGET) \

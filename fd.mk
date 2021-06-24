@@ -16,8 +16,7 @@ fd:
 	@echo "Using previously built fd."
 else
 fd: fd-setup
-	cd $(BUILD_WORK)/fd && SDKROOT="$(TARGET_SYSROOT)" MACOSX_SYSROOT="" cargo \
-		build \
+	cd $(BUILD_WORK)/fd && $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \
 		--target=$(RUST_TARGET)
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/fd/target/$(RUST_TARGET)/release/fd $(BUILD_STAGE)/fd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/fd

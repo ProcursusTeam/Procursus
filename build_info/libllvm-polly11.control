@@ -1,0 +1,15 @@
+Package: libllvm-polly11
+Version: @DEB_LLVM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libllvm11
+Section: Development
+Priority: optional
+Description: Polyhedral optimizations for LLVM
+ Polly is a high-level loop and data-locality optimizer and optimization 
+ infrastructure for LLVM. It uses an abstract mathematical representation 
+ based on integer polyhedra to analyze and optimize the memory access pattern 
+ of a program. We currently perform classical loop transformations, especially 
+ tiling and loop fusion to improve data-locality. Polly can also exploit OpenMP 
+ level parallelism, expose SIMDization opportunities. Work has also be done 
+ in the area of automatic GPU code generation.
