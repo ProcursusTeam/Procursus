@@ -6,10 +6,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS += build-essential
 
-ifneq ($(UNAME),Darwin)
-build-essential:
-	@echo "build-essential building only supported on macOS"
-else ifneq ($(wildcard $(BUILD_WORK)/build-essential/.build_complete),)
+ifneq ($(wildcard $(BUILD_WORK)/build-essential/.build_complete),)
 build-essential:
 	@echo "Using previously built build-essential."
 else
