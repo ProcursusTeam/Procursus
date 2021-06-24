@@ -1,0 +1,19 @@
+commit 4e5d078c40fd6d6b4d4a89c6a38f82e32fa34f24
+Author: Tom Schoonjans <Tom.Schoonjans@rfi.ac.uk>
+Date:   Thu Mar 25 09:09:19 2021 +0000
+
+    pkgconfig.libs: filter out m.lib
+
+diff --git a/giscanner/pkgconfig.py b/giscanner/pkgconfig.py
+index 66822378..562f6e9f 100644
+--- a/giscanner/pkgconfig.py
++++ b/giscanner/pkgconfig.py
+@@ -55,6 +55,8 @@ def libs(packages, msvc_syntax=False, ignore_errors=True, command=None):
+     flags.append('--libs')
+     flags.extend(packages)
+     out = check_output(flags, ignore_errors, command)
++    if msvc_syntax:
++        return list(filter(lambda lib: lib != 'm.lib', shlex.split(out)))
+     return shlex.split(out)
+ 
+ 

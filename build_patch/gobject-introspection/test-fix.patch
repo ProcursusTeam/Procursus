@@ -1,0 +1,14 @@
+diff --git a/tests/scanner/test_ccompiler.py b/tests/scanner/test_ccompiler.py
+index 6c0674a1..971f53d4 100644
+--- a/tests/scanner/test_ccompiler.py
++++ b/tests/scanner/test_ccompiler.py
+@@ -68,7 +68,7 @@ class UnixCCompilerTest(unittest.TestCase):
+             self.assertEqual(compiler.linker_cmd[0], "foobar")
+ 
+     def test_link_args_override(self):
+-        with Environ(dict(CC="foobar")):
++        with Environ(dict(LDSHARED="foobar")):
+             compiler = CCompiler()
+             self.assertEqual(compiler.compiler.linker_so[0], "foobar")
+ 
+

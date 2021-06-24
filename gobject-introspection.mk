@@ -2,28 +2,60 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-#SUBPROJECTS                  += gobject-introspection
+SUBPROJECTS                  += gobject-introspection
 GOBJECT-INTROSPECTION_VERSION := 1.68.0
 DEB_GOBJECT-INTROSPECTION_V   ?= $(GOBJECT-INTROSPECTION_VERSION)
 
+CROSS_LOAD := GI_CROSS_LAUNCHER=$(BUILD_TOOLS)/gi-cross-launcher-load.sh
+CROSS_SAVE := GI_CROSS_LAUNCHER=$(BUILD_TOOLS)/gi-cross-launcher-save.sh
 #### This will currently only build for the system you're building on.
 # You need libffi-dev, libglib2.0-dev, libpython3.9-dev
 
 gobject-introspection-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://download.gnome.org/sources/gobject-introspection/$(shell echo $(GOBJECT-INTROSPECTION_VERSION) | cut -f-2 -d.)/gobject-introspection-$(GOBJECT-INTROSPECTION_VERSION).tar.xz
 	$(call EXTRACT_TAR,gobject-introspection-$(GOBJECT-INTROSPECTION_VERSION).tar.xz,gobject-introspection-$(GOBJECT-INTROSPECTION_VERSION),gobject-introspection)
+	$(call DO_PATCH,gobject-introspection,gobject-introspection,-p1)
+	$(SED) -i 's/required: true/required: false/g' $(BUILD_WORK)/gobject-introspection/meson.build
 	mkdir -p $(BUILD_WORK)/gobject-introspection/build
 
+ifeq ($(MEMO_TARGET),iphoneos-arm64)
+	echo -e "[host_machine]\n \
+	cpu_family = '$(shell echo $(GNU_HOST_TRIPLE) | cut -d- -f1)'\n \
+	cpu = '$(MEMO_ARCH)'\n \
+	endian = 'little'\n \
+	system = 'darwin'\n \
+	[properties]\n \
+	root = '$(BUILD_BASE)'\n \
+	needs_exe_wrapper = true\n \
+	[paths]\n \
+	prefix ='$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
+	[binaries]\n \
+	c = '$(CC)'\n \
+	objc = '$(CC)'\n \
+	cpp = '$(CXX)'\n \
+	pkgconfig = '$(shell which pkg-config)'\n" > $(BUILD_WORK)/gobject-introspection/build/cross.txt
+endif
+
+ifneq ($(MEMO_TARGET),darwin-amd64)
+else ifneq ($(MEMO_TARGET),darwin-arm64)
+else ifneq ($(shell sw_vers -productName),iPhone OS)
+	$(SED) -i 's|\$${MEMO_TARGET}|$(MEMO_TARGET)|g' $(BUILD_TOOLS)/gi-cross-launcher-save.sh
+	$(SED) -i 's|\$${MEMO_CFVER}|$(MEMO_CFVER)|g' $(BUILD_TOOLS)/gi-cross-launcher-save.sh
+	$(SED) -i 's|\$${MEMO_TARGET}|$(MEMO_TARGET)|g' $(BUILD_TOOLS)/gi-cross-launcher-load.sh
+	$(SED) -i 's|\$${MEMO_CFVER}|$(MEMO_CFVER)|g' $(BUILD_TOOLS)/gi-cross-launcher-load.sh
 	echo -e "[paths]\n \
 	prefix ='$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
 	[binaries]\n \
 	pkgconfig = '$(shell which pkg-config)'\n" > $(BUILD_WORK)/gobject-introspection/build/cross.txt
+endif
 
 ifneq ($(wildcard $(BUILD_WORK)/gobject-introspection/.build_complete),)
 gobject-introspection:
 	@echo "Using previously built gobject-introspection."
 else
 gobject-introspection: gobject-introspection-setup glib2.0 libffi python3
+ifneq ($(MEMO_TARGET),darwin-amd64)
+else ifneq ($(MEMO_TARGET),darwin-arm64)
 	$(SED) -i 's|/usr/share|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share|g' $(BUILD_WORK)/gobject-introspection/giscanner/transformer.py
 	$(SED) -i -e "s|extra_giscanner_cflags = \[]|extra_giscanner_cflags = ['$(PLATFORM_VERSION_MIN)']|" \
 		-e "s|extra_giscanner_args = \[]|extra_giscanner_args = ['--cflags-begin'] + extra_giscanner_cflags + ['--cflags-end']|" $(BUILD_WORK)/gobject-introspection/meson.build
@@ -31,12 +63,39 @@ gobject-introspection: gobject-introspection-setup glib2.0 libffi python3
 	cd $(BUILD_WORK)/gobject-introspection/build && meson \
 		--cross-file cross.txt \
 		-Dpython="$(shell which python3)" \
+		-Dbuild_introspection_data=true \
+		-Dgi_cross_use_prebuilt_gi=false \
+		-Dgi_cross_pkgconfig_sysroot_path=$(BUILD_BASE) \
 		..; \
-	cd $(BUILD_WORK)/gobject-introspection/build; \
-		DESTDIR="$(BUILD_STAGE)/gobject-introspection" meson install; \
-		DESTDIR="$(BUILD_BASE)" meson install
+	unset MACOSX_DEPLOYMENT_TARGET && export $(CROSS_SAVE) && ninja -C $(BUILD_WORK)/gobject-introspection/build
+	+DESTDIR="$(BUILD_STAGE)/gobject-introspection" ninja -C $(BUILD_WORK)/gobject-introspection/build install
+	+DESTDIR="$(BUILD_BASE)" ninja -C $(BUILD_WORK)/gobject-introspection/build install
+	touch $(BUILD_WORK)/gobject-introspection/.build_complete
 	$(SED) -i "s|$$(cat $(BUILD_STAGE)/gobject-introspection/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/g-ir-scanner | grep \#! | sed 's/#!//')|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/gobject-introspection/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
 	touch $(BUILD_WORK)/gobject-introspection/.build_complete
+endif
+ifeq ($(MEMO_TARGET),iphoneos-arm64)
+	$(SED) -i 's|/usr/share|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share|g' $(BUILD_WORK)/gobject-introspection/giscanner/transformer.py
+	$(SED) -i -e "s|extra_giscanner_cflags = \[]|extra_giscanner_cflags = ['$(PLATFORM_VERSION_MIN)']|" \
+		-e "s|extra_giscanner_args = \[]|extra_giscanner_args = ['--cflags-begin'] + extra_giscanner_cflags + ['--cflags-end']|" $(BUILD_WORK)/gobject-introspection/meson.build
+	export GI_SCANNER_DISABLE_CACHE=true; \
+	cd $(BUILD_WORK)/gobject-introspection/build && meson \
+		--cross-file cross.txt \
+		-Dgi_cross_use_prebuilt_gi=True \
+		-Dbuild_introspection_data=true \
+		--buildtype=release \
+		--backend=ninja \
+		-Dpython="$(shell which python3)" \
+		-Dgi_cross_pkgconfig_sysroot_path=$(BUILD_BASE) \
+		..
+	$(SED) -i 's/--cflags-begin/--cflags-begin -arch $(MEMO_ARCH)/g' $(BUILD_WORK)/gobject-introspection/build/build.ninja
+	unset MACOSX_DEPLOYMENT_TARGET && export $(CROSS_LOAD) && ninja -C $(BUILD_WORK)/gobject-introspection/build
+	+DESTDIR="$(BUILD_STAGE)/gobject-introspection" ninja -C $(BUILD_WORK)/gobject-introspection/build install
+	+DESTDIR="$(BUILD_BASE)" ninja -C $(BUILD_WORK)/gobject-introspection/build install
+	touch $(BUILD_WORK)/gobject-introspection/.build_complete
+	$(SED) -i "s|$$(cat $(BUILD_STAGE)/gobject-introspection/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/g-ir-scanner | grep \#! | sed 's/#!//')|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/gobject-introspection/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
+	touch $(BUILD_WORK)/gobject-introspection/.build_complete
+endif
 endif
 
 gobject-introspection-package: gobject-introspection-stage
