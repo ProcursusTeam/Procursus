@@ -23,7 +23,9 @@ llvm-setup: setup
 		$(BUILD_WORK)/llvm/clang/lib/Driver/ToolChains/Darwin.cpp
 	$(call DO_PATCH,swift,llvm/swift,-p1)
 	mkdir -p $(BUILD_WORK)/llvm/build
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(SED) -i 's|isysroot $${CMAKE_OSX_SYSROOT}|isysroot $${CMAKE_FIND_ROOT_PATH}|' $(BUILD_WORK)/llvm/lldb/tools/debugserver/source/CMakeLists.txt
+endif
 
 ifneq ($(wildcard $(BUILD_WORK)/llvm/.build_complete),)
 llvm:
@@ -32,6 +34,12 @@ else
 llvm: llvm-setup libffi libedit ncurses xz xar
 #	Temporary SED until swift can build on their own apple silicon (cmon apple)
 	$(SED) -i -e 's/aarch64|ARM64/aarch64|ARM64|arm64/' -e 's/SWIFT_HOST_VARIANT_ARCH_default "aarch64"/SWIFT_HOST_VARIANT_ARCH_default "arm64"/' $(BUILD_WORK)/llvm/swift/CMakeLists.txt
+
+#	SED replace stuff Apple hasn't fixed themselves.
+	$(SED) -i 's/std::abs/std::llabs/g' $(BUILD_WORK)/llvm/mlir/lib/Analysis/Presburger/Simplex.cpp $(BUILD_WORK)/llvm/mlir/include/mlir/Support/MathExtras.h
+
+#	This broke cross compiling for me
+	$(SED) -i '/set(MLIR_TABLEGEN_EXE/d' $(BUILD_WORK)/llvm/flang/CMakeLists.txt
 
 ifeq ($(wildcard $(BUILD_WORK)/../../native/llvm/.*),)
 	mkdir -p $(BUILD_WORK)/../../native/llvm && cd $(BUILD_WORK)/../../native/llvm && unset CC CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS && cmake . \
@@ -43,7 +51,7 @@ ifeq ($(wildcard $(BUILD_WORK)/../../native/llvm/.*),)
 		-DSWIFT_INCLUDE_TESTS=OFF \
 		-DSWIFT_BUILD_RUNTIME_WITH_HOST_COMPILER=ON \
 		-DLLVM_TARGETS_TO_BUILD="X86;AArch64" \
-		-DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;lldb" \
+		-DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;lldb;mlir" \
 		-DLLVM_EXTERNAL_PROJECTS="cmark;swift" \
 		-DLLVM_EXTERNAL_SWIFT_SOURCE_DIR="$(BUILD_WORK)/llvm/swift" \
 		-DLLVM_EXTERNAL_CMARK_SOURCE_DIR="$(BUILD_WORK)/llvm/cmark" \
@@ -51,9 +59,13 @@ ifeq ($(wildcard $(BUILD_WORK)/../../native/llvm/.*),)
 		-DSWIFT_BUILD_DYNAMIC_STDLIB=FALSE \
 		-DSWIFT_BUILD_STDLIB_EXTRA_TOOLCHAIN_CONTENT=FALSE \
 		$(BUILD_WORK)/llvm/llvm
-	+$(MAKE) -C $(BUILD_WORK)/../../native/llvm swift-components lldb-tblgen
+	+$(MAKE) -C $(BUILD_WORK)/../../native/llvm swift-components lldb-tblgen mlir-tblgen mlir-linalg-ods-gen
 endif
 
+	mkdir -p $(BUILD_WORK)/llvm/superbin
+	cp $(BUILD_WORK)/../../native/llvm/bin/mlir-linalg-ods-gen $(BUILD_WORK)/llvm/superbin
+
+	+PATH="$(BUILD_WORK)/llvm/superbin:$(PATH)"; \
 	case $(MEMO_TARGET) in \
 	*"darwin"*) \
 		SWIFT_VARIANT=OSX \
@@ -76,7 +88,7 @@ endif
 		-DLLVM_ENABLE_FFI=ON \
 		-DLLVM_ENABLE_RTTI=ON \
 		-DLLVM_ENABLE_EH=ON \
-		-DCROSS_TOOLCHAIN_FLAGS_NATIVE='-DCMAKE_C_COMPILER=cc;-DCMAKE_CXX_COMPILER=c++;-DCMAKE_OSX_SYSROOT="$(MACOSX_SYSROOT)";-DCMAKE_OSX_ARCHITECTURES="";-DCMAKE_C_FLAGS="$(BUILD_CFLAGS)";-DCMAKE_CXX_FLAGS="$(BUILD_CXXFLAGS)";-DCMAKE_EXE_LINKER_FLAGS="$(BUILD_LDFLAGS)"' \
+		-DCROSS_TOOLCHAIN_FLAGS_NATIVE='-DCMAKE_C_COMPILER=cc;-DCMAKE_CXX_COMPILER=c++;-DCMAKE_OSX_SYSROOT="$(MACOSX_SYSROOT)";-DCMAKE_OSX_ARCHITECTURES="";-DCMAKE_C_FLAGS="$(BUILD_CFLAGS)";-DCMAKE_CXX_FLAGS="$(BUILD_CXXFLAGS)";-DCMAKE_EXE_LINKER_FLAGS="$(BUILD_LDFLAGS)";-DMLIR_TABLEGEN_EXE="$(BUILD_WORK)/../../native/llvm/bin/mlir-tblgen"' \
 		-DCLANG_VERSION=$(LLVM_VERSION) \
 		-DLLVM_ENABLE_LTO=THIN \
 		-DLLVM_BUILD_LLVM_DYLIB=ON \
@@ -86,7 +98,7 @@ endif
 		-DLLVM_VERSION_SUFFIX="" \
 		-DLLVM_DEFAULT_TARGET_TRIPLE=$(LLVM_TARGET) \
 		-DLLVM_TARGETS_TO_BUILD="X86;ARM;AArch64" \
-		-DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;lldb;clang-tools-extra;lld;polly" \
+		-DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;lldb;clang-tools-extra;lld;flang;polly" \
 		-DLLVM_EXTERNAL_PROJECTS="cmark;swift" \
 		-DLLVM_EXTERNAL_SWIFT_SOURCE_DIR="$(BUILD_WORK)/llvm/swift" \
 		-DLLVM_EXTERNAL_CMARK_SOURCE_DIR="$(BUILD_WORK)/llvm/cmark" \
@@ -113,6 +125,8 @@ endif
 		-DCLANG_TABLEGEN_EXE="$(BUILD_WORK)/../../native/llvm/bin/clang-tblgen" \
 		-DLLDB_TABLEGEN="$(BUILD_WORK)/../../native/llvm/bin/lldb-tblgen" \
 		-DLLDB_TABLEGEN_EXE="$(BUILD_WORK)/../../native/llvm/bin/lldb-tblgen" \
+		-DMLIR_TABLEGEN="$(BUILD_WORK)/../../native/llvm/bin/mlir-tblgen" \
+		-DMLIR_TABLEGEN_EXE="$(BUILD_WORK)/../../native/llvm/bin/mlir-tblgen" \
 		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_IOS="$(IPHONEOS_DEPLOYMENT_TARGET)" \
 		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_OSX="$(MACOSX_DEPLYMENT_TARGET)" \
 		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_WATCHOS="$(WATCHOS_DEPLOYMENT_TARGET)" \
@@ -120,8 +134,9 @@ endif
 		-DSWIFT_BUILD_REMOTE_MIRROR=FALSE \
 		-DSWIFT_BUILD_DYNAMIC_STDLIB=FALSE \
 		-DSWIFT_BUILD_STDLIB_EXTRA_TOOLCHAIN_CONTENT=FALSE \
-		../llvm
-	+$(MAKE) -C $(BUILD_WORK)/llvm/build install \
+		-DFLANG_INCLUDE_TESTS=NO \
+		../llvm; \
+	$(MAKE) -C $(BUILD_WORK)/llvm/build install \
 		DESTDIR="$(BUILD_STAGE)/llvm"
 	$(INSTALL) -Dm755 $(BUILD_WORK)/llvm/build/bin/{obj2yaml,yaml2obj} $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/
 	touch $(BUILD_WORK)/llvm/.build_complete
