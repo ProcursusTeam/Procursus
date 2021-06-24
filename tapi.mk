@@ -3,12 +3,13 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += tapi
+TAPI_COMMIT    := 664b8414f89612f2dfd35a9b679c345aa5389026
 TAPI_VERSION   := 1100.0.11
 DEB_TAPI_V     ?= $(TAPI_VERSION)
 
 tapi-setup: setup
-	$(call GITHUB_ARCHIVE,Diatrus,apple-libtapi,$(TAPI_VERSION),v$(TAPI_VERSION),tapi)
-	$(call EXTRACT_TAR,tapi-$(TAPI_VERSION).tar.gz,apple-libtapi-$(TAPI_VERSION),tapi)
+	$(call GITHUB_ARCHIVE,tpoechtrager,apple-libtapi,$(TAPI_COMMIT),$(TAPI_COMMIT),tapi)
+	$(call EXTRACT_TAR,tapi-$(TAPI_COMMIT).tar.gz,apple-libtapi-$(TAPI_COMMIT),tapi)
 	mkdir -p $(BUILD_WORK)/tapi/build
 
 ifneq ($(wildcard $(BUILD_WORK)/tapi/.build_complete),)
@@ -16,26 +17,31 @@ tapi:
 	@echo "Using previously built tapi."
 else
 tapi: tapi-setup
+	mkdir -p $(BUILD_WORK)/tapi/build/NATIVE && cd $(BUILD_WORK)/tapi/build/NATIVE && cmake . \
+		-DCMAKE_C_COMPILER=cc \
+		-DCMAKE_CXX_COMPILER=c++ \
+		-DCMAKE_OSX_SYSROOT="$(MACOSX_SYSROOT)" \
+		-DCMAKE_C_FLAGS="" \
+		-DCMAKE_CXX_FLAGS="" \
+		-DCMAKE_CXX_FLAGS="" \
+		-DCMAKE_EXE_LINKER_FLAGS="" \
+		-DLLVM_TARGETS_TO_BUILD="X86;ARM;AArch64" \
+		../../src/llvm
+	+$(MAKE) -C $(BUILD_WORK)/tapi/build/NATIVE llvm-tblgen clang-tblgen
+
 	cd $(BUILD_WORK)/tapi/build && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
-		-DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
-		-DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
-		-DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \
-		-DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY \
-		-DCMAKE_CXX_FLAGS="-isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/include $(PLATFORM_VERSION_MIN) -I $(BUILD_WORK)/tapi/src/llvm/projects/clang/include -I $(BUILD_WORK)/tapi/build/projects/clang/include" \
-		-DCMAKE_EXE_LINKER_FLAGS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
-		-DCMAKE_MODULE_LINKER_FLAGS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
-		-DCMAKE_SHARED_LINKER_FLAGS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/lib -F$(BUILD_BASE)/System/Library/Frameworks" \
-		-DCMAKE_STATIC_LINKER_FLAGS="" \
 		-DCROSS_TOOLCHAIN_FLAGS_NATIVE='-DCMAKE_C_COMPILER=cc;-DCMAKE_CXX_COMPILER=c++;-DCMAKE_OSX_SYSROOT="$(MACOSX_SYSROOT)";-DCMAKE_OSX_ARCHITECTURES="";-DCMAKE_C_FLAGS="";-DCMAKE_CXX_FLAGS="";-DCMAKE_EXE_LINKER_FLAGS="";-DLLVM_INCLUDE_TESTS=OFF;-DTAPI_INCLUDE_TESTS=OFF' \
 		-DLLVM_ENABLE_PROJECTS="libtapi" \
 		-DLLVM_INCLUDE_TESTS=OFF \
 		-DTAPI_FULL_VERSION=$(TAPI_VERSION) \
 		-DTAPI_INCLUDE_TESTS=OFF \
+		-DLLVM_TABLEGEN="$(BUILD_WORK)/tapi/build/NATIVE/bin/llvm-tblgen" \
+		-DCLANG_TABLEGEN="$(BUILD_WORK)/tapi/build/NATIVE/bin/clang-tblgen" \
+		-DCLANG_TABLEGEN_EXE="$(BUILD_WORK)/tapi/build/NATIVE/bin/clang-tblgen" \
 		../src/llvm
-	+$(MAKE) -C $(BUILD_WORK)/tapi/build clangBasic
-	+$(MAKE) -C $(BUILD_WORK)/tapi/build libtapi
-	+$(MAKE) -C $(BUILD_WORK)/tapi/build install-libtapi install-tapi-headers \
+	+$(MAKE) -C $(BUILD_WORK)/tapi/build libtapi tapi
+	+$(MAKE) -C $(BUILD_WORK)/tapi/build install-libtapi install-tapi-headers install-tapi \
 		DESTDIR="$(BUILD_STAGE)/tapi"
 	touch $(BUILD_WORK)/tapi/.build_complete
 endif
