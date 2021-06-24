@@ -1027,9 +1027,9 @@ ifneq ($(MEMO_QUIET),1)
 endif # ($(MEMO_QUIET),1)
 
 clean::
-	rm -rf $(BUILD_WORK) $(BUILD_BASE) $(BUILD_STAGE)
+	rm -rf $(BUILD_ROOT)/build_{base,stage,work}
 
 extreme-clean: clean
-	rm -rf $(BUILD_DIST)
+	rm -rf $(BUILD_ROOT)/build_dist
 
 .PHONY: clean setup
