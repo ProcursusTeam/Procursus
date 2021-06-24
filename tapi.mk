@@ -51,7 +51,7 @@ endif
 
 tapi-package: tapi-stage
 	# tapi.mk Package Structure
-	rm -rf $(BUILD_DIST)/libtapi
+	rm -rf $(BUILD_DIST)/tapi $(BUILD_DIST)/libtapi{,-dev}
 	mkdir -p $(BUILD_DIST)/libtapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	mkdir -p $(BUILD_DIST)/libtapi-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	mkdir -p $(BUILD_DIST)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
@@ -73,6 +73,6 @@ tapi-package: tapi-stage
 	$(call PACK,tapi,DEB_TAPI_V)
 
 	# tapi.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libtapi
+	rm -rf $(BUILD_DIST)/tapi $(BUILD_DIST)/libtapi{,-dev}
 
 .PHONY: tapi tapi-package
