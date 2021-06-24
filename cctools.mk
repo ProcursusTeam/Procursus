@@ -41,7 +41,7 @@ cctools: cctools-setup llvm uuid tapi xar
 	$(CC) $(CFLAGS) -DLINKER="\""$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/ld"\"" \
 		-DLDID="\""$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ldid"\"" \
 		-DENTS="\""$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/entitlements/general.xml"\"" \
-		-o $(BUILD_STAGE)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ld $(BUILD_INFO)/wrapper.c
+		-o $(BUILD_STAGE)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ld $(BUILD_MISC)/ld-wrapper/wrapper.c
 	touch $(BUILD_WORK)/cctools/.build_complete
 endif
 
