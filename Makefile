@@ -550,13 +550,14 @@ PACK = if [ -z "$(4)" ]; then \
 	for i in control postinst preinst postrm prerm extrainst_ conffiles; do \
 		for n in $$i $$i.$(PLATFORM); do \
 			if [ -f "$(BUILD_INFO)/$(1).$$n" ]; then \
-				$(SED) -e ':a; s|@MEMO_PREFIX@|$(MEMO_PREFIX)|g; ta' \
-					-e ':a; s|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g; ta' \
-					-e ':a; s|@MEMO_ALT_PREFIX@|$(MEMO_ALT_PREFIX)|g; ta' \
-					-e ':a; s|@GNU_PREFIX@|$(GNU_PREFIX)|g; ta' \
-					-e ':a; s/@$(2)@/$($(2))/g; ta' \
-					-e ':a; s/@DEB_MAINTAINER@/$(DEB_MAINTAINER)/g; ta' \
-					-e ':a; s/@DEB_ARCH@/$(DEB_ARCH)/g; ta' < $(BUILD_INFO)/$(1).$$n > $(BUILD_DIST)/$(1)/DEBIAN/$$i; \
+				$(SED) -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' \
+					-e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
+					-e 's|@MEMO_ALT_PREFIX@|$(MEMO_ALT_PREFIX)|g' \
+					-e 's|@GNU_PREFIX@|$(GNU_PREFIX)|g' \
+					-e 's|@BARE_PLATFORM@|$(BARE_PLATFORM)|g' \
+					-e 's/@$(2)@/$($(2))/g' \
+					-e 's/@DEB_MAINTAINER@/$(DEB_MAINTAINER)/g' \
+					-e 's/@DEB_ARCH@/$(DEB_ARCH)/g' < $(BUILD_INFO)/$(1).$$n > $(BUILD_DIST)/$(1)/DEBIAN/$$i; \
 			fi; \
 		done; \
 	done; \

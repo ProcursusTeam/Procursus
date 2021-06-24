@@ -1,7 +1,7 @@
 diff -urN ld64/src/ld/Options.cpp ld64/src/ld/Options.cpp
 --- ld64/src/ld/Options.cpp	2021-04-08 14:09:45.000000000 -0400
 +++ ld64/src/ld/Options.cpp	2021-06-24 03:06:15.000000000 -0400
-@@ -4394,6 +4394,13 @@
+@@ -4394,6 +4394,11 @@
  		else {
  			libraryPaths.push_back("/usr/lib");
  			libraryPaths.push_back("/usr/local/lib");
