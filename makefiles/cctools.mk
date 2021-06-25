@@ -2,8 +2,6 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-
 SUBPROJECTS     += cctools
 CCTOOLS_COMMIT  := 236a426c1205a3bfcf0dbb2e2faf2296f0a100e5
 CCTOOLS_VERSION := 973.0.1
@@ -51,7 +49,7 @@ cctools-package: cctools-stage
 	mkdir -p $(BUILD_DIST)/{cctools,ld64/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,libexec,share/{entitlements,man/man1}}}
 
 	# cctools.mk Prep cctools
-	cp -a $(BUILD_STAGE)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/cctools
+	cp -a $(BUILD_STAGE)/cctools $(BUILD_DIST)
 
 	# cctools.mk Prep ld64
 	mv $(BUILD_DIST)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{dyldinfo,ld,machocheck,ObjectDump,unwinddump} $(BUILD_DIST)/ld64/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
@@ -72,5 +70,3 @@ cctools-package: cctools-stage
 	rm -rf $(BUILD_DIST)/{cctools,ld64}
 
 .PHONY: cctools cctools-package
-
-endif
