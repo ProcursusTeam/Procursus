@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS       += darwintools
-DARWINTOOLS_VERSION := 1.4
+DARWINTOOLS_VERSION := 1.5
 ZBRFIRMWARE_COMMIT  := 213f1051334fdf4e9e4989b8f55ef0714b6f2779
 DEB_DARWINTOOLS_V   ?= $(DARWINTOOLS_VERSION)
 
@@ -23,8 +23,9 @@ darwintools: darwintools-setup
 		CFLAGS="$(CFLAGS)"
 	$(INSTALL) -Dm 0755 $(BUILD_WORK)/darwintools/build/firmware $(BUILD_STAGE)/darwintools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/firmware
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(CC) $(CFLAGS) $(BUILD_INFO)/sw_vers.c -o $(BUILD_WORK)/darwintools/sw_vers -framework CoreFoundation -O3
-	$(INSTALL) -s --strip-program=$(STRIP) -Dm 0755 $(BUILD_WORK)/darwintools/sw_vers $(BUILD_STAGE)/darwintools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sw_vers
+	$(CC) $(CFLAGS) $(BUILD_MISC)/darwintools/sw_vers.c -o $(BUILD_WORK)/darwintools/sw_vers -framework CoreFoundation -O3
+	$(INSTALL) -s -Dm 0755 $(BUILD_WORK)/darwintools/sw_vers $(BUILD_STAGE)/darwintools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sw_vers
+	$(INSTALL) -Dm 0644 $(BUILD_MISC)/darwintools/resolv.conf $(BUILD_STAGE)/darwintools/$(MEMO_PREFIX)/etc/resolv.conf
 endif
 	touch $(BUILD_WORK)/darwintools/.build_complete
 endif
