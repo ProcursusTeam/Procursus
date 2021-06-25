@@ -1,3 +1,4 @@
 #!/bin/sh
 
-@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/firmware
+@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/firmware-wrapper &
+disown

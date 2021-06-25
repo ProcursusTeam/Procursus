@@ -22,6 +22,8 @@ darwintools: darwintools-setup
 		EXECPREFIX=$(MEMO_SUB_PREFIX) \
 		CFLAGS="$(CFLAGS)"
 	$(INSTALL) -Dm 0755 $(BUILD_WORK)/darwintools/build/firmware $(BUILD_STAGE)/darwintools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/firmware
+	$(INSTALL) -s -Dm 0755 $(BUILD_MISC)/darwintools/firmware-wrapper $(BUILD_STAGE)/darwintools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/firmware-wrapper
+	$(SED) -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $(BUILD_STAGE)/darwintools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/firmware-wrapper
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(CC) $(CFLAGS) $(BUILD_MISC)/darwintools/sw_vers.c -o $(BUILD_WORK)/darwintools/sw_vers -framework CoreFoundation -O3
 	$(INSTALL) -s -Dm 0755 $(BUILD_WORK)/darwintools/sw_vers $(BUILD_STAGE)/darwintools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sw_vers
