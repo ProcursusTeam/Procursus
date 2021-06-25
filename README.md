@@ -1,92 +1,33 @@
-# Procursus
+<p align="center">
+    <h1 align="center">Procursus</h1>
+    <p align="center">
+        <a href="https://github.com/ProcursusTeam/Procursus/wiki">Documentation</a> •
+        <a href="https://procursus.creator-spring.com/">Merchandise</a> •
+        <a href="https://github.com/ProcursusTeam/Procursus/graphs/contributors">Contributors</a>
+    </p>
+</p>
 
-A new, powerful cross-compilation system for *OS devices coupled with an APT repo.
+A new, powerful, cross-compilation *OS bootstrap. At its core, Procursus is a build-system that provides a large set of consistently up-to-date *nix tools cross compiled to work on Darwin based platforms.
 
-## Why?
+The build-system is built in a manner where maintenance of packages is fairly simple, helping to not fall behind upstream.
 
-At its birth, this build-system was meant to create an APT repo included in a specific jailbreak. That never came to pass, however, and it turned into more of a hobby project.
+## History
+At its birth, this build-system was meant to be an APT repository included in a specific jailbreak. However, that never came to pass, turning the project into a hobby.
 
-The current goal of Procursus is to provide a large set of consistently up-to-date *nix tools cross compiled to work on Darwin based platforms. It's built from the ground up in such a way that updating packages is quick and easy, helping to not fall behind upstream.
+In the iOS jailbreak scene, Procursus attempts to address an odd fragmentation problem seen over the past couple of years. Many new APT repositories have arisen from the ashes of Saurik's Telesphoreo, both with their respective flaws. One of the main issues is that each repository is targeted to one specific jailbreak.
 
-In the iOS jailbreak scene, it also attempts to address an odd fragmentation problem seen over the past couple years. There have been a couple new APT repositories that have arrisen from the ashes of Saurik's Telesphoreo, both with their own respective flaws. One of the main issues with both of these, however, is that they're targetted towards one jailbreak or another. Here, this has been wholeheartedly solved. Procursus includes 0 code-injection and hooking platforms, and can be ran fully functionally with one or more of the four main GUI package managers as of 06/04/2020. Here are a few of the main changes over other similar build systems:
-* Based on Makefiles. This allows for parallel building of packages that don't depend on each other, making it much quicker to build. Not only that, but the way it is setup, adding a new package is as easy as making a new .mk file and adding a respective .control file.
-* Fully open to community contribution. See [Contributing](#Contributing).
-* No jailbreak-specific software, meaning it is plug and play for anyone that decides to use it in their jailbreak or project.
-- To elaborate on this point, any jailbreak wishing to include Procursus need not collaborate with us to get their hooking library or package manager on the repo. They can have their own seperate repo for those jailbreak-specific tools, and we'll just keep managing the tools we provide.
-* **First main jailbreak repository ever** to be fully functional with any one of the main four package managers out of the box, allowing you to remove the default.
-* Includes an Obj-C implementation of the traditional firmware.sh that's not only quicker, but also creates a package for cpu subtype. (cy.cpu.arm64e, for example)
-* Uses GNU tools.
-* Updating most packages is as simple as changing the version number in its .mk file and recompiling.
+Procursus attempts to circumvent this by excluding hooking platforms or packages that provide code-injection, providing a "plug-and-play" experience for anyone who decides to use it on their specific project. In the context of iOS jailbreaks, this allows developers to provide and maintain their own hooking libraries, while we maintain core, system packages seperately.
 
-## Building
+## Features
+Here are a few changes over other existing build-systems
+- Based on Makefiles, allowing parallel package building that is much quicker while also making easier to add new packages
+- Fully open-sourced (utilizing GNU tools) and open to community contribution. See [Contributing](#Contributing)
+- No jailbreak-specific software, making it easier to implement with other projects
+- **First ever build-system** to be fully functional with one of the main 4 package managers out of the box (e.g Sileo, Zebra), making easier to switch to your prefered package manager
+- Better Obj-C implementation of ``firmware.sh`` that's not only quicker, but also based on CPU subtype (e.g ``cy.cpu.arm64e``)
 
-Building has been made to be simple, yet get the job done properly. MacOS, iOS, FreeBSD and Linux are supported build systems. FreeBSD and Linux are not, however, fully supported, and not *all* packages are compilable there; MacOS is the main system you'll want to be building with. 
-
-Supported host systems as of 06/04/2020 are iphoneos-arm64, iphoneos-arm, appletvos-arm64, watchos-arm64, and watchos-arm.
-
-|                     Requirements                                  |
-|:-----------------------------------------------------------------:|
-| Xcode + Xcode Commandline Tools + Homebrew (on macOS)             |
-| An iOS toolchain, [cctools-port](https://github.com/tpoechtrager/cctools-port) recommended (on [Linux](LINUX.md) and [FreeBSD](FreeBSD.md)) |
-| GNU make (On macOS and FreeBSD you'll have to run `gmake`)        |
-| GNU coreutils                                                     |
-| GNU findutils                                                     |
-| GNU sed (gnu-sed in Homebrew)                                     |
-| GNU tar (gnu-tar in Homebrew)                                     |
-| GNU patch (gpatch in Homebrew)                                    |
-| bash 5.0                                                          |
-| openssl                                                           |
-| gnupg                                                             |
-| ldid with sha256 hashes (ldid from Homebrew is fine)              |
-| libtoolize                                                        |
-| automake                                                          |
-| yacc, lex, groff                                                  |
-| fakeroot                                                          |
-| dpkg                                                              |
-| zstd                                                              |
-| ncurses 6                                                         |
-| wget                                                              |
-| cmake                                                             |
-| docbook-xsl                                                       |
-| python 3.9                                                        |
-On macOS, all the build requirements can be installed with the following command.
-```
-brew install make bash wget gnu-tar gnu-sed gnupg ldid cmake automake groff gpatch findutils coreutils fakeroot zstd dpkg ncurses docbook-xsl python3
-```
-
-| Supported commands    | Function                                                                                                                            |
-|:--------------------------------------:|:-------------------------------------------------------------------------------------------------------------------|
-| `make` or `make all` or `make package` | Compiles the entire Procursus suite and packs it into debian packages.                                             |
-| `make (tool)`                          | Used to compile only a specified tool.                                                                             |
-| `make (tool)-package`                  | Used to compile only a specified tool and pack it into a debian package.                                           |
-| `make rebuild-(tool)`                  | Used to recompile only a specified tool after it's already been compiled before.                                   |
-| `make rebuild-(tool)-package`          | Used to recompile only a specified tool after it's already been compiled before and pack it into a debian package. |
-| `make everything`                      | Compiles the entire Procursus suite for every supported host platform and packs it into debian packages.           |
-| `make clean`                           | Clean out $(BUILD_STAGE), $(BUILD_BASE), and $(BUILD_WORK).                                                        |
-| `make extreme-clean`                   | Resets the entire git repository.                                                                                  |
-| `make env`                             | Print the `proenv` shell function to STDOUT to give a cross-compilation environment in your POSIX shell (`make env >> ~/.zshrc`) |
-| `make (tool)-deps`                     | Print the dylibs linked by (tool)                                                                                  |
-
-There are very few variables you'll need to pay attention to/change to get building working well.
-
-| Variable       | Function                                                                                                                                                             |
-|:--------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| MEMO_TARGET    | Can be set to any of the supported host systems. Pretty self explainatory. (Defaults to darwin-arm64)                                                                |
-| MEMO_CFVER     | Used to set minimum *OS version to compile for. Use the CoreFoundation version that coresponds to the OS version you're compiling for. (Defaults to 1700 for iOS 14) |
-| NO_PGP         | Set to 1 if you want to bypass verifying tarballs with gpg. Useful if you just want a quick build without importing everyone's public keys.                          |
-| TARGET_SYSROOT | Path to your chosen iPhone SDK. (Defaults to Xcode default path on macOS and the cctools-port default path on Linux.)                                                |
-| MACOSX_SYSROOT | Path to your chosen macOS SDK. (Defaults to Xcode default path on macOS and the cctools-port default path on Linux.)                                                 |
-| BUILD_ROOT     | If you have this repo in one place, but want to build everything in a different place, set BUILD_ROOT to said different place. (Untested but should work fine.)      |
-| MEMO_QUIET     | Mute unnecessary warnings and echos.                                                                                                                                 |
-
-## Contributing and/or Issues
-
-Contributions in the form of Issues or Pull Requests are welcome with open arms. See the [CONTRIBUTING.md](https://github.com/ProcursusTeam/Procursus/blob/master/CONTRIBUTING.md).
-
-## Merchandise
-
-Procursus clothing, mugs, phone cases and more are now available here: https://procursus.creator-spring.com/
+## Contributing
+Contributions (Issues or Pull Requests) are welcome with open arms. Check out the [contribution guidelines](./CONTRIBUTING.md) before helping out.
 
 ## Credits
-
-Build system created by [Diatrus](https://twitter.com/Diatrus) and [Kirb](https://twitter.com/hbkirb). Built to be better by all our wonderful contributors. Made worth it by people like you!
+Build system created by [Diatrus](https://twitter.com/Diatrus) and [Kirb](https://twitter.com/hbkirb). Built better by all our wonderful contributors. Made worth it by people like you!

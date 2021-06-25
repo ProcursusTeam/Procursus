@@ -1,0 +1,14 @@
+Package: python3-wcwidth
+Version: @DEB_PYTHON3-WCWIDTH_V@
+Architecture: @DEB_ARCH@
+Author: Jeff Quast <contact@jeffquast.com>
+Maintainer: @DEB_MAINTAINER@
+Depends: python3
+Section: Python
+Priority: optional
+Homepage: https://pypi.python.org/pypi/wcwidth
+Description: Determine printable width of a string on a terminal.
+ wcwidth allows one to determine the printable width of a string
+ on a terminal. It provides functions similar to wcwidth(3) and
+ wcswidth(3) for Python programs. This package provides the module
+ for Python 3.
