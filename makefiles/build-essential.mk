@@ -2,8 +2,6 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-
 SUBPROJECTS += build-essential
 
 ifneq ($(wildcard $(BUILD_WORK)/build-essential/.build_complete),)
@@ -34,5 +32,3 @@ build-essential-package: build-essential-stage
 	rm -rf $(BUILD_DIST)/build-essential
 
 .PHONY: build-essential build-essential-package
-
-endif # ($(MEMO_TARGET),darwin-\*)
