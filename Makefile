@@ -637,6 +637,9 @@ PACK = if [ -z "$(4)" ]; then \
 		echo $(1) owner set within individual makefile.; \
 		fi; \
 	fi; \
+	if [ -d "$(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale" ] && [ ! "$(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d ' ')" = "gettext-localizations" ]; then \
+		rm -rf $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale/*/LC_{MONETARY,TIME,COLLATE,CTYPE,NUMERIC}; \
+	fi; \
 	SIZE=$$(du -sk $(BUILD_DIST)/$(1) | cut -f 1); \
 	mkdir -p $(BUILD_DIST)/$(1)/DEBIAN; \
 	for i in control postinst preinst postrm prerm extrainst_ conffiles; do \
