@@ -1,5 +1,5 @@
 #!/bin/sh
-if command -v gmake &> /dev/null; then
+if command -v gmake; then
 	MAKE=gmake
 else
 	MAKE=make
