@@ -1,0 +1,8 @@
+Package: libc++-11-dev
+Version: @DEB_LLVM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libllvm11
+Section: Development
+Priority: optional
+Description: LLVM C++ Standard library (development files)

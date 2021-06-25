@@ -36,7 +36,8 @@ else
 		--cross-file cross.txt \
 		..
 	+ninja -C $(BUILD_WORK)/@pkg@/build
-	+DESTDIR="$(BUILD_STAGE)/@pkg@" ninja -C $(BUILD_WORK)/@pkg@/build install
+	+ninja -C $(BUILD_WORK)/@pkg@/build install \
+		DESTDIR="$(BUILD_STAGE)/@pkg@"
 	touch $(BUILD_WORK)/@pkg@/.build_complete
 endif
 
@@ -57,4 +58,3 @@ endif
 	rm -rf $(BUILD_DIST)/@pkg@
 
 .PHONY: @pkg@ @pkg@-package
-
