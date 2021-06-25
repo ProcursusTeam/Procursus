@@ -15,21 +15,21 @@ ifneq ($(wildcard $(BUILD_WORK)/@pkg@/.build_complete),)
 @pkg@:
 	@echo "Using previously built @pkg@."
 else
-@pkg@: @pkg@-setup
-	cd $(BUILD_WORK)/@pkg@ && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py \
-		install \
-		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+@pkg@: @pkg@-setup python3
+	cd $(BUILD_WORK)/@pkg@ && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py install \
+		--install-layout=deb \
 		--root="$(BUILD_STAGE)/@pkg@" \
-		--install-layout=deb
+		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
 	find $(BUILD_STAGE)/@pkg@ -name __pycache__ -prune -exec rm -rf {} \;
 	touch $(BUILD_WORK)/@pkg@/.build_complete
 endif
+
 @pkg@-package: @pkg@-stage
 	# @pkg@.mk Package Structure
 	rm -rf $(BUILD_DIST)/@pkg@
 	
 	# @pkg@.mk Prep @pkg@
-	cp -a $(BUILD_STAGE)/@pkg@ $(BUILD_DIST)/
+	cp -a $(BUILD_STAGE)/@pkg@ $(BUILD_DIST)
 	
 	#@pkg@.mk Make .debs
 	$(call PACK,@pkg@,DEB_@PKG@_V)
