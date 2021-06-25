@@ -1,0 +1,15 @@
+#!/bin/sh
+
+if [ $1 = upgrade ]; then
+    /bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/com.mkj.dropbear.plist
+    /bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/com.mkj.dropbear.plist
+fi
+
+if [ $1 = install ]; then
+    if [ -f /binpack/Library/LaunchDaemons/dropbear.plist ]; then
+			/bin/launchctl unload /binpack/Library/LaunchDaemons/dropbear.plist
+		fi
+    /bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/com.mkj.dropbear.plist
+fi
+
+exit 0

@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+	(remove|purge)
+	/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/us.diatr.shshd.plist
+	;;
+	(*)
+	exit 0
+	;;
+esac
+
+exit 0

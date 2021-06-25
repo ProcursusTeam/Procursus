@@ -1,0 +1,10 @@
+Package: clang-tools-11
+Version: @DEB_LLVM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: clang-11, python3, libllvm11, libclang-cpp11, libclang-common-11-dev
+Section: Development
+Priority: optional
+Homepage: https://www.llvm.org/
+Description: Extra clang tools
+Tag: purpose::console, role::developer
