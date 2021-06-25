@@ -1,0 +1,12 @@
+Package: libboost-program-options1.76.0
+Version: @DEB_LIBBOOST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Description: program options library for C++
+ This package forms part of the Boost C++ Libraries collection.
+ .
+ Library to let program developers obtain program options, that is
+ (name, value) pairs from the user, via conventional methods such as
+ command line and config file.

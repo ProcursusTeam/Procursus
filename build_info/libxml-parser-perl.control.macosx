@@ -1,0 +1,25 @@
+Package: libxml-parser-perl
+Version: @DEB_LIBXML_PARSER_PERL_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: perl (>= 5.32.1)
+Section: Perl
+Homepage: https://metacpan.org/pod/XML::Parser
+Description: Perl module for parsing XML files
+ The XML::Parser module provides ways to parse XML documents.  It is built on
+ top of XML::Parser::Expat, which is a lower level interface to James Clark's
+ expat library. Each call to one of the parsing methods creates a new instance
+ of XML::Parser::Expat which is then used to parse the document. Expat options
+ may be provided when the XML::Parser object is created. These options are
+ then passed on to the Expat object on each parse call. They can also be given
+ as extra arguments to the parse methods, in which case they override options
+ given at XML::Parser creation time.
+ .
+ The behavior of the parser is controlled either by Style and/or Handlers
+ options, or by setHandlers method. These all provide mechanisms for
+ XML::Parser to set the handlers needed by XML::Parser::Expat. If neither
+ Style nor Handlers are specified, then parsing just checks the document for
+ being well-formed.
+ .
+ When underlying handlers get called, they receive as their first parameter
+ the Expat object, not the Parser object.
