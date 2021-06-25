@@ -26,6 +26,8 @@ CFVER_WHOLE          := $(shell echo $(MEMO_CFVER) | cut -d. -f1)
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1100 ] && [ "$(CFVER_WHOLE)" -lt 1200 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 8.0
 APPLETVOS_DEPLOYMENT_TARGET := XXX
+AUDIOOS_DEPLOYMENT_TARGET   := XXX
+BRIDGEOS_DEPLOYMENT_TARGET  := XXX
 WATCHOS_DEPLOYMENT_TARGET   := 1.0
 MACOSX_DEPLOYMENT_TARGET    := 10.10
 DARWIN_DEPLOYMENT_VERSION   := 14
@@ -33,6 +35,8 @@ override MEMO_CFVER         := 1100
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1200 ] && [ "$(CFVER_WHOLE)" -lt 1300 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 9.0
 APPLETVOS_DEPLOYMENT_TARGET := 9.0
+AUDIOOS_DEPLOYMENT_TARGET   := XXX
+BRIDGEOS_DEPLOYMENT_TARGET  := XXX
 WATCHOS_DEPLOYMENT_TARGET   := 2.0
 MACOSX_DEPLOYMENT_TARGET    := 10.11
 DARWIN_DEPLOYMENT_VERSION   := 15
@@ -40,6 +44,8 @@ override MEMO_CFVER         := 1200
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1300 ] && [ "$(CFVER_WHOLE)" -lt 1400 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 10.0
 APPLETVOS_DEPLOYMENT_TARGET := 10.0
+AUDIOOS_DEPLOYMENT_TARGET   := XXX
+BRIDGEOS_DEPLOYMENT_TARGET  := 1.0 # bridgeOS 1.0 is T1 only
 WATCHOS_DEPLOYMENT_TARGET   := 3.0
 MACOSX_DEPLOYMENT_TARGET    := 10.12
 DARWIN_DEPLOYMENT_VERSION   := 16
@@ -47,6 +53,8 @@ override MEMO_CFVER         := 1300
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1400 ] && [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 11.0
 APPLETVOS_DEPLOYMENT_TARGET := 11.0
+AUDIOOS_DEPLOYMENT_TARGET   := 11.0
+BRIDGEOS_DEPLOYMENT_TARGET  := 2.0
 WATCHOS_DEPLOYMENT_TARGET   := 4.0
 MACOSX_DEPLOYMENT_TARGET    := 10.13
 DARWIN_DEPLOYMENT_VERSION   := 17
@@ -54,6 +62,8 @@ override MEMO_CFVER         := 1400
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1500 ] && [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 12.0
 APPLETVOS_DEPLOYMENT_TARGET := 12.0
+AUDIOOS_DEPLOYMENT_TARGET   := 12.0
+BRIDGEOS_DEPLOYMENT_TARGET  := 3.0
 WATCHOS_DEPLOYMENT_TARGET   := 5.0
 MACOSX_DEPLOYMENT_TARGET    := 10.14
 DARWIN_DEPLOYMENT_VERSION   := 18
@@ -61,6 +71,8 @@ override MEMO_CFVER         := 1500
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 13.0
 APPLETVOS_DEPLOYMENT_TARGET := 13.0
+AUDIOOS_DEPLOYMENT_TARGET   := 13.0
+BRIDGEOS_DEPLOYMENT_TARGET  := 4.0
 WATCHOS_DEPLOYMENT_TARGET   := 6.0
 MACOSX_DEPLOYMENT_TARGET    := 10.15
 DARWIN_DEPLOYMENT_VERSION   := 19
@@ -68,6 +80,8 @@ override MEMO_CFVER         := 1600
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1700 ] && [ "$(CFVER_WHOLE)" -lt 1800 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 14.0
 APPLETVOS_DEPLOYMENT_TARGET := 14.0
+AUDIOOS_DEPLOYMENT_TARGET   := 14.0
+BRIDGEOS_DEPLOYMENT_TARGET  := 5.0
 WATCHOS_DEPLOYMENT_TARGET   := 7.0
 MACOSX_DEPLOYMENT_TARGET    := 11.0
 DARWIN_DEPLOYMENT_VERSION   := 20
@@ -76,6 +90,8 @@ override MEMO_CFVER         := 1700
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1800 ] && [ "$(CFVER_WHOLE)" -lt 1900 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 15.0
 APPLETVOS_DEPLOYMENT_TARGET := 15.0
+AUDIOOS_DEPLOYMENT_TARGET  := 15.0
+BRIDGEOS_DEPLOYMENT_TARGET  := 6.0
 WATCHOS_DEPLOYMENT_TARGET   := 8.0
 MACOSX_DEPLOYMENT_TARGET    := 12.0
 DARWIN_DEPLOYMENT_VERSION   := 21
@@ -106,6 +122,25 @@ ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
 BARE_PLATFORM        := iPhoneOS
 export IPHONEOS_DEPLOYMENT_TARGET
 
+else ifeq ($(MEMO_TARGET),iphoneos-arm64e)
+ifneq ($(MEMO_QUIET),1)
+$(warning Building for iOS arm64e)
+endif # ($(MEMO_QUIET),1)
+MEMO_ARCH            := arm64e
+PLATFORM             := iphoneos
+DEB_ARCH             := iphoneos-arm64e
+GNU_HOST_TRIPLE      := aarch64-apple-darwin
+PLATFORM_VERSION_MIN := -miphoneos-version-min=$(IPHONEOS_DEPLOYMENT_TARGET)
+RUST_TARGET          := aarch64-apple-ios
+LLVM_TARGET          := arm64e-apple-ios$(IPHONEOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX          ?=
+MEMO_SUB_PREFIX      ?= /usr
+MEMO_ALT_PREFIX      ?= /local
+GNU_PREFIX           :=
+ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
+BARE_PLATFORM        := iPhoneOS
+export IPHONEOS_DEPLOYMENT_TARGET
+
 else ifeq ($(MEMO_TARGET),appletvos-arm64)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for tvOS)
@@ -124,6 +159,63 @@ GNU_PREFIX           :=
 ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
 BARE_PLATFORM        := AppleTVOS
 export APPLETVOS_DEPLOYMENT_TARGET
+
+else ifeq ($(MEMO_TARGET),appletvos-arm64e)
+ifneq ($(MEMO_QUIET),1)
+$(warning Building for tvOS arm64e)
+endif # ($(MEMO_QUIET),1)
+MEMO_ARCH            := arm64e
+PLATFORM             := appletvos
+DEB_ARCH             := appletvos-arm64e
+GNU_HOST_TRIPLE      := aarch64-apple-darwin
+PLATFORM_VERSION_MIN := -mappletvos-version-min=$(APPLETVOS_DEPLOYMENT_TARGET)
+RUST_TARGET          := aarch64-apple-tvos
+LLVM_TARGET          := arm64e-apple-tvos$(APPLETVOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX          ?=
+MEMO_SUB_PREFIX      ?= /usr
+MEMO_ALT_PREFIX      ?= /local
+GNU_PREFIX           :=
+ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
+BARE_PLATFORM        := AppleTVOS
+export APPLETVOS_DEPLOYMENT_TARGET
+
+else ifeq ($(MEMO_TARGET),audioos-arm64)
+ifneq ($(MEMO_QUIET),1)
+$(warning Building for audioOS)
+endif # ($(MEMO_QUIET),1)
+MEMO_ARCH            := arm64
+PLATFORM             := appletvos # Platform-wise, audioos ~ appletvos (although some frameworks and stuff may be missing)
+DEB_ARCH             := audioos-arm64
+GNU_HOST_TRIPLE      := aarch64-apple-darwin
+PLATFORM_VERSION_MIN := -mappletvos-version-min=$(APPLETVOS_DEPLOYMENT_TARGET)
+RUST_TARGET          := aarch64-apple-tvos
+LLVM_TARGET          := arm64-apple-tvos$(APPLETVOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX          ?=
+MEMO_SUB_PREFIX      ?= /usr
+MEMO_ALT_PREFIX      ?= /local
+GNU_PREFIX           :=
+ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
+BARE_PLATFORM        := AppleTVOS
+export AUDIOOS_DEPLOYMENT_TARGET
+
+else ifeq ($(MEMO_TARGET),bridgeos-arm64)
+ifneq ($(MEMO_QUIET),1)
+$(warning Building for BridgeOS)
+endif # ($(MEMO_QUIET),1)
+MEMO_ARCH            := arm64
+PLATFORM             := iphoneos # find me a BridgeOS.sdk and you win.
+DEB_ARCH             := bridgeos-arm64
+GNU_HOST_TRIPLE      := aarch64-apple-darwin
+PLATFORM_VERSION_MIN := --target=arm64-apple-bridgeos$(BRIDGEOS_DEPLOYMENT_TARGET)
+RUST_TARGET          := aarch64-apple-bridgeos
+LLVM_TARGET          := arm64-apple-bridgeos$(BRIDGEOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX          ?=
+MEMO_SUB_PREFIX      ?= /usr
+MEMO_ALT_PREFIX      ?= /local
+GNU_PREFIX           :=
+ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/BridgeOS.sdk
+BARE_PLATFORM        := BridgeOS
+export BRIDGEOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),watchos-arm64_32)
 ifneq ($(MEMO_QUIET),1)
@@ -358,6 +450,11 @@ CPPFLAGS            := -arch $(MEMO_ARCH) $(PLATFORM_VERSION_MIN) -isysroot $(TA
 LDFLAGS             := $(OPTIMIZATION_FLAGS) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)$(MEMO_PREFIX)/Library/Frameworks
 PKG_CONFIG_PATH     :=
 ACLOCAL_PATH        := $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal
+
+ifeq ($(MEMO_TARGET),bridgeos-arm64)
+CFLAGS              += -Wno-incompatible-sysroot
+CXXFLAGS            += -Wno-incompatible-sysroot
+endif
 
 # Link everything to libiosexec, as it's preinstalled on every Procursus system.
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
