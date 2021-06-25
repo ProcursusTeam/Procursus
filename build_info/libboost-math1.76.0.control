@@ -1,0 +1,19 @@
+Package: libboost-math1.76.0
+Version: @DEB_LIBBOOST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Description: Boost.Math Library
+ This package forms part of the Boost C++ Libraries collection.
+ .
+ This library is divided into three interconnected parts:
+  * Statistical Distributions: Provides a reasonably comprehensive set of
+    statistical distributions, upon which higher level statistical tests
+    can be built.
+  * Mathematical Special Functions: Provides a small number of high quality
+    special functions, initially these were concentrated on functions used in
+    statistical applications along with those in the Technical Report on
+    C++ Library Extensions.
+  * Implementation Toolkit: Provides many of the tools required to implement
+    mathematical special functions.

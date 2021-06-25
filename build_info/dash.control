@@ -4,7 +4,7 @@ Version: @DEB_DASH_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Pre-Depends: debianutils (>= 4.11.2)
-Depends: libedit0, debianutils (>= 4.11.2)
+Depends: debianutils (>= 4.11.2), libedit0, libiosexec1
 Provides: sh
 Section: Terminal_Support
 Priority: required

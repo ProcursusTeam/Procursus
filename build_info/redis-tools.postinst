@@ -20,8 +20,8 @@ Setup_dir () {
 
 if [ "$1" = "configure" ]
 then
-	pw groupadd -n ${USER} &>/dev/null || true
-	pw useradd -n ${USER} -d @MEMO_PREFIX@/var/lib/redis -g ${USER} -s @MEMO_PREFIX@@MEMO_SUB_PREFIX@/sbin/nologin &>/dev/null || true
+	pw groupadd -n ${USER} >/dev/null 2>&1 || true
+	pw useradd -n ${USER} -d @MEMO_PREFIX@/var/lib/redis -g ${USER} -s @MEMO_PREFIX@@MEMO_SUB_PREFIX@/sbin/nologin >/dev/null 2>&1 || true
 
 	#Setup_dir @MEMO_PREFIX@/var/log/redis 2750 adm
 	Setup_dir @MEMO_PREFIX@/var/lib/redis 750 ${USER}

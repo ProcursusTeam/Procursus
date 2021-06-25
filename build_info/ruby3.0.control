@@ -2,7 +2,7 @@ Package: ruby3.0
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_RUBY_V@
-Depends: libruby3.0 (= @DEB_RUBY_V@), libjemalloc2, libgmp10, libcrypt2
+Depends: libruby3.0 (= @DEB_RUBY_V@), libjemalloc2, libgmp10, libcrypt2, libiosexec1
 Section: Scripting
 Priority: optional
 Description: Interpreter of object-oriented scripting language Ruby

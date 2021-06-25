@@ -2,7 +2,7 @@ Package: libcairo2
 Version: @DEB_CAIRO_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libfontconfig1, libfreetype6, libpng16-16, libpixman-1-0
+Depends: libfontconfig1, libfreetype6, libpng16-16, libpixman-1-0, libx11-6, libxext6, libxcb-shm0, libxcb1, libxcb-render0, libxrender1
 Section: Libraries
 Priority: optional
 Description: Cairo 2D vector graphics library

@@ -4,7 +4,7 @@ Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_DIMENTIO_V@
 Depends: libdimentio0
-Conflicts: com.michael.dimentio, com.kasiimh1.dimentio
+Conflicts: com.michael.dimentio, com.kasiimh1.dimentio, com.0x7ff.dimentio
 Section: Development
 Priority: optional
 Description: PoC tool for setting nonce without triggering KPP/KTRR/PAC. (Development files)
