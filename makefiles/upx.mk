@@ -25,8 +25,8 @@ upx: upx-setup ucl
 		UPX_LZMA_VERSION=0x465 \
 		all
 	+$(MAKE) -C $(BUILD_WORK)/upx all
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/upx/src/upx.out $(BUILD_STAGE)/upx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/upx-ucl
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/upx/doc/upx.1 $(BUILD_STAGE)/upx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/upx-ucl.1
+	$(INSTALL) -Dm755 $(BUILD_WORK)/upx/src/upx.out $(BUILD_STAGE)/upx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/upx-ucl
+	$(INSTALL) -Dm644 $(BUILD_WORK)/upx/doc/upx.1 $(BUILD_STAGE)/upx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/upx-ucl.1
 	touch $(BUILD_WORK)/upx/.build_complete
 endif
 

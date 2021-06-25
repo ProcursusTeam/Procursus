@@ -20,8 +20,8 @@ bottom: bottom-setup
 	cd $(BUILD_WORK)/bottom && $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \
 		--target=$(RUST_TARGET)
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/bottom/target/$(RUST_TARGET)/release/bottomify \
-		$(BUILD_STAGE)/bottom/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bottom
+	$(INSTALL) -Dm755 $(BUILD_WORK)/bottom/target/$(RUST_TARGET)/release/bottomify \
+		$(BUILD_STAGE)/bottom/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bottomify
 	touch $(BUILD_WORK)/bottom/.build_complete
 endif
 

@@ -24,7 +24,7 @@ libcrack: libcrack-setup gettext
 	+$(MAKE) -C $(BUILD_WORK)/libcrack
 	+$(MAKE) -C $(BUILD_WORK)/libcrack install \
 		DESTDIR=$(BUILD_STAGE)/libcrack
-	$(GINSTALL) -Dm 644 $(BUILD_WORK)/libcrack/dicts/libcrack-words -t "$(BUILD_STAGE)/libcrack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/libcrack"
+	$(INSTALL) -Dm 644 $(BUILD_WORK)/libcrack/dicts/libcrack-words -t "$(BUILD_STAGE)/libcrack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/libcrack"
 	touch $(BUILD_WORK)/libcrack/.build_complete
 endif
 

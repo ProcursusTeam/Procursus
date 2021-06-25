@@ -19,7 +19,7 @@ else
 debootstrap: debootstrap-setup
 	+$(MAKE) -C $(BUILD_WORK)/debootstrap install \
 		DESTDIR=$(BUILD_STAGE)/debootstrap
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/debootstrap/debootstrap.8 \
+	$(INSTALL) -Dm644 $(BUILD_WORK)/debootstrap/debootstrap.8 \
 		$(BUILD_STAGE)/debootstrap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/debootstrap.8
 	touch $(BUILD_WORK)/debootstrap/.build_complete
 endif
