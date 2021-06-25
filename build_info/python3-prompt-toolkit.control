@@ -3,6 +3,7 @@ Version: @DEB_PYTHON3-PROMPT-TOOLKIT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: python3, python3-wcwidth
+Recommends: python3-pygments
 Section: Python
 Priority: optional
 Homepage: https://github.com/prompt-toolkit/python-prompt-toolkit
