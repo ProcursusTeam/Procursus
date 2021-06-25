@@ -2,7 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+ifneq (,$(findstring bridgeos,$(MEMO_TARGET)))
+SUBPROJECTS        += uikittools
+else ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS      += uikittools
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS        += uikittools
