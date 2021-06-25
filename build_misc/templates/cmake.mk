@@ -7,7 +7,7 @@ SUBPROJECTS   += @pkg@
 DEB_@PKG@_V   ?= $(@PKG@_VERSION)
 
 @pkg@-setup: setup
-	@download@
+@download@
 	$(call EXTRACT_TAR,@pkg@-$(@PKG@_VERSION).tar.gz,@pkg@-$(@PKG@_VERSION),@pkg@)
 	$(call DO_PATCH,@pkg@,@pkg@,-p1)
 	mkdir -p $(BUILD_WORK)/@pkg@/build
@@ -31,7 +31,7 @@ endif
 	rm -rf $(BUILD_DIST)/@pkg@
 	
 	# @pkg@.mk Prep @pkg@
-	cp -a $(BUILD_STAGE)/@pkg@ $(BUILD_DIST)/@pkg@
+	cp -a $(BUILD_STAGE)/@pkg@ $(BUILD_DIST)
 	
 	# @pkg@.mk Sign
 	$(call SIGN,@pkg@,general.xml)
