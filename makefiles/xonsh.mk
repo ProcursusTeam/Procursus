@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS   += xonsh
 XONSH_VERSION := 0.9.27
-DEB_XONSH_V   ?= $(XONSH_VERSION)-1
+DEB_XONSH_V   ?= $(XONSH_VERSION)-2
 
 xonsh-setup: setup
 	# Download main branch instead of tag for 0.9.27
@@ -16,7 +16,7 @@ ifneq ($(wildcard $(BUILD_WORK)/xonsh/.build_complete),)
 xonsh:
 	@echo "Using previously built xonsh."
 else
-xonsh: xonsh-setup python3
+xonsh: xonsh-setup python3-prompt-toolkit
 	cd $(BUILD_WORK)/xonsh && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py install \
 		--install-layout=deb \
 		--root=$(BUILD_STAGE)/xonsh \
