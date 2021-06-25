@@ -38,8 +38,8 @@ redis: redis-setup libjemalloc openssl
 		USE_SYSTEM_LUA=no \
 		install
 
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/redis/redis.conf $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/etc/redis/redis.conf
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/redis/sentinel.conf $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/etc/redis/sentinel.conf
+	$(INSTALL) -Dm644 $(BUILD_WORK)/redis/redis.conf $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/etc/redis/redis.conf
+	$(INSTALL) -Dm644 $(BUILD_WORK)/redis/sentinel.conf $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/etc/redis/sentinel.conf
 
 	mkdir -p $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons
 	cp -a $(BUILD_MISC)/redis/*.plist $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons

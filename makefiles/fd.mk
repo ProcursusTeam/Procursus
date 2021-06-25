@@ -19,8 +19,8 @@ fd: fd-setup
 	cd $(BUILD_WORK)/fd && $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \
 		--target=$(RUST_TARGET)
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/fd/target/$(RUST_TARGET)/release/fd $(BUILD_STAGE)/fd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/fd
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/fd/target/$(RUST_TARGET)/release/build/fd-find-*/out/fd.bash $(BUILD_STAGE)/fd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/fd
+	$(INSTALL) -Dm755 $(BUILD_WORK)/fd/target/$(RUST_TARGET)/release/fd $(BUILD_STAGE)/fd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/fd
+	$(INSTALL) -Dm644 $(BUILD_WORK)/fd/target/$(RUST_TARGET)/release/build/fd-find-*/out/fd.bash $(BUILD_STAGE)/fd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/fd
 	touch $(BUILD_WORK)/fd/.build_complete
 endif
 

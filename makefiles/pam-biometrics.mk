@@ -19,7 +19,7 @@ pam-biometrics:
 else
 pam-biometrics: pam-biometrics-setup openpam
 	+$(MAKE) -C $(BUILD_WORK)/pam-biometrics all
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/pam-biometrics/pam_biometrics.so $(BUILD_STAGE)/pam-biometrics/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pam
+	$(INSTALL) -Dm755 $(BUILD_WORK)/pam-biometrics/pam_biometrics.so $(BUILD_STAGE)/pam-biometrics/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pam
 	wget -q -O$(BUILD_STAGE)/pam-biometrics/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/pam_biometrics.8 https://gist.githubusercontent.com/1Conan/992efca8fb1ac1551432b7a744817faf/raw/b304293cd378aefbcceb22d427794f2777f09088/pam-biometrics.8.txt
 	ln -s pam_biometrics.so $(BUILD_STAGE)/pam-biometrics/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pam/pam-biometrics.so
 	# Leave the above symlink for compatibility with a messup I originally made when pushing this.

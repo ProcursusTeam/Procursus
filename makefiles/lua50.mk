@@ -67,13 +67,13 @@ lua50-package: lua50-stage
 		$(BUILD_DIST)/liblua{,lib}50{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# lua50.mk Prep lua50
-	$(GINSTALL) -Dm755 $(BUILD_STAGE)/lua50/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lua $(BUILD_DIST)/lua50/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lua50
-	$(GINSTALL) -Dm755 $(BUILD_STAGE)/lua50/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/luac $(BUILD_DIST)/lua50/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/luac50
-	$(GINSTALL) -Dm644 $(BUILD_STAGE)/lua50/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/lua.1 $(BUILD_DIST)/lua50/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/lua50.1
-	$(GINSTALL) -Dm644 $(BUILD_STAGE)/lua50/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/luac.1 $(BUILD_DIST)/lua50/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/luac50.1
+	$(INSTALL) -Dm755 $(BUILD_STAGE)/lua50/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lua $(BUILD_DIST)/lua50/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lua50
+	$(INSTALL) -Dm755 $(BUILD_STAGE)/lua50/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/luac $(BUILD_DIST)/lua50/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/luac50
+	$(INSTALL) -Dm644 $(BUILD_STAGE)/lua50/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/lua.1 $(BUILD_DIST)/lua50/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/lua50.1
+	$(INSTALL) -Dm644 $(BUILD_STAGE)/lua50/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/luac.1 $(BUILD_DIST)/lua50/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/luac50.1
 
 	# lua50.mk Prep liblua50
-	$(GINSTALL) -Dm755 $(BUILD_STAGE)/lua50/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua50.5.0.dylib \
+	$(INSTALL) -Dm755 $(BUILD_STAGE)/lua50/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua50.5.0.dylib \
 		$(BUILD_STAGE)/lua50/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua50.5.dylib \
 		$(BUILD_DIST)/liblua50/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 
@@ -83,7 +83,7 @@ lua50-package: lua50-stage
 	cp -a $(BUILD_STAGE)/lua50/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua50.dylib $(BUILD_DIST)/liblua50-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# lua50.mk Prep liblualib50
-	$(GINSTALL) -Dm755 $(BUILD_STAGE)/lua50/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblualib50.5.0.dylib \
+	$(INSTALL) -Dm755 $(BUILD_STAGE)/lua50/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblualib50.5.0.dylib \
 		$(BUILD_STAGE)/lua50/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblualib50.5.dylib \
 		$(BUILD_DIST)/liblualib50/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 

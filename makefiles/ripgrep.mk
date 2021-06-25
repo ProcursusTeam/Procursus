@@ -19,9 +19,9 @@ ripgrep: ripgrep-setup pcre2
 		--release \
 		--target=$(RUST_TARGET) \
 		--features pcre2
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/ripgrep/target/$(RUST_TARGET)/release/rg $(BUILD_STAGE)/ripgrep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/rg
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/ripgrep/complete/_rg $(BUILD_STAGE)/ripgrep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/site-functions/_rg
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/ripgrep/target/$(RUST_TARGET)/release/build/ripgrep-*/out/rg.bash $(BUILD_STAGE)/ripgrep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/rg
+	$(INSTALL) -Dm755 $(BUILD_WORK)/ripgrep/target/$(RUST_TARGET)/release/rg $(BUILD_STAGE)/ripgrep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/rg
+	$(INSTALL) -Dm644 $(BUILD_WORK)/ripgrep/complete/_rg $(BUILD_STAGE)/ripgrep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/site-functions/_rg
+	$(INSTALL) -Dm644 $(BUILD_WORK)/ripgrep/target/$(RUST_TARGET)/release/build/ripgrep-*/out/rg.bash $(BUILD_STAGE)/ripgrep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/rg
 	touch $(BUILD_WORK)/ripgrep/.build_complete
 endif
 
