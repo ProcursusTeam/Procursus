@@ -4,7 +4,7 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Games
 Priority: optional
-Depends: fortune-mod (= @DEB_FORTUNE-MOD_V@), fortunes (= @DEB_FORTUNE-MOD_V@)
+Depends: fortunes (= @DEB_FORTUNE-MOD_V@)
 Description: Data files containing offensive fortune cookies
  The fortune program displays epigrams, known as fortune cookies,
  selected randomly from a selection of fortune files.

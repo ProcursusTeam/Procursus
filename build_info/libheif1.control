@@ -10,4 +10,4 @@ Description: ISO/IEC 23008-12:2017 HEIF file format decoder - shared library
  ratios currently possible.
  .
  This package contains the shared library.
-Depends: libx265-192, libaom2, libde265-0, librav1e0, libdav1d5
+Depends: libx265-199, libaom3, libde265-0, librav1e0, libdav1d5
