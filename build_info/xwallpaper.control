@@ -1,0 +1,15 @@
+Package: xwallpaper
+Version: @DEB_XWALLPAPER_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libjpeg62-turbo, libpixman-1-0, libpng16-16, libx11-6, libxcb-image0, libxcb-randr0, libxcb-shm0, libxcb-util1, libxcb1, libxpm4
+Section: X11
+Priority: optional
+Homepage: https://github.com/stoeckmann/xwallpaper
+Description: utility for setting image files as X wallpaper
+ The xwallpaper utility allows you to set image files as your X wallpaper.
+ JPEG, PNG, and XPM file formats are supported, all of them being configurable
+ and therefore no fixed dependencies.
+ .
+ The wallpaper is also advertised to programs which support semi-transparent
+ backgrounds.

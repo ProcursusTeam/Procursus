@@ -1,0 +1,33 @@
+#!/bin/sh
+
+set -eu
+
+USER="redis"
+
+Setup_dir () {
+	DIR="${1}"
+	MODE="${2}"
+	GROUP="${3}"
+
+	mkdir -p ${DIR}
+
+	if ! @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/dpkg-statoverride --list ${DIR} >/dev/null 2>&1
+	then
+		chown ${USER}:${GROUP} ${DIR}
+		chmod ${MODE} ${DIR}
+	fi
+}
+
+if [ "$1" = "configure" ]
+then
+	pw groupadd -n ${USER} >/dev/null 2>&1 || true
+	pw useradd -n ${USER} -d @MEMO_PREFIX@/var/lib/redis -g ${USER} -s @MEMO_PREFIX@@MEMO_SUB_PREFIX@/sbin/nologin >/dev/null 2>&1 || true
+
+	#Setup_dir @MEMO_PREFIX@/var/log/redis 2750 adm
+	Setup_dir @MEMO_PREFIX@/var/lib/redis 750 ${USER}
+	Setup_dir @MEMO_PREFIX@/etc/redis 2770 ${USER}
+fi
+
+#DEBHELPER#
+
+exit 0

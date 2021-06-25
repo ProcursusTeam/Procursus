@@ -1,0 +1,10 @@
+Package: joe
+Version: @DEB_JOE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libncursesw6
+Section: Text_Editors
+Priority: optional
+Homepage: https://www.joe-editor.sourceforge.io/
+Description: Joe's Own Editor.
+ JOE is a full, terminal-based, feature rich screen editor that comes with many Linux distributions.

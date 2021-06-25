@@ -1,0 +1,12 @@
+Package: tcsh
+Version: @DEB_TCSH_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libiosexec1, libncursesw6
+Section: Terminal_Support
+Priority: optional
+Homepage: http://www.tcsh.org/
+Description: TENEX C Shell, an enhanced version of Berkeley csh
+ The TENEX C Shell is an enhanced version of the Berkeley Unix C shell.
+ It includes all features of 4.4BSD C shell, plus a command-line editor,
+ programmable word completion, spelling correction and more.
