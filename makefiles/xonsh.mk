@@ -3,14 +3,13 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += xonsh
-XONSH_VERSION := 0.9.27
-DEB_XONSH_V   ?= $(XONSH_VERSION)-2
+XONSH_COMMIT  := 86f02c034182e2c7211036f1bba0a460df909e77
+XONSH_VERSION := 0.9.27+git20210624.$(shell echo $(XONSH_COMMIT) | cut -c -7)
+DEB_XONSH_V   ?= $(XONSH_VERSION)
 
 xonsh-setup: setup
-	# Download main branch instead of tag for 0.9.27
-	# Versions were not changed before making the version tag.
-	$(call GITHUB_ARCHIVE,xonsh,xonsh,$(XONSH_VERSION),main)
-	$(call EXTRACT_TAR,xonsh-$(XONSH_VERSION).tar.gz,xonsh-main,xonsh)
+	$(call GITHUB_ARCHIVE,xonsh,xonsh,$(XONSH_COMMIT),$(XONSH_COMMIT))
+	$(call EXTRACT_TAR,xonsh-$(XONSH_COMMIT).tar.gz,xonsh-$(XONSH_COMMIT),xonsh)
 
 ifneq ($(wildcard $(BUILD_WORK)/xonsh/.build_complete),)
 xonsh:
