@@ -1,0 +1,15 @@
+Package: libzmq5
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBZMQ_V@
+Depends: libsodium23
+Section: Libraries
+Description: lightweight messaging kernel (shared library)
+ ØMQ is a library which extends the standard socket interfaces with features
+ traditionally provided by specialised messaging middleware products.
+ .
+ ØMQ sockets provide an abstraction of asynchronous message queues, multiple
+ messaging patterns, message filtering (subscriptions), seamless access to
+ multiple transport protocols and more.
+ .
+ This package contains the libzmq shared library.

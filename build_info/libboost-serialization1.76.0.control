@@ -1,0 +1,20 @@
+Package: libboost-serialization1.76.0
+Version: @DEB_LIBBOOST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Description: serialization library for C++
+ This package forms part of the Boost C++ Libraries collection,
+ containing the following functionalities:
+ .
+  * proper restoration of pointers to shared data
+  * serialization of STL containers and other commonly used templates
+  * data portability - streams of bytes created on one platform should
+    be readable on any other
+  * archive interface must be rich enough to permit the creation of an
+    archive that presents serialized data as XML in a useful manner
+ .
+ Here, "serialization" means the reversible deconstruction of an
+ arbitrary set of C++ data structures to a sequence of bytes.
+ archive: to refer to a specific rendering of this stream of bytes.

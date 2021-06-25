@@ -1,0 +1,2 @@
+#!/bin/sh
+rm -rf @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/wptc-track/2020
