@@ -1,6 +1,9 @@
 name: Documentation
 
-on: [push]
+on:
+  push:
+    paths:
+      - 'docs/**'
 
 jobs:
   build:
