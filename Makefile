@@ -832,7 +832,7 @@ proenv:
 env:
 	env
 
-include *.mk
+include makefiles/*.mk
 
 package:: $(SUBPROJECTS:%=%-package)
 
