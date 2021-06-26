@@ -1102,6 +1102,6 @@ clean::
 	rm -rf $(BUILD_ROOT)/build_{base,stage,work}
 
 extreme-clean: clean
-	rm -rf $(BUILD_ROOT)/build_dist
+	rm -rf $(BUILD_ROOT)/build_{source,strap,dist}
 
 .PHONY: clean setup
