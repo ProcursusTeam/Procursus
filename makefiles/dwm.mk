@@ -9,14 +9,7 @@ DEB_DWM_V   ?= $(DWM_VERSION)
 dwm-setup: setup
 	wget -q -nc -P$(BUILD_SOURCE) https://dl.suckless.org/dwm/dwm-6.2.tar.gz
 	$(call EXTRACT_TAR,dwm-$(DWM_VERSION).tar.gz,dwm-$(DWM_VERSION),dwm)
-	$(SED) -i 's@/usr/local@$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)@g' $(BUILD_WORK)/dwm/config.mk
-	$(SED) -i 's@cc@$(CC)@g' $(BUILD_WORK)/dwm/config.mk
-	$(SED) -i 's@/usr/include@$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include@g' $(BUILD_WORK)/dwm/config.mk
-	$(SED) -i 's@/usr/X11R6/include@$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include@g' $(BUILD_WORK)/dwm/config.mk
-	$(SED) -i 's@/usr/X11R6/lib@$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib@g' $(BUILD_WORK)/dwm/config.mk
-	$(SED) -i 's@snprintf@// snprintf@g' $(BUILD_WORK)/dwm/dwm.c
-	$(SED) -i '3 a #include <TargetConditionals.h>' $(BUILD_WORK)/dwm/drw.c $(BUILD_WORK)/dwm/dwm.c
-	$(SED) -i 's/{ "st", NULL };/{ "xterm", "-bg", "black", "-fg", "lightgray", NULL };/g' $(BUILD_WORK)/dwm/config.def.h
+	$(call DO_PATCH,dwm,dwm,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/dwm/.build_complete),)
 dwm:
