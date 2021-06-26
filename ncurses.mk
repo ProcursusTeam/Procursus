@@ -87,6 +87,11 @@ ncurses: ncurses-setup
 		$(SED) -i '/Libs:/c\Libs: -l'$${pc}'' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/$${pc}.pc; \
 	done
 
+	for file in form menu ncurses panel; do \
+		ln -sf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/lib$${file}w.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/lib$${file}.dylib; \
+	done
+	ln -sf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcurses.dylib
+
 	touch $(BUILD_WORK)/ncurses/.build_complete
 endif
 
