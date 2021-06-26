@@ -1,15 +1,26 @@
 --- !tapi-tbd
 tbd-version:     4
-targets:         [ arm64-ios ]
+targets:         [ arm64-ios, arm64e-ios, arm64-tvos, arm64e-tvos, arm64_32-watchos, arm64-bridgeos ]
 uuids:
   - target:          arm64-ios
     value:           7A1C6C19-AE18-3E3E-A149-A9B76BB01511
+  - target:          arm64e-ios
+    value:           951F8D5A-D4B0-11EB-9A25-CF9B44946910
+  - target:          arm64-tvos
+    value:           159623A0-A465-4E2E-A3E7-DF02522C87FD
+  - target:          arm64e-tvos
+    value:           C7E8A870-D4B0-11EB-A42F-D3AE38031A24
+  - target:          arm64_32-watchos
+    value:           C56699DC-54CF-4191-9C7B-9C13927883B3
+  - target:          arm64-bridgeos
+    value:           AC079058-D4B0-11EB-A862-63D08897B634
+
 flags:           [ not_app_extension_safe ]
 install-name:    '/usr/lib/libiosexec.1.dylib'
 current-version: 0
 compatibility-version: 0
 exports:
-  - targets:         [ arm64-ios ]
+  - targets:         [ arm64-ios, arm64e-ios, arm64-tvos, arm64e-tvos, arm64_32-watchos, arm64-bridgeos ]
     symbols:         [ _ie_execl, _ie_execle, _ie_execlp, _ie_execv, _ie_execve, 
                        _ie_execvp, _ie_execvpe ]
 ...
