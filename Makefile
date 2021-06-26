@@ -90,7 +90,7 @@ override MEMO_CFVER         := 1700
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1800 ] && [ "$(CFVER_WHOLE)" -lt 1900 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 15.0
 APPLETVOS_DEPLOYMENT_TARGET := 15.0
-AUDIOOS_DEPLOYMENT_TARGET  := 15.0
+AUDIOOS_DEPLOYMENT_TARGET   := 15.0
 BRIDGEOS_DEPLOYMENT_TARGET  := 6.0
 WATCHOS_DEPLOYMENT_TARGET   := 8.0
 MACOSX_DEPLOYMENT_TARGET    := 12.0
@@ -428,6 +428,8 @@ BUILD_TOOLS    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/bui
 
 ifeq ($(DEBUG),1)
 OPTIMIZATION_FLAGS := -g -O0
+else ifeq ($(MEMO_TARGET),bridgeos-arm64)
+OPTIMIZATION_FLAGS := -Oz
 else
 OPTIMIZATION_FLAGS := -Os
 ifeq ($(UNAME),Darwin)
