@@ -77,4 +77,4 @@ pojavlauncher-package: pojavlauncher-stage
 
 endif # ($(filter $(shell uname -m | cut -c -4), iPad iPho),)
 endif # ($(UNAME),Darwin)
-endif # ($(MEMO_TARGET),iphoneos-arm64)
+endif # (,$(findstring iphoneos,$(MEMO_TARGET)))
