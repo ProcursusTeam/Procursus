@@ -33,10 +33,12 @@ pojavlauncher: pojavlauncher-setup
 			mkdir -p build; \
 			cd build; \
 			wget https://github.com/leetal/ios-cmake/raw/master/ios.toolchain.cmake; \
-			cmake .. -G Xcode -DDEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET) -DCMAKE_TOOLCHAIN_FILE=ios.toolchain.cmake -DPLATFORM=OS64 -DENABLE_BITCODE=FALSE -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED="NO" -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY=""; \
+			cmake .. -G Xcode -DCMAKE_TOOLCHAIN_FILE=ios.toolchain.cmake -DDEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET) -DENABLE_ARC=TRUE -DENABLE_VISIBILITY=FALSE -DPLATFORM=OS64 -DENABLE_BITCODE=FALSE -DENABLE_STRICT_TRY_COMPILE=FALSE -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED="NO" -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY=""; \
 			cmake --build . --config Release --target pojavexec PojavLauncher; \
 			cd ../..; \
 			mkdir -p Natives/build/Release-iphoneos/PojavLauncher.app/Base.lproj; \
+			/Applications/Xcode.app/Contents/Developer/usr/bin/actool Natives/Assets.xcassets --compile Natives/resources --platform iphoneos --minimum-deployment-target $(IPHONEOS_DEPLOYMENT_TARGET) --app-icon AppIcon --output-partial-info-plist /dev/null; \
+			ibtool --compile Natives/build/Release-iphoneos/PojavLauncher.app/Base.lproj/LaunchScreen.storyboardc Natives/en.lproj/LaunchScreen.storyboard; \
 			ibtool --compile Natives/build/Release-iphoneos/PojavLauncher.app/Base.lproj/MinecraftSurface.storyboardc Natives/en.lproj/MinecraftSurface.storyboard; \
 			mkdir -p Natives/build/Release-iphoneos/PojavLauncher.app/Frameworks; \
 			cp Natives/build/Release-iphoneos/libpojavexec.dylib Natives/build/Release-iphoneos/PojavLauncher.app/Frameworks/; \
