@@ -1,0 +1,9 @@
+Package: libxo0
+Version: @DEB_LIBXO_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Homepage: https://github.com/Juniper/libxo
+Section: Libraries
+Priority: optional
+Depends: libintl8
+Description: The Easy Way to Generate text, XML, JSON, and HTML output

@@ -1,7 +1,0 @@
-Package: libboost-container1.74.0
-Version: @DEB_LIBBOOST_V@
-Architecture: @DEB_ARCH@
-Maintainer: @DEB_MAINTAINER@
-Section: Libraries
-Priority: optional
-Description: C++ library that implements several well-known containers
