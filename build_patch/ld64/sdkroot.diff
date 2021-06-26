@@ -1,0 +1,33 @@
+diff -urN ld64/src/ld/Options.cpp ld64/src/ld/Options.cpp
+--- ld64/src/ld/Options.cpp	2021-04-08 14:09:45.000000000 -0400
++++ ld64/src/ld/Options.cpp	2021-06-24 03:06:15.000000000 -0400
+@@ -4394,6 +4394,11 @@
+ 		else {
+ 			libraryPaths.push_back("/usr/lib");
+ 			libraryPaths.push_back("/usr/local/lib");
++
++            if ( fSDKPaths.size() == 0 ) {
++                libraryPaths.push_back("@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/@BARE_PLATFORM@.sdk/usr/lib");
++                frameworkPaths.push_back("@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/@BARE_PLATFORM@.sdk/System/Library/Frameworks/");
++            }
+
+ 			frameworkPaths.push_back("/Library/Frameworks/");
+ 			frameworkPaths.push_back("/System/Library/Frameworks/");
+@@ -4454,7 +4461,7 @@
+ 					else
+ 						fLibrarySearchPaths.push_back(libDir);
+ 				}
+-				else if ( !addStandardLibraryDirectories || (strcmp(libDir, "/usr/local/lib") != 0) ) {
++				else if ( !addStandardLibraryDirectories || ( (strcmp(libDir, "/usr/local/lib") != 0) && (strcmp(libDir, "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/@BARE_PLATFORM@.sdk/") != 0) ) ) {
+ 					warning("directory not found for option '-L%s'", libDir);
+ 				}
+ 			}
+@@ -4508,7 +4515,7 @@
+ 					else
+ 						fFrameworkSearchPaths.push_back(frameworkDir);
+ 				}
+-				else if ( !addStandardLibraryDirectories || (strcmp(frameworkDir, "/Library/Frameworks/") != 0) ) {
++				else if ( !addStandardLibraryDirectories || ( (strcmp(frameworkDir, "/Library/Frameworks/") != 0) && (strcmp(frameworkDir, "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/@BARE_PLATFORM@.sdk/") != 0) ) ) {
+ 					warning("directory not found for option '-F%s'", frameworkDir);
+ 				}
+ 			}
