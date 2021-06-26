@@ -11,10 +11,10 @@ ask() {
 }
 
 checkpkg() {
-	if [ -f $1.mk ]; then
+	if [ -f makefiles/$1.mk ]; then
 		echo "$1.mk already exists."
 		exit 1
-	elif grep -R "^$pkg:" *.mk &> /dev/null; then
+	elif grep -R "^$pkg:" makefiles/*.mk &> /dev/null; then
 		echo "$1 already exists."
 		exit 1
 	fi
@@ -54,7 +54,7 @@ main() {
 		-e "s/@PKG_VERSION@/${ver}/g" \
 		-e "s|@download@|$(downloadlink "$download" "$ver" "$pkg" "$formatpkg")|g" \
 		-e "s|@compression@|$(rev <<< "$download" | cut -d'.' -f1 | rev)|g" \
-		build_misc/templates/${build}.mk > ${pkg}.mk
+		build_misc/templates/${build}.mk > makefiles/${pkg}.mk
 }
 
 if which gsed &>/dev/null; then

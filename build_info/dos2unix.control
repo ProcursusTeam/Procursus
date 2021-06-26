@@ -1,0 +1,14 @@
+Package: dos2unix 
+Version: @DEB_DOS2UNIX_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: standard
+Depends: libintl8
+Description: convert text file line endings between CRLF and LF
+ This package contains utilities dos2unix, unix2dos, mac2unix, and unix2mac 
+ to convert the line endings of text files between UNIX (LF), DOS (CRLF) and Mac (CR) formats.
+ Text files under Windows and DOS typically have two ASCII characters at the end 
+ of each line: CR (carriage return) followed by LF (line feed). Older Macs used just CR, while 
+ UNIX uses just LF. While most modern editors can read all these formats, 
+ there may still be a need to convert files between them.

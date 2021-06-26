@@ -1,0 +1,14 @@
+#! /bin/sh
+set -e
+
+if [ "$1" = purge ]; then
+    if [ -e @MEMO_PREFIX@/etc/dropbear ]; then
+        rm -f @MEMO_PREFIX@/etc/dropbear/dropbear_rsa_host_key
+        rm -f @MEMO_PREFIX@/etc/dropbear/dropbear_dss_host_key
+        rm -f @MEMO_PREFIX@/etc/dropbear/dropbear_ecdsa_host_key
+        rm -f @MEMO_PREFIX@/etc/dropbear/dropbear_ed25519_host_key
+    fi
+fi
+
+#DEBHELPER#
+exit 0
