@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifeq ($(MEMO_TARGET),iphoneos-arm64)
+ifneq ($(MEMO_TARGET),iphoneos-arm64e)
 ifeq ($(UNAME),Darwin)
 ifeq ($(filter $(shell uname -m | cut -c -4), iPad iPho),)
 
