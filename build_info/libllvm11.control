@@ -1,0 +1,8 @@
+Package: libllvm11
+Version: @DEB_LLVM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libncursesw6 (>= 6.0), libedit0, libffi7
+Section: Development
+Priority: optional
+Description: Modular compiler and toolchain technologies, runtime library
