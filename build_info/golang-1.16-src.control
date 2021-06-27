@@ -2,6 +2,7 @@ Package: golang-1.16-src
 Version: @DEB_GOLANG_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Depends: libiosexec-dev
 Section: Development
 Priority: optional
 Homepage: https://golang.org

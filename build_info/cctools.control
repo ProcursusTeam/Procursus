@@ -2,7 +2,7 @@ Package: odcctools
 Version: @DEB_CCTOOLS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libuuid16, libxar1, liblto10, libtapi
+Depends: libuuid16, libxar1, liblto, libtapi
 Section: Development
 Priority: optional
 Description: linker and assembler for the iPhone
