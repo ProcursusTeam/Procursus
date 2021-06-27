@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+#### Next time you mess with this, add in compiler-rt stuff
+
 SUBPROJECTS   += llvm
 LLVM_VERSION  := 11.1.0
 LLVM_MAJOR_V  := 11
