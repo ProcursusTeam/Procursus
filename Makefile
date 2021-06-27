@@ -1009,11 +1009,11 @@ endif
 	echo "$(BUILD_STRAP)/$${BOOTSTRAP}"
 endif # ($(MEMO_PREFIX),)
 
-%-package: FAKEROOT=fakeroot -i $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev) -s $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev) --
+%-package: FAKEROOT=fakeroot -i $(BUILD_STAGE)/.fakeroot_$* -s $(BUILD_STAGE)/.fakeroot_$* --
 %-package: .SHELLFLAGS=-O extglob -c
 %-stage: %
-	rm -f $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev)
-	touch $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev)
+	rm -f $(BUILD_STAGE)/.fakeroot_$*
+	touch $(BUILD_STAGE)/.fakeroot_$*
 	mkdir -p $(BUILD_DIST)
 
 REPROJ=$(shell echo $@ | cut -f2- -d"-")
