@@ -22,6 +22,9 @@ coreutils-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) \
 		https://git.cameronkatri.com/getent-darwin/snapshot/getent-darwin-$(GETENTDARWIN_COMMIT).tar.zst
 	$(call EXTRACT_TAR,getent-darwin-$(GETENTDARWIN_COMMIT).tar.zst,getent-darwin-$(GETENTDARWIN_COMMIT),coreutils/getent-darwin)
+	mkdir -p $(BUILD_WORK)/coreutils/rev
+ 	wget -q -nc -P $(BUILD_WORK)/coreutils/rev \
+ 		https://opensource.apple.com/source/text_cmds/text_cmds-88/rev/rev.{c,1}
 
 ifneq ($(wildcard $(BUILD_WORK)/coreutils/.build_complete),)
 coreutils:
@@ -38,6 +41,11 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	+$(MAKE) -C $(BUILD_WORK)/coreutils
 	+$(MAKE) -C $(BUILD_WORK)/coreutils install \
 		DESTDIR=$(BUILD_STAGE)/coreutils
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+ 	cd $(BUILD_WORK)/coreutils/rev && $(CC) $(CFLAGS) rev.c -o rev -D'__FBSDID(x)='
+ 	cp $(BUILD_WORK)/coreutils/rev/rev $(BUILD_STAGE)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+ 	cp $(BUILD_WORK)/coreutils/rev/rev.1 $(BUILD_STAGE)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+endif
 	+$(MAKE) -C $(BUILD_WORK)/coreutils/getent-darwin install \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR="$(BUILD_STAGE)/coreutils/"
