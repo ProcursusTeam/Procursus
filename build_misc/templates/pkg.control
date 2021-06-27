@@ -1,0 +1,9 @@
+Package: @pkg@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libiosexec1
+Version: @DEB_@PKG@_V@
+Section: @Section@
+Priority: optional
+Description: @DEB_DESCRIPTION@
+@DEB_EXTENDED_DESCRIPTION@
