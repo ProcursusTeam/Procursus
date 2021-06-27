@@ -1,0 +1,8 @@
+Package: nickchan-keyring
+Version: @DEB_NICKCHAN_KEYRING_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Keyrings
+Priority: optional
+Description: GnuPG key for Nick Chan's repository
+Name: Nick Chan APT Keyring
