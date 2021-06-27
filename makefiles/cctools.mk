@@ -7,7 +7,7 @@ CCTOOLS_COMMIT  := 236a426c1205a3bfcf0dbb2e2faf2296f0a100e5
 CCTOOLS_VERSION := 973.0.1
 LD64_VERSION    := 609
 DEB_CCTOOLS_V   ?= $(CCTOOLS_VERSION)
-DEB_LD64_V      ?= $(LD64_VERSION)
+DEB_LD64_V      ?= $(LD64_VERSION)-1
 
 cctools-setup: setup
 	$(call GITHUB_ARCHIVE,tpoechtrager,cctools-port,$(CCTOOLS_COMMIT),$(CCTOOLS_COMMIT),cctools)
@@ -35,20 +35,13 @@ cctools: cctools-setup llvm uuid tapi xar
 	+$(MAKE) -C $(BUILD_WORK)/cctools
 	+$(MAKE) -C $(BUILD_WORK)/cctools install \
 		DESTDIR=$(BUILD_STAGE)/cctools
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	mv $(BUILD_STAGE)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ld $(BUILD_STAGE)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
-	$(CC) $(CFLAGS) -DLINKER="\""$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/ld"\"" \
-		-DLDID="\""$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ldid"\"" \
-		-DENTS="\""$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/entitlements/general.xml"\"" \
-		-o $(BUILD_STAGE)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ld $(BUILD_MISC)/ld-wrapper/wrapper.c
-endif
 	touch $(BUILD_WORK)/cctools/.build_complete
 endif
 
 cctools-package: cctools-stage
 	# cctools.mk Package Structure
 	rm -rf $(BUILD_DIST)/{cctools,ld64}
-	mkdir -p $(BUILD_DIST)/{cctools,ld64/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,libexec,share/{entitlements,man/man1}}}
+	mkdir -p $(BUILD_DIST)/{cctools,ld64/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}}
 
 	# cctools.mk Prep cctools
 	cp -a $(BUILD_STAGE)/cctools $(BUILD_DIST)
@@ -56,8 +49,6 @@ cctools-package: cctools-stage
 	# cctools.mk Prep ld64
 	mv $(BUILD_DIST)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{dyldinfo,ld,machocheck,ObjectDump,unwinddump} $(BUILD_DIST)/ld64/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	mv $(BUILD_DIST)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/{dyldinfo,ld{,64},unwinddump}.1 $(BUILD_DIST)/ld64/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
-	mv $(BUILD_DIST)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/ld $(BUILD_DIST)/ld64/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
-	cp -a $(BUILD_INFO)/general.xml $(BUILD_DIST)/ld64/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/entitlements
 	cd $(BUILD_DIST)/ld64/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin && ln -s ld ld64
 
 	# cctools.mk Sign
