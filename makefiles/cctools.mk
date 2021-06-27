@@ -28,9 +28,9 @@ cctools: cctools-setup llvm uuid tapi xar
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-tapi-support \
 		--with-libtapi="$(BUILD_STAGE)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
-		CFLAGS="$(CFLAGS) -DLTO_SUPPORT=1 -DHAVE_XAR_XAR_H=1 -DDEMANGLE_SWIFT=1" \
-		CXXFLAGS="$(CXXFLAGS) -DLTO_SUPPORT=1 -DHAVE_XAR_XAR_H=1 -DDEMANGLE_SWIFT=1" \
-		LIBS="-lxar"
+		CFLAGS="$(CFLAGS) -DLTO_SUPPORT=1 -DHAVE_XAR_XAR_H=1" \
+		CXXFLAGS="$(CXXFLAGS) -DLTO_SUPPORT=1 -DHAVE_XAR_XAR_H=1" \
+		LIBS="-lxar" # -DDEMANGLE_SWIFT=1
 	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/include/llvm-c/{lto,ExternC}.h $(BUILD_WORK)/cctools/include/llvm-c
 	+$(MAKE) -C $(BUILD_WORK)/cctools
 	+$(MAKE) -C $(BUILD_WORK)/cctools install \
