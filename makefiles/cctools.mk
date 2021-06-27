@@ -35,11 +35,13 @@ cctools: cctools-setup llvm uuid tapi xar
 	+$(MAKE) -C $(BUILD_WORK)/cctools
 	+$(MAKE) -C $(BUILD_WORK)/cctools install \
 		DESTDIR=$(BUILD_STAGE)/cctools
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	mv $(BUILD_STAGE)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ld $(BUILD_STAGE)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
 	$(CC) $(CFLAGS) -DLINKER="\""$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/ld"\"" \
 		-DLDID="\""$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ldid"\"" \
 		-DENTS="\""$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/entitlements/general.xml"\"" \
 		-o $(BUILD_STAGE)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ld $(BUILD_MISC)/ld-wrapper/wrapper.c
+endif
 	touch $(BUILD_WORK)/cctools/.build_complete
 endif
 
