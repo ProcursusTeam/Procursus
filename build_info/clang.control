@@ -2,7 +2,7 @@ Package: clang
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: clang-10, libc++-dev
+Depends: clang-11, libc++-dev
 Provides: c++-compiler, c-compiler, objc-compiler
 Section: Development
 Priority: optional
