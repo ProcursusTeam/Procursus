@@ -245,7 +245,7 @@ PLATFORM             := macosx
 DEB_ARCH             := darwin-arm64e
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
 RUST_TARGET          := $(GNU_HOST_TRIPLE)
-LLVM_TARGET          := arm64e-apple-darwin$(DARWIN_DEPLOYMENT_VERSION)
+LLVM_TARGET          := arm64e-apple-macosx$(MACOSX_DEPLOYMENT_TARGET)
 PLATFORM_VERSION_MIN := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
 MEMO_PREFIX          ?= /opt/procursus
 MEMO_SUB_PREFIX      ?=
@@ -263,7 +263,7 @@ PLATFORM             := macosx
 DEB_ARCH             := darwin-arm64
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
 RUST_TARGET          := $(GNU_HOST_TRIPLE)
-LLVM_TARGET          := arm64-apple-darwin$(DARWIN_DEPLOYMENT_VERSION)
+LLVM_TARGET          := arm64-apple-macosx$(MACOSX_DEPLOYMENT_TARGET)
 PLATFORM_VERSION_MIN := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
 MEMO_PREFIX          ?= /opt/procursus
 MEMO_SUB_PREFIX      ?=
@@ -281,7 +281,7 @@ PLATFORM             := macosx
 DEB_ARCH             := darwin-amd64
 GNU_HOST_TRIPLE      := x86_64-apple-darwin
 RUST_TARGET          := $(GNU_HOST_TRIPLE)
-LLVM_TARGET          := x86_64-apple-darwin$(DARWIN_DEPLOYMENT_VERSION)
+LLVM_TARGET          := x86_64-apple-macosx$(MACOSX_DEPLOYMENT_TARGET)
 PLATFORM_VERSION_MIN := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
 MEMO_PREFIX          ?= /opt/procursus
 MEMO_SUB_PREFIX      ?=
@@ -1011,11 +1011,11 @@ endif
 	echo "$(BUILD_STRAP)/$${BOOTSTRAP}"
 endif # ($(MEMO_PREFIX),)
 
-%-package: FAKEROOT=fakeroot -i $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev) -s $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev) --
+%-package: FAKEROOT=fakeroot -i $(BUILD_STAGE)/.fakeroot_$* -s $(BUILD_STAGE)/.fakeroot_$* --
 %-package: .SHELLFLAGS=-O extglob -c
 %-stage: %
-	rm -f $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev)
-	touch $(BUILD_STAGE)/.fakeroot_$$(echo $@ | rev | cut -f2- -d"-" | rev)
+	rm -f $(BUILD_STAGE)/.fakeroot_$*
+	touch $(BUILD_STAGE)/.fakeroot_$*
 	mkdir -p $(BUILD_DIST)
 
 REPROJ=$(shell echo $@ | cut -f2- -d"-")
@@ -1102,6 +1102,6 @@ clean::
 	rm -rf $(BUILD_ROOT)/build_{base,stage,work}
 
 extreme-clean: clean
-	rm -rf $(BUILD_ROOT)/build_dist
+	rm -rf $(BUILD_ROOT)/build_{source,strap,dist}
 
 .PHONY: clean setup
