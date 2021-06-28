@@ -9,7 +9,6 @@ DEB_LIBDVBPSI_V   ?= $(LIBDVBPSI_VERSION)
 libdvbpsi-setup: setup
 	wget -q -nc -P$(BUILD_SOURCE) https://download.videolan.org/pub/videolan/libdvbpsi/$(LIBDVBPSI_VERSION)/libdvbpsi-$(LIBDVBPSI_VERSION).tar.bz2
 	$(call EXTRACT_TAR,libdvbpsi-$(LIBDVBPSI_VERSION).tar.bz2,libdvbpsi-$(LIBDVBPSI_VERSION),libdvbpsi)
-	#$(call DO_PATCH,libdvbpsi,libdvbpsi,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/libdvbpsi/.build_complete),)
 libdvbpsi:
