@@ -1,0 +1,13 @@
+Package: libdvbcsa1
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_LIBDVBCSA_V@
+Depends: libiosexec1
+Section: Libraries
+Priority: optional
+Description: free implementation of the DVB/CSA
+ libdvbcsa is a free implementation of the DVB Common Scrambling Algorithm with encryption and decryption capabilities.
+ .
+ It comes in two flavors: a classical single packet implementation and a faster parallel bitslice implementation.
+ .
+ This package contains the libdvbcsa runtime library.
