@@ -1,14 +1,13 @@
-Package: libssl-dev
+Package: libssl1.1
 Version: @DEB_OPENSSL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libssl1.1 (= @DEB_OPENSSL_V@)
-Section: Development
+Depends: ca-certificates
+Section: Libraries
 Priority: standard
-Description: Secure Sockets Layer toolkit - development files
+Description: Secure Sockets Layer toolkit - shared libraries
  This package is part of the OpenSSL project's implementation of the SSL
  and TLS cryptographic protocols for secure communication over the
  Internet.
  .
- It contains development libraries, header files, and manpages for libssl
- and libcrypto.
+ It provides the libssl and libcrypto shared libraries.
