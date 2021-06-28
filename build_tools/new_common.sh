@@ -44,7 +44,7 @@ if [ -z "$1" ]; then
 else
 	ESCAPED_DESCRIPTION="$(echo "$1" | ${SED} '$!s/$/\\n/' | tr -d '\n' | ${SED} 's|^| |g')"
 	fi
-	echo "$ESCAPED_DESCRIPTION"
+	printf "$ESCAPED_DESCRIPTION"
 }
 
 createfromtemplate() {
