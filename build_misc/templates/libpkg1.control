@@ -7,4 +7,5 @@ Section: Libraries
 Priority: optional
 Description: @DEB_DESCRIPTION@
 @DEB_EXTENDED_DESCRIPTION@
+ .
  This package contains the @pkg@ runtime library.
