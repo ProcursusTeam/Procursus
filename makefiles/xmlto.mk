@@ -15,7 +15,7 @@ xmlto:
 	@echo "Using previously built xmlto."
 else
 xmlto: xmlto-setup
-	cd $(BUILD_WORK)/xmlto && ./configure -C \
+	cd $(BUILD_WORK)/xmlto && GETOPT=ggetopt ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/xmlto
 	+$(MAKE) -C $(BUILD_WORK)/xmlto install \
