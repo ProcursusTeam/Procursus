@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS       += misc-cmds
 MISC-CMDS_VERSION := 34
-DEB_MISC-CMDS_V   ?= $(MISC-CMDS_VERSION)-1
+DEB_MISC-CMDS_V   ?= $(MISC-CMDS_VERSION)
 
 misc-cmds-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/misc_cmds/misc_cmds-$(MISC-CMDS_VERSION).tar.gz
