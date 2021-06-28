@@ -2,7 +2,7 @@ Package: asciidoctor
 Maintainer: @DEB_MAINTAINER@
 Architecture: all 
 Version: @DEB_ASCIIDOCTOR_V@
-Depends: ruby
+Depends: ruby3.0
 Section: Scripting
 Priority: optional
 Description: Text processor and publishing toolchain for AsciiDoc implemented in Ruby
