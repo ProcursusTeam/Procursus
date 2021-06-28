@@ -21,7 +21,7 @@ main() {
 	description="$(ask "Description" $6)"
 	extended_description="$(ask_extended_description "$7")"
 	echo "Writing out control and makefile"
-	createfromtemplate build_misc/templates/${build}.mk makefiles/${pkg}.mk
+	createfromtemplate build_misc/templates/${build}.mk makefiles/${pkg}.mk /dev/null
 	createfromtemplate build_misc/templates/${build}-pkg.control build_info/${pkg}.control
 }
 
