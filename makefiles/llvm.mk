@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+#### Next time you mess with this, add in compiler-rt stuff
+
 SUBPROJECTS   += llvm
 LLVM_VERSION  := 11.1.0
 LLVM_MAJOR_V  := 11
@@ -131,7 +133,7 @@ endif
 
 llvm-package: llvm-stage
 	# llvm.mk Package Structure
-	rm -rf $(BUILD_DIST)/{clang*,debugserver*,libc++*-dev,libclang-common-*-dev,libclang-cpp*,liblldb-*,libllvm*,liblto*,lldb*,dsymutil*,swift*,llvm-utils*}/
+	rm -rf $(BUILD_DIST)/{clang*,debugserver*,libc++*-dev,libclang-common-*-dev,libclang-cpp*,liblldb-*,libllvm*,liblto*,lldb*,dsymutil*,swift*,lld*,llvm-utils*}/
 
 	# llvm.mk Prep clang-$(LLVM_MAJOR_V)
 	mkdir -p $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib/llvm-$(LLVM_MAJOR_V)/{bin,lib/cmake,share/clang}}
@@ -194,6 +196,10 @@ llvm-package: llvm-stage
 	# llvm.mk Prep liblto$(LLVM_MAJOR_V)
 	mkdir -p $(BUILD_DIST)/liblto$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib
 	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/libLTO.dylib $(BUILD_DIST)/liblto$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib
+
+	# llvm.mk Prep liblto
+	mkdir -p $(BUILD_DIST)/liblto/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	ln -s ./llvm-$(LLVM_MAJOR_V)/lib/libLTO.dylib $(BUILD_DIST)/liblto/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libLTO.dylib
 
 	# llvm.mk Prep lldb-$(LLVM_MAJOR_V)
 	mkdir -p $(BUILD_DIST)/lldb-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
@@ -291,6 +297,7 @@ llvm-package: llvm-stage
 	$(call PACK,liblldb-$(LLVM_MAJOR_V),DEB_LLVM_V)
 	$(call PACK,libllvm$(LLVM_MAJOR_V),DEB_LLVM_V)
 	$(call PACK,liblto$(LLVM_MAJOR_V),DEB_LLVM_V)
+	$(call PACK,liblto,DEB_LLVM_V)
 	$(call PACK,lldb-$(LLVM_MAJOR_V),DEB_LLVM_V)
 	$(call PACK,lldb,DEB_LLVM_V)
 	$(call PACK,dsymutil-$(LLVM_MAJOR_V),DEB_LLVM_V)
