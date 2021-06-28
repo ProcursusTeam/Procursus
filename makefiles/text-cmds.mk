@@ -11,6 +11,7 @@ DEB_TEXT-CMDS_V   ?= $(TEXT-CMDS_VERSION)
 text-cmds-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/text_cmds/text_cmds-$(TEXT-CMDS_VERSION).tar.gz
 	$(call EXTRACT_TAR,text_cmds-$(TEXT-CMDS_VERSION).tar.gz,text_cmds-$(TEXT-CMDS_VERSION),text-cmds)
+	sed -i 's|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|' $(BUILD_WORK)/text-cmds/ee/ee.c
 	mkdir -p $(BUILD_STAGE)/text-cmds/$(MEMO_PREFIX){/sbin,$(MEMO_SUB_PREFIX)/{bin,share/man/man{1,6}}}
 
 ifneq ($(wildcard $(BUILD_WORK)/text-cmds/.build_complete),)
