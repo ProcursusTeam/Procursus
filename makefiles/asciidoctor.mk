@@ -13,7 +13,7 @@ ifneq ($(wildcard $(BUILD_WORK)/asciidoctor/.build_complete),)
 asciidoctor:
 	@echo "Using previously built asciidoctor."
 else
-asciidoctor: asciidoctor-setup ruby
+asciidoctor: asciidoctor-setup
 	mkdir -p $(BUILD_WORK)/asciidoctor
 	gem3.0 install \
 			--ignore-dependencies \
