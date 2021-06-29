@@ -9,7 +9,7 @@ DEB_PUEUE_V   ?= $(PUEUE_VERSION)
 pueue-setup: setup
 	$(call GITHUB_ARCHIVE,Nukesor,pueue,$(PUEUE_VERSION),v$(PUEUE_VERSION))
 	$(call EXTRACT_TAR,pueue-$(PUEUE_VERSION).tar.gz,pueue-$(PUEUE_VERSION),pueue)
-	mkdir -p $(BUILD_STAGE)/pueue/{Library/LaunchDaemons,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,sbin,libexec}}
+	mkdir -p $(BUILD_STAGE)/pueue/{Library/LaunchDaemons,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,libexec}}
 
 ifneq ($(wildcard $(BUILD_WORK)/pueue/.build_complete),)
 pueue:
@@ -17,14 +17,11 @@ pueue:
 else
 pueue: pueue-setup
 	# Compile pueue and binaries to designated places
-	cd $(BUILD_WORK)/pueue && SDKROOT="$(TARGET_SYSROOT)" \
-	PKG_CONFIG="$(RUST_TARGET)-pkg-config" cargo build \
+	cd $(BUILD_WORK)/pueue && $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \
 		--target=$(RUST_TARGET)
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/pueue/target/$(RUST_TARGET)/release/pueue{,d} \
-		$(BUILD_STAGE)/pueue/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
-	ln -s $(BUILD_STAGE)/pueue/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/pueue \
-		$(BUILD_STAGE)/pueue/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pueue
+	$(INSTALL) -Dm755 $(BUILD_WORK)/pueue/target/$(RUST_TARGET)/release/pueue{,d} \
+		$(BUILD_STAGE)/pueue/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	# Setup necessary daemon requirements for pueued
 	$(SED) -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < \
 		$(BUILD_MISC)/pueue/pueued-wrapper > $(BUILD_STAGE)/pueue/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/pueued-wrapper

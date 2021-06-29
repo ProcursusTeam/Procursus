@@ -1,4 +1,4 @@
 #!/bin/sh
 # Wrapper for pueued for LaunchDaemon
 
-exec @MEMO_PREFIX@@MEMO_SUB_PREFIX@/sbin/pueued $@
+exec @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/pueued $@
