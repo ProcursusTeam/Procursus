@@ -21,7 +21,7 @@ jbat: jbat-setup
 		-o $(BUILD_WORK)/jbat/jbat \
 		-framework IOKit -framework CoreFoundation
 	$(STRIP) $(BUILD_WORK)/jbat/jbat
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/jbat/jbat $(BUILD_STAGE)/jbat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/jbat
+	$(INSTALL) -Dm755 $(BUILD_WORK)/jbat/jbat $(BUILD_STAGE)/jbat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/jbat
 	touch $(BUILD_WORK)/jbat/.build_complete
 endif
 

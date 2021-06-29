@@ -26,7 +26,7 @@ vi: vi-setup ncurses
 		LIBEXECDIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ex \
 		FEATURES="-DCHDIR -DFASTTAG -DUCVISUAL -DMB -DBIT8" \
 		DESTDIR="$(BUILD_STAGE)/vi" \
-		INSTALL="$(GINSTALL)"
+		INSTALL="$(INSTALL)"
 	touch $(BUILD_WORK)/vi/.build_complete
 endif
 vi-package: vi-stage

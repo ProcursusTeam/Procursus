@@ -22,7 +22,7 @@ exa: exa-setup
 		--release \
 		--no-default-features \
 		--target=$(RUST_TARGET)
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/exa/target/$(RUST_TARGET)/release/exa \
+	$(INSTALL) -Dm755 $(BUILD_WORK)/exa/target/$(RUST_TARGET)/release/exa \
 		$(BUILD_STAGE)/exa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/exa
 	touch $(BUILD_WORK)/exa/.build_complete
 endif

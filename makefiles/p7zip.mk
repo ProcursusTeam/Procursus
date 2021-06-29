@@ -9,7 +9,6 @@ DEB_P7ZIP_V    ?= $(P7ZIP_VERSION)
 p7zip-setup: setup
 	$(call GITHUB_ARCHIVE,jinfeihan57,p7zip,$(P7ZIP_VERSION),v$(P7ZIP_VERSION))
 	$(call EXTRACT_TAR,p7zip-$(P7ZIP_VERSION).tar.gz,p7zip-$(P7ZIP_VERSION),p7zip)
-	$(call DO_PATCH,p7zip,p7zip,-p1) # Remove after next release.
 	chmod 0755 $(BUILD_WORK)/p7zip/install.sh
 
 ifneq ($(wildcard $(BUILD_WORK)/p7zip/.build_complete),)
