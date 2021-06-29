@@ -21,7 +21,11 @@ ifneq ($(wildcard $(BUILD_WORK)/gitea/.build_complete),)
 gitea:
 	@echo "Using previously built gitea."
 else
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 gitea: gitea-setup
+else
+gitea: gitea-setup openpam
+endif
 	cd $(BUILD_WORK)/gitea && go mod vendor
 	+$(DEFAULT_GOLANG_FLAGS) TAGS="bindata pam sqlite sqlite_unlock_notify" \
 		$(MAKE) -C $(BUILD_WORK)/gitea build
