@@ -17,10 +17,9 @@ tea:
 	@echo "Using previously built tea."
 else
 tea: tea-setup
-	cd $(BUILD_WORK)/tea; \
-		$(DEFAULT_GOLANG_FLAGS) \
+	cd $(BUILD_WORK)/tea; $(DEFAULT_GOLANG_FLAGS) \
 		go build -ldflags '-X "main.Version=$(DEB_TEA_V)"'
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/tea/tea $(BUILD_STAGE)/tea/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/tea
+	$(INSTALL) -Dm755 $(BUILD_WORK)/tea/tea $(BUILD_STAGE)/tea/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/tea
 	touch $(BUILD_WORK)/tea/.build_complete
 endif
 

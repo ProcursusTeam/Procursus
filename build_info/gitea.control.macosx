@@ -5,4 +5,5 @@ Maintainer: @DEB_MAINTAINER@
 Section: Data_Storage
 Priority: optional
 Depends: git
+Homepage: https://gitea.com/
 Description: Git with a cup of tea, painless self-hosted git service

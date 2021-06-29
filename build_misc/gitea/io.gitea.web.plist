@@ -9,7 +9,7 @@
       <string>/bin/sh</string>
       <string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/gitea-wrapper</string>
       <string>-c</string>
-			<string>@MEMO_PREFIX@/etc/gitea.ini</string>
+      <string>@MEMO_PREFIX@/etc/gitea.ini</string>
     </array>
     <key>UserName</key>
     <string>gitea</string>
