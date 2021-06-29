@@ -3,36 +3,34 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += pueue
-PUEUE_VERSION := 1.0.0-rc.1
+PUEUE_VERSION := 1.0.0-rc.2
 DEB_PUEUE_V   ?= $(PUEUE_VERSION)
 
 pueue-setup: setup
 	$(call GITHUB_ARCHIVE,Nukesor,pueue,$(PUEUE_VERSION),v$(PUEUE_VERSION))
 	$(call EXTRACT_TAR,pueue-$(PUEUE_VERSION).tar.gz,pueue-$(PUEUE_VERSION),pueue)
+	mkdir -p $(BUILD_STAGE)/pueue/{Library/LaunchDaemons,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,sbin,libexec}}
 
 ifneq ($(wildcard $(BUILD_WORK)/pueue/.build_complete),)
 pueue:
 	@echo "Using previously built pueue."
 else
 pueue: pueue-setup
+	# Compile pueue and binaries to designated places
 	cd $(BUILD_WORK)/pueue && SDKROOT="$(TARGET_SYSROOT)" \
 	PKG_CONFIG="$(RUST_TARGET)-pkg-config" cargo build \
 		--release \
 		--target=$(RUST_TARGET)
-	# Move pueue and pueued binaries to designated places
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/pueue/target/$(RUST_TARGET)/release/pueue \
+	$(GINSTALL) -Dm755 $(BUILD_WORK)/pueue/target/$(RUST_TARGET)/release/pueue{,d} \
+		$(BUILD_STAGE)/pueue/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
+	ln -s $(BUILD_STAGE)/pueue/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/pueue \
 		$(BUILD_STAGE)/pueue/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pueue
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/pueue/target/$(RUST_TARGET)/release/pueued \
-		$(BUILD_STAGE)/pueue/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pueued
 	# Setup necessary daemon requirements for pueued
-	mkdir -p $(BUILD_STAGE)/pueue/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/Library/LaunchDaemons
-	cp -a $(BUILD_MISC)/pueue/com.nukesor.pueued.plist \
-		$(BUILD_STAGE)/pueue/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/Library/LaunchDaemons
-	# "Patch" up LaunchDaemon plist for pueued
-	for file in $(BUILD_STAGE)/pueue/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/Library/LaunchDaemons/*; do \
-		$(SED) -i 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' $$file; \
-		$(SED) -i 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $$file; \
-	done
+	$(SED) -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < \
+		$(BUILD_MISC)/pueue/pueued-wrapper > $(BUILD_STAGE)/pueue/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/pueued-wrapper
+	chmod +x $(BUILD_STAGE)/pueue/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/pueued-wrapper
+	$(SED) -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < \
+		$(BUILD_MISC)/pueue/com.nukesor.pueued.plist > $(BUILD_STAGE)/pueue/$(MEMO_PREFIX)/Library/LaunchDaemons/com.nukesor.pueued.plist
 	touch $(BUILD_WORK)/pueue/.build_complete
 endif
 
