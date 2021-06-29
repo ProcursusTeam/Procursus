@@ -1,0 +1,15 @@
+Package: libboost-nowide1.76.0
+Version: @DEB_LIBBOOST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Description: Standard library functions with UTF-8 API on Windows
+ This package forms part of the Boost C++ Libraries collection.
+ .
+ The library provides an implementation of standard C and C++
+ library functions which are UTF-8 aware on Windows without
+ requiring to use the Wipe API.
+ .
+ On POSIX platforms, where UTF-8 is already commonly used, the
+ calls in Nowide just alias to their standard counterparts.

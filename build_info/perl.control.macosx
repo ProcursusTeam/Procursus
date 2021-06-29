@@ -1,0 +1,19 @@
+Package: perl
+Version: @DEB_PERL_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Priority: optional
+Section: Scripting
+Homepage: http://dev.perl.org/perl5/
+Description: Larry Wall's Practical Extraction and Report Language
+ Perl is a highly capable, feature-rich programming language with over
+ 20 years of development. Perl 5 runs on over 100 platforms from
+ portables to mainframes. Perl is suitable for both rapid prototyping
+ and large scale development projects.
+ .
+ Perl 5 supports many programming styles, including procedural,
+ functional, and object-oriented. In addition to this, it is supported
+ by an ever-growing collection of reusable modules which accelerate
+ development. Some of these modules include Web frameworks, database
+ integration, networking protocols, and encryption. Perl provides
+ interfaces to C and C++ for custom extension development.

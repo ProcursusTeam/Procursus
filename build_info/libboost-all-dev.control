@@ -2,10 +2,17 @@ Package: libboost-all-dev
 Version: @DEB_LIBBOOST_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libboost-atomic1.74.0 (=  @DEB_LIBBOOST_V@), libboost-chrono1.74.0 (=  @DEB_LIBBOOST_V@), libboost-container1.74.0 (=  @DEB_LIBBOOST_V@), libboost-context1.74.0 (=  @DEB_LIBBOOST_V@), libboost-contract1.74.0 (=  @DEB_LIBBOOST_V@), libboost-coroutine1.74.0 (=  @DEB_LIBBOOST_V@), libboost-date-time1.74.0 (=  @DEB_LIBBOOST_V@), libboost-filesystem1.74.0 (=  @DEB_LIBBOOST_V@), libboost-graph1.74.0 (=  @DEB_LIBBOOST_V@), libboost-iostreams1.74.0 (=  @DEB_LIBBOOST_V@), libboost-locale1.74.0 (=  @DEB_LIBBOOST_V@), libboost-log1.74.0 (=  @DEB_LIBBOOST_V@), libboost-math1.74.0 (=  @DEB_LIBBOOST_V@), libboost-program-options1.74.0 (=  @DEB_LIBBOOST_V@), libboost-random1.74.0 (=  @DEB_LIBBOOST_V@), libboost-regex1.74.0 (=  @DEB_LIBBOOST_V@), libboost-serialization1.74.0 (=  @DEB_LIBBOOST_V@), libboost-stacktrace1.74.0 (=  @DEB_LIBBOOST_V@), libboost-system1.74.0 (=  @DEB_LIBBOOST_V@), libboost-test1.74.0 (=  @DEB_LIBBOOST_V@), libboost-thread1.74.0 (=  @DEB_LIBBOOST_V@), libboost-timer1.74.0 (=  @DEB_LIBBOOST_V@), libboost-type-erasure1.74.0 (=  @DEB_LIBBOOST_V@), libboost-wave1.74.0 (=  @DEB_LIBBOOST_V@)
-Conflicts: boost
-Replaces: boost
-Provides: boost
+Depends: libboost-atomic1.76.0 (= @DEB_LIBBOOST_V@), libboost-chrono1.76.0 (= @DEB_LIBBOOST_V@), libboost-container1.76.0 (= @DEB_LIBBOOST_V@), libboost-context1.76.0 (= @DEB_LIBBOOST_V@), libboost-contract1.76.0 (= @DEB_LIBBOOST_V@), libboost-coroutine1.76.0 (= @DEB_LIBBOOST_V@), libboost-date-time1.76.0 (= @DEB_LIBBOOST_V@), libboost-fiber1.76.0 (= @DEB_LIBBOOST_V@), libboost-filesystem1.76.0 (= @DEB_LIBBOOST_V@), libboost-graph1.76.0 (= @DEB_LIBBOOST_V@), libboost-iostreams1.76.0 (= @DEB_LIBBOOST_V@), libboost-json1.76.0 (= @DEB_LIBBOOST_V@), libboost-locale1.76.0 (= @DEB_LIBBOOST_V@), libboost-log1.76.0 (= @DEB_LIBBOOST_V@), libboost-math1.76.0 (= @DEB_LIBBOOST_V@), libboost-nowide1.76.0 (= @DEB_LIBBOOST_V@), libboost-program-options1.76.0 (= @DEB_LIBBOOST_V@), libboost-python1.76.0 (= @DEB_LIBBOOST_V@), libboost-random1.76.0 (= @DEB_LIBBOOST_V@), libboost-regex1.76.0 (= @DEB_LIBBOOST_V@), libboost-serialization1.76.0 (= @DEB_LIBBOOST_V@), libboost-stacktrace1.76.0 (= @DEB_LIBBOOST_V@), libboost-system1.76.0 (= @DEB_LIBBOOST_V@), libboost-test1.76.0 (= @DEB_LIBBOOST_V@), libboost-thread1.76.0 (= @DEB_LIBBOOST_V@), libboost-timer1.76.0 (= @DEB_LIBBOOST_V@), libboost-type-erasure1.76.0 (= @DEB_LIBBOOST_V@), libboost-wave1.76.0 (= @DEB_LIBBOOST_V@)
 Section: Development
 Priority: Optional
 Description: Boost C++ Libraries development files (ALL)
+ The Boost web site provides free, peer-reviewed, portable C++ source
+ libraries. The emphasis is on libraries which work well with the C++
+ Standard Library. One goal is to establish "existing practice" and
+ provide reference implementations so that the Boost libraries are
+ suitable for eventual standardization. Some of the libraries have
+ already been proposed for inclusion in the C++ Standards Committee's
+ upcoming C++ Standard Library Technical Report.
+ .
+ This metapackage provides the complete Boost development environment,
+ including all separately-packaged libraries.
