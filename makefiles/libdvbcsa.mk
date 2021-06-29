@@ -38,7 +38,7 @@ libdvbcsa-package: libdvbcsa-stage
 	
 	# libdvbcsa.mk Prep libdvbcsa-dev
 	cp -a $(BUILD_STAGE)/libdvbcsa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libdvbcsa-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libdvbcsa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libdvbcsa.{dylib,a}} $(BUILD_DIST)/libdvbcsa-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libdvbcsa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdvbcsa.{dylib,a} $(BUILD_DIST)/libdvbcsa-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libdvbcsa.mk Sign
 	$(call SIGN,libdvbcsa1,general.xml)
