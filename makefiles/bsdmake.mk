@@ -33,7 +33,7 @@ bsdmake: bsdmake-setup libiosexec
 		-C $(BUILD_WORK)/bsdmake \
 		install \
 		STRIP='-s --strip-program=$(STRIP)' \
-		INSTALL='$(GINSTALL)' \
+		INSTALL='$(INSTALL)' \
 		BINOWN="$$(id -un)" \
 		BINGRP="$$(id -gn)" \
 		MANOWN="$$(id -un)" \
