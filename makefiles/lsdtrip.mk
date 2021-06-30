@@ -22,7 +22,7 @@ lsdtrip: lsdtrip-setup
 		-o $(BUILD_WORK)/lsdtrip/lsdtrip \
 		-lobjc -framework Foundation -framework MobileCoreServices
 	$(STRIP) $(BUILD_WORK)/lsdtrip/lsdtrip
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/lsdtrip/lsdtrip $(BUILD_STAGE)/lsdtrip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsdtrip
+	$(INSTALL) -Dm755 $(BUILD_WORK)/lsdtrip/lsdtrip $(BUILD_STAGE)/lsdtrip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsdtrip
 	touch $(BUILD_WORK)/lsdtrip/.build_complete
 endif
 

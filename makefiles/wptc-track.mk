@@ -21,8 +21,8 @@ wptc-track: wptc-track-setup cairo
 	$(CC) $(CFLAGS) -g -Wall scales.c template.c tab.c track.c tcr.c atcf.c hurdat2.c hurdat.c md.c $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcairo.dylib -o track -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/cairo
 	mkdir -p $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{share,bin,sbin}
 	mkdir -p $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/wptc-track
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/wptc-track/tracks/track $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/track
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/wptc-track/tracks/refresh-nhc $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
+	$(INSTALL) -Dm755 $(BUILD_WORK)/wptc-track/tracks/track $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/track
+	$(INSTALL) -Dm755 $(BUILD_WORK)/wptc-track/tracks/refresh-nhc $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 	$(CP) -a $(BUILD_WORK)/wptc-track/data/* $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/wptc-track
 	touch $(BUILD_WORK)/wptc-track/.build_complete
 endif
