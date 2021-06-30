@@ -610,10 +610,17 @@ SIGN = 	for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}
 		done; \
 		find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
 else
-SIGN = 	for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
+SIGN = 	CODESIGN_FLAGS="--sign $(CODESIGN_IDENTITY) --force --deep "; \
+		if [ "$(CODESIGN_IDENTITY)" != "-" ]; then \
+			CODESIGN_FLAGS+="--timestamp -o runtime "; \
+			if [ -n "$(3)" ]; then \
+				CODESIGN_FLAGS+="--entitlements $(BUILD_INFO)/$(3) "; \
+			fi; \
+		fi; \
+		for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
 			$(STRIP) -x $$file; \
 			codesign --remove $$file &> /dev/null; \
-			codesign --sign $(CODESIGN_IDENTITY) --force --preserve-metadata=entitlements,requirements,flags,runtime $$file &> /dev/null; \
+			codesign $$CODESIGN_FLAGS $$file &> /dev/null; \
 		done
 endif
 
