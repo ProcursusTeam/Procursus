@@ -21,7 +21,7 @@ else
 chntpw: chntpw-setup
 	$(MAKE) -C $(BUILD_WORK)/chntpw chntpw cpnt reged samusrgrp sampasswd
 	mkdir -p $(BUILD_STAGE)/chntpw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/chntpw/{chntpw,cpnt,reged,samusrgrp,sampasswd} $(BUILD_STAGE)/chntpw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	$(INSTALL) -Dm755 $(BUILD_WORK)/chntpw/{chntpw,cpnt,reged,samusrgrp,sampasswd} $(BUILD_STAGE)/chntpw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	touch $(BUILD_WORK)/chntpw/.build_complete
 endif
 

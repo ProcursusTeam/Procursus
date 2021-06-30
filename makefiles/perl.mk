@@ -9,19 +9,12 @@ PERL_API_V   := $(PERL_MAJOR).0
 PERL_CROSS_V := 1.3.5
 DEB_PERL_V   ?= $(PERL_VERSION)
 
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-PERL_LIBS := LIBS="-liosexec"
-else
-PERL_LIBS :=
-endif
-
 perl-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.cpan.org/src/5.0/perl-$(PERL_VERSION).tar.gz \
 		https://github.com/arsv/perl-cross/releases/download/$(PERL_CROSS_V)/perl-cross-$(PERL_CROSS_V).tar.gz
 	rm -rf $(BUILD_WORK)/perl
 	$(call EXTRACT_TAR,perl-$(PERL_VERSION).tar.gz,perl-$(PERL_VERSION),perl)
 	$(call EXTRACT_TAR,perl-cross-$(PERL_CROSS_V).tar.gz,perl-cross-$(PERL_CROSS_V),perl,1)
-	$(call DO_PATCH,perl,perl,-p1)
 	$(SED) -i 's/readelf --syms/nm -g/g' $(BUILD_WORK)/perl/cnf/configure_type.sh
 	$(SED) -i 's/readelf/nm/g' $(BUILD_WORK)/perl/cnf/configure__f.sh
 	$(SED) -i 's/readelf/nm/g' $(BUILD_WORK)/perl/cnf/configure_tool.sh
@@ -48,23 +41,12 @@ perl-setup: setup
 	byteorder='12345678'\n\
 	libperl='libperl.dylib'" > $(BUILD_WORK)/perl/cnf/hints/darwin
 
-	mkdir -p $(BUILD_WORK)/perl/include
-ifneq (,$(wildcard $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h))
-	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h $(BUILD_WORK)/perl/include
-endif
-
 ifneq ($(wildcard $(BUILD_WORK)/perl/.build_complete),)
 perl:
 	@echo "Using previously built perl."
 else
-ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 perl: perl-setup
-else
-perl: perl-setup libiosexec
-	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libiosexec.h $(BUILD_WORK)/perl/include
-endif
-	@# Don't use $$(CFLAGS) here because, in the case BerkeleyDB was made before perl, it will look at the db.h in $$(BUILD_BASE).
-	cd $(BUILD_WORK)/perl && CC='$(CC)' AR='$(AR)' NM='$(NM)' OBJDUMP='objdump' CFLAGS='-DPERL_DARWIN -DPERL_USE_SAFE_PUTENV -DTIME_HIRES_CLOCKID_T -O2 -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_WORK)/perl/include $(PLATFORM_VERSION_MIN)' ./configure \
+	cd $(BUILD_WORK)/perl && CC='$(CC)' AR='$(AR)' NM='$(NM)' OBJDUMP='objdump' CFLAGS='-DPERL_DARWIN -DPERL_USE_SAFE_PUTENV -DTIME_HIRES_CLOCKID_T $(CFLAGS)' ./configure \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--target=$(GNU_HOST_TRIPLE) \
 		--sysroot=$(TARGET_SYSROOT) \
@@ -77,7 +59,7 @@ endif
 		-Dprivlib=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
 		-Darchlib=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
 		-Dvendorarch=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR)
-	+$(MAKE) -C $(BUILD_WORK)/perl -j1 \
+	+$(MAKE) -C $(BUILD_WORK)/perl \
 		PERL_ARCHIVE=$(BUILD_WORK)/perl/libperl.dylib \
 		$(PERL_LIBS)
 	+$(MAKE) -C $(BUILD_WORK)/perl install.perl \
