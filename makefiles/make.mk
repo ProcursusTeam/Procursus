@@ -8,6 +8,9 @@ DEB_MAKE_V   ?= $(MAKE_VERSION)-5
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 MAKE_CONFIGURE_ARGS := --program-prefix=$(GNU_PREFIX)
+else
+### Temporary disabling of posix_spawn until we get an alternative in libiosexec
+MAKE_CONFIGURE_ARGS := --disable-posix-spawn
 endif
 
 make-setup: setup
