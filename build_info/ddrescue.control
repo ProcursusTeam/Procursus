@@ -38,8 +38,3 @@ Description: GNU data recovery tool
  can be used to read from raw devices. For efficiency reasons,
  also aligns it to the memory page size if page size is a
  multiple of sector size.
- .
- Please note that this is the GNU ddrescue version providing the
- ddrescue executable. The package is named gddrescue because the
- ddrescue version of Kurt Garloff used to have the ddrescue
- package name already.
