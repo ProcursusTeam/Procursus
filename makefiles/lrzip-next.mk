@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 SUBPROJECTS        += lrzip-next
-LRZIP_NEXT_VERSION := 0.7.50
+LRZIP_NEXT_VERSION := 0.7.62
 DEB_LRZIP_NEXT_V   ?= $(LRZIP_NEXT_VERSION)
 lrzip-next-setup: setup
 	$(call GITHUB_ARCHIVE,pete4abw,lrzip-next,$(LRZIP_NEXT_VERSION),v$(LRZIP_NEXT_VERSION))
