@@ -37,7 +37,7 @@ cgit-setup: setup
 	$(SED) -i '\|-I/usr/local/include|d' $(BUILD_WORK)/cgit/git/config.mak.uname
 	$(SED) -i '\|-L/usr/local/lib|d' $(BUILD_WORK)/cgit/git/config.mak.uname
 
-ifneq ($(wildcard $(BUILD_WORK)/git/.build_complete),)
+ifneq ($(wildcard $(BUILD_WORK)/cgit/.build_complete),)
 cgit:
 	@echo "Using previously built cgit."
 else
