@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  	 += ccache
-CCACHE_VERSION := 4.2.1
+CCACHE_VERSION := 4.3
 DEB_CCACHE_V   ?= $(CCACHE_VERSION)
 
 ifneq (,$(findstring arm64,$(MEMO_TARGET)))
