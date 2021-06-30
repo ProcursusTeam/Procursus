@@ -19,7 +19,7 @@ term-fireworks: term-fireworks-setup
 	cd $(BUILD_WORK)/term-fireworks && $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \
 		--target=$(RUST_TARGET)
-	$(GINSTALL) -Dm775 $(BUILD_WORK)/term-fireworks/target/$(RUST_TARGET)/release/fireworks \
+	$(INSTALL) -Dm775 $(BUILD_WORK)/term-fireworks/target/$(RUST_TARGET)/release/fireworks \
 		$(BUILD_STAGE)/term-fireworks/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/fireworks
 	touch $(BUILD_WORK)/term-fireworks/.build_complete
 endif

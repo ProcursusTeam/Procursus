@@ -16,7 +16,7 @@ triehash:
 else
 triehash: triehash-setup
 	$(SED) -i 's|/usr/bin|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin|' $(BUILD_WORK)/triehash/triehash.pl
-	$(GINSTALL) -Dm775 $(BUILD_WORK)/triehash/triehash.pl \
+	$(INSTALL) -Dm775 $(BUILD_WORK)/triehash/triehash.pl \
 		$(BUILD_STAGE)/triehash/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/triehash
 	touch $(BUILD_WORK)/triehash/.build_complete
 endif

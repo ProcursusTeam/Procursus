@@ -4,29 +4,25 @@ endif
 
 SUBPROJECTS  += make
 MAKE_VERSION := 4.3
-DEB_MAKE_V   ?= $(MAKE_VERSION)-4
+DEB_MAKE_V   ?= $(MAKE_VERSION)-5
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 MAKE_CONFIGURE_ARGS := --program-prefix=$(GNU_PREFIX)
 else
-MAKE_CONFIGURE_ARGS := LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -liosexec"
+### Temporary disabling of posix_spawn until we get an alternative in libiosexec
+MAKE_CONFIGURE_ARGS := --disable-posix-spawn
 endif
 
 make-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/make/make-$(MAKE_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,make-$(MAKE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,make-$(MAKE_VERSION).tar.gz,make-$(MAKE_VERSION),make)
-	$(call DO_PATCH,make,make,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/make/.build_complete),)
 make:
 	@echo "Using previously built make."
 else
-ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 make: make-setup gettext
-else
-make: make-setup gettext libiosexec
-endif
 	cd $(BUILD_WORK)/make && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-guile=no \
@@ -48,7 +44,7 @@ make-package: make-stage
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 	mkdir -p $(BUILD_DIST)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin
 	for bin in $(BUILD_DIST)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
-		ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(echo $$bin | rev | cut -d/ -f1 | rev) $(BUILD_DIST)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $$bin | rev | cut -d/ -f1 | rev | cut -c2-); \
+		ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$${bin##*/} $(BUILD_DIST)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $${bin##*/} | cut -c2-); \
 	done
 endif
 
