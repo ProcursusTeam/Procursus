@@ -9,7 +9,6 @@ DEB_LIBDCA_V   ?= $(LIBDCA_VERSION)
 libdca-setup: setup
 	wget -q -nc -P$(BUILD_SOURCE) https://download.videolan.org/pub/videolan/libdca/$(LIBDCA_VERSION)/libdca-$(LIBDCA_VERSION).tar.bz2
 	$(call EXTRACT_TAR,libdca-$(LIBDCA_VERSION).tar.bz2,libdca-$(LIBDCA_VERSION),libdca)
-	#$(call DO_PATCH,libdca,libdca,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/libdca/.build_complete),)
 libdca:
