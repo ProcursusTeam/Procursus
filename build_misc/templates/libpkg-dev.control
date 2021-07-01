@@ -6,5 +6,5 @@ Depends: @pkg@@SOVER@ (= @DEB_@PKG@_V@)
 Section: Development
 Priority: optional
 Description: development files for @pkg@
-@DEB_EXTENDED_DESCRIPTION@
+@DEB_EXTENDED_DESCRIPTION@ .
  This package contains the header files and static library needed to compile applications that use @pkg@.
