@@ -19,17 +19,16 @@ else
 nano: nano-setup ncurses gettext file
 	cd $(BUILD_WORK)/nano && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--disable-debug \
-		--disable-dependency-tracking \
+		--enable-utf8 \
 		--enable-color \
 		--enable-extra \
 		--enable-nanorc \
-		--enable-utf8 \
+		--disable-debug \
 		--enable-multibuffer \
-		NCURSESW_LIBS=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib
+		NCURSESW_LIBS="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib"
 	+$(MAKE) -C $(BUILD_WORK)/nano
 	+$(MAKE) -C $(BUILD_WORK)/nano install \
-		DESTDIR=$(BUILD_STAGE)/nano
+		DESTDIR="$(BUILD_STAGE)/nano"
 	mkdir -p $(BUILD_STAGE)/nano/$(MEMO_PREFIX)/etc
 	cp -a $(BUILD_WORK)/nano/doc/sample.nanorc $(BUILD_STAGE)/nano/$(MEMO_PREFIX)/etc/nanorc
 	touch $(BUILD_WORK)/nano/.build_complete
@@ -38,9 +37,6 @@ endif
 nano-package: nano-stage
 	# nano.mk Package Structure
 	rm -rf $(BUILD_DIST)/nano
-	mkdir -p $(BUILD_DIST)/nano
-
-	# nano.mk Prep nano
 	cp -a $(BUILD_STAGE)/nano $(BUILD_DIST)
 
 	# nano.mk Sign
