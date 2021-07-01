@@ -34,7 +34,7 @@ else
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 openssh: openssh-setup openssl libxcrypt openpam libmd
 else # (,$(findstring darwin,$(MEMO_TARGET)))
-OPENSSH_CONFIGURE_ARGS += --with-keychain=apple
+OPENSSH_CONFIGURE_ARGS += --with-security-key-builtin
 openssh: openssh-setup openssl libmd
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	if ! [ -f $(BUILD_WORK)/openssh/configure ]; then \
@@ -50,7 +50,11 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 		check_for_libcrypt_before=1 \
 		$(OPENSSH_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/openssh \
+		ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 		SSHDLIBS="-lcrypt -lsandbox -lpam -ldl"
+		else
+		SSHDLIBS="-lsandbox -lpam -ldl"
+		endif
 	+$(MAKE) -C $(BUILD_WORK)/openssh install \
 		DESTDIR="$(BUILD_STAGE)/openssh"
 	mkdir -p $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/Library/LaunchDaemons
