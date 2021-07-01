@@ -882,7 +882,7 @@ GET_LOGICAL_CORES := $(shell expr $(shell nproc) / 2)
 else
 GET_LOGICAL_CORES := $(shell expr $(shell sysctl -n hw.ncpu) / 2)
 endif
-MAKEFLAGS += --jobs=$(GET_LOGICAL_CORES) --load-average=$(shell $(GET_LOGICAL_CORES))
+MAKEFLAGS += --jobs=$(GET_LOGICAL_CORES) --load-average=$(GET_LOGICAL_CORES)
 endif
 
 PROCURSUS := 1
