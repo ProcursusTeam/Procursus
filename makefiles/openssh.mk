@@ -22,7 +22,7 @@ openssh-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$(OPENSSH_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,openssh-$(OPENSSH_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,openssh-$(OPENSSH_VERSION).tar.gz,openssh-$(OPENSSH_VERSION),openssh)
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+ifeq (,$(findstring darwin,$(MEMO_TARGET))) # Need to add Apple's two patches for macOS sshd
 	$(call DO_PATCH,openssh,openssh,-p1)
 endif
 	$(SED) -i 's/#UsePAM no/UsePAM yes/' $(BUILD_WORK)/openssh/sshd_config
@@ -32,9 +32,11 @@ openssh:
 	@echo "Using previously built openssh."
 else
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+SSHDLIBS += "-lcrypt -lsandbox -lpam -ldl" # Need to add -ldns
 openssh: openssh-setup openssl libxcrypt openpam libmd
 else # (,$(findstring darwin,$(MEMO_TARGET)))
 OPENSSH_CONFIGURE_ARGS += --with-security-key-builtin
+SSHDLIBS += "-lsandbox -lpam -ldl" # Need to add -ldns and -lfido2
 openssh: openssh-setup openssl libmd
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	if ! [ -f $(BUILD_WORK)/openssh/configure ]; then \
@@ -50,11 +52,7 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 		check_for_libcrypt_before=1 \
 		$(OPENSSH_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/openssh \
-		ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-		SSHDLIBS="-lcrypt -lsandbox -lpam -ldl"
-		else
-		SSHDLIBS="-lsandbox -lpam -ldl"
-		endif
+		$(SSHDLIBS)
 	+$(MAKE) -C $(BUILD_WORK)/openssh install \
 		DESTDIR="$(BUILD_STAGE)/openssh"
 	mkdir -p $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/Library/LaunchDaemons
