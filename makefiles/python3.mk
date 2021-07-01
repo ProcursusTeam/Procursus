@@ -7,12 +7,6 @@ PYTHON3_MAJOR_V  := 3.9
 PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).5
 DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)
 
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-PYTHON3_CONFIGURE_ARGS := LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -liosexec"
-else
-PYTHON3_CONFIGURE_ARGS :=
-endif
-
 python3-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.python.org/ftp/python/$(PYTHON3_VERSION)/Python-$(PYTHON3_VERSION).tar.xz{,.asc}
 	$(call PGP_VERIFY,Python-$(PYTHON3_VERSION).tar.xz,asc)
@@ -20,9 +14,6 @@ python3-setup: setup
 	$(call DO_PATCH,python3,python3,-p1)
 	$(SED) -i -e 's/-vxworks/-darwin/g' -e 's/system=VxWorks/system=Darwin/g' -e '/readelf for/d' -e 's|LIBFFI_INCLUDEDIR=.*|LIBFFI_INCLUDEDIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include"|g' $(BUILD_WORK)/python3/configure.ac
 	$(SED) -i -e "s|self.compiler.library_dirs|['$(TARGET_SYSROOT)/usr/lib'] + ['$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib']|g" -e "s|self.compiler.include_dirs|['$(TARGET_SYSROOT)/usr/include'] + ['$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include']|g" -e "s/HOST_PLATFORM == 'darwin'/HOST_PLATFORM.startswith('darwin')/" $(BUILD_WORK)/python3/setup.py
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(SED) -i '1s/^/#include <libiosexec.h>\n/' $(BUILD_WORK)/python3/Modules/_posixsubprocess.c
-endif
 
 ifneq ($(wildcard $(BUILD_WORK)/python3/.build_complete),)
 python3:
@@ -32,7 +23,7 @@ python3: .SHELLFLAGS=-O extglob -c
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm expat
 else
-python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm expat libxcrypt libiosexec
+python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm expat libxcrypt
 endif
 	cd $(BUILD_WORK)/python3 && autoreconf -fi
 	cd $(BUILD_WORK)/python3 && ./configure -C \
