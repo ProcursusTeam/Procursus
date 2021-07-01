@@ -3,9 +3,6 @@ Version: @DEB_LD64_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: libuuid16, libxar1, liblto, libtapi
-Conflicts: org.coolstar.ld64
-Replaces: org.coolstar.ld64
-Provides: org.coolstar.ld64
 Section: Development
 Priority: optional
 Description: 64-bit iOS linker
