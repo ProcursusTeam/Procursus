@@ -1,6 +1,6 @@
 Package: asciidoctor
 Maintainer: @DEB_MAINTAINER@
-Architecture: all 
+Architecture: @DEB_ARCH@
 Version: @DEB_ASCIIDOCTOR_V@
 Depends: ruby3.0
 Section: Scripting
