@@ -16,7 +16,8 @@ fzf:
 	@echo "Using previously built fzf."
 else
 fzf: fzf-setup
-	cd $(BUILD_WORK)/fzf && $(DEFAULT_GOLANG_FLAGS) go build
+	cd $(BUILD_WORK)/fzf && $(DEFAULT_GOLANG_FLAGS) go build \
+			-ldflags "-s -w -X main.version=$(FZF_VERSION) -X main.revision=Procursus"
 	$(INSTALL) -Dm755 $(BUILD_WORK)/fzf/{/fzf,/bin/fzf-tmux} $(BUILD_STAGE)/fzf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
 	$(CP) -a $(BUILD_WORK)/fzf/man $(BUILD_STAGE)/fzf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	touch $(BUILD_WORK)/fzf/.build_complete
