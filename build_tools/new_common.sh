@@ -57,7 +57,7 @@ createfromtemplate() {
 		-e "s|@DEB_EXTENDED_DESCRIPTION@|${extended_description}|g" \
 		-e "s|@download@|$(downloadlink "$download" "$ver" "$pkg" "$formatpkg")|g" \
 		-e "s|@compression@|$(rev <<< "$download" | cut -d'.' -f1 | rev)|g" \
-		"$1" > "$2" || /dev/null
+		"$1" > "$2"
 }
 
 if command -v gsed &>/dev/null; then
