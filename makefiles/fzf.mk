@@ -11,11 +11,16 @@ fzf-setup: setup
 	$(call EXTRACT_TAR,fzf-$(FZF_VERSION).tar.gz,fzf-$(FZF_VERSION),fzf)
 	mkdir -p $(BUILD_STAGE)/fzf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX){/share,/bin}
 
+ifneq ($(wildcard $(BUILD_WORK)/fzf/.build_complete),)
+fzf:
+	@echo "Using previously built fzf."
+else
 fzf: fzf-setup
 	cd $(BUILD_WORK)/fzf && $(DEFAULT_GOLANG_FLAGS) go build
 	$(INSTALL) -Dm755 $(BUILD_WORK)/fzf/{/fzf,/bin/fzf-tmux} $(BUILD_STAGE)/fzf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
 	$(CP) -a $(BUILD_WORK)/fzf/man $(BUILD_STAGE)/fzf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	touch $(BUILD_WORK)/fzf/.build_complete
+endif
 
 fzf-package: fzf-stage
 	# fzf.mk Package Structure
