@@ -878,11 +878,11 @@ MAKEFLAGS += --no-print-directory
 
 ifeq ($(findstring --jobserver-auth=,$(MAKEFLAGS)),)
 ifeq ($(call HAS_COMMAND,nproc),1)
-GET_LOGICAL_CORES := expr $(shell nproc) / 2
+GET_LOGICAL_CORES := $(shell expr $(shell nproc) / 2)
 else
-GET_LOGICAL_CORES := expr $(shell sysctl -n hw.ncpu) / 2
+GET_LOGICAL_CORES := $(shell expr $(shell sysctl -n hw.ncpu) / 2)
 endif
-MAKEFLAGS += --jobs=$(shell $(GET_LOGICAL_CORES)) --load-average=$(shell $(GET_LOGICAL_CORES))
+MAKEFLAGS += --jobs=$(GET_LOGICAL_CORES) --load-average=$(shell $(GET_LOGICAL_CORES))
 endif
 
 PROCURSUS := 1
