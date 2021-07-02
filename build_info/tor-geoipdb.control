@@ -4,7 +4,7 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Networking
 Priority: optional
-Depends: tor (= @DEB_TOR_V)
+Depends: tor (= @DEB_TOR_V@)
 Description: GeoIP database for Tor
  This package provides a GeoIP database for Tor, i.e. it maps IPv4 addresses
  to countries.
