@@ -11,20 +11,14 @@ lf-setup: setup
 	$(call EXTRACT_TAR,lf-$(LF_VERSION).tar.gz,lf-$(LF_VERSION),lf)
 	mkdir -p $(BUILD_STAGE)/lf/{etc/profile.d,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/{lf,man/man1,zsh/site-functions,vim/vimfiles/syntax}}}
 
-ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-LF_DEPS := lf-setup
-else
-LF_DEPS := lf-setup libiosexec
-endif
-
 ifneq ($(wildcard $(BUILD_WORK)/lf/.build_complete),)
 lf:
 	@echo "Using previously built lf."
 else
-lf: $(LF_DEPS)
+lf: lf-setup
 	# Compile lf and move binaries
-	cd $(BUILD_WORK)/lf && $(DEFAULT_GOLANG_FLAGS) \
-		go build --ldflags="-s -w -X main.gVersion=$(DEB_LF_V)" .
+	cd $(BUILD_WORK)/lf && $(DEFAULT_GOLANG_FLAGS) go build \
+		--ldflags="-s -w -X main.gVersion=$(DEB_LF_V)" .
 	cp -a $(BUILD_WORK)/lf/lf $(BUILD_STAGE)/lf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_WORK)/lf/lf.1 $(BUILD_STAGE)/lf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	# Copy over other files for zsh, vim, csh, etc
