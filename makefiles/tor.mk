@@ -33,10 +33,10 @@ tor: tor-setup libevent openssl xz zstd libscrypt
 		DESTDIR="$(BUILD_STAGE)/tor"
 	mkdir -p $(BUILD_STAGE)/tor/$(MEMO_PREFIX){/Library/LaunchDaemons,$(MEMO_SUB_PREFIX)/libexec}
 	cp -a $(BUILD_MISC)/tor/org.torproject.tor.plist $(BUILD_STAGE)/tor/$(MEMO_PREFIX)/Library/LaunchDaemons
-	$(SED) -i -e 's/@MEMO_PREFIX@/$(MEMO_PREFIX)/g' -e 's/@MEMO_SUB_PREFIX@/$(MEMO_SUB_PREFIX)/g' \
+	$(SED) -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
 		$(BUILD_STAGE)/tor/$(MEMO_PREFIX)/Library/LaunchDaemons/org.torproject.tor.plist
 	cp -a $(BUILD_MISC)/tor/tor-wrapper $(BUILD_STAGE)/tor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
-	$(SED) -i -e 's/@MEMO_PREFIX@/$(MEMO_PREFIX)/g' -e 's/@MEMO_SUB_PREFIX@/$(MEMO_SUB_PREFIX)/g' \
+	$(SED) -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
 		$(BUILD_STAGE)/tor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/tor-wrapper
 	touch $(BUILD_WORK)/tor/.build_complete
 endif
