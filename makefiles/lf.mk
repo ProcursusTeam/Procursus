@@ -3,25 +3,25 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += lf
-LF_COMMIT   := 9885c4be7a14342efb6f9eedabedf337a1e14fe5
-LF_VERSION  := r23.$(shell echo $(LF_COMMIT) | cut -c -7)
+LF_VERSION  := r24
 DEB_LF_V    ?= 0~$(LF_VERSION)
 
 lf-setup: setup
-	$(call GITHUB_ARCHIVE,gokcehan,lf,$(LF_COMMIT),$(LF_COMMIT))
-	$(call EXTRACT_TAR,lf-$(LF_COMMIT).tar.gz,lf-$(LF_COMMIT),lf)
-	mkdir -p $(BUILD_STAGE)/lf/{etc/profile.d,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin} \
-		$(BUILD_STAGE)/lf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{lf,man/man1,zsh/site-functions,vim/vimfiles/syntax}
+	$(call GITHUB_ARCHIVE,gokcehan,lf,$(LF_VERSION),$(LF_VERSION))
+	$(call EXTRACT_TAR,lf-$(LF_VERSION).tar.gz,lf-$(LF_VERSION),lf)
+	mkdir -p $(BUILD_STAGE)/lf/{etc/profile.d,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/{lf,man/man1,zsh/site-functions,vim/vimfiles/syntax}}}
+
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+LF_DEPS := lf-setup
+else
+LF_DEPS := lf-setup libiosexec
+endif
 
 ifneq ($(wildcard $(BUILD_WORK)/lf/.build_complete),)
 lf:
 	@echo "Using previously built lf."
 else
-ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-lf: lf-setup
-else
-lf: lf-setup libiosexec
-endif
+lf: $(LF_DEPS)
 	# Compile lf and move binaries
 	cd $(BUILD_WORK)/lf && $(DEFAULT_GOLANG_FLAGS) \
 		go build --ldflags="-s -w -X main.gVersion=$(DEB_LF_V)" .

@@ -2,12 +2,14 @@ Package: lf
 Version: @DEB_LF_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Author: gokcehan
+Author: gokcehan <gokcehankara@gmail.com>
 Section: Administration
 Priority: optional
 Homepage: https://www.github.com/gokcehan/lf
 Description: Terminal file manager.
- LF (as in, "list files") is a terminal-based file manager written
- in Go. It's heavily inspired by ranger, with some extra features.
- While lf might not be as extensive, specific features, such as
- multi-window support, have been remade so that they're handled natively.
+ LF (as in, "list files") is a terminal-based
+ file manager written in Go. It's heavily inspired
+ by ranger, with some extra features. While lf might
+ not be as extensive, specific features, suchs as
+ multi-window support, have been remade so that they're
+ handled natively.
