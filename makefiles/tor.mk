@@ -50,7 +50,7 @@ tor-package: tor-stage
 	cp -a $(BUILD_STAGE)/tor $(BUILD_DIST)
 	rm -rf $(BUILD_DIST)/tor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tor
 	
-	# tor.mk Prep tor
+	# tor.mk Prep tor-geoipdb
 	cp -a $(BUILD_STAGE)/tor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tor \
 		$(BUILD_DIST)/tor-geoipdb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	
