@@ -1,7 +1,7 @@
 # Contributing to Procursus
 Community involvement is one of the main goals of this project, so we're glad you'd like to make contributions. There a few requirements, but they shouldn't be too unreasobable
 
-If you're like to contact team members, there are two options
+If you'd like to contact team members, there are two options
 - Going through Hayden. You can either [email Hayden](mailto:me@diatr.us) or annoy him on [Twitter](https://twitter.com/Diatrus), or...
 - Joining [Hayden's Discord Server](https://diatr.us/discord). This is where most team members are capable of providing answers to questions and further support.
 
@@ -13,7 +13,7 @@ While there isn't an overbaring policy on how to properly submit issues, please 
 ## Contribution Process
 1. Fork the project, and make changes relevant to what you're trying to add/fix on a seperate branch
 2. Create a Github Pull Request for your change in your specific branch. You should include a description of the change, why you're requesting your change to be made, and where you tested your change
-3. Don't expect your changes to be merge to upstream, since a team member will review your pull request, asking for further possible changes
+3. Don't expect your changes to be merge to upstream instantly, since a team member will review your pull request, asking for further possible changes
 4. Once all further changes have been met (if any) and your changes are approved, it will be merged to upstream and the APT repository shortly updated
 
 ### Adding a New Package
