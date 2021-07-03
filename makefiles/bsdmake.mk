@@ -11,7 +11,6 @@ DEB_BSDMAKE_V   ?= $(BSDMAKE_VERSION)
 bsdmake-setup: setup
 	wget -q -nc -P$(BUILD_SOURCE) https://opensource.apple.com/tarballs/bsdmake/bsdmake-$(BSDMAKE_VERSION).tar.gz
 	$(call EXTRACT_TAR,bsdmake-$(BSDMAKE_VERSION).tar.gz,bsdmake-$(BSDMAKE_VERSION),bsdmake)
-	$(SED) -i '1s/^/#include <libiosexec.h>\n/' $(BUILD_WORK)/bsdmake/proc.c
 	find $(BUILD_WORK)/bsdmake -type f -exec $(SED) -i -e 's|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' {} \;
 
 ifneq ($(wildcard $(BUILD_WORK)/bsdmake/.build_complete),)
@@ -25,8 +24,7 @@ bsdmake: bsdmake-setup libiosexec
 	+unset MAKEFLAGS && \
 		$(BUILD_WORK)/bsdmake/make-native \
 		-m $(BUILD_WORK)/bsdmake/mk \
-		-C $(BUILD_WORK)/bsdmake \
-		LDFLAGS="$(LDFLAGS) -liosexec"
+		-C $(BUILD_WORK)/bsdmake
 	+unset MAKEFLAGS && \
 		$(BUILD_WORK)/bsdmake/make-native \
 		-m $(BUILD_WORK)/bsdmake/mk \
