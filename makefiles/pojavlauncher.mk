@@ -12,6 +12,8 @@ POJAVLAUNCHER_VERSION   := 1.2
 #+git20210417.$(shell echo $(POJAVLAUNCHER_COMMIT) | cut -c -7)
 DEB_POJAVLAUNCHER_V     ?= $(POJAVLAUNCHER_VERSION)
 
+JAVAFILES   := $(shell cd JavaApp; find src -type f -name "*.java" -print)
+
 pojavlauncher-setup: setup
 	$(call GITHUB_ARCHIVE,PojavLauncherTeam,PojavLauncher_iOS,$(POJAVLAUNCHER_COMMIT),$(POJAVLAUNCHER_COMMIT))
 	$(call EXTRACT_TAR,PojavLauncher_iOS-$(POJAVLAUNCHER_COMMIT).tar.gz,PojavLauncher_iOS-$(POJAVLAUNCHER_COMMIT),pojavlauncher)
@@ -26,31 +28,33 @@ pojavlauncher:
 	@echo "Using previously built pojavlauncher."
 else
 pojavlauncher: pojavlauncher-setup
-	# Reimplement the build script
+	# Copy and paste from the new Makefile... basically
 	cd $(BUILD_WORK)/pojavlauncher; \
 		unset CC CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS; \
 		cd Natives; \
 			mkdir -p build; \
 			cd build; \
-			wget https://github.com/leetal/ios-cmake/raw/master/ios.toolchain.cmake; \
-			cmake .. -G Xcode -DCMAKE_TOOLCHAIN_FILE=ios.toolchain.cmake -DDEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET) -DENABLE_ARC=TRUE -DENABLE_VISIBILITY=FALSE -DPLATFORM=OS64 -DENABLE_BITCODE=FALSE -DENABLE_STRICT_TRY_COMPILE=FALSE -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED="NO" -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY=""; \
+			cmake . -DCMAKE_BUILD_TYPE=Release -DCMAKE_CROSSCOMPILING=true -DCMAKE_SYSTEM_NAME=Darwin -DCMAKE_SYSTEM_PROCESSOR=aarch64 -DCMAKE_OSX_SYSROOT="$(SDKPATH)" -DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_C_FLAGS="-arch arm64 -miphoneos-version-min=$(IPHONEOS_DEPLOYMENT_TARGET)" ..
 			cmake --build . --config Release --target pojavexec PojavLauncher; \
 			cd ../..; \
-			mkdir -p Natives/build/Release-iphoneos/PojavLauncher.app/Base.lproj; \
+			mkdir -p Natives/build/PojavLauncher.app/Base.lproj; \
 			actool Natives/Assets.xcassets --compile Natives/resources --platform iphoneos --minimum-deployment-target $(IPHONEOS_DEPLOYMENT_TARGET) --app-icon AppIcon --output-partial-info-plist /dev/null; \
-			ibtool --compile Natives/build/Release-iphoneos/PojavLauncher.app/Base.lproj/LaunchScreen.storyboardc Natives/en.lproj/LaunchScreen.storyboard; \
-			ibtool --compile Natives/build/Release-iphoneos/PojavLauncher.app/Base.lproj/MinecraftSurface.storyboardc Natives/en.lproj/MinecraftSurface.storyboard; \
-			mkdir -p Natives/build/Release-iphoneos/PojavLauncher.app/Frameworks; \
-			cp Natives/build/Release-iphoneos/libpojavexec.dylib Natives/build/Release-iphoneos/PojavLauncher.app/Frameworks/; \
-			cp -R Natives/resources/* Natives/build/Release-iphoneos/PojavLauncher.app/; \
+			ibtool --compile Natives/build/PojavLauncher.app/Base.lproj/LaunchScreen.storyboardc Natives/en.lproj/LaunchScreen.storyboard; \
+			ibtool --compile Natives/build/PojavLauncher.app/Base.lproj/MinecraftSurface.storyboardc Natives/en.lproj/MinecraftSurface.storyboard; \
+			mkdir -p Natives/build/PojavLauncher.app/Frameworks; \
+			cp Natives/build/libpojavexec.dylib Natives/build/PojavLauncher.app/Frameworks/; \
+			cp -R Natives/resources/* Natives/build/PojavLauncher.app/; \
 		cd JavaApp; \
-			chmod +x gradlew; \
-			./gradlew clean build; \
-			cd ..; \
-		mkdir Natives/build/Release-iphoneos/PojavLauncher.app/libs; \
-		cp JavaApp/build/libs/PojavLauncher.jar Natives/build/Release-iphoneos/PojavLauncher.app/libs/launcher.jar; \
-		cp JavaApp/libs/* Natives/build/Release-iphoneos/PojavLauncher.app/libs/;
-	cp -R $(BUILD_WORK)/pojavlauncher/Natives/build/Release-iphoneos/PojavLauncher.app $(BUILD_STAGE)/pojavlauncher/Applications
+			cd JavaApp; \
+			mkdir -p local_out/classes; \
+			javac -cp "libs/*" -d local_out/classes $(JAVAFILES); \
+			cd local_out/classes; \
+			jar -cf ../launcher.jar *; \
+		mkdir Natives/build/PojavLauncher.app/{libs,libs_caciocavallo}; \
+		cp -R JavaApp/build/local_out/launcher.jar Natives/build/PojavLauncher.app/libs/launcher.jar; \
+		cp -R JavaApp/libs/* Natives/build/PojavLauncher.app/libs/; \
+		cp -R JavaApp/libs_caciocavallo/* Natives/build/PojavLauncher.app/libs_caciocavallo/;
+	cp -R $(BUILD_WORK)/pojavlauncher/Natives/build/PojavLauncher.app $(BUILD_STAGE)/pojavlauncher/Applications
 	touch $(BUILD_WORK)/pojavlauncher/.build_complete
 endif
 
