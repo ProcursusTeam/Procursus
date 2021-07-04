@@ -34,11 +34,11 @@ pojavlauncher: pojavlauncher-setup
 		cd Natives; \
 			mkdir -p build; \
 			cd build; \
-			cmake . -DCMAKE_BUILD_TYPE=Release -DCMAKE_CROSSCOMPILING=true -DCMAKE_SYSTEM_NAME=Darwin -DCMAKE_SYSTEM_PROCESSOR=aarch64 -DCMAKE_OSX_SYSROOT="$(SDKPATH)" -DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_C_FLAGS="-arch arm64 -miphoneos-version-min=$(IPHONEOS_DEPLOYMENT_TARGET)" ..
+			cmake . $(DEFAULT_CMAKE_FLAGS)
 			cmake --build . --config Release --target pojavexec PojavLauncher; \
 			cd ../..; \
 			mkdir -p Natives/build/PojavLauncher.app/Base.lproj; \
-			actool Natives/Assets.xcassets --compile Natives/resources --platform iphoneos --minimum-deployment-target $(IPHONEOS_DEPLOYMENT_TARGET) --app-icon AppIcon --output-partial-info-plist /dev/null; \
+			actool Natives/Assets.xcassets --compile Natives/resources --platform $(PLATFORM) --minimum-deployment-target $(IPHONEOS_DEPLOYMENT_TARGET) --app-icon AppIcon --output-partial-info-plist /dev/null; \
 			ibtool --compile Natives/build/PojavLauncher.app/Base.lproj/LaunchScreen.storyboardc Natives/en.lproj/LaunchScreen.storyboard; \
 			ibtool --compile Natives/build/PojavLauncher.app/Base.lproj/MinecraftSurface.storyboardc Natives/en.lproj/MinecraftSurface.storyboard; \
 			mkdir -p Natives/build/PojavLauncher.app/Frameworks; \
