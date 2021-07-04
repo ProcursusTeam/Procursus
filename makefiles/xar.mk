@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += xar
-XAR_VERSION := 420
+XAR_VERSION := 452
 DEB_XAR_V   ?= 1.8.0.$(XAR_VERSION)+fc-6
 
 xar-setup: setup file-setup

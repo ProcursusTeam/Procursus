@@ -31,3 +31,12 @@ diff -urN ld64/src/ld/Options.cpp ld64/src/ld/Options.cpp
  					warning("directory not found for option '-F%s'", frameworkDir);
  				}
  			}
+@@ -5788,7 +5788,7 @@
+ 	}
+
+ 	// <rdar://problem/51911409> codesign all userland arm64 macOS binaries
+-	if ( dyldLoadsOutput() && (fArchitecture == CPU_TYPE_ARM64) && platforms().contains(ld::Platform::macOS) )
++	if ( dyldLoadsOutput() && (fArchitecture == CPU_TYPE_ARM64))
+ 		fAdHocSign = true;
+
+ }
