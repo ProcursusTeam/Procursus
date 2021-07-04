@@ -12,7 +12,7 @@ POJAVLAUNCHER_VERSION   := 1.2
 #+git20210417.$(shell echo $(POJAVLAUNCHER_COMMIT) | cut -c -7)
 DEB_POJAVLAUNCHER_V     ?= $(POJAVLAUNCHER_VERSION)
 
-JAVAFILES   := $(shell cd JavaApp; find src -type f -name "*.java" -print)
+POJAV_JAVAFILES   := $(shell cd JavaApp; find src -type f -name "*.java" -print)
 
 pojavlauncher-setup: setup
 	$(call GITHUB_ARCHIVE,PojavLauncherTeam,PojavLauncher_iOS,$(POJAVLAUNCHER_COMMIT),$(POJAVLAUNCHER_COMMIT))
@@ -47,7 +47,7 @@ pojavlauncher: pojavlauncher-setup
 		cd JavaApp; \
 			cd JavaApp; \
 			mkdir -p local_out/classes; \
-			javac -cp "libs/*" -d local_out/classes $(JAVAFILES); \
+			javac -cp "libs/*" -d local_out/classes $(POJAV_JAVAFILES); \
 			cd local_out/classes; \
 			jar -cf ../launcher.jar *; \
 		mkdir Natives/build/PojavLauncher.app/{libs,libs_caciocavallo}; \
