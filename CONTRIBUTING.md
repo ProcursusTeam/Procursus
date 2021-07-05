@@ -12,7 +12,7 @@ While there isn't an overbearing policy on how to properly submit issues, please
 
 ## Contribution Process
 1. Fork the project and make changes relevant to what you're trying to add/fix — do this in a seperate branch in your fork
-2. Test your changes made on a **physical** device. If you're adding or updating a package, test your changes with a build of the package you added/updated
+2. Test your changes. If you're adding or updating a package, create a build of the package you added/updated and test it. We recommend that you do this on a **physical** device, though something like Corellium (and other simulating software) will do the trick as well
 3. Create a Pull Request for your changes in your specific branch — include a description of the change and where you tested your change
 
 Don't expect your changes to be merged and pushed to upstream immediately — your changes will be reviewed by a team member (or Hayden), providing suggested changes which must be met.
