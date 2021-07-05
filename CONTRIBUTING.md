@@ -24,6 +24,8 @@ Adding new packages to Procursus is fairly easy and simple. For most packages, y
 - A ``.mk`` file, that builds the package, and..
 - A ``.control`` file, which contains info about your package
 
+A way to get these files is by using the [``new_package.sh``](./build_tools/new_package.sh) script (in ``build_tools``), which can generate packages for some major platforms/build systems, like Python and Perl.
+
 Some things to keep in mind when adding a new package
 - Always ensure that the Architecture and Maintainer fields of your control file are populated with ``@DEB_ARCH@`` and ``@DEB_MAINTAINER@``, respectively
 - If you take advantage of already-made patchfiles from an external source, download them and implement them to your project. Check out how it's done in [``bash.mk``](./makefiles/bash.mk)
