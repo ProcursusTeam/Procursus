@@ -2,9 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 
-STRAPPROJECTS += logcleaner
+SUBPROJECTS        += logcleaner
 LOGCLEANER_VERSION := 1.0.0
 DEB_LOGCLEANER_V   ?= $(LOGCLEANER_VERSION)
 

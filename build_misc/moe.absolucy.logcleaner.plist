@@ -15,8 +15,8 @@
 		<string>-delete</string>
 	</array>
 	<key>RunAtLoad</key>
-    <true/>
-    <key>StartInterval</key>
-    <integer>86400</integer>
+	<true/>
+	<key>StartInterval</key>
+	<integer>86400</integer>
 </dict>
 </plist>
