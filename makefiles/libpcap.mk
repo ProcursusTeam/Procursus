@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += libpcap
+SUBPROJECTS += libpcap
 LIBPCAP_VERSION := 1.10.1
 DEB_LIBPCAP_V   ?= $(LIBPCAP_VERSION)
 
@@ -19,9 +19,9 @@ else
 libpcap: libpcap-setup
 	cd $(BUILD_WORK)/libpcap/build && cmake \
 		$(DEFAULT_CMAKE_FLAGS) \
-			-DINET6=ON \
-				-DPCAP_TYPE=bpf \
-					..
+		-DINET6=ON \
+		-DPCAP_TYPE=bpf \
+		..
 	+$(MAKE) -C $(BUILD_WORK)/libpcap/build
 	+$(MAKE) -C $(BUILD_WORK)/libpcap/build install \
 		DESTDIR=$(BUILD_STAGE)/libpcap
@@ -30,7 +30,7 @@ endif
 
 libpcap-package: libpcap-stage
 	# libpcap.mk Package Structure
-	rm -rf $(BUILD_DIST)/{libpcap0.8,libpcap0.8-dev}
+	rm -rf $(BUILD_DIST)/{libpcap0.8{,-dev}
 	mkdir -p $(BUILD_DIST)/libpcap0.8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	mkdir -p $(BUILD_DIST)/libpcap0.8-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,lib/pkgconfig}
 
