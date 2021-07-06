@@ -25,6 +25,8 @@ libpcap: libpcap-setup
 	+$(MAKE) -C $(BUILD_WORK)/libpcap/build
 	+$(MAKE) -C $(BUILD_WORK)/libpcap/build install \
 		DESTDIR=$(BUILD_STAGE)/libpcap
+	+$(MAKE) -C $(BUILD_WORK)/libpcap/build install \
+		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libpcap/.build_complete
 endif
 
