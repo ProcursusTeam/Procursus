@@ -52,11 +52,11 @@ lua5.2-package: lua5.2-stage
 
 	# lua5.2.mk Prep lua5.2
 	cp -a $(BUILD_STAGE)/lua5.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/lua5.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	$(GINSTALL) -Dm644 $(BUILD_STAGE)/lua5.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/lua.1 $(BUILD_DIST)/lua5.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/lua5.2.1
-	$(GINSTALL) -Dm644 $(BUILD_STAGE)/lua5.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/luac.1 $(BUILD_DIST)/lua5.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/luac5.2.1
+	$(INSTALL) -Dm644 $(BUILD_STAGE)/lua5.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/lua.1 $(BUILD_DIST)/lua5.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/lua5.2.1
+	$(INSTALL) -Dm644 $(BUILD_STAGE)/lua5.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/luac.1 $(BUILD_DIST)/lua5.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/luac5.2.1
 
 	# lua5.2.mk Prep liblua5.2-0
-	$(GINSTALL) -Dm755 $(BUILD_STAGE)/lua5.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.2.0.dylib $(BUILD_DIST)/liblua5.2-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.2.0.dylib
+	$(INSTALL) -Dm755 $(BUILD_STAGE)/lua5.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.2.0.dylib $(BUILD_DIST)/liblua5.2-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.2.0.dylib
 	ln -sf liblua5.2.0.dylib $(BUILD_DIST)/liblua5.2-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.2.0.0.0.dylib
 
 	# lua5.2.mk Prep liblua5.2-dev

@@ -43,7 +43,7 @@ neovim-package: neovim-stage
 	# neovim.mk Prep neovim
 	cp -a $(BUILD_STAGE)/neovim $(BUILD_DIST)
 	for i in ex rview rvim view vimdiff; do \
-	$(GINSTALL) -Dm0755 $(BUILD_MISC)/neovim.$$i $(BUILD_DIST)/neovim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/neovim/$$i; \
+	$(INSTALL) -Dm0755 $(BUILD_MISC)/neovim.$$i $(BUILD_DIST)/neovim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/neovim/$$i; \
 	$(SED) -i 's|usr/bin/nvim|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/nvim|g' $(BUILD_DIST)/neovim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/neovim/$$i; \
 	done
 
