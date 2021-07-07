@@ -2,8 +2,6 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-
 SUBPROJECTS        += logcleaner
 LOGCLEANER_VERSION := 1.0.0
 DEB_LOGCLEANER_V   ?= $(LOGCLEANER_VERSION)
@@ -35,5 +33,3 @@ logcleaner-package: logcleaner-stage
 	rm -rf $(BUILD_DIST)/logcleaner
 
 .PHONY: logcleaner logcleaner-package
-
-endif
