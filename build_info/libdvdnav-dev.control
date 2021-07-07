@@ -1,0 +1,12 @@
+Package: libdvdnav-dev
+Version: @DEB_LIBDVDNAV_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libdvdnav4 (= @DEB_LIBDVDNAV_V@), pkg-config, libdvdread-dev
+Suggests: libdvdcss-dev
+Section: Development
+Priority: optional
+Homepage: http://dvdnav.mplayerhq.hu/
+Description: DVD navigation library (development)
+ libdvdnav is a DVD navigation library, which provides an interface to the advanced features of DVDs, like menus and navigation. It contains the VM and other parts useful for writing DVD players. It's based on Ogle, but was modified to be used by xine and mplayer.
+ This package contains the development files.
