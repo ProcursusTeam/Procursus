@@ -1,0 +1,8 @@
+Package: tale-keyring
+Version: @DEB_TALE_KEYRING_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Keyrings
+Priority: optional
+Description: GnuPG key for Tale/Kiwano Repository
+Name: Tale/Kiwano APT Keyring
