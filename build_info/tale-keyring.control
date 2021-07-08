@@ -4,5 +4,5 @@ Architecture: all
 Maintainer: @DEB_MAINTAINER@
 Section: Keyrings
 Priority: optional
-Description: GnuPG key for Tale/Kiwano Repository
-Name: Tale/Kiwano APT Keyring
+Description: GnuPG keys for Aarnav Tale's repositories
+Name: Tale APT Keyring
