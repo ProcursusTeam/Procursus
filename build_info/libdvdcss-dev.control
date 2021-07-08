@@ -1,0 +1,11 @@
+Package: libdvdcss-dev
+Version: @DEB_LIBDVDCSS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libdvdcss2 (= @DEB_LIBDVDCSS_V@)
+Section: Development
+Priority: optional
+Homepage: http://download.videolan.org/
+Description: Simple foundation for reading DVDs - devel files
+ To allow applications to access some of the more advanced features
+ of the DVD format.

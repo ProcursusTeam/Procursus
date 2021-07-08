@@ -1,0 +1,8 @@
+Package: libtapi-dev
+Version: @DEB_TAPI_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libtapi
+Section: Development
+Priority: optional
+Description: Text-based Application Programming Interface (library) - development files
