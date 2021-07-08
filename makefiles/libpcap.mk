@@ -51,6 +51,6 @@ libpcap-package: libpcap-stage
 	$(call PACK,libpcap0.8-dev,DEB_LIBPCAP_V)
 	
 	# libpcap.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libpcap
+	rm -rf $(BUILD_DIST)/{libpcap0.8{,-dev}
 
 .PHONY: libpcap libpcap-package
