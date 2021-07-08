@@ -33,8 +33,8 @@ endif
 libpcap-package: libpcap-stage
 	# libpcap.mk Package Structure
 	rm -rf $(BUILD_DIST)/{libpcap0.8{,-dev}
-	mkdir -p $(BUILD_DIST)/libpcap0.8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	mkdir -p $(BUILD_DIST)/libpcap0.8-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,lib/pkgconfig}
+	mkdir -p $(BUILD_DIST)/libpcap0.8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+	    $(BUILD_DIST)/libpcap0.8-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,lib/pkgconfig}
 
 	
 	# libpcap.mk Prep libpcap0.8
