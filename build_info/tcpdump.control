@@ -16,4 +16,3 @@ Description: command-line network traffic analyzer
  interface, filter packets that match a certain expression. You can
  use this tool to track down network problems, to detect attacks
  or to monitor network activities.
- 

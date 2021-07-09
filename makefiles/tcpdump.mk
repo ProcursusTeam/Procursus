@@ -16,7 +16,7 @@ ifneq ($(wildcard $(BUILD_WORK)/tcpdump/.build_complete),)
 tcpdump:
 	@echo "Using previously built tcpdump."
 else
-tcpdump: tcpdump-setup
+tcpdump: tcpdump-setup openssl libpcap
 	cd $(BUILD_WORK)/tcpdump/build && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DENABLE_SMB=OFF \
@@ -44,4 +44,4 @@ tcpdump-package: tcpdump-stage
 	# tcpdump.mk Build cleanup
 	rm -rf $(BUILD_DIST)/tcpdump
 
-	.PHONY: tcpdump tcpdump-package
+.PHONY: tcpdump tcpdump-package
