@@ -37,7 +37,7 @@ pacman: pacman-setup libarchive openssl curl gettext gpgme bash-completion
 		-D i18n=false \
 		-D doc=disabled \
 		-D crypto=openssl \
-		-D b_bitcode=true \
+		-D b_bitcode=false \
 		..
 	+ninja -C $(BUILD_WORK)/pacman/build
 	+DESTDIR="$(BUILD_STAGE)/pacman" ninja -C $(BUILD_WORK)/pacman/build install
