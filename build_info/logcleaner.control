@@ -1,0 +1,10 @@
+Package: logcleaner
+Version: @DEB_LOGCLEANER_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: findutils, launchctl
+Section: Administration
+Priority: standard
+Description: Automatically cleans up old crash reports collected by iOS.
+ Every day, or on boot, this will run a simple script that cleans up .ips
+ reports which are older than 3 days.
