@@ -7,8 +7,9 @@ PACMAN_VERSION := 6.0.0
 DEB_PACMAN_V   ?= $(PACMAN_VERSION)
 
 pacman-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://git.archlinux.org/pacman.git/snapshot/pacman-$(PACMAN_VERSION).tar.gz
-	$(call EXTRACT_TAR,pacman-$(PACMAN_VERSION).tar.gz,pacman-$(PACMAN_VERSION),pacman)
+	wget -q -nc -P $(BUILD_SOURCE) https://sources.archlinux.org/other/pacman/pacman-$(PACMAN_VERSION).tar.xz{,.sig}
+	$(call PGP_VERIFY,pacman-$(PACMAN_VERSION).tar.xz)
+	$(call EXTRACT_TAR,pacman-$(PACMAN_VERSION).tar.xz,pacman-$(PACMAN_VERSION),pacman)
 	$(call DO_PATCH,pacman,pacman,-p1)
 	mkdir -p $(BUILD_WORK)/pacman/build
 	echo -e "[host_machine]\n \
@@ -40,7 +41,7 @@ pacman: pacman-setup libarchive openssl curl gettext gpgme bash-completion
 		-D b_bitcode=false \
 		..
 	+ninja -C $(BUILD_WORK)/pacman/build
-	+DESTDIR="$(BUILD_STAGE)/pacman" ninja -C $(BUILD_WORK)/pacman/build install
+	+DESTDIR="$(BUILD_STAGE)/pacman" ninja -C $(BUILD_WORK)/pacman/build install 
 	find $(BUILD_STAGE)/pacman -type f -exec $(SED) -i 's+$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/bin/+$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/+g' {} +
 	touch $(BUILD_WORK)/pacman/.build_complete
 endif
