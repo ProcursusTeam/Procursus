@@ -2,7 +2,7 @@ Package: libpcap0.8
 Version: @DEB_LIBPCAP_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Section: Utilities
+Section: Libraries
 Priority: optional
 Homepage: http://www.tcpdump.org/
 Depends: libssl1.1
