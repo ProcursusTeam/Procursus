@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS += libpcap
+SUBPROJECTS     += libpcap
 LIBPCAP_VERSION := 1.10.1
 DEB_LIBPCAP_V   ?= $(LIBPCAP_VERSION)
 
@@ -16,7 +16,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libpcap/.build_complete),)
 libpcap:
 	@echo "Using previously built libpcap."
 else
-libpcap: libpcap-setup
+libpcap: libpcap-setup openssl
 	cd $(BUILD_WORK)/libpcap/build && cmake \
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DINET6=ON \
@@ -33,15 +33,16 @@ endif
 libpcap-package: libpcap-stage
 	# libpcap.mk Package Structure
 	rm -rf $(BUILD_DIST)/{libpcap0.8{,-dev}
-	mkdir -p $(BUILD_DIST)/libpcap0.8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-	    $(BUILD_DIST)/libpcap0.8-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,lib/pkgconfig}
+	mkdir -p $(BUILD_DIST)/libpcap0.8{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	
 	# libpcap.mk Prep libpcap0.8
-	cp -a $(BUILD_STAGE)/libpcap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/libpcap.$(LIBPCAP_VERSION).dylib,lib/libpcap.A.dylib} $(BUILD_DIST)/libpcap0.8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
+	cp -a $(BUILD_STAGE)/libpcap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpcap.*.dylib $(BUILD_DIST)/libpcap0.8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 	
 	# libpcap.mk Prep libpcap0.8-dev
-	cp -a $(BUILD_STAGE)/libpcap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include,lib/libpcap.dylib,lib/libpcap.a,lib/pkgconfig/} $(BUILD_DIST)/libpcap0.8-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
+	cp -a $(BUILD_STAGE)/libpcap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include} $(BUILD_DIST)/libpcap0.8-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libpcap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/!(libpcap.*.dylib) $(BUILD_DIST)/libpcap0.8-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	
 	# libpcap.mk Sign
 	$(call SIGN,libpcap0.8,general.xml)
 	$(call SIGN,libpcap0.8-dev,general.xml)
