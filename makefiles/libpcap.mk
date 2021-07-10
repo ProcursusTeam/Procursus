@@ -32,7 +32,7 @@ endif
 
 libpcap-package: libpcap-stage
 	# libpcap.mk Package Structure
-	rm -rf $(BUILD_DIST)/{libpcap0.8{,-dev}
+	rm -rf $(BUILD_DIST)/libpcap0.8{,-dev}
 	mkdir -p $(BUILD_DIST)/libpcap0.8{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libpcap.mk Prep libpcap0.8
@@ -51,6 +51,6 @@ libpcap-package: libpcap-stage
 	$(call PACK,libpcap0.8-dev,DEB_LIBPCAP_V)
 	
 	# libpcap.mk Build cleanup
-	rm -rf $(BUILD_DIST)/{libpcap0.8{,-dev}
+	rm -rf $(BUILD_DIST)/libpcap0.8{,-dev}
 
 .PHONY: libpcap libpcap-package
