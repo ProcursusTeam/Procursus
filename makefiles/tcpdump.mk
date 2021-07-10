@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += tcpdump
+SUBPROJECTS     += tcpdump
 TCPDUMP_VERSION := 4.99.1
 DEB_TCPDUMP_V   ?= $(TCPDUMP_VERSION)
 
@@ -30,7 +30,6 @@ endif
 tcpdump-package: tcpdump-stage
 	# tcpdump.mk Package Structure
 	rm -rf $(BUILD_DIST)/tcpdump
-	mkdir -p $(BUILD_DIST)/tcpdump
 	
 	# tcpdump.mk Prep tcpdump
 	cp -a $(BUILD_STAGE)/tcpdump $(BUILD_DIST)
