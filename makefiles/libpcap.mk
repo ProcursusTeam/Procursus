@@ -32,25 +32,25 @@ endif
 
 libpcap-package: libpcap-stage
 	# libpcap.mk Package Structure
-	rm -rf $(BUILD_DIST)/libpcap0.8{,-dev}
-	mkdir -p $(BUILD_DIST)/libpcap0.8{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	rm -rf $(BUILD_DIST)/libpcapa{,-dev}
+	mkdir -p $(BUILD_DIST)/libpcapa{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
-	# libpcap.mk Prep libpcap0.8
-	cp -a $(BUILD_STAGE)/libpcap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpcap.*.dylib $(BUILD_DIST)/libpcap0.8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
+	# libpcap.mk Prep libpcapa
+	cp -a $(BUILD_STAGE)/libpcap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpcap.*.dylib $(BUILD_DIST)/libpcapa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 	
-	# libpcap.mk Prep libpcap0.8-dev
-	cp -a $(BUILD_STAGE)/libpcap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include,share} $(BUILD_DIST)/libpcap0.8-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libpcap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libpcap.*.dylib) $(BUILD_DIST)/libpcap0.8-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	# libpcap.mk Prep libpcapa-dev
+	cp -a $(BUILD_STAGE)/libpcap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include,share} $(BUILD_DIST)/libpcapa-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libpcap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libpcap.*.dylib) $(BUILD_DIST)/libpcapa-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libpcap.mk Sign
-	$(call SIGN,libpcap0.8,general.xml)
-	$(call SIGN,libpcap0.8-dev,general.xml)
+	$(call SIGN,libpcapa,general.xml)
+	$(call SIGN,libpcapa-dev,general.xml)
 	
 	# libpcap.mk Make .debs
-	$(call PACK,libpcap0.8,DEB_LIBPCAP_V)
-	$(call PACK,libpcap0.8-dev,DEB_LIBPCAP_V)
+	$(call PACK,libpcapa,DEB_LIBPCAP_V)
+	$(call PACK,libpcapa-dev,DEB_LIBPCAP_V)
 	
 	# libpcap.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libpcap0.8{,-dev}
+	rm -rf $(BUILD_DIST)/libpcapa{,-dev}
 
 .PHONY: libpcap libpcap-package
