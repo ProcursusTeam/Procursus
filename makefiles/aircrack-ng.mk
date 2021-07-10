@@ -11,8 +11,7 @@ aircrack-ng-setup: setup
 	$(call GITHUB_ARCHIVE,aircrack-ng,aircrack-ng,$(AIRCRACK-NG_COMMIT),$(AIRCRACK-NG_COMMIT))
 	$(call EXTRACT_TAR,aircrack-ng-$(AIRCRACK-NG_COMMIT).tar.gz,aircrack-ng-$(AIRCRACK-NG_COMMIT),aircrack-ng)
 	$(call DO_PATCH,aircrack-ng,aircrack-ng,-p1)
-	rm $(BUILD_WORK)/aircrack-ng/lib/libac/support/strlcat.c && touch $(BUILD_WORK)/aircrack-ng/lib/libac/support/strlcat.c
-	rm $(BUILD_WORK)/aircrack-ng/lib/libac/support/strlcpy.c && touch $(BUILD_WORK)/aircrack-ng/lib/libac/support/strlcpy.c
+	rm $(BUILD_WORK)/aircrack-ng/lib/libac/support/{strlcat.c,strlcpy.c} && touch $(BUILD_WORK)/aircrack-ng/lib/libac/support/{strlcat.c,strlcpy.c}
 
 ifneq ($(wildcard $(BUILD_WORK)/aircrack-ng/.build_complete),)
 aircrack-ng:
