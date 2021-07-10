@@ -1,0 +1,8 @@
+Package: tale-keyring
+Version: @DEB_TALE_KEYRING_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Keyrings
+Priority: optional
+Description: GnuPG keys for Aarnav Tale's repositories
+Name: Tale APT Keyring
