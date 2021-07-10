@@ -5,7 +5,7 @@ Maintainer: @DEB_MAINTAINER@
 Section: Development
 Priority: optional
 Homepage: http://www.tcpdump.org/
-Depends: llibpcap0.8 (= @DEB_LIBPCAP_V@)
+Depends: llibpcap0.8 (= @DEB_LIBPCAP_V@), libssl-dev
 Description: development library and header files for libpcap0.8
  Headers, static libraries, and documentation for the libpcap library.
  .
