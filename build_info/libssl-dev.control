@@ -12,5 +12,3 @@ Description: Secure Sockets Layer toolkit - development files
  .
  It contains development libraries, header files, and manpages for libssl
  and libcrypto.
-Name: OpenSSL 1.1.x Libraries (Devel)
-Tag: purpose::library, role::developer

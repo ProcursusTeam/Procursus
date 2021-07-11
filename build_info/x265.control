@@ -2,7 +2,7 @@ Package: x265
 Version: @DEB_X265_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libx265-192 (>= @DEB_X265_V@)
+Depends: libx265-199 (>= @DEB_X265_V@)
 Section: Multimedia
 Priority: optional
 Homepage: http://x265.org

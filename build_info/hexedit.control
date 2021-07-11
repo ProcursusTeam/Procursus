@@ -1,0 +1,13 @@
+Package: hexedit
+Version: @DEB_HEXEDIT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: Pascal Rigaux
+Pre-Depends: libncursesw6
+Section: Text_Editors
+Priority: optional
+Homepage: https://github.com/pixel/hexedit
+Description: View and edit files in hexidecimal or ASCII.
+ Hexedit allows users to edit files in hexidecimal or ASCII format. The editor works by
+ displaying a target of the given file as either hexidecimal or ASCII. This target can be
+ a device or file, and can be edited and searched through.
