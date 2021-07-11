@@ -42,7 +42,9 @@ pacman: pacman-setup libarchive openssl curl gettext gpgme bash-completion
 		-D b_bitcode=false \
 		..
 	+ninja -C $(BUILD_WORK)/pacman/build
-	+DESTDIR="$(BUILD_STAGE)/pacman" ninja -C $(BUILD_WORK)/pacman/build install 
+	+DESTDIR="$(BUILD_STAGE)/pacman" ninja -C $(BUILD_WORK)/pacman/build install
+	$(SED) -i "s|$$(cat $(BUILD_STAGE)/pacman/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/makepkg | grep \#! | sed 's/#!//')|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bash|" $(BUILD_STAGE)/pacman/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
+	$(SED) -i "s|$$(cat $(BUILD_STAGE)/pacman/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/makepkg/buildenv.sh | grep \#! | sed 's/#!//')|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bash|" $(BUILD_STAGE)/pacman/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/makepkg/{buildenv,executable,integrity,lint_config,lint_package,lint_pkgbuild,source,tidy,source}/*
 	find $(BUILD_STAGE)/pacman -type f -exec $(SED) -i 's+$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/bin/+$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/+g' {} +
 	touch $(BUILD_WORK)/pacman/.build_complete
 endif
