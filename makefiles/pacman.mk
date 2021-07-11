@@ -25,7 +25,8 @@ pacman-setup: setup
 	localstatedir='$(MEMO_PREFIX)/var'\n \
 	[binaries]\n \
 	c = '$(CC)'\n \
-	cpp = '$(CXX)'\n" > $(BUILD_WORK)/pacman/build/cross.txt
+	cpp = '$(CXX)'\n \
+	pkgconfig = '$(BUILD_TOOLS)/cross-pkg-config'\n" > $(BUILD_WORK)/pacman/build/cross.txt
 
 ifneq ($(wildcard $(BUILD_WORK)/pacman/.build_complete),)
 pacman:
