@@ -1,0 +1,16 @@
+#!/bin/sh
+
+set -eu
+
+if [ "${1}" = "purge" ]
+then
+	if id shairport-sync &>/dev/null; then
+		dscl . -delete /Users/shairport-sync
+		dscl . -delete /Groups/shairport-sync
+	fi
+	rm -rf @MEMO_PREFIX@/var/lib/shairport-sync @MEMO_PREFIX@/var/log/shairport-sync @MEMO_PREFIX@/etc/shairport-sync
+fi
+
+#DEBHELPER#
+
+exit 0
