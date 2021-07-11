@@ -1,0 +1,24 @@
+Package: libbluray-bdj
+Version: @DEB_LIBBLURAY_V@
+Priority: optional
+Section: Libraries
+Source: libbluray
+Maintainer: Debian Multimedia Maintainers <debian-multimedia@lists.debian.org>
+Architecture: @DEB_ARCH@
+Depends: libbluray2 (>= @DEB_LIBBLURAY_V@), openjdk-jre
+Homepage: http://www.videolan.org/developers/libbluray.html
+Tag: role::shared-lib
+Description: Blu-ray Disc Java support library (BD-J library)
+ libbluray is an open-source library designed for Blu-Ray Discs playback for
+ media players, like VLC or MPlayer. This research project is developed by an
+ international team of developers from Doom9. libbluray integrates navigation,
+ playlist parsing, menus, and BD-J.
+ .
+ NB: Most commercial Blu-Ray are restricted by AACS or BD+ technologies and this
+ library is not enough to playback those discs.
+ .
+ BD-J support is important because many of the advanced features and extra
+ content in Blu-ray movies uses BD-J. Programs designed to provide support for
+ those features must depend on this.
+ .
+ This package provides the BD-J library.
