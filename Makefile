@@ -605,7 +605,7 @@ SIGN = 	for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}
 			if [ $${file\#\#*.} = "dylib" ] || [ $${file\#\#*.} = "bundle" ] || [ $${file\#\#*.} = "so" ]; then \
 				$(LDID) -S $$file; \
 			else \
-				$(LDID) -S$(BUILD_INFO)/$(2) $$file; \
+				$(LDID) -S$(BUILD_MISC)/entitlements/$(2) $$file; \
 			fi; \
 		done; \
 		find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
@@ -614,7 +614,7 @@ SIGN = 	CODESIGN_FLAGS="--sign $(CODESIGN_IDENTITY) --force --deep "; \
 		if [ "$(CODESIGN_IDENTITY)" != "-" ]; then \
 			CODESIGN_FLAGS+="--timestamp -o runtime "; \
 			if [ -n "$(3)" ]; then \
-				CODESIGN_FLAGS+="--entitlements $(BUILD_INFO)/$(3) "; \
+				CODESIGN_FLAGS+="--entitlements $(BUILD_MISC)/entitlements/$(3) "; \
 			fi; \
 		fi; \
 		for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
@@ -878,11 +878,11 @@ MAKEFLAGS += --no-print-directory
 
 ifeq ($(findstring --jobserver-auth=,$(MAKEFLAGS)),)
 ifeq ($(call HAS_COMMAND,nproc),1)
-GET_LOGICAL_CORES := nproc
+GET_LOGICAL_CORES := $(shell expr $(shell nproc) / 2)
 else
-GET_LOGICAL_CORES := sysctl -n hw.ncpu
+GET_LOGICAL_CORES := $(shell expr $(shell sysctl -n hw.ncpu) / 2)
 endif
-MAKEFLAGS += --jobs=$(shell $(GET_LOGICAL_CORES))
+MAKEFLAGS += --jobs=$(GET_LOGICAL_CORES) --load-average=$(GET_LOGICAL_CORES)
 endif
 
 PROCURSUS := 1

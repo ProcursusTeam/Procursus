@@ -12,7 +12,7 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += openssl
 endif
 OPENSSL_VERSION := 1.1.1k
-DEB_OPENSSL_V   ?= $(OPENSSL_VERSION)
+DEB_OPENSSL_V   ?= $(OPENSSL_VERSION)-1
 
 ###
 #
@@ -85,7 +85,7 @@ openssl-package: openssl-stage
 	cp -a $(BUILD_STAGE)/openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libssl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# openssl.mk Prep openssl
-	cp -a $(BUILD_STAGE)/openssl/$(MEMO_PREFIX)/etc $(BUILD_DIST)/openssl
+	cp -a $(BUILD_STAGE)/openssl/$(MEMO_PREFIX)/etc $(BUILD_DIST)/openssl/$(MEMO_PREFIX)/etc
 	cp -a $(BUILD_STAGE)/openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/* $(BUILD_DIST)/openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 	# openssl.mk Sign
