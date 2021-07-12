@@ -20,7 +20,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libboost/.build_complete),)
 libboost:
 	@echo "Using previously built libboost."
 else
-libboost: libboost-setup xz zstd icu4c
+libboost: libboost-setup xz zstd icu4c python3
 	rm -rf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_*
 	$(BUILD_WORK)/libboost/tools/build/src/engine/build.sh --cxx="$(CXX_FOR_BUILD)" --cxxflags="-std=c++11 $(BUILD_CXXFLAGS)"
 ifneq (,$(findstring amd64,$(MEMO_TARGET)))
