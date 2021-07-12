@@ -1,0 +1,8 @@
+Package: amy-keyring
+Version: @DEB_AMY_KEYRING_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Keyrings
+Priority: optional
+Description: GnuPG keys for Amy While's repositories
+Name: Amy APT Keyring
