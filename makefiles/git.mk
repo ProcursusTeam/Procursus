@@ -26,11 +26,7 @@ ifneq ($(wildcard $(BUILD_WORK)/git/.build_complete),)
 git:
 	@echo "Using previously built git."
 else
-ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 git: git-setup openssl curl pcre2 gettext libidn2 expat
-else
-git: git-setup openssl curl pcre2 gettext libidn2 expat libiosexec
-endif
 	+$(MAKE) -C $(BUILD_WORK)/git configure
 	cd $(BUILD_WORK)/git && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
