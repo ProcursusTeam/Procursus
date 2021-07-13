@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += aircrack-ng
+SUBPROJECTS         += aircrack-ng
 AIRCRACK-NG_COMMIT  := 482f56c5a1433df6b8619f1de6d89d2d5f5ab743
 AIRCRACK-NG_VERSION := 1.6~20211007.$(shell echo $(AIRCRACK_COMMIT) | cut -c -7)
 DEB_AIRCRACK-NG_V   ?= $(AIRCRACK-NG_VERSION)
@@ -24,7 +24,7 @@ aircrack-ng: aircrack-ng-setup openssl sqlite3 pcre
 		--disable-silent-rules \
 		--without-xcode \
 		--without-duma \
---without-gcrypt \
+		--without-gcrypt \
 		--with-lto
 	+$(MAKE) -C $(BUILD_WORK)/aircrack-ng
 	+$(MAKE) -C $(BUILD_WORK)/aircrack-ng install \
