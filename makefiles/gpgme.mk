@@ -19,7 +19,11 @@ gpgme: gpgme-setup gnupg libassuan libgpg-error
 	cd $(BUILD_WORK)/gpgme && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-libassuan-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--with-libgpg-error-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		--with-libgpg-error-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--disable-gpgconf-test \
+		--disable-gpg-test \
+		--disable-gpgsm-test \
+		--disable-g13-test
 	+$(MAKE) -C $(BUILD_WORK)/gpgme
 	+$(MAKE) -C $(BUILD_WORK)/gpgme install \
 		DESTDIR=$(BUILD_STAGE)/gpgme
