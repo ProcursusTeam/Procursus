@@ -30,7 +30,7 @@ smartmontools-package: smartmontools-stage
 	rm -rf $(BUILD_DIST)/smartmontools
 	
 	# smartmontools.mk Prep smartmontools
-	cp -a $(BUILD_STAGE)/smartmontools/* $(BUILD_DIST)/smartmontools/
+	cp -a $(BUILD_STAGE)/smartmontools $(BUILD_DIST)
 	
 	# smartmontools.mk Sign
 	$(call SIGN,smartmontools,apfs.xml)
