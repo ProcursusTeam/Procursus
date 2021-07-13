@@ -53,6 +53,6 @@ libdca-package: libdca-stage
 	$(call PACK,libdca-utils,DEB_LIBDCA_V)
 	
 	# libdca.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libdca{0,-dev,-utils}}
+	rm -rf $(BUILD_DIST)/libdca{0,-dev,-utils}
 
 .PHONY: libdca libdca-package
