@@ -4,7 +4,7 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
-STRAPPROJECTS     += text-cmds
+SUBPROJECTS       += text-cmds
 TEXT-CMDS_VERSION := 106
 DEB_TEXT-CMDS_V   ?= $(TEXT-CMDS_VERSION)
 

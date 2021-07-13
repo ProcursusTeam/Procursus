@@ -2,7 +2,6 @@
 
 /Library/dpkg/info/darwintools.postinst
 /Library/dpkg/info/system-cmds.postinst
-/Library/dpkg/info/text-cmds.postinst
 /Library/dpkg/info/debianutils.postinst configure 99999
 /Library/dpkg/info/apt.postinst configure 999999
 /Library/dpkg/info/zsh.postinst configure 999999
