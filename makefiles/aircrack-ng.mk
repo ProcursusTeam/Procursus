@@ -16,7 +16,7 @@ ifneq ($(wildcard $(BUILD_WORK)/aircrack-ng/.build_complete),)
 aircrack-ng:
 	@echo "Using previously built aircrack-ng."
 else
-aircrack-ng: aircrack-ng-setup openssl pcre
+aircrack-ng: aircrack-ng-setup openssl pcre libpcap
 	cd $(BUILD_WORK)/aircrack-ng && ./autogen.sh -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-experimental=yes \
