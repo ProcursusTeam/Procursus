@@ -33,7 +33,7 @@ libdvbpsi-package: libdvbpsi-stage
 	mkdir -p $(BUILD_DIST)/libdvbpsi{10,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libdvbpsi.mk Prep libdvbpsi10
-	cp -a $(BUILD_STAGE)/libdvbpsi/$(MEMO_PREIFX)$(MEMO_SUB_PREFIX)/lib/libdvbpsi.10.dylib $(BUILD_DIST)/libdvbpsi10/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libdvbpsi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdvbpsi.10.dylib $(BUILD_DIST)/libdvbpsi10/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libdvbpsi.mk Prep libdvbpsi-dev
 	cp -a $(BUILD_STAGE)/libdvbpsi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libdvbpsi-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
