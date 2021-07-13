@@ -1,0 +1,14 @@
+Package: curlie
+Version: @DEB_CURLIE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: Oliver Poitrey <rs@rhapsodyk.net>
+Depends: curl
+Section: Networking
+Priority: optional
+Homepage: https://curlie.io/
+Description: The power of curl, the ease use of httpie.
+ curlie is a front-end to curl as well as command-line
+ HTTP client similar to httpie. It implements the use of
+ curl with the ease use of httpie without compromising
+ features and performance.
