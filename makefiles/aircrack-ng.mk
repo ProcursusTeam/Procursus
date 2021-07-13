@@ -25,7 +25,9 @@ aircrack-ng: aircrack-ng-setup openssl pcre libpcap
 		--without-duma \
 		--without-gcrypt \
 		--with-lto \
-		ac_cv_file__usr_local_Homebrew=no
+		ac_cv_file__usr_local_Homebrew=no \
+		ac_cv_file__opt_local_include=no \
+		ac_cv_file__opt_local_lib=no
 	+$(MAKE) -C $(BUILD_WORK)/aircrack-ng
 	+$(MAKE) -C $(BUILD_WORK)/aircrack-ng install \
 		DESTDIR=$(BUILD_STAGE)/aircrack-ng
