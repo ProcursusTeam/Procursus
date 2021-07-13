@@ -2,7 +2,6 @@ Package: libdca0
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Version: @DEB_LIBDCA_V@
-Depends: libiosexec1
 Section: Libraries
 Priority: optional
 Description: decoding library for DTS Coherent Acoustics streams
