@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS  += gnutls
-GNUTLS_VERSION := 3.7.1
+GNUTLS_VERSION := 3.7.2
 DEB_GNUTLS_V   ?= $(GNUTLS_VERSION)
 
 gnutls-setup: setup
@@ -21,13 +21,14 @@ gnutls: gnutls-setup readline gettext libgcrypt libgmp10 libidn2 libunistring ne
 		--disable-guile \
 		--enable-local-libopts \
 		--with-default-trust-store-file=$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem \
+		ac_cv_func_malloc_0_nonnull=yes \
+		ac_cv_func_realloc_0_nonnull=yes \
 		P11_KIT_CFLAGS=-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/p11-kit-1
 	+$(MAKE) -C $(BUILD_WORK)/gnutls
 	+$(MAKE) -C $(BUILD_WORK)/gnutls install \
 		DESTDIR=$(BUILD_STAGE)/gnutls
 	+$(MAKE) -C $(BUILD_WORK)/gnutls install \
 		DESTDIR=$(BUILD_BASE)
-	rm -rf $(BUILD_STAGE)/gnutls/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	touch $(BUILD_WORK)/gnutls/.build_complete
 endif
 
