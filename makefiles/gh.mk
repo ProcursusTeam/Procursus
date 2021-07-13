@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += gh
-GH_VERSION  := 1.9.2
+GH_VERSION  := 1.12.1
 DEB_GH_V    ?= $(GH_VERSION)
 
 gh-setup: setup
@@ -15,11 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/gh/.build_complete),)
 gh:
 	@echo "Using previously built gh."
 else
-ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 gh: gh-setup
-else
-gh: gh-setup libiosexec
-endif
 	+$(MAKE) -C $(BUILD_WORK)/gh bin/gh \
 		$(DEFAULT_GOLANG_FLAGS)
 	+unset CC CXX CFLAGS CPPFLAGS LDFLAGS && $(MAKE) -C $(BUILD_WORK)/gh manpages
@@ -31,10 +27,9 @@ endif
 gh-package: gh-stage
 	# gh.mk Package Structure
 	rm -rf $(BUILD_DIST)/gh
-	mkdir -p $(BUILD_DIST)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# gh.mk Prep gh
-	cp -a $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/gh $(BUILD_DIST)
 
 	# gh.mk Sign
 	$(call SIGN,gh,general.xml)
