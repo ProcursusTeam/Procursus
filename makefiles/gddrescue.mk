@@ -8,7 +8,7 @@ DEB_GDDRESCUE_V   ?= $(GDDRESCUE_VERSION)
 
 gddrescue-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) http://mirror.keystealth.org/gnu/ddrescue/ddrescue-$(GDDRESCUE_VERSION).tar.lz{,.sig}
-	$(call PGP_VERIFY,ddrescue-$(DDRESCUE_VERSION).tar.lz)
+	$(call PGP_VERIFY,ddrescue-$(GDDRESCUE_VERSION).tar.lz)
 	$(call EXTRACT_TAR,ddrescue-$(GDDRESCUE_VERSION).tar.lz,ddrescue-$(GDDRESCUE_VERSION),gddrescue)
 
 ifneq ($(wildcard $(BUILD_WORK)/gddrescue/.build_complete),)
@@ -17,7 +17,11 @@ gddrescue:
 else
 gddrescue: gddrescue-setup
 	cd $(BUILD_WORK)/gddrescue && ./configure \
-		$(DEFAULT_CONFIGURE_FLAGS)
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		CXX="$(CXX)" \
+		CPPFLAGS="$(CPPFLAGS)" \
+		CXXFLAGS="$(CXXFLAGS)" \
+		LDFLAGS="$(LDFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/gddrescue
 	+$(MAKE) -C $(BUILD_WORK)/gddrescue install \
 		DESTDIR=$(BUILD_STAGE)/gddrescue
