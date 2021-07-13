@@ -7,9 +7,8 @@ STRAPPROJECTS += bash
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += bash
 endif # ($(MEMO_TARGET),darwin-\*)
-BASH_VERSION  := 5.1
-BASH_SUB_V    := 8
-DEB_BASH_V    ?= $(BASH_VERSION).$(BASH_SUB_V)
+BASH_VERSION  := 5.1.8
+DEB_BASH_V    ?= $(BASH_VERSION)
 
 bash-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION).tar.gz{,.sig}
