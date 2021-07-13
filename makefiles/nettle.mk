@@ -18,8 +18,8 @@ else
 nettle: nettle-setup libgmp10
 	cd $(BUILD_WORK)/nettle && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		CC_FOR_BUILD='$(shell which cc) $(BUILD_CFLAGS)' \
-		CPP_FOR_BUILD='$(shell which cc) -E $(BUILD_CPPFLAGS)'
+		CC_FOR_BUILD='$(shell which cc) $(CFLAGS_FOR_BUILD)' \
+		CPP_FOR_BUILD='$(shell which cc) -E $(CPPFLAGS_FOR_BUILD)'
 	+$(MAKE) -C $(BUILD_WORK)/nettle
 	+$(MAKE) -C $(BUILD_WORK)/nettle install \
 		DESTDIR=$(BUILD_STAGE)/nettle

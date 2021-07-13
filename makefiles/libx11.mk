@@ -29,9 +29,9 @@ libx11: libx11-setup xorgproto libxcb xtrans
 		--enable-malloc0returnsnull=no \
 		--with-keysymdefdir=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/X11 \
 		CC_FOR_BUILD="$(shell which cc)" \
-		CFLAGS_FOR_BUILD="$(BUILD_CFLAGS)" \
-		CPPFLAGS_FOR_BUILD="$(BUILD_CPPFLAGS)" \
-		LDFLAGS_FOR_BUILD="$(BUILD_LDFLAGS)"
+		CFLAGS_FOR_BUILD="$(CFLAGS_FOR_BUILD)" \
+		CPPFLAGS_FOR_BUILD="$(CPPFLAGS_FOR_BUILD)" \
+		LDFLAGS_FOR_BUILD="$(LDFLAGS_FOR_BUILD)"
 	+$(MAKE) -C $(BUILD_WORK)/libx11
 	+$(MAKE) -C $(BUILD_WORK)/libx11 install \
 		DESTDIR=$(BUILD_STAGE)/libx11

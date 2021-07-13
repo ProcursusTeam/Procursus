@@ -24,9 +24,9 @@ ncurses: ncurses-setup
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-build-cc="$(CC_FOR_BUILD)" \
 		--with-build-cpp="$(CPP_FOR_BUILD)" \
-		--with-build-cflags="$(BUILD_CFLAGS)" \
-		--with-build-cppflags="$(BUILD_CPPFLAGS)" \
-		--with-build-ldflags="$(BUILD_LDFLAGS)" \
+		--with-build-cflags="$(CFLAGS_FOR_BUILD)" \
+		--with-build-cppflags="$(CPPFLAGS_FOR_BUILD)" \
+		--with-build-ldflags="$(LDFLAGS_FOR_BUILD)" \
 		--with-shared \
 		--without-debug \
 		--enable-sigwinch \
