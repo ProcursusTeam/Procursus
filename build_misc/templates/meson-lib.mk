@@ -47,7 +47,7 @@ endif
         mkdir -p $(BUILD_DIST)/@pkg@{@SOVER@,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
         # @pkg@.mk Prep @pkg@@SOVER@
-        cp -a $(BUILD_STAGE)/@pkg@/$(MEMO_PREIFX)$(MEMO_SUB_PREFIX)/lib/@pkg@.@SOVER@.dylib $(BUILD_DIST)/@pkg@@SOVER@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+        cp -a $(BUILD_STAGE)/@pkg@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/@pkg@.@SOVER@.dylib $(BUILD_DIST)/@pkg@@SOVER@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
         # @pkg@.mk Prep @pkg@-dev
         cp -a $(BUILD_STAGE)/@pkg@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/@pkg@-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
