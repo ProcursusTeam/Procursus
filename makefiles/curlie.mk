@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/curlie/.build_complete),)
 curlie:
 	@echo "Using previously built curlie."
 else
-curlie: curlie-setup libiosexec
+curlie: curlie-setup
 	cd $(BUILD_WORK)/curlie; $(DEFAULT_GOLANG_FLAGS) go build \
 		-o release/bin/curlie \
 		--ldflags="-s -w -X main.version=$(DEB_CURLIE_V) -X main.date=$(shell date -u +%Y%m%d)"
