@@ -4,5 +4,5 @@ Architecture: all
 Maintainer: @DEB_MAINTAINER@
 Section: Keyrings
 Priority: optional
-Description: GnuPG keys for Adam Tunnic's repositories (signs iOS and macOS)
+Description: GnuPG keys for Adam Tunnic's repositories
 Name: Doregon APT Keyring
