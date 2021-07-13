@@ -3,9 +3,9 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += zsign
-ZSIGN_COMMIT  := b5733ea0bb2d612492e732ba0fa5a828c0ca04da
-ZSIGN_VERSION := 0~20210202.$(shell echo $(ZSIGN_COMMIT) | cut -c -7)
-DEB_ZSIGN_V   := $(ZSIGN_VERSION)-1
+ZSIGN_COMMIT  := 60a1fbd5f018fdd273c16b043a95ea53a528b02e
+ZSIGN_VERSION := 0~20210609.$(shell echo $(ZSIGN_COMMIT) | cut -c -7)
+DEB_ZSIGN_V   := $(ZSIGN_VERSION)
 
 zsign-setup: setup
 	$(call GITHUB_ARCHIVE,zhlynn,zsign,$(ZSIGN_COMMIT),$(ZSIGN_COMMIT))
