@@ -34,7 +34,7 @@ libdca-package: libdca-stage
 	mkdir -p $(BUILD_DIST)/libdca-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libdca.mk Prep libdca0
-	cp -a $(BUILD_STAGE)/libdca/$(MEMO_PREIFX)$(MEMO_SUB_PREFIX)/lib/libdca.0.dylib $(BUILD_DIST)/libdca0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libdca/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdca.0.dylib $(BUILD_DIST)/libdca0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libdca.mk Prep libdca-dev
 	cp -a $(BUILD_STAGE)/libdca/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libdca-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
