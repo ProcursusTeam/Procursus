@@ -12,9 +12,11 @@ ifneq ($(wildcard $(BUILD_WORK)/lrzip-next/.build_complete),)
 lrzip-next:
 	@echo "Using previously built lrzip-next."
 else
-lrzip-next: lrzip-next-setup lz4 liblzo2 libgcrypt20
+lrzip-next: lrzip-next-setup lz4 liblzo2 libgcrypt
 	cd $(BUILD_WORK)/lrzip-next && ./autogen.sh && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		--disable-asm
+	rm -f $(BUILD_WORK)/lrzip-next/version
 	+$(MAKE) -C $(BUILD_WORK)/lrzip-next
 	+$(MAKE) -C $(BUILD_WORK)/lrzip-next install \
                 DESTDIR=$(BUILD_STAGE)/lrzip-next
