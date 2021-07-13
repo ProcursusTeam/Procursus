@@ -1,0 +1,8 @@
+Package: @pkg@-keyring
+Version: @DEB_@PKG@_KEYRING_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Keyrings
+Priority: optional
+Description: GnuPG key for @NAME@'s repository
+Name: @NAME@'s APT Keyring
