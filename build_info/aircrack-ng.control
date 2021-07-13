@@ -2,7 +2,7 @@ Package: aircrack-ng
 Version: @DEB_AIRCRACK-NG_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Section: Utilities
+Section: Networking
 Priority: optional
 Homepage: https://www.aircrack-ng.org/
 Depends: libssl1.1, libsqlite3-1, libpcre1, libpcap0.8
