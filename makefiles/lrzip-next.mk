@@ -12,7 +12,7 @@ ifneq ($(wildcard $(BUILD_WORK)/lrzip-next/.build_complete),)
 lrzip-next:
 	@echo "Using previously built lrzip-next."
 else
-lrzip-next: lrzip-next-setup lz4 liblzo2
+lrzip-next: lrzip-next-setup lz4 liblzo2 libgcrypt20
 	cd $(BUILD_WORK)/lrzip-next && ./autogen.sh && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/lrzip-next
