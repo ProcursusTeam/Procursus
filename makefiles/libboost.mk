@@ -22,7 +22,7 @@ libboost:
 else
 libboost: libboost-setup xz zstd icu4c python3
 	rm -rf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_*
-	$(BUILD_WORK)/libboost/tools/build/src/engine/build.sh --cxx="$(CXX_FOR_BUILD)" --cxxflags="-std=c++11 $(BUILD_CXXFLAGS)"
+	$(BUILD_WORK)/libboost/tools/build/src/engine/build.sh --cxx="$(CXX_FOR_BUILD)" --cxxflags="-std=c++11 $(CXXFLAGS_FOR_BUILD)"
 ifneq (,$(findstring amd64,$(MEMO_TARGET)))
 	echo "using clang-darwin : x86 : $(CXX) : <compileflags>\"$(CPPFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)\" <cflags>\"$(CFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)\" <cxxflags>\"$(CXXFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)\" <linkflags>\"$(LDFLAGS)\" ;" > $(BUILD_WORK)/libboost/tools/build/src/user-config.jam
 else

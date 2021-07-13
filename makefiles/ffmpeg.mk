@@ -35,8 +35,8 @@ ffmpeg: ffmpeg-setup aom dav1d fontconfig freetype frei0r gnutls lame libass lib
 		--ranlib="$(RANLIB)" \
 		--strip="$(STRIP)" \
 		--host-cc="$(CC_FOR_BUILD)" \
-		--host-cflags="$(BUILD_CFLAGS)" \
-		--host-ldflags="$(BUILD_LDFLAGS)" \
+		--host-cflags="$(CFLAGS_FOR_BUILD)" \
+		--host-ldflags="$(LDFLAGS_FOR_BUILD)" \
 		--enable-ffplay \
 		--enable-gnutls \
 		--enable-gpl \
