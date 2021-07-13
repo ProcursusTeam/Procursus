@@ -1,0 +1,11 @@
+Package: libdvbpsi-dev
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_LIBDVBPSI_V@
+Depends: libdvbpsi10 (= @DEB_LIBDVBPSI_V@)
+Section: Development
+Priority: optional
+Description: development files for libdvbpsi
+ libdvbpsi is a simple library designed for MPEG TS and DVB PSI tables decoding and generating.
+ .
+ This package contains the header files and static library needed to compile applications that use libdvbpsi.
