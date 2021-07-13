@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += less
-LESS_VERSION := 563
-DEB_LESS_V   ?= $(LESS_VERSION)-1
+LESS_VERSION := 590
+DEB_LESS_V   ?= $(LESS_VERSION)
 
 less-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) http://www.greenwoodsoftware.com/less/less-$(LESS_VERSION).tar.gz
