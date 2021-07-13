@@ -18,7 +18,7 @@ else
 xz: xz-setup gettext
 	cd $(BUILD_WORK)/xz && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--libdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib \
+		--libdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/$(MULTIARCH_TARGET) \
 		--enable-threads \
 		--disable-xzdec \
 		--disable-lzmadec
@@ -26,7 +26,6 @@ xz: xz-setup gettext
 		DESTDIR=$(BUILD_STAGE)/xz
 	+$(MAKE) -C $(BUILD_WORK)/xz install \
 		DESTDIR=$(BUILD_BASE)
-
 	cd $(BUILD_WORK)/xz && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-shared \
@@ -48,7 +47,7 @@ xz-package: xz-stage
 	# xz.mk Package Structure
 	rm -rf $(BUILD_DIST)/xz{dec,-utils} $(BUILD_DIST)/liblzma{5,-dev}
 	mkdir -p $(BUILD_DIST)/xz{dec,-utils}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
-		$(BUILD_DIST)/liblzma{5,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib
+		$(BUILD_DIST)/liblzma{5,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/$(MULTIARCH_TARGET)
 
 	# xz.mk Prep xz-utils
 	cp -a $(BUILD_STAGE)/xz/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/!(*dec) $(BUILD_DIST)/xz-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
@@ -60,10 +59,10 @@ xz-package: xz-stage
 	cp -a $(BUILD_STAGE)/xz/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/*dec.1 $(BUILD_DIST)/xzdec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# xz.mk Prep liblzma5
-	cp -a $(BUILD_STAGE)/xz/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/liblzma.5.dylib $(BUILD_DIST)/liblzma5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/xz/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/$(MULTIARCH_TARGET)/liblzma.5.dylib $(BUILD_DIST)/liblzma5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/$(MULTIARCH_TARGET)
 
 	# xz.mk Prep liblzma-dev
-	cp -a $(BUILD_STAGE)/xz/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/!(liblzma.5.dylib) $(BUILD_DIST)/liblzma-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/xz/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/$(MULTIARCH_TARGET)/!(liblzma.5.dylib) $(BUILD_DIST)/liblzma-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/$(MULTIARCH_TARGET)
 	cp -a $(BUILD_STAGE)/xz/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/liblzma-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# xz.mk Sign

@@ -489,8 +489,10 @@ DEFAULT_CMAKE_FLAGS := \
 	-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
 	-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
 	-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-	-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+	-DCMAKE_INSTALL_NAME_DIR=$(MEMO_LIBDIR) \
+	-DCMAKE_INSTALL_LIBDIR=$(MEMO_LIBDIR) \
 	-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+	-DCMAKE_INSTALL_INCLUDEDIR=$(MEMO_LIBDIR) \
 	-DCMAKE_INSTALL_SYSCONFDIR=$(MEMO_PREFIX)/etc \
 	-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 	-DCMAKE_OSX_ARCHITECTURES="$(MEMO_ARCH)"
@@ -515,20 +517,22 @@ DEFAULT_CONFIGURE_FLAGS := \
 	--sysconfdir=$(MEMO_PREFIX)/etc \
 	--bindir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
 	--mandir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
+	--libdir=$(MEMO_LIBDIR) \
+	--includedir=$(MEMO_INCDIR) \
 	--disable-dependency-tracking
 
 DEFAULT_PERL_MAKE_FLAGS := \
-	INSTALLSITEARCH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
-	INSTALLARCHLIB=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
-	INSTALLVENDORARCH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
+	INSTALLSITEARCH=$(MEMO_LIBDIR)/perl5/$(PERL_MAJOR) \
+	INSTALLARCHLIB=$(MEMO_LIBDIR)/perl5/$(PERL_MAJOR) \
+	INSTALLVENDORARCH=$(MEMO_LIBDIR)/perl5/$(PERL_MAJOR) \
 	INSTALLPRIVLIB=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 \
 	INSTALLSITELIB=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 \
 	INSTALLVENDORLIB=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 \
-	PERL_LIB=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
-	PERL_ARCHLIB=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
-	PERL_ARCHLIBDEP=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
-	PERL_INC=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR)/CORE \
-	PERL_INCDEP=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR)/CORE \
+	PERL_LIB=$(BUILD_STAGE)/perl/$(MEMO_LIBDIR)/perl5/$(PERL_MAJOR) \
+	PERL_ARCHLIB=$(BUILD_STAGE)/perl/$(MEMO_LIBDIR)/perl5/$(PERL_MAJOR) \
+	PERL_ARCHLIBDEP=$(BUILD_STAGE)/perl/$(MEMO_LIBDIR)/perl5/$(PERL_MAJOR) \
+	PERL_INC=$(BUILD_STAGE)/perl/$(MEMO_LIBDIR)/perl5/$(PERL_MAJOR)/CORE \
+	PERL_INCDEP=$(BUILD_STAGE)/perl/$(MEMO_LIBDIR)/perl5/$(PERL_MAJOR)/CORE \
 	PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 	INSTALLMAN1DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 \
 	INSTALLSITEMAN1DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 \
@@ -546,7 +550,7 @@ DEFAULT_PERL_BUILD_FLAGS := \
 	destdir=$(BUILD_STAGE)/libmodule-build-perl \
 	install_base=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 	install_path=lib=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 \
-	install_path=arch=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
+	install_path=arch=$(MEMO_LIBDIR)/perl5/$(PERL_MAJOR) \
 	install_path=bin=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
 	install_path=script=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
 	install_path=libdoc=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 \
@@ -567,9 +571,9 @@ DEFAULT_GOLANG_FLAGS := \
 
 DEFAULT_SETUP_PY_ENV := \
 	unset MACOSX_DEPLOYMENT_TARGET && \
-	CFLAGS="$(CFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)" \
-	CXXFLAGS="$(CXXFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)" \
-	CPPFLAGS="$(CPPFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)"
+	CFLAGS="$(CFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_ALL_INCDIR)/$$(ls $(BUILD_STAGE)/python3/$(MEMO_ALL_INCDIR)" \
+	CXXFLAGS="$(CXXFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_ALL_INCDIR)/$$(ls $(BUILD_STAGE)/python3/$(MEMO_ALL_INCDIR))" \
+	CPPFLAGS="$(CPPFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_ALL_INCDIR)/$$(ls $(BUILD_STAGE)/python3/$(MEMO_ALL_INCDIR))"
 
 DEFAULT_RUST_FLAGS := \
 	SDKROOT="$(TARGET_SYSROOT)" \
@@ -1058,61 +1062,64 @@ rebuild-%:
 
 setup:
 	@mkdir -p \
-		$(BUILD_BASE) $(BUILD_BASE)$(MEMO_PREFIX)/{{,System}/Library/Frameworks,$(MEMO_SUB_PREFIX)/{include/{bsm,objc,os,sys,IOKit,libkern,mach/machine},lib/pkgconfig,$(MEMO_ALT_PREFIX)/lib}} \
+		$(BUILD_BASE) $(BUILD_BASE)$(MEMO_PREFIX)/{{,System}/Library/Frameworks,$(MEMO_SUB_PREFIX)/{include/$(MULTIARCH_TARGET)/{bsm,objc,os,sys,IOKit,libkern,mach/machine},lib/$(MULTIARCH_TARGET)/pkgconfig,$(MEMO_ALT_PREFIX)/lib/$(MULTIARCH_TARGET)}} \
 		$(BUILD_SOURCE) $(BUILD_WORK) $(BUILD_STAGE) $(BUILD_STRAP)
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include \
+	@wget -q -nc -P $(BUILD_BASE)$(MEMO_INCDIR) \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libsyscall/wrappers/spawn/spawn.h \
 		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/bootstrap_priv.h \
 		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/vproc_priv.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/bsm \
+	@wget -q -nc -P $(BUILD_BASE)$(MEMO_INCDIR)/bsm \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/bsd/bsm/audit_kevents.h
 
-	@cp -a $(BUILD_MISC)/{libxml-2.0,zlib}.pc $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
+	@$(SED) 's|@MEMO_LIBDIR@|$(MEMO_LIBDIR)|' $(BUILD_MISC)/libxml-2.0.pc \
+		> $(BUILD_BASE)/$(MEMO_LIBDIR)/pkgconfig/libxml-2.0.pc
+	@$(SED) 's|@MEMO_LIBDIR@|$(MEMO_LIBDIR)|' $(BUILD_MISC)/zlib.pc \
+		> $(BUILD_BASE)/$(MEMO_LIBDIR)/pkgconfig/zlib.pc
 
 ifeq ($(UNAME),FreeBSD)
 	@# FreeBSD does not have stdbool.h and stdarg.h
-	@cp -a $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Headers/{stdbool.h,stdarg.h} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	@cp -a $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Headers/{stdbool.h,stdarg.h} $(BUILD_BASE)/$(MEMO_INCDIR)
 endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	@# Copy headers from MacOSX.sdk
-	@cp -af $(MACOSX_SYSROOT)/usr/include/{arpa,bsm,net,xpc,netinet,servers} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	@cp -af $(MACOSX_SYSROOT)/usr/include/objc/objc-runtime.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/objc
-	@cp -af $(MACOSX_SYSROOT)/usr/include/libkern/{OSDebug.h,OSKextLib.h,OSReturn.h,OSThermalNotification.h,OSTypes.h,machine} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern
-	@cp -af $(MACOSX_SYSROOT)/usr/include/kern $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	@cp -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,proc*,ptrace,kern*,random,reboot,user,vnode}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys
-	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit
-	@cp -af $(MACOSX_SYSROOT)/usr/include/{ar,bootstrap,launch,libc,libcharset,localcharset,libproc,NSSystemDirectories,tzfile,vproc}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	@cp -af $(MACOSX_SYSROOT)/usr/include/mach/{*.defs,{mach_vm,shared_region}.h} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach
-	@cp -af $(MACOSX_SYSROOT)/usr/include/mach/machine/*.defs $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/machine
-	@cp -af $(TARGET_SYSROOT)/usr/include/mach/machine/thread_state.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/machine
-	@cp -af $(TARGET_SYSROOT)/usr/include/mach/arm $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach
-	@cp -af $(BUILD_INFO)/availability.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os
+	@cp -af $(MACOSX_SYSROOT)/usr/include/{arpa,bsm,net,xpc,netinet,servers} $(BUILD_BASE)/$(MEMO_INCDIR)
+	@cp -af $(MACOSX_SYSROOT)/usr/include/objc/objc-runtime.h $(BUILD_BASE)/$(MEMO_INCDIR)/objc
+	@cp -af $(MACOSX_SYSROOT)/usr/include/libkern/{OSDebug.h,OSKextLib.h,OSReturn.h,OSThermalNotification.h,OSTypes.h,machine} $(BUILD_BASE)/$(MEMO_INCDIR)/libkern
+	@cp -af $(MACOSX_SYSROOT)/usr/include/kern $(BUILD_BASE)$(MEMO_INCDIR)
+	@cp -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,proc*,ptrace,kern*,random,reboot,user,vnode}.h $(BUILD_BASE)/$(MEMO_INCDIR)/sys
+	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_BASE)/$(MEMO_INCDIR)/IOKit
+	@cp -af $(MACOSX_SYSROOT)/usr/include/{ar,bootstrap,launch,libc,libcharset,localcharset,libproc,NSSystemDirectories,tzfile,vproc}.h $(BUILD_BASE)/$(MEMO_INCDIR)
+	@cp -af $(MACOSX_SYSROOT)/usr/include/mach/{*.defs,{mach_vm,shared_region}.h} $(BUILD_BASE)/$(MEMO_INCDIR)/mach
+	@cp -af $(MACOSX_SYSROOT)/usr/include/mach/machine/*.defs $(BUILD_BASE)/$(MEMO_INCDIR)/mach/machine
+	@cp -af $(TARGET_SYSROOT)/usr/include/mach/machine/thread_state.h $(BUILD_BASE)/$(MEMO_INCDIR)/mach/machine
+	@cp -af $(TARGET_SYSROOT)/usr/include/mach/arm $(BUILD_BASE)/$(MEMO_INCDIR)/mach
+	@cp -af $(BUILD_INFO)/availability.h $(BUILD_BASE)/$(MEMO_INCDIR)/os
 ifneq ($(wildcard $(BUILD_MISC)/IOKit.framework.$(PLATFORM)),)
 	@cp -af $(BUILD_MISC)/IOKit.framework.$(PLATFORM) $(BUILD_BASE)/$(MEMO_PREFIX)/System/Library/Frameworks/IOKit.framework
 endif
 
-	@mkdir -p $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreAudio
-	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/CoreAudio.framework/Headers/* $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreAudio
+	@mkdir -p $(BUILD_BASE)$(MEMO_INCDIR)/CoreAudio
+	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/CoreAudio.framework/Headers/* $(BUILD_BASE)$(MEMO_INCDIR)/CoreAudio
 
 	@# Patch headers from iPhoneOS.sdk
-	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/stdlib.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h
-	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/time.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/time.h
-	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/unistd.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h
-	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/mach/task.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/task.h
-	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/mach/mach_host.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/mach_host.h
-	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/ucontext.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ucontext.h
-	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/signal.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/signal.h
-	@$(SED) -E /'__API_UNAVAILABLE'/d < $(TARGET_SYSROOT)/usr/include/pthread.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pthread.h
+	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/stdlib.h > $(BUILD_BASE)$(MEMO_INCDIR)/stdlib.h
+	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/time.h > $(BUILD_BASE)$(MEMO_INCDIR)/time.h
+	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/unistd.h > $(BUILD_BASE)$(MEMO_INCDIR)/unistd.h
+	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/mach/task.h > $(BUILD_BASE)$(MEMO_INCDIR)/mach/task.h
+	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/mach/mach_host.h > $(BUILD_BASE)$(MEMO_INCDIR)/mach/mach_host.h
+	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/ucontext.h > $(BUILD_BASE)$(MEMO_INCDIR)/ucontext.h
+	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/signal.h > $(BUILD_BASE)$(MEMO_INCDIR)/signal.h
+	@$(SED) -E /'__API_UNAVAILABLE'/d < $(TARGET_SYSROOT)/usr/include/pthread.h > $(BUILD_BASE)$(MEMO_INCDIR)/pthread.h
 
 	@# Setup libiosexec
-	@cp -af $(BUILD_MISC)/libiosexec/libiosexec.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	@cp -af $(BUILD_MISC)/libiosexec/libiosexec.1.tbd $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	@ln -sf libiosexec.1.tbd $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.tbd
-	@rm -f $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.*.dylib
-	@$(SED) -i '1s/^/#include <libiosexec.h>\n/' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h
+	@cp -af $(BUILD_MISC)/libiosexec/libiosexec.h $(BUILD_BASE)/$(MEMO_INCDIR)
+	@$(SED) 's|@MEMO_LIBDIR@|$(MEMO_LIBDIR)|g' $(BUILD_MISC)/libiosexec/libiosexec.1.tbd > $(BUILD_BASE)/$(MEMO_LIBDIR)/libiosexec.1.tbd
+	@ln -sf libiosexec.1.tbd $(BUILD_BASE)/$(MEMO_LIBDIR)/libiosexec.tbd
+	@rm -f $(BUILD_BASE)/$(MEMO_LIBDIR)/libiosexec.*.dylib
+	@$(SED) -i '1s/^/#include <libiosexec.h>\n/' $(BUILD_BASE)$(MEMO_INCDIR)/unistd.h
 endif
 
 ifneq ($(MEMO_QUIET),1)

@@ -18,12 +18,21 @@ zstd: zstd-setup lz4 xz
 	$(SED) -i s/'UNAME := $$(shell uname)'/'UNAME := Darwin'/ $(BUILD_WORK)/zstd/lib/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/zstd install \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		MANDIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
+		LIBDIR=$(MEMO_LIBDIR) \
+		INCLUDEDIR=$(MEMO_INCDIR) \
 		DESTDIR=$(BUILD_STAGE)/zstd
 	+$(MAKE) -C $(BUILD_WORK)/zstd install \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		MANDIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
+		LIBDIR=$(MEMO_LIBDIR) \
+		INCLUDEDIR=$(MEMO_INCDIR) \
 		DESTDIR=$(BUILD_BASE)
 	+$(MAKE) -C $(BUILD_WORK)/zstd/contrib/pzstd install \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		MANDIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
+		LIBDIR=$(MEMO_LIBDIR) \
+		INCLUDEDIR=$(MEMO_INCDIR) \
 		DESTDIR=$(BUILD_STAGE)/zstd
 	touch $(BUILD_WORK)/zstd/.build_complete
 endif
@@ -33,17 +42,17 @@ zstd-package: zstd-stage
 	rm -rf $(BUILD_DIST)/zstd \
 		$(BUILD_DIST)/libzstd{1,-dev}
 	mkdir -p $(BUILD_DIST)/zstd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		$(BUILD_DIST)/libzstd{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+		$(BUILD_DIST)/libzstd{1,-dev}/$(MEMO_LIBDIR)
 
 	# zstd.mk Prep zstd
 	cp -a $(BUILD_STAGE)/zstd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/zstd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/zstd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/zstd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# zstd.mk Prep libzstd1
-	cp -a $(BUILD_STAGE)/zstd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libzstd.1*.dylib $(BUILD_DIST)/libzstd1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/zstd/$(MEMO_LIBDIR)/libzstd.1*.dylib $(BUILD_DIST)/libzstd1/$(MEMO_LIBDIR)
 
 	# zstd.mk Prep libzstd-dev
-	cp -a $(BUILD_STAGE)/zstd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libzstd.{a,dylib}} $(BUILD_DIST)/libzstd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/zstd/$(MEMO_LIBDIR)/{pkgconfig,libzstd.{a,dylib}} $(BUILD_DIST)/libzstd-dev/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/zstd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libzstd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# zstd.mk Sign

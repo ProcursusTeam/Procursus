@@ -40,20 +40,20 @@ gettext-package: gettext-stage
 		$(BUILD_DIST)/libintl{8,-dev} \
 		$(BUILD_DIST)/libtextstyle{0v5,-dev} \
 		$(BUILD_DIST)/libgettextpo{0,-dev}
-	mkdir -p $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib,share/{aclocal,man/man1,gettext}} \
+	mkdir -p $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib/$(MULTIARCH_TARGET),share/{aclocal,man/man1,gettext}} \
 		$(BUILD_DIST)/gettext-base/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
 		$(BUILD_DIST)/autopoint/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/{man/man1,gettext}} \
-		$(BUILD_DIST)/libintl8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libintl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include} \
-		$(BUILD_DIST)/libtextstyle{0v5,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libtextstyle-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include \
-		$(BUILD_DIST)/libgettextpo{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libgettextpo-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-
+		$(BUILD_DIST)/libintl8/$(MEMO_LIBDIR) \
+		$(BUILD_DIST)/libintl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include}/$(MULTIARCH_TARGET) \
+		$(BUILD_DIST)/libtextstyle{0v5,-dev}/$(MEMO_LIBDIR) \
+		$(BUILD_DIST)/libtextstyle-dev/$(MEMO_INCDIR) \
+		$(BUILD_DIST)/libgettextpo{0,-dev}/$(MEMO_LIBDIR) \
+		$(BUILD_DIST)/libgettextpo-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include}/$(MULTIARCH_TARGET)
+	
 	# gettext.mk Prep gettext
 	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{msg*,gettextize,recode-sr-latin,xgettext} $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libgettext{lib,src}-0.21.dylib,gettext} $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgettextlib.a $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/gettext/$(MEMO_LIBDIR)/{libgettext{lib,src}-0.21.dylib,gettext} $(BUILD_DIST)/gettext/$(MEMO_LIBDIR)
+	cp -a $(BUILD_STAGE)/gettext/$(MEMO_LIBDIR)/libgettextlib.a $(BUILD_DIST)/gettext/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal/!(host-cpu-c-abi.m4) $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal
 	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/gettext/!(archive.dir.tar.xz) $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/gettext
 	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/{msg*.1,gettextize.1,recode-sr-latin.1,xgettext.1} $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/
@@ -69,25 +69,25 @@ gettext-package: gettext-stage
 	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/gettext/archive.dir.tar.xz $(BUILD_DIST)/autopoint/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/gettext
 
 	# gettext.mk Prep libintl8
-	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libintl.8.dylib $(BUILD_DIST)/libintl8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/gettext/$(MEMO_LIBDIR)/libintl.8.dylib $(BUILD_DIST)/libintl8/$(MEMO_LIBDIR)
 
 	# gettext.mk Prep libintl-dev
-	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libintl.{dylib,a} $(BUILD_DIST)/libintl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libintl.h $(BUILD_DIST)/libintl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/gettext/$(MEMO_LIBDIR)/libintl.{dylib,a} $(BUILD_DIST)/libintl-dev/$(MEMO_LIBDIR)
+	cp -a $(BUILD_STAGE)/gettext/$(MEMO_INCDIR)/libintl.h $(BUILD_DIST)/libintl-dev/$(MEMO_INCDIR)
 
 	# gettext.mk Prep libtextstyle0v5
-	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libtextstyle.0.dylib $(BUILD_DIST)/libtextstyle0v5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/gettext/$(MEMO_LIBDIR)/libtextstyle.0.dylib $(BUILD_DIST)/libtextstyle0v5/$(MEMO_LIBDIR)
 
 	# gettext.mk Prep libtextstyle-dev
-	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libtextstyle.{dylib,a} $(BUILD_DIST)/libtextstyle-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/textstyle{,.h} $(BUILD_DIST)/libtextstyle-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/gettext/$(MEMO_LIBDIR)/libtextstyle.{dylib,a} $(BUILD_DIST)/libtextstyle-dev/$(MEMO_LIBDIR)
+	cp -a $(BUILD_STAGE)/gettext/$(MEMO_INCDIR)/textstyle{,.h} $(BUILD_DIST)/libtextstyle-dev/$(MEMO_INCDIR)
 
 	# gettext.mk Prep libgettextpo0
-	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgettextpo.0.dylib $(BUILD_DIST)/libgettextpo0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/gettext/$(MEMO_LIBDIR)/libgettextpo.0.dylib $(BUILD_DIST)/libgettextpo0/$(MEMO_LIBDIR)
 
 	# gettext.mk Prep libgettextpo-dev
-	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgettextpo.{dylib,a} $(BUILD_DIST)/libgettextpo-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/gettext-po.h $(BUILD_DIST)/libgettextpo-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/gettext/$(MEMO_LIBDIR)/libgettextpo.{dylib,a} $(BUILD_DIST)/libgettextpo-dev/$(MEMO_LIBDIR)
+	cp -a $(BUILD_STAGE)/gettext/$(MEMO_INCDIR)/gettext-po.h $(BUILD_DIST)/libgettextpo-dev/$(MEMO_INCDIR)
 
 	# gettext.mk Sign
 	$(call SIGN,gettext,general.xml)

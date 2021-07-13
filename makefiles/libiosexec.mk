@@ -20,19 +20,27 @@ else
 libiosexec: libiosexec-setup
 	+$(MAKE) -C $(BUILD_WORK)/libiosexec install \
 		DESTDIR=$(BUILD_STAGE)/libiosexec
+	mkdir -p $(BUILD_STAGE)/libiosexec/$(MEMO_LIBDIR) \
+		$(BUILD_STAGE)/libiosexec/$(MEMO_INCDIR)
+	mv $(BUILD_STAGE)/libiosexec/$(MEMO_ALL_LIBDIR)/*.{dylib,a} \
+		$(BUILD_STAGE)/libiosexec/$(MEMO_LIBDIR)
+	mv $(BUILD_STAGE)/libiosexec/$(MEMO_ALL_INCDIR)/*.h \
+		$(BUILD_STAGE)/libiosexec/$(MEMO_INCDIR)
+	$(I_N_T) -id $(MEMO_LIBDIR)libiosexec.$(LIBIOSEXEC_SOVER).dylib \
+		$(BUILD_STAGE)/libiosexec/$(MEMO_LIBDIR)/libiosexec.$(LIBIOSEXEC_SOVER).dylib
 	touch $(BUILD_WORK)/libiosexec/.build_complete
 endif
 
 libiosexec-package: libiosexec-stage
 	# libiosexec.mk Package Structure
 	rm -rf $(BUILD_DIST)/libiosexec{$(LIBIOSEXEC_SOVER),-dev}
-	mkdir -p $(BUILD_DIST)/libiosexec{$(LIBIOSEXEC_SOVER),-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libiosexec{$(LIBIOSEXEC_SOVER),-dev}/$(MEMO_LIBDIR)
 
 	# libiosexec1 Prep libiosexec$(LIBIOSEXEC_SOVER)
-	cp -a $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.$(LIBIOSEXEC_SOVER).dylib $(BUILD_DIST)/libiosexec$(LIBIOSEXEC_SOVER)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libiosexec/$(MEMO_LIBDIR)/libiosexec.$(LIBIOSEXEC_SOVER).dylib $(BUILD_DIST)/libiosexec$(LIBIOSEXEC_SOVER)/$(MEMO_LIBDIR)
 
 	# libiosexec-dev Prep libiosexec-dev
-	cp -a $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libiosexec.$(LIBIOSEXEC_SOVER).dylib) $(BUILD_DIST)/libiosexec-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libiosexec/$(MEMO_LIBDIR)/!(libiosexec.$(LIBIOSEXEC_SOVER).dylib) $(BUILD_DIST)/libiosexec-dev/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libiosexec-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libiosexec-1 sign

@@ -20,11 +20,15 @@ lz4: lz4-setup
 		$(MAKE) -C $(BUILD_WORK)/lz4 install \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR=$(BUILD_STAGE)/lz4 \
+		LIBDIR=$(MEMO_LIBDIR) \
+		INCLUDEDIR=$(MEMO_INCDIR) \
 		CFLAGS="$(CFLAGS)"
 	TARGET_OS=Darwin \
 		$(MAKE) -C $(BUILD_WORK)/lz4 install \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR=$(BUILD_BASE) \
+		LIBDIR=$(MEMO_LIBDIR) \
+		INCLUDEDIR=$(MEMO_INCDIR) \
 		CFLAGS="$(CFLAGS)"
 	touch $(BUILD_WORK)/lz4/.build_complete
 endif
@@ -33,7 +37,7 @@ lz4-package: lz4-stage
 	# lz4.mk Package Structure
 	rm -rf $(BUILD_DIST)/liblz4-{1,dev} \
 		$(BUILD_DIST)/lz4
-	mkdir -p $(BUILD_DIST)/liblz4-{1,dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+	mkdir -p $(BUILD_DIST)/liblz4-{1,dev}/$(MEMO_LIBDIR) \
 		$(BUILD_DIST)/lz4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# lz4.mk Prep lz4
@@ -41,10 +45,10 @@ lz4-package: lz4-stage
 	cp -a $(BUILD_STAGE)/lz4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/lz4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# lz4.mk Prep liblz4
-	cp -a $(BUILD_STAGE)/lz4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblz4.{1,1.9.2}.dylib $(BUILD_DIST)/liblz4-1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/lz4/$(MEMO_LIBDIR)/liblz4.{1,1.9.2}.dylib $(BUILD_DIST)/liblz4-1/$(MEMO_LIBDIR)
 
 	# lz4
-	cp -a $(BUILD_STAGE)/lz4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{liblz4.{a,dylib},pkgconfig} $(BUILD_DIST)/liblz4-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/lz4/$(MEMO_LIBDIR)/{liblz4.{a,dylib},pkgconfig} $(BUILD_DIST)/liblz4-dev/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/lz4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/liblz4-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# lz4.mk Sign
