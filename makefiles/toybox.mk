@@ -22,6 +22,7 @@ toybox:
 	@echo "Using previously built toybox."
 else
 toybox: toybox-setup openssl libxcrypt
+	$(MAKE) -C $(BUILD_WORK)/toybox menuconfig
 	$(MAKE) -C $(BUILD_WORK)/toybox
 	+$(MAKE) -C $(BUILD_WORK)/toybox install \
 		PREFIX=$(BUILD_STAGE)/toybox

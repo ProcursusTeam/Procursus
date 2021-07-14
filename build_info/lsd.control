@@ -1,0 +1,13 @@
+Package: lsd
+Version: @DEB_LSD_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: Pierre Peltier <dev@halium.fr>
+Section: Utilities
+Priority: optional
+Homepage: https://github.com/Peltoche/lsd
+Description: The next gen ls command.
+ lsd (aka, LSDeluxe) is an ls alternative heavily
+ inspired by the super colorls project. Unlike colorls,
+ lsd is written in Rust, which provides a much needed
+ performance boost.
