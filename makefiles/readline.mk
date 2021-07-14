@@ -37,14 +37,14 @@ endif
 readline-package: readline-stage
 	# readline.mk Package Structure
 	rm -rf $(BUILD_DIST)/libreadline{8,-dev}
-	mkdir -p $(BUILD_DIST)/libreadline8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libreadline-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share}
+	mkdir -p $(BUILD_DIST)/libreadline8/$(MEMO_LIBDIR) \
+		$(BUILD_DIST)/libreadline-dev/{$(MEMO_LIBDIR),$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share}
 
 	# readline.mk Prep libreadline8
-	cp -a $(BUILD_STAGE)/readline/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/*.8.*dylib $(BUILD_DIST)/libreadline8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/readline/$(MEMO_LIBDIR)/*.8.*dylib $(BUILD_DIST)/libreadline8/$(MEMO_LIBDIR)
 
 	# readline.mk Prep libreadline-dev
-	cp -a $(BUILD_STAGE)/readline/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(*.8.*dylib) $(BUILD_DIST)/libreadline-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/readline/$(MEMO_LIBDIR)/!(*.8.*dylib) $(BUILD_DIST)/libreadline-dev/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/readline/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/libreadline-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
 	# readline.mk Sign

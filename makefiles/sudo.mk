@@ -11,7 +11,7 @@ SUDO_VERSION  := 1.9.6p1
 DEB_SUDO_V    ?= $(SUDO_VERSION)-4
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-SUDO_CONFIGURE_ARGS := LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -liosexec -lreadline -lncursesw"
+SUDO_CONFIGURE_ARGS := LIBS="-L$(BUILD_BASE)/$(MEMO_LIBDIR) -liosexec -lreadline -lncursesw"
 else
 SUDO_CONFIGURE_ARGS :=
 endif
@@ -29,7 +29,7 @@ else
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 sudo: sudo-setup gettext
 else
-sudo: sudo-setup gettext openpam libiosexec
+sudo: sudo-setup gettext openpam
 endif
 	cd $(BUILD_WORK)/sudo && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \

@@ -25,12 +25,12 @@ cacerts-package: cacerts-stage
 
 	# cacerts.mk Package Structure
 	rm -rf $(BUILD_DIST)/ca-certificates
-	mkdir -p $(BUILD_DIST)/ca-certificates/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ssl
+	mkdir -p $(BUILD_DIST)/ca-certificates/$(MEMO_ALL_LIBDIR)/ssl
 
 	# cacerts.mk Prep ca-certificates
 	cp -a $(BUILD_STAGE)/cacerts/$(MEMO_PREFIX)/etc $(BUILD_DIST)/ca-certificates/$(MEMO_PREFIX)
-	ln -s $(MEMO_PREFIX)/etc/ssl/certs $(BUILD_DIST)/ca-certificates/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ssl
-	ln -s $(MEMO_PREFIX)/etc/ssl/certs/cacert.pem $(BUILD_DIST)/ca-certificates/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ssl
+	ln -s $(MEMO_PREFIX)/etc/ssl/certs $(BUILD_DIST)/ca-certificates/$(MEMO_ALL_LIBDIR)/ssl
+	ln -s $(MEMO_PREFIX)/etc/ssl/certs/cacert.pem $(BUILD_DIST)/ca-certificates/$(MEMO_ALL_LIBDIR)/ssl
 
 	# cacerts.mk Permissions
 	$(FAKEROOT) chmod a+x $(BUILD_DIST)/ca-certificates/$(MEMO_PREFIX)/etc/profile.d/cacerts.bootstrap.sh
