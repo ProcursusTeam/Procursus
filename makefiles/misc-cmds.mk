@@ -19,8 +19,6 @@ misc-cmds:
 	@echo "Using previously built misc-cmds."
 else
 misc-cmds: misc-cmds-setup ncurses
-	mkdir -p $(BUILD_STAGE)/misc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	mkdir -p $(BUILD_STAGE)/misc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{man/man1,misc}
 	@# tsort conflics with coreutils
 	cd $(BUILD_WORK)/misc-cmds; \
 	for bin in calendar leave ncal units; do \
