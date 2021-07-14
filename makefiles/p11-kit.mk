@@ -20,6 +20,7 @@ p11-kit: p11-kit-setup gettext libtasn1 libffi
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-static \
 		--with-trust-paths=$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem \
+		--disable-static \
 		--without-systemd
 	+$(MAKE) -C $(BUILD_WORK)/p11-kit
 	+$(MAKE) -C $(BUILD_WORK)/p11-kit install \
