@@ -1,0 +1,29 @@
+From 94b3bac15825148c15a3d41db1aca90d09ce3b87 Mon Sep 17 00:00:00 2001
+From: Wu Xiaotian <yetist@gmail.com>
+Date: Sun, 22 Nov 2020 18:49:14 +0800
+Subject: [PATCH 13/13] fix run error
+
+---
+ src/polkitbackend/polkitbackendduktapeauthority.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/polkitbackend/polkitbackendduktapeauthority.c b/src/polkitbackend/polkitbackendduktapeauthority.c
+index 51e03fd..4b4f8fd 100644
+--- a/src/polkitbackend/polkitbackendduktapeauthority.c
++++ b/src/polkitbackend/polkitbackendduktapeauthority.c
+@@ -795,11 +795,11 @@ polkit_backend_js_authority_check_authorization_sync (PolkitBackendInteractiveAu
+   gboolean good = FALSE;
+   duk_context *cx = authority->priv->cx;
+ 
++  duk_set_top (cx, 0);
+   if (!duk_get_global_string (cx, "polkit")) {
+       goto out;
+   }
+ 
+-  duk_set_top (cx, 0);
+   duk_push_string (cx, "_runRules");
+ 
+   if (!push_action_and_details (cx, action_id, details, &error))
+-- 
+2.24.3 (Apple Git-128)
+

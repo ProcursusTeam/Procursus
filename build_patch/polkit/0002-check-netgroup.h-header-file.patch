@@ -1,0 +1,28 @@
+From d4800d382e7700dcef0b2e176a161ccf5d0ffdaf Mon Sep 17 00:00:00 2001
+From: Wu Xiaotian <yetist@gmail.com>
+Date: Sun, 22 Nov 2020 13:15:17 +0800
+Subject: [PATCH 02/13] check netgroup.h header file
+
+---
+ src/polkitbackend/polkitbackendduktapeauthority.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/polkitbackend/polkitbackendduktapeauthority.c b/src/polkitbackend/polkitbackendduktapeauthority.c
+index ae98453..543d6fd 100644
+--- a/src/polkitbackend/polkitbackendduktapeauthority.c
++++ b/src/polkitbackend/polkitbackendduktapeauthority.c
+@@ -26,7 +26,11 @@
+ #include <errno.h>
+ #include <pwd.h>
+ #include <grp.h>
++#ifdef HAVE_NETGROUP_H
++#include <netgroup.h>
++#else
+ #include <netdb.h>
++#endif
+ #include <string.h>
+ #include <glib/gstdio.h>
+ #include <locale.h>
+-- 
+2.24.3 (Apple Git-128)
+

@@ -1,0 +1,29 @@
+From cc14c46a4ece46947dd727a7ec273dcaa9f3da3f Mon Sep 17 00:00:00 2001
+From: Wu Xiaotian <yetist@gmail.com>
+Date: Sun, 22 Nov 2020 10:59:03 +0800
+Subject: [PATCH 03/13] check return value
+
+---
+ src/polkitbackend/polkitbackendduktapeauthority.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/src/polkitbackend/polkitbackendduktapeauthority.c b/src/polkitbackend/polkitbackendduktapeauthority.c
+index 543d6fd..a54ed5b 100644
+--- a/src/polkitbackend/polkitbackendduktapeauthority.c
++++ b/src/polkitbackend/polkitbackendduktapeauthority.c
+@@ -249,7 +249,11 @@ reload_scripts (PolkitBackendJsAuthority *authority)
+   duk_context *cx = authority->priv->cx;
+ 
+   duk_set_top (cx, 0);
+-  duk_get_global_string (cx, "polkit");
++  if (!duk_get_global_string (cx, "polkit")) {
++      polkit_backend_authority_log (POLKIT_BACKEND_AUTHORITY (authority),
++                                    "Error deleting old rules, not loading new ones");
++      return;
++  }
+   duk_push_string (cx, "_deleteRules");
+ 
+   duk_call_prop (cx, 0, 0);
+-- 
+2.24.3 (Apple Git-128)
+

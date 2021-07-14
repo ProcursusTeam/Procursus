@@ -1,0 +1,24 @@
+From db4b3b6cbc49984f993808b77b802079c658387f Mon Sep 17 00:00:00 2001
+From: Wu Xiaotian <yetist@gmail.com>
+Date: Sun, 22 Nov 2020 15:25:35 +0800
+Subject: [PATCH 11/13] remove WATCHDOG_TIMEOUT define
+
+---
+ src/polkitbackend/polkitbackendduktapeauthority.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/src/polkitbackend/polkitbackendduktapeauthority.c b/src/polkitbackend/polkitbackendduktapeauthority.c
+index 6fac3be..51e03fd 100644
+--- a/src/polkitbackend/polkitbackendduktapeauthority.c
++++ b/src/polkitbackend/polkitbackendduktapeauthority.c
+@@ -69,7 +69,6 @@ struct _PolkitBackendJsAuthorityPrivate
+   duk_context *cx;
+ };
+ 
+-#define WATCHDOG_TIMEOUT (15 * G_TIME_SPAN_SECOND)
+ 
+ static void utils_spawn (const gchar *const  *argv,
+                          guint                timeout_seconds,
+-- 
+2.24.3 (Apple Git-128)
+

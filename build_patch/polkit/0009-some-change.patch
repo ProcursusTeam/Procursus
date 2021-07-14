@@ -1,0 +1,50 @@
+From bffc151f376ff33a4319aad2a64eda66d27c124c Mon Sep 17 00:00:00 2001
+From: Wu Xiaotian <yetist@gmail.com>
+Date: Sun, 22 Nov 2020 13:53:23 +0800
+Subject: [PATCH 09/13] some change
+
+---
+ .../polkitbackendduktapeauthority.c           | 26 +++++++++++--------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
+
+diff --git a/src/polkitbackend/polkitbackendduktapeauthority.c b/src/polkitbackend/polkitbackendduktapeauthority.c
+index 237b1ad..fad9017 100644
+--- a/src/polkitbackend/polkitbackendduktapeauthority.c
++++ b/src/polkitbackend/polkitbackendduktapeauthority.c
+@@ -207,18 +207,22 @@ load_scripts (PolkitBackendJsAuthority  *authority)
+ 
+   for (l = files; l != NULL; l = l->next)
+     {
+-      const gchar *filename = l->data;
+-
++      const gchar *filename = (gchar *)l->data;
+ #if (DUK_VERSION >= 20000)
+-      gchar *contents;
+-      gsize length;
+-      GError *error = NULL;
+-      if (!g_file_get_contents (filename, &contents, &length, &error)){
+-        g_warning("Error when file contents of %s: %s\n", filename, error->message);
+-        g_error_free (error);
+-        continue;
+-      }
+-      if (duk_peval_lstring_noresult(cx, contents,length) != 0)
++      GFile *file = g_file_new_for_path (filename);
++      char *contents;
++      gsize len;
++      if (!g_file_load_contents (file, NULL, &contents, &len, NULL, NULL))
++        {
++          polkit_backend_authority_log (POLKIT_BACKEND_AUTHORITY (authority),
++                                        "Error compiling script %s",
++                                        filename);
++          g_object_unref (file);
++          continue;
++        }
++
++      g_object_unref (file);
++      if (duk_peval_lstring_noresult(cx, contents,len) != 0)
+ #else
+       if (duk_peval_file_noresult (cx, filename) != 0)
+ #endif
+-- 
+2.24.3 (Apple Git-128)
+

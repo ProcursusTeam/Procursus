@@ -1,0 +1,61 @@
+From 138019dc59863fb9876e72c31a3dd1535b5a26ac Mon Sep 17 00:00:00 2001
+From: Wu Xiaotian <yetist@gmail.com>
+Date: Sun, 22 Nov 2020 11:23:04 +0800
+Subject: [PATCH 07/13] fix typecase
+
+---
+ src/polkitbackend/polkitbackendduktapeauthority.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/src/polkitbackend/polkitbackendduktapeauthority.c b/src/polkitbackend/polkitbackendduktapeauthority.c
+index 6294ad9..d466c9d 100644
+--- a/src/polkitbackend/polkitbackendduktapeauthority.c
++++ b/src/polkitbackend/polkitbackendduktapeauthority.c
+@@ -1191,7 +1191,7 @@ static void
+ utils_on_cancelled (GCancellable *cancellable,
+                     gpointer      user_data)
+ {
+-  UtilsSpawnData *data = user_data;
++  UtilsSpawnData *data = (UtilsSpawnData *)user_data;
+   GError *error;
+ 
+   error = NULL;
+@@ -1206,7 +1206,7 @@ utils_read_child_stderr (GIOChannel *channel,
+                          GIOCondition condition,
+                          gpointer user_data)
+ {
+-  UtilsSpawnData *data = user_data;
++  UtilsSpawnData *data = (UtilsSpawnData *)user_data;
+   gchar buf[1024];
+   gsize bytes_read;
+ 
+@@ -1220,7 +1220,7 @@ utils_read_child_stdout (GIOChannel *channel,
+                          GIOCondition condition,
+                          gpointer user_data)
+ {
+-  UtilsSpawnData *data = user_data;
++  UtilsSpawnData *data = (UtilsSpawnData *)user_data;
+   gchar buf[1024];
+   gsize bytes_read;
+ 
+@@ -1234,7 +1234,7 @@ utils_child_watch_cb (GPid     pid,
+                       gint     status,
+                       gpointer user_data)
+ {
+-  UtilsSpawnData *data = user_data;
++  UtilsSpawnData *data = (UtilsSpawnData *)user_data;
+   gchar *buf;
+   gsize buf_size;
+ 
+@@ -1263,7 +1263,7 @@ utils_child_watch_cb (GPid     pid,
+ static gboolean
+ utils_timeout_cb (gpointer user_data)
+ {
+-  UtilsSpawnData *data = user_data;
++  UtilsSpawnData *data = (UtilsSpawnData *)user_data;
+ 
+   data->timed_out = TRUE;
+ 
+-- 
+2.24.3 (Apple Git-128)
+
