@@ -29,14 +29,14 @@ endif
 libmd-package: libmd-stage
 	# libmd.mk Package Structure
 	rm -rf $(BUILD_DIST)/libmd{0,-dev}
-	mkdir -p $(BUILD_DIST)/libmd{0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib,-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib}
+	mkdir -p $(BUILD_DIST)/libmd{0,-dev}/$(MEMO_LIBDIR)
 
 	# libmd.mk Prep libmd0
-	cp -a $(BUILD_STAGE)/libmd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libmd.0.dylib $(BUILD_DIST)/libmd0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libmd/$(MEMO_LIBDIR)/libmd.0.dylib $(BUILD_DIST)/libmd0/$(MEMO_LIBDIR)
 
 	# libmd.mk Prep libmd-dev
 	cp -a $(BUILD_STAGE)/libmd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libmd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libmd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libmd.a,libmd.dylib} $(BUILD_DIST)/libmd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libmd/$(MEMO_LIBDIR)/{libmd.a,libmd.dylib} $(BUILD_DIST)/libmd-dev/$(MEMO_LIBDIR)
 	for manpage in $(BUILD_DIST)/libmd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3/*; do \
 		if [ -L $$manpage ]; then \
 			$(LN) -sf $$(readlink $$manpage).zst $$manpage; \
