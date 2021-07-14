@@ -14,7 +14,7 @@ LIBKERNRW_SOVERSION := 0
 libkernrw-setup: setup
 	$(call GITHUB_ARCHIVE,ProcursusTeam,libkernrw,$(LIBKERNRW_VERSION),v$(LIBKERNRW_VERSION))
 	$(call EXTRACT_TAR,libkernrw-$(LIBKERNRW_VERSION).tar.gz,libkernrw-$(LIBKERNRW_VERSION),libkernrw)
-	mkdir -p $(BUILD_STAGE)/libkernrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib,include}
+	mkdir -p $(BUILD_STAGE)/libkernrw/{$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin,$(MEMO_LIBDIR),$(MEMO_INCDIR)}
 
 ifneq ($(wildcard $(BUILD_WORK)/libkernrw/.build_complete),)
 libkernrw:

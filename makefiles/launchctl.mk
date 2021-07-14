@@ -9,7 +9,7 @@ LAUNCHCTL_VERSION := 23-3
 DEB_LAUNCHCTL_V   ?= $(LAUNCHCTL_VERSION)
 
 launchctl:
-	@echo "Launchctl package won't build because you need to put the launchctl binary in $(BUILD_INFO)."
+	@echo "Launchctl package won't build because you need to put the launchctl binary in $(BUILD_MISC)."
 
 launchctl-package: launchctl-stage
 	# launchctl.mk Package Structure

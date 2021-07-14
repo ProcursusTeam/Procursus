@@ -2,10 +2,10 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS += berkeleydb
+STRAPPROJECTS += berkeleydb
 # Berkeleydb requires registration on Oracle's website, so this is a mirror.
-BDB_VERSION := 18.1.40
-DEB_BDB_V   ?= $(BDB_VERSION)
+BDB_VERSION   := 18.1.40
+DEB_BDB_V     ?= $(BDB_VERSION)
 
 berkeleydb-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://fossies.org/linux/misc/db-$(BDB_VERSION).tar.gz

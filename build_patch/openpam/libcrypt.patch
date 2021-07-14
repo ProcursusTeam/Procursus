@@ -9,7 +9,7 @@ Make pam_unix.so module linked to libcrypt (PR pkg/54907).
  pam_unix_la_SOURCES = pam_unix.c
  pam_unix_la_LDFLAGS = -no-undefined -module -version-info $(LIB_MAJ) \
 -	-export-symbols-regex '^pam_sm_'
-+	-export-symbols-regex '^pam_sm_' $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcrypt.a
++	-export-symbols-regex '^pam_sm_' $(BUILD_BASE)/$(MEMO_LIBDIR)/libcrypt.a
  
  @WITH_SYSTEM_LIBPAM_FALSE@pam_unix_la_LIBADD = $(top_builddir)/lib/libpam/libpam.la $(CRYPT_LIBS)
  @WITH_SYSTEM_LIBPAM_TRUE@pam_unix_la_LIBADD = $(SYSTEM_LIBPAM)

@@ -14,7 +14,6 @@ system-cmds-setup: setup libxcrypt
 	$(call EXTRACT_TAR,system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz,system_cmds-$(SYSTEM-CMDS_VERSION),system-cmds)
 	$(call DO_PATCH,system-cmds,system-cmds,-p1)
 	$(SED) -i '/#include <stdio.h>/a #include <crypt.h>' $(BUILD_WORK)/system-cmds/login.tproj/login.c
-	$(SED) -i '1 i\#include\ <libiosexec.h>' $(BUILD_WORK)/system-cmds/login.tproj/login.c
 	wget -q -nc -P $(BUILD_SOURCE) \
 		https://git.cameronkatri.com/pw-darwin/snapshot/pw-darwin-$(PWDARWIN_COMMIT).tar.zst
 	$(call EXTRACT_TAR,pw-darwin-$(PWDARWIN_COMMIT).tar.zst,pw-darwin-$(PWDARWIN_COMMIT),system-cmds/pw-darwin)
@@ -29,7 +28,7 @@ ifneq ($(wildcard $(BUILD_WORK)/system-cmds/.build_complete),)
 system-cmds:
 	@echo "Using previously built system-cmds."
 else
-system-cmds: system-cmds-setup libxcrypt openpam libiosexec
+system-cmds: system-cmds-setup libxcrypt openpam
 	for gperf in $(BUILD_WORK)/system-cmds/getconf.tproj/*.gperf; do \
 		LC_ALL=C awk -f $(BUILD_WORK)/system-cmds/getconf.tproj/fake-gperf.awk < $$gperf > $(BUILD_WORK)/system-cmds/getconf.tproj/"$$(basename $$gperf .gperf).c" ; \
 	done
@@ -48,7 +47,7 @@ system-cmds: system-cmds-setup libxcrypt openpam libiosexec
 			pwd_mkdb) CFLAGS="-D_PW_NAME_LEN=MAXLOGNAME -D_PW_YPTOKEN=\"__YP!\"";; \
 		esac ; \
 		echo "$$tproj" ; \
-		$(CC) $(CFLAGS) -I$(BUILD_WORK)/system-cmds/include -o $$tproj $$tproj.tproj/*.c $$EXTRA -D'__FBSDID(x)=' $$CFLAGS $(LDFLAGS) -framework CoreFoundation -framework IOKit $$LDFLAGS; \
+		$(CC) $(CFLAGS) -I$(BUILD_WORK)/system-cmds/include -o $$tproj $$tproj.tproj/*.c $$EXTRA -D'__FBSDID(x)=' $$CFLAGS $(LDFLAGS) -framework CoreFoundation -framework IOKit $$LDFLAGS -D__kernel_ptr_semantics=""; \
 	done
 	mkdir -p $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX){/etc/pam.d,/bin,/sbin,$(MEMO_SUB_PREFIX)/bin,$(MEMO_SUB_PREFIX)/sbin,$(MEMO_SUB_PREFIX)/share/man/man{1,5,8}}
 	cp -a $(BUILD_WORK)/system-cmds/{reboot,nologin} $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin

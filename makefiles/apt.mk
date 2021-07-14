@@ -23,8 +23,6 @@ apt-setup: setup
 	$(call DO_PATCH,apt,apt,-p1)
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call DO_PATCH,apt-macos,apt,-p1)
-else
-	$(SED) -i '1s/^/#include <libiosexec.h>\n/' $(BUILD_WORK)/apt/apt-pkg/contrib/fileutl.h
 endif
 	if [ -f "$(BUILD_WORK)/apt/apt-private/private-output.cc" ]; then \
 		mv -f $(BUILD_WORK)/apt/apt-private/private-output.{cc,mm}; \

@@ -19,8 +19,9 @@ file-cmds-setup: setup
 	mkdir -p $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/file-cmds/include
-	cp -a $(MACOSX_SYSROOT)/usr/include/tzfile.h $(BUILD_WORK)/file-cmds/include
-	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h $(BUILD_WORK)/file-cmds/include
+	cp -af $(MACOSX_SYSROOT)/usr/include/tzfile.h $(BUILD_WORK)/file-cmds/include
+	cp -af $(BUILD_BASE)$(MEMO_INCDIR)/{unistd,libiosexec}.h $(BUILD_WORK)/file-cmds/include
+	-cp -af $(BUILD_BASE)$(MEMO_INCDIR)/stdarg.h $(BUILD_WORK)/file-cmds/include
 
 	mkdir -p $(BUILD_WORK)/file-cmds/ipcs/sys
 	wget -nc -P $(BUILD_WORK)/file-cmds/ipcs/sys \
@@ -39,7 +40,7 @@ else
 file-cmds: file-cmds-setup
 	cd $(BUILD_WORK)/file-cmds ; \
 	for bin in chflags compress ipcrm ipcs pax; do \
-	    	$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -o $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -D__POSIX_C_SOURCE; \
+	    	$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include $(BUILD_BASE)$(MEMO_LIBDIR)/libiosexec.tbd -o $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -D__POSIX_C_SOURCE; \
 	done
 	touch $(BUILD_WORK)/file-cmds/.build_complete
 endif

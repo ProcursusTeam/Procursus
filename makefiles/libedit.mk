@@ -31,7 +31,7 @@ endif
 libedit-package: libedit-stage
 	# libedit.mk Package Structure
 	rm -rf $(BUILD_DIST)/libedit{0,-dev}
-	mkdir -p $(BUILD_DIST)/libedit{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share/man}
+	mkdir -p $(BUILD_DIST)/libedit{0,-dev}/{$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man,$(MEMO_LIBDIR)}
 
 	# libedit.mk Prep libedit0
 	cp -a $(BUILD_STAGE)/libedit/$(MEMO_LIBDIR)/libedit.0.dylib $(BUILD_DIST)/libedit0/$(MEMO_LIBDIR)

@@ -25,7 +25,7 @@ debianutils: debianutils-setup
 	rm -f $(BUILD_STAGE)/debianutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/installkernel \
 		$(BUILD_STAGE)/debianutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{ischroot,which,tempfile,savelog}
 	rm -rf $(BUILD_STAGE)/debianutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/{,??}/man1 \
-		$(BUILD_STAGE)/debianutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/{,??}/man8/!(run-parts|add-shell|remove-shell).8
+		$(BUILD_STAGE)/debianutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/{,??}/man8/{installkernel,savelog}.8
 	mkdir -p $(BUILD_STAGE)/debianutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/debianutils
 	echo -e "# /etc/shells: valid login shells\n\
 $(MEMO_PREFIX)/bin/sh\n\

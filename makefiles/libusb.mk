@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += libusb
+STRAPPROJECTS  += libusb
 LIBUSB_VERSION := 1.0.23
 DEB_LIBUSB_V   ?= $(LIBUSB_VERSION)-1
 
@@ -18,10 +18,10 @@ libusb: libusb-setup
 	cd $(BUILD_WORK)/libusb && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libusb install \
-		CFLAGS="$(CFLAGS) -D__OPEN_SOURCE__ -DMAC_OS_X_VERSION_MIN_REQUIRED=101500" \
+		CFLAGS="$(CFLAGS) -D__OPEN_SOURCE__ -DMAC_OS_X_VERSION_MIN_REQUIRED=101500 -D__kernel_ptr_semantics=''" \
 		DESTDIR="$(BUILD_STAGE)/libusb"
 	+$(MAKE) -C $(BUILD_WORK)/libusb install \
-		CFLAGS="$(CFLAGS) -D__OPEN_SOURCE__ -DMAC_OS_X_VERSION_MIN_REQUIRED=101500" \
+		CFLAGS="$(CFLAGS) -D__OPEN_SOURCE__ -DMAC_OS_X_VERSION_MIN_REQUIRED=101500 -D__kernel_ptr_semantics=''" \
 		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/libusb/.build_complete
 endif

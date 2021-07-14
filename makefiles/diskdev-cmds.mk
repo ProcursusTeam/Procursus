@@ -14,16 +14,16 @@ diskdev-cmds-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/diskdev_cmds/diskdev_cmds-$(DISKDEV-CMDS_VERSION).tar.gz
 	$(call EXTRACT_TAR,diskdev_cmds-$(DISKDEV-CMDS_VERSION).tar.gz,diskdev_cmds-$(DISKDEV-CMDS_VERSION),diskdev-cmds)
 	$(SED) -i -e '/#include <TargetConditionals.h>/d' \
-		$(BUILD_WORK)/diskdev-cmds/edt_fstab/edt_fstab.h \
-		$(BUILD_WORK)/diskdev-cmds/fsck.tproj/fsck.c
+		$(BUILD_WORK)/diskdev-cmds/edt_fstab/edt_fstab.h
 	$(SED) -i -e '/TARGET_OS_OSX/d' \
 		$(BUILD_WORK)/diskdev-cmds/disklib/preen.c
 	mkdir -p $(BUILD_STAGE)/diskdev-cmds/{usr/{{s,}bin,libexec,share/man/man{1,5,8}},sbin}
 
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/diskdev-cmds/include/{arm,machine,{System/,}sys,uuid}
-	cp -a $(MACOSX_SYSROOT)/usr/include/sys/{disk,reboot,vnioctl,vmmeter}.h $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Versions/Current/Headers/sys/disklabel.h $(BUILD_WORK)/diskdev-cmds/include/sys
-	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/{unistd,stdlib}.h $(BUILD_WORK)/diskdev-cmds/include
+	cp -af $(MACOSX_SYSROOT)/usr/include/sys/{disk,reboot,vnioctl,vmmeter}.h $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Versions/Current/Headers/sys/disklabel.h $(BUILD_WORK)/diskdev-cmds/include/sys
+	cp -af $(BUILD_BASE)$(MEMO_INCDIR)/{unistd,stdlib,libiosexec}.h $(BUILD_WORK)/diskdev-cmds/include
+	cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Headers/std{arg,bool,atomic}.h $(BUILD_WORK)/diskdev-cmds/include
 
 	wget -q -nc -P $(BUILD_WORK)/diskdev-cmds/include \
 		https://opensource.apple.com/source/libutil/libutil-57/mntopts.h \
@@ -49,7 +49,7 @@ diskdev-cmds: diskdev-cmds-setup
 	rm -f mntopts.h getmntopts.c; \
 	for arch in $(MEMO_ARCH); do \
 		for c in *.c; do \
-			$(CC) -arch $${arch} -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem ../include -fno-common -o $$(basename $${c} .c)-$${arch}.o -c $${c}; \
+			$(CC) -arch $${arch} -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem ../include $(BUILD_BASE)$(MEMO_LIBDIR)/libiosexec.tbd -fno-common -o $$(basename $${c} .c)-$${arch}.o -c $${c}; \
 		done; \
 		$(AR) -r libdisk-$${arch}.a *-$${arch}.o; \
 		LIBDISKA=$$(echo disklib/libdisk-$${arch}.a $${LIBDISKA}); \
@@ -68,10 +68,13 @@ diskdev-cmds: diskdev-cmds-setup
 		if [[ $$tproj = mount_cd9660 || $$tproj = mount_hfs || $$tproj = newfs_hfs ]]; then \
 			extra="${extra} -framework CoreFoundation"; \
 		fi; \
+		if [[ $$tproj = fsck ]]; then \
+			extra="${extra} -D__TARGETCONDITIONALS__ -DTARGET_OS_IPHONE=0"; \
+		fi; \
 		if [[ $$tproj = vsdbutil ]]; then \
 			extra="${extra} mount_flags_dir/mount_flags.c"; \
 		fi; \
-		$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -DTARGET_OS_SIMULATOR -Idisklib -o $$tproj $$(find "$$tproj.tproj" -name '*.c') $${LIBDISKA} -lutil $$extra; \
+		$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include $(BUILD_BASE)$(MEMO_LIBDIR)/libiosexec.tbd -DTARGET_OS_SIMULATOR -Dexecv=ie_exec -Idisklib -o $$tproj $$(find "$$tproj.tproj" -name '*.c') $${LIBDISKA} -lutil $$extra; \
 	done
 	cd $(BUILD_WORK)/diskdev-cmds/fstyp.tproj; \
 	for c in *.c; do \
