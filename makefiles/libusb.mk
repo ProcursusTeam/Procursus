@@ -29,13 +29,13 @@ endif
 libusb-package: libusb-stage
 	# libusb.mk Package Structure
 	rm -rf $(BUILD_DIST)/libusb-1.0-0{,-dev}
-	mkdir -p $(BUILD_DIST)/libusb-1.0-0{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libusb-1.0-0{,-dev}/$(MEMO_LIBDIR)
 
 	# libusb.mk Prep libusb-1.0-0
-	cp -a $(BUILD_STAGE)/libusb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libusb-1.0.0.dylib $(BUILD_DIST)/libusb-1.0-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libusb/$(MEMO_LIBDIR)/libusb-1.0.0.dylib $(BUILD_DIST)/libusb-1.0-0/$(MEMO_LIBDIR)
 
 	# libusb.mk Prep libusb-1.0-0-dev
-	cp -a $(BUILD_STAGE)/libusb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libusb-1.0.dylib} $(BUILD_DIST)/libusb-1.0-0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libusb/$(MEMO_LIBDIR)/{pkgconfig,libusb-1.0.dylib} $(BUILD_DIST)/libusb-1.0-0-dev/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/libusb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libusb-1.0-0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libusb.mk Sign

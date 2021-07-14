@@ -31,12 +31,12 @@ endif
 libxcrypt-package: libxcrypt-stage
 	# libxcrypt.mk Package Structure
 	rm -rf $(BUILD_DIST)/libcrypt{2,-dev}
-	mkdir -p $(BUILD_DIST)/libcrypt{2,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libcrypt{2,-dev}/$(MEMO_LIBDIR)
 
 	# libxcrypt.mk Prep libxcrypt
-	cp -a $(BUILD_STAGE)/libxcrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcrypt.2.dylib $(BUILD_DIST)/libcrypt2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxcrypt/$(MEMO_LIBDIR)/libcrypt.2.dylib $(BUILD_DIST)/libcrypt2/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/libxcrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libcrypt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libxcrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libcrypt.{a,dylib},pkgconfig} $(BUILD_DIST)/libcrypt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxcrypt/$(MEMO_LIBDIR)/{libcrypt.{a,dylib},pkgconfig} $(BUILD_DIST)/libcrypt-dev/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/libxcrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/libcrypt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libxcrypt.mk Sign

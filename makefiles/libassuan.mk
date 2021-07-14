@@ -30,13 +30,13 @@ endif
 libassuan-package: libassuan-stage
 	# libassuan.mk Package Structure
 	rm -rf $(BUILD_DIST)/libassuan{-dev,0}
-	mkdir -p $(BUILD_DIST)/libassuan{-dev,0}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libassuan{-dev,0}/$(MEMO_LIBDIR)
 
 	# libassuan.mk Prep libassuan0
-	cp -a $(BUILD_STAGE)/libassuan/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libassuan.0.dylib $(BUILD_DIST)/libassuan0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libassuan/$(MEMO_LIBDIR)/libassuan.0.dylib $(BUILD_DIST)/libassuan0/$(MEMO_LIBDIR)
 
 	# libassuan.mk Prep libassuan-dev
-	cp -a $(BUILD_STAGE)/libassuan/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libassuan.dylib} $(BUILD_DIST)/libassuan-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libassuan/$(MEMO_LIBDIR)/{pkgconfig,libassuan.dylib} $(BUILD_DIST)/libassuan-dev/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/libassuan/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share,include} $(BUILD_DIST)/libassuan-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libassuan.mk Sign

@@ -2,15 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-ifeq ($(SSH_STRAP),1)
-STRAPPROJECTS   += openssl3
-else # ($(SSH_STRAP),1)
-SUBPROJECTS     += openssl3
-endif # ($(SSH_STRAP),1)
-else # ($(MEMO_TARGET),darwin-\*)
-SUBPROJECTS     += openssl3
-endif
+SUBPROJECTS      += openssl3
 OPENSSL3_VERSION := 3.0.0-beta1
 DEB_OPENSSL3_V   ?= $(OPENSSL3_VERSION)
 
@@ -27,6 +19,7 @@ openssl3: openssl3-setup
 	cd $(BUILD_WORK)/openssl3 && ./Configure \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--openssldir=$(MEMO_PREFIX)/etc/ssl \
+		--libdir=lib/$(MULTIARCH_TARGET) \
 		shared \
 		no-tests \
 		darwin64-$$(echo $(LLVM_TARGET) | cut -f1 -d-)
@@ -41,13 +34,13 @@ endif
 openssl3-package: openssl3-stage
 	# openssl3.mk Package Structure
 	rm -rf $(BUILD_DIST)/{openssl,libssl{3,-dev}}
-	mkdir -p $(BUILD_DIST)/{openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin,libssl{3,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib}
+	mkdir -p $(BUILD_DIST)/{openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin,libssl{3,-dev}/$(MEMO_LIBDIR)}
 
 	# openssl3.mk Prep libssl3
-	cp -a $(BUILD_STAGE)/openssl3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{*.3.dylib,engines-3,ossl-modules} $(BUILD_DIST)/libssl3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/openssl3/$(MEMO_LIBDIR)/{*.3.dylib,engines-3,ossl-modules} $(BUILD_DIST)/libssl3/$(MEMO_LIBDIR)
 
 	# openssl3.mk Prep libssl-dev
-	cp -a $(BUILD_STAGE)/openssl3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{lib{ssl,crypto}.{a,dylib},pkgconfig} $(BUILD_DIST)/libssl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/openssl3/$(MEMO_LIBDIR)/{lib{ssl,crypto}.{a,dylib},pkgconfig} $(BUILD_DIST)/libssl-dev/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/openssl3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libssl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# openssl3.mk Prep openssl3

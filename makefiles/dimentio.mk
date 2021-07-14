@@ -15,7 +15,7 @@ DIMENTIO_LIBS      := -framework CoreFoundation -framework IOKit -lcompression
 dimentio-setup: setup
 	$(call GITHUB_ARCHIVE,0x7ff,dimentio,v$(DIMENTIO_COMMIT),$(DIMENTIO_COMMIT))
 	$(call EXTRACT_TAR,dimentio-v$(DIMENTIO_COMMIT).tar.gz,dimentio-$(DIMENTIO_COMMIT),dimentio)
-	mkdir -p $(BUILD_STAGE)/dimentio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib,include}
+	mkdir -p $(BUILD_STAGE)/dimentio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib/$(MULTIARCH_TARGET),include}
 
 ifneq ($(wildcard $(BUILD_WORK)/dimentio/.build_complete),)
 dimentio:
@@ -30,7 +30,7 @@ dimentio: dimentio-setup
 
 	# libdimentio.dylib
 	$(CC) $(CFLAGS) -dynamiclib \
-		-install_name "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdimentio.$(DIMENTIO_SOVERSION).dylib" \
+		-install_name "$(MEMO_LIBDIR)/libdimentio.$(DIMENTIO_SOVERSION).dylib" \
 		-o $(BUILD_WORK)/dimentio/libdimentio.$(DIMENTIO_SOVERSION).dylib \
 		$(BUILD_WORK)/dimentio/libdimentio.o \
 		$(LDFLAGS) $(DIMENTIO_LIBS)
@@ -52,11 +52,11 @@ dimentio: dimentio-setup
 		$(BUILD_WORK)/dimentio/libdimentio.$(DIMENTIO_SOVERSION).dylib
 
 	cp -a $(BUILD_WORK)/dimentio/dimentio $(BUILD_STAGE)/dimentio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_WORK)/dimentio/libdimentio*.{a,dylib} $(BUILD_STAGE)/dimentio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_WORK)/dimentio/libdimentio*.{a,dylib} $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_WORK)/dimentio/libdimentio.h $(BUILD_STAGE)/dimentio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	cp -a $(BUILD_WORK)/dimentio/libdimentio.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	ln -sf libdimentio.$(DIMENTIO_SOVERSION).dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdimentio.dylib
+	cp -a $(BUILD_WORK)/dimentio/libdimentio*.{a,dylib} $(BUILD_STAGE)/dimentio/$(MEMO_LIBDIR)
+	cp -a $(BUILD_WORK)/dimentio/libdimentio*.{a,dylib} $(BUILD_BASE)$(MEMO_LIBDIR)
+	cp -a $(BUILD_WORK)/dimentio/libdimentio.h $(BUILD_STAGE)/dimentio/$(MEMO_INCDIR)
+	cp -a $(BUILD_WORK)/dimentio/libdimentio.h $(BUILD_BASE)$(MEMO_INCDIR)
+	ln -sf libdimentio.$(DIMENTIO_SOVERSION).dylib $(BUILD_BASE)/$(MEMO_LIBDIR)/libdimentio.dylib
 	touch $(BUILD_WORK)/dimentio/.build_complete
 endif
 
@@ -64,16 +64,16 @@ dimentio-package: dimentio-stage
 	# dimentio.mk Package Structure
 	rm -rf $(BUILD_DIST)/dimentio $(BUILD_DIST)/libdimentio{$(DIMENTIO_SOVERSION),-dev}
 	mkdir -p $(BUILD_DIST)/dimentio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
-		$(BUILD_DIST)/libdimentio$(DIMENTIO_SOVERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libdimentio-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include}
+		$(BUILD_DIST)/libdimentio$(DIMENTIO_SOVERSION)/$(MEMO_LIBDIR) \
+		$(BUILD_DIST)/libdimentio-dev/{$(MEMO_LIBDIR),$(MEMO_INCDIR)}
 
 	# dimentio.mk Prep libdimentio$(DIMENTIO_SOVERSION)
-	cp -a $(BUILD_STAGE)/dimentio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdimentio.$(DIMENTIO_SOVERSION).dylib $(BUILD_DIST)/libdimentio$(DIMENTIO_SOVERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/dimentio/$(MEMO_LIBDIR)/libdimentio.$(DIMENTIO_SOVERSION).dylib $(BUILD_DIST)/libdimentio$(DIMENTIO_SOVERSION)/$(MEMO_LIBDIR)
 
 	# dimentio.mk Prep libdimentio-dev
-	cp -a $(BUILD_STAGE)/dimentio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdimentio.a $(BUILD_DIST)/libdimentio-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/dimentio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libdimentio.h $(BUILD_DIST)/libdimentio-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	ln -s libdimentio.$(DIMENTIO_SOVERSION).dylib $(BUILD_DIST)/libdimentio-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdimentio.dylib
+	cp -a $(BUILD_STAGE)/dimentio/$(MEMO_LIBDIR)/libdimentio.a $(BUILD_DIST)/libdimentio-dev/$(MEMO_LIBDIR)
+	cp -a $(BUILD_STAGE)/dimentio/$(MEMO_INCDIR)/libdimentio.h $(BUILD_DIST)/libdimentio-dev/$(MEMO_INCDIR)
+	ln -s libdimentio.$(DIMENTIO_SOVERSION).dylib $(BUILD_DIST)/libdimentio-dev/$(MEMO_LIBDIR)/libdimentio.dylib
 
 	# dimentio.mk Prep dimentio
 	cp -a $(BUILD_STAGE)/dimentio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dimentio $(BUILD_DIST)/dimentio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin

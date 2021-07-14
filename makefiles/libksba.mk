@@ -30,13 +30,13 @@ endif
 libksba-package: libksba-stage
 	# libksba.mk Package Structure
 	rm -rf $(BUILD_DIST)/libksba{8,-dev}
-	mkdir -p $(BUILD_DIST)/libksba{8,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libksba{8,-dev}/$(MEMO_LIBDIR)
 
 	# libksba.mk Prep libksba8
-	cp -a $(BUILD_STAGE)/libksba/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libksba.8.dylib $(BUILD_DIST)/libksba8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libksba/$(MEMO_LIBDIR)/libksba.8.dylib $(BUILD_DIST)/libksba8/$(MEMO_LIBDIR)
 
 	# libksba.mk Prep libksba-dev
-	cp -a $(BUILD_STAGE)/libksba/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libksba.{a,dylib}} $(BUILD_DIST)/libksba-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libksba/$(MEMO_LIBDIR)/{pkgconfig,libksba.{a,dylib}} $(BUILD_DIST)/libksba-dev/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/libksba/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include,share} $(BUILD_DIST)/libksba-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libksba.mk Sign

@@ -34,25 +34,25 @@ libkernrw: libkernrw-setup
 
 	# libkernrw.dylib
 	$(CC) $(CFLAGS) -dynamiclib \
-		-install_name "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkernrw.$(LIBKERNRW_SOVERSION).dylib" \
-		-o $(BUILD_STAGE)/libkernrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkernrw.$(LIBKERNRW_SOVERSION).dylib \
+		-install_name "$(MEMO_LIBDIR)/libkernrw.$(LIBKERNRW_SOVERSION).dylib" \
+		-o $(BUILD_STAGE)/libkernrw/$(MEMO_LIBDIR)/libkernrw.$(LIBKERNRW_SOVERSION).dylib \
 		$(BUILD_WORK)/libkernrw/libkernrw.o $(BUILD_WORK)/libkernrw/kernrw_daemonUser.o \
 		$(LDFLAGS)
 
 	# libkernrw.a
 	$(LIBTOOL) -static \
-		-o $(BUILD_STAGE)/libkernrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkernrw.a \
+		-o $(BUILD_STAGE)/libkernrw/$(MEMO_LIBDIR)/libkernrw.a \
 		$(BUILD_WORK)/libkernrw/libkernrw.o $(BUILD_WORK)/libkernrw/kernrw_daemonUser.o
 
 	# krwtest
 	$(CC) $(CFLAGS) \
 		-o $(BUILD_STAGE)/libkernrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/krwtest \
 		$(BUILD_WORK)/libkernrw/kernrwtest.c \
-		$(BUILD_STAGE)/libkernrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkernrw.$(LIBKERNRW_SOVERSION).dylib \
+		$(BUILD_STAGE)/libkernrw/$(MEMO_LIBDIR)/libkernrw.$(LIBKERNRW_SOVERSION).dylib \
 		$(LDFLAGS)
 
-	cp $(BUILD_WORK)/libkernrw/libkernrw.h $(BUILD_STAGE)/libkernrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	ln -s libkernrw.$(LIBKERNRW_SOVERSION).dylib $(BUILD_STAGE)/libkernrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkernrw.dylib
+	cp $(BUILD_WORK)/libkernrw/libkernrw.h $(BUILD_STAGE)/libkernrw/$(MEMO_INCDIR)
+	ln -s libkernrw.$(LIBKERNRW_SOVERSION).dylib $(BUILD_STAGE)/libkernrw/$(MEMO_LIBDIR)/libkernrw.dylib
 	touch $(BUILD_WORK)/libkernrw/.build_complete
 endif
 
@@ -60,15 +60,15 @@ libkernrw-package: libkernrw-stage
 	# libkernrw.mk Package Structure
 	rm -rf $(BUILD_DIST)/libkernrw{$(LIBKERNRW_SOVERSION),-dev,-utils}
 	mkdir -p $(BUILD_DIST)/libkernrw-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		$(BUILD_DIST)/libkernrw$(LIBKERNRW_SOVERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libkernrw-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include}
+		$(BUILD_DIST)/libkernrw$(LIBKERNRW_SOVERSION)/$(MEMO_LIBDIR) \
+		$(BUILD_DIST)/libkernrw-dev/{$(MEMO_LIBDIR),$(MEMO_INCDIR)}
 
 	# libkernrw.mk Prep libkernrw$(LIBKERNRW_SOVERSION)
-	cp -a $(BUILD_STAGE)/libkernrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkernrw.$(LIBKERNRW_SOVERSION).dylib $(BUILD_DIST)/libkernrw$(LIBKERNRW_SOVERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libkernrw/$(MEMO_LIBDIR)/libkernrw.$(LIBKERNRW_SOVERSION).dylib $(BUILD_DIST)/libkernrw$(LIBKERNRW_SOVERSION)/$(MEMO_LIBDIR)
 
 	# libkernrw.mk Prep libkernrw-dev
-	cp -a $(BUILD_STAGE)/libkernrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkernrw.{a,dylib} $(BUILD_DIST)/libkernrw-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libkernrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkernrw.h $(BUILD_DIST)/libkernrw-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/libkernrw/$(MEMO_LIBDIR)/libkernrw.{a,dylib} $(BUILD_DIST)/libkernrw-dev/$(MEMO_LIBDIR)
+	cp -a $(BUILD_STAGE)/libkernrw/$(MEMO_INCDIR)/libkernrw.h $(BUILD_DIST)/libkernrw-dev/$(MEMO_INCDIR)
 
 	# libkernrw.mk Prep libkernrw-utils
 	cp -a $(BUILD_STAGE)/libkernrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/libkernrw-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
