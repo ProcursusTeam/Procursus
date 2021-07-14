@@ -17,8 +17,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call DO_PATCH,zsh-ios,zsh,-p1)
 ZSH_CONFIGURE_ARGS := --enable-etcdir=$(MEMO_PREFIX)/etc \
 		zsh_cv_path_utmpx=/var/run/utmpx \
-		zsh_cv_path_utmp=no \
-		LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -liosexec"
+		zsh_cv_path_utmp=no
 else
 ZSH_CONFIGURE_ARGS := --enable-etcdir=$(MEMO_PREFIX)/etc
 endif

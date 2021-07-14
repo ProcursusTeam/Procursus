@@ -29,13 +29,13 @@ endif
 npth-package: npth-stage
 	# npth.mk Package Structure
 	rm -rf $(BUILD_DIST)/libnpth0{,-dev}
-	mkdir -p $(BUILD_DIST)/libnpth0{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libnpth0{,-dev}/$(MEMO_LIBDIR)
 
 	# npth.mk Prep libnpth0
-	cp -a $(BUILD_STAGE)/npth/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libnpth.0.dylib $(BUILD_DIST)/libnpth0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/npth/$(MEMO_LIBDIR)/libnpth.0.dylib $(BUILD_DIST)/libnpth0/$(MEMO_LIBDIR)
 
 	# npth.mk Prep libnpth0-dev
-	cp -a $(BUILD_STAGE)/npth/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libnpth.dylib $(BUILD_DIST)/libnpth0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/npth/$(MEMO_LIBDIR)/libnpth.dylib $(BUILD_DIST)/libnpth0-dev/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/npth/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include,share} $(BUILD_DIST)/libnpth0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# npth.mk Sign

@@ -18,8 +18,8 @@ else
 nettle: nettle-setup libgmp10
 	cd $(BUILD_WORK)/nettle && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		CC_FOR_BUILD='$(shell which cc) $(CFLAGS_FOR_BUILD)' \
-		CPP_FOR_BUILD='$(shell which cc) -E $(CPPFLAGS_FOR_BUILD)'
+		CC_FOR_BUILD='$(CC_FOR_BUILD) $(CFLAGS_FOR_BUILD)' \
+		CPP_FOR_BUILD='$(CPP_FOR_BUILD) -E $(CPPFLAGS_FOR_BUILD)'
 	+$(MAKE) -C $(BUILD_WORK)/nettle
 	+$(MAKE) -C $(BUILD_WORK)/nettle install \
 		DESTDIR=$(BUILD_STAGE)/nettle
@@ -35,21 +35,21 @@ nettle-package: nettle-stage
 		$(BUILD_DIST)/libnettle8 \
 		$(BUILD_DIST)/libhogweed6
 	mkdir -p $(BUILD_DIST)/nettle-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		$(BUILD_DIST)/nettle-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libnettle8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libhogweed6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+		$(BUILD_DIST)/nettle-dev/$(MEMO_LIBDIR) \
+		$(BUILD_DIST)/libnettle8/$(MEMO_LIBDIR) \
+		$(BUILD_DIST)/libhogweed6/$(MEMO_LIBDIR)
 
 	# nettle.mk Prep nettle-bin
 	cp -a $(BUILD_STAGE)/nettle/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/nettle-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# nettle.mk Prep libnettle8
-	cp -a $(BUILD_STAGE)/nettle/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libnettle.8*.dylib $(BUILD_DIST)/libnettle8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/nettle/$(MEMO_LIBDIR)/libnettle.8*.dylib $(BUILD_DIST)/libnettle8/$(MEMO_LIBDIR)
 
 	# nettle.mk Prep libhogweed6
-	cp -a $(BUILD_STAGE)/nettle/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libhogweed.6*.dylib $(BUILD_DIST)/libhogweed6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/nettle/$(MEMO_LIBDIR)/libhogweed.6*.dylib $(BUILD_DIST)/libhogweed6/$(MEMO_LIBDIR)
 
 	# nettle.mk Prep nettle-dev
-	cp -a $(BUILD_STAGE)/nettle/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,lib{nettle,hogweed}.{dylib,a}} $(BUILD_DIST)/nettle-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/nettle/$(MEMO_LIBDIR)/{pkgconfig,lib{nettle,hogweed}.{dylib,a}} $(BUILD_DIST)/nettle-dev/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/nettle/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/nettle-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# nettle.mk Sign

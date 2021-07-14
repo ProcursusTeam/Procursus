@@ -39,11 +39,7 @@ ifneq ($(wildcard $(BUILD_WORK)/apt/.build_complete),)
 apt:
 	@echo "Using previously built apt."
 else
-ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 apt: apt-setup libgcrypt berkeleydb lz4 xxhash xz zstd gnutls
-else
-apt: apt-setup libgcrypt berkeleydb lz4 xxhash xz zstd gnutls libiosexec
-endif
 	cd $(BUILD_WORK)/apt/build && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DSTATE_DIR=$(MEMO_PREFIX)/var/lib/apt \
@@ -58,7 +54,8 @@ endif
 		-DWITH_TESTS=0 \
 		-DDOCBOOK_XSL=$(DOCBOOK_XSL) \
 		-DDPKG_DATADIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/dpkg \
-		-DBERKELEY_INCLUDE_DIRS="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/db181" \
+		-DBERKELEY_INCLUDE_DIRS="$(BUILD_BASE)/$(MEMO_INCDIR)/db181" \
+		-DBERKELEY_LIBRARIES="$(BUILD_BASE)/$(MEMO_LIBDIR)/libdb.dylib" \
 		$(APT_CMAKE_ARGS) \
 		..
 	+$(MAKE) -C $(BUILD_WORK)/apt/build
@@ -72,13 +69,13 @@ endif
 apt-package: apt-stage
 	# apt.mk Package Structure
 	rm -rf $(BUILD_DIST)/apt{,-utils} $(BUILD_DIST)/libapt*/
-	mkdir -p $(BUILD_DIST)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib,libexec/apt/{planners,solvers}} \
+	mkdir -p $(BUILD_DIST)/apt/{$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,libexec/apt/{planners,solvers}},$(MEMO_LIBDIR)} \
 	$(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{share/man,bin,libexec/apt/{planners,solvers}} \
-	$(BUILD_DIST)/libapt-pkg{6.0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	$(BUILD_DIST)/libapt-pkg{6.0,-dev}/$(MEMO_LIBDIR)
 
 	# apt.mk Prep apt
 	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/apt{,-cache,-cdrom,-config,-get,-key,-mark} $(BUILD_DIST)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libapt-private*.dylib $(BUILD_DIST)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/apt/$(MEMO_LIBDIR)/libapt-private*.dylib $(BUILD_DIST)/apt/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/dpkg $(BUILD_DIST)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
 	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/apt/{methods,apt-helper} $(BUILD_DIST)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/apt
 	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/apt/planners/dump $(BUILD_DIST)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/apt/planners
@@ -102,11 +99,11 @@ apt-package: apt-stage
 	rm -f $(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/apt-transport*.1
 
 	# apt.mk Prep libapt-pkg6.0
-	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libapt-pkg.6.0*.dylib $(BUILD_DIST)/libapt-pkg6.0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/apt/$(MEMO_LIBDIR)/libapt-pkg.6.0*.dylib $(BUILD_DIST)/libapt-pkg6.0/$(MEMO_LIBDIR)
 
 	# apt.mk Prep libapt-pkg-dev
-	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libapt-pkg.dylib $(BUILD_DIST)/libapt-pkg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libapt-pkg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/apt/$(MEMO_LIBDIR)/libapt-pkg.dylib $(BUILD_DIST)/libapt-pkg-dev/$(MEMO_LIBDIR)
+	cp -a $(BUILD_STAGE)/apt/$(MEMO_LIBDIR)/pkgconfig $(BUILD_DIST)/libapt-pkg-dev/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libapt-pkg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# apt.mk Sign

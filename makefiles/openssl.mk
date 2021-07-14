@@ -61,6 +61,7 @@ openssl: openssl-setup
 	cd $(BUILD_WORK)/openssl && ./Configure \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--openssldir=$(MEMO_PREFIX)/etc/ssl \
+		--libdir=lib/$(MULTIARCH_TARGET) \
 		shared \
 		$(SSL_SCHEME)
 	+$(MAKE) -C $(BUILD_WORK)/openssl
@@ -68,20 +69,23 @@ openssl: openssl-setup
 		DESTDIR=$(BUILD_STAGE)/openssl
 	+$(MAKE) -C $(BUILD_WORK)/openssl install_sw \
 		DESTDIR=$(BUILD_BASE)
+	mkdir -p $(BUILD_STAGE)/openssl/$(MEMO_INCDIR)
+	mv $(BUILD_STAGE)/openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/openssl $(BUILD_STAGE)/openssl/$(MEMO_INCDIR)/openssl
+	mv $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/openssl $(BUILD_BASE)/$(MEMO_INCDIR)/
 	touch $(BUILD_WORK)/openssl/.build_complete
 endif
 
 openssl-package: openssl-stage
 	# openssl.mk Package Structure
 	rm -rf $(BUILD_DIST)/{openssl,libssl{1.1,-dev}}
-	mkdir -p $(BUILD_DIST)/{openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin,libssl{1.1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib}
+	mkdir -p $(BUILD_DIST)/{openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin,libssl{1.1,-dev}/$(MEMO_LIBDIR)}
 
 	# openssl.mk Prep libssl1.1
-	cp -a $(BUILD_STAGE)/openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib $(BUILD_DIST)/libssl1.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	rm -rf $(BUILD_DIST)/libssl1.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{lib{ssl,crypto}.{a,dylib},pkgconfig}
+	cp -a $(BUILD_STAGE)/openssl/$(MEMO_LIBDIR) $(BUILD_DIST)/libssl1.1/$(MEMO_ALL_LIBDIR)
+	rm -rf $(BUILD_DIST)/libssl1.1/$(MEMO_LIBDIR)/{lib{ssl,crypto}.{a,dylib},pkgconfig}
 
 	# openssl.mk Prep libssl-dev
-	cp -a $(BUILD_STAGE)/openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{lib{ssl,crypto}.{a,dylib},pkgconfig} $(BUILD_DIST)/libssl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/openssl/$(MEMO_LIBDIR)/{lib{ssl,crypto}.{a,dylib},pkgconfig} $(BUILD_DIST)/libssl-dev/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libssl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# openssl.mk Prep openssl

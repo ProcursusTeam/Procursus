@@ -42,13 +42,13 @@ endif
 libgpg-error-package: libgpg-error-stage
 	# libgpg-error.mk Package Structure
 	rm -rf $(BUILD_DIST)/{libgpg-error{0,-dev},gpgrt-tools}
-	mkdir -p $(BUILD_DIST)/libgpg-error{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libgpg-error{0,-dev}/$(MEMO_LIBDIR)
 	mkdir -p $(BUILD_DIST)/gpgrt-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libgpg-error.mk Prep libgpg-error
-	cp -a $(BUILD_STAGE)/libgpg-error/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgpg-error.0.dylib $(BUILD_DIST)/libgpg-error0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libgpg-error/$(MEMO_LIBDIR)/libgpg-error.0.dylib $(BUILD_DIST)/libgpg-error0/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/libgpg-error/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libgpg-error-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libgpg-error/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libgpg-error.dylib,pkgconfig} $(BUILD_DIST)/libgpg-error-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libgpg-error/$(MEMO_LIBDIR)/{libgpg-error.dylib,pkgconfig} $(BUILD_DIST)/libgpg-error-dev/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/libgpg-error/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/gpgrt-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libgpg-error.mk Sign

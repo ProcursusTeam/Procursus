@@ -29,15 +29,15 @@ endif
 libtasn1-package: libtasn1-stage
 	# libtasn1.mk Package Structure
 	rm -rf $(BUILD_DIST)/libtasn1-{6{,-dev},bin}
-	mkdir -p $(BUILD_DIST)/libtasn1-6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libtasn1-6-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share/man} \
+	mkdir -p $(BUILD_DIST)/libtasn1-6/$(MEMO_LIBDIR) \
+		$(BUILD_DIST)/libtasn1-6-dev/{$(MEMO_LIBDIR),$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man} \
 		$(BUILD_DIST)/libtasn1-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
 	# libtasn1.mk Prep libtasn1-6
-	cp -a $(BUILD_STAGE)/libtasn1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libtasn1.6.dylib $(BUILD_DIST)/libtasn1-6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libtasn1/$(MEMO_LIBDIR)/libtasn1.6.dylib $(BUILD_DIST)/libtasn1-6/$(MEMO_LIBDIR)
 
 	# libtasn1.mk Prep libtasn1-dev
-	cp -a $(BUILD_STAGE)/libtasn1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libtasn1.6.dylib) $(BUILD_DIST)/libtasn1-6-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libtasn1/$(MEMO_LIBDIR)/!(libtasn1.6.dylib) $(BUILD_DIST)/libtasn1-6-dev/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/libtasn1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libtasn1-6-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	cp -a $(BUILD_STAGE)/libtasn1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libtasn1-6-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 

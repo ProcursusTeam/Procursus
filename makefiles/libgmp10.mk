@@ -22,12 +22,16 @@ libgmp10: libgmp10-setup
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-cxx \
 		--disable-assembly \
-		CC_FOR_BUILD='$(shell which cc) $(CFLAGS_FOR_BUILD)' \
-		CPP_FOR_BUILD='$(shell which cc) -E $(CPPFLAGS_FOR_BUILD)'
+		CC_FOR_BUILD='$(CC_FOR_BUILD) $(CFLAGS_FOR_BUILD)' \
+		CPP_FOR_BUILD='$(CPP_FOR_BUILD) -E $(CPPFLAGS_FOR_BUILD)'
 	+$(MAKE) -C $(BUILD_WORK)/libgmp10
+	# gmp.h is installed to includeexecdir which can't be set at compile
+	# This is the same way that debian does it
 	+$(MAKE) -C $(BUILD_WORK)/libgmp10 install \
+		includeexecdir=$(MEMO_INCDIR) \
 		DESTDIR=$(BUILD_STAGE)/libgmp10
 	+$(MAKE) -C $(BUILD_WORK)/libgmp10 install \
+		includeexecdir=$(MEMO_INCDIR) \
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/libgmp10/.build_complete
 endif
@@ -35,16 +39,16 @@ endif
 libgmp10-package: libgmp10-stage
 	# libgmp10.mk Package Structure
 	rm -rf $(BUILD_DIST)/libgmp{10,xx4ldbl,-dev}
-	mkdir -p $(BUILD_DIST)/libgmp{10,xx4ldbl,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libgmp{10,xx4ldbl,-dev}/$(MEMO_LIBDIR)
 
 	# libgmp10.mk Prep libgmp10
-	cp -a $(BUILD_STAGE)/libgmp10/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgmp.10.dylib $(BUILD_DIST)/libgmp10/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libgmp10/$(MEMO_LIBDIR)/libgmp.10.dylib $(BUILD_DIST)/libgmp10/$(MEMO_LIBDIR)
 
 	# libgmp10.mk Prep libgmpxx4ldbl
-	cp -a $(BUILD_STAGE)/libgmp10/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgmpxx.4.dylib $(BUILD_DIST)/libgmpxx4ldbl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libgmp10/$(MEMO_LIBDIR)/libgmpxx.4.dylib $(BUILD_DIST)/libgmpxx4ldbl/$(MEMO_LIBDIR)
 
 	# libgmp10.mk Prep libgmp-dev
-	cp -a $(BUILD_STAGE)/libgmp10/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libgmp.10.dylib|libgmpxx.4.dylib) $(BUILD_DIST)/libgmp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libgmp10/$(MEMO_LIBDIR)/!(libgmp.10.dylib|libgmpxx.4.dylib) $(BUILD_DIST)/libgmp-dev/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/libgmp10/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libgmp-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libgmp10.mk Sign

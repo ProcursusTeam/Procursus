@@ -53,7 +53,7 @@ zstd-package: zstd-stage
 
 	# zstd.mk Prep libzstd-dev
 	cp -a $(BUILD_STAGE)/zstd/$(MEMO_LIBDIR)/{pkgconfig,libzstd.{a,dylib}} $(BUILD_DIST)/libzstd-dev/$(MEMO_LIBDIR)
-	cp -a $(BUILD_STAGE)/zstd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libzstd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/zstd/$(MEMO_INCDIR) $(BUILD_DIST)/libzstd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# zstd.mk Sign
 	$(call SIGN,zstd,general.xml)

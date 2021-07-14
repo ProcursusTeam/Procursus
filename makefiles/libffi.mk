@@ -28,13 +28,13 @@ endif
 libffi-package: libffi-stage
 	# libffi.mk Package Structure
 	rm -rf $(BUILD_DIST)/libffi{7,-dev}
-	mkdir -p $(BUILD_DIST)/libffi{7,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libffi{7,-dev}/$(MEMO_LIBDIR)
 
 	# libffi.mk Prep libffi7
-	cp -a $(BUILD_STAGE)/libffi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libffi.7.dylib $(BUILD_DIST)/libffi7/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libffi/$(MEMO_LIBDIR)/libffi.7.dylib $(BUILD_DIST)/libffi7/$(MEMO_LIBDIR)
 
 	# libffi.mk Prep libffi-dev
-	cp -a $(BUILD_STAGE)/libffi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libffi.7.dylib) $(BUILD_DIST)/libffi-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libffi/$(MEMO_LIBDIR)/!(libffi.7.dylib) $(BUILD_DIST)/libffi-dev/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/libffi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libffi-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libffi.mk Sign

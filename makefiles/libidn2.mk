@@ -30,8 +30,8 @@ libidn2-package: libidn2-stage
 	# libidn2.mk Package Structure
 	rm -rf $(BUILD_DIST)/libidn2{-0,-dev} \
 		$(BUILD_DIST)/idn2
-	mkdir -p $(BUILD_DIST)/libidn2-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{share,lib} \
-		$(BUILD_DIST)/libidn2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{share/man,lib} \
+	mkdir -p $(BUILD_DIST)/libidn2-0/{$(MEMO_LIBDIR),$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share} \
+		$(BUILD_DIST)/libidn2-dev/{$(MEMO_LIBDIR),$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man} \
 		$(BUILD_DIST)/idn2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
 	# libidn2.mk Prep idn2
@@ -39,11 +39,11 @@ libidn2-package: libidn2-stage
 	cp -a $(BUILD_STAGE)/libidn2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/idn2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
 	# libidn2.mk Prep libidn2-0
-	cp -a $(BUILD_STAGE)/libidn2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libidn2.0.dylib $(BUILD_DIST)/libidn2-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libidn2/$(MEMO_LIBDIR)/libidn2.0.dylib $(BUILD_DIST)/libidn2-0/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/libidn2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale $(BUILD_DIST)/libidn2-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
 	# libidn2.mk Prep libidn2-dev
-	cp -a $(BUILD_STAGE)/libidn2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libidn2.{dylib,a},pkgconfig} $(BUILD_DIST)/libidn2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libidn2/$(MEMO_LIBDIR)/{libidn2.{dylib,a},pkgconfig} $(BUILD_DIST)/libidn2-dev/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/libidn2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libidn2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
 	# libidn2.mk Sign
