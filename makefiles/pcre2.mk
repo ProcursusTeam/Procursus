@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += pcre2
-PCRE2_VERSION := 10.36
+PCRE2_VERSION := 10.37
 DEB_PCRE2_V   ?= $(PCRE2_VERSION)
 
 pcre2-setup: setup
