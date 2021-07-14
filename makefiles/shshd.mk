@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS += shshd
-SHSHD_VERSION := 1.1.1
+SHSHD_VERSION := 1.1.1.1
 DEB_SHSHD_V   ?= $(SHSHD_VERSION)
 
 shshd-setup: setup
@@ -19,7 +19,7 @@ shshd:
 else
 shshd: shshd-setup dimentio
 	cd $(BUILD_WORK)/shshd; \
-		swiftc --target=$(LLVM_TARGET) -sdk $(TARGET_SYSROOT) -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -import-objc-header Bridge.h -o $(BUILD_STAGE)/shshd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/shshd main.swift -framework IOKit -lMobileGestalt -L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -ldimentio
+		swiftc -Osize --target=$(LLVM_TARGET) -sdk $(TARGET_SYSROOT) -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -import-objc-header Bridge.h -o $(BUILD_STAGE)/shshd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/shshd main.swift -framework IOKit -lMobileGestalt -L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -ldimentio
 		$(SED) -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < $(BUILD_MISC)/shshd/shshd-wrapper > $(BUILD_STAGE)/shshd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/shshd-wrapper
 		chmod 0755 $(BUILD_STAGE)/shshd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/shshd-wrapper
 		$(SED) -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < $(BUILD_MISC)/shshd/us.diatr.shshd.plist > $(BUILD_STAGE)/shshd/$(MEMO_PREFIX)/Library/LaunchDaemons/us.diatr.shshd.plist
@@ -35,6 +35,9 @@ shshd-package: shshd-stage
 
 	# shshd.mk Sign
 	$(call SIGN,shshd,dimentio.plist)
+
+	# shshd.mk Permissions
+	chmod u+s $(BUILD_DIST)/shshd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/shshd
 
 	# shshd.mk Make .debs
 	$(call PACK,shshd,DEB_SHSHD_V)
