@@ -1,0 +1,26 @@
+diff --color -urN pacman-6.0.0/lib/libalpm/diskspace.c pacman/lib/libalpm/diskspace.c
+--- pacman-6.0.0/lib/libalpm/diskspace.c	2021-05-19 20:35:27.000000000 -0700
++++ pacman/lib/libalpm/diskspace.c	2021-07-10 10:21:57.321147704 -0700
+@@ -82,7 +82,7 @@
+ 	}
+ 
+ 	_alpm_log(handle, ALPM_LOG_DEBUG, "loading fsinfo for %s\n", mountpoint->mount_dir);
+-	mountpoint->read_only = mountpoint->fsp.f_flag & ST_RDONLY;
++	mountpoint->read_only = mountpoint->fsp.f_flags & ST_RDONLY;
+ 	mountpoint->fsinfo_loaded = MOUNT_FSINFO_LOADED;
+ #else
+ 	(void)handle;
+diff --color -urN pacman-6.0.0/meson.build pacman/meson.build
+--- pacman-6.0.0/meson.build	2021-05-19 20:35:27.000000000 -0700
++++ pacman/meson.build	2021-07-10 10:22:47.308726646 -0700
+@@ -175,8 +175,8 @@
+   endif
+ endforeach
+ 
+-if conf.has('HAVE_STRUCT_STATVFS_F_FLAG')
+-  conf.set('FSSTATSTYPE', 'struct statvfs')
++if conf.has('HAVE_STRUCT_STATFS_F_FLAG')
++  conf.set('FSSTATSTYPE', 'struct statfs')
+ elif conf.has('HAVE_STRUCT_STATFS_F_FLAGS')
+   conf.set('FSSTATSTYPE', 'struct statfs')
+ endif
