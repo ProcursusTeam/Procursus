@@ -1,0 +1,18 @@
+Package: toybox
+Version: @DEB_TOYBOX_V@
+Author: Rob Landley <rob@landley.net>
+Maintainer: @DEB_MAINTAINER@
+Depends: libssl1.1
+Section: Utilities
+Architecture: @DEB_ARCH@
+Description: all-in-one Darwin command line
+ toybox is a multicall binary, a "swiss-army-knife" program 
+ that acts differently depending on the name it was called by (cp, mv, cat...).
+ .
+ The special "toybox" command treats its first argument as the command to run.
+ With no arguments, it lists available commands. This allows you to use toybox
+ without installing it, and is the only command that can have an arbitrary
+ suffix.
+ .
+ The "help" command provides information about each command (ala "help cat"),
+ and "help toybox" provides general information about toybox.
