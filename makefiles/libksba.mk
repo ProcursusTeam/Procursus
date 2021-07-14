@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += libksba
-KSBA_VERSION  := 1.5.0
-DEB_KSBA_V    ?= $(KSBA_VERSION)-1
+KSBA_VERSION  := 1.6.0
+DEB_KSBA_V    ?= $(KSBA_VERSION)
 
 libksba-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/libksba/libksba-$(KSBA_VERSION).tar.bz2{,.sig}
@@ -36,7 +36,7 @@ libksba-package: libksba-stage
 	cp -a $(BUILD_STAGE)/libksba/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libksba.8.dylib $(BUILD_DIST)/libksba8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libksba.mk Prep libksba-dev
-	cp -a $(BUILD_STAGE)/libksba/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libksba.dylib} $(BUILD_DIST)/libksba-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libksba/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libksba.{a,dylib}} $(BUILD_DIST)/libksba-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libksba/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include,share} $(BUILD_DIST)/libksba-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libksba.mk Sign

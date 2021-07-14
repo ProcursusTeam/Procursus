@@ -314,10 +314,10 @@ LIPO     := $(GNU_HOST_TRIPLE)-lipo
 OTOOL    := $(GNU_HOST_TRIPLE)-otool
 LIBTOOL  := $(GNU_HOST_TRIPLE)-libtool
 
-BUILD_CFLAGS   :=
-BUILD_CPPFLAGS :=
-BUILD_CXXFLAGS :=
-BUILD_LDFLAGS  :=
+CFLAGS_FOR_BUILD   :=
+CPPFLAGS_FOR_BUILD :=
+CXXFLAGS_FOR_BUILD :=
+LDFLAGS_FOR_BUILD  :=
 
 else ifeq ($(UNAME),FreeBSD)
 ifneq ($(MEMO_QUIET),1)
@@ -339,10 +339,10 @@ OTOOL   := $(GNU_HOST_TRIPLE)-otool
 LIBTOOL := $(GNU_HOST_TRIPLE)-libtool
 PATH    := $(GNUBINDIR):$(PATH)
 
-BUILD_CFLAGS   :=
-BUILD_CPPFLAGS :=
-BUILD_CXXFLAGS :=
-BUILD_LDFLAGS  :=
+CFLAGS_FOR_BUILD   :=
+CPPFLAGS_FOR_BUILD :=
+CXXFLAGS_FOR_BUILD :=
+LDFLAGS_FOR_BUILD  :=
 
 else ifeq ($(UNAME),Darwin)
 ifeq ($(shell sw_vers -productName),macOS)
@@ -356,10 +356,10 @@ CXX             := $(shell xcrun --sdk $(PLATFORM) --find c++)
 CPP             := $(shell xcrun --sdk $(PLATFORM) --find cc) -E
 PATH            := /opt/procursus/bin:/opt/procursus/libexec/gnubin:/usr/bin:$(PATH)
 
-BUILD_CFLAGS   := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
-BUILD_CPPFLAGS := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
-BUILD_CXXFLAGS := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
-BUILD_LDFLAGS  := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
+CFLAGS_FOR_BUILD   := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
+CPPFLAGS_FOR_BUILD := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
+CXXFLAGS_FOR_BUILD := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
+LDFLAGS_FOR_BUILD  := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
 
 else
 ifneq ($(MEMO_QUIET),1)
@@ -372,10 +372,10 @@ CXX             := $(shell which c++)
 CPP             := $(shell which cc) -E
 PATH            := /usr/bin:$(PATH)
 
-BUILD_CFLAGS   := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
-BUILD_CPPFLAGS := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
-BUILD_CXXFLAGS := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
-BUILD_LDFLAGS  := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
+CFLAGS_FOR_BUILD   := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
+CPPFLAGS_FOR_BUILD := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
+CXXFLAGS_FOR_BUILD := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
+LDFLAGS_FOR_BUILD  := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
 
 endif
 AR              := $(shell which ar)
@@ -392,9 +392,9 @@ else
 $(error Please use macOS, iOS, Linux, or FreeBSD to build)
 endif
 
-CC_FOR_BUILD  := $(shell which cc) $(BUILD_CFLAGS)
-CPP_FOR_BUILD := $(shell which cc) -E $(BUILD_CPPFLAGS)
-CXX_FOR_BUILD := $(shell which c++) $(BUILD_CXXFLAGS)
+CC_FOR_BUILD  := $(shell which cc) $(CFLAGS_FOR_BUILD)
+CPP_FOR_BUILD := $(shell which cc) -E $(CPPFLAGS_FOR_BUILD)
+CXX_FOR_BUILD := $(shell which c++) $(CXXFLAGS_FOR_BUILD)
 AR_FOR_BUILD  := $(shell which ar)
 export CC_FOR_BUILD CPP_FOR_BUILD CXX_FOR_BUILD AR_FOR_BUILD
 
@@ -487,10 +487,10 @@ BUILD_CONFIGURE_FLAGS := \
 	CC="$(CC_FOR_BUILD)" \
 	CXX="$(CXX_FOR_BUILD)" \
 	CPP="$(CPP_FOR_BUILD)" \
-	CFLAGS="$(BUILD_CFLAGS)" \
-	CXXFLAGS="$(BUILD_CXXFLAGS)" \
-	CPPFLAGS="$(BUILD_CPPFLAGS)" \
-	LDFLAGS="$(BUILD_LDFLAGS)"
+	CFLAGS="$(CFLAGS_FOR_BUILD)" \
+	CXXFLAGS="$(CXXFLAGS_FOR_BUILD)" \
+	CPPFLAGS="$(CPPFLAGS_FOR_BUILD)" \
+	LDFLAGS="$(LDFLAGS_FOR_BUILD)"
 
 DEFAULT_CONFIGURE_FLAGS := \
 	--build=$$($(BUILD_MISC)/config.guess) \
@@ -500,7 +500,10 @@ DEFAULT_CONFIGURE_FLAGS := \
 	--sysconfdir=$(MEMO_PREFIX)/etc \
 	--bindir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
 	--mandir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
-	--disable-dependency-tracking
+	--enable-silent-rules \
+	--disable-dependency-tracking \
+	--enable-shared \
+	--enable-static
 
 DEFAULT_PERL_MAKE_FLAGS := \
 	INSTALLSITEARCH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
@@ -1063,7 +1066,7 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	@# Copy headers from MacOSX.sdk
-	@cp -af $(MACOSX_SYSROOT)/usr/include/{arpa,bsm,net,xpc,netinet,servers} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	@cp -af $(MACOSX_SYSROOT)/usr/include/{arpa,bsm,hfs,net,xpc,netinet,servers} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	@cp -af $(MACOSX_SYSROOT)/usr/include/objc/objc-runtime.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/objc
 	@cp -af $(MACOSX_SYSROOT)/usr/include/libkern/{OSDebug.h,OSKextLib.h,OSReturn.h,OSThermalNotification.h,OSTypes.h,machine} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern
 	@cp -af $(MACOSX_SYSROOT)/usr/include/kern $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include

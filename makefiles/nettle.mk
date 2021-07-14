@@ -3,25 +3,23 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS  += nettle
-NETTLE_VERSION := 3.7.2
+NETTLE_VERSION := 3.7.3
 DEB_NETTLE_V   ?= $(NETTLE_VERSION)
 
 nettle-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/nettle/nettle-$(NETTLE_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,nettle-$(NETTLE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,nettle-$(NETTLE_VERSION).tar.gz,nettle-$(NETTLE_VERSION),nettle)
-	$(call DO_PATCH,nettle,nettle,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/nettle/.build_complete),)
 nettle:
 	@echo "Using previously built nettle."
 else
 nettle: nettle-setup libgmp10
-	cd $(BUILD_WORK)/nettle && autoreconf -iv
 	cd $(BUILD_WORK)/nettle && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		CC_FOR_BUILD='$(shell which cc) $(BUILD_CFLAGS)' \
-		CPP_FOR_BUILD='$(shell which cc) -E $(BUILD_CPPFLAGS)'
+		CC_FOR_BUILD='$(shell which cc) $(CFLAGS_FOR_BUILD)' \
+		CPP_FOR_BUILD='$(shell which cc) -E $(CPPFLAGS_FOR_BUILD)'
 	+$(MAKE) -C $(BUILD_WORK)/nettle
 	+$(MAKE) -C $(BUILD_WORK)/nettle install \
 		DESTDIR=$(BUILD_STAGE)/nettle
