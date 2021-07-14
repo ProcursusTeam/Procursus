@@ -7,8 +7,8 @@ STRAPPROJECTS += pcre
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += pcre
 endif # ($(MEMO_TARGET),darwin-\*)
-PCRE_VERSION  := 8.44
-DEB_PCRE_V    ?= $(PCRE_VERSION)-1
+PCRE_VERSION  := 8.45
+DEB_PCRE_V    ?= $(PCRE_VERSION)
 
 pcre-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftp.pcre.org/pub/pcre/pcre-$(PCRE_VERSION).tar.bz2{,.sig}
