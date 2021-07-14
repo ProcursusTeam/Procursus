@@ -1,4 +1,3 @@
-
 ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
@@ -6,6 +5,10 @@ endif
 SUBPROJECTS    += toybox
 TOYBOX_VERSION := 0.8.5
 DEB_TOYBOX_V   ?= $(TOYBOX_VERSION)
+
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+TOYBOX_DEPS := libxcrypt
+endif
 
 toybox-setup: setup
 	$(call GITHUB_ARCHIVE,landley,toybox,$(TOYBOX_VERSION),$(TOYBOX_VERSION))
@@ -21,8 +24,7 @@ ifneq ($(wildcard $(BUILD_WORK)/toybox/.build_complete),)
 toybox:
 	@echo "Using previously built toybox."
 else
-toybox: toybox-setup openssl libxcrypt
-	$(MAKE) -C $(BUILD_WORK)/toybox menuconfig
+toybox: toybox-setup openssl $(TOYBOX_DEPS)
 	$(MAKE) -C $(BUILD_WORK)/toybox
 	+$(MAKE) -C $(BUILD_WORK)/toybox install \
 		PREFIX=$(BUILD_STAGE)/toybox
