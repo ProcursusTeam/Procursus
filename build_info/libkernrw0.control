@@ -1,0 +1,10 @@
+Package: libkernrw0
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBKERNRW_V@
+Provides: org.coolstar.libkernrw (= @DEB_LIBKERNRW_V@)
+Conflicts: org.coolstar.libkernrw (<< 1.0-1)
+Replaces: org.coolstar.libkernrw (<< 1.0-1)
+Section: Libraries
+Priority: standard
+Description: Kernel R/W API for iOS 14+ (Shared Library)

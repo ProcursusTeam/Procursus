@@ -1,0 +1,7 @@
+Package: xmlto
+Version: @DEB_XMLTO_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: XML
+Priority: optional
+Description: Convert XML to another format (based on XSL or other tools)

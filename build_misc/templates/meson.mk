@@ -24,7 +24,8 @@ DEB_@PKG@_V   ?= $(@PKG@_VERSION)
 	localstatedir='$(MEMO_PREFIX)/var'\n \
 	[binaries]\n \
 	c = '$(CC)'\n \
-	cpp = '$(CXX)'\n" > $(BUILD_WORK)/@pkg@/build/cross.txt
+	cpp = '$(CXX)'\n \
+	pkgconfig = '$(BUILD_TOOLS)/cross-pkg-config'\n" > $(BUILD_WORK)/@pkg@/build/cross.txt
 
 ifneq ($(wildcard $(BUILD_WORK)/@pkg@/.build_complete),)
 @pkg@:
@@ -35,14 +36,14 @@ else
 		--cross-file cross.txt \
 		..
 	+ninja -C $(BUILD_WORK)/@pkg@/build
-	+DESTDIR="$(BUILD_STAGE)/@pkg@" ninja -C $(BUILD_WORK)/@pkg@/build install
+	+ninja -C $(BUILD_WORK)/@pkg@/build install \
+		DESTDIR="$(BUILD_STAGE)/@pkg@"
 	touch $(BUILD_WORK)/@pkg@/.build_complete
 endif
 
 @pkg@-package: @pkg@-stage
 	# @pkg@.mk Package Structure
 	rm -rf $(BUILD_DIST)/@pkg@
-	mkdir -p $(BUILD_DIST)/@pkg@
 	
 	# @pkg@.mk Prep @pkg@
 	cp -a $(BUILD_STAGE)/@pkg@ $(BUILD_DIST)
@@ -57,4 +58,3 @@ endif
 	rm -rf $(BUILD_DIST)/@pkg@
 
 .PHONY: @pkg@ @pkg@-package
-

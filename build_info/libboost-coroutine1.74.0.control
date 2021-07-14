@@ -1,8 +1,0 @@
-Package: libboost-coroutine1.74.0
-Version: @DEB_LIBBOOST_V@
-Architecture: @DEB_ARCH@
-Maintainer: @DEB_MAINTAINER@
-Depends: libboost-context1.74.0 (= @DEB_LIBBOOST_V@), libboost-thread1.74.0 (= @DEB_LIBBOOST_V@), libboost-chrono1.74.0 (= @DEB_LIBBOOST_V@)
-Section: Libraries
-Priority: optional
-Description: provides a sort of cooperative multitasking on a single thread
