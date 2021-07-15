@@ -1,0 +1,11 @@
+Package: fido2-tools
+Version: @DEB_LIBFIDO2_V@
+Priority: optional
+Section: Utilities
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libfido2-1 (= @DEB_LIBFIDO2_V@)  libcbor (>= 0.5.0) libssl1.1 (>= 1.1.1) libudev1 (>= 183)
+Homepage: https://developers.yubico.com/libfido2/
+Description: command-line tools to configure and use a FIDO 2 token
+ A set of tools to manage a FIDO 2 token, generate credentials and
+ assertions, and verify them.
