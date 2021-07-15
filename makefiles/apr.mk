@@ -17,7 +17,7 @@ else
 apr: apr-setup
 	cd $(BUILD_WORK)/apr && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--includedir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/apr-1.0 \
+		--includedir=$(MEMO_INCDIR)/apr-1.0 \
 		--with-installbuilddir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/apr-1.0/build \
 		ac_cv_file__dev_zero=yes \
 		ac_cv_func_setpgrp_void=yes \
@@ -39,14 +39,14 @@ endif
 apr-package: apr-stage
 	# apr.mk Package Structure
 	rm -rf $(BUILD_DIST)/libapr1{,-dev}
-	mkdir -p $(BUILD_DIST)/libapr1{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libapr1{,-dev}/$(MEMO_LIBDIR)
 
 	# apr.mk Prep libapr1
-	cp -a $(BUILD_STAGE)/apr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libapr-1.0.dylib $(BUILD_DIST)/libapr1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/apr/$(MEMO_LIBDIR)/libapr-1.0.dylib $(BUILD_DIST)/libapr1/$(MEMO_LIBDIR)
 
 	# apr.mk Prep libapr1-dev
 	cp -a $(BUILD_STAGE)/apr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include,share} $(BUILD_DIST)/libapr1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/apr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libapr-1.0.dylib) $(BUILD_DIST)/libapr1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/apr/$(MEMO_LIBDIR)/!(libapr-1.0.dylib) $(BUILD_DIST)/libapr1-dev/$(MEMO_LIBDIR)
 
 	# apr.mk Sign
 	$(call SIGN,libapr1,general.xml)

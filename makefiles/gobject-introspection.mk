@@ -16,6 +16,8 @@ gobject-introspection-setup: setup
 
 	echo -e "[paths]\n \
 	prefix ='$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
+	libdir ='$(MEMO_LIBDIR)'\n \
+	includedir ='$(MEMO_INCDIR)'\n \
 	[binaries]\n \
 	pkgconfig = '$(shell which pkg-config)'\n" > $(BUILD_WORK)/gobject-introspection/build/cross.txt
 

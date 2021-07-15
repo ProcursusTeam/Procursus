@@ -20,6 +20,8 @@ dav1d-setup: setup
 	root = '$(BUILD_BASE)'\n \
 	[paths]\n \
 	prefix ='$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
+	libdir ='$(MEMO_LIBDIR)'\n \
+	includedir ='$(MEMO_INCDIR)'\n \
 	[binaries]\n \
 	c = '$(CC)'\n \
 	cpp = '$(CXX)'\n \
@@ -45,16 +47,16 @@ dav1d-package: dav1d-stage
 	rm -rf $(BUILD_DIST)/dav1d \
 		$(BUILD_DIST)/libdav1d{-dev,5}
 	mkdir -p $(BUILD_DIST)/dav1d/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/ \
-		$(BUILD_DIST)/libdav1d{5,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+		$(BUILD_DIST)/libdav1d{5,-dev}/$(MEMO_LIBDIR)
 
 	# dav1d.mk Prep dav1d
 	cp -a $(BUILD_STAGE)/dav1d/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/dav1d/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# dav1d.mk Prep libdav1d5
-	cp -a $(BUILD_STAGE)/dav1d/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdav1d.5.dylib $(BUILD_DIST)/libdav1d5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/dav1d/$(MEMO_LIBDIR)/libdav1d.5.dylib $(BUILD_DIST)/libdav1d5/$(MEMO_LIBDIR)
 
 	# dav1d.mk Prep libdav1d-dev
-	cp -a $(BUILD_STAGE)/dav1d/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libdav1d.5.dylib) $(BUILD_DIST)/libdav1d-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/dav1d/$(MEMO_LIBDIR)/!(libdav1d.5.dylib) $(BUILD_DIST)/libdav1d-dev/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/dav1d/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libdav1d-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# dav1d.mk Sign

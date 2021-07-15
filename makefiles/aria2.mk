@@ -39,16 +39,16 @@ aria2-package: aria2-stage
 	rm -rf $(BUILD_DIST)/aria2 \
 		$(BUILD_DIST)/libaria2-0{,-dev}
 	mkdir -p $(BUILD_DIST)/aria2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		$(BUILD_DIST)/libaria2-0{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+		$(BUILD_DIST)/libaria2-0{,-dev}/$(MEMO_LIBDIR)
 
 	# aria2.mk Prep aria2
 	cp -a $(BUILD_STAGE)/aria2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/aria2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# aria2.mk Prep libaria2-0
-	cp -a $(BUILD_STAGE)/aria2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libaria2.0.dylib $(BUILD_DIST)/libaria2-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/aria2/$(MEMO_LIBDIR)/libaria2.0.dylib $(BUILD_DIST)/libaria2-0/$(MEMO_LIBDIR)
 
 	# aria2.mk Prep libaria2-0-dev
-	cp -a $(BUILD_STAGE)/aria2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libaria2.dylib,pkgconfig} $(BUILD_DIST)/libaria2-0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/aria2/$(MEMO_LIBDIR)/{libaria2.dylib,pkgconfig} $(BUILD_DIST)/libaria2-0-dev/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/aria2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libaria2-0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# aria2.mk Sign

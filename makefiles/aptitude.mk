@@ -24,13 +24,13 @@ aptitude: aptitude-setup ncurses libboost xapian cwidget apt googletest
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-qt \
 		--disable-gtk \
-		--with-boost-libdir="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
+		--with-boost-libdir="$(BUILD_BASE)$(MEMO_LIBDIR)" \
 		--disable-boost-lib-checks \
 		--disable-tests \
 		--program-transform='s&aptitude$$&aptitude-curses&' \
 		XAPIAN_CONFIG="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/xapian-config" \
-		SIGC_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sigc++-2.0 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/sigc++-2.0/include" \
-		CWIDGET_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/cwidget -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/cwidget -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sigc++-2.0 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/sigc++-2.0/include" \
+		SIGC_CFLAGS="-I$(BUILD_BASE)$(MEMO_INCDIR)/sigc++-2.0 -I$(BUILD_BASE)$(MEMO_LIBDIR)/sigc++-2.0/include" \
+		CWIDGET_CFLAGS="-I$(BUILD_BASE)$(MEMO_INCDIR)/cwidget -I$(BUILD_BASE)$(MEMO_LIBDIR)/cwidget -I$(BUILD_BASE)$(MEMO_INCDIR)/sigc++-2.0 -I$(BUILD_BASE)$(MEMO_LIBDIR)/sigc++-2.0/include" \
 		SQLITE3_CFLAGS="-I$(TARGET_SYSROOT)/usr/include" \
 		SQLITE3_LIBS="-L$(TARGET_SYSROOT)/usr/lib -lsqlite3" \
 		CXXFLAGS="-std=gnu++17 $(CXXFLAGS) -D_XOPEN_SOURCE_EXTENDED" \

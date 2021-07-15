@@ -1,7 +1,7 @@
 prefix=
 exec_prefix=${prefix}
-libdir=${exec_prefix}/lib/
-includedir=${prefix}/include
+libdir=@MEMO_LIBDIR@
+includedir=@MEMO_INCDIR@
  
 Name: duktape
 Description: Embeddable Javascript engine

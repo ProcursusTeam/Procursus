@@ -33,16 +33,16 @@ expat-package: expat-stage
 	# expat.mk Package Structure
 	rm -rf $(BUILD_DIST)/{expat,libexpat1{,-dev}}
 	mkdir -p $(BUILD_DIST)/expat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
-		$(BUILD_DIST)/libexpat1{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+		$(BUILD_DIST)/libexpat1{,-dev}/$(MEMO_LIBDIR)
 
 	# expat.mk Prep expat
 	cp -a $(BUILD_STAGE)/expat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/xmlwf $(BUILD_DIST)/expat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 	# expat.mk Prep libexpat1
-	cp -a $(BUILD_STAGE)/expat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libexpat.1*.dylib $(BUILD_DIST)/libexpat1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/expat/$(MEMO_LIBDIR)/libexpat.1*.dylib $(BUILD_DIST)/libexpat1/$(MEMO_LIBDIR)
 
 	# expat.mk Prep libexpat1-dev
-	cp -a $(BUILD_STAGE)/expat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libexpat.{a,dylib},pkgconfig} $(BUILD_DIST)/libexpat1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/expat/$(MEMO_LIBDIR)/{libexpat.{a,dylib},pkgconfig} $(BUILD_DIST)/libexpat1-dev/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/expat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libexpat1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
 
 	# expat.mk Sign

@@ -34,16 +34,16 @@ aom-package: aom-stage
 	# aom.mk Package Structure
 	rm -rf $(BUILD_DIST)/aom-tools $(BUILD_DIST)/libaom{3,-dev}
 	mkdir -p $(BUILD_DIST)/aom-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/ \
-		$(BUILD_DIST)/libaom{3,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+		$(BUILD_DIST)/libaom{3,-dev}/$(MEMO_LIBDIR)
 
 	# aom.mk Prep aom-tools
 	cp -a $(BUILD_STAGE)/aom/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/aom-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# aom.mk Prep libaom3
-	cp -a $(BUILD_STAGE)/aom/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libaom.3*.dylib $(BUILD_DIST)/libaom3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/aom/$(MEMO_LIBDIR)/libaom.3*.dylib $(BUILD_DIST)/libaom3/$(MEMO_LIBDIR)
 
 	# aom.mk Prep libaom-pkg-dev
-	cp -a $(BUILD_STAGE)/aom/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libaom.3*.dylib) $(BUILD_DIST)/libaom-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/aom/$(MEMO_LIBDIR)/!(libaom.3*.dylib) $(BUILD_DIST)/libaom-dev/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/aom/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libaom-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# aom.mk Sign

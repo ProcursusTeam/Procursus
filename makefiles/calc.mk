@@ -25,13 +25,13 @@ calc: calc-setup ncurses readline
 		LDFLAGS="$(LDFLAGS)" \
 		target="Darwin" \
 		BINDIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin" \
-		LIBDIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
-		INCDIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
+		LIBDIR="$(MEMO_LIBDIR)" \
+		INCDIR="$(MEMO_INCDIR)" \
 		CALC_SHAREDIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/calc" \
 		CALCPAGER="pager" \
 		USE_READLINE="-DUSE_READLINE" \
 		READLINE_LIB="-lreadline" \
-		READLINE_EXTRAS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -lncursesw" \
+		READLINE_EXTRAS="-L$(BUILD_BASE)$(MEMO_LIBDIR) -lncursesw" \
 		BLD_TYPE="calc-static-only" \
 		T="$(BUILD_STAGE)/calc" \
 		-j1
@@ -42,14 +42,14 @@ endif
 calc-package: calc-stage
 	# calc.mk Package Structure
 	rm -rf $(BUILD_DIST)/calc{,-dev}
-	mkdir -p $(BUILD_DIST)/calc{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/calc{,-dev}/$(MEMO_LIBDIR)
 
 	# calc.mk Prep calc
 	cp -a $(BUILD_STAGE)/calc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/calc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# calc.mk Prep calc-dev
 	cp -a $(BUILD_STAGE)/calc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/calc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/calc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/*.a $(BUILD_DIST)/calc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/calc/$(MEMO_LIBDIR)/*.a $(BUILD_DIST)/calc-dev/$(MEMO_LIBDIR)
 
 	# calc.mk Sign
 	$(call SIGN,calc,general.xml)

@@ -20,6 +20,8 @@ rubberband-setup: setup
 	root = '$(BUILD_BASE)'\n \
 	[paths]\n \
 	prefix ='$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
+	libdir ='$(MEMO_LIBDIR)'\n \
+	includedir ='$(MEMO_INCDIR)'\n \
 	[binaries]\n \
 	c = '$(CC)'\n \
 	cpp = '$(CXX)'\n \

@@ -18,7 +18,7 @@ asciidoctor: asciidoctor-setup
 			--ignore-dependencies \
 			--no-user-install \
 			--verbose \
-			-i $(BUILD_STAGE)/asciidoctor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ruby/gems/3.0.0 \
+			-i $(BUILD_STAGE)/asciidoctor/$(MEMO_ALL_LIBDIR)/ruby/gems/3.0.0 \
 			-n $(BUILD_STAGE)/asciidoctor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
 			--local \
 			$(BUILD_SOURCE)/gems/asciidoctor-$(ASCIIDOCTOR_VERSION).gem
@@ -31,9 +31,9 @@ asciidoctor-package: asciidoctor-stage
 
 	# asciidoctor.mk Prep asciidoctor
 	cp -a $(BUILD_STAGE)/asciidoctor $(BUILD_DIST)
-	mkdir -p $(BUILD_DIST)/asciidoctor-doc/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/ruby/gems/3.0.0/
-	mv $(BUILD_DIST)/asciidoctor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ruby/gems/3.0.0/doc \
-			$(BUILD_DIST)/asciidoctor-doc/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/ruby/gems/3.0.0/doc
+	mkdir -p $(BUILD_DIST)/asciidoctor-doc/$(MEMO_ALL_LIBDIR)/ruby/gems/3.0.0/
+	mv $(BUILD_DIST)/asciidoctor/$(MEMO_ALL_LIBDIR)/ruby/gems/3.0.0/doc \
+		$(BUILD_DIST)/asciidoctor-doc/$(MEMO_ALL_LIBDIR)/ruby/gems/3.0.0/doc
 
 	# asciidoctor.mk Make .debs
 	$(call PACK,asciidoctor,DEB_ASCIIDOCTOR_V)

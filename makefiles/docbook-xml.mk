@@ -20,11 +20,11 @@ docbook-xml:
 	@echo "Using previously built docbook-xml."
 else
 docbook-xml: docbook-xml-setup
-	for ver in 4.2 4.3 4.4 $(DOCBOOK-XML_VERSION); do                                                                          \
-		cd $(BUILD_WORK)/docbook-xml/$${ver} &&                                                                                 \
+	for ver in 4.2 4.3 4.4 $(DOCBOOK-XML_VERSION); do \
+		cd $(BUILD_WORK)/docbook-xml/$${ver} && \
 		install -v -d -m755 $(BUILD_STAGE)/docbook-xml/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/xml/docbook/schema/dtd/$${ver} && \
-		cp -v -af docbook.cat *.dtd ent/ *.mod catalog.xml                                                                                \
-			$(BUILD_STAGE)/docbook-xml/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/xml/docbook/schema/dtd/$${ver};                   \
+		cp -v -af docbook.cat *.dtd ent/ *.mod catalog.xml \
+			$(BUILD_STAGE)/docbook-xml/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/xml/docbook/schema/dtd/$${ver}; \
 	done
 	install -v -d -m755 $(BUILD_STAGE)/docbook-xml/$(MEMO_PREFIX)/etc/xml
 	touch $(BUILD_WORK)/docbook-xml/.build_complete

@@ -26,6 +26,8 @@ mesa-setup: setup
 	prefix ='$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
 	sysconfdir='$(MEMO_PREFIX)/etc'\n \
 	localstatedir='$(MEMO_PREFIX)/var'\n \
+	libdir ='$(MEMO_LIBDIR)'\n \
+	includedir ='$(MEMO_INCDIR)'\n \
 	[binaries]\n \
 	c = '$(CC)'\n \
 	cpp = '$(CXX)'\n \

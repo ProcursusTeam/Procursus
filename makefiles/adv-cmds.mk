@@ -24,7 +24,7 @@ else
 adv-cmds: adv-cmds-setup ncurses
 	cd $(BUILD_WORK)/adv-cmds; \
 	$(CXX) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/locale locale/*.cc; \
-	$(CC) $(CFLAGS) -L $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/tabs tabs/*.c -lncursesw; \
+	$(CC) $(CFLAGS) -L $(BUILD_BASE)$(MEMO_LIBDIR) -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/tabs tabs/*.c -lncursesw; \
 	for bin in finger last lsvfs cap_mkdb; do \
 		$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -D'__FBSDID(x)='; \
 	done

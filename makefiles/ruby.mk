@@ -48,7 +48,7 @@ endif
 			--program-suffix=$(RUBY_VERSION) \
 			--with-soname=ruby-$(RUBY_VERSION) \
 			--with-sitedir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/ruby/site_ruby \
-			--with-vendordir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ruby/vendor_ruby \
+			--with-vendordir=$(MEMO_ALL_LIBDIR)/ruby/vendor_ruby \
 			--runstatedir=$(MEMO_PREFIX)/var/run \
 			--disable-dtrace \
 			--enable-ipv6 \
@@ -57,7 +57,7 @@ endif
 	+$(MAKE) -C $(BUILD_WORK)/ruby
 	+$(MAKE) -C $(BUILD_WORK)/ruby install \
 		DESTDIR="$(BUILD_STAGE)/ruby"
-	$(SED) -i 's/.*DLDFLAGS=.*/DLDFLAGS=/' $(BUILD_STAGE)/ruby/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/ruby-$(RUBY_VERSION).pc
+	$(SED) -i 's/.*DLDFLAGS=.*/DLDFLAGS=/' $(BUILD_STAGE)/ruby/$(MEMO_LIBDIR)/pkgconfig/ruby-$(RUBY_VERSION).pc
 	touch $(BUILD_WORK)/ruby/.build_complete
 endif
 
@@ -65,8 +65,8 @@ ruby-package: ruby-stage
 	# ruby.mk Package Structure
 	rm -rf $(BUILD_DIST)/ruby$(RUBY_VERSION){,-dev,-doc} $(BUILD_DIST)/libruby$(RUBY_VERSION) $(BUILD_DIST)/ruby
 	mkdir -p $(BUILD_DIST)/ruby$(RUBY_VERSION){,-doc}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share \
-		$(BUILD_DIST)/ruby$(RUBY_VERSION)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libruby$(RUBY_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/ruby$(RUBY_VERSION)-dev/$(MEMO_LIBDIR) \
+		$(BUILD_DIST)/libruby$(RUBY_VERSION)/$(MEMO_LIBDIR) \
 		$(BUILD_DIST)/ruby/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 
 	# ruby.mk Prep ruby$(RUBY_VERSION)
@@ -75,13 +75,13 @@ ruby-package: ruby-stage
 
 	# ruby.mk Prep ruby$(RUBY_VERSION)-dev
 	cp -a $(BUILD_STAGE)/ruby/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/ruby$(RUBY_VERSION)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/ruby/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/ruby$(RUBY_VERSION)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/ruby/$(MEMO_LIBDIR)/pkgconfig $(BUILD_DIST)/ruby$(RUBY_VERSION)-dev/$(MEMO_LIBDIR)
 
 	# ruby.mk Prep ruby$(RUBY_VERSION)-doc
 	cp -a $(BUILD_STAGE)/ruby/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/ri $(BUILD_DIST)/ruby$(RUBY_VERSION)-doc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
 	# ruby.mk Prep libruby$(RUBY_VERSION)
-	cp -a $(BUILD_STAGE)/ruby/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libruby-$(RUBY_VERSION).dylib,ruby} $(BUILD_DIST)/libruby$(RUBY_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/ruby/$(MEMO_LIBDIR)/{libruby-$(RUBY_VERSION).dylib,ruby} $(BUILD_DIST)/libruby$(RUBY_VERSION)/$(MEMO_LIBDIR)
 
 	# ruby.mk Prep ruby
 	for bin in erb irb rdoc ri ruby; do \

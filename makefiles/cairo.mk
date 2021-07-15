@@ -27,7 +27,7 @@ cairo: cairo-setup freetype gettext fontconfig glib2.0 libpng16 liblzo2 libpixma
 		--enable-xlib \
 		--enable-gobject
 	+$(MAKE) -C $(BUILD_WORK)/cairo \
-		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/glib-2.0/include"
+		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)$(MEMO_LIBDIR)/glib-2.0/include"
 	+$(MAKE) -C $(BUILD_WORK)/cairo install \
 		DESTDIR=$(BUILD_STAGE)/cairo
 	+$(MAKE) -C $(BUILD_WORK)/cairo install \
@@ -38,21 +38,21 @@ endif
 cairo-package: cairo-stage
 	# cairo.mk Package Structure
 	rm -rf $(BUILD_DIST)/libcairo2{,-dev} $(BUILD_DIST)/libcairo{-gobject,-script-interpreter}2 #$(BUILD_DIST)/cairo-perf-utils
-	mkdir -p $(BUILD_DIST)/libcairo2{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libcairo{-gobject,-script-interpreter}2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib #\
+	mkdir -p $(BUILD_DIST)/libcairo2{,-dev}/$(MEMO_LIBDIR) \
+		$(BUILD_DIST)/libcairo{-gobject,-script-interpreter}2/$(MEMO_LIBDIR) #\
 		#$(BUILD_DIST)/cairo-perf-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 	# cairo.mk Prep libcairo2
-	cp -a $(BUILD_STAGE)/cairo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcairo.2.dylib $(BUILD_DIST)/libcairo2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/cairo/$(MEMO_LIBDIR)/libcairo.2.dylib $(BUILD_DIST)/libcairo2/$(MEMO_LIBDIR)
 
 	# cairo.mk Prep libcairo-gobject2
-	cp -a $(BUILD_STAGE)/cairo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcairo-gobject.2.dylib $(BUILD_DIST)/libcairo-gobject2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/cairo/$(MEMO_LIBDIR)/libcairo-gobject.2.dylib $(BUILD_DIST)/libcairo-gobject2/$(MEMO_LIBDIR)
 
 	# cairo.mk Prep libcairo-script-interpreter2
-	cp -a $(BUILD_STAGE)/cairo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcairo-script-interpreter.2.dylib $(BUILD_DIST)/libcairo-script-interpreter2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/cairo/$(MEMO_LIBDIR)/libcairo-script-interpreter.2.dylib $(BUILD_DIST)/libcairo-script-interpreter2/$(MEMO_LIBDIR)
 
 	# cairo.mk Prep libcairo2-dev
-	cp -a $(BUILD_STAGE)/cairo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(cairo|*.2.dylib) $(BUILD_DIST)/libcairo2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/cairo/$(MEMO_LIBDIR)/!(cairo|*.2.dylib) $(BUILD_DIST)/libcairo2-dev/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/cairo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libcairo2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# cairo.mk Prep cairo-perf-utils

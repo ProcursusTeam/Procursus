@@ -36,20 +36,20 @@ cmark-package: cmark-stage
 	rm -rf $(BUILD_DIST)/cmark \
 		$(BUILD_DIST)/libcmark{$(CMARK_VERSION),-dev}
 	mkdir -p $(BUILD_DIST)/{cmark,libcmark-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
-		$(BUILD_DIST)/libcmark{$(CMARK_VERSION),-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+		$(BUILD_DIST)/libcmark{$(CMARK_VERSION),-dev}/$(MEMO_LIBDIR)
 
 	# cmark.mk Prep cmark
 	cp -a $(BUILD_STAGE)/cmark/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/cmark/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/cmark/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/cmark/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
 	# cmark.mk Prep libcmark$(CMARK_VERSION)
-	cp -a $(BUILD_STAGE)/cmark/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcmark.$(CMARK_VERSION).dylib $(BUILD_DIST)/libcmark$(CMARK_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/cmark/$(MEMO_LIBDIR)/libcmark.$(CMARK_VERSION).dylib $(BUILD_DIST)/libcmark$(CMARK_VERSION)/$(MEMO_LIBDIR)
 
 	# cmark.mk Prep libcmark-dev
 	cp -a $(BUILD_STAGE)/cmark/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libcmark-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/cmark/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcmark.{dylib,a} $(BUILD_DIST)/libcmark-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/cmark/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libcmark-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/cmark/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/cmake $(BUILD_DIST)/libcmark-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/cmark/$(MEMO_LIBDIR)/libcmark.{dylib,a} $(BUILD_DIST)/libcmark-dev/$(MEMO_LIBDIR)
+	cp -a $(BUILD_STAGE)/cmark/$(MEMO_LIBDIR)/pkgconfig $(BUILD_DIST)/libcmark-dev/$(MEMO_LIBDIR)
+	cp -a $(BUILD_STAGE)/cmark/$(MEMO_LIBDIR)/cmake $(BUILD_DIST)/libcmark-dev/$(MEMO_LIBDIR)
 	cp -a $(BUILD_STAGE)/cmark/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libcmark-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
 	# cmark.mk Sign
