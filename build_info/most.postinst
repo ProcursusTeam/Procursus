@@ -1,0 +1,21 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+  configure)
+    update-alternatives --quiet --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/pager pager \
+      @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/most 60 --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/pager.1.zst \
+      pager.1.zst @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/most.1.zst
+  ;;
+  abort-upgrade|abort-remove|abort-deconfigure)
+  ;;
+  *)
+    echo "postinst called with unknown argument \`$1'" >&2
+    exit 0
+  ;;
+esac
+
+
+
+exit 0
