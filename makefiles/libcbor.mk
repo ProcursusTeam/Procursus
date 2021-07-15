@@ -31,7 +31,7 @@ libcbor-package: libcbor-stage
 	# libcbor.mk Package Structure
 	rm -rf $(BUILD_DIST)/libcbor{0,-dev}
 	mkdir -p $(BUILD_DIST)/libcbor0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-			$(BUILD_DIST)/libcbor-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include/cbor,lib/pkgconfig}
+			 $(BUILD_DIST)/libcbor-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include/cbor,lib/pkgconfig}
 	# libcbor.mk Prep libcbor0
 	cp -a $(BUILD_STAGE)/libcbor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcbor{.dylib,.0.8.dylib,.0.8.0.dylib} $(BUILD_DIST)/libcbor0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
