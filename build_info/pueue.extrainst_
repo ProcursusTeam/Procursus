@@ -1,0 +1,25 @@
+#!/bin/sh
+# Loads/reloads pueue LaunchDaemon
+
+set -e
+
+case "$1" in
+	# Load pueue LaunchDaemon when installing
+	(install)
+	echo "Starting pueued..."
+	@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/com.nukesor.pueued.plist
+	echo "pueued has started!"
+	;;
+	# Unload, then reload when upgrading
+	(upgrade)
+	echo "Restarting pueued..."
+	@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/com.nukesor.pueued.plist
+	@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/com.nukesor.pueued.plist
+	echo "Restarted pueued."
+	;;
+	(*)
+	exit 0
+	;;
+esac
+
+exit 0
