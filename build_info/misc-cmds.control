@@ -1,0 +1,8 @@
+Package: misc-cmds
+Section: Utilities
+Version: @DEB_MISC-CMDS_V@
+Architecture: @DEB_ARCH@
+Depends: libncursesw6, libiosexec1
+Maintainer: @DEB_MAINTAINER@
+Priority: optional
+Description: calendar, leave, ncal, units
