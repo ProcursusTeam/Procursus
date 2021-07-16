@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libcdio/.build_complete),)
 libcdio:
 	@echo "Using previously built libcdio."
 else
-libcdio: libcdio-setup ncurses # libcddb
+libcdio: libcdio-setup ncurses libcddb
 	cd $(BUILD_WORK)/libcdio && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-static \
