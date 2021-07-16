@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += libsigsegv
+SUBPROJECTS        += libsigsegv
 LIBSIGSEGV_VERSION := 2.13
 DEB_LIBSIGSEGV_V   ?= $(LIBSIGSEGV_VERSION)
 
