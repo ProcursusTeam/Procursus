@@ -16,9 +16,7 @@ libcdio:
 else
 libcdio: libcdio-setup ncurses libcddb
 	cd $(BUILD_WORK)/libcdio && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS) \
-		--enable-static \
-		--enable-shared
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libcdio
 	+$(MAKE) -C $(BUILD_WORK)/libcdio install \
 		DESTDIR=$(BUILD_STAGE)/libcdio
@@ -29,42 +27,67 @@ endif
 
 libcdio-package: libcdio-stage
 	# libcdio.mk Package Structure
-	rm -rf $(BUILD_DIST)/libcdio{19,-dev}
-	mkdir -p $(BUILD_DIST)/libcdio{19,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include/cdio}
+	rm -rf $(BUILD_DIST)/libcdio{19,-dev,++1,++-dev,-utils}
+	rm -rf $(BUILD_DIST)/libiso9660{-11,-dev,++0,++-dev}
+	rm -rf $(BUILD_DIST)/libudf{0,-dev}
+	mkdir -p $(BUILD_DIST)/lib{cdio{19,-dev,++1,++-dev},iso9660{-11,-dev,++0,++-dev},udf{0,-dev}}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUULD_DIST)/lib{cdio,iso9660,udf}-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/cdio
+	mkdir -p $(BUULD_DIST)/lib{cdio,iso9660}++-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/cdio++
+	mkdir -p $(BUILD_DIST)/libcdio-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libcdio.mk Prep libcdio19
 	cp -a $(BUILD_STAGE)/libcdio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcdio.19.dylib $(BUILD_DIST)/libcdio19/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libcdio.mk Prep libcdio-dev
 	cp -a $(BUILD_STAGE)/libcdio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/cdio/{audio,bytesex,bytesex_asm,cd_types,cdio,cdio_config,cdtext,device,disc,ds,dvd,logging,memory,mmc,mmc_cmds,mmc,l_cmds,mmc_ll_cmds,mmc_util,posix,read,sector,track,types,utf8,util,version}.h $(BUILD_DIST)/libcdio-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/cdio
-	cp -a $(BUILD_STAGE)/libcdio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libcdio.{dylib,a}} $(BUILD_DIST)/libcdio-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libcdio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig/libcdio.pc,libcdio.{dylib,a}} $(BUILD_DIST)/libcdio-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libcdio.mk Prep libcdio++1
-	
+	cp -a $(BUILD_STAGE)/libcdio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcdio++.1.dylib $(BUILD_DIST)/libcdio++1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# libcdio.mk Prep libcdio++-dev
 	
 	# libcdio.mk Prep libcdio-utils
 	
 	# libcdio.mk Prep libiso9660-11
+	cp -a $(BUILD_STAGE)/libcdio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiso9660.11.dylib $(BUILD_DIST)/libiso9660-11/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libcdio.mk Prep libiso9660-dev
 	
 	# libcdio.mk Prep libiso9660++0
+	cp -a $(BUILD_STAGE)/libcdio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiso9660++.0.dylib $(BUILD_DIST)/libiso9660++0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libcdio.mk Prep libiso9660++-dev
 	
 	# libcdio.mk Prep libudf0
+	cp -a $(BUILD_STAGE)/libcdio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libudf.0.dylib $(BUILD_DIST)/libudf0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libcdio.mk Prep libudf-dev
 	
 	# libcdio.mk Sign
 	$(call SIGN,libcdio19,general.xml)
+	$(call SIGN,libcdio++1,general.xml)
+	$(call SIGN,libiso9660-11,general.xml)
+	$(call SIGN,libiso9660++0,general.xml)
+	$(call SIGN,libudf0,general.xml)
+	$(call SIGN,libcdio-utils,dd.xml)
 	
 	# libcdio.mk Make .debs
 	$(call PACK,libcdio19,DEB_LIBCDIO_V)
 	$(call PACK,libcdio-dev,DEB_LIBCDIO_V)
+	$(call PACK,libcdio++1,DEB_LIBCDIO_V)
+	$(call PACK,libcdio++-dev,DEB_LIBCDIO_V)
+	$(call PACK,libcdio-utils,DEB_LIBCDIO_V)
+	$(call PACK,libiso9660-11,DEB_LIBCDIO_V)
+	$(call PACK,libiso9660-dev,DEB_LIBCDIO_V)
+	$(call PACK,libiso9660++0,DEB_LIBCDIO_V)
+	$(call PACK,libiso9660++-dev,DEB_LIBCDIO_V)
+	$(call PACK,libudf0,DEB_LIBCDIO_V)
+	$(call PACK,libudf-dev,DEB_LIBCDIO_V)
 	
 	# libcdio.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libcdio{19,-dev}
+	rm -rf $(BUILD_DIST)/libcdio{19,-dev,++1,++-dev,-utils}
+	rm -rf  $(BUILD_DIST)/libiso9660{-11,-dev,++0,++-dev}
+	rm -rf $(BUILD_DIST)/libudf{0,-dev}
 
 .PHONY: libcdio libcdio-package
