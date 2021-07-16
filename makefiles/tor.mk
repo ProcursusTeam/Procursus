@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += tor
-TOR_VERSION  := 0.4.5.8
+TOR_VERSION  := 0.4.6.6
 DEB_TOR_V    ?= $(TOR_VERSION)
 
 tor-setup: setup
