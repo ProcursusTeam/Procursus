@@ -34,11 +34,11 @@ libsigsegv-package: libsigsegv-stage
 	mkdir -p $(BUILD_DIST)/libsigsegv{2,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libsigsegv.mk Prep libsigsegv2
-	cp -a $(BUILD_STAGE)/libsigsegv/$(MEMO_PREIFX)$(MEMO_SUB_PREFIX)/lib/libsigsegv.2.dylib $(BUILD_DIST)/libsigsegv2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libsigsegv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsigsegv.2.dylib $(BUILD_DIST)/libsigsegv2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libsigsegv.mk Prep libsigsegv-dev
 	cp -a $(BUILD_STAGE)/libsigsegv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libsigsegv-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libsigsegv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libsigsegv.{dylib,a}} $(BUILD_DIST)/libsigsegv-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libsigsegv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsigsegv.{dylib,a} $(BUILD_DIST)/libsigsegv-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libsigsegv.mk Sign
 	$(call SIGN,libsigsegv2,general.xml)
