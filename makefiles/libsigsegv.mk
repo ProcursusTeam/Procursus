@@ -17,9 +17,7 @@ libsigsegv:
 else
 libsigsegv: libsigsegv-setup
 	cd $(BUILD_WORK)/libsigsegv && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS) \
-		--enable-static \
-		--enable-shared
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libsigsegv
 	+$(MAKE) -C $(BUILD_WORK)/libsigsegv install \
 		DESTDIR=$(BUILD_STAGE)/libsigsegv
