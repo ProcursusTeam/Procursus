@@ -1,4 +1,4 @@
-Package: libpcre2-posix2
+Package: libpcre2-posix3
 Version: @DEB_PCRE2_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
