@@ -4,7 +4,7 @@ Maintainer: @DEB_MAINTAINER@
 Version: @DEB_LIBCDIO_V@
 Section: Utilities
 Priority: optional
-Depends: libcdio19 (>= @DEB_LIBCDIO_V@), libiso9660-11 (>= 2.0.0), libncursesw6 (>= 6), libtlinfo6 (>= 6), libudf0 (>= 0.78.2)
+Depends: libcdio19 (>= @DEB_LIBCDIO_V@), libiso9660-11 (>= 2.0.0), libncursesw6 (>= 6), libtinfo6 (>= 6), libudf0 (>= 0.78.2)
 Description: sample applications based on the CDIO libraries
  This package contains a collection of small libcdio-based tools:
  .
