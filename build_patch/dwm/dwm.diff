@@ -1,0 +1,66 @@
+diff -urN a/config.def.h b/config.def.h
+--- a/config.def.h	2019-02-02 20:55:28.000000000 +0800
++++ b/config.def.h	2021-06-26 15:23:29.000000000 +0800
+@@ -57,7 +57,7 @@
+ /* commands */
+ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
+ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+-static const char *termcmd[]  = { "st", NULL };
++static const char *termcmd[]  = { "xterm", "-bg", "black", "-fg", "lightgray", NULL };
+ 
+ static Key keys[] = {
+ 	/* modifier                     key        function        argument */
+diff -urN a/config.mk b/config.mk
+--- a/config.mk	2019-02-02 20:55:28.000000000 +0800
++++ b/config.mk	2021-06-26 15:39:35.000000000 +0800
+@@ -4,11 +4,11 @@
+ # Customize below to fit your system
+ 
+ # paths
+-PREFIX = /usr/local
++PREFIX = ${MEMO_PREFIX}${MEMO_SUB_PREFIX}
+ MANPREFIX = ${PREFIX}/share/man
+ 
+-X11INC = /usr/X11R6/include
+-X11LIB = /usr/X11R6/lib
++X11INC = ${BUILD_BASE}${PREFIX}/include
++X11LIB = ${BUILD_BASE}${PREFIX}/lib
+ 
+ # Xinerama, comment if you don't want it
+ XINERAMALIBS  = -lXinerama
+@@ -16,7 +16,7 @@
+ 
+ # freetype
+ FREETYPELIBS = -lfontconfig -lXft
+-FREETYPEINC = /usr/include/freetype2
++FREETYPEINC = ${BUILD_BASE}${PREFIX}/include/freetype2
+ # OpenBSD (uncomment)
+ #FREETYPEINC = ${X11INC}/freetype2
+ 
+@@ -25,14 +25,11 @@
+ LIBS = -L${X11LIB} -lX11 ${XINERAMALIBS} ${FREETYPELIBS}
+ 
+ # flags
+-CPPFLAGS = -D_DEFAULT_SOURCE -D_BSD_SOURCE -D_POSIX_C_SOURCE=2 -DVERSION=\"${VERSION}\" ${XINERAMAFLAGS}
++CPPFLAGS += -D_DEFAULT_SOURCE -D_BSD_SOURCE -D_POSIX_C_SOURCE=2 -DVERSION=\"${VERSION}\" ${XINERAMAFLAGS}
+ #CFLAGS   = -g -std=c99 -pedantic -Wall -O0 ${INCS} ${CPPFLAGS}
+-CFLAGS   = -std=c99 -pedantic -Wall -Wno-deprecated-declarations -Os ${INCS} ${CPPFLAGS}
+-LDFLAGS  = ${LIBS}
++CFLAGS   += -std=c99 -Wall -Wno-deprecated-declarations ${INCS} ${CPPFLAGS}
++LDFLAGS  += ${LIBS}
+ 
+ # Solaris
+ #CFLAGS = -fast ${INCS} -DVERSION=\"${VERSION}\"
+ #LDFLAGS = ${LIBS}
+-
+-# compiler and linker
+-CC = cc
+diff -urN a/drw.c b/drw.c
+--- a/drw.c	2019-02-02 20:55:28.000000000 +0800
++++ b/drw.c	2021-06-26 15:22:28.000000000 +0800
+@@ -1,4 +1,5 @@
+ /* See LICENSE file for copyright and license details. */
++#include <TargetConditionals.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
