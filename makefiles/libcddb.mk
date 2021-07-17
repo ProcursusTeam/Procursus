@@ -29,24 +29,24 @@ endif
 
 libcddb-package: libcddb-stage
 	# libcddb.mk Package Structure
-	rm -rf $(BUILD_DIST)/libcddb{2,-dev}
-	mkdir -p $(BUILD_DIST)/libcddb{2,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	rm -rf $(BUILD_DIST)/libcddb2{,-dev}
+	mkdir -p $(BUILD_DIST)/libcddb2{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libcddb.mk Prep libcddb2
 	cp -a $(BUILD_STAGE)/libcddb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcddb.2.dylib $(BUILD_DIST)/libcddb2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
-	# libcddb.mk Prep libcddb-dev
-	cp -a $(BUILD_STAGE)/libcddb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libcddb-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libcddb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libcddb.{dylib,a}} $(BUILD_DIST)/libcddb-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	# libcddb.mk Prep libcddb2-dev
+	cp -a $(BUILD_STAGE)/libcddb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libcddb2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libcddb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libcddb.{dylib,a}} $(BUILD_DIST)/libcddb2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libcddb.mk Sign
 	$(call SIGN,libcddb2,general.xml)
 	
 	# libcddb.mk Make .debs
 	$(call PACK,libcddb2,DEB_LIBCDDB_V)
-	$(call PACK,libcddb-dev,DEB_LIBCDDB_V)
+	$(call PACK,libcddb2-dev,DEB_LIBCDDB_V)
 	
 	# libcddb.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libcddb{2,-dev}
+	rm -rf $(BUILD_DIST)/libcddb2{,-dev}
 
 .PHONY: libcddb libcddb-package

@@ -1,8 +1,9 @@
-Package: libcddb-dev
+Package: libcddb2-dev
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Version: @DEB_LIBCDDB_V@
 Depends: libcddb2 (= @DEB_LIBCDDB_V@)
+Provides: libcddb-dev
 Section: Development
 Priority: optional
 Description: development files for libcddb

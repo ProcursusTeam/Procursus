@@ -1,0 +1,9 @@
+Package: libiso9660++0
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_LIBCDIO_V@
+Section: Libraries
+Priority: optional
+Depends: libiso9660-11 (>= 2.0.0), libcdio19 (>= @DEB_LIBCDIO_V@)
+Description: C++ library to work with ISO9660 filesystems
+ This C++ library is made to read and write ISO9660 filesystems; those filesystems are mainly used on CDROMs.

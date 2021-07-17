@@ -1,0 +1,20 @@
+Package: libcdio-utils
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_LIBCDIO_V@
+Section: Utilities
+Priority: optional
+Depends: libcdio19 (>= @DEB_LIBCDIO_V@), libiso9660-11 (>= 2.0.0), libncursesw6 (>= 6), libtlinfo6 (>= 6), libudf0 (>= 0.78.2)
+Description: sample applications based on the CDIO libraries
+ This package contains a collection of small libcdio-based tools:
+ .
+ ```
+ * cd-drive      show CD-ROM drive characteristics 
+ * cd-info       show information about a CD or CD-image 
+ * cd-paranoia   an audio CD ripper
+ * cd-read       read information from a CD or CD-image 
+ * cdda-player   a simple curses-based audio CD player 
+ * iso-info      show information about an ISO 9660 image 
+ * iso-read      read portions of an ISO 9660 image
+ * mmc-tool      issue low-level commands to a CD drive
+ ```
