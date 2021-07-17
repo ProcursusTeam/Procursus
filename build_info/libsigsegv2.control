@@ -1,0 +1,10 @@
+Package: libsigsegv2
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_LIBSIGSEGV_V@
+Section: Libraries
+Priority: optional
+Description: Library for handling page faults in a portable way
+ GNU libsigsegv is a library that allows handling page faults in a portable way. It is used e.g. for generational garbage collectors and stack overflow handlers.
+ .
+ This package contains the libsigsegv runtime library.
