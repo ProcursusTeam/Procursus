@@ -17,9 +17,7 @@ ifneq ($(wildcard $(BUILD_WORK)/@pkg@/.build_complete),)
 else
 @pkg@: @pkg@-setup
 	cd $(BUILD_WORK)/@pkg@ && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS) \
-		--enable-static \
-		--enable-shared
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/@pkg@
 	+$(MAKE) -C $(BUILD_WORK)/@pkg@ install \
 		DESTDIR=$(BUILD_STAGE)/@pkg@
