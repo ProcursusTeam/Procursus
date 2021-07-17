@@ -1,0 +1,12 @@
+Package: libcdio19
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_LIBCDIO_V@
+Section: Libraries
+Priority: optional
+Description: library to read and control CD-ROM
+ This library is to encapsulate CD-ROM reading and control. Applications wishing to be oblivious of the OS- and device-dependant properties of a CD-ROM can use this library.
+ .
+ Some support for disk image types like BIN/CUE and NRG is available, so applications that use this library also have the ability to read disc images as though they were CD's.
+ .
+ This package contains the libcdio runtime library.

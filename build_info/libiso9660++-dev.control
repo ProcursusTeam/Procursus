@@ -1,0 +1,11 @@
+Package: libiso9660++-dev
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_LIBCDIO_V@
+Depends: libiso9660++0 (= @DEB_LIBCDIO_V@), libcdio++-dev (= @DEB_LIBCDIO_V@)
+Section: Development
+Priority: optional
+Description: C++ library to work with ISO9660 filesystems (development files)
+ This package contains C++ development files (headers and static library) for the libiso9660 library.
+ .
+ This library is made to read and write ISO9660 filesystems; those filesystems are mainly used on CDROMs.
