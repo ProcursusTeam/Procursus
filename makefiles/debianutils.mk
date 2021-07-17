@@ -11,6 +11,7 @@ DEB_DEBIANUTILS_V   ?= $(DEBIANUTILS_VERSION)
 debianutils-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/d/debianutils/debianutils_$(DEBIANUTILS_VERSION).tar.xz
 	$(call EXTRACT_TAR,debianutils_$(DEBIANUTILS_VERSION).tar.xz,debianutils-$(DEBIANUTILS_VERSION),debianutils)
+	$(call DO_PATCH,debianutils,debianutils,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/debianutils/.build_complete),)
 debianutils:
