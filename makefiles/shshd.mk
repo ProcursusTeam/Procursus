@@ -4,7 +4,11 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
+ifeq ($(NO_SHSHD_STRAP),1)
+SUBPROJECTS   += shshd
+else
 STRAPPROJECTS += shshd
+endif
 SHSHD_VERSION := 1.1.1.1
 DEB_SHSHD_V   ?= $(SHSHD_VERSION)
 
