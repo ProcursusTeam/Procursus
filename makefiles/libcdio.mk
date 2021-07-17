@@ -31,8 +31,8 @@ libcdio-package: libcdio-stage
 	rm -rf $(BUILD_DIST)/libiso9660{-11,-dev,++0,++-dev}
 	rm -rf $(BUILD_DIST)/libudf{0,-dev}
 	mkdir -p $(BUILD_DIST)/lib{cdio{19,-dev,++1,++-dev},iso9660{-11,-dev,++0,++-dev},udf{0,-dev}}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	mkdir -p $(BUILD_DIST)/lib{cdio,iso9660,udf}-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include/cdio,pkgconfig}
-	mkdir -p $(BUILD_DIST)/lib{cdio,iso9660}++-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include/cdio++,pkgconfig}
+	mkdir -p $(BUILD_DIST)/lib{cdio,iso9660,udf}-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include/cdio,lib/pkgconfig}
+	mkdir -p $(BUILD_DIST)/lib{cdio,iso9660}++-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include/cdio++,lib/pkgconfig}
 	mkdir -p $(BUILD_DIST)/libcdio-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# libcdio.mk Prep libcdio19
