@@ -1,0 +1,11 @@
+--- a/Makefile.in	2020-12-08 17:17:04.000000000 -0800
++++ b/Makefile.in	2020-12-08 21:18:42.000000000 -0800
+@@ -249,7 +249,7 @@
+ # This should be a colon-separated list of directories.
+ # Normally it points to the lisp/ directory in the sources.
+ # NB lread.c relies on lisp/ being first here.
+-buildlisppath=${abs_srcdir}/lisp
++buildlisppath=${abs_srcdir}/lisp:../lisp
+ 
+ # Where to install the other architecture-independent
+ # data files distributed with Emacs (like the tutorial,

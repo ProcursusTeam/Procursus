@@ -1,0 +1,55 @@
+--- a/src/Makefile.in	2020-12-07 13:55:20.000000000 -0800
++++ b/src/Makefile.in		2020-12-07 14:17:54.000000000 -0800
+@@ -327,6 +327,12 @@
+ GMP_OBJ = @GMP_OBJ@
+ 
+ RUN_TEMACS = ./temacs
++cross_compiling = @cross_compiling@
++ifeq ($(cross_compiling),yes)
++  libsrc_run = ../native-build/lib-src
++else
++  libsrc_run = ../lib-src
++endif
+ 
+ # Whether builds should contain details. '--no-build-details' or empty.
+ BUILD_DETAILS = @BUILD_DETAILS@
+@@ -587,6 +593,9 @@
+ $(pdmp): emacs$(EXEEXT)
+ 	LC_ALL=C $(RUN_TEMACS) -batch $(BUILD_DETAILS) -l loadup --temacs=pdump
+ 	cp -f $@ $(bootstrap_pdmp)
++else
++emacs.pdmp: emacs$(EXEEXT)
++	echo "Skipping pdump (not configured)"
+ endif
+ 
+ ## We run make-docfile twice because the command line may get too long
+@@ -603,9 +612,9 @@
+ $(etc)/DOC: lisp.mk $(libsrc)/make-docfile$(EXEEXT) $(obj) $(lisp)
+ 	$(AM_V_GEN)$(MKDIR_P) $(etc)
+ 	$(AM_V_at)rm -f $(etc)/DOC
+-	$(AM_V_at)$(libsrc)/make-docfile -d $(srcdir) \
++	$(AM_V_at)$(libsrc_run)/make-docfile -d $(srcdir) \
+ 	  $(SOME_MACHINE_OBJECTS) $(obj) > $(etc)/DOC
+-	$(AM_V_at)$(libsrc)/make-docfile -a $(etc)/DOC -d $(lispsource) \
++	$(AM_V_at)$(libsrc_run)/make-docfile -a $(etc)/DOC -d $(lispsource) \
+ 	  $(shortlisp)
+ 
+ $(libsrc)/make-docfile$(EXEEXT) $(libsrc)/make-fingerprint$(EXEEXT): \
+@@ -627,7 +636,7 @@
+ am__v_GLOBALS_1 =
+ 
+ gl-stamp: $(libsrc)/make-docfile$(EXEEXT) $(GLOBAL_SOURCES)
+-	$(AM_V_GLOBALS)$(libsrc)/make-docfile -d $(srcdir) -g $(obj) > globals.tmp
++	$(AM_V_GLOBALS)$(libsrc_run)/make-docfile -d $(srcdir) -g $(obj) > globals.tmp
+ 	$(AM_V_at)$(top_srcdir)/build-aux/move-if-change globals.tmp globals.h
+ 	$(AM_V_at)echo timestamp > $@
+ 
+@@ -641,7 +650,7 @@
+ 	$(MAKE) -C $(dir $@) all
+ 
+ ifeq ($(HAVE_PDUMPER),yes)
+-  MAKE_PDUMPER_FINGERPRINT = $(libsrc)/make-fingerprint$(EXEEXT)
++  MAKE_PDUMPER_FINGERPRINT = $(libsrc_run)/make-fingerprint$(EXEEXT)
+ else
+   MAKE_PDUMPER_FINGERPRINT =
+ endif

@@ -1,0 +1,21 @@
+--- a/nextstep/Makefile.in	2020-12-07 14:46:05.000000000 -0800
++++ b/nextstep/Makefile.in	2020-12-07 14:46:31.000000000 -0800
+@@ -63,9 +63,8 @@
+ 	${MKDIR_P} ${ns_appbindir}
+ 	cp -f ../src/emacs${EXEEXT} $@
+ 
+-${ns_appbindir}/Emacs.pdmp: ${ns_appdir} ${ns_check_file} ../src/emacs${EXEEXT}.pdmp
++${ns_appbindir}/Emacs.pdmp: ${ns_appdir} ${ns_check_file}
+ 	${MKDIR_P} ${ns_appbindir}
+-	cp -f ../src/emacs${EXEEXT}.pdmp $@
+ 
+ .PHONY: FORCE
+ 
+@@ -85,7 +84,6 @@
+ 	ln -s $(top_srcdir_abs)/info ${ns_appdir}/Contents/Resources
+ 	${MKDIR_P} ${ns_appbindir}
+ 	ln -s $(abs_top_builddir)/src/emacs${EXEEXT} ${ns_appbindir}/Emacs
+-	ln -s $(abs_top_builddir)/src/emacs${EXEEXT}.pdmp ${ns_appbindir}/Emacs.pdmp
+ 	ln -s $(abs_top_builddir)/lib-src ${ns_appbindir}/bin
+ 	ln -s $(abs_top_builddir)/lib-src ${ns_appbindir}/libexec
+ 	${MKDIR_P} ${ns_appdir}/Contents/Resources/etc

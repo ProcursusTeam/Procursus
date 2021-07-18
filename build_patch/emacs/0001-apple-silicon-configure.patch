@@ -1,0 +1,11 @@
+--- a/configure.ac	2020-12-03 21:29:39.000000000 -0800
++++ b/configure.ac	2020-12-03 21:30:24.000000000 -0800
+@@ -703,7 +703,7 @@
+   *-apple-darwin* )
+     case "${canonical}" in
+       *-apple-darwin[0-9].*) unported=yes ;;
+-      i[3456]86-* | x86_64-* )  ;;
++      i[3456]86-* | x86_64-* | arm-* | aarch64-* )  ;;
+       * )            unported=yes ;;
+     esac
+     opsys=darwin
