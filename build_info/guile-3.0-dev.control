@@ -1,0 +1,10 @@
+Package: guile-3.0-dev
+Version: @DEB_GUILE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Homepage: https://www.gnu.org/software/guile/
+Name: Guile (Devel)
+Description: Development files for Guile 3.0
+ This package contains files needed for development using Guile 3.0
