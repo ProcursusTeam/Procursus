@@ -1,0 +1,36 @@
+# From: Tobias Frost <tobi@coldtobi.de>
+# Subject: Disable msync calls on hurd
+Index: tokyocabinet-1.4.47/tcfdb.c
+===================================================================
+--- tokyocabinet-1.4.47.orig/tcfdb.c	2011-02-11 16:37:45.000000000 +0100
++++ tokyocabinet-1.4.47/tcfdb.c	2012-03-05 20:52:46.549679942 +0100
+@@ -1129,10 +1129,12 @@
+   tcfdbdumpmeta(fdb, hbuf);
+   memcpy(fdb->map, hbuf, FDBOPAQUEOFF);
+   if(phys){
++#ifndef __GNU__
+     if(msync(fdb->map, fdb->limsiz, MS_SYNC) == -1){
+       tcfdbsetecode(fdb, TCEMMAP, __FILE__, __LINE__, __func__);
+       err = true;
+     }
++#endif
+     if(fsync(fdb->fd) == -1){
+       tcfdbsetecode(fdb, TCESYNC, __FILE__, __LINE__, __func__);
+       err = true;
+Index: tokyocabinet-1.4.47/tchdb.c
+===================================================================
+--- tokyocabinet-1.4.47.orig/tchdb.c	2011-02-11 16:37:45.000000000 +0100
++++ tokyocabinet-1.4.47/tchdb.c	2012-03-05 20:52:46.553680004 +0100
+@@ -1330,10 +1330,12 @@
+   memcpy(hdb->map, hbuf, HDBOPAQUEOFF);
+   if(phys){
+     size_t xmsiz = (hdb->xmsiz > hdb->msiz) ? hdb->xmsiz : hdb->msiz;
++#ifndef __GNU__
+     if(msync(hdb->map, xmsiz, MS_SYNC) == -1){
+       tchdbsetecode(hdb, TCEMMAP, __FILE__, __LINE__, __func__);
+       err = true;
+     }
++#endif
+     if(fsync(hdb->fd) == -1){
+       tchdbsetecode(hdb, TCESYNC, __FILE__, __LINE__, __func__);
+       err = true;

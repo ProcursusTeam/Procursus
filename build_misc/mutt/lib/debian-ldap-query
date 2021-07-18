@@ -1,0 +1,48 @@
+#!/usr/bin/perl -w
+# by Ben Collins <bcollins@debian.org>, butchered by Marco d'Itri <md@linux.it>
+# to use, add to ~/.muttrc:
+#  set query_command="/usr/lib/mutt/debian-ldap-query %s"
+
+use strict;
+
+my @attrs = qw(sn mn cn ircnick uid);
+my $base = 'ou=users, dc=debian, dc=org';
+my $server = 'db.debian.org';
+my $port = 389;
+
+die "Usage: $0 <name> [<name>...]\n" if not $ARGV[0];
+
+eval 'require Net::LDAP;';
+if ($@) {
+	$@ =~ s/ in \@INC.*/./;
+	die "Could not load Net::LDAP: $@\n" .
+	"(Warning: this script depends on the libnet-ldap-perl (>=0.22-1) package.)\n"
+}
+
+my $ldap = Net::LDAP->new($server, port => $port) or
+	die "Could not contact LDAP server $server:$port";
+$ldap->bind or die 'Could not bind';
+
+my @results;
+
+foreach my $search (@ARGV) {
+	my $query = join '', map { "($_=*$search*)" } @attrs;
+    my $mesg = $ldap->search(
+		base => $base, filter => "(|$query)", attrs => [ @attrs ]
+	) or die 'Failed search';
+    foreach my $entry ($mesg->entries) {
+		my $uid   = $entry->get_value('uid')	|| next;
+		my $fname = $entry->get_value('cn')	|| '';
+		my $mname = $entry->get_value('mn')	|| '';
+		$mname .= ' ' if $mname;
+		my $lname = $entry->get_value('sn')	|| '';
+		my $nick  = $entry->get_value('ircnick')|| '';
+		push @results, "<$uid\@debian.org>\t$fname $mname$lname\t($nick)\n";
+    }
+}
+
+$ldap->unbind;
+
+print 'Debian Developer query: found ', scalar @results, "\n", @results;
+exit 1 if not @results;
+exit 0;

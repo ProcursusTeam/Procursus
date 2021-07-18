@@ -1,0 +1,81 @@
+From: Cristoph Berg <myon@debian.org>
+Date: Thu, 27 Feb 2014 15:52:59 +0100
+Subject: Muttrc
+
+ * 2009-01-15 myon: refreshed for mutt-1.5.19; drop our list of ignored headers
+   in favor of upstream's new unignore list
+
+Signed-off-by: Matteo F. Vescovi <mfvescovi@gmail.com>
+---
+ doc/Muttrc.head | 41 ++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 34 insertions(+), 7 deletions(-)
+
+--- a/doc/Muttrc.head
++++ b/doc/Muttrc.head
+@@ -12,6 +12,34 @@
+ # Display the fields in this order
+ hdr_order date from to cc subject
+ 
++# emacs-like bindings
++bind editor    "\e<delete>"    kill-word
++bind editor    "\e<backspace>" kill-word
++
++# map delete-char to a sane value
++bind editor     <delete>  delete-char
++
++# some people actually like these settings
++#set pager_stop
++#bind pager <up> previous-line
++#bind pager <down> next-line
++
++# Specifies how to sort messages in the index menu.
++set sort=threads
++
++# The behavior of this option on the Debian mutt package is
++# not the original one because exim4, the default SMTP on Debian
++# does not strip bcc headers so this can cause privacy problems;
++# see man muttrc for more info
++#unset write_bcc
++# Postfix and qmail use Delivered-To for detecting loops
++unset bounce_delivered
++
++set mixmaster="mixmaster-filter"
++
++# System-wide CA file managed by the ca-certificates package
++set ssl_ca_certificates_file="/etc/ssl/certs/ca-certificates.crt"
++
+ # imitate the old search-body function
+ macro index \eb "<search>~b " "search in message bodies"
+ 
+@@ -23,7 +51,7 @@
+ "call urlview to extract URLs out of a message"
+ 
+ # Show documentation when pressing F1
+-macro generic,pager <F1> "<shell-escape> less @docdir@/manual.txt<Enter>" "show Mutt documentation"
++macro generic,pager <F1> "<shell-escape> zcat @docdir@/manual.txt.gz | sensible-pager<enter>" "show Mutt documentation"
+ 
+ # show the incoming mailboxes list (just like "mutt -y") and back when pressing "y"
+ # note: these macros have been subsumed by the <browse-mailboxes> function.
+@@ -37,7 +65,7 @@
+ # append-hook '\.gz$'  "gzip -c   '%t' >> '%f'"
+ 
+ # If Mutt is unable to determine your site's domain name correctly, you can
+-# set the default here.
++# set the default here. (better: fix /etc/mailname)
+ #
+ # set hostname=cs.hmc.edu
+ 
+@@ -49,6 +77,13 @@
+ # be undone with unmime_lookup.
+ mime_lookup application/octet-stream
+ 
++# Upgrade the progress counter every 250ms, good for mutt over SSH
++# see http://bugs.debian.org/537746
++set time_inc=250
++
++# Allow mutt to understand References, Cc and In-Reply-To as headers in mailto:
++mailto_allow = cc in-reply-to references
++
+ ##
+ ## *** DEFAULT SETTINGS FOR THE ATTACHMENTS PATCH ***
+ ##

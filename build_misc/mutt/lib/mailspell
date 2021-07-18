@@ -1,0 +1,77 @@
+#!/usr/bin/perl
+#
+# Wrapper to call ispell on mail messages, ignoring quoted portions
+# and signatures.
+# By Brendan O'Dea <bod@debian.org>, public domain.
+# Usage: set ispell = /usr/lib/mutt/mailspell
+#
+
+use IO::File;
+use File::Copy 'move';
+use File::Temp 'tempfile';
+
+$0 =~ s#.*/##;
+
+my $ISPELL = 'ispell';
+my $DIFF   = 'diff';
+my $ED     = 'ed';
+
+# make sure that we don't inherit SIGCHLD
+$SIG{CHLD} = 'DEFAULT';
+
+# ignore -x ispell option
+shift if $ARGV[0] eq '-x';
+die "Usage: $0 [-x] FILE\n" unless @ARGV == 1;
+
+my $msg = $ARGV[0];
+
+# create temporary files
+my (%orig, %ed);
+
+END {
+    unlink $ed{path}   if $ed{path};
+    unlink $orig{path} if $orig{path};
+}
+
+foreach (\%orig, \%ed) {
+    ($fh, $filename) = tempfile();
+    $_->{path} = $filename;
+    $_->{fd} = $fh;
+}
+
+while (<>) {
+    # stop at sigdashes
+    last if /^-- \n/;
+
+    # drop quoted text and attribution
+    $orig{fd}->print($_) unless /^>/ or /^On \w{3}, \w{3} \d{2}, \d{4} at \d/;
+}
+
+$orig{fd}->close;
+
+my $pid = fork;
+die "$0: can't fork ($!)\n" unless defined $pid;
+unless ($pid) {
+    open STDOUT, '>&=' . $ed{fd}->fileno
+		or die "$0: can't dup stdout to ed script ($!)\n";
+    $ed{fd}->close;
+    exec $DIFF, '-e', $orig{path}, $msg;
+    die "$0: can't exec $DIFF ($!)\n";
+}
+
+die "$0: can't reap child ($!)\n" unless wait == $pid;
+system $ISPELL, '-x', $orig{path}
+    and die "$0: problem with $ISPELL ($?)\n";
+
+$ed{fd}->seek(0, SEEK_END);
+$ed{fd}->print("w\nq\n");
+$ed{fd}->seek(0, SEEK_SET);
+
+open STDIN, '<&=' . $ed{fd}->fileno
+    or die "$0: can't dup stdin from ed script ($!)\n";
+
+system $ED, '-s', $orig{path} and die "$0: problem with $ED ($?)\n";
+move $orig{path}, $msg        or  die "$0: can't replace $msg ($!)\n";
+delete $orig{path};
+
+1;

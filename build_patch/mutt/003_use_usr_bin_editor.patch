@@ -1,0 +1,34 @@
+From: Antonio Radici <antonio@debian.org>
+Date: Thu, 27 Feb 2014 16:06:15 +0100
+Subject: use_usr_bin_editor
+
+Even if EDITOR is not set, mutt will always use /usr/bin/editor
+(which is set by update-alternatives), rather than falling back
+to vi.
+---
+ init.c | 2 +-
+ init.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+--- a/init.c
++++ b/init.c
+@@ -3757,7 +3757,7 @@
+   {
+     p = getenv ("EDITOR");
+     if (!p)
+-      p = "vi";
++      p = "/usr/bin/editor";
+   }
+   Editor = safe_strdup (p);
+   Visual = safe_strdup (p);
+--- a/init.h
++++ b/init.h
+@@ -1007,7 +1007,7 @@
+   ** .pp
+   ** This variable specifies which editor is used by mutt.
+   ** It defaults to the value of the \fC$$$VISUAL\fP, or \fC$$$EDITOR\fP, environment
+-  ** variable, or to the string ``vi'' if neither of those are set.
++  ** variable, or to the string ``/usr/bin/editor'' if neither of those are set.
+   ** .pp
+   ** The \fC$$editor\fP string may contain a \fI%s\fP escape, which will be replaced by the name
+   ** of the file to be edited.  If the \fI%s\fP escape does not appear in \fC$$editor\fP, a

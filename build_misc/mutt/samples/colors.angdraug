@@ -1,0 +1,91 @@
+# This color scheme aims to highlight as much useful information as
+# possible without spoiling user's visual experience by irritating
+# contrasts. Optimized for dark or transparent background.
+# --Dmitry Borodaenko <angdraug@mail.ru>
+
+# override defaults, make transparency work
+color normal    white default
+color attachment green default #
+color hdrdefault cyan default
+color indicator black cyan
+color markers   brightred default
+color quoted    green default
+color signature brightblue default #
+color status    brightgreen blue
+color tilde     brightblue default #
+color tree      red default
+
+# paint different quote levels
+color	quoted  	green	default
+color	quoted1 	cyan	default
+color	quoted2 	yellow	default
+color	quoted3		red	default
+
+color body brightred default "[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+" # email
+color body brightblue default "(http|ftp)://[\-\.\,/+=&%~_:?\#a-zA-Z0-9]+" # URL
+color body brightgreen default "(^| |[-.[:alnum:]]+:+)~?\(/[-_.'[:alnum:]]+\)+/?" # Unix file path
+color body brightgreen	default "(^| +)[[:alpha:]]:[-_.[:alnum:]\]+" # DOS file path
+color body brightmagenta default "(^|[ '\"]+)\\$[[:alpha:]][-_[:alpha:]]+" # variable
+color body brightred default "(^| )[*_]+[-&[:alnum:]]+[*_]( |$)" # bold/underline
+color body yellow default "(^| )[;:8ö][-^o]?[)>(|/\\]+" # smiley
+color body red default "[!?]{3,}" # exclamation
+color body green default "^ *[-+*o] +" # list item
+
+# date formats
+color body cyan default "[0-9]{1,2}:[0-9]{2}(:[0-9]{2})?( ?(AM|PM|am|pm))?( +[+-][0-9]{4})?"
+color body cyan default "(\(19|20\)?[0-9]{2}/[01]?[0-9]/[0123]?[0-9]|[0123]?[0-9][/.][01]?[0-9][/.]\(19|20\)?[0-9]{2})(( at)? +[0-9]{1,2}:[0-9]{2}(:[0-9]{2})?( ?(AM|PM|am|pm))?( +[+-][0-9]{4})?)?"
+color body cyan default "((Sun(day)?|Mon(day)?|Tue(sday)?|Wed(nesday)?|Thu(sday)?|Fri(day)?|Sat(urday)?),? +)?(Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|June?|July?|Aug(ust)?|Sep(ember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)[ .]+[0-9]{1,2}(st|nd|rd|th)?,?( +(19|20)[0-9]{2}(,?( at)? [0-9]{1,2}:[0-9]{2}(:[0-9]{2})?( ?(AM|PM|am|pm))?( +[+-][0-9]{4})?)?)?"
+color body cyan default "((Sun(day)?|Mon(day)?|Tue(sday)?|Wed(nesday)?|Thu(sday)?|Fri(day)?|Sat(urday)?),? +)?[0-9]{1,2}(st|nd|rd|th)?[ .]+(Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|June?|July?|Aug(ust)?|Sep(ember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?),?( +(19|20)?[0-9]{2})?(( at)? [0-9]{1,2}:[0-9]{2}(:[0-9]{2})?( ?(AM|PM|am|pm))?( +[+-][0-9]{4})?)?"
+
+color header   brightgreen default ^From:
+color header   brightcyan default ^To:
+color header   brightcyan default ^Reply-To:
+color header   brightcyan default ^Cc:
+color header   brightblue default ^Subject:
+
+color	header	brightcyan	default "^newsgroups: "
+color   header  yellow  default "^Delivered-To: "
+color   header  green   default "^sender: "
+color   header  green   default "^organi[sz]ation: "
+color   header  green   default "x-editor: "
+color   header  green   default "(x-mailer|user-agent): "
+color   header  green   default "X-Operating-System: "
+color   header  green   default "X-MimeOLE: "
+color   header  green   default "X-Accept-Language: "
+color	header	red	default	"^message-id:"
+color	header	red	default	"^in-reply-to: "
+color	header	red	default	"^references: "
+color	header	cyan	default	"^followup-to: "
+color	header	cyan	default	"^mail-followup-to: "
+color	header	cyan	default	"^reply-to: "
+color	header	magenta	default	"MIME-Version: "
+color	header	magenta	default	"Content-Type: "
+color	header	magenta	default	"Content-Transfer-Encoding: "
+color	header	magenta	default	"Content-Disposition: "
+color	header	magenta	default	"Content-Encoding: "
+color	header	magenta	default	"Content-Language: "
+
+color status brightwhite blue
+
+color index brightblue default '~P' # from me
+color index cyan default '~p' # personal
+color index brightcyan default '~G' # PGP
+color index brightred default '~F' # flagged
+color index green default '~Q' # replied
+color index brightwhite default '~N' # new
+color index red default '~D' # deleted
+
+# threads
+#color index brightyellow default  "~h 'References: +<.+>'"
+#color index yellow       default  "~h 'References: +<.+> +<.+>'"
+#color index brightred    default  "~h 'References: +<.+> +<.+> +<.+>'"
+#color index red          default  "~h 'References: +<.+> +<.+> +<.+> +<.+>'"
+#color index blue         default  "~h 'References: +<.+> +<.+> +<.+> +<.+> +<.+>'"
+#color index green        default  "~h 'References: +<.+> +<.+> +<.+> +<.+> +<.+> +<.+>'"
+
+# spam
+color index magenta default "\(Resent-\)?Message-Id: <>"
+color index magenta default "\(Resent-\)?Message-Id: '<.* .*>'"
+color index magenta default "\(Resent-\)?Message-Id: localhost"
+color index magenta default "! \(Resent-\)?Message-Id: @"
+color index magenta default '~C Undisclosed.*Recipients'
