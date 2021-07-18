@@ -404,27 +404,30 @@ MEMO_PGP_SIGN_KEY ?= C59F3798A305ADD7E7E6C7256430292CF9551B0E
 CODESIGN_IDENTITY ?= -
 
 # Root
-BUILD_ROOT     ?= $(PWD)
+BUILD_ROOT      ?= $(PWD)
 # Downloaded source files
-BUILD_SOURCE   := $(BUILD_ROOT)/build_source
+BUILD_SOURCE    := $(BUILD_ROOT)/build_source
 # Base headers/libs (e.g. patched from SDK)
-BUILD_BASE     := $(BUILD_ROOT)/build_base/$(MEMO_TARGET)/$(MEMO_CFVER)
+BUILD_BASE      := $(BUILD_ROOT)/build_base/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Dpkg info storage area
 BUILD_INFO     := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_info
 # Miscellaneous Procursus files
 BUILD_MISC     := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_misc
 # Patch storage area
-BUILD_PATCH    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_patch
+BUILD_PATCH     := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_patch
 # Extracted source working directory
-BUILD_WORK     := $(BUILD_ROOT)/build_work/$(MEMO_TARGET)/$(MEMO_CFVER)
+BUILD_WORK      := $(BUILD_ROOT)/build_work/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Bootstrap working area
-BUILD_STAGE    := $(BUILD_ROOT)/build_stage/$(MEMO_TARGET)/$(MEMO_CFVER)
+BUILD_STAGE     := $(BUILD_ROOT)/build_stage/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Final output
-BUILD_DIST     := $(BUILD_ROOT)/build_dist/$(MEMO_TARGET)/$(MEMO_CFVER)
+BUILD_DIST      := $(BUILD_ROOT)/build_dist/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Actual bootrap staging
-BUILD_STRAP    := $(BUILD_ROOT)/build_strap/$(MEMO_TARGET)/$(MEMO_CFVER)
+BUILD_STRAP     := $(BUILD_ROOT)/build_strap/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Extra scripts for the buildsystem
-BUILD_TOOLS    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_tools
+BUILD_TOOLS     := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_tools
+# Device ip and port
+MEMO_DEVICE_IP   ?= localhost
+MEMO_DEVICE_PORT ?= 2222
 
 
 ifeq ($(DEBUG),1)
@@ -1027,6 +1030,14 @@ endif # ($(MEMO_PREFIX),)
 	rm -f $(BUILD_STAGE)/.fakeroot_$*
 	touch $(BUILD_STAGE)/.fakeroot_$*
 	mkdir -p $(BUILD_DIST)
+%-install:: export BUILD_DIST=$(BUILD_ROOT)/build_dist/$(MEMO_TARGET)/$(MEMO_CFVER)/%
+%-install: %-package
+	temp=$$(ssh -p $(MEMO_DEVICE_PORT) root@$(MEMO_DEVICE_IP) 'mktemp -d'); \
+	rsync -z -e "ssh -p $(MEMO_DEVICE_PORT)" $(BUILD_DIST)/*.deb root@$(MEMO_DEVICE_IP):$$temp; \
+	ssh -p $(MEMO_DEVICE_PORT) root@$(MEMO_DEVICE_IP) 'apt-get update'; \
+	ssh -p $(MEMO_DEVICE_PORT) root@$(MEMO_DEVICE_IP) "apt-get reinstall $$temp/*.deb"; \
+	ssh -p $(MEMO_DEVICE_PORT) root@$(MEMO_DEVICE_IP) "rm -rf $$temp"; \
+	rm -rf $(BUILD_DIST)
 
 REPROJ=$(shell echo $@ | cut -f2- -d"-")
 REPROJ2=$(shell echo $(REPROJ) | $(SED) 's/-package//' | $(SED) 's/-setup//')
