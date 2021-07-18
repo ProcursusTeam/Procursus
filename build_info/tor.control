@@ -4,6 +4,36 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Networking
 Priority: optional
-Description: Anonymzing overlay network for TCP
-Depends: liblzma5, libevent-2.1-7, libssl1.1, libzstd1, libscrypt0
 Homepage: https://www.torproject.org/
+Depends: liblzma5, libevent-2.1-7, libssl1.1, libzstd1, libscrypt0
+Recommends: tor-geoipdb, torsocks
+Description: anonymizing overlay network for TCP
+ Tor is a connection-based low-latency anonymous communication system.
+ .
+ Clients choose a source-routed path through a set of relays, and
+ negotiate a "virtual circuit" through the network, in which each relay
+ knows its predecessor and successor, but no others. Traffic flowing
+ down the circuit is decrypted at each relay, which reveals the
+ downstream relay.
+ .
+ Basically, Tor provides a distributed network of relays. Users bounce
+ their TCP streams (web traffic, ftp, ssh, etc) around the relays, and
+ recipients, observers, and even the relays themselves have difficulty
+ learning which users connected to which destinations.
+ .
+ This package enables only a Tor client by default, but it can also be
+ configured as a relay and/or a hidden service easily.
+ .
+ Client applications can use the Tor network by connecting to the local
+ socks proxy interface provided by your Tor instance. If the application
+ itself does not come with socks support, you can use a socks client
+ such as torsocks.
+ .
+ Note that Tor does no protocol cleaning on application traffic. There
+ is a danger that application protocols and associated programs can be
+ induced to reveal information about the user. Tor depends on Torbutton
+ and similar protocol cleaners to solve this problem. For best
+ protection when web surfing, the Tor Project recommends that you use
+ the Tor Browser Bundle, a standalone tarball that includes static
+ builds of Tor, Torbutton, and a modified Firefox that is patched to fix
+ a variety of privacy bugs.

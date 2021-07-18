@@ -1,0 +1,9 @@
+#!/bin/sh -e
+
+if [ "$1" = "purge" ]; then
+	# logs have to be removed according to policy.
+	rm -rf @MEMO_PREFIX@/var/log/tor/
+	rm -rf @MEMO_PREFIX@/var/lib/tor/
+fi
+
+exit 0
