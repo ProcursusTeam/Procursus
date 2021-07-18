@@ -1,0 +1,17 @@
+Package: xbattbar
+Version: @DEB_XBATTBAR_V@
+Architecture: @DEB_ARCH@
+Priority: optional
+Section: X11
+Maintainer: @DEB_MAINTAINER@
+Depends: libx11-6
+Description: Display battery status in X11
+ Xbattbar displays the current battery status in the X window
+ environment. Battery status is obtained through BatteryCenter.framework.
+ .
+ The battery indicator of this program is very simple: a simple bar
+ at the top/bottom of your display. With its color, it indicates the
+ AC-line status (plugged in or off-line), and battery charging/remaining
+ level. Also, if the mouse cursor enters the indicator window, a popup
+ diagnosis window comes up in the center of your display showing the
+ current AC line status and battery level.
