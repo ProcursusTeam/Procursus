@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS                     += zsh-syntax-highlighting
 ZSH-SYNTAX-HIGHLIGHTING_VERSION := 0.7.1
-DEB_ZSH-SYNTAX-HIGHLIGHTING_V   ?= $(ZSH-SYNTAX-HIGHLIGHTING_VERSION)
+DEB_ZSH-SYNTAX-HIGHLIGHTING_V   ?= $(ZSH-SYNTAX-HIGHLIGHTING_VERSION)-1
 
 zsh-syntax-highlighting-setup: setup
 	$(call GITHUB_ARCHIVE,zsh-users,zsh-syntax-highlighting,$(ZSH-SYNTAX-HIGHLIGHTING_VERSION),$(ZSH-SYNTAX-HIGHLIGHTING_VERSION))
@@ -16,7 +16,8 @@ zsh-syntax-highlighting:
 else
 zsh-syntax-highlighting: zsh-syntax-highlighting-setup ncurses gettext file
 	+$(MAKE) -C $(BUILD_WORK)/zsh-syntax-highlighting install \
-		PREFIX='$(BUILD_STAGE)/zsh-syntax-highlighting/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'
+		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+		DESTDIR="$(BUILD_STAGE)/zsh-syntax-highlighting"
 	touch $(BUILD_WORK)/zsh-syntax-highlighting/.build_complete
 endif
 
