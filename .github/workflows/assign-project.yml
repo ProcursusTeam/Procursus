@@ -1,20 +1,19 @@
-name: Auto Assign PRs/Issues to Project
+name: Auto assign PRs to Project Board
 
 on:
-  issues:
-    types: [opened]
   pull_request_target:
     types: [opened]
 env:
-  MY_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
 
 jobs:
   assign_project:
     runs-on: ubuntu-latest
-    name: Assign to Procursus Project
+    name: Auto assign PRs to Project Board
     steps:
-      - name: Assign new Issues/PRs to Project
+      - name: Auto assign PRs to Project Board
         uses: srggrs/assign-one-project-github-action@1.2.1
         if: github.event.action == 'opened'
         with:
           project: https://github.com/orgs/ProcursusTeam/projects/1
+          column_name: "In Progress"
