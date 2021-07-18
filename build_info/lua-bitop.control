@@ -1,0 +1,14 @@
+Package: lua-bitop
+Version: @DEB_LUA-BITOP_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: liblua5.1-0, liblua5.2-0
+Section: Lua 
+Priority: optional
+Description: bitop library for the Lua language
+ bitop is a new pattern-matching library for Lua, based on Parsing Expression
+ Grammars (PEGs). PEGs look similar to regular expressions or context-free
+ grammars in Backus-Naur form (BNF) notation. PEGs make a good replacement for
+ regular expressions, because they are strictly more powerful. For example, a
+ regular expression inherently cannot find matched pairs of parentheses, because
+ it is not recursive, but a PEG can.
