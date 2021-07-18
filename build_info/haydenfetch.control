@@ -1,0 +1,8 @@
+Package: haydenfetch
+Architecture: @DEB_ARCH@
+Version: @DEB_HAYDENFETCH_V@
+Pre-Depends: coreutils, findutils
+Depends: jp2a, neofetch
+Description: neofetch but with haydens
+Maintainer: @DEB_MAINTAINER@
+Author: Nick Chan <towinchenmi@gmail.com>
