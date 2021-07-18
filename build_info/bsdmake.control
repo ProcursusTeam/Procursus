@@ -1,0 +1,8 @@
+Package: bsdmake
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_BSDMAKE_V@
+Section: Development
+Depends: libiosexec1
+Priority: optional
+Description: maintain program dependencies
