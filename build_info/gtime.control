@@ -1,0 +1,9 @@
+Package: gtime
+Version: @DEB_GTIME_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Homepage: https://www.gnu.org/software/time/
+Description: The `time' command runs another program, then displays information about the resources used by that program.
+
