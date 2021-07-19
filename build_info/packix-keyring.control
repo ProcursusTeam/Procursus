@@ -1,0 +1,8 @@
+Package: packix-keyring
+Version: @DEB_PACKIX_KEYRING_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Keyrings
+Priority: optional
+Description: GnuPG keys for the Packix repository
+Name: Packix APT Keyring
