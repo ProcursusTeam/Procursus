@@ -1,0 +1,10 @@
+Package: chariz-keyring
+Version: @DEB_CHARIZ_KEYRING_V@
+Replaces: procursus-keyring (<< 2020.05.09-1)
+Conflicts: procursus-keyring (<< 2020.05.09-1)
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Keyrings
+Priority: optional
+Description: GnuPG keys for the Chariz repository
+Name: Chariz APT Keyring
