@@ -18,9 +18,9 @@ else
 gtime: gtime-setup
 	cd $(BUILD_WORK)/gtime && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--program-prefix=g \
-		--with-packager=Procursus
-		--with-packager-bug-reports=https://github.com/ProcursusTeam/Procursus/issues
+		--program-prefix="g" \
+		--with-packager="Procursus" \
+		--with-packager-bug-reports="https://github.com/ProcursusTeam/Procursus/issues"
 	+$(MAKE) -C $(BUILD_WORK)/gtime
 	+$(MAKE) -C $(BUILD_WORK)/gtime install \
 		DESTDIR=$(BUILD_STAGE)/gtime
