@@ -1,0 +1,13 @@
+Package: libcbor-dev
+Version: @DEB_LIBCBOR_V@
+Priority: optional
+Section: Development
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Homepage: https://github.com/PJK/libcbor
+Description: library for parsing and generating CBOR (RFC 7049) (development headers)
+ CBOR is a general-purpose schema-less binary data format, defined in
+ RFC 7049. This package provides a C library for parsing and generating
+ CBOR.
+ .
+ This package contains the development headers.
