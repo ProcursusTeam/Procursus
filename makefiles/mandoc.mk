@@ -46,10 +46,10 @@ endif
 mandoc-package: mandoc-stage
 	# mandoc.mk Package Structure
 	rm -rf $(BUILD_DIST)/mandoc
-	mkdir -p $(BUILD_DIST)/mandoc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
+	mkdir -p $(BUILD_DIST)/mandoc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,var,sbin,man}
 	
 	# mandoc.mk Prep mandoc
-	cp -a $(BUILD_STAGE)/mandoc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/ $(BUILD_DIST)/mandoc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
+	cp -a $(BUILD_STAGE)/mandoc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,var,sbin,man} $(BUILD_DIST)/mandoc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,var,sbin,man}
 	
 	# mandoc.mk Sign
 	$(call SIGN,mandoc,general.xml)
