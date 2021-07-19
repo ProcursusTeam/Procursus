@@ -1,4 +1,4 @@
-Package: mandocs
+Package: mandoc
 Version: @DEB_MANDOC_V@
 Priority: optional
 Section: Development
@@ -12,4 +12,3 @@ Description: BSD manpage compiler toolset
  of the toolset is the mandoc utility program, based on the libmandoc
  validating compiler, to format output for UNIX terminals (with support for
  wide-character locales), XHTML, HTML, PostScript, and PDF.
-
