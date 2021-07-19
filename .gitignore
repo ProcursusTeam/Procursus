@@ -12,3 +12,6 @@ build_patch/*-[0-9]*
 darwintools/cfversion
 darwintools/firmware
 .DS_Store
+
+build_info/binutils-*-*.control
+build_info/binutils.control

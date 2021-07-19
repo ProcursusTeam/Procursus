@@ -1,0 +1,54 @@
+diff --color -urN binutils-2.36.1/libctf/ctf-link.c binutils/libctf/ctf-link.c
+--- binutils-2.36.1/libctf/ctf-link.c	2021-01-09 05:47:34.000000000 -0500
++++ binutils/libctf/ctf-link.c	2021-03-15 16:08:34.925874489 -0400
+@@ -20,7 +20,7 @@
+ #include <ctf-impl.h>
+ #include <string.h>
+ 
+-#if defined (PIC)
++#if defined (PIC) && !NOBFD
+ #pragma weak ctf_open
+ #endif
+ 
+@@ -240,7 +240,7 @@
+      a weak symbol so that -lctf -lctf-nobfd works, but in static libraries we
+      must distinguish between the two libraries explicitly.  */
+ 
+-#if defined (PIC)
++#if defined (PIC) && !NOBFD
+   if (!buf && !ctf && name && !ctf_open)
+     return (ctf_set_errno (fp, ECTF_NEEDSBFD));
+ #elif NOBFD
+@@ -724,7 +724,7 @@
+     return 1;
+ 
+   /* See ctf_link_add_ctf.  */
+-#if defined (PIC) || !NOBFD
++#if defined (PIC) && !NOBFD
+   input->clin_arc = ctf_open (input->clin_filename, NULL, &err);
+ #else
+   ctf_err_warn (fp, 0, ECTF_NEEDSBFD, _("cannot open %s lazily"),
+diff --color -urN binutils-2.36.1/opcodes/configure binutils/opcodes/configure
+--- binutils-2.36.1/opcodes/configure	2021-02-06 04:02:39.000000000 -0500
++++ binutils/opcodes/configure	2021-03-15 15:54:15.442219307 -0400
+@@ -12778,7 +12778,7 @@
+       SHARED_LIBADD="-L`pwd`/../bfd -lbfd -L`pwd`/../libiberty -liberty -L`pwd`/../intl -lintl -lcygwin"
+       ;;
+    *-*-darwin*)
+-     SHARED_LIBADD="-Wl,`pwd`/../bfd/.libs/libbfd.dylib ${SHARED_LIBADD}"
++     SHARED_LIBADD="-Wl,`pwd`/../bfd/.libs/libbfd.dylib -lintl ${SHARED_LIBADD}"
+      SHARED_DEPENDENCIES="../bfd/libbfd.la"
+      ;;
+     *)
+diff --color -urN binutils-2.36.1/opcodes/configure.ac binutils/opcodes/configure.ac
+--- binutils-2.36.1/opcodes/configure.ac	2021-01-09 05:47:34.000000000 -0500
++++ binutils/opcodes/configure.ac	2021-03-15 15:53:55.206227428 -0400
+@@ -179,7 +179,7 @@
+       SHARED_LIBADD="-L`pwd`/../bfd -lbfd -L`pwd`/../libiberty -liberty -L`pwd`/../intl -lintl -lcygwin"
+       ;;
+    *-*-darwin*)
+-     SHARED_LIBADD="-Wl,`pwd`/../bfd/.libs/libbfd.dylib ${SHARED_LIBADD}"
++     SHARED_LIBADD="-Wl,`pwd`/../bfd/.libs/libbfd.dylib -lintl ${SHARED_LIBADD}"
+      SHARED_DEPENDENCIES="../bfd/libbfd.la"
+      ;;
+     *)

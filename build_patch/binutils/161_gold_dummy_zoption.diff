@@ -1,0 +1,25 @@
+# DP: let gold accept a dummy -z buildd-<random-string> option.
+
+--- a/gold/options.cc
++++ b/gold/options.cc
+@@ -973,6 +973,8 @@ parse_short_option(int argc, const char*
+     {
+       int dummy_i = 0;
+       const char* dash_z_arg = *arg;
++      if (strncmp(dash_z_arg, "buildd", strlen("buildd")) == 0)
++	  *arg = "buildd";
+       retval = parse_long_option(1, arg, true, arg, &dummy_i);
+       if (retval == NULL)
+ 	usage(_("unknown -z option"), dash_z_arg);
+--- a/gold/options.h
++++ b/gold/options.h
+@@ -1400,6 +1400,9 @@ class General_options
+ 		    options::TWO_DASHES, '\0',
+ 		    N_("Report unresolved symbols as errors"),
+ 		    NULL, true);
++  DEFINE_bool(buildd, options::DASH_Z, '\0', false,
++	      N_("Dummy z option"),
++	      NULL);
+ 
+   DEFINE_bool(wchar_size_warning, options::TWO_DASHES, '\0', true, NULL,
+ 	      N_("(ARM only) Do not warn about objects with incompatible "
