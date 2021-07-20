@@ -2,9 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += mawk
+SUBPROJECTS  += mawk
 MAWK_VERSION := 1.3.4.20200120
-DEB_MAWK_V ?= $(MAWK_VERSION)
+DEB_MAWK_V   ?= $(MAWK_VERSION)
 
 mawk-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/m/mawk/mawk_$(MAWK_VERSION).orig.tar.gz
@@ -23,8 +23,7 @@ mawk: mawk-setup
 	touch $(BUILD_WORK)/mawk/.build_complete
 endif
 
-mawk-package: mawk-stage
-	
+mawk-package: mawk-stage	
 	# mawk.mk Package Structure
 	rm -rf $(BUILD_DIST)/mawk
 	
