@@ -6,4 +6,3 @@ Section: Development
 Priority: optional
 Depends: libjansson4 (>= @DEB_JANSSON_V@)
 Description: A C library for encoding, decoding and manipulating JSON (development files)
-Tag: purpose::console, role::developer
