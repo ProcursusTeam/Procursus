@@ -20,6 +20,7 @@ main() {
 	pkg="$(ask "Package name [Ex: cameronkatri]" $1)"
 	keyid="$(ask "KEYID (or email)" $2)"
 	author_email="$(ask "Your email (again)" $3)"
+	repo_url="$(ask "Repo URL" $4)"
 	mkdir -p build_misc/keyrings/$pkg/
 	gpg --output build_misc/keyrings/$pkg/$pkg.gpg --export $keyid
 	sed -e "s|@pkg@|${pkg}|g" \
@@ -29,7 +30,8 @@ main() {
 	sed -e "s|@pkg@|${pkg}|g" \
 		-e "s|@PKG@|$(echo ${pkg} | tr a-z A-Z)|g" \
 		-e "s|@NAME@|${name}|g" \
-		-e "s|@AUTHOR_EMAIL@|${author_email}|g" \
+		-e "s|@DEB_AUTHOR@|${name} <${author_email}>|g" \
+		-e "s|@REPO_URL@|${repo_url}|g" \
 		build_misc/templates/keyring.control > build_info/${pkg}-keyring.control
 }
 
