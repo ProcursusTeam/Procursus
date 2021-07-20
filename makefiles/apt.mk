@@ -49,6 +49,8 @@ apt: apt-setup libgcrypt berkeleydb lz4 xxhash xz zstd gnutls gettext
 		-DDPKG_DATADIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/dpkg \
 		-DBERKELEY_INCLUDE_DIRS="$(BUILD_BASE)/$(MEMO_INCDIR)/db181" \
 		-DBERKELEY_LIBRARIES="$(BUILD_BASE)/$(MEMO_LIBDIR)/libdb.dylib" \
+		-DIntl_INCLUDE_DIR="$(BUILD_BASE)/$(MEMO_INCDIR)" \
+		-DIntl_LIBRARY="$(BUILD_BASE)/$(MEMO_LIBDIR)/libintl.dylib" \
 		$(APT_CMAKE_ARGS) \
 		..
 	+$(MAKE) -C $(BUILD_WORK)/apt/build
