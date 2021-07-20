@@ -19,7 +19,9 @@ libcbor: libcbor-setup
 	cd $(BUILD_WORK)/libcbor/build && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DWITH_EXAMPLES=OFF \
+		-DBUILD_TESTING=OFF \
 		-DBUILD_SHARED_LIBS=ON \
+		-DCBOR_CUSTOM_ALLOC=ON \
 		..
 	+$(MAKE) -C $(BUILD_WORK)/libcbor/build
 	+$(MAKE) -C $(BUILD_WORK)/libcbor/build install \
