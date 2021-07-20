@@ -31,11 +31,11 @@ downloadlink() {
 	if [ "$(${SED} 's|^.*://||' <<< "${1}" | cut -d'/' -f1)" = "github.com" ]; then
 		echo -e "\t$\(call GITHUB_ARCHIVE,$(${SED} 's|^.*://||' <<< "${1}" | cut -d'/' -f2),$(${SED} 's|^.*://||' <<< "${1}" | cut -d'/' -f3),$\(${4}_VERSION\),$(echo "${1}" | cut -d'/' -f1 | ${SED} 's/\.tar.*//g' | ${SED} "s/${2}//g")$\(${4}_VERSION\)\)"
 	else
-		if echo "${1}" | cut -d'/' -f1 | ${SED} 's/\.tar.*//g' | ${SED} "s/${2}//g" | grep "${3}" &>/dev/null; then
+		if echo "${1##*/}" | ${SED} 's/-//g' | ${SED} 's/\.tar.*//g' | ${SED} "s/${2}//g" | grep "${3}" &>/dev/null; then
 			echo -e "\twget -q -nc -P\$(BUILD_SOURCE) $(${SED} "s/${2}/\$(${4}_VERSION)/g" <<< "$1")"
 		else
-			echo -e "\t-[ ! -f "$\(BUILD_SOURCE\)/${3}-$\(${4}_VERSION\).tar.$("$download" | cut -d'.' -f1)" ] \&\& \\
-\t	\twget -q -nc -O\$(BUILD_SOURCE)/${3}-\$(${4}_VERSION).tar.$("$download" | cut -d'.' -f1) \\
+			echo -e "\t-[ ! -f "$\(BUILD_SOURCE\)/${3}-$\(${4}_VERSION\).tar.${download##*.}" ] \&\& \\
+\t	\twget -q -nc -O\$(BUILD_SOURCE)/${3}-\$(${4}_VERSION).tar.${download##*.}) \\
 \t	\t\t$(${SED} "s/${2}/\$(${4}_VERSION)/g" <<< "$1")"
 		fi
 	fi
@@ -48,12 +48,12 @@ main() {
 	build="$(ask "Build System" $2)"
 	checkbuild "$build"
 	ver="$(ask "Package Version" $3)"
-	download="$(ask "Download Link" $4)"
+	download="$(ask "Tarball Download Link" $4)"
 	${SED} -e "s/@pkg@/${pkg}/g" \
 		-e "s/@PKG@/${formatpkg}/g" \
 		-e "s/@PKG_VERSION@/${ver}/g" \
 		-e "s|@download@|$(downloadlink "$download" "$ver" "$pkg" "$formatpkg")|g" \
-		-e "s|@compression@|$("$download" | cut -d'.' -f1)|g" \
+		-e "s|@compression@|${download##*.}|g" \
 		build_misc/templates/${build}.mk > makefiles/${pkg}.mk
 }
 
