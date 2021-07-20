@@ -5,4 +5,3 @@ Maintainer: @DEB_MAINTAINER@
 Section: Libraries
 Priority: optional
 Description: A C library for encoding, decoding and manipulating JSON (runtime libraries)
-Tag: purpose::console, role::developer

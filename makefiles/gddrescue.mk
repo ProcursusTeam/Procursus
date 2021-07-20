@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += gddrescue
+SUBPROJECTS       += gddrescue
 GDDRESCUE_VERSION := 1.25
 DEB_GDDRESCUE_V   ?= $(GDDRESCUE_VERSION)
 
@@ -45,4 +45,3 @@ gddrescue-package: gddrescue-stage
 	rm -rf $(BUILD_DIST)/gddrescue
 
 .PHONY: gddrescue gddrescue-package
-	

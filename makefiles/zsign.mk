@@ -30,7 +30,6 @@ endif
 zsign-package: zsign-stage
 	# zsign.mk Package Structure
 	rm -rf $(BUILD_DIST)/zsign
-	mkdir -p $(BUILD_DIST)/zsign
 
 	# zsign.mk Prep zsign
 	cp -a $(BUILD_STAGE)/zsign $(BUILD_DIST)
