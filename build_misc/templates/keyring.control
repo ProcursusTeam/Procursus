@@ -2,6 +2,7 @@ Package: @pkg@-keyring
 Version: @DEB_@PKG@_KEYRING_V@
 Architecture: all
 Maintainer: @DEB_MAINTAINER@
+Author: @NAME@ <@AUTHOR_EMAIL@>
 Section: Keyrings
 Priority: optional
 Description: GnuPG key for @NAME@'s repository
