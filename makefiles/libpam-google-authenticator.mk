@@ -36,6 +36,7 @@ libpam-google-authenticator-package: libpam-google-authenticator-stage
 	# libpam-google-authenticator.mk Prep libpam-google-authenticator
 	cp -a $(BUILD_STAGE)/libpam-google-authenticator $(BUILD_DIST)
 	mv -f $(BUILD_DIST)/libpam-google-authenticator/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/security $(BUILD_DIST)/libpam-google-authenticator/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pam
+	
 	# libpam-google-authenticator.mk Sign
 	$(call SIGN,libpam-google-authenticator,general.xml)
 
@@ -46,4 +47,3 @@ libpam-google-authenticator-package: libpam-google-authenticator-stage
 	rm -rf $(BUILD_DIST)/libpam-google-authenticator
 
 .PHONY: libpam-google-authenticator libpam-google-authenticator-package
-
