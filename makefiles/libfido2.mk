@@ -19,6 +19,7 @@ else
 libfido2: libfido2-setup libcbor openssl
 	cd $(BUILD_WORK)/libfido2/build && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
+		-DBUILD_EXAMPLES=OFF \
 		-DZLIB_FOUND=1 \
 		-DZLIB_LIBRARY_DIRS=$(TARGET_SYSROOT)/usr/lib \
 		-DZLIB_INCLUDE_DIRS=$(TARGET_SYSROOT)/usr/include/zlib.h \
