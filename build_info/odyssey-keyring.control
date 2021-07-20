@@ -1,0 +1,8 @@
+Package: odyssey-keyring
+Version: @DEB_ODYSSEY_KEYRING_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Keyrings
+Priority: optional
+Description: GnuPG keys for the Odyssey repository
+Name: Odyssey APT Keyring
