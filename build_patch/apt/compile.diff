@@ -10,18 +10,6 @@ diff -urN apt-2.1.11/CMake/Misc.cmake apt/CMake/Misc.cmake
      add_dependencies(${target} ${target}-versionscript)
  endfunction()
  
-diff -urN apt-2.1.11/CMake/apti18n.h.in apt/CMake/apti18n.h.in
---- apt-2.1.11/CMake/apti18n.h.in	2020-10-21 05:53:18.000000000 -0400
-+++ apt/CMake/apti18n.h.in	2020-11-22 18:23:41.695439833 -0500
-@@ -22,7 +22,7 @@
- # define N_(x) x
- #else
- // apt will not use any gettext
--extern "C" inline char* setlocale(int, const char*) throw() { return nullptr; }
-+// extern "C" inline char* setlocale(int, const char*) throw() { return nullptr; }
- extern "C" inline char* textdomain(const char*) throw() { return nullptr; }
- extern "C" inline char* bindtextdomain(const char*, const char*) throw() { return nullptr; }
- extern "C" inline char* dgettext(const char*, const char* msg) throw() { return const_cast<char*>(msg); }
 diff -urN apt-2.1.11/CMakeLists.txt apt/CMakeLists.txt
 --- apt-2.1.11/CMakeLists.txt	2020-10-21 05:53:18.000000000 -0400
 +++ apt/CMakeLists.txt	2020-11-22 18:24:03.107379080 -0500
@@ -98,7 +86,7 @@ diff -urN apt-2.1.11/apt-pkg/CMakeLists.txt apt/apt-pkg/CMakeLists.txt
                               ${ICONV_LIBRARIES}
                               $<$<BOOL:${GCRYPT_FOUND}>:${GCRYPT_LIBRARIES}>
                               $<$<BOOL:${XXHASH_FOUND}>:${XXHASH_LIBRARIES}>
-+                             $<$<BOOL:${USE_IOSEXEC}>:iosexec> "-framework Foundation"
++                             "-framework Foundation"
  )
  set_target_properties(apt-pkg PROPERTIES VERSION ${MAJOR}.${MINOR})
  set_target_properties(apt-pkg PROPERTIES SOVERSION ${MAJOR})
@@ -394,18 +382,6 @@ diff -urN apt-2.1.11/apt-pkg/getservbyport_r.cc apt/apt-pkg/getservbyport_r.cc
 +	return 0;
 +}
 +#endif // HAVE_GETSERVBYPORT_R
-diff -urN apt-2.1.11/apt-pkg/indexfile.cc apt/apt-pkg/indexfile.cc
---- apt-2.1.11/apt-pkg/indexfile.cc	2020-10-21 05:53:18.000000000 -0400
-+++ apt/apt-pkg/indexfile.cc	2020-11-22 18:23:41.694439835 -0500
-@@ -174,6 +174,8 @@
- 									/*}}}*/
- std::string pkgDebianIndexTargetFile::ArchiveURI(std::string const &File) const/*{{{*/
- {
-+   if ((APT::String::Startswith(Target.Option(IndexTarget::REPO_URI), "http://") && APT::String::Startswith(File, "http://")) || APT::String::Startswith(File, "https://"))
-+      return File;
-    return Target.Option(IndexTarget::REPO_URI) + File;
- }
- 									/*}}}*/
 diff -urN apt-2.1.11/apt-pkg/memrchr.cc apt/apt-pkg/memrchr.cc
 --- apt-2.1.11/apt-pkg/memrchr.cc	1969-12-31 19:00:00.000000000 -0500
 +++ apt/apt-pkg/memrchr.cc	2020-11-22 18:23:41.695439833 -0500
@@ -756,7 +732,7 @@ diff -urN apt-2.1.11/apt-private/CMakeLists.txt apt/apt-private/CMakeLists.txt
  
  # Link the library and set the SONAME
 -target_link_libraries(apt-private PUBLIC apt-pkg)
-+target_link_libraries(apt-private PUBLIC apt-pkg $<$<BOOL:${USE_IOSEXEC}>:iosexec> "-framework Foundation")
++target_link_libraries(apt-private PUBLIC apt-pkg "-framework Foundation")
  set_target_properties(apt-private PROPERTIES VERSION ${MAJOR}.${MINOR})
  set_target_properties(apt-private PROPERTIES SOVERSION ${MAJOR})
  set_target_properties(apt-private PROPERTIES CXX_VISIBILITY_PRESET hidden)
@@ -807,14 +783,3 @@ diff -urN apt/methods/connect.cc apt/methods/connect.cc
     };
 
     // We will return once we have no more connections, a time out, or
-diff -urN apt/methods/CMakeLists.txt apt/methods/CMakeLists.txt
---- apt/methods/CMakeLists.txt	2021-04-29 04:45:32.000000000 -0400
-+++ apt/methods/CMakeLists.txt	2021-05-03 23:00:24.918079696 -0400
-@@ -1,6 +1,6 @@
- # Create the executable targets
- include_directories($<$<BOOL:${SECCOMP_FOUND}>:${SECCOMP_INCLUDE_DIR}>)
--link_libraries(apt-pkg $<$<BOOL:${SECCOMP_FOUND}>:${SECCOMP_LIBRARIES}>)
-+link_libraries(apt-pkg $<$<BOOL:${SECCOMP_FOUND}>:${SECCOMP_LIBRARIES}> $<$<BOOL:${USE_IOSEXEC}>:iosexec>)
-
- add_library(connectlib OBJECT connect.cc rfc2553emu.cc)
-
