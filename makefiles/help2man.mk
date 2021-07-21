@@ -25,6 +25,7 @@ help2man: help2man-setup gettext
 		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/help2man/.build_complete
 endif
+
 help2man-package: help2man-stage
 	# help2man.mk Package Structure
 	rm -rf $(BUILD_DIST)/help2man

@@ -9,6 +9,7 @@ DEB_ZLIB-NG_V    ?= $(ZLIB-NG_VERSION)
 zlib-ng-setup: setup
 	$(call GITHUB_ARCHIVE,zlib-ng,zlib-ng,$(ZLIB-NG_VERSION),$(ZLIB-NG_VERSION))
 	$(call EXTRACT_TAR,zlib-ng-$(ZLIB-NG_VERSION).tar.gz,zlib-ng-$(ZLIB-NG_VERSION),zlib-ng)
+
 ifneq ($(wildcard $(BUILD_WORK)/zlib-ng/.build_complete),)
 zlib-ng:
 	@echo "Using previously built zlib-ng."
@@ -24,6 +25,7 @@ zlib-ng: zlib-ng-setup
 		DESTDIR=$(BUILD_BASE)
 	touch $(BUILD_WORK)/zlib-ng/.build_complete
 endif
+
 zlib-ng-package: zlib-ng-stage
 	# zlib-ng.mk Package Structure
 	rm -rf $(BUILD_DIST)/libz-ng{2,-dev}

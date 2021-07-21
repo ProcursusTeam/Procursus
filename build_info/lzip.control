@@ -4,4 +4,10 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Archiving 
 Priority: optional
-Description: Lzip is a lossless data compressor based on the LZMA algorithm, with very safe integrity checking and a user interface similar to the one of gzip or bzip2. Lzip decompresses almost as fast as gzip and compresses better than bzip2, which makes it well suited for software distribution and data archiving
+Description: lossless data compressor.
+ Lzip is a lossless data compressor based on the LZMA
+ algorithm, with very safe integrity checking and a user
+ interface similar to the one of gzip or bzip2. Lzip
+ decompresses almost as fast as gzip and compresses better
+ than bzip2, which makes it well suited for software distribution
+ and data archiving.

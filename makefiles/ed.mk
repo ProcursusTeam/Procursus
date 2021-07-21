@@ -29,6 +29,7 @@ ed: ed-setup
 		DESTDIR="$(BUILD_BASE)"
 	touch $(BUILD_WORK)/ed/.build_complete
 endif
+
 ed-package: ed-stage
 	# ed.mk Package Structure
 	rm -rf $(BUILD_DIST)/ed

@@ -1,0 +1,8 @@
+Package: idevicehacked-keyring
+Version: @DEB_IDHACKED_KEYRING_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Keyrings
+Priority: optional
+Description: GnuPG keys for the iDeviceHacked repositories
+Name: iDeviceHacked APT Keyring

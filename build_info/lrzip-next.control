@@ -5,5 +5,9 @@ Maintainer: @DEB_MAINTAINER@
 Provides: lrzip
 Section: Archiving
 Priority: optional
-Depends: liblz4-1, liblzo2-2, libgpg-error0, libgcrypt20 
-Description: Long Range Zip. An updated and Enhanced version of ckolivas' lrzip project. Lrzip Next Includes updated SDKs, Filtering, Improved output, an ASM Disassembler, and many other features not in the mainline.
+Depends: liblz4-1, liblzo2-2, libgpg-error0, libgcrypt20
+Description: Long range Zip.
+ An updated and enhanced version of ckolivas's lrzip
+ project. lrzip-next includes updated SDKs, filtering,
+ improved output, an ASM disassembler, and many other
+ features not in the mainline.
