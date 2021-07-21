@@ -6,7 +6,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS       += text-cmds
 TEXT-CMDS_VERSION := 106
-DEB_TEXT-CMDS_V   ?= $(TEXT-CMDS_VERSION)
+DEB_TEXT-CMDS_V   ?= 1:$(TEXT-CMDS_VERSION)
 
 text-cmds-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/text_cmds/text_cmds-$(TEXT-CMDS_VERSION).tar.gz
@@ -32,7 +32,7 @@ text-cmds: text-cmds-setup ncurses
 		cp -af $$bin/$$bin.6 $(BUILD_STAGE)/text-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man6 2>/dev/null; \
 	done
 	mv $(BUILD_STAGE)/text-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/md5 $(BUILD_STAGE)/text-cmds/$(MEMO_PREFIX)/sbin/md5
-	for cmd in rmd160 sha1 sha224 sha256 sha384 sha512 sha512t256 skein256 skein512 skein1014; do \
+	for cmd in rmd160 sha1 sha256; do \
 		ln -s md5 $(BUILD_STAGE)/text-cmds/$(MEMO_PREFIX)/sbin/$$cmd; \
 		ln -s md5.1.zst $(BUILD_STAGE)/text-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$$cmd.1.zst; \
 	done
