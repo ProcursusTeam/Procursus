@@ -564,10 +564,10 @@ DEFAULT_PERL_BUILD_FLAGS := \
 DEFAULT_GOLANG_FLAGS := \
 	GOOS=$(shell echo $(RUST_TARGET) | cut -f3 -d-) \
 	GOARCH=$(shell echo $(MEMO_TARGET) | cut -f2 -d-) \
-	CGO_CFLAGS="$(shell echo $(CFLAGS) | sed 's/$(OPTIMIZATION_FLAGS)//')" \
-	CGO_CXXFLAGS="$(shell echo $(CXXFLAGS) | sed 's/$(OPTIMIZATION_FLAGS)//')" \
+	CGO_CFLAGS="$(shell echo $(CFLAGS) | sed 's|$(OPTIMIZATION_FLAGS)||')" \
+	CGO_CXXFLAGS="$(shell echo $(CXXFLAGS) | sed 's|$(OPTIMIZATION_FLAGS)||')" \
 	CGO_CPPFLAGS="$(CPPFLAGS)" \
-	CGO_LDFLAGS="$(shell echo $(LDFLAGS) | sed 's/$(OPTIMIZATION_FLAGS)//')" \
+	CGO_LDFLAGS="$(shell echo $(LDFLAGS) | sed 's|$(OPTIMIZATION_FLAGS)||')" \
 	CGO_ENABLED=1 \
 	CC="$(CC)" \
 	CXX="$(CXX)" \
@@ -1067,13 +1067,21 @@ rebuild-%:
 
 setup:
 	@mkdir -p \
-		$(BUILD_BASE) $(BUILD_BASE)$(MEMO_PREFIX)/{{,System}/Library/Frameworks,$(MEMO_SUB_PREFIX)/{include/$(MULTIARCH_TARGET)/{bsm,objc,os,sys,IOKit,libkern,mach/machine},lib/$(MULTIARCH_TARGET)/pkgconfig,$(MEMO_ALT_PREFIX)/lib/$(MULTIARCH_TARGET)}} \
+		$(BUILD_BASE) $(BUILD_BASE)$(MEMO_PREFIX)/{{,System}/Library/Frameworks,$(MEMO_SUB_PREFIX)/{include/$(MULTIARCH_TARGET)/{bsm,objc,os,sys,IOKit,libkern,mach/machine,CommonCrypto},lib/$(MULTIARCH_TARGET)/pkgconfig,$(MEMO_ALT_PREFIX)/lib/$(MULTIARCH_TARGET)}} \
 		$(BUILD_SOURCE) $(BUILD_WORK) $(BUILD_STAGE) $(BUILD_STRAP)
 
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_INCDIR) \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libsyscall/wrappers/spawn/spawn.h \
 		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/bootstrap_priv.h \
-		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/vproc_priv.h
+		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/vproc_priv.h \
+		https://opensource.apple.com/source/libplatform/libplatform-126.1.2/include/_simple.h
+
+	@wget -q -nc -P $(BUILD_BASE)$(MEMO_INCDIR)/os \
+		https://opensource.apple.com/source/Libc/Libc-1439.40.11/os/assumes.h \
+		https://opensource.apple.com/source/libplatform/libplatform-126.1.2/include/os/base_private.h
+
+	@wget -q -nc -P $(BUILD_BASE)$(MEMO_INCDIR)/CommonCrypto \
+		https://opensource.apple.com/source/CommonCrypto/CommonCrypto-60118.30.2/include/CommonDigestSPI.h
 
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_INCDIR)/bsm \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/bsd/bsm/audit_kevents.h
@@ -1085,7 +1093,8 @@ setup:
 
 ifeq ($(UNAME),FreeBSD)
 	@# FreeBSD does not have stdbool.h and stdarg.h
-	@cp -a $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Headers/{stdbool.h,stdarg.h} $(BUILD_BASE)/$(MEMO_INCDIR)
+	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Headers/{stdbool.h,stdarg.h} $(BUILD_BASE)/$(MEMO_INCDIR)
+	@cp -af /usr/include/stdalign.h $(BUILD_BASE)/$(MEMO_INCDIR)
 endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
