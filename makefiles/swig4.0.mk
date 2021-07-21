@@ -16,11 +16,12 @@ swig4.0:
 else
 swig4.0: swig4.0-setup
 	cd $(BUILD_WORK)/swig && ./autogen.sh && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		--disable-ccache
 	+$(MAKE) -C $(BUILD_WORK)/swig
 	+$(MAKE) -C $(BUILD_WORK)/swig install \
 		DESTDIR=$(BUILD_STAGE)/swig4.0
-	touch $(BUILD_WORK)/swig4.0/.build_complete
+	touch $(BUILD_WORK)/swig/.build_complete
 endif
 
 swig4.0-package: swig4.0-stage
