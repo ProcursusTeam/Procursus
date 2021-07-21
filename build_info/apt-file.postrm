@@ -1,0 +1,8 @@
+#!/bin/sh
+# postremoval script for apt-file
+set -e;
+
+if [ "purge" = "$1" ]; then
+        rm -fr @MEMO_PREFIX@/var/cache/apt/apt-file/
+#        rm -f @MEMO_PREFIX@/var/lib/update-notifier/user.d/apt-file-update
+fi;

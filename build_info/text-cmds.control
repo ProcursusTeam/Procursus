@@ -1,0 +1,8 @@
+Package: text-cmds
+Section: Utilities
+Version: @DEB_TEXT-CMDS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libncursesw6
+Priority: standard
+Description: md5, ee, ul, banner

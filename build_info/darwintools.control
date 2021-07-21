@@ -2,8 +2,9 @@ Package: darwintools
 Version: @DEB_DARWINTOOLS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Pre-Depends: libiosexec1
+Depends: grep, coreutils (>= 8.32-12)
 Recommends: uikittools (>= 2.0.0)
 Section: Administration
 Priority: required
-Description: sw_vers, firmware
-Name: Darwin Tools
+Description: Provides sw_vers, @MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/firmware, and @MEMO_PREFIX@/etc/resolv.conf

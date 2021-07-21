@@ -1,0 +1,7 @@
+Package: asciidoctor-doc
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_ASCIIDOCTOR_V@
+Section: Documentation
+Priority: optional
+Description: Text processor and publishing toolchain for AsciiDoc implemented in Ruby (documentation)

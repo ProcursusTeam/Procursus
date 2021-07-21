@@ -5,7 +5,7 @@ Maintainer: @DEB_MAINTAINER@
 Section: Utilities
 Priority: optional
 Multi-Arch: foreign
-Depends: libpcre2-posix2, perl, bash, patch
+Depends: libpcre2-posix3, python3, perl, bash, patch
 Description: Utilities to work with patches
  This package includes the following utilities:
   - combinediff creates a cumulative patch from two incremental patches
