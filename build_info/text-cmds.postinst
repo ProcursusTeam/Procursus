@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+
+for i in ree edit editor; do
+  update-alternatives \
+    --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/$i $i @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/ee 20 \
+    --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/$i.1 $i.1 @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/ee.1.zst
+done
+
+exit 0
