@@ -18,6 +18,16 @@ else
 libsigsegv: libsigsegv-setup
 	cd $(BUILD_WORK)/libsigsegv && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
+
+#	Workaround for bad detection
+	echo -e "#undef CFG_FAULT\n \
+#define CFG_FAULT \"fault-macos.h\"\n \
+#undef CFG_HANDLER\n \
+#define CFG_HANDLER \"handler-macos.c\"\n \
+#undef CFG_MACHFAULT\n \
+#define CFG_MACHFAULT \"machfault-macos.h\"\n \
+" >> $(BUILD_WORK)/libsigsegv/config.h
+
 	+$(MAKE) -C $(BUILD_WORK)/libsigsegv
 	+$(MAKE) -C $(BUILD_WORK)/libsigsegv install \
 		DESTDIR=$(BUILD_STAGE)/libsigsegv
