@@ -1133,7 +1133,7 @@ endif
 	@$(SED) 's|@MEMO_LIBDIR@|$(MEMO_LIBDIR)|g' $(BUILD_MISC)/libiosexec/libiosexec.1.tbd > $(BUILD_BASE)/$(MEMO_LIBDIR)/libiosexec.1.tbd
 	@ln -sf libiosexec.1.tbd $(BUILD_BASE)/$(MEMO_LIBDIR)/libiosexec.tbd
 	@rm -f $(BUILD_BASE)/$(MEMO_LIBDIR)/libiosexec.*.dylib
-	@$(SED) -i '1s/^/#include <libiosexec.h>\n/' $(BUILD_BASE)$(MEMO_INCDIR)/unistd.h
+	@$(SED) -i '1s/^/#include <libiosexec.h>\n/' $(BUILD_BASE)$(MEMO_INCDIR)/unistd.h $(BUILD_BASE)/$(MEMO_INCDIR)/spawn.h
 endif
 
 ifneq ($(MEMO_QUIET),1)
