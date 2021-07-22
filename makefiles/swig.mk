@@ -39,6 +39,6 @@ swig-package: swig-stage
 	$(call PACK,swig4.0,DEB_SWIG_V)
 
 	# swig.mk Build cleanup
-	rm -rf $(BUILD_DIST)/swig
+	rm -rf $(BUILD_DIST)/swig4.0
 
 .PHONY: swig swig-package
