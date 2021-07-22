@@ -5,9 +5,9 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS      += libiosexec
-LIBIOSEXEC_VERSION := 1.0.16
+LIBIOSEXEC_VERSION := 1.1-alpha1
 LIBIOSEXEC_SOVER   := 1
-DEB_LIBIOSEXEC_V   ?= $(LIBIOSEXEC_VERSION)
+DEB_LIBIOSEXEC_V   ?= 1.0.17~$(LIBIOSEXEC_VERSION)
 
 libiosexec-setup: setup
 	$(call GITHUB_ARCHIVE,ProcursusTeam,libiosexec,$(LIBIOSEXEC_VERSION),$(LIBIOSEXEC_VERSION))

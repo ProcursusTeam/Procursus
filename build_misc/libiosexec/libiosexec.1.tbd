@@ -22,5 +22,5 @@ compatibility-version: 0
 exports:
   - targets:         [ arm64-ios, arm64e-ios, arm64-tvos, arm64e-tvos, arm64_32-watchos, arm64-bridgeos ]
     symbols:         [ _ie_execl, _ie_execle, _ie_execlp, _ie_execv, _ie_execve, 
-                       _ie_execvp, _ie_execvpe ]
+                       _ie_execvp, _ie_execvpe, _ie_posix_spawn, _ie_posix_spawnp ]
 ...

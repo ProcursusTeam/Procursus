@@ -2,9 +2,16 @@ Package: make
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_MAKE_V@
-Depends: libiosexec1, libintl8
+Depends: libiosexec1 (>> 1.0.16), libintl8
 Section: Development
 Priority: important
-Description: dependency-based build environments
-Name: Make
-Tag: purpose::console, role::hacker
+Description: utility for directing compilation
+ GNU Make is a utility which controls the generation of executables
+ and other target files of a program from the program's source
+ files. It determines automatically which pieces of a large program
+ need to be (re)created, and issues the commands to (re)create
+ them. Make can be used to organize any task in which targets (files)
+ are to be automatically updated based on input files whenever the
+ corresponding input is newer --- it is not limited to building
+ computer programs. Indeed, Make is a general purpose dependency
+ solver.
