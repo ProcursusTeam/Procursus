@@ -1,5 +1,5 @@
 Package: swig4.0
-Version: @DEB_SWIG4.0_V@
+Version: @DEB_SWIG_V@
 Priority: optional
 Section: Interpreters
 Architecture: @DEB_ARCH@
