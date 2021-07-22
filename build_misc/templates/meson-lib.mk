@@ -9,7 +9,7 @@ DEB_@PKG@_V   ?= $(@PKG@_VERSION)
 @pkg@-setup: setup
 @download@
 	$(call EXTRACT_TAR,@pkg@-$(@PKG@_VERSION).tar.@compression@,@pkg@-$(@PKG@_VERSION),@pkg@)
-	$(call DO_PATCH,@pkg@,@pkg@,-p1)
+	#$(call DO_PATCH,@pkg@,@pkg@,-p1)
 	mkdir -p $(BUILD_WORK)/@pkg@/build
 	echo -e "[host_machine]\n \
 	system = 'darwin'\n \
