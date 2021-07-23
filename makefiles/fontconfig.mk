@@ -19,9 +19,7 @@ else
 fontconfig: fontconfig-setup gettext freetype uuid expat
 	cd $(BUILD_WORK)/fontconfig && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--with-add-fonts="/System/Library/Fonts,~/Library/UserFonts" \
-		FREETYPE_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/freetype2 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libpng16" \
-		FREETYPE_LIBS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -lfreetype"
+		--with-add-fonts="/System/Library/Fonts,~/Library/UserFonts"
 	+$(MAKE) -C $(BUILD_WORK)/fontconfig
 	+$(MAKE) -C $(BUILD_WORK)/fontconfig install \
 		DESTDIR=$(BUILD_STAGE)/fontconfig
