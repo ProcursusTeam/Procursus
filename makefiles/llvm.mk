@@ -226,6 +226,7 @@ llvm-package: llvm-stage
 	cp -a $(BUILD_STAGE)/llvm/$(MEMO_LIBDIR)/llvm-$(LLVM_MAJOR_V)/bin/{c-index-test,clang-*,clangd,sancov,scan-build,scan-view} \
 			$(BUILD_DIST)/clang-tools-$(LLVM_MAJOR_V)/$(MEMO_LIBDIR)/llvm-$(LLVM_MAJOR_V)/bin
 	rm $(BUILD_DIST)/clang-tools-$(LLVM_MAJOR_V)/$(MEMO_LIBDIR)/llvm-$(LLVM_MAJOR_V)/bin/{clang-$(LLVM_MAJOR_V),clang-cpp}
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_LIBDIR)/llvm-$(LLVM_MAJOR_V)/libexec $(BUILD_DIST)/clang-tools-$(LLVM_MAJOR_V)/$(MEMO_LIBDIR)/llvm-$(LLVM_MAJOR_V)
 
 	# llvm.mk Prep clang-tools
 	mkdir -p $(BUILD_DIST)/clang-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
