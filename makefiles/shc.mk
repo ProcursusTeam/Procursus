@@ -10,7 +10,6 @@ shc-setup: setup
 	$(call GITHUB_ARCHIVE,neurobin,shc,$(SHC_VERSION),$(SHC_VERSION))
 	$(call EXTRACT_TAR,shc-$(SHC_VERSION).tar.gz,shc-$(SHC_VERSION),shc)
 
-
 ifneq ($(wildcard $(BUILD_WORK)/shc/.build_complete),)
 shc:
 	@echo "Using previously built shc."
@@ -18,8 +17,8 @@ else
 shc: shc-setup
 	cd $(BUILD_WORK)/shc && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-			ac_cv_func_malloc_0_nonnull=yes \
-			ac_cv_func_realloc_0_nonnull=yes
+		ac_cv_func_malloc_0_nonnull=yes \
+		ac_cv_func_realloc_0_nonnull=yes
 	+$(MAKE) -C $(BUILD_WORK)/shc
 	+$(MAKE) -C $(BUILD_WORK)/shc install \
 		DESTDIR=$(BUILD_STAGE)/shc
@@ -29,7 +28,6 @@ endif
 shc-package: shc-stage
 	# shc.mk Package Structure
 	rm -rf $(BUILD_DIST)/shc
-	mkdir -p $(BUILD_DIST)/shc
 	
 	# shc.mk Prep shc
 	cp -a $(BUILD_STAGE)/shc $(BUILD_DIST)
@@ -44,4 +42,3 @@ shc-package: shc-stage
 	rm -rf $(BUILD_DIST)/shc
 
 .PHONY: shc shc-package
-

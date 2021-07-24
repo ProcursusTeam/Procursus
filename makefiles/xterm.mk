@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += xterm
-XTERM_VERSION := 367
+XTERM_VERSION := 368
 DEB_XTERM_V   ?= $(XTERM_VERSION)
 
 xterm-setup: setup

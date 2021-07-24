@@ -22,7 +22,7 @@ dash: dash-setup libedit
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--exec-prefix="" \
 		--with-libedit \
-		$(DASH_LIBS)
+		--disable-static
 	+$(MAKE) -C $(BUILD_WORK)/dash
 	+$(MAKE) -C $(BUILD_WORK)/dash install \
 		DESTDIR=$(BUILD_STAGE)/dash

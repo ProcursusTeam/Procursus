@@ -38,6 +38,7 @@ endif
 		--disable-start-stop-daemon \
 		--disable-dselect \
 		--without-libselinux \
+		--disable-shared \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
 		PERL_LIBDIR='$$(prefix)/share/perl5' \
 		PERL="$(shell which perl)" \

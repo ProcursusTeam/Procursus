@@ -4,17 +4,12 @@ endif
 
 SUBPROJECTS  += zip
 ZIP_VERSION  := 3.0
-DEBIAN_ZIP_V := $(ZIP_VERSION)-12
-DEB_ZIP_V    ?= $(DEBIAN_ZIP_V)
+DEB_ZIP_V    ?= $(ZIP_VERSION)-12
 
 zip-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/z/zip/zip_$(ZIP_VERSION).orig.tar.gz \
-		https://deb.debian.org/debian/pool/main/z/zip/zip_$(DEBIAN_ZIP_V).debian.tar.xz
+	wget -q -nc -P $(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/z/zip/zip_$(ZIP_VERSION).orig.tar.gz
 	$(call EXTRACT_TAR,zip_$(ZIP_VERSION).orig.tar.gz,zip30,zip)
-	$(call EXTRACT_TAR,zip_$(DEBIAN_ZIP_V).debian.tar.xz,debian/patches,$(BUILD_PATCH)/zip-$(ZIP_VERSION))
-	rm $(BUILD_PATCH)/zip-$(ZIP_VERSION)/series
-	rm -rf $(BUILD_WORK)/debian
-	$(call DO_PATCH,zip-$(ZIP_VERSION),zip,-p1)
+	$(call DO_PATCH,zip,zip,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/zip/.build_complete),)
 zip:

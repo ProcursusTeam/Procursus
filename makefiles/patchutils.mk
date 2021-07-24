@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS        += patchutils
 PATCHUTILS_VERSION := 0.4.2
-DEB_PATCHUTILS_V   ?= $(PATCHUTILS_VERSION)
+DEB_PATCHUTILS_V   ?= $(PATCHUTILS_VERSION)-1
 
 patchutils-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) http://cyberelk.net/tim/data/patchutils/stable/patchutils-$(PATCHUTILS_VERSION).tar.xz{,.sig}
@@ -18,11 +18,12 @@ else
 patchutils: patchutils-setup pcre2
 	cd $(BUILD_WORK)/patchutils && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--with-pcre2 \
-		PERL="$(shell which perl)"
+		--with-pcre2
 	+$(MAKE) -C $(BUILD_WORK)/patchutils
 	+$(MAKE) -C $(BUILD_WORK)/patchutils install \
 		DESTDIR=$(BUILD_STAGE)/patchutils
+	$(SED) -i -e "s|$$(cat $(BUILD_STAGE)/patchutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/recountdiff | grep \#! | sed 's/#!//')|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl|" \
+		-e "s|$$(cat $(BUILD_STAGE)/patchutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gitdiff | grep \#! | sed 's/#!//')|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/patchutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
 	touch $(BUILD_WORK)/patchutils/.build_complete
 endif
 
