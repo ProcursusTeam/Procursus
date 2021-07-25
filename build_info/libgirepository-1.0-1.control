@@ -2,7 +2,7 @@ Package: libgirepository-1.0-1
 Version: @DEB_GOBJECT-INTROSPECTION_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libglib2.0-0, libffi7
+Depends: libglib2.0-0, libffi8
 Section: Libraries
 Homepage: https://wiki.gnome.org/GObjectIntrospection
 Description: Library for handling GObject introspection data (runtime library)
