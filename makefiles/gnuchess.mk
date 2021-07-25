@@ -7,7 +7,7 @@ GNUCHESS_VERSION := 6.2.7
 DEB_GNUCHESS_V   ?= $(GNUCHESS_VERSION)-2
 
 gnuchess-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://mirror.its.dal.ca/gnu/chess/gnuchess-$(GNUCHESS_VERSION).tar.gz{,.sig}
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gnu/chess/gnuchess-$(GNUCHESS_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,gnuchess-$(GNUCHESS_VERSION).tar.gz)
 	$(call EXTRACT_TAR,gnuchess-$(GNUCHESS_VERSION).tar.gz,gnuchess-$(GNUCHESS_VERSION),gnuchess)
 

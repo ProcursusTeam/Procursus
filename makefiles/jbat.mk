@@ -8,7 +8,7 @@ DEB_JBAT_V   ?= $(JBAT_VERSION)
 
 jbat-setup: setup
 	mkdir -p $(BUILD_WORK)/jbat
-	lynx -width 1000 -dump http://newosxbook.com/src.jl\?tree\=listings\&file\=bat.c > \
+	lynx -width 1000 -dump https://newosxbook.com/src.jl\?tree\=listings\&file\=bat.c > \
 		$(BUILD_WORK)/jbat/jbat.c
 	$(SED) -i '/free/d' $(BUILD_WORK)/jbat/jbat.c
 

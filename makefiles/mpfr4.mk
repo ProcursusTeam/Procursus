@@ -7,7 +7,7 @@ MPFR4_VERSION := 4.1.0
 DEB_MPFR4_V   ?= $(MPFR4_VERSION)
 
 mpfr4-setup: setup
-	wget -q -np -P $(BUILD_SOURCE) https://ftp.gnu.org/gnu/mpfr/mpfr-$(MPFR4_VERSION).tar.xz
+	wget -q -np -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gnu/mpfr/mpfr-$(MPFR4_VERSION).tar.xz
 	$(call EXTRACT_TAR,mpfr-$(MPFR4_VERSION).tar.xz,mpfr-$(MPFR4_VERSION),mpfr4)
 
 ifneq ($(wildcard $(BUILD_WORK)/mpfr4/.build_complete),)

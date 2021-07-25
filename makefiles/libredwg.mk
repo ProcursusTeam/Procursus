@@ -7,7 +7,7 @@ LIBREDWG_VERSION := 0.12
 DEB_LIBREDWG_V   ?= $(LIBREDWG_VERSION)
 
 libredwg-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://mirror.its.dal.ca/gnu/libredwg/libredwg-$(LIBREDWG_VERSION).tar.xz
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gnu/libredwg/libredwg-$(LIBREDWG_VERSION).tar.xz
 	$(call EXTRACT_TAR,libredwg-$(LIBREDWG_VERSION).tar.xz,libredwg-$(LIBREDWG_VERSION),libredwg)
 
 ifneq ($(wildcard $(BUILD_WORK)/libredwg/.build_complete),)

@@ -7,7 +7,7 @@ SENSIBLE-UTILS_VERSION := 0.0.13
 DEB_SENSIBLE-UTILS_V   ?= $(SENSIBLE-UTILS_VERSION)
 
 sensible-utils-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/s/sensible-utils/sensible-utils_$(SENSIBLE-UTILS_VERSION).tar.xz
+	wget -q -nc -P $(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/s/sensible-utils/sensible-utils_$(SENSIBLE-UTILS_VERSION).tar.xz
 	$(call EXTRACT_TAR,sensible-utils_$(SENSIBLE-UTILS_VERSION).tar.xz,sensible-utils-$(SENSIBLE-UTILS_VERSION),sensible-utils)
 
 ifneq ($(wildcard $(BUILD_WORK)/sensible-utils/.build_complete),)

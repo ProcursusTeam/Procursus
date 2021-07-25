@@ -7,7 +7,7 @@ DEBOOTSTRAP_VERSION := 1.0.123
 DEB_DEBOOTSTRAP_V   ?= $(DEBOOTSTRAP_VERSION)
 
 debootstrap-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/d/debootstrap/debootstrap_$(DEBOOTSTRAP_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/d/debootstrap/debootstrap_$(DEBOOTSTRAP_VERSION).tar.gz
 	$(TAR) xf $(BUILD_SOURCE)/debootstrap_$(DEBOOTSTRAP_VERSION).tar.gz -C $(BUILD_WORK)
 	$(call DO_PATCH,debootstrap,debootstrap,-p1)
 	$(SED) -i 's/@VERSION@/$(DEB_DEBOOTSTRAP_V)/g' $(BUILD_WORK)/debootstrap/debootstrap

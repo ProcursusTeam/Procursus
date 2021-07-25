@@ -7,7 +7,7 @@ SCREEN_VERSION := 4.8.0
 DEB_SCREEN_V   ?= $(SCREEN_VERSION)-1
 
 screen-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftp.gnu.org/gnu/screen/screen-$(SCREEN_VERSION).tar.gz{,.sig}
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gnu/screen/screen-$(SCREEN_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,screen-$(SCREEN_VERSION).tar.gz)
 	$(call EXTRACT_TAR,screen-$(SCREEN_VERSION).tar.gz,screen-$(SCREEN_VERSION),screen)
 	$(call DO_PATCH,screen,screen,-p1)

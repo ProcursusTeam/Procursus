@@ -7,7 +7,7 @@ BISON_VERSION := 3.7.6
 DEB_BISON_V   ?= $(BISON_VERSION)
 
 bison-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftp.gnu.org/gnu/bison/bison-$(BISON_VERSION).tar.xz{,.sig}
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gnu/bison/bison-$(BISON_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,bison-$(BISON_VERSION).tar.xz)
 	$(call EXTRACT_TAR,bison-$(BISON_VERSION).tar.xz,bison-$(BISON_VERSION),bison)
 
