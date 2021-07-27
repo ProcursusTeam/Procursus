@@ -1,0 +1,8 @@
+Package: stkc-keyring
+Version: @DEB_STKC_KEYRING_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Keyrings
+Priority: optional
+Description: GnuPG keys for stkc's repositories
+Name: stkc APT Keyring
