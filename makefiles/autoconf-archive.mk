@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS              += autoconf-archive
 AUTOCONF-ARCHIVE_VERSION := 2021.02.19
-DEB_AUTOCONF-ARCHIVE_V   ?= $(AUTOCONF-ARCHIVE_VERSION)
+DEB_AUTOCONF-ARCHIVE_V   ?= $(AUTOCONF-ARCHIVE_VERSION)-1
 
 autoconf-archive-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) http://mirrors.ocf.berkeley.edu/gnu/autoconf-archive/autoconf-archive-$(AUTOCONF-ARCHIVE_VERSION).tar.xz{,.sig}
@@ -27,6 +27,9 @@ autoconf-archive-package: autoconf-archive-stage
 	# autoconf-archive.mk Package Structure
 	rm -rf $(BUILD_DIST)/autoconf-archive
 
+ifneq (,$(findstring darwin-amd64,$(MEMO_TARGET)))
+	rm -rf $(BUILD_STAGE)/autoconf-archive/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal/ax_c_float_words_bigendian.m4
+endif
 	# autoconf-archive.mk Prep autoconf-archive
 	cp -a $(BUILD_STAGE)/autoconf-archive $(BUILD_DIST)
 
