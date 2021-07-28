@@ -1,0 +1,124 @@
+From bcbc36a9a4110626e10c5bd2a248c4d9dafb8829 Mon Sep 17 00:00:00 2001
+From: Mingye Wang <arthur200126@gmail.com>
+Date: Thu, 7 Nov 2019 16:06:35 +0800
+Subject: [PATCH] cp: experimental MacOS clonefile support
+
+This patch enables using the macBS 10.12+ clonefile(2) system call for
+reflinking on supported filesystems. The system FreeBSD cp(1) only
+supports -c (--reflink=always), which is a pain in the Tim Cook.
+
+A version rebased for 8.31 seems to work on my Catalina.
+---
+ configure.ac | 14 ++++++++++++++
+ src/copy.c   | 47 ++++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 60 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 0ee01b2cd..31ff36511 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -353,6 +353,20 @@ case $utils_cv_func_setpriority,$ac_cv_func_nice in
+   gl_ADD_PROG([optional_bin_progs], [nice])
+ esac
+ 
++AC_CACHE_CHECK([for clonefile],
++  [utils_cv_func_clonefile],
++  [AC_LINK_IFELSE(
++    [AC_LANG_PROGRAM(
++       [[#include <sys/attr.h>
++         #include <sys/clonefile.h>
++       ]],
++       [[clonefile("", "", CLONE_NOFOLLOW);]])],
++    [utils_cv_func_clonefile=yes],
++    [utils_cv_func_clonefile=no])])
++if test $utils_cv_func_clonefile = yes; then
++  AC_DEFINE([HAVE_CLONEFILE], [1], [Define if clonefile exists.])
++fi
++
+ AC_DEFUN([coreutils_DUMMY_1],
+ [
+   AC_REQUIRE([gl_READUTMP])
+diff --git a/src/copy.c b/src/copy.c
+index dc1f6d0fa..7993b9828 100644
+--- a/src/copy.c
++++ b/src/copy.c
+@@ -73,6 +73,11 @@
+ # include "verror.h"
+ #endif
+ 
++#if HAVE_CLONEFILE
++# include <sys/attr.h>
++# include <sys/clonefile.h>
++#endif
++
+ #if HAVE_LINUX_FALLOC_H
+ # include <linux/falloc.h>
+ #endif
+@@ -1057,12 +1062,50 @@ copy_reg (char const *src_name, char const *dst_name,
+       goto close_src_desc;
+     }
+ 
++#if HAVE_CLONEFILE
++  /* The macOS clonefile() syscall is like link in that it takes
++     pathnames. Do it first. */
++  if (data_copy_required && x->reflink_mode)
++    {
++      bool clone_ok = false;
++      if (! *new_dst)
++        {
++          if (unlink(dst_name) != 0)
++            {
++              error (0, errno, _("cannot remove %s"), quoteaf (dst_name));
++              goto noclone;
++            }
++          if (x->verbose)
++            printf (_("removed %s\n"), quoteaf (dst_name));
++        }
++      uint32_t cloneflags = 0;
++      if (x->dereference == DEREF_NEVER) cloneflags |= CLONE_NOFOLLOW;
++      /* CLONE_NOOWNERCOPY (0x0002) is recently added with no specific
++       * date. Let's not feed ourselves to Apple-versioning. */
++      clone_ok = clonefile (src_name, dst_name, cloneflags) == 0;
++      noclone:;
++      if (clone_ok || x->reflink_mode == REFLINK_ALWAYS)
++        {
++          if (!clone_ok)
++            {
++              error (0, errno, _("failed to clone %s from %s"),
++                     quoteaf_n (0, dst_name), quoteaf_n (1, src_name));
++              return false;
++            }
++          data_copy_required = false;
++          /* This appears to be correct for the sec ctx code path. 
++           * Some extra work is done on owner stuff, but whatever. */
++          *new_dst = false;
++        }
++    }
++#endif
++
+   /* The semantics of the following open calls are mandated
+      by the specs for both cp and mv.  */
+   if (! *new_dst)
+     {
+       int open_flags =
+-        O_WRONLY | O_BINARY | (x->data_copy_required ? O_TRUNC : 0);
++        O_WRONLY | O_BINARY | (data_copy_required ? O_TRUNC : 0);
+       dest_desc = open (dst_name, open_flags);
+       dest_errno = errno;
+ 
+@@ -1199,6 +1242,7 @@ copy_reg (char const *src_name, char const *dst_name,
+       goto close_src_and_dst_desc;
+     }
+ 
++#if ! HAVE_CLONEFILE
+   /* --attributes-only overrides --reflink.  */
+   if (data_copy_required && x->reflink_mode)
+     {
+@@ -1215,6 +1259,7 @@ copy_reg (char const *src_name, char const *dst_name,
+           data_copy_required = false;
+         }
+     }
++#endif
+ 
+   if (data_copy_required)
+     {
