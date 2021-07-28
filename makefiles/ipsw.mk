@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += ipsw
-IPSW_VERSION  := 3.0.51
+IPSW_VERSION  := 3.0.57
 DEB_IPSW_V    ?= $(IPSW_VERSION)
 
 ipsw-setup: setup
@@ -17,7 +17,7 @@ else
 ipsw: ipsw-setup
 	cd $(BUILD_WORK)/ipsw && $(DEFAULT_GOLANG_FLAGS) go build \
 		-o build/dist/ipsw \
-		-ldflags "-s -w -X github.com/blacktop/ipsw/cmd/ipsw/cmd.AppVersion=$(IPSW_VERSION) -X github.com/blacktop/ipsw/cmd/ipsw/cmd.AppBuildTime==$(shell date -u +%Y%m%d)" \
+		--ldflags "-s -w -X github.com/blacktop/ipsw/cmd/ipsw/cmd.AppVersion=$(IPSW_VERSION) -X github.com/blacktop/ipsw/cmd/ipsw/cmd.AppBuildTime==$(shell date -u +%Y%m%d)" \
 		./cmd/ipsw
 	$(INSTALL) -Dm755 $(BUILD_WORK)/ipsw/build/dist/ipsw $(BUILD_STAGE)/ipsw/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/ipsw
 	$(call AFTER_BUILD)
