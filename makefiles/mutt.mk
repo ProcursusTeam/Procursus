@@ -19,7 +19,7 @@ ifneq ($(wildcard $(BUILD_WORK)/mutt/.build_complete),)
 mutt:
 	@echo "Using previously built mutt."
 else
-mutt: mutt-setup tokyocabinet ncurses gpgme
+mutt: mutt-setup tokyocabinet ncurses gpgme libidn2 gnutls
 	cd $(BUILD_WORK)/mutt && autoreconf -fi
 	cd $(BUILD_WORK)/mutt && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
