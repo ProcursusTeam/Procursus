@@ -33,8 +33,7 @@ coreutils: coreutils-setup gettext libgmp10 libxcrypt
 else # (,$(findstring darwin,$(MEMO_TARGET)))
 coreutils: coreutils-setup gettext libgmp10
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
-	rm -rf $(BUILD_WORK)/coreutils/lib/config.hin
-	cd $(BUILD_WORK)/coreutils && autoreconf -fi && ./configure -C \
+	cd $(BUILD_WORK)/coreutils && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		$(COREUTILS_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/coreutils

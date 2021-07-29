@@ -12,31 +12,6 @@ resubmission.
  src/copy.c   | 45 ++++++++++++++++++++++++++++++++++++++++++++-
  2 files changed, 58 insertions(+), 1 deletion(-)
 
-diff --git a/configure.ac b/configure.ac
-index 69d4e7d..07ad5c1 100644
---- a/configure.ac
-+++ b/configure.ac
-@@ -362,6 +362,20 @@ case $utils_cv_func_setpriority,$ac_cv_func_nice in
-   gl_ADD_PROG([optional_bin_progs], [nice])
- esac
- 
-+AC_CACHE_CHECK([for clonefile],
-+  [utils_cv_func_clonefile],
-+  [AC_LINK_IFELSE(
-+    [AC_LANG_PROGRAM(
-+       [[#include <sys/attr.h>
-+         #include <sys/clonefile.h>
-+       ]],
-+       [[clonefile("", "", CLONE_NOFOLLOW);]])],
-+    [utils_cv_func_clonefile=yes],
-+    [utils_cv_func_clonefile=no])])
-+if test $utils_cv_func_clonefile = yes; then
-+  AC_DEFINE([HAVE_CLONEFILE], [1], [Define if clonefile exists.])
-+fi
-+
- if test "$cross_compiling" = yes || test -c /dev/stdin <.; then
-   AC_DEFINE([DEV_FD_MIGHT_BE_CHR], [1],
-     [Define to 1 if /dev/std{in,out,err} and /dev/fd/N, if they exist, might be
 diff --git a/src/copy.c b/src/copy.c
 index 4050f69..fad8189 100644
 --- a/src/copy.c
@@ -45,7 +20,7 @@ index 4050f69..fad8189 100644
  # include "verror.h"
  #endif
  
-+#if HAVE_CLONEFILE
++#if __APPLE__
 +# include <sys/attr.h>
 +# include <sys/clonefile.h>
 +#endif
@@ -57,7 +32,7 @@ index 4050f69..fad8189 100644
        goto close_src_desc;
      }
  
-+#if HAVE_CLONEFILE
++#if __APPLE__
 +  /* The macOS clonefile() syscall is like link in that it takes
 +     pathnames. Do it first. */
 +  if (data_copy_required && x->reflink_mode)
@@ -107,7 +82,7 @@ index 4050f69..fad8189 100644
        goto close_src_and_dst_desc;
      }
  
-+#if ! HAVE_CLONEFILE
++#if ! __APPLE__
    /* --attributes-only overrides --reflink.  */
    if (data_copy_required && x->reflink_mode)
      {
