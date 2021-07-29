@@ -7,7 +7,7 @@ ISL_VERSION := 0.23
 DEB_ISL_V   ?= $(ISL_VERSION)
 
 isl-setup: setup
-	wget -q -np -P $(BUILD_SOURCE) https://isl.gforge.inria.fr/isl-$(ISL_VERSION).tar.xz
+	wget -q -np -P $(BUILD_SOURCE) http://isl.gforge.inria.fr/isl-$(ISL_VERSION).tar.xz
 	$(call EXTRACT_TAR,isl-$(ISL_VERSION).tar.xz,isl-$(ISL_VERSION),isl)
 
 ifneq ($(wildcard $(BUILD_WORK)/isl/.build_complete),)

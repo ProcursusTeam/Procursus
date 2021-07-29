@@ -7,7 +7,7 @@ LIBEV_VERSION := 4.33
 DEB_LIBEV_V   ?= $(LIBEV_VERSION)
 
 libev-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://dist.schmorp.de/libev/libev-$(LIBEV_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) http://dist.schmorp.de/libev/libev-$(LIBEV_VERSION).tar.gz
 	$(call EXTRACT_TAR,libev-$(LIBEV_VERSION).tar.gz,libev-$(LIBEV_VERSION),libev)
 
 ifneq ($(wildcard $(BUILD_WORK)/libev/.build_complete),)

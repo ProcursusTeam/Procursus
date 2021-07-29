@@ -7,7 +7,7 @@ LUA-LPEG_VERSION := 1.0.2
 DEB_LUA-LPEG_V   ?= $(LUA-LPEG_VERSION)
 
 lua-lpeg-setup: setup
-	wget -q -nc -P$(BUILD_SOURCE) https://www.inf.puc-rio.br/~roberto/lpeg/lpeg-$(LUA-LPEG_VERSION).tar.gz
+	wget -q -nc -P$(BUILD_SOURCE) http://www.inf.puc-rio.br/~roberto/lpeg/lpeg-$(LUA-LPEG_VERSION).tar.gz
 	$(call EXTRACT_TAR,lpeg-$(LUA-LPEG_VERSION).tar.gz,lpeg-$(LUA-LPEG_VERSION),lua-lpeg/build51)
 	$(call EXTRACT_TAR,lpeg-$(LUA-LPEG_VERSION).tar.gz,lpeg-$(LUA-LPEG_VERSION),lua-lpeg/build51/bundle)
 	$(call EXTRACT_TAR,lpeg-$(LUA-LPEG_VERSION).tar.gz,lpeg-$(LUA-LPEG_VERSION),lua-lpeg/build52)

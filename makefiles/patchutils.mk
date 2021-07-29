@@ -7,7 +7,7 @@ PATCHUTILS_VERSION := 0.4.2
 DEB_PATCHUTILS_V   ?= $(PATCHUTILS_VERSION)-1
 
 patchutils-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://cyberelk.net/tim/data/patchutils/stable/patchutils-$(PATCHUTILS_VERSION).tar.xz{,.sig}
+	wget -q -nc -P $(BUILD_SOURCE) http://cyberelk.net/tim/data/patchutils/stable/patchutils-$(PATCHUTILS_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,patchutils-$(PATCHUTILS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,patchutils-$(PATCHUTILS_VERSION).tar.xz,patchutils-$(PATCHUTILS_VERSION),patchutils)
 

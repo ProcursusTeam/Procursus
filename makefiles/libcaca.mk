@@ -7,7 +7,7 @@ LIBCACA_VERSION := 0.99.beta19
 DEB_LIBCACA_V   ?= $(LIBCACA_VERSION)
 
 libcaca-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://caca.zoy.org/files/libcaca/libcaca-$(LIBCACA_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) http://caca.zoy.org/files/libcaca/libcaca-$(LIBCACA_VERSION).tar.gz
 	$(call EXTRACT_TAR,libcaca-$(LIBCACA_VERSION).tar.gz,libcaca-$(LIBCACA_VERSION),libcaca)
 
 ifneq ($(wildcard $(BUILD_WORK)/libcaca/.build_complete),)
