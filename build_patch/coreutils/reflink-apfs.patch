@@ -1,23 +1,22 @@
-From bcbc36a9a4110626e10c5bd2a248c4d9dafb8829 Mon Sep 17 00:00:00 2001
-From: Mingye Wang <arthur200126@gmail.com>
-Date: Thu, 7 Nov 2019 16:06:35 +0800
-Subject: [PATCH] cp: experimental MacOS clonefile support
+From:	Mingye Wang
+Subject:	[PATCH] [RFC] cp: MacOS clonefile support
+Date:	Sun, 23 Aug 2020 02:10:12 +0800
+This patch enables using the macOS 10.12+ clonefile(2) system call for
+reflinking on supported filesystems. The system BSD cp(1) only
+supports -c (--reflink=always), which is quite a pain.
 
-This patch enables using the macBS 10.12+ clonefile(2) system call for
-reflinking on supported filesystems. The system FreeBSD cp(1) only
-supports -c (--reflink=always), which is a pain in the Tim Cook.
-
-A version rebased for 8.31 seems to work on my Catalina.
+Tested on a hackintosh machine with macOS 10.15. And yes, this is a
+resubmission.
 ---
  configure.ac | 14 ++++++++++++++
- src/copy.c   | 47 ++++++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 60 insertions(+), 1 deletion(-)
+ src/copy.c   | 45 ++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 58 insertions(+), 1 deletion(-)
 
 diff --git a/configure.ac b/configure.ac
-index 0ee01b2cd..31ff36511 100644
+index 69d4e7d..07ad5c1 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -353,6 +353,20 @@ case $utils_cv_func_setpriority,$ac_cv_func_nice in
+@@ -362,6 +362,20 @@ case $utils_cv_func_setpriority,$ac_cv_func_nice in
    gl_ADD_PROG([optional_bin_progs], [nice])
  esac
  
@@ -35,11 +34,11 @@ index 0ee01b2cd..31ff36511 100644
 +  AC_DEFINE([HAVE_CLONEFILE], [1], [Define if clonefile exists.])
 +fi
 +
- AC_DEFUN([coreutils_DUMMY_1],
- [
-   AC_REQUIRE([gl_READUTMP])
+ if test "$cross_compiling" = yes || test -c /dev/stdin <.; then
+   AC_DEFINE([DEV_FD_MIGHT_BE_CHR], [1],
+     [Define to 1 if /dev/std{in,out,err} and /dev/fd/N, if they exist, might be
 diff --git a/src/copy.c b/src/copy.c
-index dc1f6d0fa..7993b9828 100644
+index 4050f69..fad8189 100644
 --- a/src/copy.c
 +++ b/src/copy.c
 @@ -73,6 +73,11 @@
@@ -54,7 +53,7 @@ index dc1f6d0fa..7993b9828 100644
  #if HAVE_LINUX_FALLOC_H
  # include <linux/falloc.h>
  #endif
-@@ -1057,12 +1062,50 @@ copy_reg (char const *src_name, char const *dst_name,
+@@ -1311,12 +1316,48 @@ copy_reg (char const *src_name, char const *dst_name,
        goto close_src_desc;
      }
  
@@ -89,8 +88,6 @@ index dc1f6d0fa..7993b9828 100644
 +              return false;
 +            }
 +          data_copy_required = false;
-+          /* This appears to be correct for the sec ctx code path. 
-+           * Some extra work is done on owner stuff, but whatever. */
 +          *new_dst = false;
 +        }
 +    }
@@ -106,7 +103,7 @@ index dc1f6d0fa..7993b9828 100644
        dest_desc = open (dst_name, open_flags);
        dest_errno = errno;
  
-@@ -1199,6 +1242,7 @@ copy_reg (char const *src_name, char const *dst_name,
+@@ -1453,6 +1494,7 @@ copy_reg (char const *src_name, char const *dst_name,
        goto close_src_and_dst_desc;
      }
  
@@ -114,7 +111,7 @@ index dc1f6d0fa..7993b9828 100644
    /* --attributes-only overrides --reflink.  */
    if (data_copy_required && x->reflink_mode)
      {
-@@ -1215,6 +1259,7 @@ copy_reg (char const *src_name, char const *dst_name,
+@@ -1469,6 +1511,7 @@ copy_reg (char const *src_name, char const *dst_name,
            data_copy_required = false;
          }
      }
@@ -122,3 +119,5 @@ index dc1f6d0fa..7993b9828 100644
  
    if (data_copy_required)
      {
+-- 
+2.20.1.windows.1
