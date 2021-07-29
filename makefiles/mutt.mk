@@ -22,10 +22,7 @@ else
 mutt: mutt-setup tokyocabinet ncurses gpgme
 	cd $(BUILD_WORK)/mutt && autoreconf -fi
 	cd $(BUILD_WORK)/mutt && ./configure -C \
-		--build=$$($(BUILD_MISC)/config.guess) \
-		--host=$(GNU_HOST_TRIPLE) \
-		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--sysconfdir=$(MEMO_PREFIX)/etc \
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-mailpath=/var/mail \
 		--enable-compressed \
 		--enable-debug \
