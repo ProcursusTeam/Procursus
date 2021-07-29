@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += less
-LESS_VERSION := 563
+LESS_VERSION := 590
 DEB_LESS_V   ?= $(LESS_VERSION)
 
 less-setup: setup

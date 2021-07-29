@@ -30,6 +30,9 @@ libgd: libgd-setup fontconfig freetype libjpeg-turbo libpng16 libtiff libwebp li
 		-DENABLE_WEBP=ON \
 		-DENABLE_XPM=ON \
 		-DXPM_XPM_INCLUDE_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
+		-DWEBP_LIBRARY="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libwebp.dylib" \
+		-DWEBP_INCLUDE_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
+		-DICONV_HAVE_WERROR=OFF \
 		.
 
 	+$(MAKE) -C $(BUILD_WORK)/libgd

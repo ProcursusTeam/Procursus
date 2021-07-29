@@ -16,7 +16,11 @@ ifneq ($(wildcard $(BUILD_WORK)/screen/.build_complete),)
 screen:
 	@echo "Using previously built screen."
 else
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 screen: screen-setup ncurses libxcrypt
+else
+screen: screen-setup ncurses
+endif
 	cd $(BUILD_WORK)/screen && ./autogen.sh
 	cd $(BUILD_WORK)/screen && ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \

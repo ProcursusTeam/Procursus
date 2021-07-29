@@ -16,9 +16,11 @@ ifneq ($(wildcard $(BUILD_WORK)/whois/.build_complete),)
 whois:
 	@echo "Using previously built whois."
 else
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 whois: whois-setup libidn2 libxcrypt
-	cd $(BUILD_WORK)/whois
-
+else
+whois: whois-setup libidn2
+endif
 	+$(MAKE) -C $(BUILD_WORK)/whois \
 		HAVE_ICONV=1 \
 		CC="$(CC)" \

@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS    += keyring
 KEYRING_VERSION  := 2020.05.09
-DEB_KEYRING_V    ?= $(KEYRING_VERSION)
+DEB_KEYRING_V    ?= $(KEYRING_VERSION)-2
 
 ifneq ($(wildcard $(BUILD_STAGE)/keyring/.build_complete),)
 keyring:
@@ -12,10 +12,7 @@ keyring:
 else
 keyring: setup
 	mkdir -p $(BUILD_STAGE)/keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	cp -a $(BUILD_INFO)/memo.gpg $(BUILD_STAGE)/keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-ifeq ($(MEMO_TARGET),iphoneos-arm64)
-	cp -a $(BUILD_INFO)/chariz.gpg $(BUILD_STAGE)/keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-endif
+	cp -a $(BUILD_MISC)/keyrings/procursus/memo.gpg $(BUILD_STAGE)/keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 	touch $(BUILD_STAGE)/keyring/.build_complete
 endif
 

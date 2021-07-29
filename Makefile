@@ -2,7 +2,9 @@ ifeq ($(firstword $(subst ., ,$(MAKE_VERSION))),3)
 $(error Install latest make from Procursus - sudo apt install make)
 endif
 
-ifeq ($(shell LANG=C /usr/bin/env bash --version | grep -iq 'version 5' && echo 1),1)
+export LANG := C
+
+ifeq ($(shell /usr/bin/env bash --version | grep -iq 'version 5' && echo 1),1)
 SHELL := /usr/bin/env bash
 else
 $(error Install bash 5.0)
@@ -314,10 +316,10 @@ LIPO     := $(GNU_HOST_TRIPLE)-lipo
 OTOOL    := $(GNU_HOST_TRIPLE)-otool
 LIBTOOL  := $(GNU_HOST_TRIPLE)-libtool
 
-BUILD_CFLAGS   :=
-BUILD_CPPFLAGS :=
-BUILD_CXXFLAGS :=
-BUILD_LDFLAGS  :=
+CFLAGS_FOR_BUILD   :=
+CPPFLAGS_FOR_BUILD :=
+CXXFLAGS_FOR_BUILD :=
+LDFLAGS_FOR_BUILD  :=
 
 else ifeq ($(UNAME),FreeBSD)
 ifneq ($(MEMO_QUIET),1)
@@ -339,10 +341,10 @@ OTOOL   := $(GNU_HOST_TRIPLE)-otool
 LIBTOOL := $(GNU_HOST_TRIPLE)-libtool
 PATH    := $(GNUBINDIR):$(PATH)
 
-BUILD_CFLAGS   :=
-BUILD_CPPFLAGS :=
-BUILD_CXXFLAGS :=
-BUILD_LDFLAGS  :=
+CFLAGS_FOR_BUILD   :=
+CPPFLAGS_FOR_BUILD :=
+CXXFLAGS_FOR_BUILD :=
+LDFLAGS_FOR_BUILD  :=
 
 else ifeq ($(UNAME),Darwin)
 ifeq ($(shell sw_vers -productName),macOS)
@@ -356,10 +358,10 @@ CXX             := $(shell xcrun --sdk $(PLATFORM) --find c++)
 CPP             := $(shell xcrun --sdk $(PLATFORM) --find cc) -E
 PATH            := /opt/procursus/bin:/opt/procursus/libexec/gnubin:/usr/bin:$(PATH)
 
-BUILD_CFLAGS   := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
-BUILD_CPPFLAGS := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
-BUILD_CXXFLAGS := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
-BUILD_LDFLAGS  := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
+CFLAGS_FOR_BUILD   := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
+CPPFLAGS_FOR_BUILD := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
+CXXFLAGS_FOR_BUILD := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
+LDFLAGS_FOR_BUILD  := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
 
 else
 ifneq ($(MEMO_QUIET),1)
@@ -372,10 +374,10 @@ CXX             := $(shell which c++)
 CPP             := $(shell which cc) -E
 PATH            := /usr/bin:$(PATH)
 
-BUILD_CFLAGS   := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
-BUILD_CPPFLAGS := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
-BUILD_CXXFLAGS := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
-BUILD_LDFLAGS  := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
+CFLAGS_FOR_BUILD   := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
+CPPFLAGS_FOR_BUILD := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
+CXXFLAGS_FOR_BUILD := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
+LDFLAGS_FOR_BUILD  := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
 
 endif
 AR              := $(shell which ar)
@@ -392,9 +394,9 @@ else
 $(error Please use macOS, iOS, Linux, or FreeBSD to build)
 endif
 
-CC_FOR_BUILD  := $(shell which cc) $(BUILD_CFLAGS)
-CPP_FOR_BUILD := $(shell which cc) -E $(BUILD_CPPFLAGS)
-CXX_FOR_BUILD := $(shell which c++) $(BUILD_CXXFLAGS)
+CC_FOR_BUILD  := $(shell which cc) $(CFLAGS_FOR_BUILD)
+CPP_FOR_BUILD := $(shell which cc) -E $(CPPFLAGS_FOR_BUILD)
+CXX_FOR_BUILD := $(shell which c++) $(CXXFLAGS_FOR_BUILD)
 AR_FOR_BUILD  := $(shell which ar)
 export CC_FOR_BUILD CPP_FOR_BUILD CXX_FOR_BUILD AR_FOR_BUILD
 
@@ -487,10 +489,10 @@ BUILD_CONFIGURE_FLAGS := \
 	CC="$(CC_FOR_BUILD)" \
 	CXX="$(CXX_FOR_BUILD)" \
 	CPP="$(CPP_FOR_BUILD)" \
-	CFLAGS="$(BUILD_CFLAGS)" \
-	CXXFLAGS="$(BUILD_CXXFLAGS)" \
-	CPPFLAGS="$(BUILD_CPPFLAGS)" \
-	LDFLAGS="$(BUILD_LDFLAGS)"
+	CFLAGS="$(CFLAGS_FOR_BUILD)" \
+	CXXFLAGS="$(CXXFLAGS_FOR_BUILD)" \
+	CPPFLAGS="$(CPPFLAGS_FOR_BUILD)" \
+	LDFLAGS="$(LDFLAGS_FOR_BUILD)"
 
 DEFAULT_CONFIGURE_FLAGS := \
 	--build=$$($(BUILD_MISC)/config.guess) \
@@ -500,7 +502,10 @@ DEFAULT_CONFIGURE_FLAGS := \
 	--sysconfdir=$(MEMO_PREFIX)/etc \
 	--bindir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
 	--mandir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
-	--disable-dependency-tracking
+	--enable-silent-rules \
+	--disable-dependency-tracking \
+	--enable-shared \
+	--enable-static
 
 DEFAULT_PERL_MAKE_FLAGS := \
 	INSTALLSITEARCH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
@@ -541,10 +546,10 @@ DEFAULT_PERL_BUILD_FLAGS := \
 DEFAULT_GOLANG_FLAGS := \
 	GOOS=$(shell echo $(RUST_TARGET) | cut -f3 -d-) \
 	GOARCH=$(shell echo $(MEMO_TARGET) | cut -f2 -d-) \
-	CGO_CFLAGS="$(shell echo $(CFLAGS) | sed 's/$(OPTIMIZATION_FLAGS)//')" \
-	CGO_CXXFLAGS="$(shell echo $(CXXFLAGS) | sed 's/$(OPTIMIZATION_FLAGS)//')" \
+	CGO_CFLAGS="$(shell echo $(CFLAGS) | sed 's|$(OPTIMIZATION_FLAGS)||')" \
+	CGO_CXXFLAGS="$(shell echo $(CXXFLAGS) | sed 's|$(OPTIMIZATION_FLAGS)||')" \
 	CGO_CPPFLAGS="$(CPPFLAGS)" \
-	CGO_LDFLAGS="$(shell echo $(LDFLAGS) | sed 's/$(OPTIMIZATION_FLAGS)//')" \
+	CGO_LDFLAGS="$(shell echo $(LDFLAGS) | sed 's|$(OPTIMIZATION_FLAGS)||')" \
 	CGO_ENABLED=1 \
 	CC="$(CC)" \
 	CXX="$(CXX)" \
@@ -605,7 +610,7 @@ SIGN = 	for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}
 			if [ $${file\#\#*.} = "dylib" ] || [ $${file\#\#*.} = "bundle" ] || [ $${file\#\#*.} = "so" ]; then \
 				$(LDID) -S $$file; \
 			else \
-				$(LDID) -S$(BUILD_INFO)/$(2) $$file; \
+				$(LDID) -S$(BUILD_MISC)/entitlements/$(2) $$file; \
 			fi; \
 		done; \
 		find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
@@ -614,7 +619,7 @@ SIGN = 	CODESIGN_FLAGS="--sign $(CODESIGN_IDENTITY) --force --deep "; \
 		if [ "$(CODESIGN_IDENTITY)" != "-" ]; then \
 			CODESIGN_FLAGS+="--timestamp -o runtime "; \
 			if [ -n "$(3)" ]; then \
-				CODESIGN_FLAGS+="--entitlements $(BUILD_INFO)/$(3) "; \
+				CODESIGN_FLAGS+="--entitlements $(BUILD_MISC)/entitlements/$(3) "; \
 			fi; \
 		fi; \
 		for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
@@ -878,11 +883,11 @@ MAKEFLAGS += --no-print-directory
 
 ifeq ($(findstring --jobserver-auth=,$(MAKEFLAGS)),)
 ifeq ($(call HAS_COMMAND,nproc),1)
-GET_LOGICAL_CORES := nproc
+GET_LOGICAL_CORES := $(shell expr $(shell nproc) / 2)
 else
-GET_LOGICAL_CORES := sysctl -n hw.ncpu
+GET_LOGICAL_CORES := $(shell expr $(shell sysctl -n hw.ncpu) / 2)
 endif
-MAKEFLAGS += --jobs=$(shell $(GET_LOGICAL_CORES))
+MAKEFLAGS += --jobs=$(GET_LOGICAL_CORES) --load-average=$(GET_LOGICAL_CORES)
 endif
 
 PROCURSUS := 1
@@ -928,7 +933,7 @@ bootstrap:: strapprojects
 	mkdir -p $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/info
 	touch $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/status
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	cd $(BUILD_STRAP) && rm -f !(apt_*|base_*|bash_*|ca-certificates_*|coreutils_*|darwintools_*|dash_*|debianutils_*|diffutils_*|diskdev-cmds_*|dpkg_*|essential_*|file-cmds_*|findutils_*|firmware-sbin_*|gpgv_*|grep_*|launchctl_*|libapt-pkg6.0_*|libassuan0_*|libcrypt2_*|libdimentio0_*|libedit0_*|libffi7_*|libgcrypt20_*|libgmp10_*|libgnutls30_*|libgpg-error0_*|libhogweed6_*|libidn2-0_*|libintl8_*|libiosexec1_*|libkernrw0_*liblz4-1_*|liblzma5_*|libmd0_*|libncursesw6_*|libnettle8_*|libnpth0_*|libp11-kit0_*|libpam-modules_*|libpam2_*|libpcre1_*|libreadline8_*|libssl1.1_*|libtasn1-6_*|libunistring2_*|libxxhash0_*|libzstd1_*|ncurses-bin_*|ncurses-term_*|openssh_*|openssh-client_*|openssh-server_*|openssh-sftp-server_*|procursus-keyring_*|profile.d_*|sed_*|shell-cmds_*|shshd_*|snaputil_*|sudo_*|system-cmds_*|tar_*|uikittools_*|zsh_*).deb
+	cd $(BUILD_STRAP) && rm -f !(apt_*|base_*|bash_*|ca-certificates_*|chariz-keyring_*|coreutils_*|darwintools_*|dash_*|debianutils_*|diffutils_*|diskdev-cmds_*|dpkg_*|essential_*|file-cmds_*|findutils_*|firmware-sbin_*|gpgv_*|grep_*|launchctl_*|libapt-pkg6.0_*|libassuan0_*|libcrypt2_*|libdimentio0_*|libedit0_*|libffi7_*|libgcrypt20_*|libgmp10_*|libgnutls30_*|libgpg-error0_*|libhogweed6_*|libidn2-0_*|libintl8_*|libiosexec1_*|libkernrw0_*liblz4-1_*|liblzma5_*|libmd0_*|libncursesw6_*|libnettle8_*|libnpth0_*|libp11-kit0_*|libpam-modules_*|libpam2_*|libpcre1_*|libreadline8_*|libssl1.1_*|libtasn1-6_*|libunistring2_*|libxxhash0_*|libzstd1_*|ncurses-bin_*|ncurses-term_*|odyssey-keyring_*|openssh_*|openssh-client_*|openssh-server_*|openssh-sftp-server_*|packix-keyring_*|procursus-keyring_*|profile.d_*|sed_*|shell-cmds_*|shshd_*|snaputil_*|sudo_*|system-cmds_*|tar_*|uikittools_*|zsh_*).deb
 else # $(MEMO_TARGET),darwin-*
 	cd $(BUILD_STRAP) && rm -f !(apt_*|ca-certificates_*|coreutils_*|darwintools_*|dpkg_*|gpgv_*|libapt-pkg6.0_*|libassuan0_*|libffi7_*|libgcrypt20_*|libgmp10_*|libgnutls30_*|libgpg-error0_*|libhogweed6_*|libidn2-0_*|libintl8_*|liblz4-1_*|liblzma5_*|libmd0_*|libnettle8_*|libnpth0_*|libp11-kit0_*|libtasn1-6_*|libunistring2_*|libxxhash0_*|libzstd1_*|procursus-keyring_*|tar_*).deb
 endif # $(MEMO_TARGET),darwin-*
@@ -1043,13 +1048,21 @@ rebuild-%:
 
 setup:
 	@mkdir -p \
-		$(BUILD_BASE) $(BUILD_BASE)$(MEMO_PREFIX)/{{,System}/Library/Frameworks,$(MEMO_SUB_PREFIX)/{include/{bsm,objc,os,sys,IOKit,libkern,mach/machine},lib/pkgconfig,$(MEMO_ALT_PREFIX)/lib}} \
+		$(BUILD_BASE) $(BUILD_BASE)$(MEMO_PREFIX)/{{,System}/Library/Frameworks,$(MEMO_SUB_PREFIX)/{include/{bsm,objc,os,sys,IOKit,libkern,mach/machine,CommonCrypto},lib/pkgconfig,$(MEMO_ALT_PREFIX)/lib}} \
 		$(BUILD_SOURCE) $(BUILD_WORK) $(BUILD_STAGE) $(BUILD_STRAP)
 
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libsyscall/wrappers/spawn/spawn.h \
 		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/bootstrap_priv.h \
-		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/vproc_priv.h
+		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/vproc_priv.h \
+		https://opensource.apple.com/source/libplatform/libplatform-126.1.2/include/_simple.h
+
+	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os \
+		https://opensource.apple.com/source/Libc/Libc-1439.40.11/os/assumes.h \
+		https://opensource.apple.com/source/libplatform/libplatform-126.1.2/include/os/base_private.h
+
+	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CommonCrypto \
+		https://opensource.apple.com/source/CommonCrypto/CommonCrypto-60118.30.2/include/CommonDigestSPI.h
 
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/bsm \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/bsd/bsm/audit_kevents.h
@@ -1058,12 +1071,13 @@ setup:
 
 ifeq ($(UNAME),FreeBSD)
 	@# FreeBSD does not have stdbool.h and stdarg.h
-	@cp -a $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Headers/{stdbool.h,stdarg.h} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Headers/{stdbool.h,stdarg.h} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	@cp -af /usr/include/stdalign.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	@# Copy headers from MacOSX.sdk
-	@cp -af $(MACOSX_SYSROOT)/usr/include/{arpa,bsm,net,xpc,netinet,servers} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	@cp -af $(MACOSX_SYSROOT)/usr/include/{arpa,bsm,hfs,net,xpc,netinet,servers} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	@cp -af $(MACOSX_SYSROOT)/usr/include/objc/objc-runtime.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/objc
 	@cp -af $(MACOSX_SYSROOT)/usr/include/libkern/{OSDebug.h,OSKextLib.h,OSReturn.h,OSThermalNotification.h,OSTypes.h,machine} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern
 	@cp -af $(MACOSX_SYSROOT)/usr/include/kern $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
@@ -1097,7 +1111,7 @@ endif
 	@cp -af $(BUILD_MISC)/libiosexec/libiosexec.1.tbd $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	@ln -sf libiosexec.1.tbd $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.tbd
 	@rm -f $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.*.dylib
-	@$(SED) -i '1s/^/#include <libiosexec.h>\n/' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h
+	@$(SED) -i '1s/^/#include <libiosexec.h>\n/' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/spawn.h
 endif
 
 ifneq ($(MEMO_QUIET),1)
