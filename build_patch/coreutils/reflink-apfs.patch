@@ -8,7 +8,6 @@ supports -c (--reflink=always), which is quite a pain.
 Tested on a hackintosh machine with macOS 10.15. And yes, this is a
 resubmission.
 ---
- configure.ac | 14 ++++++++++++++
  src/copy.c   | 45 ++++++++++++++++++++++++++++++++++++++++++++-
  2 files changed, 58 insertions(+), 1 deletion(-)
 
