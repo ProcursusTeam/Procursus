@@ -19,7 +19,7 @@ ifneq ($(wildcard $(BUILD_WORK)/neomutt/.build_complete),)
 neomutt:
 	@echo "Using previously built neomutt."
 else
-neomutt: neomutt-setup zstd lz4 tokyocabinet ncurses gpgme libidn2 gnutls
+neomutt: neomutt-setup gettext zstd lz4 tokyocabinet ncurses gpgme libidn2 gnutls
 	cd $(BUILD_WORK)/neomutt && ./configure \
 		--host=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
@@ -45,10 +45,7 @@ neomutt: neomutt-setup zstd lz4 tokyocabinet ncurses gpgme libidn2 gnutls
 		--disable-qdbm \
 		--zstd \
 		--lz4 \
-		$(NEOMUTT_CONFIGURE_ARGS) \
-		GPGME_CONFIG=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gpgme-config \
-		GPG_ERROR_CONFIG=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gpg-error-config \
-		HAVE_ICONV=1
+		$(NEOMUTT_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/neomutt
 	+$(MAKE) -C $(BUILD_WORK)/neomutt install \
 		DESTDIR=$(BUILD_STAGE)/neomutt
@@ -57,6 +54,7 @@ neomutt: neomutt-setup zstd lz4 tokyocabinet ncurses gpgme libidn2 gnutls
 		$(BUILD_STAGE)/neomutt/etc/neomuttrc.d/
 	cp -a $(BUILD_MISC)/neomutt/lib/{mailspell,source-neomuttrc.d,mailto-neomutt,debian-ldap-query} \
 		$(BUILD_STAGE)/neomutt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/neomutt/
+	$(SED) -i 's/@MEMO_PREFIX@/$(MEMO_PREFIX)/g' $(BUILD_STAGE)/neomutt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/neomutt/*
 	cp -a $(BUILD_MISC)/neomutt/rc/*.rc \
 		$(BUILD_STAGE)/neomutt/$(MEMO_PREFIX)/etc/neomuttrc.d/
 	chmod +x $(BUILD_STAGE)/neomutt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/neomutt/*

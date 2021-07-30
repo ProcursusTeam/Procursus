@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 #
 # Wrapper to call ispell on mail messages, ignoring quoted portions
 # and signatures.

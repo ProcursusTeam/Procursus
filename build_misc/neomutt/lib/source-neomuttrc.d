@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-for rc in /etc/neomuttrc.d/*.rc; do
+for rc in @MEMO_PREFIX@/etc/neomuttrc.d/*.rc; do
     test -r "$rc" && echo "source \"$rc\""
 done
 

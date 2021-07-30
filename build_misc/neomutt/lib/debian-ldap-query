@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 # by Ben Collins <bcollins@debian.org>, butchered by Marco d'Itri <md@linux.it>
 # to use, add to ~/.neomuttrc:
 #  set query_command="/usr/libexec/neomutt/debian-ldap-query %s"

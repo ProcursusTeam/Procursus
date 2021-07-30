@@ -2,7 +2,7 @@ Package: neomutt
 Version: @DEB_NEOMUTT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libassuan0, libgnutls30, libgpg-error0, libgpgme11, libintl8, liblz4, libncursesw6, libtokyocabinet9, libzstd1
+Depends: libassuan0, libgnutls30, libgpg-error0, libgpgme11, libintl8, liblz4, libncursesw6, libtokyocabinet9, libzstd1, libidn2-0
 Section: Utilities
 Priority: optional
 Recommends: mime-support
