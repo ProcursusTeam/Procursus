@@ -11,18 +11,7 @@ DEB_RUST_V   ?= $(RUST_VERSION)
 ##### THIS MAKEFILE IS CURRENTLY WIP AGAIN #####
 
 rust-setup: setup
-	if [ ! -d "$(BUILD_WORK)/rust" ]; then \
-		git clone https://github.com/rust-lang/rust.git $(BUILD_WORK)/rust; \
-		cd "$(BUILD_WORK)/rust"; \
-		git fetch origin; \
-		git checkout $(RUST_VERSION); \
-	else \
-		cd "$(BUILD_WORK)/rust"; \
-		git fetch origin; \
-		git reset --hard; \
-		git checkout $(RUST_VERSION); \
-	fi
-	rm -f "$(BUILD_WORK)/rust/0001-Enable-dynamic-linking-for-all-Apple-targets.patch.done"
+	$(call GIT_CLONE,https://github.com/rust-lang/rust.git,$(RUST_VERSION),rust)
 	$(call DO_PATCH,rust,rust,-p1)
 
 	mkdir -p "$(BUILD_WORK)/rust/build"
