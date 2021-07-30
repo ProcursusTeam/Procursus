@@ -2,8 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-#SUBPROJECTS += rust
-RUST_VERSION := 1.46.0
+SUBPROJECTS  += rust
+RUST_VERSION := 1.54.0
 DEB_RUST_V   ?= $(RUST_VERSION)
 
 # This needs ccache extra to build.
@@ -11,8 +11,19 @@ DEB_RUST_V   ?= $(RUST_VERSION)
 ##### THIS MAKEFILE IS CURRENTLY WIP AGAIN #####
 
 rust-setup: setup
-	$(call GITHUB_ARCHIVE,rust-lang,rust,$(RUST_VERSION),$(RUST_VERSION))
-	$(call EXTRACT_TAR,rust-$(RUST_VERSION).tar.gz,rust-$(RUST_VERSION),rust)
+	if [ ! -d "$(BUILD_WORK)/rust" ]; then \
+		git clone https://github.com/rust-lang/rust.git $(BUILD_WORK)/rust; \
+		cd "$(BUILD_WORK)/rust"; \
+		git fetch origin; \
+		git checkout $(RUST_VERSION); \
+	else \
+		cd "$(BUILD_WORK)/rust"; \
+		git fetch origin; \
+		git reset --hard; \
+		git checkout $(RUST_VERSION); \
+	fi
+	rm -f "$(BUILD_WORK)/rust/0001-Enable-dynamic-linking-for-all-Apple-targets.patch.done"
+	$(call DO_PATCH,rust,rust,-p1)
 
 	mkdir -p "$(BUILD_WORK)/rust/build"
 	mkdir -p "$(BUILD_STAGE)/rust"
