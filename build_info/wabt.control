@@ -1,0 +1,10 @@
+Package: wabt
+Version: @DEB_WABT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Description: A suite of tools for WebAssembly.
+Homepage: https://webassembly.org
+Name: Web Assembly Binary Toolkit
+Tag: purpose::console, role::developer

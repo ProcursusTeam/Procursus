@@ -1,0 +1,7 @@
+Package: build-essential-wasi
+Version: @DEB_WASI_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Description: Contains an SDK for the wasm32-wasi platform.
