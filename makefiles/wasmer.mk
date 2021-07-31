@@ -9,6 +9,7 @@ DEB_WASMER_V   ?= $(WASMER_VERSION)
 wasmer-setup: setup
 	$(call GITHUB_ARCHIVE,wasmerio,wasmer,$(WASMER_VERSION),v$(WASMER_VERSION))
 	$(call EXTRACT_TAR,wasmer-$(WASMER_VERSION).tar.gz,wasmer-$(WASMER_VERSION),wasmer)
+	$(call DO_PATCH,wasmer,wasmer,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/wasmer/.build_complete),)
 wasmer:
