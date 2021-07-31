@@ -9,6 +9,7 @@ DEB_BINARYEN_V   ?= $(BINARYEN_VERSION)
 binaryen-setup: setup
 	$(call GITHUB_ARCHIVE,WebAssembly,binaryen,version_$(BINARYEN_VERSION),version_$(BINARYEN_VERSION))
 	$(call EXTRACT_TAR,binaryen-version_$(BINARYEN_VERSION).tar.gz,binaryen-version_$(BINARYEN_VERSION),binaryen)
+	$(call DO_PATCH,binaryen,binaryen,-p1)
 	mkdir -p $(BUILD_WORK)/binaryen/build
 
 ifneq ($(wildcard $(BUILD_WORK)/binaryen/.build_complete),)
