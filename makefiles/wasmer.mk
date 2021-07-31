@@ -10,6 +10,7 @@ wasmer-setup: setup
 	$(call GITHUB_ARCHIVE,wasmerio,wasmer,$(WASMER_VERSION),v$(WASMER_VERSION))
 	$(call EXTRACT_TAR,wasmer-$(WASMER_VERSION).tar.gz,wasmer-$(WASMER_VERSION),wasmer)
 	$(call DO_PATCH,wasmer,wasmer,-p1)
+	mkdir -p $(BUILD_STAGE)/libwasmer-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/pkgconfig}
 
 ifneq ($(wildcard $(BUILD_WORK)/wasmer/.build_complete),)
 wasmer:
@@ -27,8 +28,6 @@ wasmer: wasmer-setup
 		--release \
 		--target=$(RUST_TARGET) \
 		--features="cranelift,dylib,staticlib"
-	mkdir -p $(BUILD_STAGE)/libwasmer/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	mkdir -p $(BUILD_STAGE)/libwasmer-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/pkgconfig}
 	$(INSTALL) -Dm755 $(BUILD_WORK)/wasmer/target/$(RUST_TARGET)/release/wasmer $(BUILD_STAGE)/wasmer/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/wasmer
 	$(INSTALL) -Dm755 $(BUILD_WORK)/wasmer/target/$(RUST_TARGET)/release/libwasmer_c_api.dylib $(BUILD_STAGE)/libwasmer/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libwasmer.dylib
 	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libwasmer.dylib $(BUILD_STAGE)/libwasmer/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libwasmer.dylib
@@ -51,7 +50,7 @@ wasmer-package: wasmer-stage
 	cp -a $(BUILD_STAGE)/wasmer $(BUILD_DIST)
 
 	# wasmer.mk Prep libwasmer
-	$(INSTALL) -Dm755 $(BUILD_STAGE)/libwasmer/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libwasmer.dylib $(BUILD_DIST)/libwasmer/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libwasmer.dylib
+	cp -a $(BUILD_STAGE)/libwasmer/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libwasmer.dylib $(BUILD_DIST)/libwasmer/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libwasmer.dylib
 
 	# wasmer.mk Prep libwasmer-dev
 	cp -a $(BUILD_STAGE)/libwasmer-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib} $(BUILD_DIST)/libwasmer-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)

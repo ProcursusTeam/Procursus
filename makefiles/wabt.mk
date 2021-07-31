@@ -16,7 +16,8 @@ wabt:
 else
 wabt: wabt-setup
 	cd $(BUILD_WORK)/wabt/build && cmake \
-		-DBUILD_TESTS=OFF $(DEFAULT_CMAKE_FLAGS) \
+		$(DEFAULT_CMAKE_FLAGS) \
+		-DBUILD_TESTS=OFF \
 		..
 	+$(MAKE) -C $(BUILD_WORK)/wabt/build
 	+$(MAKE) -C $(BUILD_WORK)/wabt/build install \

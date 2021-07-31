@@ -7,4 +7,3 @@ Priority: optional
 Description: A suite of tools for WebAssembly.
 Homepage: https://webassembly.org
 Name: Web Assembly Binary Toolkit
-Tag: purpose::console, role::developer

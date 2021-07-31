@@ -4,7 +4,8 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Development
 Priority: optional
-Description: Binaryen is a compiler and toolchain infrastructure library for WebAssembly, written in C++. 
- It aims to make compiling to WebAssembly easy, fast, and effective.
+Description: compiler and toolchain infrastructure for WebAssembly.
+ Binaryen is a compiler and toolchain infrastructure library for WebAssembly,
+ written in C++. It aims to make compiling to WebAssembly easy, fast, and
+ effective.
 Homepage: https://webassembly.org
-Tag: purpose::console, role::developer
