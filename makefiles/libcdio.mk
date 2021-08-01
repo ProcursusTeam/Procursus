@@ -101,8 +101,8 @@ libcdio-package: libcdio-stage
 	$(call PACK,libudf-dev,DEB_LIBCDIO_V)
 	
 	# libcdio.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libcdio{19,-dev,++1,++-dev,-utils}
-	rm -rf  $(BUILD_DIST)/libiso9660{-11,-dev,++0,++-dev}
-	rm -rf $(BUILD_DIST)/libudf{0,-dev}
+	rm -rf $(BUILD_DIST)/libcdio{19,-dev,++1,++-dev,-utils} \
+		$(BUILD_DIST)/libiso9660{-11,-dev,++0,++-dev} \
+		$(BUILD_DIST)/libudf{0,-dev}
 
 .PHONY: libcdio libcdio-package
