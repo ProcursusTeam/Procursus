@@ -7,7 +7,7 @@ PEXEC_VERSION := 1.0rc8
 DEB_PEXEC_V   ?= $(shell $(SED) 's/rc/~rc/g' <<< $(PEXEC_VERSION))
 
 pexec-setup: setup
-	wget -q -nc -P$(BUILD_SOURCE) http://ftp.gnu.org/gnu/pexec/pexec-$(PEXEC_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gnu/pexec/pexec-$(PEXEC_VERSION).tar.gz{,.sig}
 	$(call EXTRACT_TAR,pexec-$(PEXEC_VERSION).tar.gz,pexec-$(PEXEC_VERSION),pexec)
 	$(call DO_PATCH,pexec,pexec,-p1)
 
