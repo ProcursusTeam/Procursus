@@ -35,14 +35,14 @@ downloadlink() {
 }
 
 ask_extended_description() {
-if [ -z "$1" ]; then
-	ESCAPED_DESCRIPTION=""
-	>&2 echo "Extended Description (press ENTER then Ctrl+D when done):"
-	while read line
-        	do ESCAPED_DESCRIPTION="$ESCAPED_DESCRIPTION"" $line\n"
-	done
-else
-	ESCAPED_DESCRIPTION="$(echo "$1" | ${SED} '$!s/$/\\n/' | tr -d '\n' | ${SED} 's|^| |g')"
+	if [ -z "$1" ]; then
+		ESCAPED_DESCRIPTION=""
+		>&2 echo "Extended Description (press ENTER then Ctrl+D when done):"
+		while read line
+        		do ESCAPED_DESCRIPTION="$ESCAPED_DESCRIPTION"" $line\n"
+		done
+	else
+		ESCAPED_DESCRIPTION="$(echo "$1" | ${SED} '$!s/$/\\n/' | tr -d '\n' | ${SED} 's|^| |g')"
 	fi
 	echo "$ESCAPED_DESCRIPTION"
 }
