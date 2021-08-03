@@ -13,7 +13,7 @@ else
 tigisoftware-keyring: setup
 	mkdir -p $(BUILD_STAGE)/tigisoftware-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 	cp -a $(BUILD_MISC)/keyrings/tigisoftware/tigisoftware-repo.gpg $(BUILD_STAGE)/tigisoftware-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	touch $(BUILD_STAGE)/tigisoftware-keyring/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 tigisoftware-keyring-package: tigisoftware-keyring-stage
