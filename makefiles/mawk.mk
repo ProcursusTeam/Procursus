@@ -20,7 +20,7 @@ mawk: mawk-setup
 	+$(MAKE) -C $(BUILD_WORK)/mawk
 	+$(MAKE) -C $(BUILD_WORK)/mawk install \
 		DESTDIR=$(BUILD_STAGE)/mawk
-	touch $(BUILD_WORK)/mawk/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 mawk-package: mawk-stage	

@@ -18,7 +18,7 @@ txt2man: txt2man-setup gawk
 	+$(MAKE) -C $(BUILD_WORK)/txt2man
 	+$(MAKE) -C $(BUILD_WORK)/txt2man install \
 		prefix=$(BUILD_STAGE)/txt2man/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	touch $(BUILD_WORK)/txt2man/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 txt2man-package: txt2man-stage

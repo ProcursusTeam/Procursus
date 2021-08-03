@@ -19,7 +19,7 @@ dos2unix: dos2unix-setup gettext
 	+$(MAKE) -C $(BUILD_WORK)/dos2unix LDFLAGS="$(LDFLAGS)" prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/dos2unix install \
 		DESTDIR=$(BUILD_STAGE)/dos2unix prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	touch $(BUILD_WORK)/dos2unix/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 dos2unix-package: dos2unix-stage

@@ -21,7 +21,7 @@ hello: hello-setup
 	+$(MAKE) -C $(BUILD_WORK)/hello
 	+$(MAKE) -C $(BUILD_WORK)/hello install \
 		DESTDIR=$(BUILD_STAGE)/hello
-	touch $(BUILD_WORK)/hello/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 hello-package: hello-stage

@@ -13,7 +13,7 @@ else
 amy-keyring: setup
 	mkdir -p $(BUILD_STAGE)/amy-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 	cp -a $(BUILD_MISC)/keyrings/anamy/anamy-repo.gpg $(BUILD_STAGE)/amy-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	touch $(BUILD_STAGE)/amy-keyring/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 amy-keyring-package: amy-keyring-stage

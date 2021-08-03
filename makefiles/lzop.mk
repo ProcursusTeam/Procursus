@@ -21,7 +21,7 @@ lzop: lzop-setup liblzo2
 	+$(MAKE) -C $(BUILD_WORK)/lzop
 	+$(MAKE) -C $(BUILD_WORK)/lzop install \
 		DESTDIR=$(BUILD_STAGE)/lzop
-	touch $(BUILD_WORK)/lzop/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 lzop-package: lzop-stage

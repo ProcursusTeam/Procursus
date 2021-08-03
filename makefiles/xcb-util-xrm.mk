@@ -22,7 +22,7 @@ xcb-util-xrm: xcb-util-xrm-setup libxcb xcb-util
 		DESTDIR=$(BUILD_STAGE)/xcb-util-xrm
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-xrm install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/xcb-util-xrm/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 xcb-util-xrm-package: xcb-util-xrm-stage

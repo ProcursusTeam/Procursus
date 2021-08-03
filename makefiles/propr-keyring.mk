@@ -13,7 +13,7 @@ else
 propr-keyring: setup
 	mkdir -p $(BUILD_STAGE)/propr-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 	cp -a $(BUILD_MISC)/keyrings/propr/propr.gpg $(BUILD_STAGE)/propr-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	touch $(BUILD_STAGE)/propr-keyring/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 propr-keyring-package: propr-keyring-stage

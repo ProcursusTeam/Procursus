@@ -23,7 +23,7 @@ zip: zip-setup
 		CFLAGS="$(CFLAGS) -I. -DUNIX -DBZIP2_SUPPORT" \
 		LFLAGS2="-lbz2 $(CFLAGS)" \
 		MANDIR="$(BUILD_STAGE)/zip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1"
-	touch $(BUILD_WORK)/zip/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 zip-package: zip-stage

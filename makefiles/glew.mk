@@ -33,7 +33,7 @@ glew: glew-setup mesa libx11
 		LDFLAGS.EXTRA="$(LDFLAGS)" \
 		LN="ln -sf" \
 		GLEW_APPLE_GLX=yes
-	touch $(BUILD_WORK)/glew/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 glew-package: glew-stage

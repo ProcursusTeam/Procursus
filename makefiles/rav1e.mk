@@ -43,7 +43,7 @@ rav1e: rav1e-setup aom dav1d
 
 	ln -sf librav1e.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.dylib
 
-	touch $(BUILD_WORK)/rav1e/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 rav1e-package: rav1e-stage

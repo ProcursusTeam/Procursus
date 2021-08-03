@@ -22,7 +22,7 @@ bash-completion: bash-completion-setup bash
 		DESTDIR=$(BUILD_STAGE)/bash-completion
 	+$(MAKE) -C $(BUILD_WORK)/bash-completion install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/bash-completion/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 bash-completion-package: bash-completion-stage

@@ -19,7 +19,7 @@ neofetch: neofetch-setup
 	+$(MAKE) -C $(BUILD_WORK)/neofetch install \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR=$(BUILD_STAGE)/neofetch
-	touch $(BUILD_WORK)/neofetch/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 neofetch-package: neofetch-stage

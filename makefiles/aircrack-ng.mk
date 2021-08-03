@@ -31,7 +31,7 @@ aircrack-ng: aircrack-ng-setup openssl pcre libpcap
 	+$(MAKE) -C $(BUILD_WORK)/aircrack-ng
 	+$(MAKE) -C $(BUILD_WORK)/aircrack-ng install \
 		DESTDIR=$(BUILD_STAGE)/aircrack-ng
-	touch $(BUILD_WORK)/aircrack-ng/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 aircrack-ng-package: aircrack-ng-stage

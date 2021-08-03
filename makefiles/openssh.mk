@@ -62,7 +62,7 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	cp $(BUILD_MISC)/openssh/sshd-keygen-wrapper $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
 	cp $(BUILD_WORK)/openssh/contrib/ssh-copy-id $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	chmod 0755 $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ssh-copy-id
-	touch $(BUILD_WORK)/openssh/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 openssh-package: openssh-stage

@@ -41,7 +41,7 @@ lua5.3: lua5.3-setup readline
 		TO_BIN="lua5.3 luac5.3" \
 		TO_LIB="liblua5.3.a liblua5.3.0.dylib"
 	ln -sf liblua5.3.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.3.dylib
-	touch $(BUILD_WORK)/lua5.3/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 lua5.3-package: lua5.3-stage

@@ -22,7 +22,7 @@ lrzip-next: lrzip-next-setup lz4 liblzo2 libgcrypt
 	+$(MAKE) -C $(BUILD_WORK)/lrzip-next
 	+$(MAKE) -C $(BUILD_WORK)/lrzip-next install \
 		DESTDIR=$(BUILD_STAGE)/lrzip-next
-	touch $(BUILD_WORK)/lrzip-next/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 lrzip-next-package: lrzip-next-stage

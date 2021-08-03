@@ -38,7 +38,7 @@ rtmpdump: rtmpdump-setup nettle gnutls libgmp10
 		prefix="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		DESTDIR="$(BUILD_BASE)" \
 		mandir="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man"
-	touch $(BUILD_WORK)/rtmpdump/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 rtmpdump-package: rtmpdump-stage

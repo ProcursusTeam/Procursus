@@ -91,7 +91,7 @@ ncurses: ncurses-setup
 	done
 	ln -sf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcurses.dylib
 
-	touch $(BUILD_WORK)/ncurses/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 ncurses-package: ncurses-stage

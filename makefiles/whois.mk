@@ -28,7 +28,7 @@ endif
 		LDFLAGS='$(LDFLAGS) -liconv'
 	+$(MAKE) -C $(BUILD_WORK)/whois install \
 		DESTDIR=$(BUILD_STAGE)/whois
-	touch $(BUILD_WORK)/whois/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 whois-package: whois-stage

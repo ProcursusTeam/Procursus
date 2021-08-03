@@ -41,7 +41,7 @@ vim: vim-setup ncurses gettext
 	rm -rf $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/*{ISO*,UTF*,KOI*}
 	find $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f ! -name "vim.1" ! -name "vimtutor.1" ! -name "xxd.1" -delete
 	find $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type l -delete
-	touch $(BUILD_WORK)/vim/.build_complete
+	$(call AFTER_BUILD)
 endif
 vim-package: vim-stage
 	# vim.mk Package Structure

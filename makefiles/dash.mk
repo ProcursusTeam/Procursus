@@ -28,7 +28,7 @@ dash: dash-setup libedit
 		DESTDIR=$(BUILD_STAGE)/dash
 	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dash $(BUILD_STAGE)/dash/$(MEMO_PREFIX)/bin/sh
 	ln -sf $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dash $(BUILD_STAGE)/dash/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sh
-	touch $(BUILD_WORK)/dash/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 dash-package: dash-stage

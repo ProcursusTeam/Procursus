@@ -55,7 +55,7 @@ endif
 		mv $$lib $$(dirname $$lib)/$$(basename $$lib .dylib).$(LIBBOOST_VERSION).dylib; \
 		ln -s $$(basename $$lib .dylib).$(LIBBOOST_VERSION).dylib $$lib; \
 	done
-	touch $(BUILD_WORK)/libboost/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libboost-package: libboost-stage

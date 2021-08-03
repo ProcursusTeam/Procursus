@@ -90,18 +90,18 @@ diff -urN apt-2.1.11/apt-pkg/CMakeLists.txt apt/apt-pkg/CMakeLists.txt
  )
  set_target_properties(apt-pkg PROPERTIES VERSION ${MAJOR}.${MINOR})
  set_target_properties(apt-pkg PROPERTIES SOVERSION ${MAJOR})
-diff -urN apt-2.1.11/apt-pkg/acquire.cc apt/apt-pkg/acquire.cc
---- apt-2.1.11/apt-pkg/acquire.cc	2020-10-21 05:53:18.000000000 -0400
-+++ apt/apt-pkg/acquire.cc	2020-11-22 18:23:41.692439841 -0500
-@@ -1263,7 +1263,7 @@
-    auto const Time = std::chrono::steady_clock::now().time_since_epoch();
+diff -urN apt-2.3.7/apt-pkg/acquire.cc apt/apt-pkg/acquire.cc
+--- apt-2.3.7/apt-pkg/acquire.cc   2021-07-29 11:00:26.000000000 -0400
++++ apt/apt-pkg/acquire.cc         2021-08-02 14:38:47.000000000 -0400
+@@ -58,7 +58,7 @@
+ {
     auto const Time_sec = std::chrono::duration_cast<std::chrono::seconds>(Time);
     auto const Time_usec = std::chrono::duration_cast<std::chrono::microseconds>(Time - Time_sec);
--   return { Time_sec.count(), Time_usec.count() };
-+   return { static_cast<__darwin_time_t>(Time_sec.count()), static_cast<__darwin_suseconds_t>(Time_usec.count()) };
+-   return {Time_sec.count(), Time_usec.count()};
++   return {static_cast<__darwin_time_t>(Time_sec.count()), static_cast<__darwin_suseconds_t>(Time_usec.count())};
  }
- bool pkgAcquireStatus::Pulse(pkgAcquire *Owner)
- {
+ 
+ std::string pkgAcquire::URIEncode(std::string const &part)             /*{{{*/
 diff -urN apt-2.1.11/apt-pkg/contrib/fileutl.cc apt/apt-pkg/contrib/fileutl.cc
 --- apt-2.1.11/apt-pkg/contrib/fileutl.cc	2020-10-21 05:53:18.000000000 -0400
 +++ apt/apt-pkg/contrib/fileutl.cc	2020-11-22 18:23:41.693439838 -0500
