@@ -23,7 +23,7 @@ Here are a few changes over other existing build-systems
 - Based on Makefiles, allowing parallel package building that is much quicker while also making easier to add new packages
 - Fully open-sourced (utilizing GNU tools) and open to community contribution. See [Contributing](#Contributing)
 - No jailbreak-specific software, making it easier to implement with other projects
-- **First ever build-system** to be fully functional with one of the main 4 package managers out of the box (e.g Sileo, Zebra), making it easier to switch to your prefered package manager
+**First ever bootstrap** to be fully functional with each of the main 4 package managers out of the box (e.g Sileo and Zebra), making it easier to switch to your preferred package manager
 - Better Obj-C implementation of ``firmware.sh`` that's not only quicker, but also based on CPU subtype (e.g ``cy.cpu.arm64e``)
 
 ## Contributing
