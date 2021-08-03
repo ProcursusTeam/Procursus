@@ -592,6 +592,7 @@ EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 		cd $(BUILD_WORK) && \
 		$(TAR) -xf $(BUILD_SOURCE)/$(1) && \
 		mkdir -p $(3); \
+		chmod -R 0755 $(2); \
 		cp -a $(2)/. $(3); \
 		rm -rf $(2); \
 	fi
