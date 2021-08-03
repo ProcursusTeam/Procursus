@@ -3,13 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += xonsh
-XONSH_COMMIT  := 86f02c034182e2c7211036f1bba0a460df909e77
-XONSH_VERSION := 0.9.27+git20210624.$(shell echo $(XONSH_COMMIT) | cut -c -7)
+XONSH_VERSION := 0.10.1
 DEB_XONSH_V   ?= $(XONSH_VERSION)
 
 xonsh-setup: setup
-	$(call GITHUB_ARCHIVE,xonsh,xonsh,$(XONSH_COMMIT),$(XONSH_COMMIT))
-	$(call EXTRACT_TAR,xonsh-$(XONSH_COMMIT).tar.gz,xonsh-$(XONSH_COMMIT),xonsh)
+	$(call GITHUB_ARCHIVE,xonsh,xonsh,$(XONSH_VERSION),$(XONSH_VERSION))
+	$(call EXTRACT_TAR,xonsh-$(XONSH_VERSION).tar.gz,xonsh-$(XONSH_VERSION),xonsh)
 
 ifneq ($(wildcard $(BUILD_WORK)/xonsh/.build_complete),)
 xonsh:
