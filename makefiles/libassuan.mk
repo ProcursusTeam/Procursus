@@ -24,7 +24,7 @@ libassuan: libassuan-setup libgpg-error
 		DESTDIR=$(BUILD_STAGE)/libassuan
 	+$(MAKE) -C $(BUILD_WORK)/libassuan install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libassuan/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libassuan-package: libassuan-stage

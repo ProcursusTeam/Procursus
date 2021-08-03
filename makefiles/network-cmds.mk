@@ -110,7 +110,7 @@ network-cmds: network-cmds-setup
 		$(LN) -sf ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/$$bin $(BUILD_STAGE)/network-cmds/sbin; \
 	done
 	$(LN) -sf ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/ping6 $(BUILD_STAGE)/network-cmds/bin
-	touch $(BUILD_WORK)/network-cmds/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 network-cmds-package: network-cmds-stage

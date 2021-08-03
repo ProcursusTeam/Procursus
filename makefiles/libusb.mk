@@ -23,7 +23,7 @@ libusb: libusb-setup
 	+$(MAKE) -C $(BUILD_WORK)/libusb install \
 		CFLAGS="$(CFLAGS) -D__OPEN_SOURCE__ -DMAC_OS_X_VERSION_MIN_REQUIRED=101500 -D__kernel_ptr_semantics=''" \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libusb/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libusb-package: libusb-stage

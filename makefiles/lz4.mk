@@ -30,7 +30,7 @@ lz4: lz4-setup
 		LIBDIR=$(MEMO_LIBDIR) \
 		INCLUDEDIR=$(MEMO_INCDIR) \
 		CFLAGS="$(CFLAGS)"
-	touch $(BUILD_WORK)/lz4/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 lz4-package: lz4-stage

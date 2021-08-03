@@ -61,7 +61,7 @@ dimentio: dimentio-setup
 	cp -a $(BUILD_WORK)/dimentio/libdimentio.h $(BUILD_STAGE)/dimentio/$(MEMO_INCDIR)
 	cp -a $(BUILD_WORK)/dimentio/libdimentio.h $(BUILD_BASE)$(MEMO_INCDIR)
 	ln -sf libdimentio.$(DIMENTIO_SOVERSION).dylib $(BUILD_BASE)/$(MEMO_LIBDIR)/libdimentio.dylib
-	touch $(BUILD_WORK)/dimentio/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 dimentio-package: dimentio-stage

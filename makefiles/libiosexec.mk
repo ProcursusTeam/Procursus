@@ -28,7 +28,7 @@ libiosexec: libiosexec-setup
 		$(BUILD_STAGE)/libiosexec/$(MEMO_INCDIR)
 	$(I_N_T) -id $(MEMO_LIBDIR)libiosexec.$(LIBIOSEXEC_SOVER).dylib \
 		$(BUILD_STAGE)/libiosexec/$(MEMO_LIBDIR)/libiosexec.$(LIBIOSEXEC_SOVER).dylib
-	touch $(BUILD_WORK)/libiosexec/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libiosexec-package: libiosexec-stage

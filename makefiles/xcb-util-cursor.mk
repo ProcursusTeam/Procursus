@@ -23,7 +23,7 @@ xcb-util-cursor: xcb-util-cursor-setup libxcb xcb-util xcb-util-renderutil xcb-u
 		DESTDIR=$(BUILD_STAGE)/xcb-util-cursor
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-cursor install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/xcb-util-cursor/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 xcb-util-cursor-package: xcb-util-cursor-stage

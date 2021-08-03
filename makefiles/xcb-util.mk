@@ -21,7 +21,7 @@ xcb-util: xcb-util-setup libxcb
 		DESTDIR=$(BUILD_STAGE)/xcb-util
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/xcb-util/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 

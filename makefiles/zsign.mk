@@ -24,7 +24,7 @@ zsign: zsign-setup openssl
 		-o zsign
 	mkdir -p $(BUILD_STAGE)/zsign/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp $(BUILD_WORK)/zsign/zsign $(BUILD_STAGE)/zsign/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	touch $(BUILD_WORK)/zsign/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 zsign-package: zsign-stage

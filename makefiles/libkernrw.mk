@@ -53,7 +53,7 @@ libkernrw: libkernrw-setup
 
 	cp $(BUILD_WORK)/libkernrw/libkernrw.h $(BUILD_STAGE)/libkernrw/$(MEMO_INCDIR)
 	ln -s libkernrw.$(LIBKERNRW_SOVERSION).dylib $(BUILD_STAGE)/libkernrw/$(MEMO_LIBDIR)/libkernrw.dylib
-	touch $(BUILD_WORK)/libkernrw/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libkernrw-package: libkernrw-stage

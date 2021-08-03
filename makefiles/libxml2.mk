@@ -33,7 +33,7 @@ libxml2: libxml2-setup xz ncurses readline
 		--root="$(BUILD_STAGE)/libxml2" \
 		--install-layout=deb
 	find $(BUILD_STAGE)/libxml2 -name __pycache__ -prune -exec rm -rf {} \;
-	touch $(BUILD_WORK)/libxml2/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libxml2-package: libxml2-stage

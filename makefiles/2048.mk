@@ -32,7 +32,7 @@ else
 
 	cd $(BUILD_STAGE)/2048 && chmod +x ./$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/2048
 
-	touch $(BUILD_WORK)/2048/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 2048-package: 2048-stage

@@ -25,7 +25,7 @@ libpng16: libpng16-setup
 		DESTDIR=$(BUILD_STAGE)/libpng16
 	+$(MAKE) -C $(BUILD_WORK)/libpng16 install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libpng16/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libpng16-package: libpng16-stage

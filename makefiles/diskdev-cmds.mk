@@ -92,7 +92,7 @@ diskdev-cmds: diskdev-cmds-setup
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1)
 	rm -f $(BUILD_STAGE)/diskdev-cmds/sbin/umount
 endif
-	touch $(BUILD_WORK)/diskdev-cmds/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 diskdev-cmds-package: diskdev-cmds-stage

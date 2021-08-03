@@ -29,7 +29,7 @@ libogg: libogg-setup
 		DESTDIR=$(BUILD_STAGE)/libogg
 	+$(MAKE) -C $(BUILD_WORK)/libogg install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libogg/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libogg-package: libogg-stage

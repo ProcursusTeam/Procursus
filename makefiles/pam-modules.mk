@@ -36,7 +36,7 @@ pam-modules: pam-modules-setup openpam
 	for so in *.2.so; do \
 		cp -a $$so $(BUILD_STAGE)/pam-modules/$(MEMO_LIBDIR)/pam/$${so//".2"/}; \
 	done
-	touch $(BUILD_WORK)/pam-modules/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 pam-modules-package: pam-modules-stage

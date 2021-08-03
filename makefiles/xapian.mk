@@ -24,7 +24,7 @@ xapian: xapian-setup uuid
 		DESTDIR=$(BUILD_STAGE)/xapian
 	+$(MAKE) -C $(BUILD_WORK)/xapian install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/xapian/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 xapian-package: xapian-stage

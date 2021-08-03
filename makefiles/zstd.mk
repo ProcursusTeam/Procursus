@@ -34,7 +34,7 @@ zstd: zstd-setup lz4 xz
 		LIBDIR=$(MEMO_LIBDIR) \
 		INCLUDEDIR=$(MEMO_INCDIR) \
 		DESTDIR=$(BUILD_STAGE)/zstd
-	touch $(BUILD_WORK)/zstd/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 zstd-package: zstd-stage

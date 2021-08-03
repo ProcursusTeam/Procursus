@@ -72,7 +72,7 @@ openssl: openssl-setup
 	mkdir -p $(BUILD_STAGE)/openssl/$(MEMO_INCDIR)
 	mv $(BUILD_STAGE)/openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/openssl $(BUILD_STAGE)/openssl/$(MEMO_INCDIR)/openssl
 	mv $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/openssl $(BUILD_BASE)/$(MEMO_INCDIR)/
-	touch $(BUILD_WORK)/openssl/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 openssl-package: openssl-stage

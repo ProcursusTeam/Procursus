@@ -31,7 +31,7 @@ aria2: aria2-setup openssl libjemalloc libuv1 libssh2 libc-ares
 	+$(MAKE) -C $(BUILD_WORK)/aria2
 	+$(MAKE) -C $(BUILD_WORK)/aria2 install \
 		DESTDIR=$(BUILD_STAGE)/aria2
-	touch $(BUILD_WORK)/aria2/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 aria2-package: aria2-stage

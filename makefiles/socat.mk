@@ -20,7 +20,7 @@ socat: socat-setup openssl readline
 	+$(MAKE) -C $(BUILD_WORK)/socat
 	+$(MAKE) -C $(BUILD_WORK)/socat install \
 		DESTDIR=$(BUILD_STAGE)/socat
-	touch $(BUILD_WORK)/socat/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 socat-package: socat-stage

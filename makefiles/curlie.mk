@@ -20,7 +20,7 @@ curlie: curlie-setup
 		--ldflags="-s -w -X main.version=$(DEB_CURLIE_V) -X main.date=$(shell date -u +%Y%m%d)"
 	$(INSTALL) -Dm755 $(BUILD_WORK)/curlie/release/bin/curlie \
 		$(BUILD_STAGE)/curlie/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/curlie
-	touch $(BUILD_WORK)/curlie/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 curlie-package: curlie-stage

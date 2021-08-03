@@ -23,7 +23,7 @@ gawk: gawk-setup gettext mpfr4 libgmp10
 		DESTDIR=$(BUILD_STAGE)/gawk
 	rm -f $(BUILD_STAGE)/gawk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*awk-*
 	rm -f $(BUILD_STAGE)/gawk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/awk
-	touch $(BUILD_WORK)/gawk/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 gawk-package: gawk-stage

@@ -31,7 +31,7 @@ readline: readline-setup ncurses
 		DESTDIR=$(BUILD_STAGE)/readline
 	+$(MAKE) -C $(BUILD_WORK)/readline install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/readline/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 readline-package: readline-stage

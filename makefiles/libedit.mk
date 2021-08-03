@@ -25,7 +25,7 @@ libedit: libedit-setup ncurses
 		DESTDIR="$(BUILD_STAGE)/libedit"
 	+$(MAKE) -C $(BUILD_WORK)/libedit install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libedit/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libedit-package: libedit-stage

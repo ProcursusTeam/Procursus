@@ -13,7 +13,7 @@ else
 idevicehacked-keyring: setup
 	mkdir -p $(BUILD_STAGE)/idevicehacked-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 	cp -a $(BUILD_MISC)/keyrings/idevicehacked/idevicehacked-repo.gpg $(BUILD_STAGE)/idevicehacked-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	touch $(BUILD_STAGE)/idevicehacked-keyring/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 idevicehacked-keyring-package: idevicehacked-keyring-stage

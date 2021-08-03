@@ -33,7 +33,7 @@ libgcrypt: libgcrypt-setup libgpg-error
 		DESTDIR=$(BUILD_STAGE)/libgcrypt
 	+$(MAKE) -C $(BUILD_WORK)/libgcrypt install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libgcrypt/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libgcrypt-package: libgcrypt-stage

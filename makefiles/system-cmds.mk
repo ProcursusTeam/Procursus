@@ -66,7 +66,7 @@ endif
 	cp -a $(BUILD_MISC)/pam/{login{,.term},passwd} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/etc/pam.d
 	+$(MAKE) -C $(BUILD_WORK)/system-cmds/pw-darwin install \
 		DESTDIR="$(BUILD_STAGE)/system-cmds/"
-	touch $(BUILD_WORK)/system-cmds/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 system-cmds-package: system-cmds-stage

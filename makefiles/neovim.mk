@@ -33,7 +33,7 @@ neovim: neovim-setup gettext lua-luv libuv1 msgpack libvterm libtermkey unibiliu
 	+$(MAKE) -C $(BUILD_WORK)/neovim/build
 	+$(MAKE) -C $(BUILD_WORK)/neovim/build install \
 		DESTDIR="$(BUILD_STAGE)/neovim"
-	touch $(BUILD_WORK)/neovim/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 neovim-package: neovim-stage

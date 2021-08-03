@@ -13,7 +13,7 @@ else
 nyuszika7h-keyring: setup
 	mkdir -p $(BUILD_STAGE)/nyuszika7h-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 	cp -a $(BUILD_MISC)/keyrings/nyuszika7h/nyuszika7h.gpg $(BUILD_STAGE)/nyuszika7h-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	touch $(BUILD_STAGE)/nyuszika7h-keyring/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 nyuszika7h-keyring-package: nyuszika7h-keyring-stage

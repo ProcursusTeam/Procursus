@@ -28,7 +28,7 @@ openssl3: openssl3-setup
 		DESTDIR=$(BUILD_STAGE)/openssl3
 #	+$(MAKE) -C $(BUILD_WORK)/openssl3 install_sw \
 #		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/openssl3/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 openssl3-package: openssl3-stage

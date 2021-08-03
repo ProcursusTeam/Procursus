@@ -38,7 +38,7 @@ findutils: findutils-setup gettext
 		SORT="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$(GNU_PREFIX)sort"
 	+$(MAKE) -C $(BUILD_WORK)/findutils install \
 		DESTDIR=$(BUILD_STAGE)/findutils
-	touch $(BUILD_WORK)/findutils/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 findutils-package: findutils-stage

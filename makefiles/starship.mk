@@ -22,7 +22,7 @@ starship: starship-setup
 		--release \
 		--target=$(RUST_TARGET)
 	$(INSTALL) -Dm755 $(BUILD_WORK)/starship/target/$(RUST_TARGET)/release/starship $(BUILD_STAGE)/starship/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/starship
-	touch $(BUILD_WORK)/starship/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 starship-package: starship-stage

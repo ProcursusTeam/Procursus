@@ -27,7 +27,7 @@ make: make-setup gettext
 	+$(MAKE) -C $(BUILD_WORK)/make
 	+$(MAKE) -C $(BUILD_WORK)/make install \
 		DESTDIR="$(BUILD_STAGE)/make"
-	touch $(BUILD_WORK)/make/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 make-package: make-stage

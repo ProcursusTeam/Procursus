@@ -58,7 +58,7 @@ endif
 	+$(MAKE) -C $(BUILD_WORK)/ruby install \
 		DESTDIR="$(BUILD_STAGE)/ruby"
 	$(SED) -i 's/.*DLDFLAGS=.*/DLDFLAGS=/' $(BUILD_STAGE)/ruby/$(MEMO_LIBDIR)/pkgconfig/ruby-$(RUBY_VERSION).pc
-	touch $(BUILD_WORK)/ruby/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 ruby-package: ruby-stage

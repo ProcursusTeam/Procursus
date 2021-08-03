@@ -23,7 +23,7 @@ npth: npth-setup
 		DESTDIR=$(BUILD_STAGE)/npth
 	+$(MAKE) -C $(BUILD_WORK)/npth install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/npth/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 npth-package: npth-stage

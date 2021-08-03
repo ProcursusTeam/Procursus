@@ -40,7 +40,7 @@ lsof: lsof-setup network-cmds-setup ncurses
 		RC_CFLAGS="$(CFLAGS) -DHASUTMPX -isystem $(BUILD_WORK)/network-cmds/include -isystem $(BUILD_WORK)/lsof/lsof/include -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib"
 	cp -a $(BUILD_WORK)/lsof/lsof/lsof $(BUILD_STAGE)/lsof/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 	cp -a $(BUILD_WORK)/lsof/lsof/lsof.8 $(BUILD_STAGE)/lsof/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
-	touch $(BUILD_WORK)/lsof/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 lsof-package: lsof-stage

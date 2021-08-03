@@ -22,7 +22,7 @@ shc: shc-setup
 	+$(MAKE) -C $(BUILD_WORK)/shc
 	+$(MAKE) -C $(BUILD_WORK)/shc install \
 		DESTDIR=$(BUILD_STAGE)/shc
-	touch $(BUILD_WORK)/shc/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 shc-package: shc-stage

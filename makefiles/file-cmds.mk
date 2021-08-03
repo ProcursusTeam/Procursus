@@ -42,7 +42,7 @@ file-cmds: file-cmds-setup
 	for bin in chflags compress ipcrm ipcs pax; do \
 	    	$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include $(BUILD_BASE)$(MEMO_LIBDIR)/libiosexec.tbd -o $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -D__POSIX_C_SOURCE; \
 	done
-	touch $(BUILD_WORK)/file-cmds/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 file-cmds-package: file-cmds-stage

@@ -40,7 +40,7 @@ cmake: cmake-setup ncurses libuv1 curl libarchive expat xz nghttp2 zstd
 		.
 	+$(MAKE) -C $(BUILD_WORK)/cmake install \
 		DESTDIR="$(BUILD_STAGE)/cmake"
-	touch $(BUILD_WORK)/cmake/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 cmake-package: cmake-stage

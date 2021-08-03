@@ -25,7 +25,7 @@ libmatroska: libmatroska-setup libebml
 	+$(MAKE) -C $(BUILD_WORK)/libmatroska install \
 		DESTDIR="$(BUILD_BASE)"
 
-	touch $(BUILD_WORK)/libmatroska/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libmatroska-package: libmatroska-stage

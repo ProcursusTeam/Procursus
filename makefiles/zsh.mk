@@ -63,7 +63,7 @@ zsh: zsh-setup pcre ncurses
 	+$(MAKE) -C $(BUILD_WORK)/zsh install \
 		DESTDIR="$(BUILD_STAGE)/zsh"
 	rm -f $(BUILD_STAGE)/zsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/zsh-$(ZSH_VERSION)
-	touch $(BUILD_WORK)/zsh/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 zsh-package: zsh-stage

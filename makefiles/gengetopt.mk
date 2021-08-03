@@ -21,7 +21,7 @@ gengetopt: gengetopt-setup
 	+$(MAKE) -C $(BUILD_WORK)/gengetopt
 	+$(MAKE) -C $(BUILD_WORK)/gengetopt install \
 		DESTDIR=$(BUILD_STAGE)/gengetopt
-	touch $(BUILD_WORK)/gengetopt/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 gengetopt-package: gengetopt-stage

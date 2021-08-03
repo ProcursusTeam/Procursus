@@ -36,7 +36,7 @@ pcre: pcre-setup
 		DESTDIR=$(BUILD_STAGE)/pcre
 	+$(MAKE) -C $(BUILD_WORK)/pcre install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/pcre/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 pcre-package: pcre-stage

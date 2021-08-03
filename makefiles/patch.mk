@@ -26,7 +26,7 @@ patch: patch-setup
 	+$(MAKE) -C $(BUILD_WORK)/patch
 	+$(MAKE) -C $(BUILD_WORK)/patch install \
 		DESTDIR=$(BUILD_STAGE)/patch
-	touch $(BUILD_WORK)/patch/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 patch-package: patch-stage

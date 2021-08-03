@@ -22,7 +22,7 @@ xwallpaper: xwallpaper-setup xorgproto libjpeg-turbo libpixman libpng16 libx11 x
 	+$(MAKE) -C $(BUILD_WORK)/xwallpaper
 	+$(MAKE) -C $(BUILD_WORK)/xwallpaper install \
 		DESTDIR=$(BUILD_STAGE)/xwallpaper
-	touch $(BUILD_WORK)/xwallpaper/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 xwallpaper-package: xwallpaper-stage

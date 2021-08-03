@@ -33,7 +33,7 @@ berkeleydb: berkeleydb-setup gettext openssl
 		DESTDIR=$(BUILD_STAGE)/berkeleydb
 	+$(MAKE) -C $(BUILD_WORK)/berkeleydb/build_unix install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/berkeleydb/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 berkeleydb-package: berkeleydb-stage

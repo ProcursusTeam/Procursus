@@ -52,7 +52,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	cp -a $(BUILD_MISC)/pam/sudo $(BUILD_STAGE)/sudo/$(MEMO_PREFIX)/etc/pam.d
 endif
 	cp -a $(BUILD_MISC)/procursus.sudoers $(BUILD_STAGE)/sudo/$(MEMO_PREFIX)/etc/sudoers.d/procursus
-	touch $(BUILD_WORK)/sudo/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 sudo-package: sudo-stage

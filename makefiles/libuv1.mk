@@ -25,7 +25,7 @@ libuv1: libuv1-setup
 		DESTDIR="$(BUILD_STAGE)/libuv1"
 	+$(MAKE) -C $(BUILD_WORK)/libuv1 install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libuv1/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libuv1-package: libuv1-stage

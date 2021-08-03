@@ -49,7 +49,7 @@ endif
 		DESTDIR="$(BUILD_STAGE)/dpkg"
 	mkdir -p $(BUILD_STAGE)/dpkg/$(MEMO_PREFIX)/var/lib
 	ln -s /$(MEMO_PREFIX)/Library/dpkg $(BUILD_STAGE)/dpkg/$(MEMO_PREFIX)/var/lib/dpkg
-	touch $(BUILD_WORK)/dpkg/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 dpkg-package: dpkg-stage

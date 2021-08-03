@@ -31,7 +31,7 @@ file: file-setup xz
 		DESTDIR="$(BUILD_STAGE)/file"
 	+$(MAKE) -C $(BUILD_WORK)/file install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/file/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 file-package: file-stage

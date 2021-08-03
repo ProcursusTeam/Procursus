@@ -39,7 +39,7 @@ dav1d: dav1d-setup
 	+ninja -C $(BUILD_WORK)/dav1d/build
 	+DESTDIR=$(BUILD_STAGE)/dav1d ninja -C $(BUILD_WORK)/dav1d/build install
 	+DESTDIR=$(BUILD_BASE) ninja -C $(BUILD_WORK)/dav1d/build install
-	touch $(BUILD_WORK)/dav1d/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 dav1d-package: dav1d-stage

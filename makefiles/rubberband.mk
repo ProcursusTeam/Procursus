@@ -37,7 +37,7 @@ rubberband: rubberband-setup libsamplerate libsndfile
 		..
 	+DESTDIR=$(BUILD_STAGE)/rubberband ninja -C $(BUILD_WORK)/rubberband/build install
 	+DESTDIR=$(BUILD_BASE) ninja -C $(BUILD_WORK)/rubberband/build install
-	touch $(BUILD_WORK)/rubberband/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 rubberband-package: rubberband-stage

@@ -42,7 +42,7 @@ endif
 		DESTDIR=$(BUILD_STAGE)/sdl2
 	+$(MAKE) -C $(BUILD_WORK)/sdl2 install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/sdl2/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 sdl2-package: sdl2-stage

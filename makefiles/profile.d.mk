@@ -23,7 +23,7 @@ endif # ($(MEMO_TARGET),darwin-\*)
 		-e 's|@MEMO_LIBDIR@|$(MEMO_LIBDIR)|' \
 		$(BUILD_MISC)/profile.d/multiarch.sh \
 		> $(BUILD_STAGE)/profile.d/etc/profile.d/multiarch.sh
-	touch $(BUILD_STAGE)/profile.d/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 profile.d-package: profile.d-stage

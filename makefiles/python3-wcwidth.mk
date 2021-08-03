@@ -20,7 +20,7 @@ python3-wcwidth: python3-wcwidth-setup python3
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--root=$(BUILD_STAGE)/python3-wcwidth
 	find $(BUILD_STAGE)/python3-wcwidth -name __pycache__ -prune -exec rm -rf {} \;
-	touch $(BUILD_WORK)/python3-wcwidth/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 python3-wcwidth-package: python3-wcwidth-stage

@@ -32,7 +32,7 @@ grep: grep-setup pcre
 	+$(MAKE) -C $(BUILD_WORK)/grep
 	+$(MAKE) -C $(BUILD_WORK)/grep install \
 		DESTDIR=$(BUILD_STAGE)/grep
-	touch $(BUILD_WORK)/grep/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 grep-package: grep-stage

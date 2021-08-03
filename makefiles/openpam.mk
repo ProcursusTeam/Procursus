@@ -35,7 +35,7 @@ openpam: openpam-setup libxcrypt
 		DESTDIR="$(BUILD_STAGE)/openpam"
 	+$(MAKE) -C $(BUILD_WORK)/openpam install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/openpam/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 openpam-package: openpam-stage

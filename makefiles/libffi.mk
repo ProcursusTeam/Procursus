@@ -22,7 +22,7 @@ libffi: libffi-setup
 		DESTDIR=$(BUILD_STAGE)/libffi
 	+$(MAKE) -C $(BUILD_WORK)/libffi install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libffi/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libffi-package: libffi-stage

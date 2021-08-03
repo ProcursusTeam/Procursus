@@ -35,7 +35,7 @@ cctools: cctools-setup llvm uuid tapi xar
 	+$(MAKE) -C $(BUILD_WORK)/cctools
 	+$(MAKE) -C $(BUILD_WORK)/cctools install \
 		DESTDIR=$(BUILD_STAGE)/cctools
-	touch $(BUILD_WORK)/cctools/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 cctools-package: cctools-stage

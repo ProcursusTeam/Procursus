@@ -54,7 +54,7 @@ redis: redis-setup libjemalloc openssl
 			$(SED) -i 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $$file; \
 	done
 
-	touch $(BUILD_WORK)/redis/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 redis-package: redis-stage
