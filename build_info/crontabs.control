@@ -1,0 +1,11 @@
+Package: crontabs
+Section: Utilities
+Version: @DEB_CRONTABS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Priority: standard
+Description: run periodic system functions
+ Provides periodic which will run the scripts in
+ /etc/periodic/daily /etc/periodic/weekly and
+ /etc/periodic/monthly at their respective times.
+ Also provides newsyslog which will rotate log files.

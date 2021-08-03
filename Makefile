@@ -466,6 +466,30 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 LDFLAGS             += -liosexec
 endif
 
+BMAKE := unset MAKEFLAGS; bsdmake
+
+DEFAULT_BMAKE_FLAGS := \
+	STRIP="" \
+	BINOWN="$(shell id -u)" \
+	BINGRP="$(shell id -g)" \
+	MANOWN="$(shell id -u)" \
+	MANGRP="$(shell id -g)" \
+	LIBOWN="$(shell id -u)" \
+	LIBGRP="$(shell id -g)" \
+	SHAREOWN="$(shell id -u)" \
+	SHAREGRP="$(shell id -g)" \
+	FILESOWN="$(shell id -u)" \
+	FILESGRP="$(shell id -g)" \
+	DOCOWN="$(shell id -u)" \
+	DOCGRP="$(shell id -g)" \
+	INFOOWN="$(shell id -u)" \
+	INFOGRP="$(shell id -g)" \
+	NLSOWN="$(shell id -u)" \
+	NLSGRP="$(shell id -g)" \
+	SHAREDIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share" \
+	LIBDIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
+	INCLUDEDIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include"
+
 DEFAULT_CMAKE_FLAGS := \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_CROSSCOMPILING=true \
@@ -1058,7 +1082,8 @@ setup:
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libsyscall/wrappers/spawn/spawn.h \
 		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/bootstrap_priv.h \
 		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/vproc_priv.h \
-		https://opensource.apple.com/source/libplatform/libplatform-126.1.2/include/_simple.h
+		https://opensource.apple.com/source/libplatform/libplatform-126.1.2/include/_simple.h \
+		https://opensource.apple.com/source/libutil/libutil-58.40.2/libutil.h
 
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os \
 		https://opensource.apple.com/source/Libc/Libc-1439.40.11/os/assumes.h \
@@ -1080,7 +1105,7 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	@# Copy headers from MacOSX.sdk
-	@cp -af $(MACOSX_SYSROOT)/usr/include/{arpa,bsm,hfs,net,xpc,netinet,servers} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	@cp -af $(MACOSX_SYSROOT)/usr/include/{arpa,bsm,hfs,net,xpc,netinet,servers,get_compat.h} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	@cp -af $(MACOSX_SYSROOT)/usr/include/objc/objc-runtime.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/objc
 	@cp -af $(MACOSX_SYSROOT)/usr/include/libkern/{OSDebug.h,OSKextLib.h,OSReturn.h,OSThermalNotification.h,OSTypes.h,machine} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern
 	@cp -af $(MACOSX_SYSROOT)/usr/include/kern $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include

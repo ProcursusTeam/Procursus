@@ -1,0 +1,104 @@
+diff -urN crontabs-54/files/periodic.conf crontabs/files/periodic.conf
+--- crontabs-54/files/periodic.conf	2019-12-04 08:42:51.000000000 +0000
++++ crontabs/files/periodic.conf	2021-08-03 16:49:57.068929000 +0000
+@@ -17,10 +17,10 @@
+ #
+ 
+ # What files override these defaults ?
+-periodic_conf_files="/etc/periodic.conf /etc/periodic.conf.local"
++periodic_conf_files="@MEMO_PREFIX@/etc/periodic.conf @MEMO_PREFIX@/etc/periodic.conf.local"
+ 
+ # periodic script dirs
+-local_periodic="/usr/local/etc/periodic"
++local_periodic="@MEMO_PREFIX@@MEMO_SUB_PREFIX@@MEMO_ALT_PREFIX@/etc/periodic"
+ 
+ 
+ # Daily options
+@@ -76,7 +76,7 @@
+ daily_status_include_submit_mailq="YES"			# Also submit queue
+ 
+ # 999.local
+-daily_local="/etc/daily.local"				# Local scripts
++daily_local="@MEMO_PREFIX@/etc/daily.local"				# Local scripts
+ 
+ 
+ # Weekly options
+@@ -92,7 +92,7 @@
+ weekly_show_badconfig="NO"				# scripts returning 2
+ 
+ # 999.local
+-weekly_local="/etc/weekly.local"			# Local scripts
++weekly_local="@MEMO_PREFIX@/etc/weekly.local"			# Local scripts
+ 
+ 
+ # Monthly options
+@@ -111,7 +111,7 @@
+ monthly_accounting_enable="YES"				# Login accounting
+ 
+ # 999.local
+-monthly_local="/etc/monthly.local"			# Local scripts
++monthly_local="@MEMO_PREFIX@/etc/monthly.local"			# Local scripts
+ 
+ 
+ # Define source_periodic_confs, the mechanism used by /etc/periodic/*/*
+diff -urN crontabs-54/newsyslog/newsyslog.c crontabs/newsyslog/newsyslog.c
+--- crontabs-54/newsyslog/newsyslog.c	2011-12-21 02:07:48.000000000 +0000
++++ crontabs/newsyslog/newsyslog.c	2021-08-03 16:48:24.131231000 +0000
+@@ -773,7 +773,7 @@
+ 		glob_t g;
+ 		int i;
+ 
+-		if (glob("/etc/newsyslog.d/*.conf", GLOB_NOCHECK, NULL, &g) != 0)
++		if (glob("@MEMO_PREFIX@/etc/newsyslog.d/*.conf", GLOB_NOCHECK, NULL, &g) != 0)
+ 			err(1, "glob");
+ 		for (i = 0; i < g.gl_matchc; i++) {
+ 			fname = g.gl_pathv[i];
+diff -urN crontabs-54/newsyslog/pathnames.h crontabs/newsyslog/pathnames.h
+--- crontabs-54/newsyslog/pathnames.h	2006-08-25 00:06:51.000000000 +0000
++++ crontabs/newsyslog/pathnames.h	2021-08-03 16:47:25.697561000 +0000
+@@ -22,7 +22,7 @@
+ 
+ */
+ 
+-#define _PATH_CONF	"/etc/newsyslog.conf"
++#define _PATH_CONF	"@MEMO_PREFIX@/etc/newsyslog.conf"
+ #define _PATH_SYSLOGPID	_PATH_VARRUN "syslog.pid"
+-#define _PATH_BZIP2	"/usr/bin/bzip2"
+-#define _PATH_GZIP	"/usr/bin/gzip"
++#define _PATH_BZIP2	"@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/bzip2"
++#define _PATH_GZIP	"@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/gzip"
+diff -urN crontabs-54/periodic/periodic-wrapper.c crontabs/periodic/periodic-wrapper.c
+--- crontabs-54/periodic/periodic-wrapper.c	2014-01-23 18:11:06.000000000 +0000
++++ crontabs/periodic/periodic-wrapper.c	2021-08-03 16:47:51.364134000 +0000
+@@ -56,7 +56,7 @@
+ 			asl_log(NULL, NULL, ASL_LEVEL_NOTICE, "Running %s periodic task.", argv[1]);
+ 
+ 			const char *args[] = { "periodic", argv[1], NULL };
+-			if (posix_spawn(&pid, "/usr/sbin/periodic", NULL, NULL, (char * const *)args, environ) == 0) {
++			if (posix_spawn(&pid, "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/sbin/periodic", NULL, NULL, (char * const *)args, environ) == 0) {
+ 				if (waitpid(pid, &status, 0) != -1 && WIFEXITED(status) && WEXITSTATUS(status) == 0) {
+ 					success = true;
+ 				}
+diff -urN crontabs-54/periodic/periodic.sh crontabs/periodic/periodic.sh
+--- crontabs-54/periodic/periodic.sh	2011-12-21 02:07:48.000000000 +0000
++++ crontabs/periodic/periodic.sh	2021-08-03 16:48:12.794601000 +0000
+@@ -20,8 +20,8 @@
+ 
+ # If possible, check the global system configuration file, 
+ # to see if there are additional dirs to check
+-if [ -r /etc/defaults/periodic.conf ]; then
+-    . /etc/defaults/periodic.conf
++if [ -r @MEMO_PREFIX@/etc/defaults/periodic.conf ]; then
++    . @MEMO_PREFIX@/etc/defaults/periodic.conf
+     source_periodic_confs
+ fi
+ 
+@@ -61,7 +61,7 @@
+             continue
+         fi;;
+     *)  dirlist=
+-        for top in /etc/periodic ${local_periodic}
++        for top in @MEMO_PREFIX@/etc/periodic ${local_periodic}
+         do
+             [ -d $top/$arg ] && dirlist="$dirlist $top/$arg"
+         done;;

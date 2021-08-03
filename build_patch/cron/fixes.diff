@@ -1,0 +1,118 @@
+diff -urN cron-40/Makefile.inc cron/Makefile.inc
+--- cron-40/Makefile.inc	2007-02-20 01:24:19.000000000 +0000
++++ cron/Makefile.inc	2021-08-03 00:49:33.883422000 +0000
+@@ -5,6 +5,6 @@
+ .else
+ LIBCRON=${.CURDIR}/../lib/libcron.a
+ .endif
+-LIBCRON=${.OBJDIR}/libcron.a
++#LIBCRON=${.OBJDIR}/libcron.a
+ 
+ #.include "../Makefile.inc"
+diff -urN cron-40/com.vix.cron.plist cron/com.vix.cron.plist
+--- cron-40/com.vix.cron.plist	2008-05-01 21:42:58.000000000 +0000
++++ cron/com.vix.cron.plist	2021-08-03 16:41:38.519455000 +0000
+@@ -7,19 +7,19 @@
+ 	<string>com.vix.cron</string>
+ 	<key>ProgramArguments</key>
+ 	<array>
+-		<string>/usr/sbin/cron</string>
++		<string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/cron-wrapper</string>
+ 	</array>
+ 	<key>KeepAlive</key>
+ 	<dict>
+ 		<key>PathState</key>
+ 		<dict>
+-			<key>/etc/crontab</key>
++			<key>@MEMO_PREFIX@/etc/crontab</key>
+ 			<true/>
+ 		</dict>
+ 	</dict>
+ 	<key>QueueDirectories</key>
+ 	<array>
+-		<string>/usr/lib/cron/tabs</string>
++		<string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/cron/tabs</string>
+ 	</array>
+ 	<key>EnableTransactions</key>
+ 	<true/>
+diff -urN cron-40/cron/Makefile cron/cron/Makefile
+--- cron-40/cron/Makefile	2007-02-20 01:24:19.000000000 +0000
++++ cron/cron/Makefile	2021-08-03 16:40:25.136893000 +0000
+@@ -3,9 +3,10 @@
+ PROG=	cron
+ SRCS=	cron.c database.c do_command.c job.c user.c popen.c
+ #CFLAGS+=-DLOGIN_CAP
++CFLAGS+=-D__kernel_ptr_semantics=""
+ DPADD=	${LIBCRON} ${LIBUTIL}
+ LDADD=	${LIBCRON} -framework IOKit -framework CoreFoundation -lutil
+ MAN8=	cron.8
+-BINDIR=/usr/sbin
++BINDIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
+ 
+ .include <bsd.prog.mk>
+diff -urN cron-40/cron/config.h cron/cron/config.h
+--- cron-40/cron/config.h	2007-02-20 01:24:19.000000000 +0000
++++ cron/cron/config.h	2021-08-03 03:27:30.369677000 +0000
+@@ -21,7 +21,7 @@
+  */
+ 
+ #if !defined(_PATH_SENDMAIL)
+-# define _PATH_SENDMAIL "/usr/lib/sendmail"
++# define _PATH_SENDMAIL "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/sendmail"
+ #endif /*SENDMAIL*/
+ 
+ /*
+diff -urN cron-40/cron/pathnames.h cron/cron/pathnames.h
+--- cron-40/cron/pathnames.h	2007-04-12 21:56:03.000000000 +0000
++++ cron/cron/pathnames.h	2021-08-03 16:39:46.229769000 +0000
+@@ -29,7 +29,7 @@
+ 			 * are all relative to this directory.
+ 			 */
+ #ifdef __APPLE__
+-#define CRONDIR		"/usr/lib/cron"
++#define CRONDIR		"@MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/cron"
+ #else
+ #define CRONDIR		"/var/cron"
+ #endif
+@@ -66,12 +66,12 @@
+ #ifdef _PATH_VARRUN
+ # define PIDDIR	_PATH_VARRUN
+ #else
+-# define PIDDIR "/etc/"
++# define PIDDIR "@MEMO_PREFIX@/etc/"
+ #endif
+ #define PIDFILE		"%scron.pid"
+ 
+ 			/* 4.3BSD-style crontab */
+-#define SYSCRONTAB	"/etc/crontab"
++#define SYSCRONTAB	"@MEMO_PREFIX@/etc/crontab"
+ 
+ 			/* what editor to use if no EDITOR or VISUAL
+ 			 * environment variable specified.
+@@ -79,7 +79,7 @@
+ #if defined(_PATH_VI)
+ # define EDITOR _PATH_VI
+ #else
+-# define EDITOR "/usr/ucb/vi"
++# define EDITOR "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/ucb/vi"
+ #endif
+ 
+ #ifndef _PATH_BSHELL
+@@ -87,5 +87,5 @@
+ #endif
+ 
+ #ifndef _PATH_DEFPATH
+-# define _PATH_DEFPATH "/usr/bin:/bin"
++# define _PATH_DEFPATH "/usr/bin:/bin:@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin:@MEMO_PREFIX@/bin"
+ #endif
+diff -urN cron-40/crontab/Makefile cron/crontab/Makefile
+--- cron-40/crontab/Makefile	2011-09-26 22:51:44.000000000 +0000
++++ cron/crontab/Makefile	2021-08-03 16:40:37.330971000 +0000
+@@ -1,6 +1,6 @@
+ # $FreeBSD: src/usr.sbin/cron/crontab/Makefile,v 1.14 2004/11/03 18:01:21 ru Exp $
+ 
+-BINDIR= /usr/bin
++BINDIR= $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+ 
+ PROG=	crontab
+ BINOWN=	root
