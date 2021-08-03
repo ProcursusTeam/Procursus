@@ -1,0 +1,97 @@
+From:	Mingye Wang
+Subject:	[PATCH] [RFC] cp: MacOS clonefile support
+Date:	Sun, 23 Aug 2020 02:10:12 +0800
+This patch enables using the macOS 10.12+ clonefile(2) system call for
+reflinking on supported filesystems. The system BSD cp(1) only
+supports -c (--reflink=always), which is quite a pain.
+
+Tested on a hackintosh machine with macOS 10.15. And yes, this is a
+resubmission.
+---
+ src/copy.c   | 45 ++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 58 insertions(+), 1 deletion(-)
+
+diff --git a/src/copy.c b/src/copy.c
+index 4050f69..fad8189 100644
+--- a/src/copy.c
++++ b/src/copy.c
+@@ -73,6 +73,11 @@
+ # include "verror.h"
+ #endif
+ 
++#if __APPLE__
++# include <sys/attr.h>
++# include <sys/clonefile.h>
++#endif
++
+ #if HAVE_LINUX_FALLOC_H
+ # include <linux/falloc.h>
+ #endif
+@@ -1311,12 +1316,48 @@ copy_reg (char const *src_name, char const *dst_name,
+       goto close_src_desc;
+     }
+ 
++#if __APPLE__
++  /* The macOS clonefile() syscall is like link in that it takes
++     pathnames. Do it first. */
++  if (data_copy_required && x->reflink_mode)
++    {
++      bool clone_ok = false;
++      if (! *new_dst)
++        {
++          if (unlink(dst_name) != 0)
++            {
++              error (0, errno, _("cannot remove %s"), quoteaf (dst_name));
++              goto noclone;
++            }
++          if (x->verbose)
++            printf (_("removed %s\n"), quoteaf (dst_name));
++        }
++      uint32_t cloneflags = 0;
++      if (x->dereference == DEREF_NEVER) cloneflags |= CLONE_NOFOLLOW;
++      /* CLONE_NOOWNERCOPY (0x0002) is recently added with no specific
++       * date. Let's not feed ourselves to Apple-versioning. */
++      clone_ok = clonefile (src_name, dst_name, cloneflags) == 0;
++      noclone:;
++      if (clone_ok || x->reflink_mode == REFLINK_ALWAYS)
++        {
++          if (!clone_ok)
++            {
++              error (0, errno, _("failed to clone %s from %s"),
++                     quoteaf_n (0, dst_name), quoteaf_n (1, src_name));
++              return false;
++            }
++          data_copy_required = false;
++          *new_dst = false;
++        }
++    }
++#endif
++
+   /* The semantics of the following open calls are mandated
+      by the specs for both cp and mv.  */
+   if (! *new_dst)
+     {
+       int open_flags =
+-        O_WRONLY | O_BINARY | (x->data_copy_required ? O_TRUNC : 0);
++        O_WRONLY | O_BINARY | (data_copy_required ? O_TRUNC : 0);
+       dest_desc = open (dst_name, open_flags);
+       dest_errno = errno;
+ 
+@@ -1453,6 +1494,7 @@ copy_reg (char const *src_name, char const *dst_name,
+       goto close_src_and_dst_desc;
+     }
+ 
++#if ! __APPLE__
+   /* --attributes-only overrides --reflink.  */
+   if (data_copy_required && x->reflink_mode)
+     {
+@@ -1469,6 +1511,7 @@ copy_reg (char const *src_name, char const *dst_name,
+           data_copy_required = false;
+         }
+     }
++#endif
+ 
+   if (data_copy_required)
+     {
+-- 
+2.20.1.windows.1
