@@ -22,7 +22,7 @@ libyaml: libyaml-setup
 		DESTDIR=$(BUILD_STAGE)/libyaml
 	+$(MAKE) -C $(BUILD_WORK)/libyaml install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libyaml/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libyaml-package: libyaml-stage

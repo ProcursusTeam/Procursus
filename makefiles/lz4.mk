@@ -26,7 +26,7 @@ lz4: lz4-setup
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR=$(BUILD_BASE) \
 		CFLAGS="$(CFLAGS)"
-	touch $(BUILD_WORK)/lz4/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 lz4-package: lz4-stage

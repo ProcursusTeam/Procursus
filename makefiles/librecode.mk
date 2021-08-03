@@ -23,7 +23,7 @@ librecode: librecode-setup gettext
 		DESTDIR=$(BUILD_STAGE)/librecode
 	+$(MAKE) -C $(BUILD_WORK)/librecode install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/librecode/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 librecode-package: librecode-stage

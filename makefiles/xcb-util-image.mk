@@ -22,7 +22,7 @@ xcb-util-image: xcb-util-image-setup libxcb xcb-util
 		DESTDIR=$(BUILD_STAGE)/xcb-util-image
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-image install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/xcb-util-image/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 xcb-util-image-package: xcb-util-image-stage

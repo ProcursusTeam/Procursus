@@ -23,7 +23,7 @@ lcms2: lcms2-setup libjpeg-turbo libtiff
 		DESTDIR="$(BUILD_STAGE)/lcms2"
 	+$(MAKE) -C $(BUILD_WORK)/lcms2 install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/lcms2/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 lcms2-package: lcms2-stage

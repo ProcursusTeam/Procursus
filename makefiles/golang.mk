@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += golang
 GOLANG_MAJOR_V := 1.16
-GOLANG_VERSION := $(GOLANG_MAJOR_V).5
+GOLANG_VERSION := $(GOLANG_MAJOR_V).6
 DEB_GOLANG_V   ?= $(GOLANG_VERSION)
 
 golang-setup: setup
@@ -48,7 +48,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	mv $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg/tool/$(shell echo $(RUST_TARGET) | cut -f3 -d-)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)/link $(BUILD_STAGE)/golang$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg/tool/$(shell echo $(RUST_TARGET) | cut -f3 -d-)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)/link2
 	$(CC) $(CFLAGS) -DLINKER="\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg/tool/$(shell echo $(RUST_TARGET) | cut -f3 -d-)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)/link2\"" -o $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg/tool/$(shell echo $(RUST_TARGET) | cut -f3 -d-)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)/link $(BUILD_MISC)/ld-wrapper/wrapper.c
 endif
-	touch $(BUILD_WORK)/golang/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 golang-package: golang-stage

@@ -28,7 +28,7 @@ unzip: unzip-setup
 		LF2="$(CFLAGS)" L_BZ2=-lbz2
 	+cd $(BUILD_WORK)/unzip && $(MAKE) -f unix/Makefile install \
 		prefix=$(BUILD_STAGE)/unzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	touch $(BUILD_WORK)/unzip/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 unzip-package: unzip-stage

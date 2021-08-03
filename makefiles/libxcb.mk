@@ -32,7 +32,7 @@ libxcb: libxcb-setup xcb-proto libxau libxdmcp libpthread-stubs
 		DESTDIR=$(BUILD_BASE) \
 		XCBPROTO_XCBPYTHONDIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3/dist-packages" \
 		XCBPROTO_XCBINCLUDEDIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/xcb"
-	touch $(BUILD_WORK)/libxcb/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libxcb-package: libxcb-stage

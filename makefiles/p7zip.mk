@@ -25,7 +25,7 @@ p7zip: p7zip-setup
 		DEST_DIR=$(BUILD_STAGE)/p7zip \
 		DEST_HOME=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DEST_MAN=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
-	touch $(BUILD_WORK)/p7zip/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 p7zip-package: p7zip-stage

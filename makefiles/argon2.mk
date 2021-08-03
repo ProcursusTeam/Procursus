@@ -27,7 +27,7 @@ argon2: argon2-setup
 		DESTDIR=$(BUILD_BASE) \
 		KERNEL_NAME="Darwin" \
 		OPTTARGET="aarch64"
-	touch $(BUILD_WORK)/argon2/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 argon2-package: argon2-stage

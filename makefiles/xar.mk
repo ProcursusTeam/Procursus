@@ -35,7 +35,7 @@ xar: xar-setup openssl
 		DESTDIR=$(BUILD_STAGE)/xar
 	cp -a $(BUILD_STAGE)/xar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/* $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	cp -a $(BUILD_STAGE)/xar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/* $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	touch $(BUILD_WORK)/xar/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 xar-package: xar-stage

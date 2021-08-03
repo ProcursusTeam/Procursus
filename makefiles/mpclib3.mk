@@ -22,7 +22,7 @@ mpclib3: mpclib3-setup libgmp10 mpfr4
 		DESTDIR="$(BUILD_STAGE)/mpclib3"
 	+$(MAKE) -C $(BUILD_WORK)/mpclib3 install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/mpclib3/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 mpclib3-package: mpclib3-stage

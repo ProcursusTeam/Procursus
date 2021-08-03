@@ -36,7 +36,7 @@ endif
 			$(SED) -i 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $$file; \
 	done
 
-	touch $(BUILD_WORK)/ghostbin/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 ghostbin-package: ghostbin-stage

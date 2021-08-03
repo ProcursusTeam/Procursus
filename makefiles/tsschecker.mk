@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += tsschecker
-TSSCHECKER_VERSION := 333
-TSSCHECKER_COMMIT  := 6904e4a220358fd1fbaa134b0301ed2fc2e77130
+TSSCHECKER_VERSION := 334
+TSSCHECKER_COMMIT  := 1b5e82e3c8275874a3595c2c57cd5ea9921dc2e2
 DEB_TSSCHECKER_V   ?= $(TSSCHECKER_VERSION)
 
 tsschecker-setup: setup
@@ -29,7 +29,7 @@ tsschecker: tsschecker-setup libfragmentzip libplist curl libirecovery
 	+$(MAKE) -C $(BUILD_WORK)/tsschecker
 	+$(MAKE) -C $(BUILD_WORK)/tsschecker install \
 		DESTDIR="$(BUILD_STAGE)/tsschecker"
-	touch $(BUILD_WORK)/tsschecker/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 tsschecker-package: tsschecker-stage

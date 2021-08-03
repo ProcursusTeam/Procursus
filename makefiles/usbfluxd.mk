@@ -28,7 +28,7 @@ usbfluxd: usbfluxd-setup libplist
 		DESTDIR="$(BUILD_STAGE)/usbfluxd"
 	mkdir -p $(BUILD_STAGE)/usbfluxd/Library/LaunchDaemons
 	cp -a $(BUILD_INFO)/com.corellium.usbfluxd.plist $(BUILD_STAGE)/usbfluxd/Library/LaunchDaemons
-	touch $(BUILD_WORK)/usbfluxd/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 usbfluxd-package: usbfluxd-stage

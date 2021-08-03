@@ -19,7 +19,7 @@ nekofetch: nekofetch-setup
 	+$(MAKE) -C $(BUILD_WORK)/nekofetch install \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR=$(BUILD_STAGE)/nekofetch
-	touch $(BUILD_WORK)/nekofetch/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 nekofetch-package: nekofetch-stage

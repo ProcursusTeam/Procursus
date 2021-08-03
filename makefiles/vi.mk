@@ -27,7 +27,7 @@ vi: vi-setup ncurses
 		FEATURES="-DCHDIR -DFASTTAG -DUCVISUAL -DMB -DBIT8" \
 		DESTDIR="$(BUILD_STAGE)/vi" \
 		INSTALL="$(INSTALL)"
-	touch $(BUILD_WORK)/vi/.build_complete
+	$(call AFTER_BUILD)
 endif
 vi-package: vi-stage
 	# vi.mk Package Structure

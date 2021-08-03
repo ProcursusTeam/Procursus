@@ -22,7 +22,7 @@ youtube-dl: youtube-dl-setup
 		MANDIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
 		DESTDIR=$(BUILD_STAGE)/youtube-dl \
 		PYTHON=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3
-	touch $(BUILD_WORK)/youtube-dl/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 youtube-dl-package: youtube-dl-stage
