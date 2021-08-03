@@ -32,7 +32,7 @@ unibilium: unibilium-setup
 		DESTDIR="$(BUILD_STAGE)/unibilium"
 	+$(MAKE) -C $(BUILD_WORK)/unibilium install PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/unibilium/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 unibilium-package: unibilium-stage

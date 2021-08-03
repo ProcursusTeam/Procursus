@@ -23,7 +23,7 @@ mtr: mtr-setup ncurses jansson
 		LIBS="-lncursesw -lm"
 	+$(MAKE) -C $(BUILD_WORK)/mtr install \
 		DESTDIR=$(BUILD_STAGE)/mtr
-	touch $(BUILD_WORK)/mtr/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 mtr-package: mtr-stage

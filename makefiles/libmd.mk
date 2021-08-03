@@ -23,7 +23,7 @@ libmd: libmd-setup
 		DESTDIR=$(BUILD_STAGE)/libmd
 	+$(MAKE) -C $(BUILD_WORK)/libmd install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libmd/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libmd-package: libmd-stage

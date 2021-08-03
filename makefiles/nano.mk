@@ -31,7 +31,7 @@ nano: nano-setup ncurses gettext file
 		DESTDIR="$(BUILD_STAGE)/nano"
 	mkdir -p $(BUILD_STAGE)/nano/$(MEMO_PREFIX)/etc
 	cp -a $(BUILD_WORK)/nano/doc/sample.nanorc $(BUILD_STAGE)/nano/$(MEMO_PREFIX)/etc/nanorc
-	touch $(BUILD_WORK)/nano/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 nano-package: nano-stage

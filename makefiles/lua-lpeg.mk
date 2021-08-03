@@ -53,7 +53,7 @@ lua-lpeg: lua-lpeg-setup libuv1 lua5.1 lua5.2 lua5.3 luajit
 	cp -a $(BUILD_WORK)/lua-lpeg/buildjit/libluajit-5.1-lpeg*.dylib $(BUILD_STAGE)/lua-lpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	mkdir -p $(BUILD_STAGE)/lua-lpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/lua/5.1/
 	cp -a $(BUILD_WORK)/lua-lpeg/buildjit/bundle/lpeg.so $(BUILD_STAGE)/lua-lpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/lua/5.1/
-	touch $(BUILD_WORK)/lua-lpeg/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 lua-lpeg-package: lua-lpeg-stage

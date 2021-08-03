@@ -24,7 +24,7 @@ libopus: libopus-setup
 		DESTDIR=$(BUILD_STAGE)/libopus
 	+$(MAKE) -C $(BUILD_WORK)/libopus install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libopus/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libopus-package: libopus-stage

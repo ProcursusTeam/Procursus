@@ -52,7 +52,7 @@ glib2.0: glib2.0-setup gettext pcre libffi
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1700 ] && echo 1),1)
 	rm -f $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libexpat*
 endif
-	touch $(BUILD_WORK)/glib2.0/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 glib2.0-package: glib2.0-stage

@@ -35,7 +35,7 @@ docbook-xsl: docbook-xsl-setup
 			$(BUILD_STAGE)/docbook-xsl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$${xsl};                                            \
 	done
 	install -v -m755 -d $(BUILD_STAGE)/docbook-xsl/$(MEMO_PREFIX)/etc/xml
-	touch $(BUILD_WORK)/docbook-xsl/.build_complete
+	$(call AFTER_BUILD)
 endif
 docbook-xsl-package: docbook-xsl-stage
 	# docbook-xsl.mk Package Structure

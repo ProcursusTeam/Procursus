@@ -36,7 +36,7 @@ fakeroot: fakeroot-setup
 		CFLAGS='$(CFLAGS) -D__DARWIN_UNIX03 -DMAC_OS_X_VERSION_MIN_REQUIRED=1000'
 	+$(MAKE) -C $(BUILD_WORK)/fakeroot install \
 		DESTDIR=$(BUILD_STAGE)/fakeroot
-	touch $(BUILD_WORK)/fakeroot/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 fakeroot-package: fakeroot-stage

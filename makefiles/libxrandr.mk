@@ -24,7 +24,7 @@ libxrandr: libxrandr-setup libx11 libxrender libxext xorgproto
 		DESTDIR=$(BUILD_STAGE)/libxrandr
 	+$(MAKE) -C $(BUILD_WORK)/libxrandr install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxrandr/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libxrandr-package: libxrandr-stage

@@ -24,7 +24,7 @@ fluxbox: fluxbox-setup imlib2 libx11 libxext libxft libxinerama libxpm libxrandr
 	+$(MAKE) -C $(BUILD_WORK)/fluxbox
 	+$(MAKE) -C $(BUILD_WORK)/fluxbox install \
 		DESTDIR=$(BUILD_STAGE)/fluxbox
-	touch $(BUILD_WORK)/fluxbox/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 fluxbox-package: fluxbox-stage

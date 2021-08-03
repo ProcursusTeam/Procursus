@@ -83,7 +83,7 @@ ffmpeg: ffmpeg-setup aom dav1d fontconfig freetype frei0r gnutls lame libass lib
 		DESTDIR=$(BUILD_BASE)
 	+$(MAKE) -C $(BUILD_WORK)/ffmpeg alltools
 	cp -a $(BUILD_WORK)/ffmpeg/tools/* $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	touch $(BUILD_WORK)/ffmpeg/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 ffmpeg-package: ffmpeg-stage

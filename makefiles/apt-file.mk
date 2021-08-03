@@ -24,7 +24,7 @@ apt-file: apt-file-setup
 	$(INSTALL) -Dm755 $(BUILD_WORK)/apt-file/apt-file               $(BUILD_STAGE)/apt-file/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/apt-file
 	$(INSTALL) -Dm644 $(BUILD_WORK)/apt-file/50apt-file.conf        $(BUILD_STAGE)/apt-file/$(MEMO_PREFIX)/etc/apt/apt.conf.d/50apt-file.conf
 	$(INSTALL) -Dm644 $(BUILD_WORK)/apt-file/debian/bash-completion $(BUILD_STAGE)/apt-file/$(MEMO_PREFIX)/etc/bash_completion.d/apt-file
-	touch $(BUILD_WORK)/apt-file/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 apt-file-package: apt-file-stage

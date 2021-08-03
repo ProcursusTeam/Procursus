@@ -20,7 +20,7 @@ xmlto: xmlto-setup
 	+$(MAKE) -C $(BUILD_WORK)/xmlto
 	+$(MAKE) -C $(BUILD_WORK)/xmlto install \
 		DESTDIR=$(BUILD_STAGE)/xmlto
-	touch $(BUILD_WORK)/xmlto/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 xmlto-package: xmlto-stage

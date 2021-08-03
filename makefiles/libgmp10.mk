@@ -29,7 +29,7 @@ libgmp10: libgmp10-setup
 		DESTDIR=$(BUILD_STAGE)/libgmp10
 	+$(MAKE) -C $(BUILD_WORK)/libgmp10 install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libgmp10/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libgmp10-package: libgmp10-stage

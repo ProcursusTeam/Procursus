@@ -34,7 +34,7 @@ lynx: lynx-setup ncurses libidn2 openssl gettext
 	+$(MAKE) -C $(BUILD_WORK)/lynx
 	+$(MAKE) -C $(BUILD_WORK)/lynx install \
 		DESTDIR=$(BUILD_STAGE)/lynx
-	touch $(BUILD_WORK)/lynx/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 lynx-package: lynx-stage

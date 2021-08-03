@@ -29,7 +29,7 @@ prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)\n" > $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(
 	touch $(BUILD_STAGE)/npm/etc/npmrc
 	mkdir -p $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/nodejs
 	ln -s ../npm $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/nodejs/npm
-	touch $(BUILD_WORK)/npm/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 npm-package: npm-stage

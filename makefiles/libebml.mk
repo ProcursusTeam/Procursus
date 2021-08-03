@@ -25,7 +25,7 @@ libebml: libebml-setup
 	+$(MAKE) -C $(BUILD_WORK)/libebml install \
 		DESTDIR="$(BUILD_BASE)"
 
-	touch $(BUILD_WORK)/libebml/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libebml-package: libebml-stage

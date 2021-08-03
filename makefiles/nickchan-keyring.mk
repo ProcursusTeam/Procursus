@@ -13,7 +13,7 @@ else
 nickchan-keyring: setup
 	mkdir -p $(BUILD_STAGE)/nickchan-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 	cp -a $(BUILD_MISC)/keyrings/nickchan/nickchan.gpg $(BUILD_STAGE)/nickchan-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	touch $(BUILD_STAGE)/nickchan-keyring/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 nickchan-keyring-package: nickchan-keyring-stage

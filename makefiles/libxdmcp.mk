@@ -22,7 +22,7 @@ libxdmcp: libxdmcp-setup xorgproto
 		DESTDIR="$(BUILD_STAGE)/libxdmcp"
 	+$(MAKE) -C $(BUILD_WORK)/libxdmcp install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libxdmcp/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libxdmcp-package: libxdmcp-stage

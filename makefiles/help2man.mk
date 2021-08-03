@@ -23,7 +23,7 @@ help2man: help2man-setup gettext
 		DESTDIR=$(BUILD_STAGE)/help2man
 	+$(MAKE) -C $(BUILD_WORK)/help2man install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/help2man/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 help2man-package: help2man-stage

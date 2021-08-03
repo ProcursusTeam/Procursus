@@ -36,7 +36,7 @@ text-cmds: text-cmds-setup ncurses
 		ln -s md5 $(BUILD_STAGE)/text-cmds/$(MEMO_PREFIX)/sbin/$$cmd; \
 		ln -s md5.1.zst $(BUILD_STAGE)/text-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$$cmd.1.zst; \
 	done
-	touch $(BUILD_WORK)/text-cmds/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 text-cmds-package: text-cmds-stage

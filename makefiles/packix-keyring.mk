@@ -13,7 +13,7 @@ else
 packix-keyring: setup
 	mkdir -p $(BUILD_STAGE)/packix-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 	cp -a $(BUILD_MISC)/keyrings/packix/packix.gpg $(BUILD_STAGE)/packix-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	touch $(BUILD_STAGE)/packix-keyring/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 packix-keyring-package: packix-keyring-stage
