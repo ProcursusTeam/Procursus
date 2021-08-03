@@ -13,7 +13,7 @@ else
 stkc-keyring: setup
 	mkdir -p $(BUILD_STAGE)/stkc-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 	cp -a $(BUILD_MISC)/keyrings/stkc/stkc-repo.gpg $(BUILD_STAGE)/stkc-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	touch $(BUILD_STAGE)/stkc-keyring/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 stkc-keyring-package: stkc-keyring-stage
