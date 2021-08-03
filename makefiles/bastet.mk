@@ -22,7 +22,7 @@ bastet: bastet-setup ncurses libboost
 		CXX="$(CXX) $(CXXFLAGS)"
 	cp -a $(BUILD_WORK)/bastet/bastet $(BUILD_STAGE)/bastet/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_WORK)/bastet/bastet.6 $(BUILD_STAGE)/bastet/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man6
-	touch $(BUILD_WORK)/bastet/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 bastet-package: bastet-stage

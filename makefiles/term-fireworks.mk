@@ -21,7 +21,7 @@ term-fireworks: term-fireworks-setup
 		--target=$(RUST_TARGET)
 	$(INSTALL) -Dm775 $(BUILD_WORK)/term-fireworks/target/$(RUST_TARGET)/release/fireworks \
 		$(BUILD_STAGE)/term-fireworks/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/fireworks
-	touch $(BUILD_WORK)/term-fireworks/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 term-fireworks-package: term-fireworks-stage

@@ -22,7 +22,7 @@ xclip: xclip-setup libxmu
 	$(MAKE) -C $(BUILD_WORK)/xclip
 	$(MAKE) -C $(BUILD_WORK)/xclip install \
 		DESTDIR=$(BUILD_STAGE)/xclip
-	touch $(BUILD_WORK)/xclip/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 xclip-package: xclip-stage

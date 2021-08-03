@@ -23,7 +23,7 @@ libde265: libde265-setup
 		DESTDIR=$(BUILD_STAGE)/libde265
 	+$(MAKE) -C $(BUILD_WORK)/libde265 install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libde265/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libde265-package: libde265-stage

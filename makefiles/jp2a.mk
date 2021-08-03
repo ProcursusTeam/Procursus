@@ -22,7 +22,7 @@ jp2a: jp2a-setup curl libjpeg-turbo libpng16 ncurses
 	+$(MAKE) -C $(BUILD_WORK)/jp2a
 	+$(MAKE) -C $(BUILD_WORK)/jp2a install \
 		DESTDIR=$(BUILD_STAGE)/jp2a
-	touch $(BUILD_WORK)/jp2a/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 jp2a-package: jp2a-stage

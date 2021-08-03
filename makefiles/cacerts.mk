@@ -16,7 +16,7 @@ cacerts: setup curl-setup
 	cp $(BUILD_WORK)/cacerts/cacerts.bootstrap.sh $(BUILD_STAGE)/cacerts/$(MEMO_PREFIX)/etc/profile.d
 	cp $(BUILD_WORK)/cacerts/ca-bundle.crt $(BUILD_STAGE)/cacerts/$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem
 	ln -s certs/cacert.pem $(BUILD_STAGE)/cacerts/$(MEMO_PREFIX)/etc/ssl/cert.pem
-	touch $(BUILD_WORK)/cacerts/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 cacerts-package: cacerts-stage

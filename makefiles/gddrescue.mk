@@ -25,7 +25,7 @@ gddrescue: gddrescue-setup
 	+$(MAKE) -C $(BUILD_WORK)/gddrescue
 	+$(MAKE) -C $(BUILD_WORK)/gddrescue install \
 		DESTDIR=$(BUILD_STAGE)/gddrescue
-	touch $(BUILD_WORK)/gddrescue/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 gddrescue-package: gddrescue-stage

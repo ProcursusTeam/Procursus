@@ -2,7 +2,9 @@ ifeq ($(firstword $(subst ., ,$(MAKE_VERSION))),3)
 $(error Install latest make from Procursus - sudo apt install make)
 endif
 
-ifeq ($(shell LANG=C /usr/bin/env bash --version | grep -iq 'version 5' && echo 1),1)
+export LANG := C
+
+ifeq ($(shell /usr/bin/env bash --version | grep -iq 'version 5' && echo 1),1)
 SHELL := /usr/bin/env bash
 else
 $(error Install bash 5.0)
@@ -245,7 +247,7 @@ PLATFORM             := macosx
 DEB_ARCH             := darwin-arm64e
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
 RUST_TARGET          := $(GNU_HOST_TRIPLE)
-LLVM_TARGET          := arm64e-apple-macosx$(MACOSX_DEPLOYMENT_TARGET)
+LLVM_TARGET          := arm64e-apple-macos$(MACOSX_DEPLOYMENT_TARGET)
 PLATFORM_VERSION_MIN := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
 MEMO_PREFIX          ?= /opt/procursus
 MEMO_SUB_PREFIX      ?=
@@ -263,7 +265,7 @@ PLATFORM             := macosx
 DEB_ARCH             := darwin-arm64
 GNU_HOST_TRIPLE      := aarch64-apple-darwin
 RUST_TARGET          := $(GNU_HOST_TRIPLE)
-LLVM_TARGET          := arm64-apple-macosx$(MACOSX_DEPLOYMENT_TARGET)
+LLVM_TARGET          := arm64-apple-macos$(MACOSX_DEPLOYMENT_TARGET)
 PLATFORM_VERSION_MIN := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
 MEMO_PREFIX          ?= /opt/procursus
 MEMO_SUB_PREFIX      ?=
@@ -281,7 +283,7 @@ PLATFORM             := macosx
 DEB_ARCH             := darwin-amd64
 GNU_HOST_TRIPLE      := x86_64-apple-darwin
 RUST_TARGET          := $(GNU_HOST_TRIPLE)
-LLVM_TARGET          := x86_64-apple-macosx$(MACOSX_DEPLOYMENT_TARGET)
+LLVM_TARGET          := x86_64-apple-macos$(MACOSX_DEPLOYMENT_TARGET)
 PLATFORM_VERSION_MIN := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
 MEMO_PREFIX          ?= /opt/procursus
 MEMO_SUB_PREFIX      ?=
@@ -468,15 +470,16 @@ DEFAULT_CMAKE_FLAGS := \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_CROSSCOMPILING=true \
 	-DCMAKE_SYSTEM_NAME=Darwin \
-	-DCMAKE_SYSTEM_PROCESSOR=$(shell echo $(GNU_HOST_TRIPLE) | cut -f1 -d-) \
+	-DCMAKE_SYSTEM_PROCESSOR="$(shell echo $(GNU_HOST_TRIPLE) | cut -f1 -d-)" \
 	-DCMAKE_C_FLAGS="$(CFLAGS)" \
 	-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
-	-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
-	-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-	-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-	-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-	-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-	-DCMAKE_INSTALL_SYSCONFDIR=$(MEMO_PREFIX)/etc \
+	-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
+	-DPKG_CONFIG_EXECUTABLE="$(BUILD_TOOLS)/cross-pkg-config" \
+	-DCMAKE_INSTALL_NAME_TOOL="$(I_N_T)" \
+	-DCMAKE_INSTALL_PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+	-DCMAKE_INSTALL_NAME_DIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
+	-DCMAKE_INSTALL_RPATH="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+	-DCMAKE_INSTALL_SYSCONFDIR="$(MEMO_PREFIX)/etc" \
 	-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 	-DCMAKE_OSX_ARCHITECTURES="$(MEMO_ARCH)"
 
@@ -591,8 +594,7 @@ EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 		mkdir -p $(3); \
 		cp -a $(2)/. $(3); \
 		rm -rf $(2); \
-	fi; \
-	find $(BUILD_BASE) -name '*.la' -type f -delete
+	fi
 
 DO_PATCH    = cd $(BUILD_PATCH)/$(1); \
 	for PATCHFILE in *; do \
@@ -632,6 +634,9 @@ endif
 # TODO: Please cleanup the PACK function, it's so horrible.
 #
 ###
+
+AFTER_BUILD = touch $(BUILD_WORK)/$@/.build_complete; \
+	find $(BUILD_BASE) -name '*.la' -type f -delete
 
 PACK = if [ -z "$(4)" ]; then \
 		find $(BUILD_DIST)/$(1) -name '*.la' -type f -delete; \

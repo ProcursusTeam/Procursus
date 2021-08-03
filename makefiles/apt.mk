@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += apt
-APT_VERSION   := 2.3.6
+APT_VERSION   := 2.3.7
 DEB_APT_V     ?= $(APT_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
@@ -55,7 +55,7 @@ apt: apt-setup libgcrypt berkeleydb lz4 xxhash xz zstd gnutls gettext
 		DESTDIR="$(BUILD_STAGE)/apt"
 	+$(MAKE) -C $(BUILD_WORK)/apt/build install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/apt/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 apt-package: apt-stage

@@ -43,7 +43,7 @@ git: git-setup openssl curl pcre2 gettext libidn2 expat
 		$(GIT_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/git install \
 		$(GIT_ARGS)
-	touch $(BUILD_WORK)/git/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 git-package: git-stage

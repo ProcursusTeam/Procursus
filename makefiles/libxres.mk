@@ -24,7 +24,7 @@ libxres: libxres-setup libx11 libxext
 		DESTDIR=$(BUILD_STAGE)/libxres
 	+$(MAKE) -C $(BUILD_WORK)/libxres install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxres/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libxres-package: libxres-stage

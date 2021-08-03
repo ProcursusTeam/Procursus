@@ -30,7 +30,7 @@ img4lib: img4lib-setup openssl lzfse
 	cp -a $(BUILD_WORK)/img4lib/libDER/*.h $(BUILD_STAGE)/img4lib/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libDER
 	cp -a $(BUILD_WORK)/img4lib/libvfs/*.h $(BUILD_STAGE)/img4lib/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libvfs
 	cp -a $(BUILD_WORK)/img4lib/libimg4.a $(BUILD_STAGE)/img4lib/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	touch $(BUILD_WORK)/img4lib/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 img4lib-package: img4lib-stage

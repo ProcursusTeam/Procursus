@@ -25,7 +25,7 @@ fontconfig: fontconfig-setup gettext freetype uuid expat
 		DESTDIR=$(BUILD_STAGE)/fontconfig
 	+$(MAKE) -C $(BUILD_WORK)/fontconfig install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/fontconfig/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 fontconfig-package: fontconfig-stage

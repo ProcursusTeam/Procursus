@@ -25,7 +25,7 @@ nmap: nmap-setup lua5.3 openssl pcre libssh2
 	+$(MAKE) -C $(BUILD_WORK)/nmap
 	+$(MAKE) -C $(BUILD_WORK)/nmap install -j1 \
 		DESTDIR=$(BUILD_STAGE)/nmap
-	touch $(BUILD_WORK)/nmap/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 nmap-package: nmap-stage

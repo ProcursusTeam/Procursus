@@ -24,7 +24,7 @@ xtrans: xtrans-setup
 		DESTDIR="$(BUILD_STAGE)/xtrans"
 	+$(MAKE) -C $(BUILD_WORK)/xtrans install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/xtrans/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 xtrans-package: xtrans-stage

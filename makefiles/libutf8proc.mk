@@ -23,7 +23,7 @@ libutf8proc: libutf8proc-setup
 		OS=Darwin \
 		prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libutf8proc/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libutf8proc-package: libutf8proc-stage

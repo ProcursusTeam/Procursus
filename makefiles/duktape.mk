@@ -34,7 +34,7 @@ duktape: duktape-setup
 	mkdir -p $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_WORK)/duktape/duk $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/duk
 	cp -a $(BUILD_STAGE)/duktape/* $(BUILD_BASE)
-	touch $(BUILD_WORK)/duktape/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 duktape-package: duktape-stage

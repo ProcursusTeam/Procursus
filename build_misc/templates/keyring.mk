@@ -13,7 +13,7 @@ else
 @pkg@-keyring: setup
 	mkdir -p $(BUILD_STAGE)/@pkg@-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 	cp -a $(BUILD_MISC)/keyrings/@pkg@/@pkg@.gpg $(BUILD_STAGE)/@pkg@-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	touch $(BUILD_STAGE)/@pkg@-keyring/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 @pkg@-keyring-package: @pkg@-keyring-stage

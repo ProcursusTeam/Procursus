@@ -55,7 +55,7 @@ mesa: mesa-setup libx11 libxext libxcb libxdamage libxxf86vm gettext expat zstd
 	cd $(BUILD_WORK)/mesa/build; \
 		DESTDIR="$(BUILD_STAGE)/mesa" meson install; \
 		DESTDIR="$(BUILD_BASE)" meson install
-	touch $(BUILD_WORK)/mesa/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 mesa-package: mesa-stage

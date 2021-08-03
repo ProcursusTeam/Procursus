@@ -24,7 +24,7 @@ autossh: autossh-setup
 	+$(MAKE) -C $(BUILD_WORK)/autossh
 	+$(MAKE) -C $(BUILD_WORK)/autossh install \
 		DESTDIR=$(BUILD_STAGE)/autossh
-	touch $(BUILD_WORK)/autossh/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 autossh-package: autossh-stage

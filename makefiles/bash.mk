@@ -54,7 +54,7 @@ bash: bash-setup ncurses readline
 ifneq ($(MEMO_SUB_PREFIX),)
 	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bash $(BUILD_STAGE)/bash/$(MEMO_PREFIX)/bin/bash
 endif
-	touch $(BUILD_WORK)/bash/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 bash-package: bash-stage

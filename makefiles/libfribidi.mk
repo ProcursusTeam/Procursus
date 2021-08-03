@@ -22,7 +22,7 @@ libfribidi: libfribidi-setup
 		DESTDIR=$(BUILD_STAGE)/libfribidi
 	+$(MAKE) -C $(BUILD_WORK)/libfribidi install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libfribidi/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libfribidi-package: libfribidi-stage

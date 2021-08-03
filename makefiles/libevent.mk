@@ -24,7 +24,7 @@ libevent: libevent-setup openssl
 		DESTDIR=$(BUILD_STAGE)/libevent
 	+$(MAKE) -C $(BUILD_WORK)/libevent install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libevent/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libevent-package: libevent-stage

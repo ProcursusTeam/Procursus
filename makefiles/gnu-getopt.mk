@@ -24,7 +24,7 @@ gnu-getopt: gnu-getopt-setup
 	$(LN) -s ../libexec/gnubin/getopt $(BUILD_STAGE)/gnu-getopt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ggetopt
 	$(INSTALL) -Dm644 $(BUILD_WORK)/gnu-getopt/misc-utils/getopt.1 $(BUILD_STAGE)/gnu-getopt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man1/ggetopt.1
 	$(INSTALL) -Dm644 $(BUILD_WORK)/gnu-getopt/bash-completion/getopt $(BUILD_STAGE)/gnu-getopt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/ggetopt
-	touch $(BUILD_WORK)/gnu-getopt/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 gnu-getopt-package: gnu-getopt-stage
