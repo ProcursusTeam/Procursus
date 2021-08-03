@@ -29,7 +29,7 @@ guile: guile-setup libunistring libgc libffi readline gettext libtool libgmp10
 		DESTDIR=$(BUILD_STAGE)/guile
 	+$(MAKE) -C $(BUILD_WORK)/guile install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/guile/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 guile-package: guile-stage
