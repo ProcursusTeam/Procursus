@@ -1,0 +1,5 @@
+#!/bin/sh
+# GNU and BSD tsort have completely different arguments,
+# so this wrapper will strip any arguments so that
+# bsdmake's bsd.lib.mk will work
+PATH=/bin:/usr/bin:/opt/procursus/bin exec tsort

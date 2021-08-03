@@ -1,0 +1,63 @@
+diff -urN crontabs-54/Makefile crontabs/Makefile
+--- crontabs-54/Makefile	1970-01-01 00:00:00.000000000 +0000
++++ crontabs/Makefile	2021-08-03 17:34:51.210031000 +0000
+@@ -0,0 +1,3 @@
++SUBDIR=	files newsyslog periodic
++
++.include <bsd.subdir.mk>
+diff -urN crontabs-54/files/LaunchDaemons/Makefile crontabs/files/LaunchDaemons/Makefile
+--- crontabs-54/files/LaunchDaemons/Makefile	1970-01-01 00:00:00.000000000 +0000
++++ crontabs/files/LaunchDaemons/Makefile	2021-08-03 17:09:27.289801000 +0000
+@@ -0,0 +1,5 @@
++FILES=	com.apple.newsyslog.plist com.apple.periodic-daily.plist com.apple.periodic-monthly.plist com.apple.periodic-weekly.plist
++
++FILESDIR=	$(MEMO_PREFIX)/Library/LaunchDaemons/
++
++.include <bsd.prog.mk>
+diff -urN crontabs-54/files/Makefile crontabs/files/Makefile
+--- crontabs-54/files/Makefile	1970-01-01 00:00:00.000000000 +0000
++++ crontabs/files/Makefile	2021-08-03 17:09:52.296233000 +0000
+@@ -0,0 +1,7 @@
++FILES=	newsyslog.conf periodic.conf
++FILESDIR=	$(MEMO_PREFIX)/etc
++MAN=	periodic.conf.5
++
++SUBDIR=	LaunchDaemons
++
++.include <bsd.prog.mk>
+diff -urN crontabs-54/newsyslog/Makefile crontabs/newsyslog/Makefile
+--- crontabs-54/newsyslog/Makefile	1970-01-01 00:00:00.000000000 +0000
++++ crontabs/newsyslog/Makefile	2021-08-03 17:11:46.504234000 +0000
+@@ -0,0 +1,7 @@
++PROG=	newsyslog
++SRCS=	newsyslog.c ptimes.c
++MAN=	newsyslog.8 newsyslog.conf.5
++
++BINDIR=	$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
++
++.include <bsd.prog.mk>
+diff -urN crontabs-54/periodic/Makefile crontabs/periodic/Makefile
+--- crontabs-54/periodic/Makefile	1970-01-01 00:00:00.000000000 +0000
++++ crontabs/periodic/Makefile	2021-08-03 17:14:33.484066000 +0000
+@@ -0,0 +1,8 @@
++SCRIPTS=	periodic.sh
++PROG=	periodic-wrapper
++MAN=	periodic-wrapper.8 periodic.8
++
++SCRIPTSDIR=	$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
++BINDIR=	$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
++
++.include <bsd.prog.mk>
+diff -urN crontabs-54/periodic/periodic-wrapper.c crontabs/periodic/periodic-wrapper.c
+--- crontabs-54/periodic/periodic-wrapper.c	2014-01-23 18:11:06.000000000 +0000
++++ crontabs/periodic/periodic-wrapper.c	2021-08-03 17:14:09.796805000 +0000
+@@ -4,7 +4,8 @@
+  */
+ 
+ #include <xpc/xpc.h>
+-#include <xpc/private.h>
++//#include <xpc/private.h>
++int xpc_track_activity();
+ #include <asl.h>
+ #include <vproc_priv.h>
+ 

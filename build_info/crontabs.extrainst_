@@ -1,0 +1,24 @@
+#!/bin/sh
+
+DAEMONS="com.apple.newsyslog.plist com.apple.periodic-daily.plist com.apple.periodic-monthly.plist com.apple.periodic-weekly.plist"
+
+set -e
+
+case "$1" in
+    (install)
+    for d in ${DAEMONS}; do
+        /bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/${d}
+    done
+    ;;
+    (upgrade)
+    for d in ${DAEMONS}; do
+        /bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/${d}
+        /bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/${d}
+    done
+    ;;
+    (*)
+    exit 0
+    ;;
+esac
+
+exit 0
