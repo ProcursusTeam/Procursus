@@ -21,7 +21,7 @@ swig: swig-setup
 	+$(MAKE) -C $(BUILD_WORK)/swig
 	+$(MAKE) -C $(BUILD_WORK)/swig install \
 		DESTDIR=$(BUILD_STAGE)/swig4.0
-	touch $(BUILD_WORK)/swig/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 swig-package: swig-stage

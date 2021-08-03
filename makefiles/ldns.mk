@@ -25,7 +25,7 @@ ldns: ldns-setup
 	+$(MAKE) -C $(BUILD_WORK)/ldns
 	+$(MAKE) -C $(BUILD_WORK)/ldns install \
 		DESTDIR=$(BUILD_STAGE)/ldns
-	touch $(BUILD_WORK)/ldns/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 ldns-package: ldns-stage

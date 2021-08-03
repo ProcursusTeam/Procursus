@@ -33,22 +33,22 @@ mandoc: mandoc-setup
 		LDADD="-lz"
 	+$(MAKE) -C $(BUILD_WORK)/mandoc install \
 		DESTDIR=$(BUILD_STAGE)/mandoc
-	touch $(BUILD_WORK)/mandoc/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 mandoc-package: mandoc-stage
 	# mandoc.mk Package Structure
 	rm -rf $(BUILD_DIST)/mandoc
-	
+
 	# mandoc.mk Prep mandoc
 	cp -a $(BUILD_STAGE)/mandoc $(BUILD_DIST)/mandoc
-	
+
 	# mandoc.mk Sign
 	$(call SIGN,mandoc,general.xml)
-	
+
 	# mandoc.mk Make .debs
 	$(call PACK,mandoc,DEB_MANDOC_V)
-	
+
 	# mandoc.mk Build cleanup
 	rm -rf $(BUILD_DIST)/mandoc
 
