@@ -38,7 +38,7 @@ endif
 		ac_cv_file__dev_ptc=no \
 		ac_cv_func_sendfile=no \
 		ax_cv_c_float_words_bigendian=no \
-		$(PYTHON3_CONFIGURE_ARGS)
+		ac_cv_working_tzset=yes
 	+$(MAKE) -C $(BUILD_WORK)/python3
 	+$(MAKE) -C $(BUILD_WORK)/python3 install \
 		DESTDIR=$(BUILD_STAGE)/python3
