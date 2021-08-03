@@ -594,8 +594,7 @@ EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 		mkdir -p $(3); \
 		cp -a $(2)/. $(3); \
 		rm -rf $(2); \
-	fi; \
-	find $(BUILD_BASE) -name '*.la' -type f -delete
+	fi
 
 DO_PATCH    = cd $(BUILD_PATCH)/$(1); \
 	for PATCHFILE in *; do \
@@ -635,6 +634,9 @@ endif
 # TODO: Please cleanup the PACK function, it's so horrible.
 #
 ###
+
+AFTER_BUILD = touch $(BUILD_WORK)/$@/.build_complete; \
+	find $(BUILD_BASE) -name '*.la' -type f -delete
 
 PACK = if [ -z "$(4)" ]; then \
 		find $(BUILD_DIST)/$(1) -name '*.la' -type f -delete; \
