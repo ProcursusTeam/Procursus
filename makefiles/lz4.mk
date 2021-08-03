@@ -41,7 +41,7 @@ lz4-package: lz4-stage
 	cp -a $(BUILD_STAGE)/lz4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/lz4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# lz4.mk Prep liblz4
-	cp -a $(BUILD_STAGE)/lz4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblz4.{1,1.9.3}.dylib $(BUILD_DIST)/liblz4-1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/lz4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblz4.1*.dylib $(BUILD_DIST)/liblz4-1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# lz4
 	cp -a $(BUILD_STAGE)/lz4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{liblz4.{a,dylib},pkgconfig} $(BUILD_DIST)/liblz4-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
