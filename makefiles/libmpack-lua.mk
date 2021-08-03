@@ -54,7 +54,7 @@ libmpack-lua: libmpack-lua-setup libmpack lua5.1 lua5.2 lua5.3 luajit
 		DESTDIR=$(BUILD_STAGE)/libmpack-lua
 	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit-5.1-mpack.0.dylib $(BUILD_STAGE)/libmpack-lua/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit-5.1-mpack.0.dylib
 	$(LN) -sf libluajit-5.1-mpack.0.dylib $(BUILD_STAGE)/libmpack-lua/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit-5.1-mpack.dylib
-	touch $(BUILD_WORK)/libmpack-lua/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libmpack-lua-package: libmpack-lua-stage

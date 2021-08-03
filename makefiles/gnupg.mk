@@ -24,7 +24,7 @@ gnupg: gnupg-setup readline libgpg-error libgcrypt libassuan libksba npth gettex
 		DESTDIR=$(BUILD_STAGE)/gnupg
 	+$(MAKE) -C $(BUILD_WORK)/gnupg install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/gnupg/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 gnupg-package: gnupg-stage

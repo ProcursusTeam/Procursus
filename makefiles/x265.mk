@@ -55,7 +55,7 @@ x265: x265-setup
 		DESTDIR=$(BUILD_STAGE)/x265
 	+$(MAKE) -C $(BUILD_WORK)/x265/8bit install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/x265/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 x265-package: x265-stage

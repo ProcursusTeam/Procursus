@@ -20,7 +20,7 @@ python3-prompt-toolkit: python3-prompt-toolkit-setup python3-wcwidth
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--root=$(BUILD_STAGE)/python3-prompt-toolkit
 	find $(BUILD_STAGE)/python3-prompt-toolkit -name __pycache__ -prune -exec rm -rf {} \;
-	touch $(BUILD_WORK)/python3-prompt-toolkit/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 python3-prompt-toolkit-package: python3-prompt-toolkit-stage

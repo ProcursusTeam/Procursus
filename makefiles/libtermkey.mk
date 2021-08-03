@@ -33,7 +33,7 @@ libtermkey: libtermkey-setup unibilium
 		DESTDIR="$(BUILD_STAGE)/libtermkey"
 	+$(MAKE) -C $(BUILD_WORK)/libtermkey install PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libtermkey/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libtermkey-package: libtermkey-stage

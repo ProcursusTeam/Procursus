@@ -32,7 +32,7 @@ cairo: cairo-setup freetype gettext fontconfig glib2.0 libpng16 liblzo2 libpixma
 		DESTDIR=$(BUILD_STAGE)/cairo
 	+$(MAKE) -C $(BUILD_WORK)/cairo install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/cairo/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 cairo-package: cairo-stage

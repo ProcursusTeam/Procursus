@@ -25,7 +25,7 @@ autoconf: autoconf-setup
 		DESTDIR=$(BUILD_STAGE)/autoconf
 	+$(MAKE) -C $(BUILD_WORK)/autoconf install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/autoconf/.build_complete
+	$(call AFTER_BUILD)
 endif
 autoconf-package: autoconf-stage
 	# autoconf.mk Package Structure

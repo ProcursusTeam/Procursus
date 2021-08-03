@@ -43,7 +43,7 @@ libxml-parser-perl: libxml-parser-perl-setup perl expat
 	+$(MAKE) -C $(BUILD_WORK)/libxml-parser-perl install \
 		DESTDIR="$(BUILD_STAGE)/libxml-parser-perl"
 	rm -f $(BUILD_STAGE)/libxml-parser-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/*/perllocal.pod
-	touch $(BUILD_WORK)/libxml-parser-perl/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libxml-parser-perl-package: libxml-parser-perl-stage

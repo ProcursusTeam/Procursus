@@ -20,7 +20,7 @@ else
 libiosexec: libiosexec-setup
 	+$(MAKE) -C $(BUILD_WORK)/libiosexec install \
 		DESTDIR=$(BUILD_STAGE)/libiosexec
-	touch $(BUILD_WORK)/libiosexec/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libiosexec-package: libiosexec-stage

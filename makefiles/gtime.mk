@@ -24,7 +24,7 @@ gtime: gtime-setup
 	+$(MAKE) -C $(BUILD_WORK)/gtime
 	+$(MAKE) -C $(BUILD_WORK)/gtime install \
 		DESTDIR=$(BUILD_STAGE)/gtime
-	touch $(BUILD_WORK)/gtime/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 gtime-package: gtime-stage

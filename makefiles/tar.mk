@@ -31,7 +31,7 @@ tar: tar-setup gettext
 	+$(MAKE) -C $(BUILD_WORK)/tar
 	+$(MAKE) -C $(BUILD_WORK)/tar install \
 		DESTDIR=$(BUILD_STAGE)/tar
-	touch $(BUILD_WORK)/tar/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 tar-package: tar-stage

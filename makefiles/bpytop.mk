@@ -22,7 +22,7 @@ bpytop: bpytop-setup python3
 	+$(MAKE) -C $(BUILD_WORK)/bpytop install \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR=$(BUILD_STAGE)/bpytop/
-	touch $(BUILD_WORK)/bpytop/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 bpytop-package: bpytop-stage

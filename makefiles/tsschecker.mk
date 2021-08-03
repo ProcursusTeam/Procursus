@@ -29,7 +29,7 @@ tsschecker: tsschecker-setup libfragmentzip libplist curl libirecovery
 	+$(MAKE) -C $(BUILD_WORK)/tsschecker
 	+$(MAKE) -C $(BUILD_WORK)/tsschecker install \
 		DESTDIR="$(BUILD_STAGE)/tsschecker"
-	touch $(BUILD_WORK)/tsschecker/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 tsschecker-package: tsschecker-stage

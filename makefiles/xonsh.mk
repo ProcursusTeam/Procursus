@@ -22,7 +22,7 @@ xonsh: xonsh-setup python3-prompt-toolkit
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	$(SED) -i "s|$$(cat $(BUILD_STAGE)/xonsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/xonsh | grep \#! | sed 's/#!//')|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/xonsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
 	find $(BUILD_STAGE)/xonsh -name __pycache__ -prune -exec rm -rf {} \;
-	touch $(BUILD_WORK)/xonsh/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 xonsh-package: xonsh-stage

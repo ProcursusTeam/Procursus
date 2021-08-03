@@ -31,7 +31,7 @@ sed: sed-setup gettext
 	+$(MAKE) -C $(BUILD_WORK)/sed
 	+$(MAKE) -C $(BUILD_WORK)/sed install \
 		DESTDIR=$(BUILD_STAGE)/sed
-	touch $(BUILD_WORK)/sed/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 sed-package: sed-stage

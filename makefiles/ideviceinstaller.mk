@@ -22,7 +22,7 @@ ideviceinstaller: ideviceinstaller-setup libzip libplist libimobiledevice
 	+$(MAKE) -C $(BUILD_WORK)/ideviceinstaller V=1
 	+$(MAKE) -C $(BUILD_WORK)/ideviceinstaller install \
 		DESTDIR=$(BUILD_STAGE)/ideviceinstaller
-	touch $(BUILD_WORK)/ideviceinstaller/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 ideviceinstaller-package: ideviceinstaller-stage

@@ -22,7 +22,7 @@ bsdiff: bsdiff-setup
 
 	+$(MAKE) -C $(BUILD_WORK)/bsdiff install \
 		PREFIX="$(BUILD_STAGE)/bsdiff/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
-	touch $(BUILD_WORK)/bsdiff/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 bsdiff-package: bsdiff-stage

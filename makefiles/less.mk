@@ -23,7 +23,7 @@ less: less-setup ncurses pcre2
 	+$(MAKE) -C $(BUILD_WORK)/less
 	+$(MAKE) -C $(BUILD_WORK)/less install \
 		DESTDIR="$(BUILD_STAGE)/less"
-	touch $(BUILD_WORK)/less/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 less-package: less-stage

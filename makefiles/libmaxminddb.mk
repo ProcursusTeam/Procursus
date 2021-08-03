@@ -22,7 +22,7 @@ libmaxminddb: libmaxminddb-setup
 		DESTDIR=$(BUILD_STAGE)/libmaxminddb
 	+$(MAKE) -C $(BUILD_WORK)/libmaxminddb install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libmaxminddb/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libmaxminddb-package: libmaxminddb-stage

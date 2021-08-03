@@ -23,7 +23,7 @@ zlib-ng: zlib-ng-setup
 		DESTDIR=$(BUILD_STAGE)/zlib-ng
 	+$(MAKE) -C $(BUILD_WORK)/zlib-ng install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/zlib-ng/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 zlib-ng-package: zlib-ng-stage

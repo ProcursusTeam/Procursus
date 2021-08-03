@@ -24,7 +24,7 @@ m4: m4-setup
 		DESTDIR=$(BUILD_STAGE)/m4
 	+$(MAKE) -C $(BUILD_WORK)/m4 install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/m4/.build_complete
+	$(call AFTER_BUILD)
 endif
 m4-package: m4-stage
 	# m4.mk Package Structure

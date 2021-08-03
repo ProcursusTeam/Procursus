@@ -33,7 +33,7 @@ libsigsegv: libsigsegv-setup
 		DESTDIR=$(BUILD_STAGE)/libsigsegv
 	+$(MAKE) -C $(BUILD_WORK)/libsigsegv install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libsigsegv/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libsigsegv-package: libsigsegv-stage

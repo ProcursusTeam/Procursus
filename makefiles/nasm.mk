@@ -20,7 +20,7 @@ nasm: nasm-setup
 	+$(MAKE) -C $(BUILD_WORK)/nasm rdf
 	+$(MAKE) -C $(BUILD_WORK)/nasm install install_rdf \
 		DESTDIR=$(BUILD_STAGE)/nasm
-	touch $(BUILD_WORK)/nasm/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 nasm-package: nasm-stage

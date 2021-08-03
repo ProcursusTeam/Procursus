@@ -13,7 +13,7 @@ else
 doregon-keyring: setup
 	mkdir -p $(BUILD_STAGE)/doregon-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 	cp -a $(BUILD_MISC)/keyrings/doregon/doregon-repo.gpg $(BUILD_STAGE)/doregon-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	touch $(BUILD_STAGE)/doregon-keyring/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 doregon-keyring-package: doregon-keyring-stage

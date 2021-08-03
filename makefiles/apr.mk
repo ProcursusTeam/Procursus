@@ -35,7 +35,7 @@ apr: apr-setup
 	+$(MAKE) -C $(BUILD_WORK)/apr install \
 		DESTDIR="$(BUILD_STAGE)/apr"
 	ln -sf $(BUILD_STAGE)/apr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/apr-1-config $(BUILD_STAGE)/apr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/apr-config
-	touch $(BUILD_WORK)/apr/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 apr-package: apr-stage

@@ -42,7 +42,7 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	+$(MAKE) -C $(BUILD_WORK)/coreutils/getent-darwin install \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR="$(BUILD_STAGE)/coreutils/"
-	touch $(BUILD_WORK)/coreutils/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 coreutils-package: coreutils-stage

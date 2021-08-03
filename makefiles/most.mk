@@ -26,7 +26,7 @@ most: most-setup slang2
 	+$(MAKE) -C $(BUILD_WORK)/most install \
 		DESTDIR=$(BUILD_STAGE)/most prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
-	touch $(BUILD_WORK)/most/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 most-package: most-stage
