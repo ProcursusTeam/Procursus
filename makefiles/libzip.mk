@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += libzip
-LIBZIP_VERSION := 1.7.3
-DEB_LIBZIP_V   ?= $(LIBZIP_VERSION)-1
+LIBZIP_VERSION := 1.8.0
+DEB_LIBZIP_V   ?= $(LIBZIP_VERSION)
 
 libzip-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://libzip.org/download/libzip-$(LIBZIP_VERSION).tar.gz

@@ -3,13 +3,13 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS         += libipatcher
-LIBIPATCHER_VERSION := 81
-LIBIPATCHER_COMMIT  := ad44d0da23f5120c3c77a72062bd627c50f37e71
-DEB_LIBIPATCHER_V   ?= $(LIBIPATCHER_VERSION)-1
+LIBIPATCHER_VERSION := 84
+LIBIPATCHER_COMMIT  := dc112ad4cffc60a79934f0fecfab3b8617252a49
+DEB_LIBIPATCHER_V   ?= $(LIBIPATCHER_VERSION)
 
 libipatcher-setup: setup
-	$(call GITHUB_ARCHIVE,tihmstar,libipatcher,$(LIBIPATCHER_VERSION),$(LIBIPATCHER_VERSION))
-	$(call EXTRACT_TAR,libipatcher-$(LIBIPATCHER_VERSION).tar.gz,libipatcher-$(LIBIPATCHER_VERSION),libipatcher)
+	$(call GITHUB_ARCHIVE,Cryptiiiic,libipatcher,$(LIBIPATCHER_COMMIT),$(LIBIPATCHER_COMMIT))
+	$(call EXTRACT_TAR,libipatcher-$(LIBIPATCHER_COMMIT).tar.gz,libipatcher-$(LIBIPATCHER_COMMIT),libipatcher)
 
 	$(call GITHUB_ARCHIVE,tihmstar,iBoot32Patcher,master,master)
 	$(call GITHUB_ARCHIVE,tihmstar,jssy,master,master)

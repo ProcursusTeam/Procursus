@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS            += idevicerestore
-IDEVICERESTORE_COMMIT  := a2010182daa49f9f3bb63e8993908f8cdbca8b5e
-IDEVICERESTORE_VERSION := 1.0.0+git20210526.$(shell echo $(IDEVICERESTORE_COMMIT) | cut -c -7)
+IDEVICERESTORE_COMMIT  := dfa05a8c417e785799a0d8ea0f9a58ed89a13085
+IDEVICERESTORE_VERSION := 1.0.0+git20210629.$(shell echo $(IDEVICERESTORE_COMMIT) | cut -c -7)
 DEB_IDEVICERESTORE_V   ?= $(IDEVICERESTORE_VERSION)
 
 idevicerestore-setup: setup

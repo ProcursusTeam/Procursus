@@ -3,12 +3,13 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += libplist
-LIBPLIST_VERSION  := 2.2.0
+LIBPLIST_COMMIT	 := feb0bcd102ff0abc34ffa04e8cabf26706ffdb38
+LIBPLIST_VERSION := 2.2.1+git20210712.$(shell echo $(LIBPLIST_COMMIT) | cut -c -7)
 DEB_LIBPLIST_V    ?= $(LIBPLIST_VERSION)
 
 libplist-setup: setup
-	$(call GITHUB_ARCHIVE,libimobiledevice,libplist,$(LIBPLIST_VERSION),$(LIBPLIST_VERSION))
-	$(call EXTRACT_TAR,libplist-$(LIBPLIST_VERSION).tar.gz,libplist-$(LIBPLIST_VERSION),libplist)
+	$(call GITHUB_ARCHIVE,libimobiledevice,libplist,$(LIBPLIST_COMMIT),$(LIBPLIST_COMMIT))
+	$(call EXTRACT_TAR,libplist-$(LIBPLIST_COMMIT).tar.gz,libplist-$(LIBPLIST_COMMIT),libplist)
 
 ifneq ($(wildcard $(BUILD_WORK)/libplist/.build_complete),)
 libplist:

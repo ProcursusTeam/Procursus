@@ -3,19 +3,20 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS                  += libideviceactivation
-LIBIDEVICEACTIVATION_VERSION := 1.1.1
-DEB_LIBIDEVICEACTIVATION_V   ?= $(LIBIDEVICEACTIVATION_VERSION)-1
+LIBIDEVICEACTIVATION_COMMIT  := b2d7536e612b8c98d669df7d92520c107104efa0
+LIBIDEVICEACTIVATION_VERSION := 1.1.1+git20210629.$(shell echo $(LIBIDEVICEACTIVATION_COMMIT) | cut -c -7)
+DEB_LIBIDEVICEACTIVATION_V   ?= $(LIBIDEVICEACTIVATION_VERSION)
 
 libideviceactivation-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libimobiledevice/libideviceactivation/releases/download/$(LIBIDEVICEACTIVATION_VERSION)/libideviceactivation-$(LIBIDEVICEACTIVATION_VERSION).tar.bz2
-	$(call EXTRACT_TAR,libideviceactivation-$(LIBIDEVICEACTIVATION_VERSION).tar.bz2,libideviceactivation-$(LIBIDEVICEACTIVATION_VERSION),libideviceactivation)
+	$(call GITHUB_ARCHIVE,libimobiledevice,libideviceactivation,$(LIBIDEVICEACTIVATION_COMMIT),$(LIBIDEVICEACTIVATION_COMMIT))
+	$(call EXTRACT_TAR,libideviceactivation-$(LIBIDEVICEACTIVATION_COMMIT).tar.gz,libideviceactivation-$(LIBIDEVICEACTIVATION_COMMIT),libideviceactivation)
 
 ifneq ($(wildcard $(BUILD_WORK)/libideviceactivation/.build_complete),)
 libideviceactivation:
 	@echo "Using previously built libideviceactivation."
 else
 libideviceactivation: libideviceactivation-setup libplist libimobiledevice curl
-	cd $(BUILD_WORK)/libideviceactivation && ./configure -C \
+	cd $(BUILD_WORK)/libideviceactivation && ./autogen.sh -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		libxml2_CFLAGS=-I$(TARGET_SYSROOT)/usr/include/libxml2 \
 		libxml2_LIBS=-lxml2

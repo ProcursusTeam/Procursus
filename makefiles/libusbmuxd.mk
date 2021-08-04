@@ -3,12 +3,13 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += libusbmuxd
-LIBUSBMUXD_VERSION := 2.0.2
+LIBUSBMUXD_COMMIT  := e32bf7612912348d7af81afe1e8be2ecc93a93ca
+LIBUSBMUXD_VERSION := 2.0.3+git20210629.$(shell echo $(LIBUSBMUXD_COMMIT) | cut -c -7)
 DEB_LIBUSBMUXD_V   ?= $(LIBUSBMUXD_VERSION)
 
 libusbmuxd-setup: setup
-	$(call GITHUB_ARCHIVE,libimobiledevice,libusbmuxd,$(LIBUSBMUXD_VERSION),$(LIBUSBMUXD_VERSION))
-	$(call EXTRACT_TAR,libusbmuxd-$(LIBUSBMUXD_VERSION).tar.gz,libusbmuxd-$(LIBUSBMUXD_VERSION),libusbmuxd)
+	$(call GITHUB_ARCHIVE,libimobiledevice,libusbmuxd,$(LIBUSBMUXD_COMMIT),$(LIBUSBMUXD_COMMIT))
+	$(call EXTRACT_TAR,libusbmuxd-$(LIBUSBMUXD_COMMIT).tar.gz,libusbmuxd-$(LIBUSBMUXD_COMMIT),libusbmuxd)
 
 ifneq ($(wildcard $(BUILD_WORK)/libusbmuxd/.build_complete),)
 libusbmuxd:

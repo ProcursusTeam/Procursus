@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS          += libirecovery
-LIBIRECOVERY_COMMIT  := 47934949e0015165a4562b08e824adb3f664c0ea
-LIBIRECOVERY_VERSION := 1.0.0+git20210526.$(shell echo $(LIBIRECOVERY_COMMIT) | cut -c -7)
+LIBIRECOVERY_COMMIT  := 3dda9d2701a34f02058425eea25431122283177c
+LIBIRECOVERY_VERSION := 1.0.1+git20210701.$(shell echo $(LIBIRECOVERY_COMMIT) | cut -c -7)
 DEB_LIBIRECOVERY_V   ?= $(LIBIRECOVERY_VERSION)
 
 libirecovery-setup: setup
@@ -15,10 +15,23 @@ ifneq ($(wildcard $(BUILD_WORK)/libirecovery/.build_complete),)
 libirecovery:
 	@echo "Using previously built libirecovery."
 else
+ifeq ($(MEMO_TARGET),darwin-amd64)
+$(warning Building with IOKit)
+ENABLE_IOKIT := yes
+else ifeq ($(MEMO_TARGET),darwin-arm64)
+$(warning Building with IOKit)
+ENABLE_IOKIT := yes
+else ifeq ($(MEMO_TARGET),darwin-arm64e)
+$(warning Building with IOKit)
+ENABLE_IOKIT := yes
+else
+$(warning Not building with IOKit)
+ENABLE_IOKIT := no
+endif
 libirecovery: libirecovery-setup readline libusb
 	cd $(BUILD_WORK)/libirecovery && ./autogen.sh \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--with-iokit=no
+		--with-iokit=$(ENABLE_IOKIT)
 	+$(MAKE) -C $(BUILD_WORK)/libirecovery \
 		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libusb-1.0"
 	+$(MAKE) -C $(BUILD_WORK)/libirecovery install \

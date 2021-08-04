@@ -3,12 +3,13 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS              += ideviceinstaller
-IDEVICEINSTALLER_VERSION := 1.1.1
-DEB_IDEVICEINSTALLER_V   ?= $(IDEVICEINSTALLER_VERSION)-1
+IDEVICEINSTALLER_COMMIT  := 659e35c047278661aedb4d4688f4d3aad5892cc2
+IDEVICEINSTALLER_VERSION := 1.1.1+git20210629.$(shell echo $(IDEVICERESTORE_COMMIT) | cut -c -7)
+DEB_IDEVICEINSTALLER_V   ?= $(IDEVICEINSTALLER_VERSION)
 
 ideviceinstaller-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libimobiledevice/ideviceinstaller/releases/download/$(IDEVICEINSTALLER_VERSION)/ideviceinstaller-$(IDEVICEINSTALLER_VERSION).tar.bz2
-	$(call EXTRACT_TAR,ideviceinstaller-$(IDEVICEINSTALLER_VERSION).tar.bz2,ideviceinstaller-$(IDEVICEINSTALLER_VERSION),ideviceinstaller)
+	$(call GITHUB_ARCHIVE,libimobiledevice,ideviceinstaller,$(IDEVICEINSTALLER_COMMIT),$(IDEVICEINSTALLER_COMMIT))
+	$(call EXTRACT_TAR,ideviceinstaller-$(IDEVICEINSTALLER_COMMIT).tar.gz,ideviceinstaller-$(IDEVICEINSTALLER_COMMIT),ideviceinstaller)
 	$(SED) -i '/AC_FUNC_MALLOC/d' $(BUILD_WORK)/ideviceinstaller/configure.ac
 
 ifneq ($(wildcard $(BUILD_WORK)/ideviceinstaller/.build_complete),)
@@ -16,8 +17,7 @@ ideviceinstaller:
 	@echo "Using previously built ideviceinstaller."
 else
 ideviceinstaller: ideviceinstaller-setup libzip libplist libimobiledevice
-	cd $(BUILD_WORK)/ideviceinstaller && autoreconf -fi
-	cd $(BUILD_WORK)/ideviceinstaller && ./configure -C \
+	cd $(BUILD_WORK)/ideviceinstaller && ./autogen.sh -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/ideviceinstaller V=1
 	+$(MAKE) -C $(BUILD_WORK)/ideviceinstaller install \
