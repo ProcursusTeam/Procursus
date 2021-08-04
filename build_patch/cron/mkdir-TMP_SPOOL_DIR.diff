@@ -1,0 +1,22 @@
+diff -urN cron-40/lib/misc.c cron/lib/misc.c
+--- cron-40/lib/misc.c	2007-02-20 01:24:19.000000000 +0000
++++ cron/lib/misc.c	2021-08-04 21:00:03.694332000 +0000
+@@ -219,6 +219,18 @@
+ 	}
+ 	if (!(sb.st_mode & S_IFDIR))
+ 		err(ERROR_EXIT, "'%s' is not a directory, bailing out", SPOOL_DIR);
++
++	if (stat(TMP_SPOOL_DIR, &sb) < OK && errno == ENOENT) {
++		warn("%s", TMP_SPOOL_DIR);
++		if (OK == mkdir(TMP_SPOOL_DIR, 0700)) {
++			warnx("%s: created", TMP_SPOOL_DIR);
++			stat(TMP_SPOOL_DIR, &sb);
++		} else {
++			err(ERROR_EXIT, "%s: mkdir", TMP_SPOOL_DIR);
++		}
++	}
++	if (!(sb.st_mode & S_IFDIR))
++		err(ERROR_EXIT, "'%s' is not a directory, bailing out", TMP_SPOOL_DIR);
+ }
+ 
+ 
