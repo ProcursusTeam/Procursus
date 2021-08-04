@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS       += libplist
 LIBPLIST_COMMIT	 := feb0bcd102ff0abc34ffa04e8cabf26706ffdb38
-LIBPLIST_VERSION := 2.2.1+git20210712.$(shell echo $(LIBPLIST_COMMIT) | cut -c -7)
+LIBPLIST_VERSION := 2.2.0+git20210712.$(shell echo $(LIBPLIST_COMMIT) | cut -c -7)
 DEB_LIBPLIST_V    ?= $(LIBPLIST_VERSION)
 
 libplist-setup: setup

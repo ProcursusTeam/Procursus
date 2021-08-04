@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS        += libusbmuxd
 LIBUSBMUXD_COMMIT  := e32bf7612912348d7af81afe1e8be2ecc93a93ca
-LIBUSBMUXD_VERSION := 2.0.3+git20210629.$(shell echo $(LIBUSBMUXD_COMMIT) | cut -c -7)
+LIBUSBMUXD_VERSION := 2.0.2+git20210629.$(shell echo $(LIBUSBMUXD_COMMIT) | cut -c -7)
 DEB_LIBUSBMUXD_V   ?= $(LIBUSBMUXD_VERSION)
 
 libusbmuxd-setup: setup
