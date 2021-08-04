@@ -4,7 +4,6 @@ Version: @DEB_BASE-FILES_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Replaces: dpkg (<< 1.20.9-2)
-Depends: awk
 Section: Administration
 Priority: required
 Description: Procursus base system miscellaneous files
