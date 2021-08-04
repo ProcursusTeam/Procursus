@@ -8,7 +8,7 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += bash
 endif # ($(MEMO_TARGET),darwin-\*)
 BASH_VERSION  := 5.1.8
-DEB_BASH_V    ?= $(BASH_VERSION)
+DEB_BASH_V    ?= $(BASH_VERSION)-1
 
 bash-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION).tar.gz{,.sig}
