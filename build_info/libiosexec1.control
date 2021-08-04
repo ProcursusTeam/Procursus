@@ -1,0 +1,9 @@
+Package: libiosexec1
+Essential: yes
+Version: @DEB_LIBIOSEXEC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: required
+Homepage: http://github.com/ProcursusTeam/libiosexec
+Description: shim for execve w/ shell script support

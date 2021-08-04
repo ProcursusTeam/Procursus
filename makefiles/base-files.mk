@@ -3,16 +3,15 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS       += base-files
-BASE-FILES_VERSION  := 1.0
+BASE-FILES_VERSION  := 11.1
 DEB_BASE-FILES_V    ?= $(BASE-FILES_VERSION)
-DEBIAN_BASE-FILES_V ?= 11.1
 
 MEMO_VERSION_STRING ?= $(MEMO_VERSION_ID) Darwin/$(DARWIN_DEVELOPMENT_VERSION) ($(MEMO_CODENAME))
 MEMO_DEBIAN_VERSION ?= bullseye/sid
 
 base-files-setup:
 	wget -q -nc -P$(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/b/base-files/base-files_11.1.tar.xz
-	$(call EXTRACT_TAR,base-files_$(DEBIAN_BASE-FILES_V).tar.xz,base-files-$(DEBIAN_BASE-FILES_V),base-files)
+	$(call EXTRACT_TAR,base-files_$(BASE-FILES_VERSION).tar.xz,base-files-$(BASE-FILES_VERSION),base-files)
 	rm -rf $(BUILD_WORK)/base-files/motd
 
 ifneq ($(wildcard $(BUILD_WORK)/base-files/.build_complete),)
