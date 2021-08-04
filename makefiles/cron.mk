@@ -34,6 +34,8 @@ cron: cron-setup
 	$(SED) -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
 		$(BUILD_WORK)/cron/com.vix.cron.plist > $(BUILD_STAGE)/cron/$(MEMO_PREFIX)/Library/LaunchDaemons/com.vix.cron.plist
 	$(INSTALL) -Dm755 $(BUILD_MISC)/cron/cron-wrapper $(BUILD_STAGE)/cron/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/cron-wrapper
+	$(SED) -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
+		-i $(BUILD_STAGE)/cron/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/cron-wrapper
 	cp -a $(BUILD_WORK)/cron/crontab.default $(BUILD_STAGE)/cron/$(MEMO_PREFIX)/etc/crontab
 	$(call AFTER_BUILD)
 endif

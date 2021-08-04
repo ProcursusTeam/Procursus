@@ -1,2 +1,2 @@
 #!/bin/sh
-exec cron $@
+exec @MEMO_PREFIX@@MEMO_SUB_PREFIX@/sbin/cron $@
