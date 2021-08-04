@@ -24,7 +24,7 @@ yasm: yasm-setup
 		DESTDIR=$(BUILD_STAGE)/yasm
 	+$(MAKE) -C $(BUILD_WORK)/yasm install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/yasm/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 yasm-package: yasm-stage

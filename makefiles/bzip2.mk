@@ -36,7 +36,7 @@ ifneq ($(MEMO_SUB_PREFIX),)
 		ln -s ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(basename $$bin) $(BUILD_STAGE)/bzip2/$(MEMO_PREFIX)/bin/$$(basename $$bin); \
 	done
 endif
-	touch $(BUILD_WORK)/bzip2/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 bzip2-package: bzip2-stage

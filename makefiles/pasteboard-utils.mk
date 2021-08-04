@@ -35,7 +35,7 @@ pasteboard-utils: pasteboard-utils-setup
 		$(LDFLAGS) \
 		$(PASTEBOARD-UTILS_LIBS)
 
-	touch $(BUILD_WORK)/pasteboard-utils/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 pasteboard-utils-package: pasteboard-utils-stage

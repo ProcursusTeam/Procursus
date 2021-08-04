@@ -26,7 +26,7 @@ endif
 			--ldflags "-s -X github.com/rclone/rclone/fs.Version=$(RCLONE_VERSION)"
 	cp -a $(BUILD_WORK)/rclone/rclone $(BUILD_STAGE)/rclone/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_WORK)/rclone/rclone.1 $(BUILD_STAGE)/rclone/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
-	touch $(BUILD_WORK)/rclone/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 rclone-package: rclone-stage

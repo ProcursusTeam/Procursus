@@ -1,0 +1,9 @@
+Package: nyuszika7h-keyring
+Version: @DEB_NYUSZIKA7H_KEYRING_V@
+Author: Richard G <nyuszika7h@gmail.com>
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Keyrings
+Priority: optional
+Description: GnuPG keys for nyuszika7h's repositories
+Name: nyuszika7h APT Keyring

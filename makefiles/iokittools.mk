@@ -29,7 +29,7 @@ iokittools: iokittools-setup ncurses
 		tproj=$$(basename $$tproj .tproj); \
 		$(CC) $(CFLAGS) -L $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -isystem include -o $(BUILD_STAGE)/iokittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/$$tproj $$tproj.tproj/*.c -framework CoreFoundation -framework IOKit -lncursesw; \
 	done
-	touch $(BUILD_WORK)/iokittools/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 iokittools-package: iokittools-stage

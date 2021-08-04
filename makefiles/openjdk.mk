@@ -104,9 +104,9 @@ openjdk: openjdk-setup libx11 libxext libxi libxrender libxrandr libxtst freetyp
 		JOBS=$(shell $(GET_LOGICAL_CORES))
 	cp -a $(BUILD_WORK)/openjdk/build/*/images/jdk $(BUILD_STAGE)/openjdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk
 	for dylib in $(BUILD_STAGE)/openjdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/lib/{,*/}*.dylib; do \
-		ln -sf $$(echo $$dylib | rev | cut -d/ -f1 | rev) $$(echo $$dylib | $(SED) s/.dylib//).so; \
+		ln -sf $$(basename $$dylib) $$(echo $$dylib | $(SED) s/.dylib//).so; \
 	done
-	touch $(BUILD_WORK)/openjdk/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 openjdk-package: openjdk-stage

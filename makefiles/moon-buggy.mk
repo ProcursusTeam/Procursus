@@ -27,7 +27,7 @@ moon-buggy: moon-buggy-setup ncurses
 		CURSES_LIBS="-lncursesw"
 	+$(MAKE) -C $(BUILD_WORK)/moon-buggy install \
 		DESTDIR="$(BUILD_STAGE)/moon-buggy"
-	touch $(BUILD_WORK)/moon-buggy/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 moon-buggy-package: moon-buggy-stage

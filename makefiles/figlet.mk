@@ -25,7 +25,7 @@ figlet: figlet-setup
 	+$(MAKE) -C $(BUILD_WORK)/figlet install \
 		prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		DESTDIR="$(BUILD_STAGE)/figlet"
-	touch $(BUILD_WORK)/figlet/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 figlet-package: figlet-stage

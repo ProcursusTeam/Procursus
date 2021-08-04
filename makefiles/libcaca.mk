@@ -29,7 +29,7 @@ libcaca: libcaca-setup imlib2 slang2 ncurses
 		DESTDIR=$(BUILD_STAGE)/libcaca
 	+$(MAKE) -C $(BUILD_WORK)/libcaca install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libcaca/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libcaca-package: libcaca-stage

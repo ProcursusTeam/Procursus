@@ -25,7 +25,7 @@ libsrt: libsrt-setup openssl
 		DESTDIR=$(BUILD_STAGE)/libsrt
 	+$(MAKE) -C $(BUILD_WORK)/libsrt install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libsrt/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libsrt-package: libsrt-stage

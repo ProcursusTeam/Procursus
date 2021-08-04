@@ -36,7 +36,7 @@ fox1.6: fox1.6-setup libxft mesa libglu libx11 libxcursor libxext libxrender lib
  		DESTDIR=$(BUILD_STAGE)/fox1.6
 	+$(MAKE) -C $(BUILD_WORK)/fox1.6 install \
  		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/fox1.6/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 fox1.6-package: fox1.6-stage

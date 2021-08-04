@@ -26,7 +26,7 @@ libice: libice-setup xtrans xorgproto
 		DESTDIR=$(BUILD_STAGE)/libice
 	+$(MAKE) -C $(BUILD_WORK)/libice install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libice/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libice-package: libice-stage

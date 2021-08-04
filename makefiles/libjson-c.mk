@@ -24,7 +24,7 @@ libjson-c: libjson-c-setup
 		DESTDIR=$(BUILD_BASE)
 	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjson-c.5.dylib $(BUILD_STAGE)/libjson-c/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjson-c.5.dylib
 	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjson-c.5.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjson-c.5.dylib
-	touch $(BUILD_WORK)/libjson-c/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libjson-c-package: libjson-c-stage

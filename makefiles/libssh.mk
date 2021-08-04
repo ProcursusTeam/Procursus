@@ -26,7 +26,7 @@ libssh: libssh-setup openssl
 		DESTDIR="$(BUILD_STAGE)/libssh"
 	+$(MAKE) -C $(BUILD_WORK)/libssh/build install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libssh/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libssh-package: libssh-stage

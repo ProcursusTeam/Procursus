@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  	 += ccache
-CCACHE_VERSION := 4.2.1
+CCACHE_VERSION := 4.3
 DEB_CCACHE_V   ?= $(CCACHE_VERSION)
 
 ifneq (,$(findstring arm64,$(MEMO_TARGET)))
@@ -39,7 +39,7 @@ ccache: ccache-setup zstd
 	+$(MAKE) -C $(BUILD_WORK)/ccache install \
 		DESTDIR="$(BUILD_STAGE)/ccache"
 	mkdir -p $(BUILD_STAGE)/ccache/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/ccache
-	touch $(BUILD_WORK)/ccache/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 ccache-package: ccache-stage

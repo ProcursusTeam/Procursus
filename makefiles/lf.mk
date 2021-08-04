@@ -28,7 +28,7 @@ lf: lf-setup
 	cp -a $(BUILD_WORK)/lf/etc/lf.vim \
 		$(BUILD_STAGE)/lf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/vim/vimfiles/syntax
 	cp -a $(BUILD_WORK)/lf/etc/{lf.csh,lfcd.csh} $(BUILD_STAGE)/lf/etc/profile.d
-	touch $(BUILD_WORK)/lf/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 lf-package: lf-stage
