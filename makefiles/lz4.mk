@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += lz4
-LZ4_VERSION   := 1.9.2
-DEB_LZ4_V     ?= $(LZ4_VERSION)-2
+LZ4_VERSION   := 1.9.3
+DEB_LZ4_V     ?= $(LZ4_VERSION)
 
 lz4-setup: setup
 	$(call GITHUB_ARCHIVE,lz4,lz4,$(LZ4_VERSION),v$(LZ4_VERSION))
@@ -45,7 +45,7 @@ lz4-package: lz4-stage
 	cp -a $(BUILD_STAGE)/lz4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/lz4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# lz4.mk Prep liblz4
-	cp -a $(BUILD_STAGE)/lz4/$(MEMO_LIBDIR)/liblz4.{1,1.9.2}.dylib $(BUILD_DIST)/liblz4-1/$(MEMO_LIBDIR)
+	cp -a $(BUILD_STAGE)/lz4/$(MEMO_LIBDIR)/liblz4.1*.dylib $(BUILD_DIST)/liblz4-1/$(MEMO_LIBDIR)
 
 	# lz4
 	cp -a $(BUILD_STAGE)/lz4/$(MEMO_LIBDIR)/{liblz4.{a,dylib},pkgconfig} $(BUILD_DIST)/liblz4-dev/$(MEMO_LIBDIR)

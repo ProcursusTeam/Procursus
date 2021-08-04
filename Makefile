@@ -611,6 +611,7 @@ EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 		cd $(BUILD_WORK) && \
 		$(TAR) -xf $(BUILD_SOURCE)/$(1) && \
 		mkdir -p $(3); \
+		chmod -R 0755 $(2); \
 		cp -a $(2)/. $(3); \
 		rm -rf $(2); \
 	fi
@@ -663,6 +664,15 @@ PACK = if [ -z "$(4)" ]; then \
 	rm -f $(BUILD_DIST)/$(1)/.build_complete; \
 	rm -rf $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{info,doc}; \
 	find $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -exec zstd -19 --rm '{}' \; 2> /dev/null; \
+	for file in AUTHORS COPYING LICENSE NEWS README THANKS TODO; do \
+		if [ -f "$(BUILD_WORK)/$$(echo $@ | $(SED) 's/-package//')/$$file" ]; then \
+			mkdir -p $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1); \
+			cp -a $(BUILD_WORK)/$$(echo $@ | $(SED) 's/-package//')/$$file $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1); \
+			if [ ! "$$file" = "AUTHORS" ] && [ ! "$$file" = "COPYING" ] && [ ! "$$file" = "LICENSE" ]; then \
+				zstd -19 --rm $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1)/$$file 2> /dev/null; \
+			fi; \
+		fi; \
+	done; \
 	if [ -z $(3) ]; then \
 		if [ ! "$(MEMO_QUIET)" == "1" ]; then \
 		echo Setting $(1) owner to 0:0.; \

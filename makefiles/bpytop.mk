@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += bpytop
-BPYTOP_VERSION := 1.0.65
+BPYTOP_VERSION := 1.0.67
 DEB_BPYTOP_V   ?= $(BPYTOP_VERSION)
 
 bpytop-setup: setup
