@@ -1,0 +1,18 @@
+#!/bin/sh
+
+set -e
+
+DAEMONS="com.apple.newsyslog.plist com.apple.periodic-daily.plist com.apple.periodic-monthly.plist com.apple.periodic-weekly.plist"
+
+case "$1" in
+	(remove|purge)
+	for d in ${DAEMONS}; do
+		/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/${d}
+	done
+	;;
+	(*)
+	exit 0
+	;;
+esac
+
+exit 0
