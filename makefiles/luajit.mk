@@ -40,7 +40,7 @@ luajit: luajit-setup
 		DESTDIR="$(BUILD_BASE)" \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	mv $(BUILD_STAGE)/luajit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/luajit-$(LUAJIT_VERSION) $(BUILD_STAGE)/luajit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/luajit
-	touch $(BUILD_WORK)/luajit/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 luajit-package: luajit-stage

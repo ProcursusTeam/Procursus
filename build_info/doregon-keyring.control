@@ -1,0 +1,8 @@
+Package: doregon-keyring
+Version: @DEB_DOREGON_KEYRING_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Keyrings
+Priority: optional
+Description: GnuPG keys for Adam Tunnic's repositories
+Name: Doregon APT Keyring

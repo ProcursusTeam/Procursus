@@ -20,7 +20,7 @@ sensible-utils: sensible-utils-setup
 	+$(MAKE) -C $(BUILD_WORK)/sensible-utils
 	+$(MAKE) -C $(BUILD_WORK)/sensible-utils install \
 		DESTDIR=$(BUILD_STAGE)/sensible-utils
-	touch $(BUILD_WORK)/sensible-utils/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 sensible-utils-package: sensible-utils-stage

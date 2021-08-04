@@ -23,7 +23,7 @@ libxpm: libxpm-setup libx11 xorgproto libxt libxext gettext
 		DESTDIR=$(BUILD_STAGE)/libxpm
 	+$(MAKE) -C $(BUILD_WORK)/libxpm install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxpm/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libxpm-package: libxpm-stage

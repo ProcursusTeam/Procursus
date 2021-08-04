@@ -25,7 +25,7 @@ zstd: zstd-setup lz4 xz
 	+$(MAKE) -C $(BUILD_WORK)/zstd/contrib/pzstd install \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR=$(BUILD_STAGE)/zstd
-	touch $(BUILD_WORK)/zstd/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 zstd-package: zstd-stage

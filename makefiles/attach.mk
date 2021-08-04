@@ -24,7 +24,7 @@ attach: attach-setup
 	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/attach/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/attach2 $(BUILD_WORK)/attach/attach2.m $(LDFLAGS) -framework Foundation -framework IOKit $(BUILD_WORK)/attach/DiskImages2.tbd
 	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/attach/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/attach $(BUILD_WORK)/attach/attach.m $(LDFLAGS) -framework CoreFoundation -framework IOKit
 	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/attach/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/detach $(BUILD_WORK)/attach/detach.c $(LDFLAGS) -framework CoreFoundation -framework IOKit
-	touch $(BUILD_WORK)/attach/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 attach-package: attach-stage

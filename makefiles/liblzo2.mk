@@ -24,7 +24,7 @@ liblzo2: liblzo2-setup
 		DESTDIR=$(BUILD_STAGE)/liblzo2
 	+$(MAKE) -C $(BUILD_WORK)/liblzo2 install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/liblzo2/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 liblzo2-package: liblzo2-stage

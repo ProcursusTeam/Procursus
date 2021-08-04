@@ -23,7 +23,7 @@ bison: bison-setup m4 gettext readline
 		DESTDIR=$(BUILD_STAGE)/bison
 	+$(MAKE) -C $(BUILD_WORK)/bison install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/bison/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 bison-package: bison-stage

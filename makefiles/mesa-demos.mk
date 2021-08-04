@@ -21,7 +21,7 @@ mesa-demos: mesa-demos-setup mesa libglu glew libx11 libxext freetype
 	+$(MAKE) -C $(BUILD_WORK)/mesa-demos
 	+$(MAKE) -C $(BUILD_WORK)/mesa-demos install \
 		DESTDIR=$(BUILD_STAGE)/mesa-demos
-	touch $(BUILD_WORK)/mesa-demos/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 mesa-demos-package: mesa-demos-stage

@@ -23,7 +23,7 @@ libprotobuf: libprotobuf-setup
 		DESTDIR="$(BUILD_BASE)"
 	+$(MAKE) -C $(BUILD_WORK)/libprotobuf install \
 		DESTDIR="$(BUILD_STAGE)/libprotobuf"
-	touch $(BUILD_WORK)/libprotobuf/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libprotobuf-package: libprotobuf-stage

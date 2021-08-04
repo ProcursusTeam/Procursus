@@ -19,7 +19,7 @@ lolcat: lolcat-setup
 	+$(MAKE) -C $(BUILD_WORK)/lolcat
 	+$(MAKE) -C $(BUILD_WORK)/lolcat install \
 		DESTDIR=$(BUILD_STAGE)/lolcat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	touch $(BUILD_WORK)/lolcat/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 lolcat-package: lolcat-stage

@@ -25,7 +25,7 @@ bootstrap-cmds: bootstrap-cmds-setup
 	$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -DMIG_VERSION=\"mig-$(BOOTSTRAP-CMDS_VERSION)\" -o migcom !(handler).c -save-temps; \
 	cp -a migcom $(BUILD_STAGE)/bootstrap-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec; \
 	cp -a mig.sh $(BUILD_STAGE)/bootstrap-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/mig
-	touch $(BUILD_WORK)/bootstrap-cmds/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 bootstrap-cmds-package: bootstrap-cmds-stage

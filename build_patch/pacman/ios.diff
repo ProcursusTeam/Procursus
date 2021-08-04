@@ -1,39 +1,26 @@
-diff -urN pacman-5.2.2/lib/libalpm/util.c pacman/lib/libalpm/util.c
---- pacman-5.2.2/lib/libalpm/util.c	2020-06-26 01:04:50.000000000 -0400
-+++ pacman/lib/libalpm/util.c	2020-07-15 18:03:34.033494551 -0400
-@@ -33,6 +33,11 @@
- #include <sys/socket.h>
- #include <fnmatch.h>
+diff --color -urN pacman-6.0.0/lib/libalpm/util.c pacman/lib/libalpm/util.c
+--- pacman-6.0.0/lib/libalpm/util.c	2021-05-19 20:35:27.000000000 -0700
++++ pacman/lib/libalpm/util.c	2021-07-10 10:42:12.714192851 -0700
+@@ -35,6 +35,10 @@
  #include <poll.h>
-+#include <signal.h>
-+
+ #include <signal.h>
+ 
 +#ifndef MSG_NOSIGNAL
 +#define MSG_NOSIGNAL 0x2000
 +#endif
- 
++
  /* libarchive */
  #include <archive.h>
-@@ -556,7 +561,11 @@
+ #include <archive_entry.h>
+@@ -558,7 +562,11 @@
  	int *i, signals[] = {
  		SIGABRT, SIGALRM, SIGBUS, SIGCHLD, SIGCONT, SIGFPE, SIGHUP, SIGILL,
  		SIGINT, SIGKILL, SIGPIPE, SIGQUIT, SIGSEGV, SIGSTOP, SIGTERM, SIGTSTP,
-+#ifndef __APPLE__
- 		SIGTTIN, SIGTTOU, SIGUSR1, SIGUSR2, SIGPOLL, SIGPROF, SIGSYS, SIGTRAP,
++#ifndef __APPLE__		
+ 		SIGTTIN, SIGTTOU, SIGUSR1, SIGUSR2, SIGPROF, SIGSYS, SIGTRAP, SIGURG,
 +#else
 +		SIGTTIN, SIGTTOU, SIGUSR1, SIGUSR2, SIGIOT, SIGEMT, SIGPROF, SIGSYS, SIGTRAP,
-+#endif
- 		SIGURG, SIGVTALRM, SIGXCPU, SIGXFSZ,
- 		0
- 	};
-diff -urN pacman-5.2.2/src/pacman/conf.c pacman/src/pacman/conf.c
---- pacman-5.2.2/src/pacman/conf.c	2020-06-26 01:04:50.000000000 -0400
-+++ pacman/src/pacman/conf.c	2020-07-15 18:04:32.443497192 -0400
-@@ -32,6 +32,8 @@
- #include <sys/wait.h>
- #include <unistd.h>
- 
-+#include <signal.h>
-+
- /* pacman */
- #include "conf.h"
- #include "ini.h"
++#endif		
+ 		SIGVTALRM, SIGXCPU, SIGXFSZ,
+ #if defined(SIGPOLL)
+ 		/* Not available on FreeBSD et al. */

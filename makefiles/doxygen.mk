@@ -21,7 +21,7 @@ doxygen: doxygen-setup gettext
 	+$(MAKE) -C $(BUILD_WORK)/doxygen
 	+$(MAKE) -C $(BUILD_WORK)/doxygen install \
 		DESTDIR=$(BUILD_STAGE)/doxygen
-	touch $(BUILD_WORK)/doxygen/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 doxygen-package: doxygen-stage

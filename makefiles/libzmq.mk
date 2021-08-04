@@ -23,7 +23,7 @@ libzmq: libzmq-setup libsodium
 		DESTDIR=$(BUILD_STAGE)/libzmq
 	+$(MAKE) -C $(BUILD_WORK)/libzmq install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libzmq/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libzmq-package: libzmq-stage

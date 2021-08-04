@@ -1,0 +1,9 @@
+Package: procursus-keyring
+Version: @DEB_KEYRING_V@
+Architecture: all
+Essential: yes
+Maintainer: @DEB_MAINTAINER@
+Section: Keyrings
+Priority: required
+Description: GnuPG keys for stock *OS repositories.
+Name: Procursus APT Keyring

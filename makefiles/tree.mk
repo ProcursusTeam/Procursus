@@ -19,7 +19,7 @@ tree: tree-setup
 	+$(MAKE) -C $(BUILD_WORK)/tree
 	+$(MAKE) -C $(BUILD_WORK)/tree install \
 		prefix=$(BUILD_STAGE)/tree/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	touch $(BUILD_WORK)/tree/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 tree-package: tree-stage
