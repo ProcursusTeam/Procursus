@@ -1,0 +1,4 @@
+Vendor:     @MEMO_VENDOR@
+Vendor-URL: @MEMO_REPO_URI@
+Bugs:       @MEMO_BUGS_URI@
+Parent:     Darwin

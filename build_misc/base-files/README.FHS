@@ -1,0 +1,8 @@
+Due to *OS limitations, FHS cannot be followed strictly.
+
+Therefore, on iOS, tvOS, bridgeOS, audioOS and watchOS of Darwin version <= 20, some
+packages install files to /usr/local.
+
+On macOS, everything is prefixed in /opt/procursus
+and on iOS, tvOS, bridgeOS, audioOS and watchOS of darwin version >= 21,
+everything is prefixed in /private/preboot/procursus.

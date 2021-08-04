@@ -1,0 +1,14 @@
+Package: base-files
+Essential: yes
+Version: @DEB_BASE-FILES_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Replaces: dpkg (<< 1.20.9-2)
+Depends: awk
+Section: Administration
+Priority: required
+Description: Procursus base system miscellaneous files
+ This package contains the basic filesystem hierarchy of a Procursus system, 
+ and several important miscellaneous files, such as @MEMO_PREFIX@/etc/debian_version, 
+ @MEMO_PREFIX@/etc/host.conf, @MEMO_PREFIX@/etc/issue, @MEMO_PREFIX@/etc/motd, @MEMO_PREFIX@/etc/profile, and others, 
+ and the text of several common licenses in use on Debian systems.

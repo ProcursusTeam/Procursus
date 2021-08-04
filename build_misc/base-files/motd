@@ -1,0 +1,6 @@
+The programs included with the @MEMO_VENDOR@ Darwin system are mostly free software;
+the exact distribution terms for each program are described in the
+individual files in @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/doc/*/copyright.
+
+@MEMO_VENDOR@ Darwin comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
