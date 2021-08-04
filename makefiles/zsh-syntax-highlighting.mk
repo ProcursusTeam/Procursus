@@ -24,7 +24,6 @@ endif
 zsh-syntax-highlighting-package: zsh-syntax-highlighting-stage
 	# zsh-syntax-highlighting.mk Package Structure
 	rm -rf $(BUILD_DIST)/zsh-syntax-highlighting
-	mkdir -p $(BUILD_DIST)/zsh-syntax-highlighting
 
 	# zsh-syntax-highlighting.mk Prep zsh-syntax-highlighting
 	cp -a $(BUILD_STAGE)/zsh-syntax-highlighting $(BUILD_DIST)
