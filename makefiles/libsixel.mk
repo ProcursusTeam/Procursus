@@ -29,7 +29,7 @@ libsixel: libsixel-setup libpng16 libjpeg-turbo curl libgd
 		DESTDIR="$(BUILD_STAGE)/libsixel"
 	+$(MAKE) -C $(BUILD_WORK)/libsixel install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libsixel/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libsixel-package: libsixel-stage

@@ -4,14 +4,8 @@ endif
 
 SUBPROJECTS      += python3
 PYTHON3_MAJOR_V  := 3.9
-PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).5
+PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).6
 DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)
-
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-PYTHON3_CONFIGURE_ARGS := LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -liosexec"
-else
-PYTHON3_CONFIGURE_ARGS :=
-endif
 
 python3-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.python.org/ftp/python/$(PYTHON3_VERSION)/Python-$(PYTHON3_VERSION).tar.xz{,.asc}
@@ -20,9 +14,6 @@ python3-setup: setup
 	$(call DO_PATCH,python3,python3,-p1)
 	$(SED) -i -e 's/-vxworks/-darwin/g' -e 's/system=VxWorks/system=Darwin/g' -e '/readelf for/d' -e 's|LIBFFI_INCLUDEDIR=.*|LIBFFI_INCLUDEDIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include"|g' $(BUILD_WORK)/python3/configure.ac
 	$(SED) -i -e "s|self.compiler.library_dirs|['$(TARGET_SYSROOT)/usr/lib'] + ['$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib']|g" -e "s|self.compiler.include_dirs|['$(TARGET_SYSROOT)/usr/include'] + ['$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include']|g" -e "s/HOST_PLATFORM == 'darwin'/HOST_PLATFORM.startswith('darwin')/" $(BUILD_WORK)/python3/setup.py
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(SED) -i '1s/^/#include <libiosexec.h>\n/' $(BUILD_WORK)/python3/Modules/_posixsubprocess.c
-endif
 
 ifneq ($(wildcard $(BUILD_WORK)/python3/.build_complete),)
 python3:
@@ -32,7 +23,7 @@ python3: .SHELLFLAGS=-O extglob -c
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm expat
 else
-python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm expat libxcrypt libiosexec
+python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm expat libxcrypt
 endif
 	cd $(BUILD_WORK)/python3 && autoreconf -fi
 	cd $(BUILD_WORK)/python3 && ./configure -C \
@@ -47,7 +38,7 @@ endif
 		ac_cv_file__dev_ptc=no \
 		ac_cv_func_sendfile=no \
 		ax_cv_c_float_words_bigendian=no \
-		$(PYTHON3_CONFIGURE_ARGS)
+		ac_cv_working_tzset=yes
 	+$(MAKE) -C $(BUILD_WORK)/python3
 	+$(MAKE) -C $(BUILD_WORK)/python3 install \
 		DESTDIR=$(BUILD_STAGE)/python3
@@ -56,7 +47,7 @@ endif
 	mkdir -p $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3/dist-packages $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/dist-packages
 	$(SED) -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < $(BUILD_MISC)/python3/_sysconfigdata__darwin_darwin.py > $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/_sysconfigdata__darwin_darwin.py
 	rm -f $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}/!(*$(PYTHON3_MAJOR_V)*)
-	touch $(BUILD_WORK)/python3/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 python3-package: python3-stage

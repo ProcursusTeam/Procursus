@@ -39,7 +39,7 @@ libipatcher: libipatcher-setup libpng16 openssl img4tool liboffsetfinder64 libge
 		DESTDIR="$(BUILD_STAGE)/libipatcher"
 	+$(MAKE) -C $(BUILD_WORK)/libipatcher install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libipatcher/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libipatcher-package: libipatcher-stage

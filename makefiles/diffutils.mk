@@ -25,7 +25,7 @@ diffutils: diffutils-setup gettext
 	+$(MAKE) -C $(BUILD_WORK)/diffutils
 	+$(MAKE) -C $(BUILD_WORK)/diffutils install \
 		DESTDIR=$(BUILD_STAGE)/diffutils
-	touch $(BUILD_WORK)/diffutils/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 diffutils-package: diffutils-stage

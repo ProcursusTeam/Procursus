@@ -31,7 +31,7 @@ uikittools: uikittools-setup
 			cp $$bin $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin ; \
 		fi \
 	done
-	touch $(BUILD_WORK)/uikittools/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 uikittools-package: uikittools-stage

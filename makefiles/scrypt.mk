@@ -21,7 +21,7 @@ scrypt: scrypt-setup openssl
 	+$(MAKE) -C $(BUILD_WORK)/scrypt
 	+$(MAKE) -C $(BUILD_WORK)/scrypt install \
 		DESTDIR=$(BUILD_STAGE)/scrypt
-	touch $(BUILD_WORK)/scrypt/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 scrypt-package: scrypt-stage

@@ -21,7 +21,7 @@ libonig: libonig-setup
 		DESTDIR=$(BUILD_STAGE)/libonig
 	+$(MAKE) -C $(BUILD_WORK)/libonig install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libonig/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libonig-package: libonig-stage

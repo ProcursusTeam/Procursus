@@ -22,7 +22,7 @@ else
 ondeviceconsole: ondeviceconsole-setup
 	$(CC) $(CFLAGS) $(BUILD_WORK)/ondeviceconsole/main.m -framework Foundation \
 		-o $(BUILD_STAGE)/ondeviceconsole/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ondeviceconsole
-	touch $(BUILD_WORK)/ondeviceconsole/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 ondeviceconsole-package: ondeviceconsole-stage

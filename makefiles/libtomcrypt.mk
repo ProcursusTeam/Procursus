@@ -36,7 +36,7 @@ libtomcrypt: libtomcrypt-setup libgmp10 libtommath
 		LIBTOOL="$(BUILD_WORK)/libtommath/libtool/libtool" \
 		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libtomcrypt/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libtomcrypt-package: libtomcrypt-stage

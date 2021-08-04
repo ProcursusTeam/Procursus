@@ -2,11 +2,23 @@ Package: coreutils
 Version: @DEB_COREUTILS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: sh, profile.d, libintl8 (>= 0.20.0), libgmp10, libcrypt2
+Depends: sh, profile.d, libintl8 (>= 0.20.0), libgmp10, libcrypt2, libiosexec1
 Conflicts: coreutils-bin (<<1:0), shell-cmds (<< 207.40.1), text-cmds (<< 1:0), file-cmds (<< 272.250.1-1), system-cmds (<< 854.40.2-3)
 Replaces: netatalk (<= 2.0.3-6), coreutils-bin, shell-cmds (<< 207.40.1), text-cmds (<< 1:0), file-cmds (<< 272.250.1-1)
 Provides: md5sum, sha1sum, coreutils-bin (=@DEB_COREUTILS_V@), dirname, kill, mktemp, su
 Section: Utilities
 Priority: standard
 Homepage: http://www.gnu.org/software/coreutils/
-Description: core set of Unix shell utilities from GNU
+Description: GNU core utilities
+ This package contains the basic file, shell and text manipulation
+ utilities which are expected to exist on every operating system.
+ .
+ Specifically, this package includes: 
+ arch base64 basename cat chcon chgrp chmod chown chroot cksum comm cp
+ csplit cut date dd df dir dircolors dirname du echo env expand expr
+ factor false flock fmt fold groups head hostid id install join link ln
+ logname ls md5sum mkdir mkfifo mknod mktemp mv nice nl nohup nproc numfmt
+ od paste pathchk pinky pr printenv printf ptx pwd readlink realpath rm 
+ rmdir runcon sha*sum seq shred sleep sort split stat stty sum sync tac 
+ tail tee test timeout touch tr true truncate tsort tty uname unexpand 
+ uniq unlink users vdir wc who whoami yes

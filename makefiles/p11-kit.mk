@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += p11-kit
-P11_VERSION   := 0.23.21
+P11_VERSION   := 0.24.0
 DEB_P11_V     ?= $(P11_VERSION)
 
 p11-kit-setup: setup
@@ -19,13 +19,15 @@ p11-kit: p11-kit-setup gettext libtasn1 libffi
 	cd $(BUILD_WORK)/p11-kit && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-trust-paths=$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem \
-		--without-systemd
+		--disable-static \
+		--without-systemd \
+		--enable-nls
 	+$(MAKE) -C $(BUILD_WORK)/p11-kit
 	+$(MAKE) -C $(BUILD_WORK)/p11-kit install \
 		DESTDIR=$(BUILD_STAGE)/p11-kit
 	+$(MAKE) -C $(BUILD_WORK)/p11-kit install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/p11-kit/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 p11-kit-package: p11-kit-stage

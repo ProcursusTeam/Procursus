@@ -1,0 +1,10 @@
+Package: ld64
+Version: @DEB_LD64_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libuuid16, libxar1, liblto, libtapi
+Section: Development
+Priority: optional
+Description: 64-bit iOS linker
+Homepage: https://www.llvm.org/
+Tag: purpose::console, role::developer

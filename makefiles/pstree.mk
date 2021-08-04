@@ -21,7 +21,7 @@ pstree: pstree-setup
 		$(BUILD_STAGE)/pstree/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pstree
 	$(INSTALL) -Dm644 $(BUILD_WORK)/pstree/pstree.1 \
 		$(BUILD_STAGE)/pstree/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/pstree.1
-	touch $(BUILD_WORK)/pstree/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 pstree-package: pstree-stage

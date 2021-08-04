@@ -23,7 +23,7 @@ htop: htop-setup ncurses
 	+$(MAKE) -C $(BUILD_WORK)/htop install \
 		DESTDIR=$(BUILD_STAGE)/htop
 	rm -rf $(BUILD_STAGE)/htop/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{applications,pixmaps}
-	touch $(BUILD_WORK)/htop/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 htop-package: htop-stage

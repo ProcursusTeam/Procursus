@@ -23,7 +23,7 @@ dialog: dialog-setup ncurses gettext
 	+$(MAKE) -C $(BUILD_WORK)/dialog
 	+$(MAKE) -C $(BUILD_WORK)/dialog install-full \
 		DESTDIR=$(BUILD_STAGE)/dialog
-	touch $(BUILD_WORK)/dialog/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 dialog-package: dialog-stage

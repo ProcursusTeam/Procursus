@@ -32,7 +32,7 @@ r2ghidra-dec: r2ghidra-dec-setup radare2 openssl
 	+PATH="$(BUILD_WORK)/../../native/ghidra:$(PATH)" $(MAKE) -C $(BUILD_WORK)/r2ghidra-dec
 	$(MAKE) -C $(BUILD_WORK)/r2ghidra-dec install \
 		DESTDIR="$(BUILD_STAGE)/r2ghidra-dec"
-	touch $(BUILD_WORK)/r2ghidra-dec/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 r2ghidra-dec-package: r2ghidra-dec-stage

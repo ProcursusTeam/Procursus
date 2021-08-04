@@ -35,7 +35,7 @@ endif
 	mkdir -p $(BUILD_STAGE)/libao/$(MEMO_PREFIX)/etc
 	echo "default_driver=macosx\nquiet" > $(BUILD_STAGE)/libao/$(MEMO_PREFIX)/etc/libao.conf
 
-	touch $(BUILD_WORK)/libao/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libao-package: libao-stage

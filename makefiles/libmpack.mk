@@ -21,7 +21,7 @@ libmpack: libmpack-setup
 	+$(MAKE) -C $(BUILD_WORK)/libmpack install \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libmpack/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libmpack-package: libmpack-stage

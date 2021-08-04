@@ -16,7 +16,11 @@ ifneq ($(wildcard $(BUILD_WORK)/screen/.build_complete),)
 screen:
 	@echo "Using previously built screen."
 else
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 screen: screen-setup ncurses libxcrypt
+else
+screen: screen-setup ncurses
+endif
 	cd $(BUILD_WORK)/screen && ./autogen.sh
 	cd $(BUILD_WORK)/screen && ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
@@ -28,7 +32,7 @@ screen: screen-setup ncurses libxcrypt
 	rm -f $(BUILD_STAGE)/screen/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/screen && mv $(BUILD_STAGE)/screen/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/screen{-$(SCREEN_VERSION),}
 	mkdir -p $(BUILD_STAGE)/screen/etc
 	cp -a $(BUILD_WORK)/screen/etc/etcscreenrc $(BUILD_STAGE)/screen/etc/screenrc
-	touch $(BUILD_WORK)/screen/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 screen-package: screen-stage

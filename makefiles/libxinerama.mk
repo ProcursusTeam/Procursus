@@ -24,7 +24,7 @@ libxinerama: libxinerama-setup libx11 libxext xorgproto
 		DESTDIR=$(BUILD_STAGE)/libxinerama
 	+$(MAKE) -C $(BUILD_WORK)/libxinerama install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxinerama/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libxinerama-package: libxinerama-stage

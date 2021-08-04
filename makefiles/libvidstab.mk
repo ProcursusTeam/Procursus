@@ -25,7 +25,7 @@ libvidstab: libvidstab-setup
 		DESTDIR=$(BUILD_STAGE)/libvidstab
 	+$(MAKE) -C $(BUILD_WORK)/libvidstab install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libvidstab/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libvidstab-package: libvidstab-stage
