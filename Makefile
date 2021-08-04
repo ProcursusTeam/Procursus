@@ -645,6 +645,15 @@ PACK = if [ -z "$(4)" ]; then \
 	rm -f $(BUILD_DIST)/$(1)/.build_complete; \
 	rm -rf $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{info,doc}; \
 	find $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -exec zstd -19 --rm '{}' \; 2> /dev/null; \
+	for file in AUTHORS COPYING LICENSE NEWS README THANKS TODO; do \
+		if [ -f "$(BUILD_WORK)/$$(echo $@ | $(SED) 's/-package//')/$$file" ]; then \
+			mkdir -p $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc; \
+			cp -a $(BUILD_WORK)/$$(echo $@ | $(SED) 's/-package//')/$$file $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc; \
+			if [ ! "$$file" = "AUTHORS" ] && [ ! "$$file" = "COPYING" ] && [ ! "$$file" = "LICENSE" ]; then \
+				zstd -19 --rm $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$$file 2> /dev/null; \
+			fi; \
+		fi; \
+	done; \
 	if [ -z $(3) ]; then \
 		if [ ! "$(MEMO_QUIET)" == "1" ]; then \
 		echo Setting $(1) owner to 0:0.; \
