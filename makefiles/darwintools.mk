@@ -29,7 +29,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(INSTALL) -s -Dm 0755 $(BUILD_WORK)/darwintools/sw_vers $(BUILD_STAGE)/darwintools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sw_vers
 	$(INSTALL) -Dm 0644 $(BUILD_MISC)/darwintools/resolv.conf $(BUILD_STAGE)/darwintools/$(MEMO_PREFIX)/etc/resolv.conf
 endif
-	touch $(BUILD_WORK)/darwintools/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 darwintools-package: darwintools-stage

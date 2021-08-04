@@ -26,7 +26,7 @@ libxo: libxo-setup
 	+$(MAKE) -C $(BUILD_WORK)/libxo install \
 		LIBTOOL='$(BUILD_WORK)/libxo/libtool' \
 		DESTDIR=$(BUILD_STAGE)/libxo
-	touch $(BUILD_WORK)/libxo/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libxo-package: libxo-stage

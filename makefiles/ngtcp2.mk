@@ -31,7 +31,7 @@ ngtcp2: ngtcp2-setup gnutls nghttp3 libjemalloc libev
 	mkdir -p $(BUILD_STAGE)/ngtcp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{,s}bin
 	cp $(BUILD_WORK)/ngtcp2/examples/.libs/gtlsserver $(BUILD_STAGE)/ngtcp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 	cp $(BUILD_WORK)/ngtcp2/examples/.libs/gtlsclient $(BUILD_STAGE)/ngtcp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	touch $(BUILD_WORK)/ngtcp2/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 ngtcp2-package: ngtcp2-stage

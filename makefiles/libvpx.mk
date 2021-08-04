@@ -49,7 +49,7 @@ libvpx: libvpx-setup
 	done
 	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib $(BUILD_STAGE)/libvpx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib
 	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib
-	touch $(BUILD_WORK)/libvpx/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libvpx-package: libvpx-stage

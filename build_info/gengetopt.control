@@ -1,0 +1,12 @@
+Package: gengetopt
+Version: @DEB_GENGETOPT_V@
+Priority: optional
+Section: Development
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Homepage: https://www.gnu.org/software/gengetopt/
+Description: skeleton main.c generator
+ gengetopt reads an interface description file, and writes a file containing
+ a command-line parser function.  gengetopt supports: long and short options,
+ 11 types of parameters (including flag, int, double, string, and function
+ call), and a usage message.

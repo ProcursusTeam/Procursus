@@ -23,7 +23,7 @@ libxdamage: libxdamage-setup xorgproto libx11 libxfixes
 		DESTDIR=$(BUILD_STAGE)/libxdamage
 	+$(MAKE) -C $(BUILD_WORK)/libxdamage install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxdamage/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libxdamage-package: libxdamage-stage

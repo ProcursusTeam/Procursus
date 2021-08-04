@@ -28,7 +28,7 @@ cwidget: cwidget-setup gettext ncurses libsigcplusplus
 		DESTDIR="$(BUILD_STAGE)/cwidget"
 	+$(MAKE) -C $(BUILD_WORK)/cwidget install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/cwidget/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 cwidget-package: cwidget-stage

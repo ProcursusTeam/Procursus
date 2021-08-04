@@ -32,7 +32,7 @@ ghostscript: ghostscript-setup libtiff libpng16 jbig2dec libjpeg-turbo lcms2 lib
 	+$(MAKE) -C $(BUILD_WORK)/ghostscript soinstall \
 		DESTDIR="$(BUILD_BASE)"
 	mv $(BUILD_STAGE)/ghostscript/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gsc $(BUILD_STAGE)/ghostscript/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gs
-	touch $(BUILD_WORK)/ghostscript/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 ghostscript-package: ghostscript-stage

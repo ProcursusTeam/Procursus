@@ -52,7 +52,7 @@ imagemagick: imagemagick-setup openexr fontconfig freetype glib2.0 ghostscript l
 		DESTDIR=$(BUILD_STAGE)/imagemagick
 	+$(MAKE) -C $(BUILD_WORK)/imagemagick install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/imagemagick/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 imagemagick-package: imagemagick-stage

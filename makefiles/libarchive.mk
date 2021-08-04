@@ -29,7 +29,7 @@ libarchive: libarchive-setup lz4 liblzo2 zstd xz nettle
 		DESTDIR="$(BUILD_STAGE)/libarchive"
 	+$(MAKE) -C $(BUILD_WORK)/libarchive install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libarchive/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libarchive-package: libarchive-stage

@@ -24,7 +24,7 @@ gnuchess: gnuchess-setup ncurses readline gettext
 		LIBS="-lreadline -lncursesw"
 	+$(MAKE) -C $(BUILD_WORK)/gnuchess install \
 		DESTDIR=$(BUILD_STAGE)/gnuchess
-	touch $(BUILD_WORK)/gnuchess/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 gnuchess-package: gnuchess-stage

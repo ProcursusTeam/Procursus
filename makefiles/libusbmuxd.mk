@@ -22,7 +22,7 @@ libusbmuxd: libusbmuxd-setup libplist
 		DESTDIR="$(BUILD_STAGE)/libusbmuxd"
 	+$(MAKE) -C $(BUILD_WORK)/libusbmuxd install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libusbmuxd/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libusbmuxd-package: libusbmuxd-stage

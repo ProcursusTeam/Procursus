@@ -21,7 +21,7 @@ xtrace: xtrace-setup
 	+$(MAKE) -C $(BUILD_WORK)/xtrace
 	+$(MAKE) -C $(BUILD_WORK)/xtrace install \
 		DESTDIR=$(BUILD_STAGE)/xtrace
-	touch $(BUILD_WORK)/xtrace/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 xtrace-package: xtrace-stage

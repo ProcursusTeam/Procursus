@@ -27,7 +27,7 @@ progress: progress-setup ncurses
 		UNAME="Darwin" \
 		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		DESTDIR="$(BUILD_STAGE)/progress"
-	touch $(BUILD_WORK)/progress/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 progress-package: progress-stage

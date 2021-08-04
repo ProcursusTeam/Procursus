@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += xar
-XAR_VERSION := 420
+XAR_VERSION := 452
 DEB_XAR_V   ?= 1.8.0.$(XAR_VERSION)+fc-6
 
 xar-setup: setup file-setup
@@ -35,7 +35,7 @@ xar: xar-setup openssl
 		DESTDIR=$(BUILD_STAGE)/xar
 	cp -a $(BUILD_STAGE)/xar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/* $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	cp -a $(BUILD_STAGE)/xar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/* $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	touch $(BUILD_WORK)/xar/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 xar-package: xar-stage

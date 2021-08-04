@@ -43,7 +43,7 @@ openmp: openmp-setup
 		DESTDIR="$(BUILD_STAGE)/openmp"
 	+$(MAKE) -C $(BUILD_WORK)/openmp install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/openmp/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 openmp-package: openmp-stage

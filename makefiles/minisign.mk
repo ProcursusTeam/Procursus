@@ -25,7 +25,7 @@ minisign: minisign-setup libsodium
 	+$(MAKE) -C $(BUILD_WORK)/minisign/build
 	cp $(BUILD_WORK)/minisign/build/minisign $(BUILD_STAGE)/minisign/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
 	cp $(BUILD_WORK)/minisign/share/man/man1/* $(BUILD_STAGE)/minisign/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
-	touch $(BUILD_WORK)/minisign/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 minisign-package: minisign-stage

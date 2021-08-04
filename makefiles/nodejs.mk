@@ -47,7 +47,7 @@ nodejs: nodejs-setup nghttp2 openssl brotli libc-ares libuv1
 
 	mkdir -p $(BUILD_STAGE)/nodejs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_WORK)/nodejs/out/Release/node $(BUILD_STAGE)/nodejs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	touch $(BUILD_WORK)/nodejs/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 nodejs-package: nodejs-stage

@@ -27,7 +27,7 @@ texinfo: texinfo-setup
 	+$(MAKE) -C $(BUILD_WORK)/texinfo
 	+$(MAKE) -C $(BUILD_WORK)/texinfo install \
 		DESTDIR=$(BUILD_STAGE)/texinfo
-	touch $(BUILD_WORK)/texinfo/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 texinfo-package: texinfo-stage

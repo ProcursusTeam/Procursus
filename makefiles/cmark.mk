@@ -28,7 +28,7 @@ cmark: cmark-setup
 	+$(MAKE) -C $(BUILD_WORK)/cmark/build install \
 		DESTDIR="$(BUILD_BASE)"
 
-	touch $(BUILD_WORK)/cmark/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 cmark-package: cmark-stage
