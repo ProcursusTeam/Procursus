@@ -407,7 +407,7 @@ CODESIGN_IDENTITY ?= -
 
 MEMO_VERSION_ID  ?= 1.0a1
 MEMO_HOME_URI    ?= https://docs.procurs.us
-MEMO_BUGS_URI    ?= https://github.com/ProcursusTeam/Procursus/issues
+MEMO_BUGS_URI    ?= mailto://me@diatr.us
 MEMO_SUPPORT_URI ?= https://diatr.us/discord
 MEMO_VENDOR      ?= Procursus
 MEMO_VENDOR_ID   ?= procursus
