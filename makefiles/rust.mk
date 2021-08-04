@@ -14,8 +14,7 @@ rust-setup: setup
 	$(call GIT_CLONE,https://github.com/rust-lang/rust.git,$(RUST_VERSION),rust)
 	$(call DO_PATCH,rust,rust,-p1)
 
-	mkdir -p "$(BUILD_WORK)/rust/build"
-	mkdir -p "$(BUILD_STAGE)/rust"
+	mkdir -p $(BUILD_STAGE)/rust $(BUILD_WORK)/rust/build
 	cp -f "$(BUILD_INFO)/rust_config.toml" "$(BUILD_WORK)/rust/config.toml"
 
 	sed -i -e 's|PROCURSUS_BUILD_DIR|$(BUILD_WORK)/rust/build|g' -e 's|PROCURSUS_TARGET|$(RUST_TARGET)|g' -e 's|PROCURSUS_INSTALL_PREFIX|$(BUILD_STAGE)/rust/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' "$(BUILD_WORK)/rust/config.toml"
