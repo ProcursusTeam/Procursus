@@ -19,9 +19,9 @@ base-files:
         @echo "Using previously built base-files."
 else
 base-files: base-files-setup
-	mkdir -p $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{share/{doc,base-files},lib}
+	mkdir -p $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{share/{doc,base-files,common-licenses},lib}
 	mkdir -p $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)/etc/{update-motd.d,dpkg/origins}
-	cp -a $(BUILD_WORK)/base-files/licenses $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/common-licenses
+	cp -a $(BUILD_WORK)/base-files/licenses/* $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/common-licenses
 	$(INSTALL) -m644 $(BUILD_MISC)/base-files/APSL-2.0 $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/common-licenses
 	echo $(MEMO_DEBIAN_VERSION) > $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)/etc/debian_version
 	chmod 644 $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)/etc/debian_version
