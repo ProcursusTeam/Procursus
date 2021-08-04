@@ -6,7 +6,7 @@ STRAPPROJECTS       += base-files
 BASE-FILES_VERSION  := 11.1
 DEB_BASE-FILES_V    ?= $(BASE-FILES_VERSION)
 
-MEMO_VERSION_STRING ?= $(MEMO_VERSION_ID) Darwin/$(DARWIN_DEVELOPMENT_VERSION) ($(MEMO_CODENAME))
+MEMO_VERSION_STRING ?= $(MEMO_VERSION_ID) Darwin/$(DARWIN_DEPLOYMENT_VERSION) ($(MEMO_CODENAME))
 MEMO_DEBIAN_VERSION ?= bullseye/sid
 
 base-files-setup:
@@ -40,11 +40,12 @@ base-files: base-files-setup
 		-e 's|@MEMO_VERSION_STRING@|$(MEMO_VERSION_STRING)|g' \
 		$(BUILD_MISC)/base-files/$$file > $(BUILD_WORK)/base-files/$$file; \
 	done
-	cp -a $(BUILD_WORK)/base-files/{host.conf,issue,issue.net,os-release} $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)/etc
+	cp -a $(BUILD_WORK)/base-files/{host.conf,issue,issue.net} $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)/etc
+	cp -a $(BUILD_WORK)/base-files/os-release $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_WORK)/base-files/procursus $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)/etc/dpkg/origins
 	cp -a $(BUILD_WORK)/base-files/{motd,dot.bashrc,dot.profile,profile} $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/base-files
 	cp -a $(BUILD_MISC)/base-files/{copyright,README,README.FHS,FAQ} $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc
-	# ln -s $(MEMO_PREFIX)/etc/os-release $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/os-release
+	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/etc/os-release $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)/etc/os-release
 	$(INSTALL) -m755 $(BUILD_MISC)/base-files/10-uname $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)/etc/update-motd.d
 	zstd -c19 $(BUILD_MISC)/base-files/changelog > $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/changelog
 endif
@@ -54,7 +55,7 @@ base-files-package: base-files
 	rm -rf $(BUILD_DIST)/base-files
 
 	# base-files.mk Prep base-files
-	cp -a $(BUILD_STAGE)/base-files $(BUILD_DIST)
+	cp -af $(BUILD_STAGE)/base-files $(BUILD_DIST)
 
 	# base-files.mk Make .debs
 	$(call PACK,base-files,DEB_BASE-FILES_V)
