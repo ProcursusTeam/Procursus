@@ -47,7 +47,7 @@ base-files: base-files-setup
 	cp -a $(BUILD_MISC)/base-files/{copyright,README,README.FHS,FAQ} $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc
 	ln -fs $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/os-release $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)/etc/os-release
 	$(INSTALL) -m755 $(BUILD_MISC)/base-files/10-uname $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)/etc/update-motd.d
-	zstd -c19 $(BUILD_MISC)/base-files/changelog > $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/changelog
+	zstd -c19 $(BUILD_MISC)/base-files/changelog > $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/changelog.zst
 endif
 
 base-files-package: base-files
