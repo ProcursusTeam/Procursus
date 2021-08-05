@@ -48,7 +48,7 @@ cgit: cgit-setup openssl
 		$(CGIT_ARGS)
 	mv $(BUILD_STAGE)/cgit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/cgit/cgit.cgi \
 		$(BUILD_STAGE)/cgit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/cgit
-	touch $(BUILD_WORK)/cgit/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 cgit-package: cgit-stage
