@@ -6,4 +6,3 @@ Depends: libimobiledevice-glue (= @DEB_LIBIMOBILEDEVICEGLUE_V@), libplist-dev (>
 Section: Development
 Priority: standard
 Description: Library with common code used by the libraries and tools around the libimobiledevice project - devel
-Tag: purpose::library, role::developer
