@@ -22,7 +22,7 @@ openssh-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$(OPENSSH_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,openssh-$(OPENSSH_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,openssh-$(OPENSSH_VERSION).tar.gz,openssh-$(OPENSSH_VERSION),openssh)
-ifeq (,$(findstring darwin,$(MEMO_TARGET))) # Need to add Apple's two patches for macOS sshd
+ifeq (,$(findstring darwin,$(MEMO_TARGET)
 	$(call DO_PATCH,openssh,openssh,-p1)
 endif
 	$(SED) -i 's/#UsePAM no/UsePAM yes/' $(BUILD_WORK)/openssh/sshd_config
@@ -32,7 +32,7 @@ openssh:
 	@echo "Using previously built openssh."
 else
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-SSHDLIBS += "-lcrypt -lsandbox -lpam -ldl -ldns"
+SSHDLIBS += "-lcrypt -lsandbox -lpam -ldl" # Add -ldns to these when someone figures out how to make ldns work on iOS
 openssh: openssh-setup openssl libxcrypt openpam libmd
 else # (,$(findstring darwin,$(MEMO_TARGET)))
 OPENSSH_CONFIGURE_ARGS += --with-security-key-builtin
