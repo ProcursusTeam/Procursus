@@ -1,0 +1,15 @@
+Package: python3-ldns
+Version: @DEB_LDNS_V@
+Priority: optional
+Section: Python
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Homepage: https://www.nlnetlabs.nl/projects/ldns/about/
+Description: Python3 bindings for the ldns library for DNS programming
+ The goal of ldns is to simplify DNS programming, it supports recent RFCs
+ like the DNSSEC documents, and allows developers to easily create software
+ conforming to current RFCs, and experimental software for current Internet
+ Drafts.
+ .
+ This archive contains modules that allow you to use LDNS Library in
+ Python3 programs.
