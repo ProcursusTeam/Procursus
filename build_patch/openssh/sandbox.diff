@@ -1,0 +1,19 @@
+--- a/sandbox-darwin.c	2015-08-21 06:49:03.000000000 +0200
++++ b/sandbox-darwin.c	2015-10-24 04:41:19.000000000 +0200
+@@ -62,8 +62,16 @@ ssh_sandbox_child(struct ssh_sandbox *bo
+ 	struct rlimit rl_zero;
+ 
+ 	debug3("%s: starting Darwin sandbox", __func__);
++#ifdef __APPLE_SANDBOX_NAMED_EXTERNAL__
++#ifndef SANDBOX_NAMED_EXTERNAL
++#define SANDBOX_NAMED_EXTERNAL (0x3)
++#endif
++	if (sandbox_init("@PREFIX@/share/openssh/org.openssh.sshd.sb",
++		SANDBOX_NAMED_EXTERNAL, &errmsg) == -1)
++#else
+ 	if (sandbox_init(kSBXProfilePureComputation, SANDBOX_NAMED,
+ 	    &errmsg) == -1)
++#endif
+ 		fatal("%s: sandbox_init: %s", __func__, errmsg);
+ 
+ 	/*
