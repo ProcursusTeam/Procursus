@@ -43,7 +43,7 @@ ldns-package: ldns-stage
 	cp -af $(BUILD_STAGE)/ldns/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/ldnsutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
         # ldns.mk Prep libldns3
-	cp -a $(BUILD_STAGE)/ldns/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libldns{.dylib,.3.dylib} $(BUILD_DIST)/libldns3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/ldns/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libldns{.dylib,.3.dylib} $(BUILD_DIST)/libldns3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# ldns.mk Prep libldns-dev
 	cp -a $(BUILD_STAGE)/ldns/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(*.dylib|python3) $(BUILD_DIST)/libldns-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib

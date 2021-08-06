@@ -43,7 +43,7 @@ libfido2-package: libfido2-stage
 
 
 	# libfido2.mk Prep libfido2-1
-	cp -a $(BUILD_STAGE)/libfido2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libfido2{.dylib,.1.dylib,.1.7.0.dylib} $(BUILD_DIST)/libfido2-1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/libfido2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libfido2{.dylib,.1.dylib,.1.7.0.dylib} $(BUILD_DIST)/libfido2-1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libfido2.mk Prep libfido2-dev
 	cp -a $(BUILD_STAGE)/libfido2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libfido2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
