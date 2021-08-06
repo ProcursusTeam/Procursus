@@ -26,6 +26,8 @@ libcbor: libcbor-setup
 	+$(MAKE) -C $(BUILD_WORK)/libcbor/build
 	+$(MAKE) -C $(BUILD_WORK)/libcbor/build install \
 		DESTDIR="$(BUILD_STAGE)/libcbor"
+	+$(MAKE) -C $(BUILD_WORK)/libcbor/build install \
+		DESTDIR="$(BUILD_BASE)"
 	$(call AFTER_BUILD)
 endif
 
