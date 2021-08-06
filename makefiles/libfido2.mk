@@ -28,6 +28,8 @@ libfido2: libfido2-setup libcbor openssl
 	+$(MAKE) -C $(BUILD_WORK)/libfido2/build
 	+$(MAKE) -C $(BUILD_WORK)/libfido2/build install \
 		DESTDIR="$(BUILD_STAGE)/libfido2"
+	+$(MAKE) -C $(BUILD_WORK)/libfido2/build install \
+		DESTDIR="$(BUILD_BASE)"
 	$(call AFTER_BUILD)
 endif
 

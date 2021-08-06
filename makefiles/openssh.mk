@@ -32,11 +32,11 @@ openssh:
 	@echo "Using previously built openssh."
 else
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-SSHDLIBS += "-lcrypt -lsandbox -lpam -ldl" # Need to add -ldns
+SSHDLIBS += "-lcrypt -lsandbox -lpam -ldl -ldns"
 openssh: openssh-setup openssl libxcrypt openpam libmd
 else # (,$(findstring darwin,$(MEMO_TARGET)))
 OPENSSH_CONFIGURE_ARGS += --with-security-key-builtin
-SSHDLIBS += "-lsandbox -lpam -ldl" # Need to add -ldns and -lfido2
+SSHDLIBS += "-lsandbox -lpam -ldl -ldns -lfido2"
 openssh: openssh-setup openssl libmd
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	if ! [ -f $(BUILD_WORK)/openssh/configure ]; then \
