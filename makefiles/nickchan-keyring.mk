@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS               += nickchan-keyring
-NICKCHAN_KEYRING_VERSION  := 2021.06.13
+NICKCHAN_KEYRING_VERSION  := 2021.08.06
 DEB_NICKCHAN_KEYRING_V    ?= $(NICKCHAN_KEYRING_VERSION)
 
 ifneq ($(wildcard $(BUILD_STAGE)/nickchan-keyring/.build_complete),)
@@ -12,7 +12,7 @@ nickchan-keyring:
 else
 nickchan-keyring: setup
 	mkdir -p $(BUILD_STAGE)/nickchan-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	cp -a $(BUILD_MISC)/keyrings/nickchan/nickchan.gpg $(BUILD_STAGE)/nickchan-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
+	cp -a $(BUILD_MISC)/keyrings/nickchan/nickchan{,-table}.gpg $(BUILD_STAGE)/nickchan-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 	$(call AFTER_BUILD)
 endif
 
