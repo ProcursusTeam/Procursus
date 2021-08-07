@@ -6,22 +6,16 @@ SUBPROJECTS            += cameronkatri-keyring
 CKATRI_KEYRING_VERSION := 2020.11.21
 DEB_CKATRI_KEYRING_V   ?= $(CKATRI_KEYRING_VERSION)
 
-ifneq ($(wildcard $(BUILD_STAGE)/cameronkatri-keyring/.build_complete),)
 cameronkatri-keyring:
-	@echo "Using previously built cameronkatri-keyring."
-else
-cameronkatri-keyring: setup
-	mkdir -p $(BUILD_STAGE)/cameronkatri-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	cp -a $(BUILD_MISC)/keyrings/cameronkatri/{cameronkatri,subcursus}.gpg $(BUILD_STAGE)/cameronkatri-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	$(call AFTER_BUILD)
-endif
+	@echo "cameronkatri-keyring do not need to be built."
 
 cameronkatri-keyring-package: cameronkatri-keyring-stage
 	# cameronkatri-keyring.mk Package Structure
 	rm -rf $(BUILD_DIST)/cameronkatri-keyring
+	mkdir -p $(BUILD_DIST)/cameronkatri-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 	
 	# cameronkatri-keyring.mk Prep cameronkatri-keyring
-	cp -a $(BUILD_STAGE)/cameronkatri-keyring $(BUILD_DIST)
+	cp -a $(BUILD_MISC)/keyrings/cameronkatri/{cameronkatri,subcursus}.gpg $(BUILD_DIST)/cameronkatri-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 	
 	# cameronkatri-keyring.mk Make .debs
 	$(call PACK,cameronkatri-keyring,DEB_CKATRI_KEYRING_V)
