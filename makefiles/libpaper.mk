@@ -23,7 +23,7 @@ libpaper: libpaper-setup
 		DESTDIR="$(BUILD_STAGE)/libpaper"
 	+$(MAKE) -C $(BUILD_WORK)/libpaper install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libpaper/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libpaper-package: libpaper-stage

@@ -49,7 +49,7 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	cp $(BUILD_MISC)/dropbear/dropbear-wrapper $(BUILD_STAGE)/dropbear/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
 	$(SED) -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
 		$(BUILD_STAGE)/dropbear/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/dropbear-wrapper
-	touch $(BUILD_WORK)/dropbear/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 dropbear-package: dropbear-stage

@@ -18,7 +18,7 @@ firmware-sbin: setup
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1)
 	touch $(BUILD_STAGE)/firmware-sbin/sbin/umount
 endif
-	touch $(BUILD_STAGE)/firmware-sbin/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 firmware-sbin-package: firmware-sbin-stage

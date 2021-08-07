@@ -20,7 +20,7 @@ hexedit: hexedit-setup ncurses
 	+$(MAKE) -C $(BUILD_WORK)/hexedit LIBS=-lncursesw
 	+$(MAKE) -C $(BUILD_WORK)/hexedit install \
 		DESTDIR=$(BUILD_STAGE)/hexedit
-	touch $(BUILD_WORK)/hexedit/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 hexedit-package: hexedit-stage

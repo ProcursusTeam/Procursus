@@ -24,7 +24,7 @@ libpugixml: libpugixml-setup
 	+$(MAKE) -C $(BUILD_WORK)/libpugixml install \
 		DESTDIR="$(BUILD_BASE)"
 
-	touch $(BUILD_WORK)/libpugixml/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libpugixml-package: libpugixml-stage

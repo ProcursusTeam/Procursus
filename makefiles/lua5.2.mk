@@ -41,7 +41,7 @@ lua5.2: lua5.2-setup readline
 		TO_BIN="lua5.2 luac5.2" \
 		TO_LIB="liblua5.2.a liblua5.2.0.dylib"
 	ln -sf liblua5.2.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.2.dylib
-	touch $(BUILD_WORK)/lua5.2/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 lua5.2-package: lua5.2-stage

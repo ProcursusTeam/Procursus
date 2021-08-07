@@ -95,7 +95,7 @@ lua-luv: lua-luv-setup libuv1 lua5.1 lua5.2 lua5.3 luajit
 	sed -i "s/-lluv/-lluajit-5.1-luv/" $(BUILD_STAGE)/lua-luv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/luajit-5.1-luv.pc
 	mv $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/libluv.pc $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/luajit-5.1-luv.pc
 	sed -i "s/-lluv/-lluajit-5.1-luv/" $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/luajit-5.1-luv.pc
-	touch $(BUILD_WORK)/lua-luv/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 lua-luv-package: lua-luv-stage

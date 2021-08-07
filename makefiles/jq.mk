@@ -26,7 +26,7 @@ jq: jq-setup libonig
 		DESTDIR=$(BUILD_STAGE)/jq
 	+$(MAKE) -C $(BUILD_WORK)/jq install \
 		DESTDIR=$(BUILD_STAGE)/jq
-	touch $(BUILD_WORK)/jq/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 jq-package: jq-stage

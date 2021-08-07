@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS      += python3
 PYTHON3_MAJOR_V  := 3.9
-PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).5
+PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).6
 DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)
 
 python3-setup: setup
@@ -38,7 +38,7 @@ endif
 		ac_cv_file__dev_ptc=no \
 		ac_cv_func_sendfile=no \
 		ax_cv_c_float_words_bigendian=no \
-		$(PYTHON3_CONFIGURE_ARGS)
+		ac_cv_working_tzset=yes
 	+$(MAKE) -C $(BUILD_WORK)/python3
 	+$(MAKE) -C $(BUILD_WORK)/python3 install \
 		DESTDIR=$(BUILD_STAGE)/python3
@@ -47,7 +47,7 @@ endif
 	mkdir -p $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3/dist-packages $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/dist-packages
 	$(SED) -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < $(BUILD_MISC)/python3/_sysconfigdata__darwin_darwin.py > $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/_sysconfigdata__darwin_darwin.py
 	rm -f $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}/!(*$(PYTHON3_MAJOR_V)*)
-	touch $(BUILD_WORK)/python3/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 python3-package: python3-stage

@@ -30,7 +30,7 @@ flac: flac-setup libogg
 		DESTDIR=$(BUILD_STAGE)/flac
 	+$(MAKE) -C $(BUILD_WORK)/flac install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/flac/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 flac-package: flac-stage

@@ -23,7 +23,7 @@ xkbcomp: xkbcomp-setup libx11 xorgproto libxkbfile
 		DESTDIR=$(BUILD_STAGE)/xkbcomp
 	+$(MAKE) -C $(BUILD_WORK)/xkbcomp install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/xkbcomp/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 xkbcomp-package: xkbcomp-stage

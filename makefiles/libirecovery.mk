@@ -25,7 +25,7 @@ libirecovery: libirecovery-setup readline libusb
 		DESTDIR=$(BUILD_STAGE)/libirecovery
 	+$(MAKE) -C $(BUILD_WORK)/libirecovery install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libirecovery/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libirecovery-package: libirecovery-stage

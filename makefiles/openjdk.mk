@@ -106,7 +106,7 @@ openjdk: openjdk-setup libx11 libxext libxi libxrender libxrandr libxtst freetyp
 	for dylib in $(BUILD_STAGE)/openjdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/lib/{,*/}*.dylib; do \
 		ln -sf $$(basename $$dylib) $$(echo $$dylib | $(SED) s/.dylib//).so; \
 	done
-	touch $(BUILD_WORK)/openjdk/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 openjdk-package: openjdk-stage

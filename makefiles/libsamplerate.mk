@@ -26,7 +26,7 @@ libsamplerate: libsamplerate-setup
 	+$(MAKE) -C $(BUILD_WORK)/libsamplerate install \
 		SUBDIRS="M4 src" \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libsamplerate/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libsamplerate-package: libsamplerate-stage

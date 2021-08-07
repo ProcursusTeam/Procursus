@@ -41,7 +41,7 @@ xz: xz-setup gettext
 		--disable-lzma-links
 	+$(MAKE) -C $(BUILD_WORK)/xz install \
 		DESTDIR=$(BUILD_STAGE)/xz
-	touch $(BUILD_WORK)/xz/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 xz-package: xz-stage

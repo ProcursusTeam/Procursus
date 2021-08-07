@@ -31,7 +31,7 @@ curl: curl-setup gettext openssl libssh2 nghttp2 libidn2 brotli zstd rtmpdump
 		DESTDIR="$(BUILD_STAGE)/curl"
 	+$(MAKE) -C $(BUILD_WORK)/curl install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/curl/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 curl-package: curl-stage

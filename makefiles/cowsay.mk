@@ -22,7 +22,7 @@ cowsay: cowsay-setup
 	cp -a $(BUILD_WORK)/cowsay/cows $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	ln -s cowsay $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/games/cowthink
 	ln -s cowsay.1.zst $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/cowthink.1
-	touch $(BUILD_WORK)/cowsay/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 cowsay-package: cowsay-stage

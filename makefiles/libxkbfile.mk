@@ -23,7 +23,7 @@ libxkbfile: libxkbfile-setup libx11
 		DESTDIR=$(BUILD_STAGE)/libxkbfile
 	+$(MAKE) -C $(BUILD_WORK)/libxkbfile install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxkbfile/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libxkbfile-package: libxkbfile-stage

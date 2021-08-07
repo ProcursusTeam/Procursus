@@ -23,7 +23,7 @@ graphite2: graphite2-setup
 		DESTDIR=$(BUILD_STAGE)/graphite2
 	+$(MAKE) -C $(BUILD_WORK)/graphite2 install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/graphite2/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 graphite2-package: graphite2-stage

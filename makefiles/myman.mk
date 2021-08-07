@@ -25,7 +25,7 @@ myman: myman-setup ncurses
 		HOSTCPPFLAGS="$(CPPFLAGS)" \
 		HOSTLDFLAGS="$(LDFLAGS)" \
 		CURSESLIBS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -lncursesw"
-	touch $(BUILD_WORK)/myman/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 myman-package: myman-stage

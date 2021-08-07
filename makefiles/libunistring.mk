@@ -23,7 +23,7 @@ libunistring: libunistring-setup
 		DESTDIR=$(BUILD_STAGE)/libunistring
 	+$(MAKE) -C $(BUILD_WORK)/libunistring install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libunistring/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libunistring-package: libunistring-stage
