@@ -6,22 +6,16 @@ SUBPROJECTS               += nickchan-keyring
 NICKCHAN_KEYRING_VERSION  := 2021.08.06
 DEB_NICKCHAN_KEYRING_V    ?= $(NICKCHAN_KEYRING_VERSION)
 
-ifneq ($(wildcard $(BUILD_STAGE)/nickchan-keyring/.build_complete),)
 nickchan-keyring:
-	@echo "Using previously built nickchan-keyring."
-else
-nickchan-keyring: setup
-	mkdir -p $(BUILD_STAGE)/nickchan-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	cp -a $(BUILD_MISC)/keyrings/nickchan/nickchan{,-table}.gpg $(BUILD_STAGE)/nickchan-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	touch $(BUILD_STAGE)/nickchan-keyring/.build_complete
-endif
+	@echo "nickchan-keyring do not need to be built."
 
 nickchan-keyring-package: nickchan-keyring-stage
 	# nickchan-keyring.mk Package Structure
 	rm -rf $(BUILD_DIST)/nickchan-keyring
+	mkdir -p $(BUILD_DIST)/nickchan-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 
 	# nickchan-keyring.mk Prep nickchan-keyring
-	cp -a $(BUILD_STAGE)/nickchan-keyring $(BUILD_DIST)
+	cp -a $(BUILD_MISC)/keyrings/nickchan/nickchan{,-table}.gpg $(BUILD_DIST)/nickchan-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 
 	# nickchan-keyring.mk Make .debs
 	$(call PACK,nickchan-keyring,DEB_NICKCHAN_KEYRING_V)
