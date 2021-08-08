@@ -36,12 +36,12 @@ libcjson-package: libcjson-stage
 	mkdir -p $(BUILD_DIST)/libcjson{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libcjson.mk Prep libcjson1
-	cp -a $(BUILD_STAGE)/libcjson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcjson{,_utils}.$(LIBCJSON_VERSION).dylib $(BUILD_DIST)/libcjson1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libcjson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcjson{,_utils}.{$(LIBCJSON_VERSION),1}.dylib $(BUILD_DIST)/libcjson1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libcjson.mk Prep libcjson-dev
 	cp -a $(BUILD_STAGE)/libcjson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libcjson-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/libcjson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{cmake,pkgconfig} $(BUILD_DIST)/libcjson-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libcjson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcjson{,_utils}.{{,1.}dylib,a} $(BUILD_DIST)/libcjson-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libcjson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcjson{,_utils}.{dylib,a} $(BUILD_DIST)/libcjson-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libcjson.mk Sign
 	$(call SIGN,libcjson1,general.xml)
@@ -51,6 +51,6 @@ libcjson-package: libcjson-stage
 	$(call PACK,libcjson-dev,DEB_LIBCJSON_V)
 	
 	# libcjson.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libcjson{1,dev}
+	rm -rf $(BUILD_DIST)/libcjson{1,-dev}
 
 .PHONY: libcjson libcjson-package
