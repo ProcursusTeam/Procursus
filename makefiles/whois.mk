@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += whois
-WHOIS_VERSION := 5.5.7
+WHOIS_VERSION := 5.5.10
 DEB_WHOIS_V   ?= $(WHOIS_VERSION)-1
 
 whois-setup: setup
