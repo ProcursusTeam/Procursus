@@ -12,7 +12,10 @@ POJAVLAUNCHER_VERSION   := 1.2
 #+git20210417.$(shell echo $(POJAVLAUNCHER_COMMIT) | cut -c -7)
 DEB_POJAVLAUNCHER_V     ?= $(POJAVLAUNCHER_VERSION)
 
-POJAV_JAVAFILES   := $(shell cd JavaApp; find src -type f -name "*.java" -print)
+POJAV_JAVAFILES         := $(shell cd JavaApp; find src -type f -name "*.java" -print)
+POJAV_COMMIT            := # to be replaced with the first 7 characters of the sha
+POJAV_RELEASE           := 1
+POJAV_CMAKE_BUILD_TYPE  := RelWithDebInfo 
 
 pojavlauncher-setup: setup
 	$(call GITHUB_ARCHIVE,PojavLauncherTeam,PojavLauncher_iOS,$(POJAVLAUNCHER_COMMIT),$(POJAVLAUNCHER_COMMIT))
@@ -34,13 +37,12 @@ pojavlauncher: pojavlauncher-setup
 		cd Natives; \
 			mkdir -p build; \
 			cd build; \
-			cmake . $(DEFAULT_CMAKE_FLAGS)
+			cmake . -DCMAKE_BUILD_TYPE=$(POJAV_CMAKE_BUILD_TYPE) $(DEFAULT_CMAKE_FLAGS) -DCONFIG_COMMIT="$(POJAV_COMMIT)" -DCONFIG_RELEASE=$(POJAV_RELEASE)
 			cmake --build . --config Release --target pojavexec PojavLauncher; \
 			cd ../..; \
 			mkdir -p Natives/build/PojavLauncher.app/Base.lproj; \
 			actool Natives/Assets.xcassets --compile Natives/resources --platform $(PLATFORM) --minimum-deployment-target $(IPHONEOS_DEPLOYMENT_TARGET) --app-icon AppIcon --output-partial-info-plist /dev/null; \
 			ibtool --compile Natives/build/PojavLauncher.app/Base.lproj/LaunchScreen.storyboardc Natives/en.lproj/LaunchScreen.storyboard; \
-			ibtool --compile Natives/build/PojavLauncher.app/Base.lproj/MinecraftSurface.storyboardc Natives/en.lproj/MinecraftSurface.storyboard; \
 			mkdir -p Natives/build/PojavLauncher.app/Frameworks; \
 			cp Natives/build/libpojavexec.dylib Natives/build/PojavLauncher.app/Frameworks/; \
 			cp -R Natives/resources/* Natives/build/PojavLauncher.app/; \
@@ -55,7 +57,7 @@ pojavlauncher: pojavlauncher-setup
 		cp -R JavaApp/libs/* Natives/build/PojavLauncher.app/libs/; \
 		cp -R JavaApp/libs_caciocavallo/* Natives/build/PojavLauncher.app/libs_caciocavallo/;
 	cp -R $(BUILD_WORK)/pojavlauncher/Natives/build/PojavLauncher.app $(BUILD_STAGE)/pojavlauncher/Applications
-	touch $(BUILD_WORK)/pojavlauncher/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 pojavlauncher-package: pojavlauncher-stage
