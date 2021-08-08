@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS   += whois
 WHOIS_VERSION := 5.5.10
-DEB_WHOIS_V   ?= $(WHOIS_VERSION)-1
+DEB_WHOIS_V   ?= $(WHOIS_VERSION)
 
 whois-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/w/whois/whois_$(WHOIS_VERSION).tar.xz
