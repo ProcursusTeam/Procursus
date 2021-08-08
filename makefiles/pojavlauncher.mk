@@ -38,7 +38,7 @@ pojavlauncher: pojavlauncher-setup
 			mkdir -p build; \
 			cd build; \
 			cmake . -DCMAKE_BUILD_TYPE=$(POJAV_CMAKE_BUILD_TYPE) $(DEFAULT_CMAKE_FLAGS) -DCONFIG_COMMIT="$(POJAV_COMMIT)" -DCONFIG_RELEASE=$(POJAV_RELEASE)
-			cmake --build . --config Release --target pojavexec PojavLauncher; \
+			cmake --build . --config Release --target awt_headless awt_xawt pojavexec PojavLauncher; \
 			cd ../..; \
 			mkdir -p Natives/build/PojavLauncher.app/Base.lproj; \
 			actool Natives/Assets.xcassets --compile Natives/resources --platform $(PLATFORM) --minimum-deployment-target $(IPHONEOS_DEPLOYMENT_TARGET) --app-icon AppIcon --output-partial-info-plist /dev/null; \
