@@ -8,7 +8,7 @@ ifeq ($(filter $(shell uname -m | cut -c -4), iPad iPho),)
 
 SUBPROJECTS             += pojavlauncher
 POJAVLAUNCHER_COMMIT    := 14c756987d4c9f797e22b0c784627d7030e238e7
-POJAVLAUNCHER_VERSION   := 1.2
+POJAVLAUNCHER_VERSION   := 1.3
 #+git20210417.$(shell echo $(POJAVLAUNCHER_COMMIT) | cut -c -7)
 DEB_POJAVLAUNCHER_V     ?= $(POJAVLAUNCHER_VERSION)
 
