@@ -27,8 +27,8 @@ git:
 	@echo "Using previously built git."
 else
 git: git-setup openssl curl pcre2 gettext libidn2 expat
-	+$(MAKE) -C $(BUILD_WORK)/git configure
-	cd $(BUILD_WORK)/git && ./configure -C \
+	+$(MAKE) -C "$(BUILD_WORK)/git" configure
+	cd "$(BUILD_WORK)/git" && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-libpcre2 \
 		ac_cv_iconv_omits_bom=no \
@@ -36,23 +36,35 @@ git: git-setup openssl curl pcre2 gettext libidn2 expat
 		ac_cv_snprintf_returns_bogus=yes \
 		ac_cv_header_libintl_h=yes \
 		NO_TCLTK=1 \
-		CURL_CONFIG=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/curl-config
-	+$(MAKE) -C $(BUILD_WORK)/git all \
+		CURL_CONFIG="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/curl-config"
+	+$(MAKE) -C "$(BUILD_WORK)/git" all \
 		$(GIT_ARGS)
-	+$(MAKE) -C $(BUILD_WORK)/git/Documentation man install \
+	+$(MAKE) -C "$(BUILD_WORK)/git/Documentation" man install \
 		$(GIT_ARGS)
-	+$(MAKE) -C $(BUILD_WORK)/git install \
+	+$(MAKE) -C "$(BUILD_WORK)/git" install \
 		$(GIT_ARGS)
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+	+$(MAKE) -C "$(BUILD_WORK)/git/contrib/credential/osxkeychain"
+	cp -a "$(BUILD_WORK)/git/contrib/credential/osxkeychain/git-credential-osxkeychain" "$(BUILD_STAGE)/git/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/git-credential-osxkeychain"
+	mkdir "$(BUILD_STAGE)/git/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/etc"
+	cp -a "$(BUILD_MISC)/git/gitconfig.macosx" "$(BUILD_STAGE)/git/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/etc/gitconfig"
+endif
 	$(call AFTER_BUILD)
 endif
 
 git-package: git-stage
 	# git.mk Package Structure
-	rm -rf $(BUILD_DIST)/git
-	mkdir -p $(BUILD_DIST)/git/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share,libexec}
+	rm -rf "$(BUILD_DIST)/git"
+	mkdir -p "$(BUILD_DIST)/git/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"/{bin,share,libexec}
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+	mkdir -p "$(BUILD_DIST)/git/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/etc"
+endif
 
 	# git.mk Prep git
-	cp -a $(BUILD_STAGE)/git/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share,libexec} $(BUILD_DIST)/git/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a "$(BUILD_STAGE)/git/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"/{bin,share,libexec} "$(BUILD_DIST)/git/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+	cp -a "$(BUILD_STAGE)/git/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/etc" "$(BUILD_DIST)/git/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
+endif
 
 	# git.mk Sign
 	$(call SIGN,git,general.xml)
@@ -61,6 +73,6 @@ git-package: git-stage
 	$(call PACK,git,DEB_GIT_V)
 
 	# git.mk Build cleanup
-	rm -rf $(BUILD_DIST)/git
+	rm -rf "$(BUILD_DIST)/git"
 
 .PHONY: git git-package
