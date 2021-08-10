@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+
 SUBPROJECTS    += wasmer
 WASMER_VERSION := 2.0.0
 DEB_WASMER_V   ?= $(WASMER_VERSION)
@@ -68,3 +70,5 @@ wasmer-package: wasmer-stage
 	rm -rf $(BUILD_DIST)/wasmer
 
 .PHONY: wasmer wasmer-package
+
+endif
