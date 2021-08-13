@@ -9,6 +9,6 @@ Version: @DEB_BINDFSPROGS_V@
 Section: System
 Priority: optional
 Description: tool for mounting bindfs filesystems
- Bindfs allows you do mount a directory tree under another directory tree.
+ Bindfs allows you do mount a directory tree under another directory.
  This package provides the `mount_bindfs` binary, which is used by mount(8)
  to mount bindfs filesystems.
