@@ -1,6 +1,8 @@
 Package: bindfsprogs
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Conflicts: com.michael.bindfs
+Provides: com.michael.bindfs
 Author: Halo Michael
 Depends: firmware (>= 14.0)
 Version: @DEB_BINDFSPROGS_V@
