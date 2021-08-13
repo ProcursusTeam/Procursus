@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq ($(shell [ $(MEMO_CFVER) -ge 1700 ] && echo 1),1)
+
 SUBPROJECTS         += bindfsprogs
 BINDFSPROGS_VERSION := 0.1.4
 DEB_BINDFSPROGS_V   ?= $(BINDFSPROGS_VERSION)
@@ -38,3 +40,6 @@ bindfsprogs-package: bindfsprogs-stage
 	rm -rf $(BUILD_DIST)/bindfsprogs
 
 .PHONY: bindfsprogs bindfsprogs-package
+
+endif # ifeq ($(shell [ $(MEMO_CFVER) -ge 1700 ] && echo 1),1)
+
