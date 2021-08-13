@@ -8,7 +8,7 @@ else
 STRAPPROJECTS      += uikittools
 endif
 UIKITTOOLS_VERSION := 2.0.4
-DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)
+DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)-1
 
 uikittools-setup: setup
 	$(call GITHUB_ARCHIVE,Diatrus,uikittools-ng,$(UIKITTOOLS_VERSION),v$(UIKITTOOLS_VERSION))
@@ -41,6 +41,17 @@ uikittools-package: uikittools-stage
 
 	# uikittools.mk Prep uikittools
 	cp -a $(BUILD_STAGE)/uikittools $(BUILD_DIST)
+
+	# uikittools.mk Sign
+	$(call SIGN,uikittools,general.xml)
+
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+	$(LDID) -S$(BUILD_MISC)/entitlements/uiopen.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uiopen
+	$(LDID) -S$(BUILD_MISC)/entitlements/uicache.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uicache
+	$(LDID) -S$(BUILD_MISC)/entitlements/sbreload.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sbreload
+	$(LDID) -S$(BUILD_MISC)/entitlements/gssc.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gssc
+	find $(BUILD_DIST)/uikittools -name '.ldid*' -type f -delete
+endif
 
 	# uikittools.mk Make .debs
 	$(call PACK,uikittools,DEB_UIKITTOOLS_V)
