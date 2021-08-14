@@ -4,6 +4,9 @@ Architecture: @DEB_ARCH@
 Essential: yes
 Maintainer: @DEB_MAINTAINER@
 Section: System
+Conflicts: com.michael.bindfs
+Provides: com.michael.bindfs
+Depends: firmware (>= 14.0)
 Priority: required
 Description: mount, quota, fsck, fstyp, fdisk, tunefs
 Tag: purpose::console, role::sysadmn

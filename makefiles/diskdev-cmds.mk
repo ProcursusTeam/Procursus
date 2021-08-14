@@ -8,11 +8,20 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS          += diskdev-cmds
 endif # ($(MEMO_TARGET),darwin-\*)
 DISKDEV-CMDS_VERSION := 667.40.1
-DEB_DISKDEV-CMDS_V   ?= $(DISKDEV-CMDS_VERSION)
+BINDFS_VERSION       := 0.1.4
+DEB_DISKDEV-CMDS_V   ?= $(DISKDEV-CMDS_VERSION)-1
+
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+LIBIOSEXEC_TBD       := $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.tbd
+endif
 
 diskdev-cmds-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/diskdev_cmds/diskdev_cmds-$(DISKDEV-CMDS_VERSION).tar.gz
 	$(call EXTRACT_TAR,diskdev_cmds-$(DISKDEV-CMDS_VERSION).tar.gz,diskdev_cmds-$(DISKDEV-CMDS_VERSION),diskdev-cmds)
+ifeq ($(shell [ $(MEMO_CFVER) -ge 1700 ] && echo 1),1)
+	$(call GITHUB_ARCHIVE,Halo-Michael,bindfs,$(BINDFS_VERSION),$(BINDFS_VERSION))
+	$(call EXTRACT_TAR,bindfs-$(BINDFS_VERSION).tar.gz,bindfs-$(BINDFS_VERSION),bindfs)
+endif
 	$(SED) -i -e '/#include <TargetConditionals.h>/d' \
 		$(BUILD_WORK)/diskdev-cmds/edt_fstab/edt_fstab.h \
 		$(BUILD_WORK)/diskdev-cmds/fsck.tproj/fsck.c
@@ -24,6 +33,9 @@ diskdev-cmds-setup: setup
 	mkdir -p $(BUILD_WORK)/diskdev-cmds/include/{arm,machine,{System/,}sys,uuid}
 	cp -a $(MACOSX_SYSROOT)/usr/include/sys/{disk,reboot,vnioctl,vmmeter}.h $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Versions/Current/Headers/sys/disklabel.h $(BUILD_WORK)/diskdev-cmds/include/sys
 	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/{unistd,stdlib}.h $(BUILD_WORK)/diskdev-cmds/include
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libiosexec.h $(BUILD_WORK)/diskdev-cmds/include
+endif
 
 	wget -q -nc -P $(BUILD_WORK)/diskdev-cmds/include \
 		https://opensource.apple.com/source/libutil/libutil-57/mntopts.h \
@@ -71,13 +83,17 @@ diskdev-cmds: diskdev-cmds-setup
 		if [[ $$tproj = vsdbutil ]]; then \
 			extra="${extra} mount_flags_dir/mount_flags.c"; \
 		fi; \
-		$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -DTARGET_OS_SIMULATOR -Idisklib -o $$tproj $$(find "$$tproj.tproj" -name '*.c') $${LIBDISKA} -lutil $$extra; \
+		$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -DTARGET_OS_SIMULATOR -Idisklib -o $$tproj $$(find "$$tproj.tproj" -name '*.c') $${LIBDISKA} $(LIBIOSEXEC_TBD) -lutil $$extra; \
 	done
 	cd $(BUILD_WORK)/diskdev-cmds/fstyp.tproj; \
 	for c in *.c; do \
 		bin=../$$(basename $$c .c); \
-		$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem ../include -o $$bin $$c; \
+		$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem ../include $(LIBIOSEXEC_TBD) -o $$bin $$c; \
 	done
+ifeq ($(shell [ $(MEMO_CFVER) -ge 1700 ] && echo 1),1)
+	cd $(BUILD_WORK)/bindfs && \
+	$(CC) $(CFLAGS) -Weverything -lutil mount_bindfs.c -o $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)/sbin/mount_bindfs
+endif
 	cd $(BUILD_WORK)/diskdev-cmds; \
 	cp -a quota $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \
 	cp -a dev_mkdb edquota fdisk quotaon repquota vsdbutil $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin; \
@@ -101,17 +117,26 @@ diskdev-cmds-package: diskdev-cmds-stage
 
 	# diskdev-cmds.mk Sign
 	$(call SIGN,diskdev-cmds,general.xml)
+ifeq ($(shell [ $(MEMO_CFVER) -ge 1700 ] && echo 1),1)
+	$(LDID) -S$(BUILD_INFO)/bindfs.xml $(BUILD_DIST)/diskdev-cmds/$(MEMO_PREFIX)/sbin/mount_bindfs
+endif
 
-	# system-cmds.mk Permissions
+	# diskdev-cmds.mk Permissions
 	$(FAKEROOT) chmod u+s $(BUILD_DIST)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/quota
 ifneq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1)
 	$(FAKEROOT) chmod u+s $(BUILD_DIST)/diskdev-cmds/sbin/umount
 endif
 
 	# diskdev-cmds.mk Make .debs
+ifneq ($(shell [ $(MEMO_CFVER) -ge 1700 ] && echo 1),1)
+	$(SED) -e '/com.michael.bindfs\|firmware (>= 14.0)/d' $(BUILD_INFO)/diskdev-cmds.control.in > $(BUILD_INFO)/diskdev-cmds.control
+else
+	cp -af $(BUILD_INFO)/diskdev-cmds.control{.in,}
+endif
 	$(call PACK,diskdev-cmds,DEB_DISKDEV-CMDS_V)
 
 	# diskdev-cmds.mk Build cleanup
 	rm -rf $(BUILD_DIST)/diskdev-cmds
+	rm -f $(BUILD_INFO)/diskdev-cmds.control
 
 .PHONY: diskdev-cmds diskdev-cmds-package
