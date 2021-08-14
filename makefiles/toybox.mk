@@ -28,7 +28,7 @@ toybox: toybox-setup openssl $(TOYBOX_DEPS)
 	$(MAKE) -C $(BUILD_WORK)/toybox
 	+$(MAKE) -C $(BUILD_WORK)/toybox install \
 		PREFIX=$(BUILD_STAGE)/toybox
-	touch $(BUILD_WORK)/toybox/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 toybox-package: toybox-stage
