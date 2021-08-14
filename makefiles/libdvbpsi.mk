@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += libdvbpsi
+SUBPROJECTS       += libdvbpsi
 LIBDVBPSI_VERSION := 1.3.3
 DEB_LIBDVBPSI_V   ?= $(LIBDVBPSI_VERSION)
 
@@ -16,15 +16,13 @@ libdvbpsi:
 else
 libdvbpsi: libdvbpsi-setup
 	cd $(BUILD_WORK)/libdvbpsi && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS) \
-		--enable-static \
-		--enable-shared
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libdvbpsi
 	+$(MAKE) -C $(BUILD_WORK)/libdvbpsi install \
 		DESTDIR=$(BUILD_STAGE)/libdvbpsi
 	+$(MAKE) -C $(BUILD_WORK)/libdvbpsi install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libdvbpsi/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libdvbpsi-package: libdvbpsi-stage
