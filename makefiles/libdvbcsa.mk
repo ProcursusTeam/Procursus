@@ -17,15 +17,13 @@ libdvbcsa:
 else
 libdvbcsa: libdvbcsa-setup
 	cd $(BUILD_WORK)/libdvbcsa && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS) \
-		--enable-static \
-		--enable-shared
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libdvbcsa
 	+$(MAKE) -C $(BUILD_WORK)/libdvbcsa install \
 		DESTDIR=$(BUILD_STAGE)/libdvbcsa
 	+$(MAKE) -C $(BUILD_WORK)/libdvbcsa install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libdvbcsa/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libdvbcsa-package: libdvbcsa-stage
