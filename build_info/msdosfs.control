@@ -6,9 +6,3 @@ Maintainer: @DEB_MAINTAINER@
 Section: System
 Priority: optional
 Description: Tools for FAT (MS-DOS) filesystems
- This package contains tools and helpers that are required to
- mount, check, create, stat FAT12/FAT16/FAT32 filesystems, 
- which is the filesystem used on MS-DOS and Microsoft Windows.
- Many USB mass storage devices are formatted with this format,
- so if you often handle USB mass storage devices, you should
- install this package.

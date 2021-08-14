@@ -30,7 +30,8 @@ msdosfs: msdosfs-setup
 		cd ..; \
 	done
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	rm -f $(BUILD_STAGE)/msdosfs/$(MEMO_PREFIX)/sbin/fsck_msdos
+	rm -f $(BUILD_STAGE)/msdosfs/$(MEMO_PREFIX)/sbin/{mount,fsck}_msdos
+	rm -f $(BUILD_STAGE)/msdosfs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/mount_msdos.8
 endif
 	$(call AFTER_BUILD)
 endif
