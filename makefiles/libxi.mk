@@ -26,7 +26,7 @@ libxi: libxi-setup libx11 xorgproto libxext libxfixes
 		DESTDIR=$(BUILD_STAGE)/libxi
 	+$(MAKE) -C $(BUILD_WORK)/libxi install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxi/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libxi-package: libxi-stage

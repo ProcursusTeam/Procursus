@@ -24,7 +24,7 @@ libimobiledevice: libimobiledevice-setup libusbmuxd libplist openssl
 		DESTDIR="$(BUILD_STAGE)/libimobiledevice"
 	+$(MAKE) -C $(BUILD_WORK)/libimobiledevice install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libimobiledevice/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libimobiledevice-package: libimobiledevice-stage

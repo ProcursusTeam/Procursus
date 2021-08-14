@@ -18,5 +18,3 @@ Description: Secure Sockets Layer toolkit - cryptographic utility
   * encrypting and decrypting with ciphers;
   * testing SSL/TLS clients and servers;
   * handling S/MIME signed or encrypted mail.
-Name: OpenSSL
-Tag: purpose::library, role::developer

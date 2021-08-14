@@ -27,7 +27,7 @@ xxhash: xxhash-setup
 		UNAME=Darwin \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/xxhash/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 xxhash-package: xxhash-stage

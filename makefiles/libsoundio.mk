@@ -37,7 +37,7 @@ libsoundio: libsoundio-setup
 		DESTDIR=$(BUILD_STAGE)/libsoundio
 	+$(MAKE) -C $(BUILD_WORK)/libsoundio/build install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libsoundio/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libsoundio-package: libsoundio-stage

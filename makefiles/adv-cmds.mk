@@ -32,7 +32,7 @@ adv-cmds: adv-cmds-setup ncurses
 	yacc -d yacc.y; \
 	lex lex.l
 	$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/mklocale $(BUILD_WORK)/adv-cmds/mklocale/*.c -D'__FBSDID(x)='
-	touch $(BUILD_WORK)/adv-cmds/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 adv-cmds-package: adv-cmds-stage

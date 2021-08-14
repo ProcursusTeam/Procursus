@@ -22,7 +22,7 @@ else
 	+$(MAKE) -C $(BUILD_WORK)/@pkg@/build
 	+$(MAKE) -C $(BUILD_WORK)/@pkg@/build install \
 		DESTDIR="$(BUILD_STAGE)/@pkg@"
-	touch $(BUILD_WORK)/@pkg@/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 @pkg@-package: @pkg@-stage

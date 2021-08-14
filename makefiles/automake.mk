@@ -23,7 +23,7 @@ automake: automake-setup
 		DESTDIR=$(BUILD_STAGE)/automake
 	+$(MAKE) -C $(BUILD_WORK)/automake install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/automake/.build_complete
+	$(call AFTER_BUILD)
 endif
 automake-package: automake-stage
 	# automake.mk Package Structure

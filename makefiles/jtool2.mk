@@ -23,7 +23,7 @@ jtool2: jtool2-setup
 	[ $(MEMO_TARGET) = "darwin-arm64" ] && \
 		vtool -arch arm64 -remove-build-version ios -output $(BUILD_STAGE)/jtool2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/jtool2 $(BUILD_STAGE)/jtool2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/jtool2 && \
 		vtool -arch arm64 -remove-build-version ios -output $(BUILD_STAGE)/jtool2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/disarm $(BUILD_STAGE)/jtool2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/disarm
-	touch $(BUILD_WORK)/jtool2/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 jtool2-package: jtool2-stage

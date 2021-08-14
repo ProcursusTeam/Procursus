@@ -24,7 +24,7 @@ msgpack: msgpack-setup
 		DESTDIR="$(BUILD_STAGE)/msgpack"
 	+$(MAKE) -C $(BUILD_WORK)/msgpack install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/msgpack/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 msgpack-package: msgpack-stage

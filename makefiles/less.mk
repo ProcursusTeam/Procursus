@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += less
-LESS_VERSION := 563
+LESS_VERSION := 590
 DEB_LESS_V   ?= $(LESS_VERSION)
 
 less-setup: setup
@@ -23,7 +23,7 @@ less: less-setup ncurses pcre2
 	+$(MAKE) -C $(BUILD_WORK)/less
 	+$(MAKE) -C $(BUILD_WORK)/less install \
 		DESTDIR="$(BUILD_STAGE)/less"
-	touch $(BUILD_WORK)/less/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 less-package: less-stage

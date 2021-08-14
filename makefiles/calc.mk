@@ -36,7 +36,7 @@ calc: calc-setup ncurses readline
 		T="$(BUILD_STAGE)/calc" \
 		-j1
 	rm -rf $(BUILD_STAGE)/calc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{cscript,calc-static}
-	touch $(BUILD_WORK)/calc/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 calc-package: calc-stage

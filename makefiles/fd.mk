@@ -21,7 +21,7 @@ fd: fd-setup
 		--target=$(RUST_TARGET)
 	$(INSTALL) -Dm755 $(BUILD_WORK)/fd/target/$(RUST_TARGET)/release/fd $(BUILD_STAGE)/fd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/fd
 	$(INSTALL) -Dm644 $(BUILD_WORK)/fd/target/$(RUST_TARGET)/release/build/fd-find-*/out/fd.bash $(BUILD_STAGE)/fd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/fd
-	touch $(BUILD_WORK)/fd/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 fd-package: fd-stage

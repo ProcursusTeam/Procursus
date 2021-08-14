@@ -42,7 +42,7 @@ uvwasi: uvwasi-setup libuv1
 	ln -sf libuvwasi.$(UVWASI_SOVER).dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.dylib
 	ln -sf libuvwasi.$(UVWASI_SOVER).dylib $(BUILD_STAGE)/uvwasi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.dylib
 
-	touch $(BUILD_WORK)/uvwasi/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 uvwasi-package: uvwasi-stage

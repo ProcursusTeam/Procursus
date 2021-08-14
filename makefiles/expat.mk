@@ -26,7 +26,7 @@ expat: expat-setup
 		DESTDIR=$(BUILD_STAGE)/expat
 	+$(MAKE) -C $(BUILD_WORK)/expat install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/expat/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 expat-package: expat-stage
