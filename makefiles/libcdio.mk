@@ -23,7 +23,7 @@ libcdio: libcdio-setup ncurses libcddb
 		DESTDIR=$(BUILD_STAGE)/libcdio
 	+$(MAKE) -C $(BUILD_WORK)/libcdio install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libcdio/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libcdio-package: libcdio-stage
