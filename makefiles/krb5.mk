@@ -36,8 +36,7 @@ krb5-package: krb5-stage
 	rm -rf $(BUILD_DIST)/krb5
 	mkdir -p $(BUILD_DIST)/krb5-user/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
 		$(BUILD_DIST)/krb5-kdc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{sbin,lib,share/man/{man5,man8}} \
-		$(BUILD_DIST)/krb5-kdc-ldap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{sbin,lib,share/man/man8} \
-		$(BUILD_DIST)/krb5-admin-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{sbin,share/man/man8} \
+		$(BUILD_DIST)/krb5-admin-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{sbin,share/man/{man5,man8}} \
 		$(BUILD_DIST)/krb5-kpropd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{sbin,lib,share/man/man8} \
 		$(BUILD_DIST)/krb5-multidev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include,lib,share/man/man1} \
 		$(BUILD_DIST)/libkrb5-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include,lib,share/man/man1} \
@@ -66,8 +65,13 @@ krb5-package: krb5-stage
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5/kdc.conf.5 $(BUILD_DIST)/krb5-kdc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/{kdb5_util,kproplog,krb5kdc}.8 $(BUILD_DIST)/krb5-kdc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
-	# krb5.mk Prep krb5-kdc-ldap
-	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kdb5_ldap_util $(BUILD_DIST)/krb5-kdc-ldap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
+	# krb5.mk Prep krb5-admin-server
+	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/{kadmin.local,kadmind,kprop,krb5_newrealm} $(BUILD_DIST)/krb5-admin-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
+	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5/kadm5.acl.5 $(BUILD_DIST)/krb5-admin-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8{/kadmin.local,kadmind,kprop,krb5_newrealm}.8 $(BUILD_DIST)/krb5-admin-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+
+	# krb5.mk Prep krb5-kpropd
+	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 
 	# krb5.mk Sign
 	$(call SIGN,krb5,general.xml)
