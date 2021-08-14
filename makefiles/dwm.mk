@@ -19,7 +19,7 @@ dwm: libx11 libxft fontconfig freetype libxinerama dwm-setup
 	$(MAKE) -C $(BUILD_WORK)/dwm
 	$(MAKE) -C $(BUILD_WORK)/dwm install \
 		DESTDIR=$(BUILD_STAGE)/dwm
-	touch $(BUILD_WORK)/dwm/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 dwm-package: dwm-stage
