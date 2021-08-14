@@ -131,7 +131,7 @@ endif
 ifneq ($(shell [ $(MEMO_CFVER) -ge 1700 ] && echo 1),1)
 	$(SED) -e '/com.michael.bindfs\|firmware (>= 14.0)/d' $(BUILD_INFO)/diskdev-cmds.control.in > $(BUILD_INFO)/diskdev-cmds.control
 else
-	cp -af $(BUILD_INFO)/diskdev-cmds.control{.in,}
+	$(SED) -e 's/@BINDFS_VERSION@/$(BINDFS_VERSION)/g' $(BUILD_INFO)/diskdev-cmds.control.in > $(BUILD_INFO)/diskdev-cmds.control
 endif
 	$(call PACK,diskdev-cmds,DEB_DISKDEV-CMDS_V)
 
