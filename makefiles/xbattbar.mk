@@ -20,7 +20,7 @@ xbattbar: libx11 xbattbar-setup
 	$(MAKE) -C $(BUILD_WORK)/xbattbar
 	$(MAKE) -C $(BUILD_WORK)/xbattbar install \
 		DESTDIR=$(BUILD_STAGE)/xbattbar
-	touch $(BUILD_WORK)/xbattbar/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 xbattbar-package: xbattbar-stage
