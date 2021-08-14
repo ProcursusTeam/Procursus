@@ -33,7 +33,7 @@ icu4c: icu4c-setup
 		DESTDIR=$(BUILD_STAGE)/icu4c
 	+$(MAKE) -C $(BUILD_WORK)/icu4c/source install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/icu4c/.build_complete
+	$(call AFTER_BUILD)
 
 	for lib in $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicu*.$(ICU_VERSION).dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicu*.$(ICU_VERSION).dylib; do \
 		$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/$${basename $${lib} .$(ICU_VERSION).dylib}.$(ICU_API_V).dylib $$lib; \

@@ -32,7 +32,7 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	mkdir -p $(BUILD_STAGE)/opendoas/$(MEMO_PREFIX)/etc/pam.d
 	cp -a $(BUILD_MISC)/pam/doas $(BUILD_STAGE)/opendoas/$(MEMO_PREFIX)/etc/pam.d
 	cp -a $(BUILD_MISC)/doas.conf $(BUILD_STAGE)/opendoas/$(MEMO_PREFIX)/etc/
-	touch $(BUILD_WORK)/opendoas/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 opendoas-package: opendoas-stage

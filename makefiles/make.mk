@@ -4,13 +4,10 @@ endif
 
 SUBPROJECTS  += make
 MAKE_VERSION := 4.3
-DEB_MAKE_V   ?= $(MAKE_VERSION)-5
+DEB_MAKE_V   ?= $(MAKE_VERSION)-6
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 MAKE_CONFIGURE_ARGS := --program-prefix=$(GNU_PREFIX)
-else
-### Temporary disabling of posix_spawn until we get an alternative in libiosexec
-MAKE_CONFIGURE_ARGS := --disable-posix-spawn
 endif
 
 make-setup: setup
@@ -30,7 +27,7 @@ make: make-setup gettext
 	+$(MAKE) -C $(BUILD_WORK)/make
 	+$(MAKE) -C $(BUILD_WORK)/make install \
 		DESTDIR="$(BUILD_STAGE)/make"
-	touch $(BUILD_WORK)/make/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 make-package: make-stage

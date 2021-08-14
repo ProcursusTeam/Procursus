@@ -27,7 +27,7 @@ radare2: radare2-setup libuv1 libzip openssl
 	+$(MAKE) -C $(BUILD_WORK)/radare2 install \
 		DESTDIR="$(BUILD_BASE)"
 	rm -f $(BUILD_STAGE)/radare2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share}/radare2/last
-	touch $(BUILD_WORK)/radare2/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 radare2-package: .SHELLFLAGS=-O extglob -c

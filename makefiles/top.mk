@@ -30,7 +30,7 @@ else
 top: top-setup ncurses
 	mkdir -p $(BUILD_STAGE)/top/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
 	$(CC) $(CFLAGS) -isystem $(BUILD_WORK)/top/include -L $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -o $(BUILD_STAGE)/top/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/top $(BUILD_WORK)/top/*.c -framework IOKit -framework CoreFoundation -lncursesw -lpanelw -lutil;
-	touch $(BUILD_WORK)/top/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 top-package: top-stage

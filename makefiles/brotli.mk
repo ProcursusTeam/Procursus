@@ -28,7 +28,7 @@ brotli: brotli-setup
 			mv $$lib $${lib/-static.a/.a}; \
 		fi; \
 	done
-	touch $(BUILD_WORK)/brotli/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 brotli-package: brotli-stage

@@ -27,7 +27,7 @@ libwebp: libwebp-setup libpng16 libgif libtiff libjpeg-turbo
 		DESTDIR="$(BUILD_STAGE)/libwebp"
 	+$(MAKE) -C $(BUILD_WORK)/libwebp install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libwebp/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libwebp-package: libwebp-stage

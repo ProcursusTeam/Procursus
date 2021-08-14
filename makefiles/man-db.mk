@@ -27,7 +27,7 @@ man-db: man-db-setup libpipeline libgdbm gettext zstd
 		LDFLAGS="$(LDFLAGS) -lintl -Wl,-framework -Wl,CoreFoundation"
 	+$(MAKE) -C $(BUILD_WORK)/man-db install \
 		DESTDIR=$(BUILD_STAGE)/man-db
-	touch $(BUILD_WORK)/man-db/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 man-db-package: man-db-stage

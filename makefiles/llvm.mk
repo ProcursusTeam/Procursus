@@ -7,7 +7,7 @@ endif
 SUBPROJECTS   += llvm
 LLVM_VERSION  := 11.1.0
 LLVM_MAJOR_V  := 11
-SWIFT_VERSION := 5.4.1
+SWIFT_VERSION := 5.4.2
 SWIFT_SUFFIX  := RELEASE
 DEB_SWIFT_V   ?= $(SWIFT_VERSION)~$(SWIFT_SUFFIX)
 DEB_LLVM_V    ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)
@@ -20,9 +20,11 @@ llvm-setup: setup
 	$(call EXTRACT_TAR,swift-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz,swift-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),llvm/swift)
 	$(call EXTRACT_TAR,swift-cmark-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz,swift-cmark-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),llvm/cmark)
 	$(call DO_PATCH,llvm,llvm,-p1)
-	$(SED) -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
-		$(BUILD_WORK)/llvm/clang/lib/Frontend/InitHeaderSearch.cpp \
-		$(BUILD_WORK)/llvm/clang/lib/Driver/ToolChains/Darwin.cpp
+	cp -a $(BUILD_WORK)/llvm/lldb/include/lldb/Host/SafeMachO.h $(BUILD_WORK)/llvm/llvm/include/llvm
+	$(SED) -i '1s|^|#include "llvm/SafeMachO.h"\n|' $(BUILD_WORK)/llvm/swift/tools/swift-reflection-dump/swift-reflection-dump.cpp
+#	$(SED) -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
+#		$(BUILD_WORK)/llvm/clang/lib/Frontend/InitHeaderSearch.cpp \
+#		$(BUILD_WORK)/llvm/clang/lib/Driver/ToolChains/Darwin.cpp
 	$(call DO_PATCH,swift,llvm/swift,-p1)
 	mkdir -p $(BUILD_WORK)/llvm/build
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
@@ -80,7 +82,7 @@ endif
 		-DLLVM_ENABLE_FFI=ON \
 		-DLLVM_ENABLE_RTTI=ON \
 		-DLLVM_ENABLE_EH=ON \
-		-DCROSS_TOOLCHAIN_FLAGS_NATIVE='-DCMAKE_C_COMPILER=cc;-DCMAKE_CXX_COMPILER=c++;-DCMAKE_OSX_SYSROOT="$(MACOSX_SYSROOT)";-DCMAKE_OSX_ARCHITECTURES="";-DCMAKE_C_FLAGS="$(BUILD_CFLAGS)";-DCMAKE_CXX_FLAGS="$(BUILD_CXXFLAGS)";-DCMAKE_EXE_LINKER_FLAGS="$(BUILD_LDFLAGS)"' \
+		-DCROSS_TOOLCHAIN_FLAGS_NATIVE='-DCMAKE_C_COMPILER=cc;-DCMAKE_CXX_COMPILER=c++;-DCMAKE_OSX_SYSROOT="$(MACOSX_SYSROOT)";-DCMAKE_OSX_ARCHITECTURES="";-DCMAKE_C_FLAGS="$(CFLAGS_FOR_BUILD)";-DCMAKE_CXX_FLAGS="$(CXXFLAGS_FOR_BUILD)";-DCMAKE_EXE_LINKER_FLAGS="$(LDFLAGS_FOR_BUILD)"' \
 		-DCLANG_VERSION=$(LLVM_VERSION) \
 		-DLLVM_ENABLE_LTO=THIN \
 		-DLLVM_BUILD_LLVM_DYLIB=ON \
@@ -124,11 +126,13 @@ endif
 		-DSWIFT_BUILD_REMOTE_MIRROR=FALSE \
 		-DSWIFT_BUILD_DYNAMIC_STDLIB=FALSE \
 		-DSWIFT_BUILD_STDLIB_EXTRA_TOOLCHAIN_CONTENT=FALSE \
+		-DC_INCLUDE_DIRS="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include:$(ON_DEVICE_SDK_PATH)/usr/include:/usr/local/include:/usr/include" \
+		-DDEFAULT_SYSROOT="$(ON_DEVICE_SDK_PATH)" \
 		../llvm
 	+$(MAKE) -C $(BUILD_WORK)/llvm/build install \
 		DESTDIR="$(BUILD_STAGE)/llvm"
 	$(INSTALL) -Dm755 $(BUILD_WORK)/llvm/build/bin/{obj2yaml,yaml2obj} $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/
-	touch $(BUILD_WORK)/llvm/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 llvm-package: llvm-stage
@@ -226,6 +230,7 @@ llvm-package: llvm-stage
 	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/{c-index-test,clang-*,clangd,sancov,scan-build,scan-view} \
 			$(BUILD_DIST)/clang-tools-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
 	rm $(BUILD_DIST)/clang-tools-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/{clang-$(LLVM_MAJOR_V),clang-cpp}
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/libexec $(BUILD_DIST)/clang-tools-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)
 
 	# llvm.mk Prep clang-tools
 	mkdir -p $(BUILD_DIST)/clang-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin

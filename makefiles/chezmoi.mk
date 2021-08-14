@@ -25,7 +25,7 @@ endif
 		$(DEFAULT_GOLANG_FLAGS) \
 		go build
 	cp -a $(BUILD_WORK)/chezmoi/chezmoi $(BUILD_STAGE)/chezmoi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	touch $(BUILD_WORK)/chezmoi/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 chezmoi-package: chezmoi-stage

@@ -29,7 +29,7 @@ mtree-netbsd: mtree-netbsd-setup libmd
 		$(BUILD_STAGE)/mtree-netbsd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/nmtree.8
 	mv $(BUILD_STAGE)/mtree-netbsd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/mtree \
 		$(BUILD_STAGE)/mtree-netbsd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/nmtree
-	touch $(BUILD_WORK)/mtree-netbsd/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 mtree-netbsd-package: mtree-netbsd-stage

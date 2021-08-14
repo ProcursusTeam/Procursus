@@ -28,7 +28,7 @@ endif
 	
 ###	Another time, look into packaging the rest of the stuff the AUR does.
 ###	https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=lf
-	touch $(BUILD_WORK)/lf/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 lf-package: lf-stage

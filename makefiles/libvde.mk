@@ -26,7 +26,7 @@ libvde: libvde-setup openssl
 		DESTDIR="$(BUILD_STAGE)/libvde"
 	+$(MAKE) -C $(BUILD_WORK)/libvde install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libvde/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libvde-package: libvde-stage

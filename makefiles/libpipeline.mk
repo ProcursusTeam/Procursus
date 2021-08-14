@@ -23,7 +23,7 @@ libpipeline: libpipeline-setup
 		DESTDIR=$(BUILD_STAGE)/libpipeline
 	+$(MAKE) -C $(BUILD_WORK)/libpipeline install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libpipeline/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libpipeline-package: libpipeline-stage

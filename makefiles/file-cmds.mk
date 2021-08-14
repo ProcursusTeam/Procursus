@@ -69,7 +69,7 @@ file-cmds: file-cmds-setup
 	mv $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/mknod $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)/sbin/
 	mv $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pax $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)/bin/
 	$(INSTALL) -Dm755 $(BUILD_WORK)/file-cmds/shar/shar.sh $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/shar
-	touch $(BUILD_WORK)/file-cmds/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 file-cmds-package: file-cmds-stage

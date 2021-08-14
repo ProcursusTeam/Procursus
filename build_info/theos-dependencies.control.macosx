@@ -1,0 +1,11 @@
+Package: theos-dependencies
+Version: @DEB_THEOSDEPS_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Depends: curl, git, grep, perl, rsync, unzip, xz-utils, make, ldid
+Recommends: plutil
+Section: Development
+Priority: optional
+Description: What Theos needs.
+ This metapackage installs grep, rsync, unzip, git, perl, and xz-utils, in one go.
+Name: Theos Dependencies

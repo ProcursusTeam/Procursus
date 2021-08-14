@@ -22,7 +22,7 @@ jbig2dec: jbig2dec-setup libpng16
 		DESTDIR="$(BUILD_STAGE)/jbig2dec"
 	+$(MAKE) -C $(BUILD_WORK)/jbig2dec install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/jbig2dec/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 jbig2dec-package: jbig2dec-stage

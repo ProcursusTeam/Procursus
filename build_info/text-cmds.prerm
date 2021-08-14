@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e
+
+if [ "$1" != "upgrade" ]
+then
+  for i in ree edit editor; do
+    update-alternatives --remove $i @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/ee
+  done
+fi
+
+exit 0

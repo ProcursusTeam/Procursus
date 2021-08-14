@@ -29,7 +29,7 @@ shell-cmds: shell-cmds-setup openpam
 		cp -a $$bin/$$bin.1 $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 2>/dev/null; \
 		cp -a $$bin/$$bin.8 $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8 2>/dev/null; \
 	done
-	touch $(BUILD_WORK)/shell-cmds/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 shell-cmds-package: shell-cmds-stage

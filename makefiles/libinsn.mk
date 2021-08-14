@@ -26,7 +26,7 @@ libinsn: libinsn-setup libgeneral
 		DESTDIR="$(BUILD_STAGE)/libinsn"
 	+$(MAKE) -C $(BUILD_WORK)/libinsn install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libinsn/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libinsn-package: libinsn-stage
