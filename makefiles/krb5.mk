@@ -33,7 +33,7 @@ endif
 
 krb5-package: krb5-stage
 	# krb5.mk Package Structure
-	rm -rf $(BUILD_DIST)/{krb5-{user,kdc,admin-server,kpropd,multidev,pkinit,otp,k5tls,gss-samples},libkrb5-dev,libkrb5-3,libgssapi-krb5-2,libgssrpc4,libkadm5srv-mit12,libkadm5clnt-mit12,libk5crypto3,libkdb5-10,libkrb5support0,libkrad0,libkrad-dev}
+	rm -rf $(BUILD_DIST)/{krb5-{user,kdc,admin-server,kpropd,multidev,pkinit,otp,k5tls,gss-samples},libkrb5-dev,libkrb5-3,libgssapi-krb5-2,libgssrpc4,libkadm5srv-mit12,libkadm5clnt-mit12,libk5crypto3,libkdb5-10,libkrb5support1,libkrad0,libkrad-dev}
 	mkdir -p $(BUILD_DIST)/krb5-user/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
 		$(BUILD_DIST)/krb5-kdc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{sbin,lib,share/man/{man5,man8}} \
 		$(BUILD_DIST)/krb5-admin-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{sbin,share/man/{man5,man8}} \
@@ -49,7 +49,7 @@ krb5-package: krb5-stage
 		$(BUILD_DIST)/libkadm5clnt-mit12/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libk5crypto3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libkdb5-10/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libkrb5support0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libkrb5support1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libkrad0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/krb5-gss-samples/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
 		$(BUILD_DIST)/libkrad-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include}
@@ -108,6 +108,20 @@ krb5-package: krb5-stage
 
 	# krb5.mk Prep libkdb5-10
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkdb5.{10.dylib,10.0.dylib} $(BUILD_DIST)/libkdb5-10/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	
+	# krb5.mk Prep libkrb5support1
+	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrb5support.{1.dylib,1.1.dylib} $(BUILD_DIST)/libkrb5support1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
+	# krb5.mk Prep libkrad0
+	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrad.{0.dylib,0.0.dylib} $(BUILD_DIST)/libkrad0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
+	# krb5.mk Prep krb5-gss-samples
+	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gss-client $(BUILD_DIST)/krb5-gss-samples/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+
+	# krb5.mk Prep libkrad-dev
+	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrad.dylib $(BUILD_DIST)/libkrad-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/krad.h $(BUILD_DIST)/libkrad-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	
 	# krb5.mk Sign
 	$(call SIGN,krb5,general.xml)
 
@@ -115,6 +129,6 @@ krb5-package: krb5-stage
 	$(call PACK,krb5,DEB_KRB5_V)
 
 	# krb5.mk Build cleanup
-	rm -rf $(BUILD_DIST)/{krb5-{user,kdc,admin-server,kpropd,pkinit,otp,k5tls,gss-samples},libkrb5-dev,libkrb5-3,libgssapi-krb5-2,libgssrpc4,libkadm5srv-mit12,libkadm5clnt-mit12,libk5crypto3,libkdb5-10,libkrb5support0,libkrad0,libkrad-dev}
+	rm -rf $(BUILD_DIST)/{krb5-{user,kdc,admin-server,kpropd,pkinit,otp,k5tls,gss-samples},libkrb5-dev,libkrb5-3,libgssapi-krb5-2,libgssrpc4,libkadm5srv-mit12,libkadm5clnt-mit12,libk5crypto3,libkdb5-10,libkrb5support1,libkrad0,libkrad-dev}
 
 .PHONY: krb5 krb5-package
