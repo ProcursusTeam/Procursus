@@ -103,6 +103,11 @@ krb5-package: krb5-stage
 	# krb5.mk Prep libkadm5clntmit12
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkadm5clnt_mit.{12.dylib,12.0.dylib} $(BUILD_DIST)/libkadm5clnt-mit12/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
+	# krb5.mk Prep libk5crypto3
+	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libk5crypto.{3.dylib,3.1.dylib} $(BUILD_DIST)/libk5crypto3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
+	# krb5.mk Prep libkdb5-10
+	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkdb5.{10.dylib,10.0.dylib} $(BUILD_DIST)/libkdb5-10/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	# krb5.mk Sign
 	$(call SIGN,krb5,general.xml)
 
