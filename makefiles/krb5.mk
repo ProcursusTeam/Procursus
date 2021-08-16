@@ -89,13 +89,19 @@ krb5-package: krb5-stage
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/krb5/plugins/tls/k5tls.so $(BUILD_DIST)/krb5-k5tls/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# krb5.mk Prep libkrb5-3 
-	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libkrb5.{dylib,3.dylib},krb5/plugins/preauth/spake.so} $(BUILD_DIST)/libkrb5-3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libkrb5.{3.dylib,3.3.dylib},krb5/plugins/preauth/spake.so} $(BUILD_DIST)/libkrb5-3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# krb5.mk Prep libgssapi-krb5-2
-	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgssapi_krb5.{dylib,2.dylib} $(BUILD_DIST)/libgssapi-krb5-2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgssapi_krb5.{2.dylib,2.2.dylib} $(BUILD_DIST)/libgssapi-krb5-2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# krb5.mk Prep libgssrpc4
-	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgssrpc.{dylib,4.dylib} $(BUILD_DIST)/libgssrpc4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgssrpc.{4.dylib,4.2.dylib} $(BUILD_DIST)/libgssrpc4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
+	# krb5.mk Prep libkadm5srv-mit12
+	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkadm5srv_mit.{12.dylib,12.0.dylib} $(BUILD_DIST)/libkadm5srv-mit12/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
+	# krb5.mk Prep libkadm5clntmit12
+	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkadm5clnt_mit.{12.dylib,12.0.dylib} $(BUILD_DIST)/libkadm5clnt-mit12/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# krb5.mk Sign
 	$(call SIGN,krb5,general.xml)
