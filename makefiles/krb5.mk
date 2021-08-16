@@ -85,8 +85,11 @@ krb5-package: krb5-stage
 	# krb5.mk Prep krb5-otp
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/krb5/plugins/preauth/otp.so $(BUILD_DIST)/krb5-otp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-	# cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib $(BUILD_DIST)/libkrb5-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	# cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/libkrb5-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	# krb5.mk Prep krb5-k5tls
+	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/krb5/plugins/tls/k5tls.so $(BUILD_DIST)/krb5-k5tls/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
+	# krb5.mk Prep libkrb5-3 
+	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libkrb5.{dylib,3.dylib},krb5/plugins/preauth/spake.so} $(BUILD_DIST)/libkrb5-3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# krb5.mk Sign
 	$(call SIGN,krb5,general.xml)
