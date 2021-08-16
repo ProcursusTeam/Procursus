@@ -71,7 +71,14 @@ krb5-package: krb5-stage
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8{/kadmin.local,kadmind,kprop,krb5_newrealm}.8 $(BUILD_DIST)/krb5-admin-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
 	# krb5.mk Prep krb5-kpropd
-	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
+	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kpropd $(BUILD_DIST)/krb5-kpropd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
+	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/kpropd.8 $(BUILD_DIST)/krb5-kpropd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+
+	# krb5.mk Prep krb5-multidev
+	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/krb5-config
+	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
+	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
+	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
 
 	# krb5.mk Sign
 	$(call SIGN,krb5,general.xml)
