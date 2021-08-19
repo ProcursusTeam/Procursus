@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += lrzip-next
-LRZIP_NEXT_VERSION := 0.7.62
+LRZIP_NEXT_VERSION := 0.8.2
 DEB_LRZIP_NEXT_V   ?= $(LRZIP_NEXT_VERSION)
 
 lrzip-next-setup: setup
