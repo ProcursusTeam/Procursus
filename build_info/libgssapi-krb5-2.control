@@ -1,4 +1,4 @@
-Package: libgassapi-krb5-2
+Package: libgssapi-krb5-2
 Priority: optional
 Section: Libraries
 Maintainer: @DEB_MAINTAINER@
