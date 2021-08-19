@@ -1,0 +1,19 @@
+Package: krb5-k5tls
+Priority: optional
+Section: Networking
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Depends: libkrb5-3 (= @DEB_KRB5_V@)
+Version: @DEB_KRB5_V@
+Description: TLS plugin for MIT Kerberos
+ Kerberos is a system for authenticating users and services on a network.
+ Kerberos is a trusted third-party service.  That means that there is a
+ third party (the Kerberos server) that is trusted by all the entities on
+ the network (users and services, usually called "principals").
+ .
+ This is the MIT reference implementation of Kerberos V5.
+ .
+ This package contains a plugin for the TLS functionality used by optional
+ functionality in MIT Kerberos.  The only current consumer is client support
+ for the MS-KKDCP protocol, which tunnels Kerberos protocol traffic through
+ an HTTPS proxy.
