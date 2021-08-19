@@ -26,10 +26,11 @@ else
 	+$(MAKE) -C $(BUILD_WORK)/uikittools \
 		deviceinfo gssc ldrestart sbdidlaunch sbreload uicache uiduid uiopen
 endif
-	mkdir -p $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	mkdir -p $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 	for bin in $$(find $(BUILD_WORK)/uikittools -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
 		if [ -f $$bin ] && [ -x $$bin ]; then \
 			cp $$bin $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin ; \
+			cp $$bin.1 $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 ; \
 		fi \
 	done
 	$(call AFTER_BUILD)
