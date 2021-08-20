@@ -92,7 +92,8 @@ diskdev-cmds: diskdev-cmds-setup
 	done
 ifeq ($(shell [ $(MEMO_CFVER) -ge 1700 ] && echo 1),1)
 	cd $(BUILD_WORK)/bindfs && \
-	$(CC) $(CFLAGS) -Weverything -lutil mount_bindfs.c -o $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)/sbin/mount_bindfs
+	$(CC) $(CFLAGS) -lutil mount_bindfs.c -o $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)/sbin/mount_bindfs
+	$(INSTALL) -m644 $(BUILD_MISC)/bindfs/mount_bindfs.8 $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
 endif
 	cd $(BUILD_WORK)/diskdev-cmds; \
 	cp -a quota $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \
