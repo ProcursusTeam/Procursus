@@ -13,4 +13,3 @@ Description: MIT Kerberos runtime libraries - RADIUS library
  This is the MIT reference implementation of Kerberos V5.
  .
  This package contains the internal support library for RADIUS functionality.
-

@@ -146,7 +146,7 @@ krb5-package: krb5-stage
 	# krb5.mk Make .debs
 	$(call PACK,krb5-user,DEB_KRB5_V)
 	$(call PACK,krb5-kdc,DEB_KRB5_V)
-	$(call PACK,krb5-admin-server,,DEB_KRB5_V)
+	$(call PACK,krb5-admin-server,DEB_KRB5_V)
 	$(call PACK,krb5-kpropd,DEB_KRB5_V)
 	$(call PACK,libkrb5-dev,DEB_KRB5_V)
 	$(call PACK,krb5-pkinit,DEB_KRB5_V)

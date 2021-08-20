@@ -15,4 +15,3 @@ Description: MIT Kerberos runtime libraries - GSS enabled ONCRPC
  .
  This package contains an RPC library used by the Kerberos administrative
  programs and potentially other applications.
-
