@@ -1,4 +1,4 @@
-Package: krb5-user
+Package: krb5-otp
 Priority: optional
 Section: Networking
 Maintainer: @DEB_MAINTAINER@
