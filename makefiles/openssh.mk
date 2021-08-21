@@ -11,7 +11,7 @@ endif # ($(SSH_STRAP),1)
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += openssh
 endif
-OPENSSH_VERSION := 8.6p1
+OPENSSH_VERSION := 8.7p1
 DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
@@ -22,7 +22,7 @@ openssh-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$(OPENSSH_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,openssh-$(OPENSSH_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,openssh-$(OPENSSH_VERSION).tar.gz,openssh-$(OPENSSH_VERSION),openssh)
-ifeq (,$(findstring darwin,$(MEMO_TARGET)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call DO_PATCH,openssh,openssh,-p1)
 endif
 	$(SED) -i 's/#UsePAM no/UsePAM yes/' $(BUILD_WORK)/openssh/sshd_config
