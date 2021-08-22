@@ -3,13 +3,13 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += radare2
-RADARE2_VERSION := 4.5.0
-RADARE2_API_V   := 4.5
-DEB_RADARE2_V   ?= $(RADARE2_VERSION)-2
+RADARE2_VERSION := 5.4.0
+RADARE2_API_V   := 5.4
+DEB_RADARE2_V   ?= $(RADARE2_VERSION)
 
 radare2-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/radareorg/radare2/releases/download/$(RADARE2_VERSION)/radare2-src-$(RADARE2_VERSION).tar.gz
-	$(call EXTRACT_TAR,radare2-src-$(RADARE2_VERSION).tar.gz,radare2-$(RADARE2_VERSION),radare2)
+	$(call GITHUB_ARCHIVE,radareorg,radare2,$(RADARE2_VERSION),$(RADARE2_VERSION))
+	$(call EXTRACT_TAR,radare2-$(RADARE2_VERSION).tar.gz,radare2-$(RADARE2_VERSION),radare2)
 
 ifneq ($(wildcard $(BUILD_WORK)/radare2/.build_complete),)
 radare2:

@@ -2,8 +2,8 @@ Package: libradare2-common
 Version: @DEB_RADARE2_V@
 Architecture: all
 Maintainer: @DEB_MAINTAINER@
-Conflicts: radare2 (<< 4.5.0)
-Replaces: radare2 (<< 4.5.0)
+Conflicts: radare2 (<< 5.4.0)
+Replaces: radare2 (<< 5.4.0)
 Section: Development
 Priority: optional
 Homepage: https://www.radare.org
