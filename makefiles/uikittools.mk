@@ -11,7 +11,7 @@ UIKITTOOLS_VERSION := 2.0.4
 DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)-1
 
 uikittools-setup: setup
-	$(call GITHUB_ARCHIVE,Diatrus,uikittools-ng,$(UIKITTOOLS_VERSION),v$(UIKITTOOLS_VERSION))
+	$(call GITHUB_ARCHIVE,ProcursusTeam,uikittools-ng,$(UIKITTOOLS_VERSION),v$(UIKITTOOLS_VERSION))
 	$(call EXTRACT_TAR,uikittools-ng-$(UIKITTOOLS_VERSION).tar.gz,uikittools-ng-$(UIKITTOOLS_VERSION),uikittools)
 
 ifneq ($(wildcard $(BUILD_WORK)/uikittools/.build_complete),)
