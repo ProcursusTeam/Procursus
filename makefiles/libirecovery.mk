@@ -5,7 +5,8 @@ endif
 SUBPROJECTS          += libirecovery
 LIBIRECOVERY_COMMIT  := 47934949e0015165a4562b08e824adb3f664c0ea
 LIBIRECOVERY_VERSION := 1.0.0+git20210526.$(shell echo $(LIBIRECOVERY_COMMIT) | cut -c -7)
-DEB_LIBIRECOVERY_V   ?= $(LIBIRECOVERY_VERSION)
+LIBIRECOVERY_OLD_V   := 1.0.0+git20210526.4793494-1
+DEB_LIBIRECOVERY_V   ?= $(LIBIRECOVERY_VERSION)-1
 
 libirecovery-setup: setup
 	$(call GITHUB_ARCHIVE,libimobiledevice,libirecovery,$(LIBIRECOVERY_COMMIT),$(LIBIRECOVERY_COMMIT))
@@ -30,13 +31,13 @@ endif
 
 libirecovery-package: libirecovery-stage
 	# libirecovery.mk Package Structure
-	rm -rf $(BUILD_DIST)/libirecovery{3,-dev,-utils}
-	mkdir -p $(BUILD_DIST)/libirecovery3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+	rm -rf $(BUILD_DIST)/libirecovery{-1.0-3,3,-dev,-utils}
+	mkdir -p $(BUILD_DIST)/libirecovery-1.0-3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libirecovery-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libirecovery-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
-	# libirecovery.mk Prep libirecovery3
-	cp -a $(BUILD_STAGE)/libirecovery/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libirecovery-1.0.3.dylib $(BUILD_DIST)/libirecovery3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
+	# libirecovery.mk Prep libirecovery-1.0-3
+	cp -a $(BUILD_STAGE)/libirecovery/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libirecovery-1.0.3.dylib $(BUILD_DIST)/libirecovery-1.0-3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 
 	# libirecovery.mk Prep libirecovery-dev
 	cp -a $(BUILD_STAGE)/libirecovery/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libirecovery-1.0.{a,dylib}} $(BUILD_DIST)/libirecovery-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
@@ -46,15 +47,16 @@ libirecovery-package: libirecovery-stage
 	cp -a $(BUILD_STAGE)/libirecovery/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/libirecovery-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libirecovery.mk Sign
-	$(call SIGN,libirecovery3,general.xml)
+	$(call SIGN,libirecovery-1.0-3,general.xml)
 	$(call SIGN,libirecovery-utils,general.xml)
 
 	# libirecovery.mk Make .debs
-	$(call PACK,libirecovery3,DEB_LIBIRECOVERY_V)
+	$(call PACK,libirecovery-1.0-3,DEB_LIBIRECOVERY_V)
+	$(call PACK,libirecovery3,LIBIRECOVERY_OLD_V)
 	$(call PACK,libirecovery-dev,DEB_LIBIRECOVERY_V)
 	$(call PACK,libirecovery-utils,DEB_LIBIRECOVERY_V)
 
 	# libirecovery.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libirecovery{3,-dev,-utils}
+	rm -rf $(BUILD_DIST)/libirecovery{-1.0-3,3,-dev,-utils}
 
 .PHONY: libirecovery libirecovery-package
