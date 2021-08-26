@@ -2,6 +2,9 @@ Package: ovh-ttyrec
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Version: @DEB_OVH_TTYREC_V@
+Conflicts: ttyrec
+Replaces: ttyrec
+Provides: ttyrec (= @DEB_OVH_TTYREC_V@)
 Section: Utilities
 Priority: optional
 Description: Extended (but compatible) fork of ttyrec
