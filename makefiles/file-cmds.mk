@@ -39,7 +39,7 @@ else
 file-cmds: file-cmds-setup
 	cd $(BUILD_WORK)/file-cmds ; \
 	for bin in chflags compress ipcrm ipcs pax; do \
-	    	$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -o $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -D__POSIX_C_SOURCE; \
+	    	$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -isystem $(BUILD_BASE)/$(MEMO_PREFIX)/include -o $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -L$(BUILD_BASE)/$(MEMO_PREFIX)/lib -liosexec -D'__FBSDID(x)=' -D__POSIX_C_SOURCE; \
 	done
 	$(call AFTER_BUILD)
 endif
