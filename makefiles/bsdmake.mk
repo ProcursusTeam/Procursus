@@ -2,8 +2,6 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifeq (,$(findstring darwin,$(MEMO_TARGET))) # MacOS ships bsdmake so we don't need it here
-
 SUBPROJECTS     += bsdmake
 BSDMAKE_VERSION := 24
 DEB_BSDMAKE_V   ?= $(BSDMAKE_VERSION)
@@ -17,10 +15,10 @@ ifneq ($(wildcard $(BUILD_WORK)/bsdmake/.build_complete),)
 bsdmake:
 	@echo "Using previously built bsdmake."
 else
-bsdmake: bsdmake-setup libiosexec
+bsdmake: bsdmake-setup
 	mkdir -p $(BUILD_STAGE)/bsdmake/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 	cd $(BUILD_WORK)/bsdmake && \
-		cc *.c -o make-native -DDEFSHELLNAME=\"sh\"
+		$(CC_FOR_BUILD) $(CFLAGS_FOR_BUILD) $(LDFLAGS_FOR_BUILD) *.c -o make-native -DDEFSHELLNAME=\"sh\"
 	+unset MAKEFLAGS && \
 		$(BUILD_WORK)/bsdmake/make-native \
 		-m $(BUILD_WORK)/bsdmake/mk \
@@ -67,5 +65,3 @@ bsdmake-package: bsdmake-stage
 	rm -rf $(BUILD_DIST)/bsdmake
 
 .PHONY: bsdmake bsdmake-package
-
-endif # ($(MEMO_TARGET),darwin-\*)
