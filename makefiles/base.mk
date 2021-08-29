@@ -9,7 +9,8 @@ DEB_BASE_V    ?= $(BASE_VERSION)
 
 base:
 	mkdir -p \
-		$(BUILD_STAGE)/base/$(MEMO_PREFIX)/{Applications,bin,boot,dev,etc/{default,profile.d},lib,mnt,sbin,tmp, \
+		$(BUILD_STAGE)/base/$(MEMO_PREFIX)/{Applications,bin,boot,dev,lib,mnt,sbin,tmp, \
+		etc/{default,profile.d}, \
 		Library/{Frameworks,LaunchAgents,LaunchDaemons,Preferences,Ringtones,Wallpaper}, \
 		System/Library/{Extensions,Fonts,Frameworks,Internet\ Plug-Ins,KeyboardDictionaries,LaunchDaemons,PreferenceBundles,PrivateFrameworks,SystemConfiguration,VideoDecoders}, \
 		usr/{bin,games,include,sbin,share/{dict,misc}}, \
@@ -26,7 +27,7 @@ base-package: base-stage
 	cp -a $(BUILD_STAGE)/base $(BUILD_DIST)
 
 	# base.mk Permissions
-	$(FAKEROOT) chown 0:80 $(BUILD_DIST)/base/$(MEMO_PREFIX)/{Applications,Library/{Frameworks,Preferences,Ringtones,Wallpaper},etc,tmp,var/{db,}}
+	$(FAKEROOT) chown 0:80 $(BUILD_DIST)/base/$(MEMO_PREFIX)/{Applications,Library/{Frameworks,Preferences,Ringtones,Wallpaper},etc,tmp,var/{,db}}
 	$(FAKEROOT) chown 0:3 $(BUILD_DIST)/base/$(MEMO_PREFIX)/var/empty
 	$(FAKEROOT) chown 0:20 $(BUILD_DIST)/base/$(MEMO_PREFIX)/var/local
 	$(FAKEROOT) chown 0:1 $(BUILD_DIST)/base/$(MEMO_PREFIX)/var/run
