@@ -3,13 +3,9 @@ $(error Use the main Makefile)
 endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+ifeq (,$(findstring preboot,$(MEMO_TARGET)))
 
-ifneq (,$(findstring preboot,$(MEMO_TARGET)))
-SUBPROJECTS           += firmware-sbin
-else
 STRAPPROJECTS         += firmware-sbin
-endif
-
 FIRMWARE-SBIN_VERSION := 0-2
 DEB_FIRMWARE-SBIN_V   ?= $(FIRMWARE-SBIN_VERSION)
 
@@ -42,4 +38,5 @@ firmware-sbin-package: firmware-sbin-stage
 
 .PHONY: firmware-sbin firmware-sbin-package
 
+endif
 endif
