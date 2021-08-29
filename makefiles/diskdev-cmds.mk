@@ -20,7 +20,7 @@ diskdev-cmds-setup: setup
 		$(BUILD_WORK)/diskdev-cmds/fsck.tproj/fsck.c
 	$(SED) -i -e '/TARGET_OS_OSX/d' \
 		$(BUILD_WORK)/diskdev-cmds/disklib/preen.c
-	mkdir -p $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{/{s,}bin,libexec,share/man/man{1,5,8}}
+	mkdir -p $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{{s,}bin,libexec,share/man/man{1,5,8}}
 
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/diskdev-cmds/include/{arm,machine,{System/,}sys,uuid}
