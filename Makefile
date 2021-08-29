@@ -124,6 +124,44 @@ ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
 BARE_PLATFORM        := iPhoneOS
 export IPHONEOS_DEPLOYMENT_TARGET
 
+else ifeq ($(MEMO_TARGET),iphoneos-arm64-preboot)
+ifneq ($(MEMO_QUIET),1)
+$(warning Building for iOS with preboot prefix)
+endif # ($(MEMO_QUIET),1)
+MEMO_ARCH            := arm64
+PLATFORM             := iphoneos
+DEB_ARCH             := iphoneos-arm
+GNU_HOST_TRIPLE      := aarch64-apple-darwin
+PLATFORM_VERSION_MIN := -miphoneos-version-min=$(IPHONEOS_DEPLOYMENT_TARGET)
+RUST_TARGET          := aarch64-apple-ios
+LLVM_TARGET          := arm64-apple-ios$(IPHONEOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX          ?= /private/preboot/procursus/usr
+MEMO_SUB_PREFIX      ?= 
+MEMO_ALT_PREFIX      ?= /local
+GNU_PREFIX           :=
+ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
+BARE_PLATFORM        := iPhoneOS
+export IPHONEOS_DEPLOYMENT_TARGET
+
+else ifeq ($(MEMO_TARGET),iphoneos-arm64e-preboot)
+ifneq ($(MEMO_QUIET),1)
+$(warning Building for iOS arm64e with preboot prefix)
+endif # ($(MEMO_QUIET),1)
+MEMO_ARCH            := arm64e
+PLATFORM             := iphoneos
+DEB_ARCH             := iphoneos-arm64e
+GNU_HOST_TRIPLE      := aarch64-apple-darwin
+PLATFORM_VERSION_MIN := -miphoneos-version-min=$(IPHONEOS_DEPLOYMENT_TARGET)
+RUST_TARGET          := aarch64-apple-ios
+LLVM_TARGET          := arm64e-apple-ios$(IPHONEOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX          ?= /private/preboot/procursus/usr
+MEMO_SUB_PREFIX      ?= 
+MEMO_ALT_PREFIX      ?= /local
+GNU_PREFIX           :=
+ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
+BARE_PLATFORM        := iPhoneOS
+export IPHONEOS_DEPLOYMENT_TARGET
+
 else ifeq ($(MEMO_TARGET),iphoneos-arm64e)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for iOS arm64e)
