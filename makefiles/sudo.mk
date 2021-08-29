@@ -41,6 +41,8 @@ endif
 		--with-timeout=15 \
 		--with-password-timeout=0 \
 		--with-passprompt="[sudo] password for %p: " \
+		--with-vardir=$(MEMO_PREFIX)/var/db/sudo \ #TODO: Change these to an ifeq for macOS building
+		--with-rundir=$(MEMO_PREFIX)/var/run/sudo \
 		sudo_cv___func__=yes \
 		$(SUDO_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/sudo
