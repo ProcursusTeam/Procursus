@@ -16,7 +16,7 @@ diskdev-cmds-setup: setup
 	$(SED) -i -e '/#include <TargetConditionals.h>/d' \
 		$(BUILD_WORK)/diskdev-cmds/edt_fstab/edt_fstab.h \
 		$(BUILD_WORK)/diskdev-cmds/fsck.tproj/fsck.c
-	$(SED) -i 's/TARGET_OS_IPHONE/!TARGET_OS_IPHONE/g' \
+	$(SED) -i 's/TARGET_OS_IPHONE/WHOISJOE/g' \
 		$(BUILD_WORK)/diskdev-cmds/fsck.tproj/fsck.c
 	$(SED) -i -e '/TARGET_OS_OSX/d' \
 		$(BUILD_WORK)/diskdev-cmds/disklib/preen.c
