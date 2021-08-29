@@ -26,18 +26,6 @@ base-package: base-stage
 	# base.mk Prep base
 	cp -a $(BUILD_STAGE)/base $(BUILD_DIST)
 
-	# base.mk Permissions
-	$(FAKEROOT) chown 0:80 $(BUILD_DIST)/base/$(MEMO_PREFIX)/{Applications,Library/{Frameworks,Preferences,Ringtones,Wallpaper},etc,tmp,var/{,db}}
-	$(FAKEROOT) chown 0:3 $(BUILD_DIST)/base/$(MEMO_PREFIX)/var/empty
-	$(FAKEROOT) chown 0:20 $(BUILD_DIST)/base/$(MEMO_PREFIX)/var/local
-	$(FAKEROOT) chown 0:1 $(BUILD_DIST)/base/$(MEMO_PREFIX)/var/run
-	$(FAKEROOT) chown -R 501:501 $(BUILD_DIST)/base/$(MEMO_PREFIX)/var/mobile
-	$(FAKEROOT) chmod 0775 $(BUILD_DIST)/base/$(MEMO_PREFIX)/{Applications,Library,var/run}
-	$(FAKEROOT) chmod 2775 $(BUILD_DIST)/base/$(MEMO_PREFIX)/var/local
-	$(FAKEROOT) chmod 1775 $(BUILD_DIST)/base/$(MEMO_PREFIX)/var/{lock,tmp}
-	$(FAKEROOT) chmod 0775 $(BUILD_DIST)/base/$(MEMO_PREFIX)/var/root
-	$(FAKEROOT) chmod 0644 $(BUILD_DIST)/base/$(MEMO_PREFIX)/var/run/utmp
-
 	# base.mk Make .debs
 	$(call PACK,base,DEB_BASE_V,2)
 
