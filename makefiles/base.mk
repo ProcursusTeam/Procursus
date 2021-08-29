@@ -4,7 +4,7 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS += base
-BASE_VERSION  := 1-6
+BASE_VERSION  := 1-5
 DEB_BASE_V    ?= $(BASE_VERSION)
 
 base:
