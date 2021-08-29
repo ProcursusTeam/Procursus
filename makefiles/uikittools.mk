@@ -7,8 +7,8 @@ SUBPROJECTS        += uikittools
 else
 STRAPPROJECTS      += uikittools
 endif
-UIKITTOOLS_VERSION := 2.0.4
-DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)-1
+UIKITTOOLS_VERSION := 2.0.5
+DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)
 
 uikittools-setup: setup
 	$(call GITHUB_ARCHIVE,ProcursusTeam,uikittools-ng,$(UIKITTOOLS_VERSION),v$(UIKITTOOLS_VERSION))
@@ -21,10 +21,10 @@ else
 uikittools: uikittools-setup
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 	+$(MAKE) -C $(BUILD_WORK)/uikittools \
-		cfversion ecidecid uiduid
+		deviceinfo
 else
 	+$(MAKE) -C $(BUILD_WORK)/uikittools \
-		cfversion ecidecid gssc ldrestart sbdidlaunch sbreload uicache uiduid uiopen
+		deviceinfo gssc ldrestart sbdidlaunch sbreload uicache uiduid uiopen
 endif
 	mkdir -p $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	for bin in $$(find $(BUILD_WORK)/uikittools -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
