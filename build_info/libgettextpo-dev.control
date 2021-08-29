@@ -1,4 +1,4 @@
-Package: libgettexpo-dev
+Package: libgettextpo-dev
 Version: @DEB_GETTEXT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
