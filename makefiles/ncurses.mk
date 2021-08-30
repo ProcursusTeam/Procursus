@@ -62,22 +62,18 @@ ncurses: ncurses-setup
 		else \
 			LINK=$$(printf "%02x" "'$${ti##*/}"); \
 		fi; \
-		$(LN) -Tsf "$${ti##*/}" $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo/$${LINK}; \
+		ln -Tsf "$${ti##*/}" $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo/$${LINK}; \
 	done
 
-	mkdir -p $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw
-
-	for h in $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/*; do \
+	for h in $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw/*; do \
 		if [[ ! -d $$h ]]; then \
-			$(LN) -srf $$h $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw ; \
+			ln -srf $$h $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include; \
 		fi \
 	done
 
-	mkdir -p $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw
-
-	for h in $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/*; do \
+	for h in $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw/*; do \
 		if [[ ! -d $$h ]]; then \
-			$(LN) -srf $$h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw ; \
+			ln -srf $$h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include; \
 		fi \
 	done
 
