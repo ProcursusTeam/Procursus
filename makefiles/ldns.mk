@@ -19,7 +19,7 @@ ldns: ldns-setup
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-drill \
 		--with-examples \
-		--with-ssl \
+		--with-ssl="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		--with-pyldns \
 		--disable-dane-verify
 	+$(MAKE) -C $(BUILD_WORK)/ldns
