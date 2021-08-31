@@ -18,9 +18,13 @@ else
 guile: guile-setup libunistring libgc libffi readline gettext libtool libgmp10
 	mkdir -p $(BUILD_WORK)/guile/native
 	+unset CC CXX CPP CFLAGS CXXFLAGS CPPFLAGS LDFLAGS; \
-		cd $(BUILD_WORK)/guile/native && $(BUILD_WORK)/guile/configure; \
+		cd $(BUILD_WORK)/guile/native && $(BUILD_WORK)/guile/configure --with-libgmp-prefix="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+		--with-libunistring-prefix="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+		--with-bdw-gc="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/bdw-gc.pc" \
+		--disable-shared \
+		--disable-static; \
 		$(MAKE) -C $(BUILD_WORK)/guile/native
-	cd $(BUILD_WORK)/guile && ./configure --enable-mini-gmp --disable-shared  --disable-static -C \
+	cd $(BUILD_WORK)/guile && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		GUILE_CHECK_VERSION=$(BUILD_WORK)/guile/native/check-guile
 		GUILE_FOR_BUILD=$(BUILD_WORK)/guile/native/libguile/guile
