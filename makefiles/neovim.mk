@@ -25,6 +25,7 @@ neovim: neovim-setup gettext lua-luv libuv1 msgpack libvterm libtermkey unibiliu
 	cd $(BUILD_WORK)/neovim/build && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DXGETTEXT_PRG="`which xgettext`" \
+		-DLUA_PRG="`which luajit`" \
 		-DGETTEXT_MSGFMT_EXECUTABLE="`which msgfmt`" \
 		-DGETTEXT_MSGMERGE_EXECUTABLE="`which msgmerge`" \
 		-DLIBLUV_LIBRARY="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit5.1-luv.dylib" \
