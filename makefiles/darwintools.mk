@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS       += darwintools
 DARWINTOOLS_VERSION := 1.5
-ZBRFIRMWARE_COMMIT  := 213f1051334fdf4e9e4989b8f55ef0714b6f2779
+ZBRFIRMWARE_COMMIT  := 0d12840783e08cbb4a3148222d88cc0eaabceec6
 DEB_DARWINTOOLS_V   ?= $(DARWINTOOLS_VERSION)
 
 darwintools-setup: setup
@@ -20,7 +20,8 @@ darwintools: darwintools-setup
 		FIRMWARE_MAINTAINER="$(DEB_MAINTAINER)" \
 		PREFIX=$(MEMO_PREFIX) \
 		EXECPREFIX=$(MEMO_SUB_PREFIX) \
-		CFLAGS="$(CFLAGS)"
+		CFLAGS="$(CFLAGS)" \
+		LDFLAGS="$(LDFLAGS)"
 	$(INSTALL) -Dm 0755 $(BUILD_WORK)/darwintools/build/firmware $(BUILD_STAGE)/darwintools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/firmware
 	$(INSTALL) -s -Dm 0755 $(BUILD_MISC)/darwintools/firmware-wrapper $(BUILD_STAGE)/darwintools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/firmware-wrapper
 	$(SED) -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $(BUILD_STAGE)/darwintools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/firmware-wrapper
