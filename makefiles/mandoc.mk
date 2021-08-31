@@ -41,7 +41,7 @@ mandoc-package: mandoc-stage
 	rm -rf $(BUILD_DIST)/mandoc
 
 	# mandoc.mk Prep mandoc
-	cp -af $(BUILD_STAGE)/mandoc $(BUILD_DIST)/mandoc
+	cp -a $(BUILD_STAGE)/mandoc $(BUILD_DIST)/mandoc
 
 	# mandoc.mk Sign
 	$(call SIGN,mandoc,general.xml)
