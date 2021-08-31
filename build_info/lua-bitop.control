@@ -2,7 +2,6 @@ Package: lua-bitop
 Version: @DEB_LUA-BITOP_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: liblua5.1-0, liblua5.2-0
 Section: Lua 
 Priority: optional
 Description: bitop library for the Lua language
