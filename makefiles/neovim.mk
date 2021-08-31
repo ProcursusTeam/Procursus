@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += neovim
-NEOVIM_VERSION := 0.4.4
-DEB_NEOVIM_V   ?= $(NEOVIM_VERSION)-2
+NEOVIM_VERSION := 0.5.0
+DEB_NEOVIM_V   ?= $(NEOVIM_VERSION)
 
 neovim-setup: setup
 	$(call GITHUB_ARCHIVE,neovim,neovim,$(NEOVIM_VERSION),v$(NEOVIM_VERSION))
@@ -20,7 +20,7 @@ else ifneq ($(wildcard $(BUILD_WORK)/neovim/.build_complete),)
 neovim:
 	@echo "Using previously built neovim."
 else
-neovim: neovim-setup gettext lua-luv libuv1 msgpack libvterm libtermkey unibilium luajit
+neovim: neovim-setup gettext lua-luv libuv1 msgpack libvterm libtermkey unibilium luajit tree-sitter
 	@echo "Install neovim before building"
 	cd $(BUILD_WORK)/neovim/build && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
@@ -43,7 +43,7 @@ neovim-package: neovim-stage
 	# neovim.mk Prep neovim
 	cp -a $(BUILD_STAGE)/neovim $(BUILD_DIST)
 	for i in ex rview rvim view vimdiff; do \
-	$(INSTALL) -Dm0755 $(BUILD_MISC)/neovim.$$i $(BUILD_DIST)/neovim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/neovim/$$i; \
+	$(INSTALL) -Dm0755 $(BUILD_MISC)/neovim/$$i $(BUILD_DIST)/neovim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/neovim/$$i; \
 	$(SED) -i 's|usr/bin/nvim|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/nvim|g' $(BUILD_DIST)/neovim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/neovim/$$i; \
 	done
 
