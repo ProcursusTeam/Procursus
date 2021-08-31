@@ -40,7 +40,7 @@ ldns-package: ldns-stage
 
 	# ldns.mk Prep ldnsutils
 	cp -a $(BUILD_STAGE)/ldns/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/ldnsutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -af $(BUILD_STAGE)/ldns/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/ldnsutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+	cp -a $(BUILD_STAGE)/ldns/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/ldnsutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
         # ldns.mk Prep libldns3
 	cp -a $(BUILD_STAGE)/ldns/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libldns{.dylib,.3.dylib} $(BUILD_DIST)/libldns3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
@@ -48,7 +48,7 @@ ldns-package: ldns-stage
 	# ldns.mk Prep libldns-dev
 	cp -a $(BUILD_STAGE)/ldns/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(*.dylib|python3) $(BUILD_DIST)/libldns-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/ldns/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libldns-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -af $(BUILD_STAGE)/ldns/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libldns-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+	cp -a $(BUILD_STAGE)/ldns/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libldns-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
 	# ldns.mk Prep python3-ldns
 	cp -a $(BUILD_STAGE)/ldns/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3/dist-packages $(BUILD_DIST)/python3-ldns/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3
