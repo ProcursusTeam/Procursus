@@ -7,8 +7,8 @@ SUBPROJECTS        += uikittools
 else
 STRAPPROJECTS      += uikittools
 endif
-UIKITTOOLS_VERSION := 2.0.4
-DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)-1
+UIKITTOOLS_VERSION := 2.0.6
+DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)
 
 uikittools-setup: setup
 	$(call GITHUB_ARCHIVE,ProcursusTeam,uikittools-ng,$(UIKITTOOLS_VERSION),v$(UIKITTOOLS_VERSION))
