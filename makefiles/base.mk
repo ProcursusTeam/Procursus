@@ -38,6 +38,12 @@ base-package: base-stage
 
 	# base.mk Prep base
 	cp -a $(BUILD_STAGE)/base $(BUILD_DIST)
+	
+ifneq (,$(findstring preboot,$(MEMO_TARGET)))
+	$(FAKEROOT) chmod 0644 $(BUILD_STAGE)/base/$(MEMO_PREFIX)/etc/passwd
+	$(FAKEROOT) chmod 0600 $(BUILD_STAGE)/base/$(MEMO_PREFIX)/etc/master.passwd
+endif
+	$(FAKEROOT) chmod 0644 $(BUILD_DIST)/base/$(MEMO_PREFIX)/var/run/utmp
 ifeq (,$(MEMO_PREFIX))
 	$(FAKEROOT) chown 0:80 $(BUILD_DIST)/base/{,Applications,Library/{,Frameworks,Preferences,Ringtones,Wallpaper},etc,tmp,var/{,db}}
 	$(FAKEROOT) chown 0:3 $(BUILD_DIST)/base/var/empty
@@ -48,12 +54,9 @@ ifeq (,$(MEMO_PREFIX))
 	$(FAKEROOT) chmod 2775 $(BUILD_DIST)/base/var/local
 	$(FAKEROOT) chmod 1775 $(BUILD_DIST)/base/var/{lock,tmp}
 	$(FAKEROOT) chmod 0775 $(BUILD_DIST)/base/var/root
+else
+	$(FAKEROOT) chown -R 0:0 $(BUILD_DIST)/base
 endif
-ifneq (,$(findstring preboot,$(MEMO_TARGET)))
-	chmod 0644 $(BUILD_STAGE)/base/$(MEMO_PREFIX)/etc/passwd
-	chmod 0600 $(BUILD_STAGE)/base/$(MEMO_PREFIX)/etc/master.passwd
-endif
-	$(FAKEROOT) chmod 0644 $(BUILD_DIST)/base/var/run/utmp
 
 	# base.mk Make .debs
 	$(call PACK,base,DEB_BASE_V,2)
