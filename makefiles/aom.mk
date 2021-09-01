@@ -27,7 +27,7 @@ aom: aom-setup
 		DESTDIR="$(BUILD_STAGE)/aom"
 	+$(MAKE) -C $(BUILD_WORK)/aom/build install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/aom/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 aom-package: aom-stage

@@ -21,7 +21,7 @@ sshpass: sshpass-setup
 	+$(MAKE) -C $(BUILD_WORK)/sshpass
 	+$(MAKE) -C $(BUILD_WORK)/sshpass install \
 		DESTDIR=$(BUILD_STAGE)/sshpass
-	touch $(BUILD_WORK)/sshpass/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 sshpass-package: sshpass-stage

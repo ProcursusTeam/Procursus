@@ -80,7 +80,7 @@ endif
 		DESTDIR=$(BUILD_STAGE)/tigervnc
 	rm -f $(BUILD_STAGE)/tigervnc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg/protocol.txt
 	rm -f $(BUILD_STAGE)/tigervnc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man1/Xserver.1
-	touch $(BUILD_WORK)/tigervnc/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 tigervnc-package: tigervnc-stage

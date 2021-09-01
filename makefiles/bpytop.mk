@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += bpytop
-BPYTOP_VERSION := 1.0.65
+BPYTOP_VERSION := 1.0.67
 DEB_BPYTOP_V   ?= $(BPYTOP_VERSION)
 
 bpytop-setup: setup
@@ -22,7 +22,7 @@ bpytop: bpytop-setup python3
 	+$(MAKE) -C $(BUILD_WORK)/bpytop install \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR=$(BUILD_STAGE)/bpytop/
-	touch $(BUILD_WORK)/bpytop/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 bpytop-package: bpytop-stage

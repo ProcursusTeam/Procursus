@@ -20,7 +20,7 @@ python3-glances: python3-glances-setup python3
 		--root="$(BUILD_STAGE)/python3-glances" \
 		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
 	find $(BUILD_STAGE)/python3-glances -name __pycache__ -prune -exec rm -rf {} \;
-	touch $(BUILD_WORK)/python3-glances/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 python3-glances-package: python3-glances-stage

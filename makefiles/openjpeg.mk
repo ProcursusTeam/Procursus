@@ -23,7 +23,7 @@ openjpeg: openjpeg-setup libpng16 libtiff lcms2
 		DESTDIR="$(BUILD_STAGE)/openjpeg"
 	+$(MAKE) -C $(BUILD_WORK)/openjpeg install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/openjpeg/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 openjpeg-package: openjpeg-stage

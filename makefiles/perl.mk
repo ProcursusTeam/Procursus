@@ -65,7 +65,7 @@ perl: perl-setup
 	+$(MAKE) -C $(BUILD_WORK)/perl install.perl \
 		DESTDIR=$(BUILD_STAGE)/perl
 	ln -s $(PERL_MAJOR) $(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_VERSION)
-	touch $(BUILD_WORK)/perl/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 perl-package: perl-stage

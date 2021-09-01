@@ -25,7 +25,7 @@ bat: bat-setup libgit2
 		$(BUILD_STAGE)/bat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/bat.1
 	$(INSTALL) -Dm644 $(BUILD_WORK)/bat/target/$(RUST_TARGET)/release/build/bat-*/out/assets/completions/bat.zsh \
 		$(BUILD_STAGE)/bat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/site-functions/_bat
-	touch $(BUILD_WORK)/bat/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 bat-package: bat-stage

@@ -23,7 +23,7 @@ lsd: lsd-setup
 		--target=$(RUST_TARGET)
 	$(INSTALL) -Dm755 $(BUILD_WORK)/lsd/target/$(RUST_TARGET)/release/lsd \
 		$(BUILD_STAGE)/lsd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsd
-	touch $(BUILD_WORK)/lsd/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 lsd-package: lsd-stage

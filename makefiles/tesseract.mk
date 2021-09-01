@@ -31,7 +31,7 @@ tesseract: tesseract-setup leptonica libarchive curl
 		DESTDIR="$(BUILD_STAGE)/tesseract"
 	+$(MAKE) -C $(BUILD_WORK)/tesseract install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/tesseract/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 tesseract-package: tesseract-stage

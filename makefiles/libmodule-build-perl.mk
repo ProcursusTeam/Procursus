@@ -21,7 +21,7 @@ libmodule-build-perl: libmodule-build-perl-setup perl
 		$(DEFAULT_PERL_BUILD_FLAGS)
 	$(BUILD_WORK)/libmodule-build-perl/Build install
 	rm -rf $(BUILD_STAGE)/libmodule-build-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	touch $(BUILD_WORK)/libmodule-build-perl/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libmodule-build-perl-package: libmodule-build-perl-stage

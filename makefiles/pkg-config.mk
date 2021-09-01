@@ -29,7 +29,7 @@ pkg-config: pkg-config-setup gettext glib2.0
 		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/glib-2.0 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/glib-2.0/include"
 	+$(MAKE) -C $(BUILD_WORK)/pkg-config install \
 		DESTDIR="$(BUILD_STAGE)/pkg-config"
-	touch $(BUILD_WORK)/pkg-config/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 pkg-config-package: pkg-config-stage

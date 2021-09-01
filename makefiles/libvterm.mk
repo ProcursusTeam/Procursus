@@ -30,7 +30,7 @@ libvterm: libvterm-setup
 		DESTDIR="$(BUILD_STAGE)/libvterm"
 	+$(MAKE) -C $(BUILD_WORK)/libvterm install PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libvterm/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libvterm-package: libvterm-stage

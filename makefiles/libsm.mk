@@ -25,7 +25,7 @@ libsm: libsm-setup xtrans libice uuid
 		DESTDIR=$(BUILD_STAGE)/libsm
 	+$(MAKE) -C $(BUILD_WORK)/libsm install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libsm/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libsm-package: libsm-stage

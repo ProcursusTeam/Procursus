@@ -24,7 +24,7 @@ libideviceactivation: libideviceactivation-setup libplist libimobiledevice curl
 		DESTDIR=$(BUILD_STAGE)/libideviceactivation
 	+$(MAKE) -C $(BUILD_WORK)/libideviceactivation install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libideviceactivation/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libideviceactivation-package: libideviceactivation-stage

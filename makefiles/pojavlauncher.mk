@@ -49,7 +49,7 @@ pojavlauncher: pojavlauncher-setup
 		cp JavaApp/build/libs/PojavLauncher.jar Natives/build/Release-iphoneos/PojavLauncher.app/libs/launcher.jar; \
 		cp JavaApp/libs/* Natives/build/Release-iphoneos/PojavLauncher.app/libs/;
 	cp -R $(BUILD_WORK)/pojavlauncher/Natives/build/Release-iphoneos/PojavLauncher.app $(BUILD_STAGE)/pojavlauncher/Applications
-	touch $(BUILD_WORK)/pojavlauncher/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 pojavlauncher-package: pojavlauncher-stage

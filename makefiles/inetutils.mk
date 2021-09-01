@@ -31,7 +31,7 @@ inetutils: inetutils-setup ncurses readline
 		DESTDIR=$(BUILD_STAGE)/inetutils
 	$(LN) -sf ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ping $(BUILD_STAGE)/inetutils/bin
 	$(LN) -sf ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ping $(BUILD_STAGE)/inetutils/sbin
-	touch $(BUILD_WORK)/inetutils/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 inetutils-package: inetutils-stage

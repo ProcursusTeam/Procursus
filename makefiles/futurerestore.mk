@@ -33,7 +33,7 @@ futurerestore: futurerestore-setup libirecovery openssl libusbmuxd libimobiledev
 	+$(MAKE) -C $(BUILD_WORK)/futurerestore
 	+$(MAKE) -C $(BUILD_WORK)/futurerestore install \
 		DESTDIR="$(BUILD_STAGE)/futurerestore"
-	touch $(BUILD_WORK)/futurerestore/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 futurerestore-package: futurerestore-stage

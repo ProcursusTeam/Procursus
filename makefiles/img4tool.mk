@@ -26,7 +26,7 @@ img4tool: img4tool-setup openssl libplist libgeneral
 		DESTDIR="$(BUILD_STAGE)/img4tool"
 	+$(MAKE) -C $(BUILD_WORK)/img4tool install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/img4tool/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 img4tool-package: img4tool-stage

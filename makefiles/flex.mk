@@ -34,7 +34,7 @@ flex: flex-setup gettext
 	+$(MAKE) -C $(BUILD_WORK)/flex install \
 		DESTDIR="$(BUILD_BASE)"
 	ln -s flex $(BUILD_STAGE)/flex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lex
-	touch $(BUILD_WORK)/flex/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 flex-package: flex-stage

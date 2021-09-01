@@ -25,7 +25,7 @@ libgeoip: libgeoip-setup
 		DESTDIR="$(BUILD_STAGE)/libgeoip"
 	+$(MAKE) -C $(BUILD_WORK)/libgeoip install \
 		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libgeoip/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libgeoip-package: libgeoip-stage

@@ -22,7 +22,7 @@ rsync: rsync-setup openssl lz4 zstd xxhash
 		rsync_cv_HAVE_GETTIMEOFDAY_TZ=yes
 	+$(MAKE) -C $(BUILD_WORK)/rsync install \
 		DESTDIR=$(BUILD_STAGE)/rsync
-	touch $(BUILD_WORK)/rsync/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 rsync-package: rsync-stage

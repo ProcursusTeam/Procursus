@@ -23,7 +23,7 @@ libsndfile: libsndfile-setup flac libogg libvorbis libopus
 		DESTDIR=$(BUILD_STAGE)/libsndfile
 	+$(MAKE) -C $(BUILD_WORK)/libsndfile install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libsndfile/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libsndfile-package: libsndfile-stage

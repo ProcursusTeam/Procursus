@@ -27,7 +27,7 @@ libjemalloc: libjemalloc-setup
 		DESTDIR=$(BUILD_STAGE)/libjemalloc
 	+$(MAKE) -C $(BUILD_WORK)/libjemalloc install \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libjemalloc/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libjemalloc-package: libjemalloc-stage

@@ -47,7 +47,7 @@ endif
 	+$(MAKE) -C $(BUILD_WORK)/fish
 	+$(MAKE) -C $(BUILD_WORK)/fish install \
 		DESTDIR=$(BUILD_STAGE)/fish
-	touch $(BUILD_WORK)/fish/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 fish-package: fish-stage

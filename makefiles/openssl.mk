@@ -68,7 +68,7 @@ openssl: openssl-setup
 		DESTDIR=$(BUILD_STAGE)/openssl
 	+$(MAKE) -C $(BUILD_WORK)/openssl install_sw \
 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/openssl/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 openssl-package: openssl-stage

@@ -26,7 +26,7 @@ wimlib: wimlib-setup openssl
 	+$(MAKE) -C $(BUILD_WORK)/wimlib
 	+$(MAKE) -C $(BUILD_WORK)/wimlib install \
 		DESTDIR=$(BUILD_STAGE)/wimlib
-	touch $(BUILD_WORK)/wimlib/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 wimlib-package: wimlib-stage
