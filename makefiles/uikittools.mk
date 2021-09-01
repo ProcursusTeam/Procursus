@@ -21,17 +21,22 @@ else
 uikittools: uikittools-setup
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 	+$(MAKE) -C $(BUILD_WORK)/uikittools \
-		cfversion ecidecid uiduid
+		deviceinfo
 else
 	+$(MAKE) -C $(BUILD_WORK)/uikittools \
-		cfversion ecidecid gssc ldrestart sbdidlaunch sbreload uicache uiduid uiopen
+		deviceinfo gssc ldrestart sbdidlaunch sbreload uiopen uicache \
+		APP_PATH="$(MEMO_PREFIX)/Applications"
 endif
-	mkdir -p $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	mkdir -p $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 	for bin in $$(find $(BUILD_WORK)/uikittools -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
 		if [ -f $$bin ] && [ -x $$bin ]; then \
 			cp $$bin $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin ; \
+			cp $$bin.1 $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 ; \
 		fi \
 	done
+	ln -s deviceinfo $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/cfversion
+	ln -s deviceinfo $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ecidecid
+	ln -s deviceinfo $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uiduid
 	$(call AFTER_BUILD)
 endif
 
