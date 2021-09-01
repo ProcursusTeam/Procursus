@@ -23,7 +23,7 @@ wptc-track: wptc-track-setup cairo
 	mkdir -p $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/wptc-track
 	$(INSTALL) -Dm755 $(BUILD_WORK)/wptc-track/tracks/track $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/track
 	$(INSTALL) -Dm755 $(BUILD_WORK)/wptc-track/tracks/refresh-nhc $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
-	$(CP) -a $(BUILD_WORK)/wptc-track/data/* $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/wptc-track
+	cp -a $(BUILD_WORK)/wptc-track/data/* $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/wptc-track
 	$(call AFTER_BUILD)
 endif
 
