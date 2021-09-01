@@ -53,7 +53,7 @@ endif
 			$(I_N_T) -change $$linked $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/$$(basename $$linked .dylib).$(LIBBOOST_VERSION).dylib $$lib; \
 		done; \
 		mv $$lib $$(dirname $$lib)/$$(basename $$lib .dylib).$(LIBBOOST_VERSION).dylib; \
-		ln -s $$(basename $$lib .dylib).$(LIBBOOST_VERSION).dylib $$lib; \
+		$(LN_S) $$(basename $$lib .dylib).$(LIBBOOST_VERSION).dylib $$lib; \
 	done
 	$(call AFTER_BUILD)
 endif

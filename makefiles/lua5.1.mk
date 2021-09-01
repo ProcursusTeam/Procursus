@@ -40,7 +40,7 @@ lua5.1: lua5.1-setup readline
 		INSTALL_MAN="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1" \
 		TO_BIN="lua5.1 luac5.1" \
 		TO_LIB="liblua5.1.a liblua5.1.0.dylib"
-	ln -sf liblua5.1.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.1.dylib
+	$(LN_S) liblua5.1.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.1.dylib
 	$(call AFTER_BUILD)
 endif
 
@@ -57,11 +57,11 @@ lua5.1-package: lua5.1-stage
 
 	# lua5.1.mk Prep liblua5.1-0
 	$(INSTALL) -Dm755 $(BUILD_STAGE)/lua5.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.1.0.dylib $(BUILD_DIST)/liblua5.1-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.1.0.dylib
-	ln -sf liblua5.1.0.dylib $(BUILD_DIST)/liblua5.1-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.1.0.0.0.dylib
+	$(LN_S) liblua5.1.0.dylib $(BUILD_DIST)/liblua5.1-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.1.0.0.0.dylib
 
 	# lua5.1.mk Prep liblua5.1-dev
 	cp -a $(BUILD_STAGE)/lua5.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/liblua5.1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	ln -sf liblua5.1.0.dylib $(BUILD_DIST)/liblua5.1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.1.dylib
+	$(LN_S) liblua5.1.0.dylib $(BUILD_DIST)/liblua5.1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.1.dylib
 
 	# lua5.1.mk Sign
 	$(call SIGN,lua5.1,general.xml)

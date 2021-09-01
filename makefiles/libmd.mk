@@ -39,7 +39,7 @@ libmd-package: libmd-stage
 	cp -a $(BUILD_STAGE)/libmd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libmd.a,libmd.dylib} $(BUILD_DIST)/libmd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	for manpage in $(BUILD_DIST)/libmd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3/*; do \
 		if [ -L $$manpage ]; then \
-			ln -sf $$(readlink $$manpage).zst $$manpage; \
+			$(LN_S) $$(readlink $$manpage).zst $$manpage; \
 		fi; \
 	done
 
