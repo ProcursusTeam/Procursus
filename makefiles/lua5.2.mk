@@ -10,7 +10,7 @@ lua5.2-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.lua.org/ftp/lua-$(LUA5.2_VERSION).tar.gz
 	$(call EXTRACT_TAR,lua-$(LUA5.2_VERSION).tar.gz,lua-$(LUA5.2_VERSION),lua5.2)
 	$(call DO_PATCH,lua5.2,lua5.2,-p1)
-	$(SED) -i -e ':a; s|@MEMO_PREFIX@|$(MEMO_PREFIX)|g; ta' -e ':a; s|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g; ta' $(BUILD_WORK)/lua5.2/src/luaconf.h
+	sed -i -e ':a; s|@MEMO_PREFIX@|$(MEMO_PREFIX)|g; ta' -e ':a; s|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g; ta' $(BUILD_WORK)/lua5.2/src/luaconf.h
 
 ifneq ($(wildcard $(BUILD_WORK)/lua5.2/.build_complete),)
 lua5.2:
@@ -40,7 +40,7 @@ lua5.2: lua5.2-setup readline
 		INSTALL_MAN="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1" \
 		TO_BIN="lua5.2 luac5.2" \
 		TO_LIB="liblua5.2.a liblua5.2.0.dylib"
-	ln -sf liblua5.2.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.2.dylib
+	$(LN_S) liblua5.2.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.2.dylib
 	$(call AFTER_BUILD)
 endif
 
@@ -57,11 +57,11 @@ lua5.2-package: lua5.2-stage
 
 	# lua5.2.mk Prep liblua5.2-0
 	$(INSTALL) -Dm755 $(BUILD_STAGE)/lua5.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.2.0.dylib $(BUILD_DIST)/liblua5.2-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.2.0.dylib
-	ln -sf liblua5.2.0.dylib $(BUILD_DIST)/liblua5.2-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.2.0.0.0.dylib
+	$(LN_S) liblua5.2.0.dylib $(BUILD_DIST)/liblua5.2-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.2.0.0.0.dylib
 
 	# lua5.2.mk Prep liblua5.2-dev
 	cp -a $(BUILD_STAGE)/lua5.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/liblua5.2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	ln -sf liblua5.2.0.dylib $(BUILD_DIST)/liblua5.2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.2.dylib
+	$(LN_S) liblua5.2.0.dylib $(BUILD_DIST)/liblua5.2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.2.dylib
 
 	# lua5.2.mk Sign
 	$(call SIGN,lua5.2,general.xml)
