@@ -11,7 +11,7 @@ libogg-setup: setup
 	$(call EXTRACT_TAR,libogg-$(LIBOGG_VERSION).tar.xz,libogg-$(LIBOGG_VERSION),libogg)
 
 	# don't build the html docs
-	$(SED) -ri 's/(SUBDIRS = .*)doc(.*)/\1 \2/' $(BUILD_WORK)/libogg/Makefile.in
+	sed -ri 's/(SUBDIRS = .*)doc(.*)/\1 \2/' $(BUILD_WORK)/libogg/Makefile.in
 
 	# Fix typedefs, remove in next version
 	$(call DO_PATCH,libogg,libogg,-p1)

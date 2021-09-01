@@ -21,14 +21,14 @@ llvm-setup: setup
 	$(call EXTRACT_TAR,swift-cmark-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz,swift-cmark-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),llvm/cmark)
 	$(call DO_PATCH,llvm,llvm,-p1)
 	cp -a $(BUILD_WORK)/llvm/lldb/include/lldb/Host/SafeMachO.h $(BUILD_WORK)/llvm/llvm/include/llvm
-	$(SED) -i '1s|^|#include "llvm/SafeMachO.h"\n|' $(BUILD_WORK)/llvm/swift/tools/swift-reflection-dump/swift-reflection-dump.cpp
-#	$(SED) -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
+	sed -i '1s|^|#include "llvm/SafeMachO.h"\n|' $(BUILD_WORK)/llvm/swift/tools/swift-reflection-dump/swift-reflection-dump.cpp
+#	sed -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
 #		$(BUILD_WORK)/llvm/clang/lib/Frontend/InitHeaderSearch.cpp \
 #		$(BUILD_WORK)/llvm/clang/lib/Driver/ToolChains/Darwin.cpp
 	$(call DO_PATCH,swift,llvm/swift,-p1)
 	mkdir -p $(BUILD_WORK)/llvm/build
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(SED) -i 's|isysroot $${CMAKE_OSX_SYSROOT}|isysroot $${CMAKE_FIND_ROOT_PATH}|' $(BUILD_WORK)/llvm/lldb/tools/debugserver/source/CMakeLists.txt
+	sed -i 's|isysroot $${CMAKE_OSX_SYSROOT}|isysroot $${CMAKE_FIND_ROOT_PATH}|' $(BUILD_WORK)/llvm/lldb/tools/debugserver/source/CMakeLists.txt
 endif
 
 ifneq ($(wildcard $(BUILD_WORK)/llvm/.build_complete),)
@@ -37,7 +37,7 @@ llvm:
 else
 llvm: llvm-setup libffi libedit ncurses xz xar
 #	Temporary SED until swift can build on their own apple silicon (cmon apple)
-	$(SED) -i -e 's/aarch64|ARM64/aarch64|ARM64|arm64/' -e 's/SWIFT_HOST_VARIANT_ARCH_default "aarch64"/SWIFT_HOST_VARIANT_ARCH_default "arm64"/' $(BUILD_WORK)/llvm/swift/CMakeLists.txt
+	sed -i -e 's/aarch64|ARM64/aarch64|ARM64|arm64/' -e 's/SWIFT_HOST_VARIANT_ARCH_default "aarch64"/SWIFT_HOST_VARIANT_ARCH_default "arm64"/' $(BUILD_WORK)/llvm/swift/CMakeLists.txt
 
 ifeq ($(wildcard $(BUILD_WORK)/../../native/llvm/.*),)
 	mkdir -p $(BUILD_WORK)/../../native/llvm && cd $(BUILD_WORK)/../../native/llvm && unset CC CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS && cmake . \

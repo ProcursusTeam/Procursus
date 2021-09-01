@@ -46,7 +46,7 @@ imagemagick: imagemagick-setup openexr fontconfig freetype glib2.0 ghostscript l
 		ac_cv_prog_c_openmp=-Xpreprocessor\ -fopenmp \
 		ac_cv_prog_cxx_openmp=-Xpreprocessor\ -fopenmp \
 		LDFLAGS="$(LDFLAGS) -lomp -lz"
-	$(SED) -i 's/|-fopenmp//' $(BUILD_WORK)/imagemagick/libtool
+	sed -i 's/|-fopenmp//' $(BUILD_WORK)/imagemagick/libtool
 	+$(MAKE) -C $(BUILD_WORK)/imagemagick
 	+$(MAKE) -C $(BUILD_WORK)/imagemagick install \
 		DESTDIR=$(BUILD_STAGE)/imagemagick

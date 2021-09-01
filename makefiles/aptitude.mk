@@ -16,7 +16,7 @@ aptitude:
 	@echo "Using previously built aptitude."
 else
 aptitude: aptitude-setup ncurses libboost xapian cwidget apt googletest
-	$(SED) -i 's|/usr/share/xml/docbook/stylesheet/nwalsh|$(DOCBOOK_XSL)|g' \
+	sed -i 's|/usr/share/xml/docbook/stylesheet/nwalsh|$(DOCBOOK_XSL)|g' \
 		$(BUILD_WORK)/aptitude/buildlib/docbook.mk \
 		$(BUILD_WORK)/aptitude/doc/aptitude-{txt,man,html}.xsl \
 		$(BUILD_WORK)/aptitude/doc/{de,nl,it,es,ja,en,ru,fr,pl,fi,cs}/Makefile.in

@@ -9,7 +9,7 @@ DEB_LIBMD_V   ?= $(LIBMD_VERSION)
 libmd-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://archive.hadrons.org/software/libmd/libmd-$(LIBMD_VERSION).tar.xz
 	$(call EXTRACT_TAR,libmd-$(LIBMD_VERSION).tar.xz,libmd-$(LIBMD_VERSION),libmd)
-	$(SED) -i 's|_MSC_VER|__APPLE__|' $(BUILD_WORK)/libmd/src/local-link.h
+	sed -i 's|_MSC_VER|__APPLE__|' $(BUILD_WORK)/libmd/src/local-link.h
 
 ifneq ($(wildcard $(BUILD_WORK)/libmd/.build_complete),)
 libmd:

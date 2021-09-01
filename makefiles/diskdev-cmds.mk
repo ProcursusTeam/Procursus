@@ -13,12 +13,12 @@ DEB_DISKDEV-CMDS_V   ?= $(DISKDEV-CMDS_VERSION)
 diskdev-cmds-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/diskdev_cmds/diskdev_cmds-$(DISKDEV-CMDS_VERSION).tar.gz
 	$(call EXTRACT_TAR,diskdev_cmds-$(DISKDEV-CMDS_VERSION).tar.gz,diskdev_cmds-$(DISKDEV-CMDS_VERSION),diskdev-cmds)
-	$(SED) -i -e '/#include <TargetConditionals.h>/d' \
+	sed -i -e '/#include <TargetConditionals.h>/d' \
 		$(BUILD_WORK)/diskdev-cmds/edt_fstab/edt_fstab.h \
 		$(BUILD_WORK)/diskdev-cmds/fsck.tproj/fsck.c
-	$(SED) -i 's/TARGET_OS_IPHONE/WHOISJOE/g' \
+	sed -i 's/TARGET_OS_IPHONE/WHOISJOE/g' \
 		$(BUILD_WORK)/diskdev-cmds/fsck.tproj/fsck.c
-	$(SED) -i -e '/TARGET_OS_OSX/d' \
+	sed -i -e '/TARGET_OS_OSX/d' \
 		$(BUILD_WORK)/diskdev-cmds/disklib/preen.c
 	mkdir -p $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{{s,}bin,libexec,share/man/man{1,5,8}}
 

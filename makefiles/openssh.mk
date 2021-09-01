@@ -25,7 +25,7 @@ openssh-setup: setup
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call DO_PATCH,openssh,openssh,-p1)
 endif
-	$(SED) -i 's/#UsePAM no/UsePAM yes/' $(BUILD_WORK)/openssh/sshd_config
+	sed -i 's/#UsePAM no/UsePAM yes/' $(BUILD_WORK)/openssh/sshd_config
 
 ifneq ($(wildcard $(BUILD_WORK)/openssh/.build_complete),)
 openssh:
@@ -40,7 +40,7 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	if ! [ -f $(BUILD_WORK)/openssh/configure ]; then \
 		cd $(BUILD_WORK)/openssh && autoreconf; \
 	fi
-	$(SED) -i '/HAVE_ENDIAN_H/d' $(BUILD_WORK)/openssh/config.h.in
+	sed -i '/HAVE_ENDIAN_H/d' $(BUILD_WORK)/openssh/config.h.in
 	cd $(BUILD_WORK)/openssh && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--sysconfdir=$(MEMO_PREFIX)/etc/ssh \

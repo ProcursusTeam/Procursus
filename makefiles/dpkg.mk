@@ -28,7 +28,7 @@ ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 dpkg: dpkg-setup gettext xz zstd libmd
 else
 dpkg: dpkg-setup gettext xz zstd libmd libiosexec
-	$(SED) -i '/base-bsd-darwin/a base-bsd-darwin-arm64		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
+	sed -i '/base-bsd-darwin/a base-bsd-darwin-arm64		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
 endif
 	cd $(BUILD_WORK)/dpkg && ./autogen
 	cd $(BUILD_WORK)/dpkg && ./configure -C \

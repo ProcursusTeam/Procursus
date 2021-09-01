@@ -50,8 +50,8 @@ redis: redis-setup libjemalloc openssl
 	for file in $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons/* \
 		$(BUILD_STAGE)/redis/$(MEMO_PREFIX)/etc/redis/* \
 		$(BUILD_STAGE)/redis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/*; do \
-			$(SED) -i 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' $$file; \
-			$(SED) -i 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $$file; \
+			sed -i 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' $$file; \
+			sed -i 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $$file; \
 	done
 
 	$(call AFTER_BUILD)
