@@ -16,7 +16,7 @@ fish-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/fish-shell/fish-shell/releases/download/$(FISH_VERSION)/fish-$(FISH_VERSION).tar.xz{,.asc}
 	$(call PGP_VERIFY,fish-$(FISH_VERSION).tar.xz,asc)
 	$(call EXTRACT_TAR,fish-$(FISH_VERSION).tar.xz,fish-$(FISH_VERSION),fish)
-	$(SED) -i '/codesign_on_mac/d' $(BUILD_WORK)/fish/CMakeLists.txt
+	sed -i '/codesign_on_mac/d' $(BUILD_WORK)/fish/CMakeLists.txt
 	$(call DO_PATCH,fish,fish,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/fish/.build_complete),)
