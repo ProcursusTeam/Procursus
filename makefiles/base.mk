@@ -28,7 +28,8 @@ $(MEMO_SUB_PREFIX)/{bin,games,include,sbin,share/{dict,misc}},\
 var/{backups,cache,db,empty,lib/misc,local,lock,log,logs,msgs,preferences,run,spool,tmp,vm}}
 endif
 ifneq (,$(findstring preboot,$(MEMO_TARGET)))
-	cp $(BUILD_MISC)/passwd/* $(BUILD_STAGE)/base/$(MEMO_PREFIX)/etc
+	$(SED) -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < $(BUILD_MISC)/passwd/passwd > $(BUILD_STAGE)/base/$(MEMO_PREFIX)/etc/passwd
+	$(SED) -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < $(BUILD_MISC)/passwd/master.passwd > $(BUILD_STAGE)/base/$(MEMO_PREFIX)/etc/master.passwd
 endif
 	touch $(BUILD_STAGE)/base/$(MEMO_PREFIX)/var/run/utmp
 
