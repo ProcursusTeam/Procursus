@@ -11,7 +11,7 @@ moon-buggy-setup: setup file-setup
 	$(call PGP_VERIFY,moon-buggy-$(MOON-BUGGY_VERSION).tar.gz)
 	$(call EXTRACT_TAR,moon-buggy-$(MOON-BUGGY_VERSION).tar.gz,moon-buggy-$(MOON-BUGGY_VERSION),moon-buggy)
 	cp -a $(BUILD_WORK)/file/config.sub $(BUILD_WORK)/moon-buggy
-	$(SED) -i 's|$$(DESTDIR)$$(bindir)/moon-buggy -c||' $(BUILD_WORK)/moon-buggy/Makefile.am
+	sed -i 's|$$(DESTDIR)$$(bindir)/moon-buggy -c||' $(BUILD_WORK)/moon-buggy/Makefile.am
 
 ifneq ($(wildcard $(BUILD_WORK)/moon-buggy/.build_complete),)
 moon-buggy:

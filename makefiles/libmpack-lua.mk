@@ -17,9 +17,9 @@ libmpack-lua-setup: setup
 	$(call EXTRACT_TAR,libmpack-lua-$(LIBMPACK-LUA_VERSION).tar.gz,libmpack-lua-$(LIBMPACK-LUA_VERSION),libmpack-lua/buildjit)
 	$(call EXTRACT_TAR,libmpack-lua-$(LIBMPACK-LUA_VERSION).tar.gz,libmpack-lua-$(LIBMPACK-LUA_VERSION),libmpack-lua/buildjit/bundle)
 	for ver in {1..3}; do \
-		$(SED) -i 's/mpack.so/liblua5.'$$ver'-mpack.0.dylib/' $(BUILD_WORK)/libmpack-lua/build5$$ver/Makefile; \
+		sed -i 's/mpack.so/liblua5.'$$ver'-mpack.0.dylib/' $(BUILD_WORK)/libmpack-lua/build5$$ver/Makefile; \
 	done
-	$(SED) -i 's/mpack.so/libluajit-5.1-mpack.0.dylib/' $(BUILD_WORK)/libmpack-lua/buildjit/Makefile
+	sed -i 's/mpack.so/libluajit-5.1-mpack.0.dylib/' $(BUILD_WORK)/libmpack-lua/buildjit/Makefile
 	mkdir -p $(BUILD_STAGE)/libmpack-lua/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 
 ifneq ($(wildcard $(BUILD_WORK)/libmpack-lua/.build_complete),)

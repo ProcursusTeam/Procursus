@@ -10,7 +10,7 @@ lua5.1-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.lua.org/ftp/lua-$(LUA5.1_VERSION).tar.gz
 	$(call EXTRACT_TAR,lua-$(LUA5.1_VERSION).tar.gz,lua-$(LUA5.1_VERSION),lua5.1)
 	$(call DO_PATCH,lua5.1,lua5.1,-p1)
-	$(SED) -i -e ':a; s|@MEMO_PREFIX@|$(MEMO_PREFIX)|g; ta' -e ':a; s|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g; ta' $(BUILD_WORK)/lua5.1/src/luaconf.h
+	sed -i -e ':a; s|@MEMO_PREFIX@|$(MEMO_PREFIX)|g; ta' -e ':a; s|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g; ta' $(BUILD_WORK)/lua5.1/src/luaconf.h
 
 ifneq ($(wildcard $(BUILD_WORK)/lua5.1/.build_complete),)
 lua5.1:

@@ -11,8 +11,8 @@ USBMUXD2_COMMIT  := 101def817e8763f5bee4a67abf2c976e1fb9e4ee
 usbmuxd2-setup: setup
 	$(call GITHUB_ARCHIVE,tihmstar,usbmuxd2,$(USBMUXD2_VERSION),$(USBMUXD2_COMMIT))
 	$(call EXTRACT_TAR,usbmuxd2-$(USBMUXD2_VERSION).tar.gz,usbmuxd2-$(USBMUXD2_COMMIT),usbmuxd2)
-	$(SED) -i 's/2.2.1/2.2.0/' $(BUILD_WORK)/usbmuxd2/configure.ac
-	$(SED) -i 's/va_list ap = {}/va_list ap = NULL/' $(BUILD_WORK)/usbmuxd2/usbmuxd2/log.c
+	sed -i 's/2.2.1/2.2.0/' $(BUILD_WORK)/usbmuxd2/configure.ac
+	sed -i 's/va_list ap = {}/va_list ap = NULL/' $(BUILD_WORK)/usbmuxd2/usbmuxd2/log.c
 
 ifneq ($(wildcard $(BUILD_WORK)/usbmuxd2/.build_complete),)
 usbmuxd2:

@@ -89,7 +89,7 @@ network-cmds-setup: setup
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/mbuf.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/sockio.h
 
-	$(SED) -i 's/#if INET6/#ifdef INET6/g' $(BUILD_WORK)/network-cmds/include/sys/sockio.h
+	sed -i 's/#if INET6/#ifdef INET6/g' $(BUILD_WORK)/network-cmds/include/sys/sockio.h
 
 ifneq ($(wildcard $(BUILD_WORK)/network-cmds/.build_complete),)
 network-cmds:

@@ -78,8 +78,8 @@ ncurses: ncurses-setup
 	done
 
 	for pc in formw menuw ncurses++w ncursesw panelw; do \
-		$(SED) -i '/Libs:/c\Libs: -l'$${pc}'' $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/$${pc}.pc; \
-		$(SED) -i '/Libs:/c\Libs: -l'$${pc}'' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/$${pc}.pc; \
+		sed -i '/Libs:/c\Libs: -l'$${pc}'' $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/$${pc}.pc; \
+		sed -i '/Libs:/c\Libs: -l'$${pc}'' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/$${pc}.pc; \
 	done
 
 	for file in form menu ncurses panel; do \

@@ -17,7 +17,7 @@ dash:
 	@echo "Using previously built dash."
 else
 dash: dash-setup libedit
-	find $(BUILD_WORK)/dash -name '*.c' -exec $(SED) -i 's/stat64/stat/g' "{}" \;
+	find $(BUILD_WORK)/dash -name '*.c' -exec sed -i 's/stat64/stat/g' "{}" \;
 	cd $(BUILD_WORK)/dash && ./autogen.sh && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--exec-prefix="" \

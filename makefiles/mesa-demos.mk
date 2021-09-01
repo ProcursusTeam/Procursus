@@ -9,7 +9,7 @@ DEB_MESA_DEMOS_V   ?= $(MESA_DEMOS_VERSION)
 mesa-demos-setup: setup
 	wget -q -nc -P$(BUILD_SOURCE) https://archive.mesa3d.org//demos/mesa-demos-$(MESA_DEMOS_VERSION).tar.gz
 	$(call EXTRACT_TAR,mesa-demos-$(MESA_DEMOS_VERSION).tar.gz,mesa-demos-$(MESA_DEMOS_VERSION),mesa-demos)
-	$(SED) -i s/OpenGL/GL/ $(BUILD_WORK)/mesa-demos/src/util/gl_wrap.h
+	sed -i s/OpenGL/GL/ $(BUILD_WORK)/mesa-demos/src/util/gl_wrap.h
 
 ifneq ($(wildcard $(BUILD_WORK)/mesa-demos/.build_complete),)
 mesa-demos:
