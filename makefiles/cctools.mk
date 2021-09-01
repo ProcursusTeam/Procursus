@@ -13,7 +13,7 @@ cctools-setup: setup
 	$(call GITHUB_ARCHIVE,tpoechtrager,cctools-port,$(CCTOOLS_COMMIT),$(CCTOOLS_COMMIT),cctools)
 	$(call EXTRACT_TAR,cctools-$(CCTOOLS_COMMIT).tar.gz,cctools-port-$(CCTOOLS_COMMIT)/cctools,cctools)
 	$(call DO_PATCH,ld64,cctools,-p0)
-	$(SED) -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' \
+	sed -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' \
 		-e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
 		-e 's|@BARE_PLATFORM@|$(BARE_PLATFORM)|g' \
 		$(BUILD_WORK)/cctools/ld64/src/ld/Options.cpp
@@ -49,7 +49,7 @@ cctools-package: cctools-stage
 	# cctools.mk Prep ld64
 	mv $(BUILD_DIST)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{dyldinfo,ld,machocheck,ObjectDump,unwinddump} $(BUILD_DIST)/ld64/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	mv $(BUILD_DIST)/cctools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/{dyldinfo,ld{,64},unwinddump}.1 $(BUILD_DIST)/ld64/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
-	cd $(BUILD_DIST)/ld64/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin && ln -s ld ld64
+	cd $(BUILD_DIST)/ld64/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin && $(LN_S) ld ld64
 
 	# cctools.mk Sign
 	$(call SIGN,cctools,general.xml)

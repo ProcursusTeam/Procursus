@@ -67,9 +67,9 @@ golang-package: golang-stage
 	cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg/{*_*,include,tool} $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg
 
 	# golang.mk Prep golang-go
-	ln -s ../lib/go-$(GOLANG_MAJOR_V)/bin/go $(BUILD_DIST)/golang-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/go
-	ln -s ../lib/go-$(GOLANG_MAJOR_V)/bin/gofmt $(BUILD_DIST)/golang-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gofmt
-	ln -s ../lib/go-$(GOLANG_MAJOR_V) $(BUILD_DIST)/golang-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go
+	$(LN_S) ../lib/go-$(GOLANG_MAJOR_V)/bin/go $(BUILD_DIST)/golang-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/go
+	$(LN_S) ../lib/go-$(GOLANG_MAJOR_V)/bin/gofmt $(BUILD_DIST)/golang-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gofmt
+	$(LN_S) ../lib/go-$(GOLANG_MAJOR_V) $(BUILD_DIST)/golang-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go
 	# golang.mk Sign
 	$(call SIGN,golang-$(GOLANG_MAJOR_V)-go,general.xml)
 

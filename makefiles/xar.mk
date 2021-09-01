@@ -26,9 +26,9 @@ xar: xar-setup openssl
 		ac_cv_lib_z_deflate=yes \
 		ac_cv_header_bzlib_h=yes \
 		ac_cv_lib_bz2_BZ2_bzCompress=yes
-	$(SED) -i 's|$(MACOSX_SYSROOT)/usr/lib|$(TARGET_SYSROOT)/usr/lib|g' $(BUILD_WORK)/xar/lib/Makefile.inc
-	$(SED) -i 's|$(MACOSX_SYSROOT)/usr/lib|$(TARGET_SYSROOT)/usr/lib|g' $(BUILD_WORK)/xar/src/Makefile.inc
-	$(SED) -i 's|$(MACOSX_SYSROOT)/usr/include|$(TARGET_SYSROOT)/usr/include|g' $(BUILD_WORK)/xar/Makefile
+	sed -i 's|$(MACOSX_SYSROOT)/usr/lib|$(TARGET_SYSROOT)/usr/lib|g' $(BUILD_WORK)/xar/lib/Makefile.inc
+	sed -i 's|$(MACOSX_SYSROOT)/usr/lib|$(TARGET_SYSROOT)/usr/lib|g' $(BUILD_WORK)/xar/src/Makefile.inc
+	sed -i 's|$(MACOSX_SYSROOT)/usr/include|$(TARGET_SYSROOT)/usr/include|g' $(BUILD_WORK)/xar/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/xar \
 		CFLAGS="$(CFLAGS) -I$(BUILD_WORK)/xar/lib"
 	+$(MAKE) -C $(BUILD_WORK)/xar install \

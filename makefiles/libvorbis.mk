@@ -11,7 +11,7 @@ libvorbis-setup: setup
 	$(call EXTRACT_TAR,libvorbis-$(LIBVORBIS_VERSION).tar.xz,libvorbis-$(LIBVORBIS_VERSION),libvorbis)
 
 	# don't build the html docs
-	$(SED) -ri 's/(SUBDIRS = .*)doc(.*)/\1 \2/' $(BUILD_WORK)/libvorbis/Makefile.in
+	sed -ri 's/(SUBDIRS = .*)doc(.*)/\1 \2/' $(BUILD_WORK)/libvorbis/Makefile.in
 
 ifneq ($(wildcard $(BUILD_WORK)/libvorbis/.build_complete),)
 libvorbis:

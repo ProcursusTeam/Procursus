@@ -19,7 +19,7 @@ launchctl-package: launchctl-stage
 	# launchctl.mk Prep launchctl
 	cp -a $(BUILD_MISC)/launchctl.$(MEMO_CFVER) $(BUILD_DIST)/launchctl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/launchctl
 ifneq ($(MEMO_SUB_PREFIX),)
-	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/launchctl $(BUILD_DIST)/launchctl/$(MEMO_PREFIX)/bin/launchctl
+	$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/launchctl $(BUILD_DIST)/launchctl/$(MEMO_PREFIX)/bin/launchctl
 endif
 
 	# launchctl.mk Sign launchctl

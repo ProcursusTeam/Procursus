@@ -9,7 +9,7 @@ DEB_FIGLET_V   ?= $(FIGLET_VERSION)
 figlet-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) ftp://ftp.figlet.org/pub/figlet/program/unix/figlet-$(FIGLET_VERSION).tar.gz
 	$(call EXTRACT_TAR,figlet-$(FIGLET_VERSION).tar.gz,figlet-$(FIGLET_VERSION),figlet)
-	$(SED) -i '/#include <stdio.h>/a #include <getopt.h>' $(BUILD_WORK)/figlet/figlet.c
+	sed -i '/#include <stdio.h>/a #include <getopt.h>' $(BUILD_WORK)/figlet/figlet.c
 
 ifneq ($(wildcard $(BUILD_WORK)/figlet/.build_complete),)
 figlet:
