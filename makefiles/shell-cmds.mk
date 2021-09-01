@@ -39,7 +39,7 @@ shell-cmds-package: shell-cmds-stage
 	# shell-cmds.mk Prep shell-cmds
 	cp -a $(BUILD_STAGE)/shell-cmds $(BUILD_DIST)
 ifneq ($(MEMO_SUB_PREFIX),)
-	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/su $(BUILD_DIST)/shell-cmds/$(MEMO_PREFIX)/bin
+	$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/su $(BUILD_DIST)/shell-cmds/$(MEMO_PREFIX)/bin
 endif
 
 	# shell-cmds.mk Sign

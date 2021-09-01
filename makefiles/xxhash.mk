@@ -9,7 +9,7 @@ DEB_XXHASH_V   ?= $(XXHASH_VERSION)
 xxhash-setup: setup
 	$(call GITHUB_ARCHIVE,Cyan4973,xxhash,$(XXHASH_VERSION),v$(XXHASH_VERSION))
 	$(call EXTRACT_TAR,xxhash-$(XXHASH_VERSION).tar.gz,xxHash-$(XXHASH_VERSION),xxhash)
-	$(SED) -i 's/UNAME :=/UNAME ?=/' $(BUILD_WORK)/xxhash/Makefile
+	sed -i 's/UNAME :=/UNAME ?=/' $(BUILD_WORK)/xxhash/Makefile
 
 ifneq ($(wildcard $(BUILD_WORK)/xxhash/.build_complete),)
 xxhash:

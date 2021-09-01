@@ -75,7 +75,7 @@ ffmpeg: ffmpeg-setup aom dav1d fontconfig freetype frei0r gnutls lame libass lib
 		--disable-libjack \
 		--disable-indev=jack \
 		$(FFMPEG_CONFIGURE_FLAGS)
-	$(SED) -i 's/-lSDL2/-lSDL2 -lSDL2main/g' $(BUILD_WORK)/ffmpeg/ffbuild/config.mak
+	sed -i 's/-lSDL2/-lSDL2 -lSDL2main/g' $(BUILD_WORK)/ffmpeg/ffbuild/config.mak
 	+$(MAKE) -C $(BUILD_WORK)/ffmpeg
 	+$(MAKE) -C $(BUILD_WORK)/ffmpeg install \
 		DESTDIR=$(BUILD_STAGE)/ffmpeg

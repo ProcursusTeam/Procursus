@@ -17,8 +17,8 @@ futurerestore-setup: setup tsschecker-setup
 	$(call EXTRACT_TAR,idevicerestore-$(FUTURERESTORE_IDEVICERESTORE_COMMIT).tar.gz,idevicerestore-$(FUTURERESTORE_IDEVICERESTORE_COMMIT),futurerestore/external/idevicerestore)
 	cp -R $(BUILD_WORK)/tsschecker $(BUILD_WORK)/futurerestore/external
 
-	$(SED) -i 's/git rev\-list \-\-count HEAD/printf ${FUTURERESTORE_VERSION}/g' $(BUILD_WORK)/futurerestore/configure.ac
-	$(SED) -i 's/git rev\-parse HEAD/printf ${FUTURERESTORE_COMMIT}/g' $(BUILD_WORK)/futurerestore/configure.ac
+	sed -i 's/git rev\-list \-\-count HEAD/printf ${FUTURERESTORE_VERSION}/g' $(BUILD_WORK)/futurerestore/configure.ac
+	sed -i 's/git rev\-parse HEAD/printf ${FUTURERESTORE_COMMIT}/g' $(BUILD_WORK)/futurerestore/configure.ac
 
 ifneq ($(wildcard $(BUILD_WORK)/futurerestore/.build_complete),)
 futurerestore:

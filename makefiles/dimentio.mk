@@ -56,7 +56,7 @@ dimentio: dimentio-setup
 	cp -a $(BUILD_WORK)/dimentio/libdimentio*.{a,dylib} $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_WORK)/dimentio/libdimentio.h $(BUILD_STAGE)/dimentio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	cp -a $(BUILD_WORK)/dimentio/libdimentio.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	ln -sf libdimentio.$(DIMENTIO_SOVERSION).dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdimentio.dylib
+	$(LN_S) libdimentio.$(DIMENTIO_SOVERSION).dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdimentio.dylib
 	$(call AFTER_BUILD)
 endif
 
@@ -73,7 +73,7 @@ dimentio-package: dimentio-stage
 	# dimentio.mk Prep libdimentio-dev
 	cp -a $(BUILD_STAGE)/dimentio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdimentio.a $(BUILD_DIST)/libdimentio-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/dimentio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libdimentio.h $(BUILD_DIST)/libdimentio-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	ln -s libdimentio.$(DIMENTIO_SOVERSION).dylib $(BUILD_DIST)/libdimentio-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdimentio.dylib
+	$(LN_S) libdimentio.$(DIMENTIO_SOVERSION).dylib $(BUILD_DIST)/libdimentio-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdimentio.dylib
 
 	# dimentio.mk Prep dimentio
 	cp -a $(BUILD_STAGE)/dimentio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dimentio $(BUILD_DIST)/dimentio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin

@@ -27,7 +27,7 @@ libgpg-error:
 	@echo "Using previously built libgpg-error."
 else
 libgpg-error: libgpg-error-setup gettext
-	$(SED) -i '/{"armv7-unknown-linux-gnueabihf"  },/a \ \ \ \ {"$(GNU_HOST_TRIPLE)",  "$(GPG_SCHEME)" },' $(BUILD_WORK)/libgpg-error/src/mkheader.c
+	sed -i '/{"armv7-unknown-linux-gnueabihf"  },/a \ \ \ \ {"$(GNU_HOST_TRIPLE)",  "$(GPG_SCHEME)" },' $(BUILD_WORK)/libgpg-error/src/mkheader.c
 	cd $(BUILD_WORK)/libgpg-error && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libgpg-error install \

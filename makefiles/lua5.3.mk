@@ -10,7 +10,7 @@ lua5.3-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.lua.org/ftp/lua-$(LUA5.3_VERSION).tar.gz
 	$(call EXTRACT_TAR,lua-$(LUA5.3_VERSION).tar.gz,lua-$(LUA5.3_VERSION),lua5.3)
 	$(call DO_PATCH,lua5.3,lua5.3,-p1)
-	$(SED) -i -e ':a; s|@MEMO_PREFIX@|$(MEMO_PREFIX)|g; ta' -e ':a; s|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g; ta' $(BUILD_WORK)/lua5.3/src/luaconf.h
+	sed -i -e ':a; s|@MEMO_PREFIX@|$(MEMO_PREFIX)|g; ta' -e ':a; s|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g; ta' $(BUILD_WORK)/lua5.3/src/luaconf.h
 
 ifneq ($(wildcard $(BUILD_WORK)/lua5.3/.build_complete),)
 lua5.3:
@@ -40,7 +40,7 @@ lua5.3: lua5.3-setup readline
 		INSTALL_MAN="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1" \
 		TO_BIN="lua5.3 luac5.3" \
 		TO_LIB="liblua5.3.a liblua5.3.0.dylib"
-	ln -sf liblua5.3.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.3.dylib
+	$(LN_S) liblua5.3.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.3.dylib
 	$(call AFTER_BUILD)
 endif
 
@@ -57,11 +57,11 @@ lua5.3-package: lua5.3-stage
 
 	# lua5.3.mk Prep liblua5.3-0
 	$(INSTALL) -Dm755 $(BUILD_STAGE)/lua5.3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.3.0.dylib $(BUILD_DIST)/liblua5.3-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.3.0.dylib
-	ln -sf liblua5.3.0.dylib $(BUILD_DIST)/liblua5.3-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.3.0.0.0.dylib
+	$(LN_S) liblua5.3.0.dylib $(BUILD_DIST)/liblua5.3-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.3.0.0.0.dylib
 
 	# lua5.3.mk Prep liblua5.3-dev
 	cp -a $(BUILD_STAGE)/lua5.3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/liblua5.3-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	ln -sf liblua5.3.0.dylib $(BUILD_DIST)/liblua5.3-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.3.dylib
+	$(LN_S) liblua5.3.0.dylib $(BUILD_DIST)/liblua5.3-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.3.dylib
 
 	# lua5.3.mk Sign
 	$(call SIGN,lua5.3,general.xml)

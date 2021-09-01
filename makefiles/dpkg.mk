@@ -28,7 +28,7 @@ ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 dpkg: dpkg-setup gettext xz zstd libmd
 else
 dpkg: dpkg-setup gettext xz zstd libmd libiosexec
-	$(SED) -i '/base-bsd-darwin/a base-bsd-darwin-arm64		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
+	sed -i '/base-bsd-darwin/a base-bsd-darwin-arm64		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
 endif
 	cd $(BUILD_WORK)/dpkg && ./autogen
 	cd $(BUILD_WORK)/dpkg && ./configure -C \
@@ -50,7 +50,7 @@ endif
 	+$(MAKE) -C $(BUILD_WORK)/dpkg install \
 		DESTDIR="$(BUILD_STAGE)/dpkg"
 	mkdir -p $(BUILD_STAGE)/dpkg/$(MEMO_PREFIX)/var/lib
-	ln -s /$(MEMO_PREFIX)/Library/dpkg $(BUILD_STAGE)/dpkg/$(MEMO_PREFIX)/var/lib/dpkg
+	$(LN_S) /$(MEMO_PREFIX)/Library/dpkg $(BUILD_STAGE)/dpkg/$(MEMO_PREFIX)/var/lib/dpkg
 	$(call AFTER_BUILD)
 endif
 
@@ -71,7 +71,7 @@ dpkg-package: dpkg-stage
 	cp -a $(BUILD_STAGE)/dpkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/dpkg/{{abi,cpu,os,tuple}table,sh} $(BUILD_DIST)/dpkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/dpkg
 	mkdir -p $(BUILD_DIST)/dpkg/$(MEMO_PREFIX)/etc/dpkg/origins/
 	echo -e "Vendor: Procursus\nVendor-URL: https://github.com/ProcursusTeam/Procursus/\nBugs: mailto://me@diatrus.com" > $(BUILD_DIST)/dpkg/$(MEMO_PREFIX)/etc/dpkg/origins/procursus
-	$(LN) -s procursus $(BUILD_DIST)/dpkg/$(MEMO_PREFIX)/etc/dpkg/origins/default
+	$(LN_S) procursus $(BUILD_DIST)/dpkg/$(MEMO_PREFIX)/etc/dpkg/origins/default
 
 	# dpkg.mk Prep dpkg-dev
 	cp -a $(BUILD_STAGE)/dpkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dpkg-{architecture,buildflags,buildpackage,checkbuilddeps,distaddfile,genbuildinfo,genchanges,gencontrol,gensymbols,mergechangelogs,name,parsechangelog,scanpackages,scansources,shlibdeps,source,vendor} $(BUILD_DIST)/dpkg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin

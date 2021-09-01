@@ -17,7 +17,7 @@ pincrush:
 else
 pincrush: pincrush-setup libpng16
 	cd $(BUILD_WORK)/pincrush; \
-	$(SED) -i '/#include <stdbool.h>/a #include <string.h>' pincrush.c; \
+	sed -i '/#include <stdbool.h>/a #include <string.h>' pincrush.c; \
 	$(CC) $(CFLAGS) $(LDFLAGS) -DVERSION=\"$(PINCRUSH_VERSION)\" -o $(BUILD_STAGE)/pincrush/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pincrush pincrush.c -lpng16 -lz
 	$(call AFTER_BUILD)
 endif

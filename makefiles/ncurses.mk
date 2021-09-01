@@ -67,25 +67,25 @@ ncurses: ncurses-setup
 
 	for h in $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw/*; do \
 		if [[ ! -d $$h ]]; then \
-			ln -srf $$h $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include; \
+			$(LN_S) $$h $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include; \
 		fi \
 	done
 
 	for h in $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw/*; do \
 		if [[ ! -d $$h ]]; then \
-			ln -srf $$h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include; \
+			$(LN_S) $$h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include; \
 		fi \
 	done
 
 	for pc in formw menuw ncurses++w ncursesw panelw; do \
-		$(SED) -i '/Libs:/c\Libs: -l'$${pc}'' $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/$${pc}.pc; \
-		$(SED) -i '/Libs:/c\Libs: -l'$${pc}'' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/$${pc}.pc; \
+		sed -i '/Libs:/c\Libs: -l'$${pc}'' $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/$${pc}.pc; \
+		sed -i '/Libs:/c\Libs: -l'$${pc}'' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/$${pc}.pc; \
 	done
 
 	for file in form menu ncurses panel; do \
-		ln -sf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/lib$${file}w.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/lib$${file}.dylib; \
+		$(LN_S) $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/lib$${file}w.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/lib$${file}.dylib; \
 	done
-	ln -sf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcurses.dylib
+	$(LN_S) $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcurses.dylib
 
 	$(call AFTER_BUILD)
 endif

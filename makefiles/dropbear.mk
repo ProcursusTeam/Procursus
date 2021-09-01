@@ -10,7 +10,7 @@ dropbear-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/mkj/dropbear/archive/DROPBEAR_2020.81.tar.gz
 	$(call EXTRACT_TAR,DROPBEAR_$(DROPBEAR_VERSION).tar.gz,dropbear-DROPBEAR_$(DROPBEAR_VERSION),dropbear)
 	$(call DO_PATCH,dropbear,dropbear,-p1)
-	$(SED) -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
+	sed -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
 		$(BUILD_WORK)/dropbear/localoptions.h
 
 ifneq ($(wildcard $(BUILD_WORK)/dropbear/.build_complete),)
@@ -43,11 +43,11 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 		DESTDIR=$(BUILD_STAGE)/dropbear
 	mkdir -p $(BUILD_STAGE)/dropbear/$(MEMO_PREFIX)/Library/LaunchDaemons
 	cp $(BUILD_MISC)/dropbear/com.mkj.dropbear.plist $(BUILD_STAGE)/dropbear/$(MEMO_PREFIX)/Library/LaunchDaemons
-	$(SED) -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
+	sed -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
 		$(BUILD_STAGE)/dropbear/$(MEMO_PREFIX)/Library/LaunchDaemons/com.mkj.dropbear.plist
 	mkdir -p $(BUILD_STAGE)/dropbear/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
 	cp $(BUILD_MISC)/dropbear/dropbear-wrapper $(BUILD_STAGE)/dropbear/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
-	$(SED) -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
+	sed -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
 		$(BUILD_STAGE)/dropbear/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/dropbear-wrapper
 	$(call AFTER_BUILD)
 endif
