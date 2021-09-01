@@ -11,8 +11,8 @@ img4tool-setup: setup
 	$(call GITHUB_ARCHIVE,tihmstar,img4tool,$(IMG4TOOL_VERSION),$(IMG4TOOL_VERSION))
 	$(call EXTRACT_TAR,img4tool-$(IMG4TOOL_VERSION).tar.gz,img4tool-$(IMG4TOOL_VERSION),img4tool)
 	
-	$(SED) -i 's/git rev\-list \-\-count HEAD/printf ${IMG4TOOL_VERSION}/g' $(BUILD_WORK)/img4tool/configure.ac
-	$(SED) -i 's/git rev\-parse HEAD/printf ${IMG4TOOL_COMMIT}/g' $(BUILD_WORK)/img4tool/configure.ac
+	sed -i 's/git rev\-list \-\-count HEAD/printf ${IMG4TOOL_VERSION}/g' $(BUILD_WORK)/img4tool/configure.ac
+	sed -i 's/git rev\-parse HEAD/printf ${IMG4TOOL_COMMIT}/g' $(BUILD_WORK)/img4tool/configure.ac
 
 ifneq ($(wildcard $(BUILD_WORK)/img4tool/.build_complete),)
 img4tool:
