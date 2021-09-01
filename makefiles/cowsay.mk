@@ -20,8 +20,8 @@ cowsay: cowsay-setup
 	cp -a $(BUILD_WORK)/cowsay/cowsay $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/games
 	cp -a $(BUILD_WORK)/cowsay/cowsay.1 $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_WORK)/cowsay/cows $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	ln -s cowsay $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/games/cowthink
-	ln -s cowsay.1.zst $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/cowthink.1
+	$(LN_S) cowsay $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/games/cowthink
+	$(LN_S) cowsay.1.zst $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/cowthink.1
 	$(call AFTER_BUILD)
 endif
 

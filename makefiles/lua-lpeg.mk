@@ -36,7 +36,7 @@ lua-lpeg: lua-lpeg-setup libuv1 lua5.1 lua5.2 lua5.3 luajit
 		$(MAKE) -C $(BUILD_WORK)/lua-lpeg/build5$$ver/bundle macosx \
 			LUADIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/lua5.$$ver"; \
 		$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.$$ver-lpeg.2.dylib $(BUILD_WORK)/lua-lpeg/build5$$ver/liblua5.$$ver-lpeg.2.dylib; \
-		ln -sf liblua5.$$ver-lpeg.2.dylib $(BUILD_WORK)/lua-lpeg/build5$$ver/liblua5.$$ver-lpeg.dylib; \
+		$(LN_S) liblua5.$$ver-lpeg.2.dylib $(BUILD_WORK)/lua-lpeg/build5$$ver/liblua5.$$ver-lpeg.dylib; \
 		cp -a $(BUILD_WORK)/lua-lpeg/build5$$ver/liblua5.$$ver-lpeg*.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib; \
 		cp -a $(BUILD_WORK)/lua-lpeg/build5$$ver/liblua5.$$ver-lpeg*.dylib $(BUILD_STAGE)/lua-lpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib; \
 		mkdir -p $(BUILD_STAGE)/lua-lpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/lua/5.$$ver/; \
@@ -48,7 +48,7 @@ lua-lpeg: lua-lpeg-setup libuv1 lua5.1 lua5.2 lua5.3 luajit
 	$(MAKE) -C $(BUILD_WORK)/lua-lpeg/buildjit/bundle macosx \
 		LUADIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/luajit-2.1"
 	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit-5.1-lpeg.2.dylib $(BUILD_WORK)/lua-lpeg/buildjit/libluajit-5.1-lpeg.2.dylib
-	ln -sf liblua5.1-lpeg.2.dylib $(BUILD_WORK)/lua-lpeg/buildjit/libluajit-5.1-lpeg.dylib
+	$(LN_S) liblua5.1-lpeg.2.dylib $(BUILD_WORK)/lua-lpeg/buildjit/libluajit-5.1-lpeg.dylib
 	cp -a $(BUILD_WORK)/lua-lpeg/buildjit/libluajit-5.1-lpeg*.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_WORK)/lua-lpeg/buildjit/libluajit-5.1-lpeg*.dylib $(BUILD_STAGE)/lua-lpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	mkdir -p $(BUILD_STAGE)/lua-lpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/lua/5.1/

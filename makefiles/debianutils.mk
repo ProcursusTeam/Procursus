@@ -42,7 +42,7 @@ debianutils-package: debianutils-stage
 	# debianutils.mk Prep debianutils
 	cp -a $(BUILD_STAGE)/debianutils $(BUILD_DIST)
 ifneq ($(MEMO_SUB_PREFIX),)
-	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/run-parts $(BUILD_DIST)/debianutils/$(MEMO_PREFIX)/bin
+	$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/run-parts $(BUILD_DIST)/debianutils/$(MEMO_PREFIX)/bin
 endif
 
 	# debianutils.mk Sign

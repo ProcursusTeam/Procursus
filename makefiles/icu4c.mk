@@ -37,8 +37,8 @@ icu4c: icu4c-setup
 
 	for lib in $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicu*.$(ICU_VERSION).dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicu*.$(ICU_VERSION).dylib; do \
 		$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/$${basename $${lib} .$(ICU_VERSION).dylib}.$(ICU_API_V).dylib $$lib; \
-		ln -sf $${basename $${lib} .$(ICU_VERSION).dylib}.$(ICU_VERSION).dylib $${echo $$lib | cut -d. -f-1}.$(ICU_API_V).dylib; \
-		ln -sf $${basename $${lib} .$(ICU_VERSION).dylib}.$(ICU_API_V).dylib $${echo $$lib | cut -d. -f-1}.dylib; \
+		$(LN_S) $${basename $${lib} .$(ICU_VERSION).dylib}.$(ICU_VERSION).dylib $${echo $$lib | cut -d. -f-1}.$(ICU_API_V).dylib; \
+		$(LN_S) $${basename $${lib} .$(ICU_VERSION).dylib}.$(ICU_API_V).dylib $${echo $$lib | cut -d. -f-1}.dylib; \
 	done
 
 	for stuff in $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicu*.$(ICU_VERSION).dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicu*.$(ICU_VERSION).dylib $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/!(icu-config); do \
