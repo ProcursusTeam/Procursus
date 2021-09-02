@@ -124,9 +124,9 @@ ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
 BARE_PLATFORM        := iPhoneOS
 export IPHONEOS_DEPLOYMENT_TARGET
 
-else ifeq ($(MEMO_TARGET),iphoneos-arm64-preboot)
+else ifeq ($(MEMO_TARGET),iphoneos-arm64-rootless)
 ifneq ($(MEMO_QUIET),1)
-$(warning Building for iOS with preboot prefix)
+$(warning Building for iOS with rootless prefix)
 endif # ($(MEMO_QUIET),1)
 MEMO_ARCH            := arm64
 PLATFORM             := iphoneos
@@ -143,9 +143,9 @@ ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
 BARE_PLATFORM        := iPhoneOS
 export IPHONEOS_DEPLOYMENT_TARGET
 
-else ifeq ($(MEMO_TARGET),iphoneos-arm64e-preboot)
+else ifeq ($(MEMO_TARGET),iphoneos-arm64e-rootless)
 ifneq ($(MEMO_QUIET),1)
-$(warning Building for iOS arm64e with preboot prefix)
+$(warning Building for iOS arm64e with rootless prefix)
 endif # ($(MEMO_QUIET),1)
 MEMO_ARCH            := arm64e
 PLATFORM             := iphoneos
@@ -707,8 +707,17 @@ PACK = if [ -z "$(4)" ]; then \
 	SIZE=$$(du -sk $(BUILD_DIST)/$(1) | cut -f 1); \
 	mkdir -p $(BUILD_DIST)/$(1)/DEBIAN; \
 	for i in control postinst preinst postrm prerm extrainst_ conffiles; do \
-		for n in $$i $$i.$(PLATFORM); do \
-			if [ -f "$(BUILD_INFO)/$(1).$$n" ]; then \
+		for n in $$i $$i.$(PLATFORM) $$i.$(PLATFORM); do \
+			if [ -f "$(BUILD_INFO)/$(1).$$n.rootless" ] && [ ! -z "$(findstring rootless,$(MEMO_TARGET))" ]; then \
+				sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' \
+					-e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
+					-e 's|@MEMO_ALT_PREFIX@|$(MEMO_ALT_PREFIX)|g' \
+					-e 's|@GNU_PREFIX@|$(GNU_PREFIX)|g' \
+					-e 's|@BARE_PLATFORM@|$(BARE_PLATFORM)|g' \
+					-e 's/@$(2)@/$($(2))/g' \
+					-e 's/@DEB_MAINTAINER@/$(DEB_MAINTAINER)/g' \
+					-e 's/@DEB_ARCH@/$(DEB_ARCH)/g' < $(BUILD_INFO)/$(1).$$n.rootless > $(BUILD_DIST)/$(1)/DEBIAN/$$i; \
+			elif [ -f "$(BUILD_INFO)/$(1).$$n" ]; then \
 				sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' \
 					-e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
 					-e 's|@MEMO_ALT_PREFIX@|$(MEMO_ALT_PREFIX)|g' \
