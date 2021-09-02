@@ -672,7 +672,7 @@ endif
 ###
 
 AFTER_BUILD = \
-	if [ ! -z "$(MEMO_PREFIX)" ]; then \
+	if [ ! -z "$(MEMO_PREFIX)" ] && [ -d "$(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" ]; then \
 		rm -f $(BUILD_STAGE)/$@/._lib_cache && touch $(BUILD_STAGE)/$@/._lib_cache; \
 		for file in $$(find $(BUILD_STAGE)/$@ -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
 			$(STRIP) -x $$file; \
@@ -683,6 +683,7 @@ AFTER_BUILD = \
 			fi; \
 		done; \
 		for file in $$(find $(BUILD_STAGE)/$@ -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
+			$(I_N_T) -add_rpath "@loader_path/$$(realpath --relative-to=$$(dirname $$file) $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))/lib" $$file; \
 			cat $(BUILD_STAGE)/$@/._lib_cache | while read line; do \
 				$(I_N_T) -change $$line @rpath/$$(basename $$line) $$file; \
 			done; \
