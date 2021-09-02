@@ -644,7 +644,6 @@ DO_PATCH    = cd $(BUILD_PATCH)/$(1); \
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 SIGN = 	for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
-			$(STRIP) -x $$file; \
 			if [ $${file\#\#*.} = "dylib" ] || [ $${file\#\#*.} = "bundle" ] || [ $${file\#\#*.} = "so" ]; then \
 				$(LDID) -S $$file; \
 			else \
@@ -661,7 +660,6 @@ SIGN = 	CODESIGN_FLAGS="--sign $(CODESIGN_IDENTITY) --force --deep "; \
 			fi; \
 		fi; \
 		for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
-			$(STRIP) -x $$file; \
 			codesign --remove $$file &> /dev/null; \
 			codesign $$CODESIGN_FLAGS $$file &> /dev/null; \
 		done
@@ -673,10 +671,26 @@ endif
 #
 ###
 
-AFTER_BUILD = touch $(BUILD_WORK)/$@/.build_complete; \
+AFTER_BUILD = \
+	rm -f $(BUILD_STAGE)/$@/._lib_cache && touch $(BUILD_STAGE)/$@/._lib_cache; \
+	for file in $$(find $(BUILD_STAGE)/$@ -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
+		$(STRIP) -x $$file; \
+		INSTALL_NAME=$$(otool -D $$file); \
+		if [ ! -z "$$INSTALL_NAME" ]; then \
+			$(I_N_T) -id @rpath/$$(basename $$file) $$file; \
+			echo "$$INSTALL_NAME" >> $(BUILD_STAGE)/$@/._lib_cache
+		fi; \
+	done; \
+	for file in $$(find $(BUILD_STAGE)/$@ -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
+		cat $(BUILD_STAGE)/$@/._lib_cache | while read line; do \
+			$(I_N_T) -change $$line @rpath/$$(basename $$line) $$file; \
+		done; \
+	done; \
+	touch $(BUILD_WORK)/$@/.build_complete; \
 	find $(BUILD_BASE) -name '*.la' -type f -delete
 
-PACK = if [ -z "$(4)" ]; then \
+PACK = \
+	if [ -z "$(4)" ]; then \
 		find $(BUILD_DIST)/$(1) -name '*.la' -type f -delete; \
 	fi; \
 	rm -f $(BUILD_DIST)/$(1)/.build_complete; \
