@@ -12,7 +12,7 @@ xpwn-setup: setup
 	$(call EXTRACT_TAR,xpwn-$(XPWN_COMMIT).tar.gz,xpwn-$(XPWN_COMMIT),xpwn)
 	$(call DO_PATCH,xpwn,xpwn,-p1)
 
-	$(SED) -i 's/powerpc-apple-darwin8-libtool/libtool/' $(BUILD_WORK)/xpwn/ipsw-patch/CMakeLists.txt
+	sed -i 's/powerpc-apple-darwin8-libtool/libtool/' $(BUILD_WORK)/xpwn/ipsw-patch/CMakeLists.txt
 
 ifneq ($(wildcard $(BUILD_WORK)/xpwn/.build_complete),)
 xpwn:

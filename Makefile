@@ -4,7 +4,7 @@ endif
 
 export LANG := C
 
-ifeq ($(shell /usr/bin/env bash --version | grep -iq 'version 5' && echo 1),1)
+ifeq ($(shell LANG=C /usr/bin/env bash --version | grep -iq 'version 5' && echo 1),1)
 SHELL := /usr/bin/env bash
 else
 $(error Install bash 5.0)
@@ -590,7 +590,7 @@ endif
 
 EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 		cd $(BUILD_WORK) && \
-		$(TAR) -xf $(BUILD_SOURCE)/$(1) && \
+		tar -xf $(BUILD_SOURCE)/$(1) && \
 		mkdir -p $(3); \
 		chmod -R 0755 $(2); \
 		cp -a $(2)/. $(3); \
@@ -646,9 +646,9 @@ PACK = if [ -z "$(4)" ]; then \
 	rm -rf $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{info,doc}; \
 	find $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -exec zstd -19 --rm '{}' \; 2> /dev/null; \
 	for file in AUTHORS COPYING LICENSE NEWS README THANKS TODO; do \
-		if [ -f "$(BUILD_WORK)/$$(echo $@ | $(SED) 's/-package//')/$$file" ]; then \
+		if [ -f "$(BUILD_WORK)/$$(echo $@ | sed 's/-package//')/$$file" ]; then \
 			mkdir -p $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1); \
-			cp -a $(BUILD_WORK)/$$(echo $@ | $(SED) 's/-package//')/$$file $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1); \
+			cp -a $(BUILD_WORK)/$$(echo $@ | sed 's/-package//')/$$file $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1); \
 			if [ ! "$$file" = "AUTHORS" ] && [ ! "$$file" = "COPYING" ] && [ ! "$$file" = "LICENSE" ]; then \
 				zstd -19 --rm $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1)/$$file 2> /dev/null; \
 			fi; \
@@ -672,7 +672,7 @@ PACK = if [ -z "$(4)" ]; then \
 	for i in control postinst preinst postrm prerm extrainst_ conffiles; do \
 		for n in $$i $$i.$(PLATFORM); do \
 			if [ -f "$(BUILD_INFO)/$(1).$$n" ]; then \
-				$(SED) -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' \
+				sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' \
 					-e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
 					-e 's|@MEMO_ALT_PREFIX@|$(MEMO_ALT_PREFIX)|g' \
 					-e 's|@GNU_PREFIX@|$(GNU_PREFIX)|g' \
@@ -721,17 +721,9 @@ ifneq ($(call HAS_COMMAND,triehash),1)
 $(error Install triehash)
 endif
 
-ifeq ($(call HAS_COMMAND,gmake),1)
-# Fix this check.
-endif
-
-TAR  := tar # TODO: remove
-
 ifneq ($(shell PATH=$(PATH) tar --version | grep -q GNU && echo 1),1)
 $(error Install GNU tar)
 endif
-
-SED  := sed # TODO: remove
 
 ifneq ($(shell PATH=$(PATH) sed --version | grep -q GNU && echo 1),1)
 $(error Install GNU sed)
@@ -799,35 +791,12 @@ ifneq ($(shell PATH=$(PATH) find --version | grep -q 'GNU find' && echo 1),1)
 $(error Install GNU findutils)
 endif
 
-ifneq ($(shell PATH=$(PATH) rmdir --version | grep -q 'GNU coreutils' && echo 1),1)
-$(error Install GNU coreutils)
-endif
-
 ifeq ($(shell PATH=$(PATH) install --version | grep -q 'GNU coreutils' && echo 1),1)
-export INSTALL  := $(shell PATH=$(PATH) which install) --strip-program=$(STRIP)
+export INSTALL := $(shell PATH=$(PATH) which install) --strip-program=$(STRIP)
+export LN_S    := ln -srf
 else
 $(error Install GNU coreutils)
 endif
-
-ifeq ($(shell PATH=$(PATH) wc --version | grep -q 'GNU coreutils' && echo 1),1)
-WC := wc
-else
-$(error Install GNU coreutils)
-endif
-
-ifeq ($(shell PATH=$(PATH) cp --version | grep -q 'GNU coreutils' && echo 1),1)
-CP := cp
-else
-$(error Install GNU coreutils)
-endif
-export CP
-
-ifeq ($(shell PATH=$(PATH) ln --version | grep -q 'GNU coreutils' && echo 1),1)
-LN := ln
-else
-$(error Install GNU coreutils)
-endif
-export LN
 
 ifneq  ($(shell PATH=$(PATH) file -bi $(BUILD_MISC)/launchctl.1700 | grep -q 'x-mach-binary; charset=binary' && echo 1),1)
 $(error Install better file from Procursus - sudo apt install file)
@@ -848,8 +817,6 @@ DPKG_TYPE ?= gzip
 endif
 ifeq ($(call HAS_COMMAND,dpkg-deb),1)
 DPKG_DEB := dpkg-deb -Z$(DPKG_TYPE)
-else ifeq ($(call HAS_COMMAND,dm.pl),1)
-DPKG_DEB := dm.pl -Z$(DPKG_TYPE)
 else
 $(error Install dpkg-deb)
 endif
@@ -913,7 +880,7 @@ all:: package
 proenv:
 	@echo -e "proenv() {"
 	@echo -e "\tMEMO_TARGET='$(MEMO_TARGET)' PLATFORM='$(PLATFORM)' MEMO_ARCH='$(MEMO_ARCH)' TARGET_SYSROOT='$(TARGET_SYSROOT)' MACOSX_SYSROOT='$(MACOSX_SYSROOT)' GNU_HOST_TRIPLE='$(GNU_HOST_TRIPLE)'"
-	@echo -e "\tCC='$(CC)' CXX='$(CXX)' AR='$(AR)' LD='$(LD)' CPP='$(CPP)' RANLIB='$(RANLIB)' STRIP='$(STRIP)' NM='$(NM)' LIPO='$(LIPO)' OTOOL='$(OTOOL)' I_N_T='$(I_N_T)' EXTRA='$(EXTRA)' SED='$(SED)' LDID='$(LDID)' INSTALL='$(INSTALL)' LN='$(LN)' CP='cp'"
+	@echo -e "\tCC='$(CC)' CXX='$(CXX)' AR='$(AR)' LD='$(LD)' CPP='$(CPP)' RANLIB='$(RANLIB)' STRIP='$(STRIP)' NM='$(NM)' LIPO='$(LIPO)' OTOOL='$(OTOOL)' I_N_T='$(I_N_T)' EXTRA='$(EXTRA)' LDID='$(LDID)' INSTALL='$(INSTALL)'"
 	@echo -e "\tBUILD_ROOT='$(BUILD_ROOT)' BUILD_BASE='$(BUILD_BASE)' BUILD_INFO='$(BUILD_INFO)' BUILD_WORK='$(BUILD_WORK)' BUILD_STAGE='$(BUILD_STAGE)' BUILD_DIST='$(BUILD_DIST)' BUILD_STRAP='$(BUILD_STRAP)' BUILD_TOOLS='$(BUILD_TOOLS)'"
 	@echo -e "\tDEB_ARCH='$(DEB_ARCH)' DEB_ORIGIN='$(DEB_ORIGIN)' DEB_MAINTAINER='$(DEB_MAINTAINER)'"
 	@echo -e "\tCFLAGS='$(CFLAGS)'"
@@ -921,7 +888,7 @@ proenv:
 	@echo -e "\tCPPFLAGS='$(CPPFLAGS)'"
 	@echo -e "\tLDFLAGS='$(LDFLAGS)'"
 	@echo -e "\texport MEMO_TARGET PLATFORM MEMO_ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE"
-	@echo -e "\texport CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T EXTRA SED LDID INSTALL LN CP"
+	@echo -e "\texport CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T EXTRA LDID INSTALL"
 	@echo -e "\texport BUILD_ROOT BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP BUILD_TOOLS"
 	@echo -e "\texport DEB_ARCH DEB_ORIGIN DEB_MAINTAINER"
 	@echo -e "\texport CFLAGS CXXFLAGS CPPFLAGS LDFLAGS"
@@ -954,7 +921,7 @@ endif # $(MEMO_TARGET),darwin-*
 		PKGNAME=$$(basename $$DEB | cut -f1 -d"_"); \
 		dpkg-deb -R $$DEB $(BUILD_STRAP)/strap; \
 		cp $(BUILD_STRAP)/strap/DEBIAN/md5sums $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/info/$$PKGNAME.md5sums; \
-		dpkg-deb -c $$DEB | cut -f2- -d"." | awk -F'\\-\\>' '{print $$1}' | $(SED) '1 s/$$/./' | $(SED) 's/\/$$//' > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/info/$$PKGNAME.list; \
+		dpkg-deb -c $$DEB | cut -f2- -d"." | awk -F'\\-\\>' '{print $$1}' | sed '1 s/$$/./' | sed 's/\/$$//' > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/info/$$PKGNAME.list; \
 		for script in preinst postinst extrainst_ prerm postrm; do \
 			cp $(BUILD_STRAP)/strap/DEBIAN/$$script $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/info/$$PKGNAME.$$script; \
 		done; \
@@ -978,7 +945,7 @@ endif # $(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1
 	fi; \
 	mkdir -p $(BUILD_STRAP)/strap/private/var/lib/$$mgr; \
 	mkdir -p $(BUILD_STRAP)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/$$mgr; \
-	cd $(BUILD_STRAP)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/$$mgr && ln -fs ../firmware.sh
+	cd $(BUILD_STRAP)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/$$mgr && $(LN_S) ../firmware.sh
 	chmod 0775 $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library
 	mkdir -p $(BUILD_STRAP)/strap/private/etc/apt/preferences.d
 	cp $(BUILD_INFO)/procursus.preferences $(BUILD_STRAP)/strap/private/etc/apt/preferences.d/procursus
@@ -993,7 +960,7 @@ Components: main\n" > $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procur
 	$$FAKEROOT chown 0:80 $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library; \
 	$$FAKEROOT chown 0:3 $(BUILD_STRAP)/strap/private/var/empty; \
 	$$FAKEROOT chown 0:1 $(BUILD_STRAP)/strap/private/var/run; \
-	cd $(BUILD_STRAP)/strap && $$FAKEROOT $(TAR) -cf ../bootstrap.tar .
+	cd $(BUILD_STRAP)/strap && $$FAKEROOT tar -cf ../bootstrap.tar .
 	@if [[ "$(SSH_STRAP)" = 1 ]]; then \
 		BOOTSTRAP=bootstrap-ssh.tar.zst; \
 	else \
@@ -1022,7 +989,7 @@ Suites: $(MEMO_TARGET)/$(MEMO_CFVER)\n\
 Components: main\n" > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
 endif
 	export FAKEROOT='fakeroot -i $(BUILD_STAGE)/.fakeroot_bootstrap -s $(BUILD_STAGE)/.fakeroot_bootstrap --'; \
-	cd $(BUILD_STRAP)/strap && $$FAKEROOT $(TAR) -cf ../bootstrap.tar .
+	cd $(BUILD_STRAP)/strap && $$FAKEROOT tar -cf ../bootstrap.tar .
 	@if [[ "$(SSH_STRAP)" = 1 ]]; then \
 		BOOTSTRAP=bootstrap-ssh.tar.zst; \
 	else \
@@ -1044,7 +1011,7 @@ endif # ($(MEMO_PREFIX),)
 	mkdir -p $(BUILD_DIST)
 
 REPROJ=$(shell echo $@ | cut -f2- -d"-")
-REPROJ2=$(shell echo $(REPROJ) | $(SED) 's/-package//' | $(SED) 's/-setup//')
+REPROJ2=$(shell echo $(REPROJ) | sed 's/-package//' | sed 's/-setup//')
 rebuild-%:
 	@echo Rebuild $(REPROJ2)
 	-if [ $(REPROJ) = "all" ] || [ $(REPROJ) = "package" ]; then \
@@ -1110,21 +1077,21 @@ endif
 	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/CoreAudio.framework/Headers/* $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreAudio
 
 	@# Patch headers from iPhoneOS.sdk
-	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/stdlib.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h
-	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/time.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/time.h
-	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/unistd.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h
-	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/mach/task.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/task.h
-	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/mach/mach_host.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/mach_host.h
-	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/ucontext.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ucontext.h
-	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/signal.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/signal.h
-	@$(SED) -E /'__API_UNAVAILABLE'/d < $(TARGET_SYSROOT)/usr/include/pthread.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pthread.h
+	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/stdlib.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h
+	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/time.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/time.h
+	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/unistd.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h
+	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/mach/task.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/task.h
+	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/mach/mach_host.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/mach_host.h
+	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/ucontext.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ucontext.h
+	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/signal.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/signal.h
+	@sed -E /'__API_UNAVAILABLE'/d < $(TARGET_SYSROOT)/usr/include/pthread.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pthread.h
 
 	@# Setup libiosexec
 	@cp -af $(BUILD_MISC)/libiosexec/libiosexec.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	@cp -af $(BUILD_MISC)/libiosexec/libiosexec.1.tbd $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	@ln -sf libiosexec.1.tbd $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.tbd
+	@$(LN_S) libiosexec.1.tbd $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.tbd
 	@rm -f $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.*.dylib
-	@$(SED) -i '1s/^/#include <libiosexec.h>\n/' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/spawn.h
+	@sed -i '1s/^/#include <libiosexec.h>\n/' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/spawn.h
 endif
 
 ifneq ($(MEMO_QUIET),1)

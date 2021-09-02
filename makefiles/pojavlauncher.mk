@@ -18,7 +18,7 @@ pojavlauncher-setup: setup
 	mkdir -p $(BUILD_STAGE)/pojavlauncher/{Applications,var/mobile/Documents/minecraft,var/mobile/Documents/.pojavlauncher}
 #	for file in $(BUILD_WORK)/pojavlauncher/Natives/JavaLauncher.c \
 #	$(BUILD_WORK)/pojavlauncher/JavaApp/src/main/java/net/kdt/pojavlaunch/Tools.java; do \
-#		$(SED) -i 's/java-16-openjdk/java-17-openjdk/' $$file; \
+#		sed -i 's/java-16-openjdk/java-17-openjdk/' $$file; \
 #	done
 
 ifneq ($(wildcard $(BUILD_WORK)/pojavlauncher/.build_complete),)

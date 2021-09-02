@@ -16,7 +16,7 @@ lsd:
 else
 lsd: lsd-setup
 	# Use Lucy's fork of rust-users w/ iOS support
-	$(SED) -i 's|users = "0.11.*"|users = {git = "https://github.com/Absolucy/rust-users", branch = "ios"}|g' \
+	sed -i 's|users = "0.11.*"|users = {git = "https://github.com/Absolucy/rust-users", branch = "ios"}|g' \
 		$(BUILD_WORK)/lsd/Cargo.toml
 	cd $(BUILD_WORK)/lsd; $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \

@@ -33,7 +33,7 @@ flex: flex-setup gettext
 		DESTDIR="$(BUILD_STAGE)/flex"
 	+$(MAKE) -C $(BUILD_WORK)/flex install \
 		DESTDIR="$(BUILD_BASE)"
-	ln -s flex $(BUILD_STAGE)/flex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lex
+	$(LN_S) flex $(BUILD_STAGE)/flex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lex
 	$(call AFTER_BUILD)
 endif
 

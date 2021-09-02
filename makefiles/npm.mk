@@ -28,7 +28,7 @@ prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)\n" > $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(
 	cp -a $(BUILD_WORK)/npm/package.json $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/npm
 	touch $(BUILD_STAGE)/npm/etc/npmrc
 	mkdir -p $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/nodejs
-	ln -s ../npm $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/nodejs/npm
+	$(LN_S) ../npm $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/nodejs/npm
 	$(call AFTER_BUILD)
 endif
 

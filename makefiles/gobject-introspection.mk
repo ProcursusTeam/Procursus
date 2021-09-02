@@ -24,8 +24,8 @@ gobject-introspection:
 	@echo "Using previously built gobject-introspection."
 else
 gobject-introspection: gobject-introspection-setup glib2.0 libffi python3
-	$(SED) -i 's|/usr/share|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share|g' $(BUILD_WORK)/gobject-introspection/giscanner/transformer.py
-	$(SED) -i -e "s|extra_giscanner_cflags = \[]|extra_giscanner_cflags = ['$(PLATFORM_VERSION_MIN)']|" \
+	sed -i 's|/usr/share|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share|g' $(BUILD_WORK)/gobject-introspection/giscanner/transformer.py
+	sed -i -e "s|extra_giscanner_cflags = \[]|extra_giscanner_cflags = ['$(PLATFORM_VERSION_MIN)']|" \
 		-e "s|extra_giscanner_args = \[]|extra_giscanner_args = ['--cflags-begin'] + extra_giscanner_cflags + ['--cflags-end']|" $(BUILD_WORK)/gobject-introspection/meson.build
 	export GI_SCANNER_DISABLE_CACHE=true; \
 	cd $(BUILD_WORK)/gobject-introspection/build && meson \
@@ -35,7 +35,7 @@ gobject-introspection: gobject-introspection-setup glib2.0 libffi python3
 	cd $(BUILD_WORK)/gobject-introspection/build; \
 		DESTDIR="$(BUILD_STAGE)/gobject-introspection" meson install; \
 		DESTDIR="$(BUILD_BASE)" meson install
-	$(SED) -i "s|$$(cat $(BUILD_STAGE)/gobject-introspection/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/g-ir-scanner | grep \#! | sed 's/#!//')|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/gobject-introspection/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
+	sed -i "s|$$(cat $(BUILD_STAGE)/gobject-introspection/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/g-ir-scanner | grep \#! | sed 's/#!//')|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/gobject-introspection/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
 	$(call AFTER_BUILD)
 endif
 

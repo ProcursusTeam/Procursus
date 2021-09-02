@@ -11,8 +11,8 @@ libgeneral-setup: setup
 	$(call GITHUB_ARCHIVE,tihmstar,libgeneral,$(LIBGENERAL_VERSION),$(LIBGENERAL_VERSION))
 	$(call EXTRACT_TAR,libgeneral-$(LIBGENERAL_VERSION).tar.gz,libgeneral-$(LIBGENERAL_VERSION),libgeneral)
 	
-	$(SED) -i 's/git rev\-list \-\-count HEAD/printf ${LIBGENERAL_VERSION}/g' $(BUILD_WORK)/libgeneral/configure.ac
-	$(SED) -i 's/git rev\-parse HEAD/printf ${LIBGENERAL_COMMIT}/g' $(BUILD_WORK)/libgeneral/configure.ac
+	sed -i 's/git rev\-list \-\-count HEAD/printf ${LIBGENERAL_VERSION}/g' $(BUILD_WORK)/libgeneral/configure.ac
+	sed -i 's/git rev\-parse HEAD/printf ${LIBGENERAL_COMMIT}/g' $(BUILD_WORK)/libgeneral/configure.ac
 
 ifneq ($(wildcard $(BUILD_WORK)/libgeneral/.build_complete),)
 libgeneral:
