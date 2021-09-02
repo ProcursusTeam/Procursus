@@ -690,6 +690,9 @@ AFTER_BUILD = \
 		done; \
 		rm -f $(BUILD_STAGE)/$@/._lib_cache; \
 	fi; \
+	if [ "$(1)" = "copy" ]; then \
+		cp -af $(BUILD_STAGE)/$@/* $(BUILD_BASE); \
+	fi; \
 	touch $(BUILD_WORK)/$@/.build_complete; \
 	find $(BUILD_BASE) -name '*.la' -type f -delete
 
