@@ -672,21 +672,23 @@ endif
 ###
 
 AFTER_BUILD = \
-	rm -f $(BUILD_STAGE)/$@/._lib_cache && touch $(BUILD_STAGE)/$@/._lib_cache; \
-	for file in $$(find $(BUILD_STAGE)/$@ -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
-		$(STRIP) -x $$file; \
-		INSTALL_NAME=$$(otool -D $$file); \
-		if [ ! -z "$$INSTALL_NAME" ]; then \
-			$(I_N_T) -id @rpath/$$(basename $$file) $$file; \
-			echo "$$INSTALL_NAME" >> $(BUILD_STAGE)/$@/._lib_cache; \
-		fi; \
-	done; \
-	for file in $$(find $(BUILD_STAGE)/$@ -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
-		cat $(BUILD_STAGE)/$@/._lib_cache | while read line; do \
-			$(I_N_T) -change $$line @rpath/$$(basename $$line) $$file; \
+	if [ ! -z "$(MEMO_PREFIX)" ]; then \
+		rm -f $(BUILD_STAGE)/$@/._lib_cache && touch $(BUILD_STAGE)/$@/._lib_cache; \
+		for file in $$(find $(BUILD_STAGE)/$@ -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
+			$(STRIP) -x $$file; \
+			INSTALL_NAME=$$(otool -D $$file); \
+			if [ ! -z "$$INSTALL_NAME" ]; then \
+				$(I_N_T) -id @rpath/$$(basename $$file) $$file; \
+				echo "$$INSTALL_NAME" >> $(BUILD_STAGE)/$@/._lib_cache; \
+			fi; \
 		done; \
-	done; \
-	rm -f $(BUILD_STAGE)/$@/._lib_cache; \
+		for file in $$(find $(BUILD_STAGE)/$@ -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
+			cat $(BUILD_STAGE)/$@/._lib_cache | while read line; do \
+				$(I_N_T) -change $$line @rpath/$$(basename $$line) $$file; \
+			done; \
+		done; \
+		rm -f $(BUILD_STAGE)/$@/._lib_cache; \
+	fi; \
 	touch $(BUILD_WORK)/$@/.build_complete; \
 	find $(BUILD_BASE) -name '*.la' -type f -delete
 
