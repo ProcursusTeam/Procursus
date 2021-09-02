@@ -1,0 +1,16 @@
+Package: overb0ard
+Architecture: @DEB_ARCH@
+Author: Adam Tunnic <tunnic.adam@gmail.com>
+Conflcts: com.doregon.overb0ard, com.doregon.overb0ard-dev, com.kramerapps.jetsamctl 
+Provides: com.doregon.overb0ard (= @DEB_OVERB0ARD_V@)
+Replaces: com.doregon.overb0ard
+Enhances: com.utmapp.utm, pojavlauncher, pojavlauncher-dev
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_OVERB0ARD_V@
+Section: System
+Priority: optional
+Description: take control of your device's memory
+ Darwin's uses "jetsam" as memory monitor. This package contains a tool, "jetsamctl",
+ which allows you to set the maximum memory limit and priority a process.
+ .
+ This is useful for applications like PojavLauncher and UTM, which consumes large amount of memory.
