@@ -30,9 +30,7 @@ file: file-setup xz
 		FILE_COMPILE="$(BUILD_WORK)/file/native/src/file"
 	+$(MAKE) -C $(BUILD_WORK)/file install \
 		DESTDIR="$(BUILD_STAGE)/file"
-	+$(MAKE) -C $(BUILD_WORK)/file install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 file-package: file-stage

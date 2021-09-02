@@ -22,9 +22,7 @@ xtrans: xtrans-setup
 	+$(MAKE) -C $(BUILD_WORK)/xtrans
 	+$(MAKE) -C $(BUILD_WORK)/xtrans install \
 		DESTDIR="$(BUILD_STAGE)/xtrans"
-	+$(MAKE) -C $(BUILD_WORK)/xtrans install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 xtrans-package: xtrans-stage
