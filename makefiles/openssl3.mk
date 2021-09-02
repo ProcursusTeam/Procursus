@@ -33,9 +33,8 @@ openssl3: openssl3-setup
 	+$(MAKE) -C $(BUILD_WORK)/openssl3
 	+$(MAKE) -C $(BUILD_WORK)/openssl3 install_sw install_ssldirs \
 		DESTDIR=$(BUILD_STAGE)/openssl3
-#	+$(MAKE) -C $(BUILD_WORK)/openssl3 install_sw \
-#		DESTDIR=$(BUILD_BASE)
 	$(call AFTER_BUILD)
+	#$(call AFTER_BUILD,copy)
 endif
 
 openssl3-package: openssl3-stage

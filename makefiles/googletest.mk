@@ -25,9 +25,7 @@ googletest: googletest-setup
 	+$(MAKE) -C $(BUILD_WORK)/googletest/build
 	+$(MAKE) -C $(BUILD_WORK)/googletest/build install \
 		DESTDIR=$(BUILD_STAGE)/googletest
-	+$(MAKE) -C $(BUILD_WORK)/googletest/build install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 googletest-package: googletest-stage
