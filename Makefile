@@ -678,7 +678,7 @@ AFTER_BUILD = \
 		INSTALL_NAME=$$(otool -D $$file); \
 		if [ ! -z "$$INSTALL_NAME" ]; then \
 			$(I_N_T) -id @rpath/$$(basename $$file) $$file; \
-			echo "$$INSTALL_NAME" >> $(BUILD_STAGE)/$@/._lib_cache
+			echo "$$INSTALL_NAME" >> $(BUILD_STAGE)/$@/._lib_cache; \
 		fi; \
 	done; \
 	for file in $$(find $(BUILD_STAGE)/$@ -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
@@ -686,6 +686,7 @@ AFTER_BUILD = \
 			$(I_N_T) -change $$line @rpath/$$(basename $$line) $$file; \
 		done; \
 	done; \
+	rm -f $(BUILD_STAGE)/$@/._lib_cache; \
 	touch $(BUILD_WORK)/$@/.build_complete; \
 	find $(BUILD_BASE) -name '*.la' -type f -delete
 
@@ -853,7 +854,8 @@ endif
 
 ifeq ($(shell PATH=$(PATH) install --version | grep -q 'GNU coreutils' && echo 1),1)
 export INSTALL := $(shell PATH=$(PATH) which install) --strip-program=$(STRIP)
-export LN_S    := ln -srf
+export LN_S    := ln -sf
+export LN_SR   := ln -sfr
 else
 $(error Install GNU coreutils)
 endif

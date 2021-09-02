@@ -47,7 +47,7 @@ ncurses: ncurses-setup
 
 	rm $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/tabs
 
-ifeq (/usr,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))
+ifeq (,$(MEMO_PREFIX))
 	for ti in $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo/*/*; do \
 		if [[ $$ti == */@(?(pc)ansi|cons25|cygwin|dumb|linux|mach|rxvt|screen|sun|vt@(52|100|102|220)|swvt25?(m)|[Exe]term|putty|konsole|gnome|apple|Apple_Terminal|unknown)?([-+.]*) ]]; then \
 			echo "keeping terminfo: $$ti" ; \
@@ -70,13 +70,13 @@ endif # (/usr,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))
 
 	for h in $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw/*; do \
 		if [[ ! -d $$h ]]; then \
-			$(LN_S) $$h $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include; \
+			$(LN_SR) $$h $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include; \
 		fi \
 	done
 
 	for h in $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw/*; do \
 		if [[ ! -d $$h ]]; then \
-			$(LN_S) $$h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include; \
+			$(LN_SR) $$h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include; \
 		fi \
 	done
 
