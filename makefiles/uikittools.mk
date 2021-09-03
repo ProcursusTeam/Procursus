@@ -51,10 +51,10 @@ uikittools-package: uikittools-stage
 	$(call SIGN,uikittools,general.xml)
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(LDID) $(MEMO_LDID_EXTRA_FLAGS) -S$(BUILD_MISC)/entitlements/uiopen.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uiopen
-	$(LDID) $(MEMO_LDID_EXTRA_FLAGS) -S$(BUILD_MISC)/entitlements/uicache.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uicache
-	$(LDID) $(MEMO_LDID_EXTRA_FLAGS) -S$(BUILD_MISC)/entitlements/sbreload.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sbreload
-	$(LDID) $(MEMO_LDID_EXTRA_FLAGS) -S$(BUILD_MISC)/entitlements/gssc.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gssc
+	ldid $(MEMO_LDID_EXTRA_FLAGS) -S$(BUILD_MISC)/entitlements/uiopen.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uiopen
+	ldid $(MEMO_LDID_EXTRA_FLAGS) -S$(BUILD_MISC)/entitlements/uicache.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uicache
+	ldid $(MEMO_LDID_EXTRA_FLAGS) -S$(BUILD_MISC)/entitlements/sbreload.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sbreload
+	ldid $(MEMO_LDID_EXTRA_FLAGS) -S$(BUILD_MISC)/entitlements/gssc.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gssc
 	find $(BUILD_DIST)/uikittools -name '.ldid*' -type f -delete
 endif
 
