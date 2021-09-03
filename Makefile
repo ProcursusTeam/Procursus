@@ -466,6 +466,7 @@ BUILD_STRAP    := $(BUILD_ROOT)/build_strap/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Extra scripts for the buildsystem
 BUILD_TOOLS    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_tools
 
+MEMO_LDID_EXTRA_FLAGS ?=
 
 ifeq ($(DEBUG),1)
 OPTIMIZATION_FLAGS := -g -O0
@@ -616,7 +617,7 @@ ifeq ($(NO_PGP),1)
 ifneq ($(MEMO_QUIET),1)
 PGP_VERIFY  = echo "Skipping verification of $(1) because NO_PGP was set to 1."
 else # ($(MEMO_QUIET),1)
-PGP_VERIFY  = 
+PGP_VERIFY  =
 endif # ($(MEMO_QUIET),1)
 else
 PGP_VERIFY  = KEY=$$(gpg --verify --status-fd 1 $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) | grep NO_PUBKEY | cut -f3 -d' '); \
@@ -645,9 +646,9 @@ DO_PATCH    = cd $(BUILD_PATCH)/$(1); \
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 SIGN = 	for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
 			if [ $${file\#\#*.} = "dylib" ] || [ $${file\#\#*.} = "bundle" ] || [ $${file\#\#*.} = "so" ]; then \
-				$(LDID) -S $$file; \
+				$(LDID) $(MEMO_LDID_EXTRA_FLAGS) -S $$file; \
 			else \
-				$(LDID) -S$(BUILD_MISC)/entitlements/$(2) $$file; \
+				$(LDID) $(MEMO_LDID_EXTRA_FLAGS) -S$(BUILD_MISC)/entitlements/$(2) $$file; \
 			fi; \
 		done; \
 		find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
