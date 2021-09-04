@@ -17,6 +17,8 @@ else
 pyyaml: pyyaml-setup libyaml python3
 	cd $(BUILD_WORK)/pyyaml && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py \
 		--with-libyaml \
+		build \
+		--executable="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3" \
 		install \
 		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		--root="$(BUILD_STAGE)/pyyaml" \

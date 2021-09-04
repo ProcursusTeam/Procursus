@@ -15,7 +15,9 @@ python3-prompt-toolkit:
 	@echo "Using previously built python-prompt-toolkit."
 else
 python3-prompt-toolkit: python3-prompt-toolkit-setup python3-wcwidth
-	cd $(BUILD_WORK)/python3-prompt-toolkit && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py install \
+	cd $(BUILD_WORK)/python3-prompt-toolkit && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py build \
+		--executable="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3" \
+		install \
 		--install-layout=deb \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--root=$(BUILD_STAGE)/python3-prompt-toolkit
