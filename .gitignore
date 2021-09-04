@@ -7,3 +7,5 @@ build_strap/
 
 !.gitkeep
 .DS_Store
+
+.vscode/

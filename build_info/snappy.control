@@ -1,0 +1,7 @@
+Package: snappy
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_SNAPPY_V@
+Section: System
+Priority: optional
+Description: A Tool for APFS Snapshot Management
