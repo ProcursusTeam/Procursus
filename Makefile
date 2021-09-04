@@ -443,6 +443,9 @@ MEMO_REPO_URI     ?= https://apt.procurs.us
 MEMO_PGP_SIGN_KEY ?= C59F3798A305ADD7E7E6C7256430292CF9551B0E
 CODESIGN_IDENTITY ?= -
 
+MEMO_LDID_EXTRA_FLAGS     ?=
+MEMO_CODESIGN_EXTRA_FLAGS ?=
+
 # Root
 BUILD_ROOT     ?= $(PWD)
 # Downloaded source files
@@ -465,8 +468,6 @@ BUILD_DIST     := $(BUILD_ROOT)/build_dist/$(MEMO_TARGET)/$(MEMO_CFVER)
 BUILD_STRAP    := $(BUILD_ROOT)/build_strap/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Extra scripts for the buildsystem
 BUILD_TOOLS    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_tools
-
-MEMO_LDID_EXTRA_FLAGS ?=
 
 ifeq ($(DEBUG),1)
 OPTIMIZATION_FLAGS := -g -O0
@@ -662,7 +663,7 @@ SIGN = 	CODESIGN_FLAGS="--sign $(CODESIGN_IDENTITY) --force --deep "; \
 		fi; \
 		for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
 			codesign --remove $$file &> /dev/null; \
-			codesign $$CODESIGN_FLAGS $$file &> /dev/null; \
+			codesign $(MEMO_CODESIGN_EXTRA_FLAGS) $$CODESIGN_FLAGS $$file &> /dev/null; \
 		done
 endif
 
