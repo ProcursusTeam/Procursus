@@ -1,0 +1,8 @@
+Package: libsnappy-apfs-dev
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libsnappy-apfs1 (= @DEB_SNAPPY_V@)
+Version: @DEB_SNAPPY_V@
+Section: Development
+Priority: optional
+Description: A Tool for APFS Snapshot Management (Development files)

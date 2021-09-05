@@ -1,0 +1,7 @@
+Package: libsnappy-apfs1
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_SNAPPY_V@
+Section: Libraries
+Priority: optional
+Description: A Tool for APFS Snapshot Management (Runtime Libraries)
