@@ -793,7 +793,8 @@ endif
 
 ifeq ($(shell PATH=$(PATH) install --version | grep -q 'GNU coreutils' && echo 1),1)
 export INSTALL := $(shell PATH=$(PATH) which install) --strip-program=$(STRIP)
-export LN_S    := ln -srf
+export LN_S    := ln -sf
+export LN_SR   := ln -sfr
 else
 $(error Install GNU coreutils)
 endif
