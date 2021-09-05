@@ -49,6 +49,7 @@ snappy-package: snappy-stage
 	
 	# snappy.mk Sign
 	$(call SIGN,snappy,snaputil.xml)
+	$(call SIGN,libsnappy-apfs1,snaputil.xml)
 	
 	# snappy.mk Make .debs
 	$(call PACK,snappy,DEB_SNAPPY_V)
