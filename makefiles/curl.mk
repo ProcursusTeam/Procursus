@@ -10,7 +10,7 @@ curl-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://curl.haxx.se/download/curl-$(CURL_VERSION).tar.xz{,.asc}
 	$(call PGP_VERIFY,curl-$(CURL_VERSION).tar.xz,asc)
 	$(call EXTRACT_TAR,curl-$(CURL_VERSION).tar.xz,curl-$(CURL_VERSION),curl)
-	$(SED) -i '/CURL_VERIFY_RUNTIMELIBS/d' $(BUILD_WORK)/curl/configure.ac
+	sed -i '/CURL_VERIFY_RUNTIMELIBS/d' $(BUILD_WORK)/curl/configure.ac
 
 ifneq ($(wildcard $(BUILD_WORK)/curl/.build_complete),)
 curl:

@@ -9,9 +9,9 @@ DEB_CALC_V   ?= $(CALC_VERSION)
 calc-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/lcn2/calc/releases/download/v$(CALC_VERSION)/calc-$(CALC_VERSION).tar.bz2
 	$(call EXTRACT_TAR,calc-$(CALC_VERSION).tar.bz2,calc-$(CALC_VERSION),calc)
-	$(SED) -i '/#include <stdio.h>/a #include <string.h>' $(BUILD_WORK)/calc/have_memmv.c
-	$(SED) -i '/#include <stdio.h>/a #include <string.h>' $(BUILD_WORK)/calc/have_newstr.c
-	$(SED) -i '/#include <stdio.h>/a #include <unistd.h>' $(BUILD_WORK)/calc/have_posscl.c
+	sed -i '/#include <stdio.h>/a #include <string.h>' $(BUILD_WORK)/calc/have_memmv.c
+	sed -i '/#include <stdio.h>/a #include <string.h>' $(BUILD_WORK)/calc/have_newstr.c
+	sed -i '/#include <stdio.h>/a #include <unistd.h>' $(BUILD_WORK)/calc/have_posscl.c
 
 ifneq ($(wildcard $(BUILD_WORK)/calc/.build_complete),)
 calc:

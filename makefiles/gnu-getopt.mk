@@ -21,7 +21,7 @@ gnu-getopt: gnu-getopt-setup
 	+$(MAKE) -C $(BUILD_WORK)/gnu-getopt getopt misc-utils/getopt.1
 	mkdir -p $(BUILD_STAGE)/gnu-getopt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
 	$(INSTALL) -Dm755 $(BUILD_WORK)/gnu-getopt/getopt $(BUILD_STAGE)/gnu-getopt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/getopt
-	$(LN) -s ../libexec/gnubin/getopt $(BUILD_STAGE)/gnu-getopt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ggetopt
+	$(LN_S) ../libexec/gnubin/getopt $(BUILD_STAGE)/gnu-getopt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ggetopt
 	$(INSTALL) -Dm644 $(BUILD_WORK)/gnu-getopt/misc-utils/getopt.1 $(BUILD_STAGE)/gnu-getopt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man1/ggetopt.1
 	$(INSTALL) -Dm644 $(BUILD_WORK)/gnu-getopt/bash-completion/getopt $(BUILD_STAGE)/gnu-getopt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/ggetopt
 	$(call AFTER_BUILD)

@@ -19,8 +19,8 @@ gh: gh-setup
 	+$(MAKE) -C $(BUILD_WORK)/gh bin/gh \
 		$(DEFAULT_GOLANG_FLAGS)
 	+unset CC CXX CFLAGS CPPFLAGS LDFLAGS && $(MAKE) -C $(BUILD_WORK)/gh manpages
-	$(CP) -a $(BUILD_WORK)/gh/bin/gh $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	$(CP) -a $(BUILD_WORK)/gh/share $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_WORK)/gh/bin/gh $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_WORK)/gh/share $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	$(call AFTER_BUILD)
 endif
 

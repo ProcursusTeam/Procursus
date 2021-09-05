@@ -20,7 +20,7 @@ meson: meson-setup python3 ninja
 		--root="$(BUILD_STAGE)/meson" \
 		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
 	find $(BUILD_STAGE)/meson -name __pycache__ -prune -exec rm -rf {} \;
-	$(SED) -i "s|#!.*|#!$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/meson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/meson
+	sed -i "s|#!.*|#!$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/meson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/meson
 	$(call AFTER_BUILD)
 endif
 

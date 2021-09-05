@@ -10,8 +10,8 @@ libgeoip-setup: setup
 	wget -q -nc -L -P $(BUILD_SOURCE) \
 		https://github.com/maxmind/geoip-api-c/releases/download/v1.6.12/GeoIP-$(LIBGEOIP_VERSION).tar.gz
 	$(call EXTRACT_TAR,GeoIP-$(LIBGEOIP_VERSION).tar.gz,GeoIP-$(LIBGEOIP_VERSION),libgeoip)
-	$(SED) -i '/AC_FUNC_MALLOC/d' $(BUILD_WORK)/libgeoip/configure.ac
-	$(SED) -i '/AC_FUNC_REALLOC/d' $(BUILD_WORK)/libgeoip/configure.ac
+	sed -i '/AC_FUNC_MALLOC/d' $(BUILD_WORK)/libgeoip/configure.ac
+	sed -i '/AC_FUNC_REALLOC/d' $(BUILD_WORK)/libgeoip/configure.ac
 
 ifneq ($(wildcard $(BUILD_WORK)/libgeoip/.build_complete),)
 libgeoip:
