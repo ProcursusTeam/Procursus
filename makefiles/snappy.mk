@@ -24,10 +24,9 @@ snappy: snappy-setup
 	$(CC) $(CFLAGS) -c libsnappy.c -o libsnappy.c.o; \
 	$(CC) $(CFLAGS) -c snappy.c -o snappy.o; \
 	$(AR) -crs -- $(BUILD_STAGE)/snappy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsnappy-apfs.a libsnappy.{c,m}.o; \
-	$(CC) $(CFLAGS) $(BUILD_MISC)/libiosexec/libiosexec.1.tbd -Wl,-compatibility_version,1.0.0 -Wl,-current_version,1.3.0 -shared -framework IOKit -framework CoreFoundation -framework Foundation libsnappy.{c,m}.o -o $(BUILD_STAGE)/snappy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsnappy-apfs.$(LIBSNAPPY_APFS_SOVER).dylib; \
-	$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsnappy-apfs.$(LIBSNAPPY_APFS_SOVER).dylib $(BUILD_STAGE)/snappy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsnappy-apfs.dylib; \
+	$(CC) $(CFLAGS) $(LDFLAGS) -Wl,-install_name,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libsnappy-apfs.$(LIBSNAPPY_APFS_SOVER).dylib -Wl,-compatibility_version,1.0.0 -Wl,-current_version,1.3.0 -shared -framework IOKit -framework CoreFoundation -framework Foundation libsnappy.{c,m}.o -o $(BUILD_STAGE)/snappy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsnappy-apfs.$(LIBSNAPPY_APFS_SOVER).dylib; \
+	$(LN_S) $(BUILD_STAGE)/snappy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsnappy-apfs.{$(LIBSNAPPY_APFS_SOVER).,}dylib; \
 	$(CC) $(CFLAGS) $(BUILD_MISC)/libiosexec/libiosexec.1.tbd snappy.o $(BUILD_STAGE)/snappy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsnappy-apfs.$(LIBSNAPPY_APFS_SOVER).dylib  -framework IOKit -framework CoreFoundation -framework Foundation -o $(BUILD_STAGE)/snappy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/snappy; \
-	$(I_N_T) -change $(BUILD_STAGE)/snappy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsnappy-apfs.$(LIBSNAPPY_APFS_SOVER).dylib $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsnappy-apfs.$(LIBSNAPPY_APFS_SOVER).dylib $(BUILD_STAGE)/snappy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/snappy; \
 	$(INSTALL) -m644 snappy.h $(BUILD_STAGE)/snappy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/snappy-apfs.h
 	$(call AFTER_BUILD,copy)
 endif
