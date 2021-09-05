@@ -2,7 +2,8 @@ Package: snappy
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Version: @DEB_SNAPPY_V@
-Depends: libsnappy-apfs1 (>= @DEB_SNAPPY_V@)
+Depends: libsnappy-apfs1 (>= @DEB_SNAPPY_V@), firmware (>= 10.3)
+Author: Sam Bingner <snappy@bingner.com>
 Section: System
 Priority: optional
 Description: A Tool for APFS Snapshot Management

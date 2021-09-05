@@ -1,7 +1,8 @@
 Package: libsnappy-apfs-dev
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libsnappy-apfs1 (= @DEB_SNAPPY_V@)
+Depends: libsnappy-apfs1 (= @DEB_SNAPPY_V@), firmware (>= 10.3)
+Author: Sam Bingner <snappy@bingner.com>
 Version: @DEB_SNAPPY_V@
 Section: Development
 Priority: optional
