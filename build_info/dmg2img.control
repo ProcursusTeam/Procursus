@@ -4,7 +4,7 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Utilities
 Priority: optional
-Depends: libssl1.1
+Depends: libssl3
 Description: Tool for converting compressed dmg files to hfsplus images
  DMG2IMG is a tool which allows converting Apple compressed dmg 
  archives to standard (hfsplus) image disk files.
