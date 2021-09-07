@@ -1,5 +1,5 @@
 --- joe/coreutils-8.32/src/copy.c	2020-01-01 06:13:12.000000000 -0800
-+++ coreutils-8.32/src/copy.c	2021-09-03 17:04:00.000000000 -0700
++++ coreutils-8.32/src/copy.c	2021-09-07 15:51:23.000000000 -0700
 @@ -22,6 +22,7 @@
  #include <sys/ioctl.h>
  #include <sys/types.h>
@@ -19,7 +19,7 @@
  #if HAVE_LINUX_FALLOC_H
  # include <linux/falloc.h>
  #endif
-@@ -369,6 +374,46 @@
+@@ -369,6 +374,61 @@
  {
  #ifdef FICLONE
    return ioctl (dest_fd, FICLONE, src_fd);
@@ -29,6 +29,10 @@
 +  // This also assumes that dest_fd points to an empty file, and that src_fd exists.
 +  struct stat dest_stat;
 +  if (fstat(dest_fd, &dest_stat) == -1)
++      return -1;
++
++  // Check if fd is a regular file
++  if (!S_ISREG(dest_stat.st_mode))
 +      return -1;
 +
 +  char srcpath[PATH_MAX];
@@ -49,12 +53,23 @@
 +      // assign it the same mode as the original dest_fd, 
 +      // and dup2 it to the original dest_fd as well, just 
 +      // so that it appears dest_fd has not been changed.
-+      if (creat(destpath, dest_stat.st_mode) == -1)
++      int newfile = creat(destpath, dest_stat.st_mode);
++      if (newfile < 0)
 +          return -1;
++
++      close(newfile);
 +  }
 +
-+  if (dup2(open(destpath, O_RDWR), dest_fd) == -1)
++  int newfd = open(destpath, O_RDWR);
++  if (newfd < 0)
 +      return -1;
++
++  if (dup2(newfd, dest_fd) == -1) {
++      close(newfd);
++      return -1;
++  }
++
++  close(newfd);
 +
 +  if (fchmod(dest_fd, dest_stat.st_mode) == -1 || fchown(dest_fd, dest_stat.st_uid, dest_stat.st_gid) == -1)
 +      return -1;
