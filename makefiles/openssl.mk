@@ -33,8 +33,7 @@ openssl: openssl-setup
 	+$(MAKE) -C $(BUILD_WORK)/openssl
 	+$(MAKE) -C $(BUILD_WORK)/openssl install_sw install_ssldirs \
 		DESTDIR=$(BUILD_STAGE)/openssl
-	$(call AFTER_BUILD)
-	#$(call AFTER_BUILD,copy)
+	$(call AFTER_BUILD,copy)
 endif
 
 openssl-package: openssl-stage
