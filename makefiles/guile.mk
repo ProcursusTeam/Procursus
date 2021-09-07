@@ -20,7 +20,7 @@ guile: guile-setup libunistring libgc libffi readline gettext libtool libgmp10
 	+unset CC CXX CPP CFLAGS CXXFLAGS CPPFLAGS LDFLAGS; \
 		cd $(BUILD_WORK)/guile/native && $(BUILD_WORK)/guile/configure \
 		ac_cv_path_PKG_CONFIG="$(BUILD_TOOLS)/cross-pkg-config" \
-		--with-libgmp-prefix="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgmp10.dylib" \
+		--with-libgmp-prefix="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		--with-libunistring-prefix="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		--with-bdw-gc="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/bdw-gc.pc" \
 		ac_cv_func_GC_pthread_exit=yes \
