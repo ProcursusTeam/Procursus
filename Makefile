@@ -20,6 +20,8 @@ ifneq ($(shell umask),0022)
 $(error Please run `umask 022` before running this)
 endif
 
+RELATIVE_RPATH       := 0
+
 MEMO_TARGET          ?= darwin-arm64
 MEMO_CFVER           ?= 1700
 # iOS 13.0 == 1665.15.
@@ -685,7 +687,11 @@ AFTER_BUILD = \
 			fi; \
 		done; \
 		for file in $$(find $(BUILD_STAGE)/$@ -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
-			$(I_N_T) -add_rpath "@loader_path/$$(realpath --relative-to=$$(dirname $$file) $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))/lib" $$file; \
+			if [ "$(RELATIVE_RPATH)" = "1" ]; then \
+				$(I_N_T) -add_rpath "@loader_path/$$(realpath --relative-to=$$(dirname $$file) $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))/lib" $$file; \
+			else \
+				$(I_N_T) -add_rpath "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))/lib" $$file; \
+			fi; \
 			cat $(BUILD_STAGE)/$@/._lib_cache | while read line; do \
 				$(I_N_T) -change $$line @rpath/$$(basename $$line) $$file; \
 			done; \
