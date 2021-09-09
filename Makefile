@@ -686,18 +686,20 @@ AFTER_BUILD = \
 				echo "$$INSTALL_NAME" >> $(BUILD_STAGE)/$@/._lib_cache; \
 			fi; \
 		done; \
-		for file in $$(find $(BUILD_STAGE)/$@ -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
-			if [ "$(RELATIVE_RPATH)" = "1" ]; then \
-				$(I_N_T) -add_rpath "@loader_path/$$(realpath --relative-to=$$(dirname $$file) $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))/lib" $$file; \
-			else \
-				$(I_N_T) -add_rpath "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" $$file; \
-			fi; \
+	fi; \
+	for file in $$(find $(BUILD_STAGE)/$@ -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
+		if [ "$(RELATIVE_RPATH)" = "1" ]; then \
+			$(I_N_T) -add_rpath "@loader_path/$$(realpath --relative-to=$$(dirname $$file) $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))/lib" $$file; \
+		else \
+			$(I_N_T) -add_rpath "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" $$file; \
+		fi; \
+		if [ -f $(BUILD_STAGE)/$@/._lib_cache ]; then \
 			cat $(BUILD_STAGE)/$@/._lib_cache | while read line; do \
 				$(I_N_T) -change $$line @rpath/$$(basename $$line) $$file; \
 			done; \
-		done; \
-		rm -f $(BUILD_STAGE)/$@/._lib_cache; \
-	fi; \
+		fi; \
+	done; \
+	rm -f $(BUILD_STAGE)/$@/._lib_cache; \
 	if [ "$(1)" = "copy" ]; then \
 		cp -af $(BUILD_STAGE)/$@/* $(BUILD_BASE); \
 	fi; \
