@@ -25,8 +25,8 @@ libsystem-man:
 else
 libsystem-man: libsystem-man-setup
 	mkdir -p $(BUILD_STAGE)/libsystem-man/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	find $(BUILD_WORK)/libsystem-man -type l -exec sh -c 'd=$$(readlink {}); unlink {}; ln -s "$$d.zst" {}' \;
-	$(CP) -a $(BUILD_WORK)/libsystem-man $(BUILD_STAGE)/libsystem-man/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+	find $(BUILD_WORK)/libsystem-man -type l -exec sh -c 'd=$$(readlink {}); unlink {}; $(LN_S) "$$d.zst" {}' \;
+	cp -a $(BUILD_WORK)/libsystem-man $(BUILD_STAGE)/libsystem-man/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	$(call AFTER_BUILD)
 endif
 

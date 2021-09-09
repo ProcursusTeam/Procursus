@@ -50,7 +50,7 @@ ccache-package: ccache-stage
 		gcc-4.9 gcc-5 gcc-6 gcc-7 gcc-8 gcc-9 gcc-10 c++ c++3 c++-3.3 c++-4.0 c++-4.2 c++-4.3 c++-4.4 c++-4.5 c++-4.6 \
 		c++-4.7 c++-4.8 c++-4.9 c++-5 c++-6 c++-7 c++-8 c++-9 c++-10 g++ g++2 g++3 g++-3.3 g++-4.0 g++-4.2 g++-4.3 g++-4.4 \
 		g++-4.5 g++-4.6 g++-4.7 g++-4.8 g++-4.9 g++-5 g++-6 g++-7 g++-8 g++-9 g++-10 ; do \
-  			ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ccache $(BUILD_DIST)/ccache/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/ccache/$$compiler ; \
+  			$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ccache $(BUILD_DIST)/ccache/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/ccache/$$compiler ; \
 	done
 
 	# ccache.mk Prep ccache

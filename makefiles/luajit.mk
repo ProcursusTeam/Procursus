@@ -17,8 +17,8 @@ endif
 luajit-setup: setup
 	$(call GITHUB_ARCHIVE,LuaJIT,LuaJIT,$(LUAJIT_COMMIT),$(LUAJIT_COMMIT))
 	$(call EXTRACT_TAR,LuaJIT-$(LUAJIT_COMMIT).tar.gz,LuaJIT-$(LUAJIT_COMMIT),luajit)
-	$(SED) -i 's/#BUILDMODE= dynamic/BUILDMODE= dynamic/' $(BUILD_WORK)/luajit/src/Makefile
-	$(SED) -i 's/#define LJ_OS_NOJIT		1/#undef LJ_OS_NOJIT/' $(BUILD_WORK)/luajit/src/lj_arch.h
+	sed -i 's/#BUILDMODE= dynamic/BUILDMODE= dynamic/' $(BUILD_WORK)/luajit/src/Makefile
+	sed -i 's/#define LJ_OS_NOJIT		1/#undef LJ_OS_NOJIT/' $(BUILD_WORK)/luajit/src/lj_arch.h
 
 ifneq ($(wildcard $(BUILD_WORK)/luajit/.build_complete),)
 luajit:

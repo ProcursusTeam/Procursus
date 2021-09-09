@@ -17,7 +17,7 @@ dash:
 	@echo "Using previously built dash."
 else
 dash: dash-setup libedit
-	find $(BUILD_WORK)/dash -name '*.c' -exec $(SED) -i 's/stat64/stat/g' "{}" \;
+	find $(BUILD_WORK)/dash -name '*.c' -exec sed -i 's/stat64/stat/g' "{}" \;
 	cd $(BUILD_WORK)/dash && ./autogen.sh && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--exec-prefix="" \
@@ -26,8 +26,8 @@ dash: dash-setup libedit
 	+$(MAKE) -C $(BUILD_WORK)/dash
 	+$(MAKE) -C $(BUILD_WORK)/dash install \
 		DESTDIR=$(BUILD_STAGE)/dash
-	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dash $(BUILD_STAGE)/dash/$(MEMO_PREFIX)/bin/sh
-	ln -sf $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dash $(BUILD_STAGE)/dash/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sh
+	$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dash $(BUILD_STAGE)/dash/$(MEMO_PREFIX)/bin/sh
+	$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dash $(BUILD_STAGE)/dash/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sh
 	$(call AFTER_BUILD)
 endif
 

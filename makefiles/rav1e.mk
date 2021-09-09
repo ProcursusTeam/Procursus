@@ -41,7 +41,7 @@ rav1e: rav1e-setup aom dav1d
 	$(INSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/rav1e.pc $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/rav1e.pc
 	$(INSTALL) -Dm644 $(BUILD_WORK)/rav1e/target/$(RUST_TARGET)/release/rav1e.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/rav1e.h
 
-	ln -sf librav1e.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.dylib
+	$(LN_S) librav1e.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.dylib
 
 	$(call AFTER_BUILD)
 endif
@@ -64,7 +64,7 @@ rav1e-package: rav1e-stage
 	cp -a $(BUILD_STAGE)/rav1e/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.a $(BUILD_DIST)/librav1e-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/rav1e/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/librav1e-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/rav1e/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/librav1e-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	ln -s librav1e.0.dylib $(BUILD_DIST)/librav1e-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.dylib
+	$(LN_S) librav1e.0.dylib $(BUILD_DIST)/librav1e-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librav1e.dylib
 
 	# rav1e.mk Sign
 	$(call SIGN,rav1e,general.xml)

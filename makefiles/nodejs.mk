@@ -10,7 +10,7 @@ nodejs-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://nodejs.org/dist/v$(NODEJS_VERSION)/node-v$(NODEJS_VERSION).tar.gz
 	$(call EXTRACT_TAR,node-v$(NODEJS_VERSION).tar.gz,node-v$(NODEJS_VERSION),nodejs)
 	$(call DO_PATCH,nodejs,nodejs,-p1)
-	$(SED) -i 's/@@IPHONEOSVERMIN@@/$(shell echo "$(PLATFORM_VERSION_MIN)" | cut -d= -f2)/g' $(BUILD_WORK)/nodejs/common.gypi
+	sed -i 's/@@IPHONEOSVERMIN@@/$(shell echo "$(PLATFORM_VERSION_MIN)" | cut -d= -f2)/g' $(BUILD_WORK)/nodejs/common.gypi
 
 ifneq ($(UNAME),Darwin)
 nodejs:

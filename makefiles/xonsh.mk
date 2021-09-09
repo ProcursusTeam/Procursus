@@ -19,7 +19,7 @@ xonsh: xonsh-setup python3-prompt-toolkit
 		--install-layout=deb \
 		--root=$(BUILD_STAGE)/xonsh \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	$(SED) -i "s|$$(cat $(BUILD_STAGE)/xonsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/xonsh | grep \#! | sed 's/#!//')|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/xonsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
+	sed -i "s|$$(cat $(BUILD_STAGE)/xonsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/xonsh | grep \#! | sed 's/#!//')|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/xonsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
 	find $(BUILD_STAGE)/xonsh -name __pycache__ -prune -exec rm -rf {} \;
 	$(call AFTER_BUILD)
 endif

@@ -9,7 +9,7 @@ DEB_LIBSIGSEGV_V   ?= $(LIBSIGSEGV_VERSION)
 libsigsegv-setup: setup
 	wget -q -nc -P$(BUILD_SOURCE) https://ftp.gnu.org/gnu/libsigsegv/libsigsegv-$(LIBSIGSEGV_VERSION).tar.gz
 	$(call EXTRACT_TAR,libsigsegv-$(LIBSIGSEGV_VERSION).tar.gz,libsigsegv-$(LIBSIGSEGV_VERSION),libsigsegv)
-	$(SED) -i 's|#include <nlist.h>|#include <mach-o/nlist.h>|g' $(BUILD_WORK)/libsigsegv/src/stackvma-mach.c
+	sed -i 's|#include <nlist.h>|#include <mach-o/nlist.h>|g' $(BUILD_WORK)/libsigsegv/src/stackvma-mach.c
 
 ifneq ($(wildcard $(BUILD_WORK)/libsigsegv/.build_complete),)
 libsigsegv:
