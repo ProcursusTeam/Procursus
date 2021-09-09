@@ -4,4 +4,15 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Development
 Homepage: https://github.com/ivmai/libatomic_ops
-Description: This package provides semi-portable access to hardware-provided atomic memory update operations on a number of architectures.
+Description: A library for atomic operations (development files)
+ Libatomic-ops implements a large collection of operations, each one
+ of which is a combination of an (optional) atomic memory operation,
+ and a memory barrier.  It also implements associated feature-test
+ macros that determine whether a particular operation is available
+ on the current target hardware (either directly or by synthesis).
+ Libatomic-ops attempts to replace various existing files with similar
+ goals, since they usually do not handle differences in memory barrier
+ styles with sufficient generality.
+ .
+ This package provides the header files and documentation needed by
+ developers.
