@@ -701,7 +701,7 @@ PACK = \
 	fi; \
 	SIZE=$$(du -sk $(BUILD_DIST)/$(1) | cut -f 1); \
 	mkdir -p $(BUILD_DIST)/$(1)/DEBIAN; \
-	for i in control postinst preinst postrm prerm extrainst_ conffiles; do \
+	for i in control postinst preinst postrm prerm extrainst_ conffiles triggers; do \
 		for n in $$i $$i.$(PLATFORM) $$i.$(PLATFORM); do \
 			if [ -f "$(BUILD_INFO)/$(1).$$n.rootless" ] && [ ! -z "$(findstring rootless,$(MEMO_TARGET))" ]; then \
 				sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' \
