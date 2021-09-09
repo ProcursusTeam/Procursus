@@ -2,15 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-ifeq ($(SSH_STRAP),1)
 STRAPPROJECTS   += openssl
-else # ($(SSH_STRAP),1)
-SUBPROJECTS     += openssl
-endif # ($(SSH_STRAP),1)
-else # ($(MEMO_TARGET),darwin-\*)
-SUBPROJECTS     += openssl
-endif
 OPENSSL_VERSION := 3.0.0
 DEB_OPENSSL_V   ?= $(OPENSSL_VERSION)
 
