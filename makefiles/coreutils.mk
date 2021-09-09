@@ -29,9 +29,9 @@ coreutils:
 	@echo "Using previously built coreutils."
 else
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-coreutils: coreutils-setup gettext libgmp10 libxcrypt
+coreutils: coreutils-setup gettext libgmp10 libxcrypt openssl
 else # (,$(findstring darwin,$(MEMO_TARGET)))
-coreutils: coreutils-setup gettext libgmp10
+coreutils: coreutils-setup gettext libgmp10 openssl
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	cd $(BUILD_WORK)/coreutils && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
