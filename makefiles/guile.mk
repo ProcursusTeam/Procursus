@@ -64,7 +64,7 @@ guile-package: guile-stage
 
 	# guile.mk Prep guile-3.0-libs
 	cp -a $(BUILD_STAGE)/guile/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/guile/3.0 $(BUILD_DIST)/guile-3.0-libs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/guile/
-	cp -a $(BUILD_STAGE)/guile/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libguile-3.0.a) $(BUILD_DIST)/guile-3.0-libs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/guile/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libguile-3.0.a|pkgconfig) $(BUILD_DIST)/guile-3.0-libs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/guile/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/guile/3.0/{guile-procedures.txt,ice-9,language,oop,rnrs,rnrs.scm,scheme,srfi,statprof.scm,sxml,system,texinfo,texinfo.scm,web} $(BUILD_DIST)/guile-3.0-libs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/guile/3.0
 
 	# guile.mk Sign
