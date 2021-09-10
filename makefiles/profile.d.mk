@@ -15,7 +15,7 @@ else
 profile.d:
 	mkdir -p $(BUILD_STAGE)/profile.d/$(MEMO_PREFIX)/etc/profile.d
 	cp $(BUILD_INFO)/{,z}profile $(BUILD_STAGE)/profile.d/$(MEMO_PREFIX)/etc
-	cp $(BUILD_INFO)/terminal.sh $(BUILD_STAGE)/profile.d/$(MEMO_PREFIX)/etc/profile.d
+	cp $(BUILD_INFO)/{terminal,locale}.sh $(BUILD_STAGE)/profile.d/$(MEMO_PREFIX)/etc/profile.d
 endif
 
 profile.d-package: profile.d-stage
@@ -27,7 +27,7 @@ profile.d-package: profile.d-stage
 	cp -a $(BUILD_STAGE)/profile.d/$(MEMO_PREFIX)/etc $(BUILD_DIST)/profile.d/$(MEMO_PREFIX)
 
 	# profile.d.mk Permissions
-	$(FAKEROOT) chmod a+x $(BUILD_DIST)/profile.d/$(MEMO_PREFIX)/etc/profile.d/terminal.sh
+	$(FAKEROOT) chmod a+x $(BUILD_DIST)/profile.d/$(MEMO_PREFIX)/etc/profile.d/{terminal,locale}.sh
 
 	# profile.d.mk Make .debs
 	$(call PACK,profile.d,DEB_PROFILED_V)
