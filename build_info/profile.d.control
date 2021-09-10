@@ -5,6 +5,6 @@ Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_PROFILED_V@
 Pre-Depends: system-cmds (>=805.220.1)
-Depends: zsh
+Depends: zsh, uikittools (>= 2.0.6)
 Description: makes packaging for /etc/profile reasonable
 Name: Profile Directory
