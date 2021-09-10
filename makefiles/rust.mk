@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += rust
-RUST_VERSION := 1.54.0
+RUST_VERSION := 1.55.0
 DEB_RUST_V   ?= $(RUST_VERSION)
 
 # This needs ccache extra to build.
