@@ -25,10 +25,7 @@ libgif: libgif-setup
 	+$(MAKE) -C $(BUILD_WORK)/libgif install -j1 \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR=$(BUILD_STAGE)/libgif
-	+$(MAKE) -C $(BUILD_WORK)/libgif install -j1 \
-		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libgif-package: libgif-stage

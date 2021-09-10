@@ -40,7 +40,7 @@ lsdtrip-package: lsdtrip-stage
 
 	# lsdtrip.mk Sign
 	$(call SIGN,lsdtrip,general.xml)
-	$(LDID) -M$(BUILD_WORK)/lsdtrip/ls.ent $(BUILD_DIST)/lsdtrip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsdtrip
+	ldid $(MEMO_LDID_EXTRA_FLAGS) -M$(BUILD_WORK)/lsdtrip/ls.ent $(BUILD_DIST)/lsdtrip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsdtrip
 
 	# lsdtrip.mk Make .debs
 	$(call PACK,lsdtrip,DEB_LSDTRIP_V)

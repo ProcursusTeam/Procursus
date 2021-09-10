@@ -40,9 +40,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 endif
 	+$(MAKE) -C $(BUILD_WORK)/sdl2 install \
 		DESTDIR=$(BUILD_STAGE)/sdl2
-	+$(MAKE) -C $(BUILD_WORK)/sdl2 install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 sdl2-package: sdl2-stage

@@ -22,9 +22,7 @@ libsigcplusplus: libsigcplusplus-setup
 	+$(MAKE) -C $(BUILD_WORK)/libsigcplusplus
 	+$(MAKE) -C $(BUILD_WORK)/libsigcplusplus install \
 		DESTDIR=$(BUILD_STAGE)/libsigcplusplus
-	+$(MAKE) -C $(BUILD_WORK)/libsigcplusplus install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libsigcplusplus-package: libsigcplusplus-stage

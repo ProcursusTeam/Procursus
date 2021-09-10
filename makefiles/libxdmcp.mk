@@ -20,9 +20,7 @@ libxdmcp: libxdmcp-setup xorgproto
 		--enable-docs=no
 	+$(MAKE) -C $(BUILD_WORK)/libxdmcp install \
 		DESTDIR="$(BUILD_STAGE)/libxdmcp"
-	+$(MAKE) -C $(BUILD_WORK)/libxdmcp install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libxdmcp-package: libxdmcp-stage

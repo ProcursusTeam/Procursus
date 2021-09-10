@@ -20,9 +20,7 @@ libxvidcore: libxvidcore-setup
 	+$(MAKE) -C $(BUILD_WORK)/libxvidcore/build/generic
 	+$(MAKE) -C $(BUILD_WORK)/libxvidcore/build/generic install \
 		DESTDIR=$(BUILD_STAGE)/libxvidcore
-	+$(MAKE) -C $(BUILD_WORK)/libxvidcore/build/generic install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libxvidcore-package: libxvidcore-stage
