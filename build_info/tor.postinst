@@ -2,6 +2,7 @@
 set -e
 
 if [ "$1" = 'configure' ]; then
+	pw group add -n _tor >/dev/null 2>&1 || true
 	pw user add -n _tor -d @MEMO_PREFIX@/var/lib/tor -g _tor -s /usr/sbin/nologin >/dev/null 2>&1 || true
 
 	if ! [ -d @MEMO_PREFIX@/var/lib/tor ]; then
