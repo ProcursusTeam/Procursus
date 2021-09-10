@@ -25,9 +25,7 @@ libsnappy: libsnappy-setup
 	+$(MAKE) -C $(BUILD_WORK)/libsnappy all
 	+$(MAKE) -C $(BUILD_WORK)/libsnappy install \
 		DESTDIR="$(BUILD_STAGE)/libsnappy"
-	+$(MAKE) -C $(BUILD_WORK)/libsnappy install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libsnappy-package: libsnappy-stage

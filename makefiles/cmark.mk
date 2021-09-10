@@ -25,10 +25,7 @@ cmark: cmark-setup
 	+$(MAKE) -C $(BUILD_WORK)/cmark/build
 	+$(MAKE) -C $(BUILD_WORK)/cmark/build install \
 		DESTDIR="$(BUILD_STAGE)/cmark"
-	+$(MAKE) -C $(BUILD_WORK)/cmark/build install \
-		DESTDIR="$(BUILD_BASE)"
-
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 cmark-package: cmark-stage

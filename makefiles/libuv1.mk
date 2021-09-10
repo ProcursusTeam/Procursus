@@ -23,9 +23,7 @@ libuv1: libuv1-setup
 	+$(MAKE) -C $(BUILD_WORK)/libuv1
 	+$(MAKE) -C $(BUILD_WORK)/libuv1 install \
 		DESTDIR="$(BUILD_STAGE)/libuv1"
-	+$(MAKE) -C $(BUILD_WORK)/libuv1 install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libuv1-package: libuv1-stage

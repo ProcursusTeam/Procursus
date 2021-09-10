@@ -29,9 +29,7 @@ readline: readline-setup ncurses
 		TERMCAP_LIB="-lncursesw"
 	+$(MAKE) -C $(BUILD_WORK)/readline install \
 		DESTDIR=$(BUILD_STAGE)/readline
-	+$(MAKE) -C $(BUILD_WORK)/readline install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 readline-package: readline-stage
