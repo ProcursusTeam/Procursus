@@ -1,7 +1,8 @@
-Package: libprotobuf-lite25
+Package: libprotoc28
 Version: @DEB_LIBPROTOBUF_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Depends: libprotobuf28 (>= @DEB_LIBPROTOBUF_V@)
 Section: Libraries
 Priority: standard
-Description: Protocol Buffers - Google's data interchange format (lite version)
+Description: protocol buffers compiler library
