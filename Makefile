@@ -351,7 +351,7 @@ CXXFLAGS_FOR_BUILD :=
 LDFLAGS_FOR_BUILD  :=
 
 else ifeq ($(UNAME),Darwin)
-ifeq ($(shell sw_vers -productName),macOS)
+ifeq ($(shell sw_vers -productName),Mac OS X)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building on MacOS)
 endif # ($(MEMO_QUIET),1)
