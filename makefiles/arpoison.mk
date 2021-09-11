@@ -2,39 +2,36 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += arpoison
+SUBPROJECTS   	 += arpoison
 ARPOISON_VERSION := 0.7
 DEB_ARPOISON_V   ?= $(ARPOISON_VERSION)
 
-arpoison-setup: setup libnet
+arpoison-setup: setup
 	wget -q -nc -P$(BUILD_SOURCE) http://www.arpoison.net/arpoison-$(ARPOISON_VERSION).tar.gz
 	$(call EXTRACT_TAR,arpoison-$(ARPOISON_VERSION).tar.gz,arpoison-$(ARPOISON_VERSION),arpoison)
-	mkdir -p $(BUILD_STAGE)/arpoison/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/usr/local/bin/
-	mkdir -p $(BUILD_WORK)/linking/
-	ln -sf $(BUILD_STAGE)/libnet/usr/lib/libnet.a $(BUILD_WORK)/linking/libnet.a
+	mkdir -p $(BUILD_STAGE)/arpoison/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
 
 ifneq ($(wildcard $(BUILD_WORK)/arpoison/.build_complete),)
 arpoison:
 	@echo "Using previously built arpoison."
 else
-arpoison: arpoison-setup
+arpoison: arpoison-setup libnet
 	# arpoison.o
 	$(CC) $(CFLAGS) \
 		-c -o $(BUILD_WORK)/arpoison/arpoison.o -x c \
 		$(BUILD_WORK)/arpoison/arpoison.c\
 	
 	# arpoison
-	$(CC) $(CFLAGS) \
+	$(CC) $(CFLAGS) $(LDFLAGS)\
 		-o $(BUILD_WORK)/arpoison/arpoison \
 		$(BUILD_WORK)/arpoison/arpoison.o \
-		-L$(BUILD_WORK)/linking/ \
 		-l net
 
 	# remove linking dir
 	rm -rf $(BUILD_WORK)/linking
 
-	+mkdir -p $(BUILD_STAGE)/arpoison/usr/local/bin
-	cp $(BUILD_WORK)/arpoison/arpoison $(BUILD_STAGE)/arpoison/usr/local/bin/
+	+mkdir -p $(BUILD_STAGE)/arpoison/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp $(BUILD_WORK)/arpoison/arpoison $(BUILD_STAGE)/arpoison/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
 	$(call AFTER_BUILD)
 endif
 

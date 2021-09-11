@@ -6,3 +6,4 @@ Architecture: @DEB_ARCH@
 Version: @DEB_ARPOISON_V@
 Homepage: http://www.arpoison.net/
 Description: Generates user-defined ARP packets
+Depends: libnet9
