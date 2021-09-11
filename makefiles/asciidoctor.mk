@@ -22,7 +22,7 @@ asciidoctor: asciidoctor-setup
 			-n $(BUILD_STAGE)/asciidoctor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
 			--local \
 			$(BUILD_SOURCE)/gems/asciidoctor-$(ASCIIDOCTOR_VERSION).gem
-	touch $(BUILD_WORK)/asciidoctor/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 asciidoctor-package: asciidoctor-stage

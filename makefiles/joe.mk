@@ -20,7 +20,7 @@ joe: joe-setup ncurses
 	+$(MAKE) -C $(BUILD_WORK)/joe
 	+$(MAKE) -C $(BUILD_WORK)/joe install \
 		DESTDIR=$(BUILD_STAGE)/joe
-	touch $(BUILD_WORK)/joe/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 joe-package: joe-stage

@@ -22,7 +22,7 @@ bsd-progress: bsd-progress-setup ncurses
 		PROG_PREFIX="bsd-" \
 		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		DESTDIR="$(BUILD_STAGE)/bsd-progress"
-	touch $(BUILD_WORK)/bsd-progress/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 bsd-progress-package: bsd-progress-stage

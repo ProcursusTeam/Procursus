@@ -2,7 +2,7 @@ Package: r2ghidra-dec
 Version: @DEB_R2GHIDRA_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libradare2-4.5 (>= 4.5.0), libssl1.1 (>= 1.1.0), libzip5 (>= 1.7.3)
+Depends: libradare2-4.5 (>= 4.5.0), libssl3 (>= 1.1.0), libzip5 (>= 1.7.3)
 Section: Utilities
 Priority: optional
 Homepage: https://www.radare.org

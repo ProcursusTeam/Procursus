@@ -22,7 +22,7 @@ pyyaml: pyyaml-setup libyaml python3
 		--root="$(BUILD_STAGE)/pyyaml" \
 		--install-layout=deb
 	find $(BUILD_STAGE)/pyyaml -name __pycache__ -prune -exec rm -rf {} \;
-	touch $(BUILD_WORK)/pyyaml/.build_complete
+	$(call AFTER_BUILD)
 endif
 pyyaml-package: pyyaml-stage
 	# pyyaml.mk Package Structure

@@ -2,7 +2,7 @@ Package: libgit2-1.1
 Version: @DEB_LIBGIT2_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libssl1.1, libssh2-1, libpcre2-8-0
+Depends: libssl3, libssh2-1, libpcre2-8-0
 Section: Libraries
 Priority: optional
 Description: low-level Git library

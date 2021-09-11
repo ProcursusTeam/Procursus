@@ -13,7 +13,7 @@ else
 cameronkatri-keyring: setup
 	mkdir -p $(BUILD_STAGE)/cameronkatri-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 	cp -a $(BUILD_MISC)/keyrings/cameronkatri/{cameronkatri,subcursus}.gpg $(BUILD_STAGE)/cameronkatri-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	touch $(BUILD_STAGE)/cameronkatri-keyring/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 cameronkatri-keyring-package: cameronkatri-keyring-stage

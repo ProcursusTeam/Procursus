@@ -22,9 +22,7 @@ util-macros: util-macros-setup
 	+$(MAKE) -C $(BUILD_WORK)/util-macros
 	+$(MAKE) -C $(BUILD_WORK)/util-macros install \
 		DESTDIR=$(BUILD_STAGE)/util-macros
-	+$(MAKE) -C $(BUILD_WORK)/util-macros install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/util-macros/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 

@@ -21,7 +21,7 @@ basic-cmds: basic-cmds-setup ncurses
 	for bin in mesg write uudecode uuencode; do \
 		$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o $(BUILD_STAGE)/basic-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c; \
 	done
-	touch $(BUILD_WORK)/basic-cmds/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 basic-cmds-package: basic-cmds-stage

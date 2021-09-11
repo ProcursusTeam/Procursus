@@ -27,9 +27,7 @@ nghttp2: nghttp2-setup openssl libc-ares libev jansson libjemalloc libevent
 	+$(MAKE) -C $(BUILD_WORK)/nghttp2
 	+$(MAKE) -C $(BUILD_WORK)/nghttp2 install \
 		DESTDIR="$(BUILD_STAGE)/nghttp2"
-	+$(MAKE) -C $(BUILD_WORK)/nghttp2 install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/nghttp2/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 nghttp2-package: nghttp2-stage

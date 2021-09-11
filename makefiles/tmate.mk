@@ -20,7 +20,7 @@ tmate: tmate-setup libevent ncurses msgpack libssh
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/tmate install \
 		DESTDIR="$(BUILD_STAGE)/tmate"
-	touch $(BUILD_WORK)/tmate/.build_complete
+	$(call AFTER_BUILD)
 endif
 tmate-package: tmate-stage
 	# tmate.mk Package Structure

@@ -32,7 +32,7 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	mkdir -p $(BUILD_STAGE)/opendoas/$(MEMO_PREFIX)/etc/pam.d
 	cp -a $(BUILD_MISC)/pam/doas $(BUILD_STAGE)/opendoas/$(MEMO_PREFIX)/etc/pam.d
 	cp -a $(BUILD_MISC)/doas.conf $(BUILD_STAGE)/opendoas/$(MEMO_PREFIX)/etc/
-	touch $(BUILD_WORK)/opendoas/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 opendoas-package: opendoas-stage
@@ -45,7 +45,7 @@ opendoas-package: opendoas-stage
 	# opendoas.mk Sign
 	$(call SIGN,doas,pam.xml)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(LDID) -S$(BUILD_MISC)/entitlements/pam.xml $(BUILD_DIST)/doas/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/doas
+	ldid $(MEMO_LDID_EXTRA_FLAGS) -S$(BUILD_MISC)/entitlements/pam.xml $(BUILD_DIST)/doas/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/doas
 	find $(BUILD_DIST)/doas -name '.ldid*' -type f -delete
 endif
 

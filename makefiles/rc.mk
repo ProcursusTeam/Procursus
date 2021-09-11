@@ -34,7 +34,7 @@ endif
 	+$(MAKE) -C $(BUILD_WORK)/rc
 	+$(MAKE) -C $(BUILD_WORK)/rc install \
 		DESTDIR=$(BUILD_STAGE)/rc
-	touch $(BUILD_WORK)/rc/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 rc-package: rc-stage

@@ -26,7 +26,7 @@ endif
 		$(DEFAULT_GOLANG_FLAGS) \
 		go build
 	cp -a $(BUILD_WORK)/pup/pup $(BUILD_STAGE)/pup/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	touch $(BUILD_WORK)/pup/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 pup-package: pup-stage

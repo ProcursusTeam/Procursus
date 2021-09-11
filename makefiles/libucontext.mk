@@ -21,7 +21,7 @@ libucontext: libucontext-setup
 	mkdir -p $(BUILD_STAGE)/libucontext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_WORK)/libucontext/libucontext.a $(BUILD_STAGE)/libucontext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_WORK)/libucontext/include $(BUILD_STAGE)/libucontext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	touch $(BUILD_WORK)/libucontext/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libucontext-package:

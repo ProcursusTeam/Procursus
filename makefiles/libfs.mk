@@ -22,9 +22,7 @@ libfs: libfs-setup xorgproto xtrans
 	+$(MAKE) -C $(BUILD_WORK)/libfs
 	+$(MAKE) -C $(BUILD_WORK)/libfs install \
 		DESTDIR=$(BUILD_STAGE)/libfs
-	+$(MAKE) -C $(BUILD_WORK)/libfs install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libfs/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libfs-package: libfs-stage

@@ -10,9 +10,9 @@ misc-cmds-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/misc_cmds/misc_cmds-$(MISC-CMDS_VERSION).tar.gz
 	$(call EXTRACT_TAR,misc_cmds-$(MISC-CMDS_VERSION).tar.gz,misc_cmds-$(MISC-CMDS_VERSION),misc-cmds)
 	mkdir -p $(BUILD_STAGE)/misc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/{man/man1,misc}}
-	$(SED) -i 's|#include <calendar.h>|#include "calendar.h"|g' $(BUILD_WORK)/misc-cmds/ncal/ncal.c
-	$(SED) -i '1 i\typedef unsigned int u_int;' $(BUILD_WORK)/misc-cmds/leave/leave.c
-	$(SED) -i "s|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g" $(BUILD_WORK)/misc-cmds/{calendar,units}/pathnames.h
+	sed -i 's|#include <calendar.h>|#include "calendar.h"|g' $(BUILD_WORK)/misc-cmds/ncal/ncal.c
+	sed -i '1 i\typedef unsigned int u_int;' $(BUILD_WORK)/misc-cmds/leave/leave.c
+	sed -i "s|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g" $(BUILD_WORK)/misc-cmds/{calendar,units}/pathnames.h
 
 ifneq ($(wildcard $(BUILD_WORK)/misc-cmds/.build_complete),)
 misc-cmds:
@@ -27,7 +27,7 @@ misc-cmds: misc-cmds-setup ncurses
 	done
 	cp -a $(BUILD_WORK)/misc-cmds/calendar/calendars $(BUILD_STAGE)/misc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/calendar
 	cp -a $(BUILD_WORK)/misc-cmds/units/units.lib $(BUILD_STAGE)/misc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/misc
-	touch $(BUILD_WORK)/misc-cmds/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 misc-cmds-package: misc-cmds-stage

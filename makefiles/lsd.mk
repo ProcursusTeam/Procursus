@@ -16,14 +16,14 @@ lsd:
 else
 lsd: lsd-setup
 	# Use Lucy's fork of rust-users w/ iOS support
-	$(SED) -i 's|users = "0.11.*"|users = {git = "https://github.com/Absolucy/rust-users", branch = "ios"}|g' \
+	sed -i 's|users = "0.11.*"|users = {git = "https://github.com/Absolucy/rust-users", branch = "ios"}|g' \
 		$(BUILD_WORK)/lsd/Cargo.toml
 	cd $(BUILD_WORK)/lsd; $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \
 		--target=$(RUST_TARGET)
 	$(INSTALL) -Dm755 $(BUILD_WORK)/lsd/target/$(RUST_TARGET)/release/lsd \
 		$(BUILD_STAGE)/lsd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsd
-	touch $(BUILD_WORK)/lsd/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 lsd-package: lsd-stage

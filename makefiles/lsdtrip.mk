@@ -28,7 +28,7 @@ lsdtrip: lsdtrip-setup
 		$(LSDTRIP_FLAGS)
 	$(STRIP) $(BUILD_WORK)/lsdtrip/lsdtrip
 	$(INSTALL) -Dm755 $(BUILD_WORK)/lsdtrip/lsdtrip $(BUILD_STAGE)/lsdtrip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsdtrip
-	touch $(BUILD_WORK)/lsdtrip/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 lsdtrip-package: lsdtrip-stage
@@ -40,7 +40,7 @@ lsdtrip-package: lsdtrip-stage
 
 	# lsdtrip.mk Sign
 	$(call SIGN,lsdtrip,general.xml)
-	$(LDID) -M$(BUILD_WORK)/lsdtrip/ls.ent $(BUILD_DIST)/lsdtrip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsdtrip
+	ldid $(MEMO_LDID_EXTRA_FLAGS) -M$(BUILD_WORK)/lsdtrip/ls.ent $(BUILD_DIST)/lsdtrip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsdtrip
 
 	# lsdtrip.mk Make .debs
 	$(call PACK,lsdtrip,DEB_LSDTRIP_V)

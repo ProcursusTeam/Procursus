@@ -21,9 +21,7 @@ libxau: libxau-setup xorgproto
 	+$(MAKE) -C $(BUILD_WORK)/libxau
 	+$(MAKE) -C $(BUILD_WORK)/libxau install \
 		DESTDIR=$(BUILD_STAGE)/libxau
-	+$(MAKE) -C $(BUILD_WORK)/libxau install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxau/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libxau-package: libxau-stage

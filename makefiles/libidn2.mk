@@ -21,9 +21,7 @@ libidn2: libidn2-setup gettext libunistring
 	+$(MAKE) -C $(BUILD_WORK)/libidn2
 	+$(MAKE) -C $(BUILD_WORK)/libidn2 install \
 		DESTDIR=$(BUILD_STAGE)/libidn2
-	+$(MAKE) -C $(BUILD_WORK)/libidn2 install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libidn2/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libidn2-package: libidn2-stage

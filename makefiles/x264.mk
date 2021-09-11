@@ -30,9 +30,7 @@ x264: x264-setup
 	+$(MAKE) -C $(BUILD_WORK)/x264
 	+$(MAKE) -C $(BUILD_WORK)/x264 install \
 		DESTDIR=$(BUILD_STAGE)/x264
-	+$(MAKE) -C $(BUILD_WORK)/x264 install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/x264/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 x264-package: x264-stage

@@ -23,7 +23,7 @@ libpod-parser-perl: libpod-parser-perl-setup perl
 	+$(MAKE) -C $(BUILD_WORK)/libpod-parser-perl install \
 		DESTDIR="$(BUILD_STAGE)/libpod-parser-perl"
 	rm -rf $(BUILD_STAGE)/libpod-parser-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	touch $(BUILD_WORK)/libpod-parser-perl/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libpod-parser-perl-package: libpod-parser-perl-stage
