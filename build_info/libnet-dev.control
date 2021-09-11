@@ -4,6 +4,7 @@ Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LIBNET_V@
 Priority: optional
+Depends: libnet9 (= @DEB_LIBNET_V@)
 Description: development files for libnet
  libnet provides a portable framework for low-level network packet
  writing and handling.

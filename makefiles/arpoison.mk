@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   	 += arpoison
+SUBPROJECTS      += arpoison
 ARPOISON_VERSION := 0.7
 DEB_ARPOISON_V   ?= $(ARPOISON_VERSION)
 
