@@ -19,7 +19,7 @@ libnet: libnet-setup
 	cd $(BUILD_WORK)/libnet && autoreconf -fi
 	cd $(BUILD_WORK)/libnet && ./autogen.sh
 	cd $(BUILD_WORK)/libnet && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)\
+		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-link-layer=bpf
 	+$(MAKE) -C $(BUILD_WORK)/libnet
 	+$(MAKE) -C $(BUILD_WORK)/libnet install \
