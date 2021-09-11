@@ -23,7 +23,7 @@ aspell: aspell-setup ncurses
 		DESTDIR=$(BUILD_STAGE)/aspell
 	+$(MAKE) -C $(BUILD_WORK)/aspell install \
 		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	touch $(BUILD_WORK)/aspell/.build_complete
 endif
 
 aspell-package: aspell-stage
