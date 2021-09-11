@@ -30,7 +30,6 @@ arpoison: arpoison-setup libnet
 	# remove linking dir
 	rm -rf $(BUILD_WORK)/linking
 
-	+mkdir -p $(BUILD_STAGE)/arpoison/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp $(BUILD_WORK)/arpoison/arpoison $(BUILD_STAGE)/arpoison/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
 	$(call AFTER_BUILD)
 endif
