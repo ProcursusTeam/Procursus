@@ -27,9 +27,7 @@ libxfont2: libxfont2-setup xorgproto xtrans util-macros freetype libfontenc
 	+$(MAKE) -C $(BUILD_WORK)/libxfont2
 	+$(MAKE) -C $(BUILD_WORK)/libxfont2 install \
 		DESTDIR=$(BUILD_STAGE)/libxfont2
-	+$(MAKE) -C $(BUILD_WORK)/libxfont2 install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libxfont2-package: libxfont2-stage

@@ -2,7 +2,7 @@ Package: wget2
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_WGET2_V@
-Depends: libssl1.1, libpcre2-8-0, libintl8, liblzma5 (>= 5.2.5), libnghttp2-14, libidn2-0, libintl8, libzstd1
+Depends: libssl3, libpcre2-8-0, libintl8, liblzma5 (>= 5.2.5), libnghttp2-14, libidn2-0, libintl8, libzstd1
 Section: Networking
 Priority: important
 Description: simple HTTP file transfer client, but there's 2

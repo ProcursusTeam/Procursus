@@ -33,10 +33,7 @@ libgpg-error: libgpg-error-setup gettext
 	+$(MAKE) -C $(BUILD_WORK)/libgpg-error install \
 		DESTDIR=$(BUILD_STAGE)/libgpg-error \
 		TESTS=""
-	+$(MAKE) -C $(BUILD_WORK)/libgpg-error install \
-		DESTDIR=$(BUILD_BASE) \
-		TESTS=""
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libgpg-error-package: libgpg-error-stage

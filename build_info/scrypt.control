@@ -2,7 +2,7 @@ Package: scrypt
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_SCRYPT_V@
-Depends: libssl1.1
+Depends: libssl3
 Section: Security
 Priority: optional
 Description: File encryption utility using scrypt for key derivation

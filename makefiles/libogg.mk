@@ -27,9 +27,7 @@ libogg: libogg-setup
 	+$(MAKE) -C $(BUILD_WORK)/libogg
 	+$(MAKE) -C $(BUILD_WORK)/libogg install \
 		DESTDIR=$(BUILD_STAGE)/libogg
-	+$(MAKE) -C $(BUILD_WORK)/libogg install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libogg-package: libogg-stage

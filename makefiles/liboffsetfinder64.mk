@@ -24,9 +24,7 @@ liboffsetfinder64: liboffsetfinder64-setup libgeneral libinsn img4tool openssl l
 	+$(MAKE) -C $(BUILD_WORK)/liboffsetfinder64
 	+$(MAKE) -C $(BUILD_WORK)/liboffsetfinder64 install \
 		DESTDIR="$(BUILD_STAGE)/liboffsetfinder64"
-	+$(MAKE) -C $(BUILD_WORK)/liboffsetfinder64 install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 liboffsetfinder64-package: liboffsetfinder64-stage
