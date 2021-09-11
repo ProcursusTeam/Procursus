@@ -33,11 +33,10 @@ dav1d: dav1d-setup
 	cd $(BUILD_WORK)/dav1d/build && meson \
 		--cross-file cross.txt \
 		..
-	$(SED) -i 's/HAVE_AS_FUNC 1/HAVE_AS_FUNC 0/' $(BUILD_WORK)/dav1d/build/config.h
+	sed -i 's/HAVE_AS_FUNC 1/HAVE_AS_FUNC 0/' $(BUILD_WORK)/dav1d/build/config.h
 	+ninja -C $(BUILD_WORK)/dav1d/build
 	+DESTDIR=$(BUILD_STAGE)/dav1d ninja -C $(BUILD_WORK)/dav1d/build install
-	+DESTDIR=$(BUILD_BASE) ninja -C $(BUILD_WORK)/dav1d/build install
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 dav1d-package: dav1d-stage

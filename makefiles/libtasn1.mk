@@ -21,9 +21,7 @@ libtasn1: libtasn1-setup
 	+$(MAKE) -C $(BUILD_WORK)/libtasn1
 	+$(MAKE) -C $(BUILD_WORK)/libtasn1 install \
 		DESTDIR=$(BUILD_STAGE)/libtasn1
-	+$(MAKE) -C $(BUILD_WORK)/libtasn1 install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libtasn1-package: libtasn1-stage

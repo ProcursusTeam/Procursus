@@ -20,9 +20,7 @@ bash-completion: bash-completion-setup bash
 	+$(MAKE) -C $(BUILD_WORK)/bash-completion
 	+$(MAKE) -C $(BUILD_WORK)/bash-completion install \
 		DESTDIR=$(BUILD_STAGE)/bash-completion
-	+$(MAKE) -C $(BUILD_WORK)/bash-completion install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 bash-completion-package: bash-completion-stage

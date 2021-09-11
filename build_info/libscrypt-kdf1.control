@@ -3,7 +3,7 @@ Version: @DEB_SCRYPT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Libraries
-Depends: libssl1.1
+Depends: libssl3
 Description: Shared library for encryption using scrypt for key derivation
  A simple password-based encryption utility which demonstrates the
  scrypt key derivation function.  On modern hardware and with default

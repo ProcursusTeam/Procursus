@@ -28,10 +28,7 @@ openexr: openexr-setup
 		.
 	+$(MAKE) -C $(BUILD_WORK)/openexr/OpenEXR install \
 		DESTDIR="$(BUILD_STAGE)/openexr"
-	+$(MAKE) -C $(BUILD_WORK)/openexr/OpenEXR install \
-		DESTDIR="$(BUILD_BASE)"
-
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 openexr-package: openexr-stage

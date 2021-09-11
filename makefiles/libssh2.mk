@@ -25,9 +25,7 @@ libssh2: libssh2-setup openssl
 	+$(MAKE) -C $(BUILD_WORK)/libssh2
 	+$(MAKE) -C $(BUILD_WORK)/libssh2 install \
 		DESTDIR="$(BUILD_STAGE)/libssh2"
-	+$(MAKE) -C $(BUILD_WORK)/libssh2 install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libssh2-package: libssh2-stage

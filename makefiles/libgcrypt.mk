@@ -18,12 +18,12 @@ libgcrypt:
 else
 libgcrypt: libgcrypt-setup libgpg-error
 	for ASM in $(BUILD_WORK)/libgcrypt/mpi/aarch64/*.S; do \
-		$(SED) -i '/.type/d' $$ASM; \
-		$(SED) -i '/.size/d' $$ASM; \
-		$(SED) -i 's/_gcry/__gcry/g' $$ASM; \
+		sed -i '/.type/d' $$ASM; \
+		sed -i '/.size/d' $$ASM; \
+		sed -i 's/_gcry/__gcry/g' $$ASM; \
 	done
 	for ASM in $(BUILD_WORK)/libgcrypt/mpi/amd64/*.S; do \
-		$(SED) -i 's/_gcry/__gcry/g' $$ASM; \
+		sed -i 's/_gcry/__gcry/g' $$ASM; \
 	done
 	cd $(BUILD_WORK)/libgcrypt && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
@@ -31,9 +31,7 @@ libgcrypt: libgcrypt-setup libgpg-error
 	+$(MAKE) -C $(BUILD_WORK)/libgcrypt
 	+$(MAKE) -C $(BUILD_WORK)/libgcrypt install \
 		DESTDIR=$(BUILD_STAGE)/libgcrypt
-	+$(MAKE) -C $(BUILD_WORK)/libgcrypt install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libgcrypt-package: libgcrypt-stage
