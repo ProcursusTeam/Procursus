@@ -1,0 +1,16 @@
+Package: libpspell-dev
+Version: @DEB_ASPELL_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libaspell15, libaspell-dev
+Section: Development
+Priority: optional
+Multi-Arch: same
+Homepage: http://aspell.net/
+Description: Development files for applications with pspell support
+ This package contains the headers and static libraries for developing
+ applications with portable spell-checking interface (pspell) support.
+ .
+ You need this package ONLY if you plan to build applications that link
+ against the pspell static libraries.  You do not have to install this
+ package if all you want to do is use the Aspell program to spell-check.
