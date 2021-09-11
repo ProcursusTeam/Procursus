@@ -48,7 +48,6 @@ libnet-package: libnet-stage
 
 	# libnet.mk Make .debs
 	$(call PACK,libnet-dev,DEB_LIBNET_V)
-	# libnet.mk Make .debs
 	$(call PACK,libnet9,DEB_LIBNET_V)
 
 	# libnet.mk Build cleanup
