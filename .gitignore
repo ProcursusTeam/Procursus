@@ -7,3 +7,7 @@ build_strap/
 
 !.gitkeep
 .DS_Store
+.vscode/
+*.swp
+*.save
+desktop.ini

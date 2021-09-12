@@ -16,7 +16,7 @@ jp2a:
 	@echo "Using previously built jp2a."
 else
 jp2a: jp2a-setup curl libjpeg-turbo libpng16 ncurses
-	$(call CONFIGURE_MAKE_MAKEINSTALL,jp2a)
+	$(call CONFIGURE_MAKE_INSTALL,jp2a)
 	$(call AFTER_BUILD)
 endif
 

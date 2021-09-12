@@ -16,11 +16,7 @@ ifneq ($(wildcard $(BUILD_WORK)/@pkg@/.build_complete),)
 	@echo "Using previously built @pkg@."
 else
 @pkg@: @pkg@-setup perl
-	cd $(BUILD_WORK)/@pkg@ && $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl Makefile.PL \
-		$(DEFAULT_PERL_MAKE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/@pkg@
-	+$(MAKE) -C $(BUILD_WORK)/@pkg@ install \
-		DESTDIR="$(BUILD_STAGE)/@pkg@"
+	$(call PERL_MAKE_INSTALL,perl)
 	$(call AFTER_BUILD)
 endif
 

@@ -566,6 +566,23 @@ DEFAULT_RUST_FLAGS := \
 	SDKROOT="$(TARGET_SYSROOT)" \
 	PKG_CONFIG="$(RUST_TARGET)-pkg-config"
 
+DEFAULT_MESON_CROSS_TXT := \
+	[host_machine]\n \
+	system = 'darwin'\n \
+	cpu_family = '$(shell echo $(GNU_HOST_TRIPLE) | cut -d- -f1)'\n \
+	cpu = '$(MEMO_ARCH)'\n \
+	endian = 'little'\n \
+	[properties]\n \
+	root = '$(BUILD_BASE)'\n \
+	[paths]\n \
+	prefix ='$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
+	sysconfdir='$(MEMO_PREFIX)/etc'\n \
+	localstatedir='$(MEMO_PREFIX)/var'\n \
+	[binaries]\n \
+	c = '$(CC)'\n \
+	cpp = '$(CXX)'\n \
+	pkgconfig = '$(BUILD_TOOLS)/cross-pkg-config'\n
+
 export PLATFORM MEMO_ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE MEMO_PREFIX MEMO_SUB_PREFIX MEMO_ALT_PREFIX
 export CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T INSTALL
 export BUILD_ROOT BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP BUILD_TOOLS
@@ -605,7 +622,7 @@ DO_PATCH    = cd $(BUILD_PATCH)/$(1); \
 		fi; \
 	done
 
-CONFIGURE_MAKE_MAKEINSTALL = cd $(BUILD_WORK)/$(1); \
+CONFIGURE_MAKE_INSTALL = cd $(BUILD_WORK)/$(1); \
 	if ! [ $(2) ]; then \
 		./configure -C $(DEFAULT_CONFIGURE_FLAGS); \
 	else ./configure -C $(2); \
@@ -614,7 +631,7 @@ CONFIGURE_MAKE_MAKEINSTALL = cd $(BUILD_WORK)/$(1); \
 	$(MAKE) install -C $(BUILD_WORK)/$(1) \
 		DESTDIR=$(BUILD_STAGE)/$(1) $(4)
 
-CMAKE_MAKE_MAKEINSTALL = mkdir -p $(BUILD_WORK)/$(1)/build; \
+CMAKE_MAKE_INSTALL = mkdir -p $(BUILD_WORK)/$(1)/build; \
 	cd $(BUILD_WORK)/$(1)/build; \
 	if ! [ $(2) ]; then \
 		cmake . $(DEFAULT_CMAKE_FLAGS) ..; \
@@ -623,6 +640,36 @@ CMAKE_MAKE_MAKEINSTALL = mkdir -p $(BUILD_WORK)/$(1)/build; \
 	$(MAKE) -C $(BUILD_WORK)/$(1)/build $(3); \
 	$(MAKE) -C $(BUILD_WORK)/$(1)/build install \
 		DESTDIR=$(BUILD_STAGE)/$(1) $(4)
+
+PERL_MAKE_INSTALL = cd $(BUILD_WORK)/$(1); \
+	if ! [ $(2) ]; then \
+		$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl Makefile.PL \
+			$(DEFAULT_PERL_MAKE_FLAGS); \
+	else $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl Makefile.PL $(2); \
+	fi; \
+	$(MAKE) -C $(BUILD_WORK)/$(1) $(3); \
+	$(MAKE) -C $(BUILD_WORK)/$(1) install \
+		DESTDIR="$(BUILD_STAGE)/$(1)" $(4)
+
+MESON_NINJA_INSTALL = cd $(BUILD_WORK)/$(1)/build && meson \
+		--cross-file cross.txt \
+		.. $(2); \
+	ninja -C $(BUILD_WORK)/$(1)/build $(3); \
+	ninja -C $(BUILD_WORK)/$(1)/build install; \
+		DESTDIR="$(BUILD_STAGE)/$(1)" $(4)
+
+PYTHON3_SETUP_PY_INSTALL = 	cd $(BUILD_WORK)/$(1); \
+	if ! [ $(2) ]; then \
+		$(DEFAULT_SETUP_PY_ENV) python3 ./setup.py install \
+			--install-layout=deb \
+			--root="$(BUILD_STAGE)/$(1)" \
+			--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"; \
+	else \
+		$(2) python3 ./setup.py install \
+			--install-layout=deb \
+			--root="$(BUILD_STAGE)/$(1)" \
+			--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"; \
+	find $(BUILD_STAGE)/$(1) -name __pycache__ -prune -exec rm -rf {} \;
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 SIGN = 	for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
