@@ -605,6 +605,25 @@ DO_PATCH    = cd $(BUILD_PATCH)/$(1); \
 		fi; \
 	done
 
+CONFIGURE_MAKE_MAKEINSTALL = cd $(BUILD_WORK)/$(1); \
+	if ! [ $(2) ]; then \
+		./configure -C $(DEFAULT_CONFIGURE_FLAGS); \
+	else ./configure -C $(2); \
+	fi; \
+	$(MAKE) -C $(BUILD_WORK)/$(1) $(3); \
+	$(MAKE) install -C $(BUILD_WORK)/$(1) \
+		DESTDIR=$(BUILD_STAGE)/$(1) $(4)
+
+CMAKE_MAKE_MAKEINSTALL = mkdir -p $(BUILD_WORK)/$(1)/build; \
+	cd $(BUILD_WORK)/$(1)/build; \
+	if ! [ $(2) ]; then \
+		cmake . $(DEFAULT_CMAKE_FLAGS) ..; \
+	else cmake . $(2) ..; \
+	fi; \
+	$(MAKE) -C $(BUILD_WORK)/$(1)/build $(3); \
+	$(MAKE) -C $(BUILD_WORK)/$(1)/build install \
+		DESTDIR=$(BUILD_STAGE)/$(1) $(4)
+
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 SIGN = 	for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
 			$(STRIP) -x $$file; \

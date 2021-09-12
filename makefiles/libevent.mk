@@ -16,15 +16,10 @@ libevent:
 	@echo "Using previously built libevent."
 else
 libevent: libevent-setup openssl
-	cd $(BUILD_WORK)/libevent && cmake . \
+	$(call CMAKE_MAKE_MAKEINSTALL,libevent,\
 		$(DEFAULT_CMAKE_FLAGS) \
-		-DEVENT__LIBRARY_TYPE:STRING=BOTH \
-		.
-	+$(MAKE) -C $(BUILD_WORK)/libevent install \
-		DESTDIR=$(BUILD_STAGE)/libevent
-	+$(MAKE) -C $(BUILD_WORK)/libevent install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+		-DEVENT__LIBRARY_TYPE:STRING=BOTH)
+	$(call AFTER_BUILD,copy)
 endif
 
 libevent-package: libevent-stage

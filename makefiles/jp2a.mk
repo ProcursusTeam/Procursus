@@ -16,12 +16,7 @@ jp2a:
 	@echo "Using previously built jp2a."
 else
 jp2a: jp2a-setup curl libjpeg-turbo libpng16 ncurses
-	cd $(BUILD_WORK)/jp2a && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS) \
-		--disable-dependency-tracking
-	+$(MAKE) -C $(BUILD_WORK)/jp2a
-	+$(MAKE) -C $(BUILD_WORK)/jp2a install \
-		DESTDIR=$(BUILD_STAGE)/jp2a
+	$(call CONFIGURE_MAKE_MAKEINSTALL,jp2a)
 	$(call AFTER_BUILD)
 endif
 
