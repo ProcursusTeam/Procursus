@@ -16,14 +16,12 @@ libc-ares:
 	@echo "Using previously built libc-ares."
 else
 libc-ares: libc-ares-setup
-	cd $(BUILD_WORK)/libc-ares && ./configure -C \
+	$(call CONFIGURE_MAKE_INSTALL,\
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
 		--disable-debug \
-		--enable-shared
-	+$(MAKE) -C $(BUILD_WORK)/libc-ares
-	+$(MAKE) -C $(BUILD_WORK)/libc-ares install \
-		DESTDIR="$(BUILD_STAGE)/libc-ares"
+		--enable-shared \
+	)
 	$(call AFTER_BUILD,copy)
 endif
 

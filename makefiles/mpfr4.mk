@@ -15,11 +15,9 @@ mpfr4:
 	@echo "Using previously built mpfr4."
 else
 mpfr4: mpfr4-setup libgmp10
-	cd $(BUILD_WORK)/mpfr4 && ./configure \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/mpfr4
-	+$(MAKE) -C $(BUILD_WORK)/mpfr4 install \
-		DESTDIR="$(BUILD_STAGE)/mpfr4"
+	$(call CONFIGURE_MAKE_INSTALL,\
+		$(DEFAULT_CONFIGURE_FLAGS) \
+	)
 	$(call AFTER_BUILD,copy)
 endif
 

@@ -18,11 +18,9 @@ libuv1: libuv1-setup
 	if ! [ -f $(BUILD_WORK)/libuv1/configure ]; then \
 		cd $(BUILD_WORK)/libuv1 && ./autogen.sh; \
 	fi
-	cd $(BUILD_WORK)/libuv1 && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/libuv1
-	+$(MAKE) -C $(BUILD_WORK)/libuv1 install \
-		DESTDIR="$(BUILD_STAGE)/libuv1"
+	$(call CONFIGURE_MAKE_INSTALL,\
+		$(DEFAULT_CONFIGURE_FLAGS) \
+	)
 	$(call AFTER_BUILD,copy)
 endif
 

@@ -20,13 +20,11 @@ make:
 	@echo "Using previously built make."
 else
 make: make-setup gettext
-	cd $(BUILD_WORK)/make && ./configure -C \
+	$(call CONFIGURE_MAKE_INSTALL,\
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-guile=no \
-		$(MAKE_CONFIGURE_ARGS)
-	+$(MAKE) -C $(BUILD_WORK)/make
-	+$(MAKE) -C $(BUILD_WORK)/make install \
-		DESTDIR="$(BUILD_STAGE)/make"
+		$(MAKE_CONFIGURE_ARGS) \
+	)
 	$(call AFTER_BUILD)
 endif
 

@@ -17,16 +17,14 @@ nghttp2:
 	@echo "Using previously built nghttp2."
 else
 nghttp2: nghttp2-setup openssl libc-ares libev jansson libjemalloc libevent
-	cd $(BUILD_WORK)/nghttp2 && ./configure -C \
+	$(call CONFIGURE_MAKE_INSTALL,\
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
 		--without-systemd \
 		--enable-python-bindings=no \
 		LIBXML2_CFLAGS=-I$(TARGET_SYSROOT)/usr/include/libxml2 \
-		LIBXML2_LIBS=-lxml2
-	+$(MAKE) -C $(BUILD_WORK)/nghttp2
-	+$(MAKE) -C $(BUILD_WORK)/nghttp2 install \
-		DESTDIR="$(BUILD_STAGE)/nghttp2"
+		LIBXML2_LIBS=-lxml2 \
+	)
 	$(call AFTER_BUILD,copy)
 endif
 

@@ -16,14 +16,12 @@ wget2:
 	@echo "Using previously built wget2."
 else
 wget2: wget2-setup openssl pcre2 xz zstd nghttp2 libidn2 gettext
-	cd $(BUILD_WORK)/wget2 && ./configure -C \
+	$(call CONFIGURE_MAKE_INSTALL,\
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-ssl=openssl \
 		--with-openssl \
-		--without-libpsl
-	+$(MAKE) -C $(BUILD_WORK)/wget2
-	+$(MAKE) -C $(BUILD_WORK)/wget2 install \
-		DESTDIR="$(BUILD_STAGE)/wget2"
+		--without-libpsl \
+	)
 	rm -f $(BUILD_STAGE)/wget2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*noinstall
 	$(call AFTER_BUILD)
 endif

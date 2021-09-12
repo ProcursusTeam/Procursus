@@ -17,14 +17,12 @@ libssh2:
 else
 libssh2: libssh2-setup openssl
 	find $(BUILD_BASE) -name "*.la" -type f -delete
-	cd $(BUILD_WORK)/libssh2 && ./configure -C \
+	$(call CONFIGURE_MAKE_INSTALL,\
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-debug \
 		--disable-dependency-tracking \
-		--with-libz
-	+$(MAKE) -C $(BUILD_WORK)/libssh2
-	+$(MAKE) -C $(BUILD_WORK)/libssh2 install \
-		DESTDIR="$(BUILD_STAGE)/libssh2"
+		--with-libz \
+	)
 	$(call AFTER_BUILD,copy)
 endif
 

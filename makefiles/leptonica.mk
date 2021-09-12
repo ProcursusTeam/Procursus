@@ -15,13 +15,11 @@ leptonica:
 	@echo "Using previously built leptonica."
 else
 leptonica: leptonica-setup libgif libjpeg-turbo libpng16 libtiff openjpeg libwebp
-	cd $(BUILD_WORK)/leptonica && ./configure -C \
+	$(call CONFIGURE_MAKE_INSTALL,\
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-libwebp \
-		--with-libopenjpeg
-	+$(MAKE) -C $(BUILD_WORK)/leptonica
-	+$(MAKE) -C $(BUILD_WORK)/leptonica install \
-		DESTDIR="$(BUILD_STAGE)/leptonica"
+		--with-libopenjpeg \
+	)
 	rm -rf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libleptonica*
 	$(call AFTER_BUILD,copy)
 endif

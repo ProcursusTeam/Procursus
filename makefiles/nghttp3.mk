@@ -17,11 +17,9 @@ nghttp3:
 else
 nghttp3: nghttp3-setup
 	cd $(BUILD_WORK)/nghttp3 && autoreconf -fi
-	cd $(BUILD_WORK)/nghttp3 && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/nghttp3
-	+$(MAKE) -C $(BUILD_WORK)/nghttp3 install \
-		DESTDIR="$(BUILD_STAGE)/nghttp3"
+	$(call CONFIGURE_MAKE_INSTALL,\
+		$(DEFAULT_CONFIGURE_FLAGS) \
+	)
 	$(call AFTER_BUILD,copy)
 endif
 

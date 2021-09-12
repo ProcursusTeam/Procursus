@@ -16,7 +16,7 @@ pinentry:
 	@echo "Using previously built libassuan."
 else
 pinentry: pinentry-setup libgpg-error libassuan ncurses
-	cd $(BUILD_WORK)/pinentry && ./configure -C \
+	$(call CONFIGURE_MAKE_INSTALL,\
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-pinentry-fltk \
 		--disable-pinentry-gnome3 \
@@ -25,10 +25,8 @@ pinentry: pinentry-setup libgpg-error libassuan ncurses
 		--disable-pinentry-qt5 \
 		--disable-pinentry-tqt \
 		--enable-pinentry-tty \
-		NCURSES_CFLAGS="-DNCURSES_WIDECHAR"
-	+$(MAKE) -C $(BUILD_WORK)/pinentry
-	+$(MAKE) -C $(BUILD_WORK)/pinentry install \
-		DESTDIR="$(BUILD_STAGE)/pinentry"
+		NCURSES_CFLAGS="-DNCURSES_WIDECHAR" \
+	)
 	$(call AFTER_BUILD)
 endif
 

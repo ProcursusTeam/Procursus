@@ -18,17 +18,15 @@ curl:
 else
 curl: curl-setup gettext openssl libssh2 nghttp2 libidn2 brotli zstd rtmpdump
 	cd $(BUILD_WORK)/curl && autoreconf -vi
-	cd $(BUILD_WORK)/curl && ./configure -C \
+	$(call CONFIGURE_MAKE_INSTALL,\
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-debug \
 		--disable-dependency-tracking \
 		--with-libssh2 \
 		--with-openssl \
 		--with-nghttp2 \
-		--with-ca-bundle=$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem
-	+$(MAKE) -C $(BUILD_WORK)/curl
-	+$(MAKE) -C $(BUILD_WORK)/curl install \
-		DESTDIR="$(BUILD_STAGE)/curl"
+		--with-ca-bundle=$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem \
+	)
 	$(call AFTER_BUILD,copy)
 endif
 

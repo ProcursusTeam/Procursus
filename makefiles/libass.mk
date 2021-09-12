@@ -15,11 +15,9 @@ libass:
 	@echo "Using previously built libass."
 else
 libass: libass-setup freetype fontconfig libfribidi harfbuzz
-	cd $(BUILD_WORK)/libass && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/libass
-	+$(MAKE) -C $(BUILD_WORK)/libass install \
-		DESTDIR="$(BUILD_STAGE)/libass"
+	$(call CONFIGURE_MAKE_INSTALL,\
+		$(DEFAULT_CONFIGURE_FLAGS) \
+	)
 	$(call AFTER_BUILD,copy)
 endif
 

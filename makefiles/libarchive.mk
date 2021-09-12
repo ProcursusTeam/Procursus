@@ -15,7 +15,7 @@ libarchive:
 	@echo "Using previously built libarchive."
 else
 libarchive: libarchive-setup lz4 liblzo2 zstd xz nettle
-	cd $(BUILD_WORK)/libarchive && ./configure \
+	$(call CONFIGURE_MAKE_INSTALL,\
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
 		--without-openssl \
@@ -23,10 +23,8 @@ libarchive: libarchive-setup lz4 liblzo2 zstd xz nettle
 		--with-lzo2 \
 		--enable-bsdtar=shared \
 		--enable-bsdcpio=shared \
-		--enable-bsdcat=shared
-	+$(MAKE) -C $(BUILD_WORK)/libarchive
-	+$(MAKE) -C $(BUILD_WORK)/libarchive install \
-		DESTDIR="$(BUILD_STAGE)/libarchive"
+		--enable-bsdcat=shared \
+	)
 	$(call AFTER_BUILD,copy)
 endif
 

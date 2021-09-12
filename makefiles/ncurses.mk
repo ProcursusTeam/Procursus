@@ -19,7 +19,7 @@ ncurses:
 	@echo "Using previously built ncurses."
 else
 ncurses: ncurses-setup
-	cd $(BUILD_WORK)/ncurses && ./configure -C \
+	$(call CONFIGURE_MAKE_INSTALL,\
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-build-cc="$(CC_FOR_BUILD)" \
 		--with-build-cpp="$(CPP_FOR_BUILD)" \
@@ -38,10 +38,8 @@ ncurses: ncurses-setup
 		--enable-widec \
 		--with-default-terminfo-dir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo \
 		--with-manpage-format=normal \
-		LDFLAGS="$(CFLAGS) $(LDFLAGS)"
-	+$(MAKE) -C $(BUILD_WORK)/ncurses
-	+$(MAKE) -C $(BUILD_WORK)/ncurses install \
-		DESTDIR="$(BUILD_STAGE)/ncurses"
+		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
+	)
 
 	rm $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/tabs
 

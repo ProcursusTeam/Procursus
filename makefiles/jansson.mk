@@ -15,11 +15,9 @@ jansson:
 	@echo "Using previously built jansson."
 else
 jansson: jansson-setup
-	cd $(BUILD_WORK)/jansson && ./configure \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/jansson
-	+$(MAKE) -C $(BUILD_WORK)/jansson install \
-		DESTDIR="$(BUILD_STAGE)/jansson"
+	$(call CONFIGURE_MAKE_INSTALL,\
+		$(DEFAULT_CONFIGURE_FLAGS) \
+	)
 	$(call AFTER_BUILD,copy)
 endif
 

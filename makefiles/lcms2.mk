@@ -16,11 +16,9 @@ lcms2:
 	@echo "Using previously built lcms2."
 else
 lcms2: lcms2-setup libjpeg-turbo libtiff
-	cd $(BUILD_WORK)/lcms2 && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/lcms2
-	+$(MAKE) -C $(BUILD_WORK)/lcms2 install \
-		DESTDIR="$(BUILD_STAGE)/lcms2"
+	$(call CONFIGURE_MAKE_INSTALL,\
+		$(DEFAULT_CONFIGURE_FLAGS) \
+	)
 	$(call AFTER_BUILD,copy)
 endif
 

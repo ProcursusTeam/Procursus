@@ -17,16 +17,14 @@ libsixel:
 else
 libsixel: libsixel-setup libpng16 libjpeg-turbo curl libgd
 	cd $(BUILD_WORK)/libsixel && autoreconf -fi
-	cd $(BUILD_WORK)/libsixel && ./configure -C \
+	$(call CONFIGURE_MAKE_INSTALL,\
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-python=no \
 		--with-libcurl \
 		--with-gd \
 		--with-jpeg \
-		--with-png
-	+$(MAKE) -C $(BUILD_WORK)/libsixel
-	+$(MAKE) -C $(BUILD_WORK)/libsixel install \
-		DESTDIR="$(BUILD_STAGE)/libsixel"
+		--with-png \
+	)
 	$(call AFTER_BUILD,copy)
 endif
 

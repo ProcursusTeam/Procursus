@@ -17,15 +17,13 @@ ngtcp2:
 else
 ngtcp2: ngtcp2-setup gnutls nghttp3 libjemalloc libev
 	cd $(BUILD_WORK)/ngtcp2 && autoreconf -fi
-	cd $(BUILD_WORK)/ngtcp2 && ./configure -C \
+	$(call CONFIGURE_MAKE_INSTALL,\
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-gnutls \
 		--with-libnghttp3 \
 		--with-libev \
-		--with-jemalloc
-	+$(MAKE) -C $(BUILD_WORK)/ngtcp2
-	+$(MAKE) -C $(BUILD_WORK)/ngtcp2 install \
-		DESTDIR="$(BUILD_STAGE)/ngtcp2"
+		--with-jemalloc \
+	)
 	mkdir -p $(BUILD_STAGE)/ngtcp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{,s}bin
 	cp $(BUILD_WORK)/ngtcp2/examples/.libs/gtlsserver $(BUILD_STAGE)/ngtcp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 	cp $(BUILD_WORK)/ngtcp2/examples/.libs/gtlsclient $(BUILD_STAGE)/ngtcp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin

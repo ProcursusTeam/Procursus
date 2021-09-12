@@ -15,14 +15,12 @@ less:
 	@echo "Using previously built less."
 else
 less: less-setup ncurses pcre2
-	cd $(BUILD_WORK)/less && ./configure -C \
+	$(call CONFIGURE_MAKE_INSTALL,\
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-regex=pcre2 \
 		CFLAGS="$(CFLAGS) -Wno-implicit-function-declaration" \
-		LDFLAGS="$(CFLAGS) $(LDFLAGS)"
-	+$(MAKE) -C $(BUILD_WORK)/less
-	+$(MAKE) -C $(BUILD_WORK)/less install \
-		DESTDIR="$(BUILD_STAGE)/less"
+		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
+	)
 	$(call AFTER_BUILD)
 endif
 

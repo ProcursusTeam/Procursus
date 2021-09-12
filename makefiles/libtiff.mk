@@ -16,12 +16,10 @@ libtiff:
 	@echo "Using previously built libtiff."
 else
 libtiff: libtiff-setup libjpeg-turbo xz zstd
-	cd $(BUILD_WORK)/libtiff && ./configure -C \
+	$(call CONFIGURE_MAKE_INSTALL,\
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--disable-webp
-	+$(MAKE) -C $(BUILD_WORK)/libtiff
-	+$(MAKE) -C $(BUILD_WORK)/libtiff install \
-		DESTDIR="$(BUILD_STAGE)/libtiff"
+		--disable-webp \
+	)
 	$(call AFTER_BUILD,copy)
 endif
 

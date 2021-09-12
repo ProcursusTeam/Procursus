@@ -16,15 +16,13 @@ wget:
 	@echo "Using previously built wget."
 else
 wget: wget-setup openssl pcre2 gettext libunistring libidn2
-	cd $(BUILD_WORK)/wget && ./configure -C \
+	$(call CONFIGURE_MAKE_INSTALL,\
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-ssl=openssl \
 		--with-openssl \
 		--without-libpsl \
-		CFLAGS="$(CFLAGS) -Wno-macro-redefined -Wno-c99-extensions -D__nonnull\(params\)="
-	+$(MAKE) -C $(BUILD_WORK)/wget
-	+$(MAKE) -C $(BUILD_WORK)/wget install \
-		DESTDIR="$(BUILD_STAGE)/wget"
+		CFLAGS="$(CFLAGS) -Wno-macro-redefined -Wno-c99-extensions -D__nonnull\(params\)=" \
+	)
 	$(call AFTER_BUILD)
 endif
 

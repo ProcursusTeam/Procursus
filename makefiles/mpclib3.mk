@@ -15,11 +15,9 @@ mpclib3:
 	@echo "Using previously built mpclib3."
 else
 mpclib3: mpclib3-setup libgmp10 mpfr4
-	cd $(BUILD_WORK)/mpclib3 && ./configure \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/mpclib3
-	+$(MAKE) -C $(BUILD_WORK)/mpclib3 install \
-		DESTDIR="$(BUILD_STAGE)/mpclib3"
+	$(call CONFIGURE_MAKE_INSTALL,\
+		$(DEFAULT_CONFIGURE_FLAGS) \
+	)
 	$(call AFTER_BUILD,copy)
 endif
 

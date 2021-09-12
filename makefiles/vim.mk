@@ -19,7 +19,7 @@ vim: .SHELLFLAGS=-O extglob -c
 vim: vim-setup ncurses gettext
 	sed -i 's/AC_TRY_LINK(\[]/AC_TRY_LINK(\[#include <termcap.h>]/g' $(BUILD_WORK)/vim/src/configure.ac # This is so stupid, I cannot believe this is necessary.
 	cd $(BUILD_WORK)/vim/src && autoconf -f
-	cd $(BUILD_WORK)/vim && ./configure -C \
+	$(call CONFIGURE_MAKE_INSTALL,\
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-gui=no \
 		--with-tlib=ncursesw \
@@ -32,10 +32,8 @@ vim: vim-setup ncurses gettext
 		vim_cv_tty_mode=0620 \
 		vim_cv_getcwd_broken=no \
 		vim_cv_stat_ignores_slash=no \
-		vim_cv_memmove_handles_overlap=yes
-	+$(MAKE) -C $(BUILD_WORK)/vim
-	+$(MAKE) -C $(BUILD_WORK)/vim install \
-		DESTDIR="$(BUILD_STAGE)/vim"
+		vim_cv_memmove_handles_overlap=yes \
+	)
 	rm -f $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/!(vim|vimtutor|xxd)
 	mv $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/vim $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/vim.basic
 	rm -rf $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/*{ISO*,UTF*,KOI*}

@@ -16,12 +16,10 @@ xtrans:
 	@echo "Using previously built xtrans."
 else
 xtrans: xtrans-setup
-	cd $(BUILD_WORK)/xtrans && ./configure -C \
+	$(call CONFIGURE_MAKE_INSTALL,\
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--enable-docs=no
-	+$(MAKE) -C $(BUILD_WORK)/xtrans
-	+$(MAKE) -C $(BUILD_WORK)/xtrans install \
-		DESTDIR="$(BUILD_STAGE)/xtrans"
+		--enable-docs=no \
+	)
 	$(call AFTER_BUILD,copy)
 endif
 

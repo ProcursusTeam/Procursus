@@ -17,7 +17,7 @@ nano:
 	@echo "Using previously built nano."
 else
 nano: nano-setup ncurses gettext file
-	cd $(BUILD_WORK)/nano && ./configure -C \
+	$(call CONFIGURE_MAKE_INSTALL,\
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-utf8 \
 		--enable-color \
@@ -25,10 +25,8 @@ nano: nano-setup ncurses gettext file
 		--enable-nanorc \
 		--disable-debug \
 		--enable-multibuffer \
-		NCURSESW_LIBS="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib"
-	+$(MAKE) -C $(BUILD_WORK)/nano
-	+$(MAKE) -C $(BUILD_WORK)/nano install \
-		DESTDIR="$(BUILD_STAGE)/nano"
+		NCURSESW_LIBS="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib" \
+	)
 	mkdir -p $(BUILD_STAGE)/nano/$(MEMO_PREFIX)/etc
 	cp -a $(BUILD_WORK)/nano/doc/sample.nanorc $(BUILD_STAGE)/nano/$(MEMO_PREFIX)/etc/nanorc
 	$(call AFTER_BUILD)
