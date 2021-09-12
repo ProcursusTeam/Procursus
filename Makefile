@@ -658,10 +658,15 @@ MESON_NINJA_INSTALL = cd $(BUILD_WORK)/$(1)/build && meson \
 	ninja -C $(BUILD_WORK)/$(1)/build install; \
 		DESTDIR="$(BUILD_STAGE)/$(1)" $(4)
 
-PYTHON3_SETUP_PY_INSTALL = 	cd $(BUILD_WORK)/$(1); \
+MESON_MESON_INSTALL = cd $(BUILD_WORK)/$(1)/build && meson \
+	--cross-file cross.txt\
+	.. $(2); \
+	$(3) DESTDIR='$(BUILD_STAGE)/$(1)' meson install $(4);
+
+PYTHON3_SETUP_PY_INSTALL = cd $(BUILD_WORK)/$(1); \
 	if ! [ $(2) ]; then \
 		$(DEFAULT_SETUP_PY_ENV) python3 ./setup.py install \
-			--install-layout=deb \
+			--instal,l-layout=deb \
 			--root="$(BUILD_STAGE)/$(1)" \
 			--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"; \
 	else \
@@ -1117,9 +1122,9 @@ setup:
 	@cp -a $(BUILD_MISC)/{libxml-2.0,zlib}.pc $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 
 ifeq ($(UNAME),FreeBSD)
-	@# FreeBSD does not have stdbool.h and stdarg.h
 	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Headers/{stdbool.h,stdarg.h} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	@cp -af /usr/include/stdalign.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include https://opensource.apple.com/source/xnu/xnu-7195.101.1/EXTERNAL_HEADERS/stdatomic.h
 endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))

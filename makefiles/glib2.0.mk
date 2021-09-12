@@ -15,44 +15,24 @@ glib2.0-setup: setup
 		$(BUILD_WORK)/glib2.0/{gio/xdgmime/xdgmime.c,glib/gutils.c}
 	mkdir -p $(BUILD_WORK)/glib2.0/build
 
-	echo -e "[host_machine]\n \
-	cpu_family = '$(shell echo $(GNU_HOST_TRIPLE) | cut -d- -f1)'\n \
-	cpu = '$(MEMO_ARCH)'\n \
-	endian = 'little'\n \
-	system = 'darwin'\n \
-	[properties]\n \
-	root = '$(BUILD_BASE)'\n \
-	needs_exe_wrapper = true\n \
-	[paths]\n \
-	prefix ='$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
-	[binaries]\n \
-	c = '$(CC)'\n \
-	objc = '$(CC)'\n \
-	cpp = '$(CXX)'\n \
-	pkgconfig = '$(BUILD_TOOLS)/cross-pkg-config'\n" > $(BUILD_WORK)/glib2.0/build/cross.txt
+	echo -e "$(DEFAULT_MESON_CROSS_TXT)" > $(BUILD_WORK)/glib2.0/build/cross.txt
 
 ifneq ($(wildcard $(BUILD_WORK)/glib2.0/.build_complete),)
 glib2.0:
 	@echo "Using previously built glib2.0."
 else
 glib2.0: glib2.0-setup gettext pcre libffi
-	cd $(BUILD_WORK)/glib2.0/build && meson \
-		--cross-file cross.txt \
+	$(call MESON_MESON_INSTALL,glib2.0,\
 		-Diconv=auto \
 		-Dbsymbolic_functions=false \
-		-Ddtrace=false \
-		..
-	sed -i '/HAVE_LIBELF/d' $(BUILD_WORK)/glib2.0/build/config.h
-	cd $(BUILD_WORK)/glib2.0/build; \
-		DESTDIR="$(BUILD_STAGE)/glib2.0" meson install; \
-		DESTDIR="$(BUILD_BASE)" meson install
+		-Ddtrace=false; \
+	sed -i '/HAVE_LIBELF/d' $(BUILD_WORK)/glib2.0/build/config.h)
 	sed -i 's/, zlib//;s/\(Libs\.private:.*\)/\1 -lz/' \
-		$(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/gio-2.0.pc \
-		$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/gio-2.0.pc
+		$(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/gio-2.0.pc
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1700 ] && echo 1),1)
 	rm -f $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libexpat*
 endif
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 glib2.0-package: glib2.0-stage
