@@ -16,11 +16,7 @@ libxau:
 	@echo "Using previously built libxau."
 else
 libxau: libxau-setup xorgproto
-	cd $(BUILD_WORK)/libxau && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/libxau
-	+$(MAKE) -C $(BUILD_WORK)/libxau install \
-		DESTDIR=$(BUILD_STAGE)/libxau
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

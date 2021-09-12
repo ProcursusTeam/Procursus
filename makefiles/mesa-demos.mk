@@ -16,11 +16,7 @@ mesa-demos:
 	@echo "Using previously built mesa-demos."
 else
 mesa-demos: mesa-demos-setup mesa libglu glew libx11 libxext freetype
-	cd $(BUILD_WORK)/mesa-demos && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/mesa-demos
-	+$(MAKE) -C $(BUILD_WORK)/mesa-demos install \
-		DESTDIR=$(BUILD_STAGE)/mesa-demos
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD)
 endif
 

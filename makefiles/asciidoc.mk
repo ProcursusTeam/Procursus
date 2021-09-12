@@ -18,11 +18,7 @@ asciidoc:
 else
 asciidoc: asciidoc-setup
 	cd $(BUILD_WORK)/asciidoc && autoconf
-	cd $(BUILD_WORK)/asciidoc && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/asciidoc
-	+$(MAKE) -C $(BUILD_WORK)/asciidoc install \
-		DESTDIR=$(BUILD_STAGE)/asciidoc
+	$(call CONFIGURE_MAKE_INSTALL)
 	for file in $(BUILD_STAGE)/asciidoc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*.py; do \
 		mv $$file $(BUILD_STAGE)/asciidoc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(basename $$file .py); \
 	done

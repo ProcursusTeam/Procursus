@@ -16,11 +16,7 @@ libxft:
 	@echo "Using previously built libxft."
 else
 libxft: libxft-setup libx11 libxrender xorgproto fontconfig freetype
-	cd $(BUILD_WORK)/libxft && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/libxft
-	+$(MAKE) -C $(BUILD_WORK)/libxft install \
-		DESTDIR=$(BUILD_STAGE)/libxft
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

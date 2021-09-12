@@ -16,11 +16,7 @@ xhost:
 	@echo "Using previously built xhost."
 else
 xhost: xhost-setup libx11 libxau libxmu xorgproto xxhash
-	cd $(BUILD_WORK)/xhost && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/xhost
-	+$(MAKE) -C $(BUILD_WORK)/xhost install \
-		DESTDIR=$(BUILD_STAGE)/xhost
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD)
 endif
 

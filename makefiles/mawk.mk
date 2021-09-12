@@ -15,11 +15,7 @@ mawk:
 	@echo "Using previously built mawk."
 else
 mawk: mawk-setup
-	cd $(BUILD_WORK)/mawk && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/mawk
-	+$(MAKE) -C $(BUILD_WORK)/mawk install \
-		DESTDIR=$(BUILD_STAGE)/mawk
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD)
 endif
 

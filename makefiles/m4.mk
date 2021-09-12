@@ -17,11 +17,7 @@ m4:
 	@echo "Using previously built m4."
 else
 m4: m4-setup
-	cd $(BUILD_WORK)/m4 && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/m4
-	+$(MAKE) -C $(BUILD_WORK)/m4 install \
-		DESTDIR=$(BUILD_STAGE)/m4
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 m4-package: m4-stage

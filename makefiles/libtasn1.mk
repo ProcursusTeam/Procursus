@@ -16,11 +16,7 @@ libtasn1:
 	@echo "Using previously built libtasn1."
 else
 libtasn1: libtasn1-setup
-	cd $(BUILD_WORK)/libtasn1 && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/libtasn1
-	+$(MAKE) -C $(BUILD_WORK)/libtasn1 install \
-		DESTDIR=$(BUILD_STAGE)/libtasn1
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

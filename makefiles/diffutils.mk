@@ -20,11 +20,7 @@ diffutils:
 	@echo "Using previously built diffutils."
 else
 diffutils: diffutils-setup gettext
-	cd $(BUILD_WORK)/diffutils && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/diffutils
-	+$(MAKE) -C $(BUILD_WORK)/diffutils install \
-		DESTDIR=$(BUILD_STAGE)/diffutils
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD)
 endif
 

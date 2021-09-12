@@ -15,11 +15,7 @@ bash-completion:
 	@echo "Using previously built bash-completion."
 else
 bash-completion: bash-completion-setup bash
-	cd $(BUILD_WORK)/bash-completion && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/bash-completion
-	+$(MAKE) -C $(BUILD_WORK)/bash-completion install \
-		DESTDIR=$(BUILD_STAGE)/bash-completion
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

@@ -16,11 +16,7 @@ libpipeline:
 	@echo "Using previously built libpipeline."
 else
 libpipeline: libpipeline-setup
-	cd $(BUILD_WORK)/libpipeline && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/libpipeline
-	+$(MAKE) -C $(BUILD_WORK)/libpipeline install \
-		DESTDIR=$(BUILD_STAGE)/libpipeline
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

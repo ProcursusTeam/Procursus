@@ -16,11 +16,7 @@ xkbcomp:
 	@echo "Using previously built xkbcomp."
 else
 xkbcomp: xkbcomp-setup libx11 xorgproto libxkbfile
-	cd $(BUILD_WORK)/xkbcomp && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/xkbcomp
-	+$(MAKE) -C $(BUILD_WORK)/xkbcomp install \
-		DESTDIR=$(BUILD_STAGE)/xkbcomp
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD)
 endif
 

@@ -15,11 +15,7 @@ socat:
 	@echo "Using previously built socat."
 else
 socat: socat-setup openssl readline
-	cd $(BUILD_WORK)/socat && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/socat
-	+$(MAKE) -C $(BUILD_WORK)/socat install \
-		DESTDIR=$(BUILD_STAGE)/socat
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD)
 endif
 

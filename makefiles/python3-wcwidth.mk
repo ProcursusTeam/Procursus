@@ -15,7 +15,7 @@ python3-wcwidth:
 	@echo "Using previously built python3-wcwidth."
 else
 python3-wcwidth: python3-wcwidth-setup python3
-	$(call PYTHON3_SETUP_PY_INSTALL,python3-wcwidth)
+	$(call PYTHON3_SETUP_PY_INSTALL)
 	$(call AFTER_BUILD)
 endif
 

@@ -15,11 +15,7 @@ mc:
 	@echo "Using previously built mc."
 else
 mc: mc-setup slang2 glib2.0 gettext libssh2
-	cd $(BUILD_WORK)/mc && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/mc
-	+$(MAKE) -C $(BUILD_WORK)/mc install \
-		DESTDIR=$(BUILD_STAGE)/mc
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD)
 endif
 

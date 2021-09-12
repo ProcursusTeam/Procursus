@@ -16,11 +16,7 @@ hello:
 	@echo "Using previously built hello."
 else
 hello: hello-setup
-	cd $(BUILD_WORK)/hello && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/hello
-	+$(MAKE) -C $(BUILD_WORK)/hello install \
-		DESTDIR=$(BUILD_STAGE)/hello
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD)
 endif
 

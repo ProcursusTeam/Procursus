@@ -15,11 +15,7 @@ xcb-util-renderutil:
 	@echo "Using previously built xcb-util-renderutil."
 else
 xcb-util-renderutil: xcb-util-renderutil-setup libxcb xcb-util
-	cd $(BUILD_WORK)/xcb-util-renderutil && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/xcb-util-renderutil
-	+$(MAKE) -C $(BUILD_WORK)/xcb-util-renderutil install \
-		DESTDIR=$(BUILD_STAGE)/xcb-util-renderutil
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

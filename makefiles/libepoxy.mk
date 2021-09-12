@@ -17,7 +17,7 @@ libepoxy:
 	@echo "Using previously built libepoxy."
 else
 libepoxy: libepoxy-setup libx11 mesa
-	$(call MESON_NINJA_INSTALL,libepoxy,\
+	$(call MESON_NINJA_INSTALL,\
 		-Dtests=false \
 		-Dx11=true \
  		-Dglx=yes \

@@ -16,11 +16,7 @@ libxtst:
 	@echo "Using previously built libxtst."
 else
 libxtst: libxtst-setup xorgproto libx11 libxi
-	cd $(BUILD_WORK)/libxtst && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/libxtst
-	+$(MAKE) -C $(BUILD_WORK)/libxtst install \
-		DESTDIR=$(BUILD_STAGE)/libxtst
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

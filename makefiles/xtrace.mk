@@ -16,11 +16,7 @@ xtrace:
 else
 xtrace: xtrace-setup
 	cd $(BUILD_WORK)/xtrace && autoreconf -i
-	cd $(BUILD_WORK)/xtrace && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/xtrace
-	+$(MAKE) -C $(BUILD_WORK)/xtrace install \
-		DESTDIR=$(BUILD_STAGE)/xtrace
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD)
 endif
 

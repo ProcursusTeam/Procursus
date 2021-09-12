@@ -15,11 +15,7 @@ libffi:
 	@echo "Using previously built libffi."
 else
 libffi: libffi-setup
-	cd $(BUILD_WORK)/libffi && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/libffi
-	+$(MAKE) -C $(BUILD_WORK)/libffi install \
-		DESTDIR=$(BUILD_STAGE)/libffi
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

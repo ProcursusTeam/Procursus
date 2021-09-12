@@ -22,7 +22,7 @@ glib2.0:
 	@echo "Using previously built glib2.0."
 else
 glib2.0: glib2.0-setup gettext pcre libffi
-	$(call MESON_MESON_INSTALL,glib2.0,\
+	$(call MESON_MESON_INSTALL,\
 		-Diconv=auto \
 		-Dbsymbolic_functions=false \
 		-Ddtrace=false; \

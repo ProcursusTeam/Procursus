@@ -18,11 +18,7 @@ libxcrypt:
 else
 libxcrypt: libxcrypt-setup
 	cd $(BUILD_WORK)/libxcrypt && autoreconf -iv
-	cd $(BUILD_WORK)/libxcrypt && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/libxcrypt
-	+$(MAKE) -C $(BUILD_WORK)/libxcrypt install \
-		DESTDIR=$(BUILD_STAGE)/libxcrypt
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

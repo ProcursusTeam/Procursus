@@ -15,11 +15,7 @@ sensible-utils:
 	@echo "Using previously built sensible-utils."
 else
 sensible-utils: sensible-utils-setup
-	cd $(BUILD_WORK)/sensible-utils && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/sensible-utils
-	+$(MAKE) -C $(BUILD_WORK)/sensible-utils install \
-		DESTDIR=$(BUILD_STAGE)/sensible-utils
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD)
 endif
 

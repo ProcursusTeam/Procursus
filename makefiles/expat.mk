@@ -19,11 +19,7 @@ expat:
 	@echo "Using previously built expat."
 else
 expat: expat-setup
-	cd $(BUILD_WORK)/expat && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/expat
-	+$(MAKE) -C $(BUILD_WORK)/expat install \
-		DESTDIR=$(BUILD_STAGE)/expat
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

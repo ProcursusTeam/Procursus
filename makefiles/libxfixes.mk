@@ -16,11 +16,7 @@ libxfixes:
 	@echo "Using previously built libxfixes."
 else
 libxfixes: libxfixes-setup libx11 xorgproto
-	cd $(BUILD_WORK)/libxfixes && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/libxfixes
-	+$(MAKE) -C $(BUILD_WORK)/libxfixes install \
-		DESTDIR=$(BUILD_STAGE)/libxfixes
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

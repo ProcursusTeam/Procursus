@@ -16,11 +16,7 @@ font-util:
 	@echo "Using previously built font-util."
 else
 font-util: font-util-setup
-	cd $(BUILD_WORK)/font-util && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/font-util
-	+$(MAKE) -C $(BUILD_WORK)/font-util install \
-		DESTDIR=$(BUILD_STAGE)/font-util
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

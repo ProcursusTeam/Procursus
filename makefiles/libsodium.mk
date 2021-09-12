@@ -15,11 +15,7 @@ libsodium:
 	@echo "Using previously built libsodium."
 else
 libsodium: libsodium-setup
-	cd $(BUILD_WORK)/libsodium && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/libsodium
-	+$(MAKE) -C $(BUILD_WORK)/libsodium install \
-		DESTDIR=$(BUILD_STAGE)/libsodium
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

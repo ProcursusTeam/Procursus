@@ -15,11 +15,7 @@ xcb-util-wm:
 	@echo "Using previously built xcb-util-wm."
 else
 xcb-util-wm: xcb-util-wm-setup libxcb xcb-util
-	cd $(BUILD_WORK)/xcb-util-wm && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/xcb-util-wm
-	+$(MAKE) -C $(BUILD_WORK)/xcb-util-wm install \
-		DESTDIR=$(BUILD_STAGE)/xcb-util-wm
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

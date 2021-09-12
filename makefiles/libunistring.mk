@@ -16,11 +16,7 @@ libunistring:
 	@echo "Using previously built libunistring."
 else
 libunistring: libunistring-setup
-	cd $(BUILD_WORK)/libunistring && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/libunistring
-	+$(MAKE) -C $(BUILD_WORK)/libunistring install \
-		DESTDIR=$(BUILD_STAGE)/libunistring
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

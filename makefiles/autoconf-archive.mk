@@ -16,11 +16,7 @@ autoconf-archive:
 	@echo "Using previously built autoconf-archive."
 else
 autoconf-archive: autoconf-archive-setup
-	cd $(BUILD_WORK)/autoconf-archive && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/autoconf-archive
-	+$(MAKE) -C $(BUILD_WORK)/autoconf-archive install \
-		DESTDIR=$(BUILD_STAGE)/autoconf-archive
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD)
 endif
 autoconf-archive-package: autoconf-archive-stage

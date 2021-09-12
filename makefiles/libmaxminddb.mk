@@ -15,11 +15,7 @@ libmaxminddb:
 	@echo "Using previously built libmaxminddb."
 else
 libmaxminddb: libmaxminddb-setup
-	cd $(BUILD_WORK)/libmaxminddb && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/libmaxminddb
-	+$(MAKE) -C $(BUILD_WORK)/libmaxminddb install \
-		DESTDIR=$(BUILD_STAGE)/libmaxminddb
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

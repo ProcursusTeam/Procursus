@@ -15,11 +15,7 @@ xcb-util-keysyms:
 	@echo "Using previously built xcb-util-keysyms."
 else
 xcb-util-keysyms: xcb-util-keysyms-setup libxcb xcb-util
-	cd $(BUILD_WORK)/xcb-util-keysyms && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/xcb-util-keysyms
-	+$(MAKE) -C $(BUILD_WORK)/xcb-util-keysyms install \
-		DESTDIR=$(BUILD_STAGE)/xcb-util-keysyms
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

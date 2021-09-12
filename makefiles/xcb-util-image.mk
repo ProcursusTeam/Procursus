@@ -15,11 +15,7 @@ xcb-util-image:
 	@echo "Using previously built xcb-util-image."
 else
 xcb-util-image: xcb-util-image-setup libxcb xcb-util
-	cd $(BUILD_WORK)/xcb-util-image && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/xcb-util-image
-	+$(MAKE) -C $(BUILD_WORK)/xcb-util-image install \
-		DESTDIR=$(BUILD_STAGE)/xcb-util-image
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

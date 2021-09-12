@@ -16,11 +16,7 @@ bison:
 	@echo "Using previously built bison."
 else
 bison: bison-setup m4 gettext readline
-	cd $(BUILD_WORK)/bison && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/bison
-	+$(MAKE) -C $(BUILD_WORK)/bison install \
-		DESTDIR=$(BUILD_STAGE)/bison
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

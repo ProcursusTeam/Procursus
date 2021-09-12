@@ -16,11 +16,7 @@ libxdamage:
 	@echo "Using previously built libxdamage."
 else
 libxdamage: libxdamage-setup xorgproto libx11 libxfixes
-	cd $(BUILD_WORK)/libxdamage && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/libxdamage
-	+$(MAKE) -C $(BUILD_WORK)/libxdamage install \
-		DESTDIR=$(BUILD_STAGE)/libxdamage
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

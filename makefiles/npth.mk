@@ -16,11 +16,7 @@ npth:
 	@echo "Using previously built npth."
 else
 npth: npth-setup
-	cd $(BUILD_WORK)/npth && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/npth
-	+$(MAKE) -C $(BUILD_WORK)/npth install \
-		DESTDIR=$(BUILD_STAGE)/npth
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

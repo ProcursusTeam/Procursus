@@ -16,7 +16,7 @@ libevent:
 	@echo "Using previously built libevent."
 else
 libevent: libevent-setup openssl
-	$(call CMAKE_MAKE_INSTALL,libevent,$(DEFAULT_CMAKE_FLAGS) \
+	$(call CMAKE_MAKE_INSTALL,$(DEFAULT_CMAKE_FLAGS) \
 		-DEVENT__LIBRARY_TYPE:STRING=BOTH)
 	$(call AFTER_BUILD,copy)
 endif

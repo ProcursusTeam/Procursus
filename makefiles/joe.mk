@@ -15,11 +15,7 @@ joe:
 	@echo "Using previously built joe."
 else
 joe: joe-setup ncurses
-	cd $(BUILD_WORK)/joe && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/joe
-	+$(MAKE) -C $(BUILD_WORK)/joe install \
-		DESTDIR=$(BUILD_STAGE)/joe
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD)
 endif
 

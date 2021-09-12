@@ -18,11 +18,7 @@ libpng16:
 	@echo "Using previously built libpng16."
 else
 libpng16: libpng16-setup
-	cd $(BUILD_WORK)/libpng16 && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/libpng16
-	+$(MAKE) -C $(BUILD_WORK)/libpng16 install \
-		DESTDIR=$(BUILD_STAGE)/libpng16
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

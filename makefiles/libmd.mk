@@ -16,11 +16,7 @@ libmd:
 	@echo "Using previously built libmd."
 else
 libmd: libmd-setup
-	cd $(BUILD_WORK)/libmd && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/libmd
-	+$(MAKE) -C $(BUILD_WORK)/libmd install \
-		DESTDIR=$(BUILD_STAGE)/libmd
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

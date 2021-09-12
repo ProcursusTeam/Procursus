@@ -17,11 +17,7 @@ cpio:
 	@echo "Using previously built cpio."
 else
 cpio: cpio-setup gettext
-	cd $(BUILD_WORK)/cpio && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/cpio
-	+$(MAKE) -C $(BUILD_WORK)/cpio install \
-		DESTDIR=$(BUILD_STAGE)/cpio
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD)
 endif
 

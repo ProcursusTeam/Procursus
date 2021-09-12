@@ -16,11 +16,7 @@ xauth:
 	@echo "Using previously built xauth."
 else
 xauth: xauth-setup libx11 libxau libxext libxmu xorgproto
-	cd $(BUILD_WORK)/xauth && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/xauth
-	+$(MAKE) -C $(BUILD_WORK)/xauth install \
-		DESTDIR=$(BUILD_STAGE)/xauth
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 
