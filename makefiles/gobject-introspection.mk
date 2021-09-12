@@ -14,10 +14,7 @@ gobject-introspection-setup: setup
 	$(call EXTRACT_TAR,gobject-introspection-$(GOBJECT-INTROSPECTION_VERSION).tar.xz,gobject-introspection-$(GOBJECT-INTROSPECTION_VERSION),gobject-introspection)
 	mkdir -p $(BUILD_WORK)/gobject-introspection/build
 
-	echo -e "[paths]\n \
-	prefix ='$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
-	[binaries]\n \
-	pkgconfig = '$(shell which pkg-config)'\n" > $(BUILD_WORK)/gobject-introspection/build/cross.txt
+	echo -e "$(DEFAULT_MESON_CROSS_TXT)" > $(BUILD_WORK)/gobject-introspection/build/cross.txt
 
 ifneq ($(wildcard $(BUILD_WORK)/gobject-introspection/.build_complete),)
 gobject-introspection:
@@ -28,12 +25,7 @@ gobject-introspection: gobject-introspection-setup glib2.0 libffi python3
 	sed -i -e "s|extra_giscanner_cflags = \[]|extra_giscanner_cflags = ['$(PLATFORM_VERSION_MIN)']|" \
 		-e "s|extra_giscanner_args = \[]|extra_giscanner_args = ['--cflags-begin'] + extra_giscanner_cflags + ['--cflags-end']|" $(BUILD_WORK)/gobject-introspection/meson.build
 	export GI_SCANNER_DISABLE_CACHE=true; \
-	cd $(BUILD_WORK)/gobject-introspection/build && meson \
-		--cross-file cross.txt \
-		-Dpython="$(shell which python3)" \
-		..; \
-	cd $(BUILD_WORK)/gobject-introspection/build; \
-		DESTDIR="$(BUILD_STAGE)/gobject-introspection" meson install
+	$(call MESON_MESON_INSTALL,-Dpython="$(shell which python3)")
 	sed -i "s|$$(cat $(BUILD_STAGE)/gobject-introspection/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/g-ir-scanner | grep \#! | sed 's/#!//')|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/gobject-introspection/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
 	$(call AFTER_BUILD,copy)
 endif

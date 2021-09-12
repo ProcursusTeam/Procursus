@@ -660,8 +660,7 @@ MESON_NINJA_INSTALL = cd $(BUILD_WORK)/$@/build && meson \
 		--cross-file cross.txt \
 		.. $(1); \
 	ninja -C $(BUILD_WORK)/$@/build $(2); \
-	ninja -C $(BUILD_WORK)/$@/build install; \
-		DESTDIR="$(BUILD_STAGE)/$(1)" $(3)
+	DESTDIR="$(BUILD_STAGE)/$@" $(3) ninja -C $(BUILD_WORK)/$@/build install $(4);
 
 MESON_MESON_INSTALL = cd $(BUILD_WORK)/$@/build && meson \
 	--cross-file cross.txt\

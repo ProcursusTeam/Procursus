@@ -11,29 +11,14 @@ rubberband-setup: setup
 	$(call EXTRACT_TAR,rubberband-$(RUBBERBAND_VERSION).tar.bz2,rubberband-$(RUBBERBAND_VERSION),rubberband)
 	mkdir -p $(BUILD_WORK)/rubberband/build
 
-	echo -e "[host_machine]\n \
-	cpu_family = '$(shell echo $(GNU_HOST_TRIPLE) | cut -d- -f1)'\n \
-	cpu = '$(MEMO_ARCH)'\n \
-	endian = 'little'\n \
-	system = 'darwin'\n \
-	[properties]\n \
-	root = '$(BUILD_BASE)'\n \
-	[paths]\n \
-	prefix ='$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
-	[binaries]\n \
-	c = '$(CC)'\n \
-	cpp = '$(CXX)'\n \
-	pkgconfig = '$(BUILD_TOOLS)/cross-pkg-config'\n" > $(BUILD_WORK)/rubberband/build/cross.txt
+	echo -e "$(DEFAULT_MESON_CROSS_TXT)" > $(BUILD_WORK)/rubberband/build/cross.txt
 
 ifneq ($(wildcard $(BUILD_WORK)/rubberband/.build_complete),)
 rubberband:
 	@echo "Using previously built rubberband."
 else
 rubberband: rubberband-setup libsamplerate libsndfile
-	cd $(BUILD_WORK)/rubberband/build && meson \
-		--cross-file cross.txt \
-		..
-	+DESTDIR=$(BUILD_STAGE)/rubberband ninja -C $(BUILD_WORK)/rubberband/build install
+	$(call MESON_NINJA_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 
