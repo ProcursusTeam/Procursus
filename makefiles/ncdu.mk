@@ -15,11 +15,7 @@ ncdu:
 	@echo "Using previously built ncdu."
 else
 ncdu: ncdu-setup ncurses
-	cd $(BUILD_WORK)/ncdu && ./configure \
-		$(DEFAULT_CONFIGURE_FLAGS)
-	+$(MAKE) -C $(BUILD_WORK)/ncdu
-	+$(MAKE) -C $(BUILD_WORK)/ncdu install \
-		DESTDIR=$(BUILD_STAGE)/ncdu
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD)
 endif
 
