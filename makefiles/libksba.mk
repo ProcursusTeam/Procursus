@@ -22,9 +22,7 @@ libksba: libksba-setup libgpg-error
 	+$(MAKE) -C $(BUILD_WORK)/libksba
 	+$(MAKE) -C $(BUILD_WORK)/libksba install \
 		DESTDIR=$(BUILD_STAGE)/libksba
-	+$(MAKE) -C $(BUILD_WORK)/libksba install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libksba-package: libksba-stage

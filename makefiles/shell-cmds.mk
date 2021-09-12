@@ -44,7 +44,7 @@ endif
 
 	# shell-cmds.mk Sign
 	$(call SIGN,shell-cmds,general.xml)
-	$(LDID) -S$(BUILD_MISC)/entitlements/pam.xml $(BUILD_DIST)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/su
+	ldid $(MEMO_LDID_EXTRA_FLAGS) -S$(BUILD_MISC)/entitlements/pam.xml $(BUILD_DIST)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/su
 	find $(BUILD_DIST)/shell-cmds -name '.ldid*' -type f -delete
 
 	# shell-cmds.mk Permissions

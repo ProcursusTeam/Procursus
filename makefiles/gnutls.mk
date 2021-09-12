@@ -27,9 +27,7 @@ gnutls: gnutls-setup readline gettext libgcrypt libgmp10 libidn2 libunistring ne
 	+$(MAKE) -C $(BUILD_WORK)/gnutls
 	+$(MAKE) -C $(BUILD_WORK)/gnutls install \
 		DESTDIR=$(BUILD_STAGE)/gnutls
-	+$(MAKE) -C $(BUILD_WORK)/gnutls install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 gnutls-package: gnutls-stage

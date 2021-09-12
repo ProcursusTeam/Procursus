@@ -37,9 +37,7 @@ xorg-server: xorg-server-setup libmd libx11 libxau libxmu xorgproto font-util li
 	+$(MAKE) -C $(BUILD_WORK)/xorg-server
 	+$(MAKE) -C $(BUILD_WORK)/xorg-server install \
 		DESTDIR=$(BUILD_STAGE)/xorg-server
-	+$(MAKE) -C $(BUILD_WORK)/xorg-server install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 xorg-server-package: xorg-server-stage

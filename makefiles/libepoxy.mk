@@ -21,7 +21,7 @@ libepoxy: libepoxy-setup libx11 mesa
 		-Dtests=false \
 		-Dx11=true \
  		-Dglx=yes \
-		 ..)
+		..)
 	$(call AFTER_BUILD,copy)
 endif
 

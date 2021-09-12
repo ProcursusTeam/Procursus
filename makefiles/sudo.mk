@@ -41,6 +41,8 @@ endif
 		--with-timeout=15 \
 		--with-password-timeout=0 \
 		--with-passprompt="[sudo] password for %p: " \
+		--with-vardir=$(MEMO_PREFIX)/var/db/sudo \
+		--with-rundir=$(MEMO_PREFIX)/var/run/sudo \
 		sudo_cv___func__=yes \
 		$(SUDO_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/sudo
@@ -65,7 +67,7 @@ sudo-package: sudo-stage
 	# sudo.mk Sign
 	$(call SIGN,sudo,general.xml)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(LDID) -S$(BUILD_MISC)/entitlements/pam.xml $(BUILD_DIST)/sudo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sudo
+	ldid $(MEMO_LDID_EXTRA_FLAGS) -S$(BUILD_MISC)/entitlements/pam.xml $(BUILD_DIST)/sudo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sudo
 	find $(BUILD_DIST)/sudo -name '.ldid*' -type f -delete
 endif
 

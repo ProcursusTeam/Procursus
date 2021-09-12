@@ -11,3 +11,4 @@ build_strap/
 *.swp
 *.save
 desktop.ini
+*.p12
