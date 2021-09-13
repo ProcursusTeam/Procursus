@@ -33,7 +33,7 @@ libsunflsks: libsunflsks-setup
 		$(AR) cru $(BUILD_STAGE)/libsunflsks/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsunflsks.a ./{ProcessInfo,FileInfo,ProcessManager,Translate}.o $(LIBSUNFLSKS_ARFLAGS); \
 		cp -a include/* $(BUILD_STAGE)/libsunflsks/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sunflsks
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-		rm -f $(BUILD_STAGE)/libsunflsks/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Network.h
+		rm -f $(BUILD_STAGE)/libsunflsks/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sunflsks/{Network,SystemStatus}.h
 endif
 		$(LN_S) $(BUILD_STAGE)/libsunflsks/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsunflsks.{0.,}dylib
 	$(call AFTER_BUILD,copy)
