@@ -1,0 +1,13 @@
+Package: libsunflsks-dev
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_LIBSUNFLSKS_V@
+Depends: libsunflsks0 (= @DEB_LIBSUNFLSKS_V@)
+Provides: us.sudhip.libsunflsks (= @DEB_LIBSUNFLSKS_V@)
+Conflicts: us.sudhip.libsunflsks
+Replaces: us.sudhip.libsunflsks
+Section: Development
+Priority: optional
+Description: development files for libsunflsks
+ .
+ This package contains the header files and static library needed to compile applications that use libsunflsks.

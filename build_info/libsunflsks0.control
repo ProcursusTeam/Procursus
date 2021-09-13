@@ -1,0 +1,9 @@
+Package: libsunflsks0
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_LIBSUNFLSKS_V@
+Section: Libraries
+Priority: optional
+Description: darwin system status library
+ .
+ This package contains the libsunflsks runtime library.
