@@ -15,10 +15,10 @@ vi:
 	@echo "Using previously built vi."
 else
 vi: vi-setup ncurses
-	$(SED) -i '/#include "ex_tty.h"/a #include <sys/ioctl.h>' $(BUILD_WORK)/vi/ex_tty.c
-	$(SED) -i '/#include "ex_tty.h"/a #include <sys/ioctl.h>' $(BUILD_WORK)/vi/ex_subr.c
-	$(SED) -i '/size ex/d' $(BUILD_WORK)/vi/Makefile
-	$(SED) -i 's/ar /$(AR) /g' $(BUILD_WORK)/vi/libuxre/Makefile
+	sed -i '/#include "ex_tty.h"/a #include <sys/ioctl.h>' $(BUILD_WORK)/vi/ex_tty.c
+	sed -i '/#include "ex_tty.h"/a #include <sys/ioctl.h>' $(BUILD_WORK)/vi/ex_subr.c
+	sed -i '/size ex/d' $(BUILD_WORK)/vi/Makefile
+	sed -i 's/ar /$(AR) /g' $(BUILD_WORK)/vi/libuxre/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/vi install \
 		PREFIX="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		TERMLIB=ncursesw \

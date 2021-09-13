@@ -5,7 +5,7 @@ Maintainer: @DEB_MAINTAINER@
 Section: Utilities
 Priority: optional
 Homepage: http://www.tcpdump.org/
-Depends: libssl1.1, libpcapa
+Depends: libssl3, libpcapa
 Description: command-line network traffic analyzer
  This program allows you to dump the traffic on a network. tcpdump
  is able to examine IPv4, ICMPv4, IPv6, ICMPv6, UDP, TCP, SNMP, AFS

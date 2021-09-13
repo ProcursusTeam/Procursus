@@ -20,9 +20,7 @@ libyaml: libyaml-setup
 	+$(MAKE) -C $(BUILD_WORK)/libyaml
 	+$(MAKE) -C $(BUILD_WORK)/libyaml install \
 		DESTDIR=$(BUILD_STAGE)/libyaml
-	+$(MAKE) -C $(BUILD_WORK)/libyaml install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libyaml-package: libyaml-stage
