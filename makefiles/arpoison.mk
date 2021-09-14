@@ -31,7 +31,7 @@ arpoison: arpoison-setup libnet
 	rm -rf $(BUILD_WORK)/linking
 
 	+mkdir -p $(BUILD_STAGE)/arpoison/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp $(BUILD_WORK)/arpoison/arpoison $(BUILD_STAGE)/arpoison/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
+	cp -a $(BUILD_WORK)/arpoison/arpoison $(BUILD_STAGE)/arpoison/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
 	$(call AFTER_BUILD)
 endif
 
@@ -40,7 +40,7 @@ arpoison-package: arpoison-stage
 	rm -rf $(BUILD_DIST)/arpoison
 	
 	# arpoison.mk Prep arpoison
-	cp -r $(BUILD_STAGE)/arpoison $(BUILD_DIST)
+	cp -a $(BUILD_STAGE)/arpoison $(BUILD_DIST)
 	
 	# arpoison.mk Sign
 	$(call SIGN,arpoison,general.xml)

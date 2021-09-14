@@ -1,4 +1,4 @@
-Package: libnet-dev
+Package: libnet9-dev
 Section: Libraries
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
