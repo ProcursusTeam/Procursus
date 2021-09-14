@@ -29,10 +29,11 @@ endif
 libnet-package: libnet-stage
 	# libnet.mk Package Structure
 	rm -rf $(BUILD_DIST)/libnet{9,9-dev}
-	mkdir -p $(BUILD_DIST)/libnet{9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib,9-dev}
+	mkdir -p $(BUILD_DIST)/libnet{9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib,9-dev,9-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib}
 
 	# libnet.mk Prep libnet9-dev
-	find $(BUILD_STAGE)/libnet/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/ ! -name "libnet.9.dylib" | xargs -i cp -a {} $(BUILD_DIST)/libnet9-dev
+	cp -a $(BUILD_STAGE)/libnet/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libnet.{a,dylib},pkgconfig} $(BUILD_DIST)/libnet9-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libnet/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,bin} $(BUILD_DIST)/libnet9-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libnet.mk Prep libnet9
 	cp -a $(BUILD_STAGE)/libnet/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libnet.9.dylib $(BUILD_DIST)/libnet9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
