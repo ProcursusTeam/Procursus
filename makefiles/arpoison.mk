@@ -26,7 +26,6 @@ arpoison: arpoison-setup libnet
 		-o $(BUILD_WORK)/arpoison/arpoison \
 		$(BUILD_WORK)/arpoison/arpoison.o \
 		-l net
-	rm -rf $(BUILD_WORK)/linking
 
 	+mkdir -p $(BUILD_STAGE)/arpoison/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_WORK)/arpoison/arpoison $(BUILD_STAGE)/arpoison/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
