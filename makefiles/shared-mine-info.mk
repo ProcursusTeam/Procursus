@@ -37,8 +37,7 @@ shared-mime-info: shared-mime-info-setup glib2.0
 	sed -i 's/xmlto -o/xmlto --skip-validation -o/g' $(BUILD_WORK)/shared-mime-info/build/build.ninja
 	+ninja -C $(BUILD_WORK)/shared-mime-info/build
 	+DESTDIR="$(BUILD_STAGE)/shared-mime-info" ninja -C $(BUILD_WORK)/shared-mime-info/build install
-	+DESTDIR="$(BUILD_BASE)" ninja -C $(BUILD_WORK)/shared-mime-info/build install
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 shared-mime-info-package: shared-mime-info-stage
