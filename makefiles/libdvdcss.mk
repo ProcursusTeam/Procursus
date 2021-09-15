@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += libdvdcss
-LIBDVDCSS_VERSION := 1.4.2
+LIBDVDCSS_VERSION := 1.4.3
 DEB_LIBDVDCSS_V   ?= $(LIBDVDCSS_VERSION)
 
 libdvdcss-setup: setup

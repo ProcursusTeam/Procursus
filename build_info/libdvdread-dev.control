@@ -3,7 +3,6 @@ Version: @DEB_LIBDVDREAD_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: libdvdread8 (= @DEB_LIBDVDREAD_V@), pkg-config
-Recommends: libdvdnav-dev
 Suggests: libdvdcss-dev
 Section: libdevel
 Priority: optional

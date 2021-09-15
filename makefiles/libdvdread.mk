@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += libdvdread
-LIBDVDREAD_VERSION := 6.1.1
+LIBDVDREAD_VERSION := 6.1.2
 DEB_LIBDVDREAD_V   ?= $(LIBDVDREAD_VERSION)
 
 libdvdread-setup: setup
@@ -20,10 +20,7 @@ libdvdread: libdvdread-setup
 	+$(MAKE) -C $(BUILD_WORK)/libdvdread
 	+$(MAKE) -C $(BUILD_WORK)/libdvdread install \
 		DESTDIR=$(BUILD_STAGE)/libdvdread
-	+$(MAKE) -C $(BUILD_WORK)/libdvdread install \
-		DESTDIR=$(BUILD_BASE)
-
-	touch $(BUILD_WORK)/libdvdread/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libdvdread-package: libdvdread-stage

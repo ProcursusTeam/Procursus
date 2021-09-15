@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += libdvdnav
-LIBDVDNAV_VERSION := 6.1.0
+LIBDVDNAV_VERSION := 6.1.1
 DEB_LIBDVDNAV_V   ?= $(LIBDVDNAV_VERSION)
 
 libdvdnav-setup: setup
@@ -20,10 +20,7 @@ libdvdnav: libdvdnav-setup libdvdread
 	+$(MAKE) -C $(BUILD_WORK)/libdvdnav
 	+$(MAKE) -C $(BUILD_WORK)/libdvdnav install \
 		DESTDIR=$(BUILD_STAGE)/libdvdnav
-	+$(MAKE) -C $(BUILD_WORK)/libdvdnav install \
-		DESTDIR=$(BUILD_BASE)
-
-	touch $(BUILD_WORK)/libdvdnav/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libdvdnav-package: libdvdnav-stage

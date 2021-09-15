@@ -2,7 +2,7 @@ Package: libdvdnav-dev
 Version: @DEB_LIBDVDNAV_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libdvdnav4 (= @DEB_LIBDVDNAV_V@), pkg-config, libdvdread-dev
+Depends: libdvdnav4 (= @DEB_LIBDVDNAV_V@), pkg-config, libdvdread-dev (>= 6.0)
 Suggests: libdvdcss-dev
 Section: Development
 Priority: optional
