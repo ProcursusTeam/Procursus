@@ -26,7 +26,6 @@ arpoison: arpoison-setup libnet
 		-o $(BUILD_WORK)/arpoison/arpoison \
 		$(BUILD_WORK)/arpoison/arpoison.o \
 		-l net
-
 	# remove linking dir
 	rm -rf $(BUILD_WORK)/linking
 
