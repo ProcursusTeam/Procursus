@@ -7,7 +7,8 @@ LIBDVDCSS_VERSION := 1.4.3
 DEB_LIBDVDCSS_V   ?= $(LIBDVDCSS_VERSION)
 
 libdvdcss-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://download.videolan.org/pub/libdvdcss/$(LIBDVDCSS_VERSION)/libdvdcss-$(LIBDVDCSS_VERSION).tar.bz2
+	wget -q -nc -P $(BUILD_SOURCE) https://download.videolan.org/pub/videolan/libdvdcss/$(LIBDVDCSS_VERSION)/libdvdcss-$(LIBDVDCSS_VERSION).tar.bz2{,.asc}
+	$(call PGP_VERIFY,libdvdcss-$(LIBDVDCSS_VERSION).tar.bz2,asc)
 	$(call EXTRACT_TAR,libdvdcss-$(LIBDVDCSS_VERSION).tar.bz2,libdvdcss-$(LIBDVDCSS_VERSION),libdvdcss)
 
 ifneq ($(wildcard $(BUILD_WORK)/libdvdcss/.build_complete),)

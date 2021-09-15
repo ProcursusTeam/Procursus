@@ -7,7 +7,8 @@ LIBDVDREAD_VERSION := 6.1.2
 DEB_LIBDVDREAD_V   ?= $(LIBDVDREAD_VERSION)
 
 libdvdread-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://download.videolan.org/pub/videolan/libdvdread/$(LIBDVDREAD_VERSION)/libdvdread-$(LIBDVDREAD_VERSION).tar.bz2
+	wget -q -nc -P $(BUILD_SOURCE) https://download.videolan.org/pub/videolan/libdvdread/$(LIBDVDREAD_VERSION)/libdvdread-$(LIBDVDREAD_VERSION).tar.bz2{,.asc}
+	$(call PGP_VERIFY,libdvdread-$(LIBDVDREAD_VERSION).tar.bz2,asc)
 	$(call EXTRACT_TAR,libdvdread-$(LIBDVDREAD_VERSION).tar.bz2,libdvdread-$(LIBDVDREAD_VERSION),libdvdread)
 
 ifneq ($(wildcard $(BUILD_WORK)/libdvdread/.build_complete),)

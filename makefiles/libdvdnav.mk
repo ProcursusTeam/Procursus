@@ -7,7 +7,8 @@ LIBDVDNAV_VERSION := 6.1.1
 DEB_LIBDVDNAV_V   ?= $(LIBDVDNAV_VERSION)
 
 libdvdnav-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://download.videolan.org/pub/videolan/libdvdnav/$(LIBDVDNAV_VERSION)/libdvdnav-$(LIBDVDNAV_VERSION).tar.bz2
+	wget -q -nc -P $(BUILD_SOURCE) https://download.videolan.org/pub/videolan/libdvdnav/$(LIBDVDNAV_VERSION)/libdvdnav-$(LIBDVDNAV_VERSION).tar.bz2{,.asc}
+	$(call PGP_VERIFY,libdvdnav-$(LIBDVDNAV_VERSION).tar.bz2,asc)
 	$(call EXTRACT_TAR,libdvdnav-$(LIBDVDNAV_VERSION).tar.bz2,libdvdnav-$(LIBDVDNAV_VERSION),libdvdnav)
 
 ifneq ($(wildcard $(BUILD_WORK)/libdvdnav/.build_complete),)
