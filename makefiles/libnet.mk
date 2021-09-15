@@ -47,6 +47,6 @@ libnet-package: libnet-stage
 	$(call PACK,libnet9,DEB_LIBNET_V)
 
 	# libnet.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libnet{9,-dev}
+	rm -rf $(BUILD_DIST)/libnet9{,-dev}
 
 .PHONY: libnet libnet-package
