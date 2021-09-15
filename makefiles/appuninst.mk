@@ -25,7 +25,7 @@ appuninst: appuninst-setup
 		$(LDFLAGS) \
 		$(APPUNINST_LIBS)
 
-	touch $(BUILD_WORK)/appuninst/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 appuninst-package: appuninst-stage

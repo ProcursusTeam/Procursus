@@ -24,9 +24,7 @@ libxt: libxt-setup libx11 libice libsm
 	+$(MAKE) -C $(BUILD_WORK)/libxt
 	+$(MAKE) -C $(BUILD_WORK)/libxt install \
 		DESTDIR=$(BUILD_STAGE)/libxt
-	+$(MAKE) -C $(BUILD_WORK)/libxt install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxt/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libxt-package: libxt-stage

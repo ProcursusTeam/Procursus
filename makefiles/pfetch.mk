@@ -17,7 +17,7 @@ else
 pfetch: pfetch-setup
 	mkdir -p $(BUILD_STAGE)/pfetch/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp $(BUILD_WORK)/pfetch/pfetch $(BUILD_STAGE)/pfetch/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
-	touch $(BUILD_WORK)/pfetch/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 pfetch-package: pfetch-stage

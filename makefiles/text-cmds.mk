@@ -33,10 +33,10 @@ text-cmds: text-cmds-setup ncurses
 	done
 	mv $(BUILD_STAGE)/text-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/md5 $(BUILD_STAGE)/text-cmds/$(MEMO_PREFIX)/sbin/md5
 	for cmd in rmd160 sha1 sha256; do \
-		ln -s md5 $(BUILD_STAGE)/text-cmds/$(MEMO_PREFIX)/sbin/$$cmd; \
-		ln -s md5.1.zst $(BUILD_STAGE)/text-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$$cmd.1.zst; \
+		$(LN_S) md5 $(BUILD_STAGE)/text-cmds/$(MEMO_PREFIX)/sbin/$$cmd; \
+		$(LN_S) md5.1.zst $(BUILD_STAGE)/text-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$$cmd.1.zst; \
 	done
-	touch $(BUILD_WORK)/text-cmds/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 text-cmds-package: text-cmds-stage

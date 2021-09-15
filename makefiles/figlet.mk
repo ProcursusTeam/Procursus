@@ -9,7 +9,7 @@ DEB_FIGLET_V   ?= $(FIGLET_VERSION)
 figlet-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) ftp://ftp.figlet.org/pub/figlet/program/unix/figlet-$(FIGLET_VERSION).tar.gz
 	$(call EXTRACT_TAR,figlet-$(FIGLET_VERSION).tar.gz,figlet-$(FIGLET_VERSION),figlet)
-	$(SED) -i '/#include <stdio.h>/a #include <getopt.h>' $(BUILD_WORK)/figlet/figlet.c
+	sed -i '/#include <stdio.h>/a #include <getopt.h>' $(BUILD_WORK)/figlet/figlet.c
 
 ifneq ($(wildcard $(BUILD_WORK)/figlet/.build_complete),)
 figlet:
@@ -25,7 +25,7 @@ figlet: figlet-setup
 	+$(MAKE) -C $(BUILD_WORK)/figlet install \
 		prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		DESTDIR="$(BUILD_STAGE)/figlet"
-	touch $(BUILD_WORK)/figlet/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 figlet-package: figlet-stage

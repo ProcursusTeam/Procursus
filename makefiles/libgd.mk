@@ -38,9 +38,7 @@ libgd: libgd-setup fontconfig freetype libjpeg-turbo libpng16 libtiff libwebp li
 	+$(MAKE) -C $(BUILD_WORK)/libgd
 	+$(MAKE) -C $(BUILD_WORK)/libgd install \
 		DESTDIR="$(BUILD_STAGE)/libgd"
-	+$(MAKE) -C $(BUILD_WORK)/libgd install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libgd/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libgd-package: libgd-stage

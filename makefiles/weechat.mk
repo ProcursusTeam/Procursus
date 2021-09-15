@@ -39,7 +39,7 @@ weechat: weechat-setup ncurses gettext gnutls curl libgcrypt
 	+$(MAKE) -C $(BUILD_WORK)/weechat
 	+$(MAKE) -C $(BUILD_WORK)/weechat install \
 		DESTDIR=$(BUILD_STAGE)/weechat
-	touch $(BUILD_WORK)/weechat/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 weechat-package: weechat-stage

@@ -34,7 +34,7 @@ tor: tor-setup libevent openssl xz zstd libscrypt
 	mkdir -p $(BUILD_STAGE)/tor/$(MEMO_PREFIX){/Library/LaunchDaemons,$(MEMO_SUB_PREFIX)/libexec}
 	cp -a $(BUILD_INFO)/org.torproject.tor.plist $(BUILD_STAGE)/tor/$(MEMO_PREFIX)/Library/LaunchDaemons
 	cp -a $(BUILD_INFO)/tor-wrapper $(BUILD_STAGE)/tor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
-	touch $(BUILD_WORK)/tor/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 tor-package: tor-stage

@@ -25,7 +25,7 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	+$(MAKE) -C $(BUILD_WORK)/libpam-google-authenticator
 	+$(MAKE) -C $(BUILD_WORK)/libpam-google-authenticator install \
 		DESTDIR="$(BUILD_STAGE)/libpam-google-authenticator"
-	touch $(BUILD_WORK)/libpam-google-authenticator/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libpam-google-authenticator-package: libpam-google-authenticator-stage

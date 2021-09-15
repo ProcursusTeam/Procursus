@@ -5,7 +5,7 @@ Maintainer: @DEB_MAINTAINER@
 Section: Networking
 Priority: optional
 Homepage: https://www.aircrack-ng.org/
-Depends: libssl1.1, libpcre1, libpcapa
+Depends: libssl3, libpcre1, libpcapa
 Description: wireless WEP/WPA cracking utilities
  aircrack-ng is an 802.11a/b/g WEP/WPA cracking program that can recover a
  40-bit, 104-bit, 256-bit or 512-bit WEP key once enough encrypted packets

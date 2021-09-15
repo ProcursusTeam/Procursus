@@ -13,7 +13,7 @@ else
 odyssey-keyring: setup
 	mkdir -p $(BUILD_STAGE)/odyssey-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 	cp -a $(BUILD_MISC)/keyrings/odyssey/odyssey.gpg $(BUILD_STAGE)/odyssey-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	touch $(BUILD_STAGE)/odyssey-keyring/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 odyssey-keyring-package: odyssey-keyring-stage

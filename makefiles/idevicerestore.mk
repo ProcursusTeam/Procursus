@@ -23,7 +23,7 @@ idevicerestore: idevicerestore-setup curl libimobiledevice libirecovery libplist
 	+$(MAKE) -C $(BUILD_WORK)/idevicerestore
 	+$(MAKE) -C $(BUILD_WORK)/idevicerestore install \
 		DESTDIR="$(BUILD_STAGE)/idevicerestore"
-	touch $(BUILD_WORK)/idevicerestore/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 idevicerestore-package: idevicerestore-stage

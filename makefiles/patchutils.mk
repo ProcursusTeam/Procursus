@@ -22,9 +22,9 @@ patchutils: patchutils-setup pcre2
 	+$(MAKE) -C $(BUILD_WORK)/patchutils
 	+$(MAKE) -C $(BUILD_WORK)/patchutils install \
 		DESTDIR=$(BUILD_STAGE)/patchutils
-	$(SED) -i -e "s|$$(cat $(BUILD_STAGE)/patchutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/recountdiff | grep \#! | sed 's/#!//')|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl|" \
+	sed -i -e "s|$$(cat $(BUILD_STAGE)/patchutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/recountdiff | grep \#! | sed 's/#!//')|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl|" \
 		-e "s|$$(cat $(BUILD_STAGE)/patchutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gitdiff | grep \#! | sed 's/#!//')|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/patchutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
-	touch $(BUILD_WORK)/patchutils/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 patchutils-package: patchutils-stage

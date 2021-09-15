@@ -24,7 +24,7 @@ developer-cmds: developer-cmds-setup
 	for bin in ctags rpcgen unifdef; do \
 		$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/developer-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -D_POSIX_C_SOURCE=200112L -DS_IREAD=S_IRUSR -DS_IWRITE=S_IWUSR; \
 	done
-	touch $(BUILD_WORK)/developer-cmds/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 developer-cmds-package: developer-cmds-stage

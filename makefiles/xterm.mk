@@ -25,7 +25,7 @@ xterm: xterm-setup libx11 libxau libxmu xorgproto xbitmaps gettext ncurses libxa
 	+$(MAKE) -C $(BUILD_WORK)/xterm
 	+$(MAKE) -C $(BUILD_WORK)/xterm install \
 		DESTDIR=$(BUILD_STAGE)/xterm
-	touch $(BUILD_WORK)/xterm/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 xterm-package: xterm-stage

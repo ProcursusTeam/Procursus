@@ -27,10 +27,8 @@ gettext: gettext-setup ncurses libunistring
 		LTLIBTERMINFO=-lncursesw
 	+$(MAKE) -C $(BUILD_WORK)/gettext install \
 		DESTDIR=$(BUILD_STAGE)/gettext
-	+$(MAKE) -C $(BUILD_WORK)/gettext install \
-		DESTDIR=$(BUILD_BASE)
 	rm -rf $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/gettext-*
-	touch $(BUILD_WORK)/gettext/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 gettext-package: gettext-stage

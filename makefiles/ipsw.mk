@@ -20,7 +20,7 @@ ipsw: ipsw-setup
 		-ldflags "-s -w -X github.com/blacktop/ipsw/cmd/ipsw/cmd.AppVersion=$(IPSW_VERSION) -X github.com/blacktop/ipsw/cmd/ipsw/cmd.AppBuildTime==$(shell date -u +%Y%m%d)" \
 		./cmd/ipsw
 	$(INSTALL) -Dm755 $(BUILD_WORK)/ipsw/build/dist/ipsw $(BUILD_STAGE)/ipsw/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/ipsw
-	touch $(BUILD_WORK)/ipsw/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 ipsw-package: ipsw-stage

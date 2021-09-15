@@ -26,7 +26,7 @@ x11-apps: x11-apps-setup libsm libx11 libxaw libxcursor libxext libxft libxmu li
 				DESTDIR=$(BUILD_STAGE)/x11-apps; \
 		fi; \
 	done
-	touch $(BUILD_WORK)/x11-apps/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 x11-apps-package: x11-apps-stage

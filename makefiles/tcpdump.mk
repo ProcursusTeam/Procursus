@@ -24,7 +24,7 @@ tcpdump: tcpdump-setup openssl libpcap
 	+$(MAKE) -C $(BUILD_WORK)/tcpdump/build
 	+$(MAKE) -C $(BUILD_WORK)/tcpdump/build install \
 		DESTDIR=$(BUILD_STAGE)/tcpdump
-	touch $(BUILD_WORK)/tcpdump/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 tcpdump-package: tcpdump-stage

@@ -23,7 +23,7 @@ liblocale-gettext-perl: liblocale-gettext-perl-setup perl gettext
 	+$(MAKE) -C $(BUILD_WORK)/liblocale-gettext-perl install \
 		DESTDIR="$(BUILD_STAGE)/liblocale-gettext-perl"
 	rm -f $(BUILD_STAGE)/liblocale-gettext-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR)/perllocal.pod
-	touch $(BUILD_WORK)/liblocale-gettext-perl/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 liblocale-gettext-perl-package: liblocale-gettext-perl-stage

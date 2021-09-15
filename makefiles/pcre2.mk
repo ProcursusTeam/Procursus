@@ -26,9 +26,7 @@ pcre2: pcre2-setup readline
 	+$(MAKE) -C $(BUILD_WORK)/pcre2
 	+$(MAKE) -C $(BUILD_WORK)/pcre2 install \
 		DESTDIR=$(BUILD_STAGE)/pcre2
-	+$(MAKE) -C $(BUILD_WORK)/pcre2 install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/pcre2/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 pcre2-package: pcre2-stage

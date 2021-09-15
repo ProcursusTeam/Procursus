@@ -9,7 +9,7 @@ DEB_IDEVICEINSTALLER_V   ?= $(IDEVICEINSTALLER_VERSION)-1
 ideviceinstaller-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libimobiledevice/ideviceinstaller/releases/download/$(IDEVICEINSTALLER_VERSION)/ideviceinstaller-$(IDEVICEINSTALLER_VERSION).tar.bz2
 	$(call EXTRACT_TAR,ideviceinstaller-$(IDEVICEINSTALLER_VERSION).tar.bz2,ideviceinstaller-$(IDEVICEINSTALLER_VERSION),ideviceinstaller)
-	$(SED) -i '/AC_FUNC_MALLOC/d' $(BUILD_WORK)/ideviceinstaller/configure.ac
+	sed -i '/AC_FUNC_MALLOC/d' $(BUILD_WORK)/ideviceinstaller/configure.ac
 
 ifneq ($(wildcard $(BUILD_WORK)/ideviceinstaller/.build_complete),)
 ideviceinstaller:
@@ -22,7 +22,7 @@ ideviceinstaller: ideviceinstaller-setup libzip libplist libimobiledevice
 	+$(MAKE) -C $(BUILD_WORK)/ideviceinstaller V=1
 	+$(MAKE) -C $(BUILD_WORK)/ideviceinstaller install \
 		DESTDIR=$(BUILD_STAGE)/ideviceinstaller
-	touch $(BUILD_WORK)/ideviceinstaller/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 ideviceinstaller-package: ideviceinstaller-stage
