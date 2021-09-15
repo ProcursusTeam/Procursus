@@ -40,6 +40,7 @@ libnet-package: libnet-stage
 
 	# libnet.mk Sign
 	$(call SIGN,libnet9-dev,general.xml)
+$(call SIGN,libnet9,general.xml)
 
 	# libnet.mk Make .debs
 	$(call PACK,libnet9-dev,DEB_LIBNET_V)
