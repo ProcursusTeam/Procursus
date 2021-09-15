@@ -28,7 +28,7 @@ endif
 
 libnet-package: libnet-stage
 	# libnet.mk Package Structure
-	rm -rf $(BUILD_DIST)/libnet{9,9-dev}
+	rm -rf $(BUILD_DIST)/libnet9{,-dev}
 	mkdir -p $(BUILD_DIST)/libnet9{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libnet.mk Prep libnet9-dev
