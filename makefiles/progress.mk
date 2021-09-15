@@ -9,7 +9,7 @@ DEB_PROGRESS_V   ?= $(PROGRESS_VERSION)
 progress-setup: setup
 	$(call GITHUB_ARCHIVE,Xfennec,progress,$(PROGRESS_VERSION),v$(PROGRESS_VERSION))
 	$(call EXTRACT_TAR,progress-$(PROGRESS_VERSION).tar.gz,progress-$(PROGRESS_VERSION),progress)
-	$(SED) -i 's/-lncurses/-lncursesw/g' $(BUILD_WORK)/progress/Makefile
+	sed -i 's/-lncurses/-lncursesw/g' $(BUILD_WORK)/progress/Makefile
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	wget -P $(BUILD_WORK)/progress https://raw.githubusercontent.com/NetBSD/src/trunk/{lib/libc/gen/wordexp.c,include/wordexp.h}
@@ -27,7 +27,7 @@ progress: progress-setup ncurses
 		UNAME="Darwin" \
 		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		DESTDIR="$(BUILD_STAGE)/progress"
-	touch $(BUILD_WORK)/progress/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 progress-package: progress-stage

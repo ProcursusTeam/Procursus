@@ -1,0 +1,7 @@
+Package: gnu-getopt
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_GNU-GETOPT_V@
+Section: Terminal_Support
+Priority: optional
+Description: GNU implementation of getopt

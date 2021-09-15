@@ -24,9 +24,7 @@ libc-ares: libc-ares-setup
 	+$(MAKE) -C $(BUILD_WORK)/libc-ares
 	+$(MAKE) -C $(BUILD_WORK)/libc-ares install \
 		DESTDIR="$(BUILD_STAGE)/libc-ares"
-	+$(MAKE) -C $(BUILD_WORK)/libc-ares install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libc-ares/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libc-ares-package: libc-ares-stage

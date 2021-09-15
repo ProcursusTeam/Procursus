@@ -15,7 +15,7 @@ DEB_PAM-MODULES_V   ?= $(PAM-MODULES_VERSION)
 pam-modules-setup: setup
 	-wget -q -nc -P$(BUILD_SOURCE) https://opensource.apple.com/tarballs/pam_modules/pam_modules-$(PAM-MODULES_VERSION).tar.gz
 	$(call EXTRACT_TAR,pam_modules-$(PAM-MODULES_VERSION).tar.gz,pam_modules-$(PAM-MODULES_VERSION),pam-modules)
-	$(SED) -i 's/__APPLE__/NOTDEFINED/' $(BUILD_WORK)/pam-modules/modules/pam_group/pam_group.c
+	sed -i 's/__APPLE__/NOTDEFINED/' $(BUILD_WORK)/pam-modules/modules/pam_group/pam_group.c
 	mkdir -p $(BUILD_STAGE)/pam-modules/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pam
 	wget -q -nc -P $(BUILD_WORK)/pam-modules/include \
 		https://opensource.apple.com/source/Libinfo/Libinfo-542.40.3/membership.subproj/membershipPriv.h
@@ -36,7 +36,7 @@ pam-modules: pam-modules-setup openpam
 	for so in *.2.so; do \
 		cp -a $$so $(BUILD_STAGE)/pam-modules/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pam/$${so//".2"/}; \
 	done
-	touch $(BUILD_WORK)/pam-modules/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 pam-modules-package: pam-modules-stage

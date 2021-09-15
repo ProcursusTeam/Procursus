@@ -21,7 +21,7 @@ else
 		--root="$(BUILD_STAGE)/@pkg@" \
 		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
 	find $(BUILD_STAGE)/@pkg@ -name __pycache__ -prune -exec rm -rf {} \;
-	touch $(BUILD_WORK)/@pkg@/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 @pkg@-package: @pkg@-stage

@@ -21,9 +21,7 @@ font-util: font-util-setup
 	+$(MAKE) -C $(BUILD_WORK)/font-util
 	+$(MAKE) -C $(BUILD_WORK)/font-util install \
 		DESTDIR=$(BUILD_STAGE)/font-util
-	+$(MAKE) -C $(BUILD_WORK)/font-util install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/font-util/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 font-util-package: font-util-stage

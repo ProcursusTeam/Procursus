@@ -27,7 +27,7 @@ usbutils: usbutils-setup libusb
 		"man_MANS=lsusb.8"
 	rm -f $(BUILD_STAGE)/usbutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/usb.ids{,.gz}
 	wget -P $(BUILD_STAGE)/usbutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share http://www.linux-usb.org/usb.ids{,.gz}
-	touch $(BUILD_WORK)/usbutils/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 usbutils-package: DEB_USBIDS_V=$(shell grep Version: $(BUILD_STAGE)/usbutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/usb.ids | cut -d' ' -f3 )

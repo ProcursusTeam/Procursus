@@ -16,9 +16,9 @@ speedtest-cli:
 else
 speedtest-cli: speedtest-cli-setup
 	$(INSTALL) -Dm 755 $(BUILD_WORK)/speedtest-cli/speedtest.py "$(BUILD_STAGE)/speedtest-cli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/speedtest-cli"
-	ln -s speedtest-cli $(BUILD_STAGE)/speedtest-cli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/speedtest
+	$(LN_S) speedtest-cli $(BUILD_STAGE)/speedtest-cli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/speedtest
 	$(INSTALL) -Dm 644 $(BUILD_WORK)/speedtest-cli/speedtest-cli.1 -t "$(BUILD_STAGE)/speedtest-cli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1"
-	touch $(BUILD_WORK)/speedtest-cli/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 speedtest-cli-package: speedtest-cli-stage

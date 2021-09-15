@@ -22,14 +22,12 @@ libgmp10: libgmp10-setup
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-cxx \
 		--disable-assembly \
-		CC_FOR_BUILD='$(shell which cc) $(BUILD_CFLAGS)' \
-		CPP_FOR_BUILD='$(shell which cc) -E $(BUILD_CPPFLAGS)'
+		CC_FOR_BUILD='$(shell which cc) $(CFLAGS_FOR_BUILD)' \
+		CPP_FOR_BUILD='$(shell which cc) -E $(CPPFLAGS_FOR_BUILD)'
 	+$(MAKE) -C $(BUILD_WORK)/libgmp10
 	+$(MAKE) -C $(BUILD_WORK)/libgmp10 install \
 		DESTDIR=$(BUILD_STAGE)/libgmp10
-	+$(MAKE) -C $(BUILD_WORK)/libgmp10 install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libgmp10/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libgmp10-package: libgmp10-stage

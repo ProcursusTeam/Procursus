@@ -19,7 +19,7 @@ axel: axel-setup gettext openssl
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/axel install \
 		DESTDIR="$(BUILD_STAGE)/axel"
-	touch $(BUILD_WORK)/axel/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 axel-package: axel-stage

@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += ipsw
-IPSW_VERSION  := 3.0.41
+IPSW_VERSION  := 3.0.51
 DEB_IPSW_V    ?= $(IPSW_VERSION)
 
 ipsw-setup: setup
@@ -20,7 +20,7 @@ ipsw: ipsw-setup
 		-ldflags "-s -w -X github.com/blacktop/ipsw/cmd/ipsw/cmd.AppVersion=$(IPSW_VERSION) -X github.com/blacktop/ipsw/cmd/ipsw/cmd.AppBuildTime==$(shell date -u +%Y%m%d)" \
 		./cmd/ipsw
 	$(INSTALL) -Dm755 $(BUILD_WORK)/ipsw/build/dist/ipsw $(BUILD_STAGE)/ipsw/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/ipsw
-	touch $(BUILD_WORK)/ipsw/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 ipsw-package: ipsw-stage

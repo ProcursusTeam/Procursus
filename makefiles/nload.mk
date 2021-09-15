@@ -23,7 +23,7 @@ nload: nload-setup ncurses
 		LIBS="-lformw -lncursesw"
 	+$(MAKE) -C $(BUILD_WORK)/nload install \
 		DESTDIR=$(BUILD_STAGE)/nload
-	touch $(BUILD_WORK)/nload/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 nload-package: nload-stage

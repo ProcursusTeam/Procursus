@@ -19,7 +19,7 @@ ye: ye-setup
 	+$(MAKE) -C $(BUILD_WORK)/ye
 	+$(MAKE) -C $(BUILD_WORK)/ye install \
 		PREFIX=$(BUILD_STAGE)/ye/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	touch $(BUILD_WORK)/ye/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 ye-package: ye-stage

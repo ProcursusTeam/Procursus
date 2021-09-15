@@ -21,9 +21,7 @@ liblouis: liblouis-setup libyaml
 	+$(MAKE) -C $(BUILD_WORK)/liblouis all
 	+$(MAKE) -C $(BUILD_WORK)/liblouis install \
 		DESTDIR=$(BUILD_STAGE)/liblouis
-	+$(MAKE) -C $(BUILD_WORK)/liblouis install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/liblouis/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 liblouis-package: liblouis-stage
 	# liblouis.mk Package Structure
@@ -44,6 +42,7 @@ liblouis-package: liblouis-stage
 	
 	# liblouis.mk Prep liblouis-data
 	cp -a $(BUILD_STAGE)/liblouis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/liblouis/tables $(BUILD_DIST)/liblouis-data/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tables
+	
 	# liblouis.mk Sign
 	$(call SIGN,liblouis20,general.xml)
 	
