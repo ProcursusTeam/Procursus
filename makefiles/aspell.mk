@@ -21,9 +21,7 @@ aspell: aspell-setup ncurses
 	+$(MAKE) -C $(BUILD_WORK)/aspell
 	+$(MAKE) -C $(BUILD_WORK)/aspell install \
 		DESTDIR=$(BUILD_STAGE)/aspell
-	+$(MAKE) -C $(BUILD_WORK)/aspell install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 aspell-package: aspell-stage
@@ -70,6 +68,7 @@ aspell-package: aspell-stage
 	$(call PACK,libaspell15,DEB_ASPELL_V)
 	$(call PACK,libpspell-dev,DEB_ASPELL_V)
 
-	# aspell.mk Build cleanup
+# aspell.mk Build cleanup
+rm -rf $(BUILD_DIST)/{aspell,libaspell-dev,libaspell15,libpspell-dev}
 
 .PHONY: aspell aspell-package
