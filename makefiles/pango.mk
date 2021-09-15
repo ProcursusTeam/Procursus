@@ -38,8 +38,7 @@ pango: pango-setup glib2.0 libffi python3 harfbuzz fontconfig libfribidi cairo l
 		..
 	+ninja -C $(BUILD_WORK)/pango/build
 	+DESTDIR="$(BUILD_STAGE)/pango" ninja -C $(BUILD_WORK)/pango/build install
-	+DESTDIR="$(BUILD_BASE)" ninja -C $(BUILD_WORK)/pango/build install
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD.copy)
 endif
 
 pango-package: pango-stage
