@@ -75,226 +75,238 @@ ifeq ($(MEMO_TARGET),iphoneos-arm64)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for iOS)
 endif # ($(MEMO_QUIET),1)
-MEMO_ARCH            := arm64
-PLATFORM             := iphoneos
-DEB_ARCH             := iphoneos-arm
-GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -miphoneos-version-min=$(IPHONEOS_DEPLOYMENT_TARGET)
-RUST_TARGET          := aarch64-apple-ios
-LLVM_TARGET          := arm64-apple-ios$(IPHONEOS_DEPLOYMENT_TARGET)
-MEMO_PREFIX          ?=
-MEMO_SUB_PREFIX      ?= /usr
-MEMO_ALT_PREFIX      ?= /local
-GNU_PREFIX           :=
-ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
-BARE_PLATFORM        := iPhoneOS
+MEMO_ARCH             := arm64
+PLATFORM              := iphoneos
+DEB_ARCH              := iphoneos-arm
+GNU_HOST_TRIPLE       := aarch64-apple-darwin
+PLATFORM_VERSION_MIN  := -miphoneos-version-min=$(IPHONEOS_DEPLOYMENT_TARGET)
+RUST_TARGET           := aarch64-apple-ios
+LLVM_TARGET           := arm64-apple-ios$(IPHONEOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?=
+MEMO_SUB_PREFIX       ?= /usr
+MEMO_ALT_PREFIX       ?= /local
+MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
+GNU_PREFIX            :=
+ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
+BARE_PLATFORM         := iPhoneOS
 export IPHONEOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),iphoneos-arm64-rootless)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for iOS with rootless prefix)
 endif # ($(MEMO_QUIET),1)
-MEMO_ARCH            := arm64
-PLATFORM             := iphoneos
-DEB_ARCH             := iphoneos-arm64
-GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -miphoneos-version-min=$(IPHONEOS_DEPLOYMENT_TARGET)
-RUST_TARGET          := aarch64-apple-ios
-LLVM_TARGET          := arm64-apple-ios$(IPHONEOS_DEPLOYMENT_TARGET)
-MEMO_PREFIX          ?= /private/preboot/procursus
-MEMO_SUB_PREFIX      ?= /usr
-MEMO_ALT_PREFIX      ?=
-GNU_PREFIX           :=
-ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
-BARE_PLATFORM        := iPhoneOS
+MEMO_ARCH             := arm64
+PLATFORM              := iphoneos
+DEB_ARCH              := iphoneos-arm64
+GNU_HOST_TRIPLE       := aarch64-apple-darwin
+PLATFORM_VERSION_MIN  := -miphoneos-version-min=$(IPHONEOS_DEPLOYMENT_TARGET)
+RUST_TARGET           := aarch64-apple-ios
+LLVM_TARGET           := arm64-apple-ios$(IPHONEOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?= /private/preboot/procursus
+MEMO_SUB_PREFIX       ?= /usr
+MEMO_ALT_PREFIX       ?=
+MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
+GNU_PREFIX            :=
+ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
+BARE_PLATFORM         := iPhoneOS
 export IPHONEOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),iphoneos-arm64e-rootless)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for iOS arm64e with rootless prefix)
 endif # ($(MEMO_QUIET),1)
-MEMO_ARCH            := arm64e
-PLATFORM             := iphoneos
-DEB_ARCH             := iphoneos-arm64e
-GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -miphoneos-version-min=$(IPHONEOS_DEPLOYMENT_TARGET)
-RUST_TARGET          := aarch64-apple-ios
-LLVM_TARGET          := arm64e-apple-ios$(IPHONEOS_DEPLOYMENT_TARGET)
-MEMO_PREFIX          ?= /private/preboot/procursus
-MEMO_SUB_PREFIX      ?= /usr
-MEMO_ALT_PREFIX      ?=
-GNU_PREFIX           :=
-ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
-BARE_PLATFORM        := iPhoneOS
+MEMO_ARCH             := arm64e
+PLATFORM              := iphoneos
+DEB_ARCH              := iphoneos-arm64e
+GNU_HOST_TRIPLE       := aarch64-apple-darwin
+PLATFORM_VERSION_MIN  := -miphoneos-version-min=$(IPHONEOS_DEPLOYMENT_TARGET)
+RUST_TARGET           := aarch64-apple-ios
+LLVM_TARGET           := arm64e-apple-ios$(IPHONEOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?= /private/preboot/procursus
+MEMO_SUB_PREFIX       ?= /usr
+MEMO_ALT_PREFIX       ?=
+MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
+GNU_PREFIX            :=
+ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
+BARE_PLATFORM         := iPhoneOS
 export IPHONEOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),iphoneos-arm64e)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for iOS arm64e)
 endif # ($(MEMO_QUIET),1)
-MEMO_ARCH            := arm64e
-PLATFORM             := iphoneos
-DEB_ARCH             := iphoneos-arm64e
-GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -miphoneos-version-min=$(IPHONEOS_DEPLOYMENT_TARGET)
-RUST_TARGET          := aarch64-apple-ios
-LLVM_TARGET          := arm64e-apple-ios$(IPHONEOS_DEPLOYMENT_TARGET)
-MEMO_PREFIX          ?=
-MEMO_SUB_PREFIX      ?= /usr
-MEMO_ALT_PREFIX      ?= /local
-GNU_PREFIX           :=
-ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
-BARE_PLATFORM        := iPhoneOS
+MEMO_ARCH             := arm64e
+PLATFORM              := iphoneos
+DEB_ARCH              := iphoneos-arm64e
+GNU_HOST_TRIPLE       := aarch64-apple-darwin
+PLATFORM_VERSION_MIN  := -miphoneos-version-min=$(IPHONEOS_DEPLOYMENT_TARGET)
+RUST_TARGET           := aarch64-apple-ios
+LLVM_TARGET           := arm64e-apple-ios$(IPHONEOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?=
+MEMO_SUB_PREFIX       ?= /usr
+MEMO_ALT_PREFIX       ?= /local
+MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
+GNU_PREFIX            :=
+ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
+BARE_PLATFORM         := iPhoneOS
 export IPHONEOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),appletvos-arm64)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for tvOS)
 endif # ($(MEMO_QUIET),1)
-MEMO_ARCH            := arm64
-PLATFORM             := appletvos
-DEB_ARCH             := appletvos-arm64
-GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -mappletvos-version-min=$(APPLETVOS_DEPLOYMENT_TARGET)
-RUST_TARGET          := aarch64-apple-tvos
-LLVM_TARGET          := arm64-apple-tvos$(APPLETVOS_DEPLOYMENT_TARGET)
-MEMO_PREFIX          ?=
-MEMO_SUB_PREFIX      ?= /usr
-MEMO_ALT_PREFIX      ?= /local
-GNU_PREFIX           :=
-ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
-BARE_PLATFORM        := AppleTVOS
+MEMO_ARCH             := arm64
+PLATFORM              := appletvos
+DEB_ARCH              := appletvos-arm64
+GNU_HOST_TRIPLE       := aarch64-apple-darwin
+PLATFORM_VERSION_MIN  := -mappletvos-version-min=$(APPLETVOS_DEPLOYMENT_TARGET)
+RUST_TARGET           := aarch64-apple-tvos
+LLVM_TARGET           := arm64-apple-tvos$(APPLETVOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?=
+MEMO_SUB_PREFIX       ?= /usr
+MEMO_ALT_PREFIX       ?= /local
+MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
+GNU_PREFIX            :=
+ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
+BARE_PLATFORM         := AppleTVOS
 export APPLETVOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),appletvos-arm64e)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for tvOS arm64e)
 endif # ($(MEMO_QUIET),1)
-MEMO_ARCH            := arm64e
-PLATFORM             := appletvos
-DEB_ARCH             := appletvos-arm64e
-GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -mappletvos-version-min=$(APPLETVOS_DEPLOYMENT_TARGET)
-RUST_TARGET          := aarch64-apple-tvos
-LLVM_TARGET          := arm64e-apple-tvos$(APPLETVOS_DEPLOYMENT_TARGET)
-MEMO_PREFIX          ?=
-MEMO_SUB_PREFIX      ?= /usr
-MEMO_ALT_PREFIX      ?= /local
-GNU_PREFIX           :=
-ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
-BARE_PLATFORM        := AppleTVOS
+MEMO_ARCH             := arm64e
+PLATFORM              := appletvos
+DEB_ARCH              := appletvos-arm64e
+GNU_HOST_TRIPLE       := aarch64-apple-darwin
+PLATFORM_VERSION_MIN  := -mappletvos-version-min=$(APPLETVOS_DEPLOYMENT_TARGET)
+RUST_TARGET           := aarch64-apple-tvos
+LLVM_TARGET           := arm64e-apple-tvos$(APPLETVOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?=
+MEMO_SUB_PREFIX       ?= /usr
+MEMO_ALT_PREFIX       ?= /local
+MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
+GNU_PREFIX            :=
+ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
+BARE_PLATFORM         := AppleTVOS
 export APPLETVOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),audioos-arm64)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for audioOS)
 endif # ($(MEMO_QUIET),1)
-MEMO_ARCH            := arm64
-PLATFORM             := appletvos # Platform-wise, audioos ~ appletvos (although some frameworks and stuff may be missing)
-DEB_ARCH             := audioos-arm64
-GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -mappletvos-version-min=$(APPLETVOS_DEPLOYMENT_TARGET)
-RUST_TARGET          := aarch64-apple-tvos
-LLVM_TARGET          := arm64-apple-tvos$(APPLETVOS_DEPLOYMENT_TARGET)
-MEMO_PREFIX          ?=
-MEMO_SUB_PREFIX      ?= /usr
-MEMO_ALT_PREFIX      ?= /local
-GNU_PREFIX           :=
-ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
-BARE_PLATFORM        := AppleTVOS
+MEMO_ARCH             := arm64
+PLATFORM              := appletvos # Platform-wise, audioos ~ appletvos (although some frameworks and stuff may be missing)
+DEB_ARCH              := audioos-arm64
+GNU_HOST_TRIPLE       := aarch64-apple-darwin
+PLATFORM_VERSION_MIN  := -mappletvos-version-min=$(APPLETVOS_DEPLOYMENT_TARGET)
+RUST_TARGET           := aarch64-apple-tvos
+LLVM_TARGET           := arm64-apple-tvos$(APPLETVOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?=
+MEMO_SUB_PREFIX       ?= /usr
+MEMO_ALT_PREFIX       ?= /local
+MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
+GNU_PREFIX            :=
+ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
+BARE_PLATFORM         := AppleTVOS
 export AUDIOOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),bridgeos-arm64)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for BridgeOS)
 endif # ($(MEMO_QUIET),1)
-MEMO_ARCH            := arm64
-PLATFORM             := iphoneos # find me a BridgeOS.sdk and you win.
-DEB_ARCH             := bridgeos-arm64
-GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := --target=arm64-apple-bridgeos$(BRIDGEOS_DEPLOYMENT_TARGET)
-RUST_TARGET          := aarch64-apple-bridgeos
-LLVM_TARGET          := arm64-apple-bridgeos$(BRIDGEOS_DEPLOYMENT_TARGET)
-MEMO_PREFIX          ?=
-MEMO_SUB_PREFIX      ?= /usr
-MEMO_ALT_PREFIX      ?= /local
-GNU_PREFIX           :=
-ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/BridgeOS.sdk
-BARE_PLATFORM        := BridgeOS
+MEMO_ARCH             := arm64
+PLATFORM              := iphoneos # find me a BridgeOS.sdk and you win.
+DEB_ARCH              := bridgeos-arm64
+GNU_HOST_TRIPLE       := aarch64-apple-darwin
+PLATFORM_VERSION_MIN  := --target=arm64-apple-bridgeos$(BRIDGEOS_DEPLOYMENT_TARGET)
+RUST_TARGET           := aarch64-apple-bridgeos
+LLVM_TARGET           := arm64-apple-bridgeos$(BRIDGEOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?=
+MEMO_SUB_PREFIX       ?= /usr
+MEMO_ALT_PREFIX       ?= /local
+MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
+GNU_PREFIX            :=
+ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/BridgeOS.sdk
+BARE_PLATFORM         := BridgeOS
 export BRIDGEOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),watchos-arm64_32)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for WatchOS)
 endif # ($(MEMO_QUIET),1)
-MEMO_ARCH            := arm64_32
-PLATFORM             := watchos
-DEB_ARCH             := watchos-arm64-32
-GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -mwatchos-version-min=$(WATCHOS_DEPLOYMENT_TARGET)
-RUST_TARGET          := aarch64-apple-watchos
-LLVM_TARGET          := arm64-apple-watchos$(WATCHOS_DEPLOYMENT_TARGET)
-MEMO_PREFIX          ?=
-MEMO_SUB_PREFIX      ?= /usr
-MEMO_ALT_PREFIX      ?= /local
-GNU_PREFIX           :=
-ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/WatchOS.sdk
-BARE_PLATFORM        := WatchOS
+MEMO_ARCH             := arm64_32
+PLATFORM              := watchos
+DEB_ARCH              := watchos-arm64-32
+GNU_HOST_TRIPLE       := aarch64-apple-darwin
+PLATFORM_VERSION_MIN  := -mwatchos-version-min=$(WATCHOS_DEPLOYMENT_TARGET)
+RUST_TARGET           := aarch64-apple-watchos
+LLVM_TARGET           := arm64-apple-watchos$(WATCHOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?=
+MEMO_SUB_PREFIX       ?= /usr
+MEMO_ALT_PREFIX       ?= /local
+MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
+GNU_PREFIX            :=
+ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/WatchOS.sdk
+BARE_PLATFORM         := WatchOS
 export WATCHOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),darwin-arm64e)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for macOS arm64e)
 endif # ($(MEMO_QUIET),1)
-MEMO_ARCH            := arm64e
-PLATFORM             := macosx
-DEB_ARCH             := darwin-arm64e
-GNU_HOST_TRIPLE      := aarch64-apple-darwin
-RUST_TARGET          := $(GNU_HOST_TRIPLE)
-LLVM_TARGET          := arm64e-apple-macos$(MACOSX_DEPLOYMENT_TARGET)
-PLATFORM_VERSION_MIN := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
-MEMO_PREFIX          ?= /opt/procursus
-MEMO_SUB_PREFIX      ?=
-MEMO_ALT_PREFIX      ?=
-GNU_PREFIX           := g
-ON_DEVICE_SDK_PATH   := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
-BARE_PLATFORM        := MacOSX
+MEMO_ARCH             := arm64e
+PLATFORM              := macosx
+DEB_ARCH              := darwin-arm64e
+GNU_HOST_TRIPLE       := aarch64-apple-darwin
+RUST_TARGET           := $(GNU_HOST_TRIPLE)
+LLVM_TARGET           := arm64e-apple-macos$(MACOSX_DEPLOYMENT_TARGET)
+PLATFORM_VERSION_MIN  := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?= /opt/procursus
+MEMO_SUB_PREFIX       ?=
+MEMO_ALT_PREFIX       ?=
+MEMO_LAUNCHCTL_PREFIX ?=
+GNU_PREFIX            := g
+ON_DEVICE_SDK_PATH    := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+BARE_PLATFORM         := MacOSX
 
 else ifeq ($(MEMO_TARGET),darwin-arm64)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for macOS arm64)
 endif # ($(MEMO_QUIET),1)
-MEMO_ARCH            := arm64
-PLATFORM             := macosx
-DEB_ARCH             := darwin-arm64
-GNU_HOST_TRIPLE      := aarch64-apple-darwin
-RUST_TARGET          := $(GNU_HOST_TRIPLE)
-LLVM_TARGET          := arm64-apple-macos$(MACOSX_DEPLOYMENT_TARGET)
-PLATFORM_VERSION_MIN := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
-MEMO_PREFIX          ?= /opt/procursus
-MEMO_SUB_PREFIX      ?=
-MEMO_ALT_PREFIX      ?=
-GNU_PREFIX           := g
-ON_DEVICE_SDK_PATH   := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
-BARE_PLATFORM        := MacOSX
+MEMO_ARCH             := arm64
+PLATFORM              := macosx
+DEB_ARCH              := darwin-arm64
+GNU_HOST_TRIPLE       := aarch64-apple-darwin
+RUST_TARGET           := $(GNU_HOST_TRIPLE)
+LLVM_TARGET           := arm64-apple-macos$(MACOSX_DEPLOYMENT_TARGET)
+PLATFORM_VERSION_MIN  := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?= /opt/procursus
+MEMO_SUB_PREFIX       ?=
+MEMO_ALT_PREFIX       ?=
+MEMO_LAUNCHCTL_PREFIX ?=
+GNU_PREFIX            := g
+ON_DEVICE_SDK_PATH    := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+BARE_PLATFORM         := MacOSX
 
 else ifeq ($(MEMO_TARGET),darwin-amd64)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for macOS amd64)
 endif # ($(MEMO_QUIET),1)
-MEMO_ARCH            := x86_64
-PLATFORM             := macosx
-DEB_ARCH             := darwin-amd64
-GNU_HOST_TRIPLE      := x86_64-apple-darwin
-RUST_TARGET          := $(GNU_HOST_TRIPLE)
-LLVM_TARGET          := x86_64-apple-macos$(MACOSX_DEPLOYMENT_TARGET)
-PLATFORM_VERSION_MIN := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
-MEMO_PREFIX          ?= /opt/procursus
-MEMO_SUB_PREFIX      ?=
-MEMO_ALT_PREFIX      ?=
-GNU_PREFIX           := g
-ON_DEVICE_SDK_PATH   := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
-BARE_PLATFORM        := MacOSX
+MEMO_ARCH             := x86_64
+PLATFORM              := macosx
+DEB_ARCH              := darwin-amd64
+GNU_HOST_TRIPLE       := x86_64-apple-darwin
+RUST_TARGET           := $(GNU_HOST_TRIPLE)
+LLVM_TARGET           := x86_64-apple-macos$(MACOSX_DEPLOYMENT_TARGET)
+PLATFORM_VERSION_MIN  := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?= /opt/procursus
+MEMO_SUB_PREFIX       ?=
+MEMO_ALT_PREFIX       ?=
+MEMO_LAUNCHCTL_PREFIX ?=
+GNU_PREFIX            := g
+ON_DEVICE_SDK_PATH    := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+BARE_PLATFORM         := MacOSX
 
 else
 $(error Platform not supported)
