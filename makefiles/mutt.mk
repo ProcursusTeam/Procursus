@@ -69,7 +69,7 @@ mutt: mutt-setup gettext tokyocabinet ncurses gpgme libidn2 gnutls
 	rm -f $(BUILD_STAGE)/mutt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{flea,muttbug}
 	mkdir -p $(BUILD_STAGE)/mutt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/mime/packages/
 	echo 'application/mbox; mutt -Rf %s; edit=mutt -f %s; needsterminal' > $(BUILD_STAGE)/mutt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/mime/packages/mutt
-	touch $(BUILD_WORK)/mutt/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 mutt-package: mutt-stage

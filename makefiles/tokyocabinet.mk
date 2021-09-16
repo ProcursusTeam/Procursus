@@ -18,6 +18,7 @@ else
 tokyocabinet: tokyocabinet-setup gettext
 	cd $(BUILD_WORK)/tokyocabinet && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		--disable-static \
 		--enable-devel \
 		--enable-off64 \
 		--enable-swab \
@@ -25,9 +26,7 @@ tokyocabinet: tokyocabinet-setup gettext
 	+$(MAKE) -C $(BUILD_WORK)/tokyocabinet
 	+$(MAKE) -C $(BUILD_WORK)/tokyocabinet install \
 		DESTDIR=$(BUILD_STAGE)/tokyocabinet
-	+$(MAKE) -C $(BUILD_WORK)/tokyocabinet install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/tokyocabinet/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 tokyocabinet-package: tokyocabinet-stage

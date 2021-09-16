@@ -20,7 +20,7 @@ mailcap: mailcap-setup
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		SYSCONFDIR=$(MEMO_PREFIX)/etc \
 		DESTDIR=$(BUILD_STAGE)/mailcap
-	touch $(BUILD_WORK)/mailcap/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 mailcap-package: mailcap-stage

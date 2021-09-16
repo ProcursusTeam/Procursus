@@ -63,7 +63,7 @@ neomutt: neomutt-setup gettext zstd lz4 tokyocabinet ncurses gpgme libidn2 gnutl
 	mv /tmp/neomuttrc $(BUILD_STAGE)/neomutt/$(MEMO_PREFIX)/etc/neomuttrc
 	mkdir -p $(BUILD_STAGE)/neomutt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/mime/packages/
 	echo 'message/rfc822; neomutt -Rf %s; edit=neomutt -f %s; needsterminal' > $(BUILD_STAGE)/neomutt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/mime/packages/neomutt
-	touch $(BUILD_WORK)/neomutt/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 neomutt-package: neomutt-stage

@@ -26,7 +26,7 @@ isync: isync-setup openssl
 	+$(MAKE) -C $(BUILD_WORK)/isync
 	+$(MAKE) -C $(BUILD_WORK)/isync install \
 		DESTDIR=$(BUILD_STAGE)/isync
-	touch $(BUILD_WORK)/isync/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 isync-package: isync-stage
