@@ -3,6 +3,7 @@ Version: @DEB_REMOTE-CMDS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: libedit0, libiosexec1, libncursesw6
-Provides: telnet-client, tftp
+Conflicts: inetutils
+Provides: telnet-client, tftp, inetutils
 Section: Networking
 Description: logger, talk, ntalkd, tftp, tftpd, wall, telnet, telnetd

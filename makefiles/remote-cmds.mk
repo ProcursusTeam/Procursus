@@ -2,8 +2,6 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-
 SUBPROJECTS         += remote-cmds
 REMOTE-CMDS_VERSION := 63
 LIBTELNET_VERSION   := 13
@@ -14,9 +12,6 @@ remote-cmds-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/libtelnet/libtelnet-$(LIBTELNET_VERSION).tar.gz
 	$(call EXTRACT_TAR,remote_cmds-$(REMOTE-CMDS_VERSION).tar.gz,remote_cmds-$(REMOTE-CMDS_VERSION),remote-cmds)
 	$(call EXTRACT_TAR,libtelnet-$(LIBTELNET_VERSION).tar.gz,libtelnet-$(LIBTELNET_VERSION),remote-cmds/libtelnet)
-	wget -q -nc -P $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include https://opensource.apple.com/source/Libc/Libc-1044.1.2/include/sgtty.h
-	wget -q -nc -P $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include https://opensource.apple.com/source/lukemftp/lukemftp-13/tnftp/libedit/histedit.h
-	wget -q -nc -P $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/protocols https://opensource.apple.com/source/Libc/Libc-1044.1.2/include/protocols/talkd.h
 
 ifneq ($(wildcard $(BUILD_WORK)/remote-cmds/.build_complete),)
 remote-cmds:
@@ -32,12 +27,7 @@ remote-cmds: remote-cmds-setup ncurses libedit
 	rm -rf $(BUILD_WORK)/remote-cmds/telnetd.tproj/{authenc.c,strlcpy.c}
 	cd $(BUILD_WORK)/remote-cmds && $(CC) $(CFLAGS) -o telnetd telnetd.tproj/*.c $(LDFLAGS) -lcurses -ltelnet -DENV_HACK -DUSE_TERMIO -DNO_UTMP -D'__FBSDID(x)='
 	cd $(BUILD_WORK)/remote-cmds && $(CC) $(CFLAGS) -o telnet telnet.tproj/*.c $(LDFLAGS) -ltelnet -lcurses -DUSE_TERMIO
-	cd $(BUILD_WORK)/remote-cmds; \
-	for tproj in logger talk talkd tftp tftpd wall; do \
-		echo "$$tproj" ; \
-		$(CC) $(CFLAGS) -I$(BUILD_WORK)/remote-cmds/include -o $$tproj $$tproj.tproj/*.c -D'__FBSDID(x)=' $(LDFLAGS) \
-		-ledit -lcurses -DUSE_TERMIO -framework CoreFoundation -framework IOKit; \
-	done
+
 ifneq (,$(findstring macosx,$(PLATFORM)))
 	mkdir -p $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX){/Library/LaunchDaemons,/$(MEMO_SUB_PREFIX)/{bin,libexec,/share/man/man{1,8}}}
 	cp -a $(BUILD_WORK)/remote-cmds/telnet $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
@@ -45,7 +35,13 @@ ifneq (,$(findstring macosx,$(PLATFORM)))
 	cp -a $(BUILD_WORK)/remote-cmds/telnetd.tproj/telnet.plist $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)/Library/LaunchDaemons
 	cp -a $(BUILD_WORK)/remote-cmds/telnet.tproj/*.1 $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/
 	cp -a $(BUILD_WORK)/remote-cmds/telnetd.tproj/*.8 $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/
-else ifneq (,$(findstring iphoneos,$(PLATFORM)))
+else
+	cd $(BUILD_WORK)/remote-cmds; \
+	for tproj in logger talk talkd tftp tftpd wall; do \
+		echo "$$tproj" ; \
+		$(CC) $(CFLAGS) -I$(BUILD_WORK)/remote-cmds/include -o $$tproj $$tproj.tproj/*.c -D'__FBSDID(x)=' $(LDFLAGS) \
+		-ledit -lcurses -DUSE_TERMIO -framework CoreFoundation -framework IOKit; \
+	done
 	mkdir -p $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX){/Library/LaunchDaemons,/$(MEMO_SUB_PREFIX)/{bin,libexec,/share/man/man{1,8}}}
 	cp -a {$(BUILD_WORK)/remote-cmds/talkd.tproj/ntalk.plist,$(BUILD_MISC)/remote-cmds/telnet.plist} $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)/Library/LaunchDaemons
 	cp -a $(BUILD_WORK)/remote-cmds/{tftpd,telnetd} $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
@@ -74,7 +70,7 @@ ifneq (,$(findstring macosx,$(PLATFORM)))
 
 	# remote-cmds.mk Build cleanup
 	rm -rf $(BUILD_DIST)/remote-cmds
-else ifneq (,$(findstring iphoneos,$(PLATFORM)))
+else
 	# remote-cmds.mk Package Structure
 	rm -rf $(BUILD_DIST)/remote-cmds
 
@@ -91,5 +87,5 @@ else ifneq (,$(findstring iphoneos,$(PLATFORM)))
 	rm -rf $(BUILD_DIST)/remote-cmds
 
 .PHONY: remote-cmds remote-cmds-package
+
 endif
-endif # ($(MEMO_TARGET),darwin-\*)
