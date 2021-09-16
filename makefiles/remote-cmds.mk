@@ -79,6 +79,8 @@ else
 
 	# remote-cmds.mk Sign
 	$(call SIGN,remote-cmds,general.xml)
+	ldid $(MEMO_LDID_EXTRA_FLAGS) -S$(BUILD_MISC)/entitlements/telnetd.xml $(BUILD_DIST)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/telnetd
+	find $(BUILD_DIST)/remote-cmds -name '.ldid*' -type f -delete
 
 	# remote-cmds.mk Make .debs
 	$(call PACK,remote-cmds,DEB_REMOTE-CMDS_V)
