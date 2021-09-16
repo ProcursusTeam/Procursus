@@ -44,7 +44,7 @@ Stefan Völkel <stefan@bc-bd.org> in the second bug.
    ** .pp
    ** This variable specifies which editor is used by mutt.
    ** It defaults to the value of the \fC$$$VISUAL\fP, or \fC$$$EDITOR\fP, environment
--  ** variable, or to the string ``/usr/bin/editor'' if neither of those are set.
+-  ** variable, or to the string ``@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/editor'' if neither of those are set.
 +  ** variable, or to the string ``vi'' if neither of those are set.
    ** .pp
    ** The \fC$$editor\fP string may contain a \fI%s\fP escape, which will be replaced by the name

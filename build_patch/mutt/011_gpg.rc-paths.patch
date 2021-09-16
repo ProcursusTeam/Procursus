@@ -23,12 +23,12 @@ Use the correct path of pgpewrap.
  # create a pgp/mime encrypted attachment
 -# set pgp_encrypt_only_command="pgpewrap gpg-2comp -v --batch --output - --encrypt --textmode --armor --always-trust -- -r %r -- %f"
 -set pgp_encrypt_only_command="pgpewrap gpg --batch --quiet --no-verbose --output - --encrypt --textmode --armor --always-trust -- -r %r -- %f"
-+set pgp_encrypt_only_command="/usr/lib/mutt/pgpewrap gpg --batch --quiet --no-verbose --output - --encrypt --textmode --armor --always-trust -- -r %r -- %f"
++set pgp_encrypt_only_command="@MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/mutt/pgpewrap gpg --batch --quiet --no-verbose --output - --encrypt --textmode --armor --always-trust -- -r %r -- %f"
  
  # create a pgp/mime encrypted and signed attachment
 -# set pgp_encrypt_sign_command="pgpewrap gpg-2comp %?p?--passphrase-fd 0 --pinentry-mode=loopback? -v --batch --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
 -set pgp_encrypt_sign_command="pgpewrap gpg %?p?--passphrase-fd 0 --pinentry-mode=loopback? --batch --quiet --no-verbose --textmode --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
-+set pgp_encrypt_sign_command="/usr/lib/mutt/pgpewrap gpg %?p?--passphrase-fd 0 --pinentry-mode=loopback? --batch --quiet --no-verbose --textmode --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
++set pgp_encrypt_sign_command="@MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/mutt/pgpewrap gpg %?p?--passphrase-fd 0 --pinentry-mode=loopback? --batch --quiet --no-verbose --textmode --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
  
  # import a key into the public key ring
  set pgp_import_command="gpg --no-verbose --import %f"

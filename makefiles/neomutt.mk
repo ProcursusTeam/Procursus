@@ -51,10 +51,10 @@ neomutt: neomutt-setup gettext zstd lz4 tokyocabinet ncurses gpgme libidn2 gnutl
 		DESTDIR=$(BUILD_STAGE)/neomutt
 	mkdir -p $(BUILD_STAGE)/neomutt/$(MEMO_PREFIX)/etc/neomuttrc.d/
 	cp $(BUILD_WORK)/neomutt/contrib/samples/{gpg,smime}.rc \
-		$(BUILD_STAGE)/neomutt/etc/neomuttrc.d/
+		$(BUILD_STAGE)/neomutt/$(MEMO_PREFIX)/etc/neomuttrc.d/
 	cp -a $(BUILD_MISC)/neomutt/lib/{mailspell,source-neomuttrc.d,mailto-neomutt,debian-ldap-query} \
 		$(BUILD_STAGE)/neomutt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/neomutt/
-	$(SED) -i 's/@MEMO_PREFIX@/$(MEMO_PREFIX)/g' $(BUILD_STAGE)/neomutt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/neomutt/*
+	sed -i 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' $(BUILD_STAGE)/neomutt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/neomutt/*
 	cp -a $(BUILD_MISC)/neomutt/rc/*.rc \
 		$(BUILD_STAGE)/neomutt/$(MEMO_PREFIX)/etc/neomuttrc.d/
 	chmod +x $(BUILD_STAGE)/neomutt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/neomutt/*

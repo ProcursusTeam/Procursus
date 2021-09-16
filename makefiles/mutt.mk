@@ -15,7 +15,10 @@ mutt-setup: setup
 	$(call EXTRACT_TAR,mutt-$(MUTT_VERSION).tar.gz,mutt-$(MUTT_VERSION),mutt)
 	$(call DO_PATCH,mutt,mutt,-p1)
 
-ifneq ($(wildcard $(BUILD_WORK)/mutt/.build_complete),)
+ifneq ($(call HAS_COMMAND,lynx),1)
+mutt:
+	@echo "Install lynx before building"
+else ifneq ($(wildcard $(BUILD_WORK)/mutt/.build_complete),)
 mutt:
 	@echo "Using previously built mutt."
 else
@@ -54,7 +57,7 @@ mutt: mutt-setup gettext tokyocabinet ncurses gpgme libidn2 gnutls
 	mkdir -p $(BUILD_STAGE)/mutt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/mutt/
 	cp -a $(BUILD_MISC)/mutt/lib/{mailspell,source-muttrc.d,mailto-mutt,debian-ldap-query} \
 		$(BUILD_STAGE)/mutt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/mutt/
-	$(SED) -i 's/@MEMO_PREFIX@/$(MEMO_PREFIX)/g' $(BUILD_STAGE)/mutt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/mutt/*
+	sed -i 's/@MEMO_PREFIX@/$(MEMO_PREFIX)/g' $(BUILD_STAGE)/mutt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/mutt/*
 	mv $(BUILD_STAGE)/mutt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{mutt_pgpring,pgpewrap} \
 		$(BUILD_STAGE)/mutt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/mutt/
 	( sed -e '/## More settings/,$$d' $(BUILD_STAGE)/mutt/$(MEMO_PREFIX)/etc/Muttrc || exit 1 ; \
