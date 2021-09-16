@@ -605,7 +605,7 @@ EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 DO_PATCH    = cd $(BUILD_PATCH)/$(1); \
 	for PATCHFILE in *; do \
 		if [ ! -f $(BUILD_WORK)/$(2)/$(notdir $$PATCHFILE).done ]; then \
-			patch -sN -d $(BUILD_WORK)/$(2) $(3) < $$PATCHFILE && \
+			sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' -e 's|@MEMO_ALT_PREFIX@|$(MEMO_ALT_PREFIX)|g' $$PATCHFILE | patch -sN -d $(BUILD_WORK)/$(2) $(3) && \
 			touch $(BUILD_WORK)/$(2)/$(notdir $$PATCHFILE).done; \
 		fi; \
 	done
