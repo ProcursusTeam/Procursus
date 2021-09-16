@@ -643,9 +643,9 @@ AFTER_BUILD = \
 	if [ ! -z "$(MEMO_PREFIX)" ] && [ -d "$(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" ]; then \
 		rm -f $(BUILD_STAGE)/$@/._lib_cache && touch $(BUILD_STAGE)/$@/._lib_cache; \
 		for file in $$(find $(BUILD_STAGE)/$@ -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
-			INSTALL_NAME=$$(otool -D $$file); \
+			INSTALL_NAME=$$(otool -D $$file | grep -v ":$$"); \
 			if [ ! -z "$$INSTALL_NAME" ]; then \
-				$(I_N_T) -id @rpath/$$(basename $$file) $$file; \
+				$(I_N_T) -id @rpath/$$(basename $$INSTALL_NAME) $$file; \
 				echo "$$INSTALL_NAME" >> $(BUILD_STAGE)/$@/._lib_cache; \
 			fi; \
 		done; \
