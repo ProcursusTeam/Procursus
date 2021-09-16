@@ -1,0 +1,1416 @@
+--- a/pfetch	2020-03-11 16:39:16.000000000 -0400
++++ b/pfetch	2021-09-16 12:49:39.000000000 -0400
+@@ -2,6 +2,59 @@
+ #
+ # pfetch - Simple POSIX sh fetch script.
+ 
++# Wrapper around all escape sequences used by pfetch to allow for
++# greater control over which sequences are used (if any at all).
++esc() {
++    case $1 in
++        CUU) e="${esc_c}[${2}A" ;; # cursor up
++        CUD) e="${esc_c}[${2}B" ;; # cursor down
++        CUF) e="${esc_c}[${2}C" ;; # cursor right
++        CUB) e="${esc_c}[${2}D" ;; # cursor left
++
++        # text formatting
++        SGR)
++            case ${PF_COLOR:=1} in
++                (1)
++                    e="${esc_c}[${2}m"
++                ;;
++
++                (0)
++                    # colors disabled
++                    e=
++                ;;
++            esac
++        ;;
++
++        # line wrap
++        DECAWM)
++            case $TERM in
++                (dumb | minix | cons25)
++                    # not supported
++                    e=
++                ;;
++
++                (*)
++                    e="${esc_c}[?7${2}"
++                ;;
++            esac
++        ;;
++    esac
++}
++
++# Print a sequence to the terminal.
++esc_p() {
++    esc "$@"
++    printf '%s' "$e"
++}
++
++# This is just a simple wrapper around 'command -v' to avoid
++# spamming '>/dev/null' throughout this function. This also guards
++# against aliases and functions.
++has() {
++    _cmd=$(command -v "$1") 2>/dev/null || return 1
++    [ -x "$_cmd" ] || return 1
++}
++
+ log() {
+     # The 'log()' function handles the printing of information.
+     # In 'pfetch' (and 'neofetch'!) the printing of the ascii art and info
+@@ -77,10 +130,13 @@
+ 
+     # Move the cursor to the right, the width of the ascii art with an
+     # additional gap for text spacing.
+-    printf '[%sC' "${ascii_width--1}"
++    esc_p CUF "$ascii_width"
+ 
+     # Print the info name and color the text.
+-    printf '[3%s;1m%s[m' "${PF_COL1-4}" "$name"
++    esc_p SGR "3${PF_COL1-4}";
++    esc_p SGR 1
++    printf '%s' "$name"
++    esc_p SGR 0
+ 
+     # Print the info name and info data separator.
+     printf %s "$PF_SEP"
+@@ -88,11 +144,15 @@
+     # Move the cursor backward the length of the *current* info name and
+     # then move it forwards the length of the *longest* info name. This
+     # aligns each info data line.
+-    printf '[%sD[%sC' "${#name}" "${PF_ALIGN-$info_length}"
++    esc_p CUB "${#name}"
++    esc_p CUF "${PF_ALIGN:-$info_length}"
+ 
+     # Print the info data, color it and strip all leading whitespace
+     # from the string.
+-    printf '[3%sm%s[m\n' "${PF_COL2-7}" "$info"
++    esc_p SGR "3${PF_COL2-7}"
++    printf '%s' "$info"
++    esc_p SGR 0
++    printf '\n'
+ 
+     # Keep track of the number of times 'log()' has been run.
+     info_height=$((${info_height:-0} + 1))
+@@ -110,9 +170,26 @@
+     # the intention for using it is allowing the user to overwrite the
+     # value on invocation.
+     # shellcheck disable=SC2039
+-    hostname=${HOSTNAME:-${hostname:-$(hostname)}}
++    host=${HOSTNAME:-${host:-$(hostname)}}
++
++    # If the hostname is still not found, fallback to the contents of the
++    # /etc/hostname file.
++    [ "$host" ] || read -r host < /etc/hostname
++
++    # Add escape sequences for coloring to user and host name. As we embed
++    # them directly in the arguments passed to log(), we cannot use esc_p().
++    esc SGR 1
++    user=$e$user
++    esc SGR "3${PF_COL3:-1}"
++    user=$e$user
++    esc SGR 1
++    user=$user$e
++    esc SGR 1
++    host=$e$host
++    esc SGR "3${PF_COL3:-1}"
++    host=$e$host
+ 
+-    log "[3${PF_COL3:-1}m${user}${c7}@[3${PF_COL3:-1}m${hostname}" " " >&6
++    log "${user}@${host}" " " >&6
+ }
+ 
+ get_os() {
+@@ -128,7 +205,7 @@
+     }
+ 
+     case $os in
+-        Linux*)
++        (Linux*)
+             # Some Linux distributions (which are based on others)
+             # fail to identify as they **do not** change the upstream
+             # distribution's identification packages or files.
+@@ -151,7 +228,7 @@
+             # This applies only to distributions which follow the standard
+             # by shipping unmodified identification files and packages
+             # from their respective upstreams.
+-            if command -v lsb_release; then
++            if has lsb_release; then
+                 distro=$(lsb_release -sd)
+ 
+             # Android detection works by checking for the existence of
+@@ -167,7 +244,9 @@
+                 # the file contents as plain-text.
+                 while IFS='=' read -r key val; do
+                     case $key in
+-                        PRETTY_NAME) distro=$val ;;
++                        (PRETTY_NAME)
++                            distro=$val
++                        ;;
+                     esac
+                 done < /etc/os-release
+             fi
+@@ -179,14 +258,16 @@
+ 
+             # Special cases for (independent) distributions which
+             # don't follow any os-release/lsb standards whatsoever.
+-            command -v crux && distro=$(crux)
+-            command -v guix && distro='Guix System'
++            has crux && distro=$(crux)
++            has guix && distro='Guix System'
+ 
+             # Check to see if we're running Bedrock Linux which is
+             # very unique. This simply checks to see if the user's
+-            # PATH contais a Bedrock specific value.
++            # PATH contains a Bedrock specific value.
+             case $PATH in
+-                */bedrock/cross/*) distro='Bedrock Linux'
++                (*/bedrock/cross/*)
++                    distro='Bedrock Linux'
++                ;;
+             esac
+ 
+             # Check to see if Linux is running in Windows 10 under
+@@ -195,8 +276,8 @@
+             #
+             # If the kernel version string ends in "-Microsoft",
+             # we're very likely running under Windows 10 in WSL1.
+-            [ "${kernel%%*-Microsoft}" ] ||
+-                distro="$distro on Windows 10 [WSL1]"
++            if [ "$WSLENV" ]; then
++                distro="${distro}${WSLENV+ on Windows 10 [WSL2]}"
+ 
+             # Check to see if Linux is running in Windows 10 under
+             # WSL2 (Windows subsystem for Linux [version 2]) and
+@@ -205,10 +286,12 @@
+             # This checks to see if '$WSLENV' is defined. This
+             # appends the Windows 10 string even if '$WSLENV' is
+             # empty. We only need to check that is has been _exported_.
+-            distro="${distro}${WSLENV+ on Windows 10 [WSL2]}"
++            elif [ -z "${kernel%%*-Microsoft}" ]; then
++                distro="$distro on Windows 10 [WSL1]"
++            fi
+         ;;
+ 
+-        Darwin*)
++        (Darwin*)
+             # Parse the SystemVersion.plist file to grab the macOS
+             # version. The file is in the following format:
+             #
+@@ -227,7 +310,12 @@
+                     # directly as it contains the key's value.
+                     ProductVersion)
+                         IFS='<>' read -r _ _ mac_version _
+-                        break
++                        continue
++                    ;;
++
++                    ProductName)
++                        IFS='<>' read -r _ _ mac_product _
++                        continue
+                     ;;
+                 esac
+             done < /System/Library/CoreServices/SystemVersion.plist
+@@ -236,31 +324,37 @@
+             # the system has. As far as I'm aware there's no "dynamic" way
+             # of grabbing this information.
+             case $mac_version in
+-                10.4*)  distro='Mac OS X Tiger' ;;
+-                10.5*)  distro='Mac OS X Leopard' ;;
+-                10.6*)  distro='Mac OS X Snow Leopard' ;;
+-                10.7*)  distro='Mac OS X Lion' ;;
+-                10.8*)  distro='OS X Mountain Lion' ;;
+-                10.9*)  distro='OS X Mavericks' ;;
+-                10.10*) distro='OS X Yosemite' ;;
+-                10.11*) distro='OS X El Capitan' ;;
+-                10.12*) distro='macOS Sierra' ;;
+-                10.13*) distro='macOS High Sierra' ;;
+-                10.14*) distro='macOS Mojave' ;;
+-                10.15*) distro='macOS Catalina' ;;
+-                *)      distro='macOS' ;;
++                (10.4*)  distro='Mac OS X Tiger' ;;
++                (10.5*)  distro='Mac OS X Leopard' ;;
++                (10.6*)  distro='Mac OS X Snow Leopard' ;;
++                (10.7*)  distro='Mac OS X Lion' ;;
++                (10.8*)  distro='OS X Mountain Lion' ;;
++                (10.9*)  distro='OS X Mavericks' ;;
++                (10.10*) distro='OS X Yosemite' ;;
++                (10.11*) distro='OS X El Capitan' ;;
++                (10.12*) distro='macOS Sierra' ;;
++                (10.13*) distro='macOS High Sierra' ;;
++                (10.14*) distro='macOS Mojave' ;;
++                (10.15*) distro='macOS Catalina' ;;
++                (11*)    distro='macOS Big Sur' ;;
++                (*)      distro='macOS' ;;
++            esac
++
++            # Use the ProductName to determine if we're running in iOS.
++            case $mac_product in
++                (iP*) distro='iOS' ;;
+             esac
+ 
+             distro="$distro $mac_version"
+         ;;
+ 
+-        Haiku)
++        (Haiku)
+             # Haiku uses 'uname -v' for version information
+             # instead of 'uname -r' which only prints '1'.
+             distro=$(uname -sv)
+         ;;
+ 
+-        Minix|DragonFly)
++        (Minix|DragonFly)
+             distro="$os $kernel"
+ 
+             # Minix and DragonFly don't support the escape
+@@ -268,13 +362,27 @@
+             trap '' EXIT
+         ;;
+ 
+-        SunOS)
++        (SunOS)
+             # Grab the first line of the '/etc/release' file
+             # discarding everything after '('.
+             IFS='(' read -r distro _ < /etc/release
+         ;;
+ 
+-        *)
++        (OpenBSD*)
++            # Show the OpenBSD version type (current if present).
++            # kern.version=OpenBSD 6.6-current (GENERIC.MP) ...
++            IFS=' =' read -r _ distro openbsd_ver _ <<-EOF
++				$(sysctl kern.version)
++			EOF
++
++            distro="$distro $openbsd_ver"
++        ;;
++
++        FreeBSD)
++            distro="$os $(freebsd-version)"
++        ;;
++
++        (*)
+             # Catch all to ensure '$distro' is never blank.
+             # This also handles the BSDs.
+             distro="$os $kernel"
+@@ -286,8 +394,8 @@
+     case $os in
+         # Don't print kernel output on some systems as the
+         # OS name includes it.
+-        *BSD*|Haiku|Minix) 
+-            return 
++        (*BSD*|Haiku|Minix)
++            return
+         ;;
+     esac
+ 
+@@ -297,7 +405,7 @@
+ 
+ get_host() {
+     case $os in
+-        Linux*)
++        (Linux*)
+             # Despite what these files are called, version doesn't
+             # always contain the version nor does name always contain
+             # the name.
+@@ -308,16 +416,20 @@
+             host="$name $version $model"
+         ;;
+ 
+-        Darwin*|FreeBSD*|DragonFly*)
++        (Darwin* | FreeBSD* | DragonFly*)
+             host=$(sysctl -n hw.model)
+         ;;
+ 
+-        NetBSD*)
++        (NetBSD*)
+             host=$(sysctl -n machdep.dmi.system-vendor \
+                              machdep.dmi.system-product)
+         ;;
+ 
+-        *BSD*|Minix)
++        (OpenBSD*)
++            host=$(sysctl -n hw.version)
++        ;;
++
++        (*BSD* | Minix)
+             host=$(sysctl -n hw.vendor hw.product)
+         ;;
+     esac
+@@ -345,12 +457,12 @@
+     # This string reconstruction is needed as some OEMs either leave the
+     # identification information as "To be filled by OEM", "Default",
+     # "undefined" etc and we shouldn't print this to the screen.
+-    for word; do
++    for word do
+         # This works by reconstructing the string by excluding words
+         # found in the "blacklist" below. Only non-matches are appended
+         # to the final host string.
+         case $word in
+-            To      | [Bb]e      | [Ff]illed | [Bb]y  | O.E.M.  | OEM  |\
++           (To      | [Bb]e      | [Ff]illed | [Bb]y  | O.E.M.  | OEM  |\
+             Not     | Applicable | Specified | System | Product | Name |\
+             Version | Undefined  | Default   | string | INVALID | �    | os )
+                 continue
+@@ -369,11 +481,11 @@
+     # converting that data into days, hours and minutes using simple
+     # math.
+     case $os in
+-        Linux*|Minix*)
++        (Linux* | Minix*)
+             IFS=. read -r s _ < /proc/uptime
+         ;;
+ 
+-        Darwin*|*BSD*|DragonFly*)
++        Darwin* | *BSD* | DragonFly*)
+             s=$(sysctl -n kern.boottime)
+ 
+             # Extract the uptime in seconds from the following output:
+@@ -386,13 +498,13 @@
+             s=$(($(date +%s) - s))
+         ;;
+ 
+-        Haiku)
++        (Haiku)
+             # The boot time is returned in microseconds, convert it to
+             # regular seconds.
+             s=$(($(system_time) / 1000000))
+         ;;
+ 
+-        SunOS)
++        (SunOS)
+             # Split the output of 'kstat' on '.' and any white-space
+             # which exists in the command output.
+             #
+@@ -405,16 +517,16 @@
+ 			EOF
+         ;;
+ 
+-        IRIX)
++        (IRIX)
+             # Grab the uptime in a pretty format. Usually,
+             # 00:00:00 from the 'ps' command.
+             t=$(LC_ALL=POSIX ps -o etime= -p 1)
+ 
+             # Split the pretty output into days or hours
+             # based on the uptime.
+-            case $t in 
+-                *-*)   d=${t%%-*} t=${t#*-} ;;
+-                *:*:*) h=${t%%:*} t=${t#*:} ;;
++            case $t in
++                (*-*)   d=${t%%-*} t=${t#*-} ;;
++                (*:*:*) h=${t%%:*} t=${t#*:} ;;
+             esac
+ 
+             h=${h#0} t=${t#0}
+@@ -431,18 +543,14 @@
+     m=$((s / 60 % 60))
+ 
+     # Only append days, hours and minutes if they're non-zero.
+-    [ "$d" = 0 ] || uptime="${uptime}${d}d "
+-    [ "$h" = 0 ] || uptime="${uptime}${h}h "
+-    [ "$m" = 0 ] || uptime="${uptime}${m}m "
++    case "$d" in ([!0]*) uptime="${uptime}${d}d "; esac
++    case "$h" in ([!0]*) uptime="${uptime}${h}h "; esac
++    case "$m" in ([!0]*) uptime="${uptime}${m}m "; esac
+ 
+     log uptime "${uptime:-0m}" >&6
+ }
+ 
+ get_pkgs() {
+-    # This is just a simple wrapper around 'command -v' to avoid
+-    # spamming '>/dev/null' throughout this function.
+-    has() { command -v "$1" >/dev/null; }
+-
+     # This works by first checking for which package managers are
+     # installed and finally by printing each package manager's
+     # package list with each package one per line.
+@@ -461,7 +569,7 @@
+     # shellcheck disable=2006
+     packages=`
+         case $os in
+-            Linux*)
++            (Linux*)
+                 # Commands which print packages one per line.
+                 has bonsai     && bonsai list
+                 has crux       && pkginfo -i
+@@ -475,6 +583,7 @@
+ 
+                 # Directories containing packages.
+                 has kiss       && printf '%s\n' /var/db/kiss/installed/*/
++                has cpt-list   && printf '%s\n' /var/db/cpt/installed/*/
+                 has brew       && printf '%s\n' "$(brew --cellar)/"*
+                 has emerge     && printf '%s\n' /var/db/pkg/*/*/
+                 has pkgtool    && printf '%s\n' /var/log/packages/*
+@@ -483,13 +592,14 @@
+                 # 'nix' requires two commands.
+                 has nix-store  && {
+                     nix-store -q --requisites /run/current-system/sw
+-                    nix-store -q --requisites ~.nix-profile
++                    nix-store -q --requisites ~/.nix-profile
+                 }
+             ;;
+ 
+-            Darwin*)
++            (Darwin*)
+                 # Commands which print packages one per line.
+                 has pkgin      && pkgin list
++                has dpkg       && dpkg-query -f '.\n' -W
+ 
+                 # Directories containing packages.
+                 has brew       && printf '%s\n' /usr/local/Cellar/*
+@@ -505,37 +615,44 @@
+                 has port       && {
+                     pkg_list=$(port installed)
+ 
+-                    [ "$pkg_list" = "No ports are installed." ] ||
+-                        printf '%s\n' "$pkg_list"
++                    case "$pkg_list" in
++                        ("No ports are installed.")
++                            # do nothing
++                        ;;
++
++                        (*)
++                            printf '%s\n' "$pkg_list"
++                        ;;
++                    esac
+                 }
+             ;;
+ 
+-            FreeBSD*|DragonFly*)
++            (FreeBSD*|DragonFly*)
+                 pkg info
+             ;;
+ 
+-            OpenBSD*)
++            (OpenBSD*)
+                 printf '%s\n' /var/db/pkg/*/
+             ;;
+ 
+-            NetBSD*)
++            (NetBSD*)
+                 pkg_info
+             ;;
+ 
+-            Haiku)
++            (Haiku)
+                 printf '%s\n' /boot/system/package-links/*
+             ;;
+ 
+-            Minix)
++            (Minix)
+                 printf '%s\n' /usr/pkg/var/db/pkg/*/
+             ;;
+ 
+-            SunOS)
++            (SunOS)
+                 has pkginfo && pkginfo -i
+                 has pkg     && pkg list
+             ;;
+ 
+-            IRIX)
++            (IRIX)
+                 versions -b
+             ;;
+         esac | wc -l
+@@ -544,10 +661,22 @@
+     case $os in
+         # IRIX's package manager adds 3 lines of extra
+         # output which we must account for here.
+-        IRIX) packages=$((packages - 3)) ;;
++        (IRIX)
++            packages=$((packages - 3))
++        ;;
++
++        # OpenBSD's wc prints whitespace before the output
++        # which needs to be stripped.
++        (OpenBSD)
++            packages=$((packages))
++        ;;
+     esac
+ 
+-    [ "$packages" -gt 1 ] && log pkgs "$packages" >&6
++    case $packages in
++        (1?*|[2-9]*)
++            log pkgs "$packages" >&6
++        ;;
++    esac
+ }
+ 
+ get_memory() {
+@@ -555,34 +684,50 @@
+         # Used memory is calculated using the following "formula":
+         # MemUsed = MemTotal + Shmem - MemFree - Buffers - Cached - SReclaimable
+         # Source: https://github.com/KittyKatt/screenFetch/issues/386
+-        Linux*)
++        (Linux*)
+             # Parse the '/proc/meminfo' file splitting on ':' and 'k'.
+             # The format of the file is 'key:   000kB' and an additional
+             # split is used on 'k' to filter out 'kB'.
+             while IFS=':k '  read -r key val _; do
+                 case $key in
+-                    MemTotal)
++                    (MemTotal)
+                         mem_used=$((mem_used + val))
+                         mem_full=$val
+                     ;;
+ 
+-                    Shmem)
++                    (Shmem)
+                         mem_used=$((mem_used + val))
+                     ;;
+ 
+-                    MemFree|Buffers|Cached|SReclaimable)
++                    (MemFree | Buffers | Cached | SReclaimable)
+                         mem_used=$((mem_used - val))
+                     ;;
++
++                    # If detected this will be used over the above calculation
++                    # for mem_used. Available since Linux 3.14rc.
++                    # See kernel commit 34e431b0ae398fc54ea69ff85ec700722c9da773
++                    (MemAvailable)
++                        mem_avail=$val
++                    ;;
+                 esac
+             done < /proc/meminfo
+ 
+-            mem_used=$((mem_used / 1024))
++            case $mem_avail in
++                (*[0-9]*)
++                    mem_used=$(((mem_full - mem_avail) / 1024))
++                ;;
++
++                *)
++                    mem_used=$((mem_used / 1024))
++                ;;
++            esac
++
+             mem_full=$((mem_full / 1024))
+         ;;
+ 
+         # Used memory is calculated using the following "formula":
+         # (wired + active + occupied) * 4 / 1024
+-        Darwin*)
++        (Darwin*)
+             mem_full=$(($(sysctl -n hw.memsize) / 1024 / 1024))
+ 
+             # Parse the 'vmstat' file splitting on ':' and '.'.
+@@ -590,7 +735,7 @@
+             # split is used on '.' to filter it out.
+             while IFS=:. read -r key val; do
+                 case $key in
+-                    *' wired'*|*' active'*|*' occupied'*)
++                    (*' wired'*|*' active'*|*' occupied'*)
+                         mem_used=$((mem_used + ${val:-0}))
+                     ;;
+                 esac
+@@ -606,7 +751,7 @@
+             mem_used=$((mem_used * 4 / 1024))
+         ;;
+ 
+-        OpenBSD*)
++        (OpenBSD*)
+             mem_full=$(($(sysctl -n hw.physmem) / 1024 / 1024))
+ 
+             # This is a really simpler parser for 'vmstat' which grabs
+@@ -632,7 +777,7 @@
+ 
+         # Used memory is calculated using the following "formula":
+         # mem_full - ((inactive + free + cache) * page_size / 1024)
+-        FreeBSD*|DragonFly*)
++        (FreeBSD*|DragonFly*)
+             mem_full=$(($(sysctl -n hw.physmem) / 1024 / 1024))
+ 
+             # Use 'set --' to store the output of the command in the
+@@ -657,14 +802,14 @@
+             mem_used=$((mem_full - (($2 + $3 + $4) * $1 / 1024 / 1024)))
+         ;;
+ 
+-        NetBSD*)
++        (NetBSD*)
+             mem_full=$(($(sysctl -n hw.physmem64) / 1024 / 1024))
+ 
+             # NetBSD implements a lot of the Linux '/proc' filesystem,
+             # this uses the same parser as the Linux memory detection.
+             while IFS=':k ' read -r key val _; do
+                 case $key in
+-                    MemFree)
++                    (MemFree)
+                         mem_free=$((val / 1024))
+                         break
+                     ;;
+@@ -674,7 +819,7 @@
+             mem_used=$((mem_full - mem_free))
+         ;;
+ 
+-        Haiku)
++        (Haiku)
+             # Read the first line of 'sysinfo -mem' splitting on
+             # '(', ' ', and ')'. The needed information is then
+             # stored in the 5th and 7th elements. Using '_' "consumes"
+@@ -690,7 +835,7 @@
+             mem_full=$((mem_full / 1024 / 1024))
+         ;;
+ 
+-        Minix)
++        (Minix)
+             # Minix includes the '/proc' filesystem though the format
+             # differs from Linux. The '/proc/meminfo' file is only a
+             # single line with space separated elements and elements
+@@ -701,7 +846,7 @@
+             mem_full=$(( mem_full / 1024))
+         ;;
+ 
+-        SunOS)
++        (SunOS)
+             hw_pagesize=$(pagesize)
+ 
+             # 'kstat' outputs memory in the following format:
+@@ -715,8 +860,13 @@
+             # A variable is then assigned based on the key.
+             while read -r key val; do
+                 case $key in
+-                    *total) pages_full=$val ;;
+-                    *free)  pages_free=$val ;;
++                    (*total)
++                        pages_full=$val
++                    ;;
++
++                    (*free)
++                        pages_free=$val
++                    ;;
+                 esac
+             done <<-EOF
+ 				$(kstat -p unix:0:system_pages:pagestotal \
+@@ -728,7 +878,7 @@
+             mem_used=$((mem_full - mem_free))
+         ;;
+ 
+-        IRIX)
++        (IRIX)
+             # Read the memory information from the 'top' command. Parse
+             # and split each line until we reach the line starting with
+             # "Memory".
+@@ -736,10 +886,10 @@
+             # Example output: Memory: 160M max, 147M avail, .....
+             while IFS=' :' read -r label mem_full _ mem_free _; do
+                 case $label in
+-                    Memory) 
++                    (Memory)
+                         mem_full=${mem_full%M}
+                         mem_free=${mem_free%M}
+-                        break 
++                        break
+                     ;;
+                 esac
+             done <<-EOF
+@@ -755,10 +905,11 @@
+ 
+ get_wm() {
+     case $os in
+-        # Don't display window manager on macOS.
+-        Darwin*) ;;
++        (Darwin*)
++            # Don't display window manager on macOS.
++        ;;
+ 
+-        *)
++        (*)
+             # xprop can be used to grab the window manager's properties
+             # which contains the window manager's name under '_NET_WM_NAME'.
+             #
+@@ -812,7 +963,7 @@
+ 
+             # This is a two pass call to xprop. One call to get the window
+             # manager's ID and another to print its properties.
+-            command -v xprop && {
++            has xprop && {
+                 # The output of the ID command is as follows:
+                 # _NET_SUPPORTING_WM_CHECK: window id # 0x400000
+                 #
+@@ -831,51 +982,35 @@
+                 # To extract the name, everything before '_NET_WM_NAME = \"'
+                 # is removed and everything after the next '"' is removed.
+                 wm=$(xprop -id "$id" -notype -len 25 -f _NET_WM_NAME 8t)
+-
+-                # Handle cases of a window manager _not_ populating the
+-                # '_NET_WM_NAME' atom. Display nothing in this case.
+-                case $wm in
+-                    *'_NET_WM_NAME = '*)
+-                        wm=${wm##*_NET_WM_NAME = \"}
+-                        wm=${wm%%\"*}
+-                    ;;
+-
+-                    *)
+-                        # Fallback to checking the process list
+-                        # for the select few window managers which
+-                        # don't set '_NET_WM_NAME'.
+-                        #
+-                        # TODO: This is currently limited to 'grep'
+-                        #       implementations providing the '-o'
+-                        #       flag. This needs to be replaced with
+-                        #       a command which searches for a list
+-                        #       of strings and returns _only_ the
+-                        #       first match's contents (also ensuring
+-                        #       the search itself isn't matched).
+-                        #
+-                        #       A generic parser isn't possible as
+-                        #       the output of 'ps' is _not_ the same
+-                        #       between implementations and across
+-                        #       operating systems.
+-                        #
+-                        #       The simple search method above works
+-                        #       regardless of 'ps' implementation.
+-                        #
+-                        # Disable the shellcheck warning about using
+-                        # 'pgrep' instead of 'ps | grep' as 'pgrep'
+-                        # is not always available.
+-                        # shellcheck disable=2009
+-                        wm=$(ps x | grep -o \
+-                                         -e '[c]atwm' \
+-                                         -e '[f]vwm' \
+-                                         -e '[d]wm' \
+-                                         -e '[2]bwm' \
+-                                         -e '[m]onsterwm' \
+-                                         -e '[w]maker' \
+-                                         -e '[s]owm')
+-                    ;;
+-                esac
+             }
++
++            # Handle cases of a window manager _not_ populating the
++            # '_NET_WM_NAME' atom. Display nothing in this case.
++            case $wm in
++                (*'_NET_WM_NAME = '*)
++                    wm=${wm##*_NET_WM_NAME = \"}
++                    wm=${wm%%\"*}
++                ;;
++
++                (*)
++                    # Fallback to checking the process list
++                    # for the select few window managers which
++                    # don't set '_NET_WM_NAME'.
++                    while read -r ps_line; do
++                        case $ps_line in
++                            (*catwm*)     wm=catwm ;;
++                            (*fvwm*)      wm=fvwm ;;
++                            (*dwm*)       wm=dwm ;;
++                            (*2bwm*)      wm=2bwm ;;
++                            (*monsterwm*) wm=monsterwm ;;
++                            (*wmaker*)    wm='Window Maker' ;;
++                            (*sowm*)      wm=sowm ;;
++                        esac
++                    done <<-EOF
++                        $(ps x)
++					EOF
++                ;;
++            esac
+         ;;
+     esac
+ 
+@@ -885,7 +1020,7 @@
+ 
+ get_de() {
+     # This only supports Xorg related desktop environments though
+-    # this is fine as knowing the desktop envrionment on Windows,
++    # this is fine as knowing the desktop environment on Windows,
+     # macOS etc is useless (they'll always report the same value).
+     #
+     # Display the value of '$XDG_CURRENT_DESKTOP', if it's empty,
+@@ -911,11 +1046,19 @@
+     #
+     # This allows us to save hardcoding a second set of sequences
+     # for background colors.
+-    palette="[7m$c1 $c1 $c2 $c2 $c3 $c3 $c4 $c4 $c5 $c5 $c6 $c6 [m"
++    #
++    # False positive.
++    # shellcheck disable=2154
++    {
++        esc SGR 7
++        palette="$e$c1 $c1 $c2 $c2 $c3 $c3 $c4 $c4 $c5 $c5 $c6 $c6 "
++        esc SGR 0
++        palette="$palette$e"
++    }
+ 
+     # Print the palette with a new-line before and afterwards.
+     printf '\n' >&6
+-    log "$palette 
++    log "$palette
+         " " " >&6
+ }
+ 
+@@ -955,8 +1098,11 @@
+     # NOTE: Each ascii art below is indented using tabs, this
+     #       allows indentation to continue naturally despite
+     #       the use of '<<-EOF'.
++    #
++    # False positive.
++    # shellcheck disable=2154
+     case ${1:-${PF_ASCII:-${distro:-$os}}} in
+-        [Aa]lpine*)
++        ([Aa]lpine*)
+             read_ascii 4 <<-EOF
+ 				${c4}   /\\ /\\
+ 				  /${c7}/ ${c4}\\  \\
+@@ -967,7 +1113,7 @@
+ 			EOF
+         ;;
+ 
+-        [Aa]ndroid*)
++        ([Aa]ndroid*)
+             read_ascii 2 <<-EOF
+ 				${c2}  ;,           ,;
+ 				${c2}   ';,.-----.,;'
+@@ -978,7 +1124,7 @@
+ 			EOF
+         ;;
+ 
+-        [Aa]rch*)
++        ([Aa]rch*)
+             read_ascii 4 <<-EOF
+ 				${c6}       /\\
+ 				${c6}      /  \\
+@@ -990,7 +1136,7 @@
+ 			EOF
+         ;;
+ 
+-        [Aa]rco*)
++        ([Aa]rco*)
+             read_ascii 4 <<-EOF
+ 				${c4}      /\\
+ 				${c4}     /  \\
+@@ -1002,7 +1148,7 @@
+ 			EOF
+         ;;
+ 
+-        [Aa]rtix*)
++        ([Aa]rtix*)
+             read_ascii 6 <<-EOF
+ 				${c4}      /\\
+ 				${c4}     /  \\
+@@ -1014,7 +1160,7 @@
+ 			EOF
+         ;;
+ 
+-        [Bb]edrock*)
++        ([Bb]edrock*)
+             read_ascii 4 <<-EOF
+ 				${c7}__
+ 				${c7}\\ \\___
+@@ -1023,7 +1169,17 @@
+ 			EOF
+         ;;
+ 
+-        [Cc]ent[Oo][Ss]*)
++        ([Bb]uildroot*)
++            read_ascii 3 <<-EOF
++				${c3}   ___
++				${c3} / \`   \\
++				${c3}|   :  :|
++				${c3}-. _:__.-
++				${c3}  \` ---- \`
++			EOF
++        ;;
++
++        ([Cc]ent[Oo][Ss]*)
+             read_ascii 5 <<-EOF
+ 				${c2} ____${c3}^${c5}____
+ 				${c2} |\\  ${c3}|${c5}  /|
+@@ -1035,7 +1191,21 @@
+ 			EOF
+         ;;
+ 
+-        [Dd]ebian*)
++        ([Dd]ahlia*)
++            read_ascii 1 <<-EOF
++				${c1}      _
++				${c1}  ___/ \\___
++				${c1} |   _-_   |
++				${c1} | /     \ |
++				${c1}/ |       | \\
++				${c1}\\ |       | /
++				${c1} | \ _ _ / |
++				${c1} |___ - ___|
++				${c1}     \\_/
++			EOF
++        ;;
++
++        ([Dd]ebian*)
+             read_ascii 1 <<-EOF
+ 				${c1}  _____
+ 				${c1} /  __ \\
+@@ -1046,7 +1216,7 @@
+ 			EOF
+         ;;
+ 
+-        [Dd]ragon[Ff]ly*)
++        ([Dd]ragon[Ff]ly*)
+             read_ascii 1 <<-EOF
+ 				    ,${c1}_${c7},
+ 				 ('-_${c1}|${c7}_-')
+@@ -1058,7 +1228,7 @@
+ 			EOF
+         ;;
+ 
+-        [Ee]lementary*)
++        ([Ee]lementary*)
+             read_ascii <<-EOF
+ 				${c7}  _______
+ 				${c7} / ____  \\
+@@ -1069,9 +1239,9 @@
+ 			EOF
+         ;;
+ 
+-        [Ee]ndeavour*)
++        ([Ee]ndeavour*)
+             read_ascii 4 <<-EOF
+-    				      ${c1}/${c4}\\
++						      ${c1}/${c4}\\
+ 				    ${c1}/${c4}/  \\${c6}\\
+ 				   ${c1}/${c4}/    \\ ${c6}\\
+ 				 ${c1}/ ${c4}/     _) ${c6})
+@@ -1080,7 +1250,7 @@
+ 			EOF
+         ;;
+ 
+-        [Ff]edora*)
++        ([Ff]edora*)
+             read_ascii 4 <<-EOF
+ 				${c7}      _____
+ 				     /   __)${c4}\\${c7}
+@@ -1093,7 +1263,7 @@
+ 			EOF
+         ;;
+ 
+-        [Ff]ree[Bb][Ss][Dd]*)
++        ([Ff]ree[Bb][Ss][Dd]*)
+             read_ascii 1 <<-EOF
+ 				${c1}/\\,-'''''-,/\\
+ 				${c1}\\_)       (_/
+@@ -1104,7 +1274,7 @@
+ 			EOF
+         ;;
+ 
+-        [Gg]entoo*)
++        ([Gg]entoo*)
+             read_ascii 5 <<-EOF
+ 				${c5} _-----_
+ 				${c5}(       \\
+@@ -1116,7 +1286,23 @@
+ 			EOF
+         ;;
+ 
+-        [Gg]uix[Ss][Dd]*|[Gg]uix*)
++        ([Gg][Nn][Uu]*)
++            read_ascii 3 <<-EOF
++				${c2}    _-\`\`-,   ,-\`\`-_
++				${c2}  .'  _-_|   |_-_  '.
++				${c2}./    /_._   _._\\    \\.
++				${c2}:    _/_._\`:'_._\\_    :
++				${c2}\\:._/  ,\`   \\   \\ \\_.:/
++				${c2}   ,-';'.@)  \\ @) \\
++				${c2}   ,'/'  ..- .\\,-.|
++				${c2}   /'/' \\(( \\\` ./ )
++				${c2}    '/''  \\_,----'
++				${c2}      '/''   ,;/''
++				${c2}         \`\`;'
++			EOF
++        ;;
++
++        ([Gg]uix[Ss][Dd]*|[Gg]uix*)
+             read_ascii 3 <<-EOF
+ 				${c3}|.__          __.|
+ 				${c3}|__ \\        / __|
+@@ -1128,7 +1314,7 @@
+ 			EOF
+         ;;
+ 
+-        [Hh]aiku*)
++        ([Hh]aiku*)
+             read_ascii 3 <<-EOF
+ 				${c3}       ,^,
+ 				 ${c3}     /   \\
+@@ -1141,7 +1327,7 @@
+ 			EOF
+         ;;
+ 
+-        [Hh]yperbola*)
++        ([Hh]yperbola*)
+             read_ascii <<-EOF
+ 				${c7}    |\`__.\`/
+ 				   ${c7} \____/
+@@ -1153,7 +1339,18 @@
+ 			EOF
+         ;;
+ 
+-        [Ii][Rr][Ii][Xx]*)
++        ([Ii]nstant[Oo][Ss]*)
++            read_ascii <<-EOF
++				${c0} ,-''-,
++				${c0}: .''. :
++				${c0}: ',,' :
++				${c0} '-____:__
++				${c0}       :  \`.
++				${c0}       \`._.'
++			EOF
++        ;;
++
++        ([Ii][Rr][Ii][Xx]*)
+             read_ascii 1 <<-EOF
+ 				${c1} __
+ 				${c1} \\ \\   __
+@@ -1165,7 +1362,18 @@
+ 			EOF
+         ;;
+ 
+-        [Ll]inux*[Ll]ite*|[Ll]ite*)
++        ([Kk][Dd][Ee]*[Nn]eon*)
++            read_ascii 6 <<-EOF
++				${c7}   .${c6}__${c7}.${c6}__${c7}.
++				${c6}  /  _${c7}.${c6}_  \\
++				${c6} /  /   \\  \\
++				${c7} . ${c6}|  ${c7}O${c6}  | ${c7}.
++				${c6} \\  \\_${c7}.${c6}_/  /
++				${c6}  \\${c7}.${c6}__${c7}.${c6}__${c7}.${c6}/
++			EOF
++        ;;
++
++        ([Ll]inux*[Ll]ite*|[Ll]ite*)
+             read_ascii 3 <<-EOF
+ 				${c3}   /\\
+ 				${c3}  /  \\
+@@ -1177,7 +1385,7 @@
+ 			EOF
+         ;;
+ 
+-        [Ll]inux*[Mm]int*|[Mm]int)
++        ([Ll]inux*[Mm]int*|[Mm]int)
+             read_ascii 2 <<-EOF
+ 				${c2} ___________
+ 				${c2}|_          \\
+@@ -1190,7 +1398,7 @@
+         ;;
+ 
+ 
+-        [Ll]inux*)
++        ([Ll]inux*)
+             read_ascii 4 <<-EOF
+ 				${c4}    ___
+ 				   ${c4}(${c7}.. ${c4}|
+@@ -1202,19 +1410,19 @@
+ 			EOF
+         ;;
+ 
+-        [Mm]ac[Oo][Ss]*|[Dd]arwin*)
++        ([Mm]ac[Oo][Ss]*|[Dd]arwin*)
+             read_ascii 1 <<-EOF
+-				${c1}       .:'
+-				${c1}    _ :'_
+-				${c2} .'\`_\`-'_\`\`.
+-				${c2}:________.-'
+-				${c3}:_______:
++				${c2}       .:'
++				${c2}    _ :'_
++				${c3} .'\`_\`-'_\`\`.
++				${c1}:________.-'
++				${c1}:_______:
+ 				${c4} :_______\`-;
+ 				${c5}  \`._.-._.'
+ 			EOF
+         ;;
+ 
+-        [Mm]ageia*)
++        ([Mm]ageia*)
+             read_ascii 2 <<-EOF
+ 				${c6}   *
+ 				${c6}    *
+@@ -1226,7 +1434,7 @@
+ 			EOF
+         ;;
+ 
+-        [Mm]anjaro*)
++        ([Mm]anjaro*)
+             read_ascii 2 <<-EOF
+ 				${c2}||||||||| ||||
+ 				${c2}||||||||| ||||
+@@ -1238,7 +1446,7 @@
+ 			EOF
+         ;;
+ 
+-        [Mm]inix*)
++        ([Mm]inix*)
+             read_ascii 4 <<-EOF
+ 				${c4} ,,        ,,
+ 				${c4};${c7},${c4} ',    ,' ${c7},${c4};
+@@ -1251,7 +1459,7 @@
+ 			EOF
+         ;;
+ 
+-        [Mm][Xx]*)
++        ([Mm][Xx]*)
+             read_ascii <<-EOF
+ 				${c7}    \\\\  /
+ 				 ${c7}    \\\\/
+@@ -1263,7 +1471,7 @@
+ 			EOF
+         ;;
+ 
+-        [Nn]et[Bb][Ss][Dd]*)
++        ([Nn]et[Bb][Ss][Dd]*)
+             read_ascii 3 <<-EOF
+ 				${c7}\\\\${c3}\`-______,----__
+ 				${c7} \\\\        ${c3}__,---\`_
+@@ -1275,7 +1483,7 @@
+ 			EOF
+         ;;
+ 
+-        [Nn]ix[Oo][Ss]*)
++        ([Nn]ix[Oo][Ss]*)
+             read_ascii 4 <<-EOF
+ 				${c4}  \\\\  \\\\ //
+ 				${c4} ==\\\\__\\\\/ //
+@@ -1287,7 +1495,7 @@
+ 			EOF
+         ;;
+ 
+-        [Oo]pen[Bb][Ss][Dd]*)
++        ([Oo]pen[Bb][Ss][Dd]*)
+             read_ascii 3 <<-EOF
+ 				${c3}      _____
+ 				${c3}    \\-     -/
+@@ -1299,7 +1507,17 @@
+ 			EOF
+         ;;
+ 
+-        [Oo]pen[Ss][Uu][Ss][Ee]*|[Oo]pen*SUSE*|SUSE*|suse*)
++        ([Oo]pen[Ss][Uu][Ss][Ee]*[Tt]umbleweed*)
++            read_ascii 2 <<-EOF
++				${c2}  _____   ______
++				${c2} / ____\\ / ____ \\
++				${c2}/ /    \`/ /    \\ \\
++				${c2}\\ \\____/ /,____/ /
++				${c2} \\______/ \\_____/
++			EOF
++        ;;
++
++        ([Oo]pen[Ss][Uu][Ss][Ee]*|[Oo]pen*SUSE*|SUSE*|suse*)
+             read_ascii 2 <<-EOF
+ 				${c2}  _______
+ 				${c2}__|   __ \\
+@@ -1311,7 +1529,7 @@
+ 			EOF
+         ;;
+ 
+-        [Oo]pen[Ww]rt*)
++        ([Oo]pen[Ww]rt*)
+             read_ascii 1 <<-EOF
+ 				${c1} _______
+ 				${c1}|       |.-----.-----.-----.
+@@ -1324,7 +1542,7 @@
+ 			EOF
+         ;;
+ 
+-        [Pp]arabola*)
++        ([Pp]arabola*)
+             read_ascii 5 <<-EOF
+ 				${c5}  __ __ __  _
+ 				${c5}.\`_//_//_/ / \`.
+@@ -1335,7 +1553,7 @@
+ 			EOF
+         ;;
+ 
+-        [Pp]op!_[Oo][Ss]*)
++        ([Pp]op!_[Oo][Ss]*)
+             read_ascii 6 <<-EOF
+ 				${c6}______
+ 				${c6}\\   _ \\        __
+@@ -1348,7 +1566,7 @@
+ 			EOF
+         ;;
+ 
+-        [Pp]ure[Oo][Ss]*)
++        ([Pp]ure[Oo][Ss]*)
+             read_ascii <<-EOF
+ 				${c7} _____________
+ 				${c7}|  _________  |
+@@ -1359,7 +1577,18 @@
+ 			EOF
+         ;;
+ 
+-        [Ss]lackware*)
++        ([Rr]aspbian*)
++            read_ascii 1 <<-EOF
++				${c2}  __  __
++				${c2} (_\\)(/_)
++				${c1} (_(__)_)
++				${c1}(_(_)(_)_)
++				${c1} (_(__)_)
++				${c1}   (__)
++			EOF
++        ;;
++
++        ([Ss]lackware*)
+             read_ascii 4 <<-EOF
+ 				${c4}   ________
+ 				${c4}  /  ______|
+@@ -1371,7 +1600,7 @@
+ 			EOF
+         ;;
+ 
+-        [Ss]un[Oo][Ss]|[Ss]olaris*)
++        ([Ss]un[Oo][Ss]|[Ss]olaris*)
+             read_ascii 3 <<-EOF
+ 				${c3}       .   .;   .
+ 				${c3}   .   :;  ::  ;:   .
+@@ -1381,7 +1610,7 @@
+ 			EOF
+         ;;
+ 
+-        [Uu]buntu*)
++        ([Uu]buntu*)
+             read_ascii 3 <<-EOF
+ 				${c3}         _
+ 				${c3}     ---(_)
+@@ -1392,7 +1621,7 @@
+ 			EOF
+         ;;
+ 
+-        [Vv]oid*)
++        ([Vv]oid*)
+             read_ascii 2 <<-EOF
+ 				${c2}    _______
+ 				${c2} _ \\______ -
+@@ -1404,7 +1633,18 @@
+ 			EOF
+         ;;
+ 
+-        *)
++		([Xx]eonix*)
++            read_ascii 2 <<-EOF
++				${c2}    ___  ___
++				${c2}___ \  \/  / ___
++				${c2}\  \ \    / /  /
++				${c2} \  \/    \/  /
++				${c2}  \    /\    /
++				${c2}   \__/  \__/
++			EOF
++        ;;
++
++        (*)
+             # On no match of a distribution ascii art, this function calls
+             # itself again, this time to look for a more generic OS related
+             # ascii art (KISS Linux -> Linux).
+@@ -1425,7 +1665,7 @@
+     # printing of the information through user configuration.
+     #
+     # Iterate over each line of the ascii art to retrieve the above
+-    # information. The 'sed' is used to strip '[3Xm' color codes from
++    # information. The 'sed' is used to strip '\033[3Xm' color codes from
+     # the ascii art so they don't affect the width variable.
+     while read -r line; do
+         ascii_height=$((${ascii_height:-0} + 1))
+@@ -1448,21 +1688,33 @@
+ 
+     # Print the ascii art and position the cursor back where we
+     # started prior to printing it.
+-    # '[1m':   Print the ascii in bold.
+-    # '[m':    Clear bold.
+-    # '[%sA':  Move the cursor up '$ascii_height' amount of lines.
+-    printf '[1m%s[m[%sA' "$ascii" "$ascii_height" >&6
++    {
++        esc_p SGR 1
++        printf '%s' "$ascii"
++        esc_p SGR 0
++        esc_p CUU "$ascii_height"
++    } >&6
+ }
+ 
+ main() {
++    [ "$1" = --version ] && {
++        printf 'pfetch 0.7.0\n'
++        exit 0
++    }
++
+     # Hide 'stderr' unless the first argument is '-v'. This saves
+     # polluting the script with '2>/dev/null'.
+-    [ "$1" = -v ] || exec 2>/dev/null
++    [ "$1" = -v ] || {
++        exec 2>/dev/null
++    }
+ 
+     # Hide 'stdout' and selectively print to it using '>&6'.
+     # This gives full control over what it displayed on the screen.
+     exec 6>&1 >/dev/null
+ 
++    # Store raw escape sequence character for later reuse.
++    esc_c=$(printf '\033')
++
+     # Allow the user to execute their own script and modify or
+     # extend pfetch's behavior.
+     # shellcheck source=/dev/null
+@@ -1476,27 +1728,16 @@
+     # Generic color list.
+     # Disable warning about unused variables.
+     # shellcheck disable=2034
+-    {
+-        c1='[31m'; c2='[32m'
+-        c3='[33m'; c4='[34m'
+-        c5='[35m'; c6='[36m'
+-        c7='[37m'; c8='[38m'
+-    }
+-
+-    # Avoid text-wrapping from wrecking the program output.
+-    #
+-    # Some terminals don't support these sequences, nor do they
+-    # silently conceal them if they're printed resulting in
+-    # partial sequences being printed to the terminal!
+-    [ "$TERM" = dumb ]   ||
+-    [ "$TERM" = minix ]  ||
+-    [ "$TERM" = cons25 ] || {
+-        # Disable line-wrapping.
+-        printf '[?7l' >&6
++    for _c in c1 c2 c3 c4 c5 c6 c7 c8; do
++        esc SGR "3${_c#?}" 0
++        export "$_c=$e"
++    done
+ 
+-        # Enable line-wrapping again on exit.
+-        trap 'printf [?7h >&6' EXIT
+-    }
++    # Disable line wrapping and catch the EXIT signal to enable it again
++    # on exit. Ideally you'd somehow query the current value and retain
++    # it but I'm yet to see this irk anyone.
++    esc_p DECAWM l >&6
++    trap 'esc_p DECAWM h >&6' EXIT
+ 
+     # Store the output of 'uname' to avoid calling it multiple times
+     # throughout the script. 'read <<EOF' is the simplest way of reading
+@@ -1516,12 +1757,12 @@
+         # Disable globbing and set the positional parameters to the
+         # contents of 'PF_INFO'.
+         set -f
+-        set +f ${PF_INFO-ascii title os host kernel uptime pkgs memory}
++        set +f -- ${PF_INFO-ascii title os host kernel uptime pkgs memory}
+ 
+         # Iterate over the info functions to determine the lengths of the
+         # "info names" for output alignment. The option names and subtitles
+         # match 1:1 so this is thankfully simple.
+-        for info; do
++        for info do
+             command -v "get_$info" >/dev/null || continue
+ 
+             # This was a ternary operation but they aren't supported in
+@@ -1534,7 +1775,9 @@
+         info_length=$((info_length + 1))
+ 
+         # Iterate over the above list and run any existing "get_" functions.
+-        for info; do "get_$info"; done
++        for info do
++            "get_$info"
++        done
+     }
+ 
+     # Position the cursor below both the ascii art and information lines
