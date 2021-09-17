@@ -27,9 +27,7 @@ gpgme: gpgme-setup gnupg libassuan libgpg-error
 	+$(MAKE) -C $(BUILD_WORK)/gpgme
 	+$(MAKE) -C $(BUILD_WORK)/gpgme install \
 		DESTDIR=$(BUILD_STAGE)/gpgme
-	+$(MAKE) -C $(BUILD_WORK)/gpgme install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/gpgme/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 gpgme-package: gpgme-stage

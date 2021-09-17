@@ -18,8 +18,8 @@ rust-setup: setup
 	mkdir -p "$(BUILD_STAGE)/rust"
 	cp -f "$(BUILD_INFO)/rust_config.toml" "$(BUILD_WORK)/rust/config.toml"
 
-	$(SED) -i -e 's|PROCURSUS_BUILD_DIR|$(BUILD_WORK)/rust/build|g' -e 's|PROCURSUS_TARGET|$(RUST_TARGET)|g' -e 's|PROCURSUS_INSTALL_PREFIX|$(BUILD_STAGE)/rust/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' "$(BUILD_WORK)/rust/config.toml"
-	#$(SED) -i -e 's/"LLVM_ENABLE_ZLIB", "OFF"/"LLVM_ENABLE_ZLIB", "ON"/' -e 's|"CMAKE_OSX_SYSROOT", "/"|"CMAKE_OSX_SYSROOT", "$(TARGET_SYSROOT)"|' "$(BUILD_WORK)/rust/src/bootstrap/native.rs"
+	sed -i -e 's|PROCURSUS_BUILD_DIR|$(BUILD_WORK)/rust/build|g' -e 's|PROCURSUS_TARGET|$(RUST_TARGET)|g' -e 's|PROCURSUS_INSTALL_PREFIX|$(BUILD_STAGE)/rust/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' "$(BUILD_WORK)/rust/config.toml"
+	#sed -i -e 's/"LLVM_ENABLE_ZLIB", "OFF"/"LLVM_ENABLE_ZLIB", "ON"/' -e 's|"CMAKE_OSX_SYSROOT", "/"|"CMAKE_OSX_SYSROOT", "$(TARGET_SYSROOT)"|' "$(BUILD_WORK)/rust/src/bootstrap/native.rs"
 
 ifneq ($(wildcard $(BUILD_WORK)/rust/.build_complete),)
 rust:
@@ -39,7 +39,7 @@ rust: rust-setup openssl curl
 	rm -rf $(BUILD_STAGE)/rust/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{share/doc,etc}
 	rm -rf $(BUILD_STAGE)/rust/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/rustlib/{src,manifest-*,components,install.log,uninstall.sh,rust-installer-version}
 	rm -rf $(BUILD_STAGE)/rust/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/rustlib/*/analysis
-	touch $(BUILD_WORK)/rust/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 rust-package: rust

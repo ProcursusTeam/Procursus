@@ -21,8 +21,8 @@ meson: meson-setup python3
 		--root="$(BUILD_STAGE)/meson" \
 		--install-layout=deb
 	find $(BUILD_STAGE)/meson -name __pycache__ -prune -exec rm -rf {} \;
-	$(SED) -i "s|#!.*|#!$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/meson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/meson
-	touch $(BUILD_WORK)/meson/.build_complete
+	sed -i "s|#!.*|#!$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/meson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/meson
+	$(call AFTER_BUILD)
 endif
 
 meson-package: meson-stage

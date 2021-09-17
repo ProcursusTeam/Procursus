@@ -2,7 +2,7 @@ Package: openssl
 Version: @DEB_OPENSSL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libssl1.1 (= @DEB_OPENSSL_V@)
+Depends: libssl3 (= @DEB_OPENSSL_V@)
 Section: Security
 Priority: standard
 Description: Secure Sockets Layer toolkit - cryptographic utility

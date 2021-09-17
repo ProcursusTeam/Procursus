@@ -5,7 +5,7 @@ Maintainer: @DEB_MAINTAINER@
 Section: Libraries
 Priority: optional
 Homepage: http://www.tcpdump.org/
-Depends: libssl1.1
+Depends: libssl3
 Description: system interface for user-level packet capture
  libpcap (Packet CAPture) provides a portable framework for low-level
  network monitoring.  Applications include network statistics collection,

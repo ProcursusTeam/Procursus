@@ -24,9 +24,7 @@ libspeex: libspeex-setup libogg
 	+$(MAKE) -C $(BUILD_WORK)/libspeex
 	+$(MAKE) -C $(BUILD_WORK)/libspeex install \
 		DESTDIR=$(BUILD_STAGE)/libspeex
-	+$(MAKE) -C $(BUILD_WORK)/libspeex install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libspeex/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libspeex-package: libspeex-stage

@@ -15,10 +15,10 @@ triehash:
 	@echo "Using previously built triehash."
 else
 triehash: triehash-setup
-	$(SED) -i 's|/usr/bin|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin|' $(BUILD_WORK)/triehash/triehash.pl
+	sed -i 's|/usr/bin|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin|' $(BUILD_WORK)/triehash/triehash.pl
 	$(INSTALL) -Dm775 $(BUILD_WORK)/triehash/triehash.pl \
 		$(BUILD_STAGE)/triehash/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/triehash
-	touch $(BUILD_WORK)/triehash/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 triehash-package: triehash-stage
