@@ -10,16 +10,16 @@ mandoc-setup: setup
 	wget -q -nc -P$(BUILD_SOURCE) https://mandoc.bsd.lv/snapshots/mandoc-$(MANDOC_VERSION).tar.gz
 	$(call EXTRACT_TAR,mandoc-$(MANDOC_VERSION).tar.gz,mandoc-$(MANDOC_VERSION),mandoc)
 	$(call DO_PATCH,mandoc,mandoc,-p1)
-	$(SED) -i -e 's|@CC@|$(CC)|' \
+	sed -i -e 's|@CC@|$(CC)|' \
 		-e 's|@CFLAGS@|$(CFLAGS)|' \
 		-e 's|@CPPFLAGS@|$(CPPFLAGS)|' \
 		-e 's|@LDFLAGS@|$(LDFLAGS)|' \
 		-e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' \
 		-e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
 		$(BUILD_WORK)/mandoc/configure.local
-	$(SED) -i '/int dummy;/d' \
+	sed -i '/int dummy;/d' \
 		$(BUILD_WORK)/mandoc/compat_*.c
-	$(SED) -i 's|ar rs|$(AR) rs|' \
+	sed -i 's|ar rs|$(AR) rs|' \
 		$(BUILD_WORK)/mandoc/Makefile
 
 ifneq ($(wildcard $(BUILD_WORK)/mandoc/.build_complete),)
