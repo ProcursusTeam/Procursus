@@ -9,7 +9,7 @@ DEB_LIBMD_V   ?= $(LIBMD_VERSION)
 libmd-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://archive.hadrons.org/software/libmd/libmd-$(LIBMD_VERSION).tar.xz
 	$(call EXTRACT_TAR,libmd-$(LIBMD_VERSION).tar.xz,libmd-$(LIBMD_VERSION),libmd)
-	$(SED) -i 's|_MSC_VER|__APPLE__|' $(BUILD_WORK)/libmd/src/local-link.h
+	sed -i 's|_MSC_VER|__APPLE__|' $(BUILD_WORK)/libmd/src/local-link.h
 
 ifneq ($(wildcard $(BUILD_WORK)/libmd/.build_complete),)
 libmd:
@@ -21,9 +21,7 @@ libmd: libmd-setup
 	+$(MAKE) -C $(BUILD_WORK)/libmd
 	+$(MAKE) -C $(BUILD_WORK)/libmd install \
 		DESTDIR=$(BUILD_STAGE)/libmd
-	+$(MAKE) -C $(BUILD_WORK)/libmd install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libmd-package: libmd-stage
@@ -39,7 +37,7 @@ libmd-package: libmd-stage
 	cp -a $(BUILD_STAGE)/libmd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libmd.a,libmd.dylib} $(BUILD_DIST)/libmd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	for manpage in $(BUILD_DIST)/libmd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3/*; do \
 		if [ -L $$manpage ]; then \
-			$(LN) -sf $$(readlink $$manpage).zst $$manpage; \
+			$(LN_S) $$(readlink $$manpage).zst $$manpage; \
 		fi; \
 	done
 

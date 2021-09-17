@@ -23,9 +23,7 @@ libheif: libheif-setup x265 libde265 aom rav1e dav1d
 	+$(MAKE) -C $(BUILD_WORK)/libheif
 	+$(MAKE) -C $(BUILD_WORK)/libheif install \
 		DESTDIR=$(BUILD_STAGE)/libheif
-	+$(MAKE) -C $(BUILD_WORK)/libheif install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libheif-package: libheif-stage

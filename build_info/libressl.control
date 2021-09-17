@@ -3,8 +3,8 @@ Version: @DEB_LIBRESSL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Conflicts: openssh (<=7.6p1-5)
-Replaces: openssl, libssl0.9.8, libssl1.0, libssl1.1, libssl1.1.1
-Provides: openssl (=@DEB_LIBRESSL_V@), libssl0.9.8, libssl1.0, libssl1.1, libssl1.1.1
+Replaces: openssl, libssl0.9.8, libssl1.0, libssl3, libssl3.1
+Provides: openssl (=@DEB_LIBRESSL_V@), libssl0.9.8, libssl1.0, libssl3, libssl3.1
 Section: Security
 Priority: standard
 Description: SSL library and cryptographic tools

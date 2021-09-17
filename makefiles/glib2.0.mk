@@ -11,7 +11,7 @@ glib2.0-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftp.gnome.org/pub/gnome/sources/glib/$(GLIB2.0_MAJOR_V)/glib-$(GLIB2.0_VERSION).tar.xz
 	$(call EXTRACT_TAR,glib-$(GLIB2.0_VERSION).tar.xz,glib-$(GLIB2.0_VERSION),glib2.0)
 	$(call DO_PATCH,glib2.0,glib2.0,-p1)
-	$(SED) -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
+	sed -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
 		$(BUILD_WORK)/glib2.0/{gio/xdgmime/xdgmime.c,glib/gutils.c}
 	mkdir -p $(BUILD_WORK)/glib2.0/build
 
@@ -44,15 +44,14 @@ glib2.0: glib2.0-setup gettext pcre libffi
 		..
 	sed -i '/HAVE_LIBELF/d' $(BUILD_WORK)/glib2.0/build/config.h
 	cd $(BUILD_WORK)/glib2.0/build; \
-		DESTDIR="$(BUILD_STAGE)/glib2.0" meson install; \
-		DESTDIR="$(BUILD_BASE)" meson install
-	$(SED) -i 's/, zlib//;s/\(Libs\.private:.*\)/\1 -lz/' \
+		DESTDIR="$(BUILD_STAGE)/glib2.0" meson install
+	sed -i 's/, zlib//;s/\(Libs\.private:.*\)/\1 -lz/' \
 		$(BUILD_STAGE)/glib2.0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/gio-2.0.pc \
 		$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/gio-2.0.pc
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1700 ] && echo 1),1)
 	rm -f $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libexpat*
 endif
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 glib2.0-package: glib2.0-stage

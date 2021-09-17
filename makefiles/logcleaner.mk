@@ -16,7 +16,7 @@ logcleaner:
 	@echo "Using previously built logcleaner."
 else
 logcleaner: logcleaner-setup
-	$(SED) -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < $(BUILD_MISC)/moe.absolucy.logcleaner.plist > $(BUILD_STAGE)/logcleaner/$(MEMO_PREFIX)/Library/LaunchDaemons/moe.absolucy.logcleaner.plist
+	sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < $(BUILD_MISC)/moe.absolucy.logcleaner.plist > $(BUILD_STAGE)/logcleaner/$(MEMO_PREFIX)/Library/LaunchDaemons/moe.absolucy.logcleaner.plist
 	mkdir -p $(BUILD_WORK)/logcleaner
 	$(call AFTER_BUILD)
 endif

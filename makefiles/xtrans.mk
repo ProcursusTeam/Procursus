@@ -9,7 +9,7 @@ DEB_XTRANS_V   ?= $(XTRANS_VERSION)
 xtrans-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/lib/xtrans-$(XTRANS_VERSION).tar.bz2
 	$(call EXTRACT_TAR,xtrans-$(XTRANS_VERSION).tar.bz2,xtrans-$(XTRANS_VERSION),xtrans)
-	$(SED) -i 's|# include <sys/stropts.h>|# include <sys/ioctl.h>|' $(BUILD_WORK)/xtrans/Xtranslcl.c
+	sed -i 's|# include <sys/stropts.h>|# include <sys/ioctl.h>|' $(BUILD_WORK)/xtrans/Xtranslcl.c
 
 ifneq ($(wildcard $(BUILD_WORK)/xtrans/.build_complete),)
 xtrans:
@@ -22,9 +22,7 @@ xtrans: xtrans-setup
 	+$(MAKE) -C $(BUILD_WORK)/xtrans
 	+$(MAKE) -C $(BUILD_WORK)/xtrans install \
 		DESTDIR="$(BUILD_STAGE)/xtrans"
-	+$(MAKE) -C $(BUILD_WORK)/xtrans install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 xtrans-package: xtrans-stage

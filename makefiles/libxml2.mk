@@ -26,7 +26,7 @@ libxml2: libxml2-setup xz ncurses readline
 	+$(MAKE) -C $(BUILD_WORK)/libxml2 install \
 		DESTDIR=$(BUILD_STAGE)/libxml2 \
 		RDL_LIBS="-lreadline -lhistory -lncursesw"
-	$(SED) -i "s|includes_dir = \[|includes_dir = ['$(BUILD_STAGE)/libxml2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)', '$(TARGET_SYSROOT)/usr/include',|" $(BUILD_WORK)/libxml2/python/setup.py
+	sed -i "s|includes_dir = \[|includes_dir = ['$(BUILD_STAGE)/libxml2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)', '$(TARGET_SYSROOT)/usr/include',|" $(BUILD_WORK)/libxml2/python/setup.py
 	cd $(BUILD_WORK)/libxml2/python && $(DEFAULT_SETUP_PY_ENV) LDFLAGS="$(LDFLAGS) -L$(BUILD_STAGE)/libxml2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib" python3 ./setup.py \
 		install \
 		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \

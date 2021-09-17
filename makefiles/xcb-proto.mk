@@ -24,10 +24,7 @@ xcb-proto: xcb-proto-setup
 	+$(MAKE) -C $(BUILD_WORK)/xcb-proto install \
 		DESTDIR=$(BUILD_STAGE)/xcb-proto \
 		PYTHON=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3
-	+$(MAKE) -C $(BUILD_WORK)/xcb-proto install \
-		DESTDIR=$(BUILD_BASE) \
-		PYTHON=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 

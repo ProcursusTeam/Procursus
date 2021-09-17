@@ -4,11 +4,12 @@ endif
 
 SUBPROJECTS   += ldid
 LDID_VERSION  := 2.1.4+16.g5b8581c
-DEB_LDID_V    ?= $(LDID_VERSION)
+DEB_LDID_V    ?= $(LDID_VERSION)-1
 
 ldid-setup: setup
 	$(call GITHUB_ARCHIVE,sbingner,ldid,$(LDID_VERSION),v$(LDID_VERSION))
 	$(call EXTRACT_TAR,ldid-$(LDID_VERSION).tar.gz,ldid-$(subst +,-,$(LDID_VERSION)),ldid)
+	$(call DO_PATCH,ldid,ldid,-p1)
 	mkdir -p $(BUILD_STAGE)/ldid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 ifneq ($(wildcard $(BUILD_WORK)/ldid/.build_complete),)
@@ -21,7 +22,7 @@ ldid: ldid-setup openssl libplist
 		-o $(BUILD_STAGE)/ldid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ldid \
 		$(BUILD_WORK)/ldid/lookup2.o $(BUILD_WORK)/ldid/ldid.cpp \
 		$(LDFLAGS) -lcrypto -lplist-2.0
-	$(LN) -s ldid $(BUILD_STAGE)/ldid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ldid2
+	$(LN_S) ldid $(BUILD_STAGE)/ldid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ldid2
 	$(call AFTER_BUILD)
 endif
 
