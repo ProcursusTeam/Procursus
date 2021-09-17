@@ -22,9 +22,7 @@ libcddb: libcddb-setup
 	+$(MAKE) -C $(BUILD_WORK)/libcddb
 	+$(MAKE) -C $(BUILD_WORK)/libcddb install \
 		DESTDIR=$(BUILD_STAGE)/libcddb
-	+$(MAKE) -C $(BUILD_WORK)/libcddb install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libcddb-package: libcddb-stage
