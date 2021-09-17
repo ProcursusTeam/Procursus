@@ -20,9 +20,7 @@ jansson: jansson-setup
 	+$(MAKE) -C $(BUILD_WORK)/jansson
 	+$(MAKE) -C $(BUILD_WORK)/jansson install \
 		DESTDIR="$(BUILD_STAGE)/jansson"
-	+$(MAKE) -C $(BUILD_WORK)/jansson install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 

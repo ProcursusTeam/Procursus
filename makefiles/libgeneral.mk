@@ -24,9 +24,7 @@ libgeneral: libgeneral-setup
 	+$(MAKE) -C $(BUILD_WORK)/libgeneral
 	+$(MAKE) -C $(BUILD_WORK)/libgeneral install \
 		DESTDIR="$(BUILD_STAGE)/libgeneral"
-	+$(MAKE) -C $(BUILD_WORK)/libgeneral install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libgeneral-package: libgeneral-stage

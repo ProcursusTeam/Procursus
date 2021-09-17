@@ -22,9 +22,7 @@ m4: m4-setup
 	+$(MAKE) -C $(BUILD_WORK)/m4
 	+$(MAKE) -C $(BUILD_WORK)/m4 install \
 		DESTDIR=$(BUILD_STAGE)/m4
-	+$(MAKE) -C $(BUILD_WORK)/m4 install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 m4-package: m4-stage
 	# m4.mk Package Structure

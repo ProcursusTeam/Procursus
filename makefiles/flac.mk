@@ -28,9 +28,7 @@ flac: flac-setup libogg
 	+$(MAKE) -C $(BUILD_WORK)/flac
 	+$(MAKE) -C $(BUILD_WORK)/flac install \
 		DESTDIR=$(BUILD_STAGE)/flac
-	+$(MAKE) -C $(BUILD_WORK)/flac install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 flac-package: flac-stage

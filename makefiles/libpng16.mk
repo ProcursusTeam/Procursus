@@ -23,9 +23,7 @@ libpng16: libpng16-setup
 	+$(MAKE) -C $(BUILD_WORK)/libpng16
 	+$(MAKE) -C $(BUILD_WORK)/libpng16 install \
 		DESTDIR=$(BUILD_STAGE)/libpng16
-	+$(MAKE) -C $(BUILD_WORK)/libpng16 install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libpng16-package: libpng16-stage

@@ -21,11 +21,8 @@ zstd: zstd-setup lz4 xz
 		DESTDIR=$(BUILD_STAGE)/zstd
 	+$(MAKE) -C $(BUILD_WORK)/zstd install \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		DESTDIR=$(BUILD_BASE)
-	+$(MAKE) -C $(BUILD_WORK)/zstd/contrib/pzstd install \
-		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR=$(BUILD_STAGE)/zstd
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 zstd-package: zstd-stage

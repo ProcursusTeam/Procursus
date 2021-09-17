@@ -21,9 +21,7 @@ libxtst: libxtst-setup xorgproto libx11 libxi
 	+$(MAKE) -C $(BUILD_WORK)/libxtst
 	+$(MAKE) -C $(BUILD_WORK)/libxtst install \
 		DESTDIR=$(BUILD_STAGE)/libxtst
-	+$(MAKE) -C $(BUILD_WORK)/libxtst install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libxtst-package: libxtst-stage

@@ -3,7 +3,7 @@ Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_RSYNC_V@
 Section: Networking
-Depends: libssl1.1, libzstd1, liblz4-1, libxxhash0
+Depends: libssl3, libzstd1, liblz4-1, libxxhash0
 Suggests: openssh-client, openssh-server
 Priority: important
 Homepage: http://rsync.samba.org/
