@@ -1,0 +1,12 @@
+Package: comerr-dev
+Priority: optional
+Section: Development
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_KRB5_V@
+Description: common error description library - headers and static libraries
+ libcom_err is an attempt to present a common error-handling mechanism to
+ manipulate the most common form of error code in a fashion that does not
+ have the problems identified with mechanisms commonly in use.
+ .
+ This package contains the development environment for the com_err library.
