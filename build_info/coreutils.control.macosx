@@ -2,7 +2,7 @@ Package: coreutils
 Version: @DEB_COREUTILS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libintl8 (>= 0.20.0), libgmp10
+Depends: libssl3, libintl8 (>= 0.20.0), libgmp10
 Section: Utilities
 Priority: standard
 Homepage: http://www.gnu.org/software/coreutils/

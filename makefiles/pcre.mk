@@ -34,9 +34,7 @@ pcre: pcre-setup
 	+$(MAKE) -C $(BUILD_WORK)/pcre
 	+$(MAKE) -C $(BUILD_WORK)/pcre install \
 		DESTDIR=$(BUILD_STAGE)/pcre
-	+$(MAKE) -C $(BUILD_WORK)/pcre install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 pcre-package: pcre-stage

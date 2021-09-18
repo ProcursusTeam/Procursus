@@ -4,7 +4,7 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Utilities
 Priority: optional
-Depends: libssl1.1 (>= 1.1.0)
+Depends: libssl3 (>= 1.1.0)
 Description: A light command line download accelerator
  Axel tries to accelerate the downloading process by using multiple
  connections for one file, similar to DownThemAll and other famous

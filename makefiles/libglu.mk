@@ -22,9 +22,7 @@ libglu: libglu-setup mesa
 	+$(MAKE) -C $(BUILD_WORK)/libglu
 	+$(MAKE) -C $(BUILD_WORK)/libglu install \
 		DESTDIR=$(BUILD_STAGE)/libglu
-	+$(MAKE) -C $(BUILD_WORK)/libglu install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libglu-package: libglu-stage

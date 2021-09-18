@@ -33,9 +33,7 @@ openpam: openpam-setup libxcrypt
 		CPPFLAGS="$(CPPFLAGS) -DSYSCONFDIR=\\\"$(MEMO_PREFIX)/etc\\\""
 	+$(MAKE) -C $(BUILD_WORK)/openpam install \
 		DESTDIR="$(BUILD_STAGE)/openpam"
-	+$(MAKE) -C $(BUILD_WORK)/openpam install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 openpam-package: openpam-stage

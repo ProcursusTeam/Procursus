@@ -34,8 +34,7 @@ rubberband: rubberband-setup libsamplerate libsndfile
 		--cross-file cross.txt \
 		..
 	+DESTDIR=$(BUILD_STAGE)/rubberband ninja -C $(BUILD_WORK)/rubberband/build install
-	+DESTDIR=$(BUILD_BASE) ninja -C $(BUILD_WORK)/rubberband/build install
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 rubberband-package: rubberband-stage

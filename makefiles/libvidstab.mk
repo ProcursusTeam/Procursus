@@ -23,9 +23,7 @@ libvidstab: libvidstab-setup
 	+$(MAKE) -C $(BUILD_WORK)/libvidstab
 	+$(MAKE) -C $(BUILD_WORK)/libvidstab install \
 		DESTDIR=$(BUILD_STAGE)/libvidstab
-	+$(MAKE) -C $(BUILD_WORK)/libvidstab install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libvidstab-package: libvidstab-stage
