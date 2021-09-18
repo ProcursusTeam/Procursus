@@ -37,7 +37,7 @@ krb5-package: krb5-stage
 	mkdir -p $(BUILD_DIST)/krb5-user/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
 		$(BUILD_DIST)/krb5-kdc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{sbin,lib/krb5/plugins/kdb/,share/man/{man5,man8}} \
 		$(BUILD_DIST)/krb5-admin-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{sbin,share/man/{man5,man8}} \
-		$(BUILD_DIST)/krb5-kpropd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{sbin,lib,share/man/man8} \
+		$(BUILD_DIST)/krb5-kpropd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{sbin,share/man/man8} \
 		$(BUILD_DIST)/libkrb5-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include,lib,share/man/man1} \
 		$(BUILD_DIST)/krb5-pkinit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/krb5/plugins/preauth/ \
 		$(BUILD_DIST)/krb5-otp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/krb5/plugins/preauth/ \
@@ -88,7 +88,7 @@ krb5-package: krb5-stage
 	# krb5.mk Prep krb5-k5tls
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/krb5/plugins/tls/k5tls.so $(BUILD_DIST)/krb5-k5tls/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/krb5/plugins/tls/
 
-	# krb5.mk Prep libkrb5-3 
+	# krb5.mk Prep libkrb5-3
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libkrb5.{3.dylib,3.3.dylib},krb5/plugins/preauth/spake.so} $(BUILD_DIST)/libkrb5-3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# krb5.mk Prep libgssapi-krb5-2
@@ -108,7 +108,7 @@ krb5-package: krb5-stage
 
 	# krb5.mk Prep libkdb5-10
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkdb5.{10.dylib,10.0.dylib} $(BUILD_DIST)/libkdb5-10/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# krb5.mk Prep libkrb5support1
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrb5support.{1.dylib,1.1.dylib} $(BUILD_DIST)/libkrb5support1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
@@ -121,7 +121,7 @@ krb5-package: krb5-stage
 	# krb5.mk Prep libkrad-dev
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrad.dylib $(BUILD_DIST)/libkrad-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/krad.h $(BUILD_DIST)/libkrad-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	
+
 	# krb5.mk Sign
 	$(call SIGN,krb5-user,general.xml)
 	$(call SIGN,krb5-kdc,general.xml)
