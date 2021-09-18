@@ -4,7 +4,7 @@ Section: Networking
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Depends: libkrb5-3 (= @DEB_KRB5_V@), libkadm5srv-mit12,
- krb5-config, krb5-user, libkdb5-10 (>= 1.13.1+dfsg-1)
+ krb5-user, libkdb5-10 (>= 1.13.1+dfsg-1)
 Version: @DEB_KRB5_V@
 Suggests: krb5-kpropd, krb5-admin-server
 Description: MIT Kerberos key server (KDC)

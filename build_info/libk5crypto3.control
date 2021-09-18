@@ -3,7 +3,7 @@ Priority: optional
 Section: Libraries
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
-Depends: libkrb5-3 (<= 1.18~), libgssapi-krb5-2 (<= 1.18~)
+Depends: libkrb5-3 (= @DEB_KRB5_V@), libgssapi-krb5-2 (= @DEB_KRB5_V@)
 Version: @DEB_KRB5_V@
 Suggests: krb5-user
 Description:  MIT Kerberos runtime libraries - Crypto Library

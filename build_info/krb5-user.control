@@ -3,7 +3,6 @@ Priority: optional
 Section: Networking
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
-Depends: krb5-config (= @DEB_KRB5_V@)
 Version: @DEB_KRB5_V@
 Conflicts: heimdal-clients
 Suggests: krb5-k5tls

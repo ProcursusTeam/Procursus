@@ -3,7 +3,7 @@ Priority: optional
 Section: Networking
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
-Depends: libkrb5-3 (= @DEB_KRB5_V@), kdb5-kdc (<< 1.14+dfsg)
+Depends: libkrb5-3 (= @DEB_KRB5_V@), krb5-kdc (= @DEB_KRB5_V@)
 Version: @DEB_KRB5_V@
 Description: PKINIT plugin for MIT Kerberos
  Kerberos is a system for authenticating users and services on a network.
