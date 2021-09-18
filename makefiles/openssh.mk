@@ -49,6 +49,8 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 		--with-xauth=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/xauth \
 		--with-ssl-engine \
 		--with-pam \
+		--with-libedit \
+		--with-kerberos5 \
 		check_for_libcrypt_before=1 \
 		$(OPENSSH_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/openssh \
