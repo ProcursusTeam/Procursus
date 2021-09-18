@@ -35,7 +35,8 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 SSHDLIBS += "-lcrypt -lsandbox -lpam -ldl" # Add -ldns to these when someone figures out how to make ldns work on iOS
 openssh: openssh-setup openssl libxcrypt openpam libmd
 else # (,$(findstring darwin,$(MEMO_TARGET)))
-OPENSSH_CONFIGURE_ARGS += --with-security-key-builtin
+OPENSSH_CONFIGURE_ARGS += --with-security-key-builtin \
+		--with-ldns=$(BUILD_BASE)
 SSHDLIBS += "-lsandbox -lpam -ldl -ldns -lfido2"
 openssh: openssh-setup openssl libmd
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
