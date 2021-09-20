@@ -1,0 +1,5 @@
+#!/bin/sh
+
+update-alternatives --install /usr/bin/ftp ftp /usr/bin/tnftp 110
+
+

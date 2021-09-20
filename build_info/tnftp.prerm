@@ -1,0 +1,6 @@
+#!/bin/sh
+
+update-alternatives --remove ftp /usr/bin/tnftp
+
+
+

@@ -1,8 +1,0 @@
-Package: lukemftp
-Section: Networking
-Version: @DEB_LUKEMFTP_V@
-Architecture: @DEB_ARCH@
-Depends: libncursesw6
-Maintainer: @DEB_MAINTAINER@
-Priority: optional
-Description: lukemftp is the enhanced FTP client in NetBSD
