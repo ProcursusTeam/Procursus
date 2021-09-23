@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = configure ]; then
+    mkdir -p @MEMO_PREFIX@/var/lib/dbus
+    @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/dbus-uuidgen "--ensure=@MEMO_PREFIX@/var/lib/dbus/machine-id"
+fi
+
+
+exit 0

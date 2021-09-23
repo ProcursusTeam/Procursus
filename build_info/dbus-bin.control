@@ -1,0 +1,16 @@
+Package: dbus-bin
+Version: @DEB_DBUS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libdbus-1-3 (= @DEB_DBUS_V@)
+Breaks: dbus (<< @DEB_DBUS_V@)
+Replaces: dbus (<< @DEB_DBUS_V@)
+Section: Administration
+Priority: optional
+Description: simple interprocess messaging system (command line utilities)
+ D-Bus is a message bus, used for sending messages between applications.
+ Conceptually, it fits somewhere in between raw sockets and CORBA in
+ terms of complexity.
+ .
+ This package contains the D-Bus command-line utilities such as dbus-send
+ and dbus-monitor.
