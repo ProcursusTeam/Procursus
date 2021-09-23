@@ -1,0 +1,16 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+	(remove)
+	/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/org.freedesktop.dbus-session.plist
+	;;
+    (purge)
+    /bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/org.freedesktop.dbus-session.plist
+    ;;
+	(*)
+	exit 0
+	;;
+esac
+
+exit 0
