@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += gh
-GH_VERSION  := 1.12.1
+GH_VERSION  := 2.0.0
 DEB_GH_V    ?= $(GH_VERSION)
 
 gh-setup: setup
