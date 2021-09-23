@@ -19,15 +19,15 @@ dbus: dbus-setup expat glib2.0 libx11 libsm libice
 	cd $(BUILD_WORK)/dbus && autoreconf -fiv
 	cd $(BUILD_WORK)/dbus && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-        --disable-doxygen-docs \
+		--disable-doxygen-docs \
 		--disable-ducktype-docs \
-        --disable-xml-docs \
+		--disable-xml-docs \
 		--enable-launchd \
 		--disable-tests \
 		--with-x \
 		--with-launchd-agent-dir=$(MEMO_PREFIX)/Library/LaunchDaemons \
-        --with-system-pid-file=$(MEMO_PREFIX)/var/run/dbus/pid \
-        --with-system-socket=$(MEMO_PREFIX)/var/run/dbus/system_bus_socket \
+		--with-system-pid-file=$(MEMO_PREFIX)/var/run/dbus/pid \
+		--with-system-socket=$(MEMO_PREFIX)/var/run/dbus/system_bus_socket \
 		--with-dbus-session-bus-listen-address=unix:runtime=yes
 	+$(MAKE) -C $(BUILD_WORK)/dbus
 	+$(MAKE) -C $(BUILD_WORK)/dbus install \
