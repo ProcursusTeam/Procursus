@@ -28,4 +28,3 @@ Description: simple interprocess messaging system (system message bus)
  that implement the dbus-session-bus virtual package, such as
  dbus-user-session. The recommended implementation is indicated by
  the default-dbus-session-bus virtual package.
- 
