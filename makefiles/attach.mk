@@ -6,7 +6,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS    += attach
 ATTACH_COMMIT  := d07a4867400284633cc9fe643751059afc96de4a
-ATTACH_VERSION := 0.0.3
+ATTACH_VERSION := 0.0.2+git20210424.$(shell echo $(ATTACH_COMMIT) | cut -c -7)
 DEB_ATTACH_V   ?= $(ATTACH_VERSION)
 
 attach-setup: setup
@@ -24,7 +24,7 @@ attach: attach-setup
 	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/attach/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/attach2 $(BUILD_WORK)/attach/attach2.m $(LDFLAGS) -framework Foundation -framework IOKit $(BUILD_WORK)/attach/DiskImages2.tbd
 	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/attach/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/attach $(BUILD_WORK)/attach/attach.m $(LDFLAGS) -framework CoreFoundation -framework IOKit
 	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/attach/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/detach $(BUILD_WORK)/attach/detach.c $(LDFLAGS) -framework CoreFoundation -framework IOKit
-	touch $(BUILD_WORK)/attach/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 attach-package: attach-stage

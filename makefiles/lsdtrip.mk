@@ -6,6 +6,10 @@ SUBPROJECTS    += lsdtrip
 LSDTRIP_VERSION   := 1.0.2
 DEB_LSDTRIP_V     ?= $(LSDTRIP_VERSION)
 
+ifneq (,$(findstring arm,$(MEMO_ARCH)))
+LSDTRIP_FLAGS := -DARM
+endif
+
 lsdtrip-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/lsdtrip-$(LSDTRIP_VERSION).tar.gz" ] && \
 		wget -q -nc -O$(BUILD_SOURCE)/lsdtrip-$(LSDTRIP_VERSION).tar.gz \
@@ -18,12 +22,13 @@ lsdtrip:
 	@echo "Using previously built lsdtrip."
 else
 lsdtrip: lsdtrip-setup
-	$(CC) $(CFLAGS) $(LDFLAGS) -DARM $(BUILD_WORK)/lsdtrip/ls.m \
+	$(CC) $(CFLAGS) $(LDFLAGS) $(BUILD_WORK)/lsdtrip/ls.m \
 		-o $(BUILD_WORK)/lsdtrip/lsdtrip \
-		-lobjc -framework Foundation -framework MobileCoreServices
+		-lobjc -framework Foundation -framework MobileCoreServices \
+		$(LSDTRIP_FLAGS)
 	$(STRIP) $(BUILD_WORK)/lsdtrip/lsdtrip
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/lsdtrip/lsdtrip $(BUILD_STAGE)/lsdtrip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsdtrip
-	touch $(BUILD_WORK)/lsdtrip/.build_complete
+	$(INSTALL) -Dm755 $(BUILD_WORK)/lsdtrip/lsdtrip $(BUILD_STAGE)/lsdtrip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsdtrip
+	$(call AFTER_BUILD)
 endif
 
 lsdtrip-package: lsdtrip-stage
@@ -35,7 +40,7 @@ lsdtrip-package: lsdtrip-stage
 
 	# lsdtrip.mk Sign
 	$(call SIGN,lsdtrip,general.xml)
-	$(LDID) -M$(BUILD_WORK)/lsdtrip/ls.ent $(BUILD_DIST)/lsdtrip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsdtrip
+	ldid $(MEMO_LDID_EXTRA_FLAGS) -M$(BUILD_WORK)/lsdtrip/ls.ent $(BUILD_DIST)/lsdtrip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsdtrip
 
 	# lsdtrip.mk Make .debs
 	$(call PACK,lsdtrip,DEB_LSDTRIP_V)

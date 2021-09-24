@@ -16,9 +16,9 @@ zsh-autosuggestions:
 else
 zsh-autosuggestions: zsh-autosuggestions-setup ncurses gettext file
 	+$(MAKE) -C $(BUILD_WORK)/zsh-autosuggestions
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/zsh-autosuggestions/zsh-autosuggestions.zsh \
+	$(INSTALL) -Dm644 $(BUILD_WORK)/zsh-autosuggestions/zsh-autosuggestions.zsh \
 		$(BUILD_STAGE)/zsh-autosuggestions/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-	touch $(BUILD_WORK)/zsh-autosuggestions/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 zsh-autosuggestions-package: zsh-autosuggestions-stage

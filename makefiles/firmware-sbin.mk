@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+ifeq (,$(MEMO_PREFIX))
 
 STRAPPROJECTS         += firmware-sbin
 FIRMWARE-SBIN_VERSION := 0-2
@@ -18,7 +18,7 @@ firmware-sbin: setup
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1)
 	touch $(BUILD_STAGE)/firmware-sbin/sbin/umount
 endif
-	touch $(BUILD_STAGE)/firmware-sbin/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 firmware-sbin-package: firmware-sbin-stage

@@ -19,7 +19,7 @@ lua-inspect: lua-inspect-setup
 	cp -a $(BUILD_WORK)/lua-inspect/inspect.lua $(BUILD_STAGE)/lua-inspect/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/lua/5.1
 	cp -a $(BUILD_WORK)/lua-inspect/inspect.lua $(BUILD_STAGE)/lua-inspect/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/lua/5.2
 	cp -a $(BUILD_WORK)/lua-inspect/inspect.lua $(BUILD_STAGE)/lua-inspect/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/lua/5.3
-	touch $(BUILD_WORK)/lua-inspect/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 lua-inspect-package: lua-inspect-stage

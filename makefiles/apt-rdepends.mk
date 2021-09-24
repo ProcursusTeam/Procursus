@@ -18,9 +18,9 @@ apt-rdepends:
 	@echo "Using previously built apt-rdepends."
 else
 apt-rdepends: apt-rdepends-setup
-	$(SED) -i '1s|.*|#!$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl|g' $(BUILD_WORK)/apt-rdepends/apt-rdepends
+	sed -i '1s|.*|#!$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl|g' $(BUILD_WORK)/apt-rdepends/apt-rdepends
 	$(MAKE) -C $(BUILD_WORK)/apt-rdepends install install-man prefix=$(BUILD_STAGE)/apt-rdepends/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	touch $(BUILD_WORK)/apt-rdepends/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 apt-rdepends-package: apt-rdepends-stage

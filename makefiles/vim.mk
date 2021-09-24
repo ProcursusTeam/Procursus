@@ -17,7 +17,7 @@ vim:
 else
 vim: .SHELLFLAGS=-O extglob -c
 vim: vim-setup ncurses gettext
-	$(SED) -i 's/AC_TRY_LINK(\[]/AC_TRY_LINK(\[#include <termcap.h>]/g' $(BUILD_WORK)/vim/src/configure.ac # This is so stupid, I cannot believe this is necessary.
+	sed -i 's/AC_TRY_LINK(\[]/AC_TRY_LINK(\[#include <termcap.h>]/g' $(BUILD_WORK)/vim/src/configure.ac # This is so stupid, I cannot believe this is necessary.
 	cd $(BUILD_WORK)/vim/src && autoconf -f
 	cd $(BUILD_WORK)/vim && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
@@ -41,7 +41,7 @@ vim: vim-setup ncurses gettext
 	rm -rf $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/*{ISO*,UTF*,KOI*}
 	find $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f ! -name "vim.1" ! -name "vimtutor.1" ! -name "xxd.1" -delete
 	find $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type l -delete
-	touch $(BUILD_WORK)/vim/.build_complete
+	$(call AFTER_BUILD)
 endif
 vim-package: vim-stage
 	# vim.mk Package Structure

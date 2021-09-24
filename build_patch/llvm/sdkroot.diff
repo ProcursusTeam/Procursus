@@ -1,6 +1,14 @@
 diff -urN llvm/clang/lib/Driver/ToolChains/Darwin.cpp.old llvm/clang/lib/Driver/ToolChains/Darwin.cpp
 --- llvm/clang/lib/Driver/ToolChains/Darwin.cpp.old	2021-06-23 16:31:00.000000000 -0400
 +++ llvm/clang/lib/Driver/ToolChains/Darwin.cpp	2021-06-23 16:42:41.000000000 -0400
+@@ -26,6 +26,7 @@
+ #include "llvm/Support/Threading.h"
+ #include "llvm/Support/VirtualFileSystem.h"
+ #include <cstdlib> // ::getenv
++#include <TargetConditionals.h>
+
+ using namespace clang::driver;
+ using namespace clang::driver::tools;
 @@ -1738,10 +1738,8 @@
            << Triple.getOSName();
      break;
@@ -58,12 +66,15 @@ diff -urN llvm/clang/lib/Driver/ToolChains/Darwin.cpp.old llvm/clang/lib/Driver/
 
    if (const Arg *A = Args.getLastArg(options::OPT_isysroot)) {
      StringRef SDK = getSDKName(A->getValue());
-@@ -2069,6 +2069,21 @@
+@@ -2069,6 +2069,24 @@
      SmallString<128> P(Sysroot);
      llvm::sys::path::append(P, "usr", "include");
      addExternCSystemInclude(DriverArgs, CC1Args, P.str());
 +    if (Sysroot == "/") {
 +      switch (getTriple().getOS()) {
++        case llvm::Triple::MacOSX:
++          addExternCSystemInclude(DriverArgs, CC1Args, "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/MacOSX.sdk/usr/include");
++          break;
 +        case llvm::Triple::IOS:
 +          addExternCSystemInclude(DriverArgs, CC1Args, "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/iPhoneOS.sdk/usr/include");
 +          break;
@@ -83,12 +94,16 @@ diff -urN llvm/clang/lib/Driver/ToolChains/Darwin.cpp.old llvm/clang/lib/Driver/
 diff -urN llvm/clang/lib/Frontend/InitHeaderSearch.cpp.old llvm/clang/lib/Frontend/InitHeaderSearch.cpp
 --- llvm/clang/lib/Frontend/InitHeaderSearch.cpp.old	2021-06-23 16:45:54.000000000 -0400
 +++ llvm/clang/lib/Frontend/InitHeaderSearch.cpp	2021-06-23 16:49:52.000000000 -0400
-@@ -446,6 +446,24 @@
+@@ -446,6 +446,28 @@
    if (triple.isOSDarwin()) {
      if (HSOpts.UseStandardSystemIncludes) {
        // Add the default framework include paths on Darwin.
 +      if (!HasSysroot) {
 +        switch (triple.getOS()) {
++          case llvm::Triple::MacOSX:
++            AddPath("@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/MacOSX.sdk/System/Library/Frameworks", System, true);
++            AddPath("@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/MacOSX.sdk/Library/Frameworks", System, true);
++            break;
 +          case llvm::Triple::IOS:
 +            AddPath("@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/iPhoneOS.sdk/System/Library/Frameworks", System, true);
 +            AddPath("@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/iPhoneOS.sdk/Library/Frameworks", System, true);

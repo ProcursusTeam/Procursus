@@ -28,7 +28,7 @@ zpaq: zpaq-setup
 		PREFIX=$(BUILD_STAGE)/zpaq/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/zpaq install \
 		PREFIX=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	touch $(BUILD_WORK)/zpaq/.build_complete
+	$(call AFTER_BUILD)
 endif
 zpaq-package: zpaq-stage
 	# zpaq.mk Package Structure

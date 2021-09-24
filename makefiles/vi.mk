@@ -15,10 +15,10 @@ vi:
 	@echo "Using previously built vi."
 else
 vi: vi-setup ncurses
-	$(SED) -i '/#include "ex_tty.h"/a #include <sys/ioctl.h>' $(BUILD_WORK)/vi/ex_tty.c
-	$(SED) -i '/#include "ex_tty.h"/a #include <sys/ioctl.h>' $(BUILD_WORK)/vi/ex_subr.c
-	$(SED) -i '/size ex/d' $(BUILD_WORK)/vi/Makefile
-	$(SED) -i 's/ar /$(AR) /g' $(BUILD_WORK)/vi/libuxre/Makefile
+	sed -i '/#include "ex_tty.h"/a #include <sys/ioctl.h>' $(BUILD_WORK)/vi/ex_tty.c
+	sed -i '/#include "ex_tty.h"/a #include <sys/ioctl.h>' $(BUILD_WORK)/vi/ex_subr.c
+	sed -i '/size ex/d' $(BUILD_WORK)/vi/Makefile
+	sed -i 's/ar /$(AR) /g' $(BUILD_WORK)/vi/libuxre/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/vi install \
 		PREFIX="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		TERMLIB=ncursesw \
@@ -26,8 +26,8 @@ vi: vi-setup ncurses
 		LIBEXECDIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ex \
 		FEATURES="-DCHDIR -DFASTTAG -DUCVISUAL -DMB -DBIT8" \
 		DESTDIR="$(BUILD_STAGE)/vi" \
-		INSTALL="$(GINSTALL)"
-	touch $(BUILD_WORK)/vi/.build_complete
+		INSTALL="$(INSTALL)"
+	$(call AFTER_BUILD)
 endif
 vi-package: vi-stage
 	# vi.mk Package Structure

@@ -20,9 +20,7 @@ xbitmaps: xbitmaps-setup xorgproto
 	+$(MAKE) -C $(BUILD_WORK)/xbitmaps
 	+$(MAKE) -C $(BUILD_WORK)/xbitmaps install \
 		DESTDIR=$(BUILD_STAGE)/xbitmaps
-	+$(MAKE) -C $(BUILD_WORK)/xbitmaps install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/xbitmaps/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 xbitmaps-package: xbitmaps-stage

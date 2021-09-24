@@ -16,7 +16,7 @@ aptitude:
 	@echo "Using previously built aptitude."
 else
 aptitude: aptitude-setup ncurses libboost xapian cwidget apt googletest
-	$(SED) -i 's|/usr/share/xml/docbook/stylesheet/nwalsh|$(DOCBOOK_XSL)|g' \
+	sed -i 's|/usr/share/xml/docbook/stylesheet/nwalsh|$(DOCBOOK_XSL)|g' \
 		$(BUILD_WORK)/aptitude/buildlib/docbook.mk \
 		$(BUILD_WORK)/aptitude/doc/aptitude-{txt,man,html}.xsl \
 		$(BUILD_WORK)/aptitude/doc/{de,nl,it,es,ja,en,ru,fr,pl,fi,cs}/Makefile.in
@@ -49,7 +49,7 @@ aptitude: aptitude-setup ncurses libboost xapian cwidget apt googletest
 		README="" \
 		DOCBOOK_TARGETS="docbook-man"
 	mv $(BUILD_STAGE)/aptitude/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/gl/man8/aptitude.8 $(BUILD_STAGE)/aptitude/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/gl/man8/aptitude-curses.8
-	touch $(BUILD_WORK)/aptitude/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 aptitude-package: aptitude-stage

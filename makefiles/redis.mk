@@ -38,8 +38,8 @@ redis: redis-setup libjemalloc openssl
 		USE_SYSTEM_LUA=no \
 		install
 
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/redis/redis.conf $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/etc/redis/redis.conf
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/redis/sentinel.conf $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/etc/redis/sentinel.conf
+	$(INSTALL) -Dm644 $(BUILD_WORK)/redis/redis.conf $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/etc/redis/redis.conf
+	$(INSTALL) -Dm644 $(BUILD_WORK)/redis/sentinel.conf $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/etc/redis/sentinel.conf
 
 	mkdir -p $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons
 	cp -a $(BUILD_MISC)/redis/*.plist $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons
@@ -50,11 +50,11 @@ redis: redis-setup libjemalloc openssl
 	for file in $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons/* \
 		$(BUILD_STAGE)/redis/$(MEMO_PREFIX)/etc/redis/* \
 		$(BUILD_STAGE)/redis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/*; do \
-			$(SED) -i 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' $$file; \
-			$(SED) -i 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $$file; \
+			sed -i 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' $$file; \
+			sed -i 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $$file; \
 	done
 
-	touch $(BUILD_WORK)/redis/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 redis-package: redis-stage

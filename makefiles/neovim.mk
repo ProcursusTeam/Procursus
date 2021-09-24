@@ -12,7 +12,7 @@ neovim-setup: setup
 	$(call DO_PATCH,neovim,neovim,-p1)
 	mkdir -p $(BUILD_WORK)/neovim/build
 	# This is needed to fix a strange linking error. A better fix would be nice.
-	test -f $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit5.1-luv.dylib || ln -s libluajit-5.1-luv.dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit5.1-luv.dylib
+	test -f $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit5.1-luv.dylib || $(LN_S) libluajit-5.1-luv.dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit5.1-luv.dylib
 ifneq ($(call HAS_COMMAND,nvim),1)
 neovim:
 	@echo "Install neovim before building"
@@ -33,7 +33,7 @@ neovim: neovim-setup gettext lua-luv libuv1 msgpack libvterm libtermkey unibiliu
 	+$(MAKE) -C $(BUILD_WORK)/neovim/build
 	+$(MAKE) -C $(BUILD_WORK)/neovim/build install \
 		DESTDIR="$(BUILD_STAGE)/neovim"
-	touch $(BUILD_WORK)/neovim/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 neovim-package: neovim-stage
@@ -43,8 +43,8 @@ neovim-package: neovim-stage
 	# neovim.mk Prep neovim
 	cp -a $(BUILD_STAGE)/neovim $(BUILD_DIST)
 	for i in ex rview rvim view vimdiff; do \
-	$(GINSTALL) -Dm0755 $(BUILD_MISC)/neovim.$$i $(BUILD_DIST)/neovim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/neovim/$$i; \
-	$(SED) -i 's|usr/bin/nvim|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/nvim|g' $(BUILD_DIST)/neovim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/neovim/$$i; \
+	$(INSTALL) -Dm0755 $(BUILD_MISC)/neovim.$$i $(BUILD_DIST)/neovim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/neovim/$$i; \
+	sed -i 's|usr/bin/nvim|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/nvim|g' $(BUILD_DIST)/neovim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/neovim/$$i; \
 	done
 
 	# neovim.mk Sign

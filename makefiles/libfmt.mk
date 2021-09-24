@@ -22,10 +22,7 @@ libfmt: libfmt-setup
 	+$(MAKE) -C $(BUILD_WORK)/libfmt
 	+$(MAKE) -C $(BUILD_WORK)/libfmt install \
 		DESTDIR="$(BUILD_STAGE)/libfmt"
-	+$(MAKE) -C $(BUILD_WORK)/libfmt install \
-		DESTDIR="$(BUILD_BASE)"
-
-	touch $(BUILD_WORK)/libfmt/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libfmt-package: libfmt-stage

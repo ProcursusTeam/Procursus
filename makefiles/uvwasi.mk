@@ -23,26 +23,26 @@ uvwasi: uvwasi-setup libuv1
 		.
 	+$(MAKE) -C $(BUILD_WORK)/uvwasi
 
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/uvwasi/libuvwasi.dylib $(BUILD_STAGE)/uvwasi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.$(UVWASI_SOVER).dylib
+	$(INSTALL) -Dm644 $(BUILD_WORK)/uvwasi/libuvwasi.dylib $(BUILD_STAGE)/uvwasi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.$(UVWASI_SOVER).dylib
 
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/uvwasi/libuvwasi_a.a $(BUILD_STAGE)/uvwasi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.a
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/uvwasi/include/uvwasi.h $(BUILD_STAGE)/uvwasi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/uvwasi.h
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/uvwasi/include/wasi_serdes.h $(BUILD_STAGE)/uvwasi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/wasi_serdes.h
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/uvwasi/include/wasi_types.h $(BUILD_STAGE)/uvwasi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/wasi_types.h
+	$(INSTALL) -Dm644 $(BUILD_WORK)/uvwasi/libuvwasi_a.a $(BUILD_STAGE)/uvwasi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.a
+	$(INSTALL) -Dm644 $(BUILD_WORK)/uvwasi/include/uvwasi.h $(BUILD_STAGE)/uvwasi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/uvwasi.h
+	$(INSTALL) -Dm644 $(BUILD_WORK)/uvwasi/include/wasi_serdes.h $(BUILD_STAGE)/uvwasi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/wasi_serdes.h
+	$(INSTALL) -Dm644 $(BUILD_WORK)/uvwasi/include/wasi_types.h $(BUILD_STAGE)/uvwasi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/wasi_types.h
 
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/uvwasi/libuvwasi.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.$(UVWASI_SOVER).dylib
+	$(INSTALL) -Dm644 $(BUILD_WORK)/uvwasi/libuvwasi.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.$(UVWASI_SOVER).dylib
 
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/uvwasi/libuvwasi_a.a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.a
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/uvwasi/include/uvwasi.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/uvwasi.h
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/uvwasi/include/wasi_serdes.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/wasi_serdes.h
-	$(GINSTALL) -Dm644 $(BUILD_WORK)/uvwasi/include/wasi_types.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/wasi_types.h
+	$(INSTALL) -Dm644 $(BUILD_WORK)/uvwasi/libuvwasi_a.a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.a
+	$(INSTALL) -Dm644 $(BUILD_WORK)/uvwasi/include/uvwasi.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/uvwasi.h
+	$(INSTALL) -Dm644 $(BUILD_WORK)/uvwasi/include/wasi_serdes.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/wasi_serdes.h
+	$(INSTALL) -Dm644 $(BUILD_WORK)/uvwasi/include/wasi_types.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/wasi_types.h
 
 	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.$(UVWASI_SOVER).dylib $(BUILD_STAGE)/uvwasi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.$(UVWASI_SOVER).dylib
 	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.$(UVWASI_SOVER).dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.$(UVWASI_SOVER).dylib
-	ln -sf libuvwasi.$(UVWASI_SOVER).dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.dylib
-	ln -sf libuvwasi.$(UVWASI_SOVER).dylib $(BUILD_STAGE)/uvwasi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.dylib
+	$(LN_S) libuvwasi.$(UVWASI_SOVER).dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.dylib
+	$(LN_S) libuvwasi.$(UVWASI_SOVER).dylib $(BUILD_STAGE)/uvwasi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.dylib
 
-	touch $(BUILD_WORK)/uvwasi/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 uvwasi-package: uvwasi-stage

@@ -2,7 +2,7 @@ Package: openssl
 Version: @DEB_OPENSSL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libssl1.1 (= @DEB_OPENSSL_V@)
+Depends: libssl3 (= @DEB_OPENSSL_V@)
 Section: Security
 Priority: standard
 Description: Secure Sockets Layer toolkit - cryptographic utility
@@ -18,5 +18,3 @@ Description: Secure Sockets Layer toolkit - cryptographic utility
   * encrypting and decrypting with ciphers;
   * testing SSL/TLS clients and servers;
   * handling S/MIME signed or encrypted mail.
-Name: OpenSSL
-Tag: purpose::library, role::developer

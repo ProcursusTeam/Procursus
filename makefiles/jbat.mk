@@ -10,7 +10,7 @@ jbat-setup: setup
 	mkdir -p $(BUILD_WORK)/jbat
 	lynx -width 1000 -dump http://newosxbook.com/src.jl\?tree\=listings\&file\=bat.c > \
 		$(BUILD_WORK)/jbat/jbat.c
-	$(SED) -i '/free/d' $(BUILD_WORK)/jbat/jbat.c
+	sed -i '/free/d' $(BUILD_WORK)/jbat/jbat.c
 
 ifneq ($(wildcard $(BUILD_WORK)/jbat/.build_complete),)
 jbat:
@@ -21,8 +21,8 @@ jbat: jbat-setup
 		-o $(BUILD_WORK)/jbat/jbat \
 		-framework IOKit -framework CoreFoundation
 	$(STRIP) $(BUILD_WORK)/jbat/jbat
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/jbat/jbat $(BUILD_STAGE)/jbat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/jbat
-	touch $(BUILD_WORK)/jbat/.build_complete
+	$(INSTALL) -Dm755 $(BUILD_WORK)/jbat/jbat $(BUILD_STAGE)/jbat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/jbat
+	$(call AFTER_BUILD)
 endif
 
 jbat-package: jbat-stage

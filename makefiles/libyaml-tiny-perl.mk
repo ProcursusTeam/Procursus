@@ -23,7 +23,7 @@ libyaml-tiny-perl: libyaml-tiny-perl-setup
 	+$(MAKE) -C $(BUILD_WORK)/libyaml-tiny-perl install \
 		DESTDIR="$(BUILD_STAGE)/libyaml-tiny-perl"
 	rm -rf $(BUILD_STAGE)/libyaml-tiny-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	touch $(BUILD_WORK)/libyaml-tiny-perl/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libyaml-tiny-perl-package: libyaml-tiny-perl-stage

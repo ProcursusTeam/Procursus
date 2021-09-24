@@ -1,0 +1,7 @@
+Package: darwintools
+Version: @DEB_DARWINTOOLS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Administration
+Priority: required
+Description: Provides @MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/firmware

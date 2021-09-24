@@ -21,8 +21,8 @@ starship: starship-setup
 	cd $(BUILD_WORK)/starship && unset CFLAGS && $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \
 		--target=$(RUST_TARGET)
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/starship/target/$(RUST_TARGET)/release/starship $(BUILD_STAGE)/starship/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/starship
-	touch $(BUILD_WORK)/starship/.build_complete
+	$(INSTALL) -Dm755 $(BUILD_WORK)/starship/target/$(RUST_TARGET)/release/starship $(BUILD_STAGE)/starship/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/starship
+	$(call AFTER_BUILD)
 endif
 
 starship-package: starship-stage

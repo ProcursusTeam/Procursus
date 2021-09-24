@@ -1,0 +1,14 @@
+Package: python3-glances
+Version: @DEB_PYTHON3_GLANCES_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: Nicolas Hennion <nicolas@nicolargo.com>
+Depends: python3, python3-psutil (>= 5.3.0)
+Section: Python
+Priority: optional
+Homepage: https://nicolargo.github.io/glances/
+Description: Cursed-based monitoring tool.
+ Glances is a cursed-based monitoring tool for GNU/Linux
+ and BSD. Utilizing psutil, it provides and monitors system
+ information, such as CPU usage, network bandwidth, disk I/O, disk
+ use, and more.

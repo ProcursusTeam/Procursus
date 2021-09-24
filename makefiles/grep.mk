@@ -32,7 +32,7 @@ grep: grep-setup pcre
 	+$(MAKE) -C $(BUILD_WORK)/grep
 	+$(MAKE) -C $(BUILD_WORK)/grep install \
 		DESTDIR=$(BUILD_STAGE)/grep
-	touch $(BUILD_WORK)/grep/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 grep-package: grep-stage
@@ -46,7 +46,7 @@ grep-package: grep-stage
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 	mkdir -p $(BUILD_DIST)/grep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin
 	for bin in $(BUILD_DIST)/grep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
-		ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(echo $$bin | rev | cut -d/ -f1 | rev) $(BUILD_DIST)/grep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $$bin | rev | cut -d/ -f1 | rev | cut -c2-); \
+		$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$${bin##*/} $(BUILD_DIST)/grep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $${bin##*/} | cut -c2-); \
 	done
 endif
 

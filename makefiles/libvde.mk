@@ -24,9 +24,7 @@ libvde: libvde-setup openssl
 		ac_cv_func_realloc_0_nonnull=yes
 	unset MAKEFLAGS && $(MAKE) -C $(BUILD_WORK)/libvde install \
 		DESTDIR="$(BUILD_STAGE)/libvde"
-	+$(MAKE) -C $(BUILD_WORK)/libvde install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libvde/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libvde-package: libvde-stage

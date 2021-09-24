@@ -18,9 +18,9 @@ bottom: bottom-setup
 	cd $(BUILD_WORK)/bottom && SDKROOT="$(TARGET_SYSROOT)" cargo build \
 		--release \
 		--target=$(RUST_TARGET)
-	$(GINSTALL) -Dm755 $(BUILD_WORK)/bottom/target/$(RUST_TARGET)/release/bottomify \
+	$(INSTALL) -Dm755 $(BUILD_WORK)/bottom/target/$(RUST_TARGET)/release/bottomify \
 		$(BUILD_STAGE)/bottom/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bottomify
-	touch $(BUILD_WORK)/bottom/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 bottom-package: bottom-stage
