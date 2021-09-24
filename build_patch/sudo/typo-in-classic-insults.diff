@@ -1,0 +1,11 @@
+--- a/plugins/sudoers/ins_classic.h
++++ b/plugins/sudoers/ins_classic.h
+@@ -32,7 +32,7 @@
+     "Where did you learn to type?",
+     "Are you on drugs?",
+     "My pet ferret can type better than you!",
+-    "You type like i drive.",
++    "You type like I drive.",
+     "Do you think like you type?",
+     "Your mind just hasn't been the same since the electro-shock, has it?",
+ 
