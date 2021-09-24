@@ -2,7 +2,7 @@ Package: libpango1.0-dev
 Version: @DEB_PANGO_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends:  libcairo2-dev, libfontconfig1-dev, libfreetype-dev, libfribidi-dev, libglib2.0-dev, libharfbuzz-dev, libpango-1.0-0, libpangocairo-1.0-0, libpangoft2-1.0-0, libpangoxft-1.0-0, libx11-dev, libxft-dev, libxrender-dev, pango1.0-tools
+Depends:  libcairo2-dev, libfontconfig1-dev, libfreetype-dev, libfribidi-dev, libglib2.0-dev, libharfbuzz-dev, libpango-1.0-0 (= @DEB_PANGO_V@), libpangocairo-1.0-0 (= @DEB_PANGO_V@), libpangoft2-1.0-0 (= @DEB_PANGO_V@), libpangoxft-1.0-0 (= @DEB_PANGO_V@), libx11-dev, libxft-dev, libxrender-dev, pango1.0-tools (= @DEB_PANGO_V@)
 Section: Development
 Priority: optional
 Description: Development files for the Pango

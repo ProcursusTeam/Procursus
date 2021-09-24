@@ -2,7 +2,7 @@ Package: pango1.0-tools
 Version: @DEB_PANGO_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libcairo2, libfontconfig1, libglib2.0-0, libharfbuzz0b, libpango-1.0-0, libpangocairo-1.0-0, libpangoft2-1.0-0, libpangoxft-1.0-0, libx11-6, libxft2
+Depends: libcairo2, libfontconfig1, libglib2.0-0, libharfbuzz0b, libpango-1.0-0 (= @DEB_PANGO_V@), libpangocairo-1.0-0 (= @DEB_PANGO_V@), libpangoft2-1.0-0 (= @DEB_PANGO_V@), libpangoxft-1.0-0 (= @DEB_PANGO_V@), libx11-6, libxft2
 Breaks: libpango1.0-dev (<< 1.42.4-4)
 Replaces: libpango1.0-dev (<< 1.42.4-4)
 Section: Libraries

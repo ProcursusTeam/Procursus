@@ -2,7 +2,7 @@ Package: libpangoft2-1.0-0
 Version: @DEB_PANGO_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libfontconfig1, libfreetype6, libglib2.0-0, libharfbuzz0b, libpango-1.0-0
+Depends: libfontconfig1, libfreetype6, libglib2.0-0, libharfbuzz0b, libpango-1.0-0 (= @DEB_PANGO_V@)
 Section: Libraries
 Priority: optional
 Description: Layout and rendering of internationalized text
