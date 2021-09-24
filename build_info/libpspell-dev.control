@@ -2,7 +2,7 @@ Package: libpspell-dev
 Version: @DEB_ASPELL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libaspell15, libaspell-dev
+Depends: libaspell15 (= @DEB_ASPELL_V@), libaspell-dev (= @DEB_ASPELL_V@)
 Section: Development
 Priority: optional
 Multi-Arch: same

@@ -2,7 +2,7 @@ Package: libaspell-dev
 Version: @DEB_ASPELL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libaspell15
+Depends: libaspell15 (= @DEB_ASPELL_V@)
 Section: Development
 Priority: optional
 Multi-Arch: same

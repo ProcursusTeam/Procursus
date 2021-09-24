@@ -2,7 +2,7 @@ Package: aspell
 Version: @DEB_ASPELL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libaspell15, libncursesw6
+Depends: libaspell15 (= @DEB_ASPELL_V@), libncursesw6
 Provides: aspell-bin
 Section: Utilities
 Priority: optional
