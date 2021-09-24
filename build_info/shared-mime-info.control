@@ -2,7 +2,7 @@ Package: shared-mime-info
 Version: @DEB_SHARED-MINE-INFO_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libglib2.0-0
+Depends: libglib2.0-0 (>= 2.35.9)
 Section: Development
 Priority: optional
 Description: FreeDesktop.org shared MIME database and spec
