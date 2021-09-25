@@ -1,0 +1,14 @@
+--- a/hw/xfree86/drivers/inputtest/xf86-input-inputtest.c	2021-09-21 16:56:01.000000000 -0400
++++ b/hw/xfree86/drivers/inputtest/xf86-input-inputtest.c	2021-09-25 10:47:17.000000000 -0400
+@@ -26,6 +26,11 @@
+ #include <xorg-config.h>
+ #endif
+ 
++#ifndef SOCK_NONBLOCK
++#include <fcntl.h>
++# define SOCK_NONBLOCK O_NONBLOCK
++#endif
++
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <unistd.h>
