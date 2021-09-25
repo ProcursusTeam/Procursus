@@ -61,7 +61,7 @@ dbus-package: dbus-stage
 	cp -a $(BUILD_STAGE)/dbus/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{dbus-daemon,dbus-run-session} \
 		$(BUILD_DIST)/dbus-daemon/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/dbus/$(MEMO_PREFIX)/Library/LaunchDaemons \
-		$(BUILD_DIST)/dbus-daemon/$(MEMO_PREFIX)/Library/LaunchDaemons
+		$(BUILD_DIST)/dbus-daemon/$(MEMO_PREFIX)/Library/
 
 	# dbus.mk Prep dbus-session-bus-common
 	cp -a $(BUILD_STAGE)/dbus/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/dbus-1/session.conf \
