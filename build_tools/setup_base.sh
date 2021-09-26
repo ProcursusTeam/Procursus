@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 if [ ! -e ${BUILD_WORK}/${1}/.build_complete ]; then
 	pkgnames=$(grep "call PACK" makefiles/${1}.mk | cut -d, -f2)
