@@ -4,7 +4,7 @@ if [ ! -e ${BUILD_WORK}/${1}/.build_complete ]; then
 	pkgnames=$(grep "call PACK" makefiles/${1}.mk | cut -d, -f2)
 	temp=$(grep -m 1 "call PACK" makefiles/${1}.mk | cut -d, -f3)
 	
-	versionString=${temp::-1}
+	versionString=${temp%?}
 	
 	version=$(MEMO_QUIET=1 ${MAKE} print-${versionString})
 	
