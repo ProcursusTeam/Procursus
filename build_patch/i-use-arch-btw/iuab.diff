@@ -1,0 +1,88 @@
+diff -urN a/cmd/Makefile b/cmd/Makefile
+--- a/cmd/Makefile	2021-09-25 17:01:36.141721203 +0800
++++ b/cmd/Makefile	2021-09-25 17:05:17.751119913 +0800
+@@ -6,7 +6,7 @@
+ 
+ # Build program flags
+ ALL_CFLAGS  += -std=gnu99 -Wall -Wextra -pedantic -I../lib/include
+-ALL_LDFLAGS += -Wl,--as-needed $(LIBS)
++ALL_LDFLAGS += $(LIBS)
+ 
+ include ../rules.mk
+ 
+diff -urN a/lib/Makefile b/lib/Makefile
+--- a/lib/Makefile	2021-09-25 17:01:36.145721228 +0800
++++ b/lib/Makefile	2021-09-26 11:06:44.035234645 +0800
+@@ -3,7 +3,7 @@
+ 
+ # Build program flags
+ ALL_CFLAGS  += -std=c99 -Wall -Wextra -pedantic -Iinclude -fPIC
+-ALL_LDFLAGS += -shared -fPIC
++ALL_LDFLAGS += -shared -fPIC -install_name @MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/libiuab.@LIBIUAB_SOVER@.dylib
+ 
+ include ../rules.mk
+ 
+diff -urN a/Makefile b/Makefile
+--- a/Makefile	2021-09-25 17:01:36.141721203 +0800
++++ b/Makefile	2021-09-26 10:55:11.940568804 +0800
+@@ -1,16 +1,12 @@
+ MAKEFLAGS += -rR --no-print-directory
+ 
+-SHELL = /bin/sh
++SHELL = /bin/bash
+ 
+ # Build programs
+-CC = cc
+ LD = $(CC)
+-AR = ar
+ 
+ # Build program flags
+-CFLAGS  = -O2
+-LDFLAGS = -Wl,-O1
+-ARFLAGS = rcs
++ARFLAGS = rcu
+ 
+ # Debugging flags
+ DEBUG_CFLAGS = -g -Og
+@@ -23,7 +19,7 @@
+ endif
+ 
+ # Install commands
+-INSTALL         = install -D
++INSTALL        ?= install -D
+ INSTALL_PROGRAM = $(INSTALL)
+ INSTALL_DATA    = $(INSTALL) -m 644
+ 
+@@ -33,7 +29,7 @@
+ # Executable and library extensions
+ EXEEXT    =
+ STATICEXT = .a
+-SHAREDEXT = .so
++SHAREDEXT = .dylib
+ 
+ # Project directories
+ SRCDIR   = src
+@@ -42,15 +38,15 @@
+ 
+ # Install directories
+ DESTDIR    =
+-PREFIX     = /usr/local
+-BINDIR     = /bin
+-INCLUDEDIR = /include
+-LIBDIR     = /lib
++PREFIX     ?= /usr
++BINDIR     ?= /bin
++INCLUDEDIR ?= /include
++LIBDIR     ?= /lib
+ destdir    = $(realpath $(DESTDIR))
+-prefix     = $(destdir)$(PREFIX)
+-bindir     = $(prefix)$(BINDIR)
+-includedir = $(prefix)$(INCLUDEDIR)
+-libdir     = $(prefix)$(LIBDIR)
++prefix     ?= $(destdir)$(PREFIX)
++bindir     ?= $(prefix)$(BINDIR)
++includedir ?= $(prefix)$(INCLUDEDIR)
++libdir     ?= $(prefix)$(LIBDIR)
+ 
+ # Silence commands by default
+ Q = @
