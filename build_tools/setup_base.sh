@@ -18,7 +18,7 @@ if [ ! -e ${BUILD_WORK}/${1}/.build_complete ]; then
 	done
 	
 	for pkg in $debs; do
-		if grep -q "darwin" <<< $MEMO_TARGET; then
+		if echo "${MEMO_TARGET}" | grep -q "darwin"; then
 			if ! wget -q -P ${BUILD_DIST} https://apt.procurs.us/pool/main/"${MACOSX_SUITE_NAME}"/${pkg}; then
 				echo "${pkg} is not available, building from source."
 				${MAKE} ${1}
