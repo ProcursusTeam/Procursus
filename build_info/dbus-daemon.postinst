@@ -5,8 +5,17 @@ set -e
 if [ "$1" = configure ]; then
     mkdir -p @MEMO_PREFIX@/var/lib/dbus
     @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/dbus-uuidgen "--ensure=@MEMO_PREFIX@/var/lib/dbus/machine-id"
+fi
+
+if [ $1 = upgrade ]; then
+    /bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/org.freedesktop.dbus-session.plist
+    /bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/org.freedesktop.dbus-session.plist
     chmod 777 $(launchctl getenv DBUS_LAUNCHD_SESSION_BUS_SOCKET | cut -f-4 -d/)
 fi
 
+if [ $1 = install ]; then
+    /bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/org.freedesktop.dbus-session.plist
+    chmod 777 $(launchctl getenv DBUS_LAUNCHD_SESSION_BUS_SOCKET | cut -f-4 -d/)
+fi
 
 exit 0
