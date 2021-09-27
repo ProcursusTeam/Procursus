@@ -12,13 +12,10 @@ diff --git a/bus/org.freedesktop.dbus-session.plist.in b/bus/org.freedesktop.dbu
 index 40ff370d..3c77fa93 100644
 --- a/bus/org.freedesktop.dbus-session.plist.in
 +++ b/bus/org.freedesktop.dbus-session.plist.in
-@@ -5,15 +5,6 @@
+@@ -5,12 +5,6 @@
  	<key>Label</key>
  	<string>org.freedesktop.dbus-session</string>
  
--	<key>ServiceIPC</key>
--	<true/>
--
 -	<!-- Please uncomment on 10.4; OnDemand doesn't work properly there. -->
 -	<!--
 -	<key>OnDemand</key>

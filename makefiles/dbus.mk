@@ -6,6 +6,10 @@ SUBPROJECTS  += dbus
 DBUS_VERSION := 1.12.20
 DEB_DBUS_V   ?= $(DBUS_VERSION)
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+DBUS_PROFILE := /etc/profile.d
+endif
+
 dbus-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://dbus.freedesktop.org/releases/dbus/dbus-$(DBUS_VERSION).tar.gz
 	$(call EXTRACT_TAR,dbus-$(DBUS_VERSION).tar.gz,dbus-$(DBUS_VERSION),dbus)
@@ -42,7 +46,7 @@ dbus-package: dbus-stage
 
 	mkdir -p $(BUILD_DIST)/dbus/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec \
 		$(BUILD_DIST)/dbus-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
-		$(BUILD_DIST)/dbus-daemon/{$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin,$(MEMO_PREFIX)/Library/LaunchDaemons} \
+		$(BUILD_DIST)/dbus-daemon/{$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin,$(MEMO_PREFIX)/Library/LaunchDaemons,$(DBUS_PROFILE)} \
 		$(BUILD_DIST)/dbus-session-bus-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/dbus-1/services \
 		$(BUILD_DIST)/dbus-system-bus-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/dbus-1/system-services \
 		$(BUILD_DIST)/dbus-x11/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
@@ -62,6 +66,9 @@ dbus-package: dbus-stage
 		$(BUILD_DIST)/dbus-daemon/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/dbus/$(MEMO_PREFIX)/Library/LaunchDaemons \
 		$(BUILD_DIST)/dbus-daemon/$(MEMO_PREFIX)/Library/
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+	cp -a $(BUILD_MISC)/dbus/dbus.sh $(BUILD_DIST)/dbus-daemon/etc/profile.d
+endif
 
 	# dbus.mk Prep dbus-session-bus-common
 	cp -a $(BUILD_STAGE)/dbus/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/dbus-1/session.conf \
