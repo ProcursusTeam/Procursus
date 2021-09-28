@@ -48,14 +48,14 @@ endif
 
 xorg-server-package: xorg-server-stage
 	# xorg-server.mk Package Structure
-	rm -rf $(BUILD_DIST)/xserver-xorg-{core,dev} $(BUILD_DIST)/xvfb \
+	rm -rf $(BUILD_DIST)/xserver-xorg-{core,dev} $(BUILD_DIST)/{xvfb,xnest} \
 		$(BUILD_DIST)/xserver-{common,xephyr}
 
 	mkdir -p $(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/xserver-xephyr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
 		$(BUILD_DIST)/xserver-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/xorg,share/man/man1,local} \
-		$(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib/xorg/modules/extensions,share/man/{man5,man1}} \
-		$(BUILD_DIST)/xserver-xorg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pkgconfig,share/aclocal} \
+		$(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib/xorg/modules/input,share/man/{man5,man1}} \
+		$(BUILD_DIST)/xserver-xorg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/{pkgconfig,xorg/modules/input},share/aclocal} \
 		$(BUILD_DIST)/xvfb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
 		$(BUILD_DIST)/xnest/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 	
@@ -72,7 +72,8 @@ xorg-server-package: xorg-server-stage
 	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/gtf.1.zst $(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5/xorg.conf.5.zst $(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5
 	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5/xorg.conf.d.5.zst $(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5
-	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg/modules $(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg/
+	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg/modules/*.so $(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg/modules/
+	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg/modules/input/*.so $(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg/modules/input/
 
 	# xorg-server.mk Prep xvfb
 	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/Xvfb $(BUILD_DIST)/xvfb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
@@ -90,6 +91,8 @@ xorg-server-package: xorg-server-stage
 	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/xserver-xorg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/xorg-server.pc $(BUILD_DIST)/xserver-xorg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal/xorg-server.m4 $(BUILD_DIST)/xserver-xorg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal
+	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg/modules/*.a $(BUILD_DIST)/xserver-xorg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg/modules/
+	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg/modules/input/*.a $(BUILD_DIST)/xserver-xorg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg/modules/input/
 
 	# xorg-server.mk Sign
 	$(call SIGN,xnest,general.xml)
@@ -106,7 +109,7 @@ xorg-server-package: xorg-server-stage
 	$(call PACK,xserver-common,DEB_XORG-SERVER_V)
 	
 	# xorg-server.mk Build cleanup
-	rm -rf $(BUILD_DIST)/xserver-xorg-{core,dev} $(BUILD_DIST)/xvfb \
-		$(BUILD_DIST)/xnest $(BUILD_DIST)/xserver-{common,xephyr}
+	rm -rf $(BUILD_DIST)/xserver-xorg-{core,dev} $(BUILD_DIST)/{xvfb,xnest} \
+		$(BUILD_DIST)/xserver-{common,xephyr}
 
 .PHONY: xorg-server xorg-server-package
