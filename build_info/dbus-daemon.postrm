@@ -4,10 +4,10 @@ set -e
 
 case "$1" in
 	(remove)
-	/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/org.freedesktop.dbus-session.plist
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/org.freedesktop.dbus-session.plist
 	;;
     (purge)
-    /bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/org.freedesktop.dbus-session.plist
+    @MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/org.freedesktop.dbus-session.plist
     rm -f @MEMO_PREFIX@/var/lib/dbus/machine-id
     rmdir /var/lib/dbus || true
     ;;
