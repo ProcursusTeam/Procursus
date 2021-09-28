@@ -684,6 +684,7 @@ AFTER_BUILD = \
 	if [ "$(1)" = "copy" ]; then \
 		cp -af $(BUILD_STAGE)/$@/* $(BUILD_BASE); \
 	fi; \
+	mkdir $(BUILD_WORK)/$@/; \
 	touch $(BUILD_WORK)/$@/.build_complete; \
 	find $(BUILD_BASE) -name '*.la' -type f -delete
 
@@ -856,7 +857,7 @@ else
 $(error Install GNU coreutils)
 endif
 
-ifneq  ($(shell PATH=$(PATH) file -bi $(BUILD_MISC)/launchctl.1700 | grep -q 'x-mach-binary; charset=binary' && echo 1),1)
+ifneq  ($(shell PATH=$(PATH) file -bi $(BUILD_MISC)/launchctl/launchctl.1700 | grep -q 'x-mach-binary; charset=binary' && echo 1),1)
 $(error Install better file from Procursus - sudo apt install file)
 endif
 
