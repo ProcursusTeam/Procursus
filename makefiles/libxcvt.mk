@@ -37,7 +37,6 @@ libxcvt: libxcvt-setup
 		..
 	+ninja -C $(BUILD_WORK)/libxcvt/build
 	+DESTDIR="$(BUILD_STAGE)/libxcvt" ninja -C $(BUILD_WORK)/libxcvt/build install
-	+DESTDIR="$(BUILD_BASE)" ninja -C $(BUILD_WORK)/libxcvt/build install
 	$(call AFTER_BUILD,copy)
 endif
 
@@ -45,18 +44,22 @@ libxcvt-package: libxcvt-stage
 	# libxcvt.mk Package Structure
 	rm -rf $(BUILD_DIST)/libxcvt{0,-dev} $(BUILD_DIST)/xcvt
 	mkdir -p $(BUILD_DIST)/libxcvt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include} \
-	mkdir -p $(BUILD_DIST)/xcvt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
-	mkdir -p $(BUILD_DIST)/libxcvt0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+		$(BUILD_DIST)/xcvt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
+		$(BUILD_DIST)/libxcvt0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxcvt.mk Prep libxcvt0
-	cp -a $(BUILD_STAGE)/libxcvt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libxcvt.dylib $(BUILD_DIST)/libxcvt0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxcvt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libxcvt.dylib \
+		$(BUILD_DIST)/libxcvt0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libxcvt.mk Prep libxcvt-dev
-	cp -a $(BUILD_STAGE)/libxcvt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libxcvt.dylib) $(BUILD_DIST)/libxcvt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libxcvt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libxcvt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/libxcvt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libxcvt.dylib) \
+		$(BUILD_DIST)/libxcvt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libxcvt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libxcvt \
+		$(BUILD_DIST)/libxcvt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 
 	# libxcvt.mk Prep xcvt
-	cp -a $(BUILD_STAGE)/libxcvt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/cvt $(BUILD_DIST)/xcvt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/libxcvt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/cvt \
+		$(BUILD_DIST)/xcvt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 	# libxcvt.mk Sign
 	$(call SIGN,libxcvt0,general.xml)
