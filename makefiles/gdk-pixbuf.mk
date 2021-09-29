@@ -7,7 +7,7 @@ GDK-PIXBUF_VERSION := 2.42.6
 DEB_GDK-PIXBUF_V   ?= $(GDK-PIXBUF_VERSION)
 
 gdk-pixbuf-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://mirror.umd.edu/gnome/sources/gdk-pixbuf/$(shell echo $(GOBJECT-INTROSPECTION_VERSION) | cut -f-2 -d.)/gdk-pixbuf-$(GDK-PIXBUF_VERSION).tar.xz
+	wget -q -nc -P $(BUILD_SOURCE) https://mirror.umd.edu/gnome/sources/gdk-pixbuf/$(shell echo $(GDK-PIXBUF_VERSION) | cut -f-2 -d.)/gdk-pixbuf-$(GDK-PIXBUF_VERSION).tar.xz
 	$(call EXTRACT_TAR,gdk-pixbuf-$(GDK-PIXBUF_VERSION).tar.xz,gdk-pixbuf-$(GDK-PIXBUF_VERSION),gdk-pixbuf)
 	mkdir -p $(BUILD_WORK)/gdk-pixbuf/build
 	echo -e "[host_machine]\n \
@@ -35,8 +35,8 @@ gdk-pixbuf: gdk-pixbuf-setup glib2.0 libpng16 gettext libtiff libjpeg-turbo
 	PKG_CONFIG="pkg-config" meson \
 		--cross-file cross.txt \
 		--wrap-mode=nofallback \
-    	-Ddocs=false \
-    	-Dintrospection=disabled \
+    		-Ddocs=false \
+    		-Dintrospection=disabled \
 		..
 	ninja -C $(BUILD_WORK)/gdk-pixbuf/build
 	+DESTDIR="$(BUILD_STAGE)/gdk-pixbuf" ninja -C $(BUILD_WORK)/gdk-pixbuf/build install
