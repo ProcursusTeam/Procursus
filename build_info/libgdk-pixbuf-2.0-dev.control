@@ -1,0 +1,16 @@
+Package: libgdk-pixbuf-2.0-dev
+Version: @DEB_GDK-PIXBUF_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libgdk-pixbuf-2.0-0 (= @DEB_GDK-PIXBUF_V@), libgdk-pixbuf2.0-bin (= @DEB_GDK-PIXBUF_V@), libglib2.0-dev (>= 2.56.0), libjpeg-dev, libpng-dev, libtiff-dev, shared-mime-info
+Breaks: libgdk-pixbuf2.0-dev (<< 2.40.0+dfsg-6~)
+Replaces: libgdk-pixbuf2.0-dev (<< 2.40.0+dfsg-6~)
+Section: Development
+Priority: optional
+Description: GDK Pixbuf library (development files)
+ The GDK Pixbuf library provides:
+  - Image loading and saving facilities.
+  - Fast scaling and compositing of pixbufs.
+  - Simple animation loading (ie. animated GIFs)
+ .
+ This package contains the header files which are needed for using GDK Pixbuf.
