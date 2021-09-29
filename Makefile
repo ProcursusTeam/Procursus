@@ -779,15 +779,15 @@ ifneq ($(call HAS_COMMAND,triehash),1)
 $(error Install triehash)
 endif
 
-ifneq ($(shell PATH=$(PATH) tar --version | grep -q GNU && echo 1),1)
+ifneq ($(shell PATH="$(PATH)" tar --version | grep -q GNU && echo 1),1)
 $(error Install GNU tar)
 endif
 
-ifneq ($(shell PATH=$(PATH) sed --version | grep -q GNU && echo 1),1)
+ifneq ($(shell PATH="$(PATH)" sed --version | grep -q GNU && echo 1),1)
 $(error Install GNU sed)
 endif
 
-ifneq ($(shell PATH=$(PATH) grep --version | grep -q GNU && echo 1),1)
+ifneq ($(shell PATH="$(PATH)" grep --version | grep -q GNU && echo 1),1)
 $(error Install GNU grep)
 endif
 
@@ -837,27 +837,27 @@ ifneq ($(call HAS_COMMAND,m4),1)
 $(error Install m4)
 endif
 
-ifneq ($(shell PATH=$(PATH) groff --version | grep -q 'version 1.2' && echo 1),1)
+ifneq ($(shell PATH="$(PATH)" groff --version | grep -q 'version 1.2' && echo 1),1)
 $(error Install newer groff)
 endif
 
-ifneq ($(shell PATH=$(PATH) patch --version | grep -q 'GNU patch' && echo 1),1)
+ifneq ($(shell PATH="$(PATH)" patch --version | grep -q 'GNU patch' && echo 1),1)
 $(error Install GNU patch)
 endif
 
-ifneq ($(shell PATH=$(PATH) find --version | grep -q 'GNU find' && echo 1),1)
+ifneq ($(shell PATH="$(PATH)" find --version | grep -q 'GNU find' && echo 1),1)
 $(error Install GNU findutils)
 endif
 
-ifeq ($(shell PATH=$(PATH) install --version | grep -q 'GNU coreutils' && echo 1),1)
-export INSTALL := $(shell PATH=$(PATH) which install) --strip-program=$(STRIP)
+ifeq ($(shell PATH="$(PATH)" install --version | grep -q 'GNU coreutils' && echo 1),1)
+export INSTALL := $(shell PATH="$(PATH)" which install) --strip-program=$(STRIP)
 export LN_S    := ln -sf
 export LN_SR   := ln -sfr
 else
 $(error Install GNU coreutils)
 endif
 
-ifneq  ($(shell PATH=$(PATH) file -bi $(BUILD_MISC)/launchctl/launchctl.1700 | grep -q 'x-mach-binary; charset=binary' && echo 1),1)
+ifneq  ($(shell PATH="$(PATH)" file -bi $(BUILD_MISC)/launchctl/launchctl.1700 | grep -q 'x-mach-binary; charset=binary' && echo 1),1)
 $(error Install better file from Procursus - sudo apt install file)
 endif
 
