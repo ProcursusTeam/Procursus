@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+
+<dict>
+    <key>Label</key>
+    <string>org.a11y.atspi.Registry</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/at-spi2-registryd</string>
+        <string>--use-gnome-session</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+</dict>
+</plist>
