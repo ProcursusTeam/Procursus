@@ -7,7 +7,7 @@ PACKIX_KEYRING_VERSION := 2021.07.19
 DEB_PACKIX_KEYRING_V   ?= $(PACKIX_KEYRING_VERSION)
 
 packix-keyring:
-	@echo "packix-keyring do not need to be built."
+	@echo "packix-keyring does not need to be built."
 
 packix-keyring-package: packix-keyring-stage
 	# packix-keyring.mk Package Structure
