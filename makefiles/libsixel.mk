@@ -9,7 +9,7 @@ DEB_LIBSIXEL_V   ?= $(LIBSIXEL_VERSION)
 libsixel-setup: setup
 	$(call GITHUB_ARCHIVE,saitoha,libsixel,$(LIBSIXEL_VERSION),v$(LIBSIXEL_VERSION))
 	$(call EXTRACT_TAR,libsixel-$(LIBSIXEL_VERSION).tar.gz,libsixel-$(LIBSIXEL_VERSION),libsixel)
-	$(SED) -i 's/x$$build = x$$host/x$$build/' $(BUILD_WORK)/libsixel/configure.ac
+	sed -i 's/x$$build = x$$host/x$$build/' $(BUILD_WORK)/libsixel/configure.ac
 
 ifneq ($(wildcard $(BUILD_WORK)/libsixel/.build_complete),)
 libsixel:
@@ -27,9 +27,7 @@ libsixel: libsixel-setup libpng16 libjpeg-turbo curl libgd
 	+$(MAKE) -C $(BUILD_WORK)/libsixel
 	+$(MAKE) -C $(BUILD_WORK)/libsixel install \
 		DESTDIR="$(BUILD_STAGE)/libsixel"
-	+$(MAKE) -C $(BUILD_WORK)/libsixel install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libsixel-package: libsixel-stage

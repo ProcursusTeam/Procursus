@@ -2,7 +2,7 @@ Package: cargo
 Version: @DEB_RUST_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: rust (=@DEB_RUST_V@), libssl1.1, libcurl4
+Depends: rust (=@DEB_RUST_V@), libssl3, libcurl4
 Section: Development
 Priority: optional
 Homepage: https://www.rust-lang.org/

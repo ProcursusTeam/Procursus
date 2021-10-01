@@ -17,7 +17,7 @@ fortune-mod:
 else
 fortune-mod: .SHELLFLAGS=-O extglob -c
 fortune-mod: fortune-mod-setup librecode
-	$(SED) -i -e 's|{CMAKE_CURRENT_SOURCE_DIR}/fortune|{CMAKE_CURRENT_SOURCE_DIR}/fortunestuff|' -e 's|fortune/|fortunestuff/|' $(BUILD_WORK)/fortune-mod/CMakeLists.txt
+	sed -i -e 's|{CMAKE_CURRENT_SOURCE_DIR}/fortune|{CMAKE_CURRENT_SOURCE_DIR}/fortunestuff|' -e 's|fortune/|fortunestuff/|' $(BUILD_WORK)/fortune-mod/CMakeLists.txt
 	mv $(BUILD_WORK)/fortune-mod/fortune $(BUILD_WORK)/fortune-mod/fortunestuff
 	cd $(BUILD_WORK)/fortune-mod && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \

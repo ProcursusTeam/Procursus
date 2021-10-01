@@ -9,7 +9,7 @@ DEB_LAME_V   ?= $(LAME_VERSION)
 lame-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://downloads.sourceforge.net/lame/lame-$(LAME_VERSION).tar.gz
 	$(call EXTRACT_TAR,lame-$(LAME_VERSION).tar.gz,lame-$(LAME_VERSION),lame)
-	$(SED) -i '/lame_init_old/d' $(BUILD_WORK)/lame/include/libmp3lame.sym
+	sed -i '/lame_init_old/d' $(BUILD_WORK)/lame/include/libmp3lame.sym
 
 ifneq ($(wildcard $(BUILD_WORK)/lame/.build_complete),)
 lame:
@@ -20,13 +20,11 @@ lame: lame-setup ncurses libsndfile
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-dynamic-frontends \
 		--with-fileio=sndfile
-	$(SED) -i 's/-lncurses/-lncursesw/' $(BUILD_WORK)/lame/{,frontend/}Makefile
+	sed -i 's/-lncurses/-lncursesw/' $(BUILD_WORK)/lame/{,frontend/}Makefile
 	+$(MAKE) -C $(BUILD_WORK)/lame
 	+$(MAKE) -C $(BUILD_WORK)/lame install \
 		DESTDIR=$(BUILD_STAGE)/lame
-	+$(MAKE) -C $(BUILD_WORK)/lame install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 lame-package: lame-stage

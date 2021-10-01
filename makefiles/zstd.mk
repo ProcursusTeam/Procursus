@@ -15,17 +15,14 @@ zstd:
 	@echo "Using previously built zstd."
 else
 zstd: zstd-setup lz4 xz
-	$(SED) -i s/'UNAME := $$(shell uname)'/'UNAME := Darwin'/ $(BUILD_WORK)/zstd/lib/Makefile
+	sed -i s/'UNAME := $$(shell uname)'/'UNAME := Darwin'/ $(BUILD_WORK)/zstd/lib/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/zstd install \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR=$(BUILD_STAGE)/zstd
 	+$(MAKE) -C $(BUILD_WORK)/zstd install \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		DESTDIR=$(BUILD_BASE)
-	+$(MAKE) -C $(BUILD_WORK)/zstd/contrib/pzstd install \
-		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR=$(BUILD_STAGE)/zstd
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 zstd-package: zstd-stage

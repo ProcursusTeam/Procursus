@@ -22,9 +22,7 @@ yasm: yasm-setup
 	+$(MAKE) -C $(BUILD_WORK)/yasm
 	+$(MAKE) -C $(BUILD_WORK)/yasm install \
 		DESTDIR=$(BUILD_STAGE)/yasm
-	+$(MAKE) -C $(BUILD_WORK)/yasm install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 yasm-package: yasm-stage

@@ -27,9 +27,7 @@ libtheora: libtheora-setup libogg
 	+$(MAKE) -C $(BUILD_WORK)/libtheora
 	+$(MAKE) -C $(BUILD_WORK)/libtheora install \
 		DESTDIR=$(BUILD_STAGE)/libtheora
-	+$(MAKE) -C $(BUILD_WORK)/libtheora install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libtheora-package: libtheora-stage

@@ -11,13 +11,13 @@ fakeroot-setup: setup
 	$(call EXTRACT_TAR,fakeroot_$(FAKEROOT_VERSION).orig.tar.gz,fakeroot-$(FAKEROOT_VERSION),fakeroot)
 	$(call DO_PATCH,fakeroot,fakeroot,-p1)
 	for file in $(BUILD_WORK)/fakeroot/{communicate.{c,h},faked.c,libfakeroot{,_unix2003}.c,wrapfunc.inp}; do \
-		$(SED) -i 's/struct stat64/struct stat/g' $$file; \
-		$(SED) -i '/_DARWIN_NO_64_BIT_INODE/d' $$file; \
-		$(SED) -i 's/int who/id_t who/g' $$file; \
+		sed -i 's/struct stat64/struct stat/g' $$file; \
+		sed -i '/_DARWIN_NO_64_BIT_INODE/d' $$file; \
+		sed -i 's/int who/id_t who/g' $$file; \
 	done
-	$(SED) -i '/INT_STRUCT_STAT struct stat/d' $(BUILD_WORK)/fakeroot/libfakeroot_unix2003.c
-	$(SED) -i '/$$INODE64/d' $(BUILD_WORK)/fakeroot/wrapfunc.inp
-	$(SED) -i 's/libmacosx.la $$(LTLIBOBJS)/$$(LTLIBOBJS)/g' $(BUILD_WORK)/fakeroot/Makefile.am
+	sed -i '/INT_STRUCT_STAT struct stat/d' $(BUILD_WORK)/fakeroot/libfakeroot_unix2003.c
+	sed -i '/$$INODE64/d' $(BUILD_WORK)/fakeroot/wrapfunc.inp
+	sed -i 's/libmacosx.la $$(LTLIBOBJS)/$$(LTLIBOBJS)/g' $(BUILD_WORK)/fakeroot/Makefile.am
 
 ifneq ($(wildcard $(BUILD_WORK)/fakeroot/.build_complete),)
 fakeroot:
@@ -30,8 +30,8 @@ fakeroot: fakeroot-setup
 		--with-ipc=tcp \
 		ac_cv_func_openat=no \
 		ac_cv_func_fstatat=no
-	$(SED) -i 's/SETGROUPS_SIZE_TYPE unknown/SETGROUPS_SIZE_TYPE int/g' $(BUILD_WORK)/fakeroot/config.h
-	$(SED) -i 's|@SHELL@|$(MEMO_PREFIX)/bin/sh|' $(BUILD_WORK)/fakeroot/scripts/fakeroot.in
+	sed -i 's/SETGROUPS_SIZE_TYPE unknown/SETGROUPS_SIZE_TYPE int/g' $(BUILD_WORK)/fakeroot/config.h
+	sed -i 's|@SHELL@|$(MEMO_PREFIX)/bin/sh|' $(BUILD_WORK)/fakeroot/scripts/fakeroot.in
 	+$(MAKE) -C $(BUILD_WORK)/fakeroot all \
 		CFLAGS='$(CFLAGS) -D__DARWIN_UNIX03 -DMAC_OS_X_VERSION_MIN_REQUIRED=1000'
 	+$(MAKE) -C $(BUILD_WORK)/fakeroot install \

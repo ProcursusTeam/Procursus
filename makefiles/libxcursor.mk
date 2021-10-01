@@ -21,9 +21,7 @@ libxcursor: libxcursor-setup libx11 libxfixes libxrender util-macros
 	+$(MAKE) -C $(BUILD_WORK)/libxcursor
 	+$(MAKE) -C $(BUILD_WORK)/libxcursor install \
 		DESTDIR=$(BUILD_STAGE)/libxcursor
-	+$(MAKE) -C $(BUILD_WORK)/libxcursor install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libxcursor-package: libxcursor-stage

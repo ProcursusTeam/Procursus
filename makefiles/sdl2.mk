@@ -20,9 +20,9 @@ sdl2-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://libsdl.org/release/SDL2-$(SDL2_VERSION).tar.gz
 	$(call EXTRACT_TAR,SDL2-$(SDL2_VERSION).tar.gz,SDL2-$(SDL2_VERSION),sdl2)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(SED) -i -e 's/have_metal=no/have_metal=yes/' -e '/\ CheckMETAL/a CheckHIDAPI' \
+	sed -i -e 's/have_metal=no/have_metal=yes/' -e '/\ CheckMETAL/a CheckHIDAPI' \
 		-e '/framework,UIKit/a EXTRA_LDFLAGS="\$$EXTRA_LDFLAGS -Wl,-framework,IOKit -Wl,-framework,CoreHaptics"' $(BUILD_WORK)/sdl2/configure
-	$(SED) -i 's/#elif __MACOSX__/#elif __APPLE__/' $(BUILD_WORK)/sdl2/src/hidapi/SDL_hidapi.c
+	sed -i 's/#elif __MACOSX__/#elif __APPLE__/' $(BUILD_WORK)/sdl2/src/hidapi/SDL_hidapi.c
 endif
 
 ifneq ($(wildcard $(BUILD_WORK)/sdl2/.build_complete),)
@@ -40,9 +40,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 endif
 	+$(MAKE) -C $(BUILD_WORK)/sdl2 install \
 		DESTDIR=$(BUILD_STAGE)/sdl2
-	+$(MAKE) -C $(BUILD_WORK)/sdl2 install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 sdl2-package: sdl2-stage

@@ -3,7 +3,7 @@ Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LIBEVENT_V@
 Section: Libraries
-Depends: libevent-core-2.1-7, libssl1.1
+Depends: libevent-core-2.1-7, libssl3
 Description: Asynchronous event notification library (openssl)
  Libevent is an asynchronous event notification library that provides a
  mechanism to execute a callback function when a specific event occurs
