@@ -20,9 +20,7 @@ libpthread-stubs: libpthread-stubs-setup
 	+$(MAKE) -C $(BUILD_WORK)/libpthread-stubs
 	+$(MAKE) -C $(BUILD_WORK)/libpthread-stubs install \
 		DESTDIR=$(BUILD_STAGE)/libpthread-stubs
-	+$(MAKE) -C $(BUILD_WORK)/libpthread-stubs install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libpthread-stubs-package: libpthread-stubs-stage

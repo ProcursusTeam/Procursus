@@ -24,9 +24,7 @@ lame: lame-setup ncurses libsndfile
 	+$(MAKE) -C $(BUILD_WORK)/lame
 	+$(MAKE) -C $(BUILD_WORK)/lame install \
 		DESTDIR=$(BUILD_STAGE)/lame
-	+$(MAKE) -C $(BUILD_WORK)/lame install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 lame-package: lame-stage

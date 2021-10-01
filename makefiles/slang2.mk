@@ -26,9 +26,7 @@ slang2: slang2-setup libpng16 pcre libonig
 	+$(MAKE) -C $(BUILD_WORK)/slang2 all
 	+$(MAKE) -C $(BUILD_WORK)/slang2 -j1 install \
 		DESTDIR=$(BUILD_STAGE)/slang2
-	+$(MAKE) -C $(BUILD_WORK)/slang2 -j1 install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 slang2-package: slang2-stage

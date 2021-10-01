@@ -22,10 +22,7 @@ libebml: libebml-setup
 	+$(MAKE) -C $(BUILD_WORK)/libebml
 	+$(MAKE) -C $(BUILD_WORK)/libebml install \
 		DESTDIR="$(BUILD_STAGE)/libebml"
-	+$(MAKE) -C $(BUILD_WORK)/libebml install \
-		DESTDIR="$(BUILD_BASE)"
-
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libebml-package: libebml-stage
