@@ -2,7 +2,7 @@ Package: libimobiledevice6
 Version: @DEB_LIBIMOBILEDEVICE_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libssl1.1 (>= 1.1.0), libplist3 (>= 2.2.0), libusbmuxd6 (>= 2.0.2)
+Depends: libssl3 (>= 1.1.0), libplist3 (>= 2.2.0), libusbmuxd6 (>= 2.0.2)
 Section: Development
 Priority: standard
 Description: Library for communicating with iPhone and other Apple devices

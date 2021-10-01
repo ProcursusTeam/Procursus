@@ -26,9 +26,7 @@ cwidget: cwidget-setup gettext ncurses libsigcplusplus
 		LIBS="-lncursesw  -lpthread -lsigc-2.0 -liconv -lintl -Wl,-framework -Wl,CoreFoundation"
 	+$(MAKE) -C $(BUILD_WORK)/cwidget install \
 		DESTDIR="$(BUILD_STAGE)/cwidget"
-	+$(MAKE) -C $(BUILD_WORK)/cwidget install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 cwidget-package: cwidget-stage
