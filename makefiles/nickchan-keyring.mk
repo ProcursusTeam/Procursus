@@ -7,7 +7,7 @@ NICKCHAN_KEYRING_VERSION  := 2021.08.06
 DEB_NICKCHAN_KEYRING_V    ?= $(NICKCHAN_KEYRING_VERSION)
 
 nickchan-keyring:
-	@echo "nickchan-keyring do not need to be built."
+	@echo "nickchan-keyring does not need to be built."
 
 nickchan-keyring-package: nickchan-keyring-stage
 	# nickchan-keyring.mk Package Structure
