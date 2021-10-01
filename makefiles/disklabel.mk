@@ -9,8 +9,8 @@ DEB_DISKLABEL_V   ?= $(DISKLABEL_VERSION)
 disklabel-setup: setup
 	wget -q -nc -P$(BUILD_SOURCE) https://opensource.apple.com/tarballs/disklabel/disklabel-$(DISKLABEL_VERSION).tar.gz
 	$(call EXTRACT_TAR,disklabel-$(DISKLABEL_VERSION).tar.gz,disklabel-$(DISKLABEL_VERSION),disklabel)
-	$(SED) -i 's|#include <Kernel/libkern/OSByteOrder.h>|#include <libkern/OSByteOrder.h>|g' $(BUILD_WORK)/disklabel/util.c
-	mkdir -p $(BUILD_STAGE)/disklabel/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{sbin,share/man/man8}
+	sed -i 's|#include <Kernel/libkern/OSByteOrder.h>|#include <libkern/OSByteOrder.h>|g' $(BUILD_WORK)/disklabel/util.c
+	mkdir -p $(BUILD_STAGE)/disklabel/$(MEMO_PREFIX)/{sbin,$(MEMO_SUB_PREFIX)/share/man/man8}
 
 ifneq ($(wildcard $(BUILD_WORK)/disklabel/.build_complete),)
 disklabel:
@@ -18,7 +18,7 @@ disklabel:
 else
 disklabel: disklabel-setup
 	cd $(BUILD_WORK)/disklabel; \
-	$(CC) $(CFLAGS) $(LDFLAGS) {create,destroy,main,props,status,util}.c -lutil -lz -framework CoreFoundation -o $(BUILD_STAGE)/disklabel/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/disklabel; \
+	$(CC) $(CFLAGS) $(LDFLAGS) {create,destroy,main,props,status,util}.c -lutil -lz -framework CoreFoundation -o $(BUILD_STAGE)/disklabel/$(MEMO_PREFIX)/sbin/disklabel; \
 	$(INSTALL) -m644 disklabel.8 $(BUILD_STAGE)/disklabel/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
 	$(call AFTER_BUILD)
 endif
