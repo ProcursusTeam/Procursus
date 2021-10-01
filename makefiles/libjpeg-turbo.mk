@@ -24,9 +24,7 @@ libjpeg-turbo: libjpeg-turbo-setup
 	+$(MAKE) -C $(BUILD_WORK)/libjpeg-turbo
 	+$(MAKE) -C $(BUILD_WORK)/libjpeg-turbo install \
 		DESTDIR="$(BUILD_STAGE)/libjpeg-turbo"
-	+$(MAKE) -C $(BUILD_WORK)/libjpeg-turbo install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libjpeg-turbo-package: libjpeg-turbo-stage

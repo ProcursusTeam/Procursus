@@ -1,97 +1,83 @@
-From:	Mingye Wang
-Subject:	[PATCH] [RFC] cp: MacOS clonefile support
-Date:	Sun, 23 Aug 2020 02:10:12 +0800
-This patch enables using the macOS 10.12+ clonefile(2) system call for
-reflinking on supported filesystems. The system BSD cp(1) only
-supports -c (--reflink=always), which is quite a pain.
-
-Tested on a hackintosh machine with macOS 10.15. And yes, this is a
-resubmission.
----
- src/copy.c   | 45 ++++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 58 insertions(+), 1 deletion(-)
-
-diff --git a/src/copy.c b/src/copy.c
-index 4050f69..fad8189 100644
---- a/src/copy.c
-+++ b/src/copy.c
-@@ -73,6 +73,11 @@
+--- joe/coreutils-8.32/src/copy.c	2020-01-01 06:13:12.000000000 -0800
++++ coreutils-8.32/src/copy.c	2021-09-07 15:51:23.000000000 -0700
+@@ -22,6 +22,7 @@
+ #include <sys/ioctl.h>
+ #include <sys/types.h>
+ #include <selinux/selinux.h>
++#include <unistd.h>
+ 
+ #if HAVE_HURD_H
+ # include <hurd.h>
+@@ -73,6 +74,10 @@
  # include "verror.h"
  #endif
  
-+#if __APPLE__
-+# include <sys/attr.h>
-+# include <sys/clonefile.h>
++#ifdef __APPLE__
++#include <sys/clonefile.h>
 +#endif
 +
  #if HAVE_LINUX_FALLOC_H
  # include <linux/falloc.h>
  #endif
-@@ -1311,12 +1316,48 @@ copy_reg (char const *src_name, char const *dst_name,
-       goto close_src_desc;
-     }
- 
-+#if __APPLE__
-+  /* The macOS clonefile() syscall is like link in that it takes
-+     pathnames. Do it first. */
-+  if (data_copy_required && x->reflink_mode)
-+    {
-+      bool clone_ok = false;
-+      if (! *new_dst)
-+        {
-+          if (unlink(dst_name) != 0)
-+            {
-+              error (0, errno, _("cannot remove %s"), quoteaf (dst_name));
-+              goto noclone;
-+            }
-+          if (x->verbose)
-+            printf (_("removed %s\n"), quoteaf (dst_name));
-+        }
-+      uint32_t cloneflags = 0;
-+      if (x->dereference == DEREF_NEVER) cloneflags |= CLONE_NOFOLLOW;
-+      /* CLONE_NOOWNERCOPY (0x0002) is recently added with no specific
-+       * date. Let's not feed ourselves to Apple-versioning. */
-+      clone_ok = clonefile (src_name, dst_name, cloneflags) == 0;
-+      noclone:;
-+      if (clone_ok || x->reflink_mode == REFLINK_ALWAYS)
-+        {
-+          if (!clone_ok)
-+            {
-+              error (0, errno, _("failed to clone %s from %s"),
-+                     quoteaf_n (0, dst_name), quoteaf_n (1, src_name));
-+              return false;
-+            }
-+          data_copy_required = false;
-+          *new_dst = false;
-+        }
-+    }
-+#endif
+@@ -369,6 +374,61 @@
+ {
+ #ifdef FICLONE
+   return ioctl (dest_fd, FICLONE, src_fd);
++#elif defined __APPLE__
++  int ret = 0;
++  // This just emulates the ioctl, so that the interface is forwards compatible for later.
++  // This also assumes that dest_fd points to an empty file, and that src_fd exists.
++  struct stat dest_stat;
++  if (fstat(dest_fd, &dest_stat) == -1)
++      return -1;
 +
-   /* The semantics of the following open calls are mandated
-      by the specs for both cp and mv.  */
-   if (! *new_dst)
-     {
-       int open_flags =
--        O_WRONLY | O_BINARY | (x->data_copy_required ? O_TRUNC : 0);
-+        O_WRONLY | O_BINARY | (data_copy_required ? O_TRUNC : 0);
-       dest_desc = open (dst_name, open_flags);
-       dest_errno = errno;
- 
-@@ -1453,6 +1494,7 @@ copy_reg (char const *src_name, char const *dst_name,
-       goto close_src_and_dst_desc;
-     }
- 
-+#if ! __APPLE__
-   /* --attributes-only overrides --reflink.  */
-   if (data_copy_required && x->reflink_mode)
-     {
-@@ -1469,6 +1511,7 @@ copy_reg (char const *src_name, char const *dst_name,
-           data_copy_required = false;
-         }
-     }
-+#endif
- 
-   if (data_copy_required)
-     {
--- 
-2.20.1.windows.1
++  // Check if fd is a regular file
++  if (!S_ISREG(dest_stat.st_mode))
++      return -1;
++
++  char srcpath[PATH_MAX];
++  char destpath[PATH_MAX];
++  if (fcntl(src_fd, F_GETPATH, srcpath) == -1 || fcntl(dest_fd, F_GETPATH, destpath) == -1)
++      return -1;
++
++  struct timeval times[2];
++
++  TIMESPEC_TO_TIMEVAL(&times[0], &(dest_stat.st_atimespec));
++  TIMESPEC_TO_TIMEVAL(&times[1], &(dest_stat.st_mtimespec));
++
++  // Unlink dest_fd, since clonefile(3) requires the destpath to not exist
++  unlink(destpath);
++  if (clonefile(srcpath, destpath, 0)) {
++      ret = -1;
++      // If clonefile(3) fails, creat() a new file with the same path, 
++      // assign it the same mode as the original dest_fd, 
++      // and dup2 it to the original dest_fd as well, just 
++      // so that it appears dest_fd has not been changed.
++      int newfile = creat(destpath, dest_stat.st_mode);
++      if (newfile < 0)
++          return -1;
++
++      close(newfile);
++  }
++
++  int newfd = open(destpath, O_RDWR);
++  if (newfd < 0)
++      return -1;
++
++  if (dup2(newfd, dest_fd) == -1) {
++      close(newfd);
++      return -1;
++  }
++
++  close(newfd);
++
++  if (fchmod(dest_fd, dest_stat.st_mode) == -1 || fchown(dest_fd, dest_stat.st_uid, dest_stat.st_gid) == -1)
++      return -1;
++
++  if (futimes(dest_fd, times) == -1)
++      return -1;
++
++  return ret;
+ #else
+   (void) dest_fd;
+   (void) src_fd;

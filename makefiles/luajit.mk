@@ -17,8 +17,8 @@ endif
 luajit-setup: setup
 	$(call GITHUB_ARCHIVE,LuaJIT,LuaJIT,$(LUAJIT_COMMIT),$(LUAJIT_COMMIT))
 	$(call EXTRACT_TAR,LuaJIT-$(LUAJIT_COMMIT).tar.gz,LuaJIT-$(LUAJIT_COMMIT),luajit)
-	$(SED) -i 's/#BUILDMODE= dynamic/BUILDMODE= dynamic/' $(BUILD_WORK)/luajit/src/Makefile
-	$(SED) -i 's/#define LJ_OS_NOJIT		1/#undef LJ_OS_NOJIT/' $(BUILD_WORK)/luajit/src/lj_arch.h
+	sed -i 's/#BUILDMODE= dynamic/BUILDMODE= dynamic/' $(BUILD_WORK)/luajit/src/Makefile
+	sed -i 's/#define LJ_OS_NOJIT		1/#undef LJ_OS_NOJIT/' $(BUILD_WORK)/luajit/src/lj_arch.h
 
 ifneq ($(wildcard $(BUILD_WORK)/luajit/.build_complete),)
 luajit:
@@ -36,11 +36,8 @@ luajit: luajit-setup
 	+$(MAKE) -C $(BUILD_WORK)/luajit install \
 		DESTDIR="$(BUILD_STAGE)/luajit" \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	+$(MAKE) -C $(BUILD_WORK)/luajit install \
-		DESTDIR="$(BUILD_BASE)" \
-		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	mv $(BUILD_STAGE)/luajit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/luajit-$(LUAJIT_VERSION) $(BUILD_STAGE)/luajit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/luajit
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 luajit-package: luajit-stage

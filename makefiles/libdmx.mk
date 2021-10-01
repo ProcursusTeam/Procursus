@@ -23,9 +23,7 @@ libdmx: libdmx-setup libx11 libxext
 	+$(MAKE) -C $(BUILD_WORK)/libdmx
 	+$(MAKE) -C $(BUILD_WORK)/libdmx install \
 		DESTDIR=$(BUILD_STAGE)/libdmx
-	+$(MAKE) -C $(BUILD_WORK)/libdmx install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libdmx-package: libdmx-stage

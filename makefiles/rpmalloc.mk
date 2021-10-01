@@ -22,11 +22,11 @@ rpmalloc: rpmalloc-setup
 	$(INSTALL) -Dm0755 $(BUILD_WORK)/rpmalloc/librpmalloc.0.dylib $(BUILD_STAGE)/rpmalloc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librpmalloc.0.dylib
 	$(INSTALL) -Dm0644 $(BUILD_WORK)/rpmalloc/librpmalloc.a $(BUILD_STAGE)/rpmalloc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librpmalloc.a
 	$(INSTALL) -Dm0644 $(BUILD_WORK)/rpmalloc/rpmalloc.h $(BUILD_STAGE)/rpmalloc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/rpmalloc.h
-	$(LN) -s librpmalloc.0.dylib $(BUILD_STAGE)/rpmalloc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librpmalloc.dylib
+	$(LN_S) librpmalloc.0.dylib $(BUILD_STAGE)/rpmalloc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librpmalloc.dylib
 	$(INSTALL) -Dm0755 $(BUILD_WORK)/rpmalloc/librpmalloc.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librpmalloc.0.dylib
 	$(INSTALL) -Dm0644 $(BUILD_WORK)/rpmalloc/librpmalloc.a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librpmalloc.a
 	$(INSTALL) -Dm0644 $(BUILD_WORK)/rpmalloc/rpmalloc.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/rpmalloc.h
-	$(LN) -s librpmalloc.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librpmalloc.dylib
+	$(LN_S) librpmalloc.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librpmalloc.dylib
 	$(call AFTER_BUILD)
 endif
 

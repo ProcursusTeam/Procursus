@@ -4,11 +4,11 @@ set -e
 
 case "$1" in
     (install)
-    /bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/net.howett.ghostbin.plist
+    @MEMO_LAUNCHCTL_PREFIX@/bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/net.howett.ghostbin.plist
     ;;
 	(upgrade)
-	/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/net.howett.ghostbin.plist
-    /bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/net.howett.ghostbin.plist
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/net.howett.ghostbin.plist
+    @MEMO_LAUNCHCTL_PREFIX@/bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/net.howett.ghostbin.plist
 	;;
 	(*)
 	exit 0

@@ -10,10 +10,9 @@ DEB_LIBFRAGMENTZIP_V   ?= $(LIBFRAGMENTZIP_VERSION)-3
 libfragmentzip-setup: setup
 	$(call GITHUB_ARCHIVE,tihmstar,libfragmentzip,$(LIBFRAGMENTZIP_VERSION),$(LIBFRAGMENTZIP_VERSION))
 	$(call EXTRACT_TAR,libfragmentzip-$(LIBFRAGMENTZIP_VERSION).tar.gz,libfragmentzip-$(LIBFRAGMENTZIP_VERSION),libfragmentzip)
-	
-	$(SED) -i 's/@libz_requires@//;s/\(Libs:.*\)/\1 -lz/' $(BUILD_WORK)/libfragmentzip/libfragmentzip.pc.in
-	$(SED) -i 's/git rev\-list \-\-count HEAD/printf ${LIBFRAGMENTZIP_VERSION}/g' $(BUILD_WORK)/libfragmentzip/configure.ac
-	$(SED) -i 's/git rev\-parse HEAD/printf ${LIBFRAGMENTZIP_COMMIT}/g' $(BUILD_WORK)/libfragmentzip/configure.ac
+	sed -i 's/@libz_requires@//;s/\(Libs:.*\)/\1 -lz/' $(BUILD_WORK)/libfragmentzip/libfragmentzip.pc.in
+	sed -i 's/git rev\-list \-\-count HEAD/printf ${LIBFRAGMENTZIP_VERSION}/g' $(BUILD_WORK)/libfragmentzip/configure.ac
+	sed -i 's/git rev\-parse HEAD/printf ${LIBFRAGMENTZIP_COMMIT}/g' $(BUILD_WORK)/libfragmentzip/configure.ac
 
 ifneq ($(wildcard $(BUILD_WORK)/libfragmentzip/.build_complete),)
 libfragmentzip:
@@ -27,9 +26,7 @@ libfragmentzip: libfragmentzip-setup libgeneral libzip curl
 	+$(MAKE) -C $(BUILD_WORK)/libfragmentzip
 	+$(MAKE) -C $(BUILD_WORK)/libfragmentzip install \
 		DESTDIR="$(BUILD_STAGE)/libfragmentzip"
-	+$(MAKE) -C $(BUILD_WORK)/libfragmentzip install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libfragmentzip-package: libfragmentzip-stage

@@ -22,9 +22,7 @@ imlib2: imlib2-setup freetype libgif libjpeg-turbo libpng16 libtiff libx11 libxc
 	+$(MAKE) -C $(BUILD_WORK)/imlib2
 	+$(MAKE) -C $(BUILD_WORK)/imlib2 install \
 		DESTDIR=$(BUILD_STAGE)/imlib2
-	+$(MAKE) -C $(BUILD_WORK)/imlib2 install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 imlib2-package: imlib2-stage
