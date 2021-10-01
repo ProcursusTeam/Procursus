@@ -9,7 +9,7 @@ DEB_OVH_TTYREC_V   ?= $(OVH_TTYREC_VERSION)
 ovh-ttyrec-setup: setup
 	$(call GITHUB_ARCHIVE,ovh,ovh-ttyrec,$(OVH_TTYREC_VERSION),v$(OVH_TTYREC_VERSION))
 	$(call EXTRACT_TAR,ovh-ttyrec-$(OVH_TTYREC_VERSION).tar.gz,ovh-ttyrec-$(OVH_TTYREC_VERSION),ovh-ttyrec)
-	$(SED) -i '1 i\#define SIGWINCH 28' $(BUILD_WORK)/ovh-ttyrec/ttyrec.c
+	sed -i '1 i\#define SIGWINCH 28' $(BUILD_WORK)/ovh-ttyrec/ttyrec.c
 
 ifneq ($(wildcard $(BUILD_WORK)/ovh-ttyrec/.build_complete),)
 ovh-ttyrec:
