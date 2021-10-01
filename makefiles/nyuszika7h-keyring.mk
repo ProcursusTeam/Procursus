@@ -7,7 +7,7 @@ NYUSZIKA7H_KEYRING_VERSION  := 2021.07.14
 DEB_NYUSZIKA7H_KEYRING_V    ?= $(NYUSZIKA7H_KEYRING_VERSION)
 
 nyuszika7h-keyring:
-	@echo "nyuszika7h-keyring do not need to be built."
+	@echo "nyuszika7h-keyring does not need to be built."
 
 nyuszika7h-keyring-package: nyuszika7h-keyring-stage
 	# nyuszika7h-keyring.mk Package Structure
