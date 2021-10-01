@@ -10,7 +10,7 @@ DEB_GHOSTBIN_V    ?= $(GHOSTBIN_VERSION)-1
 ghostbin-setup: setup
 	$(call GITHUB_ARCHIVE,DHowett,spectre,v$(GHOSTBIN_COMMIT),$(GHOSTBIN_COMMIT),ghostbin)
 	$(call EXTRACT_TAR,ghostbin-v$(GHOSTBIN_COMMIT).tar.gz,spectre-$(GHOSTBIN_COMMIT),ghostbin)
-	$(SED) -i '/account creation has been disabled/,+3d' $(BUILD_WORK)/ghostbin/auth.go
+	sed -i '/account creation has been disabled/,+3d' $(BUILD_WORK)/ghostbin/auth.go
 
 ifneq ($(wildcard $(BUILD_WORK)/ghostbin/.build_complete),)
 ghostbin:
@@ -32,8 +32,8 @@ endif
 
 	for file in $(BUILD_STAGE)/ghostbin/$(MEMO_PREFIX)/Library/LaunchDaemons/* \
 		$(BUILD_STAGE)/ghostbin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
-			$(SED) -i 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' $$file; \
-			$(SED) -i 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $$file; \
+			sed -i 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' $$file; \
+			sed -i 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $$file; \
 	done
 
 	$(call AFTER_BUILD)

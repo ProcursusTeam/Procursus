@@ -41,15 +41,12 @@ libvpx: libvpx-setup
 	+$(MAKE) -C $(BUILD_WORK)/libvpx
 	+$(MAKE) -C $(BUILD_WORK)/libvpx install \
 		DESTDIR=$(BUILD_STAGE)/libvpx
-	+$(MAKE) -C $(BUILD_WORK)/libvpx install \
-		DESTDIR=$(BUILD_BASE)
 
 	for bin in $(BUILD_STAGE)/libvpx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
 		$(I_N_T) -change libvpx.6.dylib /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib $$bin; \
 	done
 	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib $(BUILD_STAGE)/libvpx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib
-	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libvpx-package: libvpx-stage

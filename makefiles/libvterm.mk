@@ -28,9 +28,7 @@ libvterm: libvterm-setup
 		LIBTOOL="$(BUILD_WORK)/libvterm/libtool/libtool"
 	+$(MAKE) -C $(BUILD_WORK)/libvterm install PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR="$(BUILD_STAGE)/libvterm"
-	+$(MAKE) -C $(BUILD_WORK)/libvterm install PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libvterm-package: libvterm-stage

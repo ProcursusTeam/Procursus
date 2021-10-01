@@ -22,12 +22,14 @@ ifeq ($(shell [ $(MEMO_CFVER) -ge 1700 ] && echo 1),1)
 	$(call GITHUB_ARCHIVE,Halo-Michael,bindfs,$(BINDFS_VERSION),$(BINDFS_VERSION))
 	$(call EXTRACT_TAR,bindfs-$(BINDFS_VERSION).tar.gz,bindfs-$(BINDFS_VERSION),bindfs)
 endif
-	$(SED) -i -e '/#include <TargetConditionals.h>/d' \
+	sed -i -e '/#include <TargetConditionals.h>/d' \
 		$(BUILD_WORK)/diskdev-cmds/edt_fstab/edt_fstab.h \
 		$(BUILD_WORK)/diskdev-cmds/fsck.tproj/fsck.c
-	$(SED) -i -e '/TARGET_OS_OSX/d' \
+	sed -i 's/TARGET_OS_IPHONE/WHOISJOE/g' \
+		$(BUILD_WORK)/diskdev-cmds/fsck.tproj/fsck.c
+	sed -i -e '/TARGET_OS_OSX/d' \
 		$(BUILD_WORK)/diskdev-cmds/disklib/preen.c
-	mkdir -p $(BUILD_STAGE)/diskdev-cmds/{usr/{{s,}bin,libexec,share/man/man{1,5,8}},sbin}
+	mkdir -p $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)/{$(MEMO_SUB_PREFIX)/{{s,}bin,libexec,share/man/man{1,5,8}},sbin}
 
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/diskdev-cmds/include/{arm,machine,{System/,}sys,uuid}
@@ -61,7 +63,7 @@ diskdev-cmds: diskdev-cmds-setup
 	rm -f mntopts.h getmntopts.c; \
 	for arch in $(MEMO_ARCH); do \
 		for c in *.c; do \
-			$(CC) -arch $${arch} -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem ../include -fno-common -o $$(basename $${c} .c)-$${arch}.o -c $${c}; \
+			$(CC) $(CFLAGS) -isystem ../include -fno-common -o $$(basename $${c} .c)-$${arch}.o -c $${c}; \
 		done; \
 		$(AR) -r libdisk-$${arch}.a *-$${arch}.o; \
 		LIBDISKA=$$(echo disklib/libdisk-$${arch}.a $${LIBDISKA}); \
@@ -83,12 +85,12 @@ diskdev-cmds: diskdev-cmds-setup
 		if [[ $$tproj = vsdbutil ]]; then \
 			extra="${extra} mount_flags_dir/mount_flags.c"; \
 		fi; \
-		$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -DTARGET_OS_SIMULATOR -Idisklib -o $$tproj $$(find "$$tproj.tproj" -name '*.c') $${LIBDISKA} $(LIBIOSEXEC_TBD) -lutil $$extra; \
+		$(CC) $(CFLAGS) -isystem include -Idisklib -o $$tproj $$(find "$$tproj.tproj" -name '*.c') $(LDFLAGS) $${LIBDISKA} -lutil $$extra; \
 	done
 	cd $(BUILD_WORK)/diskdev-cmds/fstyp.tproj; \
 	for c in *.c; do \
 		bin=../$$(basename $$c .c); \
-		$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem ../include $(LIBIOSEXEC_TBD) -o $$bin $$c; \
+		$(CC) $(CFLAGS) -isystem ../include -o $$bin $$c; \
 	done
 ifeq ($(shell [ $(MEMO_CFVER) -ge 1700 ] && echo 1),1)
 	cd $(BUILD_WORK)/bindfs && \
@@ -130,9 +132,9 @@ endif
 
 	# diskdev-cmds.mk Make .debs
 ifneq ($(shell [ $(MEMO_CFVER) -ge 1700 ] && echo 1),1)
-	$(SED) -e '/com.michael.bindfs\|firmware (>= 14.0)/d' $(BUILD_INFO)/diskdev-cmds.control.in > $(BUILD_INFO)/diskdev-cmds.control
+	sed -e '/com.michael.bindfs\|firmware (>= 14.0)/d' $(BUILD_INFO)/diskdev-cmds.control.in > $(BUILD_INFO)/diskdev-cmds.control
 else
-	$(SED) -e 's/@BINDFS_VERSION@/$(BINDFS_VERSION)/g' $(BUILD_INFO)/diskdev-cmds.control.in > $(BUILD_INFO)/diskdev-cmds.control
+	sed -e 's/@BINDFS_VERSION@/$(BINDFS_VERSION)/g' $(BUILD_INFO)/diskdev-cmds.control.in > $(BUILD_INFO)/diskdev-cmds.control
 endif
 	$(call PACK,diskdev-cmds,DEB_DISKDEV-CMDS_V)
 

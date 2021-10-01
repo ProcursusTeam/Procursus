@@ -22,12 +22,7 @@ argon2: argon2-setup
 		KERNEL_NAME="Darwin" \
 		OPTTARGET="aarch64"
 	rm -f $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libargon2.dylib
-	+$(MAKE) -C $(BUILD_WORK)/argon2/ install \
-		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		DESTDIR=$(BUILD_BASE) \
-		KERNEL_NAME="Darwin" \
-		OPTTARGET="aarch64"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 argon2-package: argon2-stage

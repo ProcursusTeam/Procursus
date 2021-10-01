@@ -21,9 +21,7 @@ xauth: xauth-setup libx11 libxau libxext libxmu xorgproto
 	+$(MAKE) -C $(BUILD_WORK)/xauth
 	+$(MAKE) -C $(BUILD_WORK)/xauth install \
 		DESTDIR=$(BUILD_STAGE)/xauth
-	+$(MAKE) -C $(BUILD_WORK)/xauth install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 xauth-package: xauth-stage

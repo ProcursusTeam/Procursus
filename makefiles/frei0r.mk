@@ -22,10 +22,8 @@ frei0r: frei0r-setup cairo
 	+$(MAKE) -C $(BUILD_WORK)/frei0r
 	+$(MAKE) -C $(BUILD_WORK)/frei0r install \
 		DESTDIR=$(BUILD_STAGE)/frei0r
-	+$(MAKE) -C $(BUILD_WORK)/frei0r install \
-		DESTDIR=$(BUILD_BASE)
 	for file in $(BUILD_STAGE)/frei0r/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/frei0r-1/*.so ; do mv $$file "$${file%.*}.dylib" ; done
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 frei0r-package: frei0r-stage

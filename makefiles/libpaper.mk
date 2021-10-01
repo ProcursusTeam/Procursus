@@ -21,9 +21,7 @@ libpaper: libpaper-setup
 	+$(MAKE) -C $(BUILD_WORK)/libpaper
 	+$(MAKE) -C $(BUILD_WORK)/libpaper install \
 		DESTDIR="$(BUILD_STAGE)/libpaper"
-	+$(MAKE) -C $(BUILD_WORK)/libpaper install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libpaper-package: libpaper-stage

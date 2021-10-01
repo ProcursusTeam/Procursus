@@ -17,9 +17,9 @@ libmpack-lua-setup: setup
 	$(call EXTRACT_TAR,libmpack-lua-$(LIBMPACK-LUA_VERSION).tar.gz,libmpack-lua-$(LIBMPACK-LUA_VERSION),libmpack-lua/buildjit)
 	$(call EXTRACT_TAR,libmpack-lua-$(LIBMPACK-LUA_VERSION).tar.gz,libmpack-lua-$(LIBMPACK-LUA_VERSION),libmpack-lua/buildjit/bundle)
 	for ver in {1..3}; do \
-		$(SED) -i 's/mpack.so/liblua5.'$$ver'-mpack.0.dylib/' $(BUILD_WORK)/libmpack-lua/build5$$ver/Makefile; \
+		sed -i 's/mpack.so/liblua5.'$$ver'-mpack.0.dylib/' $(BUILD_WORK)/libmpack-lua/build5$$ver/Makefile; \
 	done
-	$(SED) -i 's/mpack.so/libluajit-5.1-mpack.0.dylib/' $(BUILD_WORK)/libmpack-lua/buildjit/Makefile
+	sed -i 's/mpack.so/libluajit-5.1-mpack.0.dylib/' $(BUILD_WORK)/libmpack-lua/buildjit/Makefile
 	mkdir -p $(BUILD_STAGE)/libmpack-lua/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 
 ifneq ($(wildcard $(BUILD_WORK)/libmpack-lua/.build_complete),)
@@ -43,7 +43,7 @@ libmpack-lua: libmpack-lua-setup libmpack lua5.1 lua5.2 lua5.3 luajit
 			LUA_CMOD_INSTALLDIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/lua/5.$$ver \
 			DESTDIR=$(BUILD_STAGE)/libmpack-lua; \
 		$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.$$ver-mpack.0.dylib $(BUILD_STAGE)/libmpack-lua/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.$$ver-mpack.0.dylib; \
-		$(LN) -sf liblua5.$$ver-mpack.0.dylib $(BUILD_STAGE)/libmpack-lua/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.$$ver-mpack.dylib; \
+		$(LN_S) liblua5.$$ver-mpack.0.dylib $(BUILD_STAGE)/libmpack-lua/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.$$ver-mpack.dylib; \
 	done
 	$(MAKE) -C $(BUILD_WORK)/libmpack-lua/buildjit install \
 		USE_SYSTEM_MPACK=1 \
@@ -53,7 +53,7 @@ libmpack-lua: libmpack-lua-setup libmpack lua5.1 lua5.2 lua5.3 luajit
 		LUA_CMOD_INSTALLDIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		DESTDIR=$(BUILD_STAGE)/libmpack-lua
 	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit-5.1-mpack.0.dylib $(BUILD_STAGE)/libmpack-lua/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit-5.1-mpack.0.dylib
-	$(LN) -sf libluajit-5.1-mpack.0.dylib $(BUILD_STAGE)/libmpack-lua/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit-5.1-mpack.dylib
+	$(LN_S) libluajit-5.1-mpack.0.dylib $(BUILD_STAGE)/libmpack-lua/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit-5.1-mpack.dylib
 	$(call AFTER_BUILD)
 endif
 

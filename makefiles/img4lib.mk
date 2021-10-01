@@ -10,13 +10,13 @@ DEB_IMG4LIB_V   ?= $(IMG4LIB_VERSION)-1
 img4lib-setup: setup
 	$(call GITHUB_ARCHIVE,xerub,img4lib,v$(IMG4LIB_COMMIT),$(IMG4LIB_COMMIT))
 	$(call EXTRACT_TAR,img4lib-v$(IMG4LIB_COMMIT).tar.gz,img4lib-$(IMG4LIB_COMMIT),img4lib)
-	$(SED) -i 's/CFLAGS =/CFLAGS ?=/' $(BUILD_WORK)/img4lib/Makefile
-	$(SED) -i 's/LDFLAGS =/LDFLAGS ?=/' $(BUILD_WORK)/img4lib/Makefile
-	$(SED) -i '/CFLAGS += -DUSE_LIBCOMPRESSION/d' $(BUILD_WORK)/img4lib/Makefile
-	$(SED) -i '/LDLIBS = -lcompression/d' $(BUILD_WORK)/img4lib/Makefile
-	$(SED) -i 's/CC =/CC ?=/' $(BUILD_WORK)/img4lib/Makefile
-	$(SED) -i 's/LD =/LD ?=/' $(BUILD_WORK)/img4lib/Makefile
-	$(SED) -i 's/AR =/AR ?=/' $(BUILD_WORK)/img4lib/Makefile
+	sed -i 's/CFLAGS =/CFLAGS ?=/' $(BUILD_WORK)/img4lib/Makefile
+	sed -i 's/LDFLAGS =/LDFLAGS ?=/' $(BUILD_WORK)/img4lib/Makefile
+	sed -i '/CFLAGS += -DUSE_LIBCOMPRESSION/d' $(BUILD_WORK)/img4lib/Makefile
+	sed -i '/LDLIBS = -lcompression/d' $(BUILD_WORK)/img4lib/Makefile
+	sed -i 's/CC =/CC ?=/' $(BUILD_WORK)/img4lib/Makefile
+	sed -i 's/LD =/LD ?=/' $(BUILD_WORK)/img4lib/Makefile
+	sed -i 's/AR =/AR ?=/' $(BUILD_WORK)/img4lib/Makefile
 	mkdir -p $(BUILD_STAGE)/img4lib/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include/{libvfs,libDER},lib}
 
 ifneq ($(wildcard $(BUILD_WORK)/img4lib/.build_complete),)

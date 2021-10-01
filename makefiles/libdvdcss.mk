@@ -20,9 +20,7 @@ libdvdcss: libdvdcss-setup
 	+$(MAKE) -C $(BUILD_WORK)/libdvdcss
 	+$(MAKE) -C $(BUILD_WORK)/libdvdcss install \
 		DESTDIR=$(BUILD_STAGE)/libdvdcss
-	+$(MAKE) -C $(BUILD_WORK)/libdvdcss install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libdvdcss-package: libdvdcss-stage

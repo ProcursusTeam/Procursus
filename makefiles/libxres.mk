@@ -22,9 +22,7 @@ libxres: libxres-setup libx11 libxext
 	+$(MAKE) -C $(BUILD_WORK)/libxres
 	+$(MAKE) -C $(BUILD_WORK)/libxres install \
 		DESTDIR=$(BUILD_STAGE)/libxres
-	+$(MAKE) -C $(BUILD_WORK)/libxres install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libxres-package: libxres-stage

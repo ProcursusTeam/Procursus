@@ -31,11 +31,7 @@ libtommath: libtommath-setup
 		LIBTOOL="$(BUILD_WORK)/libtommath/libtool/libtool" \
 		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		DESTDIR="$(BUILD_STAGE)/libtommath"
-	+$(MAKE) -C $(BUILD_WORK)/libtommath -f makefile.shared install \
-		LIBTOOL="$(BUILD_WORK)/libtommath/libtool/libtool" \
-		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libtommath-package: libtommath-stage

@@ -2,7 +2,7 @@ Package: xar
 Version: @DEB_XAR_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libxar1 (>= @DEB_XAR_V@), libssl1.1
+Depends: libxar1 (>= @DEB_XAR_V@), libssl3
 Section: Archiving
 Priority: optional
 Homepage: https://mackyle.github.io/xar/

@@ -20,9 +20,7 @@ xcb-util-renderutil: xcb-util-renderutil-setup libxcb xcb-util
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-renderutil
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-renderutil install \
 		DESTDIR=$(BUILD_STAGE)/xcb-util-renderutil
-	+$(MAKE) -C $(BUILD_WORK)/xcb-util-renderutil install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 xcb-util-renderutil-package: xcb-util-renderutil-stage

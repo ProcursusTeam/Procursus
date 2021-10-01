@@ -31,7 +31,7 @@ mariadb-import-executables: mariadb-setup
 			cmake .. \
 				-DSTACK_DIRECTION=1 \
 		&& make import_executables
-	$(call AFTER_BUILD)
+	touch $(BUILD_WORK)/mariadb/host/.build_complete
 endif
 
 ifneq ($(wildcard $(BUILD_WORK)/mariadb/.build_complete),)
@@ -88,9 +88,7 @@ mariadb: mariadb-import-executables openssl ncurses readline libevent curl lz4 l
 	+$(MAKE) -C $(BUILD_WORK)/mariadb
 	+$(MAKE) -C $(BUILD_WORK)/mariadb install \
 		DESTDIR="$(BUILD_STAGE)/mariadb"
-	+$(MAKE) -C $(BUILD_WORK)/mariadb/{libmariadb,libmysqld,libservices,include} install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 mariadb-package: mariadb-stage

@@ -26,7 +26,7 @@ asciidoc: asciidoc-setup
 	for file in $(BUILD_STAGE)/asciidoc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*.py; do \
 		mv $$file $(BUILD_STAGE)/asciidoc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(basename $$file .py); \
 	done
-	$(SED) -i "s|$$(cat $(BUILD_STAGE)/asciidoc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/a2x | grep \#! | sed 's/#!//')|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/asciidoc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
+	sed -i "s|$$(cat $(BUILD_STAGE)/asciidoc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/a2x | grep \#! | sed 's/#!//')|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/asciidoc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
 	$(call AFTER_BUILD)
 endif
 
