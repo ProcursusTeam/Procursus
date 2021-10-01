@@ -22,7 +22,7 @@ pexec: pexec-setup
 	+$(MAKE) -C $(BUILD_WORK)/pexec
 	+$(MAKE) -C $(BUILD_WORK)/pexec install \
 		DESTDIR=$(BUILD_STAGE)/pexec
-	touch $(BUILD_WORK)/pexec/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 pexec-package: pexec-stage
