@@ -34,9 +34,7 @@ fox1.6: fox1.6-setup libxft mesa libglu libx11 libxcursor libxext libxrender lib
 		CXXFLAGS+=\ -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/freetype2
 	+$(MAKE) -C $(BUILD_WORK)/fox1.6 install \
  		DESTDIR=$(BUILD_STAGE)/fox1.6
-	+$(MAKE) -C $(BUILD_WORK)/fox1.6 install \
- 		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 fox1.6-package: fox1.6-stage

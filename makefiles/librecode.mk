@@ -21,9 +21,7 @@ librecode: librecode-setup gettext
 	+$(MAKE) -C $(BUILD_WORK)/librecode
 	+$(MAKE) -C $(BUILD_WORK)/librecode install \
 		DESTDIR=$(BUILD_STAGE)/librecode
-	+$(MAKE) -C $(BUILD_WORK)/librecode install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 librecode-package: librecode-stage

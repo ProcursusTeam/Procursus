@@ -15,19 +15,13 @@ libscrypt:
 	@echo "Using previously built libscrypt."
 else
 libscrypt: libscrypt-setup
-	$(SED) -i 's/install_name_tool/$(I_N_T)/g' $(BUILD_WORK)/libscrypt/Makefile
+	sed -i 's/install_name_tool/$(I_N_T)/g' $(BUILD_WORK)/libscrypt/Makefile
 	$(MAKE) -C $(BUILD_WORK)/libscrypt install-osx install-static \
 		DESTDIR=$(BUILD_STAGE)/libscrypt \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		CFLAGS="$(CFLAGS) -D_FORTIFY_SOURCE=2 -fPIC" \
 		-j1
-	$(MAKE) -C $(BUILD_WORK)/libscrypt install-osx install-static \
-		DESTDIR=$(BUILD_BASE) \
-		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		CFLAGS="$(CFLAGS) -D_FORTIFY_SOURCE=2 -fPIC" \
-		-j1
 	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libscrypt.0.dylib $(BUILD_STAGE)/libscrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libscrypt.0.dylib
-	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libscrypt.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libscrypt.0.dylib
 	$(call AFTER_BUILD)
 endif
 

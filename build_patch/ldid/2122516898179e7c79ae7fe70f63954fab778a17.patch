@@ -1,0 +1,48 @@
+From 2122516898179e7c79ae7fe70f63954fab778a17 Mon Sep 17 00:00:00 2001
+From: Hayden <8144478+Diatrus@users.noreply.github.com>
+Date: Sat, 21 Aug 2021 18:50:12 -0400
+Subject: [PATCH] Fix deprecations + update libplist
+
+---
+ Makefile | 4 ++--
+ ldid.cpp | 4 ++--
+ libplist | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 92550ba..16cfb35 100644
+--- a/Makefile
++++ b/Makefile
+@@ -2,8 +2,8 @@ DESTDIR ?= /
+ PREFIX  ?= /usr/local
+ OPENSSL_LDFLAGS := $(shell pkg-config --libs libcrypto)
+ OPENSSL_CFLAGS  := $(shell pkg-config --cflags libcrypto)
+-PLIST_LDFLAGS   := $(shell pkg-config --libs libplist)
+-PLIST_CFLAGS    := $(shell pkg-config --cflags libplist)
++PLIST_LDFLAGS   := $(shell pkg-config --libs libplist-2.0)
++PLIST_CFLAGS    := $(shell pkg-config --cflags libplist-2.0)
+ CFLAGS          := $(OPENSSL_CFLAGS) $(PLIST_CFLAGS) -O2
+ LDFLAGS         := $(OPENSSL_LDFLAGS) $(PLIST_LDFLAGS)
+ LDID_VERSION	:= $(shell git describe --tags --match="v*" | sed -e 's@-\([^-]*\)-\([^-]*\)$$@+\1.\2@;s@^v@@;s@%@~@g')
+diff --git a/ldid.cpp b/ldid.cpp
+index b017ebe..33272f9 100644
+--- a/ldid.cpp
++++ b/ldid.cpp
+@@ -2017,7 +2017,7 @@ static void get(std::string &value, X509_NAME *name, int nid) {
+     _assert(entry != NULL);
+     auto asn(X509_NAME_ENTRY_get_data(entry));
+     _assert(asn != NULL);
+-    value.assign(reinterpret_cast<char *>(ASN1_STRING_data(asn)), ASN1_STRING_length(asn));
++    value.assign(reinterpret_cast<const char *>(ASN1_STRING_get0_data(asn)), ASN1_STRING_length(asn));
+ }
+ #endif
+ 
+@@ -2715,7 +2715,7 @@ struct Rule {
+     Mode mode_;
+     std::string code_;
+ 
+-    mutable std::auto_ptr<Expression> regex_;
++    mutable std::unique_ptr<Expression> regex_;
+ 
+     Rule(unsigned weight, Mode mode, const std::string &code) :
+         weight_(weight),

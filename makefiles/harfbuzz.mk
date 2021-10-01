@@ -29,9 +29,7 @@ harfbuzz: harfbuzz-setup cairo freetype glib2.0 graphite2 icu4c fontconfig
 	+$(MAKE) -C $(BUILD_WORK)/harfbuzz
 	+$(MAKE) -C $(BUILD_WORK)/harfbuzz install \
 		DESTDIR="$(BUILD_STAGE)/harfbuzz"
-	+$(MAKE) -C $(BUILD_WORK)/harfbuzz install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 harfbuzz-package: harfbuzz-stage

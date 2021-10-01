@@ -2,7 +2,7 @@ Package: idevicerestore
 Version: @DEB_IDEVICERESTORE_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libplist3 (>= 2.2.0), libimobiledevice6 (>= 1.3.0), libssl1.1 (>= 1.1.0), libirecovery3 (>= 1.0.0), libcurl4, libzip5 (>= 1.7.3)
+Depends: libplist3 (>= 2.2.0), libimobiledevice6 (>= 1.3.0), libssl3 (>= 1.1.0), libirecovery3 (>= 1.0.0), libcurl4, libzip5 (>= 1.7.3)
 Section: Administration
 Priority: standard
 Description: Restore/upgrade firmware of iOS devices

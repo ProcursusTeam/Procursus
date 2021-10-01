@@ -5,7 +5,7 @@ Maintainer: @DEB_MAINTAINER@
 Replaces: libzip (<< 1:0)
 Conflicts: libzip (<< 1:0)
 Provides: libzip (= @DEB_LIBZIP_V@)
-Depends: liblzma5 (>= 5.2.5), libssl1.1 (>= 1.1.0)
+Depends: liblzma5 (>= 5.2.5), libssl3 (>= 1.1.0)
 Section: Libraries
 Priority: optional
 Description: library for reading, creating, and modifying zip archives (runtime)

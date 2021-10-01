@@ -21,8 +21,8 @@ gtk-doc: gtk-doc-setup
 	+$(MAKE) -C $(BUILD_WORK)/gtk-doc
 	+$(MAKE) -C $(BUILD_WORK)/gtk-doc install \
 		DESTDIR=$(BUILD_STAGE)/gtk-doc
-	$(SED) -i "s|$$(cat $(BUILD_STAGE)/gtk-doc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gtkdoc-check | grep \#! | sed 's/#!//')|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/gtk-doc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
-	$(SED) -i "s|$(BUILD_TOOLS)/.*-pkg-config|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pkg-config|" $(BUILD_STAGE)/gtk-doc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin/gtkdoc-depscan,share/gtk-doc/python/gtkdoc/config.py}
+	sed -i "s|$$(cat $(BUILD_STAGE)/gtk-doc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gtkdoc-check | grep \#! | sed 's/#!//')|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/gtk-doc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
+	sed -i "s|$(BUILD_TOOLS)/.*-pkg-config|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pkg-config|" $(BUILD_STAGE)/gtk-doc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin/gtkdoc-depscan,share/gtk-doc/python/gtkdoc/config.py}
 	$(call AFTER_BUILD)
 endif
 

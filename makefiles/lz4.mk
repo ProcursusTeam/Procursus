@@ -15,18 +15,13 @@ lz4:
 	@echo "Using previously built lz4."
 else
 lz4: lz4-setup
-	$(SED) -i 's/\<ln -s\>/ln -sf/g' $(BUILD_WORK)/lz4/Makefile.inc
+	sed -i 's/\<ln -s\>/$(LN_S)/g' $(BUILD_WORK)/lz4/Makefile.inc
 	TARGET_OS=Darwin \
 		$(MAKE) -C $(BUILD_WORK)/lz4 install \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR=$(BUILD_STAGE)/lz4 \
 		CFLAGS="$(CFLAGS)"
-	TARGET_OS=Darwin \
-		$(MAKE) -C $(BUILD_WORK)/lz4 install \
-		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		DESTDIR=$(BUILD_BASE) \
-		CFLAGS="$(CFLAGS)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 lz4-package: lz4-stage

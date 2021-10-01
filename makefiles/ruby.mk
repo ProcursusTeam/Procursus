@@ -34,7 +34,7 @@ endif
 #	cd $(BUILD_WORK)/ruby/nativebuild && env -i ../configure --prefix=$(BUILD_WORK)/ruby/nativebuild/install --disable-install-rdoc --disable-install-doc
 #	+unset CC CXX CFLAGS CPPFLAGS LDFLAGS && $(MAKE) -C $(BUILD_WORK)/ruby/nativebuild install
 
-	$(SED) -i -e 's/\bcurses\b/ncursesw/' \
+	sed -i -e 's/\bcurses\b/ncursesw/' \
 		-e 's/\bncurses\b/ncursesw/' $(BUILD_WORK)/ruby/ext/readline/extconf.rb
 
 #	Future reference: coroutine should be "arm64" on M1 macs
@@ -57,7 +57,7 @@ endif
 	+$(MAKE) -C $(BUILD_WORK)/ruby
 	+$(MAKE) -C $(BUILD_WORK)/ruby install \
 		DESTDIR="$(BUILD_STAGE)/ruby"
-	$(SED) -i 's/.*DLDFLAGS=.*/DLDFLAGS=/' $(BUILD_STAGE)/ruby/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/ruby-$(RUBY_VERSION).pc
+	sed -i 's/.*DLDFLAGS=.*/DLDFLAGS=/' $(BUILD_STAGE)/ruby/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/ruby-$(RUBY_VERSION).pc
 	$(call AFTER_BUILD)
 endif
 
@@ -85,8 +85,8 @@ ruby-package: ruby-stage
 
 	# ruby.mk Prep ruby
 	for bin in erb irb rdoc ri ruby; do \
-		ln -s $${bin}$(RUBY_VERSION) $(BUILD_DIST)/ruby/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$${bin}; \
-		ln -s $${bin}$(RUBY_VERSION).1.zst $(BUILD_DIST)/ruby/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$${bin}.1; \
+		$(LN_S) $${bin}$(RUBY_VERSION) $(BUILD_DIST)/ruby/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$${bin}; \
+		$(LN_S) $${bin}$(RUBY_VERSION).1.zst $(BUILD_DIST)/ruby/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$${bin}.1; \
 	done
 
 	# ruby.mk Sign

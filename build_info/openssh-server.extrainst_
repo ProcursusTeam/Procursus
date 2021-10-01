@@ -4,11 +4,11 @@ set -e
 
 case "$1" in
     (install)
-    /bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/com.openssh.sshd.plist
+    @MEMO_LAUNCHCTL_PREFIX@/bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/com.openssh.sshd.plist
     ;;
 	(upgrade)
-	/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/com.openssh.sshd.plist
-    /bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/com.openssh.sshd.plist
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/com.openssh.sshd.plist
+    @MEMO_LAUNCHCTL_PREFIX@/bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/com.openssh.sshd.plist
 	;;
 	(*)
 	exit 0

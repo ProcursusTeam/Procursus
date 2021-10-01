@@ -2,7 +2,7 @@ Package: libradare2-4.5
 Version: @DEB_RADARE2_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libradare2-common (>= @DEB_RADARE2_V@), libssl1.1 (>= 1.1.0), libuv1 (>= 1.38.1), libzip5 (>= 1.7.3)
+Depends: libradare2-common (>= @DEB_RADARE2_V@), libssl3 (>= 1.1.0), libuv1 (>= 1.38.1), libzip5 (>= 1.7.3)
 Conflicts: radare2 (<< 4.5.0)
 Replaces: radare2 (<< 4.5.0)
 Section: Libraries

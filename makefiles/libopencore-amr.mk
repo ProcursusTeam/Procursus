@@ -21,9 +21,7 @@ libopencore-amr: libopencore-amr-setup
 	+$(MAKE) -C $(BUILD_WORK)/libopencore-amr
 	+$(MAKE) -C $(BUILD_WORK)/libopencore-amr install \
 		DESTDIR=$(BUILD_STAGE)/libopencore-amr
-	+$(MAKE) -C $(BUILD_WORK)/libopencore-amr install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libopencore-amr-package: libopencore-amr-stage
