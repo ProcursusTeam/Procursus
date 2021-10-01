@@ -7,7 +7,7 @@ ODYSSEY_KEYRING_VERSION := 2021.07.20
 DEB_ODYSSEY_KEYRING_V   ?= $(ODYSSEY_KEYRING_VERSION)
 
 odyssey-keyring:
-	@echo "odyssey-keyring do not need to be built."
+	@echo "odyssey-keyring does not need to be built."
 
 odyssey-keyring-package: odyssey-keyring-stage
 	# odyssey-keyring.mk Package Structure
