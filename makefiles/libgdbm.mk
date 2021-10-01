@@ -21,9 +21,7 @@ libgdbm: libgdbm-setup readline gettext
 	+$(MAKE) -C $(BUILD_WORK)/libgdbm
 	+$(MAKE) -C $(BUILD_WORK)/libgdbm install \
 		DESTDIR=$(BUILD_STAGE)/libgdbm
-	+$(MAKE) -C $(BUILD_WORK)/libgdbm install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libgdbm-package: libgdbm-stage

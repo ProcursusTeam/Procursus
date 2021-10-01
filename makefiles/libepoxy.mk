@@ -39,8 +39,7 @@ libepoxy: libepoxy-setup libx11 mesa
 		..
 	+ninja -C $(BUILD_WORK)/libepoxy/build
 	+DESTDIR="$(BUILD_STAGE)/libepoxy" ninja -C $(BUILD_WORK)/libepoxy/build install
-	+DESTDIR="$(BUILD_BASE)" ninja -C $(BUILD_WORK)/libepoxy/build install
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libepoxy-package: libepoxy-stage
