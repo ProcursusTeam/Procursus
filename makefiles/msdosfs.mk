@@ -15,7 +15,7 @@ msdosfs-setup: setup
 		https://opensource.apple.com/source/libutil/libutil-58.40.2/{mntopts,wipefs}.h
 	cp -af $(MACOSX_SYSROOT)/usr/include/sys/loadable_fs.h $(BUILD_WORK)/msdosfs/include/sys
 	cp -af $(MACOSX_SYSROOT)/usr/include/machine/byte_order.h $(BUILD_WORK)/msdosfs/include/machine
-	ln -sf $(BUILD_WORK)/msdosfs/msdos{_,.}util.tproj
+	$(LN_S) $(BUILD_WORK)/msdosfs/msdos{_,.}util.tproj
 
 ifneq ($(wildcard $(BUILD_WORK)/msdosfs/.build_complete),)
 msdosfs:
