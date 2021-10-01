@@ -7,7 +7,7 @@ SUBPROJECTS           += @pkg@-keyring
 DEB_@PKG@_KEYRING_V   ?= $(@PKG@_KEYRING_VERSION)
 
 @pkg@-keyring:
-	@echo "@pkg@-keyring do not need to be built."
+	@echo "@pkg@-keyring does not need to be built."
 
 @pkg@-keyring-package: @pkg@-keyring-stage
 	# @pkg@-keyring.mk Package Structure
