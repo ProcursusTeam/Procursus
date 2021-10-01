@@ -16,11 +16,12 @@ file:
 	@echo "Using previously built file."
 else
 file: file-setup xz
-	rm -rf $(BUILD_WORK)/file/native
-	mkdir -p $(BUILD_WORK)/file/native
-	+unset CC CFLAGS CXXFLAGS CPPFLAGS LDFLAGS; \
-		cd $(BUILD_WORK)/file/native && $(BUILD_WORK)/file/configure; \
-		$(MAKE) -C $(BUILD_WORK)/file/native
+#	Native build
+	rm -rf $(BUILD_WORK)/file/native && mkdir -p $(BUILD_WORK)/file/native
+	cd $(BUILD_WORK)/file/native && $(BUILD_WORK)/file/configure \
+		$(BUILD_CONFIGURE_FLAGS)
+	$(MAKE) -C $(BUILD_WORK)/file/native
+
 	cd $(BUILD_WORK)/file && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-libseccomp \
@@ -29,9 +30,7 @@ file: file-setup xz
 		FILE_COMPILE="$(BUILD_WORK)/file/native/src/file"
 	+$(MAKE) -C $(BUILD_WORK)/file install \
 		DESTDIR="$(BUILD_STAGE)/file"
-	+$(MAKE) -C $(BUILD_WORK)/file install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 file-package: file-stage

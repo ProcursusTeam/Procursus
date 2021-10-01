@@ -31,9 +31,7 @@ libgit2: libgit2-setup openssl libssh2 pcre2
 	+$(MAKE) -C $(BUILD_WORK)/libgit2
 	+$(MAKE) -C $(BUILD_WORK)/libgit2 install \
 		DESTDIR="$(BUILD_STAGE)/libgit2"
-	+$(MAKE) -C $(BUILD_WORK)/libgit2 install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libgit2-package: libgit2-stage

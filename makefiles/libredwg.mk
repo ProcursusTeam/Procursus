@@ -20,9 +20,7 @@ libredwg: libredwg-setup
 	+$(MAKE) -C $(BUILD_WORK)/libredwg
 	+$(MAKE) -C $(BUILD_WORK)/libredwg install \
 		DESTDIR=$(BUILD_STAGE)/libredwg
-	+$(MAKE) -C $(BUILD_WORK)/libredwg install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libredwg-package: libredwg-stage

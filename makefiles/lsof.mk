@@ -12,7 +12,7 @@ lsof-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/lsof/lsof-$(LSOF_VERSION).tar.gz
 	$(call EXTRACT_TAR,lsof-$(LSOF_VERSION).tar.gz,lsof-$(LSOF_VERSION),lsof)
 	mkdir -p $(BUILD_STAGE)/lsof/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{sbin,share/man/man8}
-	$(SED) -i 's/lcurses/lncursesw/' $(BUILD_WORK)/lsof/lsof/Configure
+	sed -i 's/lcurses/lncursesw/' $(BUILD_WORK)/lsof/lsof/Configure
 
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/lsof/lsof/include/rpc

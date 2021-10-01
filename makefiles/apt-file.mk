@@ -16,7 +16,7 @@ apt-file:
 	@echo "Using previously built apt-file."
 else
 apt-file: apt-file-setup
-	$(SED) -i -e '1s|.*|#!$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl|g' \
+	sed -i -e '1s|.*|#!$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl|g' \
 	-e 's|/usr/lib/apt/apt-helper|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/apt/apt-helper|' $(BUILD_WORK)/apt-file/apt-file
 	$(MAKE) -C $(BUILD_WORK)/apt-file man
 	$(INSTALL) -Dm755 $(BUILD_INFO)/apt-file.is-cache-empty         $(BUILD_STAGE)/apt-file/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/share/apt-file/is-cache-empty

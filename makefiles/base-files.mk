@@ -3,20 +3,20 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS       += base-files
-BASE-FILES_VERSION  := 11.1
+BASE-FILES_VERSION  := 12
 DEB_BASE-FILES_V    ?= $(BASE-FILES_VERSION)
 
 MEMO_VERSION_STRING ?= $(MEMO_VERSION_ID) Darwin/$(DARWIN_DEPLOYMENT_VERSION) ($(MEMO_CODENAME))
-MEMO_DEBIAN_VERSION ?= bullseye/sid
+MEMO_DEBIAN_VERSION ?= bookworm/sid
 
 base-files-setup:
-	wget -q -nc -P$(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/b/base-files/base-files_11.1.tar.xz
+	wget -q -nc -P$(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/b/base-files/base-files_$(BASE-FILES_VERSION).tar.xz
 	$(call EXTRACT_TAR,base-files_$(BASE-FILES_VERSION).tar.xz,base-files-$(BASE-FILES_VERSION),base-files)
 	rm -rf $(BUILD_WORK)/base-files/motd
 
 ifneq ($(wildcard $(BUILD_WORK)/base-files/.build_complete),)
 base-files:
-        @echo "Using previously built base-files."
+	@echo "Using previously built base-files."
 else
 base-files: base-files-setup
 	mkdir -p $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{share/{doc,base-files,common-licenses},lib}
@@ -26,7 +26,7 @@ base-files: base-files-setup
 	echo $(MEMO_DEBIAN_VERSION) > $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)/etc/debian_version
 	chmod 644 $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)/etc/debian_version
 	for file in host.conf issue issue.net os-release motd procursus profile dot.profile dot.bashrc; \
-	do $(SED) \
+	do sed \
 		-e 's|@MEMO_VERSION_ID@|$(MEMO_VERSION_ID)|g' \
 		-e 's|@DARWIN_DEVELOPMEMT_VERSION@|$(DARWIN_DEVELOPMENT_VERSION)|g' \
 		-e 's|@MEMO_HOME_URI@|$(MEMO_HOME_URI)|g' \
@@ -45,9 +45,10 @@ base-files: base-files-setup
 	cp -a $(BUILD_WORK)/base-files/procursus $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)/etc/dpkg/origins
 	cp -a $(BUILD_WORK)/base-files/{motd,dot.bashrc,dot.profile,profile} $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/base-files
 	cp -a $(BUILD_MISC)/base-files/{copyright,README,README.FHS,FAQ} $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc
-	ln -fs $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/os-release $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)/etc/os-release
+	$(LN_SR) $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)/{$(MEMO_SUB_PREFIX)/lib,etc}/os-release
 	$(INSTALL) -m755 $(BUILD_MISC)/base-files/10-uname $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)/etc/update-motd.d
 	zstd -c19 $(BUILD_MISC)/base-files/changelog > $(BUILD_STAGE)/base-files/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/changelog.zst
+	$(call AFTER_BUILD)
 endif
 
 base-files-package: base-files

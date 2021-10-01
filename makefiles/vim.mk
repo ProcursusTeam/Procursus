@@ -17,7 +17,7 @@ vim:
 else
 vim: .SHELLFLAGS=-O extglob -c
 vim: vim-setup ncurses gettext
-	$(SED) -i 's/AC_TRY_LINK(\[]/AC_TRY_LINK(\[#include <termcap.h>]/g' $(BUILD_WORK)/vim/src/configure.ac # This is so stupid, I cannot believe this is necessary.
+	sed -i 's/AC_TRY_LINK(\[]/AC_TRY_LINK(\[#include <termcap.h>]/g' $(BUILD_WORK)/vim/src/configure.ac # This is so stupid, I cannot believe this is necessary.
 	cd $(BUILD_WORK)/vim/src && autoconf -f
 	cd $(BUILD_WORK)/vim && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \

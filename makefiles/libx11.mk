@@ -35,9 +35,7 @@ libx11: libx11-setup xorgproto libxcb xtrans
 	+$(MAKE) -C $(BUILD_WORK)/libx11
 	+$(MAKE) -C $(BUILD_WORK)/libx11 install \
 		DESTDIR=$(BUILD_STAGE)/libx11
-	+$(MAKE) -C $(BUILD_WORK)/libx11 install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libx11-package: libx11-stage
