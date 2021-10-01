@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS   += pexec
 PEXEC_VERSION := 1.0rc8
-DEB_PEXEC_V   ?= $(shell $(SED) 's/rc/~rc/g' <<< $(PEXEC_VERSION))
+DEB_PEXEC_V   ?= $(shell sed 's/rc/~rc/g' <<< $(PEXEC_VERSION))
 
 pexec-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gnu/pexec/pexec-$(PEXEC_VERSION).tar.gz{,.sig}
