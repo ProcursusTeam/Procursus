@@ -13,7 +13,7 @@ else
 chariz-keyring: setup
 	mkdir -p $(BUILD_STAGE)/chariz-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 	cp -a $(BUILD_MISC)/keyrings/chariz/chariz.gpg $(BUILD_STAGE)/chariz-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	touch $(BUILD_STAGE)/chariz-keyring/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 chariz-keyring-package: chariz-keyring-stage

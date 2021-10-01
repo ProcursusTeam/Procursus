@@ -20,7 +20,7 @@ mc: mc-setup slang2 glib2.0 gettext libssh2
 	+$(MAKE) -C $(BUILD_WORK)/mc
 	+$(MAKE) -C $(BUILD_WORK)/mc install \
 		DESTDIR=$(BUILD_STAGE)/mc
-	touch $(BUILD_WORK)/mc/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 mc-package: mc-stage

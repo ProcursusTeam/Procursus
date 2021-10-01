@@ -28,14 +28,14 @@ docbook-xsl: docbook-xsl-setup
 				profiling roundtrip slides template tests tools webhelp website                                                       \
 				xhtml xhtml-1_1 xhtml5                                                                                                \
 			$(BUILD_STAGE)/docbook-xsl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/xml/docbook/stylesheet/$${xsl} &&                       \
-		ln -s VERSION $(BUILD_STAGE)/docbook-xsl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/xml/docbook/stylesheet/$${xsl}/VERSION.xsl && \
+		$(LN_S) VERSION $(BUILD_STAGE)/docbook-xsl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/xml/docbook/stylesheet/$${xsl}/VERSION.xsl && \
 		install -v -m644 -D README                                                                                                    \
 			$(BUILD_STAGE)/docbook-xsl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$${xsl}/README.txt &&                               \
 		install -v -m644    RELEASE-NOTES* NEWS*                                                                                      \
 			$(BUILD_STAGE)/docbook-xsl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$${xsl};                                            \
 	done
 	install -v -m755 -d $(BUILD_STAGE)/docbook-xsl/$(MEMO_PREFIX)/etc/xml
-	touch $(BUILD_WORK)/docbook-xsl/.build_complete
+	$(call AFTER_BUILD)
 endif
 docbook-xsl-package: docbook-xsl-stage
 	# docbook-xsl.mk Package Structure

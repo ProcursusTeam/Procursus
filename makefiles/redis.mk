@@ -47,14 +47,7 @@ redis: redis-setup libjemalloc openssl
 	mkdir -p $(BUILD_STAGE)/redis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
 	cp -a $(BUILD_MISC)/redis/redis-*-wrapper $(BUILD_STAGE)/redis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
 
-	for file in $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons/* \
-		$(BUILD_STAGE)/redis/$(MEMO_PREFIX)/etc/redis/* \
-		$(BUILD_STAGE)/redis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/*; do \
-			$(SED) -i 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' $$file; \
-			$(SED) -i 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $$file; \
-	done
-
-	touch $(BUILD_WORK)/redis/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 redis-package: redis-stage

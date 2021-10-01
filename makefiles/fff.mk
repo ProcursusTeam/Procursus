@@ -19,7 +19,7 @@ fff: fff-setup
 	+$(MAKE) -C $(BUILD_WORK)/fff install \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR=$(BUILD_STAGE)/fff
-	touch $(BUILD_WORK)/fff/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 fff-package: fff-stage

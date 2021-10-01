@@ -22,9 +22,7 @@ libdca: libdca-setup
 	+$(MAKE) -C $(BUILD_WORK)/libdca
 	+$(MAKE) -C $(BUILD_WORK)/libdca install \
 		DESTDIR=$(BUILD_STAGE)/libdca
-	+$(MAKE) -C $(BUILD_WORK)/libdca install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libdca/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libdca-package: libdca-stage

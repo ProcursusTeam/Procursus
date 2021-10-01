@@ -46,7 +46,7 @@ tapi: tapi-setup
 		DESTDIR="$(BUILD_STAGE)/tapi"
 	mkdir -p $(BUILD_STAGE)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	$(INSTALL) -Dm644 $(BUILD_WORK)/tapi/src/libtapi/docs/man/*.1 $(BUILD_STAGE)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
-	touch $(BUILD_WORK)/tapi/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 tapi-package: tapi-stage

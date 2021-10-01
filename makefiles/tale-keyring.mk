@@ -13,7 +13,7 @@ else
 tale-keyring: setup
 	mkdir -p $(BUILD_STAGE)/tale-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 	cp -a $(BUILD_MISC)/keyrings/tale/{tale,cherimoya}.gpg $(BUILD_STAGE)/tale-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	touch $(BUILD_STAGE)/tale-keyring/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 tale-keyring-package: tale-keyring-stage

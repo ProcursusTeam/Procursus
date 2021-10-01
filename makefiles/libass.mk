@@ -20,9 +20,7 @@ libass: libass-setup freetype fontconfig libfribidi harfbuzz
 	+$(MAKE) -C $(BUILD_WORK)/libass
 	+$(MAKE) -C $(BUILD_WORK)/libass install \
 		DESTDIR="$(BUILD_STAGE)/libass"
-	+$(MAKE) -C $(BUILD_WORK)/libass install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libass/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libass-package: libass-stage

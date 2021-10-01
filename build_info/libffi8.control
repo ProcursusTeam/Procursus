@@ -1,10 +1,7 @@
-Package: libffi7
+Package: libffi8
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LIBFFI_V@
-Replaces: libffi (<< 1:0)
-Conflicts: libffi (<< 1:0)
-Provides: libffi (= @DEB_LIBFFI_V@)
 Section: Libraries
 Priority: optional
 Multi-Arch: foreign

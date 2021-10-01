@@ -22,9 +22,7 @@ libxaw: libxaw-setup libx11 libxau libxmu xorgproto libxpm libxt libxext
 	+$(MAKE) -C $(BUILD_WORK)/libxaw
 	+$(MAKE) -C $(BUILD_WORK)/libxaw install \
 		DESTDIR=$(BUILD_STAGE)/libxaw
-	+$(MAKE) -C $(BUILD_WORK)/libxaw install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxaw/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libxaw-package: libxaw-stage
