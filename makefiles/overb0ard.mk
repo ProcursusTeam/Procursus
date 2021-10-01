@@ -10,7 +10,7 @@ DEB_OVERB0ARD_V   ?= $(OVERB0ARD_VERSION)
 overb0ard-setup: setup
 	$(call GITHUB_ARCHIVE,Doregon,overb0ard,$(OVERB0ARD_COMMIT),$(OVERB0ARD_COMMIT))
 	$(call EXTRACT_TAR,overb0ard-$(OVERB0ARD_COMMIT).tar.gz,overb0ard-$(OVERB0ARD_COMMIT),overb0ard)
-	$(SED) -iE /'API_UNAVAILABLE'/d $(BUILD_WORK)/overb0ard/NSTask.h
+	sed -iE /'API_UNAVAILABLE'/d $(BUILD_WORK)/overb0ard/NSTask.h
 
 ifneq ($(wildcard $(BUILD_WORK)/overb0ard/.build_complete),)
 overb0ard:
