@@ -133,8 +133,8 @@ CONFIG_FOLD=y
 # CONFIG_GETFATTR is not set
 CONFIG_GETOPT=y
 # CONFIG_GETTY is not set
-# CONFIG_GROUPADD is not set
-# CONFIG_GROUPDEL is not set
+CONFIG_GROUPADD=y
+CONFIG_GROUPDEL=y
 # CONFIG_HOST is not set
 # CONFIG_INIT is not set
 # CONFIG_IP is not set
