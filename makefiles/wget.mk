@@ -25,7 +25,7 @@ wget: wget-setup openssl pcre2 gettext libunistring libidn2
 	+$(MAKE) -C $(BUILD_WORK)/wget
 	+$(MAKE) -C $(BUILD_WORK)/wget install \
 		DESTDIR="$(BUILD_STAGE)/wget"
-	touch $(BUILD_WORK)/wget/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 wget-package: wget-stage

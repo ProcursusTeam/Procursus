@@ -17,7 +17,7 @@ sl:
 else
 sl: sl-setup ncurses
 	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/sl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sl $(BUILD_WORK)/sl/sl.c $(LDFLAGS) -lncursesw
-	touch $(BUILD_WORK)/sl/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 sl-package: sl-stage

@@ -26,7 +26,7 @@ mtree-netbsd: mtree-netbsd-setup libmd
 	+$(MAKE) -C $(BUILD_WORK)/mtree-netbsd
 	+$(MAKE) -C $(BUILD_WORK)/mtree-netbsd install \
 		DESTDIR=$(BUILD_STAGE)/mtree-netbsd
-	touch $(BUILD_WORK)/mtree-netbsd/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 mtree-netbsd-package: mtree-netbsd-stage

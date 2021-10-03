@@ -21,7 +21,7 @@ mpg123: mpg123-setup
 		--with-cpu=aarch64
 	+$(MAKE) -C $(BUILD_WORK)/mpg123 install \
 		DESTDIR=$(BUILD_STAGE)/mpg123
-	touch $(BUILD_WORK)/mpg123/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 mpg123-package: mpg123-stage

@@ -35,8 +35,8 @@ ffmpeg: ffmpeg-setup aom dav1d fontconfig freetype frei0r gnutls lame libass lib
 		--ranlib="$(RANLIB)" \
 		--strip="$(STRIP)" \
 		--host-cc="$(CC_FOR_BUILD)" \
-		--host-cflags="$(BUILD_CFLAGS)" \
-		--host-ldflags="$(BUILD_LDFLAGS)" \
+		--host-cflags="$(CFLAGS_FOR_BUILD)" \
+		--host-ldflags="$(LDFLAGS_FOR_BUILD)" \
 		--enable-ffplay \
 		--enable-gnutls \
 		--enable-gpl \
@@ -75,15 +75,13 @@ ffmpeg: ffmpeg-setup aom dav1d fontconfig freetype frei0r gnutls lame libass lib
 		--disable-libjack \
 		--disable-indev=jack \
 		$(FFMPEG_CONFIGURE_FLAGS)
-	$(SED) -i 's/-lSDL2/-lSDL2 -lSDL2main/g' $(BUILD_WORK)/ffmpeg/ffbuild/config.mak
+	sed -i 's/-lSDL2/-lSDL2 -lSDL2main/g' $(BUILD_WORK)/ffmpeg/ffbuild/config.mak
 	+$(MAKE) -C $(BUILD_WORK)/ffmpeg
 	+$(MAKE) -C $(BUILD_WORK)/ffmpeg install \
 		DESTDIR=$(BUILD_STAGE)/ffmpeg
-	+$(MAKE) -C $(BUILD_WORK)/ffmpeg install \
-		DESTDIR=$(BUILD_BASE)
 	+$(MAKE) -C $(BUILD_WORK)/ffmpeg alltools
 	cp -a $(BUILD_WORK)/ffmpeg/tools/* $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	touch $(BUILD_WORK)/ffmpeg/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 ffmpeg-package: ffmpeg-stage

@@ -25,7 +25,7 @@ transmission: transmission-setup curl libevent
 	+$(MAKE) -C $(BUILD_WORK)/transmission
 	+$(MAKE) -C $(BUILD_WORK)/transmission install \
 		DESTDIR=$(BUILD_STAGE)/transmission
-	touch $(BUILD_WORK)/transmission/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 transmission-package: transmission-stage

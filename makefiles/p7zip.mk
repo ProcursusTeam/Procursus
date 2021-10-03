@@ -9,7 +9,6 @@ DEB_P7ZIP_V    ?= $(P7ZIP_VERSION)
 p7zip-setup: setup
 	$(call GITHUB_ARCHIVE,jinfeihan57,p7zip,$(P7ZIP_VERSION),v$(P7ZIP_VERSION))
 	$(call EXTRACT_TAR,p7zip-$(P7ZIP_VERSION).tar.gz,p7zip-$(P7ZIP_VERSION),p7zip)
-	$(call DO_PATCH,p7zip,p7zip,-p1) # Remove after next release.
 	chmod 0755 $(BUILD_WORK)/p7zip/install.sh
 
 ifneq ($(wildcard $(BUILD_WORK)/p7zip/.build_complete),)
@@ -17,7 +16,7 @@ p7zip:
 	@echo "Using previously built p7zip."
 else
 p7zip: p7zip-setup
-	$(SED) -i 's/ifdef __APPLE_CC__/if 0\/\/__APPLE_CC__/g' $(BUILD_WORK)/p7zip/CPP/Windows/DLL.cpp
+	sed -i 's/ifdef __APPLE_CC__/if 0\/\/__APPLE_CC__/g' $(BUILD_WORK)/p7zip/CPP/Windows/DLL.cpp
 	cd $(BUILD_WORK)/p7zip && mv -f makefile.macosx_gcc_64bits makefile.machine
 	+$(MAKE) -C $(BUILD_WORK)/p7zip all3 \
 		CC="$(CC) $(CFLAGS)" \
@@ -26,7 +25,7 @@ p7zip: p7zip-setup
 		DEST_DIR=$(BUILD_STAGE)/p7zip \
 		DEST_HOME=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DEST_MAN=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
-	touch $(BUILD_WORK)/p7zip/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 p7zip-package: p7zip-stage

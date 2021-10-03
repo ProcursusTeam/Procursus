@@ -4,7 +4,7 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Replaces: xar (<< @DEB_XAR_V@)
 Conflicts: xar (<< @DEB_XAR_V@)
-Depends: libssl1.1
+Depends: libssl3
 Section: Libraries
 Priority: optional
 Homepage: https://mackyle.github.io/xar/

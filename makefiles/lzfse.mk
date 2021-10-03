@@ -21,9 +21,7 @@ lzfse: lzfse-setup
 	+$(MAKE) -C $(BUILD_WORK)/lzfse
 	+$(MAKE) -C $(BUILD_WORK)/lzfse install \
 		DESTDIR="$(BUILD_STAGE)/lzfse"
-	+$(MAKE) -C $(BUILD_WORK)/lzfse install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/lzfse/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 lzfse-package: lzfse-stage

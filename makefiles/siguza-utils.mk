@@ -63,7 +63,7 @@ siguza-utils: siguza-utils-setup
 	chmod +x $(BUILD_STAGE)/siguza-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/strerror
 	chmod +x $(BUILD_STAGE)/siguza-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/vmacho
 	chmod +x $(BUILD_STAGE)/siguza-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/xref
-	touch $(BUILD_WORK)/siguza-utils/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 siguza-utils-package: siguza-utils-stage

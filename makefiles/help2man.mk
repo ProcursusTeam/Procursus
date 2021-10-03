@@ -21,10 +21,9 @@ help2man: help2man-setup gettext
 	+$(MAKE) -C $(BUILD_WORK)/help2man
 	+$(MAKE) -C $(BUILD_WORK)/help2man install \
 		DESTDIR=$(BUILD_STAGE)/help2man
-	+$(MAKE) -C $(BUILD_WORK)/help2man install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/help2man/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
+
 help2man-package: help2man-stage
 	# help2man.mk Package Structure
 	rm -rf $(BUILD_DIST)/help2man

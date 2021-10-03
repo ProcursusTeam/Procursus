@@ -29,7 +29,7 @@ pinentry: pinentry-setup libgpg-error libassuan ncurses
 	+$(MAKE) -C $(BUILD_WORK)/pinentry
 	+$(MAKE) -C $(BUILD_WORK)/pinentry install \
 		DESTDIR="$(BUILD_STAGE)/pinentry"
-	touch $(BUILD_WORK)/pinentry/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 pinentry-package: pinentry-stage

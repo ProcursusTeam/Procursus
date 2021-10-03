@@ -29,7 +29,7 @@ shell-cmds: shell-cmds-setup openpam
 		cp -a $$bin/$$bin.1 $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 2>/dev/null; \
 		cp -a $$bin/$$bin.8 $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8 2>/dev/null; \
 	done
-	touch $(BUILD_WORK)/shell-cmds/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 shell-cmds-package: shell-cmds-stage
@@ -39,12 +39,12 @@ shell-cmds-package: shell-cmds-stage
 	# shell-cmds.mk Prep shell-cmds
 	cp -a $(BUILD_STAGE)/shell-cmds $(BUILD_DIST)
 ifneq ($(MEMO_SUB_PREFIX),)
-	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/su $(BUILD_DIST)/shell-cmds/$(MEMO_PREFIX)/bin
+	$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/su $(BUILD_DIST)/shell-cmds/$(MEMO_PREFIX)/bin
 endif
 
 	# shell-cmds.mk Sign
 	$(call SIGN,shell-cmds,general.xml)
-	$(LDID) -S$(BUILD_INFO)/pam.xml $(BUILD_DIST)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/su
+	ldid $(MEMO_LDID_EXTRA_FLAGS) -S$(BUILD_MISC)/entitlements/pam.xml $(BUILD_DIST)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/su
 	find $(BUILD_DIST)/shell-cmds -name '.ldid*' -type f -delete
 
 	# shell-cmds.mk Permissions

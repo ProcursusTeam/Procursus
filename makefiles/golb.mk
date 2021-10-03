@@ -33,7 +33,7 @@ golb: golb-setup
 		$(BUILD_WORK)/golb/golb_ppl.c \
 		$(BUILD_WORK)/golb/aes_ap.c \
 		-o $(BUILD_STAGE)/golb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/aes_ap_ppl
-	touch $(BUILD_WORK)/golb/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 golb-package: golb-stage
