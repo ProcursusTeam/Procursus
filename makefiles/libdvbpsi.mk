@@ -20,9 +20,7 @@ libdvbpsi: libdvbpsi-setup
 	+$(MAKE) -C $(BUILD_WORK)/libdvbpsi
 	+$(MAKE) -C $(BUILD_WORK)/libdvbpsi install \
 		DESTDIR=$(BUILD_STAGE)/libdvbpsi
-	+$(MAKE) -C $(BUILD_WORK)/libdvbpsi install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libdvbpsi-package: libdvbpsi-stage
