@@ -22,7 +22,7 @@ jlutil: jlutil-setup
 		-o $(BUILD_WORK)/jlutil/jlutil
 	$(STRIP) $(BUILD_WORK)/jlutil/jlutil
 	$(INSTALL) -Dm755 $(BUILD_WORK)/jlutil/jlutil $(BUILD_STAGE)/jlutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/jlutil
-	touch $(BUILD_WORK)/jlutil/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 jlutil-package: jlutil-stage

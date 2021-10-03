@@ -27,7 +27,7 @@ xfe: xfe-setup fox1.6 gettext fontconfig freetype libpng16 libxft libxrandr libx
 		CXXFLAGS+=\ -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/fox-1.6
 	+$(MAKE) -C $(BUILD_WORK)/xfe install \
 		DESTDIR=$(BUILD_STAGE)/xfe
-	touch $(BUILD_WORK)/xfe/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 xfe-package: xfe-stage

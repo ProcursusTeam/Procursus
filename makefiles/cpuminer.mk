@@ -20,7 +20,7 @@ cpuminer: cpuminer-setup curl jansson
 		--disable-assembly
 	+$(MAKE) -C $(BUILD_WORK)/cpuminer install \
 		DESTDIR="$(BUILD_STAGE)/cpuminer"
-	touch $(BUILD_WORK)/cpuminer/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 cpuminer-package: cpuminer-stage

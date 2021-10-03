@@ -17,7 +17,7 @@ fortune-mod:
 else
 fortune-mod: .SHELLFLAGS=-O extglob -c
 fortune-mod: fortune-mod-setup librecode
-	$(SED) -i -e 's|{CMAKE_CURRENT_SOURCE_DIR}/fortune|{CMAKE_CURRENT_SOURCE_DIR}/fortunestuff|' -e 's|fortune/|fortunestuff/|' $(BUILD_WORK)/fortune-mod/CMakeLists.txt
+	sed -i -e 's|{CMAKE_CURRENT_SOURCE_DIR}/fortune|{CMAKE_CURRENT_SOURCE_DIR}/fortunestuff|' -e 's|fortune/|fortunestuff/|' $(BUILD_WORK)/fortune-mod/CMakeLists.txt
 	mv $(BUILD_WORK)/fortune-mod/fortune $(BUILD_WORK)/fortune-mod/fortunestuff
 	cd $(BUILD_WORK)/fortune-mod && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
@@ -36,7 +36,7 @@ fortune-mod: fortune-mod-setup librecode
 	cp -a $(BUILD_WORK)/fortune-mod/datfiles/off/rotated/!(PLACEHOLDER) $(BUILD_STAGE)/fortune-mod/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/games/fortunes/off
 	cp -a $(BUILD_WORK)/fortune-mod/manpages/fortune.6 $(BUILD_STAGE)/fortune-mod/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man6
 	cp -a $(BUILD_WORK)/fortune-mod/util/strfile.man $(BUILD_STAGE)/fortune-mod/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/strfile.1
-	touch $(BUILD_WORK)/fortune-mod/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 fortune-mod-package: fortune-mod-stage

@@ -5,8 +5,10 @@ endif
 SUBPROJECTS += apr
 APR_VERSION := 1.7.0
 DEB_APR_V   ?= $(APR_VERSION)
+
 apr-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://downloads.apache.org/apr/apr-$(APR_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://downloads.apache.org/apr/apr-$(APR_VERSION).tar.gz{,.asc}
+	$(call PGP_VERIFY,apr-$(APR_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,apr-$(APR_VERSION).tar.gz,apr-$(APR_VERSION),apr)
 	$(call DO_PATCH,apr,apr,-p1)
 
@@ -29,11 +31,9 @@ apr: apr-setup
 	+$(MAKE) -C $(BUILD_WORK)/apr all \
 		CC_FOR_BUILD=$(shell which clang)
 	+$(MAKE) -C $(BUILD_WORK)/apr install \
-		DESTDIR="$(BUILD_BASE)"
-	+$(MAKE) -C $(BUILD_WORK)/apr install \
 		DESTDIR="$(BUILD_STAGE)/apr"
-	ln -sf $(BUILD_STAGE)/apr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/apr-1-config $(BUILD_STAGE)/apr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/apr-config
-	touch $(BUILD_WORK)/apr/.build_complete
+	$(LN_S) $(BUILD_STAGE)/apr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/apr-1-config $(BUILD_STAGE)/apr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/apr-config
+	$(call AFTER_BUILD,copy)
 endif
 
 apr-package: apr-stage

@@ -25,9 +25,7 @@ libpcap: libpcap-setup openssl
 	+$(MAKE) -C $(BUILD_WORK)/libpcap/build
 	+$(MAKE) -C $(BUILD_WORK)/libpcap/build install \
 		DESTDIR=$(BUILD_STAGE)/libpcap
-	+$(MAKE) -C $(BUILD_WORK)/libpcap/build install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libpcap/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libpcap-package: libpcap-stage

@@ -13,8 +13,8 @@ LIBBOOST_CONFIGURE_ARGS := abi=aapcs
 endif
 
 libboost-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://boostorg.jfrog.io/artifactory/main/release/$(LIBBOOST_VERSION)/source/boost_$(shell echo $(LIBBOOST_VERSION) | $(SED) 's/\./_/g').tar.bz2
-	$(call EXTRACT_TAR,boost_$(shell echo $(LIBBOOST_VERSION) | $(SED) 's/\./_/g').tar.bz2,boost_$(shell echo $(LIBBOOST_VERSION) | $(SED) 's/\./_/g'),libboost)
+	wget -q -nc -P $(BUILD_SOURCE) https://boostorg.jfrog.io/artifactory/main/release/$(LIBBOOST_VERSION)/source/boost_$(shell echo $(LIBBOOST_VERSION) | sed 's/\./_/g').tar.bz2
+	$(call EXTRACT_TAR,boost_$(shell echo $(LIBBOOST_VERSION) | sed 's/\./_/g').tar.bz2,boost_$(shell echo $(LIBBOOST_VERSION) | sed 's/\./_/g'),libboost)
 
 ifneq ($(wildcard $(BUILD_WORK)/libboost/.build_complete),)
 libboost:
@@ -53,9 +53,9 @@ endif
 			$(I_N_T) -change $$linked $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/$$(basename $$linked .dylib).$(LIBBOOST_VERSION).dylib $$lib; \
 		done; \
 		mv $$lib $$(dirname $$lib)/$$(basename $$lib .dylib).$(LIBBOOST_VERSION).dylib; \
-		ln -s $$(basename $$lib .dylib).$(LIBBOOST_VERSION).dylib $$lib; \
+		$(LN_S) $$(basename $$lib .dylib).$(LIBBOOST_VERSION).dylib $$lib; \
 	done
-	touch $(BUILD_WORK)/libboost/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libboost-package: libboost-stage

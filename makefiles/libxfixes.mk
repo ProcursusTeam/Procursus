@@ -21,9 +21,7 @@ libxfixes: libxfixes-setup libx11 xorgproto
 	+$(MAKE) -C $(BUILD_WORK)/libxfixes
 	+$(MAKE) -C $(BUILD_WORK)/libxfixes install \
 		DESTDIR=$(BUILD_STAGE)/libxfixes
-	+$(MAKE) -C $(BUILD_WORK)/libxfixes install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxfixes/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libxfixes-package: libxfixes-stage

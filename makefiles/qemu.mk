@@ -36,7 +36,7 @@ qemu: qemu-setup glib2.0 gnutls libjpeg-turbo libpng16 libssh libusb liblzo2 ncu
 		--enable-module-upgrades
 	+$(MAKE) -C $(BUILD_WORK)/qemu install \
 		DESTDIR=$(BUILD_STAGE)/qemu
-	touch $(BUILD_WORK)/qemu/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 qemu-package: qemu-stage

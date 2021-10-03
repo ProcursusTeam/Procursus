@@ -27,7 +27,7 @@ mosh: mosh-setup libprotobuf openssl ncurses
 		CXX="$(CXX) -std=c++11"
 	+$(MAKE) -C $(BUILD_WORK)/mosh install \
 		DESTDIR=$(BUILD_STAGE)/mosh
-	touch $(BUILD_WORK)/mosh/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 mosh-package: mosh-stage

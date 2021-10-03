@@ -24,7 +24,7 @@ endif
 		go build -trimpath \
 			--ldflags "-s -w -X main.version=$(WTFUTIL_VERSION) -X main.date=$$(date +%Y-%m-%dT%H:%M:%S%z)" \
 			-o $(BUILD_STAGE)/wtfutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/wtfutil
-	touch $(BUILD_WORK)/wtfutil/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 wtfutil-package: wtfutil-stage
