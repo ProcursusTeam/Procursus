@@ -10,7 +10,7 @@ libcddb-setup: setup
 	wget -q -nc -P$(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/libc/libcddb/libcddb_$(LIBCDDB_VERSION).orig.tar.gz
 	$(call EXTRACT_TAR,libcddb_$(LIBCDDB_VERSION).orig.tar.gz,libcddb-$(LIBCDDB_VERSION),libcddb)
 	echo "echo $(GNU_HOST_TRIPLE)" > $(BUILD_WORK)/libcddb/config.sub
-	$(SED) -i -e 's|#define realloc rpl_realloc|/* cum */|g' -e 's|#define malloc rpl_malloc|/* IDK */|g' $(BUILD_WORK)/libcddb/configure
+	sed -i -e 's|#define realloc rpl_realloc|/* cum */|g' -e 's|#define malloc rpl_malloc|/* IDK */|g' $(BUILD_WORK)/libcddb/configure
 
 ifneq ($(wildcard $(BUILD_WORK)/libcddb/.build_complete),)
 libcddb:
