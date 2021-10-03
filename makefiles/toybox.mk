@@ -24,6 +24,7 @@ ifneq (,$(findstring rootless,$(MEMO_TARGET)))
 endif
 	sed -i -e 's|/usr|$(MEMO_PREIFX)$(MEMO_SUB_PREFIX)|g' $(BUILD_WORK)/toybox/toys/posix/file.c
 	cp -a $(BUILD_MISC)/toybox/config $(BUILD_WORK)/toybox/.config
+	mkdir -p $(BUILD_STAGE)/toybox/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 ifneq ($(wildcard $(BUILD_WORK)/toybox/.build_complete),)
 toybox:
@@ -31,9 +32,7 @@ toybox:
 else
 toybox: toybox-setup openssl $(TOYBOX_DEPS)
 	$(MAKE) -C $(BUILD_WORK)/toybox
-	+$(MAKE) -C $(BUILD_WORK)/toybox install \
-		PREFIX=$(BUILD_STAGE)/toybox
-	chmod 755 $(BUILD_STAGE)/toybox/bin/toybox
+	$(INSTALL) -m755 $(BUILD_WORK)/toybox/toybox $(BUILD_STAGE)/toybox/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	$(call AFTER_BUILD)
 endif
 
@@ -43,7 +42,7 @@ toybox-package: toybox-stage
 	mkdir -p $(BUILD_DIST)/toybox/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	
 	# toybox.mk Prep toybox
-	$(INSTALL) -m755 $(BUILD_STAGE)/toybox/bin/toybox $(BUILD_DIST)/toybox/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/toybox $(BUILD_DIST)
 	
 	# toybox.mk Sign
 	$(call SIGN,toybox,dd.xml)
