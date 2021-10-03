@@ -10,7 +10,6 @@ lua5.3-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.lua.org/ftp/lua-$(LUA5.3_VERSION).tar.gz
 	$(call EXTRACT_TAR,lua-$(LUA5.3_VERSION).tar.gz,lua-$(LUA5.3_VERSION),lua5.3)
 	$(call DO_PATCH,lua5.3,lua5.3,-p1)
-	sed -i -e ':a; s|@MEMO_PREFIX@|$(MEMO_PREFIX)|g; ta' -e ':a; s|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g; ta' $(BUILD_WORK)/lua5.3/src/luaconf.h
 
 ifneq ($(wildcard $(BUILD_WORK)/lua5.3/.build_complete),)
 lua5.3:
