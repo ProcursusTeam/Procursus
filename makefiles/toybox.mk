@@ -33,7 +33,7 @@ toybox: toybox-setup openssl $(TOYBOX_DEPS)
 	$(MAKE) -C $(BUILD_WORK)/toybox
 	+$(MAKE) -C $(BUILD_WORK)/toybox install \
 		PREFIX=$(BUILD_STAGE)/toybox
-	chmod 755 $(BUILD_STAGE)/toybox/$(MEMO_PREFIX)/bin/toybox
+	chmod 755 $(BUILD_STAGE)/toybox/bin/toybox
 	$(call AFTER_BUILD)
 endif
 
