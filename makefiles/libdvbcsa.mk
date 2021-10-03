@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += libdvbcsa
+SUBPROJECTS       += libdvbcsa
 LIBDVBCSA_VERSION := 1.1.0
 DEB_LIBDVBCSA_V   ?= $(LIBDVBCSA_VERSION)
 
@@ -21,9 +21,7 @@ libdvbcsa: libdvbcsa-setup
 	+$(MAKE) -C $(BUILD_WORK)/libdvbcsa
 	+$(MAKE) -C $(BUILD_WORK)/libdvbcsa install \
 		DESTDIR=$(BUILD_STAGE)/libdvbcsa
-	+$(MAKE) -C $(BUILD_WORK)/libdvbcsa install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libdvbcsa-package: libdvbcsa-stage
