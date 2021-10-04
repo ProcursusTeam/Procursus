@@ -30,7 +30,7 @@ ifneq ($(wildcard $(BUILD_WORK)/atk/.build_complete),)
 atk:
 	@echo "Using previously built atk."
 else
-atk: atk-setup at-spi2-core libxtst glib2.0 dbus libxi
+atk: atk-setup glib2.0
 	cd $(BUILD_WORK)/atk/build && meson \
 	--cross-file cross.txt \
 	-Dintrospection=false \
