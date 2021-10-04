@@ -2,7 +2,7 @@ Package: toybox
 Version: @DEB_TOYBOX_V@
 Author: Rob Landley <rob@landley.net>
 Maintainer: @DEB_MAINTAINER@
-Depends: libcrypt2, libssl1.1, libiosexec1
+Depends: libcrypt2, libssl3, libiosexec1
 Section: Utilities
 Architecture: @DEB_ARCH@
 Description: all-in-one Darwin command line
