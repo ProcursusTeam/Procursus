@@ -39,7 +39,6 @@ endif
 toybox-package: toybox-stage
 	# toybox.mk Package Structure
 	rm -rf $(BUILD_DIST)/toybox
-	mkdir -p $(BUILD_DIST)/toybox/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	
 	# toybox.mk Prep toybox
 	cp -a $(BUILD_STAGE)/toybox $(BUILD_DIST)
