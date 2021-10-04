@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS           += sunchipnacho-keyring
+SUBPROJECTS                  += sunchipnacho-keyring
 SUNCHIPNACHO_KEYRING_VERSION := 2021.10.04
 DEB_SUNCHIPNACHO_KEYRING_V   ?= $(SUNCHIPNACHO_KEYRING_VERSION)
 
