@@ -20,9 +20,10 @@ pongoterm:
 	@echo "Using previously built pongoterm."
 else
 pongoterm: pongoterm-setup
-	cd $(BUILD_WORK)/pongoterm/scripts && $(CC) $(CFLAGS) -x objective-c pongoterm.c -c
-	cd $(BUILD_WORK)/pongoterm/scripts && $(CC) $(CFLAGS) wordexp.c -c
-	cd $(BUILD_WORK)/pongoterm/scripts && $(CC) $(LDFLAGS) {pongoterm,wordexp}.o -framework IOKit -framework Foundation -framework CoreFoundation -o $(BUILD_STAGE)/pongoterm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/pongoterm;
+	cd $(BUILD_WORK)/pongoterm/scripts && \
+	$(CC) $(CFLAGS) -x objective-c pongoterm.c -c; \
+	$(CC) $(CFLAGS) wordexp.c -c; \
+	$(CC) $(LDFLAGS) {pongoterm,wordexp}.o -framework IOKit -framework Foundation -framework CoreFoundation -o $(BUILD_STAGE)/pongoterm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/pongoterm;
 	$(call AFTER_BUILD)
 endif
 
