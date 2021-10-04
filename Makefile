@@ -683,8 +683,12 @@ AFTER_BUILD = \
 	find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.gz$$' -exec gunzip '{}' \; 2> /dev/null; \
 	find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.xz$$' -exec unxz '{}' \; 2> /dev/null; \
 	find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.zst$$' -exec unzstd '{}' \; 2> /dev/null; \
-	find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -exec zstd -19 --rm '{}' \; 2> /dev/null; \
-	find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type l -exec bash -c '$(LN_S) $$(readlink "{}" | sed -e "s/\.gz$$//" -e "s/\.xz$$//" -e "s/\.zst$$//").zst "{}".zst; rm -f "{}"' \; -delete 2> /dev/null; \
+	if [ "$(MEMO_NO_DOC_COMPRESS)" != 1 ]; then \
+		find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -exec zstd -19 --rm '{}' \; 2> /dev/null; \
+		find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type l -exec bash -c '$(LN_S) $$(readlink "{}" | sed -e "s/\.gz$$//" -e "s/\.xz$$//" -e "s/\.zst$$//").zst "{}".zst; rm -f "{}"' \; -delete 2> /dev/null; \
+	else \
+		find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type l -exec bash -c '$(LN_S) $$(readlink "{}" | sed -e "s/\.gz$$//" -e "s/\.xz$$//" -e "s/\.zst$$//") "{}"' \; 2> /dev/null; \
+	fi; \
 	if [ "$(1)" = "copy" ]; then \
 		cp -af $(BUILD_STAGE)/$@/* $(BUILD_BASE); \
 	fi; \
@@ -702,8 +706,10 @@ PACK = \
 		if [ -f "$(BUILD_WORK)/$$(echo $@ | sed 's/-package//')/$$file" ]; then \
 			mkdir -p $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1); \
 			cp -aL $(BUILD_WORK)/$$(echo $@ | sed 's/-package//')/$$file $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1); \
-			if [ ! "$$file" = "AUTHORS" ] && [ ! "$$file" = "COPYING" ] && [ ! "$$file" = "LICENSE" ]; then \
-				zstd -19 --rm $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1)/$$file 2> /dev/null; \
+			if [ "$(MEMO_NO_DOC_COMPRESS)" != 1 ]; then \
+				if [ ! "$$file" = "AUTHORS" ] && [ ! "$$file" = "COPYING" ] && [ ! "$$file" = "LICENSE" ]; then \
+					zstd -19 --rm $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1)/$$file 2> /dev/null; \
+				fi; \
 			fi; \
 		fi; \
 	done; \
@@ -1152,12 +1158,12 @@ endif
 	@sed -E -e '\|/bin:|! s|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' -e '\|/var/tmp|! s|/var|$(MEMO_PREFIX)/var|g' -e '\|/bin:|! s|"/bin|"$(MEMO_PREFIX)/bin|g' -e '\|/bin:|! s|"/sbin|"$(MEMO_PREFIX)/sbin|g' -e 's|/etc|$(MEMO_PREFIX)/etc|g' -e 's|/usr/bin:|$(MEMO_PREFIX)/bin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin:/usr/bin:|g' -e 's|/usr/sbin:|$(MEMO_PREFIX)/sbin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin:/usr/sbin:|g' < $(TARGET_SYSROOT)/usr/include/grp.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/grp.h
 	@sed -E -e '\|/bin:|! s|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' -e '\|/var/tmp|! s|/var|$(MEMO_PREFIX)/var|g' -e '\|/bin:|! s|"/bin|"$(MEMO_PREFIX)/bin|g' -e '\|/bin:|! s|"/sbin|"$(MEMO_PREFIX)/sbin|g' -e 's|/etc|$(MEMO_PREFIX)/etc|g' -e 's|/usr/bin:|$(MEMO_PREFIX)/bin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin:/usr/bin:|g' -e 's|/usr/sbin:|$(MEMO_PREFIX)/sbin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin:/usr/sbin:|g' < $(TARGET_SYSROOT)/usr/include/paths.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/paths.h
 
-ifneq ($(MEMO_NO_IOSEXEC),1)
 	@# Setup libiosexec
 	@cp -af $(BUILD_MISC)/libiosexec/libiosexec.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	@cp -af $(BUILD_MISC)/libiosexec/libiosexec.1.tbd $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.1.tbd
 	@$(LN_S) libiosexec.1.tbd $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.tbd
 	@rm -f $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.*.dylib
+ifneq ($(MEMO_NO_IOSEXEC),1)
 	@sed -i '1s/^/#include <libiosexec.h>\n/' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/spawn.h
 endif
 endif
