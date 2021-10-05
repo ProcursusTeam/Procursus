@@ -35,7 +35,7 @@ atk: atk-setup glib2.0
 	--cross-file cross.txt \
 	-Dintrospection=false \
 	..
-	ninja -C $(BUILD_WORK)/atk/build
+	+ninja -C $(BUILD_WORK)/atk/build
 	+DESTDIR="$(BUILD_STAGE)/atk" ninja -C $(BUILD_WORK)/atk/build install
 	$(call AFTER_BUILD,copy)
 endif
