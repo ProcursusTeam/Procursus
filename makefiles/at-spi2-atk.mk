@@ -47,7 +47,7 @@ at-spi2-atk-package: at-spi2-atk-stage
 		$(BUILD_DIST)/libatk-bridge2.0-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libatk-bridge2.0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pkgconfig,include}
 
-	# at-spi2-atk.mk libatk-adaptor
+	# at-spi2-atk.mk Prep libatk-adaptor
 	cp -a $(BUILD_STAGE)/at-spi2-atk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{gnome-settings-daemon-3.0,gtk-2.0} \
 		$(BUILD_DIST)/libatk-adaptor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 
