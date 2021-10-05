@@ -11,7 +11,7 @@ DEB_@PKG@_V   ?= $(@PKG@_VERSION)
 	$(call EXTRACT_TAR,@pkg@-$(@PKG@_VERSION).tar.@compression@,@pkg@-$(@PKG@_VERSION),@pkg@)
 	$(call DO_PATCH,@pkg@,@pkg@,-p1)
 	mkdir -p $(BUILD_WORK)/@pkg@/build
-	echo "$(DEFAULT_MESON_CROSS_TXT)" > $(BUILD_WORK)/@pkg@/build/cross.txt
+	echo -e "$(DEFAULT_MESON_CROSS_TXT)" > $(BUILD_WORK)/@pkg@/build/cross.txt
 
 ifneq ($(wildcard $(BUILD_WORK)/@pkg@/.build_complete),)
 @pkg@:
