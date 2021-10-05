@@ -7,7 +7,7 @@ DWM_VERSION := 6.2
 DEB_DWM_V   ?= $(DWM_VERSION)
 
 dwm-setup: setup
-	wget -q -nc -P$(BUILD_SOURCE) https://dl.suckless.org/dwm/dwm-6.2.tar.gz
+	wget -q -nc -P$(BUILD_SOURCE) https://dl.suckless.org/dwm/dwm-$(DWM_VERSION).tar.gz
 	$(call EXTRACT_TAR,dwm-$(DWM_VERSION).tar.gz,dwm-$(DWM_VERSION),dwm)
 	$(call DO_PATCH,dwm,dwm,-p1)
 
@@ -15,9 +15,9 @@ ifneq ($(wildcard $(BUILD_WORK)/dwm/.build_complete),)
 dwm:
 	@echo "Using previously built dwm."
 else
-dwm: libx11 libxft fontconfig freetype libxinerama dwm-setup
+dwm: dwm-setup libx11 libxft fontconfig freetype libxinerama
 	$(MAKE) -C $(BUILD_WORK)/dwm
-	$(MAKE) -C $(BUILD_WORK)/dwm install \
+	+$(MAKE) -C $(BUILD_WORK)/dwm install \
 		DESTDIR=$(BUILD_STAGE)/dwm
 	$(call AFTER_BUILD)
 endif
