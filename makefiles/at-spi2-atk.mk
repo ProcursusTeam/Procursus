@@ -35,7 +35,7 @@ at-spi2-atk: at-spi2-atk-setup atk at-spi2-atk dbus glib2.0
 	--cross-file cross.txt \
 	-Dintrospection=false \
 	..
-	ninja -C $(BUILD_WORK)/at-spi2-atk/build
+	+ninja -C $(BUILD_WORK)/at-spi2-atk/build
 	+DESTDIR="$(BUILD_STAGE)/at-spi2-atk" ninja -C $(BUILD_WORK)/at-spi2-atk/build install
 	$(call AFTER_BUILD,copy)
 endif
