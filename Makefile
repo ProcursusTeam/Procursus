@@ -635,7 +635,7 @@ CONFIGURE_MAKE_INSTALL = cd $(BUILD_WORK)/$@; \
 
 CMAKE_MAKE_INSTALL = mkdir -p $(BUILD_WORK)/$@/build; \
 	cd $(BUILD_WORK)/$@/build; \
-		cmake . $(1) $(DEFAULT_CMAKE_FLAGS) ..; \
+		cmake .$(DEFAULT_CMAKE_FLAGS) .. $(1); \
 	$(MAKE) -C $(BUILD_WORK)/$@/build $(2); \
 	$(MAKE) -C $(BUILD_WORK)/$@/build install \
 		DESTDIR=$(BUILD_STAGE)/$@ $(3)
@@ -662,7 +662,7 @@ PYTHON3_SETUP_PY_INSTALL = cd $(BUILD_WORK)/$@; \
 	$(DEFAULT_SETUP_PY_ENV) $(1) python3 ./setup.py install \
 		--install-layout=deb \
 		--root="$(BUILD_STAGE)/$@" \
-		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"; \
+		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" $(2); \
 	find $(BUILD_STAGE)/$@ -name __pycache__ -prune -exec rm -rf {} \;
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
