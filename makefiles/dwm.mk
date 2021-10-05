@@ -25,7 +25,6 @@ endif
 dwm-package: dwm-stage
 	# dwm.mk Package Structure
 	rm -rf $(BUILD_DIST)/dwm
-	mkdir -p $(BUILD_DIST)/dwm
 	
 	# dwm.mk Prep dwm
 	cp -a $(BUILD_STAGE)/dwm $(BUILD_DIST)
