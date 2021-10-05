@@ -20,7 +20,6 @@ ncurses:
 else
 ncurses: ncurses-setup
 	$(call CONFIGURE_MAKE_INSTALL,\
-		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-build-cc="$(CC_FOR_BUILD)" \
 		--with-build-cpp="$(CPP_FOR_BUILD)" \
 		--with-build-cflags="$(CFLAGS_FOR_BUILD)" \

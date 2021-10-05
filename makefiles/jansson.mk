@@ -15,9 +15,7 @@ jansson:
 	@echo "Using previously built jansson."
 else
 jansson: jansson-setup
-	$(call CONFIGURE_MAKE_INSTALL,\
-		$(DEFAULT_CONFIGURE_FLAGS) \
-	)
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

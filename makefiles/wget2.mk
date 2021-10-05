@@ -17,7 +17,6 @@ wget2:
 else
 wget2: wget2-setup openssl pcre2 xz zstd nghttp2 libidn2 gettext
 	$(call CONFIGURE_MAKE_INSTALL,\
-		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-ssl=openssl \
 		--with-openssl \
 		--without-libpsl \

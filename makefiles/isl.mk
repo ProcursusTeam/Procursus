@@ -15,9 +15,7 @@ isl:
 	@echo "Using previously built isl."
 else
 isl: isl-setup libgmp10
-	$(call CONFIGURE_MAKE_INSTALL,\
-		$(DEFAULT_CONFIGURE_FLAGS) \
-	)
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

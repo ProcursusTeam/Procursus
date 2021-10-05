@@ -16,7 +16,6 @@ leptonica:
 else
 leptonica: leptonica-setup libgif libjpeg-turbo libpng16 libtiff openjpeg libwebp
 	$(call CONFIGURE_MAKE_INSTALL,\
-		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-libwebp \
 		--with-libopenjpeg \
 	)

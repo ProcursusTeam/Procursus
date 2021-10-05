@@ -17,7 +17,6 @@ xtrans:
 else
 xtrans: xtrans-setup
 	$(call CONFIGURE_MAKE_INSTALL,\
-		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-docs=no \
 	)
 	$(call AFTER_BUILD,copy)

@@ -16,7 +16,6 @@ less:
 else
 less: less-setup ncurses pcre2
 	$(call CONFIGURE_MAKE_INSTALL,\
-		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-regex=pcre2 \
 		CFLAGS="$(CFLAGS) -Wno-implicit-function-declaration" \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \

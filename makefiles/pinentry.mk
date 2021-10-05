@@ -17,7 +17,6 @@ pinentry:
 else
 pinentry: pinentry-setup libgpg-error libassuan ncurses
 	$(call CONFIGURE_MAKE_INSTALL,\
-		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-pinentry-fltk \
 		--disable-pinentry-gnome3 \
 		--disable-pinentry-gtk2 \

@@ -18,7 +18,6 @@ nghttp2:
 else
 nghttp2: nghttp2-setup openssl libc-ares libev jansson libjemalloc libevent
 	$(call CONFIGURE_MAKE_INSTALL,\
-		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
 		--without-systemd \
 		--enable-python-bindings=no \

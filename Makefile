@@ -628,30 +628,21 @@ DO_PATCH    = cd $(BUILD_PATCH)/$(1); \
 	done
 
 CONFIGURE_MAKE_INSTALL = cd $(BUILD_WORK)/$@; \
-	if ! [ $(1) ]; then \
-		./configure -C $(DEFAULT_CONFIGURE_FLAGS); \
-	else ./configure -C $(1); \
-	fi; \
+	./configure -C $(DEFAULT_CONFIGURE_FLAGS) $(1); \
 	$(MAKE) -C $(BUILD_WORK)/$@ $(2); \
 	$(MAKE) install -C $(BUILD_WORK)/$@ \
 		DESTDIR=$(BUILD_STAGE)/$@ $(3)
 
 CMAKE_MAKE_INSTALL = mkdir -p $(BUILD_WORK)/$@/build; \
 	cd $(BUILD_WORK)/$@/build; \
-	if ! [ $(1) ]; then \
-		cmake . $(DEFAULT_CMAKE_FLAGS) ..; \
-	else cmake . $(1) ..; \
-	fi; \
+		cmake . $(1) $(DEFAULT_CMAKE_FLAGS) ..; \
 	$(MAKE) -C $(BUILD_WORK)/$@/build $(2); \
 	$(MAKE) -C $(BUILD_WORK)/$@/build install \
 		DESTDIR=$(BUILD_STAGE)/$@ $(3)
 
 PERL_MAKE_INSTALL = cd $(BUILD_WORK)/$@; \
-	if ! [ $(1) ]; then \
-		$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl Makefile.PL \
-			$(DEFAULT_PERL_MAKE_FLAGS); \
-	else $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl Makefile.PL $(1); \
-	fi; \
+	$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl Makefile.PL \
+		$(DEFAULT_PERL_MAKE_FLAGS) $(1); \
 	$(MAKE) -C $(BUILD_WORK)/$@ $(2); \
 	$(MAKE) -C $(BUILD_WORK)/$@ install \
 		DESTDIR="$(BUILD_STAGE)/$@" $(3)
@@ -668,16 +659,10 @@ MESON_MESON_INSTALL = cd $(BUILD_WORK)/$@/build && meson \
 	$(2) DESTDIR='$(BUILD_STAGE)/$@' meson install $(3);
 
 PYTHON3_SETUP_PY_INSTALL = cd $(BUILD_WORK)/$@; \
-	if ! [ $(1) ]; then \
-		$(DEFAULT_SETUP_PY_ENV) python3 ./setup.py install \
-			--instal,l-layout=deb \
-			--root="$(BUILD_STAGE)/$@" \
-			--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"; \
-	else \
-		$(1) python3 ./setup.py install \
-			--install-layout=deb \
-			--root="$(BUILD_STAGE)/$@" \
-			--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"; \
+	$(DEFAULT_SETUP_PY_ENV) $(1) python3 ./setup.py install \
+		--install-layout=deb \
+		--root="$(BUILD_STAGE)/$@" \
+		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"; \
 	find $(BUILD_STAGE)/$@ -name __pycache__ -prune -exec rm -rf {} \;
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))

@@ -18,7 +18,6 @@ nano:
 else
 nano: nano-setup ncurses gettext file
 	$(call CONFIGURE_MAKE_INSTALL,\
-		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-utf8 \
 		--enable-color \
 		--enable-extra \

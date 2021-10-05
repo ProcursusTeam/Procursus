@@ -21,7 +21,6 @@ make:
 else
 make: make-setup gettext
 	$(call CONFIGURE_MAKE_INSTALL,\
-		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-guile=no \
 		$(MAKE_CONFIGURE_ARGS) \
 	)

@@ -17,7 +17,6 @@ libc-ares:
 else
 libc-ares: libc-ares-setup
 	$(call CONFIGURE_MAKE_INSTALL,\
-		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
 		--disable-debug \
 		--enable-shared \

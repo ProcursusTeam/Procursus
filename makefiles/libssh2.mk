@@ -18,7 +18,6 @@ else
 libssh2: libssh2-setup openssl
 	find $(BUILD_BASE) -name "*.la" -type f -delete
 	$(call CONFIGURE_MAKE_INSTALL,\
-		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-debug \
 		--disable-dependency-tracking \
 		--with-libz \

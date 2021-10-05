@@ -16,9 +16,7 @@ libpaper:
 else
 libpaper: libpaper-setup
 	cd $(BUILD_WORK)/libpaper && autoreconf -fi
-	$(call CONFIGURE_MAKE_INSTALL,\
-		$(DEFAULT_CONFIGURE_FLAGS) \
-	)
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

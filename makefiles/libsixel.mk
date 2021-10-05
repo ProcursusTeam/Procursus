@@ -18,7 +18,6 @@ else
 libsixel: libsixel-setup libpng16 libjpeg-turbo curl libgd
 	cd $(BUILD_WORK)/libsixel && autoreconf -fi
 	$(call CONFIGURE_MAKE_INSTALL,\
-		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-python=no \
 		--with-libcurl \
 		--with-gd \

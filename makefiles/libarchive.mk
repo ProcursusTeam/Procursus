@@ -16,7 +16,6 @@ libarchive:
 else
 libarchive: libarchive-setup lz4 liblzo2 zstd xz nettle
 	$(call CONFIGURE_MAKE_INSTALL,\
-		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
 		--without-openssl \
 		--with-nettle \

@@ -19,7 +19,6 @@ else
 curl: curl-setup gettext openssl libssh2 nghttp2 libidn2 brotli zstd rtmpdump
 	cd $(BUILD_WORK)/curl && autoreconf -vi
 	$(call CONFIGURE_MAKE_INSTALL,\
-		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-debug \
 		--disable-dependency-tracking \
 		--with-libssh2 \

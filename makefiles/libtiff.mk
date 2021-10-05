@@ -17,7 +17,6 @@ libtiff:
 else
 libtiff: libtiff-setup libjpeg-turbo xz zstd
 	$(call CONFIGURE_MAKE_INSTALL,\
-		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-webp \
 	)
 	$(call AFTER_BUILD,copy)

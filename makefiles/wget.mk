@@ -17,7 +17,6 @@ wget:
 else
 wget: wget-setup openssl pcre2 gettext libunistring libidn2
 	$(call CONFIGURE_MAKE_INSTALL,\
-		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-ssl=openssl \
 		--with-openssl \
 		--without-libpsl \

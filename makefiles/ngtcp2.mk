@@ -18,7 +18,6 @@ else
 ngtcp2: ngtcp2-setup gnutls nghttp3 libjemalloc libev
 	cd $(BUILD_WORK)/ngtcp2 && autoreconf -fi
 	$(call CONFIGURE_MAKE_INSTALL,\
-		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-gnutls \
 		--with-libnghttp3 \
 		--with-libev \

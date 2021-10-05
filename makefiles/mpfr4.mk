@@ -15,9 +15,7 @@ mpfr4:
 	@echo "Using previously built mpfr4."
 else
 mpfr4: mpfr4-setup libgmp10
-	$(call CONFIGURE_MAKE_INSTALL,\
-		$(DEFAULT_CONFIGURE_FLAGS) \
-	)
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 

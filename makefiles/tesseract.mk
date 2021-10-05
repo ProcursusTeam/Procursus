@@ -24,9 +24,7 @@ else
 tesseract: tesseract-setup leptonica libarchive curl
 	cd $(BUILD_WORK)/tesseract && ./autogen.sh
 	rm -f $(BUILD_WORK)/tesseract/VERSION # This, amazingly enough, makes compiling on macOS not work. (Non-case-sensitive)
-	$(call CONFIGURE_MAKE_INSTALL,\
-		$(DEFAULT_CONFIGURE_FLAGS) \
-	)
+	$(call CONFIGURE_MAKE_INSTALL)
 	$(call AFTER_BUILD,copy)
 endif
 
