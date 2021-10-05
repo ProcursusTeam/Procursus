@@ -37,7 +37,7 @@ at-spi2-core: at-spi2-core-setup libx11 libxau libxmu xorgproto xxhash
 		-Dx11=yes \
 		-Dintrospection=no \
 		..
-	ninja -C $(BUILD_WORK)/at-spi2-core/build
+	+ninja -C $(BUILD_WORK)/at-spi2-core/build
 	+DESTDIR="$(BUILD_STAGE)/at-spi2-core" ninja -C $(BUILD_WORK)/at-spi2-core/build install
 	$(call AFTER_BUILD,copy)
 endif
