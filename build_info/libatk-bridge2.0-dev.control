@@ -1,0 +1,11 @@
+Package: libatk-bridge2.0-dev
+Version: @DEB_AT-SPI2-ATK_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libatk-bridge2.0-0 (= @DEB_AT-SPI2-ATK_V@), libatk1.0-dev, libglib2.0-dev (>= 2.4.1-2), libatspi2.0-dev
+Section: Development
+Priority: optional
+Multi-Arch: same
+Description: Development files for the AT-SPI 2 toolkit bridge
+ These are the development files for libatk-bridge2.0, needed for
+ compilation of programs which use it.
