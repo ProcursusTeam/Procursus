@@ -17,7 +17,8 @@ gh:
 else
 gh: gh-setup
 	+$(MAKE) -C $(BUILD_WORK)/gh bin/gh \
-		$(DEFAULT_GOLANG_FLAGS)
+		$(DEFAULT_GOLANG_FLAGS) \
+		GH_VERSION="v$(GH_VERSION)-procursus"
 	+unset CC CXX CFLAGS CPPFLAGS LDFLAGS && $(MAKE) -C $(BUILD_WORK)/gh manpages
 	cp -a $(BUILD_WORK)/gh/bin/gh $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_WORK)/gh/share $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
