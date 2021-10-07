@@ -6,14 +6,12 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS            += developer-cmds
 DEVELOPER-CMDS_VERSION := 66
-DEB_DEVELOPER-CMDS_V   ?= $(DEVELOPER-CMDS_VERSION)
+DEB_DEVELOPER-CMDS_V   ?= $(DEVELOPER-CMDS_VERSION)-1
 
 developer-cmds-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/developer_cmds/developer_cmds-$(DEVELOPER-CMDS_VERSION).tar.gz
 	$(call EXTRACT_TAR,developer_cmds-$(DEVELOPER-CMDS_VERSION).tar.gz,developer_cmds-$(DEVELOPER-CMDS_VERSION),developer-cmds)
-	mkdir -p $(BUILD_STAGE)/developer-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	mkdir -p $(BUILD_WORK)/developer-cmds/include
-	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/{unistd,stdlib}.h $(BUILD_WORK)/developer-cmds/include
+	mkdir -p $(BUILD_STAGE)/developer-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1/}
 
 ifneq ($(wildcard $(BUILD_WORK)/developer-cmds/.build_complete),)
 developer-cmds:
@@ -22,7 +20,8 @@ else
 developer-cmds: developer-cmds-setup
 	cd $(BUILD_WORK)/developer-cmds; \
 	for bin in ctags rpcgen unifdef; do \
-		$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/developer-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -D_POSIX_C_SOURCE=200112L -DS_IREAD=S_IRUSR -DS_IWRITE=S_IWUSR; \
+		$(CC) $(CFLAGS) $(LDFLAGS) -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/developer-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -D_POSIX_C_SOURCE=200112L -DS_IREAD=S_IRUSR -DS_IWRITE=S_IWUSR; \
+		$(INSTALL) -Dm644 $$bin/$$bin.1 $(BUILD_STAGE)/developer-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/; \
 	done
 	$(call AFTER_BUILD)
 endif
