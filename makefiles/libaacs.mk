@@ -23,9 +23,7 @@ libaacs: libgcrypt gnupg libaacs-setup
 	+$(MAKE) -C $(BUILD_WORK)/libaacs
 	+$(MAKE) -C $(BUILD_WORK)/libaacs install \
 		DESTDIR=$(BUILD_STAGE)/libaacs
-	+$(MAKE) -C $(BUILD_WORK)/libaacs install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libaacs/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libaacs-package: libaacs-stage

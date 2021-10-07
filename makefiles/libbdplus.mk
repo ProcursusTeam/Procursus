@@ -32,10 +32,7 @@ libbdplus: libbdplus-setup $(LIBBDPLUS_DEPS)
 	+$(MAKE) -C $(BUILD_WORK)/libbdplus
 	+$(MAKE) -C $(BUILD_WORK)/libbdplus install \
 		DESTDIR=$(BUILD_STAGE)/libbdplus
-	# Build this thing twice so it can be detected by other packages
-	+$(MAKE) -C $(BUILD_WORK)/libbdplus install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libbdplus/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libbdplus-package: libbdplus-stage
