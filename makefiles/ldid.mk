@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS   += ldid
 LDID_VERSION  := 2.1.4+16.g5b8581c
-DEB_LDID_V    ?= $(LDID_VERSION)-1
+DEB_LDID_V    ?= $(LDID_VERSION)-2
 
 ldid-setup: setup
 	$(call GITHUB_ARCHIVE,sbingner,ldid,$(LDID_VERSION),v$(LDID_VERSION))

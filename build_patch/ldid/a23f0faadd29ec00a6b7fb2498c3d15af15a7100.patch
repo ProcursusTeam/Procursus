@@ -1,0 +1,26 @@
+From a23f0faadd29ec00a6b7fb2498c3d15af15a7100 Mon Sep 17 00:00:00 2001
+From: "Jay Freeman (saurik)" <saurik@saurik.com>
+Date: Tue, 14 Sep 2021 20:01:28 -0700
+Subject: [PATCH] The comment says to use a nullbuf, so let's do it!
+
+---
+ ldid.cpp |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/ldid.cpp b/ldid.cpp
+index 3411e59..0d4cb73 100644
+--- a/ldid.cpp
++++ b/ldid.cpp
+@@ -2503,8 +2503,7 @@ void DiskFolder::Find(const std::string &root, const std::string &base, const Fu
+ 
+ void DiskFolder::Save(const std::string &path, bool edit, const void *flag, const Functor<void (std::streambuf &)> &code) {
+     if (!edit) {
+-        // XXX: use nullbuf
+-        std::stringbuf save;
++        NullBuffer save;
+         code(save);
+     } else {
+         std::filebuf save;
+-- 
+1.7.10
+
