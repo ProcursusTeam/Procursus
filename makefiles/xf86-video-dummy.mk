@@ -23,7 +23,7 @@ xf86-video-dummy: xf86-video-dummy-setup xorgproto xorg-server
 	+$(MAKE) -C $(BUILD_WORK)/xf86-video-dummy
 	+$(MAKE) -C $(BUILD_WORK)/xf86-video-dummy install \
 		DESTDIR=$(BUILD_STAGE)/xserver-xorg-video-dummy
-	touch $(BUILD_WORK)/xf86-video-dummy/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 xf86-video-dummy-package: xf86-video-dummy-stage

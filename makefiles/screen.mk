@@ -32,7 +32,7 @@ endif
 	rm -f $(BUILD_STAGE)/screen/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/screen && mv $(BUILD_STAGE)/screen/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/screen{-$(SCREEN_VERSION),}
 	mkdir -p $(BUILD_STAGE)/screen/etc
 	cp -a $(BUILD_WORK)/screen/etc/etcscreenrc $(BUILD_STAGE)/screen/etc/screenrc
-	touch $(BUILD_WORK)/screen/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 screen-package: screen-stage

@@ -57,7 +57,7 @@ lua50: lua50-setup readline
 		INSTALL_ROOT="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		INSTALL_INC="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/lua50" \
 		INSTALL_MAN="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1"
-	touch $(BUILD_WORK)/lua50/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 lua50-package: lua50-stage

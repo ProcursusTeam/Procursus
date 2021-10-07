@@ -10,8 +10,8 @@ moon-buggy-setup: setup file-setup
 	wget -q -nc -P $(BUILD_SOURCE) https://m.seehuhn.de/programs/moon-buggy-$(MOON-BUGGY_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,moon-buggy-$(MOON-BUGGY_VERSION).tar.gz)
 	$(call EXTRACT_TAR,moon-buggy-$(MOON-BUGGY_VERSION).tar.gz,moon-buggy-$(MOON-BUGGY_VERSION),moon-buggy)
-	$(CP) -a $(BUILD_WORK)/file/config.sub $(BUILD_WORK)/moon-buggy
-	$(SED) -i 's|$$(DESTDIR)$$(bindir)/moon-buggy -c||' $(BUILD_WORK)/moon-buggy/Makefile.am
+	cp -a $(BUILD_WORK)/file/config.sub $(BUILD_WORK)/moon-buggy
+	sed -i 's|$$(DESTDIR)$$(bindir)/moon-buggy -c||' $(BUILD_WORK)/moon-buggy/Makefile.am
 
 ifneq ($(wildcard $(BUILD_WORK)/moon-buggy/.build_complete),)
 moon-buggy:
@@ -27,7 +27,7 @@ moon-buggy: moon-buggy-setup ncurses
 		CURSES_LIBS="-lncursesw"
 	+$(MAKE) -C $(BUILD_WORK)/moon-buggy install \
 		DESTDIR="$(BUILD_STAGE)/moon-buggy"
-	touch $(BUILD_WORK)/moon-buggy/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 moon-buggy-package: moon-buggy-stage

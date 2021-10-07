@@ -25,7 +25,7 @@ wget2: wget2-setup openssl pcre2 xz zstd nghttp2 libidn2 gettext
 	+$(MAKE) -C $(BUILD_WORK)/wget2 install \
 		DESTDIR="$(BUILD_STAGE)/wget2"
 	rm -f $(BUILD_STAGE)/wget2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*noinstall
-	touch $(BUILD_WORK)/wget2/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 wget2-package: wget2-stage

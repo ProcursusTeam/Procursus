@@ -8,7 +8,7 @@ DEB_JTOOL2_V   ?= $(JTOOL2_VERSION)
 
 jtool2-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) http://newosxbook.com/tools/jtool2.tgz
-	rm -rf $(BUILD_WORK)/jtool2 && mkdir -p $(BUILD_WORK)/jtool2 && pushd $(BUILD_WORK)/jtool2 && $(TAR) -C . -xf $(BUILD_SOURCE)/jtool2.tgz && popd
+	rm -rf $(BUILD_WORK)/jtool2 && mkdir -p $(BUILD_WORK)/jtool2 && pushd $(BUILD_WORK)/jtool2 && tar -C . -xf $(BUILD_SOURCE)/jtool2.tgz && popd
 
 ifneq ($(wildcard $(BUILD_WORK)/jtool2/.build_complete),)
 jtool2:
@@ -23,7 +23,7 @@ jtool2: jtool2-setup
 	[ $(MEMO_TARGET) = "darwin-arm64" ] && \
 		vtool -arch arm64 -remove-build-version ios -output $(BUILD_STAGE)/jtool2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/jtool2 $(BUILD_STAGE)/jtool2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/jtool2 && \
 		vtool -arch arm64 -remove-build-version ios -output $(BUILD_STAGE)/jtool2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/disarm $(BUILD_STAGE)/jtool2/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/disarm
-	touch $(BUILD_WORK)/jtool2/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 jtool2-package: jtool2-stage

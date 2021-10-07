@@ -2,7 +2,7 @@ Package: libipatcher0
 Version: @DEB_LIBIPATCHER_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libcurl4, libpng16-16, liboffsetfinder64-0, libimg4tool0, libssl1.1, libplist3, libinsn0, libgeneral0
+Depends: libcurl4, libpng16-16, liboffsetfinder64-0, libimg4tool0, libssl3, libplist3, libinsn0, libgeneral0
 Section: Libraries
 Priority: optional
 Description: a convinient wrapper for iBoot32Patcher (shared libraries)

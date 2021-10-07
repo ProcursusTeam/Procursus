@@ -13,16 +13,16 @@ LIBBOOST_CONFIGURE_ARGS := abi=aapcs
 endif
 
 libboost-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://boostorg.jfrog.io/artifactory/main/release/$(LIBBOOST_VERSION)/source/boost_$(shell echo $(LIBBOOST_VERSION) | $(SED) 's/\./_/g').tar.bz2
-	$(call EXTRACT_TAR,boost_$(shell echo $(LIBBOOST_VERSION) | $(SED) 's/\./_/g').tar.bz2,boost_$(shell echo $(LIBBOOST_VERSION) | $(SED) 's/\./_/g'),libboost)
+	wget -q -nc -P $(BUILD_SOURCE) https://boostorg.jfrog.io/artifactory/main/release/$(LIBBOOST_VERSION)/source/boost_$(shell echo $(LIBBOOST_VERSION) | sed 's/\./_/g').tar.bz2
+	$(call EXTRACT_TAR,boost_$(shell echo $(LIBBOOST_VERSION) | sed 's/\./_/g').tar.bz2,boost_$(shell echo $(LIBBOOST_VERSION) | sed 's/\./_/g'),libboost)
 
 ifneq ($(wildcard $(BUILD_WORK)/libboost/.build_complete),)
 libboost:
 	@echo "Using previously built libboost."
 else
-libboost: libboost-setup xz zstd icu4c
+libboost: libboost-setup xz zstd icu4c python3
 	rm -rf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_*
-	$(BUILD_WORK)/libboost/tools/build/src/engine/build.sh --cxx="$(CXX_FOR_BUILD)" --cxxflags="-std=c++11 $(BUILD_CXXFLAGS)"
+	$(BUILD_WORK)/libboost/tools/build/src/engine/build.sh --cxx="$(CXX_FOR_BUILD)" --cxxflags="-std=c++11 $(CXXFLAGS_FOR_BUILD)"
 ifneq (,$(findstring amd64,$(MEMO_TARGET)))
 	echo "using clang-darwin : x86 : $(CXX) : <compileflags>\"$(CPPFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)\" <cflags>\"$(CFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)\" <cxxflags>\"$(CXXFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)\" <linkflags>\"$(LDFLAGS)\" ;" > $(BUILD_WORK)/libboost/tools/build/src/user-config.jam
 else
@@ -53,9 +53,9 @@ endif
 			$(I_N_T) -change $$linked $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/$$(basename $$linked .dylib).$(LIBBOOST_VERSION).dylib $$lib; \
 		done; \
 		mv $$lib $$(dirname $$lib)/$$(basename $$lib .dylib).$(LIBBOOST_VERSION).dylib; \
-		ln -s $$(basename $$lib .dylib).$(LIBBOOST_VERSION).dylib $$lib; \
+		$(LN_S) $$(basename $$lib .dylib).$(LIBBOOST_VERSION).dylib $$lib; \
 	done
-	touch $(BUILD_WORK)/libboost/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libboost-package: libboost-stage

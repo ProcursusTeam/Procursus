@@ -26,9 +26,7 @@ ucl: ucl-setup
 	+$(MAKE) -C $(BUILD_WORK)/ucl all
 	+$(MAKE) -C $(BUILD_WORK)/ucl install \
 		DESTDIR=$(BUILD_STAGE)/ucl
-	+$(MAKE) -C $(BUILD_WORK)/ucl install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/ucl/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 ucl-package: ucl-stage

@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += cmake
-CMAKE_VERSION := 3.20.5
+CMAKE_VERSION := 3.21.1
 DEB_CMAKE_V   ?= $(CMAKE_VERSION)
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
@@ -40,7 +40,7 @@ cmake: cmake-setup ncurses libuv1 curl libarchive expat xz nghttp2 zstd
 		.
 	+$(MAKE) -C $(BUILD_WORK)/cmake install \
 		DESTDIR="$(BUILD_STAGE)/cmake"
-	touch $(BUILD_WORK)/cmake/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 cmake-package: cmake-stage

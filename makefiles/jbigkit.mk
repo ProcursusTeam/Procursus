@@ -41,7 +41,7 @@ jbigkit: jbigkit-setup
 	$(INSTALL) -m644 "$(BUILD_WORK)/jbigkit/pbmtools/pbmtojbg.1" $(BUILD_STAGE)/jbigkit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	$(INSTALL) -m644 "$(BUILD_WORK)/jbigkit/pbmtools/jbgtopbm.1" $(BUILD_STAGE)/jbigkit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
-	touch $(BUILD_WORK)/jbigkit/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 jbigkit-package: jbigkit-stage

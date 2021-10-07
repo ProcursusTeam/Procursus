@@ -20,7 +20,7 @@ ncdu: ncdu-setup ncurses
 	+$(MAKE) -C $(BUILD_WORK)/ncdu
 	+$(MAKE) -C $(BUILD_WORK)/ncdu install \
 		DESTDIR=$(BUILD_STAGE)/ncdu
-	touch $(BUILD_WORK)/ncdu/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 ncdu-package: ncdu-stage

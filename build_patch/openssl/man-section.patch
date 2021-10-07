@@ -1,0 +1,31 @@
+From: Debian OpenSSL Team <pkg-openssl-devel@lists.alioth.debian.org>
+Date: Sun, 5 Nov 2017 15:09:09 +0100
+Subject: man-section
+
+---
+ Configurations/unix-Makefile.tmpl | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/Configurations/unix-Makefile.tmpl b/Configurations/unix-Makefile.tmpl
+index f88a70f4828e..fceda4a1161c 100644
+--- a/Configurations/unix-Makefile.tmpl
++++ b/Configurations/unix-Makefile.tmpl
+@@ -317,7 +317,8 @@ HTMLDIR=$(DOCDIR)/html
+ # MANSUFFIX is for the benefit of anyone who may want to have a suffix
+ # appended after the manpage file section number.  "ssl" is popular,
+ # resulting in files such as config.5ssl rather than config.5.
+-MANSUFFIX=ossl
++MANSUFFIX=ssl
++MANSECTION=SSL
+ HTMLSUFFIX=html
+ 
+ # For "optional" echo messages, to get "real" silence
+@@ -1520,7 +1521,7 @@ EOF
+           my $pod = $gen0;
+           return <<"EOF";
+ $args{src}: $pod
+-	pod2man --name=$name --section=$section\$(MANSUFFIX) --center=OpenSSL \\
++	pod2man --name=$name --section=$section\$(MANSECTION) --center=OpenSSL \\
+ 		--release=\$(VERSION) $pod >\$\@
+ EOF
+       } elsif (platform->isdef($args{src})) {

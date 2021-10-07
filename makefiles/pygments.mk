@@ -22,7 +22,7 @@ pygments: pygments-setup
 		--root="$(BUILD_STAGE)/pygments" \
 		--install-layout=deb
 	find $(BUILD_STAGE)/pygments -name __pycache__ -prune -exec rm -rf {} \;
-	touch $(BUILD_WORK)/pygments/.build_complete
+	$(call AFTER_BUILD)
 endif
 pygments-package: pygments-stage
 	# pygments.mk Package Structure
