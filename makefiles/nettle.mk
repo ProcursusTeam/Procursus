@@ -23,9 +23,7 @@ nettle: nettle-setup libgmp10
 	+$(MAKE) -C $(BUILD_WORK)/nettle
 	+$(MAKE) -C $(BUILD_WORK)/nettle install \
 		DESTDIR=$(BUILD_STAGE)/nettle
-	+$(MAKE) -C $(BUILD_WORK)/nettle install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/nettle/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 nettle-package: nettle-stage

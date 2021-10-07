@@ -34,7 +34,7 @@ endif
 	+$(MAKE) -C $(BUILD_WORK)/tcsh
 	+$(MAKE) -C $(BUILD_WORK)/tcsh install \
 		DESTDIR=$(BUILD_STAGE)/tcsh
-	touch $(BUILD_WORK)/tcsh/.build_complete
+	$(call AFTER_BUILD)
 endif
 tcsh-package: tcsh-stage
 	# tcsh.mk Package Structure

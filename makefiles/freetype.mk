@@ -23,9 +23,7 @@ freetype: freetype-setup brotli libpng16
 	+$(MAKE) -C $(BUILD_WORK)/freetype
 	+$(MAKE) -C $(BUILD_WORK)/freetype install \
 		DESTDIR=$(BUILD_STAGE)/freetype
-	+$(MAKE) -C $(BUILD_WORK)/freetype install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/freetype/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 freetype-package: freetype-stage

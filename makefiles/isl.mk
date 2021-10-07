@@ -20,9 +20,7 @@ isl: isl-setup libgmp10
 	+$(MAKE) -C $(BUILD_WORK)/isl
 	+$(MAKE) -C $(BUILD_WORK)/isl install \
 		DESTDIR="$(BUILD_STAGE)/isl"
-	+$(MAKE) -C $(BUILD_WORK)/isl install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/isl/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 isl-package: isl-stage

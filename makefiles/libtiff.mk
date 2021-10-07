@@ -22,9 +22,7 @@ libtiff: libtiff-setup libjpeg-turbo xz zstd
 	+$(MAKE) -C $(BUILD_WORK)/libtiff
 	+$(MAKE) -C $(BUILD_WORK)/libtiff install \
 		DESTDIR="$(BUILD_STAGE)/libtiff"
-	+$(MAKE) -C $(BUILD_WORK)/libtiff install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libtiff/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libtiff-package: libtiff-stage

@@ -2,7 +2,7 @@ Package: redis-server
 Version: @DEB_REDIS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: redis-tools, libjemalloc2, libssl1.1
+Depends: redis-tools, libjemalloc2, libssl3
 Section: Data_Storage
 Description: Persistent key-value database with network interface
  Redis is a key-value database in a similar vein to memcache but the dataset

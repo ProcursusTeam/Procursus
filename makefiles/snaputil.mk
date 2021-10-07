@@ -17,7 +17,7 @@ snaputil:
 else
 snaputil: snaputil-setup
 	$(CC) -arch $(MEMO_ARCH) -Os -Wall -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -o $(BUILD_STAGE)/snaputil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/snaputil $(BUILD_WORK)/snaputil/snapUtil.c
-	touch $(BUILD_WORK)/snaputil/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 snaputil-package: snaputil-stage

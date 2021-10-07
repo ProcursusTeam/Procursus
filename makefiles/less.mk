@@ -23,7 +23,7 @@ less: less-setup ncurses pcre2
 	+$(MAKE) -C $(BUILD_WORK)/less
 	+$(MAKE) -C $(BUILD_WORK)/less install \
 		DESTDIR="$(BUILD_STAGE)/less"
-	touch $(BUILD_WORK)/less/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 less-package: less-stage
@@ -36,9 +36,9 @@ endif
 
 	# less.mk Prep less
 	cp -a $(BUILD_STAGE)/less/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/* $(BUILD_DIST)/less/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/less $(BUILD_DIST)/less/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/more
+	$(LN_S) /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/less $(BUILD_DIST)/less/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/more
 ifneq ($(MEMO_SUB_PREFIX),)
-	ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/less $(BUILD_DIST)/less/$(MEMO_PREFIX)/bin/more
+	$(LN_S) /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/less $(BUILD_DIST)/less/$(MEMO_PREFIX)/bin/more
 endif
 
 	# less.mk Sign

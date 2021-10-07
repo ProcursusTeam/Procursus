@@ -4,6 +4,7 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Utilities
 Priority: optional
+Homepage: https://www.gnu.org/software/ddrescue/ddrescue.html
 Description: GNU data recovery tool
  The gddrescue tool copies data from one file or block device
  (hard disc, cdrom, etc) to another, trying hard to rescue data

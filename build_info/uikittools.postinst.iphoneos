@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e 
+
+case "$1" in
+    (triggered)
+        uicache -a
+        ;;
+    (*)
+		exit 0
+		;;
+esac

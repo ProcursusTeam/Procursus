@@ -2,7 +2,7 @@ Package: srt-tools
 Version: @DEB_LIBSRT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libsrt1 (= @DEB_LIBSRT_V@), libssl1.1
+Depends: libsrt1 (= @DEB_LIBSRT_V@), libssl3
 Section: Utilities
 Priority: optional
 Homepage: https://github.com/Haivision/srt/

@@ -2,6 +2,8 @@ ifeq ($(firstword $(subst ., ,$(MAKE_VERSION))),3)
 $(error Install latest make from Procursus - sudo apt install make)
 endif
 
+export LANG := C
+
 ifeq ($(shell LANG=C /usr/bin/env bash --version | grep -iq 'version 5' && echo 1),1)
 SHELL := /usr/bin/env bash
 else
@@ -18,65 +20,23 @@ ifneq ($(shell umask),0022)
 $(error Please run `umask 022` before running this)
 endif
 
+RELATIVE_RPATH       := 0
+
 MEMO_TARGET          ?= darwin-arm64
 MEMO_CFVER           ?= 1700
 # iOS 13.0 == 1665.15.
 CFVER_WHOLE          := $(shell echo $(MEMO_CFVER) | cut -d. -f1)
 
-ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1100 ] && [ "$(CFVER_WHOLE)" -lt 1200 ] && echo 1),1)
-IPHONEOS_DEPLOYMENT_TARGET  := 8.0
-APPLETVOS_DEPLOYMENT_TARGET := XXX
-AUDIOOS_DEPLOYMENT_TARGET   := XXX
-BRIDGEOS_DEPLOYMENT_TARGET  := XXX
-WATCHOS_DEPLOYMENT_TARGET   := 1.0
-MACOSX_DEPLOYMENT_TARGET    := 10.10
-DARWIN_DEPLOYMENT_VERSION   := 14
-override MEMO_CFVER         := 1100
-else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1200 ] && [ "$(CFVER_WHOLE)" -lt 1300 ] && echo 1),1)
-IPHONEOS_DEPLOYMENT_TARGET  := 9.0
-APPLETVOS_DEPLOYMENT_TARGET := 9.0
-AUDIOOS_DEPLOYMENT_TARGET   := XXX
-BRIDGEOS_DEPLOYMENT_TARGET  := XXX
-WATCHOS_DEPLOYMENT_TARGET   := 2.0
-MACOSX_DEPLOYMENT_TARGET    := 10.11
-DARWIN_DEPLOYMENT_VERSION   := 15
-override MEMO_CFVER         := 1200
-else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1300 ] && [ "$(CFVER_WHOLE)" -lt 1400 ] && echo 1),1)
-IPHONEOS_DEPLOYMENT_TARGET  := 10.0
-APPLETVOS_DEPLOYMENT_TARGET := 10.0
-AUDIOOS_DEPLOYMENT_TARGET   := XXX
-BRIDGEOS_DEPLOYMENT_TARGET  := 1.0 # bridgeOS 1.0 is T1 only
-WATCHOS_DEPLOYMENT_TARGET   := 3.0
-MACOSX_DEPLOYMENT_TARGET    := 10.12
-DARWIN_DEPLOYMENT_VERSION   := 16
-override MEMO_CFVER         := 1300
-else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1400 ] && [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
-IPHONEOS_DEPLOYMENT_TARGET  := 11.0
-APPLETVOS_DEPLOYMENT_TARGET := 11.0
-AUDIOOS_DEPLOYMENT_TARGET   := 11.0
-BRIDGEOS_DEPLOYMENT_TARGET  := 2.0
-WATCHOS_DEPLOYMENT_TARGET   := 4.0
-MACOSX_DEPLOYMENT_TARGET    := 10.13
-DARWIN_DEPLOYMENT_VERSION   := 17
-override MEMO_CFVER         := 1400
-else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1500 ] && [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
-IPHONEOS_DEPLOYMENT_TARGET  := 12.0
-APPLETVOS_DEPLOYMENT_TARGET := 12.0
-AUDIOOS_DEPLOYMENT_TARGET   := 12.0
-BRIDGEOS_DEPLOYMENT_TARGET  := 3.0
-WATCHOS_DEPLOYMENT_TARGET   := 5.0
-MACOSX_DEPLOYMENT_TARGET    := 10.14
-DARWIN_DEPLOYMENT_VERSION   := 18
-override MEMO_CFVER         := 1500
-else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
-IPHONEOS_DEPLOYMENT_TARGET  := 13.0
-APPLETVOS_DEPLOYMENT_TARGET := 13.0
-AUDIOOS_DEPLOYMENT_TARGET   := 13.0
-BRIDGEOS_DEPLOYMENT_TARGET  := 4.0
-WATCHOS_DEPLOYMENT_TARGET   := 6.0
-MACOSX_DEPLOYMENT_TARGET    := 10.15
-DARWIN_DEPLOYMENT_VERSION   := 19
-override MEMO_CFVER         := 1600
+ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1800 ] && [ "$(CFVER_WHOLE)" -lt 1900 ] && echo 1),1)
+IPHONEOS_DEPLOYMENT_TARGET  := 15.0
+APPLETVOS_DEPLOYMENT_TARGET := 15.0
+AUDIOOS_DEPLOYMENT_TARGET   := 15.0
+BRIDGEOS_DEPLOYMENT_TARGET  := 6.0
+WATCHOS_DEPLOYMENT_TARGET   := 8.0
+MACOSX_DEPLOYMENT_TARGET    := 12.0
+DARWIN_DEPLOYMENT_VERSION   := 21
+MACOSX_SUITE_NAME           := monterey
+override MEMO_CFVER         := 1800
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1700 ] && [ "$(CFVER_WHOLE)" -lt 1800 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 14.0
 APPLETVOS_DEPLOYMENT_TARGET := 14.0
@@ -87,16 +47,24 @@ MACOSX_DEPLOYMENT_TARGET    := 11.0
 DARWIN_DEPLOYMENT_VERSION   := 20
 MACOSX_SUITE_NAME           := big_sur
 override MEMO_CFVER         := 1700
-else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1800 ] && [ "$(CFVER_WHOLE)" -lt 1900 ] && echo 1),1)
-IPHONEOS_DEPLOYMENT_TARGET  := 15.0
-APPLETVOS_DEPLOYMENT_TARGET := 15.0
-AUDIOOS_DEPLOYMENT_TARGET   := 15.0
-BRIDGEOS_DEPLOYMENT_TARGET  := 6.0
-WATCHOS_DEPLOYMENT_TARGET   := 8.0
-MACOSX_DEPLOYMENT_TARGET    := 12.0
-DARWIN_DEPLOYMENT_VERSION   := 21
-MACOSX_SUITE_NAME           := monterey
-override MEMO_CFVER         := 1800
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
+IPHONEOS_DEPLOYMENT_TARGET  := 13.0
+APPLETVOS_DEPLOYMENT_TARGET := 13.0
+AUDIOOS_DEPLOYMENT_TARGET   := 13.0
+BRIDGEOS_DEPLOYMENT_TARGET  := 4.0
+WATCHOS_DEPLOYMENT_TARGET   := 6.0
+MACOSX_DEPLOYMENT_TARGET    := 10.15
+DARWIN_DEPLOYMENT_VERSION   := 19
+override MEMO_CFVER         := 1600
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1500 ] && [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
+IPHONEOS_DEPLOYMENT_TARGET  := 12.0
+APPLETVOS_DEPLOYMENT_TARGET := 12.0
+AUDIOOS_DEPLOYMENT_TARGET   := 12.0
+BRIDGEOS_DEPLOYMENT_TARGET  := 3.0
+WATCHOS_DEPLOYMENT_TARGET   := 5.0
+MACOSX_DEPLOYMENT_TARGET    := 10.14
+DARWIN_DEPLOYMENT_VERSION   := 18
+override MEMO_CFVER         := 1500
 else
 $(error Unsupported CoreFoundation version)
 endif
@@ -107,188 +75,238 @@ ifeq ($(MEMO_TARGET),iphoneos-arm64)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for iOS)
 endif # ($(MEMO_QUIET),1)
-MEMO_ARCH            := arm64
-PLATFORM             := iphoneos
-DEB_ARCH             := iphoneos-arm
-GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -miphoneos-version-min=$(IPHONEOS_DEPLOYMENT_TARGET)
-RUST_TARGET          := aarch64-apple-ios
-LLVM_TARGET          := arm64-apple-ios$(IPHONEOS_DEPLOYMENT_TARGET)
-MEMO_PREFIX          ?=
-MEMO_SUB_PREFIX      ?= /usr
-MEMO_ALT_PREFIX      ?= /local
-GNU_PREFIX           :=
-ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
-BARE_PLATFORM        := iPhoneOS
+MEMO_ARCH             := arm64
+PLATFORM              := iphoneos
+DEB_ARCH              := iphoneos-arm
+GNU_HOST_TRIPLE       := aarch64-apple-darwin
+PLATFORM_VERSION_MIN  := -miphoneos-version-min=$(IPHONEOS_DEPLOYMENT_TARGET)
+RUST_TARGET           := aarch64-apple-ios
+LLVM_TARGET           := arm64-apple-ios$(IPHONEOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?=
+MEMO_SUB_PREFIX       ?= /usr
+MEMO_ALT_PREFIX       ?= /local
+MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
+GNU_PREFIX            :=
+ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
+BARE_PLATFORM         := iPhoneOS
+export IPHONEOS_DEPLOYMENT_TARGET
+
+else ifeq ($(MEMO_TARGET),iphoneos-arm64-rootless)
+ifneq ($(MEMO_QUIET),1)
+$(warning Building for iOS with rootless prefix)
+endif # ($(MEMO_QUIET),1)
+MEMO_ARCH             := arm64
+PLATFORM              := iphoneos
+DEB_ARCH              := iphoneos-arm64
+GNU_HOST_TRIPLE       := aarch64-apple-darwin
+PLATFORM_VERSION_MIN  := -miphoneos-version-min=$(IPHONEOS_DEPLOYMENT_TARGET)
+RUST_TARGET           := aarch64-apple-ios
+LLVM_TARGET           := arm64-apple-ios$(IPHONEOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?= /private/preboot/procursus
+MEMO_SUB_PREFIX       ?= /usr
+MEMO_ALT_PREFIX       ?=
+MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
+GNU_PREFIX            :=
+ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
+BARE_PLATFORM         := iPhoneOS
+export IPHONEOS_DEPLOYMENT_TARGET
+
+else ifeq ($(MEMO_TARGET),iphoneos-arm64e-rootless)
+ifneq ($(MEMO_QUIET),1)
+$(warning Building for iOS arm64e with rootless prefix)
+endif # ($(MEMO_QUIET),1)
+MEMO_ARCH             := arm64e
+PLATFORM              := iphoneos
+DEB_ARCH              := iphoneos-arm64e
+GNU_HOST_TRIPLE       := aarch64-apple-darwin
+PLATFORM_VERSION_MIN  := -miphoneos-version-min=$(IPHONEOS_DEPLOYMENT_TARGET)
+RUST_TARGET           := aarch64-apple-ios
+LLVM_TARGET           := arm64e-apple-ios$(IPHONEOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?= /private/preboot/procursus
+MEMO_SUB_PREFIX       ?= /usr
+MEMO_ALT_PREFIX       ?=
+MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
+GNU_PREFIX            :=
+ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
+BARE_PLATFORM         := iPhoneOS
 export IPHONEOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),iphoneos-arm64e)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for iOS arm64e)
 endif # ($(MEMO_QUIET),1)
-MEMO_ARCH            := arm64e
-PLATFORM             := iphoneos
-DEB_ARCH             := iphoneos-arm64e
-GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -miphoneos-version-min=$(IPHONEOS_DEPLOYMENT_TARGET)
-RUST_TARGET          := aarch64-apple-ios
-LLVM_TARGET          := arm64e-apple-ios$(IPHONEOS_DEPLOYMENT_TARGET)
-MEMO_PREFIX          ?=
-MEMO_SUB_PREFIX      ?= /usr
-MEMO_ALT_PREFIX      ?= /local
-GNU_PREFIX           :=
-ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
-BARE_PLATFORM        := iPhoneOS
+MEMO_ARCH             := arm64e
+PLATFORM              := iphoneos
+DEB_ARCH              := iphoneos-arm64e
+GNU_HOST_TRIPLE       := aarch64-apple-darwin
+PLATFORM_VERSION_MIN  := -miphoneos-version-min=$(IPHONEOS_DEPLOYMENT_TARGET)
+RUST_TARGET           := aarch64-apple-ios
+LLVM_TARGET           := arm64e-apple-ios$(IPHONEOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?=
+MEMO_SUB_PREFIX       ?= /usr
+MEMO_ALT_PREFIX       ?= /local
+MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
+GNU_PREFIX            :=
+ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
+BARE_PLATFORM         := iPhoneOS
 export IPHONEOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),appletvos-arm64)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for tvOS)
 endif # ($(MEMO_QUIET),1)
-MEMO_ARCH            := arm64
-PLATFORM             := appletvos
-DEB_ARCH             := appletvos-arm64
-GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -mappletvos-version-min=$(APPLETVOS_DEPLOYMENT_TARGET)
-RUST_TARGET          := aarch64-apple-tvos
-LLVM_TARGET          := arm64-apple-tvos$(APPLETVOS_DEPLOYMENT_TARGET)
-MEMO_PREFIX          ?=
-MEMO_SUB_PREFIX      ?= /usr
-MEMO_ALT_PREFIX      ?= /local
-GNU_PREFIX           :=
-ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
-BARE_PLATFORM        := AppleTVOS
+MEMO_ARCH             := arm64
+PLATFORM              := appletvos
+DEB_ARCH              := appletvos-arm64
+GNU_HOST_TRIPLE       := aarch64-apple-darwin
+PLATFORM_VERSION_MIN  := -mappletvos-version-min=$(APPLETVOS_DEPLOYMENT_TARGET)
+RUST_TARGET           := aarch64-apple-tvos
+LLVM_TARGET           := arm64-apple-tvos$(APPLETVOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?=
+MEMO_SUB_PREFIX       ?= /usr
+MEMO_ALT_PREFIX       ?= /local
+MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
+GNU_PREFIX            :=
+ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
+BARE_PLATFORM         := AppleTVOS
 export APPLETVOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),appletvos-arm64e)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for tvOS arm64e)
 endif # ($(MEMO_QUIET),1)
-MEMO_ARCH            := arm64e
-PLATFORM             := appletvos
-DEB_ARCH             := appletvos-arm64e
-GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -mappletvos-version-min=$(APPLETVOS_DEPLOYMENT_TARGET)
-RUST_TARGET          := aarch64-apple-tvos
-LLVM_TARGET          := arm64e-apple-tvos$(APPLETVOS_DEPLOYMENT_TARGET)
-MEMO_PREFIX          ?=
-MEMO_SUB_PREFIX      ?= /usr
-MEMO_ALT_PREFIX      ?= /local
-GNU_PREFIX           :=
-ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
-BARE_PLATFORM        := AppleTVOS
+MEMO_ARCH             := arm64e
+PLATFORM              := appletvos
+DEB_ARCH              := appletvos-arm64e
+GNU_HOST_TRIPLE       := aarch64-apple-darwin
+PLATFORM_VERSION_MIN  := -mappletvos-version-min=$(APPLETVOS_DEPLOYMENT_TARGET)
+RUST_TARGET           := aarch64-apple-tvos
+LLVM_TARGET           := arm64e-apple-tvos$(APPLETVOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?=
+MEMO_SUB_PREFIX       ?= /usr
+MEMO_ALT_PREFIX       ?= /local
+MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
+GNU_PREFIX            :=
+ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
+BARE_PLATFORM         := AppleTVOS
 export APPLETVOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),audioos-arm64)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for audioOS)
 endif # ($(MEMO_QUIET),1)
-MEMO_ARCH            := arm64
-PLATFORM             := appletvos # Platform-wise, audioos ~ appletvos (although some frameworks and stuff may be missing)
-DEB_ARCH             := audioos-arm64
-GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -mappletvos-version-min=$(APPLETVOS_DEPLOYMENT_TARGET)
-RUST_TARGET          := aarch64-apple-tvos
-LLVM_TARGET          := arm64-apple-tvos$(APPLETVOS_DEPLOYMENT_TARGET)
-MEMO_PREFIX          ?=
-MEMO_SUB_PREFIX      ?= /usr
-MEMO_ALT_PREFIX      ?= /local
-GNU_PREFIX           :=
-ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
-BARE_PLATFORM        := AppleTVOS
+MEMO_ARCH             := arm64
+PLATFORM              := appletvos # Platform-wise, audioos ~ appletvos (although some frameworks and stuff may be missing)
+DEB_ARCH              := audioos-arm64
+GNU_HOST_TRIPLE       := aarch64-apple-darwin
+PLATFORM_VERSION_MIN  := -mappletvos-version-min=$(APPLETVOS_DEPLOYMENT_TARGET)
+RUST_TARGET           := aarch64-apple-tvos
+LLVM_TARGET           := arm64-apple-tvos$(APPLETVOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?=
+MEMO_SUB_PREFIX       ?= /usr
+MEMO_ALT_PREFIX       ?= /local
+MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
+GNU_PREFIX            :=
+ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
+BARE_PLATFORM         := AppleTVOS
 export AUDIOOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),bridgeos-arm64)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for BridgeOS)
 endif # ($(MEMO_QUIET),1)
-MEMO_ARCH            := arm64
-PLATFORM             := iphoneos # find me a BridgeOS.sdk and you win.
-DEB_ARCH             := bridgeos-arm64
-GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := --target=arm64-apple-bridgeos$(BRIDGEOS_DEPLOYMENT_TARGET)
-RUST_TARGET          := aarch64-apple-bridgeos
-LLVM_TARGET          := arm64-apple-bridgeos$(BRIDGEOS_DEPLOYMENT_TARGET)
-MEMO_PREFIX          ?=
-MEMO_SUB_PREFIX      ?= /usr
-MEMO_ALT_PREFIX      ?= /local
-GNU_PREFIX           :=
-ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/BridgeOS.sdk
-BARE_PLATFORM        := BridgeOS
+MEMO_ARCH             := arm64
+PLATFORM              := iphoneos # find me a BridgeOS.sdk and you win.
+DEB_ARCH              := bridgeos-arm64
+GNU_HOST_TRIPLE       := aarch64-apple-darwin
+PLATFORM_VERSION_MIN  := --target=arm64-apple-bridgeos$(BRIDGEOS_DEPLOYMENT_TARGET)
+RUST_TARGET           := aarch64-apple-bridgeos
+LLVM_TARGET           := arm64-apple-bridgeos$(BRIDGEOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?=
+MEMO_SUB_PREFIX       ?= /usr
+MEMO_ALT_PREFIX       ?= /local
+MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
+GNU_PREFIX            :=
+ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/BridgeOS.sdk
+BARE_PLATFORM         := BridgeOS
 export BRIDGEOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),watchos-arm64_32)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for WatchOS)
 endif # ($(MEMO_QUIET),1)
-MEMO_ARCH            := arm64_32
-PLATFORM             := watchos
-DEB_ARCH             := watchos-arm64-32
-GNU_HOST_TRIPLE      := aarch64-apple-darwin
-PLATFORM_VERSION_MIN := -mwatchos-version-min=$(WATCHOS_DEPLOYMENT_TARGET)
-RUST_TARGET          := aarch64-apple-watchos
-LLVM_TARGET          := arm64-apple-watchos$(WATCHOS_DEPLOYMENT_TARGET)
-MEMO_PREFIX          ?=
-MEMO_SUB_PREFIX      ?= /usr
-MEMO_ALT_PREFIX      ?= /local
-GNU_PREFIX           :=
-ON_DEVICE_SDK_PATH   := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/WatchOS.sdk
-BARE_PLATFORM        := WatchOS
+MEMO_ARCH             := arm64_32
+PLATFORM              := watchos
+DEB_ARCH              := watchos-arm64-32
+GNU_HOST_TRIPLE       := aarch64-apple-darwin
+PLATFORM_VERSION_MIN  := -mwatchos-version-min=$(WATCHOS_DEPLOYMENT_TARGET)
+RUST_TARGET           := aarch64-apple-watchos
+LLVM_TARGET           := arm64-apple-watchos$(WATCHOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?=
+MEMO_SUB_PREFIX       ?= /usr
+MEMO_ALT_PREFIX       ?= /local
+MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
+GNU_PREFIX            :=
+ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/WatchOS.sdk
+BARE_PLATFORM         := WatchOS
 export WATCHOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),darwin-arm64e)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for macOS arm64e)
 endif # ($(MEMO_QUIET),1)
-MEMO_ARCH            := arm64e
-PLATFORM             := macosx
-DEB_ARCH             := darwin-arm64e
-GNU_HOST_TRIPLE      := aarch64-apple-darwin
-RUST_TARGET          := $(GNU_HOST_TRIPLE)
-LLVM_TARGET          := arm64e-apple-macosx$(MACOSX_DEPLOYMENT_TARGET)
-PLATFORM_VERSION_MIN := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
-MEMO_PREFIX          ?= /opt/procursus
-MEMO_SUB_PREFIX      ?=
-MEMO_ALT_PREFIX      ?=
-GNU_PREFIX           := g
-ON_DEVICE_SDK_PATH   := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
-BARE_PLATFORM        := MacOSX
+MEMO_ARCH             := arm64e
+PLATFORM              := macosx
+DEB_ARCH              := darwin-arm64e
+GNU_HOST_TRIPLE       := aarch64-apple-darwin
+RUST_TARGET           := $(GNU_HOST_TRIPLE)
+LLVM_TARGET           := arm64e-apple-macos$(MACOSX_DEPLOYMENT_TARGET)
+PLATFORM_VERSION_MIN  := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?= /opt/procursus
+MEMO_SUB_PREFIX       ?=
+MEMO_ALT_PREFIX       ?=
+MEMO_LAUNCHCTL_PREFIX ?=
+GNU_PREFIX            := g
+ON_DEVICE_SDK_PATH    := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+BARE_PLATFORM         := MacOSX
 
 else ifeq ($(MEMO_TARGET),darwin-arm64)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for macOS arm64)
 endif # ($(MEMO_QUIET),1)
-MEMO_ARCH            := arm64
-PLATFORM             := macosx
-DEB_ARCH             := darwin-arm64
-GNU_HOST_TRIPLE      := aarch64-apple-darwin
-RUST_TARGET          := $(GNU_HOST_TRIPLE)
-LLVM_TARGET          := arm64-apple-macosx$(MACOSX_DEPLOYMENT_TARGET)
-PLATFORM_VERSION_MIN := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
-MEMO_PREFIX          ?= /opt/procursus
-MEMO_SUB_PREFIX      ?=
-MEMO_ALT_PREFIX      ?=
-GNU_PREFIX           := g
-ON_DEVICE_SDK_PATH   := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
-BARE_PLATFORM        := MacOSX
+MEMO_ARCH             := arm64
+PLATFORM              := macosx
+DEB_ARCH              := darwin-arm64
+GNU_HOST_TRIPLE       := aarch64-apple-darwin
+RUST_TARGET           := $(GNU_HOST_TRIPLE)
+LLVM_TARGET           := arm64-apple-macos$(MACOSX_DEPLOYMENT_TARGET)
+PLATFORM_VERSION_MIN  := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?= /opt/procursus
+MEMO_SUB_PREFIX       ?=
+MEMO_ALT_PREFIX       ?=
+MEMO_LAUNCHCTL_PREFIX ?=
+GNU_PREFIX            := g
+ON_DEVICE_SDK_PATH    := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+BARE_PLATFORM         := MacOSX
 
 else ifeq ($(MEMO_TARGET),darwin-amd64)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for macOS amd64)
 endif # ($(MEMO_QUIET),1)
-MEMO_ARCH            := x86_64
-PLATFORM             := macosx
-DEB_ARCH             := darwin-amd64
-GNU_HOST_TRIPLE      := x86_64-apple-darwin
-RUST_TARGET          := $(GNU_HOST_TRIPLE)
-LLVM_TARGET          := x86_64-apple-macosx$(MACOSX_DEPLOYMENT_TARGET)
-PLATFORM_VERSION_MIN := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
-MEMO_PREFIX          ?= /opt/procursus
-MEMO_SUB_PREFIX      ?=
-MEMO_ALT_PREFIX      ?=
-GNU_PREFIX           := g
-ON_DEVICE_SDK_PATH   := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
-BARE_PLATFORM        := MacOSX
+MEMO_ARCH             := x86_64
+PLATFORM              := macosx
+DEB_ARCH              := darwin-amd64
+GNU_HOST_TRIPLE       := x86_64-apple-darwin
+RUST_TARGET           := $(GNU_HOST_TRIPLE)
+LLVM_TARGET           := x86_64-apple-macos$(MACOSX_DEPLOYMENT_TARGET)
+PLATFORM_VERSION_MIN  := -mmacosx-version-min=$(MACOSX_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?= /opt/procursus
+MEMO_SUB_PREFIX       ?=
+MEMO_ALT_PREFIX       ?=
+MEMO_LAUNCHCTL_PREFIX ?=
+GNU_PREFIX            := g
+ON_DEVICE_SDK_PATH    := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+BARE_PLATFORM         := MacOSX
 
 else
 $(error Platform not supported)
@@ -403,6 +421,9 @@ MEMO_REPO_URI     ?= https://apt.procurs.us
 MEMO_PGP_SIGN_KEY ?= C59F3798A305ADD7E7E6C7256430292CF9551B0E
 CODESIGN_IDENTITY ?= -
 
+MEMO_LDID_EXTRA_FLAGS     ?=
+MEMO_CODESIGN_EXTRA_FLAGS ?=
+
 # Root
 BUILD_ROOT     ?= $(PWD)
 # Downloaded source files
@@ -425,7 +446,6 @@ BUILD_DIST     := $(BUILD_ROOT)/build_dist/$(MEMO_TARGET)/$(MEMO_CFVER)
 BUILD_STRAP    := $(BUILD_ROOT)/build_strap/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Extra scripts for the buildsystem
 BUILD_TOOLS    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_tools
-
 
 ifeq ($(DEBUG),1)
 OPTIMIZATION_FLAGS := -g -O0
@@ -461,22 +481,27 @@ endif
 
 # Link everything to libiosexec, as it's preinstalled on every Procursus system.
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+ifneq ($(MEMO_NO_IOSEXEC),1)
 LDFLAGS             += -liosexec
+else
+CFLAGS              += -DLIBIOSEXEC_INTERNAL
+endif
 endif
 
 DEFAULT_CMAKE_FLAGS := \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_CROSSCOMPILING=true \
 	-DCMAKE_SYSTEM_NAME=Darwin \
-	-DCMAKE_SYSTEM_PROCESSOR=$(shell echo $(GNU_HOST_TRIPLE) | cut -f1 -d-) \
+	-DCMAKE_SYSTEM_PROCESSOR="$(shell echo $(GNU_HOST_TRIPLE) | cut -f1 -d-)" \
 	-DCMAKE_C_FLAGS="$(CFLAGS)" \
 	-DCMAKE_CXX_FLAGS="$(CXXFLAGS)" \
-	-DCMAKE_FIND_ROOT_PATH=$(BUILD_BASE) \
-	-DCMAKE_INSTALL_NAME_TOOL=$(I_N_T) \
-	-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-	-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-	-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-	-DCMAKE_INSTALL_SYSCONFDIR=$(MEMO_PREFIX)/etc \
+	-DCMAKE_FIND_ROOT_PATH="$(BUILD_BASE)" \
+	-DPKG_CONFIG_EXECUTABLE="$(BUILD_TOOLS)/cross-pkg-config" \
+	-DCMAKE_INSTALL_NAME_TOOL="$(I_N_T)" \
+	-DCMAKE_INSTALL_PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+	-DCMAKE_INSTALL_NAME_DIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
+	-DCMAKE_INSTALL_RPATH="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+	-DCMAKE_INSTALL_SYSCONFDIR="$(MEMO_PREFIX)/etc" \
 	-DCMAKE_OSX_SYSROOT="$(TARGET_SYSROOT)" \
 	-DCMAKE_OSX_ARCHITECTURES="$(MEMO_ARCH)"
 
@@ -544,10 +569,10 @@ DEFAULT_PERL_BUILD_FLAGS := \
 DEFAULT_GOLANG_FLAGS := \
 	GOOS=$(shell echo $(RUST_TARGET) | cut -f3 -d-) \
 	GOARCH=$(shell echo $(MEMO_TARGET) | cut -f2 -d-) \
-	CGO_CFLAGS="$(shell echo $(CFLAGS) | sed 's/$(OPTIMIZATION_FLAGS)//')" \
-	CGO_CXXFLAGS="$(shell echo $(CXXFLAGS) | sed 's/$(OPTIMIZATION_FLAGS)//')" \
+	CGO_CFLAGS="$(shell echo $(CFLAGS) | sed 's|$(OPTIMIZATION_FLAGS)||')" \
+	CGO_CXXFLAGS="$(shell echo $(CXXFLAGS) | sed 's|$(OPTIMIZATION_FLAGS)||')" \
 	CGO_CPPFLAGS="$(CPPFLAGS)" \
-	CGO_LDFLAGS="$(shell echo $(LDFLAGS) | sed 's/$(OPTIMIZATION_FLAGS)//')" \
+	CGO_LDFLAGS="$(shell echo $(LDFLAGS) | sed 's|$(OPTIMIZATION_FLAGS)||')" \
 	CGO_ENABLED=1 \
 	CC="$(CC)" \
 	CXX="$(CXX)" \
@@ -575,7 +600,7 @@ ifeq ($(NO_PGP),1)
 ifneq ($(MEMO_QUIET),1)
 PGP_VERIFY  = echo "Skipping verification of $(1) because NO_PGP was set to 1."
 else # ($(MEMO_QUIET),1)
-PGP_VERIFY  = 
+PGP_VERIFY  =
 endif # ($(MEMO_QUIET),1)
 else
 PGP_VERIFY  = KEY=$$(gpg --verify --status-fd 1 $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) | grep NO_PUBKEY | cut -f3 -d' '); \
@@ -587,28 +612,26 @@ endif
 
 EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 		cd $(BUILD_WORK) && \
-		$(TAR) -xf $(BUILD_SOURCE)/$(1) && \
+		tar -xf $(BUILD_SOURCE)/$(1) && \
 		mkdir -p $(3); \
 		cp -a $(2)/. $(3); \
 		rm -rf $(2); \
-	fi; \
-	find $(BUILD_BASE) -name '*.la' -type f -delete
+	fi
 
 DO_PATCH    = cd $(BUILD_PATCH)/$(1); \
 	for PATCHFILE in *; do \
 		if [ ! -f $(BUILD_WORK)/$(2)/$(notdir $$PATCHFILE).done ]; then \
-			patch -sN -d $(BUILD_WORK)/$(2) $(3) < $$PATCHFILE && \
+			sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' -e 's|@MEMO_ALT_PREFIX@|$(MEMO_ALT_PREFIX)|g' $$PATCHFILE | patch -sN -d $(BUILD_WORK)/$(2) $(3) && \
 			touch $(BUILD_WORK)/$(2)/$(notdir $$PATCHFILE).done; \
 		fi; \
 	done
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 SIGN = 	for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
-			$(STRIP) -x $$file; \
 			if [ $${file\#\#*.} = "dylib" ] || [ $${file\#\#*.} = "bundle" ] || [ $${file\#\#*.} = "so" ]; then \
-				$(LDID) -S $$file; \
+				ldid $(MEMO_LDID_EXTRA_FLAGS) -S $$file; \
 			else \
-				$(LDID) -S$(BUILD_MISC)/entitlements/$(2) $$file; \
+				ldid $(MEMO_LDID_EXTRA_FLAGS) -S$(BUILD_MISC)/entitlements/$(2) $$file; \
 			fi; \
 		done; \
 		find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
@@ -621,9 +644,8 @@ SIGN = 	CODESIGN_FLAGS="--sign $(CODESIGN_IDENTITY) --force --deep "; \
 			fi; \
 		fi; \
 		for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
-			$(STRIP) -x $$file; \
 			codesign --remove $$file &> /dev/null; \
-			codesign $$CODESIGN_FLAGS $$file &> /dev/null; \
+			codesign $(MEMO_CODESIGN_EXTRA_FLAGS) $$CODESIGN_FLAGS $$file &> /dev/null; \
 		done
 endif
 
@@ -633,12 +655,58 @@ endif
 #
 ###
 
-PACK = if [ -z "$(4)" ]; then \
+AFTER_BUILD = \
+	if [ ! -z "$(MEMO_PREFIX)" ] && [ -d "$(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" ]; then \
+		rm -f $(BUILD_STAGE)/$@/._lib_cache && touch $(BUILD_STAGE)/$@/._lib_cache; \
+		for file in $$(find $(BUILD_STAGE)/$@ -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
+			INSTALL_NAME=$$(otool -D $$file | grep -v ":$$"); \
+			if [ ! -z "$$INSTALL_NAME" ]; then \
+				$(I_N_T) -id @rpath/$$(basename $$INSTALL_NAME) $$file; \
+				echo "$$INSTALL_NAME" >> $(BUILD_STAGE)/$@/._lib_cache; \
+			fi; \
+		done; \
+	fi; \
+	for file in $$(find $(BUILD_STAGE)/$@ -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
+		if [ "$(RELATIVE_RPATH)" = "1" ]; then \
+			$(I_N_T) -add_rpath "@loader_path/$$(realpath --relative-to=$$(dirname $$file) $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))/lib" $$file; \
+		else \
+			$(I_N_T) -add_rpath "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" $$file; \
+		fi; \
+		if [ -f $(BUILD_STAGE)/$@/._lib_cache ]; then \
+			cat $(BUILD_STAGE)/$@/._lib_cache | while read line; do \
+				$(I_N_T) -change $$line @rpath/$$(basename $$line) $$file; \
+			done; \
+		fi; \
+		$(STRIP) -x $$file; \
+	done; \
+	rm -f $(BUILD_STAGE)/$@/._lib_cache; \
+	find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.gz$$' -exec gunzip '{}' \; 2> /dev/null; \
+	find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.xz$$' -exec unxz '{}' \; 2> /dev/null; \
+	find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.zst$$' -exec unzstd '{}' \; 2> /dev/null; \
+	find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -exec zstd -19 --rm '{}' \; 2> /dev/null; \
+	find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type l -exec bash -c '$(LN_S) $$(readlink "{}" | sed -e "s/\.gz$$//" -e "s/\.xz$$//" -e "s/\.zst$$//").zst "{}".zst; rm -f "{}"' \; -delete 2> /dev/null; \
+	if [ "$(1)" = "copy" ]; then \
+		cp -af $(BUILD_STAGE)/$@/* $(BUILD_BASE); \
+	fi; \
+	[ -d $(BUILD_WORK)/$@/ ] || mkdir $(BUILD_WORK)/$@/; \
+	touch $(BUILD_WORK)/$@/.build_complete; \
+	find $(BUILD_BASE) -name '*.la' -type f -delete
+
+PACK = \
+	if [ -z "$(4)" ]; then \
 		find $(BUILD_DIST)/$(1) -name '*.la' -type f -delete; \
 	fi; \
 	rm -f $(BUILD_DIST)/$(1)/.build_complete; \
 	rm -rf $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{info,doc}; \
-	find $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -exec zstd -19 --rm '{}' \; 2> /dev/null; \
+	for file in AUTHORS COPYING LICENSE NEWS README THANKS TODO; do \
+		if [ -f "$(BUILD_WORK)/$$(echo $@ | sed 's/-package//')/$$file" ]; then \
+			mkdir -p $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1); \
+			cp -aL $(BUILD_WORK)/$$(echo $@ | sed 's/-package//')/$$file $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1); \
+			if [ ! "$$file" = "AUTHORS" ] && [ ! "$$file" = "COPYING" ] && [ ! "$$file" = "LICENSE" ]; then \
+				zstd -19 --rm $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1)/$$file 2> /dev/null; \
+			fi; \
+		fi; \
+	done; \
 	if [ -z $(3) ]; then \
 		if [ ! "$(MEMO_QUIET)" == "1" ]; then \
 		echo Setting $(1) owner to 0:0.; \
@@ -654,10 +722,19 @@ PACK = if [ -z "$(4)" ]; then \
 	fi; \
 	SIZE=$$(du -sk $(BUILD_DIST)/$(1) | cut -f 1); \
 	mkdir -p $(BUILD_DIST)/$(1)/DEBIAN; \
-	for i in control postinst preinst postrm prerm extrainst_ conffiles; do \
-		for n in $$i $$i.$(PLATFORM); do \
-			if [ -f "$(BUILD_INFO)/$(1).$$n" ]; then \
-				$(SED) -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' \
+	for i in control postinst preinst postrm prerm extrainst_ conffiles triggers; do \
+		for n in $$i $$i.$(PLATFORM) $$i.$(PLATFORM); do \
+			if [ -f "$(BUILD_INFO)/$(1).$$n.rootless" ] && [ ! -z "$(findstring rootless,$(MEMO_TARGET))" ]; then \
+				sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' \
+					-e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
+					-e 's|@MEMO_ALT_PREFIX@|$(MEMO_ALT_PREFIX)|g' \
+					-e 's|@GNU_PREFIX@|$(GNU_PREFIX)|g' \
+					-e 's|@BARE_PLATFORM@|$(BARE_PLATFORM)|g' \
+					-e 's/@$(2)@/$($(2))/g' \
+					-e 's/@DEB_MAINTAINER@/$(DEB_MAINTAINER)/g' \
+					-e 's/@DEB_ARCH@/$(DEB_ARCH)/g' < $(BUILD_INFO)/$(1).$$n.rootless > $(BUILD_DIST)/$(1)/DEBIAN/$$i; \
+			elif [ -f "$(BUILD_INFO)/$(1).$$n" ]; then \
+				sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' \
 					-e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
 					-e 's|@MEMO_ALT_PREFIX@|$(MEMO_ALT_PREFIX)|g' \
 					-e 's|@GNU_PREFIX@|$(GNU_PREFIX)|g' \
@@ -706,30 +783,22 @@ ifneq ($(call HAS_COMMAND,triehash),1)
 $(error Install triehash)
 endif
 
-ifeq ($(call HAS_COMMAND,gmake),1)
-# Fix this check.
-endif
-
-TAR  := tar # TODO: remove
-
-ifneq ($(shell PATH=$(PATH) tar --version | grep -q GNU && echo 1),1)
+ifneq ($(shell PATH="$(PATH)" tar --version | grep -q GNU && echo 1),1)
 $(error Install GNU tar)
 endif
 
-SED  := sed # TODO: remove
-
-ifneq ($(shell PATH=$(PATH) sed --version | grep -q GNU && echo 1),1)
+ifneq ($(shell PATH="$(PATH)" sed --version | grep -q GNU && echo 1),1)
 $(error Install GNU sed)
 endif
 
-ifneq ($(shell PATH=$(PATH) grep --version | grep -q GNU && echo 1),1)
+ifneq ($(shell PATH="$(PATH)" grep --version | grep -q GNU && echo 1),1)
 $(error Install GNU grep)
 endif
 
-ifeq ($(call HAS_COMMAND,ldid),1)
-export LDID := ldid
-else
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+ifneq ($(call HAS_COMMAND,ldid),1)
 $(error Install ldid)
+endif
 endif
 
 ifeq ($(call HAS_COMMAND,libtoolize),1)
@@ -772,49 +841,27 @@ ifneq ($(call HAS_COMMAND,m4),1)
 $(error Install m4)
 endif
 
-ifneq ($(shell PATH=$(PATH) groff --version | grep -q 'version 1.2' && echo 1),1)
+ifneq ($(shell PATH="$(PATH)" groff --version | grep -q 'version 1.2' && echo 1),1)
 $(error Install newer groff)
 endif
 
-ifneq ($(shell PATH=$(PATH) patch --version | grep -q 'GNU patch' && echo 1),1)
+ifneq ($(shell PATH="$(PATH)" patch --version | grep -q 'GNU patch' && echo 1),1)
 $(error Install GNU patch)
 endif
 
-ifneq ($(shell PATH=$(PATH) find --version | grep -q 'GNU find' && echo 1),1)
+ifneq ($(shell PATH="$(PATH)" find --version | grep -q 'GNU find' && echo 1),1)
 $(error Install GNU findutils)
 endif
 
-ifneq ($(shell PATH=$(PATH) rmdir --version | grep -q 'GNU coreutils' && echo 1),1)
-$(error Install GNU coreutils)
-endif
-
-ifeq ($(shell PATH=$(PATH) install --version | grep -q 'GNU coreutils' && echo 1),1)
-export INSTALL  := $(shell PATH=$(PATH) which install) --strip-program=$(STRIP)
+ifeq ($(shell PATH="$(PATH)" install --version | grep -q 'GNU coreutils' && echo 1),1)
+export INSTALL := $(shell PATH="$(PATH)" which install) --strip-program=$(STRIP)
+export LN_S    := ln -sf
+export LN_SR   := ln -sfr
 else
 $(error Install GNU coreutils)
 endif
 
-ifeq ($(shell PATH=$(PATH) wc --version | grep -q 'GNU coreutils' && echo 1),1)
-WC := wc
-else
-$(error Install GNU coreutils)
-endif
-
-ifeq ($(shell PATH=$(PATH) cp --version | grep -q 'GNU coreutils' && echo 1),1)
-CP := cp
-else
-$(error Install GNU coreutils)
-endif
-export CP
-
-ifeq ($(shell PATH=$(PATH) ln --version | grep -q 'GNU coreutils' && echo 1),1)
-LN := ln
-else
-$(error Install GNU coreutils)
-endif
-export LN
-
-ifneq  ($(shell PATH=$(PATH) file -bi $(BUILD_MISC)/launchctl.1700 | grep -q 'x-mach-binary; charset=binary' && echo 1),1)
+ifneq  ($(shell PATH="$(PATH)" file -bi $(BUILD_MISC)/launchctl/launchctl.1700 | grep -q 'x-mach-binary; charset=binary' && echo 1),1)
 $(error Install better file from Procursus - sudo apt install file)
 endif
 
@@ -833,8 +880,6 @@ DPKG_TYPE ?= gzip
 endif
 ifeq ($(call HAS_COMMAND,dpkg-deb),1)
 DPKG_DEB := dpkg-deb -Z$(DPKG_TYPE)
-else ifeq ($(call HAS_COMMAND,dm.pl),1)
-DPKG_DEB := dm.pl -Z$(DPKG_TYPE)
 else
 $(error Install dpkg-deb)
 endif
@@ -898,7 +943,7 @@ all:: package
 proenv:
 	@echo -e "proenv() {"
 	@echo -e "\tMEMO_TARGET='$(MEMO_TARGET)' PLATFORM='$(PLATFORM)' MEMO_ARCH='$(MEMO_ARCH)' TARGET_SYSROOT='$(TARGET_SYSROOT)' MACOSX_SYSROOT='$(MACOSX_SYSROOT)' GNU_HOST_TRIPLE='$(GNU_HOST_TRIPLE)'"
-	@echo -e "\tCC='$(CC)' CXX='$(CXX)' AR='$(AR)' LD='$(LD)' CPP='$(CPP)' RANLIB='$(RANLIB)' STRIP='$(STRIP)' NM='$(NM)' LIPO='$(LIPO)' OTOOL='$(OTOOL)' I_N_T='$(I_N_T)' EXTRA='$(EXTRA)' SED='$(SED)' LDID='$(LDID)' INSTALL='$(INSTALL)' LN='$(LN)' CP='cp'"
+	@echo -e "\tCC='$(CC)' CXX='$(CXX)' AR='$(AR)' LD='$(LD)' CPP='$(CPP)' RANLIB='$(RANLIB)' STRIP='$(STRIP)' NM='$(NM)' LIPO='$(LIPO)' OTOOL='$(OTOOL)' I_N_T='$(I_N_T)' EXTRA='$(EXTRA)' INSTALL='$(INSTALL)'"
 	@echo -e "\tBUILD_ROOT='$(BUILD_ROOT)' BUILD_BASE='$(BUILD_BASE)' BUILD_INFO='$(BUILD_INFO)' BUILD_WORK='$(BUILD_WORK)' BUILD_STAGE='$(BUILD_STAGE)' BUILD_DIST='$(BUILD_DIST)' BUILD_STRAP='$(BUILD_STRAP)' BUILD_TOOLS='$(BUILD_TOOLS)'"
 	@echo -e "\tDEB_ARCH='$(DEB_ARCH)' DEB_ORIGIN='$(DEB_ORIGIN)' DEB_MAINTAINER='$(DEB_MAINTAINER)'"
 	@echo -e "\tCFLAGS='$(CFLAGS)'"
@@ -906,7 +951,7 @@ proenv:
 	@echo -e "\tCPPFLAGS='$(CPPFLAGS)'"
 	@echo -e "\tLDFLAGS='$(LDFLAGS)'"
 	@echo -e "\texport MEMO_TARGET PLATFORM MEMO_ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE"
-	@echo -e "\texport CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T EXTRA SED LDID INSTALL LN CP"
+	@echo -e "\texport CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T EXTRA INSTALL"
 	@echo -e "\texport BUILD_ROOT BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP BUILD_TOOLS"
 	@echo -e "\texport DEB_ARCH DEB_ORIGIN DEB_MAINTAINER"
 	@echo -e "\texport CFLAGS CXXFLAGS CPPFLAGS LDFLAGS"
@@ -931,15 +976,15 @@ bootstrap:: strapprojects
 	mkdir -p $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/info
 	touch $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/status
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	cd $(BUILD_STRAP) && rm -f !(apt_*|base_*|bash_*|ca-certificates_*|coreutils_*|darwintools_*|dash_*|debianutils_*|diffutils_*|diskdev-cmds_*|dpkg_*|essential_*|file-cmds_*|findutils_*|firmware-sbin_*|gpgv_*|grep_*|launchctl_*|libapt-pkg6.0_*|libassuan0_*|libcrypt2_*|libdimentio0_*|libedit0_*|libffi7_*|libgcrypt20_*|libgmp10_*|libgnutls30_*|libgpg-error0_*|libhogweed6_*|libidn2-0_*|libintl8_*|libiosexec1_*|libkernrw0_*liblz4-1_*|liblzma5_*|libmd0_*|libncursesw6_*|libnettle8_*|libnpth0_*|libp11-kit0_*|libpam-modules_*|libpam2_*|libpcre1_*|libreadline8_*|libssl1.1_*|libtasn1-6_*|libunistring2_*|libxxhash0_*|libzstd1_*|ncurses-bin_*|ncurses-term_*|openssh_*|openssh-client_*|openssh-server_*|openssh-sftp-server_*|procursus-keyring_*|profile.d_*|sed_*|shell-cmds_*|shshd_*|snaputil_*|sudo_*|system-cmds_*|tar_*|uikittools_*|zsh_*).deb
+	cd $(BUILD_STRAP) && rm -f !(apt_*|base_*|bash_*|ca-certificates_*|chariz-keyring_*|coreutils_*|darwintools_*|dash_*|debianutils_*|diffutils_*|diskdev-cmds_*|dpkg_*|essential_*|file-cmds_*|findutils_*|firmware-sbin_*|gpgv_*|grep_*|launchctl_*|libapt-pkg6.0_*|libassuan0_*|libcrypt2_*|libdimentio0_*|libedit0_*|libffi8_*|libgcrypt20_*|libgmp10_*|libgnutls30_*|libgpg-error0_*|libhogweed6_*|libidn2-0_*|libintl8_*|libiosexec1_*|libkernrw0_*|liblz4-1_*|liblzma5_*|libmd0_*|libncursesw6_*|libnettle8_*|libnpth0_*|libp11-kit0_*|libpam-modules_*|libpam2_*|libpcre1_*|libreadline8_*|libssl3_*|libtasn1-6_*|libunistring2_*|libxxhash0_*|libzstd1_*|ncurses-bin_*|ncurses-term_*|odyssey-keyring_*|openssh_*|openssh-client_*|openssh-server_*|openssh-sftp-server_*|packix-keyring_*|procursus-keyring_*|profile.d_*|sed_*|shell-cmds_*|shshd_*|snaputil_*|sudo_*|system-cmds_*|tar_*|uikittools_*|zsh_*).deb
 else # $(MEMO_TARGET),darwin-*
-	cd $(BUILD_STRAP) && rm -f !(apt_*|ca-certificates_*|coreutils_*|darwintools_*|dpkg_*|gpgv_*|libapt-pkg6.0_*|libassuan0_*|libffi7_*|libgcrypt20_*|libgmp10_*|libgnutls30_*|libgpg-error0_*|libhogweed6_*|libidn2-0_*|libintl8_*|liblz4-1_*|liblzma5_*|libmd0_*|libnettle8_*|libnpth0_*|libp11-kit0_*|libtasn1-6_*|libunistring2_*|libxxhash0_*|libzstd1_*|procursus-keyring_*|tar_*).deb
+	cd $(BUILD_STRAP) && rm -f !(apt_*|ca-certificates_*|coreutils_*|darwintools_*|dpkg_*|gpgv_*|libapt-pkg6.0_*|libassuan0_*|libffi8_*|libgcrypt20_*|libgmp10_*|libgnutls30_*|libgpg-error0_*|libhogweed6_*|libidn2-0_*|libintl8_*|liblz4-1_*|liblzma5_*|libmd0_*|libnettle8_*|libnpth0_*|libp11-kit0_*|libssl3_*|libtasn1-6_*|libunistring2_*|libxxhash0_*|libzstd1_*|procursus-keyring_*|tar_*).deb
 endif # $(MEMO_TARGET),darwin-*
 	-for DEB in $(BUILD_STRAP)/*.deb; do \
 		PKGNAME=$$(basename $$DEB | cut -f1 -d"_"); \
 		dpkg-deb -R $$DEB $(BUILD_STRAP)/strap; \
 		cp $(BUILD_STRAP)/strap/DEBIAN/md5sums $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/info/$$PKGNAME.md5sums; \
-		dpkg-deb -c $$DEB | cut -f2- -d"." | awk -F'\\-\\>' '{print $$1}' | $(SED) '1 s/$$/./' | $(SED) 's/\/$$//' > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/info/$$PKGNAME.list; \
+		dpkg-deb -c $$DEB | cut -f2- -d"." | awk -F'\\-\\>' '{print $$1}' | sed '1 s/$$/./' | sed 's/\/$$//' > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/info/$$PKGNAME.list; \
 		for script in preinst postinst extrainst_ prerm postrm; do \
 			cp $(BUILD_STRAP)/strap/DEBIAN/$$script $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/info/$$PKGNAME.$$script; \
 		done; \
@@ -963,7 +1008,7 @@ endif # $(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1
 	fi; \
 	mkdir -p $(BUILD_STRAP)/strap/private/var/lib/$$mgr; \
 	mkdir -p $(BUILD_STRAP)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/$$mgr; \
-	cd $(BUILD_STRAP)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/$$mgr && ln -fs ../firmware.sh
+	cd $(BUILD_STRAP)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/$$mgr && $(LN_S) ../firmware.sh
 	chmod 0775 $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library
 	mkdir -p $(BUILD_STRAP)/strap/private/etc/apt/preferences.d
 	cp $(BUILD_INFO)/procursus.preferences $(BUILD_STRAP)/strap/private/etc/apt/preferences.d/procursus
@@ -978,7 +1023,7 @@ Components: main\n" > $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procur
 	$$FAKEROOT chown 0:80 $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library; \
 	$$FAKEROOT chown 0:3 $(BUILD_STRAP)/strap/private/var/empty; \
 	$$FAKEROOT chown 0:1 $(BUILD_STRAP)/strap/private/var/run; \
-	cd $(BUILD_STRAP)/strap && $$FAKEROOT $(TAR) -cf ../bootstrap.tar .
+	cd $(BUILD_STRAP)/strap && $$FAKEROOT tar -cf ../bootstrap.tar .
 	@if [[ "$(SSH_STRAP)" = 1 ]]; then \
 		BOOTSTRAP=bootstrap-ssh.tar.zst; \
 	else \
@@ -1007,7 +1052,7 @@ Suites: $(MEMO_TARGET)/$(MEMO_CFVER)\n\
 Components: main\n" > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
 endif
 	export FAKEROOT='fakeroot -i $(BUILD_STAGE)/.fakeroot_bootstrap -s $(BUILD_STAGE)/.fakeroot_bootstrap --'; \
-	cd $(BUILD_STRAP)/strap && $$FAKEROOT $(TAR) -cf ../bootstrap.tar .
+	cd $(BUILD_STRAP)/strap && $$FAKEROOT tar -cf ../bootstrap.tar .
 	@if [[ "$(SSH_STRAP)" = 1 ]]; then \
 		BOOTSTRAP=bootstrap-ssh.tar.zst; \
 	else \
@@ -1029,7 +1074,7 @@ endif # ($(MEMO_PREFIX),)
 	mkdir -p $(BUILD_DIST)
 
 REPROJ=$(shell echo $@ | cut -f2- -d"-")
-REPROJ2=$(shell echo $(REPROJ) | $(SED) 's/-package//' | $(SED) 's/-setup//')
+REPROJ2=$(shell echo $(REPROJ) | sed 's/-package//' | sed 's/-setup//')
 rebuild-%:
 	@echo Rebuild $(REPROJ2)
 	-if [ $(REPROJ) = "all" ] || [ $(REPROJ) = "package" ]; then \
@@ -1046,13 +1091,21 @@ rebuild-%:
 
 setup:
 	@mkdir -p \
-		$(BUILD_BASE) $(BUILD_BASE)$(MEMO_PREFIX)/{{,System}/Library/Frameworks,$(MEMO_SUB_PREFIX)/{include/{bsm,objc,os,sys,IOKit,libkern,mach/machine},lib/pkgconfig,$(MEMO_ALT_PREFIX)/lib}} \
+		$(BUILD_BASE) $(BUILD_BASE)$(MEMO_PREFIX)/{{,System}/Library/Frameworks,$(MEMO_SUB_PREFIX)/{include/{bsm,objc,os,sys,IOKit,libkern,mach/machine,CommonCrypto},lib/pkgconfig,$(MEMO_ALT_PREFIX)/lib}} \
 		$(BUILD_SOURCE) $(BUILD_WORK) $(BUILD_STAGE) $(BUILD_STRAP)
 
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libsyscall/wrappers/spawn/spawn.h \
 		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/bootstrap_priv.h \
-		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/vproc_priv.h
+		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/vproc_priv.h \
+		https://opensource.apple.com/source/libplatform/libplatform-126.1.2/include/_simple.h
+
+	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os \
+		https://opensource.apple.com/source/Libc/Libc-1439.40.11/os/assumes.h \
+		https://opensource.apple.com/source/libplatform/libplatform-126.1.2/include/os/base_private.h
+
+	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CommonCrypto \
+		https://opensource.apple.com/source/CommonCrypto/CommonCrypto-60118.30.2/include/CommonDigestSPI.h
 
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/bsm \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/bsd/bsm/audit_kevents.h
@@ -1061,7 +1114,8 @@ setup:
 
 ifeq ($(UNAME),FreeBSD)
 	@# FreeBSD does not have stdbool.h and stdarg.h
-	@cp -a $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Headers/{stdbool.h,stdarg.h} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Headers/{stdbool.h,stdarg.h} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	@cp -af /usr/include/stdalign.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
@@ -1086,21 +1140,26 @@ endif
 	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/CoreAudio.framework/Headers/* $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreAudio
 
 	@# Patch headers from iPhoneOS.sdk
-	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/stdlib.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h
-	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/time.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/time.h
-	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/unistd.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h
-	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/mach/task.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/task.h
-	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/mach/mach_host.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/mach_host.h
-	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/ucontext.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ucontext.h
-	@$(SED) -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/signal.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/signal.h
-	@$(SED) -E /'__API_UNAVAILABLE'/d < $(TARGET_SYSROOT)/usr/include/pthread.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pthread.h
+	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/stdlib.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h
+	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/time.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/time.h
+	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/unistd.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h
+	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/mach/task.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/task.h
+	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/mach/mach_host.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/mach_host.h
+	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/ucontext.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ucontext.h
+	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/signal.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/signal.h
+	@sed -E /'__API_UNAVAILABLE'/d < $(TARGET_SYSROOT)/usr/include/pthread.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pthread.h
+	@sed -E -e '\|/bin:|! s|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' -e '\|/var/tmp|! s|/var|$(MEMO_PREFIX)/var|g' -e '\|/bin:|! s|"/bin|"$(MEMO_PREFIX)/bin|g' -e '\|/bin:|! s|"/sbin|"$(MEMO_PREFIX)/sbin|g' -e 's|/etc|$(MEMO_PREFIX)/etc|g' -e 's|/usr/bin:|$(MEMO_PREFIX)/bin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin:/usr/bin:|g' -e 's|/usr/sbin:|$(MEMO_PREFIX)/sbin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin:/usr/sbin:|g' < $(TARGET_SYSROOT)/usr/include/pwd.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pwd.h
+	@sed -E -e '\|/bin:|! s|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' -e '\|/var/tmp|! s|/var|$(MEMO_PREFIX)/var|g' -e '\|/bin:|! s|"/bin|"$(MEMO_PREFIX)/bin|g' -e '\|/bin:|! s|"/sbin|"$(MEMO_PREFIX)/sbin|g' -e 's|/etc|$(MEMO_PREFIX)/etc|g' -e 's|/usr/bin:|$(MEMO_PREFIX)/bin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin:/usr/bin:|g' -e 's|/usr/sbin:|$(MEMO_PREFIX)/sbin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin:/usr/sbin:|g' < $(TARGET_SYSROOT)/usr/include/grp.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/grp.h
+	@sed -E -e '\|/bin:|! s|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' -e '\|/var/tmp|! s|/var|$(MEMO_PREFIX)/var|g' -e '\|/bin:|! s|"/bin|"$(MEMO_PREFIX)/bin|g' -e '\|/bin:|! s|"/sbin|"$(MEMO_PREFIX)/sbin|g' -e 's|/etc|$(MEMO_PREFIX)/etc|g' -e 's|/usr/bin:|$(MEMO_PREFIX)/bin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin:/usr/bin:|g' -e 's|/usr/sbin:|$(MEMO_PREFIX)/sbin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin:/usr/sbin:|g' < $(TARGET_SYSROOT)/usr/include/paths.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/paths.h
 
+ifneq ($(MEMO_NO_IOSEXEC),1)
 	@# Setup libiosexec
 	@cp -af $(BUILD_MISC)/libiosexec/libiosexec.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	@cp -af $(BUILD_MISC)/libiosexec/libiosexec.1.tbd $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	@ln -sf libiosexec.1.tbd $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.tbd
+	@cp -af $(BUILD_MISC)/libiosexec/libiosexec.1.tbd $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.1.tbd
+	@$(LN_S) libiosexec.1.tbd $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.tbd
 	@rm -f $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.*.dylib
-	@$(SED) -i '1s/^/#include <libiosexec.h>\n/' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h
+	@sed -i '1s/^/#include <libiosexec.h>\n/' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/spawn.h
+endif
 endif
 
 ifneq ($(MEMO_QUIET),1)
