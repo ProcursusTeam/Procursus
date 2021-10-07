@@ -36,7 +36,7 @@ libdvdnav-package: libdvdnav-stage
 	
 	# libdvdnav.mk Prep libdvdnav-dev
 	cp -a $(BUILD_STAGE)/libdvdnav/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libdvdnav-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libdvdnav/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libdvdnav.{dylib,la,a},pkgconfig} $(BUILD_DIST)/libdvdnav-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libdvdnav/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libdvdnav.{dylib,a},pkgconfig} $(BUILD_DIST)/libdvdnav-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libdvdnav.mk Sign
 	$(call SIGN,libdvdnav4,general.xml)

@@ -34,7 +34,7 @@ libdvdread-package: libdvdread-stage
 
 	# libdvdread.mk Prep libdvdread-dev
 	cp -a $(BUILD_STAGE)/libdvdread/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libdvdread-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libdvdread/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libdvdread.{dylib,la,a},pkgconfig} $(BUILD_DIST)/libdvdread-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libdvdread/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libdvdread.{dylib,a},pkgconfig} $(BUILD_DIST)/libdvdread-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libdvdread.mk Sign
 	$(call SIGN,libdvdread8,general.xml)
