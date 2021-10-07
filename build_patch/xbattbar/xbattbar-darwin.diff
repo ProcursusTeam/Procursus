@@ -35,7 +35,7 @@ diff -urN a/Makefile b/Makefile
 -obj/xbattbar-check-apm.o: xbattbar-check-apm.c obj/stamp
 -	gcc -MMD -D$(OS_TYPE) -o $@ -c $< $(CFLAGS)
 +$(APM_CHECK):
-+	$(CC) -x objective-c -o $(APM_CHECK) xbattbar-check-darwin.m $(LDFLAGS) -F$(TARGET_SYSROOT)/System/Library/PrivateFrameworks -framework Foundation -framework BatteryCenter -fobjc-arc
++	$(CC) -x objective-c -o $(APM_CHECK) xbattbar-check-darwin.m $(LDFLAGS) -Wl,BatteryCenter.tbd -framework Foundation -fobjc-arc
  
  obj/stamp:
  	mkdir obj

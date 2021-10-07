@@ -9,8 +9,8 @@ DEB_XBATTBAR_V   ?= $(XBATTBAR_VERSION)
 xbattbar-setup: setup
 	wget -q -nc -P$(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/x/xbattbar/xbattbar_$(XBATTBAR_VERSION).orig.tar.gz
 	$(call EXTRACT_TAR,xbattbar_$(XBATTBAR_VERSION).orig.tar.gz,xbattbar-$(XBATTBAR_VERSION),xbattbar)
+	wget -q -nc -P$(BUILD_WORK)/xbattbar https://raw.githubusercontent.com/xybp888/iOS-SDKs/master/iPhoneOS14.5.sdk/System/Library/PrivateFrameworks/BatteryCenter.framework/BatteryCenter.tbd
 	$(call DO_PATCH,xbattbar,xbattbar,-p1)
-	$(SED) -i 's|@MEMO_PREFIX@@MEMO_SUB_PREFIX@|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' $(BUILD_WORK)/xbattbar/xbattbar.c
 
 ifneq ($(wildcard $(BUILD_WORK)/xbattbar/.build_complete),)
 xbattbar:
@@ -18,7 +18,7 @@ xbattbar:
 else
 xbattbar: libx11 xbattbar-setup
 	$(MAKE) -C $(BUILD_WORK)/xbattbar
-	$(MAKE) -C $(BUILD_WORK)/xbattbar install \
+	+$(MAKE) -C $(BUILD_WORK)/xbattbar install \
 		DESTDIR=$(BUILD_STAGE)/xbattbar
 	$(call AFTER_BUILD)
 endif
