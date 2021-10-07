@@ -27,10 +27,7 @@ libbluray: fontconfig expat libbluray-setup
 	+$(MAKE) -C $(BUILD_WORK)/libbluray
 	+$(MAKE) -C $(BUILD_WORK)/libbluray install \
 		DESTDIR=$(BUILD_STAGE)/libbluray
-	+$(MAKE) -C $(BUILD_WORK)/libbluray install \
-		DESTDIR=$(BUILD_BASE)
-
-	touch $(BUILD_WORK)/libbluray/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libbluray-package: libbluray-stage
@@ -46,7 +43,7 @@ libbluray-package: libbluray-stage
 	
 	# libbluray.mk Prep libbluray-dev
 	cp -a $(BUILD_STAGE)/libbluray/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libbluray-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libbluray/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libbluray.{dylib,la,a},pkgconfig} $(BUILD_DIST)/libbluray-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libbluray/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libbluray.{dylib,a},pkgconfig} $(BUILD_DIST)/libbluray-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	
 	# libbluray.mk Prep libbluray-bin
 	cp -a $(BUILD_STAGE)/libbluray/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/libbluray-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
