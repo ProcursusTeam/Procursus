@@ -13,10 +13,6 @@ cctools-setup: setup
 	$(call GITHUB_ARCHIVE,tpoechtrager,cctools-port,$(CCTOOLS_COMMIT),$(CCTOOLS_COMMIT),cctools)
 	$(call EXTRACT_TAR,cctools-$(CCTOOLS_COMMIT).tar.gz,cctools-port-$(CCTOOLS_COMMIT)/cctools,cctools)
 	$(call DO_PATCH,ld64,cctools,-p0)
-	sed -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' \
-		-e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
-		-e 's|@BARE_PLATFORM@|$(BARE_PLATFORM)|g' \
-		$(BUILD_WORK)/cctools/ld64/src/ld/Options.cpp
 	rm -rf $(BUILD_WORK)/cctools-*
 
 ifneq ($(wildcard $(BUILD_WORK)/cctools/.build_complete),)
