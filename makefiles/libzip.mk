@@ -26,9 +26,7 @@ libzip: libzip-setup xz openssl
 	+$(MAKE) -C $(BUILD_WORK)/libzip
 	+$(MAKE) -C $(BUILD_WORK)/libzip install \
 		DESTDIR="$(BUILD_STAGE)/libzip"
-	+$(MAKE) -C $(BUILD_WORK)/libzip install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libzip-package: libzip-stage

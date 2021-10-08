@@ -29,9 +29,9 @@ coreutils:
 	@echo "Using previously built coreutils."
 else
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-coreutils: coreutils-setup gettext libgmp10 libxcrypt
+coreutils: coreutils-setup gettext libgmp10 libxcrypt openssl
 else # (,$(findstring darwin,$(MEMO_TARGET)))
-coreutils: coreutils-setup gettext libgmp10
+coreutils: coreutils-setup gettext libgmp10 openssl
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	cd $(BUILD_WORK)/coreutils && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
@@ -70,8 +70,8 @@ endif
 	# coreutils.mk Sign
 	$(call SIGN,coreutils,general.xml)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(LDID) -S$(BUILD_MISC)/entitlements/dd.xml $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dd # Do a manual sign for dd and cat.
-	$(LDID) -S$(BUILD_MISC)/entitlements/dd.xml $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/cat
+	ldid $(MEMO_LDID_EXTRA_FLAGS) -S$(BUILD_MISC)/entitlements/dd.xml $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dd # Do a manual sign for dd and cat.
+	ldid $(MEMO_LDID_EXTRA_FLAGS) -S$(BUILD_MISC)/entitlements/dd.xml $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/cat
 	find $(BUILD_DIST)/coreutils -name '.ldid*' -type f -delete
 endif
 

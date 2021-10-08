@@ -23,9 +23,7 @@ libpixman: libpixman-setup
 	+$(MAKE) -C $(BUILD_WORK)/libpixman
 	+$(MAKE) -C $(BUILD_WORK)/libpixman install \
 		DESTDIR=$(BUILD_STAGE)/libpixman
-	+$(MAKE) -C $(BUILD_WORK)/libpixman install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libpixman-package: libpixman-stage

@@ -20,8 +20,6 @@ xkeyboard-config: xkeyboard-config-setup xorgproto
 	+$(MAKE) -C $(BUILD_WORK)/xkeyboard-config
 	+$(MAKE) -C $(BUILD_WORK)/xkeyboard-config install \
 		DESTDIR=$(BUILD_STAGE)/xkeyboard-config
-	+$(MAKE) -C $(BUILD_WORK)/xkeyboard-config install \
-		DESTDIR=$(BUILD_BASE)
 	$(call AFTER_BUILD)
 endif
 

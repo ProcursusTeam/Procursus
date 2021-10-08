@@ -30,9 +30,7 @@ unibilium: unibilium-setup
 		TERMINFO_DIRS='"/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo"'
 	+$(MAKE) -C $(BUILD_WORK)/unibilium install PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR="$(BUILD_STAGE)/unibilium"
-	+$(MAKE) -C $(BUILD_WORK)/unibilium install PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 unibilium-package: unibilium-stage
