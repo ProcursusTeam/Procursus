@@ -1,0 +1,524 @@
+From 00de1aad7b3647b91017c7009b0bc65cd0c8b2e0 Mon Sep 17 00:00:00 2001
+From: Robbie Harwood <rharwood@redhat.com>
+Date: Sat, 15 May 2021 17:35:25 -0400
+Subject: [PATCH] Fix softpkcs11 build issues with openssl 3.0
+
+EVP_PKEY_get0_RSA() has been modified to have const return type.  Remove
+its usages in favor of the EVP_PKEY interface.  Also remove calls to
+RSA_blinding_off(), which we don't need and would require a non-const
+object.  Similarly, remove RSA_set_method() calls that set a pre-existing
+default.
+
+Since softpkcs11 doesn't link against krb5 and can't use zap(), allocate
+buffers with OPENSSL_malloc() so can use OPENSSL_clear_free().
+
+Move several argument validation checks to the top of their functions.
+
+Fix some incorrect/inconsistent log messages.
+---
+ src/tests/softpkcs11/main.c | 290 +++++++++++++-----------------------
+ 1 file changed, 106 insertions(+), 184 deletions(-)
+
+diff --git a/src/tests/softpkcs11/main.c b/src/tests/softpkcs11/main.c
+index 1cccdfb4319..caa537b6832 100644
+--- a/src/tests/softpkcs11/main.c
++++ b/src/tests/softpkcs11/main.c
+@@ -375,10 +375,9 @@ add_st_object(void)
+         return NULL;
+     soft_token.object.objs = objs;
+ 
+-    o = malloc(sizeof(*o));
++    o = calloc(1, sizeof(*o));
+     if (o == NULL)
+         return NULL;
+-    memset(o, 0, sizeof(*o));
+     o->attrs = NULL;
+     o->num_attributes = 0;
+     o->object_handle = soft_token.object.num_objs;
+@@ -424,7 +423,7 @@ add_pubkey_info(struct st_object *o, CK_KEY_TYPE key_type, EVP_PKEY *key)
+         CK_ULONG modulus_bits = 0;
+         CK_BYTE *exponent = NULL;
+         size_t exponent_len = 0;
+-        RSA *rsa;
++        const RSA *rsa;
+         const BIGNUM *n, *e;
+ 
+         rsa = EVP_PKEY_get0_RSA(key);
+@@ -445,8 +444,6 @@ add_pubkey_info(struct st_object *o, CK_KEY_TYPE key_type, EVP_PKEY *key)
+         add_object_attribute(o, 0, CKA_PUBLIC_EXPONENT,
+                              exponent, exponent_len);
+ 
+-        RSA_set_method(rsa, RSA_PKCS1_OpenSSL());
+-
+         free(modulus);
+         free(exponent);
+     }
+@@ -679,10 +676,6 @@ add_certificate(char *label,
+         } else {
+             /* XXX verify keytype */
+ 
+-            if (key_type == CKK_RSA)
+-                RSA_set_method(EVP_PKEY_get0_RSA(o->u.private_key.key),
+-                               RSA_PKCS1_OpenSSL());
+-
+             if (X509_check_private_key(cert, o->u.private_key.key) != 1) {
+                 EVP_PKEY_free(o->u.private_key.key);
+                 o->u.private_key.key = NULL;
+@@ -695,7 +688,7 @@ add_certificate(char *label,
+     }
+ 
+     ret = CKR_OK;
+- out:
++out:
+     if (ret != CKR_OK) {
+         st_logf("something went wrong when adding cert!\n");
+ 
+@@ -1224,8 +1217,6 @@ C_Login(CK_SESSION_HANDLE hSession,
+         }
+ 
+         /* XXX check keytype */
+-        RSA_set_method(EVP_PKEY_get0_RSA(o->u.private_key.key),
+-                       RSA_PKCS1_OpenSSL());
+ 
+         if (X509_check_private_key(o->u.private_key.cert, o->u.private_key.key) != 1) {
+             EVP_PKEY_free(o->u.private_key.key);
+@@ -1495,8 +1486,9 @@ C_Encrypt(CK_SESSION_HANDLE hSession,
+     struct st_object *o;
+     void *buffer = NULL;
+     CK_RV ret;
+-    RSA *rsa;
+-    int padding, len, buffer_len, padding_len;
++    size_t buffer_len = 0;
++    int padding;
++    EVP_PKEY_CTX *ctx = NULL;
+ 
+     st_logf("Encrypt\n");
+ 
+@@ -1512,70 +1504,58 @@ C_Encrypt(CK_SESSION_HANDLE hSession,
+         return CKR_ARGUMENTS_BAD;
+     }
+ 
+-    rsa = EVP_PKEY_get0_RSA(o->u.public_key);
+-
+-    if (rsa == NULL)
+-        return CKR_ARGUMENTS_BAD;
+-
+-    RSA_blinding_off(rsa); /* XXX RAND is broken while running in mozilla ? */
+-
+-    buffer_len = RSA_size(rsa);
++    if (pulEncryptedDataLen == NULL) {
++        st_logf("pulEncryptedDataLen NULL\n");
++        ret = CKR_ARGUMENTS_BAD;
++        goto out;
++    }
+ 
+-    buffer = malloc(buffer_len);
+-    if (buffer == NULL) {
+-        ret = CKR_DEVICE_MEMORY;
++    if (pData == NULL) {
++        st_logf("data NULL\n");
++        ret = CKR_ARGUMENTS_BAD;
+         goto out;
+     }
+ 
+-    ret = CKR_OK;
+     switch(state->encrypt_mechanism->mechanism) {
+     case CKM_RSA_PKCS:
+         padding = RSA_PKCS1_PADDING;
+-        padding_len = RSA_PKCS1_PADDING_SIZE;
+         break;
+     case CKM_RSA_X_509:
+         padding = RSA_NO_PADDING;
+-        padding_len = 0;
+         break;
+     default:
+         ret = CKR_FUNCTION_NOT_SUPPORTED;
+         goto out;
+     }
+ 
+-    if ((CK_ULONG)buffer_len + padding_len < ulDataLen) {
+-        ret = CKR_ARGUMENTS_BAD;
+-        goto out;
+-    }
+-
+-    if (pulEncryptedDataLen == NULL) {
+-        st_logf("pulEncryptedDataLen NULL\n");
+-        ret = CKR_ARGUMENTS_BAD;
++    ctx = EVP_PKEY_CTX_new(o->u.public_key, NULL);
++    if (ctx == NULL || EVP_PKEY_encrypt_init(ctx) <= 0 ||
++        EVP_PKEY_CTX_set_rsa_padding(ctx, padding) <= 0 ||
++        EVP_PKEY_encrypt(ctx, NULL, &buffer_len, pData, ulDataLen) <= 0) {
++        ret = CKR_DEVICE_ERROR;
+         goto out;
+     }
+ 
+-    if (pData == NULL_PTR) {
+-        st_logf("data NULL\n");
+-        ret = CKR_ARGUMENTS_BAD;
++    buffer = OPENSSL_malloc(buffer_len);
++    if (buffer == NULL) {
++        ret = CKR_DEVICE_MEMORY;
+         goto out;
+     }
+ 
+-    len = RSA_public_encrypt(ulDataLen, pData, buffer, rsa, padding);
+-    if (len <= 0) {
++    if (EVP_PKEY_encrypt(ctx, buffer, &buffer_len, pData, ulDataLen) <= 0) {
+         ret = CKR_DEVICE_ERROR;
+         goto out;
+     }
+-    if (len > buffer_len)
+-        abort();
++    st_logf("Encrypt done\n");
+ 
+-    if (pEncryptedData != NULL_PTR)
+-        memcpy(pEncryptedData, buffer, len);
+-    *pulEncryptedDataLen = len;
++    if (pEncryptedData != NULL)
++        memcpy(pEncryptedData, buffer, buffer_len);
++    *pulEncryptedDataLen = buffer_len;
+ 
+- out:
+-    if (buffer) {
+-        memset(buffer, 0, buffer_len);
+-        free(buffer);
+-    }
++    ret = CKR_OK;
++out:
++    OPENSSL_clear_free(buffer, buffer_len);
++    EVP_PKEY_CTX_free(ctx);
+     return ret;
+ }
+ 
+@@ -1646,8 +1626,9 @@ C_Decrypt(CK_SESSION_HANDLE hSession,
+     struct st_object *o;
+     void *buffer = NULL;
+     CK_RV ret;
+-    RSA *rsa;
+-    int padding, len, buffer_len, padding_len;
++    size_t buffer_len = 0;
++    int padding;
++    EVP_PKEY_CTX *ctx = NULL;
+ 
+     st_logf("Decrypt\n");
+ 
+@@ -1663,71 +1644,60 @@ C_Decrypt(CK_SESSION_HANDLE hSession,
+         return CKR_ARGUMENTS_BAD;
+     }
+ 
+-    rsa = EVP_PKEY_get0_RSA(o->u.private_key.key);
+-
+-    if (rsa == NULL)
+-        return CKR_ARGUMENTS_BAD;
+-
+-    RSA_blinding_off(rsa); /* XXX RAND is broken while running in mozilla ? */
+-
+-    buffer_len = RSA_size(rsa);
++    if (pulDataLen == NULL) {
++        st_logf("pulDataLen NULL\n");
++        ret = CKR_ARGUMENTS_BAD;
++        goto out;
++    }
+ 
+-    buffer = malloc(buffer_len);
+-    if (buffer == NULL) {
+-        ret = CKR_DEVICE_MEMORY;
++    if (pEncryptedData == NULL_PTR) {
++        st_logf("data NULL\n");
++        ret = CKR_ARGUMENTS_BAD;
+         goto out;
+     }
+ 
+-    ret = CKR_OK;
+     switch(state->decrypt_mechanism->mechanism) {
+     case CKM_RSA_PKCS:
+         padding = RSA_PKCS1_PADDING;
+-        padding_len = RSA_PKCS1_PADDING_SIZE;
+         break;
+     case CKM_RSA_X_509:
+         padding = RSA_NO_PADDING;
+-        padding_len = 0;
+         break;
+     default:
+         ret = CKR_FUNCTION_NOT_SUPPORTED;
+         goto out;
+     }
+ 
+-    if ((CK_ULONG)buffer_len + padding_len < ulEncryptedDataLen) {
+-        ret = CKR_ARGUMENTS_BAD;
+-        goto out;
+-    }
+-
+-    if (pulDataLen == NULL) {
+-        st_logf("pulDataLen NULL\n");
+-        ret = CKR_ARGUMENTS_BAD;
++    ctx = EVP_PKEY_CTX_new(o->u.private_key.key, NULL);
++    if (ctx == NULL || EVP_PKEY_decrypt_init(ctx) <= 0 ||
++        EVP_PKEY_CTX_set_rsa_padding(ctx, padding) <= 0 ||
++        EVP_PKEY_decrypt(ctx, NULL, &buffer_len, pEncryptedData,
++                         ulEncryptedDataLen) <= 0) {
++        ret = CKR_DEVICE_ERROR;
+         goto out;
+     }
+ 
+-    if (pEncryptedData == NULL_PTR) {
+-        st_logf("data NULL\n");
+-        ret = CKR_ARGUMENTS_BAD;
++    buffer = OPENSSL_malloc(buffer_len);
++    if (buffer == NULL) {
++        ret = CKR_DEVICE_MEMORY;
+         goto out;
+     }
+ 
+-    len = RSA_private_decrypt(ulEncryptedDataLen, pEncryptedData, buffer,
+-                              rsa, padding);
+-    if (len <= 0) {
++    if (EVP_PKEY_decrypt(ctx, buffer, &buffer_len, pEncryptedData,
++                         ulEncryptedDataLen) <= 0) {
+         ret = CKR_DEVICE_ERROR;
+         goto out;
+     }
+-    if (len > buffer_len)
+-        abort();
++    st_logf("Decrypt done\n");
+ 
+     if (pData != NULL_PTR)
+-        memcpy(pData, buffer, len);
+-    *pulDataLen = len;
++        memcpy(pData, buffer, buffer_len);
++    *pulDataLen = buffer_len;
+ 
+- out:
+-    if (buffer) {
+-        memset(buffer, 0, buffer_len);
+-        free(buffer);
+-    }
++    ret = CKR_OK;
++out:
++    OPENSSL_clear_free(buffer, buffer_len);
++    EVP_PKEY_CTX_free(ctx);
+     return ret;
+ }
+ 
+@@ -1806,8 +1776,9 @@ C_Sign(CK_SESSION_HANDLE hSession,
+     struct st_object *o;
+     void *buffer = NULL;
+     CK_RV ret;
+-    RSA *rsa;
+-    int padding, len, buffer_len, padding_len;
++    int padding;
++    size_t buffer_len = 0;
++    EVP_PKEY_CTX *ctx = NULL;
+ 
+     st_logf("Sign\n");
+     VERIFY_SESSION_HANDLE(hSession, &state);
+@@ -1822,72 +1793,58 @@ C_Sign(CK_SESSION_HANDLE hSession,
+         return CKR_ARGUMENTS_BAD;
+     }
+ 
+-    rsa = EVP_PKEY_get0_RSA(o->u.private_key.key);
+-
+-    if (rsa == NULL)
+-        return CKR_ARGUMENTS_BAD;
+-
+-    RSA_blinding_off(rsa); /* XXX RAND is broken while running in mozilla ? */
+-
+-    buffer_len = RSA_size(rsa);
++    if (pulSignatureLen == NULL) {
++        st_logf("signature len NULL\n");
++        ret = CKR_ARGUMENTS_BAD;
++        goto out;
++    }
+ 
+-    buffer = malloc(buffer_len);
+-    if (buffer == NULL) {
+-        ret = CKR_DEVICE_MEMORY;
++    if (pData == NULL_PTR) {
++        st_logf("data NULL\n");
++        ret = CKR_ARGUMENTS_BAD;
+         goto out;
+     }
+ 
+     switch(state->sign_mechanism->mechanism) {
+     case CKM_RSA_PKCS:
+         padding = RSA_PKCS1_PADDING;
+-        padding_len = RSA_PKCS1_PADDING_SIZE;
+         break;
+     case CKM_RSA_X_509:
+         padding = RSA_NO_PADDING;
+-        padding_len = 0;
+         break;
+     default:
+         ret = CKR_FUNCTION_NOT_SUPPORTED;
+         goto out;
+     }
+ 
+-    if ((CK_ULONG)buffer_len < ulDataLen + padding_len) {
+-        ret = CKR_ARGUMENTS_BAD;
+-        goto out;
+-    }
+-
+-    if (pulSignatureLen == NULL) {
+-        st_logf("signature len NULL\n");
+-        ret = CKR_ARGUMENTS_BAD;
++    ctx = EVP_PKEY_CTX_new(o->u.private_key.key, NULL);
++    if (ctx == NULL || EVP_PKEY_sign_init(ctx) <= 0 ||
++        EVP_PKEY_CTX_set_rsa_padding(ctx, padding) <= 0 ||
++        EVP_PKEY_sign(ctx, NULL, &buffer_len, pData, ulDataLen) <= 0) {
++        ret = CKR_DEVICE_ERROR;
+         goto out;
+     }
+ 
+-    if (pData == NULL_PTR) {
+-        st_logf("data NULL\n");
+-        ret = CKR_ARGUMENTS_BAD;
++    buffer = OPENSSL_malloc(buffer_len);
++    if (buffer == NULL) {
++        ret = CKR_DEVICE_MEMORY;
+         goto out;
+     }
+ 
+-    len = RSA_private_encrypt(ulDataLen, pData, buffer, rsa, padding);
+-    st_logf("private encrypt done\n");
+-    if (len <= 0) {
++    if (EVP_PKEY_sign(ctx, buffer, &buffer_len, pData, ulDataLen) <= 0) {
+         ret = CKR_DEVICE_ERROR;
+         goto out;
+     }
+-    if (len > buffer_len)
+-        abort();
++    st_logf("Sign done\n");
+ 
+-    if (pSignature != NULL_PTR)
+-        memcpy(pSignature, buffer, len);
+-    *pulSignatureLen = len;
++    if (pSignature != NULL)
++        memcpy(pSignature, buffer, buffer_len);
++    *pulSignatureLen = buffer_len;
+ 
+     ret = CKR_OK;
+-
+- out:
+-    if (buffer) {
+-        memset(buffer, 0, buffer_len);
+-        free(buffer);
+-    }
++out:
++    OPENSSL_clear_free(buffer, buffer_len);
++    EVP_PKEY_CTX_free(ctx);
+     return ret;
+ }
+ 
+@@ -1951,10 +1908,9 @@ C_Verify(CK_SESSION_HANDLE hSession,
+ {
+     struct session_state *state;
+     struct st_object *o;
+-    void *buffer = NULL;
+     CK_RV ret;
+-    RSA *rsa;
+-    int padding, len, buffer_len;
++    int padding;
++    EVP_PKEY_CTX *ctx = NULL;
+ 
+     st_logf("Verify\n");
+     VERIFY_SESSION_HANDLE(hSession, &state);
+@@ -1969,22 +1925,18 @@ C_Verify(CK_SESSION_HANDLE hSession,
+         return CKR_ARGUMENTS_BAD;
+     }
+ 
+-    rsa = EVP_PKEY_get0_RSA(o->u.public_key);
+-
+-    if (rsa == NULL)
+-        return CKR_ARGUMENTS_BAD;
+-
+-    RSA_blinding_off(rsa); /* XXX RAND is broken while running in mozilla ? */
+-
+-    buffer_len = RSA_size(rsa);
++    if (pSignature == NULL) {
++        st_logf("signature NULL\n");
++        ret = CKR_ARGUMENTS_BAD;
++        goto out;
++    }
+ 
+-    buffer = malloc(buffer_len);
+-    if (buffer == NULL) {
+-        ret = CKR_DEVICE_MEMORY;
++    if (pData == NULL_PTR) {
++        st_logf("data NULL\n");
++        ret = CKR_ARGUMENTS_BAD;
+         goto out;
+     }
+ 
+-    ret = CKR_OK;
+     switch(state->verify_mechanism->mechanism) {
+     case CKM_RSA_PKCS:
+         padding = RSA_PKCS1_PADDING;
+@@ -1997,51 +1949,22 @@ C_Verify(CK_SESSION_HANDLE hSession,
+         goto out;
+     }
+ 
+-    if ((CK_ULONG)buffer_len < ulDataLen) {
+-        ret = CKR_ARGUMENTS_BAD;
+-        goto out;
+-    }
+-
+-    if (pSignature == NULL) {
+-        st_logf("signature NULL\n");
+-        ret = CKR_ARGUMENTS_BAD;
+-        goto out;
+-    }
+-
+-    if (pData == NULL_PTR) {
+-        st_logf("data NULL\n");
+-        ret = CKR_ARGUMENTS_BAD;
+-        goto out;
+-    }
+-
+-    len = RSA_public_decrypt(ulDataLen, pData, buffer, rsa, padding);
+-    st_logf("private encrypt done\n");
+-    if (len <= 0) {
++    ctx = EVP_PKEY_CTX_new(o->u.public_key, NULL);
++    if (ctx == NULL || EVP_PKEY_verify_init(ctx) <= 0 ||
++        EVP_PKEY_CTX_set_rsa_padding(ctx, padding) <= 0 ||
++        EVP_PKEY_verify(ctx, pSignature, ulSignatureLen, pData,
++                        ulDataLen) <= 0) {
+         ret = CKR_DEVICE_ERROR;
+         goto out;
+     }
+-    if (len > buffer_len)
+-        abort();
+-
+-    if ((CK_ULONG)len != ulSignatureLen) {
+-        ret = CKR_GENERAL_ERROR;
+-        goto out;
+-    }
++    st_logf("Verify done\n");
+ 
+-    if (memcmp(pSignature, buffer, len) != 0) {
+-        ret = CKR_GENERAL_ERROR;
+-        goto out;
+-    }
+-
+- out:
+-    if (buffer) {
+-        memset(buffer, 0, buffer_len);
+-        free(buffer);
+-    }
++    ret = CKR_OK;
++out:
++    EVP_PKEY_CTX_free(ctx);
+     return ret;
+ }
+ 
+-
+ CK_RV
+ C_VerifyUpdate(CK_SESSION_HANDLE hSession,
+                CK_BYTE_PTR pPart,
+@@ -2072,7 +1995,6 @@ C_GenerateRandom(CK_SESSION_HANDLE hSession,
+     return CKR_FUNCTION_NOT_SUPPORTED;
+ }
+ 
+-
+ CK_FUNCTION_LIST funcs = {
+     { 2, 11 },
+     C_Initialize,
