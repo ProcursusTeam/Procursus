@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += libfido2
-LIBFIDO2_VERSION := 1.7.0
+LIBFIDO2_VERSION := 1.8.0
 DEB_LIBFIDO2_V   ?= $(LIBFIDO2_VERSION)
 
 libfido2-setup: setup
@@ -28,9 +28,7 @@ libfido2: libfido2-setup libcbor openssl
 	+$(MAKE) -C $(BUILD_WORK)/libfido2/build
 	+$(MAKE) -C $(BUILD_WORK)/libfido2/build install \
 		DESTDIR="$(BUILD_STAGE)/libfido2"
-	+$(MAKE) -C $(BUILD_WORK)/libfido2/build install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libfido2-package: libfido2-stage
@@ -43,7 +41,7 @@ libfido2-package: libfido2-stage
 
 
 	# libfido2.mk Prep libfido2-1
-	cp -a $(BUILD_STAGE)/libfido2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libfido2{.dylib,.1.dylib,.1.7.0.dylib} $(BUILD_DIST)/libfido2-1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libfido2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libfido2{.dylib,.1.dylib,.1.8.0.dylib} $(BUILD_DIST)/libfido2-1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libfido2.mk Prep libfido2-dev
 	cp -a $(BUILD_STAGE)/libfido2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libfido2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)

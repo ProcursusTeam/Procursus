@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += mandoc
-MANDOC_VERSION := 1.14.5
+MANDOC_VERSION := 1.14.6
 DEB_MANDOC_V   ?= $(MANDOC_VERSION)
 
 mandoc-setup: setup
