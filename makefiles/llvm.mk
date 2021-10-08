@@ -22,9 +22,6 @@ llvm-setup: setup
 	$(call DO_PATCH,llvm,llvm,-p1)
 	cp -a $(BUILD_WORK)/llvm/lldb/include/lldb/Host/SafeMachO.h $(BUILD_WORK)/llvm/llvm/include/llvm
 	sed -i '1s|^|#include "llvm/SafeMachO.h"\n|' $(BUILD_WORK)/llvm/swift/tools/swift-reflection-dump/swift-reflection-dump.cpp
-#	sed -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
-#		$(BUILD_WORK)/llvm/clang/lib/Frontend/InitHeaderSearch.cpp \
-#		$(BUILD_WORK)/llvm/clang/lib/Driver/ToolChains/Darwin.cpp
 	$(call DO_PATCH,swift,llvm/swift,-p1)
 	mkdir -p $(BUILD_WORK)/llvm/build
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
