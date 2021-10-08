@@ -3,9 +3,9 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += ldid
-LDID_VERSION     := 2.1.4-procursus
+LDID_VERSION     := 2.1.4
 LDID_GIT_VERSION := 2.1.4+16.g5b8581c
-DEB_LDID_V       ?= $(LDID_VERSION)-2
+DEB_LDID_V       ?= $(LDID_VERSION)-procursus1
 
 ldid-setup: setup
 	$(call GITHUB_ARCHIVE,sbingner,ldid,$(LDID_GIT_VERSION),v$(LDID_GIT_VERSION))
