@@ -23,6 +23,7 @@ berkeleydb: berkeleydb-setup gettext openssl
 		--includedir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/db181 \
 		--enable-cxx \
 		--enable-compat185 \
+		--enable-dump185 \
 		--enable-sql \
 		--enable-sql_codegen \
 		--enable-dbm \
