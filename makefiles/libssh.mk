@@ -7,7 +7,7 @@ LIBSSH_VERSION := 0.9.5
 DEB_LIBSSH_V   ?= $(LIBSSH_VERSION)
 
 libssh-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.libssh.org/files/0.9/libssh-0.9.5.tar.xz
+	wget -q -nc -P $(BUILD_SOURCE) https://www.libssh.org/files/0.9/libssh-$(LIBSSH_VERSION).tar.xz
 	$(call EXTRACT_TAR,libssh-$(LIBSSH_VERSION).tar.xz,libssh-$(LIBSSH_VERSION),libssh)
 	mkdir -p $(BUILD_WORK)/libssh/build
 
