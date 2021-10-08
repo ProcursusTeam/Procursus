@@ -23,9 +23,7 @@ autoconf: autoconf-setup
 	+$(MAKE) -C $(BUILD_WORK)/autoconf
 	+$(MAKE) -C $(BUILD_WORK)/autoconf install \
 		DESTDIR=$(BUILD_STAGE)/autoconf
-	+$(MAKE) -C $(BUILD_WORK)/autoconf install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 autoconf-package: autoconf-stage
 	# autoconf.mk Package Structure

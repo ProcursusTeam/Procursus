@@ -4,11 +4,11 @@ set -e
 
 case "$1" in
     (install)
-    /bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/io.redis.redis-sentinel.plist
+    @MEMO_LAUNCHCTL_PREFIX@/bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/io.redis.redis-sentinel.plist
     ;;
 	(upgrade)
-	/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/io.redis.redis-sentinel.plist
-    /bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/io.redis.redis-sentinel.plist
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/io.redis.redis-sentinel.plist
+    @MEMO_LAUNCHCTL_PREFIX@/bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/io.redis.redis-sentinel.plist
 	;;
 	(*)
 	exit 0

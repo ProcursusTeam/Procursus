@@ -26,9 +26,7 @@ libvorbis: libvorbis-setup libogg
 	+$(MAKE) -C $(BUILD_WORK)/libvorbis
 	+$(MAKE) -C $(BUILD_WORK)/libvorbis install \
 		DESTDIR=$(BUILD_STAGE)/libvorbis
-	+$(MAKE) -C $(BUILD_WORK)/libvorbis install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libvorbis-package: libvorbis-stage

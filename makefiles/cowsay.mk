@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += cowsay
 COWSAY_VERSION := 3.04
-DEB_COWSAY_V   ?= $(COWSAY_VERSION)
+DEB_COWSAY_V   ?= $(COWSAY_VERSION)-1
 
 cowsay-setup: setup
 	$(call GITHUB_ARCHIVE,tnalpgge,rank-amateur-cowsay,$(COWSAY_VERSION),cowsay-$(COWSAY_VERSION),cowsay)
@@ -29,19 +29,19 @@ cowsay-package: cowsay-stage
 	# cowsay.mk Package Structure
 	rm -rf $(BUILD_DIST)/cowsay{,-off}
 	mkdir -p $(BUILD_DIST)/cowsay{,-off}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/cows
-
+	
 	# cowsay.mk Prep cowsay
 	cp -a $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/games $(BUILD_DIST)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	cp -a $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/cows/!(beavis.zen.cow|bong.cow|mutilated.cow|head-in.cow) $(BUILD_DIST)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/cows
-
+	cp -a $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/cows/!(beavis.zen|bong|mutilated|head-in|sodomized).cow $(BUILD_DIST)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/cows
+	
 	# cowsay.mk Prep cowsay-off
-	cp -a $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/cows/{beavis.zen.cow,bong.cow,mutilated.cow,head-in.cow} $(BUILD_DIST)/cowsay-off/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/cows
-
+	cp -a $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/cows/{beavis.zen,bong,mutilated,head-in,sodomized}.cow $(BUILD_DIST)/cowsay-off/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/cows
+	
 	# cowsay.mk Make .debs
 	$(call PACK,cowsay,DEB_COWSAY_V)
 	$(call PACK,cowsay-off,DEB_COWSAY_V)
-
+	
 	# cowsay.mk Build cleanup
 	rm -rf $(BUILD_DIST)/cowsay{,-off}
 

@@ -21,8 +21,6 @@ xhost: xhost-setup libx11 libxau libxmu xorgproto xxhash
 	+$(MAKE) -C $(BUILD_WORK)/xhost
 	+$(MAKE) -C $(BUILD_WORK)/xhost install \
 		DESTDIR=$(BUILD_STAGE)/xhost
-	+$(MAKE) -C $(BUILD_WORK)/xhost install \
-		DESTDIR=$(BUILD_BASE)
 	$(call AFTER_BUILD)
 endif
 
