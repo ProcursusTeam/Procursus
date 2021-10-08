@@ -4,7 +4,7 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS += base
-BASE_VERSION  := 1-5
+BASE_VERSION  := 1-6
 DEB_BASE_V    ?= $(BASE_VERSION)
 
 base:
@@ -30,6 +30,7 @@ var/{backups,cache,db,empty,lib/misc,local,lock,log,logs,msgs,preferences,run,sp
 	sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < $(BUILD_MISC)/passwd/master.passwd > $(BUILD_STAGE)/base/$(MEMO_PREFIX)/etc/master.passwd
 	sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < $(BUILD_MISC)/passwd/group > $(BUILD_STAGE)/base/$(MEMO_PREFIX)/etc/group
 endif
+	$(LN_S) /var/db/timezone/localtime $(BUILD_STAGE)/base/$(MEMO_PREFIX)/etc/localtime
 	touch $(BUILD_STAGE)/base/$(MEMO_PREFIX)/var/run/utmp
 
 base-package: base-stage
