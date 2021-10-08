@@ -19,8 +19,6 @@ mandoc-setup: setup
 		$(BUILD_WORK)/mandoc/configure.local
 	sed -i '/int dummy;/d' \
 		$(BUILD_WORK)/mandoc/compat_*.c
-	sed -i 's|ar rs|$(AR) rs|' \
-		$(BUILD_WORK)/mandoc/Makefile
 
 ifneq ($(wildcard $(BUILD_WORK)/mandoc/.build_complete),)
 mandoc:
