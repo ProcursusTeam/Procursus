@@ -22,9 +22,7 @@ libxrandr: libxrandr-setup libx11 libxrender libxext xorgproto
 	+$(MAKE) -C $(BUILD_WORK)/libxrandr
 	+$(MAKE) -C $(BUILD_WORK)/libxrandr install \
 		DESTDIR=$(BUILD_STAGE)/libxrandr
-	+$(MAKE) -C $(BUILD_WORK)/libxrandr install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libxrandr-package: libxrandr-stage

@@ -36,11 +36,8 @@ luajit: luajit-setup
 	+$(MAKE) -C $(BUILD_WORK)/luajit install \
 		DESTDIR="$(BUILD_STAGE)/luajit" \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	+$(MAKE) -C $(BUILD_WORK)/luajit install \
-		DESTDIR="$(BUILD_BASE)" \
-		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	mv $(BUILD_STAGE)/luajit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/luajit-$(LUAJIT_VERSION) $(BUILD_STAGE)/luajit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/luajit
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 luajit-package: luajit-stage

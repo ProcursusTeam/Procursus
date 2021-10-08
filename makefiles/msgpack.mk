@@ -22,9 +22,7 @@ msgpack: msgpack-setup
 	+$(MAKE) -C $(BUILD_WORK)/msgpack
 	+$(MAKE) -C $(BUILD_WORK)/msgpack install \
 		DESTDIR="$(BUILD_STAGE)/msgpack"
-	+$(MAKE) -C $(BUILD_WORK)/msgpack install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 msgpack-package: msgpack-stage

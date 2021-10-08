@@ -31,6 +31,9 @@ endif
 		--with-edit=readline \
 		rc_cv_sysv_sigcld=false \
 		$(RC_CONFIGURE_ARGS)
+	sed -i 's|./mksignal||g' $(BUILD_WORK)/rc/Makefile
+	sed -i 's|./mkstatval > statval.h||g' $(BUILD_WORK)/rc/Makefile
+	cp $(BUILD_MISC)/rc/{sigmsgs*,statval.h} $(BUILD_WORK)/rc/
 	+$(MAKE) -C $(BUILD_WORK)/rc
 	+$(MAKE) -C $(BUILD_WORK)/rc install \
 		DESTDIR=$(BUILD_STAGE)/rc

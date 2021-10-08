@@ -4,7 +4,7 @@ set -e
 
 case "$1" in
 	(remove|purge)
-	/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/org.torproject.tor.plist
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/org.torproject.tor.plist
 	;;
 	(*)
 	exit 0

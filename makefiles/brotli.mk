@@ -21,14 +21,12 @@ brotli: brotli-setup
 	+$(MAKE) -C $(BUILD_WORK)/brotli
 	+$(MAKE) -C $(BUILD_WORK)/brotli install \
 		DESTDIR="$(BUILD_STAGE)/brotli"
-	+$(MAKE) -C $(BUILD_WORK)/brotli install \
-		DESTDIR="$(BUILD_BASE)"
 	for lib in $(BUILD_STAGE)/brotli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libbrotli{common,dec,enc}-static.a; do \
 		if [ -f $$lib ]; then \
 			mv $$lib $${lib/-static.a/.a}; \
 		fi; \
 	done
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 brotli-package: brotli-stage
