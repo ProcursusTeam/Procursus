@@ -11,7 +11,7 @@ ldid-setup: setup
 	$(call GITHUB_ARCHIVE,sbingner,ldid,$(LDID_GIT_VERSION),v$(LDID_GIT_VERSION))
 	$(call EXTRACT_TAR,ldid-$(LDID_GIT_VERSION).tar.gz,ldid-$(subst +,-,$(LDID_GIT_VERSION)),ldid)
 	$(call DO_PATCH,ldid,ldid,-p1)
-	mkdir -p $(BUILD_STAGE)/ldid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	mkdir -p $(BUILD_STAGE)/ldid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 
 ifneq ($(wildcard $(BUILD_WORK)/ldid/.build_complete),)
 ldid:
@@ -24,6 +24,7 @@ ldid: ldid-setup openssl libplist
 		$(BUILD_WORK)/ldid/lookup2.o $(BUILD_WORK)/ldid/ldid.cpp \
 		$(LDFLAGS) -lcrypto -lplist-2.0
 	$(LN_S) ldid $(BUILD_STAGE)/ldid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ldid2
+	$(INSTALL) -m644 $(BUILD_WORK)/ldid/ldid.1 $(BUILD_STAGE)/ldid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/ldid.1
 	$(call AFTER_BUILD)
 endif
 
