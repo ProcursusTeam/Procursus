@@ -1,9 +1,9 @@
 diff --git a/ldid.1 b/ldid.1
 new file mode 100644
-index 0000000..e044ac2
+index 0000000..0820324
 --- /dev/null
 +++ b/ldid.1
-@@ -0,0 +1,146 @@
+@@ -0,0 +1,156 @@
 +.\"-
 +.\" Copyright (c) 2021 Cameron Katri
 +.\" SPDX-License-Identifier: AGPL-3.0-or-later
@@ -21,6 +21,7 @@ index 0000000..e044ac2
 +.Op Fl C Ns Op Ar adhoc | Ar enforcement | Ar expires | Ar hard | Ar host | Ar kill | Ar library-validation | Ar restrict | Ar runtime
 +.Op Fl K Ns Ar key.p12 Op Fl U Ns Ar password
 +.Op Fl r | Fl S Ns Ar file | Fl s
++.Op Fl T Ns Ar timestamp
 +.Ar
 +.Sh DESCRIPTION
 +.Nm
@@ -91,6 +92,15 @@ index 0000000..e044ac2
 +will be embedded in the Mach-O.
 +.It Fl s
 +Resign the Mach-O binaries while keeping the existing entitlements.
++.It Fl T Ns Ar timestamp
++When signing a dylib, set the timestamp to
++.Ar timestamp .
++.Ar timestamp
++should be an UNIX timestamp in seconds, if
++.Ar timestamp
++is a single dash
++.Pq Sq Fl ,
++the timestamp will be set to a hash of the Mach-O header.
 +.It Fl U Ns Ar password
 +Use
 +.Ar password
