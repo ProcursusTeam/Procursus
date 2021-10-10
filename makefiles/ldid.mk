@@ -3,9 +3,10 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += ldid
-LDID_VERSION     := 2.1.4
+# Saurik tagged 2.1.5, but sbingner hasn't pulled it yet so we apply the patches
+LDID_VERSION     := 2.1.5
 LDID_GIT_VERSION := 2.1.4+16.g5b8581c
-DEB_LDID_V       ?= $(LDID_VERSION)-procursus1
+DEB_LDID_V       ?= $(LDID_VERSION)-procursus
 
 ldid-setup: setup
 	$(call GITHUB_ARCHIVE,sbingner,ldid,$(LDID_GIT_VERSION),v$(LDID_GIT_VERSION))
