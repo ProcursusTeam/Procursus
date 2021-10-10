@@ -27,7 +27,7 @@ index 0000000..688cf6d
 +.Op Fl M
 +.Op Fl P
 +.Op Fl q
-+.Op Fl r | Fl S Ns Ar file | Fl s
++.Op Fl r | Fl S Ns Ar file.xml | Fl s
 +.Op Fl T Ns Ar timestamp
 +.Op Fl u
 +.Ar
@@ -91,12 +91,12 @@ index 0000000..688cf6d
 +Print embedded requirements of the binaries.
 +.It Fl r
 +Remove the signature from the Mach-O.
-+.It Fl S Ns Op Ar file
-+Pseudo sign the Mach-O binaries.
++.It Fl S Ns Op Ar file.xml
++Pseudo-sign the Mach-O binaries.
 +If
-+.Ar file
++.Ar file.xml
 +is specified then the entitlements found in
-+.Ar file
++.Ar file.xml
 +will be embedded in the Mach-O.
 +.It Fl s
 +Resign the Mach-O binaries while keeping the existing entitlements.
@@ -188,7 +188,7 @@ index 3d01ff4..8802649 100644
 +    fprintf(stderr, "          [-e] [-h] [-Kkey.p12 [-Upassword]] [-M] [-P] [-q] [-r | -Sfile | -s]\n");
 +    fprintf(stderr, "          [-Ttimestamp] [-u] file ...\n\n");
 +    fprintf(stderr, "Options:\n");
-+    fprintf(stderr, "   -S[file]      Pseudo sign using the entitlements in file\n");
++    fprintf(stderr, "   -S[file.xml]  Pseudo-sign using the entitlements in file.xml\n");
      fprintf(stderr, "   -Kkey.p12     Sign using private key in key.p12\n");
      fprintf(stderr, "   -Upassword    Use password to unlock key.p12\n");
      fprintf(stderr, "   -M            Merge entitlements with any existing\n");
