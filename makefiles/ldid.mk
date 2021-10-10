@@ -2,16 +2,13 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS      += ldid
-# Saurik tagged 2.1.5, but sbingner hasn't pulled it yet so we apply the patches
-LDID_VERSION     := 2.1.5
-LDID_GIT_VERSION := 2.1.4+16.g5b8581c
-DEB_LDID_V       ?= $(LDID_VERSION)-procursus
+SUBPROJECTS  += ldid
+LDID_VERSION := 2.1.5-procursus
+DEB_LDID_V   ?= $(LDID_VERSION)
 
 ldid-setup: setup
-	$(call GITHUB_ARCHIVE,sbingner,ldid,$(LDID_GIT_VERSION),v$(LDID_GIT_VERSION))
-	$(call EXTRACT_TAR,ldid-$(LDID_GIT_VERSION).tar.gz,ldid-$(subst +,-,$(LDID_GIT_VERSION)),ldid)
-	$(call DO_PATCH,ldid,ldid,-p1)
+	$(call GITHUB_ARCHIVE,ProcursusTeam,ldid,$(LDID_VERSION),v$(LDID_VERSION))
+	$(call EXTRACT_TAR,ldid-$(LDID_VERSION).tar.gz,ldid-$(LDID_VERSION),ldid)
 	mkdir -p $(BUILD_STAGE)/ldid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 
 ifneq ($(wildcard $(BUILD_WORK)/ldid/.build_complete),)
