@@ -1,9 +1,9 @@
 diff --git a/ldid.1 b/ldid.1
 new file mode 100644
-index 0000000..0820324
+index 0000000..688cf6d
 --- /dev/null
 +++ b/ldid.1
-@@ -0,0 +1,156 @@
+@@ -0,0 +1,164 @@
 +.\"-
 +.\" Copyright (c) 2021 Cameron Katri
 +.\" SPDX-License-Identifier: AGPL-3.0-or-later
@@ -16,12 +16,20 @@ index 0000000..0820324
 +.Nd Link Identity Editor
 +.Sh SYNOPSIS
 +.Nm
-+.Op Fl aDdehMPqu
 +.Op Fl A Ns Ar cputype : Ns Ar subtype
++.Op Fl a
 +.Op Fl C Ns Op Ar adhoc | Ar enforcement | Ar expires | Ar hard | Ar host | Ar kill | Ar library-validation | Ar restrict | Ar runtime
++.Op Fl D
++.Op Fl d
++.Op Fl e
++.Op Fl h
 +.Op Fl K Ns Ar key.p12 Op Fl U Ns Ar password
-+.Op Fl r | Fl S Ns Ar file | Fl s
++.Op Fl M
++.Op Fl P
++.Op Fl q
++.Op Fl r | Fl S Ns Ar file.xml | Fl s
 +.Op Fl T Ns Ar timestamp
++.Op Fl u
 +.Ar
 +.Sh DESCRIPTION
 +.Nm
@@ -83,12 +91,12 @@ index 0000000..0820324
 +Print embedded requirements of the binaries.
 +.It Fl r
 +Remove the signature from the Mach-O.
-+.It Fl S Ns Op Ar file
-+Pseudo sign the Mach-O binaries.
++.It Fl S Ns Op Ar file.xml
++Pseudo-sign the Mach-O binaries.
 +If
-+.Ar file
++.Ar file.xml
 +is specified then the entitlements found in
-+.Ar file
++.Ar file.xml
 +will be embedded in the Mach-O.
 +.It Fl s
 +Resign the Mach-O binaries while keeping the existing entitlements.
@@ -161,10 +169,10 @@ index 0000000..0820324
 +.An Kabir Oberai .
 +iOS 15 support was added on June 11, 2021.
 diff --git a/ldid.cpp b/ldid.cpp
-index 3d01ff4..fe7a599 100644
+index 3d01ff4..8802649 100644
 --- a/ldid.cpp
 +++ b/ldid.cpp
-@@ -3101,16 +3101,10 @@ std::string Hex(const uint8_t *data, size_t size) {
+@@ -3101,16 +3101,18 @@ std::string Hex(const uint8_t *data, size_t size) {
  
  static void usage(const char *argv0) {
      fprintf(stderr, "Link Identity Editor %s\n\n", LDID_VERSION);
@@ -174,14 +182,19 @@ index 3d01ff4..fe7a599 100644
 -    fprintf(stderr, "   %s -Stfp.xml gdb\n", argv0);
 -    fprintf(stderr, "\n");
 -    fprintf(stderr, "Other Options\n");
--    fprintf(stderr, "   -Kkey.p12     Sign using private key in key.p12\n");
--    fprintf(stderr, "   -Upassword    Use password to unlock key.p12\n");
--    fprintf(stderr, "   -M            Merge entitlements with any existing\n");
++    fprintf(stderr, "usage: %s [-Acputype:subtype] [-a]\n", argv0);
++    fprintf(stderr, "          [-C[adhoc | enforcement | expires | hard |\n");
++    fprintf(stderr, "          host | kill | library-validation | restrict | runtime]] [-D] [-d]\n");
++    fprintf(stderr, "          [-e] [-h] [-Kkey.p12 [-Upassword]] [-M] [-P] [-q] [-r | -Sfile | -s]\n");
++    fprintf(stderr, "          [-Ttimestamp] [-u] file ...\n\n");
++    fprintf(stderr, "Options:\n");
++    fprintf(stderr, "   -S[file.xml]  Pseudo-sign using the entitlements in file.xml\n");
+     fprintf(stderr, "   -Kkey.p12     Sign using private key in key.p12\n");
+     fprintf(stderr, "   -Upassword    Use password to unlock key.p12\n");
+     fprintf(stderr, "   -M            Merge entitlements with any existing\n");
 -    fprintf(stderr, "   -h            Print CDHash of file\n");
-+    fprintf(stderr, "usage: %s [-aDdehMPqu] [-Acputype:subtype]\n", argv0);
-+    fprintf(stderr, "          [-C[adhoc | enforcement | expires |\n");
-+    fprintf(stderr, "          hard | host | kill | library-validation | restrict | runtime]]\n");
-+    fprintf(stderr, "          [-Kkey.p12 [-Upassword]] [-r | -Sfile | -s] file ...\n");
++    fprintf(stderr, "   -h            Print CDHash of file\n\n");
++    fprintf(stderr, "More information: 'man ldid'\n");
  }
  
  #ifndef LDID_NOTOOLS
