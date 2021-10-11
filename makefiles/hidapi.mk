@@ -21,10 +21,7 @@ hidapi: hidapi-setup
 	+$(MAKE) -C $(BUILD_WORK)/hidapi install \
 		CFLAGS="$(CFLAGS) -D__OPEN_SOURCE__ -DMAC_OS_X_VERSION_MIN_REQUIRED=101500" \
 		DESTDIR="$(BUILD_STAGE)/hidapi"
-	+$(MAKE) -C $(BUILD_WORK)/hidapi install \
-		CFLAGS="$(CFLAGS) -D__OPEN_SOURCE__ -DMAC_OS_X_VERSION_MIN_REQUIRED=101500" \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 hidapi-package: hidapi-stage

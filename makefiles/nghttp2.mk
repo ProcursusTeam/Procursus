@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += nghttp2
-NGHTTP2_VERSION := 1.43.0
+NGHTTP2_VERSION := 1.45.1
 DEB_NGHTTP2_V   ?= $(NGHTTP2_VERSION)
 
 ##### EVALUATE WHETHER THIS NEEDS LAUNCHDAEMONS AT A LATER DATE #####
@@ -11,13 +11,17 @@ DEB_NGHTTP2_V   ?= $(NGHTTP2_VERSION)
 nghttp2-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/nghttp2/nghttp2/releases/download/v$(NGHTTP2_VERSION)/nghttp2-$(NGHTTP2_VERSION).tar.xz
 	$(call EXTRACT_TAR,nghttp2-$(NGHTTP2_VERSION).tar.xz,nghttp2-$(NGHTTP2_VERSION),nghttp2)
+	# Remove patch on 1.46.0
+	$(call DO_PATCH,nghttp2,nghttp2)
 
 ifneq ($(wildcard $(BUILD_WORK)/nghttp2/.build_complete),)
 nghttp2:
 	@echo "Using previously built nghttp2."
 else
 nghttp2: nghttp2-setup openssl libc-ares libev jansson libjemalloc libevent
-	cd $(BUILD_WORK)/nghttp2 && ./configure -C \
+	cd $(BUILD_WORK)/nghttp2; \
+	autoconf; \
+	./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
 		--without-systemd \
@@ -27,9 +31,7 @@ nghttp2: nghttp2-setup openssl libc-ares libev jansson libjemalloc libevent
 	+$(MAKE) -C $(BUILD_WORK)/nghttp2
 	+$(MAKE) -C $(BUILD_WORK)/nghttp2 install \
 		DESTDIR="$(BUILD_STAGE)/nghttp2"
-	+$(MAKE) -C $(BUILD_WORK)/nghttp2 install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 nghttp2-package: nghttp2-stage

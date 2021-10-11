@@ -20,9 +20,7 @@ libffi: libffi-setup
 	+$(MAKE) -C $(BUILD_WORK)/libffi
 	+$(MAKE) -C $(BUILD_WORK)/libffi install \
 		DESTDIR=$(BUILD_STAGE)/libffi
-	+$(MAKE) -C $(BUILD_WORK)/libffi install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libffi-package: libffi-stage

@@ -5,7 +5,7 @@ Maintainer: @DEB_MAINTAINER@
 Section: Networking
 Priority: optional
 Homepage: https://www.torproject.org/
-Depends: liblzma5, libevent-2.1-7, libssl1.1, libzstd1, libscrypt0
+Depends: liblzma5, libevent-2.1-7, libssl3, libzstd1, libscrypt0
 Recommends: tor-geoipdb, torsocks
 Description: anonymizing overlay network for TCP
  Tor is a connection-based low-latency anonymous communication system.

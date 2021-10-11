@@ -22,9 +22,7 @@ libxrender: libxrender-setup libx11 xorgproto
 	+$(MAKE) -C $(BUILD_WORK)/libxrender
 	+$(MAKE) -C $(BUILD_WORK)/libxrender install \
 		DESTDIR=$(BUILD_STAGE)/libxrender
-	+$(MAKE) -C $(BUILD_WORK)/libxrender install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libxrender-package: libxrender-stage

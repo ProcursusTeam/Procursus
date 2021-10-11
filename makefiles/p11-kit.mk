@@ -25,9 +25,7 @@ p11-kit: p11-kit-setup gettext libtasn1 libffi
 	+$(MAKE) -C $(BUILD_WORK)/p11-kit
 	+$(MAKE) -C $(BUILD_WORK)/p11-kit install \
 		DESTDIR=$(BUILD_STAGE)/p11-kit
-	+$(MAKE) -C $(BUILD_WORK)/p11-kit install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 p11-kit-package: p11-kit-stage

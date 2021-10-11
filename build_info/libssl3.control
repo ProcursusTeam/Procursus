@@ -1,4 +1,4 @@
-Package: libssl1.1
+Package: libssl3
 Version: @DEB_OPENSSL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
