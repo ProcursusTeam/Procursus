@@ -69,7 +69,7 @@ endif
 	+$(MAKE) -C $(BUILD_WORK)/zsh install \
 		DESTDIR="$(BUILD_STAGE)/zsh"
 	rm -f $(BUILD_STAGE)/zsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/zsh-$(ZSH_VERSION)
-	touch $(BUILD_WORK)/zsh/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 zsh-package: zsh-stage
@@ -80,7 +80,7 @@ zsh-package: zsh-stage
 	# zsh.mk Prep zsh
 	cp -a $(BUILD_STAGE)/zsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/* $(BUILD_DIST)/zsh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 ifneq ($(MEMO_SUB_PREFIX),)
-	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/zsh $(BUILD_DIST)/zsh/$(MEMO_PREFIX)/bin/zsh
+	$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/zsh $(BUILD_DIST)/zsh/$(MEMO_PREFIX)/bin/zsh
 endif
 
 	# zsh.mk Sign

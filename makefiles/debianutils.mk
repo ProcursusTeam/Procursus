@@ -11,6 +11,7 @@ DEB_DEBIANUTILS_V   ?= $(DEBIANUTILS_VERSION)
 debianutils-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/d/debianutils/debianutils_$(DEBIANUTILS_VERSION).tar.xz
 	$(call EXTRACT_TAR,debianutils_$(DEBIANUTILS_VERSION).tar.xz,debianutils-$(DEBIANUTILS_VERSION),debianutils)
+	$(call DO_PATCH,debianutils,debianutils,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/debianutils/.build_complete),)
 debianutils:
@@ -30,7 +31,7 @@ debianutils: debianutils-setup
 	echo -e "# /etc/shells: valid login shells\n\
 $(MEMO_PREFIX)/bin/sh\n\
 $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sh" > $(BUILD_STAGE)/debianutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/debianutils/shells
-	touch $(BUILD_WORK)/debianutils/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 debianutils-package: debianutils-stage
@@ -41,7 +42,7 @@ debianutils-package: debianutils-stage
 	# debianutils.mk Prep debianutils
 	cp -a $(BUILD_STAGE)/debianutils $(BUILD_DIST)
 ifneq ($(MEMO_SUB_PREFIX),)
-	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/run-parts $(BUILD_DIST)/debianutils/$(MEMO_PREFIX)/bin
+	$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/run-parts $(BUILD_DIST)/debianutils/$(MEMO_PREFIX)/bin
 endif
 
 	# debianutils.mk Sign

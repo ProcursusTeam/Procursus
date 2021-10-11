@@ -1,0 +1,83 @@
+--- joe/coreutils-8.32/src/copy.c	2020-01-01 06:13:12.000000000 -0800
++++ coreutils-8.32/src/copy.c	2021-09-07 15:51:23.000000000 -0700
+@@ -22,6 +22,7 @@
+ #include <sys/ioctl.h>
+ #include <sys/types.h>
+ #include <selinux/selinux.h>
++#include <unistd.h>
+ 
+ #if HAVE_HURD_H
+ # include <hurd.h>
+@@ -73,6 +74,10 @@
+ # include "verror.h"
+ #endif
+ 
++#ifdef __APPLE__
++#include <sys/clonefile.h>
++#endif
++
+ #if HAVE_LINUX_FALLOC_H
+ # include <linux/falloc.h>
+ #endif
+@@ -369,6 +374,61 @@
+ {
+ #ifdef FICLONE
+   return ioctl (dest_fd, FICLONE, src_fd);
++#elif defined __APPLE__
++  int ret = 0;
++  // This just emulates the ioctl, so that the interface is forwards compatible for later.
++  // This also assumes that dest_fd points to an empty file, and that src_fd exists.
++  struct stat dest_stat;
++  if (fstat(dest_fd, &dest_stat) == -1)
++      return -1;
++
++  // Check if fd is a regular file
++  if (!S_ISREG(dest_stat.st_mode))
++      return -1;
++
++  char srcpath[PATH_MAX];
++  char destpath[PATH_MAX];
++  if (fcntl(src_fd, F_GETPATH, srcpath) == -1 || fcntl(dest_fd, F_GETPATH, destpath) == -1)
++      return -1;
++
++  struct timeval times[2];
++
++  TIMESPEC_TO_TIMEVAL(&times[0], &(dest_stat.st_atimespec));
++  TIMESPEC_TO_TIMEVAL(&times[1], &(dest_stat.st_mtimespec));
++
++  // Unlink dest_fd, since clonefile(3) requires the destpath to not exist
++  unlink(destpath);
++  if (clonefile(srcpath, destpath, 0)) {
++      ret = -1;
++      // If clonefile(3) fails, creat() a new file with the same path, 
++      // assign it the same mode as the original dest_fd, 
++      // and dup2 it to the original dest_fd as well, just 
++      // so that it appears dest_fd has not been changed.
++      int newfile = creat(destpath, dest_stat.st_mode);
++      if (newfile < 0)
++          return -1;
++
++      close(newfile);
++  }
++
++  int newfd = open(destpath, O_RDWR);
++  if (newfd < 0)
++      return -1;
++
++  if (dup2(newfd, dest_fd) == -1) {
++      close(newfd);
++      return -1;
++  }
++
++  close(newfd);
++
++  if (fchmod(dest_fd, dest_stat.st_mode) == -1 || fchown(dest_fd, dest_stat.st_uid, dest_stat.st_gid) == -1)
++      return -1;
++
++  if (futimes(dest_fd, times) == -1)
++      return -1;
++
++  return ret;
+ #else
+   (void) dest_fd;
+   (void) src_fd;

@@ -20,7 +20,7 @@ sudoku: sudoku-setup ncurses
 	$(MAKE) -C $(BUILD_WORK)/sudoku install \
 		DESTDIR=$(BUILD_STAGE)/sudoku \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	touch $(BUILD_WORK)/sudoku/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 sudoku-package: sudoku-stage

@@ -21,7 +21,7 @@ ninja: ninja-setup
 		..
 	+$(MAKE) -C $(BUILD_WORK)/ninja/build
 	cp $(BUILD_WORK)/ninja/build/ninja $(BUILD_STAGE)/ninja/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
-	touch $(BUILD_WORK)/ninja/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 ninja-package: ninja-stage

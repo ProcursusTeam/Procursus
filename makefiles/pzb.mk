@@ -20,7 +20,7 @@ pzb: pzb-setup libfragmentzip
 	+$(MAKE) -C $(BUILD_WORK)/pzb
 	+$(MAKE) -C $(BUILD_WORK)/pzb install \
 		DESTDIR="$(BUILD_STAGE)/pzb"
-	touch $(BUILD_WORK)/pzb/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 pzb-package: pzb-stage

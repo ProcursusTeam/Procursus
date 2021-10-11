@@ -33,7 +33,7 @@ groff: groff-setup
 		GROFF_BIN_PATH="$$(dirname $$(which groff))"
 	+$(MAKE) -C $(BUILD_WORK)/groff install \
 		DESTDIR=$(BUILD_STAGE)/groff
-	touch $(BUILD_WORK)/groff/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 groff-package: groff-stage

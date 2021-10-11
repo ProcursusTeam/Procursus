@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += tor
-TOR_VERSION  := 0.4.5.7
+TOR_VERSION  := 0.4.6.7
 DEB_TOR_V    ?= $(TOR_VERSION)
 
 tor-setup: setup
@@ -24,33 +24,48 @@ tor: tor-setup libevent openssl xz zstd libscrypt
 		--enable-lzma \
 		--disable-seccomp \
 		--disable-unittests
+	# While _NSGetEnviron exists, it doesn't have a prototype in iOS 12 SDKs
+	sed -i '/HAVE__NSGETENVIRON/d' $(BUILD_WORK)/tor/orconfig.h
 	+$(MAKE) -C $(BUILD_WORK)/tor \
-		CC=$(CC) \
+		CC="$(CC)" \
 		CPP="$(CXX)" \
 		CFLAGS="$(CFLAGS)" \
-		LFLAGS2="$(CFLAGS)"
+		LDFLAGS="$(LDFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/tor install \
 		DESTDIR="$(BUILD_STAGE)/tor"
+
+
 	mkdir -p $(BUILD_STAGE)/tor/$(MEMO_PREFIX){/Library/LaunchDaemons,$(MEMO_SUB_PREFIX)/libexec}
-	cp -a $(BUILD_INFO)/org.torproject.tor.plist $(BUILD_STAGE)/tor/$(MEMO_PREFIX)/Library/LaunchDaemons
-	cp -a $(BUILD_INFO)/tor-wrapper $(BUILD_STAGE)/tor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
-	touch $(BUILD_WORK)/tor/.build_complete
+	install -m644 $(BUILD_MISC)/tor/org.torproject.tor.plist $(BUILD_STAGE)/tor/$(MEMO_PREFIX)/Library/LaunchDaemons
+	sed -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
+		$(BUILD_STAGE)/tor/$(MEMO_PREFIX)/Library/LaunchDaemons/org.torproject.tor.plist
+	install -m755 $(BUILD_MISC)/tor/tor-wrapper $(BUILD_STAGE)/tor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
+	sed -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
+		$(BUILD_STAGE)/tor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/tor-wrapper
+	$(call AFTER_BUILD)
 endif
 
 tor-package: tor-stage
 	# tor.mk Package Structure
-	rm -rf $(BUILD_DIST)/tor
-
+	rm -rf $(BUILD_DIST)/tor{,-geoipdb}
+	mkdir -p $(BUILD_DIST)/tor-geoipdb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	
 	# tor.mk Prep tor
 	cp -a $(BUILD_STAGE)/tor $(BUILD_DIST)
-
+	rm -rf $(BUILD_DIST)/tor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tor
+	
+	# tor.mk Prep tor-geoipdb
+	cp -a $(BUILD_STAGE)/tor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tor \
+		$(BUILD_DIST)/tor-geoipdb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	
 	# tor.mk Sign
 	$(call SIGN,tor,general.xml)
-
+	
 	# tor.mk Make .debs
 	$(call PACK,tor,DEB_TOR_V)
-
+	$(call PACK,tor-geoipdb,DEB_TOR_V)
+	
 	# tor.mk Build cleanup
-	rm -rf $(BUILD_DIST)/tor
+	rm -rf $(BUILD_DIST)/tor{,-geoipdb}
 
 .PHONY: tor tor-package

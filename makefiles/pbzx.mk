@@ -18,7 +18,7 @@ pbzx: pbzx-setup xar xz
 	$(CC) $(CFLAGS) $(LDFLAGS) -llzma -lxar $(BUILD_WORK)/pbzx/pbzx.c -o $(BUILD_WORK)/pbzx/pbzx
 	$(STRIP) $(BUILD_WORK)/pbzx/pbzx
 	$(INSTALL) -Dm755 $(BUILD_WORK)/pbzx/pbzx $(BUILD_STAGE)/pbzx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pbzx
-	touch $(BUILD_WORK)/pbzx/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 pbzx-package: pbzx-stage

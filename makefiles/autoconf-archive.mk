@@ -21,7 +21,7 @@ autoconf-archive: autoconf-archive-setup
 	+$(MAKE) -C $(BUILD_WORK)/autoconf-archive
 	+$(MAKE) -C $(BUILD_WORK)/autoconf-archive install \
 		DESTDIR=$(BUILD_STAGE)/autoconf-archive
-	touch $(BUILD_WORK)/autoconf-archive/.build_complete
+	$(call AFTER_BUILD)
 endif
 autoconf-archive-package: autoconf-archive-stage
 	# autoconf-archive.mk Package Structure

@@ -29,7 +29,7 @@ usbmuxd: usbmuxd-setup libusb libimobiledevice libplist
 		DESTDIR="$(BUILD_STAGE)/usbmuxd"
 	mkdir -p $(BUILD_STAGE)/usbmuxd/Library/LaunchDaemons
 	cp -a $(BUILD_INFO)/org.libimobiledevice.usbmuxd.plist $(BUILD_STAGE)/usbmuxd/Library/LaunchDaemons
-	touch $(BUILD_WORK)/usbmuxd/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 usbmuxd-package: usbmuxd-stage
