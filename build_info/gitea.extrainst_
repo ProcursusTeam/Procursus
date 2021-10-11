@@ -4,14 +4,14 @@ set -e
 
 case "$1" in
 	(install)
-	/bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/io.gitea.web.plist
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/io.gitea.web.plist
 	;;
 	(upgrade)
-	/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/io.gitea.web.plist
-	/bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/io.gitea.web.plist
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/io.gitea.web.plist
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/io.gitea.web.plist
 	;;
 	(remove|purge)
-	/bin/launchctl unload -w @MEMO_PREFIX@/Library/LaunchDaemons/io.gitea.web.plist
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload -w @MEMO_PREFIX@/Library/LaunchDaemons/io.gitea.web.plist
 	;;
 	(*)
 	exit 0
