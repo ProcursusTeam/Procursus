@@ -25,7 +25,7 @@ tor: tor-setup libevent openssl xz zstd libscrypt
 		--disable-seccomp \
 		--disable-unittests
 	# While _NSGetEnviron exists, it doesn't have a prototype in iOS 12 SDKs
-	$(SED) -i '/HAVE__NSGETENVIRON/d' $(BUILD_WORK)/tor/orconfig.h
+	sed -i '/HAVE__NSGETENVIRON/d' $(BUILD_WORK)/tor/orconfig.h
 	+$(MAKE) -C $(BUILD_WORK)/tor \
 		CC=$(CC) \
 		CPP="$(CXX)" \
@@ -35,10 +35,10 @@ tor: tor-setup libevent openssl xz zstd libscrypt
 		DESTDIR="$(BUILD_STAGE)/tor"
 	mkdir -p $(BUILD_STAGE)/tor/$(MEMO_PREFIX){/Library/LaunchDaemons,$(MEMO_SUB_PREFIX)/libexec}
 	install -m644 $(BUILD_MISC)/tor/org.torproject.tor.plist $(BUILD_STAGE)/tor/$(MEMO_PREFIX)/Library/LaunchDaemons
-	$(SED) -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
+	sed -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
 		$(BUILD_STAGE)/tor/$(MEMO_PREFIX)/Library/LaunchDaemons/org.torproject.tor.plist
 	install -m755 $(BUILD_MISC)/tor/tor-wrapper $(BUILD_STAGE)/tor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
-	$(SED) -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
+	sed -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
 		$(BUILD_STAGE)/tor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/tor-wrapper
 	$(call AFTER_BUILD)
 endif
