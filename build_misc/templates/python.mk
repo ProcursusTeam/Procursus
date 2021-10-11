@@ -16,7 +16,8 @@ ifneq ($(wildcard $(BUILD_WORK)/@pkg@/.build_complete),)
 	@echo "Using previously built @pkg@."
 else
 @pkg@: @pkg@-setup python3
-	cd $(BUILD_WORK)/@pkg@ && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py build \
+	cd $(BUILD_WORK)/@pkg@ && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py \
+		build \
 		--executable="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3" \
 		install \
 		--install-layout=deb \
