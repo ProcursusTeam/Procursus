@@ -34,6 +34,7 @@ tor: tor-setup libevent openssl xz zstd libscrypt
 	+$(MAKE) -C $(BUILD_WORK)/tor install \
 		DESTDIR="$(BUILD_STAGE)/tor"
 
+
 	mkdir -p $(BUILD_STAGE)/tor/$(MEMO_PREFIX){/Library/LaunchDaemons,$(MEMO_SUB_PREFIX)/libexec}
 	install -m644 $(BUILD_MISC)/tor/org.torproject.tor.plist $(BUILD_STAGE)/tor/$(MEMO_PREFIX)/Library/LaunchDaemons
 	sed -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
