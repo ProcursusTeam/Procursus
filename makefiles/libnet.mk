@@ -26,25 +26,25 @@ endif
 
 libnet-package: libnet-stage
 	# libnet.mk Package Structure
-	rm -rf $(BUILD_DIST)/libnet9{,-dev}
-	mkdir -p $(BUILD_DIST)/libnet9{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	rm -rf $(BUILD_DIST)/libnet{9,-dev}
+	mkdir -p $(BUILD_DIST)/libnet{9,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libnet.mk Prep libnet9
 	cp -a $(BUILD_STAGE)/libnet/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libnet.9.dylib $(BUILD_DIST)/libnet9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-	# libnet.mk Prep libnet9-dev
-	cp -a $(BUILD_STAGE)/libnet/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libnet.{a,dylib},pkgconfig} $(BUILD_DIST)/libnet9-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/libnet/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,bin} $(BUILD_DIST)/libnet9-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	# libnet.mk Prep libnet-dev
+	cp -a $(BUILD_STAGE)/libnet/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libnet.{a,dylib},pkgconfig} $(BUILD_DIST)/libnet-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libnet/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libnet-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libnet.mk Sign
 	$(call SIGN,libnet9,general.xml)
-	$(call SIGN,libnet9-dev,general.xml)
+	$(call SIGN,libnet-dev,general.xml)
 
 	# libnet.mk Make .debs
 	$(call PACK,libnet9,DEB_LIBNET_V)
-	$(call PACK,libnet9-dev,DEB_LIBNET_V)
+	$(call PACK,libnet-dev,DEB_LIBNET_V)
 
 	# libnet.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libnet9{,-dev}
+	rm -rf $(BUILD_DIST)/libnet{9,-dev}
 
 .PHONY: libnet libnet-package
