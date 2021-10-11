@@ -1,0 +1,19 @@
+diff -urN  sudo/src/exec_common.c sudo/src/exec_common.c
+--- sudo/src/exec_common.c	2021-04-29 23:00:10.369756666 -0400
++++ sudo/src/exec_common.c	2021-05-03 23:58:03.349602686 -0400
+@@ -35,6 +35,15 @@
+ #include "sudo.h"
+ #include "sudo_exec.h"
+
++/* wrapper functions to make iOS shell scripts function correctly */
++#if defined(__APPLE__)
++#  include <TargetConditionals.h>
++#  if TARGET_OS_IPHONE
++#    define ENABLE_IOSEXEC
++#    include <libiosexec.h>
++#  endif
++#endif
++
+ #ifdef RTLD_PRELOAD_VAR
+ /*
+  * Add a DSO file to LD_PRELOAD or the system equivalent.

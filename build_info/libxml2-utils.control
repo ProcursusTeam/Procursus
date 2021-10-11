@@ -1,0 +1,18 @@
+Package: libxml2-utils
+Version: @DEB_LIBXML2_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libxml2 (= @DEB_LIBXML2_V@), libncursesw6, libreadline8, liblzma5
+Section: Utilities
+Priority: optional
+Description: XML utilities
+ XML is a metalanguage to let you design your own markup language.
+ A regular markup language defines a way to describe information in
+ a certain class of documents (eg HTML). XML lets you define your
+ own customized markup languages for many classes of document. It
+ can do this because it's written in SGML, the international standard
+ metalanguage for markup languages.
+ .
+ This package provides xmllint, a tool for validating and reformatting
+ XML documents, and xmlcatalog, a tool to parse and manipulate XML or
+ SGML catalog files.

@@ -1,0 +1,7 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" != "upgrade" ]; then
+  update-alternatives --remove awk @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/mawk
+fi

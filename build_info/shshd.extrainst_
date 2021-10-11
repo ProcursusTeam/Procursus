@@ -1,0 +1,18 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+    (install)
+    @MEMO_LAUNCHCTL_PREFIX@/bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/us.diatr.shshd.plist
+    ;;
+	(upgrade)
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/us.diatr.shshd.plist
+    @MEMO_LAUNCHCTL_PREFIX@/bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/us.diatr.shshd.plist
+	;;
+	(*)
+	exit 0
+	;;
+esac
+
+exit 0

@@ -1,0 +1,14 @@
+Package: libboost-wave1.76.0
+Version: @DEB_LIBBOOST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libboost-filesystem1.76.0 (= @DEB_LIBBOOST_V@), libboost-thread1.76.0 (= @DEB_LIBBOOST_V@), libboost-chrono1.76.0 (= @DEB_LIBBOOST_V@)
+Section: Libraries
+Priority: optional
+Description: C99/C++ preprocessor library
+ This package forms part of the Boost C++ Libraries collection.
+ .
+ The Wave C++ preprocessor library is a Standards conformant
+ implementation of the mandated C99/C++ preprocessor functionality
+ packed behind a simple to use interface, which integrates well with
+ the well known idioms of the Standard Template Library (STL).

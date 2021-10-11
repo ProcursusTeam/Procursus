@@ -1,0 +1,8 @@
+Package: libkernrw-utils
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBKERNRW_V@
+Depends: libkernrw0 (= @DEB_LIBKERNRW_V@)
+Section: Utilities
+Priority: optional
+Description: Kernel R/W API for iOS 14+ (Utilities)

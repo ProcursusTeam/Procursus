@@ -1,0 +1,9 @@
+Package: libboost1.76.0-all
+Version: 1:0
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libboost-atomic1.76.0 (= @DEB_LIBBOOST_V@), libboost-chrono1.76.0 (= @DEB_LIBBOOST_V@), libboost-container1.76.0 (= @DEB_LIBBOOST_V@), libboost-context1.76.0 (= @DEB_LIBBOOST_V@), libboost-contract1.76.0 (= @DEB_LIBBOOST_V@), libboost-coroutine1.76.0 (= @DEB_LIBBOOST_V@), libboost-date-time1.76.0 (= @DEB_LIBBOOST_V@), libboost-fiber1.76.0 (= @DEB_LIBBOOST_V@), libboost-filesystem1.76.0 (= @DEB_LIBBOOST_V@), libboost-graph1.76.0 (= @DEB_LIBBOOST_V@), libboost-iostreams1.76.0 (= @DEB_LIBBOOST_V@), libboost-json1.76.0 (= @DEB_LIBBOOST_V@), libboost-locale1.76.0 (= @DEB_LIBBOOST_V@), libboost-log1.76.0 (= @DEB_LIBBOOST_V@), libboost-math1.76.0 (= @DEB_LIBBOOST_V@), libboost-nowide1.76.0 (= @DEB_LIBBOOST_V@), libboost-program-options1.76.0 (= @DEB_LIBBOOST_V@), libboost-python1.76.0 (= @DEB_LIBBOOST_V@), libboost-random1.76.0 (= @DEB_LIBBOOST_V@), libboost-regex1.76.0 (= @DEB_LIBBOOST_V@), libboost-serialization1.76.0 (= @DEB_LIBBOOST_V@), libboost-stacktrace1.76.0 (= @DEB_LIBBOOST_V@), libboost-system1.76.0 (= @DEB_LIBBOOST_V@), libboost-test1.76.0 (= @DEB_LIBBOOST_V@), libboost-thread1.76.0 (= @DEB_LIBBOOST_V@), libboost-timer1.76.0 (= @DEB_LIBBOOST_V@), libboost-type-erasure1.76.0 (= @DEB_LIBBOOST_V@), libboost-wave1.76.0 (= @DEB_LIBBOOST_V@)
+Section: Libraries
+Priority: Optional
+Description: Boost C++ Libraries Meta Package
+Name: libboost Meta Package

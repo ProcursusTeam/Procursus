@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+  remove)
+
+      update-alternatives --remove x-window-manager @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/startfluxbox
+    ;;
+
+  *)
+  ;;
+esac
+
+#DEBHELPER#

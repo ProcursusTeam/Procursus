@@ -1,0 +1,16 @@
+Package: doxygen
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_DOXYGEN_V@
+Section: Utilities
+Priority: optional
+Homepage: http://www.doxygen.nl/
+Description: Documentation system for C, C++, Java, Python and other languages
+ Doxygen is a documentation system for C, C++, Java, Objective-C, Python, IDL
+ and to some extent PHP, C#, and D.  It can generate an on-line class browser
+ (in HTML) and/or an off-line reference manual (in LaTeX) from a set of
+ documented source files. There is also support for generating man pages
+ and for converting the generated output into Postscript, hyperlinked PDF
+ or compressed HTML.  The documentation is extracted directly from the sources.
+ .
+ Install the doxygen-latex package to build LaTeX based documents.

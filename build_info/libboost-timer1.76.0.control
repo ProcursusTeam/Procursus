@@ -1,0 +1,18 @@
+Package: libboost-timer1.76.0
+Version: @DEB_LIBBOOST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libboost-chrono1.76.0 (= @DEB_LIBBOOST_V@)
+Section: Libraries
+Priority: optional
+Description: C++ wall clock and CPU process timers
+ This package forms part of the Boost C++ Libraries collection.
+ .
+ Portable C++ timer classes that answer the question "How long does my
+ C++ code take to run?" with as little as one #include and one
+ additional line of code.
+ .
+ Class cpu_timer measures wall clock time, user CPU process time, and
+ system CPU process time. Class auto_cpu_timer is a refinement of
+ cpu_timer that automatically reports the elapsed times when an
+ auto_cpu_timer object is destroyed.

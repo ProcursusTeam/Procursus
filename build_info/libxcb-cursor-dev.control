@@ -1,0 +1,16 @@
+Package: libxcb-cursor-dev
+Version: @DEB_XCB-UTIL-CURSOR_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libxcb-cursor0 (= @DEB_XCB-UTIL-CURSOR_V@), libxcb-render-util0-dev, libxcb-image0-dev, libxcb-render0-dev, libxcb1-dev
+Section: Development
+Description: utility libraries for X C Binding -- cursor, development files
+ This package contains the header and library files needed to build software
+ using libxcb-cursor, providing port of Xlib's libXcursor functions.
+ .
+ The xcb-util module provides a number of libraries which sit on top of libxcb,
+ the core X protocol library, and some of the extension libraries. These
+ experimental libraries provide convenience functions and interfaces which make
+ the raw X protocol more usable. Some of the libraries also provide client-side
+ code which is not strictly part of the X protocol but which have traditionally
+ been provided by Xlib.

@@ -1,0 +1,14 @@
+Package: pup
+Version: @DEB_PUP_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Homepage: https://github.com/ericchiang/pup
+Description: command-line HTML processor
+ Pup is a command-line tool for processing HTML. It
+ reads from stdin, prints to stdout, and allows the
+ user to filter parts of the page using CSS selectors.
+ .
+ Inspired by jq (http://stedolan.github.io/jq/), pup aims to be
+ a fast and flexible way of exploring HTML from the terminal.

@@ -1,0 +1,9 @@
+Package: micro
+Version: @DEB_MICRO_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Text_Editors
+Priority: optional
+Description: modern and intuitive terminal-based text editor
+ micro is a terminal-based text editor that aims to be easy to use and intuitive, while also taking advantage of the full capabilities of modern terminals.
+ As the name indicates, micro aims to be somewhat of a successor to the nano editor by being easy to install and use. 

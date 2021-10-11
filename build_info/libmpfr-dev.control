@@ -1,0 +1,18 @@
+Package: libmpfr-dev
+Version: @DEB_MPFR4_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libmpfr6 (= @DEB_MPFR4_V@), libgmp-dev
+Section: Development
+Priority: optional
+Homepage: https://www.mpfr.org
+Description: multiple precision floating-point computation developers tools
+ This development package provides the header files and the symbolic
+ links to allow compilation and linking of programs that use the libraries
+ provided in the libmpfr4 package.
+ .
+ MPFR provides a library for multiple-precision floating-point computation
+ with correct rounding.  The computation is both efficient and has a
+ well-defined semantics. It copies the good ideas from the
+ ANSI/IEEE-754 standard for double-precision floating-point arithmetic
+ (53-bit mantissa).

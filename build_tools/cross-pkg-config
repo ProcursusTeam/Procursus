@@ -1,0 +1,10 @@
+#!/bin/sh
+
+SYSROOT=${BUILD_BASE}
+
+#export PKG_CONFIG_PATH=
+export PKG_CONFIG_LIBDIR=${SYSROOT}/${MEMO_PREFIX}${MEMO_SUB_PREFIX}/lib/pkgconfig:${SYSROOT}/${MEMO_PREFIX}${MEMO_SUB_PREFIX}${MEMO_ALT_PREFIX}/lib/pkgconfig:${SYSROOT}/${MEMO_PREFIX}${MEMO_SUB_PREFIX}/share/pkgconfig
+export PKG_CONFIG_SYSROOT_DIR=${SYSROOT}
+
+exec pkg-config "$@"
+

@@ -2,10 +2,7 @@ Package: libnghttp2-14
 Version: @DEB_NGHTTP2_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Conflicts: nghttp2 (<<1:0), libnghttp2 (<<1:0)
-Replaces: nghttp2, libnghttp2
-Provides: nghttp2, libnghttp2
-Section: Development
+Section: Libraries
 Priority: standard
 Homepage: https://nghttp2.org/
 Description: library implementing HTTP/2 protocol (shared library)

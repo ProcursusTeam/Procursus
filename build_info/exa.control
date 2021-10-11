@@ -1,0 +1,12 @@
+Package: exa
+Version: @DEB_EXA_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: Benjamin Sago <auto@bsago.me>
+Section: Utilities
+Priority: optional
+Description: Modern replacement for ls.
+ Exa is a modern day replacement for the venerable file-listing command-line program
+ ls that ships with Unix and Linux operating systems, giving it more features and better
+ defaults. It uses colors to distinguish file types and metadata. It knows about symlinks,
+ extended attributes, and Git. And it's small, fast, and just one single binary.

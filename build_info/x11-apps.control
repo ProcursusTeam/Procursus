@@ -1,0 +1,35 @@
+Package: x11-apps
+Section: X11
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_X11_APPS_V@
+Depends: libsm6, libx11-6, libxaw7, libxcursor1, libxext6, libxft2, libxmu6, libxmuu1, libxrender1, libxt6, libpng16-16, libxkbfile1, man-db
+Description: X applications
+ This package provides a miscellaneous assortment of X applications
+ that ship with the X Window System, including:
+  - atobm, bitmap, and bmtoa, tools for manipulating bitmap images;
+  - ico, a demo program animating polyhedrons;
+  - oclock and xclock, graphical clocks;
+  - rendercheck, a program to test render extension implementations;
+  - transset, a tool to set opacity property on a window;
+  - xbiff, a tool which tells you when you have new email;
+  - xcalc, a scientific calculator desktop accessory;
+  - xclipboard, a tool to manage cut-and-pasted text selections;
+  - xconsole, which monitors system console messages;
+  - xcursorgen, a tool for creating X cursor files from PNGs;
+  - xditview, a viewer for ditroff output;
+  - xedit, a simple text editor for X;
+  - xeyes, a demo program in which a pair of eyes track the pointer;
+  - xgc, a graphics demo;
+  - xload, a monitor for the system load average;
+  - xlogo, a demo program that displays the X logo;
+  - xmag, which magnifies parts of the X screen;
+  - xman, a manual page browser;
+  - xmore, a text pager;
+  - xwd, a utility for taking window dumps ("screenshots") of the X session;
+  - xwud, a viewer for window dumps created by xwd;
+  - Xmark, x11perf, and x11perfcomp, tools for benchmarking graphical
+    operations under the X Window System;
+ .
+ The xbiff, xcalc, xconsole, xedit and xman programs use bitmap images
+ provided by the xbitmaps package.

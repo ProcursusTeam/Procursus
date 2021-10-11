@@ -1,0 +1,19 @@
+Package: gir1.2-glib-2.0
+Version: @DEB_GOBJECT-INTROSPECTION_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libglib2.0-0, libgirepository-1.0-1 (= @DEB_GOBJECT-INTROSPECTION_V@)
+Section: Introspection
+Homepage: https://wiki.gnome.org/GObjectIntrospection
+Description: Introspection data for GLib, GObject, Gio and GModule
+ GObject Introspection is a project for providing machine readable
+ introspection data of the API of C libraries. This introspection
+ data can be used in several different use cases, for example
+ automatic code generation for bindings, API verification and documentation
+ generation.
+ .
+ GObject Introspection contains tools to generate and handle the
+ introspection data.
+ .
+ This package contains the introspection data for the GLib, GObject,
+ GModule and Gio libraries.

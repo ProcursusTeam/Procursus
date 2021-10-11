@@ -1,0 +1,15 @@
+Package: xdmx-tools
+Version: @DEB_XORG-SERVER_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: xdmx, libdmx1, libx11-6, libxaw7, libxext6, libxmu6, libxpm4, libxt6
+Section: X11
+Priority: optional
+Description: Distributed Multihead X tools
+ This package provides a collection of tools used for administration of
+ the Xdmx server; see the xdmx package for more information.
+ .
+ More information about X.Org can be found at:
+ <URL:https://www.x.org>
+ .
+ This package is built from the X.org xserver module.

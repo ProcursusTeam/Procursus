@@ -2,9 +2,17 @@ Package: libgmp-dev
 Version: @DEB_GMP_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Depends: libgmp10 (= @DEB_GMP_V@), libgmpxx4ldbl (= @DEB_GMP_V@)
 Section: Development
 Priority: optional
-Multi-Arch: foreign
 Homepage: https://gmplib.org/
 Description: Multiprecision arithmetic library developers tools
-Depends: libgmp10 (= @DEB_GMP_V@)
+ This development package provides the header files and the symbolic
+ links to allow compilation and linking of programs that use the libraries
+ provided in the libgmp10 package.
+ .
+ Both C and C++ bindings are present in this package.  Package
+ libstdc++-dev is required to use the C++ bindings.  
+ .
+ The MPFR library (multiple-precision floating-point) used to be
+ included, but has since been moved to package libmpfr-dev.

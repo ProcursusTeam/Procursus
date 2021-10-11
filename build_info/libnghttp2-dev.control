@@ -2,8 +2,8 @@ Package: libnghttp2-dev
 Version: @DEB_NGHTTP2_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libnghttp2-14 (>=@DEB_NGHTTP2_V@)
-Section: Libraries
+Depends: libnghttp2-14 (= @DEB_NGHTTP2_V@)
+Section: Development
 Priority: standard
 Homepage: https://nghttp2.org/
 Description: library implementing HTTP/2 protocol (development files)

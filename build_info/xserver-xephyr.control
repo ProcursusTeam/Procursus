@@ -1,0 +1,18 @@
+Package: xserver-xephyr
+Version: @DEB_XORG-SERVER_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Provides: xserver
+Depends: libepoxy0, libmd0, libpixman-1-0, libx11-6, libx11-xcb1, libxau6, libxcb-glx0, libxcb-icccm4, libxcb-image0, libxcb-keysyms1, libxcb-randr0, libxcb-render-util0, libxcb-render0, libxcb-shape0, libxcb-shm0, libxcb-util1, libxcb-xf86dri0, libxcb-xkb1, libxcb1, libxdmcp6, libxfont2, libxcb-xv0, xserver-common, libgl1-mesa-glx 
+Section: X11
+Priority: optional
+Description: nested X server
+ Xephyr is an X server that can be run inside another X server,
+ much like Xnest. It is based on the kdrive X server, and as a
+ result it supports newer extensions than Xnest, including render and
+ composite.
+ .
+ More information about X.Org can be found at:
+ <URL:https://www.x.org>
+ .
+ This package is built from the X.org xserver module.

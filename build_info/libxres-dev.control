@@ -1,0 +1,22 @@
+Package: libxres-dev
+Version: @DEB_LIBXRES_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libxres1, libx11-dev, libxext-dev, x11proto-dev
+Section: Development
+Priority: optional
+Description: X11 Resource extension library (development headers)
+ libXRes provides an X Window System client interface to the Resource
+ extension to the X protocol.
+ .
+ The Resource extension allows for X clients to see and monitor the X resource
+ usage of various clients (pixmaps, et al).
+ .
+ This package contains the development headers for the library found in
+ libxres1.  Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at:
+ <URL:http://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libXRes

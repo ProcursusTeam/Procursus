@@ -1,0 +1,12 @@
+Package: wptc-track
+Version: @DEB_WPTC_TRACK_V@
+Architecture: @DEB_ARCH@ 
+Maintainer: @DEB_MAINTAINER@
+Pre-Depends: coreutils
+Depends: libcairo2, wget
+Section: Multimedia 
+Priority: optional
+Homepage: https://en.wikipedia.org/wiki/Wikipedia:WikiProject_Tropical_cyclones/Tracks
+Description: tropical cyclone track map generator
+ The track map generator program generates a track map from the NHC HURDAT data,[A 1] or from Automated Tropical Cyclone Forecast (ATCF) B-deck data files (commonly referred to as "best track" files).
+ The track map generator projects the track of a tropical cyclone onto a plate carrée geographic projection. Currently, track maps utilize a shrunk version of [File:Whole world - land and oceans.jpg](https://en.wikipedia.org/wiki/File:Whole_world_-_land_and_oceans.jpg), although support for other background images is available in the code. (Any alternate backgrounds should be high-resolution, preferably at least 4000x2000 pixels, and should cover the entire globe).

@@ -1,0 +1,26 @@
+Package: cmark
+Version: @DEB_CMARK_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Homepage: https://github.com/commonmark/cmark/
+Description: CommonMark parsing and rendering program
+ cmark is the C reference implementation of CommonMark,
+ a rationalized version of Markdown syntax with a spec.
+ .
+ cmark parses almost as fast as sundown and hoedown
+ (but safer and less buggy),
+ about 3 times faster than discount,
+ and about 100 times faster than kramdown and pandoc.
+ Memory consumption is on par with sundown
+ and about 10 times less than pandoc.
+ .
+ cmark outputs HTML, groff man, LaTeX, CommonMark,
+ and a custom XML format.
+ .
+ Markdown is a lightweight markup language
+ with plain-text-formatting syntax.
+ .
+ This package provides a command-line program (cmark)
+ for parsing and rendering CommonMark documents.

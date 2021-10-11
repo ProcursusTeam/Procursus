@@ -1,0 +1,29 @@
+Package: libboost-fiber1.76.0
+Version: @DEB_LIBBOOST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libboost-filesystem1.76.0 (= @DEB_LIBBOOST_V@), libboost-context1.76.0 (= @DEB_LIBBOOST_V@)
+Section: Libraries
+Priority: optional
+Description: cooperatively-scheduled micro-/userland-threads
+ This package forms part of the Boost C++ Libraries collection.
+ .
+ Boost.Fiber provides a framework for micro-/userland-threads (fibers)
+ scheduled cooperatively.  The API contains classes and functions to
+ manage and synchronize fibers similarly to standard thread support
+ library.
+ .
+ Each fiber has its own stack.
+ .
+ A fiber can save the current execution state, including all registers
+ and CPU flags, the instruction pointer, and the stack pointer and
+ later restore this state. The idea is to have multiple execution
+ paths running on a single thread using cooperative scheduling (versus
+ threads, which are preemptively scheduled). The running fiber decides
+ explicitly when it should yield to allow another fiber to run
+ (context switching). Boost.Fiber internally uses execution_context
+ from Boost.Context; the classes in this library manage, schedule and,
+ when needed, synchronize those execution contexts. A context switch
+ between threads usually costs thousands of CPU cycles on x86,
+ compared to a fiber switch with less than a hundred cycles. A fiber
+ runs on a single thread at any point in time.

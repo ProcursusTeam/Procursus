@@ -9,7 +9,7 @@ Provides: libgl-dev
 Depends: mesa-common-dev (= @DEB_MESA_V@), libgl1-mesa-glx (= @DEB_MESA_V@), libx11-dev, libx11-xcb-dev, libxcb1-dev, libxcb-glx0-dev, libxext-dev, libxxf86vm-dev, libxcb-shm0-dev
 Priority: optional
 Homepage: https://mesa3d.org/
-Description: ree implementation of the OpenGL API -- GLX development files
+Description: free implementation of the OpenGL API -- GLX development files
  This version of Mesa provides GLX and DRI capabilities: it is capable of
  both direct and indirect rendering.  For direct rendering, it can use DRI
  modules from the libgl1-mesa-dri package to accelerate drawing.

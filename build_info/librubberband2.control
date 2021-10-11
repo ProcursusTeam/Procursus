@@ -2,7 +2,7 @@ Package: librubberband2
 Version: @DEB_RUBBERBAND_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libsamplerate0 (>= 0.1.9), libsndfile1 (>= 1.0.30)
+Depends: libsamplerate0 (>= 0.1.9)
 Section: Libraries
 Priority: optional
 Homepage: https://www.breakfastquay.com/rubberband/

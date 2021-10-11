@@ -1,0 +1,15 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+    purge)
+        test -d @MEMO_PREFIX@/etc/X11/fluxbox && rm -rf @MEMO_PREFIX@/etc/X11/fluxbox
+    ;;
+    remove)
+        ;;
+    *)
+        ;;
+esac
+
+
+#DEBHELPER#

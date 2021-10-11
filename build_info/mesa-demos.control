@@ -1,0 +1,10 @@
+Package: mesa-demos
+Version: @DEB_MESA_DEMOS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libgl1, libglu1, libglew2.2, libx11-6, libxext6
+Section: X11
+Homepage: https://mesa3d.org/
+Description: Miscellaneous Mesa GL utilities
+ This package provides several basic GL utilities built by Mesa, including
+ glxinfo and glxgears.

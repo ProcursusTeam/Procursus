@@ -4,7 +4,7 @@ Section: Development
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_APT_V@
-Depends: libapt-pkg6.0 (=@DEB_APT_V@), libgcrypt20-dev, liblz4-dev, liblzma-dev, libxxhash-dev, libzstd-dev
+Depends: libapt-pkg6.0 (=@DEB_APT_V@), libgcrypt20-dev, liblz4-dev, liblzma-dev, libxxhash-dev, libzstd-dev, libiosexec-dev
 Conflicts: apt7 (<<1:0), apt1.4 (<<1:0), apt (<<2.0.0), apt-dev (<< 1:0)
 Replaces: apt-dev (<< 1:0)
 Description: development files for APT's libapt-pkg and libapt-inst

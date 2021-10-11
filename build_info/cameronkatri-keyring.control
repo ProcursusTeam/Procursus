@@ -1,0 +1,8 @@
+Package: cameronkatri-keyring
+Version: @DEB_CKATRI_KEYRING_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Keyrings
+Priority: optional
+Description: GnuPG key for Cameron Katri's repository
+Name: Cameron Katri's APT Keyring

@@ -6,7 +6,7 @@ Section: Libraries
 Conflicts: libgl1
 Replaces: libgl1
 Provides: libgl1
-Depends: libglapi-mesa (= @DEB_MESA_V@), libx11-6, libx11-xcb1, libxcb1, libxcb-glx0, libxext6, libxxf86vm1, libxcb-shm0, libgl1-mesa-dri
+Depends: libglapi-mesa (= @DEB_MESA_V@), libx11-6, libxext6, libzstd1
 Priority: optional
 Homepage: https://mesa3d.org/
 Description: free implementation of the OpenGL API -- GLX runtime
@@ -18,8 +18,4 @@ Description: free implementation of the OpenGL API -- GLX runtime
  Silicon Graphics, Inc.
  .
  This version of Mesa provides GLX and DRI capabilities: it is capable of
- both direct and indirect rendering.  For direct rendering, it can use DRI
- modules from the libgl1-mesa-dri package to accelerate drawing.
- .
- This package does not include the modules themselves: these can be found
- in the libgl1-mesa-dri package.
+ both direct and indirect rendering.

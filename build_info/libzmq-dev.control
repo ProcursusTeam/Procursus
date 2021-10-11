@@ -1,0 +1,15 @@
+Package: libzmq-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBZMQ_V@
+Depends: libzmq5 (= @DEB_LIBZMQ_V@), libsodium-dev
+Section: Development
+Description: lightweight messaging kernel (development files)
+ ØMQ is a library which extends the standard socket interfaces with features
+ traditionally provided by specialised messaging middleware products.
+ .
+ ØMQ sockets provide an abstraction of asynchronous message queues, multiple
+ messaging patterns, message filtering (subscriptions), seamless access to
+ multiple transport protocols and more.
+ .
+ This package contains the ZeroMQ development libraries and header files.

@@ -1,0 +1,19 @@
+Package: xserver-xorg-core
+Version: @DEB_XORG-SERVER_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Provides: xserver
+Depends: libgl1, libepoxy0, libmd0, libpixman-1-0, libxau6, libxdmcp6, libxfont2, xserver-common
+Section: X11
+Priority: optional
+Description: Xorg X server - core server
+ The Xorg X server is an X server for several architectures and operating
+ systems, which is derived from the XFree86 4.x series of X servers.
+ .
+ The Xorg server supports most modern graphics hardware from most vendors,
+ and supersedes all XFree86 X servers.
+ .
+ More information about X.Org can be found at:
+ <URL:https://www.x.org>
+ .
+ This package is built from the X.org xserver module.

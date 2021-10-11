@@ -4,9 +4,8 @@ Architecture: @DEB_ARCH@
 Essential: yes
 Maintainer: @DEB_MAINTAINER@
 Pre-Depends: bootstrap | dpkg (>= 1.19.0)
-Depends: org.coolstar.sileo (>= 2.0) | xyz.willy.zebra (>= 1.1) | me.apptapp.installer (>= 5.1) | cydia | openssh-server
+Depends: org.coolstar.sileo (>= 2.1) | xyz.willy.zebra (>= 1.1.19) | me.apptapp.installer (>= 5.1) | cydia | openssh-server, shshd
 Section: System
 Priority: required
-Description: Virtual package to keep you safe from uninstalling all your package managers.
-Name: Essential
+Description: Virtual package to keep you safe from uninstalling important packages.
 Tag: cydia::essential, role::goddess

@@ -4,8 +4,8 @@ set -e
 
 case "$1" in
 	purge)
-	    rm -f /var/log/fontconfig.log
-	    rm -rf /var/cache/fontconfig
+	    rm -f @MEMO_PREFIX@/var/log/fontconfig.log
+	    rm -rf @MEMO_PREFIX@/var/cache/fontconfig
 	    ;;
 esac
 

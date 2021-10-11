@@ -1,0 +1,16 @@
+Package: tmate
+Version: @DEB_TMATE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libmsgpackc2, libevent-2.1-7, libssh-4, libncursesw6, gettext-localizations
+Section: Terminal_Support
+Priority: optional
+Description: terminal multiplexer with instant terminal sharing
+ tmate provides an instant pairing solution, allowing you to share a terminal
+ with one or several teammates. Together with a voice call, it's almost like
+ pairing in person. The terminal sharing works by using SSH connections to
+ backend servers maintained by tmate upstream developers; teammates need to be
+ given a randomly-generated token to be able to join a session.
+ .
+ tmate is a modified version of tmux, and uses the same configurations such as
+ keybindings, color schemes etc.

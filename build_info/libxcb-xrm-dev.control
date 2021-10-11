@@ -1,0 +1,17 @@
+Package: libxcb-xrm-dev
+Version: @DEB_XCB-UTIL-XRM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libxcb-xrm0 (= @DEB_XCB-UTIL-XRM_V@), libxcb1-dev, libxcb-util-dev
+Section: Development
+Priority: optional
+Description: utility functions for the X resource manager, development files
+ This package contains the header and library files needed to build software
+ using libxcb-xrm, providing utility functions for the X resource manager.
+ .
+ The xcb-util module provides a number of libraries which sit on top of libxcb,
+ the core X protocol library, and some of the extension libraries. These
+ experimental libraries provide convenience functions and interfaces which make
+ the raw X protocol more usable. Some of the libraries also provide client-side
+ code which is not strictly part of the X protocol but which have traditionally
+ been provided by Xlib.

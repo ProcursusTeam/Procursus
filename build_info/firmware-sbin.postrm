@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 
-if [[ $1 == abort-install || $1 == abort-upgrade ]]; then
+if [ "$1" = "abort-install" ] || [ "$1" = "abort-upgrade" ]; then
 	LIST="/sbin/fsck /sbin/fsck_apfs /sbin/fsck_exfat /sbin/fsck_hfs /sbin/fsck_msdos /sbin/launchd /sbin/mount
 	/sbin/mount_apfs /sbin/mount_hfs /sbin/newfs_apfs /sbin/newfs_hfs /sbin/pfctl /usr/sbin/BTAvrcp
 	/usr/sbin/BTLEServer /usr/sbin/BTMap /usr/sbin/BTPbap /usr/sbin/BlueTool
@@ -8,13 +8,13 @@ if [[ $1 == abort-install || $1 == abort-upgrade ]]; then
 	/usr/sbin/bluetoothd /usr/sbin/cfprefsd /usr/sbin/distnoted /usr/sbin/filecoordinationd
 	/usr/sbin/ioreg /usr/sbin/ipconfig /usr/sbin/mDNSResponder /usr/sbin/mDNSResponderHelper /usr/sbin/mediaserverd
 	/usr/sbin/notifyd /usr/sbin/nvram /usr/sbin/pppd /usr/sbin/racoon /usr/sbin/rtadvd /usr/sbin/scutil
-	/usr/sbin/spindump /usr/sbin/syslogd /usr/sbin/wifid"
+	/usr/sbin/spindump /usr/sbin/syslogd /usr/sbin/wifid /sbin/umount"
 	for bin in ${LIST}; do
-		if [[ -e "${bin}".sbin ]]; then
-			if [[ -s "${bin}" ]]; then
+		if [ -e "${bin}".sbin ]; then
+			if [ -s "${bin}" ]; then
 				rm -f -v "${bin}".sbin
 			else
-				mv -f -v "${bin}"{.sbin,} || exit 1
+				mv -f -v "${bin}".sbin "${bin}" || exit 1
 			fi
 		fi
 	done

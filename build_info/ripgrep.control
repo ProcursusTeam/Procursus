@@ -2,6 +2,7 @@ Package: ripgrep
 Version: @DEB_RIPGREP_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Depends: libpcre2-8-0
 Section: Utilities
 Priority: optional
 Description: Recursively searches directories for a regex pattern

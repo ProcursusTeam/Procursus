@@ -12,40 +12,22 @@ diff -urN dpkg-1.20.0/data/cputable dpkg/data/cputable
 diff -urN dpkg-1.20.0/lib/dpkg/command.c dpkg/lib/dpkg/command.c
 --- dpkg-1.20.0/lib/dpkg/command.c	2020-01-17 18:07:01.000000000 -0500
 +++ dpkg/lib/dpkg/command.c	2020-06-09 01:42:14.325741148 -0400
-@@ -18,6 +18,7 @@
+@@ -18,6 +18,15 @@
   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
   */
  
-+#include <sys/errno.h>
++/* wrapper functions to make iOS shell scripts function correctly */
++#if defined(__APPLE__)
++#  include <TargetConditionals.h>
++#  if TARGET_OS_IPHONE
++#    define ENABLE_IOSEXEC
++#    include <libiosexec.h>
++#  endif
++#endif
++
  #include <config.h>
  #include <compat.h>
  
-@@ -179,7 +180,24 @@
- command_exec(struct command *cmd)
- {
- 	execvp(cmd->filename, (char * const *)cmd->argv);
--	ohshite(_("unable to execute %s (%s)"), cmd->name, cmd->filename);
-+	if (errno == EPERM || errno == ENOEXEC) { 
-+		const char *shell; 
-+		if (access(DEFAULTSHELL, X_OK) == 0) { 
-+			shell = DEFAULTSHELL; 
-+		} else if (access("/etc/alternatives/sh", X_OK) == 0) { 
-+			shell = "/etc/alternatives/sh"; 
-+		} else if (access("/bin/bash", X_OK) == 0) { 
-+			shell = "/bin/bash"; 
-+		} else { 
-+			ohshite(_("unable to execute %s (%s): no shell!"), cmd->name, cmd->filename); 
-+		} 
-+		struct command newcmd; 
-+		command_init(&newcmd, shell, NULL); 
-+		command_add_args(&newcmd, shell, "-c", "\"$0\" \"$@\"", NULL); 
-+		command_add_argl(&newcmd, cmd->argv); 
-+		execvp(shell, (char * const *)newcmd.argv); 
-+		ohshite(_("unable to execute %s (%s)"), cmd->name, cmd->filename); 
-+	}
- }
- 
- /**
 diff -urN dpkg-1.20.0/src/help.c dpkg/src/help.c
 --- dpkg-1.20.0/src/help.c	2020-01-17 18:07:01.000000000 -0500
 +++ dpkg/src/help.c	2020-06-09 01:42:14.321741090 -0400
