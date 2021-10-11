@@ -1,6 +1,6 @@
 #!/bin/sh
 if ! [ -d "@MEMO_PREFIX@/var/run/tor" ]; then
-	mkdir -p @MEMO_PREFIX@/var/run/tor/
-	chown _tor:_tor @MEMO_PREFIX@/var/run/tor/
+	mkdir -p @MEMO_PREFIX@/var/run/tor
+	chown _tor:_tor @MEMO_PREFIX@/var/run/tor
 fi
 exec @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/tor $@
