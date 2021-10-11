@@ -15,9 +15,7 @@ libnet:
 	@echo "Using previously built libnet."
 else
 libnet: libnet-setup
-	cd $(BUILD_WORK)/libnet && autoreconf -fi
-	cd $(BUILD_WORK)/libnet && ./autogen.sh
-	cd $(BUILD_WORK)/libnet && ./configure -C \
+	cd $(BUILD_WORK)/libnet && ./autogen.sh && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-link-layer=bpf
 	+$(MAKE) -C $(BUILD_WORK)/libnet
@@ -31,21 +29,20 @@ libnet-package: libnet-stage
 	rm -rf $(BUILD_DIST)/libnet9{,-dev}
 	mkdir -p $(BUILD_DIST)/libnet9{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
+	# libnet.mk Prep libnet9
+	cp -a $(BUILD_STAGE)/libnet/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libnet.9.dylib $(BUILD_DIST)/libnet9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
 	# libnet.mk Prep libnet9-dev
 	cp -a $(BUILD_STAGE)/libnet/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libnet.{a,dylib},pkgconfig} $(BUILD_DIST)/libnet9-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libnet/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,bin} $(BUILD_DIST)/libnet9-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
-	# libnet.mk Prep libnet9
-	cp -a $(BUILD_STAGE)/libnet/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libnet.9.dylib $(BUILD_DIST)/libnet9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-
 	# libnet.mk Sign
-	$(call SIGN,libnet9-dev,general.xml)
 	$(call SIGN,libnet9,general.xml)
+	$(call SIGN,libnet9-dev,general.xml)
 
-	# libnet.mk Make .debs
-	$(call PACK,libnet9-dev,DEB_LIBNET_V)
 	# libnet.mk Make .debs
 	$(call PACK,libnet9,DEB_LIBNET_V)
+	$(call PACK,libnet9-dev,DEB_LIBNET_V)
 
 	# libnet.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libnet9{,-dev}
