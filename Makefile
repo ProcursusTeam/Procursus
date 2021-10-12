@@ -432,13 +432,12 @@ PGP_VERIFY  = KEY=$$(gpg --verify --status-fd 1 $(BUILD_SOURCE)/$(1).$(if $(2),$
 endif
 
 CHECKSUM_VERIFY = if [ "$(1)" = "sha1" ]; then \
-		HASH=$$(sha1sum "$(2)" | awk '{print $$1}' | tr -d \n); \
+		HASH=$$(sha1sum "$(2)" | cut -d " " -f1 | tr -d \n); \
 		elif [ "$(1)" = "sha256" ]; then \
-		HASH=$$(sha256sum "$(2)" | awk '{print $$1}' | tr -d \n); \
+		HASH=$$(sha256sum "$(2)" | cut -d " " -f1 | tr -d \n); \
 		elif [ "$(1)" = "sha512" ]; then \
-		HASH=$$(sha512sum "$(2)" | awk '{print $$1}' | tr -d \n); \
+		HASH=$$(sha512sum "$(2)" | cut -d " " -f1 | tr -d \n); \
 		fi; \
-		HASH=$$(echo "$$HASH" | cut -d " " -f 1); \
 		[ "$(3)" = "$$HASH" ] || (echo "Invalid hash" && exit 1)
 
 EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
