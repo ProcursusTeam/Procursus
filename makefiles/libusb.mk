@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += libusb
-LIBUSB_VERSION := 1.0.23
-DEB_LIBUSB_V   ?= $(LIBUSB_VERSION)-1
+LIBUSB_VERSION := 1.0.24
+DEB_LIBUSB_V   ?= $(LIBUSB_VERSION)
 
 libusb-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libusb/libusb/releases/download/v$(LIBUSB_VERSION)/libusb-$(LIBUSB_VERSION).tar.bz2
@@ -18,12 +18,9 @@ libusb: libusb-setup
 	cd $(BUILD_WORK)/libusb && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libusb install \
-		CFLAGS="$(CFLAGS) -D__OPEN_SOURCE__ -DMAC_OS_X_VERSION_MIN_REQUIRED=101500" \
+		CFLAGS="$(CFLAGS) -D__OPEN_SOURCE__ -DMAC_OS_X_VERSION_MIN_REQUIRED=101500 -D__kernel_ptr_semantics=\"\"" \
 		DESTDIR="$(BUILD_STAGE)/libusb"
-	+$(MAKE) -C $(BUILD_WORK)/libusb install \
-		CFLAGS="$(CFLAGS) -D__OPEN_SOURCE__ -DMAC_OS_X_VERSION_MIN_REQUIRED=101500" \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libusb-package: libusb-stage

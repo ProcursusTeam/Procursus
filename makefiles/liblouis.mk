@@ -21,9 +21,7 @@ liblouis: liblouis-setup libyaml
 	+$(MAKE) -C $(BUILD_WORK)/liblouis all
 	+$(MAKE) -C $(BUILD_WORK)/liblouis install \
 		DESTDIR=$(BUILD_STAGE)/liblouis
-	+$(MAKE) -C $(BUILD_WORK)/liblouis install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 liblouis-package: liblouis-stage
 	# liblouis.mk Package Structure

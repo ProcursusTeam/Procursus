@@ -53,9 +53,7 @@ apt: apt-setup libgcrypt berkeleydb lz4 xxhash xz zstd gnutls gettext
 	+$(MAKE) -C $(BUILD_WORK)/apt/build
 	+$(MAKE) -C $(BUILD_WORK)/apt/build install \
 		DESTDIR="$(BUILD_STAGE)/apt"
-	+$(MAKE) -C $(BUILD_WORK)/apt/build install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 apt-package: apt-stage

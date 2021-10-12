@@ -24,9 +24,7 @@ liblqr: liblqr-setup glib2.0 gettext
 	+$(MAKE) -C $(BUILD_WORK)/liblqr
 	+$(MAKE) -C $(BUILD_WORK)/liblqr install \
 		DESTDIR=$(BUILD_STAGE)/liblqr
-	+$(MAKE) -C $(BUILD_WORK)/liblqr install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 liblqr-package: liblqr-stage

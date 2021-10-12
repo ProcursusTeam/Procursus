@@ -9,7 +9,7 @@ DEB_GLEW_V   ?= $(GLEW_VERSION)
 glew-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://downloads.sourceforge.net/project/glew/glew/$(GLEW_VERSION)/glew-$(GLEW_VERSION).tgz
 	$(call EXTRACT_TAR,glew-$(GLEW_VERSION).tgz,glew-$(GLEW_VERSION),glew)
-	$(SED) -i -e s/GLEW_DEST/GLEW_PREFIX/ \
+	sed -i -e s/GLEW_DEST/GLEW_PREFIX/ \
 		-e 's/(LIB.SHARED)/(LIB.SONAME)/' $(BUILD_WORK)/glew/config/Makefile.darwin
 
 ifneq ($(wildcard $(BUILD_WORK)/glew/.build_complete),)
@@ -23,7 +23,7 @@ glew: glew-setup mesa libx11
 		GLEW_DEST=$(BUILD_STAGE)/glew/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		CFLAGS.EXTRA="$(CFLAGS) -DGLEW_APPLE_GLX" \
 		LDFLAGS.EXTRA="$(LDFLAGS)" \
-		LN="ln -sf" \
+		LN="$(LN_S)" \
 		GLEW_APPLE_GLX=yes
 	+$(MAKE) -C $(BUILD_WORK)/glew all install \
 		SYSTEM=darwin \
@@ -31,7 +31,7 @@ glew: glew-setup mesa libx11
 		GLEW_DEST=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		CFLAGS.EXTRA="$(CFLAGS) -DGLEW_APPLE_GLX" \
 		LDFLAGS.EXTRA="$(LDFLAGS)" \
-		LN="ln -sf" \
+		LN="$(LN_S)" \
 		GLEW_APPLE_GLX=yes
 	$(call AFTER_BUILD)
 endif

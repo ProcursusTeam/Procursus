@@ -14,7 +14,7 @@ openpam-setup: setup
 	$(call EXTRACT_TAR,openpam-$(OPENPAM_VERSION).tar.gz,openpam-$(OPENPAM_VERSION),openpam)
 	$(call DO_PATCH,openpam,openpam,-p0)
 	# The below line is only if you need to debug PAM with detailed syslogs.
-	# $(SED) -i -e 's/openpam_debug = 0/openpam_debug = 1/' -e 's/priority = LOG_DEBUG/priority = LOG_ERR/' $(BUILD_WORK)/openpam/lib/libpam/openpam_log.c
+	# sed -i -e 's/openpam_debug = 0/openpam_debug = 1/' -e 's/priority = LOG_DEBUG/priority = LOG_ERR/' $(BUILD_WORK)/openpam/lib/libpam/openpam_log.c
 
 ###
 # For some reason here, libSystem's crypt() really likes being dominant. Static link to fix the issue!
@@ -33,9 +33,7 @@ openpam: openpam-setup libxcrypt
 		CPPFLAGS="$(CPPFLAGS) -DSYSCONFDIR=\\\"$(MEMO_PREFIX)/etc\\\""
 	+$(MAKE) -C $(BUILD_WORK)/openpam install \
 		DESTDIR="$(BUILD_STAGE)/openpam"
-	+$(MAKE) -C $(BUILD_WORK)/openpam install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 openpam-package: openpam-stage

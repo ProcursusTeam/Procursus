@@ -12,8 +12,8 @@ python3-setup: setup
 	$(call PGP_VERIFY,Python-$(PYTHON3_VERSION).tar.xz,asc)
 	$(call EXTRACT_TAR,Python-$(PYTHON3_VERSION).tar.xz,Python-$(PYTHON3_VERSION),python3)
 	$(call DO_PATCH,python3,python3,-p1)
-	$(SED) -i -e 's/-vxworks/-darwin/g' -e 's/system=VxWorks/system=Darwin/g' -e '/readelf for/d' -e 's|LIBFFI_INCLUDEDIR=.*|LIBFFI_INCLUDEDIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include"|g' $(BUILD_WORK)/python3/configure.ac
-	$(SED) -i -e "s|self.compiler.library_dirs|['$(TARGET_SYSROOT)/usr/lib'] + ['$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib']|g" -e "s|self.compiler.include_dirs|['$(TARGET_SYSROOT)/usr/include'] + ['$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include']|g" -e "s/HOST_PLATFORM == 'darwin'/HOST_PLATFORM.startswith('darwin')/" $(BUILD_WORK)/python3/setup.py
+	sed -i -e 's/-vxworks/-darwin/g' -e 's/system=VxWorks/system=Darwin/g' -e '/readelf for/d' -e 's|LIBFFI_INCLUDEDIR=.*|LIBFFI_INCLUDEDIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include"|g' $(BUILD_WORK)/python3/configure.ac
+	sed -i -e "s|self.compiler.library_dirs|['$(TARGET_SYSROOT)/usr/lib'] + ['$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib']|g" -e "s|self.compiler.include_dirs|['$(TARGET_SYSROOT)/usr/include'] + ['$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include']|g" -e "s/HOST_PLATFORM == 'darwin'/HOST_PLATFORM.startswith('darwin')/" $(BUILD_WORK)/python3/setup.py
 
 ifneq ($(wildcard $(BUILD_WORK)/python3/.build_complete),)
 python3:
@@ -42,12 +42,10 @@ endif
 	+$(MAKE) -C $(BUILD_WORK)/python3
 	+$(MAKE) -C $(BUILD_WORK)/python3 install \
 		DESTDIR=$(BUILD_STAGE)/python3
-	+$(MAKE) -C $(BUILD_WORK)/python3 install \
-		DESTDIR=$(BUILD_BASE)
 	mkdir -p $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3/dist-packages $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/dist-packages
-	$(SED) -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < $(BUILD_MISC)/python3/_sysconfigdata__darwin_darwin.py > $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/_sysconfigdata__darwin_darwin.py
+	sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < $(BUILD_MISC)/python3/_sysconfigdata__darwin_darwin.py > $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/_sysconfigdata__darwin_darwin.py
 	rm -f $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}/!(*$(PYTHON3_MAJOR_V)*)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 python3-package: python3-stage
@@ -71,15 +69,15 @@ python3-package: python3-stage
 	rm -f $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/python3{,-embed}.pc
 
 	# python3.mk Prep python3
-	ln -s 2to3-$(PYTHON3_MAJOR_V) $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/2to3
-	ln -s idle$(PYTHON3_MAJOR_V) $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/idle3
-	ln -s pydoc$(PYTHON3_MAJOR_V) $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pydoc3
-	ln -s python$(PYTHON3_MAJOR_V) $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3
-	ln -s python$(PYTHON3_MAJOR_V) $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python
-	ln -s python$(PYTHON3_MAJOR_V)-config $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3-config
+	$(LN_S) 2to3-$(PYTHON3_MAJOR_V) $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/2to3
+	$(LN_S) idle$(PYTHON3_MAJOR_V) $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/idle3
+	$(LN_S) pydoc$(PYTHON3_MAJOR_V) $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pydoc3
+	$(LN_S) python$(PYTHON3_MAJOR_V) $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3
+	$(LN_S) python$(PYTHON3_MAJOR_V) $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python
+	$(LN_S) python$(PYTHON3_MAJOR_V)-config $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3-config
 
-	ln -s python$(PYTHON3_MAJOR_V).1.zst $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/python3.1.zst
-	ln -s python$(PYTHON3_MAJOR_V).1.zst $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/python.1.zst
+	$(LN_S) python$(PYTHON3_MAJOR_V).1.zst $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/python3.1.zst
+	$(LN_S) python$(PYTHON3_MAJOR_V).1.zst $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/python.1.zst
 
 	# python3.mk Sign
 	$(call SIGN,python$(PYTHON3_MAJOR_V),general.xml)

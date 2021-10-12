@@ -2,7 +2,7 @@ Package: socat
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_SOCAT_V@
-Depends: libssl1.1, libreadline8
+Depends: libssl3, libreadline8
 Section: Networking
 Priority: optional
 Homepage: http://www.dest-unreach.org/socat/

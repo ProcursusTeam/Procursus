@@ -6,15 +6,15 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS       += system-cmds
 SYSTEM-CMDS_VERSION := 854.40.2
-PWDARWIN_COMMIT     := 5d48a8af168d8ffb24021d32385d3ecfa699e51d
-DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-11
+PWDARWIN_COMMIT     := 3de6f8f6ed62ac8b9b8f7635a7c4bb48b06322ca
+DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-12
 
 system-cmds-setup: setup libxcrypt
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/system_cmds/system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz
 	$(call EXTRACT_TAR,system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz,system_cmds-$(SYSTEM-CMDS_VERSION),system-cmds)
 	$(call DO_PATCH,system-cmds,system-cmds,-p1)
-	$(SED) -i '/#include <stdio.h>/a #include <crypt.h>' $(BUILD_WORK)/system-cmds/login.tproj/login.c
-	$(SED) -i '1 i\#include\ <libiosexec.h>' $(BUILD_WORK)/system-cmds/login.tproj/login.c
+	sed -i '/#include <stdio.h>/a #include <crypt.h>' $(BUILD_WORK)/system-cmds/login.tproj/login.c
+	sed -i '1 i\#include\ <libiosexec.h>' $(BUILD_WORK)/system-cmds/login.tproj/login.c
 	wget -q -nc -P $(BUILD_SOURCE) \
 		https://git.cameronkatri.com/pw-darwin/snapshot/pw-darwin-$(PWDARWIN_COMMIT).tar.zst
 	$(call EXTRACT_TAR,pw-darwin-$(PWDARWIN_COMMIT).tar.zst,pw-darwin-$(PWDARWIN_COMMIT),system-cmds/pw-darwin)
@@ -56,14 +56,14 @@ system-cmds: system-cmds-setup libxcrypt openpam libiosexec
 	cp -a $(BUILD_WORK)/system-cmds/sync $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/bin
 	cp -a $(BUILD_WORK)/system-cmds/{dmesg,dynamic_pager} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/sbin
 ifneq ($(MEMO_SUB_PREFIX),)
-	$(LN) -sf $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/reboot $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/sbin/halt
+	$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/reboot $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/sbin/halt
 endif
 	cp -a $(BUILD_WORK)/system-cmds/{arch,getconf,getty,hostinfo,login,passwd} $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_WORK)/system-cmds/{ac,accton,iostat,mkfile,pwd_mkdb,sysctl,vifs,vipw,zdump,zic} $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 	cp -a $(BUILD_WORK)/system-cmds/{arch,getconf,login,passwd}.tproj/*.1 $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/
 	cp -a $(BUILD_WORK)/system-cmds/{getty,nologin,sysctl}.tproj/*.5 $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5/
 	cp -a $(BUILD_WORK)/system-cmds/{ac,accton,dmesg,dynamic_pager,getty,hostinfo,iostat,mkfile,nologin,pwd_mkdb,reboot,sync,sysctl,vifs,vipw,zdump,zic}.tproj/*.8 $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/
-	$(LN) -sf reboot.8.zst $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/halt.8.zst
+	$(LN_S) reboot.8.zst $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/halt.8.zst
 	cp -a $(BUILD_MISC)/pam/{login{,.term},passwd} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/etc/pam.d
 	+$(MAKE) -C $(BUILD_WORK)/system-cmds/pw-darwin install \
 		DESTDIR="$(BUILD_STAGE)/system-cmds/"

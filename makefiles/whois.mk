@@ -9,8 +9,8 @@ DEB_WHOIS_V   ?= $(WHOIS_VERSION)-1
 whois-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/w/whois/whois_$(WHOIS_VERSION).tar.xz
 	$(call EXTRACT_TAR,whois_$(WHOIS_VERSION).tar.xz,whois-$(WHOIS_VERSION),whois)
-	$(SED) -i '/_XOPEN_SOURCE/d' $(BUILD_WORK)/whois/utils.c
-	$(SED) -i '/_XOPEN_SOURCE/d' $(BUILD_WORK)/whois/mkpasswd.c
+	sed -i '/_XOPEN_SOURCE/d' $(BUILD_WORK)/whois/utils.c
+	sed -i '/_XOPEN_SOURCE/d' $(BUILD_WORK)/whois/mkpasswd.c
 
 ifneq ($(wildcard $(BUILD_WORK)/whois/.build_complete),)
 whois:

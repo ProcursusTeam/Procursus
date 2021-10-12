@@ -20,8 +20,8 @@ top-setup: setup
 		https://opensource.apple.com/source/libutil/libutil-57/libutil.h
 	wget -nc -P $(BUILD_WORK)/top/include/mach \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/osfmk/mach/shared_region.h
-	$(SED) -i 's/ARM:/ARM64:/g' $(BUILD_WORK)/top/libtop.c
-	$(SED) -i 's/ARM;/ARM64;/g' $(BUILD_WORK)/top/libtop.c
+	sed -i 's/ARM:/ARM64:/g' $(BUILD_WORK)/top/libtop.c
+	sed -i 's/ARM;/ARM64;/g' $(BUILD_WORK)/top/libtop.c
 
 ifneq ($(wildcard $(BUILD_WORK)/top/.build_complete),)
 top:

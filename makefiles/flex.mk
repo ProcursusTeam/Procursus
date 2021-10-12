@@ -31,10 +31,8 @@ flex: flex-setup gettext
 		LDFLAGS="$(LDFLAGS) $(FLEX_LDFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/flex install \
 		DESTDIR="$(BUILD_STAGE)/flex"
-	+$(MAKE) -C $(BUILD_WORK)/flex install \
-		DESTDIR="$(BUILD_BASE)"
-	ln -s flex $(BUILD_STAGE)/flex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lex
-	$(call AFTER_BUILD)
+	$(LN_S) flex $(BUILD_STAGE)/flex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lex
+	$(call AFTER_BUILD,copy)
 endif
 
 flex-package: flex-stage
