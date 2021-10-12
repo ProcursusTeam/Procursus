@@ -1181,4 +1181,46 @@ clean::
 extreme-clean: clean
 	rm -rf $(BUILD_ROOT)/build_{source,strap,dist}
 
+define mootext
+                 (__)
+                 (oo)
+           /------\/
+          / |    ||
+         *  /\---/\
+            ~~   ~~
+..."Have you mooed today?"...
+endef
+define helptext
+$(MAKE)                        - Compiles the entire Procursus suite and packs it into debian packages.
+$(MAKE) help                   - Display this text
+$(MAKE) (tool)                 - Used to compile only a specified tool.
+$(MAKE) (tool)-package         - Used to compile only a specified tool and pack it into a debian package.
+$(MAKE) rebuild-(tool)         - Used to recompile only a specified tool after it's already been compiled before.
+$(MAKE) rebuild-(tool)-package - Used to recompile only a specified tool after it's already been compiled before and pack it into a debian package.
+$(MAKE) clean                  - Clean out $(BUILD_STAGE), $(BUILD_BASE), and $(BUILD_WORK).
+$(MAKE) extreme-clean          - Runs `$(MAKE) clean`and cleans out $(BUILD_DIST).
+$(MAKE) proenv                 - Print the proenv shell function to STDOUT to give a cross-compilation environment in your POSIX shell (make proenv >> ~/.zshrc)
+$(MAKE) env                    - Print the environment variables inside the makefile
+$(MAKE) (tool)-deps            - Print the dylibs linked by (tool)
+
+Some influential environmental variables:
+MEMO_TARGET     Can be set to any of the supported host systems. Pretty self explainatory. (Defaults to darwin-arm64)
+MEMO_CFVER      Used to set minimum *OS version to compile for. Use the CoreFoundation version that coresponds to the OS version you're compiling for. (Defaults to 1700 for iOS 14)
+NO_PGP          Set to 1 if you want to bypass verifying tarballs with gpg. Useful if you just want a quick build without importing everyone's public keys.
+TARGET_SYSROOT  Path to your chosen iPhone SDK. (Defaults to Xcode default path on macOS and the cctools-port default path on Linux.)
+MACOSX_SYSROOT  Path to your chosen macOS SDK. (Defaults to Xcode default path on macOS and the cctools-port default path on Linux.)
+BUILD_ROOT      If you have this repo in one place, but want to build everything in a different place, set BUILD_ROOT to said different place. (Untested but should work fine.)
+MEMO_QUIET      Mute unnecessary warnings and echos.
+
+Report issues to: https://github.com/ProcursusTeam/Procursus/issues
+For extra and updated help please refer to thr wiki: https://github.com/ProcursusTeam/Procursus/wiki
+
+This Makefile has super cow powers.
+endef
+export mootext helptext
+moo:
+	@echo "$$mootext"
+help:
+	@echo "$$helptext"
+
 .PHONY: clean setup
