@@ -1032,7 +1032,7 @@ endef
 define helptext
 $(MAKE)                        - Compiles the entire Procursus suite and packs it into debian packages.
 $(MAKE) help                   - Display this text
-$(MAKE)-(tool)                 - Used to compile only a specified tool.
+$(MAKE) (tool)                 - Used to compile only a specified tool.
 $(MAKE) (tool)-package         - Used to compile only a specified tool and pack it into a debian package.
 $(MAKE) rebuild-(tool)         - Used to recompile only a specified tool after it's already been compiled before.
 $(MAKE) rebuild-(tool)-package - Used to recompile only a specified tool after it's already been compiled before and pack it into a debian package.
