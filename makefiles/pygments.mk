@@ -17,6 +17,8 @@ pygments:
 else
 pygments: pygments-setup
 	cd $(BUILD_WORK)/pygments && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py \
+		build \
+		--executable="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3" \
 		install \
 		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		--root="$(BUILD_STAGE)/pygments" \
