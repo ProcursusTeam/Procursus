@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += jwm
+SUBPROJECTS += jwm
 JWM_VERSION := 2.3.7
 DEB_JWM_V   ?= $(JWM_VERSION)
 
