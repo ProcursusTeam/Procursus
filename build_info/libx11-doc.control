@@ -2,7 +2,7 @@ Package: libx11-doc
 Maintainer: @DEB_MAINTAINER@
 Architecture: all
 Version: @DEB_LIBX11_V@
-Section: X_Window
+Section: X11
 Priority: optional
 Description: X11 client-side library (development documentation)
  This package provides a client interface to the X Window System, otherwise
