@@ -37,7 +37,7 @@ else
 	+ninja -C $(BUILD_WORK)/@pkg@/build
 	+ninja -C $(BUILD_WORK)/@pkg@/build install \
 		DESTDIR="$(BUILD_STAGE)/@pkg@"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 @pkg@-package:
