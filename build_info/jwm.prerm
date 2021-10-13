@@ -1,0 +1,7 @@
+#!@MEMO_PREFIX@/bin/sh
+set -e
+# Automatically added by dh_installwm/13.3.3
+if [ "$1" = "remove" ]; then
+	update-alternatives --remove x-window-manager @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/jwm
+fi
+# End automatically added section

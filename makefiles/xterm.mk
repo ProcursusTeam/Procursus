@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS   += xterm
 XTERM_VERSION := 368
-DEB_XTERM_V   ?= $(XTERM_VERSION)
+DEB_XTERM_V   ?= $(XTERM_VERSION)-1
 
 xterm-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://invisible-mirror.net/archives/xterm/xterm-$(XTERM_VERSION).tgz
