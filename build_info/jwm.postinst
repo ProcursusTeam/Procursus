@@ -13,7 +13,7 @@ fi
 if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ] || [ "$1" = "abort-deconfigure" ] || [ "$1" = "abort-remove" ]; then
 	update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/x-window-manager \
 		x-window-manager @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/jwm 20 \
-		--slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/x-window-manager.1.gz \
-		x-window-manager.1.gz @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/jwm.1.gz
+		--slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/x-window-manager.1.zst \
+		x-window-manager.1.zst @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/jwm.1.zst
 fi
 # End automatically added section
