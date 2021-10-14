@@ -1,0 +1,20 @@
+#!@MEMO_PREFIX@/bin/sh
+set -e
+# Automatically added by dh_installalternatives/13.3.3
+if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ] || [ "$1" = "abort-deconfigure" ] || [ "$1" = "abort-remove" ]; then
+        update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/x-terminal-emulator x-terminal-emulator @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/xterm 20 \
+            --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/x-terminal-emulator.1.zst x-terminal-emulator.1.zst @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/xterm.1.zst
+fi
+# End automatically added section
+# Automatically added by dh_installalternatives/13.3.3
+if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ] || [ "$1" = "abort-deconfigure" ] || [ "$1" = "abort-remove" ]; then
+        update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/x-terminal-emulator x-terminal-emulator @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/uxterm 20 \
+            --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/x-terminal-emulator.1.zst x-terminal-emulator.1.zst @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/uxterm.1.zst
+fi
+# End automatically added section
+# Automatically added by dh_installalternatives/13.3.3
+if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ] || [ "$1" = "abort-deconfigure" ] || [ "$1" = "abort-remove" ]; then
+        update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/x-terminal-emulator x-terminal-emulator @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/koi8rxterm 20 \
+            --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/x-terminal-emulator.1.zst x-terminal-emulator.1.zst @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/koi8rxterm.1.zst
+fi
+# End automatically added section
