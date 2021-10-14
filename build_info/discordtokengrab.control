@@ -1,0 +1,11 @@
+Package: discordtokengrab
+Author: Amy While <me@anamy.gay>
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_DISCORDTOKENGRAB_V@
+Depends: firmware (>= 12.2) | org.swift.libswift (>= 5.0)
+Section: Utilities
+Description: tool that grabs Discord token
+ This is a tool that grabs token from Discord iOS' user defaults
+ The grabbed token is copied to the clipboard. Your token is not
+ sent to anywhere.
