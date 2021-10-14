@@ -1,4 +1,4 @@
-#!@MEMO_PREFIX@/bin/sh
+#!/bin/sh
 set -e
 # Automatically added by dh_installalternatives/13.3.3
 if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ] || [ "$1" = "abort-deconfigure" ] || [ "$1" = "abort-remove" ]; then
