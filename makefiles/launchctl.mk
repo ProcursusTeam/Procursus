@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS     += launchctl
-LAUNCHCTL_VERSION := 23-4
+LAUNCHCTL_VERSION := $(shell strings $(BUILD_MISC)/launchctl/launchctl.$(MEMO_CFVER) | grep '@(#)PROGRAM:launchctl  PROJECT:libxpc-'| cut -d- -f2)
 DEB_LAUNCHCTL_V   ?= $(LAUNCHCTL_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/launchctl/.build_complete),)
