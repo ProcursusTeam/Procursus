@@ -1,0 +1,25 @@
+Package: eatmydata
+Version: @DEB_LIBEATMYDATA_V@
+Architecture: @DEB_ARCH@
+Priority: optional
+Section: Utilities
+Maintainer: @DEB_MAINTAINER@
+Depends: libeatmydata1 (>= @DEB_LIBEATMYDATA_V@)
+Homepage: https://launchpad.net/libeatmydata
+Description: Library and utilities designed to disable fsync and friends
+ This package contains a small DYLD_INSERT_LIBRARIES library (libeatmydata) 
+ and a couple of helper utilities designed to transparently disable fsync and
+ friends (like open(O_SYNC)). This has two side-effects: making software that
+ writes data safely to disk a lot quicker and making this software no longer 
+ crash safe.
+ .
+ You will find eatmydata useful if particular software calls fsync(), sync()
+ etc. frequently but the data it stores is not that valuable to you and you may
+ afford losing it in case of system crash. Data-to-disk synchronization calls
+ are typically very slow on modern file systems and their extensive usage might
+ slow down software significantly. It does not make sense to accept such a hit
+ in performance if data being manipulated is not very important.
+ .
+ On the other hand, do not use eatmydata when you care about what software
+ stores or it manipulates important components of your system. The library is
+ called libEAT-MY-DATA for a reason.

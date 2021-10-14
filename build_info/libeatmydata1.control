@@ -1,0 +1,11 @@
+Package: libeatmydata1
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_LIBEATMYDATA_V@
+Section: Libraries
+Priority: optional
+Description: Library and utilities to disable fsync and friends - shared library
+ This package contains the actual DYLD_INSERT_LIBRARIES library (libeatmydata)
+ supporting the operation of the eatmydata package. Users typically
+ want to use or depend on the eatmydata package instead of this one,
+ so see its description for further information.
