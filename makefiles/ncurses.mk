@@ -8,7 +8,7 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += ncurses
 endif # ($(MEMO_TARGET),darwin-\*)
 NCURSES_VERSION := 6.2+20201114
-DEB_NCURSES_V   ?= $(NCURSES_VERSION)-1
+DEB_NCURSES_V   ?= $(NCURSES_VERSION)-2
 
 ncurses-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://salsa.debian.org/debian/ncurses/-/archive/upstream/$(NCURSES_VERSION)/ncurses-upstream-$(NCURSES_VERSION).tar.gz
@@ -43,7 +43,7 @@ ncurses: ncurses-setup
 	+$(MAKE) -C $(BUILD_WORK)/ncurses install \
 		DESTDIR="$(BUILD_STAGE)/ncurses"
 
-	rm $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/tabs
+	rm -f $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin/tabs,share/man/man1/tabs.1*}
 
 ifeq (,$(MEMO_PREFIX))
 	for ti in $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo/*/*; do \
