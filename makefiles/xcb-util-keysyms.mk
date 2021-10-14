@@ -20,9 +20,7 @@ xcb-util-keysyms: xcb-util-keysyms-setup libxcb xcb-util
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-keysyms
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-keysyms install \
 		DESTDIR=$(BUILD_STAGE)/xcb-util-keysyms
-	+$(MAKE) -C $(BUILD_WORK)/xcb-util-keysyms install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 xcb-util-keysyms-package: xcb-util-keysyms-stage

@@ -23,6 +23,7 @@ berkeleydb: berkeleydb-setup gettext openssl
 		--includedir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/db181 \
 		--enable-cxx \
 		--enable-compat185 \
+		--enable-dump185 \
 		--enable-sql \
 		--enable-sql_codegen \
 		--enable-dbm \
@@ -30,10 +31,8 @@ berkeleydb: berkeleydb-setup gettext openssl
 		--with-mutex=Darwin/_spin_lock_try
 	+$(MAKE) -C $(BUILD_WORK)/berkeleydb/build_unix
 	+$(MAKE) -C $(BUILD_WORK)/berkeleydb/build_unix install \
-		DESTDIR=$(BUILD_STAGE)/berkeleydb
-	+$(MAKE) -C $(BUILD_WORK)/berkeleydb/build_unix install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+		DESTDIR=$(BUILD_STAGE)/berkeleydb 
+	$(call AFTER_BUILD,copy)
 endif
 
 berkeleydb-package: berkeleydb-stage

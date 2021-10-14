@@ -32,11 +32,7 @@ libtomcrypt: libtomcrypt-setup libgmp10 libtommath
 		LIBTOOL="$(BUILD_WORK)/libtommath/libtool/libtool" \
 		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		DESTDIR="$(BUILD_STAGE)/libtomcrypt"
-	+$(MAKE) -C $(BUILD_WORK)/libtomcrypt -f makefile.shared install \
-		LIBTOOL="$(BUILD_WORK)/libtommath/libtool/libtool" \
-		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libtomcrypt-package: libtomcrypt-stage

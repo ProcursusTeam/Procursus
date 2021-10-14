@@ -24,8 +24,6 @@ xz: xz-setup gettext
 		--disable-lzmadec
 	+$(MAKE) -C $(BUILD_WORK)/xz install \
 		DESTDIR=$(BUILD_STAGE)/xz
-	+$(MAKE) -C $(BUILD_WORK)/xz install \
-		DESTDIR=$(BUILD_BASE)
 
 	cd $(BUILD_WORK)/xz && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
@@ -41,7 +39,7 @@ xz: xz-setup gettext
 		--disable-lzma-links
 	+$(MAKE) -C $(BUILD_WORK)/xz install \
 		DESTDIR=$(BUILD_STAGE)/xz
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 xz-package: xz-stage

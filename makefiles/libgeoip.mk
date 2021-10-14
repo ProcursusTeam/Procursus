@@ -23,9 +23,7 @@ libgeoip: libgeoip-setup
 	+$(MAKE) -C $(BUILD_WORK)/libgeoip
 	+$(MAKE) -C $(BUILD_WORK)/libgeoip install \
 		DESTDIR="$(BUILD_STAGE)/libgeoip"
-	+$(MAKE) -C $(BUILD_WORK)/libgeoip install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libgeoip-package: libgeoip-stage

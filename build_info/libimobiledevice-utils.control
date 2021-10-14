@@ -2,7 +2,7 @@ Package: libimobiledevice-utils
 Version: @DEB_LIBIMOBILEDEVICE_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libimobiledevice6 (= @DEB_LIBIMOBILEDEVICE_V@), libssl1.1 (>= 1.1.0), libplist3 (>= 2.2.0), libusbmuxd6 (>= 2.0.2)
+Depends: libimobiledevice6 (= @DEB_LIBIMOBILEDEVICE_V@), libssl3 (>= 1.1.0), libplist3 (>= 2.2.0), libusbmuxd6 (>= 2.0.2)
 Section: Administration
 Priority: standard
 Description: Development files for libimobiledevice

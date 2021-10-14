@@ -20,9 +20,7 @@ mpfr4: mpfr4-setup libgmp10
 	+$(MAKE) -C $(BUILD_WORK)/mpfr4
 	+$(MAKE) -C $(BUILD_WORK)/mpfr4 install \
 		DESTDIR="$(BUILD_STAGE)/mpfr4"
-	+$(MAKE) -C $(BUILD_WORK)/mpfr4 install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 mpfr4-package: mpfr4-stage

@@ -25,9 +25,7 @@ uuid: uuid-setup
 	+$(MAKE) -C $(BUILD_WORK)/uuid
 	+$(MAKE) -C $(BUILD_WORK)/uuid install \
 		DESTDIR=$(BUILD_STAGE)/uuid
-	+$(MAKE) -C $(BUILD_WORK)/uuid install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 uuid-package: uuid-stage

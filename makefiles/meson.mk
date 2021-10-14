@@ -15,7 +15,9 @@ meson:
 	@echo "Using previously built meson."
 else
 meson: meson-setup python3 ninja
-	cd $(BUILD_WORK)/meson && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py install \
+	cd $(BUILD_WORK)/meson && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py build \
+		--executable="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3" \
+		install \
 		--install-layout=deb \
 		--root="$(BUILD_STAGE)/meson" \
 		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"

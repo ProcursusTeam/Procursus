@@ -33,10 +33,9 @@ gobject-introspection: gobject-introspection-setup glib2.0 libffi python3
 		-Dpython="$(shell which python3)" \
 		..; \
 	cd $(BUILD_WORK)/gobject-introspection/build; \
-		DESTDIR="$(BUILD_STAGE)/gobject-introspection" meson install; \
-		DESTDIR="$(BUILD_BASE)" meson install
+		DESTDIR="$(BUILD_STAGE)/gobject-introspection" meson install
 	sed -i "s|$$(cat $(BUILD_STAGE)/gobject-introspection/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/g-ir-scanner | grep \#! | sed 's/#!//')|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/gobject-introspection/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 gobject-introspection-package: gobject-introspection-stage

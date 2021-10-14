@@ -10,7 +10,6 @@ DEB_LIBINSN_V   ?= $(LIBINSN_VERSION)-1
 libinsn-setup: setup
 	$(call GITHUB_ARCHIVE,tihmstar,libinsn,$(LIBINSN_COMMIT),$(LIBINSN_COMMIT))
 	$(call EXTRACT_TAR,libinsn-$(LIBINSN_COMMIT).tar.gz,libinsn-$(LIBINSN_COMMIT),libinsn)
-	
 	sed -i 's/git rev\-list \-\-count HEAD/printf ${LIBINSN_VERSION}/g' $(BUILD_WORK)/libinsn/configure.ac
 	sed -i 's/git rev\-parse HEAD/printf ${LIBINSN_COMMIT}/g' $(BUILD_WORK)/libinsn/configure.ac
 
@@ -24,9 +23,7 @@ libinsn: libinsn-setup libgeneral
 	+$(MAKE) -C $(BUILD_WORK)/libinsn
 	+$(MAKE) -C $(BUILD_WORK)/libinsn install \
 		DESTDIR="$(BUILD_STAGE)/libinsn"
-	+$(MAKE) -C $(BUILD_WORK)/libinsn install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libinsn-package: libinsn-stage

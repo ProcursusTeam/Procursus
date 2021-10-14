@@ -2,14 +2,14 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += ldid
-LDID_VERSION  := 2.1.4+16.g5b8581c
-DEB_LDID_V    ?= $(LDID_VERSION)
+SUBPROJECTS  += ldid
+LDID_VERSION := 2.1.5-procursus
+DEB_LDID_V   ?= $(LDID_VERSION)
 
 ldid-setup: setup
-	$(call GITHUB_ARCHIVE,sbingner,ldid,$(LDID_VERSION),v$(LDID_VERSION))
-	$(call EXTRACT_TAR,ldid-$(LDID_VERSION).tar.gz,ldid-$(subst +,-,$(LDID_VERSION)),ldid)
-	mkdir -p $(BUILD_STAGE)/ldid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	$(call GITHUB_ARCHIVE,ProcursusTeam,ldid,$(LDID_VERSION),v$(LDID_VERSION))
+	$(call EXTRACT_TAR,ldid-$(LDID_VERSION).tar.gz,ldid-$(LDID_VERSION),ldid)
+	mkdir -p $(BUILD_STAGE)/ldid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 
 ifneq ($(wildcard $(BUILD_WORK)/ldid/.build_complete),)
 ldid:
@@ -22,6 +22,7 @@ ldid: ldid-setup openssl libplist
 		$(BUILD_WORK)/ldid/lookup2.o $(BUILD_WORK)/ldid/ldid.cpp \
 		$(LDFLAGS) -lcrypto -lplist-2.0
 	$(LN_S) ldid $(BUILD_STAGE)/ldid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ldid2
+	$(INSTALL) -m644 $(BUILD_WORK)/ldid/ldid.1 $(BUILD_STAGE)/ldid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/ldid.1
 	$(call AFTER_BUILD)
 endif
 

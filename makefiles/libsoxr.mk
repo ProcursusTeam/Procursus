@@ -26,9 +26,7 @@ libsoxr: libsoxr-setup
 	+$(MAKE) -C $(BUILD_WORK)/libsoxr/build
 	+$(MAKE) -C $(BUILD_WORK)/libsoxr/build install \
 		DESTDIR="$(BUILD_STAGE)/libsoxr"
-	+$(MAKE) -C $(BUILD_WORK)/libsoxr/build install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libsoxr-package: libsoxr-stage

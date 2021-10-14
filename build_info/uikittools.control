@@ -3,8 +3,6 @@ Essential: yes
 Version: @DEB_UIKITTOOLS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: coreutils, findutils
 Section: Utilities
 Priority: required
 Description: Command line access for UIKit/LaunchServices/CoreServices
-Author: CoolStar <coolstarorganization@gmail.com>

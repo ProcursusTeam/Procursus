@@ -45,7 +45,7 @@ opendoas-package: opendoas-stage
 	# opendoas.mk Sign
 	$(call SIGN,doas,pam.xml)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(LDID) -S$(BUILD_MISC)/entitlements/pam.xml $(BUILD_DIST)/doas/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/doas
+	ldid $(MEMO_LDID_EXTRA_FLAGS) -S$(BUILD_MISC)/entitlements/pam.xml $(BUILD_DIST)/doas/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/doas
 	find $(BUILD_DIST)/doas -name '.ldid*' -type f -delete
 endif
 

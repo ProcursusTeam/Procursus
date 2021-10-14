@@ -28,17 +28,7 @@ rtmpdump: rtmpdump-setup nettle gnutls libgmp10
 		prefix="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		DESTDIR="$(BUILD_STAGE)/rtmpdump" \
 		mandir="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man"
-	+$(MAKE) -C $(BUILD_WORK)/rtmpdump install \
-		CC="$(CC)" \
-		LD="$(LD)" \
-		CRYPTO=GNUTLS \
-		XCFLAGS="$(CFLAGS)" \
-		XLDFLAGS="$(LDFLAGS)" \
-		SYS=darwin \
-		prefix="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
-		DESTDIR="$(BUILD_BASE)" \
-		mandir="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 rtmpdump-package: rtmpdump-stage
