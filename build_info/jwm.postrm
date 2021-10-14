@@ -1,4 +1,4 @@
-#!@MEMO_PREFIX@/bin/sh
+#!/bin/sh
 set -e
 # Automatically added by dh_installmenu/13.3.3
 inst=@MEMO_PREFIX@/etc/menu-methods/jwm
