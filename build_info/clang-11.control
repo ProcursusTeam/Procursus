@@ -1,0 +1,10 @@
+Package: clang-11
+Version: @DEB_LLVM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libllvm11, libclang-cpp11, ld64, libclang-common-11-dev, build-essential
+Section: Development
+Priority: optional
+Homepage: https://www.llvm.org/
+Description: C, C++ and Objective-C compiler
+Tag: purpose::console, role::developer

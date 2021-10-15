@@ -21,13 +21,12 @@ else
 	+$(MAKE) -C $(BUILD_WORK)/@pkg@
 	+$(MAKE) -C $(BUILD_WORK)/@pkg@ install \
 		DESTDIR=$(BUILD_STAGE)/@pkg@
-	touch $(BUILD_WORK)/@pkg@/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 @pkg@-package: @pkg@-stage
 	# @pkg@.mk Package Structure
 	rm -rf $(BUILD_DIST)/@pkg@
-	mkdir -p $(BUILD_DIST)/@pkg@
 	
 	# @pkg@.mk Prep @pkg@
 	cp -a $(BUILD_STAGE)/@pkg@ $(BUILD_DIST)

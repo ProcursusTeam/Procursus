@@ -4,7 +4,7 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Replaces: glib (<< 1:0)
 Conflicts: glib (<< 1:0)
-Depends: libglib2.0-0 (= @DEB_GLIB2.0_V@), libglib2.0-dev-bin (= @DEB_GLIB2.0_V@)
+Depends: libglib2.0-0 (= @DEB_GLIB2.0_V@), libglib2.0-dev-bin (= @DEB_GLIB2.0_V@), libffi-dev, libpcre1-dev, libintl-dev
 Section: Development
 Priority: important
 Multi-Arch: foreign

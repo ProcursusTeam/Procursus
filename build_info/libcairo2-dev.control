@@ -2,7 +2,7 @@ Package: libcairo2-dev
 Version: @DEB_CAIRO_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libcairo2 (>= @DEB_CAIRO_V@), libcairo-gobject2 (>= @DEB_CAIRO_V@), libcairo-script-interpreter2 (>= @DEB_CAIRO_V@), libfontconfig-dev, libfreetype-dev, libpng16-dev, libpixman-1-dev, libglib2.0-dev
+Depends: libcairo2 (>= @DEB_CAIRO_V@), libcairo-gobject2 (>= @DEB_CAIRO_V@), libcairo-script-interpreter2 (>= @DEB_CAIRO_V@), libfontconfig-dev, libfreetype-dev, libpng16-dev, libpixman-1-dev, libglib2.0-dev, liblzo2-dev, libx11-dev, libxext-dev, libxcb1-dev, libxrender-dev
 Section: Development
 Priority: optional
 Description: Development files for the Cairo 2D graphics library

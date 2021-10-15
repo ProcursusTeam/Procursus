@@ -1,0 +1,32 @@
+Package: libboost-container1.76.0
+Version: @DEB_LIBBOOST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Description: C++ library that implements several well-known containers
+ This package forms part of the Boost C++ Libraries collection.
+ .
+ Boost.Container library implements several well-known containers,
+ including STL containers. The aim of the library is to offers
+ advanced features not present in standard containers or to offer the
+ latest standard draft features for compilers that don't comply with
+ the latest C++ standard.
+ .
+ In short, what does Boost.Container offer?
+ .
+  * Move semantics are implemented, including move emulation
+    for pre-C++11 compilers.
+  * New advanced features (e.g. placement insertion,
+    recursive containers) are present.
+  * Containers support stateful allocators and are compatible with
+    Boost.Interprocess (they can be safely placed in shared memory).
+  * The library offers new useful containers:
+    * flat_map, flat_set, flat_multimap and flat_multiset: drop-in
+      replacements for standard associative containers but more
+      memory friendly and with faster searches.
+    * stable_vector: a std::list and std::vector hybrid container:
+      vector-like random-access iterators and list-like iterator
+      stability in insertions and erasures.
+    * slist: the classic pre-standard singly linked list implementation
+      offering constant-time size(). Note that C++11 forward_list has no size().

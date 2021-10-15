@@ -2,7 +2,7 @@ Package: icu-devtools
 Version: @DEB_ICU_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libicu68
+Depends: libicu69
 Section: Development
 Priority: standard
 Description: Development utilities for International Components for Unicode

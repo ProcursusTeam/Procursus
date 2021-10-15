@@ -12,4 +12,4 @@ Description: terminal-based package manager
  .
  aptitude is also Y2K-compliant, non-fattening, naturally cleansing,
  and housebroken.
-Depends: libapt-pkg6.0, libboost-iostreams1.74.0, libboost-system1.74.0, libcwidget4, libncursesw6, libsigc++-2.0-0v5, libxapian30, sudo
+Depends: libapt-pkg6.0, libboost-iostreams1.76.0, libboost-system1.76.0, libcwidget4, libncursesw6, libsigc++-2.0-0v5, libxapian30, sudo

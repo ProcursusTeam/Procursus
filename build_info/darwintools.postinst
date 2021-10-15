@@ -1,3 +1,3 @@
 #!/bin/sh
 
-@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/firmware
+nohup @MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/firmware-wrapper >/dev/null 2>&1 &

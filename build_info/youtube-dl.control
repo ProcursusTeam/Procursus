@@ -6,6 +6,7 @@ Depends: python3
 Recommends: aria2 | wget | curl, ffmpeg, rtmpdump
 Section: Multimedia
 Priority: optional
+Homepage: https://www.github.com/ytdl-org/youtube-dl
 Description: downloader of videos from YouTube and other sites
  youtube-dl is a small command-line program to download videos from
  YouTube.com and other sites that don't provide direct links to the

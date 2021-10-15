@@ -12,7 +12,7 @@ index e9e70c8..be4938e 100644
 +    "${PROJECT_BINARY_DIR}/snappy.pc"
 +    @ONLY
 +  )
-+  install(FILES "${PROJECT_BINARY_DIR}/snappy.pc" DESTINATION usr/lib/pkgconfig)
++  install(FILES "${PROJECT_BINARY_DIR}/snappy.pc" DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/pkgconfig)
 +endif(UNIX)
 +
  if(SNAPPY_BUILD_TESTS)

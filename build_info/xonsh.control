@@ -2,9 +2,13 @@ Package: xonsh
 Version: @DEB_XONSH_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Recommends: python3-pygments
+Depends: python3, python3-prompt-toolkit
 Section: Python
 Priority: optional
+Homepage: https://xon.sh/
 Description: Python-powered, cross-platform, Unix-gazing shell.
- xonsh (pronounced "conch") is a Python-powered, cross-platform, Unix-gazing shell
- language and command prompt. The language is a superset of Python 3.6+ with additional
- shell primatives, and is meant for the daily use of experts and novices alike.
+ xonsh (pronounced "conch") is a Python-powered, cros-platform,
+ Unix-gazing shell language and command prompt. The language is
+ a superset of Python 3.6+ with additional shell primatives, and
+ is meant for daily use of experts and novices alike.

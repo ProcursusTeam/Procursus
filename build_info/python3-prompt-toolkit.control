@@ -1,0 +1,30 @@
+Package: python3-prompt-toolkit
+Version: @DEB_PYTHON3-PROMPT-TOOLKIT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: python3, python3-wcwidth
+Recommends: python3-pygments
+Section: Python
+Priority: optional
+Homepage: https://github.com/prompt-toolkit/python-prompt-toolkit
+Description: Library for interactive command-line applications.
+ python-prompt-toolkit is a library for building powerful interactive
+ command-line applications in Python. It can also work as an alternative
+ for GNU readline, but it can do much more than that.
+ .
+ Some features:
+ * Pure Python
+ * Syntax highlighting of the input while typing
+ * Multi-line input editing
+ * Advanced code completion
+ * Both Emacs and Vi key bindings (similar to readline)
+ * Even some advanced Vi functionality, like named registers and digraphs
+ * Reverse and forward incremental search
+ * Works well with Unicode double width characters (e.g Chinese input)
+ * Selecting text for copy/paste
+ * Support for bracketed paste
+ * Mouse support for cursor positioning and scrolling
+ * Auto suggestions (e.g fish)
+ * Multiple input buffers
+ * No global state
+ * Lightweight, the only dependencies are Pygments and wcwidth

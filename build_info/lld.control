@@ -1,0 +1,10 @@
+Package: lld
+Version: @DEB_LLVM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: lld-11
+Section: Development
+Priority: optional
+Homepage: https://www.llvm.org/
+Description: LLVM linker
+Tag: purpose::console, role::developer
