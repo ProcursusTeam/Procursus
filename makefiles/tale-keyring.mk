@@ -7,7 +7,7 @@ TALE_KEYRING_VERSION  := 2021.10.10
 DEB_TALE_KEYRING_V    ?= $(TALE_KEYRING_VERSION)
 
 tale-keyring:
-	@echo "tale-keyring do not need to be built."
+	@echo "tale-keyring does not need to be built."
 
 tale-keyring-package: tale-keyring-stage
 	# tale-keyring.mk Package Structure

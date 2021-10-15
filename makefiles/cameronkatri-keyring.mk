@@ -7,7 +7,7 @@ CKATRI_KEYRING_VERSION := 2020.11.21
 DEB_CKATRI_KEYRING_V   ?= $(CKATRI_KEYRING_VERSION)
 
 cameronkatri-keyring:
-	@echo "cameronkatri-keyring do not need to be built."
+	@echo "cameronkatri-keyring does not need to be built."
 
 cameronkatri-keyring-package: cameronkatri-keyring-stage
 	# cameronkatri-keyring.mk Package Structure

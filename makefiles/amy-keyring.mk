@@ -7,7 +7,7 @@ AMY_KEYRING_VERSION  := 2021.07.10
 DEB_AMY_KEYRING_V    ?= $(AMY_KEYRING_VERSION)
 
 amy-keyring:
-	@echo "amy-keyring do not need to be built."
+	@echo "amy-keyring does not need to be built."
 
 amy-keyring-package: amy-keyring-stage
 	# amy-keyring.mk Package Structure

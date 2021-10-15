@@ -7,7 +7,7 @@ CHARIZ_KEYRING_VERSION := 2021.07.18
 DEB_CHARIZ_KEYRING_V   ?= $(CHARIZ_KEYRING_VERSION)
 
 chariz-keyring:
-	@echo "chariz-keyring do not need to be built."
+	@echo "chariz-keyring does not need to be built."
 
 chariz-keyring-package: chariz-keyring-stage
 	# chariz-keyring.mk Package Structure

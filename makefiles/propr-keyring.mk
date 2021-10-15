@@ -7,7 +7,7 @@ PROPR_KEYRING_VERSION := 2021.07.15
 DEB_PROPR_KEYRING_V   ?= $(PROPR_KEYRING_VERSION)
 
 propr-keyring:
-	@echo "propr-keyring do not need to be built."
+	@echo "propr-keyring does not need to be built."
 
 propr-keyring-package: propr-keyring-stage
 	# propr-keyring.mk Package Structure
