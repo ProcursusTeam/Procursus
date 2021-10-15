@@ -49,16 +49,16 @@ nghttp2-package: nghttp2-stage
 
 	# nghttp2.mk Prep nghttp2-proxy
 	cp -a $(BUILD_STAGE)/nghttp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/nghttpx $(BUILD_DIST)/nghttp2-proxy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/nghttp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/nghttpx.1 $(BUILD_DIST)/nghttp2-proxy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/nghttp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/nghttpx.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/nghttp2-proxy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_STAGE)/nghttp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/nghttp2 $(BUILD_DIST)/nghttp2-proxy/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
 	# nghttp2.mk Prep nghttp2-server
 	cp -a $(BUILD_STAGE)/nghttp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/nghttpd $(BUILD_DIST)/nghttp2-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/nghttp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/nghttpd.1 $(BUILD_DIST)/nghttp2-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/nghttp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/nghttpd.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/nghttp2-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# nghttp2.mk Prep nghttp2-client
 	cp -a $(BUILD_STAGE)/nghttp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/nghttp $(BUILD_DIST)/nghttp2-client/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/nghttp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/nghttp.1 $(BUILD_DIST)/nghttp2-client/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/nghttp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/nghttp.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/nghttp2-client/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	#nghttp2.mk Sign
 	$(call SIGN,libnghttp2-14,general.xml)
