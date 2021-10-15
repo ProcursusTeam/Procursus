@@ -39,8 +39,8 @@ uvwasi: uvwasi-setup libuv1
 
 	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.$(UVWASI_SOVER).dylib $(BUILD_STAGE)/uvwasi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.$(UVWASI_SOVER).dylib
 	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.$(UVWASI_SOVER).dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.$(UVWASI_SOVER).dylib
-	ln -sf libuvwasi.$(UVWASI_SOVER).dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.dylib
-	ln -sf libuvwasi.$(UVWASI_SOVER).dylib $(BUILD_STAGE)/uvwasi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.dylib
+	$(LN_S) libuvwasi.$(UVWASI_SOVER).dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.dylib
+	$(LN_S) libuvwasi.$(UVWASI_SOVER).dylib $(BUILD_STAGE)/uvwasi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.dylib
 
 	$(call AFTER_BUILD)
 endif

@@ -16,7 +16,6 @@ profile.d:
 	mkdir -p $(BUILD_STAGE)/profile.d/$(MEMO_PREFIX)/etc/profile.d
 	cp $(BUILD_INFO)/{,z}profile $(BUILD_STAGE)/profile.d/$(MEMO_PREFIX)/etc
 	cp $(BUILD_INFO)/terminal.sh $(BUILD_STAGE)/profile.d/$(MEMO_PREFIX)/etc/profile.d
-	$(call AFTER_BUILD)
 endif
 
 profile.d-package: profile.d-stage

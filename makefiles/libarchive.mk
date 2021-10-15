@@ -27,9 +27,7 @@ libarchive: libarchive-setup lz4 liblzo2 zstd xz nettle
 	+$(MAKE) -C $(BUILD_WORK)/libarchive
 	+$(MAKE) -C $(BUILD_WORK)/libarchive install \
 		DESTDIR="$(BUILD_STAGE)/libarchive"
-	+$(MAKE) -C $(BUILD_WORK)/libarchive install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libarchive-package: libarchive-stage

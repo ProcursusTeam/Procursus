@@ -21,9 +21,7 @@ libxft: libxft-setup libx11 libxrender xorgproto fontconfig freetype
 	+$(MAKE) -C $(BUILD_WORK)/libxft
 	+$(MAKE) -C $(BUILD_WORK)/libxft install \
 		DESTDIR=$(BUILD_STAGE)/libxft
-	+$(MAKE) -C $(BUILD_WORK)/libxft install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libxft-package: libxft-stage

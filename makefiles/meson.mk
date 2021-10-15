@@ -16,12 +16,14 @@ meson:
 else
 meson: meson-setup python3
 	cd $(BUILD_WORK)/meson && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py \
+		build \
+		--executable="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3" \
 		install \
 		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		--root="$(BUILD_STAGE)/meson" \
 		--install-layout=deb
 	find $(BUILD_STAGE)/meson -name __pycache__ -prune -exec rm -rf {} \;
-	$(SED) -i "s|#!.*|#!$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/meson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/meson
+	sed -i "s|#!.*|#!$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/meson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/meson
 	$(call AFTER_BUILD)
 endif
 

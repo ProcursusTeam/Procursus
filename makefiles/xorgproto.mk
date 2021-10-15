@@ -19,9 +19,7 @@ xorgproto: xorgproto-setup
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/xorgproto install \
 		DESTDIR="$(BUILD_STAGE)/xorgproto"
-	+$(MAKE) -C $(BUILD_WORK)/xorgproto install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 xorgproto-package: xorgproto-stage

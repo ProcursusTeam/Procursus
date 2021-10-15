@@ -20,9 +20,7 @@ xcb-util-wm: xcb-util-wm-setup libxcb xcb-util
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-wm
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-wm install \
 		DESTDIR=$(BUILD_STAGE)/xcb-util-wm
-	+$(MAKE) -C $(BUILD_WORK)/xcb-util-wm install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 xcb-util-wm-package: xcb-util-wm-stage

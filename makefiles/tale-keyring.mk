@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS           += tale-keyring
-TALE_KEYRING_VERSION  := 2021.07.08
+TALE_KEYRING_VERSION  := 2021.10.10
 DEB_TALE_KEYRING_V    ?= $(TALE_KEYRING_VERSION)
 
 tale-keyring:
