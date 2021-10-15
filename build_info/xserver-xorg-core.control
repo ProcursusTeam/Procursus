@@ -3,7 +3,7 @@ Version: @DEB_XORG-SERVER_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Provides: xserver
-Depends: libgl1, libepoxy0, libmd0, libpixman-1-0, libxau6, libxdmcp6, libxfont2, xserver-common
+Depends: libgl1, libepoxy0, libmd0, libpixman-1-0, libxau6, libxdmcp6, libxfont2, xserver-common (= @DEB_XORG-SERVER_V@), libxcvt
 Section: X11
 Priority: optional
 Description: Xorg X server - core server
