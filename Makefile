@@ -613,6 +613,15 @@ PGP_VERIFY  = KEY=$$(gpg --verify --status-fd 1 $(BUILD_SOURCE)/$(1).$(if $(2),$
 	gpg --verify $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) $(BUILD_SOURCE)/$(1) 2>&1 | grep -q 'Good signature'
 endif
 
+CHECKSUM_VERIFY = if [ "$(1)" = "sha1" ]; then \
+			HASH=$$(sha1sum "$(BUILD_SOURCE)/$(2)" | cut -d " " -f1 | tr -d \n); \
+		elif [ "$(1)" = "sha256" ]; then \
+			HASH=$$(sha256sum "$(BUILD_SOURCE)/$(2)" | cut -d " " -f1 | tr -d \n); \
+		elif [ "$(1)" = "sha512" ]; then \
+			HASH=$$(sha512sum "$(BUILD_SOURCE)/$(2)" | cut -d " " -f1 | tr -d \n); \
+		fi; \
+		[ "$(3)" = "$$HASH" ] || (echo "$(2) - Invalid Hash" && exit 1)
+
 EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 		cd $(BUILD_WORK) && \
 		tar -xf $(BUILD_SOURCE)/$(1) && \
