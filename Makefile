@@ -325,6 +325,7 @@ CPP      := $(GNU_HOST_TRIPLE)-clang -E
 AR       := $(GNU_HOST_TRIPLE)-ar
 LD       := $(GNU_HOST_TRIPLE)-ld
 RANLIB   := $(GNU_HOST_TRIPLE)-ranlib
+STRINGS  := $(GNU_HOST_TRIPLE)-strings
 STRIP    := $(GNU_HOST_TRIPLE)-strip
 I_N_T    := $(GNU_HOST_TRIPLE)-install_name_tool
 NM       := $(GNU_HOST_TRIPLE)-nm
@@ -349,6 +350,7 @@ CPP     := $(GNU_HOST_TRIPLE)-clang -E
 AR      := $(GNU_HOST_TRIPLE)-ar
 LD      := $(GNU_HOST_TRIPLE)-ld
 RANLIB  := $(GNU_HOST_TRIPLE)-ranlib
+STRINGS := $(GNU_HOST_TRIPLE)-strings
 STRIP   := $(GNU_HOST_TRIPLE)-strip
 I_N_T   := $(GNU_HOST_TRIPLE)-install_name_tool
 NM      := $(GNU_HOST_TRIPLE)-nm
@@ -399,6 +401,7 @@ endif
 AR              := $(shell which ar)
 LD              := $(shell which ld)
 RANLIB          := $(shell which ranlib)
+STRINGS         := $(shell which strings)
 STRIP           := $(shell which strip)
 NM              := $(shell which nm)
 LIPO            := $(shell which lipo)
@@ -609,6 +612,15 @@ PGP_VERIFY  = KEY=$$(gpg --verify --status-fd 1 $(BUILD_SOURCE)/$(1).$(if $(2),$
 	fi; \
 	gpg --verify $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) $(BUILD_SOURCE)/$(1) 2>&1 | grep -q 'Good signature'
 endif
+
+CHECKSUM_VERIFY = if [ "$(1)" = "sha1" ]; then \
+			HASH=$$(sha1sum "$(BUILD_SOURCE)/$(2)" | cut -d " " -f1 | tr -d \n); \
+		elif [ "$(1)" = "sha256" ]; then \
+			HASH=$$(sha256sum "$(BUILD_SOURCE)/$(2)" | cut -d " " -f1 | tr -d \n); \
+		elif [ "$(1)" = "sha512" ]; then \
+			HASH=$$(sha512sum "$(BUILD_SOURCE)/$(2)" | cut -d " " -f1 | tr -d \n); \
+		fi; \
+		[ "$(3)" = "$$HASH" ] || (echo "$(2) - Invalid Hash" && exit 1)
 
 EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 		cd $(BUILD_WORK) && \
