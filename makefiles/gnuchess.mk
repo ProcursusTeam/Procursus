@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS  += gnuchess
+SUBPROJECTS      += gnuchess
 GNUCHESS_VERSION := 6.2.7
 DEB_GNUCHESS_V   ?= $(GNUCHESS_VERSION)-2
 
