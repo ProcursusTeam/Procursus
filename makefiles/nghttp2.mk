@@ -13,6 +13,7 @@ nghttp2-setup: setup
 	$(call EXTRACT_TAR,nghttp2-$(NGHTTP2_VERSION).tar.xz,nghttp2-$(NGHTTP2_VERSION),nghttp2)
 	# Remove patch on 1.46.0
 	$(call DO_PATCH,nghttp2,nghttp2)
+	sed -i '1i #define\ __APPLE_USE_RFC_3542\ 1' $(BUILD_WORK)/nghttp2/src/util.cc
 
 ifneq ($(wildcard $(BUILD_WORK)/nghttp2/.build_complete),)
 nghttp2:
