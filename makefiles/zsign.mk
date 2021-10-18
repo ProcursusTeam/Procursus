@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += zsign
-ZSIGN_COMMIT  := f013215c6c7a266b8d11fdc8e728c70eedbba97c
-ZSIGN_VERSION := 0~20210721.$(shell echo $(ZSIGN_COMMIT) | cut -c -7)
+ZSIGN_COMMIT  := 66c390c
+ZSIGN_VERSION := 0~20211012.$(ZSIGN_COMMIT)
 DEB_ZSIGN_V   := $(ZSIGN_VERSION)
 
 zsign-setup: setup
@@ -30,16 +30,16 @@ endif
 zsign-package: zsign-stage
 	# zsign.mk Package Structure
 	rm -rf $(BUILD_DIST)/zsign
-
+	
 	# zsign.mk Prep zsign
 	cp -a $(BUILD_STAGE)/zsign $(BUILD_DIST)
-
+	
 	# zsign.mk Sign
 	$(call SIGN,zsign,general.xml)
-
+	
 	# zsign.mk Make .debs
 	$(call PACK,zsign,DEB_ZSIGN_V)
-
+	
 	# zsign.mk Build cleanup
 	rm -rf $(BUILD_DIST)/zsign
 

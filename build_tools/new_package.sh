@@ -16,7 +16,7 @@ main() {
 	build="$(ask "Build System" $2)"
 	checkbuild "$build"
 	ver="$(ask "Package Version" $3)"
-	download="$(ask "Download Link" $4)"
+	download="$(ask "Tarball Download Link" $4)"
 	Section="$(ask "Section" $5)"
 	description="$(ask "Description" $6)"
 	extended_description="$(ask_extended_description "$7")"

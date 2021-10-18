@@ -20,9 +20,7 @@ else
 	+$(MAKE) -C $(BUILD_WORK)/@pkg@
 	+$(MAKE) -C $(BUILD_WORK)/@pkg@ install \
 		DESTDIR=$(BUILD_STAGE)/@pkg@
-	+$(MAKE) -C $(BUILD_WORK)/@pkg@ install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 @pkg@-package: @pkg@-stage
