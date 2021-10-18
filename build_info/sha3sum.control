@@ -1,0 +1,14 @@
+Package: sha3sum
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_SHA3SUM_V@
+Depends: libkeccak1 (>= 1.2)
+Section: Utilities
+Priority: optional
+Description: Keccak, SHA-3, SHAKE, and RawSHAKE checksum utilities
+ Fully configurable byte-orientated checksum utilities
+ for Keccak and its close derivatives SHA-3, SHAKE and
+ RawSHAKE.
+ . 
+ This utilities can generate checksums or verify the
+ checksums of files.
