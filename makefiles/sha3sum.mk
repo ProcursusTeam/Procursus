@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += sha3sum
+SUBPROJECTS     += sha3sum
 SHA3SUM_VERSION := 1.2.1
 DEB_SHA3SUM_V   ?= $(SHA3SUM_VERSION)
 
@@ -16,7 +16,7 @@ ifneq ($(wildcard $(BUILD_WORK)/sha3sum/.build_complete),)
 sha3sum:
 	@echo "Using previously built sha3sum."
 else
-sha3sum:  sha3sum-setup libkeccak
+sha3sum: sha3sum-setup libkeccak
 	$(MAKE) -C $(BUILD_WORK)/sha3sum
 	+$(MAKE) -C $(BUILD_WORK)/sha3sum install \
 		DESTDIR=$(BUILD_STAGE)/sha3sum \
