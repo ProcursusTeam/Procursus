@@ -1,0 +1,11 @@
+--- a/Makefile.am	2021-10-18 17:22:01.000000000 -0400
++++ b/Makefile.am	2021-10-18 17:22:52.000000000 -0400
+@@ -182,7 +182,7 @@
+ 	SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.5.sdk PKG_CONFIG=aarch64-apple-ios-pkg-config RUSTFLAGS='-L /Users/nathan/Procursus/build_base/iphoneos-arm64/1700/usr/lib'						\
+ 	CARGO_TARGET_DIR=$(CARGO_TARGET_DIR)					\
+ 	$(CARGO) --locked build $(CARGO_VERBOSE) $(CARGO_TARGET_ARGS) $(CARGO_RELEASE_ARGS) --lib \
+-	&& cd $(LIBRSVG_BUILD_DIR) && $(LINK) $< && mv $(RUST_LIB) .libs/librsvg_c_api.a
++	&& cd $(LIBRSVG_BUILD_DIR) && for i in {1..99}; do $(AR) d $(RUST_LIB) lse.o; done && $(LINK) $< && mv $(RUST_LIB) .libs/librsvg_c_api.a
+ 
+ librsvg_@RSVG_API_MAJOR_VERSION@_la_CPPFLAGS = $(AM_CPPFLAGS)
+ 

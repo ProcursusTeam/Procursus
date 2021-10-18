@@ -1,0 +1,14 @@
+Package: librsvg2-common
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBRSVG_V@
+Depends: librsvg2-2 (= @DEB_LIBRSVG_V@), libgdk-pixbuf-2.0-0 (>= 2.23.5-2), libglib2.0-0 (>= 2.50.0)
+Section: Libraries
+Priority: optional
+Multi-Arch: same
+Description: SAX-based renderer library for SVG files (extra runtime)
+ The rsvg library is an efficient renderer for Scalable Vector Graphics
+ (SVG) pictures.
+ .
+ This package includes the gdk-pixbuf loader allowing
+ to load SVG images transparently inside GTK+ applications.
