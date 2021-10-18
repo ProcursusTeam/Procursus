@@ -2,7 +2,7 @@
 
 set -e
 
-MIMEDIR="@MEMO_PREFIX@/share/mime"
+MIMEDIR="@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/mime"
 
 if [ -e $MIMEDIR ]; then
 	cd $MIMEDIR && rm -rf $(ls |grep -v ^packages$)
