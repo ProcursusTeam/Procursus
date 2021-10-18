@@ -10,6 +10,7 @@ libkeccak-setup: setup
 	$(call GITHUB_ARCHIVE,maandree,libkeccak,$(LIBKECCAK_VERSION),$(LIBKECCAK_VERSION))
 	$(call EXTRACT_TAR,libkeccak-$(LIBKECCAK_VERSION).tar.gz,libkeccak-$(LIBKECCAK_VERSION),libkeccak)
 	sed -i 's/OSCONFIGFILE = linux.mk/OSCONFIGFILE = macos.mk/g' $(BUILD_WORK)/libkeccak/Makefile
+	sed -i '/PREFIX  /d' $(BUILD_WORK)/libkeccak/config.mk
 
 ifneq ($(wildcard $(BUILD_WORK)/libkeccak/.build_complete),)
 libkeccak:
@@ -18,7 +19,8 @@ else
 libkeccak: libkeccak-setup
 	$(MAKE) -C $(BUILD_WORK)/libkeccak
 	+$(MAKE) -C $(BUILD_WORK)/libkeccak install \
-		DESTDIR=$(BUILD_STAGE)/libkeccak
+		DESTDIR=$(BUILD_STAGE)/libkeccak \
+		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	rm -rf $(BUILD_STAGE)/libkeccak/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/licenses
 	$(call AFTER_BUILD,copy)
 endif
