@@ -71,7 +71,7 @@ endif
 
 export MACOSX_DEPLOYMENT_TARGET
 
-ifeq ($(MEMO_TARGET),iphoneos-arm64)
+ifeq ($(shell [ "$(MEMO_TARGET)" = "iphoneos-arm64" ] || [ "$(MEMO_TARGET)" = "iphoneos-arm64-ramdisk" ] && echo 1),1)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for iOS)
 endif # ($(MEMO_QUIET),1)
@@ -981,6 +981,27 @@ env:
 	env
 
 include makefiles/*.mk
+
+RAMDISK_PROJECTS := bash coreutils diskdev-cmds dropbear findutils grep gzip ncurses profile.d readline tar
+
+ramdisk:
+	+MEMO_NO_IOSEXEC=1 $(MAKE) $(RAMDISK_PROJECTS:%=%-package)
+	rm -rf $(BUILD_STRAP)/strap
+	rm -f $(BUILD_DIST)/bootstrap_tools.tar*
+	rm -f $(BUILD_DIST)/.fakeroot_bootstrap
+	touch $(BUILD_DIST)/.fakeroot_bootstrap
+	for DEB in $(BUILD_DIST)/*.deb; do \
+		dpkg-deb -x $$DEB $(BUILD_DIST)/strap; \
+	done
+	ln -s $(MEMO_PREFIX)/bin/bash $(BUILD_DIST)/strap/$(MEMO_PREFIX)/bin/sh
+	echo -e "/bin/sh\n" > $(BUILD_DIST)/strap/$(MEMO_PREFIX)/etc/shells
+	echo -e "#!/bin/sh\n\
+exec dropbear -R -F -E -p \$$@" > $(BUILD_DIST)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/dropbear-wrapper
+	rm -rf $(BUILD_DIST)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/{*.a,pkgconfig},share/{doc,man}}
+	export FAKEROOT='fakeroot -i $(BUILD_DIST)/.fakeroot_bootstrap -s $(BUILD_DIST)/.fakeroot_bootstrap --'; \
+	cd $(BUILD_DIST)/strap && $$FAKEROOT tar -ckpf $(BUILD_DIST)/bootstrap_tools.tar .
+	gzip -9 $(BUILD_DIST)/bootstrap_tools.tar
+	rm -rf $(BUILD_DIST)/strap
 
 package:: $(SUBPROJECTS:%=%-package)
 
