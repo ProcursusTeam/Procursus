@@ -985,7 +985,7 @@ include makefiles/*.mk
 RAMDISK_PROJECTS := bash coreutils diskdev-cmds dropbear findutils grep gzip ncurses profile.d readline tar
 
 ramdisk:
-	+MEMO_NO_IOSEXEC=1 $(MAKE) $(RAMDISK_PROJECTS:%=%-package)
+	+MEMO_STATIC_IOSEXEC=1 $(MAKE) $(RAMDISK_PROJECTS:%=%-package)
 	rm -rf $(BUILD_STRAP)/strap
 	rm -f $(BUILD_DIST)/bootstrap_tools.tar*
 	rm -f $(BUILD_DIST)/.fakeroot_bootstrap
@@ -1195,8 +1195,14 @@ endif
 
 	@# Setup libiosexec
 	@cp -af $(BUILD_MISC)/libiosexec/libiosexec.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	@cp -af $(BUILD_MISC)/libiosexec/libiosexec.a-$(MEMO_TARGET) $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.a
+ifneq ($(MEMO_STATIC_IOSEXEC),1)
 	@cp -af $(BUILD_MISC)/libiosexec/libiosexec.1.tbd $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.1.tbd
 	@$(LN_S) libiosexec.1.tbd $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.tbd
+else
+	@rm -f $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.*.tbd \
+		$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.tbd
+endif
 	@rm -f $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.*.dylib
 ifneq ($(MEMO_NO_IOSEXEC),1)
 	@sed -i '1s/^/#include <libiosexec.h>\n/' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/spawn.h
