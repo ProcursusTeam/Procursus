@@ -1,10 +1,9 @@
-Package: libnode83
+Package: libnode102
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_NODEJS_V@
 Section: Libraries
-Conflicts: nodejs (<< 14.13.1)
-Depends: libbrotli1, libc-ares2, libssl3, libnghttp2-14, libuv1
+Depends: libbrotli1, libc-ares2, libnghttp2-14, libuv1
 Description: evented I/O for V8 javascript - runtime library
  Node.js is a platform built on Chrome's JavaScript runtime for easily
  building fast, scalable network applications. Node.js uses an

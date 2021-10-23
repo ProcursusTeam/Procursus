@@ -1,12 +1,12 @@
-Package: libnode-dev
+Package: libnode-lts-dev
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_NODEJS_V@
 Section: Development
-Depends: libnode102 (= @DEB_NODEJS_V@), libbrotli-dev, libc-ares-dev, libuv1-dev
-Conflicts: libnode-lts-dev
-Replaces: libnode-lts-dev
-Provides: libv8-dev
+Depends: libnode93 (= @DEB_NODEJS_LTS_V@), libbrotli-dev, libc-ares-dev, libssl-dev, libuv1-dev
+Conflicts: libnode-dev
+Replaces: libnode-dev
+Provides: libv8-dev, libnode-dev
 Description: evented I/O for V8 javascript (development files)
  Node.js is a platform built on Chrome's JavaScript runtime for easily
  building fast, scalable network applications. Node.js uses an
