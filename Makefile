@@ -384,7 +384,7 @@ LDFLAGS_FOR_BUILD  := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_ve
 
 else
 ifneq ($(MEMO_QUIET),1)
-$(warning Building on iOS)-fno-plt
+$(warning Building on iOS)
 endif # ($(MEMO_QUIET),1)
 TARGET_SYSROOT  ?= /usr/share/SDKs/$(BARE_PLATFORM).sdk
 MACOSX_SYSROOT  ?= /usr/share/SDKs/MacOSX.sdk
