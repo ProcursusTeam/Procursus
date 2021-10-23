@@ -41,10 +41,6 @@ nodejs-lts-setup: setup
 	$(call GITHUB_ARCHIVE,1Conan,node,v$(NODEJS_LTS_VERSION),v$(NODEJS_LTS_VERSION)-ios)
 	$(call EXTRACT_TAR,node-v$(NODEJS_LTS_VERSION).tar.gz,node-$(NODEJS_LTS_VERSION)-ios,nodejs-lts)
 
-	# temporary
-	rm -rf $(BUILD_WORK)/nodejs-lts
-	ln -s /home/conan/Documents/@1conan/node $(BUILD_WORK)/nodejs-lts
-
 ifeq (,$(NODEJS_HOST))
 nodejs:
 	@echo "nodejs building not supported on this host os."
