@@ -14,4 +14,4 @@ Description: evented I/O for V8 javascript (development files)
  efficient, perfect for data-intensive real-time applications that run
  across distributed devices.
  .
- This package provides development headers for libnode83
+ This package provides development headers for libnode102
