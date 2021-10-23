@@ -1,7 +1,7 @@
 Package: libnode-lts-dev
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
-Version: @DEB_NODEJS_V@
+Version: @DEB_NODEJS_LTS_V@
 Section: Development
 Depends: libnode93 (= @DEB_NODEJS_LTS_V@), libbrotli-dev, libc-ares-dev, libssl-dev, libuv1-dev
 Conflicts: libnode-dev
