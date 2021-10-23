@@ -14,7 +14,7 @@ endif
 SYSROOT :=
 
 UNAME           := $(shell uname -s)
-UNAME_MACHINE		:= $(shell uname -m)
+UNAME_M         := $(shell uname -m)
 SUBPROJECTS     += $(STRAPPROJECTS)
 
 ifneq ($(shell umask),0022)
