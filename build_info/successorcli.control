@@ -1,6 +1,6 @@
 Package: successorcli
 Replaces: com.dabezt.successorcli
-Provides: com.dabezt.successorcli
+Provides: com.dabezt.successorcli (= @DEB_SUCCESSORCLI_V@)
 Conflicts: com.dabezt.successorcli
 Version: @DEB_SUCCESSORCLI_V@
 Architecture: @DEB_ARCH@
