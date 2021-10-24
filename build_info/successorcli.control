@@ -7,5 +7,5 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Author: Dabezt
 Section: System
-Depends: rsync, unzip
+Depends: rsync, unzip, firmware (>= 13.0)
 Description: A CLI Tool to Restore iOS devices on versions
