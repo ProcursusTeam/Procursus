@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 ifeq ($(shell [ "$(MEMO_CFVER)" -ge 1600 ] && echo 1),1)
 
-SUBPROJECTS           += successorcli
+SUBPROJECTS          += successorcli
 SUCCESSORCLI_VERSION := 1.0.2
 SUCCESSORCLI_COMMIT  := 800db26122ee11cdb55a744b157a63d3f594cbaf
 DEB_SUCCESSORCLI_V   ?= $(SUCCESSORCLI_VERSION)
