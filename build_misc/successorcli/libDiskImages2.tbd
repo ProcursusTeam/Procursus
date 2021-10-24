@@ -1,0 +1,63 @@
+---
+archs:                 [ armv7, armv7s, arm64, arm64e ]
+platform:              (null)
+install-name:          /System/Library/PrivateFrameworks/DiskImages2.framework/DiskImages2
+current-version:       1
+compatibility-version: 1
+exports:
+  - archs:                [ armv7, armv7s, arm64, arm64e ]
+    symbols:              [ _DIErrorDomain, _DiskImages2VersionNumber,
+                            _DiskImages2VersionString ]
+    objc-classes:         [ _BackendXPC, _CryptoBackendXPC, _DIAttachParams,
+                            _DIAttachedDeviceInfo, _DIBaseAgentXPCHandler,
+                            _DIBaseParams, _DIBaseXPCHandler,
+                            _DIClient2Controller_XPCHandler,
+                            _DIClient2IODaemonXPCHandler,
+                            _DIController2ClientDelegate, _DIConvertParams,
+                            _DIDeviceHandle, _DIError, _DISessionSecurityPort,
+                            _DIVerifyParams, _DiskImageParamsLocked_XPC,
+                            _DiskImageParamsRAM_XPC, _DiskImageParamsRaw_XPC,
+                            _DiskImageParamsUDIF_XPC, _DiskImageParamsXPC,
+                            _DiskImages2, _FileLocalXPC, _RamXPC ]
+    objc-ivars:           [ _BackendXPC._backend, _BackendXPC._cryptoHeader,
+                            _CryptoBackendXPC._baseBackendXPC,
+                            _CryptoBackendXPC._cryptoFormat,
+                            _DIAttachParams._autoMount,
+                            _DIAttachParams._commandSize,
+                            _DIAttachParams._concurrency,
+                            _DIAttachParams._fileMode,
+                            _DIAttachParams._handleRefCount,
+                            _DIAttachParams._inputMountedOnURL,
+                            _DIAttachParams._regEntryID,
+                            _DIAttachedDeviceInfo._BSDname,
+                            _DIAttachedDeviceInfo._imageURL,
+                            _DIBaseParams._allowStoringInKeychain,
+                            _DIBaseParams._debugLevel,
+                            _DIBaseParams._diskImageParamsXPC,
+                            _DIBaseParams._inputURL,
+                            _DIBaseParams._logsForwarding,
+                            _DIBaseParams._readPassphraseFlags,
+                            _DIBaseXPCHandler._connection,
+                            _DIBaseXPCHandler._isPrivileged,
+                            _DIBaseXPCHandler._remoteProxy,
+                            _DIBaseXPCHandler._semaphore,
+                            _DIBaseXPCHandler._xpcError,
+                            _DIClient2IODaemonXPCHandler._xpcListenerEndpoint,
+                            _DIController2ClientDelegate._deviceHandle,
+                            _DIConvertParams._inPlaceConversion,
+                            _DIConvertParams._maxRawUDIFRunSize,
+                            _DIConvertParams._outputBackendXPC,
+                            _DIConvertParams._outputFormat,
+                            _DIConvertParams._outputURL,
+                            _DIDeviceHandle._BSDName,
+                            _DIDeviceHandle._client2IOhandler,
+                            _DIDeviceHandle._handleRefCount,
+                            _DIDeviceHandle._ioMedia,
+                            _DIDeviceHandle._regEntryID,
+                            _DIDeviceHandle._xpcEndpoint,
+                            _DISessionSecurityPort._port,
+                            _DiskImageParamsUDIF_XPC._header,
+                            _DiskImageParamsXPC._backendXPC,
+                            _DiskImageParamsXPC._blockSize,
+                            _FileLocalXPC._fileDescriptor ]
+...

@@ -1,0 +1,11 @@
+Package: successorcli
+Replaces: com.dabezt.successorcli
+Provides: com.dabezt.successorcli
+Conflicts: com.dabezt.successorcli
+Version: @DEB_SUCCESSORCLI_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: Dabezt
+Section: System
+Depends: rsync, unzip
+Description: A CLI Tool to Restore iOS devices on versions
