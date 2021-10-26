@@ -54,7 +54,7 @@ else
 		--disable-pututxline \
 		--disable-static \
 		LDFLAGS="$(LDFLAGS) -fPIE -pie" \
-		CFLAGS='$(CFLAGS) -DDEFAULT_PATH=\\\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/sbin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/bin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin:$(MEMO_PREFIX)/sbin:$(MEMO_PREFIX)/bin\\\"'
+		CFLAGS='$(CFLAGS) -DDEFAULT_PATH=\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/sbin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/bin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin:$(MEMO_PREFIX)/sbin:$(MEMO_PREFIX)/bin\"'
 endif
 	+$(MAKE) -C $(BUILD_WORK)/dropbear
 	+$(MAKE) -C $(BUILD_WORK)/dropbear install \

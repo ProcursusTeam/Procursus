@@ -946,9 +946,9 @@ MAKEFLAGS += --no-print-directory
 
 ifeq ($(findstring --jobserver-auth=,$(MAKEFLAGS)),)
 ifeq ($(call HAS_COMMAND,nproc),1)
-GET_LOGICAL_CORES := $(shell expr $(shell nproc) / 2)
+GET_LOGICAL_CORES := $(shell expr $(shell nproc))
 else
-GET_LOGICAL_CORES := $(shell expr $(shell sysctl -n hw.ncpu) / 2)
+GET_LOGICAL_CORES := $(shell expr $(shell sysctl -n hw.ncpu))
 endif
 MAKEFLAGS += --jobs=$(GET_LOGICAL_CORES) --load-average=$(GET_LOGICAL_CORES)
 endif
@@ -986,7 +986,7 @@ ifeq ($(MEMO_TARGET),iphoneos-arm64-ramdisk)
 SSHPACK_PROJECTS ?= bash bzip2 coreutils diskdev-cmds dropbear findutils grep gzip ncurses profile.d readline tar
 MEMO_NO_IOSEXEC  ?= 1
 else ifeq ($(MEMO_TARGET),iphoneos-arm64-binpack)
-SSHPACK_PROJECTS  ?= bash coreutils diskdev-cmds dropbear file file-cmds findutils gettext grep gzip libgdbm libidn2 libiosexec libtommath libtomcrypt libplist libunistring libxcrypt ldid lz4 man nano ncurses openssl pcre2 sed snaputil system-cmds profile.d readline tar text-cmds wget xz-utils zstd
+SSHPACK_PROJECTS  ?= bash coreutils diskdev-cmds dropbear file file-cmds findutils gettext grep gzip launchctl libidn2 libiosexec libtommath libtomcrypt libplist libunistring libxcrypt ldid lz4 nano ncurses openssl openpam pcre2 sed snaputil system-cmds profile.d readline tar text-cmds wget xz zstd
 MEMO_PREFIX       ?= /cores
 RELATIVE_RPATH    := 1
 MEMO_SUB_PREFIX   :=

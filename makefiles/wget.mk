@@ -35,7 +35,7 @@ wget-package: wget-stage
 
 	# wget.mk Prep wget
 	cp -a $(BUILD_STAGE)/wget/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/wget $(BUILD_DIST)/wget/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/wget/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/wget.1 $(BUILD_DIST)/wget/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/wget/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/wget.1.zst $(BUILD_DIST)/wget/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_STAGE)/wget/$(MEMO_PREFIX)/etc/wgetrc $(BUILD_DIST)/wget/$(MEMO_PREFIX)/etc
 	# wget.mk Sign
 	$(call SIGN,wget,general.xml)
