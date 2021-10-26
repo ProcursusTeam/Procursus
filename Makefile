@@ -71,7 +71,7 @@ endif
 
 export MACOSX_DEPLOYMENT_TARGET
 
-ifeq ($(shell [ "$(MEMO_TARGET)" = "iphoneos-arm64" ] || [ "$(MEMO_TARGET)" = "iphoneos-arm64-ramdisk" ] && echo 1),1)
+ifeq ($(shell [ "$(MEMO_TARGET)" = "iphoneos-arm64" ] || [ "$(MEMO_TARGET)" = "iphoneos-arm64-binpack" ] || [ "$(MEMO_TARGET)" = "iphoneos-arm64-ramdisk" ] && echo 1),1)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for iOS)
 endif # ($(MEMO_QUIET),1)
@@ -982,10 +982,19 @@ env:
 
 include makefiles/*.mk
 
-RAMDISK_PROJECTS := bash coreutils diskdev-cmds dropbear findutils grep gzip ncurses profile.d readline tar
+ifeq ($(MEMO_TARGET),iphoneos-arm64-ramdisk)
+SSHPACK_PROJECTS += bash coreutils diskdev-cmds dropbear findutils grep gzip ncurses profile.d readline tar
+MEMO_NO_IOSEXEC  ?= 1
+else ifeq ($(MEMO_TARGET),iphoneos-arm64-binpack)
+SSHPACK_PROJECTS  += bash coreutils diskdev-cmds dropbear libiosexec libtommath libtomcrypt libxcrypt findutils grep gzip ncurses profile.d readline tar
+MEMO_PREFIX       ?= /var/tablepack
+RELATIVE_RPATH    := 1
+MEMO_SUB_PREFIX   :=
+MEMO_MOUNT_PREFIX ?= $(MEMO_PREFIX)
+endif
 
-ramdisk:
-	+MEMO_NO_IOSEXEC=1 $(MAKE) $(RAMDISK_PROJECTS:%=%-package)
+sshpack:
+	+$(MAKE) $(SSHPACK_PROJECTS:%=%-package)
 	rm -rf $(BUILD_STRAP)/strap
 	rm -f $(BUILD_DIST)/bootstrap_tools.tar*
 	rm -f $(BUILD_DIST)/.fakeroot_bootstrap
@@ -999,9 +1008,14 @@ ramdisk:
 exec dropbear -R -F -E -p \$$@" > $(BUILD_DIST)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/dropbear-wrapper
 	rm -rf $(BUILD_DIST)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/{*.a,pkgconfig},share/{doc,man}}
 	export FAKEROOT='fakeroot -i $(BUILD_DIST)/.fakeroot_bootstrap -s $(BUILD_DIST)/.fakeroot_bootstrap --'; \
-	cd $(BUILD_DIST)/strap && $$FAKEROOT tar -ckpf $(BUILD_DIST)/bootstrap_tools.tar .
+	cd $(BUILD_DIST)/strap$(MEMO_MOUNT_PREFIX) && $$FAKEROOT tar -ckpf $(BUILD_DIST)/bootstrap_tools.tar .
 	gzip -9 $(BUILD_DIST)/bootstrap_tools.tar
 	rm -rf $(BUILD_DIST)/strap
+
+ramdisk:
+	$(MAKE) sshpack MEMO_TARGET=iphoneos-arm64-ramdisk
+binpack:
+	$(MAKE) sshpack MEMO_TARGET=iphoneos-arm64-binpack
 
 package:: $(SUBPROJECTS:%=%-package)
 
