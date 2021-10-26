@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.mkj.dropbear</string>
+  <key>POSIXSpawnType</key>
+  <string>Interactive</string>
+  <key>ProcessType</key>
+  <string>Interactive</string>
+  <key>ProgramArguments</key>
+    <array>
+    <string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/sbin/dropbear</string>
+    <string>-i</string>
+    <string>-r</string>
+    <string>/private/var/dropbear_rsa_host_key</string>
+  </array>
+  <key>inetdCompatibility</key>
+    <dict>
+      <key>Wait</key>
+      <false/>
+    </dict>
+  <key>SessionCreate</key>
+  <true/>
+  <key>Sockets</key>
+  <dict>
+    <key>DropbearV4Listener</key>
+    <dict>
+      <key>SockFamily</key>
+      <string>IPv4</string>
+      <key>SockNodeName</key>
+      <string>127.0.0.1</string>
+      <key>SockServiceName</key>
+      <string>44</string>
+    </dict>
+    <key>DropbearV6Listener</key>
+    <dict>
+      <key>SockFamily</key>
+      <string>IPv6</string>
+      <key>SockNodeName</key>
+      <string>::1</string>
+      <key>SockServiceName</key>
+      <string>44</string>
+    </dict>
+  </dict>
+</dict>
+</plist>

@@ -983,13 +983,14 @@ env:
 include makefiles/*.mk
 
 ifeq ($(MEMO_TARGET),iphoneos-arm64-ramdisk)
-SSHPACK_PROJECTS += bash coreutils diskdev-cmds dropbear findutils grep gzip ncurses profile.d readline tar
+SSHPACK_PROJECTS ?= bash bzip2 coreutils diskdev-cmds dropbear findutils grep gzip ncurses profile.d readline tar
 MEMO_NO_IOSEXEC  ?= 1
 else ifeq ($(MEMO_TARGET),iphoneos-arm64-binpack)
-SSHPACK_PROJECTS  += bash coreutils diskdev-cmds dropbear libiosexec libtommath libtomcrypt libxcrypt findutils grep gzip ncurses profile.d readline tar
-MEMO_PREFIX       ?= /var/tablepack
+SSHPACK_PROJECTS  ?= bash coreutils diskdev-cmds dropbear file file-cmds findutils gettext grep gzip libgdbm libidn2 libiosexec libtommath libtomcrypt libplist libunistring libxcrypt ldid lz4 man nano ncurses openssl pcre2 sed snaputil system-cmds profile.d readline tar text-cmds wget xz-utils zstd
+MEMO_PREFIX       ?= /cores
 RELATIVE_RPATH    := 1
 MEMO_SUB_PREFIX   :=
+MEMO_ALT_PREFIX   :=
 MEMO_MOUNT_PREFIX ?= $(MEMO_PREFIX)
 endif
 
@@ -1003,9 +1004,13 @@ sshpack:
 		dpkg-deb -x $$DEB $(BUILD_DIST)/strap; \
 	done
 	ln -s $(MEMO_PREFIX)/bin/bash $(BUILD_DIST)/strap/$(MEMO_PREFIX)/bin/sh
-	echo -e "/bin/sh\n" > $(BUILD_DIST)/strap/$(MEMO_PREFIX)/etc/shells
-	echo -e "#!/bin/sh\n\
+	echo -e "$(MEMO_PRERIX)/bin/sh\n" > $(BUILD_DIST)/strap/$(MEMO_PREFIX)/etc/shells
+ifeq ($(MEMO_TARGET),iphoneos-arm64-ramdisk)
+	echo -e "#!$(MEMO_PREFIX)/bin/sh\n\
 exec dropbear -R -F -E -p \$$@" > $(BUILD_DIST)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/dropbear-wrapper
+else ifeq ($(MEMO_TARGET),iphoneos-arm64-binpack)
+	sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g'  $(BUILD_MISC)/dropbear/com.mkj.dropbear-binpack.plist > $(BUILD_DIST)/strap/$(MEMO_PREFIX)/Library/LaunchDaemons/com.mkj.dropbear.plist
+endif
 	rm -rf $(BUILD_DIST)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/{*.a,pkgconfig},share/{doc,man}}
 	export FAKEROOT='fakeroot -i $(BUILD_DIST)/.fakeroot_bootstrap -s $(BUILD_DIST)/.fakeroot_bootstrap --'; \
 	cd $(BUILD_DIST)/strap$(MEMO_MOUNT_PREFIX) && $$FAKEROOT tar -ckpf $(BUILD_DIST)/bootstrap_tools.tar .

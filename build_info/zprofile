@@ -1,11 +1,11 @@
-export PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11:/usr/games'
-export PS1='%m%::%~ %n%# '	
+export PATH='@MEMO_PREFIX@@MEMO_SUB_PREFIX@/local/sbin:@MEMO_PREFIX@@MEMO_SUB_PREFIX@/local/bin:@MEMO_PREFIX@@MEMO_SUB_PREFIX@/sbin:@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin:@MEMO_PREFIX@/sbin:@MEMO_PREFIX@/bin:@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/X11:@MEMO_PREFIX@@MEMO_SUB_PREFIX@/games:/bin:/sbin:/usr/bin:/usr/local/bin:/usr/local/sbin'
+export PS1='%m%::%~ %n%#
 umask 022
 
-export EDITOR=/usr/bin/editor
-export PAGER=/usr/bin/pager
+export EDITOR=@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/editor
+export PAGER=@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/pager
 
-for i in /etc/profile.d/*.sh ; do
+for i in @MEMO_PREFIX@/etc/profile.d/*.sh ; do
     if [ -r "$i" ]; then
         . $i
     fi
