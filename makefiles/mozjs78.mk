@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += mozjs78
+SUBPROJECTS     += mozjs78
 MOZJS78_VERSION := 78.11.0
 DEB_MOZJS78_V   ?= $(MOZJS78_VERSION)
 
@@ -19,7 +19,8 @@ else
 mozjs78: mozjs78-setup
 	mkdir -p $(BUILD_WORK)/mozjs78/js/src/obj
 	cd $(BUILD_WORK)/mozjs78/js/src/obj && \
-	$(DEFAULT_SETUP_PY_ENV) && $(DEFAULT_RUST_FLAGS) RUST_TARGET=$(RUST_TARGET) sh ../configure \
+	$(DEFAULT_SETUP_PY_ENV) && $(DEFAULT_RUST_FLAGS) RUST_TARGET=$(RUST_TARGET) \
+	LDFLAGS='$(LDFLAGS) -framework Security' sh ../configure \
 		--host=$$($(BUILD_MISC)/config.guess) \
 		--target=$(GNU_HOST_TRIPLE) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
@@ -29,8 +30,9 @@ mozjs78: mozjs78-setup
 		--with-system-icu \
 		--enable-readline \
 		--disable-jemalloc \
-		RUSTFLAGS='-L $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib' \
-		LDFLAGS='$(LDFLAGS) -framework Security'
+		--disable-tests \
+		--enable-jit \
+		RUSTFLAGS='-L $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib'
 	sed -i 's|HOST_CC = $(CC) -isysroot $(TARGET_SYSROOT)|HOST_CC = $(CC) -isysroot $(MACOSX_SYSROOT)|g' $(BUILD_WORK)/mozjs78/js/src/obj/config/autoconf.mk
 	sed -i 's|HOST_CXX = $(CXX)-isysroot $(TARGET_SYSROOT)|HOST_CXX = $(CXX) -isysroot $(MACOSX_SYSROOT)|g' $(BUILD_WORK)/mozjs78/js/src/obj/config/autoconf.mk
 	sed -i 's|HOST_CC_BASE_FLAGS = -isysroot $(TARGET_SYSROOT)|HOST_CC_BASE_FLAGS = -isysroot $(MACOSX_SYSROOT)|g' $(BUILD_WORK)/mozjs78/js/src/obj/config/autoconf.mk
@@ -38,6 +40,7 @@ mozjs78: mozjs78-setup
 	+$(DEFAULT_RUST_FLAGS) RUST_TARGET=$(RUST_TARGET) $(MAKE) -C $(BUILD_WORK)/mozjs78/js/src/obj
 	+$(MAKE) -C $(BUILD_WORK)/mozjs78/js/src/obj install \
 		DESTDIR=$(BUILD_STAGE)/mozjs78
+	rm -rf $(BUILD_STAGE)/mozjs78/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjs_static.ajs
 	$(call AFTER_BUILD,copy)
 endif
 

@@ -1,46 +1,33 @@
---- a/js/src/wasm/WasmSignalHandlers.cpp	2021-10-22 18:35:13.000000000 -0400
-+++ b/js/src/wasm/WasmSignalHandlers.cpp	2021-08-16 10:55:47.000000000 -0400
-@@ -19,7 +19,6 @@
- #include "wasm/WasmSignalHandlers.h"
- 
- #include "mozilla/DebugOnly.h"
--#include "mozilla/ScopeExit.h"
- #include "mozilla/ThreadLocal.h"
- 
- #include "threading/Thread.h"
-@@ -226,6 +225,10 @@
- #  define R13_sig(p) ((p)->thread.__sp)
- #  define R14_sig(p) ((p)->thread.__lr)
- #  define R15_sig(p) ((p)->thread.__pc)
-+#  define EPC_sig(p) ((p)->thread.__pc)
-+#  define RFP_sig(p) ((p)->thread.__fp)
-+#  define R31_sig(p) ((p)->thread.__sp)
-+#  define RLR_sig(p) ((p)->thread.__lr)
- #else
- #  error "Don't know how to read/write to the thread state via the mcontext_t."
- #endif
-@@ -351,6 +354,12 @@
+--- a/js/src/wasm/WasmSignalHandlers.cpp	2021-05-31 10:20:25.000000000 -0400
++++ b/js/src/wasm/WasmSignalHandlers.cpp	2021-10-25 15:35:14.000000000 -0400
+@@ -351,6 +350,12 @@
    arm_neon_state_t float_;
  };
  #    define CONTEXT macos_arm_context
-+#  elif defined(__aarch64__)
-+struct macos_aarch64_context {
-+  arm_thread_state64_t thread;
-+  arm_neon_state64_t float_;
++#  elif defined(__arm64__)
++struct macos_arm_context {
++  arm_thread_state_t thread;
++  arm_neon_state_t float_;
 +};
-+#    define CONTEXT macos_aarch64_context
++#    define CONTEXT macos_arm_context
  #  else
  #    error Unsupported architecture
  #  endif
-@@ -816,6 +827,11 @@
+@@ -366,7 +371,7 @@
+ #  define PC_sig(p) EIP_sig(p)
+ #  define FP_sig(p) EBP_sig(p)
+ #  define SP_sig(p) ESP_sig(p)
+-#elif defined(__arm__)
++#elif defined(__arm__) || defined(__arm64__)
+ #  define FP_sig(p) R11_sig(p)
+ #  define SP_sig(p) R13_sig(p)
+ #  define LR_sig(p) R14_sig(p)
+@@ -811,7 +816,7 @@
+   unsigned int float_state_count = x86_FLOAT_STATE_COUNT;
+   int thread_state = x86_THREAD_STATE;
+   int float_state = x86_FLOAT_STATE;
+-#  elif defined(__arm__)
++#  elif defined(__arm__) || defined(__arm64__)
+   unsigned int thread_state_count = ARM_THREAD_STATE_COUNT;
    unsigned int float_state_count = ARM_NEON_STATE_COUNT;
    int thread_state = ARM_THREAD_STATE;
-   int float_state = ARM_NEON_STATE;
-+#  elif defined(__aarch64__)
-+  unsigned int thread_state_count = ARM_THREAD_STATE64_COUNT;
-+  unsigned int float_state_count = ARM_NEON_STATE64_COUNT;
-+  int thread_state = ARM_THREAD_STATE64;
-+  int float_state = ARM_NEON_STATE64;
- #  else
- #    error Unsupported architecture
- #  endif
