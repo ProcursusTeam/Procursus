@@ -69,6 +69,6 @@ aspell-package: aspell-stage
 	$(call PACK,libpspell-dev,DEB_ASPELL_V)
 
 # aspell.mk Build cleanup
-rm -rf $(BUILD_DIST)/{aspell,libaspell-dev,libaspell15,libpspell-dev}
+	rm -rf $(BUILD_DIST)/{aspell,libaspell-dev,libaspell15,libpspell-dev}
 
 .PHONY: aspell aspell-package
