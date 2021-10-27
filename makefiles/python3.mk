@@ -26,6 +26,8 @@ else
 python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm expat libxcrypt
 endif
 	cd $(BUILD_WORK)/python3 && autoreconf -fi
+	sed -i 's/as_fn_error $$? "Unexpected output of /# /g' $(BUILD_WORK)/python3/configure
+	[ "$(UNAME)" != "Darwin" ] && export MACOSX_DEFAULT_ARCH=$(shell arch); \
 	cd $(BUILD_WORK)/python3 && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-ipv6 \
