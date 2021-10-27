@@ -19,11 +19,13 @@ autoconf2.13: autoconf2.13-setup
 	cd $(BUILD_WORK)/autoconf2.13 && PERL="$(shell command -v perl)" ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--program-suffix=2.13
-	+$(MAKE) -C $(BUILD_WORK)/autoconf2.13
-	+sed -i -e 's|bindir = /usr/bin|bindir = $$(prefix)/bin|g' -e 's|prefix = $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|prefix = $(BUILD_STAGE)/autoconf2.13/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' $(BUILD_WORK)/autoconf2.13/Makefile
-	+$(MAKE) -C $(BUILD_WORK)/autoconf2.13 install \
-		DESTDIR=$(BUILD_STAGE)/autoconf2.13
-	$(call AFTER_BUILD)
+	$(MAKE) -C $(BUILD_WORK)/autoconf2.13
+	sed -i -e 's|bindir = /usr/bin|bindir = $$(prefix)/bin|g' -e 's|prefix = $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|prefix = $(BUILD_STAGE)/autoconf2.13/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' $(BUILD_WORK)/autoconf2.13/Makefile
+	$(MAKE) -C $(BUILD_WORK)/autoconf2.13 install
+	rm -f $(BUILD_WORK)/autoconf2.13/ChangeLog*
+	mkdir -p $(BUILD_STAGE)/autoconf2.13/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_WORK)/autoconf2.13/*.1 $(BUILD_STAGE)/autoconf2.13/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	$(call AFTER_BUILD,copy)
 endif
 autoconf2.13-package: autoconf2.13-stage
 	# autoconf2.13.mk Package Structure
