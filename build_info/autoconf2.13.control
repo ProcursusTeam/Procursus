@@ -1,0 +1,11 @@
+Package: autoconf2.13
+Version: @DEB_AUTOCONF2.13_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: perl, libtool, m4
+Suggests: gnu-standards
+Section: Development
+Priority: optional
+Description: automatic configure script builder (obsolete version)
+ Obsolete compatibility package of Autoconf 2.13. For use only with antique 
+ packages that have never been updated to use Autoconf 2.50+

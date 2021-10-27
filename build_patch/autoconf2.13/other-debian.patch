@@ -1,0 +1,2218 @@
+Description: Uncategorized patches for autoconf2.13
+ These patches have accumulated for autoconf2.13 over the years.  I have
+ not yet taken the time to split them out and individually describe them.
+ It is likely that debian/changelog entries account for most of them.
+Forwarded: not-needed
+
+---
+
+--- /dev/null
++++ autoconf2.13-2.13/autoreconf.1
+@@ -0,0 +1,165 @@
++.\" Copyright (C) 1992, 1993, 1994, 1995, 1996 Free Software Foundation, Inc.
++.\" Copyright (C) 1998 Ben Pfaff.
++.\"
++.\" Permission is granted to make and distribute verbatim copies of
++.\" this manual provided the copyright notice and this permission notice
++.\" are preserved on all copies.
++.\" 
++.\" Permission is granted to copy and distribute modified versions of this
++.\" manual under the conditions for verbatim copying, provided that the entire
++.\" resulting derived work is distributed under the terms of a permission
++.\" notice identical to this one.
++.\" 
++.\" Permission is granted to copy and distribute translations of this manual
++.\" into another language, under the above conditions for modified versions,
++.\" except that this permission notice may be stated in a translation approved
++.\" by the Foundation.
++.\"
++.TH AUTORECONF 1 "Autoconf"
++.SH NAME
++autoreconf2.13 - update configure scripts
++.SH SYNOPSIS
++.B autoreconf2.13
++[
++.B --help
++|
++.B -h
++] [
++.B --force
++|
++.B -f
++] [
++.B --localdir=dir
++|
++.B -l dir
++] [
++.B --macrodir=dir
++|
++.B -m dir
++] [
++.B --verbose
++] [
++.B --version
++]
++.SH DESCRIPTION
++.PP
++If you have a lot of Autoconf-generated 
++.B configure
++scripts, the
++.B autoreconf2.13
++program can save you some work.  It runs 
++.B autoconf2.13
++(and
++.BR autoheader2.13 , 
++where appropriate) repeatedly to remake the Autoconf
++.B configure
++scripts and configuration header templates in the directory
++tree rooted at the current directory.  By default, it only remakes
++those files that are older than their 
++.B configure.in
++or (if present)
++.BR aclocal.m4 .  
++Since 
++.B autoheader2.13
++does not change the timestamp of its
++output file if the file wouldn't be changing, this is not necessarily
++the minimum amount of work.  If you install a new version of Autoconf,
++you can make 
++.B autoreconf2.13
++remake 
++.I all
++of the files by giving it the
++.B --force
++option.
++.PP
++If you give 
++.B autoreconf2.13
++the 
++.B --macrodir=DIR
++or 
++.B --localdir=DIR
++options, it passes them down to 
++.B autoconf2.13
++and 
++.B autoheader2.13
++(with
++relative paths adjusted properly).
++.PP
++.B autoreconf2.13
++does not support having, in the same directory tree,
++both directories that are parts of a larger package (sharing
++.B aclocal.m4
++and 
++.BR acconfig.h ), 
++and directories that are independent
++packages (each with their own 
++.B aclocal.m4
++and 
++.BR acconfig.h ).  
++It
++assumes that they are all part of the same package, if you use
++.BR --localdir , 
++or that each directory is a separate package, if you
++don't use it.  This restriction may be removed in the future.
++.PP
++.B autoreconf2.13
++accepts the following options:
++.TP
++.BI --help
++.TP
++.BI -h
++Print a summary of the command line options and exit.
++.TP
++.BI --force
++.TP
++.BI -f
++Remake even 
++.B configure
++scripts and configuration headers that are
++newer than their input files
++.RB ( configure.in
++and, if present,
++.BR aclocal.m4 ).
++.TP
++.BI --localdir=DIR
++.TP
++.BI -l\ DIR
++Look for the package file 
++.B aclocal.m4
++in directory DIR instead of
++in the current directory.
++.TP
++.BI --macrodir=DIR
++.TP
++.BI -m\ DIR
++Look for the installed macro files in directory DIR.  You can also
++set the 
++.B AC_MACRODIR
++environment variable to a directory; this
++option overrides the environment variable.
++.TP
++.BI --verbose
++Print the name of each directory where 
++.B autoreconf2.13
++runs
++.B autoconf2.13
++(and 
++.BR autoheader2.13 , 
++if appropriate).
++.TP
++.BI --version
++Print the version number of Autoconf and exit.
++.PP
++.SH "SEE ALSO"
++.BR autoconf2.13 (1),
++.BR autoheader2.13 (1),
++.BR autoscan2.13 (1),
++.BR autoupdate2.13 (1),
++.BR ifnames2.13 (1)
++.SH AUTHORS
++David MacKenzie, with help from Franc,ois Pinard, Karl Berry, Richard
++Pixley, Ian Lance Taylor, Roland McGrath, Noah Friedman, David
++D. Zuhn, and many others.  This manpage written by Ben Pfaff
++<pfaffben@debian.org> for the Debian GNU/Linux
++.B autoconf2.13
++package.
+--- autoconf2.13-2.13.orig/configure
++++ autoconf2.13-2.13/configure
+@@ -547,7 +547,7 @@ do
+ # Extract the first word of "$ac_prog", so it can be a program name with args.
+ set dummy $ac_prog; ac_word=$2
+ echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
+-echo "configure:551: checking for $ac_word" >&5
++echo "configure:__oline__: checking for $ac_word" >&5
+ if eval "test \"`echo '$''{'ac_cv_path_M4'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+@@ -588,7 +588,7 @@ do
+ # Extract the first word of "$ac_prog", so it can be a program name with args.
+ set dummy $ac_prog; ac_word=$2
+ echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
+-echo "configure:592: checking for $ac_word" >&5
++echo "configure:__oline__: checking for $ac_word" >&5
+ if eval "test \"`echo '$''{'ac_cv_prog_AWK'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+@@ -621,7 +621,7 @@ done
+ # Extract the first word of "perl", so it can be a program name with args.
+ set dummy perl; ac_word=$2
+ echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
+-echo "configure:625: checking for $ac_word" >&5
++echo "configure:__oline__: checking for $ac_word" >&5
+ if eval "test \"`echo '$''{'ac_cv_path_PERL'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+ else
+@@ -691,7 +691,7 @@ ac_configure=$ac_aux_dir/configure # Thi
+ # SVR4 /usr/ucb/install, which tries to use the nonexistent group "staff"
+ # ./install, which can be erroneously created by make from ./install.sh.
+ echo $ac_n "checking for a BSD compatible install""... $ac_c" 1>&6
+-echo "configure:695: checking for a BSD compatible install" >&5
++echo "configure:__oline__: checking for a BSD compatible install" >&5
+ if test -z "$INSTALL"; then
+ if eval "test \"`echo '$''{'ac_cv_path_install'+set}'`\" = set"; then
+   echo $ac_n "(cached) $ac_c" 1>&6
+--- autoconf2.13-2.13.orig/acspecific.m4
++++ autoconf2.13-2.13/acspecific.m4
+@@ -1477,14 +1477,19 @@ AC_SUBST(ALLOCA)dnl
+ AC_DEFUN(AC_FUNC_GETLOADAVG,
+ [ac_have_func=no # yes means we've found a way to get the load average.
+ 
+-# Some systems with -lutil have (and need) -lkvm as well, some do not.
+-# On Solaris, -lkvm requires nlist from -lelf, so check that first
+-# to get the right answer into the cache.
+-AC_CHECK_LIB(elf, elf_begin, LIBS="-lelf $LIBS")
+-AC_CHECK_LIB(kvm, kvm_open, LIBS="-lkvm $LIBS")
+-# Check for the 4.4BSD definition of getloadavg.
+-AC_CHECK_LIB(util, getloadavg,
+-  [LIBS="-lutil $LIBS" ac_have_func=yes ac_cv_func_getloadavg_setgid=yes])
++# Some systems have getloadavg without any extra libraries.
++AC_CHECK_FUNC(getloadavg, [ac_have_func=yes])
++
++if test $ac_have_func = no; then
++  # Some systems with -lutil have (and need) -lkvm as well, some do not.
++  # On Solaris, -lkvm requires nlist from -lelf, so check that first
++  # to get the right answer into the cache.
++  AC_CHECK_LIB(elf, elf_begin, LIBS="-lelf $LIBS")
++  AC_CHECK_LIB(kvm, kvm_open, LIBS="-lkvm $LIBS")
++  # Check for the 4.4BSD definition of getloadavg.
++  AC_CHECK_LIB(util, getloadavg,
++    [LIBS="-lutil $LIBS" ac_have_func=yes ac_cv_func_getloadavg_setgid=yes])
++fi
+ 
+ if test $ac_have_func = no; then
+   # There is a commonly available library for RS/6000 AIX.
+@@ -2659,7 +2664,7 @@ else
+   if AC_TRY_EVAL(ac_link); then
+     for file in conftest.*; do
+       case $file in
+-      *.c | *.o | *.obj) ;;
++      *.$ac_ext | *.c | *.o | *.obj) ;;
+       *) ac_cv_exeext=`echo $file | sed -e s/conftest//` ;;
+       esac
+     done
+--- autoconf2.13-2.13.orig/autoconf.texi
++++ autoconf2.13-2.13/autoconf.texi
+@@ -14,20 +14,20 @@
+ @finalout
+ @end iftex
+ 
+-@ifinfo
+-@format
+-START-INFO-DIR-ENTRY
+-* Autoconf: (autoconf).         Create source code configuration scripts.
+-END-INFO-DIR-ENTRY
+-@end format
++@dircategory Software development
++@direntry
++* Autoconf2.13: (autoconf2.13).     Create configuration scripts, only for
++                                    compatibility with old source packages.
++@end direntry
+ 
++@ifinfo
+ Autoconf: Creating Automatic Configuration Scripts, by David MacKenzie.
+ 
+ This file documents the GNU Autoconf package for creating scripts to
+ configure source code packages using templates and an @code{m4} macro
+ package.
+ 
+-Copyright (C) 1992, 1993, 1994, 1995, 1996, 1998 Free Software Foundation, Inc.
++Copyright (C) 1992, 1993, 1994, 1995, 1996, 1998, 2010 Free Software Foundation, Inc.
+ 
+ Permission is granted to make and distribute verbatim copies of
+ this manual provided the copyright notice and this permission notice
+@@ -779,7 +779,7 @@ might need to tell @code{configure} wher
+ scripts by calling @code{AC_CONFIG_AUX_DIR}, though the default places
+ it looks are correct for most cases.
+ 
+-@defmac AC_CONFIG_AUX_DIR(@var{dir})
++@defmac AC_CONFIG_AUX_DIR (@var{dir})
+ @maindex CONFIG_AUX_DIR
+ Use the @file{install-sh}, @file{config.sub}, @file{config.guess}, and
+ Cygnus @code{configure} scripts that are in directory @var{dir}.  These
+@@ -1680,7 +1680,7 @@ speed.  Instead of @file{install-sh}, it
+ but that name is obsolete because some @code{make} programs have a rule
+ that creates @file{install} from it if there is no @file{Makefile}.
+ 
+-A copy of @file{install-sh} which you may use comes with Autoconf.  If
++A copy of @file{install-sh} which you may use comes with Automake.  If
+ you use @code{AC_PROG_INSTALL}, you must include either
+ @file{install-sh} or @file{install.sh} in your distribution, or
+ @code{configure} will produce an error message saying it can't find
+--- /dev/null
++++ autoconf2.13-2.13/autoheader.1
+@@ -0,0 +1,197 @@
++.\" Copyright (C) 1992, 1993, 1994, 1995, 1996 Free Software Foundation, Inc.
++.\" Copyright (C) 1998 Ben Pfaff.
++.\"
++.\" Permission is granted to make and distribute verbatim copies of
++.\" this manual provided the copyright notice and this permission notice
++.\" are preserved on all copies.
++.\" 
++.\" Permission is granted to copy and distribute modified versions of this
++.\" manual under the conditions for verbatim copying, provided that the entire
++.\" resulting derived work is distributed under the terms of a permission
++.\" notice identical to this one.
++.\" 
++.\" Permission is granted to copy and distribute translations of this manual
++.\" into another language, under the above conditions for modified versions,
++.\" except that this permission notice may be stated in a translation approved
++.\" by the Foundation.
++.\"
++.TH AUTOHEADER 1 "Autoconf"
++.SH NAME
++autoheader2.13 - creates a template file of C #define's for use by
++configure.
++.SH SYNOPSIS
++.B autoheader2.13
++[
++.B --help
++|
++.B -h
++] [
++.B --localdir=dir
++|
++.B -l dir
++] [
++.B --macrodir=dir
++|
++.B -m dir
++] [
++.B --version
++]
++.SH DESCRIPTION
++.PP
++The 
++.B autoheader2.13
++program can create a template file of C 
++.B #define
++statements for 
++.B configure
++to use.  If 
++.B configure.in
++invokes
++.BR AC_CONFIG_HEADER(FILE) , 
++.B autoheader2.13
++creates 
++.BR FILE.in ; 
++if multiple
++file arguments are given, the first one is used.  Otherwise,
++.B autoheader2.13
++creates 
++.BR config.h.in .
++.PP
++If you give 
++.B autoheader2.13
++an argument, it uses that file instead of
++.B configure.in
++and writes the header file to the standard output
++instead of to 
++.BR config.h.in .  
++If you give 
++.B autoheader2.13
++an argument of
++.BR - , 
++it reads the standard input instead of 
++.B configure.in
++and writes
++the header file to the standard output.
++.PP
++.B autoheader2.13
++scans 
++.B configure.in
++and figures out which C
++preprocessor symbols it might define.  It copies comments and 
++.B #define
++and 
++.B #undef
++statements from a file called 
++.BR acconfig.h , 
++which comes
++with and is installed with Autoconf.  It also uses a file called
++.B acconfig.h
++in the current directory, if present.  If you 
++.B AC_DEFINE
++any additional symbols, you must create that file with entries for
++them.  For symbols defined by 
++.BR AC_CHECK_HEADERS , 
++.BR AC_CHECK_FUNCS ,
++.BR AC_CHECK_SIZEOF , 
++or 
++.BR AC_CHECK_LIB , 
++.B autoheader2.13
++generates comments
++and 
++.B #undef
++statements itself rather than copying them from a file,
++since the possible symbols are effectively limitless.
++.PP
++The file that 
++.B autoheader2.13
++creates contains mainly 
++.B #define
++and
++.B #undef
++statements and their accompanying comments.  If 
++.B ./acconfig.h
++contains the string 
++.BR @TOP@ , 
++.B autoheader2.13
++copies the lines before the
++line containing 
++.B @TOP@
++into the top of the file that it generates.
++Similarly, if 
++.B ./acconfig.h
++contains the string 
++.BR @BOTTOM@ ,
++.B autoheader2.13
++copies the lines after that line to the end of the file it
++generates.  Either or both of those strings may be omitted.
++.PP
++An alternate way to produce the same effect is to create the files
++.B FILE.top
++(typically 
++.BR config.h.top ) 
++and/or 
++.B FILE.bot
++in the current
++directory.  If they exist, 
++.B autoheader2.13
++copies them to the beginning
++and end, respectively, of its output.  Their use is discouraged because
++they have file names that contain two periods, and so can not be stored
++on MS-DOS; also, they are two more files to clutter up the directory.
++But if you use the 
++.B --localdir=DIR
++option to use an 
++.B acconfig.h
++in
++another directory, they give you a way to put custom boilerplate in each
++individual 
++.BR config.h.in .
++.PP
++.B autoheader2.13
++accepts the following options:
++.TP
++.BI --help
++.TP
++.BI -h
++Print a summary of the command line options and exit.
++.TP
++.BI --localdir=DIR
++.TP
++.BI -l\ DIR
++Look for the package files 
++.B aclocal.m4
++and 
++.B acconfig.h
++(but not
++.B FILE.top
++and 
++.BR FILE.bot ) 
++in directory DIR instead of in the current
++directory.
++.TP
++.BI --macrodir=DIR
++.TP
++.BI -m\ DIR
++Look for the installed macro files and 
++.B acconfig.h
++in directory DIR.
++You can also set the 
++.B AC_MACRODIR
++environment variable to a
++directory; this option overrides the environment variable.
++.TP
++.BI --version
++Print the version number of Autoconf and exit.
++.SH "SEE ALSO"
++.BR autoconf2.13 (1),
++.BR autoreconf2.13 (1),
++.BR autoscan2.13 (1),
++.BR autoupdate2.13 (1),
++.BR ifnames2.13 (1)
++.SH AUTHORS
++David MacKenzie, with help from Franc,ois Pinard, Karl Berry, Richard
++Pixley, Ian Lance Taylor, Roland McGrath, Noah Friedman, David
++D. Zuhn, and many others.  This manpage written by Ben Pfaff
++<pfaffben@debian.org> for the Debian GNU/Linux
++.B autoconf2.13
++package.
+--- autoconf2.13-2.13.orig/autoreconf.sh
++++ autoconf2.13-2.13/autoreconf.sh
+@@ -143,7 +143,7 @@ while read dir; do
+ 	:
+      else
+ 	test $verbose = yes && echo running aclocal in $dir, creating $aclocal
+-	aclocal --output=$aclocal -I `echo $aclocal | sed 's,/*[^/]*$,,;s,^$,.,'`
++	aclocal --output=$aclocal -I `echo $aclocal | sed 's,/*[^/]*$,,;s,^$,.,'` || exit 1	
+      fi
+   fi
+ 
+@@ -154,7 +154,7 @@ while read dir; do
+      amforce=
+      test $force = no && amforce=--no-force
+      test $verbose = yes && echo running automake`test x"$amforce" = x || echo " ($amforce)"` in $dir
+-     automake $amforce $automake_mode $automake_deps
++     automake $amforce $automake_mode $automake_deps || exit 1
+   fi
+ 
+   test ! -f $aclocal && aclocal=
+@@ -166,7 +166,7 @@ while read dir; do
+     :
+   else
+     test $verbose = yes && echo running autoconf in $dir
+-    $autoconf $macrodir_opt $localdir_opt
++    $autoconf $macrodir_opt $localdir_opt || exit 1
+   fi
+ 
+   if grep 'A[CM]_CONFIG_HEADER' configure.in >/dev/null; then
+@@ -194,9 +194,12 @@ while read dir; do
+         :
+       else
+         test $verbose = yes && echo running autoheader in $dir
+-        $autoheader $macrodir_opt $localdir_opt && 
+-        { test $verbose != yes || echo touching $stamp; } &&
+-        touch $stamp
++        if $autoheader $macrodir_opt $localdir_opt; then
++	    { test $verbose != yes || echo touching $stamp; } &&
++	    touch $stamp
++	else
++	    exit 1
++	fi
+       fi
+     fi
+   fi
+--- autoconf2.13-2.13.orig/Makefile.in
++++ autoconf2.13-2.13/Makefile.in
+@@ -49,7 +49,7 @@ bindir = @bindir@
+ 
+ # Directory in which to install library files.
+ datadir = @datadir@
+-acdatadir = $(datadir)/autoconf
++acdatadir = $(datadir)/autoconf2.13
+ 
+ # Directory in which to install documentation info files.
+ infodir = @infodir@
+--- /dev/null
++++ autoconf2.13-2.13/autoconf.1
+@@ -0,0 +1,126 @@
++.\" Copyright (C) 1992, 1993, 1994, 1995, 1996 Free Software Foundation, Inc.
++.\" Copyright (C) 1998 Ben Pfaff.
++.\"
++.\" Permission is granted to make and distribute verbatim copies of
++.\" this manual provided the copyright notice and this permission notice
++.\" are preserved on all copies.
++.\" 
++.\" Permission is granted to copy and distribute modified versions of this
++.\" manual under the conditions for verbatim copying, provided that the entire
++.\" resulting derived work is distributed under the terms of a permission
++.\" notice identical to this one.
++.\" 
++.\" Permission is granted to copy and distribute translations of this manual
++.\" into another language, under the above conditions for modified versions,
++.\" except that this permission notice may be stated in a translation approved
++.\" by the Foundation.
++.\"
++.TH AUTOCONF 1 "Autoconf"
++.SH NAME
++autoconf2.13 - creates scripts to configure source code packages using templates
++.SH SYNOPSIS
++.B autoconf2.13
++[
++.B --help
++|
++.B -h
++] [
++.B --localdir=dir
++|
++.B -l dir
++] [
++.B --macrodir=dir
++|
++.B -m dir
++] [
++.B --version
++]
++.SH DESCRIPTION
++.PP
++To create 
++.B configure
++from 
++\fBconfigure.in\fP, run the 
++.B autoconf2.13
++program with no arguments.  
++.B autoconf2.13
++processes 
++.B configure.in
++with
++the 
++.B m4
++macro processor, using the Autoconf macros.  If you give
++.B autoconf2.13
++an argument, it reads that file instead of 
++.B configure.in
++and writes the configuration script to the standard output instead of
++to 
++.BR configure .
++If you give 
++.B autoconf2.13
++the argument 
++.BR - ,
++it reads the
++standard input instead of 
++.B configure.in
++and writes the configuration
++script on the standard output.
++.PP
++The Autoconf macros are defined in several files.  Some of the files
++are distributed with Autoconf; 
++.B autoconf2.13
++reads them first.  Then it
++looks for the optional file 
++.B acsite.m4
++in the directory that contains
++the distributed Autoconf macro files, and for the optional file
++.B aclocal.m4
++in the current directory.  Those files can contain your
++site's or the package's own Autoconf macro definitions.  If a macro is
++defined in more than one of the files that 
++.B autoconf2.13
++reads, the last
++definition it reads overrides the earlier ones.
++.PP
++
++.B autoconf2.13
++accepts the following options:
++.TP
++.BI --help
++.TP
++.BI -h
++Print a summary of the command line options and exit.
++.TP
++.BI --localdir=DIR
++.TP
++.BI -l\ DIR
++Look for the package file 
++.B aclocal.m4
++in directory DIR instead of
++in the current directory.
++.TP
++.BI --macrodir=DIR
++.TP
++.BI -m\ DIR
++Look for the installed macro files in directory DIR.  You can also
++set the 
++.B AC_MACRODIR
++environment variable to a directory; this
++option overrides the environment variable.
++.TP
++.BI --version
++Print the version number of Autoconf and exit.
++.PP
++.SH "SEE ALSO"
++.BR autoheader2.13 (1),
++.BR autoreconf2.13 (1),
++.BR autoscan2.13 (1),
++.BR autoupdate2.13 (1),
++.BR ifnames2.13 (1)
++.SH AUTHORS
++David MacKenzie, with help from Franc,ois Pinard, Karl Berry, Richard
++Pixley, Ian Lance Taylor, Roland McGrath, Noah Friedman, David
++D. Zuhn, and many others.  This manpage written by Ben Pfaff
++<pfaffben@debian.org> for the Debian GNU/Linux
++.B autoconf2.13
++package.
+--- autoconf2.13-2.13.orig/acgeneral.m4
++++ autoconf2.13-2.13/acgeneral.m4
+@@ -1988,6 +1988,7 @@ changequote([, ])dnl
+ AC_MSG_CHECKING(size of $1)
+ AC_CACHE_VAL(AC_CV_NAME,
+ [AC_TRY_RUN([#include <stdio.h>
++#include <sys/types.h>
+ main()
+ {
+   FILE *f=fopen("conftestval", "w");
+@@ -2601,7 +2602,7 @@ changequote([, ])dnl
+       fi
+     fi
+ 
+-    cd $ac_popdir
++    cd "$ac_popdir"
+   done
+ fi
+ ])
+--- autoconf2.13-2.13.orig/standards.info
++++ autoconf2.13-2.13/standards.info
+@@ -1,5 +1,4 @@
+-This is Info file standards.info, produced by Makeinfo version 1.67
+-from the input file /home/bje/autoconf-2.13/standards.texi.
++This is standards.info, produced by makeinfo version 4.13 from ./standards.texi.
+ 
+ START-INFO-DIR-ENTRY
+ * Standards: (standards).        GNU coding standards.
+@@ -28,7 +27,7 @@ File: standards.info,  Node: Top,  Next:
+ Version
+ *******
+ 
+-   Last updated August 26, 1998.
++Last updated August 26, 1998.
+ 
+ * Menu:
+ 
+@@ -43,11 +42,11 @@ Version
+ 
+ File: standards.info,  Node: Preface,  Next: Intellectual Property,  Prev: Top,  Up: Top
+ 
+-About the GNU Coding Standards
+-******************************
++1 About the GNU Coding Standards
++********************************
+ 
+-   The GNU Coding Standards were written by Richard Stallman and other
+-GNU Project volunteers.  Their purpose is to make the GNU system clean,
++The GNU Coding Standards were written by Richard Stallman and other GNU
++Project volunteers.  Their purpose is to make the GNU system clean,
+ consistent, and easy to install.  This document can also be read as a
+ guide to writing portable, robust and reliable programs.  It focuses on
+ programs written in C, but many of the rules and principles are useful
+@@ -66,10 +65,10 @@ those files, please mail your suggestion
+ 
+ File: standards.info,  Node: Intellectual Property,  Next: Design Advice,  Prev: Preface,  Up: Top
+ 
+-Keeping Free Software Free
+-**************************
++2 Keeping Free Software Free
++****************************
+ 
+-   This node discusses how you can make sure that GNU software remains
++This node discusses how you can make sure that GNU software remains
+ unencumbered.
+ 
+ * Menu:
+@@ -80,11 +79,11 @@ unencumbered.
+ 
+ File: standards.info,  Node: Reading Non-Free Code,  Next: Contributions,  Up: Intellectual Property
+ 
+-Referring to Proprietary Programs
+-=================================
++2.1 Referring to Proprietary Programs
++=====================================
+ 
+-   Don't in any circumstances refer to Unix source code for or during
+-your work on GNU!  (Or to any other proprietary programs.)
++Don't in any circumstances refer to Unix source code for or during your
++work on GNU!  (Or to any other proprietary programs.)
+ 
+    If you have a vague recollection of the internals of a Unix program,
+ this does not absolutely mean you can't write an imitation of it, but
+@@ -117,12 +116,12 @@ obstacks.
+ 
+ File: standards.info,  Node: Contributions,  Prev: Reading Non-Free Code,  Up: Intellectual Property
+ 
+-Accepting Contributions
+-=======================
++2.2 Accepting Contributions
++===========================
+ 
+-   If someone else sends you a piece of code to add to the program you
+-are working on, we need legal papers to use it--the same sort of legal
+-papers we will need to get from you.  *Each* significant contributor to
++If someone else sends you a piece of code to add to the program you are
++working on, we need legal papers to use it--the same sort of legal
++papers we will need to get from you.  _Each_ significant contributor to
+ a program must sign some sort of legal papers in order for us to have
+ clear title to the program.  The main author alone is not enough.
+ 
+@@ -161,10 +160,10 @@ released or not), please ask us for a co
+ 
+ File: standards.info,  Node: Design Advice,  Next: Program Behavior,  Prev: Intellectual Property,  Up: Top
+ 
+-General Program Design
+-**********************
++3 General Program Design
++************************
+ 
+-   This node discusses some of the issues you should take into account
++This node discusses some of the issues you should take into account
+ when designing your program.
+ 
+ * Menu:
+@@ -177,10 +176,10 @@ when designing your program.
+ 
+ File: standards.info,  Node: Compatibility,  Next: Using Extensions,  Up: Design Advice
+ 
+-Compatibility with Other Implementations
+-========================================
++3.1 Compatibility with Other Implementations
++============================================
+ 
+-   With occasional exceptions, utility programs and libraries for GNU
++With occasional exceptions, utility programs and libraries for GNU
+ should be upward compatible with those in Berkeley Unix, and upward
+ compatible with ANSI C if ANSI C specifies their behavior, and upward
+ compatible with POSIX if POSIX specifies their behavior.
+@@ -210,10 +209,10 @@ feature as well.  (There is a free `vi'
+ 
+ File: standards.info,  Node: Using Extensions,  Next: ANSI C,  Prev: Compatibility,  Up: Design Advice
+ 
+-Using Non-standard Features
+-===========================
++3.2 Using Non-standard Features
++===============================
+ 
+-   Many GNU facilities that already exist support a number of convenient
++Many GNU facilities that already exist support a number of convenient
+ extensions over the comparable Unix facilities.  Whether to use these
+ extensions in implementing your program is a difficult question.
+ 
+@@ -244,10 +243,10 @@ installed already.  That would be no goo
+ 
+ File: standards.info,  Node: ANSI C,  Next: Source Language,  Prev: Using Extensions,  Up: Design Advice
+ 
+-ANSI C and pre-ANSI C
+-=====================
++3.3 ANSI C and pre-ANSI C
++=========================
+ 
+-   Do not ever use the "trigraph" feature of ANSI C.
++Do not ever use the "trigraph" feature of ANSI C.
+ 
+    ANSI C is widespread enough now that it is ok to write new programs
+ that use ANSI C features (and therefore will not work in non-ANSI
+@@ -284,16 +283,15 @@ write in ANSI C.
+ 
+ File: standards.info,  Node: Source Language,  Prev: ANSI C,  Up: Design Advice
+ 
+-Using Languages Other Than C
+-============================
++3.4 Using Languages Other Than C
++================================
+ 
+-   Using a language other than C is like using a non-standard feature:
+-it will cause trouble for users.  Even if GCC supports the other
+-language, users may find it inconvenient to have to install the
+-compiler for that other language in order to build your program.  For
+-example, if you write your program in C++, people will have to install
+-the C++ compiler in order to compile your program.  Thus, it is better
+-if you write in C.
++Using a language other than C is like using a non-standard feature: it
++will cause trouble for users.  Even if GCC supports the other language,
++users may find it inconvenient to have to install the compiler for that
++other language in order to build your program.  For example, if you
++write your program in C++, people will have to install the C++ compiler
++in order to compile your program.  Thus, it is better if you write in C.
+ 
+    But there are three situations when there is no disadvantage in using
+ some other language:
+@@ -322,10 +320,10 @@ program if it is written in C.
+ 
+ File: standards.info,  Node: Program Behavior,  Next: Writing C,  Prev: Design Advice,  Up: Top
+ 
+-Program Behavior for All Programs
+-*********************************
++4 Program Behavior for All Programs
++***********************************
+ 
+-   This node describes how to write robust software. It also describes
++This node describes how to write robust software. It also describes
+ general standards for error messages, the command line interface, and
+ how libraries should behave.
+ 
+@@ -341,24 +339,23 @@ how libraries should behave.
+ 
+ File: standards.info,  Node: Semantics,  Next: Libraries,  Up: Program Behavior
+ 
+-Writing Robust Programs
+-=======================
++4.1 Writing Robust Programs
++===========================
+ 
+-   Avoid arbitrary limits on the length or number of *any* data
+-structure, including file names, lines, files, and symbols, by
+-allocating all data structures dynamically.  In most Unix utilities,
+-"long lines are silently truncated".  This is not acceptable in a GNU
+-utility.
++Avoid arbitrary limits on the length or number of _any_ data structure,
++including file names, lines, files, and symbols, by allocating all data
++structures dynamically.  In most Unix utilities, "long lines are
++silently truncated".  This is not acceptable in a GNU utility.
+ 
+    Utilities reading files should not drop NUL characters, or any other
+-nonprinting characters *including those with codes above 0177*.  The
++nonprinting characters _including those with codes above 0177_.  The
+ only sensible exceptions would be utilities specifically intended for
+ interface to certain types of printers that can't handle those
+ characters.
+ 
+    Check every system call for an error return, unless you know you
+ wish to ignore errors.  Include the system error text (from `perror' or
+-equivalent) in *every* error message resulting from a failing system
++equivalent) in _every_ error message resulting from a failing system
+ call, as well as the name of the file if any and the name of the
+ utility.  Just "cannot open foo.c" or "stat failed" is not sufficient.
+ 
+@@ -416,7 +413,7 @@ are easy to examine with the debugger, s
+ elsewhere.
+ 
+    Do not use a count of errors as the exit status for a program.
+-*That does not work*, because exit status values are limited to 8 bits
++_That does not work_, because exit status values are limited to 8 bits
+ (0 through 255).  A single run of the program might have 256 errors; if
+ you try to return 256 as the exit status, the parent process will see 0
+ as the status, and it will appear that the program succeeded.
+@@ -428,10 +425,10 @@ instead of `/tmp'.
+ 
+ File: standards.info,  Node: Libraries,  Next: Errors,  Prev: Semantics,  Up: Program Behavior
+ 
+-Library Behavior
+-================
++4.2 Library Behavior
++====================
+ 
+-   Try to make library functions reentrant.  If they need to do dynamic
++Try to make library functions reentrant.  If they need to do dynamic
+ storage allocation, at least try to avoid any nonreentrancy aside from
+ that of `malloc' itself.
+ 
+@@ -459,10 +456,10 @@ fit any naming convention.
+ 
+ File: standards.info,  Node: Errors,  Next: User Interfaces,  Prev: Libraries,  Up: Program Behavior
+ 
+-Formatting Error Messages
+-=========================
++4.3 Formatting Error Messages
++=============================
+ 
+-   Error messages from compilers should look like this:
++Error messages from compilers should look like this:
+ 
+      SOURCE-FILE-NAME:LINENO: MESSAGE
+ 
+@@ -495,12 +492,12 @@ end with a period.
+ 
+ File: standards.info,  Node: User Interfaces,  Next: Option Table,  Prev: Errors,  Up: Program Behavior
+ 
+-Standards for Command Line Interfaces
+-=====================================
++4.4 Standards for Command Line Interfaces
++=========================================
+ 
+-   Please don't make the behavior of a utility depend on the name used
+-to invoke it.  It is useful sometimes to make a link to a utility with
+-a different name, and that should not change what it does.
++Please don't make the behavior of a utility depend on the name used to
++invoke it.  It is useful sometimes to make a link to a utility with a
++different name, and that should not change what it does.
+ 
+    Instead, use a run time option or a compilation switch or both to
+ select among the alternate behaviors.
+@@ -543,7 +540,7 @@ consistent from program to program.  For
+ to expect the "verbose" option of any GNU program which has one, to be
+ spelled precisely `--verbose'.  To achieve this uniformity, look at the
+ table of common long-option names when you choose the option names for
+-your program (*note Option Table::.).
++your program (*note Option Table::).
+ 
+    It is usually a good idea for file names given as ordinary arguments
+ to be input files only; any output files would be specified using
+@@ -568,7 +565,7 @@ among GNU utilities, and fewer idiosyncr
+ 
+           GNU Emacs 19.30
+ 
+-     The program's name should be a constant string; *don't* compute it
++     The program's name should be a constant string; _don't_ compute it
+      from `argv[0]'.  The idea is to state the standard or canonical
+      name for the program, not its file name.  There are other ways to
+      find out the precise file name where a command is found in `PATH'.
+@@ -642,10 +639,10 @@ among GNU utilities, and fewer idiosyncr
+ 
+ File: standards.info,  Node: Option Table,  Next: Memory Usage,  Prev: User Interfaces,  Up: Program Behavior
+ 
+-Table of Long Options
+-=====================
++4.5 Table of Long Options
++=========================
+ 
+-   Here is a table of long options used by GNU programs.  It is surely
++Here is a table of long options used by GNU programs.  It is surely
+ incomplete, but we aim to list all the options that a new program might
+ want to be compatible with.  If you use names not already in the table,
+ please send <gnu@gnu.org> a list of them, with their meanings, so we
+@@ -1398,7 +1395,7 @@ can update the table.
+      `-q' in Make.
+ 
+ `quiet'
+-     Used in many programs to inhibit the usual output.  *Note:* every
++     Used in many programs to inhibit the usual output.  *Note_* every
+      program accepting `--quiet' should accept `--silent' as a synonym.
+ 
+ `quiet-unshar'
+@@ -1510,7 +1507,7 @@ can update the table.
+      `-T' in `cat'.
+ 
+ `silent'
+-     Used in many programs to inhibit the usual output.  *Note:* every
++     Used in many programs to inhibit the usual output.  *Note_* every
+      program accepting `--silent' should accept `--quiet' as a synonym.
+ 
+ `size'
+@@ -1710,12 +1707,12 @@ can update the table.
+ 
+ File: standards.info,  Node: Memory Usage,  Prev: Option Table,  Up: Program Behavior
+ 
+-Memory Usage
+-============
++4.6 Memory Usage
++================
+ 
+-   If it typically uses just a few meg of memory, don't bother making
+-any effort to reduce memory usage.  For example, if it is impractical
+-for other reasons to operate on files more than a few meg long, it is
++If it typically uses just a few meg of memory, don't bother making any
++effort to reduce memory usage.  For example, if it is impractical for
++other reasons to operate on files more than a few meg long, it is
+ reasonable to read entire input files into core to operate on them.
+ 
+    However, for programs such as `cat' or `tail', that can usefully
+@@ -1732,10 +1729,10 @@ in core and give a fatal error if `mallo
+ 
+ File: standards.info,  Node: Writing C,  Next: Documentation,  Prev: Program Behavior,  Up: Top
+ 
+-Making The Best Use of C
+-************************
++5 Making The Best Use of C
++**************************
+ 
+-   This node provides advice on how best to use the C language when
++This node provides advice on how best to use the C language when
+ writing GNU software.
+ 
+ * Menu:
+@@ -1746,17 +1743,17 @@ writing GNU software.
+ * Names::                       Naming Variables and Functions
+ * System Portability::          Portability between different operating systems
+ * CPU Portability::             Supporting the range of CPU types
+-* System Functions::            Portability and "standard" library functions
++* System Functions::            Portability and ``standard'' library functions
+ * Internationalization::        Techniques for internationalization
+ * Mmap::                        How you can safely use `mmap'.
+ 
+ 
+ File: standards.info,  Node: Formatting,  Next: Comments,  Up: Writing C
+ 
+-Formatting Your Source Code
+-===========================
++5.1 Formatting Your Source Code
++===============================
+ 
+-   It is important to put the open-brace that starts the body of a C
++It is important to put the open-brace that starts the body of a C
+ function in column zero, and avoid putting any other open-brace or
+ open-parenthesis or open-bracket in column zero.  Several tools look
+ for open-braces in column zero to find the beginnings of C functions.
+@@ -1855,11 +1852,11 @@ page.  The formfeeds should appear alone
+ 
+ File: standards.info,  Node: Comments,  Next: Syntactic Conventions,  Prev: Formatting,  Up: Writing C
+ 
+-Commenting Your Work
+-====================
++5.2 Commenting Your Work
++========================
+ 
+-   Every program should start with a comment saying briefly what it is
+-for.  Example: `fmt - filter for simple filling of text'.
++Every program should start with a comment saying briefly what it is for.
++Example: `fmt - filter for simple filling of text'.
+ 
+    Please write the comments in a GNU program in English, because
+ English is the one language that nearly all programmers in all
+@@ -1908,9 +1905,9 @@ function itself would be off the bottom
+ 
+    Every `#endif' should have a comment, except in the case of short
+ conditionals (just a few lines) that are not nested.  The comment should
+-state the condition of the conditional that is ending, *including its
+-sense*.  `#else' should have a comment describing the condition *and
+-sense* of the code that follows.  For example:
++state the condition of the conditional that is ending, _including its
++sense_.  `#else' should have a comment describing the condition _and
++sense_ of the code that follows.  For example:
+ 
+      #ifdef foo
+        ...
+@@ -1935,11 +1932,11 @@ but, by contrast, write the comments thi
+ 
+ File: standards.info,  Node: Syntactic Conventions,  Next: Names,  Prev: Comments,  Up: Writing C
+ 
+-Clean Use of C Constructs
+-=========================
++5.3 Clean Use of C Constructs
++=============================
+ 
+-   Please explicitly declare all arguments to functions.  Don't omit
+-them just because they are `int's.
++Please explicitly declare all arguments to functions.  Don't omit them
++just because they are `int's.
+ 
+    Declarations of external functions and functions to appear later in
+ the source file should all go in one place near the beginning of the
+@@ -2040,10 +2037,10 @@ pointer constant, except when calling a
+ 
+ File: standards.info,  Node: Names,  Next: System Portability,  Prev: Syntactic Conventions,  Up: Writing C
+ 
+-Naming Variables and Functions
+-==============================
++5.4 Naming Variables and Functions
++==================================
+ 
+-   The names of global variables and functions in a program serve as
++The names of global variables and functions in a program serve as
+ comments of a sort.  So don't choose terse names--instead, look for
+ names that give useful information about the meaning of the variable or
+ function.  In a GNU program, names should be English, like other
+@@ -2080,10 +2077,10 @@ may not care about.
+ 
+ File: standards.info,  Node: System Portability,  Next: CPU Portability,  Prev: Names,  Up: Writing C
+ 
+-Portability between System Types
+-================================
++5.5 Portability between System Types
++====================================
+ 
+-   In the Unix world, "portability" refers to porting to different Unix
++In the Unix world, "portability" refers to porting to different Unix
+ versions.  For a GNU program, this kind of portability is desirable, but
+ not paramount.
+ 
+@@ -2120,10 +2117,10 @@ trouble debugging your program today.
+ 
+ File: standards.info,  Node: CPU Portability,  Next: System Functions,  Prev: System Portability,  Up: Writing C
+ 
+-Portability between CPUs
+-========================
++5.6 Portability between CPUs
++============================
+ 
+-   Even GNU systems will differ because of differences among CPU
++Even GNU systems will differ because of differences among CPU
+ types--for example, difference in byte ordering and alignment
+ requirements.  It is absolutely essential to handle these differences.
+ However, don't make any effort to cater to the possibility that an
+@@ -2160,7 +2157,7 @@ that pass their arguments along to `prin
+      }
+ 
+ In practice, this works on all machines, and it is much simpler than any
+-"correct" alternative.  Be sure *not* to use a prototype for such
++"correct" alternative.  Be sure _not_ to use a prototype for such
+ functions.
+ 
+    However, avoid casting pointers to integers unless you really need
+@@ -2173,10 +2170,10 @@ you'll have to make explicit provisions
+ 
+ File: standards.info,  Node: System Functions,  Next: Internationalization,  Prev: CPU Portability,  Up: Writing C
+ 
+-Calling System Functions
+-========================
++5.7 Calling System Functions
++============================
+ 
+-   C implementations differ substantially.  ANSI C reduces but does not
++C implementations differ substantially.  ANSI C reduces but does not
+ eliminate the incompatibilities; meanwhile, many users wish to compile
+ GNU software with pre-ANSI compilers.  This chapter gives
+ recommendations for how to use the more or less standard C library
+@@ -2274,7 +2271,7 @@ functions to avoid unnecessary loss of p
+           #ifndef HAVE_STRRCHR
+           #define strrchr rindex
+           #endif
+-          
++
+           char *strchr ();
+           char *strrchr ();
+ 
+@@ -2285,11 +2282,11 @@ get them properly defined is to use Auto
+ 
+ File: standards.info,  Node: Internationalization,  Next: Mmap,  Prev: System Functions,  Up: Writing C
+ 
+-Internationalization
+-====================
++5.8 Internationalization
++========================
+ 
+-   GNU has a library called GNU gettext that makes it easy to translate
+-the messages in a program into various languages.  You should use this
++GNU has a library called GNU gettext that makes it easy to translate the
++messages in a program into various languages.  You should use this
+ library in every program.  Use English for the messages as they appear
+ in the program, and let gettext provide the way to translate them into
+ other languages.
+@@ -2365,10 +2362,10 @@ calls does the job straightfowardly if t
+ 
+ File: standards.info,  Node: Mmap,  Prev: Internationalization,  Up: Writing C
+ 
+-Mmap
+-====
++5.9 Mmap
++========
+ 
+-   Don't assume that `mmap' either works on all files or fails for all
++Don't assume that `mmap' either works on all files or fails for all
+ files.  It may work on some files and fail on others.
+ 
+    The proper way to use `mmap' is to try it on the specific file for
+@@ -2384,8 +2381,8 @@ of files.
+ 
+ File: standards.info,  Node: Documentation,  Next: Managing Releases,  Prev: Writing C,  Up: Top
+ 
+-Documenting Programs
+-********************
++6 Documenting Programs
++**********************
+ 
+ * Menu:
+ 
+@@ -2400,10 +2397,10 @@ Documenting Programs
+ 
+ File: standards.info,  Node: GNU Manuals,  Next: Manual Structure Details,  Up: Documentation
+ 
+-GNU Manuals
+-===========
++6.1 GNU Manuals
++===============
+ 
+-   The preferred way to document part of the GNU system is to write a
++The preferred way to document part of the GNU system is to write a
+ manual in the Texinfo formatting language.  See the Texinfo manual,
+ either the hardcopy, or the on-line version available through `info' or
+ the Emacs Info subsystem (`C-h i').
+@@ -2429,7 +2426,7 @@ have its own manual.  That would be foll
+ implementation, rather than the structure that helps the user
+ understand.
+ 
+-   Instead, each manual should cover a coherent *topic*.  For example,
++   Instead, each manual should cover a coherent _topic_.  For example,
+ instead of a manual for `diff' and a manual for `diff3', we have one
+ manual for "comparison of files" which covers both of those programs,
+ as well as `cmp'.  By documenting these programs together, we can make
+@@ -2452,8 +2449,8 @@ start, and should also provide all the d
+ logical breakdown of its topic, but order the sections, and write their
+ text, so that reading the chapter straight through makes sense.  Do
+ likewise when structuring the book into chapters, and when structuring a
+-section into paragraphs.  The watchword is, *at each point, address the
+-most fundamental and important issue raised by the preceding text.*
++section into paragraphs.  The watchword is, _at each point, address the
++most fundamental and important issue raised by the preceding text._
+ 
+    If necessary, add extra chapters at the beginning of the manual which
+ are purely tutorial and cover the basics of the subject.  These provide
+@@ -2477,13 +2474,13 @@ computer program.  Please use "invalid"
+ 
+ File: standards.info,  Node: Manual Structure Details,  Next: NEWS File,  Prev: GNU Manuals,  Up: Documentation
+ 
+-Manual Structure Details
+-========================
++6.2 Manual Structure Details
++============================
+ 
+-   The title page of the manual should state the version of the
+-programs or packages documented in the manual.  The Top node of the
+-manual should also contain this information.  If the manual is changing
+-more frequently than or independent of the program, also state a version
++The title page of the manual should state the version of the programs or
++packages documented in the manual.  The Top node of the manual should
++also contain this information.  If the manual is changing more
++frequently than or independent of the program, also state a version
+ number for the manual in both of these places.
+ 
+    Each program documented in the manual should should have a node named
+@@ -2506,14 +2503,14 @@ for each program described.
+ 
+ File: standards.info,  Node: NEWS File,  Next: Change Logs,  Prev: Manual Structure Details,  Up: Documentation
+ 
+-The NEWS File
+-=============
++6.3 The NEWS File
++=================
+ 
+-   In addition to its manual, the package should have a file named
+-`NEWS' which contains a list of user-visible changes worth mentioning.
+-In each new release, add items to the front of the file and identify
+-the version they pertain to.  Don't discard old items; leave them in
+-the file after the newer items.  This way, a user upgrading from any
++In addition to its manual, the package should have a file named `NEWS'
++which contains a list of user-visible changes worth mentioning.  In
++each new release, add items to the front of the file and identify the
++version they pertain to.  Don't discard old items; leave them in the
++file after the newer items.  This way, a user upgrading from any
+ previous version can see what is new.
+ 
+    If the `NEWS' file gets very long, move some of the older items into
+@@ -2523,10 +2520,10 @@ that file.
+ 
+ File: standards.info,  Node: Change Logs,  Next: Man Pages,  Prev: NEWS File,  Up: Documentation
+ 
+-Change Logs
+-===========
++6.4 Change Logs
++===============
+ 
+-   Keep a change log to describe all the changes made to program source
++Keep a change log to describe all the changes made to program source
+ files.  The purpose of this is so that people investigating bugs in the
+ future will know about the changes that might have introduced the bug.
+ Often a new bug can be found by looking at what was recently changed.
+@@ -2544,10 +2541,10 @@ history of how the conflicting concepts
+ 
+ File: standards.info,  Node: Change Log Concepts,  Next: Style of Change Logs,  Up: Change Logs
+ 
+-Change Log Concepts
+--------------------
++6.4.1 Change Log Concepts
++-------------------------
+ 
+-   You can think of the change log as a conceptual "undo list" which
++You can think of the change log as a conceptual "undo list" which
+ explains how earlier versions were different from the current version.
+ People can see the current version; they don't need the change log to
+ tell them what is in it.  What they want from a change log is a clear
+@@ -2581,20 +2578,20 @@ describe the changes you made to that fu
+ 
+ File: standards.info,  Node: Style of Change Logs,  Next: Simple Changes,  Prev: Change Log Concepts,  Up: Change Logs
+ 
+-Style of Change Logs
+---------------------
++6.4.2 Style of Change Logs
++--------------------------
+ 
+-   Here are some examples of change log entries:
++Here are some examples of change log entries:
+ 
+      * register.el (insert-register): Return nil.
+      (jump-to-register): Likewise.
+-     
++
+      * sort.el (sort-subr): Return nil.
+-     
++
+      * tex-mode.el (tex-bibtex-file, tex-file, tex-region):
+      Restart the tex shell if process is gone or stopped.
+      (tex-shell-running): New function.
+-     
++
+      * expr.c (store_one_arg): Round size up for move_block_to_reg.
+      (expand_call): Round up when emitting USE insns.
+      * stmt.c (assign_parms): Round size up for move_block_from_reg.
+@@ -2618,10 +2615,10 @@ name and the asterisk when successive en
+ 
+ File: standards.info,  Node: Simple Changes,  Next: Conditional Changes,  Prev: Style of Change Logs,  Up: Change Logs
+ 
+-Simple Changes
+---------------
++6.4.3 Simple Changes
++--------------------
+ 
+-   Certain simple kinds of changes don't need much detail in the change
++Certain simple kinds of changes don't need much detail in the change
+ log.
+ 
+    When you change the calling sequence of a function in a simple
+@@ -2647,13 +2644,13 @@ documentation says with the way the prog
+ 
+ File: standards.info,  Node: Conditional Changes,  Prev: Simple Changes,  Up: Change Logs
+ 
+-Conditional Changes
+--------------------
++6.4.4 Conditional Changes
++-------------------------
+ 
+-   C programs often contain compile-time `#if' conditionals.  Many
+-changes are conditional; sometimes you add a new definition which is
+-entirely contained in a conditional.  It is very useful to indicate in
+-the change log the conditions for which the change applies.
++C programs often contain compile-time `#if' conditionals.  Many changes
++are conditional; sometimes you add a new definition which is entirely
++contained in a conditional.  It is very useful to indicate in the
++change log the conditions for which the change applies.
+ 
+    Our convention for indicating conditional changes is to use square
+ brackets around the name of the condition.
+@@ -2676,17 +2673,17 @@ are contained in a `#ifdef HAVE_LIBNCURS
+      * dispnew.c (init_display) [HAVE_LIBNCURSES]: If X, call tgetent.
+ 
+    Here is an entry for a change that takes affect only when a certain
+-macro is *not* defined:
++macro is _not_ defined:
+ 
+      (gethostname) [!HAVE_SOCKETS]: Replace with winsock version.
+ 
+ 
+ File: standards.info,  Node: Man Pages,  Next: Reading other Manuals,  Prev: Change Logs,  Up: Documentation
+ 
+-Man Pages
+-=========
++6.5 Man Pages
++=============
+ 
+-   In the GNU project, man pages are secondary.  It is not necessary or
++In the GNU project, man pages are secondary.  It is not necessary or
+ expected for every GNU program to have a man page, but some of them do.
+ It's your choice whether to include a man page in your program.
+ 
+@@ -2717,10 +2714,10 @@ documentation.
+ 
+ File: standards.info,  Node: Reading other Manuals,  Prev: Man Pages,  Up: Documentation
+ 
+-Reading other Manuals
+-=====================
++6.6 Reading other Manuals
++=========================
+ 
+-   There may be non-free books or documentation files that describe the
++There may be non-free books or documentation files that describe the
+ program you are documenting.
+ 
+    It is ok to use these documents for reference, just as the author of
+@@ -2735,10 +2732,10 @@ with the FSF about the individual case.
+ 
+ File: standards.info,  Node: Managing Releases,  Prev: Documentation,  Up: Top
+ 
+-The Release Process
+-*******************
++7 The Release Process
++*********************
+ 
+-   Making a release is more than just bundling up your source files in a
++Making a release is more than just bundling up your source files in a
+ tar file and putting it up for FTP.  You should set up your software so
+ that it can be configured to run on a variety of systems.  Your Makefile
+ should conform to the GNU standards described below, and your directory
+@@ -2755,10 +2752,10 @@ GNU software.
+ 
+ File: standards.info,  Node: Configuration,  Next: Makefile Conventions,  Up: Managing Releases
+ 
+-How Configuration Should Work
+-=============================
++7.1 How Configuration Should Work
++=================================
+ 
+-   Each GNU distribution should come with a shell script named
++Each GNU distribution should come with a shell script named
+ `configure'.  This script is given arguments which describe the kind of
+ machine and system you want to compile the program for.
+ 
+@@ -2767,12 +2764,12 @@ they affect compilation.
+ 
+    One way to do this is to make a link from a standard name such as
+ `config.h' to the proper configuration file for the chosen system.  If
+-you use this technique, the distribution should *not* contain a file
++you use this technique, the distribution should _not_ contain a file
+ named `config.h'.  This is so that people won't be able to build the
+ program without configuring it first.
+ 
+    Another thing that `configure' can do is to edit the Makefile.  If
+-you do this, the distribution should *not* contain a file named
++you do this, the distribution should _not_ contain a file named
+ `Makefile'.  Instead, it should include a file `Makefile.in' which
+ contains the input used for editing.  Once again, this is so that people
+ won't be able to build the program without configuring it first.
+@@ -2908,10 +2905,10 @@ ignore most of its arguments.
+ 
+ File: standards.info,  Node: Makefile Conventions,  Next: Releases,  Prev: Configuration,  Up: Managing Releases
+ 
+-Makefile Conventions
+-====================
++7.2 Makefile Conventions
++========================
+ 
+-   This node describes conventions for writing the Makefiles for GNU
++This node describes conventions for writing the Makefiles for GNU
+ programs.
+ 
+ * Menu:
+@@ -2927,10 +2924,10 @@ programs.
+ 
+ File: standards.info,  Node: Makefile Basics,  Next: Utilities in Makefiles,  Up: Makefile Conventions
+ 
+-General Conventions for Makefiles
+----------------------------------
++7.2.1 General Conventions for Makefiles
++---------------------------------------
+ 
+-   Every Makefile should contain this line:
++Every Makefile should contain this line:
+ 
+      SHELL = /bin/sh
+ 
+@@ -3007,10 +3004,10 @@ their subtargets) work correctly with a
+ 
+ File: standards.info,  Node: Utilities in Makefiles,  Next: Command Variables,  Prev: Makefile Basics,  Up: Makefile Conventions
+ 
+-Utilities in Makefiles
+-----------------------
++7.2.2 Utilities in Makefiles
++----------------------------
+ 
+-   Write the Makefile commands (and any shell scripts, such as
++Write the Makefile commands (and any shell scripts, such as
+ `configure') to run in `sh', not in `csh'.  Don't use any special
+ features of `ksh' or `bash'.
+ 
+@@ -3062,10 +3059,10 @@ exist.
+ 
+ File: standards.info,  Node: Command Variables,  Next: Directory Variables,  Prev: Utilities in Makefiles,  Up: Makefile Conventions
+ 
+-Variables for Specifying Commands
+----------------------------------
++7.2.3 Variables for Specifying Commands
++---------------------------------------
+ 
+-   Makefiles should provide variables for overriding certain commands,
++Makefiles should provide variables for overriding certain commands,
+ options, and so on.
+ 
+    In particular, you should run most utility programs via variables.
+@@ -3080,14 +3077,13 @@ need to replace them with other programs
+    Each program-name variable should come with an options variable that
+ is used to supply options to the program.  Append `FLAGS' to the
+ program-name variable name to get the options variable name--for
+-example, `BISONFLAGS'.  (The names `CFLAGS' for the C compiler,
+-`YFLAGS' for yacc, and `LFLAGS' for lex, are exceptions to this rule,
+-but we keep them because they are standard.) Use `CPPFLAGS' in any
++example, `BISONFLAGS'.  (The name `CFLAGS' is an exception to this
++rule, but we keep it because it is standard.)  Use `CPPFLAGS' in any
+ compilation command that runs the preprocessor, and use `LDFLAGS' in
+ any compilation command that does linking as well as in any direct use
+ of `ld'.
+ 
+-   If there are C compiler options that *must* be used for proper
++   If there are C compiler options that _must_ be used for proper
+ compilation of certain files, do not include them in `CFLAGS'.  Users
+ expect to be able to specify `CFLAGS' freely themselves.  Instead,
+ arrange to pass the necessary options to the C compiler independently
+@@ -3100,7 +3096,7 @@ by defining an implicit rule, like this:
+              $(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) $<
+ 
+    Do include the `-g' option in `CFLAGS', because that is not
+-*required* for proper compilation.  You can consider it a default that
++_required_ for proper compilation.  You can consider it a default that
+ is only recommended.  If the package is set up so that it is compiled
+ with GCC by default, then you might as well include `-O' in the default
+ value of `CFLAGS' as well.
+@@ -3131,11 +3127,11 @@ installed.
+ 
+ File: standards.info,  Node: Directory Variables,  Next: Standard Targets,  Prev: Command Variables,  Up: Makefile Conventions
+ 
+-Variables for Installation Directories
+---------------------------------------
++7.2.4 Variables for Installation Directories
++--------------------------------------------
+ 
+-   Installation directories should always be named by variables, so it
+-is easy to install in a nonstandard place.  The standard names for these
++Installation directories should always be named by variables, so it is
++easy to install in a nonstandard place.  The standard names for these
+ variables are described below.  They are based on a standard filesystem
+ layout; variants of it are used in SVR4, 4.4BSD, Linux, Ultrix v4, and
+ other modern operating systems.
+@@ -3207,7 +3203,7 @@ directories:
+      The directory for installing read-only architecture independent
+      data files.  This should normally be `/usr/local/share', but write
+      it as `$(prefix)/share'.  (If you are using Autoconf, write it as
+-     `@datadir@'.) As a special exception, see `$(infodir)' and
++     `@datadir@'.)  As a special exception, see `$(infodir)' and
+      `$(includedir)' below.
+ 
+ `sysconfdir'
+@@ -3256,8 +3252,8 @@ directories:
+ 
+ `lispdir'
+      The directory for installing any Emacs Lisp files in this package.
+-     By default, it should be `/usr/local/share/emacs/site-lisp', but
+-     it should be written as `$(prefix)/share/emacs/site-lisp'.
++     By default, it should be `/usr/local/share/emacs/site-lisp', but it
++     should be written as `$(prefix)/share/emacs/site-lisp'.
+ 
+      If you are using Autoconf, write the default as `@lispdir@'.  In
+      order to make `@lispdir@' work, you need the following lines in
+@@ -3372,11 +3368,10 @@ they will work sensibly when the user do
+ 
+ File: standards.info,  Node: Standard Targets,  Next: Install Command Categories,  Prev: Directory Variables,  Up: Makefile Conventions
+ 
+-Standard Targets for Users
+---------------------------
++7.2.5 Standard Targets for Users
++--------------------------------
+ 
+-   All GNU programs should have the following targets in their
+-Makefiles:
++All GNU programs should have the following targets in their Makefiles:
+ 
+ `all'
+      Compile the entire program.  This should be the default target.
+@@ -3415,7 +3410,7 @@ Makefiles:
+      that don't have the Unix man page documentation system installed.
+ 
+      The way to install Info files is to copy them into `$(infodir)'
+-     with `$(INSTALL_DATA)' (*note Command Variables::.), and then run
++     with `$(INSTALL_DATA)' (*note Command Variables::), and then run
+      the `install-info' program if it is present.  `install-info' is a
+      program that edits the Info `dir' file to add or update the menu
+      entry for the given Info file; it is part of the Texinfo package.
+@@ -3526,7 +3521,7 @@ Makefiles:
+      is as follows:
+ 
+           info: foo.info
+-          
++
+           foo.info: foo.texi chap1.texi chap2.texi
+                   $(MAKEINFO) $(srcdir)/foo.texi
+ 
+@@ -3544,7 +3539,7 @@ Makefiles:
+      Generate DVI files for all Texinfo documentation.  For example:
+ 
+           dvi: foo.dvi
+-          
++
+           foo.dvi: foo.texi chap1.texi chap2.texi
+                   $(TEXI2DVI) $(srcdir)/foo.texi
+ 
+@@ -3606,18 +3601,18 @@ programs in which they are useful.
+ 
+    ---------- Footnotes ----------
+ 
+-   (1)  `texi2dvi' uses TeX to do the real work of formatting. TeX is
++   (1) `texi2dvi' uses TeX to do the real work of formatting. TeX is
+ not distributed with Texinfo.
+ 
+ 
+ File: standards.info,  Node: Install Command Categories,  Prev: Standard Targets,  Up: Makefile Conventions
+ 
+-Install Command Categories
+---------------------------
++7.2.6 Install Command Categories
++--------------------------------
+ 
+-   When writing the `install' target, you must classify all the
+-commands into three categories: normal ones, "pre-installation"
+-commands and "post-installation" commands.
++When writing the `install' target, you must classify all the commands
++into three categories: normal ones, "pre-installation" commands and
++"post-installation" commands.
+ 
+    Normal commands move files into their proper places, and set their
+ modes.  They may not alter any files except the ones that come entirely
+@@ -3650,7 +3645,7 @@ variable, plus an optional comment at th
+ variables you can use, one for each category; the variable name
+ specifies the category.  Category lines are no-ops in ordinary execution
+ because these three Make variables are normally undefined (and you
+-*should not* define them in the makefile).
++_should not_ define them in the makefile).
+ 
+    Here are the three possible category lines, each with a comment that
+ explains what it means:
+@@ -3674,7 +3669,7 @@ classified as normal.
+ from the Info directory.
+ 
+    If the `install' or `uninstall' target has any dependencies which
+-act as subroutines of installation, then you should start *each*
++act as subroutines of installation, then you should start _each_
+ dependency's commands with a category line, and start the main target's
+ commands with a category line also.  This way, you can ensure that each
+ command is placed in the right category regardless of which of the
+@@ -3718,10 +3713,10 @@ shell script as part of installing the b
+ 
+ File: standards.info,  Node: Releases,  Prev: Makefile Conventions,  Up: Managing Releases
+ 
+-Making Releases
+-===============
++7.3 Making Releases
++===================
+ 
+-   Package the distribution of `Foo version 69.96' up in a gzipped tar
++Package the distribution of `Foo version 69.96' up in a gzipped tar
+ file with the name `foo-69.96.tar.gz'.  It should unpack into a
+ subdirectory named `foo-69.96'.
+ 
+@@ -3785,53 +3780,54 @@ know what other files to get.
+ 
+ 
+ Tag Table:
+-Node: Top1010
+-Node: Preface1554
+-Node: Intellectual Property2582
+-Node: Reading Non-Free Code2957
+-Node: Contributions4689
+-Node: Design Advice6683
+-Node: Compatibility7200
+-Node: Using Extensions8711
+-Node: ANSI C10213
+-Node: Source Language11449
+-Node: Program Behavior12942
+-Node: Semantics13651
+-Node: Libraries17801
+-Node: Errors19036
+-Node: User Interfaces20259
+-Node: Option Table27131
+-Node: Memory Usage41686
+-Node: Writing C42680
+-Node: Formatting43519
+-Node: Comments46791
+-Node: Syntactic Conventions50089
+-Node: Names53027
+-Node: System Portability54763
+-Node: CPU Portability56539
+-Node: System Functions58700
+-Node: Internationalization63804
+-Node: Mmap66952
+-Node: Documentation67657
+-Node: GNU Manuals68215
+-Node: Manual Structure Details72102
+-Node: NEWS File73432
+-Node: Change Logs74113
+-Node: Change Log Concepts74830
+-Node: Style of Change Logs76598
+-Node: Simple Changes78152
+-Node: Conditional Changes79343
+-Node: Man Pages80720
+-Node: Reading other Manuals82339
+-Node: Managing Releases83123
+-Node: Configuration83859
+-Node: Makefile Conventions90799
+-Node: Makefile Basics91479
+-Node: Utilities in Makefiles94648
+-Node: Command Variables96784
+-Node: Directory Variables99812
+-Node: Standard Targets110394
+-Node: Install Command Categories120895
+-Node: Releases125468
++Node: Top963
++Node: Preface1504
++Node: Intellectual Property2533
++Node: Reading Non-Free Code2909
++Node: Contributions4646
++Node: Design Advice6645
++Node: Compatibility7163
++Node: Using Extensions8679
++Node: ANSI C10186
++Node: Source Language11427
++Node: Program Behavior12925
++Node: Semantics13635
++Node: Libraries17790
++Node: Errors19030
++Node: User Interfaces20258
++Node: Option Table27134
++Node: Memory Usage41694
++Node: Writing C42693
++Node: Formatting43535
++Node: Comments46812
++Node: Syntactic Conventions50114
++Node: Names53057
++Node: System Portability54798
++Node: CPU Portability56579
++Node: System Functions58745
++Node: Internationalization63844
++Node: Mmap66997
++Node: Documentation67707
++Node: GNU Manuals68269
++Node: Manual Structure Details72161
++Node: NEWS File73496
++Node: Change Logs74183
++Node: Change Log Concepts74905
++Node: Style of Change Logs76682
++Node: Simple Changes78230
++Node: Conditional Changes79430
++Node: Man Pages80816
++Node: Reading other Manuals82440
++Node: Managing Releases83229
++Node: Configuration83966
++Node: Makefile Conventions90911
++Node: Makefile Basics91596
++Node: Utilities in Makefiles94774
++Node: Command Variables96919
++Node: Directory Variables99891
++Node: Standard Targets110483
++Ref: Standard Targets-Footnote-1120871
++Node: Install Command Categories120971
++Node: Releases125553
+ 
+ End Tag Table
+--- /dev/null
++++ autoconf2.13-2.13/autoscan.1
+@@ -0,0 +1,122 @@
++.\" Copyright (C) 1992, 1993, 1994, 1995, 1996 Free Software Foundation, Inc.
++.\" Copyright (C) 1998 Ben Pfaff.
++.\"
++.\" Permission is granted to make and distribute verbatim copies of
++.\" this manual provided the copyright notice and this permission notice
++.\" are preserved on all copies.
++.\" 
++.\" Permission is granted to copy and distribute modified versions of this
++.\" manual under the conditions for verbatim copying, provided that the entire
++.\" resulting derived work is distributed under the terms of a permission
++.\" notice identical to this one.
++.\" 
++.\" Permission is granted to copy and distribute translations of this manual
++.\" into another language, under the above conditions for modified versions,
++.\" except that this permission notice may be stated in a translation approved
++.\" by the Foundation.
++.\"
++.TH AUTOCONF 1 "Autoconf"
++.SH NAME
++autoscan2.13 - help to create a configure.in file for a software package
++.SH SYNOPSIS
++.B autoscan2.13
++[
++.B --help
++] [
++.B --macrodir=dir
++] [
++.B --verbose
++] [
++.B --version
++]
++.SH DESCRIPTION
++The 
++.B autoscan2.13
++program can help you create a 
++.B configure.in
++file for a
++software package.  
++.B autoscan2.13
++examines source files in the directory
++tree rooted at a directory given as a command line argument, or the
++current directory if none is given.  It searches the source files for
++common portability problems and creates a file 
++.B configure.scan
++which
++is a preliminary 
++.B configure.in
++for that package.
++.PP
++You should manually examine 
++.B configure.scan
++before renaming it to
++.BR configure.in ; 
++it will probably need some adjustments.  Occasionally
++.B autoscan2.13
++outputs a macro in the wrong order relative to another
++macro, so that 
++.B autoconf2.13
++produces a warning; you need to move such
++macros manually.  Also, if you want the package to use a configuration
++header file, you must add a call to 
++.BR AC_CONFIG_HEADER .  
++You might
++also have to change or add some 
++.B #if
++directives to your program in
++order to make it work with Autoconf (see 
++.BR ifnames2.13 (1)), 
++for information about a program that can help with that job).
++.PP
++.B autoscan2.13
++uses several data files, which are installed along with the
++distributed Autoconf macro files, to determine which macros to output
++when it finds particular symbols in a package's source files.  These
++files all have the same format.  Each line consists of a symbol,
++whitespace, and the Autoconf macro to output if that symbol is
++encountered.  Lines starting with 
++.B #
++are comments.
++.PP
++
++.B autoscan2.13
++requires that a Perl interpreter is installed.
++.PP
++
++.B autoscan2.13
++accepts the following options:
++.TP
++.BI --help
++.TP
++.BI -h
++Print a summary of the command line options and exit.
++.TP
++.BI --macrodir=DIR
++.TP
++.BI -m\ DIR
++Look for the installed macro files in directory DIR.  You can also
++set the 
++.B AC_MACRODIR
++environment variable to a directory; this
++option overrides the environment variable.
++.TP
++.BI --verbose
++Print the names of the fiels it examines and the potentially
++interesting symbols it finds in them.  This output can be voluminous.
++.TP
++.BI --version
++Print the version number of Autoconf and exit.
++.PP
++.SH "SEE ALSO"
++.BR autoconf2.13 (1),
++.BR autoheader2.13 (1),
++.BR autoreconf2.13 (1),
++.BR autoupdate2.13 (1),
++.BR ifnames2.13 (1)
++.SH AUTHORS
++David MacKenzie, with help from Franc,ois Pinard, Karl Berry, Richard
++Pixley, Ian Lance Taylor, Roland McGrath, Noah Friedman, David
++D. Zuhn, and many others.  This manpage written by Ben Pfaff
++<pfaffben@debian.org> for the Debian GNU/Linux
++.B autoconf2.13
++package.
+--- /dev/null
++++ autoconf2.13-2.13/config.h.in
+@@ -0,0 +1 @@
++/* config.h.in.  Generated automatically from configure.in by autoheader 2.13.  */
+--- autoconf2.13-2.13.orig/make-stds.texi
++++ autoconf2.13-2.13/make-stds.texi
+@@ -209,12 +209,11 @@ don't need to replace them with other pr
+ Each program-name variable should come with an options variable that is
+ used to supply options to the program.  Append @samp{FLAGS} to the
+ program-name variable name to get the options variable name---for
+-example, @code{BISONFLAGS}.  (The names @code{CFLAGS} for the C
+-compiler, @code{YFLAGS} for yacc, and @code{LFLAGS} for lex, are
+-exceptions to this rule, but we keep them because they are standard.)
+-Use @code{CPPFLAGS} in any compilation command that runs the
+-preprocessor, and use @code{LDFLAGS} in any compilation command that
+-does linking as well as in any direct use of @code{ld}.
++example, @code{BISONFLAGS}.  (The name @code{CFLAGS} is an exception to
++this rule, but we keep it because it is standard.)  Use @code{CPPFLAGS}
++in any compilation command that runs the preprocessor, and use
++@code{LDFLAGS} in any compilation command that does linking as well as
++in any direct use of @code{ld}.
+ 
+ If there are C compiler options that @emph{must} be used for proper
+ compilation of certain files, do not include them in @code{CFLAGS}.
+--- /dev/null
++++ autoconf2.13-2.13/autoupdate.1
+@@ -0,0 +1,97 @@
++.\" Copyright (C) 1992, 1993, 1994, 1995, 1996 Free Software Foundation, Inc.
++.\" Copyright (C) 1998 Ben Pfaff.
++.\"
++.\" Permission is granted to make and distribute verbatim copies of
++.\" this manual provided the copyright notice and this permission notice
++.\" are preserved on all copies.
++.\" 
++.\" Permission is granted to copy and distribute modified versions of this
++.\" manual under the conditions for verbatim copying, provided that the entire
++.\" resulting derived work is distributed under the terms of a permission
++.\" notice identical to this one.
++.\" 
++.\" Permission is granted to copy and distribute translations of this manual
++.\" into another language, under the above conditions for modified versions,
++.\" except that this permission notice may be stated in a translation approved
++.\" by the Foundation.
++.\"
++.TH AUTOUPDATE 1 "Autoconf"
++.SH NAME
++autoupdate2.13 - updates an old configure.in file to version 2
++.SH SYNOPSIS
++.B autoconf2.13
++[
++.B --help
++|
++.B -h
++] [
++.B --macrodir=dir
++|
++.B -m dir
++] [
++.B --version
++]
++.SH DESCRIPTION
++The 
++.B autoupdate2.13
++program updates a 
++.B configure.in
++file that calls
++Autoconf macros by their old names to use the current macro names.  In
++version 2 of Autoconf, most of the macros were renamed to use a more
++uniform and descriptive naming scheme.  Although the old names still
++work , you can make your 
++.B configure.in
++files more readable and make
++it easier to use the current Autoconf documentation if you update them
++to use the new macro names.
++If given no arguments, 
++.B autoupdate2.13
++updates 
++.BR configure.in , 
++backing up
++the original version with the suffix 
++.B ~
++(or the value of the
++environment variable 
++.BR SIMPLE_BACKUP_SUFFIX , 
++if that is set).  If you
++give 
++.B autoupdate2.13
++an argument, it reads that file instead of
++.B configure.in
++and writes the updated file to the standard output.
++.PP
++.B autoconf2.13
++accepts the following options:
++.TP
++.BI --help
++.TP
++.BI -h
++Print a summary of the command line options and exit.
++.TP
++.BI --macrodir=DIR
++.TP
++.BI -m\ DIR
++Look for the installed macro files in directory DIR.  You can also
++set the 
++.B AC_MACRODIR
++environment variable to a directory; this
++option overrides the environment variable.
++.TP
++.BI --version
++Print the version number of Autoconf and exit.
++.PP
++.SH "SEE ALSO"
++.BR autoconf2.13 (1),
++.BR autoheader2.13 (1),
++.BR autoreconf2.13 (1),
++.BR autoscan2.13 (1),
++.BR ifnames2.13 (1)
++.SH AUTHORS
++David MacKenzie, with help from Franc,ois Pinard, Karl Berry, Richard
++Pixley, Ian Lance Taylor, Roland McGrath, Noah Friedman, David
++D. Zuhn, and many others.  This manpage written by Ben Pfaff
++<pfaffben@debian.org> for the Debian GNU/Linux
++.B autoconf2.13
++package.
+--- /dev/null
++++ autoconf2.13-2.13/ifnames.1
+@@ -0,0 +1,98 @@
++.\" Copyright (C) 1992, 1993, 1994, 1995, 1996 Free Software Foundation, Inc.
++.\" Copyright (C) 1998 Ben Pfaff.
++.\"
++.\" Permission is granted to make and distribute verbatim copies of
++.\" this manual provided the copyright notice and this permission notice
++.\" are preserved on all copies.
++.\" 
++.\" Permission is granted to copy and distribute modified versions of this
++.\" manual under the conditions for verbatim copying, provided that the entire
++.\" resulting derived work is distributed under the terms of a permission
++.\" notice identical to this one.
++.\" 
++.\" Permission is granted to copy and distribute translations of this manual
++.\" into another language, under the above conditions for modified versions,
++.\" except that this permission notice may be stated in a translation approved
++.\" by the Foundation.
++.\"
++.TH IFNAMES 1 "Autoconf"
++.SH NAME
++ifnames2.13 - print identifiers that a package uses in C preprocessor
++conditionals
++.SH SYNOPSIS
++.B ifnames2.13
++[
++.B --help
++|
++.B -h
++] [
++.B --macrodir=dir
++|
++.B -m dir
++] [
++.B --version
++]
++.SH DESCRIPTION
++.PP
++.B ifnames2.13
++can help when writing a 
++.B configure.in
++for a software
++package.  It prints the identifiers that the package already uses in C
++preprocessor conditionals.  If a package has already been set up to
++have some portability, this program can help you figure out what its
++.B configure
++needs to check for.  It may help fill in some gaps in a
++.B configure.in
++generated by 
++.B autoscan2.13
++(see 
++.BR autoscan2.13 (1)).
++.PP
++.B ifnames2.13
++scans all of the C source files named on the command line
++(or the standard input, if none are given) and writes to the standard
++output a sorted list of all the identifiers that appear in those files
++in 
++.BR #if , 
++.BR #elif , 
++.BR #ifdef , 
++or 
++.B #ifndef
++directives.  It prints each
++identifier on a line, followed by a space-separated list of the files
++in which that identifier occurs.
++.PP
++.B ifnames2.13
++accepts the following options:
++.TP
++.BI --help
++.TP
++.BI -h
++Print a summary of the command line options and exit.
++.TP
++.BI --macrodir=DIR
++.TP
++.BI -m\ DIR
++Look for the installed macro files in directory DIR.  You can also
++set the 
++.B AC_MACRODIR
++environment variable to a directory; this
++option overrides the environment variable.
++.TP
++.BI --version
++Print the version number of Autoconf and exit.
++.PP
++.SH "SEE ALSO"
++.BR autoconf2.13 (1),
++.BR autoheader2.13 (1),
++.BR autoreconf2.13 (1),
++.BR autoscan2.13 (1),
++.BR autoupdate2.13 (1)
++.SH AUTHORS
++David MacKenzie, with help from Franc,ois Pinard, Karl Berry, Richard
++Pixley, Ian Lance Taylor, Roland McGrath, Noah Friedman, David
++D. Zuhn, and many others.  This manpage written by Ben Pfaff
++<pfaffben@debian.org> for the Debian GNU/Linux
++.B autoconf2.13
++package.
+--- autoconf2.13-2.13.orig/autoheader.sh
++++ autoconf2.13-2.13/autoheader.sh
+@@ -155,7 +155,7 @@ esac
+ # Don't write "do not edit" -- it will get copied into the
+ # config.h, which it's ok to edit.
+ cat <<EOF
+-/* ${config_h_in}.  Generated automatically from $infile by autoheader.  */
++/* ${config_h_in}.  Generated automatically from $infile by autoheader 2.13.  */
+ EOF
+ 
+ test -r ${config_h}.top && cat ${config_h}.top
+@@ -194,7 +194,7 @@ if test -n "$syms"; then
+   # Some fgrep's have limits on the number of lines that can be in the
+   # pattern on the command line, so use a temporary file containing the
+   # pattern.
+-  (fgrep_tmp=${TMPDIR-/tmp}/autoh$$
++  (fgrep_tmp=`mktemp ${TMPDIR-/tmp}/autohXXXXXX` || exit 1
+    trap "rm -f $fgrep_tmp; exit 1" 1 2 15
+    cat > $fgrep_tmp <<EOF
+ $syms
+--- autoconf2.13-2.13.orig/autoupdate.sh
++++ autoconf2.13-2.13/autoupdate.sh
+@@ -26,7 +26,7 @@ usage="\
+ Usage: autoupdate [-h] [--help] [-m dir] [--macrodir=dir] 
+        [--version] [template-file]" 
+ 
+-sedtmp=/tmp/acups.$$
++sedtmp=`mktemp -t acups.XXXXXX` || exit 1
+ # For debugging.
+ #sedtmp=/tmp/acups
+ show_version=no
+@@ -66,7 +66,7 @@ fi
+ 
+ : ${SIMPLE_BACKUP_SUFFIX='~'}
+ 
+-tmpout=acupo.$$
++tmpout=`mktemp -t acupo.XXXXXX` || exit 1
+ trap 'rm -f $sedtmp $tmpout; exit 1' 1 2 15
+ case $# in
+   0) infile=configure.in; out="> $tmpout"
+@@ -75,7 +75,6 @@ case $# in
+ 
+      # Make sure $infile can be written.
+      if test ! -w $infile; then
+-       rm -f $tmpout
+        echo "$0: $infile: cannot write" >&2
+        exit 1
+      fi
+--- autoconf2.13-2.13.orig/autoconf.sh
++++ autoconf2.13-2.13/autoconf.sh
+@@ -45,7 +45,8 @@ case "${M4}" in
+ esac
+ 
+ : ${TMPDIR=/tmp}
+-tmpout=${TMPDIR}/acout.$$
++tmpout=`mktemp ${TMPDIR}/acout.XXXXXX` || exit 1
++trap 'rm -f $tmpin $tmpout' 0
+ localdir=
+ show_version=no
+ 
+@@ -97,7 +98,7 @@ esac
+ 
+ trap 'rm -f $tmpin $tmpout; exit 1' 1 2 15
+ 
+-tmpin=${TMPDIR}/acin.$$ # Always set this, to avoid bogus errors from some rm's.
++tmpin=`mktemp ${TMPDIR}/acin.XXXXXX` || exit 1 # Always set this, to avoid bogus errors from some rm's.
+ if test z$infile = z-; then
+   infile=$tmpin
+   cat > $infile

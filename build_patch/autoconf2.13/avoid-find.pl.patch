@@ -1,0 +1,52 @@
+Description: Do not us deprecated find.pl in autoscan.pl
+ autoscan.pl, as shipped by autoconf2.13 currently uses find.pl, a perl 4 era 
+ library, which is deprecated and will not be part of perl 5.16. Even now, now 
+ using autoscan.pl emits warnings about find.pl deprecation.
+ .
+ This patch adapts autoscan.pl to use the File::Find module (also part
+ of Perl core).
+Author: Damyan Ivanov <dmn@debian.org>
+Bug-Debian: http://bugs.debian.org/658450
+Forwarded: not-needed
+Last-Update: 2011-02-05
+
+---
+diff --git a/autoscan.pl b/autoscan.pl
+index 3285236..afbd66a 100644
+--- a/autoscan.pl
++++ b/autoscan.pl
+@@ -19,7 +19,7 @@
+ 
+ # Written by David MacKenzie <djm@gnu.ai.mit.edu>.
+ 
+-require "find.pl";
++use File::Find qw(find);
+ 
+ $datadir = $ENV{"AC_MACRODIR"} || "@datadir@";
+ $verbose = 0;
+@@ -30,7 +30,7 @@ undef %programs_macros;
+ 
+ &parse_args;
+ &init_tables;
+-&find('.');
++find(\&wanted, '.');
+ &scan_files;
+ &output;
+ 
+@@ -124,13 +124,13 @@ sub init_tables
+ sub wanted
+ {
+     if (/^.*\.[chlymC]$/ || /^.*\.cc$/) {
+-	$name =~ s?^\./??; push(@cfiles, $name);
++	$File::Find::name =~ s?^\./??; push(@cfiles, $File::Find::name);
+     }
+     elsif (/^[Mm]akefile$/ || /^[Mm]akefile\.in$/ || /^GNUmakefile$/) {
+-	$name =~ s?^\./??; push(@makefiles, $name);
++	$File::Find::name =~ s?^\./??; push(@makefiles, $File::Find::name);
+     }
+     elsif (/^.*\.sh$/) {
+-	$name =~ s?^\./??; push(@shfiles, $name);
++	$File::Find::name =~ s?^\./??; push(@shfiles, $File::Find::name);
+     }
+ }
+ 
