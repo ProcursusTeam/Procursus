@@ -10,9 +10,6 @@ mozjs78-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://download.gnome.org/teams/releng/tarballs-needing-help/mozjs/mozjs-$(MOZJS78_VERSION).tar.bz2
 	$(call EXTRACT_TAR,mozjs-$(MOZJS78_VERSION).tar.bz2,mozjs-$(MOZJS78_VERSION),mozjs78)
 	$(call DO_PATCH,mozjs78,mozjs78,-p1)
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(call DO_PATCH,mozjs78-ios,mozjs78,-p1)
-endif
 	sed -i 's/10.15.4/99/g' $(BUILD_WORK)/mozjs78/build/moz.configure/toolchain.configure
 	
 ifneq ($(wildcard $(BUILD_WORK)/mozjs78/.build_complete),)
@@ -34,7 +31,7 @@ mozjs78: mozjs78-setup icu4c readline
 		--enable-readline \
 		--disable-jemalloc \
 		--disable-tests \
-		--disable-jit \
+		--enable-jit \
 		RUSTFLAGS='-L $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib'
 	sed -i 's|HOST_CC = $(CC) -isysroot $(TARGET_SYSROOT)|HOST_CC = $(CC) -isysroot $(MACOSX_SYSROOT)|g' $(BUILD_WORK)/mozjs78/js/src/obj/config/autoconf.mk
 	sed -i 's|HOST_CXX = $(CXX)-isysroot $(TARGET_SYSROOT)|HOST_CXX = $(CXX) -isysroot $(MACOSX_SYSROOT)|g' $(BUILD_WORK)/mozjs78/js/src/obj/config/autoconf.mk
