@@ -1,6 +1,7 @@
 Package: unxip
 Version: @DEB_DARLING_UTILS_V@
 Architecture: @DEB_ARCH@
+Depends: liblzma5, libxar1, cpio
 Maintainer: @DEB_MAINTAINER@
 Section: Archiving
 Priority: optional
