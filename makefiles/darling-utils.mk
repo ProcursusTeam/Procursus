@@ -2,6 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 SUBPROJECTS           += darling-utils
 DARLING_COMMIT        := 9393db2c6ed530acaa2a4a933c391f1363fea1e8
 DARLING_UTILS_VERSION := 2021.08.01
@@ -52,3 +53,4 @@ darling-utils-package: darling-utils-stage
 	rm -rf $(BUILD_DIST)/{unxip,plistbuddy}
 
 .PHONY: darling-utils darling-utils-package
+endif
