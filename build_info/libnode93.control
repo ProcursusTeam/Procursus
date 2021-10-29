@@ -1,15 +1,10 @@
-Package: nodejs
+Package: libnode93
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
-Version: @DEB_NODEJS_V@
-Section: Scripting
-Depends: libnode102 (= @DEB_NODEJS_V@)
-Conflicts: nodejs-lts
-Replaces: nodejs-lts
-Provides: nodejs-lts
-Recommends: ca-certificates
-Suggests: npm
-Description: evented I/O for V8 javascript - runtime executable
+Version: @DEB_NODEJS_LTS_V@
+Section: Libraries
+Depends: libbrotli1, libc-ares2, libssl3, libnghttp2-14, libuv1
+Description: evented I/O for V8 javascript - runtime library
  Node.js is a platform built on Chrome's JavaScript runtime for easily
  building fast, scalable network applications. Node.js uses an
  event-driven, non-blocking I/O model that makes it lightweight and
@@ -21,3 +16,5 @@ Description: evented I/O for V8 javascript - runtime executable
  .
  System, Events, Standard I/O, Modules, Timers, Child Processes, POSIX,
  HTTP, Multipart Parsing, TCP, DNS, Assert, Path, URL, Query Strings.
+ .
+ This package provides the dynamic library for Node.js.
