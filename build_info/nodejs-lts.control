@@ -1,12 +1,12 @@
-Package: nodejs
+Package: nodejs-lts
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
-Version: @DEB_NODEJS_V@
+Version: @DEB_NODEJS_LTS_V@
 Section: Scripting
-Depends: libnode102 (= @DEB_NODEJS_V@)
-Conflicts: nodejs-lts
-Replaces: nodejs-lts
-Provides: nodejs-lts
+Depends: libnode93 (= @DEB_NODEJS_LTS_V@)
+Conflicts: nodejs
+Replaces: nodejs
+Provides: nodejs
 Recommends: ca-certificates
 Suggests: npm
 Description: evented I/O for V8 javascript - runtime executable

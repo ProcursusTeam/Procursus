@@ -10,6 +10,8 @@ DEB_NGTCP2_V   ?= $(NGTCP2_VERSION)
 ngtcp2-setup: setup
 	$(call GITHUB_ARCHIVE,ngtcp2,ngtcp2,$(NGTCP2_COMMIT),$(NGTCP2_COMMIT))
 	$(call EXTRACT_TAR,ngtcp2-$(NGTCP2_COMMIT).tar.gz,ngtcp2-$(NGTCP2_COMMIT),ngtcp2)
+	sed -i '1i #define\ __APPLE_USE_RFC_3542\ 1' $(BUILD_WORK)/ngtcp2/examples/shared.cc
+	sed -i '1i #define\ __APPLE_USE_RFC_3542\ 1' $(BUILD_WORK)/ngtcp2/examples/server.cc
 
 ifneq ($(wildcard $(BUILD_WORK)/ngtcp2/.build_complete),)
 ngtcp2:

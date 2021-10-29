@@ -14,6 +14,7 @@ endif
 SYSROOT :=
 
 UNAME           := $(shell uname -s)
+UNAME_M         := $(shell uname -m)
 SUBPROJECTS     += $(STRAPPROJECTS)
 
 ifneq ($(shell umask),0022)
@@ -333,10 +334,10 @@ LIPO     := $(GNU_HOST_TRIPLE)-lipo
 OTOOL    := $(GNU_HOST_TRIPLE)-otool
 LIBTOOL  := $(GNU_HOST_TRIPLE)-libtool
 
-CFLAGS_FOR_BUILD   :=
-CPPFLAGS_FOR_BUILD :=
-CXXFLAGS_FOR_BUILD :=
-LDFLAGS_FOR_BUILD  :=
+CFLAGS_FOR_BUILD   := -O2 -pipe
+CPPFLAGS_FOR_BUILD := -O2 -pipe
+CXXFLAGS_FOR_BUILD := -O2 -pipe
+LDFLAGS_FOR_BUILD  := -O2 -pipe
 
 else ifeq ($(UNAME),FreeBSD)
 ifneq ($(MEMO_QUIET),1)
