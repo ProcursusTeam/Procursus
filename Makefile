@@ -14,6 +14,7 @@ endif
 SYSROOT :=
 
 UNAME           := $(shell uname -s)
+UNAME_M         := $(shell uname -m)
 SUBPROJECTS     += $(STRAPPROJECTS)
 
 ifneq ($(shell umask),0022)
@@ -71,7 +72,7 @@ endif
 
 export MACOSX_DEPLOYMENT_TARGET
 
-ifeq ($(MEMO_TARGET),iphoneos-arm64)
+ifeq ($(shell [ "$(MEMO_TARGET)" = "iphoneos-arm64" ] || [ "$(MEMO_TARGET)" = "iphoneos-arm64-ramdisk" ] && echo 1),1)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for iOS)
 endif # ($(MEMO_QUIET),1)
@@ -325,6 +326,7 @@ CPP      := $(GNU_HOST_TRIPLE)-clang -E
 AR       := $(GNU_HOST_TRIPLE)-ar
 LD       := $(GNU_HOST_TRIPLE)-ld
 RANLIB   := $(GNU_HOST_TRIPLE)-ranlib
+STRINGS  := $(GNU_HOST_TRIPLE)-strings
 STRIP    := $(GNU_HOST_TRIPLE)-strip
 I_N_T    := $(GNU_HOST_TRIPLE)-install_name_tool
 NM       := $(GNU_HOST_TRIPLE)-nm
@@ -332,10 +334,10 @@ LIPO     := $(GNU_HOST_TRIPLE)-lipo
 OTOOL    := $(GNU_HOST_TRIPLE)-otool
 LIBTOOL  := $(GNU_HOST_TRIPLE)-libtool
 
-CFLAGS_FOR_BUILD   :=
-CPPFLAGS_FOR_BUILD :=
-CXXFLAGS_FOR_BUILD :=
-LDFLAGS_FOR_BUILD  :=
+CFLAGS_FOR_BUILD   := -O2 -pipe
+CPPFLAGS_FOR_BUILD := -O2 -pipe
+CXXFLAGS_FOR_BUILD := -O2 -pipe
+LDFLAGS_FOR_BUILD  := -O2 -pipe
 
 else ifeq ($(UNAME),FreeBSD)
 ifneq ($(MEMO_QUIET),1)
@@ -349,6 +351,7 @@ CPP     := $(GNU_HOST_TRIPLE)-clang -E
 AR      := $(GNU_HOST_TRIPLE)-ar
 LD      := $(GNU_HOST_TRIPLE)-ld
 RANLIB  := $(GNU_HOST_TRIPLE)-ranlib
+STRINGS := $(GNU_HOST_TRIPLE)-strings
 STRIP   := $(GNU_HOST_TRIPLE)-strip
 I_N_T   := $(GNU_HOST_TRIPLE)-install_name_tool
 NM      := $(GNU_HOST_TRIPLE)-nm
@@ -363,7 +366,7 @@ CXXFLAGS_FOR_BUILD :=
 LDFLAGS_FOR_BUILD  :=
 
 else ifeq ($(UNAME),Darwin)
-ifeq ($(shell sw_vers -productName),macOS)
+ifeq ($(shell sw_vers -productName),macOS) # Swap to Mac OS X for devices older than Big Sur
 ifneq ($(MEMO_QUIET),1)
 $(warning Building on MacOS)
 endif # ($(MEMO_QUIET),1)
@@ -399,6 +402,7 @@ endif
 AR              := $(shell which ar)
 LD              := $(shell which ld)
 RANLIB          := $(shell which ranlib)
+STRINGS         := $(shell which strings)
 STRIP           := $(shell which strip)
 NM              := $(shell which nm)
 LIPO            := $(shell which lipo)
@@ -610,6 +614,15 @@ PGP_VERIFY  = KEY=$$(gpg --verify --status-fd 1 $(BUILD_SOURCE)/$(1).$(if $(2),$
 	gpg --verify $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) $(BUILD_SOURCE)/$(1) 2>&1 | grep -q 'Good signature'
 endif
 
+CHECKSUM_VERIFY = if [ "$(1)" = "sha1" ]; then \
+			HASH=$$(sha1sum "$(BUILD_SOURCE)/$(2)" | cut -d " " -f1 | tr -d \n); \
+		elif [ "$(1)" = "sha256" ]; then \
+			HASH=$$(sha256sum "$(BUILD_SOURCE)/$(2)" | cut -d " " -f1 | tr -d \n); \
+		elif [ "$(1)" = "sha512" ]; then \
+			HASH=$$(sha512sum "$(BUILD_SOURCE)/$(2)" | cut -d " " -f1 | tr -d \n); \
+		fi; \
+		[ "$(3)" = "$$HASH" ] || (echo "$(2) - Invalid Hash" && exit 1)
+
 EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 		cd $(BUILD_WORK) && \
 		tar -xf $(BUILD_SOURCE)/$(1) && \
@@ -629,9 +642,9 @@ DO_PATCH    = cd $(BUILD_PATCH)/$(1); \
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 SIGN = 	for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
 			if [ $${file\#\#*.} = "dylib" ] || [ $${file\#\#*.} = "bundle" ] || [ $${file\#\#*.} = "so" ]; then \
-				ldid $(MEMO_LDID_EXTRA_FLAGS) -S $$file; \
+				ldid $(MEMO_LDID_EXTRA_FLAGS) -Cadhoc -S $$file; \
 			else \
-				ldid $(MEMO_LDID_EXTRA_FLAGS) -S$(BUILD_MISC)/entitlements/$(2) $$file; \
+				ldid $(MEMO_LDID_EXTRA_FLAGS) -Cadhoc -S$(BUILD_MISC)/entitlements/$(2) $$file; \
 			fi; \
 		done; \
 		find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
@@ -683,8 +696,12 @@ AFTER_BUILD = \
 	find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.gz$$' -exec gunzip '{}' \; 2> /dev/null; \
 	find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.xz$$' -exec unxz '{}' \; 2> /dev/null; \
 	find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.zst$$' -exec unzstd '{}' \; 2> /dev/null; \
-	find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -exec zstd -19 --rm '{}' \; 2> /dev/null; \
-	find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type l -exec bash -c '$(LN_S) $$(readlink "{}" | sed -e "s/\.gz$$//" -e "s/\.xz$$//" -e "s/\.zst$$//").zst "{}".zst; rm -f "{}"' \; -delete 2> /dev/null; \
+	if [ "$(MEMO_NO_DOC_COMPRESS)" != 1 ]; then \
+		find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -exec zstd -19 --rm '{}' \; 2> /dev/null; \
+		find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type l -exec bash -c '$(LN_S) $$(readlink "{}" | sed -e "s/\.gz$$//" -e "s/\.xz$$//" -e "s/\.zst$$//").zst "{}".zst; rm -f "{}"' \; -delete 2> /dev/null; \
+	else \
+		find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type l -exec bash -c '$(LN_S) $$(readlink "{}" | sed -e "s/\.gz$$//" -e "s/\.xz$$//" -e "s/\.zst$$//") "{}"' \; 2> /dev/null; \
+	fi; \
 	if [ "$(1)" = "copy" ]; then \
 		cp -af $(BUILD_STAGE)/$@/* $(BUILD_BASE); \
 	fi; \
@@ -702,8 +719,10 @@ PACK = \
 		if [ -f "$(BUILD_WORK)/$$(echo $@ | sed 's/-package//')/$$file" ]; then \
 			mkdir -p $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1); \
 			cp -aL $(BUILD_WORK)/$$(echo $@ | sed 's/-package//')/$$file $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1); \
-			if [ ! "$$file" = "AUTHORS" ] && [ ! "$$file" = "COPYING" ] && [ ! "$$file" = "LICENSE" ]; then \
-				zstd -19 --rm $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1)/$$file 2> /dev/null; \
+			if [ "$(MEMO_NO_DOC_COMPRESS)" != 1 ]; then \
+				if [ ! "$$file" = "AUTHORS" ] && [ ! "$$file" = "COPYING" ] && [ ! "$$file" = "LICENSE" ]; then \
+					zstd -19 --rm $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1)/$$file 2> /dev/null; \
+				fi; \
 			fi; \
 		fi; \
 	done; \
@@ -728,6 +747,7 @@ PACK = \
 				sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' \
 					-e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
 					-e 's|@MEMO_ALT_PREFIX@|$(MEMO_ALT_PREFIX)|g' \
+					-e 's|@MEMO_LAUNCHCTL_PREFIX@|$(MEMO_LAUNCHCTL_PREFIX)|g' \
 					-e 's|@GNU_PREFIX@|$(GNU_PREFIX)|g' \
 					-e 's|@BARE_PLATFORM@|$(BARE_PLATFORM)|g' \
 					-e 's/@$(2)@/$($(2))/g' \
@@ -737,6 +757,7 @@ PACK = \
 				sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' \
 					-e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
 					-e 's|@MEMO_ALT_PREFIX@|$(MEMO_ALT_PREFIX)|g' \
+					-e 's|@MEMO_LAUNCHCTL_PREFIX@|$(MEMO_LAUNCHCTL_PREFIX)|g' \
 					-e 's|@GNU_PREFIX@|$(GNU_PREFIX)|g' \
 					-e 's|@BARE_PLATFORM@|$(BARE_PLATFORM)|g' \
 					-e 's/@$(2)@/$($(2))/g' \
@@ -962,6 +983,27 @@ env:
 
 include makefiles/*.mk
 
+RAMDISK_PROJECTS := bash coreutils diskdev-cmds dropbear findutils grep gzip ncurses profile.d readline tar
+
+ramdisk:
+	+MEMO_NO_IOSEXEC=1 $(MAKE) $(RAMDISK_PROJECTS:%=%-package)
+	rm -rf $(BUILD_STRAP)/strap
+	rm -f $(BUILD_DIST)/bootstrap_tools.tar*
+	rm -f $(BUILD_DIST)/.fakeroot_bootstrap
+	touch $(BUILD_DIST)/.fakeroot_bootstrap
+	for DEB in $(BUILD_DIST)/*.deb; do \
+		dpkg-deb -x $$DEB $(BUILD_DIST)/strap; \
+	done
+	ln -s $(MEMO_PREFIX)/bin/bash $(BUILD_DIST)/strap/$(MEMO_PREFIX)/bin/sh
+	echo -e "/bin/sh\n" > $(BUILD_DIST)/strap/$(MEMO_PREFIX)/etc/shells
+	echo -e "#!/bin/sh\n\
+exec dropbear -R -F -E -p \$$@" > $(BUILD_DIST)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/dropbear-wrapper
+	rm -rf $(BUILD_DIST)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/{*.a,pkgconfig},share/{doc,man}}
+	export FAKEROOT='fakeroot -i $(BUILD_DIST)/.fakeroot_bootstrap -s $(BUILD_DIST)/.fakeroot_bootstrap --'; \
+	cd $(BUILD_DIST)/strap && $$FAKEROOT tar -ckpf $(BUILD_DIST)/bootstrap_tools.tar .
+	gzip -9 $(BUILD_DIST)/bootstrap_tools.tar
+	rm -rf $(BUILD_DIST)/strap
+
 package:: $(SUBPROJECTS:%=%-package)
 
 strapprojects:: export BUILD_DIST=$(BUILD_STRAP)
@@ -1113,8 +1155,8 @@ setup:
 	@cp -a $(BUILD_MISC)/{libxml-2.0,zlib}.pc $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 
 ifeq ($(UNAME),FreeBSD)
-	@# FreeBSD does not have stdbool.h and stdarg.h
-	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Headers/{stdbool.h,stdarg.h} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	@# FreeBSD's LLVM does not have stdbool.h, stdatomic.h, and stdarg.h
+	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Headers/{stdbool,stdatomic,stdarg}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	@cp -af /usr/include/stdalign.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 endif
 
@@ -1152,12 +1194,12 @@ endif
 	@sed -E -e '\|/bin:|! s|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' -e '\|/var/tmp|! s|/var|$(MEMO_PREFIX)/var|g' -e '\|/bin:|! s|"/bin|"$(MEMO_PREFIX)/bin|g' -e '\|/bin:|! s|"/sbin|"$(MEMO_PREFIX)/sbin|g' -e 's|/etc|$(MEMO_PREFIX)/etc|g' -e 's|/usr/bin:|$(MEMO_PREFIX)/bin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin:/usr/bin:|g' -e 's|/usr/sbin:|$(MEMO_PREFIX)/sbin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin:/usr/sbin:|g' < $(TARGET_SYSROOT)/usr/include/grp.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/grp.h
 	@sed -E -e '\|/bin:|! s|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' -e '\|/var/tmp|! s|/var|$(MEMO_PREFIX)/var|g' -e '\|/bin:|! s|"/bin|"$(MEMO_PREFIX)/bin|g' -e '\|/bin:|! s|"/sbin|"$(MEMO_PREFIX)/sbin|g' -e 's|/etc|$(MEMO_PREFIX)/etc|g' -e 's|/usr/bin:|$(MEMO_PREFIX)/bin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin:/usr/bin:|g' -e 's|/usr/sbin:|$(MEMO_PREFIX)/sbin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin:/usr/sbin:|g' < $(TARGET_SYSROOT)/usr/include/paths.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/paths.h
 
-ifneq ($(MEMO_NO_IOSEXEC),1)
 	@# Setup libiosexec
 	@cp -af $(BUILD_MISC)/libiosexec/libiosexec.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	@cp -af $(BUILD_MISC)/libiosexec/libiosexec.1.tbd $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.1.tbd
 	@$(LN_S) libiosexec.1.tbd $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.tbd
 	@rm -f $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.*.dylib
+ifneq ($(MEMO_NO_IOSEXEC),1)
 	@sed -i '1s/^/#include <libiosexec.h>\n/' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/spawn.h
 endif
 endif
@@ -1172,5 +1214,47 @@ clean::
 
 extreme-clean: clean
 	rm -rf $(BUILD_ROOT)/build_{source,strap,dist}
+
+define mootext
+                 (__)
+                 (oo)
+           /------\/
+          / |    ||
+         *  /\---/\
+            ~~   ~~
+..."Have you mooed today?"...
+endef
+define helptext
+$(MAKE)                        - Compiles the entire Procursus suite and packs it into debian packages.
+$(MAKE) help                   - Display this text
+$(MAKE) (tool)                 - Used to compile only a specified tool.
+$(MAKE) (tool)-package         - Used to compile only a specified tool and pack it into a debian package.
+$(MAKE) rebuild-(tool)         - Used to recompile only a specified tool after it's already been compiled before.
+$(MAKE) rebuild-(tool)-package - Used to recompile only a specified tool after it's already been compiled before and pack it into a debian package.
+$(MAKE) clean                  - Clean out $(BUILD_STAGE), $(BUILD_BASE), and $(BUILD_WORK).
+$(MAKE) extreme-clean          - Runs `$(MAKE) clean`and cleans out $(BUILD_DIST).
+$(MAKE) proenv                 - Print the proenv shell function to STDOUT to give a cross-compilation environment in your POSIX shell (make proenv >> ~/.zshrc)
+$(MAKE) env                    - Print the environment variables inside the makefile
+$(MAKE) (tool)-deps            - Print the dylibs linked by (tool)
+
+Some influential environmental variables:
+MEMO_TARGET     Can be set to any of the supported host systems. Pretty self explainatory. (Defaults to darwin-arm64)
+MEMO_CFVER      Used to set minimum *OS version to compile for. Use the CoreFoundation version that coresponds to the OS version you're compiling for. (Defaults to 1700 for iOS 14)
+NO_PGP          Set to 1 if you want to bypass verifying tarballs with gpg. Useful if you just want a quick build without importing everyone's public keys.
+TARGET_SYSROOT  Path to your chosen iPhone SDK. (Defaults to Xcode default path on macOS and the cctools-port default path on Linux.)
+MACOSX_SYSROOT  Path to your chosen macOS SDK. (Defaults to Xcode default path on macOS and the cctools-port default path on Linux.)
+BUILD_ROOT      If you have this repo in one place, but want to build everything in a different place, set BUILD_ROOT to said different place. (Untested but should work fine.)
+MEMO_QUIET      Mute unnecessary warnings and echos.
+
+Report issues to: https://github.com/ProcursusTeam/Procursus/issues
+For extra and updated help please refer to thr wiki: https://github.com/ProcursusTeam/Procursus/wiki
+
+This Makefile has super cow powers.
+endef
+export mootext helptext
+moo:
+	@echo "$$mootext"
+help:
+	@echo "$$helptext"
 
 .PHONY: clean setup

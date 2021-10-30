@@ -28,7 +28,9 @@ ifneq ($(wildcard $(BUILD_WORK)/coreutils/.build_complete),)
 coreutils:
 	@echo "Using previously built coreutils."
 else
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+ifneq (,$(findstring ramdisk,$(MEMO_TARGET)))
+coreutils: coreutils-setup
+else ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 coreutils: coreutils-setup gettext libgmp10 libxcrypt openssl
 else # (,$(findstring darwin,$(MEMO_TARGET)))
 coreutils: coreutils-setup gettext libgmp10 openssl
