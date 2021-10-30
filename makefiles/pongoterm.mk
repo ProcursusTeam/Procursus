@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += pongoterm
-PONGOTERM_VERSION := 1
-PONGOOS_COMMIT    := ac3393f34926963cd50b539dab829b2b59a63b46
+PONGOTERM_VERSION := 2021.10.26
+PONGOOS_COMMIT    := 228aa98a92a6508ba83aabd435583ddd87aefe50
 DEB_PONGOTERM_V   ?= $(PONGOTERM_VERSION)
 
 pongoterm-setup: setup
