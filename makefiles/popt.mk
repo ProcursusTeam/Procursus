@@ -15,14 +15,16 @@ popt:
 	@echo "Using previously built popt."
 else
 popt: popt-setup
-	cd $(BUILD_WORK)/popt && ./autogen.sh && ./configure -C \
+	cd $(BUILD_WORK)/popt; \
+	./autogen.sh; \
+	./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
+
 	+$(MAKE) -C $(BUILD_WORK)/popt
 	+$(MAKE) -C $(BUILD_WORK)/popt install \
 		DESTDIR=$(BUILD_STAGE)/popt
-	+$(MAKE) -C $(BUILD_WORK)/popt install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/popt/.build_complete
+
+	$(call AFTER_BUILD,copy)
 endif
 
 popt-package: popt-stage

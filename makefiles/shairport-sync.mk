@@ -15,7 +15,9 @@ shairport-sync:
 	@echo "Using previously built shairport-sync."
 else
 shairport-sync: shairport-sync-setup openssl libsoundio libao libsoxr popt libconfig alac
-	cd $(BUILD_WORK)/shairport-sync && autoreconf -fi && ./configure -C \
+	cd $(BUILD_WORK)/shairport-sync; \
+	autoreconf -fi; \
+	./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-os=darwin \
 		--with-dummy \
@@ -47,7 +49,7 @@ shairport-sync: shairport-sync-setup openssl libsoundio libao libsoxr popt libco
 			$(SED) -i 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $$file; \
 	done
 
-	touch $(BUILD_WORK)/shairport-sync/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 shairport-sync-package: shairport-sync-stage

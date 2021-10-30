@@ -15,14 +15,16 @@ alac:
 	@echo "Using previously built alac."
 else
 alac: alac-setup
-	cd $(BUILD_WORK)/alac && autoreconf -fi && CFLAGS="$(CFLAGS) -DTARGET_OS_MAC" ./configure -C \
+	cd $(BUILD_WORK)/alac; \
+	autoreconf -fi; \
+	CFLAGS="$(CFLAGS) -DTARGET_OS_MAC" ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
+
 	+$(MAKE) -C $(BUILD_WORK)/alac
 	+$(MAKE) -C $(BUILD_WORK)/alac install \
 		DESTDIR=$(BUILD_STAGE)/alac
-	+$(MAKE) -C $(BUILD_WORK)/alac install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/alac/.build_complete
+
+	$(call AFTER_BUILD,copy)
 endif
 
 alac-package: alac-stage
