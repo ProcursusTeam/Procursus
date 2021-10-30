@@ -3,11 +3,11 @@ set -e
 
 case "$1" in
   (install)
-    /bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/com.mikebrady.shairport-sync.plist
+    @MEMO_LAUNCHCTL_PREFIX@/bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/com.mikebrady.shairport-sync.plist
     ;;
   (upgrade)
-    /bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/com.mikebrady.shairport-sync.plist
-    /bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/com.mikebrady.shairport-sync.plist
+    @MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/com.mikebrady.shairport-sync.plist
+    @MEMO_LAUNCHCTL_PREFIX@/bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/com.mikebrady.shairport-sync.plist
     ;;
   (*)
     exit 0
