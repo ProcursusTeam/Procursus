@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += libconfig
-LIBCONFIG_VERSION := 1.7.2
+LIBCONFIG_VERSION := 1.7.3
 DEB_LIBCONFIG_V   ?= $(LIBCONFIG_VERSION)
 
 libconfig-setup: setup
