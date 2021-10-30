@@ -1,0 +1,13 @@
+diff -urN a/methods/basehttp.h b/methods/basehttp.h
+--- a/methods/basehttp.h	2021-10-21 18:21:53.000000000 +0800
++++ b/methods/basehttp.h	2021-10-30 21:21:50.528112471 +0800
+@@ -20,6 +20,9 @@
+ #include <string>
+ #include <time.h>
+ 
++#undef TRUE
++#undef FALSE
++
+ using std::cout;
+ using std::endl;
+ 
