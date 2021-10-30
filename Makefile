@@ -947,11 +947,11 @@ MAKEFLAGS += --no-print-directory
 
 ifeq ($(findstring --jobserver-auth=,$(MAKEFLAGS)),)
 ifeq ($(call HAS_COMMAND,nproc),1)
-GET_LOGICAL_CORES := $(shell expr $(shell nproc) / 2)
+CORE_COUNT ?= $(shell nproc)
 else
-GET_LOGICAL_CORES := $(shell expr $(shell sysctl -n hw.ncpu) / 2)
+CORE_COUNT ?= $(shell sysctl -n hw.ncpu)
 endif
-MAKEFLAGS += --jobs=$(GET_LOGICAL_CORES) --load-average=$(GET_LOGICAL_CORES)
+MAKEFLAGS += --jobs=$(CORE_COUNT) --load-average=$(CORE_COUNT)
 endif
 
 PROCURSUS := 1
