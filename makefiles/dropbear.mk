@@ -76,17 +76,17 @@ endif
 dropbear-package: dropbear-stage
 	# dropbear.mk Package Structure
 	rm -rf $(BUILD_DIST)/dropbear
-	
+
 	# dropbear.mk Prep dropbear
 	cp -a $(BUILD_STAGE)/dropbear $(BUILD_DIST)
 	mkdir -p $(BUILD_DIST)/dropbear/$(MEMO_PREFIX)/etc/dropbear
-	
+
 	# dropbear.mk Sign
 	$(call SIGN,dropbear,general.xml)
-	
+
 	# dropbear.mk Make .debs
 	$(call PACK,dropbear,DEB_DROPBEAR_V)
-	
+
 	# dropbear.mk Build cleanup
 	rm -rf $(BUILD_DIST)/dropbear
 

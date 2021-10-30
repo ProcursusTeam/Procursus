@@ -25,7 +25,7 @@ endif
 		go build --ldflags="-s -w -X main.gVersion=$(LF_VERSION)" .
 	cp -a $(BUILD_WORK)/lf/lf $(BUILD_STAGE)/lf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_WORK)/lf/lf.1 $(BUILD_STAGE)/lf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
-	
+
 ###	Another time, look into packaging the rest of the stuff the AUR does.
 ###	https://aur.archlinux.org/cgit/aur.git/tree/PKGBUILD?h=lf
 	$(call AFTER_BUILD)
