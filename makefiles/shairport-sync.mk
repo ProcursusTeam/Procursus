@@ -45,8 +45,8 @@ shairport-sync: shairport-sync-setup openssl libsoundio libao libsoxr popt libco
 
 	for file in $(BUILD_STAGE)/shairport-sync/$(MEMO_PREFIX)/Library/LaunchDaemons/* \
 		$(BUILD_STAGE)/shairport-sync/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
-			$(SED) -i 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' $$file; \
-			$(SED) -i 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $$file; \
+			sed -i 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' $$file; \
+			sed -i 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $$file; \
 	done
 
 	$(call AFTER_BUILD)
