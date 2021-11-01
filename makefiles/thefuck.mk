@@ -9,7 +9,6 @@ DEB_THEFUCK_V   ?= $(THEFUCK_VERSION)
 thefuck-setup: setup
 	$(call GITHUB_ARCHIVE,nvbn,thefuck,$(THEFUCK_VERSION),$(THEFUCK_VERSION))
 	$(call EXTRACT_TAR,thefuck-$(THEFUCK_VERSION).tar.gz,thefuck-$(THEFUCK_VERSION),thefuck)
-#	$(call DO_PATCH,thefuck,thefuck,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/thefuck/.build_complete),)
 thefuck:
