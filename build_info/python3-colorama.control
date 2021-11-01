@@ -1,0 +1,18 @@
+Package: python3-colorama
+Version: @DEB_PYTHON3-COLORAMA_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Homepage: https://github.com/tartley/colorama
+Section: Utilities
+Depends: python3
+Description: Cross-platform colored terminal text in Python - Python 3.x
+ Python-colorama provides a simple cross-platform API to print colored terminal
+ text from Python applications.
+ .
+ ANSI escape character sequences are commonly used to produce colored terminal
+ text on Unix. Colorama provides some shortcuts to generate these sequences.
+ .
+ This has the happy side-effect that existing applications or libraries which
+ already use ANSI sequences to produce colored output on Linux.
+ .
+ This package provides the module for Python 3.
