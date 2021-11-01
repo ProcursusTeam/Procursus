@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += thefuck
-THEFUCK_VERSION := 3.30
+THEFUCK_VERSION := 3.31
 DEB_THEFUCK_V   ?= $(THEFUCK_VERSION)
 
 thefuck-setup: setup
@@ -16,13 +16,15 @@ thefuck:
 	@echo "Using previously built thefuck."
 else
 thefuck: thefuck-setup
-	cd $(BUILD_WORK)/thefuck && unset MACOSX_DEPLOYMENT_TARGET && python$(PYTHON3_MAJOR_V) ./setup.py \
+	cd $(BUILD_WORK)/thefuck && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py \
+		build \
+		--executable="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3" \
 		install \
 		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		--root="$(BUILD_STAGE)/thefuck" \
 		--install-layout=deb
-	find $(BUILD_STAGE)/thefuck -name __pycache__ -delete
-	touch $(BUILD_WORK)/thefuck/.build_complete
+	find $(BUILD_STAGE)/thefuck -name __pycache__ -prune -exec rm -rf {} \;
+	$(call AFTER_BUILD)
 endif
 thefuck-package: thefuck-stage
 	# thefuck.mk Package Structure
