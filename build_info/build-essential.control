@@ -2,8 +2,6 @@ Package: build-essential
 Version: @DEB_BUILD-ESSENTIAL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: profile.d
 Section: Development
 Priority: optional
-Description: Place SDKs for your specific platform in /usr/share/SDKs.
-Tag: purpose::console, role::developer
+Description: Contains an SDK for your platform.

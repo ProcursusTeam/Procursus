@@ -1,7 +1,0 @@
-Package: libboost-python1.74.0
-Version: @DEB_LIBBOOST_V@
-Architecture: @DEB_ARCH@
-Maintainer: @DEB_MAINTAINER@
-Section: Libraries
-Priority: optional
-Description: python data types, operations, and memory ordering constraints

@@ -11,10 +11,10 @@ ask() {
 }
 
 checkpkg() {
-	if [ -f $1.mk ]; then
+	if [ -f makefiles/$1.mk ]; then
 		echo "$1.mk already exists."
 		exit 1
-	elif grep -R "^$pkg:" *.mk &> /dev/null; then
+	elif grep -R "^$pkg:" makefiles/*.mk &> /dev/null; then
 		echo "$1 already exists."
 		exit 1
 	fi
@@ -29,13 +29,13 @@ checkbuild() {
 
 downloadlink() {
 	if [ "$(${SED} 's|^.*://||' <<< "${1}" | cut -d'/' -f1)" = "github.com" ]; then
-		echo -e "\t$\(call GITHUB_ARCHIVE,$(${SED} 's|^.*://||' <<< "${1}" | cut -d'/' -f2),$(${SED} 's|^.*://||' <<< "${1}" | cut -d'/' -f3),$\(${4}_VERSION\),$(echo "${1}" | rev | cut -d'/' -f1 | rev | ${SED} 's/\.tar.*//g' | ${SED} "s/${2}//g")$\(${4}_VERSION\)\)"
+		echo -e "\t$\(call GITHUB_ARCHIVE,$(${SED} 's|^.*://||' <<< "${1}" | cut -d'/' -f2),$(${SED} 's|^.*://||' <<< "${1}" | cut -d'/' -f3),$\(${4}_VERSION\),$\(${4}_VERSION\)\)"
 	else
-		if echo "${1}" | rev | cut -d'/' -f1 | rev | ${SED} 's/\.tar.*//g' | ${SED} "s/${2}//g" | grep "${3}" &>/dev/null; then
+		if echo "${1##*/}" | ${SED} 's/-//g' | ${SED} 's/\.tar.*//g' | ${SED} "s/${2}//g" | grep "${3}" &>/dev/null; then
 			echo -e "\twget -q -nc -P\$(BUILD_SOURCE) $(${SED} "s/${2}/\$(${4}_VERSION)/g" <<< "$1")"
 		else
-			echo -e "\t-[ ! -f "$\(BUILD_SOURCE\)/${3}-$\(${4}_VERSION\).tar.$(rev <<< "$download" | cut -d'.' -f1 | rev)" ] \&\& \\
-\t	\twget -q -nc -O\$(BUILD_SOURCE)/${3}-\$(${4}_VERSION).tar.$(rev <<< "$download" | cut -d'.' -f1 | rev) \\
+			echo -e "\t-[ ! -f "$\(BUILD_SOURCE\)/${3}-$\(${4}_VERSION\).tar.${download##*.}" ] \&\& \\
+\t	\twget -q -nc -O\$(BUILD_SOURCE)/${3}-\$(${4}_VERSION).tar.${download##*.}) \\
 \t	\t\t$(${SED} "s/${2}/\$(${4}_VERSION)/g" <<< "$1")"
 		fi
 	fi
@@ -48,13 +48,13 @@ main() {
 	build="$(ask "Build System" $2)"
 	checkbuild "$build"
 	ver="$(ask "Package Version" $3)"
-	download="$(ask "Download Link" $4)"
+	download="$(ask "Tarball Download Link" $4)"
 	${SED} -e "s/@pkg@/${pkg}/g" \
 		-e "s/@PKG@/${formatpkg}/g" \
 		-e "s/@PKG_VERSION@/${ver}/g" \
 		-e "s|@download@|$(downloadlink "$download" "$ver" "$pkg" "$formatpkg")|g" \
-		-e "s|@compression@|$(rev <<< "$download" | cut -d'.' -f1 | rev)|g" \
-		build_misc/templates/${build}.mk > ${pkg}.mk
+		-e "s|@compression@|${download##*.}|g" \
+		build_misc/templates/${build}.mk > makefiles/${pkg}.mk
 }
 
 if which gsed &>/dev/null; then

@@ -2,7 +2,7 @@ Package: vde2-cryptcab
 Version: @DEB_LIBVDE_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libvdeplug2, libssl1.1
+Depends: libvdeplug2, libssl3
 Section: Development
 Priority: optional
 Multi-Arch: foreign

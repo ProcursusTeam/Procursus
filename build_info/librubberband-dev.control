@@ -2,7 +2,7 @@ Package: librubberband-dev
 Version: @DEB_RUBBERBAND_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: librubberband2 (= @DEB_RUBBERBAND_V@)
+Depends: librubberband2 (= @DEB_RUBBERBAND_V@), libsamplerate0-dev
 Section: Development
 Priority: optional
 Homepage: https://www.breakfastquay.com/rubberband/

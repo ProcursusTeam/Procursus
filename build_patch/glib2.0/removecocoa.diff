@@ -1,0 +1,51 @@
+diff --git a/meson.build b/meson.build
+index 8e4d7347b988455925c1638739ff33bdfb252f96..3d8f7eaf9fc6798b6d6b08b2d6cfa403f93cde4d 100644
+--- a/meson.build
++++ b/meson.build
+@@ -772,18 +772,6 @@ if host_system == 'darwin'
+                                                name : 'OS X 9 or later')
+   endif
+ 
+-  # Mac OS X Cocoa support
+-  glib_have_cocoa = objcc.compiles('''#include <Cocoa/Cocoa.h>
+-                                      #ifdef GNUSTEP_BASE_VERSION
+-                                      #error "Detected GNUstep, not Cocoa"
+-                                      #endif''',
+-                                   name : 'Mac OS X Cocoa support')
+-
+-  if glib_have_cocoa
+-    glib_conf.set('HAVE_COCOA', true)
+-    osx_ldflags += ['-Wl,-framework,Foundation', '-Wl,-framework,AppKit']
+-  endif
+-
+   # FIXME: libgio mix C and objC source files and there is no way to reliably
+   # know which language flags it's going to use to link. Add to both languages
+   # for now. See https://github.com/mesonbuild/meson/issues/3585.
+
+diff --git a/gio/meson.build b/gio/meson.build
+index 49a37a7bdd928509823128e02a0618169930b3a5..0cfdf6337b70aa173cdfc13a82f89239ee554895 100644
+--- a/gio/meson.build
++++ b/gio/meson.build
+@@ -402,19 +402,9 @@ if host_system != 'windows'
+     'gunixsocketaddress.h',
+   )
+ 
+-  if glib_have_cocoa
+-    settings_sources += files('gnextstepsettingsbackend.m')
+-    contenttype_sources += files('gosxcontenttype.m')
+-    appinfo_sources += files('gosxappinfo.m')
+-    if glib_have_os_x_9_or_later
+-      unix_sources += files('gcocoanotificationbackend.m')
+-    endif
+-    application_headers += files('gosxappinfo.h')
+-  else
+-    contenttype_sources += files('gcontenttype.c')
+-    appinfo_sources += files('gdesktopappinfo.c')
+-    gio_unix_include_headers += files('gdesktopappinfo.h')
+-  endif
++  contenttype_sources += files('gcontenttype.c')
++  appinfo_sources += files('gdesktopappinfo.c')
++  gio_unix_include_headers += files('gdesktopappinfo.h')
+ 
+   subdir('xdgmime')
+   internal_deps += [xdgmime_lib]

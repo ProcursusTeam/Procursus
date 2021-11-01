@@ -19,4 +19,4 @@ Description: FFmpeg library with de/encoders for audio/video codecs - runtime fi
  codecs as well as for experimentation.
  .
  This package contains the runtime files.
-Depends: libswresample3 (= @DEB_FFMPEG_V@), libavutil56 (= @DEB_FFMPEG_V@), libvpx6, libwebpmux3, libwebp7, libdav1d5, libopencore-amrwb0, libsnappy1v5, libaom2, libmp3lame0, libopencore-amrnb0, libopenjp2-7, libopus0, librav1e0, libspeex1, libtheora0, libogg0, libvorbis0a, libvorbisenc2, libx265-192, libx264-161, libsoxr0, liblzma5
+Depends: libswresample3 (= @DEB_FFMPEG_V@), libavutil56 (= @DEB_FFMPEG_V@), libvpx6, libwebpmux3, libwebp7, libdav1d5, libopencore-amrwb0, libsnappy1v5, libaom3, libmp3lame0, libopencore-amrnb0, libopenjp2-7, libopus0, librav1e0, libspeex1, libtheora0, libogg0, libvorbis0a, libvorbisenc2, libx265-199, libx264-161, libsoxr0, liblzma5

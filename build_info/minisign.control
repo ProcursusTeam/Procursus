@@ -1,0 +1,9 @@
+Package: minisign
+Version: @DEB_MINISIGN_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libsodium23
+Section: Security
+Priority: optional
+Description: A simple tool to sign files and verify signatures
+Homepage: https://jedisct1.github.io/minisign/

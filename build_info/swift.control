@@ -2,7 +2,7 @@ Package: swift
 Version: @DEB_SWIFT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: swift-5.3.1
+Depends: swift-5.4.1
 Conflicts: com.kabiroberai.swift-toolchain
 Replaces: com.kabiroberai.swift-toolchain
 Section: Development

@@ -1,8 +1,0 @@
-Package: libboost-random1.74.0
-Version: @DEB_LIBBOOST_V@
-Architecture: @DEB_ARCH@
-Maintainer: @DEB_MAINTAINER@
-Depends: libboost-system1.74.0 (= @DEB_LIBBOOST_V@)
-Section: Libraries
-Priority: optional
-Description: Boost Random Number Library

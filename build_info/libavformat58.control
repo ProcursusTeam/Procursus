@@ -16,4 +16,4 @@ Description: FFmpeg library with (de)muxers for multimedia containers - runtime 
  supports several input and output protocols to access a media resource.
  .
  This package contains the runtime files.
-Depends: libavcodec58 (= @DEB_FFMPEG_V@), libswresample3 (= @DEB_FFMPEG_V@), libavutil56 (= @DEB_FFMPEG_V@), libgnutls30, librtmp1, libgmp10, libhogweed6, libnettle8, libsrt1, libvpx6, libwebpmux3, libwebp7, liblzma5, libdav1d5, libopencore-amrwb0, libsnappy1v5, libaom2, libmp3lame0, libopencore-amrnb0, libopenjp2-7, libopus0, librav1e0, libspeex1, libtheora0, libogg0, libvorbis0a, libvorbisenc2, libx264-161, libx265-192, libsoxr0
+Depends: libavcodec58 (= @DEB_FFMPEG_V@), libswresample3 (= @DEB_FFMPEG_V@), libavutil56 (= @DEB_FFMPEG_V@), libgnutls30, librtmp1, libgmp10, libhogweed6, libnettle8, libsrt1, libvpx6, libwebpmux3, libwebp7, liblzma5, libdav1d5, libopencore-amrwb0, libsnappy1v5, libaom3, libmp3lame0, libopencore-amrnb0, libopenjp2-7, libopus0, librav1e0, libspeex1, libtheora0, libogg0, libvorbis0a, libvorbisenc2, libx264-161, libx265-199, libsoxr0, libzmq5

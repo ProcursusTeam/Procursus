@@ -1,0 +1,10 @@
+Package: lldb-11
+Section: Development
+Version: @DEB_LLVM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: liblldb-11, debugserver-11
+Priority: optional
+Homepage: https://www.llvm.org/
+Description: Next generation, high-performance debugger
+Tag: purpose::console, role::developer

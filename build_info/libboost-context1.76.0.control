@@ -1,0 +1,18 @@
+Package: libboost-context1.76.0
+Version: @DEB_LIBBOOST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Description: provides a sort of cooperative multitasking on a single thread
+ This package forms part of the Boost C++ Libraries collection.
+ .
+ Boost.Context is a foundational library that provides a sort of
+ cooperative multitasking on a single thread. By providing an
+ abstraction of the current execution state in the current thread,
+ including the stack (with local variables) and stack pointer, all
+ registers and CPU flags, and the instruction pointer, a fcontext_t
+ instance represents a specific point in the application's execution
+ path. This is useful for building higher-level abstractions, like
+ coroutines, cooperative threads (userland threads) or an equivalent
+ to C# keyword yield in C++.

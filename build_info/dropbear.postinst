@@ -1,0 +1,50 @@
+#!/bin/sh
+set -e
+
+showpubkey() {
+    local keyfile="$1" pubkey
+    if ! which ssh-keygen >/dev/null 2>&1; then
+        cat
+    else
+        pubkey=$(mktemp)
+        grep -m1 -E '^(ssh-(dss|rsa|ed25519)|ecdsa-sha2-nistp(256|384|521)) ' >"$pubkey"
+        ssh-keygen -v -lf "$pubkey" | sed -r "1s@$pubkey(\s+\([^)]+\))\$@$keyfile\1@"
+        rm -f "$pubkey"
+    fi
+}
+
+DROPBEARCONVERT=@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/dropbearconvert
+if [ "$1" = 'configure' ]; then
+    havehostkey=no
+    for keytype in dss rsa ecdsa ed25519; do
+        keyfile="@MEMO_PREFIX@/etc/dropbear/dropbear_${keytype}_host_key"
+        if [ -e "$keyfile" ]; then
+            havehostkey=yes
+            break
+        fi
+    done
+    if [ "$havehostkey" = no ]; then
+        # generate host keys
+        for keytype in dss rsa ecdsa ed25519; do
+            keyfile="@MEMO_PREFIX@/etc/dropbear/dropbear_${keytype}_host_key"
+            case "$keytype" in
+                dss) keytype_openssh=dsa;;
+                *) keytype_openssh="$keytype";;
+            esac
+            keyfile_openssh="@MEMO_PREFIX@/etc/ssh/ssh_host_${keytype_openssh}_key"
+
+            if [ -f "$keyfile_openssh" ] && ! grep -qE '^-+BEGIN OPENSSH PRIVATE KEY-+$' "$keyfile_openssh"; then
+                # dropbearconvert(1) can't read new OpenSSH private key format
+                echo "Converting existing OpenSSH $(echo "$keytype_openssh" | tr '[a-z]' '[A-Z]') host key to Dropbear format." >&2
+                $DROPBEARCONVERT openssh dropbear "$keyfile_openssh" "$keyfile"
+                dropbearkey -y -f "$keyfile" | showpubkey "$keyfile"
+            else
+                echo "Generating Dropbear $(echo "$keytype" | tr '[a-z]' '[A-Z]') host key.  Please wait." >&2
+                dropbearkey -t "$keytype" -f "$keyfile" | showpubkey "$keyfile"
+            fi
+        done
+    fi
+fi
+
+#DEBHELPER#
+exit 0

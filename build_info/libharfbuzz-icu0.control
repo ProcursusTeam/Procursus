@@ -2,7 +2,7 @@ Package: libharfbuzz-icu0
 Version: @DEB_HARFBUZZ_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libharfbuzz0b, libgraphite2-3, libintl8, libfreetype6, libglib2.0-0, libicu68
+Depends: libharfbuzz0b, libgraphite2-3, libintl8, libfreetype6, libglib2.0-0, libicu69
 Section: Libraries
 Priority: standard
 Multi-Arch: foreign

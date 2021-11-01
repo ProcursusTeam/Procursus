@@ -4,6 +4,6 @@ Section: Games
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_BASTET_V@
-Depends: libncursesw6, libboost-program-options1.74.0
+Depends: libncursesw6, libboost-program-options1.76.0
 Description: ncurses Tetris clone with a bastard algorithm
 Name: Bastard Tetris
