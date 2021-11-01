@@ -1,0 +1,12 @@
+Package: gperf
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_GPERF_V@
+Section: Utilities
+Priority: optional
+Description: Perfect hash function generator
+ gperf is a program that generates perfect hash functions for sets of
+ key words.
+ .                                                                                       A perfect hash function is simply: A hash function and a data structure
+ that allows recognition of a key word in a set of words using exactly 1
+ probe into the data structure.
