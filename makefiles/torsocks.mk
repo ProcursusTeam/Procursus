@@ -33,16 +33,16 @@ endif
 torsocks-package: torsocks-stage
 	# torsocks.mk Package Structure
 	rm -rf $(BUILD_DIST)/torsocks
-	
+
 	# torsocks.mk Prep torsocks
 	cp -a $(BUILD_STAGE)/torsocks $(BUILD_DIST)
-	
+
 	# torsocks.mk Sign
 	$(call SIGN,torsocks,general.xml)
-	
+
 	# torsocks.mk Make .debs
 	$(call PACK,torsocks,DEB_TORSOCKS_V)
-	
+
 	# torsocks.mk Build cleanup
 	rm -rf $(BUILD_DIST)/torsocks
 
