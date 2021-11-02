@@ -1,0 +1,7 @@
+Package: hdik-man
+Section: Documentation
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Suggests: hdik | firmware (>= 13.0)
+Version: @DEB_HDIK_V@
+Description: man page for hdik

@@ -1,0 +1,8 @@
+Package: hdik
+Section: System
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Conflicts: firmware (>= 13.0)
+Recommends: hdik-man
+Version: @DEB_HDIK_V@
+Description: attach/eject optionally encrypted disk images
