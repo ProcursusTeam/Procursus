@@ -1,0 +1,6 @@
+Package: apfs-hfs-convert
+Section: System
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_APFS_HFS_CONVERT_V@
+Description: convert an existing HFS file system to APFS file system
