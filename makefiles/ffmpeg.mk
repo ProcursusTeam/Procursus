@@ -190,7 +190,7 @@ ffmpeg-package: ffmpeg-stage
 	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3/libswscale.3 $(BUILD_DIST)/libswscale-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3
 
 	# ffmpeg.mk Sign
-	$(call SIGN,ffmpeg,general.xml)
+	$(call SIGN,ffmpeg,ffmpeg.xml)
 	$(call SIGN,libavcodec58,general.xml)
 	$(call SIGN,libavdevice58,general.xml)
 	$(call SIGN,libavfilter7,general.xml)
