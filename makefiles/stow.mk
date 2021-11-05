@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += stow
+SUBPROJECTS  += stow
 STOW_VERSION := 2.3.1
 DEB_STOW_V   ?= $(STOW_VERSION)
 
