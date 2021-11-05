@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += neovim
-NEOVIM_VERSION := 0.5.0
+NEOVIM_VERSION := 0.5.1
 DEB_NEOVIM_V   ?= $(NEOVIM_VERSION)
 
 neovim-setup: setup
