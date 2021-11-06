@@ -19,7 +19,7 @@ rav1e: rav1e-setup aom dav1d
 	cd $(BUILD_WORK)/rav1e && $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \
 		--target=$(RUST_TARGET)
-	cd $(BUILD_WORK)/rav1e && $(DEFAULT_RUST_FLAGS) cargo cbuild \
+	cd $(BUILD_WORK)/rav1e && $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--target=$(RUST_TARGET) \
