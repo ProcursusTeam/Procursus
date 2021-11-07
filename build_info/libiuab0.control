@@ -1,0 +1,11 @@
+Package: libiuab0
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_I_USE_ARCH_BTW_V@
+Section: Libraries
+Priority: optional
+Description: "I use Arch btw" but it's a Turing-complete programming language
+ "I use Arch btw" is an esoteric programming language based on Brainfuck in which the Brainfuck commands have been replaced with the following keywords:
+ . 
+ i, use, arch, linux, btw, by, the, way.
+ This package contains the shared library.
