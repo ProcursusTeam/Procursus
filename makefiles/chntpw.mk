@@ -29,16 +29,16 @@ chntpw-package: chntpw-stage
 	# chntpw.mk Package Structure
 	rm -rf $(BUILD_DIST)/chntpw
 	mkdir -p $(BUILD_DIST)/chntpw
-	
+
 	# chntpw.mk Prep chntpw
 	cp -a $(BUILD_STAGE)/chntpw $(BUILD_DIST)
-	
+
 	# chntpw.mk Sign
 	$(call SIGN,chntpw,general.xml)
-	
+
 	# chntpw.mk Make .debs
 	$(call PACK,chntpw,DEB_CHNTPW_V)
-	
+
 	# chntpw.mk Build cleanup
 	rm -rf $(BUILD_DIST)/chntpw
 

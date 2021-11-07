@@ -35,13 +35,13 @@ endif
 libsystem-man-package: libsystem-man-stage
 	# libsystem-man.mk Package Structure
 	rm -rf $(BUILD_DIST)/libsystem-man
-	
+
 	# libsystem-man.mk Prep libsystem-man
 	cp -a $(BUILD_STAGE)/libsystem-man $(BUILD_DIST)
-	
+
 	# libsystem-man.mk Make .debs
 	$(call PACK,libsystem-man,DEB_LIBSYSTEM-MAN_V)
-	
+
 	# libsystem-man.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libsystem-man
 

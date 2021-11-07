@@ -84,12 +84,14 @@ diskdev-cmds: diskdev-cmds-setup
 	cp -a quota $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \
 	cp -a dev_mkdb edquota fdisk quotaon repquota vsdbutil $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin; \
 	cp -a vndevice $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec; \
-	cp -a quotacheck umount @(fstyp|newfs)?(_*([a-z0-9])) @(mount_*([a-z0-9])) $(BUILD_STAGE)/diskdev-cmds/sbin; \
+	cp -a quotacheck umount @(fstyp|newfs)?(_*([a-z0-9])) @(mount_*([a-z0-9])) $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin; \
 	cp -a quota.tproj/quota.1 $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
 	cp -a mount.tproj/fstab.5 $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5; \
 	cp -a !(setclass).tproj/*.8 $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1)
-	rm -f $(BUILD_STAGE)/diskdev-cmds/sbin/umount
+ifeq (,$(findstring ramdisk,$(MEMO_TARGET)))
+		rm -f $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)/sbin/umount
+endif
 endif
 	$(call AFTER_BUILD)
 endif
@@ -107,7 +109,9 @@ diskdev-cmds-package: diskdev-cmds-stage
 	# system-cmds.mk Permissions
 	$(FAKEROOT) chmod u+s $(BUILD_DIST)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/quota
 ifneq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1)
-	$(FAKEROOT) chmod u+s $(BUILD_DIST)/diskdev-cmds/sbin/umount
+ifneq (,$(findstring ramdisk,$(MEMO_TARGET)))
+		$(FAKEROOT) chmod u+s $(BUILD_DIST)/diskdev-cmds/sbin/umount
+endif
 endif
 
 	# diskdev-cmds.mk Make .debs
