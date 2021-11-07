@@ -1,0 +1,13 @@
+Package: tcl
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_TCLTK-DEFAULTS_V@
+Section: Interpreters
+Depends: tcl8.6 (>= @DEB_TCLTK-DEFAULTS_V@)
+Priority: optional
+Description: Tool Command Language (default version) - shell
+ Tcl is a powerful, easy to use, embeddable, cross-platform interpreted 
+ scripting language.
+ .
+ This package is a dependency package, which depends on 
+ Procursus' default Tcl version (currently 8.6).

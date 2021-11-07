@@ -1,0 +1,14 @@
+Package: tcl-doc
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_TCLTK-DEFAULTS_V@
+Section: Documentation
+Recommends: tcl8.6-doc (>= @DEB_TCLTK-DEFAULTS_V@)
+Suggests: tcl
+Priority: optional
+Description: Tool Command Language (default version) - manual pages
+ Tcl is a powerful, easy-to-use, embeddable, cross-platform interpreted 
+ scripting language. This package contains the man pages for Tcl commands.
+ . 
+ This package is a dependency package, which depends on Debian's default Tcl 
+ version (currently 8.6).

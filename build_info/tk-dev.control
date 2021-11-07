@@ -1,0 +1,14 @@
+Package: tk-dev
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_TCLTK-DEFAULTS_V@
+Section: Development
+Depends: tcl-dev, tk, tk8.6-dev (>= @DEB_TCLTK-DEFAULTS_V@)
+Suggests: tk-doc
+Priority: optional
+Description: Toolkit for Tcl and X11 (default version) - development files
+ Tk is a cross-platform graphical toolkit which provides the Motif look-and-feel 
+ and is implemented using the Tcl scripting language.
+ .
+ This package is a dependency package, which depends on Procursus' default Tk 
+ version (currently 8.6).
