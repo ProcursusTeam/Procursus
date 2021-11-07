@@ -1,4 +1,4 @@
-Package: openjdk-17-jre
+Package: openjdk-17.0.1-jre
 Version: @DEB_OPENJDK_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
