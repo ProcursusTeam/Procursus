@@ -106,9 +106,7 @@ openjdk: openjdk-setup libx11 libxext libxi libxrender libxrandr libxtst freetyp
 		--with-libpng=system \
 		--with-zlib=system \
 		--with-lcms=system \
-		--with-harfbuzz=system \
-		CPP="$(CPP) -arch arm64" \
-		CXXCPP="$(CXX) -E -arch arm64"
+		--with-harfbuzz=system
 	make -C $(BUILD_WORK)/openjdk images \
 			JOBS=$(CORE_COUNT)
 	cp -a $(BUILD_WORK)/openjdk/build/*/images/jdk $(BUILD_STAGE)/openjdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk
@@ -179,5 +177,6 @@ endif
 
 	# openjdk.mk Build cleanup
 	rm -rf $(BUILD_DIST)/openjdk*-{jre,jdk}
+
 
 .PHON/: openjdk openjdk-package
