@@ -1,0 +1,12 @@
+Package: tk8.6
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_TK8.6_V@
+Section: Interpreters
+Depends: libfontconfig1 (>= 2.12.6), libtk8.6 (>= 8.6.0), libtcl8.6 (>= 8.6.0), libfreetype6 (>= 2.2.1), libx11-6, libxext6, libxft2 (>> 2.1.1), libxss1
+Recommends: xterm | x-terminal-emulator 
+Priority: optional
+Description: Tk toolkit for Tcl and X11 v8.6 - windowing shell
+ Tk is a cross-platform graphical toolkit which provides the Motif 
+ look-and-feel and is implemented using the Tcl scripting language. This package 
+ contains the windowing Tcl/Tk shell (wish).

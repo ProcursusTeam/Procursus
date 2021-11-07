@@ -1,0 +1,11 @@
+Package: tk8.6-doc
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_TK8.6_V@
+Section: Documentation
+Suggests: tk8.6
+Priority: optional
+Description: Tk toolkit for Tcl and X11 v8.6 - manual pages
+ Tk is a cross-platform graphical toolkit which provides the Motif look-and-feel 
+ and is implemented using the Tcl scripting language. This package contains the 
+ manual pages for the Tk commands.

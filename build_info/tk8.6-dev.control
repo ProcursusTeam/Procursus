@@ -1,0 +1,12 @@
+Package: tk8.6-dev
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_TK8.6_V@
+Section: Development
+Depends: libtk8.6 (= @DEB_TK8.6_V@), libx11-dev, libxft-dev, libxext-dev, libxss-dev, tcl8.6-dev (>= 8.6.0), tk8.6
+Suggests: tk8.6-doc
+Priority: optional
+Description: Tk toolkit for Tcl and X11 v8.6 - development files
+ Tk is a cross-platform graphical toolkit which provides the Motif look-and-feel 
+ and is implemented using the Tcl scripting language. This package contains the 
+ headers and libraries needed to extend or embed Tk.
