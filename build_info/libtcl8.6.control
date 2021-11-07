@@ -1,0 +1,12 @@
+Package: libtcl8.6
+Version: @DEB_TCL_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Homepage: http://www.tcl.tk/
+Description: Tcl (the Tool Command Language) v8.6 - run-time library files
+ Tcl is a powerful, easy to use, embeddable, cross-platform interpreted 
+ scripting language. This package contains the Tcl library and auxiliary code 
+ which allows one to run Tcl-enabled applications. This version includes thread 
+ support.
