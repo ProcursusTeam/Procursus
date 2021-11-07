@@ -23,16 +23,16 @@ endif
 arpoison-package: arpoison-stage
 	# arpoison.mk Package Structure
 	rm -rf $(BUILD_DIST)/arpoison
-	
+
 	# arpoison.mk Prep arpoison
 	cp -a $(BUILD_STAGE)/arpoison $(BUILD_DIST)
-	
+
 	# arpoison.mk Sign
 	$(call SIGN,arpoison,general.xml)
-	
+
 	# arpoison.mk Make .debs
 	$(call PACK,arpoison,DEB_ARPOISON_V)
-	
+
 	# arpoison.mk Build cleanup
 	rm -rf $(BUILD_DIST)/arpoison
 

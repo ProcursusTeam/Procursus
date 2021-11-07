@@ -49,22 +49,22 @@ tor-package: tor-stage
 	# tor.mk Package Structure
 	rm -rf $(BUILD_DIST)/tor{,-geoipdb}
 	mkdir -p $(BUILD_DIST)/tor-geoipdb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	
+
 	# tor.mk Prep tor
 	cp -a $(BUILD_STAGE)/tor $(BUILD_DIST)
 	rm -rf $(BUILD_DIST)/tor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tor
-	
+
 	# tor.mk Prep tor-geoipdb
 	cp -a $(BUILD_STAGE)/tor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tor \
 		$(BUILD_DIST)/tor-geoipdb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	
+
 	# tor.mk Sign
 	$(call SIGN,tor,general.xml)
-	
+
 	# tor.mk Make .debs
 	$(call PACK,tor,DEB_TOR_V)
 	$(call PACK,tor-geoipdb,DEB_TOR_V)
-	
+
 	# tor.mk Build cleanup
 	rm -rf $(BUILD_DIST)/tor{,-geoipdb}
 

@@ -30,16 +30,16 @@ endif
 pongoterm-package: pongoterm-stage
 	# pongoterm.mk Package Structure
 	rm -rf $(BUILD_DIST)/pongoterm
-	
+
 	# pongoterm.mk Prep pongoterm
 	cp -a $(BUILD_STAGE)/pongoterm $(BUILD_DIST)
-	
+
 	# pongoterm.mk Sign
 	$(call SIGN,pongoterm,general.xml)
-	
+
 	# pongoterm.mk Make .debs
 	$(call PACK,pongoterm,DEB_PONGOTERM_V)
-	
+
 	# pongoterm.mk Build cleanup
 	rm -rf $(BUILD_DIST)/pongoterm
 

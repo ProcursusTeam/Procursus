@@ -1,12 +1,12 @@
-diff --color -urN neovim-0.4.4/CMakeLists.txt neovim/CMakeLists.txt
---- neovim-0.4.4/CMakeLists.txt	2020-08-04 20:07:48.000000000 -0400
-+++ neovim/CMakeLists.txt	2021-01-13 19:35:20.715404680 -0500
-@@ -358,15 +358,15 @@
+diff -urN neovim-0.5.0/CMakeLists.txt neovim/CMakeLists.txt
+--- neovim-0.5.0/CMakeLists.txt	2021-07-02 15:54:29.000000000 +0000
++++ neovim/CMakeLists.txt	2021-08-29 04:01:22.000000000 +0000
+@@ -368,16 +368,6 @@
    add_definitions(-D_GNU_SOURCE)
  endif()
  
--if(CMAKE_SYSTEM_NAME STREQUAL "Darwin" AND CMAKE_SIZEOF_VOID_P EQUAL 8)
--  # Required for luajit.
+-if(CMAKE_SYSTEM_NAME STREQUAL "Darwin" AND CMAKE_SIZEOF_VOID_P EQUAL 8 AND NOT PREFER_LUA AND LUAJIT_VERSION LESS "2.1.0-beta3")
+-  # Required for luajit < 2.1.0-beta3.
 -  set(CMAKE_EXE_LINKER_FLAGS
 -    "${CMAKE_EXE_LINKER_FLAGS} -pagezero_size 10000 -image_base 100000000")
 -  set(CMAKE_SHARED_LINKER_FLAGS
@@ -14,21 +14,13 @@ diff --color -urN neovim-0.4.4/CMakeLists.txt neovim/CMakeLists.txt
 -  set(CMAKE_MODULE_LINKER_FLAGS
 -    "${CMAKE_MODULE_LINKER_FLAGS} -image_base 100000000")
 -endif()
-+#if(CMAKE_SYSTEM_NAME STREQUAL "Darwin" AND CMAKE_SIZEOF_VOID_P EQUAL 8)
-+#  # Required for luajit.
-+#  set(CMAKE_EXE_LINKER_FLAGS
-+#    "${CMAKE_EXE_LINKER_FLAGS} -pagezero_size 10000 -image_base 100000000")
-+#  set(CMAKE_SHARED_LINKER_FLAGS
-+#    "${CMAKE_SHARED_LINKER_FLAGS} -image_base 100000000")
-+#  set(CMAKE_MODULE_LINKER_FLAGS
-+#    "${CMAKE_MODULE_LINKER_FLAGS} -image_base 100000000")
-+#endif()
- 
+-
  include_directories("${PROJECT_BINARY_DIR}/config")
  include_directories("${PROJECT_SOURCE_DIR}/src")
-diff --color -urN neovim-0.4.4/runtime/CMakeLists.txt neovim/runtime/CMakeLists.txt
---- neovim-0.4.4/runtime/CMakeLists.txt	2020-08-04 20:07:48.000000000 -0400
-+++ neovim/runtime/CMakeLists.txt	2021-01-13 19:34:51.332499253 -0500
+ 
+diff -urN neovim-0.5.0/runtime/CMakeLists.txt neovim/runtime/CMakeLists.txt
+--- neovim-0.5.0/runtime/CMakeLists.txt	2021-07-02 15:54:29.000000000 +0000
++++ neovim/runtime/CMakeLists.txt	2021-08-29 04:02:19.000000000 +0000
 @@ -32,7 +32,7 @@
      add_custom_command(OUTPUT "${GENERATED_PACKAGE_DIR}/${PACKNAME}/doc/tags"
        COMMAND ${CMAKE_COMMAND} -E copy_directory

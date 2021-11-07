@@ -19,13 +19,13 @@ endif
 sunchipnacho-keyring-package: sunchipnacho-keyring-stage
 	# sunchipnacho-keyring.mk Package Structure
 	rm -rf $(BUILD_DIST)/sunchipnacho-keyring
-	
+
 	# sunchipnacho-keyring.mk Prep sunchipnacho-keyring
 	cp -a $(BUILD_STAGE)/sunchipnacho-keyring $(BUILD_DIST)
-	
+
 	# sunchipnacho-keyring.mk Make .debs
 	$(call PACK,sunchipnacho-keyring,DEB_SUNCHIPNACHO_KEYRING_V)
-	
+
 	# sunchipnacho-keyring.mk Build cleanup
 	rm -rf $(BUILD_DIST)/sunchipnacho-keyring
 

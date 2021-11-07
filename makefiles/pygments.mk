@@ -29,13 +29,13 @@ endif
 pygments-package: pygments-stage
 	# pygments.mk Package Structure
 	rm -rf $(BUILD_DIST)/python3-pygments
-	
+
 	# pygments.mk Prep pygments
 	cp -a $(BUILD_STAGE)/pygments $(BUILD_DIST)/python3-pygments
-	
+
 	#pygments.mk Make .debs
 	$(call PACK,python3-pygments,DEB_PYGMENTS_V)
-	
+
 	# pygments.mk Build cleanup
 	rm -rf $(BUILD_DIST)/python3-pygments
 

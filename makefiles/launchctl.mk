@@ -27,16 +27,16 @@ endif
 launchctl-package: launchctl-stage
 	# launchctl.mk Package Structure
 	rm -rf $(BUILD_DIST)/launchctl
-	
+
 	# launchctl.mk Prep launchctl
 	cp -a $(BUILD_STAGE)/launchctl $(BUILD_DIST)/
-	
+
 	# launchctl.mk Sign launchctl
 	$(call SIGN,launchctl,launchctl.xml)
-	
+
 	# launchctl.mk Make .debs
 	$(call PACK,launchctl,DEB_LAUNCHCTL_V)
-	
+
 	# launchctl.mk Build cleanup
 	rm -rf $(BUILD_DIST)/launchctl
 

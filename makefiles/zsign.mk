@@ -30,16 +30,16 @@ endif
 zsign-package: zsign-stage
 	# zsign.mk Package Structure
 	rm -rf $(BUILD_DIST)/zsign
-	
+
 	# zsign.mk Prep zsign
 	cp -a $(BUILD_STAGE)/zsign $(BUILD_DIST)
-	
+
 	# zsign.mk Sign
 	$(call SIGN,zsign,general.xml)
-	
+
 	# zsign.mk Make .debs
 	$(call PACK,zsign,DEB_ZSIGN_V)
-	
+
 	# zsign.mk Build cleanup
 	rm -rf $(BUILD_DIST)/zsign
 
