@@ -17,7 +17,7 @@ tk8.6:
 	@echo "Using previously built tk8.6."
 else
 tk8.6: tk8.6-setup tcl libxss libx11 libxext libxft xorgproto freetype fontconfig
-	cd $(BUILD_WORK)/tk8.6 && autoreconf -fi ./macosx && ./macosx/configure -C \
+	cd $(BUILD_WORK)/tk8.6 && ./macosx/configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-tcl=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		--with-x \
@@ -25,7 +25,7 @@ tk8.6: tk8.6-setup tcl libxss libx11 libxext libxft xorgproto freetype fontconfi
 	+$(MAKE) -C $(BUILD_WORK)/tk8.6
 	+$(MAKE) -C $(BUILD_WORK)/tk8.6 install \
 		DESTDIR=$(BUILD_STAGE)/tk8.6
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 tk8.6-package: tk8.6-stage
