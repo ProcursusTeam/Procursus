@@ -3,10 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += openjdk
-OPENJDK_MAJOR_V  := 17.0.1
+OPENJDK_MAJOR_V  := 17
+OPENJDK_MINOR_V  := 0
+OPENJDK_PATCH_V  := 1
 OPENJDK_REVISION := ga
-OPENJDK_VERSION  := $(OPENJDK_MAJOR_V)-$(OPENJDK_REVISION)
-DEB_OPENJDK_V    ?= $(OPENJDK_VERSION)
+OPENJDK_VERSION  := $(OPENJDK_MAJOR_V).$(OPENJDK_MINOR_V).$(OPENJDK_PATCH_V)-$(OPENJDK_REVISION)
+DEB_OPENJDK_V    ?= $(OPENJDK_MAJOR_V)
 
 # Change "ea" to nothing on general availability...
 
@@ -40,7 +42,7 @@ openjdk-setup: setup
 		https://github.com/apple/cups/releases/download/v2.3.3/cups-2.3.3-source.tar.gz \
 		https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_macos-aarch64_bin.tar.gz
 		#https://download.java.net/java/GA/jdk15/779bf45e88a44cbd9ea6621d33e33db1/36/GPL/openjdk-15_linux-x64_bin.tar.gz
-	$(call EXTRACT_TAR,jdk-$(OPENJDK_VERSION).tar.gz,jdk17u-jdk-$(OPENJDK_MAJOR_V)-$(OPENJDK_REVISION),openjdk)
+	$(call EXTRACT_TAR,jdk-$(OPENJDK_VERSION).tar.gz,jdk17u-jdk-$(OPENJDK_VERSION),openjdk)
 	$(call EXTRACT_TAR,cups-2.3.3-source.tar.gz,cups-2.3.3,apple-cups)
 	$(call EXTRACT_TAR,openjdk-17_macos-aarch64_bin.tar.gz,jdk-17.jdk,boot-jdk.jdk) # Change this to use the Linux one on Linux
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
@@ -171,8 +173,8 @@ openjdk-package: openjdk-stage
 
 	# openjdk.mk Sign
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(call SIGN,openjdk-$(OPENJDK_MAJOR_V)-jre,qemu-ios.xml,jre-macos.xml)
-	$(call SIGN,openjdk-$(OPENJDK_MAJOR_V)-jre,qemu-ios.xml,jre-macos.xml)
+	$(call SIGN,openjdk-$(OPENJDK_MAJOR_V)-jre,qemu-ios.xml,jre-macos.xml,nohardened)
+	$(call SIGN,openjdk-$(OPENJDK_MAJOR_V)-jre,qemu-ios.xml,jre-macos.xml,nohardened)
 else
 	$(call SIGN,openjdk-$(OPENJDK_MAJOR_V)-jdk,qemu-ios.xml)
 	$(call SIGN,openjdk-$(OPENJDK_MAJOR_V)-jre,qemu-ios.xml)
