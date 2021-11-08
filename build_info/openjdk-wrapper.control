@@ -1,4 +1,4 @@
-Package: openjdk-wrapepr
+Package: openjdk-wrapper
 Version: @DEB_OPENJDK_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
