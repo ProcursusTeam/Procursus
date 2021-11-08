@@ -22,7 +22,7 @@ openssh-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$(OPENSSH_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,openssh-$(OPENSSH_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,openssh-$(OPENSSH_VERSION).tar.gz,openssh-$(OPENSSH_VERSION),openssh)
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call DO_PATCH,openssh,openssh,-p1)
 endif
 	sed -i 's/#UsePAM no/UsePAM yes/' $(BUILD_WORK)/openssh/sshd_config
