@@ -23,11 +23,14 @@ ifneq ($(wildcard $(BUILD_WORK)/tar/.build_complete),)
 tar:
 	@echo "Using previously built tar."
 else
+ifneq (,$(findstring ramdisk,$(MEMO_TARGET)))
+tar: tar-setup
+else
 tar: tar-setup gettext
+endif
 	cd $(BUILD_WORK)/tar && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		$(TAR_CONFIGURE_ARGS)
-
 	+$(MAKE) -C $(BUILD_WORK)/tar
 	+$(MAKE) -C $(BUILD_WORK)/tar install \
 		DESTDIR=$(BUILD_STAGE)/tar

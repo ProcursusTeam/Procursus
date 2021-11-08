@@ -30,16 +30,16 @@ endif
 tcpdump-package: tcpdump-stage
 	# tcpdump.mk Package Structure
 	rm -rf $(BUILD_DIST)/tcpdump
-	
+
 	# tcpdump.mk Prep tcpdump
 	cp -a $(BUILD_STAGE)/tcpdump $(BUILD_DIST)
-	
+
 	# tcpdump.mk Sign
 	$(call SIGN,tcpdump,general.xml)
-	
+
 	# tcpdump.mk Make .debs
 	$(call PACK,tcpdump,DEB_TCPDUMP_V)
-	
+
 	# tcpdump.mk Build cleanup
 	rm -rf $(BUILD_DIST)/tcpdump
 

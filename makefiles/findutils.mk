@@ -23,7 +23,11 @@ ifneq ($(wildcard $(BUILD_WORK)/findutils/.build_complete),)
 findutils:
 	@echo "Using previously built findutils."
 else
+ifneq (,$(findstring ramdisk,$(MEMO_TARGET)))
+findutils: findutils-setup
+else
 findutils: findutils-setup gettext
+endif
 	cd $(BUILD_WORK)/findutils && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--localstatedir=$(MEMO_PREFIX)/var/cache/locate \
