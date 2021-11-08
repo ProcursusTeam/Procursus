@@ -160,6 +160,15 @@ openjdk-package: openjdk-stage
 	cp -a $(BUILD_STAGE)/openjdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/man/man1/!(java.1|jfr.1|keytool.1|rmiregistry.1) \
 		$(BUILD_DIST)/openjdk-$(OPENJDK_MAJOR_V)-jdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/man/man1
 
+	# Setup openjdk-wrapper
+	mkdir -p $(BUILD_DIST)/openjdk-$(OPENJDK_MAJOR_V)-wrapper/Library/Java/JavaVirtualMachines/procursus.jdk/Contents/MacOS
+	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk \
+			$(BUILD_DIST)/openjdk-$(OPENJDK_MAJOR_V)-wrapper/Library/Java/JavaVirtualMachines/procursus.jdk/Contents/Home
+	ln -s ../Home/lib/libjli.dylib $(BUILD_DIST)/openjdk-$(OPENJDK_MAJOR_V)-wrapper/Library/Java/JavaVirtualMachines/procursus.jdk/Contents/MacOS/
+
+	cp $(BUILD_MISC)/openjdk-$(OPENJDK_MAJOR_V).infoplist $(BUILD_DIST)/openjdk-$(OPENJDK_MAJOR_V)-wrapper/Library/Java/JavaVirtualMachines/procursus.jdk/Contents/Info.plist
+
+
 	# openjdk.mk Sign
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call SIGN,openjdk-$(OPENJDK_MAJOR_V)-jre,qemu-ios.xml,jre-macos.xml)
@@ -170,13 +179,17 @@ else
 endif
 
 	# openjdk.mk Make .debs
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+	$(call PACK,openjdk-$(OPENJDK_MAJOR_V)-wrapper,DEB_OPENJDK_V)
+	$(call PACK,openjdk-wrapper,DEB_OPENJDK_V)
+endif
 	$(call PACK,openjdk-$(OPENJDK_MAJOR_V)-jdk,DEB_OPENJDK_V)
 	$(call PACK,openjdk-$(OPENJDK_MAJOR_V)-jre,DEB_OPENJDK_V)
 	$(call PACK,openjdk-jdk,DEB_OPENJDK_V)
 	$(call PACK,openjdk-jre,DEB_OPENJDK_V)
 
 	# openjdk.mk Build cleanup
-	rm -rf $(BUILD_DIST)/openjdk*-{jre,jdk}
+	rm -rf $(BUILD_DIST)/openjdk*-{jre,jdk,wrapper}
 
 
 .PHON/: openjdk openjdk-package
