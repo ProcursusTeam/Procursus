@@ -27,7 +27,9 @@ NODEJS_COMBO := $(NODEJS_HOST)-$(UNAME_M)-$(NODEJS_TARGET)-$(MEMO_ARCH)
 NODEJS_SUPPORTED_COMBOS := \
 	mac-x86_64-mac-x86_64 \
 	mac-x86_64-mac-arm64 \
+	mac-x86_64-ios-arm64
 	mac-arm64-mac-arm64 \
+	mac-arm64-ios-arm64 \
 	linux-x86_64-ios-arm64 \
 	linux-arm64-ios-arm64
 
