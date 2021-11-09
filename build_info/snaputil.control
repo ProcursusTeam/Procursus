@@ -6,4 +6,3 @@ Depends: firmware (>= 10.3)
 Section: System
 Description: APFS Snapshot Tool.
 Homepage: https://github.com/ahl/apfs/
-Name: APFS Snapshot Utility

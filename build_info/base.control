@@ -6,4 +6,3 @@ Maintainer: @DEB_MAINTAINER@
 Section: System
 Priority: required
 Description: underlying system directory structure
-Name: Base Structure

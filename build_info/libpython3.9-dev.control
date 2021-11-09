@@ -6,4 +6,3 @@ Depends: libpython3.9 (= @DEB_PYTHON3_V@), libcrypt-dev, firmware (>= 14.0) | li
 Section: Development
 Priority: optional
 Description: Interpreted, interactive, object-oriented programming language. Contains the header files necessary for developing.
-Name: Python 3.9 (Development)

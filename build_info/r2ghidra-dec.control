@@ -7,4 +7,3 @@ Section: Utilities
 Priority: optional
 Homepage: https://www.radare.org
 Description: This is an integration of the Ghidra decompiler for radare2.
-Name: Ghidra Decompiler for Radare2
