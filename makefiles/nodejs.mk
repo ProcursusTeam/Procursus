@@ -91,14 +91,12 @@ nodejs: nodejs-setup nghttp2 brotli libc-ares libuv1
 	CC_host="$(CC_FOR_BUILD)" \
 	CXX_host="$(CXX_FOR_BUILD) -std=gnu++17" \
 	AR_host="$(AR_FOR_BUILD)" \
-	CFLAGS_host="$(CFLAGS_FOR_BUILD) -Wreturn-type" \
+	CFLAGS_host="$(CFLAGS_FOR_BUILD)" \
 	CXXFLAGS_host="$(CXXFLAGS_FOR_BUILD)" \
 	CPPFLAGS_host="$(CPPFLAGS_FOR_BUILD)" \
 	LDFLAGS_host="$(LDFLAGS_FOR_BUILD) $(NODEJS_HOST_LDFLAGS)" \
 	SDKROOT="$(TARGET_SYSROOT)" \
 	CXX="$(CXX) -std=gnu++17" \
-	CFLAGS="$(CFLAGS) -Wreturn-type" \
-	CXXFLAGS="$(CXXFLAGS)" \
 	LDFLAGS="$(LDFLAGS) -undefined dynamic_lookup" \
 	PKG_CONFIG_PATH="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig" \
 	GYP_DEFINES="host_arch=$(UNAME_M) target_arch=$(MEMO_ARCH) host_os=$(NODEJS_HOST) target_os=$(NODEJS_TARGET)" \
@@ -106,11 +104,11 @@ nodejs: nodejs-setup nghttp2 brotli libc-ares libuv1
 		$(NODEJS_COMMON_FLAGS)
 
 	+$(MAKE) -C $(BUILD_WORK)/nodejs \
-		CFLAGS_host="$(CFLAGS_FOR_BUILD) -Wreturn-type" \
+		LDFLAGS="$(LDFLAGS) -undefined dynamic_lookup" \
+		CFLAGS_host="$(CFLAGS_FOR_BUILD)" \
 		CXXFLAGS_host="$(CXXFLAGS_FOR_BUILD)" \
 		CPPFLAGS_host="$(CPPFLAGS_FOR_BUILD)" \
 		LDFLAGS_host="$(LDFLAGS_FOR_BUILD) $(NODEJS_HOST_LDFLAGS)"
-
 	+$(MAKE) -C $(BUILD_WORK)/nodejs install \
 		DESTDIR=$(BUILD_STAGE)/nodejs
 
@@ -127,7 +125,7 @@ nodejs-lts:
 	@echo "Using previously built nodejs-lts."
 else
 nodejs-lts: nodejs-lts-setup nghttp2 openssl brotli libc-ares libuv1
-	cd $(BUILD_WORK)/nodejs-lts; \
+	cd $(BUILD_WORK)/nodejs-lts;\
 	CC_host="$(CC_FOR_BUILD)" \
 	CXX_host="$(CXX_FOR_BUILD) -std=gnu++14" \
 	AR_host="$(AR_FOR_BUILD)" \
@@ -137,8 +135,6 @@ nodejs-lts: nodejs-lts-setup nghttp2 openssl brotli libc-ares libuv1
 	LDFLAGS_host="$(LDFLAGS_FOR_BUILD) $(NODEJS_HOST_LDFLAGS)" \
 	SDKROOT="$(TARGET_SYSROOT)" \
 	CXX="$(CXX) -std=gnu++14" \
-	CFLAGS="$(CFLAGS) -Wreturn-type" \
-	CXXFLAGS="$(CXXFLAGS)" \
 	LDFLAGS="$(LDFLAGS) -undefined dynamic_lookup" \
 	PKG_CONFIG_PATH="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig" \
 	GYP_DEFINES="host_arch=$(UNAME_M) target_arch=$(MEMO_ARCH) host_os=$(NODEJS_HOST) target_os=$(NODEJS_TARGET)" \
@@ -147,6 +143,7 @@ nodejs-lts: nodejs-lts-setup nghttp2 openssl brotli libc-ares libuv1
 		--shared-openssl
 
 	+$(MAKE) -C $(BUILD_WORK)/nodejs-lts \
+		LDFLAGS="$(LDFLAGS) -undefined dynamic_lookup" \
 		CFLAGS_host="$(CFLAGS_FOR_BUILD) -Wreturn-type" \
 		CXXFLAGS_host="$(CXXFLAGS_FOR_BUILD)" \
 		CPPFLAGS_host="$(CPPFLAGS_FOR_BUILD)" \
