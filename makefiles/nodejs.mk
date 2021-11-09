@@ -60,18 +60,24 @@ endif
 nodejs-setup: setup
 	$(call GITHUB_ARCHIVE,1Conan,node,v$(NODEJS_VERSION),v$(NODEJS_VERSION)-ios)
 	$(call EXTRACT_TAR,node-v$(NODEJS_VERSION).tar.gz,node-$(NODEJS_VERSION)-ios,nodejs)
-	# macOS deployment target
-	sed -i 's/10.13/$(MACOSX_DEPLOYMENT_TARGET)/g' $(BUILD_WORK)/nodejs/common.gypi
+	# deployment target
 ifeq ($(NODEJS_TARGET),mac)
+	sed -i 's/10.13/$(MACOSX_DEPLOYMENT_TARGET)/g' $(BUILD_WORK)/nodejs-lts/common.gypi
 	# macOS openssldir
 	sed -i 's,/System/Library/OpenSSL/,$(MEMO_PREFIX)/etc/ssl,' $(BUILD_WORK)/nodejs/deps/openssl/openssl_common.gypi
+else ifeq ($(NODEJS_TARGET),ios)
+	sed -i 's/12.0/$(IPHONEOS_DEPLOYMENT_TARGET)/g' $(BUILD_WORK)/nodejs-lts/common.gypi
 endif
 
 nodejs-lts-setup: setup
 	$(call GITHUB_ARCHIVE,1Conan,node,v$(NODEJS_LTS_VERSION),v$(NODEJS_LTS_VERSION)-ios)
 	$(call EXTRACT_TAR,node-v$(NODEJS_LTS_VERSION).tar.gz,node-$(NODEJS_LTS_VERSION)-ios,nodejs-lts)
-	# macOS deployment target
+	# deployment target
+ifeq ($(NODEJS_TARGET),mac)
 	sed -i 's/10.13/$(MACOSX_DEPLOYMENT_TARGET)/g' $(BUILD_WORK)/nodejs-lts/common.gypi
+else ifeq ($(NODEJS_TARGET),ios)
+	sed -i 's/12.0/$(IPHONEOS_DEPLOYMENT_TARGET)/g' $(BUILD_WORK)/nodejs-lts/common.gypi
+endif
 
 ifneq ($(NODEJS_COMBO),$(filter $(NODEJS_COMBO),$(NODEJS_SUPPORTED_COMBOS)))
 nodejs:
