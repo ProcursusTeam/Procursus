@@ -7,4 +7,5 @@ Depends: openjdk-16-jre
 Section: Games
 Priority: optional
 Description: Minecraft: Java Edition launcher for iOS, based on PojavLauncher Android.
+ PojavLauncher is a Minecraft: Java Edition launcher for Android and iOS based on Boardwalk. This launcher can launch most of available Minecraft versions (from 1.6.1 to 21w08b (1.17) snapshot, including Combat Test versions). 1.17 support is available with a wordaround. Modding via Forge (1.16.x only) and Fabric are also supported. Older versions of Forge and Fabric can be used with OpenJDK 8. 
 Name: PojavLauncher iOS

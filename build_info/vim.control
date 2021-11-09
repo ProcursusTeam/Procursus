@@ -5,6 +5,9 @@ Maintainer: @DEB_MAINTAINER@
 Depends: libncursesw6, xxd, libintl8
 Section: Text_Editors
 Priority: standard
-Description: the best syntax highlighter, ever
+Description: Vi IMproved - enhanced vi editor
+ Vim is an almost compatible version of the UNIX editor Vi.
+ .
+ Many new features have been added: multi level undo, syntax highlighting, command line history, on-line help, filename completion, block operations, folding, Unicode support, etc.
 Name: Vi IMproved
 Tag: purpose::console, role::hacker

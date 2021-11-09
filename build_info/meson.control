@@ -6,5 +6,5 @@ Depends: python3, ninja
 Section: Development
 Priority: optional
 Homepage: https://www.mesonbuild.com/
-Description: The Meson Build System.
- Meson is a project used to create the best possible next generation build system.
+Description: high-productivity build system
+ Meson is a build system designed to increase programmer productivity. It does this by providing a fast, simple and easy to use interface for modern software development tools and practices.
