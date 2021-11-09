@@ -646,7 +646,7 @@ SIGN = 	for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}
 			if [ $${file\#\#*.} = "dylib" ] || [ $${file\#\#*.} = "bundle" ] || [ $${file\#\#*.} = "so" ]; then \
 				$(LDID) -S $$file; \
 			else \
-				$(LDID) -Cadhoc -S$(BUILD_MISC)/entitlements/$(2) $$file; \
+				$(LDID) -S$(BUILD_MISC)/entitlements/$(2) $$file; \
 			fi; \
 		done; \
 		find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
