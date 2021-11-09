@@ -12,4 +12,3 @@ Description: The Speex codec library development files
  emphasis on high-quality music reproduction.
  .
  This package provides the speex library headers and development files.
-Tag: purpose::library

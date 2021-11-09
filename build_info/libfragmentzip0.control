@@ -9,4 +9,3 @@ Depends: libzip5 (>= 1.7.3), libcurl4, libgeneral0
 Section: Libraries
 Priority: optional
 Description: A library allowing to download single files from a remote zip archive 
-Tag: purpose::console, role::developer

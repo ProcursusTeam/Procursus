@@ -6,4 +6,3 @@ Depends: m4, libintl8, libreadline8
 Section: Development
 Priority: optional
 Description: a general-purpose parser generator
-Name: Bison

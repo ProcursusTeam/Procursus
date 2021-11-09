@@ -9,7 +9,6 @@ Description: Unix process pipeline manipulation library
  This is a C library for setting up and running pipelines of processes,
  without needing to involve shell command-line parsing which is often
  error-prone and insecure.
-Tag: purpose::library, role::developer
 Replaces: libpipeline
 Provides: libpipeline (= @DEB_LIBPIPELINE_V@)
 Conflicts: libpipeline

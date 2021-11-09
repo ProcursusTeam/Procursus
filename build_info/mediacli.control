@@ -1,5 +1,4 @@
 Package: mediacli
-Name: MediaCLI
 Version: @DEB_MEDIACLI_V@
 Architecture: @DEB_ARCH@
 Conflicts: com.rob311.sshmediacontrols, com.rob311.sshvol, me.absidue.mediacli

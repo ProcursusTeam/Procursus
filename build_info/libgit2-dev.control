@@ -11,4 +11,3 @@ Description: low-level Git library (development files)
  re-entrant link-able library with a solid API.
  .
  This package contains the development files for libgit2.
-Tag: role::developer
