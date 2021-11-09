@@ -428,6 +428,8 @@ CODESIGN_IDENTITY ?= -
 MEMO_LDID_EXTRA_FLAGS     ?=
 MEMO_CODESIGN_EXTRA_FLAGS ?=
 
+LDID := ldid $(MEMO_LDID_EXTRA_FLAGS)
+
 # Root
 BUILD_ROOT     ?= $(PWD)
 # Downloaded source files
@@ -642,9 +644,9 @@ DO_PATCH    = cd $(BUILD_PATCH)/$(1); \
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 SIGN = 	for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
 			if [ $${file\#\#*.} = "dylib" ] || [ $${file\#\#*.} = "bundle" ] || [ $${file\#\#*.} = "so" ]; then \
-				ldid $(MEMO_LDID_EXTRA_FLAGS) -Cadhoc -S $$file; \
+				$(LDID) -Cadhoc -S $$file; \
 			else \
-				ldid $(MEMO_LDID_EXTRA_FLAGS) -Cadhoc -S$(BUILD_MISC)/entitlements/$(2) $$file; \
+				$(LDID) -Cadhoc -S$(BUILD_MISC)/entitlements/$(2) $$file; \
 			fi; \
 		done; \
 		find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
