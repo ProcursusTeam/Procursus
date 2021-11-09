@@ -12,11 +12,24 @@ DEB_NODEJS_LTS_V   ?= $(NODEJS_LTS_VERSION)
 
 ifeq ($(UNAME),Linux)
 NODEJS_HOST := linux
+else ifeq ($(UNAME),Darwin)
+NODEJS_HOST := mac
 endif
 
 ifeq ($(PLATFORM),iphoneos)
 NODEJS_TARGET := ios
+else ifeq ($(PLATFORM),macosx)
+NODEJS_TARGET := mac
 endif
+
+NODEJS_COMBO := $(NODEJS_HOST)-$(UNAME_M)-$(NODEJS_TARGET)-$(MEMO_ARCH)
+# v8 doesnt support arm64 host -> amd64 target
+NODEJS_SUPPORTED_COMBOS := \
+	mac-x86_64-mac-x86_64 \
+	mac-x86_64-mac-arm64 \
+	mac-arm64-mac-arm64 \
+	linux-x86_64-ios-arm64 \
+	linux-arm64-ios-arm64
 
 NODEJS_COMMON_FLAGS := \
 	--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
@@ -33,44 +46,64 @@ NODEJS_COMMON_FLAGS := \
 	--openssl-use-def-ca-store \
 	--with-intl=full-icu --download=all
 
+ifeq ($(NODEJS_HOST),mac)
+ifeq ($(shell sysctl -n sysctl.proc_translated),1)
+# Use rosetta when compiling from arm64 to amd64
+# Doesn't work with rosetta to arm64 so keep that in mind.
+NODEJS_HOST_LDFLAGS := -Wl,-rpath,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+else
+NODEJS_HOST_LDFLAGS := -Wl,-rpath,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+endif
+endif
+
 nodejs-setup: setup
 	$(call GITHUB_ARCHIVE,1Conan,node,v$(NODEJS_VERSION),v$(NODEJS_VERSION)-ios)
 	$(call EXTRACT_TAR,node-v$(NODEJS_VERSION).tar.gz,node-$(NODEJS_VERSION)-ios,nodejs)
+	# macOS deployment target
+	sed -i 's/10.13/$(MACOSX_DEPLOYMENT_TARGET)/g' $(BUILD_WORK)/nodejs/common.gypi
+ifeq ($(NODEJS_TARGET),mac)
+	# macOS openssldir
+	sed -i 's,/System/Library/OpenSSL/,$(MEMO_PREFIX)/etc/ssl,' $(BUILD_WORK)/nodejs/deps/openssl/openssl_common.gypi
+endif
 
 nodejs-lts-setup: setup
 	$(call GITHUB_ARCHIVE,1Conan,node,v$(NODEJS_LTS_VERSION),v$(NODEJS_LTS_VERSION)-ios)
 	$(call EXTRACT_TAR,node-v$(NODEJS_LTS_VERSION).tar.gz,node-$(NODEJS_LTS_VERSION)-ios,nodejs-lts)
+	# macOS deployment target
+	sed -i 's/10.13/$(MACOSX_DEPLOYMENT_TARGET)/g' $(BUILD_WORK)/nodejs-lts/common.gypi
 
-ifeq (,$(NODEJS_HOST))
+ifneq ($(NODEJS_COMBO),$(filter $(NODEJS_COMBO),$(NODEJS_SUPPORTED_COMBOS)))
 nodejs:
-	@echo "nodejs building not supported on this host os."
-else ifeq (,$(NODEJS_TARGET))
-nodejs:
-	@echo "nodejs building not supported on this target os."
+	@echo "nodejs building not supported on this host and target combination."
 else ifneq ($(wildcard $(BUILD_WORK)/nodejs/.build_complete),)
 nodejs:
 	@echo "Using previously built nodejs."
 else
-nodejs: nodejs-setup nghttp2 openssl brotli libc-ares libuv1
-	cd $(BUILD_WORK)/nodejs;\
+nodejs: nodejs-setup nghttp2 brotli libc-ares libuv1
+	cd $(BUILD_WORK)/nodejs; \
 	CC_host="$(CC_FOR_BUILD)" \
-	CXX_host="$(CXX_FOR_BUILD) -std=gnu++14" \
+	CXX_host="$(CXX_FOR_BUILD) -std=gnu++17" \
 	AR_host="$(AR_FOR_BUILD)" \
 	CFLAGS_host="$(CFLAGS_FOR_BUILD) -Wreturn-type" \
 	CXXFLAGS_host="$(CXXFLAGS_FOR_BUILD)" \
 	CPPFLAGS_host="$(CPPFLAGS_FOR_BUILD)" \
-	LDFLAGS_host="$(LDFLAGS_FOR_BUILD)" \
+	LDFLAGS_host="$(LDFLAGS_FOR_BUILD) $(NODEJS_HOST_LDFLAGS)" \
 	SDKROOT="$(TARGET_SYSROOT)" \
-	CXX="$(CXX) -std=gnu++14" \
-	CFLAGS="$(CFLAGS) -Wreturn-type -DOPENSSLDIR=$(MEMO_PREFIX)/etc/ssl" \
+	CXX="$(CXX) -std=gnu++17" \
+	CFLAGS="$(CFLAGS) -Wreturn-type" \
 	CXXFLAGS="$(CXXFLAGS)" \
 	LDFLAGS="$(LDFLAGS) -undefined dynamic_lookup" \
 	PKG_CONFIG_PATH="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig" \
-	GYP_DEFINES="target_arch=$(MEMO_ARCH) host_os=$(NODEJS_HOST) target_os=$(NODEJS_TARGET)" \
+	GYP_DEFINES="host_arch=$(UNAME_M) target_arch=$(MEMO_ARCH) host_os=$(NODEJS_HOST) target_os=$(NODEJS_TARGET)" \
 	./configure \
 		$(NODEJS_COMMON_FLAGS)
 
-	+$(MAKE) -C $(BUILD_WORK)/nodejs
+	+$(MAKE) -C $(BUILD_WORK)/nodejs \
+		CFLAGS_host="$(CFLAGS_FOR_BUILD) -Wreturn-type" \
+		CXXFLAGS_host="$(CXXFLAGS_FOR_BUILD)" \
+		CPPFLAGS_host="$(CPPFLAGS_FOR_BUILD)" \
+		LDFLAGS_host="$(LDFLAGS_FOR_BUILD) $(NODEJS_HOST_LDFLAGS)"
+
 	+$(MAKE) -C $(BUILD_WORK)/nodejs install \
 		DESTDIR=$(BUILD_STAGE)/nodejs
 
@@ -79,39 +112,40 @@ nodejs: nodejs-setup nghttp2 openssl brotli libc-ares libuv1
 	$(call AFTER_BUILD,copy)
 endif
 
-ifeq (,$(NODEJS_HOST))
+ifneq ($(NODEJS_COMBO),$(filter $(NODEJS_COMBO),$(NODEJS_SUPPORTED_COMBOS)))
 nodejs-lts:
-	@echo "nodejs-lts building not supported on this host os."
-else ifeq (,$(NODEJS_TARGET))
-nodejs-lts:
-	@echo "nodejs-lts building not supported on this target os."
+	@echo "nodejs-lts building not supported on this host and target combination."
 else ifneq ($(wildcard $(BUILD_WORK)/nodejs-lts/.build_complete),)
 nodejs-lts:
 	@echo "Using previously built nodejs-lts."
 else
 nodejs-lts: nodejs-lts-setup nghttp2 openssl brotli libc-ares libuv1
-	cd $(BUILD_WORK)/nodejs-lts;\
+	cd $(BUILD_WORK)/nodejs-lts; \
 	CC_host="$(CC_FOR_BUILD)" \
 	CXX_host="$(CXX_FOR_BUILD) -std=gnu++14" \
 	AR_host="$(AR_FOR_BUILD)" \
 	CFLAGS_host="$(CFLAGS_FOR_BUILD) -Wreturn-type" \
 	CXXFLAGS_host="$(CXXFLAGS_FOR_BUILD)" \
 	CPPFLAGS_host="$(CPPFLAGS_FOR_BUILD)" \
-	LDFLAGS_host="$(LDFLAGS_FOR_BUILD)" \
+	LDFLAGS_host="$(LDFLAGS_FOR_BUILD) $(NODEJS_HOST_LDFLAGS)" \
 	SDKROOT="$(TARGET_SYSROOT)" \
 	CXX="$(CXX) -std=gnu++14" \
 	CFLAGS="$(CFLAGS) -Wreturn-type" \
 	CXXFLAGS="$(CXXFLAGS)" \
 	LDFLAGS="$(LDFLAGS) -undefined dynamic_lookup" \
 	PKG_CONFIG_PATH="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig" \
-	GYP_DEFINES="target_arch=$(MEMO_ARCH) host_os=$(NODEJS_HOST) target_os=$(NODEJS_TARGET)" \
+	GYP_DEFINES="host_arch=$(UNAME_M) target_arch=$(MEMO_ARCH) host_os=$(NODEJS_HOST) target_os=$(NODEJS_TARGET)" \
 	./configure \
 		$(NODEJS_COMMON_FLAGS) \
 		--shared-openssl
 
-	+$(MAKE) -C $(BUILD_WORK)/nodejs-lts
+	+$(MAKE) -C $(BUILD_WORK)/nodejs-lts \
+		CFLAGS_host="$(CFLAGS_FOR_BUILD) -Wreturn-type" \
+		CXXFLAGS_host="$(CXXFLAGS_FOR_BUILD)" \
+		CPPFLAGS_host="$(CPPFLAGS_FOR_BUILD)" \
+		LDFLAGS_host="$(LDFLAGS_FOR_BUILD) $(NODEJS_HOST_LDFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/nodejs-lts install \
-		DESTDIR=$(BUILD_STAGE)/nodejs
+		DESTDIR=$(BUILD_STAGE)/nodejs-lts
 
 	mkdir -p $(BUILD_STAGE)/nodejs-lts/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_WORK)/nodejs-lts/out/Release/node $(BUILD_STAGE)/nodejs-lts/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
