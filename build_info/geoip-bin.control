@@ -14,4 +14,3 @@ Description: IP lookup command line tools that use the GeoIP library
  .
  This package contains the command line utilities to resolve the IP numbers
  using the GeoIP library.
-Tag: purpose::console, role::developer

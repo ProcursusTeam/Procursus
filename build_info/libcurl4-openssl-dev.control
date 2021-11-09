@@ -19,4 +19,3 @@ Description: development files and documentation for libcurl (OpenSSL flavour)
  This package provides the development files (ie. includes, static library, manual pages) that allow one to build software which uses libcurl.
  .
  SSL support is provided by OpenSSL.
-Tag: purpose::console, role::hacker

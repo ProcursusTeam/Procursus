@@ -11,4 +11,3 @@ Description: retrieves files from the web
  Wget works particularly well with slow or unstable connections by continuing to retrieve a document until the document is fully downloaded. Re-getting files from where it left off works on servers (both HTTP and FTP) that support it. Both HTTP and FTP retrievals can be time stamped, so Wget can see if the remote file has changed since the last retrieval and automatically retrieve the new version if it has.
  .
  Wget supports proxy servers; this can lighten the network load, speed up retrieval, and provide access behind firewalls.
-Tag: purpose::console, role::hacker

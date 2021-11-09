@@ -7,4 +7,3 @@ Section: Development
 Priority: optional
 Description: Interpreted, interactive, object-oriented programming language. Contains the header files necessary for developing.
 Name: Python 3.9 (Development)
-Tag: purpose::console, role::hacker

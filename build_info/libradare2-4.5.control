@@ -9,4 +9,3 @@ Section: Libraries
 Priority: optional
 Homepage: https://www.radare.org
 Description: libraries from the radare2 suite
-Tag: purpose::library, role::developer

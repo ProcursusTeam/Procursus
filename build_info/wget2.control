@@ -13,4 +13,3 @@ Description: file and recursive website downloader
  Wget supports proxy servers; this can lighten the network load, speed up retrieval, and provide access behind firewalls.
  .
  GNU Wget2 is the successor of GNU Wget.
-Tag: purpose::console, role::hacker

@@ -16,4 +16,3 @@ Description: easy-to-use client-side URL transfer library (OpenSSL flavour)
  libcurl is free, thread-safe, IPv6 compatible, feature rich, well supported, fast, thoroughly documented and is already used by many known, big and successful companies and numerous applications.
  . 
  SSL support is provided by OpenSSL
-Tag: purpose::console, role::hacker

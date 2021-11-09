@@ -9,4 +9,3 @@ Provides: libirecovery (= 99)
 Section: Networking
 Priority: standard
 Description: Library allowing communication with iBoot/iBSS of iOS devices via USB
-Tag: purpose::library, role::developer

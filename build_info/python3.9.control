@@ -7,4 +7,3 @@ Section: Scripting
 Priority: optional
 Description: Interpreted, interactive, object-oriented programming language.
 Name: Python 3.9
-Tag: purpose::console, role::hacker

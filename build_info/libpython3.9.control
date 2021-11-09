@@ -9,4 +9,3 @@ Section: Libraries
 Priority: optional
 Description: Interpreted, interactive, object-oriented programming language. Contains the standard library and other shared libraries.
 Name: Python 3.9 (Libraries)
-Tag: purpose::console, role::hacker
