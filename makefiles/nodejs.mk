@@ -47,12 +47,13 @@ NODEJS_COMMON_FLAGS := \
 	--with-intl=full-icu --download=all
 
 ifeq ($(NODEJS_HOST),mac)
+NODEJS_HOST_LDFLAGS := -Wl,-rpath,/opt/procursus/lib
+ifeq ($(NODEJS_TARGET),mac)
 ifeq ($(shell sysctl -n sysctl.proc_translated),1)
 # Use rosetta when compiling from arm64 to amd64
 # Doesn't work with rosetta to arm64 so keep that in mind.
 NODEJS_HOST_LDFLAGS := -Wl,-rpath,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-else
-NODEJS_HOST_LDFLAGS := -Wl,-rpath,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+endif
 endif
 endif
 
