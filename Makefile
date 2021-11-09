@@ -665,12 +665,6 @@ SIGN = 	CODESIGN_FLAGS="--sign $(CODESIGN_IDENTITY) --force --deep "; \
 		done
 endif
 
-###
-#
-# TODO: Please cleanup the PACK function, it's so horrible.
-#
-###
-
 AFTER_BUILD = \
 	if [ ! -z "$(MEMO_PREFIX)" ] && [ -d "$(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" ]; then \
 		rm -f $(BUILD_STAGE)/$@/._lib_cache && touch $(BUILD_STAGE)/$@/._lib_cache; \
@@ -712,72 +706,52 @@ AFTER_BUILD = \
 	touch $(BUILD_WORK)/$@/.build_complete; \
 	find $(BUILD_BASE) -name '*.la' -type f -delete
 
+SUBST_VARS = \
+	sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' \
+		-e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
+		-e 's|@MEMO_ALT_PREFIX@|$(MEMO_ALT_PREFIX)|g' \
+		-e 's|@MEMO_LAUNCHCTL_PREFIX@|$(MEMO_LAUNCHCTL_PREFIX)|g' \
+		-e 's|@GNU_PREFIX@|$(GNU_PREFIX)|g' \
+		-e 's|@BARE_PLATFORM@|$(BARE_PLATFORM)|g' \
+		-e 's/@$(1)@/$($(1))/g' \
+		-e 's/@DEB_MAINTAINER@/$(DEB_MAINTAINER)/g' \
+		-e 's/@DEB_ARCH@/$(DEB_ARCH)/g' $(2) > $(3)
+
 PACK = \
-	if [ -z "$(4)" ]; then \
-		find $(BUILD_DIST)/$(1) -name '*.la' -type f -delete; \
-	fi; \
-	rm -f $(BUILD_DIST)/$(1)/.build_complete; \
-	rm -rf $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{info,doc}; \
-	for file in AUTHORS COPYING LICENSE NEWS README THANKS TODO; do \
+	[ -z $(4) ] || find $(BUILD_DIST)/$(1) -name '*.la' -type f -delete; \
+	find $(BUILD_DIST)/$(1) -name '.DS_Store' -type f -delete; \
+	rm -rf $(BUILD_DIST)/$(1)/{.build_complete,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX){,$(MEMO_ALT_PREFIX)}/share/{info,doc}}; \
+	for file in AUTHORS BUGS COPYING LICENSE NEWS README THANKS TODO; do \
 		if [ -f "$(BUILD_WORK)/$$(echo $@ | sed 's/-package//')/$$file" ]; then \
 			mkdir -p $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1); \
 			cp -aL $(BUILD_WORK)/$$(echo $@ | sed 's/-package//')/$$file $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1); \
-			if [ "$(MEMO_NO_DOC_COMPRESS)" != 1 ]; then \
-				if [ ! "$$file" = "AUTHORS" ] && [ ! "$$file" = "COPYING" ] && [ ! "$$file" = "LICENSE" ]; then \
-					zstd -19 --rm $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1)/$$file 2> /dev/null; \
-				fi; \
-			fi; \
+			[ "$(MEMO_NO_DOC_COMPRESS)" != "1" ] && ! [[ "$$file" =~ ^(LICENSE|COPYING|AUTHORS)$$ ]] && \
+				zstd -19 --rm $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1)/$$file 2> /dev/null; \
 		fi; \
 	done; \
 	if [ -z $(3) ]; then \
-		if [ ! "$(MEMO_QUIET)" == "1" ]; then \
-		echo Setting $(1) owner to 0:0.; \
-		fi; \
-		$(FAKEROOT) chown -R 0:0 $(BUILD_DIST)/$(1)/* &>/dev/null; \
-	elif [ $(3) = "2" ]; then \
-		if [ ! "$(MEMO_QUIET)" == "1" ]; then \
-		echo $(1) owner set within individual makefile.; \
-		fi; \
-	fi; \
-	if [ -d "$(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale" ] && [ ! "$(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d ' ')" = "gettext-localizations" ]; then \
+		[ "$(MEMO_QUIET)" != "1" ] && echo "Setting $(1) owner to 0:0."; \
+		$(FAKEROOT) chown -R 0:0 $(BUILD_DIST)/$(1)/* &> /dev/null; \
+	elif [ $(3) = "2" ] && [ "$(MEMO_QUIET)" != "1" ]; then echo "$(1) owner set within individual makefile."; fi; \
+	[ "$(shell grep Package: $(BUILD_INFO)/$(1).control | cut -f2 -d ' ')" != "gettext-localizations" ] && \
 		rm -rf $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale/*/LC_{MONETARY,TIME,COLLATE,CTYPE,NUMERIC}; \
-	fi; \
 	SIZE=$$(du -sk $(BUILD_DIST)/$(1) | cut -f 1); \
 	mkdir -p $(BUILD_DIST)/$(1)/DEBIAN; \
 	for i in control postinst preinst postrm prerm extrainst_ conffiles triggers; do \
-		for n in $$i $$i.$(PLATFORM) $$i.$(PLATFORM); do \
-			if [ -f "$(BUILD_INFO)/$(1).$$n.rootless" ] && [ ! -z "$(findstring rootless,$(MEMO_TARGET))" ]; then \
-				sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' \
-					-e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
-					-e 's|@MEMO_ALT_PREFIX@|$(MEMO_ALT_PREFIX)|g' \
-					-e 's|@MEMO_LAUNCHCTL_PREFIX@|$(MEMO_LAUNCHCTL_PREFIX)|g' \
-					-e 's|@GNU_PREFIX@|$(GNU_PREFIX)|g' \
-					-e 's|@BARE_PLATFORM@|$(BARE_PLATFORM)|g' \
-					-e 's/@$(2)@/$($(2))/g' \
-					-e 's/@DEB_MAINTAINER@/$(DEB_MAINTAINER)/g' \
-					-e 's/@DEB_ARCH@/$(DEB_ARCH)/g' < $(BUILD_INFO)/$(1).$$n.rootless > $(BUILD_DIST)/$(1)/DEBIAN/$$i; \
-			elif [ -f "$(BUILD_INFO)/$(1).$$n" ]; then \
-				sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' \
-					-e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
-					-e 's|@MEMO_ALT_PREFIX@|$(MEMO_ALT_PREFIX)|g' \
-					-e 's|@MEMO_LAUNCHCTL_PREFIX@|$(MEMO_LAUNCHCTL_PREFIX)|g' \
-					-e 's|@GNU_PREFIX@|$(GNU_PREFIX)|g' \
-					-e 's|@BARE_PLATFORM@|$(BARE_PLATFORM)|g' \
-					-e 's/@$(2)@/$($(2))/g' \
-					-e 's/@DEB_MAINTAINER@/$(DEB_MAINTAINER)/g' \
-					-e 's/@DEB_ARCH@/$(DEB_ARCH)/g' < $(BUILD_INFO)/$(1).$$n > $(BUILD_DIST)/$(1)/DEBIAN/$$i; \
+		for n in $$i{,.$(PLATFORM)}; do \
+			if [ ! -z $(findstring rootless,$(MEMO_TARGET)) ] && [ -f $(BUILD_INFO)/$(1).$$n.rootless ]; then \
+				$(call SUBST_VARS,$(2),$(BUILD_INFO)/$(1).$$n.rootless,$(BUILD_DIST)/$(1)/DEBIAN/$$i); \
+			elif [ -f $(BUILD_INFO)/$(1).$$n ]; then \
+				$(call SUBST_VARS,$(2),$(BUILD_INFO)/$(1).$$n,$(BUILD_DIST)/$(1)/DEBIAN/$$i); \
 			fi; \
 		done; \
 	done; \
-	sed -i '$$a\' $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	cd $(BUILD_DIST)/$(1) && find . -type f ! -regex '.*.hg.*' ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -printf '"%P" ' | xargs md5sum > $(BUILD_DIST)/$(1)/DEBIAN/md5sums; \
-	$(FAKEROOT) chmod 0755 $(BUILD_DIST)/$(1)/DEBIAN/*; \
-	if [ ! "$(MEMO_QUIET)" == "1" ]; then \
-	echo "Installed-Size: $$SIZE"; \
-	fi; \
+	sed -i '$$a\' $(BUILD_DIST)/$(1)/DEBIAN/control; \
+	[ "$(MEMO_QUIET)" = "1" ] && echo "Installed-Size: $$SIZE"; \
 	echo "Installed-Size: $$SIZE" >> $(BUILD_DIST)/$(1)/DEBIAN/control; \
-	find $(BUILD_DIST)/$(1) -name '.DS_Store' -type f -delete; \
-	$(FAKEROOT) $(DPKG_DEB) -b $(BUILD_DIST)/$(1) $(BUILD_DIST)/$$(grep Package: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ')_$($(2))_$$(grep Architecture: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ').deb
+	$(FAKEROOT) chmod 0755 $(BUILD_DIST)/$(1)/DEBIAN/*; \
+	$(FAKEROOT) $(DPKG_DEB) -b $(BUILD_DIST)/$(1) $(BUILD_DIST)/$$(grep 'Package: ' $(BUILD_DIST)/$(1)/DEBIAN/control | cut -d ' ' -f2)_$($(2))_$$(grep 'Architecture: ' $(BUILD_DIST)/$(1)/DEBIAN/control | cut -d ' ' -f2).deb
 
 GITHUB_ARCHIVE = -if [ $(5) ]; then \
 					[ ! -f "$(BUILD_SOURCE)/$(5)-$(3).tar.gz" ] && \
