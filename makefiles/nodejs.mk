@@ -99,14 +99,12 @@ nodejs: nodejs-setup nghttp2 brotli libc-ares libuv1
 	LDFLAGS_host="$(LDFLAGS_FOR_BUILD) $(NODEJS_HOST_LDFLAGS)" \
 	SDKROOT="$(TARGET_SYSROOT)" \
 	CXX="$(CXX) -std=gnu++17" \
-	LDFLAGS="$(LDFLAGS) -undefined dynamic_lookup" \
 	PKG_CONFIG_PATH="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig" \
 	GYP_DEFINES="host_arch=$(UNAME_M) target_arch=$(MEMO_ARCH) host_os=$(NODEJS_HOST) target_os=$(NODEJS_TARGET)" \
 	./configure \
 		$(NODEJS_COMMON_FLAGS)
 
 	+$(MAKE) -C $(BUILD_WORK)/nodejs \
-		LDFLAGS="$(LDFLAGS) -undefined dynamic_lookup" \
 		CFLAGS_host="$(CFLAGS_FOR_BUILD)" \
 		CXXFLAGS_host="$(CXXFLAGS_FOR_BUILD)" \
 		CPPFLAGS_host="$(CPPFLAGS_FOR_BUILD)" \
@@ -137,7 +135,6 @@ nodejs-lts: nodejs-lts-setup nghttp2 openssl brotli libc-ares libuv1
 	LDFLAGS_host="$(LDFLAGS_FOR_BUILD) $(NODEJS_HOST_LDFLAGS)" \
 	SDKROOT="$(TARGET_SYSROOT)" \
 	CXX="$(CXX) -std=gnu++14" \
-	LDFLAGS="$(LDFLAGS) -undefined dynamic_lookup" \
 	PKG_CONFIG_PATH="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig" \
 	GYP_DEFINES="host_arch=$(UNAME_M) target_arch=$(MEMO_ARCH) host_os=$(NODEJS_HOST) target_os=$(NODEJS_TARGET)" \
 	./configure \
@@ -145,7 +142,6 @@ nodejs-lts: nodejs-lts-setup nghttp2 openssl brotli libc-ares libuv1
 		--shared-openssl
 
 	+$(MAKE) -C $(BUILD_WORK)/nodejs-lts \
-		LDFLAGS="$(LDFLAGS) -undefined dynamic_lookup" \
 		CFLAGS_host="$(CFLAGS_FOR_BUILD) -Wreturn-type" \
 		CXXFLAGS_host="$(CXXFLAGS_FOR_BUILD)" \
 		CPPFLAGS_host="$(CPPFLAGS_FOR_BUILD)" \
