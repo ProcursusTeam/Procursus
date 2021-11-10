@@ -8,7 +8,7 @@ DEB_TOKEI_V    ?= $(TOKEI_VERSION)
 
 tokei-setup: setup
 	$(call GITHUB_ARCHIVE,XAMPPRocky,tokei,$(TOKEI_VERSION),v$(TOKEI_VERSION))
-	$(call EXTRACT_TAR,tokei-v$(TOKEI_VERSION).tar.gz,tokei-$(TOKEI_VERSION),tokei)
+	$(call EXTRACT_TAR,tokei-$(TOKEI_VERSION).tar.gz,tokei-$(TOKEI_VERSION),tokei)
 
 ifneq ($(wildcard $(BUILD_WORK)/tokei/.build_complete),)
 tokei:
