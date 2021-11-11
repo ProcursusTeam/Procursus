@@ -19,4 +19,3 @@ Description: X C Binding - protocol binding generator (Python 3)
   * Thread support: access XCB from multiple threads, with no explicit locking
   * Easy creation of new extensions: automatically generates interface from
     machine-parsable protocol descriptions
-Tag: role::developer
