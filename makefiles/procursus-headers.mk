@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET))
+
 SUBPROJECTS               += procursus-headers
 PROCURSUS_HEADERS_VERSION := 2021.11.11
 DEB_PROCURSUS_HEADERS_V   ?= $(PROCURSUS_HEADERS_VERSION)
@@ -32,3 +34,4 @@ procursus-headers-package: procursus-headers-stage
 	rm -rf $(BUILD_DIST)/procursus-headers
 
 .PHONY: procursus-headers procursus-headers-package
+endif

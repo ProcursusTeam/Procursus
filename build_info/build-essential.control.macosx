@@ -1,0 +1,7 @@
+Package: build-essential
+Version: @DEB_BUILD-ESSENTIAL_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Description: Contains an SDK for your platform.
