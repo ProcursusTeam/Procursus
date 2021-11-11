@@ -41,9 +41,9 @@ kext-tools-package: kext-tools-stage
 	cp -a $(BUILD_STAGE)/kext-tools $(BUILD_DIST)
 
 	# kext-tools.mk Sign
-	$(LDID) -S$(BUILD_MISC)/entitlements/general.xml $(BUILD_STAGE)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/{mkextunpack,kext{libs,find}}
-	$(LDID) -S$(BUILD_MISC)/entitlements/kextstat.plist $(BUILD_STAGE)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kextstat
-	$(LDID) -S$(BUILD_MISC)/entitlements/kextload.plist $(BUILD_STAGE)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kext{un,}load
+	$(LDID) -S$(BUILD_MISC)/entitlements/general.xml $(BUILD_DIST)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/{mkextunpack,kext{libs,find}}
+	$(LDID) -S$(BUILD_MISC)/entitlements/kextstat.plist $(BUILD_DIST)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kextstat
+	$(LDID) -S$(BUILD_MISC)/entitlements/kextload.plist $(BUILD_DIST)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kext{un,}load
 
 	# kext-tools.mk Make .debs
 	$(call PACK,kext-tools,DEB_KEXT_TOOLS_V)
