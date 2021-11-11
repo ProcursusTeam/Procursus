@@ -44,6 +44,7 @@ kext-tools-package: kext-tools-stage
 	$(LDID) -S$(BUILD_MISC)/entitlements/general.xml $(BUILD_DIST)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/{mkextunpack,kext{libs,find}}
 	$(LDID) -S$(BUILD_MISC)/entitlements/kextstat.plist $(BUILD_DIST)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kextstat
 	$(LDID) -S$(BUILD_MISC)/entitlements/kextload.plist $(BUILD_DIST)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kext{un,}load
+	find $(BUILD_DIST)/kext-tools -name '.ldid*' -type f -delete
 
 	# kext-tools.mk Make .debs
 	$(call PACK,kext-tools,DEB_KEXT_TOOLS_V)
