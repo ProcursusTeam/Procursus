@@ -1,4 +1,3 @@
-Binary files a/.compression.c.swp and b/.compression.c.swp differ
 diff -urN a/KernelManagementShims/ShimHelpers.m b/KernelManagementShims/ShimHelpers.m
 --- a/KernelManagementShims/ShimHelpers.m	2020-07-31 17:10:54.000000000 +0800
 +++ b/KernelManagementShims/ShimHelpers.m	2021-11-12 14:40:44.431021108 +0800
@@ -103,6 +102,35 @@ diff -urN a/kext_tools_util.c b/kext_tools_util.c
  
  #include <sys/types.h>
 Binary files a/kext_tools_util.o and b/kext_tools_util.o differ
+diff -urN a/kextload_main.c b/kextload_main.c
+--- a/kextload_main.c	2020-03-14 17:33:57.000000000 +0800
++++ b/kextload_main.c	2021-11-12 17:58:41.786297575 +0800
+@@ -388,7 +388,7 @@
+ 
+     return result;
+ }
+-
++#ifndef TARGET_OS_EMBEDDED
+ /*******************************************************************************
+ *******************************************************************************/
+ ExitStatus loadKextsViaKernelManagement(KextloadArgs * toolArgs)
+@@ -399,6 +399,7 @@
+ 
+ /*******************************************************************************
+ *******************************************************************************/
++
+ ExitStatus loadKextsViaKextd(KextloadArgs * toolArgs)
+ {
+     ExitStatus result     = EX_OK;
+@@ -479,7 +480,7 @@
+ 
+     return result;
+ }
+-
++#endif
+ /*******************************************************************************
+ *******************************************************************************/
+ ExitStatus loadKextsIntoKernel(KextloadArgs * toolArgs)
 diff -urN a/kextstat_main.c b/kextstat_main.c
 --- a/kextstat_main.c	2020-08-21 14:29:02.000000000 +0800
 +++ b/kextstat_main.c	2021-11-12 14:55:49.494170281 +0800
@@ -115,6 +143,37 @@ diff -urN a/kextstat_main.c b/kextstat_main.c
      return false;
  #else
      char *legacy = getenv("KEXTSTAT_LEGACY_MODE");
+diff -urN a/kextunload_main.c b/kextunload_main.c
+--- a/kextunload_main.c	2020-07-02 01:56:36.000000000 +0800
++++ b/kextunload_main.c	2021-11-12 18:01:32.180590176 +0800
+@@ -31,9 +31,9 @@
+ #include "KernelManagementShims/Shims.h"
+ 
+ const char * progname = "(unknown)";
+-
++#ifndef TARGET_OS_EMBEDDED
+ extern void shimKextunloadArgsToKMUtilAndRun(KextunloadArgs *);
+-
++#endif
+ /*******************************************************************************
+ *******************************************************************************/
+ int main(int argc, char * const * argv)
+@@ -67,13 +67,13 @@
+     if (result != EX_OK) {
+         goto finish;
+     }
+-
++#ifndef TARGET_OS_EMBEDDED
+     // Determine now if we will be shimming over to KernelManagement,
+     if (disableKextTools() && isKernelManagementLinked()) {
+         shimKextunloadArgsToKMUtilAndRun(&toolArgs);
+         exit(EX_OSERR); // shouldn't get here!
+     }
+-
++#endif
+    /* If given URLs, create OSKext objects for them so we can get
+     * bundle identifiers (that's what IOCatalogueTerminate() expects).
+     * If we failed to open one, keep going on but save the not-found
 diff -urN a/mkext.c b/mkext.c
 --- a/mkext.c	2019-03-28 06:30:15.000000000 +0800
 +++ b/mkext.c	2021-11-12 17:03:02.061612744 +0800
