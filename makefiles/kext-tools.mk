@@ -5,10 +5,10 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS        += kext-tools
-KEXT_TOOLS_VERSION := 623.120.1
+KEXT_TOOLS_VERSION := 692.100.6
 DEB_KEXT_TOOLS_V   ?= $(KEXT_TOOLS_VERSION)
 
-KEXT_TOOLS_CFLAGS := kext_tools_util.o -framework IOKit -framework CoreFoundation -DPRIVATE -D__OS_EXPOSE_INTERNALS__ -DEMBEDDED_HOST -D__OS_TRACE_BASE_H__
+KEXT_TOOLS_CFLAGS := kext_tools_util.o Shims.o -framework IOKit -framework CoreFoundation -DPRIVATE -D__OS_EXPOSE_INTERNALS__ -DEMBEDDED_HOST
 
 kext-tools-setup: setup
 	wget -q -nc -P$(BUILD_SOURCE) https://opensource.apple.com/tarballs/kext_tools/kext_tools-$(KEXT_TOOLS_VERSION).tar.gz
@@ -22,13 +22,14 @@ kext-tools:
 else
 kext-tools: kext-tools-setup
 	cd $(BUILD_WORK)/kext-tools && \
-	$(CC) $(CFLAGS) -c kext_tools_util.c  -DPRIVATE -D__OS_EXPOSE_INTERNALS__ -DEMBEDDED_HOST -D__OS_TRACE_BASE_H__ && echo kext_tools_util.o; \
-	$(CC) $(CFLAGS) $(LDFLAGS) kextstat_main.c $(KEXT_TOOLS_CFLAGS) -o $(BUILD_STAGE)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kextstat && echo kextstat; \
-	$(CC) $(CFLAGS) $(LDFLAGS) kextload_main.c $(KEXT_TOOLS_CFLAGS) -o $(BUILD_STAGE)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kextload && echo kextload; \
-	$(CC) $(CFLAGS) $(LDFLAGS) kextfind_*.c QEQuery.c $(KEXT_TOOLS_CFLAGS) -o $(BUILD_STAGE)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kextfind && echo kextfind; \
-	$(CC) $(CFLAGS) $(LDFLAGS) kextunload_main.c $(KEXT_TOOLS_CFLAGS) -o $(BUILD_STAGE)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kextunload && echo kextunload; \
-	$(CC) $(CFLAGS) $(LDFLAGS) kextlibs_main.c $(KEXT_TOOLS_CFLAGS) -o $(BUILD_STAGE)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kextlibs && echo kextlibs; \
-	$(CC) $(CFLAGS) $(LDFLAGS) mkext*.c adler32.c $(KEXT_TOOLS_CFLAGS) -o $(BUILD_STAGE)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/mkextunpack && echo mkextunpack;
+	$(CC) $(CFLAGS) -c kext_tools_util.c KernelManagementShims/Shims.m -DPRIVATE -D__OS_EXPOSE_INTERNALS__ -DEMBEDDED_HOST && echo kext_tools_util.o; \
+	$(CC) $(CFLAGS) -c KernelManagementShims/Shims.m -DPRIVATE -D__OS_EXPOSE_INTERNALS__ -DEMBEDDED_HOST && echo Shims.o; \
+	$(CC) $(CFLAGS) $(LDFLAGS) $(KEXT_TOOLS_CFLAGS) kextstat_main.c -o $(BUILD_STAGE)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kextstat && echo kextstat; \
+	$(CC) $(CFLAGS) $(LDFLAGS) $(KEXT_TOOLS_CFLAGS) kextload_main.c -o $(BUILD_STAGE)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kextload && echo kextload; \
+	$(CC) $(CFLAGS) $(LDFLAGS) $(KEXT_TOOLS_CFLAGS) kextfind_*.c QEQuery.c -o $(BUILD_STAGE)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kextfind && echo kextfind; \
+	$(CC) $(CFLAGS) $(LDFLAGS) $(KEXT_TOOLS_CFLAGS) kextunload_main.c -o $(BUILD_STAGE)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kextunload && echo kextunload; \
+	$(CC) $(CFLAGS) $(LDFLAGS) $(KEXT_TOOLS_CFLAGS) kextlibs_main.c -o $(BUILD_STAGE)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kextlibs && echo kextlibs; \
+	$(CC) $(CFLAGS) $(LDFLAGS) $(KEXT_TOOLS_CFLAGS) mkext*.c -o $(BUILD_STAGE)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/mkextunpack && echo mkextunpack;
 	cp -a $(BUILD_WORK)/kext-tools/{kext{stat,find,libs,{un,}load},mkextunpack}.8 $(BUILD_STAGE)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
 	$(call AFTER_BUILD)
 endif
