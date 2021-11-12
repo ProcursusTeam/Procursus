@@ -1,0 +1,19 @@
+Package: libfftw3-3
+Version: @DEB_FFTW_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Depends: libfftw3-double3 (= @DEB_FFTW_V@), libfftw3-long3 (= @DEB_FFTW_V@), libfftw3-single3 (= @DEB_FFTW_V@)
+Suggests: libfftw3-bin, libfftw3-dev
+Provides: fftw3
+Replaces: fftw3
+Conflicts: fftw3
+Multi-Arch: same
+Section: Libraries
+Description: Library for computing Fast Fourier Transforms
+ The FFTW library computes Fast Fourier Transforms (FFT) in one or more
+ dimensions. It is extremely fast.
+ This package is a transitional package depending on the packages containing
+ the single and double precision libraries.
+ .
+ To get the static library and the header files, you need to install
+ libfftw3-dev. For documentation, see libfftw3-doc.
