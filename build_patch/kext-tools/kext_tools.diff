@@ -104,13 +104,13 @@ diff -urN a/kext_tools_util.c b/kext_tools_util.c
 Binary files a/kext_tools_util.o and b/kext_tools_util.o differ
 diff -urN a/kextload_main.c b/kextload_main.c
 --- a/kextload_main.c	2020-03-14 17:33:57.000000000 +0800
-+++ b/kextload_main.c	2021-11-12 18:08:48.389769263 +0800
++++ b/kextload_main.c	2021-11-12 18:13:03.064622050 +0800
 @@ -40,9 +40,9 @@
  /*******************************************************************************
  * Global variables.
  *******************************************************************************/
 -
-+#ifdef TARGET_OS_EMBEDDED
++#ifndef TARGET_OS_EMBEDDED
  extern void shimKextloadArgsToKMUtilAndRun(KextloadArgs *);
 -
 +#endif
@@ -121,7 +121,7 @@ diff -urN a/kextload_main.c b/kextload_main.c
          RANGE_ALL(toolArgs.dependencyURLs));
  
      if (doShimToKernelManagement) {
-+#ifdef TARGET_OS_EMBEDDED
++#ifndef TARGET_OS_EMBEDDED
          shimKextloadArgsToKMUtilAndRun(&toolArgs);
 +#endif
          exit(EX_OSERR); // shouldn't get here!
