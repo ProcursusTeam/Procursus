@@ -655,7 +655,7 @@ SIGN = 	CODESIGN_FLAGS="--sign $(CODESIGN_IDENTITY) --force --deep "; \
 		if [ "$(CODESIGN_IDENTITY)" != "-" ]; then \
 			CODESIGN_FLAGS+="--timestamp "; \
 			if [ "$(4)" != "nohardened" ]; then \
-				CODESIGN_FLAGS+="-o kill,hard,expires "; \
+				CODESIGN_FLAGS+="-o kill,hard "; \
 			fi; \
 			if [ -n "$(3)" ]; then \
 				CODESIGN_FLAGS+="--entitlements $(BUILD_MISC)/entitlements/$(3) "; \
