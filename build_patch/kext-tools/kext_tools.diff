@@ -104,8 +104,30 @@ diff -urN a/kext_tools_util.c b/kext_tools_util.c
 Binary files a/kext_tools_util.o and b/kext_tools_util.o differ
 diff -urN a/kextload_main.c b/kextload_main.c
 --- a/kextload_main.c	2020-03-14 17:33:57.000000000 +0800
-+++ b/kextload_main.c	2021-11-12 17:58:41.786297575 +0800
-@@ -388,7 +388,7 @@
++++ b/kextload_main.c	2021-11-12 18:08:48.389769263 +0800
+@@ -40,9 +40,9 @@
+ /*******************************************************************************
+ * Global variables.
+ *******************************************************************************/
+-
++#ifdef TARGET_OS_EMBEDDED
+ extern void shimKextloadArgsToKMUtilAndRun(KextloadArgs *);
+-
++#endif
+ ExitStatus
+ main(int argc, char * const * argv)
+ {
+@@ -125,7 +125,9 @@
+         RANGE_ALL(toolArgs.dependencyURLs));
+ 
+     if (doShimToKernelManagement) {
++#ifdef TARGET_OS_EMBEDDED
+         shimKextloadArgsToKMUtilAndRun(&toolArgs);
++#endif
+         exit(EX_OSERR); // shouldn't get here!
+     } else if (sKextdActive) {
+         result = loadKextsViaKextd(&toolArgs);
+@@ -388,7 +390,7 @@
  
      return result;
  }
@@ -114,7 +136,7 @@ diff -urN a/kextload_main.c b/kextload_main.c
  /*******************************************************************************
  *******************************************************************************/
  ExitStatus loadKextsViaKernelManagement(KextloadArgs * toolArgs)
-@@ -399,6 +399,7 @@
+@@ -399,6 +401,7 @@
  
  /*******************************************************************************
  *******************************************************************************/
@@ -122,7 +144,7 @@ diff -urN a/kextload_main.c b/kextload_main.c
  ExitStatus loadKextsViaKextd(KextloadArgs * toolArgs)
  {
      ExitStatus result     = EX_OK;
-@@ -479,7 +480,7 @@
+@@ -479,7 +482,7 @@
  
      return result;
  }
@@ -194,6 +216,20 @@ diff -urN a/mkext.c b/mkext.c
  /**************************************************************
   LZSS.C -- A Data Compression Program
  ***************************************************************
+diff -urN a/mkext1_file.c b/mkext1_file.c
+--- a/mkext1_file.c	2019-03-28 06:30:15.000000000 +0800
++++ b/mkext1_file.c	2021-11-12 18:10:25.363208031 +0800
+@@ -44,8 +44,8 @@
+ 
+ #include "kext_tools_util.h"
+ #include "compression.h"
+-
+-
++u_int32_t adler32(u_int8_t *buffer, int32_t length);
++#define local_adler32 adler32
+ /*******************************************************************************
+ *******************************************************************************/
+ typedef struct {
 diff -urN a/mkextunpack_main.c b/mkextunpack_main.c
 --- a/mkextunpack_main.c	2019-03-28 06:30:15.000000000 +0800
 +++ b/mkextunpack_main.c	2021-11-12 17:05:24.300894646 +0800
