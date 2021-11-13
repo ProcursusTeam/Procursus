@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += x264
-X264_SOVERSION := 161
-X264_COMMIT    := 55d517bc4569272a2c9a367a4106c234aba2ffbc
+X264_SOVERSION := 163
+X264_COMMIT    := 5db6aa6cab1b146e07b60cc1736a01f21da01154
 X264_VERSION   := 0.$(X264_SOVERSION).3049+git$(shell echo $(X264_COMMIT) | cut -c -7)
 DEB_X264_V     ?= $(X264_VERSION)
 
@@ -30,9 +30,7 @@ x264: x264-setup
 	+$(MAKE) -C $(BUILD_WORK)/x264
 	+$(MAKE) -C $(BUILD_WORK)/x264 install \
 		DESTDIR=$(BUILD_STAGE)/x264
-	+$(MAKE) -C $(BUILD_WORK)/x264 install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 x264-package: x264-stage

@@ -10,7 +10,7 @@ jbat-setup: setup
 	mkdir -p $(BUILD_WORK)/jbat
 	lynx -width 1000 -dump http://newosxbook.com/src.jl\?tree\=listings\&file\=bat.c > \
 		$(BUILD_WORK)/jbat/jbat.c
-	$(SED) -i '/free/d' $(BUILD_WORK)/jbat/jbat.c
+	sed -i '/free/d' $(BUILD_WORK)/jbat/jbat.c
 
 ifneq ($(wildcard $(BUILD_WORK)/jbat/.build_complete),)
 jbat:

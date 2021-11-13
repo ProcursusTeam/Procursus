@@ -11,7 +11,7 @@ libwebp-setup: setup
 		https://chromium.googlesource.com/webm/libwebp/+archive/refs/heads/$(LIBWEBP_VERSION).tar.gz
 	# Fuck this lib.
 	mkdir -p $(BUILD_WORK)/libwebp
-	$(TAR) xf $(BUILD_SOURCE)/libwebp-$(LIBWEBP_VERSION).tar.gz -C $(BUILD_WORK)/libwebp
+	tar xf $(BUILD_SOURCE)/libwebp-$(LIBWEBP_VERSION).tar.gz -C $(BUILD_WORK)/libwebp
 
 ifneq ($(wildcard $(BUILD_WORK)/libwebp/.build_complete),)
 libwebp:
@@ -25,9 +25,7 @@ libwebp: libwebp-setup libpng16 libgif libtiff libjpeg-turbo
 	+$(MAKE) -C $(BUILD_WORK)/libwebp
 	+$(MAKE) -C $(BUILD_WORK)/libwebp install \
 		DESTDIR="$(BUILD_STAGE)/libwebp"
-	+$(MAKE) -C $(BUILD_WORK)/libwebp install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libwebp-package: libwebp-stage

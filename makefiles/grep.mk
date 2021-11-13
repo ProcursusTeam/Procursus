@@ -23,7 +23,11 @@ ifneq ($(wildcard $(BUILD_WORK)/grep/.build_complete),)
 grep:
 	@echo "Using previously built grep."
 else
+ifneq (,$(findstring ramdisk,$(MEMO_TARGET)))
 grep: grep-setup pcre
+else
+grep: grep-setup
+endif
 	cd $(BUILD_WORK)/grep && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
@@ -46,7 +50,7 @@ grep-package: grep-stage
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 	mkdir -p $(BUILD_DIST)/grep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin
 	for bin in $(BUILD_DIST)/grep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
-		ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$${bin##*/} $(BUILD_DIST)/grep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $${bin##*/} | cut -c2-); \
+		$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$${bin##*/} $(BUILD_DIST)/grep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $${bin##*/} | cut -c2-); \
 	done
 endif
 

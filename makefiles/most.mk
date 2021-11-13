@@ -21,7 +21,7 @@ most: most-setup slang2
 			--with-slang=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	mkdir -p $(BUILD_WORK)/most/src/objs
-	$(SED) -i '/slangversion:/{n;d}' $(BUILD_WORK)/most/src/Makefile
+	sed -i '/slangversion:/{n;d}' $(BUILD_WORK)/most/src/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/most
 	+$(MAKE) -C $(BUILD_WORK)/most install \
 		DESTDIR=$(BUILD_STAGE)/most prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)

@@ -19,9 +19,7 @@ xcb-util: xcb-util-setup libxcb
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util install \
 		DESTDIR=$(BUILD_STAGE)/xcb-util
-	+$(MAKE) -C $(BUILD_WORK)/xcb-util install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 

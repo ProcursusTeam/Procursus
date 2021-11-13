@@ -5,4 +5,3 @@ Maintainer: @DEB_MAINTAINER@
 Section: Keyrings
 Priority: optional
 Description: GnuPG key for Cameron Katri's repository
-Name: Cameron Katri's APT Keyring

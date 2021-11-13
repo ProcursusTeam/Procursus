@@ -21,9 +21,7 @@ libpipeline: libpipeline-setup
 	+$(MAKE) -C $(BUILD_WORK)/libpipeline
 	+$(MAKE) -C $(BUILD_WORK)/libpipeline install \
 		DESTDIR=$(BUILD_STAGE)/libpipeline
-	+$(MAKE) -C $(BUILD_WORK)/libpipeline install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libpipeline-package: libpipeline-stage

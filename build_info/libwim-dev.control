@@ -2,7 +2,7 @@ Package: libwim-dev
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_WIMLIB_V@
-Depends: libssl1.1, libwim15
+Depends: libssl3, libwim15
 Section: Development
 Priority: optional
 Description: Library for manipulating Windows Imaging files - development files

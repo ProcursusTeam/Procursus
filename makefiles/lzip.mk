@@ -25,9 +25,7 @@ lzip: lzip-setup
 	+$(MAKE) -C $(BUILD_WORK)/lzip
 	+$(MAKE) -C $(BUILD_WORK)/lzip install -j1 \
 		DESTDIR="$(BUILD_STAGE)/lzip"
-	+$(MAKE) -C $(BUILD_WORK)/lzip install -j1 \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 lzip-package: lzip-stage

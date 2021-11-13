@@ -27,16 +27,16 @@ endif
 xtrace-package: xtrace-stage
 # xtrace.mk Package Structure
 	rm -rf $(BUILD_DIST)/xtrace
-	
+
 # xtrace.mk Prep xtrace
 	cp -a $(BUILD_STAGE)/xtrace $(BUILD_DIST)
-	
+
 # xtrace.mk Sign
 	$(call SIGN,xtrace,general.xml)
-	
+
 # xtrace.mk Make .debs
 	$(call PACK,xtrace,DEB_XTRACE_V)
-	
+
 # xtrace.mk Build cleanup
 	rm -rf $(BUILD_DIST)/xtrace
 

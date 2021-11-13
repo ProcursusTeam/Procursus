@@ -31,11 +31,9 @@ apr: apr-setup
 	+$(MAKE) -C $(BUILD_WORK)/apr all \
 		CC_FOR_BUILD=$(shell which clang)
 	+$(MAKE) -C $(BUILD_WORK)/apr install \
-		DESTDIR="$(BUILD_BASE)"
-	+$(MAKE) -C $(BUILD_WORK)/apr install \
 		DESTDIR="$(BUILD_STAGE)/apr"
-	ln -sf $(BUILD_STAGE)/apr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/apr-1-config $(BUILD_STAGE)/apr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/apr-config
-	$(call AFTER_BUILD)
+	$(LN_S) $(BUILD_STAGE)/apr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/apr-1-config $(BUILD_STAGE)/apr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/apr-config
+	$(call AFTER_BUILD,copy)
 endif
 
 apr-package: apr-stage
