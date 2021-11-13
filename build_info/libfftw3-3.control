@@ -7,7 +7,6 @@ Suggests: libfftw3-bin, libfftw3-dev
 Provides: fftw3
 Replaces: fftw3
 Conflicts: fftw3
-Multi-Arch: same
 Section: Libraries
 Description: Library for computing Fast Fourier Transforms
  The FFTW library computes Fast Fourier Transforms (FFT) in one or more
