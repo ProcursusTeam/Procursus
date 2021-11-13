@@ -23,7 +23,8 @@ mosh: mosh-setup libprotobuf openssl ncurses
 		--with-crypto-library=openssl \
 		--disable-dependency-tracking \
 		--enable-completion \
-		TINFO_LIBS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -lncursesw"
+		TINFO_LIBS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -lncursesw" \
+		CXX="$(CXX) -std=c++11"
 	+$(MAKE) -C $(BUILD_WORK)/mosh \
 		CXX="$(CXX) -std=c++11"
 	+$(MAKE) -C $(BUILD_WORK)/mosh install \
