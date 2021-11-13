@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += lf
-LF_VERSION  := r24
+LF_VERSION  := r26
 DEB_LF_V    ?= 0~$(LF_VERSION)
 
 lf-setup: setup
