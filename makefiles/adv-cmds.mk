@@ -6,7 +6,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS      += adv-cmds
 ADV-CMDS_VERSION := 176
-DEB_ADV-CMDS_V   ?= $(ADV-CMDS_VERSION)-1
+DEB_ADV-CMDS_V   ?= $(ADV-CMDS_VERSION)-2
 
 adv-cmds-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/adv_cmds/adv_cmds-$(ADV-CMDS_VERSION).tar.gz
