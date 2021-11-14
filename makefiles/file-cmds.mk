@@ -17,11 +17,6 @@ file-cmds-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/file_cmds/file_cmds-$(FILE-CMDS_VERSION).tar.gz
 	$(call EXTRACT_TAR,file_cmds-$(FILE-CMDS_VERSION).tar.gz,file_cmds-$(FILE-CMDS_VERSION),file-cmds)
 	mkdir -p $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
-	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
-	mkdir -p $(BUILD_WORK)/file-cmds/include
-	cp -a $(MACOSX_SYSROOT)/usr/include/tzfile.h $(BUILD_WORK)/file-cmds/include
-	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h $(BUILD_WORK)/file-cmds/include
-
 	mkdir -p $(BUILD_WORK)/file-cmds/ipcs/sys
 	wget -nc -P $(BUILD_WORK)/file-cmds/ipcs/sys \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/ipcs.h \
