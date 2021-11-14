@@ -7,7 +7,7 @@ SUBPROJECTS    += @pkg@
 DEB_@PKG@_V    ?= $(@PKG@_VERSION)
 
 @pkg@-setup: setup
-	$(call GITHUB_ARCHIVE,junegunn,@pkg@,$(@PKG@_VERSION),$(@PKG@_VERSION))
+@download@
 	$(call EXTRACT_TAR,@pkg@-$(@PKG@_VERSION).tar.gz,@pkg@-$(@PKG@_VERSION),@pkg@)
 	mkdir -p $(BUILD_STAGE)/@pkg@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
