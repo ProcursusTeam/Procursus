@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += powder
 POWDER_VERSION := 96.2.350
-DEB_POWDER_V   ?= $(POWDER_VERSION)
+DEB_POWDER_V   ?= $(POWDER_VERSION)-1
 
 powder-setup: setup
 	$(call GITHUB_ARCHIVE,The-Powder-Toy,The-Powder-Toy,$(POWDER_VERSION),v$(POWDER_VERSION))
@@ -40,9 +40,13 @@ powder: powder-setup curl sdl2 fftw luajit
 		--cross-file cross.txt \
 		..
 	+ninja -C $(BUILD_WORK)/powder/build
-	install -d $(BUILD_STAGE)/powder/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man6}
+	install -d $(BUILD_STAGE)/powder/$(MEMO_PREFIX){/Applications/Powder.app/Contents/{MacOS,Resources},$(MEMO_SUB_PREFIX)/{bin,share/man/man6}}
 	install -m755 $(BUILD_WORK)/powder/build/powder $(BUILD_STAGE)/powder/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/powder
 	install -m755 $(BUILD_WORK)/powder/resources/powder.man $(BUILD_STAGE)/powder/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man6/powder.6
+	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/powder $(BUILD_STAGE)/powder/$(MEMO_PREFIX)/Applications/Powder.app/Contents/MacOS/
+	sed -e 's|@DEB_POWDER_V@|$(DEB_POWDER_V)|g' -e "s|@POWDER_MAJOR_VERSION@|$$(echo $(DEB_POWDER_V) | cut -d. -f 1)|g" \
+		$(BUILD_MISC)/powder/Info.plist > $(BUILD_STAGE)/powder/$(MEMO_PREFIX)/Applications/Powder.app/Contents/Info.plist
+	install -m644 $(BUILD_WORK)/powder/resources/{document,icon}.icns $(BUILD_STAGE)/powder/$(MEMO_PREFIX)/Applications/Powder.app/Contents/Resources
 	$(call AFTER_BUILD)
 endif
 
