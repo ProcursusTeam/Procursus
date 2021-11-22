@@ -488,7 +488,36 @@ CFLAGS              += -DLIBIOSEXEC_INTERNAL
 endif
 endif
 
-MEMO_MANPAGE_SUFFIX := .zst
+MEMO_MANPAGE_COMPRESSION := zstd
+
+ifeq ($(MEMO_MANPAGE_COMPRESSION),zstd)
+MEMO_MANPAGE_SUFFIX   := .zst
+MEMO_MANPAGE_COMPCMD  := zstd
+MEMO_MANPAGE_COMPFLGS += -19 --rm
+
+else ifeq ($(MEMO_MANPAGE_COMPRESSION),xz)
+MEMO_MANPAGE_SUFFIX    := .xz
+MEMO_MANPAGE_COMPCMD   := xz
+MEMO_MANPAGE_COMPFLGS  := -T0
+
+else ifeq ($(MEMO_MANPAGE_COMPRESSION),gzip)
+MEMO_MANPAGE_SUFFIX    := .gz
+MEMO_MANPAGE_COMPCMD   := gzip
+MEMO_MANPAGE_COMPFLGS  := -9
+
+else ifeq ($(MEMO_MANPAGE_COMPRESSION),lz4)
+MEMO_MANPAGE_SUFFIX    := .lz4
+MEMO_MANPAGE_COMPCMD   := lz4
+
+else ifeq ($(MEMO_MANPAGE_COMPRESSION),lzop)
+MEMO_MANPAGE_SUFFIX    := .lzop
+MEMO_MANPAGE_COMPCMD   := lzop
+MEMO_MANPAGE_COMPFLGS  := -U
+
+else ifeq ($(MEMO_MANPAGE_COMPRESSION),none)
+MEMO_MANPAGE_SUFFIX    :=
+MEMO_MANPAGE_COMPCMD   := true
+endif
 
 DEFAULT_CMAKE_FLAGS := \
 	-DCMAKE_BUILD_TYPE=Release \
@@ -686,8 +715,8 @@ AFTER_BUILD = \
 	find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.xz$$' -exec unxz '{}' \; 2> /dev/null; \
 	find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.zst$$' -exec unzstd '{}' \; 2> /dev/null; \
 	if [ "$(MEMO_NO_DOC_COMPRESS)" != 1 ]; then \
-		find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -exec zstd -19 --rm '{}' \; 2> /dev/null; \
-		find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type l -exec bash -c '$(LN_S) $$(readlink "{}" | sed -e "s/\.gz$$//" -e "s/\.xz$$//" -e "s/\.zst$$//").zst "{}".zst; rm -f "{}"' \; -delete 2> /dev/null; \
+		find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -exec $(MEMO_MANPAGE_COMPCMD) $(MEMO_MANPAGE_COMPFLGS) '{}' \; 2> /dev/null; \
+		find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type l -exec bash -c '$(LN_S) $$(readlink "{}" | sed -e "s/\.gz$$//" -e "s/\.xz$$//" -e "s/\.zst$$//")$(MEMO_MANPAGE_SUFFIX) "{}"$(MEMO_MANPAGE_SUFFIX); rm -f "{}"' \; -delete 2> /dev/null; \
 	else \
 		find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type l -exec bash -c '$(LN_S) $$(readlink "{}" | sed -e "s/\.gz$$//" -e "s/\.xz$$//" -e "s/\.zst$$//") "{}"' \; 2> /dev/null; \
 	fi; \
