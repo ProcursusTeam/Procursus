@@ -49,6 +49,11 @@ ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(INSTALL) -Dm755 $(BUILD_MISC)/pinentry-macosx $(BUILD_DIST)/pinentry/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pinentry-macosx
 	sed -i 's|@PREFIX@|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/Applications/pinentry-mac.app/Contents/MacOS|g' \
 			$(BUILD_DIST)/pinentry/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pinentry-macosx
+
+	# Keep default as pinentry-curses
+	rm $(BUILD_DIST)/pinentry/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pinentry
+	$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pinentry-curses \
+			$(BUILD_DIST)/pinentry/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pinentry
 endif
 
 	# pinentry.mk Sign
