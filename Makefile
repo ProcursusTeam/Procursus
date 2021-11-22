@@ -770,6 +770,7 @@ PACK = \
 					-e 's|@BARE_PLATFORM@|$(BARE_PLATFORM)|g' \
 					-e 's/@$(2)@/$($(2))/g' \
 					-e 's/@DEB_MAINTAINER@/$(DEB_MAINTAINER)/g' \
+					-e 's/@MEMO_MANPAGE_SUFFIX@/$(MEMO_MANPAGE_SUFFIX)/g' \
 					-e 's/@DEB_ARCH@/$(DEB_ARCH)/g' < $(BUILD_INFO)/$(1).$$n.rootless > $(BUILD_DIST)/$(1)/DEBIAN/$$i; \
 			elif [ -f "$(BUILD_INFO)/$(1).$$n" ]; then \
 				sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' \
@@ -780,6 +781,7 @@ PACK = \
 					-e 's|@BARE_PLATFORM@|$(BARE_PLATFORM)|g' \
 					-e 's/@$(2)@/$($(2))/g' \
 					-e 's/@DEB_MAINTAINER@/$(DEB_MAINTAINER)/g' \
+					-e 's/@MEMO_MANPAGE_SUFFIX@/$(MEMO_MANPAGE_SUFFIX)/g' \
 					-e 's/@DEB_ARCH@/$(DEB_ARCH)/g' < $(BUILD_INFO)/$(1).$$n > $(BUILD_DIST)/$(1)/DEBIAN/$$i; \
 			fi; \
 		done; \
