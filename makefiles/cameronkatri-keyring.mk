@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS            += cameronkatri-keyring
-CKATRI_KEYRING_VERSION := 2020.11.21
+CKATRI_KEYRING_VERSION := 2021.11.23
 DEB_CKATRI_KEYRING_V   ?= $(CKATRI_KEYRING_VERSION)
 
 cameronkatri-keyring:
