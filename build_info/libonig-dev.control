@@ -6,4 +6,3 @@ Depends: libonig5 (= @DEB_LIBONIG_V@)
 Section: Development
 Priority: optional
 Description: regular expression library - development files
-Tag: purpose::library, role::developer

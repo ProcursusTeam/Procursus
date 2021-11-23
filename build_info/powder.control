@@ -1,0 +1,10 @@
+Package: powder
+Priority: optional
+Section: Games
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_POWDER_V@
+Homepage: http://powdertoy.co.uk/
+Depends: libsdl2-2.0-0, libluajit-5.1-2, libcurl4, libfftw3-single3
+Description: a physics sandbox game
+ The Powder Toy is a free physics sandbox game, which simulates air pressure and velocity, heat, gravity and a number of other interactions between different substances.

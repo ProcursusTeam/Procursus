@@ -2,7 +2,7 @@ Package: libxtst-doc
 Version: @DEB_LIBXTST_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Section: X_Window
+Section: Documentation
 Priority: optional
 Depends: libxtst-dev (= @DEB_LIBXTST_V@)
 Description: X11 Record extension library (documentation)

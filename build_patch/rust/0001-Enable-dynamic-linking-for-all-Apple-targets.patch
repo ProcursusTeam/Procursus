@@ -1,0 +1,25 @@
+From f2f321b801279edb462ff57b8dfea76cb402cf59 Mon Sep 17 00:00:00 2001
+From: Lucy <lucy@absolucy.moe>
+Date: Thu, 29 Jul 2021 17:38:46 -0400
+Subject: [PATCH] Enable dynamic linking for all Apple targets.
+
+---
+ compiler/rustc_target/src/spec/apple_sdk_base.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/compiler/rustc_target/src/spec/apple_sdk_base.rs b/compiler/rustc_target/src/spec/apple_sdk_base.rs
+index 39bc699eef0..afd79b22180 100644
+--- a/compiler/rustc_target/src/spec/apple_sdk_base.rs
++++ b/compiler/rustc_target/src/spec/apple_sdk_base.rs
+@@ -50,7 +50,7 @@ pub fn opts(os: &str, arch: Arch) -> TargetOptions {
+     TargetOptions {
+         abi: target_abi(arch),
+         cpu: target_cpu(arch),
+-        dynamic_linking: false,
++        dynamic_linking: true,
+         executables: true,
+         link_env_remove: link_env_remove(arch),
+         has_elf_tls: false,
+-- 
+2.32.0
+

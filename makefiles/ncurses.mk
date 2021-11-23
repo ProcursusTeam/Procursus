@@ -8,7 +8,7 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += ncurses
 endif # ($(MEMO_TARGET),darwin-\*)
 NCURSES_VERSION := 6.2+20201114
-DEB_NCURSES_V   ?= $(NCURSES_VERSION)-1
+DEB_NCURSES_V   ?= $(NCURSES_VERSION)-3
 
 ncurses-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://salsa.debian.org/debian/ncurses/-/archive/upstream/$(NCURSES_VERSION)/ncurses-upstream-$(NCURSES_VERSION).tar.gz
@@ -43,7 +43,7 @@ ncurses: ncurses-setup
 	+$(MAKE) -C $(BUILD_WORK)/ncurses install \
 		DESTDIR="$(BUILD_STAGE)/ncurses"
 
-	rm $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/tabs
+	rm -f $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin/tabs,share/man/man1/tabs.1*}
 
 ifeq (,$(MEMO_PREFIX))
 	for ti in $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo/*/*; do \
@@ -98,7 +98,7 @@ ncurses-package: ncurses-stage
 
 	# ncurses.mk Prep libncurses-dev
 	cp -a $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ncurses*-config $(BUILD_DIST)/libncurses-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/ncurses*-config.1 $(BUILD_DIST)/libncurses-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/ncurses*-config.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/libncurses-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libncurses-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(*.6.*|*.5.*|terminfo) $(BUILD_DIST)/libncurses-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
@@ -108,7 +108,7 @@ ncurses-package: ncurses-stage
 
 	# ncurses.mk Prep ncurses-bin
 	cp -a $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/!(ncurses*-config) $(BUILD_DIST)/ncurses-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/!(ncurses*-config.1) $(BUILD_DIST)/ncurses-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/!(ncurses*-config.1$(MEMO_MANPAGE_SUFFIX)) $(BUILD_DIST)/ncurses-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man{5,7} $(BUILD_DIST)/ncurses-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
 	# ncurses.mk Prep ncurses-doc

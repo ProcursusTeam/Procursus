@@ -12,4 +12,3 @@ Description: Theora Video Compression Codec (development files)
  .
  This package contains the header files needed to develop applications
  with libtheora.
-Tag: purpose::library, role::developer

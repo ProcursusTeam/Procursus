@@ -27,16 +27,16 @@ endif
 font-util-package: font-util-stage
 # font-util.mk Package Structure
 	rm -rf $(BUILD_DIST)/xfonts-utils
-	
+
 # font-util.mk Prep font-util
 	cp -a $(BUILD_STAGE)/font-util $(BUILD_DIST)/xfonts-utils
-	
+
 # font-util.mk Sign
 	$(call SIGN,xfonts-utils,general.xml)
-	
+
 # font-util.mk Make .debs
 	$(call PACK,xfonts-utils,DEB_FONTUTIL_V)
-	
+
 # font-util.mk Build cleanup
 	rm -rf $(BUILD_DIST)/xfonts-utils
 

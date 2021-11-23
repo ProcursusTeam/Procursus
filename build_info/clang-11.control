@@ -7,4 +7,3 @@ Section: Development
 Priority: optional
 Homepage: https://www.llvm.org/
 Description: C, C++ and Objective-C compiler
-Tag: purpose::console, role::developer

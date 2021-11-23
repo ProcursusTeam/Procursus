@@ -30,16 +30,16 @@ endif
 gtime-package: gtime-stage
 	# gtime.mk Package Structure
 	rm -rf $(BUILD_DIST)/gtime
-	
+
 	# gtime.mk Prep gtime
 	cp -a $(BUILD_STAGE)/gtime $(BUILD_DIST)
-	
+
 	# gtime.mk Sign
 	$(call SIGN,gtime,general.xml)
-	
+
 	# gtime.mk Make .debs
 	$(call PACK,gtime,DEB_GTIME_V)
-	
+
 	# gtime.mk Build cleanup
 	rm -rf $(BUILD_DIST)/gtime
 

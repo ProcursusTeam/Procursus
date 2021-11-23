@@ -20,4 +20,3 @@ Description: A socket daemon to multiplex connections from and to iOS devices ov
  .
  The daemon also manages pairing records with iOS devices and the host in /var/lib/lockdown (Linux) 
  or /var/db/lockdown (macOS/iOS). Ensure proper permissions are setup for the daemon to access the directory.
-Tag: role::developer
