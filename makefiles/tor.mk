@@ -23,7 +23,8 @@ tor: tor-setup libevent openssl xz zstd libscrypt
 		--disable-html-manual \
 		--enable-lzma \
 		--disable-seccomp \
-		--disable-unittests
+		--disable-unittests \
+		LZMA_LIBS='$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/liblzma.dylib'
 	# While _NSGetEnviron exists, it doesn't have a prototype in iOS 12 SDKs
 	sed -i '/HAVE__NSGETENVIRON/d' $(BUILD_WORK)/tor/orconfig.h
 	+$(MAKE) -C $(BUILD_WORK)/tor \
