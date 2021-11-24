@@ -27,8 +27,8 @@ tcl: tcl-setup
 endif
 tcl-package: tcl
 	# tcl.mk Package Structure
-	rm -rf $(BUILD_DIST)/{libtcl8.6,tcl8.6{,-dev-doc}}
-	mkdir -p $(BUILD_DIST)/{libtcl8.6,tcl8.6{,-dev-doc}}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	rm -rf $(BUILD_DIST)/{libtcl8.6,tcl8.6{,-dev,-doc}}
+	mkdir -p $(BUILD_DIST)/{libtcl8.6,tcl8.6{,-dev,-doc}}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	mkdir -p $(BUILD_DIST)/{libtcl8.6,tcl8.6-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/tcl
 	mkdir -p $(BUILD_DIST)/{libtcl8.6,tcl8.6-doc}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	mkdir -p $(BUILD_DIST)/libtcl8.6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tcltk
@@ -57,6 +57,6 @@ tcl-package: tcl
 	$(call PACK,tcl8.6-doc,DEB_TCL_V)
 	
 	# tcl.mk Build cleanup
-	rm -rf $(BUILD_DIST)/{libtcl8.6,tcl8.6{,-dev-doc}}
+	rm -rf $(BUILD_DIST)/{libtcl8.6,tcl8.6{,-dev,-doc}}
 
 .PHONY: tcl tcl-package
