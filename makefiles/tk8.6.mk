@@ -59,6 +59,6 @@ tk8.6-package: tk8.6-stage
 	$(call PACK,tk8.6-doc,DEB_TK8.6_V)
 
 	# tk8.6.mk Build cleanup
-	rm -rf $(BUILD_DIST)/tk8.6
+	rm -rf $(BUILD_DIST)/{tk8.6,libtk8.6,tk8.6-dev,tk8.6-doc}
 
 .PHONY: tk8.6 tk8.6-package
