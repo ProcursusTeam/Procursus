@@ -6,7 +6,7 @@ Depends: python3, python3-binwalk
 Section: Development
 Priority: optional
 Homepage: https://github.com/ReFirmLabs/binwalk
-Description: tool library for analyzing binary blobs and executable code
+Description: tool for analyzing binary blobs and executable code
  Binwalk is a tool for searching a given binary image for embedded files
  and executable code. Specifically, it is designed for identifying files
  and code embedded inside of firmware images. Binwalk uses the libmagic
