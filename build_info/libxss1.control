@@ -2,7 +2,7 @@ Package: libxss1
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Version: @DEB_LIBXSS_V@
-Depends: libx11-6 (>= 2:1.4.99.1), libxext
+Depends: libx11-6 (>= 1.4.99.1), libxext
 Section: Libraries
 Priority: optional
 Description: X11 Screen Saver extension library
