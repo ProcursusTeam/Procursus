@@ -17,6 +17,3 @@ Description: tool library for analyzing binary blobs and executable code
  improved signatures for files that are commonly found in firmware images
  such as compressed/archived files, firmware headers, Linux kernels,
  bootloaders, filesystems, etc.
- .
- This package is an empty package, because the binary tool is already
- provided with the library, dependency of this package.

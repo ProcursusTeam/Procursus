@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += binwalk
-BINWALK_VERSION := 2.3.2
+BINWALK_VERSION := 2.3.3
 DEB_BINWALK_V   ?= $(BINWALK_VERSION)
 
 binwalk-setup: setup
