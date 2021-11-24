@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += yq
-YQ_VERSION  := 4.13.0
+YQ_VERSION  := 4.15.1
 DEB_YQ_V    ?= $(YQ_VERSION)
 
 yq-setup: setup
