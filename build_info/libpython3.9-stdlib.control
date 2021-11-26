@@ -1,0 +1,9 @@
+Package: libpython3.9-stdlib
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_PYTHON3_V@
+Depends: libpython3.9 (= @DEB_PYTHON3_V@)
+Section: Scripting
+Priority: optional
+Description: Interpreted, interactive, object-oriented programming language.
+ This package contains Python 3.9's standard library. It is normally not used on its own, but as a dependency of python3.9.

@@ -51,13 +51,16 @@ python3.9-package: python3.9-stage
 	rm -rf $(BUILD_DIST)/python3{,.9} $(BUILD_DIST)/libpython3.9{,-dev}
 	mkdir -p \
 		$(BUILD_DIST)/python3{,.9}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
-		$(BUILD_DIST)/libpython3.9{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX){,$(MEMO_ALT_PREFIX)}/lib \
+		$(BUILD_DIST)/libpython3.9{,-dev,-stdlib}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# python3.9.mk Prep python3.9
 	cp -a $(BUILD_STAGE)/python3.9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/python3.9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# python3.9.mk Prep libpython3.9
-	cp -a $(BUILD_STAGE)/python3.9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libpython3.9.dylib,python3,python3.9} $(BUILD_DIST)/libpython3.9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/python3.9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpython3.9.dylib $(BUILD_DIST)/libpython3.9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
+	# python3.9.mk Prep libpython3.9-stdlib
+	cp -a $(BUILD_STAGE)/python3.9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3.9 $(BUILD_DIST)/libpython3.9-stdlib/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# python3.9.mk Prep libpython3.9-dev
 	cp -a $(BUILD_STAGE)/python3.9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libpython3.9-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
@@ -82,10 +85,11 @@ python3.9-package: python3.9-stage
 	# python3.9.mk Make .debs
 	$(call PACK,python3.9,DEB_PYTHON3_V)
 	$(call PACK,libpython3.9,DEB_PYTHON3_V)
+	$(call PACK,libpython3.9-stdlib,DEB_PYTHON3_V)
 	$(call PACK,libpython3.9-dev,DEB_PYTHON3_V)
 	$(call PACK,python3,DEB_PYTHON3_V)
 
 	# python3.9.mk Build cleanup
-	rm -rf $(BUILD_DIST)/python3{,.9} $(BUILD_DIST)/libpython3.9{,-dev}
+	rm -rf $(BUILD_DIST)/python3{,.9} $(BUILD_DIST)/libpython3.9{,-dev,-stdlib}
 
 .PHONY: python3.9 python3.9-package
