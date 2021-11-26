@@ -41,7 +41,7 @@ endif
 	+$(MAKE) -C $(BUILD_WORK)/python3.9 install \
 		DESTDIR=$(BUILD_STAGE)/python3.9
 	mkdir -p $(BUILD_STAGE)/python3.9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3.9/dist-packages
-	sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < $(BUILD_MISC)/python3/_sysconfigdata__darwin_darwin.py > $(BUILD_STAGE)/python3.9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3.9/_sysconfigdata__darwin_darwin.py
+	sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < $(BUILD_MISC)/python3.9/_sysconfigdata__darwin_darwin.py > $(BUILD_STAGE)/python3.9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3.9/_sysconfigdata__darwin_darwin.py
 	rm -f $(BUILD_STAGE)/python3.9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}/!(*3.9*)
 	$(call AFTER_BUILD,copy)
 endif
