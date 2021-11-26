@@ -3,14 +3,14 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += python3.9
-PYTHON3_VERSION  := 3.9.9
-DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)
+PYTHON39_VERSION  := 3.9.9
+DEB_PYTHON39_V    ?= $(PYTHON39_VERSION)
 
 python3.9-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.python.org/ftp/python/$(PYTHON3_VERSION)/Python-$(PYTHON3_VERSION).tar.xz{,.asc}
-	$(call PGP_VERIFY,Python-$(PYTHON3_VERSION).tar.xz,asc)
-	$(call EXTRACT_TAR,Python-$(PYTHON3_VERSION).tar.xz,Python-$(PYTHON3_VERSION),python3.9)
-	$(call DO_PATCH,python3,python3.9,-p1)
+	wget -q -nc -P $(BUILD_SOURCE) https://www.python.org/ftp/python/$(PYTHON39_VERSION)/Python-$(PYTHON39_VERSION).tar.xz{,.asc}
+	$(call PGP_VERIFY,Python-$(PYTHON39_VERSION).tar.xz,asc)
+	$(call EXTRACT_TAR,Python-$(PYTHON39_VERSION).tar.xz,Python-$(PYTHON39_VERSION),python3.9)
+	$(call DO_PATCH,python3.9,python3.9,-p1)
 	sed -i -e 's/-vxworks/-darwin/g' -e 's/system=VxWorks/system=Darwin/g' -e '/readelf for/d' -e 's|LIBFFI_INCLUDEDIR=.*|LIBFFI_INCLUDEDIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include"|g' $(BUILD_WORK)/python3.9/configure.ac
 	sed -i -e "s|self.compiler.library_dirs|['$(TARGET_SYSROOT)/usr/lib'] + ['$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib']|g" -e "s|self.compiler.include_dirs|['$(TARGET_SYSROOT)/usr/include'] + ['$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include']|g" -e "s/HOST_PLATFORM == 'darwin'/HOST_PLATFORM.startswith('darwin')/" $(BUILD_WORK)/python3.9/setup.py
 
@@ -83,11 +83,11 @@ python3.9-package: python3.9-stage
 	$(call SIGN,libpython3.9,general.xml)
 
 	# python3.9.mk Make .debs
-	$(call PACK,python3.9,DEB_PYTHON3_V)
-	$(call PACK,libpython3.9,DEB_PYTHON3_V)
-	$(call PACK,libpython3.9-stdlib,DEB_PYTHON3_V)
-	$(call PACK,libpython3.9-dev,DEB_PYTHON3_V)
-	$(call PACK,python3,DEB_PYTHON3_V)
+	$(call PACK,python3.9,DEB_PYTHON39_V)
+	$(call PACK,libpython3.9,DEB_PYTHON39_V)
+	$(call PACK,libpython3.9-stdlib,DEB_PYTHON39_V)
+	$(call PACK,libpython3.9-dev,DEB_PYTHON39_V)
+	$(call PACK,python3,DEB_PYTHON39_V)
 
 	# python3.9.mk Build cleanup
 	rm -rf $(BUILD_DIST)/python3{,.9} $(BUILD_DIST)/libpython3.9{,-dev,-stdlib}
