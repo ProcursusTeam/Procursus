@@ -15,7 +15,7 @@ endif
 xmrig-setup: setup
 	$(call GITHUB_ARCHIVE,xmrig,xmrig,$(XMRIG_VERSION),v$(XMRIG_VERSION))
 	$(call EXTRACT_TAR,xmrig-$(XMRIG_VERSION).tar.gz,xmrig-$(XMRIG_VERSION),xmrig)
-  $(call DO_PATCH,xmrig,xmrig,-p1)
+	$(call DO_PATCH,xmrig,xmrig,-p1)
 	mkdir -p $(BUILD_WORK)/xmrig/build
 
 ifneq ($(wildcard $(BUILD_WORK)/xmrig/.build_complete),)
@@ -26,12 +26,14 @@ xmrig: xmrig-setup libuv1 openssl hwloc
 	cd $(BUILD_WORK)/xmrig/build && LDFLAGS="$(LDFLAGS) -Wl,-framework,CoreFoundation" cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
 		$(XMRIG_CMAKE_FLAGS) \
-    -DUV_LIBRARY="$(BUILD_BASE)/usr/lib/libuv.dylib" \
-    -DOPENSSL_CRYPTO_LIBRARY="$(BUILD_BASE)/usr/lib/libcrypto.dylib" \
-    -DOPENSSL_SSL_LIBRARY="$(BUILD_BASE)/usr/lib/libssl.dylib" \
+		-DUV_LIBRARY="$(BUILD_BASE)/usr/lib/libuv.dylib" \
+		-DOPENSSL_CRYPTO_LIBRARY="$(BUILD_BASE)/usr/lib/libcrypto.dylib" \
+		-DOPENSSL_SSL_LIBRARY="$(BUILD_BASE)/usr/lib/libssl.dylib" \
 		-DWITH_CN_GPU=OFF \
 		..
 	+$(MAKE) -C $(BUILD_WORK)/xmrig/build
+	$(INSTALL) -d $(BUILD_STAGE)/xmrig/usr/bin
+	$(INSTALL) $(BUILD_WORK)/xmrig/build/xmrig $(BUILD_STAGE)/xmrig/usr/bin/xmrig
 	$(call AFTER_BUILD)
 endif
 
