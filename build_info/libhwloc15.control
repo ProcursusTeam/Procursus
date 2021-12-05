@@ -1,0 +1,11 @@
+Package: libhwloc15
+Version: @DEB_HWLOC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: standard
+Description: Hierarchical view of the machine - shared libraries
+ libhwloc provides a portable abstraction (across OS, versions,
+ architectures, ...) of the hierarchical topology of modern architectures.
+ .
+ It provides the libhwloc shared libraries.
