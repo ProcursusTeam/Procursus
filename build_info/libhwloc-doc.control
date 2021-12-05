@@ -1,0 +1,10 @@
+Package: libhwloc-doc
+Version: @DEB_HWLOC_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Documentation
+Description: Hierarchical view of the machine - documentation
+ libhwloc provides a portable abstraction (across OS, versions,
+ architectures, ...) of the hierarchical topology of modern architectures.
+ .
+ It contains manpages and HTML documentations for libhwloc
