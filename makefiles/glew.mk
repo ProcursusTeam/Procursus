@@ -40,7 +40,7 @@ glew-package: glew-stage
 	# glew.mk Package Structure
 	rm -rf $(BUILD_DIST)/libglew{2.2,-dev}
 	mkdir -p $(BUILD_DIST)/libglew{2.2,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# glew.mk Prep libglew2.2
 	cp -a $(BUILD_STAGE)/glew/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libGLEW.2.2*.dylib $(BUILD_DIST)/libglew2.2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
@@ -50,11 +50,11 @@ glew-package: glew-stage
 
 	# glew.mk Sign
 	$(call SIGN,libglew2.2,general.xml)
-	
+
 	# glew.mk Make .debs
 	$(call PACK,libglew2.2,DEB_GLEW_V)
 	$(call PACK,libglew-dev,DEB_GLEW_V)
-	
+
 	# glew.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libglew{2.2,-dev}
 

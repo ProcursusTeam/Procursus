@@ -33,16 +33,16 @@ endif
 asciidoc-package: asciidoc-stage
 	# asciidoc.mk Package Structure
 	rm -rf $(BUILD_DIST)/asciidoc
-	
+
 	# asciidoc.mk Prep asciidoc
 	cp -a $(BUILD_STAGE)/asciidoc $(BUILD_DIST)
-	
+
 	# asciidoc.mk Sign
 	$(call SIGN,asciidoc,general.xml)
-	
+
 	# asciidoc.mk Make .debs
 	$(call PACK,asciidoc,DEB_ASCIIDOC_V)
-	
+
 	# asciidoc.mk Build cleanup
 	rm -rf $(BUILD_DIST)/asciidoc
 

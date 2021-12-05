@@ -88,7 +88,7 @@ tigervnc-package: tigervnc-stage
 		$(BUILD_DIST)/tigervnc-common/{$(MEMO_PREFIX)/etc,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin} \
 		$(BUILD_DIST)/tigervnc-scraping-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{libexec,bin} \
 		$(BUILD_DIST)/tigervnc-xorg-extension/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg/modules/extensions \
-	
+
 # tigervnc.mk Prep tigervnc-standalone-server
 	rm -rf $(BUILD_STAGE)/tigervnc/usr/lib/xorg/protocol.txt
 	rm -rf $(BUILD_STAGE)/tigervnc/usr/share/man/man1/Xserver.1
@@ -115,13 +115,13 @@ tigervnc-package: tigervnc-stage
 	$(call SIGN,tigervnc-xorg-extension,general.xml)
 	$(call SIGN,tigervnc-scraping-server,general.xml)
 	$(call SIGN,tigervnc-common,general.xml)
-	
+
 # tigervnc.mk Make .debs
 	$(call PACK,tigervnc-standalone-server,DEB_TIGERVNC_V)
 	$(call PACK,tigervnc-xorg-extension,DEB_TIGERVNC_V)
 	$(call PACK,tigervnc-scraping-server,DEB_TIGERVNC_V)
 	$(call PACK,tigervnc-common,DEB_TIGERVNC_V)
-	
+
 # tigervnc.mk Build cleanup
 	rm -rf $(BUILD_DIST)/tigervnc-{standalone-server,xorg-extension,scraping-server,common}
 

@@ -5,7 +5,7 @@ Maintainer: @DEB_MAINTAINER@
 Priority: optional
 Homepage: https://neovim.io/
 Section: Text_Editors
-Depends: libintl8, lua-luv, libuv1, libmsgpackc2, libvterm0, libtermkey1, libunibilium4, libluajit-5.1-2
+Depends: libintl8, lua-luv, libuv1, libmsgpackc2, libvterm0, libtermkey1, libunibilium4, libluajit-5.1-2, libtree-sitter0
 Description: heavily refactored vim fork
  Neovim is a fork of Vim focused on modern code and features, rather than
  running in legacy environments.

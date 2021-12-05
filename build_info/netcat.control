@@ -7,4 +7,3 @@ Section: Networking
 Priority: important
 Multi-Arch: foreign
 Description: simple socket manipulation tool
-Tag: purpose::console, role::hacker

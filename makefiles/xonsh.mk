@@ -15,7 +15,10 @@ xonsh:
 	@echo "Using previously built xonsh."
 else
 xonsh: xonsh-setup python3-prompt-toolkit
-	cd $(BUILD_WORK)/xonsh && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py install \
+	cd $(BUILD_WORK)/xonsh && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py \
+		build \
+		--executable="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3" \
+		install \
 		--install-layout=deb \
 		--root=$(BUILD_STAGE)/xonsh \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
