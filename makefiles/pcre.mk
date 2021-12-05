@@ -14,7 +14,6 @@ pcre-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://downloads.sourceforge.net/pcre/pcre-$(PCRE_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,pcre-$(PCRE_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,pcre-$(PCRE_VERSION).tar.bz2,pcre-$(PCRE_VERSION),pcre)
-	$(call DO_PATCH,pcre,pcre,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/pcre/.build_complete),)
 pcre:
