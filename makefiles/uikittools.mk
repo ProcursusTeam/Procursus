@@ -42,6 +42,10 @@ uikittools-package: uikittools-stage
 	rm -f $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{uinotify,uisave,lsrebuild,uidisplay,uialert,uishoot} \
 		$(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/{uinotify,uisave,lsrebuild,uidisplay,uialert,uishoot}.1$(MEMO_MANPAGE_SUFFIX) \
 		$(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/*/man1/{uinotify,uisave,lsrebuild,uidisplay,uialert,uishoot}.1$(MEMO_MANPAGE_SUFFIX)
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+	# This will be handled in the next release
+	rm -f $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{uiduid,cfversion,gssc,ecidecid}
+endif
 
 	# uikittools.mk Prep uikittools-extra
 	cp -a $(BUILD_STAGE)/uikittools $(BUILD_DIST)/uikittools-extra
