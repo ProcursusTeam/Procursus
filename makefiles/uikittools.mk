@@ -8,7 +8,7 @@ else
 STRAPPROJECTS      += uikittools
 endif
 UIKITTOOLS_VERSION := 2.1.0
-DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)
+DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)-1
 
 uikittools-setup: setup
 	$(call GITHUB_ARCHIVE,ProcursusTeam,uikittools-ng,$(UIKITTOOLS_VERSION),v$(UIKITTOOLS_VERSION))
@@ -59,12 +59,16 @@ endif
 	$(call SIGN,uikittools-extra,general.xml)
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	for tool in $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/* \
-		$(BUILD_STAGE)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
-		if [ -f $(BUILD_WORK)/uikittools/$$(basename $$tool).plist ]; then \
-			$(LDID) -S$(BUILD_WORK)/uikittools/$$(basename $$tool).plist $$tool; \
-		fi; \
-	done
+	$(LDID) -S$(BUILD_WORK)/uikittools/lsrebuild.plist $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsrebuild
+	$(LDID) -S$(BUILD_WORK)/uikittools/mgask.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/mgask
+	$(LDID) -S$(BUILD_WORK)/uikittools/sbreload.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sbreload
+	$(LDID) -S$(BUILD_WORK)/uikittools/uicache.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uicache
+	$(LDID) -S$(BUILD_WORK)/uikittools/uidisplay.plist $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uidisplay
+	$(LDID) -S$(BUILD_WORK)/uikittools/uinotify.plist $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uinotify
+	$(LDID) -S$(BUILD_WORK)/uikittools/uiopen.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uiopen
+	$(LDID) -S$(BUILD_WORK)/uikittools/uisave.plist $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uisave
+	$(LDID) -S$(BUILD_WORK)/uikittools/uishoot.plist $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uishoot
+
 	find $(BUILD_DIST)/uikittools -name '.ldid*' -type f -delete
 	find $(BUILD_DIST)/uikittools-extra -name '.ldid*' -type f -delete
 endif
