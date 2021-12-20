@@ -12,7 +12,7 @@ DEB_LD64_V      ?= $(LD64_VERSION)-2
 cctools-setup: setup
 	$(call GITHUB_ARCHIVE,tpoechtrager,cctools-port,$(CCTOOLS_COMMIT),$(CCTOOLS_COMMIT),cctools)
 	$(call EXTRACT_TAR,cctools-$(CCTOOLS_COMMIT).tar.gz,cctools-port-$(CCTOOLS_COMMIT)/cctools,cctools)
-	wget -q -nc -O$(BUILD_SOURCE)/ld64_wrapper.c https://git.elucubratus.com/elucubratus/elucubratus/-/raw/35cd7d96ef1bfc14a51463b4af6499cf7706fac5/data/ld64/wrapper.c
+	wget -q -nc -O$(BUILD_SOURCE)/ld64/ld64_wrapper.c https://git.elucubratus.com/elucubratus/elucubratus/-/raw/35cd7d96ef1bfc14a51463b4af6499cf7706fac5/data/ld64/wrapper.c
 	$(call DO_PATCH,ld64,cctools,-p0)
 	rm -rf $(BUILD_WORK)/cctools-*
 
