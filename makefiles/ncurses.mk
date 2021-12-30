@@ -7,8 +7,8 @@ STRAPPROJECTS   += ncurses
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += ncurses
 endif # ($(MEMO_TARGET),darwin-\*)
-NCURSES_VERSION := 6.2+20201114
-DEB_NCURSES_V   ?= $(NCURSES_VERSION)-3
+NCURSES_VERSION := 6.2+20210905
+DEB_NCURSES_V   ?= $(NCURSES_VERSION)
 
 ncurses-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://salsa.debian.org/debian/ncurses/-/archive/upstream/$(NCURSES_VERSION)/ncurses-upstream-$(NCURSES_VERSION).tar.gz
