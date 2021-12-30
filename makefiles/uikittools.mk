@@ -7,12 +7,16 @@ SUBPROJECTS        += uikittools
 else
 STRAPPROJECTS      += uikittools
 endif
-UIKITTOOLS_VERSION := 2.1.0
-DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)-1
+UIKITTOOLS_VERSION := 2.1.1
+DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)
 
 uikittools-setup: setup
 	$(call GITHUB_ARCHIVE,ProcursusTeam,uikittools-ng,$(UIKITTOOLS_VERSION),v$(UIKITTOOLS_VERSION))
 	$(call EXTRACT_TAR,uikittools-ng-$(UIKITTOOLS_VERSION).tar.gz,uikittools-ng-$(UIKITTOOLS_VERSION),uikittools)
+
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+UIKITTOOLS_MAKE_ARGS += NO_COMPAT=1
+endif
 
 ifneq ($(wildcard $(BUILD_WORK)/uikittools/.build_complete),)
 uikittools:
@@ -29,7 +33,8 @@ uikittools: uikittools-setup gettext
 		LOCALEDIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale" \
 		DESTDIR="$(BUILD_STAGE)/uikittools" \
 		APP_PATH="$(MEMO_PREFIX)/Applications" \
-		NLS=1
+		NLS=1 \
+		$(UIKITTOOLS_MAKE_ARGS)
 	$(call AFTER_BUILD)
 endif
 
@@ -42,10 +47,6 @@ uikittools-package: uikittools-stage
 	rm -f $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{uinotify,uisave,lsrebuild,uidisplay,uialert,uishoot} \
 		$(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/{uinotify,uisave,lsrebuild,uidisplay,uialert,uishoot}.1$(MEMO_MANPAGE_SUFFIX) \
 		$(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/*/man1/{uinotify,uisave,lsrebuild,uidisplay,uialert,uishoot}.1$(MEMO_MANPAGE_SUFFIX)
-ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-	# This will be handled in the next release
-	rm -f $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{uiduid,cfversion,gssc,ecidecid}
-endif
 
 	# uikittools.mk Prep uikittools-extra
 	cp -a $(BUILD_STAGE)/uikittools $(BUILD_DIST)/uikittools-extra
