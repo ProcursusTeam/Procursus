@@ -420,7 +420,7 @@ CXX_FOR_BUILD := $(shell which c++) $(CXXFLAGS_FOR_BUILD)
 AR_FOR_BUILD  := $(shell which ar)
 export CC_FOR_BUILD CPP_FOR_BUILD CXX_FOR_BUILD AR_FOR_BUILD
 
-DEB_MAINTAINER    ?= Hayden Seay <me@diatr.us>
+DEB_MAINTAINER    ?= Procursus Team <support@procurs.us>
 MEMO_REPO_URI     ?= https://apt.procurs.us
 MEMO_PGP_SIGN_KEY ?= C59F3798A305ADD7E7E6C7256430292CF9551B0E
 CODESIGN_IDENTITY ?= -
