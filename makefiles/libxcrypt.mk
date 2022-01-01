@@ -6,18 +6,17 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS     += libxcrypt
 LIBXCRYPT_VERSION := 4.4.27
-DEB_LIBXCRYPT_V   ?= $(LIBXCRYPT_VERSION)
+DEB_LIBXCRYPT_V   ?= $(LIBXCRYPT_VERSION)-1
 
 libxcrypt-setup: setup
 	$(call GITHUB_ARCHIVE,besser82,libxcrypt,$(LIBXCRYPT_VERSION),v$(LIBXCRYPT_VERSION))
 	$(call EXTRACT_TAR,libxcrypt-$(LIBXCRYPT_VERSION).tar.gz,libxcrypt-$(LIBXCRYPT_VERSION),libxcrypt)
-	sed -i '/LT_SYS_SYMBOL_USCORE/d' $(BUILD_WORK)/libxcrypt/configure.ac
 
 ifneq ($(wildcard $(BUILD_WORK)/libxcrypt/.build_complete),)
 libxcrypt:
 	@echo "Using previously built libxcrypt."
 else
-libxcrypt: libxcrypt-setup
+libxcrypt: libxcrypt-setup libtool
 	cd $(BUILD_WORK)/libxcrypt && autoreconf -iv
 	cd $(BUILD_WORK)/libxcrypt && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
