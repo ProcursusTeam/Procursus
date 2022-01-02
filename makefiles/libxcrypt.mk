@@ -19,7 +19,10 @@ else
 libxcrypt: libxcrypt-setup libtool
 	cd $(BUILD_WORK)/libxcrypt && autoreconf -iv
 	cd $(BUILD_WORK)/libxcrypt && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		CFLAGS="$(patsubst -flto=thin,,$(CFLAGS))" \
+		LDFLAGS="$(patsubst -flto=thin,,$(LDFLAGS))"
+	# LTO is disabled here because it will build but not work if compiled with LTO.
 	+$(MAKE) -C $(BUILD_WORK)/libxcrypt
 	+$(MAKE) -C $(BUILD_WORK)/libxcrypt install \
 		DESTDIR=$(BUILD_STAGE)/libxcrypt
