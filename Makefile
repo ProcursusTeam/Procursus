@@ -1316,4 +1316,10 @@ moo:
 help:
 	@echo "$$helptext"
 
+print-%:
+	@echo '$($*)'
+
+%-download: setup
+	BUILD_BASE="$(BUILD_BASE)" BUILD_DIST="$(BUILD_DIST)" BUILD_WORK="$(BUILD_WORK)" DEB_ARCH="$(DEB_ARCH)" MACOSX_SUITE_NAME="$(MACOSX_SUITE_NAME)" MAKE="$(MAKE)" MEMO_CFVER="$(MEMO_CFVER)" MEMO_TARGET="$(MEMO_TARGET)" $(BUILD_TOOLS)/setup_base.sh '$*'
+
 .PHONY: clean setup
