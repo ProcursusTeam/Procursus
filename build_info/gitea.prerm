@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if ! dpkg-statoverride --list @MEMO_PREFIX@/etc/gitea.ini; then
+if dpkg-statoverride --list @MEMO_PREFIX@/etc/gitea.ini; then
 	dpkg-statoverride --remove @MEMO_PREFIX@/etc/gitea.ini
 fi
 
