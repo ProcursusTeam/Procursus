@@ -18,7 +18,7 @@ disklabel:
 else
 disklabel: disklabel-setup
 	cd $(BUILD_WORK)/disklabel; \
-	$(CC) $(CFLAGS) $(LDFLAGS) {create,destroy,main,props,status,util}.c -lutil -lz -framework CoreFoundation -o $(BUILD_STAGE)/disklabel/$(MEMO_PREFIX)/sbin/disklabel; \
+	$(CC) $(CFLAGS) $(LDFLAGS) {create,destroy,main,props,status,util}.c -lutil -lz -framework CoreFoundation -o $(BUILD_STAGE)/disklabel/$(MEMO_PREFIX)/sbin/disklabel -D__kernel_ptr_semantics=""; \
 	$(INSTALL) -m644 disklabel.8 $(BUILD_STAGE)/disklabel/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
 	$(call AFTER_BUILD)
 endif
