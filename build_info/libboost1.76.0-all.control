@@ -6,4 +6,3 @@ Depends: libboost-atomic1.76.0 (= @DEB_LIBBOOST_V@), libboost-chrono1.76.0 (= @D
 Section: Libraries
 Priority: Optional
 Description: Boost C++ Libraries Meta Package
-Name: libboost Meta Package

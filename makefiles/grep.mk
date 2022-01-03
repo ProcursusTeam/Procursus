@@ -11,7 +11,7 @@ STRAPPROJECTS += grep
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += grep
 endif # ($(MEMO_TARGET),darwin-\*)
-GREP_VERSION  := 3.6
+GREP_VERSION  := 3.7
 DEB_GREP_V    ?= $(GREP_VERSION)
 
 grep-setup: setup
@@ -23,7 +23,11 @@ ifneq ($(wildcard $(BUILD_WORK)/grep/.build_complete),)
 grep:
 	@echo "Using previously built grep."
 else
+ifneq (,$(findstring ramdisk,$(MEMO_TARGET)))
 grep: grep-setup pcre
+else
+grep: grep-setup
+endif
 	cd $(BUILD_WORK)/grep && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \

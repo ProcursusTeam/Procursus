@@ -6,4 +6,3 @@ Architecture: @DEB_ARCH@
 Multi-Arch: foreign
 Version: @DEB_DEVELOPER-CMDS_V@
 Description: ctags, rpcgen, unifdef
-Tag: purpose::console, role::developer

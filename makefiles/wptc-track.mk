@@ -31,16 +31,16 @@ wptc-track-package: wptc-track-stage
 	# wptc-track.mk Package Structure
 	rm -rf $(BUILD_DIST)/wptc-track
 	mkdir -p $(BUILD_DIST)/wptc-track
-	
+
 	# wptc-track.mk Prep wptc-track
 	cp -a $(BUILD_STAGE)/wptc-track $(BUILD_DIST)
-	
+
 	# wptc-track.mk Sign
 	$(call SIGN,wptc-track,general.xml)
-	
+
 	# wptc-track.mk Make .debs
 	$(call PACK,wptc-track,DEB_WPTC_TRACK_V)
-	
+
 	# wptc-track.mk Build cleanup
 	rm -rf $(BUILD_DIST)/wptc-track
 
