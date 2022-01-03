@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += git
-GIT_VERSION := 2.33.1
+GIT_VERSION := 2.34.1
 DEB_GIT_V   ?= $(GIT_VERSION)
 
 GIT_ARGS += uname_S=Darwin \
@@ -16,7 +16,7 @@ GIT_ARGS += uname_S=Darwin \
 	NO_APPLE_COMMON_CRYPTO=1 \
 	INSTALL_SYMLINKS=1 \
 	NO_INSTALL_HARDLINKS=1 \
-	V=1
+	XMLTO_EXTRA="--skip-validation"
 
 git-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://mirrors.edge.kernel.org/pub/software/scm/git/git-$(GIT_VERSION).tar.xz
