@@ -2,7 +2,7 @@ Package: db18.1-util
 Version: @DEB_BDB_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libssl1.1, libdb18.1
+Depends: libssl3, libdb18.1
 Section: Utilities
 Priority: standard
 Homepage: http://www.oracle.com/technology/products/berkeley-db/index.html

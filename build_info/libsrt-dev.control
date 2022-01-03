@@ -12,4 +12,3 @@ Description: Secure Reliable Transport UDP streaming library
  network congestion. It mitigates packet loss and supports AES encryption.
  .
  This package contains the files necessary for development.
-Tag: purpose::library, role::developer

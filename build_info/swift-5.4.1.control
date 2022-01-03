@@ -7,4 +7,3 @@ Section: Development
 Priority: optional
 Homepage: https://swift.org/
 Description: Swift developer package
-Tag: purpose::console, role::developer

@@ -5,8 +5,8 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS     += libxcrypt
-LIBXCRYPT_VERSION := 4.4.17
-DEB_LIBXCRYPT_V   ?= $(LIBXCRYPT_VERSION)
+LIBXCRYPT_VERSION := 4.4.27
+DEB_LIBXCRYPT_V   ?= $(LIBXCRYPT_VERSION)-1
 
 libxcrypt-setup: setup
 	$(call GITHUB_ARCHIVE,besser82,libxcrypt,$(LIBXCRYPT_VERSION),v$(LIBXCRYPT_VERSION))
@@ -16,16 +16,17 @@ ifneq ($(wildcard $(BUILD_WORK)/libxcrypt/.build_complete),)
 libxcrypt:
 	@echo "Using previously built libxcrypt."
 else
-libxcrypt: libxcrypt-setup
+libxcrypt: libxcrypt-setup libtool
 	cd $(BUILD_WORK)/libxcrypt && autoreconf -iv
 	cd $(BUILD_WORK)/libxcrypt && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		CFLAGS="$(patsubst -flto=thin,,$(CFLAGS))" \
+		LDFLAGS="$(patsubst -flto=thin,,$(LDFLAGS))"
+	# LTO is disabled here because it will build but not work if compiled with LTO.
 	+$(MAKE) -C $(BUILD_WORK)/libxcrypt
 	+$(MAKE) -C $(BUILD_WORK)/libxcrypt install \
 		DESTDIR=$(BUILD_STAGE)/libxcrypt
-	+$(MAKE) -C $(BUILD_WORK)/libxcrypt install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libxcrypt-package: libxcrypt-stage

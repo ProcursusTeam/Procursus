@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += redis
-REDIS_VERSION := 6.2.1
-DEB_REDIS_V   ?= $(REDIS_VERSION)-2
+REDIS_VERSION := 6.2.6
+DEB_REDIS_V   ?= $(REDIS_VERSION)
 
 ###
 # Dynamic link lua5.1 in the future.
@@ -47,13 +47,6 @@ redis: redis-setup libjemalloc openssl
 	mkdir -p $(BUILD_STAGE)/redis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
 	cp -a $(BUILD_MISC)/redis/redis-*-wrapper $(BUILD_STAGE)/redis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
 
-	for file in $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons/* \
-		$(BUILD_STAGE)/redis/$(MEMO_PREFIX)/etc/redis/* \
-		$(BUILD_STAGE)/redis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/*; do \
-			$(SED) -i 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' $$file; \
-			$(SED) -i 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $$file; \
-	done
-
 	$(call AFTER_BUILD)
 endif
 
@@ -67,14 +60,20 @@ redis-package: redis-stage
 	# redis.mk Prep redis-sentinel
 	cp -a $(BUILD_STAGE)/redis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/redis-sentinel $(BUILD_DIST)/redis-sentinel/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/etc/redis/sentinel.conf $(BUILD_DIST)/redis-sentinel/$(MEMO_PREFIX)/etc/redis
-	cp -a $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons/io.redis.redis-sentinel.plist $(BUILD_DIST)/redis-sentinel/$(MEMO_PREFIX)/Library/LaunchDaemons
 	cp -a $(BUILD_STAGE)/redis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/redis-sentinel-wrapper $(BUILD_DIST)/redis-sentinel/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
+
+	cp -a $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons/io.redis.redis-sentinel.plist $(BUILD_DIST)/redis-sentinel/$(MEMO_PREFIX)/Library/LaunchDaemons
+	sed -i 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|' $(BUILD_DIST)/redis-sentinel/$(MEMO_PREFIX)/Library/LaunchDaemons/io.redis.redis-sentinel.plist
+	sed -i 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|' $(BUILD_DIST)/redis-sentinel/$(MEMO_PREFIX)/Library/LaunchDaemons/io.redis.redis-sentinel.plist
 
 	# redis.mk Prep redis-server
 	cp -a $(BUILD_STAGE)/redis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/redis-server $(BUILD_DIST)/redis-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/etc/redis/redis.conf $(BUILD_DIST)/redis-server/$(MEMO_PREFIX)/etc/redis
-	cp -a $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons/io.redis.redis-server.plist $(BUILD_DIST)/redis-server/$(MEMO_PREFIX)/Library/LaunchDaemons
 	cp -a $(BUILD_STAGE)/redis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/redis-server-wrapper $(BUILD_DIST)/redis-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
+
+	cp -a $(BUILD_STAGE)/redis/$(MEMO_PREFIX)/Library/LaunchDaemons/io.redis.redis-server.plist $(BUILD_DIST)/redis-server/$(MEMO_PREFIX)/Library/LaunchDaemons
+	sed -i 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|' $(BUILD_DIST)/redis-server/$(MEMO_PREFIX)/Library/LaunchDaemons/io.redis.redis-server.plist
+	sed -i 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|' $(BUILD_DIST)/redis-server/$(MEMO_PREFIX)/Library/LaunchDaemons/io.redis.redis-server.plist
 
 	# redis.mk Prep redis-tools
 	cp -a $(BUILD_STAGE)/redis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/redis-{benchmark,check-aof,check-rdb,cli} $(BUILD_DIST)/redis-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin

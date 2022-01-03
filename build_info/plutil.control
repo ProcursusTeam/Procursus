@@ -8,4 +8,3 @@ Conflicts: com.ericasadun.utilities, com.bingner.plutil
 Provides: com.bingner.plutil (=@DEB_PLUTIL_V@)
 Author: Samuel Bingner
 Section: System
-Tag: role::hacker

@@ -4,13 +4,13 @@ set -e
 for i in vi view vedit editor; do
   update-alternatives \
     --install /usr/bin/$i $i /usr/bin/ex-vi 19 \
-    --slave /usr/share/man/man1/$i.1 $i.1 /usr/share/man/man1/via.1.zst
+    --slave /usr/share/man/man1/$i.1 $i.1 /usr/share/man/man1/via.1@MEMO_MANPAGE_SUFFIX@
 done
 
 for i in ex edit; do
   update-alternatives \
     --install /usr/bin/$i $i /usr/bin/ex-vi 19 \
-    --slave /usr/share/man/man1/$i.1 $i.1 /usr/share/man/man1/exa.1.zst
+    --slave /usr/share/man/man1/$i.1 $i.1 /usr/share/man/man1/exa.1@MEMO_MANPAGE_SUFFIX@
 done
 
 exit 0

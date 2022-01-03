@@ -10,7 +10,7 @@ libpng16-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://sourceforge.net/projects/libpng/files/libpng16/$(LIBPNG16_VERSION)/libpng-$(LIBPNG16_VERSION).tar.xz
 	$(call EXTRACT_TAR,libpng-$(LIBPNG16_VERSION).tar.xz,libpng-$(LIBPNG16_VERSION),libpng16)
 	# Fix the .pc file to use Apple's zlib
-	$(SED) -i 's/Requires: zlib/Requires: /;s/\(Libs:.*\)/\1 -lz/' $(BUILD_WORK)/libpng16/libpng.pc.in
+	sed -i 's/Requires: zlib/Requires: /;s/\(Libs:.*\)/\1 -lz/' $(BUILD_WORK)/libpng16/libpng.pc.in
 	$(call DO_PATCH,libpng16,libpng16,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/libpng16/.build_complete),)
@@ -23,9 +23,7 @@ libpng16: libpng16-setup
 	+$(MAKE) -C $(BUILD_WORK)/libpng16
 	+$(MAKE) -C $(BUILD_WORK)/libpng16 install \
 		DESTDIR=$(BUILD_STAGE)/libpng16
-	+$(MAKE) -C $(BUILD_WORK)/libpng16 install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libpng16-package: libpng16-stage

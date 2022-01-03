@@ -3,17 +3,19 @@ $(error Use the main Makefile)
 endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-STRAPPROJECTS += bash
+STRAPPROJECTS   += bash
 else # ($(MEMO_TARGET),darwin-\*)
-SUBPROJECTS   += bash
+SUBPROJECTS     += bash
 endif # ($(MEMO_TARGET),darwin-\*)
-BASH_VERSION  := 5.1.8
-DEB_BASH_V    ?= $(BASH_VERSION)
+BASH_VERSION    := 5.1
+BASH_PATCHLEVEL := 12
+DEB_BASH_V      ?= $(BASH_VERSION).$(BASH_PATCHLEVEL)
 
 bash-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,bash-$(BASH_VERSION).tar.gz)
 	$(call EXTRACT_TAR,bash-$(BASH_VERSION).tar.gz,bash-$(BASH_VERSION),bash)
+	$(call DO_PATCH,bash,bash,-p0)
 	mkdir -p $(BUILD_STAGE)/bash/$(MEMO_PREFIX)/bin
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 BASH_CONFIGURE_ARGS := ac_cv_c_stack_direction=-1 \
@@ -52,7 +54,7 @@ bash: bash-setup ncurses readline
 	+$(MAKE) -C $(BUILD_WORK)/bash install \
 		DESTDIR="$(BUILD_STAGE)/bash"
 ifneq ($(MEMO_SUB_PREFIX),)
-	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bash $(BUILD_STAGE)/bash/$(MEMO_PREFIX)/bin/bash
+	$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bash $(BUILD_STAGE)/bash/$(MEMO_PREFIX)/bin/bash
 endif
 	$(call AFTER_BUILD)
 endif

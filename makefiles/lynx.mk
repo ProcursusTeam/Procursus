@@ -11,7 +11,7 @@ lynx-setup: setup
 	$(call PGP_VERIFY,lynx$(LYNX_VERSION)rel.1.tar.bz2,asc)
 	$(call EXTRACT_TAR,lynx$(LYNX_VERSION)rel.1.tar.bz2,lynx$(LYNX_VERSION)rel.1,lynx)
 ifeq ($(UNAME),Darwin)
-	$(SED) -i 's|#define socklen_t int|//#define socklen_t int|' $(BUILD_WORK)/lynx/WWW/Library/Implementation/www_tcp.h
+	sed -i 's|#define socklen_t int|//#define socklen_t int|' $(BUILD_WORK)/lynx/WWW/Library/Implementation/www_tcp.h
 endif
 
 ifneq ($(wildcard $(BUILD_WORK)/lynx/.build_complete),)

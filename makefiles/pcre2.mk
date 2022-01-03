@@ -7,7 +7,7 @@ PCRE2_VERSION := 10.37
 DEB_PCRE2_V   ?= $(PCRE2_VERSION)
 
 pcre2-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftp.pcre.org/pub/pcre/pcre2-$(PCRE2_VERSION).tar.bz2{,.sig}
+	wget -q -nc -P $(BUILD_SOURCE) https://downloads.sourceforge.net/pcre/pcre2-$(PCRE2_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,pcre2-$(PCRE2_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,pcre2-$(PCRE2_VERSION).tar.bz2,pcre2-$(PCRE2_VERSION),pcre2)
 
@@ -26,9 +26,7 @@ pcre2: pcre2-setup readline
 	+$(MAKE) -C $(BUILD_WORK)/pcre2
 	+$(MAKE) -C $(BUILD_WORK)/pcre2 install \
 		DESTDIR=$(BUILD_STAGE)/pcre2
-	+$(MAKE) -C $(BUILD_WORK)/pcre2 install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 pcre2-package: pcre2-stage

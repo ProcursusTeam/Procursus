@@ -6,4 +6,3 @@ Maintainer: @DEB_MAINTAINER@
 Section: System
 Priority: required
 Description: mount, quota, fsck, fstyp, fdisk, tunefs
-Tag: purpose::console, role::sysadmn
