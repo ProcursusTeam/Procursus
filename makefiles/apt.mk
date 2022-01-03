@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += apt
-APT_VERSION   := 2.3.12
+APT_VERSION   := 2.3.13
 DEB_APT_V     ?= $(APT_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
@@ -33,7 +33,7 @@ apt:
 	@echo "Using previously built apt."
 else
 apt: apt-setup libgcrypt berkeleydb lz4 xxhash xz zstd gnutls gettext
-	cd $(BUILD_WORK)/apt/build && cmake . \
+	cd $(BUILD_WORK)/apt/build && unset MACOSX_DEPLOYMENT_TARGET && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DSTATE_DIR=$(MEMO_PREFIX)/var/lib/apt \
 		-DCACHE_DIR=$(MEMO_PREFIX)/var/cache/apt \
