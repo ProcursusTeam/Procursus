@@ -16,7 +16,7 @@ radare2:
 	@echo "Using previously built radare2."
 else
 radare2: radare2-setup libuv1 libzip openssl
-	cd $(BUILD_WORK)/radare2 && ./configure -C \
+	cd $(BUILD_WORK)/radare2 && ./autogen.sh && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-openssl \
 		--with-syszip
