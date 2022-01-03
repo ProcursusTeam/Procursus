@@ -11,4 +11,3 @@ Description: Development files for FreeBidi library
  languages.
  This package contains the header files and static libraries for the
  FriBidi C library.
-Tag: purpose::library, role::developer

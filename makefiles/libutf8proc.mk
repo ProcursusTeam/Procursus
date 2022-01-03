@@ -19,11 +19,7 @@ libutf8proc: libutf8proc-setup
 		OS=Darwin \
 		prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR="$(BUILD_STAGE)/libutf8proc"
-	+$(MAKE) -C $(BUILD_WORK)/libutf8proc install \
-		OS=Darwin \
-		prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libutf8proc-package: libutf8proc-stage

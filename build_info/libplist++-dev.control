@@ -7,4 +7,3 @@ Conflicts: libplist (<< 99)
 Section: Development
 Priority: standard
 Description: C++ library for handling Apple binary and XML property lists - dev files
-Tag: purpose::library, role::developer

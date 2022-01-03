@@ -9,4 +9,3 @@ Section: Development
 Priority: optional
 Homepage: https://www.radare.org
 Description: devel files from the radare2 suite
-Tag: purpose::library, role::developer

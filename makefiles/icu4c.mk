@@ -9,8 +9,8 @@ DEB_ICU_V   ?= $(ICU_VERSION)
 
 icu4c-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) \
-		https://github.com/unicode-org/icu/releases/download/release-$(shell echo $(ICU_VERSION) | $(SED) 's/\./-/')/icu4c-$(shell echo $(ICU_VERSION) | $(SED) 's/\./_/g')-src.tgz
-	$(call EXTRACT_TAR,icu4c-$(shell echo $(ICU_VERSION) | $(SED) 's/\./_/g')-src.tgz,icu,icu4c)
+		https://github.com/unicode-org/icu/releases/download/release-$(shell echo $(ICU_VERSION) | sed 's/\./-/')/icu4c-$(shell echo $(ICU_VERSION) | sed 's/\./_/g')-src.tgz
+	$(call EXTRACT_TAR,icu4c-$(shell echo $(ICU_VERSION) | sed 's/\./_/g')-src.tgz,icu,icu4c)
 	mkdir -p $(BUILD_WORK)/icu4c/host
 
 ifneq ($(wildcard $(BUILD_WORK)/icu4c/.build_complete),)
@@ -31,14 +31,12 @@ icu4c: icu4c-setup
 	+$(MAKE) -C $(BUILD_WORK)/icu4c/source
 	+$(MAKE) -C $(BUILD_WORK)/icu4c/source install \
 		DESTDIR=$(BUILD_STAGE)/icu4c
-	+$(MAKE) -C $(BUILD_WORK)/icu4c/source install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 
 	for lib in $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicu*.$(ICU_VERSION).dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicu*.$(ICU_VERSION).dylib; do \
 		$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/$${basename $${lib} .$(ICU_VERSION).dylib}.$(ICU_API_V).dylib $$lib; \
-		ln -sf $${basename $${lib} .$(ICU_VERSION).dylib}.$(ICU_VERSION).dylib $${echo $$lib | cut -d. -f-1}.$(ICU_API_V).dylib; \
-		ln -sf $${basename $${lib} .$(ICU_VERSION).dylib}.$(ICU_API_V).dylib $${echo $$lib | cut -d. -f-1}.dylib; \
+		$(LN_S) $${basename $${lib} .$(ICU_VERSION).dylib}.$(ICU_VERSION).dylib $${echo $$lib | cut -d. -f-1}.$(ICU_API_V).dylib; \
+		$(LN_S) $${basename $${lib} .$(ICU_VERSION).dylib}.$(ICU_API_V).dylib $${echo $$lib | cut -d. -f-1}.dylib; \
 	done
 
 	for stuff in $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicu*.$(ICU_VERSION).dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libicu*.$(ICU_VERSION).dylib $(BUILD_STAGE)/icu4c/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/!(icu-config); do \

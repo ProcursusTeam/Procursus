@@ -20,23 +20,23 @@ itstool: itstool-setup
 		PYTHON=python3
 	+$(MAKE) -C $(BUILD_WORK)/itstool install \
 		DESTDIR=$(BUILD_STAGE)/itstool
-	$(SED) -i "s|#!python3|#!$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/itstool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/itstool
+	sed -i "s|#!python3|#!$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/itstool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/itstool
 	$(call AFTER_BUILD)
 endif
 
 itstool-package: itstool-stage
 	# itstool.mk Package Structure
 	rm -rf $(BUILD_DIST)/itstool
-	
+
 	# itstool.mk Prep itstool
 	cp -a $(BUILD_STAGE)/itstool $(BUILD_DIST)
-	
+
 	# itstool.mk Sign
 	$(call SIGN,itstool,general.xml)
-	
+
 	# itstool.mk Make .debs
 	$(call PACK,itstool,DEB_ITSTOOL_V)
-	
+
 	# itstool.mk Build cleanup
 	rm -rf $(BUILD_DIST)/itstool
 

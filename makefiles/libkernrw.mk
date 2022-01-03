@@ -52,7 +52,7 @@ libkernrw: libkernrw-setup
 		$(LDFLAGS)
 
 	cp $(BUILD_WORK)/libkernrw/libkernrw.h $(BUILD_STAGE)/libkernrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	ln -s libkernrw.$(LIBKERNRW_SOVERSION).dylib $(BUILD_STAGE)/libkernrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkernrw.dylib
+	$(LN_S) libkernrw.$(LIBKERNRW_SOVERSION).dylib $(BUILD_STAGE)/libkernrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkernrw.dylib
 	$(call AFTER_BUILD)
 endif
 

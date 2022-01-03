@@ -10,9 +10,9 @@ mesa-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://mesa.freedesktop.org/archive/mesa-$(MESA_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,mesa-$(MESA_VERSION).tar.xz)
 	$(call EXTRACT_TAR,mesa-$(MESA_VERSION).tar.xz,mesa-$(MESA_VERSION),mesa)
-	$(SED) -i -e "s/with_dri_platform = 'apple'/with_dri_platform = 'none'/" \
+	sed -i -e "s/with_dri_platform = 'apple'/with_dri_platform = 'none'/" \
 		-e "/dep_xcb_shm = dependency('xcb-shm')/a dep_xxf86vm = dependency('xxf86vm')" $(BUILD_WORK)/mesa/meson.build
-	$(SED) -i "s|OpenGL/gl.h|GL/gl.h|" $(BUILD_WORK)/mesa/src/mesa/main/texcompress_s3tc_tmp.h
+	sed -i "s|OpenGL/gl.h|GL/gl.h|" $(BUILD_WORK)/mesa/src/mesa/main/texcompress_s3tc_tmp.h
 	mkdir -p $(BUILD_WORK)/mesa/build
 
 	echo -e "[host_machine]\n \
@@ -53,9 +53,8 @@ mesa: mesa-setup libx11 libxext libxcb libxdamage libxxf86vm gettext expat zstd
 		..
 #		-Dglx=dri
 	cd $(BUILD_WORK)/mesa/build; \
-		DESTDIR="$(BUILD_STAGE)/mesa" meson install; \
-		DESTDIR="$(BUILD_BASE)" meson install
-	$(call AFTER_BUILD)
+		DESTDIR="$(BUILD_STAGE)/mesa" meson install
+	$(call AFTER_BUILD,copy)
 endif
 
 mesa-package: mesa-stage

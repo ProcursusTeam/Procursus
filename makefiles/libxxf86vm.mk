@@ -22,9 +22,7 @@ libxxf86vm: libxxf86vm-setup xorgproto libx11 libxext
 	+$(MAKE) -C $(BUILD_WORK)/libxxf86vm
 	+$(MAKE) -C $(BUILD_WORK)/libxxf86vm install \
 		DESTDIR=$(BUILD_STAGE)/libxxf86vm
-	+$(MAKE) -C $(BUILD_WORK)/libxxf86vm install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libxxf86vm-package: libxxf86vm-stage

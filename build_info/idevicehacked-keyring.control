@@ -4,5 +4,4 @@ Architecture: all
 Maintainer: @DEB_MAINTAINER@
 Section: Keyrings
 Priority: optional
-Description: GnuPG keys for the iDeviceHacked repositories
-Name: iDeviceHacked APT Keyring
+Description: GnuPG keys for the iDeviceHacked repository

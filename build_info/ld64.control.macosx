@@ -7,4 +7,3 @@ Section: Development
 Priority: optional
 Description: 64-bit iOS linker
 Homepage: https://www.llvm.org/
-Tag: purpose::console, role::developer

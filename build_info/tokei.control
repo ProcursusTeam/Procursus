@@ -1,0 +1,10 @@
+Package: tokei
+Version: @DEB_TOKEI_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Description:  Count your code, quickly. 
+ Tokei is a program that displays statistics about your code. 
+ Tokei will show the number of files, total lines within those 
+ files and code, comments, and blanks grouped by language.

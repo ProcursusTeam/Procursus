@@ -7,3 +7,4 @@ build_strap/
 
 !.gitkeep
 .DS_Store
+*.p12

@@ -11,7 +11,7 @@ endif # ($(SSH_STRAP),1)
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += openssh
 endif
-OPENSSH_VERSION := 8.6p1
+OPENSSH_VERSION := 8.8p1
 DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
@@ -25,7 +25,7 @@ openssh-setup: setup
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call DO_PATCH,openssh,openssh,-p1)
 endif
-	$(SED) -i 's/#UsePAM no/UsePAM yes/' $(BUILD_WORK)/openssh/sshd_config
+	sed -i 's/#UsePAM no/UsePAM yes/' $(BUILD_WORK)/openssh/sshd_config
 
 ifneq ($(wildcard $(BUILD_WORK)/openssh/.build_complete),)
 openssh:
@@ -40,7 +40,7 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	if ! [ -f $(BUILD_WORK)/openssh/configure ]; then \
 		cd $(BUILD_WORK)/openssh && autoreconf; \
 	fi
-	$(SED) -i '/HAVE_ENDIAN_H/d' $(BUILD_WORK)/openssh/config.h.in
+	sed -i '/HAVE_ENDIAN_H/d' $(BUILD_WORK)/openssh/config.h.in
 	cd $(BUILD_WORK)/openssh && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--sysconfdir=$(MEMO_PREFIX)/etc/ssh \
@@ -76,8 +76,8 @@ openssh-package: openssh-stage
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/openssh-client/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/{ssh-keysign,ssh-pkcs11-helper,ssh-sk-helper} $(BUILD_DIST)/openssh-client/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/openssh-client/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
-	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5/ssh_config.5 $(BUILD_DIST)/openssh-client/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5
-	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/{ssh-keysign.8,ssh-pkcs11-helper.8,ssh-sk-helper.8} $(BUILD_DIST)/openssh-client/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
+	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5/ssh_config.5$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/openssh-client/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5
+	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/{ssh-keysign.8,ssh-pkcs11-helper.8,ssh-sk-helper.8}$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/openssh-client/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
 
 	# openssh.mk Prep openssh-server
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/etc/ssh/{moduli,sshd_config} $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)/etc/ssh
@@ -86,13 +86,13 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 endif
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/sshd-keygen-wrapper $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
-	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5/{moduli.5,sshd_config.5} $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5
-	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/sshd.8 $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
+	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5/{moduli.5,sshd_config.5}$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5
+	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/sshd.8$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/Library $(BUILD_DIST)/openssh-server/$(MEMO_PREFIX)
 
 	# openssh.mk Prep openssh-sftp-server
 	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/sftp-server $(BUILD_DIST)/openssh-sftp-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/
-	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/sftp-server.8 $(BUILD_DIST)/openssh-sftp-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
+	cp -a $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/sftp-server.8$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/openssh-sftp-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
 
 	# openssh.mk Sign
 	$(call SIGN,openssh-client,general.xml)

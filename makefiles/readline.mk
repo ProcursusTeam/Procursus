@@ -25,13 +25,11 @@ readline: readline-setup ncurses
 		ac_cv_type_sig_atomic_t=no \
 		LDFLAGS="$(CLFLAGS) $(LDFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/readline \
-		SHLIB_LIBS="-lncursesw"
+		SHLIB_LIBS="-lncursesw" \
 		TERMCAP_LIB="-lncursesw"
 	+$(MAKE) -C $(BUILD_WORK)/readline install \
 		DESTDIR=$(BUILD_STAGE)/readline
-	+$(MAKE) -C $(BUILD_WORK)/readline install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 readline-package: readline-stage
