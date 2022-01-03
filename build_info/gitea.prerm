@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if ! dpkg-statoverride --list @MEMO_PREFIX@/etc/gitea.ini; then
+	dpkg-statoverride --remove @MEMO_PREFIX@/etc/gitea.ini
+fi
+
+@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload -w @MEMO_PREFIX@/Library/LaunchDaemons/io.gitea.web.plist

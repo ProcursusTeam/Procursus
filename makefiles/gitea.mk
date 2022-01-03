@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS   += gitea
 GITEA_VERSION := 1.15.9
-DEB_GITEA_V   ?= $(GITEA_VERSION)
+DEB_GITEA_V   ?= $(GITEA_VERSION)-1
 
 gitea-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/gitea-$(GITEA_VERSION).tar.gz" ] && \
