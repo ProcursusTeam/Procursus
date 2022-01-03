@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += tea
-TEA_VERSION := 0.7.0
+TEA_VERSION := 0.8.0
 DEB_TEA_V   ?= $(TEA_VERSION)
 
 tea-setup: setup

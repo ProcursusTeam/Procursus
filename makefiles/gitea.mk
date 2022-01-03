@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += gitea
-GITEA_VERSION := 1.15.6
+GITEA_VERSION := 1.15.9
 DEB_GITEA_V   ?= $(GITEA_VERSION)
 
 gitea-setup: setup
@@ -35,7 +35,8 @@ endif
 	install -Dm644 $(BUILD_MISC)/gitea/io.gitea.web.plist \
 		$(BUILD_STAGE)/gitea/$(MEMO_PREFIX)/Library/LaunchDaemons/io.gitea.web.plist
 	sed -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
-		$(BUILD_STAGE)/gitea/$(MEMO_PREFIX)/Library/LaunchDaemons/io.gitea.web.plist
+		$(BUILD_STAGE)/gitea/$(MEMO_PREFIX)/Library/LaunchDaemons/io.gitea.web.plist \
+		$(BUILD_STAGE)/gitea/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gitea-wrapper
 	install -Dm644 $(BUILD_WORK)/gitea/custom/conf/app.example.ini $(BUILD_STAGE)/gitea/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/gitea/app.example.ini
 	install -Dm660 $(BUILD_WORK)/gitea/custom/conf/app.example.ini $(BUILD_STAGE)/gitea/$(MEMO_PREFIX)/etc/gitea.ini
 	touch $(BUILD_WORK)/gitea/.build_complete
