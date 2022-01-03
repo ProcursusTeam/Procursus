@@ -252,6 +252,26 @@ ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/WatchOS.sdk
 BARE_PLATFORM         := WatchOS
 export WATCHOS_DEPLOYMENT_TARGET
 
+else ifeq ($(shell [ "$(MEMO_TARGET)" = "watchos-armv7k" ] || [ "$(MEMO_TARGET)" = "watchos-armv7k-ramdisk" ] && echo 1),1)
+ifneq ($(MEMO_QUIET),1)
+$(warning Building for WatchOS)
+endif # ($(MEMO_QUIET),1)
+MEMO_ARCH             := armv7k
+PLATFORM              := watchos
+DEB_ARCH              := watchos-armv7k
+GNU_HOST_TRIPLE       := armv7k-apple-darwin
+PLATFORM_VERSION_MIN  := -mwatchos-version-min=$(WATCHOS_DEPLOYMENT_TARGET)
+RUST_TARGET           := armv7k-apple-watchos
+LLVM_TARGET           := armv7k-apple-watchos$(WATCHOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?=
+MEMO_SUB_PREFIX       ?= /usr
+MEMO_ALT_PREFIX       ?= /local
+MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
+GNU_PREFIX            :=
+ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/WatchOS.sdk
+BARE_PLATFORM         := WatchOS
+export WATCHOS_DEPLOYMENT_TARGET
+
 else ifeq ($(MEMO_TARGET),darwin-arm64e)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for macOS arm64e)
