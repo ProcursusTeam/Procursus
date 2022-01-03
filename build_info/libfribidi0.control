@@ -9,4 +9,3 @@ Description: Free Implementation of the Unicode BiDi algorithm
  FriBiDi is a BiDi algorithm implementation for Hebrew and/or Arabic
  languages.
  This package contains the shared libraries.
-Tag: purpose::library

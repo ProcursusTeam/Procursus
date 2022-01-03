@@ -26,16 +26,16 @@ endif
 mawk-package: mawk-stage	
 	# mawk.mk Package Structure
 	rm -rf $(BUILD_DIST)/mawk
-	
+
 	# mawk.mk Prep mawk
 	cp -a $(BUILD_STAGE)/mawk $(BUILD_DIST)
-	
+
 	# mawk.mk Sign
 	$(call SIGN,mawk,general.xml)
-	
+
 	# mawk.mk Make .debs
 	$(call PACK,mawk,DEB_MAWK_V)
-	
+
 	# mawk.mk Build cleanup
 	rm -rf $(BUILD_DIST)/mawk
 

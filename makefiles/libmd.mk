@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += libmd
-LIBMD_VERSION := 1.0.3
+LIBMD_VERSION := 1.0.4
 DEB_LIBMD_V   ?= $(LIBMD_VERSION)
 
 libmd-setup: setup
@@ -21,9 +21,7 @@ libmd: libmd-setup
 	+$(MAKE) -C $(BUILD_WORK)/libmd
 	+$(MAKE) -C $(BUILD_WORK)/libmd install \
 		DESTDIR=$(BUILD_STAGE)/libmd
-	+$(MAKE) -C $(BUILD_WORK)/libmd install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libmd-package: libmd-stage

@@ -35,8 +35,6 @@ endif
 	+$(MAKE) -i -C $(BUILD_WORK)/tigervnc
 	+$(MAKE) -i -C $(BUILD_WORK)/tigervnc install \
 		DESTDIR=$(BUILD_STAGE)/tigervnc
-	+$(MAKE) -i -C $(BUILD_WORK)/tigervnc install \
-		DESTDIR=$(BUILD_BASE)
 	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive//individual/xserver/xorg-server-$(XORG-SERVER_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,xorg-server-$(XORG-SERVER_VERSION).tar.gz)
 	$(call EXTRACT_TAR,xorg-server-$(XORG-SERVER_VERSION).tar.gz,xorg-server-$(XORG-SERVER_VERSION),xorg-server-vnc)
@@ -80,7 +78,7 @@ endif
 		DESTDIR=$(BUILD_STAGE)/tigervnc
 	rm -f $(BUILD_STAGE)/tigervnc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg/protocol.txt
 	rm -f $(BUILD_STAGE)/tigervnc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man1/Xserver.1
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 tigervnc-package: tigervnc-stage
@@ -90,7 +88,7 @@ tigervnc-package: tigervnc-stage
 		$(BUILD_DIST)/tigervnc-common/{$(MEMO_PREFIX)/etc,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin} \
 		$(BUILD_DIST)/tigervnc-scraping-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{libexec,bin} \
 		$(BUILD_DIST)/tigervnc-xorg-extension/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg/modules/extensions \
-	
+
 # tigervnc.mk Prep tigervnc-standalone-server
 	rm -rf $(BUILD_STAGE)/tigervnc/usr/lib/xorg/protocol.txt
 	rm -rf $(BUILD_STAGE)/tigervnc/usr/share/man/man1/Xserver.1
@@ -117,13 +115,13 @@ tigervnc-package: tigervnc-stage
 	$(call SIGN,tigervnc-xorg-extension,general.xml)
 	$(call SIGN,tigervnc-scraping-server,general.xml)
 	$(call SIGN,tigervnc-common,general.xml)
-	
+
 # tigervnc.mk Make .debs
 	$(call PACK,tigervnc-standalone-server,DEB_TIGERVNC_V)
 	$(call PACK,tigervnc-xorg-extension,DEB_TIGERVNC_V)
 	$(call PACK,tigervnc-scraping-server,DEB_TIGERVNC_V)
 	$(call PACK,tigervnc-common,DEB_TIGERVNC_V)
-	
+
 # tigervnc.mk Build cleanup
 	rm -rf $(BUILD_DIST)/tigervnc-{standalone-server,xorg-extension,scraping-server,common}
 

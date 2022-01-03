@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS      += python3
 PYTHON3_MAJOR_V  := 3.9
-PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).6
+PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).9
 DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)
 
 python3-setup: setup
@@ -42,12 +42,10 @@ endif
 	+$(MAKE) -C $(BUILD_WORK)/python3
 	+$(MAKE) -C $(BUILD_WORK)/python3 install \
 		DESTDIR=$(BUILD_STAGE)/python3
-	+$(MAKE) -C $(BUILD_WORK)/python3 install \
-		DESTDIR=$(BUILD_BASE)
 	mkdir -p $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3/dist-packages $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/dist-packages
 	sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < $(BUILD_MISC)/python3/_sysconfigdata__darwin_darwin.py > $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/_sysconfigdata__darwin_darwin.py
 	rm -f $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}/!(*$(PYTHON3_MAJOR_V)*)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 python3-package: python3-stage

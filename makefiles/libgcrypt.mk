@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS     += libgcrypt
-LIBGCRYPT_VERSION := 1.9.3
+LIBGCRYPT_VERSION := 1.9.4
 DEB_LIBGCRYPT_V   ?= $(LIBGCRYPT_VERSION)
 
 libgcrypt-setup: setup
@@ -31,9 +31,7 @@ libgcrypt: libgcrypt-setup libgpg-error
 	+$(MAKE) -C $(BUILD_WORK)/libgcrypt
 	+$(MAKE) -C $(BUILD_WORK)/libgcrypt install \
 		DESTDIR=$(BUILD_STAGE)/libgcrypt
-	+$(MAKE) -C $(BUILD_WORK)/libgcrypt install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libgcrypt-package: libgcrypt-stage
@@ -46,7 +44,7 @@ libgcrypt-package: libgcrypt-stage
 	cp -a $(BUILD_STAGE)/libgcrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgcrypt.20.dylib $(BUILD_DIST)/libgcrypt20/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libgcrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/libgcrypt20-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/libgcrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libgcrypt20-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libgcrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libgcrypt.dylib} $(BUILD_DIST)/libgcrypt20-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libgcrypt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libgcrypt.20.dylib) $(BUILD_DIST)/libgcrypt20-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libgcrypt.mk Sign
 	$(call SIGN,libgcrypt20,general.xml)

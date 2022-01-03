@@ -27,16 +27,16 @@ endif
 gengetopt-package: gengetopt-stage
 	# gengetopt.mk Package Structure
 	rm -rf $(BUILD_DIST)/gengetopt
-	
+
 	# gengetopt.mk Prep gengetopt
 	cp -a $(BUILD_STAGE)/gengetopt $(BUILD_DIST)
-	
+
 	# gengetopt.mk Sign
 	$(call SIGN,gengetopt,general.xml)
-	
+
 	# gengetopt.mk Make .debs
 	$(call PACK,gengetopt,DEB_GENGETOPT_V)
-	
+
 	# gengetopt.mk Build cleanup
 	rm -rf $(BUILD_DIST)/gengetopt
 

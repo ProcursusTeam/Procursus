@@ -25,31 +25,29 @@ libpcap: libpcap-setup openssl
 	+$(MAKE) -C $(BUILD_WORK)/libpcap/build
 	+$(MAKE) -C $(BUILD_WORK)/libpcap/build install \
 		DESTDIR=$(BUILD_STAGE)/libpcap
-	+$(MAKE) -C $(BUILD_WORK)/libpcap/build install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libpcap-package: libpcap-stage
 	# libpcap.mk Package Structure
 	rm -rf $(BUILD_DIST)/libpcapa{,-dev}
 	mkdir -p $(BUILD_DIST)/libpcapa{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libpcap.mk Prep libpcapa
 	cp -a $(BUILD_STAGE)/libpcap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpcap.*.dylib $(BUILD_DIST)/libpcapa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
-	
+
 	# libpcap.mk Prep libpcapa-dev
 	cp -a $(BUILD_STAGE)/libpcap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include,share} $(BUILD_DIST)/libpcapa-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/libpcap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libpcap.*.dylib) $(BUILD_DIST)/libpcapa-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libpcap.mk Sign
 	$(call SIGN,libpcapa,general.xml)
 	$(call SIGN,libpcapa-dev,general.xml)
-	
+
 	# libpcap.mk Make .debs
 	$(call PACK,libpcapa,DEB_LIBPCAP_V)
 	$(call PACK,libpcapa-dev,DEB_LIBPCAP_V)
-	
+
 	# libpcap.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libpcapa{,-dev}
 

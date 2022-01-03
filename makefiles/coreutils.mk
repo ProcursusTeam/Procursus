@@ -3,9 +3,9 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS       += coreutils
-COREUTILS_VERSION   := 8.32
+COREUTILS_VERSION   := 9.0
 GETENTDARWIN_COMMIT := 1ad0e39ee51181ea6c13b3d1d4e9c6005ee35b5e
-DEB_COREUTILS_V     ?= $(COREUTILS_VERSION)-13
+DEB_COREUTILS_V     ?= $(COREUTILS_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 COREUTILS_CONFIGURE_ARGS += ac_cv_func_rpmatch=no
@@ -28,10 +28,12 @@ ifneq ($(wildcard $(BUILD_WORK)/coreutils/.build_complete),)
 coreutils:
 	@echo "Using previously built coreutils."
 else
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-coreutils: coreutils-setup gettext libgmp10 libxcrypt
+ifneq (,$(findstring ramdisk,$(MEMO_TARGET)))
+coreutils: coreutils-setup
+else ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+coreutils: coreutils-setup gettext libgmp10 libxcrypt openssl
 else # (,$(findstring darwin,$(MEMO_TARGET)))
-coreutils: coreutils-setup gettext libgmp10
+coreutils: coreutils-setup gettext libgmp10 openssl
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	cd $(BUILD_WORK)/coreutils && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \

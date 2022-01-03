@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS  += xxhash
-XXHASH_VERSION := 0.8.0
+XXHASH_VERSION := 0.8.1
 DEB_XXHASH_V   ?= $(XXHASH_VERSION)
 
 xxhash-setup: setup
@@ -23,11 +23,7 @@ xxhash: xxhash-setup
 		UNAME=Darwin \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR=$(BUILD_STAGE)/xxhash
-	+$(MAKE) -C $(BUILD_WORK)/xxhash install \
-		UNAME=Darwin \
-		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 xxhash-package: xxhash-stage

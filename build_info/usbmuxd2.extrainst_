@@ -4,11 +4,11 @@ set -e
 
 case "$1" in
     (install)
-    /bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/org.libimobiledevice.usbmuxd.plist
+    @MEMO_LAUNCHCTL_PREFIX@/bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/org.libimobiledevice.usbmuxd.plist
     ;;
 	(upgrade)
-	/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/org.libimobiledevice.usbmuxd.plist
-    /bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/org.libimobiledevice.usbmuxd.plist
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/org.libimobiledevice.usbmuxd.plist
+    @MEMO_LAUNCHCTL_PREFIX@/bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/org.libimobiledevice.usbmuxd.plist
 	;;
 	(*)
 	exit 0

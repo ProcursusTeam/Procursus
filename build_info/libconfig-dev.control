@@ -1,0 +1,23 @@
+Package: libconfig-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBCONFIG_V@
+Section: Development
+Depends: libconfig11, pkg-config
+Description: parsing/manipulation of structured config files (development)
+ This library features a fully reentrant parser and includes bindings for
+ both the C and C++ programming languages. It runs on modern POSIX-compliant
+ systems such as Linux, Solaris, and Mac OS X (Darwin), as well as on
+ Microsoft Windows 2000/XP and later (Visual Studio or MinGW).
+ .
+ This library allows parsing, manipulating and writing structured configuration
+ files. Its main features are:
+  - A fully reentrant parser: Multiple configurations can be parsed in
+    concurrent threads at the same time.
+  - A simple, structured configuration file format: more readable and compact
+    than XML and more flexible than Windows' "INI" file format.
+  - A low-footprint implementation
+  - Proper documentation.
+ .
+ This package contains the files needed in order to use libconfig
+ in your own programs.

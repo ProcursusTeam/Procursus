@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS        += libgpg-error
-LIBGPG-ERROR_VERSION := 1.42
+LIBGPG-ERROR_VERSION := 1.43
 DEB_LIBGPG-ERROR_V   ?= $(LIBGPG-ERROR_VERSION)
 
 ifneq (,$(findstring aarch64,$(GNU_HOST_TRIPLE)))
@@ -33,10 +33,7 @@ libgpg-error: libgpg-error-setup gettext
 	+$(MAKE) -C $(BUILD_WORK)/libgpg-error install \
 		DESTDIR=$(BUILD_STAGE)/libgpg-error \
 		TESTS=""
-	+$(MAKE) -C $(BUILD_WORK)/libgpg-error install \
-		DESTDIR=$(BUILD_BASE) \
-		TESTS=""
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libgpg-error-package: libgpg-error-stage
@@ -48,7 +45,7 @@ libgpg-error-package: libgpg-error-stage
 	# libgpg-error.mk Prep libgpg-error
 	cp -a $(BUILD_STAGE)/libgpg-error/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgpg-error.0.dylib $(BUILD_DIST)/libgpg-error0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libgpg-error/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libgpg-error-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libgpg-error/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libgpg-error.dylib,pkgconfig} $(BUILD_DIST)/libgpg-error-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libgpg-error/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libgpg-error.0.dylib) $(BUILD_DIST)/libgpg-error-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libgpg-error/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/gpgrt-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libgpg-error.mk Sign
