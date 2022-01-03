@@ -9,6 +9,7 @@ DEB_BINWALK_V   ?= $(BINWALK_VERSION)
 binwalk-setup: setup
 	$(call GITHUB_ARCHIVE,ReFirmLabs,binwalk,$(BINWALK_VERSION),v$(BINWALK_VERSION))
 	$(call EXTRACT_TAR,binwalk-$(BINWALK_VERSION).tar.gz,binwalk-$(BINWALK_VERSION),binwalk)
+	$(call DO_PATCH,binwalk,binwalk,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/binwalk/.build_complete),)
 binwalk:
