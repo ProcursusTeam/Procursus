@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS      += python3
 PYTHON3_MAJOR_V  := 3.9
-PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).6
+PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).9
 DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)
 
 python3-setup: setup

@@ -6,4 +6,3 @@ Section: Archiving
 Priority: important
 Multi-Arch: foreign
 Description: standard Windows compression tool
-Tag: purpose::console, role::hacker

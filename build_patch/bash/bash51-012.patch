@@ -1,0 +1,198 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	5.1
+Patch-ID:	bash51-012
+
+Bug-Reported-by:	Nikolay Borisov <nborisov@suse.com>
+Bug-Reference-ID:	<1a715205-06ce-413b-c1c0-2f5639ce06c0@suse.com>
+Bug-Reference-URL:	https://lists.gnu.org/archive/html/bug-bash/2020-11/msg00091.html
+
+Bug-Description:
+
+There is a possible race condition that arises when a child process receives
+a signal trapped by the parent before it can reset the signal dispositions.
+The child process is not supposed to trap the signal in this circumstance.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-20201118/command.h	2020-08-14 15:04:39.000000000 -0400
+--- command.h	2020-11-27 15:18:02.000000000 -0500
+***************
+*** 125,128 ****
+--- 125,129 ----
+  #define SUBSHELL_COPROC	0x40	/* subshell from a coproc pipeline */
+  #define SUBSHELL_RESETTRAP 0x80	/* subshell needs to reset trap strings on first call to trap */
++ #define SUBSHELL_IGNTRAP 0x100  /* subshell should reset trapped signals from trap_handler */
+  
+  /* A structure which represents a word. */
+
+*** ../bash-20201118/execute_cmd.c	2020-11-23 14:16:48.000000000 -0500
+--- execute_cmd.c	2020-11-27 16:43:25.000000000 -0500
+***************
+*** 1548,1551 ****
+--- 1548,1554 ----
+    reset_signal_handlers ();
+    subshell_environment |= SUBSHELL_RESETTRAP;
++   /* Note that signal handlers have been reset, so we should no longer
++     reset the handler and resend trapped signals to ourselves. */
++   subshell_environment &= ~SUBSHELL_IGNTRAP;
+  
+    /* We are in a subshell, so forget that we are running a trap handler or
+***************
+*** 4321,4325 ****
+  	  cmdflags |= CMD_NO_FORK;
+  
+! 	  subshell_environment = SUBSHELL_FORK;		/* XXX */
+  	  if (pipe_in != NO_PIPE || pipe_out != NO_PIPE)
+  	    subshell_environment |= SUBSHELL_PIPE;
+--- 4324,4329 ----
+  	  cmdflags |= CMD_NO_FORK;
+  
+! 	  /* We redo some of what make_child() does with SUBSHELL_IGNTRAP */
+! 	  subshell_environment = SUBSHELL_FORK|SUBSHELL_IGNTRAP;	/* XXX */
+  	  if (pipe_in != NO_PIPE || pipe_out != NO_PIPE)
+  	    subshell_environment |= SUBSHELL_PIPE;
+***************
+*** 4575,4578 ****
+--- 4580,4584 ----
+  	  reset_signal_handlers ();
+  	  subshell_environment |= SUBSHELL_RESETTRAP;
++ 	  subshell_environment &= ~SUBSHELL_IGNTRAP;
+  
+  	  if (async)
+***************
+*** 5515,5518 ****
+--- 5521,5525 ----
+        /* Cancel traps, in trap.c. */
+        restore_original_signals ();
++       subshell_environment &= ~SUBSHELL_IGNTRAP;
+  
+  #if defined (JOB_CONTROL)
+
+*** ../bash-20201118/jobs.c	2020-08-04 10:17:39.000000000 -0400
+--- jobs.c	2020-11-27 16:39:56.000000000 -0500
+***************
+*** 2218,2221 ****
+--- 2218,2223 ----
+        pid_t mypid;
+  
++       subshell_environment |= SUBSHELL_IGNTRAP;
++ 
+        /* If this ends up being changed to modify or use `command' in the
+  	 child process, go back and change callers who free `command' in
+diff -rC 2 ../bash-20201118/nojobs.c nojobs.c
+*** ../bash-20201118/nojobs.c	2020-07-08 10:11:25.000000000 -0400
+--- nojobs.c	2020-11-27 16:38:36.000000000 -0500
+***************
+*** 576,579 ****
+--- 576,581 ----
+  #endif
+  
++       subshell_environment |= SUBSHELL_IGNTRAP;
++ 
+        default_tty_job_signals ();
+      }
+
+*** ../bash-20201118/sig.c	2020-11-23 13:22:17.000000000 -0500
+--- sig.c	2020-11-28 10:21:43.000000000 -0500
+***************
+*** 56,60 ****
+  #endif
+  
+! extern void initialize_siglist ();
+  
+  #if !defined (JOB_CONTROL)
+--- 56,61 ----
+  #endif
+  
+! extern void initialize_siglist PARAMS((void));
+! extern void set_original_signal PARAMS((int, SigHandler *));
+  
+  #if !defined (JOB_CONTROL)
+***************
+*** 256,259 ****
+--- 257,267 ----
+        XHANDLER(i) = oact.sa_handler;
+        XSAFLAGS(i) = oact.sa_flags;
++ 
++ #if 0
++       set_original_signal (XSIG(i), XHANDLER(i));	/* optimization */
++ #else
++       set_original_signal (XSIG(i), act.sa_handler);	/* optimization */
++ #endif
++ 
+        /* Don't do anything with signals that are ignored at shell entry
+  	 if the shell is not interactive. */
+
+*** ../bash-20201118/subst.c	2020-11-16 10:33:15.000000000 -0500
+--- subst.c	2020-11-27 16:07:00.000000000 -0500
+***************
+*** 5952,5955 ****
+--- 5952,5956 ----
+        /* Cancel traps, in trap.c. */
+        restore_original_signals ();	/* XXX - what about special builtins? bash-4.2 */
++       subshell_environment &= ~SUBSHELL_IGNTRAP;
+        QUIT;	/* catch any interrupts we got post-fork */
+        setup_async_signals ();
+***************
+*** 6383,6386 ****
+--- 6384,6388 ----
+        QUIT;	/* catch any interrupts we got post-fork */
+        subshell_environment |= SUBSHELL_RESETTRAP;
++       subshell_environment &= ~SUBSHELL_IGNTRAP;
+      }
+  
+
+diff -rC 2 ../bash-20201118/trap.c trap.c
+*** ../bash-20201118/trap.c	2020-11-28 12:04:07.000000000 -0500
+--- trap.c	2020-11-28 10:22:10.000000000 -0500
+***************
+*** 482,485 ****
+--- 482,511 ----
+      }
+  
++   /* This means we're in a subshell, but have not yet reset the handler for
++      trapped signals. We're not supposed to execute the trap in this situation;
++      we should restore the original signal and resend the signal to ourselves
++      to preserve the Posix "signal traps that are not being ignored shall be
++      set to the default action" semantics. */
++   if ((subshell_environment & SUBSHELL_IGNTRAP) && trap_list[sig] != (char *)IGNORE_SIG)
++     {
++       sigset_t mask;
++ 
++       /* Paranoia */
++       if (original_signals[sig] == IMPOSSIBLE_TRAP_HANDLER)
++ 	original_signals[sig] = SIG_DFL;
++ 
++       restore_signal (sig);
++ 
++       /* Make sure we let the signal we just caught through */
++       sigemptyset (&mask);
++       sigprocmask (SIG_SETMASK, (sigset_t *)NULL, &mask);
++       sigdelset (&mask, sig);
++       sigprocmask (SIG_SETMASK, &mask, (sigset_t *)NULL);
++ 
++       kill (getpid (), sig);
++ 
++       SIGRETURN (0);
++     }
++ 
+    if ((sig >= NSIG) ||
+        (trap_list[sig] == (char *)DEFAULT_SIG) ||
+
+*** ../bash-5.1/patchlevel.h	2020-06-22 14:51:03.000000000 -0400
+--- patchlevel.h	2020-10-01 11:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 11
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 12
+  
+  #endif /* _PATCHLEVEL_H_ */

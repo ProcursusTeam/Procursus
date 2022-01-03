@@ -1,0 +1,52 @@
+From 1a268176fbb184e393c98575e61fe692264c7d91 Mon Sep 17 00:00:00 2001
+From: Paul Eggert <eggert@cs.ucla.edu>
+Date: Mon, 15 Nov 2021 22:17:44 -0800
+Subject: [PATCH] lseek: port around macOS SEEK_HOLE glitch
+
+Problem reported by Sudhip Nashi (Bug#51857#47).
+* lib/lseek.c (rpl_lseek): Work around macOS lseek+SEEK_HOLE
+returning -1 with ENXIO if there are no holes before EOF,
+contrary to the macOS documentation.
+---
+ ChangeLog   | 6 ++++++
+ lib/lseek.c | 6 ++++--
+ 2 files changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/ChangeLog b/ChangeLog
+index 71a226570..efc3a3887 100644
+--- a/ChangeLog
++++ b/ChangeLog
+@@ -1,5 +1,11 @@
+ 2021-11-15  Paul Eggert  <eggert@cs.ucla.edu>
+ 
++	lseek: port around macOS SEEK_HOLE glitch
++	Problem reported by Sudhip Nashi (Bug#51857#47).
++	* lib/lseek.c (rpl_lseek): Work around macOS lseek+SEEK_HOLE
++	returning -1 with ENXIO if there are no holes before EOF,
++	contrary to the macOS documentation.
++
+ 	lseek: port around macOS SEEK_DATA glitch
+ 	Problem reported by Sudhip Nashi (Bug#51857).
+ 	* doc/posix-functions/lseek.texi (lseek): Mention macOS SEEK_DATA
+diff --git a/lib/lseek.c b/lib/lseek.c
+index 7dcd6c9da..e9a96ad20 100644
+--- a/lib/lseek.c
++++ b/lib/lseek.c
+@@ -61,10 +61,12 @@ rpl_lseek (int fd, off_t offset, int whence)
+          data followed by a possibly-empty hole.  To work around this
+          portability glitch, check whether OFFSET is within data by
+          using lseek+SEEK_HOLE, and if so return to OFFSET by using
+-         lseek+SEEK_SET.  */
++         lseek+SEEK_SET.  Also, contrary to the macOS documentation,
++         lseek+SEEK_HOLE can fail with ENXIO if there are no holes on
++         or after OFFSET.  What a mess!  */
+       off_t next_hole = lseek (fd, offset, SEEK_HOLE);
+       if (next_hole < 0)
+-        return next_hole;
++        return errno == ENXIO ? offset : next_hole;
+       if (next_hole != offset)
+         whence = SEEK_SET;
+     }
+-- 
+2.32.0
+

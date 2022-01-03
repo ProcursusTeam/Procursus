@@ -8,4 +8,3 @@ Depends: org.coolstar.sileo (>= 2.1) | xyz.willy.zebra (>= 1.1.19) | me.apptapp.
 Section: System
 Priority: required
 Description: Virtual package to keep you safe from uninstalling important packages.
-Tag: cydia::essential, role::goddess

@@ -33,16 +33,16 @@ endif
 xfe-package: xfe-stage
 # xfe.mk Package Structure
 	rm -rf $(BUILD_DIST)/xfe
-	
+
 # xfe.mk Prep xfe
 	cp -a $(BUILD_STAGE)/xfe $(BUILD_DIST)
-	
+
 # xfe.mk Sign
 	$(call SIGN,xfe,general.xml)
-	
+
 # xfe.mk Make .debs
 	$(call PACK,xfe,DEB_XFE_V)
-	
+
 # xfe.mk Build cleanup
 	rm -rf $(BUILD_DIST)/xfe
 

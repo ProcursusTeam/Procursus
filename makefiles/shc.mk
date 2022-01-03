@@ -28,16 +28,16 @@ endif
 shc-package: shc-stage
 	# shc.mk Package Structure
 	rm -rf $(BUILD_DIST)/shc
-	
+
 	# shc.mk Prep shc
 	cp -a $(BUILD_STAGE)/shc $(BUILD_DIST)
-	
+
 	# shc.mk Sign
 	$(call SIGN,shc,general.xml)
-	
+
 	# shc.mk Make .debs
 	$(call PACK,shc,DEB_SHC_V)
-	
+
 	# shc.mk Build cleanup
 	rm -rf $(BUILD_DIST)/shc
 

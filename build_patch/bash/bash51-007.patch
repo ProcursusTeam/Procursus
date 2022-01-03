@@ -1,0 +1,95 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	5.1
+Patch-ID:	bash51-007
+
+Bug-Reported-by:	Tom Tromey <tom@tromey.com>
+Bug-Reference-ID:	<875z3u9fd0.fsf@tromey.com>
+Bug-Reference-URL:	https://lists.gnu.org/archive/html/bug-readline/2021-01/msg00009.html
+
+Bug-Description:
+
+The code to check readline versions in an inputrc file had the sense of the
+comparisons reversed.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-5.1-patched/lib/readline/bind.c	2020-10-26 10:03:14.000000000 -0400
+--- lib/readline/bind.c	2021-01-18 16:38:48.000000000 -0500
+***************
+*** 1235,1239 ****
+    else if (_rl_strnicmp (args, "version", 7) == 0)
+      {
+!       int rlversion, versionarg, op, previ, major, minor;
+  
+        _rl_parsing_conditionalized_out = 1;
+--- 1235,1239 ----
+    else if (_rl_strnicmp (args, "version", 7) == 0)
+      {
+!       int rlversion, versionarg, op, previ, major, minor, opresult;
+  
+        _rl_parsing_conditionalized_out = 1;
+***************
+*** 1295,1316 ****
+  	{
+  	case OP_EQ:
+! 	  _rl_parsing_conditionalized_out = rlversion == versionarg;
+  	  break;
+  	case OP_NE:
+! 	  _rl_parsing_conditionalized_out = rlversion != versionarg;
+  	  break;
+  	case OP_GT:
+! 	  _rl_parsing_conditionalized_out = rlversion > versionarg;
+  	  break;
+  	case OP_GE:
+! 	  _rl_parsing_conditionalized_out = rlversion >= versionarg;
+  	  break;
+  	case OP_LT:
+! 	  _rl_parsing_conditionalized_out = rlversion < versionarg;
+  	  break;
+  	case OP_LE:
+! 	  _rl_parsing_conditionalized_out = rlversion <= versionarg;
+  	  break;
+  	}
+      }
+    /* Check to see if the first word in ARGS is the same as the
+--- 1295,1317 ----
+  	{
+  	case OP_EQ:
+!  	  opresult = rlversion == versionarg;
+  	  break;
+  	case OP_NE:
+! 	  opresult = rlversion != versionarg;
+  	  break;
+  	case OP_GT:
+! 	  opresult = rlversion > versionarg;
+  	  break;
+  	case OP_GE:
+! 	  opresult = rlversion >= versionarg;
+  	  break;
+  	case OP_LT:
+! 	  opresult = rlversion < versionarg;
+  	  break;
+  	case OP_LE:
+! 	  opresult = rlversion <= versionarg;
+  	  break;
+  	}
++       _rl_parsing_conditionalized_out = 1 - opresult;
+      }
+    /* Check to see if the first word in ARGS is the same as the
+*** ../bash-5.1/patchlevel.h	2020-06-22 14:51:03.000000000 -0400
+--- patchlevel.h	2020-10-01 11:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 6
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 7
+  
+  #endif /* _PATCHLEVEL_H_ */

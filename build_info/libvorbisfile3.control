@@ -13,4 +13,3 @@ Description: high-level API for Vorbis General Audio Compression Codec
  .
  The Vorbisfile library provides a convenient high-level API for decoding
  and basic manipulation of all Vorbis-I audio streams.
-Tag: purpose::library

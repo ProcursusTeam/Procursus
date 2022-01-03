@@ -12,4 +12,3 @@ Description: decoder library for Vorbis General Audio Compression Codec
  and variable bitrates from 16 to 128 kbps/channel.
  .
  The Vorbis library is the primary Ogg Vorbis library.
-Tag: purpose::library

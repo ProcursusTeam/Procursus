@@ -6,22 +6,16 @@ STRAPPROJECTS           += odyssey-keyring
 ODYSSEY_KEYRING_VERSION := 2021.07.20
 DEB_ODYSSEY_KEYRING_V   ?= $(ODYSSEY_KEYRING_VERSION)
 
-ifneq ($(wildcard $(BUILD_STAGE)/odyssey-keyring/.build_complete),)
 odyssey-keyring:
-	@echo "Using previously built odyssey-keyring."
-else
-odyssey-keyring: setup
-	mkdir -p $(BUILD_STAGE)/odyssey-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	cp -a $(BUILD_MISC)/keyrings/odyssey/odyssey.gpg $(BUILD_STAGE)/odyssey-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	$(call AFTER_BUILD)
-endif
+	@echo "odyssey-keyring does not need to be built."
 
 odyssey-keyring-package: odyssey-keyring-stage
 	# odyssey-keyring.mk Package Structure
 	rm -rf $(BUILD_DIST)/odyssey-keyring
+	mkdir -p $(BUILD_DIST)/odyssey-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 
 	# odyssey-keyring.mk Prep odyssey-keyring
-	cp -a $(BUILD_STAGE)/odyssey-keyring $(BUILD_DIST)
+	cp -a $(BUILD_MISC)/keyrings/odyssey/odyssey.gpg $(BUILD_DIST)/odyssey-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 
 	# odyssey-keyring.mk Make .debs
 	$(call PACK,odyssey-keyring,DEB_ODYSSEY_KEYRING_V)

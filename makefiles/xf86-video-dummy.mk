@@ -29,16 +29,16 @@ endif
 xf86-video-dummy-package: xf86-video-dummy-stage
 # xf86-video-dummy.mk Package Structure
 	rm -rf $(BUILD_DIST)/xserver-xorg-video-dummy
-	
+
 # xf86-video-dummy.mk Prep xf86-video-dummy
 	cp -a $(BUILD_STAGE)/xserver-xorg-video-dummy $(BUILD_DIST)
 
 # xf86-video-dummy.mk Sign
 	$(call SIGN,xserver-xorg-video-dummy,general.xml)
-	
+
 # xf86-video-dummy.mk Make .debs
 	$(call PACK,xserver-xorg-video-dummy,DEB_DUMMY_V)
-	
+
 # xf86-video-dummy.mk Build cleanup
 	rm -rf $(BUILD_DIST)/xserver-xorg-video-dummy
 

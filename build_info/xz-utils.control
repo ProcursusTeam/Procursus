@@ -28,4 +28,3 @@ Description: XZ-format compression utilities
   * limited random-access reading support;
   * improved support for multithreading (not used in xz-utils);
   * support for flushing the encoder.
-Name: XZ Utils

@@ -12,4 +12,3 @@ Description: Adaptive Multi Rate speech codec - development files
  the OpenCORE framework, part of the Google Android project.
  .
  This package contains the files necessary for development.
-Tag: purpose::library, role::developer

@@ -31,3 +31,5 @@ Contributions (Issues or Pull Requests) are welcome with open arms. Check out th
 
 ## Credits
 Build system created by [Diatrus](https://twitter.com/Diatrus) and [Kirb](https://twitter.com/hbkirb). Built better by all our wonderful contributors. Made worth it by people like you!
+
+Thank you to Macstadium for sponsoring us through their open source program!

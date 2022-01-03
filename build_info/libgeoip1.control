@@ -12,4 +12,3 @@ Description: non-DNS IP-to-country resolver library
  it should be more complete and accurate than using reverse DNS lookups.
  .
  This package contains the shared library.
-Tag: role::developer
