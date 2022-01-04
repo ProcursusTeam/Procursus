@@ -60,13 +60,13 @@ pcre-package: pcre-stage
 	# pcre.mk Prep libpcre1-dev
 	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(*.1*|*.0*|*.0*) $(BUILD_DIST)/libpcre1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pcre-config $(BUILD_DIST)/libpcre1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/pcre-config.1 $(BUILD_DIST)/libpcre1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/pcre-config.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/libpcre1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libpcre1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libpcre1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# pcre.mk Prep pcregrep
 	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pcregrep $(BUILD_DIST)/pcregrep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/pcregrep.1 $(BUILD_DIST)/pcregrep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/pcregrep.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/pcregrep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# pcre.mk Sign
 	$(call SIGN,libpcre1,general.xml)

@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS     += libgcrypt
-LIBGCRYPT_VERSION := 1.9.3
-DEB_LIBGCRYPT_V   ?= $(LIBGCRYPT_VERSION)-1
+LIBGCRYPT_VERSION := 1.9.4
+DEB_LIBGCRYPT_V   ?= $(LIBGCRYPT_VERSION)
 
 libgcrypt-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-$(LIBGCRYPT_VERSION).tar.bz2{,.sig}
