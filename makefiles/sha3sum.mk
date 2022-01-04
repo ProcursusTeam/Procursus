@@ -9,8 +9,7 @@ DEB_SHA3SUM_V   ?= $(SHA3SUM_VERSION)
 sha3sum-setup: setup
 	$(call GITHUB_ARCHIVE,maandree,sha3sum,$(SHA3SUM_VERSION),$(SHA3SUM_VERSION))
 	$(call EXTRACT_TAR,sha3sum-$(SHA3SUM_VERSION).tar.gz,sha3sum-$(SHA3SUM_VERSION),sha3sum)
-	sed -i 's/ = -/+= -/g' $(BUILD_WORK)/sha3sum/config.mk
-	sed -i '/PREFIX  /d' $(BUILD_WORK)/sha3sum/config.mk
+	$(call DO_PATCH,sha3sum,sha3sum,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/sha3sum/.build_complete),)
 sha3sum:
