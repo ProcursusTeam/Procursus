@@ -125,6 +125,6 @@ nginx-package: nginx-stage
 	$(call PACK,nginx-full,DEB_NGINX_V)
 
 	# nginx.mk Build cleanup
-	rm -rf $(BUILD_DIST)/nginx*
+	rm -rf $(BUILD_DIST)/nginx-{core,light,full}
 
 .PHONY: nginx nginx-package
