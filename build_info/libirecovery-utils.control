@@ -7,4 +7,3 @@ Conflicts: libirecovery (<< 99)
 Section: Administration
 Priority: standard
 Description: Communicate with iBoot/iBSS of iOS devices via USB
-Tag: role::developer

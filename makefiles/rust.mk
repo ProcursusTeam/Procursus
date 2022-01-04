@@ -2,8 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-#SUBPROJECTS += rust
-RUST_VERSION := 1.46.0
+SUBPROJECTS  += rust
+RUST_VERSION := 1.56.1
 DEB_RUST_V   ?= $(RUST_VERSION)
 
 # This needs ccache extra to build.
@@ -11,11 +11,10 @@ DEB_RUST_V   ?= $(RUST_VERSION)
 ##### THIS MAKEFILE IS CURRENTLY WIP AGAIN #####
 
 rust-setup: setup
-	$(call GITHUB_ARCHIVE,rust-lang,rust,$(RUST_VERSION),$(RUST_VERSION))
-	$(call EXTRACT_TAR,rust-$(RUST_VERSION).tar.gz,rust-$(RUST_VERSION),rust)
+	$(call GIT_CLONE,https://github.com/rust-lang/rust.git,$(RUST_VERSION),rust)
+	$(call DO_PATCH,rust,rust,-p1)
 
-	mkdir -p "$(BUILD_WORK)/rust/build"
-	mkdir -p "$(BUILD_STAGE)/rust"
+	mkdir -p $(BUILD_STAGE)/rust $(BUILD_WORK)/rust/build
 	cp -f "$(BUILD_INFO)/rust_config.toml" "$(BUILD_WORK)/rust/config.toml"
 
 	sed -i -e 's|PROCURSUS_BUILD_DIR|$(BUILD_WORK)/rust/build|g' -e 's|PROCURSUS_TARGET|$(RUST_TARGET)|g' -e 's|PROCURSUS_INSTALL_PREFIX|$(BUILD_STAGE)/rust/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' "$(BUILD_WORK)/rust/config.toml"
@@ -26,16 +25,19 @@ rust:
 	@echo "Using previously built rust."
 else
 rust: rust-setup openssl curl
-	mv $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h.old
 	unset CFLAGS CXXFLAGS CPPFLAGS LDFLAGS; \
 		cd "$(BUILD_WORK)/rust"; \
 		export MACOSX_DEPLOYMENT_TARGET=10.13 \
+		CFLAGS="-isysroot $(TARGET_SYSROOT)" \
 		IPHONEOS_DEPLOYMENT_TARGET=10.0 \
 		AARCH64_APPLE_IOS_OPENSSL_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"; \
 		ARMV7_APPLE_IOS_OPENSSL_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"; \
-		./x.py build; \
-		./x.py install
-	mv $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h.old $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h
+		X86_64_APPLE_DARWIN_OPENSSL_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"; \
+		AARCH64_APPLE_DARWIN_OPENSSL_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"; \
+		RUSTFLAGS="-Clink-args=-F$(TARGET_SYSROOT)/System/Library/Frameworks -Clink-args=-L$(TARGET_SYSROOT)/usr/lib"
+		$(DEFAULT_RUST_FLAGS) \
+		python3 x.py build && \
+		python3 x.py install
 	rm -rf $(BUILD_STAGE)/rust/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{share/doc,etc}
 	rm -rf $(BUILD_STAGE)/rust/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/rustlib/{src,manifest-*,components,install.log,uninstall.sh,rust-installer-version}
 	rm -rf $(BUILD_STAGE)/rust/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/rustlib/*/analysis

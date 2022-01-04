@@ -7,4 +7,3 @@ Section: Development
 Priority: optional
 Homepage: https://www.llvm.org/
 Description: Extra LLVM Utilities (llc, lli, etc)
-Tag: purpose::console, role::developer

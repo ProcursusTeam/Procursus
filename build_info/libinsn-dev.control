@@ -6,4 +6,3 @@ Depends: libinsn0 (>= @DEB_LIBINSN_V@), libgeneral-dev
 Section: Development
 Priority: optional
 Description: Support library for tihmstar's liboffsetfinder64 (development files)
-Tag: role::developer

@@ -1,5 +1,4 @@
 Package: mc
-Name: Midnight Commander
 Version: @DEB_MC_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@

@@ -3,14 +3,14 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += libgeneral
-LIBGENERAL_VERSION := 54
-LIBGENERAL_COMMIT  := b04a27d0584c4c10c4b376325bb928c0ad12e285
+LIBGENERAL_VERSION := 56
+LIBGENERAL_COMMIT  := e0d98cbeedece5d62e3e9432c3ed37cd87da5338
 DEB_LIBGENERAL_V   ?= $(LIBGENERAL_VERSION)-1
 
 libgeneral-setup: setup
 	$(call GITHUB_ARCHIVE,tihmstar,libgeneral,$(LIBGENERAL_VERSION),$(LIBGENERAL_VERSION))
 	$(call EXTRACT_TAR,libgeneral-$(LIBGENERAL_VERSION).tar.gz,libgeneral-$(LIBGENERAL_VERSION),libgeneral)
-	
+
 	sed -i 's/git rev\-list \-\-count HEAD/printf ${LIBGENERAL_VERSION}/g' $(BUILD_WORK)/libgeneral/configure.ac
 	sed -i 's/git rev\-parse HEAD/printf ${LIBGENERAL_COMMIT}/g' $(BUILD_WORK)/libgeneral/configure.ac
 
