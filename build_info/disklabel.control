@@ -1,0 +1,13 @@
+Package: disklabel
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_DISKLABEL_V@
+Section: System
+Priority: optional
+Description: manipulate and query an Apple Label disk label
+ Apple Label partitions allow for a disk device to have a consistent
+ name, ownership, and permissions across reboots, even though
+ uses a dynamic pseudofilesystem for /dev.
+ The Apple Label partition uses a set of metadata (as a plist)
+ in a reserved area of the partition.  This metadata describes the
+ owner, name, and so forth.

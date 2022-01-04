@@ -18,9 +18,9 @@ vi: vi-setup ncurses
 	sed -i '/#include "ex_tty.h"/a #include <sys/ioctl.h>' $(BUILD_WORK)/vi/ex_tty.c
 	sed -i '/#include "ex_tty.h"/a #include <sys/ioctl.h>' $(BUILD_WORK)/vi/ex_subr.c
 	sed -i '/size ex/d' $(BUILD_WORK)/vi/Makefile
-	sed -i 's/ar /$(AR) /g' $(BUILD_WORK)/vi/libuxre/Makefile
+	sed -i 's|ar |$(AR) |g' $(BUILD_WORK)/vi/libuxre/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/vi install \
-		PREFIX="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		TERMLIB=ncursesw \
 		PRESERVEDIR="/var/lib/ex" \
 		LIBEXECDIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ex \

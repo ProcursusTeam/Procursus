@@ -3,8 +3,8 @@
 set -e
 
 update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/editor editor @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/nvim 30 \
-                    --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/editor.1.zst editor.1.zst \
-                            @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/nvim.1.zst
+                    --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/editor.1@MEMO_MANPAGE_SUFFIX@ editor.1@MEMO_MANPAGE_SUFFIX@ \
+                            @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/nvim.1@MEMO_MANPAGE_SUFFIX@
 update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/ex ex @MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/neovim/ex 30
 update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/rvim rvim @MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/neovim/rvim 30
 update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/rview rview @MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/neovim/rview 30

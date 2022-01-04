@@ -29,17 +29,17 @@ endif
 jtool2-package: jtool2-stage
 	# jtool2.mk Package Structure
 	mkdir -p $(BUILD_DIST)/jtool2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	
+
 	# jtool2.mk Prep jtool2
 	cp -a $(BUILD_STAGE)/jtool2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/jtool2 $(BUILD_DIST)/jtool2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/jtool2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/disarm $(BUILD_DIST)/jtool2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 	# jtool2.mk Sign
 	$(call SIGN,jtool2,general.xml)
-	
+
 	# jtool2.mk Make .debs
 	$(call PACK,jtool2,DEB_JTOOL2_V)
-	
+
 	# jtool2.mk Build cleanup
 	rm -rf $(BUILD_DIST)/jtool2
 

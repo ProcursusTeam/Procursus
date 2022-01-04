@@ -29,4 +29,3 @@ Description: Opus codec library development files
   Floating point and fixed-point implementation
  .
  This package provides the Opus library headers and development files.
-Tag: purpose::library, role::developer

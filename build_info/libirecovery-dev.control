@@ -7,4 +7,3 @@ Conflicts: libirecovery (<< 99)
 Section: Development
 Priority: standard
 Description: Library allowing communication with iBoot/iBSS of iOS devices via USB - development files
-Tag: purpose::library, role::developer

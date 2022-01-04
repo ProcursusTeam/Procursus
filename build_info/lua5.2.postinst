@@ -4,11 +4,11 @@ case "$1" in
     configure)
         update-alternatives \
             --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/lua lua-interpreter @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/lua5.2 120 \
-            --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/lua.1.zst lua-manual \
-                @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/lua5.2.1.zst
+            --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/lua.1@MEMO_MANPAGE_SUFFIX@ lua-manual \
+                @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/lua5.2.1@MEMO_MANPAGE_SUFFIX@
         update-alternatives \
             --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/luac lua-compiler @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/luac5.2 120 \
-            --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/luac.1.zst lua-compiler-manual \
-                @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/luac5.2.1.zst
+            --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/luac.1@MEMO_MANPAGE_SUFFIX@ lua-compiler-manual \
+                @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/luac5.2.1@MEMO_MANPAGE_SUFFIX@
         ;;
 esac

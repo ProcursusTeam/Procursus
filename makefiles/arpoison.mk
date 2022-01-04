@@ -16,23 +16,24 @@ arpoison:
 	@echo "Using previously built arpoison."
 else
 arpoison: arpoison-setup libnet
-	$(CC) $(CFLAGS) $(LDFLAGS) -flto=thin -Os -o $(BUILD_STAGE)/arpoison/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/arpoison $(BUILD_WORK)/arpoison/arpoison.c -l net
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $(BUILD_STAGE)/arpoison/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/arpoison \
+		$(BUILD_WORK)/arpoison/arpoison.c -lnet
 	$(call AFTER_BUILD)
 endif
 
 arpoison-package: arpoison-stage
 	# arpoison.mk Package Structure
 	rm -rf $(BUILD_DIST)/arpoison
-	
+
 	# arpoison.mk Prep arpoison
 	cp -a $(BUILD_STAGE)/arpoison $(BUILD_DIST)
-	
+
 	# arpoison.mk Sign
 	$(call SIGN,arpoison,general.xml)
-	
+
 	# arpoison.mk Make .debs
 	$(call PACK,arpoison,DEB_ARPOISON_V)
-	
+
 	# arpoison.mk Build cleanup
 	rm -rf $(BUILD_DIST)/arpoison
 

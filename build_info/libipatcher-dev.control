@@ -6,4 +6,3 @@ Depends: libipatcher0 (>= @DEB_LIBIPATCHER_V@), libcurl-dev, libpng16-dev, libof
 Section: Development
 Priority: optional
 Description: a convinient wrapper for iBoot32Patcher (development files)
-Tag: role::developer

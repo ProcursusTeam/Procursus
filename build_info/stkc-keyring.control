@@ -5,4 +5,3 @@ Maintainer: @DEB_MAINTAINER@
 Section: Keyrings
 Priority: optional
 Description: GnuPG keys for stkc's repository
-Name: stkc's APT Keyring

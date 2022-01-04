@@ -1,0 +1,10 @@
+Package: yq
+Version: @DEB_YQ_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Description: lightweight and portable command-line YAML processor
+ .
+ The aim of the project is to be the 
+ jq or sed of yaml files.

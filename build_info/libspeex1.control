@@ -11,4 +11,3 @@ Description: The Speex codec runtime library
  emphasis on high-quality music reproduction.
  .
  This package provides the speex runtime library.
-Tag: purpose::library

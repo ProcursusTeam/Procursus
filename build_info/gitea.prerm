@@ -1,0 +1,2 @@
+#!/bin/sh
+@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload -w @MEMO_PREFIX@/Library/LaunchDaemons/io.gitea.web.plist

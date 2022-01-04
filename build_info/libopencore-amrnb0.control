@@ -11,4 +11,3 @@ Description: Adaptive Multi Rate speech codec - shared library
  the OpenCORE framework, part of the Google Android project.
  .
  This package contains the encoder/decoder shared library.
-Tag: purpose::library

@@ -2,6 +2,7 @@ Package: ncurses-term
 Version: @DEB_NCURSES_V@
 Architecture: all
 Maintainer: @DEB_MAINTAINER@
+Depends: libncursesw6 (= @DEB_NCURSES_V@)
 Replaces: ncurses (<< @DEB_NCURSES_V@)
 Conflicts: ncurses (<< @DEB_NCURSES_V@)
 Section: System

@@ -13,4 +13,3 @@ Description: development files for Vorbis General Audio Compression Codec
  .
  This package contains the header files and documentation needed to develop
  applications with libvorbis.
-Tag: purpose::library, role::developer
