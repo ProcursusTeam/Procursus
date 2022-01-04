@@ -6,3 +6,5 @@ Depends: pcre, libssl3, libgeoip1, libgd3, libxml2
 Section: Networking
 Priority: optional
 Description: web server
+Conflicts: nginx-core, nginx-light
+Replaces: nginx-core, nginx-light

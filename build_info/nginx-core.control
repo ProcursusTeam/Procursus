@@ -6,3 +6,5 @@ Depends: pcre, libssl3
 Section: Networking
 Priority: optional
 Description: web server
+Conflicts: nginx-full, nginx-light
+Replaces: nginx-full, nginx-light
