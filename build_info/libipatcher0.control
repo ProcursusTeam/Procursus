@@ -6,4 +6,3 @@ Depends: libcurl4, libpng16-16, liboffsetfinder64-0, libimg4tool0, libssl3, libp
 Section: Libraries
 Priority: optional
 Description: a convinient wrapper for iBoot32Patcher (shared libraries)
-Tag: purpose::library, role::developer

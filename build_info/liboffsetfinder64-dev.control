@@ -6,4 +6,3 @@ Depends: liboffsetfinder64-0 (>= @DEB_LIBOFFSETFINDER64_V@), libgeneral-dev, lib
 Section: Development
 Priority: optional
 Description: A 64bit offsetfinder. It finds offsets, patches, parses Mach-O and even supports IMG4 (development files)
-Tag: role::developer

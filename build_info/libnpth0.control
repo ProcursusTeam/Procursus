@@ -9,4 +9,3 @@ Section: Libraries
 Priority: optional
 Multi-Arch: foreign
 Description: replacement for GNU Pth using system threads
-Name: New GNU Portable Threads

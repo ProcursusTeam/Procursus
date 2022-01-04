@@ -1,0 +1,19 @@
+Package: hyperfine
+Version: @DEB_HYPERFINE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: sharkdp
+Section: Utilities
+Priority: optional
+Description: A command-line benchmarking tool.
+ Developed in Rust, hyperfine provides the following features:
+ .
+ * Statistical analysis across multiple runs.
+ * Support for arbitrary shell commands.
+ * Constant feedback about the benchmark progress and current estimates.
+ * Warmup runs can be executed before the actual benchmark.
+ * Cache-clearing commands can be set up before each timing run.
+ * Statistical outlier detection to detect interference from other programs and
+ caching effects.
+ * Export results to various formats: CSV, JSON, Markdown, AsciiDoc.
+ * Parameterized benchmarks (e.g. vary the number of threads).

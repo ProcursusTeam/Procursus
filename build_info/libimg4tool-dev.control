@@ -6,4 +6,3 @@ Depends: libplist-dev, libssl-dev, libgeneral-dev, libimg4tool0
 Section: Utilities
 Priority: optional
 Description: A tool for manipulating IMG4, IM4M and IM4P files - devel
-Tag: purpose::console, role::hacker

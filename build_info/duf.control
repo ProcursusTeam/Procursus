@@ -1,0 +1,7 @@
+Package: duf
+Version: @DEB_DUF_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Description:  Disk Usage/Free Utility - a better 'df' alternative 

@@ -6,4 +6,3 @@ Maintainer: @DEB_MAINTAINER@
 Section: Keyrings
 Priority: optional
 Description: GnuPG keys for nyuszika7h's repositories
-Name: nyuszika7h APT Keyring
