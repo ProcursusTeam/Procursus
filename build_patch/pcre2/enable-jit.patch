@@ -1,30 +1,6 @@
-From d6a0fa61e09266ad2e36d8ccd56f775e37b749e9 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Carlo=20Marcelo=20Arenas=20Bel=C3=B3n?= <carenas@gmail.com>
-Date: Mon, 18 Oct 2021 01:17:35 -0700
-Subject: [PATCH] macos: avoid mprotect checks for JIT pages (#105)
-
-Starting with macOS 11.2, mprotect calls for RWX pages will fail
-in Apple Silicon, even if the page was granted permission and it was
-requested the MAP_JIT flag, to better reflect the fact that the page
-returned by mmap wasn't really RWX.
-
-In macOS, there is an implementation for the executable allocator since
-e87e1cc (macos: add BigSur support to execalloc (#90), 2020-11-30) that
-flips the bits as needed, so this extra safeward is no longer needed.
-
-HardenedBSD seems to be the last implementation of PaX that still lies,
-so restrict the code only to that platform.
-
-Fixes: #99
----
- sljit_src/sljitExecAllocator.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/sljit_src/sljitExecAllocator.c b/sljit_src/sljitExecAllocator.c
-index 1f7ff96ae188474fb2adf0ca6b6739a832f611db..fce584b5c28a64a01a3ed52ee4b8be4a13368fbe 100644
---- a/sljit_src/sljitExecAllocator.c
-+++ b/sljit_src/sljitExecAllocator.c
-@@ -192,10 +192,13 @@ static SLJIT_INLINE void* alloc_chunk(sljit_uw size)
+--- a/src/sljit/sljitExecAllocator.c	2021-08-21 00:51:28.000000000 +0800
++++ a/src/sljit/sljitExecAllocator.c	2022-01-04 15:42:20.854232438 +0800
+@@ -187,10 +187,13 @@
  	if (retval == MAP_FAILED)
  		return NULL;
  
