@@ -1,0 +1,8 @@
+Package: nginx-light
+Version: @DEB_NGINX_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: pcre, libssl3
+Section: Networking
+Priority: optional
+Description: web server

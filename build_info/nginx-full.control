@@ -1,0 +1,8 @@
+Package: nginx-full
+Version: @DEB_NGINX_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: pcre, libssl3, libgeoip1, libgd3, libxml2
+Section: Networking
+Priority: optional
+Description: web server
