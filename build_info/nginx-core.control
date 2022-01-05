@@ -5,6 +5,6 @@ Maintainer: @DEB_MAINTAINER@
 Depends: pcre, libssl3
 Section: Networking
 Priority: optional
-Description: web server
+Description: Lightweight HTTP server. This package is the core NGINX utilities
 Conflicts: nginx-light
 Replaces: nginx-light
