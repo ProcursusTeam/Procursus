@@ -107,17 +107,54 @@ endif
 
 nginx-package: nginx-stage
 	# nginx.mk Package Structure
-	rm -rf $(BUILD_DIST)/nginx*
+	rm -rf $(BUILD_DIST)/{lib,}nginx*
 
 	# nginx.mk Prep nginx
 	cp -a $(BUILD_STAGE)/nginx/core $(BUILD_DIST)/nginx-core
 	cp -a $(BUILD_STAGE)/nginx/light $(BUILD_DIST)/nginx-light
 	cp -a $(BUILD_STAGE)/nginx/full $(BUILD_DIST)/nginx-full
 
+	install -Dm755 $(BUILD_STAGE)/nginx-full/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/nginx/modules/ngx_http_image_filter_module.so \
+		$(BUILD_DIST)/libnginx-mod-http-image-filter/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/nginx/modules/ngx_http_image_filter_module.so
+
+	install -Dm755 $(BUILD_STAGE)/nginx-full/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/nginx/modules/ngx_http_xslt_filter_module.so \
+		$(BUILD_DIST)/libnginx-mod-http-xslt-filter/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/nginx/modules/ngx_http_xslt_filter_module.so
+
+	install -Dm755 $(BUILD_STAGE)/nginx-full/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/nginx/modules/ngx_mail_module.so \
+		$(BUILD_DIST)/libnginx-mod-mail/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/nginx/modules/ngx_mail_module.so
+
+	install -Dm755 $(BUILD_STAGE)/nginx-full/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/nginx/modules/ngx_stream_module.so \
+		$(BUILD_DIST)/libnginx-mod-stream/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/nginx/modules/ngx_stream_module.so
+
+	install -Dm755 $(BUILD_STAGE)/nginx-full/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/nginx/modules/ngx_stream_geoip_module.so \
+		$(BUILD_DIST)/libnginx-mod-stream-geoip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/nginx/modules/ngx_stream_geoip_module.so
+
+	install -Dm755 $(BUILD_STAGE)/nginx-full/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/nginx/modules/ngx_http_geoip_module.so \
+		$(BUILD_DIST)/libnginx-mod-http-geoip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/nginx/modules/ngx_http_geoip_module.so
+
+	rm $(BUILD_DIST)/nginx-full/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/nginx/modules/*
+
 	# nginx.mk Sign
 	$(call SIGN,nginx-core,general.xml)
 	$(call SIGN,nginx-light,general.xml)
 	$(call SIGN,nginx-full,general.xml)
+	$(call SIGN,libnginx-mod-http-image-filter,general.xml)
+	$(call SIGN,libnginx-mod-http-xslt-filter,general.xml)
+	$(call SIGN,libnginx-mod-mail,general.xml)
+	$(call SIGN,libnginx-mod-stream,general.xml)
+	$(call SIGN,libnginx-mod-stream-geoip,general.xml)
+	$(call SIGN,libnginx-mod-http-geoip,general.xml)
+
+
+	$(call PACK,nginx-core,DEB_NGINX_V)
+	$(call PACK,nginx-light,DEB_NGINX_V)
+	$(call PACK,nginx-full,DEB_NGINX_V)
+	$(call PACK,libnginx-mod-http-image-filter,DEB_NGINX_V)
+	$(call PACK,libnginx-mod-http-xslt-filter,DEB_NGINX_V)
+	$(call PACK,libnginx-mod-mail,DEB_NGINX_V)
+	$(call PACK,libnginx-mod-stream,DEB_NGINX_V)
+	$(call PACK,libnginx-mod-stream-geoip,DEB_NGINX_V)
+	$(call PACK,libnginx-mod-http-geoip,DEB_NGINX_V)
 
 	# nginx.mk Make .debs
 	$(call PACK,nginx-core,DEB_NGINX_V)
@@ -125,6 +162,7 @@ nginx-package: nginx-stage
 	$(call PACK,nginx-full,DEB_NGINX_V)
 
 	# nginx.mk Build cleanup
-	rm -rf $(BUILD_DIST)/nginx-{core,light,full}
+	rm -rf $(BUILD_DIST)/nginx-{core,full,light}
+	rm -rf $(BUILD_DIST)/libnginx-mod-{http-image-filter,http-xslt-filter,mail,stream,stream-geoip,http-geoip}
 
 .PHONY: nginx nginx-package

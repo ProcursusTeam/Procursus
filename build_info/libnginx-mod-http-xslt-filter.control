@@ -1,10 +1,8 @@
-Package: nginx-core
+Package: libnginx-mod-xslt-image-filter
 Version: @DEB_NGINX_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: pcre, libssl3
+Depends: libxml2
 Section: Networking
 Priority: optional
-Description: web server
-Conflicts: nginx-light
-Replaces: nginx-light
+Description: xslt filter module for nginx

@@ -1,10 +1,8 @@
-Package: nginx-core
+Package: libnginx-mod-stream-geoip
 Version: @DEB_NGINX_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: pcre, libssl3
 Section: Networking
 Priority: optional
-Description: web server
-Conflicts: nginx-light
-Replaces: nginx-light
+Depends: libgeoip1
+Description: geoip stream module for nginx
