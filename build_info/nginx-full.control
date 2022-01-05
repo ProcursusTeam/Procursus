@@ -2,10 +2,9 @@ Package: nginx-full
 Version: @DEB_NGINX_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: nginx-core,libnginx-mod-http-geoip,libnginx-mod-http-image-filter,libnginx-mod-http-xslt-filter,libnginx-mod-mail,libnginx-mod-stream-geoip,libnginx-mod-stream
 Section: Networking
 Priority: optional
-Description: web server
+Description: meta package for nginx-core and extra dynamic modules
 Conflicts: nginx-light
 Replaces: nginx-light
-
+Depends: nginx-core,libnginx-mod-http-geoip,libnginx-mod-http-image-filter,libnginx-mod-http-xslt-filter,libnginx-mod-mail,libnginx-mod-stream-geoip,libnginx-mod-stream
