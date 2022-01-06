@@ -2,7 +2,7 @@ Package: nginx
 Version: @DEB_NGINX_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: nginx-core (=@DEB_NGINX_V@) | nginx-full (=@DEB_NGINX_V) | nginx-light (=@DEB_NGINX_V@)
+Depends: nginx-core (=@DEB_NGINX_V@) | nginx-full (=@DEB_NGINX_V@) | nginx-light (=@DEB_NGINX_V@)
 Section: Networking
 Priority: optional
 Description: Lightweight HTTP server
