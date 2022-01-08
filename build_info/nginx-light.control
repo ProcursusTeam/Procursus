@@ -2,7 +2,7 @@ Package: nginx-light
 Version: @DEB_NGINX_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: pcre, libssl3
+Depends: pcre, libssl3, nginx-common
 Section: Networking
 Priority: optional
 Description: Lightweight web server. This package is a stripped down build of NGINX to optimize space and resource consumption
