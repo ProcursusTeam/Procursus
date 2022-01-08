@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 SUBPROJECTS   += nginx
 NGINX_VERSION := 1.21.5
-DEB_NGINX_V   ?= $(NGINX_VERSION)
+DEB_NGINX_V   ?= $(NGINX_VERSION)-1
 
 ifeq ($(UNAME),Darwin)
 CC := /usr/bin/cc
@@ -35,7 +35,16 @@ GLOBAL_NGINX_FLAGS := --prefix=$(MEMO_PREFIX)/etc/nginx \
 			           --with-http_slice_module
 
 LIGHT_NGINX_FLAGS := $(GLOBAL_NGINX_FLAGS) \
-					   --with-http_addition_module
+					   --with-http_addition_module \
+					   --with-http_gzip_static_module \
+					   --without-http_browser_module \
+					   --without-http_geo_module \
+					   --without-http_limit_req_module \
+					   --without-http_limit_conn_module \
+					   --without-http_memcached_module \
+					   --without-http_referer_module \
+					   --without-http_split_clients_module \
+					   --without-http_userid_module
 
 FULL_NGINX_FLAGS := $(GLOBAL_NGINX_FLAGS) \
             		   --with-http_addition_module \
@@ -99,6 +108,9 @@ nginx-package: nginx-stage
 	cp -a $(BUILD_STAGE)/nginx/core $(BUILD_DIST)/nginx-core
 	cp -a $(BUILD_STAGE)/nginx/light $(BUILD_DIST)/nginx-light
 	mkdir $(BUILD_DIST)/nginx-full
+	mkdir -p $(BUILD_DIST)/nginx-common/$(MEMO_PREFIX)
+	mv $(BUILD_DIST)/nginx-core/$(MEMO_PREFIX)/etc $(BUILD_DIST)/nginx-common/$(MEMO_PREFIX)/
+	rm -rf $(BUILD_DIST)/nginx-{light,core}/$(MEMO_PREFIX)/etc
 
 	install -Dm755 $(BUILD_STAGE)/nginx/core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/nginx/modules/ngx_http_image_filter_module.so \
 		$(BUILD_DIST)/libnginx-mod-http-image-filter/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/nginx/modules/ngx_http_image_filter_module.so
@@ -119,6 +131,13 @@ nginx-package: nginx-stage
 		$(BUILD_DIST)/libnginx-mod-http-geoip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/nginx/modules/ngx_http_geoip_module.so
 
 	rm $(BUILD_DIST)/nginx-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/nginx/modules/*
+
+	mkdir -p $(BUILD_DIST)/nginx-common/$(MEMO_PREFIX)/etc/nginx/sites-{available,enabled}
+
+	cp $(BUILD_INFO)/nginx-defconf $(BUILD_DIST)/nginx-common/$(MEMO_PREFIX)/etc/nginx/sites-available/default
+
+	$(LN_S) $(MEMO_PREFIX)/etc/nginx/sites-available/default \
+			$(BUILD_DIST)/nginx-common/$(MEMO_PREFIX)/etc/nginx/sites-enabled/default
 
 	# nginx.mk Sign
 	$(call SIGN,nginx-core,general.xml)
@@ -141,12 +160,8 @@ nginx-package: nginx-stage
 	$(call PACK,libnginx-mod-stream,DEB_NGINX_V)
 	$(call PACK,libnginx-mod-stream-geoip,DEB_NGINX_V)
 	$(call PACK,libnginx-mod-http-geoip,DEB_NGINX_V)
-
-	# nginx.mk Make .debs
-	$(call PACK,nginx-core,DEB_NGINX_V)
-	$(call PACK,nginx-light,DEB_NGINX_V)
-	$(call PACK,nginx-full,DEB_NGINX_V)
 	$(call PACK,nginx,DEB_NGINX_V)
+	$(call PACK,nginx-common,DEB_NGINX_V)
 
 	# nginx.mk Build cleanup
 	rm -rf $(BUILD_DIST)/nginx{,-core,-full,-light}
