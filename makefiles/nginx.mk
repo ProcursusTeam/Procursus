@@ -164,7 +164,7 @@ nginx-package: nginx-stage
 	$(call PACK,nginx-common,DEB_NGINX_V)
 
 	# nginx.mk Build cleanup
-	rm -rf $(BUILD_DIST)/nginx{,-core,-full,-light}
+	rm -rf $(BUILD_DIST)/nginx{,-core,-full,-light,-common}
 	rm -rf $(BUILD_DIST)/libnginx-mod-{http-image-filter,http-xslt-filter,mail,stream,stream-geoip,http-geoip}
 
 .PHONY: nginx nginx-package
