@@ -9,4 +9,3 @@ Section: Development
 Priority: optional
 Homepage: https://mackyle.github.io/xar/
 Description: eXtensible ARchive format - Development files
-Tag: purpose::console, role::hacker

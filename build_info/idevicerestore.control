@@ -6,4 +6,3 @@ Depends: libplist3 (>= 2.2.0), libimobiledevice6 (>= 1.3.0), libssl3 (>= 1.1.0),
 Section: Administration
 Priority: standard
 Description: Restore/upgrade firmware of iOS devices
-Tag: role::developer

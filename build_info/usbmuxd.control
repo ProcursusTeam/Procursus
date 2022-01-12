@@ -6,4 +6,3 @@ Depends: libplist3 (>= 2.2.0), libusb-1.0-0 (>= 1.0.9), libimobiledevice6 (>= 1.
 Section: Administration
 Priority: standard
 Description: USB multiplexor daemon for iPhone and iPod Touch devices
-Tag: role::developer

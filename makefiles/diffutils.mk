@@ -7,8 +7,8 @@ SUBPROJECTS       += diffutils
 else
 STRAPPROJECTS     += diffutils
 endif
-DIFFUTILS_VERSION := 3.7
-DEB_DIFFUTILS_V   ?= $(DIFFUTILS_VERSION)-2
+DIFFUTILS_VERSION := 3.8
+DEB_DIFFUTILS_V   ?= $(DIFFUTILS_VERSION)
 
 diffutils-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/diffutils/diffutils-$(DIFFUTILS_VERSION).tar.xz{,.sig}
