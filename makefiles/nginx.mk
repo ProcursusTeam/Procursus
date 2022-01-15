@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 SUBPROJECTS   += nginx
 NGINX_VERSION := 1.21.5
-DEB_NGINX_V   ?= $(NGINX_VERSION)-1
+DEB_NGINX_V   ?= $(NGINX_VERSION)-5
 
 ifeq ($(UNAME),Darwin)
 CC := /usr/bin/cc
@@ -134,10 +134,15 @@ nginx-package: nginx-stage
 
 	mkdir -p $(BUILD_DIST)/nginx-common/$(MEMO_PREFIX)/etc/nginx/sites-{available,enabled}
 
-	cp $(BUILD_INFO)/nginx-defconf $(BUILD_DIST)/nginx-common/$(MEMO_PREFIX)/etc/nginx/sites-available/default
+	install -Dm644 $(BUILD_MISC)/nginx/nginx-defconf $(BUILD_DIST)/nginx-common/$(MEMO_PREFIX)/etc/nginx/sites-available/default
+	install -Dm644 $(BUILD_MISC)/nginx/nginx.launchctl $(BUILD_DIST)/nginx-common/$(MEMO_PREFIX)/Library/LaunchDaemons/us.procurs.nginx.plist -v
+	sed -i 's|@PREFIX@|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' $(BUILD_DIST)/nginx-common/$(MEMO_PREFIX)/Library/LaunchDaemons/us.procurs.nginx.plist
 
 	$(LN_S) $(MEMO_PREFIX)/etc/nginx/sites-available/default \
 			$(BUILD_DIST)/nginx-common/$(MEMO_PREFIX)/etc/nginx/sites-enabled/default
+
+	install -Dm644 $(BUILD_MISC)/nginx/nginx.conf $(BUILD_DIST)/nginx-common/$(MEMO_PREFIX)/etc/nginx/nginx.conf
+	sed -i 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' $(BUILD_DIST)/nginx-common/$(MEMO_PREFIX)/etc/nginx/nginx.conf
 
 	# nginx.mk Sign
 	$(call SIGN,nginx-core,general.xml)
