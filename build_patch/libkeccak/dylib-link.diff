@@ -19,7 +19,7 @@ diff -urN a/Makefile b/Makefile
  
  libkeccak.$(LIBEXT): $(OBJ)
 -	$(CC) $(LIBFLAGS) -o $@ $(OBJ) $(LDFLAGS)
-+	$(CC) $(LIBFLAGS) -o $@ $(OBJ) $(LDFLAGS) $(CFLAGS) -install_name $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkeccak.$(LIB_VERSION).$(LIBEXT)
++	$(CC) $(LIBFLAGS) -o $@ $(OBJ) $(LDFLAGS) $(CFLAGS) -install_name $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkeccak.$(LIBMAJOREXT)
  
  libkeccak.a: $(OBJ)
  	-rm -f -- $@
