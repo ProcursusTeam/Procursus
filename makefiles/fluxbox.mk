@@ -31,16 +31,16 @@ fluxbox-package: fluxbox-stage
 	# fluxbox.mk Package Structure
 	rm -rf $(BUILD_DIST)/fluxbox
 	mkdir -p $(BUILD_DIST)/fluxbox
-	
+
 	# fluxbox.mk Prep fluxbox
 	cp -a $(BUILD_STAGE)/fluxbox $(BUILD_DIST)
-	
+
 	# fluxbox.mk Sign
 	$(call SIGN,fluxbox,general.xml)
-	
+
 	# fluxbox.mk Make .debs
 	$(call PACK,fluxbox,DEB_FLUXBOX_V)
-	
+
 	# fluxbox.mk Build cleanup
 	rm -rf $(BUILD_DIST)/fluxbox
 

@@ -6,4 +6,3 @@ Depends: libplist3, libssl3, libgeneral0
 Section: Utilities
 Priority: optional
 Description: Development files for img4tool
-Tag: purpose::console, role::hacker

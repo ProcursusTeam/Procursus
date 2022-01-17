@@ -7,14 +7,8 @@ STRAPPROJECTS += sudo
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += sudo
 endif # ($(MEMO_TARGET),darwin-\*)
-SUDO_VERSION  := 1.9.6p1
-DEB_SUDO_V    ?= $(SUDO_VERSION)-4
-
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-SUDO_CONFIGURE_ARGS := LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -liosexec -lreadline -lncursesw"
-else
-SUDO_CONFIGURE_ARGS :=
-endif
+SUDO_VERSION  := 1.9.8p2
+DEB_SUDO_V    ?= $(SUDO_VERSION)
 
 sudo-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.sudo.ws/dist/sudo-$(SUDO_VERSION).tar.gz{,.sig}
@@ -44,7 +38,9 @@ endif
 		--with-vardir=$(MEMO_PREFIX)/var/db/sudo \
 		--with-rundir=$(MEMO_PREFIX)/var/run/sudo \
 		sudo_cv___func__=yes \
-		$(SUDO_CONFIGURE_ARGS)
+		ac_cv_have_working_snprintf=yes \
+		ac_cv_have_working_vsnprintf=yes
+	sed -i 's/-Wc,-static-libgcc/ /g' $(BUILD_WORK)/sudo/{src,,plugins/*,logsrvd,lib/util}/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/sudo
 	+$(MAKE) -C $(BUILD_WORK)/sudo install \
 		DESTDIR=$(BUILD_STAGE)/sudo \
@@ -67,7 +63,7 @@ sudo-package: sudo-stage
 	# sudo.mk Sign
 	$(call SIGN,sudo,general.xml)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	ldid $(MEMO_LDID_EXTRA_FLAGS) -S$(BUILD_MISC)/entitlements/pam.xml $(BUILD_DIST)/sudo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sudo
+	$(LDID) -S$(BUILD_MISC)/entitlements/pam.xml $(BUILD_DIST)/sudo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sudo
 	find $(BUILD_DIST)/sudo -name '.ldid*' -type f -delete
 endif
 
