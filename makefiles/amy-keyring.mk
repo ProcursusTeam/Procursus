@@ -6,22 +6,16 @@ SUBPROJECTS          += amy-keyring
 AMY_KEYRING_VERSION  := 2021.07.10
 DEB_AMY_KEYRING_V    ?= $(AMY_KEYRING_VERSION)
 
-ifneq ($(wildcard $(BUILD_STAGE)/amy-keyring/.build_complete),)
 amy-keyring:
-	@echo "Using previously built amy-keyring."
-else
-amy-keyring: setup
-	mkdir -p $(BUILD_STAGE)/amy-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	cp -a $(BUILD_MISC)/keyrings/anamy/anamy-repo.gpg $(BUILD_STAGE)/amy-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	$(call AFTER_BUILD)
-endif
+	@echo "amy-keyring does not need to be built."
 
 amy-keyring-package: amy-keyring-stage
 	# amy-keyring.mk Package Structure
 	rm -rf $(BUILD_DIST)/amy-keyring
+	mkdir -p $(BUILD_DIST)/amy-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 
 	# amy-keyring.mk Prep amy-keyring
-	cp -a $(BUILD_STAGE)/amy-keyring $(BUILD_DIST)
+	cp -a $(BUILD_MISC)/keyrings/anamy/anamy-repo.gpg $(BUILD_DIST)/amy-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 
 	# amy-keyring.mk Make .debs
 	$(call PACK,amy-keyring,DEB_AMY_KEYRING_V)

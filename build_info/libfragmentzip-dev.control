@@ -7,4 +7,3 @@ Depends: libfragmentzip0 (>= @DEB_LIBFRAGMENTZIP_V@), libzip-dev, libcurl-dev, l
 Section: Development
 Priority: optional
 Description: A library allowing to download single files from a remote zip archive (Development files)
-Tag: purpose::console, role::developer

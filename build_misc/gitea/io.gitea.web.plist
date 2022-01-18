@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>io.gitea.gitea</string>
+    <key>ProgramArguments</key>
+    <array>
+      <string>/bin/sh</string>
+      <string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/gitea-wrapper</string>
+      <string>-c</string>
+      <string>@MEMO_PREFIX@/etc/gitea.ini</string>
+    </array>
+    <key>UserName</key>
+    <string>gitea</string>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>WorkingDirectory</key>
+    <string>@MEMO_PREFIX@/var/lib/gitea</string>
+    <key>StandardOutPath</key>
+    <string>@MEMO_PREFIX@/var/lib/gitea/log/stdout.log</string>
+    <key>StandardErrorPath</key>
+    <string>@MEMO_PREFIX@/var/lib/gitea/log/stderr.log</string>
+    <key>SoftResourceLimits</key>
+    <dict>
+        <key>NumberOfFiles</key>
+        <integer>8192</integer>
+    </dict>
+</dict>
+</plist>

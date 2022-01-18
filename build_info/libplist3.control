@@ -8,4 +8,3 @@ Provides: libplist (= 99)
 Section: Networking
 Priority: standard
 Description: Library for handling Apple binary and XML property lists
-Tag: purpose::library, role::developer

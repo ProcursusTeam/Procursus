@@ -1,0 +1,7 @@
+Package: choose
+Version: @DEB_CHOOSE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Description: A human-friendly and fast alternative to cut and (sometimes) awk
