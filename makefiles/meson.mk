@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += meson
-MESON_VERSION := 0.61.0
+MESON_VERSION := 0.61.1
 DEB_MESON_V   ?= $(MESON_VERSION)
 
 meson-setup: setup
@@ -22,7 +22,6 @@ meson: meson-setup python3 ninja
 		--root="$(BUILD_STAGE)/meson" \
 		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
 	find $(BUILD_STAGE)/meson -name __pycache__ -prune -exec rm -rf {} \;
-	sed -i "s|#!.*|#!$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/meson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/meson
 	$(call AFTER_BUILD)
 endif
 
