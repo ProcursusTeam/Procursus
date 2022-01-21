@@ -5,7 +5,7 @@ endif
 SUBPROJECTS      += python3
 PYTHON3_MAJOR_V  := 3.9
 PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).9
-DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)
+DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)-1
 
 python3-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.python.org/ftp/python/$(PYTHON3_VERSION)/Python-$(PYTHON3_VERSION).tar.xz{,.asc}
