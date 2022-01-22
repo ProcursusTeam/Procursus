@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += micro
-MICRO_VERSION  := 2.0.8
+MICRO_VERSION  := 2.0.10
 DEB_MICRO_V    ?= $(MICRO_VERSION)
 
 micro-setup: setup
@@ -25,12 +25,10 @@ micro: micro-setup libiosexec
 endif
 	$(MAKE) -C $(BUILD_WORK)/micro build \
 		$(DEFAULT_GOLANG_FLAGS)
-
 	$(INSTALL) -Dm755 $(BUILD_WORK)/micro/micro $(BUILD_STAGE)/micro/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/micro
 	$(INSTALL) -Dm644 $(BUILD_WORK)/micro/assets/packaging/micro.1 $(BUILD_STAGE)/micro/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/micro.1
 	$(INSTALL) -Dm644 $(BUILD_WORK)/micro/assets/packaging/micro.desktop $(BUILD_STAGE)/micro/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/applications/micro.desktop
 	$(call AFTER_BUILD)
-
 endif
 
 micro-package: micro-stage
