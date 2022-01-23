@@ -30,6 +30,6 @@ if [ -z ${1+x} ]; then
 fi
 
 find ${1} -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; \
-	-exec otool -L {} \; | \
+	-exec ${OTOOL} -L {} \; | \
 	${GREP} -o -P '((?<=lib\/)|(?<=@rpath\/))(.*).*dylib(?!:)' | \
 	sort -u
