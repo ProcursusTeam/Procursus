@@ -11,8 +11,6 @@ glib2.0-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftp.gnome.org/pub/gnome/sources/glib/$(GLIB2.0_MAJOR_V)/glib-$(GLIB2.0_VERSION).tar.xz
 	$(call EXTRACT_TAR,glib-$(GLIB2.0_VERSION).tar.xz,glib-$(GLIB2.0_VERSION),glib2.0)
 	$(call DO_PATCH,glib2.0,glib2.0,-p1)
-	sed -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
-		$(BUILD_WORK)/glib2.0/{gio/xdgmime/xdgmime.c,glib/gutils.c}
 	mkdir -p $(BUILD_WORK)/glib2.0/build
 
 	echo -e "[host_machine]\n \

@@ -1,3 +1,6 @@
+changelog-seen = 2
+profile = "user"
+
 [llvm]
 optimize = true
 ccache = true
@@ -7,7 +10,7 @@ targets = "AArch64;ARM;X86"
 host = ["PROCURSUS_TARGET"]
 build-dir = "PROCURSUS_BUILD_DIR"
 extended = true
-tools = ["cargo", "clippy", "analysis", "src"]
+tools = ["cargo", "clippy", "src"]
 
 [install]
 prefix = "PROCURSUS_INSTALL_PREFIX"
@@ -16,6 +19,5 @@ sysconfdir = "etc"
 [rust]
 optimize = true
 incremental = true
-parallel-compiler = true
 default-linker = "clang"
-channel = "nightly"
+channel = "stable"

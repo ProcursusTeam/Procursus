@@ -1,0 +1,11 @@
+diff -urN a/Lib/ctypes/macholib/dyld.py b/Lib/ctypes/macholib/dyld.py
+--- a/Lib/ctypes/macholib/dyld.py	2021-06-28 03:26:18.000000000 -0500
++++ b/Lib/ctypes/macholib/dyld.py	2021-11-25 01:36:39.000000000 -0600
+@@ -31,6 +31,7 @@
+     "/usr/local/lib",
+     "/lib",
+     "/usr/lib",
++    "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib"
+ ]
+ 
+ def dyld_env(env, var):

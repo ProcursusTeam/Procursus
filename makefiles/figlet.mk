@@ -31,10 +31,9 @@ endif
 figlet-package: figlet-stage
 	# figlet.mk Package Structure
 	rm -rf $(BUILD_DIST)/figlet
-	mkdir -p $(BUILD_DIST)/figlet
 
 	# figlet.mk Prep figlet
-	cp -a $(BUILD_STAGE)/figlet/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/figlet
+	cp -a $(BUILD_STAGE)/figlet $(BUILD_DIST)
 
 	# figlet.mk Sign
 	$(call SIGN,figlet,general.xml)

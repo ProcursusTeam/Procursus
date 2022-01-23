@@ -10,4 +10,3 @@ Description: libcrypt shared library
  bcrypt-based password hashes
  It provides the traditional Unix 'crypt' and 'crypt_r' interfaces,
  as well as a set of extended interfaces like 'crypt_gensalt'.
-Tag: purpose::library, role::developer

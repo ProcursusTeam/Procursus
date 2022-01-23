@@ -42,16 +42,16 @@ endif
 text-cmds-package: text-cmds-stage
 	# text-cmds.mk Package Structure
 	rm -rf $(BUILD_DIST)/text-cmds
-	
+
 	# text-cmds.mk Prep text-cmds
 	cp -a $(BUILD_STAGE)/text-cmds $(BUILD_DIST)
-	
+
 	# text-cmds.mk Sign
 	$(call SIGN,text-cmds,general.xml)
-	
+
 	# text-cmds.mk Make .debs
 	$(call PACK,text-cmds,DEB_TEXT-CMDS_V)
-	
+
 	# text-cmds.mk Build cleanup
 	rm -rf $(BUILD_DIST)/text-cmds
 

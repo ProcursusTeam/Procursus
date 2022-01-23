@@ -1,0 +1,19 @@
+From 18087bc16ec20ca2c8f0045a6b0408e94c53075c Mon Sep 17 00:00:00 2001
+From: Guillem Jover <guillem@hadrons.org>
+Date: Wed, 4 May 2016 01:53:13 +0200
+Subject: [PATCH] Whitelist DPKG_COLORS environment variable
+
+---
+ plugins/sudoers/env.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/plugins/sudoers/env.c
++++ b/plugins/sudoers/env.c
+@@ -216,6 +216,7 @@ static const char *initial_checkenv_tabl
+ static const char *initial_keepenv_table[] = {
+     "COLORS",
+     "DISPLAY",
++    "DPKG_COLORS",
+     "HOSTNAME",
+     "KRB5CCNAME",
+     "LS_COLORS",

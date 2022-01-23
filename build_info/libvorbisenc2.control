@@ -13,4 +13,3 @@ Description: encoder library for Vorbis General Audio Compression Codec
  .
  The Vorbisenc library provides a convenient API for setting up an encoding
  environment using libvorbis.
-Tag: purpose::library
