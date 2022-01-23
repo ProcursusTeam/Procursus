@@ -3,5 +3,7 @@
 set -e
 
 if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ]; then
-    update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/editor editor @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/micro 40
+	update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/editor editor @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/micro 40 \
+		--slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/editor.1@MEMO_MANPAGE_SUFFIX@ editor.1@MEMO_MANPAGE_SUFFIX@ \
+		@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/micro.1@MEMO_MANPAGE_SUFFIX@
 fi
