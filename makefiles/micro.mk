@@ -11,22 +11,15 @@ micro-setup: setup
 	$(call EXTRACT_TAR,micro-$(MICRO_VERSION).tar.gz,micro-$(MICRO_VERSION),micro)
 	mkdir -p $(BUILD_STAGE)/micro/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
-ifeq (,$(shell which go))
-micro:
-	@echo "go needs to be installed in order to compile micro. Please install go and try again."
-else ifneq ($(wildcard $(BUILD_WORK)/micro/.build_complete),)
+ifneq ($(wildcard $(BUILD_WORK)/micro/.build_complete),)
 micro:
 	@echo "Using previously built micro."
 else
-ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 micro: micro-setup
-else
-micro: micro-setup libiosexec
-endif
 	$(MAKE) -C $(BUILD_WORK)/micro build \
 		$(DEFAULT_GOLANG_FLAGS)
 	$(INSTALL) -Dm755 $(BUILD_WORK)/micro/micro $(BUILD_STAGE)/micro/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/micro
-	$(INSTALL) -Dm644 $(BUILD_WORK)/micro/assets/packaging/micro.1 $(BUILD_STAGE)/micro/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/micro.1
+	$(INSTALL) -Dm644 $(BUILD_WORK)/micro/assets/packaging/micro.1 $(BUILD_STAGE)/micro/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/micro.1
 	$(INSTALL) -Dm644 $(BUILD_WORK)/micro/assets/packaging/micro.desktop $(BUILD_STAGE)/micro/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/applications/micro.desktop
 	$(call AFTER_BUILD)
 endif
