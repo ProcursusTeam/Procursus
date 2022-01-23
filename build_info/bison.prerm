@@ -1,0 +1,18 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+	upgrade|failed-upgrade)
+		:;
+	;;
+
+	remove|deconfigure)
+		update-alternatives --remove yacc /usr/bin/bison.yacc
+		;;
+ 
+	*)
+		echo "Undocumented call: \"$@\"" >&2
+		exit 1
+	;;
+esac
