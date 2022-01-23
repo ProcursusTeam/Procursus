@@ -8,7 +8,7 @@ case "$1" in
 	;;
 
 	remove|deconfigure)
-		update-alternatives --remove yacc /usr/bin/bison.yacc
+		update-alternatives --remove yacc @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/bison.yacc
 		;;
  
 	*)

@@ -6,7 +6,7 @@ case "$1" in
 	configure|abort-remove|abort-deconfigure)
 		update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/yacc yacc \
 			@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/bison.yacc 100 \
-			--slave /usr/share/man/man1/yacc.1@MEMO_MANPAGE_SUFFIX@ yaccman \
+			--slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/yacc.1@MEMO_MANPAGE_SUFFIX@ yaccman \
 			@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/bison.yacc.1@MEMO_MANPAGE_SUFFIX@
 		[ -e @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/yacc ] || update-alternatives --auto yacc
 	;;
