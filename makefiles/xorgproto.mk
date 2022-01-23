@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += xorgproto
-XORGPROTO_VERSION := 2020.1
+XORGPROTO_VERSION := 2021.5
 DEB_XORGPROTO_V   ?= $(XORGPROTO_VERSION)
 
 xorgproto-setup: setup
