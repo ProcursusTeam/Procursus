@@ -52,7 +52,7 @@ endif
 			--runstatedir=$(MEMO_PREFIX)/var/run \
 			--disable-dtrace \
 			--enable-ipv6 \
-			--with-baseruby="$(shell which ruby)" \
+			--with-baseruby="$(shell command -v ruby)" \
 			$(RUBY_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/ruby
 	+$(MAKE) -C $(BUILD_WORK)/ruby install \

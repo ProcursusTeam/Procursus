@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += libx11
-LIBX11_VERSION := 1.7.0
+LIBX11_VERSION := 1.7.3.1
 DEB_LIBX11_V   ?= $(LIBX11_VERSION)
 
 libx11-setup: setup
@@ -28,7 +28,7 @@ libx11: libx11-setup xorgproto libxcb xtrans
 		--enable-specs=no \
 		--enable-malloc0returnsnull=no \
 		--with-keysymdefdir=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/X11 \
-		CC_FOR_BUILD="$(shell which cc)" \
+		CC_FOR_BUILD="$(CC_FOR_BUILD)" \
 		CFLAGS_FOR_BUILD="$(CFLAGS_FOR_BUILD)" \
 		CPPFLAGS_FOR_BUILD="$(CPPFLAGS_FOR_BUILD)" \
 		LDFLAGS_FOR_BUILD="$(LDFLAGS_FOR_BUILD)"

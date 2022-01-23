@@ -17,7 +17,7 @@ libapt-pkg-perl:
 	@echo "Using previously built libapt-pkg-perl."
 else
 libapt-pkg-perl: libapt-pkg-perl-setup perl apt
-	cd $(BUILD_WORK)/libapt-pkg-perl && $(shell which perl) Makefile.PL \
+	cd $(BUILD_WORK)/libapt-pkg-perl && $(shell command -v perl) Makefile.PL \
 		$(DEFAULT_PERL_MAKE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libapt-pkg-perl \
 		CC="$(CXX)" \

@@ -408,9 +408,9 @@ $(warning Building on iOS)
 endif # ($(MEMO_QUIET),1)
 TARGET_SYSROOT  ?= /usr/share/SDKs/$(BARE_PLATFORM).sdk
 MACOSX_SYSROOT  ?= /usr/share/SDKs/MacOSX.sdk
-CC              := $(shell which cc)
-CXX             := $(shell which c++)
-CPP             := $(shell which cc) -E
+CC              := $(shell command -v cc)
+CXX             := $(shell command -v c++)
+CPP             := $(shell command -v cc) -E
 PATH            := /usr/bin:$(PATH)
 
 CFLAGS_FOR_BUILD   := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
@@ -419,25 +419,25 @@ CXXFLAGS_FOR_BUILD := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_
 LDFLAGS_FOR_BUILD  := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
 
 endif
-AR              := $(shell which ar)
-LD              := $(shell which ld)
-RANLIB          := $(shell which ranlib)
-STRINGS         := $(shell which strings)
-STRIP           := $(shell which strip)
-NM              := $(shell which nm)
-LIPO            := $(shell which lipo)
-OTOOL           := $(shell which otool)
-I_N_T           := $(shell which install_name_tool)
-LIBTOOL         := $(shell which libtool)
+AR              := $(shell command -v ar)
+LD              := $(shell command -v ld)
+RANLIB          := $(shell command -v ranlib)
+STRINGS         := $(shell command -v strings)
+STRIP           := $(shell command -v strip)
+NM              := $(shell command -v nm)
+LIPO            := $(shell command -v lipo)
+OTOOL           := $(shell command -v otool)
+I_N_T           := $(shell command -v install_name_tool)
+LIBTOOL         := $(shell command -v libtool)
 
 else
 $(error Please use macOS, iOS, Linux, or FreeBSD to build)
 endif
 
-CC_FOR_BUILD  := $(shell which cc) $(CFLAGS_FOR_BUILD)
-CPP_FOR_BUILD := $(shell which cc) -E $(CPPFLAGS_FOR_BUILD)
-CXX_FOR_BUILD := $(shell which c++) $(CXXFLAGS_FOR_BUILD)
-AR_FOR_BUILD  := $(shell which ar)
+CC_FOR_BUILD  := $(shell command -v cc) $(CFLAGS_FOR_BUILD)
+CPP_FOR_BUILD := $(shell command -v cc) -E $(CPPFLAGS_FOR_BUILD)
+CXX_FOR_BUILD := $(shell command -v c++) $(CXXFLAGS_FOR_BUILD)
+AR_FOR_BUILD  := $(shell command -v ar)
 export CC_FOR_BUILD CPP_FOR_BUILD CXX_FOR_BUILD AR_FOR_BUILD
 
 DEB_MAINTAINER    ?= Procursus Team <support@procurs.us>
@@ -725,44 +725,49 @@ endif
 ###
 
 AFTER_BUILD = \
-	if [ ! -z "$(MEMO_PREFIX)" ] && [ -d "$(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" ]; then \
-		rm -f $(BUILD_STAGE)/$@/._lib_cache && touch $(BUILD_STAGE)/$@/._lib_cache; \
-		for file in $$(find $(BUILD_STAGE)/$@ -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
+	if [ ! -z "$(2)" ]; then \
+		pkg="$(2)"; \
+	else \
+		pkg="$@"; \
+	fi; \
+	if [ ! -z "$(MEMO_PREFIX)" ] && [ -d "$(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" ]; then \
+		rm -f $(BUILD_STAGE)/$$pkg/._lib_cache && touch $(BUILD_STAGE)/$$pkg/._lib_cache; \
+		for file in $$(find $(BUILD_STAGE)/$$pkg -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
 			INSTALL_NAME=$$(otool -D $$file | grep -v ":$$"); \
 			if [ ! -z "$$INSTALL_NAME" ]; then \
 				$(I_N_T) -id @rpath/$$(basename $$INSTALL_NAME) $$file; \
-				echo "$$INSTALL_NAME" >> $(BUILD_STAGE)/$@/._lib_cache; \
+				echo "$$INSTALL_NAME" >> $(BUILD_STAGE)/$$pkg/._lib_cache; \
 			fi; \
 		done; \
 	fi; \
-	for file in $$(find $(BUILD_STAGE)/$@ -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
+	for file in $$(find $(BUILD_STAGE)/$$pkg -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
 		if [ "$(RELATIVE_RPATH)" = "1" ]; then \
-			$(I_N_T) -add_rpath "@loader_path/$$(realpath --relative-to=$$(dirname $$file) $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))/lib" $$file; \
+			$(I_N_T) -add_rpath "@loader_path/$$(realpath --relative-to=$$(dirname $$file) $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))/lib" $$file; \
 		else \
 			$(I_N_T) -add_rpath "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" $$file; \
 		fi; \
-		if [ -f $(BUILD_STAGE)/$@/._lib_cache ]; then \
-			cat $(BUILD_STAGE)/$@/._lib_cache | while read line; do \
+		if [ -f $(BUILD_STAGE)/$$pkg/._lib_cache ]; then \
+			cat $(BUILD_STAGE)/$$pkg/._lib_cache | while read line; do \
 				$(I_N_T) -change $$line @rpath/$$(basename $$line) $$file; \
 			done; \
 		fi; \
 		$(STRIP) -x $$file; \
 	done; \
-	rm -f $(BUILD_STAGE)/$@/._lib_cache; \
-	find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.gz$$' -exec gunzip '{}' \; 2> /dev/null; \
-	find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.xz$$' -exec unxz '{}' \; 2> /dev/null; \
-	find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.zst$$' -exec unzstd '{}' \; 2> /dev/null; \
+	rm -f $(BUILD_STAGE)/$$pkg/._lib_cache; \
+	find $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.gz$$' -exec gunzip '{}' \; 2> /dev/null; \
+	find $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.xz$$' -exec unxz '{}' \; 2> /dev/null; \
+	find $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.zst$$' -exec unzstd '{}' \; 2> /dev/null; \
 	if [ "$(MEMO_NO_DOC_COMPRESS)" != 1 ]; then \
-		find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -exec $(MEMO_MANPAGE_COMPCMD) $(MEMO_MANPAGE_COMPFLGS) '{}' \; 2> /dev/null; \
-		find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type l -exec bash -c '$(LN_S) $$(readlink "{}" | sed -e "s/\.gz$$//" -e "s/\.xz$$//" -e "s/\.zst$$//")$(MEMO_MANPAGE_SUFFIX) "{}"$(MEMO_MANPAGE_SUFFIX); rm -f "{}"' \; -delete 2> /dev/null; \
+		find $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -exec $(MEMO_MANPAGE_COMPCMD) $(MEMO_MANPAGE_COMPFLGS) '{}' \; 2> /dev/null; \
+		find $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type l -exec bash -c '$(LN_S) $$(readlink "{}" | sed -e "s/\.gz$$//" -e "s/\.xz$$//" -e "s/\.zst$$//")$(MEMO_MANPAGE_SUFFIX) "{}"$(MEMO_MANPAGE_SUFFIX); rm -f "{}"' \; -delete 2> /dev/null; \
 	else \
-		find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type l -exec bash -c '$(LN_S) $$(readlink "{}" | sed -e "s/\.gz$$//" -e "s/\.xz$$//" -e "s/\.zst$$//") "{}"' \; 2> /dev/null; \
+		find $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type l -exec bash -c '$(LN_S) $$(readlink "{}" | sed -e "s/\.gz$$//" -e "s/\.xz$$//" -e "s/\.zst$$//") "{}"' \; 2> /dev/null; \
 	fi; \
 	if [ "$(1)" = "copy" ]; then \
-		cp -af $(BUILD_STAGE)/$@/* $(BUILD_BASE); \
+		cp -af $(BUILD_STAGE)/$$pkg/* $(BUILD_BASE); \
 	fi; \
-	[ -d $(BUILD_WORK)/$@/ ] || mkdir $(BUILD_WORK)/$@/; \
-	touch $(BUILD_WORK)/$@/.build_complete; \
+	[ -d $(BUILD_WORK)/$$pkg/ ] || mkdir $(BUILD_WORK)/$$pkg/; \
+	touch $(BUILD_WORK)/$$pkg/.build_complete; \
 	find $(BUILD_BASE) -name '*.la' -type f -delete
 
 PACK = \
