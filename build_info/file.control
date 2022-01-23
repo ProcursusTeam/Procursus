@@ -2,7 +2,7 @@ Package: file
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_FILE_V@
-Depends: libmagic1, liblzma5 (>= 5.2.5)
+Depends: libmagic1 (= @DEB_FILE_V@), liblzma5 (>= 5.2.5)
 Section: Utilities
 Priority: important
 Description: Recognize the type of data in a file using "magic" numbers

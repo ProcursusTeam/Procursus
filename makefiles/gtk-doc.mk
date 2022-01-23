@@ -29,16 +29,16 @@ endif
 gtk-doc-package: gtk-doc-stage
 	# gtk-doc.mk Package Structure
 	rm -rf $(BUILD_DIST)/gtk-doc-tools
-	
+
 	# gtk-doc.mk Prep gtk-doc-tools
 	cp -a $(BUILD_STAGE)/gtk-doc $(BUILD_DIST)/gtk-doc-tools
-	
+
 	# gtk-doc.mk Sign
 	$(call SIGN,gtk-doc-tools,general.xml)
-	
+
 	# gtk-doc.mk Make .debs
 	$(call PACK,gtk-doc-tools,DEB_GTK_DOC_V)
-	
+
 	# gtk-doc.mk Build cleanup
 	rm -rf $(BUILD_DIST)/gtk-doc-tools
 

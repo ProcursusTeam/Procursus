@@ -1,0 +1,14 @@
+diff --color -urN yt-dlp-2021.09.25/Makefile yt-dlp/Makefile
+--- yt-dlp-2021.09.25/Makefile	2021-09-24 20:59:59.000000000 -0400
++++ yt-dlp/Makefile	2021-10-04 00:14:15.590296192 -0400
+@@ -40,9 +40,8 @@
+ # set markdown input format to "markdown-smart" for pandoc version 2 and to "markdown" for pandoc prior to version 2
+ MARKDOWN = $(shell if [ `pandoc -v | head -n1 | cut -d" " -f2 | head -c1` = "2" ]; then echo markdown-smart; else echo markdown; fi)
+ 
+-install: yt-dlp yt-dlp.1 completions
++install: yt-dlp completions
+ 	install -Dm755 yt-dlp $(DESTDIR)$(BINDIR)
+-	install -Dm644 yt-dlp.1 $(DESTDIR)$(MANDIR)/man1
+ 	install -Dm644 completions/bash/yt-dlp $(DESTDIR)$(SHAREDIR)/bash-completion/completions/yt-dlp
+ 	install -Dm644 completions/zsh/_yt-dlp $(DESTDIR)$(SHAREDIR)/zsh/site-functions/_yt-dlp
+ 	install -Dm644 completions/fish/yt-dlp.fish $(DESTDIR)$(SHAREDIR)/fish/vendor_completions.d/yt-dlp.fish

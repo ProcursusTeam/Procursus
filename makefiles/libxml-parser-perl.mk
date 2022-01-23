@@ -49,13 +49,13 @@ endif
 libxml-parser-perl-package: libxml-parser-perl-stage
 	# libxml-parser-perl.mk Package Structure
 	rm -rf $(BUILD_DIST)/libxml-parser-perl
-	
+
 	# libxml-parser-perl.mk Prep libxml-parser-perl
 	cp -a $(BUILD_STAGE)/libxml-parser-perl $(BUILD_DIST)
-	
+
 	# libxml-parser-perl.mk Make .debs
 	$(call PACK,libxml-parser-perl,DEB_LIBXML_PARSER_PERL_V)
-	
+
 	# libxml-parser-perl.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libxml-parser-perl
 

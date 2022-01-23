@@ -7,5 +7,3 @@ Section: Data_Storage
 Priority: standard
 Description: Command line interface for SQLite 3
 Homepage: https://www.sqlite.org/
-Name: SQLite 3.x
-Tag: purpose::console, role::hacker

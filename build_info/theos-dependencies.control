@@ -11,4 +11,3 @@ Section: Development
 Priority: optional
 Description: What Theos needs.
  This metapackage installs grep, rsync, unzip, git, perl, xz-utils, and the iOS Toolchain in one go.
-Name: Theos Dependencies

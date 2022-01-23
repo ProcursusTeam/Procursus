@@ -1,0 +1,7 @@
+Package: tigisoftware-keyring
+Version: @DEB_TIGISOFT_KEYRING_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Keyrings
+Priority: optional
+Description: GnuPG keys for the TIGI Software repository

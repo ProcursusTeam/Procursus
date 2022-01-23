@@ -31,16 +31,16 @@ endif
 gddrescue-package: gddrescue-stage
 	# gddrescue.mk Package Structure
 	rm -rf $(BUILD_DIST)/gddrescue
-	
+
 	# gddrescue.mk Prep gddrescue
 	cp -a $(BUILD_STAGE)/gddrescue $(BUILD_DIST)
-	
+
 	# gddrescue.mk Sign
 	$(call SIGN,gddrescue,general.xml)
-	
+
 	# gddrescue.mk Make .debs
 	$(call PACK,gddrescue,DEB_GDDRESCUE_V)
-	
+
 	# gddrescue.mk Build cleanup
 	rm -rf $(BUILD_DIST)/gddrescue
 
