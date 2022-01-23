@@ -29,7 +29,7 @@ apr: apr-setup
 		ac_cv_sizeof_struct_iovec=8 \
 		apr_cv_mutex_recursive=yes
 	+$(MAKE) -C $(BUILD_WORK)/apr all \
-		CC_FOR_BUILD=$(shell which clang)
+		CC_FOR_BUILD=$(shell command -v clang)
 	+$(MAKE) -C $(BUILD_WORK)/apr install \
 		DESTDIR="$(BUILD_STAGE)/apr"
 	$(LN_S) $(BUILD_STAGE)/apr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/apr-1-config $(BUILD_STAGE)/apr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/apr-config

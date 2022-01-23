@@ -39,7 +39,7 @@ endif
 		--disable-shared \
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
 		PERL_LIBDIR='$$(prefix)/share/perl5' \
-		PERL="$(shell which perl)" \
+		PERL="$(shell command -v perl)" \
 		TAR=$(GNU_PREFIX)tar \
 		LZMA_LIBS='$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/liblzma.dylib' \
 		$(DPKG_LIBS)

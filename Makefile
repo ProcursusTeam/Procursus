@@ -408,9 +408,9 @@ $(warning Building on iOS)
 endif # ($(MEMO_QUIET),1)
 TARGET_SYSROOT  ?= /usr/share/SDKs/$(BARE_PLATFORM).sdk
 MACOSX_SYSROOT  ?= /usr/share/SDKs/MacOSX.sdk
-CC              := $(shell which cc)
-CXX             := $(shell which c++)
-CPP             := $(shell which cc) -E
+CC              := $(shell command -v cc)
+CXX             := $(shell command -v c++)
+CPP             := $(shell command -v cc) -E
 PATH            := /usr/bin:$(PATH)
 
 CFLAGS_FOR_BUILD   := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
@@ -419,25 +419,25 @@ CXXFLAGS_FOR_BUILD := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_
 LDFLAGS_FOR_BUILD  := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
 
 endif
-AR              := $(shell which ar)
-LD              := $(shell which ld)
-RANLIB          := $(shell which ranlib)
-STRINGS         := $(shell which strings)
-STRIP           := $(shell which strip)
-NM              := $(shell which nm)
-LIPO            := $(shell which lipo)
-OTOOL           := $(shell which otool)
-I_N_T           := $(shell which install_name_tool)
-LIBTOOL         := $(shell which libtool)
+AR              := $(shell command -v ar)
+LD              := $(shell command -v ld)
+RANLIB          := $(shell command -v ranlib)
+STRINGS         := $(shell command -v strings)
+STRIP           := $(shell command -v strip)
+NM              := $(shell command -v nm)
+LIPO            := $(shell command -v lipo)
+OTOOL           := $(shell command -v otool)
+I_N_T           := $(shell command -v install_name_tool)
+LIBTOOL         := $(shell command -v libtool)
 
 else
 $(error Please use macOS, iOS, Linux, or FreeBSD to build)
 endif
 
-CC_FOR_BUILD  := $(shell which cc) $(CFLAGS_FOR_BUILD)
-CPP_FOR_BUILD := $(shell which cc) -E $(CPPFLAGS_FOR_BUILD)
-CXX_FOR_BUILD := $(shell which c++) $(CXXFLAGS_FOR_BUILD)
-AR_FOR_BUILD  := $(shell which ar)
+CC_FOR_BUILD  := $(shell command -v cc) $(CFLAGS_FOR_BUILD)
+CPP_FOR_BUILD := $(shell command -v cc) -E $(CPPFLAGS_FOR_BUILD)
+CXX_FOR_BUILD := $(shell command -v c++) $(CXXFLAGS_FOR_BUILD)
+AR_FOR_BUILD  := $(shell command -v ar)
 export CC_FOR_BUILD CPP_FOR_BUILD CXX_FOR_BUILD AR_FOR_BUILD
 
 DEB_MAINTAINER    ?= Procursus Team <support@procurs.us>
