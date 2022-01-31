@@ -2,7 +2,7 @@ Package: dsymutil
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: dsymutil-11
+Depends: dsymutil-12
 Section: Development
 Priority: optional
 Homepage: https://www.llvm.org/

@@ -2,7 +2,7 @@ Package: lld
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: lld-11
+Depends: lld-12
 Section: Development
 Priority: optional
 Homepage: https://www.llvm.org/
