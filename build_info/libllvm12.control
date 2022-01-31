@@ -1,4 +1,4 @@
-Package: libllvm11
+Package: libllvm12
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@

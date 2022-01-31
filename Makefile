@@ -802,7 +802,7 @@ AFTER_BUILD = \
 	if [ ! -z "$(MEMO_PREFIX)" ] && [ -d "$(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" ]; then \
 		rm -f $(BUILD_STAGE)/$$pkg/._lib_cache && touch $(BUILD_STAGE)/$$pkg/._lib_cache; \
 		for file in $$(find $(BUILD_STAGE)/$$pkg -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
-			INSTALL_NAME=$$(otool -D $$file | grep -v ":$$"); \
+			INSTALL_NAME=$$(otool -D $$file | grep -v -e ":$$" -e "^Archive :"); \
 			if [ ! -z "$$INSTALL_NAME" ]; then \
 				$(I_N_T) -id @rpath/$$(basename $$INSTALL_NAME) $$file; \
 				echo "$$INSTALL_NAME" >> $(BUILD_STAGE)/$$pkg/._lib_cache; \

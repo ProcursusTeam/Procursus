@@ -2,8 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-#### Next time you mess with this, add in compiler-rt stuff
-#### Consider mlir/polly/pstl/flang too
+#### Consider mlir/pstl/flang too
 
 SUBPROJECTS     += llvm
 LLVM_VERSION    := 14.0.0
@@ -31,8 +30,6 @@ llvm-setup: setup
 	$(call EXTRACT_TAR,swift-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz,swift-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),llvm/swift)
 	$(call EXTRACT_TAR,swift-cmark-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz,swift-cmark-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),llvm/cmark)
 	$(call DO_PATCH,llvm,llvm,-p1)
-	cp -a $(BUILD_WORK)/llvm/lldb/include/lldb/Host/SafeMachO.h $(BUILD_WORK)/llvm/llvm/include/llvm
-	sed -i '1s|^|#include "llvm/SafeMachO.h"\n|' $(BUILD_WORK)/llvm/swift/tools/swift-reflection-dump/swift-reflection-dump.cpp
 	$(call DO_PATCH,swift,llvm/swift,-p1)
 	mkdir -p $(BUILD_WORK)/llvm/build
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
@@ -68,6 +65,7 @@ ifeq ($(wildcard $(BUILD_WORK)/../../native/llvm/.*),)
 	+$(MAKE) -C $(BUILD_WORK)/../../native/llvm swift-components lldb-tblgen
 endif
 
+ifeq ($(wildcard $(BUILD_WORK)/llvm/build/.build_complete),)
 	case $(MEMO_TARGET) in \
 	*"darwin"*) \
 		SWIFT_VARIANT=OSX \
@@ -102,8 +100,12 @@ endif
 		-DLLVM_LINK_LLVM_DYLIB=ON \
 		-DCLANG_LINK_CLANG_DYLIB=ON \
 		-DLIBCXX_OVERRIDE_DARWIN_INSTALL=ON \
+		-DLLVM_VERSION_MAJOR=$(LLVM_MAJOR_V) \
+		-DLLVM_VERSION_MINOR=$(LLVM_MINOR_V) \
+		-DLLVM_VERSION_PATCH=$(LLVM_PATCH_V) \
 		-DLLVM_VERSION_SUFFIX="" \
 		-DLLVM_DEFAULT_TARGET_TRIPLE=$(LLVM_TARGET) \
+		-DLLVM_TARGET_TRIPLE_ENV="LLVM_TARGET_TRIPLE" \
 		-DLLVM_TARGETS_TO_BUILD="X86;ARM;AArch64" \
 		-DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;lldb;clang-tools-extra;lld;polly" \
 		-DLLVM_EXTERNAL_PROJECTS="cmark;swift" \
@@ -132,9 +134,7 @@ endif
 		-DSWIFT_NATIVE_CLANG_TOOLS_PATH="$(BUILD_WORK)/../../native/llvm/bin" \
 		-DSWIFT_NATIVE_LLVM_TOOLS_PATH="$(BUILD_WORK)/../../native/llvm/bin" \
 		-DLLVM_TABLEGEN="$(BUILD_WORK)/../../native/llvm/bin/llvm-tblgen" \
-		-DLLVM_TABLEGEN_EXE="$(BUILD_WORK)/../../native/llvm/bin/llvm-tblgen" \
 		-DCLANG_TABLEGEN="$(BUILD_WORK)/../../native/llvm/bin/clang-tblgen" \
-		-DCLANG_TABLEGEN_EXE="$(BUILD_WORK)/../../native/llvm/bin/clang-tblgen" \
 		-DLLDB_TABLEGEN="$(BUILD_WORK)/../../native/llvm/bin/lldb-tblgen" \
 		-DLLDB_TABLEGEN_EXE="$(BUILD_WORK)/../../native/llvm/bin/lldb-tblgen" \
 		-DLLDB_BUILD_FRAMEWORK=ON \
@@ -155,6 +155,24 @@ endif
 	+$(MAKE) -C $(BUILD_WORK)/llvm/build install \
 		DESTDIR="$(BUILD_STAGE)/llvm"
 	$(INSTALL) -Dm755 $(BUILD_WORK)/llvm/build/bin/{obj2yaml,yaml2obj} $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/
+	touch $(BUILD_WORK)/llvm/build/.build_complete
+endif
+	# Now we compile compiler-rt.
+	# We do it seperately because CMake will set the correct flags for cross compiling for us,
+	# which we will conflict with.
+	mkdir -p $(BUILD_WORK)/llvm/build-compiler-rt && cd $(BUILD_WORK)/llvm/build-compiler-rt && unset CC CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS && cmake . \
+		-DCMAKE_C_COMPILER="cc" \
+		-DCMAKE_CXX_COMPILER="c++" \
+		-DCMAKE_C_FLAGS="" \
+		-DCMAKE_CXX_FLAGS="" \
+		-DLLVM_ENABLE_PROJECTS="clang;compiler-rt" \
+		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V) \
+		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib \
+		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V) \
+		$(BUILD_WORK)/llvm/llvm
+	+unset MACOSX_DEPLOYMENT_TARGET IPHONEOS_DEPLOYMENT_TARGET APPLETVOS_DEPLOYMENT_TARGET WATCHOS_DEPLOYMENT_TARGET && \
+		$(MAKE) -C $(BUILD_WORK)/llvm/build-compiler-rt install-compiler-rt \
+		DESTDIR="$(BUILD_STAGE)/llvm"
 	$(call AFTER_BUILD)
 endif
 
@@ -367,7 +385,7 @@ endif
 	mkdir -p $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib/llvm-$(LLVM_MAJOR_V)/{bin,lib,share}}
 	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/share/swift $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/share
 	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/swift $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib
-	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/swift{,-frontend,c,-api-digester,-api-dump.py,-demangle,-syntax*} $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/swift{,-frontend,c,-api-digester,-api-dump.py,-demangle} $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
 	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/sil-{func-extractor,llvm-gen,nm,passpipeline-dumper} $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
 	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/repl_swift $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
 	$(LN_S) ../lib/llvm-$(LLVM_MAJOR_V)/bin/swift $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/swift-$(SWIFT_VERSION)

@@ -1,8 +1,8 @@
-Package: libclang-common-11-dev
+Package: libc++-12-dev
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libllvm11
+Depends: libllvm12
 Section: Development
 Priority: optional
-Description: Clang library - Common development package
+Description: LLVM C++ Standard library (development files)

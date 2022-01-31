@@ -2,7 +2,7 @@ Package: llvm-utils
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: llvm-utils-11
+Depends: llvm-utils-12
 Section: Development
 Priority: optional
 Homepage: https://www.llvm.org/
