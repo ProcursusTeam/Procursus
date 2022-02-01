@@ -1046,7 +1046,7 @@ env:
 
 include makefiles/*.mk
 
-RAMDISK_PROJECTS := bash coreutils diskdev-cmds dropbear findutils grep gzip ncurses profile.d readline tar
+RAMDISK_PROJECTS := bash coreutils diskdev-cmds findutils grep gzip ncurses profile.d readline tar openssl libmd openssh
 
 ramdisk:
 	+MEMO_NO_IOSEXEC=1 $(MAKE) $(RAMDISK_PROJECTS:%=%-package)
@@ -1059,8 +1059,6 @@ ramdisk:
 	done
 	ln -s $(MEMO_PREFIX)/bin/bash $(BUILD_DIST)/strap/$(MEMO_PREFIX)/bin/sh
 	echo -e "/bin/sh\n" > $(BUILD_DIST)/strap/$(MEMO_PREFIX)/etc/shells
-	echo -e "#!/bin/sh\n\
-exec dropbear -R -F -E -p \$$@" > $(BUILD_DIST)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/dropbear-wrapper
 	rm -rf $(BUILD_DIST)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/{*.a,pkgconfig},share/{doc,man}}
 	export FAKEROOT='fakeroot -i $(BUILD_DIST)/.fakeroot_bootstrap -s $(BUILD_DIST)/.fakeroot_bootstrap --'; \
 	cd $(BUILD_DIST)/strap && $$FAKEROOT tar -ckpf $(BUILD_DIST)/bootstrap_tools.tar .
