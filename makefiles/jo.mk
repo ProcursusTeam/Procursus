@@ -9,7 +9,6 @@ DEB_JO_V    ?= $(JO_VERSION)
 jo-setup: setup
 	$(call GITHUB_ARCHIVE,jpmens,jo,$(JO_VERSION),$(JO_VERSION))
 	$(call EXTRACT_TAR,jo-$(JO_VERSION).tar.gz,jo-$(JO_VERSION),jo)
-	#$(call DO_PATCH,jo,jo,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/jo/.build_complete),)
 jo:
