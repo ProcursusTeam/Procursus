@@ -1,0 +1,11 @@
+--- main.c	2009-04-08 23:07:36.000000000 +0000
++++ main.c.orig	2022-02-07 03:42:51.814311000 +0000
+@@ -970,7 +970,7 @@
+ 		devdir = NULL;
+ 	    prefixes[0] = devdir;
+ 	    if (_NSGetExecutablePath(execpath, &execpathsize) != 0)
+-		strcpy(execpath, "/usr/bin/bsdmake");
++		strcpy(execpath, "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/bsdmake");
+ 	    /* chop off name to get path */
+ 	    if ((cp = strrchr(execpath, '/')) != NULL)
+ 		*cp = 0;
