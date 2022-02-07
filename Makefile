@@ -674,7 +674,11 @@ CHECKSUM_VERIFY = if [ "$(1)" = "sha1" ]; then \
 		elif [ "$(1)" = "sha512" ]; then \
 			HASH=$$(sha512sum "$(BUILD_SOURCE)/$(2)" | cut -d " " -f1 | tr -d \n); \
 		fi; \
-		[ "$(3)" = "$$HASH" ] || (echo "$(2) - Invalid Hash" && exit 1)
+		if [ "$(3)" = "" ]; then \
+			[ "$$(cut -d" " -f 1 "$(BUILD_SOURCE)/$(2).$(1)")" = "$$HASH" ] || (echo "$(2) - Invalid Hash" && exit 1); \
+		else  \
+			[ "$(3)" = "$$HASH" ] || (echo "$(2) - Invalid Hash" && exit 1); \
+		fi
 
 EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 		cd $(BUILD_WORK) && \
