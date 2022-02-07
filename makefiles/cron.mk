@@ -46,6 +46,7 @@ cron-package: cron-stage
 	
 	# cron.mk Prep cron
 	cp -a $(BUILD_STAGE)/cron $(BUILD_DIST)
+	$(FAKEROOT) chmod u+s $(BUILD_DIST)/cron/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/crontab
 	
 	# cron.mk Sign
 	$(call SIGN,cron,general.xml)
