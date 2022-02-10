@@ -6,5 +6,5 @@ Section: Development
 Priority: optional
 Description: patched and missing headers for your platform
  This package contains missing and patched headers for your platform. These 
- headers are required for building most software. Additionally, this package 
+ headers are required for building many software. Additionally, this package 
  contains a pkg-config file representing the zlib shipped with your platform.
