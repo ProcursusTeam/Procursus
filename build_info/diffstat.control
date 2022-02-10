@@ -1,0 +1,11 @@
+Package: diffstat
+Version: @DEB_DIFFSTAT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Homepage: http://invisible-island.net/diffstat/
+Section: Development
+Priority: optional
+Description: produces graph of changes introduced by a diff file
+ This program is a simple filter that reads the output of the 'diff' program,
+ and produces a histogram of the total number of lines that were changed.
+ It is useful for scanning a patch file to see which files were changed.

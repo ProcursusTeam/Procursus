@@ -1,0 +1,51 @@
+diff -urN a/Makefile b/Makefile
+--- a/Makefile	2022-01-04 18:36:36.000000000 +0800
++++ b/Makefile	2022-01-04 18:51:00.000000000 +0800
+@@ -1,10 +1,10 @@
+ .POSIX:
+ 
+ # If possible, use CONFIGFILE=optimised.mk
+-CONFIGFILE = config.mk
++# We set these in Procursus main makefile
+ 
+ # Change to macos.mk for Mac OS
+-OSCONFIGFILE = linux.mk
++OSCONFIGFILE = macos.mk
+ 
+ include $(CONFIGFILE)
+ include $(OSCONFIGFILE)
+@@ -138,7 +138,7 @@
+ 	$(CC) -fPIC -c -o $@ $< $(CFLAGS) $(CPPFLAGS)
+ 
+ libkeccak.$(LIBEXT): $(OBJ)
+-	$(CC) $(LIBFLAGS) -o $@ $(OBJ) $(LDFLAGS)
++	$(CC) $(LIBFLAGS) -o $@ $(OBJ) $(LDFLAGS) $(CFLAGS) -install_name $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkeccak.$(LIBMAJOREXT)
+ 
+ libkeccak.a: $(OBJ)
+ 	-rm -f -- $@
+@@ -147,13 +147,13 @@
+ 
+ 
+ test: test.o libkeccak.a
+-	$(CC) $(FLAGS) -o $@ test.o libkeccak.a $(LDFLAGS)
++	$(CC) $(FLAGS) -o $@ test.o libkeccak.a $(CFLAGS) $(LDFLAGS)
+ 
+ test.o: test.c $(HDR)
+ 	$(CC) $(FLAGS) -O3 -c -o $@ test.c $(CFLAGS) $(CPPFLAGS)
+ 
+ benchmark: benchmark.o libkeccak.a
+-	$(CC) $(FLAGS) -o $@ benchmark.o libkeccak.a $(LDFLAGS)
++	$(CC) $(FLAGS) -o $@ benchmark.o libkeccak.a $(CFLAGS) $(LDFLAGS)
+ 
+ benchmark.o: benchmark.c $(HDR)
+ 	$(CC) $(FLAGS) -O3 -c -o $@ benchmark.c $(CFLAGS) $(CPPFLAGS)
+diff -urN a/macos.mk b/macos.mk
+--- a/macos.mk	2022-01-04 18:36:36.000000000 +0800
++++ b/macos.mk	2022-01-04 18:39:52.000000000 +0800
+@@ -1,5 +1,5 @@
+ LIBEXT = dylib
+-LIBFLAGS = -dynamiclib
++LIBFLAGS = -dynamiclib $(LDFLAGS)
+ 
+ LIBMAJOREXT = $(LIB_MAJOR).$(LIBEXT)
+ LIBMINOREXT = $(LIB_VERSION).$(LIBEXT)

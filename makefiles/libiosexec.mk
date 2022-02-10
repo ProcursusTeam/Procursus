@@ -7,7 +7,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS      += libiosexec
 LIBIOSEXEC_VERSION := 1.2-alpha1
 LIBIOSEXEC_SOVER   := 1
-DEB_LIBIOSEXEC_V   ?= 1.0.18~$(LIBIOSEXEC_VERSION)
+DEB_LIBIOSEXEC_V   ?= 1.0.20~$(LIBIOSEXEC_VERSION)
 
 libiosexec-setup: setup
 	$(call GITHUB_ARCHIVE,ProcursusTeam,libiosexec,$(LIBIOSEXEC_VERSION),$(LIBIOSEXEC_VERSION))
