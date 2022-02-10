@@ -3,9 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += openjdk
-OPENJDK_MAJOR_V  := 17.0.1
+OPENJDK_MAJOR_V  := 17
+OPENJDK_MINOR_V  := 0
+OPENJDK_PATCH_V  := 1
 OPENJDK_REVISION := ga
-OPENJDK_VERSION  := $(OPENJDK_MAJOR_V)-$(OPENJDK_REVISION)
+OPENJDK_VERSION  := $(OPENJDK_MAJOR_V).$(OPENJDK_MINOR_V).$(OPENJDK_PATCH_V)-$(OPENJDK_REVISION)
 DEB_OPENJDK_V    ?= $(OPENJDK_VERSION)
 
 # Change "ea" to nothing on general availability...
@@ -40,7 +42,7 @@ openjdk-setup: setup
 		https://github.com/apple/cups/releases/download/v2.3.3/cups-2.3.3-source.tar.gz \
 		https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_macos-aarch64_bin.tar.gz
 		#https://download.java.net/java/GA/jdk15/779bf45e88a44cbd9ea6621d33e33db1/36/GPL/openjdk-15_linux-x64_bin.tar.gz
-	$(call EXTRACT_TAR,jdk-$(OPENJDK_VERSION).tar.gz,jdk17u-jdk-$(OPENJDK_MAJOR_V)-$(OPENJDK_REVISION),openjdk)
+	$(call EXTRACT_TAR,jdk-$(OPENJDK_VERSION).tar.gz,jdk17u-jdk-$(OPENJDK_VERSION),openjdk)
 	$(call EXTRACT_TAR,cups-2.3.3-source.tar.gz,cups-2.3.3,apple-cups)
 	$(call EXTRACT_TAR,openjdk-17_macos-aarch64_bin.tar.gz,jdk-17.jdk,boot-jdk.jdk) # Change this to use the Linux one on Linux
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
@@ -106,9 +108,7 @@ openjdk: openjdk-setup libx11 libxext libxi libxrender libxrandr libxtst freetyp
 		--with-libpng=system \
 		--with-zlib=system \
 		--with-lcms=system \
-		--with-harfbuzz=system \
-		CPP="$(CPP) -arch arm64" \
-		CXXCPP="$(CXX) -E -arch arm64"
+		--with-harfbuzz=system
 	make -C $(BUILD_WORK)/openjdk images \
 			JOBS=$(CORE_COUNT)
 	cp -a $(BUILD_WORK)/openjdk/build/*/images/jdk $(BUILD_STAGE)/openjdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk
@@ -162,22 +162,36 @@ openjdk-package: openjdk-stage
 	cp -a $(BUILD_STAGE)/openjdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/man/man1/!(java.1|jfr.1|keytool.1|rmiregistry.1) \
 		$(BUILD_DIST)/openjdk-$(OPENJDK_MAJOR_V)-jdk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk/man/man1
 
+	# Setup openjdk-wrapper
+	mkdir -p $(BUILD_DIST)/openjdk-$(OPENJDK_MAJOR_V)-wrapper/Library/Java/JavaVirtualMachines/procursus.jdk/Contents/MacOS
+	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/jvm/java-$(OPENJDK_MAJOR_V)-openjdk \
+			$(BUILD_DIST)/openjdk-$(OPENJDK_MAJOR_V)-wrapper/Library/Java/JavaVirtualMachines/procursus.jdk/Contents/Home
+	ln -s ../Home/lib/libjli.dylib $(BUILD_DIST)/openjdk-$(OPENJDK_MAJOR_V)-wrapper/Library/Java/JavaVirtualMachines/procursus.jdk/Contents/MacOS/
+
+	cp $(BUILD_MISC)/openjdk-$(OPENJDK_MAJOR_V).infoplist $(BUILD_DIST)/openjdk-$(OPENJDK_MAJOR_V)-wrapper/Library/Java/JavaVirtualMachines/procursus.jdk/Contents/Info.plist
+
+
 	# openjdk.mk Sign
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(call SIGN,openjdk-$(OPENJDK_MAJOR_V)-jre,qemu-ios.xml,jre-macos.xml)
-	$(call SIGN,openjdk-$(OPENJDK_MAJOR_V)-jre,qemu-ios.xml,jre-macos.xml)
+	$(call SIGN,openjdk-$(OPENJDK_MAJOR_V)-jre,qemu-ios.xml,jre-macos.xml,nohardened)
+	$(call SIGN,openjdk-$(OPENJDK_MAJOR_V)-jre,qemu-ios.xml,jre-macos.xml,nohardened)
 else
 	$(call SIGN,openjdk-$(OPENJDK_MAJOR_V)-jdk,qemu-ios.xml)
 	$(call SIGN,openjdk-$(OPENJDK_MAJOR_V)-jre,qemu-ios.xml)
 endif
 
 	# openjdk.mk Make .debs
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+	$(call PACK,openjdk-$(OPENJDK_MAJOR_V)-wrapper,DEB_OPENJDK_V)
+	$(call PACK,openjdk-wrapper,DEB_OPENJDK_V)
+endif
 	$(call PACK,openjdk-$(OPENJDK_MAJOR_V)-jdk,DEB_OPENJDK_V)
 	$(call PACK,openjdk-$(OPENJDK_MAJOR_V)-jre,DEB_OPENJDK_V)
 	$(call PACK,openjdk-jdk,DEB_OPENJDK_V)
 	$(call PACK,openjdk-jre,DEB_OPENJDK_V)
 
 	# openjdk.mk Build cleanup
-	rm -rf $(BUILD_DIST)/openjdk*-{jre,jdk}
+	rm -rf $(BUILD_DIST)/openjdk*-{jre,jdk,wrapper}
+
 
 .PHON/: openjdk openjdk-package

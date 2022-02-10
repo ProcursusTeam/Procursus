@@ -14,9 +14,11 @@ ifneq ($(wildcard $(BUILD_WORK)/stow/.build_complete),)
 stow:
 	@echo "Using previously built stow."
 else
-stow: stow-setup perl
+stow: stow-setup
 	cd $(BUILD_WORK)/stow && ./configure \
-		$(DEFAULT_CONFIGURE_FLAGS)
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		--with-pmdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 \
+		PERL="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl"
 	+$(MAKE) -C $(BUILD_WORK)/stow
 	+$(MAKE) -C $(BUILD_WORK)/stow install \
 		DESTDIR="$(BUILD_STAGE)/stow"

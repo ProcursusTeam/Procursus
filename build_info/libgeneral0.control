@@ -8,4 +8,3 @@ Provides: libgeneral (= @DEB_LIBGENERAL_V@)
 Section: Libraries
 Priority: optional
 Description: Common library for tihmstar tools
-Tag: purpose::library, role::developer

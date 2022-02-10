@@ -11,7 +11,7 @@ STRAPPROJECTS += grep
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += grep
 endif # ($(MEMO_TARGET),darwin-\*)
-GREP_VERSION  := 3.6
+GREP_VERSION  := 3.7
 DEB_GREP_V    ?= $(GREP_VERSION)
 
 grep-setup: setup

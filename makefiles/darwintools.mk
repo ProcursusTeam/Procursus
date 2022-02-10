@@ -18,7 +18,7 @@ else
 darwintools: darwintools-setup
 	+$(MAKE) -C $(BUILD_WORK)/darwintools all \
 		FIRMWARE_MAINTAINER="$(DEB_MAINTAINER)" \
-		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		PREFIX="$(MEMO_PREFIX)" \
 		CFLAGS="$(CFLAGS)" \
 		LDFLAGS="$(LDFLAGS)"
 	$(INSTALL) -Dm 0755 $(BUILD_WORK)/darwintools/build/firmware $(BUILD_STAGE)/darwintools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/firmware

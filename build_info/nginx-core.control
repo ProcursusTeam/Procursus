@@ -1,0 +1,10 @@
+Package: nginx-core
+Version: @DEB_NGINX_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: pcre, libssl3, nginx-common
+Section: Networking
+Priority: optional
+Description: Lightweight HTTP server. This package is the core NGINX utilities
+Conflicts: nginx-light
+Replaces: nginx-light

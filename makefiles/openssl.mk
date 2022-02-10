@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS   += openssl
-OPENSSL_VERSION := 3.0.0
+OPENSSL_VERSION := 3.0.1
 DEB_OPENSSL_V   ?= $(OPENSSL_VERSION)
 
 openssl-setup: setup
@@ -17,6 +17,17 @@ openssl:
 	@echo "Using previously built openssl."
 else
 openssl: openssl-setup
+	touch $(BUILD_WORK)/openssl/Configurations/15-openssl.conf
+	@echo -e "my %targets = (\n\
+		\"darwin64-armv7k\" => {\n\
+			inherit_from     => [ \"darwin-common\" ],\n\
+			CC               => add(\"-Wall\"),\n\
+			cflags           => add(\"-arch armv7k\"),\n\
+			lib_cppflags     => add(\"-DL_ENDIAN\"),\n\
+			perlasm_scheme   => \"ios32\",\n\
+			disable          => [ \"async\" ],\n\
+		},\n\
+	);" > $(BUILD_WORK)/openssl/Configurations/15-openssl.conf
 	cd $(BUILD_WORK)/openssl && ./Configure \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--openssldir=$(MEMO_PREFIX)/etc/ssl \

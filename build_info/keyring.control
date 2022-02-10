@@ -7,4 +7,3 @@ Depends: odyssey-keyring, chariz-keyring, packix-keyring
 Section: Keyrings
 Priority: required
 Description: GnuPG keys for the Procursus repo
-Name: Procursus APT Keyring

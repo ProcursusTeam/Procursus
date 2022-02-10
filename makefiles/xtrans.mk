@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += xtrans
 XTRANS_VERSION := 1.4.0
-DEB_XTRANS_V   ?= $(XTRANS_VERSION)
+DEB_XTRANS_V   ?= $(XTRANS_VERSION)-1
 
 xtrans-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/lib/xtrans-$(XTRANS_VERSION).tar.bz2

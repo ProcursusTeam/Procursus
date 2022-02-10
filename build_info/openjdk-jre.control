@@ -2,7 +2,7 @@ Package: openjdk-jre
 Version: @DEB_OPENJDK_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: openjdk-17.0.1-jre
+Depends: openjdk-17-jre
 Section: System
 Priority: optional
 Homepage: https://github.com/openjdk/jdk
