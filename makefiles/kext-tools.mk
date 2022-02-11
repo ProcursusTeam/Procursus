@@ -5,14 +5,14 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS        += kext-tools
-KEXT_TOOLS_VERSION := 692.100.6
+KEXT_TOOLS_VERSION := 716
 DEB_KEXT_TOOLS_V   ?= $(KEXT_TOOLS_VERSION)
 
 KEXT_TOOLS_CFLAGS := kext_tools_util.o Shims.o -framework IOKit -framework CoreFoundation -DPRIVATE -D__OS_EXPOSE_INTERNALS__ -DEMBEDDED_HOST
 
 kext-tools-setup: setup
-	wget -q -nc -P$(BUILD_SOURCE) https://opensource.apple.com/tarballs/kext_tools/kext_tools-$(KEXT_TOOLS_VERSION).tar.gz
-	$(call EXTRACT_TAR,kext_tools-$(KEXT_TOOLS_VERSION).tar.gz,kext_tools-$(KEXT_TOOLS_VERSION),kext-tools)
+	$(call GITHUB_ARCHIVE,apple-oss-distributions,kext_tools,$(KEXT_TOOLS_VERSION),kext_tools-$(KEXT_TOOLS_VERSION))
+	$(call EXTRACT_TAR,kext_tools-$(KEXT_TOOLS_VERSION).tar.gz,kext_tools-kext_tools-$(KEXT_TOOLS_VERSION),kext-tools)
 	$(call DO_PATCH,kext-tools,kext-tools,-p1)
 	mkdir -p $(BUILD_STAGE)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{sbin,share/man/man8}
 
