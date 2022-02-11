@@ -15,8 +15,6 @@
         <true/>
         <key>com.apple.private.security.kext-management</key>
         <true/>
-        <key>com.apple.private.security.only-bootkc-management</key>
-        <true/>
         <key>com.apple.private.security.syspolicy.kext-management</key>
         <true/>
         <key>com.apple.rootless.internal-installer-equivalent</key>
