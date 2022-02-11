@@ -1202,6 +1202,8 @@ setup:
 		$(BUILD_BASE) $(BUILD_BASE)$(MEMO_PREFIX)/{{,System}/Library/Frameworks,$(MEMO_SUB_PREFIX)/{include/{bsm,objc,os/internal,sys,firehose,CoreFoundation,IOKit/kext,libkern,arm,{mach/,}machine,CommonCrypto,Security},lib/pkgconfig,$(MEMO_ALT_PREFIX)/lib}} \
 		$(BUILD_SOURCE) $(BUILD_WORK) $(BUILD_STAGE) $(BUILD_STRAP)
 
+	@$(LN_SR) /home/nick/Procursus/build_base/iphoneos-arm64/1500//usr/include{,/System}
+
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libsyscall/wrappers/spawn/spawn.h \
 		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/bootstrap_priv.h \
@@ -1253,15 +1255,13 @@ setup:
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/internal \
 		https://opensource.apple.com/source/libplatform/libplatform-126.50.8/include/os/internal/{internal_shared,atomic,crashlog}.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/System/sys \
+	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/fsctl.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/System/uuid \
+	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/uuid \
 		https://opensource.apple.com/source/Libc/Libc-1353.11.2/uuid/namespace.h
 
 	@cp -a $(BUILD_MISC)/{libxml-2.0,zlib}.pc $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
-
-	@$(LN_SR) $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/{,System}
 
 ifeq ($(UNAME),FreeBSD)
 	@# FreeBSD's LLVM does not have stdbool.h, stdatomic.h, and stdarg.h
