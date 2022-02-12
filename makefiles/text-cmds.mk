@@ -6,7 +6,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS       += text-cmds
 TEXT-CMDS_VERSION := 118
-DEB_TEXT-CMDS_V   ?= $(TEXT-CMDS_VERSION)
+DEB_TEXT-CMDS_V   ?= 1:$(TEXT-CMDS_VERSION)
 
 text-cmds-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,text_cmds,$(TEXT-CMDS_VERSION),text_cmds-$(TEXT-CMDS_VERSION))
