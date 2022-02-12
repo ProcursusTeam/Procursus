@@ -6,7 +6,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS      += adv-cmds
 ADV-CMDS_VERSION := 178
-DEB_ADV-CMDS_V   ?= $(ADV-CMDS_VERSION)-1
+DEB_ADV-CMDS_V   ?= $(ADV-CMDS_VERSION)
 
 adv-cmds-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,adv_cmds,$(ADV-CMDS_VERSION),adv_cmds-$(ADV-CMDS_VERSION))
