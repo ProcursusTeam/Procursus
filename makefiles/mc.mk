@@ -26,16 +26,16 @@ endif
 mc-package: mc-stage
 # mc.mk Package Structure
 	rm -rf $(BUILD_DIST)/mc
-	
+
 # mc.mk Prep mc
 	cp -a $(BUILD_STAGE)/mc $(BUILD_DIST)
-	
+
 # mc.mk Sign
 	$(call SIGN,mc,general.xml)
-	
+
 # mc.mk Make .debs
 	$(call PACK,mc,DEB_MC_V)
-	
+
 # mc.mk Build cleanup
 	rm -rf $(BUILD_DIST)/mc
 

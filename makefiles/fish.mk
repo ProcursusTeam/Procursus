@@ -31,7 +31,7 @@ endif
 	cd $(BUILD_WORK)/fish && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DBUILD_DOCS=OFF \
-		-DGETTEXT_MSGFMT_EXECUTABLE=$(shell which msgfmt) \
+		-DGETTEXT_MSGFMT_EXECUTABLE=$(shell command -v msgfmt) \
 		-DCURSES_CURSES_LIBRARY="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib" \
 		-DCURSES_INCLUDE_PATH="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw" \
 		-DSYS_PCRE2_LIB="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpcre2-32.dylib" \

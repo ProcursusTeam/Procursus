@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS             += python3-glances
-PYTHON3_GLANCES_VERSION := 3.1.7
+PYTHON3_GLANCES_VERSION := 3.2.4.2
 DEB_PYTHON3_GLANCES_V   ?= $(PYTHON3_GLANCES_VERSION)
 
 python3-glances-setup: setup
@@ -15,7 +15,10 @@ python3-glances:
 	@echo "Using previously built python3-glances."
 else
 python3-glances: python3-glances-setup python3
-	cd $(BUILD_WORK)/python3-glances && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py install \
+	cd $(BUILD_WORK)/python3-glances && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py \
+		build \
+		--executable="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3" \
+		install \
 		--install-layout=deb \
 		--root="$(BUILD_STAGE)/python3-glances" \
 		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"

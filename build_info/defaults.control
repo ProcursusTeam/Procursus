@@ -1,0 +1,7 @@
+Package: defaults
+Version: @DEB_DEFAULTS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Conflicts: ws.hbang.common (<= 1.17)
+Description: Opensource re-implementation of defaults(1)

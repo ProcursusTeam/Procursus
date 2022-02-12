@@ -7,4 +7,3 @@ Section: Development
 Priority: optional
 Homepage: https://www.llvm.org/
 Description: manipulate archived DWARF debug symbol files
-Tag: purpose::console, role::developer

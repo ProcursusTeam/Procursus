@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += toybox
-TOYBOX_VERSION := 0.8.5
+TOYBOX_VERSION := 0.8.6
 DEB_TOYBOX_V   ?= $(TOYBOX_VERSION)
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
@@ -17,7 +17,7 @@ toybox-setup: setup
 	sed -i 's|struct utmp|struct utmpx|g' $(BUILD_WORK)/toybox/toys/pending/last.c
 	sed -i 's|syscall(__NR_|syscall(|g' $(BUILD_WORK)/toybox/toys/other/ionice.c
 	sed -i 's|UT_LINESIZE|_UTX_LINESIZE|g' $(BUILD_WORK)/toybox/toys/pending/last.c
-	sed -i '1 i\#define LOGIN_NAME_MAX _SC_LOGIN_NAME_MAX' $(BUILD_WORK)/toybox/toys/pending/{user,group}add.c
+	sed -i '1 i\#define LOGIN_NAME_MAX 256' $(BUILD_WORK)/toybox/toys/pending/{user,group}add.c
 	sed -i -e 's/-Wl,--gc-sections//g' -e 's/-Wl,--as-needed//g' $(BUILD_WORK)/toybox/configure
 ifneq (,$(findstring rootless,$(MEMO_TARGET)))
 	sed -i -e 's|/etc|$(MEMO_PREFIX)/etc|g' -e 's|/var|$(MEMO_PREFIX)/var|g' $(BUILD_WORK)/toybox/toys/pending/{useradd,userdel,crontab,crond,last,telnetd,init}.c

@@ -7,4 +7,3 @@ Section: Development
 Priority: optional
 Homepage: https://www.llvm.org/
 Description: Extra clang tools
-Tag: purpose::console, role::developer

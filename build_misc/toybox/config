@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
 # ToyBox version: KCONFIG_VERSION
-# Wed Jul 14 11:37:47 2021
+# Sun Feb 13 00:38:30 2022
 #
 # CONFIG_TOYBOX_CONTAINER is not set
 # CONFIG_TOYBOX_FIFREEZE is not set
@@ -14,6 +14,7 @@ CONFIG_TOYBOX_FORK=y
 # CONFIG_TOYBOX_PRLIMIT is not set
 # CONFIG_TOYBOX_GETRANDOM is not set
 # CONFIG_TOYBOX_COPYFILERANGE is not set
+# CONFIG_TOYBOX_HASTIMERS is not set
 
 #
 # Posix commands
@@ -99,6 +100,7 @@ CONFIG_TRUE=y
 CONFIG_TTY=y
 # CONFIG_ULIMIT is not set
 # CONFIG_ARCH is not set
+# CONFIG_LINUX32 is not set
 CONFIG_UNAME=y
 CONFIG_UNIQ=y
 CONFIG_UNLINK=y
@@ -109,7 +111,7 @@ CONFIG_WHO=y
 CONFIG_XARGS=y
 
 #
-# pending (see toys/pending/README)
+# Pending (unfinished) commands
 #
 # CONFIG_ARP is not set
 # CONFIG_ARPING is not set
@@ -135,7 +137,8 @@ CONFIG_GETOPT=y
 # CONFIG_GETTY is not set
 CONFIG_GROUPADD=y
 CONFIG_GROUPDEL=y
-# CONFIG_HOST is not set
+CONFIG_HEXDUMP=y
+CONFIG_HD=y
 # CONFIG_INIT is not set
 # CONFIG_IP is not set
 # CONFIG_IPCRM is not set
@@ -159,6 +162,7 @@ CONFIG_MORE=y
 # CONFIG_ROUTE is not set
 CONFIG_SH=y
 # CONFIG_CD is not set
+# CONFIG_DECLARE is not set
 # CONFIG_EXIT is not set
 # CONFIG_SET is not set
 # CONFIG_UNSET is not set
@@ -170,6 +174,7 @@ CONFIG_SH=y
 # CONFIG_SHIFT is not set
 # CONFIG_SOURCE is not set
 # CONFIG_WAIT is not set
+# CONFIG_STRACE is not set
 # CONFIG_STTY is not set
 # CONFIG_SULOGIN is not set
 # CONFIG_SYSLOGD is not set
@@ -184,6 +189,8 @@ CONFIG_USERADD=y
 CONFIG_USERDEL=y
 CONFIG_VI=y
 CONFIG_WGET=y
+# CONFIG_WGET_LIBTLS is not set
+CONFIG_WGET_OPENSSL=y
 CONFIG_XZCAT=y
 
 #
@@ -277,6 +284,7 @@ CONFIG_TAC=y
 # CONFIG_TASKSET is not set
 CONFIG_TIMEOUT=y
 CONFIG_TRUNCATE=y
+CONFIG_UCLAMPSET=y
 # CONFIG_UPTIME is not set
 CONFIG_USLEEP=y
 CONFIG_UUIDGEN=y
@@ -290,10 +298,11 @@ CONFIG_XXD=y
 CONFIG_YES=y
 
 #
-# Networking
+# Networking commands
 #
 CONFIG_FTPGET=y
 CONFIG_FTPPUT=y
+# CONFIG_HOST is not set
 # CONFIG_IFCONFIG is not set
 CONFIG_MICROCOM=y
 CONFIG_NETCAT=y
@@ -341,12 +350,12 @@ CONFIG_SEQ=y
 # CONFIG_DEMO_UTF8TOWC is not set
 CONFIG_HELLO=y
 CONFIG_HOSTID=y
-# CONFIG_LOGWRAPPER is not set
+CONFIG_LOGPATH=y
 # CONFIG_SKELETON is not set
 # CONFIG_SKELETON_ALIAS is not set
 
 #
-# Android
+# Android commands
 #
 # CONFIG_GETENFORCE is not set
 # CONFIG_LOAD_POLICY is not set

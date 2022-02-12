@@ -6,10 +6,11 @@ Depends: zsh
 Enhances: zsh
 Section: Terminal_Support
 Priority: optional
+Homepage: https://github.com/zsh-users/zsh-syntax-highlighting
 Description: Fish shell like syntax highlighting for zsh
- This package provides syntax highlighting for the shell zsh.  It enables
+ This package provides syntax highlighting for the shell zsh. It enables
  highlighting of commands whilst they are typed at a zsh prompt into an
- interactive terminal.  This helps in reviewing commands before running
+ interactive terminal. This helps in reviewing commands before running
  them, particularly in catching syntax errors.
  .
  This feature is inspired by the Fish shell, which provides it by default.
