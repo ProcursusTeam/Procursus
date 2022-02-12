@@ -5,12 +5,12 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS            += bootstrap-cmds
-BOOTSTRAP-CMDS_VERSION := 121
-DEB_BOOTSTRAP-CMDS_V   ?= $(BOOTSTRAP-CMDS_VERSION)-1
+BOOTSTRAP-CMDS_VERSION := 122
+DEB_BOOTSTRAP-CMDS_V   ?= $(BOOTSTRAP-CMDS_VERSION)
 
 bootstrap-cmds-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/bootstrap_cmds/bootstrap_cmds-$(BOOTSTRAP-CMDS_VERSION).tar.gz
-	$(call EXTRACT_TAR,bootstrap_cmds-$(BOOTSTRAP-CMDS_VERSION).tar.gz,bootstrap_cmds-$(BOOTSTRAP-CMDS_VERSION),bootstrap-cmds)
+	$(call GITHUB_ARCHIVE,apple-oss-distributions,bootstrap_cmds,$(BOOTSTRAP-CMDS_VERSION),bootstrap_cmds-$(BOOTSTRAP-CMDS_VERSION))
+	$(call EXTRACT_TAR,bootstrap_cmds-$(BOOTSTRAP-CMDS_VERSION).tar.gz,bootstrap_cmds-bootstrap_cmds-$(BOOTSTRAP-CMDS_VERSION),bootstrap-cmds)
 	mkdir -p $(BUILD_STAGE)/bootstrap-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,libexec,share/man/man1/}
 
 ifneq ($(wildcard $(BUILD_WORK)/bootstrap-cmds/.build_complete),)
