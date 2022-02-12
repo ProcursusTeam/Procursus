@@ -9,13 +9,13 @@ STRAPPROJECTS     += file-cmds
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 FILE-CMDS_VERSION := 272.250.1
 else
-FILE-CMDS_VERSION := 287.40.2
+FILE-CMDS_VERSION := 352.40.6
 endif
-DEB_FILE-CMDS_V   ?= $(FILE-CMDS_VERSION)-3
+DEB_FILE-CMDS_V   ?= $(FILE-CMDS_VERSION)
 
 file-cmds-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/file_cmds/file_cmds-$(FILE-CMDS_VERSION).tar.gz
-	$(call EXTRACT_TAR,file_cmds-$(FILE-CMDS_VERSION).tar.gz,file_cmds-$(FILE-CMDS_VERSION),file-cmds)
+	$(call GITHUB_ARCHIVE,apple-oss-distributions,file_cmds,$(FILE-CMDS_VERSION),file_cmds-$(FILE-CMDS_VERSION))
+	$(call EXTRACT_TAR,file_cmds-$(FILE-CMDS_VERSION).tar.gz,file_cmds-file_cmds-$(FILE-CMDS_VERSION),file-cmds)
 	mkdir -p $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 	mkdir -p $(BUILD_WORK)/file-cmds/ipcs/sys
 	wget -nc -P $(BUILD_WORK)/file-cmds/ipcs/sys \
