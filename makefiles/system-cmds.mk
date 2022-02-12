@@ -5,13 +5,13 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS       += system-cmds
-SYSTEM-CMDS_VERSION := 854.40.2
+SYSTEM-CMDS_VERSION := 916
 PWDARWIN_COMMIT     := 72ae45ce6c025bc2359035cfb941b177149e88ae
-DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-13
+DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)
 
 system-cmds-setup: setup libxcrypt
-	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/system_cmds/system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz
-	$(call EXTRACT_TAR,system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz,system_cmds-$(SYSTEM-CMDS_VERSION),system-cmds)
+	$(call GITHUB_ARCHIVE,apple-oss-distributions,system_cmds,$(SYSTEM-CMDS_VERSION),system_cmds-$(SYSTEM-CMDS_VERSION))
+	$(call EXTRACT_TAR,system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz,system_cmds-system_cmds-$(SYSTEM-CMDS_VERSION),system-cmds)
 	$(call DO_PATCH,system-cmds,system-cmds,-p1)
 	sed -i '/#include <stdio.h>/a #include <crypt.h>' $(BUILD_WORK)/system-cmds/login.tproj/login.c
 	sed -i '1 i\#include\ <libiosexec.h>' $(BUILD_WORK)/system-cmds/login.tproj/login.c
