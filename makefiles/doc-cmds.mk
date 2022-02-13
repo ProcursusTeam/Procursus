@@ -9,7 +9,7 @@ DEB_DOC-CMDS_V   ?= $(DOC-CMDS_VERSION)
 doc-cmds-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,doc_cmds,$(DOC-CMDS_VERSION),doc_cmds-$(DOC-CMDS_VERSION))
 	$(call EXTRACT_TAR,doc_cmds-$(DOC-CMDS_VERSION).tar.gz,doc_cmds-doc_cmds-$(DOC-CMDS_VERSION),doc-cmds)
-	mkdir -p $(BUILD_STAGE)/doc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,libexec,share/man/man8}
+	mkdir -p $(BUILD_STAGE)/doc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 ifneq ($(wildcard $(BUILD_WORK)/doc-cmds/.build_complete),)
 doc-cmds:
@@ -22,9 +22,6 @@ doc-cmds: doc-cmds-setup
 		$(CC) $(CFLAGS) $(LDFLAGS) -o $(BUILD_STAGE)/doc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/$$bin.c; \
 		$(INSTALL) -Dm644 $$bin/$$bin.1 $(BUILD_STAGE)/doc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/; \
 	done; \
-	$(CC) $(CFLAGS) $(LDFLAGS) -lz makewhatis/makewhatis.c -o $(BUILD_STAGE)/doc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/makewhatis; \
-	$(INSTALL) -m755 makewhatis/makewhatis.local.sh $(BUILD_STAGE)/doc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/makewhatis.local; \
-	$(INSTALL) -Dm644 makewhatis/makewhatis.{,local.}8 $(BUILD_STAGE)/doc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/; \
 	$(INSTALL) -m644 intro.1 $(BUILD_STAGE)/doc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1;
 	$(call AFTER_BUILD)
 endif
