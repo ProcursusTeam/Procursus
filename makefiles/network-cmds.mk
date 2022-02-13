@@ -35,17 +35,7 @@ network-cmds-setup: setup
 		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8019.41.5/osfmk/mach/coalition.h
 
 	sed -i 's/#if INET6/#ifdef INET6/g' $(BUILD_WORK)/network-cmds/include/sys/sockio.h
-	sed -i 's|struct kevent_qos_s kqext_kev|struct kevent_qos_s { \n\
-             uint64_t        ident;          /* identifier for this event */ \n\
-             int16_t         filter;         /* filter for event */ \n\
-             uint16_t        flags;          /* general flags */ \n\
-             uint32_t        qos;            /* quality of service when servicing event */ \n\
-             uint64_t        udata;          /* opaque user data identifier */ \n\
-             uint32_t        fflags;         /* filter-specific flags */ \n\
-             uint32_t        xflags;         /* extra filter-specific flags */ \n\
-             int64_t         data;           /* filter-specific data */ \n\
-             uint64_t        ext[4];         /* filter-specific extensions */ \n\
-     }|g' $(BUILD_WORK)/network-cmds/include/sys/proc_info.h
+	sed -i '/struct kevent_qos_s kqext_kev/d' $(BUILD_WORK)/network-cmds/include/sys/proc_info.h
 
 ifneq ($(wildcard $(BUILD_WORK)/network-cmds/.build_complete),)
 network-cmds:
