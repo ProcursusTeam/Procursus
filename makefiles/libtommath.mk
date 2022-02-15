@@ -14,6 +14,7 @@ libtommath-setup: setup
 LT_INIT\n\
 AC_PROG_LIBTOOL\n\
 AC_OUTPUT" > $(BUILD_WORK)/libtommath/libtool/configure.ac
+	sed -i '1s|^|#include <TargetConditionals.h>\n|' $(BUILD_WORK)/libtommath/tommath_private.h
 
 ifneq ($(wildcard $(BUILD_WORK)/libtommath/.build_complete),)
 libtommath:
