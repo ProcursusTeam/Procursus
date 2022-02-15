@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += rust
-RUST_VERSION := 1.55.0
+RUST_VERSION := 1.56.1
 DEB_RUST_V   ?= $(RUST_VERSION)
 
 # This needs ccache extra to build.
@@ -32,6 +32,10 @@ rust: rust-setup openssl curl
 		IPHONEOS_DEPLOYMENT_TARGET=10.0 \
 		AARCH64_APPLE_IOS_OPENSSL_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"; \
 		ARMV7_APPLE_IOS_OPENSSL_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"; \
+		X86_64_APPLE_DARWIN_OPENSSL_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"; \
+		AARCH64_APPLE_DARWIN_OPENSSL_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"; \
+		RUSTFLAGS="-Clink-args=-F$(TARGET_SYSROOT)/System/Library/Frameworks -Clink-args=-L$(TARGET_SYSROOT)/usr/lib"
+		$(DEFAULT_RUST_FLAGS) \
 		python3 x.py build && \
 		python3 x.py install
 	rm -rf $(BUILD_STAGE)/rust/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{share/doc,etc}

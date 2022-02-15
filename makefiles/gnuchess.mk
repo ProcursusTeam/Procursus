@@ -2,9 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS  += gnuchess
-GNUCHESS_VERSION := 6.2.7
-DEB_GNUCHESS_V   ?= $(GNUCHESS_VERSION)-2
+SUBPROJECTS      += gnuchess
+GNUCHESS_VERSION := 6.2.9
+DEB_GNUCHESS_V   ?= $(GNUCHESS_VERSION)
 
 gnuchess-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://mirror.its.dal.ca/gnu/chess/gnuchess-$(GNUCHESS_VERSION).tar.gz{,.sig}

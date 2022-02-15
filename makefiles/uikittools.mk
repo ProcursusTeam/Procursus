@@ -7,61 +7,78 @@ SUBPROJECTS        += uikittools
 else
 STRAPPROJECTS      += uikittools
 endif
-UIKITTOOLS_VERSION := 2.0.6
+UIKITTOOLS_VERSION := 2.1.1
 DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)
 
 uikittools-setup: setup
 	$(call GITHUB_ARCHIVE,ProcursusTeam,uikittools-ng,$(UIKITTOOLS_VERSION),v$(UIKITTOOLS_VERSION))
 	$(call EXTRACT_TAR,uikittools-ng-$(UIKITTOOLS_VERSION).tar.gz,uikittools-ng-$(UIKITTOOLS_VERSION),uikittools)
 
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+UIKITTOOLS_MAKE_ARGS += NO_COMPAT=1
+endif
+
 ifneq ($(wildcard $(BUILD_WORK)/uikittools/.build_complete),)
 uikittools:
 	@echo "Using previously built uikittools."
 else
-uikittools: uikittools-setup
-ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+uikittools: uikittools-setup gettext
 	+$(MAKE) -C $(BUILD_WORK)/uikittools \
-		deviceinfo
-else
-	+$(MAKE) -C $(BUILD_WORK)/uikittools \
-		deviceinfo gssc ldrestart sbdidlaunch sbreload uiopen uicache \
-		APP_PATH="$(MEMO_PREFIX)/Applications"
-endif
-	mkdir -p $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
-	for bin in $$(find $(BUILD_WORK)/uikittools -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
-		if [ -f $$bin ] && [ -x $$bin ]; then \
-			cp $$bin $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin ; \
-			cp $$bin.1 $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 ; \
-		fi \
-	done
-	ln -s deviceinfo $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/cfversion
-	ln -s deviceinfo $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ecidecid
-	ln -s deviceinfo $(BUILD_STAGE)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uiduid
+		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+		LOCALEDIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale" \
+		APP_PATH="$(MEMO_PREFIX)/Applications" \
+		NLS=1
+	+$(MAKE) -C $(BUILD_WORK)/uikittools install \
+		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+		LOCALEDIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale" \
+		DESTDIR="$(BUILD_STAGE)/uikittools" \
+		APP_PATH="$(MEMO_PREFIX)/Applications" \
+		NLS=1 \
+		$(UIKITTOOLS_MAKE_ARGS)
 	$(call AFTER_BUILD)
 endif
 
 uikittools-package: uikittools-stage
 	# uikittools.mk Package Structure
-	rm -rf $(BUILD_DIST)/uikittools
+	rm -rf $(BUILD_DIST)/uikittools{,-extra}
 
 	# uikittools.mk Prep uikittools
 	cp -a $(BUILD_STAGE)/uikittools $(BUILD_DIST)
+	rm -f $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{uinotify,uisave,lsrebuild,uidisplay,uialert,uishoot} \
+		$(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/{uinotify,uisave,lsrebuild,uidisplay,uialert,uishoot}.1$(MEMO_MANPAGE_SUFFIX) \
+		$(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/*/man1/{uinotify,uisave,lsrebuild,uidisplay,uialert,uishoot}.1$(MEMO_MANPAGE_SUFFIX)
+
+	# uikittools.mk Prep uikittools-extra
+	cp -a $(BUILD_STAGE)/uikittools $(BUILD_DIST)/uikittools-extra
+	rm -rf $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/!(uinotify|uisave|lsrebuild|uidisplay|uialert|uishoot) \
+		$(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/!(uinotify|uisave|lsrebuild|uidisplay|uialert|uishoot).1$(MEMO_MANPAGE_SUFFIX) \
+		$(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/*/man1/!(uinotify|uisave|lsrebuild|uidisplay|uialert|uishoot).1$(MEMO_MANPAGE_SUFFIX) \
+		$(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale
 
 	# uikittools.mk Sign
 	$(call SIGN,uikittools,general.xml)
+	$(call SIGN,uikittools-extra,general.xml)
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	ldid $(MEMO_LDID_EXTRA_FLAGS) -S$(BUILD_MISC)/entitlements/uiopen.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uiopen
-	ldid $(MEMO_LDID_EXTRA_FLAGS) -S$(BUILD_MISC)/entitlements/uicache.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uicache
-	ldid $(MEMO_LDID_EXTRA_FLAGS) -S$(BUILD_MISC)/entitlements/sbreload.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sbreload
-	ldid $(MEMO_LDID_EXTRA_FLAGS) -S$(BUILD_MISC)/entitlements/gssc.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gssc
+	$(LDID) -S$(BUILD_WORK)/uikittools/lsrebuild.plist $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsrebuild
+	$(LDID) -S$(BUILD_WORK)/uikittools/mgask.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/mgask
+	$(LDID) -S$(BUILD_WORK)/uikittools/sbreload.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sbreload
+	$(LDID) -S$(BUILD_WORK)/uikittools/uicache.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uicache
+	$(LDID) -S$(BUILD_WORK)/uikittools/uidisplay.plist $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uidisplay
+	$(LDID) -S$(BUILD_WORK)/uikittools/uinotify.plist $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uinotify
+	$(LDID) -S$(BUILD_WORK)/uikittools/uiopen.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uiopen
+	$(LDID) -S$(BUILD_WORK)/uikittools/uisave.plist $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uisave
+	$(LDID) -S$(BUILD_WORK)/uikittools/uishoot.plist $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uishoot
+
 	find $(BUILD_DIST)/uikittools -name '.ldid*' -type f -delete
+	find $(BUILD_DIST)/uikittools-extra -name '.ldid*' -type f -delete
 endif
 
 	# uikittools.mk Make .debs
 	$(call PACK,uikittools,DEB_UIKITTOOLS_V)
+	$(call PACK,uikittools-extra,DEB_UIKITTOOLS_V)
 
 	# uikittools.mk Build cleanup
-	rm -rf $(BUILD_DIST)/uikittools
+	rm -rf $(BUILD_DIST)/uikittools{,-extra}
 
 .PHONY: uikittools uikittools-package

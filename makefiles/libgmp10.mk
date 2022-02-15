@@ -22,8 +22,8 @@ libgmp10: libgmp10-setup
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-cxx \
 		--disable-assembly \
-		CC_FOR_BUILD='$(shell which cc) $(CFLAGS_FOR_BUILD)' \
-		CPP_FOR_BUILD='$(shell which cc) -E $(CPPFLAGS_FOR_BUILD)'
+		CC_FOR_BUILD='$(shell command -v cc) $(CFLAGS_FOR_BUILD)' \
+		CPP_FOR_BUILD='$(shell command -v cc) -E $(CPPFLAGS_FOR_BUILD)'
 	+$(MAKE) -C $(BUILD_WORK)/libgmp10
 	+$(MAKE) -C $(BUILD_WORK)/libgmp10 install \
 		DESTDIR=$(BUILD_STAGE)/libgmp10

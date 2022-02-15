@@ -4,8 +4,8 @@ endif
 
 SUBPROJECTS      += python3
 PYTHON3_MAJOR_V  := 3.9
-PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).6
-DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)
+PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).9
+DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)-1
 
 python3-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.python.org/ftp/python/$(PYTHON3_VERSION)/Python-$(PYTHON3_VERSION).tar.xz{,.asc}
@@ -76,8 +76,8 @@ python3-package: python3-stage
 	$(LN_S) python$(PYTHON3_MAJOR_V) $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python
 	$(LN_S) python$(PYTHON3_MAJOR_V)-config $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3-config
 
-	$(LN_S) python$(PYTHON3_MAJOR_V).1.zst $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/python3.1.zst
-	$(LN_S) python$(PYTHON3_MAJOR_V).1.zst $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/python.1.zst
+	$(LN_S) python$(PYTHON3_MAJOR_V).1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/python3.1$(MEMO_MANPAGE_SUFFIX)
+	$(LN_S) python$(PYTHON3_MAJOR_V).1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/python.1$(MEMO_MANPAGE_SUFFIX)
 
 	# python3.mk Sign
 	$(call SIGN,python$(PYTHON3_MAJOR_V),general.xml)

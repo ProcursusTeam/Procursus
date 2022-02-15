@@ -1,0 +1,10 @@
+#! /bin/sh
+# prerm script for byacc2
+
+set -e
+
+if [ $1 != "upgrade" ]; then
+	update-alternatives --remove yacc @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/byacc2
+fi
+
+exit 0

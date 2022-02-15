@@ -1,0 +1,9 @@
+Package: oslog
+Architecture: @DEB_ARCH@
+Author: Elias Limneos
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_OSLOG_V@
+Provides: net.limneos.oslog
+Section: Utilities
+Priority: optional
+Description: os_log implementation for iOS
