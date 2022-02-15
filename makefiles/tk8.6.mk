@@ -22,9 +22,12 @@ tk8.6: tk8.6-setup tcl libxss libx11 libxext libxft xorgproto freetype fontconfi
 		--with-tcl=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		--with-x \
 		--disable-load
+	sed -i -e 's|-ltk8.6|$(BUILD_WORK)/tk8.6/libtk8.6.dylib|' -e 's/$${WISH_EXE}:/$${WISH_EXE}: mantiscam/' $(BUILD_WORK)/tk8.6/Makefile
+	sed -i 's|# DO NOT DELETE THIS LINE -- make depend depends on it.|mantiscam: $${TK_LIB_FILE} $${TK_STUB_LIB_FILE}\n\t$$(CC) $$(CFLAGS) $$(LDFLAGS) -shared -install_name $$(MEMO_PREFIX)$$(MEMO_SUB_PREFIX)/lib/libtk8.6.dylib -all_load -lX11 -lXss -ltcl8.6 libtk8.6.a -o libtk8.6.dylib;|' $(BUILD_WORK)/tk8.6/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/tk8.6
 	+$(MAKE) -C $(BUILD_WORK)/tk8.6 install \
 		DESTDIR=$(BUILD_STAGE)/tk8.6
+	install -m755 $(BUILD_WORK)/tk8.6/libtk8.6.dylib $(BUILD_STAGE)/tk8.6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	$(call AFTER_BUILD,copy)
 endif
 
@@ -32,19 +35,20 @@ tk8.6-package: tk8.6-stage
 	# tk8.6.mk Package Structure
 	rm -rf $(BUILD_DIST)/{tk8.6,libtk8.6,tk8.6-dev,tk8.6-doc}
 	mkdir -p $(BUILD_DIST)/{tk8.6,libtk8.6,tk8.6-dev,tk8.6-doc}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	mkdir -p $(BUILD_DIST)/{libtk8.6,tk8.6-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	mkdir -p $(BUILD_DIST)/libtk8.6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tcltk
+	mkdir -p $(BUILD_DIST)/{libtk8.6,tk8.6-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share/tcltk}
 
 	# tk8.6.mk Prep tk8.6
 	cp -a $(BUILD_STAGE)/tk8.6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/tk8.6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# tk8.6.mk Prep libtk8.6
 	cp -a $(BUILD_STAGE)/tk8.6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/tk8.6 $(BUILD_DIST)/libtk8.6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tcltk
+	cp -a $(BUILD_STAGE)/tk8.6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libtk8.6.dylib $(BUILD_DIST)/libtk8.6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	$(LN_SR) $(BUILD_DIST)/libtk8.6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{share/tcltk,lib}/tk8.6
 
 	# tk8.6.mk Prep tk8.6-dev
 	cp -a $(BUILD_STAGE)/tk8.6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/tk8.6-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/tk8.6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{tkConfig.sh,libtk{,stub}8.6.a,pkgconfig} $(BUILD_DIST)/tk8.6-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/tk8.6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libtk{,stub}8.6.a,pkgconfig} $(BUILD_DIST)/tk8.6-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/tk8.6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/tkConfig.sh $(BUILD_DIST)/tk8.6-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tcltk/tk8.6
 
 	# tk8.6.mk Prep tk8.6-doc
 	cp -a $(BUILD_STAGE)/tk8.6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/tk8.6-doc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
