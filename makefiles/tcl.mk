@@ -33,7 +33,7 @@ tcl-package: tcl
 	# tcl.mk Package Structure
 	rm -rf $(BUILD_DIST)/{libtcl8.6,tcl8.6{,-dev,-doc}}
 	mkdir -p $(BUILD_DIST)/{libtcl8.6,tcl8.6{,-dev,-doc}}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	mkdir -p $(BUILD_DIST)/{libtcl8.6,tcl8.6-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/tcl
+	mkdir -p $(BUILD_DIST)/{libtcl8.6,tcl8.6-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/tcl8.6
 	mkdir -p $(BUILD_DIST)/{libtcl8.6,tcl8.6-doc}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	mkdir -p $(BUILD_DIST)/libtcl8.6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tcltk
 	
@@ -41,13 +41,14 @@ tcl-package: tcl
 	cp -a $(BUILD_STAGE)/tcl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/tcl8.6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	
 	# tcl.mk Prep libtcl8.6
-	cp -a $(BUILD_STAGE)/tcl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{itcl4.2.2,sqlite3.36.0,tcl8,tcl8.6,tdbc{mysql,odbc,postgres}1.1.3,thread2.8.7} $(BUILD_DIST)/libtcl8.6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tcltk
+	cp -a $(BUILD_STAGE)/tcl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{itcl*,sqlite3*,tcl8,tcl8.6,tdbc{mysql,odbc,postgres}*,thread*} $(BUILD_DIST)/libtcl8.6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tcltk
 	cp -a $(BUILD_STAGE)/tcl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libtcl{,stub}8.6.dylib $(BUILD_DIST)/libtcl8.6/$(MEMO_PREFIX)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	$(LN_SR) $(BUILD_DIST)/libtcl8.6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{share/tcltk,lib}/tcl8.6
-
+	
 	# tcl.mk Prep tcl8.6-dev
 	cp -a $(BUILD_STAGE)/tcl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/tcl8.6-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -af $(BUILD_STAGE)/tcl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libtcl{,stub}8.6.a,tclConfig.sh,tclooConfig.sh} $(BUILD_DIST)/tcl8.6-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -af $(BUILD_STAGE)/tcl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libtcl{,stub}8.6.a} $(BUILD_DIST)/tcl8.6-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/tcl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/tcl{,oo}Config.sh $(BUILD_DIST)/tcl8.6-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/tcl8.6
 	
 	# tcl.mk Prep tcl8.6-doc
 	cp -a $(BUILD_STAGE)/tcl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/tcl8.6-doc/$(MEMO_SUB_PREFIX)
