@@ -1,0 +1,159 @@
+diff -urN gitea-1.15.4/custom/conf/app.example.ini gitea/custom/conf/app.example.ini
+--- gitea-1.15.4/custom/conf/app.example.ini	2021-10-08 18:37:52.000000000 +0000
++++ gitea/custom/conf/app.example.ini	2021-10-11 23:53:16.341532000 +0000
+@@ -15,7 +15,7 @@
+ APP_NAME = ; Gitea: Git with a cup of tea
+ ;;
+ ;; RUN_USER will automatically detect the current user - but you can set it here change it if you run locally
+-RUN_USER = ; git
++RUN_USER = gitea
+ ;;
+ ;; Application run mode, affects performance and debugging. Either "dev", "prod" or "test", default is "prod"
+ RUN_MODE = ; prod
+@@ -58,7 +58,7 @@
+ ;PER_WRITE_PER_KB_TIMEOUT = 30s
+ ;;
+ ;; Permission for unix socket
+-;UNIX_SOCKET_PERMISSION = 666
++UNIX_SOCKET_PERMISSION = 660
+ ;;
+ ;; Local (DMZ) URL for Gitea workers (such as SSH update) accessing web service.
+ ;; In most cases you do not need to change the default value.
+@@ -88,7 +88,7 @@
+ ;SSH_LISTEN_PORT = %(SSH_PORT)s
+ ;;
+ ;; Root path of SSH directory, default is '~/.ssh', but you have to use '/home/git/.ssh'.
+-;SSH_ROOT_PATH =
++SSH_ROOT_PATH = @MEMO_PREFIX@/var/lib/gitea/ssh
+ ;;
+ ;; Gitea will create a authorized_keys file by default when it is not using the internal ssh server
+ ;; If you intend to use the AuthorizedKeysCommand functionality then you should turn this off.
+@@ -178,7 +178,7 @@
+ ;;
+ ;; Root directory containing templates and static files.
+ ;; default is the path where Gitea is executed
+-;STATIC_ROOT_PATH =
++STATIC_ROOT_PATH = @MEMO_PREFIX@/var/lib/gitea
+ ;;
+ ;; Default path for App data
+ ;APP_DATA_PATH = data
+@@ -202,7 +202,7 @@
+ ;LFS_START_SERVER = false
+ ;;
+ ;; Where your lfs files reside, default is data/lfs.
+-;LFS_CONTENT_PATH = data/lfs
++LFS_CONTENT_PATH = @MEMO_PREFIX@/var/lib/gitea/data/lfs
+ ;;
+ ;; LFS authentication secret, change this yourself
+ LFS_JWT_SECRET =
+@@ -243,10 +243,10 @@
+ ;;
+ ;; MySQL Configuration
+ ;;
+-DB_TYPE = mysql
+-HOST = 127.0.0.1:3306 ; can use socket e.g. /var/run/mysqld/mysqld.sock
+-NAME = gitea
+-USER = root
++;DB_TYPE = mysql
++;HOST = 127.0.0.1:3306 ; can use socket e.g. /var/run/mysqld/mysqld.sock
++;NAME = gitea
++;USER = root
+ ;PASSWD = ;Use PASSWD = `your password` for quoting if you use special characters in the password.
+ ;SSL_MODE = false ; either "false" (default), "true", or "skip-verify"
+ ;CHARSET = utf8mb4 ;either "utf8" or "utf8mb4", default is "utf8mb4".
+@@ -269,8 +269,8 @@
+ ;;
+ ;; SQLite Configuration
+ ;;
+-;DB_TYPE = sqlite3
+-;PATH= ; defaults to data/gitea.db
++DB_TYPE = sqlite3
++PATH= @MEMO_PREFIX@/var/lib/gitea/data/gitea.db
+ ;SQLITE_TIMEOUT = ; Query timeout defaults to: 500
+ ;;
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+@@ -431,7 +431,7 @@
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;; Root path for the log files - defaults to %(GITEA_WORK_DIR)/log
+-;ROOT_PATH =
++ROOT_PATH = @MEMO_PREFIX@/var/lib/gitea/log
+ ;;
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;; Main Logger
+@@ -731,10 +731,10 @@
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ 
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+-;[repository]
++[repository]
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;; Root path for storing all repository data. It must be an absolute path. By default, it is stored in a sub-directory of `APP_DATA_PATH`.
+-;ROOT =
++ROOT = @MEMO_PREFIX@/var/lib/gitea/repositories
+ ;;
+ ;; The script type this server supports. Usually this is `bash`, but some users report that only `sh` is available.
+ ;SCRIPT_TYPE = bash
+@@ -827,16 +827,16 @@
+ 
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+-;[repository.local]
++[repository.local]
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;;
+ ;; Path for local repository copy. Defaults to `tmp/local-repo`
+-;LOCAL_COPY_PATH = tmp/local-repo
++LOCAL_COPY_PATH = @MEMO_PREFIX@/var/lib/gitea/tmp/local-repo
+ 
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+-;[repository.upload]
++[repository.upload]
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;;
+@@ -844,7 +844,7 @@
+ ;ENABLED = true
+ ;;
+ ;; Path for uploads. Defaults to `data/tmp/uploads` (tmp gets deleted on gitea restart)
+-;TEMP_PATH = data/tmp/uploads
++TEMP_PATH = @MEMO_PREFIX@/var/lib/gitea/data/tmp/uploads
+ ;;
+ ;; Comma-separated list of allowed file extensions (`.zip`), mime types (`text/plain`) or wildcard type (`image/*`, `audio/*`, `video/*`). Empty value or `*/*` allows all types.
+ ;ALLOWED_TYPES =
+@@ -1159,7 +1159,7 @@
+ 
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+-;[indexer]
++[indexer]
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;;
+@@ -1170,7 +1170,7 @@
+ ;ISSUE_INDEXER_TYPE = bleve
+ ;;
+ ;; Issue indexer storage path, available when ISSUE_INDEXER_TYPE is bleve
+-;ISSUE_INDEXER_PATH = indexers/issues.bleve
++ISSUE_INDEXER_PATH = @MEMO_PREFIX@/var/lib/gitea/indexers/issues.bleve
+ ;;
+ ;; Issue indexer connection string, available when ISSUE_INDEXER_TYPE is elasticsearch
+ ;ISSUE_INDEXER_CONN_STR = http://elastic:changeme@localhost:9200
+@@ -1537,12 +1537,12 @@
+ 
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+-;[picture]
++[picture]
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;;
+-;AVATAR_UPLOAD_PATH = data/avatars
+-;REPOSITORY_AVATAR_UPLOAD_PATH = data/repo-avatars
++AVATAR_UPLOAD_PATH = @MEMO_PREFIX@/var/lib/gitea/data/avatars
++REPOSITORY_AVATAR_UPLOAD_PATH = @MEMO_PREFIX@/var/lib/gitea/data/repo-avatars
+ ;;
+ ;; How Gitea deals with missing repository avatars
+ ;; none = no avatar will be displayed; random = random avatar will be displayed; image = default image will be used

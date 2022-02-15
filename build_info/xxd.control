@@ -7,3 +7,4 @@ Conflicts: vim (<< 8.2.0650)
 Section: Text_Editors
 Priority: standard
 Description: tool to make (or reverse) a hex dump
+ xxd creates a hex dump of a given file or standard input. It can also convert a hex dump back to its original binary form.

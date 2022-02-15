@@ -3,12 +3,14 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += zstd
-ZSTD_VERSION  := 1.5.0
+ZSTD_VERSION  := 1.5.2
 DEB_ZSTD_V    ?= $(ZSTD_VERSION)
 
 zstd-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/facebook/zstd/releases/download/v$(ZSTD_VERSION)/zstd-$(ZSTD_VERSION).tar.gz{,.sig,.sha256}
 	$(call GITHUB_ARCHIVE,facebook,zstd,$(ZSTD_VERSION),v$(ZSTD_VERSION))
-	$(call CHECKSUM_VERIFY,sha512,zstd-$(ZSTD_VERSION).tar.gz,25b657529a698eec891f92ff4a085d1fd95d2ff938ce52c8a4ff6163eb0b668ec642dd09e0db190652638cd92371006afa01d8e437437762c4097ad301675c33)
+	$(call CHECKSUM_VERIFY,sha256,zstd-$(ZSTD_VERSION).tar.gz)
+	$(call PGP_VERIFY,zstd-$(ZSTD_VERSION).tar.gz)
 	$(call EXTRACT_TAR,zstd-$(ZSTD_VERSION).tar.gz,zstd-$(ZSTD_VERSION),zstd)
 
 ifneq ($(wildcard $(BUILD_WORK)/zstd/.build_complete),)

@@ -1,0 +1,7 @@
+Package: nginx-common
+Version: @DEB_NGINX_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Networking
+Priority: optional
+Description: This package contains files shared by all NGINX packages

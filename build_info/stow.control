@@ -5,5 +5,8 @@ Maintainer: @DEB_MAINTAINER@
 Pre-Depends: perl (>= 5.32.1)
 Section: Perl
 Homepage: https://www.gnu.org/software/stow/
-Description: Symlink manager
- GNU Stow is a symlink farm manager which takes distinct packages of software and/or data located in separate directories on the filesystem, and makes them appear to be installed in the same place. For example, /usr/local/bin could contain symlinks to files within /usr/local/stow/emacs/bin, /usr/local/stow/perl/bin etc., and likewise recursively for any other subdirectories such as .../share, .../man, and so on. 
+Description: Organizer for /usr/local software packages
+ GNU Stow is a software installation manager for /usr/local.  Using
+ symbolic links, GNU Stow helps you keep the installations separate
+ (/usr/local/stow/emacs vs. /usr/local/stow/perl, for example) while
+ maintaining the illusion that they are all under /usr/local.
