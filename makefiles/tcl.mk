@@ -16,17 +16,17 @@ tcl:
 	@echo "Using previously built tcl."
 else
 tcl: tcl-setup libtommath
-	cd $(BUILD_WORK)/tcl && autoconf -Wall $(BUILD_WORK)/tcl/macosx/configure.ac > $(BUILD_WORK)/tcl/macosx/configure.ac && ./macosx/configure -C \
+	cd $(BUILD_WORK)/tcl && ./macosx/configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-load \
 		--disable-rpath \
 		--enable-langinfo
 	sed -i 's@( cd $$(PKG_DIR)/$$$$pkg; $$(MAKE); ) || exit $$$$?; @( cd $$(PKG_DIR)/$$$$pkg; sed -i "s{--export-dynamic{{" $$$$(grep -riI -- "--export-dynamic" $(BUILD_WORK)/tcl/pkgs/$$$$pkg | cut -d: -f1) ;$$(MAKE); ) || exit $$$$?; @g' $(BUILD_WORK)/tcl/Makefile
-	sed -i -e 's|-ltclstub8.6|$(BUILD_WORK)/tcl/libtclstub8.6.dylib|' -e 's|-ltcl8.6|$(BUILD_WORK)/tcl/libtcl8.6.dylib|' -e 's/$${TCL_EXE}:/$${TCL_EXE}: manticore/' $(BUILD_WORK)/tcl/Makefile
-	sed -i 's|# DO NOT DELETE THIS LINE -- make depend depends on it.|manticore: $${TCL_LIB_FILE} $${TCL_STUB_LIB_FILE}\n\t$$(CC) $$(CFLAGS) $$(LDFLAGS) -shared -install_name $$(MEMO_PREFIX)$$(MEMO_SUB_PREFIX)/lib/libtcl8.6.dylib -all_load -liosexec -lz -framework CoreFoundation libtcl8.6.a -o libtcl8.6.dylib;\n\t$$(CC) $$(CFLAGS) $$(LDFLAGS) -shared -all_load -install_name $$(MEMO_PREFIX)$$(MEMO_SUB_PREFIX)/lib/libtclstub8.6.dylib -liosexec libtclstub8.6.a -o libtclstub8.6.dylib;|' $(BUILD_WORK)/tcl/Makefile
+	sed -i -e 's|-ltcl8.6|$(BUILD_WORK)/tcl/libtcl8.6.dylib|' -e 's/$${TCL_EXE}:/$${TCL_EXE}: manticore/' $(BUILD_WORK)/tcl/Makefile
+	sed -i 's|# DO NOT DELETE THIS LINE -- make depend depends on it.|manticore: $${TCL_LIB_FILE} $${TCL_STUB_LIB_FILE}\n\t$$(CC) $$(CFLAGS) $$(LDFLAGS) -shared -install_name $$(MEMO_PREFIX)$$(MEMO_SUB_PREFIX)/lib/libtcl8.6.dylib -all_load -liosexec -lz -framework CoreFoundation libtcl8.6.a -o libtcl8.6.dylib;|' $(BUILD_WORK)/tcl/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/tcl install \
 		DESTDIR=$(BUILD_STAGE)/tcl
-	$(INSTALL) -m755 $(BUILD_WORK)/tcl/libtcl{,stub}8.6.dylib $(BUILD_STAGE)/tcl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	$(INSTALL) -m755 $(BUILD_WORK)/tcl/libtcl8.6.dylib $(BUILD_STAGE)/tcl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	$(call AFTER_BUILD,copy)
 endif
 tcl-package: tcl
