@@ -5,7 +5,7 @@ endif
 SUBPROJECTS      += python3
 PYTHON3_MAJOR_V  := 3.9
 PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).9
-DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)-1
+DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)-2
 
 python3-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.python.org/ftp/python/$(PYTHON3_VERSION)/Python-$(PYTHON3_VERSION).tar.xz{,.asc}
@@ -53,15 +53,17 @@ python3-package: python3-stage
 	rm -rf $(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3} $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V){,-dev}
 	mkdir -p \
 		$(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		$(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V){,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX){,$(MEMO_ALT_PREFIX)}/lib \
+		$(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V){,-dev,-stdlib}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX){,$(MEMO_ALT_PREFIX)}/lib \
 		$(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 
 	# python3.mk Prep python$(PYTHON3_MAJOR_V)
 	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/python$(PYTHON3_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# python3.mk Prep libpython$(PYTHON3_MAJOR_V)
-	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/python$(PYTHON3_MAJOR_V) $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libpython$(PYTHON3_MAJOR_V).dylib,python3,python$(PYTHON3_MAJOR_V)} $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+
+	# python3.mk Prep libpython$(PYTHON3_MAJOR_V)-stdlib
+	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/python$(PYTHON3_MAJOR_V) $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V)-stdlib/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib
 
 	# python3.mk Prep libpython$(PYTHON3_MAJOR_V)-dev
 	cp -a $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
@@ -82,14 +84,16 @@ python3-package: python3-stage
 	# python3.mk Sign
 	$(call SIGN,python$(PYTHON3_MAJOR_V),general.xml)
 	$(call SIGN,libpython$(PYTHON3_MAJOR_V),general.xml)
+	$(call SIGN,libpython$(PYTHON3_MAJOR_V)-stdlib,general.xml)
 
 	# python3.mk Make .debs
 	$(call PACK,python$(PYTHON3_MAJOR_V),DEB_PYTHON3_V)
 	$(call PACK,libpython$(PYTHON3_MAJOR_V),DEB_PYTHON3_V)
+	$(call PACK,libpython$(PYTHON3_MAJOR_V)-stdlib,DEB_PYTHON3_V)
 	$(call PACK,libpython$(PYTHON3_MAJOR_V)-dev,DEB_PYTHON3_V)
 	$(call PACK,python3,DEB_PYTHON3_V)
 
 	# python3.mk Build cleanup
-	rm -rf $(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3} $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V){,-dev}
+	rm -rf $(BUILD_DIST)/python{$(PYTHON3_MAJOR_V),3} $(BUILD_DIST)/libpython$(PYTHON3_MAJOR_V){,-dev,-stdlib}
 
 .PHONY: python3 python3-package

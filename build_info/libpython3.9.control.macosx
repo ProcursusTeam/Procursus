@@ -2,7 +2,14 @@ Package: libpython3.9
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_PYTHON3_V@
-Depends: libncursesw6 (>= 6.0), libreadline8 (>= 8.0), libssl3, libffi8, liblzma5 (>= 5.2.5), libgdbm6, libintl8
+Depends: libpython3.9-stdlib (= @DEB_PYTHON3_V@), libncursesw6 (>= 6.0), libreadline8 (>= 8.0), libssl3, libffi8, liblzma5 (>= 5.2.5), libgdbm6, libintl8
 Section: Libraries
 Priority: optional
-Description: Interpreted, interactive, object-oriented programming language. Contains the standard library and other shared libraries.
+Description: Shared Python runtime library (version 3.9)
+ Python is a high-level, interactive, object-oriented 
+ language. Its 3.9 version includes an extensive class library 
+ with lots of goodies for network programming, system 
+ administration, sounds and graphics.
+ .
+ This package contains the shared runtime library, normally not 
+ needed for programs using the statically linked interpreter.

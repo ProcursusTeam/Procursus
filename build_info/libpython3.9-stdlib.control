@@ -1,0 +1,16 @@
+Package: libpython3.9-stdlib
+Section: Python
+Priority: optional
+Version: @DEB_PYTHON3_V@
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Depends: libtk8.6 (>= 8.6.0), libtcl8.6 (>= 8.6.0), libncursesw6 (>= 6.0), libreadline8 (>= 8.0), libffi8 (>= 3.4)
+Description: Interactive high-level object-oriented language (standard library, version 3.9)
+ Python is a high-level, interactive, object-oriented 
+ language. Its 3.9 version includes an extensive class library 
+ with lots of goodies for network programming, system 
+ administration, sounds and graphics.
+ .
+ This package contains Python 3.9's standard library. It is 
+ normally not used on its own, but as a dependency of 
+ python3.9.

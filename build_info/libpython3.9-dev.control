@@ -5,4 +5,10 @@ Version: @DEB_PYTHON3_V@
 Depends: libpython3.9 (= @DEB_PYTHON3_V@), libcrypt-dev, firmware (>= 14.0) | libexpat1-dev
 Section: Development
 Priority: optional
-Description: Interpreted, interactive, object-oriented programming language. Contains the header files necessary for developing.
+Description: Header files and a static library for Python (v3.9)
+ Header files, a static library and development tools for 
+ building Python (v3.9) modules, extending the Python 
+ interpreter or embedding Python (v3.9) in applications.
+ .
+ This package contains development files. It is normally not 
+ used on it's own, but as a dependency of python3.9-dev.

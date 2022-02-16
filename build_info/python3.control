@@ -3,8 +3,17 @@ Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_PYTHON3_V@
 Depends: python3.9
-Section: Scripting
+Section: Python
 Priority: optional
-Description: Interpreted, interactive, object-oriented programming language.
- Installing pip from the command line can be done with the `sudo python -m ensurepip` command.
- After installing pip, place an SDK for your platform in /usr/share/SDKs. (e.g. /usr/share/SDKs/iPhoneOS.sdk)
+Description: interactive high-level object-oriented language (default python3 version)
+ Python, the high-level, interactive object oriented language, 
+ includes an extensive class library with lots of goodies for 
+ network programming, system administration, sounds and 
+ graphics.
+ .
+ This package is a dependency package, which depends on 
+ Procursus' default Python 3 version (currently v3.9).
+ .
+ Installing pip from the command line can be done with the 
+ `sudo python -m ensurepip` command. Installing 
+ build-essential is recommended after doing so.
