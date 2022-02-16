@@ -21,9 +21,9 @@ python3:
 else
 python3: .SHELLFLAGS=-O extglob -c
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm expat
+python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm expat tcl tk
 else
-python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm expat libxcrypt
+python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm expat libxcrypt tcl tk
 endif
 	cd $(BUILD_WORK)/python3 && autoreconf -fi
 	cd $(BUILD_WORK)/python3 && ./configure -C \
