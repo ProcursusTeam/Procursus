@@ -11,6 +11,7 @@ DEB_NEOFETCH_V   ?= $(NEOFETCH_VERSION)
 neofetch-setup: setup
 	$(call GITHUB_ARCHIVE,dylanaraps,neofetch,$(NEOFETCH_COMMIT),$(NEOFETCH_COMMIT))
 	$(call EXTRACT_TAR,neofetch-$(NEOFETCH_COMMIT).tar.gz,neofetch-$(NEOFETCH_COMMIT),neofetch)
+	$(call DO_PATCH,neofetch,neofetch,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/neofetch/.build_complete),)
 neofetch:
