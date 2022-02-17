@@ -37,16 +37,16 @@ endif
 aircrack-ng-package: aircrack-ng-stage
 	# aircrack-ng.mk Package Structure
 	rm -rf $(BUILD_DIST)/aircrack-ng
-	
+
 	# aircrack.mk Prep aircrack
 	cp -a $(BUILD_STAGE)/aircrack-ng $(BUILD_DIST)
-	
+
 	# aircrack-ng.mk Sign
 	$(call SIGN,aircrack-ng,general.xml)
-	
+
 	# aircrack-ng.mk Make .debs
 	$(call PACK,aircrack-ng,DEB_AIRCRACK-NG_V)
-	
+
 	# aircrack-ng.mk Build cleanup
 	rm -rf $(BUILD_DIST)/aircrack-ng
 

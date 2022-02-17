@@ -3,13 +3,14 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += pygments
-PYGMENTS_VERSION := 2.9.0
+PYGMENTS_VERSION := 2.11.2
 DEB_PYGMENTS_V   ?= $(PYGMENTS_VERSION)
 
 pygments-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) \
-		https://files.pythonhosted.org/packages/ba/6e/7a7c13c21d8a4a7f82ccbfe257a045890d4dbf18c023f985f565f97393e3/Pygments-$(PYGMENTS_VERSION).tar.gz
-	$(call EXTRACT_TAR,Pygments-$(PYGMENTS_VERSION).tar.gz,Pygments-$(PYGMENTS_VERSION),pygments)
+	-[ ! -f $(BUILD_SOURCE)/pygments-$(PYGMENTS_VERSION).tar.gz ] && \
+		wget -q -nc -O $(BUILD_SOURCE)/pygments-$(PYGMENTS_VERSION).tar.gz \
+			https://github.com/pygments/pygments/archive/refs/tags/$(PYGMENTS_VERSION).tar.gz
+	$(call EXTRACT_TAR,pygments-$(PYGMENTS_VERSION).tar.gz,pygments-$(PYGMENTS_VERSION),pygments)
 
 ifneq ($(wildcard $(BUILD_WORK)/pygments/.build_complete),)
 pygments:
@@ -29,13 +30,13 @@ endif
 pygments-package: pygments-stage
 	# pygments.mk Package Structure
 	rm -rf $(BUILD_DIST)/python3-pygments
-	
+
 	# pygments.mk Prep pygments
 	cp -a $(BUILD_STAGE)/pygments $(BUILD_DIST)/python3-pygments
-	
+
 	#pygments.mk Make .debs
 	$(call PACK,python3-pygments,DEB_PYGMENTS_V)
-	
+
 	# pygments.mk Build cleanup
 	rm -rf $(BUILD_DIST)/python3-pygments
 

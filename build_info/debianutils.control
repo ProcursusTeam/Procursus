@@ -5,7 +5,6 @@ Essential: yes
 Maintainer: @DEB_MAINTAINER@
 Section: Utilities
 Priority: required
-Name: Debian Utilities
 Description: Miscellaneous utilities specific to Debian
  This package provides a number of small utilities which are used
  primarily by the installation scripts of Debian packages, although

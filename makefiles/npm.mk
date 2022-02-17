@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += npm
-NPM_VERSION := 6.14.8
+NPM_VERSION := 8.1.1
 DEB_NPM_V   ?= $(NPM_VERSION)
 
 npm-setup: setup

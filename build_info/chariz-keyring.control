@@ -7,4 +7,3 @@ Maintainer: @DEB_MAINTAINER@
 Section: Keyrings
 Priority: optional
 Description: GnuPG keys for the Chariz repository
-Name: Chariz APT Keyring

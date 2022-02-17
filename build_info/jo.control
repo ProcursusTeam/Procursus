@@ -1,0 +1,18 @@
+Package: jo
+Version: @DEB_JO_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Homepage: https://github.com/jpmens/jo
+Description: command-line processor to output JSON from a shell
+ jo creates a JSON string on stdout from words given it as arguments
+ or read from stdin. It can generate both arrays and objects. Here is
+ a short example:
+ .
+  $ jo -p name=jo n=17 parser@0
+  {
+     "name": "jo",
+     "n": 17,
+     "parser": false
+  }

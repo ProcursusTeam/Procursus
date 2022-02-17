@@ -10,4 +10,3 @@ Description: minimal replacement for sudo
  doas is a minimal replacement for the venerable sudo. It was initially written
  by Ted Unangst of the OpenBSD project to provide 95% of the features of sudo
  with a fraction of the codebase.
-Tag: purpose::console, role::hacker

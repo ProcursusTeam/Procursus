@@ -6,4 +6,3 @@ Depends: libcurl4, libplist3, libssl3, libirecovery3, libfragmentzip0, libgenera
 Section: Utilities
 Priority: optional
 Description: A hacked up idevicerestore wrapper, which allows specifying SEP and Baseband for restoring
-Tag: purpose::console, role::hacker
