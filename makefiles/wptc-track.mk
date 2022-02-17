@@ -3,14 +3,16 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += wptc-track
-WPTC_TRACK_VERSION := 2020.09.26
+WPTC_TRACK_VERSION := 2021.01.07
+WPTC_TRACK_COMMIT  := 96445651ce32f935556555afbed9564196c33bd7
 DEB_WPTC_TRACK_V   ?= $(WPTC_TRACK_VERSION)
 
 wptc-track-setup: setup
-	$(call GITHUB_ARCHIVE,titoxd,wptc-track,$(WPTC_TRACK_VERSION),69bfe15eef70be9da64339eba41de1d00b0a6ec9)
-	$(call EXTRACT_TAR,wptc-track-$(WPTC_TRACK_VERSION).tar.gz,wptc-track-69bfe15eef70be9da64339eba41de1d00b0a6ec9,wptc-track)
-	sed -i 's@../data@$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/wptc-track@g' $(BUILD_WORK)/wptc-track/tracks/{refresh-nhc,track.c}
-	sed -i 's@../png/output.png@./track.png@g' $(BUILD_WORK)/wptc-track/tracks/track.c
+	$(call GITHUB_ARCHIVE,titoxd,wptc-track,$(WPTC_TRACK_COMMIT),$(WPTC_TRACK_COMMIT))
+	$(call EXTRACT_TAR,wptc-track-$(WPTC_TRACK_COMMIT).tar.gz,wptc-track-$(WPTC_TRACK_COMMIT),wptc-track)
+	sed -i 's|../data|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/wptc-track|g' $(BUILD_WORK)/wptc-track/tracks/{refresh-nhc,track.c}
+	sed -i 's|../png/output.png|./track.png|g' $(BUILD_WORK)/wptc-track/tracks/track.c
+	mkdir -p $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{share/wptc-track,bin,sbin}
 
 ifneq ($(wildcard $(BUILD_WORK)/wptc-track/.build_complete),)
 wptc-track:
@@ -18,10 +20,7 @@ wptc-track:
 else
 wptc-track: wptc-track-setup cairo
 	cd $(BUILD_WORK)/wptc-track/tracks; \
-	$(CC) $(CFLAGS) -g -Wall scales.c template.c tab.c track.c tcr.c atcf.c hurdat2.c hurdat.c md.c $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcairo.dylib -o track -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/cairo
-	mkdir -p $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{share,bin,sbin}
-	mkdir -p $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/wptc-track
-	$(INSTALL) -Dm755 $(BUILD_WORK)/wptc-track/tracks/track $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/track
+	$(CC) $(CFLAGS) $(LDFLAGS) -Wall scales.c template.c tab.c track.c tcr.c atcf.c hurdat2.c hurdat.c md.c -lcairo -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/cairo -o $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/track
 	$(INSTALL) -Dm755 $(BUILD_WORK)/wptc-track/tracks/refresh-nhc $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 	cp -a $(BUILD_WORK)/wptc-track/data/* $(BUILD_STAGE)/wptc-track/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/wptc-track
 	$(call AFTER_BUILD)

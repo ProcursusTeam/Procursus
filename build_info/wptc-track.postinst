@@ -1,2 +1,6 @@
 #!/bin/sh
-refresh-nhc
+set -e
+if [ "$1" = "configure" ]; then
+	# Download updated data from National Hurricane Center
+	refresh-nhc;
+fi
