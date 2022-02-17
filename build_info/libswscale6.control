@@ -1,4 +1,4 @@
-Package: libswscale5
+Package: libswscale6
 Version: @DEB_FFMPEG_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
@@ -24,4 +24,4 @@ Description: FFmpeg library for image scaling and various conversions - runtime 
     source and destination colorspaces differ.
  .
  This package contains the runtime files.
-Depends: libavutil56 (= @DEB_FFMPEG_V@)
+Depends: libavutil57 (= @DEB_FFMPEG_V@)

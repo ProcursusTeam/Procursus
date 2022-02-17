@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += ffmpeg
-FFMPEG_VERSION := 4.4.1
+FFMPEG_VERSION := 5.0.1
 DEB_FFMPEG_V   ?= $(FFMPEG_VERSION)
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
@@ -76,41 +76,41 @@ ffmpeg: ffmpeg-setup aom dav1d fontconfig freetype frei0r gnutls lame libass lib
 		--disable-indev=jack \
 		$(FFMPEG_CONFIGURE_FLAGS)
 	sed -i 's/-lSDL2/-lSDL2 -lSDL2main/g' $(BUILD_WORK)/ffmpeg/ffbuild/config.mak
-	+$(MAKE) -C $(BUILD_WORK)/ffmpeg
+	+$(MAKE) -C $(BUILD_WORK)/ffmpeg tools/qt-faststart
 	+$(MAKE) -C $(BUILD_WORK)/ffmpeg install \
 		DESTDIR=$(BUILD_STAGE)/ffmpeg
-	+$(MAKE) -C $(BUILD_WORK)/ffmpeg alltools
-	cp -a $(BUILD_WORK)/ffmpeg/tools/* $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	$(INSTALL) -m755 $(BUILD_WORK)/ffmpeg/tools/qt-faststart $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
+	$(INSTALL) -m644 $(BUILD_MISC)/ffmpeg/qt-faststart.1 $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/
 	$(call AFTER_BUILD,copy)
 endif
 
 ffmpeg-package: ffmpeg-stage
 	# ffmpeg.mk Package Structure
 	rm -rf $(BUILD_DIST)/ffmpeg \
-		$(BUILD_DIST)/libavcodec{58,-dev} \
-		$(BUILD_DIST)/libavdevice{58,-dev} \
-		$(BUILD_DIST)/libavfilter{7,-dev} \
-		$(BUILD_DIST)/libavformat{58,-dev} \
-		$(BUILD_DIST)/libavutil{56,-dev} \
-		$(BUILD_DIST)/libpostproc{55,-dev} \
-		$(BUILD_DIST)/libswresample{3,-dev} \
-		$(BUILD_DIST)/libswscale{5,-dev}
+		$(BUILD_DIST)/libavcodec{59,-dev} \
+		$(BUILD_DIST)/libavdevice{59,-dev} \
+		$(BUILD_DIST)/libavfilter{8,-dev} \
+		$(BUILD_DIST)/libavformat{59,-dev} \
+		$(BUILD_DIST)/libavutil{57,-dev} \
+		$(BUILD_DIST)/libpostproc{56,-dev} \
+		$(BUILD_DIST)/libswresample{4,-dev} \
+		$(BUILD_DIST)/libswscale{6,-dev}
 	mkdir -p $(BUILD_DIST)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man} \
-		$(BUILD_DIST)/libavcodec58/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libavcodec59/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libavcodec-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pkgconfig,include,share/man/man3} \
-		$(BUILD_DIST)/libavdevice58/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libavdevice59/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libavdevice-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pkgconfig,include,share/man/man3} \
-		$(BUILD_DIST)/libavfilter7/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libavfilter8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libavfilter-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pkgconfig,include,share/man/man3} \
-		$(BUILD_DIST)/libavformat58/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libavformat59/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libavformat-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pkgconfig,include,share/man/man3} \
-		$(BUILD_DIST)/libavutil56/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libavutil57/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libavutil-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pkgconfig,include,share/man/man3} \
-		$(BUILD_DIST)/libpostproc55/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libpostproc56/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libpostproc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pkgconfig,include} \
-		$(BUILD_DIST)/libswresample3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libswresample4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libswresample-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pkgconfig,include,share/man/man3} \
-		$(BUILD_DIST)/libswscale5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libswscale6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libswscale-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pkgconfig,include,share/man/man3}
 
 	# ffmpeg.mk Prep ffmpeg
@@ -118,8 +118,8 @@ ffmpeg-package: ffmpeg-stage
 	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/ffmpeg $(BUILD_DIST)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
-	# ffmpeg.mk Prep libavcodec58
-	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libavcodec.58*.dylib $(BUILD_DIST)/libavcodec58/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	# ffmpeg.mk Prep libavcodec59
+	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libavcodec.59*.dylib $(BUILD_DIST)/libavcodec59/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# ffmpeg.mk Prep libavcodec-dev
 	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libavcodec.{dylib,a} $(BUILD_DIST)/libavcodec-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
@@ -127,8 +127,8 @@ ffmpeg-package: ffmpeg-stage
 	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/libavcodec.pc $(BUILD_DIST)/libavcodec-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3/libavcodec.3.zst $(BUILD_DIST)/libavcodec-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3
 
-	# ffmpeg.mk Prep libavdevice58
-	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libavdevice.58*.dylib $(BUILD_DIST)/libavdevice58/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	# ffmpeg.mk Prep libavdevice59
+	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libavdevice.59*.dylib $(BUILD_DIST)/libavdevice59/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# ffmpeg.mk Prep libavdevice-dev
 	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libavdevice.{dylib,a} $(BUILD_DIST)/libavdevice-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
@@ -136,8 +136,8 @@ ffmpeg-package: ffmpeg-stage
 	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/libavdevice.pc $(BUILD_DIST)/libavdevice-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3/libavdevice.3.zst $(BUILD_DIST)/libavdevice-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3
 
-	# ffmpeg.mk Prep libavfilter7
-	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libavfilter.7*.dylib $(BUILD_DIST)/libavfilter7/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	# ffmpeg.mk Prep libavfilter8
+	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libavfilter.8*.dylib $(BUILD_DIST)/libavfilter8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# ffmpeg.mk Prep libavfilter-dev
 	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libavfilter.{dylib,a} $(BUILD_DIST)/libavfilter-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
@@ -145,8 +145,8 @@ ffmpeg-package: ffmpeg-stage
 	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/libavfilter.pc $(BUILD_DIST)/libavfilter-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3/libavfilter.3.zst $(BUILD_DIST)/libavfilter-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3
 
-	# ffmpeg.mk Prep libavformat58
-	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libavformat.58*.dylib $(BUILD_DIST)/libavformat58/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	# ffmpeg.mk Prep libavformat59
+	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libavformat.59*.dylib $(BUILD_DIST)/libavformat59/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# ffmpeg.mk Prep libavformat-dev
 	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libavformat.{dylib,a} $(BUILD_DIST)/libavformat-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
@@ -154,8 +154,8 @@ ffmpeg-package: ffmpeg-stage
 	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/libavformat.pc $(BUILD_DIST)/libavformat-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3/libavformat.3.zst $(BUILD_DIST)/libavformat-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3
 
-	# ffmpeg.mk Prep libavutil56
-	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libavutil.56*.dylib $(BUILD_DIST)/libavutil56/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	# ffmpeg.mk Prep libavutil57
+	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libavutil.57*.dylib $(BUILD_DIST)/libavutil57/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# ffmpeg.mk Prep libavutil-dev
 	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libavutil.{dylib,a} $(BUILD_DIST)/libavutil-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
@@ -163,16 +163,16 @@ ffmpeg-package: ffmpeg-stage
 	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/libavutil.pc $(BUILD_DIST)/libavutil-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3/libavutil.3.zst $(BUILD_DIST)/libavutil-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3
 
-	# ffmpeg.mk Prep libpostproc55
-	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpostproc.55*.dylib $(BUILD_DIST)/libpostproc55/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	# ffmpeg.mk Prep libpostproc56
+	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpostproc.56*.dylib $(BUILD_DIST)/libpostproc56/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# ffmpeg.mk Prep libpostproc-dev
 	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpostproc.{dylib,a} $(BUILD_DIST)/libpostproc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libpostproc $(BUILD_DIST)/libpostproc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/libpostproc.pc $(BUILD_DIST)/libpostproc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 
-	# ffmpeg.mk Prep libswresample3
-	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libswresample.3*.dylib $(BUILD_DIST)/libswresample3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	# ffmpeg.mk Prep libswresample4
+	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libswresample.4*.dylib $(BUILD_DIST)/libswresample4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# ffmpeg.mk Prep libswresample-dev
 	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libswresample.{dylib,a} $(BUILD_DIST)/libswresample-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
@@ -180,8 +180,8 @@ ffmpeg-package: ffmpeg-stage
 	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/libswresample.pc $(BUILD_DIST)/libswresample-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3/libswresample.3.zst $(BUILD_DIST)/libswresample-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3
 
-	# ffmpeg.mk Prep libswscale5
-	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libswscale.5*.dylib $(BUILD_DIST)/libswscale5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	# ffmpeg.mk Prep libswscale6
+	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libswscale.6*.dylib $(BUILD_DIST)/libswscale6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# ffmpeg.mk Prep libswscale-dev
 	cp -a $(BUILD_STAGE)/ffmpeg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libswscale.{dylib,a} $(BUILD_DIST)/libswscale-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
@@ -191,43 +191,43 @@ ffmpeg-package: ffmpeg-stage
 
 	# ffmpeg.mk Sign
 	$(call SIGN,ffmpeg,ffmpeg.xml)
-	$(call SIGN,libavcodec58,general.xml)
-	$(call SIGN,libavdevice58,general.xml)
-	$(call SIGN,libavfilter7,general.xml)
-	$(call SIGN,libavformat58,general.xml)
-	$(call SIGN,libavutil56,general.xml)
-	$(call SIGN,libpostproc55,general.xml)
-	$(call SIGN,libswresample3,general.xml)
-	$(call SIGN,libswscale5,general.xml)
+	$(call SIGN,libavcodec59,general.xml)
+	$(call SIGN,libavdevice59,general.xml)
+	$(call SIGN,libavfilter8,general.xml)
+	$(call SIGN,libavformat59,general.xml)
+	$(call SIGN,libavutil57,general.xml)
+	$(call SIGN,libpostproc56,general.xml)
+	$(call SIGN,libswresample4,general.xml)
+	$(call SIGN,libswscale6,general.xml)
 
 	# ffmpeg.mk Make .debs
 	$(call PACK,ffmpeg,DEB_FFMPEG_V)
-	$(call PACK,libavcodec58,DEB_FFMPEG_V)
+	$(call PACK,libavcodec59,DEB_FFMPEG_V)
 	$(call PACK,libavcodec-dev,DEB_FFMPEG_V)
-	$(call PACK,libavdevice58,DEB_FFMPEG_V)
+	$(call PACK,libavdevice59,DEB_FFMPEG_V)
 	$(call PACK,libavdevice-dev,DEB_FFMPEG_V)
-	$(call PACK,libavfilter7,DEB_FFMPEG_V)
+	$(call PACK,libavfilter8,DEB_FFMPEG_V)
 	$(call PACK,libavfilter-dev,DEB_FFMPEG_V)
-	$(call PACK,libavformat58,DEB_FFMPEG_V)
+	$(call PACK,libavformat59,DEB_FFMPEG_V)
 	$(call PACK,libavformat-dev,DEB_FFMPEG_V)
-	$(call PACK,libavutil56,DEB_FFMPEG_V)
+	$(call PACK,libavutil57,DEB_FFMPEG_V)
 	$(call PACK,libavutil-dev,DEB_FFMPEG_V)
-	$(call PACK,libpostproc55,DEB_FFMPEG_V)
+	$(call PACK,libpostproc56,DEB_FFMPEG_V)
 	$(call PACK,libpostproc-dev,DEB_FFMPEG_V)
-	$(call PACK,libswresample3,DEB_FFMPEG_V)
+	$(call PACK,libswresample4,DEB_FFMPEG_V)
 	$(call PACK,libswresample-dev,DEB_FFMPEG_V)
-	$(call PACK,libswscale5,DEB_FFMPEG_V)
+	$(call PACK,libswscale6,DEB_FFMPEG_V)
 	$(call PACK,libswscale-dev,DEB_FFMPEG_V)
 
 	# ffmpeg.mk Build cleanup
 	rm -rf $(BUILD_DIST)/ffmpeg \
-		$(BUILD_DIST)/libavcodec{58,-dev} \
-		$(BUILD_DIST)/libavdevice{58,-dev} \
-		$(BUILD_DIST)/libavfilter{7,-dev} \
-		$(BUILD_DIST)/libavformat{58,-dev} \
-		$(BUILD_DIST)/libavutil{56,-dev} \
-		$(BUILD_DIST)/libpostproc{55,-dev} \
-		$(BUILD_DIST)/libswresample{3,-dev} \
-		$(BUILD_DIST)/libswscale{5,-dev}
+		$(BUILD_DIST)/libavcodec{59,-dev} \
+		$(BUILD_DIST)/libavdevice{59,-dev} \
+		$(BUILD_DIST)/libavfilter{8,-dev} \
+		$(BUILD_DIST)/libavformat{59,-dev} \
+		$(BUILD_DIST)/libavutil{57,-dev} \
+		$(BUILD_DIST)/libpostproc{56,-dev} \
+		$(BUILD_DIST)/libswresample{4,-dev} \
+		$(BUILD_DIST)/libswscale{6,-dev}
 
 .PHONY: ffmpeg ffmpeg-package

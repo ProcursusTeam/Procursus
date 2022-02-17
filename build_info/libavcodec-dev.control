@@ -19,4 +19,4 @@ Description: FFmpeg library with de/encoders for audio/video codecs - developmen
  codecs as well as for experimentation.
  .
  This package contains the development files.
-Depends: libavcodec58 (= @DEB_FFMPEG_V@), libswresample-dev (= @DEB_FFMPEG_V@), libavutil-dev (= @DEB_FFMPEG_V@)
+Depends: libavcodec59 (= @DEB_FFMPEG_V@), libswresample-dev (= @DEB_FFMPEG_V@), libavutil-dev (= @DEB_FFMPEG_V@)

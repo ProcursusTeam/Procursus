@@ -1,4 +1,4 @@
-Package: libswresample3
+Package: libswresample4
 Version: @DEB_FFMPEG_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
@@ -30,4 +30,4 @@ Description: FFmpeg library for audio resampling, rematrixing etc. - runtime fil
     dedicated buffer or "plane").
  .
  This package contains the runtime files.
-Depends: libavutil56 (= @DEB_FFMPEG_V@), libsoxr0
+Depends: libavutil57 (= @DEB_FFMPEG_V@), libsoxr0
