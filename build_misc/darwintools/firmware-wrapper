@@ -1,0 +1,8 @@
+#!/bin/sh
+
+until [ -z "$(ps axo pid,command | grep "[d]pkg")" ]
+do
+    sleep 5
+done
+
+@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/firmware

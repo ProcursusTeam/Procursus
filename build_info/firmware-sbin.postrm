@@ -8,7 +8,7 @@ if [ "$1" = "abort-install" ] || [ "$1" = "abort-upgrade" ]; then
 	/usr/sbin/bluetoothd /usr/sbin/cfprefsd /usr/sbin/distnoted /usr/sbin/filecoordinationd
 	/usr/sbin/ioreg /usr/sbin/ipconfig /usr/sbin/mDNSResponder /usr/sbin/mDNSResponderHelper /usr/sbin/mediaserverd
 	/usr/sbin/notifyd /usr/sbin/nvram /usr/sbin/pppd /usr/sbin/racoon /usr/sbin/rtadvd /usr/sbin/scutil
-	/usr/sbin/spindump /usr/sbin/syslogd /usr/sbin/wifid"
+	/usr/sbin/spindump /usr/sbin/syslogd /usr/sbin/wifid /sbin/umount"
 	for bin in ${LIST}; do
 		if [ -e "${bin}".sbin ]; then
 			if [ -s "${bin}" ]; then

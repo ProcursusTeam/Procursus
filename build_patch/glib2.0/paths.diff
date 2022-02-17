@@ -1,0 +1,26 @@
+diff --git a/gio/xdgmime/xdgmime.c b/gio/xdgmime/xdgmime.c
+index 2446d38..1042df2 100644
+--- a/gio/xdgmime/xdgmime.c
++++ b/gio/xdgmime/xdgmime.c
+@@ -235,7 +235,7 @@ xdg_init_dirs (void)
+   xdg_data_dirs = getenv ("XDG_DATA_DIRS");
+ 
+   if (xdg_data_dirs == NULL)
+-    xdg_data_dirs = "/usr/local/share/:/usr/share/";
++    xdg_data_dirs = "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/:/usr/share/";
+ 
+   /* Work out how many dirs we’re dealing with. */
+   if (xdg_data_home != NULL || home != NULL)
+diff --git a/glib/gutils.c b/glib/gutils.c
+index 2e2d457..c97259b 100644
+--- a/glib/gutils.c
++++ b/glib/gutils.c
+@@ -2080,7 +2080,7 @@ g_build_system_data_dirs (void)
+    */
+ #ifndef G_OS_WIN32
+   if (!data_dirs || !data_dirs[0])
+-    data_dirs = "/usr/local/share/:/usr/share/";
++    data_dirs = "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/:/usr/share/";
+ 
+   data_dir_vector = g_strsplit (data_dirs, G_SEARCHPATH_SEPARATOR_S, 0);
+ #else

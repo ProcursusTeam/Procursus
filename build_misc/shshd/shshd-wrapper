@@ -1,0 +1,2 @@
+#!/bin/sh
+exec @MEMO_PREFIX@@MEMO_SUB_PREFIX@/sbin/shshd $@

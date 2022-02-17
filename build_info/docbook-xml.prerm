@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+
+docbook_location="file://@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/xml/docbook/schema/dtd"
+catalog_location="@MEMO_PREFIX@/etc/xml/catalog"
+
+for ver in 4.2 4.3 4.4 4.5; do
+	xmlcatalog --noout --del "${docbook_location}/${ver}/catalog.xml" ${catalog_location}
+done
+
+exit 0

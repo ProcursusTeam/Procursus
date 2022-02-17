@@ -1,0 +1,7 @@
+#!/bin/sh
+exec dropbear \
+    -r @MEMO_PREFIX@/etc/dropbear/dropbear_rsa_host_key \
+    -r @MEMO_PREFIX@/etc/dropbear/dropbear_dss_host_key \
+    -r @MEMO_PREFIX@/etc/dropbear/dropbear_ecdsa_host_key \
+    -r @MEMO_PREFIX@/etc/dropbear/dropbear_ed25519_host_key \
+    -F -E -p $@

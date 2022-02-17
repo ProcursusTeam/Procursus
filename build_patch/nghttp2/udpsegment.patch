@@ -1,0 +1,50 @@
+From 407df2822e4b989c53c04b4f7902d2a9210ad506 Mon Sep 17 00:00:00 2001
+From: Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+Date: Sun, 26 Sep 2021 10:29:05 +0900
+Subject: [PATCH] Remove check for UDP_SEGMENT
+
+Check for UDP_SEGMENT is for debian 10, but now that we have debian
+11, remove the check because it breaks cross-build.
+---
+ configure.ac | 28 ----------------------------
+ 1 file changed, 28 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 7b7465d28..7fc908862 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -983,34 +983,6 @@ AC_CHECK_DECLS([initgroups], [], [], [[
+   #include <grp.h>
+ ]])
+ 
+-have_netinet_udp_h_udp_segment=no
+-AC_CHECK_DECL([UDP_SEGMENT], [have_netinet_udp_h_udp_segment=yes],
+-              [have_netinet_udp_h_udp_segment=no], [[
+-  #include <netinet/udp.h>
+-]])
+-
+-if test "x$have_netinet_udp_h_udp_segment" = "xno"; then
+-  have_linux_udp_h_udp_segment=no
+-  AC_MSG_CHECKING([whether UDP_SEGMENT is defined as 103 in linux/udp.h])
+-  AC_RUN_IFELSE([AC_LANG_PROGRAM(
+-                     [[
+-                       #include <linux/udp.h>
+-                     ]],
+-                     [[
+-		       #if UDP_SEGMENT != 103
+-		       exit(1)
+-		       #endif
+-                     ]])],
+-		    [have_linux_udp_h_udp_segment=yes
+-		     AC_MSG_RESULT([yes])],
+-		    [have_linux_udp_h_udp_segment=no
+-		     AC_MSG_RESULT([no])])
+-
+-  if test "x$have_linux_udp_h_udp_segment" = "xyes"; then
+-    EXTRA_DEFS="$EXTRA_DEFS -DUDP_SEGMENT=103"
+-  fi
+-fi
+-
+ save_CFLAGS=$CFLAGS
+ save_CXXFLAGS=$CXXFLAGS
+ 

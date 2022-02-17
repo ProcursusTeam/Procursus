@@ -1,4 +1,4 @@
-Package: hello 
+Package: hello
 Version: @DEB_HELLO_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@

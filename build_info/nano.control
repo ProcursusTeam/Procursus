@@ -5,4 +5,23 @@ Maintainer: @DEB_MAINTAINER@
 Depends: libmagic1, libncursesw6, libintl8
 Section: Text_Editors
 Priority: standard
-Description: completely free, modern clone of Pico
+Homepage: https://www.nano-editor.org/
+Description: Completely free, modern clone of Pico.
+ GNU nano is an easy-to-use text editor originally
+ designed as a replacement for Pico, the ncurses-based
+ editor from the non-free mailer package Pine (itself now
+ available under the Apache License as Alpine). However,
+ GNU nano also implements many features missing ih Pico,
+ including:
+ - Undo/redo
+ - Line numbering
+ - Syntax coloring
+ - Soft-wrapping of overlong lines
+ - Selecting text by holding Shift
+ - Interactive search and replace
+ - A go-to line (and column) command
+ - Support for multiple file buffers
+ - Auto-identation
+ - Tab completion of filenames and search terms
+ - Toggling features while running
+ - Full internationalization support

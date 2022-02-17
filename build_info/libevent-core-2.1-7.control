@@ -2,8 +2,6 @@ Package: libevent-core-2.1-7
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LIBEVENT_V@
-Conflicts: libevent (<< @DEB_LIBEVENT_V@)
-Replaces: libevent (<< @DEB_LIBEVENT_V@)
 Section: Libraries
 Description: Asynchronous event notification library (core)
  Libevent is an asynchronous event notification library that provides a

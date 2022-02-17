@@ -1,0 +1,19 @@
+Package: asciidoc
+Version: @DEB_ASCIIDOC_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Depends: libxml2-utils, python3
+Section: Documentation
+Priority: optional
+Homepage: https://asciidoc.org
+Description: Highly configurable text format for writing documentation
+ AsciiDoc is a text document format for writing articles, books, manuals and
+ UNIX man pages. AsciiDoc files can be translated to HTML (with or without
+ stylesheets), DocBook (articles, books and refentry documents) and LinuxDoc
+ using the asciidoc command. AsciiDoc can also be used to build and maintain
+ websites.
+ .
+ You write an AsciiDoc document the same way you would write a
+ normal text document, there are no markup tags or weird format notations.
+ AsciiDoc files are designed to be viewed, edited and printed directly or
+ translated to other presentation formats

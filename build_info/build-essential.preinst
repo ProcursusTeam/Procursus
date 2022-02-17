@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "install" ]; then
+  if [ -d "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/@BARE_PLATFORM@.sdk" ]; then
+    mv -f @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/@BARE_PLATFORM@.sdk @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/@BARE_PLATFORM@.sdk.old
+  fi
+fi

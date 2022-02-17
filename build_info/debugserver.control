@@ -2,7 +2,7 @@ Package: debugserver
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: debugserver-10
+Depends: debugserver-11
 Section: Development
 Priority: optional
 Homepage: https://www.llvm.org/

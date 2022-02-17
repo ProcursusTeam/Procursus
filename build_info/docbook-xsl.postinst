@@ -1,0 +1,23 @@
+#!/bin/sh
+
+set -e
+
+current_version="1.79.2"
+docbook_location="file://@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/xml/docbook/stylesheet/docbook-xsl"
+catalog_location="@MEMO_PREFIX@/etc/xml/catalog"
+
+if [ ! -f ${catalog_location} ]; then
+    xmlcatalog --noout --create ${catalog_location}
+fi
+
+xmlcatalog --noout --add "nextCatalog" "" "${docbook_location}/catalog.xml" ${catalog_location}
+
+for link in https://cdn.docbook.org/release/xsl-nons http://docbook.sourceforge.net/release/xsl; do
+	for ver in current ${current_version}; do
+		for rewrite in rewriteSystem rewriteURI; do
+			xmlcatalog --noout --add "${rewrite}" "${link}/${ver}" "${docbook_location}" ${catalog_location}
+		done
+	done
+done
+
+exit 0

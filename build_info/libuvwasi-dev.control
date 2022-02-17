@@ -1,0 +1,8 @@
+Package: libuvwasi-dev
+Version: @DEB_UVWASI_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libuvwasi0 (= @DEB_UVWASI_V@), libuv1-dev
+Section: Development
+Priority: optional
+Description: WASI syscall API built atop libuv - development files

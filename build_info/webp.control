@@ -9,4 +9,3 @@ Description: Lossy compression of digital photographic images.
  WebP uses the modern VP8 compression format to deliver efficient
  compression of images for the web. More than 30% extra gain over
  optimized JPEG, for same quality, is not unusual.
- 

@@ -1,0 +1,11 @@
+Package: apt-file
+Version: @DEB_APT-FILE_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Depends: perl, libapt-pkg-perl
+Section: Packaging
+Priority: optional
+Description: search for files within Debian packages (command-line interface)
+ apt-file is a command line tool for searching files contained in packages
+ for the APT packaging system. You can search in which package a file is
+ included or list the contents of a package without installing or fetching it.

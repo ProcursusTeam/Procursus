@@ -1,0 +1,9 @@
+Package: libudf0
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_LIBCDIO_V@
+Section: Libraries
+Priority: optional
+Depends: libcdio19 (>= @DEB_LIBCDIO_V@)
+Description: library to work with UDF filesystems
+ This library is made to read and write UDF filesystems; those filesystems are mainly used on DVDs.
