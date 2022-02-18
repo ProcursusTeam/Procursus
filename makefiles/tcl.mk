@@ -42,7 +42,7 @@ tcl-package: tcl
 	
 	# tcl.mk Prep libtcl8.6
 	cp -a $(BUILD_STAGE)/tcl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{itcl*,sqlite3*,tcl8,tcl8.6,tdbc{mysql,odbc,postgres}*,thread*} $(BUILD_DIST)/libtcl8.6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tcltk
-	cp -a $(BUILD_STAGE)/tcl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libtcl{,stub}8.6.dylib $(BUILD_DIST)/libtcl8.6/$(MEMO_PREFIX)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/tcl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libtcl8.6.dylib $(BUILD_DIST)/libtcl8.6/$(MEMO_PREFIX)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	$(LN_SR) $(BUILD_DIST)/libtcl8.6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{share/tcltk,lib}/tcl8.6
 	
 	# tcl.mk Prep tcl8.6-dev
