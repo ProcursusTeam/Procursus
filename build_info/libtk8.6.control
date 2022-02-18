@@ -1,7 +1,7 @@
 Package: libtk8.6
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Version: @DEB_TK8.6_V@
+Version: @DEB_TK_V@
 Section: Libraries
 Depends: libfontconfig1 (>= 2.12.6), libtcl8.6 (>= 8.6.0), libfreetype6 (>= 2.2.1), libx11-6, libxext6, libxft2 (>> 2.1.1), libxss1
 Suggests: tk8.6
