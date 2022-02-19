@@ -31,7 +31,8 @@ toybox:
 	@echo "Using previously built toybox."
 else
 toybox: toybox-setup openssl $(TOYBOX_DEPS)
-	$(MAKE) -C $(BUILD_WORK)/toybox
+	$(MAKE) -C $(BUILD_WORK)/toybox \
+		HOSTCC="$(CC_FOR_BUILD)"
 	$(INSTALL) -m755 $(BUILD_WORK)/toybox/toybox $(BUILD_STAGE)/toybox/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	$(call AFTER_BUILD)
 endif

@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
 # ToyBox version: KCONFIG_VERSION
-# Sun Feb 13 01:02:23 2022
+# Fri Feb 18 20:38:16 2022
 #
 # CONFIG_TOYBOX_CONTAINER is not set
 # CONFIG_TOYBOX_FIFREEZE is not set
@@ -111,7 +111,7 @@ CONFIG_WHO=y
 CONFIG_XARGS=y
 
 #
-# Pending (unfinished) commands
+# pending (see toys/pending/README)
 #
 # CONFIG_ARP is not set
 # CONFIG_ARPING is not set
@@ -135,10 +135,11 @@ CONFIG_FOLD=y
 # CONFIG_GETFATTR is not set
 CONFIG_GETOPT=y
 # CONFIG_GETTY is not set
-CONFIG_GROUPADD=y
-CONFIG_GROUPDEL=y
+# CONFIG_GROUPADD is not set
+# CONFIG_GROUPDEL is not set
 CONFIG_HEXDUMP=y
 CONFIG_HD=y
+# CONFIG_HOST is not set
 # CONFIG_INIT is not set
 # CONFIG_IP is not set
 # CONFIG_IPCRM is not set
@@ -185,8 +186,8 @@ CONFIG_TFTP=y
 CONFIG_TFTPD=y
 CONFIG_TR=y
 # CONFIG_TRACEROUTE is not set
-CONFIG_USERADD=y
-CONFIG_USERDEL=y
+# CONFIG_USERADD is not set
+# CONFIG_USERDEL is not set
 CONFIG_VI=y
 CONFIG_WGET=y
 # CONFIG_WGET_LIBTLS is not set
@@ -247,7 +248,7 @@ CONFIG_IORENICE=y
 # CONFIG_MAKEDEVS is not set
 CONFIG_MCOOKIE=y
 # CONFIG_MIX is not set
-CONFIG_MKPASSWD=y
+# CONFIG_MKPASSWD is not set
 # CONFIG_MKSWAP is not set
 # CONFIG_MODINFO is not set
 # CONFIG_MOUNTPOINT is not set
@@ -262,7 +263,7 @@ CONFIG_PRINTENV=y
 CONFIG_PWDX=y
 # CONFIG_PWGEN is not set
 # CONFIG_READAHEAD is not set
-CONFIG_READELF=y
+# CONFIG_READELF is not set
 CONFIG_READLINK=y
 CONFIG_REALPATH=y
 # CONFIG_REBOOT is not set
@@ -284,7 +285,6 @@ CONFIG_TAC=y
 # CONFIG_TASKSET is not set
 CONFIG_TIMEOUT=y
 CONFIG_TRUNCATE=y
-CONFIG_UCLAMPSET=y
 # CONFIG_UPTIME is not set
 CONFIG_USLEEP=y
 CONFIG_UUIDGEN=y
@@ -298,11 +298,10 @@ CONFIG_XXD=y
 CONFIG_YES=y
 
 #
-# Networking commands
+# Networking
 #
 CONFIG_FTPGET=y
 CONFIG_FTPPUT=y
-# CONFIG_HOST is not set
 # CONFIG_IFCONFIG is not set
 CONFIG_MICROCOM=y
 CONFIG_NETCAT=y
@@ -348,14 +347,14 @@ CONFIG_SEQ=y
 # CONFIG_DEMO_NUMBER is not set
 # CONFIG_DEMO_SCANKEY is not set
 # CONFIG_DEMO_UTF8TOWC is not set
-CONFIG_HELLO=y
-CONFIG_HOSTID=y
-CONFIG_LOGPATH=y
+# CONFIG_HELLO is not set
+# CONFIG_HOSTID is not set
+# CONFIG_LOGPATH is not set
 # CONFIG_SKELETON is not set
 # CONFIG_SKELETON_ALIAS is not set
 
 #
-# Android commands
+# Android
 #
 # CONFIG_GETENFORCE is not set
 # CONFIG_LOAD_POLICY is not set
