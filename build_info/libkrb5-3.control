@@ -1,12 +1,12 @@
-Package: libkdb5
+Package: libkrb5-3
 Priority: optional
 Section: Libraries
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
+Depends: libkrb5support1 (= @DEB_KRB5_V@), libcom-err3 (= @DEB_KRB5_V@), libintl8, libk5scrypto3 (= @DEB_KRB5_V@), libssl3
 Version: @DEB_KRB5_V@
 Suggests: krb5-user
-Depends: libkrb5 (= @DEB_KRB5_V@), libcom-err (= @DEB_KRB5_V@), libgssrpc (= @DEB_KRB5_V@), libintl8, libk5crypto (= @DEB_KRB5_V@), libkrb5support (= @DEB_KRB5_V@)
-Description: MIT Kerberos runtime libraries - Kerberos database
+Description: MIT Kerberos runtime libraries
  Kerberos is a system for authenticating users and services on a network.
  Kerberos is a trusted third-party service.  That means that there is a
  third party (the Kerberos server) that is trusted by all the entities on
@@ -14,4 +14,5 @@ Description: MIT Kerberos runtime libraries - Kerberos database
  .
  This is the MIT reference implementation of Kerberos V5.
  .
- This package contains the internal Kerberos database libraries.
+ This package contains the runtime library for the main Kerberos v5 API
+ used by applications and Kerberos clients.

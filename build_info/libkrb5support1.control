@@ -1,4 +1,4 @@
-Package: libkrb5support
+Package: libkrb5support1
 Priority: optional
 Section: Libraries
 Maintainer: @DEB_MAINTAINER@
