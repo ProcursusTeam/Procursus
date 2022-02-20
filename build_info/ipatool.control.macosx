@@ -1,8 +1,0 @@
-Package: ipatool
-Author: Majd Aifhaily <majd@aifhaily.me>
-Maintainer: @DEB_MAINTAINER@
-Architecture: @DEB_ARCH@
-Version: @DEB_IPATOOL_V@
-Section: Utilities
-Priority: optional
-Description: Search and download IPA files from the App Store
