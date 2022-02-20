@@ -21,4 +21,3 @@ Description: memory-hard hashing function - development files
  .
  This package contains headers and libraries for developing program based
  on argon2.
-Tag: role::developer

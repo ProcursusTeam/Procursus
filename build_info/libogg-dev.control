@@ -9,4 +9,3 @@ Homepage: http://xiph.org/ogg/
 Description: Ogg bitstream library development files
  The libogg-dev package contains the header files and documentation
  needed to develop applications with libogg.
-Tag: purpose::library, role::developer

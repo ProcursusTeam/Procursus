@@ -1,0 +1,16 @@
+Package: byacc
+Version: @DEB_BYACC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Homepage: https://invisible-island.net/byacc/
+Section: Development
+Priority: optional
+Conflicts: bison (<= 3.7.6)
+Description: public domain Berkeley LALR Yacc parser generator
+ This package provides a parser generator utility that reads a grammar
+ specification from a file and generates an LR(1) parser for it.  The
+ parsers consist of a set of LALR(1) parsing tables and a driver
+ routine written in the C programming language.  It has a public domain
+ license which includes the generated C.
+ .
+ Related packages: bison, btyacc, byacc2, antlr

@@ -5,4 +5,5 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Utilities
 Priority: required
+Suggests: uikittools-extra (= @DEB_UIKITTOOLS_V@)
 Description: Command line access for UIKit/LaunchServices/CoreServices

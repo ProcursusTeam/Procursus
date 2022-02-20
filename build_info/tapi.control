@@ -5,4 +5,3 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Priority: optional
 Description: Text-based Application Programming Interface frontend
-Tag: purpose::console, role::developer
