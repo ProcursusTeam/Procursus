@@ -1,0 +1,148 @@
+From d6bf42279675100e3e4fe7c6e08eef74d49624cb Mon Sep 17 00:00:00 2001
+From: Robbie Harwood <rharwood@redhat.com>
+Date: Sat, 15 May 2021 18:04:58 -0400
+Subject: [PATCH] Remove deprecated OpenSSL calls from softpkcs11
+
+Rewrite add_pubkey_info() in terms of the EVP_PKEY interface.  In this
+process, fix its unchecked allocations and fail fast for non-RSA keys.
+---
+ src/configure.ac            |   1 +
+ src/tests/softpkcs11/main.c | 108 ++++++++++++++++++++++++------------
+ 2 files changed, 73 insertions(+), 36 deletions(-)
+
+diff --git a/src/configure.ac b/src/configure.ac
+index d8156340e5..d7b7a744eb 100644
+--- a/src/configure.ac
++++ b/src/configure.ac
+@@ -1148,6 +1148,7 @@ int i = 1;
+ ])], k5_cv_openssl_version_okay=yes, k5_cv_openssl_version_okay=no)])
+   old_LIBS="$LIBS"
+   AC_CHECK_LIB(crypto, PKCS7_get_signer_info)
++  AC_CHECK_FUNCS(EVP_PKEY_get_bn_param)
+   LIBS="$old_LIBS"
+ fi
+ if test "$k5_cv_openssl_version_okay" = yes && (test "$enable_pkinit" = yes || test "$enable_pkinit" = try); then
+diff --git a/src/tests/softpkcs11/main.c b/src/tests/softpkcs11/main.c
+index caa537b683..86b4ef711b 100644
+--- a/src/tests/softpkcs11/main.c
++++ b/src/tests/softpkcs11/main.c
+@@ -413,47 +413,83 @@ add_object_attribute(struct st_object *o,
+     return CKR_OK;
+ }
+ 
++#ifdef HAVE_EVP_PKEY_GET_BN_PARAM
++
++/* Declare owner pointers since EVP_PKEY_get_bn_param() gives us copies. */
++#define DECLARE_BIGNUM(name) BIGNUM *name = NULL
++#define RELEASE_BIGNUM(bn) BN_clear_free(bn)
+ static CK_RV
+-add_pubkey_info(struct st_object *o, CK_KEY_TYPE key_type, EVP_PKEY *key)
++get_bignums(EVP_PKEY *key, BIGNUM **n, BIGNUM **e)
+ {
+-    switch (key_type) {
+-    case CKK_RSA: {
+-        CK_BYTE *modulus = NULL;
+-        size_t modulus_len = 0;
+-        CK_ULONG modulus_bits = 0;
+-        CK_BYTE *exponent = NULL;
+-        size_t exponent_len = 0;
+-        const RSA *rsa;
+-        const BIGNUM *n, *e;
+-
+-        rsa = EVP_PKEY_get0_RSA(key);
+-        RSA_get0_key(rsa, &n, &e, NULL);
+-        modulus_bits = BN_num_bits(n);
+-
+-        modulus_len = BN_num_bytes(n);
+-        modulus = malloc(modulus_len);
+-        BN_bn2bin(n, modulus);
+-
+-        exponent_len = BN_num_bytes(e);
+-        exponent = malloc(exponent_len);
+-        BN_bn2bin(e, exponent);
+-
+-        add_object_attribute(o, 0, CKA_MODULUS, modulus, modulus_len);
+-        add_object_attribute(o, 0, CKA_MODULUS_BITS,
+-                             &modulus_bits, sizeof(modulus_bits));
+-        add_object_attribute(o, 0, CKA_PUBLIC_EXPONENT,
+-                             exponent, exponent_len);
+-
+-        free(modulus);
+-        free(exponent);
+-    }
+-    default:
+-        /* XXX */
+-        break;
+-    }
++    if (EVP_PKEY_get_bn_param(key, "n", n) == 0 ||
++        EVP_PKEY_get_bn_param(key, "e", e) == 0)
++        return CKR_DEVICE_ERROR;
++
++    return CKR_OK;
++}
++
++#else
++
++/* Declare const pointers since the old API gives us aliases. */
++#define DECLARE_BIGNUM(name) const BIGNUM *name
++#define RELEASE_BIGNUM(bn)
++static CK_RV
++get_bignums(EVP_PKEY *key, const BIGNUM **n, const BIGNUM **e)
++{
++    const RSA *rsa;
++
++    rsa = EVP_PKEY_get0_RSA(key);
++    RSA_get0_key(rsa, n, e, NULL);
++
+     return CKR_OK;
+ }
+ 
++#endif
++
++static CK_RV
++add_pubkey_info(struct st_object *o, CK_KEY_TYPE key_type, EVP_PKEY *key)
++{
++    CK_BYTE *modulus = NULL, *exponent = 0;
++    size_t modulus_len = 0, exponent_len = 0;
++    CK_ULONG modulus_bits = 0;
++    CK_RV ret;
++    DECLARE_BIGNUM(n);
++    DECLARE_BIGNUM(e);
++
++    if (key_type != CKK_RSA)
++        abort();
++
++    ret = get_bignums(key, &n, &e);
++    if (ret != CKR_OK)
++        goto done;
++
++    modulus_bits = BN_num_bits(n);
++    modulus_len = BN_num_bytes(n);
++    exponent_len = BN_num_bytes(e);
++
++    modulus = malloc(modulus_len);
++    exponent = malloc(exponent_len);
++    if (modulus == NULL || exponent == NULL) {
++        ret = CKR_DEVICE_MEMORY;
++        goto done;
++    }
++
++    BN_bn2bin(n, modulus);
++    BN_bn2bin(e, exponent);
++
++    add_object_attribute(o, 0, CKA_MODULUS, modulus, modulus_len);
++    add_object_attribute(o, 0, CKA_MODULUS_BITS, &modulus_bits,
++                         sizeof(modulus_bits));
++    add_object_attribute(o, 0, CKA_PUBLIC_EXPONENT, exponent, exponent_len);
++
++    ret = CKR_OK;
++done:
++    free(modulus);
++    free(exponent);
++    RELEASE_BIGNUM(n);
++    RELEASE_BIGNUM(e);
++    return ret;
++}
+ 
+ static int
+ pem_callback(char *buf, int num, int w, void *key)

@@ -1,0 +1,20 @@
+Package: krb5-kpropd
+Priority: optional
+Section: Networking
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Depends: libkrb5-3 (= @DEB_KRB5_V@), libcom-err3 (= @DEB_KRB5_V@), libgssapi-krb5-2 (= @DEB_KRB5_V@), libgssrpc4 (= @DEB_KRB5_V@), libkrb5crypto3 (= @DEB_KRB5_V@), libkadm5clnt-mit12 (= @DEB_KRB5_V@), libkdb5-10 (= @DEB_KRB5_V@), libkrb5support1 (= @DEB_KRB5_V@), libintl8
+Version: @DEB_KRB5_V@
+Replaces: krb5-kdc (<< 1.15.1-3)
+Description: MIT Kerberos key server (Slave KDC Support)
+ Kerberos is a system for authenticating users and services on a network.
+ Kerberos is a trusted third-party service.  That means that there is a
+ third party (the Kerberos server) that is trusted by all the entities on
+ the network (users and services, usually called "principals").
+ .
+ This is the MIT reference implementation of Kerberos V5.
+ .
+ This package contains the Kerberos slave KDC update server (kpropd). The
+ kpropd command runs on the slave KDC server. It listens for update requests
+ made by the kprop program, and periodically requests incremental updates from
+ the master KDC. This package should be installed on slave KDCs.
