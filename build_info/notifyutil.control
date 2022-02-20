@@ -1,0 +1,8 @@
+Package: notifyutil
+Version: @DEB_NOTIFYUTIL_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Homepage: https://opensource.apple.com/source/Libnotify/
+Description: notification command line utility

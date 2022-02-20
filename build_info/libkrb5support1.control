@@ -4,6 +4,7 @@ Section: Libraries
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_KRB5_V@
+Depends: libintl8
 Description: MIT Kerberos runtime libraries - Support library
  Kerberos is a system for authenticating users and services on a network.
  Kerberos is a trusted third-party service.  That means that there is a

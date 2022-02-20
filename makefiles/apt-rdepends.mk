@@ -10,7 +10,7 @@ apt-rdepends-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/a/apt-rdepends/apt-rdepends_$(APT-RDEPENDS_VERSION).orig.tar.gz
 	$(call EXTRACT_TAR,apt-rdepends_$(APT-RDEPENDS_VERSION).orig.tar.gz,apt-rdepends-$(APT-RDEPENDS_VERSION),apt-rdepends)
 	mkdir -p $(BUILD_STAGE)/apt-rdepends/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-ifeq (,$(shell which pod2man))
+ifeq (,$(shell command -v pod2man))
 apt-rdepends:
 	@echo "Please install pod2man to build apt-rdepends"
 else ifneq ($(wildcard $(BUILD_WORK)/apt-rdepends/.build_complete),)

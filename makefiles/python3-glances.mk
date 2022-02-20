@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS             += python3-glances
-PYTHON3_GLANCES_VERSION := 3.1.7
+PYTHON3_GLANCES_VERSION := 3.2.4.2
 DEB_PYTHON3_GLANCES_V   ?= $(PYTHON3_GLANCES_VERSION)
 
 python3-glances-setup: setup

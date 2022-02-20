@@ -3,7 +3,7 @@ Priority: optional
 Section: Libraries
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
-Depends: libkrb5-3 (= @DEB_KRB5_V@)
+Depends: libkrb5-3 (= @DEB_KRB5_V@), libcom-err3 (= @DEB_KRB5_V@), libintl8, libk5crypto (= @DEB_KRB5_V@), libkrb5support1 (= @DEB_KRB5_V@)
 Version: @DEB_KRB5_V@
 Suggests: krb5-user
 Description: MIT Kerberos runtime libraries - krb5 GSS-API Mechanism

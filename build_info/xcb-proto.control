@@ -21,4 +21,3 @@ Description: X C Binding - protocol descriptions
   * Thread support: access XCB from multiple threads, with no explicit locking
   * Easy creation of new extensions: automatically generates interface from
     machine-parsable protocol descriptions
-Tag: role::developer

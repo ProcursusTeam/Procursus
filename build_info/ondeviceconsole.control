@@ -6,4 +6,3 @@ Replaces: com.eswick.ondeviceconsole
 Author: Evan Swick
 Section: Utilities
 Description: Tool to view system log from the shell.
-Tag: role::hacker

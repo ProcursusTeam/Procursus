@@ -4,6 +4,7 @@ Section: Libraries
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_KRB5_V@
+Depends: libintl8, libkrb5support1 (= @DEB_KRB5_V@)
 Description: common error description library
  libcomerr is an attempt to present a common error-handling mechanism to
  manipulate the most common form of error code in a fashion that does not

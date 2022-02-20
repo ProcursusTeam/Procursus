@@ -3,7 +3,7 @@ Priority: optional
 Section: Networking
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
-Depends: libkrb5-3 (= @DEB_KRB5_V@)
+Depends: libkrb5-3 (= @DEB_KRB5_V@), libssl3, libkrb5support1 (= @DEB_KRB5_V@)
 Version: @DEB_KRB5_V@
 Description: TLS plugin for MIT Kerberos
  Kerberos is a system for authenticating users and services on a network.

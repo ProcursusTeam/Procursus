@@ -1,0 +1,36 @@
+diff --color=auto -urN gitea-1.14.2/Makefile gitea/Makefile
+--- gitea-1.14.2/Makefile	2021-05-09 10:14:05.000000000 +0000
++++ gitea/Makefile	2021-06-08 15:37:52.498616000 +0000
+@@ -85,8 +85,6 @@
+ 	endif
+ endif
+ 
+-LDFLAGS := $(LDFLAGS) -X "main.MakeVersion=$(MAKE_VERSION)" -X "main.Version=$(GITEA_VERSION)" -X "main.Tags=$(TAGS)"
+-
+ LINUX_ARCHS ?= linux/amd64,linux/386,linux/arm-5,linux/arm-6,linux/arm64
+ 
+ GO_PACKAGES ?= $(filter-out code.gitea.io/gitea/integrations/migration-test,$(filter-out code.gitea.io/gitea/integrations,$(shell $(GO) list -mod=vendor ./... | grep -v /vendor/)))
+@@ -546,8 +544,9 @@
+ 
+ .PHONY: install $(TAGS_PREREQ)
+ install: $(wildcard *.go)
+-	CGO_CFLAGS="$(CGO_CFLAGS)" $(GO) install -v -tags '$(TAGS)' -ldflags '-s -w $(LDFLAGS)'
++	CGO_CFLAGS="$(CGO_CFLAGS)" $(GO) install -v -tags '$(TAGS)' -ldflags '-s -w -X "main.MakeVersion=$(MAKE_VERSION)" -X "main.Version=$(GITEA_VERSION)" -X "main.Tags=$(TAGS)"'
+ 
++
+ .PHONY: build
+ build: frontend backend
+ 
+@@ -560,10 +559,10 @@
+ .PHONY: generate
+ generate: $(TAGS_PREREQ)
+ 	@echo "Running go generate..."
+-	@CC= GOOS= GOARCH= $(GO) generate -mod=vendor -tags '$(TAGS)' $(GO_PACKAGES)
++	@CC= GOOS= GOARCH= CGO_CFLAGS= CGO_LDFLAGS= CGO_CXXFLAGS= CGO_CPPFLAGS= CGO_ENABLED= $(GO) generate -mod=vendor -tags '$(TAGS)' $(GO_PACKAGES)
+ 
+ $(EXECUTABLE): $(GO_SOURCES) $(TAGS_PREREQ)
+-	CGO_CFLAGS="$(CGO_CFLAGS)" $(GO) build -mod=vendor $(GOFLAGS) $(EXTRA_GOFLAGS) -tags '$(TAGS)' -ldflags '-s -w $(LDFLAGS)' -o $@
++	CGO_CFLAGS="$(CGO_CFLAGS)" $(GO) build -mod=vendor $(GOFLAGS) $(EXTRA_GOFLAGS) -tags '$(TAGS)' -ldflags '-s -w -extld $(CC) -extldflags "$(LDFLAGS)" -X "main.MakeVersion=$(MAKE_VERSION)" -X "main.Version=$(GITEA_VERSION)" -X "main.Tags=$(TAGS)" -X "code.gitea.io/gitea/modules/setting.AppWorkPath=@MEMO_PREFIX@/var/lib/gitea/"' -o $@
+ 
+ .PHONY: release
+ release: frontend generate release-windows release-linux release-darwin release-copy release-compress release-sources release-docs release-check

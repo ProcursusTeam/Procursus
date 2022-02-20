@@ -6,6 +6,7 @@ Architecture: @DEB_ARCH@
 Version: @DEB_KRB5_V@
 Conflicts: heimdal-clients
 Suggests: krb5-k5tls
+Depends: libkrb5-3 (= @DEB_KRB5_V@), libk5crypto3 (= @DEB_KRB5_V@), libcom-err3 (= @DEB_KRB5_V@), libgssapi-krb5-2 (= @DEB_KRB5_V@), libgssrpc4 (= @DEB_KRB5_V@), libkadm5clnt-mit12 (= @DEB_KRB5_V@), libkadm5srv-mit12 (= @DEB_KRB5_V@), libkdb5-10 (= @DEB_KRB5_V@), libkrb5support1 (= @DEB_KRB5_V@), libintl8, libedit0
 Description: basic programs to authenticate using MIT Kerberos
  Kerberos is a system for authenticating users and services on a network.
  Kerberos is a trusted third-party service.  That means that there is a
