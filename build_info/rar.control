@@ -6,7 +6,7 @@ Section: Archiving
 Suggests: unrar
 Priority: optional
 Homepage: https://www.rarlabs.com/
-Description: Archiver for .rar files
+Description: Archiver for .rar files (non-free)
  This is the RAR archiver from Eugene Roshal. It supports multiple volume archives and damage protection. It can also create 
  SFX-archives. There are versions which run on DOS, Windows (3.1x,95,NT), FreeBSD, BSDI.
  .
