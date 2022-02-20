@@ -11,7 +11,7 @@ DEB_XCODES_V   ?= $(XCODES_VERSION)
 xcodes-setup: setup
 	$(call GITHUB_ARCHIVE,RobotsAndPencils,xcodes,$(XCODES_VERSION),$(XCODES_VERSION))
 	$(call EXTRACT_TAR,xcodes-$(XCODES_VERSION).tar.gz,xcodes-$(XCODES_VERSION),xcodes)
-	mkdir -p $(BUILD_STAGE)/xcodes/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	mkdir -p $(BUILD_STAGE)/xcodes/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/zsh/site-functions}
 
 ifneq ($(wildcard $(BUILD_WORK)/xcodes/.build_complete),)
 xcodes:
@@ -24,6 +24,7 @@ xcodes: xcodes-setup
 			-Xswiftc -sdk -Xswiftc $(TARGET_SYSROOT) \
 			-Xswiftc -target -Xswiftc $(LLVM_TARGET) \
 			--disable-sandbox
+	$(BUILD_WORK)/xcodes/.build/release/xcodes --generate-completion-script > $(BUILD_STAGE)/xcodes/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/site-functions/_xcodes
 	cp $(BUILD_WORK)/xcodes/.build/release/xcodes $(BUILD_STAGE)/xcodes/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
 	$(call AFTER_BUILD)
 endif
