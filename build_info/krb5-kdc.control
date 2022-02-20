@@ -3,7 +3,7 @@ Priority: optional
 Section: Networking
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
-Depends: libkrb5-3 (= @DEB_KRB5_V@), libcom-err3 (= @DEB_KRB5_V@), libgssapi-krb5-2 (= @DEB_KRB5_V@), libgssrpc4 (= @DEB_KRB5_V@), libkrb5crypto3 (= @DEB_KRB5_V@), libkadm5srv-mit12 (= @DEB_KRB5_V@), libkdb5-10 (= @DEB_KRB5_V@), libkrb5support1 (= @DEB_KRB5_V@), libintl8, krb5-user (= @DEB_KRB5_V@)
+Depends: libkrb5 (= @DEB_KRB5_V@), libcom-err (= @DEB_KRB5_V@), libgssapi-krb5 (= @DEB_KRB5_V@), libgssrpc (= @DEB_KRB5_V@), libkrb5crypto3 (= @DEB_KRB5_V@), libkadm5srv-mit (= @DEB_KRB5_V@), libkdb5 (= @DEB_KRB5_V@), libkrb5support (= @DEB_KRB5_V@), libintl8, krb5-user (= @DEB_KRB5_V@)
 Version: @DEB_KRB5_V@
 Suggests: krb5-kpropd, krb5-admin-server
 Description: MIT Kerberos key server (KDC)

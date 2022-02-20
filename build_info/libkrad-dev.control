@@ -3,10 +3,10 @@ Priority: optional
 Section: Development
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
-Depends: libkrad0 (= @DEB_KRB5_V@)
+Depends:  (= @DEB_KRB5_V@)
 Version: @DEB_KRB5_V@
 Suggests: libkrb5-dev
 Description: MIT Kerberos RADIUS Library Development
- This package includes development headers for libkrad0, the MIT
+ This package includes development headers for , the MIT
  Kerberos RADIUS library.  You should not use this RADIUS library in
  packages unrelated to MIT Kerberos.

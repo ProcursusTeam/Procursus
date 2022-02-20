@@ -5,7 +5,7 @@ Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Conflicts: heimdal-dev
 Version: @DEB_KRB5_V@
-Depends: libkrb5-3 (= @DEB_KRB5_V@), libgssapi-krb5-2 (= @DEB_KRB5_V@), libgssrpc4 (= @DEB_KRB5_V@), libkrb5crypto3 (= @DEB_KRB5_V@), libkadm5clnt-mit12 (= @DEB_KRB5_V@), libkadm5srv-mit12 (= @DEB_KRB5_V@), libkdb5-10 (= @DEB_KRB5_V@), comerr-dev (= @DEB_KRB5_V@)
+Depends: libkrb5 (= @DEB_KRB5_V@), libgssapi-krb5 (= @DEB_KRB5_V@), libgssrpc (= @DEB_KRB5_V@), libkrb5crypto3 (= @DEB_KRB5_V@), libkadm5clnt-mit (= @DEB_KRB5_V@), libkadm5srv-mit (= @DEB_KRB5_V@), libkdb5 (= @DEB_KRB5_V@), comerr-dev (= @DEB_KRB5_V@)
 Description: headers and development libraries for MIT Kerberos
  Kerberos is a system for authenticating users and services on a network.
  Kerberos is a trusted third-party service.  That means that there is a
