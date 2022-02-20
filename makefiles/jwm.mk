@@ -25,7 +25,8 @@ jwm: jwm-setup glib2.0 gettext libx11 freetype libxinerama cairo libxext libxmu 
 		--enable-png \
 		--enable-jpeg \
 		--enable-cairo \
-		--enable-fribidi
+		--enable-fribidi \
+		CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/freetype2 $(CFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/jwm
 	+$(MAKE) -C $(BUILD_WORK)/jwm install \
 		DESTDIR=$(BUILD_STAGE)/jwm
