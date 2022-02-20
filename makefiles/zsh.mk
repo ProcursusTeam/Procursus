@@ -7,8 +7,8 @@ STRAPPROJECTS += zsh
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += zsh
 endif # ($(MEMO_TARGET),darwin-\*)
-ZSH_VERSION   := 5.8
-DEB_ZSH_V     ?= $(ZSH_VERSION)-5
+ZSH_VERSION   := 5.8.1
+DEB_ZSH_V     ?= $(ZSH_VERSION)
 
 zsh-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.zsh.org/pub/zsh-$(ZSH_VERSION).tar.xz{,.asc}
