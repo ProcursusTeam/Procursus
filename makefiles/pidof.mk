@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS += pidof
+SUBPROJECTS   += pidof
 PIDOF_VERSION := 0.1.4
 PIDOF_SHA1    := 150ff344d7065ecf9bc5cb3c2cc83eeda8d31348
 DEB_PIDOF_V   ?= $(PIDOF_VERSION)
