@@ -1,0 +1,134 @@
+diff -urN a/kextfind_query.c b/kextfind_query.c
+--- a/kextfind_query.c	2021-10-06 13:20:46.000000000 +0800
++++ b/kextfind_query.c	2022-02-21 01:53:24.937845765 +0800
+@@ -37,7 +37,7 @@
+ 
+ #include "kextfind_query.h"
+ #include "kextfind_commands.h"
+-
++FILE *  kfq_g_log_stream;
+ /*****
+  * Version expressions on the command line get parsed into an operator
+  * and one or two binary versions.
+@@ -1598,9 +1598,9 @@
+         printKext(theKext, kPathsNone, context->extraInfo,
+             terminatorForElement(element));
+     } else if (CFEqual(command, CFSTR(kPredNamePrintDiagnostics))) {
+-        g_log_stream = stdout;
++        kfq_g_log_stream = stdout;
+         OSKextLogDiagnostics(theKext, kOSKextDiagnosticsFlagAll);
+-        g_log_stream = stderr;
++        kfq_g_log_stream = stderr;
+     } else if (CFEqual(command, CFSTR(kPredNamePrintProperty))) {
+         arguments = QEQueryElementGetArguments(element);
+         arg = CFArrayGetValueAtIndex(arguments, 0);
+diff -urN a/kextload_main.c b/kextload_main.c
+--- a/kextload_main.c	2021-10-06 13:20:46.000000000 +0800
++++ b/kextload_main.c	2022-02-21 01:45:39.639063662 +0800
+@@ -110,7 +110,9 @@
+         RANGE_ALL(toolArgs.dependencyURLs));
+ 
+     if (sKextdActive) {
+-        result = loadKextsViaKextd(&toolArgs);
++#if !TARGET_OS_EMBEDDED
++	result = loadKextsViaKextd(&toolArgs);
++#endif
+     } else {
+         result = loadKextsIntoKernel(&toolArgs);
+     }
+@@ -369,7 +371,7 @@
+ 
+     return result;
+ }
+-
++#if !TARGET_OS_EMBEDDED
+ /*******************************************************************************
+ *******************************************************************************/
+ ExitStatus loadKextsViaKextd(KextloadArgs * toolArgs)
+@@ -452,7 +454,7 @@
+ 
+     return result;
+ }
+-
++#endif
+ /*******************************************************************************
+ *******************************************************************************/
+ ExitStatus loadKextsIntoKernel(KextloadArgs * toolArgs)
+diff -urN a/kext_tools_util.c b/kext_tools_util.c
+--- a/kext_tools_util.c	2021-10-06 13:20:46.000000000 +0800
++++ b/kext_tools_util.c	2022-02-21 01:49:47.852195693 +0800
+@@ -35,7 +35,6 @@
+ #include <sys/resource.h>
+ #include <IOKit/kext/OSKext.h>
+ #include <IOKit/kext/OSKextPrivate.h>
+-#include <sandbox/rootless.h>
+ #include <os/log_private.h>
+ 
+ #include <sys/types.h>
+diff -urN a/kext_tools_util.h b/kext_tools_util.h
+--- a/kext_tools_util.h	2021-10-06 13:20:46.000000000 +0800
++++ b/kext_tools_util.h	2022-02-21 01:49:37.587811581 +0800
+@@ -198,7 +198,7 @@
+ 
+ void beQuiet(void);
+ 
+-FILE *  g_log_stream;
++//FILE *  g_log_stream;
+ // tool_openlog(), tool_log() copied to bootroot.h for libBootRoot clients
+ void tool_initlog();
+ void tool_openlog(const char * name);
+diff -urN a/mkext1_file.c b/mkext1_file.c
+--- a/mkext1_file.c	2021-10-06 13:20:46.000000000 +0800
++++ b/mkext1_file.c	2022-02-21 01:56:41.142805971 +0800
+@@ -45,6 +45,9 @@
+ #include "kext_tools_util.h"
+ #include "compression.h"
+ 
++u_int32_t adler32(
++    u_int8_t * buffer,
++    int32_t    length);
+ 
+ /*******************************************************************************
+ *******************************************************************************/
+@@ -143,7 +146,7 @@
+     mkextHeader->length = OSSwapHostToBigInt32(CFDataGetLength(result));
+ 
+     adler_point = (UInt8 *)&mkextHeader->version;
+-    mkextHeader->adler32 = OSSwapHostToBigInt32(local_adler32(
++    mkextHeader->adler32 = OSSwapHostToBigInt32(adler32(
+         (UInt8 *)&mkextHeader->version,
+         (int)(CFDataGetLength(result) - (adler_point - (uint8_t *)mkextHeader))));
+ 
+diff -urN a/mkext.c b/mkext.c
+--- a/mkext.c	2021-10-06 13:20:46.000000000 +0800
++++ b/mkext.c	2022-02-21 01:51:41.434794072 +0800
+@@ -25,7 +25,7 @@
+ #include <libsa/mkext.h>
+ #include <libsa/stdlib.h>
+ #else
+-#include <Kernel/libsa/mkext.h>
++//#include <Kernel/libsa/mkext.h>
+ #include <stdlib.h>
+ #endif KERNEL
+ 
+diff -urN a/mkextunpack_main.c b/mkextunpack_main.c
+--- a/mkextunpack_main.c	2021-10-06 13:20:46.000000000 +0800
++++ b/mkextunpack_main.c	2022-02-21 01:57:25.092216799 +0800
+@@ -43,7 +43,7 @@
+ static const char * progname = "mkextunpack";
+ static Boolean gVerbose = false;
+ 
+-u_int32_t local_adler32(u_int8_t *buffer, int32_t length);
++u_int32_t adler32(u_int8_t *buffer, int32_t length);
+ 
+ Boolean getMkextDataForArch(
+     u_int8_t         * fileData,
+@@ -393,7 +393,7 @@
+     }
+ 
+     crc_address = (uint8_t *)&mkextHeader->version;
+-    checksum = local_adler32(crc_address,
++    checksum = adler32(crc_address,
+         (int32_t)((uintptr_t)mkextHeader +
+         MKEXT_GET_LENGTH(mkextHeader) - (uintptr_t)crc_address));
+ 

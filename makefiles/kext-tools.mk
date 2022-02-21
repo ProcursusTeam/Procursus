@@ -5,15 +5,26 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS        += kext-tools
+ifeq ($(shell [ $(CFVER_WHOLE) -lt 1600 ] && echo 1),1)
+KEXT_TOOLS_VERSION := 528.201.1
+KEXT_TOOLS_CFLAGS  := -fPIC
+else
 KEXT_TOOLS_VERSION := 716
+KEXT_TOOLS_CFLAGS  := Shims.o
+KEXT_TOOLS_SHIM    := KernelManagementShims/Shims.m
+endif
 DEB_KEXT_TOOLS_V   ?= $(KEXT_TOOLS_VERSION)
 
-KEXT_TOOLS_CFLAGS := kext_tools_util.o Shims.o -framework IOKit -framework CoreFoundation -DPRIVATE -D__OS_EXPOSE_INTERNALS__ -DEMBEDDED_HOST
+KEXT_TOOLS_CFLAGS += kext_tools_util.o -framework IOKit -framework CoreFoundation -DPRIVATE -D__OS_EXPOSE_INTERNALS__ -DEMBEDDED_HOST
 
 kext-tools-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,kext_tools,$(KEXT_TOOLS_VERSION),kext_tools-$(KEXT_TOOLS_VERSION))
 	$(call EXTRACT_TAR,kext_tools-$(KEXT_TOOLS_VERSION).tar.gz,kext_tools-kext_tools-$(KEXT_TOOLS_VERSION),kext-tools)
+ifneq ($(shell [ $(CFVER_WHOLE) -lt 1600 ] && echo 1),1)
 	$(call DO_PATCH,kext-tools,kext-tools,-p1)
+else
+	$(call DO_PATCH,kext_tools-1500,kext-tools,-p1)
+endif
 	mkdir -p $(BUILD_STAGE)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{sbin,share/man/man8}
 
 ifneq ($(wildcard $(BUILD_WORK)/kext-tools/.build_complete),)
@@ -22,8 +33,8 @@ kext-tools:
 else
 kext-tools: kext-tools-setup
 	cd $(BUILD_WORK)/kext-tools && \
-	$(CC) $(CFLAGS) -c kext_tools_util.c KernelManagementShims/Shims.m -DPRIVATE -D__OS_EXPOSE_INTERNALS__ -DEMBEDDED_HOST && echo kext_tools_util.o; \
-	$(CC) $(CFLAGS) -c KernelManagementShims/Shims.m -DPRIVATE -D__OS_EXPOSE_INTERNALS__ -DEMBEDDED_HOST && echo Shims.o; \
+	$(CC) $(CFLAGS) -c kext_tools_util.c $(KEXT_TOOLS_SHIM) -DPRIVATE -D__OS_EXPOSE_INTERNALS__ -DEMBEDDED_HOST && echo kext_tools_util.o; \
+	$(CC) $(CFLAGS) -c $(KEXT_TOOLS_SHIM) -DPRIVATE -D__OS_EXPOSE_INTERNALS__ -DEMBEDDED_HOST && echo Shims.o; \
 	$(CC) $(CFLAGS) $(LDFLAGS) $(KEXT_TOOLS_CFLAGS) kextstat_main.c -o $(BUILD_STAGE)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kextstat && echo kextstat; \
 	$(CC) $(CFLAGS) $(LDFLAGS) $(KEXT_TOOLS_CFLAGS) kextload_main.c -o $(BUILD_STAGE)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kextload && echo kextload; \
 	$(CC) $(CFLAGS) $(LDFLAGS) $(KEXT_TOOLS_CFLAGS) kextfind_*.c QEQuery.c -o $(BUILD_STAGE)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kextfind && echo kextfind; \
