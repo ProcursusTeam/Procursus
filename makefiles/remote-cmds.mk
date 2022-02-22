@@ -18,7 +18,7 @@ remote-cmds-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,libtelnet,$(LIBTELNET_VERSION),libtelnet-$(LIBTELNET_VERSION))
 	$(call EXTRACT_TAR,remote_cmds-$(REMOTE-CMDS_VERSION).tar.gz,remote_cmds-remote_cmds-$(REMOTE-CMDS_VERSION),remote-cmds)
 	$(call EXTRACT_TAR,libtelnet-$(LIBTELNET_VERSION).tar.gz,libtelnet-libtelnet-$(LIBTELNET_VERSION),remote-cmds/libtelnet)
-	mkdir -p $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	mkdir -p $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,libexec,share/man/man{1,8}}
 	sed -i -e 's/line\[/weneta\[/g' -e 's/line,/weneta,/g'  $(BUILD_WORK)/remote-cmds/telnetd.tproj/sys_term.c
 	sed -i '/size_t strlcpy(dst, src, siz)/d' $(BUILD_WORK)/remote-cmds/telnetd.tproj/strlcpy.c
 	sed -i -e '86d' $(BUILD_WORK)/remote-cmds/telnetd.tproj/authenc.c
@@ -30,7 +30,6 @@ remote-cmds:
 else
 remote-cmds: remote-cmds-setup ncurses
 	mkdir -p $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libtelnet
-	mkdir -p $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man{1,8}/}
 	cd $(BUILD_WORK)/remote-cmds/libtelnet; \
 	$(CC) $(CFLAGS) -c *.c -D'__FBSDID=__RCSID' -I. -DHAS_CGETENT -DAUTHENTICATION -DRSA -DFORWARD -DHAVE_STDLIB_H; \
 	$(AR) -cr $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libtelnet.a *.o; \
@@ -59,6 +58,7 @@ endif
 endif
 
 remote-cmds-package: remote-cmds-stage
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	# remote-cmds.mk Package Structure
 	rm -rf $(BUILD_DIST)/remote-cmds
 
@@ -67,11 +67,36 @@ remote-cmds-package: remote-cmds-stage
 
 	# remote-cmds.mk Sign
 	$(call SIGN,remote-cmds,general.xml)
+	$(LDID) -S$(BUILD_MISC)/entitlements/network-server.xml $(BUILD_DIST)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/telnetd
 
 	# remote-cmds.mk Make .debs
 	$(call PACK,remote-cmds,DEB_REMOTE-CMDS_V)
 
 	# remote-cmds.mk Build cleanup
 	rm -rf $(BUILD_DIST)/remote-cmds
+else
+	# remote-cmds.mk Package structure
+	rm -rf $(BUILD_DIST)/telnet{,d}
+	mkdir -p $(BUILD_DIST)/telnet{,d}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+
+	# remote-cmds.mk Prep telnet
+	cp -a $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/telnet/$(MEMO_PREFIX)$(MEMO_SUB_PRRFIX)
+	cp -a $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/telnet/$(MEMO_PREFIX)$(MEMO_SUB_PRRFIX)/share/man
+
+	# remote-cmds.mk Prep telnetd
+	cp -a $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec $(BUILD_DIST)/telnet/$(MEMO_PREFIX)$(MEMO_SUB_PRRFIX)
+	cp -a $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8 $(BUILD_DIST)/telnet/$(MEMO_PREFIX)$(MEMO_SUB_PRRFIX)/share/man
+
+	# remote-cmds.mk Sign
+	$(call SIGN,telnet,general.xml)
+	$(call SIGN,telnetd,network-server.xml)
+
+	# remote-cmds.mk Make .debs
+	$(call PACK,telnet,DEB_REMOTE-CMDS_V)
+	$(call PACK,telnetd,DEB_REMOTE-CMDS_V)
+
+	# remote-cmds.mk Build cleanup
+	rm -rf $(BUILD_DIST)/telnet{,d}
+endif
 
 .PHONY: remote-cmds remote-cmds-package

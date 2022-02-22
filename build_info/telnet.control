@@ -1,0 +1,20 @@
+Package: telnet
+Version: @DEB_REMOTE-CMDS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libncursesw6
+Provides: telnet-client
+Section: Networking
+Description: basic telnet client
+ The telnet command is used for interactive communication with another host
+ using the TELNET protocol.
+ .
+ For the purpose of remote login, the present client executable should 
+ be depreciated in favour of an ssh-client, or in some cases with 
+ variants like telnet-ssl or Kerberized TELNET clients. The most 
+ important reason is that this implementation exchanges user name and 
+ password in clear text.
+ .
+ On the other hand, the present program does satisfy common use cases 
+ of network diagnostics, like protocol testing of SMTP services, so it 
+ can become handy enough.
