@@ -13,7 +13,6 @@ system-cmds-setup: setup libxcrypt
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,system_cmds,$(SYSTEM-CMDS_VERSION),system_cmds-$(SYSTEM-CMDS_VERSION))
 	$(call EXTRACT_TAR,system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz,system_cmds-system_cmds-$(SYSTEM-CMDS_VERSION),system-cmds)
 	$(call DO_PATCH,system-cmds,system-cmds,-p1)
-	sed -i '1 i\#include <sys/proc.h>' $(BUILD_WORK)/system-cmds/lsmp.tproj/lsmp.c
 	sed -i '/#include <stdio.h>/a #include <crypt.h>' $(BUILD_WORK)/system-cmds/login.tproj/login.c
 	sed -i '1 i\#include\ <libiosexec.h>' $(BUILD_WORK)/system-cmds/login.tproj/login.c
 	sed -i -E -e 's|"/usr|"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' -e 's|"/sbin|"$(MEMO_PREFIX)/sbin|g' \
