@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS   += unrar
 UNRAR_VERSION := 6.1.4
-DEB_UNRAR_V   ?= $(UNRAR_VERSION)
+DEB_UNRAR_V   ?= $(UNRAR_VERSION)-1
 
 unrar-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.rarlab.com/rar/unrarsrc-$(UNRAR_VERSION).tar.gz

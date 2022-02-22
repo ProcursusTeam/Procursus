@@ -1,0 +1,5 @@
+#!/bin/sh
+set -e
+if [ "$1" = "remove" ]; then
+        update-alternatives --remove unrar @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/unrar-nonfree
+fi
