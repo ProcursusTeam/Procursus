@@ -19,13 +19,16 @@ ipatool:
 else
 ipatool: ipatool-setup
 	cd $(BUILD_WORK)/ipatool; \
+		swift build -c release --build-path ./.build_host; \
+	
+	cd $(BUILD_WORK)/ipatool; \
 		swift build -c release \
 		-Xswiftc -sdk -Xswiftc $(TARGET_SYSROOT) \
 		-Xswiftc -target -Xswiftc $(LLVM_TARGET)
 	
-	$(BUILD_WORK)/ipatool/.build/release/ipatool --generate-completion-script zsh > $(BUILD_STAGE)/ipatool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/site-functions/_ipatool
- 	$(BUILD_WORK)/ipatool/.build/release/ipatool --generate-completion-script bash > $(BUILD_STAGE)/ipatool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/ipatool
- 	$(BUILD_WORK)/ipatool/.build/release/ipatool --generate-completion-script fish > $(BUILD_STAGE)/ipatool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/fish/vendor_completions.d/ipatool.fish
+	$(BUILD_WORK)/ipatool/.build_host/release/ipatool --generate-completion-script zsh > $(BUILD_STAGE)/ipatool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/site-functions/_ipatool
+	$(BUILD_WORK)/ipatool/.build_host/release/ipatool --generate-completion-script bash > $(BUILD_STAGE)/ipatool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/ipatool
+	$(BUILD_WORK)/ipatool/.build_host/release/ipatool --generate-completion-script fish > $(BUILD_STAGE)/ipatool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/fish/vendor_completions.d/ipatool.fish
 	cp $(BUILD_WORK)/ipatool/.build/release/ipatool $(BUILD_STAGE)/ipatool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
 		
 	$(call AFTER_BUILD)
