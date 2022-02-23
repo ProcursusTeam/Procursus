@@ -1,0 +1,12 @@
+Package: kimg4
+Version: @DEB_KIMG4_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Author: kritanta
+Section: Python
+Depends: pyaes
+Priority: optional
+Homepage: https://github.com/ricmoo/pyaes
+Description: Pure Python library for IMG4 format.
+ kimg4 is a Pure Python library for dealing with
+ Apple's propriatary IMG4 format
