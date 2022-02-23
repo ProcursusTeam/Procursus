@@ -19,7 +19,7 @@ gh: gh-setup
 	cd $(BUILD_WORK)/gh; \
 		CGO_CC="$(CC_FOR_BUILD)" CGO_CFLAGS="$(CFLAGS_FOR_BUILD)" CGO_CPPFLAGS="$(CPPFLAGS_FOR_BUILD)" CGO_LDFLAGS="$(LDFLAGS_FOR_BUILD)" go build \
 			-trimpath \
-			-o bin/gh-host \
+			-o $(BUILD_WORK)/gh/bin/gh-host \
 			$(BUILD_WORK)/gh/cmd/gh
 
 	cd $(BUILD_WORK)/gh; \
@@ -27,14 +27,16 @@ gh: gh-setup
 			-trimpath \
 			-ldflags "-X github.com/cli/cli/v2/internal/build.Date=$(shell date -u +%Y-%m-%d) \
 				-X github.com/cli/cli/v2/internal/build.Version=$(GH_VERSION)-procursus " \
-			-o $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gh \
+			-o $(BUILD_WORK)/gh/bin/gh \
 			$(BUILD_WORK)/gh/cmd/gh
 
 	cd $(BUILD_WORK)/gh; \
 		go run $(BUILD_WORK)/gh/cmd/gen-docs \
 			--man-page \
-			--doc-path $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/
-
+			--doc-path $(BUILD_WORK)/gh/share/man/man1/
+	
+	$(INSTALL) -Dm755 $(BUILD_WORK)/gh/bin/gh $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gh
+	cp -a $(BUILD_WORK)/gh/share $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	$(BUILD_WORK)/gh/bin/gh-host completion zsh > $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/site-functions/_gh
 	$(BUILD_WORK)/gh/bin/gh-host completion bash > $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/gh
 	$(BUILD_WORK)/gh/bin/gh-host completion fish > $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/fish/vendor_completions.d/gh.fish
