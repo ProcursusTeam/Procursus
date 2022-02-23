@@ -1,0 +1,11 @@
+Package: pyaes
+Version: @DEB_PYAES_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Author: Richard Moore <github@ricmoo.com>
+Section: Python
+Depends: python3
+Priority: optional
+Homepage: https://github.com/ricmoo/pyaes
+Description: Pure Python implementation of AES
+ block-cipher and common modes of operation
