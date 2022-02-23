@@ -23,6 +23,8 @@ gh: gh-setup
 	$(BUILD_WORK)/gh/bin/gh completion bash > $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/gh
 	$(BUILD_WORK)/gh/bin/gh completion fish > $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/fish/vendor_completions.d/gh.fish
 	
+	+$(MAKE) -C $(BUILD_WORK)/gh clean
+
 	+$(MAKE) -C $(BUILD_WORK)/gh bin/gh \
 		$(DEFAULT_GOLANG_FLAGS) \
 		GH_VERSION="v$(GH_VERSION)-procursus"
