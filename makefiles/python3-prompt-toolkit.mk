@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS                    += python3-prompt-toolkit
-PYTHON3-PROMPT-TOOLKIT_VERSION := 3.0.18
+PYTHON3-PROMPT-TOOLKIT_VERSION := 3.0.25
 DEB_PYTHON3-PROMPT-TOOLKIT_V   ?= $(PYTHON3-PROMPT-TOOLKIT_VERSION)-1
 
 python3-prompt-toolkit-setup: setup
