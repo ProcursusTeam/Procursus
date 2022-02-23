@@ -9,13 +9,20 @@ DEB_GH_V    ?= $(GH_VERSION)
 gh-setup: setup
 	$(call GITHUB_ARCHIVE,cli,cli,$(GH_VERSION),v$(GH_VERSION),gh)
 	$(call EXTRACT_TAR,gh-$(GH_VERSION).tar.gz,cli-$(GH_VERSION),gh)
-	mkdir -p $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	mkdir -p $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/{zsh/site-functions,bash-completion/completions,fish/vendor_completions.d}}
 
 ifneq ($(wildcard $(BUILD_WORK)/gh/.build_complete),)
 gh:
 	@echo "Using previously built gh."
 else
 gh: gh-setup
+	+$(MAKE) -C $(BUILD_WORK)/gh bin/gh \
+		CGO_CC="$(CC_FOR_BUILD)" CGO_CFLAGS="$(CFLAGS_FOR_BUILD)" CGO_CPPFLAGS="$(CPPFLAGS_FOR_BUILD)" CGO_LDFLAGS="$(LDFLAGS_FOR_BUILD)" \
+		GH_VERSION="v$(GH_VERSION)-procursus"
+	$(BUILD_WORK)/gh/bin/gh completion zsh > $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/site-functions/_gh
+	$(BUILD_WORK)/gh/bin/gh completion bash > $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/gh
+	$(BUILD_WORK)/gh/bin/gh completion fish > $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/fish/vendor_completions.d/gh.fish
+	
 	+$(MAKE) -C $(BUILD_WORK)/gh bin/gh \
 		$(DEFAULT_GOLANG_FLAGS) \
 		GH_VERSION="v$(GH_VERSION)-procursus"
