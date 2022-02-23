@@ -10,7 +10,7 @@ DEB_CHEZMOI_V   ?= $(CHEZMOI_VERSION)
 chezmoi-setup: setup
 	$(call GITHUB_ARCHIVE,twpayne,chezmoi,$(CHEZMOI_VERSION),v$(CHEZMOI_VERSION))
 	$(call EXTRACT_TAR,chezmoi-$(CHEZMOI_VERSION).tar.gz,chezmoi-$(CHEZMOI_VERSION),chezmoi)
-	mkdir -p $(BUILD_STAGE)/chezmoi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	mkdir -p $(BUILD_STAGE)/chezmoi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/{zsh/site-functions,bash-completion/completions,fish/vendor_completions.d}}
 
 ifneq ($(wildcard $(BUILD_WORK)/chezmoi/.build_complete),)
 chezmoi:
@@ -28,6 +28,13 @@ endif
 			-X main.commit=$(CHEZMOI_COMMIT) \
 			-X main.builtBy=Procursus \
 			-X main.date=$(shell date -u +%Y-%m-%dT%H:%M:%SZ)"
+	cd $(BUILD_WORK)/chezmoi && \
+		CGO_CC="$(CC_FOR_BUILD)" CGO_CFLAGS="$(CFLAGS_FOR_BUILD)" CGO_CPPFLAGS="$(CPPFLAGS_FOR_BUILD)" CGO_LDFLAGS="$(LDFLAGS_FOR_BUILD)" \
+		go build -o chezmoi-host
+
+	$(BUILD_WORK)/chezmoi/chezmoi-host completion zsh > $(BUILD_STAGE)/chezmoi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/site-functions/_chezmoi
+	$(BUILD_WORK)/chezmoi/chezmoi-host completion bash > $(BUILD_STAGE)/chezmoi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/chezmoi
+	$(BUILD_WORK)/chezmoi/chezmoi-host completion fish > $(BUILD_STAGE)/chezmoi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/fish/vendor_completions.d/chezmoi.fish
 	cp -a $(BUILD_WORK)/chezmoi/chezmoi $(BUILD_STAGE)/chezmoi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	$(call AFTER_BUILD)
 endif
