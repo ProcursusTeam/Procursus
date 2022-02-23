@@ -11,7 +11,7 @@ DEB_NETWORK-CMDS_V   ?= $(NETWORK-CMDS_VERSION)
 network-cmds-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,network_cmds,$(NETWORK-CMDS_VERSION),network_cmds-$(NETWORK-CMDS_VERSION))
 	$(call EXTRACT_TAR,network_cmds-$(NETWORK-CMDS_VERSION).tar.gz,network_cmds-network_cmds-$(NETWORK-CMDS_VERSION),network-cmds)
-	mkdir -p $(BUILD_STAGE)/network-cmds/{{s,}bin,usr/{{s,}bin,libexec,share/man/man{1,8}}}
+	mkdir -p $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)/{{s,}bin,var/tmp/PanicDumps,Library/LaunchDaemons,$(MEMO_SUB_PREFIX)/{{s,}bin,libexec,share/man/man{1,8}}}
 
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/network-cmds/include/{os,sys,firehose,arm,machine}
@@ -75,6 +75,8 @@ network-cmds: network-cmds-setup libpcap
 		$(LN_S) ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/$$bin $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)/sbin; \
 	done
 	$(LN_S) ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/ping6 $(BUILD_STAGE)/network-cmds/bin
+	sed -e 's|/var|$(MEMO_PREFIX)/var|g' -e 's|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PRRFIX)|g' < $(BUILD_WORK)/network-cmds/kdumpd.tproj/com.apple.kdumpd.plist > $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)/Library/LaunchDaemons/com.apple.kdumpd.plist
+	chmod 1755 $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)/var/tmp/PanicDumps
 	$(call AFTER_BUILD)
 endif
 
@@ -87,6 +89,9 @@ network-cmds-package: network-cmds-stage
 
 	# network-cmds.mk Sign
 	$(call SIGN,network-cmds,general.xml)
+
+	# network-cmds.mk Permissions
+	$(FAKEROOT) chown nobody:nogroup $(BUILD_DIST)/network-cmds/$(MEMO_PREFIX)/var/tmp/PanicDumps
 
 	# network-cmds.mk Make .debs
 	$(call PACK,network-cmds,DEB_NETWORK-CMDS_V)
