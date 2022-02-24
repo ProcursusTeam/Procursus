@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += duf
-DUF_VERSION  := 0.6.2
+DUF_VERSION  := 0.8.1
 DEB_DUF_V    ?= $(DUF_VERSION)
 
 duf-setup: setup
