@@ -16,7 +16,7 @@ ifneq ($(wildcard $(BUILD_WORK)/ktool/.build_complete),)
 ktool:
 	@echo "Using previously built ktool."
 else
-ktool: ktool-setup kimg4 pyaes pygments
+ktool: ktool-setup python3-kimg4 python3-pyaes pygments python3
 	cd $(BUILD_WORK)/ktool && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py \
 		build \
 		--executable="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3" \
