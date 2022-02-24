@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS           += pluto-keyring
-PLUTO_KEYRING_VERSION  := 2021.07.10
+PLUTO_KEYRING_VERSION  := 2022.02.22
 DEB_PLUTO_KEYRING_V    ?= $(PLUTO_KEYRING_VERSION)
 
 ifneq ($(wildcard $(BUILD_STAGE)/pluto-keyring/.build_complete),)
