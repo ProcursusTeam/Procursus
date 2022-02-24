@@ -2,14 +2,15 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += ktool
-KTOOL_VERSION := 0.20.1
-DEB_KTOOL_V   ?= $(KTOOL_VERSION)
+SUBPROJECTS    += ktool
+# Get rid of this variable at some point
+KTOOL_TVERSION := 1.0.0rc0
+KTOOL_VERSION  := 1.0.0~rc0
+DEB_KTOOL_V    ?= $(KTOOL_VERSION)
 
 ktool-setup: setup
-	$(call GITHUB_ARCHIVE,cxnder,ktool,$(KTOOL_VERSION),$(KTOOL_VERSION))
-	$(call EXTRACT_TAR,ktool-$(KTOOL_VERSION).tar.gz,ktool-$(KTOOL_VERSION),ktool)
-	$(call DO_PATCH,ktool,ktool,-p1)
+	$(call GITHUB_ARCHIVE,cxnder,ktool,$(KTOOL_VERSION),$(KTOOL_TVERSION))
+	$(call EXTRACT_TAR,ktool-$(KTOOL_VERSION).tar.gz,ktool-$(KTOOL_TVERSION),ktool)
 
 ifneq ($(wildcard $(BUILD_WORK)/ktool/.build_complete),)
 ktool:
