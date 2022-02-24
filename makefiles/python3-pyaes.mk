@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/pyaes/.build_complete),)
 python3-pyaes:
 	@echo "Using previously built pyaes."
 else
-python3-pyaes: python3-pyaes-setup python3
+python3-pyaes: python3-pyaes-setup
 	cd $(BUILD_WORK)/pyaes && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py \
 		build \
 		--executable="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3" \
