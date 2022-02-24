@@ -2,7 +2,7 @@ Package: python3-kimg4
 Version: @DEB_PYTHON3_KIMG4_V@
 Architecture: all
 Maintainer: @DEB_MAINTAINER@
-Author: cynder
+Author: cynder <kat@cynder.me>
 Section: Python
 Depends: python3, python3-pyaes
 Priority: optional

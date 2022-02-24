@@ -1,7 +1,7 @@
 Package: ktool
 Version: @DEB_KTOOL_V@
 Architecture: all
-Author: cynder
+Author: cynder <kat@cynder.me>
 Maintainer: @DEB_MAINTAINER@
 Depends: python3-kimg4, python3-pyaes, python3-pygments, python3
 Section: Python
