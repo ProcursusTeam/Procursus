@@ -2,19 +2,19 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += pyaes
-PYAES_VERSION := 1.6.1
-DEB_PYAES_V   ?= $(PYAES_VERSION)
+SUBPROJECTS           += python3-pyaes
+PYTHON3_PYAES_VERSION := 1.6.1
+DEB_PYTHON3_PYAES_V   ?= $(PYTHON3_PYAES_VERSION)
 
-pyaes-setup: setup
-	$(call GITHUB_ARCHIVE,ricmoo,pyaes,$(PYAES_VERSION),v$(PYAES_VERSION))
-	$(call EXTRACT_TAR,pyaes-$(PYAES_VERSION).tar.gz,pyaes-$(PYAES_VERSION),pyaes)
+python3-pyaes-setup: setup
+	$(call GITHUB_ARCHIVE,ricmoo,pyaes,$(PYTHON3_PYAES_VERSION),v$(PYTHON3_PYAES_VERSION))
+	$(call EXTRACT_TAR,pyaes-$(PYTHON3_PYAES_VERSION).tar.gz,pyaes-$(PYTHON3_PYAES_VERSION),pyaes)
 
 ifneq ($(wildcard $(BUILD_WORK)/pyaes/.build_complete),)
-pyaes:
+python3-pyaes:
 	@echo "Using previously built pyaes."
 else
-pyaes: pyaes-setup python3
+python3-pyaes: python3-pyaes-setup python3
 	cd $(BUILD_WORK)/pyaes && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py \
 		build \
 		--executable="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3" \
@@ -26,7 +26,7 @@ pyaes: pyaes-setup python3
 	$(call AFTER_BUILD)
 endif
 
-pyaes-package: pyaes-stage
+python3-pyaes-package: python3-pyaes-stage
 	# pyaes.mk Package Structure
 	rm -rf $(BUILD_DIST)/pyaes
 
@@ -34,9 +34,9 @@ pyaes-package: pyaes-stage
 	cp -a $(BUILD_STAGE)/pyaes $(BUILD_DIST)
 
 	#pyaes.mk Make .debs
-	$(call PACK,pyaes,DEB_PYAES_V)
+	$(call PACK,python3-pyaes,DEB_PYTHON3_PYAES_V)
 
 	# pyaes.mk Build cleanup
 	rm -rf $(BUILD_DIST)/pyaes
 
-.PHONY: pyaes pyaes-package
+.PHONY: python3-pyaes python3-pyaes-package
