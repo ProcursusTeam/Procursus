@@ -31,7 +31,7 @@ endif
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DBUILD_VIEWER=FALSE \
 		-DUSE_JAVA=FALSE \
-		-DGETTEXT_MSGFMT_EXECUTABLE=$(shell which msgfmt)
+		-DGETTEXT_MSGFMT_EXECUTABLE=$(shell command -v msgfmt)
 	+$(MAKE) -i -C $(BUILD_WORK)/tigervnc
 	+$(MAKE) -i -C $(BUILD_WORK)/tigervnc install \
 		DESTDIR=$(BUILD_STAGE)/tigervnc

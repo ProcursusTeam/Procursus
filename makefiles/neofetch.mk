@@ -3,13 +3,15 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += neofetch
-NEOFETCH_COMMIT  := 611117f4af527de3b81bc92c74ae976e130d39e6
-NEOFETCH_VERSION := 7.1.0+20210611.$(shell echo $(NEOFETCH_COMMIT) | cut -c -7) #TODO: Switch back to releases once a new version releases
+NEOFETCH_COMMIT  := ccd5d9f52609bbdcd5d8fa78c4fdb0f12954125f
+NEOFETCH_VERSION := 7.1.0+20220216.$(shell echo $(NEOFETCH_COMMIT) | cut -c -7)
+#TODO: Switch back to releases once a new version releases
 DEB_NEOFETCH_V   ?= $(NEOFETCH_VERSION)
 
 neofetch-setup: setup
 	$(call GITHUB_ARCHIVE,dylanaraps,neofetch,$(NEOFETCH_COMMIT),$(NEOFETCH_COMMIT))
 	$(call EXTRACT_TAR,neofetch-$(NEOFETCH_COMMIT).tar.gz,neofetch-$(NEOFETCH_COMMIT),neofetch)
+	$(call DO_PATCH,neofetch,neofetch,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/neofetch/.build_complete),)
 neofetch:
