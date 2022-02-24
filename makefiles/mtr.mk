@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += mtr
-MTR_VERSION := 0.94
+MTR_VERSION := 0.95
 DEB_MTR_V   ?= $(MTR_VERSION)
 
 mtr-setup: setup
