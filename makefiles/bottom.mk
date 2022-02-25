@@ -16,7 +16,7 @@ bottom:
 else
 bottom: bottom-setup
 	# Edit package version number to match control version
-	$(SED) -i 's|.version(crate_version!())|.version("$(DEB_BOTTOM_V)")|g' $(BUILD_WORK)/bottom/src/main.rs
+	sed -i 's|.version(crate_version!())|.version("$(DEB_BOTTOM_V)")|g' $(BUILD_WORK)/bottom/src/main.rs
 	cd $(BUILD_WORK)/bottom && $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \
 		--target=$(RUST_TARGET)
