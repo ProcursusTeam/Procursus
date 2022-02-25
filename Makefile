@@ -242,7 +242,7 @@ DEB_ARCH              := watchos-arm64-32
 GNU_HOST_TRIPLE       := aarch64-apple-darwin
 PLATFORM_VERSION_MIN  := -mwatchos-version-min=$(WATCHOS_DEPLOYMENT_TARGET)
 RUST_TARGET           := aarch64-apple-watchos
-LLVM_TARGET           := arm64-apple-watchos$(WATCHOS_DEPLOYMENT_TARGET)
+LLVM_TARGET           := arm64_32-apple-watchos$(WATCHOS_DEPLOYMENT_TARGET)
 MEMO_PREFIX           ?=
 MEMO_SUB_PREFIX       ?= /usr
 MEMO_ALT_PREFIX       ?= /local
