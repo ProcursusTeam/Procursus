@@ -11,24 +11,29 @@ DEB_SHELL-CMDS_V   ?= $(SHELL-CMDS_VERSION)
 shell-cmds-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,shell_cmds,$(SHELL-CMDS_VERSION),shell_cmds-$(SHELL-CMDS_VERSION))
 	$(call EXTRACT_TAR,shell_cmds-$(SHELL-CMDS_VERSION).tar.gz,shell_cmds-shell_cmds-$(SHELL-CMDS_VERSION),shell-cmds)
+	sed -i 's|/bin:/usr/bin|$(MEMO_PREFIX)/bin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin|g' $(BUILD_WORK)/shell-cmds/su/su.c
+	sed -i 's|/etc|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/etc|g' $(BUILD_WORK)/shell-cmds/path_helper/path_helper.c
 
 ifneq ($(wildcard $(BUILD_WORK)/shell-cmds/.build_complete),)
 shell-cmds:
 	@echo "Using previously built shell-cmds."
 else
 shell-cmds: shell-cmds-setup openpam
-	mkdir -p $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX){/bin,/etc/pam.d,$(MEMO_SUB_PREFIX)/{bin,share/man/man{1,8}}}
+	mkdir -p $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX){/bin,/etc/pam.d,$(MEMO_SUB_PREFIX)/{bin,libexec,share/man/man{1,8}}}
 	-cd $(BUILD_WORK)/shell-cmds; \
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/hexdump hexdump/{conv,display,hexdump,hexsyntax,odsyntax,parse}.c -D'__FBSDID(x)=' -D__DARWIN_C_LEVEL=200112L; \
 	cp -a hexdump/hexdump.1 $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/su su/su.c -D'__FBSDID(x)=' $(LDFLAGS) -lpam; \
 	cp -a su/su.1 $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
 	cp -a $(BUILD_MISC)/pam/su $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)/etc/pam.d; \
-	for bin in killall renice script time which getopt what; do \
-		$(CC) $(CFLAGS) $(LDFLAGS) -o $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -save-temps; \
+	for bin in killall renice script time which getopt what jot apply shlock systime w whereis; do \
+		echo $$bin; \
+		$(CC) $(CFLAGS) $(LDFLAGS) -o $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -DHAVE_UTMPX=1 -save-temps; \
 		cp -a $$bin/$$bin.1 $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 2>/dev/null; \
 		cp -a $$bin/$$bin.8 $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8 2>/dev/null; \
-	done
+	done; \
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/path_helper path_helper/path_helper.c -save-temps; \
+	cp -a path_helper/path_helper.8 $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8; \
 	$(call AFTER_BUILD)
 endif
 
