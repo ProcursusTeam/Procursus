@@ -32,7 +32,7 @@ mtr-package: mtr-stage
 	mkdir -p $(BUILD_DIST)/mtr
 
 	# mtr.mk Prep mtr
-	cp -a $(BUILD_STAGE)/mtr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/mtr
+	cp -a $(BUILD_STAGE)/mtr $(BUILD_DIST)
 
 	# mtr.mk Sign
 	$(call SIGN,mtr,general.xml)
