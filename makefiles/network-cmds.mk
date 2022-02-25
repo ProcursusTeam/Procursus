@@ -75,7 +75,7 @@ network-cmds: network-cmds-setup libpcap
 		$(LN_S) ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/$$bin $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)/sbin; \
 	done
 	$(LN_S) ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/ping6 $(BUILD_STAGE)/network-cmds/bin
-	sed -e 's|/var|$(MEMO_PREFIX)/var|g' -e 's|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PRRFIX)|g' < $(BUILD_WORK)/network-cmds/kdumpd.tproj/com.apple.kdumpd.plist > $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)/Library/LaunchDaemons/com.apple.kdumpd.plist
+	sed -e 's|/var|$(MEMO_PREFIX)/var|g' -e 's|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' < $(BUILD_WORK)/network-cmds/kdumpd.tproj/com.apple.kdumpd.plist > $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)/Library/LaunchDaemons/com.apple.kdumpd.plist
 	chmod 1755 $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)/var/tmp/PanicDumps
 	$(call AFTER_BUILD)
 endif
