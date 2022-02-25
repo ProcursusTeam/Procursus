@@ -9,7 +9,7 @@ DEB_DUF_V    ?= $(DUF_VERSION)
 duf-setup: setup
 	$(call GITHUB_ARCHIVE,muesli,duf,$(DUF_VERSION),v$(DUF_VERSION))
 	$(call EXTRACT_TAR,duf-$(DUF_VERSION).tar.gz,duf-$(DUF_VERSION),duf)
-	mkdir -p $(BUILD_STAGE)/duf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	mkdir -p $(BUILD_STAGE)/duf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 
 ifneq ($(wildcard $(BUILD_WORK)/duf/.build_complete),)
 duf:
@@ -19,6 +19,7 @@ duf: duf-setup
 	cd $(BUILD_WORK)/duf && $(DEFAULT_GOLANG_FLAGS) go build \
 			-o $(BUILD_WORK)/duf/duf
 	$(INSTALL) -Dm755 $(BUILD_WORK)/duf/duf $(BUILD_STAGE)/duf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
+	$(INSTALL) -Dm644 $(BUILD_WORK)/duf/duf.1 $(BUILD_STAGE)/duf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/duf.1
 	$(call AFTER_BUILD)
 endif
 
