@@ -7,4 +7,3 @@ Section: Administration
 Priority: important
 Multi-Arch: foreign
 Description: at-a-glance process watching tool
-Tag: purpose::console, role::hacker

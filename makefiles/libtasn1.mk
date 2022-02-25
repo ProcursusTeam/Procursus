@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS    += libtasn1
-LIBTASN1_VERSION := 4.17.0
+LIBTASN1_VERSION := 4.18.0
 DEB_LIBTASN1_V   ?= $(LIBTASN1_VERSION)
 
 libtasn1-setup: setup
@@ -21,9 +21,7 @@ libtasn1: libtasn1-setup
 	+$(MAKE) -C $(BUILD_WORK)/libtasn1
 	+$(MAKE) -C $(BUILD_WORK)/libtasn1 install \
 		DESTDIR=$(BUILD_STAGE)/libtasn1
-	+$(MAKE) -C $(BUILD_WORK)/libtasn1 install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libtasn1-package: libtasn1-stage

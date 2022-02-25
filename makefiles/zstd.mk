@@ -3,11 +3,14 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += zstd
-ZSTD_VERSION  := 1.5.0
+ZSTD_VERSION  := 1.5.2
 DEB_ZSTD_V    ?= $(ZSTD_VERSION)
 
 zstd-setup: setup
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/facebook/zstd/releases/download/v$(ZSTD_VERSION)/zstd-$(ZSTD_VERSION).tar.gz{,.sig,.sha256}
 	$(call GITHUB_ARCHIVE,facebook,zstd,$(ZSTD_VERSION),v$(ZSTD_VERSION))
+	$(call CHECKSUM_VERIFY,sha256,zstd-$(ZSTD_VERSION).tar.gz)
+	$(call PGP_VERIFY,zstd-$(ZSTD_VERSION).tar.gz)
 	$(call EXTRACT_TAR,zstd-$(ZSTD_VERSION).tar.gz,zstd-$(ZSTD_VERSION),zstd)
 
 ifneq ($(wildcard $(BUILD_WORK)/zstd/.build_complete),)
@@ -15,17 +18,12 @@ zstd:
 	@echo "Using previously built zstd."
 else
 zstd: zstd-setup lz4 xz
-	$(SED) -i s/'UNAME := $$(shell uname)'/'UNAME := Darwin'/ $(BUILD_WORK)/zstd/lib/Makefile
+	sed -i s/'UNAME := $$(shell uname)'/'UNAME := Darwin'/ $(BUILD_WORK)/zstd/lib/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/zstd install \
+		LZMALD="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/liblzma.dylib" \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR=$(BUILD_STAGE)/zstd
-	+$(MAKE) -C $(BUILD_WORK)/zstd install \
-		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		DESTDIR=$(BUILD_BASE)
-	+$(MAKE) -C $(BUILD_WORK)/zstd/contrib/pzstd install \
-		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		DESTDIR=$(BUILD_STAGE)/zstd
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 zstd-package: zstd-stage

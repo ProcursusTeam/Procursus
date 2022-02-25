@@ -6,4 +6,3 @@ Depends: libplist3
 Section: Development
 Priority: standard
 Description: USB multiplexor daemon for iPhone and iPod Touch devices
-Tag: purpose::library, role::developer

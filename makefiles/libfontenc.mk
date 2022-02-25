@@ -21,9 +21,7 @@ libfontenc: libfontenc-setup
 	+$(MAKE) -C $(BUILD_WORK)/libfontenc
 	+$(MAKE) -C $(BUILD_WORK)/libfontenc install \
 		DESTDIR=$(BUILD_STAGE)/libfontenc
-	+$(MAKE) -C $(BUILD_WORK)/libfontenc install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libfontenc-package: libfontenc-stage

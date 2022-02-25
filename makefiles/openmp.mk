@@ -25,11 +25,8 @@ openmp: openmp-setup
 	+$(MAKE) -C $(BUILD_WORK)/openmp
 	+$(MAKE) -C $(BUILD_WORK)/openmp install \
 		DESTDIR="$(BUILD_STAGE)/openmp"
-	+$(MAKE) -C $(BUILD_WORK)/openmp install \
-		DESTDIR="$(BUILD_BASE)"
 
-	ln -sf libomp.1.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libomp.dylib
-	ln -sf libomp.1.dylib $(BUILD_STAGE)/openmp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libomp.dylib
+	$(LN_S) libomp.1.dylib $(BUILD_STAGE)/openmp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libomp.dylib
 
 	# Static lib
 	cd $(BUILD_WORK)/openmp && cmake . \
@@ -41,9 +38,7 @@ openmp: openmp-setup
 	+$(MAKE) -C $(BUILD_WORK)/openmp
 	+$(MAKE) -C $(BUILD_WORK)/openmp install \
 		DESTDIR="$(BUILD_STAGE)/openmp"
-	+$(MAKE) -C $(BUILD_WORK)/openmp install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 openmp-package: openmp-stage

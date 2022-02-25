@@ -22,9 +22,7 @@ libdca: libdca-setup
 	+$(MAKE) -C $(BUILD_WORK)/libdca
 	+$(MAKE) -C $(BUILD_WORK)/libdca install \
 		DESTDIR=$(BUILD_STAGE)/libdca
-	+$(MAKE) -C $(BUILD_WORK)/libdca install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libdca-package: libdca-stage
@@ -32,26 +30,26 @@ libdca-package: libdca-stage
 	rm -rf $(BUILD_DIST)/libdca{0,-dev,-utils}
 	mkdir -p $(BUILD_DIST)/libdca{0,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	mkdir -p $(BUILD_DIST)/libdca-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libdca.mk Prep libdca0
 	cp -a $(BUILD_STAGE)/libdca/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdca.0.dylib $(BUILD_DIST)/libdca0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libdca.mk Prep libdca-dev
 	cp -a $(BUILD_STAGE)/libdca/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libdca-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/libdca/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libdca.{dylib,a}} $(BUILD_DIST)/libdca-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libdca.mk Prep libdca-utils
 	cp -a $(BUILD_STAGE)/libdca/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/libdca-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	
+
 	# libdca.mk Sign
 	$(call SIGN,libdca0,general.xml)
 	$(call SIGN,libdca-utils,general.xml)
-	
+
 	# libdca.mk Make .debs
 	$(call PACK,libdca0,DEB_LIBDCA_V)
 	$(call PACK,libdca-dev,DEB_LIBDCA_V)
 	$(call PACK,libdca-utils,DEB_LIBDCA_V)
-	
+
 	# libdca.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libdca{0,-dev,-utils}
 

@@ -89,7 +89,7 @@ network-cmds-setup: setup
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/mbuf.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/sockio.h
 
-	$(SED) -i 's/#if INET6/#ifdef INET6/g' $(BUILD_WORK)/network-cmds/include/sys/sockio.h
+	sed -i 's/#if INET6/#ifdef INET6/g' $(BUILD_WORK)/network-cmds/include/sys/sockio.h
 
 ifneq ($(wildcard $(BUILD_WORK)/network-cmds/.build_complete),)
 network-cmds:
@@ -107,9 +107,9 @@ network-cmds: network-cmds-setup
 	cp -a $(BUILD_WORK)/network-cmds/{arp,ndp,traceroute,mnc,mtest,traceroute6,ifconfig,ip6addrctl,netstat,ping6,route,rtsol} $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 	cd $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin; \
 	for bin in ifconfig ip6addrctl netstat ping6 route rtsol; do \
-		$(LN) -sf ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/$$bin $(BUILD_STAGE)/network-cmds/sbin; \
+		$(LN_S) ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/$$bin $(BUILD_STAGE)/network-cmds/sbin; \
 	done
-	$(LN) -sf ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/ping6 $(BUILD_STAGE)/network-cmds/bin
+	$(LN_S) ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/ping6 $(BUILD_STAGE)/network-cmds/bin
 	$(call AFTER_BUILD)
 endif
 

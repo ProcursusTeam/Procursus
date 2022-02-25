@@ -1,0 +1,10 @@
+Package: libalac-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_ALAC_V@
+Section: Development
+Depends: libalac0
+Description: Apple Lossless Audio Codec.
+ The Apple Lossless Audio Codec project contains the sources for the ALAC encoder and decoder.
+ .
+ This package contains the static library and header file.

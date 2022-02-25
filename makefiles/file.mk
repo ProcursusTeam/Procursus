@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += file
-FILE_VERSION   := 5.40
+FILE_VERSION   := 5.41
 DEB_FILE_V     ?= $(FILE_VERSION)
 
 file-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) ftp://ftp.astron.com/pub/file/file-$(FILE_VERSION).tar.gz{,.asc}
+	wget -q -nc -P $(BUILD_SOURCE) https://astron.com/pub/file/file-$(FILE_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,file-$(FILE_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,file-$(FILE_VERSION).tar.gz,file-$(FILE_VERSION),file)
 
@@ -16,11 +16,12 @@ file:
 	@echo "Using previously built file."
 else
 file: file-setup xz
-	rm -rf $(BUILD_WORK)/file/native
-	mkdir -p $(BUILD_WORK)/file/native
-	+unset CC CFLAGS CXXFLAGS CPPFLAGS LDFLAGS; \
-		cd $(BUILD_WORK)/file/native && $(BUILD_WORK)/file/configure; \
-		$(MAKE) -C $(BUILD_WORK)/file/native
+#	Native build
+	rm -rf $(BUILD_WORK)/file/native && mkdir -p $(BUILD_WORK)/file/native
+	cd $(BUILD_WORK)/file/native && $(BUILD_WORK)/file/configure \
+		$(BUILD_CONFIGURE_FLAGS)
+	$(MAKE) -C $(BUILD_WORK)/file/native
+
 	cd $(BUILD_WORK)/file && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-libseccomp \
@@ -29,9 +30,7 @@ file: file-setup xz
 		FILE_COMPILE="$(BUILD_WORK)/file/native/src/file"
 	+$(MAKE) -C $(BUILD_WORK)/file install \
 		DESTDIR="$(BUILD_STAGE)/file"
-	+$(MAKE) -C $(BUILD_WORK)/file install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 file-package: file-stage

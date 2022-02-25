@@ -21,9 +21,7 @@ libplist: libplist-setup
 	+$(MAKE) -C $(BUILD_WORK)/libplist
 	+$(MAKE) -C $(BUILD_WORK)/libplist install \
 		DESTDIR="$(BUILD_STAGE)/libplist"
-	+$(MAKE) -C $(BUILD_WORK)/libplist install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libplist-package: .SHELLFLAGS=-O extglob -c

@@ -1,0 +1,20 @@
+diff -urN a/config.mk b/config.mk
+--- a/config.mk	2022-01-04 18:57:02.000000000 +0800
++++ b/config.mk	2022-01-04 18:57:41.000000000 +0800
+@@ -1,5 +1,5 @@
+-PREFIX    = /usr/local
+-MANPREFIX = $(PREFIX)/share/man
++PREFIX    ?= /usr/local
++MANPREFIX ?= $(PREFIX)/share/man
+ LIBEXEC   = libexec
+ 
+ WARN = -pedantic -Wdouble-promotion -Wformat=2 -Winit-self -Wmissing-include-dirs          \
+@@ -11,6 +11,6 @@
+        -Wunsuffixed-float-constants -Wsuggest-attribute=const -Wsuggest-attribute=noreturn \
+        -Wsuggest-attribute=pure -Wsuggest-attribute=format -Wnormalized=nfkc
+ 
+-CFLAGS   = -std=c99 -Wall -Wextra $(WARN) -O3
++CFLAGS   += -std=c99 -Wall -Wextra $(WARN) -O3
+ CPPFLAGS =
+-LDFLAGS  = -s -lkeccak
++LDFLAGS  += -s -lkeccak

@@ -7,4 +7,3 @@ Section: Development
 Priority: standard
 Description: SQLite 3 development files
 Homepage: https://www.sqlite.org/
-Tag: purpose::library

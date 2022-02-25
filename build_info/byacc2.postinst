@@ -1,0 +1,13 @@
+#! /bin/sh
+# postinst script for byacc2
+
+set -e
+
+if [ $1 != "upgrade" ] ; then
+	update-alternatives \
+		--install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/yacc yacc @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/byacc2 80 \
+		--slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/yacc.1@MEMO_MANPAGE_SUFFIX@ yaccman \
+			@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/byacc2.1@MEMO_MANPAGE_SUFFIX@
+fi
+
+exit 0

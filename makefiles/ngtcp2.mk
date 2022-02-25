@@ -10,6 +10,8 @@ DEB_NGTCP2_V   ?= $(NGTCP2_VERSION)
 ngtcp2-setup: setup
 	$(call GITHUB_ARCHIVE,ngtcp2,ngtcp2,$(NGTCP2_COMMIT),$(NGTCP2_COMMIT))
 	$(call EXTRACT_TAR,ngtcp2-$(NGTCP2_COMMIT).tar.gz,ngtcp2-$(NGTCP2_COMMIT),ngtcp2)
+	sed -i '1i #define\ __APPLE_USE_RFC_3542\ 1' $(BUILD_WORK)/ngtcp2/examples/shared.cc
+	sed -i '1i #define\ __APPLE_USE_RFC_3542\ 1' $(BUILD_WORK)/ngtcp2/examples/server.cc
 
 ifneq ($(wildcard $(BUILD_WORK)/ngtcp2/.build_complete),)
 ngtcp2:
@@ -26,12 +28,10 @@ ngtcp2: ngtcp2-setup gnutls nghttp3 libjemalloc libev
 	+$(MAKE) -C $(BUILD_WORK)/ngtcp2
 	+$(MAKE) -C $(BUILD_WORK)/ngtcp2 install \
 		DESTDIR="$(BUILD_STAGE)/ngtcp2"
-	+$(MAKE) -C $(BUILD_WORK)/ngtcp2 install \
-		DESTDIR="$(BUILD_BASE)"
 	mkdir -p $(BUILD_STAGE)/ngtcp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{,s}bin
 	cp $(BUILD_WORK)/ngtcp2/examples/.libs/gtlsserver $(BUILD_STAGE)/ngtcp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 	cp $(BUILD_WORK)/ngtcp2/examples/.libs/gtlsclient $(BUILD_STAGE)/ngtcp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 ngtcp2-package: ngtcp2-stage

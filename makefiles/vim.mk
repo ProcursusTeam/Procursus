@@ -17,7 +17,7 @@ vim:
 else
 vim: .SHELLFLAGS=-O extglob -c
 vim: vim-setup ncurses gettext
-	$(SED) -i 's/AC_TRY_LINK(\[]/AC_TRY_LINK(\[#include <termcap.h>]/g' $(BUILD_WORK)/vim/src/configure.ac # This is so stupid, I cannot believe this is necessary.
+	sed -i 's/AC_TRY_LINK(\[]/AC_TRY_LINK(\[#include <termcap.h>]/g' $(BUILD_WORK)/vim/src/configure.ac # This is so stupid, I cannot believe this is necessary.
 	cd $(BUILD_WORK)/vim/src && autoconf -f
 	cd $(BUILD_WORK)/vim && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
@@ -51,12 +51,12 @@ vim-package: vim-stage
 	# vim.mk Prep vim
 	cp -a $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/vim{.basic,tutor} $(BUILD_DIST)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{vim,man} $(BUILD_DIST)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	find $(BUILD_DIST)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name "xxd.1" -delete
+	find $(BUILD_DIST)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name "xxd.1$(MEMO_MANPAGE_SUFFIX)" -delete
 
 	# vim.mk Prep xxd
 	cp -a $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/xxd $(BUILD_DIST)/xxd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/xxd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	find $(BUILD_DIST)/xxd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f ! -name "xxd.1" -delete
+	find $(BUILD_DIST)/xxd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f ! -name "xxd.1$(MEMO_MANPAGE_SUFFIX)" -delete
 
 	# vim.mk Sign
 	$(call SIGN,vim,general.xml)

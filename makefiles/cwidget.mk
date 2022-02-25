@@ -9,7 +9,7 @@ DEB_CWIDGET_V   ?= $(CWIDGET_VERSION)
 cwidget-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://salsa.debian.org/cwidget-team/cwidget-upstream/-/archive/$(CWIDGET_VERSION)/cwidget-upstream-$(CWIDGET_VERSION).tar.gz
 	$(call EXTRACT_TAR,cwidget-upstream-$(CWIDGET_VERSION).tar.gz,cwidget-upstream-$(CWIDGET_VERSION),cwidget)
-	$(SED) -i '/#define THREADS_H/a #include <pthread.h>' $(BUILD_WORK)/cwidget/src/cwidget/generic/threads/threads.h
+	sed -i '/#define THREADS_H/a #include <pthread.h>' $(BUILD_WORK)/cwidget/src/cwidget/generic/threads/threads.h
 
 ifneq ($(wildcard $(BUILD_WORK)/cwidget/.build_complete),)
 cwidget:
@@ -17,7 +17,7 @@ cwidget:
 else
 cwidget: cwidget-setup gettext ncurses libsigcplusplus
 	rm -rf $(BUILD_WORK)/cwidget/m4/{libtool,lt*}.m4
-	$(SED) -i 's/libtoolize/$(LIBTOOLIZE)/' $(BUILD_WORK)/cwidget/autogen.sh
+	sed -i 's/libtoolize/$(LIBTOOLIZE)/' $(BUILD_WORK)/cwidget/autogen.sh
 	cd $(BUILD_WORK)/cwidget && ./autogen.sh \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-werror \
@@ -26,9 +26,7 @@ cwidget: cwidget-setup gettext ncurses libsigcplusplus
 		LIBS="-lncursesw  -lpthread -lsigc-2.0 -liconv -lintl -Wl,-framework -Wl,CoreFoundation"
 	+$(MAKE) -C $(BUILD_WORK)/cwidget install \
 		DESTDIR="$(BUILD_STAGE)/cwidget"
-	+$(MAKE) -C $(BUILD_WORK)/cwidget install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 cwidget-package: cwidget-stage

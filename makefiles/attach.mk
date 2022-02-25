@@ -6,7 +6,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS    += attach
 ATTACH_COMMIT  := d07a4867400284633cc9fe643751059afc96de4a
-ATTACH_VERSION := 0.0.3
+ATTACH_VERSION := 0.0.2+git20210424.$(shell echo $(ATTACH_COMMIT) | cut -c -7)
 DEB_ATTACH_V   ?= $(ATTACH_VERSION)
 
 attach-setup: setup
