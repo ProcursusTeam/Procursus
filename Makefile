@@ -833,6 +833,8 @@ PACK = \
 			fi; \
 		done; \
 	done; \
+	find $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)/etc -type f -printf '$(MEMO_PREFIX)/etc/%P\n' | LC_ALL=C sort >> $(BUILD_DIST)/$(1)/DEBIAN/conffiles; \
+	[ -s $(BUILD_DIST)/$(1)/DEBIAN/conffiles ] || rm $(BUILD_DIST)/$(1)/DEBIAN/conffiles; \
 	sed -i '$$a\' $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	cd $(BUILD_DIST)/$(1) && find . -type f ! -regex '.*.hg.*' ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -printf '"%P" ' | xargs md5sum > $(BUILD_DIST)/$(1)/DEBIAN/md5sums; \
 	$(FAKEROOT) chmod 0755 $(BUILD_DIST)/$(1)/DEBIAN/*; \
