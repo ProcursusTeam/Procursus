@@ -1,0 +1,3 @@
+@MEMO_PREFIX@/Library/LaunchDaemons/com.apple.telnetd.plist
+@MEMO_PREFIX@/Library/LaunchDaemons/com.apple.ntalkd.plist
+@MEMO_PREFIX@/Library/LaunchDaemons/com.apple.tftpd.plist
