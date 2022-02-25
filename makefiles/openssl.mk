@@ -27,6 +27,13 @@ openssl: openssl-setup
 			perlasm_scheme   => \"ios32\",\n\
 			disable          => [ \"async\" ],\n\
 		},\n\
+		\"darwin64-arm64_32\" => {\n\
+			inherit_from     => [ \"darwin-common\" ],\n\
+			CC               => add(\"-Wall\"),\n\
+			cflags           => add(\"-arch arm64_32\"),\n\
+			lib_cppflags     => add(\"-DL_ENDIAN\"),\n\
+			perlasm_scheme   => \"ios64\",\n\
+		},\n\
 	);" > $(BUILD_WORK)/openssl/Configurations/15-openssl.conf
 	cd $(BUILD_WORK)/openssl && ./Configure \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
