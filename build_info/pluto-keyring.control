@@ -1,8 +1,9 @@
-Package: pluto-keyring
+Package: Pluto-keyring
 Version: @DEB_PLUTO_KEYRING_V@
 Architecture: all
 Maintainer: @DEB_MAINTAINER@
+Author: Pluto <pluto.networks.repo@gmail.com>
 Section: Keyrings
 Priority: optional
-Description: GnuPG keys for Pluto repository
-Name: Pluto APT Keyring
+Homepage: https://repo.plutorepo.com/
+Description: GnuPG key for Pluto's repository

@@ -2,31 +2,25 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS           += pluto-keyring
-PLUTO_KEYRING_VERSION  := 2022.02.22
-DEB_PLUTO_KEYRING_V    ?= $(PLUTO_KEYRING_VERSION)
+SUBPROJECTS           += Pluto-keyring
+PLUTO_KEYRING_VERSION := 2022.02.25
+DEB_PLUTO_KEYRING_V   ?= $(PLUTO_KEYRING_VERSION)
 
-ifneq ($(wildcard $(BUILD_STAGE)/pluto-keyring/.build_complete),)
-pluto-keyring:
-	@echo "Using previously built pluto-keyring."
-else
-pluto-keyring: setup
-	mkdir -p $(BUILD_STAGE)/pluto-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	cp -a $(BUILD_MISC)/keyrings/pluto/pluto-repo.gpg $(BUILD_STAGE)/pluto-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	touch $(BUILD_STAGE)/pluto-keyring/.build_complete
-endif
+Pluto-keyring:
+	@echo "Pluto-keyring does not need to be built."
 
-pluto-keyring-package: pluto-keyring-stage
-	# pluto-keyring.mk Package Structure
-	rm -rf $(BUILD_DIST)/pluto-keyring
+Pluto-keyring-package: Pluto-keyring-stage
+	# Pluto-keyring.mk Package Structure
+	rm -rf $(BUILD_DIST)/Pluto-keyring
+	mkdir -p $(BUILD_DIST)/Pluto-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 
-	# pluto-keyring.mk Prep pluto-keyring
-	cp -a $(BUILD_STAGE)/pluto-keyring $(BUILD_DIST)
+	# Pluto-keyring.mk Prep Pluto-keyring
+	cp -a $(BUILD_MISC)/keyrings/Pluto/Pluto.gpg $(BUILD_DIST)/Pluto-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
 
-	# pluto-keyring.mk Make .debs
-	$(call PACK,pluto-keyring,DEB_PLUTO_KEYRING_V)
+	# Pluto-keyring.mk Make .debs
+	$(call PACK,Pluto-keyring,DEB_PLUTO_KEYRING_V)
 
-	# pluto-keyring.mk Build cleanup
-	rm -rf $(BUILD_DIST)/pluto-keyring
+	# Pluto-keyring.mk Build cleanup
+	rm -rf $(BUILD_DIST)/Pluto-keyring
 
-.PHONY: pluto-keyring pluto-keyring-package
+.PHONY: Pluto-keyring Pluto-keyring-package
