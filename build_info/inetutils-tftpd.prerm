@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+case "$1" in
+	(remove|purge)
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/org.gnu.inetutils.tftpd.plist;
+	pw user del _tftpd
+	;;
+	(*)
+	exit 0
+	;;
+	esac
+
+exit 0
+

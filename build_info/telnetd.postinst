@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "configure" ]; then
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/com.apple.telnetd.plist
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl enable system/com.apple.telnetd
+fi

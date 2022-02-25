@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+set -e
+
+if [ "$1" = 'configure' ]; then
+   pw user add -n _tftpd -d /var/empty -g nogroup -s /usr/sbin/nologin >/dev/null 2>&1 || true
+   @MEMO_LAUNCHCTL_PREFIX@/bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/org.gnu.inetutils.tftpd.plist
+fi

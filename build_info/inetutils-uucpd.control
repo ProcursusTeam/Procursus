@@ -1,0 +1,12 @@
+Package: inetutils-uucpd
+Conflicts: inetutils
+Version: @DEB_INETUTILS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libcrypt2
+Section: Networking
+Priority: optional
+Homepage: http://www.gnu.org/software/inetutils/
+Description: Unix to Unix copy relay daemon
+ Uucpd is a relay daemon responsible for accepting TCP transported connections for uucico. It is started by inetd, conducts 
+ any authentication, and then hands acceptable requests over to uucico.

@@ -3,8 +3,8 @@ Version: @DEB_SHELL-CMDS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: libpam2
-Conflicts: coreutils (<< 8.32-9)
-Provides: killall, which
+Conflicts: coreutils (<< 8.32-9), inetutils (<< 2.0-1)
+Provides: killall, which, hostname
 Section: Administration
 Priority: important
-Description: killall, renice, script, time, which, getopt, what, hexdump, su
+Description: killall, renice, script, time, which, getopt, what, hexdump, su, hostname

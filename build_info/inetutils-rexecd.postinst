@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+set -e
+
+if [ "$1" = "configure" ]; then
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/org.gnu.inetutils.rexecd.plist;
+fi
+

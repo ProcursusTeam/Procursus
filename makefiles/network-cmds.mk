@@ -5,111 +5,78 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS          += network-cmds
-NETWORK-CMDS_VERSION := 596
+NETWORK-CMDS_VERSION := 624
 DEB_NETWORK-CMDS_V   ?= $(NETWORK-CMDS_VERSION)
 
 network-cmds-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/network_cmds/network_cmds-$(NETWORK-CMDS_VERSION).tar.gz
-	$(call EXTRACT_TAR,network_cmds-$(NETWORK-CMDS_VERSION).tar.gz,network_cmds-$(NETWORK-CMDS_VERSION),network-cmds)
-	mkdir -p $(BUILD_STAGE)/network-cmds/{{s,}bin,usr/{{s,}bin,libexec}}
+	$(call GITHUB_ARCHIVE,apple-oss-distributions,network_cmds,$(NETWORK-CMDS_VERSION),network_cmds-$(NETWORK-CMDS_VERSION))
+	$(call EXTRACT_TAR,network_cmds-$(NETWORK-CMDS_VERSION).tar.gz,network_cmds-network_cmds-$(NETWORK-CMDS_VERSION),network-cmds)
+	mkdir -p $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)/{{s,}bin,var/tmp/PanicDumps,Library/LaunchDaemons,$(MEMO_SUB_PREFIX)/{{s,}bin,libexec,share/man/man{1,8}}}
 
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
-	mkdir -p $(BUILD_WORK)/network-cmds/include/sys
+	mkdir -p $(BUILD_WORK)/network-cmds/include/{os,sys,firehose,arm,machine}
 	cp -a $(MACOSX_SYSROOT)/usr/include/nlist.h $(BUILD_WORK)/network-cmds/include
-	mkdir -p $(BUILD_WORK)/network-cmds/include/net/{classq,pktsched}
-	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/{stdlib,unistd}.h $(BUILD_WORK)/network-cmds/include
-
-	@#TODO: Needs severe cleaning. Was done late at night.
+	mkdir -p $(BUILD_WORK)/network-cmds/include/net/{classq,}
+	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/{libiosexec,stdlib,unistd,libutil}.h $(BUILD_WORK)/network-cmds/include
+	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/{internal,{base,log}_private.h,log.h} $(BUILD_WORK)/network-cmds/include/os
+	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/firehose/{firehose_types,tracepoint}_private.h $(BUILD_WORK)/network-cmds/include/firehose
+	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/arm/cpu_capabilities.h $(BUILD_WORK)/network-cmds/include/arm
+	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine/cpu_capabilities.h $(BUILD_WORK)/network-cmds/include/machine
+	$(LN_S) $(BUILD_WORK)/network-cmds/include/{,System}
 
 	@wget -q -nc -P $(BUILD_WORK)/network-cmds/include/net \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/net_api_stats.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/if_bridgevar.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/ntstat.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/if_llreach.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/route.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/if.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/if_var.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/if_mib.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/if_arp.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/if_media.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/radix.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/net_perf.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/if_6lowpan_var.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/if_bond_var.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/network_agent.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/if_fake_var.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/if_vlan_var.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/if_fake_var.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/lacp.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/if_bond_internal.h
+		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8019.41.5/bsd/net/{content_filter,packet_mangler,pktap,net_api_stats,if_ports_used,if_bridgevar,ntstat,if_llreach,route,if,if_var,if_mib,if_arp,if_media,radix,net_perf,if_6lowpan_var,if_bond_var,network_agent,if_fake_var,if_vlan_var,if_fake_var,bpf,lacp,if_bond_internal}.h
 	@wget -q -nc -P $(BUILD_WORK)/network-cmds/include/net/pktsched \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/pktsched/pktsched.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/pktsched/pktsched_netem.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/pktsched/pktsched_tcq.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/pktsched/pktsched_qfq.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/pktsched/pktsched_fq_codel.h
+		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8019.41.5/bsd/net/pktsched/pktsched{,_{cbq,fairq,fq_codel,hfsc,netem,priq,rmclass}}.h
 	@wget -q -nc -P $(BUILD_WORK)/network-cmds/include/net/classq \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/classq/classq.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/classq/if_classq.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/classq/classq_red.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/classq/classq_blue.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/classq/classq_rio.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/classq/classq_sfb.h
+		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8019.41.5/bsd/net/classq/{classq,if_classq,classq_red,classq_blue,classq_rio,classq_sfb}.h
 	@wget -q -nc -P $(BUILD_WORK)/network-cmds/include/netinet \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet/mptcp_var.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet/in_stat.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet/in.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet/tcp.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet/tcp_var.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet/ip_var.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet/udp_var.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet/if_ether.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet/tcpip.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet/icmp_var.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet/igmp_var.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet/tcp_seq.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet/tcp_fsm.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet/in_var.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet/in_pcb.h
+		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8019.41.5/bsd/netinet/{ip_dummynet,ip_flowid,mptcp_var,in_stat,in,tcp,tcp_var,ip_var,udp_var,if_ether,tcpip,icmp6,icmp_var,igmp_var,tcp_seq,tcp_fsm,in_var,in_pcb}.h
 	@wget -q -nc -P $(BUILD_WORK)/network-cmds/include/netinet6 \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet6/ip6_var.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet6/in6_var.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet6/in6.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet6/nd6.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet6/mld6_var.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet6/in6_pcb.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet6/raw_ip6.h
+		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8019.41.5/bsd/netinet6/{ip6_var,in6_var,in6,nd6,mld6_var,in6_pcb,raw_ip6}.h
 	@wget -q -nc -P $(BUILD_WORK)/network-cmds/include/sys \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/socket.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/unpcb.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/kern_event.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/kern_control.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/socketvar.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/sys_domain.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/mbuf.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/sockio.h
+		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8019.41.5/bsd/sys/{proc_info,socket,unpcb,kern_event,kern_control,socketvar,sys_domain,mbuf,sockio}.h
+	@wget -q -nc -P$(BUILD_WORK)/network-cmds/include/mach \
+		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8019.41.5/osfmk/mach/coalition.h
 
 	sed -i 's/#if INET6/#ifdef INET6/g' $(BUILD_WORK)/network-cmds/include/sys/sockio.h
+	sed -i '/struct kevent_qos_s kqext_kev/d' $(BUILD_WORK)/network-cmds/include/sys/proc_info.h
+	sed -i '1 i\#include <TargetConditionals.h>' $(BUILD_WORK)/network-cmds/{dnctl,frame_delay,ecnprobe,pktapctl,pktmnglr,mptcp_client}/*.c
 
 ifneq ($(wildcard $(BUILD_WORK)/network-cmds/.build_complete),)
 network-cmds:
 	@echo "Using previously built network-cmds."
 else
 network-cmds: .SHELLFLAGS=-O extglob -c
-network-cmds: network-cmds-setup
+network-cmds: network-cmds-setup libpcap
+	set -e; \
 	cd $(BUILD_WORK)/network-cmds; \
-	for tproj in !(ping|rtadvd|rarpd|spray).tproj; do \
+	for tproj in !(rarpd|spray|rtadvd).tproj; do \
 		tproj=$$(basename $$tproj .tproj); \
 		echo $$tproj; \
-		$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -o $$tproj $$tproj.tproj/!(ns).c ecnprobe/gmt2local.c -DPRIVATE -DINET6 -DPLATFORM_iPhoneOS -D__APPLE_USE_RFC_3542=1 -DUSE_RFC2292BIS=1 -D__APPLE_API_OBSOLETE=1 -DTARGET_OS_EMBEDDED=1 -Dether_ntohost=_old_ether_ntohost; \
+		$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -o $$tproj $$tproj.tproj/!(ns).c ecnprobe/gmt2local.c -DPRIVATE -DINET6 -DPLATFORM_$(BARE_PLATFORM) -D__APPLE_USE_RFC_3542=1 -DUSE_RFC2292BIS=1 -D__APPLE_API_OBSOLETE=1 -DTARGET_OS_EMBEDDED=1 -Dether_ntohost=_old_ether_ntohost -D_VA_LIST -D__OS_EXPOSE_INTERNALS__; \
+	done; \
+	for bin in cfilutil dnctl frame_delay pktapctl pktmnglr mptcp_client ecnprobe; do \
+		echo $$bin; \
+		[ "$$bin" = "ecnprobe" ] && LDFLAGS="$(LDFLAGS) -lpcap" || LDFLAGS="$(LDFLAGS)"; \
+		$(CC) -Iinclude -DPRIVATE $(CFLAGS) $$LDFLAGS $${bin}/*.c -o $${bin}/$${bin}; \
 	done
 	cp -a $(BUILD_WORK)/network-cmds/kdumpd $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
-	cp -a $(BUILD_WORK)/network-cmds/{arp,ndp,traceroute,mnc,mtest,traceroute6,ifconfig,ip6addrctl,netstat,ping6,route,rtsol} $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
+	# FHS reminder:
+	# bins with section 8 manpage => $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin (libexec for daemons)
+	# bins with section 1 manpage => $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_WORK)/network-cmds/{arp,dnctl/dnctl,frame_delay/frame_delay,ifconfig,ip6addrctl,kdumpd,mtest,ndp,ping6,pktapctl/pktapctl,route,rtsol,traceroute6,traceroute} $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
+	cp -a $(BUILD_WORK)/network-cmds/{pktmnglr/pktmnglr,cfilutil/cfilutil,ecnprobe/ecnprobe,mnc,mptcp_client/mptcp_client,netstat} $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_WORK)/network-cmds/{dnctl,frame_delay,pktapctl,{arp,ifconfig,ip6addrctl,kdumpd,mtest,ndp,ping6,route,rtsol,traceroute6,traceroute}.tproj}/*.8 $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
+	# pktmnglr has no man page
+	cp -a $(BUILD_WORK)/network-cmds/{cfilutil,ecnprobe,mptcp_client,{netstat,mnc}.tproj}/*.1 $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cd $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin; \
 	for bin in ifconfig ip6addrctl netstat ping6 route rtsol; do \
-		$(LN_S) ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/$$bin $(BUILD_STAGE)/network-cmds/sbin; \
+		$(LN_S) ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/$$bin $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)/sbin; \
 	done
 	$(LN_S) ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/ping6 $(BUILD_STAGE)/network-cmds/bin
+	sed -e 's|/var|$(MEMO_PREFIX)/var|g' -e 's|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' < $(BUILD_WORK)/network-cmds/kdumpd.tproj/com.apple.kdumpd.plist > $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)/Library/LaunchDaemons/com.apple.kdumpd.plist
+	chmod 1755 $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)/var/tmp/PanicDumps
 	$(call AFTER_BUILD)
 endif
 
@@ -122,6 +89,9 @@ network-cmds-package: network-cmds-stage
 
 	# network-cmds.mk Sign
 	$(call SIGN,network-cmds,general.xml)
+
+	# network-cmds.mk Permissions
+	$(FAKEROOT) chown nobody:nogroup $(BUILD_DIST)/network-cmds/$(MEMO_PREFIX)/var/tmp/PanicDumps
 
 	# network-cmds.mk Make .debs
 	$(call PACK,network-cmds,DEB_NETWORK-CMDS_V)

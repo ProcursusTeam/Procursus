@@ -1,0 +1,4 @@
+@MEMO_PREFIX@/etc/ftpchroot
+@MEMO_PREFIX@/etc/ftpusers
+@MEMO_PREFIX@/etc/ftpwelcome
+@MEMO_PREFIX@/Library/LaunchDaemons/org.gnu.inetutils.ftpd.plist

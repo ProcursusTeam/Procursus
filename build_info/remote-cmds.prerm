@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+case "$1" in
+	(remove|purge)
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl disable system/com.apple.telnetd
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl disable system/com.apple.ntalkd
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl disable system/com.apple.tftpd
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/com.apple.telnetd.plist
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/com.apple.ntalkd.plist
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/com.apple.tftpd.plist
+	;;
+	(*)
+	exit 0
+	;;
+	esac
+
+exit 0
