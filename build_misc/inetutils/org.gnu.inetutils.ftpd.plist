@@ -16,7 +16,7 @@
     <key>ProgramArguments</key>
     <array>
         <string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/inetutils-ftpd</string>
-        <string>--auth=pam</string>
+        <string>--auth=default</string>
     </array>
 
     <key>SessionCreate</key>
