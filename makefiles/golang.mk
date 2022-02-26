@@ -26,7 +26,7 @@ ifneq ($(wildcard $(BUILD_WORK)/golang/.build_complete),)
 golang:
 	@echo "Using previously built golang."
 else
-golang: golang-setup uikittools
+golang: golang-setup
 	export PATH="$(BUILD_WORK)/golang/superbin:$(PATH)"; \
 	cd $(BUILD_WORK)/golang/src && \
 		CGO_ENABLED=1 \
