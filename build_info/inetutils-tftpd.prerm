@@ -3,7 +3,7 @@
 case "$1" in
 	(remove|purge)
 	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/org.gnu.inetutils.tftpd.plist;
-	pw user del _tftpd
+	pw userdel _tftpd
 	;;
 	(*)
 	exit 0

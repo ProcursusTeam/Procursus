@@ -27,13 +27,13 @@
         <key>TalkdListenerV4</key>
         <dict>
             <key>SockFamily</key>
-            <string>IPv4</key>
+            <string>IPv4</string>
             <key>SockType</key>
             <string>dgram</string>
             <key>SockProtocol</key>
             <string>UDP</string>
             <key>SockServiceName</key>
-            <string>1036</string>
+            <string>518</string>
         </dict>
     </dict>
 

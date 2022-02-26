@@ -30,8 +30,10 @@
 
     <key>Sockets</key>
     <dict>
-        <key>TFTPListenerV4</key>
+        <key>TFTPListener</key>
         <dict>
+            <key>SockType</key>
+            <string>dgram</string>
             <key>SockServiceName</key>
             <string>138</string>
         </dict>

@@ -11,7 +11,7 @@
     <string>Interactive</string>
 
     <key>Program</key>
-    <string>rexecd</string>
+    <string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/rexecd</string>
 
     <key>SessionCreate</key>
     <false/>

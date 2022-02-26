@@ -51,6 +51,7 @@ inetutils-package: inetutils-stage
 	mkdir -p $(BUILD_DIST)/inetutils-{ping,telnet,ftp,tftp,talk,rlogin,rexec,rcp,rsh,tools}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 	mkdir -p $(BUILD_DIST)/inetutils-{telnet,ftp,rsh,tftp,talk,rlogin,rexec,uucp,inet}d/$(MEMO_PREFIX){/Library/LaunchDaemons,$(MEMO_SUB_PREFIX)/{libexec,share/man/man8}}
 	mkdir -p $(BUILD_DIST)/inetutils-ftpd/$(MEMO_PREFIX)/etc
+	mkdir -p $(BUILD_DIST)/inetutils-inetd/$(MEMO_PREFIX)/etc/inetd.d
 
 	# inetutils.mk Prep inetutils-{telnet,ftp,tftp,talk,rlogin,rexec,rcp,rsh}
 	-for bin in inetutils-{telnet,ftp,tftp,talk,rlogin,rexec,rcp,rsh}; do \
@@ -65,6 +66,7 @@ inetutils-package: inetutils-stage
 		cp -a $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/$${daemon}.8$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/$${daemon}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8 2> /dev/null || true; \
 	done
 	touch $(BUILD_DIST)/inetutils-ftpd/$(MEMO_PREFIX)/etc/ftp{chroot,users,welcome}
+	touch $(BUILD_DIST)/inetutils-inetd/$(MEMO_PREFIX)/etc/{services,inetd.conf}
 
 	# inetutils.mk Prep inetutils-ping
 	cp -a $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/inetutils-ping{,6} $(BUILD_DIST)/inetutils-ping/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \
@@ -77,22 +79,22 @@ inetutils-package: inetutils-stage
 	# inetutils.mk Sign
 	$(call SIGN,inetutils-ping,general.xml)
 	$(call SIGN,inetutils-telnet,general.xml)
-	$(call SIGN,inetutils-telnetd,general.xml)
+	$(call SIGN,inetutils-telnetd,network-server.xml)
 	$(call SIGN,inetutils-tools,general.xml)
 	$(call SIGN,inetutils-ftp,general.xml)
-	$(call SIGN,inetutils-ftpd,general.xml)
+	$(call SIGN,inetutils-ftpd,network-server.xml)
 	$(call SIGN,inetutils-tftp,general.xml)
-	$(call SIGN,inetutils-tftpd,general.xml)
-	$(call SIGN,inetutils-inetd,general.xml)
+	$(call SIGN,inetutils-tftpd,network-server.xml)
+	$(call SIGN,inetutils-inetd,network-server.xml)
 	$(call SIGN,inetutils-rexec,general.xml)
-	$(call SIGN,inetutils-rexecd,general.xml)
+	$(call SIGN,inetutils-rexecd,network-server.xml)
 	$(call SIGN,inetutils-rlogin,general.xml)
-	$(call SIGN,inetutils-rlogind,general.xml)
+	$(call SIGN,inetutils-rlogind,network-server.xml)
 	$(call SIGN,inetutils-talk,general.xml)
-	$(call SIGN,inetutils-talkd,general.xml)
-	$(call SIGN,inetutils-uucpd,general.xml)
+	$(call SIGN,inetutils-talkd,network-server.xml)
+	$(call SIGN,inetutils-uucpd,network-server.xml)
 	$(call SIGN,inetutils-rsh,general.xml)
-	$(call SIGN,inetutils-rshd,general.xml)
+	$(call SIGN,inetutils-rshd,network-server.xml)
 	$(call SIGN,inetutils-rcp,general.xml)
 
 	# inetutils.mk Permissions

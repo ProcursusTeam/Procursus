@@ -3,6 +3,7 @@ Version: @DEB_NETWORK-CMDS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Conflicts: inetutils (<< 2.0-1)
+Replaces: inetutils (<< 2.0-1)
 Depends: firmware (>= 9.0) | rtadvd, libpcapa
 Provides: ping, telnet, telnetd
 Section: Networking

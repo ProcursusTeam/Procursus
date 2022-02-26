@@ -10,4 +10,3 @@ Description: remote user communication server
  The talkd program is a server that notifies a user that someone else wants to initiate a conversation. It acts a repository 
  of invitations, responding to requests by clients wishing to rendezvous to hold a conversation.
  .
- Port 1036 is used by default.

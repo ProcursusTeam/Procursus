@@ -10,7 +10,7 @@ DEB_REMOTE-CMDS_V   ?= $(REMOTE-CMDS_VERSION)
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 REMOTE-CMDS_BINS    := telnet telnetd
 else
-REMOTE-CMDS_BINS    := logger talk talkd telnet telnetd tftp tftpd wall
+REMOTE-CMDS_BINS    := logger talk telnet telnetd tftp tftpd wall
 endif
 
 remote-cmds-setup: setup
@@ -36,7 +36,6 @@ remote-cmds: remote-cmds-setup ncurses
 	install -Dm644 *.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libtelnet
 	cd $(BUILD_WORK)/remote-cmds; \
 	talk=-lncurses; \
-	talkd=ttymsg.o; \
 	telnet="-DUSE_TERMIO -lncursesw -ltelnet"; \
 	telnetd="-DTIOCEXT -DNO_UTMP -DLINEMODE -DKLUDGELINEMODE -DUSE_TERMIO -DOLD_ENVIRON -DENV_HACK -DINET6 -D_PATH_WTMP -ltelnet -lncursesw"; \
 	tftp=-ledit; \
@@ -49,12 +48,10 @@ remote-cmds: remote-cmds-setup ncurses
 	done;
 	install -m755 $(BUILD_WORK)/remote-cmds/telnetd $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec;
 	install -m755 $(BUILD_WORK)/remote-cmds/telnet $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin;
-	sed -e 's|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' $(BUILD_WORK)/remote-cmds/telnetd.tproj/telnet.plist > $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)/Library/LaunchDaemons/com.apple.telnetd.plist;
+	sed -e 's|@MEMO_PREFIX@@MEMO_SUB_PREFIX@|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' $(BUILD_MISC)/remote-cmds/com.apple.telnetd.plist > $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)/Library/LaunchDaemons/com.apple.telnetd.plist;
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	sed -e 's|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' -e 's|/private/tftpboot|$(MEMO_PREFIX)/private/tftpboot|g' $(BUILD_WORK)/remote-cmds/tftpd.tproj/tftp.plist > $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)/Library/LaunchDaemons/com.apple.tftpd.plist;
-	sed -e 's|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' $(BUILD_WORK)/remote-cmds/talkd.tproj/ntalk.plist > $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)/Library/LaunchDaemons/com.apple.ntalkd.plist;
 	install -m755 $(BUILD_WORK)/remote-cmds/tftpd $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin;
-	install -m755 $(BUILD_WORK)/remote-cmds/talkd $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/ntalkd;
 	install -m755 $(BUILD_WORK)/remote-cmds/{logger,wall,talk,tftp} $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin;
 endif
 	$(call AFTER_BUILD)
@@ -70,7 +67,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 	# remote-cmds.mk Sign
 	$(call SIGN,remote-cmds,general.xml)
-	$(LDID) -S$(BUILD_MISC)/entitlements/network-server.xml $(BUILD_DIST)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/{ntalk,telnet}d
+	$(LDID) -S$(BUILD_MISC)/entitlements/network-server.xml $(BUILD_DIST)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/telnetd
 
 	# remote-cmds.mk Make .debs
 	$(call PACK,remote-cmds,DEB_REMOTE-CMDS_V)

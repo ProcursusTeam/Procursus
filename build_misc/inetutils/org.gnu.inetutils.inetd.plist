@@ -13,6 +13,13 @@
     <key>Program</key>
     <string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/inetutils-inetd</string>
 
+    <key>ProgramArguments</key>
+    <array>
+        <string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/inetutils-inetd</string>
+        <!-- needed to not double-fork -->
+        <string>--debug</string>
+    </array>
+
     <key>RunAtLoad</key>
     <true/>
 

@@ -16,8 +16,8 @@
     <key>ProgramArguments</key>
     <array>
         <string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/inetutils-telnetd</string>
-        <string>--authmode=user</string>
-        <string>--exec-login=@MEMO_PREFIX@@MEMO_SUB_PREFIX@/login</string>
+        <string>--authmode=none</string>
+        <string>--exec-login=@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/login</string>
     </array>
 
     <key>SessionCreate</key>

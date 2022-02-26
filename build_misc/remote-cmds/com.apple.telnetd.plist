@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Disabled</key>
+	<true/>
+	<key>Label</key>
+	<string>com.apple.telnetd</string>
+        <key>ProcessType</key>
+        <string>Interactive</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/telnetd</string>
+		<string>-p</string>
+		<string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/login</string>
+		<string>-a</string>
+		<string>none</string>
+	</array>
+	<key>inetdCompatibility</key>
+	<dict>
+		<key>Wait</key>
+		<false/>
+	</dict>
+	<key>Sockets</key>
+	<dict>
+		<key>Listeners</key>
+		<dict>
+			<key>SockServiceName</key>
+			<string>telnet</string>
+			<key>Bonjour</key>
+			<true/>
+		</dict>
+	</dict>
+	<key>SessionCreate</key>
+	<true/>
+	<key>EnablePressuredExit</key>
+	<false/>
+	<key>EnableTransactions</key>
+	<false/>
+</dict>
+</plist>
+
