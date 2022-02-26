@@ -5,6 +5,7 @@ Maintainer: @DEB_MAINTAINER@
 Author: Kentaro Fukuchi <kentaro@fukuchi.org>
 Section: Utilities
 Priority: optional
+Depends: libqrencode4, libpng16-16
 Homepage: https://fukuchi.org/works/qrencode/index.html.en
 Description: A fast and compact QR Code encoding program
  libqrencode is a fast and compact library for encoding 
