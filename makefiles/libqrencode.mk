@@ -58,4 +58,4 @@ libqrencode-package: libqrencode-stage
 	rm -rf $(BUILD_DIST)/qrencode \
 		$(BUILD_DIST)/libqrencode{$(LIBQRENCODE_MAJOR_VERSION),-dev}
 
-.PHONY: qrencode qrencode-package
+.PHONY: libqrencode libqrencode-package
