@@ -16,8 +16,7 @@ Description: A fast and compact QR Code encoding program
  encodes in a QR Code symbol as a bitmap array. While other 
  QR Code applications generate an image file, using libqrencode 
  allows applications to render QR Code symbols from raw bitmap 
- data directly. This library also contains a command-line utility 
- outputs QR Code images in various formats.
+ data directly.
  .
  This package provides a command-line program (qrencode)
  for encoding QR codes.
