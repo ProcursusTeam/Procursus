@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += golang
 GOLANG_MAJOR_V := 1.17
-GOLANG_VERSION := $(GOLANG_MAJOR_V).6
+GOLANG_VERSION := $(GOLANG_MAJOR_V).7
 DEB_GOLANG_V   ?= $(GOLANG_VERSION)
 
 golang-setup: setup
@@ -26,7 +26,7 @@ ifneq ($(wildcard $(BUILD_WORK)/golang/.build_complete),)
 golang:
 	@echo "Using previously built golang."
 else
-golang: golang-setup
+golang: golang-setup uikittools
 	export PATH="$(BUILD_WORK)/golang/superbin:$(PATH)"; \
 	cd $(BUILD_WORK)/golang/src && \
 		CGO_ENABLED=1 \
@@ -42,7 +42,7 @@ golang: golang-setup
 		CGO_LDFLAGS="-Os -L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
 		./make.bash
 	cp -a $(BUILD_WORK)/golang/* $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)
-	rm $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/libiosexec.diff.done
+	rm $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/*.diff.done
 	VAR=$$(ls $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg/tool | grep -v $(shell echo $(RUST_TARGET) | cut -f3 -d-)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)); \
 	if [ ! -z "$$VAR" ]; then \
 		find $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V) -name $$VAR -type d -prune -exec rm -rf {} \; ; \

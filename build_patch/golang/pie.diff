@@ -1,0 +1,21 @@
+diff -ur go/src/cmd/link/internal/ld/config.go Procursus/build_work/iphoneos-arm64/1500/golang/src/cmd/link/internal/ld/config.go
+--- go/src/cmd/link/internal/ld/config.go	2022-02-10 02:12:01.000000000 +0800
++++ Procursus/build_work/iphoneos-arm64/1500/golang/src/cmd/link/internal/ld/config.go	2022-02-19 13:54:08.621599768 +0800
+@@ -35,7 +35,7 @@
+ 		return fmt.Errorf("invalid buildmode: %q", s)
+ 	case "exe":
+ 		switch buildcfg.GOOS + "/" + buildcfg.GOARCH {
+-		case "darwin/arm64", "windows/arm", "windows/arm64": // On these platforms, everything is PIE
++		case "darwin/arm64", "ios/arm64", "windows/arm", "windows/arm64": // On these platforms, everything is PIE
+ 			*mode = BuildModePIE
+ 		default:
+ 			*mode = BuildModeExe
+@@ -227,7 +227,7 @@
+ 		switch buildcfg.GOOS + "/" + buildcfg.GOARCH {
+ 		case "linux/amd64", "linux/arm64", "android/arm64":
+ 		case "windows/386", "windows/amd64", "windows/arm", "windows/arm64":
+-		case "darwin/amd64", "darwin/arm64":
++		case "darwin/amd64", "darwin/arm64", "ios/amd64", "ios/arm64":
+ 		default:
+ 			// Internal linking does not support TLS_IE.
+ 			return true, "buildmode=pie"
