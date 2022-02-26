@@ -12,9 +12,7 @@
 	<array>
 		<string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/telnetd</string>
 		<string>-p</string>
-		<string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/login</string>
-		<string>-a</string>
-		<string>none</string>
+		<string>@LOGIN_PREFIX@/bin/login</string>
 	</array>
 	<key>inetdCompatibility</key>
 	<dict>

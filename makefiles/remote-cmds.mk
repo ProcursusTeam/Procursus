@@ -48,11 +48,13 @@ remote-cmds: remote-cmds-setup ncurses
 	done;
 	install -m755 $(BUILD_WORK)/remote-cmds/telnetd $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec;
 	install -m755 $(BUILD_WORK)/remote-cmds/telnet $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin;
-	sed -e 's|@MEMO_PREFIX@@MEMO_SUB_PREFIX@|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' $(BUILD_MISC)/remote-cmds/com.apple.telnetd.plist > $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)/Library/LaunchDaemons/com.apple.telnetd.plist;
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+	sed -e 's|@LOGIN_PREFIX@|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' -e 's|@MEMO_PREFIX@@MEMO_SUB_PREFIX@|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' $(BUILD_MISC)/remote-cmds/com.apple.telnetd.plist > $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)/Library/LaunchDaemons/com.apple.telnetd.plist;
 	sed -e 's|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' -e 's|/private/tftpboot|$(MEMO_PREFIX)/private/tftpboot|g' $(BUILD_WORK)/remote-cmds/tftpd.tproj/tftp.plist > $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)/Library/LaunchDaemons/com.apple.tftpd.plist;
 	install -m755 $(BUILD_WORK)/remote-cmds/tftpd $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin;
 	install -m755 $(BUILD_WORK)/remote-cmds/{logger,wall,talk,tftp} $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin;
+else
+	sed -e 's|@LOGIN_PREFIX@|/usr|g' -e 's|@MEMO_PREFIX@@MEMO_SUB_PREFIX@|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' $(BUILD_MISC)/remote-cmds/com.apple.telnetd.plist > $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)/Library/LaunchDaemons/com.apple.telnetd.plist;
 endif
 	$(call AFTER_BUILD)
 endif
