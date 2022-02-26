@@ -10,6 +10,7 @@ lrzip-next-setup: setup
 	$(call GITHUB_ARCHIVE,pete4abw,lrzip-next,$(LRZIP_NEXT_VERSION),v$(LRZIP_NEXT_VERSION))
 	$(call EXTRACT_TAR,lrzip-next-$(LRZIP_NEXT_VERSION).tar.gz,lrzip-next-$(LRZIP_NEXT_VERSION),lrzip-next)
 	$(call DO_PATCH,lrzip-next,lrzip-next,-p1)
+
 ifneq ($(wildcard $(BUILD_WORK)/lrzip-next/.build_complete),)
 lrzip-next:
 	@echo "Using previously built lrzip-next."
