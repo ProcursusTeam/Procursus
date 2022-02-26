@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+# Also update the libraries' control files when a new major version releases
+
 SUBPROJECTS   += libqrencode
 LIBQRENCODE_VERSION := 4.1.1
 LIBQRENCODE_MAJOR_VERSION := $(shell echo $(LIBQRENCODE_VERSION) | cut -d'.' -f1)
