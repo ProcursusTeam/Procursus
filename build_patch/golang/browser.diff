@@ -6,7 +6,7 @@ diff -ur go/src/cmd/internal/browser/browser.go Procursus/build_work/iphoneos-ar
  	case "darwin":
  		cmds = append(cmds, []string{"/usr/bin/open"})
 +	case "ios":
-+		cmds = append(cmds, []string{"/usr/bin/uiopen"})
++		cmds = append(cmds, []string{"@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/uiopen"})
  	case "windows":
  		cmds = append(cmds, []string{"cmd", "/c", "start"})
  	default:
