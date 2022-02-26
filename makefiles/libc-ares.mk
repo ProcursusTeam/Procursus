@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += libc-ares
-LIBC-ARES_VERSION := 1.18.1
+LIBC-ARES_VERSION := 1.17.2
 DEB_LIBC-ARES_V   ?= $(LIBC-ARES_VERSION)
 
 libc-ares-setup: setup
@@ -20,14 +20,7 @@ libc-ares: libc-ares-setup
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
 		--disable-debug \
-		--enable-shared \
-		CARES_RANDOM_FILE=/dev/urandom \
-		ac_cv_file__dev_urandom=yes \
-		ac_cv_func_clock_gettime=yes \
-		ax_cv_cxx_compile_cxx11__std_cpp11=yes \
-		curl_cv_save_LIBS="-lresolv" \
-		lt_cv_prog_compiler_pic_CXX='-fno-common -DPIC' \
-		lt_cv_prog_compiler_pic_works_CXX=yes
+		--enable-shared
 	+$(MAKE) -C $(BUILD_WORK)/libc-ares
 	+$(MAKE) -C $(BUILD_WORK)/libc-ares install \
 		DESTDIR="$(BUILD_STAGE)/libc-ares"
@@ -46,7 +39,7 @@ libc-ares-package: libc-ares-stage
 		$(BUILD_DIST)/libc-ares2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libc-ares.mk Prep libc-ares-dev
-	cp -a $(BUILD_STAGE)/libc-ares/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ares{,_build,_dns,_nameser,_rules,_version}.h $(BUILD_DIST)/libc-ares-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/libc-ares/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ares{,_build,_dns,_rules,_version}.h $(BUILD_DIST)/libc-ares-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	cp -a $(BUILD_STAGE)/libc-ares/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcares.{a,dylib} $(BUILD_DIST)/libc-ares-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libc-ares/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/libcares.pc $(BUILD_DIST)/libc-ares-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 	cp -a $(BUILD_STAGE)/libc-ares/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3/ares_*.3* $(BUILD_DIST)/libc-ares-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3
