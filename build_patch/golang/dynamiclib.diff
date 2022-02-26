@@ -28,3 +28,14 @@ diff -ur go/src/cmd/internal/sys/supported.go Procursus/build_work/iphoneos-arm6
  		"linux/amd64", "linux/arm64",
  		"android/arm64",
  		"windows-amd64", "windows-386", "windows-arm":
+--- go/src/cmd/link/internal/ld/config.go	2022-02-26 17:21:51.403674185 +0800
++++ Procursus/build_work/iphoneos-arm64/1500/golang/src/cmd/link/internal/ld/config.go	2022-02-26 17:22:48.265421286 +0800
+@@ -99,7 +99,7 @@
+ 			default:
+ 				return badmode()
+ 			}
+-		case "darwin":
++		case "darwin", "ios":
+ 			switch buildcfg.GOARCH {
+ 			case "amd64", "arm64":
+ 			default:
