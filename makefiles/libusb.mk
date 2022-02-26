@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += libusb
-LIBUSB_VERSION := 1.0.24
+LIBUSB_VERSION := 1.0.25
 DEB_LIBUSB_V   ?= $(LIBUSB_VERSION)
 
 libusb-setup: setup
