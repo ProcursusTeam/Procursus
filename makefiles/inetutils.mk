@@ -72,7 +72,11 @@ inetutils-package: inetutils-stage
 	done
 	touch $(BUILD_DIST)/inetutils-ftpd/$(MEMO_PREFIX)/etc/ftp{chroot,users,welcome}
 	touch $(BUILD_DIST)/inetutils-inetd/$(MEMO_PREFIX)/etc/{services,inetd.conf}
-
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+	sed -i 's|@LOGIN_PREFIX@|/usr|g' $(BUILD_DIST)/inetutils-telnetd/$(MEMO_PREFIX)/Library/LaunchDaemons/org.gnu.inetutils.telnetd.plist
+else
+	sed -i 's|@LOGIN_PREFIX@|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' $(BUILD_DIST)/inetutils-telnetd/$(MEMO_PREFIX)/Library/LaunchDaemons/org.gnu.inetutils.telnetd.plist
+endif
 	# inetutils.mk Prep inetutils-ping
 	cp -a $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/inetutils-ping{,6} $(BUILD_DIST)/inetutils-ping/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \
 	cp -a $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/inetutils-ping{,6}.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/inetutils-ping/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
