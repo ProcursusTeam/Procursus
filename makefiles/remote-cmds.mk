@@ -84,8 +84,9 @@ else
 	cp -a $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/telnet/$(MEMO_PREFIX)$(MEMO_SUB_PRRFIX)/share/man
 
 	# remote-cmds.mk Prep telnetd
-	cp -a $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX){/Library/LaunchDaemons,$(MEMO_SUB_PREFIX)/libexec} $(BUILD_DIST)/telnet/$(MEMO_PREFIX)$(MEMO_SUB_PRRFIX)
-	cp -a $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8 $(BUILD_DIST)/telnet/$(MEMO_PREFIX)$(MEMO_SUB_PRRFIX)/share/man
+	cp -a $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec $(BUILD_DIST)/telnetd/$(MEMO_PREFIX)$(MEMO_SUB_PRRFIX)
+	cp -a $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)/Library $(BUILD_DIST)/telnetd/$(MEMO_PREFIX)
+	cp -a $(BUILD_STAGE)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8 $(BUILD_DIST)/telnetd/$(MEMO_PREFIX)$(MEMO_SUB_PRRFIX)/share/man
 
 	# remote-cmds.mk Sign
 	$(call SIGN,telnet,general.xml)
