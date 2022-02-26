@@ -73,7 +73,7 @@ main() {
 		-e "s/@PKG_VERSION@/${ver}/g" \
 		-e "s|@download@|$(downloadlink "$download" "$ver" "$pkg" "$formatpkg")|g" \
 		-e "s|@compression@|${download##*.}|g" \
-		build_misc/templates/${build}.mk > makefiles/${pkg}.mk
+		"build_misc/templates/${build}.mk" > "makefiles/${pkg}.mk"
 }
 
 main_dialog() {
@@ -96,7 +96,7 @@ main_dialog() {
 	build=$(dialog \
 		--colors --no-cancel --title 'New package' \
 		--menu 'Build System' 15 40 $count "${buildsystems[@]}" 3>&1 1>&2 2>&3 3>&-)
-	build=${buildsystems[(( build*2 ))]}
+	build=${buildsystems[(( build*2-1 ))]}
 
 	ver=$(dialog_inputbox "New package" "Package version")
 	download=$(dialog_inputbox "New package" "Tarball download link")
@@ -105,7 +105,7 @@ main_dialog() {
 		-e "s/@PKG_VERSION@/${ver}/g" \
 		-e "s|@download@|$(downloadlink "$download" "$ver" "$pkg" "$formatpkg")|g" \
 		-e "s|@compression@|${download##*.}|g" \
-		build_misc/templates/${build}.mk > makefiles/${pkg}.mk
+		"build_misc/templates/${build}.mk" > "makefiles/${pkg}.mk"
 	clear
 }
 
