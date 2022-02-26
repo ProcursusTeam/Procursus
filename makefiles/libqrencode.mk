@@ -2,12 +2,10 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-# Also update the libraries' control files when a new major version releases
-
-SUBPROJECTS   += libqrencode
-LIBQRENCODE_VERSION := 4.1.1
+SUBPROJECTS               += libqrencode
+LIBQRENCODE_VERSION       := 4.1.1
 LIBQRENCODE_MAJOR_VERSION := $(shell echo $(LIBQRENCODE_VERSION) | cut -d'.' -f1)
-DEB_LIBQRENCODE_V   ?= $(LIBQRENCODE_VERSION)
+DEB_LIBQRENCODE_V         ?= $(LIBQRENCODE_VERSION)
 
 libqrencode-setup: setup
 	$(call GITHUB_ARCHIVE,fukuchi,libqrencode,$(LIBQRENCODE_VERSION),v$(LIBQRENCODE_VERSION))
