@@ -1,1 +1,2 @@
-@MEMO_PREFIX@/Library/LaunchDaemons/org.gnu.inetutils.inetd.plist
+@MEMO_PREFIX@/etc/inetd.conf
+@MEMO_PREFIX@/etc/services
