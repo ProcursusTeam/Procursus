@@ -1,0 +1,13 @@
+--- go/src/crypto/rand/rand_getentropy.go	2022-02-26 18:04:45.126039135 +0800
++++ Procursus/build_work/iphoneos-arm64/1500/golang/src/crypto/rand/rand_getentropy.go	2022-02-26 18:05:09.385885333 +0800
+@@ -2,8 +2,8 @@
+ // Use of this source code is governed by a BSD-style
+ // license that can be found in the LICENSE file.
+ 
+-//go:build (darwin && !ios) || openbsd
+-// +build darwin,!ios openbsd
++//go:build darwin || openbsd
++// +build darwin openbsd
+ 
+ package rand
+ 

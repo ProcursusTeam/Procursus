@@ -1,0 +1,13 @@
+--- go/src/internal/syscall/unix/getentropy_darwin.go	2022-02-26 17:50:26.461863269 +0800
++++ Procursus/build_work/iphoneos-arm64/1500/golang/src/internal/syscall/unix/getentropy_darwin.go	2022-02-26 17:50:36.262649574 +0800
+@@ -2,8 +2,8 @@
+ // Use of this source code is governed by a BSD-style
+ // license that can be found in the LICENSE file.
+ 
+-//go:build darwin && !ios
+-// +build darwin,!ios
++//go:build darwin
++// +build darwin
+ 
+ package unix
+ 
