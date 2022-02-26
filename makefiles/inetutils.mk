@@ -6,6 +6,7 @@ SUBPROJECTS        += inetutils
 INETUTILS_VERSION  := 2.0
 DEB_INETUTILS_V    ?= $(INETUTILS_VERSION)-1
 DEBIAN_INETUTILS_V := 2.2-2
+
 inetutils-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/inetutils/inetutils-$(INETUTILS_VERSION).tar.xz{,.sig} \
 	https://deb.debian.org/debian/pool/main/i/inetutils/inetutils_$(DEBIAN_INETUTILS_V).debian.tar.xz
@@ -20,7 +21,11 @@ ifneq ($(wildcard $(BUILD_WORK)/inetutils/.build_complete),)
 inetutils:
 	@echo "Using previously built inetutils."
 else
-inetutils: inetutils-setup ncurses readline openpam libidn2
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+inetutils: inetutils-setup ncurses readline libidn2
+else
+inetutils: inetutils-setup ncurses readline libidn2 openpam
+endif
 	cd $(BUILD_WORK)/inetutils && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-ifconfig \
