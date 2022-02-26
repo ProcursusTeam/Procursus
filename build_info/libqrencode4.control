@@ -2,6 +2,7 @@ Package: libqrencode4
 Version: @DEB_LIBQRENCODE_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Author: Kentaro Fukuchi <kentaro@fukuchi.org>
 Section: Libraries
 Priority: optional
 Homepage: https://fukuchi.org/works/qrencode/index.html.en
