@@ -2,7 +2,7 @@
 
 set -e
 
-if [ "$1" = purge ]; then
+if [ "$1" = "purge" ]; then
 	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl disable system/org.gnu.inetutils.ftpd;
 fi
 
