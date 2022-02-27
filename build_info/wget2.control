@@ -2,7 +2,7 @@ Package: wget2
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_WGET2_V@
-Depends: libassuan0, libssl3, libpcre2-8-0, libintl8, liblzma5 (>= 5.2.5), libnghttp2-14, libidn2-0, libintl8, libzstd1, libbrotli1, libgpgme11
+Depends: libassuan0, libssl3, libpcre2-8-0, libintl8, liblzma5 (>= 5.2.5), libnghttp2-14, libidn2-0, libintl8, libzstd1, libbrotli1, libgpgme11, libpsl5
 Section: Networking
 Priority: important
 Description: file and recursive website downloader
