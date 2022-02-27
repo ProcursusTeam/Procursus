@@ -71,9 +71,9 @@
  CAIRO_BEGIN_DECLS
  
  cairo_public cairo_surface_t *
---- a/src/cairo-quartz.h	2018-08-17 11:14:57.000000000 +0800
-+++ b/src/cairo-quartz.h	2022-02-27 18:36:50.652034034 +0800
-@@ -37,10 +37,14 @@
+--- cairo-1.16.0/src/cairo-quartz.h	2018-08-17 11:14:57.000000000 +0800
++++ build_work/iphoneos-arm64/1500/cairo/src/cairo-quartz.h	2022-02-27 20:04:57.498941175 +0800
+@@ -37,10 +37,15 @@
  #define CAIRO_QUARTZ_H
  
  #include "cairo.h"
@@ -85,11 +85,12 @@
  #include <ApplicationServices/ApplicationServices.h>
 +#else
 +#include <CoreGraphics/CoreGraphics.h>
++#include <CoreText/CoreText.h>
 +#endif
  
  CAIRO_BEGIN_DECLS
  
-@@ -66,8 +70,10 @@
+@@ -66,8 +71,10 @@
  cairo_public cairo_font_face_t *
  cairo_quartz_font_face_create_for_cgfont (CGFontRef font);
  
