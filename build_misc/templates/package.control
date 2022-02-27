@@ -4,6 +4,11 @@
 # 
 # Keep @DEB_@PKG@_V@, @DEB_ARCH@ and @DEB_MAINTAINER@ intact,
 # these are populated at build time.
+#
+# If you need to write a platform-specific control file,
+# append the platform to the filename as an extension
+# e.g. @pkg@.control.macosx
+#
 Package: @pkg@
 Version: @DEB_@PKG@_V@
 Architecture: @DEB_ARCH@
