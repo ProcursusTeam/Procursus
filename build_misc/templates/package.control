@@ -1,0 +1,16 @@
+# Please populate relevant fields and remove unneeded ones
+# (including this comment!) before building packages or
+# making a pull request.
+# 
+# Keep @DEB_@PKG@_V@, @DEB_ARCH@ and @DEB_MAINTAINER@ intact,
+# these are populated at build time.
+Package: @pkg@
+Version: @DEB_@PKG@_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: 
+Depends:
+Section: 
+Priority:
+Homepage:
+Description:

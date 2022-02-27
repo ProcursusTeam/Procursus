@@ -74,6 +74,9 @@ main() {
 		-e "s|@download@|$(downloadlink "$download" "$ver" "$pkg" "$formatpkg")|g" \
 		-e "s|@compression@|${download##*.}|g" \
 		"build_misc/templates/${build}.mk" > "makefiles/${pkg}.mk"
+	${SED} -e "s/@pkg@/${pkg}/g" \
+		-e "s/@PKG@/${formatpkg}/g" \
+		"build_misc/templates/package.control" > "build_info/${pkg}.control"
 }
 
 main_dialog() {
@@ -106,6 +109,9 @@ main_dialog() {
 		-e "s|@download@|$(downloadlink "$download" "$ver" "$pkg" "$formatpkg")|g" \
 		-e "s|@compression@|${download##*.}|g" \
 		"build_misc/templates/${build}.mk" > "makefiles/${pkg}.mk"
+	${SED} -e "s/@pkg@/${pkg}/g" \
+		-e "s/@PKG@/${formatpkg}/g" \
+		"build_misc/templates/package.control" > "build_info/${pkg}.control"
 	clear
 }
 
