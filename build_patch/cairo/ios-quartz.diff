@@ -1,0 +1,73 @@
+--- a/configure.ac	2018-10-18 08:21:03.000000000 +0800
++++ b/configure.ac	2022-02-27 18:50:45.173823714 +0800
+@@ -202,11 +202,11 @@
+ 
+ CAIRO_ENABLE_SURFACE_BACKEND(quartz, Quartz, auto, [
+   dnl There is no pkgconfig for quartz; lets do a header check
+-  AC_CHECK_HEADER(ApplicationServices/ApplicationServices.h, , [use_quartz="no (requires ApplicationServices framework)"])
++  AC_CHECK_HEADER(ApplicationServices/ApplicationServices.h, [use_quartz="yes"], [use_quartz="no (requires ApplicationServices framework)"])
+   if test "x$use_quartz" != "xyes" ; then
+     dnl check for CoreGraphics as a separate framework
+-    AC_CHECK_HEADER(CoreGraphics/CoreGraphics.h, , [use_quartz="no (requires CoreGraphics framework)"])
+-    quartz_LIBS="-Xlinker -framework -Xlinker CoreGraphics"
++    AC_CHECK_HEADER(CoreGraphics/CoreGraphics.h, [use_quartz="yes"], [use_quartz="no (requires CoreGraphics framework)"])
++    quartz_LIBS="-Xlinker -framework -Xlinker CoreGraphics -Xlinker -framework -Xlinker CoreFoundation"
+   else
+     quartz_LIBS="-Xlinker -framework -Xlinker ApplicationServices"
+   fi
+--- a/src/cairo-quartz-font.c	2018-08-17 09:10:53.000000000 +0800
++++ b/src/cairo-quartz-font.c	2022-02-27 18:27:05.649626172 +0800
+@@ -100,8 +100,10 @@
+ static int (*CGFontGetDescentPtr) (CGFontRef fontRef) = NULL;
+ static int (*CGFontGetLeadingPtr) (CGFontRef fontRef) = NULL;
+ 
++#if TARGET_OS_OSX
+ /* Not public anymore in 64-bits nor in 10.7 */
+ static ATSFontRef (*FMGetATSFontRefFromFontPtr) (FMFont iFont) = NULL;
++#endif
+ 
+ static cairo_bool_t _cairo_quartz_font_symbol_lookup_done = FALSE;
+ static cairo_bool_t _cairo_quartz_font_symbols_present = FALSE;
+@@ -149,9 +151,9 @@
+ 
+     CGContextGetAllowsFontSmoothingPtr = dlsym(RTLD_DEFAULT, "CGContextGetAllowsFontSmoothing");
+     CGContextSetAllowsFontSmoothingPtr = dlsym(RTLD_DEFAULT, "CGContextSetAllowsFontSmoothing");
+-
++#if TARGET_OS_OSX
+     FMGetATSFontRefFromFontPtr = dlsym(RTLD_DEFAULT, "FMGetATSFontRefFromFont");
+-
++#endif
+     if ((CGFontCreateWithFontNamePtr || CGFontCreateWithNamePtr) &&
+ 	CGFontGetGlyphBBoxesPtr &&
+ 	CGFontGetGlyphsForUnicharsPtr &&
+@@ -829,7 +831,7 @@
+ 
+     return ffont->cgFont;
+ }
+-
++#if TARGET_OS_OSX
+ /*
+  * compat with old ATSUI backend
+  */
+@@ -876,3 +878,4 @@
+ {
+     return cairo_quartz_font_face_create_for_atsu_font_id (font_id);
+ }
++#endif
+--- a/src/cairo-quartz-image.h	2018-08-17 11:14:57.000000000 +0800
++++ b/src/cairo-quartz-image.h	2022-02-27 18:27:51.849024058 +0800
+@@ -37,11 +37,12 @@
+ #define CAIRO_QUARTZ_IMAGE_H
+ 
+ #include "cairo.h"
++#include <TargetConditionals.h>
+ 
+ #if CAIRO_HAS_QUARTZ_IMAGE_SURFACE
+-
++#if TARGET_OS_OSX
+ #include <Carbon/Carbon.h>
+-
++#endif
+ CAIRO_BEGIN_DECLS
+ 
+ cairo_public cairo_surface_t *
