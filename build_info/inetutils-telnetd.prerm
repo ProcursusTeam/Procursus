@@ -1,13 +1,12 @@
-#!/usr/bin/env sh
+#\!/bin/sh
 
-case "$1" in
-	(remove|purge)
-	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/org.gnu.inetutils.telnetd.plist
-	;;
-	(*)
-	exit 0
-	;;
-	esac
+set -e
 
-exit 0
+if [ "$1" = purge ]; then
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl disable system/org.gnu.inetutils.telnetd;
+fi
+
+if [ "$1" = "remove" ]; then
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload /Library/LaunchDaemons/org.gnu.inetutils.telnetd.plist
+fi
 

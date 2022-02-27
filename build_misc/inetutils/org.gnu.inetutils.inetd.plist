@@ -3,6 +3,8 @@
 <plist version="1.0">
 
 <dict>
+    <key>Disabled</key>
+    <true/>
     <key>Label</key>
     <string>org.gnu.inetutils.inetd</string>
     <key>POSIXSpawnType</key>

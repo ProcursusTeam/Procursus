@@ -1,15 +1,14 @@
 #!/usr/bin/env sh
+set -e
 
-case "$1" in
-	(remove|purge)
+if [ "$1" = "purge" ]; then
 	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl disable system/com.apple.telnetd
 	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl disable system/com.apple.tftpd
+fi
+
+if [ "$1" = "remove" ]; then
 	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/com.apple.telnetd.plist
 	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/com.apple.tftpd.plist
-	;;
-	(*)
-	exit 0
-	;;
-	esac
+fi
 
 exit 0

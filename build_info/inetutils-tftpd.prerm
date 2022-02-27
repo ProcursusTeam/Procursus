@@ -1,14 +1,12 @@
-#!/usr/bin/env sh
+#\!/bin/sh
 
-case "$1" in
-	(remove|purge)
-	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/org.gnu.inetutils.tftpd.plist;
-	pw userdel _tftpd
-	;;
-	(*)
-	exit 0
-	;;
-	esac
+set -e
 
-exit 0
+if [ "$1" = purge ]; then
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl disable system/org.gnu.inetutils.tftpd;
+fi
+
+if [ "$1" = "remove" ]; then
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload /Library/LaunchDaemons/org.gnu.inetutils.tftpd.plist
+fi
 
