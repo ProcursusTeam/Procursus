@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += wget2
-WGET2_VERSION := 1.99.2
+WGET2_VERSION := 2.0.0
 DEB_WGET2_V   ?= $(WGET2_VERSION)-2
 
 wget2-setup: setup
@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/wget2/.build_complete),)
 wget2:
 	@echo "Using previously built wget2."
 else
-wget2: wget2-setup openssl pcre2 xz zstd nghttp2 libidn2 gettext
+wget2: wget2-setup openssl pcre2 xz brotli zstd nghttp2 libidn2 gettext gpgme
 	cd $(BUILD_WORK)/wget2 && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-ssl=openssl \
