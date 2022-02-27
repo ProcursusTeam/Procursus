@@ -71,3 +71,32 @@
  CAIRO_BEGIN_DECLS
  
  cairo_public cairo_surface_t *
+--- a/src/cairo-quartz.h	2018-08-17 11:14:57.000000000 +0800
++++ b/src/cairo-quartz.h	2022-02-27 18:36:50.652034034 +0800
+@@ -37,10 +37,14 @@
+ #define CAIRO_QUARTZ_H
+ 
+ #include "cairo.h"
++#include <TargetConditionals.h>
+ 
+ #if CAIRO_HAS_QUARTZ_SURFACE
+-
++#if TARGET_OS_OSX
+ #include <ApplicationServices/ApplicationServices.h>
++#else
++#include <CoreGraphics/CoreGraphics.h>
++#endif
+ 
+ CAIRO_BEGIN_DECLS
+ 
+@@ -66,8 +70,10 @@
+ cairo_public cairo_font_face_t *
+ cairo_quartz_font_face_create_for_cgfont (CGFontRef font);
+ 
++#if TARGET_OS_OSX
+ cairo_public cairo_font_face_t *
+ cairo_quartz_font_face_create_for_atsu_font_id (ATSUFontID font_id);
++#endif
+ 
+ #endif /* CAIRO_HAS_QUARTZ_FONT */
+ 
