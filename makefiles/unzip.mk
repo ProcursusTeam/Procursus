@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += unzip
 UNZIP_VERSION  := 6.0
-DEBIAN_UNZIP_V := $(UNZIP_VERSION)-25
+DEBIAN_UNZIP_V := $(UNZIP_VERSION)-26
 DEB_UNZIP_V    ?= $(DEBIAN_UNZIP_V)
 
 unzip-setup: setup
@@ -13,7 +13,9 @@ unzip-setup: setup
 	$(call EXTRACT_TAR,unzip_$(UNZIP_VERSION).orig.tar.gz,unzip60,unzip)
 	$(call EXTRACT_TAR,unzip_$(DEBIAN_UNZIP_V).debian.tar.xz,debian/patches,$(BUILD_PATCH)/unzip-$(UNZIP_VERSION))
 	rm -rf $(BUILD_WORK)/debian
+	rm -rf $(BUILD_PATCH)/unzip-$(UNZIP_VERSION)/series
 	$(call DO_PATCH,unzip-$(UNZIP_VERSION),unzip,-p1)
+	rm -rf $(BUILD_PATCH)/unzip-$(UNZIP_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/unzip/.build_complete),)
 unzip:
@@ -34,12 +36,11 @@ endif
 unzip-package: unzip-stage
 	# unzip.mk Package Structure
 	rm -rf $(BUILD_DIST)/unzip
-	mkdir -p $(BUILD_DIST)/unzip
+	mkdir -p $(BUILD_DIST)/unzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
 	# unzip.mk Prep unzip
-	cp -a $(BUILD_STAGE)/unzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/unzip
-	mkdir -p $(BUILD_DIST)/unzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	mv $(BUILD_DIST)/unzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/man $(BUILD_DIST)/unzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	cp -a $(BUILD_STAGE)/unzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/unzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/unzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/man $(BUILD_DIST)/unzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
 	# unzip.mk Sign
 	$(call SIGN,unzip,general.xml)
