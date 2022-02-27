@@ -1,0 +1,8 @@
+Package: libwebsockets-evlib-ev
+Section: Libraries
+Version: @DEB_LIBWEBSOCKETS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libbrotli1, libssl3 (>= 3.0.0~~alpha1), libuv1 (>= 1.4.2), libev4 (>= 4.04), libwebsockets19 (= @DEB_LIBWEBSOCKETS_V@)
+Priority: optional
+Description: lightweight C websockets library (libev bindings)

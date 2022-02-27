@@ -1,0 +1,16 @@
+Package: lwsws
+Section: Networking
+Version: @DEB_LIBWEBSOCKETS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libwebsockets19 (>= @DEB_LIBWEBSOCKETS_V@), libbrotli1, libssl3 (>= 3.0.0~~alpha1), libuv1 (>= 1.4.2)
+Priority: optional
+Description: lightweight websocket server
+ lwsws is an implementation of a very lightweight, ws-capable generic web 
+ server, which uses libwebsockets to implement everything underneath.
+ .
+ If you are basically implementing a standalone server with lws, you can avoid 
+ reinventing the wheel and use a debugged server including lws.
+ . 
+ This package includes an example configuration to have the server serve plain 
+ HTTP at localhost:7681.

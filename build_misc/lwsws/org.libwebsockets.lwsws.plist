@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+
+<dict>
+    <key>Label</key>
+    <string>com.libwebsockets.lwsws</string>
+    <key>POSIXSpawnType</key>
+    <string>Interactive</string>
+    <key>ProcessType</key>
+    <string>Interactive</string>
+
+    <key>Program</key>
+    <string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/lwsws</string>
+
+    <key>StandardErrorPath</key>
+    <string>/dev/null</string>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>ExecuteAllowed</key>
+    <true/>
+</dict>
+
+</plist>

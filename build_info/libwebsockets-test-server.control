@@ -1,0 +1,12 @@
+Package: libwebsockets-test-server
+Section: Libraries
+Version: @DEB_LIBWEBSOCKETS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libbrotli1, libssl3 (>= 3.0.0~~alpha1), libuv1 (>= 1.4.2), libwebsockets-test-server (= @DEB_LIBWEBSOCKETS_V@), libwebsockets19 (= @DEB_LIBWEBSOCKETS_V@)
+Priority: optional
+Description: lightweight C websockets library
+ Libwebsockets is a lightweight pure C library for both websockets clients and servers built to use minimal CPU and memory resources and 
+ provide fast throughput in both directions.
+ .
+ This package contains several demonstration test servers, and a test client.

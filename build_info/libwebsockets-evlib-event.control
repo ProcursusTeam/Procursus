@@ -1,0 +1,8 @@
+Package: libwebsockets-evlib-event
+Section: Libraries
+Version: @DEB_LIBWEBSOCKETS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libbrotli1, libssl3 (>= 3.0.0~~alpha1), libuv1 (>= 1.4.2), libevent-2.1-7, libwebsockets19 (= @DEB_LIBWEBSOCKETS_V@)
+Priority: optional
+Description: lightweight C websockets library (libevent bindings)
