@@ -32,12 +32,12 @@ libpsl-package: libpsl-stage
 	# libpsl.mk Package Structure
 	rm -rf $(BUILD_DIST)/psl \
 		$(BUILD_DIST)/libpsl{$(LIBPSL_API_V),-dev}
-	mkdir -p $(BUILD_DIST)/psl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
+	mkdir -p $(BUILD_DIST)/psl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 \
 		$(BUILD_DIST)/libpsl{$(LIBPSL_API_V),-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libpsl.mk Prep psl
 	cp -a $(BUILD_STAGE)/libpsl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/psl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libpsl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/psl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+	cp -a $(BUILD_STAGE)/libpsl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/psl.1.zst $(BUILD_DIST)/psl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# libpsl.mk Prep libpsl$(LIBPSL_API_V)
 	cp -a $(BUILD_STAGE)/libpsl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpsl.$(LIBPSL_API_V).dylib $(BUILD_DIST)/libpsl$(LIBPSL_API_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
