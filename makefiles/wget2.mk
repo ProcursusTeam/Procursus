@@ -15,12 +15,11 @@ ifneq ($(wildcard $(BUILD_WORK)/wget2/.build_complete),)
 wget2:
 	@echo "Using previously built wget2."
 else
-wget2: wget2-setup openssl pcre2 xz brotli zstd nghttp2 libidn2 gettext gpgme
+wget2: wget2-setup openssl pcre2 xz brotli zstd nghttp2 libidn2 gettext gpgme libpsl
 	cd $(BUILD_WORK)/wget2 && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-ssl=openssl \
-		--with-openssl \
-		--without-libpsl
+		--with-openssl 
 	+$(MAKE) -C $(BUILD_WORK)/wget2
 	+$(MAKE) -C $(BUILD_WORK)/wget2 install \
 		DESTDIR="$(BUILD_STAGE)/wget2"
