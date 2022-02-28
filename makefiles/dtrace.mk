@@ -25,6 +25,7 @@ dtrace-setup: setup
 	sed -i '1s|^|#include <dispatch/dispatch.h>\n|' $(BUILD_WORK)/dtrace/lib/libdtrace/common/dt_open.c
 	sed -i '1s|^|#include <string.h>\n#include <mach-o/loader.h>\n|' $(BUILD_WORK)/dtrace/lib/libdtrace/apple/dt_module_apple.c
 	sed -i '1s|^|#include <pthread/qos_private.h>\n|' $(BUILD_WORK)/dtrace/cmd/dtrace/dtrace.c
+	sed -i '1s|^|#!/bin/sh|#!/usr/bin/env bash|' $$(find '$(BUILD_WORK)/dtrace/DTTk' -perm 755 -not -iname 'Index' -not -iname 'License' -not -iname 'Readme' -not -iname 'install' -type f)
 	rm -f $(BUILD_WORK)/dtrace/tools/ctfconvert/compare.c
 	mkdir -p $(BUILD_STAGE)/dtrace/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{{s,}bin,lib/dtrace/{arm{,64},x86_64},share/man/man1}
 
@@ -55,10 +56,10 @@ dtrace: dtrace-setup
 		$(INSTALL) -m755 libdtrace.dylib $(BUILD_STAGE)/dtrace/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib; \
 		$(INSTALL) -m755 dtrace $(BUILD_STAGE)/dtrace/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin; \
 		$(INSTALL) -m755 lockstat plockstat usdtheadergen $(BUILD_STAGE)/dtrace/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \
-		$(INSTALL) -m755 $$(find '$(BUILD_WORK)/dtrace/DTTk' -perm 755 -not -iname 'Index' -not -iname 'License' -not -iname 'Readme' -not -iname 'install') $(BUILD_STAGE)/dtrace/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \
+		$(INSTALL) -m755 $$(find '$(BUILD_WORK)/dtrace/DTTk' -perm 755 -not -iname 'Index' -not -iname 'License' -not -iname 'Readme' -not -iname 'install' -type f) $(BUILD_STAGE)/dtrace/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \
 		$(INSTALL) -m644 DTTk/Man/man1m/*.1m $(BUILD_STAGE)/dtrace/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
-		$(INSTALL) -m644 $$(find $(BUILD_WORK)/dtrace/xnu/bsd/dev/dtrace/scripts -name '*.d' -not -name '*arm*' -not -name '*x86_64*') dtrace/scripts/{procfs.d,dt_cpp.h} $(BUILD_STAGE)/dtrace/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/dtrace; \
-		$(INSTALL) -m644 script/swift_arm.d xnu/bsd/dev/dtrace/scripts/regs_arm.d $(BUILD_STAGE)/dtrace/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/dtrace/arm; \
+		$(INSTALL) -m644 $$(find $(BUILD_WORK)/dtrace/xnu/bsd/dev/dtrace/scripts -name '*.d' -not -name '*arm*' -not -name '*x86_64*' -type f) scripts/{procfs.d,dt_cpp.h} $(BUILD_STAGE)/dtrace/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/dtrace; \
+		$(INSTALL) -m644 scripts/swift_arm.d xnu/bsd/dev/dtrace/scripts/regs_arm.d $(BUILD_STAGE)/dtrace/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/dtrace/arm; \
 		$(INSTALL) -m644 scripts/swift_arm64.d xnu/bsd/dev/dtrace/scripts/{regs,ptrauth}_arm64.d $(BUILD_STAGE)/dtrace/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/dtrace/arm64; \
 		$(INSTALL) -m644 scripts/swift_x86_64.d xnu/bsd/dev/dtrace/scripts/regs_x86_64.d $(BUILD_STAGE)/dtrace/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/dtrace/x86_64;
 	chmod 755 $(BUILD_STAGE)/dtrace/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/dtrace/*/swift_*.d
