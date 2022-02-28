@@ -1,0 +1,57 @@
+diff -ur a/src/dispatch_common.c b/src/dispatch_common.c
+--- a/src/dispatch_common.c	2021-08-14 21:55:37.850696000 +0800
++++ b/src/dispatch_common.c	2022-02-28 15:46:08.729969790 +0800
+@@ -167,17 +167,24 @@
+ #include <err.h>
+ #include <pthread.h>
+ #endif
++#ifdef __APPLE__
++#include <TargetConditionals.h>
++#endif
+ #include <string.h>
+ #include <ctype.h>
+ #include <stdio.h>
+ 
+ #include "dispatch_common.h"
+ 
+-#if defined(__APPLE__)
++#if TARGET_OS_OSX
+ #define GLX_LIB "/opt/X11/lib/libGL.1.dylib"
+ #define OPENGL_LIB "/System/Library/Frameworks/OpenGL.framework/Versions/Current/OpenGL"
+ #define GLES1_LIB "libGLESv1_CM.so"
+ #define GLES2_LIB "libGLESv2.so"
++#elif TARGET_OS_EMBEDDED
++#define GLX_LIB "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/libGL.1.dylib"
++#define GLES1_LIB "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/libGLESv1_CM.dylib"
++#define GLES2_LIB "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/libGLESv2.dylib"
+ #elif defined(__ANDROID__)
+ #define GLX_LIB "libGLESv2.so"
+ #define EGL_LIB "libEGL.so"
+@@ -666,7 +673,7 @@
+     if (api.gl_handle)
+ 	return;
+ 
+-#if defined(_WIN32) || defined(__APPLE__)
++#if defined(_WIN32) || TARGET_OS_OSX
+     get_dlopen_handle(&api.gl_handle, OPENGL_LIB, true, true);
+ #else
+ 
+@@ -680,12 +687,17 @@
+ #if defined(OPENGL_LIB)
+     if (!api.gl_handle)
+         get_dlopen_handle(&api.gl_handle, OPENGL_LIB, false, true);
+-#endif
+ 
+     if (!api.gl_handle) {
+         fprintf(stderr, "Couldn't open %s or %s\n", GLX_LIB, OPENGL_LIB);
+         abort();
+     }
++#else
++    if (!api.gl_handle) {
++        fprintf(stderr, "Couldn't open %s\n", GLX_LIB);
++        abort();
++    }
++#endif
+ 
+ #endif
+ }
