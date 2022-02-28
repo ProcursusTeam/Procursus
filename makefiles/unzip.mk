@@ -29,18 +29,18 @@ unzip: unzip-setup
 		-DNO_LCHMOD -DDATE_FORMAT=DF_YMD -DUSE_BZIP2 -DIZ_HAVE_UXUIDGID ' \
 		LF2="$(CFLAGS)" L_BZ2=-lbz2
 	+cd $(BUILD_WORK)/unzip && $(MAKE) -f unix/Makefile install \
-		prefix=$(BUILD_STAGE)/unzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		prefix=$(BUILD_STAGE)/unzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		MANDIR="$(BUILD_STAGE)/unzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/"
 	$(call AFTER_BUILD)
 endif
 
 unzip-package: unzip-stage
 	# unzip.mk Package Structure
 	rm -rf $(BUILD_DIST)/unzip
-	mkdir -p $(BUILD_DIST)/unzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	mkdir -p $(BUILD_DIST)/unzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# unzip.mk Prep unzip
-	cp -a $(BUILD_STAGE)/unzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/unzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/unzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/man $(BUILD_DIST)/unzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	cp -a $(BUILD_STAGE)/unzip $(BUILD_DIST)
 
 	# unzip.mk Sign
 	$(call SIGN,unzip,general.xml)
