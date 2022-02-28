@@ -1204,7 +1204,7 @@ rebuild-%:
 
 setup:
 	@mkdir -p \
-		$(BUILD_BASE) $(BUILD_BASE)$(MEMO_PREFIX)/{{,System}/Library/Frameworks,$(MEMO_SUB_PREFIX)/{include/{bsm,objc,os/internal,sys,firehose,CoreFoundation,IOKit/kext,libkern,arm,{mach/,}machine,CommonCrypto,Security,Kernel/kern/},lib/pkgconfig,$(MEMO_ALT_PREFIX)/lib}} \
+		$(BUILD_BASE) $(BUILD_BASE)$(MEMO_PREFIX)/{{,System}/Library/Frameworks,$(MEMO_SUB_PREFIX)/{include/{bsm,objc,os/internal,sys,firehose,CoreFoundation,IOKit/kext,libkern,arm,{mach/,}machine,CommonCrypto,Security,CoreSymbolication,Kernel/kern/,kern},lib/pkgconfig,$(MEMO_ALT_PREFIX)/lib}} \
 		$(BUILD_SOURCE) $(BUILD_WORK) $(BUILD_STAGE) $(BUILD_STRAP)
 
 	@rm -rf $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/System
@@ -1222,12 +1222,14 @@ setup:
 
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Kernel/kern/ https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/kern/ledger.h
 
+	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/kern/ https://github.com/apple-oss-distributions/xnu/raw/xnu-8019.41.5/osfmk/kern/cs_blobs.h
+
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/arm \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/arm/disklabel.h \
-		https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/arm/cpu_capabilities.h
+		https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/arm/cpu_capabilities.h \
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8019.41.5/bsd/arm/{disklabel,fasttrap_isa}.h
 
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/machine/disklabel.h
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8019.41.5/bsd/machine/{disklabel,fasttrap_isa}.h
 
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os \
 		https://opensource.apple.com/source/Libc/Libc-1439.40.11/os/assumes.h \
@@ -1266,17 +1268,20 @@ setup:
 		https://opensource.apple.com/source/libplatform/libplatform-126.50.8/include/os/internal/{internal_shared,atomic,crashlog}.h
 
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/fsctl.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/spawn_internal.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/resource.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/event.h \
-		https://opensource.apple.com/source/xnu/xnu-4903.221.2/bsd/sys/kdebug.h
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8019.41.5/bsd/sys/{fsctl,spawn_internal,resource,event,kdebug,codesign,csr,kas_info,proc,dtrace{,_{glue,impl,ptss}},fasttrap{,_impl,_isa}}.h
 
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/uuid \
 		https://opensource.apple.com/source/Libc/Libc-1353.11.2/uuid/namespace.h
 
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/mach/coalition.h
+
+	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreSymbolication \
+		https://github.com/matthewbauer/CoreSymbolication/raw/24c87c23664b3ee05dc7a5a87d647ae476a680e4/CoreSymbolication{,Private}.h
+
+	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pthread \
+		https://github.com/apple-oss-distributions/libpthread/raw/libpthread-454.120.2/private/pthread/qos_private.h \
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8019.41.5/bsd/pthread/priority_private.h
 
 	@cp -a $(BUILD_MISC)/{libxml-2.0,zlib}.pc $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 
@@ -1292,7 +1297,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	@cp -af $(MACOSX_SYSROOT)/usr/include/objc/objc-runtime.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/objc
 	@cp -af $(MACOSX_SYSROOT)/usr/include/libkern/{OSDebug.h,OSKextLib.h,OSReturn.h,OSThermalNotification.h,OSTypes.h,machine} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern
 	@cp -af $(MACOSX_SYSROOT)/usr/include/kern $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	@cp -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,proc*,ptrace,kern*,random,reboot,user,vnode,disk,vmmeter,vnioctl,conf}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys
+	@cp -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,proc_info,ptrace,kern*,random,reboot,user,vnode,disk,vmmeter,vnioctl,conf}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys
 	@cp -af  $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Versions/Current/Headers/sys/disklabel.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys
 	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit
 	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/Security.framework/Headers/{mds_schema,oidsalg,SecKeychainSearch,certextensions,Authorization,eisl,SecDigestTransform,SecKeychainItem,oidscrl,cssmcspi,CSCommon,cssmaci,SecCode,CMSDecoder,oidscert,SecRequirement,AuthSession,SecReadTransform,oids,cssmconfig,cssmkrapi,SecPolicySearch,SecAccess,cssmtpi,SecACL,SecEncryptTransform,cssmapi,cssmcli,mds,x509defs,oidsbase,SecSignVerifyTransform,cssmspi,cssmkrspi,SecTask,cssmdli,SecAsn1Coder,cssm,SecTrustedApplication,SecCodeHost,SecCustomTransform,oidsattr,SecIdentitySearch,cssmtype,SecAsn1Types,emmtype,SecTransform,SecTrustSettings,SecStaticCode,emmspi,SecTransformReadTransform,SecKeychain,SecDecodeTransform,CodeSigning,AuthorizationPlugin,cssmerr,AuthorizationTags,CMSEncoder,SecEncodeTransform,SecureDownload,SecAsn1Templates,AuthorizationDB,SecCertificateOIDs,cssmapple}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security
@@ -1328,6 +1333,7 @@ endif
 	@sed -i '1s|^|#include <Security/cssmapi.h>\n#include <Security/SecKeychain.h>\n|' $(BUILD_BASE)$(PREFIX)$(MEMO_SUB_PREFIX)/include/Security/SecKeychainPriv.h
 	@sed -i '1s|^|#include <arm/cpu_capabilities.h>\n|' $(BUILD_BASE)$(PREFIX)$(MEMO_SUB_PREFIX)/include/firehose/tracepoint_private.h
 	@sed -i 's|extern void \*__dso_handle;|#ifndef __OS_TRACE_BASE_H__\nextern void \*__dso_handle;\n#endif|' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/log.h
+	@sed -i 's|#include <sys/qos_private.h>||g' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pthread/qos_private.h
 
 	@# Setup libiosexec
 	@cp -af $(BUILD_MISC)/libiosexec/libiosexec.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include

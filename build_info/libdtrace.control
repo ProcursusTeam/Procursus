@@ -1,0 +1,13 @@
+Package: libdtrace
+Section: Libraries
+Version: @DEB_DTRACE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Description: dynamic tracing compiler and tracing utility (shared library)
+ DTrace is a comprehensive dynamic tracing framework ported from Solaris.  
+ DTrace provides a powerful infrastructure that permits administrators, 
+ developers, and service personnel to concisely answer arbitrary questions 
+ about the behavior of the operating system and user programs.
+ .
+ This package contains the libdtrace shared library and other files 
+ required by dtrace.

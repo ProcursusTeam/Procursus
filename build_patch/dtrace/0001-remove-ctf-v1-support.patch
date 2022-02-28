@@ -1,0 +1,82 @@
+diff -urN a/lib/libctf/common/ctf_open.c b/lib/libctf/common/ctf_open.c
+--- a/lib/libctf/common/ctf_open.c	2022-02-08 02:41:12.000000000 +0800
++++ b/lib/libctf/common/ctf_open.c	2022-02-28 20:53:27.000000000 +0800
+@@ -49,12 +49,6 @@
+ int _libctf_debug = 0;			/* debugging messages enabled */
+ 
+ static uint16_t
+-get_kind_v1(uint16_t info)
+-{
+-	return (CTF_INFO_KIND_V1(info));
+-}
+-
+-static uint16_t
+ get_kind_v2(uint16_t info)
+ {
+ 	return (CTF_INFO_KIND(info));
+@@ -63,12 +57,6 @@
+ #define get_kind_v3 get_kind_v2
+ 
+ static uint16_t
+-get_root_v1(uint16_t info)
+-{
+-	return (CTF_INFO_ISROOT_V1(info));
+-}
+-
+-static uint16_t
+ get_root_v2(uint16_t info)
+ {
+ 	return (CTF_INFO_ISROOT(info));
+@@ -77,12 +65,6 @@
+ #define get_root_v3 get_root_v2
+ 
+ static uint16_t
+-get_vlen_v1(uint16_t info)
+-{
+-	return (CTF_INFO_VLEN_V1(info));
+-}
+-
+-static uint16_t
+ get_vlen_v2(uint16_t info)
+ {
+ 	return (CTF_INFO_VLEN(info));
+@@ -92,7 +74,6 @@
+ 
+ static const ctf_fileops_t ctf_fileops[] = {
+ 	{ NULL, NULL },
+-	{ get_kind_v1, get_root_v1, get_vlen_v1 },
+ 	{ get_kind_v2, get_root_v2, get_vlen_v2 },
+ 	{ get_kind_v3, get_root_v3, get_vlen_v3 }
+ };
+@@ -697,7 +678,7 @@
+ 	    pp->ctp_magic, pp->ctp_version);
+ 
+ 	/*
+-	 * Validate each part of the CTF header (either V1 or V2).
++	 * Validate each part of the CTF header V2.
+ 	 * First, we validate the preamble (common to all versions).  At that
+ 	 * point, we know specific header version, and can validate the
+ 	 * version-specific parts including section offsets and alignments.
+@@ -713,22 +694,6 @@
+ 		bcopy(ctfsect->cts_data, &hp, sizeof (hp));
+ 		hdrsz = sizeof (ctf_header_t);
+ 
+-	} else if (pp->ctp_version == CTF_VERSION_1) {
+-		const ctf_header_v1_t *h1p =
+-		    (const ctf_header_v1_t *)ctfsect->cts_data;
+-
+-		if (ctfsect->cts_size < sizeof (ctf_header_v1_t))
+-			return (ctf_set_open_errno(errp, ECTF_NOCTFBUF));
+-
+-		bzero(&hp, sizeof (hp));
+-		hp.cth_preamble = h1p->cth_preamble;
+-		hp.cth_objtoff = h1p->cth_objtoff;
+-		hp.cth_funcoff = h1p->cth_funcoff;
+-		hp.cth_typeoff = h1p->cth_typeoff;
+-		hp.cth_stroff = h1p->cth_stroff;
+-		hp.cth_strlen = h1p->cth_strlen;
+-
+-		hdrsz = sizeof (ctf_header_v1_t);
+ 	} else
+ 		return (ctf_set_open_errno(errp, ECTF_CTFVERS));
+ 
