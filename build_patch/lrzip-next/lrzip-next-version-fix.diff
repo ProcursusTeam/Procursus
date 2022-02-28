@@ -16,7 +16,7 @@ diff -ur lrzip-next/configure.ac lrzip-next-diff/configure.ac
  m4_define([v_mic], [m4_esyscmd_s([./util/gitdesc.sh micro])])
 +v_maj = 0
 +v_min = 8
-+v_mic = 9
++v_mic = 10
 +
  ##--##--##--##--##--##--##--##--##--##--##--##--##--##--##--##--##
  m4_define([v_ver], [v_maj.v_min.v_mic])
