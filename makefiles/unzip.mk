@@ -37,7 +37,7 @@ endif
 unzip-package: unzip-stage
 	# unzip.mk Package Structure
 	rm -rf $(BUILD_DIST)/unzip
-	mkdir -p $(BUILD_DIST)/unzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	mkdir -p $(BUILD_DIST)/unzip
 
 	# unzip.mk Prep unzip
 	cp -a $(BUILD_STAGE)/unzip $(BUILD_DIST)
