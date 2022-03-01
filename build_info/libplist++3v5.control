@@ -7,4 +7,3 @@ Conflicts: libplist (<< 99)
 Section: Networking
 Priority: standard
 Description: C++ Library for handling Apple binary and XML property lists
-Tag: purpose::library, role::developer

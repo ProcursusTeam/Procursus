@@ -1,0 +1,53 @@
+diff -urN yt-dlp/README.md yt-dlp+procursus/README.md
+--- yt-dlp/README.md	2022-02-04 13:39:10.000000000 +0700
++++ yt-dlp+procursus/README.md	2022-02-23 19:34:24.840633837 +0700
+@@ -312,9 +312,6 @@
+ ## General Options:
+     -h, --help                       Print this help text and exit
+     --version                        Print program version and exit
+-    -U, --update                     Update this program to latest version. Make
+-                                     sure that you have sufficient permissions
+-                                     (run with sudo if needed)
+     -i, --ignore-errors              Ignore download and postprocessing errors.
+                                      The download will be considered successful
+                                      even if the postprocessing fails
+diff -urN yt-dlp/yt_dlp/__init__.py yt-dlp+procursus/yt_dlp/__init__.py
+--- yt-dlp/yt_dlp/__init__.py	2022-02-04 13:39:10.000000000 +0700
++++ yt-dlp+procursus/yt_dlp/__init__.py	2022-02-23 19:37:25.593274429 +0700
+@@ -43,7 +43,6 @@
+     std_headers,
+     write_string,
+ )
+-from .update import run_update
+ from .downloader import (
+     FileDownloader,
+ )
+@@ -824,11 +823,11 @@
+ 
+         # Update version
+         if opts.update_self:
+-            # If updater returns True, exit. Required for windows
+-            if run_update(ydl):
+-                if actual_use:
+-                    sys.exit('ERROR: The program must exit for the update to complete')
+-                sys.exit()
++            parser.error("yt-dlp's self-update mechanism is disabled on Procursus.\n"
++                "Please update yt-dlp using apt(8).\n"
++                "See https://github.com/ProcursusTeam/Procursus/blob/main/yt-dlp.mk for the "
++                "latest packaged version.\n"
++            )
+ 
+         # Maybe do nothing
+         if not actual_use:
+diff -urN yt-dlp/yt_dlp/options.py yt-dlp+procursus/yt_dlp/options.py
+--- yt-dlp/yt_dlp/options.py	2022-02-04 13:39:10.000000000 +0700
++++ yt-dlp+procursus/yt_dlp/options.py	2022-02-23 19:38:08.389283656 +0700
+@@ -229,7 +229,7 @@
+     general.add_option(
+         '-U', '--update',
+         action='store_true', dest='update_self',
+-        help='Update this program to latest version. Make sure that you have sufficient permissions (run with sudo if needed)')
++        help=optparse.SUPPRESS_HELP)
+     general.add_option(
+         '-i', '--ignore-errors',
+         action='store_true', dest='ignoreerrors',

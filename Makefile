@@ -14,6 +14,7 @@ endif
 SYSROOT :=
 
 UNAME           := $(shell uname -s)
+UNAME_M         := $(shell uname -m)
 SUBPROJECTS     += $(STRAPPROJECTS)
 
 ifneq ($(shell umask),0022)
@@ -71,7 +72,7 @@ endif
 
 export MACOSX_DEPLOYMENT_TARGET
 
-ifeq ($(MEMO_TARGET),iphoneos-arm64)
+ifeq ($(shell [ "$(MEMO_TARGET)" = "iphoneos-arm64" ] || [ "$(MEMO_TARGET)" = "iphoneos-arm64-ramdisk" ] && echo 1),1)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for iOS)
 endif # ($(MEMO_QUIET),1)
@@ -241,7 +242,27 @@ DEB_ARCH              := watchos-arm64-32
 GNU_HOST_TRIPLE       := aarch64-apple-darwin
 PLATFORM_VERSION_MIN  := -mwatchos-version-min=$(WATCHOS_DEPLOYMENT_TARGET)
 RUST_TARGET           := aarch64-apple-watchos
-LLVM_TARGET           := arm64-apple-watchos$(WATCHOS_DEPLOYMENT_TARGET)
+LLVM_TARGET           := arm64_32-apple-watchos$(WATCHOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?=
+MEMO_SUB_PREFIX       ?= /usr
+MEMO_ALT_PREFIX       ?= /local
+MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
+GNU_PREFIX            :=
+ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/WatchOS.sdk
+BARE_PLATFORM         := WatchOS
+export WATCHOS_DEPLOYMENT_TARGET
+
+else ifeq ($(shell [ "$(MEMO_TARGET)" = "watchos-armv7k" ] || [ "$(MEMO_TARGET)" = "watchos-armv7k-ramdisk" ] && echo 1),1)
+ifneq ($(MEMO_QUIET),1)
+$(warning Building for WatchOS)
+endif # ($(MEMO_QUIET),1)
+MEMO_ARCH             := armv7k
+PLATFORM              := watchos
+DEB_ARCH              := watchos-armv7k
+GNU_HOST_TRIPLE       := armv7k-apple-darwin
+PLATFORM_VERSION_MIN  := -mwatchos-version-min=$(WATCHOS_DEPLOYMENT_TARGET)
+RUST_TARGET           := armv7k-apple-watchos
+LLVM_TARGET           := armv7k-apple-watchos$(WATCHOS_DEPLOYMENT_TARGET)
 MEMO_PREFIX           ?=
 MEMO_SUB_PREFIX       ?= /usr
 MEMO_ALT_PREFIX       ?= /local
@@ -325,6 +346,7 @@ CPP      := $(GNU_HOST_TRIPLE)-clang -E
 AR       := $(GNU_HOST_TRIPLE)-ar
 LD       := $(GNU_HOST_TRIPLE)-ld
 RANLIB   := $(GNU_HOST_TRIPLE)-ranlib
+STRINGS  := $(GNU_HOST_TRIPLE)-strings
 STRIP    := $(GNU_HOST_TRIPLE)-strip
 I_N_T    := $(GNU_HOST_TRIPLE)-install_name_tool
 NM       := $(GNU_HOST_TRIPLE)-nm
@@ -332,10 +354,10 @@ LIPO     := $(GNU_HOST_TRIPLE)-lipo
 OTOOL    := $(GNU_HOST_TRIPLE)-otool
 LIBTOOL  := $(GNU_HOST_TRIPLE)-libtool
 
-CFLAGS_FOR_BUILD   :=
-CPPFLAGS_FOR_BUILD :=
-CXXFLAGS_FOR_BUILD :=
-LDFLAGS_FOR_BUILD  :=
+CFLAGS_FOR_BUILD   := -O2 -pipe
+CPPFLAGS_FOR_BUILD := -O2 -pipe
+CXXFLAGS_FOR_BUILD := -O2 -pipe
+LDFLAGS_FOR_BUILD  := -O2 -pipe
 
 else ifeq ($(UNAME),FreeBSD)
 ifneq ($(MEMO_QUIET),1)
@@ -349,6 +371,7 @@ CPP     := $(GNU_HOST_TRIPLE)-clang -E
 AR      := $(GNU_HOST_TRIPLE)-ar
 LD      := $(GNU_HOST_TRIPLE)-ld
 RANLIB  := $(GNU_HOST_TRIPLE)-ranlib
+STRINGS := $(GNU_HOST_TRIPLE)-strings
 STRIP   := $(GNU_HOST_TRIPLE)-strip
 I_N_T   := $(GNU_HOST_TRIPLE)-install_name_tool
 NM      := $(GNU_HOST_TRIPLE)-nm
@@ -363,7 +386,7 @@ CXXFLAGS_FOR_BUILD :=
 LDFLAGS_FOR_BUILD  :=
 
 else ifeq ($(UNAME),Darwin)
-ifeq ($(shell sw_vers -productName),macOS)
+ifeq ($(shell sw_vers -productName),macOS) # Swap to Mac OS X for devices older than Big Sur
 ifneq ($(MEMO_QUIET),1)
 $(warning Building on MacOS)
 endif # ($(MEMO_QUIET),1)
@@ -385,9 +408,9 @@ $(warning Building on iOS)
 endif # ($(MEMO_QUIET),1)
 TARGET_SYSROOT  ?= /usr/share/SDKs/$(BARE_PLATFORM).sdk
 MACOSX_SYSROOT  ?= /usr/share/SDKs/MacOSX.sdk
-CC              := $(shell which cc)
-CXX             := $(shell which c++)
-CPP             := $(shell which cc) -E
+CC              := $(shell command -v cc)
+CXX             := $(shell command -v c++)
+CPP             := $(shell command -v cc) -E
 PATH            := /usr/bin:$(PATH)
 
 CFLAGS_FOR_BUILD   := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
@@ -396,33 +419,36 @@ CXXFLAGS_FOR_BUILD := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_
 LDFLAGS_FOR_BUILD  := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
 
 endif
-AR              := $(shell which ar)
-LD              := $(shell which ld)
-RANLIB          := $(shell which ranlib)
-STRIP           := $(shell which strip)
-NM              := $(shell which nm)
-LIPO            := $(shell which lipo)
-OTOOL           := $(shell which otool)
-I_N_T           := $(shell which install_name_tool)
-LIBTOOL         := $(shell which libtool)
+AR              := $(shell command -v ar)
+LD              := $(shell command -v ld)
+RANLIB          := $(shell command -v ranlib)
+STRINGS         := $(shell command -v strings)
+STRIP           := $(shell command -v strip)
+NM              := $(shell command -v nm)
+LIPO            := $(shell command -v lipo)
+OTOOL           := $(shell command -v otool)
+I_N_T           := $(shell command -v install_name_tool)
+LIBTOOL         := $(shell command -v libtool)
 
 else
 $(error Please use macOS, iOS, Linux, or FreeBSD to build)
 endif
 
-CC_FOR_BUILD  := $(shell which cc) $(CFLAGS_FOR_BUILD)
-CPP_FOR_BUILD := $(shell which cc) -E $(CPPFLAGS_FOR_BUILD)
-CXX_FOR_BUILD := $(shell which c++) $(CXXFLAGS_FOR_BUILD)
-AR_FOR_BUILD  := $(shell which ar)
+CC_FOR_BUILD  := $(shell command -v cc) $(CFLAGS_FOR_BUILD)
+CPP_FOR_BUILD := $(shell command -v cc) -E $(CPPFLAGS_FOR_BUILD)
+CXX_FOR_BUILD := $(shell command -v c++) $(CXXFLAGS_FOR_BUILD)
+AR_FOR_BUILD  := $(shell command -v ar)
 export CC_FOR_BUILD CPP_FOR_BUILD CXX_FOR_BUILD AR_FOR_BUILD
 
-DEB_MAINTAINER    ?= Hayden Seay <me@diatr.us>
+DEB_MAINTAINER    ?= Procursus Team <support@procurs.us>
 MEMO_REPO_URI     ?= https://apt.procurs.us
 MEMO_PGP_SIGN_KEY ?= C59F3798A305ADD7E7E6C7256430292CF9551B0E
 CODESIGN_IDENTITY ?= -
 
 MEMO_LDID_EXTRA_FLAGS     ?=
 MEMO_CODESIGN_EXTRA_FLAGS ?=
+
+LDID := ldid -Cadhoc $(MEMO_LDID_EXTRA_FLAGS)
 
 # Root
 BUILD_ROOT     ?= $(PWD)
@@ -431,11 +457,11 @@ BUILD_SOURCE   := $(BUILD_ROOT)/build_source
 # Base headers/libs (e.g. patched from SDK)
 BUILD_BASE     := $(BUILD_ROOT)/build_base/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Dpkg info storage area
-BUILD_INFO     := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_info
+BUILD_INFO     ?= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_info
 # Miscellaneous Procursus files
-BUILD_MISC     := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_misc
+BUILD_MISC     ?= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_misc
 # Patch storage area
-BUILD_PATCH    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_patch
+BUILD_PATCH    ?= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_patch
 # Extracted source working directory
 BUILD_WORK     := $(BUILD_ROOT)/build_work/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Bootstrap working area
@@ -445,7 +471,7 @@ BUILD_DIST     := $(BUILD_ROOT)/build_dist/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Actual bootrap staging
 BUILD_STRAP    := $(BUILD_ROOT)/build_strap/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Extra scripts for the buildsystem
-BUILD_TOOLS    := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_tools
+BUILD_TOOLS    ?= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_tools
 
 ifeq ($(DEBUG),1)
 OPTIMIZATION_FLAGS := -g -O0
@@ -481,7 +507,42 @@ endif
 
 # Link everything to libiosexec, as it's preinstalled on every Procursus system.
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+ifneq ($(MEMO_NO_IOSEXEC),1)
 LDFLAGS             += -liosexec
+else
+CFLAGS              += -DLIBIOSEXEC_INTERNAL
+endif
+endif
+
+MEMO_MANPAGE_COMPRESSION := zstd
+
+ifeq ($(MEMO_MANPAGE_COMPRESSION),zstd)
+MEMO_MANPAGE_SUFFIX   := .zst
+MEMO_MANPAGE_COMPCMD  := zstd
+MEMO_MANPAGE_COMPFLGS += -19 --rm
+
+else ifeq ($(MEMO_MANPAGE_COMPRESSION),xz)
+MEMO_MANPAGE_SUFFIX    := .xz
+MEMO_MANPAGE_COMPCMD   := xz
+MEMO_MANPAGE_COMPFLGS  := -T0
+
+else ifeq ($(MEMO_MANPAGE_COMPRESSION),gzip)
+MEMO_MANPAGE_SUFFIX    := .gz
+MEMO_MANPAGE_COMPCMD   := gzip
+MEMO_MANPAGE_COMPFLGS  := -9
+
+else ifeq ($(MEMO_MANPAGE_COMPRESSION),lz4)
+MEMO_MANPAGE_SUFFIX    := .lz4
+MEMO_MANPAGE_COMPCMD   := lz4
+
+else ifeq ($(MEMO_MANPAGE_COMPRESSION),lzop)
+MEMO_MANPAGE_SUFFIX    := .lzop
+MEMO_MANPAGE_COMPCMD   := lzop
+MEMO_MANPAGE_COMPFLGS  := -U
+
+else ifeq ($(MEMO_MANPAGE_COMPRESSION),none)
+MEMO_MANPAGE_SUFFIX    :=
+MEMO_MANPAGE_COMPCMD   := true
 endif
 
 DEFAULT_CMAKE_FLAGS := \
@@ -606,6 +667,19 @@ PGP_VERIFY  = KEY=$$(gpg --verify --status-fd 1 $(BUILD_SOURCE)/$(1).$(if $(2),$
 	gpg --verify $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) $(BUILD_SOURCE)/$(1) 2>&1 | grep -q 'Good signature'
 endif
 
+CHECKSUM_VERIFY = if [ "$(1)" = "sha1" ]; then \
+			HASH=$$(sha1sum "$(BUILD_SOURCE)/$(2)" | cut -d " " -f1 | tr -d \n); \
+		elif [ "$(1)" = "sha256" ]; then \
+			HASH=$$(sha256sum "$(BUILD_SOURCE)/$(2)" | cut -d " " -f1 | tr -d \n); \
+		elif [ "$(1)" = "sha512" ]; then \
+			HASH=$$(sha512sum "$(BUILD_SOURCE)/$(2)" | cut -d " " -f1 | tr -d \n); \
+		fi; \
+		if [ "$(3)" = "" ]; then \
+			[ "$$(cut -d" " -f 1 "$(BUILD_SOURCE)/$(2).$(1)")" = "$$HASH" ] || (echo "$(2) - Invalid Hash" && exit 1); \
+		else  \
+			[ "$(3)" = "$$HASH" ] || (echo "$(2) - Invalid Hash" && exit 1); \
+		fi
+
 EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 		cd $(BUILD_WORK) && \
 		tar -xf $(BUILD_SOURCE)/$(1) && \
@@ -625,16 +699,19 @@ DO_PATCH    = cd $(BUILD_PATCH)/$(1); \
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 SIGN = 	for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
 			if [ $${file\#\#*.} = "dylib" ] || [ $${file\#\#*.} = "bundle" ] || [ $${file\#\#*.} = "so" ]; then \
-				ldid $(MEMO_LDID_EXTRA_FLAGS) -S $$file; \
+				$(LDID) -S $$file; \
 			else \
-				ldid $(MEMO_LDID_EXTRA_FLAGS) -S$(BUILD_MISC)/entitlements/$(2) $$file; \
+				$(LDID) -S$(BUILD_MISC)/entitlements/$(2) $$file; \
 			fi; \
 		done; \
 		find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
 else
 SIGN = 	CODESIGN_FLAGS="--sign $(CODESIGN_IDENTITY) --force --deep "; \
 		if [ "$(CODESIGN_IDENTITY)" != "-" ]; then \
-			CODESIGN_FLAGS+="--timestamp -o runtime "; \
+			CODESIGN_FLAGS+="--timestamp "; \
+			if [ "$(4)" != "nohardened" ]; then \
+				CODESIGN_FLAGS+="-o kill,hard "; \
+			fi; \
 			if [ -n "$(3)" ]; then \
 				CODESIGN_FLAGS+="--entitlements $(BUILD_MISC)/entitlements/$(3) "; \
 			fi; \
@@ -652,40 +729,49 @@ endif
 ###
 
 AFTER_BUILD = \
-	if [ ! -z "$(MEMO_PREFIX)" ] && [ -d "$(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" ]; then \
-		rm -f $(BUILD_STAGE)/$@/._lib_cache && touch $(BUILD_STAGE)/$@/._lib_cache; \
-		for file in $$(find $(BUILD_STAGE)/$@ -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
+	if [ ! -z "$(2)" ]; then \
+		pkg="$(2)"; \
+	else \
+		pkg="$@"; \
+	fi; \
+	if [ ! -z "$(MEMO_PREFIX)" ] && [ -d "$(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" ]; then \
+		rm -f $(BUILD_STAGE)/$$pkg/._lib_cache && touch $(BUILD_STAGE)/$$pkg/._lib_cache; \
+		for file in $$(find $(BUILD_STAGE)/$$pkg -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
 			INSTALL_NAME=$$(otool -D $$file | grep -v ":$$"); \
 			if [ ! -z "$$INSTALL_NAME" ]; then \
 				$(I_N_T) -id @rpath/$$(basename $$INSTALL_NAME) $$file; \
-				echo "$$INSTALL_NAME" >> $(BUILD_STAGE)/$@/._lib_cache; \
+				echo "$$INSTALL_NAME" >> $(BUILD_STAGE)/$$pkg/._lib_cache; \
 			fi; \
 		done; \
 	fi; \
-	for file in $$(find $(BUILD_STAGE)/$@ -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
+	for file in $$(find $(BUILD_STAGE)/$$pkg -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
 		if [ "$(RELATIVE_RPATH)" = "1" ]; then \
-			$(I_N_T) -add_rpath "@loader_path/$$(realpath --relative-to=$$(dirname $$file) $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))/lib" $$file; \
+			$(I_N_T) -add_rpath "@loader_path/$$(realpath --relative-to=$$(dirname $$file) $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))/lib" $$file; \
 		else \
 			$(I_N_T) -add_rpath "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" $$file; \
 		fi; \
-		if [ -f $(BUILD_STAGE)/$@/._lib_cache ]; then \
-			cat $(BUILD_STAGE)/$@/._lib_cache | while read line; do \
+		if [ -f $(BUILD_STAGE)/$$pkg/._lib_cache ]; then \
+			cat $(BUILD_STAGE)/$$pkg/._lib_cache | while read line; do \
 				$(I_N_T) -change $$line @rpath/$$(basename $$line) $$file; \
 			done; \
 		fi; \
 		$(STRIP) -x $$file; \
 	done; \
-	rm -f $(BUILD_STAGE)/$@/._lib_cache; \
-	find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.gz$$' -exec gunzip '{}' \; 2> /dev/null; \
-	find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.xz$$' -exec unxz '{}' \; 2> /dev/null; \
-	find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.zst$$' -exec unzstd '{}' \; 2> /dev/null; \
-	find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -exec zstd -19 --rm '{}' \; 2> /dev/null; \
-	find $(BUILD_STAGE)/$@/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type l -exec bash -c '$(LN_S) $$(readlink "{}" | sed -e "s/\.gz$$//" -e "s/\.xz$$//" -e "s/\.zst$$//").zst "{}".zst; rm -f "{}"' \; -delete 2> /dev/null; \
-	if [ "$(1)" = "copy" ]; then \
-		cp -af $(BUILD_STAGE)/$@/* $(BUILD_BASE); \
+	rm -f $(BUILD_STAGE)/$$pkg/._lib_cache; \
+	find $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.gz$$' -exec gunzip '{}' \; 2> /dev/null; \
+	find $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.xz$$' -exec unxz '{}' \; 2> /dev/null; \
+	find $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.zst$$' -exec unzstd '{}' \; 2> /dev/null; \
+	if [ "$(MEMO_NO_DOC_COMPRESS)" != 1 ]; then \
+		find $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -exec $(MEMO_MANPAGE_COMPCMD) $(MEMO_MANPAGE_COMPFLGS) '{}' \; 2> /dev/null; \
+		find $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type l -exec bash -c '$(LN_S) $$(readlink "{}" | sed -e "s/\.gz$$//" -e "s/\.xz$$//" -e "s/\.zst$$//")$(MEMO_MANPAGE_SUFFIX) "{}"$(MEMO_MANPAGE_SUFFIX); rm -f "{}"' \; -delete 2> /dev/null; \
+	else \
+		find $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type l -exec bash -c '$(LN_S) $$(readlink "{}" | sed -e "s/\.gz$$//" -e "s/\.xz$$//" -e "s/\.zst$$//") "{}"' \; 2> /dev/null; \
 	fi; \
-	mkdir $(BUILD_WORK)/$@/; \
-	touch $(BUILD_WORK)/$@/.build_complete; \
+	if [ "$(1)" = "copy" ]; then \
+		cp -af $(BUILD_STAGE)/$$pkg/* $(BUILD_BASE); \
+	fi; \
+	[ -d $(BUILD_WORK)/$$pkg/ ] || mkdir $(BUILD_WORK)/$$pkg/; \
+	touch $(BUILD_WORK)/$$pkg/.build_complete; \
 	find $(BUILD_BASE) -name '*.la' -type f -delete
 
 PACK = \
@@ -698,8 +784,10 @@ PACK = \
 		if [ -f "$(BUILD_WORK)/$$(echo $@ | sed 's/-package//')/$$file" ]; then \
 			mkdir -p $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1); \
 			cp -aL $(BUILD_WORK)/$$(echo $@ | sed 's/-package//')/$$file $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1); \
-			if [ ! "$$file" = "AUTHORS" ] && [ ! "$$file" = "COPYING" ] && [ ! "$$file" = "LICENSE" ]; then \
-				zstd -19 --rm $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1)/$$file 2> /dev/null; \
+			if [ "$(MEMO_NO_DOC_COMPRESS)" != 1 ]; then \
+				if [ ! "$$file" = "AUTHORS" ] && [ ! "$$file" = "COPYING" ] && [ ! "$$file" = "LICENSE" ]; then \
+					zstd -19 --rm $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1)/$$file 2> /dev/null; \
+				fi; \
 			fi; \
 		fi; \
 	done; \
@@ -724,23 +812,29 @@ PACK = \
 				sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' \
 					-e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
 					-e 's|@MEMO_ALT_PREFIX@|$(MEMO_ALT_PREFIX)|g' \
+					-e 's|@MEMO_LAUNCHCTL_PREFIX@|$(MEMO_LAUNCHCTL_PREFIX)|g' \
 					-e 's|@GNU_PREFIX@|$(GNU_PREFIX)|g' \
 					-e 's|@BARE_PLATFORM@|$(BARE_PLATFORM)|g' \
 					-e 's/@$(2)@/$($(2))/g' \
 					-e 's/@DEB_MAINTAINER@/$(DEB_MAINTAINER)/g' \
+					-e 's/@MEMO_MANPAGE_SUFFIX@/$(MEMO_MANPAGE_SUFFIX)/g' \
 					-e 's/@DEB_ARCH@/$(DEB_ARCH)/g' < $(BUILD_INFO)/$(1).$$n.rootless > $(BUILD_DIST)/$(1)/DEBIAN/$$i; \
 			elif [ -f "$(BUILD_INFO)/$(1).$$n" ]; then \
 				sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' \
 					-e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
 					-e 's|@MEMO_ALT_PREFIX@|$(MEMO_ALT_PREFIX)|g' \
+					-e 's|@MEMO_LAUNCHCTL_PREFIX@|$(MEMO_LAUNCHCTL_PREFIX)|g' \
 					-e 's|@GNU_PREFIX@|$(GNU_PREFIX)|g' \
 					-e 's|@BARE_PLATFORM@|$(BARE_PLATFORM)|g' \
 					-e 's/@$(2)@/$($(2))/g' \
 					-e 's/@DEB_MAINTAINER@/$(DEB_MAINTAINER)/g' \
+					-e 's/@MEMO_MANPAGE_SUFFIX@/$(MEMO_MANPAGE_SUFFIX)/g' \
 					-e 's/@DEB_ARCH@/$(DEB_ARCH)/g' < $(BUILD_INFO)/$(1).$$n > $(BUILD_DIST)/$(1)/DEBIAN/$$i; \
 			fi; \
 		done; \
 	done; \
+	find $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)/etc -type f -printf '$(MEMO_PREFIX)/etc/%P\n' | LC_ALL=C sort >> $(BUILD_DIST)/$(1)/DEBIAN/conffiles; \
+	[ -s $(BUILD_DIST)/$(1)/DEBIAN/conffiles ] || rm $(BUILD_DIST)/$(1)/DEBIAN/conffiles; \
 	sed -i '$$a\' $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	cd $(BUILD_DIST)/$(1) && find . -type f ! -regex '.*.hg.*' ! -regex '.*?debian-binary.*' ! -regex '.*?DEBIAN.*' -printf '"%P" ' | xargs md5sum > $(BUILD_DIST)/$(1)/DEBIAN/md5sums; \
 	$(FAKEROOT) chmod 0755 $(BUILD_DIST)/$(1)/DEBIAN/*; \
@@ -922,11 +1016,11 @@ MAKEFLAGS += --no-print-directory
 
 ifeq ($(findstring --jobserver-auth=,$(MAKEFLAGS)),)
 ifeq ($(call HAS_COMMAND,nproc),1)
-GET_LOGICAL_CORES := $(shell expr $(shell nproc) / 2)
+CORE_COUNT ?= $(shell nproc)
 else
-GET_LOGICAL_CORES := $(shell expr $(shell sysctl -n hw.ncpu) / 2)
+CORE_COUNT ?= $(shell sysctl -n hw.ncpu)
 endif
-MAKEFLAGS += --jobs=$(GET_LOGICAL_CORES) --load-average=$(GET_LOGICAL_CORES)
+MAKEFLAGS += --jobs=$(CORE_COUNT) --load-average=$(CORE_COUNT)
 endif
 
 PROCURSUS := 1
@@ -958,6 +1052,25 @@ env:
 
 include makefiles/*.mk
 
+RAMDISK_PROJECTS := bash coreutils diskdev-cmds findutils grep gzip ncurses profile.d readline tar openssl libmd openssh
+
+ramdisk:
+	+MEMO_NO_IOSEXEC=1 $(MAKE) $(RAMDISK_PROJECTS:%=%-package)
+	rm -rf $(BUILD_STRAP)/strap
+	rm -f $(BUILD_DIST)/bootstrap_tools.tar*
+	rm -f $(BUILD_DIST)/.fakeroot_bootstrap
+	touch $(BUILD_DIST)/.fakeroot_bootstrap
+	for DEB in $(BUILD_DIST)/*.deb; do \
+		dpkg-deb -x $$DEB $(BUILD_DIST)/strap; \
+	done
+	ln -s $(MEMO_PREFIX)/bin/bash $(BUILD_DIST)/strap/$(MEMO_PREFIX)/bin/sh
+	echo -e "/bin/sh\n" > $(BUILD_DIST)/strap/$(MEMO_PREFIX)/etc/shells
+	rm -rf $(BUILD_DIST)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/{*.a,pkgconfig},share/{doc,man}}
+	export FAKEROOT='fakeroot -i $(BUILD_DIST)/.fakeroot_bootstrap -s $(BUILD_DIST)/.fakeroot_bootstrap --'; \
+	cd $(BUILD_DIST)/strap && $$FAKEROOT tar -ckpf $(BUILD_DIST)/bootstrap_tools.tar .
+	gzip -9 $(BUILD_DIST)/bootstrap_tools.tar
+	rm -rf $(BUILD_DIST)/strap
+
 package:: $(SUBPROJECTS:%=%-package)
 
 strapprojects:: export BUILD_DIST=$(BUILD_STRAP)
@@ -981,7 +1094,7 @@ endif # $(MEMO_TARGET),darwin-*
 		dpkg-deb -R $$DEB $(BUILD_STRAP)/strap; \
 		cp $(BUILD_STRAP)/strap/DEBIAN/md5sums $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/info/$$PKGNAME.md5sums; \
 		dpkg-deb -c $$DEB | cut -f2- -d"." | awk -F'\\-\\>' '{print $$1}' | sed '1 s/$$/./' | sed 's/\/$$//' > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/info/$$PKGNAME.list; \
-		for script in preinst postinst extrainst_ prerm postrm; do \
+		for script in preinst postinst extrainst_ prerm postrm conffiles triggers; do \
 			cp $(BUILD_STRAP)/strap/DEBIAN/$$script $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/info/$$PKGNAME.$$script; \
 		done; \
 		cat $(BUILD_STRAP)/strap/DEBIAN/control >> $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/status; \
@@ -1014,7 +1127,12 @@ endif # $(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1
 URIs: $(MEMO_REPO_URI)/\n\
 Suites: $(MEMO_TARGET)/$(MEMO_CFVER)\n\
 Components: main\n" > $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procursus.sources
-	cp $(BUILD_MISC)/prep_bootstrap.sh $(BUILD_STRAP)/strap
+	if [[ "$(SSH_STRAP)" = 1 ]]; then \
+		sed -e 's/@SSH_STRAP@//' -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $(BUILD_MISC)/prep_bootstrap.sh > $(BUILD_STRAP)/strap/prep_bootstrap.sh; \
+	else \
+		sed -e '/@SSH_STRAP@/d' -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $(BUILD_MISC)/prep_bootstrap.sh > $(BUILD_STRAP)/strap/prep_bootstrap.sh; \
+	fi; \
+	chmod +x $(BUILD_STRAP)/strap/prep_bootstrap.sh; \
 	export FAKEROOT='fakeroot -i $(BUILD_STAGE)/.fakeroot_bootstrap -s $(BUILD_STAGE)/.fakeroot_bootstrap --'; \
 	$$FAKEROOT chown 0:80 $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library; \
 	$$FAKEROOT chown 0:3 $(BUILD_STRAP)/strap/private/var/empty; \
@@ -1026,6 +1144,7 @@ Components: main\n" > $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procur
 		BOOTSTRAP=bootstrap.tar.zst; \
 	fi; \
 	zstd -qf -c19 --rm $(BUILD_STRAP)/bootstrap.tar > $(BUILD_STRAP)/$${BOOTSTRAP}; \
+	gpg --armor -u $(MEMO_PGP_SIGN_KEY) --detach-sign $(BUILD_STRAP)/$${BOOTSTRAP}; \
 	rm -rf $(BUILD_STRAP)/{strap,*.deb}; \
 	echo "********** Successfully built bootstrap with **********"; \
 	echo "$(STRAPPROJECTS)"; \
@@ -1055,7 +1174,7 @@ endif
 		BOOTSTRAP=bootstrap.tar.zst; \
 	fi; \
 	zstd -qf -c19 --rm $(BUILD_STRAP)/bootstrap.tar > $(BUILD_STRAP)/$${BOOTSTRAP}; \
-	gpg --armor -u $(MEMO_PGP_SIGN_KEY) -s $(BUILD_STRAP)/$${BOOTSTRAP}; \
+	gpg --armor -u $(MEMO_PGP_SIGN_KEY) --detch-sign $(BUILD_STRAP)/$${BOOTSTRAP}; \
 	rm -rf $(BUILD_STRAP)/{strap,*.deb}; \
 	echo "********** Successfully built bootstrap with **********"; \
 	echo "$(STRAPPROJECTS)"; \
@@ -1087,18 +1206,36 @@ rebuild-%:
 
 setup:
 	@mkdir -p \
-		$(BUILD_BASE) $(BUILD_BASE)$(MEMO_PREFIX)/{{,System}/Library/Frameworks,$(MEMO_SUB_PREFIX)/{include/{bsm,objc,os,sys,IOKit,libkern,mach/machine,CommonCrypto},lib/pkgconfig,$(MEMO_ALT_PREFIX)/lib}} \
+		$(BUILD_BASE) $(BUILD_BASE)$(MEMO_PREFIX)/{{,System}/Library/Frameworks,$(MEMO_SUB_PREFIX)/{include/{bsm,objc,os/internal,sys,firehose,CoreFoundation,IOKit/kext,libkern,arm,{mach/,}machine,CommonCrypto,Security,Kernel/kern/},lib/pkgconfig,$(MEMO_ALT_PREFIX)/lib}} \
 		$(BUILD_SOURCE) $(BUILD_WORK) $(BUILD_STAGE) $(BUILD_STRAP)
+
+	@rm -rf $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/System
+	@$(LN_SR) $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include{,/System}
 
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libsyscall/wrappers/spawn/spawn.h \
+		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libsyscall/wrappers/spawn/spawn_private.h \
 		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/bootstrap_priv.h \
 		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/vproc_priv.h \
-		https://opensource.apple.com/source/libplatform/libplatform-126.1.2/include/_simple.h
+		https://opensource.apple.com/source/libplatform/libplatform-126.1.2/include/_simple.h \
+		https://opensource.apple.com/source/libutil/libutil-57/mntopts.h \
+		https://opensource.apple.com/source/libutil/libutil-57/libutil.h \
+		https://opensource.apple.com/source/xnu/xnu-6153.11.26/EXTERNAL_HEADERS/mach-o/nlist.h
+
+	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Kernel/kern/ https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/kern/ledger.h
+
+	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/arm \
+		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/arm/disklabel.h \
+		https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/arm/cpu_capabilities.h
+
+	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine \
+		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/machine/disklabel.h
 
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os \
 		https://opensource.apple.com/source/Libc/Libc-1439.40.11/os/assumes.h \
-		https://opensource.apple.com/source/libplatform/libplatform-126.1.2/include/os/base_private.h
+		https://opensource.apple.com/source/libplatform/libplatform-126.1.2/include/os/base_private.h \
+		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libkern/os/log_private.h \
+		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libkern/os/log.h
 
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CommonCrypto \
 		https://opensource.apple.com/source/CommonCrypto/CommonCrypto-60118.30.2/include/CommonDigestSPI.h
@@ -1106,14 +1243,49 @@ setup:
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/bsm \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/bsd/bsm/audit_kevents.h
 
+	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit/kext \
+		https://opensource.apple.com/source/IOKitUser/IOKitUser-1845.81.1/kext.subproj/{KextManagerPriv,OSKext,OSKextPrivate,kextmanager_types,{fat,macho,misc}_util}.h
+
+	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security \
+		https://opensource.apple.com/source/libsecurity_keychain/libsecurity_keychain-55050.9/lib/SecKeychainPriv.h \
+		https://opensource.apple.com/source/libsecurity_codesigning/libsecurity_codesigning-55037.15/lib/Sec{CodeSigner,{Code,Requirement}Priv}.h \
+		https://opensource.apple.com/source/Security/Security-55471/sec/Security/SecBasePriv.h
+
+	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreFoundation \
+		https://opensource.apple.com/source/CF/CF-1153.18/CFBundlePriv.h
+
+	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine \
+		https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/machine/cpu_capabilities.h
+
+	@wget -q -nc -P$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/firehose \
+		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libkern/firehose/tracepoint_private.h \
+		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libkern/firehose/firehose_types_private.h
+
+	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern \
+		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libkern/libkern/{OSKextLibPrivate,mkext,prelink}.h \
+
+	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/internal \
+		https://opensource.apple.com/source/libplatform/libplatform-126.50.8/include/os/internal/{internal_shared,atomic,crashlog}.h
+
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys \
+		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/fsctl.h \
+		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/spawn_internal.h \
+		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/resource.h \
+		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/event.h \
+		https://opensource.apple.com/source/xnu/xnu-4903.221.2/bsd/sys/kdebug.h \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/bsd/sys/kern_memorystatus.h
+
+	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/uuid \
+		https://opensource.apple.com/source/Libc/Libc-1353.11.2/uuid/namespace.h
+
+	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach \
+		https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/mach/coalition.h
 
 	@cp -a $(BUILD_MISC)/{libxml-2.0,zlib}.pc $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 
 ifeq ($(UNAME),FreeBSD)
-	@# FreeBSD does not have stdbool.h and stdarg.h
-	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Headers/{stdbool.h,stdarg.h} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	@# FreeBSD's LLVM does not have stdbool.h, stdatomic.h, and stdarg.h
+	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Headers/{stdbool,stdatomic,stdarg}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	@cp -af /usr/include/stdalign.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 endif
 
@@ -1123,9 +1295,11 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	@cp -af $(MACOSX_SYSROOT)/usr/include/objc/objc-runtime.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/objc
 	@cp -af $(MACOSX_SYSROOT)/usr/include/libkern/{OSDebug.h,OSKextLib.h,OSReturn.h,OSThermalNotification.h,OSTypes.h,machine} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern
 	@cp -af $(MACOSX_SYSROOT)/usr/include/kern $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	@cp -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,proc*,ptrace,kern*,random,reboot,user,vnode}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys
+	@cp -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,proc*,ptrace,kern*,random,reboot,user,vnode,disk,vmmeter,vnioctl,conf}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys
+	@cp -af  $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Versions/Current/Headers/sys/disklabel.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys
 	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit
-	@cp -af $(MACOSX_SYSROOT)/usr/include/{ar,bootstrap,launch,libc,libcharset,localcharset,libproc,NSSystemDirectories,tzfile,vproc}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/Security.framework/Headers/{mds_schema,oidsalg,SecKeychainSearch,certextensions,Authorization,eisl,SecDigestTransform,SecKeychainItem,oidscrl,cssmcspi,CSCommon,cssmaci,SecCode,CMSDecoder,oidscert,SecRequirement,AuthSession,SecReadTransform,oids,cssmconfig,cssmkrapi,SecPolicySearch,SecAccess,cssmtpi,SecACL,SecEncryptTransform,cssmapi,cssmcli,mds,x509defs,oidsbase,SecSignVerifyTransform,cssmspi,cssmkrspi,SecTask,cssmdli,SecAsn1Coder,cssm,SecTrustedApplication,SecCodeHost,SecCustomTransform,oidsattr,SecIdentitySearch,cssmtype,SecAsn1Types,emmtype,SecTransform,SecTrustSettings,SecStaticCode,emmspi,SecTransformReadTransform,SecKeychain,SecDecodeTransform,CodeSigning,AuthorizationPlugin,cssmerr,AuthorizationTags,CMSEncoder,SecEncodeTransform,SecureDownload,SecAsn1Templates,AuthorizationDB,SecCertificateOIDs,cssmapple}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security
+	@cp -af $(MACOSX_SYSROOT)/usr/include/{ar,bootstrap,launch,libc,libcharset,localcharset,libproc,nlist,NSSystemDirectories,tzfile,vproc}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	@cp -af $(MACOSX_SYSROOT)/usr/include/mach/{*.defs,{mach_vm,shared_region}.h} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach
 	@cp -af $(MACOSX_SYSROOT)/usr/include/mach/machine/*.defs $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/machine
 	@cp -af $(TARGET_SYSROOT)/usr/include/mach/machine/thread_state.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/machine
@@ -1135,10 +1309,11 @@ ifneq ($(wildcard $(BUILD_MISC)/IOKit.framework.$(PLATFORM)),)
 	@cp -af $(BUILD_MISC)/IOKit.framework.$(PLATFORM) $(BUILD_BASE)/$(MEMO_PREFIX)/System/Library/Frameworks/IOKit.framework
 endif
 
-	@mkdir -p $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreAudio
+	@mkdir -p $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/{CoreAudio,CoreFoundation}
 	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/CoreAudio.framework/Headers/* $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreAudio
 
-	@# Patch headers from iPhoneOS.sdk
+	@# Patch headers from $(BARE_PLATFORM).sdk
+	@sed -E 's/API_UNAVAILABLE(ios, watchos, tvos)//g' < $(TARGET_SYSROOT)/System/Library/Frameworks/CoreFoundation.framework/Headers/CFUserNotification.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreFoundation/CFUserNotification.h
 	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/stdlib.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h
 	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/time.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/time.h
 	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/unistd.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h
@@ -1151,12 +1326,20 @@ endif
 	@sed -E -e '\|/bin:|! s|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' -e '\|/var/tmp|! s|/var|$(MEMO_PREFIX)/var|g' -e '\|/bin:|! s|"/bin|"$(MEMO_PREFIX)/bin|g' -e '\|/bin:|! s|"/sbin|"$(MEMO_PREFIX)/sbin|g' -e 's|/etc|$(MEMO_PREFIX)/etc|g' -e 's|/usr/bin:|$(MEMO_PREFIX)/bin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin:/usr/bin:|g' -e 's|/usr/sbin:|$(MEMO_PREFIX)/sbin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin:/usr/sbin:|g' < $(TARGET_SYSROOT)/usr/include/grp.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/grp.h
 	@sed -E -e '\|/bin:|! s|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' -e '\|/var/tmp|! s|/var|$(MEMO_PREFIX)/var|g' -e '\|/bin:|! s|"/bin|"$(MEMO_PREFIX)/bin|g' -e '\|/bin:|! s|"/sbin|"$(MEMO_PREFIX)/sbin|g' -e 's|/etc|$(MEMO_PREFIX)/etc|g' -e 's|/usr/bin:|$(MEMO_PREFIX)/bin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin:/usr/bin:|g' -e 's|/usr/sbin:|$(MEMO_PREFIX)/sbin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin:/usr/sbin:|g' < $(TARGET_SYSROOT)/usr/include/paths.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/paths.h
 
+	@#Patch downloaded headers
+	@sed -i -e '/ 0/d' -e '/ -4/d' -e '/ -34/d' -e '/ -36/d' -e '/ -49/d' -e '/ -50/d' -e '/ -61/d' -e '/ -108/d' -e '/ -128/d' -e '/ -909/d' -e '/ -2070/d' -e '/ -4960/d' -e '/ -34018/d' -e '/ -34020/d' -e '/ -25291/d' -e '/ -25292/d' -e '/ -25293/d' -e '/ -25294/d' -e '/ -25295/d' -e '/ -25296/d' -e '/ -25297/d' -e '/ -25298/d' -e '/ -25299/d' -e '/ -25300/d' -e '/ -25301/d' -e '/ -25302/d' -e '/ -25303/d' -e '/ -25304/d' -e '/ -25305/d' -e '/ -25306/d' -e '/ -25307/d' -e '/ -25308/d' -e '/ -25309/d' -e '/ -25310/d' -e '/ -25311/d' -e '/ -25312/d' -e '/ -25313/d' -e '/ -25314/d' -e '/ -25315/d' -e '/ -25316/d' -e '/ -25317/d' -e '/ -25318/d' -e '/ -25319/d' -e '/ -25320/d' -e '/ -25240/d' -e '/ -25241/d' -e '/ -25242/d' -e '/ -25243/d' -e '/ -25244/d' -e '/ -25245/d' -e '/ -25256/d' -e '/ -25257/d' -e '/ -25258/d' -e '/ -25259/d' -e '/ -25260/d' -e '/ -25261/d' -e '/ -25262/d' -e '/ -25263/d' -e '/ -25264/d' -e '/ -26267/d' -e '/ -26275/d' -e '/ -67585/d' -e '/ -67586/d' -e '/ -67587/d' -e '/ -67588/d' -e '/ -67589/d' -e '/ -67590/d' -e '/ -67591/d' -e '/ -67592/d' -e '/ -67593/d' -e '/ -67594/d' -e '/ -67595/d' -e '/ -67596/d' -e '/ -67597/d' -e '/ -67598/d' -e '/ -67599/d' -e '/ -67600/d' -e '/ -67601/d' -e '/ -67602/d' -e '/ -67603/d' -e '/ -67604/d' -e '/ -67605/d' -e '/ -67606/d' -e '/ -67607/d' -e '/ -67608/d' -e '/ -67609/d' -e '/ -67610/d' -e '/ -67611/d' -e '/ -67612/d' -e '/ -67613/d' -e '/ -67614/d' -e '/ -67615/d' -e '/ -67616/d' -e '/ -67617/d' -e '/ -67618/d' -e '/ -67619/d' -e '/ -67620/d' -e '/ -67621/d' -e '/ -67622/d' -e '/ -67623/d' -e '/ -67624/d' -e '/ -67625/d' -e '/ -67626/d' -e '/ -67627/d' -e '/ -67628/d' -e '/ -67629/d' -e '/ -67630/d' -e '/ -67631/d' -e '/ -67632/d' -e '/ -67633/d' -e '/ -67634/d' -e '/ -67635/d' -e '/ -67636/d' -e '/ -67637/d' -e '/ -67638/d' -e '/ -67639/d' -e '/ -67640/d' -e '/ -67641/d' -e '/ -67642/d' -e '/ -67643/d' -e '/ -67644/d' -e '/ -67645/d' -e '/ -67646/d' -e '/ -67647/d' -e '/ -67648/d' -e '/ -67649/d' -e '/ -67650/d' -e '/ -67651/d' -e '/ -67652/d' -e '/ -67653/d' -e '/ -67654/d' -e '/ -67655/d' -e '/ -67656/d' -e '/ -67657/d' -e '/ -67658/d' -e '/ -67659/d' -e '/ -67660/d' -e '/ -67661/d' -e '/ -67662/d' -e '/ -67663/d' -e '/ -67664/d' -e '/ -67665/d' -e '/ -67666/d' -e '/ -67667/d' -e '/ -67668/d' -e '/ -67669/d' -e '/ -67670/d' -e '/ -67671/d' -e '/ -67672/d' -e '/ -67673/d' -e '/ -67674/d' -e '/ -67675/d' -e '/ -67676/d' -e '/ -67677/d' -e '/ -67678/d' -e '/ -67679/d' -e '/ -67680/d' -e '/ -67681/d' -e '/ -67682/d' -e '/ -67683/d' -e '/ -67684/d' -e '/ -67685/d' -e '/ -67686/d' -e '/ -67687/d' -e '/ -67688/d' -e '/ -67689/d' -e '/ -67690/d' -e '/ -67691/d' -e '/ -67692/d' -e '/ -67693/d' -e '/ -67694/d' -e '/ -67695/d' -e '/ -67696/d' -e '/ -67697/d' -e '/ -67698/d' -e '/ -67699/d' -e '/ -67700/d' -e '/ -67701/d' -e '/ -67702/d' -e '/ -67703/d' -e '/ -67704/d' -e '/ -67705/d' -e '/ -67706/d' -e '/ -67707/d' -e '/ -67708/d' -e '/ -67709/d' -e '/ -67710/d' -e '/ -67711/d' -e '/ -67712/d' -e '/ -67713/d' -e '/ -67714/d' -e '/ -67715/d' -e '/ -67716/d' -e '/ -67717/d' -e '/ -67718/d' -e '/ -67719/d' -e '/ -67720/d' -e '/ -67721/d' -e '/ -67722/d' -e '/ -67723/d' -e '/ -67724/d' -e '/ -67725/d' -e '/ -67726/d' -e '/ -67727/d' -e '/ -67728/d' -e '/ -67729/d' -e '/ -67730/d' -e '/ -67731/d' -e '/ -67732/d' -e '/ -67733/d' -e '/ -67734/d' -e '/ -67735/d' -e '/ -67736/d' -e '/ -67737/d' -e '/ -67738/d' -e '/ -67739/d' -e '/ -67740/d' -e '/ -67741/d' -e '/ -67742/d' -e '/ -67743/d' -e '/ -67744/d' -e '/ -67745/d' -e '/ -67746/d' -e '/ -67747/d' -e '/ -67748/d' -e '/ -67749/d' -e '/ -67750/d' -e '/ -67751/d' -e '/ -67752/d' -e '/ -67753/d' -e '/ -67754/d' -e '/ -67755/d' -e '/ -67756/d' -e '/ -67757/d' -e '/ -67758/d' -e '/ -67759/d' -e '/ -67760/d' -e '/ -67761/d' -e '/ -67762/d' -e '/ -67763/d' -e '/ -67764/d' -e '/ -67765/d' -e '/ -67766/d' -e '/ -67767/d' -e '/ -67768/d' -e '/ -67769/d' -e '/ -67770/d' -e '/ -67771/d' -e '/ -67772/d' -e '/ -67773/d' -e '/ -67774/d' -e '/ -67775/d' -e '/ -67776/d' -e '/ -67777/d' -e '/ -67778/d' -e '/ -67779/d' -e '/ -67780/d' -e '/ -67781/d' -e '/ -67782/d' -e '/ -67783/d' -e '/ -67784/d' -e '/ -67785/d' -e '/ -67786/d' -e '/ -67787/d' -e '/ -67788/d' -e '/ -67789/d' -e '/ -67790/d' -e '/ -67791/d' -e '/ -67792/d' -e '/ -67793/d' -e '/ -67794/d' -e '/ -67795/d' -e '/ -67796/d' -e '/ -67797/d' -e '/ -67798/d' -e '/ -67799/d' -e '/ -67800/d' -e '/ -67801/d' -e '/ -67802/d' -e '/ -67803/d' -e '/ -67804/d' -e '/ -67805/d' -e '/ -67806/d' -e '/ -67807/d' -e '/ -67808/d' -e '/ -67809/d' -e '/ -67810/d' -e '/ -67811/d' -e '/ -67812/d' -e '/ -67813/d' -e '/ -67814/d' -e '/ -67815/d' -e '/ -67816/d' -e '/ -67817/d' -e '/ -67818/d' -e '/ -67819/d' -e '/ -67820/d' -e '/ -67821/d' -e '/ -67822/d' -e '/ -67823/d' -e '/ -67824/d' -e '/ -67825/d' -e '/ -67826/d' -e '/ -67827/d' -e '/ -67828/d' -e '/ -67829/d' -e '/ -67830/d' -e '/ -67831/d' -e '/ -67832/d' -e '/ -67833/d' -e '/ -67834/d' -e '/ -67835/d' -e '/ -67836/d' -e '/ -67837/d' -e '/ -67838/d' -e '/ -67839/d' -e '/ -67840/d' -e '/ -67841/d' -e '/ -67842/d' -e '/ -67843/d' -e '/ -67844/d' -e '/ -67845/d' -e '/ -67846/d' -e '/ -67847/d' -e '/ -67848/d' -e '/ -67849/d' -e '/ -67850/d' -e '/ -67851/d' -e '/ -67852/d' -e '/ -67853/d' -e '/ -67854/d' -e '/ -67855/d' -e '/ -67856/d' -e '/ -67857/d' -e '/ -67858/d' -e '/ -67859/d' -e '/ -67860/d' -e '/ -67861/d' -e '/ -67862/d' -e '/ -67863/d' -e '/ -67864/d' -e '/ -67865/d' -e '/ -67866/d' -e '/ -67867/d' -e '/ -67868/d' -e '/ -67869/d' -e '/ -67870/d' -e '/ -67871/d' -e '/ -67872/d' -e '/ -67873/d' -e '/ -67874/d' -e '/ -67875/d' -e '/ -67876/d' -e '/ -67877/d' -e '/ -67878/d' -e '/ -67879/d' -e '/ -67880/d' -e '/ -67881/d' -e '/ -67882/d' -e '/ -67883/d' -e '/ -67884/d' -e '/ -67885/d' -e '/ -67886/d' -e '/ -67887/d' -e '/ -67888/d' -e '/ -67889/d' -e '/ -67890/d' -e '/ -67891/d' -e '/ -67892/d' -e '/ -67893/d' -e '/ -67894/d' -e '/ -67895/d' -e '/ -67896/d' -e '/ -67897/d' -e '/ -67898/d' -e '/ -67899/d' -e '/ -67900/d' -e '/ -67901/d' -e '/ -67902/d' $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security/SecBasePriv.h
+	@sed -i '1s|^|#include <Security/cssmapi.h>\n#include <Security/SecKeychain.h>\n|' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security/SecKeychainPriv.h
+	@sed -i '1s|^|#include <arm/cpu_capabilities.h>\n|' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/firehose/tracepoint_private.h
+	@sed -i 's|extern void \*__dso_handle;|#ifndef __OS_TRACE_BASE_H__\nextern void \*__dso_handle;\n#endif|' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/log.h
+
 	@# Setup libiosexec
 	@cp -af $(BUILD_MISC)/libiosexec/libiosexec.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	@cp -af $(BUILD_MISC)/libiosexec/libiosexec.1.tbd $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.1.tbd
 	@$(LN_S) libiosexec.1.tbd $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.tbd
 	@rm -f $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.*.dylib
+ifneq ($(MEMO_NO_IOSEXEC),1)
 	@sed -i '1s/^/#include <libiosexec.h>\n/' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/spawn.h
+endif
 endif
 
 ifneq ($(MEMO_QUIET),1)
@@ -1169,5 +1352,53 @@ clean::
 
 extreme-clean: clean
 	rm -rf $(BUILD_ROOT)/build_{source,strap,dist}
+
+define mootext
+                 (__)
+                 (oo)
+           /------\/
+          / |    ||
+         *  /\---/\
+            ~~   ~~
+..."Have you mooed today?"...
+endef
+define helptext
+$(MAKE)                        - Compiles the entire Procursus suite and packs it into debian packages.
+$(MAKE) help                   - Display this text
+$(MAKE) (tool)                 - Used to compile only a specified tool.
+$(MAKE) (tool)-package         - Used to compile only a specified tool and pack it into a debian package.
+$(MAKE) rebuild-(tool)         - Used to recompile only a specified tool after it's already been compiled before.
+$(MAKE) rebuild-(tool)-package - Used to recompile only a specified tool after it's already been compiled before and pack it into a debian package.
+$(MAKE) clean                  - Clean out $(BUILD_STAGE), $(BUILD_BASE), and $(BUILD_WORK).
+$(MAKE) extreme-clean          - Runs `$(MAKE) clean`and cleans out $(BUILD_DIST).
+$(MAKE) proenv                 - Print the proenv shell function to STDOUT to give a cross-compilation environment in your POSIX shell (make proenv >> ~/.zshrc)
+$(MAKE) env                    - Print the environment variables inside the makefile
+$(MAKE) (tool)-deps            - Print the dylibs linked by (tool)
+
+Some influential environmental variables:
+MEMO_TARGET     Can be set to any of the supported host systems. Pretty self explainatory. (Defaults to darwin-arm64)
+MEMO_CFVER      Used to set minimum *OS version to compile for. Use the CoreFoundation version that coresponds to the OS version you're compiling for. (Defaults to 1700 for iOS 14)
+NO_PGP          Set to 1 if you want to bypass verifying tarballs with gpg. Useful if you just want a quick build without importing everyone's public keys.
+TARGET_SYSROOT  Path to your chosen iPhone SDK. (Defaults to Xcode default path on macOS and the cctools-port default path on Linux.)
+MACOSX_SYSROOT  Path to your chosen macOS SDK. (Defaults to Xcode default path on macOS and the cctools-port default path on Linux.)
+BUILD_ROOT      If you have this repo in one place, but want to build everything in a different place, set BUILD_ROOT to said different place. (Untested but should work fine.)
+MEMO_QUIET      Mute unnecessary warnings and echos.
+
+Report issues to: https://github.com/ProcursusTeam/Procursus/issues
+For extra and updated help please refer to thr wiki: https://github.com/ProcursusTeam/Procursus/wiki
+
+This Makefile has super cow powers.
+endef
+export mootext helptext
+moo:
+	@echo "$$mootext"
+help:
+	@echo "$$helptext"
+
+print-%:
+	@echo '$($*)'
+
+%-download: setup
+	BUILD_BASE="$(BUILD_BASE)" BUILD_DIST="$(BUILD_DIST)" BUILD_WORK="$(BUILD_WORK)" DEB_ARCH="$(DEB_ARCH)" MACOSX_SUITE_NAME="$(MACOSX_SUITE_NAME)" MAKE="$(MAKE)" MEMO_CFVER="$(MEMO_CFVER)" MEMO_TARGET="$(MEMO_TARGET)" $(BUILD_TOOLS)/setup_base.sh '$*'
 
 .PHONY: clean setup

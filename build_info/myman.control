@@ -6,4 +6,3 @@ Architecture: @DEB_ARCH@
 Version: @DEB_MYMAN_V@
 Depends: libncursesw6
 Description: MyMan is a text-mode videogame inspired by Namco's Pac-Man
-Name: MyMan (Terminal Pacman)

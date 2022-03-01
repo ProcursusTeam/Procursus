@@ -28,4 +28,3 @@ Description: Opus codec runtime library
   Floating point and fixed-point implementation
  .
  This package provides the Opus runtime library.
-Tag: purpose::library

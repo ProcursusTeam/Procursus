@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS     += launchctl
-LAUNCHCTL_VERSION := 23-4
+LAUNCHCTL_VERSION := $(shell $(STRINGS) $(BUILD_MISC)/launchctl/launchctl.$(MEMO_CFVER) | grep '@(#)PROGRAM:launchctl  PROJECT:libxpc-'| cut -d- -f2)
 DEB_LAUNCHCTL_V   ?= $(LAUNCHCTL_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/launchctl/.build_complete),)
@@ -27,16 +27,16 @@ endif
 launchctl-package: launchctl-stage
 	# launchctl.mk Package Structure
 	rm -rf $(BUILD_DIST)/launchctl
-	
+
 	# launchctl.mk Prep launchctl
 	cp -a $(BUILD_STAGE)/launchctl $(BUILD_DIST)/
-	
+
 	# launchctl.mk Sign launchctl
 	$(call SIGN,launchctl,launchctl.xml)
-	
+
 	# launchctl.mk Make .debs
 	$(call PACK,launchctl,DEB_LAUNCHCTL_V)
-	
+
 	# launchctl.mk Build cleanup
 	rm -rf $(BUILD_DIST)/launchctl
 

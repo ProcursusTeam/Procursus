@@ -9,4 +9,3 @@ Section: Libraries
 Priority: optional
 Homepage: https://mackyle.github.io/xar/
 Description: eXtensible ARchive format - dynamic library
-Tag: purpose::console, role::hacker

@@ -1,0 +1,16 @@
+Package: kext-tools
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_KEXT_TOOLS_V@
+Section: Administration
+Priority: optional
+Description: kernel extension utilities
+ Kext_tools is a collection of tools for managing kernel extensions (kexts).
+ .
+ This package includes:
+  kextstat    - list statuses of loaded kexts
+  kextload    - load kexts into kernel
+  kextunload  - unload kexts from kernel
+  kextlibs    - find OSBundleLibraries needed by a kext
+  kextfind    - find kexts based on a set of conditions
+  mkextunpack - extract or list the contents of a multikext (mkext) archive

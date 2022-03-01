@@ -8,4 +8,3 @@ Section: Development
 Priority: optional
 Description: What Theos needs.
  This metapackage installs grep, rsync, unzip, git, perl, and xz-utils, in one go.
-Name: Theos Dependencies

@@ -6,4 +6,3 @@ Depends: libssl3 (>= 1.1.0), libplist3 (>= 2.2.0), libusbmuxd6 (>= 2.0.2)
 Section: Development
 Priority: standard
 Description: Library for communicating with iPhone and other Apple devices
-Tag: purpose::library, role::developer
