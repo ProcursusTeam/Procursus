@@ -2,9 +2,11 @@ Package: meson
 Version: @DEB_MESON_V@
 Architecture: all
 Maintainer: @DEB_MAINTAINER@
-Depends: python3, ninja
+Depends: python3, ninja (>= 1.10.0)
 Section: Development
 Priority: optional
 Homepage: https://www.mesonbuild.com/
 Description: high-productivity build system
- Meson is a build system designed to increase programmer productivity. It does this by providing a fast, simple and easy to use interface for modern software development tools and practices.
+ Meson is a build system designed to increase programmer productivity.
+ It does this by providing a fast, simple and easy to use interface
+ for modern software development tools and practices.

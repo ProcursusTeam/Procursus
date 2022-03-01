@@ -22,7 +22,7 @@ case "$1" in
         ;;
       purge)
         # Clear out /var/lib/aptitude
-	rm -fr /var/lib/aptitude
+	rm -fr @MEMO_PREFIX@/var/lib/aptitude
 	# Clear out the log
 	rm -f /var/log/aptitude /var/log/aptitude.[0-9].gz
 	;;

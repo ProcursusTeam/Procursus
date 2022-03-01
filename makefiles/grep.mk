@@ -12,7 +12,7 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += grep
 endif # ($(MEMO_TARGET),darwin-\*)
 GREP_VERSION  := 3.7
-DEB_GREP_V    ?= $(GREP_VERSION)
+DEB_GREP_V    ?= $(GREP_VERSION)-1
 
 grep-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/grep/grep-$(GREP_VERSION).tar.xz{,.sig}

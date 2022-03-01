@@ -20,10 +20,9 @@ xcb-proto: xcb-proto-setup
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-static \
 		am_cv_python_pythondir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3/dist-packages \
-		PYTHON=$(shell which python3)
+		PYTHON="$(shell command -v python3)"
 	+$(MAKE) -C $(BUILD_WORK)/xcb-proto install \
-		DESTDIR=$(BUILD_STAGE)/xcb-proto \
-		PYTHON=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3
+		DESTDIR=$(BUILD_STAGE)/xcb-proto
 	$(call AFTER_BUILD,copy)
 endif
 

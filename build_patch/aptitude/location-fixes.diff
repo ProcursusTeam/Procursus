@@ -1,0 +1,20 @@
+--- aptitude-0.8.13/configure.ac	2020-05-21 03:32:38.000000000 +0000
++++ aptitude/configure.ac	2022-02-26 18:29:00.866777878 +0000
+@@ -631,7 +631,7 @@
+ 	then
+ 	  [AC_MSG_ERROR([--with-package-state-loc needs an argument])]
+ 	else
+-	  STATEDIR="$enableval"
++	  STATEDIR="$with_package_state_loc"
+ 	fi,
+ 	STATEDIR="/var/lib/aptitude")
+ 
+@@ -641,7 +641,7 @@
+ 	then
+ 	  [AC_MSG_ERROR([--with-lock-loc needs an argument])]
+ 	else
+-	  LOCKFILE="$enableval"
++	  LOCKFILE="$with_lock_loc"
+ 	fi,
+ 	LOCKFILE="/var/lock/aptitude")
+ 

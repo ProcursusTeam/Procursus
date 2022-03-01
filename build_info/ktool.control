@@ -1,0 +1,12 @@
+Package: ktool
+Version: @DEB_KTOOL_V@
+Architecture: all
+Author: cynder <kat@cynder.me>
+Maintainer: @DEB_MAINTAINER@
+Depends: python3-kimg4, python3-pyaes, python3-pygments, python3
+Section: Python
+Priority: optional
+Homepage: https://github.com/cxnder/ktool
+Description: Static MachO/ObjC reverse engineering toolkit.
+ ktool is a fully cross-platform toolkit (and library)
+ for MachO editing and analysis.

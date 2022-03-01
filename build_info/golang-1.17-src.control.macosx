@@ -1,4 +1,4 @@
-Package: golang-1.16-src
+Package: golang-1.17-src
 Version: @DEB_GOLANG_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
