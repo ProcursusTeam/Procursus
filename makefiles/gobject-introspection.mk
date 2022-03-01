@@ -17,7 +17,7 @@ gobject-introspection-setup: setup
 	echo -e "[paths]\n \
 	prefix ='$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
 	[binaries]\n \
-	pkgconfig = '$(shell which pkg-config)'\n" > $(BUILD_WORK)/gobject-introspection/build/cross.txt
+	pkgconfig = '$(shell command -v pkg-config)'\n" > $(BUILD_WORK)/gobject-introspection/build/cross.txt
 
 ifneq ($(wildcard $(BUILD_WORK)/gobject-introspection/.build_complete),)
 gobject-introspection:
@@ -30,7 +30,7 @@ gobject-introspection: gobject-introspection-setup glib2.0 libffi python3
 	export GI_SCANNER_DISABLE_CACHE=true; \
 	cd $(BUILD_WORK)/gobject-introspection/build && meson \
 		--cross-file cross.txt \
-		-Dpython="$(shell which python3)" \
+		-Dpython="$(shell command -v python3)" \
 		..; \
 	cd $(BUILD_WORK)/gobject-introspection/build; \
 		DESTDIR="$(BUILD_STAGE)/gobject-introspection" meson install

@@ -18,9 +18,9 @@ vi: vi-setup ncurses
 	sed -i '/#include "ex_tty.h"/a #include <sys/ioctl.h>' $(BUILD_WORK)/vi/ex_tty.c
 	sed -i '/#include "ex_tty.h"/a #include <sys/ioctl.h>' $(BUILD_WORK)/vi/ex_subr.c
 	sed -i '/size ex/d' $(BUILD_WORK)/vi/Makefile
-	sed -i 's/ar /$(AR) /g' $(BUILD_WORK)/vi/libuxre/Makefile
+	sed -i 's|ar |$(AR) |g' $(BUILD_WORK)/vi/libuxre/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/vi install \
-		PREFIX="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		TERMLIB=ncursesw \
 		PRESERVEDIR="/var/lib/ex" \
 		LIBEXECDIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ex \
@@ -37,8 +37,8 @@ vi-package: vi-stage
 	# vi.mk Prep vi
 	cp -a $(BUILD_STAGE)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ex $(BUILD_DIST)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ex-vi
 	cp -a $(BUILD_STAGE)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib $(BUILD_DIST)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/ex.1 $(BUILD_DIST)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/exa.1
-	cp -a $(BUILD_STAGE)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/vi.1 $(BUILD_DIST)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/via.1
+	cp -a $(BUILD_STAGE)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/ex.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/exa.1$(MEMO_MANPAGE_SUFFIX)
+	cp -a $(BUILD_STAGE)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/vi.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/via.1$(MEMO_MANPAGE_SUFFIX)
 	cp -a $(BUILD_STAGE)/vi/var $(BUILD_DIST)/vi
 
 	# vi.mk Sign

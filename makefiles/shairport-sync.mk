@@ -38,15 +38,15 @@ shairport-sync: shairport-sync-setup openssl libsoundio libao libsoxr popt libco
 	rm -rf $(BUILD_STAGE)/shairport-sync/$(MEMO_PREFIX)/etc/shairport-sync.conf.sample
 
 	mkdir -p $(BUILD_STAGE)/shairport-sync/$(MEMO_PREFIX)/Library/LaunchDaemons
-	cp -a $(BUILD_MISC)/shairport-sync/*.plist $(BUILD_STAGE)/shairport-sync/$(MEMO_PREFIX)/Library/LaunchDaemons
+	cp -a $(BUILD_MISC)/shairport-sync/com.mikebrady.shairport-sync.plist $(BUILD_STAGE)/shairport-sync/$(MEMO_PREFIX)/Library/LaunchDaemons
 
-	mkdir -p $(BUILD_STAGE)/shairport-sync/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_MISC)/shairport-sync/shairport-sync-wrapper $(BUILD_STAGE)/shairport-sync/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	mkdir -p $(BUILD_STAGE)/shairport-sync/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
+	cp -a $(BUILD_MISC)/shairport-sync/shairport-sync-wrapper $(BUILD_STAGE)/shairport-sync/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
 
-	for file in $(BUILD_STAGE)/shairport-sync/$(MEMO_PREFIX)/Library/LaunchDaemons/* \
-		$(BUILD_STAGE)/shairport-sync/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
-			$(SED) -i 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' $$file; \
-			$(SED) -i 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $$file; \
+	for file in $(BUILD_STAGE)/shairport-sync/$(MEMO_PREFIX)/Library/LaunchDaemons/com.mikebrady.shairport-sync.plist \
+		$(BUILD_STAGE)/shairport-sync/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/shairport-sync-wrapper; do \
+			sed -i 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' $$file; \
+			sed -i 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $$file; \
 	done
 
 	$(call AFTER_BUILD)

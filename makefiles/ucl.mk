@@ -15,7 +15,6 @@ ifneq ($(wildcard $(BUILD_WORK)/ucl/.build_complete),)
 ucl:
 	@echo "Using previously built ucl"
 else
-PATH := $(BUILD_WORK)/ucl/workaround:$(PATH)
 ucl: ucl-setup
 	cd $(BUILD_WORK)/ucl && autoreconf -fi
 	cd $(BUILD_WORK)/ucl && ./configure \

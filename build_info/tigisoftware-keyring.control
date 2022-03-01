@@ -5,4 +5,3 @@ Maintainer: @DEB_MAINTAINER@
 Section: Keyrings
 Priority: optional
 Description: GnuPG keys for the TIGI Software repository
-Name: TIGI Software APT Keyring

@@ -26,7 +26,7 @@ libc-ares: libc-ares-setup
 		DESTDIR="$(BUILD_STAGE)/libc-ares"
 
 	# Temporary, until a new version is released. Needed for Node.js
-	cp $(BUILD_WORK)/libc-ares/src/lib/ares_nameser.h $(BUILD_STAGE)/libc-ares/usr/include
+	cp $(BUILD_WORK)/libc-ares/src/lib/ares_nameser.h $(BUILD_STAGE)/libc-ares/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 
 	$(call AFTER_BUILD,copy)
 endif

@@ -7,4 +7,3 @@ Depends: libgeneral0 (>= @DEB_LIBGENERAL_V@)
 Section: Development
 Priority: optional
 Description: Common library for tihmstar tools (Development files)
-Tag: role::developer
