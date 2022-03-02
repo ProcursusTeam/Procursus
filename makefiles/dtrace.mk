@@ -24,7 +24,7 @@ dtrace-setup: setup
 	sed -i '1s|^|#include <dispatch/dispatch.h>\n|' $(BUILD_WORK)/dtrace/lib/libdtrace/common/dt_open.c
 	sed -i '1s|^|#include <string.h>\n#include <mach-o/loader.h>\n|' $(BUILD_WORK)/dtrace/lib/libdtrace/apple/dt_module_apple.c
 	sed -i '1s|^|#include <pthread/qos_private.h>\n|' $(BUILD_WORK)/dtrace/cmd/dtrace/dtrace.c
-	sed -i '1s|^|#!/bin/sh|#!/usr/bin/env bash|' $$(find '$(BUILD_WORK)/dtrace/DTTk' -perm 755 -not -iname 'Index' -not -iname 'License' -not -iname 'Readme' -not -iname 'install' -type f)
+	sed -i 's|#!/bin/sh|#!/usr/bin/env bash|' $$(find '$(BUILD_WORK)/dtrace/DTTk' -perm 755 -not -iname 'Index' -not -iname 'License' -not -iname 'Readme' -not -iname 'install' -type f)
 	rm -f $(BUILD_WORK)/dtrace/tools/ctfconvert/compare.c
 	mkdir -p $(BUILD_STAGE)/dtrace/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{{s,}bin,lib/dtrace/{arm{,64},x86_64},share/man/man1}
 
