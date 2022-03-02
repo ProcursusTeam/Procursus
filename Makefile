@@ -1334,6 +1334,7 @@ endif
 	@sed -i '1s|^|#include <arm/cpu_capabilities.h>\n|' $(BUILD_BASE)$(PREFIX)$(MEMO_SUB_PREFIX)/include/firehose/tracepoint_private.h
 	@sed -i 's|extern void \*__dso_handle;|#ifndef __OS_TRACE_BASE_H__\nextern void \*__dso_handle;\n#endif|' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/log.h
 	@sed -i 's|#include <sys/qos_private.h>||g' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pthread/qos_private.h
+	@sed -i 's|#endif /\* ! __CORESYMBOLICATION_|typedef unsigned long long CSArchitecture;\n#define kCSArchitectureArm64 CSArchitectureGetArchitectureForName("arm64")\n#define kCSArchitectureArm64_32 CSArchitectureGetArchitectureForName("arm64_32")\n#endif /\* ! __CORESYMBOLICATION_|' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreSymbolication/CoreSymbolication.h
 
 	@# Setup libiosexec
 	@cp -af $(BUILD_MISC)/libiosexec/libiosexec.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include

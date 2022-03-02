@@ -8,8 +8,7 @@ DTRACE_VERSION := 375
 XNU_VERSION    := 8019.41.5
 DEB_DTRACE_V   ?= $(DTRACE_VERSION)
 
-# FIXME: add -DDTRACE_USE_CORESYMBOLICATION=1 and fix errors
-DTRACE_CFLAGS := $(shell echo -I$(BUILD_WORK)/dtrace/{include,lib/libproc,compat/opensolaris,compat/opensolaris/sys,lib/libelf,lib/libdwarf/cmplrs,lib/libdwarf,lib/libctf/common,lib/libdtrace/{apple,arm,i386,common}} -DPRIVATE)
+DTRACE_CFLAGS := $(shell echo -I$(BUILD_WORK)/dtrace/{include,lib/libproc,compat/opensolaris,compat/opensolaris/sys,lib/libelf,lib/libdwarf/cmplrs,lib/libdwarf,lib/libctf/common,lib/libdtrace/{apple,arm,i386,common}} -DPRIVATE -DDTRACE_USE_CORESYMBOLICATION=1 -Wno-error-implicit-function-declaration)
 
 dtrace-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,dtrace,$(DTRACE_VERSION),dtrace-$(DTRACE_VERSION))
@@ -44,7 +43,7 @@ dtrace: dtrace-setup
 	echo lib/libdtrace; cd $(BUILD_WORK)/dtrace/lib/libdtrace/common; \
 		bison -dy dt_grammar.y && flex dt_lex.l && sed -i 's/char yytext\[\];/char \*yytext;/g' dt_impl.h;
 	cd $(BUILD_WORK)/dtrace; \
-		$(CC) $(DTRACE_CFLAGS) $(CFLAGS) $(LDFLAGS) -DYYDEBUG -L. -lstdc++ lib/lib{proc,ctf/common,dwarf,elf}/joemama.a -shared -install_name $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libdtrace.dylib -o libdtrace.dylib compat/opensolaris/darwin_shim.c lib/libdtrace/{apple,arm,common,i386}/*.c lib/libdtrace/apple/dt_ld.cpp;
+		$(CC) $(DTRACE_CFLAGS) $(CFLAGS) $(LDFLAGS) -DYYDEBUG -L. -lstdc++ lib/lib{proc,ctf/common,dwarf,elf}/joemama.a -shared -install_name $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libdtrace.dylib $(BUILD_MISC)/dtrace/CoreSymbolication.tbd -framework CoreFoundation -o libdtrace.dylib compat/opensolaris/darwin_shim.c lib/libdtrace/{apple,arm,common,i386}/*.c lib/libdtrace/apple/dt_ld.cpp;
 	cd $(BUILD_WORK)/dtrace/cmd; \
 		for bin in dtrace lockstat plockstat usdtheadergen; do \
 			[ "$${bin}" = "lockstat" ] && LDFLAGS="$(LDFLAGS) $(BUILD_MISC)/dtrace/CoreSymbolication.tbd" || LDFLAGS="$(LDFLAGS)"; \
