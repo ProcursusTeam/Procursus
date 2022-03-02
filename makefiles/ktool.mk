@@ -16,8 +16,7 @@ ktool:
 	@echo "Using previously built ktool."
 else
 ktool: ktool-setup python3-kimg4 python3-pyaes pygments python3
-	mv $(BUILD_WORK)/ktool/.legacy_setup.py $(BUILD_WORK)/ktool/setup.py
-	cd $(BUILD_WORK)/ktool && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py \
+	cd $(BUILD_WORK)/ktool && $(DEFAULT_SETUP_PY_ENV) python3 ./.legacy_setup.py \
 		build \
 		--executable="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3" \
 		install \
