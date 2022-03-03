@@ -1,0 +1,25 @@
+Package: wiki.qaq.chromatic
+Name: Saily
+Section: Packaging
+Version: @DEB_CHROMATIC_V@
+Pre-Depends: uikittools (>= 2.0)
+Depends: firmware (>= 13.0), dpkg, apt, libiosexec1 (>= 1.0.20~1.2-alpha1)
+Recommends: ws.hbang.newterm2 | openssh-server | com.tigisoftware.filza64bit
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: Saily Team <support.0xa1@qaq.wiki>
+Homepage: https://sailyteam.github.io/Saily/index.html
+Website: https://sailyteam.github.io/Saily/index.html
+Depiction: https://sailyteam.github.io/Saily/index.html
+Icon: https://sailyteam.github.io/Saily/Resources/icon.png
+Priority: optional
+Description: a modern and beautiful APT frontend (experimental package)
+ Saily is a modern APT frontend for jailbroken iOS/iPadOS devices. It 
+ supports a limited subset of APT and dpkg's packaging functions, as 
+ well as some extensions to APT/dpkg for jailbroken iOS/iPadOS devices, 
+ such as payment processing.
+ .
+ This is an experimental package, you should have other ways of managing 
+ packages. In particular, Procursus mirrors are broken.
+ .
+ This product includes software developed by the Sileo Team.

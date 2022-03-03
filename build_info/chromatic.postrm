@@ -1,0 +1,2 @@
+#!/bin/sh
+uicache -u @MEMO_PREFIX@/Applications/chromatic.app

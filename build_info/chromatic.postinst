@@ -1,0 +1,5 @@
+#!/bin/sh
+if [ -n "$chromaticAuxiliaryExec" ]; then
+    exit 0
+fi
+uicache -p @MEMO_PREFIX@/Applications/chromatic.app
