@@ -1220,7 +1220,8 @@ setup:
 		https://opensource.apple.com/source/libplatform/libplatform-126.1.2/include/_simple.h \
 		https://opensource.apple.com/source/libutil/libutil-57/mntopts.h \
 		https://opensource.apple.com/source/libutil/libutil-57/libutil.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/EXTERNAL_HEADERS/mach-o/nlist.h
+		https://opensource.apple.com/source/xnu/xnu-6153.11.26/EXTERNAL_HEADERS/mach-o/nlist.h \
+		https://opensource.apple.com/source/Libc/Libc-1439.40.11/include/crt_externs.h
 
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Kernel/kern/ https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/kern/ledger.h
 
