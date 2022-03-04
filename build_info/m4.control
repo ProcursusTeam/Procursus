@@ -4,4 +4,5 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Development
 Priority: optional
+Depends: libintl8
 Description: Macro processing language
