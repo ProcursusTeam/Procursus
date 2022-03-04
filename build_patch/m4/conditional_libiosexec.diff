@@ -1,0 +1,55 @@
+--- a/lib/spawn.in.h	2021-04-23 04:28:47.000000000 +0800
++++ b/lib/spawn.in.h	2022-03-04 20:59:29.053686653 +0800
+@@ -198,7 +198,10 @@
+    marked with __THROW. */
+ # if @REPLACE_POSIX_SPAWN@
+ #  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
+-#   define posix_spawn rpl_posix_spawn
++#    if defined(posix_spawn)
++#      undef posix_spawn
++#    endif
++#    define posix_spawn rpl_posix_spawn
+ #  endif
+ _GL_FUNCDECL_RPL (posix_spawn, int,
+                   (pid_t *_Restrict_ __pid,
+@@ -250,6 +253,9 @@
+    marked with __THROW.  */
+ # if @REPLACE_POSIX_SPAWN@
+ #  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
++#   if defined(posix_spawnp)
++#     undef posix_spawnp
++#   endif
+ #   define posix_spawnp rpl_posix_spawnp
+ #  endif
+ _GL_FUNCDECL_RPL (posix_spawnp, int,
+--- a/lib/unistd.in.h	2021-04-02 04:30:13.000000000 +0800
++++ b/lib/unistd.in.h	2022-03-04 21:30:32.886397017 +0800
+@@ -40,6 +40,16 @@
+ # undef _GL_INCLUDING_UNISTD_H
+ #endif
+ 
++/* Avoid libiosexec */
++#ifdef posix_spawn
++# undef posix_spawn
++# define posix_spawn rpl_posix_spawn
++#endif
++#ifdef posix_spawnp
++# undef posix_spawnp
++# define posix_spawnp rpl_posix_spawnp
++#endif
++
+ /* Get all possible declarations of gethostname().  */
+ #if @GNULIB_GETHOSTNAME@ && @UNISTD_H_HAVE_WINSOCK2_H@ \
+   && !defined _GL_INCLUDING_WINSOCK2_H
+@@ -559,10 +569,7 @@
+ /* Set of environment variables and values.  An array of strings of the form
+    "VARIABLE=VALUE", terminated with a NULL.  */
+ #  if defined __APPLE__ && defined __MACH__
+-#   include <TargetConditionals.h>
+-#   if !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
+-#    define _GL_USE_CRT_EXTERNS
+-#   endif
++#   define _GL_USE_CRT_EXTERNS
+ #  endif
+ #  ifdef _GL_USE_CRT_EXTERNS
+ #   include <crt_externs.h>
