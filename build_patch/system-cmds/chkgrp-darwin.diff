@@ -1,5 +1,5 @@
 --- a/chkgrp.tproj/chkgrp.c	2022-03-05 16:52:22.017945784 +0800
-+++ b/chkgrp.tproj/chkgrp.c	2022-03-05 16:28:47.872471399 +0800
++++ b/chkgrp.tproj/chkgrp.c	2022-03-06 00:58:55.303039153 +0800
 @@ -55,7 +55,7 @@
  main(int argc, char *argv[])
  {
@@ -9,30 +9,22 @@
  	unsigned int i;
  	size_t len;
  	int opt, quiet;
-@@ -155,7 +155,7 @@
- 			warnx("%s: line %d: too many fields", gfn, n);
- 			e = 1;
- 		}
--	
-+
- 		/* check that none of the fields contain whitespace */
- 		for (k = 0; k < 4; k++) {
- 			if (strcspn(f[k], " \t") != strlen(f[k])) {
 @@ -166,14 +166,15 @@
  		}
  
  		/* check that the GID is numeric */
 -		if (strspn(f[2], "0123456789") != strlen(f[2])) {
 +		char *j;
-+		if (strtol(f[2], &j, 10), *j != '\0') {
++		errno = 0;
++		gid = strtol(f[2], &j, 10);
++		if (*j != '\0') {
  			warnx("%s: line %d: group id is not numeric", gfn, n);
  			e = 1;
  		}
  
  		/* check the range of the group id */
- 		errno = 0;
+-		errno = 0;
 -		gid = strtoul(f[2], NULL, 10);
-+		gid = strtol(f[2], NULL, 10);
  		if (errno != 0) {
  			warnx("%s: line %d: strtoul failed", gfn, n);
  		} else if (gid > GID_MAX) {
