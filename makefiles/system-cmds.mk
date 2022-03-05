@@ -6,12 +6,17 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS       += system-cmds
 SYSTEM-CMDS_VERSION := 854.40.2
+FREEBSD_COMMIT      := 25375b1415f8a0b0290b56c00c31d20e218ffab9
 PWDARWIN_COMMIT     := 72ae45ce6c025bc2359035cfb941b177149e88ae
 DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-14
 
 system-cmds-setup: setup libxcrypt
 	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/system_cmds/system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz
 	$(call EXTRACT_TAR,system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz,system_cmds-$(SYSTEM-CMDS_VERSION),system-cmds)
+	# Get external vigr and chkgrp
+	mkdir -p $(BUILD_WORK)/system-cmds/{vigr,chkgrp}.tproj
+	wget -q -nc -P $(BUILD_WORK)/system-cmds/vigr.tproj https://github.com/freebsd/freebsd-src/raw/$(FREEBSD_COMMIT)/usr.sbin/vigr/vigr.{sh,8}
+	wget -q -nc -P $(BUILD_WORK)/system-cmds/chkgrp.tproj https://github.com/freebsd/freebsd-src/raw/$(FREEBSD_COMMIT)/usr.sbin/chkgrp/chkgrp.{c,8}
 	$(call DO_PATCH,system-cmds,system-cmds,-p1)
 	sed -i '/#include <stdio.h>/a #include <crypt.h>' $(BUILD_WORK)/system-cmds/login.tproj/login.c
 	sed -i '1 i\#include\ <libiosexec.h>' $(BUILD_WORK)/system-cmds/login.tproj/login.c
@@ -36,6 +41,7 @@ system-cmds: system-cmds-setup libxcrypt openpam libiosexec
 		LC_ALL=C awk -f $(BUILD_WORK)/system-cmds/getconf.tproj/fake-gperf.awk < $$gperf > $(BUILD_WORK)/system-cmds/getconf.tproj/"$$(basename $$gperf .gperf).c" ; \
 	done
 	rm -f $(BUILD_WORK)/system-cmds/passwd.tproj/{od,nis}_passwd.c
+	cd $(BUILD_WORK)/system-cmds && $(CC) $(CFLAGS) -o chkgrp chkgrp.tproj/chkgrp.c $(LDFLAGS)
 	cd $(BUILD_WORK)/system-cmds && $(CC) $(CFLAGS) -o passwd passwd.tproj/*.c $(LDFLAGS) -lcrypt # -DINFO_PAM=2 -lpam
 	cd $(BUILD_WORK)/system-cmds && $(CC) $(CFLAGS) -o dmesg dmesg.tproj/*.c $(LDFLAGS)
 	cd $(BUILD_WORK)/system-cmds && $(CC) $(CFLAGS) -o sysctl sysctl.tproj/sysctl.c $(LDFLAGS)
@@ -55,6 +61,7 @@ system-cmds: system-cmds-setup libxcrypt openpam libiosexec
 	done
 	mkdir -p $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX){/etc/pam.d,/bin,/sbin,$(MEMO_SUB_PREFIX)/bin,$(MEMO_SUB_PREFIX)/sbin,$(MEMO_SUB_PREFIX)/share/man/man{1,5,8}}
 	install -m755 $(BUILD_WORK)/system-cmds/pagesize.tproj/pagesize.sh $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pagesize
+	install -m755 $(BUILD_WORK)/system-cmds/vigr.tproj/vigr.sh $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/vigr
 	cp -a $(BUILD_WORK)/system-cmds/sync $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/bin
 	cp -a $(BUILD_WORK)/system-cmds/{dmesg,dynamic_pager,reboot,nologin,shutdown} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/sbin
 	$(LN_S) $(MEMO_PREFIX)/sbin/reboot $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/sbin/halt
@@ -64,10 +71,10 @@ ifneq ($(MEMO_SUB_PREFIX),) # compat links because we had faultily installed reb
 endif
 	cp -a $(BUILD_WORK)/system-cmds/{arch,getconf,getty,hostinfo,login,passwd,lsmp,ltop,sc_usage} $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/arch $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/machine
-	cp -a $(BUILD_WORK)/system-cmds/{ac,accton,iostat,mkfile,pwd_mkdb,sysctl,vifs,vipw,zdump,zic,taskpolicy} $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
+	cp -a $(BUILD_WORK)/system-cmds/{ac,accton,chkgrp,iostat,mkfile,pwd_mkdb,sysctl,vifs,vipw,zdump,zic,taskpolicy} $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 	cp -a $(BUILD_WORK)/system-cmds/{arch,getconf,login,passwd,lsmp,sc_usage,ltop}.tproj/*.1 $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/
 	cp -a $(BUILD_WORK)/system-cmds/{getty,nologin,sysctl}.tproj/*.5 $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5/
-	cp -a $(BUILD_WORK)/system-cmds/{ac,accton,dmesg,dynamic_pager,getty,hostinfo,iostat,mkfile,nologin,pwd_mkdb,reboot,shutdown,sync,sysctl,vifs,vipw,zdump,zic,taskpolicy}.tproj/*.8 $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/
+	cp -a $(BUILD_WORK)/system-cmds/{ac,accton,chkgrp,dmesg,dynamic_pager,getty,hostinfo,iostat,mkfile,nologin,pwd_mkdb,reboot,shutdown,sync,sysctl,vifs,vigr,vipw,zdump,zic,taskpolicy}.tproj/*.8 $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/
 	$(LN_S) reboot.8 $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/halt.8
 	cp -a $(BUILD_MISC)/pam/{login{,.term},passwd} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/etc/pam.d
 	+$(MAKE) -C $(BUILD_WORK)/system-cmds/pw-darwin install \
