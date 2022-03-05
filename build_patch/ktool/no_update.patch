@@ -1,0 +1,46 @@
+From 00cfd0782d7199033c7a23c45d219d315a37ea02 Mon Sep 17 00:00:00 2001
+From: TheRealKeto <therealketo@gmail.com>
+Date: Sat, 5 Mar 2022 14:35:45 -0500
+Subject: [PATCH] ktool(update): Change instructions on updating
+
+Originally, the message would prompt the user to
+use pip in order to install latest updates. However,
+the user should instead use apt(8) over pip on Procursus.
+
+This also adds contact information for the Procursus Team.
+---
+ src/ktool/ktool_script.py | 7 ++++---
+ src/ktool/window.py       | 2 +-
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/src/ktool/ktool_script.py b/src/ktool/ktool_script.py
+index c2f4adf..e7dd7d4 100644
+--- a/src/ktool/ktool_script.py
++++ b/src/ktool/ktool_script.py
+@@ -393,9 +393,10 @@ def main():
+                             f'Malformed MachO. Pass -f to force loading whatever possible')
+ 
+     if UPDATE_AVAILABLE:
+-        print(f'\n\nUpdate Available ---')
+-        print(f'run `pip3 install --upgrade k2l` to fetch the latest update')
+-        print(f'set the envar KTOOL_NO_UPDATE_CHECK to disable update checks')
++        print('\n\nUpdate Available ---')
++        print('Run `sudo apt install ktool` to fetch the latest update')
++        print('or set the envar KTOOL_NO_UPDATE_CHECK to disable update checks\n')
++        print('For more information, contact the Procursus Team <support@procurs.us>.')
+ 
+     exit(0)
+ 
+diff --git a/src/ktool/window.py b/src/ktool/window.py
+index 0fde961..0927ba0 100644
+--- a/src/ktool/window.py
++++ b/src/ktool/window.py
+@@ -61,7 +61,7 @@
+ 
+ This is a *very* pre-release version of the GUI Tool, and it has a long ways to go. 
+ 
+-Stay Updated with `python3 -m pip install --upgrade k2l` !
++Stay Updated with `sudo apt install ktool` !
+ 
+ Mouse support is a WIP; quite a few things support mouse interaction already.
+ 
