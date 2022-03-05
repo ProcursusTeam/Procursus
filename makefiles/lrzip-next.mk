@@ -1,9 +1,15 @@
 ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
-
+LRZIP_NEXT_VERSION := 0.8.2
+=======
 SUBPROJECTS        += lrzip-next
+<<<<<<< Local Changes
+LRZIP_NEXT_VERSION := 0.8.9
+>>>>>>> External Changes
+=======
 LRZIP_NEXT_VERSION := 0.8.10
+>>>>>>> External Changes
 DEB_LRZIP_NEXT_V   ?= $(LRZIP_NEXT_VERSION)
 
 lrzip-next-setup: setup
