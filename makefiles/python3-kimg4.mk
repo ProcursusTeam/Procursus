@@ -11,9 +11,9 @@ python3-kimg4-setup: setup
 	$(call GITHUB_ARCHIVE,cxnder,kimg4,$(PYTHON3_KIMG4_VERSION),$(PYTHON3_KIMG4_COMMIT))
 	$(call EXTRACT_TAR,kimg4-$(PYTHON3_KIMG4_VERSION).tar.gz,kimg4-$(PYTHON3_KIMG4_COMMIT),python3-kimg4)
 
-ifneq ($(wildcard $(BUILD_WORK)/kimg4/.build_complete),)
+ifneq ($(wildcard $(BUILD_WORK)/python3-kimg4/.build_complete),)
 python3-kimg4:
-	@echo "Using previously built kimg4."
+	@echo "Using previously built python3-kimg4."
 else
 python3-kimg4: python3-kimg4-setup python3-pyaes python3
 	cd $(BUILD_WORK)/python3-kimg4 && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py \
