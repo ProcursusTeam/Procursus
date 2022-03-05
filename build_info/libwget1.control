@@ -1,0 +1,18 @@
+Package: libwget1
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_WGET2_V@
+Depends: libassuan0, libssl3, libpcre2-8-0, libintl8, liblzma5 (>= 5.2.5), libnghttp2-14, libidn2-0, libintl8, libzstd1, libbrotli1, libgpgme11, libpsl5
+Section: Libraries
+Priority: important
+Description: Download library for files and recursive websites
+ GNU Wget is a network utility to retrieve files from the web 
+ using HTTP(S) and FTP, the two most widely used internet protocols.
+ It works non-interactively, so it will work in the background, after 
+ having logged off. The program supports recursive retrieval of 
+ web-authoring pages as well as FTP sites -- you can use Wget to 
+ make mirrors of archives and home pages or to travel the web 
+ like a WWW robot.
+ .
+ This is the library that provides the basic functions needed by a 
+ webclient.

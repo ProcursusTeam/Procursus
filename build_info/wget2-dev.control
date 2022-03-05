@@ -1,0 +1,17 @@
+Package: wget2-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_WGET2_V@
+Depends: libwget1 (= @DEB_WGET2_V@)
+Section: Development
+Priority: important
+Description: development file for wget2
+ GNU Wget is a network utility to retrieve files from the web 
+ using HTTP(S) and FTP, the two most widely used internet protocols.
+ It works non-interactively, so it will work in the background, after 
+ having logged off. The program supports recursive retrieval of 
+ web-authoring pages as well as FTP sites -- you can use Wget to 
+ make mirrors of archives and home pages or to travel the web 
+ like a WWW robot.
+ .
+ These are the development files to build software with libwget.
