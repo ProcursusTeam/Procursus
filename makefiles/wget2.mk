@@ -31,12 +31,13 @@ endif
 wget2-package: wget2-stage
 	# wget2.mk Package Structure
 	rm -rf $(BUILD_DIST)/{wget2,libwget$(WGET2_API_V),wget2-dev}
-	mkdir -p $(BUILD_DIST)/wget2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+	mkdir -p $(BUILD_DIST)/wget2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share \
 		$(BUILD_DIST)/libwget$(WGET2_API_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/wget2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include,share/man}
+		$(BUILD_DIST)/wget2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share/man}
 
 	# wget2.mk Prep wget2
 	cp -a $(BUILD_STAGE)/wget2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/wget2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/wget2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale $(BUILD_DIST)/wget2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
 	# wget2.mk Prep libwget$(WGET2_API_V)
 	cp -a $(BUILD_STAGE)/wget2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libwget*.$(WGET2_API_V).dylib $(BUILD_DIST)/libwget$(WGET2_API_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
