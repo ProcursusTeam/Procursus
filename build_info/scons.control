@@ -1,0 +1,14 @@
+Package: scons
+Version: @DEB_SCONS_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Depends: python3
+Section: Development
+Priority: optional
+Homepage: https://www.scons.org/
+Description: replacement for make
+ SCons is a make replacement providing a range of enhanced features such
+ as automated dependency generation and built in compilation cache
+ support.  SCons rule sets are Python scripts so as well as the features
+ it provides itself SCons allows you to use the full power of Python
+ to control compilation.
