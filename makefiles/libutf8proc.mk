@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS         += libutf8proc
-LIBUTF8PROC_VERSION := 2.5.0
-DEB_LIBUTF8PROC_V   ?= $(LIBUTF8PROC_VERSION)-2
+LIBUTF8PROC_VERSION := 2.7.0
+DEB_LIBUTF8PROC_V   ?= $(LIBUTF8PROC_VERSION)
 
 libutf8proc-setup: setup
 	$(call GITHUB_ARCHIVE,JuliaStrings,utf8proc,$(LIBUTF8PROC_VERSION),v$(LIBUTF8PROC_VERSION),libutf8proc)
