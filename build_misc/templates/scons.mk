@@ -18,9 +18,9 @@ else
 @pkg@: @pkg@-setup
 	cd $(BUILD_WORK)/@pkg@ && scons \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		CC=$(CC) \
-		CFLAGS=$(CFLAGS) \
-		LINKFLAGS=$(LDFLAGS)
+		CC="$(CC)" \
+		CFLAGS="$(CFLAGS)" \
+		LINKFLAGS="$(LDFLAGS)"
 	scons -C $(BUILD_WORK)/@pkg@ install \
 		--install-sandbox=$(BUILD_STAGE)/@pkg@
 	$(call AFTER_BUILD)
