@@ -1,0 +1,14 @@
+Package: libserf-1-1
+Version: @DEB_LIBSERF_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libexpat1 || firmware (>= 14.0), libapr1, libaprutil1, libssl3
+Section: Libraries
+Priority: optional
+Homepage: https://serf.apache.org/
+Description: high-performance asynchronous HTTP client library
+ serf library is a C-based HTTP client library built upon the Apache
+ Portable Runtime (APR) library.  It multiplexes connections, running the
+ read/write communication asynchronously.  Memory copies and
+ transformations are kept to a minimum to provide high performance
+ operation.
