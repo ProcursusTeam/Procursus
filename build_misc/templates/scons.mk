@@ -21,7 +21,8 @@ else
 		CC=$(CC) \
 		CFLAGS=$(CFLAGS) \
 		LINKFLAGS=$(LDFLAGS)
-	scons install --install-sandbox=$(BUILD_STAGE)/@pkg@
+	scons -C $(BUILD_WORK)/@pkg@ install \
+		--install-sandbox=$(BUILD_STAGE)/@pkg@
 	$(call AFTER_BUILD)
 endif
 
