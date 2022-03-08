@@ -31,8 +31,8 @@ endif
 
 swig-package: swig-stage
 	# swig.mk Package Structure
-	rm -rf $(BUILD_DIST)/swig
-	mkdir -p $(BUILD_DIST)/swig{4.0}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share}
+	rm -rf $(BUILD_DIST)/swig{,4.0}
+	mkdir -p $(BUILD_DIST)/swig{,4.0}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share}
 
 	# swig.mk Prep swig
 	cp -a $(BUILD_STAGE)/swig/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{swig,ccache-swig} $(BUILD_DIST)/swig/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
@@ -49,6 +49,6 @@ swig-package: swig-stage
 	$(call PACK,swig4.0,DEB_SWIG_V)
 
 	# swig.mk Build cleanup
-	rm -rf $(BUILD_DIST)/swig
+	rm -rf $(BUILD_DIST)/swig{,4.0}
 
 .PHONY: swig swig-package
