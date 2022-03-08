@@ -1,0 +1,77 @@
+Description: Work around renaming of ccache-swig binary
+ The package suffixes binaries with the major version, which changes
+ ccache-swig to ccache-swig4.0. However, ccache is sensitive to the
+ name of its binary. The test did not take the program-suffix configure
+ option into account.
+ .
+ This is fixed with this patch, however, the original name will not
+ work anymore here (ccache-swig is probably broken now, calling it
+ via the installed symlink should work though).
+ .
+ The patch replaces the macro MYNAME to refer to the installed name
+ of the ccache-swig binary.
+
+Author: Torsten Landschoff <torsten@debian.org>
+Bug-Debian: http://bugs.debian.org/786618
+Origin: Debian
+Forwarded: no
+
+--- a/CCache/Makefile.in
++++ b/CCache/Makefile.in
+@@ -25,6 +25,7 @@ LIBS= @LIBS@
+ OBJS= ccache.o mdfour.o hash.o execute.o util.o args.o stats.o \
+ 	cleanup.o snprintf.o unify.o
+ HEADERS = ccache.h mdfour.h config.h config_win32.h
++CPPFLAGS = -DMYNAME='"$(shell echo '$(PACKAGE_NAME)' | sed '$(transform)')$(EXEEXT)"'
+ 
+ all: $(PACKAGE_NAME)$(EXEEXT)
+ 
+--- a/CCache/ccache.h
++++ b/CCache/ccache.h
+@@ -51,8 +51,6 @@
+ #define STATUS_FATAL 4
+ #define STATUS_NOCACHE 5
+ 
+-#define MYNAME PROGRAM_NAME
+-
+ #define LIMIT_MULTIPLE 0.8
+ 
+ /* default maximum cache size */
+--- a/CCache/ccache.c
++++ b/CCache/ccache.c
+@@ -757,6 +757,16 @@ static void from_cache(int first)
+ 	exit(0);
+ }
+ 
++/* Return true if path looks like a ccache binary path. */
++static int is_ccache_name(const char *path)
++{
++	char *base = str_basename(path);
++	int result = strcmp(base, MYNAME) == 0 || strcmp(base, PACKAGE_NAME) == 0;
++	free(base);
++	return result;
++}
++
++
+ /* find the real compiler. We just search the PATH to find a executable of the 
+    same name that isn't a link to ourselves */
+ static void find_compiler(int argc, char **argv)
+@@ -769,7 +779,7 @@ static void find_compiler(int argc, char
+ 	base = str_basename(argv[0]);
+ 
+ 	/* we might be being invoked like "ccache gcc -c foo.c" */
+-	if (strcmp(base, MYNAME) == 0) {
++	if (is_ccache_name(argv[0])) {
+ 		args_remove_first(orig_args);
+ 		free(base);
+ 		if (strchr(argv[1],'/')
+@@ -1356,8 +1366,7 @@ int main(int argc, char *argv[])
+ 
+ 
+ 	/* check if we are being invoked as "ccache" */
+-	if (strlen(argv[0]) >= strlen(MYNAME) &&
+-	    strcmp(argv[0] + strlen(argv[0]) - strlen(MYNAME), MYNAME) == 0) {
++	if (is_ccache_name(argv[0])) {
+ 		if (argc < 2) {
+ 			usage();
+ 			exit(1);

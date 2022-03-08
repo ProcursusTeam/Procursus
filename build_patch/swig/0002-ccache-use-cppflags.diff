@@ -1,0 +1,11 @@
+--- a/CCache/Makefile.in
++++ b/CCache/Makefile.in
+@@ -25,7 +25,7 @@ LIBS= @LIBS@
+ OBJS= ccache.o mdfour.o hash.o execute.o util.o args.o stats.o \
+ 	cleanup.o snprintf.o unify.o
+ HEADERS = ccache.h mdfour.h config.h config_win32.h
+-CPPFLAGS = -DMYNAME='"$(shell echo '$(PACKAGE_NAME)' | sed '$(transform)')$(EXEEXT)"'
++CPPFLAGS = @CPPFLAGS@ -DMYNAME='"$(shell echo '$(PACKAGE_NAME)' | sed '$(transform)')$(EXEEXT)"'
+ 
+ all: $(PACKAGE_NAME)$(EXEEXT)
+ 
