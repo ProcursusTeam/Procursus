@@ -14,8 +14,10 @@ profile.d:
 else
 profile.d:
 	mkdir -p $(BUILD_STAGE)/profile.d/$(MEMO_PREFIX)/etc/profile.d
-	cp $(BUILD_INFO)/{,z}profile $(BUILD_STAGE)/profile.d/$(MEMO_PREFIX)/etc
-	cp $(BUILD_INFO)/terminal.sh $(BUILD_STAGE)/profile.d/$(MEMO_PREFIX)/etc/profile.d
+	cp $(BUILD_MISC)/profile.d/{,z}profile $(BUILD_STAGE)/profile.d/$(MEMO_PREFIX)/etc
+	PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11:/usr/games
+	sed -i -e "s|@PATH@|$(shell printf "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11:/usr/games\n" | tr ':' '\n' | sed "p; s|^|$(MEMO_PREFIX)|" | tr '\n' ':' | sed 's|:$$|\n|')|" -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $(BUILD_STAGE)/profile.d/$(MEMO_PREFIX)/etc/{z,}profile
+	cp $(BUILD_MISC)/profile.d/terminal.sh $(BUILD_STAGE)/profile.d/$(MEMO_PREFIX)/etc/profile.d
 endif
 
 profile.d-package: profile.d-stage

@@ -42,6 +42,7 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	+$(MAKE) -C $(BUILD_WORK)/coreutils install \
 		DESTDIR=$(BUILD_STAGE)/coreutils
 	+$(MAKE) -C $(BUILD_WORK)/coreutils/getent-darwin install \
+		CFLAGS="$(CFLAGS) $(LDFLAGS)" \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR="$(BUILD_STAGE)/coreutils/"
 	$(call AFTER_BUILD)

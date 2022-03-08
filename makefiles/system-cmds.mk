@@ -22,6 +22,7 @@ system-cmds-setup: setup libxcrypt
 	$(call EXTRACT_TAR,pw-darwin-$(PWDARWIN_COMMIT).tar.zst,pw-darwin-$(PWDARWIN_COMMIT),system-cmds/pw-darwin)
 	wget -q -nc -P $(BUILD_WORK)/system-cmds/include \
 		https://opensource.apple.com/source/launchd/launchd-328/launchd/src/reboot2.h
+	sed -i 's|/etc|$(MEMO_PREFIX)/etc|' $(BUILD_WORK)/system-cmds/passwd.tproj/{file_,}passwd.c
 
 ###
 # TODO: Once I implement pam_chauthtok() in pam_unix.so, use PAM for passwd
