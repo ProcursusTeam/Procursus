@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS            += python3-psutil
-PYTHON3-PSUTIL_VERSION := 5.8.0
+PYTHON3-PSUTIL_VERSION := 5.9.0
 DEB_PYTHON3-PSUTIL_V   ?= $(PYTHON3-PSUTIL_VERSION)
 
 python3-psutil-setup: setup
