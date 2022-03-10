@@ -1,0 +1,187 @@
+#!/bin/sh -e
+#
+# Copyright (C) 2008,2009 by Robert Millan
+# Copyright (C) 2009 by Peter Samuelson
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+dir=.svn-bisect
+: ${SVN:=svn}
+
+svn_info ()
+{
+    LC_ALL=C $SVN info | awk "/^$1:/{ print \$2 }"
+}
+
+usage ()
+{
+  cat << EOF
+Usage:
+  $0 start [good_rev [bad_rev]]
+  $0 good [revision]
+  $0 bad [revision]
+  $0 run {command}
+  $0 status
+  $0 reset
+EOF
+}
+
+do_init ()
+{
+    rm -rf $dir
+    mkdir -p $dir
+    svn_info URL > $dir/url
+    svn_info Revision > $dir/start
+    if [ -n "$1" ]; then do_good_bad good "$1"; fi
+    if [ -n "$2" ]; then do_good_bad bad "$2"; fi
+}
+
+do_reset ()
+{
+    if [ ! -d $dir ]; then return 0; fi
+    if [ ! -f $dir/url ]; then
+        echo >&2 "Error: no $dir/url file"
+        exit 1
+    fi
+    url=$(cat $dir/url)
+    rev=$(cat $dir/start)
+    $SVN switch -r$rev "$url@$rev"
+    rm -fr $dir
+    echo "Now at r$rev in $url"
+}
+
+do_status ()
+{
+    if [ ! -d $dir ]; then
+        status='not initialized'
+    elif [ -f $dir/found ]; then
+        status="found bad revision r$(cat $dir/found)"
+    elif [ ! -f $dir/revs ]; then
+        if [ ! -f $dir/good ]; then
+            status='still need a "good" revision'
+        elif [ ! -f $dir/bad ]; then
+            status='still need a "bad" revision'
+        else
+            status='???'
+        fi
+    else
+        status="r$(head -n1 $dir/revs) is good, r$(tail -n1 $dir/revs) is bad"
+        status="$status, $(($(wc -l < $dir/revs) - 2)) unknown revs in between"
+    fi
+    echo "svn-bisect: status: $status"
+}
+
+do_good_bad ()
+{
+    what=$1
+    shift
+    good=0; bad=99999999;
+    if [ -n "$1" ] ; then
+        current=$(echo "$1" | sed s/^r*// | tee $dir/$what)
+    else
+        current=$(svn_info Revision | tee $dir/$what)
+    fi
+
+    if [ -f $dir/revs ]; then
+        cat $dir/revs | while read rev; do
+            if { [ $what = good ] && [ $rev -ge $current ]; } ||
+               { [ $what = bad ] && [ $rev -le $current ]; }; then
+                echo $rev
+            fi
+        done > $dir/revs.new;
+        mv $dir/revs.new $dir/revs
+    elif [ -f $dir/good ] && [ -f $dir/bad ]; then
+        $SVN log -q -r$(cat $dir/good):$(cat $dir/bad) |
+          awk '/^r/{print $1}' | cut -c2- > $dir/revs
+    else
+        return 0
+    fi
+    good=$(head -n1 $dir/revs)
+    bad=$(tail -n1 $dir/revs)
+    url=$(cat $dir/url)
+    start=$(cat $dir/start)
+    n=$(wc -l < $dir/revs)
+    case $n in
+        0)
+            echo >&2 "Error: no good or bad revs"
+            exit 1 ;;
+        1)
+            echo >&2 "Error: r$(cat $dir/revs) is marked as both good and bad"
+            exit 1 ;;
+        2)
+            echo "Regression found!"
+            echo "Last good revision: r$good"
+            echo "First bad revision:"
+            $SVN log -r$bad
+            echo "Use '$0 reset' or 'rm -r $dir' to clean up"
+            echo $bad > $dir/found
+            return 0 ;;
+    esac
+    target=$(head -n $(((n+1)/2)) $dir/revs | tail -n1)
+    echo "Switching to r$target ..."
+    $SVN switch -r$target "$url@$start"
+    url2=$(svn_info URL)
+    if [ "$url" != "$url2" ]; then
+        echo "r$target is in $url2"
+    fi
+    return $?
+}
+
+do_run ()
+{
+    cmd=$1
+    shift
+    while [ -d $dir ] && [ ! -f $dir/found ]; do
+        set +e
+        eval ${cmd}
+        status=$?
+        set -e
+        case $status in
+            125) $0 skip ;;
+            0) $0 good ;;
+            *) $0 bad ;;
+        esac
+    done
+}
+
+
+cmd=$1
+shift
+case "$cmd" in
+
+    start) do_init "$@" ;;
+
+    bad) do_good_bad bad "$@" ;;
+
+    good) do_good_bad good "$@" ;;
+
+    run) do_run "$@" ;;
+
+    status) do_status ;;
+
+    reset) do_reset ;;
+
+    -h|--help)
+        usage
+        exit 0 ;;
+
+    "")
+        usage >&2
+        exit 1 ;;
+
+    *)
+        echo "Unknown parameter \`$cmd'" >&2
+        usage >&2
+        exit 1 ;;
+esac

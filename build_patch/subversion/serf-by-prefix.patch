@@ -1,0 +1,14 @@
+--- a/build/ac-macros/serf.m4	2018-10-28 02:55:54.000000000 +0800
++++ b/build/ac-macros/serf.m4	2022-03-10 18:47:31.220437005 +0800
+@@ -70,10 +70,7 @@
+   ])
+ 
+   if test "$serf_skip" = "no" ; then
+-    SVN_SERF_PKG_CONFIG()
+-    if test -n "$serf_prefix" && test "$serf_found" = "no" ; then
+-      SVN_SERF_PREFIX_CONFIG()
+-    fi
++    SVN_SERF_PREFIX_CONFIG()
+   
+     AC_MSG_CHECKING([was serf enabled])
+     if test "$serf_found" = "yes"; then

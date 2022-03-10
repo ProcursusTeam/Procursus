@@ -1,0 +1,12 @@
+Package: libsvn1
+Version: @DEB_SUBVERSION_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libapr1, libaprutil1, libexpat1 || firmware (>= 14.0), libintl8, liblz4-1, libmagic1, libsasl2, libserf-1-1, libutf8proc2
+Section: Libraries
+Priority: optional
+Homepage: https://subversion.apache.org/
+Description: Shared libraries used by Apache Subversion
+ This package includes shared libraries to manipulate Apache Subversion
+ (svn) repositories and working copies.  See the 'subversion' package for
+ more information.

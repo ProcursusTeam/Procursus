@@ -1,0 +1,127 @@
+.TH SVN_LOAD_DIRS 1
+
+.SH NAME
+svn_load_dirs - Load directories into a Subversion repository
+
+.SH SYNOPSIS
+.B svn_load_dirs
+[\fIoptions\fR] \fIsvn_url\fR \fIsvn_import_dir\fR [\fIdirectory\fR ...]
+
+.SH DESCRIPTION
+This tool can be used for importing one or more directories into a
+Subversion repository. The difference from "svn import" is that
+svn_load_dirs can update an existing directory tree, and tag it
+properly. Only changes from the previous version will be recorded in
+the revision, so that you can easily apply them on another branch.
+For example, this is very useful for managing the upstream source when
+maintaining Debian packages in Subversion.
+
+.SH OPTIONS
+.TP
+\fIsvn_url\fR
+The base Subversion URL.
+.TP
+\fIsvn_import_dir\fR
+The path relative to \fIsvn_url\fR where the directories are to be imported.
+.TP
+\fIdirectory ...\fR
+The directories to import. If they are not specified on the command line,
+they are read from standard input.
+.TP
+\fB\-no_user_input\fR
+Don't ask any questions. Assume that the answer is yes.
+.TP
+\fB\-p\fR \fIfilename\fR
+Apply the properties specified in the configuration file
+\fIfilename\fR to matching files. See below for a description of
+the configuration file format.
+.TP
+\fB\-svn_username\fR \fIusername\fR
+Username to use when committing to the repository.
+.TP
+\fB\-svn_password\fR \fIpassword\fR
+Password to use when committing to the repository.
+.TP
+\fB\-t\fR \fItag_dir\fR
+Create a tag copy in \fItag_dir\fR, relative to
+\fIsvn_url\fR. \fItag_dir\fR may contain a regular expression
+enclosed within '@' characters. It will be replaced by the matching part
+from the imported directory names.
+.TP
+\fB\-v\fR
+Be more verbose. Use multiple times for increased effect.
+.TP
+\fB\-wc\fR \fIpath\fR
+Use the already checked out working copy at \fIpath\fR instead of
+checking out a new working copy.
+
+.SH PROPERTY CONFIGURATION FILE FORMAT
+The property configuration file, which is specified by the \-p option,
+contains rules for applying properties to the imported files.
+It consists of lines of the following format:
+.PP
+.I regular_expression	control	property_name	property_value
+.PP
+The meaning of the fields are:
+.TP
+.I regular_expression
+A Perl-style regular expression matching the files to apply this rule to.
+.TP
+.I control
+Either "break" or "cont". If set to "break", processing of the current
+file will stop if this rule matches. If set to "cont", processing will
+continue. The latter can be used to set multiple properties for one
+file.
+.TP
+.I property_name
+(Optional) The name of the property to set.
+.TP
+.I property_value
+(Optional) Set the property to this value.
+.PP
+The last two fields may be omitted, in which case the rule will not
+set any properties. This is useful for excluding certain files from
+subsequent rules.
+.PP
+You need to quote the \fIregular_expression\fR, \fIproperty_name\fR
+and \fIproperty_value\fR fields with double quotes ('"') if you have
+whitespace in them. Single and double quotes can be escaped with
+backslash ('\\').
+
+.SH EXAMPLES
+For example, to import the contents of the foo\-1.3 directory into the
+upstream/current directory of the foo repository:
+.PP
+.HP
+svn_load_dirs svn+ssh://svn.example.org/svn/foo upstream/current foo\-1.3
+.PP
+A tag can also be added automatically using the \-t option:
+.PP
+.HP
+svn_load_dirs svn+ssh://svn.example.org/svn/foo \-t \(aqupstream/@\\d+\\.\\w+@\(aq
+upstream/current foo\-1.3
+.PP
+Here's an example of a property configuration file:
+.PP
+\\.doc$			break	svn:mime\-type	application/msword
+.br
+\\.ds(p|w)$		break	svn:eol\-style	CRLF
+.br
+\\.dos2unix\-eol\\.sh$	break
+.br
+\&.*\ \ \ 			break	svn:eol\-style	native
+.PP
+This example specifies that .doc files are to be treated as binary
+files, that .dsp and .dsw files have their line ending characters
+kept, and that all other files except dos2unix\-eol.sh have their line
+endings converted to the native style.
+
+.SH SEE ALSO
+/usr/share/doc/subversion\-tools/svn_load_dirs.README.gz
+.PP
+\fBsvn\fR(1)
+
+.SH AUTHOR
+This manual page was written by Per Olofsson <pelle@dsv.su.se> for the
+Debian distribution (but may be used by others). Some parts were taken
+from the README.

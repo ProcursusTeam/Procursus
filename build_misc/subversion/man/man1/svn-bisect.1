@@ -1,0 +1,121 @@
+.\" svn-bisect.1
+.\" Copyright 2009 by Peter Samuelson
+.\" Permission is granted to everyone to use and distribute this work,
+.\" without limitation, modified or unmodified, in any way, for any purpose.
+.TH SVN-BISECT 1 "2009-10-22"
+.\"
+.SH NAME
+svn\-bisect \- Bisect Subversion revisions to find a regression
+.\"
+.SH SYNOPSIS
+.B svn\-bisect start
+.RI [ good_rev " [" bad_rev ]]
+.PP
+.BR svn\-bisect " {" good | bad "} "
+.RI [ rev ]
+.PP
+.B svn\-bisect run
+.I command
+.PP
+.B svn\-bisect reset
+.PP
+.B svn\-bisect status
+.\"
+.SH DESCRIPTION
+.B svn\-bisect
+helps to automate finding a bug or behavior change in a
+.B Subversion
+working copy.  Given an initial \(lqgood\(rq revision, with the desired
+or original behavior, and a newer \(lqbad\(rq revision, with the
+undesired or modified behavior,
+.B svn\-bisect
+will do a binary search through the revision range to find which
+revision caused the change.
+.PP
+.B svn\-bisect
+must be initialized in a working copy, with
+.BR "svn\-bisect start" .
+It also needs to be given at least one
+.IR good
+revision (the baseline) and one
+.I bad
+revision (known modified behavior) revision.
+.PP
+Sub-commands:
+.TP
+.B start
+Initializes or reinitializes
+.BR svn\-bisect ;
+optionally takes
+.IR good " and " bad
+revision parameters.
+.TP
+.BI good " rev"
+.TP
+.BI bad " rev"
+Tells
+.B svn\-bisect
+that a revision is
+.IR good " or " bad ,
+defining or narrowing the search space.  If not specified,
+.I revision
+defaults to the current revision in the working copy.
+.B svn\-bisect
+will then update to a revision halfway between the new
+.IR good " and " bad
+boundaries.  If this update crosses a point where a branch was created,
+it switches in or out of the branch.
+.TP
+.B reset
+Resets the working copy to the revision and branch where
+.B svn\-bisect start
+was run.  In the simple case this is equivalent to
+.BR "rm -r .svn-bisect; svn update" ,
+but not if it has crossed branches, and not if you did not start at the
+.B HEAD
+revision.  In any case,
+.B svn\-bisect
+never keeps track of mixed-revision working copies, so do not use
+.B svn\-bisect
+in a working copy that will need to be restored to mixed revisions.
+.TP
+.B status
+Prints a brief status message.
+.TP
+.BI run " command"
+Runs the bisection in a loop.  You must have already defined initial
+.IR good " and " bad
+boundary conditions.  Each iteration through the loop runs
+.I command
+as a shell command (a single argument, quoted if necessary) on the
+chosen revision, then marks the revision as
+.IR good " or " bad ,
+based on the exit status of
+.IR command .
+.\"
+.SH EXAMPLES
+Assume you are trying to find which revision between 1250 and 1400
+caused the
+.B make check
+command to fail.
+.PP
+    svn\-bisect start 1250 1400
+    svn\-bisect run \(aqmake check\(aq
+    svn\-bisect reset
+.\"
+.SH ENVIRONMENT
+.IP SVN
+The Subversion command-line program to call (default
+.BR svn ).
+.SH FILES
+.IP \.svn\-bisect
+The directory containing state information, removed after a successful
+bisection.
+.\"
+.SH "SEE ALSO"
+.BR git\-bisect (1).
+.\"
+.SH AUTHOR
+.\" <rmh@aybabtu.com>, <peter@p12n.org>
+Written by Robert Millan and Peter Samuelson, for the Debian Project
+(but may be used by others).

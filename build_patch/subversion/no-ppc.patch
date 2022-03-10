@@ -1,0 +1,17 @@
+--- a/subversion/bindings/swig/perl/native/Makefile.PL.in
++++ b/subversion/bindings/swig/perl/native/Makefile.PL.in
+@@ -76,10 +76,13 @@ my $apr_ldflags = '@SVN_APR_LIBS@'
+
+ chomp $apr_shlib_path_var;
+
++my $config_ccflags = $Config{ccflags};
++$config_ccflags =~ s/-arch\s+\S+//g;
++
+ my %config = (
+     ABSTRACT => 'Perl bindings for Subversion',
+     DEFINE => $cppflags,
+-    CCFLAGS => join(' ', $cflags, $Config{ccflags}),
++    CCFLAGS => join(' ', $cflags, $config_ccflags),
+     INC  => join(' ', $includes, $cppflags,
+                  " -I$swig_srcdir/perl/libsvn_swig_perl",
+                  " -I$svnlib_srcdir/include",

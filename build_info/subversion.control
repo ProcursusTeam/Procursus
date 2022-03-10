@@ -1,0 +1,19 @@
+Package: subversion
+Version: @DEB_SUBVERSION_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libapr1, libaprutil1, libintl8, libsvn1 (>= @DEB_SUBVERSION_V@)
+Section: Data_Storage
+Suggests: patch, subversion-tools
+Priority: optional
+Homepage: https://subversion.apache.org/
+Description: Advanced version control system
+ Apache Subversion, also known as svn, is a centralised version control
+ system.  Version control systems allow many individuals (who may be
+ distributed geographically) to collaborate on a set of files (source
+ code, websites, etc).  Subversion began with a CVS paradigm and
+ supports all the major features of CVS, but has evolved to support
+ many features that CVS users often wish they had.
+ .
+ This package includes the Subversion client (svn, svnsync), repository
+ administration tools (svnadmin, svnlook) and a network server (svnserve).
