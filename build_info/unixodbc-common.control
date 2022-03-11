@@ -1,0 +1,15 @@
+Package: unixodbc-common
+Version: @DEB_UNIXODBC_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Data_Storage
+Priority: optional
+Homepage: http://www.unixodbc.org/
+Description: Common ODBC configuration files
+ UnixODBC is an implementation of the Open Database Connectivity standard,
+ a database abstraction layer that allows applications to be used with
+ many different relational databases by way of a single library.
+ .
+ This package contains the unixODBC system configuration files, odbc.ini and
+ odbcinst.ini, as well as the ODBCDataSources directory, in which system-file
+ Data Source Names (DSNs) are stored.
