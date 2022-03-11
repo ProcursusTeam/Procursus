@@ -22,7 +22,7 @@ libsasl2: libsasl2-setup openssl
 		--enable-gss_mutexes \
 		--enable-login \
 		--enable-ntlm \
-		--with-openssl=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--with-openssl=$(BUILD_STAGE)/openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		sasl_cv_dlsym_adds_uscore=no
 	+$(MAKE) -C $(BUILD_WORK)/libsasl2 install install-data \
 		DESTDIR="$(BUILD_STAGE)/libsasl2"

@@ -31,19 +31,19 @@ subversion: subversion-setup apr apr-util expat file gettext libutf8proc libserf
 		--with-apr=$(BUILD_STAGE)/apr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-apr-util=$(BUILD_STAGE)/apr-util/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-apxs=no \
-		--with-libmagic=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--with-lz4=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--with-libmagic=$(BUILD_STAGE)/file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--with-lz4=$(BUILD_STAGE)/lz4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-ruby-sitedir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/ruby/site_ruby \
-		--with-serf=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--with-serf=$(BUILD_STAGE)/libserf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-sqlite=$(TARGET_SYSROOT)/usr \
-		--with-utf8proc=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--with-utf8proc=$(BUILD_STAGE)/libutf8proc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-zlib=$(TARGET_SYSROOT)/usr \
 		--without-apache-libexecdir \
 		--without-berkeley-db \
 		--without-boost \
 		--without-gpg-agent \
 		--without-jikes \
-		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/apr-1.0" \
+		CFLAGS="$(CFLAGS) -I$(BUILD_STAGE)/apr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/apr-1.0 -I$(BUILD_STAGE)/apr-util/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/apr-1.0" \
 		ac_cv_func_memcmp_working=yes \
 		ac_cv_lib_aprutil_1_apr_memcache_create=yes \
 		svn_cv_atomic_builtins=yes
