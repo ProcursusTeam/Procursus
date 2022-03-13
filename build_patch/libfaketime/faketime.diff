@@ -1,26 +1,28 @@
 --- a/src/faketime.c	2022-03-05 03:28:35.000000000 +0800
-+++ b/src/faketime.c	2022-03-13 08:37:38.582667238 +0800
-@@ -50,11 +50,19 @@
++++ b/src/faketime.c	2022-03-13 08:47:28.622697452 +0800
+@@ -45,12 +45,19 @@
+ #include <sys/wait.h>
+ #include <sys/mman.h>
+ #include <semaphore.h>
+-
++#ifdef __APPLE__
++#include <TargetConditionals.h>
++#endif
+ #include "faketime_common.h"
  
  const char version[] = "0.9.10";
  
+-#if (defined __APPLE__) || (defined __sun)
 +/*
 + * If somehow someday Procursus decided to use
 + * the BSD(Apple)'s date(1), remember to change
 + * this part to correctly use coreutils' date
 + */
-+/*
- #if (defined __APPLE__) || (defined __sun)
++#if TARGET_OS_OSX || defined(__sun)
  static const char *date_cmd = "gdate";
  #else
  static const char *date_cmd = "date";
- #endif
-+*/
-+static const char *date_cmd = "date";
- 
- #define PATH_BUFSIZE 4096
- 
-@@ -263,7 +271,7 @@
+@@ -263,7 +270,7 @@
      if (SEM_FAILED == (sem = sem_open(sem_name, O_CREAT|O_EXCL, S_IWUSR|S_IRUSR, 1)))
      {
        perror("faketime: sem_open");
