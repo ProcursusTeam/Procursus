@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += nano
-NANO_VERSION := 5.9
+NANO_VERSION := 6.2
 DEB_NANO_V   ?= $(NANO_VERSION)
 
 nano-setup: setup
@@ -20,11 +20,8 @@ nano: nano-setup ncurses gettext file
 	cd $(BUILD_WORK)/nano && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-utf8 \
-		--enable-color \
-		--enable-extra \
-		--enable-nanorc \
+		--enable-all \
 		--disable-debug \
-		--enable-multibuffer \
 		NCURSESW_LIBS="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib"
 	+$(MAKE) -C $(BUILD_WORK)/nano
 	+$(MAKE) -C $(BUILD_WORK)/nano install \
