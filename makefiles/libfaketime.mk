@@ -7,7 +7,7 @@ LIBFAKETIME_VERSION := 0.9.10
 DEB_LIBFAKETIME_V   ?= $(LIBFAKETIME_VERSION)-1
 
 libfaketime-setup: setup
-	$(call GITHUB_ARCHIVE,wolfcw,libfaketime,v$(LIBFAKETIME_VERSION),v$(LIBFAKETIME_VERSION))
+	$(call GITHUB_ARCHIVE,wolfcw,libfaketime,$(LIBFAKETIME_VERSION),v$(LIBFAKETIME_VERSION))
 	$(call EXTRACT_TAR,libfaketime-$(LIBFAKETIME_VERSION).tar.gz,libfaketime-$(LIBFAKETIME_VERSION),libfaketime)
 	$(call DO_PATCH,libfaketime,libfaketime,-p1)
 
