@@ -16,12 +16,12 @@ libfaketime:
 	@echo "Using previously built libfaketime."
 else
 libfaketime: libfaketime-setup
+	sed -i "s/LD_PRELOAD/DYLD_INSERT_LIBRARIES/g" $(BUILD_WORK)/libfaketime/man/faketime.1
 	+$(MAKE) -C $(BUILD_WORK)/libfaketime install \
 		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		CC="$(CC) $(CFLAGS)" \
 		LDFLAGS="$(LDFLAGS)" \
 		DESTDIR=$(BUILD_STAGE)/libfaketime
-	sed -i "s/LD_PRELOAD/DYLD_INSERT_LIBRARIES/g" $(BUILD_STAGE)/libfaketime/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/faketime.1
 	$(call AFTER_BUILD)
 endif
 
