@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += libfaketime
+SUBPROJECTS         += libfaketime
 LIBFAKETIME_VERSION := 0.9.10
 DEB_LIBFAKETIME_V   ?= $(LIBFAKETIME_VERSION)-1
 
