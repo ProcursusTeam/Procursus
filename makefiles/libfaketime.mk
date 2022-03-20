@@ -28,7 +28,7 @@ endif
 libfaketime-package: libfaketime-stage
 	# libfaketime.mk Package Structure
 	rm -rf $(BUILD_DIST)/{,lib}faketime
-	mkdir $(BUILD_DIST)/{,lib}faketime/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	mkdir -p $(BUILD_DIST)/{,lib}faketime/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libfaketime.mk Prep faketime
 	cp -a $(BUILD_STAGE)/libfaketime/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/faketime/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
