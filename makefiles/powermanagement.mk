@@ -5,7 +5,13 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS             += powermanagement
+ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1800 ] && echo 1),1)
+POWERMANAGEMENT_VERSION := 1132.50.3
+PMTOOL_EXT              := c
+else
 POWERMANAGEMENT_VERSION := 1303.80.3
+PMTOOL_EXT              := m
+endif
 DEB_POWERMANAGEMENT_V   ?= $(POWERMANAGEMENT_VERSION)
 
 powermanagement-setup: setup
@@ -27,9 +33,9 @@ powermanagement: powermanagement-setup
 	cd $(BUILD_WORK)/powermanagement; \
 		$(CC) $(CFLAGS) -DPRIVATE -D__OS_EXPOSE_INTERNALS__ -Ipmconfigd -IAppleSmartBatteryManager -c common/CommonLib.c;
 	cd $(BUILD_WORK)/powermanagement; \
-		$(CC) $(LDFLAGS) -framework CoreFoundation -framework IOKit -Icommon -Ipmconfigd $(CFLAGS) -o $(BUILD_STAGE)/powermanagement/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pmtool pmtool/*.m; \
+		$(CC) $(LDFLAGS) -framework CoreFoundation -framework IOKit -Icommon -Ipmconfigd $(CFLAGS) -o $(BUILD_STAGE)/powermanagement/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pmtool pmtool/*.$(PMTOOL_EXT); \
 		$(CC) $(LDFLAGS) -framework CoreFoundation -framework IOKit -Icommon -Ipmconfigd $(CFLAGS) -o $(BUILD_STAGE)/powermanagement/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/caffeinate caffeinate/*.c; \
-		$(CC) $(LDFLAGS) -Wno-error-implicit-function-declaration CommonLib.o -framework CoreFoundation -framework SystemConfiguration -framework IOKit -Icommon -Ipmconfigd $(CFLAGS) $(BUILD_MISC)/powermanagement/libIOReport.tbd -o $(BUILD_STAGE)/powermanagement/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pmset pmset/*.c; \
+		$(CC) $(LDFLAGS) -Wno-error-implicit-function-declaration CommonLib.o -framework CoreFoundation -framework SystemConfiguration -framework IOKit -Icommon -Ipmconfigd $(CFLAGS) $(BUILD_MISC)/powermanagement/libIOReport.tbd -o $(BUILD_STAGE)/powermanagement/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pmset pmset/pmset.c; \
 		$(INSTALL) -m644 pmtool/pmtool.1 $(BUILD_STAGE)/powermanagement/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
 		$(INSTALL) -m644 pmset/pmset.1 $(BUILD_STAGE)/powermanagement/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
 		$(INSTALL) -m644 caffeinate/caffeinate.8 $(BUILD_STAGE)/powermanagement/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8;

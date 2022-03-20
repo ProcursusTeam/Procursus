@@ -1357,7 +1357,7 @@ endif
 	@sed -i '1s|^|#include <arm/cpu_capabilities.h>\n|' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/firehose/tracepoint_private.h
 	@sed -i 's|extern void \*__dso_handle;|#ifndef __OS_TRACE_BASE_H__\nextern void \*__dso_handle;\n#endif|' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/log.h
 	@sed -i 's|__OSX_AVAILABLE_STARTING(__MAC_10_6, __IPHONE_NA);|__OSX_AVAILABLE_STARTING(__MAC_10_6, __IPHONE_2_0);|' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit/pwr_mgt/IOPMLibPrivate.h
-	@sed -i 's|, bridgeos(4.0)||g' $(BUILD_BASE)$(PREFIX)$(MEMO_SUB_PREFIX)/include/os/variant_private.h
+	@sed -i 's|, bridgeos(4.0)||g' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/variant_private.h
 	@sed -i 's|#include <SystemConfiguration/SCPreferencesKeychainPrivate.h>|#include <SystemConfiguration/SCPreferencesKeychainPrivate.h>\ntypedef uint8_t os_log_pack_t;|g' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/SystemConfiguration/SCPrivate.h
 
 	@# Setup libiosexec
