@@ -8,4 +8,3 @@ Section: Networking
 Priority: standard
 Homepage: http://www.gnu.org/software/inetutils/
 Description: ftp, inetd, ping, rlogin, telnet, tftp
-Tag: purpose::console, role::hacker

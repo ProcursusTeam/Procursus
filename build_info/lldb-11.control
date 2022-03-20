@@ -7,4 +7,3 @@ Depends: liblldb-11, debugserver-11
 Priority: optional
 Homepage: https://www.llvm.org/
 Description: Next generation, high-performance debugger
-Tag: purpose::console, role::developer

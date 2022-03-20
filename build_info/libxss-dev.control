@@ -1,0 +1,15 @@
+Package: libxss-dev
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_LIBXSS_V@
+Depends: libxss1 (= @DEB_LIBXSS_V@), libx11-dev, libxext-dev
+Section: Development
+Priority: optional
+Description: development files for libxss
+ libXss provides an X Window System client interface to the MIT-SCREEN-SAVER extension to the X protocol.
+ . 
+ The Screen Saver extension allows clients behaving as screen savers to register themselves with the X server, to better integrate themselves with the running session.
+ .
+ More information about X.Org can be found at: <URL:https://www.X.org>
+ .
+ This module can be found at https://gitlab.freedesktop.org/xorg/lib/libXScrnSaver

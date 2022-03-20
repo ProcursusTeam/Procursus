@@ -6,4 +6,3 @@ Maintainer: @DEB_MAINTAINER@
 Section: Keyrings
 Priority: required
 Description: GnuPG keys for stock *OS repositories.
-Name: Procursus APT Keyring

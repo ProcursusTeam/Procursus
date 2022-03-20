@@ -7,4 +7,3 @@ Section: Development
 Priority: optional
 Homepage: https://nongnu.org/man-db/
 Description: tools for reading manual pages
-Tag: purpose::library, role::developer

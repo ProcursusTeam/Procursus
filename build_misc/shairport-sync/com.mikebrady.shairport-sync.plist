@@ -7,7 +7,7 @@
 	<key>ProgramArguments</key>
 	<array>
 		<string>/bin/sh</string>
-		<string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/shairport-sync-wrapper</string>
+		<string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/shairport-sync-wrapper</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>

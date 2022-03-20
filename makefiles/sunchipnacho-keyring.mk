@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS                  += sunchipnacho-keyring
-SUNCHIPNACHO_KEYRING_VERSION := 2021.10.04
+SUNCHIPNACHO_KEYRING_VERSION := 2022.02.24
 DEB_SUNCHIPNACHO_KEYRING_V   ?= $(SUNCHIPNACHO_KEYRING_VERSION)
 
 ifneq ($(wildcard $(BUILD_STAGE)/sunchipnacho-keyring/.build_complete),)

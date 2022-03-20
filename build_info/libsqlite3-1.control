@@ -6,4 +6,3 @@ Section: Libraries
 Priority: standard
 Description: SQLite 3 shared library
 Homepage: https://www.sqlite.org/
-Tag: purpose::library
