@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS      += defaults
-DEFAULTS_VERSION := 1.0
+DEFAULTS_VERSION := 1.0.1
 DEB_DEFAULTS_V   ?= $(DEFAULTS_VERSION)
 
 defaults-setup: setup
@@ -18,8 +18,8 @@ defaults:
 else
 defaults: defaults-setup
 	+$(MAKE) -C $(BUILD_WORK)/defaults
-	install -d $(BUILD_STAGE)/defaults/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	install -m755 $(BUILD_WORK)/defaults/defaults $(BUILD_STAGE)/defaults/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/defaults-procursus
+	$(INSTALL) -d $(BUILD_STAGE)/defaults/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	$(INSTALL) -m755 $(BUILD_WORK)/defaults/defaults $(BUILD_STAGE)/defaults/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/defaults-procursus
 	$(call AFTER_BUILD)
 endif
 
