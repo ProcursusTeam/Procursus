@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS             += powermanagement
-POWERMANAGEMENT_VERSION := 1303.40.16
+POWERMANAGEMENT_VERSION := 1303.80.3
 DEB_POWERMANAGEMENT_V   ?= $(POWERMANAGEMENT_VERSION)
 
 powermanagement-setup: setup
