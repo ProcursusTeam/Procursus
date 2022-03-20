@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += libcbor
-LIBCBOR_VERSION := 0.8.0
+LIBCBOR_VERSION := 0.9.0
 DEB_LIBCBOR_V   ?= $(LIBCBOR_VERSION)
 
 libcbor-setup: setup
@@ -37,7 +37,7 @@ libcbor-package: libcbor-stage
 	mkdir -p $(BUILD_DIST)/libcbor0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		 $(BUILD_DIST)/libcbor-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include/cbor,lib/pkgconfig}
 	# libcbor.mk Prep libcbor0
-	cp -a $(BUILD_STAGE)/libcbor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcbor{.dylib,.0.8.dylib,.0.8.0.dylib} $(BUILD_DIST)/libcbor0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libcbor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcbor{.dylib,.0.9.dylib,.0.9.0.dylib} $(BUILD_DIST)/libcbor0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libcbor.mk Prep libcbor-dev
 	cp -a $(BUILD_STAGE)/libcbor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libcbor-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)

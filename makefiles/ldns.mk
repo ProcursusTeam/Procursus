@@ -3,13 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += ldns
-LDNS_COMMIT  := cb101c9c458b6a694676214dca7625442e5db8ff
-LDNS_VERSION := 1.7.1+git20211107.$(shell echo $(LDNS_COMMIT) | cut -c -7)
+LDNS_VERSION := 1.8.1
 DEB_LDNS_V   ?= $(LDNS_VERSION)
 
 ldns-setup: setup
-	$(call GITHUB_ARCHIVE,NLnetLabs,ldns,$(LDNS_COMMIT),$(LDNS_COMMIT))
-	$(call EXTRACT_TAR,ldns-$(LDNS_COMMIT).tar.gz,ldns-$(LDNS_COMMIT),ldns)
+	$(call GITHUB_ARCHIVE,NLnetLabs,ldns,$(LDNS_VERSION),$(LDNS_VERSION))
+	$(call EXTRACT_TAR,ldns-$(LDNS_VERSION).tar.gz,ldns-$(LDNS_VERSION),ldns)
 
 ifneq ($(wildcard $(BUILD_WORK)/ldns/.build_complete),)
 ldns:
@@ -44,7 +43,7 @@ ldns-package: ldns-stage
 	cp -a $(BUILD_STAGE)/ldns/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/ldnsutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
         # ldns.mk Prep libldns3
-	cp -a $(BUILD_STAGE)/ldns/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libldns{.dylib,.1.dylib} $(BUILD_DIST)/libldns3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/ldns/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libldns{.dylib,.3.dylib} $(BUILD_DIST)/libldns3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# ldns.mk Prep libldns-dev
 	cp -a $(BUILD_STAGE)/ldns/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(*.dylib|python3) $(BUILD_DIST)/libldns-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
