@@ -1,0 +1,7 @@
+Package: powermanagement
+Priority: optional
+Section: Administration
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_POWERMANAGEMENT_V@
+Description: pmtool, pmset, caffeinate

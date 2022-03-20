@@ -1,0 +1,46 @@
+--- !tapi-tbd
+tbd-version:     4
+targets:         [ arm64-ios, arm64-tvos, arm64_32-watchos armv7k-watchos, arm64-bridgeos, arm64e-ios, arm64e-tvos ]
+uuids:
+  - target:          arm64-ios
+    value:           3F10680E-6C8A-3B3D-9482-6B9A97D7022E
+  - target:          arm64-tvos
+    value:           6000C885-FFB7-4015-8D25-6376A1FCA80D
+  - target:          arm64_32-watchos
+    value:           7D67258D-F5FB-43F7-98CC-B102B23780DE
+  - target:          armv7k-watchos
+    value:           74DAE98A-D88C-4370-AD58-3D56A89B10AA
+  - target:          arm64-bridgeos
+    value:           8832E003-D79D-48CD-8A8A-04E43D373D67
+  - target:          arm64e-ios
+    value:           9F89E674-E86C-4252-B7FB-842D9BC2D2C8
+  - target:          arm64e-tvos
+    value:           3F15471D-9FBA-47B8-8DEA-52553290FCB5
+install-name:    '/usr/lib/libIOReport.dylib'
+exports:
+  - targets:         [ arm64-ios, arm64-tvos, arm64_32-watchos armv7k-watchos, arm64-bridgeos, arm64e-ios, arm64e-tvos ]
+    symbols:         [ _IOReportAddChannelDescription, _IOReportArrayGetValueAtIndex, 
+                       _IOReportChannelCopyDescription, _IOReportChannelGetCategories, 
+                       _IOReportChannelGetChannelID, _IOReportChannelGetChannelName, 
+                       _IOReportChannelGetDriverID, _IOReportChannelGetDriverName, 
+                       _IOReportChannelGetFormat, _IOReportChannelGetGroup, _IOReportChannelGetSubGroup, 
+                       _IOReportChannelGetUnit, _IOReportChannelGetUnitLabel, _IOReportCopyAllChannels, 
+                       _IOReportCopyChannelsForDriver, _IOReportCopyChannelsForDrivers, 
+                       _IOReportCopyChannelsInCategories, _IOReportCopyChannelsInGroup, 
+                       _IOReportCopyChannelsOfFormat, _IOReportCopyChannelsWithID, 
+                       _IOReportCopyChannelsWithUnit, _IOReportCopyCurrentProcessName, 
+                       _IOReportCopyDriverName, _IOReportCreateAggregate, _IOReportCreateSamples, 
+                       _IOReportCreateSamplesDelta, _IOReportCreateSamplesProcessed, 
+                       _IOReportCreateSamplesRaw, _IOReportCreateSubscription, _IOReportCreateUnitInfo, 
+                       _IOReportGetChannelCount, _IOReportHistogramGetBucketBounds, 
+                       _IOReportHistogramGetBucketCount, _IOReportHistogramGetBucketHits, 
+                       _IOReportHistogramGetBucketMaxValue, _IOReportHistogramGetBucketMinValue, 
+                       _IOReportHistogramGetBucketSum, _IOReportHistogramGetMaxValue, 
+                       _IOReportHistogramGetMinValue, _IOReportIterate, _IOReportMergeChannels, 
+                       _IOReportPrune, _IOReportSampleCopyDescription, _IOReportSampleCreateDelta, 
+                       _IOReportScaleValue, _IOReportSelectChannelsInGroup, _IOReportSimpleGetIntegerValue, 
+                       _IOReportStateGetCount, _IOReportStateGetCurrent, _IOReportStateGetDutyCycle, 
+                       _IOReportStateGetIDForIndex, _IOReportStateGetInTransitions, 
+                       _IOReportStateGetIndexForID, _IOReportStateGetNameForIndex, 
+                       _IOReportStateGetResidency, _IOReportWriteStringUTF8 ]
+...
