@@ -19,6 +19,9 @@ coreutils-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/coreutils/coreutils-$(COREUTILS_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,coreutils-$(COREUTILS_VERSION).tar.xz,coreutils-$(COREUTILS_VERSION),coreutils)
+ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1400 ] && echo 1),1)
+	touch $(BUILD_WORK)/coreutils/reflink-apfs.patch.done
+endif
 	$(call DO_PATCH,coreutils,coreutils,-p1)
 	wget -q -nc -P $(BUILD_SOURCE) \
 		https://git.cameronkatri.com/getent-darwin/snapshot/getent-darwin-$(GETENTDARWIN_COMMIT).tar.zst
