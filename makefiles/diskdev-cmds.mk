@@ -71,7 +71,7 @@ diskdev-cmds: diskdev-cmds-setup
 	cp -a !(setclass).tproj/*.8 $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1)
 ifeq (,$(findstring ramdisk,$(MEMO_TARGET)))
-		rm -f $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)/sbin/umount
+		rm -f $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/umount
 endif
 endif
 	$(call AFTER_BUILD)
@@ -91,7 +91,7 @@ diskdev-cmds-package: diskdev-cmds-stage
 	$(FAKEROOT) chmod u+s $(BUILD_DIST)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/quota
 ifneq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1)
 ifneq (,$(findstring ramdisk,$(MEMO_TARGET)))
-		$(FAKEROOT) chmod u+s $(BUILD_DIST)/diskdev-cmds/sbin/umount
+		$(FAKEROOT) chmod u+s $(BUILD_DIST)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/umount
 endif
 endif
 
