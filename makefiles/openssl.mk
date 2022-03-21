@@ -10,6 +10,9 @@ openssl-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.openssl.org/source/openssl-$(OPENSSL_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,openssl-$(OPENSSL_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,openssl-$(OPENSSL_VERSION).tar.gz,openssl-$(OPENSSL_VERSION),openssl)
+ifeq (,$(findstring armv7,$(MEMO_TARGET)))
+	touch $(BUILD_WORK)/openssl/0001-armv7-fix-atomic.patch.done
+endif
 	$(call DO_PATCH,openssl,openssl,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/openssl/.build_complete),)
@@ -23,6 +26,14 @@ openssl: openssl-setup
 			inherit_from     => [ \"darwin-common\" ],\n\
 			CC               => add(\"-Wall\"),\n\
 			cflags           => add(\"-arch armv7k\"),\n\
+			lib_cppflags     => add(\"-DL_ENDIAN\"),\n\
+			perlasm_scheme   => \"ios32\",\n\
+			disable          => [ \"async\" ],\n\
+		},\n\
+		\"darwin64-armv7\" => {\n\
+			inherit_from     => [ \"darwin-common\" ],\n\
+			CC               => add(\"-Wall\"),\n\
+			cflags           => add(\"-arch armv7\"),\n\
 			lib_cppflags     => add(\"-DL_ENDIAN\"),\n\
 			perlasm_scheme   => \"ios32\",\n\
 			disable          => [ \"async\" ],\n\
