@@ -1,0 +1,13 @@
+--- a/man/Makefile	2022-03-05 03:28:35.000000000 +0800
++++ b/man/Makefile	2022-03-21 16:46:25.739106618 +0800
+@@ -6,9 +6,8 @@
+ 
+ install:
+ 	$(INSTALL) -Dm0644 faketime.1 "${DESTDIR}${PREFIX}/share/man/man1/faketime.1"
+-	gzip -nf "${DESTDIR}${PREFIX}/share/man/man1/faketime.1"
+ 
+ uninstall:
+-	rm -f "${DESTDIR}${PREFIX}/share/man/man1/faketime.1.gz"
++	rm -f "${DESTDIR}${PREFIX}/share/man/man1/faketime.1"
+ 
+ .PHONY: all install uninstall
