@@ -23,7 +23,11 @@ ifneq ($(wildcard $(BUILD_WORK)/grep/.build_complete),)
 grep:
 	@echo "Using previously built grep."
 else
+ifneq (,$(findstring ramdisk,$(MEMO_TARGET)))
+grep: grep-setup pcre
+else
 grep: grep-setup
+endif
 	cd $(BUILD_WORK)/grep && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
