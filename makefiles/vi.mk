@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS += vi
+STRAPPROJECTS += vi
 VI_VERSION  := 070224
 DEB_VI_V    ?= $(VI_VERSION)
 
