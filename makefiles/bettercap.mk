@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += bettercap
+SUBPROJECTS        += bettercap
 BETTERCAP_VERSION  := 2.32.0
 DEB_BETTERCAP_V    ?= $(BETTERCAP_VERSION)
 
