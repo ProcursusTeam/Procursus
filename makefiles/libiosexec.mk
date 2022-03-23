@@ -5,9 +5,9 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS      += libiosexec
-LIBIOSEXEC_COMMIT  := 308a0356a6901e56dd6b4ec47e69a9dadea799c8
+LIBIOSEXEC_COMMIT  := 0b53c7cacd249e3dd9b55dba45b90fc543a4a603
 LIBIOSEXEC_SOVER   := 1
-DEB_LIBIOSEXEC_V   ?= 1.0.20~git20220306.$(shell echo $(LIBIOSEXEC_COMMIT) | cut -c -f-7)
+DEB_LIBIOSEXEC_V   ?= 1.0.20~git20220309.$(shell echo $(LIBIOSEXEC_COMMIT) | cut -c -7)
 
 ifneq (,$(findstring rootless,$(MEMO_TARGET)))
 LIBIOSEXEC_FLAGS   := SHEBANG_REDIRECT_PATH="$(MEMO_PREFIX)" \
