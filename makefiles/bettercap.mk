@@ -7,7 +7,7 @@ BETTERCAP_VERSION  := 2.32.0
 DEB_BETTERCAP_V    ?= $(BETTERCAP_VERSION)
 
 bettercap-setup: setup
-	$(call GITHUB_ARCHIVE,bettercap,bettercap,$(BETTERCAP_VERSION),v$(BETTERCAP_VERSION),bettercap)
+	$(call GITHUB_ARCHIVE,bettercap,bettercap,$(BETTERCAP_VERSION),v$(BETTERCAP_VERSION))
 	$(call EXTRACT_TAR,bettercap-$(BETTERCAP_VERSION).tar.gz,bettercap-$(BETTERCAP_VERSION),bettercap)
 	mkdir -p $(BUILD_STAGE)/bettercap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
