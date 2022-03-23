@@ -38,7 +38,7 @@ bettercap-package: bettercap-stage
 	mkdir -p $(BUILD_DIST)/bettercap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# bettercap.mk Prep bettercap
-	cp -a $(BUILD_STAGE)/bettercap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/bettercap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/bettercap $(BUILD_DIST)
 
 	# bettercap.mk Sign
 	$(call SIGN,bettercap,general.xml)
