@@ -25,11 +25,9 @@ bettercap: bettercap-setup libusb libpcap
 endif
 	$(MAKE) -C $(BUILD_WORK)/bettercap build \
 		$(DEFAULT_GOLANG_FLAGS)
-
 	$(MAKE) -C $(BUILD_WORK)/bettercap install \
-		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		DESTDIR=$(BUILD_STAGE)/bettercap
-
+		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+		DESTDIR="$(BUILD_STAGE)/bettercap"
 	$(call AFTER_BUILD)
 
 endif
