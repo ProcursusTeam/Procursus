@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += ibootim
+SUBPROJECTS     += ibootim
 IBOOTIM_COMMIT  := 63138198d36acfddddff0d79869c2755e6c6b18c
 IBOOTIM_VERSION := 1.0+git20190220.$(shell echo $(IBOOTIM_COMMIT) | cut -c -7)
 DEB_IBOOTIM_V   ?= $(IBOOTIM_VERSION)
