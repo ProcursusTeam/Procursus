@@ -1,0 +1,9 @@
+Package: ibootim
+Version: @DEB_IBOOTIM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: npupyshev <npupyshev@icloud.com>
+Section: Utilities
+Priority: optional
+Homepage: https://github.com/realnp/ibootim
+Description: Tool for conversion between iBoot images and PNG.
