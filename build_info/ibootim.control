@@ -5,5 +5,6 @@ Maintainer: @DEB_MAINTAINER@
 Author: npupyshev <npupyshev@icloud.com>
 Section: Utilities
 Priority: optional
+Recommends: ipsw | img4tool
 Homepage: https://github.com/realnp/ibootim
 Description: Tool for conversion between iBoot images and PNG.
