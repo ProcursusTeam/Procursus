@@ -46,8 +46,13 @@ ifneq ($(wildcard $(BUILD_WORK)/perl/.build_complete),)
 perl:
 	@echo "Using previously built perl."
 else
-perl: perl-setup
-	cd $(BUILD_WORK)/perl && CC='$(CC)' AR='$(AR)' NM='$(NM)' OBJDUMP='objdump' CFLAGS='-DPERL_DARWIN -DPERL_USE_SAFE_PUTENV -DTIME_HIRES_CLOCKID_T $(patsubst -flto=thin,,$(CFLAGS))' LDFLAGS='$(patsubst -flto=thin,,$(LDFLAGS))' ./configure \
+perl:
+	cd $(BUILD_WORK)/perl && \
+	CC='$(CC)' AR='$(AR)' NM='$(NM)' OBJDUMP='objdump' \
+	HOSTCFLAGS='-DPERL_CORE -DUSE_CROSS_COMPILE -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 $(CFLAGS_FOR_BUILD)' \
+	HOSTLDFLAGS='$(LDFLAGS_FOR_BUILD)' \
+	CFLAGS='-DPERL_DARWIN -DPERL_USE_SAFE_PUTENV -DTIME_HIRES_CLOCKID_T $(patsubst -flto=thin,,$(CFLAGS))' \
+	LDFLAGS='$(patsubst -flto=thin,,$(LDFLAGS))' ./configure \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--target=$(GNU_HOST_TRIPLE) \
 		--sysroot=$(TARGET_SYSROOT) \
@@ -60,9 +65,9 @@ perl: perl-setup
 		-Dprivlib=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
 		-Darchlib=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
 		-Dvendorarch=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR)
-	+$(MAKE) -C $(BUILD_WORK)/perl \
+	+$(MAKE) -C $(BUILD_WORK)/perl -j1 \
 		PERL_ARCHIVE=$(BUILD_WORK)/perl/libperl.dylib \
-		$(PERL_LIBS)
+		LIBS="$(filter -liosexec,$(LDFLAGS))"
 	+$(MAKE) -C $(BUILD_WORK)/perl install.perl \
 		DESTDIR=$(BUILD_STAGE)/perl
 	$(LN_S) $(PERL_MAJOR) $(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_VERSION)
