@@ -27,6 +27,9 @@ endif
 		--enable-colors256 \
 		--disable-pam \
 		--with-sys-screenrc=$(MEMO_PREFIX)/etc/screenrc
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+	sed -i '/HAVE_EXECVPE/ s/$$/\n#define HAVE_EXECVPE 1/' $(BUILD_WORK)/screen/config.h
+endif
 	+$(MAKE) -C $(BUILD_WORK)/screen install \
 		DESTDIR="$(BUILD_STAGE)/screen"
 	rm -f $(BUILD_STAGE)/screen/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/screen && mv $(BUILD_STAGE)/screen/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/screen{-$(SCREEN_VERSION),}
