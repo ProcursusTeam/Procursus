@@ -1,12 +1,13 @@
-diff -urN llvm/clang/lib/Driver/ToolChains/Darwin.cpp.old llvm/clang/lib/Driver/ToolChains/Darwin.cpp
---- llvm/clang/lib/Driver/ToolChains/Darwin.cpp.old	2021-06-23 16:31:00.000000000 -0400
-+++ llvm/clang/lib/Driver/ToolChains/Darwin.cpp	2021-06-23 16:42:41.000000000 -0400
-@@ -26,6 +26,7 @@
+diff --git a/clang/lib/Driver/ToolChains/Darwin.cpp b/clang/lib/Driver/ToolChains/Darwin.cpp
+index febde361a429..b6944316d63c 100644
+--- a/clang/lib/Driver/ToolChains/Darwin.cpp
++++ b/clang/lib/Driver/ToolChains/Darwin.cpp
+@@ -27,6 +27,7 @@
  #include "llvm/Support/Threading.h"
  #include "llvm/Support/VirtualFileSystem.h"
  #include <cstdlib> // ::getenv
 +#include <TargetConditionals.h>
-
+ 
  using namespace clang::driver;
  using namespace clang::driver::tools;
 @@ -1765,11 +1763,13 @@
@@ -24,90 +25,12 @@ diff -urN llvm/clang/lib/Driver/ToolChains/Darwin.cpp.old llvm/clang/lib/Driver/
  #else
      OSTy = llvm::Triple::IOS;
  #endif
-@@ -1976,6 +1976,29 @@
-   if (Environment == MacABI)
-     NativeTargetVersion = OSTarget->getNativeTargetVersion();
-   setTarget(Platform, Environment, Major, Minor, Micro, NativeTargetVersion);
-+
-+  if (!Args.getLastArg(options::OPT_isysroot)) {
-+    llvm::Triple DefaultTriple(LLVM_DEFAULT_TARGET_TRIPLE);
-+    switch (Platform) {
-+      case DarwinPlatformKind::MacOS:
-+        if (DefaultTriple.getOS() != llvm::Triple::MacOSX)
-+          Args.append(Args.MakeSeparateArg(nullptr, Opts.getOption(options::OPT_isysroot), "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/MacOSX.sdk"));
-+        break;
-+      case DarwinPlatformKind::IPhoneOS:
-+        if (DefaultTriple.getOS() != llvm::Triple::IOS)
-+          Args.append(Args.MakeSeparateArg(nullptr, Opts.getOption(options::OPT_isysroot), "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/iPhoneOS.sdk"));
-+        break;
-+      case DarwinPlatformKind::TvOS:
-+        if (DefaultTriple.getOS() != llvm::Triple::TvOS)
-+          Args.append(Args.MakeSeparateArg(nullptr, Opts.getOption(options::OPT_isysroot), "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/AppleTVOS.sdk"));
-+        break;
-+      case DarwinPlatformKind::WatchOS:
-+        if (DefaultTriple.getOS() != llvm::Triple::WatchOS)
-+          Args.append(Args.MakeSeparateArg(nullptr, Opts.getOption(options::OPT_isysroot), "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/WatchOS.sdk"));
-+        break;
-+    }
-+  }
-+
-
-   if (const Arg *A = Args.getLastArg(options::OPT_isysroot)) {
-     StringRef SDK = getSDKName(A->getValue());
-@@ -2069,6 +2069,24 @@
-     SmallString<128> P(Sysroot);
-     llvm::sys::path::append(P, "usr", "include");
-     addExternCSystemInclude(DriverArgs, CC1Args, P.str());
-+    if (Sysroot == "/") {
-+      switch (getTriple().getOS()) {
-+        case llvm::Triple::MacOSX:
-+          addExternCSystemInclude(DriverArgs, CC1Args, "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/MacOSX.sdk/usr/include");
-+          break;
-+        case llvm::Triple::IOS:
-+          addExternCSystemInclude(DriverArgs, CC1Args, "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/iPhoneOS.sdk/usr/include");
-+          break;
-+        case llvm::Triple::TvOS:
-+          addExternCSystemInclude(DriverArgs, CC1Args, "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/AppleTVOS.sdk/usr/include");
-+          break;
-+        case llvm::Triple::WatchOS:
-+          addExternCSystemInclude(DriverArgs, CC1Args, "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/WatchOS.sdk/usr/include");
-+          break;
-+        default:
-+          break;
-+      }
-+    }
-   }
- }
- 
-diff -urN llvm/clang/lib/Frontend/InitHeaderSearch.cpp.old llvm/clang/lib/Frontend/InitHeaderSearch.cpp
---- llvm/clang/lib/Frontend/InitHeaderSearch.cpp.old	2021-06-23 16:45:54.000000000 -0400
-+++ llvm/clang/lib/Frontend/InitHeaderSearch.cpp	2021-06-23 16:49:52.000000000 -0400
-@@ -446,6 +446,28 @@
-   if (triple.isOSDarwin()) {
-     if (HSOpts.UseStandardSystemIncludes) {
-       // Add the default framework include paths on Darwin.
-+      if (!HasSysroot) {
-+        switch (triple.getOS()) {
-+          case llvm::Triple::MacOSX:
-+            AddPath("@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/MacOSX.sdk/System/Library/Frameworks", System, true);
-+            AddPath("@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/MacOSX.sdk/Library/Frameworks", System, true);
-+            break;
-+          case llvm::Triple::IOS:
-+            AddPath("@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/iPhoneOS.sdk/System/Library/Frameworks", System, true);
-+            AddPath("@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/iPhoneOS.sdk/Library/Frameworks", System, true);
-+            break;
-+          case llvm::Triple::TvOS:
-+            AddPath("@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/AppleTVOS.sdk/System/Library/Frameworks", System, true);
-+            AddPath("@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/AppleTVOS.sdk/Library/Frameworks", System, true);
-+            break;
-+          case llvm::Triple::WatchOS:
-+            AddPath("@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/WatchOS.sdk/System/Library/Frameworks", System, true);
-+            AddPath("@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/SDKs/WatchOS.sdk/Library/Frameworks", System, true);
-+            break;
-+          default:
-+            break;
-+        }
-+      }
-       AddPath("/System/Library/Frameworks", System, true);
-       AddPath("/Library/Frameworks", System, true);
+@@ -2168,7 +2171,7 @@ void DarwinClang::AddClangSystemIncludeArgs(const llvm::opt::ArgList &DriverArgs
+     CIncludeDirs.split(dirs, ":");
+     for (llvm::StringRef dir : dirs) {
+       llvm::StringRef Prefix =
+-          llvm::sys::path::is_absolute(dir) ? "" : llvm::StringRef(Sysroot);
++          DriverArgs.hasArg(options::OPT_isysroot) ? llvm::StringRef(Sysroot) : "";
+       addExternCSystemInclude(DriverArgs, CC1Args, Prefix + dir);
      }
+   } else {

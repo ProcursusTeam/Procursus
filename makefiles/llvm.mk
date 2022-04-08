@@ -173,7 +173,7 @@ endif
 	+unset MACOSX_DEPLOYMENT_TARGET IPHONEOS_DEPLOYMENT_TARGET APPLETVOS_DEPLOYMENT_TARGET WATCHOS_DEPLOYMENT_TARGET && \
 		$(MAKE) -C $(BUILD_WORK)/llvm/build-compiler-rt install-compiler-rt \
 		DESTDIR="$(BUILD_STAGE)/llvm"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,,,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib)
 endif
 
 llvm-package: llvm-stage
