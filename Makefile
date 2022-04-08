@@ -814,6 +814,9 @@ AFTER_BUILD = \
 			$(I_N_T) -add_rpath "@loader_path/$$(realpath --relative-to=$$(dirname $$file) $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))/lib" $$file; \
 		else \
 			$(I_N_T) -add_rpath "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" $$file; \
+			if [ ! -z "$(3)" ]; then \
+				$(I_N_T) -add_rpath "$(3)"  $$file; \
+			fi; \
 		fi; \
 		if [ -f $(BUILD_STAGE)/$$pkg/._lib_cache ]; then \
 			cat $(BUILD_STAGE)/$$pkg/._lib_cache | while read line; do \

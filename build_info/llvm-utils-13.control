@@ -1,9 +1,9 @@
-Package: dsymutil-12
+Package: llvm-utils-13
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libllvm12
+Depends: libllvm13, build-essential
 Section: Development
 Priority: optional
 Homepage: https://www.llvm.org/
-Description: manipulate archived DWARF debug symbol files
+Description: Extra LLVM Utilities (llc, lli, etc)

@@ -1,9 +1,9 @@
-Package: lldb-12
+Package: lldb-13
 Section: Development
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: liblldb-12, debugserver-12
+Depends: liblldb-13, debugserver-13
 Priority: optional
 Homepage: https://www.llvm.org/
 Description: Next generation, high-performance debugger

@@ -1,8 +1,8 @@
-Package: clang-tools-12
+Package: clang-tools-13
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: clang-12, python3, libllvm12, libclang-cpp12, libclang-common-12-dev
+Depends: clang-13, python3, libllvm13, libclang-cpp13, libclang-common-13-dev
 Section: Development
 Priority: optional
 Homepage: https://www.llvm.org/

@@ -1,9 +1,9 @@
-Package: llvm-utils-12
+Package: debugserver-13
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libllvm12, build-essential
+Depends: libllvm13, libclang-cpp13
 Section: Development
 Priority: optional
 Homepage: https://www.llvm.org/
-Description: Extra LLVM Utilities (llc, lli, etc)
+Description: Next generation, high-performance debugger (debugserver)
