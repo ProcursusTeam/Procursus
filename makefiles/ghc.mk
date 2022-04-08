@@ -12,17 +12,16 @@ ghc-setup: setup
 	$(call EXTRACT_TAR,ghc-$(GHC_VERSION)-src.tar.xz,ghc-$(GHC_VERSION),ghc)
 	$(call DO_PATCH,ghc,ghc,-p1)
 
-#	GHC only properly compiles with prefixed cross tools and no LTO. Do what it wants.
-#	No libiosexec right now, as I have not put in the time to make that compile/function properly.
 	mkdir -p $(BUILD_WORK)/ghc/probin
-	echo "$(CC) -DLIBIOSEXEC_INTERNAL $(patsubst -flto=thin,,$(CFLAGS)) \$$@" > $(BUILD_WORK)/ghc/probin/$(GNU_HOST_TRIPLE)-cc
+	echo "$(CC) $(patsubst -flto=thin,,$(CFLAGS)) \$$@" > $(BUILD_WORK)/ghc/probin/$(GNU_HOST_TRIPLE)-cc
 	chmod +x $(BUILD_WORK)/ghc/probin/$(GNU_HOST_TRIPLE)-cc
 
 	echo "HADDOCK_DOCS=NO" > $(BUILD_WORK)/ghc/mk/build.mk
+	# better with "perf-llvm" but time spending (also requires LSE)
 	echo "BuildFlavour  = quick-cross-ncg" >> $(BUILD_WORK)/ghc/mk/build.mk
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-GHC_CONFIG_ARGS := --disable-large-address-space
+GHC_CONFIG_ARGS := --disable-dtrace --disable-large-address-space
 endif
 
 ifneq ($(wildcard $(BUILD_WORK)/ghc/.build_complete),)
