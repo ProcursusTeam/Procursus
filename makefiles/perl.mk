@@ -46,7 +46,7 @@ ifneq ($(wildcard $(BUILD_WORK)/perl/.build_complete),)
 perl:
 	@echo "Using previously built perl."
 else
-perl:
+perl: perl-setup
 	cd $(BUILD_WORK)/perl && \
 	CC='$(CC)' AR='$(AR)' NM='$(NM)' OBJDUMP='objdump' \
 	HOSTCFLAGS='-DPERL_CORE -DUSE_CROSS_COMPILE -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 $(CFLAGS_FOR_BUILD)' \
