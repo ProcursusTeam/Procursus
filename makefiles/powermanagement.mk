@@ -18,7 +18,7 @@ powermanagement-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,PowerManagement,$(POWERMANAGEMENT_VERSION),PowerManagement-$(POWERMANAGEMENT_VERSION))
 	$(call EXTRACT_TAR,PowerManagement-$(POWERMANAGEMENT_VERSION).tar.gz,PowerManagement-PowerManagement-$(POWERMANAGEMENT_VERSION),powermanagement)
 	sed -i 's|#include <CoreFoundation/CFPreferences_Private.h>|#include <CoreFoundation/CFPreferences.h>|' $(BUILD_WORK)/powermanagement/{pmtool/pmtool.h,pmconfigd/BatteryTimeRemaining.m}
-	sed -i -e 's|IOReportIterationResult||' -e '40s|^|uint64_t iter;\n|' -e 's/#define PLATFORM_HAS_DISPLAYSERVICES    1/#define PLATFORM_HAS_DISPLAYSERVICES    0/' $(BUILD_WORK)/powermanagement/pmset/pmset.c
+	sed -i -e 's|IOReportIterationResult||' -e '1s|^|unsigned long iter;\n|' -e 's/#define PLATFORM_HAS_DISPLAYSERVICES    1/#define PLATFORM_HAS_DISPLAYSERVICES    0/' $(BUILD_WORK)/powermanagement/pmset/pmset.c
 	sed -i -e '/inactivityWindowType/d' -e 's|#include "CommonLib.h"|#include "$(BUILD_WORK)/powermanagement/common/CommonLib.h"|g' $(BUILD_WORK)/powermanagement/pmconfigd/PrivateLib.h
 	sed -i 's|#include <MobileKeyBag/MobileKeyBag.h>||' $(BUILD_WORK)/powermanagement/pmconfigd/BatteryTimeRemaining.m
 
