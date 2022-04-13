@@ -26,6 +26,7 @@ ncurses: ncurses-setup
 		--with-build-cflags="$(CFLAGS_FOR_BUILD)" \
 		--with-build-cppflags="$(CPPFLAGS_FOR_BUILD)" \
 		--with-build-ldflags="$(LDFLAGS_FOR_BUILD)" \
+		--disable-overwrite \
 		--with-shared \
 		--without-debug \
 		--enable-sigwinch \
@@ -66,10 +67,10 @@ endif # (/usr,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))
 		ln -Tsf "$${ti##*/}" $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo/$${LINK}; \
 	done
 
-	install -d $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw
-	set -e; \
-	for file in $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/*.h; do \
-		ln -s ../$${file##*/} $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw; \
+	for h in $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw/*; do \
+		if [[ ! -d $$h ]]; then \
+			$(LN_SR) $$h $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include; \
+		fi \
 	done
 
 	for pc in formw menuw ncurses++w ncursesw panelw; do \
