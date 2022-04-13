@@ -1,0 +1,43 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	5.1
+Patch-ID:	bash51-013
+
+Bug-Reported-by:	Anders Kaseorg <andersk@mit.edu>
+Bug-Reference-ID:	<de65540274064d7b95f17e9c46a3a6d8@oc11expo7.exchange.mit.edu>
+Bug-Reference-URL:	https://lists.gnu.org/archive/html/bug-bash/2021-11/msg00025.html
+
+Bug-Description:
+
+Bash did not always perform tilde expansion following an unquoted colon on
+the rhs of an assignment statement in posix mode.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-20211028/subst.c	2021-10-18 16:09:58.000000000 -0400
+--- subst.c	2021-11-30 11:19:47.000000000 -0500
+***************
+*** 3826,3829 ****
+--- 3826,3830 ----
+    td.flags = W_ASSIGNRHS;
+  #endif
++   td.flags |= (W_NOGLOB|W_TILDEEXP);
+    td.word = savestring (string);
+    value = call_expand_word_internal (&td, quoted, 0, (int *)NULL, (int *)NULL);
+
+*** ../bash-5.1/patchlevel.h	2020-06-22 14:51:03.000000000 -0400
+--- patchlevel.h	2020-10-01 11:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 12
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 13
+  
+  #endif /* _PATCHLEVEL_H_ */
