@@ -26,8 +26,9 @@ nano: nano-setup ncurses gettext file
 	+$(MAKE) -C $(BUILD_WORK)/nano
 	+$(MAKE) -C $(BUILD_WORK)/nano install \
 		DESTDIR="$(BUILD_STAGE)/nano"
-	mkdir -p $(BUILD_STAGE)/nano/$(MEMO_PREFIX)/etc
+	mkdir -p $(BUILD_STAGE)/nano/$(MEMO_PREFIX){/etc,$(MEMO_SUB_PREFIX)/share/nano/debian}
 	cp -a $(BUILD_WORK)/nano/doc/sample.nanorc $(BUILD_STAGE)/nano/$(MEMO_PREFIX)/etc/nanorc
+	cp -a $(BUILD_MISC)/nano/debian.nanorc $(BUILD_STAGE)/nano/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/nano/debian/
 	$(call AFTER_BUILD)
 endif
 
