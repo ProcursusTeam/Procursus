@@ -7,12 +7,12 @@ STRAPPROJECTS   += ncurses
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += ncurses
 endif # ($(MEMO_TARGET),darwin-\*)
-NCURSES_VERSION := 6.2+20210905
+NCURSES_VERSION := 6.3-2
 DEB_NCURSES_V   ?= $(NCURSES_VERSION)
 
 ncurses-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://salsa.debian.org/debian/ncurses/-/archive/upstream/$(NCURSES_VERSION)/ncurses-upstream-$(NCURSES_VERSION).tar.gz
-	$(call EXTRACT_TAR,ncurses-upstream-$(NCURSES_VERSION).tar.gz,ncurses-upstream-$(NCURSES_VERSION),ncurses)
+	wget -q -nc -P $(BUILD_SOURCE) https://salsa.debian.org/debian/ncurses/-/archive/debian/$(NCURSES_VERSION)/ncurses-debian-$(NCURSES_VERSION).tar.gz
+	$(call EXTRACT_TAR,ncurses-debian-$(NCURSES_VERSION).tar.gz,ncurses-debian-$(NCURSES_VERSION),ncurses)
 
 ifneq ($(wildcard $(BUILD_WORK)/ncurses/.build_complete),)
 ncurses:
@@ -26,6 +26,7 @@ ncurses: ncurses-setup
 		--with-build-cflags="$(CFLAGS_FOR_BUILD)" \
 		--with-build-cppflags="$(CPPFLAGS_FOR_BUILD)" \
 		--with-build-ldflags="$(LDFLAGS_FOR_BUILD)" \
+		--disable-overwrite \
 		--with-shared \
 		--without-debug \
 		--enable-sigwinch \
@@ -66,10 +67,10 @@ endif # (/usr,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))
 		ln -Tsf "$${ti##*/}" $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo/$${LINK}; \
 	done
 
-	install -d $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw
-	set -e; \
-	for file in $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/*.h; do \
-		ln -s ../$${file##*/} $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw; \
+	for h in $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw/*; do \
+		if [[ ! -d $$h ]]; then \
+			$(LN_SR) $$h $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include; \
+		fi \
 	done
 
 	for pc in formw menuw ncurses++w ncursesw panelw; do \
