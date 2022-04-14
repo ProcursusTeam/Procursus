@@ -1,8 +1,8 @@
-Package: golang-1.17-go
+Package: golang-1.18-go
 Version: @DEB_GOLANG_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: golang-1.17-src (>= @DEB_GOLANG_V@), libiosexec1, clang
+Depends: golang-1.18-src (>= @DEB_GOLANG_V@), libiosexec1, clang
 Section: Development
 Priority: optional
 Homepage: https://golang.org
@@ -19,5 +19,5 @@ Description: Go programming language compiler, linker, compiled stdlib
  This package provides an assembler, compiler, linker, and compiled libraries
  for the Go programming language.
  .
- Go supports cross-compilation, but as of Go 1.5, it is no longer necessary to
- pre-compile the standard library inside GOROOT for cross-compilation to work.
+ To use this version, instead of the default one provided by golang-go package,
+ add @MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/go-1.18/bin/ to PATH, or invoke @MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/go-1.18/bin/go directly.
