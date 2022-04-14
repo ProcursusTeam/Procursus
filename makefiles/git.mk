@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += git
-GIT_VERSION := 2.35.2
+GIT_VERSION := 2.35.3
 DEB_GIT_V   ?= $(GIT_VERSION)
 
 GIT_ARGS += uname_S=Darwin \
