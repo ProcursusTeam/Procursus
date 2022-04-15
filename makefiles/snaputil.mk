@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS    += snaputil
-SNAPUTIL_VERSION := 12.1
+SNAPUTIL_VERSION := 12.3
 DEB_SNAPUTIL_V   ?= $(SNAPUTIL_VERSION)
 
 snaputil-setup: setup
-	$(call GITHUB_ARCHIVE,ProcursusTeam,apfs,$(SNAPUTIL_VERSION),v$(SNAPUTIL_VERSION),snaputil)
+	$(call GITHUB_ARCHIVE,ahl,apfs,$(SNAPUTIL_VERSION),v$(SNAPUTIL_VERSION),snaputil)
 	$(call EXTRACT_TAR,snaputil-$(SNAPUTIL_VERSION).tar.gz,apfs-$(SNAPUTIL_VERSION),snaputil)
 	mkdir -p $(BUILD_STAGE)/snaputil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 
