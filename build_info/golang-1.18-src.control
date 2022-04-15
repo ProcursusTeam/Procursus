@@ -1,4 +1,4 @@
-Package: golang-1.17-src
+Package: golang-1.18-src
 Version: @DEB_GOLANG_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
@@ -17,4 +17,4 @@ Description: Go programming language - source files
  interpreted language.
  .
  This package provides the Go programming language source files needed for
- cross-compilation.
+ compilation.

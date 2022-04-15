@@ -34,6 +34,7 @@ vim: vim-setup ncurses gettext
 		vim_cv_stat_ignores_slash=no \
 		vim_cv_memmove_handles_overlap=yes
 	+$(MAKE) -C $(BUILD_WORK)/vim
+	mkdir -p $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	+$(MAKE) -C $(BUILD_WORK)/vim install \
 		DESTDIR="$(BUILD_STAGE)/vim"
 	rm -f $(BUILD_STAGE)/vim/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/!(vim|vimtutor|xxd)
