@@ -39,7 +39,8 @@ ncurses: ncurses-setup
 		--enable-widec \
 		--with-default-terminfo-dir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo \
 		--with-manpage-format=normal \
-		LDFLAGS="$(CFLAGS) $(LDFLAGS)"
+		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
+		PKG_CONFIG_LIBDIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig"
 	+$(MAKE) -C $(BUILD_WORK)/ncurses
 	+$(MAKE) -C $(BUILD_WORK)/ncurses install \
 		DESTDIR="$(BUILD_STAGE)/ncurses"
