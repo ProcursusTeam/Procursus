@@ -90,7 +90,6 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
 BARE_PLATFORM         := iPhoneOS
-export IPHONEOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),iphoneos-arm64-rootless)
 ifneq ($(MEMO_QUIET),1)
@@ -110,7 +109,6 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
 BARE_PLATFORM         := iPhoneOS
-export IPHONEOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),iphoneos-arm64e-rootless)
 ifneq ($(MEMO_QUIET),1)
@@ -130,7 +128,6 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
 BARE_PLATFORM         := iPhoneOS
-export IPHONEOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),iphoneos-arm64e)
 ifneq ($(MEMO_QUIET),1)
@@ -150,7 +147,6 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
 BARE_PLATFORM         := iPhoneOS
-export IPHONEOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),appletvos-arm64)
 ifneq ($(MEMO_QUIET),1)
@@ -170,7 +166,6 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
 BARE_PLATFORM         := AppleTVOS
-export APPLETVOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),appletvos-arm64e)
 ifneq ($(MEMO_QUIET),1)
@@ -190,7 +185,6 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
 BARE_PLATFORM         := AppleTVOS
-export APPLETVOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),audioos-arm64)
 ifneq ($(MEMO_QUIET),1)
@@ -210,7 +204,6 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
 BARE_PLATFORM         := AppleTVOS
-export AUDIOOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),bridgeos-arm64)
 ifneq ($(MEMO_QUIET),1)
@@ -230,7 +223,6 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/BridgeOS.sdk
 BARE_PLATFORM         := BridgeOS
-export BRIDGEOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),watchos-arm64_32)
 ifneq ($(MEMO_QUIET),1)
@@ -250,7 +242,6 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/WatchOS.sdk
 BARE_PLATFORM         := WatchOS
-export WATCHOS_DEPLOYMENT_TARGET
 
 else ifeq ($(shell [ "$(MEMO_TARGET)" = "watchos-armv7k" ] || [ "$(MEMO_TARGET)" = "watchos-armv7k-ramdisk" ] && echo 1),1)
 ifneq ($(MEMO_QUIET),1)
@@ -270,7 +261,6 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/WatchOS.sdk
 BARE_PLATFORM         := WatchOS
-export WATCHOS_DEPLOYMENT_TARGET
 
 else ifeq ($(MEMO_TARGET),darwin-arm64e)
 ifneq ($(MEMO_QUIET),1)
@@ -392,9 +382,9 @@ $(warning Building on MacOS)
 endif # ($(MEMO_QUIET),1)
 TARGET_SYSROOT  ?= $(shell xcrun --sdk $(PLATFORM) --show-sdk-path)
 MACOSX_SYSROOT  ?= $(shell xcrun --show-sdk-path)
-CC              := $(shell xcrun --sdk $(PLATFORM) --find cc)
-CXX             := $(shell xcrun --sdk $(PLATFORM) --find c++)
-CPP             := $(shell xcrun --sdk $(PLATFORM) --find cc) -E
+CC              := $(shell xcrun --find cc)
+CXX             := $(shell xcrun --find c++)
+CPP             := $(shell xcrun --find cc) -E
 PATH            := /opt/procursus/bin:/opt/procursus/libexec/gnubin:/usr/bin:$(PATH)
 
 CFLAGS_FOR_BUILD   := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
@@ -1334,7 +1324,6 @@ endif
 	@sed -E -e '\|/var/tmp|! s|"/var|"$(MEMO_PREFIX)/var|g' -e '\|/bin:|! s|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' -e '\|/bin:|! s|"/bin|"$(MEMO_PREFIX)/bin|g' -e '\|/bin:|! s|"/sbin|"$(MEMO_PREFIX)/sbin|g' -e 's|/etc|$(MEMO_PREFIX)/etc|g' -e 's|/usr/bin:|$(MEMO_PREFIX)/bin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin:/usr/bin:|g' -e 's|/usr/sbin:|$(MEMO_PREFIX)/sbin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin:/usr/sbin:|g' < $(TARGET_SYSROOT)/usr/include/paths.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/paths.h
 
 	@#Patch downloaded headers
-	@sed -i -e '/ 0/d' -e '/ -4/d' -e '/ -34/d' -e '/ -36/d' -e '/ -49/d' -e '/ -50/d' -e '/ -61/d' -e '/ -108/d' -e '/ -128/d' -e '/ -909/d' -e '/ -2070/d' -e '/ -4960/d' -e '/ -34018/d' -e '/ -34020/d' -e '/ -25291/d' -e '/ -25292/d' -e '/ -25293/d' -e '/ -25294/d' -e '/ -25295/d' -e '/ -25296/d' -e '/ -25297/d' -e '/ -25298/d' -e '/ -25299/d' -e '/ -25300/d' -e '/ -25301/d' -e '/ -25302/d' -e '/ -25303/d' -e '/ -25304/d' -e '/ -25305/d' -e '/ -25306/d' -e '/ -25307/d' -e '/ -25308/d' -e '/ -25309/d' -e '/ -25310/d' -e '/ -25311/d' -e '/ -25312/d' -e '/ -25313/d' -e '/ -25314/d' -e '/ -25315/d' -e '/ -25316/d' -e '/ -25317/d' -e '/ -25318/d' -e '/ -25319/d' -e '/ -25320/d' -e '/ -25240/d' -e '/ -25241/d' -e '/ -25242/d' -e '/ -25243/d' -e '/ -25244/d' -e '/ -25245/d' -e '/ -25256/d' -e '/ -25257/d' -e '/ -25258/d' -e '/ -25259/d' -e '/ -25260/d' -e '/ -25261/d' -e '/ -25262/d' -e '/ -25263/d' -e '/ -25264/d' -e '/ -26267/d' -e '/ -26275/d' -e '/ -67585/d' -e '/ -67586/d' -e '/ -67587/d' -e '/ -67588/d' -e '/ -67589/d' -e '/ -67590/d' -e '/ -67591/d' -e '/ -67592/d' -e '/ -67593/d' -e '/ -67594/d' -e '/ -67595/d' -e '/ -67596/d' -e '/ -67597/d' -e '/ -67598/d' -e '/ -67599/d' -e '/ -67600/d' -e '/ -67601/d' -e '/ -67602/d' -e '/ -67603/d' -e '/ -67604/d' -e '/ -67605/d' -e '/ -67606/d' -e '/ -67607/d' -e '/ -67608/d' -e '/ -67609/d' -e '/ -67610/d' -e '/ -67611/d' -e '/ -67612/d' -e '/ -67613/d' -e '/ -67614/d' -e '/ -67615/d' -e '/ -67616/d' -e '/ -67617/d' -e '/ -67618/d' -e '/ -67619/d' -e '/ -67620/d' -e '/ -67621/d' -e '/ -67622/d' -e '/ -67623/d' -e '/ -67624/d' -e '/ -67625/d' -e '/ -67626/d' -e '/ -67627/d' -e '/ -67628/d' -e '/ -67629/d' -e '/ -67630/d' -e '/ -67631/d' -e '/ -67632/d' -e '/ -67633/d' -e '/ -67634/d' -e '/ -67635/d' -e '/ -67636/d' -e '/ -67637/d' -e '/ -67638/d' -e '/ -67639/d' -e '/ -67640/d' -e '/ -67641/d' -e '/ -67642/d' -e '/ -67643/d' -e '/ -67644/d' -e '/ -67645/d' -e '/ -67646/d' -e '/ -67647/d' -e '/ -67648/d' -e '/ -67649/d' -e '/ -67650/d' -e '/ -67651/d' -e '/ -67652/d' -e '/ -67653/d' -e '/ -67654/d' -e '/ -67655/d' -e '/ -67656/d' -e '/ -67657/d' -e '/ -67658/d' -e '/ -67659/d' -e '/ -67660/d' -e '/ -67661/d' -e '/ -67662/d' -e '/ -67663/d' -e '/ -67664/d' -e '/ -67665/d' -e '/ -67666/d' -e '/ -67667/d' -e '/ -67668/d' -e '/ -67669/d' -e '/ -67670/d' -e '/ -67671/d' -e '/ -67672/d' -e '/ -67673/d' -e '/ -67674/d' -e '/ -67675/d' -e '/ -67676/d' -e '/ -67677/d' -e '/ -67678/d' -e '/ -67679/d' -e '/ -67680/d' -e '/ -67681/d' -e '/ -67682/d' -e '/ -67683/d' -e '/ -67684/d' -e '/ -67685/d' -e '/ -67686/d' -e '/ -67687/d' -e '/ -67688/d' -e '/ -67689/d' -e '/ -67690/d' -e '/ -67691/d' -e '/ -67692/d' -e '/ -67693/d' -e '/ -67694/d' -e '/ -67695/d' -e '/ -67696/d' -e '/ -67697/d' -e '/ -67698/d' -e '/ -67699/d' -e '/ -67700/d' -e '/ -67701/d' -e '/ -67702/d' -e '/ -67703/d' -e '/ -67704/d' -e '/ -67705/d' -e '/ -67706/d' -e '/ -67707/d' -e '/ -67708/d' -e '/ -67709/d' -e '/ -67710/d' -e '/ -67711/d' -e '/ -67712/d' -e '/ -67713/d' -e '/ -67714/d' -e '/ -67715/d' -e '/ -67716/d' -e '/ -67717/d' -e '/ -67718/d' -e '/ -67719/d' -e '/ -67720/d' -e '/ -67721/d' -e '/ -67722/d' -e '/ -67723/d' -e '/ -67724/d' -e '/ -67725/d' -e '/ -67726/d' -e '/ -67727/d' -e '/ -67728/d' -e '/ -67729/d' -e '/ -67730/d' -e '/ -67731/d' -e '/ -67732/d' -e '/ -67733/d' -e '/ -67734/d' -e '/ -67735/d' -e '/ -67736/d' -e '/ -67737/d' -e '/ -67738/d' -e '/ -67739/d' -e '/ -67740/d' -e '/ -67741/d' -e '/ -67742/d' -e '/ -67743/d' -e '/ -67744/d' -e '/ -67745/d' -e '/ -67746/d' -e '/ -67747/d' -e '/ -67748/d' -e '/ -67749/d' -e '/ -67750/d' -e '/ -67751/d' -e '/ -67752/d' -e '/ -67753/d' -e '/ -67754/d' -e '/ -67755/d' -e '/ -67756/d' -e '/ -67757/d' -e '/ -67758/d' -e '/ -67759/d' -e '/ -67760/d' -e '/ -67761/d' -e '/ -67762/d' -e '/ -67763/d' -e '/ -67764/d' -e '/ -67765/d' -e '/ -67766/d' -e '/ -67767/d' -e '/ -67768/d' -e '/ -67769/d' -e '/ -67770/d' -e '/ -67771/d' -e '/ -67772/d' -e '/ -67773/d' -e '/ -67774/d' -e '/ -67775/d' -e '/ -67776/d' -e '/ -67777/d' -e '/ -67778/d' -e '/ -67779/d' -e '/ -67780/d' -e '/ -67781/d' -e '/ -67782/d' -e '/ -67783/d' -e '/ -67784/d' -e '/ -67785/d' -e '/ -67786/d' -e '/ -67787/d' -e '/ -67788/d' -e '/ -67789/d' -e '/ -67790/d' -e '/ -67791/d' -e '/ -67792/d' -e '/ -67793/d' -e '/ -67794/d' -e '/ -67795/d' -e '/ -67796/d' -e '/ -67797/d' -e '/ -67798/d' -e '/ -67799/d' -e '/ -67800/d' -e '/ -67801/d' -e '/ -67802/d' -e '/ -67803/d' -e '/ -67804/d' -e '/ -67805/d' -e '/ -67806/d' -e '/ -67807/d' -e '/ -67808/d' -e '/ -67809/d' -e '/ -67810/d' -e '/ -67811/d' -e '/ -67812/d' -e '/ -67813/d' -e '/ -67814/d' -e '/ -67815/d' -e '/ -67816/d' -e '/ -67817/d' -e '/ -67818/d' -e '/ -67819/d' -e '/ -67820/d' -e '/ -67821/d' -e '/ -67822/d' -e '/ -67823/d' -e '/ -67824/d' -e '/ -67825/d' -e '/ -67826/d' -e '/ -67827/d' -e '/ -67828/d' -e '/ -67829/d' -e '/ -67830/d' -e '/ -67831/d' -e '/ -67832/d' -e '/ -67833/d' -e '/ -67834/d' -e '/ -67835/d' -e '/ -67836/d' -e '/ -67837/d' -e '/ -67838/d' -e '/ -67839/d' -e '/ -67840/d' -e '/ -67841/d' -e '/ -67842/d' -e '/ -67843/d' -e '/ -67844/d' -e '/ -67845/d' -e '/ -67846/d' -e '/ -67847/d' -e '/ -67848/d' -e '/ -67849/d' -e '/ -67850/d' -e '/ -67851/d' -e '/ -67852/d' -e '/ -67853/d' -e '/ -67854/d' -e '/ -67855/d' -e '/ -67856/d' -e '/ -67857/d' -e '/ -67858/d' -e '/ -67859/d' -e '/ -67860/d' -e '/ -67861/d' -e '/ -67862/d' -e '/ -67863/d' -e '/ -67864/d' -e '/ -67865/d' -e '/ -67866/d' -e '/ -67867/d' -e '/ -67868/d' -e '/ -67869/d' -e '/ -67870/d' -e '/ -67871/d' -e '/ -67872/d' -e '/ -67873/d' -e '/ -67874/d' -e '/ -67875/d' -e '/ -67876/d' -e '/ -67877/d' -e '/ -67878/d' -e '/ -67879/d' -e '/ -67880/d' -e '/ -67881/d' -e '/ -67882/d' -e '/ -67883/d' -e '/ -67884/d' -e '/ -67885/d' -e '/ -67886/d' -e '/ -67887/d' -e '/ -67888/d' -e '/ -67889/d' -e '/ -67890/d' -e '/ -67891/d' -e '/ -67892/d' -e '/ -67893/d' -e '/ -67894/d' -e '/ -67895/d' -e '/ -67896/d' -e '/ -67897/d' -e '/ -67898/d' -e '/ -67899/d' -e '/ -67900/d' -e '/ -67901/d' -e '/ -67902/d' $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security/SecBasePriv.h
 	@sed -i '1s|^|#include <Security/cssmapi.h>\n#include <Security/SecKeychain.h>\n|' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security/SecKeychainPriv.h
 	@sed -i '1s|^|#include <arm/cpu_capabilities.h>\n|' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/firehose/tracepoint_private.h
 	@sed -i 's|extern void \*__dso_handle;|#ifndef __OS_TRACE_BASE_H__\nextern void \*__dso_handle;\n#endif|' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/log.h
