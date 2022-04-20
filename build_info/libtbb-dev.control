@@ -1,0 +1,19 @@
+Package: libtbb-dev
+Version: @DEB_TBB_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libtbb12 (= @DEB_TBB_V@)
+Section: Development
+Priority: optional
+Homepage: https://github.com/oneapi-src/oneTBB
+Description: parallelism library for C++ - development files
+ TBB is a library that helps you leverage multi-core processor
+ performance without having to be a threading expert. It represents a
+ higher-level, task-based parallelism that abstracts platform details
+ and threading mechanism for performance and scalability.
+ .
+ (Note: if you are a user of the i386 architecture, i.e., 32-bit Intel
+ or compatible hardware, this package only supports Pentium4-compatible
+ and higher processors.)
+ .
+ This package includes the TBB development files.
