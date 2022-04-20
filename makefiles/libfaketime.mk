@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS         += libfaketime
 LIBFAKETIME_VERSION := 0.9.10
-DEB_LIBFAKETIME_V   ?= $(LIBFAKETIME_VERSION)-1
+DEB_LIBFAKETIME_V   ?= $(LIBFAKETIME_VERSION)
 
 libfaketime-setup: setup
 	$(call GITHUB_ARCHIVE,wolfcw,libfaketime,$(LIBFAKETIME_VERSION),v$(LIBFAKETIME_VERSION))
