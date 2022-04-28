@@ -25,7 +25,7 @@ ktool: ktool-setup python3-kimg4 python3-pyaes pygments python3
 		--install-layout=deb \
 		--root="$(BUILD_STAGE)/ktool" \
 		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
-	cp -a $(BUILD_WORK)/ktool/docs/ktool.1 $(BUILD_STAGE)/ktool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_MISC)/ktool/ktool.1 $(BUILD_STAGE)/ktool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	find $(BUILD_STAGE)/ktool -name __pycache__ -prune -exec rm -rf {} \;
 	$(call AFTER_BUILD)
 endif
