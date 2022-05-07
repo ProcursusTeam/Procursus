@@ -1,0 +1,13 @@
+diff --git a/lsof/lib/regex.c b/lsof/lib/regex.c
+index 88e959d..810720c 100644
+--- a/lsof/lib/regex.c
++++ b/lsof/lib/regex.c
+@@ -238,7 +238,7 @@ char *realloc ();
+ 
+ /* Get the interface, including the syntax bits.  */
+ /* Disabled by V. Abell on January 29, 2001: #include <regex.h> */
+-#include "../regex.h"
++#include <regex.h>
+ 
+ /* isalpha etc. are used for the character classes.  */
+ #include <ctype.h>

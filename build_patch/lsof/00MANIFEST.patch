@@ -1,0 +1,12 @@
+diff --git a/lsof/00MANIFEST b/lsof/00MANIFEST
+index 72c72b5..4746d26 100644
+--- a/lsof/00MANIFEST
++++ b/lsof/00MANIFEST
+@@ -30,7 +30,6 @@ node.c
+ print.c
+ proc.c
+ proto.h
+-regex.h
+ scripts/
+ store.c
+ tests/

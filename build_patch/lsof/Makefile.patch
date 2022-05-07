@@ -1,0 +1,18 @@
+diff --git a/lsof/dialects/darwin/libproc/Makefile b/lsof/dialects/darwin/libproc/Makefile
+index a74f108..1b31367 100644
+--- a/lsof/dialects/darwin/libproc/Makefile
++++ b/lsof/dialects/darwin/libproc/Makefile
+@@ -29,11 +29,11 @@ HDR=    lsof.h lsof_fields.h dlsof.h machine.h proto.h dproto.h
+ 
+ SRC=    ddev.c dfile.c dmnt.c dproc.c dsock.c dstore.c \
+ 	arg.c main.c misc.c node.c print.c proc.c store.c usage.c util.c \
+-	dnetpolicy.c dchannel.c dnexus.c
++	dnetpolicy.c dchannel.c
+ 
+ OBJ=	ddev.o dfile.o dmnt.o dproc.o dsock.o dstore.o \
+ 	arg.o main.o misc.o node.o print.o proc.o store.o usage.o util.o \
+-	dnetpolicy.o dchannel.o dnexus.o
++	dnetpolicy.o dchannel.o
+ 
+ MAN=	lsof.8
+ 
