@@ -1,21 +1,24 @@
-From 464260413c09fa7c33d07c9b7d0b72f75127224e Mon Sep 17 00:00:00 2001
+From 82ad9d69b9609dd28369454063b08855099543af Mon Sep 17 00:00:00 2001
 From: TheRealKeto <therealketo@gmail.com>
-Date: Sat, 5 Mar 2022 14:24:50 -0500
+Date: Fri, 6 May 2022 21:43:50 -0400
 Subject: [PATCH] legacy(setup): Let's handle this ourselves...
 
 ---
- .legacy_setup.py | 1 +
- 1 file changed, 1 insertion(+)
+ .legacy_setup.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/.legacy_setup.py b/.legacy_setup.py
-index 4207d43..6eed624 100644
+index 0b1fb63..6eed624 100644
 --- a/.legacy_setup.py
 +++ b/.legacy_setup.py
-@@ -6,6 +6,7 @@
- 
+@@ -6,7 +6,7 @@ long_description = (this_directory / "README.md").read_text()
+
  setup(
      name = 'k2l',
+-    version = "1.2.1",
 +    version = "@DEB_KTOOL_V@",
      description = 'Static MacO/ObjC Reverse Engineering Toolkit',
      long_description = long_description,
      long_description_content_type = 'text/markdown',
+--
+2.34.1

@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += ktool
-KTOOL_VERSION  := 1.1.1
+KTOOL_VERSION  := 1.2.1
 DEB_KTOOL_V    ?= $(KTOOL_VERSION)
 
 ktool-setup: setup
