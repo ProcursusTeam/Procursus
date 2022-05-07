@@ -25,19 +25,22 @@ endif
 		HAVE_ICONV=1 \
 		CC="$(CC)" \
 		CFLAGS='$(CFLAGS) -Wall -I.' \
-		LDFLAGS='$(LDFLAGS) -liconv'
+		LDFLAGS='$(LDFLAGS) -liconv' \
+		CONFIG_FILE="$(MEMO_PREFIX)/etc/whois.conf" \
+		prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
 	+$(MAKE) -C $(BUILD_WORK)/whois install \
-		DESTDIR=$(BUILD_STAGE)/whois
+		DESTDIR="$(BUILD_STAGE)/whois" \
+		CONFIG_FILE="$(MEMO_PREFIX)/etc/whois.conf" \
+		prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
 	$(call AFTER_BUILD)
 endif
 
 whois-package: whois-stage
 	# whois.mk Package Structure
 	rm -rf $(BUILD_DIST)/whois
-	mkdir -p $(BUILD_DIST)/whois/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share}
 
 	# whois.mk Prep WHOIS
-	cp -a $(BUILD_STAGE)/whois/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/whois/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/whois $(BUILD_DIST)/whois
 
 	#whois.mk Sign
 	$(call SIGN,whois,general.xml)
