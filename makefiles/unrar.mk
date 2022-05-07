@@ -17,13 +17,13 @@ unrar:
 else
 unrar: unrar-setup
 	+$(MAKE) -C $(BUILD_WORK)/unrar \
-		CXX="$(CXX) $(CFLAGS)" \
+		CXX="$(CXX) $(CFLAGS) $(LDFLAGS)" \
 		STRIP=$(STRIP)
 	mkdir -p $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib,include,share/man/man1}
 	cp -af $(BUILD_WORK)/unrar/unrar $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	+$(MAKE) -C $(BUILD_WORK)/unrar clean
 	+$(MAKE) -C $(BUILD_WORK)/unrar lib \
-		CXX="$(CXX) $(CFLAGS)" \
+		CXX="$(CXX) $(CFLAGS) $(LDFLAGS)" \
 		AR="$(AR)" \
 		STRIP=$(STRIP)
 	cp -af $(BUILD_WORK)/unrar/libunrar*.dylib $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
