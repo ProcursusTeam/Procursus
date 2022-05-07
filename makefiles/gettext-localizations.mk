@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS                   += gettext-localizations
-GETTEXT-LOCALIZATIONS_VERSION := 2020.10.07
+GETTEXT-LOCALIZATIONS_VERSION := 2022.05.06
 DEB_GETTEXT-LOCALIZATIONS_V   ?= $(GETTEXT-LOCALIZATIONS_VERSION)
 
 ifneq ($(wildcard $(BUILD_WORK)/gettext-localizations/.build_complete),)
@@ -14,7 +14,7 @@ gettext-localizations:
 else ifeq ($(shell [ $(UNAME) = Darwin ] && [ -f "/System/Library/Kernels/kernel" ] && echo 1),1)
 gettext-localizations: setup
 	mkdir -p $(BUILD_STAGE)/gettext-localizations/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	cp -af /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale $(BUILD_STAGE)/gettext-localizations/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	cp -a /usr/share/locale $(BUILD_STAGE)/gettext-localizations/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	rm -f $(BUILD_STAGE)/gettext-localizations/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale/locale.alias
 else
 gettext-localizations:
