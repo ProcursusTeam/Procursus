@@ -1,0 +1,13 @@
+diff --git examples/loadables/Makefile.inc.in examples/loadables/Makefile.inc.in
+index 8b419a7..1c5470c 100644
+--- examples/loadables/Makefile.inc.in
++++ examples/loadables/Makefile.inc.in
+@@ -45,7 +45,7 @@ VPATH = @srcdir@
+ # Support an alternate destination root directory for package building
+ DESTDIR =
+ 
+-INSTALL = @INSTALL@
++INSTALL = @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/install --strip-program=@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/strip
+ INSTALL_PROGRAM = @INSTALL_PROGRAM@
+ INSTALL_SCRIPT = @INSTALL_SCRIPT@
+ INSTALL_DATA = @INSTALL_DATA@
