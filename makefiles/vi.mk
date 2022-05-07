@@ -32,14 +32,9 @@ endif
 vi-package: vi-stage
 	# vi.mk Package Structure
 	rm -rf $(BUILD_DIST)/vi
-	mkdir -p $(BUILD_DIST)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 
 	# vi.mk Prep vi
-	cp -a $(BUILD_STAGE)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ex $(BUILD_DIST)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ex-vi
-	cp -a $(BUILD_STAGE)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib $(BUILD_DIST)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/ex.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/exa.1$(MEMO_MANPAGE_SUFFIX)
-	cp -a $(BUILD_STAGE)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/vi.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/via.1$(MEMO_MANPAGE_SUFFIX)
-	cp -a $(BUILD_STAGE)/vi/$(MEMO_PREFIX)/var $(BUILD_DIST)/vi/$(MEMO_PREFIX)
+	cp -a $(BUILD_STAGE)/vi $(BUILD_DIST)/vi
 
 	# vi.mk Sign
 	$(call SIGN,vi,general.xml)
