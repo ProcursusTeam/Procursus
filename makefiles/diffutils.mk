@@ -21,7 +21,8 @@ diffutils:
 else
 diffutils: diffutils-setup gettext
 	cd $(BUILD_WORK)/diffutils && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		ac_cv_path_PR_PROGRAM="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pr"
 	+$(MAKE) -C $(BUILD_WORK)/diffutils
 	+$(MAKE) -C $(BUILD_WORK)/diffutils install \
 		DESTDIR=$(BUILD_STAGE)/diffutils
