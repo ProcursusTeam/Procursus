@@ -19,7 +19,8 @@ else
 gzip: gzip-setup
 	cd $(BUILD_WORK)/gzip && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--disable-dependency-tracking
+		--disable-dependency-tracking \
+		ac_cv_path_GREP="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/grep"
 	+$(MAKE) -C $(BUILD_WORK)/gzip install \
 		DESTDIR=$(BUILD_STAGE)/gzip
 ifneq ($(MEMO_SUB_PREFIX),)
