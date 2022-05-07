@@ -4,20 +4,19 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 SUBPROJECTS           += darling-utils
-DARLING_COMMIT        := 9393db2c6ed530acaa2a4a933c391f1363fea1e8
-DARLING_UTILS_VERSION := 2021.08.01
+DARLING_UTILS_VERSION := 0.1.20220213
 DEB_DARLING_UTILS_V   ?= $(DARLING_UTILS_VERSION)
 
 darling-utils-setup: setup
-	$(call GITHUB_ARCHIVE,darlinghq,darling,$(DARLING_COMMIT),$(DARLING_COMMIT))
-	$(call EXTRACT_TAR,darling-$(DARLING_COMMIT).tar.gz,darling-$(DARLING_COMMIT),darling-utils)
+	$(call GITHUB_ARCHIVE,darlinghq,darling,$(DARLING_UTILS_VERSION),v$(DARLING_UTILS_VERSION))
+	$(call EXTRACT_TAR,darling-$(DARLING_UTILS_VERSION).tar.gz,darling-$(DARLING_UTILS_VERSION),darling-utils)
 	mkdir -p $(BUILD_STAGE)/darling-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,libexec,share/man/man8}
 
 ifneq ($(wildcard $(BUILD_WORK)/darling-utils/.build_complete),)
 darling-utils:
 	@echo "Using previously built darling-utils."
 else
-darling-utils: darling-utils-setup xar
+darling-utils: darling-utils-setup xar xz
 	cd $(BUILD_WORK)/darling-utils/src/unxip; \
 		$(CC) $(CFLAGS) $(LDFLAGS) -lxar -llzma xip_extract_cpio.c -o $(BUILD_STAGE)/darling-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/xip_extract_cpio; \
 	sed 's|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' unxip > $(BUILD_STAGE)/darling-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/unxip
