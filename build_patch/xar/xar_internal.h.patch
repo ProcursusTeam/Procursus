@@ -1,0 +1,13 @@
+diff --git a/src/xar_internal.h b/src/xar_internal.h
+index b78745c..daa4ec2 100644
+--- a/src/xar_internal.h
++++ b/src/xar_internal.h
+@@ -11,7 +11,7 @@
+ #ifdef XARSIG_BUILDING_WITH_XAR
+ #include "xar.h"
+ #else
+-#include <xar/xar.h>
++#include "xar.h"
+ #endif // XARSIG_BUILDING_WITH_XAR
+ 
+ // Undeprecate these for internal usage

@@ -3,12 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += xar
-XAR_VERSION := 452
+XAR_VERSION := 483
 DEB_XAR_V   ?= 1.8.0.$(XAR_VERSION)+fc-6
 
 xar-setup: setup file-setup
-	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/xar/xar-$(XAR_VERSION).tar.gz
-	$(call EXTRACT_TAR,xar-$(XAR_VERSION).tar.gz,xar-$(XAR_VERSION)/xar,xar)
+	$(call GITHUB_ARCHIVE,apple-oss-distributions,xar,$(XAR_VERSION),xar-$(XAR_VERSION))
+	$(call EXTRACT_TAR,xar-$(XAR_VERSION).tar.gz,xar-xar-$(XAR_VERSION)/xar,xar)
 	$(call DO_PATCH,xar,xar,-p1)
 	cp -a $(BUILD_WORK)/file/config.sub $(BUILD_WORK)/xar
 
@@ -30,8 +30,9 @@ xar: xar-setup openssl
 	sed -i 's|$(MACOSX_SYSROOT)/usr/lib|$(TARGET_SYSROOT)/usr/lib|g' $(BUILD_WORK)/xar/src/Makefile.inc
 	sed -i 's|$(MACOSX_SYSROOT)/usr/include|$(TARGET_SYSROOT)/usr/include|g' $(BUILD_WORK)/xar/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/xar \
-		CFLAGS="$(CFLAGS) -I$(BUILD_WORK)/xar/lib"
+		CPPFLAGS="$(CPPFLAGS) -I$(BUILD_WORK)/xar/include -I$(BUILD_WORK)/xar/lib"
 	+$(MAKE) -C $(BUILD_WORK)/xar install \
+		CPPFLAGS="$(CPPFLAGS) -I$(BUILD_WORK)/xar/include -I$(BUILD_WORK)/xar/lib" \
 		DESTDIR=$(BUILD_STAGE)/xar
 	cp -a $(BUILD_STAGE)/xar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/* $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	cp -a $(BUILD_STAGE)/xar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/* $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
