@@ -14,7 +14,7 @@ gettext-localizations:
 else ifeq ($(shell [ $(UNAME) = Darwin ] && [ -f "/System/Library/Kernels/kernel" ] && echo 1),1)
 gettext-localizations: setup
 	mkdir -p $(BUILD_STAGE)/gettext-localizations/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	cp -a /usr/share/locale $(BUILD_STAGE)/gettext-localizations/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	cp -af /usr/share/locale $(BUILD_STAGE)/gettext-localizations/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	rm -f $(BUILD_STAGE)/gettext-localizations/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale/locale.alias
 else
 gettext-localizations:
