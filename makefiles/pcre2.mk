@@ -38,7 +38,7 @@ pcre2-package: pcre2-stage
 
 	# pcre2.mk Prep pcre2-utils
 	cp -a $(BUILD_STAGE)/pcre2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/!(pcre2-config) $(BUILD_DIST)/pcre2-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/pcre2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/!(pcre2-config.1) $(BUILD_DIST)/pcre2-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/pcre2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/!(pcre2-config.1)$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/pcre2-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# pcre2.mk Prep libpcre2-{8,16,32}-0
 	for ver in {8,16,32}; do \
@@ -51,7 +51,7 @@ pcre2-package: pcre2-stage
 	# pcre2.mk Prep libpcre2-dev
 	cp -a $(BUILD_STAGE)/pcre2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(*8.0*|*16.0*|*32.0*|*posix.3*) $(BUILD_DIST)/libpcre2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/pcre2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pcre2-config $(BUILD_DIST)/libpcre2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/pcre2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/pcre2-config.1 $(BUILD_DIST)/libpcre2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/pcre2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/pcre2-config.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/libpcre2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_STAGE)/pcre2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libpcre2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	cp -a $(BUILD_STAGE)/pcre2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libpcre2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
