@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += lf
-LF_VERSION  := r26
+LF_VERSION  := r27
 DEB_LF_V    ?= 0~$(LF_VERSION)
 
 lf-setup: setup
@@ -18,7 +18,7 @@ else
 lf: lf-setup
 	# Compile lf and move binaries
 	cd $(BUILD_WORK)/lf && $(DEFAULT_GOLANG_FLAGS) go build \
-		--ldflags="-s -w -X main.gVersion=$(DEB_LF_V)" .
+		-ldflags="-s -w -X main.gVersion=$(DEB_LF_V)" .
 	cp -a $(BUILD_WORK)/lf/lf $(BUILD_STAGE)/lf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_WORK)/lf/lf.1 $(BUILD_STAGE)/lf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	# Copy over other files for zsh, vim, csh, etc
