@@ -12,7 +12,6 @@ lsof-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,lsof,$(LSOF_VERSION),lsof-$(LSOF_VERSION))
 	$(call EXTRACT_TAR,lsof-$(LSOF_VERSION).tar.gz,lsof-lsof-$(LSOF_VERSION),lsof)
 	$(call DO_PATCH,lsof,lsof,-p1)
-	
 	mkdir -p $(BUILD_STAGE)/lsof/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{sbin,share/man/man8}
 	sed -i 's/lcurses/lncursesw/' $(BUILD_WORK)/lsof/lsof/Configure
 
