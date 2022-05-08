@@ -97,11 +97,7 @@ network-cmds:
 else
 network-cmds: .SHELLFLAGS=-O extglob -c
 network-cmds: network-cmds-setup
-	mkdir -p $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	mkdir -p $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	mkdir -p $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
-	mkdir -p $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
-	
+	mkdir -p $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,sbin,libexec}	
 	cd $(BUILD_WORK)/network-cmds; \
 	for tproj in !(ping|rtadvd|rarpd|spray).tproj; do \
 		tproj=$$(basename $$tproj .tproj); \
