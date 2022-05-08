@@ -11,7 +11,6 @@ DEB_NETWORK-CMDS_V   ?= $(NETWORK-CMDS_VERSION)
 network-cmds-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,network_cmds,$(NETWORK-CMDS_VERSION),network_cmds-$(NETWORK-CMDS_VERSION))
 	$(call EXTRACT_TAR,network_cmds-$(NETWORK-CMDS_VERSION).tar.gz,network_cmds-network_cmds-$(NETWORK-CMDS_VERSION),network-cmds)
-	mkdir -p $(BUILD_STAGE)/network-cmds/{{s,}bin,usr/{{s,}bin,libexec}}
 
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/network-cmds/include/sys
@@ -97,7 +96,7 @@ network-cmds:
 else
 network-cmds: .SHELLFLAGS=-O extglob -c
 network-cmds: network-cmds-setup
-	mkdir -p $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,sbin,libexec}	
+	mkdir -p $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,sbin,libexec}
 	cd $(BUILD_WORK)/network-cmds; \
 	for tproj in !(ping|rtadvd|rarpd|spray).tproj; do \
 		tproj=$$(basename $$tproj .tproj); \
@@ -108,9 +107,9 @@ network-cmds: network-cmds-setup
 	cp -a $(BUILD_WORK)/network-cmds/{arp,ndp,traceroute,mnc,mtest,traceroute6,ifconfig,ip6addrctl,netstat,ping6,route,rtsol} $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 	cd $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin; \
 	for bin in ifconfig ip6addrctl netstat ping6 route rtsol; do \
-		$(LN_S) ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/$$bin $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)sbin; \
+		$(LN_S) ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/$$bin $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin; \
 	done
-	$(LN_S) ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/ping6 $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)bin
+	$(LN_S) ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/ping6 $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	$(call AFTER_BUILD)
 endif
 
