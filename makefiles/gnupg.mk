@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += gnupg
-GNUPG_VERSION := 2.3.4
+GNUPG_VERSION := 2.3.6
 DEB_GNUPG_V   ?= $(GNUPG_VERSION)
 
 gnupg-setup: setup
