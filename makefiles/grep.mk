@@ -23,7 +23,7 @@ ifneq ($(wildcard $(BUILD_WORK)/grep/.build_complete),)
 grep:
 	@echo "Using previously built grep."
 else
-ifneq (,$(findstring ramdisk,$(MEMO_TARGET)))
+ifeq (,$(findstring ramdisk,$(MEMO_TARGET)))
 grep: grep-setup pcre
 else
 grep: grep-setup
