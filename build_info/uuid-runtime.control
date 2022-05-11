@@ -1,0 +1,24 @@
+Package: uuid-runtime
+Version: @DEB_UTIL_LINUX_V@
+Priority: optional
+Section: Utilities
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Pre-Depends: libuuid1 (>= 2.25-5~)
+Depends: libsmartcols1 (>= 2.27~rc1), libuuid1 (>= 2.31.1)
+Homepage: http://www.kernel.org/pub/linux/utils/util-linux/
+Description: runtime components for the Universally Unique ID library
+ The libuuid library generates and parses 128-bit Universally Unique
+ IDs (UUIDs). A UUID is an identifier that is unique within the space
+ of all such identifiers across both space and time. It can be used for
+ multiple purposes, from tagging objects with an extremely short lifetime
+ to reliably identifying very persistent objects across a network.
+ .
+ See RFC 4122 for more information.
+ .
+ This package contains the uuidgen program and the uuidd daemon.
+ .
+ The uuidd daemon is used to generate UUIDs, especially time-based
+ UUIDs, in a secure and guaranteed-unique fashion, even in the face of
+ large numbers of threads trying to grab UUIDs running on different CPUs.
+ It is used by libuuid as well as the uuidgen program.

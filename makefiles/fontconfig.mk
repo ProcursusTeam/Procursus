@@ -16,7 +16,7 @@ ifneq ($(wildcard $(BUILD_WORK)/fontconfig/.build_complete),)
 fontconfig:
 	@echo "Using previously built fontconfig."
 else
-fontconfig: fontconfig-setup gettext freetype uuid expat
+fontconfig: fontconfig-setup gettext freetype ossp-uuid expat
 	cd $(BUILD_WORK)/fontconfig && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-add-fonts="/System/Library/Fonts,~/Library/UserFonts"

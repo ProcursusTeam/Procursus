@@ -1,11 +1,11 @@
-Package: libuuid-dev
+Package: uuid-dev
+Version: @DEB_UTIL_LINUX_V@
+Priority: optional
+Section: Development
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
-Version: @DEB_UUID_V@
-Replaces: uuid (<< @DEB_UUID_V@)
-Conflicts: uuid (<< @DEB_UUID_V@)
-Section: Development
-Priority: optional
+Depends: libuuid1 (= @DEB_UTIL_LINUX_V@)
+Homepage: http://www.kernel.org/pub/linux/utils/util-linux/
 Description: Universally Unique ID library - headers and static libraries
  The libuuid library generates and parses 128-bit Universally Unique IDs
  (UUIDs). See RFC 4122 for more information.

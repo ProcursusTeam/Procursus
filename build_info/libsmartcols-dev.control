@@ -1,0 +1,12 @@
+Package: libsmartcols-dev
+Version: @DEB_UTIL_LINUX_V@
+Priority: optional
+Section: Development
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Depends: libsmartcols1 (= @DEB_UTIL_LINUX_V@)
+Homepage: http://www.kernel.org/pub/linux/utils/util-linux/
+Description: smart column output alignment library - headers
+ This smart column output alignment library is used by fdisk utilities.
+ .
+ This package contains the development environment for the mount library.

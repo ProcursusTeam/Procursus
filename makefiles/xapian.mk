@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/xapian/.build_complete),)
 xapian:
 	@echo "Using previously built xapian."
 else
-xapian: xapian-setup uuid
+xapian: xapian-setup ossp-uuid
 	cd $(BUILD_WORK)/xapian && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-shared=yes \

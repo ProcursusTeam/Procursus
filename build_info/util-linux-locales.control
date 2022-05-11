@@ -1,0 +1,14 @@
+Package: util-linux-locales
+Version: @DEB_UTIL_LINUX_V@
+Architecture: @DEB_ARCH@
+Priority: optional
+Section: Localizations
+Maintainer: @DEB_MAINTAINER@
+Depends: util-linux (>= @DEB_UTIL_LINUX_V@)
+Homepage: http://www.kernel.org/pub/linux/utils/util-linux/
+Description: locales files for util-linux
+ This package contains the internationalization files for the util-linux
+ package.
+ .
+ They are needed when you want the programs in util-linux to print their
+ messages in other languages than English.

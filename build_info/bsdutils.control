@@ -1,0 +1,16 @@
+Package: bsdutils
+Version: @DEB_UTIL_LINUX_V@
+Architecture: @DEB_ARCH@
+Section: Utilities
+Priority: optional
+Maintainer: @DEB_MAINTAINER@
+Recommends: bsdextrautils
+Homepage: http://www.kernel.org/pub/linux/utils/util-linux/
+Description: basic utilities from 4.4BSD-Lite
+ This package contains the bare minimum of BSD utilities 
+ needed for a Debian system: logger, renice, script, 
+ scriptlive, scriptreplay and wall. These utilities are not 
+ needed by a Procursus system and are packaged as such for the 
+ sake of Debianization. Some of the utilities have been 
+ prefixed due to conflicts with apple-cmds. The remaining 
+ standard BSD utilities are provided by bsdextrautils.

@@ -1,0 +1,16 @@
+Package: util-linux
+Version: @DEB_UTIL_LINUX_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Pre-Depends: libuuid1 (>= 2.16), libncursesw6 (>= 6), libblkid1 (>= 2.37.2), libsmartcols1 (>= 2.38)
+Suggests: msdosfs | dosfstools
+Breaks: bash-completion (<< 1:2.8)
+Section: Utilities
+Priority: optional
+Homepage: http://www.kernel.org/pub/linux/utils/util-linux/
+Description: Description: miscellaneous system utilities
+ This package contains a number of important utilities, most 
+ of which are oriented towards maintenance of your system. 
+ Some of the more important utilities included in this package 
+ allow you to create new filesystems, view block IDs, and set 
+ process I/O priorities.

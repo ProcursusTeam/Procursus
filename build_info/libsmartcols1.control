@@ -1,0 +1,9 @@
+Package: libsmartcols1
+Version: @DEB_UTIL_LINUX_V@
+Architecture: @DEB_ARCH@
+Priority: optional
+Section: Libraries
+Maintainer: @DEB_MAINTAINER@
+Homepage: http://www.kernel.org/pub/linux/utils/util-linux/
+Description: smart column output alignment library
+ This smart column output alignment library is used by fdisk utilities.

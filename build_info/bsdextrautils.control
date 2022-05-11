@@ -1,0 +1,12 @@
+Package: bsdextrautils
+Version: @DEB_UTIL_LINUX_V@
+Architecture: @DEB_ARCH@
+Section: Utilities
+Priority: optional
+Maintainer: @DEB_MAINTAINER@
+Pre-Depends: libsmartcols1 (>= 2.38), libncursesw6 (>= 6)
+Homepage: http://www.kernel.org/pub/linux/utils/util-linux/
+Description: extra utilities from 4.4BSD-Lite
+ This package contains some extra prefixed BSD utilities: col, 
+ colcrt, colrm, column, hexdump, look, ul and write. Other 
+ BSD utilities are provided by bsdutils and calendar.

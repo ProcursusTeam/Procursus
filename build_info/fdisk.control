@@ -1,0 +1,19 @@
+Package: fdisk
+Version: @DEB_UTIL_LINUX_V@
+Architecture: @DEB_ARCH@
+Section: Utilities
+Priority: optional
+Maintainer: @DEB_MAINTAINER@
+Depends: libfdisk1 (>= 2.38), libncursesw6 (>= 6), libsmartcols1 (>= 2.28~rc1), libncursesw6 (>= 6)
+Homepage: http://www.kernel.org/pub/linux/utils/util-linux/
+Description: collection of partitioning utilities
+ This package contains the classic fdisk, sfdisk and cfdisk partitioning
+ utilities from the util-linux suite.
+ .
+ The utilities included in this package allow you to partition
+ your hard disk. The utilities supports both modern and legacy
+ partition tables (eg. GPT, MBR, etc).
+ .
+ The fdisk utility is the classical text-mode utility.
+ The cfdisk utilitity gives a more userfriendly curses based interface.
+ The sfdisk utility is mostly for automation and scripting uses.

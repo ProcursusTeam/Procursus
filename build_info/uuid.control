@@ -1,17 +1,23 @@
 Package: uuid
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
-Version: @DEB_UUID_V@
-Depends: libuuid16 (>= @DEB_UUID_V@)
+Version: @DEB_OSSP-UUID_V@
+Depends: libossp-uuid16 (>= @DEB_OSSP-UUID_V@)
 Section: System
 Priority: optional
-Description: runtime components for the Universally Unique ID library
- The libuuid library generates and parses 128-bit Universally Unique
- IDs (UUIDs). A UUID is an identifier that is unique within the space
- of all such identifiers across both space and time. It can be used for
- multiple purposes, from tagging objects with an extremely short lifetime
- to reliably identifying very persistent objects across a network.
+Description: Universally Unique Identifier Command-Line Tool
+ OSSP uuid is an ISO-C and Perl application programming interface (API) 
+ and corresponding command line interface (CLI) for the generation of 
+ DCE 1.1 and ISO/IEC 11578:1996 compliant Universally Unique Identifier 
+ (UUID). It supports DCE 1.1 variant UUIDs of version 1 (time and node 
+ based), version 3 (name based) and version 4 (random number based).
  .
- See RFC 4122 for more information.
+ UUIDs are 128 bit numbers which are intended to have a high likelihood
+ of uniqueness over space and time and are computationally difficult to 
+ guess. They are globally unique identifiers which can be locally
+ generated without contacting a global registration authority. UUIDs are
+ intended as unique identifiers for both mass tagging objects with an
+ extremely short lifetime and to reliably identifying very persistent
+ objects across a network.
  .
- This package contains the uuid program.
+ This package contains the Universally Unique Identifier Command-Line Tool.

@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libsm/.build_complete),)
 libsm:
 	@echo "Using previously built libsm."
 else
-libsm: libsm-setup xtrans libice uuid
+libsm: libsm-setup xtrans libice ossp-uuid
 	cd $(BUILD_WORK)/libsm && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-malloc0returnsnull=no \

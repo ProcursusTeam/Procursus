@@ -1,0 +1,12 @@
+Package: libfdisk-dev
+Version: @DEB_UTIL_LINUX_V@
+Priority: optional
+Section: Development
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Depends: libblkid-dev, libfdisk1 (= @DEB_UTIL_LINUX_V@), uuid-dev
+Description: fdisk partitioning library - headers
+ The libfdisk library is used for manipulating partition tables. It is
+ the core of the fdisk, cfdisk, and sfdisk tools.
+ .
+ This package contains the development environment for the fdisk library.

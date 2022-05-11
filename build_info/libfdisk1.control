@@ -1,0 +1,12 @@
+Package: libfdisk1
+Version: @DEB_UTIL_LINUX_V@
+Architecture: @DEB_ARCH@
+Section: Libraries
+Priority: optional
+Depends: libuuid1 (>= 2.16), libblkid1 (>= 2.24.2)
+Maintainer: @DEB_MAINTAINER@
+Homepage: http://www.kernel.org/pub/linux/utils/util-linux/
+Description: fdisk partitioning library
+ The libfdisk library is used for manipulating partition 
+ tables. It is the core of the fdisk, cfdisk, and sfdisk 
+ tools.
