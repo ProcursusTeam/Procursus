@@ -25,7 +25,11 @@ ifneq ($(wildcard $(BUILD_WORK)/util-linux/.build_complete),)
 util-linux:
 	@echo "Using previously built util-linux."
 else
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 util-linux: util-linux-setup gettext openpam readline
+else
+util-linux: util-linux-setup gettext readline
+endif
 	cd $(BUILD_WORK)/util-linux && ./autogen.sh && \
 		./configure -C \
 			$(DEFAULT_CONFIGURE_FLAGS) \
