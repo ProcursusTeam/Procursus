@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS       += text-cmds
-TEXT-CMDS_VERSION := 118
+TEXT-CMDS_VERSION := 138.100.3
 DEB_TEXT-CMDS_V   ?= 1:$(TEXT-CMDS_VERSION)
 
 text-cmds-setup: setup
