@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += ipsw
-IPSW_VERSION  := 3.0.81
+IPSW_VERSION  := 3.1.96
 DEB_IPSW_V    ?= $(IPSW_VERSION)
 
 ipsw-setup: setup
@@ -15,11 +15,19 @@ ipsw:
 	@echo "Using previously built ipsw."
 else
 ipsw: ipsw-setup
+	mkdir -p $(BUILD_STAGE)/ipsw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/{man/man1,zsh/site-functions,bash-completion/completions,fish/vendor_completions.d}}
 	cd $(BUILD_WORK)/ipsw && $(DEFAULT_GOLANG_FLAGS) go build \
 		-o build/dist/ipsw \
-		-ldflags "-s -w -X github.com/blacktop/ipsw/cmd/ipsw/cmd.AppVersion=$(IPSW_VERSION) -X github.com/blacktop/ipsw/cmd/ipsw/cmd.AppBuildTime==$(shell date -u +%Y%m%d)" \
+		-ldflags "-s -w -X github.com/blacktop/ipsw/cmd/ipsw/cmd.AppVersion=$(IPSW_VERSION) -X github.com/blacktop/ipsw/cmd/ipsw/cmd.AppBuildTime=$(shell date -u +%Y%m%d)" \
 		./cmd/ipsw
-	$(INSTALL) -Dm755 $(BUILD_WORK)/ipsw/build/dist/ipsw $(BUILD_STAGE)/ipsw/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/bin/ipsw
+	$(INSTALL) -Dm755 $(BUILD_WORK)/ipsw/build/dist/ipsw $(BUILD_STAGE)/ipsw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ipsw
+	cd $(BUILD_WORK)/ipsw && CGO_CC="$(CC_FOR_BUILD)" CGO_CFLAGS="$(CFLAGS_FOR_BUILD)" CGO_CPPFLAGS="$(CPPFLAGS_FOR_BUILD)" CGO_LDFLAGS="$(LDFLAGS_FOR_BUILD)" go build \
+		-o build/dist/ipsw-host \
+		./cmd/ipsw
+	$(BUILD_WORK)/ipsw/build/dist/ipsw-host man $(BUILD_STAGE)/ipsw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/
+	$(BUILD_WORK)/ipsw/build/dist/ipsw-host completion zsh > $(BUILD_STAGE)/ipsw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/site-functions/_ipsw
+	$(BUILD_WORK)/ipsw/build/dist/ipsw-host completion bash > $(BUILD_STAGE)/ipsw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/ipsw
+	$(BUILD_WORK)/ipsw/build/dist/ipsw-host completion fish > $(BUILD_STAGE)/ipsw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/fish/vendor_completions.d/ipsw.fish
 	$(call AFTER_BUILD)
 endif
 

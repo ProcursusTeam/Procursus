@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += apt
-APT_VERSION   := 2.3.7
+APT_VERSION   := 2.4.5
 DEB_APT_V     ?= $(APT_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
@@ -33,7 +33,7 @@ apt:
 	@echo "Using previously built apt."
 else
 apt: apt-setup libgcrypt berkeleydb lz4 xxhash xz zstd gnutls gettext
-	cd $(BUILD_WORK)/apt/build && cmake . \
+	cd $(BUILD_WORK)/apt/build && unset MACOSX_DEPLOYMENT_TARGET && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DSTATE_DIR=$(MEMO_PREFIX)/var/lib/apt \
 		-DCACHE_DIR=$(MEMO_PREFIX)/var/cache/apt \
@@ -73,8 +73,8 @@ apt-package: apt-stage
 	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/apt/solvers/dump $(BUILD_DIST)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/apt/solvers
 	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)/{etc,var} $(BUILD_DIST)/apt/$(MEMO_PREFIX)
-	rm -f $(BUILD_DIST)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/*/man1/apt-{extracttemplates,ftparchive,sortpkgs}.1
-	rm -f $(BUILD_DIST)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/apt-{extracttemplates,ftparchive,sortpkgs}.1
+	rm -f $(BUILD_DIST)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/*/man1/apt-{extracttemplates,ftparchive,sortpkgs}.1$(MEMO_MANPAGE_SUFFIX)
+	rm -f $(BUILD_DIST)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/apt-{extracttemplates,ftparchive,sortpkgs}.1$(MEMO_MANPAGE_SUFFIX)
 	rm -f $(BUILD_DIST)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale/*/LC_MESSAGES/{apt-utils,libapt-pkg6.0}.mo
 
 	# apt.mk Prep apt-utils
@@ -87,8 +87,8 @@ apt-package: apt-stage
 	for i in $(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/!(man1); do \
 		rm -rf $$i/man{5,7,8}; \
 	done
-	rm -f $(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/!(man1)/man1/apt-transport*.1
-	rm -f $(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/apt-transport*.1
+	rm -f $(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/!(man1)/man1/apt-transport*.1$(MEMO_MANPAGE_SUFFIX)
+	rm -f $(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/apt-transport*.1$(MEMO_MANPAGE_SUFFIX)
 	rm -f $(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale/*/LC_MESSAGES/{apt,libapt-pkg6.0}.mo
 
 	# apt.mk Prep libapt-pkg6.0

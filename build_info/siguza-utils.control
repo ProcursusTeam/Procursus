@@ -7,8 +7,10 @@ Section: Utilities
 Priority: optional
 Homepage: https://www.github.com/Siguza/misc
 Description: Various C written tools.
- This package provides specific C written tools designed by Siguza that do specific things.
- This software and all its binaries, which are listed below, is provided without any kind of warranty and as-is. Use at your own risk.
+ This package provides specific tools, written in C, created by Siguza
+ that do specific things. This software, and all its binaries, which are
+ listed below, is provided without any kind of warranty and as-is. Use
+ at your own risk
  - bindump: Prints a 64-bit command line arg in binary
  - clz: Clang's __builtin_clz, but for the command line
  - dsc_syms: Prints symbol addresses of a dyld_shared_cache in radare2 format

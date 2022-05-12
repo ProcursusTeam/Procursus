@@ -6,4 +6,3 @@ Maintainer: @DEB_MAINTAINER@
 Priority: important
 Multi-Arch: foreign
 Description: msg, uudecode, uuencode, write
-Tag: purpose::console, role::hacker

@@ -27,16 +27,16 @@ endif
 itstool-package: itstool-stage
 	# itstool.mk Package Structure
 	rm -rf $(BUILD_DIST)/itstool
-	
+
 	# itstool.mk Prep itstool
 	cp -a $(BUILD_STAGE)/itstool $(BUILD_DIST)
-	
+
 	# itstool.mk Sign
 	$(call SIGN,itstool,general.xml)
-	
+
 	# itstool.mk Make .debs
 	$(call PACK,itstool,DEB_ITSTOOL_V)
-	
+
 	# itstool.mk Build cleanup
 	rm -rf $(BUILD_DIST)/itstool
 

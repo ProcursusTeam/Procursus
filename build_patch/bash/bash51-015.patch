@@ -1,0 +1,49 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	5.1
+Patch-ID:	bash51-015
+
+Bug-Reported-by:	Volodymyr Prodan <vovcat@gmail.com>
+Bug-Reference-ID:
+Bug-Reference-URL:	https://savannah.gnu.org/patch/?10076
+
+Bug-Description:
+
+Patch (apply with `patch -p0'):
+
+There are some characters (e.g., cyrillic) that can't be displayed using
+certain single-byte encodings (e.g., cp1251) because the negative signed
+int is interpreted as EOF and not displayed.
+
+*** ../bash-20210524/lib/readline/display.c	2021-03-16 18:12:20.000000000 -0400
+--- lib/readline/display.c	2021-06-07 16:53:08.000000000 -0400
+***************
+*** 1599,1603 ****
+  
+    for (cur_face = FACE_NORMAL, i = 0; i < n; i++)
+!     putc_face (str[i], face[i], &cur_face);
+    putc_face (EOF, FACE_NORMAL, &cur_face);
+  }
+--- 1599,1603 ----
+  
+    for (cur_face = FACE_NORMAL, i = 0; i < n; i++)
+!     putc_face ((unsigned char) str[i], face[i], &cur_face);
+    putc_face (EOF, FACE_NORMAL, &cur_face);
+  }
+
+*** ../bash-5.1/patchlevel.h	2020-06-22 14:51:03.000000000 -0400
+--- patchlevel.h	2020-10-01 11:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 14
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 15
+  
+  #endif /* _PATCHLEVEL_H_ */
