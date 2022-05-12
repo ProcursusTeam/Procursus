@@ -23,14 +23,14 @@ system-cmds-setup: setup libxcrypt
 	wget -q -nc -P $(BUILD_WORK)/system-cmds/include \
 		https://opensource.apple.com/source/launchd/launchd-328/launchd/src/reboot2.h
 	sed -i 's|#include <mach/i386/vm_param.h>|#include <mach/vm_param.h>|' $(BUILD_WORK)/system-cmds/memory_pressure.tproj/memory_pressure.c
-	sed -i '1s/^/typedef char uuid_string_t[37];\n/' $(BUILD_WORK)/system-cmds/{gcore.tproj/{vanilla,convert,dyld,dyld_shared_cache}.c,proc_uuid_policy.tproj/proc_uuid_policy.c}
-	sed -i '1s|^|const char UUID_NULL[37];\n|' $(BUILD_WORK)/system-cmds/gcore.tproj/corefile.c
 ifeq ($(shell [ $(CFVER_WHOLE) -lt 1800 ] && echo 1),1)
 	sed -i 's/task_inspect_for_pid(/task_for_pid(/' $(BUILD_WORK)/system-cmds/vm_purgeable_stat.tproj/vm_purgeable_stat.c
-	sed -i 's/task_read_for_pid(/task_for_pid(/' $(BUILD_WORK)/system-cmds/gcore.tproj/main.c
-	rm -f $(BUILD_WORK)/system-cmds/lsmp.tproj/*
+	rm -f $(BUILD_WORK)/system-cmds/{lsmp,gcore}.tproj/*
 	wget -q -nc -P$(BUILD_WORK)/system-cmds/lsmp.tproj https://github.com/apple-oss-distributions/system_cmds/raw/8579bd456573d7d205fec79af332a12e12464a60/lsmp.tproj/{common.h,json.h,lsmp.1,lsmp.c,{port,task}_details.c}
+	wget -q -nc -P$(BUILD_WORK)/system-cmds/gcore.tproj https://github.com/apple-oss-distributions/system_cmds/raw/ae9b08dd34d024c6a8c04f312169edc9d197dfff/gcore.tproj/{gcore.1,gcore-internal.1,{loader_additions,options,region}.h,main.c,{convert,corefile,dyld,dyld_shared_cache,sparse,threads,utils,vanilla,vm}.{c,h}}
 endif
+	sed -i '1s|^|const char UUID_NULL[37];\n|' $(BUILD_WORK)/system-cmds/gcore.tproj/corefile.c
+	sed -i '1s/^/typedef char uuid_string_t[37];\n/' $(BUILD_WORK)/system-cmds/{gcore.tproj/{vanilla,convert,dyld,dyld_shared_cache}.c,proc_uuid_policy.tproj/proc_uuid_policy.c}
 
 ###
 # TODO: Once I implement pam_chauthtok() in pam_unix.so, use PAM for passwd
@@ -73,7 +73,8 @@ system-cmds: system-cmds-setup libxcrypt openpam libiosexec
 		echo "$$tproj" ; \
 		$(CC) $(CFLAGS) -D__kernel_ptr_semantics="" -I$(BUILD_WORK)/system-cmds/include -o $$tproj $$tproj.tproj/*.c -D'__FBSDID(x)=' $${CFLAGS} $(LDFLAGS) -framework CoreFoundation -framework IOKit $${LDFLAGS} -DPRIVATE -D__APPLE_PRIVATE ; \
 	done
-	mkdir -p $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX){/etc/pam.d,/bin,/sbin,$(MEMO_SUB_PREFIX)/bin,$(MEMO_SUB_PREFIX)/{sbin,libexec,share/man/man{1,5,8}}}
+	mkdir -p $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX){/Library/LaunchDaemons,/etc/pam.d,/bin,/sbin,$(MEMO_SUB_PREFIX)/bin,$(MEMO_SUB_PREFIX)/{sbin,libexec,share/man/man{1,5,8}}}
+	sed 's|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|' < $(BUILD_WORK)/system-cmds/atrun.tproj/com.apple.atrun.plist > $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/Library/LaunchDaemons/com.apple.atrun.plist
 	install -m755 $(BUILD_WORK)/system-cmds/pagesize.tproj/pagesize.sh $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pagesize
 	install -m755 $(BUILD_WORK)/system-cmds/wait4path.x $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/bin/wait4path
 	install -m755 $(BUILD_WORK)/system-cmds/mslutil.x $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/mslutil
@@ -109,8 +110,24 @@ system-cmds-package: system-cmds-stage
 
 	# system-cmds.mk Sign
 	$(call SIGN,system-cmds,general.xml)
+ifeq ($(shell [ $(CFVER_WHOLE) -lt 1800 ] && echo 1),1)
+	$(LDID) -S$(BUILD_MISC)/entitlements/lsmp-legacy.xml $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsmp
+	$(LDID) -S$(BUILD_MISC)/entitlements/gcore-legacy.xml $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gcore
+	$(LDID) -S$(BUILD_MISC)/entitlements/tfp.entitlements $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/vm_purgeable_stat
+else
 	$(LDID) -S$(BUILD_MISC)/entitlements/lsmp.xml $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsmp
+	$(LDID) -S$(BUILD_MISC)/entitlements/gcore.xml $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gcore
+	$(LDID) -S$(BUILD_MISC)/entitlements/vm_purgeable_stat.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/vm_purgeable_stat
+
+endif
 	$(LDID) -S$(BUILD_MISC)/entitlements/taskpolicy.xml $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/taskpolicy
+	$(LDID) -S$(BUILD_MISC)/entitlements/kextstat.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/zlog
+	$(LDID) -S$(BUILD_MISC)/entitlements/fs_usage.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/fs_usage
+	$(LDID) -S$(BUILD_MISC)/entitlements/zprint.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/zprint
+	$(LDID) -S$(BUILD_MISC)/entitlements/vm_purgeable_stat.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/vm_purgeable_stat
+	$(LDID) -S$(BUILD_MISC)/entitlements/login.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/login
+	$(LDID) -S$(BUILD_MISC)/entitlements/passwd.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/passwd
+
 	find $(BUILD_DIST)/system-cmds -name '.ldid*' -type f -delete
 
 	# system-cmds.mk Permissions
