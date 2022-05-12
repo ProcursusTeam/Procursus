@@ -1,0 +1,9 @@
+Package: xcodes
+Author: Robots and Pencils <hello@robotsandpencils.com>
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_XCODES_V@
+Recommends: aria2
+Section: Utilities
+Priority: optional
+Description: Command-line tool to install and switch between multiple versions of Xcode.
