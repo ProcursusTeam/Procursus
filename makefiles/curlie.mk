@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += curlie
-CURLIE_VERSION  := 1.6.0
+CURLIE_VERSION  := 1.6.7
 DEB_CURLIE_V    ?= $(CURLIE_VERSION)
 
 curlie-setup: setup
