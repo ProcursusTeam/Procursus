@@ -75,7 +75,7 @@ endif
 	done
 	mv $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/{,g}fdisk;
 	sed -i -e 's/_fdisk_module()/_gfdisk_module()/' -e 's/complete -F _fdisk_module fdisk/complete -F _gfdisk_module gfdisk/' $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/gfdisk
-	for bin in colrm col renice cal logger ul getopt colcrt rev look mesg column hexdump wall; do \
+	for bin in colrm col renice cal logger ul getopt colcrt rev look mesg newgrp column hexdump wall; do \
 		mv $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{,g}$${bin}; \
 		mv $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/{,g}$${bin}.1; \
 		mv $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/{,g}$${bin}; \
@@ -98,9 +98,9 @@ util-linux-package: util-linux-stage
 
 	# util-linux.mk Prep util-linux
 	cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)/sbin/{newfs,newfs_bfs,newfs_cramfs,newfs_minix,fsck_cramfs,fsck_minix,mkswap,swaplabel,gnologin,blkid,wipefs} $(BUILD_DIST)/util-linux/$(MEMO_PREFIX)/sbin
-	cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{flock,ionice,ggetopt,mcookie,setsid,namei,whereis,grev,isosize,gmesg,hardlink,line,pg} $(BUILD_DIST)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{flock,ionice,ggetopt,mcookie,setsid,namei,whereis,grev,isosize,gmesg,hardlink,gnewgrp,line,pg} $(BUILD_DIST)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	-for lang in '' $(MANPAGE_LANGS); do \
-		cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man1/{flock,ggetopt,mcookie,setsid,namei,whereis,grev,gmesg,hardlink,line,pg}.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man1; \
+		cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man1/{flock,ggetopt,mcookie,setsid,namei,whereis,grev,gnewgrp,gmesg,hardlink,line,pg}.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man1; \
 		cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man8/{newfs,newfs_bfs,newfs_cramfs,newfs_minix,fsck_cramfs,fsck_minix,mkswap,swaplabel,gnologin,blkid,isosize,wipefs}.8$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man8; \
 		cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man5/terminal-colors.d.5$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man5; \
 	done
