@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS       += system-cmds
-SYSTEM-CMDS_VERSION := 916
+SYSTEM-CMDS_VERSION := 918.100.3
 PWDARWIN_COMMIT     := 72ae45ce6c025bc2359035cfb941b177149e88ae
 DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)
 
@@ -22,6 +22,15 @@ system-cmds-setup: setup libxcrypt
 	$(call EXTRACT_TAR,pw-darwin-$(PWDARWIN_COMMIT).tar.zst,pw-darwin-$(PWDARWIN_COMMIT),system-cmds/pw-darwin)
 	wget -q -nc -P $(BUILD_WORK)/system-cmds/include \
 		https://opensource.apple.com/source/launchd/launchd-328/launchd/src/reboot2.h
+	sed -i 's|#include <mach/i386/vm_param.h>|#include <mach/vm_param.h>|' $(BUILD_WORK)/system-cmds/memory_pressure.tproj/memory_pressure.c
+	sed -i '1s/^/typedef char uuid_string_t[37];\n/' $(BUILD_WORK)/system-cmds/{gcore.tproj/{vanilla,convert,dyld,dyld_shared_cache}.c,proc_uuid_policy.tproj/proc_uuid_policy.c}
+	sed -i '1s|^|const char UUID_NULL[37];\n|' $(BUILD_WORK)/system-cmds/gcore.tproj/corefile.c
+ifeq ($(shell [ $(CFVER_WHOLE) -lt 1800 ] && echo 1),1)
+	sed -i 's/task_inspect_for_pid(/task_for_pid(/' $(BUILD_WORK)/system-cmds/vm_purgeable_stat.tproj/vm_purgeable_stat.c
+	sed -i 's/task_read_for_pid(/task_for_pid(/' $(BUILD_WORK)/system-cmds/gcore.tproj/main.c
+	rm -f $(BUILD_WORK)/system-cmds/lsmp.tproj/*
+	wget -q -nc -P$(BUILD_WORK)/system-cmds/lsmp.tproj https://github.com/apple-oss-distributions/system_cmds/raw/8579bd456573d7d205fec79af332a12e12464a60/lsmp.tproj/{common.h,json.h,lsmp.1,lsmp.c,{port,task}_details.c}
+endif
 
 ###
 # TODO: Once I implement pam_chauthtok() in pam_unix.so, use PAM for passwd
@@ -36,38 +45,52 @@ system-cmds: system-cmds-setup libxcrypt openpam libiosexec
 		LC_ALL=C awk -f $(BUILD_WORK)/system-cmds/getconf.tproj/fake-gperf.awk < $$gperf > $(BUILD_WORK)/system-cmds/getconf.tproj/"$$(basename $$gperf .gperf).c" ; \
 	done
 	rm -f $(BUILD_WORK)/system-cmds/passwd.tproj/{od,nis}_passwd.c
-	cd $(BUILD_WORK)/system-cmds && $(CC) $(CFLAGS) -o passwd passwd.tproj/*.c $(LDFLAGS) -lcrypt # -DINFO_PAM=2 -lpam
-	cd $(BUILD_WORK)/system-cmds && $(CC) $(CFLAGS) -o dmesg dmesg.tproj/*.c $(LDFLAGS)
-	cd $(BUILD_WORK)/system-cmds && $(CC) $(CFLAGS) -o sysctl sysctl.tproj/sysctl.c $(LDFLAGS)
-	cd $(BUILD_WORK)/system-cmds && $(CC) $(CFLAGS) -o arch arch.tproj/*.c $(LDFLAGS) -framework CoreFoundation -framework Foundation -lobjc
+	cd $(BUILD_WORK)/system-cmds && $(CC) $(CFLAGS) $(LDFLAGS) -o mslutil.x mslutil/*.c
+	cd $(BUILD_WORK)/system-cmds && $(CC) $(CFLAGS) $(LDFLAGS) -o wait4path.x wait4path/*.c
 	cd $(BUILD_WORK)/system-cmds; \
-	for tproj in ac accton dynamic_pager getconf getty hostinfo iostat login mkfile pwd_mkdb reboot shutdown sync vifs vipw zdump zic nologin taskpolicy lsmp sc_usage ltop; do \
+	for tproj in ac accton arch at atrun cpuctl dmesg dynamic_pager fs_usage gcore getconf getty hostinfo iosim iostat kpgo latency login lskq mean memory_pressure mkfile newgrp proc_uuid_policy purge pwd_mkdb reboot sa shutdown stackshot trace passwd sync sysctl vifs vipw vm_purgeable_stat wordexp-helper zdump zic zlog zprint nologin taskpolicy lsmp sc_usage ltop; do \
 		CFLAGS=; \
 		case $$tproj in \
+			arch) LDFLAGS="-framework CoreFoundation -framework Foundation -lobjc";; \
+			zprint) CFLAGS="-DKERNEL_PRIVATE=1";; \
 			login) CFLAGS="-DUSE_PAM=1" LDFLAGS="-lpam -liosexec";; \
 			dynamic_pager) CFLAGS="-Idynamic_pager.tproj";; \
 			pwd_mkdb) CFLAGS="-D_PW_NAME_LEN=MAXLOGNAME -D_PW_YPTOKEN=\"__YP!\"";; \
+			passwd) LDFLAGS="-lcrypt";; \
 			shutdown) LDFLAGS="-lbsm -liosexec";; \
 			sc_usage) LDFLAGS="-lncurses";; \
+			at) LDFLAGS="-Iat.tproj -DPERM_PATH=\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/cron\" -DDAEMON_UID=1 -DDAEMON_GID=1 -D__FreeBSD__ -DDEFAULT_AT_QUEUE='a' -DDEFAULT_BATCH_QUEUE='b'";; \
+			iosim) LDFLAGS="-Iat.tproj";; \
+			fs_usage) LDFLAGS="-Wno-error-implicit-function-declaration $(BUILD_MISC)/PrivateFrameworks/ktrace.framework/ktrace.tbd";; \
+			zprint) LDFLAGS="$(BUILD_MISC)/PrivateFrameworks/ktrace.framework/ktrace.tbd";; \
+			latency) LDFLAGS="-lncurses -lutil";; \
+			trace) LDFLAGS="-lutil";; \
+			gcore) LDFLAGS="-Igcore.tproj -lutil -lcompression";; \
+			lskq) LDFLAGS="-Ilskq.tproj";; \
+			sa) LDFLAGS="-Isa.tproj -DAHZV1=64";; \
+			zlog) LDFLAGS="-Wno-error-implicit-function-declaration $(BUILD_MISC)/PrivateFrameworks/CoreSymbolication.framework/CoreSymbolication.tbd";; \
 		esac ; \
 		echo "$$tproj" ; \
-		$(CC) $(CFLAGS) -D__kernel_ptr_semantics="" -I$(BUILD_WORK)/system-cmds/include -o $$tproj $$tproj.tproj/*.c -D'__FBSDID(x)=' $$CFLAGS $(LDFLAGS) -framework CoreFoundation -framework IOKit $$LDFLAGS -DPRIVATE; \
+		$(CC) $(CFLAGS) -D__kernel_ptr_semantics="" -I$(BUILD_WORK)/system-cmds/include -o $$tproj $$tproj.tproj/*.c -D'__FBSDID(x)=' $${CFLAGS} $(LDFLAGS) -framework CoreFoundation -framework IOKit $${LDFLAGS} -DPRIVATE -D__APPLE_PRIVATE ; \
 	done
-	mkdir -p $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX){/etc/pam.d,/bin,/sbin,$(MEMO_SUB_PREFIX)/bin,$(MEMO_SUB_PREFIX)/sbin,$(MEMO_SUB_PREFIX)/share/man/man{1,5,8}}
-	install -m755 $(BUILD_WORK)/system-cmds/pagesize.tproj/pagesize.sh $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pagesize
+	mkdir -p $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX){/etc/pam.d,/bin,/sbin,$(MEMO_SUB_PREFIX)/bin,$(MEMO_SUB_PREFIX)/{sbin,libexec,share/man/man{1,5,8}}}
+	install -m755 $(BUILD_WORK)/system-cmds/pagesize.tproj/pagesize.sh $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pagesize
+	install -m755 $(BUILD_WORK)/system-cmds/wait4path.x $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/bin/wait4path
+	install -m755 $(BUILD_WORK)/system-cmds/mslutil.x $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/mslutil
+	cp -a $(BUILD_WORK)/system-cmds/{dmesg,dynamic_pager,nologin,reboot,shutdown} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/sbin
 	cp -a $(BUILD_WORK)/system-cmds/sync $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/bin
-	cp -a $(BUILD_WORK)/system-cmds/{dmesg,dynamic_pager,reboot,nologin,shutdown} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/sbin
+	cp -a $(BUILD_WORK)/system-cmds/{ac,accton,iostat,mkfile,pwd_mkdb,sa,sysctl,taskpolicy,vifs,vipw,zdump,zic} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
+	cp -a $(BUILD_WORK)/system-cmds/{arch,at,cpuctl,fs_usage,gcore,getconf,hostinfo,iosim,kpgo,latency,login,lskq,lsmp,ltop,mean,memory_pressure,newgrp,passwd,proc_uuid_policy,purge,sc_usage,stackshot,trace,vm_purgeable_stat,zlog,zprint} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_WORK)/system-cmds/{atrun,getty,wordexp-helper} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
+	cp -a $(BUILD_WORK)/system-cmds/{{arch,at,fs_usage,gcore,getconf,iosim,latency,login,lskq,lsmp,ltop,memory_pressure,newgrp,pagesize,passwd,proc_uuid_policy,trace,vm_purgeable_stat,vm_stat,zlog,zprint}.tproj,mslutil,wait4path}/*.1 $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_WORK)/system-cmds/{getty,nologin,sysctl}.tproj/*.5 $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5
+	cp -a $(BUILD_WORK)/system-cmds/{ac,accton,atrun,cpuctl,dmesg,dynamic_pager,getty,hostinfo,iostat,mkfile,nologin,nvram,purge,pwd_mkdb,reboot,sa,shutdown,sync,sysctl,taskpolicy,vifs,vipw,zdump,zic}.tproj/*.8 $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
+	$(LN_SR) $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{arch,machine}
 	$(LN_S) $(MEMO_PREFIX)/sbin/reboot $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/sbin/halt
 ifneq ($(MEMO_SUB_PREFIX),) # compat links because we had faultily installed reboot and nologin to /usr/sbin even though they belong in /sbin
 	$(LN_S) $(MEMO_PREFIX)/sbin/reboot $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/reboot
 	$(LN_S) $(MEMO_PREFIX)/sbin/nologin $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/nologin
 endif
-	cp -a $(BUILD_WORK)/system-cmds/{arch,getconf,getty,hostinfo,login,passwd,lsmp,ltop,sc_usage} $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/arch $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/machine
-	cp -a $(BUILD_WORK)/system-cmds/{ac,accton,iostat,mkfile,pwd_mkdb,sysctl,vifs,vipw,zdump,zic,taskpolicy} $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
-	cp -a $(BUILD_WORK)/system-cmds/{arch,getconf,login,passwd,lsmp,sc_usage,ltop}.tproj/*.1 $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/
-	cp -a $(BUILD_WORK)/system-cmds/{getty,nologin,sysctl}.tproj/*.5 $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5/
-	cp -a $(BUILD_WORK)/system-cmds/{ac,accton,dmesg,dynamic_pager,getty,hostinfo,iostat,mkfile,nologin,pwd_mkdb,reboot,shutdown,sync,sysctl,vifs,vipw,zdump,zic,taskpolicy}.tproj/*.8 $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/
 	$(LN_S) reboot.8 $(BUILD_STAGE)/system-cmds$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/halt.8
 	cp -a $(BUILD_MISC)/pam/{login{,.term},passwd} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/etc/pam.d
 	+$(MAKE) -C $(BUILD_WORK)/system-cmds/pw-darwin install \
