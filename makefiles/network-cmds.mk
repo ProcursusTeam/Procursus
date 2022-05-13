@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS          += network-cmds
-NETWORK-CMDS_VERSION := 624
+NETWORK-CMDS_VERSION := 624.100.5
 DEB_NETWORK-CMDS_V   ?= $(NETWORK-CMDS_VERSION)
 
 network-cmds-setup: setup
@@ -16,7 +16,7 @@ network-cmds-setup: setup
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/network-cmds/include/{os,sys,firehose,arm,machine}
 	cp -a $(MACOSX_SYSROOT)/usr/include/nlist.h $(BUILD_WORK)/network-cmds/include
-	mkdir -p $(BUILD_WORK)/network-cmds/include/net/{classq,}
+	mkdir -p $(BUILD_WORK)/network-cmds/include/{net/{classq,},corecrypto}
 	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/{libiosexec,stdlib,unistd,libutil}.h $(BUILD_WORK)/network-cmds/include
 	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/{internal,{base,log}_private.h,log.h} $(BUILD_WORK)/network-cmds/include/os
 	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/firehose/{firehose_types,tracepoint}_private.h $(BUILD_WORK)/network-cmds/include/firehose
@@ -25,19 +25,21 @@ network-cmds-setup: setup
 	$(LN_S) $(BUILD_WORK)/network-cmds/include/{,System}
 
 	@wget -q -nc -P $(BUILD_WORK)/network-cmds/include/net \
-		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8019.41.5/bsd/net/{content_filter,packet_mangler,pktap,net_api_stats,if_ports_used,if_bridgevar,ntstat,if_llreach,route,if,if_var,if_mib,if_arp,if_media,radix,net_perf,if_6lowpan_var,if_bond_var,network_agent,if_fake_var,if_vlan_var,if_fake_var,bpf,lacp,if_bond_internal}.h
+		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8020.101.4/bsd/net/{content_filter,packet_mangler,pktap,net_api_stats,if_ports_used,if_bridgevar,ntstat,if_llreach,route,if,if_var,if_mib,if_arp,if_media,radix,net_perf,if_6lowpan_var,if_bond_var,network_agent,if_fake_var,if_vlan_var,if_fake_var,bpf,lacp,if_bond_internal}.h
 	@wget -q -nc -P $(BUILD_WORK)/network-cmds/include/net/pktsched \
-		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8019.41.5/bsd/net/pktsched/pktsched{,_{cbq,fairq,fq_codel,hfsc,netem,priq,rmclass}}.h
+		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8020.101.4/bsd/net/pktsched/pktsched{,_{cbq,fairq,fq_codel,hfsc,netem,priq,rmclass,fq_codel}}.h
 	@wget -q -nc -P $(BUILD_WORK)/network-cmds/include/net/classq \
-		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8019.41.5/bsd/net/classq/{classq,if_classq,classq_red,classq_blue,classq_rio,classq_sfb}.h
+		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8020.101.4/bsd/net/classq/{classq,if_classq,classq_red,classq_blue,classq_rio,classq_sfb}.h
 	@wget -q -nc -P $(BUILD_WORK)/network-cmds/include/netinet \
-		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8019.41.5/bsd/netinet/{ip_dummynet,ip_flowid,mptcp_var,in_stat,in,tcp,tcp_var,ip_var,udp_var,if_ether,tcpip,icmp6,icmp_var,igmp_var,tcp_seq,tcp_fsm,in_var,in_pcb}.h
+		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8020.101.4/bsd/netinet/{ip_dummynet,ip_flowid,mptcp_var,in_stat,in,tcp,tcp_var,ip_var,udp_var,if_ether,tcpip,icmp6,icmp_var,igmp_var,tcp_seq,tcp_fsm,in_var,in_pcb}.h
 	@wget -q -nc -P $(BUILD_WORK)/network-cmds/include/netinet6 \
-		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8019.41.5/bsd/netinet6/{ip6_var,in6_var,in6,nd6,mld6_var,in6_pcb,raw_ip6}.h
+		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8020.101.4/bsd/netinet6/{ip6_var,in6_var,in6,nd6,mld6_var,in6_pcb,raw_ip6}.h
 	@wget -q -nc -P $(BUILD_WORK)/network-cmds/include/sys \
-		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8019.41.5/bsd/sys/{proc_info,socket,unpcb,kern_event,kern_control,socketvar,sys_domain,mbuf,sockio}.h
+		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8020.101.4/bsd/sys/{proc_info,socket,unpcb,kern_event,kern_control,socketvar,sys_domain,mbuf,sockio}.h
 	@wget -q -nc -P$(BUILD_WORK)/network-cmds/include/mach \
-		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8019.41.5/osfmk/mach/coalition.h
+		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8020.101.4/osfmk/mach/coalition.h
+	@wget -q -nc -P$(BUILD_WORK)/network-cmds/include/corecrypto \
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.101.4/EXTERNAL_HEADERS/corecrypto/cc{,n,sha2,digest,_{config,error}}.h
 
 	sed -i 's/#if INET6/#ifdef INET6/g' $(BUILD_WORK)/network-cmds/include/sys/sockio.h
 	sed -i '/struct kevent_qos_s kqext_kev/d' $(BUILD_WORK)/network-cmds/include/sys/proc_info.h
@@ -54,12 +56,12 @@ network-cmds: network-cmds-setup libpcap
 	for tproj in !(rarpd|ping|spray|rtadvd).tproj; do \
 		tproj=$$(basename $$tproj .tproj); \
 		echo $$tproj; \
-		$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -o $$tproj $$tproj.tproj/!(ns).c ecnprobe/gmt2local.c -DPRIVATE -DINET6 -DPLATFORM_$(BARE_PLATFORM) -D__APPLE_USE_RFC_3542=1 -DUSE_RFC2292BIS=1 -D__APPLE_API_OBSOLETE=1 -DTARGET_OS_EMBEDDED=1 -Dether_ntohost=_old_ether_ntohost -D_VA_LIST -D__OS_EXPOSE_INTERNALS__; \
+		$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -o $$tproj $$tproj.tproj/!(ns).c ecnprobe/gmt2local.c -DPRIVATE=1 -DINET6 -DPLATFORM_$(BARE_PLATFORM) -D__APPLE_USE_RFC_3542=1 -DUSE_RFC2292BIS=1 -D__APPLE_API_OBSOLETE=1 -DTARGET_OS_EMBEDDED=1 -Dether_ntohost=_old_ether_ntohost -D_VA_LIST -D__OS_EXPOSE_INTERNALS__; \
 	done; \
 	for bin in cfilutil dnctl frame_delay pktapctl pktmnglr mptcp_client ecnprobe; do \
 		echo $$bin; \
 		[ "$$bin" = "ecnprobe" ] && LDFLAGS="$(LDFLAGS) -lpcap" || LDFLAGS="$(LDFLAGS)"; \
-		$(CC) -Iinclude -DPRIVATE $(CFLAGS) $$LDFLAGS $${bin}/*.c -o $${bin}/$${bin}; \
+		$(CC) -Iinclude -DPRIVATE=1 $(CFLAGS) $$LDFLAGS $${bin}/*.c -o $${bin}/$${bin}; \
 	done
 	cp -a $(BUILD_WORK)/network-cmds/kdumpd $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
 	# FHS reminder:
