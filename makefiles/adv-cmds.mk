@@ -16,19 +16,24 @@ adv-cmds-setup: setup
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/adv-cmds/include
 	cp -a $(MACOSX_SYSROOT)/usr/include/tzfile.h $(BUILD_WORK)/adv-cmds/include
-	wget -q -nc -P$(BUILD_WORK)/adv-cmds/include https://github.com/apple-oss-distributions/Libc/raw/Libc-1507.100.9/nls/FreeBSD/msgcat.h
+	wget -q -nc -P$(BUILD_WORK)/adv-cmds/include https://github.com/apple-oss-distributions/Libc/raw/Libc-1507.100.9/{nls/FreeBSD/msgcat,locale/FreeBSD/collate}.h
+	wget -q -nc -P$(BUILD_WORK)/adv-cmds/colldef https://github.com/apple-oss-distributions/Liby/raw/Liby-20/libyywrap.c
 
 ifneq ($(wildcard $(BUILD_WORK)/adv-cmds/.build_complete),)
 adv-cmds:
 	@echo "Using previously built adv-cmds."
 else
 adv-cmds: adv-cmds-setup ncurses
+	cd $(BUILD_WORK)/adv-cmds/colldef; \
+		yacc -d parse.y; \
+		lex scan.l;
 	cd $(BUILD_WORK)/adv-cmds; \
 	$(CXX) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/locale locale/*.cc; \
 	$(INSTALL) -Dm644 locale/locale.1 $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
 	$(CC) $(CFLAGS) -L $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/tabs tabs/*.c -lncursesw; \
 	$(INSTALL) -Dm644 tabs/tabs.1 $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
 	for bin in finger last lsvfs cap_mkdb gencat colldef; do \
+		echo $${bin}; \
 		$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -D'__FBSDID(x)='; \
 		$(INSTALL) -Dm644 $$bin/$$bin.1 $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
 	done; \
