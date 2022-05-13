@@ -69,52 +69,40 @@ endif
 		mv $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/fsck{.,_}$${fs}; \
 		sed -i -e 's/_fsck.'$${fs}'_module()/_fsck_'$${fs}'_module()/' -e 's/complete -F _fsck.'$${fs}'_module fsck.'$${fs}'/complete -F _fsck_'$${fs}'_module fsck_'$${fs}'/' $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/fsck_$${fs}; \
 	done
-	for sbin in fdisk nologin; do \
-		mv $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)/sbin/{,g}$${sbin}; \
-		mv $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/{,g}$${sbin}.8; \
-	done
-	mv $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/{,g}fdisk;
-	sed -i -e 's/_fdisk_module()/_gfdisk_module()/' -e 's/complete -F _fdisk_module fdisk/complete -F _gfdisk_module gfdisk/' $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/gfdisk
-	for bin in colrm col renice cal logger ul getopt colcrt rev look mesg newgrp column hexdump wall; do \
-		mv $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{,g}$${bin}; \
-		mv $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/{,g}$${bin}.1; \
-		mv $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/{,g}$${bin}; \
-		sed -i -e 's/_'$${bin}'_module()/_g'$${bin}'_module()/' -e 's/complete -F _'$${bin}'_module '$${bin}'/complete -F _g'$${bin}'_module g'$${bin}'/' $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/g$${bin}; \
-	done
 	$(call AFTER_BUILD,copy)
 endif
 
 util-linux-package: util-linux-stage
 	# util-linux.mk Package Structure
-	rm -rf $(BUILD_DIST)/{util-linux,util-linux-locales,fdisk,bsdutils,bsdextrautils,libfdisk1,libfdisk-dev,libblkid1,libblkid-dev,libsmartcols1,libsmartcols-dev,libuuid1,uuid-dev,uuid-runtime}
-	mkdir -p $(BUILD_DIST)/{util-linux,fdisk,bsdutils,bsdextrautils,libfdisk1,libfdisk-dev,libblkid1,libblkid-dev,libsmartcols1,libsmartcols-dev,libuuid1,uuid-dev,uuid-runtime}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/{$(shell echo ",$$(echo '$(MANPAGE_LANGS)' | sed 's/ /,/g')")}/man{1,3,5,8}
+	rm -rf $(BUILD_DIST)/{util-linux,util-linux-locales,fdisk,bsdutils,libfdisk1,libfdisk-dev,libblkid1,libblkid-dev,libsmartcols1,libsmartcols-dev,libuuid1,uuid-dev,uuid-runtime}
+	mkdir -p $(BUILD_DIST)/{util-linux,fdisk,bsdutils,libfdisk1,libfdisk-dev,libblkid1,libblkid-dev,libsmartcols1,libsmartcols-dev,libuuid1,uuid-dev,uuid-runtime}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/{$(shell echo ",$$(echo '$(MANPAGE_LANGS)' | sed 's/ /,/g')")}/man{1,3,5,8}
 	mkdir -p $(BUILD_DIST)/util-linux-locales/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	mkdir -p $(BUILD_DIST)/{util-linux,bsdutils,bsdextrautils,uuid-runtime}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/{man/man1,bash-completion/completions}}
+	mkdir -p $(BUILD_DIST)/{util-linux,bsdutils,uuid-runtime}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/{man/man1,bash-completion/completions}}
 	mkdir -p $(BUILD_DIST)/{util-linux,fdisk}/$(MEMO_PREFIX)/{sbin,$(MEMO_SUB_PREFIX)/share/{bash-completion/completions,man/man8}}
-	mkdir -p $(BUILD_DIST)/{util-linux,fdisk,bsdutils,bsdextrautils,libfdisk1,libfdisk-dev,libblkid1,libblkid-dev,libsmartcols1,libsmartcols-dev,libuuid1,uuid-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	mkdir -p $(BUILD_DIST)/{util-linux,fdisk,bsdutils,libfdisk1,libfdisk-dev,libblkid1,libblkid-dev,libsmartcols1,libsmartcols-dev,libuuid1,uuid-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	mkdir -p $(BUILD_DIST)/{uuid-dev,libblkid-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3
 	mkdir -p $(BUILD_DIST)/lib{fdisk,blkid,smartcols,uuid}1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	mkdir -p $(BUILD_DIST)/{uuid-dev,libfdisk-dev,libblkid-dev,libsmartcols-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pkgconfig,include}
 
 	# util-linux.mk Prep util-linux
-	cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)/sbin/{newfs,newfs_bfs,newfs_cramfs,newfs_minix,fsck_cramfs,fsck_minix,mkswap,swaplabel,gnologin,blkid,wipefs} $(BUILD_DIST)/util-linux/$(MEMO_PREFIX)/sbin
-	cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{flock,ionice,ggetopt,mcookie,setsid,namei,whereis,grev,isosize,gmesg,hardlink,gnewgrp,line,pg} $(BUILD_DIST)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)/sbin/{newfs,newfs_bfs,newfs_cramfs,newfs_minix,fsck_cramfs,fsck_minix,mkswap,swaplabel,blkid,wipefs} $(BUILD_DIST)/util-linux/$(MEMO_PREFIX)/sbin
+	cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{flock,ionice,mcookie,setsid,namei,isosize,hardlink,line,pg} $(BUILD_DIST)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	-for lang in '' $(MANPAGE_LANGS); do \
-		cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man1/{flock,ggetopt,mcookie,setsid,namei,whereis,grev,gnewgrp,gmesg,hardlink,line,pg}.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man1; \
-		cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man8/{newfs,newfs_bfs,newfs_cramfs,newfs_minix,fsck_cramfs,fsck_minix,mkswap,swaplabel,gnologin,blkid,isosize,wipefs}.8$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man8; \
+		cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man1/{flock,mcookie,setsid,namei,hardlink,line,pg}.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man1; \
+		cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man8/{newfs,newfs_bfs,newfs_cramfs,newfs_minix,fsck_cramfs,fsck_minix,mkswap,swaplabel,blkid,isosize,wipefs}.8$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man8; \
 		cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man5/terminal-colors.d.5$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man5; \
 	done
 	cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/ionice.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
-	cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/{newfs,newfs_bfs,newfs_cramfs,newfs_minix,fsck_cramfs,fsck_minix,mkswap,swaplabel,blkid,isosize,wipefs,flock,ggetopt,mcookie,setsid,namei,whereis,grev,gmesg,hardlink,pg} $(BUILD_DIST)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions
+	cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/{newfs,newfs_bfs,newfs_cramfs,newfs_minix,fsck_cramfs,fsck_minix,mkswap,swaplabel,blkid,isosize,wipefs,flock,mcookie,setsid,namei,hardlink,pg} $(BUILD_DIST)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions
 
 	# util-linux.mk Prep util-linux-locales
 	cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale $(BUILD_DIST)/util-linux-locales/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
 	# util-linux.mk Prep fdisk
-	cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)/sbin/{g,c,s}fdisk $(BUILD_DIST)/fdisk/$(MEMO_PREFIX)/sbin
-	cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/{g,c,s}fdisk $(BUILD_DIST)/fdisk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/
+	cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)/sbin/{c,s}fdisk $(BUILD_DIST)/fdisk/$(MEMO_PREFIX)/sbin
+	cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/{c,s}fdisk $(BUILD_DIST)/fdisk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/
 	-for lang in '' $(MANPAGE_LANGS); do \
-		cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man8/{g,c,s}fdisk.8$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/fdisk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man8; \
+		cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man8/{c,s}fdisk.8$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/fdisk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man8; \
 	done
 
 	# util-linux.mk Prep libblkid-dev
@@ -155,17 +143,10 @@ util-linux-package: util-linux-stage
 	done
 
 	# util-linux.mk Prep bsdutils
-	cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{glogger,scriptreplay,gwall,grenice} $(BUILD_DIST)/bsdutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/{glogger,scriptreplay,gwall,grenice}  $(BUILD_DIST)/bsdutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/
+	cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/scriptreplay $(BUILD_DIST)/bsdutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/scriptreplay  $(BUILD_DIST)/bsdutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/
 	-for lang in '' $(MANPAGE_LANGS); do \
-		cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man1/{glogger,scriptreplay,gwall,grenice}.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/bsdutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man1; \
-	done
-
-	# util-linux.mk Prep bsdextrautils
-	cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/g{col,ul,colcrt,colrm,hexdump,look} $(BUILD_DIST)/bsdextrautils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/g{col,ul,colcrt,colrm,hexdump,look} $(BUILD_DIST)/bsdextrautils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/
-	-for lang in '' $(MANPAGE_LANGS); do \
-		cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man1/g{col,ul,colcrt,colrm,hexdump,look}.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/bsdextrautils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man1; \
+		cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man1/scriptreplay.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/bsdutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/$${lang}/man1; \
 	done
 
 	# util-linux.mk Prep libfdisk1
@@ -177,7 +158,7 @@ util-linux-package: util-linux-stage
 	cp -a $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libfdisk $(BUILD_DIST)/libfdisk-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 
 	# Remove empty man directories
-	for pkg in util-linux fdisk bsdutils bsdextrautils libfdisk1 libfdisk-dev libblkid1 libblkid-dev libsmartcols1 libsmartcols-dev libuuid1 uuid-dev uuid-runtime; do \
+	for pkg in util-linux fdisk bsdutils libfdisk1 libfdisk-dev libblkid1 libblkid-dev libsmartcols1 libsmartcols-dev libuuid1 uuid-dev uuid-runtime; do \
 		if find $(BUILD_DIST)/$${pkg}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f | grep . > /dev/null; then \
 			for section in 1 3 5 8; do \
 				if find $(BUILD_DIST)/$${pkg}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man$${section} -type f | grep . > /dev/null; then \
@@ -202,7 +183,6 @@ util-linux-package: util-linux-stage
 	$(call SIGN,util-linux,dd.xml)
 	$(call SIGN,fdisk,dd.xml)
 	$(call SIGN,bsdutils,general.xml)
-	$(call SIGN,bsdextrautils,general.xml)
 	$(call SIGN,libfdisk1,general.xml)
 	$(call SIGN,libsmartcols1,general.xml)
 	$(call SIGN,libuuid1,general.xml)
@@ -213,7 +193,6 @@ util-linux-package: util-linux-stage
 	$(call PACK,util-linux-locales,DEB_UTIL_LINUX_V)
 	$(call PACK,fdisk,DEB_UTIL_LINUX_V)
 	$(call PACK,bsdutils,DEB_UTIL_LINUX_V)
-	$(call PACK,bsdextrautils,DEB_UTIL_LINUX_V)
 	$(call PACK,libfdisk1,DEB_UTIL_LINUX_V)
 	$(call PACK,libfdisk-dev,DEB_UTIL_LINUX_V)
 	$(call PACK,libblkid1,DEB_UTIL_LINUX_V)
@@ -225,6 +204,6 @@ util-linux-package: util-linux-stage
 	$(call PACK,uuid-runtime,DEB_UTIL_LINUX_V)
 
 	# util-linux.mk Build cleanup
-	rm -rf $(BUILD_DIST)/{util-linux,util-linux-locales,fdisk,bsdutils,bsdextrautils,libfdisk1,libfdisk-dev,libblkid1,libblkid-dev,libsmartcols1,libsmartcols-dev,libuuid1,uuid-dev,uuid-runtime}
+	rm -rf $(BUILD_DIST)/{util-linux,util-linux-locales,fdisk,bsdutils,libfdisk1,libfdisk-dev,libblkid1,libblkid-dev,libsmartcols1,libsmartcols-dev,libuuid1,uuid-dev,uuid-runtime}
 
 .PHONY: util-linux util-linux-package
