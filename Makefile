@@ -1305,7 +1305,8 @@ setup:
 		https://opensource.apple.com/source/libplatform/libplatform-126.50.8/include/os/internal/{internal_shared,atomic,crashlog}.h
 
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.101.4/bsd/sys/{fcntl,fsctl,spawn_internal,resource,event,kdebug,proc,proc_info,pgo,proc_uuid_policy,acct,stackshot,event,mbuf,kern_memorystatus,reason}.h
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.101.4/bsd/sys/{fcntl,fsctl,spawn_internal,resource,event,kdebug,proc,proc_info,pgo,proc_uuid_policy,acct,stackshot,event,mbuf,kern_memorystatus,reason}.h \
+		https://opensource.apple.com/source/xnu/xnu-1228.9.59/bsd/sys/mtio.h
 
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/uuid \
 		https://opensource.apple.com/source/Libc/Libc-1353.11.2/uuid/namespace.h

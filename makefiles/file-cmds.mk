@@ -10,19 +10,17 @@ ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 FILE-CMDS_VERSION := 272.250.1
 DEB_FILE-CMDS_V   ?= $(FILE-CMDS_VERSION)-3
 else
-FILE-CMDS_VERSION := 352.40.6
+FILE-CMDS_VERSION := 353.100.22
 DEB_FILE-CMDS_V   ?= $(FILE-CMDS_VERSION)
 endif
 
 file-cmds-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,file_cmds,$(FILE-CMDS_VERSION),file_cmds-$(FILE-CMDS_VERSION))
 	$(call EXTRACT_TAR,file_cmds-$(FILE-CMDS_VERSION).tar.gz,file_cmds-file_cmds-$(FILE-CMDS_VERSION),file-cmds)
-	mkdir -p $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
+	mkdir -p $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man{1,8}}
 	mkdir -p $(BUILD_WORK)/file-cmds/ipcs/sys
 	@wget -q -nc -P $(BUILD_WORK)/file-cmds/ipcs/sys \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/ipcs.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/sem_internal.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/shm_internal.h
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.101.4/bsd/sys/{shm_internal,sem_internal,ipcs}.h
 	sed -i 's/user64_time_t/user_time_t/g' $(BUILD_WORK)/file-cmds/ipcs/sys/sem_internal.h
 	sed -i 's/user32_time_t/user_time_t/g' $(BUILD_WORK)/file-cmds/ipcs/sys/sem_internal.h
 	sed -i 's/user32_addr_t/user_addr_t/g' $(BUILD_WORK)/file-cmds/ipcs/sys/shm_internal.h
@@ -34,10 +32,15 @@ file-cmds:
 else
 file-cmds: file-cmds-setup
 	cd $(BUILD_WORK)/file-cmds; \
-	for bin in chflags compress ipcrm ipcs pax; do \
+	for bin in chflags compress ipcrm ipcs pax xattr; do \
+		echo $${bin}; \
 		$(CC) $(CFLAGS) -isystem include -o $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c $(LDFLAGS) -D'__FBSDID(x)=' -D__POSIX_C_SOURCE; \
 		$(INSTALL) -Dm644 $$bin/$$bin.1 $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/; \
-	done
+	done; \
+	echo rmt && $(CC) $(CFLAGS) -isystem include -o $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/rmt rmt/*.c $(LDFLAGS) -D'__FBSDID(x)=' -D__POSIX_C_SOURCE; \
+		$(INSTALL) -Dm644 rmt/rmt.8 $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/; \
+	echo shar && $(INSTALL) -Dm755 shar/shar.sh $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/shar; \
+		$(INSTALL) -Dm644 shar/shar.1 $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/; \
 	$(call AFTER_BUILD)
 endif
 
