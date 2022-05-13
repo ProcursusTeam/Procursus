@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += doc-cmds
-DOC-CMDS_VERSION := 55
+DOC-CMDS_VERSION := 57
 DEB_DOC-CMDS_V   ?= $(DOC-CMDS_VERSION)
 
 doc-cmds-setup: setup
