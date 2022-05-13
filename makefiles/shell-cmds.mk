@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS      += shell-cmds
-SHELL-CMDS_VERSION := 234
+SHELL-CMDS_VERSION := 240.100.15
 DEB_SHELL-CMDS_V   ?= $(SHELL-CMDS_VERSION)
 
 shell-cmds-setup: setup
@@ -26,14 +26,14 @@ shell-cmds: shell-cmds-setup openpam
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/su su/su.c -D'__FBSDID(x)=' $(LDFLAGS) -lpam; \
 	cp -a su/su.1 $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
 	cp -a $(BUILD_MISC)/pam/su $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)/etc/pam.d; \
-	for bin in killall renice script time which getopt what jot apply shlock systime w whereis; do \
+	for bin in killall renice script time which getopt what jot apply lastcomm systime shlock systime w whereis; do \
 		echo $$bin; \
 		$(CC) $(CFLAGS) $(LDFLAGS) -o $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -DHAVE_UTMPX=1 -save-temps; \
 		cp -a $$bin/$$bin.1 $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 2>/dev/null; \
 		cp -a $$bin/$$bin.8 $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8 2>/dev/null; \
 	done; \
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/path_helper path_helper/path_helper.c -save-temps; \
-	cp -a path_helper/path_helper.8 $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8; \
+	cp -a path_helper/path_helper.8 $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8;
 	$(call AFTER_BUILD)
 endif
 

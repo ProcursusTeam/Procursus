@@ -1243,7 +1243,8 @@ setup:
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/EXTERNAL_HEADERS/mach-o/nlist.h \
 		https://raw.githubusercontent.com/apple-oss-distributions/Libc/main/gen/get_compat.h \
 		https://github.com/apple-oss-distributions/libmalloc/raw/main/private/stack_logging.h \
-		https://github.com/apple-oss-distributions/xnu/raw/main/osfmk/mach/vm_statistics.h
+		https://github.com/apple-oss-distributions/xnu/raw/main/osfmk/mach/vm_statistics.h \
+		https://github.com/apple-oss-distributions/Libc/raw/main/include/struct.h
 
 
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach-o \
