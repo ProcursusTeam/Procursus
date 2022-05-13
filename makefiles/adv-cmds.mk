@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS      += adv-cmds
-ADV-CMDS_VERSION := 178
+ADV-CMDS_VERSION := 181
 DEB_ADV-CMDS_V   ?= $(ADV-CMDS_VERSION)
 
 adv-cmds-setup: setup
@@ -16,6 +16,7 @@ adv-cmds-setup: setup
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/adv-cmds/include
 	cp -a $(MACOSX_SYSROOT)/usr/include/tzfile.h $(BUILD_WORK)/adv-cmds/include
+	wget -q -nc -P$(BUILD_WORK)/adv-cmds/include https://github.com/apple-oss-distributions/Libc/raw/Libc-1507.100.9/nls/FreeBSD/msgcat.h
 
 ifneq ($(wildcard $(BUILD_WORK)/adv-cmds/.build_complete),)
 adv-cmds:
@@ -27,7 +28,7 @@ adv-cmds: adv-cmds-setup ncurses
 	$(INSTALL) -Dm644 locale/locale.1 $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
 	$(CC) $(CFLAGS) -L $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/tabs tabs/*.c -lncursesw; \
 	$(INSTALL) -Dm644 tabs/tabs.1 $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
-	for bin in finger last lsvfs cap_mkdb; do \
+	for bin in finger last lsvfs cap_mkdb gencat colldef; do \
 		$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem include -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -D'__FBSDID(x)='; \
 		$(INSTALL) -Dm644 $$bin/$$bin.1 $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
 	done; \
