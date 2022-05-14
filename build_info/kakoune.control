@@ -5,7 +5,7 @@ Maintainer: @DEB_MAINTAINER@
 Author: Maxime Coste <mawww@kakoune.org>
 Section: Text_Editors
 Priority: optional
-Homepage: http://kakoune.org/
+Homepage: https://kakoune.org/
 Description: Vim-inspired, selection-oriented code editor
  Kakoune is a code editor heavily inspired by Vim; as such most of its
  commands are similar to vi’s ones, and it shares Vi’s "keystrokes as
