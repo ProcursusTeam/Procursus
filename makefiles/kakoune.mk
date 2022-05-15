@@ -17,8 +17,9 @@ else
 kakoune: kakoune-setup
 	+$(MAKE) -C $(BUILD_WORK)/kakoune \
 		CXX="$(CXX)" \
-		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
+		LDFLAGS="$(patsubst -L/opt/local/lib,,$(LDFLAGS))"
 	+$(MAKE) -C $(BUILD_WORK)/kakoune install \
+		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		DESTDIR="$(BUILD_STAGE)/kakoune"
 	$(call AFTER_BUILD)
 endif
