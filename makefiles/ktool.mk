@@ -3,14 +3,13 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += ktool
-KTOOL_VERSION  := 1.2.1
+KTOOL_VERSION  := 1.3.0
 DEB_KTOOL_V    ?= $(KTOOL_VERSION)
 
 ktool-setup: setup
 	$(call GITHUB_ARCHIVE,cxnder,ktool,$(KTOOL_VERSION),$(KTOOL_VERSION))
 	$(call EXTRACT_TAR,ktool-$(KTOOL_VERSION).tar.gz,ktool-$(KTOOL_VERSION),ktool)
 	$(call DO_PATCH,ktool,ktool,-p1)
-	mkdir -p $(BUILD_STAGE)/ktool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 ifneq ($(wildcard $(BUILD_WORK)/ktool/.build_complete),)
 ktool:
@@ -25,7 +24,7 @@ ktool: ktool-setup python3-kimg4 python3-pyaes pygments python3
 		--install-layout=deb \
 		--root="$(BUILD_STAGE)/ktool" \
 		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
-	cp -a $(BUILD_MISC)/ktool/ktool.1 $(BUILD_STAGE)/ktool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	$(INSTALL) -Dm644 $(BUILD_MISC)/ktool/ktool.1 -t $(BUILD_STAGE)/ktool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	find $(BUILD_STAGE)/ktool -name __pycache__ -prune -exec rm -rf {} \;
 	$(call AFTER_BUILD)
 endif
