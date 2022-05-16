@@ -48,11 +48,10 @@ system-cmds: system-cmds-setup libxcrypt openpam libiosexec
 	cd $(BUILD_WORK)/system-cmds && $(CC) $(CFLAGS) $(LDFLAGS) -o mslutil.x mslutil/*.c
 	cd $(BUILD_WORK)/system-cmds && $(CC) $(CFLAGS) $(LDFLAGS) -o wait4path.x wait4path/*.c
 	cd $(BUILD_WORK)/system-cmds; \
-	for tproj in ac accton arch at atrun cpuctl dmesg dynamic_pager fs_usage gcore getconf getty hostinfo iosim iostat kpgo latency login lskq mean memory_pressure mkfile newgrp proc_uuid_policy purge pwd_mkdb reboot sa shutdown stackshot trace passwd sync sysctl vifs vipw vm_purgeable_stat wordexp-helper zdump zic zlog zprint nologin taskpolicy lsmp sc_usage ltop; do \
+	for tproj in ac accton arch at atrun cpuctl dmesg dynamic_pager fs_usage gcore getconf getty hostinfo iosim iostat kpgo latency login lskq mean memory_pressure mkfile newgrp proc_uuid_policy purge pwd_mkdb reboot sa shutdown stackshot trace passwd sync sysctl vifs vipw vm_purgeable_stat wordexp-helper zdump zic zlog nologin taskpolicy lsmp sc_usage ltop; do \
 		CFLAGS=; \
 		case $$tproj in \
 			arch) LDFLAGS="-framework CoreFoundation -framework Foundation -lobjc";; \
-			zprint) CFLAGS="-DKERNEL_PRIVATE=1";; \
 			login) CFLAGS="-DUSE_PAM=1" LDFLAGS="-lpam -liosexec";; \
 			dynamic_pager) CFLAGS="-Idynamic_pager.tproj";; \
 			pwd_mkdb) CFLAGS="-D_PW_NAME_LEN=MAXLOGNAME -D_PW_YPTOKEN=\"__YP!\"";; \
@@ -62,7 +61,6 @@ system-cmds: system-cmds-setup libxcrypt openpam libiosexec
 			at) LDFLAGS="-Iat.tproj -DPERM_PATH=\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/cron\" -DDAEMON_UID=1 -DDAEMON_GID=1 -D__FreeBSD__ -DDEFAULT_AT_QUEUE='a' -DDEFAULT_BATCH_QUEUE='b'";; \
 			iosim) LDFLAGS="-Iat.tproj";; \
 			fs_usage) LDFLAGS="-Wno-error-implicit-function-declaration $(BUILD_MISC)/PrivateFrameworks/ktrace.framework/ktrace.tbd";; \
-			zprint) LDFLAGS="$(BUILD_MISC)/PrivateFrameworks/ktrace.framework/ktrace.tbd";; \
 			latency) LDFLAGS="-lncurses -lutil";; \
 			trace) LDFLAGS="-lutil";; \
 			gcore) LDFLAGS="-Igcore.tproj -lutil -lcompression";; \
@@ -81,7 +79,7 @@ system-cmds: system-cmds-setup libxcrypt openpam libiosexec
 	cp -a $(BUILD_WORK)/system-cmds/{dmesg,dynamic_pager,nologin,reboot,shutdown} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/sbin
 	cp -a $(BUILD_WORK)/system-cmds/sync $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/bin
 	cp -a $(BUILD_WORK)/system-cmds/{ac,accton,iostat,mkfile,pwd_mkdb,sa,sysctl,taskpolicy,vifs,vipw,zdump,zic} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
-	cp -a $(BUILD_WORK)/system-cmds/{arch,at,cpuctl,fs_usage,gcore,getconf,hostinfo,iosim,kpgo,latency,login,lskq,lsmp,ltop,mean,memory_pressure,newgrp,passwd,proc_uuid_policy,purge,sc_usage,stackshot,trace,vm_purgeable_stat,zlog,zprint} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_WORK)/system-cmds/{arch,at,cpuctl,fs_usage,gcore,getconf,hostinfo,iosim,kpgo,latency,login,lskq,lsmp,ltop,mean,memory_pressure,newgrp,passwd,proc_uuid_policy,purge,sc_usage,stackshot,trace,vm_purgeable_stat,zlog} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_WORK)/system-cmds/{atrun,getty,wordexp-helper} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
 	cp -a $(BUILD_WORK)/system-cmds/{{arch,at,fs_usage,gcore,getconf,iosim,latency,login,lskq,lsmp,ltop,memory_pressure,newgrp,pagesize,passwd,proc_uuid_policy,trace,vm_purgeable_stat,vm_stat,zlog,zprint}.tproj,mslutil,wait4path}/*.1 $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_WORK)/system-cmds/{getty,nologin,sysctl}.tproj/*.5 $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5
@@ -123,7 +121,6 @@ endif
 	$(LDID) -S$(BUILD_MISC)/entitlements/taskpolicy.xml $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/taskpolicy
 	$(LDID) -S$(BUILD_MISC)/entitlements/kextstat.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/zlog
 	$(LDID) -S$(BUILD_MISC)/entitlements/fs_usage.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/fs_usage
-	$(LDID) -S$(BUILD_MISC)/entitlements/zprint.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/zprint
 	$(LDID) -S$(BUILD_MISC)/entitlements/vm_purgeable_stat.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/vm_purgeable_stat
 	$(LDID) -S$(BUILD_MISC)/entitlements/login.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/login
 	$(LDID) -S$(BUILD_MISC)/entitlements/passwd.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/passwd
