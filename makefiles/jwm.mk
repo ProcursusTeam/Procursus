@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += jwm
-JWM_VERSION := 2.3.7
+JWM_VERSION := 2.4.1
 DEB_JWM_V   ?= $(JWM_VERSION)
 
 jwm-setup: setup
@@ -26,6 +26,7 @@ jwm: jwm-setup glib2.0 gettext libx11 freetype libxinerama cairo libxext libxmu 
 		--enable-jpeg \
 		--enable-cairo \
 		--enable-fribidi \
+		ac_cv_func_malloc_0_nonnull=yes \
 		CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/freetype2 $(CFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/jwm
 	+$(MAKE) -C $(BUILD_WORK)/jwm install \
