@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += libbdplus
-LIBBDPLUS_VERSION := 0.1.2
+LIBBDPLUS_VERSION := 0.2.0
 DEB_LIBBDPLUS_V   ?= $(LIBBDPLUS_VERSION)
 
 libbdplus-setup: setup
