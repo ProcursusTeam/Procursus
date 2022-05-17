@@ -4,7 +4,7 @@ endif
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 SUBPROJECTS     += libaacs
-LIBAACS_VERSION := 0.11.0
+LIBAACS_VERSION := 0.11.1
 DEB_LIBAACS_V   ?= $(LIBAACS_VERSION)
 
 libaacs-setup: setup
