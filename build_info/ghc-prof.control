@@ -1,0 +1,18 @@
+Package: ghc-prof
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_GHC_V@
+Depends: ghc (= @DEB_GHC_V@)
+Section: Development
+Description: Profiling libraries for the Glasgow Haskell Compilation system
+ The Glorious Glasgow Haskell Compilation system (GHC) is a compiler for
+ Haskell.
+ .
+ Haskell is "the" standard lazy functional programming language.  The language
+ definition and additional documentation can be found in the `haskell-doc'
+ package.  Alternatively, there is an online version at
+ http://haskell.org/onlinereport/.
+ .
+ This package contains additional profiling libraries. They are only needed,
+ if you want to take a closer look on where exactly your program burns CPU
+ cycles.

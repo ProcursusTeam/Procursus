@@ -1,0 +1,64 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	5.1
+Patch-ID:	bash51-016
+
+Bug-Reported-by:	Vincent Menegaux <vincent.menegaux@gmail.com>
+Bug-Reference-ID:
+Bug-Reference-URL:	https://savannah.gnu.org/patch/?10070
+
+Bug-Description:
+
+Multiple `!' tokens should toggle negation of an expression in a [[
+conditional command, instead of simply negating the expression.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-20210515/parse.y	2021-04-21 15:32:50.000000000 -0400
+--- parse.y	2021-05-24 11:53:30.000000000 -0400
+***************
+*** 4797,4801 ****
+        term = cond_term ();
+        if (term)
+! 	term->flags |= CMD_INVERT_RETURN;
+      }
+    else if (tok == WORD && yylval.word->word[0] == '-' && yylval.word->word[1] && yylval.word->word[2] == 0 && test_unop (yylval.word->word))
+--- 4797,4801 ----
+        term = cond_term ();
+        if (term)
+! 	term->flags ^= CMD_INVERT_RETURN;
+      }
+    else if (tok == WORD && yylval.word->word[0] == '-' && yylval.word->word[1] && yylval.word->word[2] == 0 && test_unop (yylval.word->word))
+
+*** ../bash-20210515/y.tab.c	2021-05-14 15:50:41.000000000 -0400
+--- y.tab.c	2021-05-24 16:35:55.000000000 -0400
+***************
+*** 7091,7095 ****
+        term = cond_term ();
+        if (term)
+! 	term->flags |= CMD_INVERT_RETURN;
+      }
+    else if (tok == WORD && yylval.word->word[0] == '-' && yylval.word->word[1] && yylval.word->word[2] == 0 && test_unop (yylval.word->word))
+--- 7091,7095 ----
+        term = cond_term ();
+        if (term)
+! 	term->flags ^= CMD_INVERT_RETURN;
+      }
+    else if (tok == WORD && yylval.word->word[0] == '-' && yylval.word->word[1] && yylval.word->word[2] == 0 && test_unop (yylval.word->word))
+
+*** ../bash-5.1/patchlevel.h	2020-06-22 14:51:03.000000000 -0400
+--- patchlevel.h	2020-10-01 11:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 15
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 16
+  
+  #endif /* _PATCHLEVEL_H_ */
