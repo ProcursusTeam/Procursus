@@ -1,4 +1,4 @@
-Package: dos2unix 
+Package: dos2unix
 Version: @DEB_DOS2UNIX_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@

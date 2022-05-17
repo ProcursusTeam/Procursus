@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += xterm
-XTERM_VERSION := 367
+XTERM_VERSION := 368
 DEB_XTERM_V   ?= $(XTERM_VERSION)
 
 xterm-setup: setup
@@ -25,22 +25,22 @@ xterm: xterm-setup libx11 libxau libxmu xorgproto xbitmaps gettext ncurses libxa
 	+$(MAKE) -C $(BUILD_WORK)/xterm
 	+$(MAKE) -C $(BUILD_WORK)/xterm install \
 		DESTDIR=$(BUILD_STAGE)/xterm
-	touch $(BUILD_WORK)/xterm/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 xterm-package: xterm-stage
 # xterm.mk Package Structure
 	rm -rf $(BUILD_DIST)/xterm
-	
+
 # xterm.mk Prep xterm
 	cp -a $(BUILD_STAGE)/xterm $(BUILD_DIST)
-	
+
 # xterm.mk Sign
 	$(call SIGN,xterm,general.xml)
-	
+
 # xterm.mk Make .debs
 	$(call PACK,xterm,DEB_XTERM_V)
-	
+
 # xterm.mk Build cleanup
 	rm -rf $(BUILD_DIST)/xterm
 

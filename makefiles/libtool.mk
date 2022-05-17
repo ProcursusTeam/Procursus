@@ -29,9 +29,7 @@ libtool: libtool-setup
 	+$(MAKE) -C $(BUILD_WORK)/libtool
 	+$(MAKE) -C $(BUILD_WORK)/libtool install \
 		DESTDIR=$(BUILD_STAGE)/libtool
-	+$(MAKE) -C $(BUILD_WORK)/libtool install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libtool/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 libtool-package: libtool-stage
 	# libtool.mk Package Structure

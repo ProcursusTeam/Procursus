@@ -22,9 +22,7 @@ libressl: libressl-setup
 	+$(MAKE) -C $(BUILD_WORK)/libressl
 	+$(MAKE) -C $(BUILD_WORK)/libressl install \
 		DESTDIR=$(BUILD_STAGE)/libressl
-	+$(MAKE) -C $(BUILD_WORK)/libressl install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libressl/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libressl-package: libressl-stage

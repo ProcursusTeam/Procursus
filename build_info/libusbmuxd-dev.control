@@ -6,4 +6,3 @@ Depends: libusbmuxd6 (= @DEB_LIBUSBMUXD_V@), libplist-dev (>= 2.2.0)
 Section: Development
 Priority: standard
 Description: USB multiplexor daemon for iPhone and iPod Touch devices - devel
-Tag: purpose::library, role::developer

@@ -19,13 +19,14 @@ tmux: tmux-setup ncurses libevent libutf8proc
 	cd $(BUILD_WORK)/tmux && autoreconf -fi
 	cd $(BUILD_WORK)/tmux && ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		--disable-static \
 		--enable-utf8proc \
 		ac_cv_func_strtonum=no \
 		LIBNCURSES_LIBS="-lncursesw" \
 		LIBNCURSES_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw"
 	+$(MAKE) -C $(BUILD_WORK)/tmux install \
 		DESTDIR=$(BUILD_STAGE)/tmux
-	touch $(BUILD_WORK)/tmux/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 tmux-package: tmux-stage

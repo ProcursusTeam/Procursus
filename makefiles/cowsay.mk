@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += cowsay
 COWSAY_VERSION := 3.04
-DEB_COWSAY_V   ?= $(COWSAY_VERSION)
+DEB_COWSAY_V   ?= $(COWSAY_VERSION)-1
 
 cowsay-setup: setup
 	$(call GITHUB_ARCHIVE,tnalpgge,rank-amateur-cowsay,$(COWSAY_VERSION),cowsay-$(COWSAY_VERSION),cowsay)
@@ -16,13 +16,13 @@ cowsay:
 	@echo "Using previously built cowsay."
 else
 cowsay: cowsay-setup
-	$(SED) -i -e 's|%BANGPERL%|!/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl|' -e 's|%PREFIX%|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|' $(BUILD_WORK)/cowsay/cowsay $(BUILD_WORK)/cowsay/cowsay.1
+	sed -i -e 's|%BANGPERL%|!/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl|' -e 's|%PREFIX%|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|' $(BUILD_WORK)/cowsay/cowsay $(BUILD_WORK)/cowsay/cowsay.1
 	cp -a $(BUILD_WORK)/cowsay/cowsay $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/games
 	cp -a $(BUILD_WORK)/cowsay/cowsay.1 $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_WORK)/cowsay/cows $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	ln -s cowsay $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/games/cowthink
-	ln -s cowsay.1.zst $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/cowthink.1
-	touch $(BUILD_WORK)/cowsay/.build_complete
+	$(LN_S) cowsay $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/games/cowthink
+	$(LN_S) cowsay.1.zst $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/cowthink.1
+	$(call AFTER_BUILD)
 endif
 
 cowsay-package: cowsay-stage
@@ -33,10 +33,10 @@ cowsay-package: cowsay-stage
 	# cowsay.mk Prep cowsay
 	cp -a $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/games $(BUILD_DIST)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	cp -a $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/cows/!(beavis.zen.cow|bong.cow|mutilated.cow|head-in.cow) $(BUILD_DIST)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/cows
+	cp -a $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/cows/!(beavis.zen|bong|mutilated|head-in|sodomized).cow $(BUILD_DIST)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/cows
 
 	# cowsay.mk Prep cowsay-off
-	cp -a $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/cows/{beavis.zen.cow,bong.cow,mutilated.cow,head-in.cow} $(BUILD_DIST)/cowsay-off/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/cows
+	cp -a $(BUILD_STAGE)/cowsay/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/cows/{beavis.zen,bong,mutilated,head-in,sodomized}.cow $(BUILD_DIST)/cowsay-off/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/cows
 
 	# cowsay.mk Make .debs
 	$(call PACK,cowsay,DEB_COWSAY_V)

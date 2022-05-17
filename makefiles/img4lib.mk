@@ -3,20 +3,20 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += img4lib
-IMG4LIB_COMMIT  := be2e7dd93339f42d7143ae574a329938e97020b4
-IMG4LIB_VERSION := 1.0+git20201209.$(shell echo $(IMG4LIB_COMMIT) | cut -c -7)
+IMG4LIB_COMMIT  := 1d8c1dd96a0e60e2070353771fff9adcfe3f3360
+IMG4LIB_VERSION := 1.0+git20210122.$(shell echo $(IMG4LIB_COMMIT) | cut -c -7)
 DEB_IMG4LIB_V   ?= $(IMG4LIB_VERSION)-1
 
 img4lib-setup: setup
 	$(call GITHUB_ARCHIVE,xerub,img4lib,v$(IMG4LIB_COMMIT),$(IMG4LIB_COMMIT))
 	$(call EXTRACT_TAR,img4lib-v$(IMG4LIB_COMMIT).tar.gz,img4lib-$(IMG4LIB_COMMIT),img4lib)
-	$(SED) -i 's/CFLAGS =/CFLAGS ?=/' $(BUILD_WORK)/img4lib/Makefile
-	$(SED) -i 's/LDFLAGS =/LDFLAGS ?=/' $(BUILD_WORK)/img4lib/Makefile
-	$(SED) -i '/CFLAGS += -DUSE_LIBCOMPRESSION/d' $(BUILD_WORK)/img4lib/Makefile
-	$(SED) -i '/LDLIBS = -lcompression/d' $(BUILD_WORK)/img4lib/Makefile
-	$(SED) -i 's/CC =/CC ?=/' $(BUILD_WORK)/img4lib/Makefile
-	$(SED) -i 's/LD =/LD ?=/' $(BUILD_WORK)/img4lib/Makefile
-	$(SED) -i 's/AR =/AR ?=/' $(BUILD_WORK)/img4lib/Makefile
+	sed -i 's/CFLAGS =/CFLAGS ?=/' $(BUILD_WORK)/img4lib/Makefile
+	sed -i 's/LDFLAGS =/LDFLAGS ?=/' $(BUILD_WORK)/img4lib/Makefile
+	sed -i '/CFLAGS += -DUSE_LIBCOMPRESSION/d' $(BUILD_WORK)/img4lib/Makefile
+	sed -i '/LDLIBS = -lcompression/d' $(BUILD_WORK)/img4lib/Makefile
+	sed -i 's/CC =/CC ?=/' $(BUILD_WORK)/img4lib/Makefile
+	sed -i 's/LD =/LD ?=/' $(BUILD_WORK)/img4lib/Makefile
+	sed -i 's/AR =/AR ?=/' $(BUILD_WORK)/img4lib/Makefile
 	mkdir -p $(BUILD_STAGE)/img4lib/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include/{libvfs,libDER},lib}
 
 ifneq ($(wildcard $(BUILD_WORK)/img4lib/.build_complete),)
@@ -30,7 +30,7 @@ img4lib: img4lib-setup openssl lzfse
 	cp -a $(BUILD_WORK)/img4lib/libDER/*.h $(BUILD_STAGE)/img4lib/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libDER
 	cp -a $(BUILD_WORK)/img4lib/libvfs/*.h $(BUILD_STAGE)/img4lib/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libvfs
 	cp -a $(BUILD_WORK)/img4lib/libimg4.a $(BUILD_STAGE)/img4lib/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	touch $(BUILD_WORK)/img4lib/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 img4lib-package: img4lib-stage

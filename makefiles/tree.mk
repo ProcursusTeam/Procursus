@@ -3,23 +3,27 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += tree
-TREE_VERSION := 1.8.0
-DEB_TREE_V   ?= $(TREE_VERSION)-1
+TREE_VERSION := 2.0.1
+DEB_TREE_V   ?= $(TREE_VERSION)
 
 tree-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) http://mama.indstate.edu/users/ice/tree/src/tree-$(TREE_VERSION).tgz
 	$(call EXTRACT_TAR,tree-$(TREE_VERSION).tgz,tree-$(TREE_VERSION),tree)
-	$(call DO_PATCH,tree,tree,-p1)
+	#$(call DO_PATCH,tree,tree,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/tree/.build_complete),)
 tree:
 	@echo "Using previously built tree."
 else
 tree: tree-setup
-	+$(MAKE) -C $(BUILD_WORK)/tree
+	+$(MAKE) -C $(BUILD_WORK)/tree \
+		CC="$(CC)" \
+		CFLAGS="$(CFLAGS)" \
+		LDFLAGS="$(LDFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/tree install \
-		prefix=$(BUILD_STAGE)/tree/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	touch $(BUILD_WORK)/tree/.build_complete
+		PREFIX=$(BUILD_STAGE)/tree/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		MANDIR=$(BUILD_STAGE)/tree/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
+	$(call AFTER_BUILD)
 endif
 
 tree-package: tree-stage

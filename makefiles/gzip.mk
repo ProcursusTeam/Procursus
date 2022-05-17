@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += gzip
-GZIP_VERSION  := 1.10
-DEB_GZIP_V    ?= $(GZIP_VERSION)-2
+GZIP_VERSION  := 1.11
+DEB_GZIP_V    ?= $(GZIP_VERSION)
 
 gzip-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gzip/gzip-$(GZIP_VERSION).tar.xz{,.sig}
@@ -24,10 +24,10 @@ gzip: gzip-setup
 		DESTDIR=$(BUILD_STAGE)/gzip
 ifneq ($(MEMO_SUB_PREFIX),)
 	for bin in $(BUILD_STAGE)/gzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
-		ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(basename $$bin) $(BUILD_STAGE)/gzip/$(MEMO_PREFIX)/bin/$$(basename $$bin); \
+		$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(basename $$bin) $(BUILD_STAGE)/gzip/$(MEMO_PREFIX)/bin/$$(basename $$bin); \
 	done
 endif
-	touch $(BUILD_WORK)/gzip/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 gzip-package: gzip-stage

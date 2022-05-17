@@ -21,7 +21,7 @@ bender: bender-setup
 		--release \
 		--target=$(RUST_TARGET)
 	$(INSTALL) -Dm755 $(BUILD_WORK)/bender/target/$(RUST_TARGET)/release/bender $(BUILD_STAGE)/bender/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bender
-	touch $(BUILD_WORK)/bender/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 bender-package: bender-stage

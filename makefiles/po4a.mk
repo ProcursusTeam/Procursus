@@ -20,7 +20,7 @@ po4a: po4a-setup perl
 	$(BUILD_WORK)/po4a/Build
 	$(BUILD_WORK)/po4a/Build install
 	rm -rf $(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	touch $(BUILD_WORK)/po4a/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 po4a-package: po4a-stage

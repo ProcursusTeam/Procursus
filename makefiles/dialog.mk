@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += dialog
 DIALOG_VERSION := 1.3
-DIALOG_DATE    := 20210117
+DIALOG_DATE    := 20220117
 DEB_DIALOG_V   ?= $(DIALOG_VERSION)-$(DIALOG_DATE)
 
 dialog-setup: setup
@@ -23,7 +23,7 @@ dialog: dialog-setup ncurses gettext
 	+$(MAKE) -C $(BUILD_WORK)/dialog
 	+$(MAKE) -C $(BUILD_WORK)/dialog install-full \
 		DESTDIR=$(BUILD_STAGE)/dialog
-	touch $(BUILD_WORK)/dialog/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 dialog-package: dialog-stage

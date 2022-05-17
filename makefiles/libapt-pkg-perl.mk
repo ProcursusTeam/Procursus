@@ -17,7 +17,7 @@ libapt-pkg-perl:
 	@echo "Using previously built libapt-pkg-perl."
 else
 libapt-pkg-perl: libapt-pkg-perl-setup perl apt
-	cd $(BUILD_WORK)/libapt-pkg-perl && $(shell which perl) Makefile.PL \
+	cd $(BUILD_WORK)/libapt-pkg-perl && $(shell command -v perl) Makefile.PL \
 		$(DEFAULT_PERL_MAKE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libapt-pkg-perl \
 		CC="$(CXX)" \
@@ -27,7 +27,7 @@ libapt-pkg-perl: libapt-pkg-perl-setup perl apt
 	+$(MAKE) -C $(BUILD_WORK)/libapt-pkg-perl install \
 		DESTDIR="$(BUILD_STAGE)/libapt-pkg-perl"
 	rm -f $(BUILD_STAGE)/libapt-pkg-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR)/perllocal.pod
-	touch $(BUILD_WORK)/libapt-pkg-perl/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libapt-pkg-perl-package: libapt-pkg-perl-stage

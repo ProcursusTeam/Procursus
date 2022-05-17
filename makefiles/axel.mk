@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += axel
-AXEL_VERSION := 2.17.10
+AXEL_VERSION := 2.17.11
 DEB_AXEL_V   ?= $(AXEL_VERSION)
 
 axel-setup: setup
@@ -19,7 +19,7 @@ axel: axel-setup gettext openssl
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/axel install \
 		DESTDIR="$(BUILD_STAGE)/axel"
-	touch $(BUILD_WORK)/axel/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 axel-package: axel-stage

@@ -16,14 +16,12 @@ automake:
 	@echo "Using previously built automake."
 else
 automake: automake-setup
-	cd $(BUILD_WORK)/automake && PERL="$(shell which perl)" ./configure -C \
+	cd $(BUILD_WORK)/automake && PERL="$(shell command -v perl)" ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/automake
 	+$(MAKE) -C $(BUILD_WORK)/automake install \
 		DESTDIR=$(BUILD_STAGE)/automake
-	+$(MAKE) -C $(BUILD_WORK)/automake install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/automake/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 automake-package: automake-stage
 	# automake.mk Package Structure

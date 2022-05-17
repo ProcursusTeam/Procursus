@@ -15,8 +15,8 @@ add_wm_entry ()
 {
     update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/x-window-manager \
         x-window-manager $manager 50 \
-          --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/x-window-manager.1.zst \
-        x-window-manager.1.zst @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/fluxbox.1.zst
+          --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/x-window-manager.1@MEMO_MANPAGE_SUFFIX@ \
+        x-window-manager.1@MEMO_MANPAGE_SUFFIX@ @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/fluxbox.1@MEMO_MANPAGE_SUFFIX@
 }
 
 case "$1" in

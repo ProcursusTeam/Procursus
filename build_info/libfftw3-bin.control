@@ -1,0 +1,14 @@
+Package: libfftw3-bin
+Version: @DEB_FFTW_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Multi-Arch: foreign
+Depends: libfftw3-double3 (= @DEB_FFTW_V@), libfftw3-long3 (= @DEB_FFTW_V@), libfftw3-single3 (= @DEB_FFTW_V@)
+Replaces: libfftw3-dev (<< 3.3.2-1)
+Breaks: libfftw3-dev (<< 3.3.2-1)
+Section: Utilities
+Description: Library for computing Fast Fourier Transforms - Tools
+ The FFTW library computes Fast Fourier Transforms (FFT) in one or more
+ dimensions. It is extremely fast.
+ .
+ This package contains the wisdom management tools.

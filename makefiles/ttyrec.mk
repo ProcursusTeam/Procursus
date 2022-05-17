@@ -21,7 +21,7 @@ ttyrec: ttyrec-setup
 	+$(MAKE) -C $(BUILD_WORK)/ttyrec install \
 		DESTDIR="$(BUILD_STAGE)/ttyrec"
 	cp $(BUILD_WORK)/ttyrec/tty{play,rec,time}.1 $(BUILD_STAGE)/ttyrec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
-	touch $(BUILD_WORK)/ttyrec/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 ttyrec-package: ttyrec-stage

@@ -7,4 +7,3 @@ Section: Utilities
 Priority: optional
 Homepage: https://www.brotli.org/
 Description: Command line utility for the Brotli compression format
-Tag: purpose::console, role::hacker

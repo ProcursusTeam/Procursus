@@ -1,0 +1,9 @@
+Package: openjdk-17-wrapper
+Version: @DEB_OPENJDK_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: openjdk-17-jdk
+Section: System
+Priority: optional
+Homepage: https://github.com/openjdk/jdk
+Description: Wrapper to allow procursus jdk to be used with system java wrappers
