@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libwebsockets/.build_complete),)
 libwebsockets:
 	@echo "Using previously built libwebsockets."
 else
-libwebsockets: libwebsockets-setup openssl brotli glib2.0 libuv1 libevent
+libwebsockets: libwebsockets-setup openssl brotli glib2.0 libuv1 libev
 	cd $(BUILD_WORK)/libwebsockets/build && cmake .. \
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DLWS_WITH_HTTP2=1 \
