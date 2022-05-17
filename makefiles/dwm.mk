@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += dwm
-DWM_VERSION := 6.2
+DWM_VERSION := 6.3
 DEB_DWM_V   ?= $(DWM_VERSION)
 
 dwm-setup: setup
@@ -25,16 +25,16 @@ endif
 dwm-package: dwm-stage
 	# dwm.mk Package Structure
 	rm -rf $(BUILD_DIST)/dwm
-	
+
 	# dwm.mk Prep dwm
 	cp -a $(BUILD_STAGE)/dwm $(BUILD_DIST)
-	
+
 	# dwm.mk Sign
 	$(call SIGN,dwm,general.xml)
-	
+
 	# dwm.mk Make .debs
 	$(call PACK,dwm,DEB_DWM_V)
-	
+
 	# dwm.mk Build cleanup
 	rm -rf $(BUILD_DIST)/dwm
 
