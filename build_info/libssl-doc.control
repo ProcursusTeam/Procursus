@@ -1,0 +1,11 @@
+Package: libssl-doc
+Version: @DEB_OPENSSL_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Documentation
+Description: Secure Sockets Layer toolkit - development documentation
+ This package is part of the OpenSSL project's implementation of the SSL
+ and TLS cryptographic protocols for secure communication over the
+ Internet.
+ .
+ It contains manpages and demo files for libssl and libcrypto.

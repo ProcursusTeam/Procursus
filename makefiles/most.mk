@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS  += most
 MOST_VERSION := 5.1.0
-DEB_MOST_V   ?= $(MOST_VERSION)
+DEB_MOST_V   ?= $(MOST_VERSION)-1
 
 most-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.jedsoft.org/releases/most/most-$(MOST_VERSION).tar.gz{,.asc}
@@ -21,12 +21,12 @@ most: most-setup slang2
 			--with-slang=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	mkdir -p $(BUILD_WORK)/most/src/objs
-	$(SED) -i '/slangversion:/{n;d}' $(BUILD_WORK)/most/src/Makefile
+	sed -i '/slangversion:/{n;d}' $(BUILD_WORK)/most/src/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/most
 	+$(MAKE) -C $(BUILD_WORK)/most install \
 		DESTDIR=$(BUILD_STAGE)/most prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
-	touch $(BUILD_WORK)/most/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 most-package: most-stage

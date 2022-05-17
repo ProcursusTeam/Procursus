@@ -23,7 +23,11 @@ ifneq ($(wildcard $(BUILD_WORK)/findutils/.build_complete),)
 findutils:
 	@echo "Using previously built findutils."
 else
+ifneq (,$(findstring ramdisk,$(MEMO_TARGET)))
+findutils: findutils-setup
+else
 findutils: findutils-setup gettext
+endif
 	cd $(BUILD_WORK)/findutils && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--localstatedir=$(MEMO_PREFIX)/var/cache/locate \
@@ -38,7 +42,7 @@ findutils: findutils-setup gettext
 		SORT="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$(GNU_PREFIX)sort"
 	+$(MAKE) -C $(BUILD_WORK)/findutils install \
 		DESTDIR=$(BUILD_STAGE)/findutils
-	touch $(BUILD_WORK)/findutils/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 findutils-package: findutils-stage
@@ -50,7 +54,7 @@ findutils-package: findutils-stage
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 	mkdir -p $(BUILD_DIST)/findutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin
 	for bin in $(BUILD_DIST)/findutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
-		ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(echo $$bin | rev | cut -d/ -f1 | rev) $(BUILD_DIST)/findutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $$bin | rev | cut -d/ -f1 | rev | cut -c2-); \
+		$(LN_S) /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$${bin##*/} $(BUILD_DIST)/findutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $${bin##*/} | cut -c2-); \
 	done
 endif
 

@@ -7,8 +7,8 @@ SUBPROJECTS       += diffutils
 else
 STRAPPROJECTS     += diffutils
 endif
-DIFFUTILS_VERSION := 3.7
-DEB_DIFFUTILS_V   ?= $(DIFFUTILS_VERSION)-2
+DIFFUTILS_VERSION := 3.8
+DEB_DIFFUTILS_V   ?= $(DIFFUTILS_VERSION)
 
 diffutils-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/diffutils/diffutils-$(DIFFUTILS_VERSION).tar.xz{,.sig}
@@ -25,7 +25,7 @@ diffutils: diffutils-setup gettext
 	+$(MAKE) -C $(BUILD_WORK)/diffutils
 	+$(MAKE) -C $(BUILD_WORK)/diffutils install \
 		DESTDIR=$(BUILD_STAGE)/diffutils
-	touch $(BUILD_WORK)/diffutils/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 diffutils-package: diffutils-stage

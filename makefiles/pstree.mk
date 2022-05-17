@@ -9,7 +9,7 @@ DEB_PSTREE_V   ?= $(PSTREE_VERSION)
 pstree-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://fossies.org/linux/misc/pstree-$(PSTREE_VERSION).tar.gz
 	mkdir -p $(BUILD_WORK)/pstree
-	$(TAR) xf $(BUILD_SOURCE)/pstree-$(PSTREE_VERSION).tar.gz -C $(BUILD_WORK)/pstree
+	tar xf $(BUILD_SOURCE)/pstree-$(PSTREE_VERSION).tar.gz -C $(BUILD_WORK)/pstree
 
 ifneq ($(wildcard $(BUILD_WORK)/pstree/.build_complete),)
 pstree:
@@ -21,7 +21,7 @@ pstree: pstree-setup
 		$(BUILD_STAGE)/pstree/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pstree
 	$(INSTALL) -Dm644 $(BUILD_WORK)/pstree/pstree.1 \
 		$(BUILD_STAGE)/pstree/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/pstree.1
-	touch $(BUILD_WORK)/pstree/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 pstree-package: pstree-stage

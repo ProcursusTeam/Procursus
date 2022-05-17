@@ -9,4 +9,3 @@ Section: System
 Priority: required
 Multi-Arch: foreign
 Description: represents Telesphoreo / iPhoneOS conflicts
-Name: iPhone Firmware (/sbin)

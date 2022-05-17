@@ -21,23 +21,23 @@ hello: hello-setup
 	+$(MAKE) -C $(BUILD_WORK)/hello
 	+$(MAKE) -C $(BUILD_WORK)/hello install \
 		DESTDIR=$(BUILD_STAGE)/hello
-	touch $(BUILD_WORK)/hello/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 hello-package: hello-stage
 	# hello.mk Package Structure
 	rm -rf $(BUILD_DIST)/hello
 	mkdir -p $(BUILD_DIST)/hello
-	
+
 	# hello.mk Prep hello
 	cp -a $(BUILD_STAGE)/hello $(BUILD_DIST)
-	
+
 	# hello.mk Sign
 	$(call SIGN,hello,general.xml)
-	
+
 	# hello.mk Make .debs
 	$(call PACK,hello,DEB_HELLO_V)
-	
+
 	# hello.mk Build cleanup
 	rm -rf $(BUILD_DIST)/hello
 

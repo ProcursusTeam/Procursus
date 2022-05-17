@@ -1,0 +1,7 @@
+Package: propr-keyring
+Version: @DEB_PROPR_KEYRING_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Keyrings
+Priority: optional
+Description: GnuPG key for propr's repository

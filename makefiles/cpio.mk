@@ -22,7 +22,7 @@ cpio: cpio-setup gettext
 	+$(MAKE) -C $(BUILD_WORK)/cpio
 	+$(MAKE) -C $(BUILD_WORK)/cpio install \
 		DESTDIR=$(BUILD_STAGE)/cpio
-	touch $(BUILD_WORK)/cpio/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 cpio-package: cpio-stage

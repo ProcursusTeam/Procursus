@@ -5,4 +5,3 @@ Maintainer: @DEB_MAINTAINER@
 Section: Libraries
 Priority: optional
 Description: The pixel-manipulation library for X and cairo
-Tag: purpose::library, role::developer

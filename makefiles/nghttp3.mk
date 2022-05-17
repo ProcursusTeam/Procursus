@@ -22,9 +22,7 @@ nghttp3: nghttp3-setup
 	+$(MAKE) -C $(BUILD_WORK)/nghttp3
 	+$(MAKE) -C $(BUILD_WORK)/nghttp3 install \
 		DESTDIR="$(BUILD_STAGE)/nghttp3"
-	+$(MAKE) -C $(BUILD_WORK)/nghttp3 install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/nghttp3/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 nghttp3-package: nghttp3-stage

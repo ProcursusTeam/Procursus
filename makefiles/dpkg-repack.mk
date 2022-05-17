@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS         += dpkg-repack
-DPKG_REPACK_VERSION := 1.47
+DPKG_REPACK_VERSION := 1.48
 DEB_DPKG_REPACK_V   ?= $(DPKG_REPACK_VERSION)
 
 dpkg-repack-setup: setup
@@ -22,7 +22,7 @@ dpkg-repack: dpkg-repack-setup
 		< dpkg-repack.pod > dpkg-repack.1
 	$(INSTALL) -Dm0755 $(BUILD_WORK)/dpkg-repack/dpkg-repack $(BUILD_STAGE)/dpkg-repack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dpkg-repack
 	$(INSTALL) -Dm0644 $(BUILD_WORK)/dpkg-repack/dpkg-repack.1 $(BUILD_STAGE)/dpkg-repack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/dpkg-repack.1
-	touch $(BUILD_WORK)/dpkg-repack/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 dpkg-repack-package: dpkg-repack-stage

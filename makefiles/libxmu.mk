@@ -24,9 +24,7 @@ libxmu: libxmu-setup libxext libxt
 	+$(MAKE) -C $(BUILD_WORK)/libxmu
 	+$(MAKE) -C $(BUILD_WORK)/libxmu install \
 		DESTDIR=$(BUILD_STAGE)/libxmu
-	+$(MAKE) -C $(BUILD_WORK)/libxmu install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxmu/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libxmu-package: libxmu-stage

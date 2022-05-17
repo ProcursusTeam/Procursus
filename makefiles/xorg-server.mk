@@ -11,7 +11,7 @@ xorg-server-setup: setup
 	$(call PGP_VERIFY,xorg-server-$(XORG-SERVER_VERSION).tar.gz)
 	$(call EXTRACT_TAR,xorg-server-$(XORG-SERVER_VERSION).tar.gz,xorg-server-$(XORG-SERVER_VERSION),xorg-server)
 	$(call DO_PATCH,xorg-server,xorg-server,-p1)
-	$(SED) -i 's/__APPLE__/__PEAR__/' $(BUILD_WORK)/xorg-server/miext/rootless/rootlessWindow.c
+	sed -i 's/__APPLE__/__PEAR__/' $(BUILD_WORK)/xorg-server/miext/rootless/rootlessWindow.c
 
 #   --enable-glamor needs GBM and libepoxy
 
@@ -32,14 +32,12 @@ xorg-server: xorg-server-setup libmd libx11 libxau libxmu xorgproto font-util li
 		--with-sha1=libmd \
 		--disable-glx \
 		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pixman-1"
-	$(SED) -i 's|panoramiX.\$$(OBJEXT)||' $(BUILD_WORK)/xorg-server/hw/dmx/Makefile
+	sed -i 's|panoramiX.\$$(OBJEXT)||' $(BUILD_WORK)/xorg-server/hw/dmx/Makefile
 #   ^^ Wtf
 	+$(MAKE) -C $(BUILD_WORK)/xorg-server
 	+$(MAKE) -C $(BUILD_WORK)/xorg-server install \
 		DESTDIR=$(BUILD_STAGE)/xorg-server
-	+$(MAKE) -C $(BUILD_WORK)/xorg-server install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/xorg-server/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 xorg-server-package: xorg-server-stage
@@ -56,7 +54,7 @@ xorg-server-package: xorg-server-stage
 		$(BUILD_DIST)/xserver-xorg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pkgconfig,share/aclocal} \
 		$(BUILD_DIST)/xvfb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
 		$(BUILD_DIST)/xnest/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
-	
+
 	# xorg-server.mk Prep xdmx
 	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/Xdmx $(BUILD_DIST)/xdmx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/Xdmx.1 $(BUILD_DIST)/xdmx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
@@ -116,7 +114,7 @@ xorg-server-package: xorg-server-stage
 	$(call SIGN,xserver-xephyr,general.xml)
 	$(call SIGN,xvfb,general.xml)
 	$(call SIGN,xserver-xorg-core,general.xml)
-	
+
 	# xorg-server.mk Make .debs
 	$(call PACK,xserver-xorg-core,DEB_XORG-SERVER_V)
 	$(call PACK,xvfb,DEB_XORG-SERVER_V)
@@ -126,7 +124,7 @@ xorg-server-package: xorg-server-stage
 	$(call PACK,xnest,DEB_XORG-SERVER_V)
 	$(call PACK,xserver-xorg-dev,DEB_XORG-SERVER_V)
 	$(call PACK,xserver-common,DEB_XORG-SERVER_V)
-	
+
 	# xorg-server.mk Build cleanup
 	rm -rf $(BUILD_DIST)/xserver-xorg-{core,dev} $(BUILD_DIST)/xvfb \
 		$(BUILD_DIST)/xnest $(BUILD_DIST)/xdmx $(BUILD_DIST)/xdmx-tools $(BUILD_DIST)/xserver-{common,xephyr}

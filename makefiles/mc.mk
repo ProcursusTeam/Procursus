@@ -20,22 +20,22 @@ mc: mc-setup slang2 glib2.0 gettext libssh2
 	+$(MAKE) -C $(BUILD_WORK)/mc
 	+$(MAKE) -C $(BUILD_WORK)/mc install \
 		DESTDIR=$(BUILD_STAGE)/mc
-	touch $(BUILD_WORK)/mc/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 mc-package: mc-stage
 # mc.mk Package Structure
 	rm -rf $(BUILD_DIST)/mc
-	
+
 # mc.mk Prep mc
 	cp -a $(BUILD_STAGE)/mc $(BUILD_DIST)
-	
+
 # mc.mk Sign
 	$(call SIGN,mc,general.xml)
-	
+
 # mc.mk Make .debs
 	$(call PACK,mc,DEB_MC_V)
-	
+
 # mc.mk Build cleanup
 	rm -rf $(BUILD_DIST)/mc
 

@@ -20,21 +20,19 @@ xbitmaps: xbitmaps-setup xorgproto
 	+$(MAKE) -C $(BUILD_WORK)/xbitmaps
 	+$(MAKE) -C $(BUILD_WORK)/xbitmaps install \
 		DESTDIR=$(BUILD_STAGE)/xbitmaps
-	+$(MAKE) -C $(BUILD_WORK)/xbitmaps install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/xbitmaps/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 xbitmaps-package: xbitmaps-stage
 # xbitmaps.mk Package Structure
 	rm -rf $(BUILD_DIST)/xbitmaps
-	
+
 # xbitmaps.mk Prep xbitmaps
 	cp -a $(BUILD_STAGE)/xbitmaps $(BUILD_DIST)
-	
+
 # xbitmaps.mk Make .debs
 	$(call PACK,xbitmaps,DEB_XBITMAPS_V)
-	
+
 # xbitmaps.mk Build cleanup
 	rm -rf $(BUILD_DIST)/xbitmaps
 

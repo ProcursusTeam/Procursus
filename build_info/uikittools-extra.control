@@ -1,0 +1,8 @@
+Package: uikittools-extra
+Version: @DEB_UIKITTOOLS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Depends: uikittools (= @DEB_UIKITTOOLS_V@)
+Enhances: uikittools
+Description: Extra Command line access for UIKit/LaunchServices/CoreServices

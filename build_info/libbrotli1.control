@@ -6,4 +6,3 @@ Section: Development
 Priority: optional
 Homepage: https://www.brotli.org/
 Description: Shared libraries for the Brotli compression format
-Tag: purpose::library, role::developer

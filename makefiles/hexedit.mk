@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += hexedit
-HEXEDIT_VERSION := 1.4
+HEXEDIT_VERSION := 1.5
 DEB_HEXEDIT_V   ?= $(HEXEDIT_VERSION)
 
 hexedit-setup: setup
@@ -20,7 +20,7 @@ hexedit: hexedit-setup ncurses
 	+$(MAKE) -C $(BUILD_WORK)/hexedit LIBS=-lncursesw
 	+$(MAKE) -C $(BUILD_WORK)/hexedit install \
 		DESTDIR=$(BUILD_STAGE)/hexedit
-	touch $(BUILD_WORK)/hexedit/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 hexedit-package: hexedit-stage

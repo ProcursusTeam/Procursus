@@ -27,7 +27,7 @@ docbook-xml: docbook-xml-setup
 			$(BUILD_STAGE)/docbook-xml/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/xml/docbook/schema/dtd/$${ver};                   \
 	done
 	install -v -d -m755 $(BUILD_STAGE)/docbook-xml/$(MEMO_PREFIX)/etc/xml
-	touch $(BUILD_WORK)/docbook-xml/.build_complete
+	$(call AFTER_BUILD)
 endif
 docbook-xml-package: docbook-xml-stage
 	# docbook-xml.mk Package Structure

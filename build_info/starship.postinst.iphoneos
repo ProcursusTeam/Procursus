@@ -7,8 +7,8 @@ echo "You need to put the contents of 'starship init [shell] --print-full-init' 
 echo "or in a file that you source in bashrc/zshrc!"
 echo ""
 echo "EXAMPLE:"
-echo "% starship init zsh --print-full-init > .zstarship"
-echo "% chmod +x .zstarship"
-echo "% echo \"source ~/.zstarship\" >> ~/.zshrc"
+echo "% starship init zsh --print-full-init > @MEMO_MANPAGE_SUFFIX@arship"
+echo "% chmod +x @MEMO_MANPAGE_SUFFIX@arship"
+echo "% echo \"source ~/@MEMO_MANPAGE_SUFFIX@arship\" >> ~/.zshrc"
 
 exit 0

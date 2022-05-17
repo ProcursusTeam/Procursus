@@ -53,9 +53,7 @@ x265: x265-setup
 
 	+$(MAKE) -C $(BUILD_WORK)/x265/8bit install \
 		DESTDIR=$(BUILD_STAGE)/x265
-	+$(MAKE) -C $(BUILD_WORK)/x265/8bit install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/x265/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 x265-package: x265-stage

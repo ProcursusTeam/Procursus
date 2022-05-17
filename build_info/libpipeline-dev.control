@@ -11,6 +11,5 @@ Description: Unix process pipeline manipulation library (development files)
  error-prone and insecure.
  .
  This package contains files needed for developing with libpipeline.
-Tag: purpose::library, role::developer
 Replaces: libpipeline
 Conflicts: libpipeline
