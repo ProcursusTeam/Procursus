@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += inetutils
-INETUTILS_VERSION  := 2.0
-DEB_INETUTILS_V    ?= $(INETUTILS_VERSION)-1
+INETUTILS_VERSION  := 2.2
+DEB_INETUTILS_V    ?= $(INETUTILS_VERSION)
 DEBIAN_INETUTILS_V := 2.2-2
 
 inetutils-setup: setup
@@ -26,12 +26,8 @@ inetutils: inetutils-setup ncurses readline libidn2
 else
 inetutils: inetutils-setup ncurses readline libidn2 openpam
 endif
-	cd $(BUILD_WORK)/inetutils && ./configure -C \
+	cd $(BUILD_WORK)/inetutils && autoreconf -fi && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--disable-ifconfig \
-		--disable-syslogd \
-		--disable-traceroute \
-		--disable-whois \
 		--with-pam \
 		--with-idn \
 		--with-packager="Procursus" \
@@ -40,32 +36,38 @@ endif
 	sed -i 's/-ltermcap/-lncursesw/g' $(BUILD_WORK)/inetutils/telnetd/Makefile
 	$(MAKE) -C $(BUILD_WORK)/inetutils install \
 		DESTDIR=$(BUILD_STAGE)/inetutils
-	$(LN_S) ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ping $(BUILD_STAGE)/inetutils/bin
-	$(LN_S) ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ping $(BUILD_STAGE)/inetutils/sbin
-	-for bin in ftp ftpd inetd ping ping6 talk talkd telnet dnsdomainname hostname logger; do \
+	$(LN_S) ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/inetutils-ping $(BUILD_STAGE)/inetutils/bin
+	$(LN_S) ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/inetutils-ping $(BUILD_STAGE)/inetutils/sbin
+	$(LN_S) ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/inetutils-ping6 $(BUILD_STAGE)/inetutils/bin
+	$(LN_S) ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/inetutils-ping6 $(BUILD_STAGE)/inetutils/sbin
+	-for bin in ftp ftpd inetd ping ping6 talk talkd telnet dnsdomainname hostname logger traceroute ping6 whois ifconfig syslogd; do \
 		[ -f $(BUILD_WORK)/inetutils/debian/local/man/$$bin.1 ] && $(INSTALL) -m644 $(BUILD_WORK)/inetutils/debian/local/man/$$bin.1 $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/inetutils-$$bin.1; \
 		[ -f $(BUILD_WORK)/inetutils/debian/local/man/$$bin.8 ] && $(INSTALL) -m644 $(BUILD_WORK)/inetutils/debian/local/man/$$bin.8 $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/inetutils-$$bin.8; \
 	done
+	mkdir -p $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)/{$(MEMO_SUB_PREFIX)/share/man/man5,etc/logrotate.d}
+	$(INSTALL) -m644 $(BUILD_WORK)/inetutils/debian/local/man/syslog.conf.5 $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5
+	sed 's|/var|$(MEMO_PREFIX)/var|g' < $(BUILD_WORK)/inetutils/debian/local/etc/syslog.conf > $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)/etc/syslog.conf
+	sed -e 's|/var|$(MEMO_PREFIX)/var|g' -e 's|service inetutils-syslogd reload|launchctl kickstart -k system/org.gnu.inetutils.syslogd|g' < $(BUILD_WORK)/inetutils/debian/inetutils-syslogd.logrotate > $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)/etc/logrotate.d/inetutils-syslogd
 	$(call AFTER_BUILD)
 endif
 
 inetutils-package: inetutils-stage
 	# inetutils.mk Package Structure
-	rm -rf $(BUILD_DIST)/inetutils-{ping,telnet,ftp,ftpd,tftp,tftpd,talk,talkd,inetd,telnet,telnetd,tools,rlogin,rlogind,rexec,rexecd,rsh,rcp,uucpd,rshd}
-	mkdir -p $(BUILD_DIST)/inetutils-{ping,telnet,ftp,ftpd,tftp,tftpd,talk,talkd,inetd,telnetd,tools,rlogin,rlogind,rexec,rexecd,rcp,uucpd,rshd}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	mkdir -p $(BUILD_DIST)/inetutils-{ping,telnet,ftp,tftp,talk,rlogin,rexec,rcp,rsh,tools}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
-	mkdir -p $(BUILD_DIST)/inetutils-{telnet,ftp,rsh,tftp,talk,rlogin,rexec,uucp,inet}d/$(MEMO_PREFIX){/Library/LaunchDaemons,$(MEMO_SUB_PREFIX)/{libexec,share/man/man8}}
-	mkdir -p $(BUILD_DIST)/inetutils-ftpd/$(MEMO_PREFIX)/etc
+	rm -rf $(BUILD_DIST)/inetutils-{ping,telnet,ftp,ftpd,tftp,tftpd,talk,talkd,inetd,telnet,telnetd,tools,rlogin,rlogind,rexec,rexecd,rsh,rcp,uucpd,rshd,syslogd,traceroute,whois}
+	mkdir -p $(BUILD_DIST)/inetutils-{ping,telnet,ftp,ftpd,tftp,tftpd,talk,talkd,inetd,telnetd,tools,rlogin,rlogind,rexec,rexecd,rcp,uucpd,rshd,syslogd,traceroute,whois}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	mkdir -p $(BUILD_DIST)/inetutils-{ping,telnet,ftp,tftp,talk,rlogin,rexec,rcp,rsh,tools,traceroute,whois}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
+	mkdir -p $(BUILD_DIST)/inetutils-{telnet,ftp,rsh,tftp,talk,rlogin,rexec,uucp,inet,syslog}d/$(MEMO_PREFIX){/Library/LaunchDaemons,$(MEMO_SUB_PREFIX)/{libexec,share/man/man8}}
+	mkdir -p $(BUILD_DIST)/inetutils-{ftp,syslog}d/$(MEMO_PREFIX)/etc
 	mkdir -p $(BUILD_DIST)/inetutils-inetd/$(MEMO_PREFIX)/etc/inetd.d
 
-	# inetutils.mk Prep inetutils-{telnet,ftp,tftp,talk,rlogin,rexec,rcp,rsh}
-	-for bin in inetutils-{telnet,ftp,tftp,talk,rlogin,rexec,rcp,rsh}; do \
+	# inetutils.mk Prep inetutils-{telnet,ftp,tftp,talk,rlogin,rexec,rcp,rsh,traceroute,whois}
+	-for bin in inetutils-{telnet,ftp,tftp,talk,rlogin,rexec,rcp,rsh,traceroute,whois}; do \
 		cp -a $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$${bin} $(BUILD_DIST)/$${bin}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \
 		cp -a $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$${bin}.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/$${bin}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 2> /dev/null; \
 	done
 
 	# inetutils.mk Prep inetutils-{telnet,ftp,tftp,talk,rlogin,rexec,uucp,inet,rsh}d
-	for daemon in inetutils-{telnet,ftp,tftp,talk,rlogin,rexec,uucp,inet,rsh}d; do \
+	for daemon in inetutils-{telnet,ftp,tftp,talk,rlogin,rexec,uucp,inet,rsh,syslog}d; do \
 		cp -a $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/$${daemon} $(BUILD_DIST)/$${daemon}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec; \
 		sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' "$(BUILD_MISC)/inetutils/org.gnu.inetutils.$$(echo "$${daemon}" | cut -d- -f2).plist" > $(BUILD_DIST)/$${daemon}/$(MEMO_PREFIX)/Library/LaunchDaemons/org.gnu.inetutils.$$(echo "$${daemon}" | cut -d- -f2).plist; \
 		cp -a $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/$${daemon}.8$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/$${daemon}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8 2> /dev/null || true; \
@@ -82,8 +84,11 @@ endif
 	cp -a $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/inetutils-ping{,6}.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/inetutils-ping/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
 
 	# inetutils.mk Prep inetutils-tools
-	cp -a $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/inetutils-{dnsdomainname,hostname,logger} $(BUILD_DIST)/inetutils-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \
-	cp -a $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/inetutils-{dnsdomainname,hostname,logger}.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/inetutils-ping/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
+	cp -a $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/inetutils-{ifconfig,dnsdomainname,hostname,logger} $(BUILD_DIST)/inetutils-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \
+	cp -a $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/inetutils-{ifconfig,dnsdomainname,hostname,logger}.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/inetutils-ping/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
+
+	# inetutils.mk Prep inetutils-syslogd continued
+	cp -a $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)/etc/{syslog.conf,logrotate.d} $(BUILD_DIST)/inetutils-syslogd/$(MEMO_PREFIX)/etc
 
 	# inetutils.mk Sign
 	$(call SIGN,inetutils-ping,general.xml)
@@ -105,6 +110,9 @@ endif
 	$(call SIGN,inetutils-rsh,general.xml)
 	$(call SIGN,inetutils-rshd,network-server.xml)
 	$(call SIGN,inetutils-rcp,general.xml)
+	$(call SIGN,inetutils-traceroute,general.xml)
+	$(call SIGN,inetutils-syslogd,general.xml)
+	$(call SIGN,inetutils-whois,general.xml)
 
 	# inetutils.mk Permissions
 	$(FAKEROOT) chmod 0755 $(BUILD_DIST)/inetutils-*/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
@@ -130,8 +138,11 @@ endif
 	$(call PACK,inetutils-rsh,DEB_INETUTILS_V)
 	$(call PACK,inetutils-rshd,DEB_INETUTILS_V)
 	$(call PACK,inetutils-rcp,DEB_INETUTILS_V)
+	$(call PACK,inetutils-traceroute,DEB_INETUTILS_V)
+	$(call PACK,inetutils-syslogd,DEB_INETUTILS_V)
+	$(call PACK,inetutils-whois,DEB_INETUTILS_V)
 
 	# inetutils.mk Build cleanup
-	rm -rf $(BUILD_DIST)/inetutils-{ping,telnet,ftp,ftpd,tftp,tftpd,talk,inetd,telnet,telnetd,tools,rlogin,rlogind,rexec,rexecd,rsh,rcp,uucpd,rshd,talkd}
+	rm -rf $(BUILD_DIST)/inetutils-{ping,telnet,ftp,ftpd,tftp,tftpd,talk,inetd,telnet,telnetd,tools,rlogin,rlogind,rexec,rexecd,rsh,rcp,uucpd,rshd,talkd,traceroute,syslogd,whois}
 
 .PHONY: inetutils inetutils-package
