@@ -15,7 +15,9 @@ ifneq ($(wildcard $(BUILD_WORK)/dropbear/.build_complete),)
 dropbear:
 	@echo "Using previously built dropbear."
 else
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+ifneq (,$(findstring ramdisk,$(MEMO_TARGET)))
+dropbear: dropbear-setup
+else ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 dropbear: dropbear-setup libtommath libtomcrypt libxcrypt openpam
 else # (,$(findstring darwin,$(MEMO_TARGET)))
 dropbear: dropbear-setup libtommath libtomcrypt
@@ -23,6 +25,21 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	if ! [ -f $(BUILD_WORK)/dropbear/configure ]; then \
 		cd $(BUILD_WORK)/dropbear && autoreconf -i; \
 	fi
+ifneq (,$(findstring ramdisk,$(MEMO_TARGET)))
+	cd $(BUILD_WORK)/dropbear && ./configure -C \
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		--disable-lastlog \
+		--disable-utmp \
+		--disable-utmpx \
+		--disable-wtmp \
+		--disable-wtmpx \
+		--disable-loginfunc \
+		--disable-pututline \
+		--disable-pututxline \
+		--disable-static \
+		LDFLAGS="$(LDFLAGS) -fPIE -pie" \
+		CFLAGS="$(CFLAGS) -DDEFAULT_PATH=\"\\\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/sbin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/bin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin:$(MEMO_PREFIX)/sbin:$(MEMO_PREFIX)/bin\\\"\""
+else
 	cd $(BUILD_WORK)/dropbear && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-bundled-libtom \
@@ -35,7 +52,10 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 		--disable-loginfunc \
 		--disable-pututline \
 		--disable-pututxline \
-		LDFLAGS="$(LDFLAGS) -fPIE -pie"
+		--disable-static \
+		LDFLAGS="$(LDFLAGS) -fPIE -pie" \
+		CFLAGS='$(CFLAGS) -DDEFAULT_PATH=\"\\\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/sbin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/bin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin:$(MEMO_PREFIX)/sbin:$(MEMO_PREFIX)/bin\\\"\"'
+endif
 	+$(MAKE) -C $(BUILD_WORK)/dropbear
 	+$(MAKE) -C $(BUILD_WORK)/dropbear install \
 		DESTDIR=$(BUILD_STAGE)/dropbear
@@ -47,23 +67,26 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	cp $(BUILD_MISC)/dropbear/dropbear-wrapper $(BUILD_STAGE)/dropbear/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
 	sed -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
 		$(BUILD_STAGE)/dropbear/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/dropbear-wrapper
+ifneq (,$(findstring ramdisk,$(MEMO_TARGET)))
+	sed -i 's/44/2222/' $(BUILD_STAGE)/dropbear/$(MEMO_PREFIX)/Library/LaunchDaemons/com.mkj.dropbear.plist
+endif
 	$(call AFTER_BUILD)
 endif
 
 dropbear-package: dropbear-stage
 	# dropbear.mk Package Structure
 	rm -rf $(BUILD_DIST)/dropbear
-	
+
 	# dropbear.mk Prep dropbear
 	cp -a $(BUILD_STAGE)/dropbear $(BUILD_DIST)
 	mkdir -p $(BUILD_DIST)/dropbear/$(MEMO_PREFIX)/etc/dropbear
-	
+
 	# dropbear.mk Sign
 	$(call SIGN,dropbear,general.xml)
-	
+
 	# dropbear.mk Make .debs
 	$(call PACK,dropbear,DEB_DROPBEAR_V)
-	
+
 	# dropbear.mk Build cleanup
 	rm -rf $(BUILD_DIST)/dropbear
 

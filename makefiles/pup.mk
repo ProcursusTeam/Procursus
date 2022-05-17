@@ -32,16 +32,16 @@ endif
 pup-package: pup-stage
 	# pup.mk Package Structure
 	rm -rf $(BUILD_DIST)/pup
-	
+
 	# pup.mk Prep pup
 	cp -a $(BUILD_STAGE)/pup $(BUILD_DIST)
-	
+
 	# pup.mk Sign
 	$(call SIGN,pup,general.xml)
-	
+
 	# pup.mk Make .debs
 	$(call PACK,pup,DEB_PUP_V)
-	
+
 	# pup.mk Build cleanup
 	rm -rf $(BUILD_DIST)/pup
 

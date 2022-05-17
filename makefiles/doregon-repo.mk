@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS                  += doregon-keyring
-DOREGON_KEYRING_VERSION      := 2021.07.12
+DOREGON_KEYRING_VERSION      := 2022.01.28
 DEB_DOREGON_KEYRING_V        ?= $(DOREGON_KEYRING_VERSION)
 
 ifneq ($(wildcard $(BUILD_STAGE)/doregon-keyring/.build_complete),)

@@ -26,8 +26,8 @@ mariadb-import-executables: mariadb-setup
 	# https://mariadb.com/kb/en/cross-compiling-mariadb/
 	cd $(BUILD_WORK)/mariadb/host \
 	&& unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS && \
-			CC=$(shell which cc) \
-			CXX=$(shell which c++) \
+			CC=$(shell command -v cc) \
+			CXX=$(shell command -v c++) \
 			cmake .. \
 				-DSTACK_DIRECTION=1 \
 		&& make import_executables

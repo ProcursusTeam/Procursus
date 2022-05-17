@@ -1,0 +1,8 @@
+Package: libnginx-mod-http-geoip
+Version: @DEB_NGINX_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Networking
+Priority: optional
+Depends: libgeoip1
+Description: http stream module for nginx

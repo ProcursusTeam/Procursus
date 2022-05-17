@@ -19,6 +19,7 @@ tmux: tmux-setup ncurses libevent libutf8proc
 	cd $(BUILD_WORK)/tmux && autoreconf -fi
 	cd $(BUILD_WORK)/tmux && ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		--disable-static \
 		--enable-utf8proc \
 		ac_cv_func_strtonum=no \
 		LIBNCURSES_LIBS="-lncursesw" \

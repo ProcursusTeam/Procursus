@@ -1,0 +1,4 @@
+#!/bin/sh
+if [ "$1" = "remove" ]; then
+  update-alternatives --remove defaults @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/defaults-procursus
+fi

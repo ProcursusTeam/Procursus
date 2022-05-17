@@ -1,0 +1,81 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	5.1
+Patch-ID:	bash51-011
+
+Bug-Reported-by:	Alex fxmbsw7 Ratchev <fxmbsw7@gmail.com>
+Bug-Reference-ID:	<CAALKErFrm+yuwy=ioK+RmjCiwxTDmzeMFWqLF2BEWYtkGS5UFQ@mail.gmail.com>
+Bug-Reference-URL:	https://lists.gnu.org/archive/html/bug-bash/2020-11/msg00064.html
+
+Bug-Description:
+
+When reading a compound assignment, and running it through the parser to
+split it into words, we need to save and restore any alias we're currently
+expanding.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-5.1-patched/parse.y	2020-11-28 12:10:06.000000000 -0500
+--- parse.y	2021-10-13 11:04:27.000000000 -0400
+***************
+*** 6494,6501 ****
+  
+    push_stream (1);
+- #if 0 /* TAG: bash-5.2 Alex fxmbsw7 Ratchev <fxmbsw7@gmail.com> 11/17/2020 */
+    if (ea = expanding_alias ())
+      parser_save_alias ();
+- #endif
+    last_read_token = WORD;		/* WORD to allow reserved words here */
+    current_command_line_count = 0;
+--- 6494,6499 ----
+***************
+*** 6532,6539 ****
+    pop_stream ();
+  
+- #if 0 /* TAG: bash-5.2 */
+    if (ea)
+      parser_restore_alias ();
+- #endif
+  
+  #if defined (HISTORY)
+--- 6530,6535 ----
+*** ../bash-5.1-patched/y.tab.c	2020-11-28 12:17:19.000000000 -0500
+--- y.tab.c	2021-11-17 10:47:35.000000000 -0500
+***************
+*** 8788,8795 ****
+  
+    push_stream (1);
+- #if 0 /* TAG: bash-5.2 Alex fxmbsw7 Ratchev <fxmbsw7@gmail.com> 11/17/2020 */
+    if (ea = expanding_alias ())
+      parser_save_alias ();
+- #endif
+    last_read_token = WORD;		/* WORD to allow reserved words here */
+    current_command_line_count = 0;
+--- 8777,8782 ----
+***************
+*** 8826,8833 ****
+    pop_stream ();
+  
+- #if 0 /* TAG: bash-5.2 */
+    if (ea)
+      parser_restore_alias ();
+- #endif
+  
+  #if defined (HISTORY)
+--- 8813,8818 ----
+*** ../bash-5.1/patchlevel.h	2020-06-22 14:51:03.000000000 -0400
+--- patchlevel.h	2020-10-01 11:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 10
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 11
+  
+  #endif /* _PATCHLEVEL_H_ */

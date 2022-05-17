@@ -8,4 +8,3 @@ Pre-Depends: debianutils (>= 4.11.2)
 Section: Terminal_Support
 Priority: required
 Description: a shell with interactive features
-Name: Z Shell

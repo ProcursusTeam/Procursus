@@ -1,0 +1,79 @@
+diff --git a/b/0001-armv7-disable-atomic.patch b/0001-armv7-disable-atomic.patch
+new file mode 100644
+index 00000000..e69de29b
+diff --git a/crypto/init.c b/crypto/init.c
+index 6a27d1a8..e254251b 100644
+--- a/crypto/init.c
++++ b/crypto/init.c
+@@ -34,7 +34,7 @@
+ #include <openssl/trace.h>
+ 
+ static int stopped = 0;
+-static uint64_t optsdone = 0;
++static CRYPTO_ATOMIC_U64 optsdone = 0;
+ 
+ typedef struct ossl_init_stop_st OPENSSL_INIT_STOP;
+ struct ossl_init_stop_st {
+@@ -457,7 +457,7 @@ void OPENSSL_cleanup(void)
+  */
+ int OPENSSL_init_crypto(uint64_t opts, const OPENSSL_INIT_SETTINGS *settings)
+ {
+-    uint64_t tmp;
++    CRYPTO_ATOMIC_U64 tmp;
+     int aloaddone = 0;
+ 
+    /* Applications depend on 0 being returned when cleanup was already done */
+diff --git a/crypto/threads_pthread.c b/crypto/threads_pthread.c
+index 9f00d8be..8425030a 100644
+--- a/crypto/threads_pthread.c
++++ b/crypto/threads_pthread.c
+@@ -216,9 +216,11 @@ int CRYPTO_atomic_or(uint64_t *val, uint64_t op, uint64_t *ret,
+                      CRYPTO_RWLOCK *lock)
+ {
+ # if defined(__GNUC__) && defined(__ATOMIC_ACQ_REL)
+-    if (__atomic_is_lock_free(sizeof(*val), val)) {
+-        *ret = __atomic_or_fetch(val, op, __ATOMIC_ACQ_REL);
+-        return 1;
++    if (CRYPTO_ATOMIC_IS_ALIGNED_U64(val) &&
++        __atomic_is_lock_free(sizeof(*val), (CRYPTO_ATOMIC_U64 *)val)) {
++            *ret = __atomic_or_fetch((CRYPTO_ATOMIC_U64 *)val, op,
++                                     __ATOMIC_ACQ_REL);
++            return 1;
+     }
+ # elif defined(__sun) && (defined(__SunOS_5_10) || defined(__SunOS_5_11))
+     /* This will work for all future Solaris versions. */
+@@ -241,9 +243,12 @@ int CRYPTO_atomic_or(uint64_t *val, uint64_t op, uint64_t *ret,
+ int CRYPTO_atomic_load(uint64_t *val, uint64_t *ret, CRYPTO_RWLOCK *lock)
+ {
+ # if defined(__GNUC__) && defined(__ATOMIC_ACQUIRE)
+-    if (__atomic_is_lock_free(sizeof(*val), val)) {
+-        __atomic_load(val, ret, __ATOMIC_ACQUIRE);
+-        return 1;
++    if (CRYPTO_ATOMIC_IS_ALIGNED_U64(val) &&
++        CRYPTO_ATOMIC_IS_ALIGNED_U64(ret) &&
++        __atomic_is_lock_free(sizeof(*val), (CRYPTO_ATOMIC_U64 *)val)) {
++            __atomic_load((CRYPTO_ATOMIC_U64 *)val, (CRYPTO_ATOMIC_U64 *)ret,
++                          __ATOMIC_ACQUIRE);
++            return 1;
+     }
+ # elif defined(__sun) && (defined(__SunOS_5_10) || defined(__SunOS_5_11))
+     /* This will work for all future Solaris versions. */
+diff --git a/include/openssl/crypto.h.in b/include/openssl/crypto.h.in
+index 724e2ca5..07664006 100644
+--- a/include/openssl/crypto.h.in
++++ b/include/openssl/crypto.h.in
+@@ -85,6 +85,14 @@ __owur int CRYPTO_THREAD_write_lock(CRYPTO_RWLOCK *lock);
+ int CRYPTO_THREAD_unlock(CRYPTO_RWLOCK *lock);
+ void CRYPTO_THREAD_lock_free(CRYPTO_RWLOCK *lock);
+ 
++# if defined(__GNUC__) && !defined(OPENSSL_NO_STDINT_H)
++typedef __attribute__((__aligned__(8))) uint64_t CRYPTO_ATOMIC_U64;
++#  define CRYPTO_ATOMIC_IS_ALIGNED_U64(val) (((uintptr_t)(val) & (8 - 1)) == 0)
++# else
++typedef uint64_t CRYPTO_ATOMIC_U64;
++#  define CRYPTO_ATOMIC_IS_ALIGNED_U64(val) (1)
++# endif
++
+ int CRYPTO_atomic_add(int *val, int amount, int *ret, CRYPTO_RWLOCK *lock);
+ int CRYPTO_atomic_or(uint64_t *val, uint64_t op, uint64_t *ret,
+                      CRYPTO_RWLOCK *lock);
