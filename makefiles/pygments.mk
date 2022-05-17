@@ -16,7 +16,7 @@ ifneq ($(wildcard $(BUILD_WORK)/pygments/.build_complete),)
 pygments:
 	@echo "Using previously built pygments."
 else
-pygments: pygments-setup
+pygments: pygments-setup python3
 	cd $(BUILD_WORK)/pygments && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py \
 		build \
 		--executable="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3" \
