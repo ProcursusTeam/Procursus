@@ -109,7 +109,7 @@ const char *cssmErrorString(CSSM_RETURN error)
 #endif
 
 OSStatus SecKeychainErrFromOSStatus(OSStatus osStatus)
-    API_AVAILABLE(macos(10.4), ios(NA), bridgeos(NA));
+    API_AVAILABLE(macos(10.4)) API_UNAVAILABLE(ios, bridgeos);
 
 /*
  * For used when running in root session as a agent/daemon and want to redirect to
