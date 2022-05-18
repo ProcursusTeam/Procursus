@@ -3,6 +3,7 @@ Version: @DEB_XTERM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: libsixel1, libncursesw6, libpcre2-posix3, libfontconfig1, libfreetype6, libice6, libxaw7, libxext6, libxft2, libxmu6, libxpm4, libxt6, libxinerama1, xbitmaps
+Provides: x-terminal-emulator
 Section: X11
 Priority: optional
 Description: X terminal emulator
