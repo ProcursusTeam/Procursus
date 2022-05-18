@@ -1244,8 +1244,8 @@ setup:
 
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security \
 		https://opensource.apple.com/source/libsecurity_keychain/libsecurity_keychain-55050.9/lib/SecKeychainPriv.h \
-		https://opensource.apple.com/source/libsecurity_codesigning/libsecurity_codesigning-55037.15/lib/Sec{CodeSigner,{Code,Requirement}Priv}.h \
-		https://opensource.apple.com/source/Security/Security-55471/sec/Security/SecBasePriv.h
+		https://opensource.apple.com/source/libsecurity_codesigning/libsecurity_codesigning-55037.15/lib/Sec{CodeSigner,{Code,Requirement}Priv}.h
+	@cp -a $(BUILD_MISC)/include/Security/SecBasePriv.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security
 
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreFoundation \
 		https://opensource.apple.com/source/CF/CF-1153.18/CFBundlePriv.h
