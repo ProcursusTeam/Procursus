@@ -31,7 +31,7 @@ ifneq ($(wildcard $(BUILD_WORK)/system-cmds/.build_complete),)
 system-cmds:
 	@echo "Using previously built system-cmds."
 else
-system-cmds: system-cmds-setup libxcrypt openpam libiosexec
+system-cmds: system-cmds-setup libxcrypt openpam ncurses libiosexec
 	for gperf in $(BUILD_WORK)/system-cmds/getconf.tproj/*.gperf; do \
 		LC_ALL=C awk -f $(BUILD_WORK)/system-cmds/getconf.tproj/fake-gperf.awk < $$gperf > $(BUILD_WORK)/system-cmds/getconf.tproj/"$$(basename $$gperf .gperf).c" ; \
 	done
