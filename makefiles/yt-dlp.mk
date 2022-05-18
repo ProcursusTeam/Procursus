@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += yt-dlp
-YT-DLP_VERSION := 2021.09.25
+YT-DLP_VERSION := 2022.02.04
 DEB_YT-DLP_V   ?= $(YT-DLP_VERSION)
 
 yt-dlp-setup: setup
