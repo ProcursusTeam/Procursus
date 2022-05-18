@@ -19,6 +19,7 @@ else
 pexec: pexec-setup
 	cd $(BUILD_WORK)/pexec && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
+	+sed -i 's|CFLAGS=|CFLAGS=$(CFLAGS) $(LDFLAGS) |g' $(BUILD_WORK)/pexec/src/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/pexec
 	+$(MAKE) -C $(BUILD_WORK)/pexec install \
 		DESTDIR=$(BUILD_STAGE)/pexec
@@ -28,16 +29,16 @@ endif
 pexec-package: pexec-stage
 	# pexec.mk Package Structure
 	rm -rf $(BUILD_DIST)/pexec
-	
+
 	# pexec.mk Prep pexec
 	cp -a $(BUILD_STAGE)/pexec $(BUILD_DIST)
-	
+
 	# pexec.mk Sign
 	$(call SIGN,pexec,general.xml)
-	
+
 	# pexec.mk Make .debs
 	$(call PACK,pexec,DEB_PEXEC_V)
-	
+
 	# pexec.mk Build cleanup
 	rm -rf $(BUILD_DIST)/pexec
 
