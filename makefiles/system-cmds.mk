@@ -29,7 +29,6 @@ ifeq ($(shell [ $(CFVER_WHOLE) -lt 1800 ] && echo 1),1)
 	wget -q -nc -P$(BUILD_WORK)/system-cmds/lsmp.tproj https://github.com/apple-oss-distributions/system_cmds/raw/8579bd456573d7d205fec79af332a12e12464a60/lsmp.tproj/{common.h,json.h,lsmp.1,lsmp.c,{port,task}_details.c}
 	wget -q -nc -P$(BUILD_WORK)/system-cmds/gcore.tproj https://github.com/apple-oss-distributions/system_cmds/raw/ae9b08dd34d024c6a8c04f312169edc9d197dfff/gcore.tproj/{gcore.1,gcore-internal.1,{loader_additions,options,region}.h,main.c,{convert,corefile,dyld,dyld_shared_cache,sparse,threads,utils,vanilla,vm}.{c,h}}
 endif
-	sed -i '1s|^|const char UUID_NULL[37];\n|' $(BUILD_WORK)/system-cmds/gcore.tproj/corefile.c
 	sed -i '1s/^/typedef char uuid_string_t[37];\n/' $(BUILD_WORK)/system-cmds/{gcore.tproj/{vanilla,convert,dyld,dyld_shared_cache}.c,proc_uuid_policy.tproj/proc_uuid_policy.c}
 
 ###
@@ -40,7 +39,7 @@ ifneq ($(wildcard $(BUILD_WORK)/system-cmds/.build_complete),)
 system-cmds:
 	@echo "Using previously built system-cmds."
 else
-system-cmds: system-cmds-setup libxcrypt openpam libiosexec
+system-cmds: system-cmds-setup libxcrypt openpam libiosexec ncurses
 	for gperf in $(BUILD_WORK)/system-cmds/getconf.tproj/*.gperf; do \
 		LC_ALL=C awk -f $(BUILD_WORK)/system-cmds/getconf.tproj/fake-gperf.awk < $$gperf > $(BUILD_WORK)/system-cmds/getconf.tproj/"$$(basename $$gperf .gperf).c" ; \
 	done
