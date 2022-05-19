@@ -33,6 +33,14 @@
 #include <AvailabilityMacros.h>
 #include <Availability.h>
 
+
+// Macros for allowing use of availability for internal functions without digging for when
+// they first existed.
+// When publishing any API publicly, don't use these.
+#define __SEC_MAC_ONLY_UNKNOWN __OSX_AVAILABLE_STARTING(__MAC_10_12, __IPHONE_NA);
+#define __SEC_IOS_ONLY_UNKNOWN __OSX_AVAILABLE_STARTING(__MAC_NA, __IPHONE_10_0);
+#define __SEC_MAC_AND_IOS_UNKNOWN __OSX_AVAILABLE_STARTING(__MAC_10_12, __IPHONE_10_0);
+
 #if SEC_OS_OSX
 #include <Security/cssmtype.h>
 #endif /* SEC_OS_OSX */
@@ -100,7 +108,8 @@ const char *cssmErrorString(CSSM_RETURN error)
     __SEC_MAC_ONLY_UNKNOWN;
 #endif
 
-OSStatus SecKeychainErrFromOSStatus(OSStatus osStatus);
+OSStatus SecKeychainErrFromOSStatus(OSStatus osStatus)
+    API_AVAILABLE(macos(10.4)) API_UNAVAILABLE(ios, bridgeos);
 
 /*
  * For used when running in root session as a agent/daemon and want to redirect to
@@ -109,7 +118,8 @@ OSStatus SecKeychainErrFromOSStatus(OSStatus osStatus);
  *
  * This only apply to MacOS where background session exists.
  */
-void _SecSetSecuritydTargetUID(uid_t uid);
+void _SecSetSecuritydTargetUID(uid_t uid)
+    API_AVAILABLE(macos(10.13.5)) API_UNAVAILABLE(ios, macCatalyst, watchos, tvos, bridgeos);
 
 
 
