@@ -10,6 +10,7 @@ DEB_VIM_V   ?= $(VIM_VERSION)
 vim-setup: setup
 	$(call GITHUB_ARCHIVE,vim,vim,$(VIM_VERSION),v$(VIM_VERSION))
 	$(call EXTRACT_TAR,vim-$(VIM_VERSION).tar.gz,vim-$(VIM_VERSION),vim)
+	$(call DO_PATCH,vim,vim,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/vim/.build_complete),)
 vim:
