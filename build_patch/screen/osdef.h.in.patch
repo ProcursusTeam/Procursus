@@ -1,0 +1,15 @@
+diff --git a/osdef.h.in b/osdef.h.in
+index 6ddbd66..a555e88 100644
+--- a/osdef.h.in
++++ b/osdef.h.in
+@@ -121,8 +121,8 @@ extern int   geteuid __P((void));
+ extern int   getgid __P((void)); 
+ extern int   getegid __P((void));
+ struct passwd;	/* for getpwuid __P */
+-extern struct passwd *getpwuid __P((int));
+-extern struct passwd *getpwnam __P((char *));
++extern struct passwd *getpwuid __P((uid_t));
++extern struct passwd *getpwnam __P((const char *));
+ extern int   isatty __P((int)); 
+ extern int   chown __P((char *, int, int)); 
+ extern int   rename __P((char *, char *));
