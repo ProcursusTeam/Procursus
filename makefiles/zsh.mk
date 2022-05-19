@@ -7,7 +7,7 @@ STRAPPROJECTS += zsh
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += zsh
 endif # ($(MEMO_TARGET),darwin-\*)
-ZSH_VERSION   := 5.8.1
+ZSH_VERSION   := 5.9
 DEB_ZSH_V     ?= $(ZSH_VERSION)
 
 zsh-setup: setup
