@@ -6,11 +6,11 @@ ifneq ($(MEMO_ARCH),armv7k)
 ifneq ($(MEMO_ARCH),arm64_32)
 ifneq ($(MEMO_ARCH),arm64e)
 
-SUBPROJECTS   += rar
-RAR_VERSION   := 6.1
-RAR_BUILD     := 610
-DEB_RAR_V     ?= $(RAR_VERSION)
-DEBIAN_RAR_V  := 5.5.0-1.1
+SUBPROJECTS                 += rar
+RAR_VERSION                 := 6.12
+DEB_RAR_V                   ?= $(RAR_VERSION)
+RAR_DOWNLOAD_VERSION_RARLAB := 612
+RAR_DOWNLOAD_VERSION_DEBIAN := 6.11-0.1
 
 # XXX: needs severe cleaning
 
@@ -32,15 +32,15 @@ endif # ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 
 rar-setup: setup
 ifeq ($(MEMO_ARCH),x86_64)
-	wget -q -nc -P$(BUILD_SOURCE) https://www.rarlab.com/rar/rarmacos-x64-$(RAR_BUILD).tar.gz
-	tar -C $(BUILD_WORK) -xf $(BUILD_SOURCE)/rarmacos-x64-$(RAR_BUILD).tar.gz
+	wget -q -nc -P$(BUILD_SOURCE) https://www.rarlab.com/rar/rarmacos-x64-$(RAR_DOWNLOAD_VERSION_RARLAB).tar.gz
+	tar -C $(BUILD_WORK) -xf $(BUILD_SOURCE)/rarmacos-x64-$(RAR_DOWNLOAD_VERSION_RARLAB).tar.gz
 endif
 ifeq ($(MEMO_ARCH),arm64)
-	wget -q -nc -P$(BUILD_SOURCE) https://www.rarlab.com/rar/rarmacos-arm-$(RAR_BUILD).tar.gz
-	tar -C $(BUILD_WORK) -xf $(BUILD_SOURCE)/rarmacos-arm-$(RAR_BUILD).tar.gz
+	wget -q -nc -P$(BUILD_SOURCE) https://www.rarlab.com/rar/rarmacos-arm-$(RAR_DOWNLOAD_VERSION_RARLAB).tar.gz
+	tar -C $(BUILD_WORK) -xf $(BUILD_SOURCE)/rarmacos-arm-$(RAR_DOWNLOAD_VERSION_RARLAB).tar.gz
 endif
-	wget -q -nc -P$(BUILD_SOURCE) http://deb.debian.org/debian/pool/non-free/r/rar/rar_$(DEBIAN_RAR_V).debian.tar.xz
-	tar -C $(BUILD_WORK)/rar -xJf $(BUILD_SOURCE)/rar_$(DEBIAN_RAR_V).debian.tar.xz
+	wget -q -nc -P$(BUILD_SOURCE) http://deb.debian.org/debian/pool/non-free/r/rar/rar_$(RAR_DOWNLOAD_VERSION_DEBIAN).debian.tar.xz
+	tar -C $(BUILD_WORK)/rar -xJf $(BUILD_SOURCE)/rar_$(RAR_DOWNLOAD_VERSION_DEBIAN).debian.tar.xz
 	mkdir -p $(BUILD_STAGE)/rar/$(MEMO_PREFIX){$(MEMO_SUB_PREFIX)/{bin,lib,share/man/man1},/etc}
 
 ifneq ($(wildcard $(BUILD_WORK)/rar/.build_complete),)
