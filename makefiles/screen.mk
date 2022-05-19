@@ -26,15 +26,15 @@ endif
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-colors256 \
 		--disable-pam \
-		--with-sys-screenrc=$(MEMO_PREFIX)/etc/screenrc
+		--with-sys-screenrc="$(MEMO_PREFIX)/etc/screenrc"
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	sed -i '/HAVE_EXECVPE/ s/$$/\n#define HAVE_EXECVPE 1/' $(BUILD_WORK)/screen/config.h
 endif
 	+$(MAKE) -C $(BUILD_WORK)/screen install \
 		DESTDIR="$(BUILD_STAGE)/screen"
 	rm -f $(BUILD_STAGE)/screen/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/screen && mv $(BUILD_STAGE)/screen/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/screen{-$(SCREEN_VERSION),}
-	mkdir -p $(BUILD_STAGE)/screen/etc
-	cp -a $(BUILD_WORK)/screen/etc/etcscreenrc $(BUILD_STAGE)/screen/etc/screenrc
+	mkdir -p "$(BUILD_STAGE)/screen$(MEMO_PREFIX)/etc"
+	cp -a "$(BUILD_WORK)/screen/etc/etcscreenrc" "$(BUILD_STAGE)/screen$(MEMO_PREFIX)/etc/screenrc"
 	$(call AFTER_BUILD)
 endif
 
