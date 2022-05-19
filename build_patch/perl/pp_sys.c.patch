@@ -1,0 +1,22 @@
+diff --git a/pp_sys.c b/pp_sys.c
+index a431bbe..1efdfba 100644
+--- a/pp_sys.c
++++ b/pp_sys.c
+@@ -76,6 +76,8 @@ extern int h_errno;
+ #ifdef HAS_PASSWD
+ # ifdef I_PWD
+ #  include <pwd.h>
++struct passwd *getpwnam (const char *);
++struct passwd *getpwuid (Uid_t);
+ # elif !defined(VMS)
+     struct passwd *getpwnam (char *);
+     struct passwd *getpwuid (Uid_t);
+@@ -92,6 +94,8 @@ extern int h_errno;
+ #ifdef HAS_GROUP
+ # ifdef I_GRP
+ #  include <grp.h>
++struct group *getgrnam (const char *);
++struct group *getgrgid (Gid_t);
+ # else
+     struct group *getgrnam (char *);
+     struct group *getgrgid (Gid_t);
