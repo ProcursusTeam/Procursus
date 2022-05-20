@@ -1,0 +1,13 @@
+diff --git a/gettext-tools/gnulib-lib/Makefile.in b/gettext-tools/gnulib-lib/Makefile.in
+index 2768a0f..a2f93db 100644
+--- a/gettext-tools/gnulib-lib/Makefile.in
++++ b/gettext-tools/gnulib-lib/Makefile.in
+@@ -3834,7 +3834,7 @@ getopt-cdefs.h: getopt-cdefs.in.h $(top_builddir)/config.status
+ 	mv -f $@-t $@
+ 
+ # No need to install libgettextlib.a, except on AIX.
+-install-exec-local: install-libLTLIBRARIES install-exec-clean
++install-exec-hook: install-exec-clean
+ install-exec-clean:
+ 	case "@host_os@" in \
+ 	  aix*) ;; \
