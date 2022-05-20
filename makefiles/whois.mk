@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += whois
-WHOIS_VERSION := 5.5.10
+WHOIS_VERSION := 5.5.13
 DEB_WHOIS_V   ?= $(WHOIS_VERSION)
 
 whois-setup: setup
@@ -17,9 +17,9 @@ whois:
 	@echo "Using previously built whois."
 else
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-whois: whois-setup libidn2 libxcrypt
-else
 whois: whois-setup libidn2
+else
+whois: whois-setup libidn2 libxcrypt
 endif
 	+$(MAKE) -C $(BUILD_WORK)/whois \
 		HAVE_ICONV=1 \
@@ -52,4 +52,3 @@ whois-package: whois-stage
 	rm -rf $(BUILD_DIST)/whois
 
 .PHONY: whois whois-package
-
