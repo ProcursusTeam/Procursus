@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += unrar
-UNRAR_VERSION := 6.1.4
+UNRAR_VERSION := 6.1.7
 DEB_UNRAR_V   ?= $(UNRAR_VERSION)
 
 unrar-setup: setup
