@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS   += top
-TOP_VERSION   := 133
+TOP_VERSION   := 135
 DEB_TOP_V     ?= $(TOP_VERSION)
 
 top-setup: setup
