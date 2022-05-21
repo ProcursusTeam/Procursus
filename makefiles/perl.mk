@@ -16,7 +16,6 @@ perl-setup: setup
 	$(call EXTRACT_TAR,perl-$(PERL_VERSION).tar.gz,perl-$(PERL_VERSION),perl)
 	chmod -R +w $(BUILD_WORK)/perl
 	$(call EXTRACT_TAR,perl-cross-$(PERL_CROSS_V).tar.gz,perl-cross-$(PERL_CROSS_V),perl,1)
-	$(call DO_PATCH,perl,perl,-p1)
 	sed -i 's/readelf --syms/nm -g/g' $(BUILD_WORK)/perl/cnf/configure_type.sh
 	sed -i 's/readelf/nm/g' $(BUILD_WORK)/perl/cnf/configure__f.sh
 	sed -i 's/readelf/nm/g' $(BUILD_WORK)/perl/cnf/configure_tool.sh
@@ -42,6 +41,9 @@ perl-setup: setup
 	d_clock='define'\n\
 	byteorder='12345678'\n\
 	libperl='libperl.dylib'" > $(BUILD_WORK)/perl/cnf/hints/darwin
+	#Fix for libiosexec defines. This is seemingly useless for our purposes anyways.
+	sed -i -e '/getpwnam C/d' -e '/getpwuid T/d' -e '/getgrnam C/d' -e '/getgrgid T/d' $(BUILD_WORK)/perl/regen/reentr.pl
+	cd $(BUILD_WORK)/perl && perl ./regen/reentr.pl
 
 ifneq ($(wildcard $(BUILD_WORK)/perl/.build_complete),)
 perl:
