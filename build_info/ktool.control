@@ -8,5 +8,5 @@ Section: Python
 Priority: optional
 Homepage: https://github.com/cxnder/ktool
 Description: Static MachO/ObjC reverse engineering toolkit.
- ktool is a fully cross-platform toolkit (and library)
- for MachO editing and analysis.
+ ktool is a fully cross-platform toolkit, TUI, and library
+ for MachO binary editing and analysis.

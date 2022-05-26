@@ -1,0 +1,26 @@
+diff -urN ghc/ghc.mk.old ghc/ghc.mk
+--- ghc/ghc.mk	2022-01-23 15:35:58.000000000 -0500
++++ ghc/ghc.mk2022-01-23 15:36:25.000000000 -0500
+@@ -953,22 +953,8 @@
+
+ INSTALLED_PACKAGE_CONF=$(DESTDIR)$(topdir)/package.conf.d
+
+-ifeq "$(BINDIST) $(CrossCompiling)" "NO YES"
+-# when installing ghc-stage2 we can't run target's
+-# 'ghc-pkg' and 'ghc-stage2' but those are needed for registration.
+ INSTALLED_GHC_REAL=$(TOP)/inplace/bin/ghc-stage1
+ INSTALLED_GHC_PKG_REAL=$(TOP)/$(ghc-pkg_DIST_BINARY)
+-else # CrossCompiling
+-# Install packages in the right order, so that ghc-pkg doesn't complain.
+-# Also, install ghc-pkg first.
+-ifeq "$(Windows_Host)" "NO"
+-INSTALLED_GHC_REAL=$(DESTDIR)$(ghclibexecdir)/bin/ghc
+-INSTALLED_GHC_PKG_REAL=$(DESTDIR)$(ghclibexecdir)/bin/ghc-pkg
+-else
+-INSTALLED_GHC_REAL=$(DESTDIR)$(bindir)/ghc.exe
+-INSTALLED_GHC_PKG_REAL=$(DESTDIR)$(bindir)/ghc-pkg.exe
+-endif
+-endif # CrossCompiling
+
+ # Set the INSTALL_DISTDIR_p for each package; compiler is special
+ $(foreach p,$(filter-out compiler,$(INSTALL_PACKAGES)),\
