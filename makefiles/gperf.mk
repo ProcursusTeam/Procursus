@@ -27,16 +27,16 @@ endif
 gperf-package: gperf-stage
 	# gperf.mk Package Structure
 	rm -rf $(BUILD_DIST)/gperf
-	
+
 	# gperf.mk Prep gperf
 	cp -a $(BUILD_STAGE)/gperf $(BUILD_DIST)
-	
+
 	# gperf.mk Sign
 	$(call SIGN,gperf,general.xml)
-	
+
 	# gperf.mk Make .debs
 	$(call PACK,gperf,DEB_GPERF_V)
-	
+
 	# gperf.mk Build cleanup
 	rm -rf $(BUILD_DIST)/gperf
 
