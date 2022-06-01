@@ -16,7 +16,7 @@ system-cmds-setup: setup libxcrypt
 	sed -i '/#include <stdio.h>/a #include <crypt.h>' $(BUILD_WORK)/system-cmds/login.tproj/login.c
 	sed -i '1 i\#include\ <libiosexec.h>' $(BUILD_WORK)/system-cmds/login.tproj/login.c
 	sed -i -E -e 's|"/usr|"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' -e 's|"/sbin|"$(MEMO_PREFIX)/sbin|g' \
-		$(BUILD_WORK)/system-cmds/shutdown.tproj/pathnames.h
+		$(BUILD_WORK)/system-cmds/{shutdown.tproj/pathnames.h,getty.tproj/{ttys,gettytab}.5,sc_usage.tproj/sc_usage.{1,c},at.tproj/{at.1,pathnames.h}}
 	wget -q -nc -P $(BUILD_SOURCE) \
 		https://git.cameronkatri.com/pw-darwin/snapshot/pw-darwin-$(PWDARWIN_COMMIT).tar.zst
 	$(call EXTRACT_TAR,pw-darwin-$(PWDARWIN_COMMIT).tar.zst,pw-darwin-$(PWDARWIN_COMMIT),system-cmds/pw-darwin)
@@ -30,9 +30,11 @@ ifeq ($(shell [ $(CFVER_WHOLE) -lt 1800 ] && echo 1),1)
 	wget -q -nc -P$(BUILD_WORK)/system-cmds/gcore.tproj https://github.com/apple-oss-distributions/system_cmds/raw/ae9b08dd34d024c6a8c04f312169edc9d197dfff/gcore.tproj/{gcore.1,gcore-internal.1,{loader_additions,options,region}.h,main.c,{convert,corefile,dyld,dyld_shared_cache,sparse,threads,utils,vanilla,vm}.{c,h}}
 endif
 	sed -i '1s/^/typedef char uuid_string_t[37];\n/' $(BUILD_WORK)/system-cmds/{gcore.tproj/{vanilla,convert,dyld,dyld_shared_cache}.c,proc_uuid_policy.tproj/proc_uuid_policy.c}
+	sed -i 's|/System/Library/Kernels/kernel.development|$(MEMO_PREFIX)/Library/Kernels/kernel.development|' $(BUILD_WORK)/system-cmds/latency.tproj/latency.{1,c} # Allow placing kernels from [redacted] sources on rootless
 
 ###
 # TODO: Once I implement pam_chauthtok() in pam_unix.so, use PAM for passwd
+# TODO: tzdata for zic
 ###
 
 ifneq ($(wildcard $(BUILD_WORK)/system-cmds/.build_complete),)
@@ -47,7 +49,7 @@ system-cmds: system-cmds-setup libxcrypt openpam libiosexec ncurses
 	cd $(BUILD_WORK)/system-cmds && $(CC) $(CFLAGS) $(LDFLAGS) -o mslutil.x mslutil/*.c
 	cd $(BUILD_WORK)/system-cmds && $(CC) $(CFLAGS) $(LDFLAGS) -o wait4path.x wait4path/*.c
 	cd $(BUILD_WORK)/system-cmds; \
-	for tproj in ac accton arch at atrun cpuctl dmesg dynamic_pager fs_usage gcore getconf getty hostinfo iosim iostat kpgo latency login lskq mean memory_pressure mkfile newgrp proc_uuid_policy purge pwd_mkdb reboot sa shutdown stackshot trace passwd sync sysctl vifs vipw vm_purgeable_stat wordexp-helper zdump zic zlog nologin taskpolicy lsmp sc_usage ltop; do \
+	for tproj in ac accton arch at atrun cpuctl dmesg dynamic_pager fs_usage gcore getconf getty hostinfo iosim iostat kpgo latency login lskq mean memory_pressure mkfile newgrp proc_uuid_policy purge pwd_mkdb reboot sa shutdown stackshot trace passwd sync sysctl vifs vipw vm_purgeable_stat wordexp-helper zdump zic nologin taskpolicy lsmp sc_usage ltop; do \
 		CFLAGS=; \
 		case $$tproj in \
 			arch) LDFLAGS="-framework CoreFoundation -framework Foundation -lobjc";; \
@@ -64,8 +66,8 @@ system-cmds: system-cmds-setup libxcrypt openpam libiosexec ncurses
 			trace) LDFLAGS="-lutil";; \
 			gcore) LDFLAGS="-Igcore.tproj -lutil -lcompression";; \
 			lskq) LDFLAGS="-Ilskq.tproj";; \
+			zic) CFLAGS='-DTZDIR="$(MEMO_PREFIX)/var/db/timezone/zoneinfo"';; \
 			sa) LDFLAGS="-Isa.tproj -DAHZV1=64";; \
-			zlog) LDFLAGS="-Wno-error-implicit-function-declaration -fcommon $(BUILD_MISC)/PrivateFrameworks/CoreSymbolication.framework/CoreSymbolication.tbd";; \
 		esac ; \
 		echo "$$tproj" ; \
 		$(CC) $(CFLAGS) -D__kernel_ptr_semantics="" -I$(BUILD_WORK)/system-cmds/include -o $$tproj $$tproj.tproj/*.c -D'__FBSDID(x)=' $${CFLAGS} $(LDFLAGS) -framework CoreFoundation -framework IOKit $${LDFLAGS} -DPRIVATE -D__APPLE_PRIVATE ; \
@@ -78,9 +80,9 @@ system-cmds: system-cmds-setup libxcrypt openpam libiosexec ncurses
 	cp -a $(BUILD_WORK)/system-cmds/{dmesg,dynamic_pager,nologin,reboot,shutdown} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/sbin
 	cp -a $(BUILD_WORK)/system-cmds/sync $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/bin
 	cp -a $(BUILD_WORK)/system-cmds/{ac,accton,iostat,mkfile,pwd_mkdb,sa,sysctl,taskpolicy,vifs,vipw,zdump,zic} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
-	cp -a $(BUILD_WORK)/system-cmds/{arch,at,cpuctl,fs_usage,gcore,getconf,hostinfo,iosim,kpgo,latency,login,lskq,lsmp,ltop,mean,memory_pressure,newgrp,passwd,proc_uuid_policy,purge,sc_usage,stackshot,trace,vm_purgeable_stat,zlog} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_WORK)/system-cmds/{arch,at,cpuctl,fs_usage,gcore,getconf,hostinfo,iosim,kpgo,latency,login,lskq,lsmp,ltop,mean,memory_pressure,newgrp,passwd,proc_uuid_policy,purge,sc_usage,stackshot,trace,vm_purgeable_stat} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_WORK)/system-cmds/{atrun,getty,wordexp-helper} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
-	cp -a $(BUILD_WORK)/system-cmds/{{arch,at,fs_usage,gcore,getconf,iosim,latency,login,lskq,lsmp,ltop,memory_pressure,newgrp,pagesize,passwd,proc_uuid_policy,trace,vm_purgeable_stat,vm_stat,zlog,zprint}.tproj,mslutil,wait4path}/*.1 $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_WORK)/system-cmds/{{arch,at,fs_usage,gcore,getconf,iosim,latency,login,lskq,lsmp,ltop,memory_pressure,newgrp,pagesize,passwd,proc_uuid_policy,trace,vm_purgeable_stat,vm_stat,zprint}.tproj,mslutil,wait4path}/*.1 $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_WORK)/system-cmds/{getty,nologin,sysctl}.tproj/*.5 $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5
 	cp -a $(BUILD_WORK)/system-cmds/{ac,accton,atrun,cpuctl,dmesg,dynamic_pager,getty,hostinfo,iostat,mkfile,nologin,nvram,purge,pwd_mkdb,reboot,sa,shutdown,sync,sysctl,taskpolicy,vifs,vipw,zdump,zic}.tproj/*.8 $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
 	$(LN_SR) $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{arch,machine}
@@ -119,7 +121,6 @@ else
 
 endif
 	$(LDID) -S$(BUILD_MISC)/entitlements/taskpolicy.xml $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/taskpolicy
-	$(LDID) -S$(BUILD_MISC)/entitlements/kextstat.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/zlog
 	$(LDID) -S$(BUILD_MISC)/entitlements/fs_usage.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/fs_usage
 	$(LDID) -S$(BUILD_MISC)/entitlements/vm_purgeable_stat.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/vm_purgeable_stat
 	$(LDID) -S$(BUILD_MISC)/entitlements/login.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/login
