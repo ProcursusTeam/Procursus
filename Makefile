@@ -1310,7 +1310,7 @@ setup:
 		https://github.com/darlinghq/darling-libxpc/raw/deaf74952ccfd9d6bc8572f6665be4b06e599c35/include/xpc/private/{bundle,date,endpoint,mach_recv,mach_send,pipe,plist}.h
 
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ktrace \
-		https://github.com/Torrekie/apple_internal_sdk/raw/479ba5b1286de8fa4dc63e757b1cf128bb096f5c/usr/include/ktrace/{private,session}.h
+		https://github.com/Torrekie/apple_internal_sdk/raw/d47a144dd78bf84a38391a57ea526aab2d0661d5/usr/include/ktrace/{private,session}.h
 
 	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreSymbolication \
 		https://github.com/Torrekie/apple_internal_sdk/raw/9e765a8570f6f3f3f380d247b0342dd1ecef2db4/System/Library/PrivateFrameworks/CoreSymbolication.framework/Headers/CoreSymbolication{,Private}.h

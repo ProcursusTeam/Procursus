@@ -65,7 +65,7 @@ system-cmds: system-cmds-setup libxcrypt openpam libiosexec ncurses
 			gcore) LDFLAGS="-Igcore.tproj -lutil -lcompression";; \
 			lskq) LDFLAGS="-Ilskq.tproj";; \
 			sa) LDFLAGS="-Isa.tproj -DAHZV1=64";; \
-			zlog) LDFLAGS="-Wno-error-implicit-function-declaration $(BUILD_MISC)/PrivateFrameworks/CoreSymbolication.framework/CoreSymbolication.tbd";; \
+			zlog) LDFLAGS="-Wno-error-implicit-function-declaration -fcommon $(BUILD_MISC)/PrivateFrameworks/CoreSymbolication.framework/CoreSymbolication.tbd";; \
 		esac ; \
 		echo "$$tproj" ; \
 		$(CC) $(CFLAGS) -D__kernel_ptr_semantics="" -I$(BUILD_WORK)/system-cmds/include -o $$tproj $$tproj.tproj/*.c -D'__FBSDID(x)=' $${CFLAGS} $(LDFLAGS) -framework CoreFoundation -framework IOKit $${LDFLAGS} -DPRIVATE -D__APPLE_PRIVATE ; \
@@ -95,6 +95,7 @@ endif
 		MEMO_PREFIX="$(MEMO_PREFIX)" \
 		MEMO_SUB_PREFIX="$(MEMO_SUB_PREFIX)" \
 		DESTDIR="$(BUILD_STAGE)/system-cmds/"
+	chmod 4755 $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/chpass # AFTER_BUILD needs this
 	$(call AFTER_BUILD)
 endif
 
