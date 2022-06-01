@@ -16,6 +16,7 @@ tc:
 else
 tc: tc-setup
 	+$(MAKE) -C $(BUILD_WORK)/tc install \
+		COMMONCRYPTO=1 \
 		PREFIX="$(BUILD_STAGE)/tc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
 	$(call AFTER_BUILD)
 endif
