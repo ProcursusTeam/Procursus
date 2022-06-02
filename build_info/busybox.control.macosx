@@ -1,0 +1,18 @@
+Package: busybox
+Version: @DEB_BUSYBOX_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Homepage: https://www.busybox.net/
+Description: Tiny utilities for small and embedded systems
+ BusyBox combines tiny versions of many common UNIX utilities into a 
+ single small executable. It provides minimalist replacements for the 
+ most common utilities you would usually find on your Darwin system 
+ (i.e., ls, cp, mv, kill, tar, etc.). The utilities in BusyBox 
+ generally have fewer options than their full-featured GNU cousins; 
+ however, the options that are included provide the expected 
+ functionality and behave very much like their GNU counterparts.
+ .
+ This package installs the BusyBox binary but does not install symlinks 
+ for any of the supported utilities.

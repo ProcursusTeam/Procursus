@@ -1,0 +1,480 @@
+diff -urN a/Makefile b/Makefile
+--- a/Makefile	2021-12-27 00:55:55.000000000 +0800
++++ b/Makefile	2022-06-04 16:27:59.200494342 +0800
+@@ -1,8 +1,8 @@
+ VERSION = 1
+ PATCHLEVEL = 35
+ SUBLEVEL = 0
+-EXTRAVERSION =
+-NAME = Unnamed
++EXTRAVERSION = -frlower
++NAME = For Real Flower
+ 
+ # *DOCUMENTATION*
+ # To see a list of typical targets execute "make help"
+@@ -271,10 +271,10 @@
+ # Look for make include files relative to root of kernel src
+ MAKEFLAGS += --include-dir=$(srctree)
+ 
+-HOSTCC  	= gcc
+-HOSTCXX  	= g++
+-HOSTCFLAGS	:=
+-HOSTCXXFLAGS	:=
++HOSTCC  	= $(CC_FOR_BUILD)
++HOSTCXX  	= $(CXX_FOR_BUILD)
++HOSTCFLAGS	:= $(CFLAGS_FOR_BUILD)
++HOSTCXXFLAGS	:= $(CXXFLAGS_FOR_BUILD)
+ # We need some generic definitions
+ include $(srctree)/scripts/Kbuild.include
+ 
+@@ -288,16 +288,6 @@
+ 
+ # Make variables (CC, etc...)
+ 
+-AS		= $(CROSS_COMPILE)as
+-CC		= $(CROSS_COMPILE)gcc
+-LD		= $(CC) -nostdlib
+-CPP		= $(CC) -E
+-AR		= $(CROSS_COMPILE)ar
+-NM		= $(CROSS_COMPILE)nm
+-STRIP		= $(CROSS_COMPILE)strip
+-OBJCOPY		= $(CROSS_COMPILE)objcopy
+-OBJDUMP		= $(CROSS_COMPILE)objdump
+-PKG_CONFIG	?= $(CROSS_COMPILE)pkg-config
+ AWK		= awk
+ GENKSYMS	= scripts/genksyms/genksyms
+ DEPMOD		= /sbin/depmod
+@@ -305,7 +295,7 @@
+ PERL		= perl
+ CHECK		= sparse
+ 
+-CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ -Wbitwise $(CF)
++CHECKFLAGS     := -D__APPLE__ -D__STDC__ -Dunix -D__unix__ -Wbitwise $(CF)
+ MODFLAGS	= -DMODULE
+ CFLAGS_MODULE   = $(MODFLAGS)
+ AFLAGS_MODULE   = $(MODFLAGS)
+diff -urN a/Makefile.custom b/Makefile.custom
+--- a/Makefile.custom	2021-12-27 00:53:20.000000000 +0800
++++ b/Makefile.custom	2022-06-03 18:49:21.525490738 +0800
+@@ -110,7 +110,7 @@
+ .PHONY: bloatcheck
+ bloatcheck: busybox_old busybox_unstripped
+ 	@$(srctree)/scripts/bloat-o-meter busybox_old busybox_unstripped
+-	@$(CROSS_COMPILE)size busybox_old busybox_unstripped
++	@size busybox_old busybox_unstripped
+ 
+ .PHONY: baseline
+ baseline: busybox_unstripped
+@@ -122,11 +122,11 @@
+ 
+ .PHONY: stksizes
+ stksizes: busybox_unstripped
+-	$(CROSS_COMPILE)objdump -d busybox_unstripped | $(srctree)/scripts/checkstack.pl $(ARCH) | uniq
++	objdump -d busybox_unstripped | $(srctree)/scripts/checkstack.pl $(ARCH) | uniq
+ 
+ .PHONY: bigdata
+ bigdata: busybox_unstripped
+-	$(CROSS_COMPILE)nm --size-sort busybox_unstripped | grep -vi ' [trw] '
++	nm --size-sort busybox_unstripped | grep -vi ' [trw] '
+ 
+ # Documentation Targets
+ .PHONY: doc
+diff -urN a/Makefile.flags b/Makefile.flags
+--- a/Makefile.flags	2021-12-27 00:53:26.000000000 +0800
++++ b/Makefile.flags	2022-06-03 18:49:21.526936839 +0800
+@@ -173,7 +173,7 @@
+ # Add libraries you need to CONFIG_EXTRA_LDLIBS instead.
+ 
+ ifeq ($(CONFIG_PAM),y)
+-LDLIBS += pam pam_misc
++LDLIBS += pam
+ endif
+ 
+ ifeq ($(CONFIG_SELINUX),y)
+diff -urN a/configs/android_defconfig b/configs/android_defconfig
+--- a/configs/android_defconfig	2021-12-27 00:53:20.000000000 +0800
++++ b/configs/android_defconfig	2022-06-03 18:49:21.528996836 +0800
+@@ -78,7 +78,7 @@
+ # -fno-short-enums
+ # -fgcse-after-reload
+ # -frename-registers
+-CONFIG_EXTRA_CFLAGS="-I$A/system/core/include -I$A/bionic/libc/arch-arm/include -I$A/bionic/libc/include -I$A/bionic/libc/kernel/common -I$A/bionic/libc/kernel/arch-arm -I$A/bionic/libm/include -I$A/bionic/libm/include/arch/arm -include $A/system/core/include/arch/linux-arm/AndroidConfig.h -I$A/system/core/include/arch/linux-arm/ -D__ANDROID__ -DSK_RELEASE -nostdlib -march=armv7-a -msoft-float -mfloat-abi=softfp -mfpu=neon -mthumb -mthumb-interwork -fpic -fno-short-enums -fgcse-after-reload -frename-registers"
++CONFIG_EXTRA_CFLAGS="-I$A/system/core/include -I$A/bionic/libc/arch-arm/include -I$A/bionic/libc/include -I$A/bionic/libc/kernel/common -I$A/bionic/libc/kernel/arch-arm -I$A/bionic/libm/include -I$A/bionic/libm/include/arch/arm -include $A/system/core/include/arch/linux-arm/AndroidConfig.h -I$A/system/core/include/arch/linux-arm/ -D__ANDROID__ -DSK_RELEASE  -march=armv7-a -msoft-float -mfloat-abi=softfp -mfpu=neon -mthumb -mthumb-interwork -fpic -fno-short-enums -fgcse-after-reload -frename-registers"
+ 
+ #
+ # Debugging Options
+diff -urN a/configs/android_ndk_defconfig b/configs/android_ndk_defconfig
+--- a/configs/android_ndk_defconfig	2021-12-27 00:53:20.000000000 +0800
++++ b/configs/android_ndk_defconfig	2022-06-03 18:49:21.530613770 +0800
+@@ -64,8 +64,8 @@
+ # CONFIG_LFS is not set
+ CONFIG_CROSS_COMPILER_PREFIX="arm-linux-androideabi-"
+ CONFIG_SYSROOT="/opt/android-ndk/platforms/android-9/arch-arm"
+-CONFIG_EXTRA_CFLAGS="-DANDROID -D__ANDROID__ -DSK_RELEASE -nostdlib -march=armv7-a -msoft-float -mfloat-abi=softfp -mfpu=neon -mthumb -mthumb-interwork -fpic -fno-short-enums -fgcse-after-reload -frename-registers -fuse-ld=bfd"
+-CONFIG_EXTRA_LDFLAGS="-Xlinker -z -Xlinker muldefs -nostdlib -Bdynamic -Xlinker -dynamic-linker -Xlinker /system/bin/linker -Xlinker -z -Xlinker nocopyreloc -Xlinker --no-undefined ${SYSROOT}/usr/lib/crtbegin_dynamic.o ${SYSROOT}/usr/lib/crtend_android.o"
++CONFIG_EXTRA_CFLAGS="-DANDROID -D__ANDROID__ -DSK_RELEASE  -march=armv7-a -msoft-float -mfloat-abi=softfp -mfpu=neon -mthumb -mthumb-interwork -fpic -fno-short-enums -fgcse-after-reload -frename-registers -fuse-ld=bfd"
++CONFIG_EXTRA_LDFLAGS="-Xlinker -z -Xlinker muldefs  -Bdynamic -Xlinker -dynamic-linker -Xlinker /system/bin/linker -Xlinker -z -Xlinker nocopyreloc -Xlinker --no-undefined ${SYSROOT}/usr/lib/crtbegin_dynamic.o ${SYSROOT}/usr/lib/crtend_android.o"
+ CONFIG_EXTRA_LDLIBS="dl m c gcc"
+ 
+ #
+diff -urN a/coreutils/date.c b/coreutils/date.c
+--- a/coreutils/date.c	2021-12-27 00:53:20.000000000 +0800
++++ b/coreutils/date.c	2022-06-03 18:49:21.532744166 +0800
+@@ -246,7 +246,7 @@
+ 		xstat(filename, &statbuf);
+ 		ts.tv_sec = statbuf.st_mtime;
+ #if ENABLE_FEATURE_DATE_NANO
+-		ts.tv_nsec = statbuf.st_mtim.tv_nsec;
++		ts.tv_nsec = statbuf.st_mtimensec;
+ 		/* Some toolchains use .st_mtimensec instead of st_mtim.tv_nsec.
+ 		 * If you need #define _SVID_SOURCE 1 to enable st_mtim.tv_nsec,
+ 		 * drop a mail to project mailing list please
+diff -urN a/coreutils/dd.c b/coreutils/dd.c
+--- a/coreutils/dd.c	2021-12-27 00:53:20.000000000 +0800
++++ b/coreutils/dd.c	2022-06-03 18:49:21.534057020 +0800
+@@ -103,6 +103,8 @@
+ 
+ #include "libbb.h"
+ #include "common_bufsiz.h"
++#define O_DIRECT 0
++/* ^^ Does not actually do anything */
+ 
+ /* This is a NOEXEC applet. Be very careful! */
+ 
+diff -urN a/coreutils/stat.c b/coreutils/stat.c
+--- a/coreutils/stat.c	2021-12-27 00:53:20.000000000 +0800
++++ b/coreutils/stat.c	2022-06-03 18:49:21.535154749 +0800
+@@ -106,6 +106,7 @@
+ 
+ #include "libbb.h"
+ #include "common_bufsiz.h"
++#include <sys/mount.h>
+ 
+ enum {
+ 	OPT_TERSE       = (1 << 0),
+diff -urN a/coreutils/test.c b/coreutils/test.c
+--- a/coreutils/test.c	2021-12-27 00:53:26.000000000 +0800
++++ b/coreutils/test.c	2022-06-03 18:49:21.536410890 +0800
+@@ -435,7 +435,7 @@
+ };
+ 
+ /* See test_ptr_hack.c */
+-extern struct test_statics *BB_GLOBAL_CONST test_ptr_to_statics;
++struct test_statics *BB_GLOBAL_CONST test_ptr_to_statics;
+ 
+ #define S (*test_ptr_to_statics)
+ #define args            (S.args         )
+diff -urN a/coreutils/touch.c b/coreutils/touch.c
+--- a/coreutils/touch.c	2021-12-27 00:53:20.000000000 +0800
++++ b/coreutils/touch.c	2022-06-03 21:12:58.554625566 +0800
+@@ -134,8 +134,8 @@
+ 		xstat(reference_file, &stbuf);
+ 		timebuf[0].tv_sec = stbuf.st_atime;
+ 		timebuf[1].tv_sec = stbuf.st_mtime;
+-		timebuf[0].tv_nsec = stbuf.st_atim.tv_nsec;
+-		timebuf[1].tv_nsec = stbuf.st_mtim.tv_nsec;
++		timebuf[0].tv_nsec = stbuf.st_atimensec;
++		timebuf[1].tv_nsec = stbuf.st_mtimensec;
+ 	}
+ 	if (opts & (OPT_d|OPT_t)) {
+ 		struct tm tm_time;
+diff -urN a/examples/android-build b/examples/android-build
+--- a/examples/android-build	2021-12-27 00:53:20.000000000 +0800
++++ b/examples/android-build	2022-06-03 18:49:21.540530140 +0800
+@@ -21,11 +21,11 @@
+ # Set the linker flags; compiler flags are in the defconfig file
+ if grep "^CONFIG_STATIC=y" .config >/dev/null ; then
+ 	# Static linking
+-	LDFLAGS="-static -Xlinker -z -Xlinker muldefs -nostdlib $A/out/target/product/$P/obj/lib/crtbegin_static.o $A/out/target/product/$P/obj/lib/crtend_android.o -L$A/out/target/product/$P/obj/lib -L$A/out/target/product/$P/obj/STATIC_LIBRARIES/libm_intermediates -L$A/out/target/product/$P/obj/STATIC_LIBRARIES/libc_intermediates"
++	LDFLAGS="-static -Xlinker -z -Xlinker muldefs  $A/out/target/product/$P/obj/lib/crtbegin_static.o $A/out/target/product/$P/obj/lib/crtend_android.o -L$A/out/target/product/$P/obj/lib -L$A/out/target/product/$P/obj/STATIC_LIBRARIES/libm_intermediates -L$A/out/target/product/$P/obj/STATIC_LIBRARIES/libc_intermediates"
+ 	LDLIBS="m c gcc"
+ else
+ 	# Dynamic linking
+-	LDFLAGS="-Xlinker -z -Xlinker muldefs -nostdlib -Bdynamic -Xlinker -T$A/build/core/armelf.x -Xlinker -dynamic-linker -Xlinker /system/bin/linker -Xlinker -z -Xlinker nocopyreloc -Xlinker --no-undefined $A/out/target/product/$P/obj/lib/crtbegin_dynamic.o $A/out/target/product/$P/obj/lib/crtend_android.o -L$A/out/target/product/$P/obj/lib"
++	LDFLAGS="-Xlinker -z -Xlinker muldefs  -Bdynamic -Xlinker -T$A/build/core/armelf.x -Xlinker -dynamic-linker -Xlinker /system/bin/linker -Xlinker -z -Xlinker nocopyreloc -Xlinker --no-undefined $A/out/target/product/$P/obj/lib/crtbegin_dynamic.o $A/out/target/product/$P/obj/lib/crtend_android.o -L$A/out/target/product/$P/obj/lib"
+ 	LDLIBS="dl m c gcc"
+ fi
+ 
+diff -urN a/include/fix_u32.h b/include/fix_u32.h
+--- a/include/fix_u32.h	2021-12-27 00:53:20.000000000 +0800
++++ b/include/fix_u32.h	2022-06-03 18:49:21.548414538 +0800
+@@ -13,8 +13,8 @@
+  * may end up typedef'ing bb_hack_u32 inside foo.h,
+  * and repeated typedefs aren't allowed in C/C++.
+  */
+-#include <asm/types.h>
+-#include <linux/types.h>
++
++#include <sys/types.h>
+ 
+ /* In case above includes still failed to provide the types,
+  * provide them ourself
+diff -urN a/include/libbb.h b/include/libbb.h
+--- a/include/libbb.h	2021-12-27 00:53:26.000000000 +0800
++++ b/include/libbb.h	2022-06-03 18:49:21.551645703 +0800
+@@ -21,12 +21,12 @@
+ #include <setjmp.h>
+ #include <signal.h>
+ #include <paths.h>
+-#if defined __UCLIBC__ /* TODO: and glibc? */
++//#if defined __UCLIBC__ /* TODO: and glibc? */
+ /* use inlined versions of these: */
+ # define sigfillset(s)    __sigfillset(s)
+ # define sigemptyset(s)   __sigemptyset(s)
+ # define sigisemptyset(s) __sigisemptyset(s)
+-#endif
++//#endif
+ #include <stdint.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+@@ -53,6 +53,7 @@
+ #include <termios.h>
+ #include <time.h>
+ #include <sys/param.h>
++#include <sys/mount.h>
+ #include <pwd.h>
+ #include <grp.h>
+ #if ENABLE_FEATURE_SHADOWPASSWDS
+@@ -192,7 +193,7 @@
+ # define BUFSIZ 4096
+ #endif
+ 
+-#if __GNUC_PREREQ(5,0)
++//#if __GNUC_PREREQ(5,0)
+ /* Since musl is apparently unable to get it right and would use
+  * a function call to a single-instruction function of "bswap %eax",
+  * reroute to gcc builtins:
+@@ -213,7 +214,7 @@
+ #   define ntohl(x) __builtin_bswap32(x)
+ #   define htonl(x) __builtin_bswap32(x)
+ # endif
+-#endif
++//#endif
+ 
+ /* Busybox does not use threads, we can speed up stdio. */
+ #ifdef HAVE_UNLOCKED_STDIO
+@@ -2281,7 +2282,7 @@
+ /* '*const' ptr makes gcc optimize code much better.
+  * Magic prevents ptr_to_globals from going into rodata.
+  * If you want to assign a value, use SET_PTR_TO_GLOBALS(x) */
+-extern struct globals *const ptr_to_globals;
++struct globals *const ptr_to_globals;
+ 
+ #define barrier() asm volatile ("":::"memory")
+ 
+diff -urN a/libbb/appletlib.c b/libbb/appletlib.c
+--- a/libbb/appletlib.c	2021-12-27 00:53:26.000000000 +0800
++++ b/libbb/appletlib.c	2022-06-03 18:49:21.556414619 +0800
+@@ -589,8 +589,8 @@
+ 		if (sct->m_mode & S_ISGID)
+ 			rgid = sct->m_ugid.gid;
+ 		/* else: we will set egid = rgid, thus dropping sgid effect */
+-		if (setresgid(-1, rgid, rgid))
+-			bb_simple_perror_msg_and_die("setresgid");
++		if (setregid(-1, rgid))
++			bb_simple_perror_msg_and_die("setregid");
+ 
+ 		/* Are we directed to change uid
+ 		 * (APPLET = s** USER.GROUP or APPLET = S** USER.GROUP)?
+@@ -599,8 +599,8 @@
+ 		if (sct->m_mode & S_ISUID)
+ 			uid = sct->m_ugid.uid;
+ 		/* else: we will set euid = ruid, thus dropping suid effect */
+-		if (setresuid(-1, uid, uid))
+-			bb_simple_perror_msg_and_die("setresuid");
++		if (setreuid(-1, uid))
++			bb_simple_perror_msg_and_die("setreuid");
+ 
+ 		goto ret;
+ 	}
+diff -urN a/libbb/common_bufsiz.c b/libbb/common_bufsiz.c
+--- a/libbb/common_bufsiz.c	2021-12-27 00:53:20.000000000 +0800
++++ b/libbb/common_bufsiz.c	2022-06-03 18:49:21.561325417 +0800
+@@ -68,7 +68,7 @@
+  * It is not defined as a dummy macro.
+  * It means we have to provide this function.
+  */
+-char *const bb_common_bufsiz1 __attribute__ ((section (".data")));
++char* bb_common_bufsiz1;
+ void setup_common_bufsiz(void)
+ {
+ 	if (!bb_common_bufsiz1)
+diff -urN a/libbb/lineedit.c b/libbb/lineedit.c
+--- a/libbb/lineedit.c	2021-12-27 00:53:26.000000000 +0800
++++ b/libbb/lineedit.c	2022-06-03 18:49:21.565574239 +0800
+@@ -189,7 +189,7 @@
+ };
+ 
+ /* See lineedit_ptr_hack.c */
+-extern struct lineedit_statics *BB_GLOBAL_CONST lineedit_ptr_to_statics;
++struct lineedit_statics *BB_GLOBAL_CONST lineedit_ptr_to_statics;
+ 
+ #define S (*lineedit_ptr_to_statics)
+ #define state            (S.state           )
+diff -urN a/libbb/llist.c b/libbb/llist.c
+--- a/libbb/llist.c	2021-12-27 00:53:20.000000000 +0800
++++ b/libbb/llist.c	2022-06-03 21:17:19.707257591 +0800
+@@ -40,7 +40,7 @@
+ 	if (temp) {
+ 		data = temp->data;
+ 		*head = temp->link;
+-		free(temp);
++		/* free(temp);  Don't free it */
+ 	}
+ 	return data;
+ }
+diff -urN a/libbb/signals.c b/libbb/signals.c
+--- a/libbb/signals.c	2021-12-27 00:53:21.000000000 +0800
++++ b/libbb/signals.c	2022-06-03 18:49:21.569287905 +0800
+@@ -8,6 +8,7 @@
+  *
+  * Licensed under GPLv2, see file LICENSE in this source tree.
+  */
++#include <signal.h>
+ #include "libbb.h"
+ 
+ /* All known arches use small ints for signals */
+diff -urN a/miscutils/beep.c b/miscutils/beep.c
+--- a/miscutils/beep.c	2021-12-27 00:53:21.000000000 +0800
++++ b/miscutils/beep.c	2022-06-03 18:49:21.573256624 +0800
+@@ -40,7 +40,7 @@
+ //usage:     "\n	-d	Delay in ms"
+ //usage:     "\n	-r	Repetitions"
+ //usage:     "\n	-n	Start new tone"
+-
++#ifdef __APPLE__
+ #include "libbb.h"
+ 
+ #include <linux/kd.h>
+@@ -149,3 +149,4 @@
+         -n -f$d -l100 \
+         -n -f$d -l200 \
+ */
++#endif
+diff -urN a/miscutils/volname.c b/miscutils/volname.c
+--- a/miscutils/volname.c	2021-12-27 00:53:21.000000000 +0800
++++ b/miscutils/volname.c	2022-06-03 18:49:21.577281899 +0800
+@@ -51,7 +51,7 @@
+ 	char buffer[32];
+ 	const char *device;
+ 
+-	device = "/dev/cdrom";
++	device = "/dev/disk0";
+ 	if (argv[1]) {
+ 		device = argv[1];
+ 		if (argv[2])
+diff -urN a/scripts/Makefile.IMA b/scripts/Makefile.IMA
+--- a/scripts/Makefile.IMA	2021-12-27 00:53:21.000000000 +0800
++++ b/scripts/Makefile.IMA	2022-06-03 18:49:21.579093325 +0800
+@@ -38,16 +38,6 @@
+ ifndef HOSTCC
+ HOSTCC = cc
+ endif
+-AS              = $(CROSS_COMPILE)as
+-CC              = $(CROSS_COMPILE)gcc
+-LD              = $(CC) -nostdlib
+-CPP             = $(CC) -E
+-AR              = $(CROSS_COMPILE)ar
+-NM              = $(CROSS_COMPILE)nm
+-STRIP           = $(CROSS_COMPILE)strip
+-OBJCOPY         = $(CROSS_COMPILE)objcopy
+-OBJDUMP         = $(CROSS_COMPILE)objdump
+-
+ CFLAGS   := $(CFLAGS)
+ 
+ # We need some generic definitions
+diff -urN a/scripts/Makefile.build b/scripts/Makefile.build
+--- a/scripts/Makefile.build	2021-12-27 00:53:21.000000000 +0800
++++ b/scripts/Makefile.build	2022-06-03 18:49:21.581323076 +0800
+@@ -255,10 +255,10 @@
+ ifdef builtin-target
+ quiet_cmd_link_o_target = LD      $@
+ # If the list of objects to link is empty, just create an empty built-in.o
+-# -nostdlib is added to make "make LD=gcc ..." work (some people use that)
++#  is added to make "make LD=gcc ..." work (some people use that)
+ cmd_link_o_target = $(if $(strip $(obj-y)),\
+-		$(LD) -nostdlib $(ld_flags) -r -o $@ $(filter $(obj-y), $^),\
+-		rm -f $@; $(AR) rcs $@)
++		$(LD)  $(ld_flags) -r -o $@ $(filter $(obj-y), $^),\
++		rm -f $@; $(AR) rcs $@ $(EXTRA_ARFLAGS))
+ 
+ $(builtin-target): $(obj-y) FORCE
+ 	$(call if_changed,link_o_target)
+@@ -271,7 +271,7 @@
+ #
+ ifdef lib-target
+ quiet_cmd_link_l_target = AR      $@
+-cmd_link_l_target = rm -f $@; $(AR) $(EXTRA_ARFLAGS) rcs $@ $(lib-y)
++cmd_link_l_target = rm -f $@; $(AR) rcs $@ $(lib-y) $(EXTRA_ARFLAGS)
+ 
+ $(lib-target): $(lib-y) FORCE
+ 	$(call if_changed,link_l_target)
+diff -urN a/scripts/Makefile.host b/scripts/Makefile.host
+--- a/scripts/Makefile.host	2021-12-27 00:53:21.000000000 +0800
++++ b/scripts/Makefile.host	2022-06-04 16:49:10.984599942 +0800
+@@ -29,7 +29,8 @@
+ # conf.c is compiled as a c program, and conf.o is linked together with
+ # libkconfig.so as the executable conf.
+ # Note: Shared libraries consisting of C++ files are not supported
+-
++HOSTLDFLAGS := $(LDFLAGS_FOR_BUILD)
++HOST_LOADLIBES := $(LDFLAGS_FOR_BUILD)
+ __hostprogs := $(sort $(hostprogs-y)$(hostprogs-m))
+ 
+ # hostprogs-y := tools/build may have been specified. Retreive directory
+diff -urN a/scripts/trylink b/scripts/trylink
+--- a/scripts/trylink	2021-12-27 00:53:21.000000000 +0800
++++ b/scripts/trylink	2022-06-04 16:28:42.814664081 +0800
+@@ -93,10 +93,10 @@
+     SORT_SECTION=""
+ fi
+ 
+-START_GROUP="-Wl,--start-group"
+-END_GROUP="-Wl,--end-group"
++START_GROUP=""
++END_GROUP=""
+ INFO_OPTS() {
+-	echo "-Wl,--warn-common -Wl,-Map,$EXE.map -Wl,--verbose"
++	echo ""
+ }
+ 
+ # gold may not support --sort-common (yet)
+@@ -296,7 +296,7 @@
+ 
+ if test "$CONFIG_FEATURE_INDIVIDUAL" = y; then
+     echo "Linking individual applets against libbusybox (see $sharedlib_dir/*)"
+-    gcc -DNAME_MAIN -E -include include/autoconf.h include/applets.h \
++    ${CC} -DNAME_MAIN -E -include include/autoconf.h include/applets.h \
+     | grep -v "^#" \
+     | grep -v "^ *$" \
+     > applet_lst.tmp
+diff -urN a/shell/ash.c b/shell/ash.c
+--- a/shell/ash.c	2021-12-27 00:53:26.000000000 +0800
++++ b/shell/ash.c	2022-06-03 18:49:21.591585284 +0800
+@@ -474,7 +474,7 @@
+ #endif
+ 	pid_t backgndpid;        /* pid of last background process */
+ };
+-extern struct globals_misc *BB_GLOBAL_CONST ash_ptr_to_globals_misc;
++struct globals_misc *BB_GLOBAL_CONST ash_ptr_to_globals_misc;
+ #define G_misc (*ash_ptr_to_globals_misc)
+ #define exitstatus        (G_misc.exitstatus )
+ #define back_exitstatus   (G_misc.back_exitstatus )
+@@ -1574,7 +1574,7 @@
+ 	size_t g_stacknleft; // = MINSIZE;
+ 	struct stack_block stackbase;
+ };
+-extern struct globals_memstack *BB_GLOBAL_CONST ash_ptr_to_globals_memstack;
++struct globals_memstack *BB_GLOBAL_CONST ash_ptr_to_globals_memstack;
+ #define G_memstack (*ash_ptr_to_globals_memstack)
+ #define g_stackp     (G_memstack.g_stackp    )
+ #define g_stacknxt   (G_memstack.g_stacknxt  )
+@@ -2174,7 +2174,7 @@
+ 	unsigned trap_depth;
+ 	bool in_trap_ERR; /* ERR cannot recurse, no need to be a counter */
+ };
+-extern struct globals_var *BB_GLOBAL_CONST ash_ptr_to_globals_var;
++struct globals_var *BB_GLOBAL_CONST ash_ptr_to_globals_var;
+ #define G_var (*ash_ptr_to_globals_var)
+ #define shellparam    (G_var.shellparam   )
+ //#define redirlist     (G_var.redirlist    )
