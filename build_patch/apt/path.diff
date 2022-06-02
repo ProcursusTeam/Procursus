@@ -6,7 +6,7 @@ diff -urN apt-2.2.0/apt-pkg/init.cc apt/apt-pkg/init.cc
 
 
 -   Cnf.CndSet("DPkg::Path", "/usr/sbin:/usr/bin:/sbin:/bin");
-+   Cnf.CndSet("DPkg::Path", "/opt/procursus/sbin:/opt/procursus/bin:/usr/sbin:/usr/bin:/sbin:/bin");
++   Cnf.CndSet("DPkg::Path", "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/sbin:@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin:@MEMO_PREFIX@/sbin:@MEMO_PREFIX@/bin:/usr/sbin:/usr/bin:/sbin:/bin");
 
     // Read an alternate config file
     _error->PushToStack();
