@@ -1,4 +1,4 @@
-Package: libnghttp3-0
+Package: libnghttp3-2
 Version: @DEB_NGHTTP3_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
