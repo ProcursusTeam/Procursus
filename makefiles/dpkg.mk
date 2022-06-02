@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS  += dpkg
-DPKG_VERSION   := 1.21.1
+DPKG_VERSION   := 1.21.8
 DEB_DPKG_V     ?= $(DPKG_VERSION)
 
 dpkg-setup: setup
@@ -12,12 +12,8 @@ dpkg-setup: setup
 	$(call DO_PATCH,dpkg,dpkg,-p1)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call DO_PATCH,dpkg-ios,dpkg,-p1)
-
-DPKG_LIBS := LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -liosexec"
 else
 	$(call DO_PATCH,dpkg-macos,dpkg,-p1)
-
-DPKG_LIBS :=
 endif
 
 ifneq ($(wildcard $(BUILD_WORK)/dpkg/.build_complete),)
@@ -31,6 +27,7 @@ endif
 	cd $(BUILD_WORK)/dpkg && ./autogen
 	cd $(BUILD_WORK)/dpkg && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		--with-libz \
 		--with-admindir=$(MEMO_PREFIX)/Library/dpkg \
 		--with-logdir=$(MEMO_PREFIX)/var/log \
 		--disable-start-stop-daemon \
@@ -41,8 +38,7 @@ endif
 		PERL_LIBDIR='$$(prefix)/share/perl5' \
 		PERL="$(shell command -v perl)" \
 		TAR=$(GNU_PREFIX)tar \
-		LZMA_LIBS='$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/liblzma.dylib' \
-		$(DPKG_LIBS)
+		LZMA_LIBS='$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/liblzma.dylib'
 	+$(MAKE) -C $(BUILD_WORK)/dpkg \
 		PERL="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl"
 	+$(MAKE) -C $(BUILD_WORK)/dpkg install \
