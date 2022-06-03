@@ -20,14 +20,14 @@ ifneq ($(wildcard $(BUILD_WORK)/dpkg/.build_complete),)
 dpkg:
 	@echo "Using previously built dpkg."
 else
-dpkg: dpkg-setup gettext xz zstd libmd
+dpkg: dpkg-setup gettext xz zstd libmd zlib-ng
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	sed -i '/base-bsd-darwin/a base-bsd-darwin-arm64		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
 endif
 	cd $(BUILD_WORK)/dpkg && ./autogen
 	cd $(BUILD_WORK)/dpkg && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--with-libz \
+		--with-libz-ng \
 		--with-admindir=$(MEMO_PREFIX)/Library/dpkg \
 		--with-logdir=$(MEMO_PREFIX)/var/log \
 		--disable-start-stop-daemon \
