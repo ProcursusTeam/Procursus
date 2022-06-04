@@ -69,6 +69,7 @@ endif
 		mv $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/fsck{.,_}$${fs}; \
 		sed -i -e 's/_fsck.'$${fs}'_module()/_fsck_'$${fs}'_module()/' -e 's/complete -F _fsck.'$${fs}'_module fsck.'$${fs}'/complete -F _fsck_'$${fs}'_module fsck_'$${fs}'/' $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/fsck_$${fs}; \
 	done
+	mv $(BUILD_STAGE)/util-linux/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/uuid/{,ul_}uuid.h
 	$(call AFTER_BUILD,copy)
 endif
 
