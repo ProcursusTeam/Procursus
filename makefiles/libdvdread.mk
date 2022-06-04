@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += libdvdread
-LIBDVDREAD_VERSION := 6.1.2
+LIBDVDREAD_VERSION := 6.1.3
 DEB_LIBDVDREAD_V   ?= $(LIBDVDREAD_VERSION)
 
 libdvdread-setup: setup
@@ -28,21 +28,21 @@ libdvdread-package: libdvdread-stage
 	# libdvdread.mk Package Structure
 	rm -rf $(BUILD_DIST)/libdvdread{8,-dev}
 	mkdir -p $(BUILD_DIST)/libdvdread{8,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libdvdread.mk Prep libdvdread8
 	cp -a $(BUILD_STAGE)/libdvdread/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libdvdread.8.dylib $(BUILD_DIST)/libdvdread8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libdvdread.mk Prep libdvdread-dev
 	cp -a $(BUILD_STAGE)/libdvdread/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libdvdread-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/libdvdread/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libdvdread.{dylib,a},pkgconfig} $(BUILD_DIST)/libdvdread-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libdvdread.mk Sign
 	$(call SIGN,libdvdread8,general.xml)
-	
+
 	# libdvdread.mk Make .debs
 	$(call PACK,libdvdread8,DEB_LIBDVDREAD_V)
 	$(call PACK,libdvdread-dev,DEB_LIBDVDREAD_V)
-	
+
 	# libdvdread.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libdvdread{8,-dev}
 
