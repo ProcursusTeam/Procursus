@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += dialog
 DIALOG_VERSION := 1.3
-DIALOG_DATE    := 20210117
+DIALOG_DATE    := 20220117
 DEB_DIALOG_V   ?= $(DIALOG_VERSION)-$(DIALOG_DATE)
 
 dialog-setup: setup
