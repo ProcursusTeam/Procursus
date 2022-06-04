@@ -1,0 +1,15 @@
+Package: cmatrix
+Version: @DEB_CMATRIX_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libncursesw6 (>= 6)
+Section: Miscellaneous
+Priority: optional
+Homepage: https://github.com/abishekvashok/cmatrix
+Description: simulates the display from "The Matrix" 
+ Screen saver for the terminal based in the movie "The Matrix". It works 
+ in terminals of all dimensions and have the following features:
+  * Support terminal resize.
+  * Screen saver mode: any key closes it.
+  * Selectable color.
+  * Change text scroll rate.
