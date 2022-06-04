@@ -1,0 +1,18 @@
+Package: libpsl5
+Version: @DEB_LIBPSL_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: Tim Rühsen <tim.ruehsen@gmx.de>
+Depends: libidn2-0, libunistring2
+Section: Libraries
+Priority: optional
+Homepage: https://rockdaboot.github.io/libpsl
+Description: C library for the Public Suffix List
+ libpsl allows checking domains against the Public Suffix List. 
+ It can be used to avoid privacy-leaking 'super-cookies', 
+ 'super domain' certificates, for domain highlighting purposes 
+ sorting domain lists by site and more.
+ .
+ Please see https://publicsuffix.org for more detailed information.
+ .
+ This package contains runtime libraries.
