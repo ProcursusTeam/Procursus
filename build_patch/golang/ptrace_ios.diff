@@ -1,5 +1,5 @@
---- go/src/syscall/ptrace_ios.go	2022-02-26 17:58:04.039474631 +0800
-+++ Procursus/build_work/iphoneos-arm64/1500/golang/src/syscall/ptrace_ios.go	2022-02-26 17:58:20.009326055 +0800
+--- a/src/syscall/ptrace_ios.go	2022-02-26 17:58:04.039474631 +0800
++++ b/src/syscall/ptrace_ios.go	2022-02-26 17:58:20.009326055 +0800
 @@ -11,5 +11,5 @@
  //
  //go:nosplit

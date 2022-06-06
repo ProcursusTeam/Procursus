@@ -1,6 +1,5 @@
-diff -ur go/src/cmd/internal/browser/browser.go Procursus/build_work/iphoneos-arm64/1500/golang/src/cmd/internal/browser/browser.go
---- go/src/cmd/internal/browser/browser.go	2022-02-10 02:12:01.000000000 +0800
-+++ Procursus/build_work/iphoneos-arm64/1500/golang/src/cmd/internal/browser/browser.go	2022-02-19 13:49:59.503960157 +0800
+--- a/src/cmd/internal/browser/browser.go	2022-02-10 02:12:01.000000000 +0800
++++ b/src/cmd/internal/browser/browser.go	2022-02-19 13:49:59.503960157 +0800
 @@ -21,6 +21,8 @@
  	switch runtime.GOOS {
  	case "darwin":

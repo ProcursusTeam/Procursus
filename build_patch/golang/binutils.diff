@@ -1,6 +1,5 @@
-diff -ur go/src/cmd/vendor/github.com/google/pprof/internal/binutils/binutils.go Procursus/build_work/iphoneos-arm64/1500/golang/src/cmd/vendor/github.com/google/pprof/internal/binutils/binutils.go
---- go/src/cmd/vendor/github.com/google/pprof/internal/binutils/binutils.go	2022-02-10 02:12:01.000000000 +0800
-+++ Procursus/build_work/iphoneos-arm64/1500/golang/src/cmd/vendor/github.com/google/pprof/internal/binutils/binutils.go	2022-02-19 14:12:10.556595849 +0800
+--- a/src/cmd/vendor/github.com/google/pprof/internal/binutils/binutils.go	2022-02-10 02:12:01.000000000 +0800
++++ b/src/cmd/vendor/github.com/google/pprof/internal/binutils/binutils.go	2022-02-19 14:12:10.556595849 +0800
 @@ -162,7 +162,7 @@
  // a boolean indicating if it is an LLVM objdump.
  func findObjdump(paths []string) (string, bool, bool) {
