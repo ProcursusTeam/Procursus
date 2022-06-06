@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += libssh2
-LIBSSH2_VERSION := 1.9.0
-DEB_LIBSSH2_V   ?= $(LIBSSH2_VERSION)-2
+LIBSSH2_VERSION := 1.10.0
+DEB_LIBSSH2_V   ?= $(LIBSSH2_VERSION)
 
 libssh2-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://libssh2.org/download/libssh2-$(LIBSSH2_VERSION).tar.gz{,.asc}
@@ -21,7 +21,9 @@ libssh2: libssh2-setup openssl
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-debug \
 		--disable-dependency-tracking \
-		--with-libz
+		--with-libz \
+		--with-libssl-prefix="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+		--with-libgcrypt-prefix="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
 	+$(MAKE) -C $(BUILD_WORK)/libssh2
 	+$(MAKE) -C $(BUILD_WORK)/libssh2 install \
 		DESTDIR="$(BUILD_STAGE)/libssh2"

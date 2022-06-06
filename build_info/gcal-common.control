@@ -1,0 +1,11 @@
+Package: gcal-common
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_GCAL_V@
+Recommends: gcal (>= @DEB_GCAL_V@)
+Section: Utilities
+Priority: optional
+Description: gcal architecture independent files
+ This package contains architecture independent files needed for gcal to run properly.
+ Therefore, unless you have 'gcal' package installed, you will hardly find this 
+ package useful.

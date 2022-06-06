@@ -1,0 +1,23 @@
+Package: libqrencode-dev
+Version: @DEB_LIBQRENCODE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: Kentaro Fukuchi <kentaro@fukuchi.org>
+Depends: libqrencode4 (= @DEB_LIBQRENCODE_V@)
+Section: Development
+Priority: optional
+Homepage: https://fukuchi.org/works/qrencode/index.html.en
+Description: development files for the QR Code encoding library
+ libqrencode is a fast and compact library for encoding 
+ data in a QR Code, a 2D symbology that can be scanned by
+ handy terminals such as a smartphone. The capacity of 
+ QR Code is up to 7000 digits or 4000 characters and has 
+ high robustness.
+ .
+ libqrencode accepts a string or a list of data chunks then
+ encodes in a QR Code symbol as a bitmap array. While other 
+ QR Code applications generate an image file, using libqrencode 
+ allows applications to render QR Code symbols from raw bitmap 
+ data directly.
+ .
+ This package contains the header and development files.
