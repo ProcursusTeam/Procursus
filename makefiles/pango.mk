@@ -31,7 +31,7 @@ ifneq ($(wildcard $(BUILD_WORK)/pango/.build_complete),)
 pango:
 	@echo "Using previously built pango."
 else
-pango: pango-setup cairo fontconfig freetype libfirbidi libxft glib2.0 harfbuzz
+pango: pango-setup cairo fontconfig freetype libfribidi libxft glib2.0 harfbuzz
 	cd $(BUILD_WORK)/pango/build && meson \
 		--cross-file cross.txt \
 		-Dcairo=enabled \
@@ -52,6 +52,9 @@ pango-package: pango-stage
 	rm -rf $(BUILD_DIST)/libpango{,cairo,ft2,xft}-1.0-0
 	rm -rf $(BUILD_DIST)/libpango1.0-{0,dev}
 	rm -rf $(BUILD_DIST)/pango1.0-tools
+	mkdir -p $(BUILD_DIST)/libpango{,cairo,ft2,xft}-1.0-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libpango1.0-{0,dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/pango1.0-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# pango.mk Prep libpangocairo-1.0-0
 	cp -a $(BUILD_STAGE)/pango/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpangocairo-1.0.0.dylib $(BUILD_DIST)/libpangocairo-1.0-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
