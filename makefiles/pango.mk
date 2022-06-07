@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += pango
-PANGO_VERSION := 1.50.6
+PANGO_VERSION := 1.50.7
 DEB_PANGO_V   ?= $(PANGO_VERSION)
 
 pango-setup: setup
@@ -31,12 +31,13 @@ ifneq ($(wildcard $(BUILD_WORK)/pango/.build_complete),)
 pango:
 	@echo "Using previously built pango."
 else
-pango: pango-setup cairo fontconfig freetype libfirbidi glib2.0 harfbuzz
+pango: pango-setup cairo fontconfig freetype libfirbidi libxft glib2.0 harfbuzz
 	cd $(BUILD_WORK)/pango/build && meson \
 		--cross-file cross.txt \
 		-Dcairo=enabled \
 		-Dfontconfig=enabled \
 		-Dfreetype=enabled \
+		-Dxft=enabled \
 		-Dintrospection=disabled \
 		-Ddefault_library=both \
 		..
