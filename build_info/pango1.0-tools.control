@@ -11,7 +11,7 @@ Depends: libcairo2 (>= 1.12.10),
          libpangoft2-1.0-0 (= @DEB_PANGO_V@),
          libpangoxft-1.0-0 (= @DEB_PANGO_V@),
          libx11-6,
-         libxft2 (>> 2.1.1),
+         libxft2 (>> 2.1.1)
 Section: Utilities
 Priority: optional
 Replaces: libpango1.0-dev (<< 1.42.4-4)
