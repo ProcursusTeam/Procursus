@@ -1,0 +1,15 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = "triggered" ]; then
+    if which update-mime-database >/dev/null 2>&1; then
+        update-mime-database @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/mime
+    fi
+    exit 0
+fi
+
+if which update-mime-database >/dev/null 2>&1; then
+    update-mime-database @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/mime
+fi
+
+#DEBHELPER#
