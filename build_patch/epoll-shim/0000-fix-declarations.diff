@@ -1,0 +1,25 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 744c9e8..541437a 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -24,11 +24,18 @@ set(CMAKE_C_EXTENSIONS ON)
+ add_subdirectory(external)
+ 
+ include(CheckTypeSize)
+-list(APPEND CMAKE_EXTRA_INCLUDE_FILES "errno.h" "stdlib.h")
++list(APPEND CMAKE_EXTRA_INCLUDE_FILES "errno.h" "stdlib.h" "sys/types.h")
+ check_type_size(errno_t ERRNO_T BUILTIN_TYPES_ONLY LANGUAGE C)
+ if(NOT HAVE_ERRNO_T)
+   add_definitions(-Derrno_t=int)
+ endif()
++check_type_size(__uintptr_t __UINTPTR_T BUILTIN_TYPES_ONLY LANGUAGE C)
++if(NOT HAVE___UINTPTR_T)
++  add_definitions(-D__uintptr_t=uintptr_t)
++endif()
++if(NOT APPLE)
++  add_definitions(-D__ITIMERSPEC)
++endif()
+ 
+ add_subdirectory(src)
+ 
+

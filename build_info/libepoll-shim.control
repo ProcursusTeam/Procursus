@@ -1,0 +1,11 @@
+Package: libepoll-shim
+Version: @DEB_EPOLL_SHIM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Homepage: https://github.com/jiixyj/epoll-shim
+Description: Small epoll implementation using kqueue
+  epoll-shim is a small library that implements epoll on top of kqueue. It
+  has been successfully used to port libinput, libevdev, Wayland and more
+  software to FreeBSD.
