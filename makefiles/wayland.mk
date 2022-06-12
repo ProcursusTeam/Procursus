@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS   += wayland
+SUBPROJECTS     += wayland
 WAYLAND_VERSION := 1.20.0
 DEB_WAYLAND_V   ?= $(WAYLAND_VERSION)
 
