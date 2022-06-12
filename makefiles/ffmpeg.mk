@@ -74,8 +74,10 @@ ffmpeg: ffmpeg-setup aom dav1d fontconfig freetype frei0r gnutls lame libass lib
 		--disable-libbluray \
 		--disable-libjack \
 		--disable-indev=jack \
+		--disable-xlib \
 		$(FFMPEG_CONFIGURE_FLAGS)
-	sed -i 's/-lSDL2/-lSDL2 -lSDL2main/g' $(BUILD_WORK)/ffmpeg/ffbuild/config.mak
+	sed -i -e 's/-lSDL2/-lSDL2 -lSDL2main/g' -e 's|^INSTALL_NAME_DIR=.*$$|INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib|' \
+		$(BUILD_WORK)/ffmpeg/ffbuild/config.mak
 	+$(MAKE) -C $(BUILD_WORK)/ffmpeg tools/qt-faststart
 	+$(MAKE) -C $(BUILD_WORK)/ffmpeg install \
 		DESTDIR=$(BUILD_STAGE)/ffmpeg
