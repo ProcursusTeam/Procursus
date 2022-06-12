@@ -232,3 +232,26 @@ index 760dea7..a3deaf1 100644
  #else
  	typeof(ppoll) *real_ppoll;
  #endif
+diff --git a/include/sys/timerfd.h b/include/sys/timerfd.h
+index 504c4bc..72f8002 100644
+--- a/include/sys/timerfd.h
++++ b/include/sys/timerfd.h
+@@ -14,7 +14,18 @@ extern "C" {
+ #define TFD_TIMER_ABSTIME 1
+ #define TFD_TIMER_CANCEL_ON_SET (1 << 1)
+ 
++#ifdef __APPLE__
++// Darwin's <time.h> does not have itimerspec
++#ifndef __ITIMERSPEC
++#define __ITIMERSPEC struct itimerspec
++__ITIMERSPEC {
++	struct timespec it_interval;
++	struct timespec it_value;
++};
++#endif
++#else
+ struct itimerspec;
++#endif
+ 
+ int timerfd_create(int, int);
+ int timerfd_settime(int, int, struct itimerspec const *, struct itimerspec *);
