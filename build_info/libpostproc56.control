@@ -1,4 +1,4 @@
-Package: libpostproc55
+Package: libpostproc56
 Version: @DEB_FFMPEG_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
@@ -13,4 +13,4 @@ Description: FFmpeg library for post processing - runtime files
  This library provides video post processing.
  .
  This package contains the runtime files.
-Depends: libavutil56 (= @DEB_FFMPEG_V@)
+Depends: libavutil57 (= @DEB_FFMPEG_V@)

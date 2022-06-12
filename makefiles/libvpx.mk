@@ -19,6 +19,7 @@ endif
 libvpx-setup: setup
 	$(call GITHUB_ARCHIVE,webmproject,libvpx,$(LIBVPX_VERSION),v$(LIBVPX_VERSION))
 	$(call EXTRACT_TAR,libvpx-$(LIBVPX_VERSION).tar.gz,libvpx-$(LIBVPX_VERSION),libvpx)
+	sed -i 's/\[ "$$(show_darwin_sdk_major_version iphoneos)" -gt 8 \]/false/' $(BUILD_WORK)/libvpx/build/make/configure.sh
 
 ifneq ($(wildcard $(BUILD_WORK)/libvpx/.build_complete),)
 libvpx:

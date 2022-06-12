@@ -34,6 +34,7 @@ sdl2: sdl2-setup
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-hidapi \
 		--without-x \
+		LIBS="-framework GameController -framework CoreHaptics" \
 		$(SDL2_CONFIGURE_FLAGS)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	cp $(BUILD_WORK)/sdl2/include/SDL_config_iphoneos.h $(BUILD_WORK)/sdl2/include/SDL_config.h
