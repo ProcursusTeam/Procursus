@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += libarchive
-LIBARCHIVE_VERSION := 3.5.1
+LIBARCHIVE_VERSION := 3.6.1
 DEB_LIBARCHIVE_V   ?= $(LIBARCHIVE_VERSION)
 
 libarchive-setup: setup

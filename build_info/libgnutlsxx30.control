@@ -1,4 +1,4 @@
-Package: libgnutlsxx28
+Package: libgnutlsxx30
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_GNUTLS_V@

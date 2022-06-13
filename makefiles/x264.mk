@@ -8,6 +8,10 @@ X264_COMMIT    := baee400fa9ced6f5481a728138fed6e867b0ff7f
 X264_VERSION   := 0.$(X264_SOVERSION).3095+git$(shell echo $(X264_COMMIT) | cut -c -7)
 DEB_X264_V     ?= $(X264_VERSION)
 
+ifneq (,$(findstring arm64,$(MEMO_TARGET)))
+X264_CONFIGURE_ARGS += --extra-asflags='$(CFLAGS)'
+endif
+
 x264-setup: setup
 #	Clones latest from the stable branch. Update version/commit on compile.
 	$(call GIT_CLONE,https://code.videolan.org/videolan/x264.git,stable,x264)
@@ -24,7 +28,7 @@ x264: x264-setup
 		--enable-strip \
 		--system-libx264 \
 		--enable-lto \
-		--extra-asflags='$(CFLAGS)'
+		$(X264_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/x264
 	+$(MAKE) -C $(BUILD_WORK)/x264 install \
 		DESTDIR=$(BUILD_STAGE)/x264

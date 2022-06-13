@@ -1,4 +1,4 @@
-Package: libdav1d5
+Package: libdav1d6
 Version: @DEB_DAV1D_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@

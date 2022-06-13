@@ -1,4 +1,4 @@
-Package: libvpx6
+Package: libvpx7
 Version: @DEB_LIBVPX_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@

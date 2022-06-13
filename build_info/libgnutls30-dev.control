@@ -1,9 +1,9 @@
-Package: libgnutls28-dev
+Package: libgnutls30-dev
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_GNUTLS_V@
 Conflicts: gnutls (<< 1:0)
-Depends: libgnutls30 (>= @DEB_GNUTLS_V@), libgnutlsxx28 (>= @DEB_GNUTLS_V@), libp11-kit-dev, libtasn1-6-dev, nettle-dev, libidn2-dev
+Depends: libgnutls30 (>= @DEB_GNUTLS_V@), libgnutlsxx30 (>= @DEB_GNUTLS_V@), libp11-kit-dev, libtasn1-6-dev, nettle-dev, libidn2-dev
 Section: Libraries
 Priority: optional
 Homepage: http://www.gnu.org/software/gnutls/
