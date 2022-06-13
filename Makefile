@@ -486,7 +486,7 @@ BUILD_WORK     := $(BUILD_ROOT)/build_work/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Bootstrap working area
 BUILD_STAGE    := $(BUILD_ROOT)/build_stage/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Final output
-BUILD_DIST     := $(BUILD_ROOT)/build_dist/$(MEMO_TARGET)/$(MEMO_CFVER)
+BUILD_DIST     := $(BUILD_ROOT)/build_dist/$(MEMO_TARGET)/$(MEMO_CFVER)/work/
 # Actual bootrap staging
 BUILD_STRAP    := $(BUILD_ROOT)/build_strap/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Extra scripts for the buildsystem
@@ -862,7 +862,8 @@ PACK = \
 	fi; \
 	echo "Installed-Size: $$SIZE" >> $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	find $(BUILD_DIST)/$(1) -name '.DS_Store' -type f -delete; \
-	$(FAKEROOT) $(DPKG_DEB) -b $(BUILD_DIST)/$(1) $(BUILD_DIST)/$$(grep Package: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ')_$($(2))_$$(grep Architecture: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ').deb
+	mkdir -p $(BUILD_DIST)/../$$(echo $@ | sed 's/-package//'); \
+	$(FAKEROOT) $(DPKG_DEB) -b $(BUILD_DIST)/$(1) $(BUILD_DIST)/../$$(echo $@ | sed 's/-package//')/$$(grep Package: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ')_$($(2))_$$(grep Architecture: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ').deb
 
 GITHUB_ARCHIVE = -if [ $(5) ]; then \
 					[ ! -f "$(BUILD_SOURCE)/$(5)-$(3).tar.gz" ] && \
@@ -1092,23 +1093,23 @@ ramdisk:
 
 package:: $(SUBPROJECTS:%=%-package)
 
-strapprojects:: export BUILD_DIST=$(BUILD_STRAP)
+strapprojects:: export BUILD_DIST=$(BUILD_STRAP)/work/
 strapprojects:: $(STRAPPROJECTS:%=%-package)
 bootstrap:: .SHELLFLAGS=-O extglob -c
 bootstrap:: strapprojects
 	mkdir -p $(BUILD_DIST)
-	cp -a $(BUILD_STRAP)/*.deb $(BUILD_DIST)
+	cp -a $(BUILD_STRAP)/* $(BUILD_DIST)
 	rm -rf $(BUILD_STRAP)/strap
 	rm -f $(BUILD_STAGE)/.fakeroot_bootstrap
 	touch $(BUILD_STAGE)/.fakeroot_bootstrap
 	mkdir -p $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/info
 	touch $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/status
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	cd $(BUILD_STRAP) && rm -f !(apt_*|base_*|bash_*|ca-certificates_*|chariz-keyring_*|coreutils_*|darwintools_*|dash_*|debianutils_*|diffutils_*|diskdev-cmds_*|dpkg_*|essential_*|file-cmds_*|findutils_*|firmware-sbin_*|gpgv_*|grep_*|havoc-keyring_*|launchctl_*|libapt-pkg6.0_*|libassuan0_*|libcrypt2_*|libdimentio0_*|libedit0_*|libffi8_*|libgcrypt20_*|libgmp10_*|libgnutls30_*|libgpg-error0_*|libhogweed6_*|libidn2-0_*|libintl8_*|libiosexec1_*|libkernrw0_*|liblz4-1_*|liblzma5_*|libmd0_*|libncursesw6_*|libnettle8_*|libnpth0_*|libp11-kit0_*|libpam-modules_*|libpam2_*|libpcre1_*|libreadline8_*|libssl3_*|libtasn1-6_*|libunistring2_*|libxxhash0_*|libz-ng2_*|libzstd1_*|ncurses-bin_*|ncurses-term_*|odyssey-keyring_*|openssh_*|openssh-client_*|openssh-server_*|openssh-sftp-server_*|packix-keyring_*|procursus-keyring_*|profile.d_*|sed_*|shell-cmds_*|shshd_*|snaputil_*|sudo_*|system-cmds_*|tar_*|uikittools_*|vi_*|zsh_*).deb
-else # $(MEMO_TARGET),darwin-*
-	cd $(BUILD_STRAP) && rm -f !(apt_*|ca-certificates_*|coreutils_*|darwintools_*|dpkg_*|gpgv_*|libapt-pkg6.0_*|libassuan0_*|libffi8_*|libgcrypt20_*|libgmp10_*|libgnutls30_*|libgpg-error0_*|libhogweed6_*|libidn2-0_*|libintl8_*|liblz4-1_*|liblzma5_*|libmd0_*|libnettle8_*|libnpth0_*|libp11-kit0_*|libssl3_*|libtasn1-6_*|libunistring2_*|libxxhash0_*|libz-ng2_*|libzstd1_*|procursus-keyring_*|tar_*).deb
-endif # $(MEMO_TARGET),darwin-*
-	-for DEB in $(BUILD_STRAP)/*.deb; do \
+	-if echo $(MEMO_TARGET) | grep "darwin"; then \
+		PKGS="apt/apt_*.deb cacerts/ca-certificates_*.deb coreutils/coreutils_*.deb darwintools/darwintools_*.deb dpkg/dpkg_*.deb gnupg/gpgv_*.deb apt/libapt-pkg6.0_*.deb libassuan/libassuan0_*.deb libffi/libffi8_*.deb libgcrypt/libgcrypt20_*.deb libgmp10/libgmp10_*.deb gnutls/libgnutls30_*.deb libgpg-error/libgpg-error0_*.deb nettle/libhogweed6_*.deb libidn2/libidn2-0_*.deb gettext/libintl8_*.deb lz4/liblz4-1_*.deb xz/liblzma5_*.deb libmd/libmd0_*.deb nettle/libnettle8_*.deb npth/libnpth0_*.deb p11-kit/libp11-kit0_*.deb openssl/libssl3_*.deb libtasn1/libtasn1-6_*.deb libunistring/libunistring2_*.deb xxhash/libxxhash0_*.deb zlib-ng/libz-ng2_*.deb zstd/libzstd1_*.deb keyring/procursus-keyring_*.deb tar/tar_*.deb"; \
+	else \
+		PKGS="apt/apt_*.deb base/base_*.deb bash/bash_*.deb cacerts/ca-certificates_*.deb chariz-keyring/chariz-keyring_*.deb coreutils/coreutils_*.deb darwintools/darwintools_*.deb dash/dash_*.deb debianutils/debianutils_*.deb diffutils/diffutils_*.deb diskdev-cmds/diskdev-cmds_*.deb dpkg/dpkg_*.deb essential/essential_*.deb file-cmds/file-cmds_*.deb findutils/findutils_*.deb firmware-sbin/firmware-sbin_*.deb gnupg/gpgv_*.deb grep/grep_*.deb havoc-keyring/havoc-keyring_*.deb launchctl/launchctl_*.deb apt/libapt-pkg6.0_*.deb libassuan/libassuan0_*.deb libxcrypt/libcrypt2_*.deb dimentio/libdimentio0_*.deb libedit/libedit0_*.deb libffi/libffi8_*.deb libgcrypt/libgcrypt20_*.deb libgmp10/libgmp10_*.deb gnutls/libgnutls30_*.deb libgpg-error/libgpg-error0_*.deb nettle/libhogweed6_*.deb libidn2/libidn2-0_*.deb gettext/libintl8_*.deb libiosexec/libiosexec1_*.deb libkernrw/libkernrw0_*.deb lz4/liblz4-1_*.deb xz/liblzma5_*.deb libmd/libmd0_*.deb ncurses/libncursesw6_*.deb nettle/libnettle8_*.deb npth/libnpth0_*.deb p11-kit/libp11-kit0_*.deb pam-modules/libpam-modules_*.deb openpam/libpam2_*.deb pcre/libpcre1_*.deb readline/libreadline8_*.deb openssl/libssl3_*.deb libtasn1/libtasn1-6_*.deb libunistring/libunistring2_*.deb xxhash/libxxhash0_*.deb zlib-ng/libz-ng2_*.deb zstd/libzstd1_*.deb ncurses/ncurses-bin_*.deb ncurses/ncurses-term_*.deb odyssey-keyring/odyssey-keyring_*.deb packix-keyring/packix-keyring_*.deb keyring/procursus-keyring_*.deb profile.d/profile.d_*.deb sed/sed_*.deb shell-cmds/shell-cmds_*.deb shshd/shshd_*.deb snaputil/snaputil_*.deb sudo/sudo_*.deb system-cmds/system-cmds_*.deb tar/tar_*.deb uikittools/uikittools_*.deb vi/vi_*.deb zsh/zsh_*.deb"; \
+	fi; \
+	cd $(BUILD_STRAP); for DEB in $$PKGS; do \
 		PKGNAME=$$(basename $$DEB | cut -f1 -d"_"); \
 		dpkg-deb -R $$DEB $(BUILD_STRAP)/strap; \
 		cp $(BUILD_STRAP)/strap/DEBIAN/md5sums $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/info/$$PKGNAME.md5sums; \
@@ -1164,7 +1165,7 @@ Components: main\n" > $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procur
 	fi; \
 	zstd -qf -c19 --rm $(BUILD_STRAP)/bootstrap.tar > $(BUILD_STRAP)/$${BOOTSTRAP}; \
 	gpg --armor -u $(MEMO_PGP_SIGN_KEY) --detach-sign $(BUILD_STRAP)/$${BOOTSTRAP}; \
-	rm -rf $(BUILD_STRAP)/{strap,*.deb}; \
+	rm -rf $(BUILD_STRAP)/*/; \
 	echo "********** Successfully built bootstrap with **********"; \
 	echo "$(STRAPPROJECTS)"; \
 	echo "$(BUILD_STRAP)/$${BOOTSTRAP}"
