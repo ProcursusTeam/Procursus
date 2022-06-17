@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS 	 += figlet
+SUBPROJECTS    += figlet
 FIGLET_VERSION := 2.2.5
 DEB_FIGLET_V   ?= $(FIGLET_VERSION)
 

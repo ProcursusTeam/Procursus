@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += freetype
-FREETYPE_VERSION := 2.10.4
+FREETYPE_VERSION := 2.12.1
 DEB_FREETYPE_V   ?= $(FREETYPE_VERSION)
 
 freetype-setup: setup

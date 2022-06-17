@@ -45,5 +45,6 @@
 	<key>com.apple.private.storagekitd.statuschange</key>
 	<true/>
 	<key>com.apple.private.system-extensions.extension-point</key>
+	<true/>
 </dict>
 </plist>
