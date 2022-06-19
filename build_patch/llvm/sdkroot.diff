@@ -25,12 +25,3 @@ index febde361a429..b6944316d63c 100644
  #else
      OSTy = llvm::Triple::IOS;
  #endif
-@@ -2168,7 +2171,7 @@ void DarwinClang::AddClangSystemIncludeArgs(const llvm::opt::ArgList &DriverArgs
-     CIncludeDirs.split(dirs, ":");
-     for (llvm::StringRef dir : dirs) {
-       llvm::StringRef Prefix =
--          llvm::sys::path::is_absolute(dir) ? "" : llvm::StringRef(Sysroot);
-+          DriverArgs.hasArg(options::OPT_isysroot) ? llvm::StringRef(Sysroot) : "";
-       addExternCSystemInclude(DriverArgs, CC1Args, Prefix + dir);
-     }
-   } else {
