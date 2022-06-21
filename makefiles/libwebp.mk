@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += libwebp
-LIBWEBP_VERSION := 1.2.0
+LIBWEBP_VERSION := 1.2.2
 DEB_LIBWEBP_V   ?= $(LIBWEBP_VERSION)
 
 libwebp-setup: setup

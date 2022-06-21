@@ -1,0 +1,7 @@
+Package: havoc-keyring
+Version: @DEB_HAVOC_KEYRING_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Keyrings
+Priority: optional
+Description: GnuPG keys for the Havoc repository

@@ -13,4 +13,4 @@ Description: FFmpeg library for post processing - development files
  This library provides video post processing.
  .
  This package contains the development files.
-Depends: libpostproc55 (= @DEB_FFMPEG_V@), libavutil-dev (= @DEB_FFMPEG_V@)
+Depends: libpostproc56 (= @DEB_FFMPEG_V@), libavutil-dev (= @DEB_FFMPEG_V@)

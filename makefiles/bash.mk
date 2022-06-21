@@ -8,7 +8,7 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += bash
 endif # ($(MEMO_TARGET),darwin-\*)
 BASH_VERSION    := 5.1
-BASH_PATCHLEVEL := 12
+BASH_PATCHLEVEL := 16
 DEB_BASH_V      ?= $(BASH_VERSION).$(BASH_PATCHLEVEL)
 
 bash-setup: setup

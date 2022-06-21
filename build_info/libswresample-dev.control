@@ -30,4 +30,4 @@ Description: FFmpeg library for audio resampling, rematrixing etc. - development
     dedicated buffer or "plane").
  .
  This package contains the development files.
-Depends: libswresample3 (= @DEB_FFMPEG_V@), libavutil-dev (= @DEB_FFMPEG_V@)
+Depends: libswresample4 (= @DEB_FFMPEG_V@), libavutil-dev (= @DEB_FFMPEG_V@)
