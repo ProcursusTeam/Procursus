@@ -3,14 +3,13 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += uvwasi
-UVWASI_VERSION := 0.0.11
+UVWASI_VERSION := 0.0.12
 DEB_UVWASI_V   ?= $(UVWASI_VERSION)
 UVWASI_SOVER   := 0
 
 uvwasi-setup: setup
 	$(call GITHUB_ARCHIVE,nodejs,uvwasi,$(UVWASI_VERSION),v$(UVWASI_VERSION))
 	$(call EXTRACT_TAR,uvwasi-$(UVWASI_VERSION).tar.gz,uvwasi-$(UVWASI_VERSION),uvwasi)
-	$(call DO_PATCH,uvwasi,uvwasi,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/uvwasi/.build_complete),)
 uvwasi:
