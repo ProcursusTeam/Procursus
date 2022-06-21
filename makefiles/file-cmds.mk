@@ -12,6 +12,8 @@ DEB_FILE-CMDS_V   ?= $(FILE-CMDS_VERSION)-3
 else
 FILE-CMDS_VERSION := 353.100.22
 DEB_FILE-CMDS_V   ?= $(FILE-CMDS_VERSION)
+
+FILE-EXTRA-CMDS  := xattr
 endif
 
 file-cmds-setup: setup
@@ -32,7 +34,7 @@ file-cmds:
 else
 file-cmds: file-cmds-setup
 	cd $(BUILD_WORK)/file-cmds; \
-	for bin in chflags compress ipcrm ipcs pax xattr; do \
+	for bin in chflags compress ipcrm ipcs pax $(FILE-EXTRA-CMDS); do \
 		echo $${bin}; \
 		$(CC) $(CFLAGS) -isystem include -o $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c $(LDFLAGS) -D'__FBSDID(x)=' -D__POSIX_C_SOURCE; \
 		$(INSTALL) -Dm644 $$bin/$$bin.1 $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/; \

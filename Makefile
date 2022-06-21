@@ -359,7 +359,7 @@ endif # ($(MEMO_QUIET),1)
 TARGET_SYSROOT  ?= $(HOME)/cctools/SDK/$(BARE_PLATFORM).sdk
 MACOSX_SYSROOT  ?= $(HOME)/cctools/SDK/MacOSX.sdk
 
-CC       := $(GNU_HOST_TRIPLE)-clang -stdlib=libc++
+CC       := $(GNU_HOST_TRIPLE)-clang
 CXX      := $(GNU_HOST_TRIPLE)-clang++ -stdlib=libc++
 CPP      := $(GNU_HOST_TRIPLE)-clang -E
 AR       := $(GNU_HOST_TRIPLE)-ar
