@@ -360,7 +360,7 @@ TARGET_SYSROOT  ?= $(HOME)/cctools/SDK/$(BARE_PLATFORM).sdk
 MACOSX_SYSROOT  ?= $(HOME)/cctools/SDK/MacOSX.sdk
 
 CC       := $(GNU_HOST_TRIPLE)-clang
-CXX      := $(GNU_HOST_TRIPLE)-clang++ -stdlib=libc++
+CXX      := $(GNU_HOST_TRIPLE)-clang++
 CPP      := $(GNU_HOST_TRIPLE)-clang -E
 AR       := $(GNU_HOST_TRIPLE)-ar
 LD       := $(GNU_HOST_TRIPLE)-ld
@@ -513,7 +513,7 @@ OPTIMIZATION_FLAGS += -lto_library $(MEMO_ALT_LTO_LIB)
 endif
 
 CFLAGS              := $(OPTIMIZATION_FLAGS) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)$(MEMO_PREFIX)/Library/Frameworks
-CXXFLAGS            := $(CFLAGS)
+CXXFLAGS            := $(CFLAGS) -stdlib=libc++
 CPPFLAGS            := -arch $(MEMO_ARCH) $(PLATFORM_VERSION_MIN) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include -Wno-error-implicit-function-declaration
 LDFLAGS             := $(OPTIMIZATION_FLAGS) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)$(MEMO_PREFIX)/Library/Frameworks -Wl,-not_for_dyld_shared_cache
 PKG_CONFIG_PATH     :=
