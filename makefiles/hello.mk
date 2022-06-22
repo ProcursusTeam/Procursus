@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += hello
-HELLO_VERSION := 2.10
+HELLO_VERSION := 2.12
 DEB_HELLO_V   ?= $(HELLO_VERSION)
 
 hello-setup: setup
@@ -15,9 +15,10 @@ ifneq ($(wildcard $(BUILD_WORK)/hello/.build_complete),)
 hello:
 	@echo "Using previously built hello."
 else
-hello: hello-setup
+hello: hello-setup gettext
 	cd $(BUILD_WORK)/hello && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		LIBS="-liconv"
 	+$(MAKE) -C $(BUILD_WORK)/hello
 	+$(MAKE) -C $(BUILD_WORK)/hello install \
 		DESTDIR=$(BUILD_STAGE)/hello
@@ -27,7 +28,6 @@ endif
 hello-package: hello-stage
 	# hello.mk Package Structure
 	rm -rf $(BUILD_DIST)/hello
-	mkdir -p $(BUILD_DIST)/hello
 
 	# hello.mk Prep hello
 	cp -a $(BUILD_STAGE)/hello $(BUILD_DIST)
