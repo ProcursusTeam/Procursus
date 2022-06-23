@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS           += rubberband
-RUBBERBAND_VERSION    := 1.9.1
+RUBBERBAND_VERSION    := 2.0.2
 DEB_RUBBERBAND_V      ?= $(RUBBERBAND_VERSION)
 
 rubberband-setup: setup
@@ -18,7 +18,7 @@ rubberband-setup: setup
 	system = 'darwin'\n \
 	[properties]\n \
 	root = '$(BUILD_BASE)'\n \
-	[paths]\n \
+	[built-in options]\n \
 	prefix ='$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
 	[binaries]\n \
 	c = '$(CC)'\n \

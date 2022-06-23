@@ -1,5 +1,4 @@
 Package: shshd
-Essential: yes
 Author: Hayden Seay <me@diatr.us>
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@

@@ -2,7 +2,7 @@ Package: libvpx-dev
 Version: @DEB_LIBVPX_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libvpx6 (>= @DEB_LIBVPX_V@)
+Depends: libvpx7 (>= @DEB_LIBVPX_V@)
 Section: Development
 Priority: optional
 Description: VP8 and VP9 video codec (development files)

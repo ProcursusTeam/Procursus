@@ -1,3 +1,2 @@
 https://apt.procurs.us
-https://ftp.sudhip.com/procursus
 https://repo.quiprr.dev/procursus
