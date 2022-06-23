@@ -28,8 +28,6 @@ endif
 		$(BUILD_WORK)/diskdev-cmds/fsck.tproj/fsck.c
 	sed -i -e '/TARGET_OS_OSX/d' \
 		$(BUILD_WORK)/diskdev-cmds/disklib/preen.c
-	sed -i -e '1s/^/typedef char uuid_string_t[37];\n/' \
-		$(BUILD_WORK)/diskdev-cmds/vsdbutil.tproj/vsdbutil_main.c
 	mkdir -p $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{{s,}bin,libexec,share/man/man{1,5,8}}
 
 ifneq ($(wildcard $(BUILD_WORK)/diskdev-cmds/.build_complete),)
