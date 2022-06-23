@@ -65,7 +65,7 @@ system-cmds: system-cmds-setup libxcrypt openpam libiosexec ncurses
 			trace) LDFLAGS="-lutil";; \
 			gcore) LDFLAGS="-Igcore.tproj -lutil -lcompression";; \
 			lskq) LDFLAGS="-Ilskq.tproj -DEVFILT_NW_CHANNEL=(-16)";; \
-			zic) CFLAGS='-DUNIDEF_MOVE_LOCALTIME';; \
+			zic) CFLAGS='-DUNIDEF_MOVE_LOCALTIME -DTZDIR="/var/db/timezone/zoneinfo" -DTZDEFAULT="/var/db/timezone/localtime"';; \
 			sa) LDFLAGS="-Isa.tproj -DAHZV1=64";; \
 		esac ; \
 		echo "$$tproj" ; \
