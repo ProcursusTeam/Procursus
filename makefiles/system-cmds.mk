@@ -30,12 +30,10 @@ ifeq ($(shell [ $(CFVER_WHOLE) -lt 1800 ] && echo 1),1)
 	wget -q -nc -P$(BUILD_WORK)/system-cmds/lsmp.tproj https://github.com/apple-oss-distributions/system_cmds/raw/8579bd456573d7d205fec79af332a12e12464a60/lsmp.tproj/{common.h,json.h,lsmp.1,lsmp.c,{port,task}_details.c}
 	wget -q -nc -P$(BUILD_WORK)/system-cmds/gcore.tproj https://github.com/apple-oss-distributions/system_cmds/raw/ae9b08dd34d024c6a8c04f312169edc9d197dfff/gcore.tproj/{gcore.1,gcore-internal.1,{loader_additions,options,region}.h,main.c,{convert,corefile,dyld,dyld_shared_cache,sparse,threads,utils,vanilla,vm}.{c,h}}
 endif
-	sed -i '1s/^/typedef char uuid_string_t[37];\n/' $(BUILD_WORK)/system-cmds/{gcore.tproj/{vanilla,convert,dyld,dyld_shared_cache}.c,proc_uuid_policy.tproj/proc_uuid_policy.c}
 	sed -i 's|/System/Library/Kernels/kernel.development|$(MEMO_PREFIX)/Library/Kernels/kernel.development|' $(BUILD_WORK)/system-cmds/latency.tproj/latency.{1,c} # Allow placing kernels from [redacted] sources on rootless
 
 ###
 # TODO: Once I implement pam_chauthtok() in pam_unix.so, use PAM for passwd
-# TODO: tzdata for zic
 ###
 
 ifneq ($(wildcard $(BUILD_WORK)/system-cmds/.build_complete),)
@@ -66,8 +64,8 @@ system-cmds: system-cmds-setup libxcrypt openpam libiosexec ncurses
 			latency) LDFLAGS="-lncurses -lutil";; \
 			trace) LDFLAGS="-lutil";; \
 			gcore) LDFLAGS="-Igcore.tproj -lutil -lcompression";; \
-			lskq) LDFLAGS="-Ilskq.tproj";; \
-			zic) CFLAGS='-DTZDIR="$(MEMO_PREFIX)/var/db/timezone/zoneinfo"';; \
+			lskq) LDFLAGS="-Ilskq.tproj -DEVFILT_NW_CHANNEL=(-16)";; \
+			zic) CFLAGS='-DUNIDEF_MOVE_LOCALTIME';; \
 			sa) LDFLAGS="-Isa.tproj -DAHZV1=64";; \
 		esac ; \
 		echo "$$tproj" ; \
