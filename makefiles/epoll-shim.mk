@@ -7,9 +7,8 @@ EPOLL_SHIM_VERSION := 0.0.20220607
 DEB_EPOLL_SHIM_V   ?= $(EPOLL_SHIM_VERSION)
 
 epoll-shim-setup: setup
-	$(call GITHUB_ARCHIVE,jiixyj,epoll-shim,$(EPOLL_SHIM_VERSION),$(EPOLL_SHIM_VERSION))
+	wget -q -nc -O $(BUILD_SOURCE)/epoll-shim-$(EPOLL_SHIM_VERSION).tar.gz https://api.github.com/repos/bouldev/epoll-shim/tarball/darwin
 	$(call EXTRACT_TAR,epoll-shim-$(EPOLL_SHIM_VERSION).tar.gz,epoll-shim-$(EPOLL_SHIM_VERSION),epoll-shim)
-	$(call DO_PATCH,epoll-shim,epoll-shim,-p1)
 	mkdir -p $(BUILD_WORK)/epoll-shim/build
 
 ifneq ($(wildcard $(BUILD_WORK)/epoll-shim/.build_complete),)
@@ -19,7 +18,6 @@ else
 epoll-shim: epoll-shim-setup
 	cd $(BUILD_WORK)/epoll-shim/build && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
-		-DCMAKE_INSTALL_PKGCONFIGDIR=lib/pkgconfig \
 		-DBUILD_TESTING=OFF \
 		..
 	+$(MAKE) -C $(BUILD_WORK)/epoll-shim/build
