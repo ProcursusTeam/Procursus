@@ -15,6 +15,7 @@ system-cmds-setup: setup libxcrypt
 	$(call DO_PATCH,system-cmds,system-cmds,-p1)
 	sed -i '/#include <stdio.h>/a #include <crypt.h>' $(BUILD_WORK)/system-cmds/login.tproj/login.c
 	sed -i '1 i\#include\ <libiosexec.h>' $(BUILD_WORK)/system-cmds/login.tproj/login.c
+	sed -i '1 i\#define IOPOL_TYPE_VFS_HFS_CASE_SENSITIVITY 1\n#define IOPOL_SCOPE_PROCESS 0\n#define IOPOL_VFS_HFS_CASE_SENSITIVITY_DEFAULT 0\n#define IOPOL_VFS_HFS_CASE_SENSITIVITY_FORCE_CASE_SENSITIVE 1\n#define PRIO_DARWIN_ROLE_UI 0x2' $(BUILD_WORK)/system-cmds/taskpolicy.tproj/taskpolicy.c
 	sed -i -E -e 's|"/usr|"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' -e 's|"/sbin|"$(MEMO_PREFIX)/sbin|g' \
 		$(BUILD_WORK)/system-cmds/{shutdown.tproj/pathnames.h,getty.tproj/{ttys,gettytab}.5,sc_usage.tproj/sc_usage.{1,c},at.tproj/{at.1,pathnames.h}}
 	wget -q -nc -P $(BUILD_SOURCE) \
