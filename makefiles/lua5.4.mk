@@ -33,14 +33,8 @@ lua5.4: lua5.4-setup readline
 		INSTALL_MAN="$(BUILD_STAGE)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1" \
 		TO_BIN="lua5.4 luac5.4" \
 		TO_LIB="liblua5.4.a liblua5.4.0.dylib"
-	+$(MAKE) -C $(BUILD_WORK)/lua5.4 install \
-		INSTALL_TOP="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
-		INSTALL_INC="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/lua5.4" \
-		INSTALL_MAN="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1" \
-		TO_BIN="lua5.4 luac5.4" \
-		TO_LIB="liblua5.4.a liblua5.4.0.dylib"
 	$(LN_S) liblua5.4.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.4.dylib
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 lua5.4-package: lua5.4-stage
