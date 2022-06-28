@@ -33,14 +33,8 @@ lua5.1: lua5.1-setup readline
 		INSTALL_MAN="$(BUILD_STAGE)/lua5.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1" \
 		TO_BIN="lua5.1 luac5.1" \
 		TO_LIB="liblua5.1.a liblua5.1.0.dylib"
-	+$(MAKE) -C $(BUILD_WORK)/lua5.1 install \
-		INSTALL_TOP="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
-		INSTALL_INC="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/lua5.1" \
-		INSTALL_MAN="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1" \
-		TO_BIN="lua5.1 luac5.1" \
-		TO_LIB="liblua5.1.a liblua5.1.0.dylib"
 	$(LN_S) liblua5.1.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.1.dylib
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 lua5.1-package: lua5.1-stage
