@@ -21,27 +21,14 @@ uvwasi: uvwasi-setup libuv1
 		-DWITH_SYSTEM_LIBUV=1 \
 		.
 	+$(MAKE) -C $(BUILD_WORK)/uvwasi
-
 	$(INSTALL) -Dm644 $(BUILD_WORK)/uvwasi/libuvwasi.dylib $(BUILD_STAGE)/uvwasi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.$(UVWASI_SOVER).dylib
-
 	$(INSTALL) -Dm644 $(BUILD_WORK)/uvwasi/libuvwasi_a.a $(BUILD_STAGE)/uvwasi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.a
 	$(INSTALL) -Dm644 $(BUILD_WORK)/uvwasi/include/uvwasi.h $(BUILD_STAGE)/uvwasi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/uvwasi.h
 	$(INSTALL) -Dm644 $(BUILD_WORK)/uvwasi/include/wasi_serdes.h $(BUILD_STAGE)/uvwasi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/wasi_serdes.h
 	$(INSTALL) -Dm644 $(BUILD_WORK)/uvwasi/include/wasi_types.h $(BUILD_STAGE)/uvwasi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/wasi_types.h
-
-	$(INSTALL) -Dm644 $(BUILD_WORK)/uvwasi/libuvwasi.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.$(UVWASI_SOVER).dylib
-
-	$(INSTALL) -Dm644 $(BUILD_WORK)/uvwasi/libuvwasi_a.a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.a
-	$(INSTALL) -Dm644 $(BUILD_WORK)/uvwasi/include/uvwasi.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/uvwasi.h
-	$(INSTALL) -Dm644 $(BUILD_WORK)/uvwasi/include/wasi_serdes.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/wasi_serdes.h
-	$(INSTALL) -Dm644 $(BUILD_WORK)/uvwasi/include/wasi_types.h $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/wasi_types.h
-
 	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.$(UVWASI_SOVER).dylib $(BUILD_STAGE)/uvwasi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.$(UVWASI_SOVER).dylib
-	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.$(UVWASI_SOVER).dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.$(UVWASI_SOVER).dylib
-	$(LN_S) libuvwasi.$(UVWASI_SOVER).dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.dylib
 	$(LN_S) libuvwasi.$(UVWASI_SOVER).dylib $(BUILD_STAGE)/uvwasi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuvwasi.dylib
-
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 uvwasi-package: uvwasi-stage
