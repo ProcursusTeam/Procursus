@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS     += libheif
 LIBHEIF_VERSION := 1.12.0
-DEB_LIBHEIF_V   ?= $(LIBHEIF_VERSION)
+DEB_LIBHEIF_V   ?= $(LIBHEIF_VERSION)-1
 
 libheif-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/strukturag/libheif/releases/download/v$(LIBHEIF_VERSION)/libheif-$(LIBHEIF_VERSION).tar.gz
