@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libfontenc/.build_complete),)
 libfontenc:
 	@echo "Using previously built libfontenc."
 else
-libfontenc: libfontenc-setup
+libfontenc: libfontenc-setup xorgproto
 	cd $(BUILD_WORK)/libfontenc && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libfontenc
