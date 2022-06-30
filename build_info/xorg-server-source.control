@@ -1,0 +1,16 @@
+Package: xorg-server-source
+Version: @DEB_XORG-SERVER_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: X11
+Priority: optional
+Homepage: https://x.org
+Description: Xorg X server - source files
+ This package provides original Procursus (with Procursus patches
+ already applied, and autotools files updated) sources for the X.Org
+ ('Xorg') X server shipped in a tarball.  This enables other projects
+ re-using X server codebase (e.g. VNC servers) to (re-)use officially
+ Procursus-supported version of the X xserver for their builds.
+ .
+ Unless you are building a software product using X server sources,
+ you probably want xserver-xorg and/or xserver-xorg-core instead.
