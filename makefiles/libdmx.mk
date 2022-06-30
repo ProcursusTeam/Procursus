@@ -16,6 +16,7 @@ libdmx:
 	@echo "Using previously built libdmx."
 else
 libdmx: libdmx-setup libx11 libxext
+	$(eval $(warning libdmx is deprecated))
 	cd $(BUILD_WORK)/libdmx && unset CPP CPPFLAGS && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-malloc0returnsnull=no \
