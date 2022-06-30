@@ -1,0 +1,21 @@
+Package: libxxf86dga-dev
+Version: @DEB_LIBXXF86DGA_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libxxf86dga1 (= @DEB_LIBXXF86DGA_V@), libx11-dev
+Section: Development
+Priority: optional
+Description: X11 Direct Graphics Access extension library (development headers)
+ libXxf86dga provides the XFree86-DGA extension, which allows direct
+ graphics access to a framebuffer-like region, and also allows relative
+ mouse reporting, et al.  It is mainly used by games and emulators for
+ games.
+ .
+ This package contains the development headers for the library found in
+ libxxf86dga1.  Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at:
+ <URL:http://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libXxf86dga
