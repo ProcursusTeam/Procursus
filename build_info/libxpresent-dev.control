@@ -1,0 +1,21 @@
+Package: libxpresent-dev
+Version: @DEB_LIBXPRESENT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libxpresent1 (= @DEB_LIBXPRESENT_V@), libxext-dev, libxrandr-dev, libxfixes-dev
+Section: Development
+Homepage: http://cgit.freedesktop.org/xorg/lib/libXpresent/
+Priority: optional
+Description: X11 Present extension library (development headers)
+ libXpresent provides an X Window System client interface to the Present
+ extension to the X protocol.
+ .
+ The Present extension provides a way for applications to update their
+ window contents from a pixmap in a well defined fashion, synchronizing
+ with the display refresh and potentially using a more efficient mechanism
+ than copying the contents of the source pixmap.
+ .
+ This package contains the development headers for the library found in 
+ libxpresent1. Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at: <URL:http://www.X.org>
