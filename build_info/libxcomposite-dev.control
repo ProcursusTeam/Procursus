@@ -1,0 +1,22 @@
+Package: libxcomposite-dev
+Version: @DEB_LIBXCOMPOSITE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libxcomposite1 (= @DEB_LIBXCOMPOSITE_V@), libx11-dev, libxfixes-dev, libxext-dev
+Section: Development
+Priority: optional
+Description: X11 Composite extension library (development headers)
+ libXcomposite provides an X Window System client interface to the Composite
+ extension to the X protocol.
+ .
+ The Composite extension allows clients called compositing managers to control
+ the final drawing of the screen.  Rendering is done into an off-screen buffer.
+ .
+ This package contains the development headers for the library found in
+ libxcomposite1.  Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at:
+ <URL:http://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libXcomposite

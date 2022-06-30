@@ -1,0 +1,19 @@
+Package: libxcomposite1
+Version: @DEB_LIBXCOMPOSITE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libx11-6 (>= 1.4.99.1)
+Section: Libraries
+Priority: optional
+Description: X11 Composite extension library
+ libXcomposite provides an X Window System client interface to the Composite
+ extension to the X protocol.
+ .
+ The Composite extension allows clients called compositing managers to control
+ the final drawing of the screen.  Rendering is done into an off-screen buffer.
+ .
+ More information about X.Org can be found at:
+ <URL:http://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libXcomposite
