@@ -1,0 +1,20 @@
+Package: libxv-dev
+Version: @DEB_LIBXV_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libx11-dev, libxext-dev, libxv1 (= @DEB_LIBXV_V@)
+Section: Development
+Priority: optional
+Description: X11 Video extension library
+ libXv provides an X Window System client interface to the XVideo
+ extension to the X protocol.
+ .
+ The XVideo extension allows for accelerated drawing of videos.  Hardware
+ adaptors are exposed to clients, which may draw in a number of colourspaces,
+ including YUV.
+ .
+ More information about X.Org can be found at:
+ <URL:https://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libXv
