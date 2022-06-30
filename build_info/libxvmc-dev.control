@@ -1,0 +1,24 @@
+Package: libxvmc-dev
+Version: @DEB_LIBXVMC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libx11-dev, libxext-dev, x11proto-dev, libxvmc1 (= @DEB_LIBXVMC_V@)
+Section: Development
+Priority: optional
+Description: X11 Video extension library (development headers)
+ libXvMC provides an X Window System client interface to the
+ XVideo-MotionCompensation extension to the X protocol.
+ .
+ The XVideo-MotionCompensation extension allows for further accelerated drawing
+ of videos.  Video data may be sent at earlier stages of the decoding pipeline
+ than raw YUV data.  At the moment, driver support for XvMC is poor to
+ non-existent.
+ .
+ This package contains the development headers for the library found in
+ libxvmc1.  Non-developers likely have little use for this package.
+ .
+ More information about X.Org can be found at:
+ <URL:https://www.X.org>
+ .
+ This module can be found at
+ git://anongit.freedesktop.org/git/xorg/lib/libXvMC
