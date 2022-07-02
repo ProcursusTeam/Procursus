@@ -1,0 +1,22 @@
+From c61bf17f292408c20d862d7b9135799861c02d08 Mon Sep 17 00:00:00 2001
+From: Zaoqi <zaomir@outlook.com>
+Date: Mon, 8 Jul 2019 21:58:38 +0800
+Subject: [PATCH] remove the limit of max-connection-per-server
+
+---
+ src/OptionHandlerFactory.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/OptionHandlerFactory.cc b/src/OptionHandlerFactory.cc
+index 6bff4caa3..b3496373d 100644
+--- a/src/OptionHandlerFactory.cc
++++ b/src/OptionHandlerFactory.cc
+@@ -440,7 +440,7 @@ std::vector<OptionHandler*> OptionHandlerFactory::createOptionHandlers()
+   {
+     OptionHandler* op(new NumberOptionHandler(PREF_MAX_CONNECTION_PER_SERVER,
+                                               TEXT_MAX_CONNECTION_PER_SERVER,
+-                                              "1", 1, 16, 'x'));
++                                              "1", 1, -1, 'x'));
+     op->addTag(TAG_BASIC);
+     op->addTag(TAG_FTP);
+     op->addTag(TAG_HTTP);
