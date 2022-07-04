@@ -1,0 +1,16 @@
+--- a/src/sljit/sljitExecAllocator.c	2021-08-21 00:51:28.000000000 +0800
++++ a/src/sljit/sljitExecAllocator.c	2022-01-04 15:42:20.854232438 +0800
+@@ -187,10 +187,13 @@
+ 	if (retval == MAP_FAILED)
+ 		return NULL;
+ 
++#ifdef __FreeBSD__
++        /* HardenedBSD's mmap lies, so check permissions again */
+ 	if (mprotect(retval, size, PROT_READ | PROT_WRITE | PROT_EXEC) < 0) {
+ 		munmap(retval, size);
+ 		return NULL;
+ 	}
++#endif /* FreeBSD */
+ 
+ 	SLJIT_UPDATE_WX_FLAGS(retval, (uint8_t *)retval + size, 0);
+ 

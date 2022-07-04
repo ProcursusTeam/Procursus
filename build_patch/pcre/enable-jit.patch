@@ -1,0 +1,16 @@
+--- a/sljit/sljitExecAllocator.c	2022-01-04 15:24:23.012333128 +0800
++++ b/sljit/sljitExecAllocator.c	2022-01-04 15:29:31.125770746 +0800
+@@ -169,10 +169,13 @@
+ 	if (retval == MAP_FAILED)
+ 		retval = NULL;
+ 	else {
++#ifdef __FreeBSD__
++		/* HardenedBSD's mmap lies, so check permissions again */
+ 		if (mprotect(retval, size, prot) < 0) {
+ 			munmap(retval, size);
+ 			retval = NULL;
+ 		}
++#endif /* FreeBSD */
+ 	}
+ 
+ 	return retval;

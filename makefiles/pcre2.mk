@@ -3,13 +3,14 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += pcre2
-PCRE2_VERSION := 10.37
+PCRE2_VERSION := 10.39
 DEB_PCRE2_V   ?= $(PCRE2_VERSION)
 
 pcre2-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://downloads.sourceforge.net/pcre/pcre2-$(PCRE2_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,pcre2-$(PCRE2_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,pcre2-$(PCRE2_VERSION).tar.bz2,pcre2-$(PCRE2_VERSION),pcre2)
+	$(call DO_PATCH,pcre2,pcre2,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/pcre2/.build_complete),)
 pcre2:
