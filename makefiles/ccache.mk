@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  	 += ccache
-CCACHE_VERSION := 4.3
+CCACHE_VERSION := 4.6
 DEB_CCACHE_V   ?= $(CCACHE_VERSION)
 
 ifneq (,$(findstring arm64,$(MEMO_TARGET)))
@@ -33,6 +33,7 @@ ccache: ccache-setup zstd
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DZSTD_INCLUDE_DIR=$(BUILD_STAGE)/zstd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include \
 		-DZSTD_LIBRARY=$(BUILD_STAGE)/zstd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libzstd.dylib \
+		-DREDIS_STORAGE_BACKEND=Off \
 		$(CCACHE_CMAKE_ARGS) \
 		.
 	+$(MAKE) -C $(BUILD_WORK)/ccache
