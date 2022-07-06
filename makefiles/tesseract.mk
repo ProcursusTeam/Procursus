@@ -26,6 +26,7 @@ tesseract: tesseract-setup leptonica libarchive curl
 	rm -f $(BUILD_WORK)/tesseract/VERSION # This, amazingly enough, makes compiling on macOS not work. (Non-case-sensitive)
 	cd $(BUILD_WORK)/tesseract && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		--datarootdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tesseract-ocr/5/ \
 		--disable-doc # The docs do not work, so we'll disable them for now
 	+$(MAKE) -C $(BUILD_WORK)/tesseract
 	+$(MAKE) -C $(BUILD_WORK)/tesseract install \
@@ -39,7 +40,7 @@ tesseract-package: tesseract-stage
 	mkdir -p \
 		$(BUILD_DIST)/libtesseract-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/tesseract-ocr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		$(BUILD_DIST)/libtesseract5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share}
+		$(BUILD_DIST)/libtesseract5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share/tesseract-ocr/5/}
 
 	# tesseract.mk Prep libtesseract-dev
 	cp -a $(BUILD_STAGE)/tesseract/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libtesseract-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
@@ -51,9 +52,9 @@ tesseract-package: tesseract-stage
 
 	# tesseract.mk Prep libtesseract5
 	cp -a $(BUILD_STAGE)/tesseract/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libtesseract.5.dylib $(BUILD_DIST)/libtesseract5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/tesseract/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tessdata $(BUILD_DIST)/libtesseract5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	cp -a $(BUILD_STAGE)/tesseract/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tesseract-ocr/5/tessdata $(BUILD_DIST)/libtesseract5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tesseract-ocr/5/
 	# Just bundle eng and osd with the library.
-	wget -q -nc -P $(BUILD_DIST)/libtesseract5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tessdata \
+	wget -q -nc -P $(BUILD_DIST)/libtesseract5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tesseract-ocr/5/tessdata \
 		https://github.com/tesseract-ocr/tessdata_fast/raw/4.0.0/eng.traineddata \
 		https://github.com/tesseract-ocr/tessdata_fast/raw/4.0.0/osd.traineddata
 

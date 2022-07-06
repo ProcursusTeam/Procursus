@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS  += gnutls
 GNUTLS_VERSION := 3.7.6
-DEB_GNUTLS_V   ?= $(GNUTLS_VERSION)
+DEB_GNUTLS_V   ?= $(GNUTLS_VERSION)-1
 
 gnutls-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://www.gnupg.org/ftp/gcrypt/gnutls/v$(shell echo $(GNUTLS_VERSION) | cut -d. -f-2)/gnutls-$(GNUTLS_VERSION).tar.xz
@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/gnutls/.build_complete),)
 gnutls:
 	@echo "Using previously built gnutls."
 else
-gnutls: gnutls-setup readline gettext libgcrypt libgmp10 libidn2 libunistring nettle p11-kit
+gnutls: gnutls-setup readline gettext libgcrypt libgmp10 libidn2 libunistring nettle p11-kit brotli zstd
 	find $(BUILD_BASE) -name "*.la" -type f -delete
 	cd $(BUILD_WORK)/gnutls && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \

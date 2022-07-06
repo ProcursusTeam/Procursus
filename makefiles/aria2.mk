@@ -3,12 +3,13 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += aria2
-ARIA2_VERSION := 1.35.0
+ARIA2_VERSION := 1.36.0
 DEB_ARIA2_V   ?= $(ARIA2_VERSION)
 
 aria2-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tatsuhiro-t/aria2/releases/download/release-$(ARIA2_VERSION)/aria2-$(ARIA2_VERSION).tar.xz
 	$(call EXTRACT_TAR,aria2-$(ARIA2_VERSION).tar.xz,aria2-$(ARIA2_VERSION),aria2)
+	$(call DO_PATCH,aria2,aria2,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/aria2/.build_complete),)
 aria2:
