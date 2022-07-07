@@ -467,7 +467,7 @@ CODESIGN_IDENTITY ?= -
 MEMO_LDID_EXTRA_FLAGS     ?=
 MEMO_CODESIGN_EXTRA_FLAGS ?=
 
-LDID := ldid -Cadhoc $(MEMO_LDID_EXTRA_FLAGS)
+LDID := ldid -Hsha256 -Cadhoc $(MEMO_LDID_EXTRA_FLAGS)
 
 # Root
 BUILD_ROOT     ?= $(PWD)
@@ -722,8 +722,7 @@ SIGN = 	for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}
 			else \
 				$(LDID) -S$(BUILD_MISC)/entitlements/$(2) $$file; \
 			fi; \
-		done; \
-		find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
+		done
 else
 SIGN = 	CODESIGN_FLAGS="--sign $(CODESIGN_IDENTITY) --force --deep "; \
 		if [ "$(CODESIGN_IDENTITY)" != "-" ]; then \
