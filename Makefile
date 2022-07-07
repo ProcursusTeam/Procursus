@@ -177,7 +177,7 @@ ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sd
 BARE_PLATFORM         := iPhoneOS
 export IPHONEOS_DEPLOYMENT_TARGET
 
-else ifeq ($(MEMO_TARGET),appletvos-arm64)
+else ifeq ($(shell [ "$(MEMO_TARGET)" = "appletvos-arm64" ] || [ "$(MEMO_TARGET)" = "appletvos-arm64-ramdisk" ] && echo 1),1)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for tvOS)
 endif # ($(MEMO_QUIET),1)
@@ -1080,7 +1080,7 @@ ramdisk:
 	rm -f $(BUILD_DIST)/bootstrap_tools.tar*
 	rm -f $(BUILD_DIST)/.fakeroot_bootstrap
 	touch $(BUILD_DIST)/.fakeroot_bootstrap
-	for DEB in $(BUILD_DIST)/*.deb; do \
+	for DEB in $$(find $(BUILD_DIST)/../ -name "*.deb"); do \
 		dpkg-deb -x $$DEB $(BUILD_DIST)/strap; \
 	done
 	ln -s $(MEMO_PREFIX)/bin/bash $(BUILD_DIST)/strap/$(MEMO_PREFIX)/bin/sh
