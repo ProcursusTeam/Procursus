@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += bison
-BISON_VERSION := 3.7.6
+BISON_VERSION := 3.8.2
 DEB_BISON_V   ?= $(BISON_VERSION)
 
 bison-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftp.gnu.org/gnu/bison/bison-$(BISON_VERSION).tar.xz{,.sig}
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gnu/bison/bison-$(BISON_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,bison-$(BISON_VERSION).tar.xz)
 	$(call EXTRACT_TAR,bison-$(BISON_VERSION).tar.xz,bison-$(BISON_VERSION),bison)
 
@@ -21,9 +21,11 @@ bison: bison-setup m4 gettext readline
 	+$(MAKE) -C $(BUILD_WORK)/bison
 	+$(MAKE) -C $(BUILD_WORK)/bison install \
 		DESTDIR=$(BUILD_STAGE)/bison
-	+$(MAKE) -C $(BUILD_WORK)/bison install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	mv $(BUILD_STAGE)/bison/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/yacc \
+		$(BUILD_STAGE)/bison/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bison.yacc
+	mv $(BUILD_STAGE)/bison/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/yacc.1 \
+		$(BUILD_STAGE)/bison/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/bison.yacc.1
+	$(call AFTER_BUILD,copy)
 endif
 
 bison-package: bison-stage

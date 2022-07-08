@@ -15,7 +15,6 @@ ifneq ($(wildcard $(BUILD_WORK)/ucl/.build_complete),)
 ucl:
 	@echo "Using previously built ucl"
 else
-PATH := $(BUILD_WORK)/ucl/workaround:$(PATH)
 ucl: ucl-setup
 	cd $(BUILD_WORK)/ucl && autoreconf -fi
 	cd $(BUILD_WORK)/ucl && ./configure \
@@ -26,9 +25,7 @@ ucl: ucl-setup
 	+$(MAKE) -C $(BUILD_WORK)/ucl all
 	+$(MAKE) -C $(BUILD_WORK)/ucl install \
 		DESTDIR=$(BUILD_STAGE)/ucl
-	+$(MAKE) -C $(BUILD_WORK)/ucl install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 ucl-package: ucl-stage

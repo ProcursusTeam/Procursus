@@ -22,16 +22,14 @@ libglu: libglu-setup mesa
 	+$(MAKE) -C $(BUILD_WORK)/libglu
 	+$(MAKE) -C $(BUILD_WORK)/libglu install \
 		DESTDIR=$(BUILD_STAGE)/libglu
-	+$(MAKE) -C $(BUILD_WORK)/libglu install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libglu-package: libglu-stage
 	# libglu.mk Package Structure
 	rm -rf $(BUILD_DIST)/libglu1-mesa{,-dev}
 	mkdir -p $(BUILD_DIST)/libglu1-mesa{,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# libglu.mk Prep libglu1-mesa
 	cp -a $(BUILD_STAGE)/libglu/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libGLU.1.dylib $(BUILD_DIST)/libglu1-mesa/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
@@ -41,11 +39,11 @@ libglu-package: libglu-stage
 
 	# libglu.mk Sign
 	$(call SIGN,libglu1-mesa,general.xml)
-	
+
 	# libglu.mk Make .debs
 	$(call PACK,libglu1-mesa,DEB_LIBGLU_V)
 	$(call PACK,libglu1-mesa-dev,DEB_LIBGLU_V)
-	
+
 	# libglu.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libglu1-mesa{,-dev}
 

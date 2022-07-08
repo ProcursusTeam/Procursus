@@ -6,4 +6,3 @@ Section: Development
 Priority: optional
 Homepage: https://c-ares.haxx.se/
 Description: Shared libraries for the c-ares asynchronous name resolver library.
-Tag: purpose::library, role::developer

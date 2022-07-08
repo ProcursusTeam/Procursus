@@ -25,9 +25,7 @@ ed: ed-setup
 	+$(MAKE) -C $(BUILD_WORK)/ed
 	+$(MAKE) -C $(BUILD_WORK)/ed install -j1 \
 		DESTDIR=$(BUILD_STAGE)/ed
-	+$(MAKE) -C $(BUILD_WORK)/ed install -j1 \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 ed-package: ed-stage

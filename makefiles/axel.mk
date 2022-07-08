@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += axel
-AXEL_VERSION := 2.17.10
+AXEL_VERSION := 2.17.11
 DEB_AXEL_V   ?= $(AXEL_VERSION)
 
 axel-setup: setup

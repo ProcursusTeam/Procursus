@@ -1,0 +1,13 @@
+Package: libkeccak1
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_LIBKECCAK_V@
+Section: Libraries
+Priority: optional
+Description: Keccak-family hashing library
+ libkeccak is a bit-oriented lanewise implementation of
+ the Keccak-family with support for extend output size,
+ state marshalling, algorithm tuning with implicit parameters,
+ secure erasure of sensitive data, and HMAC.
+ .
+ This package contains the libkeccak runtime library.

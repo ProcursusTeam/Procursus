@@ -1,0 +1,12 @@
+Package: python3-kimg4
+Version: @DEB_PYTHON3_KIMG4_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Author: cynder <kat@cynder.me>
+Section: Python
+Depends: python3, python3-pyaes
+Priority: optional
+Homepage: https://github.com/cxnder/kimg4
+Description: Pure Python library for IMG4 format.
+ kimg4 is a Pure Python library for dealing with
+ Apple's propriatary IMG4 format

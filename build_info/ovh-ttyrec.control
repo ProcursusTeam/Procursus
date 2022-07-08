@@ -1,0 +1,21 @@
+Package: ovh-ttyrec
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_OVH_TTYREC_V@
+Conflicts: ttyrec
+Replaces: ttyrec
+Provides: ttyrec (= @DEB_OVH_TTYREC_V@)
+Section: Utilities
+Priority: optional
+Description: Extended (but compatible) fork of ttyrec
+ ttyrec is a terminal (tty) recorder, it comes with ttyplay, which is a tty player.
+ Some features of ovh-ttyrec follow:
+ -   Drop-in replacement of the classic ttyrec, additional features don't break compatibility
+ -   The code is portable and OS features that can be used are detected at compile time
+ -   Supports ttyrec output file rotation without interrupting the session
+ -   Supports locking the session after a keyboard input timeout, optionally displaying a custom message
+ -   Supports terminating the session after a keyboard input timeout
+ -   Supports manually locking or terminating the session via "cheatcodes" (specific keystrokes)
+ -   Supports a no-tty mode, relying on pipes instead of pseudottys, while still recording stdout/stderr
+ -   Automatically detects whether to use pseudottys or pipes, also overridable from command-line
+ -   Supports reporting the number of bytes that were output to the terminal on session exit

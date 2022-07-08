@@ -7,4 +7,3 @@ Conflicts: libplist (<< 99)
 Section: Networking
 Priority: standard
 Description: Apple property list converter
-Tag: role::developer

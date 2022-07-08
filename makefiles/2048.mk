@@ -16,7 +16,7 @@ endif
 	mkdir -p $(BUILD_WORK)/2048
 	cp $(BUILD_SOURCE)/2048-$(2048_GIT_HASH).c $(BUILD_WORK)/2048
 	mv $(BUILD_WORK)/2048/2048-$(2048_GIT_HASH).c $(BUILD_WORK)/2048/2048.c
-	$(SED) -i '/#define _XOPEN_SOURCE 500/d' $(BUILD_WORK)/2048/2048.c
+	sed -i '/#define _XOPEN_SOURCE 500/d' $(BUILD_WORK)/2048/2048.c
 
 ifneq ($(wildcard $(BUILD_WORK)/2048/.build_complete),)
 2048:

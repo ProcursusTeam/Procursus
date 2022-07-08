@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += aom
-AOM_VERSION   := 3.1.0
+AOM_VERSION   := 3.3.0
 DEB_AOM_V     ?= $(AOM_VERSION)
 
 aom-setup: setup
@@ -25,9 +25,7 @@ aom: aom-setup
 	+$(MAKE) -C $(BUILD_WORK)/aom/build
 	+$(MAKE) -C $(BUILD_WORK)/aom/build install \
 		DESTDIR="$(BUILD_STAGE)/aom"
-	+$(MAKE) -C $(BUILD_WORK)/aom/build install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 aom-package: aom-stage

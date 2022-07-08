@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += gpgme
-GPGME_VERSION := 1.16.0
+GPGME_VERSION := 1.17.1
 DEB_GPGME_V   ?= $(GPGME_VERSION)
 
 gpgme-setup: setup
@@ -27,9 +27,7 @@ gpgme: gpgme-setup gnupg libassuan libgpg-error
 	+$(MAKE) -C $(BUILD_WORK)/gpgme
 	+$(MAKE) -C $(BUILD_WORK)/gpgme install \
 		DESTDIR=$(BUILD_STAGE)/gpgme
-	+$(MAKE) -C $(BUILD_WORK)/gpgme install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 gpgme-package: gpgme-stage

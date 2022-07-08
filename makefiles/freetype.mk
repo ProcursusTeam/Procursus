@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += freetype
-FREETYPE_VERSION := 2.10.4
+FREETYPE_VERSION := 2.12.1
 DEB_FREETYPE_V   ?= $(FREETYPE_VERSION)
 
 freetype-setup: setup
@@ -23,9 +23,7 @@ freetype: freetype-setup brotli libpng16
 	+$(MAKE) -C $(BUILD_WORK)/freetype
 	+$(MAKE) -C $(BUILD_WORK)/freetype install \
 		DESTDIR=$(BUILD_STAGE)/freetype
-	+$(MAKE) -C $(BUILD_WORK)/freetype install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 freetype-package: freetype-stage

@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += frei0r
-FREI0R_VERSION := 1.7.0
-DEB_FREI0R_V   ?= $(FREI0R_VERSION)-1
+FREI0R_VERSION := 1.8.0
+DEB_FREI0R_V   ?= $(FREI0R_VERSION)
 
 frei0r-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://files.dyne.org/frei0r/releases/frei0r-plugins-$(FREI0R_VERSION).tar.gz
@@ -22,10 +22,8 @@ frei0r: frei0r-setup cairo
 	+$(MAKE) -C $(BUILD_WORK)/frei0r
 	+$(MAKE) -C $(BUILD_WORK)/frei0r install \
 		DESTDIR=$(BUILD_STAGE)/frei0r
-	+$(MAKE) -C $(BUILD_WORK)/frei0r install \
-		DESTDIR=$(BUILD_BASE)
 	for file in $(BUILD_STAGE)/frei0r/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/frei0r-1/*.so ; do mv $$file "$${file%.*}.dylib" ; done
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 frei0r-package: frei0r-stage

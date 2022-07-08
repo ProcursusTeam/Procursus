@@ -25,9 +25,7 @@ libxext: libxext-setup libx11 xorgproto
 	+$(MAKE) -C $(BUILD_WORK)/libxext
 	+$(MAKE) -C $(BUILD_WORK)/libxext install \
 		DESTDIR=$(BUILD_STAGE)/libxext
-	+$(MAKE) -C $(BUILD_WORK)/libxext install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libxext-package: libxext-stage

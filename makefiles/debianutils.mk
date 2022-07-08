@@ -5,13 +5,12 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS       += debianutils
-DEBIANUTILS_VERSION := 4.11.2
+DEBIANUTILS_VERSION := 5.7
 DEB_DEBIANUTILS_V   ?= $(DEBIANUTILS_VERSION)
 
 debianutils-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/d/debianutils/debianutils_$(DEBIANUTILS_VERSION).tar.xz
-	$(call EXTRACT_TAR,debianutils_$(DEBIANUTILS_VERSION).tar.xz,debianutils-$(DEBIANUTILS_VERSION),debianutils)
-	$(call DO_PATCH,debianutils,debianutils,-p1)
+	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/d/debianutils/debianutils_$(DEBIANUTILS_VERSION).orig.tar.gz
+	$(call EXTRACT_TAR,debianutils_$(DEBIANUTILS_VERSION).orig.tar.gz,debianutils-$(DEBIANUTILS_VERSION),debianutils)
 
 ifneq ($(wildcard $(BUILD_WORK)/debianutils/.build_complete),)
 debianutils:
@@ -24,9 +23,9 @@ debianutils: debianutils-setup
 	+$(MAKE) -C $(BUILD_WORK)/debianutils install \
 		DESTDIR=$(BUILD_STAGE)/debianutils
 	rm -f $(BUILD_STAGE)/debianutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/installkernel \
-		$(BUILD_STAGE)/debianutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{ischroot,which,tempfile,savelog}
+		$(BUILD_STAGE)/debianutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{ischroot,which}
 	rm -rf $(BUILD_STAGE)/debianutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/{,??}/man1 \
-		$(BUILD_STAGE)/debianutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/{,??}/man8/!(run-parts|add-shell|remove-shell).8
+		$(BUILD_STAGE)/debianutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/{,??}/man8/installkernel.8
 	mkdir -p $(BUILD_STAGE)/debianutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/debianutils
 	echo -e "# /etc/shells: valid login shells\n\
 $(MEMO_PREFIX)/bin/sh\n\
@@ -42,7 +41,7 @@ debianutils-package: debianutils-stage
 	# debianutils.mk Prep debianutils
 	cp -a $(BUILD_STAGE)/debianutils $(BUILD_DIST)
 ifneq ($(MEMO_SUB_PREFIX),)
-	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/run-parts $(BUILD_DIST)/debianutils/$(MEMO_PREFIX)/bin
+	$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/run-parts $(BUILD_DIST)/debianutils/$(MEMO_PREFIX)/bin
 endif
 
 	# debianutils.mk Sign

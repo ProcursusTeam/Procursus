@@ -1,0 +1,3 @@
+https://apt.procurs.us
+https://repo.quiprr.dev/procursus
+https://procursus.itsnebula.net

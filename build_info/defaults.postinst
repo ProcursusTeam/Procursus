@@ -1,0 +1,4 @@
+#!/bin/sh
+if [ "$1" = "configure" ]; then
+  update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/defaults defaults @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/defaults-procursus 50
+fi

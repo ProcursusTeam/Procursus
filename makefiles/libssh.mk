@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += libssh
-LIBSSH_VERSION := 0.9.5
+LIBSSH_VERSION := 0.9.6
 DEB_LIBSSH_V   ?= $(LIBSSH_VERSION)
 
 libssh-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.libssh.org/files/0.9/libssh-0.9.5.tar.xz
+	wget -q -nc -P $(BUILD_SOURCE) https://www.libssh.org/files/0.9/libssh-$(LIBSSH_VERSION).tar.xz
 	$(call EXTRACT_TAR,libssh-$(LIBSSH_VERSION).tar.xz,libssh-$(LIBSSH_VERSION),libssh)
 	mkdir -p $(BUILD_WORK)/libssh/build
 
@@ -24,9 +24,7 @@ libssh: libssh-setup openssl
 	+$(MAKE) -C $(BUILD_WORK)/libssh/build
 	+$(MAKE) -C $(BUILD_WORK)/libssh/build install \
 		DESTDIR="$(BUILD_STAGE)/libssh"
-	+$(MAKE) -C $(BUILD_WORK)/libssh/build install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libssh-package: libssh-stage

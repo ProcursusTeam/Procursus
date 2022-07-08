@@ -2,8 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS      += zlib-ng
-ZLIB-NG_VERSION  := 2.0.3
+STRAPPROJECTS    += zlib-ng
+ZLIB-NG_VERSION  := 2.0.6
 DEB_ZLIB-NG_V    ?= $(ZLIB-NG_VERSION)
 
 zlib-ng-setup: setup
@@ -17,13 +17,13 @@ else
 zlib-ng: zlib-ng-setup
 	cd $(BUILD_WORK)/zlib-ng && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
+		-DZLIB_ENABLE_TESTS=Off \
+		-DZLIB_INSTALL_UTILS=On \
 		.
 	+$(MAKE) -C $(BUILD_WORK)/zlib-ng
 	+$(MAKE) -C $(BUILD_WORK)/zlib-ng install \
 		DESTDIR=$(BUILD_STAGE)/zlib-ng
-	+$(MAKE) -C $(BUILD_WORK)/zlib-ng install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 zlib-ng-package: zlib-ng-stage

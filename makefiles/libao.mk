@@ -29,13 +29,11 @@ endif
 	+$(MAKE) -C $(BUILD_WORK)/libao
 	+$(MAKE) -C $(BUILD_WORK)/libao install \
 		DESTDIR=$(BUILD_STAGE)/libao
-	+$(MAKE) -C $(BUILD_WORK)/libao install \
-		DESTDIR=$(BUILD_BASE)
 
 	mkdir -p $(BUILD_STAGE)/libao/$(MEMO_PREFIX)/etc
 	echo "default_driver=macosx\nquiet" > $(BUILD_STAGE)/libao/$(MEMO_PREFIX)/etc/libao.conf
 
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libao-package: libao-stage

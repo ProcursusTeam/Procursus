@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += pcre2
-PCRE2_VERSION := 10.37
+PCRE2_VERSION := 10.40
 DEB_PCRE2_V   ?= $(PCRE2_VERSION)
 
 pcre2-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftp.pcre.org/pub/pcre/pcre2-$(PCRE2_VERSION).tar.bz2{,.sig}
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/PCRE2Project/pcre2/releases/download/pcre2-$(PCRE2_VERSION)/pcre2-$(PCRE2_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,pcre2-$(PCRE2_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,pcre2-$(PCRE2_VERSION).tar.bz2,pcre2-$(PCRE2_VERSION),pcre2)
 
@@ -16,7 +16,7 @@ pcre2:
 	@echo "Using previously built pcre2."
 else
 pcre2: pcre2-setup readline
-	cd $(BUILD_WORK)/pcre2 && unset MACOSX_DEPLOYMENT_TARGET && ./configure -C \
+	cd $(BUILD_WORK)/pcre2 && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-jit \
 		--enable-pcre2-16 \
@@ -26,9 +26,7 @@ pcre2: pcre2-setup readline
 	+$(MAKE) -C $(BUILD_WORK)/pcre2
 	+$(MAKE) -C $(BUILD_WORK)/pcre2 install \
 		DESTDIR=$(BUILD_STAGE)/pcre2
-	+$(MAKE) -C $(BUILD_WORK)/pcre2 install \
-		DESTDIR=$(BUILD_BASE)
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 pcre2-package: pcre2-stage
@@ -40,7 +38,7 @@ pcre2-package: pcre2-stage
 
 	# pcre2.mk Prep pcre2-utils
 	cp -a $(BUILD_STAGE)/pcre2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/!(pcre2-config) $(BUILD_DIST)/pcre2-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/pcre2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/!(pcre2-config.1) $(BUILD_DIST)/pcre2-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/pcre2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/!(pcre2-config.1$(MEMO_MANPAGE_SUFFIX)) $(BUILD_DIST)/pcre2-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# pcre2.mk Prep libpcre2-{8,16,32}-0
 	for ver in {8,16,32}; do \
@@ -53,7 +51,7 @@ pcre2-package: pcre2-stage
 	# pcre2.mk Prep libpcre2-dev
 	cp -a $(BUILD_STAGE)/pcre2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(*8.0*|*16.0*|*32.0*|*posix.3*) $(BUILD_DIST)/libpcre2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/pcre2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pcre2-config $(BUILD_DIST)/libpcre2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/pcre2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/pcre2-config.1 $(BUILD_DIST)/libpcre2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/pcre2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/pcre2-config.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/libpcre2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_STAGE)/pcre2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libpcre2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	cp -a $(BUILD_STAGE)/pcre2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libpcre2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 

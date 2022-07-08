@@ -5,4 +5,3 @@ Maintainer: @DEB_MAINTAINER@
 Section: Keyrings
 Priority: optional
 Description: GnuPG key for propr's repository
-Name: propr's APT Keyring

@@ -2,7 +2,7 @@ Package: libsrt1
 Version: @DEB_LIBSRT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libssl1.1
+Depends: libssl3
 Section: Libraries
 Priority: optional
 Homepage: https://github.com/Haivision/srt/
@@ -12,4 +12,3 @@ Description: Secure Reliable Transport UDP streaming library
  network congestion. It mitigates packet loss and supports AES encryption.
  .
  This package contains the shared library.
-Tag: purpose::library
