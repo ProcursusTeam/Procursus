@@ -29,6 +29,7 @@ ncurses: ncurses-setup
 		--disable-overwrite \
 		--with-shared \
 		--without-debug \
+		--without-tests \
 		--enable-sigwinch \
 		--enable-const \
 		--enable-symlinks \
