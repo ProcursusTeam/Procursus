@@ -47,7 +47,7 @@ libzip-package: libzip-stage
 	# libzip.mk Prep zip{cmp,merge,tool}
 	for bin in zip{cmp,merge,tool}; do \
 		cp -a $(BUILD_STAGE)/libzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $(BUILD_DIST)/$$bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \
-		cp -a $(BUILD_STAGE)/libzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$$bin.1.zst $(BUILD_DIST)/$$bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
+		cp -a $(BUILD_STAGE)/libzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$$bin.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/$$bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
 	done
 
 	# libzip.mk Sign

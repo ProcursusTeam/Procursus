@@ -37,14 +37,14 @@ uuid-package: uuid-stage
 
 	# uuid.mk Prep uuid
 	cp -a $(BUILD_STAGE)/uuid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uuid $(BUILD_DIST)/uuid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/uuid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/uuid.1.zst $(BUILD_DIST)/uuid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/uuid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/uuid.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/uuid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# uuid.mk Prep libuuid16
 	cp -a $(BUILD_STAGE)/uuid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libuuid.16.dylib $(BUILD_DIST)/libuuid16/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# uuid.mk Prep libuuid-dev
 	cp -a $(BUILD_STAGE)/uuid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libuuid.16.dylib) $(BUILD_DIST)/libuuid-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/uuid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/uuid-config.1.zst $(BUILD_DIST)/libuuid-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/uuid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/uuid-config.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/libuuid-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_STAGE)/uuid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uuid-config $(BUILD_DIST)/libuuid-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/uuid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libuuid-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	cp -a $(BUILD_STAGE)/uuid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libuuid-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
