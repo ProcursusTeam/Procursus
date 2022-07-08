@@ -2,7 +2,7 @@ Package: libimobiledevice-glue
 Version: @DEB_LIBIMOBILEDEVICEGLUE_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libplist (>= 2.2.0)
+Depends: libplist3 (>= 2.2.0)
 Section: Development
 Priority: standard
-Description: Library with common code used by the libraries and tools around the libimobiledevice project
+Description: A library with common code used by libraries and tools around the libimobiledevice project

@@ -5,4 +5,4 @@ Maintainer: @DEB_MAINTAINER@
 Depends: libimobiledevice-glue (= @DEB_LIBIMOBILEDEVICEGLUE_V@), libplist-dev (>= 2.2.0)
 Section: Development
 Priority: standard
-Description: Library with common code used by the libraries and tools around the libimobiledevice project - devel
+Description: A library with common code used by libraries and tools around the libimobiledevice project - devel

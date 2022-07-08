@@ -6,4 +6,4 @@ Depends: libplist3 (= @DEB_LIBPLIST_V@)
 Conflicts: libplist (<< 99)
 Section: Development
 Priority: standard
-Description: Library for handling Apple binary and XML property lists - development files
+Description: Library for handling Apple binary and XML property lists - devel

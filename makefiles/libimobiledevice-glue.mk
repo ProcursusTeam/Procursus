@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS              += libimobiledevice-glue
-LIBIMOBILEDEVICEGLUE_COMMIT  := 4b34ad0f047abb441573177480d8baed312e930e
-LIBIMOBILEDEVICEGLUE_VERSION := 1.0.0+git20210629.$(shell echo $(LIBIMOBILEDEVICEGLUE_COMMIT) | cut -c -7)
+LIBIMOBILEDEVICEGLUE_COMMIT  := d2ff7969dcd0a12e4f18f63dab03e6cd03054fcb
+LIBIMOBILEDEVICEGLUE_VERSION := 1.0.0+git20220522.$(shell echo $(LIBIMOBILEDEVICEGLUE_COMMIT) | cut -c -7)
 DEB_LIBIMOBILEDEVICEGLUE_V   ?= $(LIBIMOBILEDEVICEGLUE_VERSION)
 
 libimobiledevice-glue-setup: setup
@@ -22,16 +22,14 @@ libimobiledevice-glue: libimobiledevice-glue-setup libplist
 	+$(MAKE) -C $(BUILD_WORK)/libimobiledevice-glue
 	+$(MAKE) -C $(BUILD_WORK)/libimobiledevice-glue install \
 		DESTDIR="$(BUILD_STAGE)/libimobiledevice-glue"
-	+$(MAKE) -C $(BUILD_WORK)/libimobiledevice-glue install \
-		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libimobiledevice-glue-package: libimobiledevice-glue-stage
 	# libimobiledevice-glue.mk Package Structure
-	rm -rf $(BUILD_DIST)/libimobiledevice-glue{,-dev,-utils}
+	rm -rf $(BUILD_DIST)/libimobiledevice-glue{,-dev}
 	mkdir -p $(BUILD_DIST)/libimobiledevice-glue/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/libimobiledevice-glue-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libimobiledevice-glue-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libimobiledevice-glue.mk Prep libimobiledevice-glue
 	cp -a $(BUILD_STAGE)/libimobiledevice-glue$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libimobiledevice-glue-1.0.0.dylib $(BUILD_DIST)/libimobiledevice-glue/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
@@ -41,13 +39,13 @@ libimobiledevice-glue-package: libimobiledevice-glue-stage
 	cp -a $(BUILD_STAGE)/libimobiledevice-glue$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libimobiledevice-glue-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libimobiledevice-glue.mk Sign
-	$(call SIGN,libimobiledevice,general.xml)
+	$(call SIGN,libimobiledevice-glue,general.xml)
 
 	# libimobiledevice-glue.mk Make .debs
 	$(call PACK,libimobiledevice-glue,DEB_LIBIMOBILEDEVICEGLUE_V)
 	$(call PACK,libimobiledevice-glue-dev,DEB_LIBIMOBILEDEVICEGLUE_V)
 
 	# libimobiledevice-glue.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libimobiledevice-glue{,-dev,-utils}
+	rm -rf $(BUILD_DIST)/libimobiledevice-glue{,-dev}
 
 .PHONY: libimobiledevice-glue libimobiledevice-glue-package

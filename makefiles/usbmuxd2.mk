@@ -3,14 +3,14 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += usbmuxd2
-USBMUXD2_VERSION := 38
+USBMUXD2_COMMIT  := 753b79eaf317c56df6c8b1fb6da5847cc54a0bb0
+USBMUXD2_VERSION := 46
 DEB_USBMUXD2_V   ?= $(USBMUXD2_VERSION)
 
-USBMUXD2_COMMIT  := 101def817e8763f5bee4a67abf2c976e1fb9e4ee
 
 usbmuxd2-setup: setup
-	$(call GITHUB_ARCHIVE,tihmstar,usbmuxd2,$(USBMUXD2_VERSION),$(USBMUXD2_COMMIT))
-	$(call EXTRACT_TAR,usbmuxd2-$(USBMUXD2_VERSION).tar.gz,usbmuxd2-$(USBMUXD2_COMMIT),usbmuxd2)
+	$(call GITHUB_ARCHIVE,tihmstar,usbmuxd2,$(USBMUXD2_COMMIT),$(USBMUXD2_COMMIT))
+	$(call EXTRACT_TAR,usbmuxd2-$(USBMUXD2_COMMIT).tar.gz,usbmuxd2-$(USBMUXD2_COMMIT),usbmuxd2)
 	sed -i 's/2.2.1/2.2.0/' $(BUILD_WORK)/usbmuxd2/configure.ac
 	sed -i 's/va_list ap = {}/va_list ap = NULL/' $(BUILD_WORK)/usbmuxd2/usbmuxd2/log.c
 
@@ -18,7 +18,7 @@ ifneq ($(wildcard $(BUILD_WORK)/usbmuxd2/.build_complete),)
 usbmuxd2:
 	@echo "Using previously built usbmuxd2."
 else
-usbmuxd2: usbmuxd2-setup libgeneral libusb libimobiledevice libplist
+usbmuxd2: usbmuxd2-setup libgeneral libusb libplist libimobiledevice-glue libimobiledevice
 	cd $(BUILD_WORK)/usbmuxd2 && ./autogen.sh \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--without-systemd

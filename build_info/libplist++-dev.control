@@ -6,4 +6,4 @@ Depends: libplist++3v5 (= @DEB_LIBPLIST_V@)
 Conflicts: libplist (<< 99)
 Section: Development
 Priority: standard
-Description: C++ library for handling Apple binary and XML property lists - dev files
+Description: C++ library for handling Apple binary and XML property lists - devel
