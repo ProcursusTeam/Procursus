@@ -51,7 +51,6 @@ gettext-package: gettext-stage
 	# gettext.mk Prep gettext
 	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{msg*,gettextize,recode-sr-latin,xgettext} $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libgettext{lib,src}-0.21.dylib,gettext} $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgettextlib.a $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal/!(host-cpu-c-abi.m4) $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal
 	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/gettext/!(archive.dir.tar.xz) $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/gettext
 	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/{msg*.1,gettextize.1,recode-sr-latin.1,xgettext.1}$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/
