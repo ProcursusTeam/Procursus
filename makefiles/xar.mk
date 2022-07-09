@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS += xar
 XAR_VERSION := 487.100.1
-DEB_XAR_V   ?= 1.8.0.$(XAR_VERSION)+fc-6
+DEB_XAR_V   ?= 1.8.0.$(XAR_VERSION)
 
 xar-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,xar,$(XAR_VERSION),xar-$(XAR_VERSION))
