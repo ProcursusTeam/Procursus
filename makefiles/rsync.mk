@@ -18,6 +18,10 @@ else
 rsync: rsync-setup openssl lz4 zstd xxhash
 	cd $(BUILD_WORK)/rsync && ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		--with-included-zlib=no \
+		--disable-md5-asm \
+		--with-rrsync \
+		--enable-ipv6 \
 		--disable-simd \
 		rsync_cv_HAVE_GETTIMEOFDAY_TZ=yes
 	+$(MAKE) -C $(BUILD_WORK)/rsync install \
