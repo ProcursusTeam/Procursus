@@ -10,19 +10,22 @@ rsync-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://download.samba.org/pub/rsync/src/rsync-$(RSYNC_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,rsync-$(RSYNC_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,rsync-$(RSYNC_VERSION).tar.gz,rsync-$(RSYNC_VERSION),rsync)
+	$(call DO_PATCH,rsync,rsync,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/rsync/.build_complete),)
 rsync:
 	@echo "Using previously built rsync."
 else
-rsync: rsync-setup openssl lz4 zstd xxhash
+rsync: rsync-setup openssl lz4 zstd xxhash popt
 	cd $(BUILD_WORK)/rsync && ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-included-zlib=no \
+		--with-included-popt=no \
 		--disable-md5-asm \
 		--with-rrsync \
 		--enable-ipv6 \
 		--disable-simd \
+		rsync_cv_HAVE_C99_VSNPRINTF=yes \
 		rsync_cv_HAVE_GETTIMEOFDAY_TZ=yes
 	+$(MAKE) -C $(BUILD_WORK)/rsync install \
 		DESTDIR=$(BUILD_STAGE)/rsync
