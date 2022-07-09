@@ -3,14 +3,15 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += xar
-XAR_VERSION := 452
+XAR_VERSION := 487.100.1
 DEB_XAR_V   ?= 1.8.0.$(XAR_VERSION)+fc-6
 
-xar-setup: setup file-setup
-	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/xar/xar-$(XAR_VERSION).tar.gz
-	$(call EXTRACT_TAR,xar-$(XAR_VERSION).tar.gz,xar-$(XAR_VERSION)/xar,xar)
-	$(call DO_PATCH,xar,xar,-p1)
-	cp -a $(BUILD_WORK)/file/config.sub $(BUILD_WORK)/xar
+xar-setup: setup
+	$(call GITHUB_ARCHIVE,apple-oss-distributions,xar,$(XAR_VERSION),$(XAR_VERSION))
+	$(call EXTRACT_TAR,xar-$(XAR_VERSION).tar.gz,xar-xar-$(XAR_VERSION)/xar,xar)
+#	XXX: Patches stolen from MacPorts (who mostly stole them from other spots)
+	$(call DO_PATCH,xar,xar,-p0)
+	cp -a $(BUILD_MISC)/config.sub $(BUILD_WORK)/xar
 
 ifneq ($(wildcard $(BUILD_WORK)/xar/.build_complete),)
 xar:

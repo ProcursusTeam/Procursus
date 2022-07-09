@@ -3,8 +3,8 @@ linuxattr: fix missing symbol safe_dirname
 This one was probably missed when they did a global rename to xar_
 prefixed variants.
 
---- a/lib/linuxattr.c
-+++ b/lib/linuxattr.c
+--- lib/linuxattr.c
++++ lib/linuxattr.c
 @@ -223,7 +223,7 @@
  	if( statfs(file, &sfs) != 0 ) {
  		char *tmp, *bname;

@@ -1,5 +1,5 @@
---- a/lib/archive.c
-+++ b/lib/archive.c
+--- lib/archive.c
++++ lib/archive.c
 @@ -387,7 +387,8 @@
  			return NULL;
  		}
@@ -10,8 +10,8 @@
  		if( lseek(XAR(ret)->fd, XAR(ret)->heap_offset, SEEK_SET) == -1 ) {
  			xar_close(ret);
  			return NULL;
---- a/src/xar.c
-+++ a/src/xar.c
+--- src/xar.c
++++ src/xar.c
 @@ -783,7 +783,7 @@
  int main(int argc, char *argv[]) {
  	int ret;
