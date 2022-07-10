@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += libwebp
-LIBWEBP_VERSION := 1.2.0
+LIBWEBP_VERSION := 1.2.2
 DEB_LIBWEBP_V   ?= $(LIBWEBP_VERSION)
 
 libwebp-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/libwebp-$(LIBWEBP_VERSION).tar.gz" ] && wget -q -nc -L -O$(BUILD_SOURCE)/libwebp-$(LIBWEBP_VERSION).tar.gz \
+	-[ ! -f "$(BUILD_SOURCE)/libwebp-$(LIBWEBP_VERSION).tar.gz" ] && wget2 -q -nc -L -O$(BUILD_SOURCE)/libwebp-$(LIBWEBP_VERSION).tar.gz \
 		https://chromium.googlesource.com/webm/libwebp/+archive/refs/heads/$(LIBWEBP_VERSION).tar.gz
 	# Fuck this lib.
 	mkdir -p $(BUILD_WORK)/libwebp

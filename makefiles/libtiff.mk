@@ -7,7 +7,7 @@ LIBTIFF_VERSION := 4.2.0
 DEB_LIBTIFF_V   ?= $(LIBTIFF_VERSION)
 
 libtiff-setup: setup
-	wget -q -nc -L -P $(BUILD_SOURCE) \
+	wget2 -q -nc -L -P $(BUILD_SOURCE) \
 		https://download.osgeo.org/libtiff/tiff-$(LIBTIFF_VERSION).tar.gz
 	$(call EXTRACT_TAR,tiff-$(LIBTIFF_VERSION).tar.gz,tiff-$(LIBTIFF_VERSION),libtiff)
 
@@ -18,7 +18,9 @@ else
 libtiff: libtiff-setup libjpeg-turbo xz zstd
 	cd $(BUILD_WORK)/libtiff && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--disable-webp
+		--disable-webp \
+		--with-lzma-lib-dir=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib \
+		--with-lzma-include-dir=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include
 	+$(MAKE) -C $(BUILD_WORK)/libtiff
 	+$(MAKE) -C $(BUILD_WORK)/libtiff install \
 		DESTDIR="$(BUILD_STAGE)/libtiff"

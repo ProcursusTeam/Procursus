@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += frei0r
-FREI0R_VERSION := 1.7.0
-DEB_FREI0R_V   ?= $(FREI0R_VERSION)-1
+FREI0R_VERSION := 1.8.0
+DEB_FREI0R_V   ?= $(FREI0R_VERSION)
 
 frei0r-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://files.dyne.org/frei0r/releases/frei0r-plugins-$(FREI0R_VERSION).tar.gz
+	wget2 -q -nc -P $(BUILD_SOURCE) https://files.dyne.org/frei0r/releases/frei0r-plugins-$(FREI0R_VERSION).tar.gz
 	$(call EXTRACT_TAR,frei0r-plugins-$(FREI0R_VERSION).tar.gz,frei0r-plugins-$(FREI0R_VERSION),frei0r)
 
 ifneq ($(wildcard $(BUILD_WORK)/frei0r/.build_complete),)

@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += gnupg
-GNUPG_VERSION := 2.3.4
+GNUPG_VERSION := 2.3.6
 DEB_GNUPG_V   ?= $(GNUPG_VERSION)
 
 gnupg-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/gnupg/gnupg-$(GNUPG_VERSION).tar.bz2
+	wget2 -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/gnupg/gnupg-$(GNUPG_VERSION).tar.bz2
 	$(call EXTRACT_TAR,gnupg-$(GNUPG_VERSION).tar.bz2,gnupg-$(GNUPG_VERSION),gnupg)
 
 ifneq ($(wildcard $(BUILD_WORK)/gnupg/.build_complete),)
@@ -53,45 +53,45 @@ gnupg-package: gnupg-stage
 	# gnupg.mk Prep gnupg-utils
 	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{gpgparsemail,gpgsplit,gpgtar,kbxutil,watchgnupg} $(BUILD_DIST)/gnupg-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gpg-pair-tool $(BUILD_DIST)/gnupg-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
-	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/{gpgparsemail,gpgtar,watchgnupg}.1.zst $(BUILD_DIST)/gnupg-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/{gpgparsemail,gpgtar,watchgnupg}.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/gnupg-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin $(BUILD_DIST)/gnupg-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/{addgnupghome,applygnupgdefaults}.8.zst $(BUILD_DIST)/gnupg-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
 
 	# gnupg.mk Prep gpg
 	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gpg $(BUILD_DIST)/gpg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/gpg.1.zst $(BUILD_DIST)/gpg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/gpg.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/gpg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# gnupg.mk Prep gpg-agent
 	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gpg-agent $(BUILD_DIST)/gpg-agent/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/gpg-{agent,check-pattern,preset-passphrase}.1.zst $(BUILD_DIST)/gpg-agent/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/gpg-{agent,check-pattern,preset-passphrase}.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/gpg-agent/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gpg-{check-pattern,preset-passphrase,protect-tool} $(BUILD_DIST)/gpg-agent/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
 
 	# gnupg.mk Prep gpg-wks-client
 	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gpg-wks-client $(BUILD_DIST)/gpg-wks-client/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gpg-wks-client $(BUILD_DIST)/gpg-wks-client/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
-	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/gpg-wks-client.1.zst $(BUILD_DIST)/gpg-wks-client/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/gpg-wks-client.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/gpg-wks-client/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# gnupg.mk Prep gpg-wks-server
 	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gpg-wks-server $(BUILD_DIST)/gpg-wks-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/gpg-wks-server.1.zst $(BUILD_DIST)/gpg-wks-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/gpg-wks-server.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/gpg-wks-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# gnupg.mk Prep gpgconf
 	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{gpgconf,gpg-connect-agent} $(BUILD_DIST)/gpgconf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/{gpgconf,gpg-connect-agent}.1.zst $(BUILD_DIST)/gpgconf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/{gpgconf,gpg-connect-agent}.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/gpgconf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/gnupg/distsigkey.gpg $(BUILD_DIST)/gpgconf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/gnupg
 
 	# gnupg.mk Prep gpgsm
 	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gpgsm $(BUILD_DIST)/gpgsm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/gpgsm.1.zst $(BUILD_DIST)/gpgsm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/gpgsm.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/gpgsm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# gnupg.mk Prep gpgv
 	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gpgv $(BUILD_DIST)/gpgv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/gpgv.1.zst $(BUILD_DIST)/gpgv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/gpgv.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/gpgv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# gnupg.mk Prep scdaemon
 	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gpg-card $(BUILD_DIST)/scdaemon/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/scdaemon $(BUILD_DIST)/scdaemon/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
-	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/{gpg-card,scdaemon}.1.zst $(BUILD_DIST)/scdaemon/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/{gpg-card,scdaemon}.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/scdaemon/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# gnupg.mk Sign
 	$(call SIGN,dirmngr,general.xml)

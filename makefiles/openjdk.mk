@@ -37,8 +37,8 @@ endif
 ###
 
 openjdk-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/openjdk/jdk17u/archive/refs/tags/jdk-$(OPENJDK_VERSION).tar.gz
-	wget -q -nc -P $(BUILD_SOURCE) \
+	wget2 -q -nc -P $(BUILD_SOURCE) https://github.com/openjdk/jdk17u/archive/refs/tags/jdk-$(OPENJDK_VERSION).tar.gz
+	wget2 -q -nc -P $(BUILD_SOURCE) \
 		https://github.com/apple/cups/releases/download/v2.3.3/cups-2.3.3-source.tar.gz \
 		https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_macos-aarch64_bin.tar.gz
 		#https://download.java.net/java/GA/jdk15/779bf45e88a44cbd9ea6621d33e33db1/36/GPL/openjdk-15_linux-x64_bin.tar.gz

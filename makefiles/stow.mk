@@ -7,7 +7,7 @@ STOW_VERSION := 2.3.1
 DEB_STOW_V   ?= $(STOW_VERSION)
 
 stow-setup: setup
-	wget -q -nc -P$(BUILD_SOURCE) https://ftp.gnu.org/gnu/stow/stow-$(STOW_VERSION).tar.gz
+	wget2 -q -nc -P$(BUILD_SOURCE) https://ftp.gnu.org/gnu/stow/stow-$(STOW_VERSION).tar.gz
 	$(call EXTRACT_TAR,stow-$(STOW_VERSION).tar.gz,stow-$(STOW_VERSION),stow)
 
 ifneq ($(wildcard $(BUILD_WORK)/stow/.build_complete),)

@@ -3,23 +3,21 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += nghttp2
-NGHTTP2_VERSION := 1.45.1
+NGHTTP2_VERSION := 1.47.0
 DEB_NGHTTP2_V   ?= $(NGHTTP2_VERSION)
 
 ##### EVALUATE WHETHER THIS NEEDS LAUNCHDAEMONS AT A LATER DATE #####
 
 nghttp2-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/nghttp2/nghttp2/releases/download/v$(NGHTTP2_VERSION)/nghttp2-$(NGHTTP2_VERSION).tar.xz
+	wget2 -q -nc -P $(BUILD_SOURCE) https://github.com/nghttp2/nghttp2/releases/download/v$(NGHTTP2_VERSION)/nghttp2-$(NGHTTP2_VERSION).tar.xz
 	$(call EXTRACT_TAR,nghttp2-$(NGHTTP2_VERSION).tar.xz,nghttp2-$(NGHTTP2_VERSION),nghttp2)
-	# Remove patch on 1.46.0
-	$(call DO_PATCH,nghttp2,nghttp2)
 	sed -i '1i #define\ __APPLE_USE_RFC_3542\ 1' $(BUILD_WORK)/nghttp2/src/util.cc
 
 ifneq ($(wildcard $(BUILD_WORK)/nghttp2/.build_complete),)
 nghttp2:
 	@echo "Using previously built nghttp2."
 else
-nghttp2: nghttp2-setup openssl libc-ares libev jansson libjemalloc libevent
+nghttp2: nghttp2-setup openssl libc-ares libev jansson libjemalloc libevent nghttp3 ngtcp2
 	cd $(BUILD_WORK)/nghttp2; \
 	autoconf; \
 	./configure -C \

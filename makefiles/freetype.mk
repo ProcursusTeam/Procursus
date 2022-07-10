@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += freetype
-FREETYPE_VERSION := 2.10.4
+FREETYPE_VERSION := 2.12.1
 DEB_FREETYPE_V   ?= $(FREETYPE_VERSION)
 
 freetype-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://download.savannah.gnu.org/releases/freetype/freetype-$(FREETYPE_VERSION).tar.xz{,.sig}
+	wget2 -q -nc -P $(BUILD_SOURCE) https://download.savannah.gnu.org/releases/freetype/freetype-$(FREETYPE_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,freetype-$(FREETYPE_VERSION).tar.xz)
 	$(call EXTRACT_TAR,freetype-$(FREETYPE_VERSION).tar.xz,freetype-$(FREETYPE_VERSION),freetype)
 

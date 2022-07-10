@@ -7,7 +7,7 @@ XORG-SERVER_VERSION := 1.20.11
 DEB_XORG-SERVER_V   ?= $(XORG-SERVER_VERSION)
 
 xorg-server-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive//individual/xserver/xorg-server-$(XORG-SERVER_VERSION).tar.gz{,.sig}
+	wget2 -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive//individual/xserver/xorg-server-$(XORG-SERVER_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,xorg-server-$(XORG-SERVER_VERSION).tar.gz)
 	$(call EXTRACT_TAR,xorg-server-$(XORG-SERVER_VERSION).tar.gz,xorg-server-$(XORG-SERVER_VERSION),xorg-server)
 	$(call DO_PATCH,xorg-server,xorg-server,-p1)

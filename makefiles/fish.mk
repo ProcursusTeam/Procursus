@@ -3,33 +3,24 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += fish
-FISH_VERSION  := 3.2.2
-DEB_FISH_V    ?= $(FISH_VERSION)-1
-
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-FISH_CMAKE_ARGS := -DCMAKE_EXE_LINKER_FLAGS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -liosexec"
-else
-FISH_CMAKE_ARGS :=
-endif
+FISH_VERSION  := 3.4.1
+DEB_FISH_V    ?= $(FISH_VERSION)
 
 fish-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/fish-shell/fish-shell/releases/download/$(FISH_VERSION)/fish-$(FISH_VERSION).tar.xz{,.asc}
+	wget2 -q -nc -P $(BUILD_SOURCE) https://github.com/fish-shell/fish-shell/releases/download/$(FISH_VERSION)/fish-$(FISH_VERSION).tar.xz{,.asc}
 	$(call PGP_VERIFY,fish-$(FISH_VERSION).tar.xz,asc)
 	$(call EXTRACT_TAR,fish-$(FISH_VERSION).tar.xz,fish-$(FISH_VERSION),fish)
 	sed -i '/codesign_on_mac/d' $(BUILD_WORK)/fish/CMakeLists.txt
-	$(call DO_PATCH,fish,fish,-p1)
+	rm -f $(BUILD_WORK)/fish/version # The C++ standards people truly put no thought into add version as a libc++ header
 
 ifneq ($(wildcard $(BUILD_WORK)/fish/.build_complete),)
 fish:
 	@echo "Using previously built fish"
 else
-ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 fish: fish-setup ncurses gettext pcre2
-else
-fish: fish-setup ncurses gettext pcre2 libiosexec
-endif
 	cd $(BUILD_WORK)/fish && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
+		-DCMAKE_CXX_FLAGS="$(CXXFLAGS) -std=c++11" \
 		-DBUILD_DOCS=OFF \
 		-DGETTEXT_MSGFMT_EXECUTABLE=$(shell command -v msgfmt) \
 		-DCURSES_CURSES_LIBRARY="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib" \

@@ -2,12 +2,12 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS += vi
-VI_VERSION  := 070224
-DEB_VI_V    ?= $(VI_VERSION)
+STRAPPROJECTS += vi
+VI_VERSION    := 070224
+DEB_VI_V      ?= $(VI_VERSION)
 
 vi-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://sources.archlinux.org/other/vi/ex-$(VI_VERSION).tar.xz
+	wget2 -q -nc -P $(BUILD_SOURCE) https://sources.archlinux.org/other/vi/ex-$(VI_VERSION).tar.xz
 	$(call EXTRACT_TAR,ex-$(VI_VERSION).tar.xz,ex-$(VI_VERSION),vi)
 
 ifneq ($(wildcard $(BUILD_WORK)/vi/.build_complete),)
@@ -22,7 +22,7 @@ vi: vi-setup ncurses
 	+$(MAKE) -C $(BUILD_WORK)/vi install \
 		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		TERMLIB=ncursesw \
-		PRESERVEDIR="/var/lib/ex" \
+		PRESERVEDIR="$(MEMO_PREFIX)/var/lib/ex" \
 		LIBEXECDIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ex \
 		FEATURES="-DCHDIR -DFASTTAG -DUCVISUAL -DMB -DBIT8" \
 		DESTDIR="$(BUILD_STAGE)/vi" \
@@ -39,7 +39,7 @@ vi-package: vi-stage
 	cp -a $(BUILD_STAGE)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib $(BUILD_DIST)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/ex.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/exa.1$(MEMO_MANPAGE_SUFFIX)
 	cp -a $(BUILD_STAGE)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/vi.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/vi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/via.1$(MEMO_MANPAGE_SUFFIX)
-	cp -a $(BUILD_STAGE)/vi/var $(BUILD_DIST)/vi
+	cp -a $(BUILD_STAGE)/vi/$(MEMO_PREFIX)/var $(BUILD_DIST)/vi/$(MEMO_PREFIX)
 
 	# vi.mk Sign
 	$(call SIGN,vi,general.xml)

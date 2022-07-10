@@ -7,7 +7,7 @@ GETTEXT_VERSION := 0.21
 DEB_GETTEXT_V   ?= $(GETTEXT_VERSION)-4
 
 gettext-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gettext/gettext-$(GETTEXT_VERSION).tar.xz{,.sig}
+	wget2 -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gettext/gettext-$(GETTEXT_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,gettext-$(GETTEXT_VERSION).tar.xz)
 	$(call EXTRACT_TAR,gettext-$(GETTEXT_VERSION).tar.xz,gettext-$(GETTEXT_VERSION),gettext)
 
@@ -51,7 +51,6 @@ gettext-package: gettext-stage
 	# gettext.mk Prep gettext
 	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{msg*,gettextize,recode-sr-latin,xgettext} $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libgettext{lib,src}-0.21.dylib,gettext} $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgettextlib.a $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal/!(host-cpu-c-abi.m4) $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal
 	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/gettext/!(archive.dir.tar.xz) $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/gettext
 	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/{msg*.1,gettextize.1,recode-sr-latin.1,xgettext.1}$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/

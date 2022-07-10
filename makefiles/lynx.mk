@@ -7,7 +7,7 @@ LYNX_VERSION := 2.8.9
 DEB_LYNX_V   ?= $(LYNX_VERSION)-3
 
 lynx-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://invisible-mirror.net/archives/lynx/tarballs/lynx$(LYNX_VERSION)rel.1.tar.bz2{,.asc}
+	wget2 -q -nc -P $(BUILD_SOURCE) https://invisible-mirror.net/archives/lynx/tarballs/lynx$(LYNX_VERSION)rel.1.tar.bz2{,.asc}
 	$(call PGP_VERIFY,lynx$(LYNX_VERSION)rel.1.tar.bz2,asc)
 	$(call EXTRACT_TAR,lynx$(LYNX_VERSION)rel.1.tar.bz2,lynx$(LYNX_VERSION)rel.1,lynx)
 ifeq ($(UNAME),Darwin)

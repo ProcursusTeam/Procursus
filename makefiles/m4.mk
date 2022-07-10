@@ -4,10 +4,10 @@ endif
 
 SUBPROJECTS += m4
 M4_VERSION  := 1.4.19
-DEB_M4_V    ?= $(M4_VERSION)
+DEB_M4_V    ?= $(M4_VERSION)-1
 
 m4-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/m4/m4-$(M4_VERSION).tar.gz{,.sig}
+	wget2 -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/m4/m4-$(M4_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,m4-$(M4_VERSION).tar.gz)
 	$(call EXTRACT_TAR,m4-$(M4_VERSION).tar.gz,m4-$(M4_VERSION),m4)
 
@@ -17,7 +17,10 @@ m4:
 else
 m4: m4-setup
 	cd $(BUILD_WORK)/m4 && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		gl_cv_func_posix_spawn_secure_exec=yes \
+		gl_cv_func_posix_spawn_works=yes \
+		gl_cv_func_posix_spawnp_secure_exec=yes
 	+$(MAKE) -C $(BUILD_WORK)/m4
 	+$(MAKE) -C $(BUILD_WORK)/m4 install \
 		DESTDIR=$(BUILD_STAGE)/m4

@@ -15,7 +15,7 @@ SED_VERSION   := 4.8
 DEB_SED_V     ?= $(SED_VERSION)-2
 
 sed-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/sed/sed-$(SED_VERSION).tar.xz{,.sig}
+	wget2 -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/sed/sed-$(SED_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,sed-$(SED_VERSION).tar.xz)
 	$(call EXTRACT_TAR,sed-$(SED_VERSION).tar.xz,sed-$(SED_VERSION),sed)
 

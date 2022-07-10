@@ -7,7 +7,7 @@ NPM_VERSION := 8.1.1
 DEB_NPM_V   ?= $(NPM_VERSION)
 
 npm-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://registry.npmjs.org/npm/-/npm-$(NPM_VERSION).tgz
+	wget2 -q -nc -P $(BUILD_SOURCE) https://registry.npmjs.org/npm/-/npm-$(NPM_VERSION).tgz
 	$(call EXTRACT_TAR,npm-$(NPM_VERSION).tgz,package,npm)
 
 ifneq ($(wildcard $(BUILD_WORK)/npm/.build_complete),)
@@ -15,7 +15,7 @@ npm:
 	@echo "Using previously built npm."
 else
 npm: npm-setup
-	mkdir -p $(BUILD_STAGE)/npm/{etc,usr/share}
+	mkdir -p $(BUILD_STAGE)/npm/$(MEMO_PREFIX)/{etc,$(MEMO_SUB_PREFIX)/share}
 	cp -a $(BUILD_WORK)/npm $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	node $(BUILD_WORK)/npm/bin/npm-cli.js install \
 		-ddd --global \
@@ -26,7 +26,7 @@ globalconfig=$(MEMO_PREFIX)/etc/npmrc\n\
 globalignorefile=$(MEMO_PREFIX)/etc/npmignore\n\
 prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)\n" > $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/node_modules/npm/npmrc
 	cp -a $(BUILD_WORK)/npm/package.json $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/npm
-	touch $(BUILD_STAGE)/npm/etc/npmrc
+	touch $(BUILD_STAGE)/npm/$(MEMO_PREFIX)/etc/npmrc
 	mkdir -p $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/nodejs
 	$(LN_S) ../npm $(BUILD_STAGE)/npm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/nodejs/npm
 	$(call AFTER_BUILD)

@@ -7,7 +7,7 @@ JQ_VERSION   := 1.6
 DEB_JQ_V     ?= $(JQ_VERSION)
 
 jq-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/stedolan/jq/releases/download/jq-$(JQ_VERSION)/jq-$(JQ_VERSION).tar.gz
+	wget2 -q -nc -P $(BUILD_SOURCE) https://github.com/stedolan/jq/releases/download/jq-$(JQ_VERSION)/jq-$(JQ_VERSION).tar.gz
 	$(call EXTRACT_TAR,jq-$(JQ_VERSION).tar.gz,jq-$(JQ_VERSION),jq)
 
 ifneq ($(wildcard $(BUILD_WORK)/jq/.build_complete),)
