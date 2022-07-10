@@ -9,7 +9,7 @@ RTMPDUMP_SHORT_V2 := gitfa8646d.1
 DEB_RTMPDUMP_V    ?= $(RTMPDUMP_VERSION)+$(RTMPDUMP_SHORT_V1).$(RTMPDUMP_SHORT_V2)
 
 rtmpdump-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/r/rtmpdump/rtmpdump_$(RTMPDUMP_VERSION)+$(RTMPDUMP_SHORT_V1).$(RTMPDUMP_SHORT_V2).orig.tar.gz
+	wget2 -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/r/rtmpdump/rtmpdump_$(RTMPDUMP_VERSION)+$(RTMPDUMP_SHORT_V1).$(RTMPDUMP_SHORT_V2).orig.tar.gz
 	$(call EXTRACT_TAR,rtmpdump_$(RTMPDUMP_VERSION)+$(RTMPDUMP_SHORT_V1).$(RTMPDUMP_SHORT_V2).orig.tar.gz,rtmpdump-$(RTMPDUMP_SHORT_V1),rtmpdump)
 
 ifneq ($(wildcard $(BUILD_WORK)/rtmpdump/.build_complete),)

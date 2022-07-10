@@ -7,7 +7,7 @@ LIBEBML_VERSION := 1.4.2
 DEB_LIBEBML_V   ?= $(LIBEBML_VERSION)
 
 libebml-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://dl.matroska.org/downloads/libebml/libebml-$(LIBEBML_VERSION).tar.xz
+	wget2 -q -nc -P $(BUILD_SOURCE) https://dl.matroska.org/downloads/libebml/libebml-$(LIBEBML_VERSION).tar.xz
 	$(call EXTRACT_TAR,libebml-$(LIBEBML_VERSION).tar.xz,libebml-$(LIBEBML_VERSION),libebml)
 
 ifneq ($(wildcard $(BUILD_WORK)/libebml/.build_complete),)

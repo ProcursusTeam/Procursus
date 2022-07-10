@@ -7,7 +7,7 @@ JP2A_VERSION := 1.1.0
 DEB_JP2A_V   ?= $(JP2A_VERSION)
 
 jp2a-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/Talinx/jp2a/releases/download/v$(JP2A_VERSION)/jp2a-$(JP2A_VERSION).tar.gz
+	wget2 -q -nc -P $(BUILD_SOURCE) https://github.com/Talinx/jp2a/releases/download/v$(JP2A_VERSION)/jp2a-$(JP2A_VERSION).tar.gz
 	$(call EXTRACT_TAR,jp2a-$(JP2A_VERSION).tar.gz,jp2a-$(JP2A_VERSION),jp2a)
 	sed -i s/ncurses/ncursesw/ $(BUILD_WORK)/jp2a/configure
 

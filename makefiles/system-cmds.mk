@@ -10,7 +10,7 @@ PWDARWIN_COMMIT     := 72ae45ce6c025bc2359035cfb941b177149e88ae
 DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-14
 
 system-cmds-setup: setup libxcrypt
-	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/system_cmds/system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz
+	wget2 -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/system_cmds/system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz
 	$(call EXTRACT_TAR,system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz,system_cmds-$(SYSTEM-CMDS_VERSION),system-cmds)
 	$(call DO_PATCH,system-cmds,system-cmds,-p1)
 	sed -i '/#include <stdio.h>/a #include <crypt.h>' $(BUILD_WORK)/system-cmds/login.tproj/login.c
@@ -18,10 +18,10 @@ system-cmds-setup: setup libxcrypt
 	sed -i '1 i\#define IOPOL_TYPE_VFS_HFS_CASE_SENSITIVITY 1\n#define IOPOL_SCOPE_PROCESS 0\n#define IOPOL_VFS_HFS_CASE_SENSITIVITY_DEFAULT 0\n#define IOPOL_VFS_HFS_CASE_SENSITIVITY_FORCE_CASE_SENSITIVE 1\n#define PRIO_DARWIN_ROLE_UI 0x2' $(BUILD_WORK)/system-cmds/taskpolicy.tproj/taskpolicy.c
 	sed -i -E -e 's|"/usr|"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' -e 's|"/sbin|"$(MEMO_PREFIX)/sbin|g' \
 		$(BUILD_WORK)/system-cmds/shutdown.tproj/pathnames.h
-	wget -q -nc -P $(BUILD_SOURCE) \
+	wget2 -q -nc -P $(BUILD_SOURCE) \
 		https://git.cameronkatri.com/pw-darwin/snapshot/pw-darwin-$(PWDARWIN_COMMIT).tar.zst
 	$(call EXTRACT_TAR,pw-darwin-$(PWDARWIN_COMMIT).tar.zst,pw-darwin-$(PWDARWIN_COMMIT),system-cmds/pw-darwin)
-	wget -q -nc -P $(BUILD_WORK)/system-cmds/include \
+	wget2 -q -nc -P $(BUILD_WORK)/system-cmds/include \
 		https://opensource.apple.com/source/launchd/launchd-328/launchd/src/reboot2.h
 
 ###

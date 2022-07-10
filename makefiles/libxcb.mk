@@ -7,7 +7,7 @@ LIBXCB_VERSION := 1.14
 DEB_LIBXCB_V   ?= $(LIBXCB_VERSION)
 
 libxcb-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libxcb-$(LIBXCB_VERSION).tar.gz{,.sig}
+	wget2 -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libxcb-$(LIBXCB_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,libxcb-$(LIBXCB_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libxcb-$(LIBXCB_VERSION).tar.gz,libxcb-$(LIBXCB_VERSION),libxcb)
 

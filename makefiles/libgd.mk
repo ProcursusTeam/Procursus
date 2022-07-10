@@ -7,7 +7,7 @@ LIBGD_VERSION := 2.3.2
 DEB_LIBGD_V   ?= $(LIBGD_VERSION)-1
 
 libgd-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) \
+	wget2 -q -nc -P $(BUILD_SOURCE) \
 		https://github.com/libgd/libgd/releases/download/gd-$(LIBGD_VERSION)/libgd-$(LIBGD_VERSION).tar.xz
 	$(call EXTRACT_TAR,libgd-$(LIBGD_VERSION).tar.xz,libgd-$(LIBGD_VERSION),libgd)
 

@@ -7,7 +7,7 @@ PO4A_VERSION := 0.63
 DEB_PO4A_V   ?= $(PO4A_VERSION)
 
 po4a-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/mquinson/po4a/releases/download/v$(PO4A_VERSION)/po4a-$(PO4A_VERSION).tar.gz
+	wget2 -q -nc -P $(BUILD_SOURCE) https://github.com/mquinson/po4a/releases/download/v$(PO4A_VERSION)/po4a-$(PO4A_VERSION).tar.gz
 	$(call EXTRACT_TAR,po4a-$(PO4A_VERSION).tar.gz,po4a-$(PO4A_VERSION),po4a)
 
 ifneq ($(wildcard $(BUILD_WORK)/po4a/.build_complete),)

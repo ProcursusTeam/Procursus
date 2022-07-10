@@ -8,7 +8,7 @@ DEB_LIBPOD-PARSER-PERL_V   ?= $(LIBPOD-PARSER-PERL_VERSION)
 
 libpod-parser-perl-setup: setup
 	-[ ! -e "$(BUILD_SOURCE)/libpod-parser-perl-$(LIBPOD-PARSER-PERL_VERSION).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/libpod-parser-perl-$(LIBPOD-PARSER-PERL_VERSION).tar.gz \
+		&& wget2 -q -nc -O$(BUILD_SOURCE)/libpod-parser-perl-$(LIBPOD-PARSER-PERL_VERSION).tar.gz \
 			https://cpan.metacpan.org/authors/id/M/MA/MAREKR/Pod-Parser-$(LIBPOD-PARSER-PERL_VERSION).tar.gz
 	$(call EXTRACT_TAR,libpod-parser-perl-$(LIBPOD-PARSER-PERL_VERSION).tar.gz,Pod-Parser-$(LIBPOD-PARSER-PERL_VERSION),libpod-parser-perl)
 

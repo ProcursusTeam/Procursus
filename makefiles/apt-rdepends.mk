@@ -7,7 +7,7 @@ APT-RDEPENDS_VERSION := 1.3.0
 DEB_APT-RDEPENDS_V   ?= $(APT-RDEPENDS_VERSION)
 
 apt-rdepends-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/a/apt-rdepends/apt-rdepends_$(APT-RDEPENDS_VERSION).orig.tar.gz
+	wget2 -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/a/apt-rdepends/apt-rdepends_$(APT-RDEPENDS_VERSION).orig.tar.gz
 	$(call EXTRACT_TAR,apt-rdepends_$(APT-RDEPENDS_VERSION).orig.tar.gz,apt-rdepends-$(APT-RDEPENDS_VERSION),apt-rdepends)
 	mkdir -p $(BUILD_STAGE)/apt-rdepends/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 ifeq (,$(shell command -v pod2man))

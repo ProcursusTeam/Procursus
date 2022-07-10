@@ -7,7 +7,7 @@ RPMALLOC_VERSION := 1.4.1
 DEB_RPMALLOC_V   ?= $(RPMALLOC_VERSION)
 
 rpmalloc-setup: setup
-	wget -q -nc -P $(BUILD_WORK)/rpmalloc \
+	wget2 -q -nc -P $(BUILD_WORK)/rpmalloc \
 		https://raw.githubusercontent.com/mjansson/rpmalloc/1.4.1/rpmalloc/malloc.c \
 		https://raw.githubusercontent.com/mjansson/rpmalloc/1.4.1/rpmalloc/rpmalloc.{c,h}
 

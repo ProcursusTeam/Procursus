@@ -7,7 +7,7 @@ LIBSAMPLERATE_VERSION := 0.1.9
 DEB_LIBSAMPLERATE_V   ?= $(LIBSAMPLERATE_VERSION)
 
 libsamplerate-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://www.mega-nerd.com/SRC/libsamplerate-$(LIBSAMPLERATE_VERSION).tar.gz
+	wget2 -q -nc -P $(BUILD_SOURCE) http://www.mega-nerd.com/SRC/libsamplerate-$(LIBSAMPLERATE_VERSION).tar.gz
 	$(call EXTRACT_TAR,libsamplerate-$(LIBSAMPLERATE_VERSION).tar.gz,libsamplerate-$(LIBSAMPLERATE_VERSION),libsamplerate)
 
 ifneq ($(wildcard $(BUILD_WORK)/libsamplerate/.build_complete),)

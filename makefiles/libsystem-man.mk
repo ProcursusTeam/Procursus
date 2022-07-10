@@ -9,7 +9,7 @@ LIBSYSTEM-MAN_VERSION := 1.2
 DEB_LIBSYSTEM-MAN_V   ?= $(LIBSYSTEM-MAN_VERSION)
 
 libsystem-man-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://sudhip.com/files/darwin-manpages/$(LIBSYSTEM-MAN_VERSION)/man{2,3,4}.tar.zst{,.sig}
+	wget2 -q -nc -P $(BUILD_SOURCE) https://sudhip.com/files/darwin-manpages/$(LIBSYSTEM-MAN_VERSION)/man{2,3,4}.tar.zst{,.sig}
 	$(call PGP_VERIFY,man2.tar.gz)
 	$(call PGP_VERIFY,man3.tar.gz)
 	$(call PGP_VERIFY,man4.tar.gz)
