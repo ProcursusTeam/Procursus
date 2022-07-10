@@ -13,7 +13,7 @@ DEB_GROFF_V    ?= $(GROFF_VERSION)
 ###
 
 groff-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/groff/groff-$(GROFF_VERSION).tar.gz{,.sig}
+	wget2 -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/groff/groff-$(GROFF_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,groff-$(GROFF_VERSION).tar.gz)
 	$(call EXTRACT_TAR,groff-$(GROFF_VERSION).tar.gz,groff-$(GROFF_VERSION),groff)
 	$(call DO_PATCH,groff,groff,-p1) # Remove in next release.

@@ -8,7 +8,7 @@ DEB_LIBXSS_V   ?= $(LIBXSS_VERSION)
 
 libxss-setup: setup
 	[ -f $(BUILD_SOURCE)/libxss-$(LIBXSS_VERSION).tar.bz2 ] || \
-		wget -q -nc -O$(BUILD_SOURCE)/libxss-$(LIBXSS_VERSION).tar.bz2 \
+		wget2 -q -nc -O$(BUILD_SOURCE)/libxss-$(LIBXSS_VERSION).tar.bz2 \
 			https://gitlab.freedesktop.org/xorg/lib/libxscrnsaver/-/archive/libXScrnSaver-$(LIBXSS_VERSION)/libxscrnsaver-libXScrnSaver-$(LIBXSS_VERSION).tar.bz2
 	$(call EXTRACT_TAR,libxss-$(LIBXSS_VERSION).tar.bz2,libxscrnsaver-libXScrnSaver-$(LIBXSS_VERSION),libxss)
 

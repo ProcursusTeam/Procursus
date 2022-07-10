@@ -7,7 +7,7 @@ CPUMINER_VERSION := 2.5.1
 DEB_CPUMINER_V   ?= $(CPUMINER_VERSION)
 
 cpuminer-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/pooler/cpuminer/releases/download/v$(CPUMINER_VERSION)/pooler-cpuminer-$(CPUMINER_VERSION).tar.gz
+	wget2 -q -nc -P $(BUILD_SOURCE) https://github.com/pooler/cpuminer/releases/download/v$(CPUMINER_VERSION)/pooler-cpuminer-$(CPUMINER_VERSION).tar.gz
 	$(call EXTRACT_TAR,pooler-cpuminer-$(CPUMINER_VERSION).tar.gz,cpuminer-$(CPUMINER_VERSION),cpuminer)
 
 ifneq ($(wildcard $(BUILD_WORK)/cpuminer/.build_complete),)

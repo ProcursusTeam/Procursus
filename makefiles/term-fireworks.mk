@@ -7,7 +7,7 @@ TERM-FIREWORKS_VERSION := 1.0.4
 DEB_TERM-FIREWORKS_V   ?= $(TERM-FIREWORKS_VERSION)
 
 term-fireworks-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://gitlab.com/DarrienG/term-fireworks/-/archive/v$(TERM-FIREWORKS_VERSION)/term-fireworks-v$(TERM-FIREWORKS_VERSION).tar.bz2
+	wget2 -q -nc -P $(BUILD_SOURCE) https://gitlab.com/DarrienG/term-fireworks/-/archive/v$(TERM-FIREWORKS_VERSION)/term-fireworks-v$(TERM-FIREWORKS_VERSION).tar.bz2
 	$(call EXTRACT_TAR,term-fireworks-v$(TERM-FIREWORKS_VERSION).tar.bz2,term-fireworks-v$(TERM-FIREWORKS_VERSION),term-fireworks)
 	$(call DO_PATCH,term-fireworks,term-fireworks,-p1)
 

@@ -11,7 +11,7 @@ CMAKE_CMAKE_ARGS := -DHAVE_CoreServices:INTERNAL=0
 endif
 
 cmake-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/Kitware/CMake/releases/download/v$(CMAKE_VERSION)/cmake-$(CMAKE_VERSION).tar.gz
+	wget2 -q -nc -P $(BUILD_SOURCE) https://github.com/Kitware/CMake/releases/download/v$(CMAKE_VERSION)/cmake-$(CMAKE_VERSION).tar.gz
 	$(call EXTRACT_TAR,cmake-$(CMAKE_VERSION).tar.gz,cmake-$(CMAKE_VERSION),cmake)
 
 ifneq ($(wildcard $(BUILD_WORK)/cmake/.build_complete),)

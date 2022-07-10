@@ -7,7 +7,7 @@ LUA-BITOP_VERSION := 1.0.2
 DEB_LUA-BITOP_V   ?= $(LUA-BITOP_VERSION)
 
 lua-bitop-setup: setup
-	wget -q -nc -P$(BUILD_SOURCE) https://bitop.luajit.org/download/LuaBitOp-$(LUA-BITOP_VERSION).tar.gz
+	wget2 -q -nc -P$(BUILD_SOURCE) https://bitop.luajit.org/download/LuaBitOp-$(LUA-BITOP_VERSION).tar.gz
 	$(call EXTRACT_TAR,LuaBitOp-$(LUA-BITOP_VERSION).tar.gz,LuaBitOp-$(LUA-BITOP_VERSION),lua-bitop)
 	mkdir -p $(BUILD_STAGE)/lua-bitop/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/lua/5.{1..2}
 

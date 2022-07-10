@@ -7,7 +7,7 @@ LIBXRANDR_VERSION := 1.5.2
 DEB_LIBXRANDR_V   ?= $(LIBXRANDR_VERSION)
 
 libxrandr-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXrandr-$(LIBXRANDR_VERSION).tar.gz{,.sig}
+	wget2 -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXrandr-$(LIBXRANDR_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,libXrandr-$(LIBXRANDR_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXrandr-$(LIBXRANDR_VERSION).tar.gz,libXrandr-$(LIBXRANDR_VERSION),libxrandr)
 

@@ -7,7 +7,7 @@ AUTOMAKE_VERSION  := 1.16.3
 DEB_AUTOMAKE_V    ?= $(AUTOMAKE_VERSION)
 
 automake-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/automake/automake-$(AUTOMAKE_VERSION).tar.gz{,.sig}
+	wget2 -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/automake/automake-$(AUTOMAKE_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,automake-$(AUTOMAKE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,automake-$(AUTOMAKE_VERSION).tar.gz,automake-$(AUTOMAKE_VERSION),automake)
 

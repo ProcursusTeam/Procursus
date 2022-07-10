@@ -8,7 +8,7 @@ DEB_LIBYAML-TINY-PERL_V   ?= $(LIBYAML-TINY-PERL_VERSION)
 
 libyaml-tiny-perl-setup: setup
 	-[ ! -e "$(BUILD_SOURCE)/libyaml-tiny-perl-$(LIBYAML-TINY-PERL_VERSION).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/libyaml-tiny-perl-$(LIBYAML-TINY-PERL_VERSION).tar.gz \
+		&& wget2 -q -nc -O$(BUILD_SOURCE)/libyaml-tiny-perl-$(LIBYAML-TINY-PERL_VERSION).tar.gz \
 			https://cpan.metacpan.org/authors/id/E/ET/ETHER/YAML-Tiny-$(LIBYAML-TINY-PERL_VERSION).tar.gz
 	$(call EXTRACT_TAR,libyaml-tiny-perl-$(LIBYAML-TINY-PERL_VERSION).tar.gz,YAML-Tiny-$(LIBYAML-TINY-PERL_VERSION),libyaml-tiny-perl)
 

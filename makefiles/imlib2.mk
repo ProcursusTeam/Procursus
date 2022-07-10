@@ -7,7 +7,7 @@ IMLIB2_VERSION := 1.7.1
 DEB_IMLIB2_V   ?= $(IMLIB2_VERSION)
 
 imlib2-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://downloads.sourceforge.net/project/enlightenment/imlib2-src/$(IMLIB2_VERSION)/imlib2-$(IMLIB2_VERSION).tar.bz2
+	wget2 -q -nc -P $(BUILD_SOURCE) https://downloads.sourceforge.net/project/enlightenment/imlib2-src/$(IMLIB2_VERSION)/imlib2-$(IMLIB2_VERSION).tar.bz2
 	$(call EXTRACT_TAR,imlib2-$(IMLIB2_VERSION).tar.bz2,imlib2-$(IMLIB2_VERSION),imlib2)
 
 ifneq ($(wildcard $(BUILD_WORK)/imlib2/.build_complete),)

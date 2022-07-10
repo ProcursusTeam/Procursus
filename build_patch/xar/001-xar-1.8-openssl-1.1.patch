@@ -3,8 +3,8 @@ lib/hash.c: fix compilation with OpenSSL-1.1+
 EVP_MD_CTX has become an anonymous struct now, so can't allocate size
 for it anymore.
 
---- a/lib/hash.c	2015-06-09 03:22:07.000000000 +0000
-+++ b/lib/hash.c	2019-01-01 14:37:01.487775958 +0000
+--- lib/hash.c	2015-06-09 03:22:07.000000000 +0000
++++ lib/hash.c	2019-01-01 14:37:01.487775958 +0000
 @@ -102,7 +102,7 @@
  #ifdef __APPLE__
  	CCDigestRef digest;

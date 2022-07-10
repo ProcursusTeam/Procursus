@@ -7,7 +7,7 @@ LIBCDIO_VERSION := 2.1.0
 DEB_LIBCDIO_V   ?= $(LIBCDIO_VERSION)
 
 libcdio-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gnu/libcdio/libcdio-$(LIBCDIO_VERSION).tar.bz2{,.sig}
+	wget2 -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gnu/libcdio/libcdio-$(LIBCDIO_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,libcdio-$(LIBCDIO_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libcdio-$(LIBCDIO_VERSION).tar.bz2,libcdio-$(LIBCDIO_VERSION),libcdio)
 

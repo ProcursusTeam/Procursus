@@ -7,7 +7,7 @@ LIBOPUS_VERSION := 1.3.1
 DEB_LIBOPUS_V   ?= $(LIBOPUS_VERSION)
 
 libopus-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://archive.mozilla.org/pub/opus/opus-$(LIBOPUS_VERSION).tar.gz
+	wget2 -q -nc -P $(BUILD_SOURCE) https://archive.mozilla.org/pub/opus/opus-$(LIBOPUS_VERSION).tar.gz
 	$(call EXTRACT_TAR,opus-$(LIBOPUS_VERSION).tar.gz,opus-$(LIBOPUS_VERSION),libopus)
 
 ifneq ($(wildcard $(BUILD_WORK)/libopus/.build_complete),)

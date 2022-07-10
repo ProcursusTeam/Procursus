@@ -7,7 +7,7 @@ XZ_VERSION    := 5.2.5
 DEB_XZ_V      ?= $(XZ_VERSION)-3
 
 xz-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://tukaani.org/xz/xz-$(XZ_VERSION).tar.xz{,.sig}
+	wget2 -q -nc -P $(BUILD_SOURCE) https://tukaani.org/xz/xz-$(XZ_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,xz-$(XZ_VERSION).tar.xz)
 	$(call EXTRACT_TAR,xz-$(XZ_VERSION).tar.xz,xz-$(XZ_VERSION),xz)
 
@@ -50,12 +50,12 @@ xz-package: xz-stage
 
 	# xz.mk Prep xz-utils
 	cp -a $(BUILD_STAGE)/xz/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/!(*dec) $(BUILD_DIST)/xz-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/xz/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/!(*dec.1.zst) $(BUILD_DIST)/xz-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/xz/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/!(*dec.1$(MEMO_MANPAGE_SUFFIX)) $(BUILD_DIST)/xz-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_STAGE)/xz/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale $(BUILD_DIST)/xz-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
 	# xz.mk Prep xzdec
 	cp -a $(BUILD_STAGE)/xz/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*dec $(BUILD_DIST)/xzdec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/xz/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/*dec.1.zst $(BUILD_DIST)/xzdec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/xz/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/*dec.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/xzdec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# xz.mk Prep liblzma5
 	cp -a $(BUILD_STAGE)/xz/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/liblzma.5.dylib $(BUILD_DIST)/liblzma5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib

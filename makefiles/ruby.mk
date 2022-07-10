@@ -8,7 +8,7 @@ RUBY_API_VERSION := $(RUBY_VERSION).1
 DEB_RUBY_V       ?= $(RUBY_API_VERSION)-1
 
 ruby-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://cache.ruby-lang.org/pub/ruby/$(RUBY_VERSION)/ruby-$(RUBY_API_VERSION).tar.gz
+	wget2 -q -nc -P $(BUILD_SOURCE) https://cache.ruby-lang.org/pub/ruby/$(RUBY_VERSION)/ruby-$(RUBY_API_VERSION).tar.gz
 	$(call EXTRACT_TAR,ruby-$(RUBY_API_VERSION).tar.gz,ruby-$(RUBY_API_VERSION),ruby)
 	$(call DO_PATCH,ruby,ruby,-p1)
 
@@ -86,7 +86,7 @@ ruby-package: ruby-stage
 	# ruby.mk Prep ruby
 	for bin in erb irb rdoc ri ruby; do \
 		$(LN_S) $${bin}$(RUBY_VERSION) $(BUILD_DIST)/ruby/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$${bin}; \
-		$(LN_S) $${bin}$(RUBY_VERSION).1.zst $(BUILD_DIST)/ruby/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$${bin}.1; \
+		$(LN_S) $${bin}$(RUBY_VERSION).1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/ruby/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$${bin}.1; \
 	done
 
 	# ruby.mk Sign

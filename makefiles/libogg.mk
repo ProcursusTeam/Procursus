@@ -7,7 +7,7 @@ LIBOGG_VERSION := 1.3.4
 DEB_LIBOGG_V   ?= $(LIBOGG_VERSION)
 
 libogg-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://downloads.xiph.org/releases/ogg/libogg-$(LIBOGG_VERSION).tar.xz
+	wget2 -q -nc -P $(BUILD_SOURCE) https://downloads.xiph.org/releases/ogg/libogg-$(LIBOGG_VERSION).tar.xz
 	$(call EXTRACT_TAR,libogg-$(LIBOGG_VERSION).tar.xz,libogg-$(LIBOGG_VERSION),libogg)
 
 	# don't build the html docs

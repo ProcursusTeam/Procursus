@@ -7,7 +7,7 @@ VI_VERSION    := 070224
 DEB_VI_V      ?= $(VI_VERSION)
 
 vi-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://sources.archlinux.org/other/vi/ex-$(VI_VERSION).tar.xz
+	wget2 -q -nc -P $(BUILD_SOURCE) https://sources.archlinux.org/other/vi/ex-$(VI_VERSION).tar.xz
 	$(call EXTRACT_TAR,ex-$(VI_VERSION).tar.xz,ex-$(VI_VERSION),vi)
 
 ifneq ($(wildcard $(BUILD_WORK)/vi/.build_complete),)
