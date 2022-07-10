@@ -24,21 +24,21 @@ network-cmds-setup: setup
 	cp -a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine/cpu_capabilities.h $(BUILD_WORK)/network-cmds/include/machine
 	$(LN_S) $(BUILD_WORK)/network-cmds/include/{,System}
 
-	@wget -q -nc -P $(BUILD_WORK)/network-cmds/include/net \
+	@wget2 -q -nc -P $(BUILD_WORK)/network-cmds/include/net \
 		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8020.101.4/bsd/net/{content_filter,packet_mangler,pktap,net_api_stats,if_ports_used,if_bridgevar,ntstat,if_llreach,route,if,if_var,if_mib,if_arp,if_media,radix,net_perf,if_6lowpan_var,if_bond_var,network_agent,if_fake_var,if_vlan_var,if_fake_var,bpf,lacp,if_bond_internal}.h
-	@wget -q -nc -P $(BUILD_WORK)/network-cmds/include/net/pktsched \
+	@wget2 -q -nc -P $(BUILD_WORK)/network-cmds/include/net/pktsched \
 		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8020.101.4/bsd/net/pktsched/pktsched{,_{cbq,fairq,fq_codel,hfsc,netem,priq,rmclass,fq_codel}}.h
-	@wget -q -nc -P $(BUILD_WORK)/network-cmds/include/net/classq \
+	@wget2 -q -nc -P $(BUILD_WORK)/network-cmds/include/net/classq \
 		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8020.101.4/bsd/net/classq/{classq,if_classq,classq_red,classq_blue,classq_rio,classq_sfb}.h
-	@wget -q -nc -P $(BUILD_WORK)/network-cmds/include/netinet \
+	@wget2 -q -nc -P $(BUILD_WORK)/network-cmds/include/netinet \
 		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8020.101.4/bsd/netinet/{ip_dummynet,ip_flowid,mptcp_var,in_stat,in,tcp,tcp_var,ip_var,udp_var,if_ether,tcpip,icmp6,icmp_var,igmp_var,tcp_seq,tcp_fsm,in_var,in_pcb}.h
-	@wget -q -nc -P $(BUILD_WORK)/network-cmds/include/netinet6 \
+	@wget2 -q -nc -P $(BUILD_WORK)/network-cmds/include/netinet6 \
 		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8020.101.4/bsd/netinet6/{ip6_var,in6_var,in6,nd6,mld6_var,in6_pcb,raw_ip6}.h
-	@wget -q -nc -P $(BUILD_WORK)/network-cmds/include/sys \
+	@wget2 -q -nc -P $(BUILD_WORK)/network-cmds/include/sys \
 		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8020.101.4/bsd/sys/{proc_info,socket,unpcb,kern_event,kern_control,socketvar,sys_domain,mbuf,sockio}.h
-	@wget -q -nc -P$(BUILD_WORK)/network-cmds/include/mach \
+	@wget2 -q -nc -P$(BUILD_WORK)/network-cmds/include/mach \
 		https://raw.githubusercontent.com/apple-oss-distributions/xnu/xnu-8020.101.4/osfmk/mach/coalition.h
-	@wget -q -nc -P$(BUILD_WORK)/network-cmds/include/corecrypto \
+	@wget2 -q -nc -P$(BUILD_WORK)/network-cmds/include/corecrypto \
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.101.4/EXTERNAL_HEADERS/corecrypto/cc{,n,sha2,digest,_{config,error}}.h
 
 	sed -i 's/#if INET6/#ifdef INET6/g' $(BUILD_WORK)/network-cmds/include/sys/sockio.h

@@ -867,11 +867,11 @@ PACK = \
 
 GITHUB_ARCHIVE = -if [ $(5) ]; then \
 					[ ! -f "$(BUILD_SOURCE)/$(5)-$(3).tar.gz" ] && \
-						wget -q -nc -O$(BUILD_SOURCE)/$(5)-$(3).tar.gz \
+						wget2 -q -nc -O$(BUILD_SOURCE)/$(5)-$(3).tar.gz \
 							https://github.com/$(1)/$(2)/archive/$(4).tar.gz; \
 				else \
 					[ ! -f "$(BUILD_SOURCE)/$(2)-$(3).tar.gz" ] && \
-						wget -q -nc -O$(BUILD_SOURCE)/$(2)-$(3).tar.gz \
+						wget2 -q -nc -O$(BUILD_SOURCE)/$(2)-$(3).tar.gz \
 							https://github.com/$(1)/$(2)/archive/$(4).tar.gz; \
 				fi
 
@@ -885,8 +885,8 @@ GIT_CLONE = if [ ! -d "$(BUILD_WORK)/$(3)" ]; then \
 #
 ###
 
-ifneq ($(call HAS_COMMAND,wget),1)
-$(error Install wget)
+ifneq ($(call HAS_COMMAND,wget2),1)
+$(error Install wget2)
 endif
 
 ifneq ($(call HAS_COMMAND,triehash),1)
@@ -1232,7 +1232,7 @@ setup:
 	@rm -rf $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/System
 	@$(LN_SR) $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include{,/System}
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include \
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.101.4/libsyscall/wrappers/{spawn/spawn{,_private},libproc/libproc{,_internal,_private}}.h \
 		https://github.com/apple-oss-distributions/launchd/raw/launchd-842.92.1/liblaunch/{bootstrap,vproc}_priv.h \
 		https://github.com/apple-oss-distributions/libplatform/raw/libplatform-273.100.5/private/_simple.h \
@@ -1241,82 +1241,82 @@ setup:
 		https://github.com/apple-oss-distributions/libmalloc/raw/libmalloc-374.100.5/private/stack_logging.h \
 		https://github.com/apple-oss-distributions/Libc/raw/Libc-1507.100.9/{gen/get_compat,include/struct}.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach-o \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach-o \
 		https://github.com/apple-oss-distributions/dyld/raw/dyld-955/{include/mach-o/dyld_{process_info,introspection},cache-builder/dyld_cache_format}.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Kernel/kern/ \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Kernel/kern/ \
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.101.4/osfmk/kern/ledger.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Kernel/IOKit \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Kernel/IOKit \
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.101.4/iokit/IOKit/IOKitDebug.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Kernel/libkern \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Kernel/libkern \
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.101.4/libkern/libkern/OSKextLibPrivate.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/kern https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.101.4/osfmk/kern/debug.h
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/kern https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.101.4/osfmk/kern/debug.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/arm \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/arm \
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.101.4/{bsd/arm/disklabel,osfmk/arm/cpu_capabilities}.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine \
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.101.4/bsd/machine/disklabel.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os \
 		https://github.com/apple-oss-distributions/Libc/raw/Libc-1507.100.9/os/assumes.h \
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.101.4/libkern/os/{base_private,log_private,log}.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CommonCrypto \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CommonCrypto \
 		https://github.com/apple-oss-distributions/CommonCrypto/raw/CommonCrypto-60191.100.1/include/Private/CommonDigestSPI.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/bsm \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/bsm \
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.101.4/bsd/bsm/audit_kevents.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit/kext \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit/kext \
 		https://github.com/apple-oss-distributions/IOKitUser/raw/IOKitUser-1955.100.5/kext.subproj/{KextManagerPriv,OSKext,OSKextPrivate,kextmanager_types,{fat,macho,misc}_util}.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security \
 		https://github.com/apple-oss-distributions/Security/raw/Security-60158.100.133/OSX/libsecurity_keychain/lib/SecKeychainPriv.h \
 		https://github.com/apple-oss-distributions/Security/raw/Security-60158.100.133/OSX/libsecurity_codesigning/lib/Sec{CodeSigner,{Code,Requirement}Priv}.h \
 		https://github.com/apple-oss-distributions/Security/raw/Security-60158.100.133/base/SecBasePriv.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreFoundation \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreFoundation \
 		https://github.com/apple-oss-distributions/CF/raw/CF-1153.18/CFBundlePriv.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine \
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.101.4/osfmk/machine/cpu_capabilities.h
 
-	@wget -q -nc -P$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/firehose \
+	@wget2 -q -nc -P$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/firehose \
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.101.4/libkern/firehose/{tracepoint,firehose_types}_private.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern \
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.101.4//libkern/libkern/{OSKextLibPrivate,mkext,prelink}.h \
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/internal \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/internal \
 		https://github.com/apple-oss-distributions/libplatform/raw/libplatform-126.50.8/include/os/internal/{internal_shared,atomic,crashlog}.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys \
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.101.4/bsd/sys/{fcntl,fsctl,spawn_internal,resource,event,kdebug,kdebug_private,proc,proc_info,pgo,proc_uuid_policy,acct,stackshot,event,mbuf,kern_memorystatus,reason}.h \
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-1228.9.59/bsd/sys/mtio.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/uuid \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/uuid \
 		https://github.com/apple-oss-distributions/Libc/raw/Libc-1507.100.9/uuid/namespace.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach \
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.101.4/osfmk/mach/coalition.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpc \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpc \
 		https://github.com/darlinghq/darling-libxpc/raw/deaf74952ccfd9d6bc8572f6665be4b06e599c35/include/xpc/{launchd{,_defs},private}.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpc/private \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpc/private \
 		https://github.com/darlinghq/darling-libxpc/raw/deaf74952ccfd9d6bc8572f6665be4b06e599c35/include/xpc/private/{bundle,date,endpoint,mach_recv,mach_send,pipe,plist}.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ktrace \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ktrace \
 		https://github.com/Torrekie/apple_internal_sdk/raw/1510c72af1d940146ecf13b7adc37ba15c054636/usr/include/ktrace/{private,session}.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreSymbolication \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreSymbolication \
 		https://github.com/Torrekie/apple_internal_sdk/raw/1510c72af1d940146ecf13b7adc37ba15c054636/System/Library/PrivateFrameworks/CoreSymbolication.framework/Headers/CoreSymbolication{,Private}.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/dispatch \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/dispatch \
 		https://github.com/apple-oss-distributions/libdispatch/raw/libdispatch-1325.120.2/private/{private,benchmark,{apply,channel,data,introspection,io,layout,mach,queue,source,time,workloop}_private}.h
 
 	@cp -a $(BUILD_MISC)/{libxml-2.0,zlib}.pc $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig

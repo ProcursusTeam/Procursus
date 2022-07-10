@@ -18,17 +18,17 @@ system-cmds-setup: setup libxcrypt
 	sed -i '1 i\#define IOPOL_TYPE_VFS_HFS_CASE_SENSITIVITY 1\n#define IOPOL_SCOPE_PROCESS 0\n#define IOPOL_VFS_HFS_CASE_SENSITIVITY_DEFAULT 0\n#define IOPOL_VFS_HFS_CASE_SENSITIVITY_FORCE_CASE_SENSITIVE 1\n#define PRIO_DARWIN_ROLE_UI 0x2' $(BUILD_WORK)/system-cmds/taskpolicy.tproj/taskpolicy.c
 	sed -i -E -e 's|"/usr|"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' -e 's|"/sbin|"$(MEMO_PREFIX)/sbin|g' \
 		$(BUILD_WORK)/system-cmds/{shutdown.tproj/pathnames.h,getty.tproj/{ttys,gettytab}.5,sc_usage.tproj/sc_usage.{1,c},at.tproj/{at.1,pathnames.h}}
-	wget -q -nc -P $(BUILD_SOURCE) \
+	wget2 -q -nc -P $(BUILD_SOURCE) \
 		https://git.cameronkatri.com/pw-darwin/snapshot/pw-darwin-$(PWDARWIN_COMMIT).tar.zst
 	$(call EXTRACT_TAR,pw-darwin-$(PWDARWIN_COMMIT).tar.zst,pw-darwin-$(PWDARWIN_COMMIT),system-cmds/pw-darwin)
-	wget -q -nc -P $(BUILD_WORK)/system-cmds/include \
+	wget2 -q -nc -P $(BUILD_WORK)/system-cmds/include \
 		https://opensource.apple.com/source/launchd/launchd-328/launchd/src/reboot2.h
 	sed -i 's|#include <mach/i386/vm_param.h>|#include <mach/vm_param.h>|' $(BUILD_WORK)/system-cmds/memory_pressure.tproj/memory_pressure.c
 ifeq ($(shell [ $(CFVER_WHOLE) -lt 1800 ] && echo 1),1)
 	sed -i 's/task_inspect_for_pid(/task_for_pid(/' $(BUILD_WORK)/system-cmds/vm_purgeable_stat.tproj/vm_purgeable_stat.c
 	rm -f $(BUILD_WORK)/system-cmds/{lsmp,gcore}.tproj/*
-	wget -q -nc -P$(BUILD_WORK)/system-cmds/lsmp.tproj https://github.com/apple-oss-distributions/system_cmds/raw/8579bd456573d7d205fec79af332a12e12464a60/lsmp.tproj/{common.h,json.h,lsmp.1,lsmp.c,{port,task}_details.c}
-	wget -q -nc -P$(BUILD_WORK)/system-cmds/gcore.tproj https://github.com/apple-oss-distributions/system_cmds/raw/ae9b08dd34d024c6a8c04f312169edc9d197dfff/gcore.tproj/{gcore.1,gcore-internal.1,{loader_additions,options,region}.h,main.c,{convert,corefile,dyld,dyld_shared_cache,sparse,threads,utils,vanilla,vm}.{c,h}}
+	wget2 -q -nc -P$(BUILD_WORK)/system-cmds/lsmp.tproj https://github.com/apple-oss-distributions/system_cmds/raw/8579bd456573d7d205fec79af332a12e12464a60/lsmp.tproj/{common.h,json.h,lsmp.1,lsmp.c,{port,task}_details.c}
+	wget2 -q -nc -P$(BUILD_WORK)/system-cmds/gcore.tproj https://github.com/apple-oss-distributions/system_cmds/raw/ae9b08dd34d024c6a8c04f312169edc9d197dfff/gcore.tproj/{gcore.1,gcore-internal.1,{loader_additions,options,region}.h,main.c,{convert,corefile,dyld,dyld_shared_cache,sparse,threads,utils,vanilla,vm}.{c,h}}
 endif
 	sed -i 's|/System/Library/Kernels/kernel.development|$(MEMO_PREFIX)/Library/Kernels/kernel.development|' $(BUILD_WORK)/system-cmds/latency.tproj/latency.{1,c} # Allow placing kernels from [redacted] sources on rootless
 

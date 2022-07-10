@@ -16,8 +16,8 @@ adv-cmds-setup: setup
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/adv-cmds/include
 	cp -a $(MACOSX_SYSROOT)/usr/include/tzfile.h $(BUILD_WORK)/adv-cmds/include
-	wget -q -nc -P$(BUILD_WORK)/adv-cmds/include https://github.com/apple-oss-distributions/Libc/raw/Libc-1507.100.9/{nls/FreeBSD/msgcat,locale/FreeBSD/collate}.h
-	wget -q -nc -P$(BUILD_WORK)/adv-cmds/colldef https://github.com/apple-oss-distributions/Liby/raw/Liby-20/libyywrap.c
+	wget2 -q -nc -P$(BUILD_WORK)/adv-cmds/include https://github.com/apple-oss-distributions/Libc/raw/Libc-1507.100.9/{nls/FreeBSD/msgcat,locale/FreeBSD/collate}.h
+	wget2 -q -nc -P$(BUILD_WORK)/adv-cmds/colldef https://github.com/apple-oss-distributions/Liby/raw/Liby-20/libyywrap.c
 
 ifneq ($(wildcard $(BUILD_WORK)/adv-cmds/.build_complete),)
 adv-cmds:

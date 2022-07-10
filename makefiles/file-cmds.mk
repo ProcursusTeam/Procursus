@@ -21,7 +21,7 @@ file-cmds-setup: setup
 	$(call EXTRACT_TAR,file_cmds-$(FILE-CMDS_VERSION).tar.gz,file_cmds-file_cmds-$(FILE-CMDS_VERSION),file-cmds)
 	mkdir -p $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man{1,8}}
 	mkdir -p $(BUILD_WORK)/file-cmds/ipcs/sys
-	@wget -q -nc -P $(BUILD_WORK)/file-cmds/ipcs/sys \
+	@wget2 -q -nc -P $(BUILD_WORK)/file-cmds/ipcs/sys \
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.101.4/bsd/sys/{shm_internal,sem_internal,ipcs}.h
 	sed -i 's/user64_time_t/user_time_t/g' $(BUILD_WORK)/file-cmds/ipcs/sys/sem_internal.h
 	sed -i 's/user32_time_t/user_time_t/g' $(BUILD_WORK)/file-cmds/ipcs/sys/sem_internal.h
