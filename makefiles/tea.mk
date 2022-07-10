@@ -8,7 +8,7 @@ DEB_TEA_V   ?= $(TEA_VERSION)
 
 tea-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/tea-$(TEA_VERSION).tar.gz" ] && \
-		wget2 -q -nc -O$(BUILD_SOURCE)/tea-$(TEA_VERSION).tar.gz \
+		wget -q -nc -O$(BUILD_SOURCE)/tea-$(TEA_VERSION).tar.gz \
 			https://gitea.com/gitea/tea/archive/v$(TEA_VERSION).tar.gz
 	tar -xf $(BUILD_SOURCE)/tea-$(TEA_VERSION).tar.gz -C $(BUILD_WORK)
 

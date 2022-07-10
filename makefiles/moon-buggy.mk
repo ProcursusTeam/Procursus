@@ -7,7 +7,7 @@ MOON-BUGGY_VERSION := 1.0.51
 DEB_MOON-BUGGY_V   ?= $(MOON-BUGGY_VERSION)-1
 
 moon-buggy-setup: setup file-setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://m.seehuhn.de/programs/moon-buggy-$(MOON-BUGGY_VERSION).tar.gz{,.sig}
+	wget -q -nc -P $(BUILD_SOURCE) https://m.seehuhn.de/programs/moon-buggy-$(MOON-BUGGY_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,moon-buggy-$(MOON-BUGGY_VERSION).tar.gz)
 	$(call EXTRACT_TAR,moon-buggy-$(MOON-BUGGY_VERSION).tar.gz,moon-buggy-$(MOON-BUGGY_VERSION),moon-buggy)
 	cp -a $(BUILD_WORK)/file/config.sub $(BUILD_WORK)/moon-buggy

@@ -13,7 +13,7 @@ APT_CMAKE_ARGS :=
 endif
 
 apt-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://salsa.debian.org/apt-team/apt/-/archive/$(APT_VERSION)/apt-$(APT_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://salsa.debian.org/apt-team/apt/-/archive/$(APT_VERSION)/apt-$(APT_VERSION).tar.gz
 	$(call EXTRACT_TAR,apt-$(APT_VERSION).tar.gz,apt-$(APT_VERSION),apt)
 	$(call DO_PATCH,apt,apt,-p1)
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))

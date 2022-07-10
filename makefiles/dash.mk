@@ -8,7 +8,7 @@ DASH_VERSION  := 0.5.11.5
 DEB_DASH_V    ?= $(DASH_VERSION)
 
 dash-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) http://gondor.apana.org.au/~herbert/dash/files/dash-$(DASH_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) http://gondor.apana.org.au/~herbert/dash/files/dash-$(DASH_VERSION).tar.gz
 	$(call EXTRACT_TAR,dash-$(DASH_VERSION).tar.gz,dash-$(DASH_VERSION),dash)
 	mkdir -p $(BUILD_STAGE)/dash/$(MEMO_PREFIX)/bin
 

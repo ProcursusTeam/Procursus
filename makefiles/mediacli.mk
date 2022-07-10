@@ -7,7 +7,7 @@ MEDIACLI_VERSION := 1.2
 DEB_MEDIACLI_V   ?= $(MEDIACLI_VERSION)
 
 mediacli-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://github.com/absidue/mediacli/releases/download/v$(MEDIACLI_VERSION)/mediacli-$(MEDIACLI_VERSION).tar.xz
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/absidue/mediacli/releases/download/v$(MEDIACLI_VERSION)/mediacli-$(MEDIACLI_VERSION).tar.xz
 	$(call EXTRACT_TAR,mediacli-$(MEDIACLI_VERSION).tar.xz,mediacli-$(MEDIACLI_VERSION),mediacli)
 
 ifneq ($(wildcard $(BUILD_WORK)/mediacli/.build_complete),)

@@ -9,7 +9,7 @@ SNAPRESTORE_VERSION := 0.3
 DEB_SNAPRESTORE_V   ?= $(SNAPRESTORE_VERSION)
 
 snaprestore-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) \
+	wget -q -nc -P $(BUILD_SOURCE) \
 		https://git.cameronkatri.com/snaprestore/snapshot/snaprestore-$(SNAPRESTORE_VERSION).tar.zst
 	$(call EXTRACT_TAR,snaprestore-$(SNAPRESTORE_VERSION).tar.zst,snaprestore-$(SNAPRESTORE_VERSION),snaprestore)
 

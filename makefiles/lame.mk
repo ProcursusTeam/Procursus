@@ -7,7 +7,7 @@ LAME_VERSION := 3.100
 DEB_LAME_V   ?= $(LAME_VERSION)
 
 lame-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://downloads.sourceforge.net/lame/lame-$(LAME_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://downloads.sourceforge.net/lame/lame-$(LAME_VERSION).tar.gz
 	$(call EXTRACT_TAR,lame-$(LAME_VERSION).tar.gz,lame-$(LAME_VERSION),lame)
 	sed -i '/lame_init_old/d' $(BUILD_WORK)/lame/include/libmp3lame.sym
 

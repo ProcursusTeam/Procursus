@@ -8,7 +8,7 @@ DEB_LIBTEST-HARNESS-PERL_V   ?= $(LIBTEST-HARNESS-PERL_VERSION)
 
 libtest-harness-perl-setup: setup
 	-[ ! -e "$(BUILD_SOURCE)/libtest-harness-perl-$(LIBTEST-HARNESS-PERL_VERSION).tar.gz" ] \
-		&& wget2 -q -nc -O$(BUILD_SOURCE)/libtest-harness-perl-$(LIBTEST-HARNESS-PERL_VERSION).tar.gz \
+		&& wget -q -nc -O$(BUILD_SOURCE)/libtest-harness-perl-$(LIBTEST-HARNESS-PERL_VERSION).tar.gz \
 			https://cpan.metacpan.org/authors/id/L/LE/LEONT/Test-Harness-$(LIBTEST-HARNESS-PERL_VERSION).tar.gz
 	$(call EXTRACT_TAR,libtest-harness-perl-$(LIBTEST-HARNESS-PERL_VERSION).tar.gz,Test-Harness-$(LIBTEST-HARNESS-PERL_VERSION),libtest-harness-perl)
 

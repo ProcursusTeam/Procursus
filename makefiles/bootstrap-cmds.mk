@@ -9,7 +9,7 @@ BOOTSTRAP-CMDS_VERSION := 121
 DEB_BOOTSTRAP-CMDS_V   ?= $(BOOTSTRAP-CMDS_VERSION)-1
 
 bootstrap-cmds-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/bootstrap_cmds/bootstrap_cmds-$(BOOTSTRAP-CMDS_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/bootstrap_cmds/bootstrap_cmds-$(BOOTSTRAP-CMDS_VERSION).tar.gz
 	$(call EXTRACT_TAR,bootstrap_cmds-$(BOOTSTRAP-CMDS_VERSION).tar.gz,bootstrap_cmds-$(BOOTSTRAP-CMDS_VERSION),bootstrap-cmds)
 	mkdir -p $(BUILD_STAGE)/bootstrap-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,libexec,share/man/man1/}
 

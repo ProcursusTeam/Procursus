@@ -7,7 +7,7 @@ MC_VERSION  := 4.8.26
 DEB_MC_V    ?= $(MC_VERSION)
 
 mc-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) http://ftp.midnight-commander.org/mc-$(MC_VERSION).tar.xz
+	wget -q -nc -P $(BUILD_SOURCE) http://ftp.midnight-commander.org/mc-$(MC_VERSION).tar.xz
 	$(call EXTRACT_TAR,mc-$(MC_VERSION).tar.xz,mc-$(MC_VERSION),mc)
 
 ifneq ($(wildcard $(BUILD_WORK)/mc/.build_complete),)

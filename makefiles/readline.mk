@@ -12,7 +12,7 @@ READLINE_PATCH   := 2
 DEB_READLINE_V   ?= $(READLINE_VERSION).$(READLINE_PATCH)
 
 readline-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://ftp.gnu.org/gnu/readline/readline-$(READLINE_VERSION).tar.gz{,.sig}
+	wget -q -nc -P $(BUILD_SOURCE) https://ftp.gnu.org/gnu/readline/readline-$(READLINE_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,readline-$(READLINE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,readline-$(READLINE_VERSION).tar.gz,readline-$(READLINE_VERSION),readline)
 	$(call DO_PATCH,readline,readline,-p0)

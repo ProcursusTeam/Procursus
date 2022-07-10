@@ -12,7 +12,7 @@ endif
 
 lsdtrip-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/lsdtrip-$(LSDTRIP_VERSION).tar.gz" ] && \
-		wget2 -q -nc -O$(BUILD_SOURCE)/lsdtrip-$(LSDTRIP_VERSION).tar.gz \
+		wget -q -nc -O$(BUILD_SOURCE)/lsdtrip-$(LSDTRIP_VERSION).tar.gz \
 			http://newosxbook.com/tools/lsdtrip.tgz
 	mkdir -p $(BUILD_WORK)/lsdtrip
 	tar xf $(BUILD_SOURCE)/lsdtrip-$(LSDTRIP_VERSION).tar.gz -C $(BUILD_WORK)/lsdtrip

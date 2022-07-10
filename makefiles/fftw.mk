@@ -7,7 +7,7 @@ FFTW_VERSION := 3.3.10
 DEB_FFTW_V   ?= $(FFTW_VERSION)
 
 fftw-setup: setup
-	wget2 -q -nc -P$(BUILD_SOURCE) https://fftw.org/fftw-$(FFTW_VERSION).tar.gz
+	wget -q -nc -P$(BUILD_SOURCE) https://fftw.org/fftw-$(FFTW_VERSION).tar.gz
 	$(call EXTRACT_TAR,fftw-$(FFTW_VERSION).tar.gz,fftw-$(FFTW_VERSION),fftw)
 
 ifneq ($(wildcard $(BUILD_WORK)/fftw/.build_complete),)

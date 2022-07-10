@@ -7,7 +7,7 @@ XBITMAPS_VERSION := 1.1.0
 DEB_XBITMAPS_V   ?= $(XBITMAPS_VERSION)
 
 xbitmaps-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/app/xbitmaps-$(XBITMAPS_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/app/xbitmaps-$(XBITMAPS_VERSION).tar.gz
 	$(call EXTRACT_TAR,xbitmaps-$(XBITMAPS_VERSION).tar.gz,xbitmaps-$(XBITMAPS_VERSION),xbitmaps)
 
 ifneq ($(wildcard $(BUILD_WORK)/xbitmaps/.build_complete),)

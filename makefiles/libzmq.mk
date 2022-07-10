@@ -7,7 +7,7 @@ LIBZMQ_VERSION := 4.3.4
 DEB_LIBZMQ_V   ?= $(LIBZMQ_VERSION)
 
 libzmq-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://github.com/zeromq/libzmq/releases/download/v$(LIBZMQ_VERSION)/zeromq-$(LIBZMQ_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/zeromq/libzmq/releases/download/v$(LIBZMQ_VERSION)/zeromq-$(LIBZMQ_VERSION).tar.gz
 	$(call EXTRACT_TAR,zeromq-$(LIBZMQ_VERSION).tar.gz,zeromq-$(LIBZMQ_VERSION),libzmq)
 
 ifneq ($(wildcard $(BUILD_WORK)/libzmq/.build_complete),)

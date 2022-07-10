@@ -7,7 +7,7 @@ LIBXI_VERSION := 1.7.10
 DEB_LIBXI_V   ?= $(LIBXI_VERSION)
 
 libxi-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXi-$(LIBXI_VERSION).tar.gz{,.sig}
+	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXi-$(LIBXI_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,libXi-$(LIBXI_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXi-$(LIBXI_VERSION).tar.gz,libXi-$(LIBXI_VERSION),libxi)
 

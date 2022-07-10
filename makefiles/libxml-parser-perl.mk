@@ -8,7 +8,7 @@ DEB_LIBXML_PARSER_PERL_V   ?= $(LIBXML_PARSER_PERL_VERSION)
 
 libxml-parser-perl-setup: setup
 	-[ ! -f $(BUILD_SOURCE)/libxml-parser-perl-$(LIBXML_PARSER_PERL_VERSION).tar.gz ] && \
-			wget2 -q -nc -O$(BUILD_SOURCE)/libxml-parser-perl-$(LIBXML_PARSER_PERL_VERSION).tar.gz \
+			wget -q -nc -O$(BUILD_SOURCE)/libxml-parser-perl-$(LIBXML_PARSER_PERL_VERSION).tar.gz \
 				https://cpan.metacpan.org/authors/id/T/TO/TODDR/XML-Parser-$(LIBXML_PARSER_PERL_VERSION).tar.gz
 	$(call EXTRACT_TAR,libxml-parser-perl-$(LIBXML_PARSER_PERL_VERSION).tar.gz,XML-Parser-$(LIBXML_PARSER_PERL_VERSION),libxml-parser-perl)
 

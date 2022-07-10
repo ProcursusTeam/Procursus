@@ -7,7 +7,7 @@ TORSOCKS_VERSION := 2.3.0
 DEB_TORSOCKS_V   ?= $(TORSOCKS_VERSION)
 
 torsocks-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) \
+	wget -q -nc -P $(BUILD_SOURCE) \
 		https://people.torproject.org/~dgoulet/torsocks/torsocks-$(TORSOCKS_VERSION).tar.xz{,.asc}
 	$(call PGP_VERIFY,torsocks-$(TORSOCKS_VERSION).tar.xz,asc)
 	$(call EXTRACT_TAR,torsocks-$(TORSOCKS_VERSION).tar.xz,torsocks-$(TORSOCKS_VERSION),torsocks)

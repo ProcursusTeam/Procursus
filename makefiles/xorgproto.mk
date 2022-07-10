@@ -7,7 +7,7 @@ XORGPROTO_VERSION := 2021.5
 DEB_XORGPROTO_V   ?= $(XORGPROTO_VERSION)
 
 xorgproto-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/proto/xorgproto-$(XORGPROTO_VERSION).tar.bz2
+	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/proto/xorgproto-$(XORGPROTO_VERSION).tar.bz2
 	$(call EXTRACT_TAR,xorgproto-$(XORGPROTO_VERSION).tar.bz2,xorgproto-$(XORGPROTO_VERSION),xorgproto)
 
 ifneq ($(wildcard $(BUILD_WORK)/xorgproto/.build_complete),)

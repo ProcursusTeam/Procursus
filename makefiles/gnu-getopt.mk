@@ -7,7 +7,7 @@ GNU-GETOPT_VERSION := 2.37
 DEB_GNU-GETOPT_V   ?= $(GNU-GETOPT_VERSION)
 
 gnu-getopt-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://www.kernel.org/pub/linux/utils/util-linux/v2.37/util-linux-2.37.tar.xz
+	wget -q -nc -P $(BUILD_SOURCE) https://www.kernel.org/pub/linux/utils/util-linux/v2.37/util-linux-2.37.tar.xz
 	$(call EXTRACT_TAR,util-linux-2.37.tar.xz,util-linux-$(GNU-GETOPT_VERSION),gnu-getopt)
 
 ifneq ($(wildcard $(BUILD_WORK)/gnu-getopt/.build_complete),)

@@ -7,8 +7,8 @@ LIBCRACK_VERSION := 2.9.7
 DEB_LIBCRACK_V   ?= $(LIBCRACK_VERSION)
 
 libcrack-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://github.com/cracklib/cracklib/releases/download/v$(LIBCRACK_VERSION)/cracklib-$(LIBCRACK_VERSION).tar.gz
-	wget2 -q -nc -P $(BUILD_SOURCE) https://github.com/cracklib/cracklib/releases/download/v$(LIBCRACK_VERSION)/cracklib-words-$(LIBCRACK_VERSION).gz
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/cracklib/cracklib/releases/download/v$(LIBCRACK_VERSION)/cracklib-$(LIBCRACK_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/cracklib/cracklib/releases/download/v$(LIBCRACK_VERSION)/cracklib-words-$(LIBCRACK_VERSION).gz
 	$(call EXTRACT_TAR,cracklib-$(LIBCRACK_VERSION).tar.gz,cracklib-$(LIBCRACK_VERSION),libcrack)
 	gzip -dc < $(BUILD_SOURCE)/cracklib-words-$(LIBCRACK_VERSION).gz > $(BUILD_WORK)/libcrack/dicts/libcrack-words
 

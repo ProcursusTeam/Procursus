@@ -7,7 +7,7 @@ RSYNC_VERSION := 3.2.4
 DEB_RSYNC_V   ?= $(RSYNC_VERSION)-1
 
 rsync-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://download.samba.org/pub/rsync/src/rsync-$(RSYNC_VERSION).tar.gz{,.asc}
+	wget -q -nc -P $(BUILD_SOURCE) https://download.samba.org/pub/rsync/src/rsync-$(RSYNC_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,rsync-$(RSYNC_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,rsync-$(RSYNC_VERSION).tar.gz,rsync-$(RSYNC_VERSION),rsync)
 	$(call DO_PATCH,rsync,rsync,-p1)

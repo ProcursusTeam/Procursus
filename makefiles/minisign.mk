@@ -7,7 +7,7 @@ MINISIGN_VERSION := 0.9
 DEB_MINISIGN_V   ?= $(MINISIGN_VERSION)
 
 minisign-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://github.com/jedisct1/minisign/releases/download/$(MINISIGN_VERSION)/minisign-$(MINISIGN_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/jedisct1/minisign/releases/download/$(MINISIGN_VERSION)/minisign-$(MINISIGN_VERSION).tar.gz
 	$(call EXTRACT_TAR,minisign-$(MINISIGN_VERSION).tar.gz,minisign-$(MINISIGN_VERSION),minisign)
 	mkdir -p $(BUILD_WORK)/minisign/build
 

@@ -7,7 +7,7 @@ LIBPROTOBUF_VERSION := 3.14.0
 DEB_LIBPROTOBUF_V   ?= $(LIBPROTOBUF_VERSION)
 
 libprotobuf-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://github.com/protocolbuffers/protobuf/releases/download/v$(LIBPROTOBUF_VERSION)/protobuf-cpp-$(LIBPROTOBUF_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/protocolbuffers/protobuf/releases/download/v$(LIBPROTOBUF_VERSION)/protobuf-cpp-$(LIBPROTOBUF_VERSION).tar.gz
 	$(call EXTRACT_TAR,protobuf-cpp-$(LIBPROTOBUF_VERSION).tar.gz,protobuf-$(LIBPROTOBUF_VERSION),libprotobuf)
 
 ifneq ($(wildcard $(BUILD_WORK)/libprotobuf/.build_complete),)

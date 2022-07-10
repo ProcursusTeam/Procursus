@@ -7,7 +7,7 @@ XTERM_VERSION := 368
 DEB_XTERM_V   ?= $(XTERM_VERSION)
 
 xterm-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://invisible-mirror.net/archives/xterm/xterm-$(XTERM_VERSION).tgz
+	wget -q -nc -P $(BUILD_SOURCE) https://invisible-mirror.net/archives/xterm/xterm-$(XTERM_VERSION).tgz
 	$(call EXTRACT_TAR,xterm-$(XTERM_VERSION).tgz,xterm-$(XTERM_VERSION),xterm)
 
 ifneq ($(wildcard $(BUILD_WORK)/xterm/.build_complete),)

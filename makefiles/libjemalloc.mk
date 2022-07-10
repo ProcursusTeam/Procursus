@@ -7,7 +7,7 @@ LIBJEMALLOC_VERSION := 5.2.1
 DEB_LIBJEMALLOC_V  	?= $(LIBJEMALLOC_VERSION)-3
 
 libjemalloc-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://github.com/jemalloc/jemalloc/releases/download/$(LIBJEMALLOC_VERSION)/jemalloc-$(LIBJEMALLOC_VERSION).tar.bz2
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/jemalloc/jemalloc/releases/download/$(LIBJEMALLOC_VERSION)/jemalloc-$(LIBJEMALLOC_VERSION).tar.bz2
 	$(call EXTRACT_TAR,jemalloc-$(LIBJEMALLOC_VERSION).tar.bz2,jemalloc-$(LIBJEMALLOC_VERSION),libjemalloc)
 	$(call DO_PATCH,jemalloc,libjemalloc,-p1)
 

@@ -7,7 +7,7 @@ GNUPG_VERSION := 2.3.6
 DEB_GNUPG_V   ?= $(GNUPG_VERSION)
 
 gnupg-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/gnupg/gnupg-$(GNUPG_VERSION).tar.bz2
+	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/gnupg/gnupg-$(GNUPG_VERSION).tar.bz2
 	$(call EXTRACT_TAR,gnupg-$(GNUPG_VERSION).tar.bz2,gnupg-$(GNUPG_VERSION),gnupg)
 
 ifneq ($(wildcard $(BUILD_WORK)/gnupg/.build_complete),)

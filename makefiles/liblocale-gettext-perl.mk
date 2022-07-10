@@ -8,7 +8,7 @@ DEB_LIBLOCALE-GETTEXT-PERL_V   ?= $(LIBLOCALE-GETTEXT-PERL_VERSION)
 
 liblocale-gettext-perl-setup: setup
 	-[ ! -e "$(BUILD_SOURCE)/liblocale-gettext-perl-$(LIBLOCALE-GETTEXT-PERL_VERSION).tar.gz" ] \
-		&& wget2 -q -nc -O$(BUILD_SOURCE)/liblocale-gettext-perl-$(LIBLOCALE-GETTEXT-PERL_VERSION).tar.gz \
+		&& wget -q -nc -O$(BUILD_SOURCE)/liblocale-gettext-perl-$(LIBLOCALE-GETTEXT-PERL_VERSION).tar.gz \
 			https://cpan.metacpan.org/authors/id/P/PV/PVANDRY/gettext-$(LIBLOCALE-GETTEXT-PERL_VERSION).tar.gz
 	$(call EXTRACT_TAR,liblocale-gettext-perl-$(LIBLOCALE-GETTEXT-PERL_VERSION).tar.gz,Locale-gettext-$(LIBLOCALE-GETTEXT-PERL_VERSION),liblocale-gettext-perl)
 

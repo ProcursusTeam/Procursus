@@ -7,7 +7,7 @@ CHNTPW_VERSION := 1.0
 DEB_CHNTPW_V   ?= $(CHNTPW_VERSION)
 
 chntpw-setup: setup
-	wget2 -q -nc -P$(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/c/chntpw/chntpw_$(CHNTPW_VERSION).orig.tar.gz
+	wget -q -nc -P$(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/c/chntpw/chntpw_$(CHNTPW_VERSION).orig.tar.gz
 	$(call EXTRACT_TAR,chntpw_$(CHNTPW_VERSION).orig.tar.gz,chntpw-$(CHNTPW_VERSION),chntpw)
 	sed -i 's@/usr@$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)@g' $(BUILD_WORK)/chntpw/Makefile
 	sed -i 's|gcc|$(CC) $(CFLAGS)|g' $(BUILD_WORK)/chntpw/Makefile

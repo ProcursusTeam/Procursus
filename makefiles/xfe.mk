@@ -7,7 +7,7 @@ XFE_VERSION := 1.44
 DEB_XFE_V   ?= $(XFE_VERSION)
 
 xfe-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://pilotfiber.dl.sourceforge.net/project/xfe/xfe/1.44/xfe-1.44.tar.xz
+	wget -q -nc -P $(BUILD_SOURCE) https://pilotfiber.dl.sourceforge.net/project/xfe/xfe/1.44/xfe-1.44.tar.xz
 	$(call EXTRACT_TAR,xfe-$(XFE_VERSION).tar.xz,xfe-$(XFE_VERSION),xfe)
 
 ifneq ($(wildcard $(BUILD_WORK)/xfe/.build_complete),)

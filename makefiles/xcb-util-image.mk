@@ -7,7 +7,7 @@ XCB-UTIL-IMAGE_VERSION := 0.4.0
 DEB_XCB-UTIL-IMAGE_V   ?= $(XCB-UTIL-IMAGE_VERSION)
 
 xcb-util-image-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/xcb/xcb-util-image-$(XCB-UTIL-IMAGE_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/xcb/xcb-util-image-$(XCB-UTIL-IMAGE_VERSION).tar.gz
 	$(call EXTRACT_TAR,xcb-util-image-$(XCB-UTIL-IMAGE_VERSION).tar.gz,xcb-util-image-$(XCB-UTIL-IMAGE_VERSION),xcb-util-image)
 
 ifneq ($(wildcard $(BUILD_WORK)/xcb-util-image/.build_complete),)

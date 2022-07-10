@@ -7,7 +7,7 @@ LIBIDEVICEACTIVATION_VERSION := 1.1.1
 DEB_LIBIDEVICEACTIVATION_V   ?= $(LIBIDEVICEACTIVATION_VERSION)-1
 
 libideviceactivation-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://github.com/libimobiledevice/libideviceactivation/releases/download/$(LIBIDEVICEACTIVATION_VERSION)/libideviceactivation-$(LIBIDEVICEACTIVATION_VERSION).tar.bz2
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libimobiledevice/libideviceactivation/releases/download/$(LIBIDEVICEACTIVATION_VERSION)/libideviceactivation-$(LIBIDEVICEACTIVATION_VERSION).tar.bz2
 	$(call EXTRACT_TAR,libideviceactivation-$(LIBIDEVICEACTIVATION_VERSION).tar.bz2,libideviceactivation-$(LIBIDEVICEACTIVATION_VERSION),libideviceactivation)
 
 ifneq ($(wildcard $(BUILD_WORK)/libideviceactivation/.build_complete),)

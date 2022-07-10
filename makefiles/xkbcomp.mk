@@ -7,7 +7,7 @@ XKBCOMP_VERSION := 1.4.5
 DEB_XKBCOMP_V   ?= $(XKBCOMP_VERSION)
 
 xkbcomp-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/app/xkbcomp-$(XKBCOMP_VERSION).tar.gz{,.sig}
+	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/app/xkbcomp-$(XKBCOMP_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,xkbcomp-$(XKBCOMP_VERSION).tar.gz)
 	$(call EXTRACT_TAR,xkbcomp-$(XKBCOMP_VERSION).tar.gz,xkbcomp-$(XKBCOMP_VERSION),xkbcomp)
 

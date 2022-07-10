@@ -8,7 +8,7 @@ DEB_LIBMODULE-BUILD-PERL_V   ?= $(LIBMODULE-BUILD-PERL_VERSION)
 
 libmodule-build-perl-setup: setup
 	-[ ! -e "$(BUILD_SOURCE)/libmodule-build-perl-$(LIBMODULE-BUILD-PERL_VERSION).tar.gz" ] \
-		&& wget2 -q -nc -O$(BUILD_SOURCE)/libmodule-build-perl-$(LIBMODULE-BUILD-PERL_VERSION).tar.gz \
+		&& wget -q -nc -O$(BUILD_SOURCE)/libmodule-build-perl-$(LIBMODULE-BUILD-PERL_VERSION).tar.gz \
 			https://cpan.metacpan.org/authors/id/L/LE/LEONT/Module-Build-$(LIBMODULE-BUILD-PERL_VERSION).tar.gz
 	$(call EXTRACT_TAR,libmodule-build-perl-$(LIBMODULE-BUILD-PERL_VERSION).tar.gz,Module-Build-$(LIBMODULE-BUILD-PERL_VERSION),libmodule-build-perl)
 

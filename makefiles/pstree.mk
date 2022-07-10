@@ -7,7 +7,7 @@ PSTREE_VERSION := 2.39
 DEB_PSTREE_V   ?= $(PSTREE_VERSION)
 
 pstree-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://fossies.org/linux/misc/pstree-$(PSTREE_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://fossies.org/linux/misc/pstree-$(PSTREE_VERSION).tar.gz
 	mkdir -p $(BUILD_WORK)/pstree
 	tar xf $(BUILD_SOURCE)/pstree-$(PSTREE_VERSION).tar.gz -C $(BUILD_WORK)/pstree
 

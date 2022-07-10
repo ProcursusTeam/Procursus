@@ -11,7 +11,7 @@ NCURSES_VERSION := 6.3-2
 DEB_NCURSES_V   ?= $(NCURSES_VERSION)
 
 ncurses-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://salsa.debian.org/debian/ncurses/-/archive/debian/$(NCURSES_VERSION)/ncurses-debian-$(NCURSES_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://salsa.debian.org/debian/ncurses/-/archive/debian/$(NCURSES_VERSION)/ncurses-debian-$(NCURSES_VERSION).tar.gz
 	$(call EXTRACT_TAR,ncurses-debian-$(NCURSES_VERSION).tar.gz,ncurses-debian-$(NCURSES_VERSION),ncurses)
 
 ifneq ($(wildcard $(BUILD_WORK)/ncurses/.build_complete),)

@@ -9,7 +9,7 @@ DEBIANUTILS_VERSION := 5.7
 DEB_DEBIANUTILS_V   ?= $(DEBIANUTILS_VERSION)
 
 debianutils-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/d/debianutils/debianutils_$(DEBIANUTILS_VERSION).orig.tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/d/debianutils/debianutils_$(DEBIANUTILS_VERSION).orig.tar.gz
 	$(call EXTRACT_TAR,debianutils_$(DEBIANUTILS_VERSION).orig.tar.gz,debianutils-$(DEBIANUTILS_VERSION),debianutils)
 
 ifneq ($(wildcard $(BUILD_WORK)/debianutils/.build_complete),)

@@ -7,7 +7,7 @@ LZIP_VERSION  := 1.22
 DEB_LZIP_V    ?= $(LZIP_VERSION)
 
 lzip-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) http://download.savannah.gnu.org/releases/lzip/lzip-$(LZIP_VERSION).tar.gz{,.sig}
+	wget -q -nc -P $(BUILD_SOURCE) http://download.savannah.gnu.org/releases/lzip/lzip-$(LZIP_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,lzip-$(LZIP_VERSION).tar.gz)
 	$(call EXTRACT_TAR,lzip-$(LZIP_VERSION).tar.gz,lzip-$(LZIP_VERSION),lzip)
 

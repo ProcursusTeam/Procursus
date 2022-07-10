@@ -8,7 +8,7 @@ RUBY_API_VERSION := $(RUBY_VERSION).1
 DEB_RUBY_V       ?= $(RUBY_API_VERSION)-1
 
 ruby-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://cache.ruby-lang.org/pub/ruby/$(RUBY_VERSION)/ruby-$(RUBY_API_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://cache.ruby-lang.org/pub/ruby/$(RUBY_VERSION)/ruby-$(RUBY_API_VERSION).tar.gz
 	$(call EXTRACT_TAR,ruby-$(RUBY_API_VERSION).tar.gz,ruby-$(RUBY_API_VERSION),ruby)
 	$(call DO_PATCH,ruby,ruby,-p1)
 

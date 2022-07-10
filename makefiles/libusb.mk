@@ -7,7 +7,7 @@ LIBUSB_VERSION := 1.0.24
 DEB_LIBUSB_V   ?= $(LIBUSB_VERSION)
 
 libusb-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://github.com/libusb/libusb/releases/download/v$(LIBUSB_VERSION)/libusb-$(LIBUSB_VERSION).tar.bz2
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libusb/libusb/releases/download/v$(LIBUSB_VERSION)/libusb-$(LIBUSB_VERSION).tar.bz2
 	$(call EXTRACT_TAR,libusb-$(LIBUSB_VERSION).tar.bz2,libusb-$(LIBUSB_VERSION),libusb)
 
 ifneq ($(wildcard $(BUILD_WORK)/libusb/.build_complete),)

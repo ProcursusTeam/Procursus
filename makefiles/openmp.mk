@@ -7,7 +7,7 @@ OPENMP_VERSION := 12.0.0
 DEB_OPENMP_V   ?= $(OPENMP_VERSION)
 
 openmp-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://github.com/llvm/llvm-project/releases/download/llvmorg-$(OPENMP_VERSION)/openmp-$(OPENMP_VERSION).src.tar.xz
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/llvm/llvm-project/releases/download/llvmorg-$(OPENMP_VERSION)/openmp-$(OPENMP_VERSION).src.tar.xz
 	$(call EXTRACT_TAR,openmp-$(OPENMP_VERSION).src.tar.xz,openmp-$(OPENMP_VERSION).src,openmp)
 	$(call DO_PATCH,openmp,openmp,-p1)
 

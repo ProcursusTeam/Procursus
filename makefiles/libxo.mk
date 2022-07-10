@@ -7,7 +7,7 @@ LIBXO_VERSION := 1.4.0
 DEB_LIBXO_V   ?= $(LIBXO_VERSION)
 
 libxo-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) \
+	wget -q -nc -P $(BUILD_SOURCE) \
 		https://github.com/Juniper/libxo/releases/download/$(LIBXO_VERSION)/libxo-$(LIBXO_VERSION).tar.gz
 	$(call EXTRACT_TAR,libxo-$(LIBXO_VERSION).tar.gz,libxo-$(LIBXO_VERSION),libxo)
 

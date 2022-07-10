@@ -7,7 +7,7 @@ UNRAR_VERSION := 6.1.4
 DEB_UNRAR_V   ?= $(UNRAR_VERSION)
 
 unrar-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://www.rarlab.com/rar/unrarsrc-$(UNRAR_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://www.rarlab.com/rar/unrarsrc-$(UNRAR_VERSION).tar.gz
 	$(call EXTRACT_TAR,unrarsrc-$(UNRAR_VERSION).tar.gz,n/a,unrar)
 	$(call DO_PATCH,unrar,unrar,-p1)
 

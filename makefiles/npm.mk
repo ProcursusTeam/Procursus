@@ -7,7 +7,7 @@ NPM_VERSION := 8.1.1
 DEB_NPM_V   ?= $(NPM_VERSION)
 
 npm-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://registry.npmjs.org/npm/-/npm-$(NPM_VERSION).tgz
+	wget -q -nc -P $(BUILD_SOURCE) https://registry.npmjs.org/npm/-/npm-$(NPM_VERSION).tgz
 	$(call EXTRACT_TAR,npm-$(NPM_VERSION).tgz,package,npm)
 
 ifneq ($(wildcard $(BUILD_WORK)/npm/.build_complete),)

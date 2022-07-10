@@ -7,7 +7,7 @@ LIBSSH2_VERSION := 1.10.0
 DEB_LIBSSH2_V   ?= $(LIBSSH2_VERSION)-1
 
 libssh2-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://libssh2.org/download/libssh2-$(LIBSSH2_VERSION).tar.gz{,.asc}
+	wget -q -nc -P $(BUILD_SOURCE) https://libssh2.org/download/libssh2-$(LIBSSH2_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,libssh2-$(LIBSSH2_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,libssh2-$(LIBSSH2_VERSION).tar.gz,libssh2-$(LIBSSH2_VERSION),libssh2)
 

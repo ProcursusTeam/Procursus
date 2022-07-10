@@ -9,7 +9,7 @@ DEB_NMAP_V   ?= $(NMAP_VERSION)
 NMAP_MANPAGE_LANGS := de es fr hr hu it ja pl pt_BR pt_PT ro ru sk zh
 
 nmap-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://nmap.org/dist/nmap-$(NMAP_VERSION).tar.bz2
+	wget -q -nc -P $(BUILD_SOURCE) https://nmap.org/dist/nmap-$(NMAP_VERSION).tar.bz2
 	$(call EXTRACT_TAR,nmap-$(NMAP_VERSION).tar.bz2,nmap-$(NMAP_VERSION),nmap)
 
 ifneq ($(wildcard $(BUILD_WORK)/nmap/.build_complete),)

@@ -7,7 +7,7 @@ GPGME_VERSION := 1.17.1
 DEB_GPGME_V   ?= $(GPGME_VERSION)
 
 gpgme-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/gpgme/gpgme-$(GPGME_VERSION).tar.bz2{,.sig}
+	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/gpgme/gpgme-$(GPGME_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,gpgme-$(GPGME_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,gpgme-$(GPGME_VERSION).tar.bz2,gpgme-$(GPGME_VERSION),gpgme)
 

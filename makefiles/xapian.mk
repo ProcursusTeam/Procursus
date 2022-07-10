@@ -7,7 +7,7 @@ XAPIAN_VERSION := 1.4.17
 DEB_XAPIAN_V   ?= $(XAPIAN_VERSION)
 
 xapian-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://oligarchy.co.uk/xapian/$(XAPIAN_VERSION)/xapian-core-$(XAPIAN_VERSION).tar.xz
+	wget -q -nc -P $(BUILD_SOURCE) https://oligarchy.co.uk/xapian/$(XAPIAN_VERSION)/xapian-core-$(XAPIAN_VERSION).tar.xz
 	$(call EXTRACT_TAR,xapian-core-$(XAPIAN_VERSION).tar.xz,xapian-core-$(XAPIAN_VERSION),xapian)
 
 ifneq ($(wildcard $(BUILD_WORK)/xapian/.build_complete),)

@@ -7,7 +7,7 @@ MOST_VERSION := 5.1.0
 DEB_MOST_V   ?= $(MOST_VERSION)-1
 
 most-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://www.jedsoft.org/releases/most/most-$(MOST_VERSION).tar.gz{,.asc}
+	wget -q -nc -P $(BUILD_SOURCE) https://www.jedsoft.org/releases/most/most-$(MOST_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,most-$(MOST_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,most-$(MOST_VERSION).tar.gz,most-$(MOST_VERSION),most)
 

@@ -9,7 +9,7 @@ NOTIFYUTIL_VERSION := 279.40.4
 DEB_NOTIFYUTIL_V   ?= $(NOTIFYUTIL_VERSION)
 
 notifyutil-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/Libnotify/Libnotify-$(NOTIFYUTIL_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/Libnotify/Libnotify-$(NOTIFYUTIL_VERSION).tar.gz
 	$(call EXTRACT_TAR,Libnotify-$(NOTIFYUTIL_VERSION).tar.gz,Libnotify-$(NOTIFYUTIL_VERSION),notifyutil)
 	$(call DO_PATCH,notifyutil,notifyutil,-p1)
 	mkdir -p $(BUILD_STAGE)/notifyutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}

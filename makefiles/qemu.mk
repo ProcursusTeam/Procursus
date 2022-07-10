@@ -7,7 +7,7 @@ QEMU_VERSION := 5.2.0
 DEB_QEMU_V   ?= $(QEMU_VERSION)-1
 
 qemu-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://github.com/utmapp/qemu/releases/download/v$(QEMU_VERSION)-asi/qemu-$(QEMU_VERSION)-asi.tar.bz2
+	wget -q -nc -P $(BUILD_SOURCE) https://github.com/utmapp/qemu/releases/download/v$(QEMU_VERSION)-asi/qemu-$(QEMU_VERSION)-asi.tar.bz2
 	$(call EXTRACT_TAR,qemu-$(QEMU_VERSION)-asi.tar.bz2,qemu-$(QEMU_VERSION)-asi,qemu)
 
 ifneq ($(wildcard $(BUILD_WORK)/qemu/.build_complete),)

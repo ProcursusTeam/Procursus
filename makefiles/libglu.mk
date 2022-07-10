@@ -8,7 +8,7 @@ DEB_LIBGLU_V   ?= $(LIBGLU_VERSION)
 
 libglu-setup: setup
 	-[ ! -f $(BUILD_SOURCE)/libglu-$(LIBGLU_VERSION).tar.xz ] && \
-			wget2 -q -nc -O$(BUILD_SOURCE)/libglu-$(LIBGLU_VERSION).tar.xz \
+			wget -q -nc -O$(BUILD_SOURCE)/libglu-$(LIBGLU_VERSION).tar.xz \
 				ftp://ftp.freedesktop.org/pub/mesa/glu/glu-$(LIBGLU_VERSION).tar.xz
 	$(call EXTRACT_TAR,libglu-$(LIBGLU_VERSION).tar.xz,glu-$(LIBGLU_VERSION),libglu)
 
