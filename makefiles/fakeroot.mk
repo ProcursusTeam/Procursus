@@ -7,7 +7,7 @@ FAKEROOT_VERSION   := 1.25.3
 DEB_FAKEROOT_V     ?= $(FAKEROOT_VERSION)-1
 
 fakeroot-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/f/fakeroot/fakeroot_$(FAKEROOT_VERSION).orig.tar.gz
+	wget2 -q -nc -P $(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/f/fakeroot/fakeroot_$(FAKEROOT_VERSION).orig.tar.gz
 	$(call EXTRACT_TAR,fakeroot_$(FAKEROOT_VERSION).orig.tar.gz,fakeroot-$(FAKEROOT_VERSION),fakeroot)
 	$(call DO_PATCH,fakeroot,fakeroot,-p1)
 	for file in $(BUILD_WORK)/fakeroot/{communicate.{c,h},faked.c,libfakeroot{,_unix2003}.c,wrapfunc.inp}; do \

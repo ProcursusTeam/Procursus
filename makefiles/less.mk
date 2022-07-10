@@ -7,7 +7,7 @@ LESS_VERSION := 590
 DEB_LESS_V   ?= $(LESS_VERSION)
 
 less-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://www.greenwoodsoftware.com/less/less-$(LESS_VERSION).tar.gz
+	wget2 -q -nc -P $(BUILD_SOURCE) http://www.greenwoodsoftware.com/less/less-$(LESS_VERSION).tar.gz
 	$(call EXTRACT_TAR,less-$(LESS_VERSION).tar.gz,less-$(LESS_VERSION),less)
 
 ifneq ($(wildcard $(BUILD_WORK)/less/.build_complete),)

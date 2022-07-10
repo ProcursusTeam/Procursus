@@ -7,7 +7,7 @@ WIMLIB_VERSION := 1.13.3
 DEB_WIMLIB_V   ?= $(WIMLIB_VERSION)
 
 wimlib-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://wimlib.net/downloads/wimlib-$(WIMLIB_VERSION).tar.gz
+	wget2 -q -nc -P $(BUILD_SOURCE) https://wimlib.net/downloads/wimlib-$(WIMLIB_VERSION).tar.gz
 	$(call EXTRACT_TAR,wimlib-$(WIMLIB_VERSION).tar.gz,wimlib-$(WIMLIB_VERSION),wimlib)
 
 ifneq ($(wildcard $(BUILD_WORK)/wimlib/.build_complete),)

@@ -7,7 +7,7 @@ LIBXSS_VERSION := 1.2.3
 DEB_LIBXSS_V   ?= $(LIBXSS_VERSION)
 
 libxss-setup: setup
-	wget -q -nc -P$(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXScrnSaver-$(LIBXSS_VERSION).tar.bz2{,.sig}
+	wget1 -q -nc -P$(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXScrnSaver-$(LIBXSS_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,libXScrnSaver-$(LIBXSS_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libXScrnSaver-$(LIBXSS_VERSION).tar.bz2,libXScrnSaver-$(LIBXSS_VERSION),libxss)
 

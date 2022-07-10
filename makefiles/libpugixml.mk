@@ -7,7 +7,7 @@ LIBPUGIXML_VERSION     := 1.11.4
 DEB_LIBPUGIXML_V       ?= $(LIBPUGIXML_VERSION)
 
 libpugixml-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/zeux/pugixml/releases/download/v$(LIBPUGIXML_VERSION)/pugixml-$(LIBPUGIXML_VERSION).tar.gz
+	wget2 -q -nc -P $(BUILD_SOURCE) https://github.com/zeux/pugixml/releases/download/v$(LIBPUGIXML_VERSION)/pugixml-$(LIBPUGIXML_VERSION).tar.gz
 	$(call EXTRACT_TAR,pugixml-$(LIBPUGIXML_VERSION).tar.gz,pugixml-$(LIBPUGIXML_VERSION),libpugixml)
 
 ifneq ($(wildcard $(BUILD_WORK)/libpugixml/.build_complete),)

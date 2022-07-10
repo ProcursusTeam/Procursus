@@ -7,7 +7,7 @@ LIBFONTENC_VERSION := 1.1.4
 DEB_LIBFONTENC_V   ?= $(LIBFONTENC_VERSION)
 
 libfontenc-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libfontenc-$(LIBFONTENC_VERSION).tar.gz{,.sig}
+	wget2 -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libfontenc-$(LIBFONTENC_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,libfontenc-$(LIBFONTENC_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libfontenc-$(LIBFONTENC_VERSION).tar.gz,libfontenc-$(LIBFONTENC_VERSION),libfontenc)
 

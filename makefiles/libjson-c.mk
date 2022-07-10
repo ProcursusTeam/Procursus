@@ -7,7 +7,7 @@ JSON-C_VERSION   := 0.15
 DEB_JSON-C_V     ?= $(JSON-C_VERSION)
 
 libjson-c-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://s3.amazonaws.com/json-c_releases/releases/json-c-$(JSON-C_VERSION).tar.gz
+	wget2 -q -nc -P $(BUILD_SOURCE) https://s3.amazonaws.com/json-c_releases/releases/json-c-$(JSON-C_VERSION).tar.gz
 	$(call EXTRACT_TAR,json-c-$(JSON-C_VERSION).tar.gz,json-c-$(JSON-C_VERSION),libjson-c)
 
 ifneq ($(wildcard $(BUILD_WORK)/libjson-c/.build_complete),)

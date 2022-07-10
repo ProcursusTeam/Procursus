@@ -7,7 +7,7 @@ LIBGCRYPT_VERSION := 1.10.1
 DEB_LIBGCRYPT_V   ?= $(LIBGCRYPT_VERSION)
 
 libgcrypt-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-$(LIBGCRYPT_VERSION).tar.bz2{,.sig}
+	wget2 -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-$(LIBGCRYPT_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,libgcrypt-$(LIBGCRYPT_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libgcrypt-$(LIBGCRYPT_VERSION).tar.bz2,libgcrypt-$(LIBGCRYPT_VERSION),libgcrypt)
 

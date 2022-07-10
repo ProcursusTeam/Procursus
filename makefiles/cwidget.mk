@@ -7,7 +7,7 @@ CWIDGET_VERSION := 0.5.18
 DEB_CWIDGET_V   ?= $(CWIDGET_VERSION)
 
 cwidget-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://salsa.debian.org/cwidget-team/cwidget-upstream/-/archive/$(CWIDGET_VERSION)/cwidget-upstream-$(CWIDGET_VERSION).tar.gz
+	wget2 -q -nc -P $(BUILD_SOURCE) https://salsa.debian.org/cwidget-team/cwidget-upstream/-/archive/$(CWIDGET_VERSION)/cwidget-upstream-$(CWIDGET_VERSION).tar.gz
 	$(call EXTRACT_TAR,cwidget-upstream-$(CWIDGET_VERSION).tar.gz,cwidget-upstream-$(CWIDGET_VERSION),cwidget)
 	sed -i '/#define THREADS_H/a #include <pthread.h>' $(BUILD_WORK)/cwidget/src/cwidget/generic/threads/threads.h
 

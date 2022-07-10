@@ -8,7 +8,7 @@ DEB_LIBTERM-READKEY-PERL_V   ?= $(LIBTERM-READKEY-PERL_VERSION)
 
 libterm-readkey-perl-setup: setup
 	-[ ! -e "$(BUILD_SOURCE)/libterm-readkey-perl-$(LIBTERM-READKEY-PERL_VERSION).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/libterm-readkey-perl-$(LIBTERM-READKEY-PERL_VERSION).tar.gz \
+		&& wget2 -q -nc -O$(BUILD_SOURCE)/libterm-readkey-perl-$(LIBTERM-READKEY-PERL_VERSION).tar.gz \
 			https://cpan.metacpan.org/authors/id/J/JS/JSTOWE/TermReadKey-$(LIBTERM-READKEY-PERL_VERSION).tar.gz
 	$(call EXTRACT_TAR,libterm-readkey-perl-$(LIBTERM-READKEY-PERL_VERSION).tar.gz,TermReadKey-$(LIBTERM-READKEY-PERL_VERSION),libterm-readkey-perl)
 

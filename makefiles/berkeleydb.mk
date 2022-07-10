@@ -8,7 +8,7 @@ BDB_VERSION := 18.1.40
 DEB_BDB_V   ?= $(BDB_VERSION)
 
 berkeleydb-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://fossies.org/linux/misc/db-$(BDB_VERSION).tar.gz
+	wget2 -q -nc -P $(BUILD_SOURCE) https://fossies.org/linux/misc/db-$(BDB_VERSION).tar.gz
 	$(call EXTRACT_TAR,db-$(BDB_VERSION).tar.gz,db-$(BDB_VERSION),berkeleydb)
 	$(call DO_PATCH,berkeleydb,berkeleydb,-p1)
 

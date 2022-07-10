@@ -15,8 +15,13 @@ TIGERVNC_CONFIGURE_FLAGS := --enable-mitshm
 endif
 
 tigervnc-setup: setup
+<<<<<<< HEAD
 	$(call GITHUB_ARCHIVE,TigerVNC,tigervnc,$(TIGERVNC_COMMIT),$(TIGERVNC_COMMIT))
 	$(call EXTRACT_TAR,tigervnc-$(TIGERVNC_COMMIT).tar.gz,tigervnc-$(TIGERVNC_COMMIT),tigervnc)
+=======
+	wget2 -q -nc -P $(BUILD_SOURCE) https://github.com/TigerVNC/tigervnc/archive/refs/tags/v1.11.0.tar.gz
+	$(call EXTRACT_TAR,v$(TIGERVNC_VERSION).tar.gz,tigervnc-$(TIGERVNC_VERSION),tigervnc)
+>>>>>>> upstream/main
 	$(call DO_PATCH,tigervnc,tigervnc,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/tigervnc/.build_complete),)
@@ -36,8 +41,16 @@ endif
 	+$(MAKE) -i -C $(BUILD_WORK)/tigervnc
 	+$(MAKE) -i -C $(BUILD_WORK)/tigervnc install \
 		DESTDIR=$(BUILD_STAGE)/tigervnc
+<<<<<<< HEAD
 	cd $(BUILD_WORK)/tigervnc && tar -xf $(BUILD_WORK)/xorg-server/xorg-server-$(XORG-SERVER_VERSION).tar.xz
 	cp -a $(BUILD_WORK)/tigervnc/xorg-server-$(XORG-SERVER_VERSION)/* $(BUILD_WORK)/tigervnc/unix/xserver/
+=======
+	wget2 -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive//individual/xserver/xorg-server-$(XORG-SERVER_VERSION).tar.gz{,.sig}
+	$(call PGP_VERIFY,xorg-server-$(XORG-SERVER_VERSION).tar.gz)
+	$(call EXTRACT_TAR,xorg-server-$(XORG-SERVER_VERSION).tar.gz,xorg-server-$(XORG-SERVER_VERSION),xorg-server-vnc)
+	cp -R $(BUILD_WORK)/xorg-server-vnc/. $(BUILD_WORK)/tigervnc/unix/xserver
+	sed -i 's/__APPLE__/__PEAR__/' $(BUILD_WORK)/tigervnc/unix/xserver/miext/rootless/rootlessWindow.c
+>>>>>>> upstream/main
 	cd $(BUILD_WORK)/tigervnc/unix/xserver && patch -p1 < $(BUILD_WORK)/tigervnc/unix/xserver$(XORG_VERSION).patch && \
 	export ACLOCAL='aclocal -I $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal' && \
 	export gcc=cc && autoreconf -fiv && ./configure -C \

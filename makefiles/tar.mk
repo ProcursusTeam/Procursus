@@ -15,7 +15,7 @@ TAR_CONFIGURE_ARGS += --program-prefix=$(GNU_PREFIX)
 endif
 
 tar-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/tar/tar-$(TAR_VERSION).tar.xz{,.sig}
+	wget2 -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/tar/tar-$(TAR_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,tar-$(TAR_VERSION).tar.xz)
 	$(call EXTRACT_TAR,tar-$(TAR_VERSION).tar.xz,tar-$(TAR_VERSION),tar)
 

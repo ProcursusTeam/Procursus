@@ -10,7 +10,7 @@ DEB_PONGOTERM_V   ?= $(PONGOTERM_VERSION)
 pongoterm-setup: setup
 	$(call GITHUB_ARCHIVE,checkra1n,pongoOS,$(PONGOOS_COMMIT),$(PONGOOS_COMMIT))
 	$(call EXTRACT_TAR,pongoOS-$(PONGOOS_COMMIT).tar.gz,pongoOS-$(PONGOOS_COMMIT),pongoterm)
-	wget -q -nc -P$(BUILD_WORK)/pongoterm/scripts https://opensource.apple.com/source/Libc/Libc-997.90.3/gen/wordexp.c
+	wget2 -q -nc -P$(BUILD_WORK)/pongoterm/scripts https://opensource.apple.com/source/Libc/Libc-997.90.3/gen/wordexp.c
 	sed 's|__OSX_AVAILABLE_STARTING|;//|g' $(TARGET_SYSROOT)/usr/include/wordexp.h > $(BUILD_WORK)/pongoterm/scripts/wordexp.h
 	sed -i 's/<wordexp.h>/"wordexp.h"/g' $(BUILD_WORK)/pongoterm/scripts/{pongoterm,wordexp}.c
 	mkdir -p $(BUILD_STAGE)/pongoterm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin

@@ -7,7 +7,7 @@ DOXYGEN_VERSION := 1.9.1
 DEB_DOXYGEN_V   ?= $(DOXYGEN_VERSION)
 
 doxygen-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://doxygen.nl/files/doxygen-$(DOXYGEN_VERSION).src.tar.gz
+	wget2 -q -nc -P $(BUILD_SOURCE) https://doxygen.nl/files/doxygen-$(DOXYGEN_VERSION).src.tar.gz
 	$(call EXTRACT_TAR,doxygen-$(DOXYGEN_VERSION).src.tar.gz,doxygen-$(DOXYGEN_VERSION),doxygen)
 	sed -i 's/-mmacosx-version-min=\$${MACOS_VERSION_MIN}//' $(BUILD_WORK)/doxygen/CMakeLists.txt
 

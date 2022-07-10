@@ -7,7 +7,7 @@ USBUTILS_VERSION := 007
 DEB_USBUTILS_V   ?= $(USBUTILS_VERSION)
 
 usbutils-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.kernel.org/pub/linux/utils/usb/usbutils/usbutils-$(USBUTILS_VERSION).tar.xz
+	wget2 -q -nc -P $(BUILD_SOURCE) https://www.kernel.org/pub/linux/utils/usb/usbutils/usbutils-$(USBUTILS_VERSION).tar.xz
 	$(call EXTRACT_TAR,usbutils-$(USBUTILS_VERSION).tar.xz,usbutils-$(USBUTILS_VERSION),usbutils)
 
 ifneq ($(wildcard $(BUILD_WORK)/usbutils/.build_complete),)

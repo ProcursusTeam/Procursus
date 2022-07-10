@@ -7,7 +7,7 @@ LIBSM_VERSION := 1.2.3
 DEB_LIBSM_V   ?= $(LIBSM_VERSION)
 
 libsm-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libSM-$(LIBSM_VERSION).tar.gz{,.sig}
+	wget2 -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libSM-$(LIBSM_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,libSM-$(LIBSM_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libSM-$(LIBSM_VERSION).tar.gz,libSM-$(LIBSM_VERSION),libsm)
 

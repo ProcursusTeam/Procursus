@@ -8,7 +8,7 @@ DEB_LIBAPT-PKG-PERL_V   ?= $(LIBAPT-PKG-PERL_VERSION)
 
 libapt-pkg-perl-setup: setup
 	-[ ! -e "$(BUILD_SOURCE)/libapt-pkg-perl-$(LIBAPT-PKG-PERL_VERSION).tar.xz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/libapt-pkg-perl-$(LIBAPT-PKG-PERL_VERSION).tar.xz \
+		&& wget2 -q -nc -O$(BUILD_SOURCE)/libapt-pkg-perl-$(LIBAPT-PKG-PERL_VERSION).tar.xz \
 			https://deb.debian.org/debian/pool/main/liba/libapt-pkg-perl/libapt-pkg-perl_$(LIBAPT-PKG-PERL_VERSION).tar.xz
 	$(call EXTRACT_TAR,libapt-pkg-perl-$(LIBAPT-PKG-PERL_VERSION).tar.xz,libapt-pkg-perl-$(LIBAPT-PKG-PERL_VERSION),libapt-pkg-perl)
 

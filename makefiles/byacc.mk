@@ -7,7 +7,7 @@ BYACC_VERSION := 20220114
 DEB_BYACC_V   ?= $(BYACC_VERSION)
 
 byacc-setup: setup
-	wget -q -nc -P$(BUILD_SOURCE) https://invisible-mirror.net/archives/byacc/byacc-$(BYACC_VERSION).tgz{,.asc}
+	wget2 -q -nc -P$(BUILD_SOURCE) https://invisible-mirror.net/archives/byacc/byacc-$(BYACC_VERSION).tgz{,.asc}
 	$(call PGP_VERIFY,byacc-$(BYACC_VERSION).tgz,asc)
 	$(call EXTRACT_TAR,byacc-$(BYACC_VERSION).tgz,byacc-$(BYACC_VERSION),byacc)
 	mkdir -p $(BUILD_WORK)/byacc/byacc{,2}-build

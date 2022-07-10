@@ -177,7 +177,7 @@ ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sd
 BARE_PLATFORM         := iPhoneOS
 export IPHONEOS_DEPLOYMENT_TARGET
 
-else ifeq ($(MEMO_TARGET),appletvos-arm64)
+else ifeq ($(shell [ "$(MEMO_TARGET)" = "appletvos-arm64" ] || [ "$(MEMO_TARGET)" = "appletvos-arm64-ramdisk" ] && echo 1),1)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for tvOS)
 endif # ($(MEMO_QUIET),1)
@@ -467,7 +467,7 @@ CODESIGN_IDENTITY ?= -
 MEMO_LDID_EXTRA_FLAGS     ?=
 MEMO_CODESIGN_EXTRA_FLAGS ?=
 
-LDID := ldid -Cadhoc $(MEMO_LDID_EXTRA_FLAGS)
+LDID := ldid -Hsha256 -Cadhoc $(MEMO_LDID_EXTRA_FLAGS)
 
 # Root
 BUILD_ROOT     ?= $(PWD)
@@ -662,7 +662,8 @@ DEFAULT_SETUP_PY_ENV := \
 
 DEFAULT_RUST_FLAGS := \
 	SDKROOT="$(TARGET_SYSROOT)" \
-	PKG_CONFIG="$(RUST_TARGET)-pkg-config"
+	PKG_CONFIG="$(RUST_TARGET)-pkg-config" \
+	RUSTFLAGS="-L $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib"
 
 export PLATFORM MEMO_ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE MEMO_PREFIX MEMO_SUB_PREFIX MEMO_ALT_PREFIX
 export CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T INSTALL
@@ -722,8 +723,7 @@ SIGN = 	for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}
 			else \
 				$(LDID) -S$(BUILD_MISC)/entitlements/$(2) $$file; \
 			fi; \
-		done; \
-		find $(BUILD_DIST)/$(1) -name '.ldid*' -type f -delete
+		done
 else
 SIGN = 	CODESIGN_FLAGS="--sign $(CODESIGN_IDENTITY) --force --deep "; \
 		if [ "$(CODESIGN_IDENTITY)" != "-" ]; then \
@@ -867,11 +867,11 @@ PACK = \
 
 GITHUB_ARCHIVE = -if [ $(5) ]; then \
 					[ ! -f "$(BUILD_SOURCE)/$(5)-$(3).tar.gz" ] && \
-						wget -q -nc -O$(BUILD_SOURCE)/$(5)-$(3).tar.gz \
+						wget2 -q -nc -O$(BUILD_SOURCE)/$(5)-$(3).tar.gz \
 							https://github.com/$(1)/$(2)/archive/$(4).tar.gz; \
 				else \
 					[ ! -f "$(BUILD_SOURCE)/$(2)-$(3).tar.gz" ] && \
-						wget -q -nc -O$(BUILD_SOURCE)/$(2)-$(3).tar.gz \
+						wget2 -q -nc -O$(BUILD_SOURCE)/$(2)-$(3).tar.gz \
 							https://github.com/$(1)/$(2)/archive/$(4).tar.gz; \
 				fi
 
@@ -885,8 +885,8 @@ GIT_CLONE = if [ ! -d "$(BUILD_WORK)/$(3)" ]; then \
 #
 ###
 
-ifneq ($(call HAS_COMMAND,wget),1)
-$(error Install wget)
+ifneq ($(call HAS_COMMAND,wget2),1)
+$(error Install wget2)
 endif
 
 ifneq ($(call HAS_COMMAND,triehash),1)
@@ -1080,7 +1080,7 @@ ramdisk:
 	rm -f $(BUILD_DIST)/bootstrap_tools.tar*
 	rm -f $(BUILD_DIST)/.fakeroot_bootstrap
 	touch $(BUILD_DIST)/.fakeroot_bootstrap
-	for DEB in $(BUILD_DIST)/*.deb; do \
+	for DEB in $$(find $(BUILD_DIST)/../ -name "*.deb"); do \
 		dpkg-deb -x $$DEB $(BUILD_DIST)/strap; \
 	done
 	ln -s $(MEMO_PREFIX)/bin/bash $(BUILD_DIST)/strap/$(MEMO_PREFIX)/bin/sh
@@ -1103,7 +1103,7 @@ bootstrap:: strapprojects
 	rm -f $(BUILD_STAGE)/.fakeroot_bootstrap
 	touch $(BUILD_STAGE)/.fakeroot_bootstrap
 	mkdir -p $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/info
-	touch $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/status
+	touch $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/{status,available}
 	-if echo $(MEMO_TARGET) | grep "darwin"; then \
 		PKGS="apt/apt_*.deb brotli/libbrotli1_*.deb cacerts/ca-certificates_*.deb coreutils/coreutils_*.deb darwintools/darwintools_*.deb dpkg/dpkg_*.deb gnupg/gpgv_*.deb apt/libapt-pkg6.0_*.deb libassuan/libassuan0_*.deb libffi/libffi8_*.deb libgcrypt/libgcrypt20_*.deb libgmp10/libgmp10_*.deb gnutls/libgnutls30_*.deb libgpg-error/libgpg-error0_*.deb nettle/libhogweed6_*.deb libidn2/libidn2-0_*.deb gettext/libintl8_*.deb lz4/liblz4-1_*.deb xz/liblzma5_*.deb libmd/libmd0_*.deb nettle/libnettle8_*.deb npth/libnpth0_*.deb p11-kit/libp11-kit0_*.deb openssl/libssl3_*.deb libtasn1/libtasn1-6_*.deb libunistring/libunistring2_*.deb xxhash/libxxhash0_*.deb zlib-ng/libz-ng2_*.deb zstd/libzstd1_*.deb keyring/procursus-keyring_*.deb tar/tar_*.deb"; \
 	else \
@@ -1232,7 +1232,7 @@ setup:
 	@rm -rf $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/System
 	@$(LN_SR) $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include{,/System}
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libsyscall/wrappers/spawn/spawn.h \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libsyscall/wrappers/spawn/spawn_private.h \
 		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/bootstrap_priv.h \
@@ -1242,61 +1242,61 @@ setup:
 		https://opensource.apple.com/source/libutil/libutil-57/libutil.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/EXTERNAL_HEADERS/mach-o/nlist.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Kernel/kern/ https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/kern/ledger.h
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Kernel/kern/ https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/kern/ledger.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/arm \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/arm \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/arm/disklabel.h \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/arm/cpu_capabilities.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/machine/disklabel.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os \
 		https://opensource.apple.com/source/Libc/Libc-1439.40.11/os/assumes.h \
 		https://opensource.apple.com/source/libplatform/libplatform-126.1.2/include/os/base_private.h \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libkern/os/log_private.h \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libkern/os/log.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CommonCrypto \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CommonCrypto \
 		https://opensource.apple.com/source/CommonCrypto/CommonCrypto-60118.30.2/include/CommonDigestSPI.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/bsm \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/bsm \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/bsd/bsm/audit_kevents.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit/kext \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit/kext \
 		https://opensource.apple.com/source/IOKitUser/IOKitUser-1845.81.1/kext.subproj/{KextManagerPriv,OSKext,OSKextPrivate,kextmanager_types,{fat,macho,misc}_util}.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security \
 		https://opensource.apple.com/source/libsecurity_keychain/libsecurity_keychain-55050.9/lib/SecKeychainPriv.h \
 		https://opensource.apple.com/source/libsecurity_codesigning/libsecurity_codesigning-55037.15/lib/Sec{CodeSigner,{Code,Requirement}Priv}.h \
 		https://opensource.apple.com/source/Security/Security-55471/sec/Security/SecBasePriv.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreFoundation \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreFoundation \
 		https://opensource.apple.com/source/CF/CF-1153.18/CFBundlePriv.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/machine/cpu_capabilities.h
 
-	@wget -q -nc -P$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/firehose \
+	@wget2 -q -nc -P$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/firehose \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libkern/firehose/tracepoint_private.h \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libkern/firehose/firehose_types_private.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libkern/libkern/{OSKextLibPrivate,mkext,prelink}.h \
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/internal \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/internal \
 		https://opensource.apple.com/source/libplatform/libplatform-126.50.8/include/os/internal/{internal_shared,atomic,crashlog}.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/fsctl.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/spawn_internal.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/event.h \
 		https://opensource.apple.com/source/xnu/xnu-4903.221.2/bsd/sys/kdebug.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/uuid \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/uuid \
 		https://opensource.apple.com/source/Libc/Libc-1353.11.2/uuid/namespace.h
 
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach \
+	@wget2 -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/mach/coalition.h
 
 	@cp -a $(BUILD_MISC)/{libxml-2.0,zlib}.pc $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig

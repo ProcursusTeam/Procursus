@@ -3,13 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += bat
-BAT_VERSION := 0.18.0
+BAT_VERSION := 0.21.0
 DEB_BAT_V   ?= $(BAT_VERSION)
 
 bat-setup: setup
 	$(call GITHUB_ARCHIVE,sharkdp,bat,$(BAT_VERSION),v$(BAT_VERSION))
 	$(call EXTRACT_TAR,bat-$(BAT_VERSION).tar.gz,bat-$(BAT_VERSION),bat)
-	$(call DO_PATCH,bat,bat,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/bat/.build_complete),)
 bat:

@@ -7,7 +7,7 @@ LIBTERMKEY_VERSION := 0.22
 DEB_LIBTERMKEY_V   ?= $(LIBTERMKEY_VERSION)
 
 libtermkey-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://www.leonerd.org.uk/code/libtermkey/libtermkey-$(LIBTERMKEY_VERSION).tar.gz
+	wget2 -q -nc -P $(BUILD_SOURCE) http://www.leonerd.org.uk/code/libtermkey/libtermkey-$(LIBTERMKEY_VERSION).tar.gz
 	$(call EXTRACT_TAR,libtermkey-$(LIBTERMKEY_VERSION).tar.gz,libtermkey-$(LIBTERMKEY_VERSION),libtermkey)
 	$(call DO_PATCH,libtermkey,libtermkey)
 	mkdir -p $(BUILD_WORK)/libtermkey/libtool

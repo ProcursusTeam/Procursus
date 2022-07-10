@@ -8,7 +8,7 @@ LIBJPEG_TURBO_VERSION := 2.0.6
 DEB_LIBJPEG_TURBO_V   ?= $(LIBJPEG_TURBO_VERSION)
 
 libjpeg-turbo-setup: setup
-	wget -q -nc -L -P $(BUILD_SOURCE) \
+	wget2 -q -nc -L -P $(BUILD_SOURCE) \
 		https://sourceforge.net/projects/libjpeg-turbo/files/$(LIBJPEG_TURBO_VERSION)/libjpeg-turbo-$(LIBJPEG_TURBO_VERSION).tar.gz
 	$(call EXTRACT_TAR,libjpeg-turbo-$(LIBJPEG_TURBO_VERSION).tar.gz,libjpeg-turbo-$(LIBJPEG_TURBO_VERSION),libjpeg-turbo)
 	# TODO: add debian extras jpegexiforient,exifautotran
