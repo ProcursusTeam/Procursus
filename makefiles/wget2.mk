@@ -20,6 +20,8 @@ wget2: wget2-setup openssl pcre2 xz zstd nghttp2 libidn2 gettext brotli gpgme li
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-ssl=openssl \
 		--with-openssl \
+		--with-lzma \
+		--with-bzip2 \
 		--disable-valgrind-tests \
 		--without-libpsl \
 		--disable-doc # Disable doc until we have `graphviz`.

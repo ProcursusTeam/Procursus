@@ -1,8 +1,8 @@
 Package: libhsts-dev
-Version: @DEB_HSTS_V@
+Version: @DEB_LIBHSTS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libhsts0 (= @DEB_HSTS_V@)
+Depends: libhsts0 (= @DEB_LIBHSTS_V@)
 Section: Development
 Priority: optional
 Homepage: https://gitlab.com/rockdaboot/libhsts/

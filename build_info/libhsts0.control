@@ -1,5 +1,5 @@
 Package: libhsts0
-Version: @DEB_HSTS_V@
+Version: @DEB_LIBHSTS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Recommends: hstspreload
