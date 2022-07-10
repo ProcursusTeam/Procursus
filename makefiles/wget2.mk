@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/wget2/.build_complete),)
 wget2:
 	@echo "Using previously built wget2."
 else
-wget2: wget2-setup openssl pcre2 xz zstd nghttp2 libidn2 gettext brotli gpgme
+wget2: wget2-setup openssl pcre2 xz zstd nghttp2 libidn2 gettext brotli gpgme libhsts
 	cd $(BUILD_WORK)/wget2 && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-ssl=openssl \
@@ -26,7 +26,7 @@ wget2: wget2-setup openssl pcre2 xz zstd nghttp2 libidn2 gettext brotli gpgme
 	+$(MAKE) -C $(BUILD_WORK)/wget2
 	+$(MAKE) -C $(BUILD_WORK)/wget2 install \
 		DESTDIR="$(BUILD_STAGE)/wget2"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 wget2-package: wget2-stage

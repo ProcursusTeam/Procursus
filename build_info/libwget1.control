@@ -2,7 +2,7 @@ Package: libwget1
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_WGET2_V@
-Depends: libssl3, libpcre2-8-0, libintl8, liblzma5 (>= 5.2.5), libnghttp2-14, libidn2-0, libintl8, libzstd1, libbrotli1, libgpgme11 
+Depends: libssl3, libpcre2-8-0, libintl8, liblzma5 (>= 5.2.5), libnghttp2-14, libidn2-0, libintl8, libzstd1, libbrotli1, libgpgme11, libhsts0 
 Section: Libraries
 Priority: important
 Description: Download library for files and recursive websites
