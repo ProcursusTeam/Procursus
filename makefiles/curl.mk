@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += curl
-CURL_VERSION := 7.83.1
+CURL_VERSION := 7.84.0
 DEB_CURL_V   ?= $(CURL_VERSION)
 
 curl-setup: setup
@@ -20,8 +20,6 @@ curl: curl-setup gettext openssl libssh2 nghttp2 libidn2 brotli zstd rtmpdump
 	cd $(BUILD_WORK)/curl && autoreconf -vi
 	cd $(BUILD_WORK)/curl && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--disable-debug \
-		--disable-dependency-tracking \
 		--with-libssh2 \
 		--with-openssl \
 		--with-nghttp2 \
