@@ -2,6 +2,9 @@ ifeq ($(firstword $(subst ., ,$(MAKE_VERSION))),3)
 $(error Install latest make from Procursus - sudo apt install make)
 endif
 
+# Comma var must be here because makefile functions cannot contain commas
+comma := ,
+
 export LANG := C
 
 ifeq ($(shell LANG=C /usr/bin/env bash --version | grep -iq 'version 5' && echo 1),1)
@@ -708,6 +711,23 @@ EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 		rm -rf $(2); \
 	fi
 
+DOWNLOAD_FILE = if [ ! -f "$(1)" ]; then \
+					echo "Downloading $(1)"; \
+					if [ -z "$$LIST" ]; then \
+						$(CURL) --output \
+							$(1) $(2) ; \
+					else \
+						$(CURL) --output \
+							$(1) $(2) & \
+					fi; \
+				else echo "$(1) already downloaded."; fi
+
+DOWNLOAD_FILES = LIST="$$(echo $(2))"; \
+				for url in $$LIST; do \
+					file=$${url\#\#*/}; \
+					$(call DOWNLOAD_FILE,$(1)/$$file,$$url); \
+				done; wait
+
 DO_PATCH    = cd $(BUILD_PATCH)/$(1); \
 	for PATCHFILE in *; do \
 		if [ ! -f $(BUILD_WORK)/$(2)/$(notdir $$PATCHFILE).done ]; then \
@@ -887,6 +907,8 @@ GIT_CLONE = if [ ! -d "$(BUILD_WORK)/$(3)" ]; then \
 
 ifneq ($(call HAS_COMMAND,curl),1)
 $(error Install curl)
+else
+CURL := curl --silent -L --create-dir
 endif
 
 ifneq ($(call HAS_COMMAND,triehash),1)
