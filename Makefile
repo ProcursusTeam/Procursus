@@ -908,7 +908,7 @@ GIT_CLONE = if [ ! -d "$(BUILD_WORK)/$(3)" ]; then \
 ifneq ($(call HAS_COMMAND,curl),1)
 $(error Install curl)
 else
-CURL := curl --silent -L --create-dir
+CURL := curl --silent -L --create-dir --hsts ~/.curl_hsts_cache_procursus.txt
 endif
 
 ifneq ($(call HAS_COMMAND,triehash),1)
