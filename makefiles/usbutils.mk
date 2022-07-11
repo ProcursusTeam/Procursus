@@ -26,7 +26,7 @@ usbutils: usbutils-setup libusb
 		sbin_SCRIPTS="" \
 		"man_MANS=lsusb.8"
 	rm -f $(BUILD_STAGE)/usbutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/usb.ids{,.gz}
-	wget -P $(BUILD_STAGE)/usbutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share http://www.linux-usb.org/usb.ids{,.gz}
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_STAGE)/usbutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share http://www.linux-usb.org/usb.ids{,.gz}
 	$(call AFTER_BUILD)
 endif
 
