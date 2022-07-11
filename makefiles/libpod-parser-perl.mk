@@ -7,9 +7,8 @@ LIBPOD-PARSER-PERL_VERSION := 1.63
 DEB_LIBPOD-PARSER-PERL_V   ?= $(LIBPOD-PARSER-PERL_VERSION)
 
 libpod-parser-perl-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/libpod-parser-perl-$(LIBPOD-PARSER-PERL_VERSION).tar.gz" ] \
-		&& curl --silent -L -Z --create-dirs -C - --remote-name-all --output $(BUILD_SOURCE)/libpod-parser-perl-$(LIBPOD-PARSER-PERL_VERSION).tar.gz \
-			https://cpan.metacpan.org/authors/id/M/MA/MAREKR/Pod-Parser-$(LIBPOD-PARSER-PERL_VERSION).tar.gz
+	$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/libpod-parser-perl-$(LIBPOD-PARSER-PERL_VERSION).tar.gz, \
+		https://cpan.metacpan.org/authors/id/M/MA/MAREKR/Pod-Parser-$(LIBPOD-PARSER-PERL_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libpod-parser-perl-$(LIBPOD-PARSER-PERL_VERSION).tar.gz,Pod-Parser-$(LIBPOD-PARSER-PERL_VERSION),libpod-parser-perl)
 
 ifneq ($(wildcard $(BUILD_WORK)/libpod-parser-perl/.build_complete),)

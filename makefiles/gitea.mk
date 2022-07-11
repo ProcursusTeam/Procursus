@@ -7,9 +7,8 @@ GITEA_VERSION := 1.15.9
 DEB_GITEA_V   ?= $(GITEA_VERSION)-1
 
 gitea-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/gitea-$(GITEA_VERSION).tar.gz" ] && \
-		curl --silent -L -Z --create-dirs -C - --remote-name-all --output $(BUILD_SOURCE)/gitea-$(GITEA_VERSION).tar.gz \
-			https://github.com/go-gitea/gitea/releases/download/v$(GITEA_VERSION)/gitea-src-$(GITEA_VERSION).tar.gz
+	$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/gitea-$(GITEA_VERSION).tar.gz, \
+		https://github.com/go-gitea/gitea/releases/download/v$(GITEA_VERSION)/gitea-src-$(GITEA_VERSION).tar.gz)
 	-[ ! -f "$(BUILD_WORK)/gitea" ] && \
 		mkdir -p $(BUILD_WORK)/gitea && \
 			tar xf $(BUILD_SOURCE)/gitea-$(GITEA_VERSION).tar.gz -C $(BUILD_WORK)/gitea

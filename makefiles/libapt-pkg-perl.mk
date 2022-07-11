@@ -7,9 +7,8 @@ LIBAPT-PKG-PERL_VERSION := 0.1.40
 DEB_LIBAPT-PKG-PERL_V   ?= $(LIBAPT-PKG-PERL_VERSION)
 
 libapt-pkg-perl-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/libapt-pkg-perl-$(LIBAPT-PKG-PERL_VERSION).tar.xz" ] \
-		&& curl --silent -L -Z --create-dirs -C - --remote-name-all --output $(BUILD_SOURCE)/libapt-pkg-perl-$(LIBAPT-PKG-PERL_VERSION).tar.xz \
-			https://deb.debian.org/debian/pool/main/liba/libapt-pkg-perl/libapt-pkg-perl_$(LIBAPT-PKG-PERL_VERSION).tar.xz
+	$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/libapt-pkg-perl-$(LIBAPT-PKG-PERL_VERSION).tar.xz, \
+		https://deb.debian.org/debian/pool/main/liba/libapt-pkg-perl/libapt-pkg-perl_$(LIBAPT-PKG-PERL_VERSION).tar.xz)
 	$(call EXTRACT_TAR,libapt-pkg-perl-$(LIBAPT-PKG-PERL_VERSION).tar.xz,libapt-pkg-perl-$(LIBAPT-PKG-PERL_VERSION),libapt-pkg-perl)
 
 ifneq ($(wildcard $(BUILD_WORK)/libapt-pkg-perl/.build_complete),)

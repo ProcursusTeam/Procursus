@@ -7,9 +7,8 @@ LIBYAML-TINY-PERL_VERSION := 1.73
 DEB_LIBYAML-TINY-PERL_V   ?= $(LIBYAML-TINY-PERL_VERSION)
 
 libyaml-tiny-perl-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/libyaml-tiny-perl-$(LIBYAML-TINY-PERL_VERSION).tar.gz" ] \
-		&& curl --silent -L -Z --create-dirs -C - --remote-name-all --output $(BUILD_SOURCE)/libyaml-tiny-perl-$(LIBYAML-TINY-PERL_VERSION).tar.gz \
-			https://cpan.metacpan.org/authors/id/E/ET/ETHER/YAML-Tiny-$(LIBYAML-TINY-PERL_VERSION).tar.gz
+	$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/libyaml-tiny-perl-$(LIBYAML-TINY-PERL_VERSION).tar.gz, \
+		https://cpan.metacpan.org/authors/id/E/ET/ETHER/YAML-Tiny-$(LIBYAML-TINY-PERL_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libyaml-tiny-perl-$(LIBYAML-TINY-PERL_VERSION).tar.gz,YAML-Tiny-$(LIBYAML-TINY-PERL_VERSION),libyaml-tiny-perl)
 
 ifneq ($(wildcard $(BUILD_WORK)/libyaml-tiny-perl/.build_complete),)
