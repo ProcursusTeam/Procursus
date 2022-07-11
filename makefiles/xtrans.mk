@@ -7,7 +7,7 @@ XTRANS_VERSION := 1.4.0
 DEB_XTRANS_V   ?= $(XTRANS_VERSION)-1
 
 xtrans-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/lib/xtrans-$(XTRANS_VERSION).tar.bz2
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.x.org/archive/individual/lib/xtrans-$(XTRANS_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,xtrans-$(XTRANS_VERSION).tar.bz2,xtrans-$(XTRANS_VERSION),xtrans)
 	sed -i 's|# include <sys/stropts.h>|# include <sys/ioctl.h>|' $(BUILD_WORK)/xtrans/Xtranslcl.c
 

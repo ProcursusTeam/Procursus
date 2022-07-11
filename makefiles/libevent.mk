@@ -4,10 +4,10 @@ endif
 
 SUBPROJECTS        += libevent
 LIBEVENT_VERSION   := 2.1.12
-DEB_LIBEVENT_V     ?= $(LIBEVENT_VERSION)-2
+DEB_LIBEVENT_V     ?= $(LIBEVENT_VERSION)-3
 
 libevent-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libevent/libevent/releases/download/release-$(LIBEVENT_VERSION)-stable/libevent-$(LIBEVENT_VERSION)-stable.tar.gz{,.asc}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/libevent/libevent/releases/download/release-$(LIBEVENT_VERSION)-stable/libevent-$(LIBEVENT_VERSION)-stable.tar.gz{$(comma).asc})
 	$(call PGP_VERIFY,libevent-$(LIBEVENT_VERSION)-stable.tar.gz,asc)
 	$(call EXTRACT_TAR,libevent-$(LIBEVENT_VERSION)-stable.tar.gz,libevent-$(LIBEVENT_VERSION)-stable,libevent)
 

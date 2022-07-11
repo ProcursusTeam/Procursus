@@ -2,7 +2,10 @@ Package: lynx
 Version: @DEB_LYNX_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libncursesw6, libidn2-0, openssl, libintl8
+Depends: libncursesw6, libidn2-0, libssl3, libintl8
 Section: Networking
 Priority: optional
-Description: A text browser for the World Wide Web
+Description: classic non-graphical (text-mode) web browser
+ In continuous development since 1992, Lynx sets the standard for
+ text-mode web clients. It is fast and simple to use, with support for
+ browsing via FTP, Gopher, HTTP, HTTPS, NNTP, and the local file system.

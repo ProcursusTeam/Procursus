@@ -7,7 +7,7 @@ APTITUDE_VERSION := 0.8.13
 DEB_APTITUDE_V   ?= $(APTITUDE_VERSION)
 
 aptitude-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/a/aptitude/aptitude_$(APTITUDE_VERSION).orig.tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://deb.debian.org/debian/pool/main/a/aptitude/aptitude_$(APTITUDE_VERSION).orig.tar.xz)
 	$(call EXTRACT_TAR,aptitude_$(APTITUDE_VERSION).orig.tar.xz,aptitude-$(APTITUDE_VERSION),aptitude)
 	$(call DO_PATCH,aptitude,aptitude,-p1)
 

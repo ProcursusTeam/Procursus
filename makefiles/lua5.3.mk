@@ -7,7 +7,7 @@ LUA5.3_VERSION := 5.3.3
 DEB_LUA5.3_V   ?= $(LUA5.3_VERSION)-1
 
 lua5.3-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.lua.org/ftp/lua-$(LUA5.3_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.lua.org/ftp/lua-$(LUA5.3_VERSION).tar.gz)
 	$(call EXTRACT_TAR,lua-$(LUA5.3_VERSION).tar.gz,lua-$(LUA5.3_VERSION),lua5.3)
 	$(call DO_PATCH,lua5.3,lua5.3,-p1)
 

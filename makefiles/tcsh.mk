@@ -13,7 +13,7 @@ TCSH_CONFIGURE_ARGS :=
 endif
 
 tcsh-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) ftp://ftp.astron.com/pub/tcsh/tcsh-$(TCSH_VERSION).tar.gz{,.asc}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),ftp://ftp.astron.com/pub/tcsh/tcsh-$(TCSH_VERSION).tar.gz{$(comma).asc})
 	$(call PGP_VERIFY,tcsh-$(TCSH_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,tcsh-$(TCSH_VERSION).tar.gz,tcsh-$(TCSH_VERSION),tcsh)
 	$(call DO_PATCH,tcsh,tcsh,-p0)

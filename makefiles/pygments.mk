@@ -8,8 +8,8 @@ DEB_PYGMENTS_V   ?= $(PYGMENTS_VERSION)
 
 pygments-setup: setup
 	-[ ! -f $(BUILD_SOURCE)/pygments-$(PYGMENTS_VERSION).tar.gz ] && \
-		wget -q -nc -O $(BUILD_SOURCE)/pygments-$(PYGMENTS_VERSION).tar.gz \
-			https://github.com/pygments/pygments/archive/refs/tags/$(PYGMENTS_VERSION).tar.gz
+		$(call DOWNLOAD_FILE, $(BUILD_SOURCE)/pygments-$(PYGMENTS_VERSION).tar.gz, \
+			https://github.com/pygments/pygments/archive/refs/tags/$(PYGMENTS_VERSION).tar.gz)
 	$(call EXTRACT_TAR,pygments-$(PYGMENTS_VERSION).tar.gz,pygments-$(PYGMENTS_VERSION),pygments)
 
 ifneq ($(wildcard $(BUILD_WORK)/pygments/.build_complete),)

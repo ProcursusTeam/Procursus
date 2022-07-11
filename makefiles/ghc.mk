@@ -7,7 +7,7 @@ GHC_VERSION := 9.2.2
 DEB_GHC_V   ?= $(GHC_VERSION)
 
 ghc-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://downloads.haskell.org/~ghc/$(GHC_VERSION)/ghc-$(GHC_VERSION)-src.tar.xz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://downloads.haskell.org/~ghc/$(GHC_VERSION)/ghc-$(GHC_VERSION)-src.tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,ghc-$(GHC_VERSION)-src.tar.xz)
 	$(call EXTRACT_TAR,ghc-$(GHC_VERSION)-src.tar.xz,ghc-$(GHC_VERSION),ghc)
 	$(call DO_PATCH,ghc,ghc,-p1)

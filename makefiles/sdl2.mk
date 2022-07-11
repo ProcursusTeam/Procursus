@@ -17,7 +17,7 @@ SDL2_CONFIGURE_FLAGS := --host=aarch64-ios-darwin \
 endif
 
 sdl2-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://libsdl.org/release/SDL2-$(SDL2_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://libsdl.org/release/SDL2-$(SDL2_VERSION).tar.gz)
 	$(call EXTRACT_TAR,SDL2-$(SDL2_VERSION).tar.gz,SDL2-$(SDL2_VERSION),sdl2)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	sed -i -e 's/have_metal=no/have_metal=yes/' -e '/\ CheckMETAL/a CheckHIDAPI' \

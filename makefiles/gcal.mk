@@ -7,7 +7,7 @@ GCAL_VERSION := 4.1
 DEB_GCAL_V   ?= $(GCAL_VERSION)
 
 gcal-setup: setup
-	wget -q -nc -P$(BUILD_SOURCE) https://ftpmirror.gnu.org/gnu/gcal/gcal-$(GCAL_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/gnu/gcal/gcal-$(GCAL_VERSION).tar.xz)
 	$(call EXTRACT_TAR,gcal-$(GCAL_VERSION).tar.xz,gcal-$(GCAL_VERSION),gcal)
 
 ifneq ($(wildcard $(BUILD_WORK)/gcal/.build_complete),)

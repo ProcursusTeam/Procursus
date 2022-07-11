@@ -7,7 +7,7 @@ GENGETOPT_VERSION := 2.23
 DEB_GENGETOPT_V   ?= $(GENGETOPT_VERSION)
 
 gengetopt-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftp.gnu.org/gnu/gengetopt/gengetopt-$(GENGETOPT_VERSION).tar.xz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftp.gnu.org/gnu/gengetopt/gengetopt-$(GENGETOPT_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,gengetopt-$(GENGETOPT_VERSION).tar.xz)
 	$(call EXTRACT_TAR,gengetopt-$(GENGETOPT_VERSION).tar.xz,gengetopt-$(GENGETOPT_VERSION),gengetopt)
 

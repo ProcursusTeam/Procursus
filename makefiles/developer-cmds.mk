@@ -9,7 +9,7 @@ DEVELOPER-CMDS_VERSION := 66
 DEB_DEVELOPER-CMDS_V   ?= $(DEVELOPER-CMDS_VERSION)-1
 
 developer-cmds-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/developer_cmds/developer_cmds-$(DEVELOPER-CMDS_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://opensource.apple.com/tarballs/developer_cmds/developer_cmds-$(DEVELOPER-CMDS_VERSION).tar.gz)
 	$(call EXTRACT_TAR,developer_cmds-$(DEVELOPER-CMDS_VERSION).tar.gz,developer_cmds-$(DEVELOPER-CMDS_VERSION),developer-cmds)
 	mkdir -p $(BUILD_STAGE)/developer-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1/}
 
