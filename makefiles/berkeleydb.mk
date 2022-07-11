@@ -5,7 +5,7 @@ endif
 SUBPROJECTS += berkeleydb
 # Berkeleydb requires registration on Oracle's website, so this is a mirror.
 BDB_VERSION := 18.1.40
-DEB_BDB_V   ?= $(BDB_VERSION)
+DEB_BDB_V   ?= $(BDB_VERSION)-1
 
 berkeleydb-setup: setup
 	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://fossies.org/linux/misc/db-$(BDB_VERSION).tar.gz
