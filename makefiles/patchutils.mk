@@ -7,7 +7,7 @@ PATCHUTILS_VERSION := 0.4.2
 DEB_PATCHUTILS_V   ?= $(PATCHUTILS_VERSION)-1
 
 patchutils-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://cyberelk.net/tim/data/patchutils/stable/patchutils-$(PATCHUTILS_VERSION).tar.xz{,.sig}
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://cyberelk.net/tim/data/patchutils/stable/patchutils-$(PATCHUTILS_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,patchutils-$(PATCHUTILS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,patchutils-$(PATCHUTILS_VERSION).tar.xz,patchutils-$(PATCHUTILS_VERSION),patchutils)
 

@@ -7,7 +7,7 @@ JBIGKIT_VERSION := 2.1
 DEB_JBIGKIT_V   ?= $(JBIGKIT_VERSION)
 
 jbigkit-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.cl.cam.ac.uk/~mgk25/jbigkit/download/jbigkit-$(JBIGKIT_VERSION).tar.gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.cl.cam.ac.uk/~mgk25/jbigkit/download/jbigkit-$(JBIGKIT_VERSION).tar.gz
 	$(call EXTRACT_TAR,jbigkit-$(JBIGKIT_VERSION).tar.gz,jbigkit-$(JBIGKIT_VERSION),jbigkit)
 	$(call DO_PATCH,jbigkit,jbigkit,-p1)
 

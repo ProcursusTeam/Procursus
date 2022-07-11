@@ -7,7 +7,7 @@ MINISIGN_VERSION := 0.9
 DEB_MINISIGN_V   ?= $(MINISIGN_VERSION)
 
 minisign-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/jedisct1/minisign/releases/download/$(MINISIGN_VERSION)/minisign-$(MINISIGN_VERSION).tar.gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/jedisct1/minisign/releases/download/$(MINISIGN_VERSION)/minisign-$(MINISIGN_VERSION).tar.gz
 	$(call EXTRACT_TAR,minisign-$(MINISIGN_VERSION).tar.gz,minisign-$(MINISIGN_VERSION),minisign)
 	mkdir -p $(BUILD_WORK)/minisign/build
 

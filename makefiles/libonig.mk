@@ -7,7 +7,7 @@ LIBONIG_VERSION := 6.9.6
 DEB_LIBONIG_V   ?= $(LIBONIG_VERSION)
 
 libonig-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/kkos/oniguruma/releases/download/v$(LIBONIG_VERSION)/onig-$(LIBONIG_VERSION).tar.gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/kkos/oniguruma/releases/download/v$(LIBONIG_VERSION)/onig-$(LIBONIG_VERSION).tar.gz
 	$(call EXTRACT_TAR,onig-$(LIBONIG_VERSION).tar.gz,onig-$(LIBONIG_VERSION),libonig)
 
 ifneq ($(wildcard $(BUILD_WORK)/libonig/.build_complete),)

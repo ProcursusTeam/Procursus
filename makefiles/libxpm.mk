@@ -7,7 +7,7 @@ LIBXPM_VERSION := 3.5.13
 DEB_LIBXPM_V   ?= $(LIBXPM_VERSION)
 
 libxpm-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXpm-$(LIBXPM_VERSION).tar.bz2{,.sig}
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXpm-$(LIBXPM_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,libXpm-$(LIBXPM_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libXpm-$(LIBXPM_VERSION).tar.bz2,libXpm-$(LIBXPM_VERSION),libxpm)
 

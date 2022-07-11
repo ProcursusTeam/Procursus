@@ -7,7 +7,7 @@ WGET2_VERSION := 2.0.1
 DEB_WGET2_V   ?= $(WGET2_VERSION)
 
 wget2-setup: setup
-	wget2 -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/wget/wget2-$(WGET2_VERSION).tar.gz{,.sig}
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftpmirror.gnu.org/wget/wget2-$(WGET2_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,wget2-$(WGET2_VERSION).tar.gz)
 	$(call EXTRACT_TAR,wget2-$(WGET2_VERSION).tar.gz,wget2-$(WGET2_VERSION),wget2)
 

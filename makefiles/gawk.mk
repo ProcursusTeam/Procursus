@@ -7,7 +7,7 @@ GAWK_VERSION := 5.1.0
 DEB_GAWK_V   ?= $(GAWK_VERSION)-2
 
 gawk-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftpmirror.gnu.org/gawk/gawk-$(GAWK_VERSION).tar.xz{,.sig}
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftpmirror.gnu.org/gawk/gawk-$(GAWK_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,gawk-$(GAWK_VERSION).tar.xz)
 	$(call EXTRACT_TAR,gawk-$(GAWK_VERSION).tar.xz,gawk-$(GAWK_VERSION),gawk)
 

@@ -9,7 +9,7 @@ LSOF_VERSION := 62
 DEB_LSOF_V   ?= $(LSOF_VERSION)
 
 lsof-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://opensource.apple.com/tarballs/lsof/lsof-$(LSOF_VERSION).tar.gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://opensource.apple.com/tarballs/lsof/lsof-$(LSOF_VERSION).tar.gz
 	$(call EXTRACT_TAR,lsof-$(LSOF_VERSION).tar.gz,lsof-$(LSOF_VERSION),lsof)
 	mkdir -p $(BUILD_STAGE)/lsof/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{sbin,share/man/man8}
 	sed -i 's/lcurses/lncursesw/' $(BUILD_WORK)/lsof/lsof/Configure
@@ -17,7 +17,7 @@ lsof-setup: setup
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/lsof/lsof/include/rpc
 
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_WORK)/lsof/lsof/include/rpc \
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_WORK)/lsof/lsof/include/rpc \
 		https://opensource.apple.com/source/Libinfo/Libinfo-538/rpc.subproj/pmap_prot.h
 
 ifneq ($(wildcard $(BUILD_WORK)/lsof/.build_complete),)

@@ -7,7 +7,7 @@ LIBCACA_VERSION := 0.99.beta19
 DEB_LIBCACA_V   ?= $(LIBCACA_VERSION)
 
 libcaca-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://caca.zoy.org/files/libcaca/libcaca-$(LIBCACA_VERSION).tar.gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://caca.zoy.org/files/libcaca/libcaca-$(LIBCACA_VERSION).tar.gz
 	$(call EXTRACT_TAR,libcaca-$(LIBCACA_VERSION).tar.gz,libcaca-$(LIBCACA_VERSION),libcaca)
 
 ifneq ($(wildcard $(BUILD_WORK)/libcaca/.build_complete),)

@@ -7,7 +7,7 @@ HELLO_VERSION := 2.10
 DEB_HELLO_V   ?= $(HELLO_VERSION)
 
 hello-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://ftpmirror.gnu.org/gnu/hello/hello-$(HELLO_VERSION).tar.gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://ftpmirror.gnu.org/gnu/hello/hello-$(HELLO_VERSION).tar.gz
 	$(call EXTRACT_TAR,hello-$(HELLO_VERSION).tar.gz,hello-$(HELLO_VERSION),hello)
 	$(call DO_PATCH,hello,hello,-p1)
 

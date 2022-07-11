@@ -7,7 +7,7 @@ XCB-UTIL-XRM_VERSION := 1.3
 DEB_XCB-UTIL-XRM_V   ?= $(XCB-UTIL-XRM_VERSION)
 
 xcb-util-xrm-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/Airblader/xcb-util-xrm/releases/download/v1.3/xcb-util-xrm-1.3.tar.gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/Airblader/xcb-util-xrm/releases/download/v1.3/xcb-util-xrm-1.3.tar.gz
 	$(call EXTRACT_TAR,xcb-util-xrm-$(XCB-UTIL-XRM_VERSION).tar.gz,xcb-util-xrm-$(XCB-UTIL-XRM_VERSION),xcb-util-xrm)
 
 ifneq ($(wildcard $(BUILD_WORK)/xcb-util-xrm/.build_complete),)

@@ -7,7 +7,7 @@ LIBTOOL_VERSION := 2.4.6
 DEB_LIBTOOL_V   ?= $(LIBTOOL_VERSION)-4
 
 libtool-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftpmirror.gnu.org/libtool/libtool-$(LIBTOOL_VERSION).tar.gz{,.sig}
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftpmirror.gnu.org/libtool/libtool-$(LIBTOOL_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,libtool-$(LIBTOOL_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libtool-$(LIBTOOL_VERSION).tar.gz,libtool-$(LIBTOOL_VERSION),libtool)
 	$(call DO_PATCH,libtool,libtool,-p0)

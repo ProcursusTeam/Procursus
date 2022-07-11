@@ -7,7 +7,7 @@ MOST_VERSION := 5.1.0
 DEB_MOST_V   ?= $(MOST_VERSION)-1
 
 most-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.jedsoft.org/releases/most/most-$(MOST_VERSION).tar.gz{,.asc}
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.jedsoft.org/releases/most/most-$(MOST_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,most-$(MOST_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,most-$(MOST_VERSION).tar.gz,most-$(MOST_VERSION),most)
 

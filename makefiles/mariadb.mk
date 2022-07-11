@@ -7,7 +7,7 @@ MARIADB_VERSION := 10.5.9
 DEB_MARIADB_V   ?= $(MARIADB_VERSION)
 
 mariadb-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) \
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) \
 		https://downloads.mariadb.com/MariaDB/mariadb-$(MARIADB_VERSION)/source/mariadb-$(MARIADB_VERSION).tar.gz
 	$(call EXTRACT_TAR,mariadb-$(MARIADB_VERSION).tar.gz,mariadb-$(MARIADB_VERSION),mariadb)
 	$(call DO_PATCH,mariadb,mariadb,-p1)

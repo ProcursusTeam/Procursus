@@ -7,7 +7,7 @@ USBUTILS_VERSION := 007
 DEB_USBUTILS_V   ?= $(USBUTILS_VERSION)
 
 usbutils-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.kernel.org/pub/linux/utils/usb/usbutils/usbutils-$(USBUTILS_VERSION).tar.xz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.kernel.org/pub/linux/utils/usb/usbutils/usbutils-$(USBUTILS_VERSION).tar.xz
 	$(call EXTRACT_TAR,usbutils-$(USBUTILS_VERSION).tar.xz,usbutils-$(USBUTILS_VERSION),usbutils)
 
 ifneq ($(wildcard $(BUILD_WORK)/usbutils/.build_complete),)
@@ -26,7 +26,7 @@ usbutils: usbutils-setup libusb
 		sbin_SCRIPTS="" \
 		"man_MANS=lsusb.8"
 	rm -f $(BUILD_STAGE)/usbutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/usb.ids{,.gz}
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_STAGE)/usbutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share http://www.linux-usb.org/usb.ids{,.gz}
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_STAGE)/usbutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share http://www.linux-usb.org/usb.ids{,.gz}
 	$(call AFTER_BUILD)
 endif
 

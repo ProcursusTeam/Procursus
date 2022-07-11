@@ -7,7 +7,7 @@ IDN2_VERSION  := 2.3.2
 DEB_IDN2_V    ?= $(IDN2_VERSION)
 
 libidn2-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftpmirror.gnu.org/libidn/libidn2-$(IDN2_VERSION).tar.gz{,.sig}
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftpmirror.gnu.org/libidn/libidn2-$(IDN2_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,libidn2-$(IDN2_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libidn2-$(IDN2_VERSION).tar.gz,libidn2-$(IDN2_VERSION),libidn2)
 

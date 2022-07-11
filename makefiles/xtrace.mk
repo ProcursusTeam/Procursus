@@ -7,7 +7,7 @@ XTRACE_VERSION := 1.4.0
 DEB_XTRACE_V   ?= $(XTRACE_VERSION)
 
 xtrace-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://salsa.debian.org/debian/xtrace/-/archive/xtrace-$(XTRACE_VERSION)/xtrace-xtrace-$(XTRACE_VERSION).tar.gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://salsa.debian.org/debian/xtrace/-/archive/xtrace-$(XTRACE_VERSION)/xtrace-xtrace-$(XTRACE_VERSION).tar.gz
 	$(call EXTRACT_TAR,xtrace-xtrace-$(XTRACE_VERSION).tar.gz,xtrace-xtrace-$(XTRACE_VERSION),xtrace)
 
 ifneq ($(wildcard $(BUILD_WORK)/xtrace/.build_complete),)

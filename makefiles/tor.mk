@@ -7,7 +7,7 @@ TOR_VERSION  := 0.4.6.8
 DEB_TOR_V    ?= $(TOR_VERSION)
 
 tor-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://dist.torproject.org/tor-$(TOR_VERSION).tar.gz{,.asc}
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://dist.torproject.org/tor-$(TOR_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,tor-$(TOR_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,tor-$(TOR_VERSION).tar.gz,tor-$(TOR_VERSION),tor)
 

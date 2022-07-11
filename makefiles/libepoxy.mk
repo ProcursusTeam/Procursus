@@ -7,7 +7,7 @@ LIBEPOXY_VERSION := 1.5.7
 DEB_LIBEPOXY_V   ?= $(LIBEPOXY_VERSION)
 
 libepoxy-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir$(BUILD_SOURCE) https://download.gnome.org/sources/libepoxy/$(shell echo $(LIBEPOXY_VERSION) | cut -d. -f-2)/libepoxy-$(LIBEPOXY_VERSION).tar.xz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir$(BUILD_SOURCE) https://download.gnome.org/sources/libepoxy/$(shell echo $(LIBEPOXY_VERSION) | cut -d. -f-2)/libepoxy-$(LIBEPOXY_VERSION).tar.xz
 	$(call EXTRACT_TAR,libepoxy-$(LIBEPOXY_VERSION).tar.xz,libepoxy-$(LIBEPOXY_VERSION),libepoxy)
 	mkdir -p $(BUILD_WORK)/libepoxy/build
 	echo -e "[host_machine]\n \

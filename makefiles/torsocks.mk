@@ -7,7 +7,7 @@ TORSOCKS_VERSION := 2.3.0
 DEB_TORSOCKS_V   ?= $(TORSOCKS_VERSION)
 
 torsocks-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) \
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) \
 		https://people.torproject.org/~dgoulet/torsocks/torsocks-$(TORSOCKS_VERSION).tar.xz{,.asc}
 	$(call PGP_VERIFY,torsocks-$(TORSOCKS_VERSION).tar.xz,asc)
 	$(call EXTRACT_TAR,torsocks-$(TORSOCKS_VERSION).tar.xz,torsocks-$(TORSOCKS_VERSION),torsocks)

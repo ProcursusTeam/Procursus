@@ -7,7 +7,7 @@ LIBXI_VERSION := 1.7.10
 DEB_LIBXI_V   ?= $(LIBXI_VERSION)
 
 libxi-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXi-$(LIBXI_VERSION).tar.gz{,.sig}
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXi-$(LIBXI_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,libXi-$(LIBXI_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXi-$(LIBXI_VERSION).tar.gz,libXi-$(LIBXI_VERSION),libxi)
 

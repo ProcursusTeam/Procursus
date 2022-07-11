@@ -7,7 +7,7 @@ BASH-COMPLETION_VERSION := 2.11
 DEB_BASH-COMPLETION_V   ?= $(BASH-COMPLETION_VERSION)-1
 
 bash-completion-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/scop/bash-completion/releases/download/$(BASH-COMPLETION_VERSION)/bash-completion-$(BASH-COMPLETION_VERSION).tar.xz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/scop/bash-completion/releases/download/$(BASH-COMPLETION_VERSION)/bash-completion-$(BASH-COMPLETION_VERSION).tar.xz
 	$(call EXTRACT_TAR,bash-completion-$(BASH-COMPLETION_VERSION).tar.xz,bash-completion-$(BASH-COMPLETION_VERSION),bash-completion)
 
 ifneq ($(wildcard $(BUILD_WORK)/bash-completion/.build_complete),)

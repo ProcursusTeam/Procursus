@@ -7,7 +7,7 @@ JTOOL2_VERSION := 2020.12.21
 DEB_JTOOL2_V   ?= $(JTOOL2_VERSION)
 
 jtool2-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://newosxbook.com/tools/jtool2.tgz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://newosxbook.com/tools/jtool2.tgz
 	rm -rf $(BUILD_WORK)/jtool2 && mkdir -p $(BUILD_WORK)/jtool2 && pushd $(BUILD_WORK)/jtool2 && tar -C . -xf $(BUILD_SOURCE)/jtool2.tgz && popd
 
 ifneq ($(wildcard $(BUILD_WORK)/jtool2/.build_complete),)

@@ -7,7 +7,7 @@ RUBBERBAND_VERSION    := 2.0.2
 DEB_RUBBERBAND_V      ?= $(RUBBERBAND_VERSION)
 
 rubberband-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://breakfastquay.com/files/releases/rubberband-$(RUBBERBAND_VERSION).tar.bz2
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://breakfastquay.com/files/releases/rubberband-$(RUBBERBAND_VERSION).tar.bz2
 	$(call EXTRACT_TAR,rubberband-$(RUBBERBAND_VERSION).tar.bz2,rubberband-$(RUBBERBAND_VERSION),rubberband)
 	mkdir -p $(BUILD_WORK)/rubberband/build
 

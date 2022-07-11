@@ -7,7 +7,7 @@ FILE_VERSION   := 5.41
 DEB_FILE_V     ?= $(FILE_VERSION)
 
 file-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://astron.com/pub/file/file-$(FILE_VERSION).tar.gz{,.asc}
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://astron.com/pub/file/file-$(FILE_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,file-$(FILE_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,file-$(FILE_VERSION).tar.gz,file-$(FILE_VERSION),file)
 

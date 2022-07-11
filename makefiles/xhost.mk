@@ -7,7 +7,7 @@ XHOST_VERSION := 1.0.8
 DEB_XHOST_V   ?= $(XHOST_VERSION)
 
 xhost-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.x.org/archive//individual/app/xhost-$(XHOST_VERSION).tar.gz{,.sig}
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.x.org/archive//individual/app/xhost-$(XHOST_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,xhost-$(XHOST_VERSION).tar.gz)
 	$(call EXTRACT_TAR,xhost-$(XHOST_VERSION).tar.gz,xhost-$(XHOST_VERSION),xhost)
 

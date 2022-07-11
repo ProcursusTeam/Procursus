@@ -7,7 +7,7 @@ LIBXAU_VERSION := 1.0.9
 DEB_LIBXAU_V   ?= $(LIBXAU_VERSION)-1
 
 libxau-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXau-$(LIBXAU_VERSION).tar.gz{,.sig}
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXau-$(LIBXAU_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,libXau-$(LIBXAU_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXau-$(LIBXAU_VERSION).tar.gz,libXau-$(LIBXAU_VERSION),libxau)
 

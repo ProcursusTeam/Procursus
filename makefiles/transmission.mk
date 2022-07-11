@@ -7,7 +7,7 @@ TRANSMISSION_VERSION := 3.00
 DEB_TRANSMISSION_V   ?= $(TRANSMISSION_VERSION)-1
 
 transmission-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/transmission/transmission-releases/raw/master/transmission-$(TRANSMISSION_VERSION).tar.xz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/transmission/transmission-releases/raw/master/transmission-$(TRANSMISSION_VERSION).tar.xz
 	$(call EXTRACT_TAR,transmission-$(TRANSMISSION_VERSION).tar.xz,transmission-$(TRANSMISSION_VERSION),transmission)
 
 ifneq ($(wildcard $(BUILD_WORK)/transmission/.build_complete),)

@@ -7,7 +7,7 @@ MESA_DEMOS_VERSION := 8.4.0
 DEB_MESA_DEMOS_V   ?= $(MESA_DEMOS_VERSION)
 
 mesa-demos-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir$(BUILD_SOURCE) https://archive.mesa3d.org//demos/mesa-demos-$(MESA_DEMOS_VERSION).tar.gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir$(BUILD_SOURCE) https://archive.mesa3d.org//demos/mesa-demos-$(MESA_DEMOS_VERSION).tar.gz
 	$(call EXTRACT_TAR,mesa-demos-$(MESA_DEMOS_VERSION).tar.gz,mesa-demos-$(MESA_DEMOS_VERSION),mesa-demos)
 	sed -i s/OpenGL/GL/ $(BUILD_WORK)/mesa-demos/src/util/gl_wrap.h
 

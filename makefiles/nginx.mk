@@ -65,7 +65,7 @@ FULL_NGINX_FLAGS := $(GLOBAL_NGINX_FLAGS) \
   		               --with-stream_ssl_preread_module
 
 nginx-setup: setup pcre openssl libgeoip libgd libxml2
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir$(BUILD_SOURCE) https://nginx.org/download/nginx-$(NGINX_VERSION).tar.gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir$(BUILD_SOURCE) https://nginx.org/download/nginx-$(NGINX_VERSION).tar.gz
 	$(call EXTRACT_TAR,nginx-$(NGINX_VERSION).tar.gz,nginx-$(NGINX_VERSION),nginx)
 	$(call DO_PATCH,nginx,nginx,-p0)
 

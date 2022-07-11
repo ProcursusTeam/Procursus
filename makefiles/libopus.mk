@@ -7,7 +7,7 @@ LIBOPUS_VERSION := 1.3.1
 DEB_LIBOPUS_V   ?= $(LIBOPUS_VERSION)
 
 libopus-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://archive.mozilla.org/pub/opus/opus-$(LIBOPUS_VERSION).tar.gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://archive.mozilla.org/pub/opus/opus-$(LIBOPUS_VERSION).tar.gz
 	$(call EXTRACT_TAR,opus-$(LIBOPUS_VERSION).tar.gz,opus-$(LIBOPUS_VERSION),libopus)
 
 ifneq ($(wildcard $(BUILD_WORK)/libopus/.build_complete),)

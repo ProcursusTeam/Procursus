@@ -32,14 +32,14 @@ endif # ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 
 rar-setup: setup
 ifeq ($(MEMO_ARCH),x86_64)
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir$(BUILD_SOURCE) https://www.rarlab.com/rar/rarmacos-x64-$(RAR_BUILD).tar.gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir$(BUILD_SOURCE) https://www.rarlab.com/rar/rarmacos-x64-$(RAR_BUILD).tar.gz
 	tar -C $(BUILD_WORK) -xf $(BUILD_SOURCE)/rarmacos-x64-$(RAR_BUILD).tar.gz
 endif
 ifeq ($(MEMO_ARCH),arm64)
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir$(BUILD_SOURCE) https://www.rarlab.com/rar/rarmacos-arm-$(RAR_BUILD).tar.gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir$(BUILD_SOURCE) https://www.rarlab.com/rar/rarmacos-arm-$(RAR_BUILD).tar.gz
 	tar -C $(BUILD_WORK) -xf $(BUILD_SOURCE)/rarmacos-arm-$(RAR_BUILD).tar.gz
 endif
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir$(BUILD_SOURCE) http://deb.debian.org/debian/pool/non-free/r/rar/rar_$(DEBIAN_RAR_V).debian.tar.xz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir$(BUILD_SOURCE) http://deb.debian.org/debian/pool/non-free/r/rar/rar_$(DEBIAN_RAR_V).debian.tar.xz
 	tar -C $(BUILD_WORK)/rar -xJf $(BUILD_SOURCE)/rar_$(DEBIAN_RAR_V).debian.tar.xz
 	mkdir -p $(BUILD_STAGE)/rar/$(MEMO_PREFIX){$(MEMO_SUB_PREFIX)/{bin,lib,share/man/man1},/etc}
 

@@ -7,7 +7,7 @@ HELP2MAN_VERSION  := 1.48.3
 DEB_HELP2MAN_V    ?= $(HELP2MAN_VERSION)
 
 help2man-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://mirrors.kernel.org/gnu/help2man/help2man-$(HELP2MAN_VERSION).tar.xz{,.sig}
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://mirrors.kernel.org/gnu/help2man/help2man-$(HELP2MAN_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,help2man-$(HELP2MAN_VERSION).tar.xz)
 	$(call EXTRACT_TAR,help2man-$(HELP2MAN_VERSION).tar.xz,help2man-$(HELP2MAN_VERSION),help2man)
 

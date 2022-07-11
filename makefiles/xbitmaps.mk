@@ -7,7 +7,7 @@ XBITMAPS_VERSION := 1.1.0
 DEB_XBITMAPS_V   ?= $(XBITMAPS_VERSION)
 
 xbitmaps-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.x.org/archive/individual/app/xbitmaps-$(XBITMAPS_VERSION).tar.gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.x.org/archive/individual/app/xbitmaps-$(XBITMAPS_VERSION).tar.gz
 	$(call EXTRACT_TAR,xbitmaps-$(XBITMAPS_VERSION).tar.gz,xbitmaps-$(XBITMAPS_VERSION),xbitmaps)
 
 ifneq ($(wildcard $(BUILD_WORK)/xbitmaps/.build_complete),)

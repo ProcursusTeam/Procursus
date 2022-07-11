@@ -7,7 +7,7 @@ ARPOISON_VERSION := 0.7
 DEB_ARPOISON_V   ?= $(ARPOISON_VERSION)
 
 arpoison-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir$(BUILD_SOURCE) http://www.arpoison.net/arpoison-$(ARPOISON_VERSION).tar.gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir$(BUILD_SOURCE) http://www.arpoison.net/arpoison-$(ARPOISON_VERSION).tar.gz
 	$(call EXTRACT_TAR,arpoison-$(ARPOISON_VERSION).tar.gz,arpoison-$(ARPOISON_VERSION),arpoison)
 	mkdir -p $(BUILD_STAGE)/arpoison/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 

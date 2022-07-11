@@ -8,7 +8,7 @@ DEB_FFF_V   ?= $(FFF_VERSION)
 
 fff-setup: setup
 	$(call GITHUB_ARCHIVE,dylanaraps,fff,$(FFF_VERSION),$(FFF_VERSION))
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/dylanaraps/fff/archive/$(FFF_VERSION).tar.gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/dylanaraps/fff/archive/$(FFF_VERSION).tar.gz
 	$(call EXTRACT_TAR,fff-$(FFF_VERSION).tar.gz,fff-$(FFF_VERSION),fff)
 
 ifneq ($(wildcard $(BUILD_WORK)/fff/.build_complete),)

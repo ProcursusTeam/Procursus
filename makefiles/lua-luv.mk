@@ -8,7 +8,7 @@ DEB_LUA-LUV_V   ?= $(LUA-LUV_VERSION)-1
 
 lua-luv-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/lua-luv-$(LUA-LUV_VERSION).tar.gz" ] && \
-		curl --silent -Z --create-dirs -C - --remote-name-all --output $(BUILD_SOURCE)/lua-luv-$(LUA-LUV_VERSION).tar.gz \
+		curl --silent -L -Z --create-dirs -C - --remote-name-all --output $(BUILD_SOURCE)/lua-luv-$(LUA-LUV_VERSION).tar.gz \
 			https://github.com/luvit/luv/releases/download/$(LUA-LUV_VERSION)-0/luv-$(LUA-LUV_VERSION)-0.tar.gz
 	$(call EXTRACT_TAR,lua-luv-$(LUA-LUV_VERSION).tar.gz,luv-$(LUA-LUV_VERSION)-0,lua-luv/bundle)
 	$(call DO_PATCH,lua-luv,lua-luv,-p1)

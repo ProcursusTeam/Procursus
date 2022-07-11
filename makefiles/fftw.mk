@@ -7,7 +7,7 @@ FFTW_VERSION := 3.3.10
 DEB_FFTW_V   ?= $(FFTW_VERSION)
 
 fftw-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir$(BUILD_SOURCE) https://fftw.org/fftw-$(FFTW_VERSION).tar.gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir$(BUILD_SOURCE) https://fftw.org/fftw-$(FFTW_VERSION).tar.gz
 	$(call EXTRACT_TAR,fftw-$(FFTW_VERSION).tar.gz,fftw-$(FFTW_VERSION),fftw)
 
 ifneq ($(wildcard $(BUILD_WORK)/fftw/.build_complete),)

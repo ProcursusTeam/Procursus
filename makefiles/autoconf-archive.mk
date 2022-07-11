@@ -7,7 +7,7 @@ AUTOCONF-ARCHIVE_VERSION := 2021.02.19
 DEB_AUTOCONF-ARCHIVE_V   ?= $(AUTOCONF-ARCHIVE_VERSION)
 
 autoconf-archive-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://mirrors.ocf.berkeley.edu/gnu/autoconf-archive/autoconf-archive-$(AUTOCONF-ARCHIVE_VERSION).tar.xz{,.sig}
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://mirrors.ocf.berkeley.edu/gnu/autoconf-archive/autoconf-archive-$(AUTOCONF-ARCHIVE_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,autoconf-archive-$(AUTOCONF-ARCHIVE_VERSION).tar.xz)
 	$(call EXTRACT_TAR,autoconf-archive-$(AUTOCONF-ARCHIVE_VERSION).tar.xz,autoconf-archive-$(AUTOCONF-ARCHIVE_VERSION),autoconf-archive)
 

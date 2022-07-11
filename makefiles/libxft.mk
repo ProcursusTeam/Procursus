@@ -7,7 +7,7 @@ LIBXFT_VERSION := 2.3.3
 DEB_LIBXFT_V   ?= $(LIBXFT_VERSION)
 
 libxft-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.x.org/archive/individual/lib/libXft-$(LIBXFT_VERSION).tar.gz{,.sig}
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.x.org/archive/individual/lib/libXft-$(LIBXFT_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,libXft-$(LIBXFT_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXft-$(LIBXFT_VERSION).tar.gz,libXft-$(LIBXFT_VERSION),libxft)
 

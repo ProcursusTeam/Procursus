@@ -8,7 +8,7 @@ DASH_VERSION  := 0.5.11.5
 DEB_DASH_V    ?= $(DASH_VERSION)
 
 dash-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://gondor.apana.org.au/~herbert/dash/files/dash-$(DASH_VERSION).tar.gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://gondor.apana.org.au/~herbert/dash/files/dash-$(DASH_VERSION).tar.gz
 	$(call EXTRACT_TAR,dash-$(DASH_VERSION).tar.gz,dash-$(DASH_VERSION),dash)
 	mkdir -p $(BUILD_STAGE)/dash/$(MEMO_PREFIX)/bin
 

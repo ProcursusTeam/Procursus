@@ -7,7 +7,7 @@ PACMAN_VERSION := 6.0.0
 DEB_PACMAN_V   ?= $(PACMAN_VERSION)
 
 pacman-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://sources.archlinux.org/other/pacman/pacman-$(PACMAN_VERSION).tar.xz{,.sig}
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://sources.archlinux.org/other/pacman/pacman-$(PACMAN_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,pacman-$(PACMAN_VERSION).tar.xz)
 	$(call EXTRACT_TAR,pacman-$(PACMAN_VERSION).tar.xz,pacman-$(PACMAN_VERSION),pacman)
 	$(call DO_PATCH,pacman,pacman,-p1)

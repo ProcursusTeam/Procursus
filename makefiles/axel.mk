@@ -7,7 +7,7 @@ AXEL_VERSION := 2.17.11
 DEB_AXEL_V   ?= $(AXEL_VERSION)
 
 axel-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/axel-download-accelerator/axel/releases/download/v$(AXEL_VERSION)/axel-$(AXEL_VERSION).tar.xz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/axel-download-accelerator/axel/releases/download/v$(AXEL_VERSION)/axel-$(AXEL_VERSION).tar.xz
 	$(call EXTRACT_TAR,axel-$(AXEL_VERSION).tar.xz,axel-$(AXEL_VERSION),axel)
 
 ifneq ($(wildcard $(BUILD_WORK)/axel/.build_complete),)

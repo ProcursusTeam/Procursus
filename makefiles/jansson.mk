@@ -7,7 +7,7 @@ JANSSON_VERSION := 2.13.1
 DEB_JANSSON_V   ?= $(JANSSON_VERSION)
 
 jansson-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://digip.org/jansson/releases/jansson-$(JANSSON_VERSION).tar.gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://digip.org/jansson/releases/jansson-$(JANSSON_VERSION).tar.gz
 	$(call EXTRACT_TAR,jansson-$(JANSSON_VERSION).tar.gz,jansson-$(JANSSON_VERSION),jansson)
 
 ifneq ($(wildcard $(BUILD_WORK)/jansson/.build_complete),)

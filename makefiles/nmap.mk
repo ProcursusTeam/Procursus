@@ -9,7 +9,7 @@ DEB_NMAP_V   ?= $(NMAP_VERSION)
 NMAP_MANPAGE_LANGS := de es fr hr hu it ja pl pt_BR pt_PT ro ru sk zh
 
 nmap-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://nmap.org/dist/nmap-$(NMAP_VERSION).tar.bz2
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://nmap.org/dist/nmap-$(NMAP_VERSION).tar.bz2
 	$(call EXTRACT_TAR,nmap-$(NMAP_VERSION).tar.bz2,nmap-$(NMAP_VERSION),nmap)
 
 ifneq ($(wildcard $(BUILD_WORK)/nmap/.build_complete),)

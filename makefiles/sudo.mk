@@ -11,7 +11,7 @@ SUDO_VERSION  := 1.9.8p2
 DEB_SUDO_V    ?= $(SUDO_VERSION)
 
 sudo-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.sudo.ws/dist/sudo-$(SUDO_VERSION).tar.gz{,.sig}
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.sudo.ws/dist/sudo-$(SUDO_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,sudo-$(SUDO_VERSION).tar.gz)
 	$(call EXTRACT_TAR,sudo-$(SUDO_VERSION).tar.gz,sudo-$(SUDO_VERSION),sudo)
 	$(call DO_PATCH,sudo,sudo,-p1)

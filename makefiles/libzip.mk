@@ -7,7 +7,7 @@ LIBZIP_VERSION := 1.9.2
 DEB_LIBZIP_V   ?= $(LIBZIP_VERSION)
 
 libzip-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://libzip.org/download/libzip-$(LIBZIP_VERSION).tar.gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://libzip.org/download/libzip-$(LIBZIP_VERSION).tar.gz
 	$(call EXTRACT_TAR,libzip-$(LIBZIP_VERSION).tar.gz,libzip-$(LIBZIP_VERSION),libzip)
 
 ifneq ($(wildcard $(BUILD_WORK)/libzip/.build_complete),)

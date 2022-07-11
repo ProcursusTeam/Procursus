@@ -7,7 +7,7 @@ GTK_DOC_VERSION := 1.32
 DEB_GTK_DOC_V   ?= $(GTK_DOC_VERSION)-1
 
 gtk-doc-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir$(BUILD_SOURCE) https://download.gnome.org/sources/gtk-doc/$(GTK_DOC_VERSION)/gtk-doc-$(GTK_DOC_VERSION).tar.xz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir$(BUILD_SOURCE) https://download.gnome.org/sources/gtk-doc/$(GTK_DOC_VERSION)/gtk-doc-$(GTK_DOC_VERSION).tar.xz
 	$(call EXTRACT_TAR,gtk-doc-$(GTK_DOC_VERSION).tar.xz,gtk-doc-$(GTK_DOC_VERSION),gtk-doc)
 
 ifneq ($(wildcard $(BUILD_WORK)/gtk-doc/.build_complete),)

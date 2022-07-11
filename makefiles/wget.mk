@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += wget
-WGET_VERSION := 1.21.1
+WGET_VERSION := 1.21.3
 DEB_WGET_V   ?= $(WGET_VERSION)
 
 wget-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftpmirror.gnu.org/wget/wget-$(WGET_VERSION).tar.gz{,.sig}
+	curl --silent -L -Z --create-dirs -L -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftpmirror.gnu.org/wget/wget-$(WGET_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,wget-$(WGET_VERSION).tar.gz)
 	$(call EXTRACT_TAR,wget-$(WGET_VERSION).tar.gz,wget-$(WGET_VERSION),wget)
 
@@ -20,8 +20,7 @@ wget: wget-setup openssl pcre2 gettext libunistring libidn2
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-ssl=openssl \
 		--with-openssl \
-		--without-libpsl \
-		CFLAGS="$(CFLAGS) -Wno-macro-redefined -Wno-c99-extensions -D__nonnull\(params\)="
+		--without-libpsl
 	+$(MAKE) -C $(BUILD_WORK)/wget
 	+$(MAKE) -C $(BUILD_WORK)/wget install \
 		DESTDIR="$(BUILD_STAGE)/wget"

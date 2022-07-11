@@ -7,8 +7,8 @@ LIBCRACK_VERSION := 2.9.7
 DEB_LIBCRACK_V   ?= $(LIBCRACK_VERSION)
 
 libcrack-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/cracklib/cracklib/releases/download/v$(LIBCRACK_VERSION)/cracklib-$(LIBCRACK_VERSION).tar.gz
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/cracklib/cracklib/releases/download/v$(LIBCRACK_VERSION)/cracklib-words-$(LIBCRACK_VERSION).gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/cracklib/cracklib/releases/download/v$(LIBCRACK_VERSION)/cracklib-$(LIBCRACK_VERSION).tar.gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/cracklib/cracklib/releases/download/v$(LIBCRACK_VERSION)/cracklib-words-$(LIBCRACK_VERSION).gz
 	$(call EXTRACT_TAR,cracklib-$(LIBCRACK_VERSION).tar.gz,cracklib-$(LIBCRACK_VERSION),libcrack)
 	gzip -dc < $(BUILD_SOURCE)/cracklib-words-$(LIBCRACK_VERSION).gz > $(BUILD_WORK)/libcrack/dicts/libcrack-words
 

@@ -7,7 +7,7 @@ GENGETOPT_VERSION := 2.23
 DEB_GENGETOPT_V   ?= $(GENGETOPT_VERSION)
 
 gengetopt-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftp.gnu.org/gnu/gengetopt/gengetopt-$(GENGETOPT_VERSION).tar.xz{,.sig}
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftp.gnu.org/gnu/gengetopt/gengetopt-$(GENGETOPT_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,gengetopt-$(GENGETOPT_VERSION).tar.xz)
 	$(call EXTRACT_TAR,gengetopt-$(GENGETOPT_VERSION).tar.xz,gengetopt-$(GENGETOPT_VERSION),gengetopt)
 

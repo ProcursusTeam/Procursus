@@ -8,7 +8,7 @@ DEB_2048_V    ?= 0.$(2048_VERSION)
 2048_GIT_HASH := 72725bab07d7686e5e5b3f68e398f43ffb6f49ce
 
 2048-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output $(BUILD_SOURCE)/2048-$(2048_GIT_HASH).c \
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output $(BUILD_SOURCE)/2048-$(2048_GIT_HASH).c \
 		 https://github.com/mevdschee/2048.c/raw/$(2048_GIT_HASH)/2048.c
 	mkdir -p $(BUILD_WORK)/2048
 

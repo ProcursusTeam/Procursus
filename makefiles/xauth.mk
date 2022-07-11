@@ -7,7 +7,7 @@ XAUTH_VERSION := 1.1
 DEB_XAUTH_V   ?= $(XAUTH_VERSION)
 
 xauth-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/app/xauth-$(XAUTH_VERSION).tar.gz{,.sig}
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/app/xauth-$(XAUTH_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,xauth-$(XAUTH_VERSION).tar.gz)
 	$(call EXTRACT_TAR,xauth-$(XAUTH_VERSION).tar.gz,xauth-$(XAUTH_VERSION),xauth)
 

@@ -7,7 +7,7 @@ MPFR4_VERSION := 4.1.0
 DEB_MPFR4_V   ?= $(MPFR4_VERSION)
 
 mpfr4-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftp.gnu.org/gnu/mpfr/mpfr-$(MPFR4_VERSION).tar.xz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftp.gnu.org/gnu/mpfr/mpfr-$(MPFR4_VERSION).tar.xz
 	$(call EXTRACT_TAR,mpfr-$(MPFR4_VERSION).tar.xz,mpfr-$(MPFR4_VERSION),mpfr4)
 
 ifneq ($(wildcard $(BUILD_WORK)/mpfr4/.build_complete),)

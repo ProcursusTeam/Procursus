@@ -7,7 +7,7 @@ LUA5.1_VERSION := 5.1.5
 DEB_LUA5.1_V   ?= $(LUA5.1_VERSION)-1
 
 lua5.1-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.lua.org/ftp/lua-$(LUA5.1_VERSION).tar.gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.lua.org/ftp/lua-$(LUA5.1_VERSION).tar.gz
 	$(call EXTRACT_TAR,lua-$(LUA5.1_VERSION).tar.gz,lua-$(LUA5.1_VERSION),lua5.1)
 	$(call DO_PATCH,lua5.1,lua5.1,-p1)
 

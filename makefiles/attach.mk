@@ -13,7 +13,7 @@ attach-setup: setup
 	$(call GITHUB_ARCHIVE,NyaMisty,Attach-Detach,$(ATTACH_COMMIT),$(ATTACH_COMMIT),attach)
 	$(call EXTRACT_TAR,attach-$(ATTACH_COMMIT).tar.gz,attach-detach-$(ATTACH_COMMIT),attach)
 	mkdir -p $(BUILD_STAGE)/attach/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_WORK)/attach \
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_WORK)/attach \
 		https://raw.githubusercontent.com/elihwyma/iOS-SDK-With-Passion/uwu/iPhoneOS14.0.sdk/System/Library/PrivateFrameworks/DiskImages2.framework/DiskImages2.tbd
 
 ifneq ($(wildcard $(BUILD_WORK)/attach/.build_complete),)

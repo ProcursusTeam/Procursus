@@ -7,7 +7,7 @@ RPMALLOC_VERSION := 1.4.1
 DEB_RPMALLOC_V   ?= $(RPMALLOC_VERSION)
 
 rpmalloc-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_WORK)/rpmalloc \
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_WORK)/rpmalloc \
 		https://raw.githubusercontent.com/mjansson/rpmalloc/1.4.1/rpmalloc/malloc.c \
 		https://raw.githubusercontent.com/mjansson/rpmalloc/1.4.1/rpmalloc/rpmalloc.{c,h}
 

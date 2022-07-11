@@ -7,7 +7,7 @@ XCBPROTO_VERSION := 1.14.1
 DEB_XCBPROTO_V   ?= $(XCBPROTO_VERSION)
 
 xcb-proto-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://xorg.freedesktop.org/archive/individual/proto/xcb-proto-$(XCBPROTO_VERSION).tar.gz{,.sig}
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://xorg.freedesktop.org/archive/individual/proto/xcb-proto-$(XCBPROTO_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,xcb-proto-$(XCBPROTO_VERSION).tar.gz)
 	$(call EXTRACT_TAR,xcb-proto-$(XCBPROTO_VERSION).tar.gz,xcb-proto-$(XCBPROTO_VERSION),xcb-proto)
 

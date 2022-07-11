@@ -7,7 +7,7 @@ LIBSPEEX_VERSION := 1.2.0
 DEB_LIBSPEEX_V   ?= $(LIBSPEEX_VERSION)
 
 libspeex-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) \
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) \
 		https://downloads.us.xiph.org/releases/speex/speex-$(LIBSPEEX_VERSION).tar.gz
 	$(call EXTRACT_TAR,speex-$(LIBSPEEX_VERSION).tar.gz,speex-$(LIBSPEEX_VERSION),libspeex)
 

@@ -7,7 +7,7 @@ LIBEV_VERSION := 4.33
 DEB_LIBEV_V   ?= $(LIBEV_VERSION)
 
 libev-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://dist.schmorp.de/libev/libev-$(LIBEV_VERSION).tar.gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://dist.schmorp.de/libev/libev-$(LIBEV_VERSION).tar.gz
 	$(call EXTRACT_TAR,libev-$(LIBEV_VERSION).tar.gz,libev-$(LIBEV_VERSION),libev)
 
 ifneq ($(wildcard $(BUILD_WORK)/libev/.build_complete),)

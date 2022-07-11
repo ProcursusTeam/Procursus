@@ -7,7 +7,7 @@ LIBTHEORA_VERSION := 1.1.1
 DEB_LIBTHEORA_V   ?= $(LIBTHEORA_VERSION)
 
 libtheora-setup: setup file-setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://downloads.xiph.org/releases/theora/libtheora-$(LIBTHEORA_VERSION).tar.xz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://downloads.xiph.org/releases/theora/libtheora-$(LIBTHEORA_VERSION).tar.xz
 	$(call EXTRACT_TAR,libtheora-$(LIBTHEORA_VERSION).tar.xz,libtheora-$(LIBTHEORA_VERSION),libtheora)
 	cp -a $(BUILD_WORK)/file/config.sub $(BUILD_WORK)/libtheora
 

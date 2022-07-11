@@ -8,7 +8,7 @@ DEB_TEA_V   ?= $(TEA_VERSION)
 
 tea-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/tea-$(TEA_VERSION).tar.gz" ] && \
-		curl --silent -Z --create-dirs -C - --remote-name-all --output $(BUILD_SOURCE)/tea-$(TEA_VERSION).tar.gz \
+		curl --silent -L -Z --create-dirs -C - --remote-name-all --output $(BUILD_SOURCE)/tea-$(TEA_VERSION).tar.gz \
 			https://gitea.com/gitea/tea/archive/v$(TEA_VERSION).tar.gz
 	tar -xf $(BUILD_SOURCE)/tea-$(TEA_VERSION).tar.gz -C $(BUILD_WORK)
 

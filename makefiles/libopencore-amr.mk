@@ -7,7 +7,7 @@ LIBOPENCORE-AMR_VERSION := 0.1.5
 DEB_LIBOPENCORE-AMR_V   ?= $(LIBOPENCORE-AMR_VERSION)
 
 libopencore-amr-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://downloads.sourceforge.net/project/opencore-amr/opencore-amr/opencore-amr-$(LIBOPENCORE-AMR_VERSION).tar.gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://downloads.sourceforge.net/project/opencore-amr/opencore-amr/opencore-amr-$(LIBOPENCORE-AMR_VERSION).tar.gz
 	$(call EXTRACT_TAR,opencore-amr-$(LIBOPENCORE-AMR_VERSION).tar.gz,opencore-amr-$(LIBOPENCORE-AMR_VERSION),libopencore-amr)
 
 ifneq ($(wildcard $(BUILD_WORK)/libopencore-amr/.build_complete),)

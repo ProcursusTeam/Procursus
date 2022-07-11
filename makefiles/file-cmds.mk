@@ -14,11 +14,11 @@ endif
 DEB_FILE-CMDS_V   ?= $(FILE-CMDS_VERSION)-3
 
 file-cmds-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://opensource.apple.com/tarballs/file_cmds/file_cmds-$(FILE-CMDS_VERSION).tar.gz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://opensource.apple.com/tarballs/file_cmds/file_cmds-$(FILE-CMDS_VERSION).tar.gz
 	$(call EXTRACT_TAR,file_cmds-$(FILE-CMDS_VERSION).tar.gz,file_cmds-$(FILE-CMDS_VERSION),file-cmds)
 	mkdir -p $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 	mkdir -p $(BUILD_WORK)/file-cmds/ipcs/sys
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_WORK)/file-cmds/ipcs/sys \
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_WORK)/file-cmds/ipcs/sys \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/ipcs.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/sem_internal.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/shm_internal.h

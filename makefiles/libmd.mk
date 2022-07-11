@@ -7,7 +7,7 @@ LIBMD_VERSION := 1.0.4
 DEB_LIBMD_V   ?= $(LIBMD_VERSION)
 
 libmd-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://archive.hadrons.org/software/libmd/libmd-$(LIBMD_VERSION).tar.xz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://archive.hadrons.org/software/libmd/libmd-$(LIBMD_VERSION).tar.xz
 	$(call EXTRACT_TAR,libmd-$(LIBMD_VERSION).tar.xz,libmd-$(LIBMD_VERSION),libmd)
 	sed -i 's|_MSC_VER|__APPLE__|' $(BUILD_WORK)/libmd/src/local-link.h
 

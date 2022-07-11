@@ -7,7 +7,7 @@ YOUTUBE-DL_VERSION := 2021.06.06
 DEB_YOUTUBE-DL_V   ?= $(YOUTUBE-DL_VERSION)
 
 youtube-dl-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/ytdl-org/youtube-dl/releases/download/$(YOUTUBE-DL_VERSION)/youtube-dl-$(YOUTUBE-DL_VERSION).tar.gz{,.sig}
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/ytdl-org/youtube-dl/releases/download/$(YOUTUBE-DL_VERSION)/youtube-dl-$(YOUTUBE-DL_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,youtube-dl-$(YOUTUBE-DL_VERSION).tar.gz)
 	$(call EXTRACT_TAR,youtube-dl-$(YOUTUBE-DL_VERSION).tar.gz,youtube-dl-$(YOUTUBE-DL_VERSION),youtube-dl)
 	$(call DO_PATCH,youtube-dl,youtube-dl,-p1)

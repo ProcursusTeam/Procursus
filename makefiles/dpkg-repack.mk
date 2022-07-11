@@ -7,7 +7,7 @@ DPKG_REPACK_VERSION := 1.48
 DEB_DPKG_REPACK_V   ?= $(DPKG_REPACK_VERSION)
 
 dpkg-repack-setup: setup
-	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/d/dpkg-repack/dpkg-repack_$(DPKG_REPACK_VERSION).tar.xz
+	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/d/dpkg-repack/dpkg-repack_$(DPKG_REPACK_VERSION).tar.xz
 	$(call EXTRACT_TAR,dpkg-repack_$(DPKG_REPACK_VERSION).tar.xz,dpkg-repack-$(DPKG_REPACK_VERSION),dpkg-repack)
 
 ifneq ($(wildcard $(BUILD_WORK)/dpkg-repack/.build_complete),)
