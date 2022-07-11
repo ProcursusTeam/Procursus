@@ -7,7 +7,7 @@ YASM_VERSION := 1.3.0
 DEB_YASM_V   ?= $(YASM_VERSION)
 
 yasm-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.tortall.net/projects/yasm/releases/yasm-$(YASM_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.tortall.net/projects/yasm/releases/yasm-$(YASM_VERSION).tar.gz)
 	$(call EXTRACT_TAR,yasm-$(YASM_VERSION).tar.gz,yasm-$(YASM_VERSION),yasm)
 
 ifneq ($(wildcard $(BUILD_WORK)/yasm/.build_complete),)

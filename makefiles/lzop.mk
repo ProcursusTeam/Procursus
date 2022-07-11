@@ -7,7 +7,7 @@ LZOP_VERSION := 1.04
 DEB_LZOP_V   ?= $(LZOP_VERSION)
 
 lzop-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.lzop.org/download/lzop-$(LZOP_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.lzop.org/download/lzop-$(LZOP_VERSION).tar.gz)
 	$(call EXTRACT_TAR,lzop-$(LZOP_VERSION).tar.gz,lzop-$(LZOP_VERSION),lzop)
 
 ifneq ($(wildcard $(BUILD_WORK)/lzop/.build_complete),)

@@ -9,7 +9,7 @@ DEB_LIBXML2_V   ?= $(LIBXML2_VERSION)
 ### Provided by macOS/iOS and only used for tools. Try not to link anything to this.
 
 libxml2-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://xmlsoft.org/sources/libxml2-$(LIBXML2_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://xmlsoft.org/sources/libxml2-$(LIBXML2_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libxml2-$(LIBXML2_VERSION).tar.gz,libxml2-$(LIBXML2_VERSION),libxml2)
 	$(call DO_PATCH,libxml2,libxml2,-p1)
 

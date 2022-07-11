@@ -7,7 +7,7 @@ LIBXXF86VM_VERSION := 1.1.4
 DEB_LIBXXF86VM_V   ?= $(LIBXXF86VM_VERSION)
 
 libxxf86vm-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXxf86vm-$(LIBXXF86VM_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libXxf86vm-$(LIBXXF86VM_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libXxf86vm-$(LIBXXF86VM_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXxf86vm-$(LIBXXF86VM_VERSION).tar.gz,libXxf86vm-$(LIBXXF86VM_VERSION),libxxf86vm)
 

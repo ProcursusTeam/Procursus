@@ -9,7 +9,7 @@ LSOF_VERSION := 62
 DEB_LSOF_V   ?= $(LSOF_VERSION)
 
 lsof-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://opensource.apple.com/tarballs/lsof/lsof-$(LSOF_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://opensource.apple.com/tarballs/lsof/lsof-$(LSOF_VERSION).tar.gz)
 	$(call EXTRACT_TAR,lsof-$(LSOF_VERSION).tar.gz,lsof-$(LSOF_VERSION),lsof)
 	mkdir -p $(BUILD_STAGE)/lsof/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{sbin,share/man/man8}
 	sed -i 's/lcurses/lncursesw/' $(BUILD_WORK)/lsof/lsof/Configure

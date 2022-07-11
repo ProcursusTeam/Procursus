@@ -7,7 +7,7 @@ DOS2UNIX_VERSION := 7.4.2
 DEB_DOS2UNIX_V   ?= $(DOS2UNIX_VERSION)
 
 dos2unix-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://waterlan.home.xs4all.nl/dos2unix/dos2unix-$(DOS2UNIX_VERSION).tar.gz{,.asc}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://waterlan.home.xs4all.nl/dos2unix/dos2unix-$(DOS2UNIX_VERSION).tar.gz{$(comma).asc})
 	$(call PGP_VERIFY,dos2unix-$(DOS2UNIX_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,dos2unix-$(DOS2UNIX_VERSION).tar.gz,dos2unix-$(DOS2UNIX_VERSION),dos2unix)
 

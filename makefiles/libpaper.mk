@@ -7,7 +7,7 @@ LIBPAPER_VERSION := 1.1.28
 DEB_LIBPAPER_V   ?= $(LIBPAPER_VERSION)
 
 libpaper-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/libp/libpaper/libpaper_$(LIBPAPER_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://deb.debian.org/debian/pool/main/libp/libpaper/libpaper_$(LIBPAPER_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libpaper_$(LIBPAPER_VERSION).tar.gz,libpaper-$(LIBPAPER_VERSION),libpaper)
 
 ifneq ($(wildcard $(BUILD_WORK)/libpaper/.build_complete),)

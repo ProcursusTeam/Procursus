@@ -7,7 +7,7 @@ X11_APPS_VERSION := 7.7+8
 DEB_X11_APPS_V   ?= $(X11_APPS_VERSION)
 
 x11-apps-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir$(BUILD_SOURCE) https://salsa.debian.org/xorg-team/app/x11-apps/-/archive/x11-apps-$(X11_APPS_VERSION)/x11-apps-x11-apps-$(X11_APPS_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://salsa.debian.org/xorg-team/app/x11-apps/-/archive/x11-apps-$(X11_APPS_VERSION)/x11-apps-x11-apps-$(X11_APPS_VERSION).tar.gz)
 	$(call EXTRACT_TAR,x11-apps-x11-apps-$(X11_APPS_VERSION).tar.gz,x11-apps-x11-apps-$(X11_APPS_VERSION),x11-apps)
 	$(call DO_PATCH,xedit,x11-apps/xedit,-p1)
 

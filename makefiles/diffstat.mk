@@ -7,7 +7,7 @@ DIFFSTAT_VERSION := 1.64
 DEB_DIFFSTAT_V   ?= $(DIFFSTAT_VERSION)
 
 diffstat-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir$(BUILD_SOURCE) https://invisible-mirror.net/archives/diffstat/diffstat-$(DIFFSTAT_VERSION).tgz{,.asc}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://invisible-mirror.net/archives/diffstat/diffstat-$(DIFFSTAT_VERSION).tgz{$(comma).asc})
 	$(call PGP_VERIFY,diffstat-$(DIFFSTAT_VERSION).tgz,asc)
 	$(call EXTRACT_TAR,diffstat-$(DIFFSTAT_VERSION).tgz,diffstat-$(DIFFSTAT_VERSION),diffstat)
 

@@ -7,7 +7,7 @@ XTERM_VERSION := 368
 DEB_XTERM_V   ?= $(XTERM_VERSION)
 
 xterm-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://invisible-mirror.net/archives/xterm/xterm-$(XTERM_VERSION).tgz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://invisible-mirror.net/archives/xterm/xterm-$(XTERM_VERSION).tgz)
 	$(call EXTRACT_TAR,xterm-$(XTERM_VERSION).tgz,xterm-$(XTERM_VERSION),xterm)
 
 ifneq ($(wildcard $(BUILD_WORK)/xterm/.build_complete),)

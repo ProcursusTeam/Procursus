@@ -7,7 +7,7 @@ GTIME_VERSION := 1.9
 DEB_GTIME_V   ?= $(GTIME_VERSION)
 
 gtime-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftp.gnu.org/gnu/time/time-1.9.tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftp.gnu.org/gnu/time/time-1.9.tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,time-$(GTIME_VERSION).tar.gz)
 	$(call EXTRACT_TAR,time-$(GTIME_VERSION).tar.gz,time-$(GTIME_VERSION),gtime)
 

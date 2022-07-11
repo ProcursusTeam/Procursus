@@ -7,7 +7,7 @@ FOX1.6_VERSION := 1.6.56
 DEB_FOX1.6_V   ?= $(FOX1.6_VERSION)
 
 fox1.6-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://fox-toolkit.org/ftp/fox-1.6.56.tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://fox-toolkit.org/ftp/fox-1.6.56.tar.gz)
 	$(call EXTRACT_TAR,fox-$(FOX1.6_VERSION).tar.gz,fox-$(FOX1.6_VERSION),fox1.6)
 	$(call DO_PATCH,fox1.6,fox1.6,-p1)
 

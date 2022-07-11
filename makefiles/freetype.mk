@@ -7,7 +7,7 @@ FREETYPE_VERSION := 2.12.1
 DEB_FREETYPE_V   ?= $(FREETYPE_VERSION)
 
 freetype-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://download.savannah.gnu.org/releases/freetype/freetype-$(FREETYPE_VERSION).tar.xz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://download.savannah.gnu.org/releases/freetype/freetype-$(FREETYPE_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,freetype-$(FREETYPE_VERSION).tar.xz)
 	$(call EXTRACT_TAR,freetype-$(FREETYPE_VERSION).tar.xz,freetype-$(FREETYPE_VERSION),freetype)
 

@@ -7,7 +7,7 @@ GDDRESCUE_VERSION := 1.25
 DEB_GDDRESCUE_V   ?= $(GDDRESCUE_VERSION)
 
 gddrescue-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://mirror.keystealth.org/gnu/ddrescue/ddrescue-$(GDDRESCUE_VERSION).tar.lz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://mirror.keystealth.org/gnu/ddrescue/ddrescue-$(GDDRESCUE_VERSION).tar.lz{$(comma).sig})
 	$(call PGP_VERIFY,ddrescue-$(GDDRESCUE_VERSION).tar.lz)
 	$(call EXTRACT_TAR,ddrescue-$(GDDRESCUE_VERSION).tar.lz,ddrescue-$(GDDRESCUE_VERSION),gddrescue)
 

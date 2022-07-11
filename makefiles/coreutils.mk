@@ -16,7 +16,7 @@ COREUTILS_CONFIGURE_ARGS += --program-prefix=$(GNU_PREFIX)
 endif
 
 coreutils-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftpmirror.gnu.org/coreutils/coreutils-$(COREUTILS_VERSION).tar.xz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/coreutils/coreutils-$(COREUTILS_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,coreutils-$(COREUTILS_VERSION).tar.xz,coreutils-$(COREUTILS_VERSION),coreutils)
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1400 ] && echo 1),1)

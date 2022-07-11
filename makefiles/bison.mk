@@ -7,7 +7,7 @@ BISON_VERSION := 3.8.2
 DEB_BISON_V   ?= $(BISON_VERSION)
 
 bison-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftpmirror.gnu.org/gnu/bison/bison-$(BISON_VERSION).tar.xz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/gnu/bison/bison-$(BISON_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,bison-$(BISON_VERSION).tar.xz)
 	$(call EXTRACT_TAR,bison-$(BISON_VERSION).tar.xz,bison-$(BISON_VERSION),bison)
 

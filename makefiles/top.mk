@@ -9,7 +9,7 @@ TOP_VERSION   := 125
 DEB_TOP_V     ?= $(TOP_VERSION)
 
 top-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://opensource.apple.com/tarballs/top/top-$(TOP_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://opensource.apple.com/tarballs/top/top-$(TOP_VERSION).tar.gz)
 	$(call EXTRACT_TAR,top-$(TOP_VERSION).tar.gz,top-$(TOP_VERSION),top)
 	mkdir -p $(BUILD_WORK)/top/include/{IOKit/storage,mach}
 	cp -a $(MACOSX_SYSROOT)/usr/include/libkern $(BUILD_WORK)/top/include

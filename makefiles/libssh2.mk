@@ -7,7 +7,7 @@ LIBSSH2_VERSION := 1.10.0
 DEB_LIBSSH2_V   ?= $(LIBSSH2_VERSION)-1
 
 libssh2-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://libssh2.org/download/libssh2-$(LIBSSH2_VERSION).tar.gz{,.asc}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://libssh2.org/download/libssh2-$(LIBSSH2_VERSION).tar.gz{$(comma).asc})
 	$(call PGP_VERIFY,libssh2-$(LIBSSH2_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,libssh2-$(LIBSSH2_VERSION).tar.gz,libssh2-$(LIBSSH2_VERSION),libssh2)
 

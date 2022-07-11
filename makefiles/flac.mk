@@ -7,7 +7,7 @@ FLAC_VERSION := 1.3.3
 DEB_FLAC_V   ?= $(FLAC_VERSION)
 
 flac-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftp.osuosl.org/pub/xiph/releases/flac/flac-$(FLAC_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftp.osuosl.org/pub/xiph/releases/flac/flac-$(FLAC_VERSION).tar.xz)
 	$(call EXTRACT_TAR,flac-$(FLAC_VERSION).tar.xz,flac-$(FLAC_VERSION),flac)
 
 ifneq ($(wildcard $(BUILD_WORK)/flac/.build_complete),)

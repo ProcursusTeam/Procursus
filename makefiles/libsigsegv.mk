@@ -7,7 +7,7 @@ LIBSIGSEGV_VERSION := 2.13
 DEB_LIBSIGSEGV_V   ?= $(LIBSIGSEGV_VERSION)
 
 libsigsegv-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir$(BUILD_SOURCE) https://ftp.gnu.org/gnu/libsigsegv/libsigsegv-$(LIBSIGSEGV_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftp.gnu.org/gnu/libsigsegv/libsigsegv-$(LIBSIGSEGV_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libsigsegv-$(LIBSIGSEGV_VERSION).tar.gz,libsigsegv-$(LIBSIGSEGV_VERSION),libsigsegv)
 	sed -i 's|#include <nlist.h>|#include <mach-o/nlist.h>|g' $(BUILD_WORK)/libsigsegv/src/stackvma-mach.c
 

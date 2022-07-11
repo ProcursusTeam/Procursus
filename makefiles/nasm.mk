@@ -7,7 +7,7 @@ NASM_VERSION := 2.15.05
 DEB_NASM_V   ?= $(NASM_VERSION)
 
 nasm-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.nasm.us/pub/nasm/releasebuilds/$(NASM_VERSION)/nasm-$(NASM_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.nasm.us/pub/nasm/releasebuilds/$(NASM_VERSION)/nasm-$(NASM_VERSION).tar.xz)
 	$(call EXTRACT_TAR,nasm-$(NASM_VERSION).tar.xz,nasm-$(NASM_VERSION),nasm)
 
 ifneq ($(wildcard $(BUILD_WORK)/nasm/.build_complete),)

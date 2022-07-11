@@ -7,7 +7,7 @@ UCL_VERSION := 1.03
 DEB_UCL_V   ?= $(UCL_VERSION)
 
 ucl-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.oberhumer.com/opensource/ucl/download/ucl-$(UCL_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.oberhumer.com/opensource/ucl/download/ucl-$(UCL_VERSION).tar.gz)
 	$(call EXTRACT_TAR,ucl-$(UCL_VERSION).tar.gz,ucl-$(UCL_VERSION),ucl)
 	$(call DO_PATCH,ucl,ucl,-p1)
 

@@ -7,7 +7,7 @@ BASIC-CMDS_VERSION := 55
 DEB_BASIC-CMDS_V   ?= $(BASIC-CMDS_VERSION)-2
 
 basic-cmds-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://opensource.apple.com/tarballs/basic_cmds/basic_cmds-$(BASIC-CMDS_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://opensource.apple.com/tarballs/basic_cmds/basic_cmds-$(BASIC-CMDS_VERSION).tar.gz)
 	$(call EXTRACT_TAR,basic_cmds-$(BASIC-CMDS_VERSION).tar.gz,basic_cmds-$(BASIC-CMDS_VERSION),basic-cmds)
 	mkdir -p $(BUILD_STAGE)/basic-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 

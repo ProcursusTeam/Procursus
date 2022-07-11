@@ -7,7 +7,7 @@ LIBLOUIS_VERSION  := 3.17.0
 DEB_LIBLOUIS_V    ?= $(LIBLOUIS_VERSION)
 
 liblouis-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/liblouis/liblouis/releases/download/v$(LIBLOUIS_VERSION)/liblouis-$(LIBLOUIS_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/liblouis/liblouis/releases/download/v$(LIBLOUIS_VERSION)/liblouis-$(LIBLOUIS_VERSION).tar.gz)
 	$(call EXTRACT_TAR,liblouis-$(LIBLOUIS_VERSION).tar.gz,liblouis-$(LIBLOUIS_VERSION),liblouis)
 
 ifneq ($(wildcard $(BUILD_WORK)/liblouis/.build_complete),)

@@ -7,7 +7,7 @@ LIBASSUAN_VERSION := 2.5.5
 DEB_LIBASSUAN_V   ?= $(LIBASSUAN_VERSION)
 
 libassuan-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/libassuan/libassuan-$(LIBASSUAN_VERSION).tar.bz2{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://gnupg.org/ftp/gcrypt/libassuan/libassuan-$(LIBASSUAN_VERSION).tar.bz2{$(comma).sig})
 	$(call PGP_VERIFY,libassuan-$(LIBASSUAN_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libassuan-$(LIBASSUAN_VERSION).tar.bz2,libassuan-$(LIBASSUAN_VERSION),libassuan)
 

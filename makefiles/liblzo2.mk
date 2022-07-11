@@ -7,7 +7,7 @@ LIBLZO2_VERSION := 2.10
 DEB_LIBLZO2_V   ?= $(LIBLZO2_VERSION)
 
 liblzo2-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.oberhumer.com/opensource/lzo/download/lzo-$(LIBLZO2_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.oberhumer.com/opensource/lzo/download/lzo-$(LIBLZO2_VERSION).tar.gz)
 	$(call EXTRACT_TAR,lzo-$(LIBLZO2_VERSION).tar.gz,lzo-$(LIBLZO2_VERSION),liblzo2)
 
 ifneq ($(wildcard $(BUILD_WORK)/liblzo2/.build_complete),)

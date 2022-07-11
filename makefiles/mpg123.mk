@@ -7,7 +7,7 @@ MPG123_VERSION := 1.26.3
 DEB_MPG123_V   ?= $(MPG123_VERSION)
 
 mpg123-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.mpg123.de/download/mpg123-$(MPG123_VERSION).tar.bz2
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.mpg123.de/download/mpg123-$(MPG123_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,mpg123-$(MPG123_VERSION).tar.bz2,mpg123-$(MPG123_VERSION),mpg123)
 
 ifneq ($(wildcard $(BUILD_WORK)/mpg123/.build_complete),)

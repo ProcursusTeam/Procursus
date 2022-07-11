@@ -12,7 +12,7 @@ READLINE_PATCH   := 2
 DEB_READLINE_V   ?= $(READLINE_VERSION).$(READLINE_PATCH)
 
 readline-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftp.gnu.org/gnu/readline/readline-$(READLINE_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftp.gnu.org/gnu/readline/readline-$(READLINE_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,readline-$(READLINE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,readline-$(READLINE_VERSION).tar.gz,readline-$(READLINE_VERSION),readline)
 	$(call DO_PATCH,readline,readline,-p0)

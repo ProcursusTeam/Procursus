@@ -7,7 +7,7 @@ WIMLIB_VERSION := 1.13.3
 DEB_WIMLIB_V   ?= $(WIMLIB_VERSION)
 
 wimlib-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://wimlib.net/downloads/wimlib-$(WIMLIB_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://wimlib.net/downloads/wimlib-$(WIMLIB_VERSION).tar.gz)
 	$(call EXTRACT_TAR,wimlib-$(WIMLIB_VERSION).tar.gz,wimlib-$(WIMLIB_VERSION),wimlib)
 
 ifneq ($(wildcard $(BUILD_WORK)/wimlib/.build_complete),)

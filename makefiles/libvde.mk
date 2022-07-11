@@ -7,7 +7,7 @@ LIBVDE_VERSION := 2.3.2
 DEB_LIBVDE_V   ?= $(LIBVDE_VERSION)
 
 libvde-setup: setup file-setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://downloads.sourceforge.net/project/vde/vde2/$(LIBVDE_VERSION)/vde2-$(LIBVDE_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://downloads.sourceforge.net/project/vde/vde2/$(LIBVDE_VERSION)/vde2-$(LIBVDE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,vde2-$(LIBVDE_VERSION).tar.gz,vde2-$(LIBVDE_VERSION),libvde)
 	$(call DO_PATCH,vde2,libvde,-p1)
 	cp -a $(BUILD_WORK)/file/config.sub $(BUILD_WORK)/libvde

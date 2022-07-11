@@ -9,7 +9,7 @@ DEB_NGHTTP2_V   ?= $(NGHTTP2_VERSION)
 ##### EVALUATE WHETHER THIS NEEDS LAUNCHDAEMONS AT A LATER DATE #####
 
 nghttp2-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/nghttp2/nghttp2/releases/download/v$(NGHTTP2_VERSION)/nghttp2-$(NGHTTP2_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/nghttp2/nghttp2/releases/download/v$(NGHTTP2_VERSION)/nghttp2-$(NGHTTP2_VERSION).tar.xz)
 	$(call EXTRACT_TAR,nghttp2-$(NGHTTP2_VERSION).tar.xz,nghttp2-$(NGHTTP2_VERSION),nghttp2)
 	sed -i '1i #define\ __APPLE_USE_RFC_3542\ 1' $(BUILD_WORK)/nghttp2/src/util.cc
 

@@ -7,7 +7,7 @@ LIBXDMCP_VERSION := 1.1.3
 DEB_LIBXDMCP_V   ?= $(LIBXDMCP_VERSION)
 
 libxdmcp-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.x.org/archive/individual/lib/libXdmcp-$(LIBXDMCP_VERSION).tar.bz2
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.x.org/archive/individual/lib/libXdmcp-$(LIBXDMCP_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libXdmcp-$(LIBXDMCP_VERSION).tar.bz2,libXdmcp-$(LIBXDMCP_VERSION),libxdmcp)
 
 ifneq ($(wildcard $(BUILD_WORK)/libxdmcp/.build_complete),)

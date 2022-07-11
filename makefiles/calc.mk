@@ -7,7 +7,7 @@ CALC_VERSION := 2.13.0.1
 DEB_CALC_V   ?= $(CALC_VERSION)
 
 calc-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/lcn2/calc/releases/download/v$(CALC_VERSION)/calc-$(CALC_VERSION).tar.bz2
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/lcn2/calc/releases/download/v$(CALC_VERSION)/calc-$(CALC_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,calc-$(CALC_VERSION).tar.bz2,calc-$(CALC_VERSION),calc)
 	sed -i '/#include <stdio.h>/a #include <string.h>' $(BUILD_WORK)/calc/have_memmv.c
 	sed -i '/#include <stdio.h>/a #include <string.h>' $(BUILD_WORK)/calc/have_newstr.c

@@ -9,7 +9,7 @@ NETWORK-CMDS_VERSION := 596
 DEB_NETWORK-CMDS_V   ?= $(NETWORK-CMDS_VERSION)
 
 network-cmds-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://opensource.apple.com/tarballs/network_cmds/network_cmds-$(NETWORK-CMDS_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://opensource.apple.com/tarballs/network_cmds/network_cmds-$(NETWORK-CMDS_VERSION).tar.gz)
 	$(call EXTRACT_TAR,network_cmds-$(NETWORK-CMDS_VERSION).tar.gz,network_cmds-$(NETWORK-CMDS_VERSION),network-cmds)
 	mkdir -p $(BUILD_STAGE)/network-cmds/{{s,}bin,usr/{{s,}bin,libexec}}
 

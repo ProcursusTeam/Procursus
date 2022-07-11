@@ -13,7 +13,7 @@ DEB_SWIFT_V   ?= $(SWIFT_VERSION)~$(SWIFT_SUFFIX)
 DEB_LLVM_V    ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)
 
 llvm-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/apple/llvm-project/archive/swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/apple/llvm-project/archive/swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz)
 	$(call GITHUB_ARCHIVE,apple,swift,$(SWIFT_VERSION)-$(SWIFT_SUFFIX),swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),swift-swift)
 	$(call GITHUB_ARCHIVE,apple,cmark,$(SWIFT_VERSION)-$(SWIFT_SUFFIX),swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),swift-cmark)
 	$(call EXTRACT_TAR,swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz,llvm-project-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),llvm)

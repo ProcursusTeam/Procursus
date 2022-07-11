@@ -7,7 +7,7 @@ LIBXCB_VERSION := 1.14
 DEB_LIBXCB_V   ?= $(LIBXCB_VERSION)
 
 libxcb-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libxcb-$(LIBXCB_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libxcb-$(LIBXCB_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libxcb-$(LIBXCB_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libxcb-$(LIBXCB_VERSION).tar.gz,libxcb-$(LIBXCB_VERSION),libxcb)
 
