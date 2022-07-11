@@ -7,7 +7,7 @@ TREE_VERSION := 2.0.1
 DEB_TREE_V   ?= $(TREE_VERSION)
 
 tree-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://mama.indstate.edu/users/ice/tree/src/tree-$(TREE_VERSION).tgz
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://mama.indstate.edu/users/ice/tree/src/tree-$(TREE_VERSION).tgz
 	$(call EXTRACT_TAR,tree-$(TREE_VERSION).tgz,tree-$(TREE_VERSION),tree)
 	#$(call DO_PATCH,tree,tree,-p1)
 

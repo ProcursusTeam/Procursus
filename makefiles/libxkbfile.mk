@@ -7,7 +7,7 @@ LIBXKBFILE_VERSION := 1.1.0
 DEB_LIBXKBFILE_V   ?= $(LIBXKBFILE_VERSION)
 
 libxkbfile-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libxkbfile-$(LIBXKBFILE_VERSION).tar.bz2{,.sig}
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libxkbfile-$(LIBXKBFILE_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,libxkbfile-$(LIBXKBFILE_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libxkbfile-$(LIBXKBFILE_VERSION).tar.bz2,libxkbfile-$(LIBXKBFILE_VERSION),libxkbfile)
 

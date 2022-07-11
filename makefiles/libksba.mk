@@ -7,7 +7,7 @@ KSBA_VERSION  := 1.6.0
 DEB_KSBA_V    ?= $(KSBA_VERSION)
 
 libksba-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/libksba/libksba-$(KSBA_VERSION).tar.bz2{,.sig}
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/libksba/libksba-$(KSBA_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,libksba-$(KSBA_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libksba-$(KSBA_VERSION).tar.bz2,libksba-$(KSBA_VERSION),libksba)
 

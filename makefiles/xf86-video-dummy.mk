@@ -7,7 +7,7 @@ DUMMY_VERSION := 0.3.8
 DEB_DUMMY_V   ?= $(DUMMY_VERSION)
 
 xf86-video-dummy-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/driver/xf86-video-dummy-$(DUMMY_VERSION).tar.gz{,.sig}
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.x.org/archive/individual/driver/xf86-video-dummy-$(DUMMY_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,xf86-video-dummy-$(DUMMY_VERSION).tar.gz)
 	$(call EXTRACT_TAR,xf86-video-dummy-$(DUMMY_VERSION).tar.gz,xf86-video-dummy-$(DUMMY_VERSION),xf86-video-dummy)
 

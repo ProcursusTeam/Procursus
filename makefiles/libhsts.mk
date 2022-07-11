@@ -7,7 +7,7 @@ LIBHSTS_VERSION := 0.1.0
 DEB_LIBHSTS_V   ?= $(LIBHSTS_VERSION)
 
 libhsts-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://gitlab.com/rockdaboot/libhsts/-/archive/libhsts-$(LIBHSTS_VERSION)/libhsts-libhsts-$(LIBHSTS_VERSION).tar.gz
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://gitlab.com/rockdaboot/libhsts/-/archive/libhsts-$(LIBHSTS_VERSION)/libhsts-libhsts-$(LIBHSTS_VERSION).tar.gz
 	$(call EXTRACT_TAR,libhsts-libhsts-$(LIBHSTS_VERSION).tar.gz,libhsts-libhsts-$(LIBHSTS_VERSION),libhsts)
 
 ifneq ($(wildcard $(BUILD_WORK)/libhsts/.build_complete),)

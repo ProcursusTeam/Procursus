@@ -7,7 +7,7 @@ LIBDVBPSI_VERSION := 1.3.3
 DEB_LIBDVBPSI_V   ?= $(LIBDVBPSI_VERSION)
 
 libdvbpsi-setup: setup
-	wget -q -nc -P$(BUILD_SOURCE) https://download.videolan.org/pub/videolan/libdvbpsi/$(LIBDVBPSI_VERSION)/libdvbpsi-$(LIBDVBPSI_VERSION).tar.bz2
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir$(BUILD_SOURCE) https://download.videolan.org/pub/videolan/libdvbpsi/$(LIBDVBPSI_VERSION)/libdvbpsi-$(LIBDVBPSI_VERSION).tar.bz2
 	$(call EXTRACT_TAR,libdvbpsi-$(LIBDVBPSI_VERSION).tar.bz2,libdvbpsi-$(LIBDVBPSI_VERSION),libdvbpsi)
 
 ifneq ($(wildcard $(BUILD_WORK)/libdvbpsi/.build_complete),)

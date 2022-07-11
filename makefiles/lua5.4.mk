@@ -7,7 +7,7 @@ LUA5.4_VERSION := 5.4.2
 DEB_LUA5.4_V   ?= $(LUA5.4_VERSION)-1
 
 lua5.4-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.lua.org/ftp/lua-$(LUA5.4_VERSION).tar.gz
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.lua.org/ftp/lua-$(LUA5.4_VERSION).tar.gz
 	$(call EXTRACT_TAR,lua-$(LUA5.4_VERSION).tar.gz,lua-$(LUA5.4_VERSION),lua5.4)
 	$(call DO_PATCH,lua5.4,lua5.4,-p1)
 

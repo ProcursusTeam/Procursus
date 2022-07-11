@@ -10,7 +10,7 @@ PERL_CROSS_V := 1.3.5
 DEB_PERL_V   ?= $(PERL_VERSION)
 
 perl-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.cpan.org/src/5.0/perl-$(PERL_VERSION).tar.gz \
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.cpan.org/src/5.0/perl-$(PERL_VERSION).tar.gz \
 		https://github.com/arsv/perl-cross/releases/download/$(PERL_CROSS_V)/perl-cross-$(PERL_CROSS_V).tar.gz
 	rm -rf $(BUILD_WORK)/perl
 	$(call EXTRACT_TAR,perl-$(PERL_VERSION).tar.gz,perl-$(PERL_VERSION),perl)

@@ -7,7 +7,7 @@ LIBXFIXES_VERSION := 5.0.3
 DEB_LIBXFIXES_V   ?= $(LIBXFIXES_VERSION)
 
 libxfixes-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXfixes-$(LIBXFIXES_VERSION).tar.gz{,.sig}
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXfixes-$(LIBXFIXES_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,libXfixes-$(LIBXFIXES_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXfixes-$(LIBXFIXES_VERSION).tar.gz,libXfixes-$(LIBXFIXES_VERSION),libxfixes)
 

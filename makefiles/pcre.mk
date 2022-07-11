@@ -11,7 +11,7 @@ PCRE_VERSION  := 8.45
 DEB_PCRE_V    ?= $(PCRE_VERSION)-1
 
 pcre-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://downloads.sourceforge.net/pcre/pcre-$(PCRE_VERSION).tar.bz2{,.sig}
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://downloads.sourceforge.net/pcre/pcre-$(PCRE_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,pcre-$(PCRE_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,pcre-$(PCRE_VERSION).tar.bz2,pcre-$(PCRE_VERSION),pcre)
 	$(call DO_PATCH,pcre,pcre,-p1)

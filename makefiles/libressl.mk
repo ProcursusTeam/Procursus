@@ -7,7 +7,7 @@ LIBRESSL_VERSION := 3.3.1
 DEB_LIBRESSL_V   ?= $(LIBRESSL_VERSION)
 
 libressl-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-$(LIBRESSL_VERSION).tar.gz{,.asc}
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-$(LIBRESSL_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,libressl-$(LIBRESSL_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,libressl-$(LIBRESSL_VERSION).tar.gz,libressl-$(LIBRESSL_VERSION),libressl)
 

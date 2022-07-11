@@ -7,7 +7,7 @@ LIBC-ARES_VERSION := 1.17.2
 DEB_LIBC-ARES_V   ?= $(LIBC-ARES_VERSION)
 
 libc-ares-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://c-ares.haxx.se/download/c-ares-$(LIBC-ARES_VERSION).tar.gz{,.asc}
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://c-ares.haxx.se/download/c-ares-$(LIBC-ARES_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,c-ares-$(LIBC-ARES_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,c-ares-$(LIBC-ARES_VERSION).tar.gz,c-ares-$(LIBC-ARES_VERSION),libc-ares)
 

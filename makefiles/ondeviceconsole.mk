@@ -9,7 +9,7 @@ DEB_ONDEVICECONSOLE_V   ?= $(ONDEVICECONSOLE_VERSION)
 
 ondeviceconsole-setup: setup
 	mkdir -p $(BUILD_WORK)/ondeviceconsole
-	wget -q -nc -P $(BUILD_WORK)/ondeviceconsole \
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_WORK)/ondeviceconsole \
 		https://raw.githubusercontent.com/eswick/ondeviceconsole/$(ONDEVICECONSOLE_COMMIT)/main.m
 	sed -i '\|#import <sys/socket.h>|a #import <Foundation/Foundation.h>' \
 		$(BUILD_WORK)/ondeviceconsole/main.m

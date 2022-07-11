@@ -7,7 +7,7 @@ LIBXFONT2_VERSION := 2.0.4
 DEB_LIBXFONT2_V   ?= $(LIBXFONT2_VERSION)
 
 libxfont2-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXfont2-$(LIBXFONT2_VERSION).tar.gz{,.sig}
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXfont2-$(LIBXFONT2_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,libXfont2-$(LIBXFONT2_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXfont2-$(LIBXFONT2_VERSION).tar.gz,libXfont2-$(LIBXFONT2_VERSION),libxfont2)
 

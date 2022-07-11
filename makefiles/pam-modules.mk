@@ -13,11 +13,11 @@ DEB_PAM-MODULES_V   ?= $(PAM-MODULES_VERSION)-1
 ###
 
 pam-modules-setup: setup
-	-wget -q -nc -P$(BUILD_SOURCE) https://opensource.apple.com/tarballs/pam_modules/pam_modules-$(PAM-MODULES_VERSION).tar.gz
+	-curl --silent -Z --create-dirs -C - --remote-name-all --output-dir$(BUILD_SOURCE) https://opensource.apple.com/tarballs/pam_modules/pam_modules-$(PAM-MODULES_VERSION).tar.gz
 	$(call EXTRACT_TAR,pam_modules-$(PAM-MODULES_VERSION).tar.gz,pam_modules-$(PAM-MODULES_VERSION),pam-modules)
 	sed -i 's/__APPLE__/NOTDEFINED/' $(BUILD_WORK)/pam-modules/modules/pam_group/pam_group.c
 	mkdir -p $(BUILD_STAGE)/pam-modules/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pam,share/man/man8}
-	wget -q -nc -P $(BUILD_WORK)/pam-modules/include \
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_WORK)/pam-modules/include \
 		https://opensource.apple.com/source/Libinfo/Libinfo-542.40.3/membership.subproj/membershipPriv.h
 
 ifneq ($(wildcard $(BUILD_WORK)/pam-modules/.build_complete),)

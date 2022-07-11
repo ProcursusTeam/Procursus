@@ -12,7 +12,7 @@ BASH_PATCHLEVEL := 16
 DEB_BASH_V      ?= $(BASH_VERSION).$(BASH_PATCHLEVEL)
 
 bash-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION).tar.gz{,.sig}
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,bash-$(BASH_VERSION).tar.gz)
 	$(call EXTRACT_TAR,bash-$(BASH_VERSION).tar.gz,bash-$(BASH_VERSION),bash)
 	$(call DO_PATCH,bash,bash,-p0)

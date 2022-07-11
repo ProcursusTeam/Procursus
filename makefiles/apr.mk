@@ -7,7 +7,7 @@ APR_VERSION := 1.7.0
 DEB_APR_V   ?= $(APR_VERSION)
 
 apr-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://downloads.apache.org/apr/apr-$(APR_VERSION).tar.gz{,.asc}
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://downloads.apache.org/apr/apr-$(APR_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,apr-$(APR_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,apr-$(APR_VERSION).tar.gz,apr-$(APR_VERSION),apr)
 	$(call DO_PATCH,apr,apr,-p1)

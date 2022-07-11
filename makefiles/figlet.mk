@@ -7,7 +7,7 @@ FIGLET_VERSION := 2.2.5
 DEB_FIGLET_V   ?= $(FIGLET_VERSION)
 
 figlet-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) ftp://ftp.figlet.org/pub/figlet/program/unix/figlet-$(FIGLET_VERSION).tar.gz
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) ftp://ftp.figlet.org/pub/figlet/program/unix/figlet-$(FIGLET_VERSION).tar.gz
 	$(call EXTRACT_TAR,figlet-$(FIGLET_VERSION).tar.gz,figlet-$(FIGLET_VERSION),figlet)
 	sed -i '/#include <stdio.h>/a #include <getopt.h>' $(BUILD_WORK)/figlet/figlet.c
 
