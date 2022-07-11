@@ -23,8 +23,8 @@ ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1400 ] && echo 1),1)
 	touch $(BUILD_WORK)/coreutils/reflink-apfs.patch.done
 endif
 	$(call DO_PATCH,coreutils,coreutils,-p1)
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) \
-		https://git.cameronkatri.com/getent-darwin/snapshot/getent-darwin-$(GETENTDARWIN_COMMIT).tar.zst
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
+		https://git.cameronkatri.com/getent-darwin/snapshot/getent-darwin-$(GETENTDARWIN_COMMIT).tar.zst)
 	$(call EXTRACT_TAR,getent-darwin-$(GETENTDARWIN_COMMIT).tar.zst,getent-darwin-$(GETENTDARWIN_COMMIT),coreutils/getent-darwin)
 
 ifneq ($(wildcard $(BUILD_WORK)/coreutils/.build_complete),)

@@ -18,10 +18,10 @@ file-cmds-setup: setup
 	$(call EXTRACT_TAR,file_cmds-$(FILE-CMDS_VERSION).tar.gz,file_cmds-$(FILE-CMDS_VERSION),file-cmds)
 	mkdir -p $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 	mkdir -p $(BUILD_WORK)/file-cmds/ipcs/sys
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_WORK)/file-cmds/ipcs/sys \
+	$(call DOWNLOAD_FILES,$(BUILD_WORK)/file-cmds/ipcs/sys, \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/ipcs.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/sem_internal.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/shm_internal.h
+		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/shm_internal.h)
 	sed -i 's/user64_time_t/user_time_t/g' $(BUILD_WORK)/file-cmds/ipcs/sys/sem_internal.h
 	sed -i 's/user32_time_t/user_time_t/g' $(BUILD_WORK)/file-cmds/ipcs/sys/sem_internal.h
 	sed -i 's/user32_addr_t/user_addr_t/g' $(BUILD_WORK)/file-cmds/ipcs/sys/shm_internal.h

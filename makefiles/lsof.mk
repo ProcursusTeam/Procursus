@@ -17,8 +17,8 @@ lsof-setup: setup
 	# Mess of copying over headers because some build_base headers interfere with the build of Apple cmds.
 	mkdir -p $(BUILD_WORK)/lsof/lsof/include/rpc
 
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_WORK)/lsof/lsof/include/rpc \
-		https://opensource.apple.com/source/Libinfo/Libinfo-538/rpc.subproj/pmap_prot.h
+	$(call DOWNLOAD_FILES,$(BUILD_WORK)/lsof/lsof/include/rpc, \
+		https://opensource.apple.com/source/Libinfo/Libinfo-538/rpc.subproj/pmap_prot.h)
 
 ifneq ($(wildcard $(BUILD_WORK)/lsof/.build_complete),)
 lsof:

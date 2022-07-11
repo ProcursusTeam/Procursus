@@ -8,9 +8,9 @@ DEB_HSTSPRELOAD_V   ?= $(HSTSPRELOAD_VERSION)
 
 hstspreload-setup: setup
 	mkdir -p $(BUILD_WORK)/hstspreload
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_WORK)/hstspreload \
+	$(call DOWNLOAD_FILES,$(BUILD_WORK)/hstspreload, \
 		https://raw.githubusercontent.com/chromium/chromium/master/net/http/transport_security_state_static.json \
-		https://gitlab.com/rockdaboot/libhsts/-/raw/master/src/hsts-make-dafsa
+		https://gitlab.com/rockdaboot/libhsts/-/raw/master/src/hsts-make-dafsa)
 	chmod 0755 $(BUILD_WORK)/hstspreload/hsts-make-dafsa
 	sed -i 's/^ *\/\/.*$$//g' $(BUILD_WORK)/hstspreload/transport_security_state_static.json
 	sed -i 's|env python|env python3|' $(BUILD_WORK)/hstspreload/hsts-make-dafsa

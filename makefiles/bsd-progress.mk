@@ -8,8 +8,8 @@ BSD_PROGRESS_COMMIT  := a9bda63998e2f358b07a50a8dd4ed48100f9a9ee
 DEB_BSD_PROGRESS_V   ?= $(BSD_PROGRESS_VERSION)
 
 bsd-progress-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) \
-		https://git.cameronkatri.com/bsd-progress/snapshot/bsd-progress-$(BSD_PROGRESS_COMMIT).tar.zst
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
+		https://git.cameronkatri.com/bsd-progress/snapshot/bsd-progress-$(BSD_PROGRESS_COMMIT).tar.zst)
 	$(call EXTRACT_TAR,bsd-progress-$(BSD_PROGRESS_COMMIT).tar.zst,bsd-progress-$(BSD_PROGRESS_COMMIT),bsd-progress)
 
 ifneq ($(wildcard $(BUILD_WORK)/bsd-progress/.build_complete),)

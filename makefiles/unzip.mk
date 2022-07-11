@@ -8,8 +8,8 @@ DEBIAN_UNZIP_V := $(UNZIP_VERSION)-26
 DEB_UNZIP_V    ?= $(DEBIAN_UNZIP_V)
 
 unzip-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/u/unzip/unzip_$(UNZIP_VERSION).orig.tar.gz \
-		https://deb.debian.org/debian/pool/main/u/unzip/unzip_$(DEBIAN_UNZIP_V).debian.tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/u/unzip/unzip_$(UNZIP_VERSION).orig.tar.gz, \
+		https://deb.debian.org/debian/pool/main/u/unzip/unzip_$(DEBIAN_UNZIP_V).debian.tar.xz)
 	$(call EXTRACT_TAR,unzip_$(UNZIP_VERSION).orig.tar.gz,unzip60,unzip)
 	$(call EXTRACT_TAR,unzip_$(DEBIAN_UNZIP_V).debian.tar.xz,debian/patches,$(BUILD_PATCH)/unzip-$(UNZIP_VERSION))
 	rm -rf $(BUILD_WORK)/debian

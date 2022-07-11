@@ -7,8 +7,8 @@ LIBXO_VERSION := 1.4.0
 DEB_LIBXO_V   ?= $(LIBXO_VERSION)
 
 libxo-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) \
-		https://github.com/Juniper/libxo/releases/download/$(LIBXO_VERSION)/libxo-$(LIBXO_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
+		https://github.com/Juniper/libxo/releases/download/$(LIBXO_VERSION)/libxo-$(LIBXO_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libxo-$(LIBXO_VERSION).tar.gz,libxo-$(LIBXO_VERSION),libxo)
 
 ifneq ($(wildcard $(BUILD_WORK)/libxo/.build_complete),)
