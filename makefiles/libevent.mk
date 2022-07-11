@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS        += libevent
 LIBEVENT_VERSION   := 2.1.12
-DEB_LIBEVENT_V     ?= $(LIBEVENT_VERSION)-2
+DEB_LIBEVENT_V     ?= $(LIBEVENT_VERSION)-3
 
 libevent-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/libevent/libevent/releases/download/release-$(LIBEVENT_VERSION)-stable/libevent-$(LIBEVENT_VERSION)-stable.tar.gz{$(comma).asc})
