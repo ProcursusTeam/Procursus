@@ -8,7 +8,7 @@ LIBEDIT_DATE    := 20210910
 DEB_LIBEDIT_V   ?= $(LIBEDIT_VERSION)-$(LIBEDIT_DATE)
 
 libedit-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://thrysoee.dk/editline/libedit-$(LIBEDIT_DATE)-$(LIBEDIT_VERSION).tar.gz
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://thrysoee.dk/editline/libedit-$(LIBEDIT_DATE)-$(LIBEDIT_VERSION).tar.gz
 	$(call EXTRACT_TAR,libedit-$(LIBEDIT_DATE)-$(LIBEDIT_VERSION).tar.gz,libedit-$(LIBEDIT_DATE)-$(LIBEDIT_VERSION),libedit)
 
 ifneq ($(wildcard $(BUILD_WORK)/libedit/.build_complete),)

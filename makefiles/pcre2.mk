@@ -7,7 +7,7 @@ PCRE2_VERSION := 10.40
 DEB_PCRE2_V   ?= $(PCRE2_VERSION)
 
 pcre2-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/PCRE2Project/pcre2/releases/download/pcre2-$(PCRE2_VERSION)/pcre2-$(PCRE2_VERSION).tar.bz2{,.sig}
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/PCRE2Project/pcre2/releases/download/pcre2-$(PCRE2_VERSION)/pcre2-$(PCRE2_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,pcre2-$(PCRE2_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,pcre2-$(PCRE2_VERSION).tar.bz2,pcre2-$(PCRE2_VERSION),pcre2)
 

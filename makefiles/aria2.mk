@@ -7,7 +7,7 @@ ARIA2_VERSION := 1.36.0
 DEB_ARIA2_V   ?= $(ARIA2_VERSION)
 
 aria2-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tatsuhiro-t/aria2/releases/download/release-$(ARIA2_VERSION)/aria2-$(ARIA2_VERSION).tar.xz
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/tatsuhiro-t/aria2/releases/download/release-$(ARIA2_VERSION)/aria2-$(ARIA2_VERSION).tar.xz
 	$(call EXTRACT_TAR,aria2-$(ARIA2_VERSION).tar.xz,aria2-$(ARIA2_VERSION),aria2)
 	$(call DO_PATCH,aria2,aria2,-p1)
 

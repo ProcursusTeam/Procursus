@@ -7,7 +7,7 @@ CPIO_VERSION := 2.13
 DEB_CPIO_V   ?= $(CPIO_VERSION)
 
 cpio-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/cpio/cpio-$(CPIO_VERSION).tar.gz{,.sig}
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftpmirror.gnu.org/cpio/cpio-$(CPIO_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,cpio-$(CPIO_VERSION).tar.gz)
 	$(call EXTRACT_TAR,cpio-$(CPIO_VERSION).tar.gz,cpio-$(CPIO_VERSION),cpio)
 	$(call DO_PATCH,cpio,cpio,-p1)

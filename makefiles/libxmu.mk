@@ -7,7 +7,7 @@ LIBXMU_VERSION := 1.1.3
 DEB_LIBXMU_V   ?= $(LIBXMU_VERSION)-1
 
 libxmu-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXmu-$(LIBXMU_VERSION).tar.bz2{,.sig}
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXmu-$(LIBXMU_VERSION).tar.bz2{,.sig}
 	$(call PGP_VERIFY,libXmu-$(LIBXMU_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libXmu-$(LIBXMU_VERSION).tar.bz2,libXmu-$(LIBXMU_VERSION),libxmu)
 

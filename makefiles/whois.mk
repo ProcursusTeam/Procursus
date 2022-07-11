@@ -7,7 +7,7 @@ WHOIS_VERSION := 5.5.10
 DEB_WHOIS_V   ?= $(WHOIS_VERSION)
 
 whois-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/w/whois/whois_$(WHOIS_VERSION).tar.xz
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/w/whois/whois_$(WHOIS_VERSION).tar.xz
 	$(call EXTRACT_TAR,whois_$(WHOIS_VERSION).tar.xz,whois-$(WHOIS_VERSION),whois)
 	sed -i '/_XOPEN_SOURCE/d' $(BUILD_WORK)/whois/utils.c
 	sed -i '/_XOPEN_SOURCE/d' $(BUILD_WORK)/whois/mkpasswd.c

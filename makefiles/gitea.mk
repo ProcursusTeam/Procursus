@@ -8,7 +8,7 @@ DEB_GITEA_V   ?= $(GITEA_VERSION)-1
 
 gitea-setup: setup
 	-[ ! -f "$(BUILD_SOURCE)/gitea-$(GITEA_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/gitea-$(GITEA_VERSION).tar.gz \
+		curl --silent -Z --create-dirs -C - --remote-name-all --output $(BUILD_SOURCE)/gitea-$(GITEA_VERSION).tar.gz \
 			https://github.com/go-gitea/gitea/releases/download/v$(GITEA_VERSION)/gitea-src-$(GITEA_VERSION).tar.gz
 	-[ ! -f "$(BUILD_WORK)/gitea" ] && \
 		mkdir -p $(BUILD_WORK)/gitea && \

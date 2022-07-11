@@ -7,7 +7,7 @@ DAV1D_VERSION := 1.0.0
 DEB_DAV1D_V   ?= $(DAV1D_VERSION)
 
 dav1d-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://downloads.videolan.org/pub/videolan/dav1d/$(DAV1D_VERSION)/dav1d-$(DAV1D_VERSION).tar.xz
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://downloads.videolan.org/pub/videolan/dav1d/$(DAV1D_VERSION)/dav1d-$(DAV1D_VERSION).tar.xz
 	$(call EXTRACT_TAR,dav1d-$(DAV1D_VERSION).tar.xz,dav1d-$(DAV1D_VERSION),dav1d)
 	mkdir -p $(BUILD_WORK)/dav1d/build
 

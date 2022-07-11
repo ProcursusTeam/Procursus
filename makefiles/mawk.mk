@@ -7,7 +7,7 @@ MAWK_VERSION := 1.3.4.20200120
 DEB_MAWK_V   ?= $(MAWK_VERSION)
 
 mawk-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/m/mawk/mawk_$(MAWK_VERSION).orig.tar.gz
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/m/mawk/mawk_$(MAWK_VERSION).orig.tar.gz
 	$(call EXTRACT_TAR,mawk_$(MAWK_VERSION).orig.tar.gz,$$(echo mawk-$(MAWK_VERSION) | sed 's/\(.*\)\./\1-/'),mawk)
 
 ifneq ($(wildcard $(BUILD_WORK)/mawk/.build_complete),)

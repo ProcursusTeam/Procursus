@@ -11,7 +11,7 @@ PKG-CONFIG_CONFIGURE_ARGS := --with-pc-path="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/l
 endif
 
 pkg-config-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://pkgconfig.freedesktop.org/releases/pkg-config-$(PKG-CONFIG_VERSION).tar.gz{,.asc}
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://pkgconfig.freedesktop.org/releases/pkg-config-$(PKG-CONFIG_VERSION).tar.gz{,.asc}
 	$(call PGP_VERIFY,pkg-config-$(PKG-CONFIG_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,pkg-config-$(PKG-CONFIG_VERSION).tar.gz,pkg-config-$(PKG-CONFIG_VERSION),pkg-config)
 

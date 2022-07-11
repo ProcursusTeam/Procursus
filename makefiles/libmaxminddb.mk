@@ -7,7 +7,7 @@ LIBMAXMINDDB_VERSION := 1.6.0
 DEB_LIBMAXMINDDB_V   ?= $(LIBMAXMINDDB_VERSION)
 
 libmaxminddb-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/maxmind/libmaxminddb/releases/download/$(LIBMAXMINDDB_VERSION)/libmaxminddb-$(LIBMAXMINDDB_VERSION).tar.gz
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/maxmind/libmaxminddb/releases/download/$(LIBMAXMINDDB_VERSION)/libmaxminddb-$(LIBMAXMINDDB_VERSION).tar.gz
 	$(call EXTRACT_TAR,libmaxminddb-$(LIBMAXMINDDB_VERSION).tar.gz,libmaxminddb-$(LIBMAXMINDDB_VERSION),libmaxminddb)
 
 ifneq ($(wildcard $(BUILD_WORK)/libmaxminddb/.build_complete),)

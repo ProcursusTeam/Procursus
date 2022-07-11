@@ -7,7 +7,7 @@ LIBFS_VERSION := 1.0.8
 DEB_LIBFS_V   ?= $(LIBFS_VERSION)
 
 libfs-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libFS-$(LIBFS_VERSION).tar.gz{,.sig}
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libFS-$(LIBFS_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,libFS-$(LIBFS_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libFS-$(LIBFS_VERSION).tar.gz,libFS-$(LIBFS_VERSION),libfs)
 

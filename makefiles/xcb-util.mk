@@ -7,7 +7,7 @@ XCB-UTIL_VERSION := 0.4.0
 DEB_XCB-UTIL_V   ?= $(XCB-UTIL_VERSION)
 
 xcb-util-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xcb.freedesktop.org/dist/xcb-util-$(XCB-UTIL_VERSION).tar.gz
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://xcb.freedesktop.org/dist/xcb-util-$(XCB-UTIL_VERSION).tar.gz
 	$(call EXTRACT_TAR,xcb-util-$(XCB-UTIL_VERSION).tar.gz,xcb-util-$(XCB-UTIL_VERSION),xcb-util)
 
 ifneq ($(wildcard $(BUILD_WORK)/xcb-util/.build_complete),)

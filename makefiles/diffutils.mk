@@ -11,7 +11,7 @@ DIFFUTILS_VERSION := 3.8
 DEB_DIFFUTILS_V   ?= $(DIFFUTILS_VERSION)
 
 diffutils-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/diffutils/diffutils-$(DIFFUTILS_VERSION).tar.xz{,.sig}
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftpmirror.gnu.org/diffutils/diffutils-$(DIFFUTILS_VERSION).tar.xz{,.sig}
 	$(call PGP_VERIFY,diffutils-$(DIFFUTILS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,diffutils-$(DIFFUTILS_VERSION).tar.xz,diffutils-$(DIFFUTILS_VERSION),diffutils)
 

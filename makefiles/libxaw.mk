@@ -7,7 +7,7 @@ LIBXAW_VERSION := 1.0.13
 DEB_LIBXAW_V  ?= $(LIBXAW_VERSION)
 
 libxaw-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/lib/libXaw-$(LIBXAW_VERSION).tar.gz{,.sig}
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.x.org/archive/individual/lib/libXaw-$(LIBXAW_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,libXaw-$(LIBXAW_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXaw-$(LIBXAW_VERSION).tar.gz,libXaw-$(LIBXAW_VERSION),libxaw)
 

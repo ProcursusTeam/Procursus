@@ -7,7 +7,7 @@ LIBTIFF_VERSION := 4.2.0
 DEB_LIBTIFF_V   ?= $(LIBTIFF_VERSION)
 
 libtiff-setup: setup
-	wget -q -nc -L -P $(BUILD_SOURCE) \
+	curl --silent -Z --create-dirs -L -C - --remote-name-all --output-dir $(BUILD_SOURCE) \
 		https://download.osgeo.org/libtiff/tiff-$(LIBTIFF_VERSION).tar.gz
 	$(call EXTRACT_TAR,tiff-$(LIBTIFF_VERSION).tar.gz,tiff-$(LIBTIFF_VERSION),libtiff)
 

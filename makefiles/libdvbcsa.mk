@@ -7,7 +7,7 @@ LIBDVBCSA_VERSION := 1.1.0
 DEB_LIBDVBCSA_V   ?= $(LIBDVBCSA_VERSION)
 
 libdvbcsa-setup: setup
-	wget -q -nc -P$(BUILD_SOURCE) https://download.videolan.org/pub/videolan/libdvbcsa/$(LIBDVBCSA_VERSION)/libdvbcsa-$(LIBDVBCSA_VERSION).tar.gz
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir$(BUILD_SOURCE) https://download.videolan.org/pub/videolan/libdvbcsa/$(LIBDVBCSA_VERSION)/libdvbcsa-$(LIBDVBCSA_VERSION).tar.gz
 	$(call EXTRACT_TAR,libdvbcsa-$(LIBDVBCSA_VERSION).tar.gz,libdvbcsa-$(LIBDVBCSA_VERSION),libdvbcsa)
 	echo "echo $(GNU_HOST_TRIPLE)" > $(BUILD_WORK)/libdvbcsa/config.sub
 

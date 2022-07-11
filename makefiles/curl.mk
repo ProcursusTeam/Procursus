@@ -7,7 +7,7 @@ CURL_VERSION := 7.83.1
 DEB_CURL_V   ?= $(CURL_VERSION)
 
 curl-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://curl.haxx.se/download/curl-$(CURL_VERSION).tar.xz{,.asc}
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://curl.haxx.se/download/curl-$(CURL_VERSION).tar.xz{,.asc}
 	$(call PGP_VERIFY,curl-$(CURL_VERSION).tar.xz,asc)
 	$(call EXTRACT_TAR,curl-$(CURL_VERSION).tar.xz,curl-$(CURL_VERSION),curl)
 	sed -i '/CURL_VERIFY_RUNTIMELIBS/d' $(BUILD_WORK)/curl/configure.ac

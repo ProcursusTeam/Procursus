@@ -54,7 +54,7 @@ tesseract-package: tesseract-stage
 	cp -a $(BUILD_STAGE)/tesseract/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libtesseract.5.dylib $(BUILD_DIST)/libtesseract5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/tesseract/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tesseract-ocr/5/tessdata $(BUILD_DIST)/libtesseract5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tesseract-ocr/5/
 	# Just bundle eng and osd with the library.
-	wget -q -nc -P $(BUILD_DIST)/libtesseract5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tesseract-ocr/5/tessdata \
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_DIST)/libtesseract5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tesseract-ocr/5/tessdata \
 		https://github.com/tesseract-ocr/tessdata_fast/raw/4.0.0/eng.traineddata \
 		https://github.com/tesseract-ocr/tessdata_fast/raw/4.0.0/osd.traineddata
 

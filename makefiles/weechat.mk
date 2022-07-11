@@ -7,7 +7,7 @@ WEECHAT_VERSION := 2.9
 DEB_WEECHAT_V   ?= $(WEECHAT_VERSION)
 
 weechat-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.weechat.org/files/src/weechat-$(WEECHAT_VERSION).tar.xz
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.weechat.org/files/src/weechat-$(WEECHAT_VERSION).tar.xz
 	$(call EXTRACT_TAR,weechat-$(WEECHAT_VERSION).tar.xz,weechat-$(WEECHAT_VERSION),weechat)
 
 ifneq ($(wildcard $(BUILD_WORK)/weechat/.build_complete),)

@@ -8,7 +8,7 @@ DEB_LIBSGMLS-PERL_V   ?= $(LIBSGMLS-PERL_VERSION)
 
 libsgmls-perl-setup: setup
 	-[ ! -e "$(BUILD_SOURCE)/libsgmls-perl-$(LIBSGMLS-PERL_VERSION).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/libsgmls-perl-$(LIBSGMLS-PERL_VERSION).tar.gz \
+		&& curl --silent -Z --create-dirs -C - --remote-name-all --output $(BUILD_SOURCE)/libsgmls-perl-$(LIBSGMLS-PERL_VERSION).tar.gz \
 			https://cpan.metacpan.org/authors/id/R/RA/RAAB/SGMLSpm-$(LIBSGMLS-PERL_VERSION).tar.gz
 	$(call EXTRACT_TAR,libsgmls-perl-$(LIBSGMLS-PERL_VERSION).tar.gz,SGMLSpm-$(LIBSGMLS-PERL_VERSION),libsgmls-perl)
 	chmod -R 0744 $(BUILD_WORK)/libsgmls-perl

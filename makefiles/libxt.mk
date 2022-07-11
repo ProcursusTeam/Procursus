@@ -7,7 +7,7 @@ LIBXT_VERSION := 1.2.1
 DEB_LIBXT_V   ?= $(LIBXT_VERSION)
 
 libxt-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXt-$(LIBXT_VERSION).tar.gz{,.sig}
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXt-$(LIBXT_VERSION).tar.gz{,.sig}
 	$(call PGP_VERIFY,libXt-$(LIBXT_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXt-$(LIBXT_VERSION).tar.gz,libXt-$(LIBXT_VERSION),libxt)
 

@@ -7,7 +7,7 @@ LIBMATROSKA_VERSION := 1.6.3
 DEB_LIBMATROSKA_V   ?= $(LIBMATROSKA_VERSION)
 
 libmatroska-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://dl.matroska.org/downloads/libmatroska/libmatroska-$(LIBMATROSKA_VERSION).tar.xz
+	curl --silent -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://dl.matroska.org/downloads/libmatroska/libmatroska-$(LIBMATROSKA_VERSION).tar.xz
 	$(call EXTRACT_TAR,libmatroska-$(LIBMATROSKA_VERSION).tar.xz,libmatroska-$(LIBMATROSKA_VERSION),libmatroska)
 
 ifneq ($(wildcard $(BUILD_WORK)/libmatroska/.build_complete),)
