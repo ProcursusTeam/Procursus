@@ -887,12 +887,12 @@ PACK = \
 
 GITHUB_ARCHIVE = -if [ $(5) ]; then \
 					[ ! -f "$(BUILD_SOURCE)/$(5)-$(3).tar.gz" ] && \
-						wget -q -nc -O$(BUILD_SOURCE)/$(5)-$(3).tar.gz \
-							https://github.com/$(1)/$(2)/archive/$(4).tar.gz; \
+						$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/$(5)-$(3).tar.gz, \
+							https://github.com/$(1)/$(2)/archive/$(4).tar.gz); \
 				else \
 					[ ! -f "$(BUILD_SOURCE)/$(2)-$(3).tar.gz" ] && \
-						wget -q -nc -O$(BUILD_SOURCE)/$(2)-$(3).tar.gz \
-							https://github.com/$(1)/$(2)/archive/$(4).tar.gz; \
+						$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/$(2)-$(3).tar.gz, \
+							https://github.com/$(1)/$(2)/archive/$(4).tar.gz); \
 				fi
 
 GIT_CLONE = if [ ! -d "$(BUILD_WORK)/$(3)" ]; then \
