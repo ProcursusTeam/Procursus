@@ -4,23 +4,23 @@ endif
 
 SUBPROJECTS  += mosh
 MOSH_VERSION := 1.3.2
-DEB_MOSH_V   ?= $(MOSH_VERSION)-4
+DEB_MOSH_V   ?= $(MOSH_VERSION)-5
 
 mosh-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://mosh.org/mosh-$(MOSH_VERSION).tar.gz)
 	$(call EXTRACT_TAR,mosh-$(MOSH_VERSION).tar.gz,mosh-$(MOSH_VERSION),mosh)
-	$(call DO_PATCH,mosh,mosh,-p1)
+	$(call DO_PATCH,mosh,mosh,-p0)
 
 ifneq ($(wildcard $(BUILD_WORK)/mosh/.build_complete),)
 mosh:
 	@echo "Using previously built mosh."
 else
 mosh: mosh-setup libprotobuf openssl ncurses
+	cd $(BUILD_WORK)/mosh && ./autogen.sh
 	cd $(BUILD_WORK)/mosh && ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-ncursesw \
 		--with-crypto-library=openssl \
-		--disable-dependency-tracking \
 		--enable-completion \
 		TINFO_LIBS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -lncursesw"
 	+$(MAKE) -C $(BUILD_WORK)/mosh \
