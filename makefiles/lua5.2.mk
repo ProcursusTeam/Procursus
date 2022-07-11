@@ -7,7 +7,7 @@ LUA5.2_VERSION := 5.2.4
 DEB_LUA5.2_V   ?= $(LUA5.2_VERSION)-1
 
 lua5.2-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.lua.org/ftp/lua-$(LUA5.2_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.lua.org/ftp/lua-$(LUA5.2_VERSION).tar.gz)
 	$(call EXTRACT_TAR,lua-$(LUA5.2_VERSION).tar.gz,lua-$(LUA5.2_VERSION),lua5.2)
 	$(call DO_PATCH,lua5.2,lua5.2,-p1)
 

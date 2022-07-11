@@ -7,7 +7,7 @@ ASCIIDOCTOR_VERSION := 2.0.15
 DEB_ASCIIDOCTOR_V   ?= $(ASCIIDOCTOR_VERSION)
 
 asciidoctor-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE)/gems https://rubygems.org/downloads/asciidoctor-$(ASCIIDOCTOR_VERSION).gem
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE)/gems,https://rubygems.org/downloads/asciidoctor-$(ASCIIDOCTOR_VERSION).gem)
 ifneq ($(wildcard $(BUILD_WORK)/asciidoctor/.build_complete),)
 asciidoctor:
 	@echo "Using previously built asciidoctor."

@@ -887,12 +887,12 @@ PACK = \
 
 GITHUB_ARCHIVE = -if [ $(5) ]; then \
 					[ ! -f "$(BUILD_SOURCE)/$(5)-$(3).tar.gz" ] && \
-						wget -q -nc -O$(BUILD_SOURCE)/$(5)-$(3).tar.gz \
-							https://github.com/$(1)/$(2)/archive/$(4).tar.gz; \
+						$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/$(5)-$(3).tar.gz, \
+							https://github.com/$(1)/$(2)/archive/$(4).tar.gz); \
 				else \
 					[ ! -f "$(BUILD_SOURCE)/$(2)-$(3).tar.gz" ] && \
-						wget -q -nc -O$(BUILD_SOURCE)/$(2)-$(3).tar.gz \
-							https://github.com/$(1)/$(2)/archive/$(4).tar.gz; \
+						$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/$(2)-$(3).tar.gz, \
+							https://github.com/$(1)/$(2)/archive/$(4).tar.gz); \
 				fi
 
 GIT_CLONE = if [ ! -d "$(BUILD_WORK)/$(3)" ]; then \
@@ -1254,7 +1254,7 @@ setup:
 	@rm -rf $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/System
 	@$(LN_SR) $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include{,/System}
 
-	@curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include \
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include, \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libsyscall/wrappers/spawn/spawn.h \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libsyscall/wrappers/spawn/spawn_private.h \
 		https://opensource.apple.com/source/launchd/launchd-842.92.1/liblaunch/bootstrap_priv.h \
@@ -1262,64 +1262,64 @@ setup:
 		https://opensource.apple.com/source/libplatform/libplatform-126.1.2/include/_simple.h \
 		https://opensource.apple.com/source/libutil/libutil-57/mntopts.h \
 		https://opensource.apple.com/source/libutil/libutil-57/libutil.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/EXTERNAL_HEADERS/mach-o/nlist.h
+		https://opensource.apple.com/source/xnu/xnu-6153.11.26/EXTERNAL_HEADERS/mach-o/nlist.h)
 
-	@curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Kernel/kern/ https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/kern/ledger.h
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Kernel/kern/, https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/kern/ledger.h)
 
-	@curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/arm \
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/arm, \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/arm/disklabel.h \
-		https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/arm/cpu_capabilities.h
+		https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/arm/cpu_capabilities.h)
 
-	@curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/machine/disklabel.h
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine, \
+		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/machine/disklabel.h)
 
-	@curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os \
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os, \
 		https://opensource.apple.com/source/Libc/Libc-1439.40.11/os/assumes.h \
 		https://opensource.apple.com/source/libplatform/libplatform-126.1.2/include/os/base_private.h \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libkern/os/log_private.h \
-		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libkern/os/log.h
+		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libkern/os/log.h)
 
-	@curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CommonCrypto \
-		https://opensource.apple.com/source/CommonCrypto/CommonCrypto-60118.30.2/include/CommonDigestSPI.h
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CommonCrypto, \
+		https://opensource.apple.com/source/CommonCrypto/CommonCrypto-60118.30.2/include/CommonDigestSPI.h)
 
-	@curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/bsm \
-		https://opensource.apple.com/source/xnu/xnu-7195.101.1/bsd/bsm/audit_kevents.h
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/bsm, \
+		https://opensource.apple.com/source/xnu/xnu-7195.101.1/bsd/bsm/audit_kevents.h)
 
-	@curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit/kext \
-		https://opensource.apple.com/source/IOKitUser/IOKitUser-1845.81.1/kext.subproj/{KextManagerPriv,OSKext,OSKextPrivate,kextmanager_types,{fat,macho,misc}_util}.h
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit/kext, \
+		https://opensource.apple.com/source/IOKitUser/IOKitUser-1845.81.1/kext.subproj/{KextManagerPriv$(comma)OSKext$(comma)OSKextPrivate$(comma)kextmanager_types$(comma){fat$(comma)macho$(comma)misc}_util}.h)
 
-	@curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security \
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security, \
 		https://opensource.apple.com/source/libsecurity_keychain/libsecurity_keychain-55050.9/lib/SecKeychainPriv.h \
-		https://opensource.apple.com/source/libsecurity_codesigning/libsecurity_codesigning-55037.15/lib/Sec{CodeSigner,{Code,Requirement}Priv}.h \
-		https://opensource.apple.com/source/Security/Security-55471/sec/Security/SecBasePriv.h
+		https://opensource.apple.com/source/libsecurity_codesigning/libsecurity_codesigning-55037.15/lib/Sec{CodeSigner$(comma){Code$(comma)Requirement}Priv}.h \
+		https://opensource.apple.com/source/Security/Security-55471/sec/Security/SecBasePriv.h)
 
-	@curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreFoundation \
-		https://opensource.apple.com/source/CF/CF-1153.18/CFBundlePriv.h
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreFoundation, \
+		https://opensource.apple.com/source/CF/CF-1153.18/CFBundlePriv.h)
 
-	@curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine \
-		https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/machine/cpu_capabilities.h
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine, \
+		https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/machine/cpu_capabilities.h)
 
-	@curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/firehose \
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/firehose, \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libkern/firehose/tracepoint_private.h \
-		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libkern/firehose/firehose_types_private.h
+		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libkern/firehose/firehose_types_private.h)
 
-	@curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern \
-		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libkern/libkern/{OSKextLibPrivate,mkext,prelink}.h \
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern, \
+		https://opensource.apple.com/source/xnu/xnu-7195.101.1/libkern/libkern/{OSKextLibPrivate$(comma)mkext$(comma)prelink}.h)
 
-	@curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/internal \
-		https://opensource.apple.com/source/libplatform/libplatform-126.50.8/include/os/internal/{internal_shared,atomic,crashlog}.h
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/internal, \
+		https://opensource.apple.com/source/libplatform/libplatform-126.50.8/include/os/internal/{internal_shared$(comma)atomic$(comma)crashlog}.h)
 
-	@curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys \
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys, \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/fsctl.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/spawn_internal.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/event.h \
-		https://opensource.apple.com/source/xnu/xnu-4903.221.2/bsd/sys/kdebug.h
+		https://opensource.apple.com/source/xnu/xnu-4903.221.2/bsd/sys/kdebug.h)
 
-	@curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/uuid \
-		https://opensource.apple.com/source/Libc/Libc-1353.11.2/uuid/namespace.h
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/uuid, \
+		https://opensource.apple.com/source/Libc/Libc-1353.11.2/uuid/namespace.h)
 
-	@curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach \
-		https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/mach/coalition.h
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach, \
+		https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/mach/coalition.h)
 
 	@cp -a $(BUILD_MISC)/{libxml-2.0,zlib}.pc $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 

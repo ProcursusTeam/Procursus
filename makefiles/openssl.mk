@@ -7,7 +7,7 @@ OPENSSL_VERSION := 3.0.5
 DEB_OPENSSL_V   ?= $(OPENSSL_VERSION)
 
 openssl-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.openssl.org/source/openssl-$(OPENSSL_VERSION).tar.gz{,.asc}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.openssl.org/source/openssl-$(OPENSSL_VERSION).tar.gz{$(comma).asc})
 	$(call PGP_VERIFY,openssl-$(OPENSSL_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,openssl-$(OPENSSL_VERSION).tar.gz,openssl-$(OPENSSL_VERSION),openssl)
 ifeq (,$(findstring armv7,$(MEMO_TARGET)))

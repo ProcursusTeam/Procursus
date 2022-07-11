@@ -7,7 +7,7 @@ LIBDCA_VERSION := 0.0.7
 DEB_LIBDCA_V   ?= $(LIBDCA_VERSION)
 
 libdca-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir$(BUILD_SOURCE) https://download.videolan.org/pub/videolan/libdca/$(LIBDCA_VERSION)/libdca-$(LIBDCA_VERSION).tar.bz2
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://download.videolan.org/pub/videolan/libdca/$(LIBDCA_VERSION)/libdca-$(LIBDCA_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libdca-$(LIBDCA_VERSION).tar.bz2,libdca-$(LIBDCA_VERSION),libdca)
 
 ifneq ($(wildcard $(BUILD_WORK)/libdca/.build_complete),)

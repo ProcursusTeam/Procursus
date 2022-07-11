@@ -7,7 +7,7 @@ ZIP_VERSION  := 3.0
 DEB_ZIP_V    ?= $(ZIP_VERSION)-12
 
 zip-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://deb.debian.org/debian/pool/main/z/zip/zip_$(ZIP_VERSION).orig.tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://deb.debian.org/debian/pool/main/z/zip/zip_$(ZIP_VERSION).orig.tar.gz)
 	$(call EXTRACT_TAR,zip_$(ZIP_VERSION).orig.tar.gz,zip30,zip)
 	$(call DO_PATCH,zip,zip,-p1)
 

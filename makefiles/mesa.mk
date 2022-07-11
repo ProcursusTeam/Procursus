@@ -7,7 +7,7 @@ MESA_VERSION := 21.0.2
 DEB_MESA_V   ?= $(MESA_VERSION)
 
 mesa-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://mesa.freedesktop.org/archive/mesa-$(MESA_VERSION).tar.xz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://mesa.freedesktop.org/archive/mesa-$(MESA_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,mesa-$(MESA_VERSION).tar.xz)
 	$(call EXTRACT_TAR,mesa-$(MESA_VERSION).tar.xz,mesa-$(MESA_VERSION),mesa)
 	sed -i -e "s/with_dri_platform = 'apple'/with_dri_platform = 'none'/" \

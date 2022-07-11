@@ -7,7 +7,7 @@ LIBASS_VERSION := 0.16.0
 DEB_LIBASS_V   ?= $(LIBASS_VERSION)
 
 libass-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/libass/libass/releases/download/$(LIBASS_VERSION)/libass-$(LIBASS_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/libass/libass/releases/download/$(LIBASS_VERSION)/libass-$(LIBASS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,libass-$(LIBASS_VERSION).tar.xz,libass-$(LIBASS_VERSION),libass)
 
 ifneq ($(wildcard $(BUILD_WORK)/libass/.build_complete),)

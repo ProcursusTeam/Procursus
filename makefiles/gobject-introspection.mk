@@ -10,7 +10,7 @@ DEB_GOBJECT-INTROSPECTION_V   ?= $(GOBJECT-INTROSPECTION_VERSION)
 # You need libffi-dev, libglib2.0-dev, libpython3.9-dev
 
 gobject-introspection-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://download.gnome.org/sources/gobject-introspection/$(shell echo $(GOBJECT-INTROSPECTION_VERSION) | cut -f-2 -d.)/gobject-introspection-$(GOBJECT-INTROSPECTION_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE) https://download.gnome.org/sources/gobject-introspection/$(shell echo $(GOBJECT-INTROSPECTION_VERSION) | cut -f-2,-d.)/gobject-introspection-$(GOBJECT-INTROSPECTION_VERSION).tar.xz)
 	$(call EXTRACT_TAR,gobject-introspection-$(GOBJECT-INTROSPECTION_VERSION).tar.xz,gobject-introspection-$(GOBJECT-INTROSPECTION_VERSION),gobject-introspection)
 	mkdir -p $(BUILD_WORK)/gobject-introspection/build
 

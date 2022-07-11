@@ -7,7 +7,7 @@ LIBDVDCSS_VERSION := 1.4.2
 DEB_LIBDVDCSS_V   ?= $(LIBDVDCSS_VERSION)
 
 libdvdcss-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://download.videolan.org/pub/libdvdcss/$(LIBDVDCSS_VERSION)/libdvdcss-$(LIBDVDCSS_VERSION).tar.bz2
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://download.videolan.org/pub/libdvdcss/$(LIBDVDCSS_VERSION)/libdvdcss-$(LIBDVDCSS_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libdvdcss-$(LIBDVDCSS_VERSION).tar.bz2,libdvdcss-$(LIBDVDCSS_VERSION),libdvdcss)
 
 ifneq ($(wildcard $(BUILD_WORK)/libdvdcss/.build_complete),)

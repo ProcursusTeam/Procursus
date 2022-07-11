@@ -7,7 +7,7 @@ LIBSOXR_VERSION := 0.1.3
 DEB_LIBSOXR_V   ?= $(LIBSOXR_VERSION)
 
 libsoxr-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://downloads.sourceforge.net/project/soxr/soxr-$(LIBSOXR_VERSION)-Source.tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://downloads.sourceforge.net/project/soxr/soxr-$(LIBSOXR_VERSION)-Source.tar.xz)
 	$(call EXTRACT_TAR,soxr-$(LIBSOXR_VERSION)-Source.tar.xz,soxr-$(LIBSOXR_VERSION)-Source,libsoxr)
 	mkdir -p $(BUILD_WORK)/libsoxr/build
 

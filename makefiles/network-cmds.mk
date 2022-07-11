@@ -9,7 +9,7 @@ NETWORK-CMDS_VERSION := 596
 DEB_NETWORK-CMDS_V   ?= $(NETWORK-CMDS_VERSION)
 
 network-cmds-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://opensource.apple.com/tarballs/network_cmds/network_cmds-$(NETWORK-CMDS_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://opensource.apple.com/tarballs/network_cmds/network_cmds-$(NETWORK-CMDS_VERSION).tar.gz)
 	$(call EXTRACT_TAR,network_cmds-$(NETWORK-CMDS_VERSION).tar.gz,network_cmds-$(NETWORK-CMDS_VERSION),network-cmds)
 	mkdir -p $(BUILD_STAGE)/network-cmds/{{s,}bin,usr/{{s,}bin,libexec}}
 
@@ -21,7 +21,7 @@ network-cmds-setup: setup
 
 	@#TODO: Needs severe cleaning. Was done late at night.
 
-	@curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_WORK)/network-cmds/include/net \
+	@$(call DOWNLOAD_FILES,$(BUILD_WORK)/network-cmds/include/net, \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/net_api_stats.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/if_bridgevar.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/ntstat.h \
@@ -41,21 +41,21 @@ network-cmds-setup: setup
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/if_vlan_var.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/if_fake_var.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/lacp.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/if_bond_internal.h
-	@curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_WORK)/network-cmds/include/net/pktsched \
+		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/if_bond_internal.h)
+	@$(call DOWNLOAD_FILES,$(BUILD_WORK)/network-cmds/include/net/pktsched, \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/pktsched/pktsched.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/pktsched/pktsched_netem.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/pktsched/pktsched_tcq.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/pktsched/pktsched_qfq.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/pktsched/pktsched_fq_codel.h
-	@curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_WORK)/network-cmds/include/net/classq \
+		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/pktsched/pktsched_fq_codel.h)
+	@$(call DOWNLOAD_FILES,$(BUILD_WORK)/network-cmds/include/net/classq, \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/classq/classq.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/classq/if_classq.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/classq/classq_red.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/classq/classq_blue.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/classq/classq_rio.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/classq/classq_sfb.h
-	@curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_WORK)/network-cmds/include/netinet \
+		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/net/classq/classq_sfb.h)
+	@$(call DOWNLOAD_FILES,$(BUILD_WORK)/network-cmds/include/netinet, \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet/mptcp_var.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet/in_stat.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet/in.h \
@@ -70,16 +70,16 @@ network-cmds-setup: setup
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet/tcp_seq.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet/tcp_fsm.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet/in_var.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet/in_pcb.h
-	@curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_WORK)/network-cmds/include/netinet6 \
+		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet/in_pcb.h)
+	@$(call DOWNLOAD_FILES,$(BUILD_WORK)/network-cmds/include/netinet6, \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet6/ip6_var.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet6/in6_var.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet6/in6.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet6/nd6.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet6/mld6_var.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet6/in6_pcb.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet6/raw_ip6.h
-	@curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_WORK)/network-cmds/include/sys \
+		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/netinet6/raw_ip6.h)
+	@$(call DOWNLOAD_FILES,$(BUILD_WORK)/network-cmds/include/sys, \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/socket.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/unpcb.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/kern_event.h \
@@ -87,7 +87,7 @@ network-cmds-setup: setup
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/socketvar.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/sys_domain.h \
 		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/mbuf.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/sockio.h
+		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/sockio.h)
 
 	sed -i 's/#if INET6/#ifdef INET6/g' $(BUILD_WORK)/network-cmds/include/sys/sockio.h
 

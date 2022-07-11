@@ -9,7 +9,7 @@ DEB_TEXINFO_V   ?= $(TEXINFO_VERSION)
 ## This is super broken, someone should fix it
 
 texinfo-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftp.gnu.org/gnu/texinfo/texinfo-$(TEXINFO_VERSION).tar.xz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftp.gnu.org/gnu/texinfo/texinfo-$(TEXINFO_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,texinfo-$(TEXINFO_VERSION).tar.xz)
 	$(call EXTRACT_TAR,texinfo-$(TEXINFO_VERSION).tar.xz,texinfo-$(TEXINFO_VERSION),texinfo)
 

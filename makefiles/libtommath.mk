@@ -7,7 +7,7 @@ LIBTOMMATH_VERSION := 1.2.0
 DEB_LIBTOMMATH_V   ?= $(LIBTOMMATH_VERSION)-1
 
 libtommath-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/libtom/libtommath/releases/download/v$(LIBTOMMATH_VERSION)/ltm-$(LIBTOMMATH_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/libtom/libtommath/releases/download/v$(LIBTOMMATH_VERSION)/ltm-$(LIBTOMMATH_VERSION).tar.xz)
 	$(call EXTRACT_TAR,ltm-$(LIBTOMMATH_VERSION).tar.xz,libtommath-$(LIBTOMMATH_VERSION),libtommath)
 	mkdir -p $(BUILD_WORK)/libtommath/libtool
 	echo -e "AC_INIT([dummy],[1.0])\n\

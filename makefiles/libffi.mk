@@ -7,7 +7,7 @@ LIBFFI_VERSION := 3.4.2
 DEB_LIBFFI_V   ?= $(LIBFFI_VERSION)
 
 libffi-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/libffi/libffi/releases/download/v$(LIBFFI_VERSION)/libffi-$(LIBFFI_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/libffi/libffi/releases/download/v$(LIBFFI_VERSION)/libffi-$(LIBFFI_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libffi-$(LIBFFI_VERSION).tar.gz,libffi-$(LIBFFI_VERSION),libffi)
 
 ifneq ($(wildcard $(BUILD_WORK)/libffi/.build_complete),)

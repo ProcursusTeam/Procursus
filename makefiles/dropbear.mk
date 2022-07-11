@@ -7,7 +7,7 @@ DROPBEAR_VERSION := 2020.81
 DEB_DROPBEAR_V   ?= $(DROPBEAR_VERSION)
 
 dropbear-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/mkj/dropbear/archive/DROPBEAR_2020.81.tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/mkj/dropbear/archive/DROPBEAR_2020.81.tar.gz)
 	$(call EXTRACT_TAR,DROPBEAR_$(DROPBEAR_VERSION).tar.gz,dropbear-DROPBEAR_$(DROPBEAR_VERSION),dropbear)
 	$(call DO_PATCH,dropbear,dropbear,-p1)
 

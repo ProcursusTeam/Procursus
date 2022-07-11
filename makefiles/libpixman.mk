@@ -7,7 +7,7 @@ LIBPIXMAN_VERSION := 0.40.0
 DEB_LIBPIXMAN_V   ?= $(LIBPIXMAN_VERSION)
 
 libpixman-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://cairographics.org/releases/pixman-$(LIBPIXMAN_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://cairographics.org/releases/pixman-$(LIBPIXMAN_VERSION).tar.gz)
 	$(call EXTRACT_TAR,pixman-$(LIBPIXMAN_VERSION).tar.gz,pixman-$(LIBPIXMAN_VERSION),libpixman)
 
 ifneq ($(wildcard $(BUILD_WORK)/libpixman/.build_complete),)

@@ -7,8 +7,8 @@ LIBWEBP_VERSION := 1.2.2
 DEB_LIBWEBP_V   ?= $(LIBWEBP_VERSION)
 
 libwebp-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/libwebp-$(LIBWEBP_VERSION).tar.gz" ] && curl --silent -L -Z --create-dirs -L -C - --remote-name-all --output $(BUILD_SOURCE)/libwebp-$(LIBWEBP_VERSION).tar.gz \
-		https://chromium.googlesource.com/webm/libwebp/+archive/refs/heads/$(LIBWEBP_VERSION).tar.gz
+	$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/libwebp-$(LIBWEBP_VERSION).tar.gz, \
+		https://chromium.googlesource.com/webm/libwebp/+archive/refs/heads/$(LIBWEBP_VERSION).tar.gz)
 	# Fuck this lib.
 	mkdir -p $(BUILD_WORK)/libwebp
 	tar xf $(BUILD_SOURCE)/libwebp-$(LIBWEBP_VERSION).tar.gz -C $(BUILD_WORK)/libwebp

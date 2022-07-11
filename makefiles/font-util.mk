@@ -7,7 +7,7 @@ FONTUTIL_VERSION := 1.3.2
 DEB_FONTUTIL_V   ?= $(FONTUTIL_VERSION)
 
 font-util-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.x.org/archive//individual/font/font-util-$(FONTUTIL_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.x.org/archive//individual/font/font-util-$(FONTUTIL_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,font-util-$(FONTUTIL_VERSION).tar.gz)
 	$(call EXTRACT_TAR,font-util-$(FONTUTIL_VERSION).tar.gz,font-util-$(FONTUTIL_VERSION),font-util)
 

@@ -7,7 +7,7 @@ FONTCONFIG_VERSION := 2.14.0
 DEB_FONTCONFIG_V   ?= $(FONTCONFIG_VERSION)
 
 fontconfig-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.freedesktop.org/software/fontconfig/release/fontconfig-$(FONTCONFIG_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.freedesktop.org/software/fontconfig/release/fontconfig-$(FONTCONFIG_VERSION).tar.gz)
 	$(call EXTRACT_TAR,fontconfig-$(FONTCONFIG_VERSION).tar.gz,fontconfig-$(FONTCONFIG_VERSION),fontconfig)
 	sed -i 's/use_jsonc=yes/use_jsonc=no/' $(BUILD_WORK)/fontconfig/configure
 

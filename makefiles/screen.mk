@@ -7,7 +7,7 @@ SCREEN_VERSION := 4.9.0
 DEB_SCREEN_V   ?= $(SCREEN_VERSION)
 
 screen-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftp.gnu.org/gnu/screen/screen-$(SCREEN_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftp.gnu.org/gnu/screen/screen-$(SCREEN_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,screen-$(SCREEN_VERSION).tar.gz)
 	$(call EXTRACT_TAR,screen-$(SCREEN_VERSION).tar.gz,screen-$(SCREEN_VERSION),screen)
 	$(call DO_PATCH,screen,screen,-p1)

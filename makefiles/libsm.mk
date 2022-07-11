@@ -7,7 +7,7 @@ LIBSM_VERSION := 1.2.3
 DEB_LIBSM_V   ?= $(LIBSM_VERSION)
 
 libsm-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libSM-$(LIBSM_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libSM-$(LIBSM_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libSM-$(LIBSM_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libSM-$(LIBSM_VERSION).tar.gz,libSM-$(LIBSM_VERSION),libsm)
 

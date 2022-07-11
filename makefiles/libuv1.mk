@@ -7,7 +7,7 @@ LIBUV1_VERSION := 1.44.1
 DEB_LIBUV1_V   ?= $(LIBUV1_VERSION)
 
 libuv1-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://dist.libuv.org/dist/v$(LIBUV1_VERSION)/libuv-v$(LIBUV1_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://dist.libuv.org/dist/v$(LIBUV1_VERSION)/libuv-v$(LIBUV1_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libuv-v$(LIBUV1_VERSION).tar.gz,libuv-v$(LIBUV1_VERSION),libuv1)
 #	FUTURE: Remove after next release.
 	$(call DO_PATCH,libuv1,libuv1,-p1)

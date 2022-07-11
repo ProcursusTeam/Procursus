@@ -7,7 +7,7 @@ MPCLIB3_VERSION := 1.2.1
 DEB_MPCLIB3_V   ?= $(MPCLIB3_VERSION)
 
 mpclib3-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftp.gnu.org/gnu/mpc/mpc-$(MPCLIB3_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftp.gnu.org/gnu/mpc/mpc-$(MPCLIB3_VERSION).tar.gz)
 	$(call EXTRACT_TAR,mpc-$(MPCLIB3_VERSION).tar.gz,mpc-$(MPCLIB3_VERSION),mpclib3)
 
 ifneq ($(wildcard $(BUILD_WORK)/mpclib3/.build_complete),)

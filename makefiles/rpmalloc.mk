@@ -7,9 +7,9 @@ RPMALLOC_VERSION := 1.4.1
 DEB_RPMALLOC_V   ?= $(RPMALLOC_VERSION)
 
 rpmalloc-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_WORK)/rpmalloc \
+	$(call DOWNLOAD_FILES,$(BUILD_WORK)/rpmalloc, \
 		https://raw.githubusercontent.com/mjansson/rpmalloc/1.4.1/rpmalloc/malloc.c \
-		https://raw.githubusercontent.com/mjansson/rpmalloc/1.4.1/rpmalloc/rpmalloc.{c,h}
+		https://raw.githubusercontent.com/mjansson/rpmalloc/1.4.1/rpmalloc/rpmalloc.{c$(comma)h})
 
 ifneq ($(wildcard $(BUILD_WORK)/rpmalloc/.build_complete),)
 rpmalloc:

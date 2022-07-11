@@ -7,7 +7,7 @@ LIBXINERAMA_VERSION := 1.1.4
 DEB_LIBXINERAMA_V   ?= $(LIBXINERAMA_VERSION)
 
 libxinerama-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.x.org/archive/individual/lib/libXinerama-$(LIBXINERAMA_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.x.org/archive/individual/lib/libXinerama-$(LIBXINERAMA_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libXinerama-$(LIBXINERAMA_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXinerama-$(LIBXINERAMA_VERSION).tar.gz,libXinerama-$(LIBXINERAMA_VERSION),libxinerama)
 

@@ -7,7 +7,7 @@ SCRYPT_VERSION := 1.3.1
 DEB_SCRYPT_V   ?= $(SCRYPT_VERSION)
 
 scrypt-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.tarsnap.com/scrypt/scrypt-$(SCRYPT_VERSION).tgz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.tarsnap.com/scrypt/scrypt-$(SCRYPT_VERSION).tgz)
 	$(call EXTRACT_TAR,scrypt-$(SCRYPT_VERSION).tgz,scrypt-$(SCRYPT_VERSION),scrypt)
 
 ifneq ($(wildcard $(BUILD_WORK)/scrypt/.build_complete),)

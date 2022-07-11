@@ -9,7 +9,7 @@ OPENPAM_VERSION := 20190224
 DEB_OPENPAM_V   ?= $(OPENPAM_VERSION)
 
 openpam-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://downloads.sourceforge.net/openpam/openpam-$(OPENPAM_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://downloads.sourceforge.net/openpam/openpam-$(OPENPAM_VERSION).tar.gz)
 	$(call EXTRACT_TAR,openpam-$(OPENPAM_VERSION).tar.gz,openpam-$(OPENPAM_VERSION),openpam)
 	$(call DO_PATCH,openpam,openpam,-p0)
 	# The below line is only if you need to debug PAM with detailed syslogs.

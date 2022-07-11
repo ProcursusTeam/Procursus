@@ -7,7 +7,7 @@ LIBEVENT_VERSION   := 2.1.12
 DEB_LIBEVENT_V     ?= $(LIBEVENT_VERSION)-2
 
 libevent-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/libevent/libevent/releases/download/release-$(LIBEVENT_VERSION)-stable/libevent-$(LIBEVENT_VERSION)-stable.tar.gz{,.asc}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/libevent/libevent/releases/download/release-$(LIBEVENT_VERSION)-stable/libevent-$(LIBEVENT_VERSION)-stable.tar.gz{$(comma).asc})
 	$(call PGP_VERIFY,libevent-$(LIBEVENT_VERSION)-stable.tar.gz,asc)
 	$(call EXTRACT_TAR,libevent-$(LIBEVENT_VERSION)-stable.tar.gz,libevent-$(LIBEVENT_VERSION)-stable,libevent)
 

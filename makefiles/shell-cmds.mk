@@ -9,7 +9,7 @@ SHELL-CMDS_VERSION := 207.40.1
 DEB_SHELL-CMDS_V   ?= $(SHELL-CMDS_VERSION)-2
 
 shell-cmds-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://opensource.apple.com/tarballs/shell_cmds/shell_cmds-$(SHELL-CMDS_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://opensource.apple.com/tarballs/shell_cmds/shell_cmds-$(SHELL-CMDS_VERSION).tar.gz)
 	$(call EXTRACT_TAR,shell_cmds-$(SHELL-CMDS_VERSION).tar.gz,shell_cmds-$(SHELL-CMDS_VERSION),shell-cmds)
 
 ifneq ($(wildcard $(BUILD_WORK)/shell-cmds/.build_complete),)

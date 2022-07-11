@@ -7,7 +7,7 @@ LZIP_VERSION  := 1.22
 DEB_LZIP_V    ?= $(LZIP_VERSION)
 
 lzip-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://download.savannah.gnu.org/releases/lzip/lzip-$(LZIP_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://download.savannah.gnu.org/releases/lzip/lzip-$(LZIP_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,lzip-$(LZIP_VERSION).tar.gz)
 	$(call EXTRACT_TAR,lzip-$(LZIP_VERSION).tar.gz,lzip-$(LZIP_VERSION),lzip)
 

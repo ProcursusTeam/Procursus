@@ -7,7 +7,7 @@ XCB-UTIL-RENDERUTIL_VERSION := 0.3.9
 DEB_XCB-UTIL-RENDERUTIL_V   ?= $(XCB-UTIL-RENDERUTIL_VERSION)
 
 xcb-util-renderutil-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://www.x.org/archive/individual/xcb/xcb-util-renderutil-$(XCB-UTIL-RENDERUTIL_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.x.org/archive/individual/xcb/xcb-util-renderutil-$(XCB-UTIL-RENDERUTIL_VERSION).tar.gz)
 	$(call EXTRACT_TAR,xcb-util-renderutil-$(XCB-UTIL-RENDERUTIL_VERSION).tar.gz,xcb-util-renderutil-$(XCB-UTIL-RENDERUTIL_VERSION),xcb-util-renderutil)
 
 ifneq ($(wildcard $(BUILD_WORK)/xcb-util-renderutil/.build_complete),)

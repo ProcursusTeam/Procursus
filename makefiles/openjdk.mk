@@ -37,10 +37,10 @@ endif
 ###
 
 openjdk-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/openjdk/jdk17u/archive/refs/tags/jdk-$(OPENJDK_VERSION).tar.gz
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) \
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/openjdk/jdk17u/archive/refs/tags/jdk-$(OPENJDK_VERSION).tar.gz)
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
 		https://github.com/apple/cups/releases/download/v2.3.3/cups-2.3.3-source.tar.gz \
-		https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_macos-aarch64_bin.tar.gz
+		https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_macos-aarch64_bin.tar.gz)
 		#https://download.java.net/java/GA/jdk15/779bf45e88a44cbd9ea6621d33e33db1/36/GPL/openjdk-15_linux-x64_bin.tar.gz
 	$(call EXTRACT_TAR,jdk-$(OPENJDK_VERSION).tar.gz,jdk17u-jdk-$(OPENJDK_VERSION),openjdk)
 	$(call EXTRACT_TAR,cups-2.3.3-source.tar.gz,cups-2.3.3,apple-cups)

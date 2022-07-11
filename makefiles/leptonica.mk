@@ -7,7 +7,7 @@ LEPTONICA_VERSION := 1.80.0
 DEB_LEPTONICA_V   ?= $(LEPTONICA_VERSION)
 
 leptonica-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) http://www.leptonica.org/source/leptonica-$(LEPTONICA_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://www.leptonica.org/source/leptonica-$(LEPTONICA_VERSION).tar.gz)
 	$(call EXTRACT_TAR,leptonica-$(LEPTONICA_VERSION).tar.gz,leptonica-$(LEPTONICA_VERSION),leptonica)
 
 ifneq ($(wildcard $(BUILD_WORK)/leptonica/.build_complete),)

@@ -7,7 +7,7 @@ PLUTIL_VERSION  := 0.2.2
 DEB_PLUTIL_V    ?= $(PLUTIL_VERSION)
 
 plutil-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://github.com/Diatrus/plutil/releases/download/v$(PLUTIL_VERSION)/plutil-$(PLUTIL_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/Diatrus/plutil/releases/download/v$(PLUTIL_VERSION)/plutil-$(PLUTIL_VERSION).tar.xz)
 	$(call EXTRACT_TAR,plutil-$(PLUTIL_VERSION).tar.xz,plutil-$(PLUTIL_VERSION),plutil)
 
 ifneq ($(wildcard $(BUILD_WORK)/plutil/.build_complete),)

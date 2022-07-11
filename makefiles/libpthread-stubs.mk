@@ -7,7 +7,7 @@ LIBPTHREAD-STUBS_VERSION := 0.4
 DEB_LIBPTHREAD-STUBS_V   ?= $(LIBPTHREAD-STUBS_VERSION)
 
 libpthread-stubs-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/xcb/libpthread-stubs-$(LIBPTHREAD-STUBS_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/xcb/libpthread-stubs-$(LIBPTHREAD-STUBS_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libpthread-stubs-$(LIBPTHREAD-STUBS_VERSION).tar.gz,libpthread-stubs-$(LIBPTHREAD-STUBS_VERSION),libpthread-stubs)
 
 ifneq ($(wildcard $(BUILD_WORK)/libpthread-stubs/.build_complete),)

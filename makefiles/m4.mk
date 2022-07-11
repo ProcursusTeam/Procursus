@@ -7,7 +7,7 @@ M4_VERSION  := 1.4.19
 DEB_M4_V    ?= $(M4_VERSION)-1
 
 m4-setup: setup
-	curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $(BUILD_SOURCE) https://ftpmirror.gnu.org/m4/m4-$(M4_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/m4/m4-$(M4_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,m4-$(M4_VERSION).tar.gz)
 	$(call EXTRACT_TAR,m4-$(M4_VERSION).tar.gz,m4-$(M4_VERSION),m4)
 
