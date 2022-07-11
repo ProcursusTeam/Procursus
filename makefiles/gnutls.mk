@@ -7,7 +7,7 @@ GNUTLS_VERSION := 3.7.6
 DEB_GNUTLS_V   ?= $(GNUTLS_VERSION)-1
 
 gnutls-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE) https://www.gnupg.org/ftp/gcrypt/gnutls/v$(shell echo $(GNUTLS_VERSION) | cut -d.,-f-2)/gnutls-$(GNUTLS_VERSION).tar.xz)
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE) https://www.gnupg.org/ftp/gcrypt/gnutls/v$(shell echo $(GNUTLS_VERSION) | cut -d.$(comma)-f-2)/gnutls-$(GNUTLS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,gnutls-$(GNUTLS_VERSION).tar.xz,gnutls-$(GNUTLS_VERSION),gnutls)
 
 ifneq ($(wildcard $(BUILD_WORK)/gnutls/.build_complete),)
