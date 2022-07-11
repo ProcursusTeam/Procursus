@@ -885,8 +885,8 @@ GIT_CLONE = if [ ! -d "$(BUILD_WORK)/$(3)" ]; then \
 #
 ###
 
-ifneq ($(call HAS_COMMAND,wget),1)
-$(error Install wget)
+ifneq ($(call HAS_COMMAND,curl),1)
+$(error Install curl)
 endif
 
 ifneq ($(call HAS_COMMAND,triehash),1)
