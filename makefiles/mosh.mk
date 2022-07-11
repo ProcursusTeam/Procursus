@@ -33,10 +33,9 @@ endif
 mosh-package: mosh-stage
 	# mosh.mk Package Structure
 	rm -rf $(BUILD_DIST)/mosh
-	mkdir -p $(BUILD_DIST)/mosh
 
 	# mosh.mk Prep mosh
-	cp -a $(BUILD_STAGE)/mosh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/mosh
+	cp -a $(BUILD_STAGE)/mosh $(BUILD_DIST)
 
 	# mosh.mk Sign
 	$(call SIGN,mosh,general.xml)
