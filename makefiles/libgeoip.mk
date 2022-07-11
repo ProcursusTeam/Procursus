@@ -7,8 +7,8 @@ LIBGEOIP_VERSION := 1.6.12
 DEB_LIBGEOIP_V   ?= $(LIBGEOIP_VERSION)
 
 libgeoip-setup: setup
-	curl --silent -L -Z --create-dirs -L -C - --remote-name-all --output-dir $(BUILD_SOURCE) \
-		https://github.com/maxmind/geoip-api-c/releases/download/v1.6.12/GeoIP-$(LIBGEOIP_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
+		https://github.com/maxmind/geoip-api-c/releases/download/v1.6.12/GeoIP-$(LIBGEOIP_VERSION).tar.gz)
 	$(call EXTRACT_TAR,GeoIP-$(LIBGEOIP_VERSION).tar.gz,GeoIP-$(LIBGEOIP_VERSION),libgeoip)
 	sed -i '/AC_FUNC_MALLOC/d' $(BUILD_WORK)/libgeoip/configure.ac
 	sed -i '/AC_FUNC_REALLOC/d' $(BUILD_WORK)/libgeoip/configure.ac
