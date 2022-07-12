@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += apt
-APT_VERSION   := 2.3.13
+APT_VERSION   := 2.5.0
 DEB_APT_V     ?= $(APT_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
@@ -13,7 +13,7 @@ APT_CMAKE_ARGS :=
 endif
 
 apt-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://salsa.debian.org/apt-team/apt/-/archive/$(APT_VERSION)/apt-$(APT_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://salsa.debian.org/apt-team/apt/-/archive/$(APT_VERSION)/apt-$(APT_VERSION).tar.gz)
 	$(call EXTRACT_TAR,apt-$(APT_VERSION).tar.gz,apt-$(APT_VERSION),apt)
 	$(call DO_PATCH,apt,apt,-p1)
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))

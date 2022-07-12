@@ -7,7 +7,7 @@ PLUTIL_VERSION  := 0.2.2
 DEB_PLUTIL_V    ?= $(PLUTIL_VERSION)
 
 plutil-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/Diatrus/plutil/releases/download/v$(PLUTIL_VERSION)/plutil-$(PLUTIL_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/Diatrus/plutil/releases/download/v$(PLUTIL_VERSION)/plutil-$(PLUTIL_VERSION).tar.xz)
 	$(call EXTRACT_TAR,plutil-$(PLUTIL_VERSION).tar.xz,plutil-$(PLUTIL_VERSION),plutil)
 
 ifneq ($(wildcard $(BUILD_WORK)/plutil/.build_complete),)
@@ -24,10 +24,9 @@ endif
 plutil-package: plutil-stage
 	# plutil.mk Package Structure
 	rm -rf $(BUILD_DIST)/plutil
-	mkdir -p $(BUILD_DIST)/plutil
 
 	# plutil.mk Prep plutil
-	cp -a $(BUILD_STAGE)/plutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/plutil
+	cp -a $(BUILD_STAGE)/plutil $(BUILD_DIST)/plutil
 
 	# plutil.mk Sign
 	$(call SIGN,plutil,general.xml)

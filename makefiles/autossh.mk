@@ -7,7 +7,7 @@ AUTOSSH_VERSION := 1.4g
 DEB_AUTOSSH_V   ?= $(AUTOSSH_VERSION)
 
 autossh-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.harding.motd.ca/autossh/autossh-$(AUTOSSH_VERSION).tgz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.harding.motd.ca/autossh/autossh-$(AUTOSSH_VERSION).tgz)
 	$(call EXTRACT_TAR,autossh-$(AUTOSSH_VERSION).tgz,autossh-$(AUTOSSH_VERSION),autossh)
 	sed -i '/AC_FUNC_MALLOC/d' $(BUILD_WORK)/autossh/configure.ac
 	sed -i '/AC_FUNC_REALLOC/d' $(BUILD_WORK)/autossh/configure.ac

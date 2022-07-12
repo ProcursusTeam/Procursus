@@ -7,7 +7,7 @@ ARPOISON_VERSION := 0.7
 DEB_ARPOISON_V   ?= $(ARPOISON_VERSION)
 
 arpoison-setup: setup
-	wget -q -nc -P$(BUILD_SOURCE) http://www.arpoison.net/arpoison-$(ARPOISON_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://www.arpoison.net/arpoison-$(ARPOISON_VERSION).tar.gz)
 	$(call EXTRACT_TAR,arpoison-$(ARPOISON_VERSION).tar.gz,arpoison-$(ARPOISON_VERSION),arpoison)
 	mkdir -p $(BUILD_STAGE)/arpoison/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 

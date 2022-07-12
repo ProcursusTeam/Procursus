@@ -7,7 +7,7 @@ LIBXRES_VERSION := 1.2.1
 DEB_LIBXRES_V   ?= $(LIBXRES_VERSION)
 
 libxres-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/lib/libXres-$(LIBXRES_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.x.org/archive/individual/lib/libXres-$(LIBXRES_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libXres-$(LIBXRES_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXres-$(LIBXRES_VERSION).tar.gz,libXres-$(LIBXRES_VERSION),libxres)
 

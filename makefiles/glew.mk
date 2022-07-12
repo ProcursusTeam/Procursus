@@ -7,7 +7,7 @@ GLEW_VERSION := 2.2.0
 DEB_GLEW_V   ?= $(GLEW_VERSION)
 
 glew-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://downloads.sourceforge.net/project/glew/glew/$(GLEW_VERSION)/glew-$(GLEW_VERSION).tgz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://downloads.sourceforge.net/project/glew/glew/$(GLEW_VERSION)/glew-$(GLEW_VERSION).tgz)
 	$(call EXTRACT_TAR,glew-$(GLEW_VERSION).tgz,glew-$(GLEW_VERSION),glew)
 	sed -i -e s/GLEW_DEST/GLEW_PREFIX/ \
 		-e 's/(LIB.SHARED)/(LIB.SONAME)/' $(BUILD_WORK)/glew/config/Makefile.darwin

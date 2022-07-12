@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += gpgme
-GPGME_VERSION := 1.16.0
+GPGME_VERSION := 1.17.1
 DEB_GPGME_V   ?= $(GPGME_VERSION)
 
 gpgme-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/gpgme/gpgme-$(GPGME_VERSION).tar.bz2{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://gnupg.org/ftp/gcrypt/gpgme/gpgme-$(GPGME_VERSION).tar.bz2{$(comma).sig})
 	$(call PGP_VERIFY,gpgme-$(GPGME_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,gpgme-$(GPGME_VERSION).tar.bz2,gpgme-$(GPGME_VERSION),gpgme)
 

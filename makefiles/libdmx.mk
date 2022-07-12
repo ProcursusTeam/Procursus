@@ -7,7 +7,7 @@ LIBDMX_VERSION := 1.1.4
 DEB_LIBDMX_V   ?= $(LIBDMX_VERSION)
 
 libdmx-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libdmx-$(LIBDMX_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libdmx-$(LIBDMX_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libdmx-$(LIBDMX_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libdmx-$(LIBDMX_VERSION).tar.gz,libdmx-$(LIBDMX_VERSION),libdmx)
 

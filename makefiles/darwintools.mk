@@ -40,7 +40,7 @@ darwintools-package: darwintools-stage
 	cp -a $(BUILD_STAGE)/darwintools $(BUILD_DIST)
 
 	# darwintools.mk Sign
-	$(call SIGN,darwintools,general.xml)
+	$(call SIGN,darwintools,firmware.xml)
 
 	# darwintools.mk Make .debs
 	$(call PACK,darwintools,DEB_DARWINTOOLS_V)

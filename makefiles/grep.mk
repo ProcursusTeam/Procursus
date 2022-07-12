@@ -12,10 +12,10 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += grep
 endif # ($(MEMO_TARGET),darwin-\*)
 GREP_VERSION  := 3.7
-DEB_GREP_V    ?= $(GREP_VERSION)
+DEB_GREP_V    ?= $(GREP_VERSION)-1
 
 grep-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/grep/grep-$(GREP_VERSION).tar.xz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/grep/grep-$(GREP_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,grep-$(GREP_VERSION).tar.xz)
 	$(call EXTRACT_TAR,grep-$(GREP_VERSION).tar.xz,grep-$(GREP_VERSION),grep)
 
@@ -23,7 +23,7 @@ ifneq ($(wildcard $(BUILD_WORK)/grep/.build_complete),)
 grep:
 	@echo "Using previously built grep."
 else
-ifneq (,$(findstring ramdisk,$(MEMO_TARGET)))
+ifeq (,$(findstring ramdisk,$(MEMO_TARGET)))
 grep: grep-setup pcre
 else
 grep: grep-setup

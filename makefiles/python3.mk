@@ -8,7 +8,7 @@ PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).9
 DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)-1
 
 python3-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.python.org/ftp/python/$(PYTHON3_VERSION)/Python-$(PYTHON3_VERSION).tar.xz{,.asc}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.python.org/ftp/python/$(PYTHON3_VERSION)/Python-$(PYTHON3_VERSION).tar.xz{$(comma).asc})
 	$(call PGP_VERIFY,Python-$(PYTHON3_VERSION).tar.xz,asc)
 	$(call EXTRACT_TAR,Python-$(PYTHON3_VERSION).tar.xz,Python-$(PYTHON3_VERSION),python3)
 	$(call DO_PATCH,python3,python3,-p1)
@@ -26,6 +26,8 @@ else
 python3: python3-setup gettext libffi ncurses readline xz openssl libgdbm expat libxcrypt
 endif
 	cd $(BUILD_WORK)/python3 && autoreconf -fi
+	sed -i 's/as_fn_error $$? "Unexpected output of /# /g' $(BUILD_WORK)/python3/configure
+	[ "$(UNAME)" != "Darwin" ] && export MACOSX_DEFAULT_ARCH=$(shell uname -m); \
 	cd $(BUILD_WORK)/python3 && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-ipv6 \
