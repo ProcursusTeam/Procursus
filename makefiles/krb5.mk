@@ -3,24 +3,24 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += krb5
-KRB5_VERSION := 1.19.2
+KRB5_VERSION := 1.20
 DEB_KRB5_V   ?= $(KRB5_VERSION)
 
 krb5-setup: setup
-	wget -q -nc -P$(BUILD_SOURCE) https://kerberos.org/dist/krb5/$(shell echo $(KRB5_VERSION) | cut -d. -f-2)/krb5-$(KRB5_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
+		https://kerberos.org/dist/krb5/$(shell echo $(KRB5_VERSION) | cut -d. -f-2)/krb5-$(KRB5_VERSION).tar.gz)
 	$(call EXTRACT_TAR,krb5-$(KRB5_VERSION).tar.gz,krb5-$(KRB5_VERSION),krb5)
-	$(call DO_PATCH,krb5,krb5,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/krb5/.build_complete),)
 krb5:
 	@echo "Using previously built krb5."
 else
-krb5: krb5-setup
+krb5: krb5-setup libverto openssl
 	cd $(BUILD_WORK)/krb5/src && autoreconf -fi && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-static \
-		--without-system-verto \
 		--without-keyutils \
+		--with-system-verto \
 		krb5_cv_attr_constructor_destructor=yes,yes \
 		ac_cv_func_regcomp=yes \
 		ac_cv_printf_positional=yes
