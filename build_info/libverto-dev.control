@@ -1,0 +1,15 @@
+Package: libverto-dev
+Version: @DEB_LIBVERTO_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libverto1 (= @DEB_LIBVERTO_V@), libverto-libevent1 (= @DEB_LIBVERTO_V@), libverto-libev1 (= @DEB_LIBVERTO_V@), libverto-glib1 (= @DEB_LIBVERTO_V@)
+Section: Development
+Priority: optional
+Description: Event loop abstraction for Libraries - Development
+ Libverto exists to isolate libraries from the particular event loop
+ chosen by an application. Libverto provides an asynchronous
+ programming interface independent of any particular event loop and
+ allows applications to attach this interface to whatever event loop
+ they select.
+ .
+ This package includes development libraries.

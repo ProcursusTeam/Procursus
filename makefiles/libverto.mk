@@ -42,7 +42,8 @@ libverto-package: libverto-stage
 	cp -a $(BUILD_STAGE)/libverto/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libverto-glib.1.dylib $(BUILD_DIST)/libverto-glib1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libverto.mk Prep libverto-dev
-	cp -a $(BUILD_STAGE)/libverto/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libverto*{.a,.dylib},pkgconfig} $(BUILD_DIST)/libverto-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libverto/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libverto.1.dylib|libverto-libevent.1.dylib|libverto-libev.1.dylib|libverto-glib.1.dylib) \
+		$(BUILD_DIST)/libverto-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libverto/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libverto-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libverto.mk Sign
