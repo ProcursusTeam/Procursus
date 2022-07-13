@@ -25,7 +25,7 @@ shell-cmds: shell-cmds-setup openpam
 	cp -a su/su.1 $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
 	cp -a $(BUILD_MISC)/pam/su $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)/etc/pam.d; \
 	for bin in killall renice script time which getopt what; do \
-		$(CC) $(CFLAGS) -o $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -save-temps; \
+		$(CC) $(CFLAGS) $(LDFLAGS) -o $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -D'__FBSDID(x)=' -save-temps; \
 		cp -a $$bin/$$bin.1 $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 2>/dev/null; \
 		cp -a $$bin/$$bin.8 $(BUILD_STAGE)/shell-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8 2>/dev/null; \
 	done

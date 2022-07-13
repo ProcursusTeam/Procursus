@@ -1336,10 +1336,8 @@ ifeq ($(UNAME),FreeBSD)
 endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	@wget -q -nc -P $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/resource.h \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/bsd/sys/event.h \
-		https://opensource.apple.com/source/xnu/xnu-4903.221.2/bsd/sys/kdebug.h
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys, \
+		https://opensource.apple.com/source/xnu/xnu-7195.101.1/bsd/sys/resource.h)
 
 	@# Copy headers from MacOSX.sdk
 	@cp -af $(MACOSX_SYSROOT)/usr/include/{arpa,bsm,hfs,net,xpc,netinet,servers} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
