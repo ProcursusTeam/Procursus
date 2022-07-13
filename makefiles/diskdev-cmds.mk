@@ -66,7 +66,7 @@ diskdev-cmds: diskdev-cmds-setup
 	cd $(BUILD_WORK)/diskdev-cmds/fstyp.tproj; \
 	for c in *.c; do \
 		bin=../$$(basename $$c .c); \
-		$(CC) $(CFLAGS) -isystem ../include -o $$bin $$c; \
+		$(CC) $(CFLAGS) $(LDFLAGS) -isystem ../include -o $$bin $$c; \
 	done
 	cd $(BUILD_WORK)/diskdev-cmds; \
 	cp -a quota $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \
