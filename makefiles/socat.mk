@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += socat
-SOCAT_VERSION := 1.7.4.1
+SOCAT_VERSION := 1.7.4.3
 DEB_SOCAT_V   ?= $(SOCAT_VERSION)
 
 socat-setup: setup

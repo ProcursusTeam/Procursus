@@ -15,12 +15,12 @@ redis-setup: setup
 	$(call EXTRACT_TAR,redis-$(REDIS_VERSION).tar.gz,redis-$(REDIS_VERSION),redis)
 	$(call DO_PATCH,redis,redis,-p1)
 	# Please don't ask why
-	sed -i 's/$$.AR./$(AR)/g' $(BUILD_WORK)/redis/deps/hiredis/Makefile
+	sed -i 's|$$.AR.|$(AR)|g' $(BUILD_WORK)/redis/deps/hiredis/Makefile
 
 	sed -i 's/PLAT= none/PLAT= macosx/' $(BUILD_WORK)/redis/deps/lua/Makefile
-	sed -i 's/RANLIB=.*/RANLIB=$(RANLIB)/' $(BUILD_WORK)/redis/deps/lua/Makefile
-	sed -i 's/AR=.*/AR=$(AR)/g' $(BUILD_WORK)/redis/deps/lua/src/Makefile
-	sed -i 's/RANLIB=.*/RANLIB=$(RANLIB)/g' $(BUILD_WORK)/redis/deps/lua/src/Makefile
+	sed -i 's|RANLIB=.*|RANLIB=$(RANLIB)|' $(BUILD_WORK)/redis/deps/lua/Makefile
+	sed -i 's|AR=.*|AR=$(AR)|g' $(BUILD_WORK)/redis/deps/lua/src/Makefile
+	sed -i 's|RANLIB=.*|RANLIB=$(RANLIB)|g' $(BUILD_WORK)/redis/deps/lua/src/Makefile
 
 ifneq ($(wildcard $(BUILD_WORK)/redis/.build_complete),)
 redis:
