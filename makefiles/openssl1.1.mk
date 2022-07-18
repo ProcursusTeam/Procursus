@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS        += openssl1.1
 OPENSSL1.1_VERSION := 1.1.1q
-DEB_OPENSSL1.1_V   ?= $(OPENSSL1.1_VERSION)
+DEB_OPENSSL1.1_V   ?= $(OPENSSL1.1_VERSION)-1
 
 ifneq (,$(findstring aarch64,$(GNU_HOST_TRIPLE)))
 	SSL_SCHEME := aarch64-apple-darwin
@@ -61,7 +61,7 @@ openssl1.1-package: openssl1.1-stage
 	mkdir -p $(BUILD_DIST)/libssl1.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# openssl1.1.mk Prep libssl1.1
-	cp -a $(BUILD_STAGE)/openssl1.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{engines-1.1,lib{crypto,ssl}.1.1.dylib} $(BUILD_DIST)/libssl1.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/openssl1.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{engines-1.1,lib{crypto,ssl}.1.1.dylib} $(BUILD_DIST)/libssl1.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 
 	# openssl1.1.mk Sign
 	$(call SIGN,libssl1.1,general.xml)
