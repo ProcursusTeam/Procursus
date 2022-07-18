@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS += bat
 BAT_VERSION := 0.21.0
-DEB_BAT_V   ?= $(BAT_VERSION)
+DEB_BAT_V   ?= $(BAT_VERSION)-1
 
 bat-setup: setup
 	$(call GITHUB_ARCHIVE,sharkdp,bat,$(BAT_VERSION),v$(BAT_VERSION))

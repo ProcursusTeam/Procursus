@@ -102,6 +102,7 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
 BARE_PLATFORM         := iPhoneOS
+MEMO_DEPLOYMENT       := IPHONEOS_DEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),iphoneos-arm64-rootless)
 ifneq ($(MEMO_QUIET),1)
@@ -121,6 +122,7 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
 BARE_PLATFORM         := iPhoneOS
+MEMO_DEPLOYMENT       := IPHONEOS_DEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),iphoneos-arm64e-rootless)
 ifneq ($(MEMO_QUIET),1)
@@ -140,6 +142,7 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
 BARE_PLATFORM         := iPhoneOS
+MEMO_DEPLOYMENT       := IPHONEOS_DEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),iphoneos-arm64e)
 ifneq ($(MEMO_QUIET),1)
@@ -159,6 +162,7 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
 BARE_PLATFORM         := iPhoneOS
+MEMO_DEPLOYMENT       := IPHONEOS_DEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(shell [ "$(MEMO_TARGET)" = "iphoneos-armv7" ] || [ "$(MEMO_TARGET)" = "iphoneos-armv7-ramdisk" ] && echo 1),1)
 ifneq ($(MEMO_QUIET),1)
@@ -178,7 +182,7 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
 BARE_PLATFORM         := iPhoneOS
-export IPHONEOS_DEPLOYMENT_TARGET
+MEMO_DEPLOYMENT       := IPHONEOS_DEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(shell [ "$(MEMO_TARGET)" = "appletvos-arm64" ] || [ "$(MEMO_TARGET)" = "appletvos-arm64-ramdisk" ] && echo 1),1)
 ifneq ($(MEMO_QUIET),1)
@@ -198,6 +202,7 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
 BARE_PLATFORM         := AppleTVOS
+MEMO_DEPLOYMENT       := APPLETVOS_DEPLOYMENT_TARGET=$(APPLETVOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),appletvos-arm64e)
 ifneq ($(MEMO_QUIET),1)
@@ -217,6 +222,7 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
 BARE_PLATFORM         := AppleTVOS
+MEMO_DEPLOYMENT       := APPLETVOS_DEPLOYMENT_TARGET=$(APPLETVOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),audioos-arm64)
 ifneq ($(MEMO_QUIET),1)
@@ -236,6 +242,7 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
 BARE_PLATFORM         := AppleTVOS
+MEMO_DEPLOYMENT       := APPLETVOS_DEPLOYMENT_TARGET=$(APPLETVOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),bridgeos-arm64)
 ifneq ($(MEMO_QUIET),1)
@@ -255,6 +262,7 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/BridgeOS.sdk
 BARE_PLATFORM         := BridgeOS
+MEMO_DEPLOYMENT       := BRIDGEOS_DEPLOYMENT_TARGET=$(BRIDGEOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),watchos-arm64_32)
 ifneq ($(MEMO_QUIET),1)
@@ -274,6 +282,7 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/WatchOS.sdk
 BARE_PLATFORM         := WatchOS
+MEMO_DEPLOYMENT       := WATCHOS_DEPLOYMENT_TARGET=$(WATCHOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(shell [ "$(MEMO_TARGET)" = "watchos-armv7k" ] || [ "$(MEMO_TARGET)" = "watchos-armv7k-ramdisk" ] && echo 1),1)
 ifneq ($(MEMO_QUIET),1)
@@ -293,6 +302,7 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/WatchOS.sdk
 BARE_PLATFORM         := WatchOS
+MEMO_DEPLOYMENT       := WATCHOS_DEPLOYMENT_TARGET=$(WATCHOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),darwin-arm64e)
 ifneq ($(MEMO_QUIET),1)
@@ -312,6 +322,7 @@ MEMO_LAUNCHCTL_PREFIX ?=
 GNU_PREFIX            := g
 ON_DEVICE_SDK_PATH    := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 BARE_PLATFORM         := MacOSX
+MEMO_DEPLOYMENT       := MACOSX_DEPLOYMENT_TARGET=$(MACOSX_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),darwin-arm64)
 ifneq ($(MEMO_QUIET),1)
@@ -331,6 +342,7 @@ MEMO_LAUNCHCTL_PREFIX ?=
 GNU_PREFIX            := g
 ON_DEVICE_SDK_PATH    := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 BARE_PLATFORM         := MacOSX
+MEMO_DEPLOYMENT       := MACOSX_DEPLOYMENT_TARGET=$(MACOSX_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),darwin-amd64)
 ifneq ($(MEMO_QUIET),1)
@@ -350,6 +362,7 @@ MEMO_LAUNCHCTL_PREFIX ?=
 GNU_PREFIX            := g
 ON_DEVICE_SDK_PATH    := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 BARE_PLATFORM         := MacOSX
+MEMO_DEPLOYMENT       := MACOSX_DEPLOYMENT_TARGET=$(MACOSX_DEPLOYMENT_TARGET)
 
 else
 $(error Platform not supported)
@@ -664,6 +677,7 @@ DEFAULT_SETUP_PY_ENV := \
 	CPPFLAGS="$(CPPFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)"
 
 DEFAULT_RUST_FLAGS := \
+	$(MEMO_DEPLOYMENT) \
 	SDKROOT="$(TARGET_SYSROOT)" \
 	PKG_CONFIG="$(RUST_TARGET)-pkg-config" \
 	RUSTFLAGS="-L $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib"
