@@ -7,6 +7,12 @@ RUBY_API_VERSION := 3.1
 RUBY_VERSION     := $(RUBY_API_VERSION).2
 DEB_RUBY_V       ?= $(RUBY_VERSION)
 
+###
+#
+# TODO: Change $(LIBDIR)/ruby/$(RUBY_API_VERSION).0/arm64-darwin/rbconfig.rb to reflect proper CFLAGS, etc
+#
+###
+
 ruby-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://cache.ruby-lang.org/pub/ruby/$(RUBY_API_VERSION)/ruby-$(RUBY_VERSION).tar.gz)
 	$(call EXTRACT_TAR,ruby-$(RUBY_VERSION).tar.gz,ruby-$(RUBY_VERSION),ruby)
