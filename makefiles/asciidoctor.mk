@@ -22,6 +22,7 @@ asciidoctor: asciidoctor-setup
 			-n $(BUILD_STAGE)/asciidoctor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
 			--local \
 			$(BUILD_SOURCE)/gems/asciidoctor-$(ASCIIDOCTOR_VERSION).gem
+	sed -i "s|$$(cat $(BUILD_STAGE)/asciidoctor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/asciidoctor | grep \#! | sed 's/#!//')|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ruby3.1|" $(BUILD_STAGE)/asciidoctor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
 	$(call AFTER_BUILD)
 endif
 
