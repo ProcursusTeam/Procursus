@@ -390,9 +390,10 @@ OTOOL    := $(GNU_HOST_TRIPLE)-otool
 LIBTOOL  := $(GNU_HOST_TRIPLE)-libtool
 
 CFLAGS_FOR_BUILD   := -O2 -pipe
-CPPFLAGS_FOR_BUILD := -O2 -pipe
-CXXFLAGS_FOR_BUILD := -O2 -pipe
-LDFLAGS_FOR_BUILD  := -O2 -pipe
+CPPFLAGS_FOR_BUILD := $(CFLAGS_FOR_BUILD)
+CXXFLAGS_FOR_BUILD := $(CFLAGS_FOR_BUILD)
+ASFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
+LDFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
 
 else ifeq ($(UNAME),FreeBSD)
 ifneq ($(MEMO_QUIET),1)
@@ -418,6 +419,7 @@ PATH    := $(GNUBINDIR):$(PATH)
 CFLAGS_FOR_BUILD   :=
 CPPFLAGS_FOR_BUILD :=
 CXXFLAGS_FOR_BUILD :=
+ASFLAGS_FOR_BUILD  :=
 LDFLAGS_FOR_BUILD  :=
 
 else ifeq ($(UNAME),Darwin)
@@ -433,9 +435,10 @@ CPP             := $(shell xcrun --find cc) -E
 PATH            := /opt/procursus/bin:/opt/procursus/libexec/gnubin:/usr/bin:$(PATH)
 
 CFLAGS_FOR_BUILD   := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
-CPPFLAGS_FOR_BUILD := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
-CXXFLAGS_FOR_BUILD := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
-LDFLAGS_FOR_BUILD  := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
+CPPFLAGS_FOR_BUILD := $(CFLAGS_FOR_BUILD)
+CXXFLAGS_FOR_BUILD := $(CFLAGS_FOR_BUILD)
+ASFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
+LDFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
 
 else
 ifneq ($(MEMO_QUIET),1)
@@ -449,9 +452,10 @@ CPP             := $(shell command -v cc) -E
 PATH            := /usr/bin:$(PATH)
 
 CFLAGS_FOR_BUILD   := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
-CPPFLAGS_FOR_BUILD := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
-CXXFLAGS_FOR_BUILD := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
-LDFLAGS_FOR_BUILD  := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
+CPPFLAGS_FOR_BUILD := $(CFLAGS_FOR_BUILD)
+CXXFLAGS_FOR_BUILD := $(CFLAGS_FOR_BUILD)
+ASFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
+LDFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
 
 endif
 AR              := $(shell command -v ar)
@@ -530,6 +534,7 @@ endif
 
 CFLAGS              := $(OPTIMIZATION_FLAGS) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)$(MEMO_PREFIX)/Library/Frameworks
 CXXFLAGS            := $(CFLAGS)
+ASFLAGS             := $(CFLAGS)
 CPPFLAGS            := -arch $(MEMO_ARCH) $(PLATFORM_VERSION_MIN) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include -Wno-error-implicit-function-declaration
 LDFLAGS             := $(OPTIMIZATION_FLAGS) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)$(MEMO_PREFIX)/Library/Frameworks -Wl,-not_for_dyld_shared_cache
 PKG_CONFIG_PATH     :=
@@ -607,6 +612,7 @@ BUILD_CONFIGURE_FLAGS := \
 	CFLAGS="$(CFLAGS_FOR_BUILD)" \
 	CXXFLAGS="$(CXXFLAGS_FOR_BUILD)" \
 	CPPFLAGS="$(CPPFLAGS_FOR_BUILD)" \
+	ASFLAGS="$(ASFLAGS_FOR_BUILD)" \
 	LDFLAGS="$(LDFLAGS_FOR_BUILD)"
 
 DEFAULT_CONFIGURE_FLAGS := \
@@ -686,7 +692,7 @@ export PLATFORM MEMO_ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE MEMO_PRE
 export CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T INSTALL
 export BUILD_ROOT BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP BUILD_TOOLS
 export DEB_ARCH DEB_ORIGIN DEB_MAINTAINER
-export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS ACLOCAL_PATH PKG_CONFIG_PATH
+export CFLAGS CXXFLAGS CPPFLAGS ASFLAGS LDFLAGS ACLOCAL_PATH PKG_CONFIG_PATH
 export DEFAULT_CMAKE_FLAGS DEFAULT_CONFIGURE_FLAGS DEFAULT_PERL_MAKE_FLAGS DEFAULT_PERL_BUILD_FLAGS DEFAULT_GOLANG_FLAGS
 
 HAS_COMMAND = $(shell type $(1) >/dev/null 2>&1 && echo 1)
@@ -704,6 +710,12 @@ PGP_VERIFY  = KEY=$$(gpg --verify --status-fd 1 $(BUILD_SOURCE)/$(1).$(if $(2),$
 	gpg --verify $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) $(BUILD_SOURCE)/$(1) 2>&1 | grep -q 'Good signature'
 endif
 
+###
+#
+# TODO: Account for multiple files being hashed in the shafile (xz, xz.asc, etc)
+#
+###
+
 CHECKSUM_VERIFY = if [ "$(1)" = "sha1" -o "$(1)" = "sha1sum" ]; then \
 			HASH=$$(sha1sum "$(BUILD_SOURCE)/$(2)" | cut -d " " -f1 | tr -d \n); \
 		elif [ "$(1)" = "sha256" -o "$(1)" = "sha256sum" ]; then \
@@ -712,7 +724,7 @@ CHECKSUM_VERIFY = if [ "$(1)" = "sha1" -o "$(1)" = "sha1sum" ]; then \
 			HASH=$$(sha512sum "$(BUILD_SOURCE)/$(2)" | cut -d " " -f1 | tr -d \n); \
 		fi; \
 		if [ "$(3)" = "" ]; then \
-			[ "$$(cut -d" " -f 1 "$(BUILD_SOURCE)/$(2).$(1)")" = "$$HASH" ] || (echo "$(2) - Invalid Hash" && exit 1); \
+			[ "$$(head -n1 "$(BUILD_SOURCE)/$(2).$(1)" | cut -d" " -f1)" = "$$HASH" ] || (echo "$(2) - Invalid Hash" && exit 1); \
 		else  \
 			[ "$(3)" = "$$HASH" ] || (echo "$(2) - Invalid Hash" && exit 1); \
 		fi
