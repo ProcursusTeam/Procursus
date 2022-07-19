@@ -704,6 +704,12 @@ PGP_VERIFY  = KEY=$$(gpg --verify --status-fd 1 $(BUILD_SOURCE)/$(1).$(if $(2),$
 	gpg --verify $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) $(BUILD_SOURCE)/$(1) 2>&1 | grep -q 'Good signature'
 endif
 
+###
+#
+# TODO: Account for multiple files being hashed in the shafile (xz, xz.asc, etc)
+#
+###
+
 CHECKSUM_VERIFY = if [ "$(1)" = "sha1" -o "$(1)" = "sha1sum" ]; then \
 			HASH=$$(sha1sum "$(BUILD_SOURCE)/$(2)" | cut -d " " -f1 | tr -d \n); \
 		elif [ "$(1)" = "sha256" -o "$(1)" = "sha256sum" ]; then \
@@ -712,7 +718,7 @@ CHECKSUM_VERIFY = if [ "$(1)" = "sha1" -o "$(1)" = "sha1sum" ]; then \
 			HASH=$$(sha512sum "$(BUILD_SOURCE)/$(2)" | cut -d " " -f1 | tr -d \n); \
 		fi; \
 		if [ "$(3)" = "" ]; then \
-			[ "$$(cut -d" " -f 1 "$(BUILD_SOURCE)/$(2).$(1)")" = "$$HASH" ] || (echo "$(2) - Invalid Hash" && exit 1); \
+			[ "$$(head -n1 "$(BUILD_SOURCE)/$(2).$(1)" | cut -d" " -f1)" = "$$HASH" ] || (echo "$(2) - Invalid Hash" && exit 1); \
 		else  \
 			[ "$(3)" = "$$HASH" ] || (echo "$(2) - Invalid Hash" && exit 1); \
 		fi
