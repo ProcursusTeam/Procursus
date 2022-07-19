@@ -2,7 +2,7 @@ Package: ruby
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_RUBY_V@
-Depends: ruby3.0
+Depends: ruby3.1
 Section: Scripting
 Priority: optional
 Description: Interpreter of object-oriented scripting language Ruby (default version)

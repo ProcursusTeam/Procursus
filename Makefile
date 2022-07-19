@@ -102,6 +102,7 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
 BARE_PLATFORM         := iPhoneOS
+MEMO_DEPLOYMENT       := IPHONEOS_DEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),iphoneos-arm64-rootless)
 ifneq ($(MEMO_QUIET),1)
@@ -121,6 +122,7 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
 BARE_PLATFORM         := iPhoneOS
+MEMO_DEPLOYMENT       := IPHONEOS_DEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),iphoneos-arm64e-rootless)
 ifneq ($(MEMO_QUIET),1)
@@ -140,6 +142,7 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
 BARE_PLATFORM         := iPhoneOS
+MEMO_DEPLOYMENT       := IPHONEOS_DEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),iphoneos-arm64e)
 ifneq ($(MEMO_QUIET),1)
@@ -159,6 +162,7 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
 BARE_PLATFORM         := iPhoneOS
+MEMO_DEPLOYMENT       := IPHONEOS_DEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(shell [ "$(MEMO_TARGET)" = "iphoneos-armv7" ] || [ "$(MEMO_TARGET)" = "iphoneos-armv7-ramdisk" ] && echo 1),1)
 ifneq ($(MEMO_QUIET),1)
@@ -178,7 +182,7 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
 BARE_PLATFORM         := iPhoneOS
-export IPHONEOS_DEPLOYMENT_TARGET
+MEMO_DEPLOYMENT       := IPHONEOS_DEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(shell [ "$(MEMO_TARGET)" = "appletvos-arm64" ] || [ "$(MEMO_TARGET)" = "appletvos-arm64-ramdisk" ] && echo 1),1)
 ifneq ($(MEMO_QUIET),1)
@@ -198,6 +202,7 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
 BARE_PLATFORM         := AppleTVOS
+MEMO_DEPLOYMENT       := APPLETVOS_DEPLOYMENT_TARGET=$(APPLETVOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),appletvos-arm64e)
 ifneq ($(MEMO_QUIET),1)
@@ -217,6 +222,7 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
 BARE_PLATFORM         := AppleTVOS
+MEMO_DEPLOYMENT       := APPLETVOS_DEPLOYMENT_TARGET=$(APPLETVOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),audioos-arm64)
 ifneq ($(MEMO_QUIET),1)
@@ -236,6 +242,7 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
 BARE_PLATFORM         := AppleTVOS
+MEMO_DEPLOYMENT       := APPLETVOS_DEPLOYMENT_TARGET=$(APPLETVOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),bridgeos-arm64)
 ifneq ($(MEMO_QUIET),1)
@@ -255,6 +262,7 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/BridgeOS.sdk
 BARE_PLATFORM         := BridgeOS
+MEMO_DEPLOYMENT       := BRIDGEOS_DEPLOYMENT_TARGET=$(BRIDGEOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),watchos-arm64_32)
 ifneq ($(MEMO_QUIET),1)
@@ -274,6 +282,7 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/WatchOS.sdk
 BARE_PLATFORM         := WatchOS
+MEMO_DEPLOYMENT       := WATCHOS_DEPLOYMENT_TARGET=$(WATCHOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(shell [ "$(MEMO_TARGET)" = "watchos-armv7k" ] || [ "$(MEMO_TARGET)" = "watchos-armv7k-ramdisk" ] && echo 1),1)
 ifneq ($(MEMO_QUIET),1)
@@ -293,6 +302,7 @@ MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
 ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/WatchOS.sdk
 BARE_PLATFORM         := WatchOS
+MEMO_DEPLOYMENT       := WATCHOS_DEPLOYMENT_TARGET=$(WATCHOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),darwin-arm64e)
 ifneq ($(MEMO_QUIET),1)
@@ -312,6 +322,7 @@ MEMO_LAUNCHCTL_PREFIX ?=
 GNU_PREFIX            := g
 ON_DEVICE_SDK_PATH    := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 BARE_PLATFORM         := MacOSX
+MEMO_DEPLOYMENT       := MACOSX_DEPLOYMENT_TARGET=$(MACOSX_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),darwin-arm64)
 ifneq ($(MEMO_QUIET),1)
@@ -331,6 +342,7 @@ MEMO_LAUNCHCTL_PREFIX ?=
 GNU_PREFIX            := g
 ON_DEVICE_SDK_PATH    := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 BARE_PLATFORM         := MacOSX
+MEMO_DEPLOYMENT       := MACOSX_DEPLOYMENT_TARGET=$(MACOSX_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),darwin-amd64)
 ifneq ($(MEMO_QUIET),1)
@@ -350,6 +362,7 @@ MEMO_LAUNCHCTL_PREFIX ?=
 GNU_PREFIX            := g
 ON_DEVICE_SDK_PATH    := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 BARE_PLATFORM         := MacOSX
+MEMO_DEPLOYMENT       := MACOSX_DEPLOYMENT_TARGET=$(MACOSX_DEPLOYMENT_TARGET)
 
 else
 $(error Platform not supported)
@@ -377,9 +390,10 @@ OTOOL    := $(GNU_HOST_TRIPLE)-otool
 LIBTOOL  := $(GNU_HOST_TRIPLE)-libtool
 
 CFLAGS_FOR_BUILD   := -O2 -pipe
-CPPFLAGS_FOR_BUILD := -O2 -pipe
-CXXFLAGS_FOR_BUILD := -O2 -pipe
-LDFLAGS_FOR_BUILD  := -O2 -pipe
+CPPFLAGS_FOR_BUILD := $(CFLAGS_FOR_BUILD)
+CXXFLAGS_FOR_BUILD := $(CFLAGS_FOR_BUILD)
+ASFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
+LDFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
 
 else ifeq ($(UNAME),FreeBSD)
 ifneq ($(MEMO_QUIET),1)
@@ -405,6 +419,7 @@ PATH    := $(GNUBINDIR):$(PATH)
 CFLAGS_FOR_BUILD   :=
 CPPFLAGS_FOR_BUILD :=
 CXXFLAGS_FOR_BUILD :=
+ASFLAGS_FOR_BUILD  :=
 LDFLAGS_FOR_BUILD  :=
 
 else ifeq ($(UNAME),Darwin)
@@ -420,9 +435,10 @@ CPP             := $(shell xcrun --find cc) -E
 PATH            := /opt/procursus/bin:/opt/procursus/libexec/gnubin:/usr/bin:$(PATH)
 
 CFLAGS_FOR_BUILD   := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
-CPPFLAGS_FOR_BUILD := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
-CXXFLAGS_FOR_BUILD := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
-LDFLAGS_FOR_BUILD  := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
+CPPFLAGS_FOR_BUILD := $(CFLAGS_FOR_BUILD)
+CXXFLAGS_FOR_BUILD := $(CFLAGS_FOR_BUILD)
+ASFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
+LDFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
 
 else
 ifneq ($(MEMO_QUIET),1)
@@ -436,9 +452,10 @@ CPP             := $(shell command -v cc) -E
 PATH            := /usr/bin:$(PATH)
 
 CFLAGS_FOR_BUILD   := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
-CPPFLAGS_FOR_BUILD := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
-CXXFLAGS_FOR_BUILD := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
-LDFLAGS_FOR_BUILD  := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
+CPPFLAGS_FOR_BUILD := $(CFLAGS_FOR_BUILD)
+CXXFLAGS_FOR_BUILD := $(CFLAGS_FOR_BUILD)
+ASFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
+LDFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
 
 endif
 AR              := $(shell command -v ar)
@@ -517,6 +534,7 @@ endif
 
 CFLAGS              := $(OPTIMIZATION_FLAGS) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)$(MEMO_PREFIX)/Library/Frameworks
 CXXFLAGS            := $(CFLAGS)
+ASFLAGS             := $(CFLAGS)
 CPPFLAGS            := -arch $(MEMO_ARCH) $(PLATFORM_VERSION_MIN) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include -Wno-error-implicit-function-declaration
 LDFLAGS             := $(OPTIMIZATION_FLAGS) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)$(MEMO_PREFIX)/Library/Frameworks -Wl,-not_for_dyld_shared_cache
 PKG_CONFIG_PATH     :=
@@ -594,6 +612,7 @@ BUILD_CONFIGURE_FLAGS := \
 	CFLAGS="$(CFLAGS_FOR_BUILD)" \
 	CXXFLAGS="$(CXXFLAGS_FOR_BUILD)" \
 	CPPFLAGS="$(CPPFLAGS_FOR_BUILD)" \
+	ASFLAGS="$(ASFLAGS_FOR_BUILD)" \
 	LDFLAGS="$(LDFLAGS_FOR_BUILD)"
 
 DEFAULT_CONFIGURE_FLAGS := \
@@ -664,6 +683,7 @@ DEFAULT_SETUP_PY_ENV := \
 	CPPFLAGS="$(CPPFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)"
 
 DEFAULT_RUST_FLAGS := \
+	$(MEMO_DEPLOYMENT) \
 	SDKROOT="$(TARGET_SYSROOT)" \
 	PKG_CONFIG="$(RUST_TARGET)-pkg-config" \
 	RUSTFLAGS="-L $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib"
@@ -672,7 +692,7 @@ export PLATFORM MEMO_ARCH TARGET_SYSROOT MACOSX_SYSROOT GNU_HOST_TRIPLE MEMO_PRE
 export CC CXX AR LD CPP RANLIB STRIP NM LIPO OTOOL I_N_T INSTALL
 export BUILD_ROOT BUILD_BASE BUILD_INFO BUILD_WORK BUILD_STAGE BUILD_DIST BUILD_STRAP BUILD_TOOLS
 export DEB_ARCH DEB_ORIGIN DEB_MAINTAINER
-export CFLAGS CXXFLAGS CPPFLAGS LDFLAGS ACLOCAL_PATH PKG_CONFIG_PATH
+export CFLAGS CXXFLAGS CPPFLAGS ASFLAGS LDFLAGS ACLOCAL_PATH PKG_CONFIG_PATH
 export DEFAULT_CMAKE_FLAGS DEFAULT_CONFIGURE_FLAGS DEFAULT_PERL_MAKE_FLAGS DEFAULT_PERL_BUILD_FLAGS DEFAULT_GOLANG_FLAGS
 
 HAS_COMMAND = $(shell type $(1) >/dev/null 2>&1 && echo 1)
@@ -690,15 +710,21 @@ PGP_VERIFY  = KEY=$$(gpg --verify --status-fd 1 $(BUILD_SOURCE)/$(1).$(if $(2),$
 	gpg --verify $(BUILD_SOURCE)/$(1).$(if $(2),$(2),sig) $(BUILD_SOURCE)/$(1) 2>&1 | grep -q 'Good signature'
 endif
 
-CHECKSUM_VERIFY = if [ "$(1)" = "sha1" ]; then \
+###
+#
+# TODO: Account for multiple files being hashed in the shafile (xz, xz.asc, etc)
+#
+###
+
+CHECKSUM_VERIFY = if [ "$(1)" = "sha1" -o "$(1)" = "sha1sum" ]; then \
 			HASH=$$(sha1sum "$(BUILD_SOURCE)/$(2)" | cut -d " " -f1 | tr -d \n); \
-		elif [ "$(1)" = "sha256" ]; then \
+		elif [ "$(1)" = "sha256" -o "$(1)" = "sha256sum" ]; then \
 			HASH=$$(sha256sum "$(BUILD_SOURCE)/$(2)" | cut -d " " -f1 | tr -d \n); \
-		elif [ "$(1)" = "sha512" ]; then \
+		elif [ "$(1)" = "sha512" -o "$(1)" = "sha512sum" ]; then \
 			HASH=$$(sha512sum "$(BUILD_SOURCE)/$(2)" | cut -d " " -f1 | tr -d \n); \
 		fi; \
 		if [ "$(3)" = "" ]; then \
-			[ "$$(cut -d" " -f 1 "$(BUILD_SOURCE)/$(2).$(1)")" = "$$HASH" ] || (echo "$(2) - Invalid Hash" && exit 1); \
+			[ "$$(head -n1 "$(BUILD_SOURCE)/$(2).$(1)" | cut -d" " -f1)" = "$$HASH" ] || (echo "$(2) - Invalid Hash" && exit 1); \
 		else  \
 			[ "$(3)" = "$$HASH" ] || (echo "$(2) - Invalid Hash" && exit 1); \
 		fi
@@ -1248,7 +1274,7 @@ rebuild-%:
 
 setup:
 	@mkdir -p \
-		$(BUILD_BASE) $(BUILD_BASE)$(MEMO_PREFIX)/{{,System}/Library/Frameworks,$(MEMO_SUB_PREFIX)/{include/{bsm,objc,os/internal,sys,firehose,CoreFoundation,IOKit/kext,libkern,arm,{mach/,}machine,CommonCrypto,Security,Kernel/kern/},lib/pkgconfig,$(MEMO_ALT_PREFIX)/lib}} \
+		$(BUILD_BASE) $(BUILD_BASE)$(MEMO_PREFIX)/{{,System}/Library/Frameworks,$(MEMO_SUB_PREFIX)/{include/{bsm,objc,os/internal,sys,firehose,CoreFoundation,FSEvents,IOKit/kext,libkern,arm,{mach/,}machine,CommonCrypto,Security,Kernel/kern/},lib/pkgconfig,$(MEMO_ALT_PREFIX)/lib}} \
 		$(BUILD_SOURCE) $(BUILD_WORK) $(BUILD_STAGE) $(BUILD_STRAP)
 
 	@rm -rf $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/System
@@ -1321,6 +1347,9 @@ setup:
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach, \
 		https://opensource.apple.com/source/xnu/xnu-7195.101.1/osfmk/mach/coalition.h)
 
+	@# FSEvents headers won't be found even when building for macOS... Should probably fix this properly eventually
+	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/CoreServices.framework/Frameworks/FSEvents.framework/Headers/* $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/FSEvents/
+
 	@cp -a $(BUILD_MISC)/{libxml-2.0,zlib}.pc $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 
 ifeq ($(UNAME),FreeBSD)
@@ -1336,7 +1365,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	@cp -af $(MACOSX_SYSROOT)/usr/include/libkern/{OSDebug.h,OSKextLib.h,OSReturn.h,OSThermalNotification.h,OSTypes.h,machine} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern
 	@cp -af $(MACOSX_SYSROOT)/usr/include/kern $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	@cp -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,proc*,ptrace,kern*,random,reboot,user,vnode,disk,vmmeter,conf}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys
-	@cp -af  $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Versions/Current/Headers/sys/disklabel.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys
+	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Versions/Current/Headers/sys/disklabel.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys
 	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit
 	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/Security.framework/Headers/{mds_schema,oidsalg,SecKeychainSearch,certextensions,Authorization,eisl,SecDigestTransform,SecKeychainItem,oidscrl,cssmcspi,CSCommon,cssmaci,SecCode,CMSDecoder,oidscert,SecRequirement,AuthSession,SecReadTransform,oids,cssmconfig,cssmkrapi,SecPolicySearch,SecAccess,cssmtpi,SecACL,SecEncryptTransform,cssmapi,cssmcli,mds,x509defs,oidsbase,SecSignVerifyTransform,cssmspi,cssmkrspi,SecTask,cssmdli,SecAsn1Coder,cssm,SecTrustedApplication,SecCodeHost,SecCustomTransform,oidsattr,SecIdentitySearch,cssmtype,SecAsn1Types,emmtype,SecTransform,SecTrustSettings,SecStaticCode,emmspi,SecTransformReadTransform,SecKeychain,SecDecodeTransform,CodeSigning,AuthorizationPlugin,cssmerr,AuthorizationTags,CMSEncoder,SecEncodeTransform,SecureDownload,SecAsn1Templates,AuthorizationDB,SecCertificateOIDs,cssmapple}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security
 	@cp -af $(MACOSX_SYSROOT)/usr/include/{ar,bootstrap,launch,libc,libcharset,localcharset,libproc,nlist,NSSystemDirectories,tzfile,vproc}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include

@@ -26,6 +26,7 @@ bison: bison-setup m4 gettext readline
 	mv $(BUILD_STAGE)/bison/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/yacc.1 \
 		$(BUILD_STAGE)/bison/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/bison.yacc.1
 	$(call AFTER_BUILD,copy)
+	rm -f $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bison
 endif
 
 bison-package: bison-stage
