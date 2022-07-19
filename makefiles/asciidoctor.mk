@@ -32,9 +32,9 @@ asciidoctor-package: asciidoctor-stage
 
 	# asciidoctor.mk Prep asciidoctor
 	cp -a $(BUILD_STAGE)/asciidoctor $(BUILD_DIST)
-	mkdir -p $(BUILD_DIST)/asciidoctor-doc/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/ruby/gems/3.1.0/
-	mv $(BUILD_DIST)/asciidoctor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ruby/gems/3.1.0/doc \
-			$(BUILD_DIST)/asciidoctor-doc/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/ruby/gems/3.1.0/doc
+	mkdir -p $(BUILD_DIST)/asciidoctor-doc/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/ruby/gems/3.0.0/
+	mv $(BUILD_DIST)/asciidoctor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ruby/gems/3.0.0/doc \
+			$(BUILD_DIST)/asciidoctor-doc/$(MEMO_PREFIX)/$(MEMO_SUB_PREFIX)/lib/ruby/gems/3.0.0/doc
 
 	# asciidoctor.mk Make .debs
 	$(call PACK,asciidoctor,DEB_ASCIIDOCTOR_V)
