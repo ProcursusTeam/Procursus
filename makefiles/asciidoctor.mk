@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS         += asciidoctor
-ASCIIDOCTOR_VERSION := 2.0.15
+ASCIIDOCTOR_VERSION := 2.0.17
 DEB_ASCIIDOCTOR_V   ?= $(ASCIIDOCTOR_VERSION)
 
 asciidoctor-setup: setup
@@ -14,11 +14,11 @@ asciidoctor:
 else
 asciidoctor: asciidoctor-setup
 	mkdir -p $(BUILD_WORK)/asciidoctor
-	gem3.0 install \
+	gem3.1 install \
 			--ignore-dependencies \
 			--no-user-install \
 			--verbose \
-			-i $(BUILD_STAGE)/asciidoctor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ruby/gems/3.0.0 \
+			-i $(BUILD_STAGE)/asciidoctor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ruby/gems/3.1.0 \
 			-n $(BUILD_STAGE)/asciidoctor/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
 			--local \
 			$(BUILD_SOURCE)/gems/asciidoctor-$(ASCIIDOCTOR_VERSION).gem
