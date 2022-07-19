@@ -39,13 +39,13 @@ libtool-package: libtool-stage
 
 	# libtool.mk Prep libtool
 	cp -a $(BUILD_STAGE)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/glibtoolize $(BUILD_DIST)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/glibtoolize.1 $(BUILD_DIST)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/glibtoolize.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_STAGE)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal/!(ltdl.m4) $(BUILD_DIST)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal
 	cp -a $(BUILD_STAGE)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/libtool/build-aux $(BUILD_DIST)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/libtool
 
 	# libtool.mk Prep libtool-bin
 	cp -a $(BUILD_STAGE)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/glibtool $(BUILD_DIST)/libtool-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/glibtool.1 $(BUILD_DIST)/libtool-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/glibtool.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/libtool-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# libtool.mk Prep libltdl7
 	cp -a $(BUILD_STAGE)/libtool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libltdl.7.dylib $(BUILD_DIST)/libltdl7/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
