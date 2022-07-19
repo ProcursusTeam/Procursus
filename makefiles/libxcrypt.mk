@@ -24,7 +24,11 @@ libxcrypt: libxcrypt-setup libtool
 #	Prebuilding libtool needed for autoreconf to succeed here (why?)
 	cd $(BUILD_WORK)/libxcrypt && autoreconf -iv
 	cd $(BUILD_WORK)/libxcrypt && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		CFLAGS="$(patsubst -flto=thin,,$(CFLAGS))" \
+		LDFLAGS="$(patsubst -flto=thin,,$(LDFLAGS))"
+	# LTO is disabled here because it will build but not work if compiled with LTO.
+	# No matter what you're thinking, just don't try to change it, it will segfault.
 	+$(MAKE) -C $(BUILD_WORK)/libxcrypt
 	+$(MAKE) -C $(BUILD_WORK)/libxcrypt install \
 		DESTDIR=$(BUILD_STAGE)/libxcrypt

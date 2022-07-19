@@ -3,21 +3,19 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += libtool
-LIBTOOL_VERSION := 2.4.6
-DEB_LIBTOOL_V   ?= $(LIBTOOL_VERSION)-4
+LIBTOOL_VERSION := 2.4.7
+DEB_LIBTOOL_V   ?= $(LIBTOOL_VERSION)
 
 libtool-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/libtool/libtool-$(LIBTOOL_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libtool-$(LIBTOOL_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libtool-$(LIBTOOL_VERSION).tar.gz,libtool-$(LIBTOOL_VERSION),libtool)
-	$(call DO_PATCH,libtool,libtool,-p0)
 
 ifneq ($(wildcard $(BUILD_WORK)/libtool/.build_complete),)
 libtool:
 	@echo "Using previously built libtool."
 else
 libtool: libtool-setup
-	cd $(BUILD_WORK)/libtool && autoreconf -f
 	cd $(BUILD_WORK)/libtool && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--program-prefix=g \
