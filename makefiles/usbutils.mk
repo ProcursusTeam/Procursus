@@ -7,7 +7,7 @@ USBUTILS_VERSION := 007
 DEB_USBUTILS_V   ?= $(USBUTILS_VERSION)
 
 usbutils-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.kernel.org/pub/linux/utils/usb/usbutils/usbutils-$(USBUTILS_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.kernel.org/pub/linux/utils/usb/usbutils/usbutils-$(USBUTILS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,usbutils-$(USBUTILS_VERSION).tar.xz,usbutils-$(USBUTILS_VERSION),usbutils)
 
 ifneq ($(wildcard $(BUILD_WORK)/usbutils/.build_complete),)
@@ -26,7 +26,7 @@ usbutils: usbutils-setup libusb
 		sbin_SCRIPTS="" \
 		"man_MANS=lsusb.8"
 	rm -f $(BUILD_STAGE)/usbutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/usb.ids{,.gz}
-	wget -P $(BUILD_STAGE)/usbutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share http://www.linux-usb.org/usb.ids{,.gz}
+	$(call DOWNLOAD_FILES,$(BUILD_STAGE)/usbutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share,http://www.linux-usb.org/usb.ids{$(comma).gz})
 	$(call AFTER_BUILD)
 endif
 

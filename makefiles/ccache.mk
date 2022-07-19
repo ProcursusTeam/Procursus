@@ -21,7 +21,7 @@ CCACHE_CMAKE_ARGS := -DHAVE_NEON=FALSE \
 endif
 
 ccache-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/ccache/ccache/releases/download/v$(CCACHE_VERSION)/ccache-$(CCACHE_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/ccache/ccache/releases/download/v$(CCACHE_VERSION)/ccache-$(CCACHE_VERSION).tar.xz)
 	$(call EXTRACT_TAR,ccache-$(CCACHE_VERSION).tar.xz,ccache-$(CCACHE_VERSION),ccache)
 
 ifneq ($(wildcard $(BUILD_WORK)/ccache/.build_complete),)

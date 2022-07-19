@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS            += shairport-sync
-SHAIRPORT-SYNC_VERSION := 3.3.8
+SHAIRPORT-SYNC_VERSION := 3.3.9
 DEB_SHAIRPORT-SYNC_V   ?= $(SHAIRPORT-SYNC_VERSION)
 
 shairport-sync-setup: setup

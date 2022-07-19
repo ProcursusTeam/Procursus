@@ -3,12 +3,14 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += libuv1
-LIBUV1_VERSION := 1.42.0
+LIBUV1_VERSION := 1.44.1
 DEB_LIBUV1_V   ?= $(LIBUV1_VERSION)
 
 libuv1-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://dist.libuv.org/dist/v$(LIBUV1_VERSION)/libuv-v$(LIBUV1_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://dist.libuv.org/dist/v$(LIBUV1_VERSION)/libuv-v$(LIBUV1_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libuv-v$(LIBUV1_VERSION).tar.gz,libuv-v$(LIBUV1_VERSION),libuv1)
+#	FUTURE: Remove after next release.
+	$(call DO_PATCH,libuv1,libuv1,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/libuv1/.build_complete),)
 libuv1:

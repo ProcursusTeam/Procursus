@@ -8,11 +8,11 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += bash
 endif # ($(MEMO_TARGET),darwin-\*)
 BASH_VERSION    := 5.1
-BASH_PATCHLEVEL := 12
+BASH_PATCHLEVEL := 16
 DEB_BASH_V      ?= $(BASH_VERSION).$(BASH_PATCHLEVEL)
 
 bash-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,bash-$(BASH_VERSION).tar.gz)
 	$(call EXTRACT_TAR,bash-$(BASH_VERSION).tar.gz,bash-$(BASH_VERSION),bash)
 	$(call DO_PATCH,bash,bash,-p0)

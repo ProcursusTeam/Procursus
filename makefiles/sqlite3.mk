@@ -7,7 +7,7 @@ SQLITE3_VERSION  := 3.34.1
 DEB_SQLITE3_V    ?= $(SQLITE3_VERSION)
 
 sqlite3-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/s/sqlite3/sqlite3_$(SQLITE3_VERSION).orig.tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://deb.debian.org/debian/pool/main/s/sqlite3/sqlite3_$(SQLITE3_VERSION).orig.tar.xz)
 	$(call EXTRACT_TAR,sqlite3_$(SQLITE3_VERSION).orig.tar.xz,sqlite3-$(SQLITE3_VERSION),sqlite3)
 
 	# I change the soversion here to allow installation to /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib on iOS where libsqlite3 is already in the shared cache.

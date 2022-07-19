@@ -16,4 +16,4 @@ Description: FFmpeg library with (de)muxers for multimedia containers - developm
  supports several input and output protocols to access a media resource.
  .
  This package contains the development files.
-Depends: libavformat58 (= @DEB_FFMPEG_V@), libavcodec-dev (= @DEB_FFMPEG_V@), libswresample-dev (= @DEB_FFMPEG_V@), libavutil-dev (= @DEB_FFMPEG_V@)
+Depends: libavformat59 (= @DEB_FFMPEG_V@), libavcodec-dev (= @DEB_FFMPEG_V@), libswresample-dev (= @DEB_FFMPEG_V@), libavutil-dev (= @DEB_FFMPEG_V@)
