@@ -21,6 +21,8 @@ krb5: krb5-setup libverto openssl
 		--disable-static \
 		--without-keyutils \
 		--with-system-verto \
+		--with-system-et \
+		ac_cv_prog_compile_et=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/compile_et \ #change to system installed
 		krb5_cv_attr_constructor_destructor=yes,yes \
 		ac_cv_func_regcomp=yes \
 		ac_cv_printf_positional=yes
@@ -53,92 +55,81 @@ krb5-package: krb5-stage
 		$(BUILD_DIST)/libkrad0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/krb5-gss-samples/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
 		$(BUILD_DIST)/libkrad-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include} \
-		$(BUILD_DIST)/libcom-err3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-		$(BUILD_DIST)/comerr-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib,include,share/{et,man/man1}}
-	
+
+
 	# krb5.mk Prep krb5-doc
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5/{k5identity,k5login,krb5.conf}.5$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/krb5-doc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5/
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man7 $(BUILD_DIST)/krb5-doc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/
-	
+
 	# krb5.mk Prep krb5-user
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{k5srvutil,kadmin,kdestroy,kinit,klist,kpasswd,ksu,kswitch,ktutil,kvno} $(BUILD_DIST)/krb5-user/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/{k5srvutil,kadmin,kdestroy,kinit,klist,kpasswd,ksu,kswitch,ktutil,kvno}.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/krb5-user/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
-	
+
 	# krb5.mk Prep krb5-kdc
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/{kdb5_util,kproplog,krb5kdc} $(BUILD_DIST)/krb5-kdc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/krb5/plugins/kdb/db2.so $(BUILD_DIST)/krb5-kdc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/krb5/plugins/kdb/
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5/kdc.conf.5$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/krb5-kdc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/{kdb5_util,kproplog,krb5kdc}.8$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/krb5-kdc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
-	
+
 	# krb5.mk Prep krb5-admin-server
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/{kadmin.local,kadmind,kprop} $(BUILD_DIST)/krb5-admin-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5/kadm5.acl.5$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/krb5-admin-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/{kadmin.local,kadmind,kprop}.8$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/krb5-admin-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
-	
+
 	# krb5.mk Prep krb5-kpropd
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kpropd $(BUILD_DIST)/krb5-kpropd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/kpropd.8$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/krb5-kpropd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
-	
+
 	# krb5.mk Prep libkrb5-dev
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/krb5-config $(BUILD_DIST)/libkrb5-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/{gssapi.h,kdb.h,krb5.h,profile.h,gssapi,gssrpc,kadm5,krb5} $(BUILD_DIST)/libkrb5-dev$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libgssapi_krb5.dylib,libgssrpc.dylib,libk5crypto.dylib,libkadm5clnt{,_mit}.dylib,libkadm5srv{,_mit}.dylib,libkdb5.dylib,libkrb5.dylib,libkrb5support.dylib,pkgconfig} $(BUILD_DIST)/libkrb5-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/krb5-config.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/libkrb5-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
-	
+
 	# krb5.mk Prep krb5-pkinit
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/krb5/plugins/preauth/pkinit.so $(BUILD_DIST)/krb5-pkinit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/krb5/plugins/preauth/
-	
+
 	# krb5.mk Prep krb5-otp
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/krb5/plugins/preauth/otp.so $(BUILD_DIST)/krb5-otp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/krb5/plugins/preauth/
-	
+
 	# krb5.mk Prep krb5-k5tls
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/krb5/plugins/tls/k5tls.so $(BUILD_DIST)/krb5-k5tls/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/krb5/plugins/tls/
-	
+
 	# krb5.mk Prep libkrb5-3
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrb5.{3.dylib,3.3.dylib} $(BUILD_DIST)/libkrb5-3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/krb5/plugins/preauth/spake.so $(BUILD_DIST)/libkrb5-3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/krb5/plugins/preauth/
-	
+
 	# krb5.mk Prep libgssapi-krb5-2
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgssapi_krb5.{2.dylib,2.2.dylib} $(BUILD_DIST)/libgssapi-krb5-2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# krb5.mk Prep libgssrpc4
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgssrpc.{4.dylib,4.2.dylib} $(BUILD_DIST)/libgssrpc4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# krb5.mk Prep libkadm5srv-mit12
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkadm5srv_mit.{12.dylib,12.0.dylib} $(BUILD_DIST)/libkadm5srv-mit12/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# krb5.mk Prep libkadm5clnt-mit12
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkadm5clnt_mit.{12.dylib,12.0.dylib} $(BUILD_DIST)/libkadm5clnt-mit12/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# krb5.mk Prep libk5crypto3
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libk5crypto.{3.dylib,3.1.dylib} $(BUILD_DIST)/libk5crypto3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# krb5.mk Prep libkdb5-10
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkdb5.{10.dylib,10.0.dylib} $(BUILD_DIST)/libkdb5-10/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# krb5.mk Prep libkrb5support1
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrb5support.{1.dylib,1.1.dylib} $(BUILD_DIST)/libkrb5support1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# krb5.mk Prep libkrad0
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrad.{0.dylib,0.0.dylib} $(BUILD_DIST)/libkrad0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
+
 	# krb5.mk Prep krb5-gss-samples
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gss-client $(BUILD_DIST)/krb5-gss-samples/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	
+
 	# krb5.mk Prep libkrad-dev
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrad.dylib $(BUILD_DIST)/libkrad-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/krad.h $(BUILD_DIST)/libkrad-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	
-	# krb5.mk Prep libcom-err3
-	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcom_err.{3.dylib,3.0.dylib} $(BUILD_DIST)/libcom-err3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	
-	# krb5.mk Prep comerr-dev
-	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/compile_et $(BUILD_DIST)/comerr-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcom_err.dylib $(BUILD_DIST)/comerr-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/com_err.h $(BUILD_DIST)/comerr-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/et/et_{c,h}.awk $(BUILD_DIST)/comerr-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/et
-	cp -a $(BUILD_STAGE)/krb5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/compile_et.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/comerr-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
-	
+
 	# krb5.mk Sign
 	$(call SIGN,krb5-user,general.xml)
 	$(call SIGN,krb5-kdc,general.xml)
@@ -159,9 +150,7 @@ krb5-package: krb5-stage
 	$(call SIGN,libkrad0,general.xml)
 	$(call SIGN,krb5-gss-samples,general.xml)
 	$(call SIGN,libkrad-dev,general.xml)
-	$(call SIGN,libcom-err3,general.xml)
-	$(call SIGN,comerr-dev,general.xml)
-	
+
 	# krb5.mk Make .debs
 	$(call PACK,krb5-user,DEB_KRB5_V)
 	$(call PACK,krb5-kdc,DEB_KRB5_V)
@@ -183,10 +172,8 @@ krb5-package: krb5-stage
 	$(call PACK,libkrad0,DEB_KRB5_V)
 	$(call PACK,krb5-gss-samples,DEB_KRB5_V)
 	$(call PACK,libkrad-dev,DEB_KRB5_V)
-	$(call PACK,libcom-err3,DEB_KRB5_V)
-	$(call PACK,comerr-dev,DEB_KRB5_V)
-	
+
 	# krb5.mk Build cleanup
-	rm -rf $(BUILD_DIST)/{krb5-{user,kdc,admin-server,kpropd,pkinit,otp,k5tls,gss-samples,doc},libkrb5-dev,libkrb5-3,libgssapi-krb5-2,libgssrpc4,libkadm5srv-mit12,libkadm5clnt-mit12,libk5crypto3,libkdb5-10,libkrb5support1,libkrad0,libkrad-dev,libcom-err3,comerr-dev}
+	rm -rf $(BUILD_DIST)/{krb5-{user,kdc,admin-server,kpropd,pkinit,otp,k5tls,gss-samples,doc},libkrb5-dev,libkrb5-3,libgssapi-krb5-2,libgssrpc4,libkadm5srv-mit12,libkadm5clnt-mit12,libk5crypto3,libkdb5-10,libkrb5support1,libkrad0,libkrad-dev}
 
 .PHONY: krb5 krb5-package

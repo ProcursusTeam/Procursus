@@ -4,7 +4,7 @@ Section: Libraries
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_KRB5_V@
-Depends: libkrb5-3 (= @DEB_KRB5_V@), libcom-err3 (= @DEB_KRB5_V@), libgssapi-krb5-2 (= @DEB_KRB5_V@), libgssrpc4 (= @DEB_KRB5_V@), libintl8, libk5crypto (= @DEB_KRB5_V@), libkrb5support1 (= @DEB_KRB5_V@)
+Depends: libkrb5-3 (= @DEB_KRB5_V@), libgssapi-krb5-2 (= @DEB_KRB5_V@), libgssrpc4 (= @DEB_KRB5_V@), libintl8, libk5crypto (= @DEB_KRB5_V@), libkrb5support1 (= @DEB_KRB5_V@)
 Suggests: krb5-user
 Description: MIT Kerberos runtime libraries - Administration Clients
  Kerberos is a system for authenticating users and services on a network.
