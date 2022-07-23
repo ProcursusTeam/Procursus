@@ -30,6 +30,8 @@ lf: lf-setup
 	    -t $(BUILD_STAGE)/lf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/lf
 	$(INSTALL) -Dm644 $(BUILD_WORK)/lf/etc/lf.vim \
 	    -t $(BUILD_STAGE)/lf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/vim/vimfiles/syntax
+	$(INSTALL) -Dm644 $(BUILD_WORK)/lf/etc/lf.bash \
+	    $(BUILD_STAGE)/lf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/lf
 	$(INSTALL) -Dm644 $(BUILD_WORK)/lf/etc/{lf.csh,lfcd.csh} -t $(BUILD_STAGE)/lf/$(MEMO_PREFIX)/etc/profile.d
 	$(call AFTER_BUILD)
 endif
