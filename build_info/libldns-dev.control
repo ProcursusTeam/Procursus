@@ -1,0 +1,15 @@
+Package: libldns-dev
+Version: @DEB_LDNS_V@
+Priority: optional
+Section: Development
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libldns3 (= @DEB_LDNS_V@), libssl-dev
+Homepage: https://www.nlnetlabs.nl/projects/ldns/about/
+Description: ldns library for DNS programming
+ The goal of ldns is to simplify DNS programming, it supports recent RFCs
+ like the DNSSEC documents, and allows developers to easily create software
+ conforming to current RFCs, and experimental software for current Internet
+ Drafts.
+ .
+ This package contains development libraries and headers.

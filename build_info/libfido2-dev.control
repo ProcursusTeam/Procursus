@@ -1,0 +1,14 @@
+Package: libfido2-dev
+Version: @DEB_LIBFIDO2_V@
+Priority: optional
+Section: Development
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libfido2-1 (= @DEB_LIBFIDO2_V@)
+Homepage: https://developers.yubico.com/libfido2/
+Description: library for generating and verifying FIDO 2.0 objects -- headers
+ A library for communicating with a FIDO device over USB, and for verifying
+ attestation and assertion signatures. FIDO U2F (CTAP 1) and FIDO 2.0 (CTAP 2)
+ are supported.
+ .
+ This package contains the library's development headers.

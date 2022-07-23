@@ -1,0 +1,20 @@
+--- a/sshd.c	2016-02-29 19:48:45.000000000 +0100
++++ b/sshd.c	2016-02-29 20:10:32.000000000 +0100
+@@ -713,10 +713,17 @@ privsep_preauth(Authctxt *authctxt)
+ 		/* Arrange for logging to be sent to the monitor */
+ 		set_log_handler(mm_log_handler, pmonitor);
+ 
++#ifdef __APPLE_SANDBOX_NAMED_EXTERNAL__
++		/* We need to do this before we chroot() so we can read sshd.sb */
++		if (box != NULL)
++			ssh_sandbox_child(box);
++#endif
+ 		privsep_preauth_child();
+ 		setproctitle("%s", "[net]");
++#ifndef __APPLE_SANDBOX_NAMED_EXTERNAL__
+ 		if (box != NULL)
+ 			ssh_sandbox_child(box);
++#endif
+ 
+ 		return 0;
+ 	}

@@ -11,7 +11,7 @@ endif # ($(SSH_STRAP),1)
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += openssh
 endif
-OPENSSH_VERSION := 8.8p1
+OPENSSH_VERSION := 8.9p1
 DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
@@ -22,7 +22,7 @@ openssh-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$(OPENSSH_VERSION).tar.gz{$(comma).asc})
 	$(call PGP_VERIFY,openssh-$(OPENSSH_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,openssh-$(OPENSSH_VERSION).tar.gz,openssh-$(OPENSSH_VERSION),openssh)
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call DO_PATCH,openssh,openssh,-p1)
 endif
 ifeq (,$(findstring ramdisk,$(MEMO_TARGET)))
@@ -34,13 +34,16 @@ openssh:
 	@echo "Using previously built openssh."
 else
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+SSHDLIBS += "-lcrypt -lsandbox -lpam -ldl" # Add -ldns to these when someone figures out how to make ldns work on iOS
 ifeq (,$(findstring ramdisk,$(MEMO_TARGET)))
 openssh: openssh-setup openssl libxcrypt openpam libmd
 else #(,$(findstring ramdisk,$(MEMO_TARGET)))
 openssh: openssh-setup openssl libmd
 endif #(,$(findstring ramdisk,$(MEMO_TARGET)))
 else # (,$(findstring darwin,$(MEMO_TARGET)))
-OPENSSH_CONFIGURE_ARGS += --with-keychain=apple
+OPENSSH_CONFIGURE_ARGS += --with-security-key-builtin \
+		--with-ldns=$(BUILD_BASE)
+SSHDLIBS += "-lsandbox -lpam -ldl -ldns -lfido2"
 openssh: openssh-setup openssl libmd
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	if ! [ -f $(BUILD_WORK)/openssh/configure ]; then \
@@ -54,10 +57,12 @@ ifeq (,$(findstring ramdisk,$(MEMO_TARGET)))
 		--with-xauth=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/xauth \
 		--with-ssl-engine \
 		--with-pam \
+		--with-libedit \
+		--with-kerberos5 \
 		check_for_libcrypt_before=1 \
 		$(OPENSSH_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/openssh \
-		SSHDLIBS="-lcrypt -lsandbox -lpam -ldl"
+		$(SSHDLIBS)
 	+$(MAKE) -C $(BUILD_WORK)/openssh install \
 		DESTDIR="$(BUILD_STAGE)/openssh"
 	mkdir -p $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/etc/pam.d
