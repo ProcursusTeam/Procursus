@@ -1,0 +1,19 @@
+Package: krb5-pkinit
+Priority: optional
+Section: Networking
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Depends: libkrb5-3 (= @DEB_KRB5_V@), libssl3, libkrb5crypto3 (= @DEB_KRB5_V@), libintl8, libkrb5support1 (= @DEB_KRB5_V@)
+Version: @DEB_KRB5_V@
+Description: PKINIT plugin for MIT Kerberos
+ Kerberos is a system for authenticating users and services on a network.
+ Kerberos is a trusted third-party service.  That means that there is a
+ third party (the Kerberos server) that is trusted by all the entities on
+ the network (users and services, usually called "principals").
+ .
+ This is the MIT reference implementation of Kerberos V5.
+ .
+ This package contains a plugin for the PKINIT protocol, which allows
+ Kerberos tickets to be obtained using public-key credentials such as
+ X.509 certificates or a smart card.  This plugin can be used by the
+ client libraries and the KDC.
