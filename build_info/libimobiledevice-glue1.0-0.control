@@ -1,4 +1,4 @@
-Package: libimobiledevice-glue
+Package: libimobiledevice-glue1.0-0
 Version: @DEB_LIBIMOBILEDEVICEGLUE_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
