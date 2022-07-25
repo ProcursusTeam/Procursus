@@ -4,12 +4,14 @@ endif
 
 SUBPROJECTS    += uvwasi
 UVWASI_VERSION := 0.0.12
-DEB_UVWASI_V   ?= $(UVWASI_VERSION)
+DEB_UVWASI_V   ?= $(UVWASI_VERSION)-1
 UVWASI_SOVER   := 0
 
 uvwasi-setup: setup
 	$(call GITHUB_ARCHIVE,nodejs,uvwasi,$(UVWASI_VERSION),v$(UVWASI_VERSION))
 	$(call EXTRACT_TAR,uvwasi-$(UVWASI_VERSION).tar.gz,uvwasi-$(UVWASI_VERSION),uvwasi)
+#	uvwasi doesn't mark functions as public, do this
+	sed -i 's/-fvisibility=hidden/-fvisibility=default/' $(BUILD_WORK)/uvwasi/CMakeLists.txt
 
 ifneq ($(wildcard $(BUILD_WORK)/uvwasi/.build_complete),)
 uvwasi:
