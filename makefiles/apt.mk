@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += apt
-APT_VERSION   := 2.5.0
+APT_VERSION   := 2.5.1
 DEB_APT_V     ?= $(APT_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)
@@ -13,7 +13,7 @@ APT_CMAKE_ARGS :=
 endif
 
 apt-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://salsa.debian.org/apt-team/apt/-/archive/$(APT_VERSION)/apt-$(APT_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://salsa.debian.org/apt-team/apt/-/archive/$(APT_VERSION)/apt-$(APT_VERSION).tar.gz)
 	$(call EXTRACT_TAR,apt-$(APT_VERSION).tar.gz,apt-$(APT_VERSION),apt)
 	$(call DO_PATCH,apt,apt,-p1)
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
@@ -44,6 +44,7 @@ apt: apt-setup libgcrypt berkeleydb lz4 xxhash xz zstd gnutls gettext
 		-DCOMMON_ARCH=$(DEB_ARCH) \
 		-DUSE_NLS=1 \
 		-DWITH_DOC=0 \
+		-DWITH_DOC_MANPAGES=1 \
 		-DWITH_TESTS=0 \
 		-DDOCBOOK_XSL=$(DOCBOOK_XSL) \
 		-DDPKG_DATADIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/dpkg \

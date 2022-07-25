@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += ldid
-LDID_VERSION := 2.1.5-procursus3
+LDID_VERSION := 2.1.5-procursus5
 DEB_LDID_V   ?= $(LDID_VERSION)
 
 ldid-setup: setup
@@ -23,6 +23,8 @@ ldid: ldid-setup openssl libplist
 		LIBPLIST_LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -lplist-2.0" \
 		LIBCRYPTO_INCLUDES="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
 		LIBCRYPTO_LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -lcrypto"
+	install -d $(BUILD_STAGE)/ldid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/site-functions/
+	install -m644 $(BUILD_WORK)/ldid/_ldid $(BUILD_STAGE)/ldid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/site-functions/_ldid
 	$(call AFTER_BUILD)
 endif
 

@@ -7,7 +7,7 @@ LIBZIP_VERSION := 1.9.2
 DEB_LIBZIP_V   ?= $(LIBZIP_VERSION)
 
 libzip-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://libzip.org/download/libzip-$(LIBZIP_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://libzip.org/download/libzip-$(LIBZIP_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libzip-$(LIBZIP_VERSION).tar.gz,libzip-$(LIBZIP_VERSION),libzip)
 
 ifneq ($(wildcard $(BUILD_WORK)/libzip/.build_complete),)

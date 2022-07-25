@@ -7,7 +7,7 @@ LIBTOMCRYPT_VERSION := 1.18.2
 DEB_LIBTOMCRYPT_V   ?= $(LIBTOMCRYPT_VERSION)-1
 
 libtomcrypt-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libtom/libtomcrypt/releases/download/v$(LIBTOMCRYPT_VERSION)/crypt-$(LIBTOMCRYPT_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/libtom/libtomcrypt/releases/download/v$(LIBTOMCRYPT_VERSION)/crypt-$(LIBTOMCRYPT_VERSION).tar.xz)
 	$(call EXTRACT_TAR,crypt-$(LIBTOMCRYPT_VERSION).tar.xz,libtomcrypt-$(LIBTOMCRYPT_VERSION),libtomcrypt)
 	mkdir -p $(BUILD_WORK)/libtomcrypt/libtool
 	echo -e "AC_INIT([dummy],[1.0])\n\

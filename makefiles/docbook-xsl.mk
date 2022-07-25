@@ -8,9 +8,9 @@ DOCBOOK-XSL_VERSION := 1.79.2
 DEB_DOCBOOK-XSL_V   ?= $(DOCBOOK-XSL_VERSION)
 
 docbook-xsl-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) \
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
 		https://github.com/docbook/xslt10-stylesheets/releases/download/release%2F$(DOCBOOK-XSL_VERSION)/docbook-xsl-nons-$(DOCBOOK-XSL_VERSION).tar.bz2 \
-		https://github.com/docbook/xslt10-stylesheets/releases/download/release%2F$(DOCBOOK-XSL_VERSION)/docbook-xsl-$(DOCBOOK-XSL_VERSION).tar.bz2
+		https://github.com/docbook/xslt10-stylesheets/releases/download/release%2F$(DOCBOOK-XSL_VERSION)/docbook-xsl-$(DOCBOOK-XSL_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,docbook-xsl-$(DOCBOOK-XSL_VERSION).tar.bz2,docbook-xsl-$(DOCBOOK-XSL_VERSION),docbook-xsl/docbook-xsl-ns)
 	$(call EXTRACT_TAR,docbook-xsl-nons-$(DOCBOOK-XSL_VERSION).tar.bz2,docbook-xsl-nons-$(DOCBOOK-XSL_VERSION),docbook-xsl/docbook-xsl)
 	$(call DO_PATCH,docbook-xsl,docbook-xsl/docbook-xsl-ns,-p1)

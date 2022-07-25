@@ -7,7 +7,7 @@ PINENTRY_VERSION := 1.2.0
 DEB_PINENTRY_V   ?= $(PINENTRY_VERSION)
 
 pinentry-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/pinentry/pinentry-$(PINENTRY_VERSION).tar.bz2{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://gnupg.org/ftp/gcrypt/pinentry/pinentry-$(PINENTRY_VERSION).tar.bz2{$(comma).sig})
 	$(call PGP_VERIFY,pinentry-$(PINENTRY_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,pinentry-$(PINENTRY_VERSION).tar.bz2,pinentry-$(PINENTRY_VERSION),pinentry)
 
