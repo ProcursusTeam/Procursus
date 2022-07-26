@@ -2,7 +2,7 @@ Package: libusbmuxd6
 Version: @DEB_LIBUSBMUXD_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libplist3
+Depends: libplist3, libimobiledevice-glue1.0-0 (>= 1.0.0)
 Section: Development
 Priority: standard
-Description: USB multiplexor daemon for iPhone and iPod Touch devices
+Description: A client library to multiplex connections from and to iOS devices

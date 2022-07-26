@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS              += libimobiledevice
-LIBIMOBILEDEVICE_COMMIT  := 25059d4c7d75e03aab516af2929d7c6e6d4c17de
-LIBIMOBILEDEVICE_VERSION := 1.3.0+git20210304.$(shell echo $(LIBIMOBILEDEVICE_COMMIT) | cut -c -7)
+LIBIMOBILEDEVICE_COMMIT  := 2eec1b9a172354c8521123a767d998b17bd2ac18
+LIBIMOBILEDEVICE_VERSION := 1.3.0+git20220702.$(shell echo $(LIBIMOBILEDEVICE_COMMIT) | cut -c -7)
 DEB_LIBIMOBILEDEVICE_V   ?= $(LIBIMOBILEDEVICE_VERSION)
 
 libimobiledevice-setup: setup
@@ -15,9 +15,10 @@ ifneq ($(wildcard $(BUILD_WORK)/libimobiledevice/.build_complete),)
 libimobiledevice:
 	@echo "Using previously built libimobiledevice."
 else
-libimobiledevice: libimobiledevice-setup libusbmuxd libplist openssl
+libimobiledevice: libimobiledevice-setup libusbmuxd libplist libimobiledevice-glue openssl
 	cd $(BUILD_WORK)/libimobiledevice && ./autogen.sh \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		PACKAGE_VERSION="$(LIBIMOBILEDEVICE_VERSION)" \
 		--without-cython
 	+$(MAKE) -C $(BUILD_WORK)/libimobiledevice
 	+$(MAKE) -C $(BUILD_WORK)/libimobiledevice install \
