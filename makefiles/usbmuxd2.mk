@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+
 SUBPROJECTS      += usbmuxd2
 USBMUXD2_COMMIT  := 753b79eaf317c56df6c8b1fb6da5847cc54a0bb0
 USBMUXD2_VERSION := 46
@@ -18,7 +20,7 @@ ifneq ($(wildcard $(BUILD_WORK)/usbmuxd2/.build_complete),)
 usbmuxd2:
 	@echo "Using previously built usbmuxd2."
 else
-usbmuxd2: usbmuxd2-setup libgeneral libusb libplist libimobiledevice-glue libimobiledevice
+usbmuxd2: usbmuxd2-setup libgeneral libusb libplist libimobiledevice
 	cd $(BUILD_WORK)/usbmuxd2 && ./autogen.sh \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--without-systemd
@@ -47,3 +49,5 @@ usbmuxd2-package: usbmuxd2-stage
 	rm -rf $(BUILD_DIST)/usbmuxd2
 
 .PHONY: usbmuxd2 usbmuxd2-package
+
+endif

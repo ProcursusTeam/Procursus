@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += libusbmuxd
-LIBUSBMUXD_COMMIT := 36ffb7ab6e2a7e33bd1b56398a88895b7b8c615a
+LIBUSBMUXD_COMMIT  := 36ffb7ab6e2a7e33bd1b56398a88895b7b8c615a
 LIBUSBMUXD_VERSION := 2.0.2+git20220504.$(shell echo $(LIBUSBMUXD_COMMIT) | cut -c -7)
 DEB_LIBUSBMUXD_V   ?= $(LIBUSBMUXD_VERSION)
 
