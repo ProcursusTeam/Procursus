@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libideviceactivation/.build_complete),)
 libideviceactivation:
 	@echo "Using previously built libideviceactivation."
 else
-libideviceactivation: libideviceactivation-setup libplist libimobiledevice-glue libimobiledevice curl
+libideviceactivation: libideviceactivation-setup libplist libimobiledevice curl
 	cd $(BUILD_WORK)/libideviceactivation && ./autogen.sh -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		PACKAGE_VERSION="$(LIBIDEVICEACTIVATION_VERSION)" \
