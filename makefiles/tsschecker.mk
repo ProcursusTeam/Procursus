@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += tsschecker
-TSSCHECKER_VERSION := 367
-TSSCHECKER_COMMIT  := 9e7762e0edcc4821635b96feddf232b930c34e90
+TSSCHECKER_VERSION := 385
+TSSCHECKER_COMMIT  := a600e296a3f2ba764e7ab1f164d10e4e7b82e127
 DEB_TSSCHECKER_V   ?= $(TSSCHECKER_VERSION)
 
 tsschecker-setup: setup
