@@ -11,7 +11,7 @@
     <string>Interactive</string>
 
     <key>Program</key>
-    <string>/bin/sh</string>
+    <string>@MEMO_PREFIX@/bin/sh</string>
     <key>ProgramArguments</key>
     <array>
         <string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/sh</string>
