@@ -14,7 +14,7 @@
     <string>/bin/sh</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/bin/sh</string>
+        <string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/sh</string>
         <string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/shshd-wrapper</string>
     </array>
 
