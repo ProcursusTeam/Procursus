@@ -1,2 +1,2 @@
 #!/bin/sh
-pwd_mkdb -p /etc/master.passwd >/dev/null 2>&1
+@MEMO_PREFIX@@MEMO_SUB_PREFIX@/sbin/pwd_mkdb -p @MEMO_PREFIX@/etc/master.passwd >/dev/null 2>&1

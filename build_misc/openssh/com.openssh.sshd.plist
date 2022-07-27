@@ -11,12 +11,12 @@
     <string>Interactive</string>
 
     <key>Program</key>
-    <string>/bin/sh</string>
+    <string>@MEMO_PREFIX@/bin/sh</string>
 
     <key>ProgramArguments</key>
     <array>
-        <string>/bin/sh</string>
-        <string>/usr/libexec/sshd-keygen-wrapper</string>
+        <string>@MEMO_PREFIX@/bin/sh</string>
+        <string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/sshd-keygen-wrapper</string>
         <string>-i</string>
     </array>
 

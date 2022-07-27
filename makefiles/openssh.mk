@@ -11,7 +11,7 @@ endif # ($(SSH_STRAP),1)
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += openssh
 endif
-OPENSSH_VERSION := 8.8p1
+OPENSSH_VERSION := 8.9p1
 DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
@@ -57,9 +57,15 @@ ifeq (,$(findstring ramdisk,$(MEMO_TARGET)))
 		check_for_libcrypt_before=1 \
 		$(OPENSSH_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/openssh \
-		SSHDLIBS="-lcrypt -lsandbox -lpam -ldl"
+		SSHDLIBS="-lcrypt -lsandbox -lpam -ldl" \
+		CONFIG_FILE="$(MEMO_PREFIX)/etc/openssh.conf" \
+		piddir="$(MEMO_PREFIX)/var/run" \
+		PRIVSEP_PATH="$(MEMO_PREFIX)/var/empty"
 	+$(MAKE) -C $(BUILD_WORK)/openssh install \
-		DESTDIR="$(BUILD_STAGE)/openssh"
+		DESTDIR="$(BUILD_STAGE)/openssh" \
+		CONFIG_FILE="$(MEMO_PREFIX)/etc/openssh.conf" \
+		piddir="$(MEMO_PREFIX)/var/run" \
+		PRIVSEP_PATH="$(MEMO_PREFIX)/var/empty"
 	mkdir -p $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/etc/pam.d
 	cp $(BUILD_MISC)/openssh/sshd $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/etc/pam.d
 else # (,$(findstring ramdisk,$(MEMO_TARGET)))
@@ -70,14 +76,22 @@ else # (,$(findstring ramdisk,$(MEMO_TARGET)))
 		check_for_libcrypt_before=1 \
 		$(OPENSSH_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/openssh \
-		SSHDLIBS=""
+		SSHDLIBS="" \
+		CONFIG_FILE="$(MEMO_PREFIX)/etc/openssh.conf" \
+		piddir="$(MEMO_PREFIX)/var/run" \
+		PRIVSEP_PATH="$(MEMO_PREFIX)/var/empty"
 	+$(MAKE) -C $(BUILD_WORK)/openssh install \
-		DESTDIR="$(BUILD_STAGE)/openssh"
+		DESTDIR="$(BUILD_STAGE)/openssh" \
+		CONFIG_FILE="$(MEMO_PREFIX)/etc/openssh.conf" \
+		piddir="$(MEMO_PREFIX)/var/run" \
+		PRIVSEP_PATH="$(MEMO_PREFIX)/var/empty"
 endif #(,$(findstring ramdisk,$(MEMO_TARGET)))
 	mkdir -p $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/Library/LaunchDaemons
 	cp $(BUILD_MISC)/openssh/com.openssh.sshd.plist $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/Library/LaunchDaemons
 	cp $(BUILD_MISC)/openssh/sshd-keygen-wrapper $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
+	sed -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/sshd-keygen-wrapper $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)/Library/LaunchDaemons/com.openssh.sshd.plist
 	cp $(BUILD_WORK)/openssh/contrib/ssh-copy-id $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp $(BUILD_WORK)/openssh/contrib/ssh-copy-id.1 $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/
 	chmod 0755 $(BUILD_STAGE)/openssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ssh-copy-id
 	$(call AFTER_BUILD)
 endif

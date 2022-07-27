@@ -18,6 +18,9 @@ bash-setup: setup
 	$(call DO_PATCH,bash,bash,-p0)
 	mkdir -p $(BUILD_STAGE)/bash/$(MEMO_PREFIX)/bin
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+ifneq (,$(MEMO_PREFIX))
+	sed -i 's|/etc/profile|$(MEMO_PREFIX)/etc/profile|' $(BUILD_WORK)/bash/pathnames.h.in
+endif
 BASH_CONFIGURE_ARGS := ac_cv_c_stack_direction=-1 \
 	ac_cv_func_mmap_fixed_mapped=yes \
 	ac_cv_func_setvbuf_reversed=no \

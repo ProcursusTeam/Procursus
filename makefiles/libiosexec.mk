@@ -5,13 +5,22 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS      += libiosexec
-LIBIOSEXEC_VERSION := 1.2-alpha1
+LIBIOSEXEC_COMMIT  := 0b53c7cacd249e3dd9b55dba45b90fc543a4a603
 LIBIOSEXEC_SOVER   := 1
-DEB_LIBIOSEXEC_V   ?= 1.0.20~$(LIBIOSEXEC_VERSION)
+DEB_LIBIOSEXEC_V   ?= 1.0.20~git20220309.$(shell echo $(LIBIOSEXEC_COMMIT) | cut -c -7)
+
+ifneq (,$(findstring rootless,$(MEMO_TARGET)))
+LIBIOSEXEC_FLAGS   := SHEBANG_REDIRECT_PATH="$(MEMO_PREFIX)" \
+		      LIBIOSEXEC_PREFIXED_ROOT=1 \
+		      DEFAULT_INTERPRETER="$(MEMO_PREFIX)/bin/sh"
+else
+LIBIOSEXEC_FLAGS   := LIBIOSEXEC_PREFIXED_ROOT=0 \
+		      DEFAULT_INTERPRETER="$(MEMO_PREFIX)/bin/sh"
+endif
 
 libiosexec-setup: setup
-	$(call GITHUB_ARCHIVE,ProcursusTeam,libiosexec,$(LIBIOSEXEC_VERSION),$(LIBIOSEXEC_VERSION))
-	$(call EXTRACT_TAR,libiosexec-$(LIBIOSEXEC_VERSION).tar.gz,libiosexec-$(LIBIOSEXEC_VERSION),libiosexec)
+	$(call GITHUB_ARCHIVE,ProcursusTeam,libiosexec,$(LIBIOSEXEC_COMMIT),$(LIBIOSEXEC_COMMIT))
+	$(call EXTRACT_TAR,libiosexec-$(LIBIOSEXEC_COMMIT).tar.gz,libiosexec-$(LIBIOSEXEC_COMMIT),libiosexec)
 
 ifneq ($(wildcard $(BUILD_WORK)/libiosexec/.build_complete),)
 libiosexec:
@@ -19,7 +28,8 @@ libiosexec:
 else
 libiosexec: libiosexec-setup
 	+$(MAKE) -C $(BUILD_WORK)/libiosexec install \
-		DESTDIR=$(BUILD_STAGE)/libiosexec
+		DESTDIR=$(BUILD_STAGE)/libiosexec \
+		$(LIBIOSEXEC_FLAGS)
 	$(call AFTER_BUILD)
 endif
 

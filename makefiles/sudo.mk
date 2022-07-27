@@ -50,6 +50,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	cp -a $(BUILD_MISC)/pam/sudo $(BUILD_STAGE)/sudo/$(MEMO_PREFIX)/etc/pam.d
 endif
 	cp -a $(BUILD_MISC)/procursus.sudoers $(BUILD_STAGE)/sudo/$(MEMO_PREFIX)/etc/sudoers.d/procursus
+	$(I_N_T) -add_rpath $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/sudo $(BUILD_STAGE)/sudo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sudo
 	$(call AFTER_BUILD)
 endif
 
