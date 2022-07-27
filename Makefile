@@ -1222,8 +1222,7 @@ Components: main\n" > $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procur
 	echo "$(BUILD_STRAP)/$${BOOTSTRAP}"
 else # ($(MEMO_PREFIX),)
 	chmod 0775 $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library
-	mkdir -p $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/preferences.d \
-		$(BUILD_STRAP)/strap/$(MEMO_PREFIX)/var/{mobile,root}
+	mkdir -p $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/preferences.d
 	cp $(BUILD_INFO)/procursus.preferences $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/preferences.d/procursus
 	touch $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/.procursus_strapped
 	touch $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
@@ -1245,8 +1244,6 @@ Components: main\n" > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d
 	chmod +x $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/prep_bootstrap.sh
 endif
 	export FAKEROOT='fakeroot -i $(BUILD_STAGE)/.fakeroot_bootstrap -s $(BUILD_STAGE)/.fakeroot_bootstrap --'; \
-	$$FAKEROOT chown 0:0 $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/var/root; \
-	$$FAKEROOT chown 501:501 $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/var/mobile; \
 	cd $(BUILD_STRAP)/strap && $$FAKEROOT tar -cf ../bootstrap.tar .
 	@if [[ "$(SSH_STRAP)" = 1 ]]; then \
 		BOOTSTRAP=bootstrap-ssh.tar.zst; \

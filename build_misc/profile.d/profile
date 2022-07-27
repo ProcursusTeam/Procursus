@@ -1,4 +1,5 @@
 export PATH='@PATH@'
+export TMPDIR='@MEMO_PREFIX@/tmp'
 export PS1='\h:\w \u\$ '
 umask 022
 
