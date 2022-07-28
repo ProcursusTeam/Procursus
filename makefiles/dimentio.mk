@@ -6,11 +6,11 @@ ifneq (,$(findstring arm64,$(MEMO_TARGET)))
 
 STRAPPROJECTS      += dimentio
 DIMENTIO_COMMIT    := 7ffffff834bae1469e43ba7a5b6f1fb0766d312f
-DIMENTIO_VERSION   := 1:0~20220721.$(shell echo $(DIMENTIO_COMMIT) | cut -c -7)
+DIMENTIO_VERSION   := 1:0~20220621.$(shell echo $(DIMENTIO_COMMIT) | cut -c -7)
 DEB_DIMENTIO_V     ?= $(DIMENTIO_VERSION)
 
 DIMENTIO_SOVERSION := 0
-DIMENTIO_LIBS      := -framework CoreFoundation -framework IOKit -lcompression
+DIMENTIO_LIBS      := -framework CoreFoundation -framework IOKit
 
 dimentio-setup: setup
 	$(call GITHUB_ARCHIVE,0x7ff,dimentio,$(DIMENTIO_COMMIT),$(DIMENTIO_COMMIT))
