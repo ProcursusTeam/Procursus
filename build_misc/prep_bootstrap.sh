@@ -1,6 +1,6 @@
 #!@MEMO_PREFIX@/bin/sh
 
-@MEMO_PREFIX@/Library/dpkg/info/darwintools.postinst
+@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/firmware
 @MEMO_PREFIX@@MEMO_SUB_PREFIX@/sbin/pwd_mkdb -p @MEMO_PREFIX@/etc/master.passwd >/dev/null 2>&1
 @MEMO_PREFIX@/Library/dpkg/info/debianutils.postinst configure 99999
 @MEMO_PREFIX@/Library/dpkg/info/apt.postinst configure 999999
