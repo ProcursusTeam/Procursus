@@ -4,6 +4,7 @@
 @MEMO_PREFIX@/Library/dpkg/info/system-cmds.postinst
 @MEMO_PREFIX@/Library/dpkg/info/debianutils.postinst configure 99999
 @MEMO_PREFIX@/Library/dpkg/info/apt.postinst configure 999999
+@MEMO_PREFIX@/Library/dpkg/info/dash.postinst configure 999999
 @MEMO_PREFIX@/Library/dpkg/info/zsh.postinst configure 999999
 @MEMO_PREFIX@/Library/dpkg/info/bash.postinst configure 999999
 @MEMO_PREFIX@/Library/dpkg/info/vi.postinst configure 999999
