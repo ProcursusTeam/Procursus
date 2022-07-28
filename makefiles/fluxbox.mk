@@ -7,7 +7,7 @@ FLUXBOX_VERSION := 1.3.7
 DEB_FLUXBOX_V   ?= $(FLUXBOX_VERSION)
 
 fluxbox-setup: setup
-	wget -q -nc -P$(BUILD_SOURCE) http://sourceforge.net/projects/fluxbox/files/fluxbox/$(FLUXBOX_VERSION)/fluxbox-$(FLUXBOX_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://sourceforge.net/projects/fluxbox/files/fluxbox/$(FLUXBOX_VERSION)/fluxbox-$(FLUXBOX_VERSION).tar.xz)
 	$(call EXTRACT_TAR,fluxbox-$(FLUXBOX_VERSION).tar.xz,fluxbox-$(FLUXBOX_VERSION),fluxbox)
 	$(call DO_PATCH,fluxbox,fluxbox,-p1)
 	sed -i -e '/AC_FUNC_MALLOC/d' -e '/AC_FUNC_REALLOC/d' $(BUILD_WORK)/fluxbox/configure.ac

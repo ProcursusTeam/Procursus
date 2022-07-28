@@ -10,9 +10,9 @@ python3-pyaes-setup: setup
 	$(call GITHUB_ARCHIVE,ricmoo,pyaes,$(PYTHON3_PYAES_VERSION),v$(PYTHON3_PYAES_VERSION))
 	$(call EXTRACT_TAR,pyaes-$(PYTHON3_PYAES_VERSION).tar.gz,pyaes-$(PYTHON3_PYAES_VERSION),python3-pyaes)
 
-ifneq ($(wildcard $(BUILD_WORK)/pyaes/.build_complete),)
+ifneq ($(wildcard $(BUILD_WORK)/python3-pyaes/.build_complete),)
 python3-pyaes:
-	@echo "Using previously built pyaes."
+	@echo "Using previously built python3-pyaes."
 else
 python3-pyaes: python3-pyaes-setup python3
 	cd $(BUILD_WORK)/python3-pyaes && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py \

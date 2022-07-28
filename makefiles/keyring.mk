@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS    += keyring
 KEYRING_VERSION  := 2020.05.09
-DEB_KEYRING_V    ?= $(KEYRING_VERSION)-2
+DEB_KEYRING_V    ?= $(KEYRING_VERSION)-3
 
 ifneq ($(wildcard $(BUILD_STAGE)/keyring/.build_complete),)
 keyring:

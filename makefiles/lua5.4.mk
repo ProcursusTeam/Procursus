@@ -7,7 +7,7 @@ LUA5.4_VERSION := 5.4.2
 DEB_LUA5.4_V   ?= $(LUA5.4_VERSION)-1
 
 lua5.4-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.lua.org/ftp/lua-$(LUA5.4_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.lua.org/ftp/lua-$(LUA5.4_VERSION).tar.gz)
 	$(call EXTRACT_TAR,lua-$(LUA5.4_VERSION).tar.gz,lua-$(LUA5.4_VERSION),lua5.4)
 	$(call DO_PATCH,lua5.4,lua5.4,-p1)
 
@@ -33,14 +33,8 @@ lua5.4: lua5.4-setup readline
 		INSTALL_MAN="$(BUILD_STAGE)/lua5.4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1" \
 		TO_BIN="lua5.4 luac5.4" \
 		TO_LIB="liblua5.4.a liblua5.4.0.dylib"
-	+$(MAKE) -C $(BUILD_WORK)/lua5.4 install \
-		INSTALL_TOP="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
-		INSTALL_INC="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/lua5.4" \
-		INSTALL_MAN="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1" \
-		TO_BIN="lua5.4 luac5.4" \
-		TO_LIB="liblua5.4.a liblua5.4.0.dylib"
 	$(LN_S) liblua5.4.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.4.dylib
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 lua5.4-package: lua5.4-stage

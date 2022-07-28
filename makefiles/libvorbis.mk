@@ -7,7 +7,7 @@ LIBVORBIS_VERSION := 1.3.7
 DEB_LIBVORBIS_V   ?= $(LIBVORBIS_VERSION)
 
 libvorbis-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://downloads.xiph.org/releases/vorbis/libvorbis-$(LIBVORBIS_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://downloads.xiph.org/releases/vorbis/libvorbis-$(LIBVORBIS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,libvorbis-$(LIBVORBIS_VERSION).tar.xz,libvorbis-$(LIBVORBIS_VERSION),libvorbis)
 
 	# don't build the html docs

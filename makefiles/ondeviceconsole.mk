@@ -9,8 +9,8 @@ DEB_ONDEVICECONSOLE_V   ?= $(ONDEVICECONSOLE_VERSION)
 
 ondeviceconsole-setup: setup
 	mkdir -p $(BUILD_WORK)/ondeviceconsole
-	wget -q -nc -P $(BUILD_WORK)/ondeviceconsole \
-		https://raw.githubusercontent.com/eswick/ondeviceconsole/$(ONDEVICECONSOLE_COMMIT)/main.m
+	$(call DOWNLOAD_FILES,$(BUILD_WORK)/ondeviceconsole, \
+		https://raw.githubusercontent.com/eswick/ondeviceconsole/$(ONDEVICECONSOLE_COMMIT)/main.m)
 	sed -i '\|#import <sys/socket.h>|a #import <Foundation/Foundation.h>' \
 		$(BUILD_WORK)/ondeviceconsole/main.m
 	mkdir -p $(BUILD_STAGE)/ondeviceconsole/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin

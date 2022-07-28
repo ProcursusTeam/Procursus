@@ -33,3 +33,18 @@ diff -ur system_cmds-854.11.2/passwd.tproj/passwd.c.old system-cmds-854.11.2/pas
  
  	*old_clear = obuf;
  	*new_clear = nbuf;
+diff -urN system-cmds-854.11.2/passwd.tproj/file_passwd.c.orig system-cmds-854.11.2/passwd.tproj/file_passwd.c
+--- system-cmds-854.11.2/passwd.tproj/file_passwd.c.orig	2022-07-27 13:35:51.000000000 -0400
++++ system-cmds-854.11.2/passwd.tproj/file_passwd.c	2022-07-27 13:36:52.000000000 -0400
+@@ -232,5 +233,9 @@
+
+ 	fclose(fp);
+
++	execl(_PATH_PWD_MKDB, "pwd_mkdb", "-p",
++		"-d", _PATH_PWD, "-u", uname, fname,
++		(char *)NULL); // Doesn't support other paths right now, but that's fine.
++	
+ 	return 0;
+ }
+
+ 

@@ -1,0 +1,24 @@
+From e5f8a826ef9ff5da4cfce3bb8151f9526ec19db0 Mon Sep 17 00:00:00 2001
+From: John Hood <cgull@glup.org>
+Date: Wed, 15 Aug 2018 01:11:48 -0400
+Subject: [PATCH] Fix bind(2) being misinterpreted as std::bind() with libc++7
+ on FreeBSD.
+
+https://bugs.freebsd.org/bugzillshow_bug.cgi?id=230624
+---
+ src/network/network.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git src/network/network.cc src/network/network.cc
+index 3294e6e64d49728a027806f45595da2b020a1b2d..ce3e7606b2e801d4e8ef3cb296457ccf54d69ccd 100644
+--- src/network/network.cc
++++ src/network/network.cc
+@@ -332,7 +332,7 @@ bool Connection::try_bind( const char *addr, int port_low, int port_high )
+       }
+     }
+ 
+-    if ( bind( sock(), &local_addr.sa, local_addr_len ) == 0 ) {
++    if ( ::bind( sock(), &local_addr.sa, local_addr_len ) == 0 ) {
+       set_MTU( local_addr.sa.sa_family );
+       return true;
+     } // else fallthrough to below code, on last iteration.

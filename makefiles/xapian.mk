@@ -7,7 +7,7 @@ XAPIAN_VERSION := 1.4.17
 DEB_XAPIAN_V   ?= $(XAPIAN_VERSION)
 
 xapian-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://oligarchy.co.uk/xapian/$(XAPIAN_VERSION)/xapian-core-$(XAPIAN_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://oligarchy.co.uk/xapian/$(XAPIAN_VERSION)/xapian-core-$(XAPIAN_VERSION).tar.xz)
 	$(call EXTRACT_TAR,xapian-core-$(XAPIAN_VERSION).tar.xz,xapian-core-$(XAPIAN_VERSION),xapian)
 
 ifneq ($(wildcard $(BUILD_WORK)/xapian/.build_complete),)
@@ -41,14 +41,14 @@ xapian-package: xapian-stage
 	cp -a $(BUILD_STAGE)/xapian/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libxapian-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/xapian/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libxapian.30.dylib) $(BUILD_DIST)/libxapian-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/xapian/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal $(BUILD_DIST)/libxapian-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	cp -a $(BUILD_STAGE)/xapian/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/xapian-config.1 $(BUILD_DIST)/libxapian-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/xapian/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/xapian-config.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/libxapian-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# xapian.mk Prep xapian-examples
 	cp -a $(BUILD_STAGE)/xapian/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/simple{expand,index,search} $(BUILD_DIST)/xapian-examples/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 	# xapian.mk Prep xapian-tools
 	cp -a $(BUILD_STAGE)/xapian/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{quest,copydatabase,xapian-{check,compact,delve,metadata,pos,progsrv,replicate{,-server},tcpsrv}} $(BUILD_DIST)/xapian-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/xapian/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/{copydatabase,quest,xapian-{check,compact,delve,metadata,pos,progsrv,replicate{,-server},tcpsrv}}.1 $(BUILD_DIST)/xapian-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/xapian/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/{copydatabase,quest,xapian-{check,compact,delve,metadata,pos,progsrv,replicate{,-server},tcpsrv}}.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/xapian-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# xapian.mk Sign
 	$(call SIGN,libxapian30,general.xml)

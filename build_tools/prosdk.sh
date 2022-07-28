@@ -64,11 +64,11 @@ done
 
 echo "Patching and copying headers"
 mkdir -p $OUT_SYSROOT/{{,System}/Library/Frameworks,usr/{include/{bsm,objc,os,sys,IOKit,libkern,mach/machine},lib}}
-wget -q -nc -P $OUT_SYSROOT/usr/include \
+curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $OUT_SYSROOT/usr/include \
 	https://opensource.apple.com/source/xnu/xnu-6153.61.1/libsyscall/wrappers/spawn/spawn.h
-wget -q -nc -P $OUT_SYSROOT/usr/include/mach/machine \
+curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $OUT_SYSROOT/usr/include/mach/machine \
 	https://opensource.apple.com/source/xnu/xnu-6153.81.5/osfmk/mach/machine/thread_state.h
-wget -q -nc -P $OUT_SYSROOT/usr/include/bsdm \
+curl --silent -L -Z --create-dirs -C - --remote-name-all --output-dir $OUT_SYSROOT/usr/include/bsdm \
 	https://opensource.apple.com/source/xnu/xnu-6153.81.5/bsd/bsm/audit_kevents.h
 
 cp -af $MACOSX_SYSROOT/usr/include/{arpa,net,xpc,netinet} $OUT_SYSROOT/usr/include

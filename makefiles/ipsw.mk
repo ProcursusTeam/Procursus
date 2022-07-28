@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += ipsw
-IPSW_VERSION  := 3.1.61
+IPSW_VERSION  := 3.1.128
 DEB_IPSW_V    ?= $(IPSW_VERSION)
 
 ipsw-setup: setup
@@ -24,7 +24,7 @@ ipsw: ipsw-setup
 	cd $(BUILD_WORK)/ipsw && CGO_CC="$(CC_FOR_BUILD)" CGO_CFLAGS="$(CFLAGS_FOR_BUILD)" CGO_CPPFLAGS="$(CPPFLAGS_FOR_BUILD)" CGO_LDFLAGS="$(LDFLAGS_FOR_BUILD)" go build \
 		-o build/dist/ipsw-host \
 		./cmd/ipsw
-	$(BUILD_WORK)/ipsw/build/dist/ipsw-host man > $(BUILD_STAGE)/ipsw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/ipsw.1
+	$(BUILD_WORK)/ipsw/build/dist/ipsw-host man $(BUILD_STAGE)/ipsw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/
 	$(BUILD_WORK)/ipsw/build/dist/ipsw-host completion zsh > $(BUILD_STAGE)/ipsw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/site-functions/_ipsw
 	$(BUILD_WORK)/ipsw/build/dist/ipsw-host completion bash > $(BUILD_STAGE)/ipsw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/ipsw
 	$(BUILD_WORK)/ipsw/build/dist/ipsw-host completion fish > $(BUILD_STAGE)/ipsw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/fish/vendor_completions.d/ipsw.fish
