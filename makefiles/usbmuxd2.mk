@@ -40,7 +40,7 @@ usbmuxd2-package: usbmuxd2-stage
 	cp -a $(BUILD_STAGE)/usbmuxd2 $(BUILD_DIST)
 
 	# usbmuxd2.mk Sign
-	$(call SIGN,usbmuxd2,general.xml)
+	$(call SIGN,usbmuxd2,usb.xml)
 
 	# usbmuxd2.mk Make .debs
 	$(call PACK,usbmuxd2,DEB_USBMUXD2_V)

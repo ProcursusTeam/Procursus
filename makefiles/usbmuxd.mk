@@ -7,7 +7,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 SUBPROJECTS     += usbmuxd
 USBMUXD_COMMIT  := f50e52f3393a9149ac65fdda8f0d425109efc7fe
 USBMUXD_VERSION := 1.1.1+git20220619.$(shell echo $(USBMUXD_COMMIT) | cut -c -7)
-DEB_USBMUXD_V   ?= $(USBMUXD_VERSION)
+DEB_USBMUXD_V   ?= $(USBMUXD_VERSION)-1
 
 usbmuxd-setup: setup
 	$(call GITHUB_ARCHIVE,libimobiledevice,usbmuxd,$(USBMUXD_COMMIT),$(USBMUXD_COMMIT))
@@ -40,7 +40,7 @@ usbmuxd-package: usbmuxd-stage
 	cp -a $(BUILD_STAGE)/usbmuxd $(BUILD_DIST)
 
 	# usbmuxd.mk Sign
-	$(call SIGN,usbmuxd,general.xml)
+	$(call SIGN,usbmuxd,usb.xml)
 
 	# usbmuxd.mk Make .debs
 	$(call PACK,usbmuxd,DEB_USBMUXD_V)

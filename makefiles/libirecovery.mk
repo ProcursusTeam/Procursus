@@ -5,7 +5,7 @@ endif
 SUBPROJECTS          += libirecovery
 LIBIRECOVERY_COMMIT  := ab5b4d8d4c0e90c05d80f80c7e99a6516de9b5c6
 LIBIRECOVERY_VERSION := 1.0.0+git20220628.$(shell echo $(LIBIRECOVERY_COMMIT) | cut -c -7)
-DEB_LIBIRECOVERY_V   ?= $(LIBIRECOVERY_VERSION)
+DEB_LIBIRECOVERY_V   ?= $(LIBIRECOVERY_VERSION)-1
 
 libirecovery-setup: setup
 	$(call GITHUB_ARCHIVE,libimobiledevice,libirecovery,$(LIBIRECOVERY_COMMIT),$(LIBIRECOVERY_COMMIT))
@@ -45,7 +45,7 @@ libirecovery-package: libirecovery-stage
 
 	# libirecovery.mk Sign
 	$(call SIGN,libirecovery3,general.xml)
-	$(call SIGN,libirecovery-utils,general.xml)
+	$(call SIGN,libirecovery-utils,usb.xml)
 
 	# libirecovery.mk Make .debs
 	$(call PACK,libirecovery3,DEB_LIBIRECOVERY_V)

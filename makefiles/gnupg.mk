@@ -103,7 +103,7 @@ gnupg-package: gnupg-stage
 	$(call SIGN,gpgconf,general.xml)
 	$(call SIGN,gpgsm,general.xml)
 	$(call SIGN,gpgv,general.xml)
-	$(call SIGN,scdaemon,general.xml)
+	$(call SIGN,scdaemon,usb.xml)
 
 	# gnupg.mk Make .debs
 	$(call PACK,gnupg,DEB_GNUPG_V)

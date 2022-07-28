@@ -45,7 +45,7 @@ usbutils-package: usbutils-stage
 	cp -a $(BUILD_STAGE)/usbutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/usbutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
 	# usbutils.mk Sign
-	$(call SIGN,usbutils,general.xml)
+	$(call SIGN,usbutils,usb.xml)
 
 	# usbutils.mk Make .debs
 	$(call PACK,usb.ids,DEB_USBIDS_V)

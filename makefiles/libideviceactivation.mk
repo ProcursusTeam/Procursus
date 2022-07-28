@@ -5,7 +5,7 @@ endif
 SUBPROJECTS                  += libideviceactivation
 LIBIDEVICEACTIVATION_COMMIT  := 75505b75816691e1ff651fb55bfc6aaa7170ba3f
 LIBIDEVICEACTIVATION_VERSION := 1.1.1+git20220404.$(shell echo $(LIBIDEVICEACTIVATION_COMMIT) | cut -c -7)
-DEB_LIBIDEVICEACTIVATION_V   ?= $(LIBIDEVICEACTIVATION_VERSION)-1
+DEB_LIBIDEVICEACTIVATION_V   ?= $(LIBIDEVICEACTIVATION_VERSION)-2
 
 libideviceactivation-setup: setup
 	$(call GITHUB_ARCHIVE,libimobiledevice,libideviceactivation,$(LIBIDEVICEACTIVATION_COMMIT),$(LIBIDEVICEACTIVATION_COMMIT))
@@ -42,7 +42,7 @@ libideviceactivation-package: libideviceactivation-stage
 
 	# libideviceactivation.mk Sign
 	$(call SIGN,libideviceactivation2,general.xml)
-	$(call SIGN,libideviceactivation-utils,general.xml)
+	$(call SIGN,libideviceactivation-utils,usb.xml)
 
 	# libideviceactivation.mk Make .debs
 	$(call PACK,libideviceactivation2,DEB_LIBIDEVICEACTIVATION_V)
