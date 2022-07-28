@@ -7,7 +7,7 @@ LUA5.1_VERSION := 5.1.5
 DEB_LUA5.1_V   ?= $(LUA5.1_VERSION)-1
 
 lua5.1-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.lua.org/ftp/lua-$(LUA5.1_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.lua.org/ftp/lua-$(LUA5.1_VERSION).tar.gz)
 	$(call EXTRACT_TAR,lua-$(LUA5.1_VERSION).tar.gz,lua-$(LUA5.1_VERSION),lua5.1)
 	$(call DO_PATCH,lua5.1,lua5.1,-p1)
 
@@ -33,14 +33,8 @@ lua5.1: lua5.1-setup readline
 		INSTALL_MAN="$(BUILD_STAGE)/lua5.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1" \
 		TO_BIN="lua5.1 luac5.1" \
 		TO_LIB="liblua5.1.a liblua5.1.0.dylib"
-	+$(MAKE) -C $(BUILD_WORK)/lua5.1 install \
-		INSTALL_TOP="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
-		INSTALL_INC="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/lua5.1" \
-		INSTALL_MAN="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1" \
-		TO_BIN="lua5.1 luac5.1" \
-		TO_LIB="liblua5.1.a liblua5.1.0.dylib"
 	$(LN_S) liblua5.1.0.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.1.dylib
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 lua5.1-package: lua5.1-stage

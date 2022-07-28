@@ -7,7 +7,7 @@ LIBXCURSOR_VERSION := 1.2.0
 DEB_LIBXCURSOR_V   ?= $(LIBXCURSOR_VERSION)
 
 libxcursor-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXcursor-$(LIBXCURSOR_VERSION).tar.bz2{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libXcursor-$(LIBXCURSOR_VERSION).tar.bz2{$(comma).sig})
 	$(call PGP_VERIFY,libXcursor-$(LIBXCURSOR_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libXcursor-$(LIBXCURSOR_VERSION).tar.bz2,libXcursor-$(LIBXCURSOR_VERSION),libXcursor)
 

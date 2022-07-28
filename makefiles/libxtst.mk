@@ -7,7 +7,7 @@ LIBXTST_VERSION := 1.2.3
 DEB_LIBXTST_V   ?= $(LIBXTST_VERSION)
 
 libxtst-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXtst-$(LIBXTST_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libXtst-$(LIBXTST_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libXtst-$(LIBXTST_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXtst-$(LIBXTST_VERSION).tar.gz,libXtst-$(LIBXTST_VERSION),libxtst)
 

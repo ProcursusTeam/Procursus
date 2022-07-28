@@ -7,7 +7,7 @@ CAIRO_VERSION := 1.16.0
 DEB_CAIRO_V   ?= $(CAIRO_VERSION)-3
 
 cairo-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://cairographics.org/releases/cairo-$(CAIRO_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://cairographics.org/releases/cairo-$(CAIRO_VERSION).tar.xz)
 	$(call EXTRACT_TAR,cairo-$(CAIRO_VERSION).tar.xz,cairo-$(CAIRO_VERSION),cairo)
 
 ifneq ($(wildcard $(BUILD_WORK)/cairo/.build_complete),)

@@ -4,8 +4,8 @@
 # This file is the authoritative user database.
 ##
 nobody:*:-2:-2::0:0:Unprivileged User:@MEMO_PREFIX@/var/empty:@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/false
-root:$6$V7qMYJaNbVKOeh4P$iybXGZgLR3X57uggElv.cYndy9mDF0fKvu6NB57tb3Krbo/eE6/tP7.Vvf04JZ2Ni2/0x1Wwy0NaUrrEYZPpz0:0:0::0:0:System Administrator:/var/root:@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/zsh
-mobile:$6$V7qMYJaNbVKOeh4P$iybXGZgLR3X57uggElv.cYndy9mDF0fKvu6NB57tb3Krbo/eE6/tP7.Vvf04JZ2Ni2/0x1Wwy0NaUrrEYZPpz0:501:501::0:0:Mobile User:/var/mobile:@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/zsh
+root:!:0:0::0:0:System Administrator:/var/jb/var/root:@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/zsh
+mobile:$6$V7qMYJaNbVKOeh4P$iybXGZgLR3X57uggElv.cYndy9mDF0fKvu6NB57tb3Krbo/eE6/tP7.Vvf04JZ2Ni2/0x1Wwy0NaUrrEYZPpz0:501:501::0:0:Mobile User:/var/jb/var/mobile:@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/zsh
 daemon:*:1:1::0:0:System Services:/var/root:@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/false
 _ftp:*:98:-2::0:0:FTP Daemon:@MEMO_PREFIX@/var/empty:@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/false
 _networkd:*:24:24::0:0:Network Services:/var/networkd:@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/false

@@ -7,14 +7,13 @@ STRAPPROJECTS += zsh
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += zsh
 endif # ($(MEMO_TARGET),darwin-\*)
-ZSH_VERSION   := 5.8.1
+ZSH_VERSION   := 5.9
 DEB_ZSH_V     ?= $(ZSH_VERSION)
 
 zsh-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.zsh.org/pub/zsh-$(ZSH_VERSION).tar.xz{,.asc}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.zsh.org/pub/zsh-$(ZSH_VERSION).tar.xz{$(comma).asc})
 	$(call EXTRACT_TAR,zsh-$(ZSH_VERSION).tar.xz,zsh-$(ZSH_VERSION),zsh)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(call DO_PATCH,zsh-ios,zsh,-p1)
 ZSH_CONFIGURE_ARGS := --enable-etcdir=$(MEMO_PREFIX)/etc \
 		zsh_cv_path_utmpx=/var/run/utmpx \
 		zsh_cv_path_utmp=no \
@@ -27,11 +26,7 @@ ifneq ($(wildcard $(BUILD_WORK)/zsh/.build_complete),)
 zsh:
 	@echo "Using previously built zsh."
 else
-ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 zsh: zsh-setup pcre ncurses
-else
-zsh: zsh-setup pcre ncurses libiosexec
-endif
 	## So many flags are needed because zsh's configure script sucks! I also suck but it's cool.
 	cd $(BUILD_WORK)/zsh && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \

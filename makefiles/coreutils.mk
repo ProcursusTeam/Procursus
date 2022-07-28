@@ -16,15 +16,15 @@ COREUTILS_CONFIGURE_ARGS += --program-prefix=$(GNU_PREFIX)
 endif
 
 coreutils-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/coreutils/coreutils-$(COREUTILS_VERSION).tar.xz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/coreutils/coreutils-$(COREUTILS_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,coreutils-$(COREUTILS_VERSION).tar.xz,coreutils-$(COREUTILS_VERSION),coreutils)
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1400 ] && echo 1),1)
 	touch $(BUILD_WORK)/coreutils/reflink-apfs.patch.done
 endif
 	$(call DO_PATCH,coreutils,coreutils,-p1)
-	wget -q -nc -P $(BUILD_SOURCE) \
-		https://git.cameronkatri.com/getent-darwin/snapshot/getent-darwin-$(GETENTDARWIN_COMMIT).tar.zst
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
+		https://git.cameronkatri.com/getent-darwin/snapshot/getent-darwin-$(GETENTDARWIN_COMMIT).tar.zst)
 	$(call EXTRACT_TAR,getent-darwin-$(GETENTDARWIN_COMMIT).tar.zst,getent-darwin-$(GETENTDARWIN_COMMIT),coreutils/getent-darwin)
 
 ifneq ($(wildcard $(BUILD_WORK)/coreutils/.build_complete),)
@@ -45,6 +45,7 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	+$(MAKE) -C $(BUILD_WORK)/coreutils install \
 		DESTDIR=$(BUILD_STAGE)/coreutils
 	+$(MAKE) -C $(BUILD_WORK)/coreutils/getent-darwin install \
+		CFLAGS="$(CFLAGS) $(LDFLAGS)" \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR="$(BUILD_STAGE)/coreutils/"
 	$(call AFTER_BUILD)

@@ -7,7 +7,7 @@ GRAPHITE2_VERSION := 1.3.14
 DEB_GRAPHITE2_V   ?= $(GRAPHITE2_VERSION)
 
 graphite2-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/silnrsi/graphite/releases/download/$(GRAPHITE2_VERSION)/graphite2-$(GRAPHITE2_VERSION).tgz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/silnrsi/graphite/releases/download/$(GRAPHITE2_VERSION)/graphite2-$(GRAPHITE2_VERSION).tgz)
 	$(call EXTRACT_TAR,graphite2-$(GRAPHITE2_VERSION).tgz,graphite2-$(GRAPHITE2_VERSION),graphite2)
 
 ifneq ($(wildcard $(BUILD_WORK)/graphite2/.build_complete),)

@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS            += idevicerestore
-IDEVICERESTORE_COMMIT  := a2010182daa49f9f3bb63e8993908f8cdbca8b5e
-IDEVICERESTORE_VERSION := 1.0.0+git20210526.$(shell echo $(IDEVICERESTORE_COMMIT) | cut -c -7)
+IDEVICERESTORE_COMMIT  := 7d622d916be16f2df5a72bf53a42f3a326bbfaa4
+IDEVICERESTORE_VERSION := 1.0.0+git20220628.$(shell echo $(IDEVICERESTORE_COMMIT) | cut -c -7)
 DEB_IDEVICERESTORE_V   ?= $(IDEVICERESTORE_VERSION)
 
 idevicerestore-setup: setup
@@ -15,9 +15,10 @@ ifneq ($(wildcard $(BUILD_WORK)/idevicerestore/.build_complete),)
 idevicerestore:
 	@echo "Using previously built idevicerestore."
 else
-idevicerestore: idevicerestore-setup curl libimobiledevice libirecovery libplist libzip
+idevicerestore: idevicerestore-setup curl libimobiledevice-glue libimobiledevice libirecovery libplist libzip
 	cd $(BUILD_WORK)/idevicerestore && ./autogen.sh \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		PACKAGE_VERSION="$(IDEVICERESTORE_VERSION)"
 		zlib_LIBS="-L$(TARGET_SYSROOT)/usr/lib -lz" \
 		zlib_CFLAGS="-I$(TARGET_SYSROOT)/usr/include"
 	+$(MAKE) -C $(BUILD_WORK)/idevicerestore

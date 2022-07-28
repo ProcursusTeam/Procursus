@@ -1,0 +1,25 @@
+Description: Fix manpage installation for rrsync
+ Otherwise we would get "ERROR: support/rrsync.1 cannot be created."
+ I'm not confident this is the best approach on solving this issue,
+ but I know this works with no regressions.
+ This patch needs to be reviewed before being submitted to upstream.
+Author: Samuel Henrique <samueloph@debian.org>
+Index: rsync/maybe-make-man
+===================================================================
+--- rsync.orig/maybe-make-man
++++ rsync/maybe-make-man
+@@ -22,12 +22,8 @@ if [ ! -f "$flagfile" ]; then
+ 	    cp -p "$srcdir/$outname" .
+ 	    exit 0
+ 	else
+-	    echo "ERROR: $outname cannot be created."
+-	    if [ -f "$HOME/build_farm/build_test.fns" ]; then
+-		exit 0 # No exit errorno to avoid a build failure in the samba build farm
+-	    else
+-		exit 1
+-	    fi
++		"$srcdir/md-convert" "$srcdir/$inname"
++	    cp -p "$srcdir/$outname" .
+ 	fi
+     fi
+ fi

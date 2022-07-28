@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS      += zlib-ng
+STRAPPROJECTS    += zlib-ng
 ZLIB-NG_VERSION  := 2.0.6
 DEB_ZLIB-NG_V    ?= $(ZLIB-NG_VERSION)
 

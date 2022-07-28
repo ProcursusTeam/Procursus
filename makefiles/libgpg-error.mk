@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS        += libgpg-error
-LIBGPG-ERROR_VERSION := 1.43
+LIBGPG-ERROR_VERSION := 1.45
 DEB_LIBGPG-ERROR_V   ?= $(LIBGPG-ERROR_VERSION)
 
 ifneq (,$(findstring aarch64,$(GNU_HOST_TRIPLE)))
@@ -17,10 +17,9 @@ else
 endif
 
 libgpg-error-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-$(LIBGPG-ERROR_VERSION).tar.bz2{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-$(LIBGPG-ERROR_VERSION).tar.bz2{$(comma).sig})
 	$(call PGP_VERIFY,libgpg-error-$(LIBGPG-ERROR_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libgpg-error-$(LIBGPG-ERROR_VERSION).tar.bz2,libgpg-error-$(LIBGPG-ERROR_VERSION),libgpg-error)
-	$(call DO_PATCH,libgpg-error,libgpg-error,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/libgpg-error/.build_complete),)
 libgpg-error:

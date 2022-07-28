@@ -7,7 +7,7 @@ DUKTAPE_VERSION := 2.6.0
 DEB_DUKTAPE_V   ?= $(DUKTAPE_VERSION)
 
 duktape-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/svaarala/duktape/releases/download/v$(DUKTAPE_VERSION)/duktape-$(DUKTAPE_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/svaarala/duktape/releases/download/v$(DUKTAPE_VERSION)/duktape-$(DUKTAPE_VERSION).tar.xz)
 	$(call EXTRACT_TAR,duktape-$(DUKTAPE_VERSION).tar.xz,duktape-$(DUKTAPE_VERSION),duktape)
 	sed -i 's/gcc/cc/g' $(BUILD_WORK)/duktape/Makefile.cmdline
 	sed -i 's/gcc/cc/g' $(BUILD_WORK)/duktape/Makefile.sharedlibrary
