@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS             += siguza-utils
-SIGUZA_UTILS_COMMIT     := cb73706e410a053148ee6407201daeb99a447470
-SIGUZA_UTILS_VERSION    := 1.0+git20220225.$(shell echo $(SIGUZA_UTILS_COMMIT) | cut -c -7)
+SIGUZA_UTILS_COMMIT     := c0c96db1962ed4ce156ba790beb297066bd2fc32
+SIGUZA_UTILS_VERSION    := 1.0+git20220709.$(shell echo $(SIGUZA_UTILS_COMMIT) | cut -c -7)
 DEB_SIGUZA_UTILS_V      ?= $(SIGUZA_UTILS_VERSION)
 
 siguza-utils-setup: setup
