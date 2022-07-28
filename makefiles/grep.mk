@@ -15,7 +15,7 @@ GREP_VERSION  := 3.7
 DEB_GREP_V    ?= $(GREP_VERSION)-1
 
 grep-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/grep/grep-$(GREP_VERSION).tar.xz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/grep/grep-$(GREP_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,grep-$(GREP_VERSION).tar.xz)
 	$(call EXTRACT_TAR,grep-$(GREP_VERSION).tar.xz,grep-$(GREP_VERSION),grep)
 

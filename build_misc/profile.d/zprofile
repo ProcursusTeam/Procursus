@@ -1,0 +1,13 @@
+export PATH='@PATH@'
+export TMPDIR='@MEMO_PREFIX@/tmp'
+export PS1='%m%::%~ %n%# '	
+umask 022
+
+export EDITOR=@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/editor
+export PAGER=@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/pager
+
+for i in @MEMO_PREFIX@/etc/profile.d/*.sh ; do
+    if [ -r "$i" ]; then
+        . $i
+    fi
+done

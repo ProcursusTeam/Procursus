@@ -1,0 +1,36 @@
+diff -urN a/layout/DEBIAN/postinst.in b/layout/DEBIAN/postinst.in
+--- a/layout/DEBIAN/postinst.in	2022-05-15 14:48:40.000000000 -0400
++++ b/layout/DEBIAN/postinst.in	2022-07-04 15:21:54.000000000 -0400
+@@ -54,18 +54,6 @@
+ 		rm -rf $sourcesDir/../preferences.d/checkra1n
+ 		exit 0
+ 		;;
+-	(triggered)
+-		if [ "$2" = "/Applications" ]; then
+-			finish uicache
+-			exit 0
+-		fi
+-		if ! [ -s /usr/lib/libblackjack.dylib ]; then
+-			if [ "$2" = "/Library/MobileSubstrate/DynamicLibraries" ]; then
+-				finish restart
+-				exit 0
+-			fi
+-		fi
+-		;;
+ 	(abort-upgrade|abort-remove|abort-deconfigure)
+ 		exit 0
+ 		;;
+@@ -75,7 +63,4 @@
+ 		;;
+ esac
+
+-if [ -z "${SILEO}" ]; then echo "Not running in Sileo. Trigger UICache"; fi
+-if [ -z "${SILEO}" ]; then uicache -p /Applications/@@SILEO_APP@@; fi
+-
+ exit 0
+diff -urN a/layout/DEBIAN/triggers b/layout/DEBIAN/triggers
+--- a/layout/DEBIAN/triggers	2022-05-15 14:48:40.000000000 -0400
++++ b/layout/DEBIAN/triggers	1969-12-31 19:00:00.000000000 -0500
+@@ -1,2 +0,0 @@
+-interest /Applications
+-interest /Library/MobileSubstrate/DynamicLibraries

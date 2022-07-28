@@ -70,7 +70,7 @@ index a41f11b..00255e5 100644
  
  	char* bundlePath;
 -	char* bundleRoot = "FirmwareBundles/";
-+    char* bundleRoot = "${CMAKE_INSTALL_PREFIX}/share/xpwn/FirmwareBundles";
++	char* bundleRoot = "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/xpwn/FirmwareBundles";
  
  	int mergePaths;
  	char* outputIPSW;

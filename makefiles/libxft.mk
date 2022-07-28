@@ -7,7 +7,7 @@ LIBXFT_VERSION := 2.3.3
 DEB_LIBXFT_V   ?= $(LIBXFT_VERSION)
 
 libxft-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/lib/libXft-$(LIBXFT_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.x.org/archive/individual/lib/libXft-$(LIBXFT_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libXft-$(LIBXFT_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXft-$(LIBXFT_VERSION).tar.gz,libXft-$(LIBXFT_VERSION),libxft)
 

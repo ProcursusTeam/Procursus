@@ -11,7 +11,7 @@ DISKDEV-CMDS_VERSION := 667.40.1
 DEB_DISKDEV-CMDS_V   ?= $(DISKDEV-CMDS_VERSION)
 
 diskdev-cmds-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/diskdev_cmds/diskdev_cmds-$(DISKDEV-CMDS_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://opensource.apple.com/tarballs/diskdev_cmds/diskdev_cmds-$(DISKDEV-CMDS_VERSION).tar.gz)
 	$(call EXTRACT_TAR,diskdev_cmds-$(DISKDEV-CMDS_VERSION).tar.gz,diskdev_cmds-$(DISKDEV-CMDS_VERSION),diskdev-cmds)
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1300 ] && echo 1),1)
 	sed -i -e 's+#include <sys/mount.h>+#include <sys/mount.h>\n#ifndef MNT_STRICTATIME\n#define MNT_STRICTATIME 0x80\n#endif+g' $(BUILD_WORK)/diskdev-cmds/mount_flags_dir/mount_flags.c
@@ -66,7 +66,7 @@ diskdev-cmds: diskdev-cmds-setup
 	cd $(BUILD_WORK)/diskdev-cmds/fstyp.tproj; \
 	for c in *.c; do \
 		bin=../$$(basename $$c .c); \
-		$(CC) $(CFLAGS) -isystem ../include -o $$bin $$c; \
+		$(CC) $(CFLAGS) $(LDFLAGS) -isystem ../include -o $$bin $$c; \
 	done
 	cd $(BUILD_WORK)/diskdev-cmds; \
 	cp -a quota $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \

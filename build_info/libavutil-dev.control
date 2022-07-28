@@ -18,4 +18,4 @@ Description: FFmpeg library with functions for simplifying programming - develop
  The goal for this library is to be modular, small, efficient and useful.
  .
  This package contains the development files.
-Depends: libavutil56 (= @DEB_FFMPEG_V@)
+Depends: libavutil57 (= @DEB_FFMPEG_V@)

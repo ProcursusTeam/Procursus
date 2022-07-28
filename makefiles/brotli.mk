@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS      += brotli
+STRAPPROJECTS    += brotli
 BROTLI_VERSION   := 1.0.9
 DEB_BROTLI_V     ?= $(BROTLI_VERSION)
 

@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS                 += zsh-autosuggestions
-ZSH-AUTOSUGGESTIONS_VERSION := 0.6.4
+ZSH-AUTOSUGGESTIONS_VERSION := 0.7.0
 DEB_ZSH-AUTOSUGGESTIONS_V   ?= $(ZSH-AUTOSUGGESTIONS_VERSION)
 
 zsh-autosuggestions-setup: setup

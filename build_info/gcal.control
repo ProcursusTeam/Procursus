@@ -1,0 +1,20 @@
+Package: gcal
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Version: @DEB_GCAL_V@
+Depends: libncursesw6 (>= 6), gcal-common (= @DEB_GCAL_V@), libintl8
+Section: Utilities
+Priority: optional
+Description: program for calculating and printing calendars
+ Gcal displays a calendar for a month or a year, eternal holiday lists
+ and fixed date lists, in many ways. The program correctly omits the
+ dates that were skipped when the current Gregorian calendar replaced
+ the earlier Julian calendar.
+ .
+ Apart from the usual and well known calendar functions like the
+ output of a month or a year calendar sheet, or the output of an eternal
+ holiday list, Gcal offers the facility to display fixed dates on the
+ day of their occurrence and to remind or inform the user about them.
+ So it is possible for users to receive an on-screen notification, at bootup
+ or login, of all holidays or appointments which take place on that day.
+ Notification by electronic mail is also possible.

@@ -3,20 +3,22 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += libusbmuxd
-LIBUSBMUXD_VERSION := 2.0.2
+LIBUSBMUXD_COMMIT  := 36ffb7ab6e2a7e33bd1b56398a88895b7b8c615a
+LIBUSBMUXD_VERSION := 2.0.2+git20220504.$(shell echo $(LIBUSBMUXD_COMMIT) | cut -c -7)
 DEB_LIBUSBMUXD_V   ?= $(LIBUSBMUXD_VERSION)
 
 libusbmuxd-setup: setup
-	$(call GITHUB_ARCHIVE,libimobiledevice,libusbmuxd,$(LIBUSBMUXD_VERSION),$(LIBUSBMUXD_VERSION))
-	$(call EXTRACT_TAR,libusbmuxd-$(LIBUSBMUXD_VERSION).tar.gz,libusbmuxd-$(LIBUSBMUXD_VERSION),libusbmuxd)
+	$(call GITHUB_ARCHIVE,libimobiledevice,libusbmuxd,$(LIBUSBMUXD_COMMIT),$(LIBUSBMUXD_COMMIT))
+	$(call EXTRACT_TAR,libusbmuxd-$(LIBUSBMUXD_COMMIT).tar.gz,libusbmuxd-$(LIBUSBMUXD_COMMIT),libusbmuxd)
 
 ifneq ($(wildcard $(BUILD_WORK)/libusbmuxd/.build_complete),)
 libusbmuxd:
 	@echo "Using previously built libusbmuxd."
 else
-libusbmuxd: libusbmuxd-setup libplist
+libusbmuxd: libusbmuxd-setup libplist libimobiledevice-glue
 	cd $(BUILD_WORK)/libusbmuxd && ./autogen.sh \
-		$(DEFAULT_CONFIGURE_FLAGS)
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		PACKAGE_VERSION="$(LIBUSBMUXD_VERSION)"
 	+$(MAKE) -C $(BUILD_WORK)/libusbmuxd
 	+$(MAKE) -C $(BUILD_WORK)/libusbmuxd install \
 		DESTDIR="$(BUILD_STAGE)/libusbmuxd"

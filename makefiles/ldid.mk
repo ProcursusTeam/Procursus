@@ -3,27 +3,28 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += ldid
-LDID_VERSION := 2.1.5-procursus2
+LDID_VERSION := 2.1.5-procursus5
 DEB_LDID_V   ?= $(LDID_VERSION)
 
 ldid-setup: setup
 	$(call GITHUB_ARCHIVE,ProcursusTeam,ldid,$(LDID_VERSION),v$(LDID_VERSION))
 	$(call EXTRACT_TAR,ldid-$(LDID_VERSION).tar.gz,ldid-$(LDID_VERSION),ldid)
-	mkdir -p $(BUILD_STAGE)/ldid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/{zh_TW,}/man1}
 
 ifneq ($(wildcard $(BUILD_WORK)/ldid/.build_complete),)
 ldid:
 	@echo "Using previously built ldid."
 else
 ldid: ldid-setup openssl libplist
-	$(CC) -c $(CFLAGS) -I$(BUILD_WORK)/ldid -o $(BUILD_WORK)/ldid/lookup2.o $(BUILD_WORK)/ldid/lookup2.c
-	$(CXX) -std=c++11 $(CXXFLAGS) -I$(BUILD_WORK)/ldid -DLDID_VERSION=\"$(LDID_VERSION)\" \
-		-o $(BUILD_STAGE)/ldid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ldid \
-		$(BUILD_WORK)/ldid/lookup2.o $(BUILD_WORK)/ldid/ldid.cpp \
-		$(LDFLAGS) -lcrypto -lplist-2.0
-	$(LN_S) ldid $(BUILD_STAGE)/ldid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ldid2
-	$(INSTALL) -m644 $(BUILD_WORK)/ldid/ldid.1 $(BUILD_STAGE)/ldid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/ldid.1
-	$(INSTALL) -m644 $(BUILD_WORK)/ldid/ldid.1.zh_TW $(BUILD_STAGE)/ldid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/zh_TW/man1/ldid.1
+	+$(MAKE) -C $(BUILD_WORK)/ldid install \
+		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+		VERSION="$(LDID_VERSION)" \
+		DESTDIR="$(BUILD_STAGE)/ldid" \
+		LIBPLIST_INCLUDES="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
+		LIBPLIST_LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -lplist-2.0" \
+		LIBCRYPTO_INCLUDES="-I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
+		LIBCRYPTO_LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -lcrypto"
+	install -d $(BUILD_STAGE)/ldid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/site-functions/
+	install -m644 $(BUILD_WORK)/ldid/_ldid $(BUILD_STAGE)/ldid/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/site-functions/_ldid
 	$(call AFTER_BUILD)
 endif
 

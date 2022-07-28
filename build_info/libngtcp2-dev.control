@@ -2,11 +2,11 @@ Package: libngtcp2-dev
 Version: @DEB_NGTCP2_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libngtcp2-0 (= @DEB_NGTCP2_V@), libngtcp2-crypto-gnutls0 (= @DEB_NGTCP2_V@), libgnutls28-dev
+Depends: libngtcp2-3 (= @DEB_NGTCP2_V@)
 Section: Development
 Priority: standard
 Homepage: https://nghttp2.org/ngtcp2/
-Description: implementation of QUIC protocol. (development)
+Description: implementation of QUIC protocol (development)
  ngtcp2 project is an effort to implement QUIC protocol which is
  now being discussed in IETF QUICWG for its standardization.
  .
