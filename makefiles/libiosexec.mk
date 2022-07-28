@@ -5,22 +5,19 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS      += libiosexec
-LIBIOSEXEC_COMMIT  := 0b53c7cacd249e3dd9b55dba45b90fc543a4a603
-LIBIOSEXEC_SOVER   := 1
-DEB_LIBIOSEXEC_V   ?= 1.0.20~git20220309.$(shell echo $(LIBIOSEXEC_COMMIT) | cut -c -7)
+LIBIOSEXEC_VERSION := 1.2.1
+DEB_LIBIOSEXEC_V   ?= $(LIBIOSEXEC_VERSION)
 
 ifneq (,$(findstring rootless,$(MEMO_TARGET)))
 LIBIOSEXEC_FLAGS   := SHEBANG_REDIRECT_PATH="$(MEMO_PREFIX)" \
-		      LIBIOSEXEC_PREFIXED_ROOT=1 \
-		      DEFAULT_INTERPRETER="$(MEMO_PREFIX)/bin/sh"
+		      LIBIOSEXEC_PREFIXED_ROOT=1
 else
-LIBIOSEXEC_FLAGS   := LIBIOSEXEC_PREFIXED_ROOT=0 \
-		      DEFAULT_INTERPRETER="$(MEMO_PREFIX)/bin/sh"
+LIBIOSEXEC_FLAGS   := LIBIOSEXEC_PREFIXED_ROOT=0
 endif
 
 libiosexec-setup: setup
-	$(call GITHUB_ARCHIVE,ProcursusTeam,libiosexec,$(LIBIOSEXEC_COMMIT),$(LIBIOSEXEC_COMMIT))
-	$(call EXTRACT_TAR,libiosexec-$(LIBIOSEXEC_COMMIT).tar.gz,libiosexec-$(LIBIOSEXEC_COMMIT),libiosexec)
+	$(call GITHUB_ARCHIVE,ProcursusTeam,libiosexec,$(LIBIOSEXEC_VERSION),$(LIBIOSEXEC_VERSION))
+	$(call EXTRACT_TAR,libiosexec-$(LIBIOSEXEC_VERSION).tar.gz,libiosexec-$(LIBIOSEXEC_VERSION),libiosexec)
 
 ifneq ($(wildcard $(BUILD_WORK)/libiosexec/.build_complete),)
 libiosexec:
@@ -29,20 +26,21 @@ else
 libiosexec: libiosexec-setup
 	+$(MAKE) -C $(BUILD_WORK)/libiosexec install \
 		DESTDIR=$(BUILD_STAGE)/libiosexec \
-		$(LIBIOSEXEC_FLAGS)
+		$(LIBIOSEXEC_FLAGS) \
+		DEFAULT_INTERPRETER="$(MEMO_PREFIX)/bin/sh"
 	$(call AFTER_BUILD)
 endif
 
 libiosexec-package: libiosexec-stage
 	# libiosexec.mk Package Structure
-	rm -rf $(BUILD_DIST)/libiosexec{$(LIBIOSEXEC_SOVER),-dev}
-	mkdir -p $(BUILD_DIST)/libiosexec{$(LIBIOSEXEC_SOVER),-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	rm -rf $(BUILD_DIST)/libiosexec{1,-dev}
+	mkdir -p $(BUILD_DIST)/libiosexec{1,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-	# libiosexec1 Prep libiosexec$(LIBIOSEXEC_SOVER)
-	cp -a $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.$(LIBIOSEXEC_SOVER).dylib $(BUILD_DIST)/libiosexec$(LIBIOSEXEC_SOVER)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	# libiosexec1 Prep libiosexec1
+	cp -a $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libiosexec.1.dylib $(BUILD_DIST)/libiosexec1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libiosexec-dev Prep libiosexec-dev
-	cp -a $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libiosexec.$(LIBIOSEXEC_SOVER).dylib) $(BUILD_DIST)/libiosexec-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libiosexec.1.dylib) $(BUILD_DIST)/libiosexec-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libiosexec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libiosexec-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libiosexec-1 sign
@@ -53,7 +51,7 @@ libiosexec-package: libiosexec-stage
 	$(call PACK,libiosexec-dev,DEB_LIBIOSEXEC_V)
 
 	# libiosexec.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libiosexec{$(LIBIOSEXEC_SOVER),-dev}
+	rm -rf $(BUILD_DIST)/libiosexec{1,-dev}
 
 .PHONY: libiosexec libiosexec-package
 
