@@ -13,8 +13,8 @@ DIMENTIO_SOVERSION := 0
 DIMENTIO_LIBS      := -framework CoreFoundation -framework IOKit -lcompression
 
 dimentio-setup: setup
-	$(call GITHUB_ARCHIVE,0x7ff,dimentio,v$(DIMENTIO_COMMIT),$(DIMENTIO_COMMIT))
-	$(call EXTRACT_TAR,dimentio-v$(DIMENTIO_COMMIT).tar.gz,dimentio-$(DIMENTIO_COMMIT),dimentio)
+	$(call GITHUB_ARCHIVE,0x7ff,dimentio,$(DIMENTIO_COMMIT),$(DIMENTIO_COMMIT))
+	$(call EXTRACT_TAR,dimentio-$(DIMENTIO_COMMIT).tar.gz,dimentio-$(DIMENTIO_COMMIT),dimentio)
 	mkdir -p $(BUILD_STAGE)/dimentio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib,include}
 
 ifneq ($(wildcard $(BUILD_WORK)/dimentio/.build_complete),)
