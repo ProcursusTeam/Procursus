@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS      += libiosexec
-LIBIOSEXEC_VERSION := 1.2.1
+LIBIOSEXEC_VERSION := 1.2.2
 DEB_LIBIOSEXEC_V   ?= $(LIBIOSEXEC_VERSION)
 
 ifneq (,$(findstring rootless,$(MEMO_TARGET)))
