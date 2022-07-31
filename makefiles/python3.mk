@@ -82,8 +82,8 @@ python3-package: python3-stage
 	$(LN_S) python$(PYTHON3_MAJOR_V).1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/python.1$(MEMO_MANPAGE_SUFFIX)
 
 	# python3.mk Sign
-	$(call SIGN,python$(PYTHON3_MAJOR_V),general.xml)
-	$(call SIGN,libpython$(PYTHON3_MAJOR_V),general.xml)
+	$(call SIGN,python$(PYTHON3_MAJOR_V),usb.xml)
+	$(call SIGN,libpython$(PYTHON3_MAJOR_V),usb.xml)
 
 	# python3.mk Make .debs
 	$(call PACK,python$(PYTHON3_MAJOR_V),DEB_PYTHON3_V)
