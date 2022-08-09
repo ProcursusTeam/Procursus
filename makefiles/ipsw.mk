@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += ipsw
-IPSW_VERSION  := 3.1.128
+IPSW_VERSION  := 3.1.140
 DEB_IPSW_V    ?= $(IPSW_VERSION)
 
 ipsw-setup: setup
