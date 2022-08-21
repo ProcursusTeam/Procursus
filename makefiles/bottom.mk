@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += bottom
 BOTTOM_VERSION := 1.2.0
-DEB_BOTTOM_V   ?= $(BOTTOM_VERSION)-1
+DEB_BOTTOM_V   ?= $(BOTTOM_VERSION)-2
 
 bottom-setup: setup
 	$(call GITHUB_ARCHIVE,bottom-software-foundation,bottom-rs,$(BOTTOM_VERSION),need_top,bottom)
@@ -21,7 +21,7 @@ bottom: bottom-setup
 		--release \
 		--target=$(RUST_TARGET)
 	$(INSTALL) -Dm755 $(BUILD_WORK)/bottom/target/$(RUST_TARGET)/release/bottomify \
-		$(BUILD_STAGE)/bottom/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bottomify
+		$(BUILD_STAGE)/bottom/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bottom
 	$(call AFTER_BUILD)
 endif
 
