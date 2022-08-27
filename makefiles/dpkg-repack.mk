@@ -21,6 +21,8 @@ dpkg-repack: dpkg-repack-setup
 		--release='$(DEB_DPKG_REPACK_V)' \
 		< dpkg-repack.pod > dpkg-repack.1
 	sed -e "s:my \$$VERSION = .*;:my \$$VERSION = '$(DEB_DPKG_REPACK_V)';:" \
+		-e "1s|.*|#!$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl|" \
+		-e "s/-pd/-pP/" \
 		< $(BUILD_WORK)/dpkg-repack/dpkg-repack.pl > $(BUILD_WORK)/dpkg-repack/dpkg-repack
 	$(INSTALL) -Dm0755 $(BUILD_WORK)/dpkg-repack/dpkg-repack $(BUILD_STAGE)/dpkg-repack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dpkg-repack
 	$(INSTALL) -Dm0644 $(BUILD_WORK)/dpkg-repack/dpkg-repack.1 $(BUILD_STAGE)/dpkg-repack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/dpkg-repack.1
