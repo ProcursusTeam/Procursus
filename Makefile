@@ -898,6 +898,17 @@ PACK = \
 			fi; \
 		done; \
 	done; \
+	if ! grep -q "darwin" <<< "$(MEMO_TARGET)"; then \
+		if ! [ "$(1)" = "libiosexec1" ] || ! [ "$(1)" = "libiosexec-dev" ]; then \
+			if find $(BUILD_DIST)/$(1) | xargs file -ib | grep 'x-mach-binary' | head -1 | grep -q 'x-mach-binary'; then \
+				if grep -q '^Depends\:' $(BUILD_DIST)/$(1)/DEBIAN/control; then \
+					sed -i 's/^Depends\:/Depends: libiosexec1 (>= '$${DEB_LIBIOSEXEC_V}'),/' $(BUILD_DIST)/$(1)/DEBIAN/control; \
+				else \
+					echo 'Depends: libiosexec1 (>= '$${DEB_LIBIOSEXEC_V}')' >> $(BUILD_DIST)/$(1)/DEBIAN/control; \
+				fi; \
+			fi; \
+		fi; \
+	fi; \
 	find $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)/etc -type f -printf '$(MEMO_PREFIX)/etc/%P\n' | LC_ALL=C sort >> $(BUILD_DIST)/$(1)/DEBIAN/conffiles; \
 	[ -s $(BUILD_DIST)/$(1)/DEBIAN/conffiles ] || rm $(BUILD_DIST)/$(1)/DEBIAN/conffiles; \
 	sed -i '$$a\' $(BUILD_DIST)/$(1)/DEBIAN/control; \
