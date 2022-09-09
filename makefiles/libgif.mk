@@ -8,7 +8,7 @@ LIBGIF_VERSION := 5.2.1
 DEB_LIBGIF_V   ?= $(LIBGIF_VERSION)-1
 
 libgif-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE) \
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
 		https://sourceforge.net/projects/giflib/files/giflib-$(LIBGIF_VERSION).tar.gz)
 	$(call EXTRACT_TAR,giflib-$(LIBGIF_VERSION).tar.gz,giflib-$(LIBGIF_VERSION),libgif)
 	$(call DO_PATCH,libgif,libgif,-p0)
