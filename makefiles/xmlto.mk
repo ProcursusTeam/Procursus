@@ -7,7 +7,7 @@ XMLTO_VERSION := 0.0.28
 DEB_XMLTO_V   ?= $(XMLTO_VERSION)
 
 xmlto-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE) https://releases.pagure.org/xmlto/xmlto-$(XMLTO_VERSION).tar.bz2,)
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://releases.pagure.org/xmlto/xmlto-$(XMLTO_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,xmlto-$(XMLTO_VERSION).tar.bz2,xmlto-$(XMLTO_VERSION),xmlto)
 
 ifneq ($(wildcard $(BUILD_WORK)/xmlto/.build_complete),)
