@@ -14,9 +14,10 @@ ifneq ($(wildcard $(BUILD_WORK)/xmlto/.build_complete),)
 xmlto:
 	@echo "Using previously built xmlto."
 else
-xmlto: xmlto-setup
+xmlto: xmlto-setup gnu-getopt
 	cd $(BUILD_WORK)/xmlto && GETOPT=ggetopt ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		GETOPT="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ggetopt"
 	+$(MAKE) -C $(BUILD_WORK)/xmlto
 	+$(MAKE) -C $(BUILD_WORK)/xmlto install \
 		DESTDIR=$(BUILD_STAGE)/xmlto
