@@ -6,7 +6,7 @@
 	<string>org.libimobiledevice.usbmuxd</string>
 	<key>ProgramArguments</key>
 	<array>
-		<string>/usr/sbin/usbmuxd</string>
+		<string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/sbin/usbmuxd</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>
