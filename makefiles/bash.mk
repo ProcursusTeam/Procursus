@@ -51,7 +51,8 @@ bash: bash-setup ncurses readline
 		--disable-nls \
 		--with-installed-readline=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		CFLAGS="$(CFLAGS) -DSSH_SOURCE_BASHRC" \
-		$(BASH_CONFIGURE_ARGS)
+		$(BASH_CONFIGURE_ARGS) \
+		bash_cv_getcwd_malloc=yes
 	+$(MAKE) -C $(BUILD_WORK)/bash \
 		TERMCAP_LIB=-lncursesw
 	+$(MAKE) -C $(BUILD_WORK)/bash install \
