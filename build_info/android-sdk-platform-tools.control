@@ -1,0 +1,16 @@
+Package: android-sdk-platform-tools
+Version: @DEB_ANDROID_TOOLS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Homepage: https://developer.android.com/studio/releases/platform-tools
+Description: Tools for interacting with an Android platform
+ The Android SDK includes a variety of tools that help you develop 
+ mobile applications for the Android platform. The tools are classified 
+ into 3 groups: SDK Tools, Platform-tools and Build-tools.
+ .
+ Platform-tools are customized to support the features of the latest 
+ Android platform.
+ .
+ This package pulls Android SDK Platform-tools.

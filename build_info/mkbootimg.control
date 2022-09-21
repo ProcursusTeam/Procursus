@@ -1,0 +1,11 @@
+Package: mkbootimg
+Version: @DEB_ANDROID_TOOLS_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Depends: python3
+Section: Development
+Priority: optional
+Homepage: https://developer.android.com/studio/releases/platform-tools
+Description: Creates Android boot images
+ Creates Android boot images that includes kernel image and ramdisk, in 
+ a special format which can be used with fastboot.

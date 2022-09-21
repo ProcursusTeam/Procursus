@@ -1,0 +1,11 @@
+Package: adb
+Version: @DEB_ANDROID_TOOLS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libzstd1, liblz4-1, libbrotli1, libusb-1.0-0, libprotobuf32
+Section: Development
+Priority: optional
+Homepage: https://developer.android.com/studio/releases/platform-tools
+Description: Android Debug Bridge
+ A versatile command line tool that lets you communicate with an 
+ emulator instance or connected Android-powered device.

@@ -1,0 +1,151 @@
+diff -urN a/vendor/CMakeLists.adb.txt b/vendor/CMakeLists.adb.txt
+--- a/vendor/CMakeLists.adb.txt	2022-07-14 00:44:44.000000000 +0800
++++ b/vendor/CMakeLists.adb.txt	2022-08-22 13:04:42.000000000 +0800
+@@ -24,7 +24,7 @@
+ 	adb/client/main.cpp
+ 	adb/client/pairing/pairing_client.cpp
+ 	adb/client/usb_libusb.cpp
+-	adb/client/usb_linux.cpp
++	adb/client/usb_osx.cpp
+ 	adb/pairing_auth/aes_128_gcm.cpp
+ 	adb/pairing_auth/pairing_auth.cpp
+ 	adb/pairing_connection/pairing_connection.cpp
+diff -urN a/vendor/CMakeLists.fastboot.txt b/vendor/CMakeLists.fastboot.txt
+--- a/vendor/CMakeLists.fastboot.txt	2022-07-14 00:44:44.000000000 +0800
++++ b/vendor/CMakeLists.fastboot.txt	2022-08-22 13:04:42.000000000 +0800
+@@ -32,7 +32,7 @@
+ 	extras/ext4_utils/ext4_sb.cpp)
+ 
+ target_include_directories(libext4 PUBLIC
+-	core/libsparse/include core/include selinux/libselinux/include
++	core/libsparse/include core/include
+ 	extras/ext4_utils/include libbase/include)
+ 
+ add_library(libfsmgr STATIC
+@@ -47,68 +47,6 @@
+ 	boringssl/include)
+ target_link_libraries(libfsmgr PUBLIC fmt::fmt)
+ 
+-add_library(libselinux STATIC
+-	selinux/libselinux/src/booleans.c
+-	selinux/libselinux/src/callbacks.c
+-	selinux/libselinux/src/canonicalize_context.c
+-	selinux/libselinux/src/check_context.c
+-	selinux/libselinux/src/disable.c
+-	selinux/libselinux/src/enabled.c
+-	selinux/libselinux/src/freecon.c
+-	selinux/libselinux/src/getenforce.c
+-	selinux/libselinux/src/init.c
+-	selinux/libselinux/src/label_backends_android.c
+-	selinux/libselinux/src/label.c
+-	selinux/libselinux/src/label_file.c
+-	selinux/libselinux/src/label_support.c
+-	selinux/libselinux/src/lgetfilecon.c
+-	selinux/libselinux/src/load_policy.c
+-	selinux/libselinux/src/lsetfilecon.c
+-	selinux/libselinux/src/matchpathcon.c
+-	selinux/libselinux/src/policyvers.c
+-	selinux/libselinux/src/regex.c
+-	selinux/libselinux/src/selinux_config.c
+-	selinux/libselinux/src/setenforce.c
+-	selinux/libselinux/src/setrans_client.c
+-	selinux/libselinux/src/seusers.c
+-	selinux/libselinux/src/sha1.c)
+-
+-target_compile_definitions(libselinux PRIVATE
+-	-DAUDITD_LOG_TAG=1003 -D_GNU_SOURCE -DHOST -DUSE_PCRE2
+-	-DNO_PERSISTENTLY_STORED_PATTERNS -DDISABLE_SETRANS
+-	-DDISABLE_BOOL -DNO_MEDIA_BACKEND -DNO_X_BACKEND -DNO_DB_BACKEND
+-	-DPCRE2_CODE_UNIT_WIDTH=8)
+-target_include_directories(libselinux PUBLIC
+-	selinux/libselinux/include selinux/libsepol/include)
+-
+-add_library(libsepol
+-	selinux/libsepol/src/assertion.c
+-	selinux/libsepol/src/avrule_block.c
+-	selinux/libsepol/src/avtab.c
+-	selinux/libsepol/src/conditional.c
+-	selinux/libsepol/src/constraint.c
+-	selinux/libsepol/src/context.c
+-	selinux/libsepol/src/context_record.c
+-	selinux/libsepol/src/debug.c
+-	selinux/libsepol/src/ebitmap.c
+-	selinux/libsepol/src/expand.c
+-	selinux/libsepol/src/hashtab.c
+-	selinux/libsepol/src/hierarchy.c
+-	selinux/libsepol/src/kernel_to_common.c
+-	selinux/libsepol/src/mls.c
+-	selinux/libsepol/src/policydb.c
+-	selinux/libsepol/src/policydb_convert.c
+-	selinux/libsepol/src/policydb_public.c
+-	selinux/libsepol/src/services.c
+-	selinux/libsepol/src/sidtab.c
+-	selinux/libsepol/src/symtab.c
+-	selinux/libsepol/src/util.c
+-	selinux/libsepol/src/write.c
+-	selinux/libsepol/src/optimize.c)
+-
+-target_include_directories(libsepol PUBLIC
+-	selinux/libsepol/include)
+-
+ add_executable(fastboot
+ 	core/fastboot/bootimg_utils.cpp
+ 	core/fastboot/fastboot.cpp
+@@ -118,7 +56,7 @@
+ 	core/fastboot/socket.cpp
+ 	core/fastboot/tcp.cpp
+ 	core/fastboot/udp.cpp
+-	core/fastboot/usb_linux.cpp
++	core/fastboot/usb_osx.cpp
+ 	core/fastboot/vendor_boot_img_utils.cpp
+ 	core/fastboot/util.cpp)
+ 
+@@ -134,5 +72,5 @@
+ 	-DANDROID_MKE2FS_NAME="${ANDROID_MKE2FS_NAME}")
+ target_link_libraries(fastboot
+ 	libsparse libzip libcutils liblog libfsmgr libutil
+-	libbase libext4 libselinux libsepol libdiagnoseusb crypto
++	libbase libext4 libdiagnoseusb crypto
+ 	z pcre2-8 Threads::Threads dl)
+diff -urN a/vendor/CMakeLists.mke2fs.txt b/vendor/CMakeLists.mke2fs.txt
+--- a/vendor/CMakeLists.mke2fs.txt	2022-07-14 00:44:44.000000000 +0800
++++ b/vendor/CMakeLists.mke2fs.txt	2022-08-22 13:06:10.000000000 +0800
+@@ -117,27 +117,9 @@
+ target_include_directories("${ANDROID_MKE2FS_NAME}" PRIVATE
+ 	e2fsprogs/lib)
+ 
+-add_executable(e2fsdroid
+-	e2fsprogs/contrib/android/e2fsdroid.c
+-	e2fsprogs/contrib/android/basefs_allocator.c
+-	e2fsprogs/contrib/android/block_range.c
+-	e2fsprogs/contrib/android/base_fs.c
+-	e2fsprogs/contrib/android/fsmap.c
+-	e2fsprogs/contrib/android/block_list.c
+-	e2fsprogs/contrib/android/perms.c)
+-
+ include(CheckIncludeFile)
+ CHECK_INCLUDE_FILE("sys/types.h" HAVE_SYS_TYPES_H)
+ 
+-if(HAVE_SYS_TYPES_H)
+-	target_compile_definitions(e2fsdroid PUBLIC HAVE_SYS_TYPES_H)
+-endif(HAVE_SYS_TYPES_H)
+-
+-target_link_libraries(e2fsdroid
+-	libext2fs libsparse libzip libcutils liblog libutil libbase libselinux libsepol z pcre2-8 pthread)
+-target_include_directories(e2fsdroid PRIVATE
+-	e2fsprogs/lib e2fsprogs/lib/ext2fs selinux/libselinux/include core/libcutils/include e2fsprogs/misc)
+-
+ add_executable(ext2simg
+ 	e2fsprogs/contrib/android/ext2simg.c)
+ 
+diff -urN a/vendor/CMakeLists.txt b/vendor/CMakeLists.txt
+--- a/vendor/CMakeLists.txt	2022-08-06 20:04:45.000000000 +0800
++++ b/vendor/CMakeLists.txt	2022-08-22 13:05:28.000000000 +0800
+@@ -85,7 +85,6 @@
+ 	lpmake
+ 	lpunpack
+ 	simg2img
+-	e2fsdroid
+ 	ext2simg
+ 	DESTINATION bin)
+ 

@@ -1,0 +1,10 @@
+Package: android-sdk-libsparse-utils
+Version: @DEB_ANDROID_TOOLS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Homepage: https://developer.android.com/studio/releases/platform-tools
+Description: Android sparse image creation tool
+ Command line tools to create sparse images for usage with Android 
+ devices. Includes simg2img, img2simg and append2simg tools.
