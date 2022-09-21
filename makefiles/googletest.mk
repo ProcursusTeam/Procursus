@@ -9,6 +9,7 @@ DEB_GOOGLETEST_V   ?= $(GOOGLETEST_VERSION)
 googletest-setup: setup
 	$(call GITHUB_ARCHIVE,google,googletest,$(GOOGLETEST_VERSION),release-$(GOOGLETEST_VERSION))
 	$(call EXTRACT_TAR,googletest-$(GOOGLETEST_VERSION).tar.gz,googletest-release-$(GOOGLETEST_VERSION),googletest)
+	sed -i 's/-Werror//g' $(BUILD_WORK)/googletest/googletest/cmake/internal_utils.cmake
 
 ifneq ($(wildcard $(BUILD_WORK)/googletest/.build_complete),)
 googletest:
