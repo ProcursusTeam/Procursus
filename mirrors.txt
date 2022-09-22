@@ -1,3 +1,4 @@
 https://apt.procurs.us
 https://repo.quiprr.dev/procursus
 https://procursus.itsnebula.net
+https://table.jeenyuhs.one
