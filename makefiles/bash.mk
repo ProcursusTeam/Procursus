@@ -9,7 +9,7 @@ SUBPROJECTS     += bash
 endif # ($(MEMO_TARGET),darwin-\*)
 BASH_VERSION    := 5.1
 BASH_PATCHLEVEL := 16
-DEB_BASH_V      ?= $(BASH_VERSION).$(BASH_PATCHLEVEL)
+DEB_BASH_V      ?= $(BASH_VERSION).$(BASH_PATCHLEVEL)-1
 
 bash-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION).tar.gz{$(comma).sig})
@@ -51,7 +51,8 @@ bash: bash-setup ncurses readline
 		--disable-nls \
 		--with-installed-readline=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		CFLAGS="$(CFLAGS) -DSSH_SOURCE_BASHRC" \
-		$(BASH_CONFIGURE_ARGS)
+		$(BASH_CONFIGURE_ARGS) \
+		bash_cv_getcwd_malloc=yes
 	+$(MAKE) -C $(BUILD_WORK)/bash \
 		TERMCAP_LIB=-lncursesw
 	+$(MAKE) -C $(BUILD_WORK)/bash install \
