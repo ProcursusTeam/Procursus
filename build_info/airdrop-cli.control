@@ -1,0 +1,9 @@
+Package: airdrop-cli
+Version: @DEB_AIRDROP_CLI_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: Volodymyr Klymenko
+Section: Networking 
+Priority: optional
+Homepage: https://github.com/vldmrkl/airdrop-cli
+Description: A command line tool that allows you to share files and URLs with Apple devices using AirDrop from your terminal.
