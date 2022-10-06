@@ -15,10 +15,10 @@ airdrop-cli:
 	@echo "Using previously built airdrop-cli."
 else
 airdrop-cli: airdrop-cli-setup
-	cd $(BUILD_WORK)/airdrop-cli && swift build -c release --sdk $(TARGET_SYSROOT)  --disable-sandbox
+	cd $(BUILD_WORK)/airdrop-cli && swift build -c release --sdk $(TARGET_SYSROOT) --arch=$(MEMO_ARCH) --disable-sandbox
 	 mkdir -p $(BUILD_STAGE)/airdrop-cli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	 cp $(BUILD_WORK)/airdrop-cli/.build/release/airdrop $(BUILD_STAGE)/airdrop-cli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	 chmod +x $(BUILD_STAGE)/airdrop-cli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	 chmod +x $(BUILD_STAGE)/airdrop-cli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/airdrop
 		$(call AFTER_BUILD)
 endif
 
