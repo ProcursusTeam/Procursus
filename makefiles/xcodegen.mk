@@ -4,7 +4,7 @@ endif
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 
-SUBPROJECTS   += xcodegen
+SUBPROJECTS      += xcodegen
 XCODEGEN_VERSION := 2.32.0
 DEB_XCODEGEN_V   ?= $(XCODEGEN_VERSION)
 
@@ -19,7 +19,7 @@ else
 xcodegen: xcodegen-setup
 	cd $(BUILD_WORK)/xcodegen && swift build -c release --sdk=$(MACOSX_SYSROOT) --arch=$(MEMO_ARCH) --disable-sandbox
 	mkdir -p $(BUILD_STAGE)/xcodegen/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp $(BUILD_WORK)/xcodegen/.build/release/xcodegen $(BUILD_STAGE)/xcodegen/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	install -Dm755 $(BUILD_WORK)/xcodegen/.build/release/xcodegen $(BUILD_STAGE)/xcodegen/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	$(call AFTER_BUILD)
 endif
 
