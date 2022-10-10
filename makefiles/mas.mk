@@ -23,12 +23,8 @@ $(error mas will fail to build with libncurses-dev installed)
 else
 	printf "enum Package { \n\t static let version = \"$(MAS_VERSION)\"\n}" > $(BUILD_WORK)/mas/Sources/MasKit/Package.swift
 	mkdir -p $(BUILD_STAGE)/mas/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-# cd $(BUILD_WORK)/mas && swift build -c release --sdk $(TARGET_SYSROOT) --arch=$(MEMO_ARCH) --disable-sandbox
-	cd $(BUILD_WORK)/mas && swift build -c release \
-		-Xswiftc "-Osize" \
-		-Xswiftc "--target=$(LLVM_TARGET)" \
-		-Xswiftc "-I$(TARGET_SYSROOT)/usr/include" 
-	install -Dm755 $(BUILD_WORK)/mas/.build/release/mas $(BUILD_STAGE)/mas/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cd $(BUILD_WORK)/mas && swift build -c release --sdk $(TARGET_SYSROOT) --arch=$(MEMO_ARCH) --disable-sandbox
+		install -Dm755 $(BUILD_WORK)/mas/.build/release/mas $(BUILD_STAGE)/mas/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	$(call AFTER_BUILD)
 endif
 endif
