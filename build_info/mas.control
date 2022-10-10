@@ -1,0 +1,8 @@
+Package: mas
+Version: @DEB_MAS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Homepage: https://github.com/mas-cli/mas
+Description: Mac App Store command line interface
