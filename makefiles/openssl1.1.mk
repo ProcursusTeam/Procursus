@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += openssl1.1
-OPENSSL1.1_VERSION := 1.1.1q
+OPENSSL1.1_VERSION := 1.1.1r
 DEB_OPENSSL1.1_V   ?= $(OPENSSL1.1_VERSION)-1
 
 ifneq (,$(findstring aarch64,$(GNU_HOST_TRIPLE)))

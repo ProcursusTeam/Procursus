@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += ngtcp2
-NGTCP2_VERSION := 0.5.0
+NGTCP2_VERSION := 0.9.0
 DEB_NGTCP2_V   ?= $(NGTCP2_VERSION)
 
 ngtcp2-setup: setup
