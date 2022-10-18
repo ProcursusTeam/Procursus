@@ -7,7 +7,7 @@ STRAPPROJECTS += sudo
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += sudo
 endif # ($(MEMO_TARGET),darwin-\*)
-SUDO_VERSION  := 1.9.8p2
+SUDO_VERSION  := 1.9.11p3
 DEB_SUDO_V    ?= $(SUDO_VERSION)
 
 sudo-setup: setup
