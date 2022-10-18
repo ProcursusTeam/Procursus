@@ -28,7 +28,7 @@ usbmuxd: usbmuxd-setup libusb libplist libimobiledevice-glue libimobiledevice
 		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libusb-1.0"
 	+$(MAKE) -C $(BUILD_WORK)/usbmuxd install \
 		DESTDIR="$(BUILD_STAGE)/usbmuxd"
-	sed -e "s|@MEMO_PREFIX@|$(MEMO_PREFIX)|g" -e "s|@MEMO_SUB_PREFIX|$(MEMO_SUB_PREFIX)|g" < $(BUILD_INFO)/org.libimobiledevice.usbmuxd.plist > $(BUILD_STAGE)/usbmuxd/Library/LaunchDaemons/org.libimobiledevice.usbmuxd.plist
+	sed -e "s|@MEMO_PREFIX@|$(MEMO_PREFIX)|g" -e "s|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g" < $(BUILD_INFO)/org.libimobiledevice.usbmuxd.plist > $(BUILD_STAGE)/usbmuxd/Library/LaunchDaemons/org.libimobiledevice.usbmuxd.plist
 	$(call AFTER_BUILD)
 endif
 
