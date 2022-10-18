@@ -4,7 +4,7 @@ endif
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 
-SUBPROJECTS		  += swiftlint
+SUBPROJECTS       += swiftlint
 SWIFTLINT_VERSION := 0.49.1
 DEB_SWIFTLINT_V   ?= $(SWIFTLINT_VERSION)
 
