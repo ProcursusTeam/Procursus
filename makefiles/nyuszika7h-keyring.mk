@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS                 += nyuszika7h-keyring
-NYUSZIKA7H_KEYRING_VERSION  := 2021.07.14
+NYUSZIKA7H_KEYRING_VERSION  := 2022.10.12
 DEB_NYUSZIKA7H_KEYRING_V    ?= $(NYUSZIKA7H_KEYRING_VERSION)
 
 nyuszika7h-keyring:
