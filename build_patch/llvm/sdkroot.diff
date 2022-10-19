@@ -9,18 +9,6 @@ diff -urN llvm/clang/lib/Driver/ToolChains/Darwin.cpp.old llvm/clang/lib/Driver/
 
  using namespace clang::driver;
  using namespace clang::driver::tools;
-@@ -1738,10 +1738,8 @@
-           << Triple.getOSName();
-     break;
-   case llvm::Triple::IOS:
--    Triple.getiOSVersion(Major, Minor, Micro);
--    break;
-   case llvm::Triple::TvOS:
--    Triple.getOSVersion(Major, Minor, Micro);
-+    Triple.getiOSVersion(Major, Minor, Micro);
-     break;
-   case llvm::Triple::WatchOS:
-     Triple.getWatchOSVersion(Major, Minor, Micro);
 @@ -1765,11 +1763,13 @@
 
    StringRef MachOArchName = Toolchain.getMachOArchName(Args);
