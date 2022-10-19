@@ -1,0 +1,62 @@
+--- a/llvm/llvm/lib/Support/Triple.cpp	2022-10-18 16:37:38.670048919 +0800
++++ b/llvm/llvm/lib/Support/Triple.cpp	2022-10-18 16:37:02.975535309 +0800
+@@ -1183,9 +1183,46 @@
+ 
+ void Triple::getiOSVersion(unsigned &Major, unsigned &Minor,
+                            unsigned &Micro) const {
++  getOSVersion(Major, Minor, Micro);
+   switch (getOS()) {
+   default: llvm_unreachable("unexpected OS for Darwin triple");
+   case Darwin:
++    // Default to darwin19, i.e., iOS 13.0.
++    if (Major == 0)
++      Major = 19;
++
++    Micro = 0;
++    // Both iOS 7 and 8 using darwin14, set iOS 8.0 as default.
++    if (Major == 14) {
++      Minor = 0;
++      Major = 8;
++    } else {
++      // iOS 9.0
++      if (Major == 15) {
++        Minor = (Minor >= 4) ? 3 : 0;
++      // iOS 10.0
++      } else if (Major == 16) {
++        Minor = (Minor > 0) + (Minor > 1) + (Minor > 3);
++      // iOS 11.0
++      } else if (Major == 17) {
++        Minor = (Minor > 0) + (Minor > 2) + (Minor > 4) + (Minor > 5);
++      // iOS 12.0
++      } else if (Major == 18) {
++        // Treat iOS 12.5 as 12.4
++        Minor = (Minor > 0) + (Minor > 2) + (Minor > 5) + (Minor > 6);
++      // iOS 13.0
++      } else if (Major == 19) {
++        // Treat iOS 13.7 as 13.6
++        Minor = (2 * (Minor > 0)) + (Minor > 2) + (Minor > 3) + (Minor > 4) + (Minor > 5);
++      // iOS 14.0
++      } else if (Major == 20) {
++        Minor = (Minor > 0) + Minor;
++      // iOS 15.0 and later
++      } else if (Major >= 21) {
++        // Minor versions is same as Darwin minor version since iOS 15 / Darwin 21
++      }
++    }
++    break;
+   case MacOSX:
+     // Ignore the version from the triple.  This is only handled because the
+     // the clang driver combines OS X and IOS support into a common Darwin
+@@ -1196,8 +1233,11 @@
+     Micro = 0;
+     break;
+   case IOS:
++    // Default to 10.0 (or 13.0 for arm64)
++    if (Major == 0)
++      Major = (getArch() == aarch64) ? 13 : 10;
++    break;
+   case TvOS:
+-    getOSVersion(Major, Minor, Micro);
+     // Default to 5.0 (or 7.0 for arm64).
+     if (Major == 0)
+       Major = (getArch() == aarch64) ? 7 : 5;
