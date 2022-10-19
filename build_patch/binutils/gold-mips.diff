@@ -1,0 +1,39 @@
+# DP: Fix gold on mips64 targets.
+
+gold/
+
+2016-08-09  Aurelien Jarno  <aurelien@aurel32.net>
+
+	* configure.tgt: Add mips64el*-*-*|mips64le*-*-* and mips64*-*-*.
+
+ 
+--- a/gold/configure.tgt
++++ b/gold/configure.tgt
+@@ -153,6 +153,13 @@ aarch64*-*)
+  targ_big_endian=false
+  targ_extra_big_endian=true
+  ;;
++mips*64*el*-*-*|mips*64*le*-*-*)
++ targ_obj=mips
++ targ_machine=EM_MIPS_RS3_LE
++ targ_size=64
++ targ_big_endian=false
++ targ_extra_big_endian=true
++ ;;
+ mips*el*-*-*|mips*le*-*-*)
+  targ_obj=mips
+  targ_machine=EM_MIPS_RS3_LE
+@@ -160,6 +167,13 @@ mips*el*-*-*|mips*le*-*-*)
+  targ_big_endian=false
+  targ_extra_big_endian=true
+  ;;
++mips*64*-*-*)
++ targ_obj=mips
++ targ_machine=EM_MIPS
++ targ_size=64
++ targ_big_endian=true
++ targ_extra_big_endian=false
++ ;;
+ mips*-*-*)
+  targ_obj=mips
+  targ_machine=EM_MIPS

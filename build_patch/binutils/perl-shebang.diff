@@ -1,0 +1,8 @@
+--- a/gprofng/gp-display-html/gp-display-html.in
++++ b/gprofng/gp-display-html/gp-display-html.in
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env perl
++#!/usr/bin/perl
+ #   Copyright (C) 2021 Free Software Foundation, Inc.
+ #   Contributed by Oracle.
+ #

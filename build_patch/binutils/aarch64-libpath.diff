@@ -1,0 +1,25 @@
+--- a/ld/emulparams/aarch64linux.sh
++++ b/ld/emulparams/aarch64linux.sh
+@@ -38,12 +38,15 @@ PLT=".plt          ${RELOCATING-0} : ALI
+ 
+ # Linux modifies the default library search path to first include
+ # a 64-bit specific directory.
+-case "$target" in
+-  aarch64*-linux*)
+-    case "$EMULATION_NAME" in
+-      aarch64linux*) LIBPATH_SUFFIX=64 ;;
+-    esac
+-    ;;
+-esac
++
++# not for multiarch systems ...
++
++#case "$target" in
++#  aarch64*-linux*)
++#    case "$EMULATION_NAME" in
++#      aarch64linux*) LIBPATH_SUFFIX=64 ;;
++#    esac
++#    ;;
++#esac
+ 
+ ELF_INTERPRETER_NAME=\"/lib/ld-linux-aarch64.so.1\"

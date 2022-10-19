@@ -1,0 +1,12 @@
+--- a/gas/config/tc-mips.c
++++ b/gas/config/tc-mips.c
+@@ -16734,6 +16734,9 @@ parse_code_option (char * name)
+   else
+     return OPTION_TYPE_BAD;
+ 
++  if (mips_opts.isa == ISA_MIPS1 && mips_opts.fp == 0)
++    mips_opts.isa = ISA_MIPS2;
++
+   return isa_set ? OPTION_TYPE_ISA : OPTION_TYPE_NORMAL;
+ }
+ 

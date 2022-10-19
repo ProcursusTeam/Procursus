@@ -1,0 +1,14 @@
+# DP: gold on 32bit archs: Release mapped files after each pass.
+
+--- a/gold/options.h
++++ b/gold/options.h
+@@ -1012,7 +1012,8 @@ class General_options
+ 
+   // k
+ 
+-  DEFINE_bool(keep_files_mapped, options::TWO_DASHES, '\0', true,
++  DEFINE_bool(keep_files_mapped, options::TWO_DASHES, '\0',
++	      sizeof(void*) >= 8,
+ 	      N_("Keep files mapped across passes"),
+ 	      N_("Release mapped files after each pass"));
+ 

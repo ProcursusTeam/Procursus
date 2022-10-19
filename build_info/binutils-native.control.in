@@ -1,0 +1,13 @@
+Package: binutils
+Version: @DEB_BINUTILS_V@
+Priority: optional
+Architecture: @DEB_ARCH@
+Section: Development
+Maintainer: @DEB_MAINTAINER@
+Provides: binutils-gold, elf-binutils
+Depends: binutils-common (= @DEB_BINUTILS_V@), binutils-@TARGET@ (= @DEB_BINUTILS_V@)
+Homepage: https://www.gnu.org/software/binutils
+Description: GNU assembler and binary utilities
+ The programs in this package are used to assemble, link and manipulate
+ binary and object files.  They may be used in conjunction with a compiler
+ and various libraries to build programs.

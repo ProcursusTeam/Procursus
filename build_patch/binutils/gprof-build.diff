@@ -1,0 +1,14 @@
+# DP: Fix gprof build error.
+
+--- a/gprof/gconfig.in
++++ b/gprof/gconfig.in
+@@ -99,9 +99,6 @@
+ #endif
+ 
+ 
+-/* Version number of package */
+-#undef VERSION
+-
+ /* Enable large inode numbers on Mac OS X 10.5.  */
+ #ifndef _DARWIN_USE_64_BIT_INODE
+ # define _DARWIN_USE_64_BIT_INODE 1

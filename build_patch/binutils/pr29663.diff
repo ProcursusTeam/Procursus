@@ -1,0 +1,72 @@
+From 7b68800441a1572640b34f988c8f71f50b2a70cf Mon Sep 17 00:00:00 2001
+From: Vladimir Mezentsev <vladimir.mezentsev@oracle.com>
+Date: Mon, 10 Oct 2022 15:34:42 -0700
+Subject: [PATCH] gprofng: use the --libdir path to find libraries
+
+gprofng/ChangeLog
+2022-10-10  Vladimir Mezentsev  <vladimir.mezentsev@oracle.com>
+
+	PR gprofng/29663
+	* src/Makefile.am: Add -DLIBDIR to CPPFLAGS.
+	* src/Makefile.in: Rebuild.
+	* src/envsets.cc (putenv_libcollector_ld_misc): Use LIBDIR to find
+	the gprofng libraries.
+---
+ gprofng/src/Makefile.am | 2 +-
+ gprofng/src/Makefile.in | 2 +-
+ gprofng/src/envsets.cc  | 8 +++++++-
+ 3 files changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/gprofng/src/Makefile.am b/gprofng/src/Makefile.am
+index 6e0931524e4..27ef7974afe 100644
+--- a/gprofng/src/Makefile.am
++++ b/gprofng/src/Makefile.am
+@@ -108,7 +108,7 @@ LOCALEDIR = @localedir@
+ SYSCONFDIR = @sysconfdir@
+ 
+ AM_CPPFLAGS = $(GPROFNG_CPPFLAGS) -DLOCALEDIR=\"$(LOCALEDIR)\" \
+-	-DSYSCONFDIR=\"$(SYSCONFDIR)\" \
++	-DSYSCONFDIR=\"$(SYSCONFDIR)\" -DLIBDIR=\"$(libdir)\" \
+ 	-I.. -I$(srcdir) \
+ 	-I$(srcdir)/../common \
+ 	-I$(srcdir)/../../include -I$(srcdir)/../../opcodes \
+diff --git a/gprofng/src/Makefile.in b/gprofng/src/Makefile.in
+index ba7fdd6e8ad..7efdb9885f6 100644
+--- a/gprofng/src/Makefile.in
++++ b/gprofng/src/Makefile.in
+@@ -536,7 +536,7 @@ ZLIBINC = @zlibinc@
+ LOCALEDIR = @localedir@
+ SYSCONFDIR = @sysconfdir@
+ AM_CPPFLAGS = $(GPROFNG_CPPFLAGS) -DLOCALEDIR=\"$(LOCALEDIR)\" \
+-	-DSYSCONFDIR=\"$(SYSCONFDIR)\" \
++	-DSYSCONFDIR=\"$(SYSCONFDIR)\" -DLIBDIR=\"$(libdir)\" \
+ 	-I.. -I$(srcdir) \
+ 	-I$(srcdir)/../common \
+ 	-I$(srcdir)/../../include -I$(srcdir)/../../opcodes \
+diff --git a/gprofng/src/envsets.cc b/gprofng/src/envsets.cc
+index 484cbf83995..c9838416638 100644
+--- a/gprofng/src/envsets.cc
++++ b/gprofng/src/envsets.cc
+@@ -159,12 +159,18 @@ collect::putenv_libcollector_ld_misc ()
+   sb.appendf ("%s=", "SP_COLLECTOR_LIBRARY_PATH");
+   int len = sb.length ();
+   int cnt = 0;
++  char *fname = dbe_sprintf ("%s/%s/%s", LIBDIR, PACKAGE, LIBGP_COLLECTOR);
++  if (access (fname, R_OK | F_OK) == 0)
++    {
++      ++cnt;
++      sb.appendf ("%s/%s", LIBDIR, PACKAGE);
++    }
++  free (fname);
+   for (char *s = ev; s;)
+     {
+       char *s1 = strchr (s, ':');
+       if (s1)
+ 	*(s1++) = 0;
+-      char *fname;
+       if (*s == '/')
+ 	{
+ 	  fname = dbe_sprintf ("%s/%s/%s", s, PACKAGE, LIBGP_COLLECTOR);
+-- 
+2.31.1
+

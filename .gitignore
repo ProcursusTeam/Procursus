@@ -8,3 +8,7 @@ build_strap/
 !.gitkeep
 .DS_Store
 *.p12
+
+build_info/binutils-*-*.control
+build_info/binutils-.control
+build_info/binutils.control

@@ -1,0 +1,14 @@
+# DP: In ld.texi, remove cross reference to BFD internals documentation.
+
+--- a/ld/ld.texi
++++ b/ld/ld.texi
+@@ -9025,7 +9025,8 @@ may be spent optimizing algorithms for a
+ One minor artifact of the BFD solution which you should bear in
+ mind is the potential for information loss.  There are two places where
+ useful information can be lost using the BFD mechanism: during
+-conversion and during output. @xref{BFD information loss}.
++conversion and during output. See BFD information loss in the BFD
++internal documentation.
+ 
+ @menu
+ * BFD outline::                 How it works: an outline of BFD
