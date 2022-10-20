@@ -5,8 +5,10 @@ endif
 #### Consider mlir/pstl/flang too
 
 SUBPROJECTS     += llvm
-LLVM_VERSION    := 14.0.0
 LLVM_MAJOR_V    := 14
+LLVM_MINOR_V    := 0
+LLVM_PATCH_V    := 0
+LLVM_VERSION    := $(LLVM_MAJOR_V).$(LLVM_MINOR_V).$(LLVM_PATCH_V)
 LLVM_REVISION   := 3dade082a9b1989207a7fa7f3975868485d16a49
 LLVM_REPOSITORY := https://github.com/apple/llvm-project.git
 SWIFT_VERSION   := 5.7
@@ -189,7 +191,7 @@ endif
 
 llvm-package: llvm-stage
 	# llvm.mk Package Structure
-	rm -rf $(BUILD_DIST)/{clang*,debugserver*,libc++*-dev,libclang-common-*-dev,libclang-cpp*,liblldb-*,libllvm*,liblto*,lldb*,swift*,lld*,llvm*}/
+	rm -rf $(BUILD_DIST)/{clang*,debugserver*,libc++*,libclang*,liblldb*,liblld*,libllvm*,lldb*,swift*,lld*,llvm*,LLDB.framework}/
 
 	# llvm.mk Prep clang-$(LLVM_MAJOR_V)
 	mkdir -p $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib/llvm-$(LLVM_MAJOR_V)/{bin,lib/cmake,share/clang}}
@@ -453,16 +455,16 @@ endif
 	$(call PACK,liblld-$(LLVM_MAJOR_V)-dev,DEB_LLVM_V)
 	$(call PACK,liblldb-$(LLVM_MAJOR_V),DEB_LLVM_V)
 	$(call PACK,liblldb-$(LLVM_MAJOR_V)-dev,DEB_LLVM_V)
-	$(call PACK,libllvm$(LLVM_MAJOR_V),DEB_LLVM_V)
+	$(call PACK,libllvm$(LLVM_MAJOR_V),DEB_LLVM_V)			# Provides libllvm-polly
 	$(call PACK,lldb-$(LLVM_MAJOR_V),DEB_LLVM_V)
 	$(call PACK,lldb,DEB_LLVM_V)
 	$(call PACK,swift-$(SWIFT_VERSION),DEB_SWIFT_V)
 	$(call PACK,swift,DEB_SWIFT_V)
-	$(call PACK,llvm-$(LLVM_MAJOR_V),DEB_LLVM_V)
+	$(call PACK,llvm-$(LLVM_MAJOR_V),DEB_LLVM_V)			# Provides dsymutil
 	$(call PACK,llvm,DEB_LLVM_V)
 	$(call PACK,llvm-$(LLVM_MAJOR_V)-tools,DEB_LLVM_V)
 	$(call PACK,llvm-$(LLVM_MAJOR_V)-runtime,DEB_LLVM_V)
-	$(call PACK,llvm-$(LLVM_MAJOR_V)-linker-tools,DEB_LLVM_V)
+	$(call PACK,llvm-$(LLVM_MAJOR_V)-linker-tools,DEB_LLVM_V)	# Provides liblto
 	$(call PACK,clang-tools-$(LLVM_MAJOR_V),DEB_LLVM_V)
 	$(call PACK,clang-tools,DEB_LLVM_V)
 	$(call PACK,lld-$(LLVM_MAJOR_V),DEB_LLVM_V)
@@ -470,6 +472,6 @@ endif
 	$(call PACK,LLDB.framework,DEB_LLVM_V)
 
 	# llvm.mk Build cleanup
-	rm -rf $(BUILD_DIST)/{clang*,debugserver*,libc++*-dev,libclang-common-*-dev,libclang-cpp*,liblldb-*,libllvm*,liblto*,lldb*,swift*,lld*,llvm*}/
+	rm -rf $(BUILD_DIST)/{clang*,debugserver*,libc++*,libclang*,liblldb*,liblld*,libllvm*,lldb*,swift*,lld*,llvm*,LLDB.framework}/
 
 .PHONY: llvm llvm-package
