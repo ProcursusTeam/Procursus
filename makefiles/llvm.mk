@@ -189,7 +189,7 @@ endif
 
 llvm-package: llvm-stage
 	# llvm.mk Package Structure
-	rm -rf $(BUILD_DIST)/{clang*,debugserver*,libc++*-dev,libclang-common-*-dev,libclang-cpp*,liblldb-*,libllvm*,liblto*,lldb*,dsymutil*,swift*,lld*,llvm*}/
+	rm -rf $(BUILD_DIST)/{clang*,debugserver*,libc++*-dev,libclang-common-*-dev,libclang-cpp*,liblldb-*,libllvm*,liblto*,lldb*,swift*,lld*,llvm*}/
 
 	# llvm.mk Prep clang-$(LLVM_MAJOR_V)
 	mkdir -p $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib/llvm-$(LLVM_MAJOR_V)/{bin,lib/cmake,share/clang}}
@@ -381,15 +381,6 @@ endif
 		$(LN_S) ../lib/llvm-$(LLVM_MAJOR_V)/bin/$$(basename "$$file") $(BUILD_DIST)/clang-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/; \
 	done
 
-	# llvm.mk Prep dsymutil-$(LLVM_MAJOR_V)
-	mkdir -p $(BUILD_DIST)/dsymutil-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib/llvm-$(LLVM_MAJOR_V)/bin}
-	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/dsymutil $(BUILD_DIST)/dsymutil-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
-	$(LN_S) ../lib/llvm-$(LLVM_MAJOR_V)/bin/dsymutil $(BUILD_DIST)/dsymutil-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dsymutil-$(LLVM_MAJOR_V)
-
-	# llvm.mk Prep dsymutil
-	mkdir -p $(BUILD_DIST)/dsymutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	$(LN_S) ../lib/llvm-$(LLVM_MAJOR_V)/bin/dsymutil $(BUILD_DIST)/dsymutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dsymutil
-
 	# llvm.mk Prep swift-$(SWIFT_VERSION)
 	mkdir -p $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib/llvm-$(LLVM_MAJOR_V)/{bin,lib,share}}
 	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/share/swift $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/share
@@ -428,7 +419,6 @@ endif
 	$(call SIGN,liblldb-$(LLVM_MAJOR_V),general.xml)
 	$(call SIGN,libllvm$(LLVM_MAJOR_V),general.xml)
 	$(call SIGN,lldb-$(LLVM_MAJOR_V),general.xml)
-	$(call SIGN,dsymutil-$(LLVM_MAJOR_V),general.xml)
 	$(call SIGN,swift-$(SWIFT_VERSION),general.xml)
 	$(call SIGN,llvm-$(LLVM_MAJOR_V),general.xml)
 	$(call SIGN,llvm-$(LLVM_MAJOR_V)-tools,general.xml)
@@ -466,8 +456,6 @@ endif
 	$(call PACK,libllvm$(LLVM_MAJOR_V),DEB_LLVM_V)
 	$(call PACK,lldb-$(LLVM_MAJOR_V),DEB_LLVM_V)
 	$(call PACK,lldb,DEB_LLVM_V)
-	$(call PACK,dsymutil-$(LLVM_MAJOR_V),DEB_LLVM_V)
-	$(call PACK,dsymutil,DEB_LLVM_V)
 	$(call PACK,swift-$(SWIFT_VERSION),DEB_SWIFT_V)
 	$(call PACK,swift,DEB_SWIFT_V)
 	$(call PACK,llvm-$(LLVM_MAJOR_V),DEB_LLVM_V)
@@ -482,6 +470,6 @@ endif
 	$(call PACK,LLDB.framework,DEB_LLVM_V)
 
 	# llvm.mk Build cleanup
-	rm -rf $(BUILD_DIST)/{clang*,debugserver*,libc++*-dev,libclang-common-*-dev,libclang-cpp*,liblldb-*,libllvm*,liblto*,lldb*,dsymutil*,swift*,lld*,llvm*}/
+	rm -rf $(BUILD_DIST)/{clang*,debugserver*,libc++*-dev,libclang-common-*-dev,libclang-cpp*,liblldb-*,libllvm*,liblto*,lldb*,swift*,lld*,llvm*}/
 
 .PHONY: llvm llvm-package

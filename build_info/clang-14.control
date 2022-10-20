@@ -1,8 +1,8 @@
-Package: clang-13
+Package: clang-14
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libllvm13, libclang-cpp13, ld64 (>= 609-3), libclang-common-13-dev (= @DEB_LLVM_V@), build-essential
+Depends: libllvm14, libclang-cpp14, ld64 (>= 609-3), libclang-common-14-dev (= @DEB_LLVM_V@), build-essential
 Section: Development
 Priority: optional
 Homepage: https://www.llvm.org/
