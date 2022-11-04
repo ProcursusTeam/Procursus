@@ -5,8 +5,8 @@ endif
 ifneq (,$(findstring arm64,$(MEMO_TARGET)))
 
 SUBPROJECTS    += golb
-GOLB_COMMIT    := 7ffffff2f80cbee13709392367a01a37c50fc2cb
-GOLB_VERSION   := 1.0.1+git20210608.$(shell echo $(GOLB_COMMIT) | cut -c -7)
+GOLB_COMMIT    := 7ffffff4fc123bfbf4aaa97ee26b81e3877f76cc
+GOLB_VERSION   := 1.0.1+git20220919.$(shell echo $(GOLB_COMMIT) | cut -c -7)
 DEB_GOLB_V     ?= $(GOLB_VERSION)
 
 golb-setup: setup
@@ -39,10 +39,9 @@ endif
 golb-package: golb-stage
 	# golb.mk Package Structure
 	rm -rf $(BUILD_DIST)/golb
-	mkdir -p $(BUILD_DIST)/golb
 
 	# golb.mk Prep golb
-	cp -a $(BUILD_STAGE)/golb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/golb
+	cp -a $(BUILD_STAGE)/golb $(BUILD_DIST)/golb
 
 	# golb.mk Sign
 	$(call SIGN,golb,tfp0.xml)
