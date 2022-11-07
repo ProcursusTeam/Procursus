@@ -7,7 +7,7 @@ DISKLABEL_VERSION := 7
 DEB_DISKLABEL_V   ?= $(DISKLABEL_VERSION)
 
 disklabel-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://opensource.apple.com/tarballs/disklabel/disklabel-$(DISKLABEL_VERSION).tar.gz)
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/apple-oss-distributions/disklabel/archive/refs/tags/disklabel-$(DISKLABEL_VERSION).tar.gz)
 	$(call EXTRACT_TAR,disklabel-$(DISKLABEL_VERSION).tar.gz,disklabel-$(DISKLABEL_VERSION),disklabel)
 	sed -i 's|#include <Kernel/libkern/OSByteOrder.h>|#include <libkern/OSByteOrder.h>|g' $(BUILD_WORK)/disklabel/util.c
 	mkdir -p $(BUILD_STAGE)/disklabel/$(MEMO_PREFIX)/{sbin,$(MEMO_SUB_PREFIX)/share/man/man8}
@@ -26,16 +26,16 @@ endif
 disklabel-package: disklabel-stage
 	# disklabel.mk Package Structure
 	rm -rf $(BUILD_DIST)/disklabel
-	
+
 	# disklabel.mk Prep disklabel
 	cp -a $(BUILD_STAGE)/disklabel $(BUILD_DIST)
-	
+
 	# disklabel.mk Sign
 	$(call SIGN,disklabel,dd.xml)
-	
+
 	# disklabel.mk Make .debs
 	$(call PACK,disklabel,DEB_DISKLABEL_V)
-	
+
 	# disklabel.mk Build cleanup
 	rm -rf $(BUILD_DIST)/disklabel
 

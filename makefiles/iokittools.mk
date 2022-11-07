@@ -7,7 +7,7 @@ IOKITTOOLS_VERSION := 91
 DEB_IOKITTOOLS_V   ?= $(IOKITTOOLS_VERSION)
 
 iokittools-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://opensource.apple.com/tarballs/IOKitTools/IOKitTools-$(IOKITTOOLS_VERSION).tar.gz)
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/apple-oss-distributions/IOKitTools/archive/refs/tags/IOKitTools-$(IOKITTOOLS_VERSION).tar.gz)
 	$(call EXTRACT_TAR,IOKitTools-$(IOKITTOOLS_VERSION).tar.gz,IOKitTools-$(IOKITTOOLS_VERSION),iokittools)
 	mkdir -p $(BUILD_STAGE)/iokittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 

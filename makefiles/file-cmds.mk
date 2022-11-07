@@ -14,7 +14,7 @@ endif
 DEB_FILE-CMDS_V   ?= $(FILE-CMDS_VERSION)-3
 
 file-cmds-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://opensource.apple.com/tarballs/file_cmds/file_cmds-$(FILE-CMDS_VERSION).tar.gz)
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/apple-oss-distributions/file_cmds/archive/refs/tags/file_cmds-$(FILE-CMDS_VERSION).tar.gz)
 	$(call EXTRACT_TAR,file_cmds-$(FILE-CMDS_VERSION).tar.gz,file_cmds-$(FILE-CMDS_VERSION),file-cmds)
 	mkdir -p $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 	mkdir -p $(BUILD_WORK)/file-cmds/ipcs/sys

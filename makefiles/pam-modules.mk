@@ -13,7 +13,7 @@ DEB_PAM-MODULES_V   ?= $(PAM-MODULES_VERSION)-1
 ###
 
 pam-modules-setup: setup
-	-$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://opensource.apple.com/tarballs/pam_modules/pam_modules-$(PAM-MODULES_VERSION).tar.gz)
+	-$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/apple-oss-distributions/pam_modules/archive/refs/tags/pam_modules-$(PAM-MODULES_VERSION).tar.gz)
 	$(call EXTRACT_TAR,pam_modules-$(PAM-MODULES_VERSION).tar.gz,pam_modules-$(PAM-MODULES_VERSION),pam-modules)
 	sed -i 's/__APPLE__/NOTDEFINED/' $(BUILD_WORK)/pam-modules/modules/pam_group/pam_group.c
 	mkdir -p $(BUILD_STAGE)/pam-modules/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pam,share/man/man8}

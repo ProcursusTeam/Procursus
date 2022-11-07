@@ -7,7 +7,7 @@ MISC-CMDS_VERSION := 34
 DEB_MISC-CMDS_V   ?= $(MISC-CMDS_VERSION)
 
 misc-cmds-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://opensource.apple.com/tarballs/misc_cmds/misc_cmds-$(MISC-CMDS_VERSION).tar.gz)
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/apple-oss-distributions/misc_cmds/archive/refs/tags/misc_cmds-$(MISC-CMDS_VERSION).tar.gz)
 	$(call EXTRACT_TAR,misc_cmds-$(MISC-CMDS_VERSION).tar.gz,misc_cmds-$(MISC-CMDS_VERSION),misc-cmds)
 	mkdir -p $(BUILD_STAGE)/misc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/{man/man1,misc}}
 	sed -i 's|#include <calendar.h>|#include "calendar.h"|g' $(BUILD_WORK)/misc-cmds/ncal/ncal.c
