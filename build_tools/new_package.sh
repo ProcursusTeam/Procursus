@@ -94,7 +94,8 @@ main_dialog() {
 	count=1
 	for i in ./build_misc/templates/*.mk; do
 		if ! [ "$(basename "$i" .mk)" = "keyring" ]; then
-			buildsystems+=("$count $(basename "$i" .mk)")
+		    # shellcheck disable=SC2086,SC2207,SC2206
+			buildsystems+=($count $(basename $i .mk))
 			count=$((count + 1))
 		fi
 	done
