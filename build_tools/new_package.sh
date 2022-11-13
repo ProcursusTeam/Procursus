@@ -3,7 +3,7 @@
 ask() {
 	[ -z ${1+x} ] && exit 1
 	if [ -z ${2+x} ]; then
-		read -p "${1}: " rc
+		read -rp "${1}: " rc
 	else
 		rc=$2
 	fi
@@ -13,11 +13,11 @@ ask() {
 dialog_inputbox() {
 	dialog \
 		--colors --no-cancel --title "$1" \
-		--inputbox "$2" ${3:-15} ${4:-40} 3>&1 1>&2 2>&3 3>&-
+		--inputbox "$2" "${3:-15}" "${4:-40}" 3>&1 1>&2 2>&3 3>&-
 }
 
 checkpkg() {
-	if [ -f makefiles/$1.mk ]; then
+	if [ -f makefiles/"$1".mk ]; then
 		echo "$1.mk already exists."
 		return 1
 	elif grep -R "^$pkg:" makefiles/*.mk &>/dev/null; then
@@ -27,7 +27,7 @@ checkpkg() {
 }
 
 checkbuild() {
-	if [ ! -f build_misc/templates/$1.mk ]; then
+	if [ ! -f build_misc/templates/"$1".mk ]; then
 		echo "$1 is not a valid buildsystem"
 		return 1
 	fi
@@ -38,19 +38,21 @@ downloadlink() {
 		echo -e "\t$\(call GITHUB_ARCHIVE,$(${SED} 's|^.*://||' <<<"${1}" | cut -d'/' -f2),$(${SED} 's|^.*://||' <<<"${1}" | cut -d'/' -f3),$\(${4}_VERSION\),$\(${4}_VERSION\)\)"
 	else
 		if echo "${1##*/}" | ${SED} 's/-//g' | ${SED} 's/\.tar.*//g' | ${SED} "s/${2}//g" | grep "${3}" &>/dev/null; then
-			echo -e "\t$\(call DOWNLOAD_FILES,\$(BUILD_SOURCE),$(${SED} 's/${2}/\$(${4}_VERSION)/g' <<<"$1"))"
+			echo -e "\t$\(call DOWNLOAD_FILES,\$(BUILD_SOURCE),$(${SED} "s/${2}/\$(${4}_VERSION)/g" <<< "$1"))"
 		else
-		    echo -e "\t$\(call DOWNLOAD_FILE,\$(BUILD_SOURCE)/${3}-\$(${4}_VERSION).tar.${download##*.},$(${SED} 's/${2}/\$(${4}_VERSION)/g' <<<"$1"))"
+		    echo -e "\t$\(call DOWNLOAD_FILE,\$(BUILD_SOURCE)/${3}-\$(${4}_VERSION).tar.${download##*.},$(${SED} "s/${2}/\$(${4}_VERSION)/g" <<< "$1"))"
 		fi
 	fi
 }
 
 main() {
+    # shellcheck disable=SC2086
 	pkg="$(ask "Package Name" $1)"
 	checkpkg "$pkg" || exit 1
 	formatpkg="$(${SED} -e 's|-|_|g' -e "s|\(.\)|\u\1|g" <<<"${pkg}")"
 
 	while true; do
+        # shellcheck disable=SC2086
 		build="$(ask "Build System (type ? to list all build systems)" $2)"
 		if [ "$build" = "?" ]; then
 			echo "Available build systems:"
@@ -58,13 +60,15 @@ main() {
 		else
 			if checkbuild "$build"; then
 				break
-			elif ! [ -z "$2" ]; then
+			elif [ -n "$2" ]; then
 				exit 1
 			fi
 		fi
 	done
 
+    # shellcheck disable=SC2086
 	ver="$(ask "Package Version" $3)"
+    # shellcheck disable=SC2086
 	download="$(ask "Tarball Download Link" $4)"
 	${SED} -e "s/@pkg@/${pkg}/g" \
 		-e "s/@PKG@/${formatpkg}/g" \
@@ -89,8 +93,8 @@ main_dialog() {
 	buildsystems=()
 	count=1
 	for i in ./build_misc/templates/*.mk; do
-		if ! [ "$(basename $i .mk)" = "keyring" ]; then
-			buildsystems+=($count $(basename $i .mk))
+		if ! [ "$(basename "$i" .mk)" = "keyring" ]; then
+			buildsystems+=("$count $(basename "$i" .mk)")
 			count=$((count + 1))
 		fi
 	done
@@ -123,5 +127,5 @@ fi
 if command -v dialog &>/dev/null && [ -z "$1" ]; then
 	main_dialog
 else
-	main $@
+	main "$@"
 fi
