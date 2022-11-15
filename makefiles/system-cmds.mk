@@ -6,19 +6,24 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS       += system-cmds
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
-SYSTEM-CMDS_VERSION := 854.11.2
+SYSTEM-CMDS_VERSION := 854.40.2
 DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-15
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1800 ] && echo 1),1)
-SYSTEM-CMDS_VERSION := 880.40.5
+SYSTEM-CMDS_VERSION := 880.60.2
+DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)
 else
 SYSTEM-CMDS_VERSION := 950
+DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)
 endif
 PWDARWIN_COMMIT     := 72ae45ce6c025bc2359035cfb941b177149e88ae
-DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)
 
 system-cmds-setup: setup libxcrypt
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,system_cmds,$(SYSTEM-CMDS_VERSION),system_cmds-$(SYSTEM-CMDS_VERSION))
+ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
+	$(call EXTRACT_TAR,system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz,system_cmds-$(SYSTEM-CMDS_VERSION),system-cmds)
+else
 	$(call EXTRACT_TAR,system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz,system_cmds-system_cmds-$(SYSTEM-CMDS_VERSION),system-cmds)
+endif
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1800 ] && echo 1),1)
 	$(call DO_PATCH,system-cmds,system-cmds,-p1)
 else
@@ -117,7 +122,6 @@ ifeq ($(shell [ $(CFVER_WHOLE) -lt 1800 ] && echo 1),1)
 	$(LDID) -S$(BUILD_MISC)/entitlements/lsmp-legacy.xml $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsmp
 else
 	$(LDID) -S$(BUILD_MISC)/entitlements/lsmp.xml $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsmp
-
 endif
 	$(LDID) -S$(BUILD_MISC)/entitlements/taskpolicy.xml $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/taskpolicy
 	$(LDID) -S$(BUILD_MISC)/entitlements/dynamic_pager.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)/sbin/dynamic_pager

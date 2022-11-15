@@ -65,8 +65,8 @@ network-cmds: network-cmds-setup libpcap
 		$(CC) -Iinclude -DPRIVATE=1 $(CFLAGS) $$LDFLAGS $${bin}/*.c -o $${bin}/$${bin}; \
 	done
 	cp -a $(BUILD_WORK)/network-cmds/kdumpd $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
-	cp -a $(BUILD_WORK)/network-cmds/{arp,dnctl/dnctl,frame_delay/frame_delay,ifconfig,ip6addrctl,kdumpd,mtest,ndp,ping6,pktapctl/pktapctl,route,rtsol,traceroute6,traceroute} $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
-	cp -a $(BUILD_WORK)/network-cmds/{pktmnglr/pktmnglr,cfilutil/cfilutil,mnc,netstat} $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_WORK)/network-cmds/{arp,dnctl/dnctl,frame_delay/frame_delay,ifconfig,ip6addrctl,kdumpd,mtest,ndp,ping6,pktapctl/pktapctl,route,rtsol,traceroute6,traceroute,netstat} $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
+	cp -a $(BUILD_WORK)/network-cmds/{pktmnglr/pktmnglr,cfilutil/cfilutil,mnc} $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_WORK)/network-cmds/{dnctl,frame_delay,pktapctl,{arp,ifconfig,ip6addrctl,kdumpd,mtest,ndp,ping6,route,rtsol,traceroute6,traceroute}.tproj}/*.8 $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
 	# pktmnglr has no man page
 	cp -a $(BUILD_WORK)/network-cmds/{cfilutil,{netstat,mnc}.tproj}/*.1 $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1

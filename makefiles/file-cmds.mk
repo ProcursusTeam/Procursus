@@ -36,6 +36,7 @@ file-cmds: file-cmds-setup
 	echo shar && $(INSTALL) -Dm755 shar/shar.sh $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/shar; \
 	$(INSTALL) -Dm644 shar/shar.1 $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/;
 	$(LN_S) compress $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uncompress
+	$(LN_S) compress.1 $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/uncompress.1
 	$(call AFTER_BUILD)
 endif
 
