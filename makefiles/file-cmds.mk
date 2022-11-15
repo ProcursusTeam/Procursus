@@ -5,16 +5,8 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS     += file-cmds
-# Don't upgrade file-cmds, as any future version includes APIs introduced in iOS 13+.
-ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
-FILE-CMDS_VERSION := 272.250.1
-DEB_FILE-CMDS_V   ?= $(FILE-CMDS_VERSION)-4
-else
 FILE-CMDS_VERSION := 400
 DEB_FILE-CMDS_V   ?= $(FILE-CMDS_VERSION)
-
-FILE-EXTRA-CMDS  := xattr
-endif
 
 file-cmds-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,file_cmds,$(FILE-CMDS_VERSION),file_cmds-$(FILE-CMDS_VERSION))
@@ -23,6 +15,8 @@ file-cmds-setup: setup
 	mkdir -p $(BUILD_WORK)/file-cmds/ipcs/sys
 	@$(call DOWNLOAD_FILES,$(BUILD_WORK)/file-cmds/ipcs/sys, \
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.101.4/bsd/sys/{shm_internal$(comma)sem_internal$(comma)ipcs}.h)
+	@$(call DOWNLOAD_FILES,$(BUILD_WORK)/file-cmds/compress, \
+		https://github.com/apple-oss-distributions/Libc/raw/7861c72/string/FreeBSD/rpmatch.c)
 	sed -i 's/user64_time_t/user_time_t/g' $(BUILD_WORK)/file-cmds/ipcs/sys/sem_internal.h
 	sed -i 's/user32_time_t/user_time_t/g' $(BUILD_WORK)/file-cmds/ipcs/sys/sem_internal.h
 	sed -i 's/user32_addr_t/user_addr_t/g' $(BUILD_WORK)/file-cmds/ipcs/sys/shm_internal.h
@@ -34,13 +28,14 @@ file-cmds:
 else
 file-cmds: file-cmds-setup
 	cd $(BUILD_WORK)/file-cmds; \
-	for bin in chflags compress ipcrm ipcs pax $(FILE-EXTRA-CMDS); do \
+	for bin in chflags compress ipcrm ipcs pax xattr; do \
 		echo $${bin}; \
 		$(CC) $(CFLAGS) -isystem include -o $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c $(LDFLAGS) -D'__FBSDID(x)=' -D__POSIX_C_SOURCE; \
 		$(INSTALL) -Dm644 $$bin/$$bin.1 $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/; \
 	done; \
 	echo shar && $(INSTALL) -Dm755 shar/shar.sh $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/shar; \
-		$(INSTALL) -Dm644 shar/shar.1 $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/;
+	$(INSTALL) -Dm644 shar/shar.1 $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/;
+	$(LN_S) compress $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uncompress
 	$(call AFTER_BUILD)
 endif
 
