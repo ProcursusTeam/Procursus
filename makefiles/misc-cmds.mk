@@ -27,6 +27,7 @@ misc-cmds: misc-cmds-setup ncurses
 	done
 	cp -a $(BUILD_WORK)/misc-cmds/calendar/calendars $(BUILD_STAGE)/misc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/calendar
 	cp -a $(BUILD_WORK)/misc-cmds/units/units.lib $(BUILD_STAGE)/misc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/misc
+	$(LN_S) ncal $(BUILD_STAGE)/misc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/cal
 	$(call AFTER_BUILD)
 endif
 
