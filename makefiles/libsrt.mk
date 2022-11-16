@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += libsrt
-LIBSRT_VERSION := 1.4.3
+LIBSRT_VERSION := 1.4.4
 DEB_LIBSRT_V   ?= $(LIBSRT_VERSION)
 
 libsrt-setup: setup

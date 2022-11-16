@@ -7,7 +7,7 @@ LIBXEXT_VERSION := 1.3.4
 DEB_LIBXEXT_V   ?= $(LIBXEXT_VERSION)-1
 
 libxext-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXext-$(LIBXEXT_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libXext-$(LIBXEXT_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libXext-$(LIBXEXT_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXext-$(LIBXEXT_VERSION).tar.gz,libXext-$(LIBXEXT_VERSION),libxext)
 

@@ -3,9 +3,9 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS          += libirecovery
-LIBIRECOVERY_COMMIT  := 47934949e0015165a4562b08e824adb3f664c0ea
-LIBIRECOVERY_VERSION := 1.0.0+git20210526.$(shell echo $(LIBIRECOVERY_COMMIT) | cut -c -7)
-DEB_LIBIRECOVERY_V   ?= $(LIBIRECOVERY_VERSION)
+LIBIRECOVERY_COMMIT  := ab5b4d8d4c0e90c05d80f80c7e99a6516de9b5c6
+LIBIRECOVERY_VERSION := 1.0.0+git20220628.$(shell echo $(LIBIRECOVERY_COMMIT) | cut -c -7)
+DEB_LIBIRECOVERY_V   ?= $(LIBIRECOVERY_VERSION)-1
 
 libirecovery-setup: setup
 	$(call GITHUB_ARCHIVE,libimobiledevice,libirecovery,$(LIBIRECOVERY_COMMIT),$(LIBIRECOVERY_COMMIT))
@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libirecovery/.build_complete),)
 libirecovery:
 	@echo "Using previously built libirecovery."
 else
-libirecovery: libirecovery-setup readline libusb
+libirecovery: libirecovery-setup readline libusb libimobiledevice-glue
 	cd $(BUILD_WORK)/libirecovery && ./autogen.sh \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-iokit=no
@@ -45,7 +45,7 @@ libirecovery-package: libirecovery-stage
 
 	# libirecovery.mk Sign
 	$(call SIGN,libirecovery3,general.xml)
-	$(call SIGN,libirecovery-utils,general.xml)
+	$(call SIGN,libirecovery-utils,usb.xml)
 
 	# libirecovery.mk Make .debs
 	$(call PACK,libirecovery3,DEB_LIBIRECOVERY_V)

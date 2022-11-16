@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += meson
-MESON_VERSION := 0.61.2
+MESON_VERSION := 0.64.0
 DEB_MESON_V   ?= $(MESON_VERSION)
 
 meson-setup: setup

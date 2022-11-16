@@ -10,9 +10,9 @@ DEB_DOCBOOK-XML_V   ?= $(DOCBOOK-XML_VERSION)
 docbook-xml-setup: setup
 	mkdir -p $(BUILD_WORK)/docbook-xml
 	for ver in 4.2 4.3 4.4 $(DOCBOOK-XML_VERSION); do \
-		wget -q -nc -P $(BUILD_SOURCE) https://docbook.org/xml/$${ver}/docbook-xml-$${ver}.zip; \
+		$(call DOWNLOAD_FILES,$(BUILD_SOURCE), https://docbook.org/xml/$${ver}/docbook-xml-$${ver}.zip); \
 		rm -rf $(BUILD_WORK)/docbook-xml/$${ver}; \
-		unzip $(BUILD_SOURCE)/docbook-xml-$${ver}.zip -d $(BUILD_WORK)/docbook-xml/$${ver}; \
+		unzip -q $(BUILD_SOURCE)/docbook-xml-$${ver}.zip -d $(BUILD_WORK)/docbook-xml/$${ver}; \
 	done
 
 ifneq ($(wildcard $(BUILD_WORK)/docbook-xml/.build_complete),)

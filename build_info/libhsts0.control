@@ -1,0 +1,14 @@
+Package: libhsts0
+Version: @DEB_LIBHSTS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Recommends: hstspreload
+Section: Libraries
+Priority: optional
+Homepage: https://gitlab.com/rockdaboot/libhsts/
+Description: C library to access the HSTS preload list
+ C library to access the HSTS preload list. The HSTS preload
+ list is a list of domains that support HTTPS. The list is compiled
+ by Google and is utilised by Chrome, Firefox and others.
+ .
+ This package contains the shared library files.

@@ -7,7 +7,7 @@ MAN-DB_VERSION := 2.9.4
 DEB_MAN-DB_V   ?= $(MAN-DB_VERSION)-3
 
 man-db-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://download.savannah.gnu.org/releases/man-db/man-db-$(MAN-DB_VERSION).tar.xz{,.asc}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://download.savannah.gnu.org/releases/man-db/man-db-$(MAN-DB_VERSION).tar.xz{$(comma).asc})
 	$(call PGP_VERIFY,man-db-$(MAN-DB_VERSION).tar.xz,asc)
 	$(call EXTRACT_TAR,man-db-$(MAN-DB_VERSION).tar.xz,man-db-$(MAN-DB_VERSION),man-db)
 

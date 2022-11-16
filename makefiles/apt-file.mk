@@ -4,10 +4,10 @@ endif
 
 SUBPROJECTS       += apt-file
 APT-FILE_VERSION  := 3.2.2
-DEB_APT-FILE_V    ?= $(APT-FILE_VERSION)-1
+DEB_APT-FILE_V    ?= $(APT-FILE_VERSION)-2
 
 apt-file-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://salsa.debian.org/apt-team/apt-file/-/archive/debian/$(APT-FILE_VERSION)/apt-file-debian-$(APT-FILE_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://salsa.debian.org/apt-team/apt-file/-/archive/debian/$(APT-FILE_VERSION)/apt-file-debian-$(APT-FILE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,apt-file-debian-$(APT-FILE_VERSION).tar.gz,apt-file-debian-$(APT-FILE_VERSION),apt-file)
 	mkdir -p $(BUILD_STAGE)/apt-file/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
