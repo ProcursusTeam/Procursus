@@ -435,7 +435,7 @@ endif
 	$(call PACK,libllvm$(LLVM_MAJOR_V),DEB_LLVM_V)			# Provides libllvm-polly
 	$(call PACK,lldb-$(LLVM_MAJOR_V),DEB_LLVM_V)
 	$(call PACK,lldb,DEB_LLVM_V)
-	$(call PACK,swift-$(SWIFT_VERSION),DEB_SWIFT_V,,,DEB_LLVM_V)
+	$(call PACK,swift-$(SWIFT_VERSION),DEB_SWIFT_V)
 	$(call PACK,swift,DEB_SWIFT_V)
 	$(call PACK,llvm-$(LLVM_MAJOR_V),DEB_LLVM_V)			# Provides dsymutil
 	$(call PACK,llvm,DEB_LLVM_V)
