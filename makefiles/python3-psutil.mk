@@ -3,12 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS            += python3-psutil
-PYTHON3-PSUTIL_VERSION := 5.8.0
+PYTHON3-PSUTIL_VERSION := 5.9.4
 DEB_PYTHON3-PSUTIL_V   ?= $(PYTHON3-PSUTIL_VERSION)
 
 python3-psutil-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE) ,https://github.com/giampaolo/psutil/archive/refs/tags/release-$(PYTHON3-PSUTIL_VERSION).tar.gz)
-	$(call EXTRACT_TAR,release-$(PYTHON3-PSUTIL_VERSION).tar.gz,psutil-release-$(PYTHON3-PSUTIL_VERSION),python3-psutil)
+	$(call GITHUB_ARCHIVE,giampaolo,psutil,$(PYTHON3-PSUTIL_VERSION),release-$(PYTHON3-PSUTIL_VERSION),python3-psutil)
+	$(call EXTRACT_TAR,python3-psutil-$(PYTHON3-PSUTIL_VERSION).tar.gz,psutil-release-$(PYTHON3-PSUTIL_VERSION),python3-psutil)
 
 ifneq ($(wildcard $(BUILD_WORK)/python3-psutil/.build_complete),)
 python3-psutil:
@@ -29,10 +29,9 @@ endif
 python3-psutil-package: python3-psutil-stage
 	# python3-psutil.mk Package Structure
 	rm -rf $(BUILD_DIST)/python3-psutil
-	mkdir -p $(BUILD_DIST)/python3-psutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# python3-psutil.mk Prep python3-psutil
-	cp -a $(BUILD_STAGE)/python3-psutil$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib $(BUILD_DIST)/python3-psutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/python3-psutil $(BUILD_DIST)
 
 	# python3-psutil.mk Sign
 	$(call SIGN,python3-psutil,general.xml)
