@@ -1,0 +1,10 @@
+Package: python3-defusedxml
+Version: @DEB_PYTHON3_DEFUSEDXML_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: Christian Heimes <christian@python.org>
+Depends: python3
+Section: Python
+Priority: optional
+Homepage: https://github.com/tiran/defusedxml
+Description: XML bomb protection for Python stdlib modules
