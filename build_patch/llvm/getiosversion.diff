@@ -1,5 +1,5 @@
---- a/llvm/llvm/lib/Support/Triple.cpp	2022-10-18 16:37:38.670048919 +0800
-+++ b/llvm/llvm/lib/Support/Triple.cpp	2022-10-18 16:37:02.975535309 +0800
+--- a/llvm/lib/Support/Triple.cpp	2022-10-18 16:37:38.670048919 +0800
++++ b/llvm/lib/Support/Triple.cpp	2022-10-18 16:37:02.975535309 +0800
 @@ -1183,9 +1183,46 @@
  
  void Triple::getiOSVersion(unsigned &Major, unsigned &Minor,

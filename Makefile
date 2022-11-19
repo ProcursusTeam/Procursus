@@ -802,28 +802,34 @@ AFTER_BUILD = \
 	if [ ! -z "$(MEMO_PREFIX)" ] && [ -d "$(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" ]; then \
 		rm -f $(BUILD_STAGE)/$$pkg/._lib_cache && touch $(BUILD_STAGE)/$$pkg/._lib_cache; \
 		for file in $$(find $(BUILD_STAGE)/$$pkg -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
-			INSTALL_NAME=$$(otool -D $$file | grep -v -e ":$$" -e "^Archive :"); \
-			if [ ! -z "$$INSTALL_NAME" ]; then \
-				$(I_N_T) -id @rpath/$$(basename $$INSTALL_NAME) $$file; \
-				echo "$$INSTALL_NAME" >> $(BUILD_STAGE)/$$pkg/._lib_cache; \
+			if [ $${file\#\#*.} != "a" ] && [ $${file\#\#*.} != "dSYM" ]; then \
+				INSTALL_NAME=$$($(OTOOL) -D $$file | grep -v -e ":$$" -e "^Archive :" | head -n1); \
+				if [ ! -z "$$INSTALL_NAME" ]; then \
+					echo "I_N: $$INSTALL_NAME"; \
+					$(I_N_T) -id @rpath/$$(basename $$INSTALL_NAME) $$file; \
+					echo "$$INSTALL_NAME" >> $(BUILD_STAGE)/$$pkg/._lib_cache; \
+				fi; \
 			fi; \
 		done; \
 	fi; \
 	for file in $$(find $(BUILD_STAGE)/$$pkg -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
-		if [ "$(RELATIVE_RPATH)" = "1" ]; then \
-			$(I_N_T) -add_rpath "@loader_path/$$(realpath --relative-to=$$(dirname $$file) $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))/lib" $$file; \
-		else \
-			$(I_N_T) -add_rpath "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" $$file; \
-			if [ ! -z "$(3)" ]; then \
-				$(I_N_T) -add_rpath "$(3)"  $$file; \
+		if [ $${file\#\#*.} != "a" ] && [ $${file\#\#*.} != "dSYM" ]; then \
+			if [ "$(RELATIVE_RPATH)" = "1" ]; then \
+				$(I_N_T) -add_rpath "@loader_path/$$(realpath --relative-to=$$(dirname $$file) $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))/lib" $$file; \
+			else \
+				$(I_N_T) -add_rpath "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" $$file; \
+				if [ ! -z "$(3)" ]; then \
+					$(I_N_T) -add_rpath "$(3)" $$file; \
+				fi; \
 			fi; \
+			if [ -f $(BUILD_STAGE)/$$pkg/._lib_cache ]; then \
+				cat $(BUILD_STAGE)/$$pkg/._lib_cache | while read line; do \
+					echo "line: $$line"; \
+					$(I_N_T) -change $$line @rpath/$$(basename $$line) $$file; \
+				done; \
+			fi; \
+			$(STRIP) -x $$file; \
 		fi; \
-		if [ -f $(BUILD_STAGE)/$$pkg/._lib_cache ]; then \
-			cat $(BUILD_STAGE)/$$pkg/._lib_cache | while read line; do \
-				$(I_N_T) -change $$line @rpath/$$(basename $$line) $$file; \
-			done; \
-		fi; \
-		$(STRIP) -x $$file; \
 	done; \
 	rm -f $(BUILD_STAGE)/$$pkg/._lib_cache; \
 	find $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.gz$$' -exec gunzip '{}' \; 2> /dev/null; \

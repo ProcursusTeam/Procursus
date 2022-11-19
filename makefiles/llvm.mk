@@ -46,7 +46,7 @@ llvm: llvm-setup libffi libedit ncurses xz xar
 #	Temporary SED until swift can build on their own apple silicon (cmon apple)
 	sed -i -e 's/aarch64|ARM64/aarch64|ARM64|arm64/' -e 's/SWIFT_HOST_VARIANT_ARCH_default "aarch64"/SWIFT_HOST_VARIANT_ARCH_default "arm64"/' $(BUILD_WORK)/llvm/swift/CMakeLists.txt
 
-ifeq ($(wildcard $(BUILD_WORK)/../../native/llvm/.*),)
+ifeq ($(wildcard $(BUILD_WORK)/../../native/llvm/.build_complete),)
 	mkdir -p $(BUILD_WORK)/../../native/llvm && cd $(BUILD_WORK)/../../native/llvm && unset CC CXX LD CFLAGS CPPFLAGS CXXFLAGS LDFLAGS && cmake . \
 		-DCMAKE_C_COMPILER=cc \
 		-DCMAKE_CXX_COMPILER=c++ \
@@ -64,7 +64,9 @@ ifeq ($(wildcard $(BUILD_WORK)/../../native/llvm/.*),)
 		-DSWIFT_BUILD_DYNAMIC_STDLIB=FALSE \
 		-DSWIFT_BUILD_STDLIB_EXTRA_TOOLCHAIN_CONTENT=FALSE \
 		$(BUILD_WORK)/llvm/llvm
+	mkdir -p $(BUILD_WORK)/../../native/llvm/share/swift # ¯\_(ツ)_/¯
 	+$(MAKE) -C $(BUILD_WORK)/../../native/llvm swift-components lldb-tblgen
+	touch $(BUILD_WORK)/../../native/llvm/.build_complete
 endif
 
 ifeq ($(wildcard $(BUILD_WORK)/llvm/build/.build_complete),)
@@ -90,8 +92,8 @@ ifeq ($(wildcard $(BUILD_WORK)/llvm/build/.build_complete),)
 		-DCMAKE_INSTALL_PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V) \
 		-DCMAKE_INSTALL_NAME_DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib \
 		-DCMAKE_INSTALL_RPATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V) \
-		-DLIBCXX_INSTALL_LIBRARY_DIR="lib/c++" \
-		-DLIBCXXABI_INSTALL_LIBRARY_DIR="lib/c++" \
+		-DLIBCXX_INSTALL_LIBRARY_DIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/c++" \
+		-DLIBCXXABI_INSTALL_LIBRARY_DIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/c++" \
 		-DLLVM_ENABLE_FFI=ON \
 		-DLLVM_ENABLE_RTTI=ON \
 		-DLLVM_ENABLE_EH=ON \
@@ -154,6 +156,8 @@ ifeq ($(wildcard $(BUILD_WORK)/llvm/build/.build_complete),)
 		-DPACKAGE_VENDOR="Procursus" \
 		-DBUG_REPORT_URL="https://github.com/ProcursusTeam/Procursus/issues" \
 		../llvm
+	mkdir -p $(BUILD_WORK)/llvm/build/share/swift # ¯\_(ツ)_/¯
+	+$(MAKE) -C $(BUILD_WORK)/llvm/build
 	+$(MAKE) -C $(BUILD_WORK)/llvm/build install \
 		DESTDIR="$(BUILD_STAGE)/llvm"
 	$(INSTALL) -Dm755 $(BUILD_WORK)/llvm/build/bin/{obj2yaml,yaml2obj} $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/

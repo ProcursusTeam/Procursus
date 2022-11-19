@@ -1,5 +1,5 @@
---- a/llvm/llvm/cmake/modules/VersionFromVCS.cmake	2022-08-23 06:45:26.000000000 +0800
-+++ b/llvm/llvm/cmake/modules/VersionFromVCS.cmake	2022-10-19 14:33:47.613112569 +0800
+--- a/llvm/cmake/modules/VersionFromVCS.cmake	2022-08-23 06:45:26.000000000 +0800
++++ b/llvm/cmake/modules/VersionFromVCS.cmake	2022-10-19 14:33:47.613112569 +0800
 @@ -5,7 +5,7 @@
  
  function(get_source_info path revision repository)
