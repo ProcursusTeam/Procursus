@@ -7,7 +7,7 @@ STRAPPROJECTS   += ncurses
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += ncurses
 endif # ($(MEMO_TARGET),darwin-\*)
-NCURSES_VERSION := 6.3-2
+NCURSES_VERSION := 6.3+20220423-2
 DEB_NCURSES_V   ?= $(NCURSES_VERSION)
 
 ncurses-setup: setup
