@@ -1,9 +1,9 @@
-Package: lld
+Package: liblldb-14-dev
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: lld-14 (= @DEB_LLVM_V@)
+Depends: liblldb-14 (= @DEB_LLVM_V@)
 Section: Development
 Priority: optional
 Homepage: https://www.llvm.org/
-Description: LLVM linker
+Description: Next generation, high-performance debugger, library

@@ -1,8 +1,8 @@
-Package: swift-5.6.1
+Package: swift-5.7.1
 Version: @DEB_SWIFT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libllvm13, ld64 (>= 609-3), build-essential
+Depends: libllvm14, ld64 (>= 609-3), build-essential
 Section: Development
 Priority: optional
 Homepage: https://swift.org/

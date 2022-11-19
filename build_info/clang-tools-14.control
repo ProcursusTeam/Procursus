@@ -2,7 +2,7 @@ Package: clang-tools-14
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: clang-14, python3, libllvm14, libclang-cpp14, libclang-common-14-dev
+Depends: clang-14 (= @DEB_LLVM_V@), python3, libllvm14 (= @DEB_LLVM_V@), libclang-cpp14 (= @DEB_LLVM_V@), libclang-common-14-dev (= @DEB_LLVM_V@)
 Section: Development
 Priority: optional
 Homepage: https://www.llvm.org/
