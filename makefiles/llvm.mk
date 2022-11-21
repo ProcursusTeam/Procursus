@@ -157,8 +157,12 @@ ifeq ($(wildcard $(BUILD_WORK)/llvm/build/.build_complete),)
 		-DBUG_REPORT_URL="https://github.com/ProcursusTeam/Procursus/issues" \
 		../llvm
 	mkdir -p $(BUILD_WORK)/llvm/build/share/swift # ¯\_(ツ)_/¯
-	find $(BUILD_WORK)/llvm/build/tools/swift/stdlib/toolchain -type d -name '*-arm64e.dir' \
-		-exec sed -i 's/-arch arm64 //g' {}/flags.make \; # I hate this, but I don't have a choice
+	for arch in armv7 armv7k arm64 arm64e arm64_32 x86_64; do \
+		if [ "$(MEMO_ARCH)" != "$${arch}" ]; then \
+			find $(BUILD_WORK)/llvm/build/tools/swift/stdlib/toolchain -type d -name "*-$${arch}.dir" \
+				-exec sed -i 's/-arch $(MEMO_ARCH) //g' {}/flags.make \;; \
+		fi; \
+	done # I hate this, but I don't have a choice
 	find $(BUILD_WORK)/llvm/build/tools/swift/stdlib/toolchain -type d -name '*.dir' \
 		-exec sed -i 's/-flto=thin //g' {}/flags.make \; # I hate this too, but I don't have a choice
 	+$(MAKE) -C $(BUILD_WORK)/llvm/build
