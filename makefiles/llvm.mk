@@ -37,6 +37,7 @@ llvm-setup: setup
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	sed -i 's|isysroot $${CMAKE_OSX_SYSROOT}|isysroot $${CMAKE_FIND_ROOT_PATH}|' $(BUILD_WORK)/llvm/lldb/tools/debugserver/source/CMakeLists.txt
 endif
+	sed -i '/define SDK_HAS_NEW_DYLD_INTROSPECTION_SPIS/d' $(BUILD_WORK)/llvm/lldb/source/Host/macosx/objcxx/HostInfoMacOSX.mm
 
 ifneq ($(wildcard $(BUILD_WORK)/llvm/.build_complete),)
 llvm:
@@ -150,17 +151,22 @@ ifeq ($(wildcard $(BUILD_WORK)/llvm/build/.build_complete),)
 		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_TVOS="$(APPLETVOS_DEPLYMENT_TARGET)" \
 		-DSWIFT_BUILD_REMOTE_MIRROR=FALSE \
 		-DSWIFT_BUILD_DYNAMIC_STDLIB=FALSE \
-		-DSWIFT_BUILD_STDLIB_EXTRA_TOOLCHAIN_CONTENT=FALSE \
+		-DSWIFT_BUILD_STDLIB_EXTRA_TOOLCHAIN_CONTENT=TRUE \
+		-DSWIFT_STDLIB_SUPPORT_BACK_DEPLOYMENT=TRUE \
 		-DPACKAGE_VENDOR="Procursus" \
 		-DBUG_REPORT_URL="https://github.com/ProcursusTeam/Procursus/issues" \
 		../llvm
 	mkdir -p $(BUILD_WORK)/llvm/build/share/swift # ¯\_(ツ)_/¯
+	find $(BUILD_WORK)/llvm/build/tools/swift/stdlib/toolchain -type d -name '*-arm64e.dir' \
+		-exec sed -i 's/-arch arm64 //g' {}/flags.make \; # I hate this, but I don't have a choice
 	+$(MAKE) -C $(BUILD_WORK)/llvm/build
 	+$(MAKE) -C $(BUILD_WORK)/llvm/build install \
 		DESTDIR="$(BUILD_STAGE)/llvm"
 	$(INSTALL) -Dm755 $(BUILD_WORK)/llvm/build/bin/{obj2yaml,yaml2obj} $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/
 	touch $(BUILD_WORK)/llvm/build/.build_complete
 endif
+
+ifeq ($(wildcard $(BUILD_WORK)/llvm/build-compiler-rt/.build_complete),)
 	# Now we compile compiler-rt.
 	# We do it seperately because CMake will set the correct flags for cross compiling for us,
 	# which we will conflict with.
@@ -177,6 +183,8 @@ endif
 	+unset MACOSX_DEPLOYMENT_TARGET IPHONEOS_DEPLOYMENT_TARGET APPLETVOS_DEPLOYMENT_TARGET WATCHOS_DEPLOYMENT_TARGET && \
 		$(MAKE) -C $(BUILD_WORK)/llvm/build-compiler-rt install-compiler-rt \
 		DESTDIR="$(BUILD_STAGE)/llvm"
+	touch $(BUILD_WORK)/llvm/build-compiler-rt/.build_complete
+endif
 	# Let's build wrappers now
 	mkdir -p $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
 	$(CC) $(CFLAGS) $(LDFLAGS) $(BUILD_MISC)/llvm/wrapper.c -o $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/clang-$(LLVM_MAJOR_V) \
@@ -187,6 +195,12 @@ endif
 		-DEXTRA_CPATH=\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include\" -DEXTRA_LIBRARY_PATH=\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib\"
 	$(CC) $(CFLAGS) $(LDFLAGS) $(BUILD_MISC)/llvm/wrapper.c -o $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/clang-cpp-$(LLVM_MAJOR_V) \
 		-DTOOL=\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/clang-cpp\" -DDEFAULT_SYSROOT=\"$(ON_DEVICE_SDK_PATH)\" \
+		-DEXTRA_CPATH=\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include\" -DEXTRA_LIBRARY_PATH=\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib\"
+	$(CC) $(CFLAGS) $(LDFLAGS) $(BUILD_MISC)/llvm/wrapper.c -o $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/swift-$(SWIFT_VERSION) \
+		-DTOOL=\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/swift\" -DDEFAULT_SYSROOT=\"$(ON_DEVICE_SDK_PATH)\" \
+		-DEXTRA_CPATH=\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include\" -DEXTRA_LIBRARY_PATH=\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib\"
+	$(CC) $(CFLAGS) $(LDFLAGS) $(BUILD_MISC)/llvm/wrapper.c -o $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/swiftc-$(SWIFT_VERSION) \
+		-DTOOL=\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/swiftc\" -DDEFAULT_SYSROOT=\"$(ON_DEVICE_SDK_PATH)\" \
 		-DEXTRA_CPATH=\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include\" -DEXTRA_LIBRARY_PATH=\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib\"
 	$(call AFTER_BUILD,,,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib)
 endif
@@ -337,8 +351,8 @@ endif
 
 	# llvm.mk Prep llvm-dev
 	mkdir -p $(BUILD_DIST)/llvm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib}
-	$(LN_S) ../llvm-$(LLVM_MAJOR_V)/include/llvm $(BUILD_DIST)/llvm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/llvm
-	$(LN_S) ../llvm-$(LLVM_MAJOR_V)/include/llvm-c $(BUILD_DIST)/llvm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/llvm-c
+	$(LN_S) ../lib/llvm-$(LLVM_MAJOR_V)/include/llvm $(BUILD_DIST)/llvm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/llvm
+	$(LN_S) ../lib/llvm-$(LLVM_MAJOR_V)/include/llvm-c $(BUILD_DIST)/llvm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/llvm-c
 	$(LN_S) ../llvm-$(LLVM_MAJOR_V)/lib/libLTO.dylib $(BUILD_DIST)/llvm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libLTO.dylib
 
 	# llvm.mk Prep llvm-$(LLVM_MAJOR_V)-linker-tools
@@ -368,13 +382,12 @@ endif
 	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/swift{,-frontend,c,-api-digester,-api-dump.py,-demangle} $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
 	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/sil-{func-extractor,llvm-gen,nm,passpipeline-dumper} $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
 	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/repl_swift $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
-	$(LN_S) ../lib/llvm-$(LLVM_MAJOR_V)/bin/swift $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/swift-$(SWIFT_VERSION)
-	$(LN_S) ../lib/llvm-$(LLVM_MAJOR_V)/bin/swiftc $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/swiftc-$(SWIFT_VERSION)
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/swift{c,}-$(SWIFT_VERSION) $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 	# llvm.mk Prep swift
 	mkdir -p $(BUILD_DIST)/swift/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib/swift}
-	$(LN_S) ../lib/llvm-$(LLVM_MAJOR_V)/bin/swift $(BUILD_DIST)/swift/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/swift
-	$(LN_S) ../lib/llvm-$(LLVM_MAJOR_V)/bin/swiftc $(BUILD_DIST)/swift/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/swiftc
+	$(LN_S) swift-$(SWIFT_VERSION) $(BUILD_DIST)/swift/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/swift
+	$(LN_S) swiftc-$(SWIFT_VERSION) $(BUILD_DIST)/swift/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/swiftc
 	cd $(BUILD_DIST)/swift-$(SWIFT_VERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/swift; \
 	for lib in *; do \
 		$(LN_S) ../llvm-$(LLVM_MAJOR_V)/lib/swift/$$lib $(BUILD_DIST)/swift/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/swift/$$lib; \
