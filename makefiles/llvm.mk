@@ -159,6 +159,8 @@ ifeq ($(wildcard $(BUILD_WORK)/llvm/build/.build_complete),)
 	mkdir -p $(BUILD_WORK)/llvm/build/share/swift # ¯\_(ツ)_/¯
 	find $(BUILD_WORK)/llvm/build/tools/swift/stdlib/toolchain -type d -name '*-arm64e.dir' \
 		-exec sed -i 's/-arch arm64 //g' {}/flags.make \; # I hate this, but I don't have a choice
+	find $(BUILD_WORK)/llvm/build/tools/swift/stdlib/toolchain -type d -name '*.dir' \
+		-exec sed -i 's/-flto=thin //g' {}/flags.make \; # I hate this too, but I don't have a choice
 	+$(MAKE) -C $(BUILD_WORK)/llvm/build
 	+$(MAKE) -C $(BUILD_WORK)/llvm/build install \
 		DESTDIR="$(BUILD_STAGE)/llvm"
