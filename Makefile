@@ -807,7 +807,6 @@ AFTER_BUILD = \
 			if [ $${file\#\#*.} != "a" ] && [ $${file\#\#*.} != "dSYM" ]; then \
 				INSTALL_NAME=$$($(OTOOL) -D $$file | grep -v -e ":$$" -e "^Archive :" | head -n1); \
 				if [ ! -z "$$INSTALL_NAME" ]; then \
-					echo "I_N: $$INSTALL_NAME"; \
 					$(I_N_T) -id @rpath/$$(basename $$INSTALL_NAME) $$file; \
 					echo "$$INSTALL_NAME" >> $(BUILD_STAGE)/$$pkg/._lib_cache; \
 				fi; \
@@ -826,7 +825,6 @@ AFTER_BUILD = \
 			fi; \
 			if [ -f $(BUILD_STAGE)/$$pkg/._lib_cache ]; then \
 				cat $(BUILD_STAGE)/$$pkg/._lib_cache | while read line; do \
-					echo "line: $$line"; \
 					$(I_N_T) -change $$line @rpath/$$(basename $$line) $$file; \
 				done; \
 			fi; \
