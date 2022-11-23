@@ -14,7 +14,7 @@ LLVM_REPOSITORY := https://github.com/apple/llvm-project.git
 SWIFT_VERSION   := 5.7.1
 SWIFT_SUFFIX    := RELEASE
 DEB_SWIFT_V     ?= $(SWIFT_VERSION)~$(SWIFT_SUFFIX)
-DEB_LLVM_V      ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)
+DEB_LLVM_V      ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)-1
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 LLVM_CMAKE_FLAGS :=     -DLLDB_USE_SYSTEM_DEBUGSERVER=ON \
@@ -359,13 +359,13 @@ endif
 	mkdir -p $(BUILD_DIST)/llvm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib}
 	$(LN_S) ../lib/llvm-$(LLVM_MAJOR_V)/include/llvm $(BUILD_DIST)/llvm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/llvm
 	$(LN_S) ../lib/llvm-$(LLVM_MAJOR_V)/include/llvm-c $(BUILD_DIST)/llvm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/llvm-c
-	$(LN_S) ../llvm-$(LLVM_MAJOR_V)/lib/libLTO.dylib $(BUILD_DIST)/llvm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libLTO.dylib
+	$(LN_S) llvm-$(LLVM_MAJOR_V)/lib/libLTO.dylib $(BUILD_DIST)/llvm-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libLTO.dylib
 
 	# llvm.mk Prep llvm-$(LLVM_MAJOR_V)-linker-tools
 	mkdir -p $(BUILD_DIST)/llvm-$(LLVM_MAJOR_V)-linker-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib
 	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/{libLTO.dylib,LLVMPolly.so} $(BUILD_DIST)/llvm-$(LLVM_MAJOR_V)-linker-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib
 	# https://llvm.org/bugs/show_bug.cgi?id=19465
-	$(LN_S) ../llvm-$(LLVM_MAJOR_V)/lib/LLVMPolly.so $(BUILD_DIST)/llvm-$(LLVM_MAJOR_V)-linker-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/LLVMPolly.dylib
+	$(LN_S) llvm-$(LLVM_MAJOR_V)/lib/LLVMPolly.so $(BUILD_DIST)/llvm-$(LLVM_MAJOR_V)-linker-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/LLVMPolly.dylib
 
 	# llvm.mk Prep clang-tools-$(LLVM_MAJOR_V)
 	mkdir -p $(BUILD_DIST)/clang-tools-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/{bin,lib}
