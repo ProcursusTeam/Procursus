@@ -12,6 +12,7 @@ build-essential: setup
 	mkdir -p $(BUILD_WORK)/build-essential
 	mkdir -p $(BUILD_STAGE)/build-essential/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/$(BARE_PLATFORM).sdk
 	cp -a $(TARGET_SYSROOT)/* $(BUILD_STAGE)/build-essential/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/$(BARE_PLATFORM).sdk
+	rm -rf $(BUILD_STAGE)/build-essential/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/$(BARE_PLATFORM).sdk/usr/share/man/man{1,6,8}
 	$(call AFTER_BUILD)
 endif
 

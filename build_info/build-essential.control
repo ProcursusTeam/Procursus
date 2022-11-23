@@ -1,6 +1,6 @@
 Package: build-essential
 Version: @DEB_BUILD-ESSENTIAL_V@
-Architecture: @DEB_ARCH@
+Architecture: all
 Maintainer: @DEB_MAINTAINER@
 Section: Development
 Priority: optional
