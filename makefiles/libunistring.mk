@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS     += libunistring
-UNISTRING_VERSION := 0.9.10
-DEB_UNISTRING_V   ?= $(UNISTRING_VERSION)-2
+UNISTRING_VERSION := 1.1
+DEB_UNISTRING_V   ?= $(UNISTRING_VERSION)
 
 libunistring-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/libunistring/libunistring-$(UNISTRING_VERSION).tar.gz{$(comma).sig})
