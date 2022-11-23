@@ -3,12 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS            += python3-psutil
-PYTHON3-PSUTIL_VERSION := 5.9.4
-DEB_PYTHON3-PSUTIL_V   ?= $(PYTHON3-PSUTIL_VERSION)
+PYTHON3_PSUTIL_VERSION := 5.9.4
+DEB_PYTHON3_PSUTIL_V   ?= $(PYTHON3_PSUTIL_VERSION)
 
 python3-psutil-setup: setup
-	$(call GITHUB_ARCHIVE,giampaolo,psutil,$(PYTHON3-PSUTIL_VERSION),release-$(PYTHON3-PSUTIL_VERSION),python3-psutil)
-	$(call EXTRACT_TAR,python3-psutil-$(PYTHON3-PSUTIL_VERSION).tar.gz,psutil-release-$(PYTHON3-PSUTIL_VERSION),python3-psutil)
+	$(call GITHUB_ARCHIVE,giampaolo,psutil,$(PYTHON3_PSUTIL_VERSION),release-$(PYTHON3_PSUTIL_VERSION),python3-psutil)
+	$(call EXTRACT_TAR,python3-psutil-$(PYTHON3_PSUTIL_VERSION).tar.gz,psutil-release-$(PYTHON3_PSUTIL_VERSION),python3-psutil)
 
 ifneq ($(wildcard $(BUILD_WORK)/python3-psutil/.build_complete),)
 python3-psutil:
@@ -37,7 +37,7 @@ python3-psutil-package: python3-psutil-stage
 	$(call SIGN,python3-psutil,general.xml)
 
 	# python3-psutil.mk Make .debs
-	$(call PACK,python3-psutil,DEB_PYTHON3-PSUTIL_V)
+	$(call PACK,python3-psutil,DEB_PYTHON3_PSUTIL_V)
 
 	# python3-psutil.mk Build cleanup
 	rm -rf $(BUILD_DIST)/python3-psutil
