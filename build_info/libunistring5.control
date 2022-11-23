@@ -1,4 +1,4 @@
-Package: libunistring2
+Package: libunistring5
 Version: @DEB_UNISTRING_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
