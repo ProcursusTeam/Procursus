@@ -100,7 +100,6 @@ MEMO_SUB_PREFIX       ?= /usr
 MEMO_ALT_PREFIX       ?= /local
 MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
-ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
 BARE_PLATFORM         := iPhoneOS
 MEMO_DEPLOYMENT       := IPHONEOS_DEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET)
 
@@ -120,7 +119,6 @@ MEMO_SUB_PREFIX       ?= /usr
 MEMO_ALT_PREFIX       ?=
 MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
-ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
 BARE_PLATFORM         := iPhoneOS
 MEMO_DEPLOYMENT       := IPHONEOS_DEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET)
 
@@ -140,7 +138,6 @@ MEMO_SUB_PREFIX       ?= /usr
 MEMO_ALT_PREFIX       ?=
 MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
-ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
 BARE_PLATFORM         := iPhoneOS
 MEMO_DEPLOYMENT       := IPHONEOS_DEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET)
 
@@ -160,7 +157,6 @@ MEMO_SUB_PREFIX       ?= /usr
 MEMO_ALT_PREFIX       ?= /local
 MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
-ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
 BARE_PLATFORM         := iPhoneOS
 MEMO_DEPLOYMENT       := IPHONEOS_DEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET)
 
@@ -180,7 +176,6 @@ MEMO_SUB_PREFIX       ?= /usr
 MEMO_ALT_PREFIX       ?= /local
 MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
-ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/iPhoneOS.sdk
 BARE_PLATFORM         := iPhoneOS
 MEMO_DEPLOYMENT       := IPHONEOS_DEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET)
 
@@ -200,7 +195,6 @@ MEMO_SUB_PREFIX       ?= /usr
 MEMO_ALT_PREFIX       ?= /local
 MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
-ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
 BARE_PLATFORM         := AppleTVOS
 MEMO_DEPLOYMENT       := APPLETVOS_DEPLOYMENT_TARGET=$(APPLETVOS_DEPLOYMENT_TARGET)
 
@@ -220,7 +214,6 @@ MEMO_SUB_PREFIX       ?= /usr
 MEMO_ALT_PREFIX       ?= /local
 MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
-ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
 BARE_PLATFORM         := AppleTVOS
 MEMO_DEPLOYMENT       := APPLETVOS_DEPLOYMENT_TARGET=$(APPLETVOS_DEPLOYMENT_TARGET)
 
@@ -240,7 +233,6 @@ MEMO_SUB_PREFIX       ?= /usr
 MEMO_ALT_PREFIX       ?= /local
 MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
-ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
 BARE_PLATFORM         := AppleTVOS
 MEMO_DEPLOYMENT       := APPLETVOS_DEPLOYMENT_TARGET=$(APPLETVOS_DEPLOYMENT_TARGET)
 
@@ -260,7 +252,6 @@ MEMO_SUB_PREFIX       ?= /usr
 MEMO_ALT_PREFIX       ?= /local
 MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
-ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/BridgeOS.sdk
 BARE_PLATFORM         := BridgeOS
 MEMO_DEPLOYMENT       := BRIDGEOS_DEPLOYMENT_TARGET=$(BRIDGEOS_DEPLOYMENT_TARGET)
 
@@ -280,7 +271,6 @@ MEMO_SUB_PREFIX       ?= /usr
 MEMO_ALT_PREFIX       ?= /local
 MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
-ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/WatchOS.sdk
 BARE_PLATFORM         := WatchOS
 MEMO_DEPLOYMENT       := WATCHOS_DEPLOYMENT_TARGET=$(WATCHOS_DEPLOYMENT_TARGET)
 
@@ -300,7 +290,6 @@ MEMO_SUB_PREFIX       ?= /usr
 MEMO_ALT_PREFIX       ?= /local
 MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
 GNU_PREFIX            :=
-ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/WatchOS.sdk
 BARE_PLATFORM         := WatchOS
 MEMO_DEPLOYMENT       := WATCHOS_DEPLOYMENT_TARGET=$(WATCHOS_DEPLOYMENT_TARGET)
 
@@ -320,7 +309,6 @@ MEMO_SUB_PREFIX       ?=
 MEMO_ALT_PREFIX       ?=
 MEMO_LAUNCHCTL_PREFIX ?=
 GNU_PREFIX            := g
-ON_DEVICE_SDK_PATH    := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 BARE_PLATFORM         := MacOSX
 MEMO_DEPLOYMENT       := MACOSX_DEPLOYMENT_TARGET=$(MACOSX_DEPLOYMENT_TARGET)
 
@@ -340,7 +328,6 @@ MEMO_SUB_PREFIX       ?=
 MEMO_ALT_PREFIX       ?=
 MEMO_LAUNCHCTL_PREFIX ?=
 GNU_PREFIX            := g
-ON_DEVICE_SDK_PATH    := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 BARE_PLATFORM         := MacOSX
 MEMO_DEPLOYMENT       := MACOSX_DEPLOYMENT_TARGET=$(MACOSX_DEPLOYMENT_TARGET)
 
@@ -360,7 +347,6 @@ MEMO_SUB_PREFIX       ?=
 MEMO_ALT_PREFIX       ?=
 MEMO_LAUNCHCTL_PREFIX ?=
 GNU_PREFIX            := g
-ON_DEVICE_SDK_PATH    := /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 BARE_PLATFORM         := MacOSX
 MEMO_DEPLOYMENT       := MACOSX_DEPLOYMENT_TARGET=$(MACOSX_DEPLOYMENT_TARGET)
 
@@ -427,11 +413,11 @@ ifeq ($(shell sw_vers -productName),macOS) # Swap to Mac OS X for devices older 
 ifneq ($(MEMO_QUIET),1)
 $(warning Building on MacOS)
 endif # ($(MEMO_QUIET),1)
-TARGET_SYSROOT  ?= $(shell xcrun --sdk $(PLATFORM) --show-sdk-path)
-MACOSX_SYSROOT  ?= $(shell xcrun --show-sdk-path)
-CC              := $(shell xcrun --find cc)
-CXX             := $(shell xcrun --find c++)
-CPP             := $(shell xcrun --find cc) -E
+TARGET_SYSROOT  ?= /opt/procursus/share/SDKs/$(BARE_PLATFORM).sdk
+MACOSX_SYSROOT  ?= /opt/procursus/share/SDKs/MacOSX.sdk
+CC              := $(shell which cc)
+CXX             := $(shell which c++)
+CPP             := $(CC) -E
 PATH            := /opt/procursus/bin:/opt/procursus/libexec/gnubin:/usr/bin:$(PATH)
 
 CFLAGS_FOR_BUILD   := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
@@ -472,6 +458,8 @@ LIBTOOL         := $(shell command -v libtool)
 else
 $(error Please use macOS, iOS, Linux, or FreeBSD to build)
 endif
+
+ON_DEVICE_SDK_PATH := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/$(BARE_PLATFORM).sdk
 
 CC_FOR_BUILD  := $(shell command -v cc) $(CFLAGS_FOR_BUILD)
 CPP_FOR_BUILD := $(shell command -v cc) -E $(CPPFLAGS_FOR_BUILD)
