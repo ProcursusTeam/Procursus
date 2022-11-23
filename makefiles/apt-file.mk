@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += apt-file
-APT-FILE_VERSION  := 3.2.2
+APT-FILE_VERSION  := 3.3
 DEB_APT-FILE_V    ?= $(APT-FILE_VERSION)-2
 
 apt-file-setup: setup
