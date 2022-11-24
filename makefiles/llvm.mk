@@ -13,8 +13,8 @@ LLVM_REVISION   := 3dade082a9b1989207a7fa7f3975868485d16a49
 LLVM_REPOSITORY := https://github.com/apple/llvm-project.git
 SWIFT_VERSION   := 5.7.1
 SWIFT_SUFFIX    := RELEASE
-DEB_SWIFT_V     ?= $(SWIFT_VERSION)~$(SWIFT_SUFFIX)
-DEB_LLVM_V      ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)-1
+DEB_SWIFT_V     ?= $(SWIFT_VERSION)~$(SWIFT_SUFFIX)-2
+DEB_LLVM_V      ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 LLVM_CMAKE_FLAGS :=     -DLLDB_USE_SYSTEM_DEBUGSERVER=ON \
@@ -155,6 +155,9 @@ ifeq ($(wildcard $(BUILD_WORK)/llvm/build/.build_complete),)
 		-DSWIFT_STDLIB_SUPPORT_BACK_DEPLOYMENT=TRUE \
 		-DPACKAGE_VENDOR="Procursus" \
 		-DBUG_REPORT_URL="https://github.com/ProcursusTeam/Procursus/issues" \
+		-DLLVM_BUILD_DOCS=OFF \
+		-DLLVM_ENABLE_SPHINX=OFF \
+		-DSPHINX_OUTPUT_HTML=OFF \
 		../llvm
 	mkdir -p $(BUILD_WORK)/llvm/build/share/swift # ¯\_(ツ)_/¯
 	for arch in armv7 armv7k arm64 arm64e arm64_32 x86_64; do \
