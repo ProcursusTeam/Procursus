@@ -19,7 +19,7 @@ xkeyboard-config: xkeyboard-config-setup xorgproto libx11 libxcb libxau libpthre
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/xkeyboard-config
 	+$(MAKE) -C $(BUILD_WORK)/xkeyboard-config install \
-		DESTDIR=$(BUILD_STAGE)/xkeyboard-config
+		DESTDIR="$(BUILD_STAGE)/xkeyboard-config"
 	$(call AFTER_BUILD)
 endif
 
