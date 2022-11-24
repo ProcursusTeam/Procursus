@@ -14,7 +14,7 @@ ifneq ($(wildcard $(BUILD_WORK)/xkeyboard-config/.build_complete),)
 xkeyboard-config:
 	@echo "Using previously built xkeyboard-config."
 else
-xkeyboard-config: xkeyboard-config-setup xorgproto
+xkeyboard-config: xkeyboard-config-setup xorgproto libx11 libxcb libxau libpthread-stubs libxdmcp
 	cd $(BUILD_WORK)/xkeyboard-config && ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/xkeyboard-config
