@@ -1,0 +1,54 @@
+#!/bin/sh
+# We are only supporting the small subset of flags and orders that llvm
+# uses when building compiler-rt. We can extend this to be more general later.
+
+if [ -z "${XCRUN_SDK_SEARCH_DIR}" ]; then
+	if [ -d "/opt/procursus/share/SDKs" ]; then
+		XCRUN_SDK_SEARCH_DIR="/opt/procursus/share/SDKs"
+	elif [ -d "/var/jb/usr/share/SDKs" ]; then
+		XCRUN_SDK_SEARCH_DIR="/var/jb/usr/share/SDKs"
+	else
+		XCRUN_SDK_SEARCH_DIR="/usr/share/SDKs"
+	fi
+fi
+
+if [ "$1" = "-f" ] || [ "$1" = "-find" ] || [ "$1" = "--find" ]; then
+	if [ -z "$2" ] || [ -n "$3" ]; then
+		exit 64
+	fi
+	exec which $2
+fi
+
+if [ "$1" = "-sdk" ] || [ "$1" = "--sdk" ]; then
+	if [ -z "$2" ] || [ -z "$3" ]; then
+		exit 64
+	fi
+	if [ "$(echo $2 | cut -c1)" = "/" ]; then
+		sdk_name="$2"
+	elif [ "$2" = "iphoneos" ]; then
+		sdk_name="${XCRUN_SDK_SEARCH_DIR}/iPhoneOS.sdk"
+	elif [ "$2" = "macosx" ]; then
+		sdk_name="${XCRUN_SDK_SEARCH_DIR}/MacOSX.sdk"
+	elif [ "$2" = "watchos" ]; then
+		sdk_name="${XCRUN_SDK_SEARCH_DIR}/WatchOS.sdk"
+	elif [ "$2" = "appletvos" ]; then
+		sdk_name="${XCRUN_SDK_SEARCH_DIR}/AppleTVOS.sdk"
+	else
+		sdk_name="$(find "$XCRUN_SDK_SEARCH_DIR" -depth 1 -type d -iname "$2.sdk" | head -n1)"
+	fi
+	if [ -z "${sdk_name}" ] || [ ! -d "${sdk_name}" ]; then
+		sdk_name="$2"
+	fi
+	if [ "$3" = "--show-sdk-path" ]; then
+		echo "$sdk_name"
+		exit 0
+	fi
+	shift 2
+	SDKROOT="${sdk_name}" exec $@
+fi
+
+if [ -z "$1" ]; then
+	exit 64
+fi
+
+exec $@
