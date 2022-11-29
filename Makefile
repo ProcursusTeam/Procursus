@@ -764,10 +764,12 @@ DO_PATCH    = cd $(BUILD_PATCH)/$(1); \
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 SIGN = 	for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
-			if [ $${file\#\#*.} = "dylib" ] || [ $${file\#\#*.} = "bundle" ] || [ $${file\#\#*.} = "so" ]; then \
-				$(LDID) -S $$file; \
-			else \
-				$(LDID) -S$(BUILD_MISC)/entitlements/$(2) $$file; \
+			if [ $${file\#\#*.} != "a" ]; then \
+				if [ $${file\#\#*.} = "dylib" ] || [ $${file\#\#*.} = "bundle" ] || [ $${file\#\#*.} = "so" ]; then \
+					$(LDID) -S $$file; \
+				else \
+					$(LDID) -S$(BUILD_MISC)/entitlements/$(2) $$file; \
+				fi; \
 			fi; \
 		done
 else
@@ -802,25 +804,32 @@ AFTER_BUILD = \
 	if [ ! -z "$(MEMO_PREFIX)" ] && [ -d "$(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" ]; then \
 		rm -f $(BUILD_STAGE)/$$pkg/._lib_cache && touch $(BUILD_STAGE)/$$pkg/._lib_cache; \
 		for file in $$(find $(BUILD_STAGE)/$$pkg -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
-			INSTALL_NAME=$$(otool -D $$file | grep -v ":$$"); \
-			if [ ! -z "$$INSTALL_NAME" ]; then \
-				$(I_N_T) -id @rpath/$$(basename $$INSTALL_NAME) $$file; \
-				echo "$$INSTALL_NAME" >> $(BUILD_STAGE)/$$pkg/._lib_cache; \
+			if [ $${file\#\#*.} != "a" ] && [ $${file\#\#*.} != "dSYM" ]; then \
+				INSTALL_NAME=$$($(OTOOL) -D $$file | grep -v -e ":$$" -e "^Archive :" | head -n1); \
+				if [ ! -z "$$INSTALL_NAME" ]; then \
+					$(I_N_T) -id @rpath/$$(basename $$INSTALL_NAME) $$file; \
+					echo "$$INSTALL_NAME" >> $(BUILD_STAGE)/$$pkg/._lib_cache; \
+				fi; \
 			fi; \
 		done; \
 	fi; \
 	for file in $$(find $(BUILD_STAGE)/$$pkg -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
-		if [ "$(RELATIVE_RPATH)" = "1" ]; then \
-			$(I_N_T) -add_rpath "@loader_path/$$(realpath --relative-to=$$(dirname $$file) $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))/lib" $$file; \
-		else \
-			$(I_N_T) -add_rpath "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" $$file; \
+		if [ $${file\#\#*.} != "a" ] && [ $${file\#\#*.} != "dSYM" ]; then \
+			if [ "$(RELATIVE_RPATH)" = "1" ]; then \
+				$(I_N_T) -add_rpath "@loader_path/$$(realpath --relative-to=$$(dirname $$file) $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))/lib" $$file; \
+			else \
+				$(I_N_T) -add_rpath "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" $$file; \
+				if [ ! -z "$(3)" ]; then \
+					$(I_N_T) -add_rpath "$(3)" $$file; \
+				fi; \
+			fi; \
+			if [ -f $(BUILD_STAGE)/$$pkg/._lib_cache ]; then \
+				cat $(BUILD_STAGE)/$$pkg/._lib_cache | while read line; do \
+					$(I_N_T) -change $$line @rpath/$$(basename $$line) $$file; \
+				done; \
+			fi; \
+			$(STRIP) -x $$file; \
 		fi; \
-		if [ -f $(BUILD_STAGE)/$$pkg/._lib_cache ]; then \
-			cat $(BUILD_STAGE)/$$pkg/._lib_cache | while read line; do \
-				$(I_N_T) -change $$line @rpath/$$(basename $$line) $$file; \
-			done; \
-		fi; \
-		$(STRIP) -x $$file; \
 	done; \
 	rm -f $(BUILD_STAGE)/$$pkg/._lib_cache; \
 	find $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.gz$$' -exec gunzip '{}' \; 2> /dev/null; \
@@ -1104,10 +1113,7 @@ endif
 
 PROCURSUS := 1
 
-all:: package
-	@echo "********** Successfully built debs for $(MEMO_TARGET) **********"
-	@echo "$(SUBPROJECTS)"
-	@MEMO_TARGET="$(MEMO_TARGET)" MEMO_CFVER="$(MEMO_CFVER)" '$(BUILD_TOOLS)/check_gettext.sh'
+all:: help
 
 proenv:
 	@echo -e "proenv() {"
@@ -1437,14 +1443,15 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/bsd/sys/resource.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/bsd/sys/resource.h \
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/bsd/sys/vnioctl.h)
 
 	@# Copy headers from MacOSX.sdk
 	@cp -af $(MACOSX_SYSROOT)/usr/include/{arpa,bsm,hfs,net,xpc,netinet,servers,timeconv.h,launch.h} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	@cp -af $(MACOSX_SYSROOT)/usr/include/objc/objc-runtime.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/objc
 	@cp -af $(MACOSX_SYSROOT)/usr/include/libkern/{OSDebug.h,OSKextLib.h,OSReturn.h,OSThermalNotification.h,OSTypes.h,machine} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern
 	@cp -af $(MACOSX_SYSROOT)/usr/include/kern $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	@cp -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,ptrace,kern*,random,reboot,user,vnode,disk,vmmeter,vnioctl,conf}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys
+	@cp -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,ptrace,kern*,random,reboot,user,vnode,disk,vmmeter,conf}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys
 	@cp -af  $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Versions/Current/Headers/sys/disklabel.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys
 	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit
 	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/Security.framework/Headers/{mds_schema,oidsalg,SecKeychainSearch,certextensions,Authorization,eisl,SecDigestTransform,SecKeychainItem,oidscrl,cssmcspi,CSCommon,cssmaci,SecCode,CMSDecoder,oidscert,SecRequirement,AuthSession,SecReadTransform,oids,cssmconfig,cssmkrapi,SecPolicySearch,SecAccess,cssmtpi,SecACL,SecEncryptTransform,cssmapi,cssmcli,mds,x509defs,oidsbase,SecSignVerifyTransform,cssmspi,cssmkrspi,SecTask,cssmdli,SecAsn1Coder,cssm,SecTrustedApplication,SecCodeHost,SecCustomTransform,oidsattr,SecIdentitySearch,cssmtype,SecAsn1Types,emmtype,SecTransform,SecTrustSettings,SecStaticCode,emmspi,SecTransformReadTransform,SecKeychain,SecDecodeTransform,CodeSigning,AuthorizationPlugin,cssmerr,AuthorizationTags,CMSEncoder,SecEncodeTransform,SecureDownload,SecAsn1Templates,AuthorizationDB,SecCertificateOIDs,cssmapple}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security
@@ -1518,14 +1525,14 @@ define mootext
 ..."Have you mooed today?"...
 endef
 define helptext
-$(MAKE)                        - Compiles the entire Procursus suite and packs it into debian packages.
-$(MAKE) help                   - Display this text
+$(MAKE)                        - Display this text
 $(MAKE) (tool)                 - Used to compile only a specified tool.
 $(MAKE) (tool)-package         - Used to compile only a specified tool and pack it into a debian package.
 $(MAKE) rebuild-(tool)         - Used to recompile only a specified tool after it's already been compiled before.
 $(MAKE) rebuild-(tool)-package - Used to recompile only a specified tool after it's already been compiled before and pack it into a debian package.
 $(MAKE) clean                  - Clean out $(BUILD_STAGE), $(BUILD_BASE), and $(BUILD_WORK).
 $(MAKE) extreme-clean          - Runs `$(MAKE) clean`and cleans out $(BUILD_DIST).
+$(MAKE) package                - Compiles the entire Procursus suite and packs it into debian packages.
 $(MAKE) proenv                 - Print the proenv shell function to STDOUT to give a cross-compilation environment in your POSIX shell (make proenv >> ~/.zshrc)
 $(MAKE) env                    - Print the environment variables inside the makefile
 $(MAKE) (tool)-deps            - Print the dylibs linked by (tool)

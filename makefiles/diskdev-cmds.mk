@@ -71,7 +71,11 @@ diskdev-cmds: diskdev-cmds-setup
 		bin=../$$(basename $$c .c); \
 		$(CC) $(CFLAGS) $(LDFLAGS) -isystem ../include -o $$bin $$c; \
 	done
+ifneq ($(shell [ "$(CFVER_WHOLE)" -ge 1800 ] && echo 1),1)
 	$(CC) $(CFLAGS) $(LDFLAGS) $(BUILD_WORK)/diskdev-cmds/dirs_cleaner/dirs_cleaner.c -o $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/dirs_cleaner
+else
+	rmdir $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
+endif
 	cd $(BUILD_WORK)/diskdev-cmds; \
 	cp -a quota $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \
 	cp -a dev_mkdb edquota fdisk quotaon repquota vsdbutil $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin; \
