@@ -29,7 +29,7 @@ ifneq ($(wildcard $(BUILD_WORK)/sdl2/.build_complete),)
 sdl2:
 	@echo "Using previously built sdl2."
 else
-sdl2: sdl2-setup
+sdl2: sdl2-setup libx11 libxcb xorgproto
 	cd $(BUILD_WORK)/sdl2 && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-hidapi \
