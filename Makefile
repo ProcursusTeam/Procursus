@@ -16,8 +16,8 @@ endif
 # Unset sysroot, we manage that ourselves.
 SYSROOT :=
 
-UNAME           := $(shell uname -s)
-UNAME_M         := $(shell uname -m)
+UNAME           != uname -s
+UNAME_M         != uname -m
 SUBPROJECTS     += $(STRAPPROJECTS)
 
 ifneq ($(shell umask),0022)
@@ -29,7 +29,7 @@ RELATIVE_RPATH       := 0
 MEMO_TARGET          ?= darwin-arm64
 MEMO_CFVER           ?= 1700
 # iOS 13.0 == 1665.15.
-CFVER_WHOLE          := $(shell echo $(MEMO_CFVER) | cut -d. -f1)
+CFVER_WHOLE          != echo $(MEMO_CFVER) | cut -d. -f1
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1800 ] && [ "$(CFVER_WHOLE)" -lt 1900 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 15.0
@@ -427,11 +427,15 @@ ifeq ($(shell sw_vers -productName),macOS) # Swap to Mac OS X for devices older 
 ifneq ($(MEMO_QUIET),1)
 $(warning Building on MacOS)
 endif # ($(MEMO_QUIET),1)
-TARGET_SYSROOT  ?= $(shell xcrun --sdk $(PLATFORM) --show-sdk-path)
-MACOSX_SYSROOT  ?= $(shell xcrun --show-sdk-path)
-CC              := $(shell xcrun --find cc)
-CXX             := $(shell xcrun --find c++)
-CPP             := $(shell xcrun --find cc) -E
+ifeq ($(origin TARGET_SYSROOT), undefined)
+TARGET_SYSROOT  != xcrun --sdk $(PLATFORM) --show-sdk-path
+endif
+ifeq ($(origin MACOSX_SYSROOT), undefined)
+MACOSX_SYSROOT  != xcrun --show-sdk-path
+endif
+CC              != xcrun --find cc
+CXX             != xcrun --find c++
+CPP             := $(CC) -E
 PATH            := /opt/procursus/bin:/opt/procursus/libexec/gnubin:/usr/bin:$(PATH)
 
 CFLAGS_FOR_BUILD   := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
@@ -446,9 +450,9 @@ $(warning Building on iOS)
 endif # ($(MEMO_QUIET),1)
 TARGET_SYSROOT  ?= /usr/share/SDKs/$(BARE_PLATFORM).sdk
 MACOSX_SYSROOT  ?= /usr/share/SDKs/MacOSX.sdk
-CC              := $(shell command -v cc)
-CXX             := $(shell command -v c++)
-CPP             := $(shell command -v cc) -E
+CC              != command -v cc
+CXX             != command -v c++
+CPP             := $(CC) -E
 PATH            := /usr/bin:$(PATH)
 
 CFLAGS_FOR_BUILD   := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
@@ -458,16 +462,16 @@ ASFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
 LDFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
 
 endif
-AR              := $(shell command -v ar)
-LD              := $(shell command -v ld)
-RANLIB          := $(shell command -v ranlib)
-STRINGS         := $(shell command -v strings)
-STRIP           := $(shell command -v strip)
-NM              := $(shell command -v nm)
-LIPO            := $(shell command -v lipo)
-OTOOL           := $(shell command -v otool)
-I_N_T           := $(shell command -v install_name_tool)
-LIBTOOL         := $(shell command -v libtool)
+AR              != command -v ar
+LD              != command -v ld
+RANLIB          != command -v ranlib
+STRINGS         != command -v strings
+STRIP           != command -v strip
+NM              != command -v nm
+LIPO            != command -v lipo
+OTOOL           != command -v otool
+I_N_T           != command -v install_name_tool
+LIBTOOL         != command -v libtool
 
 else
 $(error Please use macOS, iOS, Linux, or FreeBSD to build)
@@ -489,6 +493,7 @@ MEMO_CODESIGN_EXTRA_FLAGS ?=
 
 LDID := ldid -Hsha256 -Cadhoc $(MEMO_LDID_EXTRA_FLAGS)
 
+REPO_BASE      != dirname $(realpath $(firstword $(MAKEFILE_LIST)))
 # Root
 BUILD_ROOT     ?= $(PWD)
 # Downloaded source files
@@ -496,11 +501,11 @@ BUILD_SOURCE   := $(BUILD_ROOT)/build_source
 # Base headers/libs (e.g. patched from SDK)
 BUILD_BASE     := $(BUILD_ROOT)/build_base/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Dpkg info storage area
-BUILD_INFO     ?= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_info
+BUILD_INFO     ?= $(REPO_BASE)/build_info
 # Miscellaneous Procursus files
-BUILD_MISC     ?= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_misc
+BUILD_MISC     ?= $(REPO_BASE)/build_misc
 # Patch storage area
-BUILD_PATCH    ?= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_patch
+BUILD_PATCH    ?= $(REPO_BASE)/build_patch
 # Extracted source working directory
 BUILD_WORK     := $(BUILD_ROOT)/build_work/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Bootstrap working area
@@ -510,7 +515,7 @@ BUILD_DIST     := $(BUILD_ROOT)/build_dist/$(MEMO_TARGET)/$(MEMO_CFVER)/work/
 # Actual bootrap staging
 BUILD_STRAP    := $(BUILD_ROOT)/build_strap/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Extra scripts for the buildsystem
-BUILD_TOOLS    ?= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_tools
+BUILD_TOOLS    ?= $(REPO_BASE)/build_tools
 
 ifeq ($(DEBUG),1)
 OPTIMIZATION_FLAGS := -g -O0
