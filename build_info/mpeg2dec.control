@@ -1,0 +1,13 @@
+Package: mpeg2dec
+Version: @DEB_LIBMPEG2_V@
+Priority: optional
+Section: X11
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libmpeg2-4 (>= @DEB_LIBMPEG2_V@), libx11-6, libxext6
+Homepage: http://libmpeg2.sourceforge.net/
+Description: Simple libmpeg2 video decoder application
+ Simple libmpeg2 application which can decode and play ES, PS, and TS video
+ streams.  Includes extract_mpeg2 demuxer and various output drivers.
+ .
+ This package provides the mpeg2dec and extract_mpeg2 tools.

@@ -1,0 +1,13 @@
+Package: mpeg2dec
+Version: @DEB_LIBMPEG2_V@
+Priority: optional
+Section: Development
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libmpeg2-4 (= @DEB_LIBMPEG2_V@)
+Homepage: http://libmpeg2.sourceforge.net/
+Description: libmpeg2 development libraries and headers
+ libmpeg2 is a library which can decode MPEG1 and MPEG2 video streams.
+ .
+ This package contains the libraries and headers required to compile
+ programs which use libmpeg2.
