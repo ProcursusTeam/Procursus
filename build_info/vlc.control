@@ -1,0 +1,29 @@
+Package: vlc
+Version: @DEB_VLC_V@
+Architecture: @DEB_ARCH@
+Author: VideoLAN <videolan@videolan.org>
+Priority: optional
+Section: Multimedia
+Maintainer: @DEB_MAINTAINER@
+Provides: mp3-decoder
+Depends: vlc-bin (= @DEB_VLC_V@)
+Recommends: vlc-l10n (= @DEB_VLC_V@), vlc-plugin-access-extra (= @DEB_VLC_V@), vlc-plugin-notify (= @DEB_VLC_V@), vlc-plugin-samba (= @DEB_VLC_V@), vlc-plugin-skins2 (= @DEB_VLC_V@), vlc-plugin-video-splitter (= @DEB_VLC_V@), vlc-plugin-visualization (= @DEB_VLC_V@)
+Suggests: vlc-plugin-fluidsynth (= @DEB_VLC_V@), vlc-plugin-jack (= @DEB_VLC_V@), vlc-plugin-svg (= @DEB_VLC_V@)
+Homepage: https://www.videolan.org/vlc/
+Description: multimedia player and streamer
+ VLC is the VideoLAN project's media player. It plays MPEG, MPEG-2, MPEG-4,
+ DivX, MOV, WMV, QuickTime, WebM, FLAC, MP3, Ogg/Vorbis files, DVDs, VCDs,
+ podcasts, and multimedia streams from various network sources.
+ .
+ VLC can also be used as a streaming server that duplicates the stream it
+ reads and multicasts them through the network to other clients, or serves
+ them through HTTP.
+ .
+ VLC has support for on-the-fly transcoding of audio and video formats, either
+ for broadcasting purposes or for movie format transformations. Support for
+ most output methods is provided by this package, but features can be added by
+ installing additional plugins:
+  * vlc-plugin-access-extra
+  * vlc-plugin-video-output
+  * vlc-plugin-video-splitter
+  * vlc-plugin-visualization

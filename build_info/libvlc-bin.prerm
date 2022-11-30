@@ -1,0 +1,10 @@
+#! /bin/sh
+set -e
+
+
+
+case "$1" in
+    remove)
+        rm -f @MEMO_PREFIX@@MEMO_SUB_PREFIX/lib/vlc/plugins/plugins.dat
+        ;;
+esac

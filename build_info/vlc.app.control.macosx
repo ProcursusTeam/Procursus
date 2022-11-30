@@ -1,0 +1,12 @@
+Package: vlc.app
+Version: @DEB_VLC_V@
+Architecture: @DEB_ARCH@
+Author: VideoLAN <videolan@videolan.org>
+Priority: optional
+Depends: vlc-bin (= @DEB_VLC_V@), libvlc-bin (= @DEB_VLC_V@), vlc-data (= @DEB_VLC_V@), vlc-plugin-base (= @DEB_VLC_V@), vlc-plugin-video-output (= @DEB_VLC_V@)
+Recommends: vlc-l10n (= @DEB_VLC_V@), vlc-plugin-access-extra (= @DEB_VLC_V@), vlc-plugin-video-splitter (= @DEB_VLC_V@), vlc-plugin-visualization (= @DEB_VLC_V@)
+Section: Multimedia
+Maintainer: @DEB_MAINTAINER@
+Homepage: https://www.videolan.org/vlc/
+Description: VLC application bundle
+ This is the macOS .app bundle of VLC.

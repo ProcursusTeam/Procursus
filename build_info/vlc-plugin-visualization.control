@@ -1,0 +1,16 @@
+Package: vlc-plugin-visualization
+Version: @DEB_VLC_V@
+Architecture: @DEB_ARCH@
+Author: VideoLAN <videolan@videolan.org>
+Priority: optional
+Enhances: vlc
+Depends: vlc-plugin-abi-3-0-0f, libgl1, libvlccore9 (>= @DEB_VLC_V@)
+Section: Multimedia
+Maintainer: @DEB_MAINTAINER@
+Homepage: https://www.videolan.org/vlc/
+Description: multimedia player and streamer (visualization plugins)
+ VLC is the VideoLAN project's media player. It plays MPEG, MPEG-2, MPEG-4,
+ DivX, MOV, WMV, QuickTime, WebM, FLAC, MP3, Ogg/Vorbis files, DVDs, VCDs,
+ podcasts, and multimedia streams from various network sources.
+ .
+ This package contains the visualization plugins.

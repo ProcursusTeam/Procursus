@@ -1,0 +1,10 @@
+#!/bin/sh
+
+case "$1" in
+	abort-upgrade)
+	mv @MEMO_PREFIX@/tmp/vlc.app_PkgInfo_sip_fs_workaround @MEMO_PREFIX@/Applications/VLC.app/Contents
+	;;
+esac
+
+ln -s @MEMO_PREFIX@/Applications/VLC.app /Applications/VLC.app
+exit 0

@@ -1,0 +1,14 @@
+Package: vlc-data
+Version: @DEB_VLC_V@
+Architecture: all
+Author: VideoLAN <videolan@videolan.org>
+Priority: optional
+Section: Multimedia
+Maintainer: @DEB_MAINTAINER@
+Homepage: https://www.videolan.org/vlc/
+Description: common data for VLC
+ VLC is the VideoLAN project's media player. It plays MPEG, MPEG-2, MPEG-4,
+ DivX, MOV, WMV, QuickTime, WebM, FLAC, MP3, Ogg/Vorbis files, DVDs, VCDs,
+ podcasts, and multimedia streams from various network sources.
+ .
+ This package contains icons and shell scripts for VLC media player.

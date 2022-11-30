@@ -1,0 +1,16 @@
+Package: vlc-plugin-access-extra
+Version: @DEB_VLC_V@
+Architecture: @DEB_ARCH@
+Author: VideoLAN <videolan@videolan.org>
+Priority: optional
+Section: Multimedia
+Depends: libxcb-composite0, libxcb1, vlc-plugin-abi-3-0-0f, libvlccore9 (>= @DEB_VLC_V@)
+Enhances: vlc
+Maintainer: @DEB_MAINTAINER@
+Homepage: https://www.videolan.org/vlc/
+Description: multimedia player and streamer (extra access plugins)
+ VLC is the VideoLAN project's media player. It plays MPEG, MPEG-2, MPEG-4,
+ DivX, MOV, WMV, QuickTime, WebM, FLAC, MP3, Ogg/Vorbis files, DVDs, VCDs,
+ podcasts, and multimedia streams from various network sources.
+ .
+ This package contains additional access plugins.

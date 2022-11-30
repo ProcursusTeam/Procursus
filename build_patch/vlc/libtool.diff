@@ -1,0 +1,12 @@
+diff -urN a/modules/Makefile.am b/modules/Makefile.am
+--- a/modules/Makefile.am	2017-11-30 07:35:29.000000000 +0800
++++ b/modules/Makefile.am	2021-05-22 11:29:50.000000000 +0800
+@@ -58,7 +58,7 @@
+ include mux/Makefile.am
+ include stream_out/Makefile.am
+ endif
+-
++AM_LIBTOOLFLAGS = --tag=CC
+ BUILT_SOURCES += dummy.cpp
+ 
+ dummy.cpp:

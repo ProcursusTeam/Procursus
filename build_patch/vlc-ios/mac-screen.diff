@@ -1,0 +1,15 @@
+diff -urN a/modules/access/Makefile.am d/modules/access/Makefile.am
+--- a/modules/access/Makefile.am	2022-02-21 17:19:30.000000000 +0800
++++ d/modules/access/Makefile.am	2022-06-05 07:11:43.309485688 +0800
+@@ -182,11 +182,6 @@
+ libscreen_plugin_la_LIBADD = -lgdi32
+ access_LTLIBRARIES += libscreen_plugin.la
+ endif
+-if HAVE_MAC_SCREEN
+-libscreen_plugin_la_SOURCES += access/screen/mac.c
+-libscreen_plugin_la_LDFLAGS += "-Wl,-framework,OpenGL,-framework,ApplicationServices"
+-access_LTLIBRARIES += libscreen_plugin.la
+-endif
+ 
+ librdp_plugin_la_SOURCES = access/rdp.c
+ librdp_plugin_la_CFLAGS = $(AM_CFLAGS) $(FREERDP_CFLAGS)

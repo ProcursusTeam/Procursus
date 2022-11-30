@@ -1,0 +1,16 @@
+Package: libvlc5
+Version: @DEB_VLC_V@
+Architecture: @DEB_ARCH@
+Priority: optional
+Section: Libraries
+Maintainer: @DEB_MAINTAINER@
+Depends: libvlccore9 (>= @DEB_VLC_V@)
+Recommends: libvlc-bin (= @DEB_VLC_V@)
+Homepage: https://www.videolan.org/vlc/
+Description: multimedia player and streamer library
+ VLC is the VideoLAN project's media player. It plays MPEG, MPEG-2, MPEG-4,
+ DivX, MOV, WMV, QuickTime, WebM, FLAC, MP3, Ogg/Vorbis files, DVDs, VCDs,
+ podcasts, and multimedia streams from various network sources.
+ .
+ This package contains the shared library required by applications using VLC
+ features.

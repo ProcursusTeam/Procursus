@@ -1,0 +1,16 @@
+Package: libvlccore-dev
+Version: @DEB_VLC_V@
+Architecture: @DEB_ARCH@
+Author: VideoLAN <videolan@videolan.org>
+Priority: optional
+Section: Multimedia
+Maintainer: @DEB_MAINTAINER@
+Depends: libvlccore9 (= @DEB_VLC_V@)
+Homepage: https://www.videolan.org/vlc/
+Description: development files for libvlccore
+ VLC is the VideoLAN project's media player. It plays MPEG, MPEG-2, MPEG-4,
+ DivX, MOV, WMV, QuickTime, WebM, FLAC, MP3, Ogg/Vorbis files, DVDs, VCDs,
+ podcasts, and multimedia streams from various network sources.
+ .
+ This package contains headers and a static library required to build plugins
+ for VLC.

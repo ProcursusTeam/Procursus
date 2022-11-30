@@ -1,0 +1,32 @@
+#!/bin/sh
+set -e
+
+run_vlc_cache_gen() {
+    if ! test -d @MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/vlc/plugins
+    then
+        return
+    fi
+    files=`find @MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/vlc/plugins -name '*.dylib' -type f -print -quit`
+    if test -n "$files"
+    then
+        # run vlc-cache-gen since there are plugins
+        if ! @MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/vlc/vlc-cache-gen @MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/vlc/plugins 2>&1
+        then
+            echo "WARNING: Regenerating VLC plugin cache failed."
+            echo "Please run '@MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/vlc/vlc-cache-gen @MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/vlc/plugins' manually."
+        fi
+    else
+        # no plugins, so remove plugins.dat
+        rm -f @MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/vlc/plugins/plugins.dat
+    fi
+}
+
+case "$1" in
+    triggered)
+        run_vlc_cache_gen
+        exit 0
+        ;;
+    configure)
+        dpkg-trigger @MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/vlc/plugins
+        ;;
+esac

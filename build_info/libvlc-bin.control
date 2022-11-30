@@ -1,0 +1,15 @@
+Package: libvlc-bin
+Version: @DEB_VLC_V@
+Architecture: @DEB_ARCH@
+Author: VideoLAN <videolan@videolan.org>
+Priority: optional
+Section: Multimedia
+Maintainer: @DEB_MAINTAINER@
+Depends: libvlc5 (>= @DEB_VLC_V@)
+Homepage: https://www.videolan.org/vlc/
+Description: tools for VLC's base library
+ VLC is the VideoLAN project's media player. It plays MPEG, MPEG-2, MPEG-4,
+ DivX, MOV, WMV, QuickTime, WebM, FLAC, MP3, Ogg/Vorbis files, DVDs, VCDs,
+ podcasts, and multimedia streams from various network sources.
+ .
+ This package contains the vlc-cache-gen binary.

@@ -1,0 +1,18 @@
+diff -urN a/include/vlc_atomic.h b/include/vlc_atomic.h
+--- a/include/vlc_atomic.h	2017-12-21 17:51:16.000000000 +0800
++++ b/include/vlc_atomic.h	2022-06-05 00:48:37.219429368 +0800
+@@ -34,11 +34,13 @@
+ #endif
+ 
+ # ifndef __cplusplus
+-#  if !defined (__STDC_NO_ATOMICS__)
++#  if 0
+ /*** Native C11 atomics ***/
+ #   include <stdatomic.h>
+ 
+ #  else
++#include <stdbool.h>
++#include <stdint.h>
+ /*** Intel/GCC atomics ***/
+ 
+ #  define ATOMIC_FLAG_INIT false

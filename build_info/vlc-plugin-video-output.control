@@ -1,0 +1,16 @@
+Package: vlc-plugin-video-output
+Version: @DEB_VLC_V@
+Architecture: @DEB_ARCH@
+Author: VideoLAN <videolan@videolan.org>
+Priority: optional
+Enhances: vlc
+Depends: libx11-6, libxcb-keysyms1, libxcb-shm0, libxcb-xv0 (>= 1.2), libxcb1, libvlccore9 (>= @DEB_VLC_V@), vlc-plugin-abi-3-0-0f, libsm6, libgles2, libgl1, libice6 (>= 1.0.0), libcaca0 (>= 0.99.beta17-1), libavutil57 (>= 5.0), libavcodec59 (>= 5.0)
+Section: Multimedia
+Maintainer: @DEB_MAINTAINER@
+Homepage: https://www.videolan.org/vlc/
+Description: multimedia player and streamer (video output plugins)
+ VLC is the VideoLAN project's media player. It plays MPEG, MPEG-2, MPEG-4,
+ DivX, MOV, WMV, QuickTime, WebM, FLAC, MP3, Ogg/Vorbis files, DVDs, VCDs,
+ podcasts, and multimedia streams from various network sources.
+ .
+ This package contains the video output plugins.

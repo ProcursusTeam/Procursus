@@ -1,0 +1,10 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+	upgrade|failed-upgrade)
+	rm -f /tmp/vlc.app_PkgInfo_sip_fs_workaround
+	;;
+esac
+exit 0
