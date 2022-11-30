@@ -455,7 +455,7 @@ CXX             != command -v c++
 CPP             := $(CC) -E
 PATH            := /usr/bin:$(PATH)
 
-CFLAGS_FOR_BUILD   := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
+CFLAGS_FOR_BUILD   := -arch $(shell arch) -miphoneos-version-min=$(shell sw_vers -productVersion)
 CPPFLAGS_FOR_BUILD := $(CFLAGS_FOR_BUILD)
 CXXFLAGS_FOR_BUILD := $(CFLAGS_FOR_BUILD)
 ASFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
