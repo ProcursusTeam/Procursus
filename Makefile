@@ -16,8 +16,8 @@ endif
 # Unset sysroot, we manage that ourselves.
 SYSROOT :=
 
-UNAME           := $(shell uname -s)
-UNAME_M         := $(shell uname -m)
+UNAME           != uname -s
+UNAME_M         != uname -m
 SUBPROJECTS     += $(STRAPPROJECTS)
 
 ifneq ($(shell umask),0022)
@@ -29,7 +29,7 @@ RELATIVE_RPATH       := 0
 MEMO_TARGET          ?= darwin-arm64
 MEMO_CFVER           ?= 1700
 # iOS 13.0 == 1665.15.
-CFVER_WHOLE          := $(shell echo $(MEMO_CFVER) | cut -d. -f1)
+CFVER_WHOLE          != echo $(MEMO_CFVER) | cut -d. -f1
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1800 ] && [ "$(CFVER_WHOLE)" -lt 1900 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 15.0
@@ -427,11 +427,15 @@ ifeq ($(shell sw_vers -productName),macOS) # Swap to Mac OS X for devices older 
 ifneq ($(MEMO_QUIET),1)
 $(warning Building on MacOS)
 endif # ($(MEMO_QUIET),1)
-TARGET_SYSROOT  ?= $(shell xcrun --sdk $(PLATFORM) --show-sdk-path)
-MACOSX_SYSROOT  ?= $(shell xcrun --show-sdk-path)
-CC              := $(shell xcrun --find cc)
-CXX             := $(shell xcrun --find c++)
-CPP             := $(shell xcrun --find cc) -E
+ifeq ($(origin TARGET_SYSROOT), undefined)
+TARGET_SYSROOT  != xcrun --sdk $(PLATFORM) --show-sdk-path
+endif
+ifeq ($(origin MACOSX_SYSROOT), undefined)
+MACOSX_SYSROOT  != xcrun --show-sdk-path
+endif
+CC              != xcrun --find cc
+CXX             != xcrun --find c++
+CPP             := $(CC) -E
 PATH            := /opt/procursus/bin:/opt/procursus/libexec/gnubin:/usr/bin:$(PATH)
 
 CFLAGS_FOR_BUILD   := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
@@ -446,9 +450,9 @@ $(warning Building on iOS)
 endif # ($(MEMO_QUIET),1)
 TARGET_SYSROOT  ?= /usr/share/SDKs/$(BARE_PLATFORM).sdk
 MACOSX_SYSROOT  ?= /usr/share/SDKs/MacOSX.sdk
-CC              := $(shell command -v cc)
-CXX             := $(shell command -v c++)
-CPP             := $(shell command -v cc) -E
+CC              != command -v cc
+CXX             != command -v c++
+CPP             := $(CC) -E
 PATH            := /usr/bin:$(PATH)
 
 CFLAGS_FOR_BUILD   := -arch $(shell arch) -miphoneos-version-min=$(shell sw_vers -productVersion)
@@ -458,16 +462,16 @@ ASFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
 LDFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
 
 endif
-AR              := $(shell command -v ar)
-LD              := $(shell command -v ld)
-RANLIB          := $(shell command -v ranlib)
-STRINGS         := $(shell command -v strings)
-STRIP           := $(shell command -v strip)
-NM              := $(shell command -v nm)
-LIPO            := $(shell command -v lipo)
-OTOOL           := $(shell command -v otool)
-I_N_T           := $(shell command -v install_name_tool)
-LIBTOOL         := $(shell command -v libtool)
+AR              != command -v ar
+LD              != command -v ld
+RANLIB          != command -v ranlib
+STRINGS         != command -v strings
+STRIP           != command -v strip
+NM              != command -v nm
+LIPO            != command -v lipo
+OTOOL           != command -v otool
+I_N_T           != command -v install_name_tool
+LIBTOOL         != command -v libtool
 
 else
 $(error Please use macOS, iOS, Linux, or FreeBSD to build)
@@ -489,6 +493,7 @@ MEMO_CODESIGN_EXTRA_FLAGS ?=
 
 LDID := ldid -Hsha256 -Cadhoc $(MEMO_LDID_EXTRA_FLAGS)
 
+REPO_BASE      != dirname $(realpath $(firstword $(MAKEFILE_LIST)))
 # Root
 BUILD_ROOT     ?= $(PWD)
 # Downloaded source files
@@ -496,11 +501,11 @@ BUILD_SOURCE   := $(BUILD_ROOT)/build_source
 # Base headers/libs (e.g. patched from SDK)
 BUILD_BASE     := $(BUILD_ROOT)/build_base/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Dpkg info storage area
-BUILD_INFO     ?= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_info
+BUILD_INFO     ?= $(REPO_BASE)/build_info
 # Miscellaneous Procursus files
-BUILD_MISC     ?= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_misc
+BUILD_MISC     ?= $(REPO_BASE)/build_misc
 # Patch storage area
-BUILD_PATCH    ?= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_patch
+BUILD_PATCH    ?= $(REPO_BASE)/build_patch
 # Extracted source working directory
 BUILD_WORK     := $(BUILD_ROOT)/build_work/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Bootstrap working area
@@ -510,7 +515,7 @@ BUILD_DIST     := $(BUILD_ROOT)/build_dist/$(MEMO_TARGET)/$(MEMO_CFVER)/work/
 # Actual bootrap staging
 BUILD_STRAP    := $(BUILD_ROOT)/build_strap/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Extra scripts for the buildsystem
-BUILD_TOOLS    ?= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_tools
+BUILD_TOOLS    ?= $(REPO_BASE)/build_tools
 
 ifeq ($(DEBUG),1)
 OPTIMIZATION_FLAGS := -g -O0
@@ -764,10 +769,12 @@ DO_PATCH    = cd $(BUILD_PATCH)/$(1); \
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 SIGN = 	for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
-			if [ $${file\#\#*.} = "dylib" ] || [ $${file\#\#*.} = "bundle" ] || [ $${file\#\#*.} = "so" ]; then \
-				$(LDID) -S $$file; \
-			else \
-				$(LDID) -S$(BUILD_MISC)/entitlements/$(2) $$file; \
+			if [ $${file\#\#*.} != "a" ]; then \
+				if [ $${file\#\#*.} = "dylib" ] || [ $${file\#\#*.} = "bundle" ] || [ $${file\#\#*.} = "so" ]; then \
+					$(LDID) -S $$file; \
+				else \
+					$(LDID) -S$(BUILD_MISC)/entitlements/$(2) $$file; \
+				fi; \
 			fi; \
 		done
 else
@@ -802,25 +809,32 @@ AFTER_BUILD = \
 	if [ ! -z "$(MEMO_PREFIX)" ] && [ -d "$(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" ]; then \
 		rm -f $(BUILD_STAGE)/$$pkg/._lib_cache && touch $(BUILD_STAGE)/$$pkg/._lib_cache; \
 		for file in $$(find $(BUILD_STAGE)/$$pkg -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
-			INSTALL_NAME=$$(otool -D $$file | grep -v ":$$"); \
-			if [ ! -z "$$INSTALL_NAME" ]; then \
-				$(I_N_T) -id @rpath/$$(basename $$INSTALL_NAME) $$file; \
-				echo "$$INSTALL_NAME" >> $(BUILD_STAGE)/$$pkg/._lib_cache; \
+			if [ $${file\#\#*.} != "a" ] && [ $${file\#\#*.} != "dSYM" ]; then \
+				INSTALL_NAME=$$($(OTOOL) -D $$file | grep -v -e ":$$" -e "^Archive :" | head -n1); \
+				if [ ! -z "$$INSTALL_NAME" ]; then \
+					$(I_N_T) -id @rpath/$$(basename $$INSTALL_NAME) $$file; \
+					echo "$$INSTALL_NAME" >> $(BUILD_STAGE)/$$pkg/._lib_cache; \
+				fi; \
 			fi; \
 		done; \
 	fi; \
 	for file in $$(find $(BUILD_STAGE)/$$pkg -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
-		if [ "$(RELATIVE_RPATH)" = "1" ]; then \
-			$(I_N_T) -add_rpath "@loader_path/$$(realpath --relative-to=$$(dirname $$file) $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))/lib" $$file; \
-		else \
-			$(I_N_T) -add_rpath "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" $$file; \
+		if [ $${file\#\#*.} != "a" ] && [ $${file\#\#*.} != "dSYM" ]; then \
+			if [ "$(RELATIVE_RPATH)" = "1" ]; then \
+				$(I_N_T) -add_rpath "@loader_path/$$(realpath --relative-to=$$(dirname $$file) $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))/lib" $$file; \
+			else \
+				$(I_N_T) -add_rpath "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" $$file; \
+				if [ ! -z "$(3)" ]; then \
+					$(I_N_T) -add_rpath "$(3)" $$file; \
+				fi; \
+			fi; \
+			if [ -f $(BUILD_STAGE)/$$pkg/._lib_cache ]; then \
+				cat $(BUILD_STAGE)/$$pkg/._lib_cache | while read line; do \
+					$(I_N_T) -change $$line @rpath/$$(basename $$line) $$file; \
+				done; \
+			fi; \
+			$(STRIP) -x $$file; \
 		fi; \
-		if [ -f $(BUILD_STAGE)/$$pkg/._lib_cache ]; then \
-			cat $(BUILD_STAGE)/$$pkg/._lib_cache | while read line; do \
-				$(I_N_T) -change $$line @rpath/$$(basename $$line) $$file; \
-			done; \
-		fi; \
-		$(STRIP) -x $$file; \
 	done; \
 	rm -f $(BUILD_STAGE)/$$pkg/._lib_cache; \
 	find $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.gz$$' -exec gunzip '{}' \; 2> /dev/null; \
@@ -1104,10 +1118,7 @@ endif
 
 PROCURSUS := 1
 
-all:: package
-	@echo "********** Successfully built debs for $(MEMO_TARGET) **********"
-	@echo "$(SUBPROJECTS)"
-	@MEMO_TARGET="$(MEMO_TARGET)" MEMO_CFVER="$(MEMO_CFVER)" '$(BUILD_TOOLS)/check_gettext.sh'
+all:: help
 
 proenv:
 	@echo -e "proenv() {"
@@ -1437,14 +1448,15 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/bsd/sys/resource.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/bsd/sys/resource.h \
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/bsd/sys/vnioctl.h)
 
 	@# Copy headers from MacOSX.sdk
 	@cp -af $(MACOSX_SYSROOT)/usr/include/{arpa,bsm,hfs,net,xpc,netinet,servers,timeconv.h,launch.h} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	@cp -af $(MACOSX_SYSROOT)/usr/include/objc/objc-runtime.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/objc
 	@cp -af $(MACOSX_SYSROOT)/usr/include/libkern/{OSDebug.h,OSKextLib.h,OSReturn.h,OSThermalNotification.h,OSTypes.h,machine} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern
 	@cp -af $(MACOSX_SYSROOT)/usr/include/kern $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	@cp -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,ptrace,kern*,random,reboot,user,vnode,disk,vmmeter,vnioctl,conf}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys
+	@cp -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,ptrace,kern*,random,reboot,user,vnode,disk,vmmeter,conf}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys
 	@cp -af  $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Versions/Current/Headers/sys/disklabel.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys
 	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit
 	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/Security.framework/Headers/{mds_schema,oidsalg,SecKeychainSearch,certextensions,Authorization,eisl,SecDigestTransform,SecKeychainItem,oidscrl,cssmcspi,CSCommon,cssmaci,SecCode,CMSDecoder,oidscert,SecRequirement,AuthSession,SecReadTransform,oids,cssmconfig,cssmkrapi,SecPolicySearch,SecAccess,cssmtpi,SecACL,SecEncryptTransform,cssmapi,cssmcli,mds,x509defs,oidsbase,SecSignVerifyTransform,cssmspi,cssmkrspi,SecTask,cssmdli,SecAsn1Coder,cssm,SecTrustedApplication,SecCodeHost,SecCustomTransform,oidsattr,SecIdentitySearch,cssmtype,SecAsn1Types,emmtype,SecTransform,SecTrustSettings,SecStaticCode,emmspi,SecTransformReadTransform,SecKeychain,SecDecodeTransform,CodeSigning,AuthorizationPlugin,cssmerr,AuthorizationTags,CMSEncoder,SecEncodeTransform,SecureDownload,SecAsn1Templates,AuthorizationDB,SecCertificateOIDs,cssmapple}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security
@@ -1518,14 +1530,14 @@ define mootext
 ..."Have you mooed today?"...
 endef
 define helptext
-$(MAKE)                        - Compiles the entire Procursus suite and packs it into debian packages.
-$(MAKE) help                   - Display this text
+$(MAKE)                        - Display this text
 $(MAKE) (tool)                 - Used to compile only a specified tool.
 $(MAKE) (tool)-package         - Used to compile only a specified tool and pack it into a debian package.
 $(MAKE) rebuild-(tool)         - Used to recompile only a specified tool after it's already been compiled before.
 $(MAKE) rebuild-(tool)-package - Used to recompile only a specified tool after it's already been compiled before and pack it into a debian package.
 $(MAKE) clean                  - Clean out $(BUILD_STAGE), $(BUILD_BASE), and $(BUILD_WORK).
 $(MAKE) extreme-clean          - Runs `$(MAKE) clean`and cleans out $(BUILD_DIST).
+$(MAKE) package                - Compiles the entire Procursus suite and packs it into debian packages.
 $(MAKE) proenv                 - Print the proenv shell function to STDOUT to give a cross-compilation environment in your POSIX shell (make proenv >> ~/.zshrc)
 $(MAKE) env                    - Print the environment variables inside the makefile
 $(MAKE) (tool)-deps            - Print the dylibs linked by (tool)
