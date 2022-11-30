@@ -6,6 +6,15 @@ SUBPROJECTS    += mpg123
 MPG123_VERSION := 1.26.3
 DEB_MPG123_V   ?= $(MPG123_VERSION)
 
+ifeq ($(MEMO_ARCH),x86_64h)
+MPG123_CPU_TYPE := avx
+else ifeq ($(MEMO_ARCH),x86_64)
+MPG123_CPU_TYPE := x86-64
+else ifneq (,$(findstring arm64,$(MEMO_ARCH)))
+MPG123_CPU_TYPE := aarch64
+else
+MPG123_CPU_TYPE := generic_dither
+endif
 mpg123-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.mpg123.de/download/mpg123-$(MPG123_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,mpg123-$(MPG123_VERSION).tar.bz2,mpg123-$(MPG123_VERSION),mpg123)
@@ -18,7 +27,7 @@ mpg123: mpg123-setup
 	cd $(BUILD_WORK)/mpg123 && ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-audio=coreaudio \
-		--with-cpu=aarch64
+		--with-cpu=$(MPG123_CPU_TYPE)
 	+$(MAKE) -C $(BUILD_WORK)/mpg123 install \
 		DESTDIR=$(BUILD_STAGE)/mpg123
 	$(call AFTER_BUILD,copy)
