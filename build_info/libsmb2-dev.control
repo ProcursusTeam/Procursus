@@ -1,0 +1,13 @@
+Package: libsmb2-dev
+Version: @DEB_LIBSMB2_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Homepage: https://github.com/sahlberg/libnfs
+Description: SMB2/3 client library
+ Libsmb2 is a userspace client library for accessing SMB2/SMB3 shares on 
+ a network. It is high performance and fully async. It supports both 
+ zero-copy for SMB READ/WRITE commands as well as compounded commands.
+ .
+ This package provides the headers and other development files.
