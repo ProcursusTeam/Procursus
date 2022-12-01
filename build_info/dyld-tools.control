@@ -1,0 +1,14 @@
+Package: dyld-tools
+Section: Utilities
+Version: @DEB_DYLD_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Priority: optional
+Description: tools for manipulating dyld-related files
+ dyld-tools is a set of tools to manipulate files related dyld.
+ The follow tools are included in this package:
+  - dyld_info: displays information used by dyld in programs and dylibs
+  - dyld_usage: report dyld activity in real time
+  - dyld_shared_cache_util: get information on or extract dyld3 shared caches
+  - dyld_closure_util: create or view dyld closures
+  - dyld_inspect: inspect the dyld shared cache
