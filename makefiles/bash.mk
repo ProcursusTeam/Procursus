@@ -7,15 +7,14 @@ STRAPPROJECTS   += bash
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += bash
 endif # ($(MEMO_TARGET),darwin-\*)
-BASH_VERSION    := 5.1
-BASH_PATCHLEVEL := 16
+BASH_VERSION    := 5.2
+BASH_PATCHLEVEL := 0
 DEB_BASH_V      ?= $(BASH_VERSION).$(BASH_PATCHLEVEL)
 
 bash-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,bash-$(BASH_VERSION).tar.gz)
 	$(call EXTRACT_TAR,bash-$(BASH_VERSION).tar.gz,bash-$(BASH_VERSION),bash)
-	$(call DO_PATCH,bash,bash,-p0)
 	mkdir -p $(BUILD_STAGE)/bash/$(MEMO_PREFIX)/bin
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 ifneq (,$(MEMO_PREFIX))
@@ -49,9 +48,10 @@ bash: bash-setup ncurses readline
 	cd $(BUILD_WORK)/bash && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-nls \
-		--with-installed-readline=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		--with-installed-readline=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/ \
 		CFLAGS="$(CFLAGS) -DSSH_SOURCE_BASHRC" \
-		$(BASH_CONFIGURE_ARGS)
+		$(BASH_CONFIGURE_ARGS) \
+		bash_cv_getcwd_malloc=yes
 	+$(MAKE) -C $(BUILD_WORK)/bash \
 		TERMCAP_LIB=-lncursesw
 	+$(MAKE) -C $(BUILD_WORK)/bash install \

@@ -2,7 +2,7 @@ Package: bison
 Version: @DEB_BISON_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: m4, libintl8, libreadline8
+Depends: m4, libintl8, libreadline8, libtextstyle0v5
 Section: Development
 Priority: optional
 Description: YACC-compatible parser generator

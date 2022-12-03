@@ -3,12 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += basic-cmds
-BASIC-CMDS_VERSION := 55
-DEB_BASIC-CMDS_V   ?= $(BASIC-CMDS_VERSION)-2
+BASIC-CMDS_VERSION := 67
+DEB_BASIC-CMDS_V   ?= $(BASIC-CMDS_VERSION)
 
 basic-cmds-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://opensource.apple.com/tarballs/basic_cmds/basic_cmds-$(BASIC-CMDS_VERSION).tar.gz)
-	$(call EXTRACT_TAR,basic_cmds-$(BASIC-CMDS_VERSION).tar.gz,basic_cmds-$(BASIC-CMDS_VERSION),basic-cmds)
+	$(call GITHUB_ARCHIVE,apple-oss-distributions,basic_cmds,$(BASIC-CMDS_VERSION),basic_cmds-$(BASIC-CMDS_VERSION))
+	$(call EXTRACT_TAR,basic_cmds-$(BASIC-CMDS_VERSION).tar.gz,basic_cmds-basic_cmds-$(BASIC-CMDS_VERSION),basic-cmds)
 	mkdir -p $(BUILD_STAGE)/basic-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 ifneq ($(wildcard $(BUILD_WORK)/basic-cmds/.build_complete),)
