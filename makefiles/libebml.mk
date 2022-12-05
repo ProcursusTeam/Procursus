@@ -7,7 +7,7 @@ LIBEBML_VERSION := 1.4.2
 DEB_LIBEBML_V   ?= $(LIBEBML_VERSION)
 
 libebml-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://dl.matroska.org/downloads/libebml/libebml-$(LIBEBML_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://dl.matroska.org/downloads/libebml/libebml-$(LIBEBML_VERSION).tar.xz)
 	$(call EXTRACT_TAR,libebml-$(LIBEBML_VERSION).tar.xz,libebml-$(LIBEBML_VERSION),libebml)
 
 ifneq ($(wildcard $(BUILD_WORK)/libebml/.build_complete),)
@@ -22,10 +22,7 @@ libebml: libebml-setup
 	+$(MAKE) -C $(BUILD_WORK)/libebml
 	+$(MAKE) -C $(BUILD_WORK)/libebml install \
 		DESTDIR="$(BUILD_STAGE)/libebml"
-	+$(MAKE) -C $(BUILD_WORK)/libebml install \
-		DESTDIR="$(BUILD_BASE)"
-
-	touch $(BUILD_WORK)/libebml/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libebml-package: libebml-stage

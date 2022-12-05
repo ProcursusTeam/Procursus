@@ -7,7 +7,7 @@ LIBXVIDCORE_VERSION := 1.3.7
 DEB_LIBXVIDCORE_V   ?= $(LIBXVIDCORE_VERSION)
 
 libxvidcore-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://downloads.xvid.com/downloads/xvidcore-$(LIBXVIDCORE_VERSION).tar.bz2
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://downloads.xvid.com/downloads/xvidcore-$(LIBXVIDCORE_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,xvidcore-$(LIBXVIDCORE_VERSION).tar.bz2,xvidcore,libxvidcore)
 
 ifneq ($(wildcard $(BUILD_WORK)/libxvidcore/.build_complete),)
@@ -20,9 +20,7 @@ libxvidcore: libxvidcore-setup
 	+$(MAKE) -C $(BUILD_WORK)/libxvidcore/build/generic
 	+$(MAKE) -C $(BUILD_WORK)/libxvidcore/build/generic install \
 		DESTDIR=$(BUILD_STAGE)/libxvidcore
-	+$(MAKE) -C $(BUILD_WORK)/libxvidcore/build/generic install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libxvidcore/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libxvidcore-package: libxvidcore-stage

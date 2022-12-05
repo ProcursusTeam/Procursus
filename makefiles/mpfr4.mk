@@ -7,7 +7,7 @@ MPFR4_VERSION := 4.1.0
 DEB_MPFR4_V   ?= $(MPFR4_VERSION)
 
 mpfr4-setup: setup
-	wget -q -np -P $(BUILD_SOURCE) https://ftp.gnu.org/gnu/mpfr/mpfr-$(MPFR4_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftp.gnu.org/gnu/mpfr/mpfr-$(MPFR4_VERSION).tar.xz)
 	$(call EXTRACT_TAR,mpfr-$(MPFR4_VERSION).tar.xz,mpfr-$(MPFR4_VERSION),mpfr4)
 
 ifneq ($(wildcard $(BUILD_WORK)/mpfr4/.build_complete),)
@@ -20,9 +20,7 @@ mpfr4: mpfr4-setup libgmp10
 	+$(MAKE) -C $(BUILD_WORK)/mpfr4
 	+$(MAKE) -C $(BUILD_WORK)/mpfr4 install \
 		DESTDIR="$(BUILD_STAGE)/mpfr4"
-	+$(MAKE) -C $(BUILD_WORK)/mpfr4 install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/mpfr4/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 mpfr4-package: mpfr4-stage

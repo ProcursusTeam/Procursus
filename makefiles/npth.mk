@@ -7,7 +7,7 @@ NPTH_VERSION  := 1.6
 DEB_NPTH_V    ?= $(NPTH_VERSION)-2
 
 npth-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/npth/npth-$(NPTH_VERSION).tar.bz2{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://gnupg.org/ftp/gcrypt/npth/npth-$(NPTH_VERSION).tar.bz2{$(comma).sig})
 	$(call PGP_VERIFY,npth-$(NPTH_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,npth-$(NPTH_VERSION).tar.bz2,npth-$(NPTH_VERSION),npth)
 
@@ -21,9 +21,7 @@ npth: npth-setup
 	+$(MAKE) -C $(BUILD_WORK)/npth
 	+$(MAKE) -C $(BUILD_WORK)/npth install \
 		DESTDIR=$(BUILD_STAGE)/npth
-	+$(MAKE) -C $(BUILD_WORK)/npth install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/npth/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 npth-package: npth-stage

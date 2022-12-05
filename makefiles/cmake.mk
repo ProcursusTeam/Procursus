@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += cmake
-CMAKE_VERSION := 3.20.5
+CMAKE_VERSION := 3.22.1
 DEB_CMAKE_V   ?= $(CMAKE_VERSION)
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
@@ -11,7 +11,7 @@ CMAKE_CMAKE_ARGS := -DHAVE_CoreServices:INTERNAL=0
 endif
 
 cmake-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/Kitware/CMake/releases/download/v$(CMAKE_VERSION)/cmake-$(CMAKE_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/Kitware/CMake/releases/download/v$(CMAKE_VERSION)/cmake-$(CMAKE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,cmake-$(CMAKE_VERSION).tar.gz,cmake-$(CMAKE_VERSION),cmake)
 
 ifneq ($(wildcard $(BUILD_WORK)/cmake/.build_complete),)
@@ -40,7 +40,7 @@ cmake: cmake-setup ncurses libuv1 curl libarchive expat xz nghttp2 zstd
 		.
 	+$(MAKE) -C $(BUILD_WORK)/cmake install \
 		DESTDIR="$(BUILD_STAGE)/cmake"
-	touch $(BUILD_WORK)/cmake/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 cmake-package: cmake-stage

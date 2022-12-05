@@ -15,7 +15,7 @@ SED_VERSION   := 4.8
 DEB_SED_V     ?= $(SED_VERSION)-2
 
 sed-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/sed/sed-$(SED_VERSION).tar.xz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/sed/sed-$(SED_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,sed-$(SED_VERSION).tar.xz)
 	$(call EXTRACT_TAR,sed-$(SED_VERSION).tar.xz,sed-$(SED_VERSION),sed)
 
@@ -31,7 +31,7 @@ sed: sed-setup gettext
 	+$(MAKE) -C $(BUILD_WORK)/sed
 	+$(MAKE) -C $(BUILD_WORK)/sed install \
 		DESTDIR=$(BUILD_STAGE)/sed
-	touch $(BUILD_WORK)/sed/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 sed-package: sed-stage
@@ -45,7 +45,7 @@ sed-package: sed-stage
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 	mkdir -p $(BUILD_DIST)/sed/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin
 	for bin in $(BUILD_DIST)/sed/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
-		ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$${bin##/*} $(BUILD_DIST)/sed/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $${bin##/*} | cut -c2-); \
+		$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$${bin##*/} $(BUILD_DIST)/sed/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $${bin##*/} | cut -c2-); \
 	done
 endif
 

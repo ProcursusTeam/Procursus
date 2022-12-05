@@ -4,11 +4,11 @@ endif
 
 SUBPROJECTS    += dialog
 DIALOG_VERSION := 1.3
-DIALOG_DATE    := 20210117
+DIALOG_DATE    := 20220117
 DEB_DIALOG_V   ?= $(DIALOG_VERSION)-$(DIALOG_DATE)
 
 dialog-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://invisible-mirror.net/archives/dialog/dialog-$(DIALOG_VERSION)-$(DIALOG_DATE).tgz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://invisible-mirror.net/archives/dialog/dialog-$(DIALOG_VERSION)-$(DIALOG_DATE).tgz)
 	$(call EXTRACT_TAR,dialog-$(DIALOG_VERSION)-$(DIALOG_DATE).tgz,dialog-$(DIALOG_VERSION)-$(DIALOG_DATE),dialog)
 
 ifneq ($(wildcard $(BUILD_WORK)/dialog/.build_complete),)
@@ -23,7 +23,7 @@ dialog: dialog-setup ncurses gettext
 	+$(MAKE) -C $(BUILD_WORK)/dialog
 	+$(MAKE) -C $(BUILD_WORK)/dialog install-full \
 		DESTDIR=$(BUILD_STAGE)/dialog
-	touch $(BUILD_WORK)/dialog/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 dialog-package: dialog-stage

@@ -7,7 +7,7 @@ XWALLPAPER_VERSION := 0.6.6
 DEB_XWALLPAPER_V   ?= $(XWALLPAPER_VERSION)
 
 xwallpaper-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/stoeckmann/xwallpaper/releases/download/v0.6.6/xwallpaper-0.6.6.tar.xz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/stoeckmann/xwallpaper/releases/download/v0.6.6/xwallpaper-0.6.6.tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,xwallpaper-$(XWALLPAPER_VERSION).tar.xz)
 	$(call EXTRACT_TAR,xwallpaper-$(XWALLPAPER_VERSION).tar.xz,xwallpaper-$(XWALLPAPER_VERSION),xwallpaper)
 
@@ -22,7 +22,7 @@ xwallpaper: xwallpaper-setup xorgproto libjpeg-turbo libpixman libpng16 libx11 x
 	+$(MAKE) -C $(BUILD_WORK)/xwallpaper
 	+$(MAKE) -C $(BUILD_WORK)/xwallpaper install \
 		DESTDIR=$(BUILD_STAGE)/xwallpaper
-	touch $(BUILD_WORK)/xwallpaper/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 xwallpaper-package: xwallpaper-stage

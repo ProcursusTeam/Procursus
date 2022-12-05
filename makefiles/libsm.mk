@@ -7,7 +7,7 @@ LIBSM_VERSION := 1.2.3
 DEB_LIBSM_V   ?= $(LIBSM_VERSION)
 
 libsm-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libSM-$(LIBSM_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libSM-$(LIBSM_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libSM-$(LIBSM_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libSM-$(LIBSM_VERSION).tar.gz,libSM-$(LIBSM_VERSION),libsm)
 
@@ -23,9 +23,7 @@ libsm: libsm-setup xtrans libice uuid
 	+$(MAKE) -C $(BUILD_WORK)/libsm
 	+$(MAKE) -C $(BUILD_WORK)/libsm install \
 		DESTDIR=$(BUILD_STAGE)/libsm
-	+$(MAKE) -C $(BUILD_WORK)/libsm install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libsm/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libsm-package: libsm-stage

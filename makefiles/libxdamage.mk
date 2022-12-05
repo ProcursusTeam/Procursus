@@ -7,7 +7,7 @@ LIBXDAMAGE_VERSION := 1.1.5
 DEB_LIBXDAMAGE_V   ?= $(LIBXDAMAGE_VERSION)
 
 libxdamage-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXdamage-$(LIBXDAMAGE_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libXdamage-$(LIBXDAMAGE_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libXdamage-$(LIBXDAMAGE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXdamage-$(LIBXDAMAGE_VERSION).tar.gz,libXdamage-$(LIBXDAMAGE_VERSION),libxdamage)
 
@@ -21,9 +21,7 @@ libxdamage: libxdamage-setup xorgproto libx11 libxfixes
 	+$(MAKE) -C $(BUILD_WORK)/libxdamage
 	+$(MAKE) -C $(BUILD_WORK)/libxdamage install \
 		DESTDIR=$(BUILD_STAGE)/libxdamage
-	+$(MAKE) -C $(BUILD_WORK)/libxdamage install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxdamage/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libxdamage-package: libxdamage-stage

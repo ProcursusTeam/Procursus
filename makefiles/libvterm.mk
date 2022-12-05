@@ -7,7 +7,7 @@ LIBVTERM_VERSION := 0.1.4
 DEB_LIBVTERM_V   ?= $(LIBVTERM_VERSION)
 
 libvterm-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/libv/libvterm/libvterm_$(LIBVTERM_VERSION).orig.tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://deb.debian.org/debian/pool/main/libv/libvterm/libvterm_$(LIBVTERM_VERSION).orig.tar.gz)
 	$(call EXTRACT_TAR,libvterm_$(LIBVTERM_VERSION).orig.tar.gz,libvterm-$(LIBVTERM_VERSION),libvterm)
 	mkdir -p $(BUILD_WORK)/libvterm/libtool
 	echo -e "AC_INIT([dummy],[1.0])\n\
@@ -28,9 +28,7 @@ libvterm: libvterm-setup
 		LIBTOOL="$(BUILD_WORK)/libvterm/libtool/libtool"
 	+$(MAKE) -C $(BUILD_WORK)/libvterm install PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR="$(BUILD_STAGE)/libvterm"
-	+$(MAKE) -C $(BUILD_WORK)/libvterm install PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libvterm/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libvterm-package: libvterm-stage

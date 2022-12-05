@@ -7,7 +7,7 @@ LIBXT_VERSION := 1.2.1
 DEB_LIBXT_V   ?= $(LIBXT_VERSION)
 
 libxt-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXt-$(LIBXT_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libXt-$(LIBXT_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libXt-$(LIBXT_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXt-$(LIBXT_VERSION).tar.gz,libXt-$(LIBXT_VERSION),libxt)
 
@@ -24,9 +24,7 @@ libxt: libxt-setup libx11 libice libsm
 	+$(MAKE) -C $(BUILD_WORK)/libxt
 	+$(MAKE) -C $(BUILD_WORK)/libxt install \
 		DESTDIR=$(BUILD_STAGE)/libxt
-	+$(MAKE) -C $(BUILD_WORK)/libxt install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxt/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libxt-package: libxt-stage

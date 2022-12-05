@@ -7,7 +7,7 @@ MSGPACK_VERSION := 3.3.0
 DEB_MSGPACK_V   ?= $(MSGPACK_VERSION)
 
 msgpack-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/msgpack/msgpack-c/releases/download/cpp-$(MSGPACK_VERSION)/msgpack-$(MSGPACK_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/msgpack/msgpack-c/releases/download/cpp-$(MSGPACK_VERSION)/msgpack-$(MSGPACK_VERSION).tar.gz)
 	$(call EXTRACT_TAR,msgpack-$(MSGPACK_VERSION).tar.gz,msgpack-$(MSGPACK_VERSION),msgpack)
 
 ifneq ($(wildcard $(BUILD_WORK)/msgpack/.build_complete),)
@@ -22,9 +22,7 @@ msgpack: msgpack-setup
 	+$(MAKE) -C $(BUILD_WORK)/msgpack
 	+$(MAKE) -C $(BUILD_WORK)/msgpack install \
 		DESTDIR="$(BUILD_STAGE)/msgpack"
-	+$(MAKE) -C $(BUILD_WORK)/msgpack install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/msgpack/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 msgpack-package: msgpack-stage

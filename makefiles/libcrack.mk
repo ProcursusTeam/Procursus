@@ -7,8 +7,8 @@ LIBCRACK_VERSION := 2.9.7
 DEB_LIBCRACK_V   ?= $(LIBCRACK_VERSION)
 
 libcrack-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/cracklib/cracklib/releases/download/v$(LIBCRACK_VERSION)/cracklib-$(LIBCRACK_VERSION).tar.gz
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/cracklib/cracklib/releases/download/v$(LIBCRACK_VERSION)/cracklib-words-$(LIBCRACK_VERSION).gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/cracklib/cracklib/releases/download/v$(LIBCRACK_VERSION)/cracklib-$(LIBCRACK_VERSION).tar.gz)
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/cracklib/cracklib/releases/download/v$(LIBCRACK_VERSION)/cracklib-words-$(LIBCRACK_VERSION).gz)
 	$(call EXTRACT_TAR,cracklib-$(LIBCRACK_VERSION).tar.gz,cracklib-$(LIBCRACK_VERSION),libcrack)
 	gzip -dc < $(BUILD_SOURCE)/cracklib-words-$(LIBCRACK_VERSION).gz > $(BUILD_WORK)/libcrack/dicts/libcrack-words
 
@@ -25,7 +25,7 @@ libcrack: libcrack-setup gettext
 	+$(MAKE) -C $(BUILD_WORK)/libcrack install \
 		DESTDIR=$(BUILD_STAGE)/libcrack
 	$(INSTALL) -Dm 644 $(BUILD_WORK)/libcrack/dicts/libcrack-words -t "$(BUILD_STAGE)/libcrack/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/libcrack"
-	touch $(BUILD_WORK)/libcrack/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libcrack-package: libcrack-stage

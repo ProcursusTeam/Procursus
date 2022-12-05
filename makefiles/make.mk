@@ -3,30 +3,23 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += make
-MAKE_VERSION := 4.3
-DEB_MAKE_V   ?= $(MAKE_VERSION)-4
+MAKE_VERSION := 4.4
+DEB_MAKE_V   ?= $(MAKE_VERSION)
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 MAKE_CONFIGURE_ARGS := --program-prefix=$(GNU_PREFIX)
-else
-MAKE_CONFIGURE_ARGS := LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -liosexec"
 endif
 
 make-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/make/make-$(MAKE_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/make/make-$(MAKE_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,make-$(MAKE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,make-$(MAKE_VERSION).tar.gz,make-$(MAKE_VERSION),make)
-	$(call DO_PATCH,make,make,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/make/.build_complete),)
 make:
 	@echo "Using previously built make."
 else
-ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 make: make-setup gettext
-else
-make: make-setup gettext libiosexec
-endif
 	cd $(BUILD_WORK)/make && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-guile=no \
@@ -34,7 +27,7 @@ endif
 	+$(MAKE) -C $(BUILD_WORK)/make
 	+$(MAKE) -C $(BUILD_WORK)/make install \
 		DESTDIR="$(BUILD_STAGE)/make"
-	touch $(BUILD_WORK)/make/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 make-package: make-stage
@@ -48,7 +41,7 @@ make-package: make-stage
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 	mkdir -p $(BUILD_DIST)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin
 	for bin in $(BUILD_DIST)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
-		ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$${bin##/*} $(BUILD_DIST)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $${bin##/*} | cut -c2-); \
+		$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$${bin##*/} $(BUILD_DIST)/make/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $${bin##*/} | cut -c2-); \
 	done
 endif
 

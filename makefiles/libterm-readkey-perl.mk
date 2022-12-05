@@ -7,9 +7,8 @@ LIBTERM-READKEY-PERL_VERSION := 2.38
 DEB_LIBTERM-READKEY-PERL_V   ?= $(LIBTERM-READKEY-PERL_VERSION)
 
 libterm-readkey-perl-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/libterm-readkey-perl-$(LIBTERM-READKEY-PERL_VERSION).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/libterm-readkey-perl-$(LIBTERM-READKEY-PERL_VERSION).tar.gz \
-			https://cpan.metacpan.org/authors/id/J/JS/JSTOWE/TermReadKey-$(LIBTERM-READKEY-PERL_VERSION).tar.gz
+	$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/libterm-readkey-perl-$(LIBTERM-READKEY-PERL_VERSION).tar.gz, \
+		https://cpan.metacpan.org/authors/id/J/JS/JSTOWE/TermReadKey-$(LIBTERM-READKEY-PERL_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libterm-readkey-perl-$(LIBTERM-READKEY-PERL_VERSION).tar.gz,TermReadKey-$(LIBTERM-READKEY-PERL_VERSION),libterm-readkey-perl)
 
 	###
@@ -29,7 +28,7 @@ libterm-readkey-perl: libterm-readkey-perl-setup perl
 		FULLPERLRUNINST="/opt/procursus/bin/perl -I/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR)" \
 		DESTDIR="$(BUILD_STAGE)/libterm-readkey-perl"
 	rm -f $(BUILD_STAGE)/libterm-readkey-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR)/perllocal.pod
-	touch $(BUILD_WORK)/libterm-readkey-perl/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libterm-readkey-perl-package: libterm-readkey-perl-stage

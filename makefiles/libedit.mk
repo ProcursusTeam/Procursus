@@ -4,11 +4,11 @@ endif
 
 STRAPPROJECTS   += libedit
 LIBEDIT_VERSION := 3.1
-LIBEDIT_DATE    := 20210522
+LIBEDIT_DATE    := 20210910
 DEB_LIBEDIT_V   ?= $(LIBEDIT_VERSION)-$(LIBEDIT_DATE)
 
 libedit-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://thrysoee.dk/editline/libedit-$(LIBEDIT_DATE)-$(LIBEDIT_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://thrysoee.dk/editline/libedit-$(LIBEDIT_DATE)-$(LIBEDIT_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libedit-$(LIBEDIT_DATE)-$(LIBEDIT_VERSION).tar.gz,libedit-$(LIBEDIT_DATE)-$(LIBEDIT_VERSION),libedit)
 
 ifneq ($(wildcard $(BUILD_WORK)/libedit/.build_complete),)
@@ -23,9 +23,7 @@ libedit: libedit-setup ncurses
 		LIBS=-lncursesw
 	+$(MAKE) -C $(BUILD_WORK)/libedit install \
 		DESTDIR="$(BUILD_STAGE)/libedit"
-	+$(MAKE) -C $(BUILD_WORK)/libedit install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libedit/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libedit-package: libedit-stage

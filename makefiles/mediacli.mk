@@ -7,7 +7,7 @@ MEDIACLI_VERSION := 1.2
 DEB_MEDIACLI_V   ?= $(MEDIACLI_VERSION)
 
 mediacli-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/absidue/mediacli/releases/download/v$(MEDIACLI_VERSION)/mediacli-$(MEDIACLI_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/absidue/mediacli/releases/download/v$(MEDIACLI_VERSION)/mediacli-$(MEDIACLI_VERSION).tar.xz)
 	$(call EXTRACT_TAR,mediacli-$(MEDIACLI_VERSION).tar.xz,mediacli-$(MEDIACLI_VERSION),mediacli)
 
 ifneq ($(wildcard $(BUILD_WORK)/mediacli/.build_complete),)
@@ -19,7 +19,7 @@ mediacli: mediacli-setup
 	+$(MAKE) -C $(BUILD_WORK)/mediacli install \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR=$(BUILD_STAGE)/mediacli
-	touch $(BUILD_WORK)/mediacli/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 mediacli-package: mediacli-stage

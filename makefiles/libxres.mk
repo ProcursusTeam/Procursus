@@ -7,7 +7,7 @@ LIBXRES_VERSION := 1.2.1
 DEB_LIBXRES_V   ?= $(LIBXRES_VERSION)
 
 libxres-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/lib/libXres-$(LIBXRES_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.x.org/archive/individual/lib/libXres-$(LIBXRES_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libXres-$(LIBXRES_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXres-$(LIBXRES_VERSION).tar.gz,libXres-$(LIBXRES_VERSION),libxres)
 
@@ -22,9 +22,7 @@ libxres: libxres-setup libx11 libxext
 	+$(MAKE) -C $(BUILD_WORK)/libxres
 	+$(MAKE) -C $(BUILD_WORK)/libxres install \
 		DESTDIR=$(BUILD_STAGE)/libxres
-	+$(MAKE) -C $(BUILD_WORK)/libxres install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxres/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libxres-package: libxres-stage

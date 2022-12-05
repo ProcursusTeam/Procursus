@@ -5,7 +5,7 @@ endif
 SUBPROJECTS         += libipatcher
 LIBIPATCHER_VERSION := 81
 LIBIPATCHER_COMMIT  := ad44d0da23f5120c3c77a72062bd627c50f37e71
-DEB_LIBIPATCHER_V   ?= $(LIBIPATCHER_VERSION)-1
+DEB_LIBIPATCHER_V   ?= $(LIBIPATCHER_VERSION)-2
 
 libipatcher-setup: setup
 	$(call GITHUB_ARCHIVE,tihmstar,libipatcher,$(LIBIPATCHER_VERSION),$(LIBIPATCHER_VERSION))
@@ -17,11 +17,11 @@ libipatcher-setup: setup
 	$(call EXTRACT_TAR,jssy-master.tar.gz,jssy-master,libipatcher/external/jssy)
 	$(call EXTRACT_TAR,iBoot32Patcher-master.tar.gz,iBoot32Patcher-master,libipatcher/external/iBoot32Patcher)
 
-	$(SED) -i '/AC_FUNC_MALLOC/d' $(BUILD_WORK)/libipatcher/configure.ac
-	$(SED) -i '/AC_FUNC_REALLOC/d' $(BUILD_WORK)/libipatcher/configure.ac
-	$(SED) -i 's|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/lib/|$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib|g' $(BUILD_WORK)/libipatcher/libipatcher/Makefile.am
-	$(SED) -i 's/git rev\-list \-\-count HEAD/printf ${LIBIPATCHER_VERSION}/g' $(BUILD_WORK)/libipatcher/configure.ac
-	$(SED) -i 's/git rev\-parse HEAD/printf ${LIBIPATCHER_COMMIT}/g' $(BUILD_WORK)/libipatcher/configure.ac
+	sed -i '/AC_FUNC_MALLOC/d' $(BUILD_WORK)/libipatcher/configure.ac
+	sed -i '/AC_FUNC_REALLOC/d' $(BUILD_WORK)/libipatcher/configure.ac
+	sed -i 's|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/lib/|$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib|g' $(BUILD_WORK)/libipatcher/libipatcher/Makefile.am
+	sed -i 's/git rev\-list \-\-count HEAD/printf ${LIBIPATCHER_VERSION}/g' $(BUILD_WORK)/libipatcher/configure.ac
+	sed -i 's/git rev\-parse HEAD/printf ${LIBIPATCHER_COMMIT}/g' $(BUILD_WORK)/libipatcher/configure.ac
 
 ifneq ($(wildcard $(BUILD_WORK)/libipatcher/.build_complete),)
 libipatcher:
@@ -37,9 +37,7 @@ libipatcher: libipatcher-setup libpng16 openssl img4tool liboffsetfinder64 libge
 		LIBS="-lcurl"
 	+$(MAKE) -C $(BUILD_WORK)/libipatcher install \
 		DESTDIR="$(BUILD_STAGE)/libipatcher"
-	+$(MAKE) -C $(BUILD_WORK)/libipatcher install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libipatcher/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libipatcher-package: libipatcher-stage

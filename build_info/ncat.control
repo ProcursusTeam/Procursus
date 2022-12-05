@@ -1,0 +1,14 @@
+Package: ncat
+Version: @DEB_NMAP_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libpcre1, libssl3, nmap-common (= @DEB_NMAP_V@), liblua5.3-0
+Conflicts: nmap-utils
+Replaces: nmap-utils
+Section: Networking
+Priority: optional
+Description: NMAP netcat reimplementation
+ ncat is a reimplementation of Netcat by the NMAP project, providing 
+ most of the features present in the original implementations, along 
+ with some new features such as IPv6 and SSL support. Port scanning 
+ support has been removed.

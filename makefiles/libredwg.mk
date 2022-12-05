@@ -7,7 +7,7 @@ LIBREDWG_VERSION := 0.12
 DEB_LIBREDWG_V   ?= $(LIBREDWG_VERSION)
 
 libredwg-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://mirror.its.dal.ca/gnu/libredwg/libredwg-$(LIBREDWG_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://mirror.its.dal.ca/gnu/libredwg/libredwg-$(LIBREDWG_VERSION).tar.xz)
 	$(call EXTRACT_TAR,libredwg-$(LIBREDWG_VERSION).tar.xz,libredwg-$(LIBREDWG_VERSION),libredwg)
 
 ifneq ($(wildcard $(BUILD_WORK)/libredwg/.build_complete),)
@@ -20,9 +20,7 @@ libredwg: libredwg-setup
 	+$(MAKE) -C $(BUILD_WORK)/libredwg
 	+$(MAKE) -C $(BUILD_WORK)/libredwg install \
 		DESTDIR=$(BUILD_STAGE)/libredwg
-	+$(MAKE) -C $(BUILD_WORK)/libredwg install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libredwg/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libredwg-package: libredwg-stage

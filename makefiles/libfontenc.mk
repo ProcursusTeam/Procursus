@@ -7,7 +7,7 @@ LIBFONTENC_VERSION := 1.1.4
 DEB_LIBFONTENC_V   ?= $(LIBFONTENC_VERSION)
 
 libfontenc-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libfontenc-$(LIBFONTENC_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libfontenc-$(LIBFONTENC_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libfontenc-$(LIBFONTENC_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libfontenc-$(LIBFONTENC_VERSION).tar.gz,libfontenc-$(LIBFONTENC_VERSION),libfontenc)
 
@@ -21,9 +21,7 @@ libfontenc: libfontenc-setup
 	+$(MAKE) -C $(BUILD_WORK)/libfontenc
 	+$(MAKE) -C $(BUILD_WORK)/libfontenc install \
 		DESTDIR=$(BUILD_STAGE)/libfontenc
-	+$(MAKE) -C $(BUILD_WORK)/libfontenc install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libfontenc/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libfontenc-package: libfontenc-stage

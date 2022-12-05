@@ -7,8 +7,8 @@ LIBSNDFILE_VERSION := 1.0.31
 DEB_LIBSNDFILE_V   ?= $(LIBSNDFILE_VERSION)
 
 libsndfile-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) \
-		https://github.com/libsndfile/libsndfile/releases/download/$(LIBSNDFILE_VERSION)/libsndfile-$(LIBSNDFILE_VERSION).tar.bz2
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
+		https://github.com/libsndfile/libsndfile/releases/download/$(LIBSNDFILE_VERSION)/libsndfile-$(LIBSNDFILE_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libsndfile-$(LIBSNDFILE_VERSION).tar.bz2,libsndfile-$(LIBSNDFILE_VERSION),libsndfile)
 
 ifneq ($(wildcard $(BUILD_WORK)/libsndfile/.build_complete),)
@@ -21,9 +21,7 @@ libsndfile: libsndfile-setup flac libogg libvorbis libopus
 	+$(MAKE) -C $(BUILD_WORK)/libsndfile
 	+$(MAKE) -C $(BUILD_WORK)/libsndfile install \
 		DESTDIR=$(BUILD_STAGE)/libsndfile
-	+$(MAKE) -C $(BUILD_WORK)/libsndfile install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libsndfile/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libsndfile-package: libsndfile-stage

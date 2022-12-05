@@ -7,11 +7,11 @@ LIBOGG_VERSION := 1.3.4
 DEB_LIBOGG_V   ?= $(LIBOGG_VERSION)
 
 libogg-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://downloads.xiph.org/releases/ogg/libogg-$(LIBOGG_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://downloads.xiph.org/releases/ogg/libogg-$(LIBOGG_VERSION).tar.xz)
 	$(call EXTRACT_TAR,libogg-$(LIBOGG_VERSION).tar.xz,libogg-$(LIBOGG_VERSION),libogg)
 
 	# don't build the html docs
-	$(SED) -ri 's/(SUBDIRS = .*)doc(.*)/\1 \2/' $(BUILD_WORK)/libogg/Makefile.in
+	sed -ri 's/(SUBDIRS = .*)doc(.*)/\1 \2/' $(BUILD_WORK)/libogg/Makefile.in
 
 	# Fix typedefs, remove in next version
 	$(call DO_PATCH,libogg,libogg,-p1)
@@ -27,9 +27,7 @@ libogg: libogg-setup
 	+$(MAKE) -C $(BUILD_WORK)/libogg
 	+$(MAKE) -C $(BUILD_WORK)/libogg install \
 		DESTDIR=$(BUILD_STAGE)/libogg
-	+$(MAKE) -C $(BUILD_WORK)/libogg install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libogg/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libogg-package: libogg-stage

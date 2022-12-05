@@ -4,11 +4,11 @@ endif
 
 SUBPROJECTS     += dmg2img
 DMG2IMG_VERSION := 1.6.7
-DEB_DMG2IMG_V   ?= $(DMG2IMG_VERSION)
+DEB_DMG2IMG_V   ?= $(DMG2IMG_VERSION)-1
 
 dmg2img-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/d/dmg2img/dmg2img_$(DMG2IMG_VERSION).orig.tar.gz
-	$(call EXTRACT_TAR,dmg2img_$(DMG2IMG_VERSION).orig.tar.gz,dmg2img-$(DMG2IMG_VERSION),dmg2img)
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://vu1tur.eu.org/tools/dmg2img-$(DMG2IMG_VERSION).tar.gz)
+	$(call EXTRACT_TAR,dmg2img-$(DMG2IMG_VERSION).tar.gz,dmg2img-$(DMG2IMG_VERSION),dmg2img)
 	$(call DO_PATCH,dmg2img,dmg2img,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/dmg2img/.build_complete),)
@@ -23,7 +23,7 @@ dmg2img: dmg2img-setup openssl
 		DESTDIR="$(BUILD_STAGE)/dmg2img"
 	$(INSTALL) -Dm644 $(BUILD_WORK)/dmg2img/vfdecrypt.1 $(BUILD_STAGE)/dmg2img/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/vfdecrypt.1
 	$(INSTALL) -Dm644 $(BUILD_INFO)/dmg2img.1 $(BUILD_STAGE)/dmg2img/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/dmg2img.1
-	touch $(BUILD_WORK)/dmg2img/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 dmg2img-package: dmg2img-stage

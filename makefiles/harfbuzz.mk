@@ -9,6 +9,7 @@ DEB_HARFBUZZ_V   ?= $(HARFBUZZ_VERSION)
 harfbuzz-setup: setup
 	$(call GITHUB_ARCHIVE,harfbuzz,harfbuzz,$(HARFBUZZ_VERSION),$(HARFBUZZ_VERSION))
 	$(call EXTRACT_TAR,harfbuzz-$(HARFBUZZ_VERSION).tar.gz,harfbuzz-$(HARFBUZZ_VERSION),harfbuzz)
+	sed -i 's/supp_size;/__unused supp_size;/' $(BUILD_WORK)/harfbuzz/src/hb-subset-cff1.cc
 
 ifneq ($(wildcard $(BUILD_WORK)/harfbuzz/.build_complete),)
 harfbuzz:
@@ -25,13 +26,11 @@ harfbuzz: harfbuzz-setup cairo freetype glib2.0 graphite2 icu4c fontconfig
 		--with-icu \
 		--with-graphite2 \
 		--with-coretext \
-		--enable-introspection=no # Remove this when introspection is proper.
+		--enable-introspection=no
 	+$(MAKE) -C $(BUILD_WORK)/harfbuzz
 	+$(MAKE) -C $(BUILD_WORK)/harfbuzz install \
 		DESTDIR="$(BUILD_STAGE)/harfbuzz"
-	+$(MAKE) -C $(BUILD_WORK)/harfbuzz install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/harfbuzz/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 harfbuzz-package: harfbuzz-stage

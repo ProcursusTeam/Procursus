@@ -7,7 +7,7 @@ LIBXPM_VERSION := 3.5.13
 DEB_LIBXPM_V   ?= $(LIBXPM_VERSION)
 
 libxpm-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXpm-$(LIBXPM_VERSION).tar.bz2{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libXpm-$(LIBXPM_VERSION).tar.bz2{$(comma).sig})
 	$(call PGP_VERIFY,libXpm-$(LIBXPM_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libXpm-$(LIBXPM_VERSION).tar.bz2,libXpm-$(LIBXPM_VERSION),libxpm)
 
@@ -21,9 +21,7 @@ libxpm: libxpm-setup libx11 xorgproto libxt libxext gettext
 	+$(MAKE) -C $(BUILD_WORK)/libxpm
 	+$(MAKE) -C $(BUILD_WORK)/libxpm install \
 		DESTDIR=$(BUILD_STAGE)/libxpm
-	+$(MAKE) -C $(BUILD_WORK)/libxpm install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxpm/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libxpm-package: libxpm-stage

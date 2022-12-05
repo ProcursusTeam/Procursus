@@ -2,12 +2,12 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS  += gnuchess
-GNUCHESS_VERSION := 6.2.7
-DEB_GNUCHESS_V   ?= $(GNUCHESS_VERSION)-2
+SUBPROJECTS      += gnuchess
+GNUCHESS_VERSION := 6.2.9
+DEB_GNUCHESS_V   ?= $(GNUCHESS_VERSION)
 
 gnuchess-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://mirror.its.dal.ca/gnu/chess/gnuchess-$(GNUCHESS_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://mirror.its.dal.ca/gnu/chess/gnuchess-$(GNUCHESS_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,gnuchess-$(GNUCHESS_VERSION).tar.gz)
 	$(call EXTRACT_TAR,gnuchess-$(GNUCHESS_VERSION).tar.gz,gnuchess-$(GNUCHESS_VERSION),gnuchess)
 
@@ -24,7 +24,7 @@ gnuchess: gnuchess-setup ncurses readline gettext
 		LIBS="-lreadline -lncursesw"
 	+$(MAKE) -C $(BUILD_WORK)/gnuchess install \
 		DESTDIR=$(BUILD_STAGE)/gnuchess
-	touch $(BUILD_WORK)/gnuchess/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 gnuchess-package: gnuchess-stage

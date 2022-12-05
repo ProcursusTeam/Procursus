@@ -7,7 +7,7 @@ HELP2MAN_VERSION  := 1.48.3
 DEB_HELP2MAN_V    ?= $(HELP2MAN_VERSION)
 
 help2man-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://mirrors.kernel.org/gnu/help2man/help2man-$(HELP2MAN_VERSION).tar.xz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://mirrors.kernel.org/gnu/help2man/help2man-$(HELP2MAN_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,help2man-$(HELP2MAN_VERSION).tar.xz)
 	$(call EXTRACT_TAR,help2man-$(HELP2MAN_VERSION).tar.xz,help2man-$(HELP2MAN_VERSION),help2man)
 
@@ -21,10 +21,9 @@ help2man: help2man-setup gettext
 	+$(MAKE) -C $(BUILD_WORK)/help2man
 	+$(MAKE) -C $(BUILD_WORK)/help2man install \
 		DESTDIR=$(BUILD_STAGE)/help2man
-	+$(MAKE) -C $(BUILD_WORK)/help2man install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/help2man/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
+
 help2man-package: help2man-stage
 	# help2man.mk Package Structure
 	rm -rf $(BUILD_DIST)/help2man

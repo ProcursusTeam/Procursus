@@ -5,10 +5,10 @@ endif
 SUBPROJECTS += berkeleydb
 # Berkeleydb requires registration on Oracle's website, so this is a mirror.
 BDB_VERSION := 18.1.40
-DEB_BDB_V   ?= $(BDB_VERSION)
+DEB_BDB_V   ?= $(BDB_VERSION)-1
 
 berkeleydb-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://fossies.org/linux/misc/db-$(BDB_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://fossies.org/linux/misc/db-$(BDB_VERSION).tar.gz)
 	$(call EXTRACT_TAR,db-$(BDB_VERSION).tar.gz,db-$(BDB_VERSION),berkeleydb)
 	$(call DO_PATCH,berkeleydb,berkeleydb,-p1)
 
@@ -30,10 +30,8 @@ berkeleydb: berkeleydb-setup gettext openssl
 		--with-mutex=Darwin/_spin_lock_try
 	+$(MAKE) -C $(BUILD_WORK)/berkeleydb/build_unix
 	+$(MAKE) -C $(BUILD_WORK)/berkeleydb/build_unix install \
-		DESTDIR=$(BUILD_STAGE)/berkeleydb
-	+$(MAKE) -C $(BUILD_WORK)/berkeleydb/build_unix install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/berkeleydb/.build_complete
+		DESTDIR=$(BUILD_STAGE)/berkeleydb 
+	$(call AFTER_BUILD,copy)
 endif
 
 berkeleydb-package: berkeleydb-stage

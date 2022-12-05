@@ -7,7 +7,7 @@ MPCLIB3_VERSION := 1.2.1
 DEB_MPCLIB3_V   ?= $(MPCLIB3_VERSION)
 
 mpclib3-setup: setup
-	wget -q -np -P $(BUILD_SOURCE) https://ftp.gnu.org/gnu/mpc/mpc-$(MPCLIB3_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftp.gnu.org/gnu/mpc/mpc-$(MPCLIB3_VERSION).tar.gz)
 	$(call EXTRACT_TAR,mpc-$(MPCLIB3_VERSION).tar.gz,mpc-$(MPCLIB3_VERSION),mpclib3)
 
 ifneq ($(wildcard $(BUILD_WORK)/mpclib3/.build_complete),)
@@ -20,9 +20,7 @@ mpclib3: mpclib3-setup libgmp10 mpfr4
 	+$(MAKE) -C $(BUILD_WORK)/mpclib3
 	+$(MAKE) -C $(BUILD_WORK)/mpclib3 install \
 		DESTDIR="$(BUILD_STAGE)/mpclib3"
-	+$(MAKE) -C $(BUILD_WORK)/mpclib3 install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/mpclib3/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 mpclib3-package: mpclib3-stage

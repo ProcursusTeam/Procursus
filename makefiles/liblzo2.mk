@@ -7,7 +7,7 @@ LIBLZO2_VERSION := 2.10
 DEB_LIBLZO2_V   ?= $(LIBLZO2_VERSION)
 
 liblzo2-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.oberhumer.com/opensource/lzo/download/lzo-$(LIBLZO2_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.oberhumer.com/opensource/lzo/download/lzo-$(LIBLZO2_VERSION).tar.gz)
 	$(call EXTRACT_TAR,lzo-$(LIBLZO2_VERSION).tar.gz,lzo-$(LIBLZO2_VERSION),liblzo2)
 
 ifneq ($(wildcard $(BUILD_WORK)/liblzo2/.build_complete),)
@@ -22,9 +22,7 @@ liblzo2: liblzo2-setup
 	+$(MAKE) -C $(BUILD_WORK)/liblzo2
 	+$(MAKE) -C $(BUILD_WORK)/liblzo2 install \
 		DESTDIR=$(BUILD_STAGE)/liblzo2
-	+$(MAKE) -C $(BUILD_WORK)/liblzo2 install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/liblzo2/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 liblzo2-package: liblzo2-stage

@@ -7,7 +7,7 @@ SLANG2_VERSION := 2.3.2
 DEB_SLANG2_V   ?= $(SLANG2_VERSION)
 
 slang2-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.jedsoft.org/releases/slang/slang-$(SLANG2_VERSION).tar.bz2{,.asc}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.jedsoft.org/releases/slang/slang-$(SLANG2_VERSION).tar.bz2{$(comma).asc})
 	$(call PGP_VERIFY,slang-$(SLANG2_VERSION).tar.bz2,asc)
 	$(call EXTRACT_TAR,slang-$(SLANG2_VERSION).tar.bz2,slang-$(SLANG2_VERSION),slang2)
 
@@ -26,9 +26,7 @@ slang2: slang2-setup libpng16 pcre libonig
 	+$(MAKE) -C $(BUILD_WORK)/slang2 all
 	+$(MAKE) -C $(BUILD_WORK)/slang2 -j1 install \
 		DESTDIR=$(BUILD_STAGE)/slang2
-	+$(MAKE) -C $(BUILD_WORK)/slang2 -j1 install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/slang2/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 slang2-package: slang2-stage

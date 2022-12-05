@@ -7,7 +7,7 @@ LIBONIG_VERSION := 6.9.6
 DEB_LIBONIG_V   ?= $(LIBONIG_VERSION)
 
 libonig-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/kkos/oniguruma/releases/download/v$(LIBONIG_VERSION)/onig-$(LIBONIG_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/kkos/oniguruma/releases/download/v$(LIBONIG_VERSION)/onig-$(LIBONIG_VERSION).tar.gz)
 	$(call EXTRACT_TAR,onig-$(LIBONIG_VERSION).tar.gz,onig-$(LIBONIG_VERSION),libonig)
 
 ifneq ($(wildcard $(BUILD_WORK)/libonig/.build_complete),)
@@ -19,9 +19,7 @@ libonig: libonig-setup
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libonig install \
 		DESTDIR=$(BUILD_STAGE)/libonig
-	+$(MAKE) -C $(BUILD_WORK)/libonig install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libonig/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libonig-package: libonig-stage

@@ -7,7 +7,7 @@ LIBXDMCP_VERSION := 1.1.3
 DEB_LIBXDMCP_V   ?= $(LIBXDMCP_VERSION)
 
 libxdmcp-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/lib/libXdmcp-$(LIBXDMCP_VERSION).tar.bz2
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.x.org/archive/individual/lib/libXdmcp-$(LIBXDMCP_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libXdmcp-$(LIBXDMCP_VERSION).tar.bz2,libXdmcp-$(LIBXDMCP_VERSION),libxdmcp)
 
 ifneq ($(wildcard $(BUILD_WORK)/libxdmcp/.build_complete),)
@@ -20,9 +20,7 @@ libxdmcp: libxdmcp-setup xorgproto
 		--enable-docs=no
 	+$(MAKE) -C $(BUILD_WORK)/libxdmcp install \
 		DESTDIR="$(BUILD_STAGE)/libxdmcp"
-	+$(MAKE) -C $(BUILD_WORK)/libxdmcp install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libxdmcp/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libxdmcp-package: libxdmcp-stage

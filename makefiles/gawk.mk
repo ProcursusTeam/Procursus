@@ -7,7 +7,7 @@ GAWK_VERSION := 5.1.0
 DEB_GAWK_V   ?= $(GAWK_VERSION)-2
 
 gawk-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gawk/gawk-$(GAWK_VERSION).tar.xz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/gawk/gawk-$(GAWK_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,gawk-$(GAWK_VERSION).tar.xz)
 	$(call EXTRACT_TAR,gawk-$(GAWK_VERSION).tar.xz,gawk-$(GAWK_VERSION),gawk)
 
@@ -23,7 +23,7 @@ gawk: gawk-setup gettext mpfr4 libgmp10
 		DESTDIR=$(BUILD_STAGE)/gawk
 	rm -f $(BUILD_STAGE)/gawk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*awk-*
 	rm -f $(BUILD_STAGE)/gawk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/awk
-	touch $(BUILD_WORK)/gawk/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 gawk-package: gawk-stage

@@ -3,15 +3,15 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += libwebp
-LIBWEBP_VERSION := 1.2.0
+LIBWEBP_VERSION := 1.2.2
 DEB_LIBWEBP_V   ?= $(LIBWEBP_VERSION)
 
 libwebp-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/libwebp-$(LIBWEBP_VERSION).tar.gz" ] && wget -q -nc -L -O$(BUILD_SOURCE)/libwebp-$(LIBWEBP_VERSION).tar.gz \
-		https://chromium.googlesource.com/webm/libwebp/+archive/refs/heads/$(LIBWEBP_VERSION).tar.gz
+	$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/libwebp-$(LIBWEBP_VERSION).tar.gz, \
+		https://chromium.googlesource.com/webm/libwebp/+archive/refs/heads/$(LIBWEBP_VERSION).tar.gz)
 	# Fuck this lib.
 	mkdir -p $(BUILD_WORK)/libwebp
-	$(TAR) xf $(BUILD_SOURCE)/libwebp-$(LIBWEBP_VERSION).tar.gz -C $(BUILD_WORK)/libwebp
+	tar xf $(BUILD_SOURCE)/libwebp-$(LIBWEBP_VERSION).tar.gz -C $(BUILD_WORK)/libwebp
 
 ifneq ($(wildcard $(BUILD_WORK)/libwebp/.build_complete),)
 libwebp:
@@ -25,9 +25,7 @@ libwebp: libwebp-setup libpng16 libgif libtiff libjpeg-turbo
 	+$(MAKE) -C $(BUILD_WORK)/libwebp
 	+$(MAKE) -C $(BUILD_WORK)/libwebp install \
 		DESTDIR="$(BUILD_STAGE)/libwebp"
-	+$(MAKE) -C $(BUILD_WORK)/libwebp install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libwebp/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libwebp-package: libwebp-stage

@@ -8,7 +8,7 @@ DEB_FFF_V   ?= $(FFF_VERSION)
 
 fff-setup: setup
 	$(call GITHUB_ARCHIVE,dylanaraps,fff,$(FFF_VERSION),$(FFF_VERSION))
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/dylanaraps/fff/archive/$(FFF_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/dylanaraps/fff/archive/$(FFF_VERSION).tar.gz)
 	$(call EXTRACT_TAR,fff-$(FFF_VERSION).tar.gz,fff-$(FFF_VERSION),fff)
 
 ifneq ($(wildcard $(BUILD_WORK)/fff/.build_complete),)
@@ -19,7 +19,7 @@ fff: fff-setup
 	+$(MAKE) -C $(BUILD_WORK)/fff install \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR=$(BUILD_STAGE)/fff
-	touch $(BUILD_WORK)/fff/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 fff-package: fff-stage

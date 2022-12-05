@@ -18,7 +18,7 @@ DEB_@PKG@_V   ?= $(@PKG@_VERSION)
 	endian = 'little'\n \
 	[properties]\n \
 	root = '$(BUILD_BASE)'\n \
-	[paths]\n \
+	[built-in options]\n \
 	prefix ='$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
 	sysconfdir='$(MEMO_PREFIX)/etc'\n \
 	localstatedir='$(MEMO_PREFIX)/var'\n \
@@ -38,22 +38,22 @@ else
 	+ninja -C $(BUILD_WORK)/@pkg@/build
 	+ninja -C $(BUILD_WORK)/@pkg@/build install \
 		DESTDIR="$(BUILD_STAGE)/@pkg@"
-	touch $(BUILD_WORK)/@pkg@/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 @pkg@-package: @pkg@-stage
 	# @pkg@.mk Package Structure
 	rm -rf $(BUILD_DIST)/@pkg@
-	
+
 	# @pkg@.mk Prep @pkg@
 	cp -a $(BUILD_STAGE)/@pkg@ $(BUILD_DIST)
-	
+
 	# @pkg@.mk Sign
 	$(call SIGN,@pkg@,general.xml)
-	
+
 	# @pkg@.mk Make .debs
 	$(call PACK,@pkg@,DEB_@PKG@_V)
-	
+
 	# @pkg@.mk Build cleanup
 	rm -rf $(BUILD_DIST)/@pkg@
 

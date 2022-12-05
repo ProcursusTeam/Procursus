@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += libsrt
-LIBSRT_VERSION := 1.4.3
+LIBSRT_VERSION := 1.4.4
 DEB_LIBSRT_V   ?= $(LIBSRT_VERSION)
 
 libsrt-setup: setup
@@ -23,9 +23,7 @@ libsrt: libsrt-setup openssl
 		-DWITH_OPENSSL_LIBDIR=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	+$(MAKE) -C $(BUILD_WORK)/libsrt install \
 		DESTDIR=$(BUILD_STAGE)/libsrt
-	+$(MAKE) -C $(BUILD_WORK)/libsrt install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libsrt/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libsrt-package: libsrt-stage

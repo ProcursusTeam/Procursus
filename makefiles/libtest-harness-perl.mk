@@ -7,9 +7,8 @@ LIBTEST-HARNESS-PERL_VERSION := 3.42
 DEB_LIBTEST-HARNESS-PERL_V   ?= $(LIBTEST-HARNESS-PERL_VERSION)
 
 libtest-harness-perl-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/libtest-harness-perl-$(LIBTEST-HARNESS-PERL_VERSION).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/libtest-harness-perl-$(LIBTEST-HARNESS-PERL_VERSION).tar.gz \
-			https://cpan.metacpan.org/authors/id/L/LE/LEONT/Test-Harness-$(LIBTEST-HARNESS-PERL_VERSION).tar.gz
+	$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/libtest-harness-perl-$(LIBTEST-HARNESS-PERL_VERSION).tar.gz, \
+		https://cpan.metacpan.org/authors/id/L/LE/LEONT/Test-Harness-$(LIBTEST-HARNESS-PERL_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libtest-harness-perl-$(LIBTEST-HARNESS-PERL_VERSION).tar.gz,Test-Harness-$(LIBTEST-HARNESS-PERL_VERSION),libtest-harness-perl)
 
 ifneq ($(wildcard $(BUILD_WORK)/libtest-harness-perl/.build_complete),)
@@ -23,7 +22,7 @@ libtest-harness-perl: libtest-harness-perl-setup perl
 	+$(MAKE) -C $(BUILD_WORK)/libtest-harness-perl install \
 		DESTDIR="$(BUILD_STAGE)/libtest-harness-perl"
 	rm -rf $(BUILD_STAGE)/libtest-harness-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	touch $(BUILD_WORK)/libtest-harness-perl/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libtest-harness-perl-package: libtest-harness-perl-stage

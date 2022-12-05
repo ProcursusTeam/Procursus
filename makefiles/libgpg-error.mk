@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS        += libgpg-error
-LIBGPG-ERROR_VERSION := 1.42
+LIBGPG-ERROR_VERSION := 1.45
 DEB_LIBGPG-ERROR_V   ?= $(LIBGPG-ERROR_VERSION)
 
 ifneq (,$(findstring aarch64,$(GNU_HOST_TRIPLE)))
@@ -17,26 +17,22 @@ else
 endif
 
 libgpg-error-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-$(LIBGPG-ERROR_VERSION).tar.bz2{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-$(LIBGPG-ERROR_VERSION).tar.bz2{$(comma).sig})
 	$(call PGP_VERIFY,libgpg-error-$(LIBGPG-ERROR_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libgpg-error-$(LIBGPG-ERROR_VERSION).tar.bz2,libgpg-error-$(LIBGPG-ERROR_VERSION),libgpg-error)
-	$(call DO_PATCH,libgpg-error,libgpg-error,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/libgpg-error/.build_complete),)
 libgpg-error:
 	@echo "Using previously built libgpg-error."
 else
 libgpg-error: libgpg-error-setup gettext
-	$(SED) -i '/{"armv7-unknown-linux-gnueabihf"  },/a \ \ \ \ {"$(GNU_HOST_TRIPLE)",  "$(GPG_SCHEME)" },' $(BUILD_WORK)/libgpg-error/src/mkheader.c
+	sed -i '/{"armv7-unknown-linux-gnueabihf"  },/a \ \ \ \ {"$(GNU_HOST_TRIPLE)",  "$(GPG_SCHEME)" },' $(BUILD_WORK)/libgpg-error/src/mkheader.c
 	cd $(BUILD_WORK)/libgpg-error && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libgpg-error install \
 		DESTDIR=$(BUILD_STAGE)/libgpg-error \
 		TESTS=""
-	+$(MAKE) -C $(BUILD_WORK)/libgpg-error install \
-		DESTDIR=$(BUILD_BASE) \
-		TESTS=""
-	touch $(BUILD_WORK)/libgpg-error/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libgpg-error-package: libgpg-error-stage
@@ -48,7 +44,7 @@ libgpg-error-package: libgpg-error-stage
 	# libgpg-error.mk Prep libgpg-error
 	cp -a $(BUILD_STAGE)/libgpg-error/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgpg-error.0.dylib $(BUILD_DIST)/libgpg-error0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libgpg-error/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libgpg-error-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libgpg-error/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libgpg-error.dylib,pkgconfig} $(BUILD_DIST)/libgpg-error-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libgpg-error/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libgpg-error.0.dylib) $(BUILD_DIST)/libgpg-error-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libgpg-error/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/gpgrt-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libgpg-error.mk Sign

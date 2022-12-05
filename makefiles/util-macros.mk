@@ -7,7 +7,7 @@ UTILMACROS_VERSION := 1.19.2
 DEB_UTILMACROS_V   ?= $(UTILMACROS_VERSION)
 
 util-macros-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://xorg.freedesktop.org/releases/individual/util/util-macros-$(UTILMACROS_VERSION).tar.bz2{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://xorg.freedesktop.org/releases/individual/util/util-macros-$(UTILMACROS_VERSION).tar.bz2{$(comma).sig})
 	$(call PGP_VERIFY,util-macros-$(UTILMACROS_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,util-macros-$(UTILMACROS_VERSION).tar.bz2,util-macros-$(UTILMACROS_VERSION),util-macros)
 
@@ -22,9 +22,7 @@ util-macros: util-macros-setup
 	+$(MAKE) -C $(BUILD_WORK)/util-macros
 	+$(MAKE) -C $(BUILD_WORK)/util-macros install \
 		DESTDIR=$(BUILD_STAGE)/util-macros
-	+$(MAKE) -C $(BUILD_WORK)/util-macros install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/util-macros/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 

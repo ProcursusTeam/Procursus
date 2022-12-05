@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += libidn2
-IDN2_VERSION  := 2.3.0
-DEB_IDN2_V    ?= $(IDN2_VERSION)-3
+IDN2_VERSION  := 2.3.2
+DEB_IDN2_V    ?= $(IDN2_VERSION)
 
 libidn2-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/libidn/libidn2-$(IDN2_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/libidn/libidn2-$(IDN2_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libidn2-$(IDN2_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libidn2-$(IDN2_VERSION).tar.gz,libidn2-$(IDN2_VERSION),libidn2)
 
@@ -21,9 +21,7 @@ libidn2: libidn2-setup gettext libunistring
 	+$(MAKE) -C $(BUILD_WORK)/libidn2
 	+$(MAKE) -C $(BUILD_WORK)/libidn2 install \
 		DESTDIR=$(BUILD_STAGE)/libidn2
-	+$(MAKE) -C $(BUILD_WORK)/libidn2 install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libidn2/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libidn2-package: libidn2-stage

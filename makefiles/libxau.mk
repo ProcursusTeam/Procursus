@@ -7,7 +7,7 @@ LIBXAU_VERSION := 1.0.9
 DEB_LIBXAU_V   ?= $(LIBXAU_VERSION)-1
 
 libxau-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXau-$(LIBXAU_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libXau-$(LIBXAU_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libXau-$(LIBXAU_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXau-$(LIBXAU_VERSION).tar.gz,libXau-$(LIBXAU_VERSION),libxau)
 
@@ -21,9 +21,7 @@ libxau: libxau-setup xorgproto
 	+$(MAKE) -C $(BUILD_WORK)/libxau
 	+$(MAKE) -C $(BUILD_WORK)/libxau install \
 		DESTDIR=$(BUILD_STAGE)/libxau
-	+$(MAKE) -C $(BUILD_WORK)/libxau install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxau/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libxau-package: libxau-stage

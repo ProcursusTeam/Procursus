@@ -7,7 +7,7 @@ LIBXFONT2_VERSION := 2.0.4
 DEB_LIBXFONT2_V   ?= $(LIBXFONT2_VERSION)
 
 libxfont2-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXfont2-$(LIBXFONT2_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libXfont2-$(LIBXFONT2_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libXfont2-$(LIBXFONT2_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXfont2-$(LIBXFONT2_VERSION).tar.gz,libXfont2-$(LIBXFONT2_VERSION),libxfont2)
 
@@ -27,9 +27,7 @@ libxfont2: libxfont2-setup xorgproto xtrans util-macros freetype libfontenc
 	+$(MAKE) -C $(BUILD_WORK)/libxfont2
 	+$(MAKE) -C $(BUILD_WORK)/libxfont2 install \
 		DESTDIR=$(BUILD_STAGE)/libxfont2
-	+$(MAKE) -C $(BUILD_WORK)/libxfont2 install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxfont2/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libxfont2-package: libxfont2-stage

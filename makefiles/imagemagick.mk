@@ -13,7 +13,7 @@ DEB_IMAGEMAGICK_V   ?= $(shell echo $(IMAGEMAGICK_VERSION) | sed s/-/./)
 ###
 
 imagemagick-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.imagemagick.org/download/releases/ImageMagick-$(IMAGEMAGICK_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.imagemagick.org/download/releases/ImageMagick-$(IMAGEMAGICK_VERSION).tar.xz)
 	$(call EXTRACT_TAR,ImageMagick-$(IMAGEMAGICK_VERSION).tar.xz,ImageMagick-$(IMAGEMAGICK_VERSION),imagemagick)
 
 ifneq ($(wildcard $(BUILD_WORK)/imagemagick/.build_complete),)
@@ -46,13 +46,11 @@ imagemagick: imagemagick-setup openexr fontconfig freetype glib2.0 ghostscript l
 		ac_cv_prog_c_openmp=-Xpreprocessor\ -fopenmp \
 		ac_cv_prog_cxx_openmp=-Xpreprocessor\ -fopenmp \
 		LDFLAGS="$(LDFLAGS) -lomp -lz"
-	$(SED) -i 's/|-fopenmp//' $(BUILD_WORK)/imagemagick/libtool
+	sed -i 's/|-fopenmp//' $(BUILD_WORK)/imagemagick/libtool
 	+$(MAKE) -C $(BUILD_WORK)/imagemagick
 	+$(MAKE) -C $(BUILD_WORK)/imagemagick install \
 		DESTDIR=$(BUILD_STAGE)/imagemagick
-	+$(MAKE) -C $(BUILD_WORK)/imagemagick install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/imagemagick/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 imagemagick-package: imagemagick-stage

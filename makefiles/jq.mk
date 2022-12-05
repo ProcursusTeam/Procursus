@@ -2,12 +2,12 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += jq
+SUBPROJECTS  += jq
 JQ_VERSION   := 1.6
 DEB_JQ_V     ?= $(JQ_VERSION)
 
 jq-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/stedolan/jq/releases/download/jq-$(JQ_VERSION)/jq-$(JQ_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/stedolan/jq/releases/download/jq-$(JQ_VERSION)/jq-$(JQ_VERSION).tar.gz)
 	$(call EXTRACT_TAR,jq-$(JQ_VERSION).tar.gz,jq-$(JQ_VERSION),jq)
 
 ifneq ($(wildcard $(BUILD_WORK)/jq/.build_complete),)
@@ -26,26 +26,26 @@ jq: jq-setup libonig
 		DESTDIR=$(BUILD_STAGE)/jq
 	+$(MAKE) -C $(BUILD_WORK)/jq install \
 		DESTDIR=$(BUILD_STAGE)/jq
-	touch $(BUILD_WORK)/jq/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 jq-package: jq-stage
 	# jq.mk Package Structure
 	rm -rf $(BUILD_DIST)/{jq,libjq-dev,libjq1}
-	mkdir -p $(BUILD_DIST)/jq/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
+	mkdir -p $(BUILD_DIST)/jq/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} \
 			$(BUILD_DIST)/libjq-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib} \
 			$(BUILD_DIST)/libjq1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# jq.mk Prep jq
 	cp -a $(BUILD_STAGE)/jq/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/jq $(BUILD_DIST)/jq/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/jq/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/jq.1 $(BUILD_DIST)/jq/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/jq/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/jq/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/
 
 	# jq.mk Prep libjq-dev
 	cp -a $(BUILD_STAGE)/jq/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/{jq.h,jv.h} $(BUILD_DIST)/libjq-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	cp -a $(BUILD_STAGE)/jq/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjq.dylib $(BUILD_DIST)/libjq-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/jq/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjq.{dylib,a} $(BUILD_DIST)/libjq-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# jq.mk Prep libjq1
-	cp -a $(BUILD_STAGE)/jq/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjq.{a,1.dylib} $(BUILD_DIST)/libjq1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/jq/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjq.1.dylib $(BUILD_DIST)/libjq1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# jq.mk Sign
 	$(call SIGN,jq,general.xml)

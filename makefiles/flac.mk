@@ -7,7 +7,7 @@ FLAC_VERSION := 1.3.3
 DEB_FLAC_V   ?= $(FLAC_VERSION)
 
 flac-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftp.osuosl.org/pub/xiph/releases/flac/flac-$(FLAC_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftp.osuosl.org/pub/xiph/releases/flac/flac-$(FLAC_VERSION).tar.xz)
 	$(call EXTRACT_TAR,flac-$(FLAC_VERSION).tar.xz,flac-$(FLAC_VERSION),flac)
 
 ifneq ($(wildcard $(BUILD_WORK)/flac/.build_complete),)
@@ -28,9 +28,7 @@ flac: flac-setup libogg
 	+$(MAKE) -C $(BUILD_WORK)/flac
 	+$(MAKE) -C $(BUILD_WORK)/flac install \
 		DESTDIR=$(BUILD_STAGE)/flac
-	+$(MAKE) -C $(BUILD_WORK)/flac install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/flac/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 flac-package: flac-stage

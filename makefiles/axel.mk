@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += axel
-AXEL_VERSION := 2.17.10
+AXEL_VERSION := 2.17.11
 DEB_AXEL_V   ?= $(AXEL_VERSION)
 
 axel-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/axel-download-accelerator/axel/releases/download/v$(AXEL_VERSION)/axel-$(AXEL_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/axel-download-accelerator/axel/releases/download/v$(AXEL_VERSION)/axel-$(AXEL_VERSION).tar.xz)
 	$(call EXTRACT_TAR,axel-$(AXEL_VERSION).tar.xz,axel-$(AXEL_VERSION),axel)
 
 ifneq ($(wildcard $(BUILD_WORK)/axel/.build_complete),)
@@ -19,7 +19,7 @@ axel: axel-setup gettext openssl
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/axel install \
 		DESTDIR="$(BUILD_STAGE)/axel"
-	touch $(BUILD_WORK)/axel/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 axel-package: axel-stage

@@ -7,7 +7,7 @@ JOE_VERSION := 4.6
 DEB_JOE_V   ?= $(JOE_VERSION)
 
 joe-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://sourceforge.net/projects/joe-editor/files/JOE%20sources/joe-$(JOE_VERSION)/joe-$(JOE_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://sourceforge.net/projects/joe-editor/files/JOE%20sources/joe-$(JOE_VERSION)/joe-$(JOE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,joe-$(JOE_VERSION).tar.gz,joe-$(JOE_VERSION),joe)
 
 ifneq ($(wildcard $(BUILD_WORK)/joe/.build_complete),)
@@ -20,7 +20,7 @@ joe: joe-setup ncurses
 	+$(MAKE) -C $(BUILD_WORK)/joe
 	+$(MAKE) -C $(BUILD_WORK)/joe install \
 		DESTDIR=$(BUILD_STAGE)/joe
-	touch $(BUILD_WORK)/joe/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 joe-package: joe-stage

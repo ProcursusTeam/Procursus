@@ -7,7 +7,7 @@ ISL_VERSION := 0.23
 DEB_ISL_V   ?= $(ISL_VERSION)
 
 isl-setup: setup
-	wget -q -np -P $(BUILD_SOURCE) http://isl.gforge.inria.fr/isl-$(ISL_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://isl.gforge.inria.fr/isl-$(ISL_VERSION).tar.xz)
 	$(call EXTRACT_TAR,isl-$(ISL_VERSION).tar.xz,isl-$(ISL_VERSION),isl)
 
 ifneq ($(wildcard $(BUILD_WORK)/isl/.build_complete),)
@@ -20,9 +20,7 @@ isl: isl-setup libgmp10
 	+$(MAKE) -C $(BUILD_WORK)/isl
 	+$(MAKE) -C $(BUILD_WORK)/isl install \
 		DESTDIR="$(BUILD_STAGE)/isl"
-	+$(MAKE) -C $(BUILD_WORK)/isl install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/isl/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 isl-package: isl-stage

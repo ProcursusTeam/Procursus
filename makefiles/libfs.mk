@@ -7,7 +7,7 @@ LIBFS_VERSION := 1.0.8
 DEB_LIBFS_V   ?= $(LIBFS_VERSION)
 
 libfs-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libFS-$(LIBFS_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libFS-$(LIBFS_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libFS-$(LIBFS_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libFS-$(LIBFS_VERSION).tar.gz,libFS-$(LIBFS_VERSION),libfs)
 
@@ -22,9 +22,7 @@ libfs: libfs-setup xorgproto xtrans
 	+$(MAKE) -C $(BUILD_WORK)/libfs
 	+$(MAKE) -C $(BUILD_WORK)/libfs install \
 		DESTDIR=$(BUILD_STAGE)/libfs
-	+$(MAKE) -C $(BUILD_WORK)/libfs install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libfs/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libfs-package: libfs-stage

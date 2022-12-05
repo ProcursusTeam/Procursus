@@ -7,7 +7,7 @@ HELLO_VERSION := 2.10
 DEB_HELLO_V   ?= $(HELLO_VERSION)
 
 hello-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://ftpmirror.gnu.org/gnu/hello/hello-$(HELLO_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://ftpmirror.gnu.org/gnu/hello/hello-$(HELLO_VERSION).tar.gz)
 	$(call EXTRACT_TAR,hello-$(HELLO_VERSION).tar.gz,hello-$(HELLO_VERSION),hello)
 	$(call DO_PATCH,hello,hello,-p1)
 
@@ -21,23 +21,23 @@ hello: hello-setup
 	+$(MAKE) -C $(BUILD_WORK)/hello
 	+$(MAKE) -C $(BUILD_WORK)/hello install \
 		DESTDIR=$(BUILD_STAGE)/hello
-	touch $(BUILD_WORK)/hello/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 hello-package: hello-stage
 	# hello.mk Package Structure
 	rm -rf $(BUILD_DIST)/hello
 	mkdir -p $(BUILD_DIST)/hello
-	
+
 	# hello.mk Prep hello
 	cp -a $(BUILD_STAGE)/hello $(BUILD_DIST)
-	
+
 	# hello.mk Sign
 	$(call SIGN,hello,general.xml)
-	
+
 	# hello.mk Make .debs
 	$(call PACK,hello,DEB_HELLO_V)
-	
+
 	# hello.mk Build cleanup
 	rm -rf $(BUILD_DIST)/hello
 

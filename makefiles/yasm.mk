@@ -7,7 +7,7 @@ YASM_VERSION := 1.3.0
 DEB_YASM_V   ?= $(YASM_VERSION)
 
 yasm-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.tortall.net/projects/yasm/releases/yasm-$(YASM_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.tortall.net/projects/yasm/releases/yasm-$(YASM_VERSION).tar.gz)
 	$(call EXTRACT_TAR,yasm-$(YASM_VERSION).tar.gz,yasm-$(YASM_VERSION),yasm)
 
 ifneq ($(wildcard $(BUILD_WORK)/yasm/.build_complete),)
@@ -22,9 +22,7 @@ yasm: yasm-setup
 	+$(MAKE) -C $(BUILD_WORK)/yasm
 	+$(MAKE) -C $(BUILD_WORK)/yasm install \
 		DESTDIR=$(BUILD_STAGE)/yasm
-	+$(MAKE) -C $(BUILD_WORK)/yasm install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/yasm/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 yasm-package: yasm-stage

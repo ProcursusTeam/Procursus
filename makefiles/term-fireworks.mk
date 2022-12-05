@@ -7,7 +7,7 @@ TERM-FIREWORKS_VERSION := 1.0.4
 DEB_TERM-FIREWORKS_V   ?= $(TERM-FIREWORKS_VERSION)
 
 term-fireworks-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://gitlab.com/DarrienG/term-fireworks/-/archive/v$(TERM-FIREWORKS_VERSION)/term-fireworks-v$(TERM-FIREWORKS_VERSION).tar.bz2
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://gitlab.com/DarrienG/term-fireworks/-/archive/v$(TERM-FIREWORKS_VERSION)/term-fireworks-v$(TERM-FIREWORKS_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,term-fireworks-v$(TERM-FIREWORKS_VERSION).tar.bz2,term-fireworks-v$(TERM-FIREWORKS_VERSION),term-fireworks)
 	$(call DO_PATCH,term-fireworks,term-fireworks,-p1)
 
@@ -21,7 +21,7 @@ term-fireworks: term-fireworks-setup
 		--target=$(RUST_TARGET)
 	$(INSTALL) -Dm775 $(BUILD_WORK)/term-fireworks/target/$(RUST_TARGET)/release/fireworks \
 		$(BUILD_STAGE)/term-fireworks/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/fireworks
-	touch $(BUILD_WORK)/term-fireworks/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 term-fireworks-package: term-fireworks-stage

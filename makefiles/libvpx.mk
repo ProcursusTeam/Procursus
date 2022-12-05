@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += libvpx
-LIBVPX_VERSION := 1.10.0
+LIBVPX_VERSION := 1.11.0
 DEB_LIBVPX_V   ?= $(LIBVPX_VERSION)
 
 ifneq (,$(findstring arm64,$(MEMO_TARGET)))
@@ -19,6 +19,7 @@ endif
 libvpx-setup: setup
 	$(call GITHUB_ARCHIVE,webmproject,libvpx,$(LIBVPX_VERSION),v$(LIBVPX_VERSION))
 	$(call EXTRACT_TAR,libvpx-$(LIBVPX_VERSION).tar.gz,libvpx-$(LIBVPX_VERSION),libvpx)
+	sed -i 's/\[ "$$(show_darwin_sdk_major_version iphoneos)" -gt 8 \]/false/' $(BUILD_WORK)/libvpx/build/make/configure.sh
 
 ifneq ($(wildcard $(BUILD_WORK)/libvpx/.build_complete),)
 libvpx:
@@ -41,43 +42,40 @@ libvpx: libvpx-setup
 	+$(MAKE) -C $(BUILD_WORK)/libvpx
 	+$(MAKE) -C $(BUILD_WORK)/libvpx install \
 		DESTDIR=$(BUILD_STAGE)/libvpx
-	+$(MAKE) -C $(BUILD_WORK)/libvpx install \
-		DESTDIR=$(BUILD_BASE)
 
 	for bin in $(BUILD_STAGE)/libvpx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
-		$(I_N_T) -change libvpx.6.dylib /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib $$bin; \
+		$(I_N_T) -change libvpx.7.dylib /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.7.dylib $$bin; \
 	done
-	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib $(BUILD_STAGE)/libvpx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib
-	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib
-	touch $(BUILD_WORK)/libvpx/.build_complete
+	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.7.dylib $(BUILD_STAGE)/libvpx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.7.dylib
+	$(call AFTER_BUILD,copy)
 endif
 
 libvpx-package: libvpx-stage
 	# libvpx.mk Package Structure
-	rm -rf $(BUILD_DIST)/libvpx{6,-dev} $(BUILD_DIST)/vpx-tools
-	mkdir -p $(BUILD_DIST)/libvpx{6,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+	rm -rf $(BUILD_DIST)/libvpx{7,-dev} $(BUILD_DIST)/vpx-tools
+	mkdir -p $(BUILD_DIST)/libvpx{7,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/vpx-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
-	# libvpx.mk Prep libvpx6
-	cp -a $(BUILD_STAGE)/libvpx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.6.dylib $(BUILD_DIST)/libvpx6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	# libvpx.mk Prep libvpx7
+	cp -a $(BUILD_STAGE)/libvpx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libvpx.7.dylib $(BUILD_DIST)/libvpx7/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libvpx.mk Prep libvpx-dev
-	cp -a $(BUILD_STAGE)/libvpx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libvpx.6.dylib) $(BUILD_DIST)/libvpx-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libvpx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libvpx.7.dylib) $(BUILD_DIST)/libvpx-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libvpx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libvpx-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libvpx.mk Prep vpx-tools
 	cp -a $(BUILD_STAGE)/libvpx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/vpx-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libvpx.mk Sign
-	$(call SIGN,libvpx6,general.xml)
+	$(call SIGN,libvpx7,general.xml)
 	$(call SIGN,vpx-tools,general.xml)
 
 	# libvpx.mk Make .debs
-	$(call PACK,libvpx6,DEB_LIBVPX_V)
+	$(call PACK,libvpx7,DEB_LIBVPX_V)
 	$(call PACK,libvpx-dev,DEB_LIBVPX_V)
 	$(call PACK,vpx-tools,DEB_LIBVPX_V)
 
 	# libvpx.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libvpx{6,-dev} $(BUILD_DIST)/vpx-tools
+	rm -rf $(BUILD_DIST)/libvpx{7,-dev} $(BUILD_DIST)/vpx-tools
 
 .PHONY: libvpx libvpx-package

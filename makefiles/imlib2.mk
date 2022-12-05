@@ -7,7 +7,7 @@ IMLIB2_VERSION := 1.7.1
 DEB_IMLIB2_V   ?= $(IMLIB2_VERSION)
 
 imlib2-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://downloads.sourceforge.net/project/enlightenment/imlib2-src/$(IMLIB2_VERSION)/imlib2-$(IMLIB2_VERSION).tar.bz2
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://downloads.sourceforge.net/project/enlightenment/imlib2-src/$(IMLIB2_VERSION)/imlib2-$(IMLIB2_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,imlib2-$(IMLIB2_VERSION).tar.bz2,imlib2-$(IMLIB2_VERSION),imlib2)
 
 ifneq ($(wildcard $(BUILD_WORK)/imlib2/.build_complete),)
@@ -22,9 +22,7 @@ imlib2: imlib2-setup freetype libgif libjpeg-turbo libpng16 libtiff libx11 libxc
 	+$(MAKE) -C $(BUILD_WORK)/imlib2
 	+$(MAKE) -C $(BUILD_WORK)/imlib2 install \
 		DESTDIR=$(BUILD_STAGE)/imlib2
-	+$(MAKE) -C $(BUILD_WORK)/imlib2 install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/imlib2/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 imlib2-package: imlib2-stage

@@ -3,22 +3,23 @@ $(error Use the main Makefile)
 endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-STRAPPROJECTS += bash
+STRAPPROJECTS   += bash
 else # ($(MEMO_TARGET),darwin-\*)
-SUBPROJECTS   += bash
+SUBPROJECTS     += bash
 endif # ($(MEMO_TARGET),darwin-\*)
-BASH_VERSION  := 5.1
-BASH_SUB_V    := 008
-DEB_BASH_V    ?= $(BASH_VERSION).$(BASH_SUB_V)
+BASH_VERSION    := 5.2
+BASH_PATCHLEVEL := 0
+DEB_BASH_V      ?= $(BASH_VERSION).$(BASH_PATCHLEVEL)
 
 bash-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,bash-$(BASH_VERSION).tar.gz)
 	$(call EXTRACT_TAR,bash-$(BASH_VERSION).tar.gz,bash-$(BASH_VERSION),bash)
 	mkdir -p $(BUILD_STAGE)/bash/$(MEMO_PREFIX)/bin
-	$(call DO_PATCH,bash,bash,-p0)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(SED) -i '1s/^/#include <libiosexec.h>\n/' $(BUILD_WORK)/bash/execute_cmd.h
+ifneq (,$(MEMO_PREFIX))
+	sed -i 's|/etc/profile|$(MEMO_PREFIX)/etc/profile|' $(BUILD_WORK)/bash/pathnames.h.in
+endif
 BASH_CONFIGURE_ARGS := ac_cv_c_stack_direction=-1 \
 	ac_cv_func_mmap_fixed_mapped=yes \
 	ac_cv_func_setvbuf_reversed=no \
@@ -36,34 +37,29 @@ BASH_CONFIGURE_ARGS := ac_cv_c_stack_direction=-1 \
 	bash_cv_must_reinstall_sighandlers=no \
 	bash_cv_sys_named_pipes=present \
 	bash_cv_sys_siglist=yes \
-	gt_cv_int_divbyzero_sigfpe=no \
-	LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -liosexec"
+	gt_cv_int_divbyzero_sigfpe=no
 endif
 
 ifneq ($(wildcard $(BUILD_WORK)/bash/.build_complete),)
 bash:
 	@echo "Using previously built bash."
 else
-ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 bash: bash-setup ncurses readline
-else
-bash: bash-setup ncurses readline libiosexec
-endif
 	cd $(BUILD_WORK)/bash && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-nls \
-		--with-installed-readline=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		--with-installed-readline=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/ \
 		CFLAGS="$(CFLAGS) -DSSH_SOURCE_BASHRC" \
-		$(BASH_CONFIGURE_ARGS)
+		$(BASH_CONFIGURE_ARGS) \
+		bash_cv_getcwd_malloc=yes
 	+$(MAKE) -C $(BUILD_WORK)/bash \
-		CC_FOR_BUILD='$(shell which cc)' \
 		TERMCAP_LIB=-lncursesw
 	+$(MAKE) -C $(BUILD_WORK)/bash install \
 		DESTDIR="$(BUILD_STAGE)/bash"
 ifneq ($(MEMO_SUB_PREFIX),)
-	ln -s $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bash $(BUILD_STAGE)/bash/$(MEMO_PREFIX)/bin/bash
+	$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/bash $(BUILD_STAGE)/bash/$(MEMO_PREFIX)/bin/bash
 endif
-	touch $(BUILD_WORK)/bash/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 bash-package: bash-stage

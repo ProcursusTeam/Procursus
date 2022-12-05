@@ -7,7 +7,7 @@ LIBXCB_VERSION := 1.14
 DEB_LIBXCB_V   ?= $(LIBXCB_VERSION)
 
 libxcb-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libxcb-$(LIBXCB_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libxcb-$(LIBXCB_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libxcb-$(LIBXCB_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libxcb-$(LIBXCB_VERSION).tar.gz,libxcb-$(LIBXCB_VERSION),libxcb)
 
@@ -28,11 +28,7 @@ libxcb: libxcb-setup xcb-proto libxau libxdmcp libpthread-stubs
 		DESTDIR=$(BUILD_STAGE)/libxcb \
 		XCBPROTO_XCBPYTHONDIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3/dist-packages" \
 		XCBPROTO_XCBINCLUDEDIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/xcb"
-	+$(MAKE) -C $(BUILD_WORK)/libxcb install \
-		DESTDIR=$(BUILD_BASE) \
-		XCBPROTO_XCBPYTHONDIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3/dist-packages" \
-		XCBPROTO_XCBINCLUDEDIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/xcb"
-	touch $(BUILD_WORK)/libxcb/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libxcb-package: libxcb-stage

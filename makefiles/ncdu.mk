@@ -7,7 +7,7 @@ NCDU_VERSION := 1.15.1
 DEB_NCDU_V   ?= $(NCDU_VERSION)
 
 ncdu-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://dev.yorhel.nl/download/ncdu-$(NCDU_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://dev.yorhel.nl/download/ncdu-$(NCDU_VERSION).tar.gz)
 	$(call EXTRACT_TAR,ncdu-$(NCDU_VERSION).tar.gz,ncdu-$(NCDU_VERSION),ncdu)
 
 ifneq ($(wildcard $(BUILD_WORK)/ncdu/.build_complete),)
@@ -20,7 +20,7 @@ ncdu: ncdu-setup ncurses
 	+$(MAKE) -C $(BUILD_WORK)/ncdu
 	+$(MAKE) -C $(BUILD_WORK)/ncdu install \
 		DESTDIR=$(BUILD_STAGE)/ncdu
-	touch $(BUILD_WORK)/ncdu/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 ncdu-package: ncdu-stage

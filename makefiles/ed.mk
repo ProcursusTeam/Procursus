@@ -7,7 +7,7 @@ ED_VERSION  := 1.17
 DEB_ED_V    ?= $(ED_VERSION)
 
 ed-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/ed/ed-$(ED_VERSION).tar.lz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/ed/ed-$(ED_VERSION).tar.lz{$(comma).sig})
 	$(call PGP_VERIFY,ed-$(ED_VERSION).tar.lz)
 	$(call EXTRACT_TAR,ed-$(ED_VERSION).tar.lz,ed-$(ED_VERSION),ed)
 
@@ -25,10 +25,9 @@ ed: ed-setup
 	+$(MAKE) -C $(BUILD_WORK)/ed
 	+$(MAKE) -C $(BUILD_WORK)/ed install -j1 \
 		DESTDIR=$(BUILD_STAGE)/ed
-	+$(MAKE) -C $(BUILD_WORK)/ed install -j1 \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/ed/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
+
 ed-package: ed-stage
 	# ed.mk Package Structure
 	rm -rf $(BUILD_DIST)/ed

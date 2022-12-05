@@ -8,7 +8,7 @@ EXPAT_FORMAT_V := 2_2_10
 DEB_EXPAT_V    ?= $(EXPAT_VERSION)
 
 expat-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libexpat/libexpat/releases/download/R_$(EXPAT_FORMAT_V)/expat-$(EXPAT_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/libexpat/libexpat/releases/download/R_$(EXPAT_FORMAT_V)/expat-$(EXPAT_VERSION).tar.xz)
 	$(call EXTRACT_TAR,expat-$(EXPAT_VERSION).tar.xz,expat-$(EXPAT_VERSION),expat)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1700 ] && echo 1),1)
@@ -24,9 +24,7 @@ expat: expat-setup
 	+$(MAKE) -C $(BUILD_WORK)/expat
 	+$(MAKE) -C $(BUILD_WORK)/expat install \
 		DESTDIR=$(BUILD_STAGE)/expat
-	+$(MAKE) -C $(BUILD_WORK)/expat install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/expat/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 expat-package: expat-stage

@@ -7,8 +7,8 @@ MARIADB_VERSION := 10.5.9
 DEB_MARIADB_V   ?= $(MARIADB_VERSION)
 
 mariadb-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) \
-		https://downloads.mariadb.com/MariaDB/mariadb-$(MARIADB_VERSION)/source/mariadb-$(MARIADB_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
+		https://downloads.mariadb.com/MariaDB/mariadb-$(MARIADB_VERSION)/source/mariadb-$(MARIADB_VERSION).tar.gz)
 	$(call EXTRACT_TAR,mariadb-$(MARIADB_VERSION).tar.gz,mariadb-$(MARIADB_VERSION),mariadb)
 	$(call DO_PATCH,mariadb,mariadb,-p1)
 
@@ -26,8 +26,8 @@ mariadb-import-executables: mariadb-setup
 	# https://mariadb.com/kb/en/cross-compiling-mariadb/
 	cd $(BUILD_WORK)/mariadb/host \
 	&& unset CFLAGS CPPFLAGS CXXFLAGS LDFLAGS && \
-			CC=$(shell which cc) \
-			CXX=$(shell which c++) \
+			CC=$(shell command -v cc) \
+			CXX=$(shell command -v c++) \
 			cmake .. \
 				-DSTACK_DIRECTION=1 \
 		&& make import_executables
@@ -88,9 +88,7 @@ mariadb: mariadb-import-executables openssl ncurses readline libevent curl lz4 l
 	+$(MAKE) -C $(BUILD_WORK)/mariadb
 	+$(MAKE) -C $(BUILD_WORK)/mariadb install \
 		DESTDIR="$(BUILD_STAGE)/mariadb"
-	+$(MAKE) -C $(BUILD_WORK)/mariadb/{libmariadb,libmysqld,libservices,include} install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/mariadb/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 mariadb-package: mariadb-stage

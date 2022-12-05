@@ -7,7 +7,7 @@ XCB-UTIL-KEYSYMS_VERSION := 0.4.0
 DEB_XCB-UTIL-KEYSYMS_V   ?= $(XCB-UTIL-KEYSYMS_VERSION)
 
 xcb-util-keysyms-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/xcb/xcb-util-keysyms-$(XCB-UTIL-KEYSYMS_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.x.org/archive/individual/xcb/xcb-util-keysyms-$(XCB-UTIL-KEYSYMS_VERSION).tar.gz)
 	$(call EXTRACT_TAR,xcb-util-keysyms-$(XCB-UTIL-KEYSYMS_VERSION).tar.gz,xcb-util-keysyms-$(XCB-UTIL-KEYSYMS_VERSION),xcb-util-keysyms)
 
 ifneq ($(wildcard $(BUILD_WORK)/xcb-util-keysyms/.build_complete),)
@@ -20,9 +20,7 @@ xcb-util-keysyms: xcb-util-keysyms-setup libxcb xcb-util
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-keysyms
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-keysyms install \
 		DESTDIR=$(BUILD_STAGE)/xcb-util-keysyms
-	+$(MAKE) -C $(BUILD_WORK)/xcb-util-keysyms install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/xcb-util-keysyms/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 xcb-util-keysyms-package: xcb-util-keysyms-stage

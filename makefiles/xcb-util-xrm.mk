@@ -7,7 +7,7 @@ XCB-UTIL-XRM_VERSION := 1.3
 DEB_XCB-UTIL-XRM_V   ?= $(XCB-UTIL-XRM_VERSION)
 
 xcb-util-xrm-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/Airblader/xcb-util-xrm/releases/download/v1.3/xcb-util-xrm-1.3.tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/Airblader/xcb-util-xrm/releases/download/v1.3/xcb-util-xrm-1.3.tar.gz)
 	$(call EXTRACT_TAR,xcb-util-xrm-$(XCB-UTIL-XRM_VERSION).tar.gz,xcb-util-xrm-$(XCB-UTIL-XRM_VERSION),xcb-util-xrm)
 
 ifneq ($(wildcard $(BUILD_WORK)/xcb-util-xrm/.build_complete),)
@@ -20,9 +20,7 @@ xcb-util-xrm: xcb-util-xrm-setup libxcb xcb-util
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-xrm
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-xrm install \
 		DESTDIR=$(BUILD_STAGE)/xcb-util-xrm
-	+$(MAKE) -C $(BUILD_WORK)/xcb-util-xrm install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/xcb-util-xrm/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 xcb-util-xrm-package: xcb-util-xrm-stage

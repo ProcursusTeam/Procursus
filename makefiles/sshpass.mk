@@ -7,7 +7,7 @@ SSHPASS_VERSION := 1.09
 DEB_SSHPASS_V   ?= $(SSHPASS_VERSION)
 
 sshpass-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/s/sshpass/sshpass_$(SSHPASS_VERSION).orig.tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://deb.debian.org/debian/pool/main/s/sshpass/sshpass_$(SSHPASS_VERSION).orig.tar.gz)
 	$(call EXTRACT_TAR,sshpass_$(SSHPASS_VERSION).orig.tar.gz,sshpass-$(SSHPASS_VERSION),sshpass)
 
 ifneq ($(wildcard $(BUILD_WORK)/sshpass/.build_complete),)
@@ -21,7 +21,7 @@ sshpass: sshpass-setup
 	+$(MAKE) -C $(BUILD_WORK)/sshpass
 	+$(MAKE) -C $(BUILD_WORK)/sshpass install \
 		DESTDIR=$(BUILD_STAGE)/sshpass
-	touch $(BUILD_WORK)/sshpass/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 sshpass-package: sshpass-stage

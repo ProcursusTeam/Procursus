@@ -7,7 +7,7 @@ LIBOPUS_VERSION := 1.3.1
 DEB_LIBOPUS_V   ?= $(LIBOPUS_VERSION)
 
 libopus-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://archive.mozilla.org/pub/opus/opus-$(LIBOPUS_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://archive.mozilla.org/pub/opus/opus-$(LIBOPUS_VERSION).tar.gz)
 	$(call EXTRACT_TAR,opus-$(LIBOPUS_VERSION).tar.gz,opus-$(LIBOPUS_VERSION),libopus)
 
 ifneq ($(wildcard $(BUILD_WORK)/libopus/.build_complete),)
@@ -22,9 +22,7 @@ libopus: libopus-setup
 	+$(MAKE) -C $(BUILD_WORK)/libopus
 	+$(MAKE) -C $(BUILD_WORK)/libopus install \
 		DESTDIR=$(BUILD_STAGE)/libopus
-	+$(MAKE) -C $(BUILD_WORK)/libopus install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libopus/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libopus-package: libopus-stage

@@ -7,7 +7,7 @@ NASM_VERSION := 2.15.05
 DEB_NASM_V   ?= $(NASM_VERSION)
 
 nasm-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.nasm.us/pub/nasm/releasebuilds/$(NASM_VERSION)/nasm-$(NASM_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.nasm.us/pub/nasm/releasebuilds/$(NASM_VERSION)/nasm-$(NASM_VERSION).tar.xz)
 	$(call EXTRACT_TAR,nasm-$(NASM_VERSION).tar.xz,nasm-$(NASM_VERSION),nasm)
 
 ifneq ($(wildcard $(BUILD_WORK)/nasm/.build_complete),)
@@ -20,7 +20,7 @@ nasm: nasm-setup
 	+$(MAKE) -C $(BUILD_WORK)/nasm rdf
 	+$(MAKE) -C $(BUILD_WORK)/nasm install install_rdf \
 		DESTDIR=$(BUILD_STAGE)/nasm
-	touch $(BUILD_WORK)/nasm/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 nasm-package: nasm-stage

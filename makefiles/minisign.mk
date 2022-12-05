@@ -7,7 +7,7 @@ MINISIGN_VERSION := 0.9
 DEB_MINISIGN_V   ?= $(MINISIGN_VERSION)
 
 minisign-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/jedisct1/minisign/releases/download/$(MINISIGN_VERSION)/minisign-$(MINISIGN_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/jedisct1/minisign/releases/download/$(MINISIGN_VERSION)/minisign-$(MINISIGN_VERSION).tar.gz)
 	$(call EXTRACT_TAR,minisign-$(MINISIGN_VERSION).tar.gz,minisign-$(MINISIGN_VERSION),minisign)
 	mkdir -p $(BUILD_WORK)/minisign/build
 
@@ -25,7 +25,7 @@ minisign: minisign-setup libsodium
 	+$(MAKE) -C $(BUILD_WORK)/minisign/build
 	cp $(BUILD_WORK)/minisign/build/minisign $(BUILD_STAGE)/minisign/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
 	cp $(BUILD_WORK)/minisign/share/man/man1/* $(BUILD_STAGE)/minisign/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
-	touch $(BUILD_WORK)/minisign/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 minisign-package: minisign-stage

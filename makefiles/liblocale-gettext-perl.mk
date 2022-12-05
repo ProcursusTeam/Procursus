@@ -7,9 +7,8 @@ LIBLOCALE-GETTEXT-PERL_VERSION := 1.07
 DEB_LIBLOCALE-GETTEXT-PERL_V   ?= $(LIBLOCALE-GETTEXT-PERL_VERSION)
 
 liblocale-gettext-perl-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/liblocale-gettext-perl-$(LIBLOCALE-GETTEXT-PERL_VERSION).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/liblocale-gettext-perl-$(LIBLOCALE-GETTEXT-PERL_VERSION).tar.gz \
-			https://cpan.metacpan.org/authors/id/P/PV/PVANDRY/gettext-$(LIBLOCALE-GETTEXT-PERL_VERSION).tar.gz
+	$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/liblocale-gettext-perl-$(LIBLOCALE-GETTEXT-PERL_VERSION).tar.gz, \
+		https://cpan.metacpan.org/authors/id/P/PV/PVANDRY/gettext-$(LIBLOCALE-GETTEXT-PERL_VERSION).tar.gz)
 	$(call EXTRACT_TAR,liblocale-gettext-perl-$(LIBLOCALE-GETTEXT-PERL_VERSION).tar.gz,Locale-gettext-$(LIBLOCALE-GETTEXT-PERL_VERSION),liblocale-gettext-perl)
 
 ifneq ($(wildcard $(BUILD_WORK)/liblocale-gettext-perl/.build_complete),)
@@ -23,7 +22,7 @@ liblocale-gettext-perl: liblocale-gettext-perl-setup perl gettext
 	+$(MAKE) -C $(BUILD_WORK)/liblocale-gettext-perl install \
 		DESTDIR="$(BUILD_STAGE)/liblocale-gettext-perl"
 	rm -f $(BUILD_STAGE)/liblocale-gettext-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR)/perllocal.pod
-	touch $(BUILD_WORK)/liblocale-gettext-perl/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 liblocale-gettext-perl-package: liblocale-gettext-perl-stage

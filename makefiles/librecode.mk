@@ -7,7 +7,7 @@ LIBRECODE_VERSION := 3.7.8
 DEB_LIBRECODE_V   ?= $(LIBRECODE_VERSION)
 
 librecode-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/rrthomas/recode/releases/download/v$(LIBRECODE_VERSION)/recode-$(LIBRECODE_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/rrthomas/recode/releases/download/v$(LIBRECODE_VERSION)/recode-$(LIBRECODE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,recode-$(LIBRECODE_VERSION).tar.gz,recode-$(LIBRECODE_VERSION),librecode)
 
 ifneq ($(wildcard $(BUILD_WORK)/librecode/.build_complete),)
@@ -21,9 +21,7 @@ librecode: librecode-setup gettext
 	+$(MAKE) -C $(BUILD_WORK)/librecode
 	+$(MAKE) -C $(BUILD_WORK)/librecode install \
 		DESTDIR=$(BUILD_STAGE)/librecode
-	+$(MAKE) -C $(BUILD_WORK)/librecode install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/librecode/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 librecode-package: librecode-stage

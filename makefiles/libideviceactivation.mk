@@ -3,28 +3,28 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS                  += libideviceactivation
-LIBIDEVICEACTIVATION_VERSION := 1.1.1
-DEB_LIBIDEVICEACTIVATION_V   ?= $(LIBIDEVICEACTIVATION_VERSION)-1
+LIBIDEVICEACTIVATION_COMMIT  := 75505b75816691e1ff651fb55bfc6aaa7170ba3f
+LIBIDEVICEACTIVATION_VERSION := 1.1.1+git20220404.$(shell echo $(LIBIDEVICEACTIVATION_COMMIT) | cut -c -7)
+DEB_LIBIDEVICEACTIVATION_V   ?= $(LIBIDEVICEACTIVATION_VERSION)-2
 
 libideviceactivation-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/libimobiledevice/libideviceactivation/releases/download/$(LIBIDEVICEACTIVATION_VERSION)/libideviceactivation-$(LIBIDEVICEACTIVATION_VERSION).tar.bz2
-	$(call EXTRACT_TAR,libideviceactivation-$(LIBIDEVICEACTIVATION_VERSION).tar.bz2,libideviceactivation-$(LIBIDEVICEACTIVATION_VERSION),libideviceactivation)
+	$(call GITHUB_ARCHIVE,libimobiledevice,libideviceactivation,$(LIBIDEVICEACTIVATION_COMMIT),$(LIBIDEVICEACTIVATION_COMMIT))
+	$(call EXTRACT_TAR,libideviceactivation-$(LIBIDEVICEACTIVATION_COMMIT).tar.gz,libideviceactivation-$(LIBIDEVICEACTIVATION_COMMIT),libideviceactivation)
 
 ifneq ($(wildcard $(BUILD_WORK)/libideviceactivation/.build_complete),)
 libideviceactivation:
 	@echo "Using previously built libideviceactivation."
 else
 libideviceactivation: libideviceactivation-setup libplist libimobiledevice curl
-	cd $(BUILD_WORK)/libideviceactivation && ./configure -C \
+	cd $(BUILD_WORK)/libideviceactivation && ./autogen.sh -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		PACKAGE_VERSION="$(LIBIDEVICEACTIVATION_VERSION)" \
 		libxml2_CFLAGS=-I$(TARGET_SYSROOT)/usr/include/libxml2 \
 		libxml2_LIBS=-lxml2
 	+$(MAKE) -C $(BUILD_WORK)/libideviceactivation
 	+$(MAKE) -C $(BUILD_WORK)/libideviceactivation install \
 		DESTDIR=$(BUILD_STAGE)/libideviceactivation
-	+$(MAKE) -C $(BUILD_WORK)/libideviceactivation install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libideviceactivation/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libideviceactivation-package: libideviceactivation-stage
@@ -42,7 +42,7 @@ libideviceactivation-package: libideviceactivation-stage
 
 	# libideviceactivation.mk Sign
 	$(call SIGN,libideviceactivation2,general.xml)
-	$(call SIGN,libideviceactivation-utils,general.xml)
+	$(call SIGN,libideviceactivation-utils,usb.xml)
 
 	# libideviceactivation.mk Make .debs
 	$(call PACK,libideviceactivation2,DEB_LIBIDEVICEACTIVATION_V)

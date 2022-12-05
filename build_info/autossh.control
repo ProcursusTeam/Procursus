@@ -2,7 +2,7 @@ Package: autossh
 Version: @DEB_AUTOSSH_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Section: Utilities
+Section: Networking
 Priority: optional
 Depends: openssh-client
 Enhances: openssh-client

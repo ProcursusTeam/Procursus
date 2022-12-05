@@ -7,7 +7,7 @@ FOX1.6_VERSION := 1.6.56
 DEB_FOX1.6_V   ?= $(FOX1.6_VERSION)
 
 fox1.6-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://fox-toolkit.org/ftp/fox-1.6.56.tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://fox-toolkit.org/ftp/fox-1.6.56.tar.gz)
 	$(call EXTRACT_TAR,fox-$(FOX1.6_VERSION).tar.gz,fox-$(FOX1.6_VERSION),fox1.6)
 	$(call DO_PATCH,fox1.6,fox1.6,-p1)
 
@@ -34,9 +34,7 @@ fox1.6: fox1.6-setup libxft mesa libglu libx11 libxcursor libxext libxrender lib
 		CXXFLAGS+=\ -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/freetype2
 	+$(MAKE) -C $(BUILD_WORK)/fox1.6 install \
  		DESTDIR=$(BUILD_STAGE)/fox1.6
-	+$(MAKE) -C $(BUILD_WORK)/fox1.6 install \
- 		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/fox1.6/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 fox1.6-package: fox1.6-stage

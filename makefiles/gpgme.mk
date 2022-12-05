@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += gpgme
-GPGME_VERSION := 1.15.1
-DEB_GPGME_V   ?= $(GPGME_VERSION)-1
+GPGME_VERSION := 1.17.1
+DEB_GPGME_V   ?= $(GPGME_VERSION)
 
 gpgme-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/gpgme/gpgme-$(GPGME_VERSION).tar.bz2{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://gnupg.org/ftp/gcrypt/gpgme/gpgme-$(GPGME_VERSION).tar.bz2{$(comma).sig})
 	$(call PGP_VERIFY,gpgme-$(GPGME_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,gpgme-$(GPGME_VERSION).tar.bz2,gpgme-$(GPGME_VERSION),gpgme)
 
@@ -19,13 +19,15 @@ gpgme: gpgme-setup gnupg libassuan libgpg-error
 	cd $(BUILD_WORK)/gpgme && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-libassuan-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--with-libgpg-error-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		--with-libgpg-error-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--disable-gpgconf-test \
+		--disable-gpg-test \
+		--disable-gpgsm-test \
+		--disable-g13-test
 	+$(MAKE) -C $(BUILD_WORK)/gpgme
 	+$(MAKE) -C $(BUILD_WORK)/gpgme install \
 		DESTDIR=$(BUILD_STAGE)/gpgme
-	+$(MAKE) -C $(BUILD_WORK)/gpgme install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/gpgme/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 gpgme-package: gpgme-stage

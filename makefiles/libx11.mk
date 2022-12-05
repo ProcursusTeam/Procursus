@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += libx11
-LIBX11_VERSION := 1.7.0
+LIBX11_VERSION := 1.7.3.1
 DEB_LIBX11_V   ?= $(LIBX11_VERSION)
 
 libx11-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libX11-$(LIBX11_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libX11-$(LIBX11_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libX11-$(LIBX11_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libX11-$(LIBX11_VERSION).tar.gz,libX11-$(LIBX11_VERSION),libx11)
 
@@ -28,16 +28,14 @@ libx11: libx11-setup xorgproto libxcb xtrans
 		--enable-specs=no \
 		--enable-malloc0returnsnull=no \
 		--with-keysymdefdir=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/X11 \
-		CC_FOR_BUILD="$(shell which cc)" \
-		CFLAGS_FOR_BUILD="$(BUILD_CFLAGS)" \
-		CPPFLAGS_FOR_BUILD="$(BUILD_CPPFLAGS)" \
-		LDFLAGS_FOR_BUILD="$(BUILD_LDFLAGS)"
+		CC_FOR_BUILD="$(CC_FOR_BUILD)" \
+		CFLAGS_FOR_BUILD="$(CFLAGS_FOR_BUILD)" \
+		CPPFLAGS_FOR_BUILD="$(CPPFLAGS_FOR_BUILD)" \
+		LDFLAGS_FOR_BUILD="$(LDFLAGS_FOR_BUILD)"
 	+$(MAKE) -C $(BUILD_WORK)/libx11
 	+$(MAKE) -C $(BUILD_WORK)/libx11 install \
 		DESTDIR=$(BUILD_STAGE)/libx11
-	+$(MAKE) -C $(BUILD_WORK)/libx11 install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libx11/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libx11-package: libx11-stage

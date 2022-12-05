@@ -12,4 +12,3 @@ Description: The Speex codec command line tools
  emphasis on high-quality music reproduction.
  .
  This package contains the encoder and decoder command-line applications.
-Tag: purpose::library

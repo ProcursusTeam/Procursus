@@ -7,7 +7,7 @@ LIBPIXMAN_VERSION := 0.40.0
 DEB_LIBPIXMAN_V   ?= $(LIBPIXMAN_VERSION)
 
 libpixman-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://cairographics.org/releases/pixman-$(LIBPIXMAN_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://cairographics.org/releases/pixman-$(LIBPIXMAN_VERSION).tar.gz)
 	$(call EXTRACT_TAR,pixman-$(LIBPIXMAN_VERSION).tar.gz,pixman-$(LIBPIXMAN_VERSION),libpixman)
 
 ifneq ($(wildcard $(BUILD_WORK)/libpixman/.build_complete),)
@@ -23,9 +23,7 @@ libpixman: libpixman-setup
 	+$(MAKE) -C $(BUILD_WORK)/libpixman
 	+$(MAKE) -C $(BUILD_WORK)/libpixman install \
 		DESTDIR=$(BUILD_STAGE)/libpixman
-	+$(MAKE) -C $(BUILD_WORK)/libpixman install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libpixman/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libpixman-package: libpixman-stage

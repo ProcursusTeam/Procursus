@@ -12,4 +12,4 @@ Description: tiny C SSH library (OpenSSL flavor)
  With its SFTP implementation, you can play with remote files easily.
  .
  This package contains shared libraries linked against OpenSSL.
-Depends: libssl1.1
+Depends: libssl3

@@ -7,7 +7,7 @@ LIBXFIXES_VERSION := 5.0.3
 DEB_LIBXFIXES_V   ?= $(LIBXFIXES_VERSION)
 
 libxfixes-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXfixes-$(LIBXFIXES_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libXfixes-$(LIBXFIXES_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libXfixes-$(LIBXFIXES_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXfixes-$(LIBXFIXES_VERSION).tar.gz,libXfixes-$(LIBXFIXES_VERSION),libxfixes)
 
@@ -21,9 +21,7 @@ libxfixes: libxfixes-setup libx11 xorgproto
 	+$(MAKE) -C $(BUILD_WORK)/libxfixes
 	+$(MAKE) -C $(BUILD_WORK)/libxfixes install \
 		DESTDIR=$(BUILD_STAGE)/libxfixes
-	+$(MAKE) -C $(BUILD_WORK)/libxfixes install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxfixes/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libxfixes-package: libxfixes-stage

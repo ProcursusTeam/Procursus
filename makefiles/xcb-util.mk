@@ -7,7 +7,7 @@ XCB-UTIL_VERSION := 0.4.0
 DEB_XCB-UTIL_V   ?= $(XCB-UTIL_VERSION)
 
 xcb-util-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xcb.freedesktop.org/dist/xcb-util-$(XCB-UTIL_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xcb.freedesktop.org/dist/xcb-util-$(XCB-UTIL_VERSION).tar.gz)
 	$(call EXTRACT_TAR,xcb-util-$(XCB-UTIL_VERSION).tar.gz,xcb-util-$(XCB-UTIL_VERSION),xcb-util)
 
 ifneq ($(wildcard $(BUILD_WORK)/xcb-util/.build_complete),)
@@ -19,9 +19,7 @@ xcb-util: xcb-util-setup libxcb
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util install \
 		DESTDIR=$(BUILD_STAGE)/xcb-util
-	+$(MAKE) -C $(BUILD_WORK)/xcb-util install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/xcb-util/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 

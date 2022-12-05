@@ -7,7 +7,7 @@ LEPTONICA_VERSION := 1.80.0
 DEB_LEPTONICA_V   ?= $(LEPTONICA_VERSION)
 
 leptonica-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://www.leptonica.org/source/leptonica-$(LEPTONICA_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://www.leptonica.org/source/leptonica-$(LEPTONICA_VERSION).tar.gz)
 	$(call EXTRACT_TAR,leptonica-$(LEPTONICA_VERSION).tar.gz,leptonica-$(LEPTONICA_VERSION),leptonica)
 
 ifneq ($(wildcard $(BUILD_WORK)/leptonica/.build_complete),)
@@ -23,9 +23,7 @@ leptonica: leptonica-setup libgif libjpeg-turbo libpng16 libtiff openjpeg libweb
 	+$(MAKE) -C $(BUILD_WORK)/leptonica install \
 		DESTDIR="$(BUILD_STAGE)/leptonica"
 	rm -rf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libleptonica*
-	+$(MAKE) -C $(BUILD_WORK)/leptonica install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/leptonica/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 leptonica-package: leptonica-stage

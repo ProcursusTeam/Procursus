@@ -7,7 +7,7 @@ LIBASSUAN_VERSION := 2.5.5
 DEB_LIBASSUAN_V   ?= $(LIBASSUAN_VERSION)
 
 libassuan-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://gnupg.org/ftp/gcrypt/libassuan/libassuan-$(LIBASSUAN_VERSION).tar.bz2{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://gnupg.org/ftp/gcrypt/libassuan/libassuan-$(LIBASSUAN_VERSION).tar.bz2{$(comma).sig})
 	$(call PGP_VERIFY,libassuan-$(LIBASSUAN_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libassuan-$(LIBASSUAN_VERSION).tar.bz2,libassuan-$(LIBASSUAN_VERSION),libassuan)
 
@@ -22,9 +22,7 @@ libassuan: libassuan-setup libgpg-error
 	+$(MAKE) -C $(BUILD_WORK)/libassuan
 	+$(MAKE) -C $(BUILD_WORK)/libassuan install \
 		DESTDIR=$(BUILD_STAGE)/libassuan
-	+$(MAKE) -C $(BUILD_WORK)/libassuan install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libassuan/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libassuan-package: libassuan-stage

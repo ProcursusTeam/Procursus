@@ -15,7 +15,7 @@ FINDUTILS_CONFIGURE_ARGS += --program-prefix=$(GNU_PREFIX)
 endif
 
 findutils-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/findutils/findutils-$(FINDUTILS_VERSION).tar.xz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/findutils/findutils-$(FINDUTILS_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,findutils-$(FINDUTILS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,findutils-$(FINDUTILS_VERSION).tar.xz,findutils-$(FINDUTILS_VERSION),findutils)
 
@@ -23,7 +23,11 @@ ifneq ($(wildcard $(BUILD_WORK)/findutils/.build_complete),)
 findutils:
 	@echo "Using previously built findutils."
 else
+ifneq (,$(findstring ramdisk,$(MEMO_TARGET)))
+findutils: findutils-setup
+else
 findutils: findutils-setup gettext
+endif
 	cd $(BUILD_WORK)/findutils && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--localstatedir=$(MEMO_PREFIX)/var/cache/locate \
@@ -38,7 +42,7 @@ findutils: findutils-setup gettext
 		SORT="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$(GNU_PREFIX)sort"
 	+$(MAKE) -C $(BUILD_WORK)/findutils install \
 		DESTDIR=$(BUILD_STAGE)/findutils
-	touch $(BUILD_WORK)/findutils/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 findutils-package: findutils-stage
@@ -50,7 +54,7 @@ findutils-package: findutils-stage
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 	mkdir -p $(BUILD_DIST)/findutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin
 	for bin in $(BUILD_DIST)/findutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
-		ln -s /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$${bin##/*} $(BUILD_DIST)/findutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $${bin##/*} | cut -c2-); \
+		$(LN_S) /$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$${bin##*/} $(BUILD_DIST)/findutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/gnubin/$$(echo $${bin##*/} | cut -c2-); \
 	done
 endif
 

@@ -7,7 +7,7 @@ LZOP_VERSION := 1.04
 DEB_LZOP_V   ?= $(LZOP_VERSION)
 
 lzop-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.lzop.org/download/lzop-$(LZOP_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.lzop.org/download/lzop-$(LZOP_VERSION).tar.gz)
 	$(call EXTRACT_TAR,lzop-$(LZOP_VERSION).tar.gz,lzop-$(LZOP_VERSION),lzop)
 
 ifneq ($(wildcard $(BUILD_WORK)/lzop/.build_complete),)
@@ -21,7 +21,7 @@ lzop: lzop-setup liblzo2
 	+$(MAKE) -C $(BUILD_WORK)/lzop
 	+$(MAKE) -C $(BUILD_WORK)/lzop install \
 		DESTDIR=$(BUILD_STAGE)/lzop
-	touch $(BUILD_WORK)/lzop/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 lzop-package: lzop-stage

@@ -7,7 +7,7 @@ XCB-UTIL-RENDERUTIL_VERSION := 0.3.9
 DEB_XCB-UTIL-RENDERUTIL_V   ?= $(XCB-UTIL-RENDERUTIL_VERSION)
 
 xcb-util-renderutil-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/xcb/xcb-util-renderutil-$(XCB-UTIL-RENDERUTIL_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.x.org/archive/individual/xcb/xcb-util-renderutil-$(XCB-UTIL-RENDERUTIL_VERSION).tar.gz)
 	$(call EXTRACT_TAR,xcb-util-renderutil-$(XCB-UTIL-RENDERUTIL_VERSION).tar.gz,xcb-util-renderutil-$(XCB-UTIL-RENDERUTIL_VERSION),xcb-util-renderutil)
 
 ifneq ($(wildcard $(BUILD_WORK)/xcb-util-renderutil/.build_complete),)
@@ -20,9 +20,7 @@ xcb-util-renderutil: xcb-util-renderutil-setup libxcb xcb-util
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-renderutil
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-renderutil install \
 		DESTDIR=$(BUILD_STAGE)/xcb-util-renderutil
-	+$(MAKE) -C $(BUILD_WORK)/xcb-util-renderutil install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/xcb-util-renderutil/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 xcb-util-renderutil-package: xcb-util-renderutil-stage

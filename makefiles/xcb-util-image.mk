@@ -7,7 +7,7 @@ XCB-UTIL-IMAGE_VERSION := 0.4.0
 DEB_XCB-UTIL-IMAGE_V   ?= $(XCB-UTIL-IMAGE_VERSION)
 
 xcb-util-image-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/xcb/xcb-util-image-$(XCB-UTIL-IMAGE_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.x.org/archive/individual/xcb/xcb-util-image-$(XCB-UTIL-IMAGE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,xcb-util-image-$(XCB-UTIL-IMAGE_VERSION).tar.gz,xcb-util-image-$(XCB-UTIL-IMAGE_VERSION),xcb-util-image)
 
 ifneq ($(wildcard $(BUILD_WORK)/xcb-util-image/.build_complete),)
@@ -20,9 +20,7 @@ xcb-util-image: xcb-util-image-setup libxcb xcb-util
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-image
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-image install \
 		DESTDIR=$(BUILD_STAGE)/xcb-util-image
-	+$(MAKE) -C $(BUILD_WORK)/xcb-util-image install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/xcb-util-image/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 xcb-util-image-package: xcb-util-image-stage

@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS                 += zsh-autosuggestions
-ZSH-AUTOSUGGESTIONS_VERSION := 0.6.4
+ZSH-AUTOSUGGESTIONS_VERSION := 0.7.0
 DEB_ZSH-AUTOSUGGESTIONS_V   ?= $(ZSH-AUTOSUGGESTIONS_VERSION)
 
 zsh-autosuggestions-setup: setup
@@ -18,7 +18,7 @@ zsh-autosuggestions: zsh-autosuggestions-setup ncurses gettext file
 	+$(MAKE) -C $(BUILD_WORK)/zsh-autosuggestions
 	$(INSTALL) -Dm644 $(BUILD_WORK)/zsh-autosuggestions/zsh-autosuggestions.zsh \
 		$(BUILD_STAGE)/zsh-autosuggestions/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-	touch $(BUILD_WORK)/zsh-autosuggestions/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 zsh-autosuggestions-package: zsh-autosuggestions-stage

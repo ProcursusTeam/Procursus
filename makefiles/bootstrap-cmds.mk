@@ -5,13 +5,13 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS            += bootstrap-cmds
-BOOTSTRAP-CMDS_VERSION := 121
+BOOTSTRAP-CMDS_VERSION := 129
 DEB_BOOTSTRAP-CMDS_V   ?= $(BOOTSTRAP-CMDS_VERSION)
 
 bootstrap-cmds-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/bootstrap_cmds/bootstrap_cmds-$(BOOTSTRAP-CMDS_VERSION).tar.gz
-	$(call EXTRACT_TAR,bootstrap_cmds-$(BOOTSTRAP-CMDS_VERSION).tar.gz,bootstrap_cmds-$(BOOTSTRAP-CMDS_VERSION),bootstrap-cmds)
-	mkdir -p $(BUILD_STAGE)/bootstrap-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,libexec}
+	$(call GITHUB_ARCHIVE,apple-oss-distributions,bootstrap_cmds,$(BOOTSTRAP-CMDS_VERSION),bootstrap_cmds-$(BOOTSTRAP-CMDS_VERSION))
+	$(call EXTRACT_TAR,bootstrap_cmds-$(BOOTSTRAP-CMDS_VERSION).tar.gz,bootstrap_cmds-bootstrap_cmds-$(BOOTSTRAP-CMDS_VERSION),bootstrap-cmds)
+	mkdir -p $(BUILD_STAGE)/bootstrap-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,libexec,share/man/man1/}
 
 ifneq ($(wildcard $(BUILD_WORK)/bootstrap-cmds/.build_complete),)
 bootstrap-cmds:
@@ -22,10 +22,11 @@ bootstrap-cmds: bootstrap-cmds-setup
 	cd $(BUILD_WORK)/bootstrap-cmds/migcom.tproj; \
 	yacc -d parser.y; \
 	lex lexxer.l; \
-	$(CC) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -DMIG_VERSION=\"mig-$(BOOTSTRAP-CMDS_VERSION)\" -o migcom !(handler).c -save-temps; \
+	$(CC) $(CFLAGS) $(LDFLAGS) -DMIG_VERSION=\"mig-$(BOOTSTRAP-CMDS_VERSION)\" -o migcom !(handler).c -save-temps; \
 	cp -a migcom $(BUILD_STAGE)/bootstrap-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec; \
 	cp -a mig.sh $(BUILD_STAGE)/bootstrap-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/mig
-	touch $(BUILD_WORK)/bootstrap-cmds/.build_complete
+	$(INSTALL) -Dm644 $(BUILD_WORK)/bootstrap-cmds/migcom.tproj/migcom.1 $(BUILD_WORK)/bootstrap-cmds/migcom.tproj/mig.1 $(BUILD_STAGE)/bootstrap-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/
+	$(call AFTER_BUILD)
 endif
 
 bootstrap-cmds-package: bootstrap-cmds-stage

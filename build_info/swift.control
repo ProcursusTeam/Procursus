@@ -2,11 +2,10 @@ Package: swift
 Version: @DEB_SWIFT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: swift-5.4.1
+Depends: swift-5.7.1
 Conflicts: com.kabiroberai.swift-toolchain
 Replaces: com.kabiroberai.swift-toolchain
 Section: Development
 Priority: optional
 Homepage: https://swift.org/
 Description: Swift developer package
-Tag: purpose::console, role::developer

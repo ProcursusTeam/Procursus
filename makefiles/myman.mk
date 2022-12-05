@@ -7,7 +7,7 @@ MYMAN_VERSION := 2009-10-30
 DEB_MYMAN_V   ?= 0.7.1
 
 myman-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://downloads.sourceforge.net/project/myman/myman-cvs/myman-cvs-$(MYMAN_VERSION)/myman-wip-$(MYMAN_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://downloads.sourceforge.net/project/myman/myman-cvs/myman-cvs-$(MYMAN_VERSION)/myman-wip-$(MYMAN_VERSION).tar.gz)
 	$(call EXTRACT_TAR,myman-wip-$(MYMAN_VERSION).tar.gz,myman-wip-$(MYMAN_VERSION),myman)
 
 ifneq ($(wildcard $(BUILD_WORK)/myman/.build_complete),)
@@ -25,7 +25,7 @@ myman: myman-setup ncurses
 		HOSTCPPFLAGS="$(CPPFLAGS)" \
 		HOSTLDFLAGS="$(LDFLAGS)" \
 		CURSESLIBS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -lncursesw"
-	touch $(BUILD_WORK)/myman/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 myman-package: myman-stage

@@ -7,9 +7,8 @@ LIBSGMLS-PERL_VERSION := 1.1
 DEB_LIBSGMLS-PERL_V   ?= $(LIBSGMLS-PERL_VERSION)
 
 libsgmls-perl-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/libsgmls-perl-$(LIBSGMLS-PERL_VERSION).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/libsgmls-perl-$(LIBSGMLS-PERL_VERSION).tar.gz \
-			https://cpan.metacpan.org/authors/id/R/RA/RAAB/SGMLSpm-$(LIBSGMLS-PERL_VERSION).tar.gz
+	$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/libsgmls-perl-$(LIBSGMLS-PERL_VERSION).tar.gz, \
+		https://cpan.metacpan.org/authors/id/R/RA/RAAB/SGMLSpm-$(LIBSGMLS-PERL_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libsgmls-perl-$(LIBSGMLS-PERL_VERSION).tar.gz,SGMLSpm-$(LIBSGMLS-PERL_VERSION),libsgmls-perl)
 	chmod -R 0744 $(BUILD_WORK)/libsgmls-perl
 
@@ -25,7 +24,7 @@ libsgmls-perl: libsgmls-perl-setup perl
 		DESTDIR="$(BUILD_STAGE)/libsgmls-perl"
 	rm -rf $(BUILD_STAGE)/libsgmls-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	mv $(BUILD_STAGE)/libsgmls-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sgmlspl.pl $(BUILD_STAGE)/libsgmls-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sgmlspl
-	touch $(BUILD_WORK)/libsgmls-perl/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libsgmls-perl-package: libsgmls-perl-stage

@@ -7,7 +7,7 @@ INETUTILS_VERSION := 2.0
 DEB_INETUTILS_V   ?= $(INETUTILS_VERSION)
 
 inetutils-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/inetutils/inetutils-$(INETUTILS_VERSION).tar.xz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/inetutils/inetutils-$(INETUTILS_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,inetutils-$(INETUTILS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,inetutils-$(INETUTILS_VERSION).tar.xz,inetutils-$(INETUTILS_VERSION),inetutils)
 	mkdir -p $(BUILD_STAGE)/inetutils/{s,}bin
@@ -25,13 +25,13 @@ inetutils: inetutils-setup ncurses readline
 		--disable-talkd \
 		--disable-traceroute \
 		--disable-whois
-	$(SED) -i 's/-ltermcap/-lncursesw/g' $(BUILD_WORK)/inetutils/telnet/Makefile
-	$(SED) -i 's/-ltermcap/-lncursesw/g' $(BUILD_WORK)/inetutils/telnetd/Makefile
+	sed -i 's/-ltermcap/-lncursesw/g' $(BUILD_WORK)/inetutils/telnet/Makefile
+	sed -i 's/-ltermcap/-lncursesw/g' $(BUILD_WORK)/inetutils/telnetd/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/inetutils install \
 		DESTDIR=$(BUILD_STAGE)/inetutils
-	$(LN) -sf ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ping $(BUILD_STAGE)/inetutils/bin
-	$(LN) -sf ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ping $(BUILD_STAGE)/inetutils/sbin
-	touch $(BUILD_WORK)/inetutils/.build_complete
+	$(LN_S) ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ping $(BUILD_STAGE)/inetutils/bin
+	$(LN_S) ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ping $(BUILD_STAGE)/inetutils/sbin
+	$(call AFTER_BUILD)
 endif
 
 inetutils-package: inetutils-stage

@@ -7,7 +7,7 @@ LIBFRIBIDI_VERSION := 1.0.10
 DEB_LIBFRIBIDI_V   ?= $(LIBFRIBIDI_VERSION)
 
 libfribidi-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/fribidi/fribidi/releases/download/v$(LIBFRIBIDI_VERSION)/fribidi-$(LIBFRIBIDI_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/fribidi/fribidi/releases/download/v$(LIBFRIBIDI_VERSION)/fribidi-$(LIBFRIBIDI_VERSION).tar.xz)
 	$(call EXTRACT_TAR,fribidi-$(LIBFRIBIDI_VERSION).tar.xz,fribidi-$(LIBFRIBIDI_VERSION),libfribidi)
 
 ifneq ($(wildcard $(BUILD_WORK)/libfribidi/.build_complete),)
@@ -20,9 +20,7 @@ libfribidi: libfribidi-setup
 	+$(MAKE) -C $(BUILD_WORK)/libfribidi
 	+$(MAKE) -C $(BUILD_WORK)/libfribidi install \
 		DESTDIR=$(BUILD_STAGE)/libfribidi
-	+$(MAKE) -C $(BUILD_WORK)/libfribidi install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libfribidi/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libfribidi-package: libfribidi-stage

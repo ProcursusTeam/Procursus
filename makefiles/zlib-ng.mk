@@ -2,13 +2,14 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS      += zlib-ng
-ZLIB-NG_VERSION  := 2.0.3
+STRAPPROJECTS    += zlib-ng
+ZLIB-NG_VERSION  := 2.0.6
 DEB_ZLIB-NG_V    ?= $(ZLIB-NG_VERSION)
 
 zlib-ng-setup: setup
 	$(call GITHUB_ARCHIVE,zlib-ng,zlib-ng,$(ZLIB-NG_VERSION),$(ZLIB-NG_VERSION))
 	$(call EXTRACT_TAR,zlib-ng-$(ZLIB-NG_VERSION).tar.gz,zlib-ng-$(ZLIB-NG_VERSION),zlib-ng)
+
 ifneq ($(wildcard $(BUILD_WORK)/zlib-ng/.build_complete),)
 zlib-ng:
 	@echo "Using previously built zlib-ng."
@@ -16,14 +17,15 @@ else
 zlib-ng: zlib-ng-setup
 	cd $(BUILD_WORK)/zlib-ng && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
+		-DZLIB_ENABLE_TESTS=Off \
+		-DZLIB_INSTALL_UTILS=On \
 		.
 	+$(MAKE) -C $(BUILD_WORK)/zlib-ng
 	+$(MAKE) -C $(BUILD_WORK)/zlib-ng install \
 		DESTDIR=$(BUILD_STAGE)/zlib-ng
-	+$(MAKE) -C $(BUILD_WORK)/zlib-ng install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/zlib-ng/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
+
 zlib-ng-package: zlib-ng-stage
 	# zlib-ng.mk Package Structure
 	rm -rf $(BUILD_DIST)/libz-ng{2,-dev}

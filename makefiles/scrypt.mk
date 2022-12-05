@@ -7,7 +7,7 @@ SCRYPT_VERSION := 1.3.1
 DEB_SCRYPT_V   ?= $(SCRYPT_VERSION)
 
 scrypt-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.tarsnap.com/scrypt/scrypt-$(SCRYPT_VERSION).tgz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.tarsnap.com/scrypt/scrypt-$(SCRYPT_VERSION).tgz)
 	$(call EXTRACT_TAR,scrypt-$(SCRYPT_VERSION).tgz,scrypt-$(SCRYPT_VERSION),scrypt)
 
 ifneq ($(wildcard $(BUILD_WORK)/scrypt/.build_complete),)
@@ -21,7 +21,7 @@ scrypt: scrypt-setup openssl
 	+$(MAKE) -C $(BUILD_WORK)/scrypt
 	+$(MAKE) -C $(BUILD_WORK)/scrypt install \
 		DESTDIR=$(BUILD_STAGE)/scrypt
-	touch $(BUILD_WORK)/scrypt/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 scrypt-package: scrypt-stage

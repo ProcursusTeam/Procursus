@@ -3,13 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += fontconfig
-FONTCONFIG_VERSION := 2.13.1
-DEB_FONTCONFIG_V   ?= $(FONTCONFIG_VERSION)-1
+FONTCONFIG_VERSION := 2.14.0
+DEB_FONTCONFIG_V   ?= $(FONTCONFIG_VERSION)
 
 fontconfig-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.freedesktop.org/software/fontconfig/release/fontconfig-$(FONTCONFIG_VERSION).tar.bz2
-	$(call EXTRACT_TAR,fontconfig-$(FONTCONFIG_VERSION).tar.bz2,fontconfig-$(FONTCONFIG_VERSION),fontconfig)
-	$(call DO_PATCH,fontconfig,fontconfig,-p1) # Remove this patch after next release.
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.freedesktop.org/software/fontconfig/release/fontconfig-$(FONTCONFIG_VERSION).tar.gz)
+	$(call EXTRACT_TAR,fontconfig-$(FONTCONFIG_VERSION).tar.gz,fontconfig-$(FONTCONFIG_VERSION),fontconfig)
 	sed -i 's/use_jsonc=yes/use_jsonc=no/' $(BUILD_WORK)/fontconfig/configure
 
 ifneq ($(wildcard $(BUILD_WORK)/fontconfig/.build_complete),)
@@ -19,15 +18,11 @@ else
 fontconfig: fontconfig-setup gettext freetype uuid expat
 	cd $(BUILD_WORK)/fontconfig && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--with-add-fonts="/System/Library/Fonts,~/Library/UserFonts" \
-		FREETYPE_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/freetype2 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libpng16" \
-		FREETYPE_LIBS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -lfreetype"
+		--with-add-fonts="/System/Library/Fonts,~/Library/UserFonts"
 	+$(MAKE) -C $(BUILD_WORK)/fontconfig
 	+$(MAKE) -C $(BUILD_WORK)/fontconfig install \
 		DESTDIR=$(BUILD_STAGE)/fontconfig
-	+$(MAKE) -C $(BUILD_WORK)/fontconfig install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/fontconfig/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 fontconfig-package: fontconfig-stage
@@ -43,7 +38,7 @@ fontconfig-package: fontconfig-stage
 
 	# fontconfig.mk Prep fontconfig-config
 	cp -a $(BUILD_STAGE)/fontconfig/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{fontconfig,xml} $(BUILD_DIST)/fontconfig-config/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	cp -a $(BUILD_STAGE)/fontconfig/$(MEMO_PREFIX)/etc $(BUILD_DIST)/fontconfig-config/
+	cp -a $(BUILD_STAGE)/fontconfig/$(MEMO_PREFIX)/etc $(BUILD_DIST)/fontconfig-config/$(MEMO_PREFIX)
 	cp -a $(BUILD_STAGE)/fontconfig/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5 $(BUILD_DIST)/fontconfig-config/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
 	# fontconfig.mk Prep libfontconfig1

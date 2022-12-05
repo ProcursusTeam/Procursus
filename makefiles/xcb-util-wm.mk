@@ -7,7 +7,7 @@ XCB-UTIL-WM_VERSION := 0.4.0
 DEB_XCB-UTIL-WM_V   ?= $(XCB-UTIL-WM_VERSION)
 
 xcb-util-wm-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/xcb/xcb-util-wm-$(XCB-UTIL-WM_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.x.org/archive/individual/xcb/xcb-util-wm-$(XCB-UTIL-WM_VERSION).tar.gz)
 	$(call EXTRACT_TAR,xcb-util-wm-$(XCB-UTIL-WM_VERSION).tar.gz,xcb-util-wm-$(XCB-UTIL-WM_VERSION),xcb-util-wm)
 
 ifneq ($(wildcard $(BUILD_WORK)/xcb-util-wm/.build_complete),)
@@ -20,9 +20,7 @@ xcb-util-wm: xcb-util-wm-setup libxcb xcb-util
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-wm
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-wm install \
 		DESTDIR=$(BUILD_STAGE)/xcb-util-wm
-	+$(MAKE) -C $(BUILD_WORK)/xcb-util-wm install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/xcb-util-wm/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 xcb-util-wm-package: xcb-util-wm-stage

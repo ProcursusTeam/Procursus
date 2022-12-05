@@ -7,7 +7,7 @@ LIBXRANDR_VERSION := 1.5.2
 DEB_LIBXRANDR_V   ?= $(LIBXRANDR_VERSION)
 
 libxrandr-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXrandr-$(LIBXRANDR_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libXrandr-$(LIBXRANDR_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libXrandr-$(LIBXRANDR_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXrandr-$(LIBXRANDR_VERSION).tar.gz,libXrandr-$(LIBXRANDR_VERSION),libxrandr)
 
@@ -22,9 +22,7 @@ libxrandr: libxrandr-setup libx11 libxrender libxext xorgproto
 	+$(MAKE) -C $(BUILD_WORK)/libxrandr
 	+$(MAKE) -C $(BUILD_WORK)/libxrandr install \
 		DESTDIR=$(BUILD_STAGE)/libxrandr
-	+$(MAKE) -C $(BUILD_WORK)/libxrandr install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxrandr/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libxrandr-package: libxrandr-stage

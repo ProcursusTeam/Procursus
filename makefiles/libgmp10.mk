@@ -7,7 +7,7 @@ GMP_VERSION   := 6.2.1
 DEB_GMP_V     ?= $(GMP_VERSION)-3
 
 libgmp10-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://gmplib.org/download/gmp/gmp-$(GMP_VERSION).tar.xz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://gmplib.org/download/gmp/gmp-$(GMP_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,gmp-$(GMP_VERSION).tar.xz)
 	$(call EXTRACT_TAR,gmp-$(GMP_VERSION).tar.xz,gmp-$(GMP_VERSION),libgmp10)
 
@@ -22,14 +22,12 @@ libgmp10: libgmp10-setup
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-cxx \
 		--disable-assembly \
-		CC_FOR_BUILD='$(shell which cc) $(BUILD_CFLAGS)' \
-		CPP_FOR_BUILD='$(shell which cc) -E $(BUILD_CPPFLAGS)'
+		CC_FOR_BUILD='$(shell command -v cc) $(CFLAGS_FOR_BUILD)' \
+		CPP_FOR_BUILD='$(shell command -v cc) -E $(CPPFLAGS_FOR_BUILD)'
 	+$(MAKE) -C $(BUILD_WORK)/libgmp10
 	+$(MAKE) -C $(BUILD_WORK)/libgmp10 install \
 		DESTDIR=$(BUILD_STAGE)/libgmp10
-	+$(MAKE) -C $(BUILD_WORK)/libgmp10 install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libgmp10/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libgmp10-package: libgmp10-stage

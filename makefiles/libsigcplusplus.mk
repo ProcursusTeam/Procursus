@@ -7,7 +7,7 @@ LIBSIGCPLUSPLUS_VERSION := 2.10.3
 DEB_LIBSIGCPLUSPLUS_V   ?= $(LIBSIGCPLUSPLUS_VERSION)
 
 libsigcplusplus-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://download.gnome.org/sources/libsigc++/2.10/libsigc++-$(LIBSIGCPLUSPLUS_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://download.gnome.org/sources/libsigc++/2.10/libsigc++-$(LIBSIGCPLUSPLUS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,libsigc++-$(LIBSIGCPLUSPLUS_VERSION).tar.xz,libsigc++-$(LIBSIGCPLUSPLUS_VERSION),libsigcplusplus)
 
 ifneq ($(wildcard $(BUILD_WORK)/libsigcplusplus/.build_complete),)
@@ -22,9 +22,7 @@ libsigcplusplus: libsigcplusplus-setup
 	+$(MAKE) -C $(BUILD_WORK)/libsigcplusplus
 	+$(MAKE) -C $(BUILD_WORK)/libsigcplusplus install \
 		DESTDIR=$(BUILD_STAGE)/libsigcplusplus
-	+$(MAKE) -C $(BUILD_WORK)/libsigcplusplus install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libsigcplusplus/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libsigcplusplus-package: libsigcplusplus-stage

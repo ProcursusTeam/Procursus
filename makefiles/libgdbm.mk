@@ -7,7 +7,7 @@ LIBGDBM_VERSION := 1.19
 DEB_LIBGDBM_V   ?= $(LIBGDBM_VERSION)
 
 libgdbm-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/gdbm/gdbm-$(LIBGDBM_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/gdbm/gdbm-$(LIBGDBM_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,gdbm-$(LIBGDBM_VERSION).tar.gz)
 	$(call EXTRACT_TAR,gdbm-$(LIBGDBM_VERSION).tar.gz,gdbm-$(LIBGDBM_VERSION),libgdbm)
 
@@ -21,9 +21,7 @@ libgdbm: libgdbm-setup readline gettext
 	+$(MAKE) -C $(BUILD_WORK)/libgdbm
 	+$(MAKE) -C $(BUILD_WORK)/libgdbm install \
 		DESTDIR=$(BUILD_STAGE)/libgdbm
-	+$(MAKE) -C $(BUILD_WORK)/libgdbm install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libgdbm/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libgdbm-package: libgdbm-stage

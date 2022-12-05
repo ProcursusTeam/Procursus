@@ -7,7 +7,7 @@ LIBXFT_VERSION := 2.3.3
 DEB_LIBXFT_V   ?= $(LIBXFT_VERSION)
 
 libxft-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/lib/libXft-$(LIBXFT_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.x.org/archive/individual/lib/libXft-$(LIBXFT_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libXft-$(LIBXFT_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXft-$(LIBXFT_VERSION).tar.gz,libXft-$(LIBXFT_VERSION),libxft)
 
@@ -21,9 +21,7 @@ libxft: libxft-setup libx11 libxrender xorgproto fontconfig freetype
 	+$(MAKE) -C $(BUILD_WORK)/libxft
 	+$(MAKE) -C $(BUILD_WORK)/libxft install \
 		DESTDIR=$(BUILD_STAGE)/libxft
-	+$(MAKE) -C $(BUILD_WORK)/libxft install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxft/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libxft-package: libxft-stage

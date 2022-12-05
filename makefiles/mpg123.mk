@@ -7,7 +7,7 @@ MPG123_VERSION := 1.26.3
 DEB_MPG123_V   ?= $(MPG123_VERSION)
 
 mpg123-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.mpg123.de/download/mpg123-$(MPG123_VERSION).tar.bz2
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.mpg123.de/download/mpg123-$(MPG123_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,mpg123-$(MPG123_VERSION).tar.bz2,mpg123-$(MPG123_VERSION),mpg123)
 
 ifneq ($(wildcard $(BUILD_WORK)/mpg123/.build_complete),)
@@ -21,7 +21,7 @@ mpg123: mpg123-setup
 		--with-cpu=aarch64
 	+$(MAKE) -C $(BUILD_WORK)/mpg123 install \
 		DESTDIR=$(BUILD_STAGE)/mpg123
-	touch $(BUILD_WORK)/mpg123/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 mpg123-package: mpg123-stage

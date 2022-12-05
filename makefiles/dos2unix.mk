@@ -7,7 +7,7 @@ DOS2UNIX_VERSION := 7.4.2
 DEB_DOS2UNIX_V   ?= $(DOS2UNIX_VERSION)
 
 dos2unix-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://waterlan.home.xs4all.nl/dos2unix/dos2unix-$(DOS2UNIX_VERSION).tar.gz{,.asc}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://waterlan.home.xs4all.nl/dos2unix/dos2unix-$(DOS2UNIX_VERSION).tar.gz{$(comma).asc})
 	$(call PGP_VERIFY,dos2unix-$(DOS2UNIX_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,dos2unix-$(DOS2UNIX_VERSION).tar.gz,dos2unix-$(DOS2UNIX_VERSION),dos2unix)
 
@@ -19,7 +19,7 @@ dos2unix: dos2unix-setup gettext
 	+$(MAKE) -C $(BUILD_WORK)/dos2unix LDFLAGS="$(LDFLAGS)" prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/dos2unix install \
 		DESTDIR=$(BUILD_STAGE)/dos2unix prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	touch $(BUILD_WORK)/dos2unix/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 dos2unix-package: dos2unix-stage

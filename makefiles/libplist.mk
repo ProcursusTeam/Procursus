@@ -3,12 +3,13 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += libplist
-LIBPLIST_VERSION  := 2.2.0
+LIBPLIST_COMMIT  := db93bae96d64140230ad050061632531644c46ad
+LIBPLIST_VERSION := 2.2.0+git20220405.$(shell echo $(LIBPLIST_COMMIT) | cut -c -7)
 DEB_LIBPLIST_V    ?= $(LIBPLIST_VERSION)
 
 libplist-setup: setup
-	$(call GITHUB_ARCHIVE,libimobiledevice,libplist,$(LIBPLIST_VERSION),$(LIBPLIST_VERSION))
-	$(call EXTRACT_TAR,libplist-$(LIBPLIST_VERSION).tar.gz,libplist-$(LIBPLIST_VERSION),libplist)
+	$(call GITHUB_ARCHIVE,libimobiledevice,libplist,$(LIBPLIST_COMMIT),$(LIBPLIST_COMMIT))
+	$(call EXTRACT_TAR,libplist-$(LIBPLIST_COMMIT).tar.gz,libplist-$(LIBPLIST_COMMIT),libplist)
 
 ifneq ($(wildcard $(BUILD_WORK)/libplist/.build_complete),)
 libplist:
@@ -17,13 +18,12 @@ else
 libplist: libplist-setup
 	cd $(BUILD_WORK)/libplist && ./autogen.sh \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		PACKAGE_VERSION="$(LIBPLIST_VERSION)" \
 		--without-cython
 	+$(MAKE) -C $(BUILD_WORK)/libplist
 	+$(MAKE) -C $(BUILD_WORK)/libplist install \
 		DESTDIR="$(BUILD_STAGE)/libplist"
-	+$(MAKE) -C $(BUILD_WORK)/libplist install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libplist/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libplist-package: .SHELLFLAGS=-O extglob -c

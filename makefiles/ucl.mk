@@ -7,7 +7,7 @@ UCL_VERSION := 1.03
 DEB_UCL_V   ?= $(UCL_VERSION)
 
 ucl-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.oberhumer.com/opensource/ucl/download/ucl-$(UCL_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.oberhumer.com/opensource/ucl/download/ucl-$(UCL_VERSION).tar.gz)
 	$(call EXTRACT_TAR,ucl-$(UCL_VERSION).tar.gz,ucl-$(UCL_VERSION),ucl)
 	$(call DO_PATCH,ucl,ucl,-p1)
 
@@ -15,7 +15,6 @@ ifneq ($(wildcard $(BUILD_WORK)/ucl/.build_complete),)
 ucl:
 	@echo "Using previously built ucl"
 else
-PATH := $(BUILD_WORK)/ucl/workaround:$(PATH)
 ucl: ucl-setup
 	cd $(BUILD_WORK)/ucl && autoreconf -fi
 	cd $(BUILD_WORK)/ucl && ./configure \
@@ -26,9 +25,7 @@ ucl: ucl-setup
 	+$(MAKE) -C $(BUILD_WORK)/ucl all
 	+$(MAKE) -C $(BUILD_WORK)/ucl install \
 		DESTDIR=$(BUILD_STAGE)/ucl
-	+$(MAKE) -C $(BUILD_WORK)/ucl install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/ucl/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 ucl-package: ucl-stage

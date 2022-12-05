@@ -10,33 +10,32 @@ DEB_GOBJECT-INTROSPECTION_V   ?= $(GOBJECT-INTROSPECTION_VERSION)
 # You need libffi-dev, libglib2.0-dev, libpython3.9-dev
 
 gobject-introspection-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://download.gnome.org/sources/gobject-introspection/$(shell echo $(GOBJECT-INTROSPECTION_VERSION) | cut -f-2 -d.)/gobject-introspection-$(GOBJECT-INTROSPECTION_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE) https://download.gnome.org/sources/gobject-introspection/$(shell echo $(GOBJECT-INTROSPECTION_VERSION) | cut -f-2,-d.)/gobject-introspection-$(GOBJECT-INTROSPECTION_VERSION).tar.xz)
 	$(call EXTRACT_TAR,gobject-introspection-$(GOBJECT-INTROSPECTION_VERSION).tar.xz,gobject-introspection-$(GOBJECT-INTROSPECTION_VERSION),gobject-introspection)
 	mkdir -p $(BUILD_WORK)/gobject-introspection/build
 
 	echo -e "[paths]\n \
 	prefix ='$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
 	[binaries]\n \
-	pkgconfig = '$(shell which pkg-config)'\n" > $(BUILD_WORK)/gobject-introspection/build/cross.txt
+	pkgconfig = '$(shell command -v pkg-config)'\n" > $(BUILD_WORK)/gobject-introspection/build/cross.txt
 
 ifneq ($(wildcard $(BUILD_WORK)/gobject-introspection/.build_complete),)
 gobject-introspection:
 	@echo "Using previously built gobject-introspection."
 else
 gobject-introspection: gobject-introspection-setup glib2.0 libffi python3
-	$(SED) -i 's|/usr/share|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share|g' $(BUILD_WORK)/gobject-introspection/giscanner/transformer.py
-	$(SED) -i -e "s|extra_giscanner_cflags = \[]|extra_giscanner_cflags = ['$(PLATFORM_VERSION_MIN)']|" \
+	sed -i 's|/usr/share|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share|g' $(BUILD_WORK)/gobject-introspection/giscanner/transformer.py
+	sed -i -e "s|extra_giscanner_cflags = \[]|extra_giscanner_cflags = ['$(PLATFORM_VERSION_MIN)']|" \
 		-e "s|extra_giscanner_args = \[]|extra_giscanner_args = ['--cflags-begin'] + extra_giscanner_cflags + ['--cflags-end']|" $(BUILD_WORK)/gobject-introspection/meson.build
 	export GI_SCANNER_DISABLE_CACHE=true; \
 	cd $(BUILD_WORK)/gobject-introspection/build && meson \
 		--cross-file cross.txt \
-		-Dpython="$(shell which python3)" \
+		-Dpython="$(shell command -v python3)" \
 		..; \
 	cd $(BUILD_WORK)/gobject-introspection/build; \
-		DESTDIR="$(BUILD_STAGE)/gobject-introspection" meson install; \
-		DESTDIR="$(BUILD_BASE)" meson install
-	$(SED) -i "s|$$(cat $(BUILD_STAGE)/gobject-introspection/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/g-ir-scanner | grep \#! | sed 's/#!//')|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/gobject-introspection/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
-	touch $(BUILD_WORK)/gobject-introspection/.build_complete
+		DESTDIR="$(BUILD_STAGE)/gobject-introspection" meson install
+	sed -i "s|$$(cat $(BUILD_STAGE)/gobject-introspection/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/g-ir-scanner | grep \#! | sed 's/#!//')|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3|" $(BUILD_STAGE)/gobject-introspection/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*
+	$(call AFTER_BUILD,copy)
 endif
 
 gobject-introspection-package: gobject-introspection-stage

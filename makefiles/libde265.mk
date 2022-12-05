@@ -7,7 +7,7 @@ LIBDE265_VERSION := 1.0.8
 DEB_LIBDE265_V   ?= $(LIBDE265_VERSION)
 
 libde265-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/strukturag/libde265/releases/download/v$(LIBDE265_VERSION)/libde265-$(LIBDE265_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/strukturag/libde265/releases/download/v$(LIBDE265_VERSION)/libde265-$(LIBDE265_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libde265-$(LIBDE265_VERSION).tar.gz,libde265-$(LIBDE265_VERSION),libde265)
 
 ifneq ($(wildcard $(BUILD_WORK)/libde265/.build_complete),)
@@ -21,9 +21,7 @@ libde265: libde265-setup
 	+$(MAKE) -C $(BUILD_WORK)/libde265
 	+$(MAKE) -C $(BUILD_WORK)/libde265 install \
 		DESTDIR=$(BUILD_STAGE)/libde265
-	+$(MAKE) -C $(BUILD_WORK)/libde265 install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libde265/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libde265-package: libde265-stage

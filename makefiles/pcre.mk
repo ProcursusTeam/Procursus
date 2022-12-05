@@ -7,20 +7,21 @@ STRAPPROJECTS += pcre
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += pcre
 endif # ($(MEMO_TARGET),darwin-\*)
-PCRE_VERSION  := 8.44
+PCRE_VERSION  := 8.45
 DEB_PCRE_V    ?= $(PCRE_VERSION)-1
 
 pcre-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftp.pcre.org/pub/pcre/pcre-$(PCRE_VERSION).tar.bz2{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://downloads.sourceforge.net/pcre/pcre-$(PCRE_VERSION).tar.bz2{$(comma).sig})
 	$(call PGP_VERIFY,pcre-$(PCRE_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,pcre-$(PCRE_VERSION).tar.bz2,pcre-$(PCRE_VERSION),pcre)
+	$(call DO_PATCH,pcre,pcre,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/pcre/.build_complete),)
 pcre:
 	@echo "Using previously built pcre."
 else
 pcre: pcre-setup
-	cd $(BUILD_WORK)/pcre && unset MACOSX_DEPLOYMENT_TARGET && ./configure -C \
+	cd $(BUILD_WORK)/pcre && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
 		--enable-utf8 \
@@ -34,9 +35,7 @@ pcre: pcre-setup
 	+$(MAKE) -C $(BUILD_WORK)/pcre
 	+$(MAKE) -C $(BUILD_WORK)/pcre install \
 		DESTDIR=$(BUILD_STAGE)/pcre
-	+$(MAKE) -C $(BUILD_WORK)/pcre install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/pcre/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 pcre-package: pcre-stage
@@ -62,13 +61,13 @@ pcre-package: pcre-stage
 	# pcre.mk Prep libpcre1-dev
 	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(*.1*|*.0*|*.0*) $(BUILD_DIST)/libpcre1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pcre-config $(BUILD_DIST)/libpcre1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/pcre-config.1 $(BUILD_DIST)/libpcre1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/pcre-config.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/libpcre1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/libpcre1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libpcre1-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# pcre.mk Prep pcregrep
 	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pcregrep $(BUILD_DIST)/pcregrep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/pcregrep.1 $(BUILD_DIST)/pcregrep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/pcre/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/pcregrep.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/pcregrep/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# pcre.mk Sign
 	$(call SIGN,libpcre1,general.xml)

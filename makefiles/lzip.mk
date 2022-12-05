@@ -7,7 +7,7 @@ LZIP_VERSION  := 1.22
 DEB_LZIP_V    ?= $(LZIP_VERSION)
 
 lzip-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://download.savannah.gnu.org/releases/lzip/lzip-$(LZIP_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://download.savannah.gnu.org/releases/lzip/lzip-$(LZIP_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,lzip-$(LZIP_VERSION).tar.gz)
 	$(call EXTRACT_TAR,lzip-$(LZIP_VERSION).tar.gz,lzip-$(LZIP_VERSION),lzip)
 
@@ -25,10 +25,9 @@ lzip: lzip-setup
 	+$(MAKE) -C $(BUILD_WORK)/lzip
 	+$(MAKE) -C $(BUILD_WORK)/lzip install -j1 \
 		DESTDIR="$(BUILD_STAGE)/lzip"
-	+$(MAKE) -C $(BUILD_WORK)/lzip install -j1 \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/lzip/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
+
 lzip-package: lzip-stage
 	# lzip.mk Package Structure
 	rm -rf $(BUILD_DIST)/lzip

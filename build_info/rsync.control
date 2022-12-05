@@ -3,11 +3,10 @@ Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_RSYNC_V@
 Section: Networking
-Depends: libssl1.1, libzstd1, liblz4-1, libxxhash0
+Depends: libssl3, libzstd1, liblz4-1, libxxhash0, libpopt0
 Suggests: openssh-client, openssh-server
 Priority: important
 Homepage: http://rsync.samba.org/
-Tag: purpose::console, role::hacker
 Description: fast, versatile, remote (and local) file-copying tool
  rsync is a fast and versatile file-copying tool which can copy locally
  and to/from a remote host. It offers many options to control its behavior,

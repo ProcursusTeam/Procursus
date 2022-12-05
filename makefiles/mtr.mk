@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += mtr
-MTR_VERSION := 0.94
+MTR_VERSION := 0.95
 DEB_MTR_V   ?= $(MTR_VERSION)
 
 mtr-setup: setup
@@ -23,7 +23,7 @@ mtr: mtr-setup ncurses jansson
 		LIBS="-lncursesw -lm"
 	+$(MAKE) -C $(BUILD_WORK)/mtr install \
 		DESTDIR=$(BUILD_STAGE)/mtr
-	touch $(BUILD_WORK)/mtr/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 mtr-package: mtr-stage
@@ -32,7 +32,7 @@ mtr-package: mtr-stage
 	mkdir -p $(BUILD_DIST)/mtr
 
 	# mtr.mk Prep mtr
-	cp -a $(BUILD_STAGE)/mtr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/mtr
+	cp -a $(BUILD_STAGE)/mtr $(BUILD_DIST)
 
 	# mtr.mk Sign
 	$(call SIGN,mtr,general.xml)

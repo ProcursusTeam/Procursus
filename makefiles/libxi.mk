@@ -7,7 +7,7 @@ LIBXI_VERSION := 1.7.10
 DEB_LIBXI_V   ?= $(LIBXI_VERSION)
 
 libxi-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXi-$(LIBXI_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libXi-$(LIBXI_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libXi-$(LIBXI_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXi-$(LIBXI_VERSION).tar.gz,libXi-$(LIBXI_VERSION),libxi)
 
@@ -24,9 +24,7 @@ libxi: libxi-setup libx11 xorgproto libxext libxfixes
 	+$(MAKE) -C $(BUILD_WORK)/libxi
 	+$(MAKE) -C $(BUILD_WORK)/libxi install \
 		DESTDIR=$(BUILD_STAGE)/libxi
-	+$(MAKE) -C $(BUILD_WORK)/libxi install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxi/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libxi-package: libxi-stage

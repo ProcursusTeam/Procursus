@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += xpwn
-XPWN_COMMIT  := def39d6e0ed0fdec0a0ff526bd11bec15d8de4e7
-XPWN_VERSION := 0.5.8+git20201206.$(shell echo $(XPWN_COMMIT) | cut -c -7)
+XPWN_COMMIT  := c89fba5f7390fde9bb0443d0c7be81ccc17f02ff
+XPWN_VERSION := 0.5.8+git20220711.$(shell echo $(XPWN_COMMIT) | cut -c -7)
 DEB_XPWN_V   ?= $(XPWN_VERSION)
 
 xpwn-setup: setup
@@ -12,7 +12,7 @@ xpwn-setup: setup
 	$(call EXTRACT_TAR,xpwn-$(XPWN_COMMIT).tar.gz,xpwn-$(XPWN_COMMIT),xpwn)
 	$(call DO_PATCH,xpwn,xpwn,-p1)
 
-	$(SED) -i 's/powerpc-apple-darwin8-libtool/libtool/' $(BUILD_WORK)/xpwn/ipsw-patch/CMakeLists.txt
+	sed -i 's/powerpc-apple-darwin8-libtool/libtool/' $(BUILD_WORK)/xpwn/ipsw-patch/CMakeLists.txt
 
 ifneq ($(wildcard $(BUILD_WORK)/xpwn/.build_complete),)
 xpwn:
@@ -25,15 +25,12 @@ xpwn: xpwn-setup libpng16 openssl
 		-DZLIB_LIBRARY="-L$(TARGET_SYSROOT)/usr/lib -lz"
 	+$(MAKE) -C $(BUILD_WORK)/xpwn
 	+$(MAKE) -C $(BUILD_WORK)/xpwn install \
-		DESTDIR=$(BUILD_BASE)
-	+$(MAKE) -C $(BUILD_WORK)/xpwn install \
 		DESTDIR=$(BUILD_STAGE)/xpwn
+	mv $(BUILD_STAGE)/xpwn/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ipsw $(BUILD_STAGE)/xpwn/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ipsw-xpwn
 	mkdir -p {$(BUILD_BASE),$(BUILD_STAGE)/xpwn}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include/xpwn,lib/xpwn}
-	cp -a $(BUILD_WORK)/xpwn/includes/* $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpwn
 	cp -a $(BUILD_WORK)/xpwn/includes/* $(BUILD_STAGE)/xpwn/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpwn
-	cp -a $(BUILD_WORK)/xpwn/{ipsw-patch/libxpwn,minizip/libminizip,common/libcommon,hfs/libhfs,dmg/libdmg}.a $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xpwn
 	cp -a $(BUILD_WORK)/xpwn/{ipsw-patch/libxpwn,minizip/libminizip,common/libcommon,hfs/libhfs,dmg/libdmg}.a $(BUILD_STAGE)/xpwn/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xpwn
-	touch $(BUILD_WORK)/xpwn/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 xpwn-package: xpwn-stage

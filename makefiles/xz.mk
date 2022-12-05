@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += xz
-XZ_VERSION    := 5.2.5
-DEB_XZ_V      ?= $(XZ_VERSION)-3
+XZ_VERSION    := 5.2.8
+DEB_XZ_V      ?= $(XZ_VERSION)
 
 xz-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://tukaani.org/xz/xz-$(XZ_VERSION).tar.xz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://tukaani.org/xz/xz-$(XZ_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,xz-$(XZ_VERSION).tar.xz)
 	$(call EXTRACT_TAR,xz-$(XZ_VERSION).tar.xz,xz-$(XZ_VERSION),xz)
 
@@ -18,15 +18,12 @@ else
 xz: xz-setup gettext
 	cd $(BUILD_WORK)/xz && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--libdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib \
+		--libdir="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib" \
 		--enable-threads \
 		--disable-xzdec \
 		--disable-lzmadec
 	+$(MAKE) -C $(BUILD_WORK)/xz install \
-		DESTDIR=$(BUILD_STAGE)/xz
-	+$(MAKE) -C $(BUILD_WORK)/xz install \
-		DESTDIR=$(BUILD_BASE)
-
+		DESTDIR="$(BUILD_STAGE)/xz"
 	cd $(BUILD_WORK)/xz && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-shared \
@@ -40,8 +37,8 @@ xz: xz-setup gettext
 		--disable-xz \
 		--disable-lzma-links
 	+$(MAKE) -C $(BUILD_WORK)/xz install \
-		DESTDIR=$(BUILD_STAGE)/xz
-	touch $(BUILD_WORK)/xz/.build_complete
+		DESTDIR="$(BUILD_STAGE)/xz"
+	$(call AFTER_BUILD,copy)
 endif
 
 xz-package: xz-stage
@@ -52,12 +49,12 @@ xz-package: xz-stage
 
 	# xz.mk Prep xz-utils
 	cp -a $(BUILD_STAGE)/xz/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/!(*dec) $(BUILD_DIST)/xz-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/xz/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/!(*dec.1) $(BUILD_DIST)/xz-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/xz/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/!(*dec.1$(MEMO_MANPAGE_SUFFIX)) $(BUILD_DIST)/xz-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_STAGE)/xz/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale $(BUILD_DIST)/xz-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
 	# xz.mk Prep xzdec
 	cp -a $(BUILD_STAGE)/xz/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*dec $(BUILD_DIST)/xzdec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/xz/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/*dec.1 $(BUILD_DIST)/xzdec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/xz/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/*dec.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/xzdec/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# xz.mk Prep liblzma5
 	cp -a $(BUILD_STAGE)/xz/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/liblzma.5.dylib $(BUILD_DIST)/liblzma5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib

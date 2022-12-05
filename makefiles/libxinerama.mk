@@ -7,7 +7,7 @@ LIBXINERAMA_VERSION := 1.1.4
 DEB_LIBXINERAMA_V   ?= $(LIBXINERAMA_VERSION)
 
 libxinerama-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/lib/libXinerama-$(LIBXINERAMA_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.x.org/archive/individual/lib/libXinerama-$(LIBXINERAMA_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libXinerama-$(LIBXINERAMA_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXinerama-$(LIBXINERAMA_VERSION).tar.gz,libXinerama-$(LIBXINERAMA_VERSION),libxinerama)
 
@@ -22,9 +22,7 @@ libxinerama: libxinerama-setup libx11 libxext xorgproto
 	+$(MAKE) -C $(BUILD_WORK)/libxinerama
 	+$(MAKE) -C $(BUILD_WORK)/libxinerama install \
 		DESTDIR=$(BUILD_STAGE)/libxinerama
-	+$(MAKE) -C $(BUILD_WORK)/libxinerama install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxinerama/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libxinerama-package: libxinerama-stage

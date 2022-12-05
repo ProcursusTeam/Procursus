@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += nano
-NANO_VERSION := 5.7
+NANO_VERSION := 6.4
 DEB_NANO_V   ?= $(NANO_VERSION)
 
 nano-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/nano/nano-$(NANO_VERSION).tar.xz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/nano/nano-$(NANO_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,nano-$(NANO_VERSION).tar.xz)
 	$(call EXTRACT_TAR,nano-$(NANO_VERSION).tar.xz,nano-$(NANO_VERSION),nano)
 	$(call DO_PATCH,nano,nano,-p1)
@@ -19,28 +19,22 @@ else
 nano: nano-setup ncurses gettext file
 	cd $(BUILD_WORK)/nano && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--disable-debug \
-		--disable-dependency-tracking \
-		--enable-color \
-		--enable-extra \
-		--enable-nanorc \
 		--enable-utf8 \
-		--enable-multibuffer \
-		NCURSESW_LIBS=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib
+		--enable-all \
+		--disable-debug \
+		NCURSESW_LIBS="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib"
 	+$(MAKE) -C $(BUILD_WORK)/nano
 	+$(MAKE) -C $(BUILD_WORK)/nano install \
-		DESTDIR=$(BUILD_STAGE)/nano
-	mkdir -p $(BUILD_STAGE)/nano/$(MEMO_PREFIX)/etc
+		DESTDIR="$(BUILD_STAGE)/nano"
+	mkdir -p $(BUILD_STAGE)/nano/$(MEMO_PREFIX){/etc,$(MEMO_SUB_PREFIX)/share/nano/debian}
 	cp -a $(BUILD_WORK)/nano/doc/sample.nanorc $(BUILD_STAGE)/nano/$(MEMO_PREFIX)/etc/nanorc
-	touch $(BUILD_WORK)/nano/.build_complete
+	cp -a $(BUILD_MISC)/nano/debian.nanorc $(BUILD_STAGE)/nano/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/nano/debian/
+	$(call AFTER_BUILD)
 endif
 
 nano-package: nano-stage
 	# nano.mk Package Structure
 	rm -rf $(BUILD_DIST)/nano
-	mkdir -p $(BUILD_DIST)/nano
-
-	# nano.mk Prep nano
 	cp -a $(BUILD_STAGE)/nano $(BUILD_DIST)
 
 	# nano.mk Sign

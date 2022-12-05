@@ -4,10 +4,10 @@ endif
 
 SUBPROJECTS     += libheif
 LIBHEIF_VERSION := 1.12.0
-DEB_LIBHEIF_V   ?= $(LIBHEIF_VERSION)
+DEB_LIBHEIF_V   ?= $(LIBHEIF_VERSION)-1
 
 libheif-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/strukturag/libheif/releases/download/v$(LIBHEIF_VERSION)/libheif-$(LIBHEIF_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/strukturag/libheif/releases/download/v$(LIBHEIF_VERSION)/libheif-$(LIBHEIF_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libheif-$(LIBHEIF_VERSION).tar.gz,libheif-$(LIBHEIF_VERSION),libheif)
 	$(call DO_PATCH,libheif,libheif,-p1)
 
@@ -23,9 +23,7 @@ libheif: libheif-setup x265 libde265 aom rav1e dav1d
 	+$(MAKE) -C $(BUILD_WORK)/libheif
 	+$(MAKE) -C $(BUILD_WORK)/libheif install \
 		DESTDIR=$(BUILD_STAGE)/libheif
-	+$(MAKE) -C $(BUILD_WORK)/libheif install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libheif/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libheif-package: libheif-stage

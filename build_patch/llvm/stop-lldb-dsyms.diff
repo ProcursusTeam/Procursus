@@ -1,0 +1,11 @@
+--- a/lldb/cmake/modules/AddLLDB.cmake	2022-11-19 13:18:35.897776269 +0000
++++ b/lldb/cmake/modules/AddLLDB.cmake	2022-11-19 13:18:43.384689444 +0000
+@@ -328,8 +328,6 @@
+ 
+     set(buildtree_name ${buildtree_dir}/${bundle_subdir}${output_name})
+     install(CODE "message(STATUS \"Externalize debuginfo: ${dsym_name}\")" COMPONENT ${name})
+-    install(CODE "execute_process(COMMAND xcrun dsymutil -o=${dsym_name} ${buildtree_name})"
+-            COMPONENT ${name})
+   endif()
+ 
+   if(NOT LLDB_SKIP_STRIP)

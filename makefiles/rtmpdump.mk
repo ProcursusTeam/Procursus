@@ -9,7 +9,7 @@ RTMPDUMP_SHORT_V2 := gitfa8646d.1
 DEB_RTMPDUMP_V    ?= $(RTMPDUMP_VERSION)+$(RTMPDUMP_SHORT_V1).$(RTMPDUMP_SHORT_V2)
 
 rtmpdump-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/r/rtmpdump/rtmpdump_$(RTMPDUMP_VERSION)+$(RTMPDUMP_SHORT_V1).$(RTMPDUMP_SHORT_V2).orig.tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://deb.debian.org/debian/pool/main/r/rtmpdump/rtmpdump_$(RTMPDUMP_VERSION)+$(RTMPDUMP_SHORT_V1).$(RTMPDUMP_SHORT_V2).orig.tar.gz)
 	$(call EXTRACT_TAR,rtmpdump_$(RTMPDUMP_VERSION)+$(RTMPDUMP_SHORT_V1).$(RTMPDUMP_SHORT_V2).orig.tar.gz,rtmpdump-$(RTMPDUMP_SHORT_V1),rtmpdump)
 
 ifneq ($(wildcard $(BUILD_WORK)/rtmpdump/.build_complete),)
@@ -28,17 +28,7 @@ rtmpdump: rtmpdump-setup nettle gnutls libgmp10
 		prefix="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		DESTDIR="$(BUILD_STAGE)/rtmpdump" \
 		mandir="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man"
-	+$(MAKE) -C $(BUILD_WORK)/rtmpdump install \
-		CC="$(CC)" \
-		LD="$(LD)" \
-		CRYPTO=GNUTLS \
-		XCFLAGS="$(CFLAGS)" \
-		XLDFLAGS="$(LDFLAGS)" \
-		SYS=darwin \
-		prefix="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
-		DESTDIR="$(BUILD_BASE)" \
-		mandir="/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man"
-	touch $(BUILD_WORK)/rtmpdump/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 rtmpdump-package: rtmpdump-stage

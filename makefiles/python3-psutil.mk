@@ -7,7 +7,7 @@ PYTHON3-PSUTIL_VERSION := 5.8.0
 DEB_PYTHON3-PSUTIL_V   ?= $(PYTHON3-PSUTIL_VERSION)
 
 python3-psutil-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE)  https://github.com/giampaolo/psutil/archive/refs/tags/release-$(PYTHON3-PSUTIL_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE) ,https://github.com/giampaolo/psutil/archive/refs/tags/release-$(PYTHON3-PSUTIL_VERSION).tar.gz)
 	$(call EXTRACT_TAR,release-$(PYTHON3-PSUTIL_VERSION).tar.gz,psutil-release-$(PYTHON3-PSUTIL_VERSION),python3-psutil)
 
 ifneq ($(wildcard $(BUILD_WORK)/python3-psutil/.build_complete),)
@@ -16,12 +16,14 @@ python3-psutil:
 else
 python3-psutil: python3-psutil-setup python3
 	cd $(BUILD_WORK)/python3-psutil && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py \
+		build \
+		--executable="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3" \
 		install \
 		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		--root="$(BUILD_STAGE)/python3-psutil" \
 		--install-layout=deb
 	find $(BUILD_STAGE)/python3-psutil -name __pycache__ -prune -exec rm -rf {} \;
-	touch $(BUILD_WORK)/python3-psutil/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 python3-psutil-package: python3-psutil-stage

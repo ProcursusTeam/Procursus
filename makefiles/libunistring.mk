@@ -7,7 +7,7 @@ UNISTRING_VERSION := 0.9.10
 DEB_UNISTRING_V   ?= $(UNISTRING_VERSION)-2
 
 libunistring-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/libunistring/libunistring-$(UNISTRING_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/libunistring/libunistring-$(UNISTRING_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libunistring-$(UNISTRING_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libunistring-$(UNISTRING_VERSION).tar.gz,libunistring-$(UNISTRING_VERSION),libunistring)
 
@@ -21,9 +21,7 @@ libunistring: libunistring-setup
 	+$(MAKE) -C $(BUILD_WORK)/libunistring
 	+$(MAKE) -C $(BUILD_WORK)/libunistring install \
 		DESTDIR=$(BUILD_STAGE)/libunistring
-	+$(MAKE) -C $(BUILD_WORK)/libunistring install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libunistring/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libunistring-package: libunistring-stage

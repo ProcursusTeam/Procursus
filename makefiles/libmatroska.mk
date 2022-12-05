@@ -7,7 +7,7 @@ LIBMATROSKA_VERSION := 1.6.3
 DEB_LIBMATROSKA_V   ?= $(LIBMATROSKA_VERSION)
 
 libmatroska-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://dl.matroska.org/downloads/libmatroska/libmatroska-$(LIBMATROSKA_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://dl.matroska.org/downloads/libmatroska/libmatroska-$(LIBMATROSKA_VERSION).tar.xz)
 	$(call EXTRACT_TAR,libmatroska-$(LIBMATROSKA_VERSION).tar.xz,libmatroska-$(LIBMATROSKA_VERSION),libmatroska)
 
 ifneq ($(wildcard $(BUILD_WORK)/libmatroska/.build_complete),)
@@ -22,10 +22,7 @@ libmatroska: libmatroska-setup libebml
 	+$(MAKE) -C $(BUILD_WORK)/libmatroska
 	+$(MAKE) -C $(BUILD_WORK)/libmatroska install \
 		DESTDIR="$(BUILD_STAGE)/libmatroska"
-	+$(MAKE) -C $(BUILD_WORK)/libmatroska install \
-		DESTDIR="$(BUILD_BASE)"
-
-	touch $(BUILD_WORK)/libmatroska/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libmatroska-package: libmatroska-stage

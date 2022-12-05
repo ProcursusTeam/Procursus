@@ -4,11 +4,11 @@ set -e
 
 case "$1" in
     (install)
-    /bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/us.diatr.shshd.plist
+    @MEMO_LAUNCHCTL_PREFIX@/bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/us.diatr.shshd.plist
     ;;
 	(upgrade)
-	/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/us.diatr.shshd.plist
-    /bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/us.diatr.shshd.plist
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/us.diatr.shshd.plist
+    @MEMO_LAUNCHCTL_PREFIX@/bin/launchctl load @MEMO_PREFIX@/Library/LaunchDaemons/us.diatr.shshd.plist
 	;;
 	(*)
 	exit 0

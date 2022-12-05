@@ -7,7 +7,7 @@ LUA50_VERSION := 5.0.3
 DEB_LUA50_V   ?= $(LUA50_VERSION)
 
 lua50-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.lua.org/ftp/lua-$(LUA50_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.lua.org/ftp/lua-$(LUA50_VERSION).tar.gz)
 	$(call EXTRACT_TAR,lua-$(LUA50_VERSION).tar.gz,lua-$(LUA50_VERSION),lua50)
 	$(call DO_PATCH,lua50,lua50,-p1)
 
@@ -57,7 +57,7 @@ lua50: lua50-setup readline
 		INSTALL_ROOT="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		INSTALL_INC="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/lua50" \
 		INSTALL_MAN="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1"
-	touch $(BUILD_WORK)/lua50/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 lua50-package: lua50-stage

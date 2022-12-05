@@ -7,7 +7,7 @@ OPENMP_VERSION := 12.0.0
 DEB_OPENMP_V   ?= $(OPENMP_VERSION)
 
 openmp-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/llvm/llvm-project/releases/download/llvmorg-$(OPENMP_VERSION)/openmp-$(OPENMP_VERSION).src.tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/llvm/llvm-project/releases/download/llvmorg-$(OPENMP_VERSION)/openmp-$(OPENMP_VERSION).src.tar.xz)
 	$(call EXTRACT_TAR,openmp-$(OPENMP_VERSION).src.tar.xz,openmp-$(OPENMP_VERSION).src,openmp)
 	$(call DO_PATCH,openmp,openmp,-p1)
 
@@ -25,11 +25,8 @@ openmp: openmp-setup
 	+$(MAKE) -C $(BUILD_WORK)/openmp
 	+$(MAKE) -C $(BUILD_WORK)/openmp install \
 		DESTDIR="$(BUILD_STAGE)/openmp"
-	+$(MAKE) -C $(BUILD_WORK)/openmp install \
-		DESTDIR="$(BUILD_BASE)"
 
-	ln -sf libomp.1.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libomp.dylib
-	ln -sf libomp.1.dylib $(BUILD_STAGE)/openmp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libomp.dylib
+	$(LN_S) libomp.1.dylib $(BUILD_STAGE)/openmp/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libomp.dylib
 
 	# Static lib
 	cd $(BUILD_WORK)/openmp && cmake . \
@@ -41,9 +38,7 @@ openmp: openmp-setup
 	+$(MAKE) -C $(BUILD_WORK)/openmp
 	+$(MAKE) -C $(BUILD_WORK)/openmp install \
 		DESTDIR="$(BUILD_STAGE)/openmp"
-	+$(MAKE) -C $(BUILD_WORK)/openmp install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/openmp/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 openmp-package: openmp-stage

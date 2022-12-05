@@ -7,7 +7,7 @@ LIBXTST_VERSION := 1.2.3
 DEB_LIBXTST_V   ?= $(LIBXTST_VERSION)
 
 libxtst-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXtst-$(LIBXTST_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libXtst-$(LIBXTST_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libXtst-$(LIBXTST_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXtst-$(LIBXTST_VERSION).tar.gz,libXtst-$(LIBXTST_VERSION),libxtst)
 
@@ -21,9 +21,7 @@ libxtst: libxtst-setup xorgproto libx11 libxi
 	+$(MAKE) -C $(BUILD_WORK)/libxtst
 	+$(MAKE) -C $(BUILD_WORK)/libxtst install \
 		DESTDIR=$(BUILD_STAGE)/libxtst
-	+$(MAKE) -C $(BUILD_WORK)/libxtst install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxtst/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libxtst-package: libxtst-stage

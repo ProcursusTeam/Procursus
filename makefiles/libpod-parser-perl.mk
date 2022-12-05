@@ -7,9 +7,8 @@ LIBPOD-PARSER-PERL_VERSION := 1.63
 DEB_LIBPOD-PARSER-PERL_V   ?= $(LIBPOD-PARSER-PERL_VERSION)
 
 libpod-parser-perl-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/libpod-parser-perl-$(LIBPOD-PARSER-PERL_VERSION).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/libpod-parser-perl-$(LIBPOD-PARSER-PERL_VERSION).tar.gz \
-			https://cpan.metacpan.org/authors/id/M/MA/MAREKR/Pod-Parser-$(LIBPOD-PARSER-PERL_VERSION).tar.gz
+	$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/libpod-parser-perl-$(LIBPOD-PARSER-PERL_VERSION).tar.gz, \
+		https://cpan.metacpan.org/authors/id/M/MA/MAREKR/Pod-Parser-$(LIBPOD-PARSER-PERL_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libpod-parser-perl-$(LIBPOD-PARSER-PERL_VERSION).tar.gz,Pod-Parser-$(LIBPOD-PARSER-PERL_VERSION),libpod-parser-perl)
 
 ifneq ($(wildcard $(BUILD_WORK)/libpod-parser-perl/.build_complete),)
@@ -23,7 +22,7 @@ libpod-parser-perl: libpod-parser-perl-setup perl
 	+$(MAKE) -C $(BUILD_WORK)/libpod-parser-perl install \
 		DESTDIR="$(BUILD_STAGE)/libpod-parser-perl"
 	rm -rf $(BUILD_STAGE)/libpod-parser-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	touch $(BUILD_WORK)/libpod-parser-perl/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libpod-parser-perl-package: libpod-parser-perl-stage

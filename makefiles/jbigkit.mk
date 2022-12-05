@@ -7,7 +7,7 @@ JBIGKIT_VERSION := 2.1
 DEB_JBIGKIT_V   ?= $(JBIGKIT_VERSION)
 
 jbigkit-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.cl.cam.ac.uk/~mgk25/jbigkit/download/jbigkit-$(JBIGKIT_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.cl.cam.ac.uk/~mgk25/jbigkit/download/jbigkit-$(JBIGKIT_VERSION).tar.gz)
 	$(call EXTRACT_TAR,jbigkit-$(JBIGKIT_VERSION).tar.gz,jbigkit-$(JBIGKIT_VERSION),jbigkit)
 	$(call DO_PATCH,jbigkit,jbigkit,-p1)
 
@@ -41,7 +41,7 @@ jbigkit: jbigkit-setup
 	$(INSTALL) -m644 "$(BUILD_WORK)/jbigkit/pbmtools/pbmtojbg.1" $(BUILD_STAGE)/jbigkit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	$(INSTALL) -m644 "$(BUILD_WORK)/jbigkit/pbmtools/jbgtopbm.1" $(BUILD_STAGE)/jbigkit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
-	touch $(BUILD_WORK)/jbigkit/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 jbigkit-package: jbigkit-stage

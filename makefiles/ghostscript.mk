@@ -7,7 +7,7 @@ GHOSTSCRIPT_VERSION := 9.53.3
 DEB_GHOSTSCRIPT_V   ?= $(GHOSTSCRIPT_VERSION)
 
 ghostscript-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs9533/ghostpdl-$(GHOSTSCRIPT_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs9533/ghostpdl-$(GHOSTSCRIPT_VERSION).tar.gz)
 	$(call EXTRACT_TAR,ghostpdl-$(GHOSTSCRIPT_VERSION).tar.gz,ghostpdl-$(GHOSTSCRIPT_VERSION),ghostscript)
 	$(call DO_PATCH,ghostscript,ghostscript,-p1)
 	rm -rf $(BUILD_WORK)/ghostscript/{tiff,jpeg,openjpeg,freetype,expat,libpng,zlib,lcms2mt,jpegxr,jbig2dec}
@@ -29,10 +29,8 @@ ghostscript: ghostscript-setup libtiff libpng16 jbig2dec libjpeg-turbo lcms2 lib
 	+$(MAKE) -C $(BUILD_WORK)/ghostscript so
 	+$(MAKE) -C $(BUILD_WORK)/ghostscript soinstall \
 		DESTDIR="$(BUILD_STAGE)/ghostscript"
-	+$(MAKE) -C $(BUILD_WORK)/ghostscript soinstall \
-		DESTDIR="$(BUILD_BASE)"
 	mv $(BUILD_STAGE)/ghostscript/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gsc $(BUILD_STAGE)/ghostscript/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gs
-	touch $(BUILD_WORK)/ghostscript/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 ghostscript-package: ghostscript-stage

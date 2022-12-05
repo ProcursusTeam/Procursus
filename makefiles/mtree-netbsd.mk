@@ -9,7 +9,7 @@ DEB_MTREE_NETBSD_V   ?= $(MTREE_NETBSD_VERSION)
 mtree-netbsd-setup: setup
 	$(call GITHUB_ARCHIVE,jgoerzen,mtree-netbsd,$(MTREE_NETBSD_VERSION),debian/$(MTREE_NETBSD_VERSION))
 	$(call EXTRACT_TAR,mtree-netbsd-$(MTREE_NETBSD_VERSION).tar.gz,mtree-netbsd-debian-$(MTREE_NETBSD_VERSION),mtree-netbsd)
-	wget -q -nc -P $(BUILD_WORK)/mtree-netbsd https://raw.githubusercontent.com/NetBSD/src/trunk/lib/libc/gen/pwcache.{c,h}
+	$(call DOWNLOAD_FILES,$(BUILD_WORK)/mtree-netbsd,https://raw.githubusercontent.com/NetBSD/src/trunk/lib/libc/gen/pwcache.{c$(comma)h})
 	$(call DO_PATCH,mtree-netbsd,mtree-netbsd,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/mtree-netbsd/.build_complete),)
@@ -26,7 +26,7 @@ mtree-netbsd: mtree-netbsd-setup libmd
 	+$(MAKE) -C $(BUILD_WORK)/mtree-netbsd
 	+$(MAKE) -C $(BUILD_WORK)/mtree-netbsd install \
 		DESTDIR=$(BUILD_STAGE)/mtree-netbsd
-	touch $(BUILD_WORK)/mtree-netbsd/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 mtree-netbsd-package: mtree-netbsd-stage

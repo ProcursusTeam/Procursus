@@ -7,7 +7,7 @@ LIBLOUIS_VERSION  := 3.17.0
 DEB_LIBLOUIS_V    ?= $(LIBLOUIS_VERSION)
 
 liblouis-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/liblouis/liblouis/releases/download/v$(LIBLOUIS_VERSION)/liblouis-$(LIBLOUIS_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/liblouis/liblouis/releases/download/v$(LIBLOUIS_VERSION)/liblouis-$(LIBLOUIS_VERSION).tar.gz)
 	$(call EXTRACT_TAR,liblouis-$(LIBLOUIS_VERSION).tar.gz,liblouis-$(LIBLOUIS_VERSION),liblouis)
 
 ifneq ($(wildcard $(BUILD_WORK)/liblouis/.build_complete),)
@@ -21,9 +21,7 @@ liblouis: liblouis-setup libyaml
 	+$(MAKE) -C $(BUILD_WORK)/liblouis all
 	+$(MAKE) -C $(BUILD_WORK)/liblouis install \
 		DESTDIR=$(BUILD_STAGE)/liblouis
-	+$(MAKE) -C $(BUILD_WORK)/liblouis install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/liblouis/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 liblouis-package: liblouis-stage
 	# liblouis.mk Package Structure
@@ -41,12 +39,13 @@ liblouis-package: liblouis-stage
 
 	# liblouis.mk Prep liblouis-bin
 	cp -a $(BUILD_STAGE)/liblouis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/* $(BUILD_DIST)/liblouis-bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	
+
 	# liblouis.mk Prep liblouis-data
 	cp -a $(BUILD_STAGE)/liblouis/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/liblouis/tables $(BUILD_DIST)/liblouis-data/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tables
+
 	# liblouis.mk Sign
 	$(call SIGN,liblouis20,general.xml)
-	
+
 	# liblouis.mk Make .debs
 	$(call PACK,liblouis20,DEB_LIBLOUIS_V)
 	$(call PACK,liblouis-dev,DEB_LIBLOUIS_V)

@@ -7,7 +7,7 @@ XCB-UTIL-CURSOR_VERSION := 0.1.3
 DEB_XCB-UTIL-CURSOR_V   ?= $(XCB-UTIL-CURSOR_VERSION)
 
 xcb-util-cursor-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/xcb/xcb-util-cursor-$(XCB-UTIL-CURSOR_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.x.org/archive/individual/xcb/xcb-util-cursor-$(XCB-UTIL-CURSOR_VERSION).tar.gz)
 	$(call EXTRACT_TAR,xcb-util-cursor-$(XCB-UTIL-CURSOR_VERSION).tar.gz,xcb-util-cursor-$(XCB-UTIL-CURSOR_VERSION),xcb-util-cursor)
 
 ifneq ($(wildcard $(BUILD_WORK)/xcb-util-cursor/.build_complete),)
@@ -21,9 +21,7 @@ xcb-util-cursor: xcb-util-cursor-setup libxcb xcb-util xcb-util-renderutil xcb-u
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-cursor
 	+$(MAKE) -C $(BUILD_WORK)/xcb-util-cursor install \
 		DESTDIR=$(BUILD_STAGE)/xcb-util-cursor
-	+$(MAKE) -C $(BUILD_WORK)/xcb-util-cursor install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/xcb-util-cursor/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 xcb-util-cursor-package: xcb-util-cursor-stage

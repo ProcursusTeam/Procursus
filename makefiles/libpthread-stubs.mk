@@ -7,7 +7,7 @@ LIBPTHREAD-STUBS_VERSION := 0.4
 DEB_LIBPTHREAD-STUBS_V   ?= $(LIBPTHREAD-STUBS_VERSION)
 
 libpthread-stubs-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/xcb/libpthread-stubs-$(LIBPTHREAD-STUBS_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/xcb/libpthread-stubs-$(LIBPTHREAD-STUBS_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libpthread-stubs-$(LIBPTHREAD-STUBS_VERSION).tar.gz,libpthread-stubs-$(LIBPTHREAD-STUBS_VERSION),libpthread-stubs)
 
 ifneq ($(wildcard $(BUILD_WORK)/libpthread-stubs/.build_complete),)
@@ -20,9 +20,7 @@ libpthread-stubs: libpthread-stubs-setup
 	+$(MAKE) -C $(BUILD_WORK)/libpthread-stubs
 	+$(MAKE) -C $(BUILD_WORK)/libpthread-stubs install \
 		DESTDIR=$(BUILD_STAGE)/libpthread-stubs
-	+$(MAKE) -C $(BUILD_WORK)/libpthread-stubs install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libpthread-stubs/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libpthread-stubs-package: libpthread-stubs-stage

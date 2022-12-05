@@ -7,8 +7,8 @@ LIBSPEEX_VERSION := 1.2.0
 DEB_LIBSPEEX_V   ?= $(LIBSPEEX_VERSION)
 
 libspeex-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) \
-		https://downloads.us.xiph.org/releases/speex/speex-$(LIBSPEEX_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
+		https://downloads.us.xiph.org/releases/speex/speex-$(LIBSPEEX_VERSION).tar.gz)
 	$(call EXTRACT_TAR,speex-$(LIBSPEEX_VERSION).tar.gz,speex-$(LIBSPEEX_VERSION),libspeex)
 
 ifneq ($(wildcard $(BUILD_WORK)/libspeex/.build_complete),)
@@ -24,9 +24,7 @@ libspeex: libspeex-setup libogg
 	+$(MAKE) -C $(BUILD_WORK)/libspeex
 	+$(MAKE) -C $(BUILD_WORK)/libspeex install \
 		DESTDIR=$(BUILD_STAGE)/libspeex
-	+$(MAKE) -C $(BUILD_WORK)/libspeex install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libspeex/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libspeex-package: libspeex-stage

@@ -7,7 +7,7 @@ LIBSAMPLERATE_VERSION := 0.1.9
 DEB_LIBSAMPLERATE_V   ?= $(LIBSAMPLERATE_VERSION)
 
 libsamplerate-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://www.mega-nerd.com/SRC/libsamplerate-$(LIBSAMPLERATE_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://www.mega-nerd.com/SRC/libsamplerate-$(LIBSAMPLERATE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libsamplerate-$(LIBSAMPLERATE_VERSION).tar.gz,libsamplerate-$(LIBSAMPLERATE_VERSION),libsamplerate)
 
 ifneq ($(wildcard $(BUILD_WORK)/libsamplerate/.build_complete),)
@@ -23,10 +23,7 @@ libsamplerate: libsamplerate-setup
 	+$(MAKE) -C $(BUILD_WORK)/libsamplerate install \
 		SUBDIRS="M4 src" \
 		DESTDIR=$(BUILD_STAGE)/libsamplerate
-	+$(MAKE) -C $(BUILD_WORK)/libsamplerate install \
-		SUBDIRS="M4 src" \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libsamplerate/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libsamplerate-package: libsamplerate-stage

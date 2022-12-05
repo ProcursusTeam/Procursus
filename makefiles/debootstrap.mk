@@ -7,10 +7,10 @@ DEBOOTSTRAP_VERSION := 1.0.123
 DEB_DEBOOTSTRAP_V   ?= $(DEBOOTSTRAP_VERSION)
 
 debootstrap-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://deb.debian.org/debian/pool/main/d/debootstrap/debootstrap_$(DEBOOTSTRAP_VERSION).tar.gz
-	$(TAR) xf $(BUILD_SOURCE)/debootstrap_$(DEBOOTSTRAP_VERSION).tar.gz -C $(BUILD_WORK)
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://deb.debian.org/debian/pool/main/d/debootstrap/debootstrap_$(DEBOOTSTRAP_VERSION).tar.gz)
+	tar xf $(BUILD_SOURCE)/debootstrap_$(DEBOOTSTRAP_VERSION).tar.gz -C $(BUILD_WORK)
 	$(call DO_PATCH,debootstrap,debootstrap,-p1)
-	$(SED) -i 's/@VERSION@/$(DEB_DEBOOTSTRAP_V)/g' $(BUILD_WORK)/debootstrap/debootstrap
+	sed -i 's/@VERSION@/$(DEB_DEBOOTSTRAP_V)/g' $(BUILD_WORK)/debootstrap/debootstrap
 
 ifneq ($(wildcard $(BUILD_WORK)/debootstrap/.build_complete),)
 debootstrap:
@@ -21,7 +21,7 @@ debootstrap: debootstrap-setup
 		DESTDIR=$(BUILD_STAGE)/debootstrap
 	$(INSTALL) -Dm644 $(BUILD_WORK)/debootstrap/debootstrap.8 \
 		$(BUILD_STAGE)/debootstrap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8/debootstrap.8
-	touch $(BUILD_WORK)/debootstrap/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 debootstrap-package: debootstrap-stage

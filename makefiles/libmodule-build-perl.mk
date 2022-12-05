@@ -7,9 +7,8 @@ LIBMODULE-BUILD-PERL_VERSION := 0.4231
 DEB_LIBMODULE-BUILD-PERL_V   ?= $(LIBMODULE-BUILD-PERL_VERSION)
 
 libmodule-build-perl-setup: setup
-	-[ ! -e "$(BUILD_SOURCE)/libmodule-build-perl-$(LIBMODULE-BUILD-PERL_VERSION).tar.gz" ] \
-		&& wget -q -nc -O$(BUILD_SOURCE)/libmodule-build-perl-$(LIBMODULE-BUILD-PERL_VERSION).tar.gz \
-			https://cpan.metacpan.org/authors/id/L/LE/LEONT/Module-Build-$(LIBMODULE-BUILD-PERL_VERSION).tar.gz
+	$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/libmodule-build-perl-$(LIBMODULE-BUILD-PERL_VERSION).tar.gz, \
+		https://cpan.metacpan.org/authors/id/L/LE/LEONT/Module-Build-$(LIBMODULE-BUILD-PERL_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libmodule-build-perl-$(LIBMODULE-BUILD-PERL_VERSION).tar.gz,Module-Build-$(LIBMODULE-BUILD-PERL_VERSION),libmodule-build-perl)
 
 ifneq ($(wildcard $(BUILD_WORK)/libmodule-build-perl/.build_complete),)
@@ -21,7 +20,7 @@ libmodule-build-perl: libmodule-build-perl-setup perl
 		$(DEFAULT_PERL_BUILD_FLAGS)
 	$(BUILD_WORK)/libmodule-build-perl/Build install
 	rm -rf $(BUILD_STAGE)/libmodule-build-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	touch $(BUILD_WORK)/libmodule-build-perl/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libmodule-build-perl-package: libmodule-build-perl-stage

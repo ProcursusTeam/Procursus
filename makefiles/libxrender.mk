@@ -7,7 +7,7 @@ LIBXRENDER_VERSION := 0.9.10
 DEB_LIBXRENDER_V   ?= $(LIBXRENDER_VERSION)
 
 libxrender-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXrender-$(LIBXRENDER_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libXrender-$(LIBXRENDER_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libXrender-$(LIBXRENDER_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libXrender-$(LIBXRENDER_VERSION).tar.gz,libXrender-$(LIBXRENDER_VERSION),libxrender)
 
@@ -22,9 +22,7 @@ libxrender: libxrender-setup libx11 xorgproto
 	+$(MAKE) -C $(BUILD_WORK)/libxrender
 	+$(MAKE) -C $(BUILD_WORK)/libxrender install \
 		DESTDIR=$(BUILD_STAGE)/libxrender
-	+$(MAKE) -C $(BUILD_WORK)/libxrender install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxrender/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libxrender-package: libxrender-stage

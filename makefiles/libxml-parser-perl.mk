@@ -7,9 +7,8 @@ LIBXML_PARSER_PERL_VERSION := 2.46
 DEB_LIBXML_PARSER_PERL_V   ?= $(LIBXML_PARSER_PERL_VERSION)
 
 libxml-parser-perl-setup: setup
-	-[ ! -f $(BUILD_SOURCE)/libxml-parser-perl-$(LIBXML_PARSER_PERL_VERSION).tar.gz ] && \
-			wget -q -nc -O$(BUILD_SOURCE)/libxml-parser-perl-$(LIBXML_PARSER_PERL_VERSION).tar.gz \
-				https://cpan.metacpan.org/authors/id/T/TO/TODDR/XML-Parser-$(LIBXML_PARSER_PERL_VERSION).tar.gz
+	$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/libxml-parser-perl-$(LIBXML_PARSER_PERL_VERSION).tar.gz, \
+		https://cpan.metacpan.org/authors/id/T/TO/TODDR/XML-Parser-$(LIBXML_PARSER_PERL_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libxml-parser-perl-$(LIBXML_PARSER_PERL_VERSION).tar.gz,XML-Parser-$(LIBXML_PARSER_PERL_VERSION),libxml-parser-perl)
 
 ifneq ($(wildcard $(BUILD_WORK)/libxml-parser-perl/.build_complete),)
@@ -43,19 +42,19 @@ libxml-parser-perl: libxml-parser-perl-setup perl expat
 	+$(MAKE) -C $(BUILD_WORK)/libxml-parser-perl install \
 		DESTDIR="$(BUILD_STAGE)/libxml-parser-perl"
 	rm -f $(BUILD_STAGE)/libxml-parser-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/*/perllocal.pod
-	touch $(BUILD_WORK)/libxml-parser-perl/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 libxml-parser-perl-package: libxml-parser-perl-stage
 	# libxml-parser-perl.mk Package Structure
 	rm -rf $(BUILD_DIST)/libxml-parser-perl
-	
+
 	# libxml-parser-perl.mk Prep libxml-parser-perl
 	cp -a $(BUILD_STAGE)/libxml-parser-perl $(BUILD_DIST)
-	
+
 	# libxml-parser-perl.mk Make .debs
 	$(call PACK,libxml-parser-perl,DEB_LIBXML_PARSER_PERL_V)
-	
+
 	# libxml-parser-perl.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libxml-parser-perl
 

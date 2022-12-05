@@ -7,7 +7,7 @@ JSON-C_VERSION   := 0.15
 DEB_JSON-C_V     ?= $(JSON-C_VERSION)
 
 libjson-c-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://s3.amazonaws.com/json-c_releases/releases/json-c-$(JSON-C_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://s3.amazonaws.com/json-c_releases/releases/json-c-$(JSON-C_VERSION).tar.gz)
 	$(call EXTRACT_TAR,json-c-$(JSON-C_VERSION).tar.gz,json-c-$(JSON-C_VERSION),libjson-c)
 
 ifneq ($(wildcard $(BUILD_WORK)/libjson-c/.build_complete),)
@@ -20,11 +20,8 @@ libjson-c: libjson-c-setup
 		.
 	+$(MAKE) -C $(BUILD_WORK)/libjson-c install \
 		DESTDIR=$(BUILD_STAGE)/libjson-c
-	+$(MAKE) -C $(BUILD_WORK)/libjson-c install \
-		DESTDIR=$(BUILD_BASE)
 	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjson-c.5.dylib $(BUILD_STAGE)/libjson-c/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjson-c.5.dylib
-	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjson-c.5.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjson-c.5.dylib
-	touch $(BUILD_WORK)/libjson-c/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libjson-c-package: libjson-c-stage

@@ -7,7 +7,7 @@ LIBPIPELINE_VERSION := 1.5.3
 DEB_LIBPIPELINE_V   ?= $(LIBPIPELINE_VERSION)
 
 libpipeline-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://mirrors.sarata.com/non-gnu/libpipeline/libpipeline-$(LIBPIPELINE_VERSION).tar.gz{,.asc}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://mirrors.sarata.com/non-gnu/libpipeline/libpipeline-$(LIBPIPELINE_VERSION).tar.gz{$(comma).asc})
 	$(call PGP_VERIFY,libpipeline-$(LIBPIPELINE_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,libpipeline-$(LIBPIPELINE_VERSION).tar.gz,libpipeline-$(LIBPIPELINE_VERSION),libpipeline)
 
@@ -21,9 +21,7 @@ libpipeline: libpipeline-setup
 	+$(MAKE) -C $(BUILD_WORK)/libpipeline
 	+$(MAKE) -C $(BUILD_WORK)/libpipeline install \
 		DESTDIR=$(BUILD_STAGE)/libpipeline
-	+$(MAKE) -C $(BUILD_WORK)/libpipeline install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libpipeline/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libpipeline-package: libpipeline-stage

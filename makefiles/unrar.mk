@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += unrar
-UNRAR_VERSION := 6.0.4
-DEB_UNRAR_V   ?= $(UNRAR_VERSION)-1
+UNRAR_VERSION := 6.1.4
+DEB_UNRAR_V   ?= $(UNRAR_VERSION)
 
 unrar-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.rarlab.com/rar/unrarsrc-$(UNRAR_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.rarlab.com/rar/unrarsrc-$(UNRAR_VERSION).tar.gz)
 	$(call EXTRACT_TAR,unrarsrc-$(UNRAR_VERSION).tar.gz,n/a,unrar)
 	$(call DO_PATCH,unrar,unrar,-p1)
 
@@ -29,8 +29,9 @@ unrar: unrar-setup
 	cp -af $(BUILD_WORK)/unrar/libunrar*.dylib $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -af $(BUILD_WORK)/unrar/libunrar.a $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -af $(BUILD_WORK)/unrar/*.hpp $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	cp -a $(BUILD_MISC)/unrar.1 $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
-	touch $(BUILD_WORK)/unrar/.build_complete
+	cp -a $(BUILD_MISC)/unrar.1 $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/unrar-nonfree.1
+	mv $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/unrar{,-nonfree}
+	$(call AFTER_BUILD)
 endif
 
 unrar-package: unrar-stage

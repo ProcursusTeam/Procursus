@@ -16,13 +16,15 @@ pyyaml:
 else
 pyyaml: pyyaml-setup libyaml python3
 	cd $(BUILD_WORK)/pyyaml && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py \
-		--with-libyaml \
+		build \
+		--executable="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3" \
 		install \
 		--prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		--root="$(BUILD_STAGE)/pyyaml" \
+		--with-libyaml \
 		--install-layout=deb
 	find $(BUILD_STAGE)/pyyaml -name __pycache__ -prune -exec rm -rf {} \;
-	touch $(BUILD_WORK)/pyyaml/.build_complete
+	$(call AFTER_BUILD)
 endif
 pyyaml-package: pyyaml-stage
 	# pyyaml.mk Package Structure

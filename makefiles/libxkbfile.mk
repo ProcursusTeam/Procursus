@@ -7,7 +7,7 @@ LIBXKBFILE_VERSION := 1.1.0
 DEB_LIBXKBFILE_V   ?= $(LIBXKBFILE_VERSION)
 
 libxkbfile-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libxkbfile-$(LIBXKBFILE_VERSION).tar.bz2{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libxkbfile-$(LIBXKBFILE_VERSION).tar.bz2{$(comma).sig})
 	$(call PGP_VERIFY,libxkbfile-$(LIBXKBFILE_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libxkbfile-$(LIBXKBFILE_VERSION).tar.bz2,libxkbfile-$(LIBXKBFILE_VERSION),libxkbfile)
 
@@ -21,9 +21,7 @@ libxkbfile: libxkbfile-setup libx11
 	+$(MAKE) -C $(BUILD_WORK)/libxkbfile
 	+$(MAKE) -C $(BUILD_WORK)/libxkbfile install \
 		DESTDIR=$(BUILD_STAGE)/libxkbfile
-	+$(MAKE) -C $(BUILD_WORK)/libxkbfile install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxkbfile/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libxkbfile-package: libxkbfile-stage

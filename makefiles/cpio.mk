@@ -7,7 +7,7 @@ CPIO_VERSION := 2.13
 DEB_CPIO_V   ?= $(CPIO_VERSION)
 
 cpio-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/cpio/cpio-$(CPIO_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/cpio/cpio-$(CPIO_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,cpio-$(CPIO_VERSION).tar.gz)
 	$(call EXTRACT_TAR,cpio-$(CPIO_VERSION).tar.gz,cpio-$(CPIO_VERSION),cpio)
 	$(call DO_PATCH,cpio,cpio,-p1)
@@ -22,7 +22,7 @@ cpio: cpio-setup gettext
 	+$(MAKE) -C $(BUILD_WORK)/cpio
 	+$(MAKE) -C $(BUILD_WORK)/cpio install \
 		DESTDIR=$(BUILD_STAGE)/cpio
-	touch $(BUILD_WORK)/cpio/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 cpio-package: cpio-stage

@@ -7,7 +7,7 @@ AUTOMAKE_VERSION  := 1.16.3
 DEB_AUTOMAKE_V    ?= $(AUTOMAKE_VERSION)
 
 automake-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/automake/automake-$(AUTOMAKE_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/automake/automake-$(AUTOMAKE_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,automake-$(AUTOMAKE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,automake-$(AUTOMAKE_VERSION).tar.gz,automake-$(AUTOMAKE_VERSION),automake)
 
@@ -16,14 +16,12 @@ automake:
 	@echo "Using previously built automake."
 else
 automake: automake-setup
-	cd $(BUILD_WORK)/automake && PERL="$(shell which perl)" ./configure -C \
+	cd $(BUILD_WORK)/automake && PERL="$(shell command -v perl)" ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/automake
 	+$(MAKE) -C $(BUILD_WORK)/automake install \
 		DESTDIR=$(BUILD_STAGE)/automake
-	+$(MAKE) -C $(BUILD_WORK)/automake install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/automake/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 automake-package: automake-stage
 	# automake.mk Package Structure

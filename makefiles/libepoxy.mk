@@ -7,7 +7,7 @@ LIBEPOXY_VERSION := 1.5.7
 DEB_LIBEPOXY_V   ?= $(LIBEPOXY_VERSION)
 
 libepoxy-setup: setup
-	wget -q -nc -P$(BUILD_SOURCE) https://download.gnome.org/sources/libepoxy/$(shell echo $(LIBEPOXY_VERSION) | cut -d. -f-2)/libepoxy-$(LIBEPOXY_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE) https://download.gnome.org/sources/libepoxy/$(shell echo $(LIBEPOXY_VERSION) | cut -d.,-f-2)/libepoxy-$(LIBEPOXY_VERSION).tar.xz)
 	$(call EXTRACT_TAR,libepoxy-$(LIBEPOXY_VERSION).tar.xz,libepoxy-$(LIBEPOXY_VERSION),libepoxy)
 	mkdir -p $(BUILD_WORK)/libepoxy/build
 	echo -e "[host_machine]\n \
@@ -39,8 +39,7 @@ libepoxy: libepoxy-setup libx11 mesa
 		..
 	+ninja -C $(BUILD_WORK)/libepoxy/build
 	+DESTDIR="$(BUILD_STAGE)/libepoxy" ninja -C $(BUILD_WORK)/libepoxy/build install
-	+DESTDIR="$(BUILD_BASE)" ninja -C $(BUILD_WORK)/libepoxy/build install
-	touch $(BUILD_WORK)/libepoxy/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libepoxy-package: libepoxy-stage

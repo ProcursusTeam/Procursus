@@ -3,7 +3,10 @@ Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_NODEJS_V@
 Section: Scripting
-Depends: libnode83 (= @DEB_NODEJS_V@)
+Depends: libnode102 (= @DEB_NODEJS_V@)
+Conflicts: nodejs-lts
+Replaces: nodejs-lts
+Provides: nodejs-lts
 Recommends: ca-certificates
 Suggests: npm
 Description: evented I/O for V8 javascript - runtime executable

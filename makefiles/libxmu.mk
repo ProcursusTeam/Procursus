@@ -7,7 +7,7 @@ LIBXMU_VERSION := 1.1.3
 DEB_LIBXMU_V   ?= $(LIBXMU_VERSION)-1
 
 libxmu-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libXmu-$(LIBXMU_VERSION).tar.bz2{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libXmu-$(LIBXMU_VERSION).tar.bz2{$(comma).sig})
 	$(call PGP_VERIFY,libXmu-$(LIBXMU_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libXmu-$(LIBXMU_VERSION).tar.bz2,libXmu-$(LIBXMU_VERSION),libxmu)
 
@@ -24,9 +24,7 @@ libxmu: libxmu-setup libxext libxt
 	+$(MAKE) -C $(BUILD_WORK)/libxmu
 	+$(MAKE) -C $(BUILD_WORK)/libxmu install \
 		DESTDIR=$(BUILD_STAGE)/libxmu
-	+$(MAKE) -C $(BUILD_WORK)/libxmu install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libxmu/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libxmu-package: libxmu-stage

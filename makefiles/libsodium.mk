@@ -7,7 +7,7 @@ LIBSODIUM_VERSION     := 1.0.18
 DEB_LIBSODIUM_V       ?= $(LIBSODIUM_VERSION)
 
 libsodium-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://download.libsodium.org/libsodium/releases/libsodium-$(LIBSODIUM_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://download.libsodium.org/libsodium/releases/libsodium-$(LIBSODIUM_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libsodium-$(LIBSODIUM_VERSION).tar.gz,libsodium-$(LIBSODIUM_VERSION),libsodium)
 
 ifneq ($(wildcard $(BUILD_WORK)/libsodium/.build_complete),)
@@ -20,9 +20,7 @@ libsodium: libsodium-setup
 	+$(MAKE) -C $(BUILD_WORK)/libsodium
 	+$(MAKE) -C $(BUILD_WORK)/libsodium install \
 		DESTDIR=$(BUILD_STAGE)/libsodium
-	+$(MAKE) -C $(BUILD_WORK)/libsodium install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libsodium/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libsodium-package: libsodium-stage

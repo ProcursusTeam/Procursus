@@ -3,14 +3,15 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += xar
-XAR_VERSION := 452
-DEB_XAR_V   ?= 1.8.0.$(XAR_VERSION)+fc-6
+XAR_VERSION := 487.100.1
+DEB_XAR_V   ?= 1.8.0.$(XAR_VERSION)
 
-xar-setup: setup file-setup
-	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/xar/xar-$(XAR_VERSION).tar.gz
-	$(call EXTRACT_TAR,xar-$(XAR_VERSION).tar.gz,xar-$(XAR_VERSION)/xar,xar)
-	$(call DO_PATCH,xar,xar,-p1)
-	cp -a $(BUILD_WORK)/file/config.sub $(BUILD_WORK)/xar
+xar-setup: setup
+	$(call GITHUB_ARCHIVE,apple-oss-distributions,xar,$(XAR_VERSION),xar-$(XAR_VERSION))
+	$(call EXTRACT_TAR,xar-$(XAR_VERSION).tar.gz,xar-xar-$(XAR_VERSION)/xar,xar)
+#	XXX: Patches stolen from MacPorts (who mostly stole them from other spots)
+	$(call DO_PATCH,xar,xar,-p0)
+	cp -a $(BUILD_MISC)/config.sub $(BUILD_WORK)/xar
 
 ifneq ($(wildcard $(BUILD_WORK)/xar/.build_complete),)
 xar:
@@ -26,16 +27,16 @@ xar: xar-setup openssl
 		ac_cv_lib_z_deflate=yes \
 		ac_cv_header_bzlib_h=yes \
 		ac_cv_lib_bz2_BZ2_bzCompress=yes
-	$(SED) -i 's|$(MACOSX_SYSROOT)/usr/lib|$(TARGET_SYSROOT)/usr/lib|g' $(BUILD_WORK)/xar/lib/Makefile.inc
-	$(SED) -i 's|$(MACOSX_SYSROOT)/usr/lib|$(TARGET_SYSROOT)/usr/lib|g' $(BUILD_WORK)/xar/src/Makefile.inc
-	$(SED) -i 's|$(MACOSX_SYSROOT)/usr/include|$(TARGET_SYSROOT)/usr/include|g' $(BUILD_WORK)/xar/Makefile
+	sed -i 's|$(MACOSX_SYSROOT)/usr/lib|$(TARGET_SYSROOT)/usr/lib|g' $(BUILD_WORK)/xar/lib/Makefile.inc
+	sed -i 's|$(MACOSX_SYSROOT)/usr/lib|$(TARGET_SYSROOT)/usr/lib|g' $(BUILD_WORK)/xar/src/Makefile.inc
+	sed -i 's|$(MACOSX_SYSROOT)/usr/include|$(TARGET_SYSROOT)/usr/include|g' $(BUILD_WORK)/xar/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/xar \
 		CFLAGS="$(CFLAGS) -I$(BUILD_WORK)/xar/lib"
 	+$(MAKE) -C $(BUILD_WORK)/xar install \
 		DESTDIR=$(BUILD_STAGE)/xar
 	cp -a $(BUILD_STAGE)/xar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/* $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	cp -a $(BUILD_STAGE)/xar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/* $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	touch $(BUILD_WORK)/xar/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 xar-package: xar-stage

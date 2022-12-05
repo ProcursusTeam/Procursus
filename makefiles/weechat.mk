@@ -7,7 +7,7 @@ WEECHAT_VERSION := 2.9
 DEB_WEECHAT_V   ?= $(WEECHAT_VERSION)
 
 weechat-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.weechat.org/files/src/weechat-$(WEECHAT_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.weechat.org/files/src/weechat-$(WEECHAT_VERSION).tar.xz)
 	$(call EXTRACT_TAR,weechat-$(WEECHAT_VERSION).tar.xz,weechat-$(WEECHAT_VERSION),weechat)
 
 ifneq ($(wildcard $(BUILD_WORK)/weechat/.build_complete),)
@@ -39,7 +39,7 @@ weechat: weechat-setup ncurses gettext gnutls curl libgcrypt
 	+$(MAKE) -C $(BUILD_WORK)/weechat
 	+$(MAKE) -C $(BUILD_WORK)/weechat install \
 		DESTDIR=$(BUILD_STAGE)/weechat
-	touch $(BUILD_WORK)/weechat/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 weechat-package: weechat-stage

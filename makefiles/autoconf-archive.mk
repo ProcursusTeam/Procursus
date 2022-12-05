@@ -7,7 +7,7 @@ AUTOCONF-ARCHIVE_VERSION := 2021.02.19
 DEB_AUTOCONF-ARCHIVE_V   ?= $(AUTOCONF-ARCHIVE_VERSION)
 
 autoconf-archive-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://mirrors.ocf.berkeley.edu/gnu/autoconf-archive/autoconf-archive-$(AUTOCONF-ARCHIVE_VERSION).tar.xz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://mirrors.ocf.berkeley.edu/gnu/autoconf-archive/autoconf-archive-$(AUTOCONF-ARCHIVE_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,autoconf-archive-$(AUTOCONF-ARCHIVE_VERSION).tar.xz)
 	$(call EXTRACT_TAR,autoconf-archive-$(AUTOCONF-ARCHIVE_VERSION).tar.xz,autoconf-archive-$(AUTOCONF-ARCHIVE_VERSION),autoconf-archive)
 
@@ -21,7 +21,7 @@ autoconf-archive: autoconf-archive-setup
 	+$(MAKE) -C $(BUILD_WORK)/autoconf-archive
 	+$(MAKE) -C $(BUILD_WORK)/autoconf-archive install \
 		DESTDIR=$(BUILD_STAGE)/autoconf-archive
-	touch $(BUILD_WORK)/autoconf-archive/.build_complete
+	$(call AFTER_BUILD)
 endif
 autoconf-archive-package: autoconf-archive-stage
 	# autoconf-archive.mk Package Structure

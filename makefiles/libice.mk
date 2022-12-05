@@ -7,7 +7,7 @@ LIBICE_VERSION := 1.0.10
 DEB_LIBICE_V   ?= $(LIBICE_VERSION)
 
 libice-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://xorg.freedesktop.org/archive/individual/lib/libICE-$(LIBICE_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libICE-$(LIBICE_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libICE-$(LIBICE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libICE-$(LIBICE_VERSION).tar.gz,libICE-$(LIBICE_VERSION),libice)
 
@@ -24,9 +24,7 @@ libice: libice-setup xtrans xorgproto
 	+$(MAKE) -C $(BUILD_WORK)/libice
 	+$(MAKE) -C $(BUILD_WORK)/libice install \
 		DESTDIR=$(BUILD_STAGE)/libice
-	+$(MAKE) -C $(BUILD_WORK)/libice install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/libice/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libice-package: libice-stage

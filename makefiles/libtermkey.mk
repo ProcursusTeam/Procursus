@@ -7,7 +7,7 @@ LIBTERMKEY_VERSION := 0.22
 DEB_LIBTERMKEY_V   ?= $(LIBTERMKEY_VERSION)
 
 libtermkey-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) http://www.leonerd.org.uk/code/libtermkey/libtermkey-$(LIBTERMKEY_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://www.leonerd.org.uk/code/libtermkey/libtermkey-$(LIBTERMKEY_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libtermkey-$(LIBTERMKEY_VERSION).tar.gz,libtermkey-$(LIBTERMKEY_VERSION),libtermkey)
 	$(call DO_PATCH,libtermkey,libtermkey)
 	mkdir -p $(BUILD_WORK)/libtermkey/libtool
@@ -31,9 +31,7 @@ libtermkey: libtermkey-setup unibilium
 		DEMOS=""
 	+$(MAKE) -C $(BUILD_WORK)/libtermkey install PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		DESTDIR="$(BUILD_STAGE)/libtermkey"
-	+$(MAKE) -C $(BUILD_WORK)/libtermkey install PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libtermkey/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libtermkey-package: libtermkey-stage

@@ -15,12 +15,15 @@ python3-wcwidth:
 	@echo "Using previously built python3-wcwidth."
 else
 python3-wcwidth: python3-wcwidth-setup python3
-	cd $(BUILD_WORK)/python3-wcwidth && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py install \
+	cd $(BUILD_WORK)/python3-wcwidth && $(DEFAULT_SETUP_PY_ENV) python3 ./setup.py \
+		build \
+		--executable="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3" \
+		install \
 		--install-layout=deb \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--root=$(BUILD_STAGE)/python3-wcwidth
 	find $(BUILD_STAGE)/python3-wcwidth -name __pycache__ -prune -exec rm -rf {} \;
-	touch $(BUILD_WORK)/python3-wcwidth/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 python3-wcwidth-package: python3-wcwidth-stage

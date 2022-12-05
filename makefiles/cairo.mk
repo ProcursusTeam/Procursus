@@ -7,7 +7,7 @@ CAIRO_VERSION := 1.16.0
 DEB_CAIRO_V   ?= $(CAIRO_VERSION)-3
 
 cairo-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://cairographics.org/releases/cairo-$(CAIRO_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://cairographics.org/releases/cairo-$(CAIRO_VERSION).tar.xz)
 	$(call EXTRACT_TAR,cairo-$(CAIRO_VERSION).tar.xz,cairo-$(CAIRO_VERSION),cairo)
 
 ifneq ($(wildcard $(BUILD_WORK)/cairo/.build_complete),)
@@ -30,9 +30,7 @@ cairo: cairo-setup freetype gettext fontconfig glib2.0 libpng16 liblzo2 libpixma
 		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/glib-2.0/include"
 	+$(MAKE) -C $(BUILD_WORK)/cairo install \
 		DESTDIR=$(BUILD_STAGE)/cairo
-	+$(MAKE) -C $(BUILD_WORK)/cairo install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/cairo/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 cairo-package: cairo-stage

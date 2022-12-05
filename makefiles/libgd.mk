@@ -7,8 +7,8 @@ LIBGD_VERSION := 2.3.2
 DEB_LIBGD_V   ?= $(LIBGD_VERSION)-1
 
 libgd-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) \
-		https://github.com/libgd/libgd/releases/download/gd-$(LIBGD_VERSION)/libgd-$(LIBGD_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
+		https://github.com/libgd/libgd/releases/download/gd-$(LIBGD_VERSION)/libgd-$(LIBGD_VERSION).tar.xz)
 	$(call EXTRACT_TAR,libgd-$(LIBGD_VERSION).tar.xz,libgd-$(LIBGD_VERSION),libgd)
 
 # TODO: build all bins
@@ -30,14 +30,15 @@ libgd: libgd-setup fontconfig freetype libjpeg-turbo libpng16 libtiff libwebp li
 		-DENABLE_WEBP=ON \
 		-DENABLE_XPM=ON \
 		-DXPM_XPM_INCLUDE_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
+		-DWEBP_LIBRARY="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libwebp.dylib" \
+		-DWEBP_INCLUDE_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
+		-DICONV_HAVE_WERROR=OFF \
 		.
 
 	+$(MAKE) -C $(BUILD_WORK)/libgd
 	+$(MAKE) -C $(BUILD_WORK)/libgd install \
 		DESTDIR="$(BUILD_STAGE)/libgd"
-	+$(MAKE) -C $(BUILD_WORK)/libgd install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libgd/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libgd-package: libgd-stage

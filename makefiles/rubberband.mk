@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS           += rubberband
-RUBBERBAND_VERSION    := 1.9.1
+RUBBERBAND_VERSION    := 2.0.2
 DEB_RUBBERBAND_V      ?= $(RUBBERBAND_VERSION)
 
 rubberband-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://breakfastquay.com/files/releases/rubberband-$(RUBBERBAND_VERSION).tar.bz2
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://breakfastquay.com/files/releases/rubberband-$(RUBBERBAND_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,rubberband-$(RUBBERBAND_VERSION).tar.bz2,rubberband-$(RUBBERBAND_VERSION),rubberband)
 	mkdir -p $(BUILD_WORK)/rubberband/build
 
@@ -18,7 +18,7 @@ rubberband-setup: setup
 	system = 'darwin'\n \
 	[properties]\n \
 	root = '$(BUILD_BASE)'\n \
-	[paths]\n \
+	[built-in options]\n \
 	prefix ='$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
 	[binaries]\n \
 	c = '$(CC)'\n \
@@ -34,8 +34,7 @@ rubberband: rubberband-setup libsamplerate libsndfile
 		--cross-file cross.txt \
 		..
 	+DESTDIR=$(BUILD_STAGE)/rubberband ninja -C $(BUILD_WORK)/rubberband/build install
-	+DESTDIR=$(BUILD_BASE) ninja -C $(BUILD_WORK)/rubberband/build install
-	touch $(BUILD_WORK)/rubberband/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 rubberband-package: rubberband-stage

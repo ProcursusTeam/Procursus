@@ -8,7 +8,7 @@ RADARE2_API_V   := 4.5
 DEB_RADARE2_V   ?= $(RADARE2_VERSION)-2
 
 radare2-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/radareorg/radare2/releases/download/$(RADARE2_VERSION)/radare2-src-$(RADARE2_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/radareorg/radare2/releases/download/$(RADARE2_VERSION)/radare2-src-$(RADARE2_VERSION).tar.gz)
 	$(call EXTRACT_TAR,radare2-src-$(RADARE2_VERSION).tar.gz,radare2-$(RADARE2_VERSION),radare2)
 
 ifneq ($(wildcard $(BUILD_WORK)/radare2/.build_complete),)
@@ -24,10 +24,8 @@ radare2: radare2-setup libuv1 libzip openssl
 		HAVE_LIBVERSION=1
 	+$(MAKE) -C $(BUILD_WORK)/radare2 install \
 		DESTDIR="$(BUILD_STAGE)/radare2"
-	+$(MAKE) -C $(BUILD_WORK)/radare2 install \
-		DESTDIR="$(BUILD_BASE)"
 	rm -f $(BUILD_STAGE)/radare2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share}/radare2/last
-	touch $(BUILD_WORK)/radare2/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 radare2-package: .SHELLFLAGS=-O extglob -c

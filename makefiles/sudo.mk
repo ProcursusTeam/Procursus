@@ -7,17 +7,11 @@ STRAPPROJECTS += sudo
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += sudo
 endif # ($(MEMO_TARGET),darwin-\*)
-SUDO_VERSION  := 1.9.6p1
-DEB_SUDO_V    ?= $(SUDO_VERSION)-4
-
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-SUDO_CONFIGURE_ARGS := LIBS="-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -liosexec -lreadline -lncursesw"
-else
-SUDO_CONFIGURE_ARGS :=
-endif
+SUDO_VERSION  := 1.9.12p1
+DEB_SUDO_V    ?= $(SUDO_VERSION)
 
 sudo-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.sudo.ws/dist/sudo-$(SUDO_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.sudo.ws/dist/sudo-$(SUDO_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,sudo-$(SUDO_VERSION).tar.gz)
 	$(call EXTRACT_TAR,sudo-$(SUDO_VERSION).tar.gz,sudo-$(SUDO_VERSION),sudo)
 	$(call DO_PATCH,sudo,sudo,-p1)
@@ -41,8 +35,12 @@ endif
 		--with-timeout=15 \
 		--with-password-timeout=0 \
 		--with-passprompt="[sudo] password for %p: " \
+		--with-vardir=$(MEMO_PREFIX)/var/db/sudo \
+		--with-rundir=$(MEMO_PREFIX)/var/run/sudo \
 		sudo_cv___func__=yes \
-		$(SUDO_CONFIGURE_ARGS)
+		ac_cv_have_working_snprintf=yes \
+		ac_cv_have_working_vsnprintf=yes
+	sed -i 's/-Wc,-static-libgcc/ /g' $(BUILD_WORK)/sudo/{src,,plugins/*,logsrvd,lib/util}/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/sudo
 	+$(MAKE) -C $(BUILD_WORK)/sudo install \
 		DESTDIR=$(BUILD_STAGE)/sudo \
@@ -52,7 +50,8 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	cp -a $(BUILD_MISC)/pam/sudo $(BUILD_STAGE)/sudo/$(MEMO_PREFIX)/etc/pam.d
 endif
 	cp -a $(BUILD_MISC)/procursus.sudoers $(BUILD_STAGE)/sudo/$(MEMO_PREFIX)/etc/sudoers.d/procursus
-	touch $(BUILD_WORK)/sudo/.build_complete
+	$(I_N_T) -add_rpath $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/sudo $(BUILD_STAGE)/sudo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sudo
+	$(call AFTER_BUILD)
 endif
 
 sudo-package: sudo-stage
@@ -65,7 +64,7 @@ sudo-package: sudo-stage
 	# sudo.mk Sign
 	$(call SIGN,sudo,general.xml)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(LDID) -S$(BUILD_INFO)/pam.xml $(BUILD_DIST)/sudo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sudo
+	$(LDID) -S$(BUILD_MISC)/entitlements/pam.xml $(BUILD_DIST)/sudo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sudo
 	find $(BUILD_DIST)/sudo -name '.ldid*' -type f -delete
 endif
 

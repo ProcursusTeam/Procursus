@@ -41,12 +41,12 @@ tapi: tapi-setup
 		-DCLANG_TABLEGEN="$(BUILD_WORK)/tapi/build/NATIVE/bin/clang-tblgen" \
 		-DCLANG_TABLEGEN_EXE="$(BUILD_WORK)/tapi/build/NATIVE/bin/clang-tblgen" \
 		../src/llvm
-	+$(MAKE) -C $(BUILD_WORK)/tapi/build libtapi tapi
+	+$(MAKE) -C $(BUILD_WORK)/tapi/build ClangDeclNodes libtapi tapi
 	+$(MAKE) -C $(BUILD_WORK)/tapi/build install-libtapi install-tapi-headers install-tapi \
 		DESTDIR="$(BUILD_STAGE)/tapi"
 	mkdir -p $(BUILD_STAGE)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	$(INSTALL) -Dm644 $(BUILD_WORK)/tapi/src/libtapi/docs/man/*.1 $(BUILD_STAGE)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
-	touch $(BUILD_WORK)/tapi/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 tapi-package: tapi-stage

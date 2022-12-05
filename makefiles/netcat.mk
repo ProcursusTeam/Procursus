@@ -7,7 +7,7 @@ NETCAT_VERSION := 0.7.1
 DEB_NETCAT_V   ?= $(NETCAT_VERSION)-2
 
 netcat-setup: setup file-setup
-	wget -q -nc -P $(BUILD_SOURCE) https://downloads.sourceforge.net/project/netcat/netcat/$(NETCAT_VERSION)/netcat-$(NETCAT_VERSION).tar.bz2
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://downloads.sourceforge.net/project/netcat/netcat/$(NETCAT_VERSION)/netcat-$(NETCAT_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,netcat-$(NETCAT_VERSION).tar.bz2,netcat-$(NETCAT_VERSION),netcat)
 	cp -a $(BUILD_WORK)/file/config.sub $(BUILD_WORK)/netcat
 
@@ -21,7 +21,7 @@ netcat: netcat-setup gettext
 	+$(MAKE) -C $(BUILD_WORK)/netcat install \
 		DESTDIR="$(BUILD_STAGE)/netcat"
 	rm -rf $(BUILD_STAGE)/netcat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/info
-	touch $(BUILD_WORK)/netcat/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 netcat-package: netcat-stage

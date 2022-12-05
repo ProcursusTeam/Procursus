@@ -7,7 +7,7 @@ XHOST_VERSION := 1.0.8
 DEB_XHOST_V   ?= $(XHOST_VERSION)
 
 xhost-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive//individual/app/xhost-$(XHOST_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.x.org/archive//individual/app/xhost-$(XHOST_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,xhost-$(XHOST_VERSION).tar.gz)
 	$(call EXTRACT_TAR,xhost-$(XHOST_VERSION).tar.gz,xhost-$(XHOST_VERSION),xhost)
 
@@ -21,9 +21,7 @@ xhost: xhost-setup libx11 libxau libxmu xorgproto xxhash
 	+$(MAKE) -C $(BUILD_WORK)/xhost
 	+$(MAKE) -C $(BUILD_WORK)/xhost install \
 		DESTDIR=$(BUILD_STAGE)/xhost
-	+$(MAKE) -C $(BUILD_WORK)/xhost install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/xhost/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 xhost-package: xhost-stage

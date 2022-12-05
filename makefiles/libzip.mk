@@ -3,18 +3,18 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += libzip
-LIBZIP_VERSION := 1.7.3
-DEB_LIBZIP_V   ?= $(LIBZIP_VERSION)-1
+LIBZIP_VERSION := 1.9.2
+DEB_LIBZIP_V   ?= $(LIBZIP_VERSION)
 
 libzip-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://libzip.org/download/libzip-$(LIBZIP_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://libzip.org/download/libzip-$(LIBZIP_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libzip-$(LIBZIP_VERSION).tar.gz,libzip-$(LIBZIP_VERSION),libzip)
 
 ifneq ($(wildcard $(BUILD_WORK)/libzip/.build_complete),)
 libzip:
 	@echo "Using previously built libzip."
 else
-libzip: libzip-setup xz openssl
+libzip: libzip-setup xz zstd openssl
 	cd $(BUILD_WORK)/libzip && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DCOMMON_ARCH=$(DEB_ARCH) \
@@ -26,9 +26,7 @@ libzip: libzip-setup xz openssl
 	+$(MAKE) -C $(BUILD_WORK)/libzip
 	+$(MAKE) -C $(BUILD_WORK)/libzip install \
 		DESTDIR="$(BUILD_STAGE)/libzip"
-	+$(MAKE) -C $(BUILD_WORK)/libzip install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/libzip/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 libzip-package: libzip-stage
@@ -49,7 +47,7 @@ libzip-package: libzip-stage
 	# libzip.mk Prep zip{cmp,merge,tool}
 	for bin in zip{cmp,merge,tool}; do \
 		cp -a $(BUILD_STAGE)/libzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $(BUILD_DIST)/$$bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \
-		cp -a $(BUILD_STAGE)/libzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$$bin.1 $(BUILD_DIST)/$$bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
+		cp -a $(BUILD_STAGE)/libzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$$bin.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/$$bin/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
 	done
 
 	# libzip.mk Sign

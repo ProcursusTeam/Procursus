@@ -11,7 +11,7 @@ FLEX_LDFLAGS := -Wl,-flat_namespace -Wl,-undefined -Wl,suppress
 endif
 
 flex-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/westes/flex/releases/download/v$(FLEX_VERSION)/flex-$(FLEX_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/westes/flex/releases/download/v$(FLEX_VERSION)/flex-$(FLEX_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,flex-$(FLEX_VERSION).tar.gz)
 	$(call EXTRACT_TAR,flex-$(FLEX_VERSION).tar.gz,flex-$(FLEX_VERSION),flex)
 
@@ -31,10 +31,8 @@ flex: flex-setup gettext
 		LDFLAGS="$(LDFLAGS) $(FLEX_LDFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/flex install \
 		DESTDIR="$(BUILD_STAGE)/flex"
-	+$(MAKE) -C $(BUILD_WORK)/flex install \
-		DESTDIR="$(BUILD_BASE)"
-	ln -s flex $(BUILD_STAGE)/flex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lex
-	touch $(BUILD_WORK)/flex/.build_complete
+	$(LN_S) flex $(BUILD_STAGE)/flex/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lex
+	$(call AFTER_BUILD,copy)
 endif
 
 flex-package: flex-stage

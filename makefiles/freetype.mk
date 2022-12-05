@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += freetype
-FREETYPE_VERSION := 2.10.4
+FREETYPE_VERSION := 2.12.1
 DEB_FREETYPE_V   ?= $(FREETYPE_VERSION)
 
 freetype-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://download.savannah.gnu.org/releases/freetype/freetype-$(FREETYPE_VERSION).tar.xz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://download.savannah.gnu.org/releases/freetype/freetype-$(FREETYPE_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,freetype-$(FREETYPE_VERSION).tar.xz)
 	$(call EXTRACT_TAR,freetype-$(FREETYPE_VERSION).tar.xz,freetype-$(FREETYPE_VERSION),freetype)
 
@@ -23,9 +23,7 @@ freetype: freetype-setup brotli libpng16
 	+$(MAKE) -C $(BUILD_WORK)/freetype
 	+$(MAKE) -C $(BUILD_WORK)/freetype install \
 		DESTDIR=$(BUILD_STAGE)/freetype
-	+$(MAKE) -C $(BUILD_WORK)/freetype install \
-		DESTDIR=$(BUILD_BASE)
-	touch $(BUILD_WORK)/freetype/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 freetype-package: freetype-stage

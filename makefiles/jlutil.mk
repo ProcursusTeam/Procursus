@@ -7,9 +7,8 @@ JLUTIL_VERSION    := 1.0
 DEB_JLUTIL_V      ?= $(JLUTIL_VERSION)
 
 jlutil-setup: setup
-	-[ ! -f "$(BUILD_SOURCE)/jlutil-$(JLUTIL_VERSION).tar.gz" ] && \
-		wget -q -nc -O$(BUILD_SOURCE)/jlutil-$(JLUTIL_VERSION).tar.gz \
-			http://newosxbook.com/tools/jlutil.tgz
+	$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/jlutil-$(JLUTIL_VERSION).tar.gz, \
+		http://newosxbook.com/tools/jlutil.tgz)
 	mkdir -p $(BUILD_WORK)/jlutil
 	tar xf $(BUILD_SOURCE)/jlutil-$(JLUTIL_VERSION).tar.gz -C $(BUILD_WORK)/jlutil
 
@@ -22,7 +21,7 @@ jlutil: jlutil-setup
 		-o $(BUILD_WORK)/jlutil/jlutil
 	$(STRIP) $(BUILD_WORK)/jlutil/jlutil
 	$(INSTALL) -Dm755 $(BUILD_WORK)/jlutil/jlutil $(BUILD_STAGE)/jlutil/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/jlutil
-	touch $(BUILD_WORK)/jlutil/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 jlutil-package: jlutil-stage

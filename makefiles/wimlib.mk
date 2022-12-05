@@ -7,7 +7,7 @@ WIMLIB_VERSION := 1.13.3
 DEB_WIMLIB_V   ?= $(WIMLIB_VERSION)
 
 wimlib-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://wimlib.net/downloads/wimlib-$(WIMLIB_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://wimlib.net/downloads/wimlib-$(WIMLIB_VERSION).tar.gz)
 	$(call EXTRACT_TAR,wimlib-$(WIMLIB_VERSION).tar.gz,wimlib-$(WIMLIB_VERSION),wimlib)
 
 ifneq ($(wildcard $(BUILD_WORK)/wimlib/.build_complete),)
@@ -26,7 +26,7 @@ wimlib: wimlib-setup openssl
 	+$(MAKE) -C $(BUILD_WORK)/wimlib
 	+$(MAKE) -C $(BUILD_WORK)/wimlib install \
 		DESTDIR=$(BUILD_STAGE)/wimlib
-	touch $(BUILD_WORK)/wimlib/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 wimlib-package: wimlib-stage

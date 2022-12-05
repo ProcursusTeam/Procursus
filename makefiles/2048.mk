@@ -8,15 +8,9 @@ DEB_2048_V    ?= 0.$(2048_VERSION)
 2048_GIT_HASH := 72725bab07d7686e5e5b3f68e398f43ffb6f49ce
 
 2048-setup: setup
-ifeq ($(wildcard $(BUILD_SOURCE)/2048-$(2048_GIT_HASH).c),)
-	wget -q -P $(BUILD_SOURCE) https://github.com/mevdschee/2048.c/raw/$(2048_GIT_HASH)/2048.c
-	mv $(BUILD_SOURCE)/2048.c $(BUILD_SOURCE)/2048-$(2048_GIT_HASH).c
-endif
-
+	$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/2048-$(2048_GIT_HASH).c, \
+		https://github.com/mevdschee/2048.c/raw/$(2048_GIT_HASH)/2048.c)
 	mkdir -p $(BUILD_WORK)/2048
-	cp $(BUILD_SOURCE)/2048-$(2048_GIT_HASH).c $(BUILD_WORK)/2048
-	mv $(BUILD_WORK)/2048/2048-$(2048_GIT_HASH).c $(BUILD_WORK)/2048/2048.c
-	$(SED) -i '/#define _XOPEN_SOURCE 500/d' $(BUILD_WORK)/2048/2048.c
 
 ifneq ($(wildcard $(BUILD_WORK)/2048/.build_complete),)
 2048:
@@ -24,7 +18,8 @@ ifneq ($(wildcard $(BUILD_WORK)/2048/.build_complete),)
 else
 2048: 2048-setup
 	mkdir -p $(BUILD_STAGE)/2048/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-
+	cp $(BUILD_SOURCE)/2048/2048-$(2048_GIT_HASH).c $(BUILD_WORK)/2048/2048.c
+	sed -i '/#define _XOPEN_SOURCE 500/d' $(BUILD_WORK)/2048/2048.c
 	cd $(BUILD_WORK)/2048 && $(CC) -std=c99 \
 		$(CFLAGS) \
 		2048.c \
@@ -32,7 +27,7 @@ else
 
 	cd $(BUILD_STAGE)/2048 && chmod +x ./$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/2048
 
-	touch $(BUILD_WORK)/2048/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 2048-package: 2048-stage

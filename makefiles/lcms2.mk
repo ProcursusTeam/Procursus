@@ -7,8 +7,8 @@ LCMS2_VERSION := 2.12
 DEB_LCMS2_V   ?= $(LCMS2_VERSION)
 
 lcms2-setup: setup
-	wget -q -nc -L -P $(BUILD_SOURCE) \
-		https://downloads.sourceforge.net/lcms/lcms2-$(LCMS2_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
+		https://downloads.sourceforge.net/lcms/lcms2-$(LCMS2_VERSION).tar.gz)
 	$(call EXTRACT_TAR,lcms2-$(LCMS2_VERSION).tar.gz,lcms2-$(LCMS2_VERSION),lcms2)
 
 ifneq ($(wildcard $(BUILD_WORK)/lcms2/.build_complete),)
@@ -21,9 +21,7 @@ lcms2: lcms2-setup libjpeg-turbo libtiff
 	+$(MAKE) -C $(BUILD_WORK)/lcms2
 	+$(MAKE) -C $(BUILD_WORK)/lcms2 install \
 		DESTDIR="$(BUILD_STAGE)/lcms2"
-	+$(MAKE) -C $(BUILD_WORK)/lcms2 install \
-		DESTDIR="$(BUILD_BASE)"
-	touch $(BUILD_WORK)/lcms2/.build_complete
+	$(call AFTER_BUILD,copy)
 endif
 
 lcms2-package: lcms2-stage

@@ -7,17 +7,17 @@ DUKTAPE_VERSION := 2.6.0
 DEB_DUKTAPE_V   ?= $(DUKTAPE_VERSION)
 
 duktape-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/svaarala/duktape/releases/download/v$(DUKTAPE_VERSION)/duktape-$(DUKTAPE_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/svaarala/duktape/releases/download/v$(DUKTAPE_VERSION)/duktape-$(DUKTAPE_VERSION).tar.xz)
 	$(call EXTRACT_TAR,duktape-$(DUKTAPE_VERSION).tar.xz,duktape-$(DUKTAPE_VERSION),duktape)
-	$(SED) -i 's/gcc/cc/g' $(BUILD_WORK)/duktape/Makefile.cmdline
-	$(SED) -i 's/gcc/cc/g' $(BUILD_WORK)/duktape/Makefile.sharedlibrary
-	$(SED) -i 's|\$$(CCLIBS)|\$$(CCLIBS) $(LDFLAGS) $(CFLAGS)|g' $(BUILD_WORK)/duktape/Makefile.cmdline
-	$(SED) -i 's|\$$(CC)|\$$(CC) $(LDFLAGS) $(CFLAGS)|g' $(BUILD_WORK)/duktape/Makefile.sharedlibrary
+	sed -i 's/gcc/cc/g' $(BUILD_WORK)/duktape/Makefile.cmdline
+	sed -i 's/gcc/cc/g' $(BUILD_WORK)/duktape/Makefile.sharedlibrary
+	sed -i 's|\$$(CCLIBS)|\$$(CCLIBS) $(LDFLAGS) $(CFLAGS)|g' $(BUILD_WORK)/duktape/Makefile.cmdline
+	sed -i 's|\$$(CC)|\$$(CC) $(LDFLAGS) $(CFLAGS)|g' $(BUILD_WORK)/duktape/Makefile.sharedlibrary
 	mkdir -p $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib/pkgconfig,include}
 	cp $(BUILD_MISC)/duktape/duktape.pc $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/duktape.pc
-	$(SED) -i 's|prefix=|prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' \
+	sed -i 's|prefix=|prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' \
 		$(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/duktape.pc
-	$(SED) -i 's/Version:/Version: $(DUKTAPE_VERSION)/g' \
+	sed -i 's/Version:/Version: $(DUKTAPE_VERSION)/g' \
 		$(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/duktape.pc
 
 
@@ -34,7 +34,7 @@ duktape: duktape-setup
 	mkdir -p $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_WORK)/duktape/duk $(BUILD_STAGE)/duktape/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/duk
 	cp -a $(BUILD_STAGE)/duktape/* $(BUILD_BASE)
-	touch $(BUILD_WORK)/duktape/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 duktape-package: duktape-stage

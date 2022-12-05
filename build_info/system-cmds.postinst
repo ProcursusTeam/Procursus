@@ -1,2 +1,0 @@
-#!/bin/sh
-pwd_mkdb -p /etc/master.passwd >/dev/null 2>&1
