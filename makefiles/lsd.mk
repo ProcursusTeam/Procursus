@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += lsd
-LSD_VERSION := 0.20.1
+LSD_VERSION := 0.23.1
 DEB_LSD_V   ?= $(LSD_VERSION)
 
 lsd-setup: setup
