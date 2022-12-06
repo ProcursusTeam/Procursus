@@ -6,7 +6,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS     += file-cmds
 FILE-CMDS_VERSION := 400
-DEB_FILE-CMDS_V   ?= $(FILE-CMDS_VERSION)
+DEB_FILE-CMDS_V   ?= $(FILE-CMDS_VERSION)-1
 
 file-cmds-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,file_cmds,$(FILE-CMDS_VERSION),file_cmds-$(FILE-CMDS_VERSION))
@@ -35,8 +35,6 @@ file-cmds: file-cmds-setup
 	done; \
 	echo shar && $(INSTALL) -Dm755 shar/shar.sh $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/shar; \
 	$(INSTALL) -Dm644 shar/shar.1 $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/;
-	$(LN_S) compress $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uncompress
-	$(LN_S) compress.1 $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/uncompress.1
 	$(call AFTER_BUILD)
 endif
 

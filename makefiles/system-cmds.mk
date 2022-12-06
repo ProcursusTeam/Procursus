@@ -57,7 +57,6 @@ system-cmds: system-cmds-setup libxcrypt openpam libiosexec ncurses
 		LC_ALL=C awk -f $(BUILD_WORK)/system-cmds/getconf.tproj/fake-gperf.awk < $$gperf > $(BUILD_WORK)/system-cmds/getconf.tproj/"$$(basename $$gperf .gperf).c" ; \
 	done
 	rm -f $(BUILD_WORK)/system-cmds/passwd.tproj/{od,nis}_passwd.c
-	cd $(BUILD_WORK)/system-cmds && $(CC) $(CFLAGS) $(LDFLAGS) -o mslutil.x mslutil/*.c
 	cd $(BUILD_WORK)/system-cmds && $(CC) $(CFLAGS) $(LDFLAGS) -o wait4path.x wait4path/*.c
 	cd $(BUILD_WORK)/system-cmds; \
 	for tproj in ac accton arch at atrun cpuctl dmesg dynamic_pager fs_usage getconf getty hostinfo iostat latency login lskq memory_pressure mkfile newgrp purge pwd_mkdb reboot shutdown stackshot trace passwd sync sysctl vifs vipw zdump zic nologin taskpolicy lsmp sc_usage ltop; do \
@@ -84,13 +83,12 @@ system-cmds: system-cmds-setup libxcrypt openpam libiosexec ncurses
 	sed 's|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|' < $(BUILD_WORK)/system-cmds/atrun.tproj/com.apple.atrun.plist > $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/Library/LaunchDaemons/com.apple.atrun.plist
 	install -m755 $(BUILD_WORK)/system-cmds/pagesize.tproj/pagesize.sh $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pagesize
 	install -m755 $(BUILD_WORK)/system-cmds/wait4path.x $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/bin/wait4path
-	install -m755 $(BUILD_WORK)/system-cmds/mslutil.x $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/mslutil
 	cp -a $(BUILD_WORK)/system-cmds/{dmesg,dynamic_pager,nologin,reboot,shutdown} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/sbin
 	cp -a $(BUILD_WORK)/system-cmds/sync $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)/bin
 	cp -a $(BUILD_WORK)/system-cmds/{ac,accton,iostat,mkfile,pwd_mkdb,sysctl,taskpolicy,vifs,vipw,zdump,zic} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 	cp -a $(BUILD_WORK)/system-cmds/{arch,at,cpuctl,fs_usage,getconf,hostinfo,latency,login,lskq,lsmp,ltop,memory_pressure,newgrp,passwd,purge,sc_usage,stackshot,trace} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_WORK)/system-cmds/{atrun,getty} $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
-	cp -a $(BUILD_WORK)/system-cmds/{{arch,at,fs_usage,getconf,iosim,latency,login,lskq,lsmp,ltop,memory_pressure,newgrp,pagesize,passwd,trace,vm_stat,zprint}.tproj,mslutil,wait4path}/*.1 $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_WORK)/system-cmds/{{arch,at,fs_usage,getconf,latency,login,lskq,lsmp,ltop,memory_pressure,newgrp,pagesize,passwd,trace,vm_stat,zprint}.tproj,wait4path}/*.1 $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_WORK)/system-cmds/{getty,nologin,sysctl}.tproj/*.5 $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5
 	cp -a $(BUILD_WORK)/system-cmds/{ac,accton,atrun,cpuctl,dmesg,dynamic_pager,getty,hostinfo,iostat,mkfile,nologin,nvram,purge,pwd_mkdb,reboot,sa,shutdown,sync,sysctl,taskpolicy,vifs,vipw,zdump,zic}.tproj/*.8 $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
 	$(LN_SR) $(BUILD_STAGE)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{arch,machine}
