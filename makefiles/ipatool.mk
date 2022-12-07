@@ -2,6 +2,8 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+
 SUBPROJECTS     += ipatool
 IPATOOL_VERSION := 2.0.0-rc.2
 DEB_IPATOOL_V   ?= $(IPATOOL_VERSION)
@@ -40,3 +42,5 @@ ipatool-package: ipatool-stage
 	rm -rf $(BUILD_DIST)/ipatool
 
 .PHONY: ipatool ipatool-package
+
+endif
