@@ -1,0 +1,19 @@
+diff --git a/tools/version.sh b/tools/version.sh
+index a955dd2..97d710b 100755
+--- a/tools/version.sh
++++ b/tools/version.sh
+@@ -1,6 +1,6 @@
+ #!/bin/sh -e
+
+-VERSION=$(git describe --abbrev=0 --tags | cut -c 2-)
++VERSION=@DEB_IPATOOL_V@
+ BASEDIR=$(dirname "$0")
+
+ cat <<EOF >"$BASEDIR/../cmd/version.go"
+@@ -10,4 +10,4 @@ package cmd
+ const version = "$VERSION"
+ EOF
+
+-echo "Version ${VERSION}"
+\ No newline at end of file
++echo "Version ${VERSION}"

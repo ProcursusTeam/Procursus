@@ -11,6 +11,7 @@ DEB_IPATOOL_V   ?= $(IPATOOL_VERSION)
 ipatool-setup: setup
 	$(call GITHUB_ARCHIVE,majd,ipatool,$(IPATOOL_VERSION),v$(IPATOOL_VERSION))
 	$(call EXTRACT_TAR,ipatool-$(IPATOOL_VERSION).tar.gz,ipatool-$(IPATOOL_VERSION),ipatool)
+	$(call DO_PATCH,ipatool,ipatool,-p1)
 	mkdir -p $(BUILD_STAGE)/ipatool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 ifneq ($(wildcard $(BUILD_WORK)/ipatool/.build_complete),)
@@ -18,6 +19,7 @@ ipatool:
 	@echo "Using previously built ipatool."
 else
 ipatool: ipatool-setup
+	sed -e "s|@DEB_IPATOOL_V@|$(DEB_IPATOOL_V)|g" -i $(BUILD_WORK)/ipatool/tools/version.sh
 	cd $(BUILD_WORK)/ipatool && ./tools/version.sh
 	cd $(BUILD_WORK)/ipatool && $(DEFAULT_GOLANG_FLAGS) go build \
 		-o $(BUILD_WORK)/ipatool/ipatool
