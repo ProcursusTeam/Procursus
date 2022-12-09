@@ -1,0 +1,9 @@
+Package: dhinakg-keyring
+Version: @DEB_DHINAKG_KEYRING_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Author: Dhinak G <dallas@dhinak.net>
+Section: Keyrings
+Priority: optional
+Homepage: https://dhinakg.github.io/repo
+Description: GnuPG key for Dhinak G's repository
