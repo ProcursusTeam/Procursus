@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS           += dhinakg-keyring
+SUBPROJECTS             += dhinakg-keyring
 DHINAKG_KEYRING_VERSION := 2022.12.08
 DEB_DHINAKG_KEYRING_V   ?= $(DHINAKG_KEYRING_VERSION)
 
