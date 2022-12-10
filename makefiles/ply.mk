@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS  += ply
 PLY_COMMIT   := 663ca4754218f780059ce490798b012183e4d0b4
-PLY_VERSION  := 1.0.0
+PLY_VERSION  := 1.0.0-$(shell echo $(PLY_COMMIT) | cut -c -7)
 DEB_PLY_V    ?= $(PLY_VERSION)
 
 ply-setup: setup
