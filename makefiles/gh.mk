@@ -16,10 +16,14 @@ gh:
 	@echo "Using previously built gh."
 else
 gh: gh-setup
-	cd $(BUILD_WORK)/gh && CGO_CC=$(CC_FOR_BUILD) go build \
+	cd $(BUILD_WORK)/gh && CGO_CC="$(CC_FOR_BUILD)" go build \
 		-trimpath \
 		-o $(BUILD_WORK)/gh/bin/gh-host \
 		$(BUILD_WORK)/gh/cmd/gh
+	cd $(BUILD_WORK)/gh && go run $(BUILD_WORK)/gh/cmd/gen-docs \
+		--man-page \
+		--doc-path $(BUILD_WORK)/gh/share/man/man1/
+	sed -e "66s|manpages||" -i $(BUILD_WORK)/gh/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/gh \
 		$(DEFAULT_GOLANG_FLAGS) \
 		GH_VERSION="$(DEB_GH_V)-procursus"
