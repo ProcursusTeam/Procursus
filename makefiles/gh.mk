@@ -9,7 +9,7 @@ DEB_GH_V    ?= $(GH_VERSION)
 gh-setup: setup
 	$(call GITHUB_ARCHIVE,cli,cli,$(GH_VERSION),v$(GH_VERSION),gh)
 	$(call EXTRACT_TAR,gh-$(GH_VERSION).tar.gz,cli-$(GH_VERSION),gh)
-	mkdir -p $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/{zsh/site-functions,bash-completion/completions,fish/vendor_completions.d}}
+	mkdir -p $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{zsh/site-functions,bash-completion/completions,fish/vendor_completions.d}
 
 ifneq ($(wildcard $(BUILD_WORK)/gh/.build_complete),)
 gh:
