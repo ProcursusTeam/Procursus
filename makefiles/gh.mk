@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += gh
-GH_VERSION  := 2.5.1
+GH_VERSION  := 2.20.2
 DEB_GH_V    ?= $(GH_VERSION)
 
 gh-setup: setup
@@ -34,7 +34,7 @@ gh: gh-setup
 		go run $(BUILD_WORK)/gh/cmd/gen-docs \
 			--man-page \
 			--doc-path $(BUILD_WORK)/gh/share/man/man1/
-	
+
 	$(INSTALL) -Dm755 $(BUILD_WORK)/gh/bin/gh $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gh
 	cp -a $(BUILD_WORK)/gh/share $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	$(BUILD_WORK)/gh/bin/gh-host completion zsh > $(BUILD_STAGE)/gh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/site-functions/_gh
