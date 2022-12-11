@@ -1264,9 +1264,9 @@ Components: main\n" > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d
 		sed -e '/@SSH_STRAP@/d' -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $(BUILD_MISC)/prep_bootstrap.sh > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/prep_bootstrap.sh; \
 	fi
 	if [ ! -z "$(findstring rootless,$(MEMO_TARGET))" ]; then \
-		sed -ie 's/@ROOTLESS@//' $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/prep_bootstrap.sh; \
+		sed -i -e 's/@ROOTLESS@//' $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/prep_bootstrap.sh; \
 	else \
-		sed -ie '/@ROOTLESS@/d' $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/prep_bootstrap.sh; \
+		sed -i -e '/@ROOTLESS@/d' $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/prep_bootstrap.sh; \
 	fi
 	chmod +x $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/prep_bootstrap.sh
 endif
