@@ -7,7 +7,7 @@ TMUX_VERSION   := 3.2
 DEB_TMUX_V     ?= $(TMUX_VERSION)
 
 tmux-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/tmux/tmux/releases/download/$(TMUX_VERSION)/tmux-$(TMUX_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/tmux/tmux/releases/download/$(TMUX_VERSION)/tmux-$(TMUX_VERSION).tar.gz)
 	$(call EXTRACT_TAR,tmux-$(TMUX_VERSION).tar.gz,tmux-$(TMUX_VERSION),tmux)
 	$(call DO_PATCH,tmux,tmux,-p1)
 

@@ -1,0 +1,397 @@
+From dc9e574df2c9d276cd0f46e8bd1af03b1b71cf17 Mon Sep 17 00:00:00 2001
+From: Tormod Volden <debian.tormod@gmail.com>
+Date: Fri, 19 Nov 2021 18:31:57 +0100
+Subject: [PATCH 1/7] Build conditionally with libudev
+X-Origin: https://github.com/gregkh/usbutils/pull/134
+
+Allow building on non-Linux platforms, at the expense of missing out on
+USB names from the udev database.
+
+Signed-off-by: Tormod Volden <debian.tormod@gmail.com>
+---
+ configure.ac |  4 +++-
+ names.c      | 12 +++++++++++-
+ 2 files changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index fc94396..f23eaa4 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -17,7 +17,9 @@ AC_CHECK_FUNCS([nl_langinfo iconv])
+ 
+ PKG_CHECK_MODULES(LIBUSB, libusb-1.0 >= 1.0.14)
+ 
+-PKG_CHECK_MODULES(UDEV, libudev >= 196)
++PKG_CHECK_MODULES(UDEV, libudev >= 196,
++		  [AC_DEFINE([HAVE_UDEV], [1], [Use UDEV])],
++		  [true])
+ 
+ AC_CONFIG_HEADERS([config.h])
+ AC_CONFIG_FILES([
+diff --git a/names.c b/names.c
+index c8cdd02..701f335 100644
+--- a/names.c
++++ b/names.c
+@@ -21,7 +21,9 @@
+ #include <stdio.h>
+ #include <ctype.h>
+ 
+-#include <libudev.h>
++#ifdef HAVE_UDEV
++# include <libudev.h>
++#endif
+ 
+ #include "usb-spec.h"
+ #include "names.h"
+@@ -43,8 +45,10 @@ static unsigned int hashnum(unsigned int num)
+ 
+ /* ---------------------------------------------------------------------- */
+ 
++#ifdef HAVE_UDEV
+ static struct udev *udev = NULL;
+ static struct udev_hwdb *hwdb = NULL;
++#endif
+ static struct audioterminal *audioterminals_hash[HASHSZ] = { NULL, };
+ static struct videoterminal *videoterminals_hash[HASHSZ] = { NULL, };
+ static struct genericstrtable *hiddescriptors_hash[HASHSZ] = { NULL, };
+@@ -113,9 +117,11 @@ static const char *hwdb_get(const char *modalias, const char *key)
+ {
+ 	struct udev_list_entry *entry;
+ 
++#ifdef HAVE_UDEV
+ 	udev_list_entry_foreach(entry, udev_hwdb_get_properties_list_entry(hwdb, modalias, 0))
+ 		if (strcmp(udev_list_entry_get_name(entry), key) == 0)
+ 			return udev_list_entry_get_value(entry);
++#endif
+ 
+ 	return NULL;
+ }
+@@ -407,6 +413,7 @@ int names_init(void)
+ {
+ 	int r;
+ 
++#ifdef HAVE_UDEV
+ 	udev = udev_new();
+ 	if (!udev)
+ 		r = -1;
+@@ -415,6 +422,7 @@ int names_init(void)
+ 		if (!hwdb)
+ 			r = -1;
+ 	}
++#endif
+ 
+ 	r = hash_tables();
+ 
+@@ -423,6 +431,8 @@ int names_init(void)
+ 
+ void names_exit(void)
+ {
++#ifdef HAVE_UDEV
+ 	hwdb = udev_hwdb_unref(hwdb);
+ 	udev = udev_unref(udev);
++#endif
+ }
+
+From bcd3c67ddde6886422dbf0d4aaa92070833ce751 Mon Sep 17 00:00:00 2001
+From: Tormod Volden <debian.tormod@gmail.com>
+Date: Fri, 19 Nov 2021 19:10:55 +0100
+Subject: [PATCH 2/7] usbreset: Error out if not on Linux
+
+It only supports a Linux-specific ioctl.
+
+Signed-off-by: Tormod Volden <debian.tormod@gmail.com>
+---
+ usbreset.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/usbreset.c b/usbreset.c
+index 0fcba41..b84265a 100644
+--- a/usbreset.c
++++ b/usbreset.c
+@@ -14,6 +14,9 @@
+ #include <ctype.h>
+ #include <limits.h>
+ #include <dirent.h>
++
++#ifdef __linux__
++
+ #include <sys/ioctl.h>
+ 
+ #include <linux/usbdevice_fs.h>
+@@ -189,3 +192,11 @@ int main(int argc, char **argv)
+ 	reset_device(dev);
+ 	return 0;
+ }
++
++#else
++int main(int argc, char **argv)
++{
++	fprintf(stderr, "Only supported on Linux\n");
++	exit(1);
++}
++#endif /* __linux__ */
+
+From 483ad580f64547d838bd14923b8dd9d948431dc5 Mon Sep 17 00:00:00 2001
+From: Tormod Volden <debian.tormod@gmail.com>
+Date: Fri, 19 Nov 2021 18:34:57 +0100
+Subject: [PATCH 3/7] usbhid-dump: Conditionally build with signal handling
+
+Allow building for Windows (MinGW).
+
+Signed-off-by: Tormod Volden <debian.tormod@gmail.com>
+---
+ usbhid-dump/configure.ac      | 2 +-
+ usbhid-dump/src/usbhid-dump.c | 6 ++++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/usbhid-dump/configure.ac b/usbhid-dump/configure.ac
+index f07e47a..2180ebf 100644
+--- a/usbhid-dump/configure.ac
++++ b/usbhid-dump/configure.ac
+@@ -67,7 +67,7 @@ fi
+ #
+ # Checks for library functions.
+ #
+-AC_CHECK_FUNCS(libusb_set_option)
++AC_CHECK_FUNCS(libusb_set_option sigaction)
+ 
+ #
+ # Output
+diff --git a/usbhid-dump/src/usbhid-dump.c b/usbhid-dump/src/usbhid-dump.c
+index bd669e2..dfdabc0 100644
+--- a/usbhid-dump/src/usbhid-dump.c
++++ b/usbhid-dump/src/usbhid-dump.c
+@@ -912,7 +912,9 @@ main(int argc, char **argv)
+     bool                dump_stream     = false;
+     unsigned int        stream_timeout  = 60000;
+ 
++#ifdef HAVE_SIGACTION
+     struct sigaction    sa;
++#endif
+ 
+     /*
+      * Extract program invocation name
+@@ -1003,6 +1005,7 @@ main(int argc, char **argv)
+     if (optind < argc)
+         USAGE_ERROR("Positional arguments are not accepted");
+ 
++#ifdef HAVE_SIGACTION
+     /*
+      * Setup signal handlers
+      */
+@@ -1035,6 +1038,7 @@ main(int argc, char **argv)
+     sigaction(SIGUSR1, &sa, NULL);
+     sa.sa_handler = stream_resume_sighandler;
+     sigaction(SIGUSR2, &sa, NULL);
++#endif /* HAVE_SIGACTION */
+ 
+     /* Make stdout buffered - we will flush it explicitly */
+     setbuf(stdout, NULL);
+@@ -1043,6 +1047,7 @@ main(int argc, char **argv)
+     result = run(dump_descriptor, dump_stream, stream_timeout,
+                  bus_num, dev_addr, vid, pid, iface_num);
+ 
++#ifdef HAVE_SIGACTION
+     /*
+      * Restore signal handlers
+      */
+@@ -1061,6 +1066,7 @@ main(int argc, char **argv)
+     if (exit_signum != 0)
+         raise(exit_signum);
+ 
++#endif /* HAVE_SIGACTION */
+     return result;
+ }
+ 
+
+From fcc12cf6c4c12ba800d99ceb615e1827dc92f2b4 Mon Sep 17 00:00:00 2001
+From: Tormod Volden <debian.tormod@gmail.com>
+Date: Fri, 19 Nov 2021 19:10:30 +0100
+Subject: [PATCH 4/7] sysfs: Return only error if not on Linux
+
+Signed-off-by: Tormod Volden <debian.tormod@gmail.com>
+---
+ sysfs.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
+
+diff --git a/sysfs.c b/sysfs.c
+index e073aa8..0ec8a64 100644
+--- a/sysfs.c
++++ b/sysfs.c
+@@ -12,10 +12,11 @@
+ #include <fcntl.h>
+ #include <unistd.h>
+ #include <stdio.h>
+-#include <linux/limits.h>
+-
+ #include <libusb.h>
+ 
++#ifdef __linux__
++
++#include <linux/limits.h>
+ #include "sysfs.h"
+ 
+ /*
+@@ -70,3 +71,15 @@ int read_sysfs_prop(char *buf, size_t size, char *sysfs_name, char *propname)
+ 	close(fd);
+ 	return n;
+ }
++
++#else
++int get_sysfs_name(char *buf, size_t size, libusb_device *dev)
++{
++	return -1;
++}
++
++int read_sysfs_prop(char *buf, size_t size, char *sysfs_name, char *propname)
++{
++	return -1;
++}
++#endif /* __linux__ */
+
+From a6a34ce0a259915b4fa4c50bdc82429e1211d730 Mon Sep 17 00:00:00 2001
+From: Tormod Volden <debian.tormod@gmail.com>
+Date: Fri, 19 Nov 2021 18:34:00 +0100
+Subject: [PATCH 5/7] lsusb-t.c: Disable if not on Linux
+
+It relies on parsing sysfs.
+
+Signed-off-by: Tormod Volden <debian.tormod@gmail.com>
+---
+ lsusb-t.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/lsusb-t.c b/lsusb-t.c
+index 88b6553..b6b7448 100644
+--- a/lsusb-t.c
++++ b/lsusb-t.c
+@@ -19,6 +19,8 @@
+ #define MY_PATH_MAX 4096
+ #define MY_PARAM_MAX 64
+ 
++#ifdef __linux__
++
+ struct usbinterface {
+ 	struct list_head list;
+ 	struct usbinterface *next;
+@@ -728,3 +730,11 @@ int lsusb_t(void)
+ 		perror(sys_bus_usb_devices);
+ 	return sbud == NULL;
+ }
++
++#else
++int lsusb_t(void)
++{
++	fprintf(stderr, "lsusb -t is only supported on Linux\n");
++	return 1;
++}
++#endif /* __linux__ */
+
+From 98d80e960ef06783c7014959cd3a4c864d4d8635 Mon Sep 17 00:00:00 2001
+From: Tormod Volden <debian.tormod@gmail.com>
+Date: Fri, 19 Nov 2021 20:46:39 +0100
+Subject: [PATCH 6/7] The -D option only works on Linux
+
+Signed-off-by: Tormod Volden <debian.tormod@gmail.com>
+---
+ lsusb.c   | 5 +++++
+ usbmisc.c | 4 ++++
+ 2 files changed, 9 insertions(+)
+
+diff --git a/lsusb.c b/lsusb.c
+index 46593a0..7a5f157 100644
+--- a/lsusb.c
++++ b/lsusb.c
+@@ -3711,6 +3711,7 @@ static void get_vendor_product_with_fallback(char *vendor, int vendor_len,
+ 
+ static int dump_one_device(libusb_context *ctx, const char *path)
+ {
++#if __linux__
+ 	libusb_device *dev;
+ 	struct libusb_device_descriptor desc;
+ 	char vendor[128], product[128];
+@@ -3729,6 +3730,10 @@ static int dump_one_device(libusb_context *ctx, const char *path)
+ 					       product);
+ 	dumpdev(dev);
+ 	return 0;
++#else
++	fprintf(stderr, "Only supported on Linux\n");
++	return 1;
++#endif /* __linux__ */
+ }
+ 
+ static int list_devices(libusb_context *ctx, int busnum, int devnum, int vendorid, int productid)
+diff --git a/usbmisc.c b/usbmisc.c
+index b12928f..1717ecd 100644
+--- a/usbmisc.c
++++ b/usbmisc.c
+@@ -25,6 +25,8 @@
+ 
+ #include "usbmisc.h"
+ 
++#ifdef __linux__
++
+ /* ---------------------------------------------------------------------- */
+ 
+ static const char *devbususb = "/dev/bus/usb";
+@@ -141,6 +143,8 @@ libusb_device *get_usb_device(libusb_context *ctx, const char *path)
+ 	return dev;
+ }
+ 
++#endif /* __linux__ */
++
+ static char *get_dev_string_ascii(libusb_device_handle *dev, size_t size,
+                                   uint8_t id)
+ {
+
+From 31148dd2064cf29b852dd211e51f3656b15b6128 Mon Sep 17 00:00:00 2001
+From: Tormod Volden <debian.tormod@gmail.com>
+Date: Sun, 21 Nov 2021 11:08:37 +0100
+Subject: [PATCH 7/7] Only link with --as-needed if using GNU linker
+
+Signed-off-by: Tormod Volden <debian.tormod@gmail.com>
+---
+ Makefile.am  |  2 ++
+ configure.ac | 14 ++++++++++++++
+ 2 files changed, 16 insertions(+)
+
+diff --git a/Makefile.am b/Makefile.am
+index 448c854..e6bbee9 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -7,8 +7,10 @@
+ SUBDIRS = \
+ 	usbhid-dump
+ 
++if HAVE_GNULD
+ AM_LDFLAGS = \
+ 	-Wl,--as-needed
++endif
+ 
+ data_DATA =
+ 
+diff --git a/configure.ac b/configure.ac
+index f23eaa4..ef0051e 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -21,6 +21,20 @@ PKG_CHECK_MODULES(UDEV, libudev >= 196,
+ 		  [AC_DEFINE([HAVE_UDEV], [1], [Use UDEV])],
+ 		  [true])
+ 
++AC_MSG_CHECKING(for GNU ld)
++ac_prog=ld
++if test "$GCC" = yes; then
++       ac_prog=`$CC -print-prog-name=ld`
++fi
++case `"$ac_prog" -V 2>&1 < /dev/null` in
++      *GNU*)
++          GNULD=yes;;
++      *)
++          GNULD=no;;
++esac
++AC_MSG_RESULT($GNULD)
++AM_CONDITIONAL([HAVE_GNULD], [test "$GNULD" = yes])
++
+ AC_CONFIG_HEADERS([config.h])
+ AC_CONFIG_FILES([
+ 	Makefile

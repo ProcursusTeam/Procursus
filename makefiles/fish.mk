@@ -7,7 +7,7 @@ FISH_VERSION  := 3.4.1
 DEB_FISH_V    ?= $(FISH_VERSION)
 
 fish-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/fish-shell/fish-shell/releases/download/$(FISH_VERSION)/fish-$(FISH_VERSION).tar.xz{,.asc}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/fish-shell/fish-shell/releases/download/$(FISH_VERSION)/fish-$(FISH_VERSION).tar.xz{$(comma).asc})
 	$(call PGP_VERIFY,fish-$(FISH_VERSION).tar.xz,asc)
 	$(call EXTRACT_TAR,fish-$(FISH_VERSION).tar.xz,fish-$(FISH_VERSION),fish)
 	sed -i '/codesign_on_mac/d' $(BUILD_WORK)/fish/CMakeLists.txt

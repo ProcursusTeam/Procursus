@@ -7,8 +7,7 @@ ZSTD_VERSION  := 1.5.2
 DEB_ZSTD_V    ?= $(ZSTD_VERSION)
 
 zstd-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/facebook/zstd/releases/download/v$(ZSTD_VERSION)/zstd-$(ZSTD_VERSION).tar.gz{,.sig,.sha256}
-	$(call GITHUB_ARCHIVE,facebook,zstd,$(ZSTD_VERSION),v$(ZSTD_VERSION))
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/facebook/zstd/releases/download/v$(ZSTD_VERSION)/zstd-$(ZSTD_VERSION).tar.gz{$(comma).sig$(comma).sha256})
 	$(call CHECKSUM_VERIFY,sha256,zstd-$(ZSTD_VERSION).tar.gz)
 	$(call PGP_VERIFY,zstd-$(ZSTD_VERSION).tar.gz)
 	$(call EXTRACT_TAR,zstd-$(ZSTD_VERSION).tar.gz,zstd-$(ZSTD_VERSION),zstd)

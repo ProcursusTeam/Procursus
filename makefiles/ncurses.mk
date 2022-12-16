@@ -7,11 +7,11 @@ STRAPPROJECTS   += ncurses
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += ncurses
 endif # ($(MEMO_TARGET),darwin-\*)
-NCURSES_VERSION := 6.3-2
+NCURSES_VERSION := 6.3+20220423-2
 DEB_NCURSES_V   ?= $(NCURSES_VERSION)
 
 ncurses-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://salsa.debian.org/debian/ncurses/-/archive/debian/$(NCURSES_VERSION)/ncurses-debian-$(NCURSES_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://salsa.debian.org/debian/ncurses/-/archive/debian/$(NCURSES_VERSION)/ncurses-debian-$(NCURSES_VERSION).tar.gz)
 	$(call EXTRACT_TAR,ncurses-debian-$(NCURSES_VERSION).tar.gz,ncurses-debian-$(NCURSES_VERSION),ncurses)
 
 ifneq ($(wildcard $(BUILD_WORK)/ncurses/.build_complete),)
@@ -29,6 +29,7 @@ ncurses: ncurses-setup
 		--disable-overwrite \
 		--with-shared \
 		--without-debug \
+		--without-tests \
 		--enable-sigwinch \
 		--enable-const \
 		--enable-symlinks \
@@ -39,11 +40,11 @@ ncurses: ncurses-setup
 		--enable-widec \
 		--with-default-terminfo-dir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo \
 		--with-manpage-format=normal \
-		LDFLAGS="$(CFLAGS) $(LDFLAGS)"
+		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
+		PKG_CONFIG_LIBDIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig"
 	+$(MAKE) -C $(BUILD_WORK)/ncurses
 	+$(MAKE) -C $(BUILD_WORK)/ncurses install \
 		DESTDIR="$(BUILD_STAGE)/ncurses"
-
 	rm -f $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin/tabs,share/man/man1/tabs.1*}
 
 ifeq (,$(MEMO_PREFIX))
@@ -56,7 +57,7 @@ ifeq (,$(MEMO_PREFIX))
 	done
 endif # (/usr,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))
 
-	-rmdir --ignore-fail-on-non-empty $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo/*/
+	rmdir --ignore-fail-on-non-empty $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo/*/
 
 	for ti in $(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo/*; do \
 		if [[ ! -L "$(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo/78" ]] && [[ -d "$(BUILD_STAGE)/ncurses/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/terminfo/78" ]]; then \
@@ -81,7 +82,6 @@ endif # (/usr,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))
 		$(LN_S) $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/lib$${file}w.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/lib$${file}.dylib; \
 	done
 	$(LN_S) $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcurses.dylib
-
 	$(call AFTER_BUILD,copy)
 endif
 

@@ -5,4 +5,4 @@ Maintainer: @DEB_MAINTAINER@
 Section: Utilities
 Homepage: https://libimobiledevice.org/
 Description: A command-line application to manage apps and app archives on iOS devices.
-Depends: libimobiledevice6, libplist3, libzip5 (>= 1.7.3)
+Depends: libimobiledevice-glue1.0-0 (>= 1.0.0), libimobiledevice6, libplist3, libzip5 (>= 1.7.3)

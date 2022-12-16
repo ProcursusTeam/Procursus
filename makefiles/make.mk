@@ -3,15 +3,15 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += make
-MAKE_VERSION := 4.3
-DEB_MAKE_V   ?= $(MAKE_VERSION)-6
+MAKE_VERSION := 4.4
+DEB_MAKE_V   ?= $(MAKE_VERSION)
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 MAKE_CONFIGURE_ARGS := --program-prefix=$(GNU_PREFIX)
 endif
 
 make-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/make/make-$(MAKE_VERSION).tar.gz{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/make/make-$(MAKE_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,make-$(MAKE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,make-$(MAKE_VERSION).tar.gz,make-$(MAKE_VERSION),make)
 

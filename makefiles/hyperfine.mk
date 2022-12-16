@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += hyperfine
-HYPERFINE_VERSION  := 1.12.0
+HYPERFINE_VERSION  := 1.15.0
 DEB_HYPERFINE_V    ?= $(HYPERFINE_VERSION)
 
 hyperfine-setup: setup
@@ -23,7 +23,6 @@ hyperfine: hyperfine-setup
 	$(INSTALL) -Dm644 $(BUILD_WORK)/hyperfine/target/$(RUST_TARGET)/release/build/hyperfine-*/out/hyperfine.bash $(BUILD_STAGE)/hyperfine/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/hyperfine
 	$(INSTALL) -Dm644 $(BUILD_WORK)/hyperfine/target/$(RUST_TARGET)/release/build/hyperfine-*/out/hyperfine.fish $(BUILD_STAGE)/hyperfine/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/fish/vendor_completions.d/hyperfine.fish
 	$(INSTALL) -Dm644 $(BUILD_WORK)/hyperfine/target/$(RUST_TARGET)/release/build/hyperfine-*/out/_hyperfine $(BUILD_STAGE)/hyperfine/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/site-functions/_hyperfine
-
 	$(call AFTER_BUILD)
 endif
 

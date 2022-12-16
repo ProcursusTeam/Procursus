@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += curl
-CURL_VERSION := 7.82.0
+CURL_VERSION := 7.84.0
 DEB_CURL_V   ?= $(CURL_VERSION)
 
 curl-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://curl.haxx.se/download/curl-$(CURL_VERSION).tar.xz{,.asc}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://curl.haxx.se/download/curl-$(CURL_VERSION).tar.xz{$(comma).asc})
 	$(call PGP_VERIFY,curl-$(CURL_VERSION).tar.xz,asc)
 	$(call EXTRACT_TAR,curl-$(CURL_VERSION).tar.xz,curl-$(CURL_VERSION),curl)
 	sed -i '/CURL_VERIFY_RUNTIMELIBS/d' $(BUILD_WORK)/curl/configure.ac
@@ -20,12 +20,13 @@ curl: curl-setup gettext openssl libssh2 nghttp2 libidn2 brotli zstd rtmpdump
 	cd $(BUILD_WORK)/curl && autoreconf -vi
 	cd $(BUILD_WORK)/curl && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--disable-debug \
-		--disable-dependency-tracking \
 		--with-libssh2 \
 		--with-openssl \
 		--with-nghttp2 \
+		--without-nghttp3 \
+		--without-ngtcp2 \
 		--with-ca-bundle=$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem
+	# Enable HTTP/3 when OpenSSL gains QUIC support
 	+$(MAKE) -C $(BUILD_WORK)/curl
 	+$(MAKE) -C $(BUILD_WORK)/curl install \
 		DESTDIR="$(BUILD_STAGE)/curl"

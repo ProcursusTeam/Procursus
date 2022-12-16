@@ -7,19 +7,19 @@ XKEYBOARD-CONFIG_VERSION := 2.32
 DEB_XKEYBOARD-CONFIG_V   ?= $(XKEYBOARD-CONFIG_VERSION)
 
 xkeyboard-config-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://www.x.org/archive/individual/data/xkeyboard-config/xkeyboard-config-$(XKEYBOARD-CONFIG_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.x.org/archive/individual/data/xkeyboard-config/xkeyboard-config-$(XKEYBOARD-CONFIG_VERSION).tar.gz)
 	$(call EXTRACT_TAR,xkeyboard-config-$(XKEYBOARD-CONFIG_VERSION).tar.gz,xkeyboard-config-$(XKEYBOARD-CONFIG_VERSION),xkeyboard-config)
 
 ifneq ($(wildcard $(BUILD_WORK)/xkeyboard-config/.build_complete),)
 xkeyboard-config:
 	@echo "Using previously built xkeyboard-config."
 else
-xkeyboard-config: xkeyboard-config-setup xorgproto
+xkeyboard-config: xkeyboard-config-setup xorgproto libx11 libxcb libxau libpthread-stubs libxdmcp
 	cd $(BUILD_WORK)/xkeyboard-config && ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/xkeyboard-config
 	+$(MAKE) -C $(BUILD_WORK)/xkeyboard-config install \
-		DESTDIR=$(BUILD_STAGE)/xkeyboard-config
+		DESTDIR="$(BUILD_STAGE)/xkeyboard-config"
 	$(call AFTER_BUILD)
 endif
 

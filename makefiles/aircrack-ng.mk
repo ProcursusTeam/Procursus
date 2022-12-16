@@ -3,13 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS         += aircrack-ng
-AIRCRACK-NG_COMMIT  := 482f56c5a1433df6b8619f1de6d89d2d5f5ab743
-AIRCRACK-NG_VERSION := 1.6~20211007.$(shell echo $(AIRCRACK-NG_COMMIT) | cut -c -7)
+AIRCRACK-NG_VERSION := 1.7
 DEB_AIRCRACK-NG_V   ?= $(AIRCRACK-NG_VERSION)
 
 aircrack-ng-setup: setup
-	$(call GITHUB_ARCHIVE,aircrack-ng,aircrack-ng,$(AIRCRACK-NG_COMMIT),$(AIRCRACK-NG_COMMIT))
-	$(call EXTRACT_TAR,aircrack-ng-$(AIRCRACK-NG_COMMIT).tar.gz,aircrack-ng-$(AIRCRACK-NG_COMMIT),aircrack-ng)
+	$(call GITHUB_ARCHIVE,aircrack-ng,aircrack-ng,$(AIRCRACK-NG_VERSION),$(AIRCRACK-NG_VERSION))
+	$(call EXTRACT_TAR,aircrack-ng-$(AIRCRACK-NG_VERSION).tar.gz,aircrack-ng-$(AIRCRACK-NG_VERSION),aircrack-ng)
 	rm $(BUILD_WORK)/aircrack-ng/lib/libac/support/{strlcat.c,strlcpy.c} && touch $(BUILD_WORK)/aircrack-ng/lib/libac/support/{strlcat.c,strlcpy.c}
 
 ifneq ($(wildcard $(BUILD_WORK)/aircrack-ng/.build_complete),)

@@ -7,7 +7,7 @@ IOKITTOOLS_VERSION := 91
 DEB_IOKITTOOLS_V   ?= $(IOKITTOOLS_VERSION)
 
 iokittools-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://opensource.apple.com/tarballs/IOKitTools/IOKitTools-$(IOKITTOOLS_VERSION).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://opensource.apple.com/tarballs/IOKitTools/IOKitTools-$(IOKITTOOLS_VERSION).tar.gz)
 	$(call EXTRACT_TAR,IOKitTools-$(IOKITTOOLS_VERSION).tar.gz,IOKitTools-$(IOKITTOOLS_VERSION),iokittools)
 	mkdir -p $(BUILD_STAGE)/iokittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 
@@ -16,8 +16,8 @@ iokittools-setup: setup
 	cp -a $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_WORK)/iokittools/include/IOKit
 	cp -a $(MACOSX_SYSROOT)/usr/include/libkern $(BUILD_WORK)/iokittools/include
 
-	wget -q -nc -P $(BUILD_WORK)/iokittools/include/IOKit \
-		https://opensource.apple.com/source/IOKitUser/IOKitUser-1726.11.1/IOKitLibPrivate.h
+	$(call DOWNLOAD_FILES,$(BUILD_WORK)/iokittools/include/IOKit, \
+		https://opensource.apple.com/source/IOKitUser/IOKitUser-1726.11.1/IOKitLibPrivate.h)
 
 ifneq ($(wildcard $(BUILD_WORK)/iokittools/.build_complete),)
 iokittools:

@@ -1,0 +1,7 @@
+Package: utm-keyring
+Version: @DEB_UTM_KEYRING_V@
+Maintainer: @DEB_MAINTAINER@
+Architecture: all
+Section: Keyrings
+Priority: optional
+Description: GnuPG keys for the UTM repository

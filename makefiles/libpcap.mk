@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS     += libpcap
 LIBPCAP_VERSION := 1.10.1
-DEB_LIBPCAP_V   ?= $(LIBPCAP_VERSION)
+DEB_LIBPCAP_V   ?= $(LIBPCAP_VERSION)-1
 
 libpcap-setup: setup
 	$(call GITHUB_ARCHIVE,the-tcpdump-group,libpcap,$(LIBPCAP_VERSION),libpcap-$(LIBPCAP_VERSION))

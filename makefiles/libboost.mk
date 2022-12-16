@@ -13,7 +13,7 @@ LIBBOOST_CONFIGURE_ARGS := abi=aapcs
 endif
 
 libboost-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://boostorg.jfrog.io/artifactory/main/release/$(LIBBOOST_VERSION)/source/boost_$(shell echo $(LIBBOOST_VERSION) | sed 's/\./_/g').tar.bz2
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE) https://boostorg.jfrog.io/artifactory/main/release/$(LIBBOOST_VERSION)/source/boost_$(shell echo $(LIBBOOST_VERSION) | sed,'s/\./_/g').tar.bz2)
 	$(call EXTRACT_TAR,boost_$(shell echo $(LIBBOOST_VERSION) | sed 's/\./_/g').tar.bz2,boost_$(shell echo $(LIBBOOST_VERSION) | sed 's/\./_/g'),libboost)
 
 ifneq ($(wildcard $(BUILD_WORK)/libboost/.build_complete),)

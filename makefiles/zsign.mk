@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += zsign
-ZSIGN_COMMIT  := 66c390c
-ZSIGN_VERSION := 0~20211012.$(ZSIGN_COMMIT)
+ZSIGN_COMMIT  := 27016df
+ZSIGN_VERSION := 0~20220120.$(ZSIGN_COMMIT)
 DEB_ZSIGN_V   := $(ZSIGN_VERSION)
 
 zsign-setup: setup
