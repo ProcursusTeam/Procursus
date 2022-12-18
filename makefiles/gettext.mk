@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS   += gettext
-GETTEXT_VERSION := 0.21
-DEB_GETTEXT_V   ?= $(GETTEXT_VERSION)-4
+GETTEXT_VERSION := 0.21.1
+DEB_GETTEXT_V   ?= $(GETTEXT_VERSION)
 
 gettext-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/gettext/gettext-$(GETTEXT_VERSION).tar.xz{$(comma).sig})
