@@ -10,5 +10,6 @@ Author: Evelyn
 Section: Tweak Injection
 Priority: optional
 Description: ElleKit tweak injection libraries and loader
- ElleKit tweak injection libraries and loader.
- Currently in beta, does not currently include a LaunchDaemon.
+ Currently NO SAFE MODE INCLUDED! Install at your own risk!
+ ElleKit tweak injection libraries and loader. Currently in beta,
+ does not currently include a LaunchDaemon.
