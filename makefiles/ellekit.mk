@@ -26,9 +26,6 @@ ellekit-setup: setup
 	$(call GITHUB_ARCHIVE,evelyneee,ellekit,$(ELLEKIT_VERSION),v$(ELLEKIT_VERSION))
 	$(call EXTRACT_TAR,ellekit-$(ELLEKIT_VERSION).tar.gz,ellekit-$(ELLEKIT_VERSION),ellekit)
 	$(call DO_PATCH,ellekit,ellekit,-p1)
-	sed -i -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' \
-		$(BUILD_WORK)/ellekit/loader/main.swift \
-		$(BUILD_WORK)/ellekit/launchd-hook/{pspawn,TweakList}.m
 
 ifneq ($(wildcard $(BUILD_WORK)/ellekit/.build_complete),)
 ellekit:
@@ -91,7 +88,7 @@ ellekit-package: ellekit-stage
 	cp -a $(BUILD_STAGE)/ellekit $(BUILD_DIST)
 
 	# ellekit.mk Sign
-	$(call SIGN,ellekit,general.xml)
+	$(call SIGN,ellekit,tfp0.xml)
 
 	# ellekit.mk Make .debs
 	$(call PACK,ellekit,DEB_ELLEKIT_V)
