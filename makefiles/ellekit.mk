@@ -53,25 +53,25 @@ else ifeq ($(PLATFORM),macosx)
 		cd $(BUILD_WORK)/ellekit && xcodebuild \
 			-target $$target $(ELLEKIT_COMMON_XCB); \
 	done
-	mv $(BUILD_WORK)/ellekit/build/Release-iphoneos/libellekit-mac.dylib \
-		$(BUILD_WORK)/ellekit/build/Release-iphoneos/libellekit.dylib
+	mv $(BUILD_WORK)/ellekit/build/Release/libellekit-mac.dylib \
+		$(BUILD_WORK)/ellekit/build/Release/libellekit.dylib
 else
 	@echo "### MEMO: Platform not currently supported for ellekit build"
 endif
 	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libellekit.dylib \
-		$(BUILD_WORK)/ellekit/build/Release-iphoneos/libellekit.dylib
+		$(BUILD_WORK)/ellekit/build/Release*/libellekit.dylib
 	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ellekit/pspawn.dylib \
-		$(BUILD_WORK)/ellekit/build/Release-iphoneos/libpspawn.dylib
+		$(BUILD_WORK)/ellekit/build/Release*/libpspawn.dylib
 	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ellekit/injector.dylib \
-		$(BUILD_WORK)/ellekit/build/Release-iphoneos/libinjector.dylib
+		$(BUILD_WORK)/ellekit/build/Release*/libinjector.dylib
 
-	install -Dm755 $(BUILD_WORK)/ellekit/build/Release-iphoneos/loader \
+	install -Dm755 $(BUILD_WORK)/ellekit/build/Release*/loader \
 		$(BUILD_STAGE)/ellekit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/ellekit/loader
-	install -Dm644 $(BUILD_WORK)/ellekit/build/Release-iphoneos/libpspawn.dylib \
+	install -Dm644 $(BUILD_WORK)/ellekit/build/Release*/libpspawn.dylib \
 		$(BUILD_STAGE)/ellekit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ellekit/pspawn.dylib
-	install -m644 $(BUILD_WORK)/ellekit/build/Release-iphoneos/libinjector.dylib \
+	install -m644 $(BUILD_WORK)/ellekit/build/Release*/libinjector.dylib \
 		$(BUILD_STAGE)/ellekit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ellekit/injector.dylib
-	install -Dm644 $(BUILD_WORK)/ellekit/build/Release-iphoneos/libellekit.dylib \
+	install -Dm644 $(BUILD_WORK)/ellekit/build/Release*/libellekit.dylib \
 		$(BUILD_STAGE)/ellekit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libellekit.dylib
 
 	ln -s libellekit.dylib \
