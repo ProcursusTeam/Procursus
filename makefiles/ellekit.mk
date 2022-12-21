@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-### NOTE: No 32-bit
+### NOTE: No 32-bit or arm64e
 
 ### TODO: Only builds on Mac.
 ### TODO: current xcodebuild impl builds way more than needed. This is fine until the codebase stabilizes.
@@ -14,7 +14,8 @@ endif
 ### HOLD: reevaluate patches and build steps each release until this is removed
 
 SUBPROJECTS     += ellekit
-ELLEKIT_VERSION := 0.1
+ELLEKIT_COMMIT  := 5fe185d0f83da32570d4b89ba1c3cde6062e8c33
+ELLEKIT_VERSION := 0.1+git20221221.$(shell echo $(ELLEKIT_COMMIT) | cut -c -7)
 DEB_ELLEKIT_V   ?= $(ELLEKIT_VERSION)
 
 ELLEKIT_COMMON_XCB := -sdk $(PLATFORM) -configuration Release \
@@ -23,9 +24,9 @@ ELLEKIT_COMMON_XCB := -sdk $(PLATFORM) -configuration Release \
 			$(MEMO_DEPLOYMENT)
 
 ellekit-setup: setup
-	$(call GITHUB_ARCHIVE,evelyneee,ellekit,$(ELLEKIT_VERSION),v$(ELLEKIT_VERSION))
-	$(call EXTRACT_TAR,ellekit-$(ELLEKIT_VERSION).tar.gz,ellekit-$(ELLEKIT_VERSION),ellekit)
-	$(call DO_PATCH,ellekit,ellekit,-p1)
+	$(call GITHUB_ARCHIVE,evelyneee,ellekit,$(ELLEKIT_COMMIT),$(ELLEKIT_COMMIT))
+	$(call EXTRACT_TAR,ellekit-$(ELLEKIT_COMMIT).tar.gz,ellekit-$(ELLEKIT_COMMIT),ellekit)
+#	$(call DO_PATCH,ellekit,ellekit,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/ellekit/.build_complete),)
 ellekit:
@@ -33,41 +34,33 @@ ellekit:
 else
 ellekit: ellekit-setup
 ifeq ($(PLATFORM),iphoneos)
-	cd $(BUILD_WORK)/ellekit && xcodebuild \
-		-target ellekit \
-		$(ELLEKIT_COMMON_XCB) ARCHS="arm64 arm64e"
-	mv $(BUILD_WORK)/ellekit/build/Release-iphoneos/libellekit.a \
-		$(BUILD_WORK)/ellekit/build/Release-iphoneos/libellekit.dylib
-	for target in loader injector pspawn; do \
+	for target in launchd ellekit; do \
 		cd $(BUILD_WORK)/ellekit && xcodebuild \
-			-target $$target $(ELLEKIT_COMMON_XCB); \
+			-target $$target \
+			$(ELLEKIT_COMMON_XCB) ARCHS="arm64 arm64e"; \
 	done
 else ifeq ($(PLATFORM),macosx)
-	cd $(BUILD_WORK)/ellekit && xcodebuild \
-		-target ellekit-mac \
-		$(ELLEKIT_COMMON_XCB) ARCHS="x86_64 arm64 arm64e"
-	for target in loader injector pspawn; do \
+	for target in launchd ellekit; do \
 		cd $(BUILD_WORK)/ellekit && xcodebuild \
-			-target $$target $(ELLEKIT_COMMON_XCB); \
+			-target $$target \
+			$(ELLEKIT_COMMON_XCB) ARCHS="arm64 arm64e x86_64"; \
 	done
-	mv $(BUILD_WORK)/ellekit/build/Release/libellekit-mac.dylib \
-		$(BUILD_WORK)/ellekit/build/Release/libellekit.dylib
 else
 	@echo "### MEMO: Platform not currently supported for ellekit build"
 endif
+
+	cd $(BUILD_WORK)/ellekit && xcodebuild \
+		-target loader $(ELLEKIT_COMMON_XCB)
+
 	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libellekit.dylib \
 		$(BUILD_WORK)/ellekit/build/Release*/libellekit.dylib
 	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ellekit/pspawn.dylib \
-		$(BUILD_WORK)/ellekit/build/Release*/libpspawn.dylib
-	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ellekit/injector.dylib \
-		$(BUILD_WORK)/ellekit/build/Release*/libinjector.dylib
+		$(BUILD_WORK)/ellekit/build/Release*/liblaunchd.dylib
 
 	install -Dm755 $(BUILD_WORK)/ellekit/build/Release*/loader \
 		$(BUILD_STAGE)/ellekit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/ellekit/loader
-	install -Dm644 $(BUILD_WORK)/ellekit/build/Release*/libpspawn.dylib \
+	install -Dm644 $(BUILD_WORK)/ellekit/build/Release*/liblaunchd.dylib \
 		$(BUILD_STAGE)/ellekit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ellekit/pspawn.dylib
-	install -m644 $(BUILD_WORK)/ellekit/build/Release*/libinjector.dylib \
-		$(BUILD_STAGE)/ellekit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ellekit/injector.dylib
 	install -Dm644 $(BUILD_WORK)/ellekit/build/Release*/libellekit.dylib \
 		$(BUILD_STAGE)/ellekit/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libellekit.dylib
 
