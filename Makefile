@@ -1216,10 +1216,17 @@ endif # $(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1
 	cp $(BUILD_INFO)/procursus.preferences $(BUILD_STRAP)/strap/private/etc/apt/preferences.d/procursus
 	touch $(BUILD_STRAP)/strap/.procursus_strapped
 	touch $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procursus.sources
+ifeq ($(shell [ "$(MEMO_CFVER)" -ge 1800 ] && echo 1),1)
+	echo -e "Types: deb\n\
+URIs: $(MEMO_REPO_URI)/\n\
+Suites: $(MEMO_CFVER)\n\
+Components: main\n" > $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procursus.sources
+else
 	echo -e "Types: deb\n\
 URIs: $(MEMO_REPO_URI)/\n\
 Suites: $(MEMO_TARGET)/$(MEMO_CFVER)\n\
 Components: main\n" > $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procursus.sources
+endif
 	if [[ "$(SSH_STRAP)" = 1 ]]; then \
 		sed -e 's/@SSH_STRAP@//' -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $(BUILD_MISC)/prep_bootstrap.sh > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/prep_bootstrap.sh; \
 	else \
@@ -1254,10 +1261,17 @@ URIs: $(MEMO_REPO_URI)/\n\
 Suites: $(MACOSX_SUITE_NAME)\n\
 Components: main\n" > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
 else
+ifeq ($(shell [ "$(MEMO_CFVER)" -ge 1800 ] && echo 1),1)
+	echo -e "Types: deb\n\
+URIs: $(MEMO_REPO_URI)/\n\
+Suites: $(MEMO_CFVER)\n\
+Components: main\n" > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
+else
 	echo -e "Types: deb\n\
 URIs: $(MEMO_REPO_URI)/\n\
 Suites: $(MEMO_TARGET)/$(MEMO_CFVER)\n\
 Components: main\n" > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
+endif
 	if [[ "$(SSH_STRAP)" = 1 ]]; then \
 		sed -e 's/@SSH_STRAP@//' -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $(BUILD_MISC)/prep_bootstrap.sh > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/prep_bootstrap.sh; \
 	else \
