@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += ldid
-LDID_VERSION := 2.1.5-procursus5
+LDID_VERSION := 2.1.5-procursus6
 DEB_LDID_V   ?= $(LDID_VERSION)
 
 ldid-setup: setup

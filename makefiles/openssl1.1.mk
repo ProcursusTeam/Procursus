@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += openssl1.1
-OPENSSL1.1_VERSION := 1.1.1q
-DEB_OPENSSL1.1_V   ?= $(OPENSSL1.1_VERSION)-1
+OPENSSL1.1_VERSION := 1.1.1s
+DEB_OPENSSL1.1_V   ?= $(OPENSSL1.1_VERSION)
 
 ifneq (,$(findstring aarch64,$(GNU_HOST_TRIPLE)))
 	SSL_SCHEME := aarch64-apple-darwin

@@ -12,6 +12,7 @@ DEB_USBMUXD_V   ?= $(USBMUXD_VERSION)-1
 usbmuxd-setup: setup
 	$(call GITHUB_ARCHIVE,libimobiledevice,usbmuxd,$(USBMUXD_COMMIT),$(USBMUXD_COMMIT))
 	$(call EXTRACT_TAR,usbmuxd-$(USBMUXD_COMMIT).tar.gz,usbmuxd-$(USBMUXD_COMMIT),usbmuxd)
+	mkdir -p $(BUILD_STAGE)/usbmuxd/Library/LaunchDaemons
 
 ifneq ($(wildcard $(BUILD_WORK)/usbmuxd/.build_complete),)
 usbmuxd:
@@ -27,8 +28,7 @@ usbmuxd: usbmuxd-setup libusb libplist libimobiledevice-glue libimobiledevice
 		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libusb-1.0"
 	+$(MAKE) -C $(BUILD_WORK)/usbmuxd install \
 		DESTDIR="$(BUILD_STAGE)/usbmuxd"
-	mkdir -p $(BUILD_STAGE)/usbmuxd/Library/LaunchDaemons
-	cp -a $(BUILD_INFO)/org.libimobiledevice.usbmuxd.plist $(BUILD_STAGE)/usbmuxd/Library/LaunchDaemons
+	sed -e "s|@MEMO_PREFIX@|$(MEMO_PREFIX)|g" -e "s|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g" < $(BUILD_INFO)/org.libimobiledevice.usbmuxd.plist > $(BUILD_STAGE)/usbmuxd/Library/LaunchDaemons/org.libimobiledevice.usbmuxd.plist
 	$(call AFTER_BUILD)
 endif
 

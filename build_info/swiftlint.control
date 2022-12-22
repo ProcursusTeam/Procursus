@@ -1,0 +1,8 @@
+Package: swiftlint
+Version: @DEB_SWIFTLINT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Homepage: https://github.com/realm/SwiftLint
+Description: A tool to enforce Swift style and conventions.
