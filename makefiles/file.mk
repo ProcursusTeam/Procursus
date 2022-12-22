@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += file
-FILE_VERSION   := 5.41
+FILE_VERSION   := 5.43
 DEB_FILE_V     ?= $(FILE_VERSION)
 
 file-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://astron.com/pub/file/file-$(FILE_VERSION).tar.gz{,.asc}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://astron.com/pub/file/file-$(FILE_VERSION).tar.gz{$(comma).asc})
 	$(call PGP_VERIFY,file-$(FILE_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,file-$(FILE_VERSION).tar.gz,file-$(FILE_VERSION),file)
 

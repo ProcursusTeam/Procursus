@@ -8,19 +8,20 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += pcre
 endif # ($(MEMO_TARGET),darwin-\*)
 PCRE_VERSION  := 8.45
-DEB_PCRE_V    ?= $(PCRE_VERSION)
+DEB_PCRE_V    ?= $(PCRE_VERSION)-1
 
 pcre-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://downloads.sourceforge.net/pcre/pcre-$(PCRE_VERSION).tar.bz2{,.sig}
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://downloads.sourceforge.net/pcre/pcre-$(PCRE_VERSION).tar.bz2{$(comma).sig})
 	$(call PGP_VERIFY,pcre-$(PCRE_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,pcre-$(PCRE_VERSION).tar.bz2,pcre-$(PCRE_VERSION),pcre)
+	$(call DO_PATCH,pcre,pcre,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/pcre/.build_complete),)
 pcre:
 	@echo "Using previously built pcre."
 else
 pcre: pcre-setup
-	cd $(BUILD_WORK)/pcre && unset MACOSX_DEPLOYMENT_TARGET && ./configure -C \
+	cd $(BUILD_WORK)/pcre && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
 		--enable-utf8 \

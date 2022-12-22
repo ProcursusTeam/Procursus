@@ -7,7 +7,7 @@ FORTUNE-MOD_VERSION := 3.6.0
 DEB_FORTUNE-MOD_V   ?= $(FORTUNE-MOD_VERSION)
 
 fortune-mod-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://github.com/shlomif/fortune-mod/releases/download/fortune-mod-$(FORTUNE-MOD_VERSION)/fortune-mod-$(FORTUNE-MOD_VERSION).tar.xz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/shlomif/fortune-mod/releases/download/fortune-mod-$(FORTUNE-MOD_VERSION)/fortune-mod-$(FORTUNE-MOD_VERSION).tar.xz)
 	$(call EXTRACT_TAR,fortune-mod-$(FORTUNE-MOD_VERSION).tar.xz,fortune-mod-$(FORTUNE-MOD_VERSION),fortune-mod)
 	mkdir -p $(BUILD_STAGE)/fortune-mod/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,games,share/{games/fortunes/off,man/man{1,6}}}
 

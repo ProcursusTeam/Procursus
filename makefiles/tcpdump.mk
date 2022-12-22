@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS     += tcpdump
 TCPDUMP_VERSION := 4.99.1
-DEB_TCPDUMP_V   ?= $(TCPDUMP_VERSION)
+DEB_TCPDUMP_V   ?= $(TCPDUMP_VERSION)-1
 
 tcpdump-setup: setup
 	$(call GITHUB_ARCHIVE,the-tcpdump-group,tcpdump,$(TCPDUMP_VERSION),tcpdump-$(TCPDUMP_VERSION))

@@ -12,7 +12,7 @@ progress-setup: setup
 	sed -i 's/-lncurses/-lncursesw/g' $(BUILD_WORK)/progress/Makefile
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	wget -P $(BUILD_WORK)/progress https://raw.githubusercontent.com/NetBSD/src/trunk/{lib/libc/gen/wordexp.c,include/wordexp.h}
+	$(call DOWNLOAD_FILES,$(BUILD_WORK)/progress,https://raw.githubusercontent.com/NetBSD/src/trunk/{lib/libc/gen/wordexp.c$(comma)include/wordexp.h})
 	$(call DO_PATCH,progress,progress,-p1)
 endif
 	mv $(BUILD_WORK)/progress/progress.1 $(BUILD_WORK)/progress/cv-progress.1

@@ -2,7 +2,6 @@ Package: perl
 Version: @DEB_PERL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libiosexec1
 Priority: optional
 Section: Scripting
 Homepage: http://dev.perl.org/perl5/

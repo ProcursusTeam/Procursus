@@ -1,0 +1,34 @@
+From 57b97a4c910e3294b1ed441acea55da2f9ca3cb1 Mon Sep 17 00:00:00 2001
+From: Harry Sintonen <sintonen@iki.fi>
+Date: Sat, 5 Dec 2020 21:21:14 +0200
+Subject: [PATCH] Use CLOCK_MONOTONIC_RAW when available
+
+---
+ src/util/timestamp.cc | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git src/util/timestamp.cc src/util/timestamp.cc
+index 2e2efe217a7d636ea5889192ea503160ef5216da..a50f734fba7b4ea036fc0a9f888c0861a20e93c6 100644
+--- src/util/timestamp.cc
++++ src/util/timestamp.cc
+@@ -48,6 +48,12 @@
+ #include <stdio.h>
+ #endif
+ 
++#ifdef CLOCK_MONOTONIC_RAW
++#define CLOCKTYPE CLOCK_MONOTONIC_RAW
++#else
++#define CLOCKTYPE CLOCK_MONOTONIC
++#endif
++
+ static uint64_t millis_cache = -1;
+ 
+ uint64_t frozen_timestamp( void )
+@@ -73,7 +79,7 @@ void freeze_timestamp( void )
+       // Check for presence, for OS X SDK >= 10.12 and runtime < 10.12
+       &clock_gettime != NULL &&
+ #endif
+-      clock_gettime( CLOCK_MONOTONIC, &tp ) == 0 ) {
++      clock_gettime( CLOCKTYPE, &tp ) == 0 ) {
+     uint64_t millis = tp.tv_nsec / 1000000;
+     millis += uint64_t( tp.tv_sec ) * 1000;

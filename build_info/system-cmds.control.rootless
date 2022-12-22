@@ -1,0 +1,11 @@
+Package: system-cmds
+Version: @DEB_SYSTEM-CMDS_V@
+Architecture: @DEB_ARCH@
+Essential: yes
+Maintainer: @DEB_MAINTAINER@
+Depends: file-cmds, libcrypt2, libpam2
+Recommends: vi
+Provides: login, passwd, reboot
+Section: Administration
+Priority: required
+Description: iostat, login, passwd, sync, sysctl, pw
