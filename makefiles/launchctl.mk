@@ -6,7 +6,7 @@ STRAPPROJECTS     += launchctl
 LAUNCHCTL_VERSION := 0.1beta2
 DEB_LAUNCHCTL_V   ?= 1:$(LAUNCHCTL_VERSION)
 
-launchctl-setup:
+launchctl-setup: setup
 	$(call GITHUB_ARCHIVE,ProcursusTeam,launchctl,$(LAUNCHCTL_VERSION),v$(LAUNCHCTL_VERSION))
 	$(call EXTRACT_TAR,launchctl-$(LAUNCHCTL_VERSION).tar.gz,launchctl-$(LAUNCHCTL_VERSION),launchctl)
 
