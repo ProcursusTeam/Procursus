@@ -17,7 +17,7 @@ bender:
 	@echo "Using previously built bender."
 else
 bender: bender-setup
-	sed -e "24,25s|aspen.*/|dfrankland/|" -i $(BUILD_WORK)/bender/Cargo.toml
+	sed -e "24,25s|aspen.*/|dfrankland/|" -e "5s|aspen.*<.*>|Absolucy <lucy@absolucy.moe>|" -i $(BUILD_WORK)/bender/Cargo.toml
 	cd $(BUILD_WORK)/bender && $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \
 		--target=$(RUST_TARGET)
