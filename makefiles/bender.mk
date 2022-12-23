@@ -9,7 +9,7 @@ BENDER_VERSION   := 1.1.1
 DEB_BENDER_V     ?= $(BENDER_VERSION)
 
 bender-setup: setup
-	$(call GITHUB_ARCHIVE,aspenluxxxy,bender,$(BENDER_VERSION),v$(BENDER_VERSION))
+	$(call GITHUB_ARCHIVE,Absolucy,bender,$(BENDER_VERSION),v$(BENDER_VERSION))
 	$(call EXTRACT_TAR,bender-$(BENDER_VERSION).tar.gz,bender-$(BENDER_VERSION),bender)
 
 ifneq ($(wildcard $(BUILD_WORK)/bender/.build_complete),)
@@ -17,6 +17,7 @@ bender:
 	@echo "Using previously built bender."
 else
 bender: bender-setup
+	sed -e "24,25s|aspen.*/|dfrankland/|" -i $(BUILD_WORK)/bender/Cargo.toml
 	cd $(BUILD_WORK)/bender && $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \
 		--target=$(RUST_TARGET)
