@@ -1,0 +1,13 @@
+#!@MEMO_PREFIX@/bin/sh
+
+set -e
+
+export DYLD_FORCE_FLAT_NAMESPACE=1
+
+if [ "${DYLD_INSERT_LIBRARIES}" != "" ]; then
+	export DYLD_INSERT_LIBRARIES="@MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/librarhelper.dylib:${DYLD_INSERT_LIBRARIES}"
+else
+	export DYLD_INSERT_LIBRARIES="@MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/librarhelper.dylib"
+fi
+
+exec "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/rar_bin" $@

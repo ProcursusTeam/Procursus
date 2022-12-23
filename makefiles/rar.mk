@@ -7,10 +7,10 @@ ifneq ($(MEMO_ARCH),arm64_32)
 ifneq ($(MEMO_ARCH),arm64e)
 
 SUBPROJECTS   += rar
-RAR_VERSION   := 6.1
-RAR_BUILD     := 610
+RAR_VERSION   := 6.12
+RAR_BUILD     := 612
 DEB_RAR_V     ?= $(RAR_VERSION)
-DEBIAN_RAR_V  := 5.5.0-1.1
+DEBIAN_RAR_V  := 5.5.0-1
 
 # XXX: needs severe cleaning
 
@@ -56,6 +56,14 @@ rar: rar-setup
 	install -m644 rarfiles.lst $(BUILD_STAGE)/rar/$(MEMO_PREFIX)/etc; \
 	install -m644 debian/rar.1 $(BUILD_STAGE)/rar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
 	install -m644 default.sfx $(BUILD_STAGE)/rar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+ifneq ($(MEMO_ARCH),x86_64)
+ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
+	$(CC) $(CFLAGS) $(LDFLAGS) -shared $(BUILD_MISC)/rar/chkstk.S -o $(BUILD_STAGE)/rar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/librarhelper.dylib
+	mv $(BUILD_STAGE)/rar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/rar{,_bin}
+	sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < $(BUILD_MISC)/rar/rar > $(BUILD_STAGE)/rar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/rar
+	chmod 755 $(BUILD_STAGE)/rar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/rar
+endif
+endif
 	$(call AFTER_BUILD)
 endif # ifneq ($(wildcard $(BUILD_WORK)/rar/.build_complete),)
 
