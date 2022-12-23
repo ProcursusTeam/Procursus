@@ -1044,8 +1044,10 @@ else
 $(error Install GNU coreutils)
 endif
 
-ifneq  ($(shell PATH="$(PATH)" file -bi $(BUILD_MISC)/launchctl/launchctl.1700 | grep -q 'x-mach-binary; charset=binary' && echo 1),1)
+ifeq ($(shell sw_vers -productName),macOS)
+ifneq  ($(shell PATH="$(PATH)" file -bi /bin/sh | grep -q 'x-mach-binary; charset=binary' && echo 1),1)
 $(error Install better file from Procursus - sudo apt install file)
+endif
 endif
 
 ifneq ($(call HAS_COMMAND,fakeroot),1)
