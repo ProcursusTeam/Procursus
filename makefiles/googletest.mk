@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += googletest
-GOOGLETEST_VERSION := 1.10.0
+GOOGLETEST_VERSION := 1.12.1
 DEB_GOOGLETEST_V   ?= $(GOOGLETEST_VERSION)
 
 googletest-setup: setup
