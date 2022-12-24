@@ -51,7 +51,7 @@ perl: perl-setup
 	CC='$(CC)' AR='$(AR)' NM='$(NM)' OBJDUMP='objdump' \
 	HOSTCFLAGS='-DPERL_CORE -DUSE_CROSS_COMPILE -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 $(CFLAGS_FOR_BUILD)' \
 	HOSTLDFLAGS='$(LDFLAGS_FOR_BUILD)' \
-	CFLAGS='-DPERL_DARWIN -DPERL_USE_SAFE_PUTENV -DTIME_HIRES_CLOCKID_T $(patsubst -flto=thin,,$(CFLAGS))' \
+	CFLAGS='-DPERL_DARWIN -DPERL_USE_SAFE_PUTENV -DTIME_HIRES_CLOCKID_T -DLIBIOSEXEC_INTERNAL=1 $(patsubst -flto=thin,,$(CFLAGS))' \
 	LDFLAGS='$(patsubst -flto=thin,,$(LDFLAGS))' ./configure \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--target=$(GNU_HOST_TRIPLE) \
