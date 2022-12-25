@@ -3,9 +3,9 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS           += golang
-GOLANG_MAJOR_V        := 1.18
-GOLANG_VERSION        := $(GOLANG_MAJOR_V).3
-DEBIAN_GOLANG_VERSION := $(GOLANG_MAJOR_V)~3
+GOLANG_MAJOR_V        := 1.19
+GOLANG_VERSION        := $(GOLANG_MAJOR_V).4
+DEBIAN_GOLANG_VERSION := $(GOLANG_MAJOR_V)~1
 DEB_GOLANG_V          ?= $(GOLANG_VERSION)
 
 golang-setup: setup

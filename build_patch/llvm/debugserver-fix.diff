@@ -1,0 +1,53 @@
+--- llvm/lldb/tools/debugserver/source/CMakeLists.txt	2022-11-20 14:17:10.275279555 +0000
++++ llvm/lldb/tools/debugserver/source/CMakeLists.txt	2022-11-20 14:15:45.466285390 +0000
+@@ -124,28 +124,6 @@
+ set_property(GLOBAL PROPERTY
+   LLDB_DEBUGSERVER_CODESIGN_IDENTITY ${debugserver_codesign_identity})
+ 
+-if(APPLE)
+-  if(APPLE_EMBEDDED)
+-    find_library(BACKBOARD_LIBRARY BackBoardServices
+-      PATHS ${CMAKE_OSX_SYSROOT}/System/Library/PrivateFrameworks)
+-    find_library(FRONTBOARD_LIBRARY FrontBoardServices
+-      PATHS ${CMAKE_OSX_SYSROOT}/System/Library/PrivateFrameworks)
+-    find_library(SPRINGBOARD_LIBRARY SpringBoardServices
+-      PATHS ${CMAKE_OSX_SYSROOT}/System/Library/PrivateFrameworks)
+-    find_library(MOBILESERVICES_LIBRARY MobileCoreServices
+-      PATHS ${CMAKE_OSX_SYSROOT}/System/Library/PrivateFrameworks)
+-    find_library(LOCKDOWN_LIBRARY lockdown)
+-    if (APPLE_EMBEDDED STREQUAL "watchos")
+-      find_library(CAROUSELSERVICES_LIBRARY CarouselServices
+-        PATHS ${CMAKE_OSX_SYSROOT}/System/Library/PrivateFrameworks)
+-    endif()
+-
+-    if(NOT BACKBOARD_LIBRARY)
+-      set(SKIP_TEST_DEBUGSERVER ON CACHE BOOL "" FORCE)
+-    endif()
+-  endif()
+-endif()
+-
+ if(HAVE_LIBCOMPRESSION)
+   set(LIBCOMPRESSION compression)
+ endif()
+@@ -298,21 +276,11 @@
+ set_target_properties(debugserver PROPERTIES FOLDER "lldb libraries/debugserver")
+ 
+ if(APPLE_EMBEDDED)
+-  set_property(TARGET lldbDebugserverCommon APPEND PROPERTY COMPILE_DEFINITIONS
+-    WITH_LOCKDOWN
+-    WITH_FBS
+-    WITH_BKS
+-    )
+   if(CAROUSELSERVICES_LIBRARY)
+     set_property(TARGET lldbDebugserverCommon APPEND PROPERTY COMPILE_DEFINITIONS
+       WITH_CAROUSEL
+       )
+   endif()
+-  set_property(TARGET debugserver APPEND PROPERTY COMPILE_DEFINITIONS
+-    WITH_LOCKDOWN
+-    WITH_FBS
+-    WITH_BKS
+-    )
+   set_property(TARGET lldbDebugserverCommon APPEND PROPERTY COMPILE_FLAGS
+     -F${CMAKE_OSX_SYSROOT}/System/Library/PrivateFrameworks
+     )

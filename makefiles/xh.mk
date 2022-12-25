@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS := xh
+SUBPROJECTS += xh
 XH_VERSION  := 0.13.0
 DEB_XH_V    ?= $(XH_VERSION)-1
 

@@ -1,0 +1,25 @@
+From e9af69519c27477d5840329c891a9dc20c07685a Mon Sep 17 00:00:00 2001
+From: Nick Chan <towinchenmi@gmail.com>
+Date: Sat, 5 Nov 2022 02:06:00 +0800
+Subject: [PATCH] Add missing int reboot3(int) declaration
+
+---
+ reboot.tproj/reboot.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/reboot.tproj/reboot.c b/reboot.tproj/reboot.c
+index 372efc7..d507480 100644
+--- a/reboot.tproj/reboot.c
++++ b/reboot.tproj/reboot.c
+@@ -74,6 +74,8 @@ __unused static const char rcsid[] =
+ #include <sys/time.h>
+ #endif
+ 
++int reboot3(int);
++
+ void usage(void);
+ u_int get_pageins(void);
+ #if defined(__APPLE__) && !(TARGET_OS_IPHONE && !TARGET_OS_SIMULATOR)
+-- 
+2.37.1
+

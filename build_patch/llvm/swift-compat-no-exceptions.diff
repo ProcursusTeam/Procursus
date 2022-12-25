@@ -1,0 +1,11 @@
+--- llvm/swift/stdlib/toolchain/CMakeLists.txt.orig	2022-11-21 16:17:02.715436365 +0000
++++ llvm/swift/stdlib/toolchain/CMakeLists.txt	2022-11-21 16:17:44.735585467 +0000
+@@ -13,6 +13,8 @@
+   # warnings.
+   "-Wall"
+ 
++  "-fno-exceptions"
++
+   # C++ code in the runtime and standard library should generally avoid
+   # introducing static constructors or destructors.
+   "-Wglobal-constructors"

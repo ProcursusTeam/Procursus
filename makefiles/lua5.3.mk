@@ -45,8 +45,8 @@ lua5.3-package: lua5.3-stage
 
 	# lua5.3.mk Prep lua5.3
 	cp -a $(BUILD_STAGE)/lua5.3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/lua5.3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	$(INSTALL) -Dm633 $(BUILD_STAGE)/lua5.3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/lua.1 $(BUILD_DIST)/lua5.3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/lua5.3.1
-	$(INSTALL) -Dm633 $(BUILD_STAGE)/lua5.3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/luac.1 $(BUILD_DIST)/lua5.3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/luac5.3.1
+	$(INSTALL) -Dm633 $(BUILD_STAGE)/lua5.3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/lua.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/lua5.3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/lua5.3.1$(MEMO_MANPAGE_SUFFIX)
+	$(INSTALL) -Dm633 $(BUILD_STAGE)/lua5.3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/luac.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/lua5.3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/luac5.3.1$(MEMO_MANPAGE_SUFFIX)
 
 	# lua5.3.mk Prep liblua5.3-0
 	$(INSTALL) -Dm755 $(BUILD_STAGE)/lua5.3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.3.0.dylib $(BUILD_DIST)/liblua5.3-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.3.0.dylib

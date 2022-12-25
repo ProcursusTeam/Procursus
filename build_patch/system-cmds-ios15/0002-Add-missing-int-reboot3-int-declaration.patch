@@ -1,0 +1,25 @@
+From f33c93b124a5400ad64c2dd78327292f146c3beb Mon Sep 17 00:00:00 2001
+From: Nick Chan <towinchenmi@gmail.com>
+Date: Sat, 5 Nov 2022 02:10:27 +0800
+Subject: [PATCH] Add missing int reboot3(int) declaration
+
+---
+ reboot.tproj/reboot.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/reboot.tproj/reboot.c b/reboot.tproj/reboot.c
+index 909492b..b95861a 100644
+--- a/reboot.tproj/reboot.c
++++ b/reboot.tproj/reboot.c
+@@ -74,6 +74,8 @@ __FBSDID("$FreeBSD$");
+ #include <reboot2.h>
+ #endif
+ 
++int reboot3(int);
++
+ static void usage(void);
+ #ifndef __APPLE__
+ static u_int get_pageins(void);
+-- 
+2.37.1
+

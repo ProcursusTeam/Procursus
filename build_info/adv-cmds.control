@@ -6,4 +6,4 @@ Architecture: @DEB_ARCH@
 Multi-Arch: foreign
 Version: @DEB_ADV-CMDS_V@
 Depends: libncursesw6
-Description: cap_mkdb, finger, last, locale, lsvfs, tabs
+Description: cap_mkdb, colldef, finger, gencat, last, locale, lsvfs, tabs

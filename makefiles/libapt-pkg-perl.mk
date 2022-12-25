@@ -16,16 +16,20 @@ libapt-pkg-perl:
 	@echo "Using previously built libapt-pkg-perl."
 else
 libapt-pkg-perl: libapt-pkg-perl-setup perl apt
-	cd $(BUILD_WORK)/libapt-pkg-perl && $(shell command -v perl) Makefile.PL \
+	cd $(BUILD_WORK)/libapt-pkg-perl && PERLRUN=$(shell command -v perl) $(shell command -v perl) Makefile.PL \
 		$(DEFAULT_PERL_MAKE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libapt-pkg-perl \
+		$(DEFAULT_PERL_MAKE_FLAGS) \
 		CC="$(CXX)" \
 		CCFLAGS="-std=c++11 $(CXXFLAGS) -Denviron" \
 		LD="$(CXX)" \
-		LDDLFLAGS="-std=c++11 -shared $(LDFLAGS)"
+		LDDLFLAGS="-std=c++11 -shared $(LDFLAGS)" \
+		INST_DYNAMIC_FIX="-lapt-pkg"
 	+$(MAKE) -C $(BUILD_WORK)/libapt-pkg-perl install \
+		$(DEFAULT_PERL_MAKE_FLAGS) \
 		DESTDIR="$(BUILD_STAGE)/libapt-pkg-perl"
 	rm -f $(BUILD_STAGE)/libapt-pkg-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR)/perllocal.pod
+	chmod 755 $(BUILD_STAGE)/libapt-pkg-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR)/auto/AptPkg/AptPkg.so
 	$(call AFTER_BUILD)
 endif
 

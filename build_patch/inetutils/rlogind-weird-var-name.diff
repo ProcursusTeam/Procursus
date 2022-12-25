@@ -1,0 +1,47 @@
+--- inetutils/src/rlogind.c.orig	2022-12-25 04:26:16.250088664 +0000
++++ inetutils/src/rlogind.c	2022-12-25 04:26:54.056862747 +0000
+@@ -1173,7 +1173,7 @@
+   struct auth_data auth_data;
+   char addrstr[INET6_ADDRSTRLEN];
+   const char *reply;
+-  int true;
++  int truev;
+   char c;
+   int authenticated;
+   pid_t pid;
+@@ -1205,16 +1205,16 @@
+ 	  ? ntohs (((struct sockaddr_in6 *) &auth_data.from)->sin6_port)
+ 	  : ntohs (((struct sockaddr_in *) &auth_data.from)->sin_port));
+ 
+-  true = 1;
++  truev = 1;
+   if (keepalive
+-      && setsockopt (infd, SOL_SOCKET, SO_KEEPALIVE, &true, sizeof true) < 0)
++      && setsockopt (infd, SOL_SOCKET, SO_KEEPALIVE, &truev, sizeof truev) < 0)
+     syslog (LOG_WARNING, "setsockopt (SO_KEEPALIVE): %m");
+ 
+ #if defined IP_TOS && defined IPPROTO_IP && defined IPTOS_LOWDELAY
+-  true = IPTOS_LOWDELAY;
++  truev = IPTOS_LOWDELAY;
+   if (auth_data.from.ss_family == AF_INET &&
+       setsockopt (infd, IPPROTO_IP, IP_TOS,
+-		  (char *) &true, sizeof true) < 0)
++		  (char *) &truev, sizeof truev) < 0)
+     syslog (LOG_WARNING, "setsockopt (IP_TOS): %m");
+ #endif
+ 
+@@ -1261,10 +1261,10 @@
+     }
+ 
+   /* Parent */
+-  true = 1;
+-  IF_NOT_ENCRYPT (ioctl (infd, FIONBIO, &true));
+-  ioctl (master, FIONBIO, &true);
+-  ioctl (master, TIOCPKT, &true);
++  truev = 1;
++  IF_NOT_ENCRYPT (ioctl (infd, FIONBIO, &truev));
++  ioctl (master, FIONBIO, &truev);
++  ioctl (master, TIOCPKT, &truev);
+   netf = infd;			/* Needed for cleanup() */
+   setsig (SIGCHLD, cleanup);
+   protocol (infd, master, &auth_data);

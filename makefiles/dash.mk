@@ -21,16 +21,12 @@ dash:
 	@echo "Using previously built dash."
 else
 dash: dash-setup libedit
+	find $(BUILD_WORK)/dash -name '*.c' -exec sed -i 's/stat64/stat/g' "{}" \;
 	cd $(BUILD_WORK)/dash && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--exec-prefix="" \
 		--with-libedit \
-		--disable-static \
-		ac_cv_func_stat64=no \
-		ac_cv_func_stpcpy=yes \
-		ac_cv_func_strtod=yes \
-		ac_cv_func_killpg=yes \
-		ac_cv_func_sysconf=yes
+		--disable-static
 	+$(MAKE) -C $(BUILD_WORK)/dash
 	+$(MAKE) -C $(BUILD_WORK)/dash install \
 		DESTDIR=$(BUILD_STAGE)/dash

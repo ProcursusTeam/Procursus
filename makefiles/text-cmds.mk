@@ -5,13 +5,23 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS       += text-cmds
-TEXT-CMDS_VERSION := 106
+TEXT-CMDS_VERSION := 154
 DEB_TEXT-CMDS_V   ?= 1:$(TEXT-CMDS_VERSION)
 
+ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
+COL_EXTRAFLAGS    := $(BUILD_WORK)/text-cmds/col/strtonum.c
+endif
+
 text-cmds-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://opensource.apple.com/tarballs/text_cmds/text_cmds-$(TEXT-CMDS_VERSION).tar.gz)
-	$(call EXTRACT_TAR,text_cmds-$(TEXT-CMDS_VERSION).tar.gz,text_cmds-$(TEXT-CMDS_VERSION),text-cmds)
+	$(call GITHUB_ARCHIVE,apple-oss-distributions,text_cmds,$(TEXT-CMDS_VERSION),text_cmds-$(TEXT-CMDS_VERSION))
+	$(call EXTRACT_TAR,text_cmds-$(TEXT-CMDS_VERSION).tar.gz,text_cmds-text_cmds-$(TEXT-CMDS_VERSION),text-cmds)
 	sed -i 's|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|' $(BUILD_WORK)/text-cmds/ee/ee.c
+ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
+	# backport strtonum to iOS 13.0 and lower
+	$(call DOWNLOAD_FILES,$(BUILD_WORK)/text-cmds/col,https://github.com/apple-oss-distributions/Libc/raw/Libc-1507.100.9/stdlib/FreeBSD/strtonum.c)
+	sed -i '1s|^|long long strtonum_rpl(const char *numstr, long long minval, long long maxval, const char **errstrp);|' $(BUILD_WORK)/text-cmds/col/col.c
+	sed -i 's/strtonum(/strtonum_rpl(/' $(BUILD_WORK)/text-cmds/col/{col,strtonum}.c
+endif
 	mkdir -p $(BUILD_STAGE)/text-cmds/$(MEMO_PREFIX){/sbin,$(MEMO_SUB_PREFIX)/{bin,share/man/man{1,6}}}
 
 ifneq ($(wildcard $(BUILD_WORK)/text-cmds/.build_complete),)
@@ -22,6 +32,7 @@ text-cmds: text-cmds-setup ncurses
 	-cd $(BUILD_WORK)/text-cmds; \
 	for bin in banner col colrm column ee lam look md5 rev rs ul unvis vis; do \
 		case $$bin in \
+			col) EXTRAFLAGS="$(COL_EXTRAFLAGS)";; \
 			ee) EXTRAFLAGS="-lncursesw";; \
 			md5) EXTRAFLAGS="$(BUILD_WORK)/text-cmds/md5/commoncrypto.c";; \
 			ul) EXTRAFLAGS="-lncursesw";; \

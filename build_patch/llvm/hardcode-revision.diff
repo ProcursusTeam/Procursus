@@ -1,0 +1,21 @@
+--- a/llvm/cmake/modules/VersionFromVCS.cmake	2022-08-23 06:45:26.000000000 +0800
++++ b/llvm/cmake/modules/VersionFromVCS.cmake	2022-10-19 14:33:47.613112569 +0800
+@@ -5,7 +5,7 @@
+ 
+ function(get_source_info path revision repository)
+   find_package(Git QUIET)
+-  if(GIT_FOUND)
++  if(GIT_FOUND AND NOT LLVM_REPOSITORY AND NOT LLVM_REVISION)
+     execute_process(COMMAND ${GIT_EXECUTABLE} rev-parse --git-dir
+       WORKING_DIRECTORY ${path}
+       RESULT_VARIABLE git_result
+@@ -45,6 +45,9 @@
+         set(${repository} ${path} PARENT_SCOPE)
+       endif()
+     endif()
++  elseif(LLVM_REPOSITORY AND NOT LLVM_REVISION)
++    set(${revision} ${LLVM_REVISION} PARENT_SCOPE)
++    set(${repository} ${LLVM_REPOSITORY} PARENT_SCOPE)
+   else()
+     message(WARNING "Git not found. Version cannot be determined.")
+   endif()

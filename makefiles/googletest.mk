@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += googletest
-GOOGLETEST_VERSION := 1.10.0
+GOOGLETEST_VERSION := 1.12.1
 DEB_GOOGLETEST_V   ?= $(GOOGLETEST_VERSION)
 
 googletest-setup: setup
@@ -30,19 +30,14 @@ endif
 
 googletest-package: googletest-stage
 	# googletest.mk Package Structure
-	rm -rf $(BUILD_DIST)/{libg{test,mock}-dev,googletest{,-tools}}
+	rm -rf $(BUILD_DIST)/{libg{test,mock}-dev,googletest}
 	mkdir -p $(BUILD_DIST)/googletest/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/src/googletest \
-		$(BUILD_DIST)/googletest-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/googletest-tools/generator} \
 		$(BUILD_DIST)/libg{mock,test}-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/pkgconfig}
 
 	# googletest.mk Prep googletest
 	cp -a $(BUILD_WORK)/googletest/googletest $(BUILD_DIST)/googletest/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/src/googletest
 	cp -a $(BUILD_WORK)/googletest/googlemock $(BUILD_DIST)/googletest/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/src/googletest
 	cp -a $(BUILD_WORK)/googletest/CMakeLists.txt $(BUILD_DIST)/googletest/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/src/googletest
-
-	# googletest.mk Prep googletest-tools
-	cp -a $(BUILD_WORK)/googletest/googlemock/scripts/generator/gmock_gen.py $(BUILD_DIST)/googletest-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gmock_gen
-	cp -a $(BUILD_WORK)/googletest/googlemock/scripts/generator/cpp $(BUILD_DIST)/googletest-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/googletest-tools/generator
 
 	# googletest.mk Prep libgmock-dev
 	cp -a $(BUILD_STAGE)/googletest/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/gmock $(BUILD_DIST)/libgmock-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
@@ -54,11 +49,10 @@ googletest-package: googletest-stage
 
 	# googletest.mk Make .debs
 	$(call PACK,googletest,DEB_GOOGLETEST_V)
-	$(call PACK,googletest-tools,DEB_GOOGLETEST_V)
 	$(call PACK,libgmock-dev,DEB_GOOGLETEST_V)
 	$(call PACK,libgtest-dev,DEB_GOOGLETEST_V)
 
 	# googletest.mk Build cleanup
-	rm -rf $(BUILD_DIST)/{libg{test,mock}-dev,googletest{,-tools}}
+	rm -rf $(BUILD_DIST)/{libg{test,mock}-dev,googletest}
 
 .PHONY: googletest googletest-package

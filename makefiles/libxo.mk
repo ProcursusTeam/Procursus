@@ -54,7 +54,7 @@ libxo-package: libxo-stage
 		$(BUILD_DIST)/libxo-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libxo/**/*test*
 	cp -a $(BUILD_STAGE)/libxo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man{3,5} \
 		$(BUILD_DIST)/libxo-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/
-	cp -a $(BUILD_STAGE)/libxo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/xo{po,lint}.1 \
+	cp -a $(BUILD_STAGE)/libxo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/xo{po,lint}.1$(MEMO_MANPAGE_SUFFIX) \
 		$(BUILD_DIST)/libxo-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_STAGE)/libxo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{libxo-config,xo{po,lint}} \
 		$(BUILD_DIST)/libxo-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
@@ -62,7 +62,7 @@ libxo-package: libxo-stage
 	# libxo.mk Prep libxo0
 	cp -a $(BUILD_STAGE)/libxo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/xo{,html} \
 		$(BUILD_DIST)/libxo-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/libxo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/xo{,html}.1 \
+	cp -a $(BUILD_STAGE)/libxo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/xo{,html}.1$(MEMO_MANPAGE_SUFFIX) \
 		$(BUILD_DIST)/libxo-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/
 	cp -a $(BUILD_STAGE)/libxo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/libxo \
 		$(BUILD_DIST)/libxo-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/

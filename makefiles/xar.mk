@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS += xar
 XAR_VERSION := 487.100.1
-DEB_XAR_V   ?= 1.8.0.$(XAR_VERSION)
+DEB_XAR_V   ?= 1.8.0.$(XAR_VERSION)-1
 
 xar-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,xar,$(XAR_VERSION),xar-$(XAR_VERSION))
@@ -34,9 +34,7 @@ xar: xar-setup openssl
 		CFLAGS="$(CFLAGS) -I$(BUILD_WORK)/xar/lib"
 	+$(MAKE) -C $(BUILD_WORK)/xar install \
 		DESTDIR=$(BUILD_STAGE)/xar
-	cp -a $(BUILD_STAGE)/xar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/* $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	cp -a $(BUILD_STAGE)/xar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/* $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 xar-package: xar-stage

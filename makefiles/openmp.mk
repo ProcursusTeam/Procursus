@@ -9,7 +9,6 @@ DEB_OPENMP_V   ?= $(OPENMP_VERSION)
 openmp-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/llvm/llvm-project/releases/download/llvmorg-$(OPENMP_VERSION)/openmp-$(OPENMP_VERSION).src.tar.xz)
 	$(call EXTRACT_TAR,openmp-$(OPENMP_VERSION).src.tar.xz,openmp-$(OPENMP_VERSION).src,openmp)
-	$(call DO_PATCH,openmp,openmp,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/openmp/.build_complete),)
 openmp:

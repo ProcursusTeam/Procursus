@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS         += debootstrap
-DEBOOTSTRAP_VERSION := 1.0.123
+DEBOOTSTRAP_VERSION := 1.0.128+nmu2
 DEB_DEBOOTSTRAP_V   ?= $(DEBOOTSTRAP_VERSION)
 
 debootstrap-setup: setup
