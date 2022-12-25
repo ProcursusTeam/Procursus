@@ -33,6 +33,7 @@ llvm-setup: setup
 	$(call EXTRACT_TAR,swift-cmark-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz,swift-cmark-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),llvm/cmark)
 	$(call DO_PATCH,llvm,llvm,-p1)
 	$(call DO_PATCH,swift,llvm/swift,-p1)
+	sed -i "s|VERBATIM COMMAND mig |VERBATIM COMMAND mig -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include |" $(BUILD_WORK)/llvm/lldb/tools/debugserver/source/CMakeLists.txt
 	mkdir -p $(BUILD_WORK)/llvm/build
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	sed -i 's|isysroot $${CMAKE_OSX_SYSROOT}|isysroot $${CMAKE_FIND_ROOT_PATH}|' $(BUILD_WORK)/llvm/lldb/tools/debugserver/source/CMakeLists.txt
