@@ -92,8 +92,6 @@ else
 $(error Unsupported CoreFoundation version)
 endif
 
-export MACOSX_DEPLOYMENT_TARGET
-
 ifeq ($(shell [ "$(MEMO_TARGET)" = "iphoneos-arm64" ] || [ "$(MEMO_TARGET)" = "iphoneos-arm64-ramdisk" ] && echo 1),1)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for iOS)
