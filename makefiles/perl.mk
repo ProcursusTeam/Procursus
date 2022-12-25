@@ -9,6 +9,8 @@ PERL_API_V   := $(PERL_MAJOR).0
 PERL_CROSS_V := 1.3.5
 DEB_PERL_V   ?= $(PERL_VERSION)
 
+export PERL_MAJOR
+
 perl-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE) https://www.cpan.org/src/5.0/perl-$(PERL_VERSION).tar.gz, \
 		https://github.com/arsv/perl-cross/releases/download/$(PERL_CROSS_V)/perl-cross-$(PERL_CROSS_V).tar.gz)
