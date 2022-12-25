@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS            += sensible-utils
-SENSIBLE-UTILS_VERSION := 0.0.13
+SENSIBLE-UTILS_VERSION := 0.0.17
 DEB_SENSIBLE-UTILS_V   ?= $(SENSIBLE-UTILS_VERSION)
 
 sensible-utils-setup: setup
