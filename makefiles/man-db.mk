@@ -4,12 +4,14 @@ endif
 
 SUBPROJECTS    += man-db
 MAN-DB_VERSION := 2.9.4
-DEB_MAN-DB_V   ?= $(MAN-DB_VERSION)-3
+DEB_MAN-DB_V   ?= $(MAN-DB_VERSION)-4
 
 man-db-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://download.savannah.gnu.org/releases/man-db/man-db-$(MAN-DB_VERSION).tar.xz{$(comma).asc})
 	$(call PGP_VERIFY,man-db-$(MAN-DB_VERSION).tar.xz,asc)
 	$(call EXTRACT_TAR,man-db-$(MAN-DB_VERSION).tar.xz,man-db-$(MAN-DB_VERSION),man-db)
+	$(call DO_PATCH,man-db,man-db,-p1)
+	sed -i "s|@ON_DEVICE_SDK_PATH@|$(ON_DEVICE_SDK_PATH)|g" $(BUILD_WORK)/man-db/src/man_db.conf.in
 
 ifneq ($(wildcard $(BUILD_WORK)/man-db/.build_complete),)
 man-db:
@@ -27,7 +29,7 @@ man-db: man-db-setup libpipeline libgdbm gettext zstd
 		LDFLAGS="$(LDFLAGS) -lintl -Wl,-framework -Wl,CoreFoundation"
 	+$(MAKE) -C $(BUILD_WORK)/man-db install \
 		DESTDIR=$(BUILD_STAGE)/man-db
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,,,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/man-db)
 endif
 
 man-db-package: man-db-stage
