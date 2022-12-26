@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS      += aptitude
 APTITUDE_VERSION := 0.8.13
-DEB_APTITUDE_V   ?= $(APTITUDE_VERSION)
+DEB_APTITUDE_V   ?= $(APTITUDE_VERSION)-1
 
 aptitude-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://deb.debian.org/debian/pool/main/a/aptitude/aptitude_$(APTITUDE_VERSION).orig.tar.xz)
