@@ -13,7 +13,7 @@ SYSTEM-CMDS_VERSION := 880.60.2
 DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)
 else
 SYSTEM-CMDS_VERSION := 950
-DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)
+DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-1
 endif
 PWDARWIN_COMMIT     := 72ae45ce6c025bc2359035cfb941b177149e88ae
 
@@ -39,7 +39,7 @@ endif
 	$(call EXTRACT_TAR,pw-darwin-$(PWDARWIN_COMMIT).tar.zst,pw-darwin-$(PWDARWIN_COMMIT),system-cmds/pw-darwin)
 	$(call DOWNLOAD_FILES,$(BUILD_WORK)/system-cmds/include, \
 		https://opensource.apple.com/source/launchd/launchd-328/launchd/src/reboot2.h)
-	sed -i 's|/etc|$(MEMO_PREFIX)/etc|' $(BUILD_WORK)/system-cmds/passwd.tproj/{file_,}passwd.c
+	sed -i 's|"/etc|"$(MEMO_PREFIX)/etc|' $(BUILD_WORK)/system-cmds/passwd.tproj/{file_,}passwd.c
 	sed -i 's|#include <mach/i386/vm_param.h>|#include <mach/vm_param.h>|' $(BUILD_WORK)/system-cmds/memory_pressure.tproj/memory_pressure.c
 	# Allow placing kernels from [redacted] sources on rootless
 	sed -i 's|/System/Library/Kernels/kernel.development|$(MEMO_PREFIX)/Library/Kernels/kernel.development|' $(BUILD_WORK)/system-cmds/latency.tproj/latency.{1,c}
