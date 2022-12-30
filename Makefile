@@ -529,6 +529,8 @@ ifeq ($(DEBUG),1)
 OPTIMIZATION_FLAGS := -g -O0
 else ifeq ($(MEMO_TARGET),bridgeos-arm64)
 OPTIMIZATION_FLAGS := -Oz
+else ifeq ($(BINPACK),1)
+OPTIMIZATION_FLAGS := -Oz
 else
 OPTIMIZATION_FLAGS := -Os
 ifeq ($(UNAME),Darwin)
