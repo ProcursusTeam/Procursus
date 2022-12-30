@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += gh
-GH_VERSION  := 2.20.2
+GH_VERSION  := 2.21.1
 DEB_GH_V    ?= $(GH_VERSION)
 
 gh-setup: setup
@@ -26,7 +26,7 @@ gh: gh-setup
 	sed -e "66s|manpages||" -i $(BUILD_WORK)/gh/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/gh \
 		$(DEFAULT_GOLANG_FLAGS) \
-		GH_VERSION="$(DEB_GH_V)-procursus"
+		GH_VERSION="$(DEB_GH_V)"
 	+$(MAKE) -C $(BUILD_WORK)/gh install \
 		prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		DESTDIR="$(BUILD_STAGE)/gh"
