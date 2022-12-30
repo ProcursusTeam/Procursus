@@ -5,8 +5,9 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS      += libiosexec
-LIBIOSEXEC_VERSION := 1.2.1
+LIBIOSEXEC_VERSION := 1.2.2
 DEB_LIBIOSEXEC_V   ?= $(LIBIOSEXEC_VERSION)
+export DEB_LIBIOSEXEC_V
 
 ifneq (,$(findstring rootless,$(MEMO_TARGET)))
 LIBIOSEXEC_FLAGS   := SHEBANG_REDIRECT_PATH="$(MEMO_PREFIX)" \

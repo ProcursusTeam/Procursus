@@ -3,12 +3,13 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += curlie
-CURLIE_VERSION  := 1.6.7
+CURLIE_VERSION  := 1.6.9
 DEB_CURLIE_V    ?= $(CURLIE_VERSION)
 
 curlie-setup: setup
 	$(call GITHUB_ARCHIVE,rs,curlie,$(CURLIE_VERSION),v$(CURLIE_VERSION))
 	$(call EXTRACT_TAR,curlie-$(CURLIE_VERSION).tar.gz,curlie-$(CURLIE_VERSION),curlie)
+	$(call DO_PATCH,curlie,curlie,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/curlie/.build_complete),)
 curlie:

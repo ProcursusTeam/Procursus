@@ -4,12 +4,13 @@ endif
 
 SUBPROJECTS      += aptitude
 APTITUDE_VERSION := 0.8.13
-DEB_APTITUDE_V   ?= $(APTITUDE_VERSION)
+DEB_APTITUDE_V   ?= $(APTITUDE_VERSION)-1
 
 aptitude-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://deb.debian.org/debian/pool/main/a/aptitude/aptitude_$(APTITUDE_VERSION).orig.tar.xz)
 	$(call EXTRACT_TAR,aptitude_$(APTITUDE_VERSION).orig.tar.xz,aptitude-$(APTITUDE_VERSION),aptitude)
 	$(call DO_PATCH,aptitude,aptitude,-p1)
+	sed -i '/#include <fcntl.h>/a #include <unistd.h>' $(BUILD_WORK)/aptitude/src/generic/apt/dpkg.cc
 
 ifneq ($(wildcard $(BUILD_WORK)/aptitude/.build_complete),)
 aptitude:

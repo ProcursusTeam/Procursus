@@ -1,0 +1,48 @@
+From c65cb92e5091b138b5a66a87628fdfbc67c9477f Mon Sep 17 00:00:00 2001
+From: Teutates <103068388+Teutates@users.noreply.github.com>
+Date: Mon, 19 Dec 2022 23:20:46 -0500
+Subject: [PATCH 1/2] Modify paths to couple libs
+
+Paths previously too general and contributes to */lib clutter.
+---
+ launchd-hook/pspawn.m | 8 ++++----
+ loader/main.swift     | 2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/launchd-hook/pspawn.m b/launchd-hook/pspawn.m
+index bc3a2f9..88f26d3 100644
+--- a/launchd-hook/pspawn.m
++++ b/launchd-hook/pspawn.m
+@@ -39,12 +39,12 @@ pid_t (*orig_waitpid)(pid_t pid, int *stat_loc, int options);
+ #define INJECTOR_ENV "DYLD_INSERT_LIBRARIES=/usr/local/lib/libinjector.dylib"
+ #define SUBSTRATE_PATH "/Library/Frameworks/ellekit.dylib"
+ #elif ROOTLESS // iOS/macOS rootless
+-#define PSPAWN_ENV "DYLD_INSERT_LIBRARIES=/var/jb/usr/lib/pspawn.dylib"
+-#define INJECTOR_ENV "DYLD_INSERT_LIBRARIES=/var/jb/usr/lib/libinjector.dylib"
++#define PSPAWN_ENV "DYLD_INSERT_LIBRARIES=/var/jb/usr/lib/ellekit/pspawn.dylib"
++#define INJECTOR_ENV "DYLD_INSERT_LIBRARIES=/var/jb/usr/lib/ellekit/injector.dylib"
+ #define SUBSTRATE_PATH "/var/jb/usr/lib/libsubstrate.dylib"
+ #else
+-#define PSPAWN_ENV "DYLD_INSERT_LIBRARIES=/usr/lib/pspawn.dylib"
+-#define INJECTOR_ENV "DYLD_INSERT_LIBRARIES=/usr/lib/libinjector.dylib"
++#define PSPAWN_ENV "DYLD_INSERT_LIBRARIES=/usr/lib/ellekit/pspawn.dylib"
++#define INJECTOR_ENV "DYLD_INSERT_LIBRARIES=/usr/lib/ellekit/injector.dylib"
+ #define SUBSTRATE_PATH "/usr/lib/libsubstrate.dylib"
+ #endif
+ 
+diff --git a/loader/main.swift b/loader/main.swift
+index 0f130a1..ba83994 100644
+--- a/loader/main.swift
++++ b/loader/main.swift
+@@ -29,7 +29,7 @@ class retain {
+     #if os(macOS)
+     static var str_c = ("/Library/TweakInject/pspawn.dylib" as NSString).utf8String
+     #else
+-    static var str_c = ("/usr/lib/pspawn.dylib" as NSString).utf8String
++    static var str_c = ("/usr/lib/ellekit/pspawn.dylib" as NSString).utf8String
+     #endif
+ }
+ 
+-- 
+2.37.1
+

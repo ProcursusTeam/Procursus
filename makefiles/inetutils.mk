@@ -10,6 +10,7 @@ inetutils-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/inetutils/inetutils-$(INETUTILS_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,inetutils-$(INETUTILS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,inetutils-$(INETUTILS_VERSION).tar.xz,inetutils-$(INETUTILS_VERSION),inetutils)
+	$(call DO_PATCH,inetutils,inetutils,-p1)
 	mkdir -p $(BUILD_STAGE)/inetutils/{s,}bin
 
 ifneq ($(wildcard $(BUILD_WORK)/inetutils/.build_complete),)
@@ -27,6 +28,7 @@ inetutils: inetutils-setup ncurses readline
 		--disable-whois
 	sed -i 's/-ltermcap/-lncursesw/g' $(BUILD_WORK)/inetutils/telnet/Makefile
 	sed -i 's/-ltermcap/-lncursesw/g' $(BUILD_WORK)/inetutils/telnetd/Makefile
+	touch $(BUILD_WORK)/inetutils/man/*.8 $(BUILD_WORK)/inetutils/man/*.1
 	+$(MAKE) -C $(BUILD_WORK)/inetutils install \
 		DESTDIR=$(BUILD_STAGE)/inetutils
 	$(LN_S) ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ping $(BUILD_STAGE)/inetutils/bin

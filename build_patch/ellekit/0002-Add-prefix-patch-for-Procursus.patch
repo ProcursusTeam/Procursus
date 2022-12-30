@@ -1,0 +1,77 @@
+From 7c644c533b2789fe2cf2e89a0d8f5f684bbf87ee Mon Sep 17 00:00:00 2001
+From: Teutates <103068388+Teutates@users.noreply.github.com>
+Date: Mon, 19 Dec 2022 23:26:42 -0500
+Subject: [PATCH 2/2] Add prefix patch for Procursus
+
+---
+ launchd-hook/TweakList.m |  6 ++----
+ launchd-hook/pspawn.m    | 12 ++++--------
+ loader/main.swift        |  4 ++--
+ 3 files changed, 8 insertions(+), 14 deletions(-)
+
+diff --git a/launchd-hook/TweakList.m b/launchd-hook/TweakList.m
+index dc4d671..6c6d5d4 100644
+--- a/launchd-hook/TweakList.m
++++ b/launchd-hook/TweakList.m
+@@ -48,12 +48,10 @@
+ - (void)updateTweakList
+ {
+ 	NSMutableArray* tweakListM = [NSMutableArray new];
+-#if TARGET_OS_OSX
++#if 0
+     NSArray* dynamicLibraries = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[NSURL fileURLWithPath:@"/Library/TweakInject/"].URLByResolvingSymlinksInPath includingPropertiesForKeys:nil options:0 error:nil];
+-#elif ROOTLESS // iOS/macOS rootless
+-    NSArray* dynamicLibraries = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[NSURL fileURLWithPath:@"/var/jb/usr/lib/TweakInject/"].URLByResolvingSymlinksInPath includingPropertiesForKeys:nil options:0 error:nil];
+ #else
+-    NSArray* dynamicLibraries = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[NSURL fileURLWithPath:@"/Library/MobileSubstrate/DynamicLibraries/"].URLByResolvingSymlinksInPath includingPropertiesForKeys:nil options:0 error:nil];
++    NSArray* dynamicLibraries = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[NSURL fileURLWithPath:@"@MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/TweakInject/"].URLByResolvingSymlinksInPath includingPropertiesForKeys:nil options:0 error:nil];
+ #endif
+ 
+ 	for(NSURL* URL in dynamicLibraries)
+diff --git a/launchd-hook/pspawn.m b/launchd-hook/pspawn.m
+index 88f26d3..068e81b 100644
+--- a/launchd-hook/pspawn.m
++++ b/launchd-hook/pspawn.m
+@@ -34,18 +34,14 @@ int (*orig_spawnp)(pid_t *restrict pid, const char *restrict path,
+ 
+ pid_t (*orig_waitpid)(pid_t pid, int *stat_loc, int options);
+ 
+-#if TARGET_OS_OSX // ElleKit Mac paths
++#if 0 // ElleKit Mac paths
+ #define PSPAWN_ENV "DYLD_INSERT_LIBRARIES=/Library/TweakInject/pspawn.dylib"
+ #define INJECTOR_ENV "DYLD_INSERT_LIBRARIES=/usr/local/lib/libinjector.dylib"
+ #define SUBSTRATE_PATH "/Library/Frameworks/ellekit.dylib"
+-#elif ROOTLESS // iOS/macOS rootless
+-#define PSPAWN_ENV "DYLD_INSERT_LIBRARIES=/var/jb/usr/lib/ellekit/pspawn.dylib"
+-#define INJECTOR_ENV "DYLD_INSERT_LIBRARIES=/var/jb/usr/lib/ellekit/injector.dylib"
+-#define SUBSTRATE_PATH "/var/jb/usr/lib/libsubstrate.dylib"
+ #else
+-#define PSPAWN_ENV "DYLD_INSERT_LIBRARIES=/usr/lib/ellekit/pspawn.dylib"
+-#define INJECTOR_ENV "DYLD_INSERT_LIBRARIES=/usr/lib/ellekit/injector.dylib"
+-#define SUBSTRATE_PATH "/usr/lib/libsubstrate.dylib"
++#define PSPAWN_ENV "DYLD_INSERT_LIBRARIES=@MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/ellekit/pspawn.dylib"
++#define INJECTOR_ENV "DYLD_INSERT_LIBRARIES=@MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/ellekit/injector.dylib"
++#define SUBSTRATE_PATH "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/libellekit.dylib"
+ #endif
+ 
+ TweakList* tweaks;
+diff --git a/loader/main.swift b/loader/main.swift
+index ba83994..b256767 100644
+--- a/loader/main.swift
++++ b/loader/main.swift
+@@ -26,10 +26,10 @@ assert(mach_vm_allocate(task, &tweak_str_addr, UInt64(vm_page_size), VM_FLAGS_AN
+ assert(mach_vm_protect(task, tweak_str_addr, UInt64(vm_page_size), 0, VM_PROT_READ | VM_PROT_WRITE | VM_PROT_COPY) == KERN_SUCCESS)
+ 
+ class retain {
+-    #if os(macOS)
++    #if false
+     static var str_c = ("/Library/TweakInject/pspawn.dylib" as NSString).utf8String
+     #else
+-    static var str_c = ("/usr/lib/ellekit/pspawn.dylib" as NSString).utf8String
++    static var str_c = ("@MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/ellekit/pspawn.dylib" as NSString).utf8String
+     #endif
+ }
+ 
+-- 
+2.37.1
+

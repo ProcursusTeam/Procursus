@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += nano
-NANO_VERSION := 6.3
+NANO_VERSION := 6.4
 DEB_NANO_V   ?= $(NANO_VERSION)
 
 nano-setup: setup

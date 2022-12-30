@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += hexedit
-HEXEDIT_VERSION := 1.5
+HEXEDIT_VERSION := 1.6
 DEB_HEXEDIT_V   ?= $(HEXEDIT_VERSION)
 
 hexedit-setup: setup

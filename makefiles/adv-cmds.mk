@@ -5,26 +5,32 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS      += adv-cmds
-ADV-CMDS_VERSION := 176
-DEB_ADV-CMDS_V   ?= $(ADV-CMDS_VERSION)-1
+ADV-CMDS_VERSION := 199.0.1
+DEB_ADV-CMDS_V   ?= $(ADV-CMDS_VERSION)
 
 adv-cmds-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://opensource.apple.com/tarballs/adv_cmds/adv_cmds-$(ADV-CMDS_VERSION).tar.gz)
-	$(call EXTRACT_TAR,adv_cmds-$(ADV-CMDS_VERSION).tar.gz,adv_cmds-$(ADV-CMDS_VERSION),adv-cmds)
+	$(call GITHUB_ARCHIVE,apple-oss-distributions,adv_cmds,$(ADV-CMDS_VERSION),adv_cmds-$(ADV-CMDS_VERSION))
+	$(call EXTRACT_TAR,adv_cmds-$(ADV-CMDS_VERSION).tar.gz,adv_cmds-adv_cmds-$(ADV-CMDS_VERSION),adv-cmds)
 	mkdir -p $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man{1,5}/}
+	$(call DOWNLOAD_FILES,$(BUILD_WORK)/adv-cmds/include,https://github.com/apple-oss-distributions/Libc/raw/Libc-1507.100.9/{nls/FreeBSD/msgcat$(comma)locale/FreeBSD/collate}.h)
+	$(call DOWNLOAD_FILES,$(BUILD_WORK)/adv-cmds/colldef,https://github.com/apple-oss-distributions/Liby/raw/Liby-20/libyywrap.c)
 
 ifneq ($(wildcard $(BUILD_WORK)/adv-cmds/.build_complete),)
 adv-cmds:
 	@echo "Using previously built adv-cmds."
 else
 adv-cmds: adv-cmds-setup ncurses
+	cd $(BUILD_WORK)/adv-cmds/colldef; \
+		yacc -d parse.y; \
+		lex scan.l;
 	cd $(BUILD_WORK)/adv-cmds; \
 	$(CXX) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/locale locale/*.cc; \
 	$(INSTALL) -Dm644 locale/locale.1 $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
 	$(CC) $(CFLAGS) $(LDFLAGS) -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/tabs tabs/*.c -lncursesw; \
 	$(INSTALL) -Dm644 tabs/tabs.1 $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
-	for bin in finger last lsvfs cap_mkdb; do \
-		$(CC) $(CFLAGS) $(LDFLAGS) -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -D'__FBSDID(x)='; \
+	for bin in finger last lsvfs cap_mkdb gencat colldef; do \
+		echo $${bin}; \
+		$(CC) $(CFLAGS) $(LDFLAGS) -I$(BUILD_WORK)/adv-cmds/include -DPLATFORM_iPhoneOS -o $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -D'__FBSDID(x)='; \
 		$(INSTALL) -Dm644 $$bin/$$bin.1 $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
 	done; \
 	$(INSTALL) -Dm644 finger/finger.conf.5 $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5; \

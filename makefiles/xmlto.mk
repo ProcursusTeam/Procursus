@@ -7,16 +7,17 @@ XMLTO_VERSION := 0.0.28
 DEB_XMLTO_V   ?= $(XMLTO_VERSION)
 
 xmlto-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE) https://releases.pagure.org/xmlto/xmlto-$(XMLTO_VERSION).tar.bz2,)
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://releases.pagure.org/xmlto/xmlto-$(XMLTO_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,xmlto-$(XMLTO_VERSION).tar.bz2,xmlto-$(XMLTO_VERSION),xmlto)
 
 ifneq ($(wildcard $(BUILD_WORK)/xmlto/.build_complete),)
 xmlto:
 	@echo "Using previously built xmlto."
 else
-xmlto: xmlto-setup
-	cd $(BUILD_WORK)/xmlto && GETOPT=ggetopt ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
+xmlto: xmlto-setup gnu-getopt
+	cd $(BUILD_WORK)/xmlto && ./configure -C \
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		GETOPT="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ggetopt"
 	+$(MAKE) -C $(BUILD_WORK)/xmlto
 	+$(MAKE) -C $(BUILD_WORK)/xmlto install \
 		DESTDIR=$(BUILD_STAGE)/xmlto

@@ -2,7 +2,7 @@ Package: tcsh
 Version: @DEB_TCSH_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libiosexec1, libncursesw6
+Depends: libncursesw6
 Section: Terminal_Support
 Priority: optional
 Homepage: http://www.tcsh.org/
