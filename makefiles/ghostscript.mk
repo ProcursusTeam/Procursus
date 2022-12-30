@@ -17,7 +17,7 @@ ghostscript:
 	@echo "Using previously built ghostscript."
 else
 ghostscript: ghostscript-setup libtiff libpng16 jbig2dec libjpeg-turbo lcms2 libpaper fontconfig freetype openjpeg expat
-	cd $(BUILD_WORK)/ghostscript && unset CPP && PKGCONFIG="pkg-config --define-prefix" ./autogen.sh -C \
+	cd $(BUILD_WORK)/ghostscript && unset CPP && ./autogen.sh -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--without-pcl \
 		--with-system-libtiff \
