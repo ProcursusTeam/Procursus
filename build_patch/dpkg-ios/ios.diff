@@ -1,9 +1,9 @@
-diff -urN dpkg-1.20.0/data/cputable dpkg/data/cputable
---- dpkg-1.20.0/data/cputable	2019-11-05 06:59:03.000000000 -0500
-+++ dpkg/data/cputable	2020-06-09 01:42:14.325741148 -0400
-@@ -21,6 +21,7 @@
- alpha		alpha		alpha.*			64	little
+diff -urN a/data/cputable b/data/cputable
+--- a/data/cputable
++++ b/data/cputable
+@@ -22,6 +22,7 @@
  amd64		x86_64		(amd64|x86_64)		64	little
+ arc		arc		arc			32	little
  armeb		armeb		arm.*b			32	big
 +armk		armk		arm.*k			32	little
  arm		arm		arm.*			32	little

@@ -1,7 +1,7 @@
-diff -urN dpkg-1.20.0/src/help.c dpkg/src/help.c
---- dpkg-1.20.0/src/main/help.c	2020-01-17 18:07:01.000000000 -0500
-+++ dpkg/src/main/help.c	2020-06-09 01:42:14.321741090 -0400
-@@ -121,7 +121,6 @@
+diff -urN a/src/main/help.c b/src/main/help.c
+--- a/src/main/help.c
++++ b/src/main/help.c
+@@ -124,7 +124,6 @@
      /* Mac OS X uses dyld (Mach-O) instead of ld.so (ELF), and does not have
       * an ldconfig. */
  #if defined(__APPLE__) && defined(__MACH__)

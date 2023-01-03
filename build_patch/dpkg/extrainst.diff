@@ -1,5 +1,6 @@
---- dpkg-1.21.7/lib/dpkg/dpkg.h	2022-03-26 17:17:58.000000000 +0000
-+++ dpkg-1.21.7/lib/dpkg/dpkg.h	2022-06-01 15:18:34.621589000 +0000
+diff -urN a/lib/dpkg/dpkg.h b/lib/dpkg/dpkg.h
+--- a/lib/dpkg/dpkg.h
++++ b/lib/dpkg/dpkg.h
 @@ -68,6 +68,7 @@
  #define CONTROLFILE        "control"
  #define CONFFILESFILE      "conffiles"
@@ -8,21 +9,22 @@
  #define POSTINSTFILE       "postinst"
  #define PRERMFILE          "prerm"
  #define POSTRMFILE         "postrm"
---- dpkg-1.21.7/src/main/unpack.c	2022-03-26 17:17:59.000000000 +0000
-+++ dpkg-1.21.7/src/main/unpack.c	2022-06-01 15:18:11.112664000 +0000
+diff -urN a/src/main/unpack.c b/src/main/unpack.c
+--- a/src/main/unpack.c
++++ b/src/main/unpack.c
 @@ -1577,6 +1577,15 @@
    subproc_reap(pid, BACKEND " --fsys-tarfile", SUBPROC_NOPIPE);
- 
+
    tar_deferred_extract(newfiles_queue.head, pkg);
 +  if (oldversionstatus == PKG_STAT_NOTINSTALLED || oldversionstatus == PKG_STAT_CONFIGFILES) {
-+    maintscript_new(pkg, EXTRAINSTFILE, "extra-installation", cidir, cidirrest,
++    maintscript_new(pkg, EXTRAINSTFILE, "extra-installation", cidir, cdirrest,
 +                    "install", NULL);
 +  } else {
-+    maintscript_new(pkg, EXTRAINSTFILE, "extra-installation", cidir, cidirrest, 
-+                    "upgrade", 
-+                    versiondescribe(&pkg->installed.version, vdew_nonambig), 
++    maintscript_new(pkg, EXTRAINSTFILE, "extra-installation", cidir, cidirrest,
++                    "upgrade",
++                    versiondescribe(&pkg->installed.version, vdew_nonambig),
 +                    NULL);
 +  }
- 
+
    if (oldversionstatus == PKG_STAT_HALFINSTALLED ||
        oldversionstatus == PKG_STAT_UNPACKED) {
