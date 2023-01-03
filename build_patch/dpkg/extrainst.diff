@@ -17,7 +17,7 @@ diff -urN a/src/main/unpack.c b/src/main/unpack.c
 
    tar_deferred_extract(newfiles_queue.head, pkg);
 +  if (oldversionstatus == PKG_STAT_NOTINSTALLED || oldversionstatus == PKG_STAT_CONFIGFILES) {
-+    maintscript_new(pkg, EXTRAINSTFILE, "extra-installation", cidir, cdirrest,
++    maintscript_new(pkg, EXTRAINSTFILE, "extra-installation", cidir, cidirrest,
 +                    "install", NULL);
 +  } else {
 +    maintscript_new(pkg, EXTRAINSTFILE, "extra-installation", cidir, cidirrest,
