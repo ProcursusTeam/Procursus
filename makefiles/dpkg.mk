@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS  += dpkg
-DPKG_VERSION   := 1.21.9
+DPKG_VERSION   := 1.21.15
 DEB_DPKG_V     ?= $(DPKG_VERSION)
 
 dpkg-setup: setup
