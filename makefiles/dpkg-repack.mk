@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS         += dpkg-repack
-DPKG_REPACK_VERSION := 1.50
+DPKG_REPACK_VERSION := 1.52
 DEB_DPKG_REPACK_V   ?= $(DPKG_REPACK_VERSION)
 
 dpkg-repack-setup: setup
