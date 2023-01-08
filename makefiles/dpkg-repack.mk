@@ -19,8 +19,8 @@ dpkg-repack: dpkg-repack-setup
 		--section 1 \
 		--center='dpkg suite' \
 		--release='$(DEB_DPKG_REPACK_V)' \
-		< dpkg-repack.pod > dpkg-repack.1
-	sed -e "s:my \$$VERSION = .*;:my \$$VERSION = '$(DEB_DPKG_REPACK_V)';:" \
+		dpkg-repack.pod dpkg-repack.1
+	sed -e "s|x.y|$(DEB_DPKG_REPACK_V)|" \
 		-e "1s|.*|#!$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl|" \
 		-e "s/-pd/-pP/" \
 		< $(BUILD_WORK)/dpkg-repack/dpkg-repack.pl > $(BUILD_WORK)/dpkg-repack/dpkg-repack
