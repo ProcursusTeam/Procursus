@@ -2,6 +2,10 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+### HOLD: No longer compatible with pre-iOS 15. This is acceptable, as shshd pre-iOS 15 is complete.
+
+### TODO: Update upstream
+
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS += shshd
@@ -12,6 +16,7 @@ shshd-setup: setup
 	$(call GITHUB_ARCHIVE,Diatrus,SHSHDaemon,$(SHSHD_VERSION),v$(SHSHD_VERSION))
 	$(call EXTRACT_TAR,SHSHDaemon-$(SHSHD_VERSION).tar.gz,SHSHDaemon-$(SHSHD_VERSION),shshd)
 	mkdir -p $(BUILD_STAGE)/shshd/$(MEMO_PREFIX){/Library/LaunchDaemons,$(MEMO_SUB_PREFIX)/{sbin,libexec}}
+	sed -i 's|kIOMasterPortDefault|kIOMainPortDefault|' $(BUILD_WORK)/shshd/main.swift
 
 ifneq ($(wildcard $(BUILD_WORK)/shshd/.build_complete),)
 shshd:
@@ -19,7 +24,16 @@ shshd:
 else
 shshd: shshd-setup dimentio
 	cd $(BUILD_WORK)/shshd; \
-		swiftc -Osize --target=$(LLVM_TARGET) -sdk $(TARGET_SYSROOT) -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -import-objc-header Bridge.h -o $(BUILD_STAGE)/shshd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/shshd main.swift -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -framework IOKit -lMobileGestalt -L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -ldimentio -liosexec
+		swiftc -Osize \
+			--target=$(LLVM_TARGET) \
+			-sdk $(TARGET_SYSROOT) \
+			-I$(BUILD_STAGE)/dimentio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include \
+			-import-objc-header Bridge.h \
+			-o $(BUILD_STAGE)/shshd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/shshd \
+			main.swift \
+			-framework IOKit -lMobileGestalt \
+			-L$(BUILD_STAGE)/dimentio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -ldimentio \
+			-L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -liosexec
 		sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < $(BUILD_MISC)/shshd/shshd-wrapper > $(BUILD_STAGE)/shshd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/shshd-wrapper
 		chmod 0755 $(BUILD_STAGE)/shshd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/shshd-wrapper
 		sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < $(BUILD_MISC)/shshd/us.diatr.shshd.plist > $(BUILD_STAGE)/shshd/$(MEMO_PREFIX)/Library/LaunchDaemons/us.diatr.shshd.plist

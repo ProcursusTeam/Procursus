@@ -14,7 +14,7 @@ LLVM_REPOSITORY := https://github.com/apple/llvm-project.git
 SWIFT_VERSION   := 5.7.1
 SWIFT_SUFFIX    := RELEASE
 DEB_SWIFT_V     ?= $(SWIFT_VERSION)~$(SWIFT_SUFFIX)
-DEB_LLVM_V      ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)-1
+DEB_LLVM_V      ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)-2
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 LLVM_CMAKE_FLAGS :=     -DLLDB_USE_SYSTEM_DEBUGSERVER=ON \
@@ -33,6 +33,7 @@ llvm-setup: setup
 	$(call EXTRACT_TAR,swift-cmark-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz,swift-cmark-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),llvm/cmark)
 	$(call DO_PATCH,llvm,llvm,-p1)
 	$(call DO_PATCH,swift,llvm/swift,-p1)
+	sed -i "s|VERBATIM COMMAND mig |VERBATIM COMMAND mig -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include |" $(BUILD_WORK)/llvm/lldb/tools/debugserver/source/CMakeLists.txt
 	mkdir -p $(BUILD_WORK)/llvm/build
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	sed -i 's|isysroot $${CMAKE_OSX_SYSROOT}|isysroot $${CMAKE_FIND_ROOT_PATH}|' $(BUILD_WORK)/llvm/lldb/tools/debugserver/source/CMakeLists.txt
@@ -155,6 +156,8 @@ ifeq ($(wildcard $(BUILD_WORK)/llvm/build/.build_complete),)
 		-DSWIFT_STDLIB_SUPPORT_BACK_DEPLOYMENT=TRUE \
 		-DPACKAGE_VENDOR="Procursus" \
 		-DBUG_REPORT_URL="https://github.com/ProcursusTeam/Procursus/issues" \
+		-DFFI_INCLUDE_PATH="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
+		-DFFI_LIBRARY_PATH="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libffi.dylib" \
 		../llvm
 	mkdir -p $(BUILD_WORK)/llvm/build/share/swift # ¯\_(ツ)_/¯
 	for arch in armv7 armv7k arm64 arm64e arm64_32 x86_64; do \

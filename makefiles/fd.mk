@@ -3,13 +3,16 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += fd
-FD_VERSION  := 8.2.1
+FD_VERSION  := 8.6.0
 DEB_FD_V    ?= $(FD_VERSION)
 
 fd-setup: setup
 	$(call GITHUB_ARCHIVE,sharkdp,fd,$(FD_VERSION),v$(FD_VERSION))
 	$(call EXTRACT_TAR,fd-$(FD_VERSION).tar.gz,fd-$(FD_VERSION),fd)
-	$(call DO_PATCH,fd,fd,-p1)
+	sed -i 's+users = "0.11.0"+users = {git = "https://github.com/ogham/rust-users", rev = "5208452"}+g' \
+		$(BUILD_WORK)/fd/Cargo.toml
+	sed -i 's|(target_os = "macos")|(target_vendor = "apple")|' \
+		$(BUILD_WORK)/fd/Cargo.toml $(BUILD_WORK)/fd/src/main.rs $(BUILD_WORK)/fd/src/walk.rs
 
 ifneq ($(wildcard $(BUILD_WORK)/fd/.build_complete),)
 fd:
@@ -20,7 +23,7 @@ fd: fd-setup
 		--release \
 		--target=$(RUST_TARGET)
 	$(INSTALL) -Dm755 $(BUILD_WORK)/fd/target/$(RUST_TARGET)/release/fd $(BUILD_STAGE)/fd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/fd
-	$(INSTALL) -Dm644 $(BUILD_WORK)/fd/target/$(RUST_TARGET)/release/build/fd-find-*/out/fd.bash $(BUILD_STAGE)/fd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/fd
+	$(INSTALL) -Dm644 $(BUILD_WORK)/fd/doc/fd.1 $(BUILD_STAGE)/fd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/fd.1
 	$(call AFTER_BUILD)
 endif
 

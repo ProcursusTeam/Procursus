@@ -9,6 +9,8 @@ DEB_WEECHAT_V   ?= $(WEECHAT_VERSION)
 weechat-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.weechat.org/files/src/weechat-$(WEECHAT_VERSION).tar.xz)
 	$(call EXTRACT_TAR,weechat-$(WEECHAT_VERSION).tar.xz,weechat-$(WEECHAT_VERSION),weechat)
+	sed -i -e 's/`pkg-config/`$$PKG_CONFIG/' -e 's/libgcrypt-config/$$PKG_CONFIG libgcrypt/'\
+		$(BUILD_WORK)/weechat/configure.ac
 
 ifneq ($(wildcard $(BUILD_WORK)/weechat/.build_complete),)
 weechat:

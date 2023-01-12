@@ -27,11 +27,21 @@ endif
 RELATIVE_RPATH       := 0
 
 MEMO_TARGET          ?= darwin-arm64
-MEMO_CFVER           ?= 1700
+MEMO_CFVER           ?= 1800
 # iOS 13.0 == 1665.15.
 CFVER_WHOLE          != echo $(MEMO_CFVER) | cut -d. -f1
 
-ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1800 ] && [ "$(CFVER_WHOLE)" -lt 1900 ] && echo 1),1)
+ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1900 ] && [ "$(CFVER_WHOLE)" -lt 2000 ] && echo 1),1)
+IPHONEOS_DEPLOYMENT_TARGET  := 16.0
+APPLETVOS_DEPLOYMENT_TARGET := 16.0
+AUDIOOS_DEPLOYMENT_TARGET   := 16.0
+BRIDGEOS_DEPLOYMENT_TARGET  := 7.0
+WATCHOS_DEPLOYMENT_TARGET   := 9.0
+MACOSX_DEPLOYMENT_TARGET    := 13.0
+DARWIN_DEPLOYMENT_VERSION   := 22
+MACOSX_SUITE_NAME           := ventura
+override MEMO_CFVER         := 1900
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1800 ] && [ "$(CFVER_WHOLE)" -lt 1900 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 15.0
 APPLETVOS_DEPLOYMENT_TARGET := 15.0
 AUDIOOS_DEPLOYMENT_TARGET   := 15.0
@@ -81,8 +91,6 @@ override MEMO_CFVER         := 1200
 else
 $(error Unsupported CoreFoundation version)
 endif
-
-export MACOSX_DEPLOYMENT_TARGET
 
 ifeq ($(shell [ "$(MEMO_TARGET)" = "iphoneos-arm64" ] || [ "$(MEMO_TARGET)" = "iphoneos-arm64-ramdisk" ] && echo 1),1)
 ifneq ($(MEMO_QUIET),1)
@@ -521,6 +529,8 @@ ifeq ($(DEBUG),1)
 OPTIMIZATION_FLAGS := -g -O0
 else ifeq ($(MEMO_TARGET),bridgeos-arm64)
 OPTIMIZATION_FLAGS := -Oz
+else ifeq ($(BINPACK),1)
+OPTIMIZATION_FLAGS := -Oz
 else
 OPTIMIZATION_FLAGS := -Os
 ifeq ($(UNAME),Darwin)
@@ -634,17 +644,17 @@ DEFAULT_CONFIGURE_FLAGS := \
 	--enable-static
 
 DEFAULT_PERL_MAKE_FLAGS := \
-	INSTALLSITEARCH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
-	INSTALLARCHLIB=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
-	INSTALLVENDORARCH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
+	INSTALLSITEARCH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$${PERL_MAJOR} \
+	INSTALLARCHLIB=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$${PERL_MAJOR} \
+	INSTALLVENDORARCH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$${PERL_MAJOR} \
 	INSTALLPRIVLIB=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 \
 	INSTALLSITELIB=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 \
 	INSTALLVENDORLIB=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 \
-	PERL_LIB=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
-	PERL_ARCHLIB=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
-	PERL_ARCHLIBDEP=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
-	PERL_INC=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR)/CORE \
-	PERL_INCDEP=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR)/CORE \
+	PERL_LIB=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$${PERL_MAJOR} \
+	PERL_ARCHLIB=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$${PERL_MAJOR} \
+	PERL_ARCHLIBDEP=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$${PERL_MAJOR} \
+	PERL_INC=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$${PERL_MAJOR}/CORE \
+	PERL_INCDEP=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$${PERL_MAJOR}/CORE \
 	PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 	INSTALLMAN1DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 \
 	INSTALLSITEMAN1DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 \
@@ -653,6 +663,9 @@ DEFAULT_PERL_MAKE_FLAGS := \
 	INSTALLSITEMAN3DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 \
 	INSTALLVENDORMAN3DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 \
 	PERL="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl" \
+	PERLRUN="$(shell which perl)" \
+	FULLPERLRUN="$(shell which perl)" \
+	ABSPERLRUN="$(shell which perl)" \
 	CCFLAGS="$(CFLAGS)" \
 	LDDLFLAGS="$(LDFLAGS) -shared"
 
@@ -662,7 +675,7 @@ DEFAULT_PERL_BUILD_FLAGS := \
 	destdir=$(BUILD_STAGE)/libmodule-build-perl \
 	install_base=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 	install_path=lib=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 \
-	install_path=arch=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
+	install_path=arch=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$${PERL_MAJOR} \
 	install_path=bin=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
 	install_path=script=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
 	install_path=libdoc=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 \
@@ -1044,8 +1057,10 @@ else
 $(error Install GNU coreutils)
 endif
 
-ifneq  ($(shell PATH="$(PATH)" file -bi $(BUILD_MISC)/launchctl/launchctl.1700 | grep -q 'x-mach-binary; charset=binary' && echo 1),1)
+ifeq ($(shell sw_vers -productName),macOS)
+ifneq  ($(shell PATH="$(PATH)" file -bi /bin/sh | grep -q 'x-mach-binary; charset=binary' && echo 1),1)
 $(error Install better file from Procursus - sudo apt install file)
+endif
 endif
 
 ifneq ($(call HAS_COMMAND,fakeroot),1)
@@ -1216,10 +1231,17 @@ endif # $(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1
 	cp $(BUILD_INFO)/procursus.preferences $(BUILD_STRAP)/strap/private/etc/apt/preferences.d/procursus
 	touch $(BUILD_STRAP)/strap/.procursus_strapped
 	touch $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procursus.sources
+ifeq ($(shell [ "$(MEMO_CFVER)" -ge 1800 ] && echo 1),1)
+	echo -e "Types: deb\n\
+URIs: $(MEMO_REPO_URI)/\n\
+Suites: $(MEMO_CFVER)\n\
+Components: main\n" > $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procursus.sources
+else
 	echo -e "Types: deb\n\
 URIs: $(MEMO_REPO_URI)/\n\
 Suites: $(MEMO_TARGET)/$(MEMO_CFVER)\n\
 Components: main\n" > $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procursus.sources
+endif
 	if [[ "$(SSH_STRAP)" = 1 ]]; then \
 		sed -e 's/@SSH_STRAP@//' -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $(BUILD_MISC)/prep_bootstrap.sh > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/prep_bootstrap.sh; \
 	else \
@@ -1254,10 +1276,17 @@ URIs: $(MEMO_REPO_URI)/\n\
 Suites: $(MACOSX_SUITE_NAME)\n\
 Components: main\n" > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
 else
+ifeq ($(shell [ "$(MEMO_CFVER)" -ge 1800 ] && echo 1),1)
+	echo -e "Types: deb\n\
+URIs: $(MEMO_REPO_URI)/\n\
+Suites: $(MEMO_CFVER)\n\
+Components: main\n" > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
+else
 	echo -e "Types: deb\n\
 URIs: $(MEMO_REPO_URI)/\n\
 Suites: $(MEMO_TARGET)/$(MEMO_CFVER)\n\
 Components: main\n" > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
+endif
 	if [[ "$(SSH_STRAP)" = 1 ]]; then \
 		sed -e 's/@SSH_STRAP@//' -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $(BUILD_MISC)/prep_bootstrap.sh > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/prep_bootstrap.sh; \
 	else \
@@ -1282,7 +1311,7 @@ endif
 	fi; \
 	zstd -qf -c19 --rm $(BUILD_STRAP)/bootstrap.tar > $(BUILD_STRAP)/$${BOOTSTRAP}; \
 	gpg --armor -u $(MEMO_PGP_SIGN_KEY) --detach-sign $(BUILD_STRAP)/$${BOOTSTRAP}; \
-	rm -rf $(BUILD_STRAP)/{strap,*.deb}; \
+	rm -rf $(BUILD_STRAP)/*/; \
 	echo "********** Successfully built bootstrap with **********"; \
 	echo "$(STRAPPROJECTS)"; \
 	echo "$(BUILD_STRAP)/$${BOOTSTRAP}"
@@ -1393,6 +1422,9 @@ setup:
 	@# FSEvents headers won't be found even when building for macOS... Should probably fix this properly eventually
 	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/CoreServices.framework/Frameworks/FSEvents.framework/Headers/* $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/FSEvents/
 
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit, \
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/iokit/IOKit/IOKitDebug.h)
+
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit/kext, \
 		https://opensource.apple.com/source/IOKitUser/IOKitUser-1845.81.1/kext.subproj/{KextManagerPriv$(comma)OSKext$(comma)OSKextPrivate$(comma)kextmanager_types$(comma){fat$(comma)macho$(comma)misc}_util}.h)
 
@@ -1420,17 +1452,14 @@ setup:
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys, \
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/bsd/sys/{fcntl$(comma)fsctl$(comma)spawn_internal$(comma)resource$(comma)event$(comma)kdebug$(comma)proc$(comma)proc_info$(comma)pgo$(comma)proc_uuid_policy$(comma)acct$(comma)stackshot$(comma)event$(comma)mbuf$(comma)kern_memorystatus$(comma)reason}.h)
 
-	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/uuid, \
-		https://opensource.apple.com/source/Libc/Libc-1353.11.2/uuid/namespace.h)
-
-	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/osfmk/mach/coalition.h)
-
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpc, \
 		https://github.com/Torrekie/apple_internal_sdk/raw/322eb6573bc701e7f35af05650b0cc162d0355c1/usr/include/xpc/private.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ktrace, \
 		https://github.com/Torrekie/apple_internal_sdk/raw/fa5457b4e5246d20da5a74f1449b37dfd79f1248/usr/include/ktrace/{private$(comma)session}.h)
+
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/perfdata, \
+		https://github.com/Torrekie/apple_internal_sdk/raw/757ad82d5a680005bd253447dd3842217c6c8abc/usr/include/perfdata/perfdata.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreSymbolication, \
 		https://github.com/Torrekie/apple_internal_sdk/raw/fa5457b4e5246d20da5a74f1449b37dfd79f1248/System/Library/PrivateFrameworks/CoreSymbolication.framework/Headers/CoreSymbolication{$(comma)Private}.h)
@@ -1493,7 +1522,7 @@ endif
 	@#Patch downloaded headers
 	@sed -i '1s|^|#include <Security/cssmapi.h>\n#include <Security/SecKeychain.h>\n|' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security/SecKeychainPriv.h
 	@sed -i '1s|^|#include <arm/cpu_capabilities.h>\n|' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/firehose/tracepoint_private.h
-	@sed -i -e 's/__osloglike([0-9], [0-9])//' -e 's|extern void \*__dso_handle;|#ifndef __OS_TRACE_BASE_H__\nextern void \*__dso_handle;\n#endif|' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/log{,_private}.h
+	@sed -i -e 's/__osloglike([0-9], [0-9])//' -e 's|extern void \*__dso_handle;|#ifndef __OS_TRACE_BASE_H__\nextern struct mach_header __dso_handle;\n#endif|' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/log{,_private}.h
 	@sed -i 's/, ios(NA), bridgeos(NA)//' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security/SecBasePriv.h
 	@sed -i 's/__API_UNAVAILABLE(ios, tvos, watchos) __API_UNAVAILABLE(bridgeos)//' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach-o/dyld_process_info.h
 	@sed -i 's/, bridgeos(4.0)//' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/dispatch/{mach,data,source}_private.h
