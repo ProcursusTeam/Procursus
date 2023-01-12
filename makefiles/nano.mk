@@ -10,7 +10,7 @@ nano-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/nano/nano-$(NANO_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,nano-$(NANO_VERSION).tar.xz)
 	$(call EXTRACT_TAR,nano-$(NANO_VERSION).tar.xz,nano-$(NANO_VERSION),nano)
-	$(call DO_PATCH,nano,nano,-p1)
+	sed -e "66b1;80b1;83b1;242b1;b;:1;s|#[[:space:]]||" -i $(BUILD_WORK)/nano/doc/sample.nanorc.in
 
 ifneq ($(wildcard $(BUILD_WORK)/nano/.build_complete),)
 nano:
