@@ -1544,10 +1544,10 @@ ifneq ($(MEMO_QUIET),1)
 endif # ($(MEMO_QUIET),1)
 
 clean::
-	rm -rf $(BUILD_ROOT)/build_{base,stage,work}
+	rm -rf $(BUILD_ROOT)/build_{source,stage}
 
 extreme-clean: clean
-	rm -rf $(BUILD_ROOT)/build_{source,strap,dist}
+	rm -rf $(BUILD_ROOT)/build_{base,strap,work}
 
 define mootext
                  (__)
