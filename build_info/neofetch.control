@@ -1,6 +1,6 @@
 Package: neofetch
 Version: @DEB_NEOFETCH_V@
-Architecture: @DEB_ARCH@
+Architecture: all
 Priority: optional
 Section: Utilities
 Maintainer: @DEB_MAINTAINER@
