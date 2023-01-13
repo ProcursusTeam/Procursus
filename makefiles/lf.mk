@@ -24,8 +24,11 @@ lf: lf-setup
 	$(INSTALL) -Dm644 $(BUILD_WORK)/lf/etc/lf.zsh $(BUILD_STAGE)/lf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/site-functions/_lf
 	$(INSTALL) -Dm644 $(BUILD_WORK)/lf/etc/lfcd.sh -t $(BUILD_STAGE)/lf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/lf
 	$(INSTALL) -Dm644 $(BUILD_WORK)/lf/etc/lf.vim -t $(BUILD_STAGE)/lf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/vim/vimfiles/syntax
+	$(INSTALL) -Dm644 $(BUILD_WORK)/lf/etc/lf.vim -t $(BUILD_STAGE)/lf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/vim/vimfiles/ftdetect
 	$(INSTALL) -Dm644 $(BUILD_WORK)/lf/etc/lf.bash $(BUILD_STAGE)/lf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/lf
 	$(INSTALL) -Dm644 $(BUILD_WORK)/lf/etc/lf{,cd}.csh -t $(BUILD_STAGE)/lf/$(MEMO_PREFIX)/etc/profile.d
+	$(INSTALL) -Dm644 $(BUILD_WORK)/lf/etc/lf.fish -t $(BUILD_STAGE)/lf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/fish/vendor_completions.d
+	$(INSTALL) -Dm644 $(BUILD_WORK)/lf/etc/lfcd.fish -t $(BUILD_STAGE)/lf/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/fish/vendor_functions.d
 	$(call AFTER_BUILD)
 endif
 
