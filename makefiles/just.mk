@@ -20,6 +20,16 @@ just: just-setup
 		--all-features \
 		--target=$(RUST_TARGET)
 	$(INSTALL) -Dm755 $(BUILD_WORK)/just/target/$(RUST_TARGET)/release/just $(BUILD_STAGE)/just/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/just
+
+	$(INSTALL) -Dm644 $(BUILD_WORK)/just/man/just.1 \
+	    -t $(BUILD_STAGE)/just/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	$(INSTALL) -Dm644 $(BUILD_WORK)/just/completions/just.zsh \
+	    $(BUILD_STAGE)/just/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/site-functions/_just
+	$(INSTALL) -Dm644 $(BUILD_WORK)/just/completions/just.fish \
+		$(BUILD_STAGE)/just/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/fish/vendor_completions.d/just.fish
+	$(INSTALL) -Dm644 $(BUILD_WORK)/just/completions/just.bash \
+	    $(BUILD_STAGE)/just/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/bash-completion/completions/just
+
 	$(call AFTER_BUILD)
 endif
 
