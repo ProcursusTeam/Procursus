@@ -30,15 +30,15 @@ endif
 libvde-package: libvde-stage
 	# libvde.mk Package Structure
 	rm -rf $(BUILD_DIST)/libvde{0,-dev} $(BUILD_DIST)/libvdeplug{2,-dev} $(BUILD_DIST)/vde2{,-cryptcab}
-	mkdir -p $(BUILD_DIST)/libvde0/{etc/vde2,usr/lib} \
-	$(BUILD_DIST)/libvde-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/pkgconfig} \
-	$(BUILD_DIST)/libvdeplug2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
-	$(BUILD_DIST)/libvdeplug-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/pkgconfig} \
-	$(BUILD_DIST)/vde2/{etc/vde2,usr/lib/vde2/vde_l3} \
-	$(BUILD_DIST)/vde2-cryptcab/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
+	mkdir -p $(BUILD_DIST)/libvde0/{$(MEMO_PREFIX)/etc/vde2,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib} \
+		$(BUILD_DIST)/libvde-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/pkgconfig} \
+		$(BUILD_DIST)/libvdeplug2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libvdeplug-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/pkgconfig} \
+		$(BUILD_DIST)/vde2/{$(MEMO_PREFIX)/etc/vde2,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/vde2/vde_l3} \
+		$(BUILD_DIST)/vde2-cryptcab/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
 
 	# libvde.mk Prep libvde0
-	cp -a $(BUILD_STAGE)/libvde/etc/vde2/libvdemgmt $(BUILD_DIST)/libvde0/etc/vde2
+	cp -a $(BUILD_STAGE)/libvde/$(MEMO_PREFIX)/etc/vde2/libvdemgmt $(BUILD_DIST)/libvde0/$(MEMO_PREFIX)/etc/vde2
 	cp -a $(BUILD_STAGE)/libvde/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libvdehist,libvdemgmt,libvdesnmp}.0.dylib $(BUILD_DIST)/libvde0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libvde.mk Prep libvde-dev
@@ -56,10 +56,10 @@ libvde-package: libvde-stage
 
 	# libvde.mk Prep vde2
 	cp -a $(BUILD_STAGE)/libvde/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/vde2/vde_l3/{{b,p}fifo,tbf}.so $(BUILD_DIST)/vde2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/vde2/vde_l3
-	cp -a $(BUILD_STAGE)/libvde/etc/vde2/vdecmd $(BUILD_DIST)/vde2/etc/vde2
+	cp -a $(BUILD_STAGE)/libvde/$(MEMO_PREFIX)/etc/vde2/vdecmd $(BUILD_DIST)/vde2/$(MEMO_PREFIX)/etc/vde2
 	cp -a $(BUILD_STAGE)/libvde/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/vde2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	rm -f $(BUILD_DIST)/vde2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/vde{cmd,kvm,qemu,_cryptcab}
-	rm -f $(BUILD_DIST)/vde2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/vde{cmd,kvm,qemu,_cryptcab}.1
+	rm -f $(BUILD_DIST)/vde2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/vde{cmd,kvm,qemu}
+	rm -f $(BUILD_DIST)/vde2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/vde{cmd,kvm,qemu}.1
 
 	# libvde.mk Prep vde2-cryptcab
 	cp -a $(BUILD_STAGE)/libvde/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/vde_cryptcab $(BUILD_DIST)/vde2-cryptcab/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
