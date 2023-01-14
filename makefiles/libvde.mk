@@ -63,7 +63,7 @@ libvde-package: libvde-stage
 
 	# libvde.mk Prep vde2-cryptcab
 	cp -a $(BUILD_STAGE)/libvde/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/vde_cryptcab $(BUILD_DIST)/vde2-cryptcab/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/libvde/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/vde_cryptcab.1 $(BUILD_DIST)/vde2-cryptcab/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/libvde/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/vde_cryptcab.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/vde2-cryptcab/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# libvde.mk Sign
 	$(call SIGN,libvde0,general.xml)
