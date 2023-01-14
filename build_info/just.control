@@ -1,0 +1,10 @@
+Package: just
+Version: @DEB_JUST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: casey
+Depends: dash
+Section: Development
+Priority: optional
+Homepage: https://just.systems/
+Description: just is a handy way to save and run project-specific commands.
