@@ -27,10 +27,9 @@ endif
 netcat-package: netcat-stage
 	# netcat.mk Package Structure
 	rm -rf $(BUILD_DIST)/netcat
-	mkdir -p $(BUILD_DIST)/netcat
 
 	# netcat.mk Prep netcat
-	cp -a $(BUILD_STAGE)/netcat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/netcat
+	cp -a $(BUILD_STAGE)/netcat $(BUILD_DIST)
 
 	# netcat.mk Sign
 	$(call SIGN,netcat,general.xml)
