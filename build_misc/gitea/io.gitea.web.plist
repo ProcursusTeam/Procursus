@@ -28,5 +28,7 @@
         <key>NumberOfFiles</key>
         <integer>8192</integer>
     </dict>
+    <key>Disabled</key>
+    <true/>
 </dict>
 </plist>

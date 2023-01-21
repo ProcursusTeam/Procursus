@@ -3,18 +3,14 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += gitea
-GITEA_VERSION := 1.15.9
-DEB_GITEA_V   ?= $(GITEA_VERSION)-1
+GITEA_VERSION := 1.18.2
+DEB_GITEA_V   ?= $(GITEA_VERSION)
 
 gitea-setup: setup
 	$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/gitea-$(GITEA_VERSION).tar.gz, \
 		https://github.com/go-gitea/gitea/releases/download/v$(GITEA_VERSION)/gitea-src-$(GITEA_VERSION).tar.gz)
-	-[ ! -f "$(BUILD_WORK)/gitea" ] && \
-		mkdir -p $(BUILD_WORK)/gitea && \
-			tar xf $(BUILD_SOURCE)/gitea-$(GITEA_VERSION).tar.gz -C $(BUILD_WORK)/gitea
+	$(call EXTRACT_TAR,gitea-$(GITEA_VERSION).tar.gz,gitea-src-$(GITEA_VERSION),gitea)
 	$(call DO_PATCH,gitea,gitea,-p1)
-	sed -i 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' $(BUILD_WORK)/gitea/Makefile
-	sed -i 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' $(BUILD_WORK)/gitea/custom/conf/app.example.ini
 
 ifneq ($(wildcard $(BUILD_WORK)/gitea/.build_complete),)
 gitea:
@@ -27,6 +23,7 @@ gitea: gitea-setup openpam
 endif
 	cd $(BUILD_WORK)/gitea && go mod vendor
 	+$(DEFAULT_GOLANG_FLAGS) TAGS="bindata pam sqlite sqlite_unlock_notify" \
+		LDFLAGS="$(LDFLAGS) -Wl,-U,_pam_start_confdir" \
 		$(MAKE) -C $(BUILD_WORK)/gitea build
 	install -Dm755 $(BUILD_WORK)/gitea/gitea $(BUILD_STAGE)/gitea/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gitea
 	install -Dm755 $(BUILD_MISC)/gitea/gitea-wrapper \
