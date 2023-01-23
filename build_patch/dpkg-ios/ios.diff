@@ -1,7 +1,8 @@
-diff -urN a/data/cputable b/data/cputable
+diff --git a/data/cputable b/data/cputable
+index 7b1ee2c58..9f2742fe3 100644
 --- a/data/cputable
 +++ b/data/cputable
-@@ -22,6 +22,7 @@
+@@ -22,6 +22,7 @@ alpha		alpha		alpha.*			64	little
  amd64		x86_64		(amd64|x86_64)		64	little
  arc		arc		arc			32	little
  armeb		armeb		arm.*b			32	big

@@ -1,7 +1,8 @@
-diff -urN a/lib/dpkg/dpkg.h b/lib/dpkg/dpkg.h
+diff --git a/lib/dpkg/dpkg.h b/lib/dpkg/dpkg.h
+index 463f8296d..be778753d 100644
 --- a/lib/dpkg/dpkg.h
 +++ b/lib/dpkg/dpkg.h
-@@ -68,6 +68,7 @@
+@@ -68,6 +68,7 @@ DPKG_BEGIN_DECLS
  #define CONTROLFILE        "control"
  #define CONFFILESFILE      "conffiles"
  #define PREINSTFILE        "preinst"
@@ -9,12 +10,13 @@ diff -urN a/lib/dpkg/dpkg.h b/lib/dpkg/dpkg.h
  #define POSTINSTFILE       "postinst"
  #define PRERMFILE          "prerm"
  #define POSTRMFILE         "postrm"
-diff -urN a/src/main/unpack.c b/src/main/unpack.c
+diff --git a/src/main/unpack.c b/src/main/unpack.c
+index 8fb716ec4..8edb72960 100644
 --- a/src/main/unpack.c
 +++ b/src/main/unpack.c
-@@ -1577,6 +1577,15 @@
+@@ -1580,6 +1580,15 @@ void process_archive(const char *filename) {
    subproc_reap(pid, BACKEND " --fsys-tarfile", SUBPROC_NOPIPE);
-
+ 
    tar_deferred_extract(newfiles_queue.head, pkg);
 +  if (oldversionstatus == PKG_STAT_NOTINSTALLED || oldversionstatus == PKG_STAT_CONFIGFILES) {
 +    maintscript_new(pkg, EXTRAINSTFILE, "extra-installation", cidir, cidirrest,
@@ -25,6 +27,6 @@ diff -urN a/src/main/unpack.c b/src/main/unpack.c
 +                    versiondescribe(&pkg->installed.version, vdew_nonambig),
 +                    NULL);
 +  }
-
+ 
    if (oldversionstatus == PKG_STAT_HALFINSTALLED ||
        oldversionstatus == PKG_STAT_UNPACKED) {
