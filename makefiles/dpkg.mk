@@ -22,7 +22,7 @@ dpkg:
 else
 dpkg: dpkg-setup gettext xz zstd libmd zlib-ng
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	sed -e '|base-bsd-darwin|a base-bsd-darwin-arm64\t\t$(DEB_ARCH)' -i $(BUILD_WORK)/dpkg/data/tupletable
+	sed -e '\|base-bsd-darwin|a base-bsd-darwin-arm64\t\t$(DEB_ARCH)' -i $(BUILD_WORK)/dpkg/data/tupletable
 endif
 	cd $(BUILD_WORK)/dpkg && ./autogen
 	cd $(BUILD_WORK)/dpkg && ./configure -C \
