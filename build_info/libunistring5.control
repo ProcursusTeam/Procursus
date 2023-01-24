@@ -2,9 +2,6 @@ Package: libunistring5
 Version: @DEB_UNISTRING_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Replaces: libunistring (<< @DEB_UNISTRING_V@)
-Conflicts: libunistring (<< @DEB_UNISTRING_V@)
-Provides: libunistring (= @DEB_UNISTRING_V@)
 Section: Libraries
 Priority: optional
 Multi-Arch: foreign
