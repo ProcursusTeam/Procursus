@@ -45,8 +45,8 @@ lua5.1-package: lua5.1-stage
 
 	# lua5.1.mk Prep lua5.1
 	cp -a $(BUILD_STAGE)/lua5.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/lua5.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	$(INSTALL) -Dm644 $(BUILD_STAGE)/lua5.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/lua.1 $(BUILD_DIST)/lua5.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/lua5.1.1
-	$(INSTALL) -Dm644 $(BUILD_STAGE)/lua5.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/luac.1 $(BUILD_DIST)/lua5.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/luac5.1.1
+	$(INSTALL) -Dm644 $(BUILD_STAGE)/lua5.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/lua.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/lua5.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/lua5.1.1$(MEMO_MANPAGE_SUFFIX)
+	$(INSTALL) -Dm644 $(BUILD_STAGE)/lua5.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/luac.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/lua5.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/luac5.1.1$(MEMO_MANPAGE_SUFFIX)
 
 	# lua5.1.mk Prep liblua5.1-0
 	$(INSTALL) -Dm755 $(BUILD_STAGE)/lua5.1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.1.0.dylib $(BUILD_DIST)/liblua5.1-0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblua5.1.0.dylib

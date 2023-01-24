@@ -19,8 +19,10 @@ calc:
 else
 calc: calc-setup ncurses readline
 	+$(MAKE) -C $(BUILD_WORK)/calc install \
-		LCC=clang \
-		CC=$(CC) \
+		LCC="$(CC_FOR_BUILD)" \
+		ICFLAGS="$(CFLAGS_FOR_BUILD)" \
+		ILDFLAGS="$(LDFLAGS_FOR_BUILD)" \
+		CC="$(CC)" \
 		CFLAGS="$(CFLAGS) -DCALC_SRC -DCUSTOMHELPDIR=\"\\\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/calc/custhelp\\\"\" -DHELPDIR=\"\\\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/calc/help\\\"\" -DDEFAULTCALCPATH=\"\\\".:./cal:~/.cal:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/calc:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/calc/custom\\\"\" -I$(BUILD_WORK)" \
 		LDFLAGS="$(LDFLAGS)" \
 		target="Darwin" \

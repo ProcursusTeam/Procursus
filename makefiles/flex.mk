@@ -23,6 +23,7 @@ flex: flex-setup gettext
 	cd $(BUILD_WORK)/flex && ./autogen.sh
 	cd $(BUILD_WORK)/flex && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		--disable-bootstrap \
 		ac_cv_func_malloc_0_nonnull=yes \
 		ac_cv_func_realloc_0_nonnull=yes \
 		ac_cv_path_M4="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/m4"
