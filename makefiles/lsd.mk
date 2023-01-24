@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += lsd
-LSD_VERSION := 0.20.1
+LSD_VERSION := 0.23.1
 DEB_LSD_V   ?= $(LSD_VERSION)
 
 lsd-setup: setup
@@ -15,10 +15,9 @@ lsd:
 	@echo "Using previously built lsd."
 else
 lsd: lsd-setup
-	# Use Lucy's fork of rust-users w/ iOS support
-	sed -i 's|users = "0.11.*"|users = {git = "https://github.com/Absolucy/rust-users", branch = "ios"}|g' \
+	sed -i -e 's|users = "0.11.*"|users = {git = "https://github.com/ogham/rust-users", rev = "refs/pull/46/head"}|g' \
 		$(BUILD_WORK)/lsd/Cargo.toml
-	cd $(BUILD_WORK)/lsd; $(DEFAULT_RUST_FLAGS) cargo build \
+	cd $(BUILD_WORK)/lsd && $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \
 		--target=$(RUST_TARGET)
 	$(INSTALL) -Dm755 $(BUILD_WORK)/lsd/target/$(RUST_TARGET)/release/lsd \

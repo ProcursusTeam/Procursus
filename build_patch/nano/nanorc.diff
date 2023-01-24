@@ -1,34 +1,42 @@
-diff -urN nano/doc/sample.nanorc.in.orig nano/doc/sample.nanorc.in
---- nano/doc/sample.nanorc.in.orig	2020-10-09 15:58:18.000000000 -0400
-+++ nano/doc/sample.nanorc.in	2020-10-09 15:59:32.000000000 -0400
-@@ -60,7 +60,7 @@
- # set fill -8
- 
+--- nano/doc/sample.nanorc.in.orig	2023-01-18 08:19:15.000000000 +0000
++++ nano/doc/sample.nanorc.in	2023-01-24 04:31:06.591877412 +0000
+@@ -63,7 +63,7 @@
+ # set guidestripe 75
+
  ## Remember the used search/replace strings for the next session.
 -# set historylog
 +set historylog
- 
+
  ## Display a "scrollbar" on the righthand side of the edit window.
  # set indicator
-@@ -74,10 +74,10 @@
+@@ -77,10 +77,10 @@
  ## Enable vim-style lock-files.  This is just to let a vim user know you
  ## are editing a file [s]he is trying to edit and vice versa.  There are
  ## no plans to implement vim-style undo state in these files.
 -# set locking
 +set locking
- 
+
  ## Fall back to slow libmagic to try and determine an applicable syntax.
 -# set magic
 +set magic
- 
- ## The opening and closing brackets that can be found by bracket
- ## searches.  They cannot contain blank characters.  The former set must
-@@ -231,7 +231,7 @@
+
+ ## The opening and closing brackets that are found by a matching-bracket
+ ## search.  This may not contain blank characters.  The opening brackets
+@@ -168,7 +168,7 @@
+
+ ## Use the end of the title bar for some state flags: I = auto-indenting,
+ ## M = mark, L = hard-wrapping long lines, R = recording, S = soft-wrapping.
+-# set stateflags
++set stateflags
+
+ ## Use this tab size instead of the default; it must be greater than 0.
+ # set tabsize 8
+@@ -239,7 +239,7 @@
  ## For all details, see 'man nanorc', section SYNTAX HIGHLIGHTING.
- 
+
  ## To include most of the existing syntax definitions, you can do:
 -# include "@PKGDATADIR@/*.nanorc"
 +include "@PKGDATADIR@/*.nanorc"
- 
+
  ## Or you can select just the ones you need.  For example:
- # include "/usr/share/nano/html.nanorc"
+ # include "@PKGDATADIR@/html.nanorc"

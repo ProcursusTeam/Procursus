@@ -40,7 +40,7 @@ libcaca-package: libcaca-stage
 
 	# libcaca.mk Prep caca-utils
 	cp -a $(BUILD_STAGE)/libcaca/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/caca-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/libcaca/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/!(caca-config.1) $(BUILD_DIST)/caca-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/libcaca/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/!(caca-config.1$(MEMO_MANPAGE_SUFFIX)) $(BUILD_DIST)/caca-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cp -a $(BUILD_STAGE)/libcaca/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/caca-config $(BUILD_DIST)/caca-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 	# libcaca.mk Prep libcaca0
@@ -52,7 +52,7 @@ libcaca-package: libcaca-stage
 	cp -a $(BUILD_STAGE)/libcaca/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libcaca{,++}.{a,dylib},pkgconfig} $(BUILD_DIST)/libcaca-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libcaca/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libcaca-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/libcaca/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/caca-config $(BUILD_DIST)/libcaca-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/libcaca/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/caca-config.1 $(BUILD_DIST)/libcaca-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/libcaca/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/caca-config.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/libcaca-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# libcaca.mk Sign
 	$(call SIGN,caca-utils,general.xml)

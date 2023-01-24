@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS       += libboost
 LIBBOOST_VERSION  := 1.76.0
-DEB_LIBBOOST_V    ?= $(LIBBOOST_VERSION)
+DEB_LIBBOOST_V    ?= $(LIBBOOST_VERSION)-1
 
 ifneq (,$(findstring amd64,$(MEMO_TARGET)))
 LIBBOOST_CONFIGURE_ARGS := abi=sysv
@@ -37,25 +37,16 @@ endif
 		cxxstd="14" \
 		$(LIBBOOST_CONFIGURE_ARGS) \
 		install
-	cd $(BUILD_WORK)/libboost && $(BUILD_WORK)/libboost/tools/build/src/engine/b2 \
-		--prefix=$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		--without-mpi \
-		--without-graph_parallel \
-		threading=multi \
-		variant=release \
-		cxxstd="14" \
-		$(LIBBOOST_CONFIGURE_ARGS) \
-		install
 	# F u boost!
-	for lib in $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_*.dylib $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_*.dylib; do \
-		$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/$$(basename $$lib .dylib).$(LIBBOOST_VERSION).dylib $$lib; \
-		for linked in $$(otool -L $$lib | grep @rpath | sed 's/\ .*$$//' | tr -d '\011\013\014\015\040'); do \
-			$(I_N_T) -change $$linked $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/$$(basename $$linked .dylib).$(LIBBOOST_VERSION).dylib $$lib; \
+	for lib in $(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_*.dylib; do \
+		$(I_N_T) -id @rpath/$$(basename $$lib .dylib).$(LIBBOOST_VERSION).dylib $$lib; \
+		for linked in $$(otool -L $$lib | grep @rpath | sed 's/\ .*$$//' | tr -d '\011\013\014\015\040' | grep "libboost"); do \
+			$(I_N_T) -change $$linked @rpath/$$(basename $$linked .dylib).$(LIBBOOST_VERSION).dylib $$lib; \
 		done; \
 		mv $$lib $$(dirname $$lib)/$$(basename $$lib .dylib).$(LIBBOOST_VERSION).dylib; \
 		$(LN_S) $$(basename $$lib .dylib).$(LIBBOOST_VERSION).dylib $$lib; \
 	done
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libboost-package: libboost-stage
