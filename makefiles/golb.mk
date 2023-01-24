@@ -36,7 +36,7 @@ golb-package: golb-stage
 	rm -rf $(BUILD_DIST)/golb
 
 	# golb.mk Prep golb
-	cp -a $(BUILD_STAGE)/golb $(BUILD_DIST)/golb
+	cp -a $(BUILD_STAGE)/golb $(BUILD_DIST)/
 
 	# golb.mk Sign
 	$(call SIGN,golb,tfp0.xml)

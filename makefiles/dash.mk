@@ -4,7 +4,7 @@ endif
 
 
 STRAPPROJECTS += dash
-DASH_VERSION  := 0.5.11.5
+DASH_VERSION  := 0.5.12
 DEB_DASH_V    ?= $(DASH_VERSION)
 
 dash-setup: setup
@@ -12,7 +12,7 @@ dash-setup: setup
 	$(call EXTRACT_TAR,dash-$(DASH_VERSION).tar.gz,dash-$(DASH_VERSION),dash)
 	mkdir -p $(BUILD_STAGE)/dash/$(MEMO_PREFIX)/bin
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	sed -i 's|/etc/profile|$(MEMO_PREFIX)/etc/profile|' $(BUILD_WORK)/dash/src/main.c
+	sed -i 's|"/etc/profile|"$(MEMO_PREFIX)/etc/profile|' $(BUILD_WORK)/dash/src/main.c
 	sed -i 's|PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin|PATH=$(shell printf "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\n" | tr ':' '\n' | sed "p; s|^|$(MEMO_PREFIX)|" | tr '\n' ':' | sed 's|:$$|\n|')|' $(BUILD_WORK)/dash/src/var.c
 endif
 
