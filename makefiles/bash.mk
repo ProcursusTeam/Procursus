@@ -7,9 +7,9 @@ STRAPPROJECTS   += bash
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += bash
 endif # ($(MEMO_TARGET),darwin-\*)
-BASH_VERSION    := 5.2
+BASH_VERSION    := 5.2.15
 BASH_PATCHLEVEL := 0
-DEB_BASH_V      ?= $(BASH_VERSION).$(BASH_PATCHLEVEL)
+DEB_BASH_V      ?= $(BASH_VERSION)
 
 bash-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION).tar.gz{$(comma).sig})
@@ -18,7 +18,7 @@ bash-setup: setup
 	mkdir -p $(BUILD_STAGE)/bash/$(MEMO_PREFIX)/bin
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 ifneq (,$(MEMO_PREFIX))
-	sed -i 's|/etc/profile|$(MEMO_PREFIX)/etc/profile|' $(BUILD_WORK)/bash/pathnames.h.in
+	sed -i 's|"/etc/profile|"$(MEMO_PREFIX)/etc/profile|' $(BUILD_WORK)/bash/pathnames.h.in
 endif
 BASH_CONFIGURE_ARGS := ac_cv_c_stack_direction=-1 \
 	ac_cv_func_mmap_fixed_mapped=yes \

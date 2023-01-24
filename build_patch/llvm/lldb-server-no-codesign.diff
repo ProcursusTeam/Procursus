@@ -1,0 +1,21 @@
+--- llvm/lldb/tools/lldb-server/CMakeLists.txt.orig	2022-11-20 19:29:38.062923863 +0000
++++ llvm/lldb/tools/lldb-server/CMakeLists.txt	2022-11-20 19:29:52.012696667 +0000
+@@ -25,18 +25,6 @@
+   list(APPEND LLDB_PLUGINS lldbPluginObjectFileELF)
+ endif()
+ 
+-if(APPLE_EMBEDDED)
+-  if(LLDB_CODESIGN_IDENTITY)
+-    # Use explicit LLDB identity
+-    set(LLVM_CODESIGNING_IDENTITY ${LLDB_CODESIGN_IDENTITY})
+-  else()
+-    # Use explicit LLVM identity or default to lldb_codesign if empty
+-    if(NOT LLVM_CODESIGNING_IDENTITY)
+-      set(LLVM_CODESIGNING_IDENTITY lldb_codesign)
+-    endif()
+-  endif()
+-endif()
+-
+ add_lldb_tool(lldb-server
+     Acceptor.cpp
+     lldb-gdbserver.cpp

@@ -16,8 +16,8 @@ endif
 # Unset sysroot, we manage that ourselves.
 SYSROOT :=
 
-UNAME           := $(shell uname -s)
-UNAME_M         := $(shell uname -m)
+UNAME           != uname -s
+UNAME_M         != uname -m
 SUBPROJECTS     += $(STRAPPROJECTS)
 
 ifneq ($(shell umask),0022)
@@ -27,11 +27,21 @@ endif
 RELATIVE_RPATH       := 0
 
 MEMO_TARGET          ?= darwin-arm64
-MEMO_CFVER           ?= 1700
+MEMO_CFVER           ?= 1800
 # iOS 13.0 == 1665.15.
-CFVER_WHOLE          := $(shell echo $(MEMO_CFVER) | cut -d. -f1)
+CFVER_WHOLE          != echo $(MEMO_CFVER) | cut -d. -f1
 
-ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1800 ] && [ "$(CFVER_WHOLE)" -lt 1900 ] && echo 1),1)
+ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1900 ] && [ "$(CFVER_WHOLE)" -lt 2000 ] && echo 1),1)
+IPHONEOS_DEPLOYMENT_TARGET  := 16.0
+APPLETVOS_DEPLOYMENT_TARGET := 16.0
+AUDIOOS_DEPLOYMENT_TARGET   := 16.0
+BRIDGEOS_DEPLOYMENT_TARGET  := 7.0
+WATCHOS_DEPLOYMENT_TARGET   := 9.0
+MACOSX_DEPLOYMENT_TARGET    := 13.0
+DARWIN_DEPLOYMENT_VERSION   := 22
+MACOSX_SUITE_NAME           := ventura
+override MEMO_CFVER         := 1900
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1800 ] && [ "$(CFVER_WHOLE)" -lt 1900 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 15.0
 APPLETVOS_DEPLOYMENT_TARGET := 15.0
 AUDIOOS_DEPLOYMENT_TARGET   := 15.0
@@ -81,8 +91,6 @@ override MEMO_CFVER         := 1200
 else
 $(error Unsupported CoreFoundation version)
 endif
-
-export MACOSX_DEPLOYMENT_TARGET
 
 ifeq ($(shell [ "$(MEMO_TARGET)" = "iphoneos-arm64" ] || [ "$(MEMO_TARGET)" = "iphoneos-arm64-ramdisk" ] && echo 1),1)
 ifneq ($(MEMO_QUIET),1)
@@ -427,11 +435,15 @@ ifeq ($(shell sw_vers -productName),macOS) # Swap to Mac OS X for devices older 
 ifneq ($(MEMO_QUIET),1)
 $(warning Building on MacOS)
 endif # ($(MEMO_QUIET),1)
-TARGET_SYSROOT  ?= $(shell xcrun --sdk $(PLATFORM) --show-sdk-path)
-MACOSX_SYSROOT  ?= $(shell xcrun --show-sdk-path)
-CC              := $(shell xcrun --find cc)
-CXX             := $(shell xcrun --find c++)
-CPP             := $(shell xcrun --find cc) -E
+ifeq ($(origin TARGET_SYSROOT), undefined)
+TARGET_SYSROOT  != xcrun --sdk $(PLATFORM) --show-sdk-path
+endif
+ifeq ($(origin MACOSX_SYSROOT), undefined)
+MACOSX_SYSROOT  != xcrun --show-sdk-path
+endif
+CC              != xcrun --find cc
+CXX             != xcrun --find c++
+CPP             := $(CC) -E
 PATH            := /opt/procursus/bin:/opt/procursus/libexec/gnubin:/usr/bin:$(PATH)
 
 CFLAGS_FOR_BUILD   := -arch $(shell uname -m) -mmacosx-version-min=$(shell sw_vers -productVersion) -isysroot $(MACOSX_SYSROOT)
@@ -446,28 +458,28 @@ $(warning Building on iOS)
 endif # ($(MEMO_QUIET),1)
 TARGET_SYSROOT  ?= /usr/share/SDKs/$(BARE_PLATFORM).sdk
 MACOSX_SYSROOT  ?= /usr/share/SDKs/MacOSX.sdk
-CC              := $(shell command -v cc)
-CXX             := $(shell command -v c++)
-CPP             := $(shell command -v cc) -E
+CC              != command -v cc
+CXX             != command -v c++
+CPP             := $(CC) -E
 PATH            := /usr/bin:$(PATH)
 
-CFLAGS_FOR_BUILD   := -arch $(shell uname -p) -miphoneos-version-min=$(shell sw_vers -productVersion)
+CFLAGS_FOR_BUILD   := -arch $(shell arch) -miphoneos-version-min=$(shell sw_vers -productVersion)
 CPPFLAGS_FOR_BUILD := $(CFLAGS_FOR_BUILD)
 CXXFLAGS_FOR_BUILD := $(CFLAGS_FOR_BUILD)
 ASFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
 LDFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
 
 endif
-AR              := $(shell command -v ar)
-LD              := $(shell command -v ld)
-RANLIB          := $(shell command -v ranlib)
-STRINGS         := $(shell command -v strings)
-STRIP           := $(shell command -v strip)
-NM              := $(shell command -v nm)
-LIPO            := $(shell command -v lipo)
-OTOOL           := $(shell command -v otool)
-I_N_T           := $(shell command -v install_name_tool)
-LIBTOOL         := $(shell command -v libtool)
+AR              != command -v ar
+LD              != command -v ld
+RANLIB          != command -v ranlib
+STRINGS         != command -v strings
+STRIP           != command -v strip
+NM              != command -v nm
+LIPO            != command -v lipo
+OTOOL           != command -v otool
+I_N_T           != command -v install_name_tool
+LIBTOOL         != command -v libtool
 
 else
 $(error Please use macOS, iOS, Linux, or FreeBSD to build)
@@ -489,6 +501,7 @@ MEMO_CODESIGN_EXTRA_FLAGS ?=
 
 LDID := ldid -Hsha256 -Cadhoc $(MEMO_LDID_EXTRA_FLAGS)
 
+REPO_BASE      != dirname $(realpath $(firstword $(MAKEFILE_LIST)))
 # Root
 BUILD_ROOT     ?= $(PWD)
 # Downloaded source files
@@ -496,11 +509,11 @@ BUILD_SOURCE   := $(BUILD_ROOT)/build_source
 # Base headers/libs (e.g. patched from SDK)
 BUILD_BASE     := $(BUILD_ROOT)/build_base/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Dpkg info storage area
-BUILD_INFO     ?= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_info
+BUILD_INFO     ?= $(REPO_BASE)/build_info
 # Miscellaneous Procursus files
-BUILD_MISC     ?= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_misc
+BUILD_MISC     ?= $(REPO_BASE)/build_misc
 # Patch storage area
-BUILD_PATCH    ?= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_patch
+BUILD_PATCH    ?= $(REPO_BASE)/build_patch
 # Extracted source working directory
 BUILD_WORK     := $(BUILD_ROOT)/build_work/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Bootstrap working area
@@ -510,11 +523,13 @@ BUILD_DIST     := $(BUILD_ROOT)/build_dist/$(MEMO_TARGET)/$(MEMO_CFVER)/work/
 # Actual bootrap staging
 BUILD_STRAP    := $(BUILD_ROOT)/build_strap/$(MEMO_TARGET)/$(MEMO_CFVER)
 # Extra scripts for the buildsystem
-BUILD_TOOLS    ?= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/build_tools
+BUILD_TOOLS    ?= $(REPO_BASE)/build_tools
 
 ifeq ($(DEBUG),1)
 OPTIMIZATION_FLAGS := -g -O0
 else ifeq ($(MEMO_TARGET),bridgeos-arm64)
+OPTIMIZATION_FLAGS := -Oz
+else ifeq ($(BINPACK),1)
 OPTIMIZATION_FLAGS := -Oz
 else
 OPTIMIZATION_FLAGS := -Os
@@ -629,17 +644,17 @@ DEFAULT_CONFIGURE_FLAGS := \
 	--enable-static
 
 DEFAULT_PERL_MAKE_FLAGS := \
-	INSTALLSITEARCH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
-	INSTALLARCHLIB=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
-	INSTALLVENDORARCH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
+	INSTALLSITEARCH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$${PERL_MAJOR} \
+	INSTALLARCHLIB=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$${PERL_MAJOR} \
+	INSTALLVENDORARCH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$${PERL_MAJOR} \
 	INSTALLPRIVLIB=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 \
 	INSTALLSITELIB=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 \
 	INSTALLVENDORLIB=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 \
-	PERL_LIB=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
-	PERL_ARCHLIB=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
-	PERL_ARCHLIBDEP=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
-	PERL_INC=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR)/CORE \
-	PERL_INCDEP=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR)/CORE \
+	PERL_LIB=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$${PERL_MAJOR} \
+	PERL_ARCHLIB=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$${PERL_MAJOR} \
+	PERL_ARCHLIBDEP=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$${PERL_MAJOR} \
+	PERL_INC=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$${PERL_MAJOR}/CORE \
+	PERL_INCDEP=$(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$${PERL_MAJOR}/CORE \
 	PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 	INSTALLMAN1DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 \
 	INSTALLSITEMAN1DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 \
@@ -648,6 +663,9 @@ DEFAULT_PERL_MAKE_FLAGS := \
 	INSTALLSITEMAN3DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 \
 	INSTALLVENDORMAN3DIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 \
 	PERL="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl" \
+	PERLRUN="$(shell which perl)" \
+	FULLPERLRUN="$(shell which perl)" \
+	ABSPERLRUN="$(shell which perl)" \
 	CCFLAGS="$(CFLAGS)" \
 	LDDLFLAGS="$(LDFLAGS) -shared"
 
@@ -657,7 +675,7 @@ DEFAULT_PERL_BUILD_FLAGS := \
 	destdir=$(BUILD_STAGE)/libmodule-build-perl \
 	install_base=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 	install_path=lib=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 \
-	install_path=arch=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
+	install_path=arch=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$${PERL_MAJOR} \
 	install_path=bin=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
 	install_path=script=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
 	install_path=libdoc=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 \
@@ -764,10 +782,12 @@ DO_PATCH    = cd $(BUILD_PATCH)/$(1); \
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 SIGN = 	for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
-			if [ $${file\#\#*.} = "dylib" ] || [ $${file\#\#*.} = "bundle" ] || [ $${file\#\#*.} = "so" ]; then \
-				$(LDID) -S $$file; \
-			else \
-				$(LDID) -S$(BUILD_MISC)/entitlements/$(2) $$file; \
+			if [ $${file\#\#*.} != "a" ]; then \
+				if [ $${file\#\#*.} = "dylib" ] || [ $${file\#\#*.} = "bundle" ] || [ $${file\#\#*.} = "so" ]; then \
+					$(LDID) -S $$file; \
+				else \
+					$(LDID) -S$(BUILD_MISC)/entitlements/$(2) $$file; \
+				fi; \
 			fi; \
 		done
 else
@@ -802,25 +822,32 @@ AFTER_BUILD = \
 	if [ ! -z "$(MEMO_PREFIX)" ] && [ -d "$(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" ]; then \
 		rm -f $(BUILD_STAGE)/$$pkg/._lib_cache && touch $(BUILD_STAGE)/$$pkg/._lib_cache; \
 		for file in $$(find $(BUILD_STAGE)/$$pkg -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
-			INSTALL_NAME=$$(otool -D $$file | grep -v ":$$"); \
-			if [ ! -z "$$INSTALL_NAME" ]; then \
-				$(I_N_T) -id @rpath/$$(basename $$INSTALL_NAME) $$file; \
-				echo "$$INSTALL_NAME" >> $(BUILD_STAGE)/$$pkg/._lib_cache; \
+			if [ $${file\#\#*.} != "a" ] && [ $${file\#\#*.} != "dSYM" ]; then \
+				INSTALL_NAME=$$($(OTOOL) -D $$file | grep -v -e ":$$" -e "^Archive :" | head -n1); \
+				if [ ! -z "$$INSTALL_NAME" ]; then \
+					$(I_N_T) -id @rpath/$$(basename $$INSTALL_NAME) $$file; \
+					echo "$$INSTALL_NAME" >> $(BUILD_STAGE)/$$pkg/._lib_cache; \
+				fi; \
 			fi; \
 		done; \
 	fi; \
 	for file in $$(find $(BUILD_STAGE)/$$pkg -type f -exec sh -c "file -ib '{}' | grep -q 'x-mach-binary; charset=binary'" \; -print); do \
-		if [ "$(RELATIVE_RPATH)" = "1" ]; then \
-			$(I_N_T) -add_rpath "@loader_path/$$(realpath --relative-to=$$(dirname $$file) $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))/lib" $$file; \
-		else \
-			$(I_N_T) -add_rpath "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" $$file; \
+		if [ $${file\#\#*.} != "a" ] && [ $${file\#\#*.} != "dSYM" ]; then \
+			if [ "$(RELATIVE_RPATH)" = "1" ]; then \
+				$(I_N_T) -add_rpath "@loader_path/$$(realpath --relative-to=$$(dirname $$file) $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX))/lib" $$file; \
+			else \
+				$(I_N_T) -add_rpath "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" $$file; \
+				if [ ! -z "$(3)" ]; then \
+					$(I_N_T) -add_rpath "$(3)" $$file; \
+				fi; \
+			fi; \
+			if [ -f $(BUILD_STAGE)/$$pkg/._lib_cache ]; then \
+				cat $(BUILD_STAGE)/$$pkg/._lib_cache | while read line; do \
+					$(I_N_T) -change $$line @rpath/$$(basename $$line) $$file; \
+				done; \
+			fi; \
+			$(STRIP) -x $$file; \
 		fi; \
-		if [ -f $(BUILD_STAGE)/$$pkg/._lib_cache ]; then \
-			cat $(BUILD_STAGE)/$$pkg/._lib_cache | while read line; do \
-				$(I_N_T) -change $$line @rpath/$$(basename $$line) $$file; \
-			done; \
-		fi; \
-		$(STRIP) -x $$file; \
 	done; \
 	rm -f $(BUILD_STAGE)/$$pkg/._lib_cache; \
 	find $(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man -type f -name '*.gz$$' -exec gunzip '{}' \; 2> /dev/null; \
@@ -1030,8 +1057,10 @@ else
 $(error Install GNU coreutils)
 endif
 
-ifneq  ($(shell PATH="$(PATH)" file -bi $(BUILD_MISC)/launchctl/launchctl.1700 | grep -q 'x-mach-binary; charset=binary' && echo 1),1)
+ifeq ($(shell sw_vers -productName),macOS)
+ifneq  ($(shell PATH="$(PATH)" file -bi /bin/sh | grep -q 'x-mach-binary; charset=binary' && echo 1),1)
 $(error Install better file from Procursus - sudo apt install file)
+endif
 endif
 
 ifneq ($(call HAS_COMMAND,fakeroot),1)
@@ -1104,10 +1133,7 @@ endif
 
 PROCURSUS := 1
 
-all:: package
-	@echo "********** Successfully built debs for $(MEMO_TARGET) **********"
-	@echo "$(SUBPROJECTS)"
-	@MEMO_TARGET="$(MEMO_TARGET)" MEMO_CFVER="$(MEMO_CFVER)" '$(BUILD_TOOLS)/check_gettext.sh'
+all:: help
 
 proenv:
 	@echo -e "proenv() {"
@@ -1164,9 +1190,9 @@ bootstrap:: strapprojects
 	mkdir -p $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/info
 	touch $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/{status,available}
 	-if echo $(MEMO_TARGET) | grep "darwin"; then \
-		PKGS="apt/apt_*.deb brotli/libbrotli1_*.deb cacerts/ca-certificates_*.deb coreutils/coreutils_*.deb darwintools/darwintools_*.deb dpkg/dpkg_*.deb gnupg/gpgv_*.deb apt/libapt-pkg6.0_*.deb libassuan/libassuan0_*.deb libffi/libffi8_*.deb libgcrypt/libgcrypt20_*.deb libgmp10/libgmp10_*.deb gnutls/libgnutls30_*.deb libgpg-error/libgpg-error0_*.deb nettle/libhogweed6_*.deb libidn2/libidn2-0_*.deb gettext/libintl8_*.deb lz4/liblz4-1_*.deb xz/liblzma5_*.deb libmd/libmd0_*.deb nettle/libnettle8_*.deb npth/libnpth0_*.deb p11-kit/libp11-kit0_*.deb openssl/libssl3_*.deb libtasn1/libtasn1-6_*.deb libunistring/libunistring2_*.deb xxhash/libxxhash0_*.deb zlib-ng/libz-ng2_*.deb zstd/libzstd1_*.deb keyring/procursus-keyring_*.deb tar/tar_*.deb"; \
+		PKGS="apt/apt_*.deb brotli/libbrotli1_*.deb cacerts/ca-certificates_*.deb coreutils/coreutils_*.deb darwintools/darwintools_*.deb dpkg/dpkg_*.deb gnupg/gpgv_*.deb apt/libapt-pkg6.0_*.deb libassuan/libassuan0_*.deb libffi/libffi8_*.deb libgcrypt/libgcrypt20_*.deb libgmp10/libgmp10_*.deb gnutls/libgnutls30_*.deb libgpg-error/libgpg-error0_*.deb nettle/libhogweed6_*.deb libidn2/libidn2-0_*.deb gettext/libintl8_*.deb lz4/liblz4-1_*.deb xz/liblzma5_*.deb libmd/libmd0_*.deb nettle/libnettle8_*.deb npth/libnpth0_*.deb p11-kit/libp11-kit0_*.deb openssl/libssl3_*.deb libtasn1/libtasn1-6_*.deb libunistring/libunistring5_*.deb xxhash/libxxhash0_*.deb zlib-ng/libz-ng2_*.deb zstd/libzstd1_*.deb keyring/procursus-keyring_*.deb tar/tar_*.deb"; \
 	else \
-		PKGS="apt/apt_*.deb base/base_*.deb bash/bash_*.deb brotli/libbrotli1_*.deb cacerts/ca-certificates_*.deb chariz-keyring/chariz-keyring_*.deb coreutils/coreutils_*.deb darwintools/darwintools_*.deb dash/dash_*.deb debianutils/debianutils_*.deb diffutils/diffutils_*.deb diskdev-cmds/diskdev-cmds_*.deb dpkg/dpkg_*.deb essential/essential_*.deb file-cmds/file-cmds_*.deb findutils/findutils_*.deb firmware-sbin/firmware-sbin_*.deb gnupg/gpgv_*.deb grep/grep_*.deb havoc-keyring/havoc-keyring_*.deb launchctl/launchctl_*.deb apt/libapt-pkg6.0_*.deb libassuan/libassuan0_*.deb libxcrypt/libcrypt2_*.deb dimentio/libdimentio0_*.deb libedit/libedit0_*.deb libffi/libffi8_*.deb libgcrypt/libgcrypt20_*.deb libgmp10/libgmp10_*.deb gnutls/libgnutls30_*.deb libgpg-error/libgpg-error0_*.deb nettle/libhogweed6_*.deb libidn2/libidn2-0_*.deb gettext/libintl8_*.deb libiosexec/libiosexec1_*.deb libkernrw/libkernrw0_*.deb lz4/liblz4-1_*.deb xz/liblzma5_*.deb libmd/libmd0_*.deb ncurses/libncursesw6_*.deb nettle/libnettle8_*.deb npth/libnpth0_*.deb p11-kit/libp11-kit0_*.deb pam-modules/libpam-modules_*.deb openpam/libpam2_*.deb pcre/libpcre1_*.deb readline/libreadline8_*.deb libtasn1/libtasn1-6_*.deb libunistring/libunistring2_*.deb xxhash/libxxhash0_*.deb zlib-ng/libz-ng2_*.deb zstd/libzstd1_*.deb ncurses/ncurses-bin_*.deb ncurses/ncurses-term_*.deb odyssey-keyring/odyssey-keyring_*.deb openssh/openssh-server_*.deb openssh/openssh-sftp-server_*.deb openssh/openssh-client_*.deb openssl/libssl3_*.deb packix-keyring/packix-keyring_*.deb keyring/procursus-keyring_*.deb profile.d/profile.d_*.deb sed/sed_*.deb shell-cmds/shell-cmds_*.deb shshd/shshd_*.deb snaputil/snaputil_*.deb sudo/sudo_*.deb system-cmds/system-cmds_*.deb tar/tar_*.deb uikittools/uikittools_*.deb vi/vi_*.deb zsh/zsh_*.deb"; \
+		PKGS="apt/apt_*.deb base/base_*.deb bash/bash_*.deb brotli/libbrotli1_*.deb cacerts/ca-certificates_*.deb chariz-keyring/chariz-keyring_*.deb coreutils/coreutils_*.deb darwintools/darwintools_*.deb dash/dash_*.deb debianutils/debianutils_*.deb diffutils/diffutils_*.deb diskdev-cmds/diskdev-cmds_*.deb dpkg/dpkg_*.deb essential/essential_*.deb file-cmds/file-cmds_*.deb findutils/findutils_*.deb firmware-sbin/firmware-sbin_*.deb gnupg/gpgv_*.deb grep/grep_*.deb havoc-keyring/havoc-keyring_*.deb launchctl/launchctl_*.deb apt/libapt-pkg6.0_*.deb libassuan/libassuan0_*.deb libxcrypt/libcrypt2_*.deb dimentio/libdimentio0_*.deb libedit/libedit0_*.deb libffi/libffi8_*.deb libgcrypt/libgcrypt20_*.deb libgmp10/libgmp10_*.deb gnutls/libgnutls30_*.deb libgpg-error/libgpg-error0_*.deb nettle/libhogweed6_*.deb libidn2/libidn2-0_*.deb gettext/libintl8_*.deb libiosexec/libiosexec1_*.deb libkernrw/libkernrw0_*.deb lz4/liblz4-1_*.deb xz/liblzma5_*.deb libmd/libmd0_*.deb ncurses/libncursesw6_*.deb nettle/libnettle8_*.deb npth/libnpth0_*.deb p11-kit/libp11-kit0_*.deb pam-modules/libpam-modules_*.deb openpam/libpam2_*.deb pcre/libpcre1_*.deb readline/libreadline8_*.deb libtasn1/libtasn1-6_*.deb libunistring/libunistring5_*.deb xxhash/libxxhash0_*.deb zlib-ng/libz-ng2_*.deb zstd/libzstd1_*.deb ncurses/ncurses-bin_*.deb ncurses/ncurses-term_*.deb odyssey-keyring/odyssey-keyring_*.deb openssh/openssh-server_*.deb openssh/openssh-sftp-server_*.deb openssh/openssh-client_*.deb openssl/libssl3_*.deb packix-keyring/packix-keyring_*.deb keyring/procursus-keyring_*.deb profile.d/profile.d_*.deb sed/sed_*.deb shell-cmds/shell-cmds_*.deb shshd/shshd_*.deb snaputil/snaputil_*.deb sudo/sudo_*.deb system-cmds/system-cmds_*.deb tar/tar_*.deb uikittools/uikittools_*.deb vi/vi_*.deb zsh/zsh_*.deb"; \
 	fi; \
 	cd $(BUILD_STRAP); for DEB in $$PKGS; do \
 		if [ ! -f $$DEB ]; then \
@@ -1205,10 +1231,17 @@ endif # $(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1
 	cp $(BUILD_INFO)/procursus.preferences $(BUILD_STRAP)/strap/private/etc/apt/preferences.d/procursus
 	touch $(BUILD_STRAP)/strap/.procursus_strapped
 	touch $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procursus.sources
+ifeq ($(shell [ "$(MEMO_CFVER)" -ge 1800 ] && echo 1),1)
+	echo -e "Types: deb\n\
+URIs: $(MEMO_REPO_URI)/\n\
+Suites: $(MEMO_CFVER)\n\
+Components: main\n" > $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procursus.sources
+else
 	echo -e "Types: deb\n\
 URIs: $(MEMO_REPO_URI)/\n\
 Suites: $(MEMO_TARGET)/$(MEMO_CFVER)\n\
 Components: main\n" > $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procursus.sources
+endif
 	if [[ "$(SSH_STRAP)" = 1 ]]; then \
 		sed -e 's/@SSH_STRAP@//' -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $(BUILD_MISC)/prep_bootstrap.sh > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/prep_bootstrap.sh; \
 	else \
@@ -1243,19 +1276,26 @@ URIs: $(MEMO_REPO_URI)/\n\
 Suites: $(MACOSX_SUITE_NAME)\n\
 Components: main\n" > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
 else
+ifeq ($(shell [ "$(MEMO_CFVER)" -ge 1800 ] && echo 1),1)
+	echo -e "Types: deb\n\
+URIs: $(MEMO_REPO_URI)/\n\
+Suites: $(MEMO_CFVER)\n\
+Components: main\n" > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
+else
 	echo -e "Types: deb\n\
 URIs: $(MEMO_REPO_URI)/\n\
 Suites: $(MEMO_TARGET)/$(MEMO_CFVER)\n\
 Components: main\n" > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/etc/apt/sources.list.d/procursus.sources
+endif
 	if [[ "$(SSH_STRAP)" = 1 ]]; then \
 		sed -e 's/@SSH_STRAP@//' -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $(BUILD_MISC)/prep_bootstrap.sh > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/prep_bootstrap.sh; \
 	else \
 		sed -e '/@SSH_STRAP@/d' -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' $(BUILD_MISC)/prep_bootstrap.sh > $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/prep_bootstrap.sh; \
 	fi
 	if [ ! -z "$(findstring rootless,$(MEMO_TARGET))" ]; then \
-		sed -ie 's/@ROOTLESS@//' $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/prep_bootstrap.sh; \
+		sed -i -e 's/@ROOTLESS@//' $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/prep_bootstrap.sh; \
 	else \
-		sed -ie '/@ROOTLESS@/d' $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/prep_bootstrap.sh; \
+		sed -i -e '/@ROOTLESS@/d' $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/prep_bootstrap.sh; \
 	fi
 	chmod +x $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/prep_bootstrap.sh
 endif
@@ -1271,7 +1311,7 @@ endif
 	fi; \
 	zstd -qf -c19 --rm $(BUILD_STRAP)/bootstrap.tar > $(BUILD_STRAP)/$${BOOTSTRAP}; \
 	gpg --armor -u $(MEMO_PGP_SIGN_KEY) --detach-sign $(BUILD_STRAP)/$${BOOTSTRAP}; \
-	rm -rf $(BUILD_STRAP)/{strap,*.deb}; \
+	rm -rf $(BUILD_STRAP)/*/; \
 	echo "********** Successfully built bootstrap with **********"; \
 	echo "$(STRAPPROJECTS)"; \
 	echo "$(BUILD_STRAP)/$${BOOTSTRAP}"
@@ -1382,6 +1422,9 @@ setup:
 	@# FSEvents headers won't be found even when building for macOS... Should probably fix this properly eventually
 	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/CoreServices.framework/Frameworks/FSEvents.framework/Headers/* $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/FSEvents/
 
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit, \
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/iokit/IOKit/IOKitDebug.h)
+
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit/kext, \
 		https://opensource.apple.com/source/IOKitUser/IOKitUser-1845.81.1/kext.subproj/{KextManagerPriv$(comma)OSKext$(comma)OSKextPrivate$(comma)kextmanager_types$(comma){fat$(comma)macho$(comma)misc}_util}.h)
 
@@ -1409,17 +1452,14 @@ setup:
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys, \
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/bsd/sys/{fcntl$(comma)fsctl$(comma)spawn_internal$(comma)resource$(comma)event$(comma)kdebug$(comma)proc$(comma)proc_info$(comma)pgo$(comma)proc_uuid_policy$(comma)acct$(comma)stackshot$(comma)event$(comma)mbuf$(comma)kern_memorystatus$(comma)reason}.h)
 
-	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/uuid, \
-		https://opensource.apple.com/source/Libc/Libc-1353.11.2/uuid/namespace.h)
-
-	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/osfmk/mach/coalition.h)
-
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpc, \
 		https://github.com/Torrekie/apple_internal_sdk/raw/322eb6573bc701e7f35af05650b0cc162d0355c1/usr/include/xpc/private.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ktrace, \
 		https://github.com/Torrekie/apple_internal_sdk/raw/fa5457b4e5246d20da5a74f1449b37dfd79f1248/usr/include/ktrace/{private$(comma)session}.h)
+
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/perfdata, \
+		https://github.com/Torrekie/apple_internal_sdk/raw/757ad82d5a680005bd253447dd3842217c6c8abc/usr/include/perfdata/perfdata.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreSymbolication, \
 		https://github.com/Torrekie/apple_internal_sdk/raw/fa5457b4e5246d20da5a74f1449b37dfd79f1248/System/Library/PrivateFrameworks/CoreSymbolication.framework/Headers/CoreSymbolication{$(comma)Private}.h)
@@ -1437,14 +1477,15 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/bsd/sys/resource.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/bsd/sys/resource.h \
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/bsd/sys/vnioctl.h)
 
 	@# Copy headers from MacOSX.sdk
 	@cp -af $(MACOSX_SYSROOT)/usr/include/{arpa,bsm,hfs,net,xpc,netinet,servers,timeconv.h,launch.h} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	@cp -af $(MACOSX_SYSROOT)/usr/include/objc/objc-runtime.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/objc
 	@cp -af $(MACOSX_SYSROOT)/usr/include/libkern/{OSDebug.h,OSKextLib.h,OSReturn.h,OSThermalNotification.h,OSTypes.h,machine} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern
 	@cp -af $(MACOSX_SYSROOT)/usr/include/kern $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	@cp -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,ptrace,kern*,random,reboot,user,vnode,disk,vmmeter,vnioctl,conf}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys
+	@cp -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,ptrace,kern*,random,reboot,user,vnode,disk,vmmeter,conf}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys
 	@cp -af  $(MACOSX_SYSROOT)/System/Library/Frameworks/Kernel.framework/Versions/Current/Headers/sys/disklabel.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys
 	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit
 	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/Security.framework/Headers/{mds_schema,oidsalg,SecKeychainSearch,certextensions,Authorization,eisl,SecDigestTransform,SecKeychainItem,oidscrl,cssmcspi,CSCommon,cssmaci,SecCode,CMSDecoder,oidscert,SecRequirement,AuthSession,SecReadTransform,oids,cssmconfig,cssmkrapi,SecPolicySearch,SecAccess,cssmtpi,SecACL,SecEncryptTransform,cssmapi,cssmcli,mds,x509defs,oidsbase,SecSignVerifyTransform,cssmspi,cssmkrspi,SecTask,cssmdli,SecAsn1Coder,cssm,SecTrustedApplication,SecCodeHost,SecCustomTransform,oidsattr,SecIdentitySearch,cssmtype,SecAsn1Types,emmtype,SecTransform,SecTrustSettings,SecStaticCode,emmspi,SecTransformReadTransform,SecKeychain,SecDecodeTransform,CodeSigning,AuthorizationPlugin,cssmerr,AuthorizationTags,CMSEncoder,SecEncodeTransform,SecureDownload,SecAsn1Templates,AuthorizationDB,SecCertificateOIDs,cssmapple}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security
@@ -1481,7 +1522,7 @@ endif
 	@#Patch downloaded headers
 	@sed -i '1s|^|#include <Security/cssmapi.h>\n#include <Security/SecKeychain.h>\n|' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security/SecKeychainPriv.h
 	@sed -i '1s|^|#include <arm/cpu_capabilities.h>\n|' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/firehose/tracepoint_private.h
-	@sed -i -e 's/__osloglike([0-9], [0-9])//' -e 's|extern void \*__dso_handle;|#ifndef __OS_TRACE_BASE_H__\nextern void \*__dso_handle;\n#endif|' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/log{,_private}.h
+	@sed -i -e 's/__osloglike([0-9], [0-9])//' -e 's|extern void \*__dso_handle;|#ifndef __OS_TRACE_BASE_H__\nextern struct mach_header __dso_handle;\n#endif|' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/log{,_private}.h
 	@sed -i 's/, ios(NA), bridgeos(NA)//' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security/SecBasePriv.h
 	@sed -i 's/__API_UNAVAILABLE(ios, tvos, watchos) __API_UNAVAILABLE(bridgeos)//' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach-o/dyld_process_info.h
 	@sed -i 's/, bridgeos(4.0)//' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/dispatch/{mach,data,source}_private.h
@@ -1503,10 +1544,10 @@ ifneq ($(MEMO_QUIET),1)
 endif # ($(MEMO_QUIET),1)
 
 clean::
-	rm -rf $(BUILD_ROOT)/build_{base,stage,work}
+	rm -rf $(BUILD_ROOT)/build_{source,stage}
 
 extreme-clean: clean
-	rm -rf $(BUILD_ROOT)/build_{source,strap,dist}
+	rm -rf $(BUILD_ROOT)/build_{base,strap,work}
 
 define mootext
                  (__)
@@ -1518,14 +1559,14 @@ define mootext
 ..."Have you mooed today?"...
 endef
 define helptext
-$(MAKE)                        - Compiles the entire Procursus suite and packs it into debian packages.
-$(MAKE) help                   - Display this text
+$(MAKE)                        - Display this text
 $(MAKE) (tool)                 - Used to compile only a specified tool.
 $(MAKE) (tool)-package         - Used to compile only a specified tool and pack it into a debian package.
 $(MAKE) rebuild-(tool)         - Used to recompile only a specified tool after it's already been compiled before.
 $(MAKE) rebuild-(tool)-package - Used to recompile only a specified tool after it's already been compiled before and pack it into a debian package.
 $(MAKE) clean                  - Clean out $(BUILD_STAGE), $(BUILD_BASE), and $(BUILD_WORK).
 $(MAKE) extreme-clean          - Runs `$(MAKE) clean`and cleans out $(BUILD_DIST).
+$(MAKE) package                - Compiles the entire Procursus suite and packs it into debian packages.
 $(MAKE) proenv                 - Print the proenv shell function to STDOUT to give a cross-compilation environment in your POSIX shell (make proenv >> ~/.zshrc)
 $(MAKE) env                    - Print the environment variables inside the makefile
 $(MAKE) (tool)-deps            - Print the dylibs linked by (tool)

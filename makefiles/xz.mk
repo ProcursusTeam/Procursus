@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += xz
-XZ_VERSION    := 5.2.5
-DEB_XZ_V      ?= $(XZ_VERSION)-3
+XZ_VERSION    := 5.4.1
+DEB_XZ_V      ?= $(XZ_VERSION)
 
 xz-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://tukaani.org/xz/xz-$(XZ_VERSION).tar.xz{$(comma).sig})
@@ -18,27 +18,28 @@ else
 xz: xz-setup gettext
 	cd $(BUILD_WORK)/xz && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--libdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib \
+		--libdir="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib" \
 		--enable-threads \
 		--disable-xzdec \
-		--disable-lzmadec
+		--disable-lzmadec \
+		--enable-nls \
+		--with-libintl-prefix="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
 	+$(MAKE) -C $(BUILD_WORK)/xz install \
-		DESTDIR=$(BUILD_STAGE)/xz
-
+		DESTDIR="$(BUILD_STAGE)/xz"
 	cd $(BUILD_WORK)/xz && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-shared \
-		--disable-nls \
+		--enable-nls \
 		--disable-encoders \
 		--enable-small \
 		--disable-threads \
-		--disable-liblzma2-compat \
 		--disable-lzmainfo \
 		--disable-scripts \
 		--disable-xz \
-		--disable-lzma-links
+		--disable-lzma-links \
+		--with-libintl-prefix="$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
 	+$(MAKE) -C $(BUILD_WORK)/xz install \
-		DESTDIR=$(BUILD_STAGE)/xz
+		DESTDIR="$(BUILD_STAGE)/xz"
 	$(call AFTER_BUILD,copy)
 endif
 
