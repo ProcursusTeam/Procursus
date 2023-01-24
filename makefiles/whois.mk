@@ -22,11 +22,13 @@ else
 whois: whois-setup libidn2
 endif
 	+$(MAKE) -C $(BUILD_WORK)/whois \
+		prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		HAVE_ICONV=1 \
 		CC="$(CC)" \
 		CFLAGS='$(CFLAGS) -Wall -I.' \
 		LDFLAGS='$(LDFLAGS) -liconv'
 	+$(MAKE) -C $(BUILD_WORK)/whois install \
+		prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		DESTDIR=$(BUILD_STAGE)/whois
 	$(call AFTER_BUILD)
 endif

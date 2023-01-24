@@ -6,7 +6,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS          += network-cmds
 NETWORK-CMDS_VERSION := 641
-DEB_NETWORK-CMDS_V   ?= $(NETWORK-CMDS_VERSION)
+DEB_NETWORK-CMDS_V   ?= $(NETWORK-CMDS_VERSION)-1
 
 network-cmds-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,network_cmds,$(NETWORK-CMDS_VERSION),network_cmds-$(NETWORK-CMDS_VERSION))
@@ -72,9 +72,9 @@ network-cmds: network-cmds-setup libpcap
 	cp -a $(BUILD_WORK)/network-cmds/{cfilutil,{netstat,mnc}.tproj}/*.1 $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	cd $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin; \
 	for bin in ifconfig ip6addrctl netstat ping6 route rtsol; do \
-		$(LN_S) ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/$$bin $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)/sbin; \
+		$(LN_SR) $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/$$bin $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)/sbin; \
 	done
-	$(LN_S) ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/ping6 $(BUILD_STAGE)/network-cmds/bin
+	$(LN_SR) $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/ping6 $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)/bin
 	sed -e 's|/var|$(MEMO_PREFIX)/var|g' -e 's|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' < $(BUILD_WORK)/network-cmds/kdumpd.tproj/com.apple.kdumpd.plist > $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)/Library/LaunchDaemons/com.apple.kdumpd.plist
 	chmod 1755 $(BUILD_STAGE)/network-cmds/$(MEMO_PREFIX)/var/tmp/PanicDumps
 	$(call AFTER_BUILD)
