@@ -30,7 +30,7 @@ netcat-package: netcat-stage
 	mkdir -p $(BUILD_DIST)/netcat
 
 	# netcat.mk Prep netcat
-	cp -a $(BUILD_STAGE)/netcat/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/netcat
+	cp -a $(BUILD_STAGE)/netcat $(BUILD_DIST)/
 
 	# netcat.mk Sign
 	$(call SIGN,netcat,general.xml)
