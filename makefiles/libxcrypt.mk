@@ -20,9 +20,7 @@ ifneq ($(wildcard $(BUILD_WORK)/libxcrypt/.build_complete),)
 libxcrypt:
 	@echo "Using previously built libxcrypt."
 else
-libxcrypt: libxcrypt-setup libtool
-#	Prebuilding libtool needed for autoreconf to succeed here (why?)
-	cd $(BUILD_WORK)/libxcrypt && autoreconf -iv
+libxcrypt: libxcrypt-setup
 	cd $(BUILD_WORK)/libxcrypt && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		CFLAGS="$(patsubst -flto=thin,,$(CFLAGS))" \
@@ -31,7 +29,7 @@ libxcrypt: libxcrypt-setup libtool
 	# No matter what you're thinking, just don't try to change it, it will segfault.
 	+$(MAKE) -C $(BUILD_WORK)/libxcrypt
 	+$(MAKE) -C $(BUILD_WORK)/libxcrypt install \
-		DESTDIR=$(BUILD_STAGE)/libxcrypt
+		DESTDIR="$(BUILD_STAGE)/libxcrypt"
 	$(call AFTER_BUILD,copy)
 endif
 
