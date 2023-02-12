@@ -1,4 +1,4 @@
-Package: golang-1.19-src
+Package: golang-1.20-src
 Version: @DEB_GOLANG_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
