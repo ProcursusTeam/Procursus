@@ -1,0 +1,23 @@
+--- capstone/Makefile.orig	2023-02-13 15:07:56.311209521 +0000
++++ capstone/Makefile	2023-02-13 15:08:27.513227618 +0000
+@@ -8,11 +8,7 @@
+ # Verbose output?
+ V ?= 0
+ 
+-OS := $(shell uname)
+-ifeq ($(OS),Darwin)
+-LIBARCHS ?= x86_64
+-PREFIX ?= /usr/local
+-endif
++OS := Darwin
+ 
+ ifeq ($(PKG_EXTRA),)
+ PKG_VERSION = $(PKG_MAJOR).$(PKG_MINOR)
+@@ -61,7 +57,6 @@
+ 		  -fno-builtin
+ endif
+ 
+-PREFIX ?= /usr
+ DESTDIR ?=
+ ifndef BUILDDIR
+ BLDIR = .

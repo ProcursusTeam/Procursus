@@ -1,0 +1,13 @@
+Package: libcapstone-dev
+Version: @DEB_CAPSTONE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libcapstone4 (= @DEB_CAPSTONE_V@)
+Section: Development
+Priority: optional
+Homepage: https://www.capstone-engine.org/
+Description: lightweight multi-architecture disassembly framework - devel files
+ Capstone is a lightweight multi-platform, multi-architecture disassembly
+ framework.
+ .
+ These are the development headers and libraries.
