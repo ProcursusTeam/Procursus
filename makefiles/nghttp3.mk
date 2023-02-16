@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += nghttp3
-NGHTTP3_VERSION := 0.4.1
+NGHTTP3_VERSION := 0.7.1
 DEB_NGHTTP3_V   ?= $(NGHTTP3_VERSION)
 
 nghttp3-setup: setup
