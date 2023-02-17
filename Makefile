@@ -1378,7 +1378,7 @@ setup:
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/bsd/machine/disklabel.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os, \
-		https://github.com/apple-oss-distributions/Libc/raw/Libc-1534.40.2/os/assumes.h \
+		https://github.com/apple-oss-distributions/Libc/raw/Libc-1506.40.4/os/assumes.h \
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/libkern/os/{base_private$(comma)log_private$(comma)log}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CommonCrypto, \
