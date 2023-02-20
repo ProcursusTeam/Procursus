@@ -1,4 +1,4 @@
-Package: libngtcp2-crypto-gnutls2
+Package: libngtcp2-crypto-gnutls4
 Version: @DEB_NGTCP2_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
