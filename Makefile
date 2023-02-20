@@ -1349,11 +1349,11 @@ setup:
 	@$(LN_SR) $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include{,/System}
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/libsyscall/wrappers/{spawn/spawn{$(comma)_private}$(comma)libproc/libproc{$(comma)_internal$(comma)_private}}.h \
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/libsyscall/wrappers/{spawn/spawn{$(comma)_private}$(comma)libproc/libproc{$(comma)_internal$(comma)_private}}.h \
 		https://github.com/apple-oss-distributions/launchd/raw/launchd-842.92.1/liblaunch/{bootstrap$(comma)vproc}_priv.h \
 		https://github.com/apple-oss-distributions/libplatform/raw/libplatform-273.100.5/private/_simple.h \
 		https://github.com/apple-oss-distributions/libutil/raw/libutil-64/{mntopts$(comma)libutil}.h \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/{EXTERNAL_HEADERS/mach-o/nlist$(comma)osfmk/mach/vm_statistics}.h \
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/{EXTERNAL_HEADERS/mach-o/nlist$(comma)osfmk/mach/vm_statistics}.h \
 		https://github.com/apple-oss-distributions/libmalloc/raw/libmalloc-374.100.5/private/stack_logging.h \
 		https://github.com/apple-oss-distributions/Libc/raw/Libc-1534.40.2/{gen/get_compat$(comma)include/struct}.h)
 
@@ -1361,31 +1361,31 @@ setup:
 		https://github.com/apple-oss-distributions/dyld/raw/dyld-955/{include/mach-o/dyld_{process_info$(comma)introspection}$(comma)cache-builder/dyld_cache_format}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Kernel/kern, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/osfmk/kern/ledger.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/osfmk/kern/ledger.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Kernel/IOKit, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/iokit/IOKit/IOKitDebug.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/iokit/IOKit/IOKitDebug.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Kernel/libkern, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/libkern/libkern/OSKextLibPrivate.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/libkern/libkern/OSKextLibPrivate.h)
 
-	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/kern,https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/osfmk/kern/debug.h)
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/kern,https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/osfmk/kern/debug.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/arm, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/{bsd/arm/disklabel$(comma)osfmk/arm/cpu_capabilities}.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/{bsd/arm/disklabel$(comma)osfmk/arm/cpu_capabilities}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/bsd/machine/disklabel.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/bsd/machine/disklabel.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os, \
 		https://github.com/apple-oss-distributions/Libc/raw/Libc-1506.40.4/os/assumes.h \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/libkern/os/{base_private$(comma)log_private$(comma)log}.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/libkern/os/{base_private$(comma)log_private$(comma)log}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CommonCrypto, \
 		https://github.com/apple-oss-distributions/CommonCrypto/raw/CommonCrypto-60198.40.3/include/Private/CommonDigestSPI.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/bsm, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/bsd/bsm/audit_kevents.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/bsd/bsm/audit_kevents.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit/kext, \
 		https://github.com/apple-oss-distributions/IOKitUser/raw/IOKitUser-1955.100.5/kext.subproj/{KextManagerPriv$(comma)OSKext$(comma)OSKextPrivate$(comma)kextmanager_types$(comma){fat$(comma)macho$(comma)misc}_util}.h)
@@ -1399,34 +1399,34 @@ setup:
 		https://github.com/apple-oss-distributions/CF/raw/CF-1153.18/CFBundlePriv.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/osfmk/machine/cpu_capabilities.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/osfmk/machine/cpu_capabilities.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/firehose, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/libkern/firehose/{tracepoint$(comma)firehose_types}_private.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/libkern/firehose/{tracepoint$(comma)firehose_types}_private.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9//libkern/libkern/{OSKextLibPrivate$(comma)mkext$(comma)prelink}.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2//libkern/libkern/{OSKextLibPrivate$(comma)mkext$(comma)prelink}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/internal, \
 		https://github.com/apple-oss-distributions/libplatform/raw/libplatform-126.50.8/include/os/internal/{internal_shared$(comma)atomic$(comma)crashlog}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/bsd/sys/{fcntl$(comma)fsctl$(comma)spawn_internal$(comma)resource$(comma)event$(comma)kdebug$(comma)kdebug_private$(comma)proc$(comma)proc_info$(comma)pgo$(comma)proc_uuid_policy$(comma)acct$(comma)stackshot$(comma)event$(comma)mbuf$(comma)kern_memorystatus$(comma)reason}.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/bsd/sys/{fcntl$(comma)fsctl$(comma)spawn_internal$(comma)resource$(comma)event$(comma)kdebug$(comma)kdebug_private$(comma)proc$(comma)proc_info$(comma)pgo$(comma)proc_uuid_policy$(comma)acct$(comma)stackshot$(comma)event$(comma)mbuf$(comma)kern_memorystatus$(comma)reason}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/uuid, \
 		https://github.com/apple-oss-distributions/Libc/raw/Libc-1534.40.2/uuid/namespace.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/osfmk/mach/coalition.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/osfmk/mach/coalition.h)
 
 	@# FSEvents headers won't be found even when building for macOS... Should probably fix this properly eventually
 	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/CoreServices.framework/Frameworks/FSEvents.framework/Headers/* $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/FSEvents/
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/iokit/IOKit/IOKitDebug.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/iokit/IOKit/IOKitDebug.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit/kext, \
-		https://opensource.apple.com/source/IOKitUser/IOKitUser-1845.81.1/kext.subproj/{KextManagerPriv$(comma)OSKext$(comma)OSKextPrivate$(comma)kextmanager_types$(comma){fat$(comma)macho$(comma)misc}_util}.h)
+		https://github.com/apple-oss-distributions/IOKitUser/raw/IOKitUser-1845.81.1/kext.subproj/{KextManagerPriv$(comma)OSKext$(comma)OSKextPrivate$(comma)kextmanager_types$(comma){fat$(comma)macho$(comma)misc}_util}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security, \
 		https://github.com/apple-oss-distributions/Security/raw/Security-60420.40.34.0.1/OSX/libsecurity_keychain/lib/SecKeychainPriv.h \
@@ -1434,23 +1434,23 @@ setup:
 		https://github.com/apple-oss-distributions/Security/raw/Security-60420.40.34.0.1/base/SecBasePriv.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreFoundation, \
-		https://opensource.apple.com/source/CF/CF-1153.18/CFBundlePriv.h)
+		https://github.com/apple-oss-distributions/CF/raw/CF-1153.18/CFBundlePriv.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/osfmk/machine/cpu_capabilities.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/osfmk/machine/cpu_capabilities.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/firehose, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/libkern/firehose/tracepoint_private.h \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/libkern/firehose/firehose_types_private.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/libkern/firehose/tracepoint_private.h \
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/libkern/firehose/firehose_types_private.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/libkern/libkern/{OSKextLibPrivate$(comma)mkext$(comma)prelink}.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/libkern/libkern/{OSKextLibPrivate$(comma)mkext$(comma)prelink}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/internal, \
-		https://opensource.apple.com/source/libplatform/libplatform-126.50.8/include/os/internal/{internal_shared$(comma)atomic$(comma)crashlog}.h)
+		https://github.com/apple-oss-distributions/libplatform/raw/libplatform-126.50.8/include/os/internal/{internal_shared$(comma)atomic$(comma)crashlog}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/bsd/sys/{fcntl$(comma)fsctl$(comma)spawn_internal$(comma)resource$(comma)event$(comma)kdebug$(comma)proc$(comma)proc_info$(comma)pgo$(comma)proc_uuid_policy$(comma)acct$(comma)stackshot$(comma)event$(comma)mbuf$(comma)kern_memorystatus$(comma)reason}.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/bsd/sys/{fcntl$(comma)fsctl$(comma)spawn_internal$(comma)resource$(comma)event$(comma)kdebug$(comma)proc$(comma)proc_info$(comma)pgo$(comma)proc_uuid_policy$(comma)acct$(comma)stackshot$(comma)event$(comma)mbuf$(comma)kern_memorystatus$(comma)reason}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpc, \
 		https://github.com/Torrekie/apple_internal_sdk/raw/322eb6573bc701e7f35af05650b0cc162d0355c1/usr/include/xpc/private.h)
@@ -1477,8 +1477,8 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/bsd/sys/resource.h \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/bsd/sys/vnioctl.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/bsd/sys/resource.h \
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.140.41/bsd/sys/vnioctl.h)
 
 	@# Copy headers from MacOSX.sdk
 	@cp -af $(MACOSX_SYSROOT)/usr/include/{arpa,bsm,hfs,net,xpc,netinet,servers,timeconv.h,launch.h} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
