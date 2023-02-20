@@ -252,7 +252,7 @@ ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.s
 BARE_PLATFORM         := AppleTVOS
 MEMO_DEPLOYMENT       := APPLETVOS_DEPLOYMENT_TARGET=$(APPLETVOS_DEPLOYMENT_TARGET)
 
-else ifeq ($(MEMO_TARGET),bridgeos-arm64)
+else ifeq ($(shell [ "$(MEMO_TARGET)" = "bridgeos-arm64" ] || [ "$(MEMO_TARGET)" = "bridgeos-arm64-ramdisk" ] && echo 1),1)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building for BridgeOS)
 endif # ($(MEMO_QUIET),1)
@@ -260,7 +260,7 @@ MEMO_ARCH             := arm64
 PLATFORM              := iphoneos # find me a BridgeOS.sdk and you win.
 DEB_ARCH              := bridgeos-arm64
 GNU_HOST_TRIPLE       := aarch64-apple-darwin
-PLATFORM_VERSION_MIN  := --target=arm64-apple-bridgeos$(BRIDGEOS_DEPLOYMENT_TARGET)
+PLATFORM_VERSION_MIN  := -mbridgeos-version-min=$(BRIDGEOS_DEPLOYMENT_TARGET)
 RUST_TARGET           := aarch64-apple-bridgeos
 LLVM_TARGET           := arm64-apple-bridgeos$(BRIDGEOS_DEPLOYMENT_TARGET)
 MEMO_PREFIX           ?=
