@@ -2,7 +2,7 @@ Package: libcurl4
 Version: @DEB_CURL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libnghttp2-14, libssh2-1, libssl3, libidn2-0, libbrotli1, libzstd1, librtmp1
+Depends: libcurl4 (= @DEB_CURL_V@), libc-ares2, libnghttp2-14, libidn2-0, librtmp1, libgmp10, libgnutls30, libhogweed6, libnettle8, libssh2-1, libssl3, libzstd1, libbrotli1
 Replaces: curl (<< @DEB_CURL_V@)
 Conflicts: curl (<< @DEB_CURL_V@)
 Section: Libraries
