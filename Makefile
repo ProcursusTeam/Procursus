@@ -1180,6 +1180,7 @@ RAMDISK_PROJECTS := bash coreutils diskdev-cmds findutils grep gzip ncurses prof
 ramdisk:
 	+MEMO_NO_IOSEXEC=1 $(MAKE) $(RAMDISK_PROJECTS:%=%-package)
 	rm -rf $(BUILD_STRAP)/strap
+	rm -rf $(BUILD_DIST)/strap
 	rm -f $(BUILD_DIST)/bootstrap_tools.tar*
 	rm -f $(BUILD_DIST)/.fakeroot_bootstrap
 	touch $(BUILD_DIST)/.fakeroot_bootstrap
