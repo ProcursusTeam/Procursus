@@ -1375,7 +1375,7 @@ setup:
 		https://github.com/apple-oss-distributions/libmalloc/raw/libmalloc-374.100.5/private/stack_logging.h \
 		https://github.com/apple-oss-distributions/Libc/raw/Libc-1534.40.2/{gen/get_compat$(comma)include/struct}.h)
 
-ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1800 ] && echo 1),1)
+ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1900 ] && echo 1),1)
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include, \
 		https://github.com/apple-oss-distributions/libutil/raw/libutil-60/{mntopts$(comma)libutil}.h)
 else
