@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += tcc
-TCC_COMMIT  := 9b76a64f96b2a8359e9e1332f381137557d106a2
-TCC_VERSION := 0.9.27+git20210423.$(shell echo $(TCC_COMMIT) | cut -c -7)
+TCC_COMMIT  := 605538f46d277fe0931f72f032a24a675417ee2a
+TCC_VERSION := 0.9.27+git20230222.$(shell echo $(TCC_COMMIT) | cut -c -7)
 DEB_TCC_V   ?= $(TCC_VERSION)
 
 tcc-setup: setup
