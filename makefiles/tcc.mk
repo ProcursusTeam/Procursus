@@ -7,11 +7,13 @@ TCC_COMMIT  := 605538f46d277fe0931f72f032a24a675417ee2a
 TCC_VERSION := 0.9.27+git20230222.$(shell echo $(TCC_COMMIT) | cut -c -7)
 DEB_TCC_V   ?= $(TCC_VERSION)
 
+### NOTE: tcc package from Procursus must be installed for successful compilation
+###       of this project. All available targets are cross compiled.
+
 tcc-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://repo.or.cz/tinycc.git/snapshot/$(TCC_COMMIT).tar.gz
 	$(call EXTRACT_TAR,$(TCC_COMMIT).tar.gz,tinycc-$(shell echo $(TCC_COMMIT) | cut -c -7),tcc)
 	$(call DO_PATCH,tcc,tcc,-p1)
-	$(SED) -i 's/arm arm64/arm arm64 arm64-osx/' $(BUILD_WORK)/tcc/Makefile
 
 ifneq ($(wildcard $(BUILD_WORK)/tcc/.build_complete),)
 tcc:
