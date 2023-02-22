@@ -2,7 +2,7 @@ Package: libaom-dev
 Version: @DEB_AOM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libaom2 (= @DEB_AOM_V@)
+Depends: libaom3 (= @DEB_AOM_V@)
 Section: Development
 Priority: optional
 Description: AV1 Video Codec Library -- Development Files

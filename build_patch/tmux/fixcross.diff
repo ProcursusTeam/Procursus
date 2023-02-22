@@ -1,0 +1,33 @@
+diff -urN a/configure.ac b/configure.ac
+--- a/configure.ac	2022-06-09 07:30:50.000000000 -0400
++++ b/configure.ac	2023-01-03 22:51:14.000000000 -0400
+@@ -187,27 +187,8 @@
+ 	[AC_LIBOBJ(strtonum) AC_MSG_RESULT(no)]
+ )
+
+-# Clang sanitizers wrap reallocarray even if it isn't available on the target
+-# system. When compiled it always returns NULL and crashes the program. To
+-# detect this we need a more complicated test.
+-AC_MSG_CHECKING([for working reallocarray])
+-AC_RUN_IFELSE([AC_LANG_PROGRAM(
+-		[#include <stdlib.h>],
+-		[return (reallocarray(NULL, 1, 1) == NULL);]
+-	)],
+-	AC_MSG_RESULT(yes),
+-	[AC_LIBOBJ(reallocarray) AC_MSG_RESULT([no])],
+-	[AC_LIBOBJ(reallocarray) AC_MSG_RESULT([no])]
+-)
+-AC_MSG_CHECKING([for working recallocarray])
+-AC_RUN_IFELSE([AC_LANG_PROGRAM(
+-		[#include <stdlib.h>],
+-		[return (recallocarray(NULL, 1, 1, 1) == NULL);]
+-	)],
+-	AC_MSG_RESULT(yes),
+-	[AC_LIBOBJ(recallocarray) AC_MSG_RESULT([no])],
+-	[AC_LIBOBJ(recallocarray) AC_MSG_RESULT([no])]
+-)
++AC_LIBOBJ(reallocarray)
++AC_LIBOBJ(recallocarray)
+
+ # Look for clock_gettime. Must come before event_init.
+ AC_SEARCH_LIBS(clock_gettime, rt)

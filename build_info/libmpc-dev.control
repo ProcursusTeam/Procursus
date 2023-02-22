@@ -1,0 +1,19 @@
+Package: libmpc-dev
+Version: @DEB_MPCLIB3_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libmpc3 (= @DEB_MPCLIB3_V@), libmpfr-dev, libgmp-dev
+Section: Development
+Priority: optional
+Homepage: http://www.multiprecision.org/mpc/
+Description: multiple precision complex floating-point library development package
+ MPC is a portable library written in C for arbitrary precision
+ arithmetic on complex numbers providing correct rounding. For the time
+ being, it contains all arithmetic operations over complex numbers, the
+ exponential and the logarithm functions, the trigonometric and
+ hyperbolic functions.
+ .
+ Ultimately, it should implement a multiprecision equivalent of the ISO
+ C99 standard.
+ .
+ It builds upon the GNU MP and the MPFR libraries.

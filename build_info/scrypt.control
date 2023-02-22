@@ -2,7 +2,7 @@ Package: scrypt
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_SCRYPT_V@
-Depends: libssl1.1
+Depends: libssl3
 Section: Security
 Priority: optional
 Description: File encryption utility using scrypt for key derivation
@@ -13,4 +13,3 @@ Description: File encryption utility using scrypt for key derivation
  cracking the same password on a file encrypted by openssl enc; this
  means that a five-character password using scrypt is stronger than a
  ten-character password using openssl.
-Tag: purpose::console, role::hacker

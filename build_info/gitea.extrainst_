@@ -1,0 +1,18 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+	(install)
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/io.gitea.web.plist || true
+	;;
+	(upgrade)
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/io.gitea.web.plist || true
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl load -w @MEMO_PREFIX@/Library/LaunchDaemons/io.gitea.web.plist || true
+	;;
+	(*)
+	exit 0
+	;;
+esac
+
+exit 0

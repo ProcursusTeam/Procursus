@@ -1,0 +1,7 @@
+Package: hstspreload
+Maintainer: @DEB_MAINTAINER@
+Architecture: all
+Version: @DEB_HSTSPRELOAD_V@
+Section: Networking
+Priority: optional
+Description: HSTS preload list in DAFSA format

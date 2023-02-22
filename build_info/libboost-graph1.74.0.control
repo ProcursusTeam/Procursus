@@ -1,8 +1,0 @@
-Package: libboost-graph1.74.0
-Version: @DEB_LIBBOOST_V@
-Architecture: @DEB_ARCH@
-Maintainer: @DEB_MAINTAINER@
-Depends: libboost-regex1.74.0 (= @DEB_LIBBOOST_V@)
-Section: Libraries
-Priority: optional
-Description: generic graph components and algorithms in C++

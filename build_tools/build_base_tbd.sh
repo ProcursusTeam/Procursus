@@ -2,40 +2,35 @@
 
 shopt -s globstar
 
-echo -e "Note: this is unsupported, you will probably encounter errors while building packages\nstop now while you have the chance"
-sleep 5
+if [ "$#" -ne 1 ]; then
+	echo "Specify path"
+	exit 1
+fi
 
 if [[ $(uname) = "Darwin" ]]; then
 	TAPI="$(xcrun tapi)"
 elif command -v tapi > /dev/null; then
 	TAPI="$(command -v tapi)"
-elif command -v tbd > /dev/null; then
-	TBD="$(command -v tbd)"
 else
-	echo "Please install either tapi or tbd"
+	echo "Please install tapi"
 	exit 1
+fi
+
+echo -e "Note: this is unsupported, you will probably encounter errors while building packages\nstop now while you have the chance"
+sleep 5
+
+if which gsed >/dev/null; then
+	SED=gsed
+else
+	SED=sed
 fi
 
 unset MACOSX_DEPLOYMENT_TARGET IPHONEOS_DEPLOYMENT_TARGET APPLETVOS_DEPLOYMENT_TARGET WATCHOS_DEPLOYMENT_TARGET
 
-fixext() {
-	echo "$1" | rev | \
-		cut -d. -f 2- | \
-		rev | \
-		sed 's/.*/&.tbd/'
-}
+${TAPI} stubify --filetype=tbd-v2 $1
 
-for dylib in ${BUILD_BASE}${MEMO_PREFIX}${MEMO_SUB_PREFIX}/lib/**/*.dylib ${BUILD_BASE}${MEMO_PREFIX}${MEMO_SUB_PREFIX}${MEMO_ALT_PREFIX}/lib/**/*.dylib; do
-	if file -Nb "$dylib" | grep "shared library" >/dev/null; then
-		if [ -L $lib ]; then
-			ln -sf $(fixext $(readlink "$dylib")) $(fixext "$dylib")
-		else
-			if [ -z ${TAPI+x} ]; then
-				tbd -p $lib -o $(fixext "$dylib") -v2
-			else
-				${TAPI} stubify "$dylib" --filetype=tbd-v2
-			fi
-		fi
+for tbd in ${1}/**/*.tbd; do
+	if [ -e $(rev <<< "$tbd" | cut -d'.' -f2- | rev).dylib -o -L $(rev <<< "$tbd" | cut -d'.' -f2- | rev).dylib ]; then
+		rm -f $(rev <<< "$tbd" | cut -d'.' -f2- | rev).dylib
 	fi
-	rm "$dylib"
 done

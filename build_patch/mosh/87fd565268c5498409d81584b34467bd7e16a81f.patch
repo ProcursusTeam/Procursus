@@ -1,0 +1,26 @@
+From 87fd565268c5498409d81584b34467bd7e16a81f Mon Sep 17 00:00:00 2001
+From: Harry Sintonen <sintonen@iki.fi>
+Date: Thu, 21 Oct 2021 16:43:41 +0300
+Subject: [PATCH] Only use CLOCK_MONOTONIC_RAW with __APPLE__ systems.
+
+---
+ src/util/timestamp.cc | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git src/util/timestamp.cc src/util/timestamp.cc
+index a50f734fba7b4ea036fc0a9f888c0861a20e93c6..59a833f68e3d928632631cd6e42badbac1f5ee81 100644
+--- src/util/timestamp.cc
++++ src/util/timestamp.cc
+@@ -48,7 +48,11 @@
+ #include <stdio.h>
+ #endif
+ 
+-#ifdef CLOCK_MONOTONIC_RAW
++// On Apple systems CLOCK_MONOTONIC is unfortunately able to go
++// backwards in time. This breaks mosh when system is returning from
++// suspend as described in ticket #1014. To avoid this issue prefer
++// CLOCK_MONOTONIC_RAW on Apple systems when available.
++#if defined(__APPLE__) && defined(CLOCK_MONOTONIC_RAW)
+ #define CLOCKTYPE CLOCK_MONOTONIC_RAW
+ #else
+ #define CLOCKTYPE CLOCK_MONOTONIC

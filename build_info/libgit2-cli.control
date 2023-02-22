@@ -1,0 +1,14 @@
+Package: libgit2-cli
+Version: @DEB_LIBGIT2_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libgit2-1.5 (= @DEB_LIBGIT2_V@)
+Section: Utilities
+Priority: optional
+Description: low-level Git library
+ libgit2 is a portable, pure C implementation of the Git
+ distributed version control system core methods provided as a
+ re-entrant link-able library with a solid API.
+ .
+ This package contains the git-compatible command-line
+ interface that uses libgit2.

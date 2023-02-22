@@ -1,0 +1,12 @@
+Package: txt2man
+Version: @DEB_TXT2MAN_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: Marc Vertes (mvertes)
+Depends: gawk (>= 5.1.0-1)
+Section: Utilities
+Priority: optional
+Homepage: https://www.github.com/mvertes/txt2man
+Description: Text to man page CLI converter.
+ txt2man is a command-line tool that utilizes GNU awk to convert flat
+ ASCII text to man page format, and works on every Unix-like system.

@@ -1,0 +1,71 @@
+From cfe6b253398b4c86381fe272d4f6f9183bf44868 Mon Sep 17 00:00:00 2001
+From: Gymxo <55960119+Gymxo@users.noreply.github.com>
+Date: Sun, 28 Mar 2021 10:42:06 -0400
+Subject: [PATCH 1/2] Update CMakeLists.txt
+
+---
+ CMakeLists.txt | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 9f1505e0..a8a24f70 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -130,7 +130,7 @@ if(WIN32)
+ endif()
+ 
+ # X11 stuff. It's in a if() so that we can say REQUIRED
+-if(UNIX AND NOT APPLE)
++if(APPLE)
+   find_package(X11 REQUIRED)
+ endif()
+ 
+@@ -228,9 +228,8 @@ endif()
+ set(FLTK_SKIP_FLUID TRUE)
+ set(FLTK_SKIP_OPENGL TRUE)
+ set(FLTK_SKIP_FORMS TRUE)
+-find_package(FLTK)
+ 
+-if(UNIX AND NOT APPLE)
++if(APPLE)
+   # No proper handling for extra X11 libs that FLTK might need...
+   if(X11_Xft_FOUND)
+     # Xft headers include references to fontconfig, so we need
+@@ -264,7 +263,7 @@ if(ENABLE_GNUTLS)
+ endif()
+ 
+ # Check for PAM library
+-if(UNIX AND NOT APPLE)
++if(APPLE)
+   check_include_files(security/pam_appl.h HAVE_PAM_H)
+   set(CMAKE_REQUIRED_LIBRARIES -lpam)
+   check_function_exists(pam_start HAVE_PAM_START)
+@@ -289,7 +288,7 @@ if(WIN32)
+   add_subdirectory(win)
+ else()
+   # No interest in building x related parts on Apple
+-  if(NOT APPLE)
++  if(APPLE)
+     add_subdirectory(unix)
+   endif()
+ endif()
+@@ -298,15 +297,12 @@ if(ENABLE_NLS)
+   add_subdirectory(po)
+ endif()
+ 
+-option(BUILD_VIEWER "Build TigerVNC viewer" ON)
++option(BUILD_VIEWER "Build TigerVNC viewer" OFF)
+ if(BUILD_VIEWER)
+   add_subdirectory(vncviewer)
+   add_subdirectory(media)
+ endif()
+ 
+-add_subdirectory(tests)
+-
+-
+ add_subdirectory(release)
+ 
+ # uninstall
+-- 
+2.24.3 (Apple Git-128)
+

@@ -1,0 +1,110 @@
+From 93c54d9f6a4a6709b8db11ad0ab2fc36c0fdbe1d Mon Sep 17 00:00:00 2001
+From: Tobias Grothmann <Tobias.Grothmann@googlemail.com>
+Date: Fri, 24 Jun 2022 09:48:10 +0200
+Subject: [PATCH] fix errors for unused but set variables on mac
+
+---
+ src/common/pa_converters.c                   | 24 ++++++++++----------
+ src/hostapi/coreaudio/pa_mac_core.c          |  1 +
+ src/hostapi/coreaudio/pa_mac_core_blocking.c |  2 ++
+ 3 files changed, 15 insertions(+), 12 deletions(-)
+
+diff --git a/src/common/pa_converters.c b/src/common/pa_converters.c
+index 93e44a364..29bbf2b3f 100644
+--- a/src/common/pa_converters.c
++++ b/src/common/pa_converters.c
+@@ -1055,16 +1055,16 @@ static void Int32_To_UInt8_Dither(
+     void *sourceBuffer, signed int sourceStride,
+     unsigned int count, struct PaUtilTriangularDitherGenerator *ditherGenerator )
+ {
+-    PaInt32 *src = (PaInt32*)sourceBuffer;
+-    unsigned char *dest =  (unsigned char*)destinationBuffer;
++    /* PaInt32 *src = (PaInt32*)sourceBuffer;
++    unsigned char *dest =  (unsigned char*)destinationBuffer; */
+     (void)ditherGenerator; /* unused parameter */
+ 
+     while( count-- )
+     {
+         /* IMPLEMENT ME */
+ 
+-        src += sourceStride;
+-        dest += destinationStride;
++        /* src += sourceStride;
++        dest += destinationStride; */
+     }
+ }
+ 
+@@ -1416,16 +1416,16 @@ static void Int16_To_Int8_Dither(
+     void *sourceBuffer, signed int sourceStride,
+     unsigned int count, struct PaUtilTriangularDitherGenerator *ditherGenerator )
+ {
+-    PaInt16 *src = (PaInt16*)sourceBuffer;
+-    signed char *dest =  (signed char*)destinationBuffer;
++    /* PaInt16 *src = (PaInt16*)sourceBuffer;
++    signed char *dest =  (signed char*)destinationBuffer; */
+     (void)ditherGenerator; /* unused parameter */
+ 
+     while( count-- )
+     {
+         /* IMPLEMENT ME */
+ 
+-        src += sourceStride;
+-        dest += destinationStride;
++        /* src += sourceStride;
++        dest += destinationStride; */
+     }
+ }
+ 
+@@ -1456,16 +1456,16 @@ static void Int16_To_UInt8_Dither(
+     void *sourceBuffer, signed int sourceStride,
+     unsigned int count, struct PaUtilTriangularDitherGenerator *ditherGenerator )
+ {
+-    PaInt16 *src = (PaInt16*)sourceBuffer;
+-    unsigned char *dest =  (unsigned char*)destinationBuffer;
++    /* PaInt16 *src = (PaInt16*)sourceBuffer;
++    unsigned char *dest =  (unsigned char*)destinationBuffer; */
+     (void)ditherGenerator; /* unused parameter */
+ 
+     while( count-- )
+     {
+         /* IMPLEMENT ME */
+ 
+-        src += sourceStride;
+-        dest += destinationStride;
++        /* src += sourceStride;
++        dest += destinationStride; */
+     }
+ }
+ 
+diff --git a/src/hostapi/coreaudio/pa_mac_core.c b/src/hostapi/coreaudio/pa_mac_core.c
+index aaa5bf40c..eba89d3e0 100644
+--- a/src/hostapi/coreaudio/pa_mac_core.c
++++ b/src/hostapi/coreaudio/pa_mac_core.c
+@@ -2807,6 +2807,7 @@ static PaError StopStream( PaStream *s )
+         paErr = waitUntilBlioWriteBufferIsEmpty( &stream->blio, stream->sampleRate,
+                 maxHostFrames );
+         VDBUG( ( "waitUntilBlioWriteBufferIsEmpty returned %d\n", paErr ) );
++        (void) paErr; /* Prevent "unused variable" warnings. */
+     }
+     return FinishStoppingStream( stream );
+ }
+diff --git a/src/hostapi/coreaudio/pa_mac_core_blocking.c b/src/hostapi/coreaudio/pa_mac_core_blocking.c
+index 70515f957..b3e57ddd7 100644
+--- a/src/hostapi/coreaudio/pa_mac_core_blocking.c
++++ b/src/hostapi/coreaudio/pa_mac_core_blocking.c
+@@ -195,6 +195,7 @@ PaError initializeBlioRingBuffers(
+                 data );
+         assert( !err );
+     }
++    (void) err; /* Prevent "unused variable" warnings. */
+ 
+     result = resetBlioRingBuffers( blio );
+     if( result )
+@@ -372,6 +373,7 @@ int BlioCallback( const void *input, void *output, unsigned long frameCount,
+         /*printf( "reading %d\n", toRead );*/
+         framesTransferred = PaUtil_WriteRingBuffer( &blio->inputRingBuffer, input, framesToTransfer );
+         assert( framesToTransfer == framesTransferred );
++        (void) framesTransferred; /* Prevent "unused variable" warnings. */
+ #ifdef PA_MAC__BLIO_MUTEX
+         /* Priority inversion. See notes below. */
+         blioSetIsInputEmpty( blio, false );

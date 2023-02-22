@@ -1,0 +1,257 @@
+diff -urN a/KernelManagementShims/ShimHelpers.m b/KernelManagementShims/ShimHelpers.m
+--- a/KernelManagementShims/ShimHelpers.m	2020-07-31 17:10:54.000000000 +0800
++++ b/KernelManagementShims/ShimHelpers.m	2021-11-12 14:40:44.431021108 +0800
+@@ -10,8 +10,7 @@
+ #import "Shims.h"
+ #import "../kext_tools_util.h"
+ 
+-#if !(TARGET_OS_IPHONE && !TARGET_OS_SIMULATOR) && !TARGET_OS_BRIDGE
+-
++#ifndef TARGET_OS_EMBEDDED
+ static NSTask *shimmedTask = nil;
+ static NSMutableArray *shimmedTaskArguments = nil;
+ 
+diff -urN a/KernelManagementShims/Shims.m b/KernelManagementShims/Shims.m
+--- a/KernelManagementShims/Shims.m	2020-07-02 01:56:36.000000000 +0800
++++ b/KernelManagementShims/Shims.m	2021-11-12 14:40:01.021883828 +0800
+@@ -11,7 +11,7 @@
+ #import <pthread/pthread.h>
+ #import <Foundation/Foundation.h>
+ 
+-#if !(TARGET_OS_IPHONE && !TARGET_OS_SIMULATOR)
++#ifndef TARGET_OS_EMBEDDED
+ #import <KernelManagement/KernelManagement.h>
+ #import <KernelManagement/KernelManagement_Private.h>
+ 
+@@ -20,8 +20,8 @@
+ #endif
+ 
+ bool isKernelManagementLinked() {
+-#if TARGET_OS_IPHONE && !TARGET_OS_SIMULATOR
+-    /* KM doesn't exist on iPhone */
++#ifdef TARGET_OS_EMBEDDED
++    /* KM doesn't exist on non-macOS */
+     return false;
+ #else
+     return NSClassFromString(@"KernelManagementClient") ? true : false;
+@@ -30,7 +30,7 @@
+ 
+ int KernelManagementLoadKextsWithURLs(CFArrayRef urls)
+ {
+-#if TARGET_OS_IPHONE && !TARGET_OS_SIMULATOR
++#ifdef TARGET_OS_EMBEDDED
+ 	(void)urls;
+ 	return EX_OSERR;
+ #else
+@@ -62,5 +62,5 @@
+ 	result = EX_OK;
+ finish:
+ 	return result;
+-#endif // #if TARGET_OS_IPHONE && !TARGET_OS_SIMULATOR
++#endif // #ifdef TARGET_OS_EMBEDDED
+ }
+diff -urN a/KernelManagementShims/kextutil.m b/KernelManagementShims/kextutil.m
+--- a/KernelManagementShims/kextutil.m	2020-07-31 11:06:43.000000000 +0800
++++ b/KernelManagementShims/kextutil.m	2021-11-12 14:42:59.712198120 +0800
+@@ -7,17 +7,17 @@
+ 
+ #import <Foundation/Foundation.h>
+ #import "ShimHelpers.h"
+-
++#ifndef TARGET_OS_EMBEDDED
+ #import <KernelManagement/KernelManagement.h>
+ #import <KernelManagement/KernelManagement_Private.h>
+-
++#endif
+ #import "kextutil_main.h"
+ #import "kext_tools_util.h"
+ 
+ bool isKernelManagementLinked() {
+-    return NSClassFromString(@"KernelManagementClient") ? true : false;
++    return false
+ }
+-
++#ifndef TARGET_OS_EMBEDDED
+ /*\
+ 
+     Transform a command from kextutil to kmutil. For example,
+@@ -101,3 +101,4 @@
+ 
+     runWithShimmedArguments();
+ }
++#endif
+diff -urN a/kext_tools_util.c b/kext_tools_util.c
+--- a/kext_tools_util.c	2020-02-13 03:52:44.000000000 +0800
++++ b/kext_tools_util.c	2021-11-12 16:01:24.688596519 +0800
+@@ -22,7 +22,7 @@
+  */
+ 
+ #include <TargetConditionals.h>
+-#if !(TARGET_OS_IPHONE && !TARGET_OS_SIMULATOR)
++#ifndef TARGET_OS_EMBEDDED
+     #include <bless.h>
+     #include "bootcaches.h"
+ #endif  // !(TARGET_OS_IPHONE && !TARGET_OS_SIMULATOR)
+@@ -38,7 +38,7 @@
+ #include <sys/resource.h>
+ #include <IOKit/kext/OSKext.h>
+ #include <IOKit/kext/OSKextPrivate.h>
+-#include <sandbox/rootless.h>
++#include <os/trace_base.h>
+ #include <os/log_private.h>
+ 
+ #include <sys/types.h>
+Binary files a/kext_tools_util.o and b/kext_tools_util.o differ
+diff -urN a/kextload_main.c b/kextload_main.c
+--- a/kextload_main.c	2020-03-14 17:33:57.000000000 +0800
++++ b/kextload_main.c	2021-11-12 18:13:03.064622050 +0800
+@@ -40,9 +40,9 @@
+ /*******************************************************************************
+ * Global variables.
+ *******************************************************************************/
+-
++#ifndef TARGET_OS_EMBEDDED
+ extern void shimKextloadArgsToKMUtilAndRun(KextloadArgs *);
+-
++#endif
+ ExitStatus
+ main(int argc, char * const * argv)
+ {
+@@ -125,7 +125,9 @@
+         RANGE_ALL(toolArgs.dependencyURLs));
+ 
+     if (doShimToKernelManagement) {
++#ifndef TARGET_OS_EMBEDDED
+         shimKextloadArgsToKMUtilAndRun(&toolArgs);
++#endif
+         exit(EX_OSERR); // shouldn't get here!
+     } else if (sKextdActive) {
+         result = loadKextsViaKextd(&toolArgs);
+@@ -388,7 +390,7 @@
+ 
+     return result;
+ }
+-
++#ifndef TARGET_OS_EMBEDDED
+ /*******************************************************************************
+ *******************************************************************************/
+ ExitStatus loadKextsViaKernelManagement(KextloadArgs * toolArgs)
+@@ -399,6 +401,7 @@
+ 
+ /*******************************************************************************
+ *******************************************************************************/
++
+ ExitStatus loadKextsViaKextd(KextloadArgs * toolArgs)
+ {
+     ExitStatus result     = EX_OK;
+@@ -479,7 +482,7 @@
+ 
+     return result;
+ }
+-
++#endif
+ /*******************************************************************************
+ *******************************************************************************/
+ ExitStatus loadKextsIntoKernel(KextloadArgs * toolArgs)
+diff -urN a/kextstat_main.c b/kextstat_main.c
+--- a/kextstat_main.c	2020-08-21 14:29:02.000000000 +0800
++++ b/kextstat_main.c	2021-11-12 14:55:49.494170281 +0800
+@@ -51,7 +51,7 @@
+ static bool
+ shim_kextstat(void)
+ {
+-#if TARGET_OS_BRIDGE
++#ifdef TARGET_OS_EMBEDDED
+     return false;
+ #else
+     char *legacy = getenv("KEXTSTAT_LEGACY_MODE");
+diff -urN a/kextunload_main.c b/kextunload_main.c
+--- a/kextunload_main.c	2020-07-02 01:56:36.000000000 +0800
++++ b/kextunload_main.c	2021-11-12 18:01:32.180590176 +0800
+@@ -31,9 +31,9 @@
+ #include "KernelManagementShims/Shims.h"
+ 
+ const char * progname = "(unknown)";
+-
++#ifndef TARGET_OS_EMBEDDED
+ extern void shimKextunloadArgsToKMUtilAndRun(KextunloadArgs *);
+-
++#endif
+ /*******************************************************************************
+ *******************************************************************************/
+ int main(int argc, char * const * argv)
+@@ -67,13 +67,13 @@
+     if (result != EX_OK) {
+         goto finish;
+     }
+-
++#ifndef TARGET_OS_EMBEDDED
+     // Determine now if we will be shimming over to KernelManagement,
+     if (disableKextTools() && isKernelManagementLinked()) {
+         shimKextunloadArgsToKMUtilAndRun(&toolArgs);
+         exit(EX_OSERR); // shouldn't get here!
+     }
+-
++#endif
+    /* If given URLs, create OSKext objects for them so we can get
+     * bundle identifiers (that's what IOCatalogueTerminate() expects).
+     * If we failed to open one, keep going on but save the not-found
+diff -urN a/mkext.c b/mkext.c
+--- a/mkext.c	2019-03-28 06:30:15.000000000 +0800
++++ b/mkext.c	2021-11-12 17:03:02.061612744 +0800
+@@ -25,7 +25,6 @@
+ #include <libsa/mkext.h>
+ #include <libsa/stdlib.h>
+ #else
+-#include <Kernel/libsa/mkext.h>
+ #include <stdlib.h>
+ #endif KERNEL
+ 
+@@ -56,7 +55,7 @@
+ 
+     return result;
+ }
+-
++#define local_adler32 adler32
+ /**************************************************************
+  LZSS.C -- A Data Compression Program
+ ***************************************************************
+diff -urN a/mkext1_file.c b/mkext1_file.c
+--- a/mkext1_file.c	2019-03-28 06:30:15.000000000 +0800
++++ b/mkext1_file.c	2021-11-12 18:10:25.363208031 +0800
+@@ -44,8 +44,8 @@
+ 
+ #include "kext_tools_util.h"
+ #include "compression.h"
+-
+-
++u_int32_t adler32(u_int8_t *buffer, int32_t length);
++#define local_adler32 adler32
+ /*******************************************************************************
+ *******************************************************************************/
+ typedef struct {
+diff -urN a/mkextunpack_main.c b/mkextunpack_main.c
+--- a/mkextunpack_main.c	2019-03-28 06:30:15.000000000 +0800
++++ b/mkextunpack_main.c	2021-11-12 17:05:24.300894646 +0800
+@@ -43,8 +43,8 @@
+ static const char * progname = "mkextunpack";
+ static Boolean gVerbose = false;
+ 
+-u_int32_t local_adler32(u_int8_t *buffer, int32_t length);
+-
++u_int32_t adler32(u_int8_t *buffer, int32_t length);
++#define local_adler32 adler32
+ Boolean getMkextDataForArch(
+     u_int8_t         * fileData,
+     size_t             fileSize,
+diff -urN a/signposts.h b/signposts.h
+--- a/signposts.h	2019-04-13 03:58:31.000000000 +0800
++++ b/signposts.h	2021-11-12 14:57:14.375767398 +0800
+@@ -8,7 +8,6 @@
+ 
+ #include <os/log.h>
+ #include <os/signpost.h>
+-#include <os/signpost_private.h>
+ 
+ // shared events
+ #define SIGNPOST_EVENT_BOOTCACHE_UPDATE_REASON  "BootcacheUpdateReason"

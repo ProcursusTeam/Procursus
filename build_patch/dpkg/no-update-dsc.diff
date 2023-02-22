@@ -1,0 +1,12 @@
+diff --git a/src/main/help.c b/src/main/help.c
+index c869aac86..45f227a01 100644
+--- a/src/main/help.c
++++ b/src/main/help.c
+@@ -124,7 +124,6 @@ void checkpath(void) {
+     /* Mac OS X uses dyld (Mach-O) instead of ld.so (ELF), and does not have
+      * an ldconfig. */
+ #if defined(__APPLE__) && defined(__MACH__)
+-    "update_dyld_shared_cache",
+ #elif defined(__GLIBC__) || defined(__UCLIBC__) || \
+       defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__)
+     "ldconfig",

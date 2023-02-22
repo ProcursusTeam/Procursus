@@ -1,0 +1,23 @@
+Package: libboost-python1.76.0
+Version: @DEB_LIBBOOST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Suggests: python3
+Section: Libraries
+Priority: optional
+Description: Boost.Python Library
+ This package forms part of the Boost C++ Libraries collection.
+ .
+ The Boost Python Library is used to quickly and easily export a C++
+ library to Python such that the Python interface is very similar to
+ the C++ interface. It is designed to be minimally intrusive on your
+ C++ design. In most cases, you should not have to alter your C++
+ classes in any way in order to use them with Boost.Python.  The
+ system should simply "reflect" your C++ classes and functions into
+ Python. The major features of Boost.Python include support for:
+ Subclassing extension types in Python, Overriding virtual functions
+ in Python, Member function Overloading, Automatic wrapping of
+ numeric operators among others.
+ .
+ One of the python interpreter packages is required to use the
+ created extensions.

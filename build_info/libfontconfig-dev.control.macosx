@@ -1,0 +1,15 @@
+Package: libfontconfig-dev
+Version: @DEB_FONTCONFIG_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libuuid-dev, libfreetype-dev, libfontconfig1 (= @DEB_FONTCONFIG_V@)
+Section: Development
+Priority: standard
+Description: generic font configuration library - development
+ Fontconfig is a font configuration and customization library, which
+ does not depend on the X Window System. It is designed to locate
+ fonts within the system and select them according to requirements
+ specified by applications.
+ .
+ This package contains the static libraries and headers needed for the
+ development of applications using fontconfig.

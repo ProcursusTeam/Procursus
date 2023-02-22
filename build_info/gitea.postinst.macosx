@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+set -e
+
+getHiddenUserPGid()
+{
+	local __PGIDS=$(dscl . -list /Users PrimaryGroupID | awk '{print $2}' | sort -ugr)
+
+	local __NewPGID
+	for __NewPGID in $__PGIDS; do
+		if [[ $__NewPGID -lt 499 ]]; then
+			break;
+		fi
+	done
+
+	echo $((__NewPGID+1))
+}
+
+getHiddenUserUid()
+{
+	local __UIDS=$(dscl . -list /Users UniqueID | awk '{print $2}' | sort -ugr)
+
+	local __NewUID
+	for __NewUID in $__UIDS; do
+	if [[ $__NewUID -lt 499 ]]; then
+		break;
+	fi
+	done
+
+	echo $((__NewUID+1))
+}
+
+if [ "$1" = 'configure' ]; then
+	if ! id gitea &>/dev/null; then
+		GROUPID=$(getHiddenUserPGid)
+		dscl . -create /Users/gitea UserShell /bin/sh
+		dscl . -create /Users/gitea NSFHomeDirectory @MEMO_PREFIX@/var/lib/gitea
+		dscl . -create /Users/gitea UniqueID $(getHiddenUserUid)
+		dscl . -create /Users/gitea PrimaryGroupID $GROUPID
+		dscl . -create /Users/gitea RealName "Gitea Server User"
+
+		dscl . -create /Groups/gitea gid $GROUPID
+		dscl . -create /Groups/gitea RealName "Gitea Server Group"
+	fi
+
+	if ! [ -d @MEMO_PREFIX@/var/lib/gitea ]; then
+		mkdir -p @MEMO_PREFIX@/var/lib/gitea
+		chown gitea:gitea @MEMO_PREFIX@/var/lib/gitea
+	fi
+
+	if [ ! -f @MEMO_PREFIX@/etc/gitea.ini ]; then
+		cp @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/gitea/app.example.ini @MEMO_PREFIX@/etc/gitea.ini
+		chown gitea:gitea @MEMO_PREFIX@/etc/gitea.ini
+		chmod 660 @MEMO_PREFIX@/etc/gitea.ini
+	fi
+fi

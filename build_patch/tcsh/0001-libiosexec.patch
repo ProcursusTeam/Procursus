@@ -1,0 +1,19 @@
+diff -urN sh.exec.c sh.exec.c
+--- sh.exec.c	2021-04-09 12:19:45.642362158 -0400
++++ sh.exec.c	2021-05-03 23:39:30.046010515 -0400
+@@ -44,6 +44,15 @@
+ # define FASTHASH	/* Fast hashing is the default */
+ #endif /* OLDHASH */
+
++/* wrapper functions to make iOS shell scripts function correctly */
++#if defined(__APPLE__)
++#  include <TargetConditionals.h>
++#  if TARGET_OS_IPHONE
++#    define ENABLE_IOSEXEC
++#    include <libiosexec.h>
++#  endif
++#endif
++
+ /*
+  * System level search and execute of a command.
+  * We look in each directory for the specified command name.

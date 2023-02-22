@@ -1,0 +1,8 @@
+Package: sudo
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_SUDO_V@
+Depends: libintl8
+Section: Administration
+Priority: optional
+Description: temporarily assume root priviledges

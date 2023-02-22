@@ -1,0 +1,14 @@
+Package: libboost-type-erasure1.76.0
+Version: @DEB_LIBBOOST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libboost-chrono1.76.0 (= @DEB_LIBBOOST_V@), libboost-thread1.76.0 (= @DEB_LIBBOOST_V@), libboost-system1.76.0 (= @DEB_LIBBOOST_V@)
+Section: Libraries
+Priority: optional
+Description: C++ runtime polymorphism based on concepts
+ This package forms part of the Boost C++ Libraries collection.
+ .
+ C++ has two distinct kinds of polymorphism, virtual functions and templates,
+ each of which has its own advantages and disadvantages.  The Boost.TypeErasure
+ library combines the superior abstraction capabilities of templates, with the
+ runtime flexibility of virtual functions.

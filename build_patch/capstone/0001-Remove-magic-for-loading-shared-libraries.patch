@@ -1,0 +1,70 @@
+From: Hilko Bengen <bengen@debian.org>
+Date: Wed, 25 Jul 2018 15:14:07 +0200
+Subject: Remove magic for loading shared libraries
+
+---
+ bindings/python/capstone/__init__.py | 46 +-----------------------------------
+ 1 file changed, 1 insertion(+), 45 deletions(-)
+
+diff --git a/bindings/python/capstone/__init__.py b/bindings/python/capstone/__init__.py
+index 757dc7d..4917af9 100644
+--- a/bindings/python/capstone/__init__.py
++++ b/bindings/python/capstone/__init__.py
+@@ -264,56 +264,12 @@ CS_OPT   = {v:k for k,v in locals().items() if k.startswith('CS_OPT_')}
+ import ctypes, ctypes.util
+ from os.path import split, join, dirname
+ import distutils.sysconfig
+-import pkg_resources
+ 
+ import inspect
+ if not hasattr(sys.modules[__name__], '__file__'):
+     __file__ = inspect.getfile(inspect.currentframe())
+ 
+-if sys.platform == 'darwin':
+-    _lib = "libcapstone.dylib"
+-elif sys.platform in ('win32', 'cygwin'):
+-    _lib = "capstone.dll"
+-else:
+-    _lib = "libcapstone.so"
+-
+-_found = False
+-
+-def _load_lib(path):
+-    lib_file = join(path, _lib)
+-    if os.path.exists(lib_file):
+-        return ctypes.cdll.LoadLibrary(lib_file)
+-    else:
+-        # if we're on linux, try again with .so.4 extension
+-        if lib_file.endswith('.so'):
+-            if os.path.exists(lib_file + '.4'):
+-                return ctypes.cdll.LoadLibrary(lib_file + '.4')
+-    return None
+-
+-_cs = None
+-
+-# Loading attempts, in order
+-# - user-provided environment variable
+-# - pkg_resources can get us the path to the local libraries
+-# - we can get the path to the local libraries by parsing our filename
+-# - global load
+-# - python's lib directory
+-# - last-gasp attempt at some hardcoded paths on darwin and linux
+-
+-_path_list = [os.getenv('LIBCAPSTONE_PATH', None),
+-              pkg_resources.resource_filename(__name__, 'lib'),
+-              join(split(__file__)[0], 'lib'),
+-              '',
+-              distutils.sysconfig.get_python_lib(),
+-              "/usr/local/lib/" if sys.platform == 'darwin' else '/usr/lib64']
+-
+-for _path in _path_list:
+-    if _path is None: continue
+-    _cs = _load_lib(_path)
+-    if _cs is not None: break
+-else:
+-    raise ImportError("ERROR: fail to load the dynamic library.")
+-
++_cs = ctypes.cdll.LoadLibrary("libcapstone.4.dylib")
+ 
+ # low-level structure for C code
+ 

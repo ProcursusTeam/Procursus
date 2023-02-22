@@ -2,11 +2,17 @@ Package: libcurl4
 Version: @DEB_CURL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libnghttp2-14, libssh2-1, libssl1.1, libidn2-0, libbrotli1, libzstd1, librtmp1
+Depends: libcurl4 (= @DEB_CURL_V@), libc-ares2, libnghttp2-14, libidn2-0, librtmp1, libgmp10, libgnutls30, libhogweed6, libnettle8, libssh2-1, libssl3, libzstd1, libbrotli1
 Replaces: curl (<< @DEB_CURL_V@)
 Conflicts: curl (<< @DEB_CURL_V@)
 Section: Libraries
 Priority: standard
 Homepage: http://curl.haxx.se/
 Description: easy-to-use client-side URL transfer library (OpenSSL flavour)
-Tag: purpose::console, role::hacker
+ libcurl is an easy-to-use client-side URL transfer library, supporting DICT, FILE, FTP, FTPS, GOPHER, HTTP, HTTPS, IMAP, IMAPS, LDAP, LDAPS, POP3, POP3S, RTMP, RTSP, SCP, SFTP, SMTP, SMTPS, TELNET and TFTP.
+ .
+ libcurl supports SSL certificates, HTTP POST, HTTP PUT, FTP uploading, HTTP form based upload, proxies, cookies, user+password authentication (Basic, Digest, NTLM, Negotiate, Kerberos), file transfer resume, http proxy tunneling and more!
+ .
+ libcurl is free, thread-safe, IPv6 compatible, feature rich, well supported, fast, thoroughly documented and is already used by many known, big and successful companies and numerous applications.
+ . 
+ SSL support is provided by OpenSSL

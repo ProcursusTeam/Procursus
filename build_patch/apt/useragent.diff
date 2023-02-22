@@ -1,21 +1,22 @@
-diff -urN apt/methods/http.cc apt/methods/http.cc
---- apt/methods/http.cc	2021-03-08 05:50:31.000000000 -0500
-+++ apt/methods/http.cc	2021-04-09 18:55:17.281130341 -0400
-@@ -341,7 +341,7 @@
+diff --git a/methods/http.cc b/methods/http.cc
+index b4519a890..cdfe7c1f0 100644
+--- a/methods/http.cc
++++ b/methods/http.cc
+@@ -341,7 +341,7 @@ static ResultState UnwrapHTTPConnect(std::string Host, int Port, URI Proxy, std:
        Req << "Proxy-Authorization: Basic "
  	  << Base64Encode(Proxy.User + ":" + Proxy.Password) << "\r\n";
-
+ 
 -   Req << "User-Agent: " << Owner->ConfigFind("User-Agent", "Debian APT-HTTP/1.3 (" PACKAGE_VERSION ")") << "\r\n";
 +   Req << "User-Agent: " << Owner->ConfigFind("User-Agent", "Procursus APT-HTTP/1.3 (" PACKAGE_VERSION ")") << "\r\n";
-
+ 
     Req << "\r\n";
-
-@@ -955,7 +955,7 @@
+ 
+@@ -957,7 +957,7 @@ void HttpMethod::SendReq(FetchItem *Itm)
  	 << Base64Encode(Uri.User + ":" + Uri.Password) << "\r\n";
-
+ 
     Req << "User-Agent: " << ConfigFind("User-Agent",
 -		"Debian APT-HTTP/1.3 (" PACKAGE_VERSION ")");
 +		"Procursus APT-HTTP/1.3 (" PACKAGE_VERSION ")");
-
+ 
  #ifdef HAVE_SYSTEMD
     if (ConfigFindB("User-Agent-Non-Interactive", false))

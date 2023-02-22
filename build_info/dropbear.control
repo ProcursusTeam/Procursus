@@ -1,0 +1,15 @@
+Package: dropbear
+Version: @DEB_DROPBEAR_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libtommath1, libtomcrypt1, libcrypt2, libpam2
+Suggests: openssh-client
+Section: Networking
+Priority: important
+Description: lightweight SSH2 server and client - command line tools
+ dropbear is a SSH 2 server and client designed to be small enough to
+ be used in small memory environments, while still being functional and
+ secure enough for general use.
+ .
+ It implements most required features of the SSH 2 protocol, and other
+ features such as authentication agent forwarding.

@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -e
+
+update-alternatives --quiet --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/awk awk @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/mawk 5 \
+  --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/awk.1@MEMO_MANPAGE_SUFFIX@ awk.1@MEMO_MANPAGE_SUFFIX@ @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/mawk.1@MEMO_MANPAGE_SUFFIX@ \
+  --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/nawk nawk @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/mawk \
+  --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/nawk.1@MEMO_MANPAGE_SUFFIX@ nawk.1@MEMO_MANPAGE_SUFFIX@ @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/mawk.1@MEMO_MANPAGE_SUFFIX@

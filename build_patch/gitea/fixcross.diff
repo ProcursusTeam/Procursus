@@ -1,0 +1,38 @@
+--- gitea/Makefile	2023-01-19 00:23:34.230657936 +0000
++++ gitea/Makefile	2023-01-19 00:22:45.365391900 +0000
+@@ -96,8 +96,6 @@
+ 	endif
+ endif
+ 
+-LDFLAGS := $(LDFLAGS) -X "main.MakeVersion=$(MAKE_VERSION)" -X "main.Version=$(GITEA_VERSION)" -X "main.Tags=$(TAGS)"
+-
+ LINUX_ARCHS ?= linux/amd64,linux/386,linux/arm-5,linux/arm-6,linux/arm64
+ 
+ GO_PACKAGES ?= $(filter-out code.gitea.io/gitea/models/migrations code.gitea.io/gitea/tests/integration/migration-test code.gitea.io/gitea/tests code.gitea.io/gitea/tests/integration code.gitea.io/gitea/tests/e2e,$(shell $(GO) list ./... | grep -v /vendor/))
+@@ -702,7 +700,7 @@
+ 
+ .PHONY: install $(TAGS_PREREQ)
+ install: $(wildcard *.go)
+-	CGO_CFLAGS="$(CGO_CFLAGS)" $(GO) install -v -tags '$(TAGS)' -ldflags '-s -w $(LDFLAGS)'
++	CGO_CFLAGS="$(CGO_CFLAGS)" $(GO) install -v -tags '$(TAGS)' -ldflags '-s -w -X "main.MakeVersion=$(MAKE_VERSION)" -X "main.Version=$(GITEA_VERSION)" -X "main.Tags=$(TAGS)"'
+ 
+ .PHONY: build
+ build: frontend backend
+@@ -721,7 +721,7 @@
+ .PHONY: generate-go
+ generate-go: $(TAGS_PREREQ)
+ 	@echo "Running go generate..."
+-	@CC= GOOS= GOARCH= $(GO) generate -tags '$(TAGS)' $(GO_PACKAGES)
++	@CC= CGO_CFLAGS= CGO_CPPFLAGS= CGO_LDFLAGS= GOOS= GOARCH= $(GO) generate -tags '$(TAGS)' $(GO_PACKAGES)
+ 
+ .PHONY: security-check
+ security-check:
+@@ -730,7 +728,7 @@
+ 	govulncheck -v ./...
+ 
+ $(EXECUTABLE): $(GO_SOURCES) $(TAGS_PREREQ)
+-	CGO_CFLAGS="$(CGO_CFLAGS)" $(GO) build $(GOFLAGS) $(EXTRA_GOFLAGS) -tags '$(TAGS)' -ldflags '-s -w $(LDFLAGS)' -o $@
++	CGO_CFLAGS="$(CGO_CFLAGS)" $(GO) build $(GOFLAGS) $(EXTRA_GOFLAGS) -tags '$(TAGS)' -ldflags '-s -w -extld "$(CC)" -extldflags "$(LDFLAGS)" -X "main.MakeVersion=$(MAKE_VERSION)" -X "main.Version=$(GITEA_VERSION)" -X "main.Tags=$(TAGS)" -X "code.gitea.io/gitea/modules/setting.AppWorkPath=@MEMO_PREFIX@/var/lib/gitea/"' -o $@
+ 
+ .PHONY: release
+ release: frontend generate release-windows release-linux release-darwin release-copy release-compress vendor release-sources release-docs release-check

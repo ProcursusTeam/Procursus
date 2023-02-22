@@ -1,0 +1,8 @@
+Package: ipsw
+Version: @DEB_IPSW_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libusb-1.0-0, libunicorn2
+Section: Utilities
+Priority: optional
+Description: iOS/macOS Research Swiss Army Knife

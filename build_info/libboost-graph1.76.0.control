@@ -1,0 +1,15 @@
+Package: libboost-graph1.76.0
+Version: @DEB_LIBBOOST_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libboost-regex1.76.0 (= @DEB_LIBBOOST_V@), libicu69
+Section: Libraries
+Priority: optional
+Description: generic graph components and algorithms in C++
+ This package forms part of the Boost C++ Libraries collection.
+ .
+ Graphs are mathematical abstractions that are useful for solving
+ many types of problems in computer science. Consequently, these
+ abstractions must also be represented in computer programs. A
+ standardized generic interface for traversing graphs is of utmost
+ importance to encourage reuse of graph algorithms and data structures.

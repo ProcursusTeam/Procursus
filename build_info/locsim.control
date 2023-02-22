@@ -1,0 +1,9 @@
+Package: locsim
+Version: @DEB_LOCSIM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: udevs
+Section: Utilities
+Priority: optional
+Provides: com.udevs.locsim (= @DEB_LOCSIM_V@)
+Description: Simulate GPS location system-wide

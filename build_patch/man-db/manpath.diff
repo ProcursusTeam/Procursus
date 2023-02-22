@@ -1,0 +1,39 @@
+--- man-db/src/man_db.conf.in.orig	2022-12-26 17:14:27.490589658 +0000
++++ man-db/src/man_db.conf.in	2022-12-26 17:18:29.170312993 +0000
+@@ -20,6 +20,10 @@
+ MANDATORY_MANPATH			/usr/man
+ MANDATORY_MANPATH			/usr/share/man
+ MANDATORY_MANPATH			/usr/local/share/man
++MANDATORY_MANPATH			@MEMO_PREFIX@@MEMO_SUB_PREFIX@/man
++MANDATORY_MANPATH			@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man
++MANDATORY_MANPATH			@MEMO_PREFIX@@MEMO_SUB_PREFIX@/local/share/man
++MANDATORY_MANPATH			@ON_DEVICE_SDK_PATH@/usr/share/man
+ #---------------------------------------------------------
+ # set up PATH to MANPATH mapping
+ # ie. what man tree holds man pages for what binary directory.
+@@ -39,6 +43,19 @@
+ MANPATH_MAP	/usr/games		/usr/share/man
+ MANPATH_MAP	/opt/bin		/opt/man
+ MANPATH_MAP	/opt/sbin		/opt/man
++MANPATH_MAP	@MEMO_PREFIX@/bin			@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man
++MANPATH_MAP	@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin		@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man
++MANPATH_MAP	@MEMO_PREFIX@/sbin			@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man
++MANPATH_MAP	@MEMO_PREFIX@@MEMO_SUB_PREFIX@/sbin		@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man
++MANPATH_MAP	@MEMO_PREFIX@@MEMO_SUB_PREFIX@/local/bin		@MEMO_PREFIX@@MEMO_SUB_PREFIX@/local/man
++MANPATH_MAP	@MEMO_PREFIX@@MEMO_SUB_PREFIX@/local/bin		@MEMO_PREFIX@@MEMO_SUB_PREFIX@/local/share/man
++MANPATH_MAP	@MEMO_PREFIX@@MEMO_SUB_PREFIX@/local/sbin		@MEMO_PREFIX@@MEMO_SUB_PREFIX@/local/man
++MANPATH_MAP	@MEMO_PREFIX@@MEMO_SUB_PREFIX@/local/sbin		@MEMO_PREFIX@@MEMO_SUB_PREFIX@/local/share/man
++MANPATH_MAP	@MEMO_PREFIX@@MEMO_SUB_PREFIX@/X11R6/bin		@MEMO_PREFIX@@MEMO_SUB_PREFIX@/X11R6/man
++MANPATH_MAP	@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/X11		@MEMO_PREFIX@@MEMO_SUB_PREFIX@/X11R6/man
++MANPATH_MAP	@MEMO_PREFIX@@MEMO_SUB_PREFIX@/games		@MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man
++MANPATH_MAP	@MEMO_PREFIX@/opt/bin		@MEMO_PREFIX@@MEMO_SUB_PREFIX@/man
++MANPATH_MAP	@MEMO_PREFIX@/opt/sbin		@MEMO_PREFIX@/opt/man
+ #---------------------------------------------------------
+ # For a manpath element to be treated as a system manpath (as most of those
+ # above should normally be), it must be mentioned below. Each line may have
+@@ -129,4 +146,4 @@
+ #---------------------------------------------------------
+ # Flags.
+ # NOCACHE keeps man from creating cat pages.
+-#NOCACHE
++NOCACHE

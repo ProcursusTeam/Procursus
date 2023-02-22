@@ -1,0 +1,9 @@
+Package: xcodegen
+Version: @DEB_XCODEGEN_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: Yonas Kolb
+Section: Development
+Priority: optional
+Homepage: https://github.com/yonaskolb/XcodeGen
+Description: A Swift command line tool for generating your Xcode project

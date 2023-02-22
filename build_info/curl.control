@@ -2,9 +2,11 @@ Package: curl
 Version: @DEB_CURL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libnghttp2-14, libssh2-1, libssl1.1, libidn2-0, libcurl4 (= @DEB_CURL_V@), libbrotli1, libzstd1, librtmp1
+Depends: libcurl4 (= @DEB_CURL_V@), libc-ares2, libnghttp2-14, libidn2-0, librtmp1, libgmp10, libgnutls30, libhogweed6, libnettle8, libssh2-1, libssl3, libzstd1, libbrotli1
 Section: Networking
 Priority: standard
 Homepage: http://curl.haxx.se/
 Description: command line tool for transferring data with URL syntax
-Tag: purpose::console, role::hacker
+ curl is a command line tool for transferring data with URL syntax, supporting DICT, FILE, FTP, FTPS, GOPHER, HTTP, HTTPS, IMAP, IMAPS, LDAP, LDAPS, POP3, POP3S, RTMP, RTSP, SCP, SFTP, SMTP, SMTPS, TELNET and TFTP.
+ .
+ curl supports SSL certificates, HTTP POST, HTTP PUT, FTP uploading, HTTP form based upload, proxies, cookies, user+password authentication (Basic, Digest, NTLM, Negotiate, kerberos...), file transfer resume, proxy tunneling and a busload of other useful tricks.
