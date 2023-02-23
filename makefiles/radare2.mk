@@ -18,7 +18,7 @@ ifneq ($(wildcard $(BUILD_WORK)/radare2/.build_complete),)
 radare2:
 	@echo "Using previously built radare2."
 else
-radare2: radare2-setup capstone libuv1 libzip openssl xxhash lz4 file libjemalloc
+radare2: radare2-setup capstone libuv1 libzip openssl xxhash lz4 file
 	cd $(BUILD_WORK)/radare2 && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-ssl \
