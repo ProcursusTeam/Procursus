@@ -10,6 +10,9 @@ DEB_TCC_V   ?= $(TCC_VERSION)
 ### NOTE: tcc package from Procursus must be installed for successful compilation
 ###       of this project. All available targets are cross compiled.
 
+### WARN: Remove 'fixios.patch' when __clear_cache is natively implemented for
+###       arm64-osx in tcc.
+
 tcc-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://repo.or.cz/tinycc.git/snapshot/$(TCC_COMMIT).tar.gz
 	$(call EXTRACT_TAR,$(TCC_COMMIT).tar.gz,tinycc-$(shell echo $(TCC_COMMIT) | cut -c -7),tcc)
