@@ -28,7 +28,7 @@ else
 libgpg-error: libgpg-error-setup gettext
 	sed -i '/{"armv7-unknown-linux-gnueabihf"  },/a \ \ \ \ {"$(GNU_HOST_TRIPLE)",  "$(GPG_SCHEME)" },' $(BUILD_WORK)/libgpg-error/src/mkheader.c
 	cd $(BUILD_WORK)/libgpg-error && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
+		$(DEFAULT_CONFIGURE_FLAGS) --enable-install-gpg-error-config
 	+$(MAKE) -C $(BUILD_WORK)/libgpg-error install \
 		DESTDIR=$(BUILD_STAGE)/libgpg-error \
 		TESTS=""
