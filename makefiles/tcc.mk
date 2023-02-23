@@ -14,7 +14,7 @@ DEB_TCC_V   ?= $(TCC_VERSION)
 ###       arm64-osx in tcc.
 
 tcc-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://repo.or.cz/tinycc.git/snapshot/$(TCC_COMMIT).tar.gz
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://repo.or.cz/tinycc.git/snapshot/$(TCC_COMMIT).tar.gz)
 	$(call EXTRACT_TAR,$(TCC_COMMIT).tar.gz,tinycc-$(shell echo $(TCC_COMMIT) | cut -c -7),tcc)
 	$(call DO_PATCH,tcc,tcc,-p1)
 
