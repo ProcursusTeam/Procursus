@@ -36,7 +36,7 @@ tcc: tcc-setup
 		MACOSX_DEPLOYMENT_TARGET=$(MACOSX_DEPLOYMENT_TARGET)
 	+$(MAKE) -C $(BUILD_WORK)/tcc install \
 		DESTDIR=$(BUILD_STAGE)/tcc
-	touch $(BUILD_WORK)/tcc/.build_complete
+	$(call AFTER_BUILD)
 endif
 
 tcc-package: tcc-stage
