@@ -26,8 +26,8 @@ tcc: tcc-setup
 		--cc=$(CC) \
 		--ar=$(AR) \
 		--source-path=$(BUILD_WORK)/tcc \
-		--sysincludepaths=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include:/usr/local/include:/usr/include:$(ON_DEVICE_SDK_PATH)/usr/include:{B}/include \
-		--libpaths=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib:/usr/local/lib:/usr/lib:$(ON_DEVICE_SDK_PATH)/usr/lib:{B}/lib \
+		--sysincludepaths=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/tcc/include:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include:/usr/local/include:/usr/include:$(ON_DEVICE_SDK_PATH)/usr/include:{B}/include \
+		--libpaths=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/tcc:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib:/usr/local/lib:/usr/lib:$(ON_DEVICE_SDK_PATH)/usr/lib:{B}/lib \
 		--enable-cross
 	+$(MAKE) -C $(BUILD_WORK)/tcc \
 		MACOSX_DEPLOYMENT_TARGET=$(MACOSX_DEPLOYMENT_TARGET)

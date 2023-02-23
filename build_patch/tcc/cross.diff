@@ -8,10 +8,10 @@ diff -urN tcc/lib/Makefile.orig tcc/lib/Makefile
 -XTCC ?= $(TOP)/$(X)tcc$(EXESUF)
 -XCC = $(XTCC)
 +ifeq ($(X),)
-+XTCC ?= /opt/procursus/bin/$(MEMO_ARCH)-osx-tcc$(EXESUF)
++XTCC ?= $(MEMO_ARCH)-osx-tcc$(EXESUF)
 +XCC = $(XTCC) -I$(TARGET_SYSROOT)/usr/include -L$(TARGET_SYSROOT)/usr/lib
 +else
-+XTCC ?= /opt/procursus/bin/$(X)tcc$(EXESUF)
++XTCC ?= $(X)tcc$(EXESUF)
 +XCC = $(XTCC)
 +endif
  XAR = $(XTCC) -ar
