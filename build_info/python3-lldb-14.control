@@ -1,9 +1,9 @@
-Package: lldb-14
+Package: python3-lldb-14
 Section: Development
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: liblldb-14 (= @DEB_LLVM_V@), debugserver-14 (= @DEB_LLVM_V@), python3-lldb-14 (= @DEB_LLVM_V@)
+Depends: python3.9 (= 3.9.9-1), libpython3.9 (= 3.9.9-1)
 Priority: optional
 Homepage: https://www.llvm.org/
 Description: Next generation, high-performance debugger
