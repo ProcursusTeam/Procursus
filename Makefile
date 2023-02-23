@@ -872,7 +872,7 @@ PACK = \
 	fi; \
 	rm -f $(BUILD_DIST)/$(1)/.build_complete; \
 	rm -rf $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{info,doc}; \
-	for file in AUTHORS COPYING LICENSE NEWS README THANKS TODO; do \
+	for file in AUTHORS{,.TXT} COPYING{,.TXT} LICENSE{,.TXT} NEWS{,.TXT} README{,.TXT} THANKS{,.TXT} TODO{,.TXT}; do \
 		if [ -f "$(BUILD_WORK)/$$(echo $@ | sed 's/-package//')/$$file" ]; then \
 			mkdir -p $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1); \
 			cp -aL $(BUILD_WORK)/$$(echo $@ | sed 's/-package//')/$$file $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1); \

@@ -1,11 +1,12 @@
-Package: libradare2-common
+Package: libradare2-5.8
 Version: @DEB_RADARE2_V@
-Architecture: all
+Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Section: Development
+Depends: libradare2-common (= @DEB_RADARE2_V@), libcapstone5, libssl3, libuv1, libzip5, liblz4-1, libxxhash0, libmagic1
+Section: Libraries
 Priority: optional
 Homepage: https://www.radare.org
-Description: arch independent files from the radare2 suite
+Description: libraries from the radare2 suite
  The project aims to create a complete, portable, multi-architecture,
  unix-like toolchain for reverse engineering.
  .
@@ -18,4 +19,4 @@ Description: arch independent files from the radare2 suite
  supporting PE, mach0, ELF, class, etc. named rabin, and a block-based
  hash utility called rahash.
  .
- This package provides the arch independent files from radare2.
+ This package provides the libraries from radare2.
