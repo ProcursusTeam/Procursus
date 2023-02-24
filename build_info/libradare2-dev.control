@@ -2,7 +2,7 @@ Package: libradare2-dev
 Version: @DEB_RADARE2_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libradare2-4.5 (= @DEB_RADARE2_V@), libcapstone-dev, libssl-dev, libuv1-dev, libzip-dev, liblz4-dev, libxxhash-dev, libmagic-dev
+Depends: libradare2-5.8 (= @DEB_RADARE2_V@), libcapstone-dev, libssl-dev, libuv1-dev, libzip-dev, liblz4-dev, libxxhash-dev, libmagic-dev
 Section: Development
 Priority: optional
 Homepage: https://www.radare.org

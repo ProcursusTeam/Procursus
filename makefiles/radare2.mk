@@ -5,7 +5,7 @@ endif
 SUBPROJECTS     += radare2
 RADARE2_VERSION := 5.8.2
 RADARE2_API_V   := 5.8
-DEB_RADARE2_V   ?= $(RADARE2_VERSION)
+DEB_RADARE2_V   ?= $(RADARE2_VERSION)-1
 
 radare2-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/radareorg/radare2/releases/download/$(RADARE2_VERSION)/radare2-$(RADARE2_VERSION).tar.xz)
