@@ -93,9 +93,6 @@ $(error Unsupported CoreFoundation version)
 endif
 
 ifeq ($(shell [ "$(MEMO_TARGET)" = "iphoneos-arm64" ] || [ "$(MEMO_TARGET)" = "iphoneos-arm64-ramdisk" ] && echo 1),1)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for iOS)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := arm64
 PLATFORM              := iphoneos
 DEB_ARCH              := iphoneos-arm
@@ -113,9 +110,6 @@ BARE_PLATFORM         := iPhoneOS
 MEMO_DEPLOYMENT       := IPHONEOS_DEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),iphoneos-arm64-rootless)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for iOS with rootless prefix)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := arm64
 PLATFORM              := iphoneos
 DEB_ARCH              := iphoneos-arm64
@@ -133,9 +127,6 @@ BARE_PLATFORM         := iPhoneOS
 MEMO_DEPLOYMENT       := IPHONEOS_DEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),iphoneos-arm64e-rootless)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for iOS arm64e with rootless prefix)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := arm64e
 PLATFORM              := iphoneos
 DEB_ARCH              := iphoneos-arm64e
@@ -153,9 +144,6 @@ BARE_PLATFORM         := iPhoneOS
 MEMO_DEPLOYMENT       := IPHONEOS_DEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),iphoneos-arm64e)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for iOS arm64e)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := arm64e
 PLATFORM              := iphoneos
 DEB_ARCH              := iphoneos-arm64e
@@ -173,9 +161,6 @@ BARE_PLATFORM         := iPhoneOS
 MEMO_DEPLOYMENT       := IPHONEOS_DEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(shell [ "$(MEMO_TARGET)" = "iphoneos-armv7" ] || [ "$(MEMO_TARGET)" = "iphoneos-armv7-ramdisk" ] && echo 1),1)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for iOS)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := armv7
 PLATFORM              := iphoneos
 DEB_ARCH              := iphoneos-arm
@@ -193,9 +178,6 @@ BARE_PLATFORM         := iPhoneOS
 MEMO_DEPLOYMENT       := IPHONEOS_DEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(shell [ "$(MEMO_TARGET)" = "appletvos-arm64" ] || [ "$(MEMO_TARGET)" = "appletvos-arm64-ramdisk" ] && echo 1),1)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for tvOS)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := arm64
 PLATFORM              := appletvos
 DEB_ARCH              := appletvos-arm64
@@ -213,9 +195,6 @@ BARE_PLATFORM         := AppleTVOS
 MEMO_DEPLOYMENT       := APPLETVOS_DEPLOYMENT_TARGET=$(APPLETVOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),appletvos-arm64e)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for tvOS arm64e)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := arm64e
 PLATFORM              := appletvos
 DEB_ARCH              := appletvos-arm64e
@@ -233,9 +212,6 @@ BARE_PLATFORM         := AppleTVOS
 MEMO_DEPLOYMENT       := APPLETVOS_DEPLOYMENT_TARGET=$(APPLETVOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),audioos-arm64)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for audioOS)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := arm64
 PLATFORM              := appletvos # Platform-wise, audioos ~ appletvos (although some frameworks and stuff may be missing)
 DEB_ARCH              := audioos-arm64
@@ -253,9 +229,6 @@ BARE_PLATFORM         := AppleTVOS
 MEMO_DEPLOYMENT       := APPLETVOS_DEPLOYMENT_TARGET=$(APPLETVOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),bridgeos-arm64)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for BridgeOS)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := arm64
 PLATFORM              := iphoneos # find me a BridgeOS.sdk and you win.
 DEB_ARCH              := bridgeos-arm64
@@ -273,9 +246,6 @@ BARE_PLATFORM         := BridgeOS
 MEMO_DEPLOYMENT       := BRIDGEOS_DEPLOYMENT_TARGET=$(BRIDGEOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),watchos-arm64_32)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for WatchOS)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := arm64_32
 PLATFORM              := watchos
 DEB_ARCH              := watchos-arm64-32
@@ -293,9 +263,6 @@ BARE_PLATFORM         := WatchOS
 MEMO_DEPLOYMENT       := WATCHOS_DEPLOYMENT_TARGET=$(WATCHOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(shell [ "$(MEMO_TARGET)" = "watchos-armv7k" ] || [ "$(MEMO_TARGET)" = "watchos-armv7k-ramdisk" ] && echo 1),1)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for WatchOS)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := armv7k
 PLATFORM              := watchos
 DEB_ARCH              := watchos-armv7k
@@ -313,9 +280,6 @@ BARE_PLATFORM         := WatchOS
 MEMO_DEPLOYMENT       := WATCHOS_DEPLOYMENT_TARGET=$(WATCHOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),darwin-arm64e)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for macOS arm64e)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := arm64e
 PLATFORM              := macosx
 DEB_ARCH              := darwin-arm64e
@@ -333,9 +297,6 @@ BARE_PLATFORM         := MacOSX
 MEMO_DEPLOYMENT       := MACOSX_DEPLOYMENT_TARGET=$(MACOSX_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),darwin-arm64)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for macOS arm64)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := arm64
 PLATFORM              := macosx
 DEB_ARCH              := darwin-arm64
@@ -353,9 +314,6 @@ BARE_PLATFORM         := MacOSX
 MEMO_DEPLOYMENT       := MACOSX_DEPLOYMENT_TARGET=$(MACOSX_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),darwin-amd64)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for macOS amd64)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := x86_64
 PLATFORM              := macosx
 DEB_ARCH              := darwin-amd64
@@ -374,6 +332,11 @@ MEMO_DEPLOYMENT       := MACOSX_DEPLOYMENT_TARGET=$(MACOSX_DEPLOYMENT_TARGET)
 
 else
 $(error Platform not supported)
+endif
+
+
+ifneq ($(MEMO_QUIET),1)
+$(warning Building for $(BARE_PLATFORM) $(MEMO_ARCH) with CoreFoundation version $(MEMO_CFVER) and prefix $(MEMO_PREFIX))
 endif
 
 ifeq ($(UNAME),Linux)
