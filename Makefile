@@ -1283,9 +1283,9 @@ endif # ($(MEMO_PREFIX),)
 %-package: FAKEROOT=fakeroot -i $(BUILD_STAGE)/.fakeroot_$$(echo $@ | sed 's/\(.*\)-package/\1/') -s $(BUILD_STAGE)/.fakeroot_$$(echo $@ | sed 's/\(.*\)-package/\1/') --
 %-package: .SHELLFLAGS=-O extglob -c
 %-stage: %
+	mkdir -p $(BUILD_DIST) $(BUILD_STAGE)
 	rm -f $(BUILD_STAGE)/.fakeroot_$*
 	touch $(BUILD_STAGE)/.fakeroot_$*
-	mkdir -p $(BUILD_DIST)
 
 REPROJ=$(shell echo $@ | cut -f2- -d"-")
 REPROJ2=$(shell echo $(REPROJ) | sed 's/-package//' | sed 's/-setup//')
