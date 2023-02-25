@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += gzip
-GZIP_VERSION  := 1.11
+GZIP_VERSION  := 1.12
 DEB_GZIP_V    ?= $(GZIP_VERSION)
 
 gzip-setup: setup
