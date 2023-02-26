@@ -1,0 +1,14 @@
+diff -urN r2ghidra-5.8.2/ghidra/deps.mk r2ghidra/ghidra/deps.mk
+--- r2ghidra-5.8.2/ghidra/deps.mk	2023-01-23 18:03:56.000000000 +0000
++++ r2ghidra/ghidra/deps.mk	2023-02-26 03:49:58.619280139 +0000
+@@ -117,8 +117,8 @@
+ ../ghidra-processors.txt:
+ 	cp -f ../ghidra-processors.txt.default ../ghidra-processors.txt
+ 
+-sleigh-build: sleighc ../ghidra-processors.txt
+-	for a in DATA $(shell cat ../ghidra-processors.txt) ; do ./sleighc -a $(GHIDRA_SLEIGH_HOME)/$$a ; done
++sleigh-build: ../ghidra-processors.txt
++	for a in DATA $(shell cat ../ghidra-processors.txt) ; do sleighc -a $(GHIDRA_SLEIGH_HOME)/$$a ; done
+ 
+ GHIDRA_PROCS=$(GHIDRA_SLEIGH_HOME)/*/*/*
+ 
