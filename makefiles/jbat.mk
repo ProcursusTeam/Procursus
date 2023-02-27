@@ -8,7 +8,6 @@ DEB_JBAT_V   ?= $(JBAT_VERSION)
 
 jbat-setup: setup
 	$(call DOWNLOAD_FILE,$(BUILD_WORK)/jbat/jbat.c,https://github.com/hack-different/newosxbook-tools/raw/main/src/bat.c)
-	sed -i '/free/d' $(BUILD_WORK)/jbat/jbat.c
 
 ifneq ($(wildcard $(BUILD_WORK)/jbat/.build_complete),)
 jbat:
