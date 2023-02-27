@@ -7,7 +7,8 @@ HTOP_VERSION := 3.2.2
 DEB_HTOP_V   ?= $(HTOP_VERSION)
 
 htop-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/htop-dev/htop/releases/download/$(HTOP_VERSION)/htop-$(HTOP_VERSION).tar.xz)
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/htop-dev/htop/releases/download/$(HTOP_VERSION)/htop-$(HTOP_VERSION).tar.xz{$(comma).sha256})
+	$(call CHECKSUM_VERIFY,sha256,htop-$(HTOP_VERSION).tar.xz)
 	$(call EXTRACT_TAR,htop-$(HTOP_VERSION).tar.xz,htop-$(HTOP_VERSION),htop)
 
 ifneq ($(wildcard $(BUILD_WORK)/htop/.build_complete),)
