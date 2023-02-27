@@ -7,22 +7,21 @@ HTOP_VERSION := 3.2.2
 DEB_HTOP_V   ?= $(HTOP_VERSION)
 
 htop-setup: setup
-	$(call GITHUB_ARCHIVE,htop-dev,htop,$(HTOP_VERSION),$(HTOP_VERSION))
-	$(call EXTRACT_TAR,htop-$(HTOP_VERSION).tar.gz,htop-$(HTOP_VERSION),htop)
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/htop-dev/htop/releases/download/$(HTOP_VERSION)/htop-$(HTOP_VERSION).tar.xz)
+	$(call EXTRACT_TAR,htop-$(HTOP_VERSION).tar.xz,htop-$(HTOP_VERSION),htop)
 
 ifneq ($(wildcard $(BUILD_WORK)/htop/.build_complete),)
 htop:
 	@echo "Using previously built htop."
 else
 htop: htop-setup ncurses
-	cd $(BUILD_WORK)/htop && ./autogen.sh
 	cd $(BUILD_WORK)/htop && ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-static \
 		--disable-linux-affinity \
 		ac_cv_lib_ncursesw_addnwstr=yes
 	+$(MAKE) -C $(BUILD_WORK)/htop install \
-		DESTDIR=$(BUILD_STAGE)/htop
+		DESTDIR="$(BUILD_STAGE)/htop"
 	rm -rf $(BUILD_STAGE)/htop/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{applications,pixmaps}
 	$(call AFTER_BUILD)
 endif
