@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += dos2unix
-DOS2UNIX_VERSION := 7.4.2
+DOS2UNIX_VERSION := 7.4.4
 DEB_DOS2UNIX_V   ?= $(DOS2UNIX_VERSION)
 
 dos2unix-setup: setup
