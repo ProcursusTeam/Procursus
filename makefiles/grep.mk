@@ -26,7 +26,6 @@ grep: grep-setup
 endif
 	cd $(BUILD_WORK)/grep && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--disable-dependency-tracking \
 		--with-packager="$(DEB_MAINTAINER)" \
 		--program-prefix="$(GNU_PREFIX)"
 	+$(MAKE) -C $(BUILD_WORK)/grep
