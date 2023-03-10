@@ -18,13 +18,13 @@ else
 ed: ed-setup
 	cd $(BUILD_WORK)/ed && ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		CC=$(CC) \
+		CC="$(CC)" \
 		CFLAGS="$(CCFLAGS)" \
 		CPPFLAGS="$(CPPFLAGS)" \
 		LDFLAGS="$(LDFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/ed
-	+$(MAKE) -C $(BUILD_WORK)/ed install -j1 \
-		DESTDIR=$(BUILD_STAGE)/ed
+	+$(MAKE) -C $(BUILD_WORK)/ed install \
+		DESTDIR="$(BUILD_STAGE)/ed"
 	$(call AFTER_BUILD,copy)
 endif
 
