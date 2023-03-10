@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += ed
-ED_VERSION  := 1.18
+ED_VERSION  := 1.19
 DEB_ED_V    ?= $(ED_VERSION)
 
 ed-setup: setup
