@@ -3,7 +3,7 @@ Section: Development
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: python3.9 (= 3.9.9-1), libpython3.9 (= 3.9.9-1)
+Depends: python3.9, libpython3.9
 Priority: optional
 Homepage: https://www.llvm.org/
 Description: Next generation, high-performance debugger

@@ -346,8 +346,8 @@ endif
 	$(LN_S) libLLVM.dylib $(BUILD_DIST)/libllvm$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/libLLVM-$(LLVM_MAJOR_V).dylib
 
 	#llvm.mk Prep python3-lldb-$(LLVM_MAJOR_V)
-	mkdir -p $(BUILD_DIST)/python3-lldb-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/lib/python3.9/dist-packages
-	cp -a $(BUILD_STAGE)/llvm/opt/procursus/bin/python3/. $(BUILD_DIST)/python3-lldb-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/local/lib/python3.9/dist-packages/
+	mkdir -p $(BUILD_DIST)/python3-lldb-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/dist-packages
+	cp -a $(BUILD_STAGE)/llvm/opt/procursus/bin/python3/. $(BUILD_DIST)/python3-lldb-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/python$(PYTHON3_MAJOR_V)/dist-packages
 
 	# llvm.mk Prep lldb-$(LLVM_MAJOR_V)
 	mkdir -p $(BUILD_DIST)/lldb-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
