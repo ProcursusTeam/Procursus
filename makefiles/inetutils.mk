@@ -10,7 +10,6 @@ inetutils-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/inetutils/inetutils-$(INETUTILS_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,inetutils-$(INETUTILS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,inetutils-$(INETUTILS_VERSION).tar.xz,inetutils-$(INETUTILS_VERSION),inetutils)
-	mkdir -p $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)/{s,}bin
 
 ifneq ($(wildcard $(BUILD_WORK)/inetutils/.build_complete),)
 inetutils:
@@ -25,13 +24,16 @@ inetutils: inetutils-setup ncurses readline
 		--disable-talkd \
 		--disable-traceroute \
 		--disable-whois
-	sed -i 's/-ltermcap/-lncursesw/g' $(BUILD_WORK)/inetutils/telnet/Makefile
-	sed -i 's/-ltermcap/-lncursesw/g' $(BUILD_WORK)/inetutils/telnetd/Makefile
-	touch $(BUILD_WORK)/inetutils/man/*.8 $(BUILD_WORK)/inetutils/man/*.1
+	sed -i 's/-ltermcap/-lncursesw/g' $(BUILD_WORK)/inetutils/telnet{,d}/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/inetutils install \
-		DESTDIR=$(BUILD_STAGE)/inetutils
+		DESTDIR="$(BUILD_STAGE)/inetutils"
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+	mkdir -p $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)/bin
 	$(LN_SR) $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ping $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)/bin/ping
+else
+	mkdir -p $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)/sbin
 	$(LN_SR) $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ping $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)/sbin/ping
+endif
 	$(call AFTER_BUILD)
 endif
 
