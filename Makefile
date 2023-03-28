@@ -868,11 +868,11 @@ EXTRACT_TAR = -if [ ! -d $(BUILD_WORK)/$(3) ] || [ "$(4)" = "1" ]; then \
 DOWNLOAD_FILE = if [ ! -f "$(1)" ]; then \
 					echo "Downloading $(1)"; \
 					if [ -z "$$LIST" ]; then \
-						$(CURL) --output \
-							$(1) $(2) ; \
+						$(CURL) -s -w "%{http_code}" --output \
+							$(1) $(2) | grep -q 404 && echo "FAILED TO DOWNLOAD $(1)"; \
 					else \
-						$(CURL) --output \
-							$(1) $(2) & \
+						$(CURL) -s -w "%{http_code}" --output \
+							$(1) $(2) | grep -q 404 && echo "FAILED TO DOWNLOAD $(1)" & \
 					fi; \
 				else echo "$(1) already downloaded."; fi
 
@@ -1267,7 +1267,7 @@ env:
 
 include makefiles/*.mk
 
-RAMDISK_PROJECTS := bash coreutils diskdev-cmds findutils grep gzip ncurses profile.d readline tar openssl libmd openssh
+RAMDISK_PROJECTS := bash coreutils diskdev-cmds findutils grep gzip tar openssl openssh
 
 ramdisk:
 	+MEMO_NO_IOSEXEC=1 $(MAKE) $(RAMDISK_PROJECTS:%=%-package)
