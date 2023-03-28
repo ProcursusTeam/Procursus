@@ -1,0 +1,15 @@
+[target.x86_64-apple-darwin]
+linker = "x86_64-apple-darwin-clang"
+ar = "x86_64-apple-darwin-ar"
+
+
+[target.aarch64-apple-darwin]
+linker = "aarch64-apple-darwin-clang"
+ar = "aarch64-apple-darwin-ar"
+
+[target.aarch64-apple-ios]
+linker = "aarch64-apple-darwin-clang"
+ar = "aarch64-apple-darwin-ar"
+
+[build]
+rustflags = ["-C", "link-args=-shared"]
