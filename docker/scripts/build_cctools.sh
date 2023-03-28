@@ -4,6 +4,7 @@ set -e
 COMMIT="236a426c1205a3bfcf0dbb2e2faf2296f0a100e5"
 
 TRIPLES=(
+  "armv6-apple-darwin"
   "armv7-apple-darwin"
   "armv7k-apple-darwin"
   "aarch64-apple-darwin"

@@ -2,6 +2,7 @@
 set -e
 
 TRIPLES=(
+  "armv6-apple-darwin"
   "armv7-apple-darwin"
   "armv7k-apple-darwin"
   "aarch64-apple-darwin"
