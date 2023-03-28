@@ -3,14 +3,13 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += inetutils
-INETUTILS_VERSION := 2.0
-DEB_INETUTILS_V   ?= $(INETUTILS_VERSION)-1
+INETUTILS_VERSION := 2.4
+DEB_INETUTILS_V   ?= $(INETUTILS_VERSION)
 
 inetutils-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/inetutils/inetutils-$(INETUTILS_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,inetutils-$(INETUTILS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,inetutils-$(INETUTILS_VERSION).tar.xz,inetutils-$(INETUTILS_VERSION),inetutils)
-	$(call DO_PATCH,inetutils,inetutils,-p1)
 	mkdir -p $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)/{s,}bin
 
 ifneq ($(wildcard $(BUILD_WORK)/inetutils/.build_complete),)
