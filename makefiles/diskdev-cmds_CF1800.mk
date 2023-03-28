@@ -2,22 +2,12 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && [ "$(CFVER_WHOLE)" -lt 1800 ] && echo 1),1)
 
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-STRAPPROJECTS        += diskdev-cmds
-else # ($(MEMO_TARGET),darwin-\*)
-SUBPROJECTS          += diskdev-cmds
-endif # ($(MEMO_TARGET),darwin-\*)
-DISKDEV-CMDS_VERSION := 667.100.2
-DEB_DISKDEV-CMDS_V   ?= $(DISKDEV-CMDS_VERSION)
+DISKDEV-CMDS_CF1800_VERSION := 697
 
-diskdev-cmds-setup: setup
-	$(call GITHUB_ARCHIVE,apple-oss-distributions,diskdev_cmds,$(DISKDEV-CMDS_VERSION),diskdev_cmds-$(DISKDEV-CMDS_VERSION))
-	$(call EXTRACT_TAR,diskdev_cmds-$(DISKDEV-CMDS_VERSION).tar.gz,diskdev_cmds-diskdev_cmds-$(DISKDEV-CMDS_VERSION),diskdev-cmds)
-ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1300 ] && echo 1),1)
-	sed -i -e 's+#include <sys/mount.h>+#include <sys/mount.h>\n#ifndef MNT_STRICTATIME\n#define MNT_STRICTATIME 0x80\n#endif+g' $(BUILD_WORK)/diskdev-cmds/mount_flags_dir/mount_flags.c
-endif
+diskdev-cmds_CF1800-setup: setup
+	$(call GITHUB_ARCHIVE,apple-oss-distributions,diskdev_cmds,$(DISKDEV-CMDS_CF1800_VERSION),diskdev_cmds-$(DISKDEV-CMDS_CF1800_VERSION))
+	$(call EXTRACT_TAR,diskdev_cmds-$(DISKDEV-CMDS_CF1800_VERSION).tar.gz,diskdev_cmds-diskdev_cmds-$(DISKDEV-CMDS_CF1800_VERSION),diskdev-cmds)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	sed -i 's/TARGET_OS_IPHONE/1/g' $(BUILD_WORK)/diskdev-cmds/edt_fstab/edt_fstab.h
 	sed -i 's/TARGET_OS_SIMULATOR/0/g' $(BUILD_WORK)/diskdev-cmds/edt_fstab/edt_fstab.h
@@ -29,14 +19,17 @@ endif
 		$(BUILD_WORK)/diskdev-cmds/fsck.tproj/fsck.c
 	sed -i -e '/TARGET_OS_OSX/d' \
 		$(BUILD_WORK)/diskdev-cmds/disklib/preen.c
+	sed -i -e 's|/private/var/dirs_cleaner/|$(MEMO_PREFIX)/var/dirs_cleaner/|' \
+		-e 's|/tmp|$(MEMO_PREFIX)/tmp|g' \
+		$(BUILD_WORK)/diskdev-cmds/dirs_cleaner/dirs_cleaner.c
 	mkdir -p $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{{s,}bin,libexec,share/man/man{1,5,8}}
 
 ifneq ($(wildcard $(BUILD_WORK)/diskdev-cmds/.build_complete),)
-diskdev-cmds:
+diskdev-cmds_CF1800:
 	@echo "Using previously built diskdev-cmds."
 else
-diskdev-cmds: .SHELLFLAGS=-O extglob -c
-diskdev-cmds: diskdev-cmds-setup
+diskdev-cmds_CF1800: .SHELLFLAGS=-O extglob -c
+diskdev-cmds_CF1800: diskdev-cmds-setup
 	cd $(BUILD_WORK)/diskdev-cmds/disklib; \
 	rm -f mntopts.h getmntopts.c; \
 	for arch in $(MEMO_ARCH); do \
@@ -70,22 +63,23 @@ diskdev-cmds: diskdev-cmds-setup
 		bin=../$$(basename $$c .c); \
 		$(CC) $(CFLAGS) $(LDFLAGS) -isystem ../include -o $$bin $$c; \
 	done
+	$(CC) $(CFLAGS) $(LDFLAGS) $(BUILD_WORK)/diskdev-cmds/dirs_cleaner/dirs_cleaner.c -o $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/dirs_cleaner
 	cd $(BUILD_WORK)/diskdev-cmds; \
 	cp -a quota $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \
 	cp -a dev_mkdb edquota fdisk quotaon repquota vsdbutil $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin; \
 	cp -a vndevice $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec; \
 	cp -a quotacheck umount @(fstyp|newfs)?(_*([a-z0-9])) @(mount_*([a-z0-9])) $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin; \
-	cp -a quota.tproj/quota.1 $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
-	cp -a mount.tproj/fstab.5 $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5;
-ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1)
+	cp -a quota.tproj/quota.1 $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/; \
+	cp -a mount.tproj/fstab.5 $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5/; \
+	cp -a !(setclass).tproj/*.8 dirs_cleaner/dirs_cleaner.8 $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
 ifeq (,$(findstring ramdisk,$(MEMO_TARGET)))
 		rm -f $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/umount
-endif
 endif
 	$(call AFTER_BUILD)
 endif
 
-diskdev-cmds-package: diskdev-cmds-stage
+diskdev-cmds_CF1800-package:: DEB_DISKDEV-CMDS_V ?= $(DISKDEV-CMDS_CF1800_VERSION)
+diskdev-cmds_CF1800-package: diskdev-cmds-stage
 	# diskdev-cmds.mk Package Structure
 	rm -rf $(BUILD_DIST)/diskdev-cmds
 
@@ -96,10 +90,8 @@ diskdev-cmds-package: diskdev-cmds-stage
 	$(call SIGN,diskdev-cmds,general.xml)
 
 	# system-cmds.mk Permissions
-ifneq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1)
 ifneq (,$(findstring ramdisk,$(MEMO_TARGET)))
 		$(FAKEROOT) chmod u+s $(BUILD_DIST)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/umount
-endif
 endif
 
 	# diskdev-cmds.mk Make .debs
@@ -108,5 +100,4 @@ endif
 	# diskdev-cmds.mk Build cleanup
 	rm -rf $(BUILD_DIST)/diskdev-cmds
 
-.PHONY: diskdev-cmds diskdev-cmds-package
-endif
+.PHONY: diskdev-cmds_CF1800 diskdev-cmds_CF1800-package

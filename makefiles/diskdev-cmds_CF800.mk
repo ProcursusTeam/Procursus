@@ -2,20 +2,15 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-DISKDEV-CMDS_CF1600_VERSION := 667.100.2
+DISKDEV-CMDS_CF800_VERSION := 593
 
-diskdev-cmds_CF1600-setup: setup
-	$(call GITHUB_ARCHIVE,apple-oss-distributions,diskdev_cmds,$(DISKDEV-CMDS_CF1600_VERSION),diskdev_cmds-$(DISKDEV-CMDS_CF1600_VERSION))
-	$(call EXTRACT_TAR,diskdev_cmds-$(DISKDEV-CMDS_CF1600_VERSION).tar.gz,diskdev_cmds-diskdev_cmds-$(DISKDEV-CMDS_CF1600_VERSION),diskdev-cmds)
+diskdev-cmds_CF800-setup: setup
+	$(call GITHUB_ARCHIVE,apple-oss-distributions,diskdev_cmds,$(DISKDEV-CMDS_CF800_VERSION),diskdev_cmds-$(DISKDEV-CMDS_CF800_VERSION))
+	$(call EXTRACT_TAR,diskdev_cmds-$(DISKDEV-CMDS_CF800_VERSION).tar.gz,diskdev_cmds-diskdev_cmds-$(DISKDEV-CMDS_CF800_VERSION),diskdev-cmds)
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1300 ] && echo 1),1)
 	sed -i -e 's+#include <sys/mount.h>+#include <sys/mount.h>\n#ifndef MNT_STRICTATIME\n#define MNT_STRICTATIME 0x80\n#endif+g' $(BUILD_WORK)/diskdev-cmds/mount_flags_dir/mount_flags.c
 endif
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	sed -i 's/TARGET_OS_IPHONE/1/g' $(BUILD_WORK)/diskdev-cmds/edt_fstab/edt_fstab.h
-	sed -i 's/TARGET_OS_SIMULATOR/0/g' $(BUILD_WORK)/diskdev-cmds/edt_fstab/edt_fstab.h
-endif
 	sed -i -e '/#include <TargetConditionals.h>/d' \
-		$(BUILD_WORK)/diskdev-cmds/edt_fstab/edt_fstab.h \
 		$(BUILD_WORK)/diskdev-cmds/fsck.tproj/fsck.c
 	sed -i 's/TARGET_OS_IPHONE/WHOISJOE/g' \
 		$(BUILD_WORK)/diskdev-cmds/fsck.tproj/fsck.c
@@ -24,11 +19,11 @@ endif
 	mkdir -p $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{{s,}bin,libexec,share/man/man{1,5,8}}
 
 ifneq ($(wildcard $(BUILD_WORK)/diskdev-cmds/.build_complete),)
-diskdev-cmds_CF1600:
+diskdev-cmds_CF800:
 	@echo "Using previously built diskdev-cmds."
 else
-diskdev-cmds_CF1600: .SHELLFLAGS=-O extglob -c
-diskdev-cmds_CF1600: diskdev-cmds-setup
+diskdev-cmds_CF800: .SHELLFLAGS=-O extglob -c
+diskdev-cmds_CF800: diskdev-cmds-setup
 	cd $(BUILD_WORK)/diskdev-cmds/disklib; \
 	rm -f mntopts.h getmntopts.c; \
 	for arch in $(MEMO_ARCH); do \
@@ -52,9 +47,6 @@ diskdev-cmds_CF1600: diskdev-cmds-setup
 		if [[ $$tproj = mount_cd9660 || $$tproj = mount_hfs || $$tproj = newfs_hfs ]]; then \
 			extra="${extra} -framework CoreFoundation"; \
 		fi; \
-		if [[ $$tproj = vsdbutil ]]; then \
-			extra="${extra} mount_flags_dir/mount_flags.c"; \
-		fi; \
 		$(CC) $(CFLAGS) -isystem include -Idisklib -o $$tproj $$(find "$$tproj.tproj" -name '*.c') $(LDFLAGS) $${LIBDISKA} -lutil $$extra; \
 	done
 	cd $(BUILD_WORK)/diskdev-cmds/fstyp.tproj; \
@@ -63,10 +55,10 @@ diskdev-cmds_CF1600: diskdev-cmds-setup
 		$(CC) $(CFLAGS) $(LDFLAGS) -isystem ../include -o $$bin $$c; \
 	done
 	cd $(BUILD_WORK)/diskdev-cmds; \
-	cp -a quota $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin; \
-	cp -a dev_mkdb edquota fdisk quotaon repquota vsdbutil $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin; \
-	cp -a vndevice $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec; \
-	cp -a quotacheck umount @(fstyp|newfs)?(_*([a-z0-9])) @(mount_*([a-z0-9])) $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin; \
+	cp -a quota $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/; \
+	cp -a dev_mkdb edquota fdisk quotaon repquota vsdbutil $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/; \
+	cp -a vndevice $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/; \
+	cp -a quotacheck umount @(fstyp|newfs)?(_*([a-z0-9])) @(mount_*([a-z0-9])) $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/; \
 	cp -a quota.tproj/quota.1 $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
 	cp -a mount.tproj/fstab.5 $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5;
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1)
@@ -77,8 +69,8 @@ endif
 	$(call AFTER_BUILD)
 endif
 
-diskdev-cmds_CF1600-package:: DEB_DISKDEV-CMDS_V ?= $(DISKDEV-CMDS_CF1600_VERSION)
-diskdev-cmds_CF1600-package: diskdev-cmds-stage
+diskdev-cmds_CF800-package:: DEB_DISKDEV-CMDS_V ?= $(DISKDEV-CMDS_CF800_VERSION)
+diskdev-cmds_CF800-package: diskdev-cmds-stage
 	# diskdev-cmds.mk Package Structure
 	rm -rf $(BUILD_DIST)/diskdev-cmds
 
@@ -89,6 +81,7 @@ diskdev-cmds_CF1600-package: diskdev-cmds-stage
 	$(call SIGN,diskdev-cmds,general.xml)
 
 	# system-cmds.mk Permissions
+	$(FAKEROOT) chmod u+s $(BUILD_DIST)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/quota
 ifneq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1)
 ifneq (,$(findstring ramdisk,$(MEMO_TARGET)))
 		$(FAKEROOT) chmod u+s $(BUILD_DIST)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/umount
@@ -101,4 +94,4 @@ endif
 	# diskdev-cmds.mk Build cleanup
 	rm -rf $(BUILD_DIST)/diskdev-cmds
 
-.PHONY: diskdev-cmds_CF1600 diskdev-cmds_CF1600-package
+.PHONY: diskdev-cmds_CF800 diskdev-cmds_CF800-package

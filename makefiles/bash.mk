@@ -7,6 +7,7 @@ STRAPPROJECTS   += bash
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += bash
 endif # ($(MEMO_TARGET),darwin-\*)
+
 BASH_VERSION    := 5.2.15
 BASH_PATCHLEVEL := 0
 DEB_BASH_V      ?= $(BASH_VERSION)
