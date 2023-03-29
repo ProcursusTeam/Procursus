@@ -1,10 +1,8 @@
-Package: libtapi
-Version: @DEB_TAPI_V@
+Package: libtapi14
+Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Conflicts: libtapi10
-Replaces: libtapi10
-Depends: libncursesw6 (>= 6.0)
+Depends: libllvm14 (= @DEB_LLVM_V@)
 Section: Development
 Priority: optional
 Description: Text-based Application Programming Interface (library)

@@ -7,14 +7,17 @@ endif
 SUBPROJECTS     += llvm
 LLVM_MAJOR_V    := 14
 LLVM_MINOR_V    := 0
-LLVM_PATCH_V    := 0
+# Arbitrarily bump the patch version cause why didn't apple???
+LLVM_PATCH_V    := 1
 LLVM_VERSION    := $(LLVM_MAJOR_V).$(LLVM_MINOR_V).$(LLVM_PATCH_V)
 LLVM_REVISION   := c41f13252ed4b49f246729b4d91ff521d5a6bf9d
 LLVM_REPOSITORY := https://github.com/apple/llvm-project.git
-SWIFT_VERSION   := 5.7.2
+SWIFT_VERSION   := 5.7.3
 SWIFT_SUFFIX    := RELEASE
 DEB_SWIFT_V     ?= $(SWIFT_VERSION)~$(SWIFT_SUFFIX)
 DEB_LLVM_V      ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)
+
+TAPI_COMMIT     := ea837b1bece733f359a8f59ac62ed8dbe204430f
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 LLVM_CMAKE_FLAGS :=     -DLLDB_USE_SYSTEM_DEBUGSERVER=ON \
@@ -28,9 +31,11 @@ llvm-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/apple/llvm-project/archive/swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz)
 	$(call GITHUB_ARCHIVE,apple,swift,$(SWIFT_VERSION)-$(SWIFT_SUFFIX),swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),swift-swift)
 	$(call GITHUB_ARCHIVE,apple,cmark,$(SWIFT_VERSION)-$(SWIFT_SUFFIX),swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),swift-cmark)
+	$(call GITHUB_ARCHIVE,CRKatri,tapi,$(TAPI_COMMIT),$(TAPI_COMMIT))
 	$(call EXTRACT_TAR,swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz,llvm-project-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),llvm)
 	$(call EXTRACT_TAR,swift-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz,swift-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),llvm/swift)
 	$(call EXTRACT_TAR,swift-cmark-$(SWIFT_VERSION)-$(SWIFT_SUFFIX).tar.gz,swift-cmark-swift-$(SWIFT_VERSION)-$(SWIFT_SUFFIX),llvm/cmark)
+	$(call EXTRACT_TAR,tapi-$(TAPI_COMMIT).tar.gz,tapi-$(TAPI_COMMIT),llvm/tapi)
 	$(call DO_PATCH,llvm,llvm,-p1)
 	$(call DO_PATCH,swift,llvm/swift,-p1)
 	sed -i "s|VERBATIM COMMAND mig |VERBATIM COMMAND mig -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include |" $(BUILD_WORK)/llvm/lldb/tools/debugserver/source/CMakeLists.txt
@@ -114,9 +119,10 @@ ifeq ($(wildcard $(BUILD_WORK)/llvm/build/.build_complete),)
 		-DLLVM_TARGET_TRIPLE_ENV="LLVM_TARGET_TRIPLE" \
 		-DLLVM_TARGETS_TO_BUILD="X86;ARM;AArch64" \
 		-DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;lldb;clang-tools-extra;lld;polly" \
-		-DLLVM_EXTERNAL_PROJECTS="cmark;swift" \
+		-DLLVM_EXTERNAL_PROJECTS="cmark;swift;tapi" \
 		-DLLVM_EXTERNAL_SWIFT_SOURCE_DIR="$(BUILD_WORK)/llvm/swift" \
 		-DLLVM_EXTERNAL_CMARK_SOURCE_DIR="$(BUILD_WORK)/llvm/cmark" \
+		-DLLVM_EXTERNAL_TAPI_SOURCE_DIR="$(BUILD_WORK)/llvm/tapi" \
 		-DLLVM_INCLUDE_TESTS=OFF \
 		-DMIG_ARCHS=$(MEMO_ARCH) \
 		-DCFLAGS_DEPLOYMENT_VERSION_IOS="$(IPHONEOS_DEPLOYMENT_TARGET)" \
@@ -141,6 +147,7 @@ ifeq ($(wildcard $(BUILD_WORK)/llvm/build/.build_complete),)
 		-DSWIFT_NATIVE_LLVM_TOOLS_PATH="$(BUILD_WORK)/../../native/llvm/bin" \
 		-DLLVM_TABLEGEN="$(BUILD_WORK)/../../native/llvm/bin/llvm-tblgen" \
 		-DCLANG_TABLEGEN="$(BUILD_WORK)/../../native/llvm/bin/clang-tblgen" \
+		-DCLANG_TABLEGEN_EXE="$(BUILD_WORK)/../../native/llvm/bin/clang-tblgen" \
 		-DLLDB_TABLEGEN="$(BUILD_WORK)/../../native/llvm/bin/lldb-tblgen" \
 		-DLLDB_TABLEGEN_EXE="$(BUILD_WORK)/../../native/llvm/bin/lldb-tblgen" \
 		-DLLDB_BUILD_FRAMEWORK=OFF \
@@ -175,7 +182,8 @@ ifeq ($(wildcard $(BUILD_WORK)/llvm/build/.build_complete),)
 	find $(BUILD_WORK)/llvm/build/tools/swift/stdlib/toolchain -type d -name '*.dir' \
 		-exec sed -i 's/-flto=thin //g' {}/flags.make \; # I hate this too, but I don't have a choice
 	+$(MAKE) -C $(BUILD_WORK)/llvm/build
-	+$(MAKE) -C $(BUILD_WORK)/llvm/build install \
+	+$(MAKE) -C $(BUILD_WORK)/llvm/build libtapi tapi
+	+$(MAKE) -C $(BUILD_WORK)/llvm/build install install-libtapi-stripped install-tapi-headers install-tapi \
 		DESTDIR="$(BUILD_STAGE)/llvm"
 	$(INSTALL) -Dm755 $(BUILD_WORK)/llvm/build/bin/{obj2yaml,yaml2obj} $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/
 	touch $(BUILD_WORK)/llvm/build/.build_complete
@@ -217,12 +225,12 @@ endif
 	$(CC) $(CFLAGS) $(LDFLAGS) $(BUILD_MISC)/llvm/wrapper.c -o $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/swiftc-$(SWIFT_VERSION) \
 		-DTOOL=\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/swiftc\" -DDEFAULT_SYSROOT=\"$(ON_DEVICE_SDK_PATH)\" \
 		-DEXTRA_CPATH=\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include\" -DEXTRA_LIBRARY_PATH=\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib\"
-	$(call AFTER_BUILD,,,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib)
+	$(call AFTER_BUILD,copy,,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib)
 endif
 
 llvm-package: llvm-stage
 	# llvm.mk Package Structure
-	rm -rf $(BUILD_DIST)/{clang*,debugserver*,libc++*,libclang*,liblldb*,liblld*,libllvm*,lldb*,swift*,lld*,llvm*}/
+	rm -rf $(BUILD_DIST)/{clang*,debugserver*,libc++*,libclang*,liblldb*,liblld*,libllvm*,lldb*,swift*,lld*,llvm*,libtapi*,tapi*}/
 
 	# llvm.mk Prep clang-$(LLVM_MAJOR_V)
 	mkdir -p $(BUILD_DIST)/clang-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib/llvm-$(LLVM_MAJOR_V)/{bin,lib/cmake,share/clang}}
@@ -416,6 +424,22 @@ endif
 	mkdir -p $(BUILD_DIST)/lld/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	$(LN_S) ../lib/llvm-$(LLVM_MAJOR_V)/bin/{ld.lld,ld64.lld,lld,lld-link,wasm-ld} $(BUILD_DIST)/lld/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
 
+	# llvm.mk Prep libtapi$(LLVM_MAJOR_V)
+	mkdir -p $(BUILD_DIST)/libtapi$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/libtapi.dylib $(BUILD_DIST)/libtapi$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/
+
+	# llvm.mk Prep libtapi-dev
+	mkdir -p $(BUILD_DIST)/libtapi-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/include
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/include/tapi $(BUILD_DIST)/libtapi-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/include/
+
+	# llvm.mk Prep tapi-$(LLVM_MAJOR_V)
+	mkdir -p $(BUILD_DIST)/tapi-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib/llvm-$(LLVM_MAJOR_V)/bin}
+	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/tapi $(BUILD_DIST)/tapi-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/
+	$(LN_S) ../lib/llvm-$(LLVM_MAJOR_V)/bin/tapi $(BUILD_DIST)/tapi-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/tapi-14
+
+	# llvm.mk Prep tapi
+	mkdir -p $(BUILD_DIST)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	$(LN_S) tapi-14 $(BUILD_DIST)/tapi/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/tapi
 
 	# llvm.mk Sign
 	$(call SIGN,clang-$(LLVM_MAJOR_V),general.xml)
@@ -435,6 +459,8 @@ endif
 	$(call SIGN,llvm-$(LLVM_MAJOR_V)-linker-tools,general.xml)
 	$(call SIGN,clang-tools-$(LLVM_MAJOR_V),general.xml)
 	$(call SIGN,lld-$(LLVM_MAJOR_V),general.xml)
+	$(call SIGN,libtapi$(LLVM_MAJOR_V),general.xml)
+	$(call SIGN,tapi-$(LLVM_MAJOR_V),general.xml)
 	# repl_swift may need to sign with tfp0.xml
 
 	# llvm.mk Make .debs
@@ -474,9 +500,12 @@ endif
 	$(call PACK,clang-tools-$(LLVM_MAJOR_V),DEB_LLVM_V)
 	$(call PACK,clang-tools,DEB_LLVM_V)
 	$(call PACK,lld-$(LLVM_MAJOR_V),DEB_LLVM_V)
-	$(call PACK,lld,DEB_LLVM_V)
+	$(call PACK,libtapi$(LLVM_MAJOR_V),DEB_LLVM_V)
+	$(call PACK,libtapi-dev,DEB_LLVM_V)
+	$(call PACK,tapi-$(LLVM_MAJOR_V),DEB_LLVM_V)
+	$(call PACK,tapi,DEB_LLVM_V)
 
 	# llvm.mk Build cleanup
-	rm -rf $(BUILD_DIST)/{clang*,debugserver*,libc++*,libclang*,liblldb*,liblld*,libllvm*,lldb*,swift*,lld*,llvm*}/
+	rm -rf $(BUILD_DIST)/{clang*,debugserver*,libc++*,libclang*,liblldb*,liblld*,libllvm*,lldb*,swift*,lld*,llvm*,libtapi*,tapi*}/
 
 .PHONY: llvm llvm-package
