@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS             += dhinakg-keyring
-DHINAKG_KEYRING_VERSION := 2022.12.08
+DHINAKG_KEYRING_VERSION := 2023.04.02
 DEB_DHINAKG_KEYRING_V   ?= $(DHINAKG_KEYRING_VERSION)
 
 dhinakg-keyring:
