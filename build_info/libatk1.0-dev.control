@@ -1,0 +1,17 @@
+Package: libatk1.0-dev
+Version: @DEB_ATK_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libatk1.0-0 (= @DEB_ATK_V@), pkg-config, libglib2.0-dev (>= 2.31.2)
+Replaces: gir-repository-dev
+Section: Development
+Priority: optional
+Multi-Arch: same
+Description: Development files for the ATK accessibility toolkit
+ ATK is a toolkit providing accessibility interfaces for applications or
+ other toolkits. By implementing these interfaces, those other toolkits or
+ applications can be used with tools such as screen readers, magnifiers, and
+ other alternative input devices.
+ .
+ These are the development files for ATK, needed for compilation of
+ programs or toolkits which use it.
