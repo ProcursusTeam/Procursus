@@ -2,21 +2,23 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += ktool
-KTOOL_VERSION  := 1.3.0
-DEB_KTOOL_V    ?= $(KTOOL_VERSION)
+SUBPROJECTS   += ktool
+KTOOL_VERSION := 1.4.0
+KTOOL_COMMIT  := 596404b085af4f3c2406251ef3bbbc77b81a4981
+DEB_KTOOL_V   ?= $(KTOOL_VERSION)
 
 ktool-setup: setup
-	$(call GITHUB_ARCHIVE,cxnder,ktool,$(KTOOL_VERSION),$(KTOOL_VERSION))
-	$(call EXTRACT_TAR,ktool-$(KTOOL_VERSION).tar.gz,ktool-$(KTOOL_VERSION),ktool)
+	$(call GITHUB_ARCHIVE,cxnder,ktool,$(KTOOL_COMMIT),$(KTOOL_COMMIT))
+	$(call EXTRACT_TAR,ktool-$(KTOOL_COMMIT).tar.gz,ktool-$(KTOOL_COMMIT),ktool)
 	$(call DO_PATCH,ktool,ktool,-p1)
+	sed -i '9s|".*"|"$(DEB_KTOOL_V)"|' $(BUILD_WORK)/ktool/.legacy_setup.py
+	sed -i "444s|@DEB_MAINTAINER@|$(DEB_MAINTAINER)|" $(BUILD_WORK)/ktool/src/ktool/ktool_script.py
 
 ifneq ($(wildcard $(BUILD_WORK)/ktool/.build_complete),)
 ktool:
 	@echo "Using previously built ktool."
 else
 ktool: ktool-setup python3-kimg4 python3-pyaes pygments python3
-	sed -i 's|@DEB_KTOOL_V@|$(DEB_KTOOL_V)|g' $(BUILD_WORK)/ktool/.legacy_setup.py
 	cd $(BUILD_WORK)/ktool && $(DEFAULT_SETUP_PY_ENV) python3 ./.legacy_setup.py \
 		build \
 		--executable="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3" \
@@ -35,9 +37,6 @@ ktool-package: ktool-stage
 
 	# ktool.mk Prep ktool
 	cp -a $(BUILD_STAGE)/ktool $(BUILD_DIST)
-
-	# ktool.mk Sign
-	$(call SIGN,ktool,general.xml)
 
 	# ktool.mk Make .debs
 	$(call PACK,ktool,DEB_KTOOL_V)
