@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += libmd
 LIBMD_VERSION := 1.0.4
-DEB_LIBMD_V   ?= $(LIBMD_VERSION)
+DEB_LIBMD_V   ?= $(LIBMD_VERSION)-1
 
 libmd-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://archive.hadrons.org/software/libmd/libmd-$(LIBMD_VERSION).tar.xz)
@@ -35,11 +35,6 @@ libmd-package: libmd-stage
 	# libmd.mk Prep libmd-dev
 	cp -a $(BUILD_STAGE)/libmd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share} $(BUILD_DIST)/libmd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/libmd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libmd.a,libmd.dylib} $(BUILD_DIST)/libmd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	for manpage in $(BUILD_DIST)/libmd-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3/*; do \
-		if [ -L $$manpage ]; then \
-			$(LN_S) $$(readlink $$manpage).zst $$manpage; \
-		fi; \
-	done
 
 	# libmd.mk Sign
 	$(call SIGN,libmd0,general.xml)

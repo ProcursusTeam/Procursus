@@ -6,13 +6,13 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS      += shell-cmds
 SHELL-CMDS_VERSION := 278
-DEB_SHELL-CMDS_V   ?= $(SHELL-CMDS_VERSION)
+DEB_SHELL-CMDS_V   ?= $(SHELL-CMDS_VERSION)-1
 
 shell-cmds-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,shell_cmds,$(SHELL-CMDS_VERSION),shell_cmds-$(SHELL-CMDS_VERSION))
 	$(call EXTRACT_TAR,shell_cmds-$(SHELL-CMDS_VERSION).tar.gz,shell_cmds-shell_cmds-$(SHELL-CMDS_VERSION),shell-cmds)
-	sed -i 's|/bin:/usr/bin|$(MEMO_PREFIX)/bin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin|g' $(BUILD_WORK)/shell-cmds/su/su.c
-	sed -i 's|/etc|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/etc|g' $(BUILD_WORK)/shell-cmds/path_helper/path_helper.c
+	sed -i 's|"/bin:/usr/bin|"/bin:/usr/bin:$(MEMO_PREFIX)/bin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin|g' $(BUILD_WORK)/shell-cmds/su/su.c
+	sed -i 's|"/etc|"$(MEMO_PREFIX)/etc|g' $(BUILD_WORK)/shell-cmds/path_helper/path_helper.c
 
 ifneq ($(wildcard $(BUILD_WORK)/shell-cmds/.build_complete),)
 shell-cmds:

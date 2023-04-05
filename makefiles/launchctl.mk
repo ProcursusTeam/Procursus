@@ -2,19 +2,23 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-
 STRAPPROJECTS     += launchctl
-LAUNCHCTL_VERSION := $(shell $(STRINGS) $(BUILD_MISC)/launchctl/launchctl.$(MEMO_CFVER) | grep '@(#)PROGRAM:launchctl  PROJECT:libxpc-'| cut -d- -f2)
-DEB_LAUNCHCTL_V   ?= $(LAUNCHCTL_VERSION)
+LAUNCHCTL_VERSION := 1.1.1
+DEB_LAUNCHCTL_V   ?= 1:$(LAUNCHCTL_VERSION)
+
+launchctl-setup: setup
+	$(call GITHUB_ARCHIVE,ProcursusTeam,launchctl,$(LAUNCHCTL_VERSION),v$(LAUNCHCTL_VERSION))
+	$(call EXTRACT_TAR,launchctl-$(LAUNCHCTL_VERSION).tar.gz,launchctl-$(LAUNCHCTL_VERSION),launchctl)
 
 ifneq ($(wildcard $(BUILD_WORK)/launchctl/.build_complete),)
 launchctl:
 	@echo "Using previously built launchctl."
 else
-launchctl:
+launchctl: launchctl-setup
 	mkdir -p $(BUILD_STAGE)/launchctl/{$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man{1,5,8}},$(MEMO_PREFIX)/bin}
-	$(INSTALL) -m755 $(BUILD_MISC)/launchctl/launchctl.$(MEMO_CFVER) $(BUILD_STAGE)/launchctl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/launchctl
+	$(MAKE) -C $(BUILD_WORK)/launchctl install \
+		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+		DESTDIR="$(BUILD_STAGE)/launchctl"
 ifneq ($(MEMO_SUB_PREFIX),)
 	$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/launchctl $(BUILD_STAGE)/launchctl/$(MEMO_PREFIX)/bin/launchctl
 endif
@@ -41,5 +45,3 @@ launchctl-package: launchctl-stage
 	rm -rf $(BUILD_DIST)/launchctl
 
 .PHONY: launchctl launchctl-package
-
-endif

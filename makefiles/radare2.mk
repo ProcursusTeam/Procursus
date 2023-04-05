@@ -3,23 +3,32 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += radare2
-RADARE2_VERSION := 4.5.0
-RADARE2_API_V   := 4.5
-DEB_RADARE2_V   ?= $(RADARE2_VERSION)-2
+RADARE2_VERSION := 5.8.2
+RADARE2_API_V   := 5.8
+DEB_RADARE2_V   ?= $(RADARE2_VERSION)-1
 
 radare2-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/radareorg/radare2/releases/download/$(RADARE2_VERSION)/radare2-src-$(RADARE2_VERSION).tar.gz)
-	$(call EXTRACT_TAR,radare2-src-$(RADARE2_VERSION).tar.gz,radare2-$(RADARE2_VERSION),radare2)
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/radareorg/radare2/releases/download/$(RADARE2_VERSION)/radare2-$(RADARE2_VERSION).tar.xz)
+	$(call EXTRACT_TAR,radare2-$(RADARE2_VERSION).tar.xz,radare2-$(RADARE2_VERSION),radare2)
+	$(call DO_PATCH,radare2,radare2,-p1)
+#	Only God knows why this isn't in the original Makefile...
+	sed -i "s|LDFLAGS+=\$$(SHLR)/grub/libgrubfs.a|LDFLAGS+=\$$(SHLR)/grub/libgrubfs.a -lzip|" $(BUILD_WORK)/radare2/libr/fs/Makefile
 
 ifneq ($(wildcard $(BUILD_WORK)/radare2/.build_complete),)
 radare2:
 	@echo "Using previously built radare2."
 else
-radare2: radare2-setup libuv1 libzip openssl
+radare2: radare2-setup capstone libuv1 libzip openssl xxhash lz4 file
 	cd $(BUILD_WORK)/radare2 && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--with-openssl \
-		--with-syszip
+		--with-ssl \
+		--with-syszip \
+		--with-syslz4 \
+		--with-sysxxhash \
+		--with-sysmagic \
+		--with-syscapstone \
+		--with-libuv \
+		PKGCONFIG="$(BUILD_TOOLS)/cross-pkg-config"
 	+$(MAKE) -C $(BUILD_WORK)/radare2 \
 		HAVE_LIBVERSION=1
 	+$(MAKE) -C $(BUILD_WORK)/radare2 install \
@@ -42,7 +51,7 @@ radare2-package: radare2-stage
 	cp -a $(BUILD_STAGE)/radare2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man $(BUILD_DIST)/radare2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
 	# radare2.mk Prep libradare2-$(RADARE2_API_V)
-	cp -a $(BUILD_STAGE)/radare2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/*$(RADARE2_VERSION).dylib $(BUILD_DIST)/libradare2-$(RADARE2_API_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/radare2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/*$(RADARE2_API_V)*.dylib $(BUILD_DIST)/libradare2-$(RADARE2_API_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/radare2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/radare2 $(BUILD_DIST)/libradare2-$(RADARE2_API_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# radare2.mk Prep libradare2-common
@@ -50,7 +59,7 @@ radare2-package: radare2-stage
 
 	# radare2.mk Prep libradare2-dev
 	cp -a $(BUILD_STAGE)/radare2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libradare2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/radare2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(*$(RADARE2_VERSION)*|radare2) $(BUILD_DIST)/libradare2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/radare2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(*$(RADARE2_API_V)*|radare2) $(BUILD_DIST)/libradare2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# radare2.mk Sign
 	$(call SIGN,radare2,general.xml)

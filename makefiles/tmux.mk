@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += tmux
-TMUX_VERSION   := 3.2
+TMUX_VERSION   := 3.3a
 DEB_TMUX_V     ?= $(TMUX_VERSION)
 
 tmux-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/tmux/tmux/releases/download/$(TMUX_VERSION)/tmux-$(TMUX_VERSION).tar.gz)
+	$(call GITHUB_ARCHIVE,tmux,tmux,$(TMUX_VERSION),$(TMUX_VERSION))
 	$(call EXTRACT_TAR,tmux-$(TMUX_VERSION).tar.gz,tmux-$(TMUX_VERSION),tmux)
 	$(call DO_PATCH,tmux,tmux,-p1)
 
@@ -16,7 +16,7 @@ tmux:
 	@echo "Using previously built tmux."
 else
 tmux: tmux-setup ncurses libevent libutf8proc
-	cd $(BUILD_WORK)/tmux && autoreconf -fi
+	cd $(BUILD_WORK)/tmux && ./autogen.sh
 	cd $(BUILD_WORK)/tmux && ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-static \
@@ -25,7 +25,7 @@ tmux: tmux-setup ncurses libevent libutf8proc
 		LIBNCURSES_LIBS="-lncursesw" \
 		LIBNCURSES_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ncursesw"
 	+$(MAKE) -C $(BUILD_WORK)/tmux install \
-		DESTDIR=$(BUILD_STAGE)/tmux
+		DESTDIR="$(BUILD_STAGE)/tmux"
 	$(call AFTER_BUILD)
 endif
 

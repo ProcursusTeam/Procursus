@@ -19,6 +19,7 @@ endif
 libiosexec-setup: setup
 	$(call GITHUB_ARCHIVE,ProcursusTeam,libiosexec,$(LIBIOSEXEC_VERSION),$(LIBIOSEXEC_VERSION))
 	$(call EXTRACT_TAR,libiosexec-$(LIBIOSEXEC_VERSION).tar.gz,libiosexec-$(LIBIOSEXEC_VERSION),libiosexec)
+	sed -i 's/$$(shell uname -s)/Darwin/g' $(BUILD_WORK)/libiosexec/Makefile
 
 ifneq ($(wildcard $(BUILD_WORK)/libiosexec/.build_complete),)
 libiosexec:

@@ -1,9 +1,0 @@
-Package: tc
-Version: @DEB_TC_V@
-Architecture: @DEB_ARCH@
-Maintainer: @DEB_MAINTAINER@
-Author: Cameron Katri <me+tc@cameronkatri.com>
-Section: Development
-Priority: optional
-Homepage: https://github.com/CRKatri/tc
-Description: Get info about and modify Apple trustcaches

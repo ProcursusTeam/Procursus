@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS += vim
 # Per homebrew, vim should only be updated every 50 releases on multiples of 50
-VIM_VERSION := 8.2.1800
+VIM_VERSION := 9.0.1000
 DEB_VIM_V   ?= $(VIM_VERSION)
 
 vim-setup: setup
@@ -16,7 +16,7 @@ vim:
 	@echo "Using previously built vim."
 else
 vim: .SHELLFLAGS=-O extglob -c
-vim: vim-setup ncurses gettext
+vim: vim-setup ncurses gettext libsodium
 	sed -i 's/AC_TRY_LINK(\[]/AC_TRY_LINK(\[#include <termcap.h>]/g' $(BUILD_WORK)/vim/src/configure.ac # This is so stupid, I cannot believe this is necessary.
 	cd $(BUILD_WORK)/vim/src && autoconf -f
 	cd $(BUILD_WORK)/vim && ./configure -C \

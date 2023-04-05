@@ -11,8 +11,8 @@ STRAPPROJECTS += sed
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += sed
 endif # ($(MEMO_TARGET),darwin-\*)
-SED_VERSION   := 4.8
-DEB_SED_V     ?= $(SED_VERSION)-2
+SED_VERSION   := 4.9
+DEB_SED_V     ?= $(SED_VERSION)
 
 sed-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/sed/sed-$(SED_VERSION).tar.xz{$(comma).sig})
