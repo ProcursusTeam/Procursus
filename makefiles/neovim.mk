@@ -30,7 +30,7 @@ neovim: neovim-setup gettext lua-luv libuv1 msgpack libvterm libtermkey unibiliu
 		-DGETTEXT_MSGMERGE_EXECUTABLE="`which msgmerge`" \
 		-DLIBLUV_LIBRARY="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit5.1-luv.dylib" \
 		-DLIBLUV_INCLUDE_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/lua5.1/" \
-		-DCMAKE_BUILD_RPATH="/opt/procursus/lib" \
+		-DCMAKE_BUILD_RPATH="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
 		..
 	+$(MAKE) -C $(BUILD_WORK)/neovim/build
 	+$(MAKE) -C $(BUILD_WORK)/neovim/build install \
