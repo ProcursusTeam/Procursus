@@ -3,13 +3,13 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += neovim
-NEOVIM_VERSION := 0.5.1
+NEOVIM_VERSION := 0.8.3
 DEB_NEOVIM_V   ?= $(NEOVIM_VERSION)
 
 neovim-setup: setup
-	$(call GITHUB_ARCHIVE,neovim,neovim,$(NEOVIM_VERSION),v$(NEOVIM_VERSION))
-	$(call EXTRACT_TAR,neovim-$(NEOVIM_VERSION).tar.gz,neovim-$(NEOVIM_VERSION),neovim)
-	$(call DO_PATCH,neovim,neovim,-p1)
+	$(call GITHUB_ARCHIVE,neovim,neovim,v$(NEOVIM_VERSION),v$(NEOVIM_VERSION))
+	$(call EXTRACT_TAR,neovim-v$(NEOVIM_VERSION).tar.gz,neovim-$(NEOVIM_VERSION),neovim)
+	#$(call DO_PATCH,neovim,neovim,-p1)
 	mkdir -p $(BUILD_WORK)/neovim/build
 	# This is needed to fix a strange linking error. A better fix would be nice.
 	test -f $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit5.1-luv.dylib || $(LN_S) libluajit-5.1-luv.dylib $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit5.1-luv.dylib
@@ -30,6 +30,7 @@ neovim: neovim-setup gettext lua-luv libuv1 msgpack libvterm libtermkey unibiliu
 		-DGETTEXT_MSGMERGE_EXECUTABLE="`which msgmerge`" \
 		-DLIBLUV_LIBRARY="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libluajit5.1-luv.dylib" \
 		-DLIBLUV_INCLUDE_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/lua5.1/" \
+		-DCMAKE_BUILD_RPATH="/opt/procursus/lib" \
 		..
 	+$(MAKE) -C $(BUILD_WORK)/neovim/build
 	+$(MAKE) -C $(BUILD_WORK)/neovim/build install \
