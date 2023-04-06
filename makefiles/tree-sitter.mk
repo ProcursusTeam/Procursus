@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS         += tree-sitter
-TREE_SITTER_VERSION := 0.20.0
+TREE_SITTER_VERSION := 0.20.8
 DEB_TREE_SITTER_V   ?= $(TREE_SITTER_VERSION)
 
 tree-sitter-setup: setup
