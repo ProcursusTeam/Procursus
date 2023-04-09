@@ -1,0 +1,18 @@
+--- r2ghidra/meson.build.orig	2023-02-26 03:13:32.710903062 +0000
++++ r2ghidra/meson.build	2023-02-26 03:13:55.191653220 +0000
+@@ -27,13 +27,8 @@
+   'ghidra-native/src/decompiler/',
+ ]
+ 
+-res = run_command(['r2','-HR2_LIBR_PLUGINS'], capture:true)
+-if res.returncode() == 0
+-  r2_plugdir = res.stdout().strip()
+-else
+-  prefix = get_option('prefix')
+-  r2_plugdir = prefix + '/lib/radare2/plugins'
+-endif
++prefix = get_option('prefix')
++r2_plugdir = prefix + '/lib/radare2/plugins'
+ 
+ cpp = meson.get_compiler('cpp')
+ if cpp.get_id() == 'msvc'

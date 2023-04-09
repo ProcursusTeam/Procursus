@@ -1,4 +1,4 @@
-Package: libcapstone4
+Package: libcapstone5
 Version: @DEB_CAPSTONE_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
