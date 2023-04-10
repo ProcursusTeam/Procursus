@@ -92,6 +92,7 @@ endif
 	$(call AFTER_BUILD)
 endif
 
+system-cmds_CFbase-package:: DEB_SYSTEM-CMDS_V ?= $(SYSTEM-CMDS_CFBASE_VERSION)
 system-cmds_CFbase-package: system-cmds-stage
 	# system-cmds.mk Package Structure
 	rm -rf $(BUILD_DIST)/system-cmds
@@ -115,7 +116,7 @@ system-cmds_CFbase-package: system-cmds-stage
 	$(FAKEROOT) chmod a+x $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pagesize
 
 	# system-cmds.mk Make .debs
-	$(call PACK,system-cmds,DEB_SYSTEM-CMDS_CFBASE_V)
+	$(call PACK,system-cmds,DEB_SYSTEM-CMDS_V)
 
 	# system-cmds.mk Build cleanup
 	rm -rf $(BUILD_DIST)/system-cmds
