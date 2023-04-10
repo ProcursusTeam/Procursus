@@ -13,6 +13,7 @@ debianutils-setup: setup
 	$(call EXTRACT_TAR,debianutils_$(DEBIANUTILS_VERSION).orig.tar.gz,debianutils-$(DEBIANUTILS_VERSION),debianutils)
 	sed -i 's|/etc/shells|$(MEMO_PREFIX)/etc/shells|g' $(BUILD_WORK)/debianutils/add-shell
 	sed -i 's|/etc/shells|$(MEMO_PREFIX)/etc/shells|g' $(BUILD_WORK)/debianutils/remove-shell
+	sed -i 's/static int cleanup_tmpfile/static void cleanup_tmpfile/g' $(BUILD_WORK)/debianutils/run-parts.c
 
 ifneq ($(wildcard $(BUILD_WORK)/debianutils/.build_complete),)
 debianutils:
