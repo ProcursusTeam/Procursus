@@ -17,7 +17,7 @@ berkeleydb:
 	@echo "Using previously built berkeleydb."
 else
 berkeleydb: berkeleydb-setup gettext openssl
-	cd $(BUILD_WORK)/berkeleydb/dist && ./s_config
+	cd $(BUILD_WORK)/berkeleydb/dist && ./s_config && sed -i 's/tlsvar = NULL/tlsvar = {}/g' configure
 	cd $(BUILD_WORK)/berkeleydb/build_unix && ../dist/configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--includedir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/db181 \
