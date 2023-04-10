@@ -6,7 +6,7 @@ endif
 setup_CF1900:
 	@echo "Running setup_CF1900"
 	@mkdir -p \
-		$(BUILD_BASE) $(BUILD_BASE)$(MEMO_PREFIX)/{{,System}/Library/Frameworks,$(MEMO_SUB_PREFIX)/{include/{bsm,objc,os/internal,sys,firehose,CoreFoundation,Foundation,FSEvents,IOKit/kext,libkern,kern,arm,{mach/,}machine,CommonCrypto,Security,CoreSymbolication,Kernel/{kern,IOKit,libkern},rpc,rpcsvc,xpc/private,ktrace,mach-o,dispatch},lib/pkgconfig,$(MEMO_ALT_PREFIX)/lib}} \
+		$(BUILD_BASE) $(BUILD_BASE)$(MEMO_PREFIX)/{{,System}/Library/Frameworks,$(MEMO_SUB_PREFIX)/{include/{bsm,objc,os/internal,sys,firehose,CoreFoundation,FSEvents,IOKit/kext,libkern,kern,arm,{mach/,}machine,CommonCrypto,Security,CoreSymbolication,Kernel/{kern,IOKit,libkern},rpc,rpcsvc,xpc/private,ktrace,mach-o,dispatch},lib/pkgconfig,$(MEMO_ALT_PREFIX)/lib}} \
 		$(BUILD_SOURCE) $(BUILD_WORK) $(BUILD_STAGE) $(BUILD_STRAP)
 
 	@rm -rf $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/System
@@ -16,12 +16,10 @@ setup_CF1900:
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/libsyscall/wrappers/{spawn/spawn{$(comma)_private}$(comma)libproc/libproc{$(comma)_internal$(comma)_private}}.h \
 		https://github.com/apple-oss-distributions/launchd/raw/launchd-842.92.1/liblaunch/{bootstrap$(comma)vproc}_priv.h \
 		https://github.com/apple-oss-distributions/libplatform/raw/libplatform-273.100.5/private/_simple.h \
+		https://github.com/apple-oss-distributions/libutil/raw/libutil-64/{mntopts$(comma)libutil}.h \
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/{EXTERNAL_HEADERS/mach-o/nlist$(comma)osfmk/mach/vm_statistics}.h \
 		https://github.com/apple-oss-distributions/libmalloc/raw/libmalloc-374.100.5/private/stack_logging.h \
 		https://github.com/apple-oss-distributions/Libc/raw/Libc-1534.40.2/{gen/get_compat$(comma)include/struct}.h)
-
-	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include, \
-		https://github.com/apple-oss-distributions/libutil/raw/libutil-60/{mntopts$(comma)libutil}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach-o, \
 		https://github.com/apple-oss-distributions/dyld/raw/dyld-955/{include/mach-o/dyld_{process_info$(comma)introspection}$(comma)cache-builder/dyld_cache_format}.h)
@@ -86,7 +84,7 @@ setup_CF1900:
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/osfmk/mach/coalition.h)
 
 	@# FSEvents headers won't be found even when building for macOS... Should probably fix this properly eventually
-	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/CoreServices.framework/Frameworks/FSEvents.framework/Headers/* $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/FSEvents/
+	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Headers/* $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/FSEvents/
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit, \
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/iokit/IOKit/IOKitDebug.h)
@@ -172,13 +170,12 @@ endif
 
 	@# Patch headers from $(BARE_PLATFORM).sdk
 	@if [ -f $(TARGET_SYSROOT)/System/Library/Frameworks/CoreFoundation.framework/Headers/CFUserNotification.h ]; then sed -E 's/API_UNAVAILABLE(ios, watchos, tvos)//g' < $(TARGET_SYSROOT)/System/Library/Frameworks/CoreFoundation.framework/Headers/CFUserNotification.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreFoundation/CFUserNotification.h; fi
-	@if [ -f $(TARGET_SYSROOT)/System/Library/Frameworks/Foundation.framework/Headers/NSObjCRuntime.h ]; then sed 's/__attribute__ ((format_arg(A)))//g' < $(TARGET_SYSROOT)/System/Library/Frameworks/Foundation.framework/Headers/NSObjCRuntime.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Foundation/NSObjCRuntime.h; fi
-	@if [ -f $(TARGET_SYSROOT)/System/Library/Frameworks/Foundation.framework/Headers/NSURLSession.h ]; then sed 's/_Nullable_result//g' < $(TARGET_SYSROOT)/System/Library/Frameworks/Foundation.framework/Headers/NSURLSession.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Foundation/NSURLSession.h; fi
 	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/stdlib.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/stdlib.h
 	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/time.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/time.h
 	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/unistd.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/unistd.h
 	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/mach/task.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/task.h
 	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/mach/mach_host.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/mach_host.h
+	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/mach/thread_act.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/thread_act.h
 	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/ucontext.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ucontext.h
 	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/signal.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/signal.h
 	@sed -E /'__API_UNAVAILABLE'/d < $(TARGET_SYSROOT)/usr/include/pthread.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pthread.h
