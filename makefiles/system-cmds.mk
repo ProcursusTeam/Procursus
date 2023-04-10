@@ -43,7 +43,7 @@ endif
 	sed -i 's|#include <mach/i386/vm_param.h>|#include <mach/vm_param.h>|' $(BUILD_WORK)/system-cmds/memory_pressure.tproj/memory_pressure.c
 	# Allow placing kernels from [redacted] sources on rootless
 	sed -i 's|/System/Library/Kernels/kernel.development|$(MEMO_PREFIX)/Library/Kernels/kernel.development|' $(BUILD_WORK)/system-cmds/latency.tproj/latency.{1,c}
-
+	sed -i 's/plonk(sc_token);/plonk(sc_tokid);/g' $(BUILD_WORK)/system-cmds/at.tproj/parsetime.c
 ###
 # TODO: Once I implement pam_chauthtok() in pam_unix.so, use PAM for passwd
 ###
