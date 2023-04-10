@@ -37,5 +37,6 @@ RUN rm -rf /tmp && mkdir -p /tmp && chmod 777 /tmp
 RUN apt-get clean
 
 COPY darwin /usr/lib/llvm-11/lib/clang/11.0.1/lib/darwin
+RUN mv /usr/local/include /usr/local/include.bk
 
 WORKDIR /workspace/
