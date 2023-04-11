@@ -41,7 +41,7 @@ ifneq ($(MEMO_SUB_PREFIX),)
 	mkdir -p $(BUILD_DIST)/inetutils/$(MEMO_PREFIX)/bin
 	$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ping $(BUILD_DIST)/inetutils/$(MEMO_PREFIX)/bin/ping
 endif
-ifneq ($(MEMO_PREFIX),)
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 	mkdir -p $(BUILD_DIST)/inetutils/$(MEMO_PREFIX)/sbin
 	$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ping $(BUILD_DIST)/inetutils/$(MEMO_PREFIX)/sbin/ping
 endif
