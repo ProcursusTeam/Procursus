@@ -6,10 +6,6 @@ SUBPROJECTS  += make
 MAKE_VERSION := 4.4.1
 DEB_MAKE_V   ?= $(MAKE_VERSION)
 
-ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-MAKE_CONFIGURE_ARGS := --program-prefix=$(GNU_PREFIX)
-endif
-
 make-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/make/make-$(MAKE_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,make-$(MAKE_VERSION).tar.gz)
@@ -23,7 +19,7 @@ make: make-setup gettext
 	cd $(BUILD_WORK)/make && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-guile=no \
-		$(MAKE_CONFIGURE_ARGS)
+		--program-prefix="$(GNU_PREFIX)"
 	+$(MAKE) -C $(BUILD_WORK)/make
 	+$(MAKE) -C $(BUILD_WORK)/make install \
 		DESTDIR="$(BUILD_STAGE)/make"
