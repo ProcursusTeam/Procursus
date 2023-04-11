@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += make
-MAKE_VERSION := 4.4
+MAKE_VERSION := 4.4.1
 DEB_MAKE_V   ?= $(MAKE_VERSION)
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
