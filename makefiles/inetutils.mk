@@ -27,13 +27,6 @@ inetutils: inetutils-setup ncurses readline
 	sed -i 's/-ltermcap/-lncursesw/g' $(BUILD_WORK)/inetutils/telnet{,d}/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/inetutils install \
 		DESTDIR="$(BUILD_STAGE)/inetutils"
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	mkdir -p $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)/bin
-	$(LN_SR) $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ping $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)/bin/ping
-else
-	mkdir -p $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)/sbin
-	$(LN_SR) $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ping $(BUILD_STAGE)/inetutils/$(MEMO_PREFIX)/sbin/ping
-endif
 	$(call AFTER_BUILD)
 endif
 
@@ -43,6 +36,15 @@ inetutils-package: inetutils-stage
 
 	# inetutils.mk Prep inetutils
 	cp -a $(BUILD_STAGE)/inetutils $(BUILD_DIST)
+
+ifneq ($(MEMO_SUB_PREFIX),)
+	mkdir -p $(BUILD_DIST)/inetutils/$(MEMO_PREFIX)/bin
+	$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ping $(BUILD_DIST)/inetutils/$(MEMO_PREFIX)/bin/ping
+endif
+ifneq ($(MEMO_PREFIX),)
+	mkdir -p $(BUILD_DIST)/inetutils/$(MEMO_PREFIX)/sbin
+	$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ping $(BUILD_DIST)/inetutils/$(MEMO_PREFIX)/sbin/ping
+endif
 
 	# inetutils.mk Sign
 	$(call SIGN,inetutils,general.xml)
