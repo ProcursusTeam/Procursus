@@ -13,6 +13,7 @@ endif
 cmake-setup: setup
 	$(call GITHUB_ARCHIVE,Kitware,CMake,$(CMAKE_VERSION),v$(CMAKE_VERSION))
 	$(call EXTRACT_TAR,cmake-$(CMAKE_VERSION).tar.gz,cmake-$(CMAKE_VERSION),cmake)
+	sed -i "79d" $(BUILD_WORK)/cmake/Source/cmDocumentation.cxx
 
 ifneq ($(wildcard $(BUILD_WORK)/cmake/.build_complete),)
 cmake:
