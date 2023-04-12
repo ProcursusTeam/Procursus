@@ -1,18 +1,17 @@
-@@ -0,0 +1,53 @@
-diff --color -urN jemalloc-5.2.1/VERSION jemalloc/VERSION
---- jemalloc-5.2.1/VERSION	2019-08-05 16:04:07.000000000 -0400
-+++ jemalloc/VERSION	1969-12-31 19:00:00.000000000 -0500
+diff -urN jemalloc-5.3.0/VERSION jemalloc/VERSION
+--- jemalloc-5.3.0/VERSION	2022-05-06 18:29:30.000000000 +0000
++++ jemalloc/VERSION	1970-01-01 00:00:00.000000000 +0000
 @@ -1 +0,0 @@
--5.2.1-0-gea6b3e973b477b8061e0076bb257dbd7f3faa756
-diff --color -urN jemalloc-5.2.1/VERSION.txt jemalloc/VERSION.txt
---- jemalloc-5.2.1/VERSION.txt	1969-12-31 19:00:00.000000000 -0500
-+++ jemalloc/VERSION.txt	2019-08-05 16:04:07.000000000 -0400
+-5.3.0-0-g54eaed1d8b56b1aa528be3bdd1877e59c56fa90c
+diff -urN jemalloc-5.3.0/VERSION.txt jemalloc/VERSION.txt
+--- jemalloc-5.3.0/VERSION.txt	1970-01-01 00:00:00.000000000 +0000
++++ jemalloc/VERSION.txt	2022-05-06 18:29:30.000000000 +0000
 @@ -0,0 +1 @@
-+5.2.1-0-gea6b3e973b477b8061e0076bb257dbd7f3faa756
-diff --color -urN jemalloc-5.2.1/configure.ac jemalloc/configure.ac
---- jemalloc-5.2.1/configure.ac	2019-08-05 16:02:00.000000000 -0400
-+++ jemalloc/configure.ac	2021-11-01 23:27:24.384470948 -0400
-@@ -551,7 +551,7 @@
++5.3.0-0-g54eaed1d8b56b1aa528be3bdd1877e59c56fa90c
+diff -urN jemalloc-5.3.0/configure.ac jemalloc/configure.ac
+--- jemalloc-5.3.0/configure.ac	2022-05-06 18:29:14.000000000 +0000
++++ jemalloc/configure.ac	2023-02-21 00:54:15.115057911 +0000
+@@ -580,15 +580,15 @@
    [
      echo "${with_version}" | grep ['^[0-9]\+\.[0-9]\+\.[0-9]\+-[0-9]\+-g[0-9a-f]\+$'] 2>&1 1>/dev/null
      if test $? -eq 0 ; then
@@ -21,7 +20,17 @@ diff --color -urN jemalloc-5.2.1/configure.ac jemalloc/configure.ac
      else
        echo "${with_version}" | grep ['^VERSION$'] 2>&1 1>/dev/null
        if test $? -ne 0 ; then
-@@ -571,7 +571,7 @@
+-        AC_MSG_ERROR([${with_version} does not match <major>.<minor>.<bugfix>-<nrev>-g<gid> or VERSION])
++        AC_MSG_ERROR([${with_version} does not match <major>.<minor>.<bugfix>-<nrev>-g<gid> or VERSION.txt])
+       fi
+     fi
+   ], [
+-    dnl Set VERSION if source directory is inside a git repository.
++    dnl Set VERSION.txt if source directory is inside a git repository.
+     if test "x`test ! \"${srcroot}\" && cd \"${srcroot}\"; git rev-parse --is-inside-work-tree 2>/dev/null`" = "xtrue" ; then
+       dnl Pattern globs aren't powerful enough to match both single- and
+       dnl double-digit version numbers, so iterate over patterns to support up
+@@ -600,7 +600,7 @@
                       '[0-9][0-9].[0-9][0-9].[0-9][0-9]']; do
          (test ! "${srcroot}" && cd "${srcroot}"; git describe --long --abbrev=40 --match="${pattern}") > "${objroot}VERSION.tmp" 2>/dev/null
          if test $? -eq 0 ; then
@@ -30,7 +39,7 @@ diff --color -urN jemalloc-5.2.1/configure.ac jemalloc/configure.ac
            break
          fi
        done
-@@ -579,16 +579,16 @@
+@@ -608,16 +608,16 @@
      rm -f "${objroot}VERSION.tmp"
    ])
  
@@ -39,9 +48,10 @@ diff --color -urN jemalloc-5.2.1/configure.ac jemalloc/configure.ac
 +if test ! -e "${objroot}VERSION.txt" ; then
 +  if test ! -e "${srcroot}VERSION.txt" ; then
      AC_MSG_RESULT(
-       [Missing VERSION file, and unable to generate it; creating bogus VERSION])
--    echo "0.0.0-0-g0000000000000000000000000000000000000000" > "${objroot}VERSION"
-+    echo "0.0.0-0-g0000000000000000000000000000000000000000" > "${objroot}VERSION.txt"
+-      [Missing VERSION file, and unable to generate it; creating bogus VERSION])
+-    echo "0.0.0-0-g000000missing_version_try_git_fetch_tags" > "${objroot}VERSION"
++      [Missing VERSION.txt file, and unable to generate it; creating bogus VERSION.txt])
++    echo "0.0.0-0-g000000missing_version_try_git_fetch_tags" > "${objroot}VERSION.txt"
    else
 -    cp ${srcroot}VERSION ${objroot}VERSION
 +    cp ${srcroot}VERSION.txt ${objroot}VERSION.txt

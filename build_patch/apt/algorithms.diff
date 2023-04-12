@@ -1,7 +1,7 @@
-diff -urN apt-2.1.8 apt-2.1.8+procursus 
-diff -urN apt-2.1.8/apt-pkg/algorithms.cc apt-2.1.8+procursus/apt-pkg/algorithms.cc
---- apt-2.1.8/apt-pkg/algorithms.cc	2020-08-04 06:41:28.000000000 -0400
-+++ apt-2.1.8+procursus/apt-pkg/algorithms.cc	2020-08-11 12:12:38.000000000 -0400
+diff --git a/apt-pkg/algorithms.cc b/apt-pkg/algorithms.cc
+index 26d8c71c2..740e56c7a 100644
+--- a/apt-pkg/algorithms.cc
++++ b/apt-pkg/algorithms.cc
 @@ -15,6 +15,9 @@
  // Include Files							/*{{{*/
  #include <config.h>
@@ -10,9 +10,9 @@ diff -urN apt-2.1.8/apt-pkg/algorithms.cc apt-2.1.8+procursus/apt-pkg/algorithms
 +#include <Foundation/Foundation.h>
 +
  #include <apt-pkg/algorithms.h>
+ #include <apt-pkg/cachefilter.h>
  #include <apt-pkg/configuration.h>
- #include <apt-pkg/depcache.h>
-@@ -96,6 +99,37 @@
+@@ -107,6 +110,37 @@ void pkgSimulate::Describe(PkgIterator Pkg,ostream &out,bool Current,bool Candid
     }
  }
  									/*}}}*/
@@ -50,7 +50,7 @@ diff -urN apt-2.1.8/apt-pkg/algorithms.cc apt-2.1.8+procursus/apt-pkg/algorithms
  // Simulate::Install - Simulate unpacking of a package			/*{{{*/
  // ---------------------------------------------------------------------
  /* */
-@@ -108,6 +142,49 @@
+@@ -119,6 +153,49 @@ bool pkgSimulate::Install(PkgIterator iPkg,string File)
  }
  bool pkgSimulate::RealInstall(PkgIterator iPkg,string /*File*/)
  {
@@ -90,9 +90,9 @@ diff -urN apt-2.1.8/apt-pkg/algorithms.cc apt-2.1.8+procursus/apt-pkg/algorithms
 +               {
 +                  if (Start->Type == pkgCache::Dep::Conflicts)
 +                     _error->Error("Fatal, conflicts violated %s",I.FullName(false).c_str());
-+               }     
++               }
 +            }
-+         }      
++         }
 +      }
 +      return true;
 +   }
@@ -100,7 +100,7 @@ diff -urN apt-2.1.8/apt-pkg/algorithms.cc apt-2.1.8+procursus/apt-pkg/algorithms
     // Adapt the iterator
     PkgIterator Pkg = Sim.FindPkg(iPkg.Name(), iPkg.Arch());
     Flags[Pkg->ID] = 1;
-@@ -161,47 +238,51 @@
+@@ -172,47 +249,51 @@ bool pkgSimulate::Configure(PkgIterator iPkg)
  }
  bool pkgSimulate::RealConfigure(PkgIterator iPkg)
  {
@@ -128,7 +128,7 @@ diff -urN apt-2.1.8/apt-pkg/algorithms.cc apt-2.1.8+procursus/apt-pkg/algorithms
 +         // Print out each package and the failed dependencies
 +         for (pkgCache::DepIterator D = Sim[Pkg].InstVerIter(Sim).DependsList(); D.end() == false; ++D)
 +         {
-+   	 if (Sim.IsImportantDep(D) == false || 
++   	 if (Sim.IsImportantDep(D) == false ||
 +   	     (Sim[D] & pkgDepCache::DepInstall) != 0)
 +   	    continue;
 +
@@ -140,11 +140,11 @@ diff -urN apt-2.1.8/apt-pkg/algorithms.cc apt-2.1.8+procursus/apt-pkg/algorithms
 +   	    cout << " Breaks:" << D.TargetPkg().FullName(false);
 +   	 else
 +   	    cout << " Depends:" << D.TargetPkg().FullName(false);
-+         }	    
++         }
 +         cout << endl;
 +
 +         _error->Error("Conf Broken %s",Pkg.FullName(false).c_str());
-+      }   
++      }
 +      else
        {
 -	 if (Sim.IsImportantDep(D) == false || 
@@ -161,7 +161,7 @@ diff -urN apt-2.1.8/apt-pkg/algorithms.cc apt-2.1.8+procursus/apt-pkg/algorithms
 -	    cout << " Depends:" << D.TargetPkg().FullName(false);
 -      }	    
 -      cout << endl;
-+         cout << "Conf "; 
++         cout << "Conf ";
 +         Describe(Pkg,cout,false,true);
 +      }
  
@@ -184,7 +184,7 @@ diff -urN apt-2.1.8/apt-pkg/algorithms.cc apt-2.1.8+procursus/apt-pkg/algorithms
     
     return true;
  }
-@@ -218,6 +299,8 @@
+@@ -229,6 +310,8 @@ bool pkgSimulate::Remove(PkgIterator iPkg,bool Purge)
  }
  bool pkgSimulate::RealRemove(PkgIterator iPkg,bool Purge)
  {
@@ -193,7 +193,7 @@ diff -urN apt-2.1.8/apt-pkg/algorithms.cc apt-2.1.8+procursus/apt-pkg/algorithms
     // Adapt the iterator
     PkgIterator Pkg = Sim.FindPkg(iPkg.Name(), iPkg.Arch());
     if (Pkg.end() == true)
-@@ -229,16 +312,32 @@
+@@ -240,16 +323,32 @@ bool pkgSimulate::RealRemove(PkgIterator iPkg,bool Purge)
     Flags[Pkg->ID] = 3;
     Sim.MarkDelete(Pkg);
  
@@ -234,10 +234,11 @@ diff -urN apt-2.1.8/apt-pkg/algorithms.cc apt-2.1.8+procursus/apt-pkg/algorithms
  
     return true;
  }
-diff -urN apt-2.1.5/apt-pkg/algorithms.h apt/apt-pkg/algorithms.h
---- apt-2.1.5/apt-pkg/algorithms.h	2020-05-26 06:20:42.000000000 -0400
-+++ apt/apt-pkg/algorithms.h	2020-06-02 23:06:58.398093103 -0400
-@@ -77,6 +77,9 @@
+diff --git a/apt-pkg/algorithms.h b/apt-pkg/algorithms.h
+index 12a77d4b8..84226ed39 100644
+--- a/apt-pkg/algorithms.h
++++ b/apt-pkg/algorithms.h
+@@ -79,6 +79,9 @@ public:
  private:
     APT_HIDDEN void ShortBreaks();
     APT_HIDDEN void Describe(PkgIterator iPkg,std::ostream &out,bool Current,bool Candidate);

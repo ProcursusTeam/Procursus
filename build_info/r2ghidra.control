@@ -1,0 +1,8 @@
+Package: r2ghidra
+Version: @DEB_R2GHIDRA_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libradare2-5.8, libpugixml1
+Section: Utilities
+Homepage: https://github.com/radareorg/r2ghidra
+Description: Native Ghidra Decompiler for r2

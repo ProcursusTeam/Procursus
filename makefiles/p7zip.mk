@@ -7,7 +7,7 @@ P7ZIP_VERSION  := 17.04
 DEB_P7ZIP_V    ?= $(P7ZIP_VERSION)
 
 p7zip-setup: setup
-	$(call GITHUB_ARCHIVE,jinfeihan57,p7zip,$(P7ZIP_VERSION),v$(P7ZIP_VERSION))
+	$(call GITHUB_ARCHIVE,p7zip-project,p7zip,$(P7ZIP_VERSION),v$(P7ZIP_VERSION))
 	$(call EXTRACT_TAR,p7zip-$(P7ZIP_VERSION).tar.gz,p7zip-$(P7ZIP_VERSION),p7zip)
 	chmod 0755 $(BUILD_WORK)/p7zip/install.sh
 

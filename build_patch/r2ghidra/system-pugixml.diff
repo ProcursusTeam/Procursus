@@ -1,0 +1,70 @@
+From 971fdf012c6c48e43e00d91727698ace4b0c67a6 Mon Sep 17 00:00:00 2001
+From: Maxim Karasev <mxkrsv@disroot.org>
+Date: Fri, 23 Dec 2022 22:27:24 +0300
+Subject: [PATCH] Use system pugixml
+
+---
+ meson.build | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
+
+diff --git a/meson.build b/meson.build
+index e35d4f7..a5788c9 100644
+--- a/meson.build
++++ b/meson.build
+@@ -7,10 +7,6 @@ version : '5.8.0',
+ default_options : ['c_std=c11', 'cpp_std=c++11']
+ )
+ 
+-pugixml_sources = [
+-  'third-party/pugixml/src/pugixml.cpp'
+-]
+-
+ r2ghidra_sources = [
+   'src/ArchMap.cpp',
+   'src/CodeXMLParse.cpp',
+@@ -28,7 +24,6 @@ r2ghidra_sources = [
+ 
+ incdirs = [
+   'src',
+-  'third-party/pugixml/src/',
+   'ghidra-native/src/decompiler/',
+ ]
+ 
+@@ -178,7 +173,6 @@ ghidra_decompiler_sources = [
+ 
+ r2ghidra_core_sources = [
+   r2ghidra_sources,
+-  pugixml_sources,
+   ghidra_decompiler_sources,
+   'src/anal_ghidra_plugin.c',
+   'src/anal_ghidra.cpp',
+@@ -188,16 +182,17 @@ r2ghidra_core_sources = [
+ 
+ sleighc_sources = [
+   r2ghidra_sources,
+-  pugixml_sources,
+   'ghidra-native/src/decompiler/slgh_compile.cc',
+   'ghidra-native/src/decompiler/slghparse.cc',
+   'ghidra-native/src/decompiler/slghscan.cc',
+   ghidra_decompiler_sources,
+ ]
+ 
++pugixml = dependency('pugixml')
++
+ r2ghidra_core_plugin = library('core_r2ghidra',
+   r2ghidra_core_sources,
+-  dependencies: [r_core],
++  dependencies: [r_core, pugixml],
+   override_options : ['c_std=c11', 'cpp_std=c++11'],
+   include_directories: r2ghidra_incdirs,
+   install: true,
+@@ -207,6 +202,6 @@ r2ghidra_core_plugin = library('core_r2ghidra',
+ sleighc_exe = executable('sleighc', sleighc_sources,
+   include_directories: r2ghidra_incdirs,
+   override_options : ['c_std=c11', 'cpp_std=c++11'],
+-  dependencies: [r_core],
++  dependencies: [r_core, pugixml],
+   install: true
+ )
+-- 
+2.39.0

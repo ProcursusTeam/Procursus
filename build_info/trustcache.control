@@ -1,0 +1,13 @@
+Package: trustcache
+Version: @DEB_TRUSTCACHE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: Cameron Katri <me+trustcache@cameronkatri.com>
+Section: Development
+Depends: libmd0
+Priority: optional
+Conflicts: tc
+Provides: tc (= @DEB_TRUSTCACHE_V@)
+Replaces: tc
+Homepage: https://github.com/CRKatri/trustcache
+Description: Get info about and modify Apple trustcaches

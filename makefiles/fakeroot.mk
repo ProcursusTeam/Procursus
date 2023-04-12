@@ -29,7 +29,9 @@ fakeroot: fakeroot-setup
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-ipc=tcp \
 		ac_cv_func_openat=no \
-		ac_cv_func_fstatat=no
+		ac_cv_func_fstatat=no \
+		CFLAGS="$(CFLAGS) -DLIBIOSEXEC_INTERNAL=1" \
+		CPPFLAGS="$(CPPFLAGS) -DLIBIOSEXEC_INTERNAL=1"
 	sed -i 's/SETGROUPS_SIZE_TYPE unknown/SETGROUPS_SIZE_TYPE int/g' $(BUILD_WORK)/fakeroot/config.h
 	sed -i 's|@SHELL@|$(MEMO_PREFIX)/bin/sh|' $(BUILD_WORK)/fakeroot/scripts/fakeroot.in
 	+$(MAKE) -C $(BUILD_WORK)/fakeroot all \

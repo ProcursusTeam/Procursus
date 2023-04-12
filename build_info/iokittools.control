@@ -1,8 +1,8 @@
 Package: iokittools
-Maintainer: @DEB_MAINTAINER@
-Architecture: @DEB_ARCH@
 Version: @DEB_IOKITTOOLS_V@
-Depends: libncursesw6
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
 Section: Administration
-Priority: important
-Description: ioalloccount, ioclasscount
+Priority: optional
+Homepage: https://github.com/apple-oss-distributions/IOKitTools
+Description: IOKit tools - ioclasscount, ioallocount and ioreg manpage

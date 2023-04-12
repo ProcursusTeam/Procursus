@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += nghttp3
-NGHTTP3_VERSION := 0.4.1
+NGHTTP3_VERSION := 0.8.0
 DEB_NGHTTP3_V   ?= $(NGHTTP3_VERSION)
 
 nghttp3-setup: setup
@@ -26,24 +26,24 @@ endif
 
 nghttp3-package: nghttp3-stage
 	# nghttp3.mk Package Structure
-	rm -rf $(BUILD_DIST)/libnghttp3-{2,dev}
-	mkdir -p $(BUILD_DIST)/libnghttp3-{2,dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	rm -rf $(BUILD_DIST)/libnghttp3-{3,dev}
+	mkdir -p $(BUILD_DIST)/libnghttp3-{3,dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-	# nghttp3.mk Prep libnghttp3-2
-	cp -a $(BUILD_STAGE)/nghttp3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libnghttp3.2.dylib $(BUILD_DIST)/libnghttp3-2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	# nghttp3.mk Prep libnghttp3-3
+	cp -a $(BUILD_STAGE)/nghttp3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libnghttp3.3.dylib $(BUILD_DIST)/libnghttp3-3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# nghttp3.mk Prep libnghttp3-dev
-	cp -a $(BUILD_STAGE)/nghttp3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libnghttp3.2.dylib) $(BUILD_DIST)/libnghttp3-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/nghttp3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libnghttp3.3.dylib) $(BUILD_DIST)/libnghttp3-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/nghttp3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libnghttp3-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# nghttp3.mk Sign
-	$(call SIGN,libnghttp3-2,general.xml)
+	$(call SIGN,libnghttp3-3,general.xml)
 
 	# nghttp3.mk Make .debs
-	$(call PACK,libnghttp3-2,DEB_NGHTTP3_V)
+	$(call PACK,libnghttp3-3,DEB_NGHTTP3_V)
 	$(call PACK,libnghttp3-dev,DEB_NGHTTP3_V)
 
 	# nghttp3.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libnghttp3-{2,dev}
+	rm -rf $(BUILD_DIST)/libnghttp3-{3,dev}
 
 .PHONY: nghttp3 nghttp3-package

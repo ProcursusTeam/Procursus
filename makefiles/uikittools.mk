@@ -7,7 +7,7 @@ SUBPROJECTS        += uikittools
 else
 STRAPPROJECTS      += uikittools
 endif
-UIKITTOOLS_VERSION := 2.1.1
+UIKITTOOLS_VERSION := 2.1.4
 DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)
 
 uikittools-setup: setup

@@ -22,11 +22,13 @@ else
 whois: whois-setup libidn2
 endif
 	+$(MAKE) -C $(BUILD_WORK)/whois \
+		prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		HAVE_ICONV=1 \
 		CC="$(CC)" \
 		CFLAGS='$(CFLAGS) -Wall -I.' \
 		LDFLAGS='$(LDFLAGS) -liconv'
 	+$(MAKE) -C $(BUILD_WORK)/whois install \
+		prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		DESTDIR=$(BUILD_STAGE)/whois
 	$(call AFTER_BUILD)
 endif
@@ -34,10 +36,9 @@ endif
 whois-package: whois-stage
 	# whois.mk Package Structure
 	rm -rf $(BUILD_DIST)/whois
-	mkdir -p $(BUILD_DIST)/whois/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share}
 
 	# whois.mk Prep WHOIS
-	cp -a $(BUILD_STAGE)/whois/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share} $(BUILD_DIST)/whois/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/whois $(BUILD_DIST)/
 
 	#whois.mk Sign
 	$(call SIGN,whois,general.xml)

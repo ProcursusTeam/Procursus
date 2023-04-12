@@ -1,0 +1,38 @@
+--- man-db/src/manp.c	2020-01-01 15:11:59.000000000 +0000
++++ man-db/src/manp.c	2023-01-11 21:38:26.901391016 +0000
+@@ -60,6 +60,15 @@
+ #include <string.h>
+ #include <unistd.h>
+ 
++#include <Availability.h>
++#if (TARGET_OS_MAC && !(TARGET_OS_EMBEDDED || TARGET_OS_IPHONE))
++typedef struct __xcselect_manpaths xcselect_manpaths;
++xcselect_manpaths *xcselect_get_manpaths(const char *);
++unsigned xcselect_manpaths_get_num_paths(xcselect_manpaths*);
++const char *xcselect_manpaths_get_path(xcselect_manpaths*, unsigned);
++void xcselect_manpaths_free(xcselect_manpaths*);
++#endif
++
+ #include "canonicalize.h"
+ #include "gl_array_list.h"
+ #include "gl_linkedhash_list.h"
+@@ -674,6 +683,19 @@
+ 
+ 		manpathlist = get_manpath_from_path (path, 1);
+ 	}
++
++#if (TARGET_OS_MAC && !(TARGET_OS_EMBEDDED || TARGET_OS_IPHONE))
++	xcselect_manpaths *xcp;
++	xcp = xcselect_get_manpaths(NULL);
++	if (xcp != NULL) {
++		unsigned int n = xcselect_manpaths_get_num_paths(xcp);
++		for (unsigned i = 0; i < n; i++) {
++			manpathlist = pathappend (manpathlist, xcselect_manpaths_get_path (xcp, i));
++		}
++	}
++	xcselect_manpaths_free(xcp);
++#endif
++
+ 	manpath = add_system_manpath (systems, manpathlist);
+ 	free (manpathlist);
+ 	return manpath;

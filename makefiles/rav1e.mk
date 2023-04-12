@@ -3,12 +3,13 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += rav1e
-RAV1E_VERSION := 0.5.1
+RAV1E_VERSION := 0.6.1
 DEB_RAV1E_V   ?= $(RAV1E_VERSION)
 
 rav1e-setup: setup
 	$(call GITHUB_ARCHIVE,xiph,rav1e,$(RAV1E_VERSION),v$(RAV1E_VERSION))
 	$(call EXTRACT_TAR,rav1e-$(RAV1E_VERSION).tar.gz,rav1e-$(RAV1E_VERSION),rav1e)
+	sed -i 's|clap = { version = "4.0.18"|clap = { version = "4.0.32"|g' $(BUILD_WORK)/rav1e/Cargo.toml
 
 ifneq ($(wildcard $(BUILD_WORK)/rav1e/.build_complete),)
 rav1e:

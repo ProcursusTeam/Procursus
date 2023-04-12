@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS     += sudoku
 SUDOKU_VERSION  := 1.0.5
-DEB_SUDOKU_V    ?= $(SUDOKU_VERSION)
+DEB_SUDOKU_V    ?= $(SUDOKU_VERSION)-1
 
 sudoku-setup: setup
 	$(call GITHUB_ARCHIVE,cinemast,sudoku,$(SUDOKU_VERSION),v$(SUDOKU_VERSION))
@@ -29,7 +29,7 @@ sudoku-package: sudoku-stage
 	mkdir -p $(BUILD_DIST)/sudoku
 
 	# sudoku.mk Prep sudoku
-	cp -a $(BUILD_STAGE)/sudoku/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/sudoku
+	cp -a $(BUILD_STAGE)/sudoku/ $(BUILD_DIST)/
 
 	# sudoku.mk Sign
 	$(call SIGN,sudoku,general.xml)

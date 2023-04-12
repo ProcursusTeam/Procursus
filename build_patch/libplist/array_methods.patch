@@ -1,0 +1,63 @@
+From d5d70a7a134437941f6dde92acf0304df7352a4a Mon Sep 17 00:00:00 2001
+From: Daniel <daniel@ospr.nl>
+Date: Fri, 6 Jan 2023 19:53:00 +0100
+Subject: [PATCH] Add PList::Array iterator member functions
+
+... returning both iterators and const_iterators:
+* PList::Array::Begin()
+* PList::Array::End()
+---
+ include/plist/Array.h |  7 +++++++
+ src/Array.cpp         | 20 ++++++++++++++++++++
+ 2 files changed, 27 insertions(+)
+
+diff --git a/include/plist/Array.h b/include/plist/Array.h
+index 1b7728ae..5f82e830 100644
+--- a/include/plist/Array.h
++++ b/include/plist/Array.h
+@@ -39,7 +39,14 @@ public :
+
+     Node* Clone() const;
+
++    typedef std::vector<Node*>::iterator iterator;
++    typedef std::vector<Node*>::const_iterator const_iterator;
++
+     Node* operator[](unsigned int index);
++    iterator Begin();
++    iterator End();
++    const_iterator Begin() const;
++    const_iterator End() const;
+     void Append(Node* node);
+     void Insert(Node* node, unsigned int pos);
+     void Remove(Node* node);
+diff --git a/src/Array.cpp b/src/Array.cpp
+index 23f99226..5a4fd687 100644
+--- a/src/Array.cpp
++++ b/src/Array.cpp
+@@ -88,6 +88,26 @@ Node* Array::operator[](unsigned int array_index)
+     return _array.at(array_index);
+ }
+
++Array::iterator Array::Begin()
++{
++    return _array.begin();
++}
++
++Array::iterator Array::End()
++{
++    return _array.end();
++}
++
++Array::const_iterator Array::Begin() const
++{
++    return _array.begin();
++}
++
++Array::const_iterator Array::End() const
++{
++    return _array.end();
++}
++
+ void Array::Append(Node* node)
+ {
+     if (node)

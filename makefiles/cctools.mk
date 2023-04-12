@@ -13,7 +13,7 @@ cctools-setup: setup
 	$(call GITHUB_ARCHIVE,tpoechtrager,cctools-port,$(CCTOOLS_COMMIT),$(CCTOOLS_COMMIT),cctools)
 	$(call EXTRACT_TAR,cctools-$(CCTOOLS_COMMIT).tar.gz,cctools-port-$(CCTOOLS_COMMIT)/cctools,cctools)
 	$(call DO_PATCH,ld64,cctools,-p0)
-	rm -rf $(BUILD_WORK)/cctools-*
+	rm -rf $(BUILD_WORK)/cctools-port-$(CCTOOLS_COMMIT)
 
 ifneq ($(wildcard $(BUILD_WORK)/cctools/.build_complete),)
 cctools:

@@ -6,7 +6,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS      += adv-cmds
 ADV-CMDS_VERSION := 199.0.1
-DEB_ADV-CMDS_V   ?= $(ADV-CMDS_VERSION)
+DEB_ADV-CMDS_V   ?= $(ADV-CMDS_VERSION)-1
 
 adv-cmds-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,adv_cmds,$(ADV-CMDS_VERSION),adv_cmds-$(ADV-CMDS_VERSION))
@@ -14,6 +14,7 @@ adv-cmds-setup: setup
 	mkdir -p $(BUILD_STAGE)/adv-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man{1,5}/}
 	$(call DOWNLOAD_FILES,$(BUILD_WORK)/adv-cmds/include,https://github.com/apple-oss-distributions/Libc/raw/Libc-1507.100.9/{nls/FreeBSD/msgcat$(comma)locale/FreeBSD/collate}.h)
 	$(call DOWNLOAD_FILES,$(BUILD_WORK)/adv-cmds/colldef,https://github.com/apple-oss-distributions/Liby/raw/Liby-20/libyywrap.c)
+	sed -i 's|/usr/share/locale|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale|g' $(BUILD_WORK)/adv-cmds/locale/locale.cc
 
 ifneq ($(wildcard $(BUILD_WORK)/adv-cmds/.build_complete),)
 adv-cmds:
