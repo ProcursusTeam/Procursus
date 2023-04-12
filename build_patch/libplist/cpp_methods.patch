@@ -1,0 +1,113 @@
+diff --git a/include/plist/Array.h b/include/plist/Array.h
+index 5f82e83..f3625cc 100644
+--- a/include/plist/Array.h
++++ b/include/plist/Array.h
+@@ -47,6 +47,11 @@ public :
+     iterator End();
+     const_iterator Begin() const;
+     const_iterator End() const;
++    iterator begin();
++    iterator end();
++    const_iterator begin() const;
++    const_iterator end() const;
++    const size_t size() const;
+     void Append(Node* node);
+     void Insert(Node* node, unsigned int pos);
+     void Remove(Node* node);
+diff --git a/include/plist/Dictionary.h b/include/plist/Dictionary.h
+index a3ac3a7..9361361 100644
+--- a/include/plist/Dictionary.h
++++ b/include/plist/Dictionary.h
+@@ -46,10 +46,15 @@ public :
+     Node* operator[](const std::string& key);
+     iterator Begin();
+     iterator End();
++    iterator begin();
++    iterator end();
+     iterator Find(const std::string& key);
+     const_iterator Begin() const;
+     const_iterator End() const;
++    const_iterator begin() const;
++    const_iterator end() const;
+     const_iterator Find(const std::string& key) const;
++    const size_t size() const;
+     iterator Set(const std::string& key, const Node* node);
+     iterator Set(const std::string& key, const Node& node);
+     iterator Insert(const std::string& key, Node* node) PLIST_WARN_DEPRECATED("use Set() instead");
+diff --git a/src/Array.cpp b/src/Array.cpp
+index 5a4fd68..4b3414c 100644
+--- a/src/Array.cpp
++++ b/src/Array.cpp
+@@ -108,6 +108,30 @@ Array::const_iterator Array::End() const
+     return _array.end();
+ }
+ 
++Array::iterator Array::begin()
++{
++    return _array.begin();
++}
++
++Array::iterator Array::end()
++{
++    return _array.end();
++}
++
++Array::const_iterator Array::begin() const
++{
++    return _array.begin();
++}
++
++Array::const_iterator Array::end() const
++{
++    return _array.end();
++}
++
++const size_t Array::size() const {
++    return _array.size();
++}
++
+ void Array::Append(Node* node)
+ {
+     if (node)
+diff --git a/src/Dictionary.cpp b/src/Dictionary.cpp
+index ea04e81..f8bf25c 100644
+--- a/src/Dictionary.cpp
++++ b/src/Dictionary.cpp
+@@ -114,6 +114,26 @@ Dictionary::const_iterator Dictionary::End() const
+     return _map.end();
+ }
+ 
++Dictionary::iterator Dictionary::begin()
++{
++    return _map.begin();
++}
++
++Dictionary::iterator Dictionary::end()
++{
++    return _map.end();
++}
++
++Dictionary::const_iterator Dictionary::begin() const
++{
++    return _map.begin();
++}
++
++Dictionary::const_iterator Dictionary::end() const
++{
++    return _map.end();
++}
++
+ Dictionary::iterator Dictionary::Find(const std::string& key)
+ {
+     return _map.find(key);
+@@ -124,6 +144,10 @@ Dictionary::const_iterator Dictionary::Find(const std::string& key) const
+     return _map.find(key);
+ }
+ 
++const size_t Dictionary::size() const {
++    return _map.size();
++}
++
+ Dictionary::iterator Dictionary::Set(const std::string& key, const Node* node)
+ {
+     if (node)

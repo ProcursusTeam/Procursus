@@ -1,0 +1,21 @@
+Package: libtcc-dev
+Section: Development
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_TCC_V@
+Homepage: http://www.tinycc.org/
+Description: fast library for dynamic code generation
+ Libtcc is a library that uses tcc, a compiler several times faster than
+ 'gcc -O0' to perform dynamic code generation. It exposes in its API all
+ operations tcc performs to generate a binary from sources: setting
+ header and library paths, compiling program from a source file,
+ manipulating its symbols and handling relocation of its code among
+ other things. Libtcc is also able to compile from a buffer.
+ .
+ This package contains the static library and header file for TCC (Tiny
+ C Compiler).
+ .
+ NOTE: libtcc is still somewhat experimental and is not recommended for
+ production use.  The code it generates is much less optimized than what
+ GCC produces, and compiler bugs can have serious security consequences
+ for your program.

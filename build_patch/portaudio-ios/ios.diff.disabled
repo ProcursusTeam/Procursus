@@ -1,0 +1,43 @@
+--- portaudio/include/pa_mac_core.h	2021-04-01 00:35:42.000000000 +0000
++++ portaudio/include/pa_mac_core.h	2023-02-13 21:32:20.920064143 +0000
+@@ -47,6 +47,7 @@
+ 
+ #include <AudioUnit/AudioUnit.h>
+ #include <AudioToolbox/AudioToolbox.h>
++#include <CoreAudio/AudioHardware.h>
+ 
+ #ifdef __cplusplus
+ extern "C" {
+--- portaudio/src/hostapi/coreaudio/pa_mac_core.c	2023-02-13 21:05:57.616717042 +0000
++++ portaudio/src/hostapi/coreaudio/pa_mac_core.c	2023-02-13 21:30:57.254792519 +0000
+@@ -1230,7 +1230,11 @@
+      *  but I don't think that's relevant here.
+      */
+     desc.componentType         = kAudioUnitType_Output;
++#if TARGET_OS_OSX
+     desc.componentSubType      = kAudioUnitSubType_HALOutput;
++#else
++    desc.componentSubType      = kAudioUnitSubType_RemoteIO;
++#endif
+     desc.componentManufacturer = kAudioUnitManufacturer_Apple;
+     desc.componentFlags        = 0;
+     desc.componentFlagsMask    = 0;
+@@ -2715,6 +2719,7 @@
+ 
+ // it's not clear from appl's docs that this really waits
+ // until all data is flushed.
++typedef OSStatus ComponentResult;
+ static ComponentResult BlockWhileAudioUnitIsRunning( AudioUnit audioUnit, AudioUnitElement element )
+ {
+     Boolean isRunning = 1;
+--- portaudio/src/hostapi/coreaudio/pa_mac_core_utilities.h	2021-04-01 00:35:42.000000000 +0000
++++ portaudio/src/hostapi/coreaudio/pa_mac_core_utilities.h	2023-02-13 21:27:18.625683548 +0000
+@@ -64,6 +64,8 @@
+ #include "pa_util.h"
+ #include <AudioUnit/AudioUnit.h>
+ #include <AudioToolbox/AudioToolbox.h>
++#include <AudioToolbox/AUComponent.h>
++#include <CoreAudio/AudioHardware.h>
+ 
+ #ifndef MIN
+ #define MIN(a, b)  (((a)<(b))?(a):(b))
