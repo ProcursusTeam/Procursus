@@ -10,10 +10,10 @@ SYSTEM-CMDS_VERSION := 854.40.2
 DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-15
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1800 ] && echo 1),1)
 SYSTEM-CMDS_VERSION := 880.60.2
-DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)
+DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-1
 else
 SYSTEM-CMDS_VERSION := 950
-DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-1
+DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-2
 endif
 PWDARWIN_COMMIT     := 72ae45ce6c025bc2359035cfb941b177149e88ae
 
@@ -44,10 +44,6 @@ endif
 	# Allow placing kernels from [redacted] sources on rootless
 	sed -i 's|/System/Library/Kernels/kernel.development|$(MEMO_PREFIX)/Library/Kernels/kernel.development|' $(BUILD_WORK)/system-cmds/latency.tproj/latency.{1,c}
 
-###
-# TODO: Once I implement pam_chauthtok() in pam_unix.so, use PAM for passwd
-###
-
 ifneq ($(wildcard $(BUILD_WORK)/system-cmds/.build_complete),)
 system-cmds:
 	@echo "Using previously built system-cmds."
@@ -66,7 +62,7 @@ system-cmds: system-cmds-setup libxcrypt openpam libiosexec ncurses
 			login) CFLAGS="-DUSE_PAM=1" LDFLAGS="-lpam -liosexec";; \
 			dynamic_pager) CFLAGS="-Idynamic_pager.tproj";; \
 			pwd_mkdb) CFLAGS="-D_PW_NAME_LEN=MAXLOGNAME -D_PW_YPTOKEN=\"__YP!\"";; \
-			passwd) LDFLAGS="-lcrypt";; \
+			passwd) CFLAGS="-DINFO_PAM=4" LDFLAGS="-lcrypt -lpam";; \
 			shutdown) LDFLAGS="-lbsm -liosexec";; \
 			sc_usage) LDFLAGS="-lncurses";; \
 			at) LDFLAGS="-Iat.tproj -DPERM_PATH=\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/cron\" -DDAEMON_UID=1 -DDAEMON_GID=1 -D__FreeBSD__ -DDEFAULT_AT_QUEUE='a' -DDEFAULT_BATCH_QUEUE='b'";; \
