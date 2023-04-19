@@ -6,7 +6,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS      += libiosexec
 LIBIOSEXEC_VERSION := 1.3.0
-DEB_LIBIOSEXEC_V   ?= $(LIBIOSEXEC_VERSION)
+DEB_LIBIOSEXEC_V   ?= $(LIBIOSEXEC_VERSION)-1
 export DEB_LIBIOSEXEC_V
 
 ifneq (,$(findstring rootless,$(MEMO_TARGET)))
@@ -29,7 +29,8 @@ libiosexec: libiosexec-setup
 	+$(MAKE) -C $(BUILD_WORK)/libiosexec install \
 		DESTDIR=$(BUILD_STAGE)/libiosexec \
 		$(LIBIOSEXEC_FLAGS) \
-		DEFAULT_INTERPRETER="$(MEMO_PREFIX)/bin/sh"
+		DEFAULT_INTERPRETER="$(MEMO_PREFIX)/bin/sh" \
+		LDFLAGS="$(filter-out -liosexec,$(LDFLAGS))"
 	$(call AFTER_BUILD)
 endif
 
