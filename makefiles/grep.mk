@@ -2,17 +2,13 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-GREP_CONFIGURE_ARGS := --program-prefix=$(GNU_PREFIX)
-endif
-
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS += grep
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += grep
 endif # ($(MEMO_TARGET),darwin-\*)
-GREP_VERSION  := 3.7
-DEB_GREP_V    ?= $(GREP_VERSION)-1
+GREP_VERSION  := 3.10
+DEB_GREP_V    ?= $(GREP_VERSION)
 
 grep-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/grep/grep-$(GREP_VERSION).tar.xz{$(comma).sig})
@@ -30,12 +26,11 @@ grep: grep-setup
 endif
 	cd $(BUILD_WORK)/grep && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--disable-dependency-tracking \
 		--with-packager="$(DEB_MAINTAINER)" \
-		$(GREP_CONFIGURE_ARGS)
+		--program-prefix="$(GNU_PREFIX)"
 	+$(MAKE) -C $(BUILD_WORK)/grep
 	+$(MAKE) -C $(BUILD_WORK)/grep install \
-		DESTDIR=$(BUILD_STAGE)/grep
+		DESTDIR="$(BUILD_STAGE)/grep"
 	$(call AFTER_BUILD)
 endif
 
