@@ -8,7 +8,7 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += grep
 endif # ($(MEMO_TARGET),darwin-\*)
 GREP_VERSION  := 3.10
-DEB_GREP_V    ?= $(GREP_VERSION)
+DEB_GREP_V    ?= $(GREP_VERSION)-1
 
 grep-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/grep/grep-$(GREP_VERSION).tar.xz{$(comma).sig})
@@ -20,7 +20,7 @@ grep:
 	@echo "Using previously built grep."
 else
 ifeq (,$(findstring ramdisk,$(MEMO_TARGET)))
-grep: grep-setup pcre
+grep: grep-setup pcre2
 else
 grep: grep-setup
 endif
