@@ -20,7 +20,7 @@ install-name:    '@rpath/libiosexec.1.dylib'
 current-version: 0
 compatibility-version: 0
 exports:
-  - targets:         [ arm64-ios ]
+  - targets:         [ arm64-ios, arm64e-ios, arm64-tvos, arm64e-tvos, arm64_32-watchos, arm64-bridgeos ]
     symbols:         [ _ie_endgrent, _ie_endpwent, _ie_endusershell, _ie_execl, _ie_execle, 
                        _ie_execlp, _ie_execv, _ie_execve, _ie_execvp, _ie_execvpe, 
                        _ie_getgrent, _ie_getgrgid, _ie_getgrgid_r, _ie_getgrnam, 
