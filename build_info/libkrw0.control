@@ -1,0 +1,11 @@
+Package: libkrw0
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBKRW_V@
+Provides: net.siguza.libkrw (= @DEB_LIBKRW_V@)
+Conflicts: org.coolstar.libkernrw
+Replaces: org.coolstar.libkernrw
+Depends: libkrw-plugin
+Section: Libraries
+Priority: standard
+Description: Nice kernel r/w API for the iOS 15 dopamine jailbreak (Shared Library)
