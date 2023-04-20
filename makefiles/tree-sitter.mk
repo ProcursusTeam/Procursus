@@ -24,7 +24,7 @@ tree-sitter: tree-sitter-setup
 	+$(MAKE) -C $(BUILD_WORK)/tree-sitter install \
 		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 tree-sitter-package: tree-sitter-stage
