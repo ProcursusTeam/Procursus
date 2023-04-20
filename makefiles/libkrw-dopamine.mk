@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 ifeq ($(shell [ "$(MEMO_CFVER)" -eq 1800 ] && echo 1),1)
 
-STRAPPROJECTS     			+= libkrw-dopamine
+SUBPROJECTS     			+= libkrw-dopamine
 LIBKRW_DOPAMINE_VERSION 	:= 1.0.0
 LIBKRW_DOPAMINE_MINOR	 	:= 1
 DEB_LIBKRW_DOPAMINE_V   	?= $(LIBKRW_DOPAMINE_VERSION)

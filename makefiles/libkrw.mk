@@ -5,11 +5,10 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 ifeq ($(shell [ "$(MEMO_CFVER)" -ge 1800 ] && echo 1),1)
 
-STRAPPROJECTS     += libkrw
-LIBKRW_VERSION := 1.1.1
-DEB_LIBKRW_V   ?= $(LIBKRW_VERSION)
-
-LIBKRW_SOVERSION := 0
+STRAPPROJECTS     		+= libkrw
+LIBKRW_VERSION		 	:= 1.1.1
+DEB_LIBKRW_V		 	?= $(LIBKRW_VERSION)
+LIBKRW_SOVERSION		:= 0
 
 libkrw-setup: setup
 	$(call GITHUB_ARCHIVE,Siguza,libkrw,$(LIBKRW_VERSION),$(LIBKRW_VERSION))
