@@ -3,7 +3,7 @@ Author: Siguza
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LIBKRW_V@
-Depends: libkrw-plugin, firmware (>= 15.0), firmware (<= 15.5)
+Depends: libkrw-plugin
 Section: Libraries
 Priority: standard
 Description: A kernel R/W API for jailbreaks (Shared Library)
