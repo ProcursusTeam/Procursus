@@ -5,7 +5,7 @@ Architecture: @DEB_ARCH@
 Version: @DEB_LIBKRW_V@
 Provides: libkrw-plugin
 Conflicts: libkrw0-dopamine
-Depends: firmware (>= 12.0), firmware (<= 16.99), libkrw0
+Depends: libkrw0
 Section: Libraries
 Priority: standard
 Description: Plugin for libkrw that uses tfp0 (Shared Library)
