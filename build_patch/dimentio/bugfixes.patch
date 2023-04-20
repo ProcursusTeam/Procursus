@@ -1,0 +1,29 @@
+--- a/libdimentio.c	2023-04-19 16:50:39.165161004 -0700
++++ b/libdimentio.c	2023-04-19 16:49:52.762349080 -0700
+@@ -102,7 +102,7 @@
+ typedef mach_port_t io_object_t;
+ typedef kern_return_t (*kernrw_0_kbase_func_t)(kaddr_t *);
+ typedef io_object_t io_service_t, io_connect_t, io_registry_entry_t;
+-typedef int (*krw_0_kbase_func_t)(kaddr_t *), (*krw_0_kread_func_t)(kaddr_t, void *, size_t), (*krw_0_kwrite_func_t)(const void *, kaddr_t, size_t), (*kernrw_0_req_kernrw_func_t)(void);
++typedef int (*krw_0_kbase_func_t)(kaddr_t *), (*krw_0_kread_func_t)(kaddr_t, void *, size_t), (*krw_0_kwrite_func_t)(kaddr_t, const void *, size_t), (*kernrw_0_req_kernrw_func_t)(void);
+ 
+ typedef struct {
+ 	struct section_64 s64;
+@@ -310,7 +310,7 @@
+ 
+ static kern_return_t
+ kwrite_buf_krw_0(kaddr_t addr, const void *buf, size_t sz) {
+-	return krw_0_kwrite(buf, addr, sz) == 0 ? KERN_SUCCESS : KERN_FAILURE;
++	return krw_0_kwrite(addr, buf, sz) == 0 ? KERN_SUCCESS : KERN_FAILURE;
+ }
+ 
+ static kern_return_t
+@@ -863,7 +863,7 @@
+ 	CFArrayRef kext_names;
+ 
+ 	if(kbase == 0) {
+-		if((((kernrw_0 == NULL || (kernrw_0_kbase = (kernrw_0_kbase_func_t)dlsym(kernrw_0, "kernRW_getKernelBase")) == NULL || kernrw_0_kbase(&kbase) != KERN_SUCCESS)) && (krw_0 == NULL || (krw_0_kbase = (krw_0_kbase_func_t)dlsym(krw_0, "kbase")) == NULL || krw_0_kbase(&kbase) != 0)) || tfp0 == TASK_NULL || task_info(tfp0, TASK_DYLD_INFO, (task_info_t)&dyld_info, &cnt) != KERN_SUCCESS || (kbase = vm_kernel_link_addr + dyld_info.all_image_info_size) == 0) {
++		if((((kernrw_0 == NULL || (kernrw_0_kbase = (kernrw_0_kbase_func_t)dlsym(kernrw_0, "kernRW_getKernelBase")) == NULL || kernrw_0_kbase(&kbase) != KERN_SUCCESS)) && (krw_0 == NULL || (krw_0_kbase = (krw_0_kbase_func_t)dlsym(krw_0, "kbase")) == NULL || krw_0_kbase(&kbase) != 0)) && (tfp0 == TASK_NULL || task_info(tfp0, TASK_DYLD_INFO, (task_info_t)&dyld_info, &cnt) != KERN_SUCCESS || (kbase = vm_kernel_link_addr + dyld_info.all_image_info_size) == 0)) {
+ 			for(pri.pri_addr = 0; proc_pidinfo(0, PROC_PIDREGIONINFO, pri.pri_addr, &pri, sizeof(pri)) == sizeof(pri); pri.pri_addr += pri.pri_sz) {
+ 				if(pri.pri_prot == VM_PROT_READ && pri.pri_user_tag == VM_KERN_MEMORY_OSKEXT) {
+ 					if(kread_buf(pri.pri_addr + LOADED_KEXT_SUMMARY_HDR_NAME_OFF, kext_name, sizeof(kext_name)) == KERN_SUCCESS) {
