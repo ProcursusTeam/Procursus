@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += neofetch
-NEOFETCH_VERSION := 7.3.6
+NEOFETCH_VERSION := 7.3.8
 DEB_NEOFETCH_V   ?= $(NEOFETCH_VERSION)
 
 neofetch-setup: setup
