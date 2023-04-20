@@ -14,7 +14,7 @@ LIBKRW_DOPAMINE_LIBS   		:= -ljailbreak -framework Foundation
 libkrw-dopamine-setup: setup
 	$(call GITHUB_ARCHIVE,Cryptiiiic,libjbdrw,$(LIBKRW_DOPAMINE_VERSION),v$(LIBKRW_DOPAMINE_VERSION))
 	$(call EXTRACT_TAR,libjbdrw-$(LIBKRW_DOPAMINE_VERSION).tar.gz,libjbdrw-$(LIBKRW_DOPAMINE_VERSION),libkrw-dopamine)
-	mkdir -p $(BUILD_STAGE)/libkrw-dopamine/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_STAGE)/libkrw-dopamine/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw
 
 ifneq ($(wildcard $(BUILD_WORK)/libkrw-dopamine/.build_complete),)
 libkrw-dopamine:
@@ -28,7 +28,7 @@ libkrw-dopamine: libkrw-dopamine-setup
 		-D__FILENAME__="\"libkrw-dopamine.m\"" \
 		-DVERSION=$(LIBKRW_DOPAMINE_SOVERSION) \
 		-install_name "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw-dopamine.$(LIBKRW_DOPAMINE_SOVERSION).dylib" \
-		-o $(BUILD_STAGE)/libkrw-dopamine/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw-dopamine.$(LIBKRW_DOPAMINE_SOVERSION).dylib \
+		-o $(BUILD_STAGE)/libkrw-dopamine/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw/libkrw-dopamine.$(LIBKRW_DOPAMINE_SOVERSION).dylib \
 		$(BUILD_WORK)/libkrw-dopamine/src/jbdrw.m \
 		$(LDFLAGS) \
 		-L$(BUILD_WORK)/libkrw-dopamine/lib \
@@ -39,14 +39,14 @@ endif
 libkrw-dopamine-package: libkrw-dopamine-stage
 	# libkrw-dopamine.mk Package Structure
 	rm -rf $(BUILD_DIST)/libkrw-dopamine{$(LIBKRW_DOPAMINE_SOVERSION)}
-	mkdir -p $(BUILD_DIST)/libkrw-dopamine$(LIBKRW_DOPAMINE_SOVERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/libkrw-dopamine$(LIBKRW_DOPAMINE_SOVERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw
 
 	# libkrw-dopamine.mk Prep libkrw-dopamine$(LIBKRW_DOPAMINE_SOVERSION)
-	cp -a $(BUILD_STAGE)/libkrw-dopamine/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw-dopamine.$(LIBKRW_DOPAMINE_SOVERSION).dylib $(BUILD_DIST)/libkrw-dopamine$(LIBKRW_DOPAMINE_SOVERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libkrw-dopamine/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw/libkrw-dopamine.$(LIBKRW_DOPAMINE_SOVERSION).dylib $(BUILD_DIST)/libkrw-dopamine$(LIBKRW_DOPAMINE_SOVERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw
 
 
 	# libkrw-dopamine.mk Sign
-	$(call SIGN,libkrw-dopamine$(LIBKRW_DOPAMINE_SOVERSION))
+	$(call SIGN,libkrw-dopamine$(LIBKRW_DOPAMINE_SOVERSION),general.xml)
 
 	# libkrw-dopamine.mk Make .debs
 	$(call PACK,libkrw-dopamine$(LIBKRW_DOPAMINE_SOVERSION),DEB_LIBKRW_DOPAMINE_V)

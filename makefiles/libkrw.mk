@@ -64,7 +64,7 @@ libkrw-package: libkrw-stage
 	cp -a $(BUILD_STAGE)/libkrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkrw{,_plugin}.h $(BUILD_DIST)/libkrw-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 
 	# libkrw.mk Sign
-	$(call SIGN,libkrw$(LIBKRW_SOVERSION))
+	$(call SIGN,libkrw$(LIBKRW_SOVERSION),general.xml)
 
 	# libkrw.mk Make .debs
 	$(call PACK,libkrw$(LIBKRW_SOVERSION),DEB_LIBKRW_V)
