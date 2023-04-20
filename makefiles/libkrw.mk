@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-ifeq ($(shell [ "$(MEMO_CFVER)" -eq 1800 ] && echo 1),1)
+ifeq ($(shell [ "$(MEMO_CFVER)" -ge 1800 ] && echo 1),1)
 
 STRAPPROJECTS     += libkrw
 LIBKRW_VERSION := 1.1.1
