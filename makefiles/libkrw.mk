@@ -11,7 +11,7 @@ DEB_LIBKRW_V   ?= $(LIBKRW_VERSION)
 
 LIBKRW_SOVERSION := 0
 
-libkrw-setup: setup libkrw-dopamine
+libkrw-setup: setup
 	$(call GITHUB_ARCHIVE,Siguza,libkrw,$(LIBKRW_VERSION),$(LIBKRW_VERSION))
 	$(call EXTRACT_TAR,libkrw-$(LIBKRW_VERSION).tar.gz,libkrw-$(LIBKRW_VERSION),libkrw)
 	mkdir -p $(BUILD_STAGE)/libkrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include}
@@ -28,13 +28,13 @@ libkrw: libkrw-setup
 	# libkrw.o
 	$(CC) $(CFLAGS) \
 		-I$(BUILD_WORK)/libkrw/include \
-		-c -o $(BUILD_WORK)/libkrw/src/.lib/libkrw.o -x c \
+		-c -o $(BUILD_WORK)/libkrw/src/.lib/libkrw.o \
 		$(BUILD_WORK)/libkrw/src/libkrw.c
 
 	# libkrw_tfp0.o
 	$(CC) $(CFLAGS) \
 		-I$(BUILD_WORK)/libkrw/include \
-		-c -o $(BUILD_WORK)/libkrw/src/.lib/libkrw_tfp0.o -x c \
+		-c -o $(BUILD_WORK)/libkrw/src/.lib/libkrw_tfp0.o \
 		$(BUILD_WORK)/libkrw/src/libkrw_tfp0.c
 
 	# libkrw.dylib

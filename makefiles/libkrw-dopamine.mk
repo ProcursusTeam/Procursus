@@ -25,9 +25,8 @@ libkrw-dopamine: libkrw-dopamine-setup
 	# libkrw-dopamine.dylib
 	$(CC) $(CFLAGS) -fobjc-arc -dynamiclib \
 		-I$(BUILD_WORK)/libkrw-dopamine/include \
-		-D__FILENAME__="\"libkrw-dopamine.m\"" \
 		-DVERSION=$(LIBKRW_DOPAMINE_SOVERSION) \
-		-install_name "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw-dopamine.$(LIBKRW_DOPAMINE_SOVERSION).dylib" \
+		-install_name "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw/libkrw-dopamine.$(LIBKRW_DOPAMINE_SOVERSION).dylib" \
 		-o $(BUILD_STAGE)/libkrw-dopamine/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw/libkrw-dopamine.$(LIBKRW_DOPAMINE_SOVERSION).dylib \
 		$(BUILD_WORK)/libkrw-dopamine/src/jbdrw.m \
 		$(LDFLAGS) \
@@ -38,7 +37,7 @@ endif
 
 libkrw-dopamine-package: libkrw-dopamine-stage
 	# libkrw-dopamine.mk Package Structure
-	rm -rf $(BUILD_DIST)/libkrw-dopamine{$(LIBKRW_DOPAMINE_SOVERSION)}
+	rm -rf $(BUILD_DIST)/libkrw-dopamine$(LIBKRW_DOPAMINE_SOVERSION)
 	mkdir -p $(BUILD_DIST)/libkrw-dopamine$(LIBKRW_DOPAMINE_SOVERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw
 
 	# libkrw-dopamine.mk Prep libkrw-dopamine$(LIBKRW_DOPAMINE_SOVERSION)
