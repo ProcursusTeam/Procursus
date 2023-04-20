@@ -1,10 +1,10 @@
 Package: libkrw-dopamine0
+Author: Cryptiiiic
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LIBKRW_DOPAMINE_V@
 Provides: libkrw-plugin
-Conflicts: org.coolstar.libkernrw
-Replaces: org.coolstar.libkernrw
+Depends: firmware (>= 15.0), firmware (<= 15.5)
 Section: Libraries
 Priority: standard
 Description: Plugin for libkrw interacing with iOS 15 dopamine jailbreakd (Shared Library)

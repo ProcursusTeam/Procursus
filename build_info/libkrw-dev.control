@@ -1,9 +1,9 @@
 Package: libkrw-dev
+Author: Siguza
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LIBKRW_V@
 Depends: libkrw0 (= @DEB_LIBKRW_V@)
-Provides: net.siguza.libkrw-dev (= @DEB_LIBKRW_V@)
 Section: Development
 Priority: optional
-Description: Nice kernel r/w API for the iOS 15 dopamine jailbreak (Development Files)
+Description: Kernel r/w API for the iOS 15 dopamine jailbreak (Development Files)
