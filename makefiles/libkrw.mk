@@ -47,11 +47,11 @@ libkrw: libkrw-setup
 		$(BUILD_WORK)/libkrw/src/.lib/libkrw.o \
 		$(LDFLAGS)
 
-	# libkrw$(LIBKRW_SOVERSION)-tfp0.dylib
+	# libkrw-tfp0.dylib
 	$(CC) $(CFLAGS) -dynamiclib \
 		-I$(BUILD_WORK)/libkrw/include \
-		-install_name "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw/libkrw$(LIBKRW_SOVERSION)-tfp0.dylib" \
-		-o $(BUILD_STAGE)/libkrw-tfp0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw/libkrw$(LIBKRW_SOVERSION)-tfp0.dylib \
+		-install_name "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw/libkrw-tfp0.dylib" \
+		-o $(BUILD_STAGE)/libkrw-tfp0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw/libkrw-tfp0.dylib \
 		$(BUILD_WORK)/libkrw/src/.lib/libkrw_tfp0.o \
 		$(LDFLAGS)
 
@@ -71,7 +71,7 @@ libkrw-package: libkrw-stage
 	cp -a $(BUILD_STAGE)/libkrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw.$(LIBKRW_SOVERSION).dylib $(BUILD_DIST)/libkrw$(LIBKRW_SOVERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libkrw.mk Prep libkrw$(LIBKRW_SOVERSION)-tfp0
-	cp -a $(BUILD_STAGE)/libkrw-tfp0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw/libkrw$(LIBKRW_SOVERSION)-tfp0.dylib $(BUILD_DIST)/libkrw$(LIBKRW_SOVERSION)-tfp0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw
+	cp -a $(BUILD_STAGE)/libkrw-tfp0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw/libkrw-tfp0.dylib $(BUILD_DIST)/libkrw$(LIBKRW_SOVERSION)-tfp0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw
 
 	# libkrw.mk Prep libkrw-dev
 	cp -a $(BUILD_STAGE)/libkrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw.dylib $(BUILD_DIST)/libkrw-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
