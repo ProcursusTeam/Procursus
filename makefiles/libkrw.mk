@@ -54,8 +54,8 @@ libkrw-package: libkrw-stage
 	# libkrw.mk Package Structure
 	rm -rf $(BUILD_DIST)/libkrw{$(LIBKRW_SOVERSION),-dev}
 	mkdir -p $(BUILD_DIST)/libkrw$(LIBKRW_SOVERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libkrw$(LIBKRW_SOVERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw \
 		$(BUILD_DIST)/libkrw-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include}
-
 	# libkrw.mk Prep libkrw$(LIBKRW_SOVERSION)
 	cp -a $(BUILD_STAGE)/libkrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw.$(LIBKRW_SOVERSION).dylib $(BUILD_DIST)/libkrw$(LIBKRW_SOVERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
