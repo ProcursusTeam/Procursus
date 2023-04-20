@@ -6,4 +6,4 @@ Version: @DEB_LIBKRW_V@
 Depends: libkrw-plugin, firmware (>= 15.0), firmware (<= 15.5)
 Section: Libraries
 Priority: standard
-Description: Kernel R/W API for iOS jailbreak's (Shared Library)
+Description: A kernel R/W API for jailbreaks (Shared Library)

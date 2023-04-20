@@ -6,4 +6,4 @@ Version: @DEB_LIBKRW_V@
 Depends: libkrw0 (= @DEB_LIBKRW_V@)
 Section: Development
 Priority: optional
-Description: Kernel R/W API for iOS jailbreak's (Development Files)
+Description: A kernel R/W API for jailbreaks (Development Files)
