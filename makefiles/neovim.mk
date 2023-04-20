@@ -20,9 +20,9 @@ else ifneq ($(wildcard $(BUILD_WORK)/neovim/.build_complete),)
 neovim:
 	@echo "Using previously built neovim."
 else
-neovim: neovim-setup gettext lua-luv libuv1 msgpack libvterm libtermkey unibilium luajit tree-sitter
+neovim: neovim-setup gettext lua-luv libuv1 msgpack libvterm libtermkey unibilium luajit tree-sitter libmpack-lua lua-lpeg
 	@echo "Install neovim before building"
-	cd $(BUILD_WORK)/neovim/build && cmake . \
+	cd $(BUILD_WORK)/neovim/build && $(MEMO_DEPLOYMENT) cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DXGETTEXT_PRG="`which xgettext`" \
 		-DLUA_PRG="`which luajit`" \
