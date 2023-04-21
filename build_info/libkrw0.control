@@ -7,4 +7,5 @@ Provides: libkrw (= @DEB_LIBKRW_V@)
 Depends: libkrw0-plugin
 Section: Libraries
 Priority: standard
+Homepage: https://github.com/Siguza/libkrw
 Description: A kernel R/W API for jailbreaks (Shared Library)
