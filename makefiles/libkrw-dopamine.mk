@@ -51,7 +51,7 @@ libkrw-dopamine-package: libkrw-dopamine-stage
 	$(call PACK,libkrw$(LIBKRW_SOVERSION)-dopamine,DEB_LIBKRW_DOPAMINE_V)
 
 	# libkrw-dopamine.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libkrw-dopamine
+	rm -rf $(BUILD_DIST)/libkrw$(LIBKRW_SOVERSION)-dopamine
 
 .PHONY: libkrw-dopamine libkrw-dopamine-package
 
