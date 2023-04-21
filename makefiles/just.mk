@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += just
-JUST_VERSION  := 1.11.0
+JUST_VERSION  := 1.13.0
 DEB_JUST_V    ?= $(JUST_VERSION)
 
 just-setup: setup
