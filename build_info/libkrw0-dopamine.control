@@ -3,7 +3,7 @@ Author: Cryptiiiic
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LIBKRW_DOPAMINE_V@
-Provides: libkrw-plugin
+Provides: libkrw0-plugin
 Conflicts: libkrw0-tfp0
 Depends: firmware (>= 15.0), firmware (<= 15.5), libkrw0
 Section: Libraries

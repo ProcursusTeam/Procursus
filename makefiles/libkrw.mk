@@ -5,9 +5,9 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 ifeq ($(shell [ "$(MEMO_CFVER)" -ge 1800 ] && echo 1),1)
 
-STRAPPROJECTS    += libkrw
-LIBKRW_VERSION   := 1.1.1
-DEB_LIBKRW_V     ?= $(LIBKRW_VERSION)
+STRAPPROJECTS  += libkrw
+LIBKRW_VERSION := 1.1.1
+DEB_LIBKRW_V   ?= $(LIBKRW_VERSION)
 
 LIBKRW_SOVERSION := 0
 
@@ -23,7 +23,6 @@ libkrw:
 	@echo "Using previously built libkrw."
 else
 libkrw: libkrw-setup
-
 	mkdir -p $(BUILD_WORK)/libkrw/src/.lib/
 
 	# libkrw.o
@@ -50,27 +49,28 @@ libkrw: libkrw-setup
 	$(CC) $(CFLAGS) -dynamiclib \
 		-I$(BUILD_WORK)/libkrw/include \
 		-install_name "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw/libkrw-tfp0.dylib" \
-		-o $(BUILD_STAGE)/libkrw-tfp0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw/libkrw-tfp0.dylib \
+		-o $(BUILD_STAGE)/libkrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw/libkrw-tfp0.dylib \
 		$(BUILD_WORK)/libkrw/src/.lib/libkrw_tfp0.o \
 		$(LDFLAGS)
 
-	cp $(BUILD_WORK)/libkrw/include/libkrw{,_plugin}.h $(BUILD_STAGE)/libkrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_WORK)/libkrw/include/libkrw{,_plugin}.h $(BUILD_STAGE)/libkrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	$(LN_S) libkrw.$(LIBKRW_SOVERSION).dylib $(BUILD_STAGE)/libkrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw.dylib
 	$(call AFTER_BUILD,copy)
 endif
 
 libkrw-package: libkrw-stage
 	# libkrw.mk Package Structure
-	rm -rf $(BUILD_DIST)/libkrw{$(LIBKRW_SOVERSION),-dev}
+	rm -rf $(BUILD_DIST)/libkrw{$(LIBKRW_SOVERSION){,-tfp0},-dev,}
 	mkdir -p $(BUILD_DIST)/libkrw$(LIBKRW_SOVERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libkrw$(LIBKRW_SOVERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw \
 		$(BUILD_DIST)/libkrw-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include} \
 		$(BUILD_DIST)/libkrw$(LIBKRW_SOVERSION)-tfp0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw
+	
 	# libkrw.mk Prep libkrw$(LIBKRW_SOVERSION)
 	cp -a $(BUILD_STAGE)/libkrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw.$(LIBKRW_SOVERSION).dylib $(BUILD_DIST)/libkrw$(LIBKRW_SOVERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libkrw.mk Prep libkrw$(LIBKRW_SOVERSION)-tfp0
-	cp -a $(BUILD_STAGE)/libkrw-tfp0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw/libkrw-tfp0.dylib $(BUILD_DIST)/libkrw$(LIBKRW_SOVERSION)-tfp0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw
+	cp -a $(BUILD_STAGE)/libkrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw/libkrw-tfp0.dylib $(BUILD_DIST)/libkrw$(LIBKRW_SOVERSION)-tfp0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw
 
 	# libkrw.mk Prep libkrw-dev
 	cp -a $(BUILD_STAGE)/libkrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw.dylib $(BUILD_DIST)/libkrw-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
@@ -86,7 +86,7 @@ libkrw-package: libkrw-stage
 	$(call PACK,libkrw-dev,DEB_LIBKRW_V)
 
 	# libkrw.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libkrw{$(LIBKRW_SOVERSION),-dev}
+	rm -rf $(BUILD_DIST)/libkrw{$(LIBKRW_SOVERSION){,-tfp0},-dev,}
 
 .PHONY: libkrw libkrw-package
 

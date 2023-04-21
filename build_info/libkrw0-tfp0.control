@@ -3,9 +3,10 @@ Author: Siguza
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LIBKRW_V@
-Provides: libkrw-plugin
+Provides: libkrw0-plugin
 Conflicts: libkrw0-dopamine
 Depends: libkrw0
 Section: Libraries
 Priority: standard
-Description: Plugin for libkrw that uses tfp0 (Shared Library)
+Homepage: https://github.com/Siguza/libkrw
+Description: Plugin for libkrw that interfaces with tfp0 (Shared Library)
