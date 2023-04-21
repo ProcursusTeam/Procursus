@@ -5,17 +5,17 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 ifeq ($(shell [ "$(MEMO_CFVER)" -ge 1800 ] && echo 1),1)
 
-STRAPPROJECTS     		+= libkrw
-LIBKRW_VERSION		 	:= 1.1.1
-DEB_LIBKRW_V		 	?= $(LIBKRW_VERSION)
-LIBKRW_SOVERSION		:= 0
+STRAPPROJECTS    += libkrw
+LIBKRW_VERSION   := 1.1.1
+DEB_LIBKRW_V     ?= $(LIBKRW_VERSION)
+
+LIBKRW_SOVERSION := 0
 
 libkrw-setup: setup
 	$(call GITHUB_ARCHIVE,Siguza,libkrw,$(LIBKRW_VERSION),$(LIBKRW_VERSION))
 	$(call EXTRACT_TAR,libkrw-$(LIBKRW_VERSION).tar.gz,libkrw-$(LIBKRW_VERSION),libkrw)
 	$(call DO_PATCH,libkrw,libkrw,-p1)
-	mkdir -p $(BUILD_STAGE)/libkrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include} \
-		$(BUILD_STAGE)/libkrw-tfp0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw
+	mkdir -p $(BUILD_STAGE)/libkrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/libkrw}
 	sed -i 's|/usr/lib|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib|g' $(BUILD_WORK)/libkrw/src/libkrw.c
 
 ifneq ($(wildcard $(BUILD_WORK)/libkrw/.build_complete),)

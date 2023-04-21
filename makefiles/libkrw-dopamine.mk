@@ -5,12 +5,11 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 ifeq ($(shell [ "$(MEMO_CFVER)" -eq 1800 ] && echo 1),1)
 
-SUBPROJECTS     			+= libkrw-dopamine
-LIBKRW_DOPAMINE_VERSION 	:= 1.0.0
-LIBKRW_DOPAMINE_MINOR	 	:= 1
-DEB_LIBKRW_DOPAMINE_V   	?= $(LIBKRW_DOPAMINE_VERSION)
-LIBKRW_DOPAMINE_LIBS   		:= -ljailbreak -framework Foundation
-LIBKRW_DOPAMINE_SOVERSION	:= 0
+SUBPROJECTS             += libkrw-dopamine
+LIBKRW_DOPAMINE_VERSION := 1.0.0
+LIBKRW_DOPAMINE_MINOR   := 1
+DEB_LIBKRW_DOPAMINE_V   ?= $(LIBKRW_DOPAMINE_VERSION)
+LIBKRW_DOPAMINE_LIBS    := -ljailbreak -framework Foundation
 
 libkrw-dopamine-setup: setup
 	$(call GITHUB_ARCHIVE,Cryptiiiic,libjbdrw,$(LIBKRW_DOPAMINE_VERSION),v$(LIBKRW_DOPAMINE_VERSION))
@@ -39,17 +38,17 @@ endif
 libkrw-dopamine-package: libkrw-dopamine-stage
 	# libkrw-dopamine.mk Package Structure
 	rm -rf $(BUILD_DIST)/libkrw-dopamine
-	mkdir -p $(BUILD_DIST)/libkrw$(LIBKRW_DOPAMINE_SOVERSION)-dopamine/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw
+	mkdir -p $(BUILD_DIST)/libkrw$(LIBKRW_SOVERSION)-dopamine/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw
 
 	# libkrw-dopamine.mk Prep libkrw-dopamine
-	cp -a $(BUILD_STAGE)/libkrw-dopamine/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw/libkrw-dopamine.dylib $(BUILD_DIST)/libkrw$(LIBKRW_DOPAMINE_SOVERSION)-dopamine/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw
+	cp -a $(BUILD_STAGE)/libkrw-dopamine/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw/libkrw-dopamine.dylib $(BUILD_DIST)/libkrw$(LIBKRW_SOVERSION)-dopamine/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw
 
 
 	# libkrw-dopamine.mk Sign
-	$(call SIGN,libkrw$(LIBKRW_DOPAMINE_SOVERSION)-dopamine,general.xml)
+	$(call SIGN,libkrw$(LIBKRW_SOVERSION)-dopamine,general.xml)
 
 	# libkrw-dopamine.mk Make .debs
-	$(call PACK,libkrw$(LIBKRW_DOPAMINE_SOVERSION)-dopamine,DEB_LIBKRW_DOPAMINE_V)
+	$(call PACK,libkrw$(LIBKRW_SOVERSION)-dopamine,DEB_LIBKRW_DOPAMINE_V)
 
 	# libkrw-dopamine.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libkrw-dopamine
