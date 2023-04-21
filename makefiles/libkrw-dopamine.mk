@@ -37,7 +37,7 @@ endif
 
 libkrw-dopamine-package: libkrw-dopamine-stage
 	# libkrw-dopamine.mk Package Structure
-	rm -rf $(BUILD_DIST)/libkrw-dopamine
+	rm -rf $(BUILD_DIST)/libkrw$(LIBKRW_SOVERSION)-dopamine
 	mkdir -p $(BUILD_DIST)/libkrw$(LIBKRW_SOVERSION)-dopamine/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw
 
 	# libkrw-dopamine.mk Prep libkrw-dopamine
