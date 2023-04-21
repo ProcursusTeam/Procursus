@@ -4,7 +4,6 @@ Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LIBKRW_V@
 Provides: libkrw0-plugin
-Conflicts: libkrw0-dopamine
 Depends: libkrw0
 Section: Libraries
 Priority: standard
