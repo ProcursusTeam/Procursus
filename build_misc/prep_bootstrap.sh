@@ -17,10 +17,12 @@
 
 if [ -z "$NO_PASSWORD_PROMPT" ]; then
     PASSWORD=""
-    while [ -z "$PASSWORD" ]; do
-            PASSWORD=$(@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/uialert -b "In order to use command line tools like \"sudo\" after jailbreaking, you will need to set a terminal passcode. (This cannot be empty)" --secure "Password" -p "Set" "Set Password" | @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/head -n 1)
+    while [ -z "$PASSWORD1" ] || [ ! "$PASSWORD1" = "$PASSWORD2" ]; do
+            PASSWORDS="$(@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/uialert -b "In order to use command line tools like \"sudo\" after jailbreaking, you will need to set a terminal passcode. (This cannot be empty)" --secure "Password" --secure "Repeat Password" -p "Set" "Set Password" | @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/head -n 1)"
+            PASSWORD1="$(printf "%s\n" "$PASSWORDS" | /var/jb/usr/bin/sed -n '1 p')"
+            PASSWORD2="$(printf "%s\n" "$PASSWORDS" | /var/jb/usr/bin/sed -n '2 p')"
     done
-    echo "$PASSWORD" | @MEMO_PREFIX@@MEMO_SUB_PREFIX@/sbin/pw usermod 501 -h 0
+    printf "%s\n" "$PASSWORD1" | @MEMO_PREFIX@@MEMO_SUB_PREFIX@/sbin/pw usermod 501 -h 0
 fi
 
 rm -f @MEMO_PREFIX@/prep_bootstrap.sh
