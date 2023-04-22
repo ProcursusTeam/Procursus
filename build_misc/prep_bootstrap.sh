@@ -15,4 +15,12 @@
 @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/chsh -s @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/zsh mobile
 @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/chsh -s @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/zsh root
 
+if [ -z "$NO_PASSWORD_PROMPT" ]; then
+    PASSWORD=""
+    while [ -z "$PASSWORD" ]; do
+            PASSWORD=$(/var/jb/usr/bin/uialert -b "In order to use command line tools like \"sudo\" after jailbreaking, you will need to set a terminal passcode. (This cannot be empty)" --secure "Password" -p "Set" "Set Password" | /var/jb/usr/bin/head -n 1)
+    done
+    echo "$PASSWORD" | /var/jb/usr/sbin/pw usermod 501 -h 0
+fi
+
 rm -f @MEMO_PREFIX@/prep_bootstrap.sh
