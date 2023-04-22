@@ -8,7 +8,7 @@ else
 STRAPPROJECTS      += uikittools
 endif
 UIKITTOOLS_VERSION := 2.1.5
-DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)
+DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)-1
 
 uikittools-setup: setup
 	$(call GITHUB_ARCHIVE,ProcursusTeam,uikittools-ng,$(UIKITTOOLS_VERSION),v$(UIKITTOOLS_VERSION))
@@ -44,15 +44,15 @@ uikittools-package: uikittools-stage
 
 	# uikittools.mk Prep uikittools
 	cp -a $(BUILD_STAGE)/uikittools $(BUILD_DIST)
-	rm -f $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{uinotify,uisave,lsrebuild,uidisplay,uialert,uishoot} \
-		$(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/{uinotify,uisave,lsrebuild,uidisplay,uialert,uishoot}.1$(MEMO_MANPAGE_SUFFIX) \
-		$(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/*/man1/{uinotify,uisave,lsrebuild,uidisplay,uialert,uishoot}.1$(MEMO_MANPAGE_SUFFIX)
+	rm -f $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{uinotify,uisave,lsrebuild,uidisplay,uishoot} \
+		$(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/{uinotify,uisave,lsrebuild,uidisplay,uishoot}.1$(MEMO_MANPAGE_SUFFIX) \
+		$(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/*/man1/{uinotify,uisave,lsrebuild,uidisplay,uishoot}.1$(MEMO_MANPAGE_SUFFIX)
 
 	# uikittools.mk Prep uikittools-extra
 	cp -a $(BUILD_STAGE)/uikittools $(BUILD_DIST)/uikittools-extra
-	rm -rf $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/!(uinotify|uisave|lsrebuild|uidisplay|uialert|uishoot) \
-		$(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/!(uinotify|uisave|lsrebuild|uidisplay|uialert|uishoot).1$(MEMO_MANPAGE_SUFFIX) \
-		$(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/*/man1/!(uinotify|uisave|lsrebuild|uidisplay|uialert|uishoot).1$(MEMO_MANPAGE_SUFFIX) \
+	rm -rf $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/!(uinotify|uisave|lsrebuild|uidisplay|uishoot) \
+		$(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/!(uinotify|uisave|lsrebuild|uidisplay|uishoot).1$(MEMO_MANPAGE_SUFFIX) \
+		$(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/*/man1/!(uinotify|uisave|lsrebuild|uidisplay|uishoot).1$(MEMO_MANPAGE_SUFFIX) \
 		$(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale
 
 	# uikittools.mk Sign
