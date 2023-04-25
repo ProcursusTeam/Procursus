@@ -1,0 +1,58 @@
+--- neovim/src/nvim/po/CMakeLists.txt.orig	2023-04-20 04:17:33.297033954 +0000
++++ neovim/src/nvim/po/CMakeLists.txt	2023-04-20 04:17:39.923092526 +0000
+@@ -53,7 +53,7 @@
+   list(SORT NVIM_RELATIVE_SOURCES)
+   add_custom_command(
+     OUTPUT ${NVIM_POT}
+-    COMMAND $<TARGET_FILE:nvim> -u NONE -i NONE -n --headless --cmd "set cpo+=+"
++    COMMAND "nvim" -u NONE -i NONE -n --headless --cmd "set cpo+=+"
+       -S ${CMAKE_CURRENT_SOURCE_DIR}/tojavascript.vim ${NVIM_POT} ${PROJECT_SOURCE_DIR}/runtime/optwin.vim
+     COMMAND ${XGETTEXT_PRG} -o ${NVIM_POT} --default-domain=nvim
+       --add-comments --keyword=_ --keyword=N_ --keyword=NGETTEXT:1,2
+@@ -59,7 +59,7 @@
+       --add-comments --keyword=_ --keyword=N_ --keyword=NGETTEXT:1,2
+       -D ${CMAKE_CURRENT_SOURCE_DIR} -D ${CMAKE_CURRENT_BINARY_DIR}
+       ${NVIM_RELATIVE_SOURCES} optwin.js
+-    COMMAND $<TARGET_FILE:nvim> -u NONE -i NONE -n --headless --cmd "set cpo+=+"
++    COMMAND nvim -u NONE -i NONE -n --headless --cmd "set cpo+=+"
+       -S ${CMAKE_CURRENT_SOURCE_DIR}/fixfilenames.vim ${NVIM_POT} ../../../runtime/optwin.vim
+     VERBATIM
+     DEPENDS ${NVIM_SOURCES} nvim nvim_runtime_deps)
+@@ -88,7 +88,7 @@
+     set(poFile ${CMAKE_CURRENT_SOURCE_DIR}/${name}.po)
+ 
+     add_custom_target(check-po-${name}
+-      COMMAND $<TARGET_FILE:nvim> -u NONE -n -e
++      COMMAND nvim -u NONE -n -e
+           -S ${CMAKE_CURRENT_SOURCE_DIR}/check.vim
+           -c "if error == 0 | q | endif" -c cq ${poFile} ||
+           ${CMAKE_COMMAND} -E echo "${name}.po failed the check."
+--- neovim/runtime/CMakeLists.txt.orig	2023-04-07 11:26:29.000000000 +0000
++++ neovim/runtime/CMakeLists.txt	2023-04-20 04:21:12.713172471 +0000
+@@ -32,7 +32,7 @@
+     add_custom_command(OUTPUT "${GENERATED_PACKAGE_DIR}/${PACKNAME}/doc/tags"
+       COMMAND ${CMAKE_COMMAND} -E copy_directory
+         ${PACKAGE} ${GENERATED_PACKAGE_DIR}/${PACKNAME}
+-      COMMAND "${PROJECT_BINARY_DIR}/bin/nvim"
++      COMMAND "nvim"
+         -u NONE -i NONE -e --headless -c "helptags doc" -c quit
+       DEPENDS
+         nvim
+@@ -66,7 +66,7 @@
+   COMMAND ${CMAKE_COMMAND} -E remove_directory doc
+   COMMAND ${CMAKE_COMMAND} -E copy_directory
+     ${PROJECT_SOURCE_DIR}/runtime/doc doc
+-  COMMAND "${PROJECT_BINARY_DIR}/bin/nvim"
++  COMMAND "nvim"
+     -u NONE -i NONE -e --headless -c "helptags ++t doc" -c quit
+   DEPENDS
+     nvim
+@@ -77,7 +77,7 @@
+ 
+ # TODO: This doesn't work. wait for "nvim -l" to land?
+ add_custom_target(doc_html
+-  COMMAND "${PROJECT_BINARY_DIR}/bin/nvim"
++  COMMAND "nvim"
+     -V1 -es --clean -c "lua require('scripts.gen_help_html').gen('./build/runtime/doc', './build/doc_html', nil, 'todo_commit_id')" -c "0cq"
+   DEPENDS
+     ${GENERATED_HELP_TAGS}

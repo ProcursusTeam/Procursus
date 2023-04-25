@@ -1,0 +1,13 @@
+Package: capstone-tool
+Version: @DEB_CAPSTONE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Homepage: https://www.capstone-engine.org/
+Description: lightweight multi-architecture disassembly framework - command line tool
+ Capstone is a lightweight multi-platform, multi-architecture disassembly
+ framework.
+ .
+ This package contains cstool, a command-line tool to disassemble
+ hexadecimal strings.

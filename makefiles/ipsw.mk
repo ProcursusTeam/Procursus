@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += ipsw
-IPSW_VERSION  := 3.1.260
+IPSW_VERSION  := 3.1.279
 DEB_IPSW_V    ?= $(IPSW_VERSION)
 
 ipsw-setup: setup
@@ -14,10 +14,13 @@ ifneq ($(wildcard $(BUILD_WORK)/ipsw/.build_complete),)
 ipsw:
 	@echo "Using previously built ipsw."
 else
-ipsw: ipsw-setup
+ipsw: ipsw-setup libusb unicorn
 	mkdir -p $(BUILD_STAGE)/ipsw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/{man/man1,zsh/site-functions,bash-completion/completions,fish/vendor_completions.d}}
-	cd $(BUILD_WORK)/ipsw && $(DEFAULT_GOLANG_FLAGS) go build \
+	cd $(BUILD_WORK)/ipsw && $(DEFAULT_GOLANG_FLAGS) CGO_CPPFLAGS="$(CPPFLAGS) -I$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libusb-1.0" \
+		PKG_CONFIG_PATH="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig" \
+		go build \
 		-o build/dist/ipsw \
+		-tags libusb,unicorn \
 		-ldflags "-s -w -X github.com/blacktop/ipsw/cmd/ipsw/cmd.AppVersion=$(IPSW_VERSION) -X github.com/blacktop/ipsw/cmd/ipsw/cmd.AppBuildTime=$(shell date -u +%Y%m%d)" \
 		./cmd/ipsw
 	$(INSTALL) -Dm755 $(BUILD_WORK)/ipsw/build/dist/ipsw $(BUILD_STAGE)/ipsw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ipsw

@@ -1,0 +1,14 @@
+--- neovim/src/nvim/os/lang.c.orig	2023-04-20 04:04:04.055687796 +0000
++++ neovim/src/nvim/os/lang.c	2023-04-20 04:08:13.254952890 +0000
+@@ -26,10 +26,7 @@
+ 
+     // $LANG is not set, either because it was unset or Nvim was started
+     // from the Dock. Query the system locale.
+-    if (LocaleRefGetPartString(NULL,
+-                               kLocaleLanguageMask | kLocaleLanguageVariantMask |
+-                               kLocaleRegionMask | kLocaleRegionVariantMask,
+-                               sizeof(buf) - 10, buf) == noErr && *buf) {
++    if (0) {
+       if (strcasestr(buf, "utf-8") == NULL) {
+         xstrlcat(buf, ".UTF-8", sizeof(buf));
+       }

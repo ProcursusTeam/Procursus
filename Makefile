@@ -93,9 +93,6 @@ $(error Unsupported CoreFoundation version)
 endif
 
 ifeq ($(shell [ "$(MEMO_TARGET)" = "iphoneos-arm64" ] || [ "$(MEMO_TARGET)" = "iphoneos-arm64-ramdisk" ] && echo 1),1)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for iOS)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := arm64
 PLATFORM              := iphoneos
 DEB_ARCH              := iphoneos-arm
@@ -113,9 +110,6 @@ BARE_PLATFORM         := iPhoneOS
 MEMO_DEPLOYMENT       := IPHONEOS_DEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),iphoneos-arm64-rootless)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for iOS with rootless prefix)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := arm64
 PLATFORM              := iphoneos
 DEB_ARCH              := iphoneos-arm64
@@ -133,9 +127,6 @@ BARE_PLATFORM         := iPhoneOS
 MEMO_DEPLOYMENT       := IPHONEOS_DEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),iphoneos-arm64e-rootless)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for iOS arm64e with rootless prefix)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := arm64e
 PLATFORM              := iphoneos
 DEB_ARCH              := iphoneos-arm64e
@@ -153,9 +144,6 @@ BARE_PLATFORM         := iPhoneOS
 MEMO_DEPLOYMENT       := IPHONEOS_DEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),iphoneos-arm64e)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for iOS arm64e)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := arm64e
 PLATFORM              := iphoneos
 DEB_ARCH              := iphoneos-arm64e
@@ -173,9 +161,6 @@ BARE_PLATFORM         := iPhoneOS
 MEMO_DEPLOYMENT       := IPHONEOS_DEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(shell [ "$(MEMO_TARGET)" = "iphoneos-armv7" ] || [ "$(MEMO_TARGET)" = "iphoneos-armv7-ramdisk" ] && echo 1),1)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for iOS)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := armv7
 PLATFORM              := iphoneos
 DEB_ARCH              := iphoneos-arm
@@ -193,9 +178,6 @@ BARE_PLATFORM         := iPhoneOS
 MEMO_DEPLOYMENT       := IPHONEOS_DEPLOYMENT_TARGET=$(IPHONEOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(shell [ "$(MEMO_TARGET)" = "appletvos-arm64" ] || [ "$(MEMO_TARGET)" = "appletvos-arm64-ramdisk" ] && echo 1),1)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for tvOS)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := arm64
 PLATFORM              := appletvos
 DEB_ARCH              := appletvos-arm64
@@ -213,9 +195,6 @@ BARE_PLATFORM         := AppleTVOS
 MEMO_DEPLOYMENT       := APPLETVOS_DEPLOYMENT_TARGET=$(APPLETVOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),appletvos-arm64e)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for tvOS arm64e)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := arm64e
 PLATFORM              := appletvos
 DEB_ARCH              := appletvos-arm64e
@@ -233,9 +212,6 @@ BARE_PLATFORM         := AppleTVOS
 MEMO_DEPLOYMENT       := APPLETVOS_DEPLOYMENT_TARGET=$(APPLETVOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),audioos-arm64)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for audioOS)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := arm64
 PLATFORM              := appletvos # Platform-wise, audioos ~ appletvos (although some frameworks and stuff may be missing)
 DEB_ARCH              := audioos-arm64
@@ -253,9 +229,6 @@ BARE_PLATFORM         := AppleTVOS
 MEMO_DEPLOYMENT       := APPLETVOS_DEPLOYMENT_TARGET=$(APPLETVOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),bridgeos-arm64)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for BridgeOS)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := arm64
 PLATFORM              := iphoneos # find me a BridgeOS.sdk and you win.
 DEB_ARCH              := bridgeos-arm64
@@ -273,9 +246,6 @@ BARE_PLATFORM         := BridgeOS
 MEMO_DEPLOYMENT       := BRIDGEOS_DEPLOYMENT_TARGET=$(BRIDGEOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),watchos-arm64_32)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for WatchOS)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := arm64_32
 PLATFORM              := watchos
 DEB_ARCH              := watchos-arm64-32
@@ -293,9 +263,6 @@ BARE_PLATFORM         := WatchOS
 MEMO_DEPLOYMENT       := WATCHOS_DEPLOYMENT_TARGET=$(WATCHOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(shell [ "$(MEMO_TARGET)" = "watchos-armv7k" ] || [ "$(MEMO_TARGET)" = "watchos-armv7k-ramdisk" ] && echo 1),1)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for WatchOS)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := armv7k
 PLATFORM              := watchos
 DEB_ARCH              := watchos-armv7k
@@ -313,9 +280,6 @@ BARE_PLATFORM         := WatchOS
 MEMO_DEPLOYMENT       := WATCHOS_DEPLOYMENT_TARGET=$(WATCHOS_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),darwin-arm64e)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for macOS arm64e)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := arm64e
 PLATFORM              := macosx
 DEB_ARCH              := darwin-arm64e
@@ -333,9 +297,6 @@ BARE_PLATFORM         := MacOSX
 MEMO_DEPLOYMENT       := MACOSX_DEPLOYMENT_TARGET=$(MACOSX_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),darwin-arm64)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for macOS arm64)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := arm64
 PLATFORM              := macosx
 DEB_ARCH              := darwin-arm64
@@ -353,9 +314,6 @@ BARE_PLATFORM         := MacOSX
 MEMO_DEPLOYMENT       := MACOSX_DEPLOYMENT_TARGET=$(MACOSX_DEPLOYMENT_TARGET)
 
 else ifeq ($(MEMO_TARGET),darwin-amd64)
-ifneq ($(MEMO_QUIET),1)
-$(warning Building for macOS amd64)
-endif # ($(MEMO_QUIET),1)
 MEMO_ARCH             := x86_64
 PLATFORM              := macosx
 DEB_ARCH              := darwin-amd64
@@ -374,6 +332,11 @@ MEMO_DEPLOYMENT       := MACOSX_DEPLOYMENT_TARGET=$(MACOSX_DEPLOYMENT_TARGET)
 
 else
 $(error Platform not supported)
+endif
+
+
+ifneq ($(MEMO_QUIET),1)
+$(warning Building for $(BARE_PLATFORM) $(MEMO_ARCH) with CoreFoundation version $(MEMO_CFVER) and prefix $(MEMO_PREFIX))
 endif
 
 ifeq ($(UNAME),Linux)
@@ -872,7 +835,7 @@ PACK = \
 	fi; \
 	rm -f $(BUILD_DIST)/$(1)/.build_complete; \
 	rm -rf $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{info,doc}; \
-	for file in AUTHORS COPYING LICENSE NEWS README THANKS TODO; do \
+	for file in AUTHORS{,.TXT} COPYING{,.TXT} LICENSE{,.TXT} NEWS{,.TXT} README{,.TXT} THANKS{,.TXT} TODO{,.TXT}; do \
 		if [ -f "$(BUILD_WORK)/$$(echo $@ | sed 's/-package//')/$$file" ]; then \
 			mkdir -p $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1); \
 			cp -aL $(BUILD_WORK)/$$(echo $@ | sed 's/-package//')/$$file $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1); \
@@ -949,7 +912,7 @@ PACK = \
 	mkdir -p $(BUILD_DIST)/../$$(echo $@ | sed 's/-package//'); \
 	$(FAKEROOT) $(DPKG_DEB) -b $(BUILD_DIST)/$(1) $(BUILD_DIST)/../$$(echo $@ | sed 's/-package//')/$$(grep Package: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ')_$($(2))_$$(grep Architecture: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ').deb
 
-GITHUB_ARCHIVE = -if [ $(5) ]; then \
+GITHUB_ARCHIVE = -if [ "x$(5)" != "x" ]; then \
 					[ ! -f "$(BUILD_SOURCE)/$(5)-$(3).tar.gz" ] && \
 						$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/$(5)-$(3).tar.gz, \
 							https://github.com/$(1)/$(2)/archive/$(4).tar.gz); \
@@ -972,7 +935,7 @@ GIT_CLONE = if [ ! -d "$(BUILD_WORK)/$(3)" ]; then \
 ifneq ($(call HAS_COMMAND,curl),1)
 $(error Install curl)
 else
-CURL := curl --silent -L --create-dir --hsts ~/.curl_hsts_cache_procursus.txt
+CURL := curl --silent -L --create-dir
 endif
 
 ifneq ($(call HAS_COMMAND,triehash),1)
@@ -1192,7 +1155,7 @@ bootstrap:: strapprojects
 	-if echo $(MEMO_TARGET) | grep "darwin"; then \
 		PKGS="apt/apt_*.deb brotli/libbrotli1_*.deb cacerts/ca-certificates_*.deb coreutils/coreutils_*.deb darwintools/darwintools_*.deb dpkg/dpkg_*.deb gnupg/gpgv_*.deb apt/libapt-pkg6.0_*.deb libassuan/libassuan0_*.deb libffi/libffi8_*.deb libgcrypt/libgcrypt20_*.deb libgmp10/libgmp10_*.deb gnutls/libgnutls30_*.deb libgpg-error/libgpg-error0_*.deb nettle/libhogweed6_*.deb libidn2/libidn2-0_*.deb gettext/libintl8_*.deb lz4/liblz4-1_*.deb xz/liblzma5_*.deb libmd/libmd0_*.deb nettle/libnettle8_*.deb npth/libnpth0_*.deb p11-kit/libp11-kit0_*.deb openssl/libssl3_*.deb libtasn1/libtasn1-6_*.deb libunistring/libunistring5_*.deb xxhash/libxxhash0_*.deb zlib-ng/libz-ng2_*.deb zstd/libzstd1_*.deb keyring/procursus-keyring_*.deb tar/tar_*.deb"; \
 	else \
-		PKGS="apt/apt_*.deb base/base_*.deb bash/bash_*.deb brotli/libbrotli1_*.deb cacerts/ca-certificates_*.deb chariz-keyring/chariz-keyring_*.deb coreutils/coreutils_*.deb darwintools/darwintools_*.deb dash/dash_*.deb debianutils/debianutils_*.deb diffutils/diffutils_*.deb diskdev-cmds/diskdev-cmds_*.deb dpkg/dpkg_*.deb essential/essential_*.deb file-cmds/file-cmds_*.deb findutils/findutils_*.deb firmware-sbin/firmware-sbin_*.deb gnupg/gpgv_*.deb grep/grep_*.deb havoc-keyring/havoc-keyring_*.deb launchctl/launchctl_*.deb apt/libapt-pkg6.0_*.deb libassuan/libassuan0_*.deb libxcrypt/libcrypt2_*.deb dimentio/libdimentio0_*.deb libedit/libedit0_*.deb libffi/libffi8_*.deb libgcrypt/libgcrypt20_*.deb libgmp10/libgmp10_*.deb gnutls/libgnutls30_*.deb libgpg-error/libgpg-error0_*.deb nettle/libhogweed6_*.deb libidn2/libidn2-0_*.deb gettext/libintl8_*.deb libiosexec/libiosexec1_*.deb libkernrw/libkernrw0_*.deb lz4/liblz4-1_*.deb xz/liblzma5_*.deb libmd/libmd0_*.deb ncurses/libncursesw6_*.deb nettle/libnettle8_*.deb npth/libnpth0_*.deb p11-kit/libp11-kit0_*.deb pam-modules/libpam-modules_*.deb openpam/libpam2_*.deb pcre/libpcre1_*.deb readline/libreadline8_*.deb libtasn1/libtasn1-6_*.deb libunistring/libunistring5_*.deb xxhash/libxxhash0_*.deb zlib-ng/libz-ng2_*.deb zstd/libzstd1_*.deb ncurses/ncurses-bin_*.deb ncurses/ncurses-term_*.deb odyssey-keyring/odyssey-keyring_*.deb openssh/openssh-server_*.deb openssh/openssh-sftp-server_*.deb openssh/openssh-client_*.deb openssl/libssl3_*.deb packix-keyring/packix-keyring_*.deb keyring/procursus-keyring_*.deb profile.d/profile.d_*.deb sed/sed_*.deb shell-cmds/shell-cmds_*.deb shshd/shshd_*.deb snaputil/snaputil_*.deb sudo/sudo_*.deb system-cmds/system-cmds_*.deb tar/tar_*.deb uikittools/uikittools_*.deb vi/vi_*.deb zsh/zsh_*.deb"; \
+		PKGS="apt/apt_*.deb base/base_*.deb bash/bash_*.deb brotli/libbrotli1_*.deb cacerts/ca-certificates_*.deb chariz-keyring/chariz-keyring_*.deb coreutils/coreutils_*.deb darwintools/darwintools_*.deb dash/dash_*.deb debianutils/debianutils_*.deb diffutils/diffutils_*.deb diskdev-cmds/diskdev-cmds_*.deb dpkg/dpkg_*.deb essential/essential_*.deb file-cmds/file-cmds_*.deb findutils/findutils_*.deb firmware-sbin/firmware-sbin_*.deb gnupg/gpgv_*.deb grep/grep_*.deb havoc-keyring/havoc-keyring_*.deb launchctl/launchctl_*.deb apt/libapt-pkg6.0_*.deb libassuan/libassuan0_*.deb libxcrypt/libcrypt2_*.deb dimentio/libdimentio0_*.deb libedit/libedit0_*.deb libffi/libffi8_*.deb libgcrypt/libgcrypt20_*.deb libgmp10/libgmp10_*.deb gnutls/libgnutls30_*.deb libgpg-error/libgpg-error0_*.deb nettle/libhogweed6_*.deb libidn2/libidn2-0_*.deb gettext/libintl8_*.deb libiosexec/libiosexec1_*.deb libkrw/libkrw0_*.deb lz4/liblz4-1_*.deb xz/liblzma5_*.deb libmd/libmd0_*.deb ncurses/libncursesw6_*.deb nettle/libnettle8_*.deb npth/libnpth0_*.deb p11-kit/libp11-kit0_*.deb pam-modules/libpam-modules_*.deb openpam/libpam2_*.deb pcre/libpcre1_*.deb pcre2/libpcre2-8-0_*.deb readline/libreadline8_*.deb libtasn1/libtasn1-6_*.deb libunistring/libunistring5_*.deb xxhash/libxxhash0_*.deb zlib-ng/libz-ng2_*.deb zstd/libzstd1_*.deb ncurses/ncurses-bin_*.deb ncurses/ncurses-term_*.deb odyssey-keyring/odyssey-keyring_*.deb openssh/openssh-server_*.deb openssh/openssh-sftp-server_*.deb openssh/openssh-client_*.deb openssl/libssl3_*.deb packix-keyring/packix-keyring_*.deb keyring/procursus-keyring_*.deb profile.d/profile.d_*.deb sed/sed_*.deb shell-cmds/shell-cmds_*.deb shshd/shshd_*.deb snaputil/snaputil_*.deb sudo/sudo_*.deb system-cmds/system-cmds_*.deb tar/tar_*.deb uikittools/uikittools_*.deb vi/vi_*.deb zsh/zsh_*.deb"; \
 	fi; \
 	cd $(BUILD_STRAP); for DEB in $$PKGS; do \
 		if [ ! -f $$DEB ]; then \
@@ -1320,9 +1283,9 @@ endif # ($(MEMO_PREFIX),)
 %-package: FAKEROOT=fakeroot -i $(BUILD_STAGE)/.fakeroot_$$(echo $@ | sed 's/\(.*\)-package/\1/') -s $(BUILD_STAGE)/.fakeroot_$$(echo $@ | sed 's/\(.*\)-package/\1/') --
 %-package: .SHELLFLAGS=-O extglob -c
 %-stage: %
+	mkdir -p $(BUILD_DIST) $(BUILD_STAGE)
 	rm -f $(BUILD_STAGE)/.fakeroot_$*
 	touch $(BUILD_STAGE)/.fakeroot_$*
-	mkdir -p $(BUILD_DIST)
 
 REPROJ=$(shell echo $@ | cut -f2- -d"-")
 REPROJ2=$(shell echo $(REPROJ) | sed 's/-package//' | sed 's/-setup//')
@@ -1349,11 +1312,11 @@ setup:
 	@$(LN_SR) $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include{,/System}
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/libsyscall/wrappers/{spawn/spawn{$(comma)_private}$(comma)libproc/libproc{$(comma)_internal$(comma)_private}}.h \
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/libsyscall/wrappers/{spawn/spawn{$(comma)_private}$(comma)libproc/libproc{$(comma)_internal$(comma)_private}}.h \
 		https://github.com/apple-oss-distributions/launchd/raw/launchd-842.92.1/liblaunch/{bootstrap$(comma)vproc}_priv.h \
 		https://github.com/apple-oss-distributions/libplatform/raw/libplatform-273.100.5/private/_simple.h \
 		https://github.com/apple-oss-distributions/libutil/raw/libutil-64/{mntopts$(comma)libutil}.h \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/{EXTERNAL_HEADERS/mach-o/nlist$(comma)osfmk/mach/vm_statistics}.h \
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/{EXTERNAL_HEADERS/mach-o/nlist$(comma)osfmk/mach/vm_statistics}.h \
 		https://github.com/apple-oss-distributions/libmalloc/raw/libmalloc-374.100.5/private/stack_logging.h \
 		https://github.com/apple-oss-distributions/Libc/raw/Libc-1534.40.2/{gen/get_compat$(comma)include/struct}.h)
 
@@ -1361,31 +1324,31 @@ setup:
 		https://github.com/apple-oss-distributions/dyld/raw/dyld-955/{include/mach-o/dyld_{process_info$(comma)introspection}$(comma)cache-builder/dyld_cache_format}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Kernel/kern, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/osfmk/kern/ledger.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/osfmk/kern/ledger.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Kernel/IOKit, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/iokit/IOKit/IOKitDebug.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/iokit/IOKit/IOKitDebug.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Kernel/libkern, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/libkern/libkern/OSKextLibPrivate.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/libkern/libkern/OSKextLibPrivate.h)
 
-	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/kern,https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/osfmk/kern/debug.h)
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/kern,https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/osfmk/kern/debug.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/arm, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/{bsd/arm/disklabel$(comma)osfmk/arm/cpu_capabilities}.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/{bsd/arm/disklabel$(comma)osfmk/arm/cpu_capabilities}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/bsd/machine/disklabel.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/bsd/machine/disklabel.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os, \
-		https://github.com/apple-oss-distributions/Libc/raw/Libc-1534.40.2/os/assumes.h \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/libkern/os/{base_private$(comma)log_private$(comma)log}.h)
+		https://github.com/apple-oss-distributions/Libc/raw/Libc-1506.40.4/os/assumes.h \
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/libkern/os/{base_private$(comma)log_private$(comma)log}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CommonCrypto, \
 		https://github.com/apple-oss-distributions/CommonCrypto/raw/CommonCrypto-60198.40.3/include/Private/CommonDigestSPI.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/bsm, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/bsd/bsm/audit_kevents.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/bsd/bsm/audit_kevents.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit/kext, \
 		https://github.com/apple-oss-distributions/IOKitUser/raw/IOKitUser-1955.100.5/kext.subproj/{KextManagerPriv$(comma)OSKext$(comma)OSKextPrivate$(comma)kextmanager_types$(comma){fat$(comma)macho$(comma)misc}_util}.h)
@@ -1399,34 +1362,34 @@ setup:
 		https://github.com/apple-oss-distributions/CF/raw/CF-1153.18/CFBundlePriv.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/osfmk/machine/cpu_capabilities.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/osfmk/machine/cpu_capabilities.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/firehose, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/libkern/firehose/{tracepoint$(comma)firehose_types}_private.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/libkern/firehose/{tracepoint$(comma)firehose_types}_private.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9//libkern/libkern/{OSKextLibPrivate$(comma)mkext$(comma)prelink}.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2//libkern/libkern/{OSKextLibPrivate$(comma)mkext$(comma)prelink}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/internal, \
 		https://github.com/apple-oss-distributions/libplatform/raw/libplatform-126.50.8/include/os/internal/{internal_shared$(comma)atomic$(comma)crashlog}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/bsd/sys/{fcntl$(comma)fsctl$(comma)spawn_internal$(comma)resource$(comma)event$(comma)kdebug$(comma)kdebug_private$(comma)proc$(comma)proc_info$(comma)pgo$(comma)proc_uuid_policy$(comma)acct$(comma)stackshot$(comma)event$(comma)mbuf$(comma)kern_memorystatus$(comma)reason}.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/bsd/sys/{fcntl$(comma)fsctl$(comma)spawn_internal$(comma)resource$(comma)event$(comma)kdebug$(comma)kdebug_private$(comma)proc$(comma)proc_info$(comma)pgo$(comma)proc_uuid_policy$(comma)acct$(comma)stackshot$(comma)event$(comma)mbuf$(comma)kern_memorystatus$(comma)reason}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/uuid, \
 		https://github.com/apple-oss-distributions/Libc/raw/Libc-1534.40.2/uuid/namespace.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/osfmk/mach/coalition.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/osfmk/mach/coalition.h)
 
 	@# FSEvents headers won't be found even when building for macOS... Should probably fix this properly eventually
 	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/CoreServices.framework/Frameworks/FSEvents.framework/Headers/* $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/FSEvents/
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/iokit/IOKit/IOKitDebug.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/iokit/IOKit/IOKitDebug.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit/kext, \
-		https://opensource.apple.com/source/IOKitUser/IOKitUser-1845.81.1/kext.subproj/{KextManagerPriv$(comma)OSKext$(comma)OSKextPrivate$(comma)kextmanager_types$(comma){fat$(comma)macho$(comma)misc}_util}.h)
+		https://github.com/apple-oss-distributions/IOKitUser/raw/IOKitUser-1845.81.1/kext.subproj/{KextManagerPriv$(comma)OSKext$(comma)OSKextPrivate$(comma)kextmanager_types$(comma){fat$(comma)macho$(comma)misc}_util}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security, \
 		https://github.com/apple-oss-distributions/Security/raw/Security-60420.40.34.0.1/OSX/libsecurity_keychain/lib/SecKeychainPriv.h \
@@ -1434,23 +1397,23 @@ setup:
 		https://github.com/apple-oss-distributions/Security/raw/Security-60420.40.34.0.1/base/SecBasePriv.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreFoundation, \
-		https://opensource.apple.com/source/CF/CF-1153.18/CFBundlePriv.h)
+		https://github.com/apple-oss-distributions/CF/raw/CF-1153.18/CFBundlePriv.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/osfmk/machine/cpu_capabilities.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/osfmk/machine/cpu_capabilities.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/firehose, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/libkern/firehose/tracepoint_private.h \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/libkern/firehose/firehose_types_private.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/libkern/firehose/tracepoint_private.h \
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/libkern/firehose/firehose_types_private.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/libkern/libkern/{OSKextLibPrivate$(comma)mkext$(comma)prelink}.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/libkern/libkern/{OSKextLibPrivate$(comma)mkext$(comma)prelink}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/internal, \
-		https://opensource.apple.com/source/libplatform/libplatform-126.50.8/include/os/internal/{internal_shared$(comma)atomic$(comma)crashlog}.h)
+		https://github.com/apple-oss-distributions/libplatform/raw/libplatform-126.50.8/include/os/internal/{internal_shared$(comma)atomic$(comma)crashlog}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/bsd/sys/{fcntl$(comma)fsctl$(comma)spawn_internal$(comma)resource$(comma)event$(comma)kdebug$(comma)proc$(comma)proc_info$(comma)pgo$(comma)proc_uuid_policy$(comma)acct$(comma)stackshot$(comma)event$(comma)mbuf$(comma)kern_memorystatus$(comma)reason}.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/bsd/sys/{fcntl$(comma)fsctl$(comma)spawn_internal$(comma)resource$(comma)event$(comma)kdebug$(comma)proc$(comma)proc_info$(comma)pgo$(comma)proc_uuid_policy$(comma)acct$(comma)stackshot$(comma)event$(comma)mbuf$(comma)kern_memorystatus$(comma)reason}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpc, \
 		https://github.com/Torrekie/apple_internal_sdk/raw/322eb6573bc701e7f35af05650b0cc162d0355c1/usr/include/xpc/private.h)
@@ -1477,8 +1440,9 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/bsd/sys/resource.h \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.41.9/bsd/sys/vnioctl.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/bsd/sys/resource.h \
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.140.41/bsd/sys/vnioctl.h)
+	rm -f $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/utmp.h
 
 	@# Copy headers from MacOSX.sdk
 	@cp -af $(MACOSX_SYSROOT)/usr/include/{arpa,bsm,hfs,net,xpc,netinet,servers,timeconv.h,launch.h} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include

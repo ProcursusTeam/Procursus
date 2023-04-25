@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS        += libgpg-error
-LIBGPG-ERROR_VERSION := 1.45
+LIBGPG-ERROR_VERSION := 1.46
 DEB_LIBGPG-ERROR_V   ?= $(LIBGPG-ERROR_VERSION)
 
 ifneq (,$(findstring aarch64,$(GNU_HOST_TRIPLE)))
@@ -28,7 +28,7 @@ else
 libgpg-error: libgpg-error-setup gettext
 	sed -i '/{"armv7-unknown-linux-gnueabihf"  },/a \ \ \ \ {"$(GNU_HOST_TRIPLE)",  "$(GPG_SCHEME)" },' $(BUILD_WORK)/libgpg-error/src/mkheader.c
 	cd $(BUILD_WORK)/libgpg-error && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
+		$(DEFAULT_CONFIGURE_FLAGS) --enable-install-gpg-error-config
 	+$(MAKE) -C $(BUILD_WORK)/libgpg-error install \
 		DESTDIR=$(BUILD_STAGE)/libgpg-error \
 		TESTS=""

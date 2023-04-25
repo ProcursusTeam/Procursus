@@ -48,12 +48,15 @@ bash: bash-setup ncurses readline
 	cd $(BUILD_WORK)/bash && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-nls \
-		--with-installed-readline=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/ \
+		--with-installed-readline=yes \
 		CFLAGS="$(CFLAGS) -DSSH_SOURCE_BASHRC" \
 		$(BASH_CONFIGURE_ARGS) \
-		bash_cv_getcwd_malloc=yes
+		bash_cv_getcwd_malloc=yes \
+		READLINE_LIBS="-lreadline"
 	+$(MAKE) -C $(BUILD_WORK)/bash \
-		TERMCAP_LIB=-lncursesw
+		TERMCAP_LIB=-lncursesw \
+		HISTORY_LDFLAGS="" \
+		READLINE_LDFLAGS=""
 	+$(MAKE) -C $(BUILD_WORK)/bash install \
 		DESTDIR="$(BUILD_STAGE)/bash"
 ifneq ($(MEMO_SUB_PREFIX),)

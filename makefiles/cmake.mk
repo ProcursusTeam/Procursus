@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += cmake
-CMAKE_VERSION := 3.22.1
+CMAKE_VERSION := 3.26.3
 DEB_CMAKE_V   ?= $(CMAKE_VERSION)
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
@@ -11,8 +11,9 @@ CMAKE_CMAKE_ARGS := -DHAVE_CoreServices:INTERNAL=0
 endif
 
 cmake-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/Kitware/CMake/releases/download/v$(CMAKE_VERSION)/cmake-$(CMAKE_VERSION).tar.gz)
+	$(call GITHUB_ARCHIVE,Kitware,CMake,$(CMAKE_VERSION),v$(CMAKE_VERSION))
 	$(call EXTRACT_TAR,cmake-$(CMAKE_VERSION).tar.gz,cmake-$(CMAKE_VERSION),cmake)
+	sed -i "79d" $(BUILD_WORK)/cmake/Source/cmDocumentation.cxx
 
 ifneq ($(wildcard $(BUILD_WORK)/cmake/.build_complete),)
 cmake:
