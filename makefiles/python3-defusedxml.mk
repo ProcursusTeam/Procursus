@@ -33,7 +33,7 @@ python3-defusedxml-package: python3-defusedxml-stage
 	# python3-defusedxml.mk Prep python3-defusedxml
 	cp -a $(BUILD_STAGE)/python3-defusedxml $(BUILD_DIST)
 
-	#python3-defusedxml.mk Make .debs
+	# python3-defusedxml.mk Make .debs
 	$(call PACK,python3-defusedxml,DEB_PYTHON3_DEFUSEDXML_V)
 
 	# python3-defusedxml.mk Build cleanup
