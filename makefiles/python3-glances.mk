@@ -29,10 +29,9 @@ endif
 python3-glances-package: python3-glances-stage
 	# python3-glances.mk Package Structure
 	rm -rf $(BUILD_DIST)/python3-glances
-	cp -a $(BUILD_STAGE)/python3-glances $(BUILD_DIST)
 
-	# python3-glances.mk Sign
-	$(call SIGN,python3-glances,general.xml)
+	# python3-glances.mk Prep python3-glances
+	cp -a $(BUILD_STAGE)/python3-glances $(BUILD_DIST)
 
 	# python3-glances.mk Make .debs
 	$(call PACK,python3-glances,DEB_PYTHON3_GLANCES_V)
