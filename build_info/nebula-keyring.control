@@ -1,0 +1,9 @@
+Package: nebula-keyring
+Version: @DEB_NEBULA_KEYRING_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Author: Nebula <me@itsnebula.net>
+Section: Keyrings
+Priority: optional
+Homepage: https://apt.itsnebula.net
+Description: GnuPG key for Nebula's repositories (including palera1n repos)

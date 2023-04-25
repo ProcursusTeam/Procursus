@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS          += libmpack-lua
-LIBMPACK-LUA_VERSION := 1.0.8
+LIBMPACK-LUA_VERSION := 1.0.10
 DEB_LIBMPACK-LUA_V   ?= $(LIBMPACK-LUA_VERSION)
 
 libmpack-lua-setup: setup

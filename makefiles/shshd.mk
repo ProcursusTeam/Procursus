@@ -8,7 +8,11 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
+ifeq ($(call HAS_COMMAND,swiftc),1)
 STRAPPROJECTS += shshd
+else
+SUBPROJECTS   += shshd
+endif
 SHSHD_VERSION := 1.1.1.1
 DEB_SHSHD_V   ?= $(SHSHD_VERSION)
 
