@@ -17,6 +17,11 @@ IOSEXEC_PUBLIC int ie_execvp(const char* file, char* const argv[]);
 IOSEXEC_PUBLIC int ie_execvpe(const char* file, char* const argv[], char* const envp[]);
 IOSEXEC_PUBLIC int ie_execve(const char* path, char* const argv[], char* const envp[]); 
 
+IOSEXEC_PUBLIC int ie_system(const char *command);
+
+IOSEXEC_PUBLIC char *ie_getusershell(void);
+IOSEXEC_PUBLIC void ie_setusershell(void);
+IOSEXEC_PUBLIC void ie_endusershell(void);
 /*
  * If spawn.h was already included then we need these prototypes,
  * otherwise the defines below will let us use the prototypes from spawn.h
@@ -71,6 +76,12 @@ IOSEXEC_PUBLIC char *ie_group_from_gid(gid_t, int);
 #      define execve ie_execve
 #      define posix_spawn ie_posix_spawn
 #      define posix_spawnp ie_posix_spawnp
+
+#      define system ie_system
+
+#      define getusershell ie_getusershell
+#      define setusershell ie_setusershell
+#      define endusershell ie_endusershell
 
 #      define getpwent ie_getpwent
 #      define getpwuid ie_getpwuid

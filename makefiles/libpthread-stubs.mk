@@ -29,7 +29,7 @@ libpthread-stubs-package: libpthread-stubs-stage
 	mkdir -p $(BUILD_DIST)/libpthread-stubs0-dev
 
 	# libpthread-stubs.mk Prep libpthread-stubs0-dev
-	cp -a $(BUILD_STAGE)/libpthread-stubs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/libpthread-stubs0-dev
+	cp -a $(BUILD_STAGE)/libpthread-stubs $(BUILD_DIST)/libpthread-stubs0-dev
 
 	# libpthread-stubs.mk Make .debs
 	$(call PACK,libpthread-stubs0-dev,DEB_LIBPTHREAD-STUBS_V)

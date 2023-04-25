@@ -1,0 +1,10 @@
+Package: libkrw-dev
+Author: Siguza
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBKRW_V@
+Depends: libkrw0 (= @DEB_LIBKRW_V@)
+Section: Development
+Priority: optional
+Homepage: https://github.com/Siguza/libkrw
+Description: A kernel R/W API for jailbreaks (Development Files)

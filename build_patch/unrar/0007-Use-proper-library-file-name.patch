@@ -2,7 +2,7 @@ diff --git a/makefile b/makefile
 index 2900c8f..9a54f4a 100644
 --- a/makefile
 +++ b/makefile
-@@ -159,7 +159,9 @@ lib:	WHAT=RARDLL
+@@ -162,7 +162,9 @@ lib:	WHAT=RARDLL
  lib:	CXXFLAGS+=$(LIBFLAGS)
  lib:	clean $(OBJECTS) $(LIB_OBJ)
  	@rm -f libunrar.*

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+if [ "$1" = "configure" ] && [ -n "$2" ] && dpkg --compare-versions -- "$2" lt "950-2"; then
+	@MEMO_PREFIX@@MEMO_SUB_PREFIX@/sbin/pwd_mkdb -p @MEMO_PREFIX@/etc/master.passwd
+fi

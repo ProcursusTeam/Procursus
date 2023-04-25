@@ -6,7 +6,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS      += shell-cmds
 SHELL-CMDS_VERSION := 278
-DEB_SHELL-CMDS_V   ?= $(SHELL-CMDS_VERSION)-1
+DEB_SHELL-CMDS_V   ?= $(SHELL-CMDS_VERSION)-2
 
 shell-cmds-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,shell_cmds,$(SHELL-CMDS_VERSION),shell_cmds-$(SHELL-CMDS_VERSION))

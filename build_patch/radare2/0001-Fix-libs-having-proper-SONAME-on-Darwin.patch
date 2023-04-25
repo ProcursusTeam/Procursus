@@ -1,0 +1,47 @@
+From deda015f78edd7aaeb79d98ea9422d52f17be202 Mon Sep 17 00:00:00 2001
+From: Teutates <103068388+Teutates@users.noreply.github.com>
+Date: Thu, 23 Feb 2023 15:07:43 -0500
+Subject: [PATCH] Fix libs having proper SONAME on Darwin
+
+* On Darwin systems, the SONAME should be libexample.{ABIVERSION}.dylib
+---
+ libr/config.mk.tail | 4 ++--
+ libr/rules.mk       | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/libr/config.mk.tail b/libr/config.mk.tail
+index 4664ab38ba..7d962eedc6 100644
+--- a/libr/config.mk.tail
++++ b/libr/config.mk.tail
+@@ -184,13 +184,13 @@ libname=-shared -o $1.${EXT_SO}
+ else
+ ifeq (${OSTYPE},darwin)
+ ifeq (${HAVE_LIBVERSION},1)
+-libname=-dynamiclib -o $1.${EXT_SO} ${LDFLAGS_SONAME}$1.${LIBVERSION}.${EXT_SO}
++libname=-dynamiclib -o $1.${EXT_SO} ${LDFLAGS_SONAME}$1.${ABIVERSION}.${EXT_SO}
+ else
+ libname=-dynamiclib -o $1.${EXT_SO}
+ endif
+ else
+ ifeq (${HAVE_LIBVERSION},1)
+-libname=-shared -o $1.${EXT_SO} ${LDFLAGS_SONAME}$1.${EXT_SO}.${LIBVERSION}
++libname=-shared -o $1.${EXT_SO} ${LDFLAGS_SONAME}$1.${EXT_SO}.${ABIVERSION}
+ else
+ libname=-shared -o $1.${EXT_SO}
+ endif
+diff --git a/libr/rules.mk b/libr/rules.mk
+index ca1efebd07..973f3012ec 100644
+--- a/libr/rules.mk
++++ b/libr/rules.mk
+@@ -47,7 +47,7 @@ endif
+ else
+ ifeq (${OSTYPE},darwin)
+ ifeq (${HAVE_LIBVERSION},1)
+-LIBNAME=${LDFLAGS_SONAME}${LIB}.${LIBVERSION}.${EXT_SO}
++LIBNAME=${LDFLAGS_SONAME}${LIB}.${ABIVERSION}.${EXT_SO}
+ else
+ LIBNAME=${LDFLAGS_SONAME}${LIB}.${EXT_SO}
+ endif
+-- 
+2.39.1
+

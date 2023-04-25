@@ -1,0 +1,18 @@
+Package: tcc
+Section: Development
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_TCC_V@
+Homepage: http://www.tinycc.org/
+Description: small ANSI C compiler
+ TCC (for Tiny C Compiler) is a small and fast ANSI C compiler.  It
+ generates optimized x86 code, and can compile, assemble, and link
+ several times faster than 'gcc -O0'.  Any C dynamic library can be used
+ directly.  It includes an optional memory and bounds checker, and
+ bounds-checked code can be mixed freely with standard code.  C script
+ is also supported via the usual hash-bang mechanism.
+ .
+ NOTE: TCC is still somewhat experimental and is not recommended for
+ production use.  The code it generates is much less optimized than what
+ GCC produces, and compiler bugs can have serious security consequences
+ for your program.

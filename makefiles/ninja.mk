@@ -3,24 +3,23 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += ninja
-NINJA_VERSION := 1.10.2
+NINJA_VERSION := 1.11.1
 DEB_NINJA_V   ?= $(NINJA_VERSION)
 
 ninja-setup: setup
 	$(call GITHUB_ARCHIVE,ninja-build,ninja,$(NINJA_VERSION),v$(NINJA_VERSION))
 	$(call EXTRACT_TAR,ninja-$(NINJA_VERSION).tar.gz,ninja-$(NINJA_VERSION),ninja)
-	mkdir -p $(BUILD_WORK)/ninja/build $(BUILD_STAGE)/ninja/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 ifneq ($(wildcard $(BUILD_WORK)/ninja/.build_complete),)
 ninja:
 	@echo "Using previously built ninja."
 else
 ninja: ninja-setup
-	cd $(BUILD_WORK)/ninja/build && cmake . \
-		$(DEFAULT_CMAKE_FLAGS) \
-		..
+	cd $(BUILD_WORK)/ninja && cmake -B build \
+		$(DEFAULT_CMAKE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/ninja/build
-	cp $(BUILD_WORK)/ninja/build/ninja $(BUILD_STAGE)/ninja/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
+	+$(MAKE) -C $(BUILD_WORK)/ninja/build install \
+		DESTDIR="$(BUILD_STAGE)/ninja"
 	$(call AFTER_BUILD)
 endif
 

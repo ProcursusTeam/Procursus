@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS            += sensible-utils
 SENSIBLE-UTILS_VERSION := 0.0.17
-DEB_SENSIBLE-UTILS_V   ?= $(SENSIBLE-UTILS_VERSION)
+DEB_SENSIBLE-UTILS_V   ?= $(SENSIBLE-UTILS_VERSION)-1
 
 sensible-utils-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://deb.debian.org/debian/pool/main/s/sensible-utils/sensible-utils_$(SENSIBLE-UTILS_VERSION).tar.xz)
@@ -29,7 +29,7 @@ sensible-utils-package: sensible-utils-stage
 	mkdir -p $(BUILD_DIST)/sensible-utils
 
 	# sensible-utils.mk Prep sensible-utils
-	cp -a $(BUILD_STAGE)/sensible-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/sensible-utils
+	cp -a $(BUILD_STAGE)/sensible-utils/ $(BUILD_DIST)/
 
 	# sensible-utils.mk Sign
 	$(call SIGN,sensible-utils,general.xml)

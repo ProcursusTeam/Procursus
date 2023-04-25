@@ -1,0 +1,186 @@
+From aa053464eb261337c2c763f2a3df1e5ef8f4797e Mon Sep 17 00:00:00 2001
+From: John Melas <ioannis.melas@gmail.com>
+Date: Thu, 29 Apr 2021 03:38:18 +0300
+Subject: [PATCH] [macOS] drop support for 10.5 (#511)
+
+* drop support for 10.5
+
+* more documentation fixes
+
+Co-authored-by: John Melas <john@jmelas.gr>
+---
+ bindings/cpp/INSTALL                       |  2 +-
+ configure                                  | 26 ++----------
+ configure.in                               | 36 +---------------
+ doc/src/tutorial/compile_mac_coreaudio.dox | 12 +++---
+ src/hostapi/coreaudio/pa_mac_core.c        | 48 +++-------------------
+ 5 files changed, 17 insertions(+), 107 deletions(-)
+
+diff --git a/bindings/cpp/INSTALL b/bindings/cpp/INSTALL
+index 209984075..cde9b495c 100644
+--- a/bindings/cpp/INSTALL
++++ b/bindings/cpp/INSTALL
+@@ -124,7 +124,7 @@ architecture at a time in the source code directory.  After you have
+ installed the package for one architecture, use `make distclean' before
+ reconfiguring for another architecture.
+ 
+-   On MacOS X 10.5 and later systems, you can create libraries and
++   On MacOS X 10.6 and later systems, you can create libraries and
+ executables that work on multiple system types--known as "fat" or
+ "universal" binaries--by specifying multiple `-arch' options to the
+ compiler but only a single `-arch' option to the preprocessor.  Like
+diff --git a/doc/src/tutorial/compile_mac_coreaudio.dox b/doc/src/tutorial/compile_mac_coreaudio.dox
+index 068391e28..3f4de9037 100644
+--- a/doc/src/tutorial/compile_mac_coreaudio.dox
++++ b/doc/src/tutorial/compile_mac_coreaudio.dox
+@@ -3,11 +3,11 @@
+ 
+ @section comp_mac_ca_1 Requirements
+ 
+-* OS X 10.4 or later. PortAudio v19 currently only compiles and runs on OS X version 10.4 or later. Because of its heavy reliance on memory barriers, it's not clear how easy it would be to back-port PortAudio to OS X version 10.3. Leopard support requires the 2007 snapshot or later.
++* OS X 10.6 or later. PortAudio v19.7 currently only compiles and runs on OS X version 10.6 or later.
+ 
+ * Apple's Xcode and its related tools installed in the default location. There is no Xcode project for PortAudio.
+ 
+-* Mac 10.4 SDK. Look for "/Developer/SDKs/MacOSX10.4u.sdk" folder on your system. It may be installed with XCode. If not then you can download it from Apple Developer Connection. http://connect.apple.com/
++* Mac 10.6 SDK. Look for "/Developer/SDKs/MacOSX10.6.sdk" folder on your system. It may be installed with XCode. If not then you can download it from Apple Developer Connection. http://connect.apple.com/
+ 
+ @section comp_mac_ca_2 Building
+ 
+@@ -29,7 +29,7 @@ There are a variety of other options for building PortAudio. The default describ
+ 
+ @subsection comp_mac_ca_3.1 Building Non-Universal Libraries
+ 
+-By default, PortAudio is built as a universal binary. This includes 64-bit versions if you are compiling on 10.5, Leopard. If you want a "thin", or single architecture library, you have two options:
++By default, PortAudio is built as a universal binary. This includes 64-bit versions if you are compiling on 10.6, Snow Leopard. If you want a "thin", or single architecture library, you have two options:
+ 
+  * build a non-universal library using configure options.
+  * use lipo(1) on whatever part of the library you plan to use.
+@@ -44,11 +44,11 @@ To build a non-universal library for the host architecture, simply use the <i>--
+  ./configure --disable-mac-universal && make
+ @endcode
+ 
+-The <i>--disable-mac-universal</i> option may also be used in conjunction with environment variables to give you more control over the universal binary build process. For example, to build a universal binary for the i386 and ppc architectures using the 10.4u sdk (which is the default on 10.4, but not 10.5), you might specify this configure command line:
++The <i>--disable-mac-universal</i> option may also be used in conjunction with environment variables to give you more control over the universal binary build process. For example, to build a universal binary for the i386 and ppc architectures using the 10.6 sdk, you might specify this configure command line:
+ 
+ @code
+- CFLAGS="-O2 -g -Wall -arch i386 -arch ppc -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.3" \
+-   LDFLAGS="-arch i386 -arch ppc -isysroot /Developer/SDKs/MacOSX10.4u.sdk -mmacosx-version-min=10.3" \
++ CFLAGS="-O2 -g -Wall -arch i386 -arch ppc -isysroot /Developer/SDKs/MacOSX10.6.sdk -mmacosx-version-min=10.6" \
++   LDFLAGS="-arch i386 -arch ppc -isysroot /Developer/SDKs/MacOSX10.6.sdk -mmacosx-version-min=10.6" \
+    ./configure --disable-mac-universal --disable-dependency-tracking
+ @endcode
+ 
+diff --git a/src/hostapi/coreaudio/pa_mac_core.c b/src/hostapi/coreaudio/pa_mac_core.c
+index 26b814c67..728835d6a 100644
+--- a/src/hostapi/coreaudio/pa_mac_core.c
++++ b/src/hostapi/coreaudio/pa_mac_core.c
+@@ -71,11 +71,6 @@
+ #include "pa_mac_core_utilities.h"
+ #include "pa_mac_core_blocking.h"
+ 
+-#ifndef MAC_OS_X_VERSION_10_6
+-#define MAC_OS_X_VERSION_10_6 1060
+-#endif
+-
+-
+ #ifdef __cplusplus
+ extern "C"
+ {
+@@ -726,19 +721,11 @@ PaError PaMacCore_Initialize( PaUtilHostApiRepresentation **hostApi, PaHostApiIn
+ 
+     VVDBUG(("PaMacCore_Initialize(): hostApiIndex=%d\n", hostApiIndex));
+ 
+-    SInt32 major;
+-    SInt32 minor;
+-    Gestalt(gestaltSystemVersionMajor, &major);
+-    Gestalt(gestaltSystemVersionMinor, &minor);
+-
+-    // Starting with 10.6 systems, the HAL notification thread is created internally
+-    if ( major > 10 || (major == 10 && minor >= 6) ) {
+-        CFRunLoopRef theRunLoop = NULL;
+-        AudioObjectPropertyAddress theAddress = { kAudioHardwarePropertyRunLoop, kAudioObjectPropertyScopeGlobal, kAudioObjectPropertyElementMaster };
+-        OSStatus osErr = AudioObjectSetPropertyData (kAudioObjectSystemObject, &theAddress, 0, NULL, sizeof(CFRunLoopRef), &theRunLoop);
+-        if (osErr != noErr) {
+-            goto error;
+-        }
++    CFRunLoopRef theRunLoop = NULL;
++    AudioObjectPropertyAddress theAddress = { kAudioHardwarePropertyRunLoop, kAudioObjectPropertyScopeGlobal, kAudioObjectPropertyElementMaster };
++    OSStatus osErr = AudioObjectSetPropertyData (kAudioObjectSystemObject, &theAddress, 0, NULL, sizeof(CFRunLoopRef), &theRunLoop);
++    if (osErr != noErr) {
++        goto error;
+     }
+ 
+     unixErr = initializeXRunListenerList();
+@@ -1180,13 +1167,8 @@ static PaError OpenAndSetupOneAudioUnit(
+         const double sampleRate,
+         void *refCon )
+ {
+-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
+     AudioComponentDescription desc;
+     AudioComponent comp;
+-#else
+-    ComponentDescription desc;
+-    Component comp;
+-#endif
+     /*An Apple TN suggests using CAStreamBasicDescription, but that is C++*/
+     AudioStreamBasicDescription desiredFormat;
+     OSStatus result = noErr;
+@@ -1253,11 +1235,7 @@ static PaError OpenAndSetupOneAudioUnit(
+     desc.componentFlags        = 0;
+     desc.componentFlagsMask    = 0;
+     /* -- find the component -- */
+-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
+     comp = AudioComponentFindNext( NULL, &desc );
+-#else
+-    comp = FindNextComponent( NULL, &desc );
+-#endif
+     if( !comp )
+     {
+         DBUG( ( "AUHAL component not found." ) );
+@@ -1266,11 +1244,7 @@ static PaError OpenAndSetupOneAudioUnit(
+         return paUnanticipatedHostError;
+     }
+     /* -- open it -- */
+-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
+     result = AudioComponentInstanceNew( comp, audioUnit );
+-#else
+-    result = OpenAComponent( comp, audioUnit );
+-#endif
+     if( result )
+     {
+         DBUG( ( "Failed to open AUHAL component." ) );
+@@ -1619,11 +1593,7 @@ static PaError OpenAndSetupOneAudioUnit(
+ 
+ error:
+ 
+-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
+     AudioComponentInstanceDispose( *audioUnit );
+-#else
+-    CloseComponent( *audioUnit );
+-#endif
+     *audioUnit = NULL;
+     if( result )
+         return PaMacCore_SetError( result, line, 1 );
+@@ -2679,21 +2649,13 @@ static PaError CloseStream( PaStream* s )
+         }
+         if( stream->outputUnit && stream->outputUnit != stream->inputUnit ) {
+             AudioUnitUninitialize( stream->outputUnit );
+-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
+             AudioComponentInstanceDispose( stream->outputUnit );
+-#else
+-            CloseComponent( stream->outputUnit );
+-#endif
+         }
+         stream->outputUnit = NULL;
+         if( stream->inputUnit )
+         {
+             AudioUnitUninitialize( stream->inputUnit );
+-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
+             AudioComponentInstanceDispose( stream->inputUnit );
+-#else
+-            CloseComponent( stream->inputUnit );
+-#endif
+             stream->inputUnit = NULL;
+         }
+         if( stream->inputRingBuffer.buffer )

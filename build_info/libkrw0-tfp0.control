@@ -1,0 +1,11 @@
+Package: libkrw0-tfp0
+Author: Siguza
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBKRW_V@
+Provides: libkrw0-plugin
+Depends: libkrw0
+Section: Libraries
+Priority: standard
+Homepage: https://github.com/Siguza/libkrw
+Description: Plugin for libkrw that interfaces with tfp0 (Shared Library)

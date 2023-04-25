@@ -6,12 +6,13 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS       += debianutils
 DEBIANUTILS_VERSION := 5.7
-DEB_DEBIANUTILS_V   ?= $(DEBIANUTILS_VERSION)
+DEB_DEBIANUTILS_V   ?= $(DEBIANUTILS_VERSION)-1
 
 debianutils-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://deb.debian.org/debian/pool/main/d/debianutils/debianutils_$(DEBIANUTILS_VERSION).orig.tar.gz)
 	$(call EXTRACT_TAR,debianutils_$(DEBIANUTILS_VERSION).orig.tar.gz,debianutils-$(DEBIANUTILS_VERSION),debianutils)
 	sed -i 's|/etc/shells|$(MEMO_PREFIX)/etc/shells|g' $(BUILD_WORK)/debianutils/add-shell
+	sed -i 's|/etc/shells|$(MEMO_PREFIX)/etc/shells|g' $(BUILD_WORK)/debianutils/remove-shell
 
 ifneq ($(wildcard $(BUILD_WORK)/debianutils/.build_complete),)
 debianutils:

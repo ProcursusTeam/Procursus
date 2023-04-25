@@ -6,7 +6,7 @@
 	<string>com.corellium.usbfluxd</string>
 	<key>ProgramArguments</key>
 	<array>
-		<string>/usr/sbin/usbfluxd</string>
+		<string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/sbin/usbfluxd</string>
 	</array>
 	<key>RunAtLoad</key>
 	<true/>

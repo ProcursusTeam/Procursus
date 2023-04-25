@@ -3,7 +3,7 @@ Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_GNUTLS_V@
 Conflicts: gnutls (<< 1:0)
-Depends: libgnutls30 (>= @DEB_GNUTLS_V@), libintl8 (>= 0.20.0), libgmp10, libidn2-0, libunistring2, libnettle8, libhogweed6, libp11-kit0, libtasn1-6, libzstd1, libbrotli1
+Depends: libgnutls30 (>= @DEB_GNUTLS_V@), libintl8 (>= 0.20.0), libgmp10, libidn2-0, libunistring5, libnettle8, libhogweed6, libp11-kit0, libtasn1-6, libzstd1, libbrotli1
 Section: Utilities
 Priority: optional
 Description: GNU TLS library - commandline utilities

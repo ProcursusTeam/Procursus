@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += nano
-NANO_VERSION := 6.4
+NANO_VERSION := 7.2
 DEB_NANO_V   ?= $(NANO_VERSION)
 
 nano-setup: setup
@@ -29,6 +29,7 @@ nano: nano-setup ncurses gettext file
 	mkdir -p $(BUILD_STAGE)/nano/$(MEMO_PREFIX){/etc,$(MEMO_SUB_PREFIX)/share/nano/debian}
 	cp -a $(BUILD_WORK)/nano/doc/sample.nanorc $(BUILD_STAGE)/nano/$(MEMO_PREFIX)/etc/nanorc
 	cp -a $(BUILD_MISC)/nano/debian.nanorc $(BUILD_STAGE)/nano/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/nano/debian/
+	$(LN_S) debian/debian.nanorc $(BUILD_STAGE)/nano/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/nano/debian.nanorc
 	$(call AFTER_BUILD)
 endif
 

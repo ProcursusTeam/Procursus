@@ -7,7 +7,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 SUBPROJECTS      += usbmuxd2
 USBMUXD2_COMMIT  := 753b79eaf317c56df6c8b1fb6da5847cc54a0bb0
 USBMUXD2_VERSION := 46
-DEB_USBMUXD2_V   ?= $(USBMUXD2_VERSION)
+DEB_USBMUXD2_V   ?= $(USBMUXD2_VERSION)-1
 
 
 usbmuxd2-setup: setup
@@ -27,8 +27,8 @@ usbmuxd2: usbmuxd2-setup libgeneral libusb libplist libimobiledevice
 	+$(MAKE) -C $(BUILD_WORK)/usbmuxd2
 	+$(MAKE) -C $(BUILD_WORK)/usbmuxd2 install \
 		DESTDIR="$(BUILD_STAGE)/usbmuxd2"
-	mkdir -p $(BUILD_STAGE)/usbmuxd2/Library/LaunchDaemons
-	cp -a $(BUILD_INFO)/org.libimobiledevice.usbmuxd.plist $(BUILD_STAGE)/usbmuxd2/Library/LaunchDaemons
+	mkdir -p $(BUILD_STAGE)/usbmuxd2/$(MEMO_PREFIX)/Library/LaunchDaemons
+	sed -e "s|@MEMO_PREFIX@|$(MEMO_PREFIX)|g" -e "s|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g" < $(BUILD_INFO)/org.libimobiledevice.usbmuxd.plist > $(BUILD_STAGE)/usbmuxd2/$(MEMO_PREFIX)/Library/LaunchDaemons/org.libimobiledevice.usbmuxd.plist
 	$(call AFTER_BUILD)
 endif
 

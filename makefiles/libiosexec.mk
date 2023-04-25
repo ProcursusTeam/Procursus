@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS      += libiosexec
-LIBIOSEXEC_VERSION := 1.2.2
+LIBIOSEXEC_VERSION := 1.3.1
 DEB_LIBIOSEXEC_V   ?= $(LIBIOSEXEC_VERSION)
 export DEB_LIBIOSEXEC_V
 
@@ -19,6 +19,7 @@ endif
 libiosexec-setup: setup
 	$(call GITHUB_ARCHIVE,ProcursusTeam,libiosexec,$(LIBIOSEXEC_VERSION),$(LIBIOSEXEC_VERSION))
 	$(call EXTRACT_TAR,libiosexec-$(LIBIOSEXEC_VERSION).tar.gz,libiosexec-$(LIBIOSEXEC_VERSION),libiosexec)
+	sed -i 's/$$(shell uname -s)/Darwin/g' $(BUILD_WORK)/libiosexec/Makefile
 
 ifneq ($(wildcard $(BUILD_WORK)/libiosexec/.build_complete),)
 libiosexec:
@@ -28,7 +29,8 @@ libiosexec: libiosexec-setup
 	+$(MAKE) -C $(BUILD_WORK)/libiosexec install \
 		DESTDIR=$(BUILD_STAGE)/libiosexec \
 		$(LIBIOSEXEC_FLAGS) \
-		DEFAULT_INTERPRETER="$(MEMO_PREFIX)/bin/sh"
+		DEFAULT_INTERPRETER="$(MEMO_PREFIX)/bin/sh" \
+		LDFLAGS="$(filter-out -liosexec,$(LDFLAGS))"
 	$(call AFTER_BUILD)
 endif
 

@@ -2,16 +2,12 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-GREP_CONFIGURE_ARGS := --program-prefix=$(GNU_PREFIX)
-endif
-
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS += grep
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += grep
 endif # ($(MEMO_TARGET),darwin-\*)
-GREP_VERSION  := 3.7
+GREP_VERSION  := 3.10
 DEB_GREP_V    ?= $(GREP_VERSION)-1
 
 grep-setup: setup
@@ -24,18 +20,17 @@ grep:
 	@echo "Using previously built grep."
 else
 ifeq (,$(findstring ramdisk,$(MEMO_TARGET)))
-grep: grep-setup pcre
+grep: grep-setup pcre2
 else
 grep: grep-setup
 endif
 	cd $(BUILD_WORK)/grep && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--disable-dependency-tracking \
 		--with-packager="$(DEB_MAINTAINER)" \
-		$(GREP_CONFIGURE_ARGS)
+		--program-prefix="$(GNU_PREFIX)"
 	+$(MAKE) -C $(BUILD_WORK)/grep
 	+$(MAKE) -C $(BUILD_WORK)/grep install \
-		DESTDIR=$(BUILD_STAGE)/grep
+		DESTDIR="$(BUILD_STAGE)/grep"
 	$(call AFTER_BUILD)
 endif
 

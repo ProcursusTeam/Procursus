@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += jansson
-JANSSON_VERSION := 2.13.1
+JANSSON_VERSION := 2.14
 DEB_JANSSON_V   ?= $(JANSSON_VERSION)
 
 jansson-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://digip.org/jansson/releases/jansson-$(JANSSON_VERSION).tar.gz)
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/akheron/jansson/releases/download/v$(JANSSON_VERSION)/jansson-$(JANSSON_VERSION).tar.gz)
 	$(call EXTRACT_TAR,jansson-$(JANSSON_VERSION).tar.gz,jansson-$(JANSSON_VERSION),jansson)
 
 ifneq ($(wildcard $(BUILD_WORK)/jansson/.build_complete),)
@@ -27,11 +27,10 @@ endif
 jansson-package: jansson-stage
 	# jansson.mk Package Structure
 	rm -rf $(BUILD_DIST)/libjansson{4,-dev}
-	mkdir -p $(BUILD_DIST)/libjansson-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib} \
-		$(BUILD_DIST)/libjansson4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,} \
+	mkdir -p $(BUILD_DIST)/libjansson{4,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# jansson.mk Prep libjanssson-dev
-	cp -a $(BUILD_STAGE)/jansson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/*.h $(BUILD_DIST)/libjansson-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/jansson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libjansson-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	cp -a $(BUILD_STAGE)/jansson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libjansson.{a,dylib} $(BUILD_DIST)/libjansson-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/jansson/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libjansson-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 

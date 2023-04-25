@@ -10,17 +10,17 @@ SYSTEM-CMDS_VERSION := 854.40.2
 DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-15
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1800 ] && echo 1),1)
 SYSTEM-CMDS_VERSION := 880.60.2
-DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)
+DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-1
 else
 SYSTEM-CMDS_VERSION := 950
-DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-1
+DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-2
 endif
 PWDARWIN_COMMIT     := 72ae45ce6c025bc2359035cfb941b177149e88ae
 
 system-cmds-setup: setup libxcrypt
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,system_cmds,$(SYSTEM-CMDS_VERSION),system_cmds-$(SYSTEM-CMDS_VERSION))
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
-	$(call EXTRACT_TAR,system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz,system_cmds-$(SYSTEM-CMDS_VERSION),system-cmds)
+	$(call EXTRACT_TAR,system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz,system_cmds-system_cmds-$(SYSTEM-CMDS_VERSION),system-cmds)
 else
 	$(call EXTRACT_TAR,system_cmds-$(SYSTEM-CMDS_VERSION).tar.gz,system_cmds-system_cmds-$(SYSTEM-CMDS_VERSION),system-cmds)
 endif
@@ -38,15 +38,11 @@ endif
 		https://git.cameronkatri.com/pw-darwin/snapshot/pw-darwin-$(PWDARWIN_COMMIT).tar.zst)
 	$(call EXTRACT_TAR,pw-darwin-$(PWDARWIN_COMMIT).tar.zst,pw-darwin-$(PWDARWIN_COMMIT),system-cmds/pw-darwin)
 	$(call DOWNLOAD_FILES,$(BUILD_WORK)/system-cmds/include, \
-		https://opensource.apple.com/source/launchd/launchd-328/launchd/src/reboot2.h)
+		https://github.com/apple-oss-distributions/launchd/raw/launchd-328/launchd/src/reboot2.h)
 	sed -i 's|"/etc|"$(MEMO_PREFIX)/etc|' $(BUILD_WORK)/system-cmds/passwd.tproj/{file_,}passwd.c
 	sed -i 's|#include <mach/i386/vm_param.h>|#include <mach/vm_param.h>|' $(BUILD_WORK)/system-cmds/memory_pressure.tproj/memory_pressure.c
 	# Allow placing kernels from [redacted] sources on rootless
 	sed -i 's|/System/Library/Kernels/kernel.development|$(MEMO_PREFIX)/Library/Kernels/kernel.development|' $(BUILD_WORK)/system-cmds/latency.tproj/latency.{1,c}
-
-###
-# TODO: Once I implement pam_chauthtok() in pam_unix.so, use PAM for passwd
-###
 
 ifneq ($(wildcard $(BUILD_WORK)/system-cmds/.build_complete),)
 system-cmds:
@@ -66,7 +62,7 @@ system-cmds: system-cmds-setup libxcrypt openpam libiosexec ncurses
 			login) CFLAGS="-DUSE_PAM=1" LDFLAGS="-lpam -liosexec";; \
 			dynamic_pager) CFLAGS="-Idynamic_pager.tproj";; \
 			pwd_mkdb) CFLAGS="-D_PW_NAME_LEN=MAXLOGNAME -D_PW_YPTOKEN=\"__YP!\"";; \
-			passwd) LDFLAGS="-lcrypt";; \
+			passwd) CFLAGS="-DINFO_PAM=4" LDFLAGS="-lcrypt -lpam";; \
 			shutdown) LDFLAGS="-lbsm -liosexec";; \
 			sc_usage) LDFLAGS="-lncurses";; \
 			at) LDFLAGS="-Iat.tproj -DPERM_PATH=\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/cron\" -DDAEMON_UID=1 -DDAEMON_GID=1 -D__FreeBSD__ -DDEFAULT_AT_QUEUE='a' -DDEFAULT_BATCH_QUEUE='b'";; \

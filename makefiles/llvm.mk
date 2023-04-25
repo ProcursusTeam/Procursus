@@ -9,12 +9,12 @@ LLVM_MAJOR_V    := 14
 LLVM_MINOR_V    := 0
 LLVM_PATCH_V    := 0
 LLVM_VERSION    := $(LLVM_MAJOR_V).$(LLVM_MINOR_V).$(LLVM_PATCH_V)
-LLVM_REVISION   := 3dade082a9b1989207a7fa7f3975868485d16a49
+LLVM_REVISION   := c41f13252ed4b49f246729b4d91ff521d5a6bf9d
 LLVM_REPOSITORY := https://github.com/apple/llvm-project.git
-SWIFT_VERSION   := 5.7.1
+SWIFT_VERSION   := 5.7.2
 SWIFT_SUFFIX    := RELEASE
 DEB_SWIFT_V     ?= $(SWIFT_VERSION)~$(SWIFT_SUFFIX)
-DEB_LLVM_V      ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)-2
+DEB_LLVM_V      ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 LLVM_CMAKE_FLAGS :=     -DLLDB_USE_SYSTEM_DEBUGSERVER=ON \
@@ -158,6 +158,12 @@ ifeq ($(wildcard $(BUILD_WORK)/llvm/build/.build_complete),)
 		-DBUG_REPORT_URL="https://github.com/ProcursusTeam/Procursus/issues" \
 		-DFFI_INCLUDE_PATH="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
 		-DFFI_LIBRARY_PATH="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libffi.dylib" \
+		-DCURSES_CURSES_LIBRARY="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib" \
+		-DCURSES_FORM_LIBRARY="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libformw.dylib" \
+		-DCURSES_NCURSES_LIBRARY="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib" \
+		-DLIBLZMA_LIBRARY_RELEASE="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/liblzma.dylib" \
+		-DPANEL_LIBRARIES="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpanelw.dylib" \
+		-DTERMINFO_LIB="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libncursesw.dylib" \
 		../llvm
 	mkdir -p $(BUILD_WORK)/llvm/build/share/swift # ¯\_(ツ)_/¯
 	for arch in armv7 armv7k arm64 arm64e arm64_32 x86_64; do \

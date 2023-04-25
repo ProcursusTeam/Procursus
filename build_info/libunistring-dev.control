@@ -4,7 +4,7 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Replaces: libunistring (<< @DEB_UNISTRING_V@)
 Conflicts: libunistring (<< @DEB_UNISTRING_V@)
-Depends: libunistring2 (>= @DEB_UNISTRING_V@)
+Depends: libunistring5 (>= @DEB_UNISTRING_V@)
 Section: Development
 Priority: optional
 Multi-Arch: foreign

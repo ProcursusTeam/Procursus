@@ -9,17 +9,17 @@ TOP_VERSION   := 125
 DEB_TOP_V     ?= $(TOP_VERSION)
 
 top-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://opensource.apple.com/tarballs/top/top-$(TOP_VERSION).tar.gz)
-	$(call EXTRACT_TAR,top-$(TOP_VERSION).tar.gz,top-$(TOP_VERSION),top)
+	$(call GITHUB_ARCHIVE,apple-oss-distributions,top,$(TOP_VERSION),top-$(TOP_VERSION))
+	$(call EXTRACT_TAR,top-$(TOP_VERSION).tar.gz,top-top-$(TOP_VERSION),top)
 	mkdir -p $(BUILD_WORK)/top/include/{IOKit/storage,mach}
 	cp -a $(MACOSX_SYSROOT)/usr/include/libkern $(BUILD_WORK)/top/include
 	cp -a $(MACOSX_SYSROOT)/usr/include/mach/mach_vm.h $(BUILD_WORK)/top/include/mach
 	cp -a $(MACOSX_SYSROOT)/usr/include/nlist.h $(BUILD_WORK)/top/include
 	cp -a $(MACOSX_SYSROOT)/System/Library/Frameworks/IOKit.framework/Headers/* $(BUILD_WORK)/top/include/IOKit
 	$(call DOWNLOAD_FILES,$(BUILD_WORK)/top/include, \
-		https://opensource.apple.com/source/libutil/libutil-57/libutil.h)
+		https://github.com/apple-oss-distributions/libutil/raw/libutil-57/libutil.h)
 	$(call DOWNLOAD_FILES,$(BUILD_WORK)/top/include/mach, \
-		https://opensource.apple.com/source/xnu/xnu-6153.11.26/osfmk/mach/shared_region.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-8792.81.2/osfmk/mach/shared_region.h)
 	sed -i 's/ARM:/ARM64:/g' $(BUILD_WORK)/top/libtop.c
 	sed -i 's/ARM;/ARM64;/g' $(BUILD_WORK)/top/libtop.c
 
@@ -29,7 +29,7 @@ top:
 else
 top: top-setup ncurses
 	mkdir -p $(BUILD_STAGE)/top/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
-	$(CC) $(CFLAGS) -isystem $(BUILD_WORK)/top/include -L $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -o $(BUILD_STAGE)/top/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/top $(BUILD_WORK)/top/*.c -framework IOKit -framework CoreFoundation -lncursesw -lpanelw -lutil;
+	$(CC) $(CFLAGS) -liosexec -isystem $(BUILD_WORK)/top/include -L $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -o $(BUILD_STAGE)/top/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/top $(BUILD_WORK)/top/*.c -framework IOKit -framework CoreFoundation -lncursesw -lpanelw -lutil;
 	$(call AFTER_BUILD)
 endif
 
