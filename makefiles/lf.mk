@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS += lf
 LF_RELEASE  := r28
-LF_VERSION  := $(shell echo $(LF_RELEASE) | cut -b 2-3)
+LF_VERSION  := $(shell echo $(LF_RELEASE) | cut -c 2-3)
 DEB_LF_V    ?= $(LF_VERSION)
 
 lf-setup: setup
