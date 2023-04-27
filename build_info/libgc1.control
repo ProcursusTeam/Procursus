@@ -18,4 +18,3 @@ Description: conservative garbage collector for C and C++
   This version of the collector is thread safe, has C++ support and
   uses the defaults for everything else. However, it does not work as
   a drop-in malloc(3) replacement.
-

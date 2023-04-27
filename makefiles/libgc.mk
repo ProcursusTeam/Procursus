@@ -34,8 +34,8 @@ libgc-package: libgc-stage
 	mkdir -p $(BUILD_DIST)/{libgc-dev,libgc1}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libgc.mk Prep libgc-dev
-	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libgc-dev
-	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libgc-dev/lib/
+	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libgc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
+	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libgc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libcord,libgc}.a $(BUILD_DIST)/libgc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 
 	# libgc.mk Prep libgc1
