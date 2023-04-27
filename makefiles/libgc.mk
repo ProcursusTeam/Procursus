@@ -17,7 +17,7 @@ libgc:
 	@echo "Using previously built libgc."
 else
 libgc: libgc-setup
-	cd $(BUILD_WORK)/libgc/libatomic_ops && ./configure	-C \
+	cd $(BUILD_WORK)/libgc/libatomic_ops && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libgc/libatomic_ops
 	cd $(BUILD_WORK)/libgc && ./configure -C \
