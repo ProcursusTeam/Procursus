@@ -16,5 +16,9 @@ Description: conservative garbage collector for C and C++
   The collector automatically recycles memory when it determines that
   it can no longer be used.
   .
+  This version of the collector is thread safe, has C++ support and
+  uses the defaults for everything else. However, it does not work as
+  a drop-in malloc(3) replacement.
+  .
   This package is required to compile and link programs that use
   libgc1.

@@ -14,3 +14,8 @@ Description: conservative garbage collector for C and C++
   without explicitly deallocating memory that is no longer useful.
   The collector automatically recycles memory when it determines that
   it can no longer be used.
+  .
+  This version of the collector is thread safe, has C++ support and
+  uses the defaults for everything else. However, it does not work as
+  a drop-in malloc(3) replacement.
+
