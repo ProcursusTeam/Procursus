@@ -1,0 +1,21 @@
+Package: libgc-dev
+Version: @DEB_LIBGC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Homepage: https://www.hboehm.info/gc/
+Depends: libatomic-ops-dev, libgc1 (= @DEB_LIBGC_V@)
+Description: conservative garbage collector for C (development)
+ Boehm-Demers-Weiser's GC is a garbage collecting storage allocator that is
+ intended to be used as a plug-in replacement for C's malloc or C++'s new().
+ .
+ It allows you to allocate memory basically as you normally would without
+ explicitly deallocating memory that is no longer useful. The collector
+ automatically recycles memory when it determines that it can no longer be
+ used.
+ .
+ This version of the collector is thread safe, has C++ support and uses the
+ defaults for everything else. However, it does not work as a drop-in malloc(3)
+ replacement.
+ .
+ This package is required to compile and link programs that use libgc1c2.

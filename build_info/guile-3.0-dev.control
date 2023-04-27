@@ -1,0 +1,17 @@
+Package: guile-3.0-dev
+Version: @DEB_GUILE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Homepage: https://www.gnu.org/software/guile/
+Depends: guile-3.0 (= @DEB_GUILE_V@), guile-3.0-libs (= @DEB_GUILE_V@),
+ libncurses-dev, libreadline-dev, libgmp-dev, libgc-dev, pkg-config
+Description:  Development files for Guile 3.0
+ This package contains files needed for development using Guile 3.0.
+ .
+ Guile is a Scheme implementation designed for real world programming,
+ providing a rich Unix interface, a module system, an interpreter, and
+ many extension languages.  Guile can be used as a standard #! style
+ interpreter, via #!/usr/bin/guile, or as an extension language for
+ other applications via libguile.
