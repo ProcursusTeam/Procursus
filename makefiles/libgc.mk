@@ -32,32 +32,28 @@ endif
 
 libgc-package: libgc-stage
 	# libgc.mk Package Structure
-	rm -rf $(BUILD_DIST)/{libgc-dev,libgc1}
-	mkdir -p $(BUILD_DIST)/{libgc-dev,libgc1}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	rm -rf $(BUILD_DIST)/libgc{-dev,1}
+	mkdir -p $(BUILD_DIST)/libgc{-dev,1}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libgc.mk Prep libgc-dev
 	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libgc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
+	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/libgc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
 	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libgc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
-	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libcord,libgc,libgccpp,libgctba}.a \
+	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/lib{cord,gc,gccpp,gctba}.{a,dylib} \
 		$(BUILD_DIST)/libgc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 
 	# libgc.mk Prep libgc1
-	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgc{,.1}.dylib $(BUILD_DIST)/libgc1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
-	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcord{,.1}.dylib $(BUILD_DIST)/libgc1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
-	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgccpp{,.1}.dylib $(BUILD_DIST)/libgc1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
-	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgctba{,.1}.dylib $(BUILD_DIST)/libgc1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
-	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libcord,libgc,libgccpp,libgctba}.la \
+	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/lib{cord,gc,gccpp,gctba}.1.dylib \
 		$(BUILD_DIST)/libgc1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 
 	# libgc.mk Sign
 	$(call SIGN,libgc1,general.xml)
-	$(call SIGN,libgc-dev,general.xml)
 
 	# libgc.mk Make .debs
 	$(call PACK,libgc1,DEB_LIBGC_V)
 	$(call PACK,libgc-dev,DEB_LIBGC_V)
 
 	# libgc.mk Build cleanup
-	rm -rf $(BUILD_DIST)/{libgc-dev,libgc1}
+	rm -rf $(BUILD_DIST)/libgc{-dev,1}
 
 .PHONY: libgc libgc-package
