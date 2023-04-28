@@ -21,7 +21,9 @@ libgc: libgc-setup
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libgc/libatomic_ops
 	cd $(BUILD_WORK)/libgc && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		--enable-cplusplus \
+		--enable-large-config
 	+$(MAKE) -C $(BUILD_WORK)/libgc
 	+$(MAKE) -C $(BUILD_WORK)/libgc install \
 		DESTDIR="$(BUILD_STAGE)/libgc"
@@ -36,12 +38,16 @@ libgc-package: libgc-stage
 	# libgc.mk Prep libgc-dev
 	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libgc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
 	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig $(BUILD_DIST)/libgc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
-	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libcord,libgc}.a $(BUILD_DIST)/libgc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
+	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libcord,libgc,libgccpp,libgctba}.a \
+		$(BUILD_DIST)/libgc-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 
 	# libgc.mk Prep libgc1
 	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgc{,.1}.dylib $(BUILD_DIST)/libgc1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcord{,.1}.dylib $(BUILD_DIST)/libgc1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
-	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcord.la $(BUILD_DIST)/libgc1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
+	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgccpp{,.1}.dylib $(BUILD_DIST)/libgc1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
+	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgctba{,.1}.dylib $(BUILD_DIST)/libgc1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
+	cp -a $(BUILD_STAGE)/libgc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libcord,libgc,libgccpp,libgctba}.la \
+		$(BUILD_DIST)/libgc1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/
 
 	# libgc.mk Sign
 	$(call SIGN,libgc1,general.xml)
