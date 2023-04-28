@@ -27,7 +27,7 @@ libgc: libgc-setup
 	+$(MAKE) -C $(BUILD_WORK)/libgc
 	+$(MAKE) -C $(BUILD_WORK)/libgc install \
 		DESTDIR="$(BUILD_STAGE)/libgc"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 libgc-package: libgc-stage
