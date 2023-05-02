@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS           += echo-keyring
+SUBPROJECTS          += echo-keyring
 ECHO_KEYRING_VERSION := 2023.05.01
 DEB_ECHO_KEYRING_V   ?= $(ECHO_KEYRING_VERSION)
 
