@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS           += odyssey-keyring
+SUBPROJECTS             += odyssey-keyring
 ODYSSEY_KEYRING_VERSION := 2021.07.20
 DEB_ODYSSEY_KEYRING_V   ?= $(ODYSSEY_KEYRING_VERSION)
 
