@@ -1020,8 +1020,8 @@ PACK = \
 	fi; \
 	echo "Installed-Size: $$SIZE" >> $(BUILD_DIST)/$(1)/DEBIAN/control; \
 	find $(BUILD_DIST)/$(1) -name '.DS_Store' -type f -delete; \
-	mkdir -p $(BUILD_DIST)/../$$(echo $@ | sed 's/-package//'); \
-	$(FAKEROOT) $(DPKG_DEB) -b $(BUILD_DIST)/$(1) $(BUILD_DIST)/../$$(echo $@ | sed 's/-package//')/$$(grep Package: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ')_$($(2))_$$(grep Architecture: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ').deb
+	mkdir -p $(BUILD_DIST)/../$$(echo $@ | awk '{split($$0,a,"_CF"); print a[1]}' | sed 's/-package//'); \
+	$(FAKEROOT) $(DPKG_DEB) -b $(BUILD_DIST)/$(1) $(BUILD_DIST)/../$$(echo $@ | awk '{split($$0,a,"_CF"); print a[1]}' | sed 's/-package//')/$$(grep Package: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ')_$($(2))_$$(grep Architecture: $(BUILD_DIST)/$(1)/DEBIAN/control | cut -f2 -d ' ').deb
 
 GITHUB_ARCHIVE = -if [ "x$(5)" != "x" ]; then \
 					[ ! -f "$(BUILD_SOURCE)/$(5)-$(3).tar.gz" ] && \
