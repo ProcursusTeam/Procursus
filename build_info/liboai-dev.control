@@ -1,0 +1,9 @@
+Package: liboai-dev
+Version: @DEB_LIBOAI_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Conflicts: liboai (<< @DEB_LIBOAI_V@)
+Depends: liboai0 (>= @DEB_LIBOAI_V@)
+Section: Development
+Priority: optional
+Description: A C++17 library to access the entire OpenAI API. (Development files)

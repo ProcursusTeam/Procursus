@@ -1,0 +1,11 @@
+Package: liboai
+Version: @DEB_LIBOAI_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Conflicts: liboai (<< 1:0)
+Replaces: liboai (<< 1:0)
+Provides: liboai (= @DEB_LIBOAI_V@)
+Depends: libcurl4
+Section: Libraries
+Priority: optional
+Description: A C++17 library to access the entire OpenAI API.
