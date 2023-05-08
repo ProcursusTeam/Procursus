@@ -39,6 +39,8 @@ PACKAGES=(
   "ninja-build"
   "curl"
   "xsltproc"
+  "python3-setuptools"
+  "python3-pip"
 )
 
 apt-get update
