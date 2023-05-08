@@ -15,6 +15,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call DO_PATCH,portaudio-ios,portaudio,-p1)
 endif
 	sed -i 's|-framework AudioUnit ||g' $(BUILD_WORK)/portaudio/configure.in
+	sed -i 's/0x7FFFFFFF/(float)0x7FFFFFFF/g' $(BUILD_WORK)/portaudio/src/common/pa_converters.c
 
 ifneq ($(wildcard $(BUILD_WORK)/portaudio/.build_complete),)
 portaudio:
