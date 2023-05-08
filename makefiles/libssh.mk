@@ -10,6 +10,8 @@ libssh-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.libssh.org/files/0.9/libssh-$(LIBSSH_VERSION).tar.xz)
 	$(call EXTRACT_TAR,libssh-$(LIBSSH_VERSION).tar.xz,libssh-$(LIBSSH_VERSION),libssh)
 	mkdir -p $(BUILD_WORK)/libssh/build
+	sed -i 's/() {/(void) {/g' $(BUILD_WORK)/libssh/src/init.c
+	sed -i 's/(){/(void){/g' $(BUILD_WORK)/libssh/examples/sshnetcat.c
 
 ifneq ($(wildcard $(BUILD_WORK)/libssh/.build_complete),)
 libssh:
