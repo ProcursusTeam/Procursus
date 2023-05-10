@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += rsync
-RSYNC_VERSION := 3.2.4
+RSYNC_VERSION := 3.2.7
 DEB_RSYNC_V   ?= $(RSYNC_VERSION)-1
 
 rsync-setup: setup
