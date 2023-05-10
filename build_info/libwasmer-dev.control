@@ -1,0 +1,9 @@
+Package: libwasmer-dev
+Version: @DEB_WASMER_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Depends: libwasmer (= @DEB_WASMER_V@)
+Homepage: https://wasmer.io/
+Description: An open-source runtime for executing WebAssembly.

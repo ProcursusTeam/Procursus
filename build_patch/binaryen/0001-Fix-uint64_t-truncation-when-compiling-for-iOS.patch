@@ -1,0 +1,22 @@
+From 389e5ffcdf1d24221cbc317096f20ff4c655fc0b Mon Sep 17 00:00:00 2001
+From: Lucy <lucy@absolucy.moe>
+Date: Sat, 31 Jul 2021 14:51:41 -0400
+Subject: [PATCH] Fix `uint64_t` truncation when compiling for iOS.
+
+---
+ src/wasm/literal.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/wasm/literal.cpp b/src/wasm/literal.cpp
+index c7a9ca8446..7cb99f2140 100644
+--- a/src/wasm/literal.cpp
++++ b/src/wasm/literal.cpp
+@@ -815,7 +815,7 @@ Literal Literal::abs() const {
+     case Type::i32:
+       return Literal(std::abs(i32));
+     case Type::i64:
+-      return Literal(std::abs(i64));
++      return Literal(std::llabs(i64));
+     case Type::f32:
+       return Literal(i32 & 0x7fffffff).castToF32();
+     case Type::f64:

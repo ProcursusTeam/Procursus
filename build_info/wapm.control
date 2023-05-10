@@ -1,0 +1,9 @@
+Package: wapm
+Version: @DEB_WAPM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Description: This tool enables installing, managing, and publishing wasm packages on the wapm.io registry.
+Homepage: https://github.com/wasmerio/wapm-cli
+Name: WebAssembly Package Manager CLI

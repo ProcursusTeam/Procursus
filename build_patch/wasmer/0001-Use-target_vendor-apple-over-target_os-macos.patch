@@ -1,0 +1,269 @@
+From 2564a5c8075a1bb07205e6d38fb22c34e4080dc0 Mon Sep 17 00:00:00 2001
+From: Lucy <lucy@absolucy.moe>
+Date: Sat, 31 Jul 2021 12:46:22 -0400
+Subject: [PATCH] Use `target_vendor = "apple"` over `target_os = "macos"`
+
+---
+ examples/engine_cross_compilation.rs         |  2 +-
+ lib/c-api/build.rs                           |  2 +-
+ lib/compiler-llvm/src/translator/stackmap.rs |  2 +-
+ lib/emscripten/src/syscalls/unix.rs          | 32 ++++++++++----------
+ lib/emscripten/src/time.rs                   |  6 ++--
+ lib/vm/src/libcalls.rs                       |  4 +--
+ lib/vm/src/trap/traphandlers.rs              | 10 +++---
+ lib/wasi/src/syscalls/mod.rs                 |  4 +--
+ 8 files changed, 31 insertions(+), 31 deletions(-)
+
+diff --git a/examples/engine_cross_compilation.rs b/examples/engine_cross_compilation.rs
+index 618d24d..150e5c2 100644
+--- a/examples/engine_cross_compilation.rs
++++ b/examples/engine_cross_compilation.rs
+@@ -103,7 +103,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
+ #[cfg(not(any(
+     windows,
+     // We don't support yet crosscompilation in macOS with Apple Silicon
+-    all(target_os = "macos", target_arch = "aarch64"),
++    all(target_vendor = "apple", target_arch = "aarch64"),
+     target_env = "musl",
+ )))]
+ fn test_cross_compilation() -> Result<(), Box<dyn std::error::Error>> {
+diff --git a/lib/c-api/build.rs b/lib/c-api/build.rs
+index 01ec70e..3bd4e64 100644
+--- a/lib/c-api/build.rs
++++ b/lib/c-api/build.rs
+@@ -281,7 +281,7 @@ fn build_inline_c_env_vars() {
+         shared_object_dir = shared_object_dir,
+         lib = if cfg!(target_os = "windows") {
+             "wasmer_c_api.dll".to_string()
+-        } else if cfg!(target_os = "macos") {
++        } else if cfg!(target_vendor = "apple") {
+             "libwasmer_c_api.dylib".to_string()
+         } else {
+             let path = format!(
+diff --git a/lib/compiler-llvm/src/translator/stackmap.rs b/lib/compiler-llvm/src/translator/stackmap.rs
+index d23ebd1..cb6abc4 100644
+--- a/lib/compiler-llvm/src/translator/stackmap.rs
++++ b/lib/compiler-llvm/src/translator/stackmap.rs
+@@ -54,7 +54,7 @@ pub enum StackmapEntryKind {
+ 
+ impl StackmapEntry {
+     #[cfg(all(
+-        any(target_os = "freebsd", target_os = "linux", target_os = "macos"),
++        any(target_os = "freebsd", target_os = "linux", target_vendor = "apple"),
+         target_arch = "x86_64"
+     ))]
+     pub fn populate_msm(
+diff --git a/lib/emscripten/src/syscalls/unix.rs b/lib/emscripten/src/syscalls/unix.rs
+index 69ac5a2..2444329 100644
+--- a/lib/emscripten/src/syscalls/unix.rs
++++ b/lib/emscripten/src/syscalls/unix.rs
+@@ -1,5 +1,5 @@
+ use crate::{ptr::WasmPtr, varargs::VarArgs, LibcDirWrapper};
+-#[cfg(target_os = "macos")]
++#[cfg(target_vendor = "apple")]
+ use libc::size_t;
+ /// NOTE: TODO: These syscalls only support wasm_32 for now because they assume offsets are u32
+ /// Syscall list: https://www.cs.utexas.edu/~bismith/test/syscalls/syscalls32.html
+@@ -121,7 +121,7 @@ use std::io::Error;
+ use std::mem;
+ 
+ // Linking to functions that are not provided by rust libc
+-#[cfg(target_os = "macos")]
++#[cfg(target_vendor = "apple")]
+ #[link(name = "c")]
+ extern "C" {
+     pub fn wait4(pid: pid_t, status: *mut c_int, options: c_int, rusage: *mut rusage) -> pid_t;
+@@ -140,19 +140,19 @@ extern "C" {
+     pub fn lstat(path: *const libc::c_char, buf: *mut stat) -> c_int;
+ }
+ 
+-#[cfg(not(any(target_os = "freebsd", target_os = "macos", target_os = "android")))]
++#[cfg(not(any(target_os = "freebsd", target_vendor = "apple", target_os = "android")))]
+ use libc::fallocate;
+ #[cfg(target_os = "freebsd")]
+ use libc::madvise;
+-#[cfg(not(any(target_os = "freebsd", target_os = "macos")))]
++#[cfg(not(any(target_os = "freebsd", target_vendor = "apple")))]
+ use libc::{fdatasync, ftruncate64, lstat, madvise, wait4};
+ 
+ // Another conditional constant for name resolution: Macos et iOS use
+ // SO_NOSIGPIPE as a setsockopt flag to disable SIGPIPE emission on socket.
+ // Other platforms do otherwise.
+-#[cfg(target_os = "macos")]
++#[cfg(target_vendor = "apple")]
+ use libc::SO_NOSIGPIPE;
+-#[cfg(not(target_os = "macos"))]
++#[cfg(not(target_vendor = "apple"))]
+ const SO_NOSIGPIPE: c_int = 0;
+ 
+ /// open
+@@ -269,7 +269,7 @@ pub fn ___syscall194(ctx: &EmEnv, _which: c_int, mut varargs: VarArgs) -> c_int
+     debug!("emscripten::___syscall194 (ftruncate64) {}", _which);
+     let _fd: c_int = varargs.get(ctx);
+     let _length: i64 = varargs.get(ctx);
+-    #[cfg(not(any(target_os = "freebsd", target_os = "macos")))]
++    #[cfg(not(any(target_os = "freebsd", target_vendor = "apple")))]
+     unsafe {
+         ftruncate64(_fd, _length)
+     }
+@@ -277,7 +277,7 @@ pub fn ___syscall194(ctx: &EmEnv, _which: c_int, mut varargs: VarArgs) -> c_int
+     unsafe {
+         ftruncate(_fd, _length)
+     }
+-    #[cfg(target_os = "macos")]
++    #[cfg(target_vendor = "apple")]
+     unimplemented!("emscripten::___syscall194 (ftruncate64) {}", _which)
+ }
+ 
+@@ -639,7 +639,7 @@ pub fn ___syscall102(ctx: &EmEnv, _which: c_int, mut varargs: VarArgs) -> c_int
+             let mut host_address: sockaddr = sockaddr {
+                 sa_family: Default::default(),
+                 sa_data: Default::default(),
+-                #[cfg(any(target_os = "freebsd", target_os = "macos"))]
++                #[cfg(any(target_os = "freebsd", target_vendor = "apple"))]
+                 sa_len: Default::default(),
+             };
+             let fd = unsafe { accept(socket, &mut host_address, address_len_addr) };
+@@ -672,7 +672,7 @@ pub fn ___syscall102(ctx: &EmEnv, _which: c_int, mut varargs: VarArgs) -> c_int
+             let mut sock_addr_host: sockaddr = sockaddr {
+                 sa_family: Default::default(),
+                 sa_data: Default::default(),
+-                #[cfg(any(target_os = "freebsd", target_os = "macos"))]
++                #[cfg(any(target_os = "freebsd", target_vendor = "apple"))]
+                 sa_len: Default::default(),
+             };
+             let ret = unsafe {
+@@ -1013,14 +1013,14 @@ pub fn ___syscall196(ctx: &EmEnv, _which: i32, mut varargs: VarArgs) -> i32 {
+     unsafe {
+         let mut stat: stat = std::mem::zeroed();
+ 
+-        #[cfg(target_os = "macos")]
++        #[cfg(target_vendor = "apple")]
+         let stat_ptr = &mut stat as *mut stat as *mut c_void;
+-        #[cfg(not(target_os = "macos"))]
++        #[cfg(not(target_vendor = "apple"))]
+         let stat_ptr = &mut stat as *mut stat;
+ 
+-        #[cfg(target_os = "macos")]
++        #[cfg(target_vendor = "apple")]
+         let ret = lstat64(real_path, stat_ptr);
+-        #[cfg(not(target_os = "macos"))]
++        #[cfg(not(target_vendor = "apple"))]
+         let ret = lstat(real_path, stat_ptr);
+ 
+         debug!("ret: {}", ret);
+@@ -1131,11 +1131,11 @@ pub fn ___syscall324(ctx: &EmEnv, _which: c_int, mut varargs: VarArgs) -> c_int
+     let _mode: c_int = varargs.get(ctx);
+     let _offset: off_t = varargs.get(ctx);
+     let _len: off_t = varargs.get(ctx);
+-    #[cfg(not(any(target_os = "freebsd", target_os = "macos", target_os = "android")))]
++    #[cfg(not(any(target_os = "freebsd", target_vendor = "apple", target_os = "android")))]
+     unsafe {
+         fallocate(_fd, _mode, _offset, _len)
+     }
+-    #[cfg(any(target_os = "freebsd", target_os = "macos", target_os = "android"))]
++    #[cfg(any(target_os = "freebsd", target_vendor = "apple", target_os = "android"))]
+     {
+         unimplemented!("emscripten::___syscall324 (fallocate) {}", _which)
+     }
+diff --git a/lib/emscripten/src/time.rs b/lib/emscripten/src/time.rs
+index 1827b89..7bb57e6 100644
+--- a/lib/emscripten/src/time.rs
++++ b/lib/emscripten/src/time.rs
+@@ -35,11 +35,11 @@ use libc::{CLOCK_MONOTONIC, CLOCK_REALTIME};
+ #[cfg(target_os = "freebsd")]
+ const CLOCK_MONOTONIC_COARSE: clockid_t = 6;
+ 
+-#[cfg(target_os = "macos")]
++#[cfg(target_vendor = "apple")]
+ use libc::CLOCK_REALTIME;
+-#[cfg(target_os = "macos")]
++#[cfg(target_vendor = "apple")]
+ const CLOCK_MONOTONIC: clockid_t = 1;
+-#[cfg(target_os = "macos")]
++#[cfg(target_vendor = "apple")]
+ const CLOCK_MONOTONIC_COARSE: clockid_t = 6;
+ 
+ // some assumptions about the constants when targeting windows
+diff --git a/lib/vm/src/libcalls.rs b/lib/vm/src/libcalls.rs
+index e60704d..301568e 100644
+--- a/lib/vm/src/libcalls.rs
++++ b/lib/vm/src/libcalls.rs
+@@ -858,9 +858,9 @@ impl LibCall {
+             Self::RaiseTrap => "wasmer_vm_raise_trap",
+             // We have to do this because macOS requires a leading `_` and it's not
+             // a normal function, it's a static variable, so we have to do it manually.
+-            #[cfg(target_os = "macos")]
++            #[cfg(target_vendor = "apple")]
+             Self::Probestack => "_wasmer_vm_probestack",
+-            #[cfg(not(target_os = "macos"))]
++            #[cfg(not(target_vendor = "apple"))]
+             Self::Probestack => "wasmer_vm_probestack",
+         }
+     }
+diff --git a/lib/vm/src/trap/traphandlers.rs b/lib/vm/src/trap/traphandlers.rs
+index aff2b44..4a4c7a0 100644
+--- a/lib/vm/src/trap/traphandlers.rs
++++ b/lib/vm/src/trap/traphandlers.rs
+@@ -82,12 +82,12 @@ cfg_if::cfg_if! {
+ 
+             // On ARM, handle Unaligned Accesses.
+             // On Darwin, guard page accesses are raised as SIGBUS.
+-            if cfg!(target_arch = "arm") || cfg!(target_os = "macos") {
++            if cfg!(target_arch = "arm") || cfg!(target_vendor = "apple") {
+                 register(&mut PREV_SIGBUS, libc::SIGBUS);
+             }
+         }
+ 
+-        #[cfg(target_os = "macos")]
++        #[cfg(target_vendor = "apple")]
+         unsafe fn thread_stack() -> (usize, usize) {
+             let this_thread = libc::pthread_self();
+             let stackaddr = libc::pthread_get_stackaddr_np(this_thread);
+@@ -95,7 +95,7 @@ cfg_if::cfg_if! {
+             (stackaddr as usize - stacksize, stacksize)
+         }
+ 
+-        #[cfg(not(target_os = "macos"))]
++        #[cfg(not(target_vendor = "apple"))]
+         unsafe fn thread_stack() -> (usize, usize) {
+             let this_thread = libc::pthread_self();
+             let mut thread_attrs: libc::pthread_attr_t = mem::zeroed();
+@@ -219,10 +219,10 @@ cfg_if::cfg_if! {
+                 } else if #[cfg(all(target_os = "android", target_arch = "aarch64"))] {
+                     let cx = &*(cx as *const libc::ucontext_t);
+                     cx.uc_mcontext.pc as *const u8
+-                } else if #[cfg(all(target_os = "macos", target_arch = "x86_64"))] {
++                } else if #[cfg(all(target_vendor = "apple", target_arch = "x86_64"))] {
+                     let cx = &*(cx as *const libc::ucontext_t);
+                     (*cx.uc_mcontext).__ss.__rip as *const u8
+-                } else if #[cfg(all(target_os = "macos", target_arch = "aarch64"))] {
++                } else if #[cfg(all(target_vendor = "apple", target_arch = "aarch64"))] {
+                     use std::mem;
+                     // TODO: This should be integrated into rust/libc
+                     // Related issue: https://github.com/rust-lang/libc/issues/1977
+diff --git a/lib/wasi/src/syscalls/mod.rs b/lib/wasi/src/syscalls/mod.rs
+index 58413a6..59a39bf 100644
+--- a/lib/wasi/src/syscalls/mod.rs
++++ b/lib/wasi/src/syscalls/mod.rs
+@@ -8,7 +8,7 @@ pub mod types {
+     target_os = "freebsd",
+     target_os = "linux",
+     target_os = "android",
+-    target_os = "macos"
++    target_vendor = "apple"
+ ))]
+ pub mod unix;
+ #[cfg(any(target_os = "windows"))]
+@@ -37,7 +37,7 @@ use wasmer::{Memory, RuntimeError, Value};
+     target_os = "freebsd",
+     target_os = "linux",
+     target_os = "android",
+-    target_os = "macos"
++    target_vendor = "apple"
+ ))]
+ pub use unix::*;
+ 
+-- 
+2.32.0
+

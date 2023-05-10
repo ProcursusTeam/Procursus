@@ -57,7 +57,7 @@ ifeq ($(wildcard $(BUILD_WORK)/../../native/llvm/.build_complete),)
 		-DCMAKE_OSX_SYSROOT="$(MACOSX_SYSROOT)" \
 		-DSWIFT_INCLUDE_TESTS=OFF \
 		-DSWIFT_BUILD_RUNTIME_WITH_HOST_COMPILER=ON \
-		-DLLVM_TARGETS_TO_BUILD="X86;AArch64" \
+		-DLLVM_TARGETS_TO_BUILD="X86;AArch64;WebAssembly" \
 		-DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;lldb" \
 		-DLLVM_EXTERNAL_PROJECTS="cmark;swift" \
 		-DLLVM_EXTERNAL_SWIFT_SOURCE_DIR="$(BUILD_WORK)/llvm/swift" \
