@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-STRAPPROJECTS          += packix-keyring
+SUBPROJECTS            += packix-keyring
 PACKIX_KEYRING_VERSION := 2021.07.19
 DEB_PACKIX_KEYRING_V   ?= $(PACKIX_KEYRING_VERSION)
 

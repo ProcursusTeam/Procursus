@@ -8,7 +8,7 @@ DASH_VERSION  := 0.5.12
 DEB_DASH_V    ?= $(DASH_VERSION)
 
 dash-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://gondor.apana.org.au/~herbert/dash/files/dash-$(DASH_VERSION).tar.gz)
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://git.kernel.org/pub/scm/utils/dash/dash.git/snapshot/dash-$(DASH_VERSION).tar.gz)
 	$(call EXTRACT_TAR,dash-$(DASH_VERSION).tar.gz,dash-$(DASH_VERSION),dash)
 	mkdir -p $(BUILD_STAGE)/dash/$(MEMO_PREFIX)/bin
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
@@ -22,7 +22,7 @@ dash:
 else
 dash: dash-setup libedit
 	find $(BUILD_WORK)/dash -name '*.c' -exec sed -i 's/stat64/stat/g' "{}" \;
-	cd $(BUILD_WORK)/dash && ./configure -C \
+	cd $(BUILD_WORK)/dash && autoreconf -fi && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--exec-prefix="" \
 		--with-libedit \
