@@ -2,10 +2,10 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS             += siguza-utils
-SIGUZA_UTILS_COMMIT     := 6087a6122d9fbd614f1b81d63fbe6a3150639400
-SIGUZA_UTILS_VERSION    := 1.0+git20230414.$(shell echo $(SIGUZA_UTILS_COMMIT) | cut -c -7)
-DEB_SIGUZA_UTILS_V      ?= $(SIGUZA_UTILS_VERSION)
+SUBPROJECTS           += siguza-utils
+SIGUZA_UTILS_COMMIT   := 6087a6122d9fbd614f1b81d63fbe6a3150639400
+SIGUZA_UTILS_VERSION  := 1.0+git20230414.$(shell echo $(SIGUZA_UTILS_COMMIT) | cut -c -7)
+DEB_SIGUZA_UTILS_V    ?= $(SIGUZA_UTILS_VERSION)
 
 siguza-utils-setup: setup
 	$(call GITHUB_ARCHIVE,Siguza,misc,$(SIGUZA_UTILS_COMMIT),$(SIGUZA_UTILS_COMMIT),siguza-utils)
@@ -22,8 +22,6 @@ siguza-utils: siguza-utils-setup
 		LDFLAGS="$(LDFLAGS)" \
 		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		DESTDIR="$(BUILD_STAGE)/siguza-utils"
-	# Delete mesu, it's broken afaik
-	rm -rf $(BUILD_STAGE)/siguza-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/mesu
 	$(call AFTER_BUILD)
 endif
 
