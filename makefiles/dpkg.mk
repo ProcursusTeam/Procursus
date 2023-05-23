@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS  += dpkg
-DPKG_VERSION   := 1.21.9
+DPKG_VERSION   := 1.21.21
 DEB_DPKG_V     ?= $(DPKG_VERSION)
 
 dpkg-setup: setup
@@ -22,14 +22,14 @@ dpkg:
 else
 dpkg: dpkg-setup gettext xz zstd libmd zlib-ng
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	sed -i '/base-bsd-darwin/a base-bsd-darwin-arm64		$(DEB_ARCH)' $(BUILD_WORK)/dpkg/data/tupletable
+	sed -e '\|base-bsd-darwin|a base-bsd-darwin-arm64\t\t$(DEB_ARCH)' -i $(BUILD_WORK)/dpkg/data/tupletable
 endif
 	cd $(BUILD_WORK)/dpkg && ./autogen
 	cd $(BUILD_WORK)/dpkg && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-libz-ng \
-		--with-admindir=$(MEMO_PREFIX)/Library/dpkg \
-		--with-logdir=$(MEMO_PREFIX)/var/log \
+		--with-admindir="$(MEMO_PREFIX)/Library/dpkg" \
+		--with-logdir="$(MEMO_PREFIX)/var/log" \
 		--disable-start-stop-daemon \
 		--disable-dselect \
 		--without-libselinux \
@@ -38,13 +38,13 @@ endif
 		PERL_LIBDIR='$$(prefix)/share/perl5' \
 		PERL="$(shell command -v perl)" \
 		TAR=$(GNU_PREFIX)tar \
-		LZMA_LIBS='$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/liblzma.dylib'
+		LZMA_LIBS="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/liblzma.dylib"
 	+$(MAKE) -C $(BUILD_WORK)/dpkg \
 		PERL="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl"
 	+$(MAKE) -C $(BUILD_WORK)/dpkg install \
 		DESTDIR="$(BUILD_STAGE)/dpkg"
 	mkdir -p $(BUILD_STAGE)/dpkg/$(MEMO_PREFIX)/var/lib
-	$(LN_S) /$(MEMO_PREFIX)/Library/dpkg $(BUILD_STAGE)/dpkg/$(MEMO_PREFIX)/var/lib/dpkg
+	$(LN_S) $(MEMO_PREFIX)/Library/dpkg $(BUILD_STAGE)/dpkg/$(MEMO_PREFIX)/var/lib/dpkg
 	$(call AFTER_BUILD)
 endif
 
@@ -64,7 +64,7 @@ dpkg-package: dpkg-stage
 	rm -f $(BUILD_DIST)/dpkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale/*/LC_MESSAGES/!(dpkg.mo)
 	cp -a $(BUILD_STAGE)/dpkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/dpkg/{{abi,cpu,os,tuple}table,sh} $(BUILD_DIST)/dpkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/dpkg
 	mkdir -p $(BUILD_DIST)/dpkg/$(MEMO_PREFIX)/etc/dpkg/origins/
-	echo -e "Vendor: Procursus\nVendor-URL: https://github.com/ProcursusTeam/Procursus/\nBugs: mailto://me@diatrus.com" > $(BUILD_DIST)/dpkg/$(MEMO_PREFIX)/etc/dpkg/origins/procursus
+	echo -e "Vendor: Procursus\nVendor-URL: https://github.com/ProcursusTeam/Procursus/\nBugs: mailto://support@procurs.us" > $(BUILD_DIST)/dpkg/$(MEMO_PREFIX)/etc/dpkg/origins/procursus
 	$(LN_S) procursus $(BUILD_DIST)/dpkg/$(MEMO_PREFIX)/etc/dpkg/origins/default
 
 	# dpkg.mk Prep dpkg-dev

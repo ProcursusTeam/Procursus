@@ -11,6 +11,9 @@ man-db-setup: setup
 	$(call PGP_VERIFY,man-db-$(MAN-DB_VERSION).tar.xz,asc)
 	$(call EXTRACT_TAR,man-db-$(MAN-DB_VERSION).tar.xz,man-db-$(MAN-DB_VERSION),man-db)
 	$(call DO_PATCH,man-db,man-db,-p1)
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+	sed -i 's|LIBMAN = |LIBMAN = -lxcselect |' $(BUILD_WORK)/man-db/src/Makefile.{am,in}
+endif
 	sed -i "s|@ON_DEVICE_SDK_PATH@|$(ON_DEVICE_SDK_PATH)|g" $(BUILD_WORK)/man-db/src/man_db.conf.in
 
 ifneq ($(wildcard $(BUILD_WORK)/man-db/.build_complete),)
@@ -23,8 +26,7 @@ man-db: man-db-setup libpipeline libgdbm gettext zstd
 		--disable-cache-owner \
 		--enable-nls \
 		--with-nroff=groff \
-		man_cv_prog_gnu_nroff=yes \
-		--disable-nls # Disable this until I figure out why po4a is being dumb.
+		man_cv_prog_gnu_nroff=yes
 	+$(MAKE) -C $(BUILD_WORK)/man-db \
 		LDFLAGS="$(LDFLAGS) -lintl -Wl,-framework -Wl,CoreFoundation"
 	+$(MAKE) -C $(BUILD_WORK)/man-db install \

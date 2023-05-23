@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS  += gnutls
-GNUTLS_VERSION := 3.7.6
-DEB_GNUTLS_V   ?= $(GNUTLS_VERSION)-1
+GNUTLS_VERSION := 3.8.0
+DEB_GNUTLS_V   ?= $(GNUTLS_VERSION)
 
 gnutls-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), https://www.gnupg.org/ftp/gcrypt/gnutls/v$(shell echo $(GNUTLS_VERSION) | cut -d. -f-2)/gnutls-$(GNUTLS_VERSION).tar.xz)

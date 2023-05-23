@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS         += libjemalloc
-LIBJEMALLOC_VERSION := 5.2.1
-DEB_LIBJEMALLOC_V  	?= $(LIBJEMALLOC_VERSION)-3
+LIBJEMALLOC_VERSION := 5.3.0
+DEB_LIBJEMALLOC_V   ?= $(LIBJEMALLOC_VERSION)
 
 libjemalloc-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/jemalloc/jemalloc/releases/download/$(LIBJEMALLOC_VERSION)/jemalloc-$(LIBJEMALLOC_VERSION).tar.bz2)
@@ -21,7 +21,7 @@ libjemalloc: libjemalloc-setup
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-lg-page=14 \
 		--with-jemalloc-prefix= \
-		--with-version=$(DEB_LIBJEMALLOC_V)-gd3d5ad2b5683c1a435a185eec9c593749c7ca41a
+		--with-version=$(DEB_LIBJEMALLOC_V)-0-g54eaed1d8b56b1aa528be3bdd1877e59c56fa90c
 		# The above system page size is specified because
 		# iOS arm64 devices have a 16KB page size.
 	+$(MAKE) -C $(BUILD_WORK)/libjemalloc

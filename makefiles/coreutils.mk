@@ -3,9 +3,9 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS       += coreutils
-COREUTILS_VERSION   := 9.1
+COREUTILS_VERSION   := 9.3
 GETENTDARWIN_COMMIT := 1ad0e39ee51181ea6c13b3d1d4e9c6005ee35b5e
-DEB_COREUTILS_V     ?= $(COREUTILS_VERSION)
+DEB_COREUTILS_V     ?= $(COREUTILS_VERSION)-1
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
 COREUTILS_CONFIGURE_ARGS += ac_cv_func_rpmatch=no
@@ -16,12 +16,9 @@ COREUTILS_CONFIGURE_ARGS += --program-prefix=$(GNU_PREFIX)
 endif
 
 coreutils-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/coreutils/coreutils-$(COREUTILS_VERSION).tar.xz{$(comma).sig})
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftp.gnu.org/gnu/coreutils/coreutils-$(COREUTILS_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,coreutils-$(COREUTILS_VERSION).tar.xz,coreutils-$(COREUTILS_VERSION),coreutils)
-ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1400 ] && echo 1),1)
-	touch $(BUILD_WORK)/coreutils/reflink-apfs.patch.done
-endif
 	$(call DO_PATCH,coreutils,coreutils,-p1)
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
 		https://git.cameronkatri.com/getent-darwin/snapshot/getent-darwin-$(GETENTDARWIN_COMMIT).tar.zst)
@@ -38,9 +35,11 @@ coreutils: coreutils-setup gettext libgmp10 libxcrypt openssl
 else # (,$(findstring darwin,$(MEMO_TARGET)))
 coreutils: coreutils-setup gettext libgmp10 openssl
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
+	cd $(BUILD_WORK)/coreutils && autoreconf -fi
 	cd $(BUILD_WORK)/coreutils && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		$(COREUTILS_CONFIGURE_ARGS)
+		$(COREUTILS_CONFIGURE_ARGS) \
+		gl_cv_macro_MB_CUR_MAX_good=yes
 	+$(MAKE) -C $(BUILD_WORK)/coreutils
 	+$(MAKE) -C $(BUILD_WORK)/coreutils install \
 		DESTDIR=$(BUILD_STAGE)/coreutils

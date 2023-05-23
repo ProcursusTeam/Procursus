@@ -3,13 +3,13 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += lua-luv
-LUA-LUV_VERSION := 1.36.0
+LUA-LUV_VERSION := 1.44.2
 DEB_LUA-LUV_V   ?= $(LUA-LUV_VERSION)-1
 
 lua-luv-setup: setup
 	$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/lua-luv-$(LUA-LUV_VERSION).tar.gz, \
-		https://github.com/luvit/luv/releases/download/$(LUA-LUV_VERSION)-0/luv-$(LUA-LUV_VERSION)-0.tar.gz)
-	$(call EXTRACT_TAR,lua-luv-$(LUA-LUV_VERSION).tar.gz,luv-$(LUA-LUV_VERSION)-0,lua-luv/bundle)
+		https://github.com/luvit/luv/releases/download/$(LUA-LUV_VERSION)-1/luv-$(LUA-LUV_VERSION)-1.tar.gz)
+	$(call EXTRACT_TAR,lua-luv-$(LUA-LUV_VERSION).tar.gz,luv-$(LUA-LUV_VERSION)-1,lua-luv/bundle)
 	$(call DO_PATCH,lua-luv,lua-luv,-p1)
 	mkdir -p $(BUILD_WORK)/lua-luv/{,bundle/}build5{1..3}
 	mkdir -p $(BUILD_WORK)/lua-luv/buildjit

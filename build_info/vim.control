@@ -2,7 +2,7 @@ Package: vim
 Version: @DEB_VIM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libncursesw6, xxd, libintl8
+Depends: libncursesw6, xxd, libintl8, libsodium23
 Section: Text_Editors
 Priority: standard
 Description: Vi IMproved - enhanced vi editor

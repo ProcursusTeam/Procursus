@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += curl
-CURL_VERSION := 7.84.0
+CURL_VERSION := 8.0.1
 DEB_CURL_V   ?= $(CURL_VERSION)
 
 curl-setup: setup
@@ -16,13 +16,18 @@ ifneq ($(wildcard $(BUILD_WORK)/curl/.build_complete),)
 curl:
 	@echo "Using previously built curl."
 else
-curl: curl-setup gettext openssl libssh2 nghttp2 libidn2 brotli zstd rtmpdump
+curl: curl-setup gettext openssl libc-ares libssh2 nghttp2 libidn2 brotli zstd rtmpdump
 	cd $(BUILD_WORK)/curl && autoreconf -vi
 	cd $(BUILD_WORK)/curl && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--with-libssh2 \
 		--with-openssl \
 		--with-nghttp2 \
+		--with-libssh2 \
+		--with-libidn2 \
+		--with-brotli \
+		--with-zstd \
+		--with-librtmp \
+		--enable-ares \
 		--without-nghttp3 \
 		--without-ngtcp2 \
 		--with-ca-bundle=$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem

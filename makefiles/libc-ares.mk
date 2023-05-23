@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += libc-ares
-LIBC-ARES_VERSION := 1.17.2
+LIBC-ARES_VERSION := 1.19.0
 DEB_LIBC-ARES_V   ?= $(LIBC-ARES_VERSION)
 
 libc-ares-setup: setup
@@ -24,10 +24,6 @@ libc-ares: libc-ares-setup
 	+$(MAKE) -C $(BUILD_WORK)/libc-ares
 	+$(MAKE) -C $(BUILD_WORK)/libc-ares install \
 		DESTDIR="$(BUILD_STAGE)/libc-ares"
-
-	# Temporary, until a new version is released. Needed for Node.js
-	cp $(BUILD_WORK)/libc-ares/src/lib/ares_nameser.h $(BUILD_STAGE)/libc-ares/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-
 	$(call AFTER_BUILD,copy)
 endif
 

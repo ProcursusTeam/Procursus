@@ -1,0 +1,16 @@
+Package: libportaudio19-dev
+Version: @DEB_PORTAUDIO_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libportaudio2 (= @DEB_PORTAUDIO_V@), libportaudiocpp0 (= @DEB_PORTAUDIO_V@)
+Section: Development
+Priority: optional
+Homepage: http://www.portaudio.com/
+Description: Portable audio I/O - development files
+ PortAudio is a portable audio I/O library designed for cross-platform
+ support of audio. It uses a callback mechanism to request audio
+ processing.  Audio can be generated in various formats, including 32
+ bit floating point, and will be converted to the native format
+ internally.
+ .
+ This package contains the development files.

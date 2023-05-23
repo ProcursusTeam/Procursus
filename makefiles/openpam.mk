@@ -15,16 +15,11 @@ openpam-setup: setup
 	# The below line is only if you need to debug PAM with detailed syslogs.
 	# sed -i -e 's/openpam_debug = 0/openpam_debug = 1/' -e 's/priority = LOG_DEBUG/priority = LOG_ERR/' $(BUILD_WORK)/openpam/lib/libpam/openpam_log.c
 
-###
-# For some reason here, libSystem's crypt() really likes being dominant. Static link to fix the issue!
-# TODO: Add pam_sm_chauthtok() to pam_unix.so
-###
-
 ifneq ($(wildcard $(BUILD_WORK)/openpam/.build_complete),)
 openpam:
 	@echo "Using previously built openpam."
 else
-openpam: openpam-setup libxcrypt
+openpam: openpam-setup
 	cd $(BUILD_WORK)/openpam && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-modules-dir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pam \

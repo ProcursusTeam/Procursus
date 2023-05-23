@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS   += gettext
-GETTEXT_VERSION := 0.21
-DEB_GETTEXT_V   ?= $(GETTEXT_VERSION)-4
+GETTEXT_VERSION := 0.21.1
+DEB_GETTEXT_V   ?= $(GETTEXT_VERSION)
 
 gettext-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/gettext/gettext-$(GETTEXT_VERSION).tar.xz{$(comma).sig})
@@ -50,7 +50,7 @@ gettext-package: gettext-stage
 
 	# gettext.mk Prep gettext
 	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{msg*,gettextize,recode-sr-latin,xgettext} $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libgettext{lib,src}-0.21.dylib,gettext} $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libgettext{lib,src}-$(GETTEXT_VERSION).dylib,gettext} $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal/!(host-cpu-c-abi.m4) $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal
 	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/gettext/!(archive.dir.tar.xz) $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/gettext
 	cp -a $(BUILD_STAGE)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/{msg*.1,gettextize.1,recode-sr-latin.1,xgettext.1}$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/gettext/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/
