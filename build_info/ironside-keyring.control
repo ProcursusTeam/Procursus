@@ -1,9 +1,0 @@
-Package: ironside-keyring
-Version: @DEB_IRONSIDE_KEYRING_V@
-Architecture: all
-Maintainer: @DEB_MAINTAINER@
-Author: Hephaestus Team <me@ironside.org.uk>
-Section: Keyrings
-Priority: optional
-Homepage: repo.ironside.org.uk
-Description: GnuPG key for the Hephaestus/Ironside repository
