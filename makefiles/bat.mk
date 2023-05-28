@@ -10,6 +10,7 @@ bat-setup: setup
 	$(call GITHUB_ARCHIVE,sharkdp,bat,$(BAT_VERSION),v$(BAT_VERSION))
 	$(call EXTRACT_TAR,bat-$(BAT_VERSION).tar.gz,bat-$(BAT_VERSION),bat)
 	$(call DO_PATCH,bat,bat,-p1)
+	sed -i "20d;63d" $(BUILD_WORK)/bat/Cargo.toml
 
 ifneq ($(wildcard $(BUILD_WORK)/bat/.build_complete),)
 bat:
