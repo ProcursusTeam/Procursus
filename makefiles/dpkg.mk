@@ -22,7 +22,7 @@ dpkg:
 else
 dpkg: dpkg-setup gettext xz zstd libmd zlib-ng
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	sed -e '\|base-bsd-darwin|a base-bsd-darwin-arm64\t\t$(DEB_ARCH)' -i $(BUILD_WORK)/dpkg/data/tupletable
+	sed -i "\|base-bsd-darwin|a base-bsd-darwin-arm64\t\t$(DEB_ARCH)" $(BUILD_WORK)/dpkg/data/tupletable
 endif
 	cd $(BUILD_WORK)/dpkg && ./autogen
 	cd $(BUILD_WORK)/dpkg && ./configure -C \
@@ -37,7 +37,7 @@ endif
 		LDFLAGS="$(CFLAGS) $(LDFLAGS)" \
 		PERL_LIBDIR='$$(prefix)/share/perl5' \
 		PERL="$(shell command -v perl)" \
-		TAR=$(GNU_PREFIX)tar \
+		TAR="$(GNU_PREFIX)tar" \
 		LZMA_LIBS="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/liblzma.dylib"
 	+$(MAKE) -C $(BUILD_WORK)/dpkg \
 		PERL="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl"
