@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS   += rsync
 RSYNC_VERSION := 3.2.7
-DEB_RSYNC_V   ?= $(RSYNC_VERSION)-1
+DEB_RSYNC_V   ?= $(RSYNC_VERSION)
 
 rsync-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://download.samba.org/pub/rsync/src/rsync-$(RSYNC_VERSION).tar.gz{$(comma).asc})
