@@ -827,7 +827,7 @@ AFTER_BUILD = \
 	fi; \
 	[ -d $(BUILD_WORK)/$$pkg/ ] || mkdir $(BUILD_WORK)/$$pkg/; \
 	touch $(BUILD_WORK)/$$pkg/.build_complete; \
-	find $(BUILD_BASE) -name '*.la' -type f -delete
+	find $(BUILD_BASE) -name '*.la' \( -type f -o -type l \) -delete
 
 PACK = \
 	if [ -z "$(4)" ]; then \
