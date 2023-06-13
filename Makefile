@@ -831,7 +831,7 @@ AFTER_BUILD = \
 
 PACK = \
 	if [ -z "$(4)" ]; then \
-		find $(BUILD_DIST)/$(1) -name '*.la' -type f -delete; \
+		find $(BUILD_DIST)/$(1) -name '*.la' \( -type f -o -type l \) -delete; \
 	fi; \
 	rm -f $(BUILD_DIST)/$(1)/.build_complete; \
 	rm -rf $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{info,doc}; \
