@@ -3,14 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += jbat
+JBAT_COMMIT  := b523e79866390ac4905a97d2c8c7106e9c256408
 JBAT_VERSION := 1.0
 DEB_JBAT_V   ?= $(JBAT_VERSION)
 
 jbat-setup: setup
-	mkdir -p $(BUILD_WORK)/jbat
-	lynx -width 1000 -dump http://newosxbook.com/src.jl\?tree\=listings\&file\=bat.c > \
-		$(BUILD_WORK)/jbat/jbat.c
-	sed -i '/free/d' $(BUILD_WORK)/jbat/jbat.c
+	$(call DOWNLOAD_FILE,$(BUILD_WORK)/jbat/jbat.c,https://github.com/hack-different/newosxbook-tools/raw/$(JBAT_COMMIT)/src/bat.c)
 
 ifneq ($(wildcard $(BUILD_WORK)/jbat/.build_complete),)
 jbat:

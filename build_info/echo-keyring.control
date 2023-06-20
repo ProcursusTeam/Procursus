@@ -1,0 +1,9 @@
+Package: echo-keyring
+Version: @DEB_ECHO_KEYRING_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Author: CallMeEcho <romanbarrettsarpi@pm.me>
+Section: Keyrings
+Priority: optional
+Homepage: https://repo.callmeecho.dev
+Description: GnuPG key for CallMeEcho's repository

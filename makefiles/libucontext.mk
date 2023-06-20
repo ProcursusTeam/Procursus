@@ -25,7 +25,7 @@ libucontext: libucontext-setup
 endif
 
 libucontext-package:
-	@echo There's no need for a libucontext package.
+	@echo "There's no need for a libucontext package."
 
 .PHONY: libucontext
 

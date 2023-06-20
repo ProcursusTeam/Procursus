@@ -1,6 +1,5 @@
-diff -urN gitea-1.15.4/custom/conf/app.example.ini gitea/custom/conf/app.example.ini
---- gitea-1.15.4/custom/conf/app.example.ini	2021-10-08 18:37:52.000000000 +0000
-+++ gitea/custom/conf/app.example.ini	2021-10-11 23:53:16.341532000 +0000
+--- gitea/custom/conf/app.example.ini.orig	2023-01-19 00:13:49.099126865 +0000
++++ gitea/custom/conf/app.example.ini	2023-01-19 00:19:16.721731771 +0000
 @@ -15,7 +15,7 @@
  APP_NAME = ; Gitea: Git with a cup of tea
  ;;
@@ -10,7 +9,7 @@ diff -urN gitea-1.15.4/custom/conf/app.example.ini gitea/custom/conf/app.example
  ;;
  ;; Application run mode, affects performance and debugging. Either "dev", "prod" or "test", default is "prod"
  RUN_MODE = ; prod
-@@ -58,7 +58,7 @@
+@@ -82,7 +82,7 @@
  ;PER_WRITE_PER_KB_TIMEOUT = 30s
  ;;
  ;; Permission for unix socket
@@ -19,7 +18,7 @@ diff -urN gitea-1.15.4/custom/conf/app.example.ini gitea/custom/conf/app.example
  ;;
  ;; Local (DMZ) URL for Gitea workers (such as SSH update) accessing web service.
  ;; In most cases you do not need to change the default value.
-@@ -88,7 +88,7 @@
+@@ -121,7 +121,7 @@
  ;SSH_LISTEN_PORT = %(SSH_PORT)s
  ;;
  ;; Root path of SSH directory, default is '~/.ssh', but you have to use '/home/git/.ssh'.
@@ -28,7 +27,7 @@ diff -urN gitea-1.15.4/custom/conf/app.example.ini gitea/custom/conf/app.example
  ;;
  ;; Gitea will create a authorized_keys file by default when it is not using the internal ssh server
  ;; If you intend to use the AuthorizedKeysCommand functionality then you should turn this off.
-@@ -178,7 +178,7 @@
+@@ -241,7 +241,7 @@
  ;;
  ;; Root directory containing templates and static files.
  ;; default is the path where Gitea is executed
@@ -37,16 +36,7 @@ diff -urN gitea-1.15.4/custom/conf/app.example.ini gitea/custom/conf/app.example
  ;;
  ;; Default path for App data
  ;APP_DATA_PATH = data
-@@ -202,7 +202,7 @@
- ;LFS_START_SERVER = false
- ;;
- ;; Where your lfs files reside, default is data/lfs.
--;LFS_CONTENT_PATH = data/lfs
-+LFS_CONTENT_PATH = @MEMO_PREFIX@/var/lib/gitea/data/lfs
- ;;
- ;; LFS authentication secret, change this yourself
- LFS_JWT_SECRET =
-@@ -243,10 +243,10 @@
+@@ -304,10 +304,10 @@
  ;;
  ;; MySQL Configuration
  ;;
@@ -61,7 +51,7 @@ diff -urN gitea-1.15.4/custom/conf/app.example.ini gitea/custom/conf/app.example
  ;PASSWD = ;Use PASSWD = `your password` for quoting if you use special characters in the password.
  ;SSL_MODE = false ; either "false" (default), "true", or "skip-verify"
  ;CHARSET = utf8mb4 ;either "utf8" or "utf8mb4", default is "utf8mb4".
-@@ -269,8 +269,8 @@
+@@ -330,8 +330,8 @@
  ;;
  ;; SQLite Configuration
  ;;
@@ -70,9 +60,9 @@ diff -urN gitea-1.15.4/custom/conf/app.example.ini gitea/custom/conf/app.example
 +DB_TYPE = sqlite3
 +PATH= @MEMO_PREFIX@/var/lib/gitea/data/gitea.db
  ;SQLITE_TIMEOUT = ; Query timeout defaults to: 500
+ ;SQLITE_JOURNAL_MODE = ; defaults to sqlite database default (often DELETE), can be used to enable WAL mode. https://www.sqlite.org/pragma.html#pragma_journal_mode
  ;;
- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-@@ -431,7 +431,7 @@
+@@ -508,7 +508,7 @@
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  ;; Root path for the log files - defaults to %(GITEA_WORK_DIR)/log
@@ -81,20 +71,21 @@ diff -urN gitea-1.15.4/custom/conf/app.example.ini gitea/custom/conf/app.example
  ;;
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  ;; Main Logger
-@@ -731,10 +731,10 @@
+@@ -836,11 +836,11 @@
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 -;[repository]
 +[repository]
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
- ;; Root path for storing all repository data. It must be an absolute path. By default, it is stored in a sub-directory of `APP_DATA_PATH`.
+ ;; Root path for storing all repository data. By default, it is set to %(APP_DATA_PATH)/gitea-repositories.
+ ;; A relative path is interpreted as %(GITEA_WORK_DIR)/%(ROOT)
 -;ROOT =
 +ROOT = @MEMO_PREFIX@/var/lib/gitea/repositories
  ;;
  ;; The script type this server supports. Usually this is `bash`, but some users report that only `sh` is available.
  ;SCRIPT_TYPE = bash
-@@ -827,16 +827,16 @@
+@@ -933,16 +933,16 @@
  
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -103,7 +94,7 @@ diff -urN gitea-1.15.4/custom/conf/app.example.ini gitea/custom/conf/app.example
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  ;;
- ;; Path for local repository copy. Defaults to `tmp/local-repo`
+ ;; Path for local repository copy. Defaults to `tmp/local-repo` (content gets deleted on gitea restart)
 -;LOCAL_COPY_PATH = tmp/local-repo
 +LOCAL_COPY_PATH = @MEMO_PREFIX@/var/lib/gitea/tmp/local-repo
  
@@ -114,16 +105,16 @@ diff -urN gitea-1.15.4/custom/conf/app.example.ini gitea/custom/conf/app.example
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  ;;
-@@ -844,7 +844,7 @@
+@@ -950,7 +950,7 @@
  ;ENABLED = true
  ;;
- ;; Path for uploads. Defaults to `data/tmp/uploads` (tmp gets deleted on gitea restart)
+ ;; Path for uploads. Defaults to `data/tmp/uploads` (content gets deleted on gitea restart)
 -;TEMP_PATH = data/tmp/uploads
 +TEMP_PATH = @MEMO_PREFIX@/var/lib/gitea/data/tmp/uploads
  ;;
  ;; Comma-separated list of allowed file extensions (`.zip`), mime types (`text/plain`) or wildcard type (`image/*`, `audio/*`, `video/*`). Empty value or `*/*` allows all types.
  ;ALLOWED_TYPES =
-@@ -1159,7 +1159,7 @@
+@@ -1288,7 +1288,7 @@
  
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -132,7 +123,7 @@ diff -urN gitea-1.15.4/custom/conf/app.example.ini gitea/custom/conf/app.example
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  ;;
-@@ -1170,7 +1170,7 @@
+@@ -1299,7 +1299,7 @@
  ;ISSUE_INDEXER_TYPE = bleve
  ;;
  ;; Issue indexer storage path, available when ISSUE_INDEXER_TYPE is bleve
@@ -141,7 +132,7 @@ diff -urN gitea-1.15.4/custom/conf/app.example.ini gitea/custom/conf/app.example
  ;;
  ;; Issue indexer connection string, available when ISSUE_INDEXER_TYPE is elasticsearch
  ;ISSUE_INDEXER_CONN_STR = http://elastic:changeme@localhost:9200
-@@ -1537,12 +1537,12 @@
+@@ -1694,12 +1694,12 @@
  
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

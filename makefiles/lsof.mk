@@ -9,8 +9,8 @@ LSOF_VERSION := 62
 DEB_LSOF_V   ?= $(LSOF_VERSION)
 
 lsof-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://opensource.apple.com/tarballs/lsof/lsof-$(LSOF_VERSION).tar.gz)
-	$(call EXTRACT_TAR,lsof-$(LSOF_VERSION).tar.gz,lsof-$(LSOF_VERSION),lsof)
+	$(call GITHUB_ARCHIVE,apple-oss-distributions,lsof,$(LSOF_VERSION),lsof-$(LSOF_VERSION))
+	$(call EXTRACT_TAR,lsof-$(LSOF_VERSION).tar.gz,lsof-lsof-$(LSOF_VERSION),lsof)
 	mkdir -p $(BUILD_STAGE)/lsof/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{sbin,share/man/man8}
 	sed -i 's/lcurses/lncursesw/' $(BUILD_WORK)/lsof/lsof/Configure
 
@@ -18,7 +18,7 @@ lsof-setup: setup
 	mkdir -p $(BUILD_WORK)/lsof/lsof/include/rpc
 
 	$(call DOWNLOAD_FILES,$(BUILD_WORK)/lsof/lsof/include/rpc, \
-		https://opensource.apple.com/source/Libinfo/Libinfo-538/rpc.subproj/pmap_prot.h)
+		https://github.com/apple-oss-distributions/Libinfo/raw/Libinfo-564/rpc.subproj/pmap_prot.h)
 
 ifneq ($(wildcard $(BUILD_WORK)/lsof/.build_complete),)
 lsof:
@@ -37,7 +37,7 @@ lsof: lsof-setup network-cmds-setup ncurses
 		CC=$(CC) \
 		AR="$(AR) cr \$${LIB} \$${OBJ}" \
 		RANLIB="$(RANLIB) \$${LIB}" \
-		RC_CFLAGS="$(CFLAGS) -DHASUTMPX -isystem $(BUILD_WORK)/network-cmds/include -isystem $(BUILD_WORK)/lsof/lsof/include -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib"
+		RC_CFLAGS="$(CFLAGS) -DUSE_LIB_REGEX -DHASUTMPX -liosexec -isystem $(BUILD_WORK)/network-cmds/include -isystem $(BUILD_WORK)/lsof/lsof/include -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib"
 	cp -a $(BUILD_WORK)/lsof/lsof/lsof $(BUILD_STAGE)/lsof/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 	cp -a $(BUILD_WORK)/lsof/lsof/lsof.8 $(BUILD_STAGE)/lsof/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
 	$(call AFTER_BUILD)

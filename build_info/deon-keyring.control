@@ -1,0 +1,9 @@
+Package: deon-keyring
+Version: @DEB_DEON_KEYRING_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Author: Deon
+Section: Keyrings
+Priority: optional
+Homepage: https://deontw.github.io/repo/
+Description: GnuPG keys for Deon's repositories

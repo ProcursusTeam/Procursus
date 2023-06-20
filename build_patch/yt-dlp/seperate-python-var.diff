@@ -1,0 +1,12 @@
+diff -urN yt-dlp-2023.03.04/Makefile yt-dlp/Makefile
+--- yt-dlp-2023.03.04/Makefile	2023-03-04 22:24:51.000000000 +0000
++++ yt-dlp/Makefile	2023-06-20 19:47:05.322716509 +0000
+@@ -85,7 +85,7 @@
+ 	mv zip/yt_dlp/__main__.py zip/
+ 	cd zip ; zip -q ../yt-dlp yt_dlp/*.py yt_dlp/*/*.py __main__.py
+ 	rm -rf zip
+-	echo '#!$(PYTHON)' > yt-dlp
++	echo '#!$(PYTHON_FOR_SCRIPT)' > yt-dlp
+ 	cat yt-dlp.zip >> yt-dlp
+ 	rm yt-dlp.zip
+ 	chmod a+x yt-dlp

@@ -3,14 +3,13 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += usbfluxd
-USBFLUXD_COMMIT  := f1773325c7e197384bd6ac724f47b319dea3d2d4
-USBFLUXD_VERSION := 1.2.0+git20200925.$(shell echo $(USBFLUXD_COMMIT) | cut -c -7)
-DEB_USBFLUXD_V   ?= $(USBFLUXD_VERSION)-1
+USBFLUXD_COMMIT  := 0723a9a89a188de0949a6c80177705309ebb21f5
+USBFLUXD_VERSION := 1.2.0+git20210920.$(shell echo $(USBFLUXD_COMMIT) | cut -c -7)
+DEB_USBFLUXD_V   ?= $(USBFLUXD_VERSION)
 
 usbfluxd-setup: setup
 	$(call GITHUB_ARCHIVE,corellium,usbfluxd,$(USBFLUXD_VERSION),$(USBFLUXD_COMMIT))
 	$(call EXTRACT_TAR,usbfluxd-$(USBFLUXD_VERSION).tar.gz,usbfluxd-$(USBFLUXD_COMMIT),usbfluxd)
-	$(call DO_PATCH,usbfluxd,usbfluxd,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/usbfluxd/.build_complete),)
 usbfluxd:
@@ -26,8 +25,8 @@ usbfluxd: usbfluxd-setup libplist
 		libplist_LIBS="-lplist-2.0"
 	+$(MAKE) -C $(BUILD_WORK)/usbfluxd install \
 		DESTDIR="$(BUILD_STAGE)/usbfluxd"
-	mkdir -p $(BUILD_STAGE)/usbfluxd/Library/LaunchDaemons
-	cp -a $(BUILD_INFO)/com.corellium.usbfluxd.plist $(BUILD_STAGE)/usbfluxd/Library/LaunchDaemons
+	mkdir -p $(BUILD_STAGE)/usbfluxd/$(MEMO_PREFIX)/Library/LaunchDaemons
+	sed -e "s|@MEMO_PREFIX@|$(MEMO_PREFIX)|g" -e "s|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g" < $(BUILD_INFO)/com.corellium.usbfluxd.plist > $(BUILD_STAGE)/usbfluxd/$(MEMO_PREFIX)/Library/LaunchDaemons/com.corellium.usbfluxd.plist
 	$(call AFTER_BUILD)
 endif
 

@@ -1,0 +1,52 @@
+diff -urN r2ghidra-5.8.2/src/Makefile r2ghidra/src/Makefile
+--- r2ghidra-5.8.2/src/Makefile	2023-01-23 18:03:56.000000000 +0000
++++ r2ghidra/src/Makefile	2023-02-25 22:07:11.486852731 +0000
+@@ -24,16 +24,8 @@
+ R2G_PLUG_SRCS= anal_ghidra.cpp core_ghidra.cpp
+ R2G_PLUG_SRCS+= anal_ghidra_plugin.o core_ghidra_plugin.o
+ 
+-PUGIXML_HOME=../third-party/pugixml/src/
+-PUGIXML_CFLAGS=-I$(PUGIXML_HOME)
+-PUGIXML_SRCS= $(PUGIXML_HOME)/pugixml.cpp
+-PUGIXML_OBJS= $(PUGIXML_HOME)/pugixml.o
+-#PUGIXML_OBJS= pugixml.o
++PUGIXML_LDFLAGS = -lpugixml
+ 
+-$(PUGIXML_OBJS): $(PUGIXML_SRCS)
+-	$(CXX) -c $(R2_LDFLAGS) $(CXXFLAGS) -o $@ $<
+-
+-CXXFLAGS+=$(PUGIXML_CFLAGS)
+ # CXXFLAGS+=-DR2GHIDRA_SLEIGHHOME_DEFAULT=\"$(GHIDRA_HOME)\"
+ 
+ R2GHIDRA_OBJS=$(subst .cpp,.o,$(R2GHIDRA_SRCS))
+@@ -64,25 +56,25 @@
+ endif
+ 
+ clean:
+-	rm -f *.o $(PUGIXML_HOME)/*.o
++	rm -f *.o
+ 	rm -f *.o $(GHIDRA_DECOMPILER)/*.o
+ 	rm -f $(R2G_CORE_PLUGIN) $(R2G_ASM_PLUGIN) $(R2G_ANAL_PLUGIN) sleighc
+ 
+ plugins: $(R2G_CORE_PLUGIN) sleighc
+ 	$(MAKE) sign
+ 
+-deps=$(R2GHIDRA_OBJS) $(GHIDRA_OBJS) $(R2G_PLUGIN_OBJS) $(PUGIXML_OBJS)
++deps=$(R2GHIDRA_OBJS) $(GHIDRA_OBJS) $(R2G_PLUGIN_OBJS)
+ 
+ asan:
+ 	CFLAGS="-fsanitize=address -g" $(MAKE) -j
+ 	$(MAKE) user-install
+ 
+ $(R2G_CORE_PLUGIN): $(deps)
+-	$(CXX) -shared -o $@ $(R2GHIDRA_OBJS) $(GHIDRA_OBJS) $(PUGIXML_OBJS) core_ghidra.o \
+-		anal_ghidra.o core_ghidra_plugin.o anal_ghidra_plugin.o $(R2_LDFLAGS) $(CXXFLAGS)
++	$(CXX) -shared -o $@ $(R2GHIDRA_OBJS) $(GHIDRA_OBJS) core_ghidra.o \
++		anal_ghidra.o core_ghidra_plugin.o anal_ghidra_plugin.o $(R2_LDFLAGS) $(PUGIXML_LDFLAGS) $(CXXFLAGS)
+ 
+ $(R2G_ANAL_PLUGIN): $(deps)
+-	$(CXX) -shared $(GHIDRA_OBJS) $(PUGIXML_OBJS) anal_ghidra.o anal_ghidra_plugin.o \
++	$(CXX) -shared $(GHIDRA_OBJS) $(PUGIXML_LDFLAGS) anal_ghidra.o anal_ghidra_plugin.o \
+ 		$(R2_LDFLAGS) $(CXXFLAGS) -o $@ $(R2GHIDRA_OBJS)
+ 
+ ifneq (,$(wildcard /usr/bin/codesign))

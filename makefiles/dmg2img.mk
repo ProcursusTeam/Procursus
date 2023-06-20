@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS     += dmg2img
 DMG2IMG_VERSION := 1.6.7
-DEB_DMG2IMG_V   ?= $(DMG2IMG_VERSION)-1
+DEB_DMG2IMG_V   ?= $(DMG2IMG_VERSION)-2
 
 dmg2img-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://vu1tur.eu.org/tools/dmg2img-$(DMG2IMG_VERSION).tar.gz)
@@ -20,7 +20,7 @@ dmg2img: dmg2img-setup openssl
 		CC="$(CC) $(LDFLAGS)" \
 		CFLAGS="$(CFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/dmg2img install \
-		DESTDIR="$(BUILD_STAGE)/dmg2img"
+		BIN_DIR="$(BUILD_STAGE)/dmg2img/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin"
 	$(INSTALL) -Dm644 $(BUILD_WORK)/dmg2img/vfdecrypt.1 $(BUILD_STAGE)/dmg2img/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/vfdecrypt.1
 	$(INSTALL) -Dm644 $(BUILD_INFO)/dmg2img.1 $(BUILD_STAGE)/dmg2img/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/dmg2img.1
 	$(call AFTER_BUILD)

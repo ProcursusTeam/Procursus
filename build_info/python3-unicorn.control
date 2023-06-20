@@ -1,0 +1,18 @@
+Package: python3-unicorn
+Version: @DEB_UNICORN_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: python3, libunicorn2 (= @DEB_UNICORN_V@)
+Section: Python
+Priority: optional
+Homepage: https://unicorn-engine.org
+Description: Lightweight CPU emulator framework
+ Unicorn is a CPU emulator which is based on the CPU emulation code from
+ QEMU. Unlike QEMU, it focuses on the emulation of CPU code without a
+ full system emulation, but with the goal to make the emulation
+ extensible and easy to integrate in custom tools. Unicorn provides
+ language bindings for Python, Ruby, and Rust (among others) and has
+ instrumentation hooks for various CPU events. This makes Unicorn well
+ suited for malware analysis and reverse engineering.
+ .
+ This package installs the Python 3 bindings.

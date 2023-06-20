@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += gzip
-GZIP_VERSION  := 1.11
+GZIP_VERSION  := 1.12
 DEB_GZIP_V    ?= $(GZIP_VERSION)
 
 gzip-setup: setup
@@ -18,10 +18,9 @@ gzip:
 else
 gzip: gzip-setup
 	cd $(BUILD_WORK)/gzip && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS) \
-		--disable-dependency-tracking
+		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/gzip install \
-		DESTDIR=$(BUILD_STAGE)/gzip
+		DESTDIR="$(BUILD_STAGE)/gzip"
 ifneq ($(MEMO_SUB_PREFIX),)
 	for bin in $(BUILD_STAGE)/gzip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
 		$(LN_S) $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(basename $$bin) $(BUILD_STAGE)/gzip/$(MEMO_PREFIX)/bin/$$(basename $$bin); \

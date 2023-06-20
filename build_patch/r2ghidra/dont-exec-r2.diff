@@ -1,0 +1,37 @@
+diff -urN r2ghidra-5.8.2/configure r2ghidra/configure
+--- r2ghidra-5.8.2/configure	2023-01-23 18:03:56.000000000 +0000
++++ r2ghidra/configure	2023-02-26 03:56:11.839462352 +0000
+@@ -507,33 +507,6 @@
+ else
+ echo no
+ fi ; fi
+-printf "checking exec r2 -H R2_PREFIX... "
+-R2_PREFIX="`r2 -H R2_PREFIX 2>/dev/null`"
+-if [ $? = 0 ]; then
+-	echo "ok"
+-else
+-	R2_PREFIX=""
+-	echo "not found"
+-echo 'required'; exit 1
+-fi
+-printf "checking exec r2 -H R2_USER_PLUGINS... "
+-R2_USER_PLUGINS="`r2 -H R2_USER_PLUGINS 2>/dev/null`"
+-if [ $? = 0 ]; then
+-	echo "ok"
+-else
+-	R2_USER_PLUGINS=""
+-	echo "not found"
+-echo 'required'; exit 1
+-fi
+-printf "checking exec r2 -H R2_LIBR_PLUGINS... "
+-R2_LIBR_PLUGINS="`r2 -H R2_LIBR_PLUGINS 2>/dev/null`"
+-if [ $? = 0 ]; then
+-	echo "ok"
+-else
+-	R2_LIBR_PLUGINS=""
+-	echo "not found"
+-echo 'required'; exit 1
+-fi
+ SEDFLAGS=" -e '"
+ COUNT=0
+ for A in ${ENVWORDS} ; do

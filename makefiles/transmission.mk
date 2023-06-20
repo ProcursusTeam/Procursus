@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS          += transmission
 TRANSMISSION_VERSION := 3.00
-DEB_TRANSMISSION_V   ?= $(TRANSMISSION_VERSION)-1
+DEB_TRANSMISSION_V   ?= $(TRANSMISSION_VERSION)-2
 
 transmission-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/transmission/transmission-releases/raw/master/transmission-$(TRANSMISSION_VERSION).tar.xz)
@@ -34,7 +34,7 @@ transmission-package: transmission-stage
 	mkdir -p $(BUILD_DIST)/transmission
 
 	# transmission.mk Prep transmission
-	cp -a $(BUILD_STAGE)/transmission/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/transmission
+	cp -a $(BUILD_STAGE)/transmission/ $(BUILD_DIST)/
 
 	# transmission.mk Sign
 	$(call SIGN,transmission,general.xml)

@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS      += pincrush
 PINCRUSH_VERSION := 0.9.2
-DEB_PINCRUSH_V   ?= $(PINCRUSH_VERSION)
+DEB_PINCRUSH_V   ?= $(PINCRUSH_VERSION)-1
 
 pincrush-setup: setup
 	$(call GITHUB_ARCHIVE,DHowett,pincrush,$(PINCRUSH_VERSION),$(PINCRUSH_VERSION))
@@ -28,7 +28,7 @@ pincrush-package: pincrush-stage
 	mkdir -p $(BUILD_DIST)/pincrush
 
 	# pincrush.mk Prep pincrush
-	cp -a $(BUILD_STAGE)/pincrush/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) $(BUILD_DIST)/pincrush
+	cp -a $(BUILD_STAGE)/pincrush/ $(BUILD_DIST)/
 
 	# pincrush.mk Sign
 	$(call SIGN,pincrush,general.xml)

@@ -5,8 +5,8 @@ endif
 ifneq (,$(findstring arm64,$(MEMO_TARGET)))
 
 STRAPPROJECTS      += dimentio
-DIMENTIO_COMMIT    := 7ffffff82f06a7c84b0563b599e5722cc6152dc0
-DIMENTIO_VERSION   := 1:0~20221111.$(shell echo $(DIMENTIO_COMMIT) | cut -c -7)
+DIMENTIO_COMMIT    := 7ffffffb4ebfcdbc46ab5e8f1becc0599a05711d
+DIMENTIO_VERSION   := 1:0~20230202.$(shell echo $(DIMENTIO_COMMIT) | cut -c -7)
 DEB_DIMENTIO_V     ?= $(DIMENTIO_VERSION)
 
 DIMENTIO_SOVERSION := 0
@@ -15,7 +15,9 @@ DIMENTIO_LIBS      := -framework CoreFoundation -framework IOKit -lcompression
 dimentio-setup: setup
 	$(call GITHUB_ARCHIVE,0x7ff,dimentio,$(DIMENTIO_COMMIT),$(DIMENTIO_COMMIT))
 	$(call EXTRACT_TAR,dimentio-$(DIMENTIO_COMMIT).tar.gz,dimentio-$(DIMENTIO_COMMIT),dimentio)
+	$(call DO_PATCH,dimentio,dimentio,-p1)
 	mkdir -p $(BUILD_STAGE)/dimentio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib,include}
+	sed -i 's|/usr/lib|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib|g' $(BUILD_WORK)/dimentio/libdimentio.c
 
 ifneq ($(wildcard $(BUILD_WORK)/dimentio/.build_complete),)
 dimentio:

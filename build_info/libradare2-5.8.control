@@ -1,0 +1,22 @@
+Package: libradare2-5.8
+Version: @DEB_RADARE2_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libradare2-common (= @DEB_RADARE2_V@), libcapstone5, libssl3, libuv1, libzip5, liblz4-1, libxxhash0, libmagic1
+Section: Libraries
+Priority: optional
+Homepage: https://www.radare.org
+Description: libraries from the radare2 suite
+ The project aims to create a complete, portable, multi-architecture,
+ unix-like toolchain for reverse engineering.
+ .
+ It is composed by an hexadecimal editor (radare) with a wrapped IO
+ layer supporting multiple backends for local/remote files, debugger
+ (OS X, BSD, Linux, W32), stream analyzer, assembler/disassembler (rasm)
+ for x86, ARM, PPC, m68k, Java, MSIL, SPARC, code analysis modules and
+ scripting facilities. A bindiffer named radiff, base converter (rax),
+ shellcode development helper (rasc), a binary information extractor
+ supporting PE, mach0, ELF, class, etc. named rabin, and a block-based
+ hash utility called rahash.
+ .
+ This package provides the libraries from radare2.
