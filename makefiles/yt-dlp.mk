@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += yt-dlp
-YT-DLP_VERSION := 2022.02.04
+YT-DLP_VERSION := 2023.03.04
 DEB_YT-DLP_V   ?= $(YT-DLP_VERSION)
 
 yt-dlp-setup: setup
@@ -17,12 +17,13 @@ yt-dlp:
 	@echo "Using previously built yt-dlp."
 else
 yt-dlp: yt-dlp-setup
+	cd $(BUILD_WORK)/yt-dlp; python3 devscripts/set-variant.py procursus -M "As yt-dlp has been installed via apt, you should use that to update."
 	+$(MAKE) -C $(BUILD_WORK)/yt-dlp install \
 		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		MANDIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
 		SYSCONFDIR=$(MEMO_PREFIX)/etc \
 		DESTDIR=$(BUILD_STAGE)/yt-dlp \
-		PYTHON=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3
+		PYTHON_FOR_SCRIPT=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3
 	$(call AFTER_BUILD)
 endif
 
