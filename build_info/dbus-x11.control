@@ -1,0 +1,19 @@
+Package: dbus-x11
+Version: @DEB_DBUS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: dbus-bin (= @DEB_DBUS_V@), dbus-daemon (= @DEB_DBUS_V@), dbus-session-bus-common (= @DEB_DBUS_V@), libdbus-1-3 (= @DEB_DBUS_V@), libx11-6
+Provides: dbus-session-bus
+Section: X11
+Priority: optional
+Description: simple interprocess messaging system (X11 deps)
+ D-Bus is a message bus, used for sending messages between applications.
+ Conceptually, it fits somewhere in between raw sockets and CORBA in
+ terms of complexity.
+ .
+ This package contains the dbus-launch utility, which automatically
+ launches one D-Bus session bus per X11 display per user. If the
+ dbus-user-session package is also installed, it takes precedence over
+ this package.
+ .
+ See the dbus description for more information about D-Bus in general.
