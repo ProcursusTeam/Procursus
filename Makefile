@@ -492,10 +492,12 @@ ifeq ($(DEBUG),1)
 OPTIMIZATION_FLAGS := -g -O0
 else ifeq ($(MEMO_TARGET),bridgeos-arm64)
 OPTIMIZATION_FLAGS := -Oz
-else ifeq ($(BINPACK),1)
+else
+ifeq ($(BINPACK),1)
 OPTIMIZATION_FLAGS := -Oz
 else
 OPTIMIZATION_FLAGS := -Os
+endif
 ifeq ($(UNAME),Darwin)
 OPTIMIZATION_FLAGS += -flto=thin
 else ifeq ($(MEMO_FORCE_LTO),1)
@@ -529,6 +531,8 @@ ifneq ($(MEMO_NO_IOSEXEC),1)
 LDFLAGS             += -liosexec
 else
 CFLAGS              += -DLIBIOSEXEC_INTERNAL
+CXXFLAGS            += -DLIBIOSEXEC_INTERNAL
+CPPFLAGS            += -DLIBIOSEXEC_INTERNAL
 endif
 endif
 
