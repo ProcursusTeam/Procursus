@@ -21,6 +21,12 @@ diskdev-cmds-setup: diskdev-cmds_CF800-setup
 diskdev-cmds: diskdev-cmds_CF800
 diskdev-cmds-package: diskdev-cmds_CF800-package
 
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 700 ] && echo 1),1)
+DISKDEV-CMDS_VERSION := $(DISKDEV-CMDS_CF700_VERSION)
+diskdev-cmds-setup: diskdev-cmds_CF700-setup
+diskdev-cmds: diskdev-cmds_CF700
+diskdev-cmds-package: diskdev-cmds_CF700-package
+
 else
 DISKDEV-CMDS_VERSION := $(DISKDEV-CMDS_CFBASE_VERSION)
 diskdev-cmds-setup: diskdev-cmds_CFbase-setup

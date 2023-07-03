@@ -2,12 +2,11 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-DISKDEV-CMDS_CFBASE_VERSION := 593
+DISKDEV-CMDS_CF700_VERSION := 593
 
-diskdev-cmds_CFbase-setup: setup
-	$(call GITHUB_ARCHIVE,apple-oss-distributions,diskdev_cmds,$(DISKDEV-CMDS_CFBASE_VERSION),diskdev_cmds-$(DISKDEV-CMDS_CFBASE_VERSION))
-	$(call EXTRACT_TAR,diskdev_cmds-$(DISKDEV-CMDS_CFBASE_VERSION).tar.gz,diskdev_cmds-diskdev_cmds-$(DISKDEV-CMDS_CFBASE_VERSION),diskdev-cmds)
-	mkdir -p $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{{s,}bin,libexec,share/man/man{1,5,8}}
+diskdev-cmds_CF700-setup: setup
+	$(call GITHUB_ARCHIVE,apple-oss-distributions,diskdev_cmds,$(DISKDEV-CMDS_CF700_VERSION),diskdev_cmds-$(DISKDEV-CMDS_CF700_VERSION))
+	$(call EXTRACT_TAR,diskdev_cmds-$(DISKDEV-CMDS_CF700_VERSION).tar.gz,diskdev_cmds-diskdev_cmds-$(DISKDEV-CMDS_CF700_VERSION),diskdev-cmds)
 	sed -i -e '/#include <TargetConditionals.h>/d' \
 		$(BUILD_WORK)/diskdev-cmds/fsck.tproj/fsck.c
 	sed -i 's/TARGET_OS_EMBEDDED/WHOISJOE/g' \
@@ -23,14 +22,14 @@ diskdev-cmds_CFbase-setup: setup
 		$(BUILD_WORK)/diskdev-cmds/disklib/preen.c
 	sed -i -e 's/#define PROTECTION_CLASS_A 1/#ifndef O_DP_GETRAWENCRYPTED\n#define O_DP_GETRAWENCRYPTED 0x1\n#define open_dprotected_np(a,b,c...) open(a,b)\n#endif\n#define PROTECTION_CLASS_A 1/g' $(BUILD_WORK)/diskdev-cmds/setclass.tproj/setclass.c
 	sed -i -e 's/select_fstyp,/\(int \(*\)\(struct dirent *\)\)select_fstyp,/g' $(BUILD_WORK)/diskdev-cmds/fstyp.tproj/fstyp.c
-	sed -i -e 's/int main (int/#ifndef MNT_CPROTECT\n#define MNT_CPROTECT 0x00000080\n#endif\nint main (int/g' $(BUILD_WORK)/diskdev-cmds/vsdbutil.tproj/vsdbutil_main.c
+	
 
 ifneq ($(wildcard $(BUILD_WORK)/diskdev-cmds/.build_complete),)
-diskdev-cmds_CFbase:
+diskdev-cmds_CF700:
 	@echo "Using previously built diskdev-cmds."
 else
-diskdev-cmds_CFbase: .SHELLFLAGS=-O extglob -c
-diskdev-cmds_CFbase: diskdev-cmds-setup
+diskdev-cmds_CF700: .SHELLFLAGS=-O extglob -c
+diskdev-cmds_CF700: diskdev-cmds-setup
 	cd $(BUILD_WORK)/diskdev-cmds/disklib; \
 	rm -f mntopts.h getmntopts.c; \
 	for arch in $(MEMO_ARCH); do \
@@ -71,8 +70,8 @@ diskdev-cmds_CFbase: diskdev-cmds-setup
 	$(call AFTER_BUILD)
 endif
 
-diskdev-cmds_CFbase-package:: DEB_DISKDEV-CMDS_V ?= $(DISKDEV-CMDS_CFBASE_VERSION)
-diskdev-cmds_CFbase-package: diskdev-cmds-stage
+diskdev-cmds_CF700-package:: DEB_DISKDEV-CMDS_V ?= $(DISKDEV-CMDS_CF700_VERSION)
+diskdev-cmds_CF700-package: diskdev-cmds-stage
 	# diskdev-cmds.mk Package Structure
 	rm -rf $(BUILD_DIST)/diskdev-cmds
 
@@ -91,4 +90,4 @@ diskdev-cmds_CFbase-package: diskdev-cmds-stage
 
 	# diskdev-cmds.mk Build cleanup
 	rm -rf $(BUILD_DIST)/diskdev-cmds
-.PHONY: diskdev-cmds_CFbase diskdev-cmds-package_CFbase
+.PHONY: diskdev-cmds_CF700 diskdev-cmds-package_CF700
