@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += figlet
 FIGLET_VERSION := 2.2.5
-DEB_FIGLET_V   ?= $(FIGLET_VERSION)
+DEB_FIGLET_V   ?= $(FIGLET_VERSION)-1
 
 figlet-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),ftp://ftp.figlet.org/pub/figlet/program/unix/figlet-$(FIGLET_VERSION).tar.gz)
