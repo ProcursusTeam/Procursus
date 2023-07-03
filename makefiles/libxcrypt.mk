@@ -15,6 +15,7 @@ libxcrypt-setup: setup
 	$(call CHECKSUM_VERIFY,sha256sum,libxcrypt-$(LIBXCRYPT_VERSION).tar.xz)
 	$(call PGP_VERIFY,libxcrypt-$(LIBXCRYPT_VERSION).tar.xz,asc)
 	$(call EXTRACT_TAR,libxcrypt-$(LIBXCRYPT_VERSION).tar.xz,libxcrypt-$(LIBXCRYPT_VERSION),libxcrypt)
+	sed -i 's/pragma clang diagnostic ignored "-Wvla"/pragma clang diagnostic ignored "-Wvla"\n#pragma clang diagnostic ignored "-Wlanguage-extension-token"/g' $(BUILD_WORK)/libxcrypt/lib/util-xbzero.c
 
 ifneq ($(wildcard $(BUILD_WORK)/libxcrypt/.build_complete),)
 libxcrypt:
