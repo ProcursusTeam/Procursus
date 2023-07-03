@@ -21,7 +21,8 @@ gettext: gettext-setup ncurses libunistring
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-java \
 		--disable-csharp \
-		--without-libintl-prefix
+		--without-libintl-prefix \
+		CFLAGS='-D_GL_USE_CRT_EXTERNS'
 	+$(MAKE) -C $(BUILD_WORK)/gettext \
 		LIBTERMINFO=-lncursesw \
 		LTLIBTERMINFO=-lncursesw
