@@ -8,6 +8,9 @@ setup: setup_CF1900
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 800 ] && echo 1),1)
 setup: setup_CF800
 
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 700 ] && echo 1),1)
+setup: setup_CF700
+
 else
 setup: setup_CFbase
 
