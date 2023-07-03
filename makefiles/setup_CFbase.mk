@@ -123,7 +123,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 		https://github.com/apple-oss-distributions/xnu/raw/rel/xnu-1504/bsd/sys/vnioctl.h)
 
 	@# Copy headers from MacOSX.sdk
-	@cp -af $(MACOSX_SYSROOT)/usr/include/{arpa,bsm,hfs,net,netinet,servers,timeconv.h,launch.h} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	@cp -af $(MACOSX_SYSROOT)/usr/include/{arpa,bsm,hfs,net,netinet,servers,timeconv.h,launch.h,libproc.h,crt_externs.h,secure} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	@cp -af $(MACOSX_SYSROOT)/usr/include/objc/objc-runtime.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/objc
 	@cp -af $(MACOSX_SYSROOT)/usr/include/libkern/{OSDebug.h,OSKextLib.h,OSReturn.h,OSTypes.h,machine} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern
 	@cp -af $(MACOSX_SYSROOT)/usr/include/sys/{tty*,ptrace,kern*,random,reboot,user,vnode,disk,vmmeter,conf}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys
@@ -168,6 +168,8 @@ endif
 	@sed -i 's/, ios(NA), bridgeos(NA)//' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security/SecBasePriv.h
 	@sed -i 's/__API_UNAVAILABLE(ios, tvos, watchos) __API_UNAVAILABLE(bridgeos)//' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach-o/dyld_process_info.h
 	@sed -i 's/, bridgeos(4.0)//' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/dispatch/{mach,data,source}_private.h
+	@echo -e '#ifndef MNT_CPROTECT\n#define MNT_CPROTECT 0x00000080\n#endif' >> $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mntopts.h
+	@sed -i 's/fsctl(const char /bad_redecleration_of_fsctl(const char/g' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/System/sys/fsctl.h
 
 	@# Setup libiosexec
 	@cp -af $(BUILD_MISC)/libiosexec/libiosexec.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
