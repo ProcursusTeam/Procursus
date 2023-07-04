@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += libgeneral
-LIBGENERAL_VERSION := 56
-LIBGENERAL_COMMIT  := e0d98cbeedece5d62e3e9432c3ed37cd87da5338
+LIBGENERAL_VERSION := 65
+LIBGENERAL_COMMIT  := e6904c2096999bf0c0e7e11afe7f0a87da29fff1
 DEB_LIBGENERAL_V   ?= $(LIBGENERAL_VERSION)-1
 
 libgeneral-setup: setup
