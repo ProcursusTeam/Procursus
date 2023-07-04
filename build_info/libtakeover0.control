@@ -1,0 +1,8 @@
+Package: libtakeover0
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBTAKEOVER_V@
+Depends: libgeneral0
+Section: Utilities
+Priority: optional
+Description: Development files for libtakeover

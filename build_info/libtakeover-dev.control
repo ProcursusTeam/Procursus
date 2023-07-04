@@ -1,0 +1,8 @@
+Package: libtakeover-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBTAKEOVER_V@
+Depends: libgeneral-dev, libtakeover0
+Section: Utilities
+Priority: optional
+Description: call functions in a remote process using Mach API - devel
