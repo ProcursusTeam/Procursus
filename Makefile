@@ -211,23 +211,6 @@ ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.s
 BARE_PLATFORM         := AppleTVOS
 MEMO_DEPLOYMENT       := APPLETVOS_DEPLOYMENT_TARGET=$(APPLETVOS_DEPLOYMENT_TARGET)
 
-else ifeq ($(MEMO_TARGET),audioos-arm64)
-MEMO_ARCH             := arm64
-PLATFORM              := appletvos # Platform-wise, audioos ~ appletvos (although some frameworks and stuff may be missing)
-DEB_ARCH              := audioos-arm64
-GNU_HOST_TRIPLE       := aarch64-apple-darwin
-PLATFORM_VERSION_MIN  := -mappletvos-version-min=$(APPLETVOS_DEPLOYMENT_TARGET)
-RUST_TARGET           := aarch64-apple-tvos
-LLVM_TARGET           := arm64-apple-tvos$(APPLETVOS_DEPLOYMENT_TARGET)
-MEMO_PREFIX           ?=
-MEMO_SUB_PREFIX       ?= /usr
-MEMO_ALT_PREFIX       ?= /local
-MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
-GNU_PREFIX            :=
-ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
-BARE_PLATFORM         := AppleTVOS
-MEMO_DEPLOYMENT       := APPLETVOS_DEPLOYMENT_TARGET=$(APPLETVOS_DEPLOYMENT_TARGET)
-
 else ifeq ($(MEMO_TARGET),bridgeos-arm64)
 MEMO_ARCH             := arm64
 PLATFORM              := iphoneos # find me a BridgeOS.sdk and you win.
