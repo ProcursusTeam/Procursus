@@ -2,12 +2,12 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-OPENSSL_CFBASE_VERSION := 3.0.8
+OPENSSL_CF600_VERSION := 3.0.8
 
-openssl_CFbase-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.openssl.org/source/openssl-$(OPENSSL_CFBASE_VERSION).tar.gz{$(comma).asc})
-	$(call PGP_VERIFY,openssl-$(OPENSSL_CFBASE_VERSION).tar.gz,asc)
-	$(call EXTRACT_TAR,openssl-$(OPENSSL_CFBASE_VERSION).tar.gz,openssl-$(OPENSSL_CFBASE_VERSION),openssl)
+openssl_CF600-setup: setup
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.openssl.org/source/openssl-$(OPENSSL_CF600_VERSION).tar.gz{$(comma).asc})
+	$(call PGP_VERIFY,openssl-$(OPENSSL_CF600_VERSION).tar.gz,asc)
+	$(call EXTRACT_TAR,openssl-$(OPENSSL_CF600_VERSION).tar.gz,openssl-$(OPENSSL_CF600_VERSION),openssl)
 ifeq (,$(findstring armv7,$(MEMO_TARGET)))
 	touch $(BUILD_WORK)/openssl/0001-armv7-fix-atomic.patch.done
 endif
@@ -18,10 +18,10 @@ endif
 	$(call DO_PATCH,openssl,openssl,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/openssl/.build_complete),)
-openssl_CFbase:
+openssl_CF600:
 	@echo "Using previously built openssl."
 else
-openssl_CFbase: openssl-setup
+openssl_CF600: openssl-setup
 	touch $(BUILD_WORK)/openssl/Configurations/15-openssl.conf
 	@echo -e "my %targets = (\n\
 		\"darwin64-armv7k\" => {\n\
@@ -43,7 +43,7 @@ openssl_CFbase: openssl-setup
 		\"darwin64-armv6\" => {\n\
 			inherit_from     => [ \"darwin-common\" ],\n\
 			CC               => add(\"-Wall\"),\n\
-			cflags           => add(\"-arch armv6 -L/usr/lib/gcc/arm-apple-darwin9/4.0.1/v6/ -lgcc\"),\n\
+			cflags           => add(\"-arch armv6\"),\n\
 			lib_cppflags     => add(\"-DL_ENDIAN\"),\n\
 			perlasm_scheme   => \"ios32\",\n\
 			disable          => [ \"async\" ],\n\
@@ -69,8 +69,8 @@ openssl_CFbase: openssl-setup
 	$(call AFTER_BUILD,copy)
 endif
 
-openssl_CFbase-package:: DEB_OPENSSL_V ?= $(OPENSSL_CFBASE_VERSION)
-openssl_CFbase-package: openssl-stage
+openssl_CF600-package:: DEB_OPENSSL_V ?= $(OPENSSL_CF600_VERSION)
+openssl_CF600-package: openssl-stage
 	# openssl.mk Package Structure
 	rm -rf $(BUILD_DIST)/{openssl,libssl{3,-dev,-doc}}
 	mkdir -p $(BUILD_DIST)/{openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin,libssl{3,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib} \
@@ -103,4 +103,4 @@ openssl_CFbase-package: openssl-stage
 	# openssl.mk Build cleanup
 	rm -rf $(BUILD_DIST)/{openssl,libssl{3,-dev,-doc}}
 
-.PHONY: openssl_CFbase openssl_CFbase-package
+.PHONY: openssl_CF600 openssl_CF600-package

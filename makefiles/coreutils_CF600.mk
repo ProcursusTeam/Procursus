@@ -2,24 +2,24 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-COREUTILS_CFBASE_VERSION   	:= 9.1
-GETENTDARWIN_CFBASE_COMMIT := 1ad0e39ee51181ea6c13b3d1d4e9c6005ee35b5e
+COREUTILS_CF600_VERSION   	:= 9.1
+GETENTDARWIN_CF600_COMMIT := 1ad0e39ee51181ea6c13b3d1d4e9c6005ee35b5e
 
-COREUTILS_CFBASE_CONFIGURE_ARGS += ac_cv_func_rpmatch=no
+COREUTILS_CF600_CONFIGURE_ARGS += ac_cv_func_rpmatch=no
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 COREUTILS_CFBASE_CONFIGURE_ARGS += --program-prefix=$(GNU_PREFIX)
 endif
 
-coreutils_CFbase-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/coreutils/coreutils-$(COREUTILS_CFBASE_VERSION).tar.xz{$(comma).sig})
-	$(call PGP_VERIFY,coreutils-$(COREUTILS_CFBASE_VERSION).tar.xz)
-	$(call EXTRACT_TAR,coreutils-$(COREUTILS_CFBASE_VERSION).tar.xz,coreutils-$(COREUTILS_CFBASE_VERSION),coreutils)
+coreutils_CF600-setup: setup
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/coreutils/coreutils-$(COREUTILS_CF600_VERSION).tar.xz{$(comma).sig})
+	$(call PGP_VERIFY,coreutils-$(COREUTILS_CF600_VERSION).tar.xz)
+	$(call EXTRACT_TAR,coreutils-$(COREUTILS_CF600_VERSION).tar.xz,coreutils-$(COREUTILS_CF600_VERSION),coreutils)
 	touch $(BUILD_WORK)/coreutils/reflink-apfs.patch.done
 	$(call DO_PATCH,coreutils,coreutils,-p1)
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
-		https://git.cameronkatri.com/getent-darwin/snapshot/getent-darwin-$(GETENTDARWIN_CFBASE_COMMIT).tar.zst)
-	$(call EXTRACT_TAR,getent-darwin-$(GETENTDARWIN_CFBASE_COMMIT).tar.zst,getent-darwin-$(GETENTDARWIN_CFBASE_COMMIT),coreutils/getent-darwin)
+		https://git.cameronkatri.com/getent-darwin/snapshot/getent-darwin-$(GETENTDARWIN_CF600_COMMIT).tar.zst)
+	$(call EXTRACT_TAR,getent-darwin-$(GETENTDARWIN_CF600_COMMIT).tar.zst,getent-darwin-$(GETENTDARWIN_CF600_COMMIT),coreutils/getent-darwin)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	sed -i 's#__FBSDID#//__FBSDID#g' $(BUILD_WORK)/coreutils/getent-darwin/getent.c
 	sed -i 's#__FBSDID#//__FBSDID#g' $(BUILD_WORK)/coreutils/getent-darwin/getutxent.c
@@ -27,19 +27,19 @@ endif
 
 
 ifneq ($(wildcard $(BUILD_WORK)/coreutils/.build_complete),)
-coreutils_CFbase:
+coreutils_CF600:
 	@echo "Using previously built coreutils."
 else
 ifneq (,$(findstring ramdisk,$(MEMO_TARGET)))
-coreutils_CFbase: coreutils-setup
+coreutils_CF600: coreutils-setup
 else ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-coreutils_CFbase: coreutils-setup gettext libgmp10 libxcrypt openssl
+coreutils_CF600: coreutils-setup gettext libgmp10 libxcrypt openssl
 else # (,$(findstring darwin,$(MEMO_TARGET)))
-coreutils_CFbase: coreutils-setup gettext libgmp10 openssl
+coreutils_CF600: coreutils-setup gettext libgmp10 openssl
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	cd $(BUILD_WORK)/coreutils && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS) LDFLAGS="-L /usr/lib/gcc/arm-apple-darwin9/4.0.1/v6/ -lgcc" \
-		$(COREUTILS_CFBASE_CONFIGURE_ARGS)
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		$(COREUTILS_CF600_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/coreutils
 	+$(MAKE) -C $(BUILD_WORK)/coreutils install \
 		DESTDIR=$(BUILD_STAGE)/coreutils
@@ -50,8 +50,8 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call AFTER_BUILD)
 endif
 
-coreutils_CFbase-package:: DEB_COREUTILS_V ?= $(COREUTILS_CFBASE_VERSION)
-coreutils_CFbase-package: coreutils-stage
+coreutils_CF600-package:: DEB_COREUTILS_V ?= $(COREUTILS_CF600_VERSION)
+coreutils_CF600-package: coreutils-stage
 	# coreutils.mk Package Structure
 	rm -rf $(BUILD_DIST)/coreutils
 	mkdir -p $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/{bin,$(MEMO_SUB_PREFIX)/sbin}
@@ -87,4 +87,4 @@ endif
 	# coreutils.mk Build cleanup
 	rm -rf $(BUILD_DIST)/coreutils
 
-.PHONY: coreutils_CFbase coreutils_CFbase-package
+.PHONY: coreutils_CF600 coreutils_CF600-package

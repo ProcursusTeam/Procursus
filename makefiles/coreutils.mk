@@ -9,6 +9,12 @@ coreutils-setup: coreutils_CF800-setup
 coreutils: coreutils_CF800
 coreutils-package: coreutils_CF800-package
 
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 600 ] && echo 1),1)
+COREUTILS_VERSION := $(COREUTILS_CF600_VERSION)
+coreutils-setup: coreutils_CF600-setup
+coreutils: coreutils_CF600
+coreutils-package: coreutils_CF600-package
+
 else
 COREUTILS_VERSION := $(COREUTILS_CFBASE_VERSION)
 coreutils-setup: coreutils_CFbase-setup
