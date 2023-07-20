@@ -1231,21 +1231,39 @@ env:
 
 include makefiles/*.mk
 
-RAMDISK_PROJECTS := bash coreutils diskdev-cmds findutils grep gzip tar openssl openssh
+ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 800 ] && echo 1),1)
+RAMDISK_PROJECTS := bash coreutils diskdev-cmds findutils grep gzip tar openssl openssh readline ncurses
+
+else
+RAMDISK_PROJECTS := bash coreutils openssl openssh readline ncurses libmd
+
+endif
+
 
 ramdisk:
+	find $(BUILD_DIST)/../ -name "*.deb" -exec rm {} \;
 	+MEMO_NO_IOSEXEC=1 $(MAKE) $(RAMDISK_PROJECTS:%=%-package)
 	rm -rf $(BUILD_STRAP)/strap
 	rm -rf $(BUILD_DIST)/strap
 	rm -f $(BUILD_DIST)/bootstrap_tools.tar*
 	rm -f $(BUILD_DIST)/.fakeroot_bootstrap
 	touch $(BUILD_DIST)/.fakeroot_bootstrap
+
+	rm -f $(BUILD_DIST)/../openssl/openssl_*.deb
+	find $(BUILD_DIST)/../ -name "*-dev*.deb" -exec rm {} \;
+	find $(BUILD_DIST)/../ -name "*-doc*.deb" -exec rm {} \;
+
 	for DEB in $$(find $(BUILD_DIST)/../ -name "*.deb"); do \
 		dpkg-deb -x $$DEB $(BUILD_DIST)/strap; \
 	done
 	ln -s $(MEMO_PREFIX)/bin/bash $(BUILD_DIST)/strap/$(MEMO_PREFIX)/bin/sh
 	echo -e "/bin/sh\n" > $(BUILD_DIST)/strap/$(MEMO_PREFIX)/etc/shells
-	rm -rf $(BUILD_DIST)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/{*.a,pkgconfig},share/{doc,man}}
+	rm -rf $(BUILD_DIST)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/{*.a,pkgconfig,bash},share/{doc,man,readline}}
+	rm -rf $(BUILD_DIST)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{ssh,ssh-add,ssh-agent,ssh-copy-id,ssh-keyscan}
+ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 800 ] && echo 1),1)
+	# Ramdisk size limit is 32MB o.O
+	rm -rf $(BUILD_DIST)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{b2sum,base32,base64,dircolors,chcon,chgrp,cksum,comm,csplit,expr,factor,fmt,fold,infocmp,infotocap,install,join,logname,mkfifo,mktemp,nl,numfmt,od,openssl,pinky,pr,ptx,reset,runcon,shred,shuf,timeout}
+endif
 	export FAKEROOT='fakeroot -i $(BUILD_DIST)/.fakeroot_bootstrap -s $(BUILD_DIST)/.fakeroot_bootstrap --'; \
 	cd $(BUILD_DIST)/strap && $$FAKEROOT tar -ckpf $(BUILD_DIST)/bootstrap_tools.tar .
 	gzip -9 $(BUILD_DIST)/bootstrap_tools.tar
