@@ -1241,7 +1241,7 @@ endif
 
 
 ramdisk:
-	find $(BUILD_DIST)/../ -name "*.deb" -exec rm {} \;
+	find $(BUILD_DIST)/../ -name "*.deb" -exec rm {} \; || true
 	+MEMO_NO_IOSEXEC=1 $(MAKE) $(RAMDISK_PROJECTS:%=%-package)
 	rm -rf $(BUILD_STRAP)/strap
 	rm -rf $(BUILD_DIST)/strap
