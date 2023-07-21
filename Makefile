@@ -1262,7 +1262,9 @@ ramdisk:
 	rm -rf $(BUILD_DIST)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{ssh,ssh-add,ssh-agent,ssh-copy-id,ssh-keyscan}
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 800 ] && echo 1),1)
 	# Ramdisk size limit is 32MB o.O
-	rm -rf $(BUILD_DIST)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{b2sum,base32,base64,dircolors,chcon,chgrp,cksum,comm,csplit,expr,factor,fmt,fold,infocmp,infotocap,install,join,logname,mkfifo,mktemp,nl,numfmt,od,openssl,pinky,pr,ptx,reset,runcon,shred,shuf,timeout}
+	rm -rf $(BUILD_DIST)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/{b2sum,base32,base64,dircolors,captoinfo,chcon,chgrp,cksum,comm,csplit,expr,factor,fmt,fold,hostid,infocmp,infotocap,install,join,logname,mkfifo,mktemp,nl,nproc,numfmt,od,openssl,pathchk,pinky,pr,ptx,reset,runcon,sha224sum,sha256sum,sha384sum,sha512sum,shred,shuf,tac,timeout,tic,toe,tput,unexpand,vdir,wc,yes}
+	rm -rf $(BUILD_DIST)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/../bin/{chgrp,vdir}
+	rm -rf $(BUILD_DIST)/strap/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/ssh-pkcs11-helper
 endif
 	export FAKEROOT='fakeroot -i $(BUILD_DIST)/.fakeroot_bootstrap -s $(BUILD_DIST)/.fakeroot_bootstrap --'; \
 	cd $(BUILD_DIST)/strap && $$FAKEROOT tar -ckpf $(BUILD_DIST)/bootstrap_tools.tar .
