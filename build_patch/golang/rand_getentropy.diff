@@ -1,0 +1,11 @@
+--- a/src/crypto/rand/rand_getentropy.go	2022-06-02 00:44:41.000000000 +0800
++++ b/src/crypto/rand/rand_getentropy.go	2022-06-06 15:11:00.317841742 +0800
+@@ -2,7 +2,7 @@
+ // Use of this source code is governed by a BSD-style
+ // license that can be found in the LICENSE file.
+ 
+-//go:build (darwin && !ios) || openbsd
++//go:build darwin || openbsd
+ 
+ package rand
+ 

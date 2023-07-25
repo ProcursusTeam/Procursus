@@ -1,0 +1,58 @@
+--- a/src/cmd/internal/sys/supported.go	2022-06-06 14:50:53.663261689 +0800
++++ b/src/cmd/internal/sys/supported.go	2022-06-06 14:53:36.347486723 +0800
+@@ -108,7 +108,7 @@
+ 		case "linux/amd64", "linux/arm", "linux/arm64", "linux/386", "linux/ppc64le", "linux/riscv64", "linux/s390x",
+ 			"android/amd64", "android/arm", "android/arm64", "android/386",
+ 			"freebsd/amd64",
+-			"darwin/amd64", "darwin/arm64",
++			"darwin/amd64", "darwin/arm64", "ios/amd64", "ios/arm64",
+ 			"windows/amd64", "windows/386", "windows/arm64":
+ 			return true
+ 		}
+@@ -144,7 +144,7 @@
+ 		switch platform {
+ 		case "linux/amd64", "linux/arm", "linux/arm64", "linux/386", "linux/s390x", "linux/ppc64le",
+ 			"android/amd64", "android/arm", "android/arm64", "android/386",
+-			"darwin/amd64", "darwin/arm64",
++			"darwin/amd64", "darwin/arm64", "ios/amd64", "ios/arm64",
+ 			"freebsd/amd64":
+ 			return true
+ 		}
+@@ -157,7 +157,7 @@
+ 
+ func InternalLinkPIESupported(goos, goarch string) bool {
+ 	switch goos + "/" + goarch {
+-	case "darwin/amd64", "darwin/arm64",
++	case "darwin/amd64", "darwin/arm64", "ios/amd64", "ios/arm64",
+ 		"linux/amd64", "linux/arm64", "linux/ppc64le",
+ 		"android/arm64",
+ 		"windows-amd64", "windows-386", "windows-arm":
+--- a/src/cmd/link/internal/ld/config.go	2022-06-06 14:50:53.664679394 +0800
++++ b/src/cmd/link/internal/ld/config.go	2022-06-06 15:00:38.143145731 +0800
+@@ -35,7 +35,7 @@
+ 		return fmt.Errorf("invalid buildmode: %q", s)
+ 	case "exe":
+ 		switch buildcfg.GOOS + "/" + buildcfg.GOARCH {
+-		case "darwin/arm64", "windows/arm", "windows/arm64": // On these platforms, everything is PIE
++		case "darwin/arm64", "ios/arm64", "windows/arm", "windows/arm64": // On these platforms, everything is PIE
+ 			*mode = BuildModePIE
+ 		default:
+ 			*mode = BuildModeExe
+@@ -99,7 +99,7 @@
+ 			default:
+ 				return badmode()
+ 			}
+-		case "darwin":
++		case "darwin", "ios":
+ 			switch buildcfg.GOARCH {
+ 			case "amd64", "arm64":
+ 			default:
+@@ -228,7 +228,7 @@
+ 		case "android/arm64":
+ 		case "linux/amd64", "linux/arm64", "linux/ppc64le":
+ 		case "windows/386", "windows/amd64", "windows/arm", "windows/arm64":
+-		case "darwin/amd64", "darwin/arm64":
++		case "darwin/amd64", "darwin/arm64", "ios/amd64", "ios/arm64":
+ 		default:
+ 			// Internal linking does not support TLS_IE.
+ 			return true, "buildmode=pie"

@@ -1,0 +1,29 @@
+--- a/src/cmd/vendor/github.com/google/pprof/internal/binutils/binutils.go	2022-02-10 02:12:01.000000000 +0800
++++ b/src/cmd/vendor/github.com/google/pprof/internal/binutils/binutils.go	2022-02-19 14:12:10.556595849 +0800
+@@ -162,7 +162,7 @@
+ // a boolean indicating if it is an LLVM objdump.
+ func findObjdump(paths []string) (string, bool, bool) {
+ 	objdumpNames := []string{"llvm-objdump", "objdump"}
+-	if runtime.GOOS == "darwin" {
++	if runtime.GOOS == "darwin" || runtime.GOOS == "ios" {
+ 		objdumpNames = append(objdumpNames, "gobjdump")
+ 	}
+ 
+@@ -192,7 +192,7 @@
+ // It returns a string with path to the binary and a boolean indicating if any
+ // acceptable binary was found.
+ func chooseExe(names, osxNames []string, paths []string) (string, bool) {
+-	if runtime.GOOS == "darwin" {
++	if runtime.GOOS == "darwin" || runtime.GOOS == "ios" {
+ 		names = append(names, osxNames...)
+ 	}
+ 	for _, name := range names {
+@@ -228,7 +228,7 @@
+ 		// not supported by previous versions.
+ 		return true
+ 	}
+-	if runtime.GOOS == "darwin" {
++	if runtime.GOOS == "darwin" || runtime.GOOS == "ios" {
+ 		// Ensure LLVM objdump is at least version 10.0.1 on MacOS.
+ 		return verMajor > 10 || (verMajor == 10 && verPatch >= 1)
+ 	}

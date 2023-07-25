@@ -1,0 +1,11 @@
+--- a/src/cmd/internal/browser/browser.go	2022-02-10 02:12:01.000000000 +0800
++++ b/src/cmd/internal/browser/browser.go	2022-02-19 13:49:59.503960157 +0800
+@@ -21,6 +21,8 @@
+ 	switch runtime.GOOS {
+ 	case "darwin":
+ 		cmds = append(cmds, []string{"/usr/bin/open"})
++	case "ios":
++		cmds = append(cmds, []string{"@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/uiopen"})
+ 	case "windows":
+ 		cmds = append(cmds, []string{"cmd", "/c", "start"})
+ 	default:

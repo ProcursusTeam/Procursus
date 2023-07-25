@@ -1,0 +1,11 @@
+--- a/src/internal/syscall/unix/getentropy_darwin.go	2022-06-02 00:44:48.000000000 +0800
++++ b/src/internal/syscall/unix/getentropy_darwin.go	2022-06-06 15:06:25.567262444 +0800
+@@ -2,7 +2,7 @@
+ // Use of this source code is governed by a BSD-style
+ // license that can be found in the LICENSE file.
+ 
+-//go:build darwin && !ios
++//go:build darwin
+ 
+ package unix
+ 
