@@ -1,0 +1,9 @@
+Package: snoolie-keyring
+Version: @DEB_SNOOLIE_KEYRING_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Author: Snoolie Keffaber (0xilis) <QuickUpdateShortcutSupport@protonmail.com>
+Section: Keyrings
+Priority: optional
+Homepage: https://0xilis.github.io/repo/
+Description: GnuPG key for Snoolie Keffaber (0xilis)'s repository

@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += unrar
-UNRAR_VERSION := 6.1.4
+UNRAR_VERSION := 6.2.6
 DEB_UNRAR_V   ?= $(UNRAR_VERSION)
 
 unrar-setup: setup
@@ -17,15 +17,17 @@ unrar:
 else
 unrar: unrar-setup
 	+$(MAKE) -C $(BUILD_WORK)/unrar \
-		CXX="$(CXX) $(CFLAGS)" \
-		STRIP=$(STRIP)
+		CXX="$(CXX) -std=c++11 $(CXXFLAGS)" \
+		STRIP=$(STRIP) \
+		LDFLAGS="$(LDFLAGS)"
 	mkdir -p $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib,include,share/man/man1}
 	cp -af $(BUILD_WORK)/unrar/unrar $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	+$(MAKE) -C $(BUILD_WORK)/unrar clean
 	+$(MAKE) -C $(BUILD_WORK)/unrar lib \
-		CXX="$(CXX) $(CFLAGS)" \
+		CXX="$(CXX) -std=c++11 $(CXXFLAGS)" \
 		AR="$(AR)" \
-		STRIP=$(STRIP)
+		STRIP=$(STRIP) \
+		LDFLAGS="$(LDFLAGS)"
 	cp -af $(BUILD_WORK)/unrar/libunrar*.dylib $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -af $(BUILD_WORK)/unrar/libunrar.a $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -af $(BUILD_WORK)/unrar/*.hpp $(BUILD_STAGE)/unrar/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include

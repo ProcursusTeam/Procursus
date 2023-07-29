@@ -3,13 +3,14 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += xtrans
-XTRANS_VERSION := 1.4.0
-DEB_XTRANS_V   ?= $(XTRANS_VERSION)-1
+XTRANS_VERSION := 1.5.0
+DEB_XTRANS_V   ?= $(XTRANS_VERSION)
 
 xtrans-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.x.org/archive/individual/lib/xtrans-$(XTRANS_VERSION).tar.bz2)
-	$(call EXTRACT_TAR,xtrans-$(XTRANS_VERSION).tar.bz2,xtrans-$(XTRANS_VERSION),xtrans)
-	sed -i 's|# include <sys/stropts.h>|# include <sys/ioctl.h>|' $(BUILD_WORK)/xtrans/Xtranslcl.c
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.x.org/archive/individual/lib/xtrans-$(XTRANS_VERSION).tar.xz{$(comma).sig})
+	$(call PGP_VERIFY,xtrans-$(XTRANS_VERSION).tar.xz)
+	$(call EXTRACT_TAR,xtrans-$(XTRANS_VERSION).tar.xz,xtrans-$(XTRANS_VERSION),xtrans)
+	sed -i 's|# include <stropts.h>|# include <sys/ioctl.h>|' $(BUILD_WORK)/xtrans/Xtranslcl.c
 
 ifneq ($(wildcard $(BUILD_WORK)/xtrans/.build_complete),)
 xtrans:
@@ -21,17 +22,16 @@ xtrans: xtrans-setup
 		--enable-docs=no
 	+$(MAKE) -C $(BUILD_WORK)/xtrans
 	+$(MAKE) -C $(BUILD_WORK)/xtrans install \
-		DESTDIR="$(BUILD_STAGE)/xtrans"
+		DESTDIR="$(BUILD_STAGE)/xtrans-dev"
 	$(call AFTER_BUILD,copy)
 endif
 
 xtrans-package: xtrans-stage
 	# xtrans.mk Package Structure
 	rm -rf $(BUILD_DIST)/xtrans-dev
-	mkdir -p $(BUILD_DIST)/xtrans-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# xtrans.mk Prep xtrans-dev
-	cp -a $(BUILD_STAGE)/xtrans/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/ $(BUILD_DIST)/xtrans-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/xtrans-dev $(BUILD_DIST)
 
 	# xtrans.mk Make .debs
 	$(call PACK,xtrans-dev,DEB_XTRANS_V)

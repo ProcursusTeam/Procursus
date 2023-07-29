@@ -1,0 +1,14 @@
+diff --git a/apt-pkg/init.cc b/apt-pkg/init.cc
+index b9d9b15d2..ae2df7594 100644
+--- a/apt-pkg/init.cc
++++ b/apt-pkg/init.cc
+@@ -165,7 +165,7 @@ bool pkgInitConfig(Configuration &Cnf)
+    Cnf.CndSet("Dir::Log", &LOG_DIR[1]);
+    Cnf.CndSet("Dir::Log::Terminal","term.log");
+    Cnf.CndSet("Dir::Log::History","history.log");
+-   Cnf.CndSet("Dir::Log::Planner","eipp.log.xz");
++   Cnf.CndSet("Dir::Log::Planner","eipp.log.zst");
+ 
+    Cnf.Set("Dir::Ignore-Files-Silently::", "~$");
+    Cnf.Set("Dir::Ignore-Files-Silently::", "\\.disabled$");
+

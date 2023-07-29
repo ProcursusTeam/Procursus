@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += unzip
 UNZIP_VERSION  := 6.0
-DEBIAN_UNZIP_V := $(UNZIP_VERSION)-27
+DEBIAN_UNZIP_V := $(UNZIP_VERSION)-28
 DEB_UNZIP_V    ?= $(DEBIAN_UNZIP_V)
 
 unzip-setup: setup

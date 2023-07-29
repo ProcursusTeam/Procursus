@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS         += tree-sitter
-TREE_SITTER_VERSION := 0.20.0
+TREE_SITTER_VERSION := 0.20.8
 DEB_TREE_SITTER_V   ?= $(TREE_SITTER_VERSION)
 
 tree-sitter-setup: setup
@@ -24,7 +24,7 @@ tree-sitter: tree-sitter-setup
 	+$(MAKE) -C $(BUILD_WORK)/tree-sitter install \
 		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		DESTDIR="$(BUILD_BASE)"
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 
 tree-sitter-package: tree-sitter-stage

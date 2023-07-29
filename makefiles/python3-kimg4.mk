@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS           += pythnon3-kimg4
+SUBPROJECTS           += python3-kimg4
 PYTHON3_KIMG4_VERSION := 0.1.1
 PYTHON3_KIMG4_COMMIT  := 2e117290a90fbd53a4f5c4a8b60f8e32e6af0ad8
 DEB_PYTHON3_KIMG4_V   ?= $(PYTHON3_KIMG4_VERSION)

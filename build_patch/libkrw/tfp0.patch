@@ -1,0 +1,14 @@
+diff --git a/src/libkrw.c b/src/libkrw.c
+index 4c0e50a..5ad473d 100644
+--- a/src/libkrw.c
++++ b/src/libkrw.c
+@@ -107,9 +107,7 @@ static void iterate_plugins(int (*callback)(void *), void **check) {
+ }
+
+ static void init_krw_handlers(void *ctx) {
+-    if (libkrw_initialization(&krw_handlers) != 0) {
+-        iterate_plugins(&obtain_krw_funcs, (void**)&krw_handlers.kread);
+-    }
++    iterate_plugins(&obtain_krw_funcs, (void**)&krw_handlers.kread);
+     iterate_plugins(&obtain_kcall_funcs, (void**)&krw_handlers.kcall);
+ }
