@@ -29,6 +29,7 @@ libgmp10_CF700: libgmp10_CF700-setup
 	$(call AFTER_BUILD,copy)
 endif
 
+libgmp10_CF700-package:: DEB_GMP_V ?= $(DEB_GMP_CF700_V)
 libgmp10_CF700-package: libgmp10_CF700-stage
 	# libgmp10.mk Package Structure
 	rm -rf $(BUILD_DIST)/libgmp{10,xx4ldbl,-dev}
@@ -49,9 +50,9 @@ libgmp10_CF700-package: libgmp10_CF700-stage
 	$(call SIGN,libgmpxx4ldbl,general.xml)
 
 	# libgmp10.mk Make .debs
-	$(call PACK,libgmp10,DEB_GMP_CF700_V)
-	$(call PACK,libgmpxx4ldbl,DEB_GMP_CF700_V)
-	$(call PACK,libgmp-dev,DEB_GMP_CF700_V)
+	$(call PACK,libgmp10,DEB_GMP_V)
+	$(call PACK,libgmpxx4ldbl,DEB_GMP_V)
+	$(call PACK,libgmp-dev,DEB_GMP_V)
 
 	# libgmp10.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libgmp{10,xx4ldbl,-dev}

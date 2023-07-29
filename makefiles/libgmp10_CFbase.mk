@@ -30,6 +30,7 @@ libgmp10_CFbase: libgmp10_CFbase-setup
 	$(call AFTER_BUILD,copy)
 endif
 
+libgmp10_CFbase-package:: DEB_GMP_V ?= $(DEB_GMP_CFBASE_V)
 libgmp10_CFbase-package: libgmp10_CFbase-stage
 	# libgmp10.mk Package Structure
 	rm -rf $(BUILD_DIST)/libgmp{10,xx4ldbl,-dev}
@@ -50,9 +51,9 @@ libgmp10_CFbase-package: libgmp10_CFbase-stage
 	$(call SIGN,libgmpxx4ldbl,general.xml)
 
 	# libgmp10.mk Make .debs
-	$(call PACK,libgmp10,DEB_GMP_CFBASE_V)
-	$(call PACK,libgmpxx4ldbl,DEB_GMP_CFBASE_V)
-	$(call PACK,libgmp-dev,DEB_GMP_CFBASE_V)
+	$(call PACK,libgmp10,DEB_GMP_V)
+	$(call PACK,libgmpxx4ldbl,DEB_GMP_V)
+	$(call PACK,libgmp-dev,DEB_GMP_V)
 
 	# libgmp10.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libgmp{10,xx4ldbl,-dev}
