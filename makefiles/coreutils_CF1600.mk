@@ -2,39 +2,36 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-COREUTILS_CF800_VERSION   := 9.1
-GETENTDARWIN_CF800_COMMIT := 1ad0e39ee51181ea6c13b3d1d4e9c6005ee35b5e
-
-COREUTILS_CF800_CONFIGURE_ARGS += ac_cv_func_rpmatch=no
+COREUTILS_CF1600_VERSION   := 9.1
+GETENTDARWIN_CF1600_COMMIT := 1ad0e39ee51181ea6c13b3d1d4e9c6005ee35b5e
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-COREUTILS_CF800_CONFIGURE_ARGS += --program-prefix=$(GNU_PREFIX)
+COREUTILS_CF1600_CONFIGURE_ARGS += --program-prefix=$(GNU_PREFIX)
 endif
 
-coreutils_CF800-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/coreutils/coreutils-$(COREUTILS_CF800_VERSION).tar.xz{$(comma).sig})
-	$(call PGP_VERIFY,coreutils-$(COREUTILS_CF800_VERSION).tar.xz)
-	$(call EXTRACT_TAR,coreutils-$(COREUTILS_CF800_VERSION).tar.xz,coreutils-$(COREUTILS_CF800_VERSION),coreutils)
-	touch $(BUILD_WORK)/coreutils/revert-2984e47.diff.done
+coreutils_CF1600-setup: setup
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/coreutils/coreutils-$(COREUTILS_CF1600_VERSION).tar.xz{$(comma).sig})
+	$(call PGP_VERIFY,coreutils-$(COREUTILS_CF1600_VERSION).tar.xz)
+	$(call EXTRACT_TAR,coreutils-$(COREUTILS_CF1600_VERSION).tar.xz,coreutils-$(COREUTILS_CF1600_VERSION),coreutils)
 	$(call DO_PATCH,coreutils,coreutils,-p1)
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
-		https://git.cameronkatri.com/getent-darwin/snapshot/getent-darwin-$(GETENTDARWIN_CF800_COMMIT).tar.zst)
-	$(call EXTRACT_TAR,getent-darwin-$(GETENTDARWIN_CF800_COMMIT).tar.zst,getent-darwin-$(GETENTDARWIN_CF800_COMMIT),coreutils/getent-darwin)
+		https://git.cameronkatri.com/getent-darwin/snapshot/getent-darwin-$(GETENTDARWIN_CF1600_COMMIT).tar.zst)
+	$(call EXTRACT_TAR,getent-darwin-$(GETENTDARWIN_CF1600_COMMIT).tar.zst,getent-darwin-$(GETENTDARWIN_CF1600_COMMIT),coreutils/getent-darwin)
 
 ifneq ($(wildcard $(BUILD_WORK)/coreutils/.build_complete),)
-coreutils_CF800:
+coreutils_CF1600:
 	@echo "Using previously built coreutils."
 else
 ifneq (,$(findstring ramdisk,$(MEMO_TARGET)))
-coreutils_CF800: coreutils-setup
+coreutils_CF1600: coreutils-setup
 else ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-coreutils_CF800: coreutils-setup gettext libgmp10 libxcrypt openssl
+coreutils_CF1600: coreutils-setup gettext libgmp10 libxcrypt openssl
 else # (,$(findstring darwin,$(MEMO_TARGET)))
-coreutils_CF800: coreutils-setup gettext libgmp10 openssl
+coreutils_CF1600: coreutils-setup gettext libgmp10 openssl
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	cd $(BUILD_WORK)/coreutils && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		$(COREUTILS_CF800_CONFIGURE_ARGS)
+		$(COREUTILS_CF1600_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/coreutils
 	+$(MAKE) -C $(BUILD_WORK)/coreutils install \
 		DESTDIR=$(BUILD_STAGE)/coreutils
@@ -45,8 +42,8 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call AFTER_BUILD)
 endif
 
-coreutils_CF800-package:: DEB_COREUTILS_V ?= $(COREUTILS_CF800_VERSION)
-coreutils_CF800-package: coreutils-stage
+coreutils_CF1600-package:: DEB_COREUTILS_V ?= $(COREUTILS_CF1600_VERSION)
+coreutils_CF1600-package: coreutils-stage
 
 	# coreutils.mk Package Structure
 	rm -rf $(BUILD_DIST)/coreutils
@@ -83,4 +80,4 @@ endif
 	# coreutils.mk Build cleanup
 	rm -rf $(BUILD_DIST)/coreutils
 
-.PHONY: coreutils_CF800 coreutils_CF800-package
+.PHONY: coreutils_CF1600 coreutils_CF1600-package
