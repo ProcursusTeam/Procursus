@@ -9,6 +9,12 @@ openssl-setup: openssl_CF1400-setup
 openssl: openssl_CF1400
 openssl-package: openssl_CF1400-package
 
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 600 ] && echo 1),1)
+OPENSSL_VERSION := $(OPENSSL_CF1400_VERSION)
+openssl-setup: openssl_CF600-setup
+openssl: openssl_CF600
+openssl-package: openssl_CF600-package
+
 else
 OPENSSL_VERSION := $(OPENSSL_CFBASE_VERSION)
 openssl-setup: openssl_CFbase-setup
