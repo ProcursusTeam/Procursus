@@ -7,9 +7,6 @@ DISKDEV-CMDS_CF800_VERSION := 593
 diskdev-cmds_CF800-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,diskdev_cmds,$(DISKDEV-CMDS_CF800_VERSION),diskdev_cmds-$(DISKDEV-CMDS_CF800_VERSION))
 	$(call EXTRACT_TAR,diskdev_cmds-$(DISKDEV-CMDS_CF800_VERSION).tar.gz,diskdev_cmds-diskdev_cmds-$(DISKDEV-CMDS_CF800_VERSION),diskdev-cmds)
-ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1300 ] && echo 1),1)
-	sed -i -e 's+#include <sys/mount.h>+#include <sys/mount.h>\n#ifndef MNT_STRICTATIME\n#define MNT_STRICTATIME 0x80\n#endif+g' $(BUILD_WORK)/diskdev-cmds/mount_flags_dir/mount_flags.c
-endif
 	sed -i -e '/#include <TargetConditionals.h>/d' \
 		$(BUILD_WORK)/diskdev-cmds/fsck.tproj/fsck.c
 	sed -i 's/TARGET_OS_IPHONE/WHOISJOE/g' \
@@ -61,11 +58,7 @@ diskdev-cmds_CF800: diskdev-cmds-setup
 	cp -a quotacheck umount @(fstyp|newfs)?(_*([a-z0-9])) @(mount_*([a-z0-9])) $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/; \
 	cp -a quota.tproj/quota.1 $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1; \
 	cp -a mount.tproj/fstab.5 $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5;
-ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1)
-ifeq (,$(findstring ramdisk,$(MEMO_TARGET)))
-		rm -f $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/umount
-endif
-endif
+
 	$(call AFTER_BUILD)
 endif
 
@@ -81,12 +74,8 @@ diskdev-cmds_CF800-package: diskdev-cmds-stage
 	$(call SIGN,diskdev-cmds,general.xml)
 
 	# system-cmds.mk Permissions
-	$(FAKEROOT) chmod u+s $(BUILD_DIST)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/quota
-ifneq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1)
-ifneq (,$(findstring ramdisk,$(MEMO_TARGET)))
-		$(FAKEROOT) chmod u+s $(BUILD_DIST)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/umount
-endif
-endif
+	$(FAKEROOT) chmod u+s $(BUILD_DIST)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/quota || true #Does not exist??
+	$(FAKEROOT) chmod u+s $(BUILD_DIST)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/umount
 
 	# diskdev-cmds.mk Make .debs
 	$(call PACK,diskdev-cmds,DEB_DISKDEV-CMDS_V)
