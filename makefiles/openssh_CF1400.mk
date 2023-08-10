@@ -2,12 +2,12 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-OPENSSH_CF600_VERSION := 9.2p1
+OPENSSH_CF1400_VERSION := 9.2p1
 
-openssh_CF600-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$(OPENSSH_CF600_VERSION).tar.gz{$(comma).asc})
-	$(call PGP_VERIFY,openssh-$(OPENSSH_CF600_VERSION).tar.gz,asc)
-	$(call EXTRACT_TAR,openssh-$(OPENSSH_CF600_VERSION).tar.gz,openssh-$(OPENSSH_CF600_VERSION),openssh)
+openssh_CF1400-setup: setup
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-$(OPENSSH_CF1400_VERSION).tar.gz{$(comma).asc})
+	$(call PGP_VERIFY,openssh-$(OPENSSH_CF1400_VERSION).tar.gz,asc)
+	$(call EXTRACT_TAR,openssh-$(OPENSSH_CF1400_VERSION).tar.gz,openssh-$(OPENSSH_CF1400_VERSION),openssh)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call DO_PATCH,openssh,openssh,-p1)
 endif
@@ -16,20 +16,19 @@ ifeq (,$(findstring ramdisk,$(MEMO_TARGET)))
 endif #(,$(findstring ramdisk,$(MEMO_TARGET)))
 
 OPENSSH_CONFIGURE_ARGS += ac_cv_func_strtonum=no
-OPENSSH_CONFIGURE_ARGS += ac_cv_func_timingsafe_bcmp=no #WatchOS 3.0 ramdisk doesn't actually have it
 ifneq ($(wildcard $(BUILD_WORK)/openssh/.build_complete),)
-openssh_CF600:
+openssh_CF1400:
 	@echo "Using previously built openssh."
 else
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 ifeq (,$(findstring ramdisk,$(MEMO_TARGET)))
-openssh_CF600: openssh-setup openssl libxcrypt openpam libmd
+openssh_CF1400: openssh-setup openssl libxcrypt openpam libmd
 else #(,$(findstring ramdisk,$(MEMO_TARGET)))
-openssh_CF600: openssh-setup openssl libmd
+openssh_CF1400: openssh-setup openssl libmd
 endif #(,$(findstring ramdisk,$(MEMO_TARGET)))
 else # (,$(findstring darwin,$(MEMO_TARGET)))
 OPENSSH_CONFIGURE_ARGS += --with-keychain=apple
-openssh_CF600: openssh-setup openssl libmd
+openssh_CF1400: openssh-setup openssl libmd
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	if ! [ -f $(BUILD_WORK)/openssh/configure ]; then \
 		cd $(BUILD_WORK)/openssh && autoreconf; \
@@ -84,8 +83,8 @@ endif #(,$(findstring ramdisk,$(MEMO_TARGET)))
 	$(call AFTER_BUILD)
 endif
 
-openssh_CF600-package:: DEB_OPENSSH_V ?= $(OPENSSH_CFBASE_VERSION)
-openssh_CF600-package: openssh-stage
+openssh_CF1400-package:: DEB_OPENSSH_V ?= $(OPENSSH_CFBASE_VERSION)
+openssh_CF1400-package: openssh-stage
 	# openssh.mk Package Structure
 	rm -rf $(BUILD_DIST)/openssh{,-sftp-server,-server,-client}
 ifeq (,$(findstring ramdisk,$(MEMO_TARGET)))
@@ -144,4 +143,4 @@ endif
 	# openssh.mk Build cleanup
 	rm -rf $(BUILD_DIST)/openssh{,-sftp-server,-server,-client}
 
-.PHONY: openssh_CF600 openssh_CF600-package
+.PHONY: openssh_CF1400 openssh_CF1400-package

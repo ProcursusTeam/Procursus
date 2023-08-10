@@ -16,6 +16,7 @@ ifeq (,$(findstring ramdisk,$(MEMO_TARGET)))
 endif #(,$(findstring ramdisk,$(MEMO_TARGET)))
 
 OPENSSH_CONFIGURE_ARGS += ac_cv_func_strtonum=no
+OPENSSH_CONFIGURE_ARGS += ac_cv_func_timingsafe_bcmp=no #WatchOS 3.0 ramdisk doesn't actually have it
 ifneq ($(wildcard $(BUILD_WORK)/openssh/.build_complete),)
 openssh_CFbase:
 	@echo "Using previously built openssh."

@@ -18,6 +18,12 @@ openssh-setup: openssh_CF1700-setup
 openssh: openssh_CF1700
 openssh-package: openssh_CF1700-package
 
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1400 ] && echo 1),1)
+OPENSSH_VERSION := $(OPENSSH_CF1400_VERSION)
+openssh-setup: openssh_CF1400-setup
+openssh: openssh_CF1400
+openssh-package: openssh_CF1400-package
+
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 600 ] && echo 1),1)
 OPENSSH_VERSION := $(OPENSSH_CF600_VERSION)
 openssh-setup: openssh_CF600-setup
