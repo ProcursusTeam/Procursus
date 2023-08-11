@@ -15,6 +15,7 @@ coreutils_CF1400-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/coreutils/coreutils-$(COREUTILS_CF1400_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_CF1400_VERSION).tar.xz)
 	$(call EXTRACT_TAR,coreutils-$(COREUTILS_CF1400_VERSION).tar.xz,coreutils-$(COREUTILS_CF1400_VERSION),coreutils)
+	touch $(BUILD_WORK)/coreutils/revert-2984e47.diff.done
 	$(call DO_PATCH,coreutils,coreutils,-p1)
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
 		https://git.cameronkatri.com/getent-darwin/snapshot/getent-darwin-$(GETENTDARWIN_CF1400_COMMIT).tar.zst)
