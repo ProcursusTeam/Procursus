@@ -1,7 +1,15 @@
-Use different git2 fork. See link below for more info.
+Use different git2 fork when building.
+
+The git2-rs maintainers do not understand the difference
+between ABI and API changes and ruin our system library
+linking. This forces us (the Procursus Team) to patch
+their mistakes to support projects that depend on their
+work.
+
+See the link below for more info.
 
 https://github.com/rust-lang/git2-rs/pull/859
-===================================================================
+=================================================
 diff --git a/Cargo.toml b/Cargo.toml
 index f0eb26c0..4d88f27a 100644
 --- a/Cargo.toml

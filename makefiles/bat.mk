@@ -17,7 +17,6 @@ bat:
 	@echo "Using previously built bat."
 else
 bat: bat-setup libgit2
-	cd $(BUILD_WORK)/bat && cargo update
 	cd $(BUILD_WORK)/bat && $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \
 		--target=$(RUST_TARGET)
