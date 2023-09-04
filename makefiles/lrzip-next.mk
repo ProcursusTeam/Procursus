@@ -1,14 +1,21 @@
 ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
-
+LRZIP_NEXT_VERSION := 0.8.2
+=======
 SUBPROJECTS        += lrzip-next
-LRZIP_NEXT_VERSION := 0.7.62
+<<<<<<< Local Changes
+LRZIP_NEXT_VERSION := 0.8.9
+>>>>>>> External Changes
+=======
+LRZIP_NEXT_VERSION := 0.8.10
+>>>>>>> External Changes
 DEB_LRZIP_NEXT_V   ?= $(LRZIP_NEXT_VERSION)
 
 lrzip-next-setup: setup
 	$(call GITHUB_ARCHIVE,pete4abw,lrzip-next,$(LRZIP_NEXT_VERSION),v$(LRZIP_NEXT_VERSION))
 	$(call EXTRACT_TAR,lrzip-next-$(LRZIP_NEXT_VERSION).tar.gz,lrzip-next-$(LRZIP_NEXT_VERSION),lrzip-next)
+	$(call DO_PATCH,lrzip-next,lrzip-next,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/lrzip-next/.build_complete),)
 lrzip-next:
@@ -16,9 +23,8 @@ lrzip-next:
 else
 lrzip-next: lrzip-next-setup lz4 liblzo2 libgcrypt
 	cd $(BUILD_WORK)/lrzip-next && ./autogen.sh && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS) \
-		--disable-asm
-	rm -rf $(BUILD_WORK)/lrzip-next/version
+		$(DEFAULT_CONFIGURE_FLAGS)
+	rm -f $(BUILD_WORK)/lrzip-next/version
 	+$(MAKE) -C $(BUILD_WORK)/lrzip-next
 	+$(MAKE) -C $(BUILD_WORK)/lrzip-next install \
 		DESTDIR=$(BUILD_STAGE)/lrzip-next
