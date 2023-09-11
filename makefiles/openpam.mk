@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS   += openpam
-OPENPAM_VERSION := 20190224
+OPENPAM_VERSION := 20230627
 DEB_OPENPAM_V   ?= $(OPENPAM_VERSION)
 
 openpam-setup: setup
