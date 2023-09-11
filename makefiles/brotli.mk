@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS    += brotli
-BROTLI_VERSION   := 1.0.9
+BROTLI_VERSION   := 1.1.0
 DEB_BROTLI_V     ?= $(BROTLI_VERSION)
 
 brotli-setup: setup
@@ -15,17 +15,20 @@ brotli:
 	@echo "Using previously built brotli."
 else
 brotli: brotli-setup
+	# First build static
 	cd $(BUILD_WORK)/brotli && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
-		-DCMAKE_AUTOGEN_PARALLEL=6
+		-DBUILD_SHARED_LIBS=OFF
 	+$(MAKE) -C $(BUILD_WORK)/brotli
 	+$(MAKE) -C $(BUILD_WORK)/brotli install \
 		DESTDIR="$(BUILD_STAGE)/brotli"
-	for lib in $(BUILD_STAGE)/brotli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libbrotli{common,dec,enc}-static.a; do \
-		if [ -f $$lib ]; then \
-			mv $$lib $${lib/-static.a/.a}; \
-		fi; \
-	done
+	# Then build dynamic
+	cd $(BUILD_WORK)/brotli && cmake . \
+		$(DEFAULT_CMAKE_FLAGS) \
+		-DBUILD_SHARED_LIBS=ON
+	+$(MAKE) -C $(BUILD_WORK)/brotli
+	+$(MAKE) -C $(BUILD_WORK)/brotli install \
+		DESTDIR="$(BUILD_STAGE)/brotli"
 	$(call AFTER_BUILD,copy)
 endif
 
