@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += xz
-XZ_VERSION    := 5.4.1
+XZ_VERSION    := 5.4.4
 DEB_XZ_V      ?= $(XZ_VERSION)
 
 xz-setup: setup
