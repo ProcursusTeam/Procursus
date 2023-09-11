@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += pcre2
-PCRE2_VERSION := 10.40
-DEB_PCRE2_V   ?= $(PCRE2_VERSION)-1
+PCRE2_VERSION := 10.42
+DEB_PCRE2_V   ?= $(PCRE2_VERSION)
 
 pcre2-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/PCRE2Project/pcre2/releases/download/pcre2-$(PCRE2_VERSION)/pcre2-$(PCRE2_VERSION).tar.bz2{$(comma).sig})
