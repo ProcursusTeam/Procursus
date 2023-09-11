@@ -3,24 +3,27 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += p11-kit
-P11_VERSION   := 0.24.1
+P11_VERSION   := 0.25.0
 DEB_P11_V     ?= $(P11_VERSION)
 
 p11-kit-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/p11-glue/p11-kit/releases/download/$(P11_VERSION)/p11-kit-$(P11_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,p11-kit-$(P11_VERSION).tar.xz)
 	$(call EXTRACT_TAR,p11-kit-$(P11_VERSION).tar.xz,p11-kit-$(P11_VERSION),p11-kit)
+	$(call DO_PATCH,p11-kit,p11-kit,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/p11-kit/.build_complete),)
 p11-kit:
 	@echo "Using previously built p11-kit."
 else
 p11-kit: p11-kit-setup gettext libtasn1 libffi
+	cd $(BUILD_WORK)/p11-kit && autoreconf -fi
 	cd $(BUILD_WORK)/p11-kit && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-trust-paths=$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem \
 		--disable-static \
 		--without-systemd \
+		--enable-debug=no \
 		--enable-nls
 	+$(MAKE) -C $(BUILD_WORK)/p11-kit
 	+$(MAKE) -C $(BUILD_WORK)/p11-kit install \
