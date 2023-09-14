@@ -12,10 +12,10 @@ DEB_@PKG@_KEYRING_V   ?= $(@PKG@_KEYRING_VERSION)
 @pkg@-keyring-package: @pkg@-keyring-stage
 	# @pkg@-keyring.mk Package Structure
 	rm -rf $(BUILD_DIST)/@pkg@-keyring
-	mkdir -p $(BUILD_DIST)/@pkg@-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
+	mkdir -p $(BUILD_DIST)/@pkg@-keyring/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/keyrings/
 
 	# @pkg@-keyring.mk Prep @pkg@-keyring
-	cp -a $(BUILD_MISC)/keyrings/@pkg@/@pkg@.gpg $(BUILD_DIST)/@pkg@-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
+	cp -a $(BUILD_MISC)/keyrings/@pkg@/@pkg@.gpg $(BUILD_DIST)/@pkg@-keyring/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/keyrings/
 
 	# @pkg@-keyring.mk Make .debs
 	$(call PACK,@pkg@-keyring,DEB_@PKG@_KEYRING_V)
