@@ -2,12 +2,12 @@ Package: theos-dependencies
 Version: @DEB_THEOSDEPS_V@
 Architecture: all
 Maintainer: @DEB_MAINTAINER@
-Depends: clang, odcctools, curl, git, grep, perl, rsync, unzip, xz-utils, make, ldid
-Recommends: plutil, swift
+Depends: clang, odcctools, curl, git, grep, gzip, perl, rsync, xz-utils, make, ldid
+Recommends: unzip, plutil, swift
 Conflicts: org.theos.dependencies
 Provides: org.theos.dependencies
 Replaces: org.theos.dependencies
 Section: Development
 Priority: optional
 Description: What Theos needs.
- This metapackage installs grep, rsync, unzip, git, perl, xz-utils, and the iOS Toolchain in one go.
+ This metapackage installs curl, git, grep, gzip, perl, rsync, xz-utils, and the iOS Toolchain in one go.
