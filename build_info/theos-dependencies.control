@@ -3,7 +3,7 @@ Version: @DEB_THEOSDEPS_V@
 Architecture: all
 Maintainer: @DEB_MAINTAINER@
 Depends: clang, odcctools, curl, git, grep, gzip, perl, rsync, xz-utils, make, ldid
-Recommends: unzip, plutil, swift
+Recommends: zip, plutil, swift
 Conflicts: org.theos.dependencies
 Provides: org.theos.dependencies
 Replaces: org.theos.dependencies
