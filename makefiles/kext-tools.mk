@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS        += kext-tools
-KEXT_TOOLS_VERSION := 716
+KEXT_TOOLS_VERSION := 745
 DEB_KEXT_TOOLS_V   ?= $(KEXT_TOOLS_VERSION)
 
 KEXT_TOOLS_CFLAGS := kext_tools_util.o Shims.o -framework IOKit -framework CoreFoundation -DPRIVATE -D__OS_EXPOSE_INTERNALS__ -DEMBEDDED_HOST
