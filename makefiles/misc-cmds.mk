@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += misc-cmds
-MISC-CMDS_VERSION := 37
+MISC-CMDS_VERSION := 39
 DEB_MISC-CMDS_V   ?= $(MISC-CMDS_VERSION)
 
 misc-cmds-setup: setup
@@ -12,7 +12,7 @@ misc-cmds-setup: setup
 	mkdir -p $(BUILD_STAGE)/misc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/{man/man1,misc}}
 	sed -i 's|#include <calendar.h>|#include "calendar.h"|g' $(BUILD_WORK)/misc-cmds/ncal/ncal.c
 	sed -i '1 i\typedef unsigned int u_int;' $(BUILD_WORK)/misc-cmds/leave/leave.c
-	sed -i "s|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g" $(BUILD_WORK)/misc-cmds/{calendar,units}/pathnames.h
+	sed -i "s|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g" $(BUILD_WORK)/misc-cmds/{calendar,units}/{pathnames.h,*.1}
 
 ifneq ($(wildcard $(BUILD_WORK)/misc-cmds/.build_complete),)
 misc-cmds:
