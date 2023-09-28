@@ -4,10 +4,21 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 STRAPPROJECTS += base
-BASE_VERSION  := 1-6
+BASE_VERSION  := 2
 DEB_BASE_V    ?= $(BASE_VERSION)
 
+APPLE_FILES_VERSION := 926.0.2
+
+base-setup: setup
+	$(call GITHUB_ARCHIVE,apple-oss-distributions,files,$(APPLE_FILES_VERSION),files-$(APPLE_FILES_VERSION))
+	$(call EXTRACT_TAR,files-$(APPLE_FILES_VERSION).tar.gz,files-files-$(APPLE_FILES_VERSION),base)
+	find $(BUILD_WORK)/base -name Makefile -delete
+
+ifneq ($(wildcard $(BUILD_WORK)/base/.build_complete),)
 base:
+	@echo "Using previously built base."
+else
+base: base-setup
 ifeq (,$(MEMO_PREFIX))
 	mkdir -p \
 		$(BUILD_STAGE)/base/$(MEMO_PREFIX)/{Applications,bin,boot,dev,lib,mnt,sbin,tmp,\
@@ -30,8 +41,13 @@ var/{backups,cache,db,empty,lib/misc,local,lock,log,logs,mobile,msgs,preferences
 	sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < $(BUILD_MISC)/passwd/master.passwd > $(BUILD_STAGE)/base/$(MEMO_PREFIX)/etc/master.passwd
 	sed -e 's|@MEMO_PREFIX@|$(MEMO_PREFIX)|g' -e 's|@MEMO_SUB_PREFIX@|$(MEMO_SUB_PREFIX)|g' < $(BUILD_MISC)/passwd/group > $(BUILD_STAGE)/base/$(MEMO_PREFIX)/etc/group
 endif
+	install -m644 $(BUILD_WORK)/base/usr/share/dict/web2 $(BUILD_STAGE)/base/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/dict
+	cp -a $(BUILD_WORK)/base/usr/share/man $(BUILD_STAGE)/base/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
+	$(LN_S) web2 $(BUILD_STAGE)/base/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/dict/words
 	$(LN_S) /var/db/timezone/localtime $(BUILD_STAGE)/base/$(MEMO_PREFIX)/etc/localtime
 	touch $(BUILD_STAGE)/base/$(MEMO_PREFIX)/var/run/utmp
+	$(call AFTER_BUILD)
+endif
 
 base-package: base-stage
 	# base.mk Package Structure
