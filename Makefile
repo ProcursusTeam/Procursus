@@ -31,7 +31,17 @@ MEMO_CFVER           ?= 1800
 # iOS 13.0 == 1665.15.
 CFVER_WHOLE          != echo $(MEMO_CFVER) | cut -d. -f1
 
-ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1900 ] && [ "$(CFVER_WHOLE)" -lt 2000 ] && echo 1),1)
+ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 2000 ] && [ "$(CFVER_WHOLE)" -lt 2100 ] && echo 1),1)
+IPHONEOS_DEPLOYMENT_TARGET  := 17.0
+APPLETVOS_DEPLOYMENT_TARGET := 17.0
+AUDIOOS_DEPLOYMENT_TARGET   := 17.0
+BRIDGEOS_DEPLOYMENT_TARGET  := 8.0
+WATCHOS_DEPLOYMENT_TARGET   := 10.0
+MACOSX_DEPLOYMENT_TARGET    := 14.0
+DARWIN_DEPLOYMENT_VERSION   := 23
+MACOSX_SUITE_NAME           := sonoma
+override MEMO_CFVER         := 2000
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1900 ] && [ "$(CFVER_WHOLE)" -lt 2000 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 16.0
 APPLETVOS_DEPLOYMENT_TARGET := 16.0
 AUDIOOS_DEPLOYMENT_TARGET   := 16.0
@@ -605,10 +615,10 @@ ifdef ($(MEMO_ALT_LTO_LIB))
 OPTIMIZATION_FLAGS += -lto_library $(MEMO_ALT_LTO_LIB)
 endif
 
-CFLAGS              := $(OPTIMIZATION_FLAGS) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)$(MEMO_PREFIX)/Library/Frameworks
+CFLAGS              := $(OPTIMIZATION_FLAGS) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/c++/v1 -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include/c++/v1 -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)$(MEMO_PREFIX)/Library/Frameworks
 CXXFLAGS            := $(CFLAGS)
 ASFLAGS             := $(CFLAGS)
-CPPFLAGS            := -arch $(MEMO_ARCH) $(PLATFORM_VERSION_MIN) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include -Wno-error-implicit-function-declaration
+CPPFLAGS            := -arch $(MEMO_ARCH) $(PLATFORM_VERSION_MIN) -isysroot $(TARGET_SYSROOT) -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/c++/v1 -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include/c++/v1 -isystem $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/include -Wno-error-implicit-function-declaration
 LDFLAGS             := $(OPTIMIZATION_FLAGS) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)$(MEMO_PREFIX)/Library/Frameworks -Wl,-not_for_dyld_shared_cache
 PKG_CONFIG_PATH     :=
 ACLOCAL_PATH        := $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal
