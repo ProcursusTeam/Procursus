@@ -1,0 +1,151 @@
+.\"
+.\" ktool.1
+.\" Copyright (c) 2021-present cynder
+.\"
+.\" SPDX-License-Identifier: MIT
+.\" Created by TheRealKeto on 8/30/2021.
+.\"
+.Dd April 3, 2022
+.Dt KTOOL 1
+.Os
+.Sh NAME
+.Nm ktool
+.Nd Static Mach-O binary analysis tool
+.Sh SYNOPSIS
+.Nm
+.Op Ar open Oo ... Oc
+.Ar
+.Sh DESCRIPTION
+.Nm
+is a cross-platform, static analysis toolkit & TUI capable of
+editing and analyzing Mach-O binaries, also acting as a library
+.Bl -tag -width -indent
+.It Fl V
+Print the currently installed version of
+.Nm
+.It Fl f
+Force load, ignoring malformations in the given file and attempting
+to load whatever possible
+.It Fl v Oo -1 ... 5 Oc
+Specify log verbosity, with -1 completely silencing logging,
+while 5 allowing for every action ktool takes to be logged.
+.It Fl h
+Print the help message, which includes information about
+.Nm
+.El
+.Sh COMMANDS
+.Bl -tag -width indent
+.It Ar open
+Open the built-in TUI and browse the given file
+.El
+.Bl -tag -width indent
+.It Ar insert Oo options ... Oc
+Insert data into the given file
+.Bl -tag -width indent
+.It Fl -lc
+Specify the type of load command to insert
+.It Fl -payload
+Add required payload for insertion
+.It Fl -out Oo path Oc
+Path where the patched file should be dumped
+.El
+.It Ar dump Oo options ... Oc
+Dump information from the given file
+.Bl -tag -width indent
+.It Fl -tdb
+Dump .tbd files corresponding to the given file
+.It Fl -headers
+Dump headers corresponding to the given file
+.It Fl -out Oo path Oc
+Path where information from the given file should be dumped
+.It Fl -slice Oo n | number | index Oc
+Specify which slice should be examined
+.El
+.It Ar json Oo options ... Oc
+Dump metadata of the given file in json format
+.Bl -tag -width indent
+.It Fl -with-objc
+Include Obj-C metadata when dumping information of the given file
+.El
+.It Ar cs Oo options ... Oc Fl -slice Oo n | number | index Oc
+Interact with codesigning info of a file
+.Bl -tag -width indent
+.It Fl -ent
+Dump entitlements of the given file
+.El
+.It Ar file
+Print (very) basic information about the given file
+.It Ar img4 Oo options .. Oc
+Interact with IMG4 files
+.Bl -tag -width indent
+.It Fl -kbag
+Decode keybags from an im4p file
+.It Fl -dec Fl -iv | -key Oo iv | key Oc
+Decrypt an IM4P file with a specific IV/key
+.It Fl -out Oo path Oc
+Path where decrypted IM4P output should be dumped
+.El
+.It Ar lipo Oo options ... Oc
+Interact with universal, multi-architecture files, allowing
+for the combination/separation of slices in fat Mach-O files
+.Bl -tag -width indent
+.It Fl -extract Oo slice Oc
+Extract a slice from the given file
+.It Fl -create
+Create a fat Mach-O binary from multiple thin binaries
+.It Fl -out Oo path Oc
+Path where a combination of thin binaries combined into one fat
+Mach-O binary should be dumped.
+Use this option alongside the
+.Fl -create
+flag.
+.El
+.It Ar list Oo options ... Oc
+Print symbols, classes, protocols, or linked libraries of a binary
+.Bl -tag -width indent
+.It Fl -symbols
+Print the symbols table of the given file
+.It Fl -classes
+Print the list of classes of the given file
+.It Fl -protocols
+Print the list of protocols of the given file
+.It Fl -linked
+Print the list of linked libraries of the given file
+.El
+.It Ar info Oo options ... Oc Fl -slice Oo n | number | index Oc
+Print generic information about the given file
+.Bl -tag -width indent
+.It Fl -vm
+Print VM -> Slice -> File addressing mapping for a slice of a Mach-O file
+.It Fl -cmds
+Print the list of load commands of the given file
+.It Fl -binding
+Print binding actions for the given file
+.Sh EXAMPLES
+To dump .tbd files for a framework
+.Dl "ktool dump --tbd [file]"
+.Pp
+To print basic information of a binary
+.Dl "ktool file [file]"
+.Pp
+To extract a slice from a fat binary
+.Dl "ktool lipo --extract [slice] [file]"
+.Pp
+To decrypt an IMP4 image
+.Dl "ktool img4 --dec --iv [AES_IV] --key [AES_KEY] [file]"
+.Pp
+Check out more examples by using
+.Dl "ktool [command]"
+.Sh HISTORY
+.Nm
+is an alternative to specific tools, such as
+.An lipo ,
+and
+.An otool .
+For the sake of platform independence, it was written by
+.An cynder
+with the Python Programming Language, preventing any hassles
+when operating on static binaries and libraries.
+This very own manpage was written by
+.An Keto (TheRealKeto)
+on August 30, 2021.
