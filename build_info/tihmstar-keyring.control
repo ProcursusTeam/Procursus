@@ -1,0 +1,7 @@
+Package: tihmstar-keyring
+Version: @DEB_TIHMSTAR_KEYRING_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Keyrings
+Priority: optional
+Description: GnuPG keys for tihmstar's repositories
