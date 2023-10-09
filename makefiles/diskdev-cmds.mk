@@ -3,7 +3,13 @@ $(error Use the main Makefile)
 endif
 
 
-ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1800 ] && echo 1),1)
+ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1900 ] && echo 1),1)
+DISKDEV-CMDS_VERSION := $(DISKDEV-CMDS_CF1900_VERSION)
+diskdev-cmds-setup: diskdev-cmds_CF1900-setup
+diskdev-cmds: diskdev-cmds_CF1900
+diskdev-cmds-package: diskdev-cmds_CF1900-package
+
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1800 ] && echo 1),1)
 DISKDEV-CMDS_VERSION := $(DISKDEV-CMDS_CF1800_VERSION)
 diskdev-cmds-setup: diskdev-cmds_CF1800-setup
 diskdev-cmds: diskdev-cmds_CF1800
