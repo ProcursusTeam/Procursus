@@ -18,8 +18,8 @@ else
 gdisk: gdisk-setup
 	# TODO: fix the makefile, it sucks ass
 	+$(MAKE) -C $(BUILD_WORK)/gdisk
-	+$(MAKE) -C $(BUILD_WORK)/gdisk install \
-		DESTDIR=$(BUILD_STAGE)/gdisk
+	mkdir -p $(BUILD_STAGE)/gdisk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	mv $(BUILD_WORK)/gdisk/gdisk $(BUILD_STAGE)/gdisk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	$(call AFTER_BUILD,copy)
 endif
 
@@ -27,6 +27,9 @@ gdisk-package: gdisk-stage
 	# gdisk.mk Package Structure
 	rm -rf $(BUILD_DIST)/gdisk
 	mkdir -p $(BUILD_DIST)/gdisk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+
+	# gdisk.mk Prep gdisk
+	cp -a $(BUILD_STAGE)/gdisk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gdisk $(BUILD_DIST)/gdisk/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 	# gdisk.mk Sign
 	# TODO: This probably needs more entitlements
