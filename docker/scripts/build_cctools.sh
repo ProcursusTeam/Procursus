@@ -11,6 +11,16 @@ TRIPLES=(
   "x86_64-apple-darwin"
 )
 
+#Install libdispatch
+git clone https://github.com/apple/swift-corelibs-libdispatch
+cd swift-corelibs-libdispatch
+mkdir bb && cd bb
+CC=clang CXX=clang++ cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+make -j $(nproc)
+make install
+cd ../../
+rm -rf swift-corelibs-libdispatch
+
 git clone --depth=1 https://github.com/apple/llvm-project -b llvm.org/release/16.x /tmp/llvm-project
 pushd /tmp/llvm-project
 cmake -S llvm -B build -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS="clang;lld" -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind;compiler-rt" -DLLVM_TARGETS_TO_BUILD="ARM;X86;AArch64"
