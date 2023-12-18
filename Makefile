@@ -632,6 +632,12 @@ CFLAGS              += -Wno-incompatible-sysroot
 CXXFLAGS            += -Wno-incompatible-sysroot
 endif
 
+ifeq ($(MEMO_ARCH),armv6)
+# iOS 2 needs this.
+CFLAGS              += -ffixed-r9
+CXXFLAGS            += -ffixed-r9
+endif
+
 # Link everything to libiosexec, as it's preinstalled on every Procursus system.
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 ifneq ($(MEMO_NO_IOSEXEC),1)
