@@ -16,7 +16,6 @@ coreutils_CFbase-setup: setup
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_CFBASE_VERSION).tar.xz)
 	$(call EXTRACT_TAR,coreutils-$(COREUTILS_CFBASE_VERSION).tar.xz,coreutils-$(COREUTILS_CFBASE_VERSION),coreutils)
 	touch $(BUILD_WORK)/coreutils/reflink-apfs.patch.done
-	$(call DO_PATCH,coreutils,coreutils,-p1)
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
 		https://git.cameronkatri.com/getent-darwin/snapshot/getent-darwin-$(GETENTDARWIN_CFBASE_COMMIT).tar.zst)
 	$(call EXTRACT_TAR,getent-darwin-$(GETENTDARWIN_CFBASE_COMMIT).tar.zst,getent-darwin-$(GETENTDARWIN_CFBASE_COMMIT),coreutils/getent-darwin)
