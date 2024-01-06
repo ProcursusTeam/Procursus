@@ -1,10 +1,12 @@
---- llvm/lldb/tools/debugserver/source/CMakeLists.txt	2022-11-20 14:17:10.275279555 +0000
-+++ llvm/lldb/tools/debugserver/source/CMakeLists.txt	2022-11-20 14:15:45.466285390 +0000
-@@ -124,28 +124,6 @@
+diff -urN a/lldb/tools/debugserver/source/CMakeLists.txt b/lldb/tools/debugserver/source/CMakeLists.txt
+--- a/lldb/tools/debugserver/source/CMakeLists.txt	2024-01-05 21:55:59
++++ b/lldb/tools/debugserver/source/CMakeLists.txt	2024-01-05 22:00:39
+@@ -122,29 +122,6 @@
  set_property(GLOBAL PROPERTY
    LLDB_DEBUGSERVER_CODESIGN_IDENTITY ${debugserver_codesign_identity})
- 
+
 -if(APPLE)
+-  set(LIBCOMPRESSION compression)
 -  if(APPLE_EMBEDDED)
 -    find_library(BACKBOARD_LIBRARY BackBoardServices
 -      PATHS ${CMAKE_OSX_SYSROOT}/System/Library/PrivateFrameworks)
@@ -26,9 +28,9 @@
 -  endif()
 -endif()
 -
- if(HAVE_LIBCOMPRESSION)
-   set(LIBCOMPRESSION compression)
- endif()
+ if(LLDB_USE_ENTITLEMENTS)
+   if(APPLE_EMBEDDED)
+     set(entitlements ${DEBUGSERVER_RESOURCE_DIR}/debugserver-entitlements.plist)
 @@ -298,21 +276,11 @@
  set_target_properties(debugserver PROPERTIES FOLDER "lldb libraries/debugserver")
  

@@ -1,0 +1,10 @@
+Package: libbolt-16-dev
+Version: @DEB_LLVM_V@
+Architecture: @DEB_ARCH@
+Priority: optional
+Section: Development
+Maintainer: @DEB_MAINTAINER@
+Homepage: https://www.llvm.org/
+Description: Post-link optimizer
+ It achieves the improvements by optimizing application's code layout based on
+ execution profile gathered by sampling profiler.

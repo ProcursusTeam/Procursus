@@ -2,7 +2,7 @@ Package: clang-tidy
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: clang-tidy-14 (= @DEB_LLVM_V@)
+Depends: clang-tidy-16 (= @DEB_LLVM_V@)
 Section: Development
 Priority: optional
 Homepage: https://www.llvm.org/

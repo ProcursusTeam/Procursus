@@ -1,0 +1,15 @@
+Package: libflang-16-dev
+Version: @DEB_LLVM_V@
+Architecture: @DEB_ARCH@
+Priority: optional
+Section: Development
+Maintainer: @DEB_MAINTAINER@
+Homepage: https://www.llvm.org/
+Description: Fortran compiler
+ Ground-up implementation of a Fortran front end written in
+ modern C++.
+ .
+ While it is capable of generating executables for a number
+ of examples, some functionalities are still missing.
+ .
+ This package contains the flang libraries and headers.

@@ -1,12 +1,12 @@
-Package: llvm-14-runtime
+Package: llvm-16-dev
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libllvm14 (= @DEB_LLVM_V@)
+Depends: libllvm16 (= @DEB_LLVM_V@), llvm-16 (= @DEB_LLVM_V@), libclang-cpp16 (= @DEB_LLVM_V@)
 Section: Development
 Priority: optional
 Homepage: https://www.llvm.org/
-Description: Modular compiler and toolchain technologies, IR interpreter
+Description: Modular compiler and toolchain technologies, libraries and headers
  LLVM is a collection of libraries and tools that make it easy to build
  compilers, optimizers, just-in-time code generators, and many other
  compiler-related programs.
@@ -19,5 +19,5 @@ Description: Modular compiler and toolchain technologies, IR interpreter
  techniques to be applied at compile-time, link-time, install-time,
  run-time, or "idle-time" (between program runs).
  .
- This package provides the minimal required to execute programs in LLVM
- format.
+ This package provides the libraries and headers to develop applications
+ using llvm.

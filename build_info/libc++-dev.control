@@ -2,7 +2,7 @@ Package: libc++-dev
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libc++-14-dev (= @DEB_LLVM_V@)
+Depends: libc++-16-dev (= @DEB_LLVM_V@)
 Section: Development
 Priority: optional
 Description: LLVM C++ Standard library (development files)

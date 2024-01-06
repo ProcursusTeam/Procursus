@@ -2,7 +2,7 @@ Package: clangd
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: clangd-14 (= @DEB_LLVM_V@)
+Depends: clangd-16 (= @DEB_LLVM_V@)
 Section: Development
 Priority: optional
 Homepage: https://www.llvm.org/

@@ -1,14 +1,14 @@
-Package: liblld-14-dev
+Package: liblld-16
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: liblld-14-dev (= @DEB_LLVM_V@)
+Depends: libllvm16 (= @DEB_LLVM_V@)
 Section: Development
 Priority: optional
 Homepage: https://www.llvm.org/
-Description: LLVM-based linker, header files
+Description: LLVM-based linker, library
  LLD is a new, high-performance linker. It is built as a set of reusable
  components which highly leverage existing libraries in the larger LLVM
  Project.
  .
- This package provides the header files to build extension over lld.
+ This package contains the LLD runtime library.

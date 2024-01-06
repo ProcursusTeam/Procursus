@@ -1,8 +1,8 @@
-Package: clang-format-14
+Package: clang-format-16
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libllvm14 (= @DEB_LLVM_V@), libclang-cpp14 (= @DEB_LLVM_V@)
+Depends: libllvm16 (= @DEB_LLVM_V@), libclang-cpp16 (= @DEB_LLVM_V@)
 Section: Development
 Priority: optional
 Homepage: https://www.llvm.org/
