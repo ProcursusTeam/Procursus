@@ -1,0 +1,8 @@
+Package: mono
+Version: @DEB_MONO_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Homepage: https://www.gnu.org/software/libidn/#libidn2
+Description: net
