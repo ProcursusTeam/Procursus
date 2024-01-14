@@ -2,7 +2,7 @@ Package: llvm-dev
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: llvm-14-dev (= @DEB_LLVM_V@), llvm-14-linker-tools (= @DEB_LLVM_V@)
+Depends: llvm-16-dev (= @DEB_LLVM_V@), llvm-16-linker-tools (= @DEB_LLVM_V@)
 Replaces: liblto
 Conflicts: libto
 Provides: liblto

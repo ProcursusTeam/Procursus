@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-#### Consider mlir/pstl/flang too
+#### Consider flang too
 
 SUBPROJECTS          += llvm
 LLVM_MAJOR_V         := 16

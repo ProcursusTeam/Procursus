@@ -2,7 +2,7 @@ Package: clang-tools
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: clang-tools-14 (= @DEB_LLVM_V@)
+Depends: clang-tools-16 (= @DEB_LLVM_V@)
 Section: Development
 Priority: optional
 Homepage: https://www.llvm.org/
