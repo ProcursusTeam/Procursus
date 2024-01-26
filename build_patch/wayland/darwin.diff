@@ -1,0 +1,115 @@
+--- a/meson.build	2021-12-10 00:20:36.000000000 +0800
++++ b/meson.build	2022-06-11 17:03:42.962192321 +0800
+@@ -45,7 +45,7 @@
+ endforeach
+ config_h.set10('HAVE_XUCRED_CR_PID', cc.has_member('struct xucred', 'cr_pid', prefix : '#include <sys/ucred.h>'))
+ have_broken_msg_cmsg_cloexec = false
+-if host_machine.system() == 'freebsd'
++if ['freebsd', 'darwin', 'ios'].contains(host_machine.system())
+ 	have_broken_msg_cmsg_cloexec = not cc.compiles('''
+ #include <sys/param.h> /* To get __FreeBSD_version. */
+ #if __FreeBSD_version < 1300502 || \
+@@ -62,7 +62,7 @@
+ config_h.set10('HAVE_BROKEN_MSG_CMSG_CLOEXEC', have_broken_msg_cmsg_cloexec)
+ 
+ if get_option('libraries')
+-	if host_machine.system() == 'freebsd'
++	if ['freebsd', 'darwin', 'ios'].contains(host_machine.system())
+ 		# When building for FreeBSD, epoll(7) is provided by a userspace
+ 		# wrapper around kqueue(2).
+ 		epoll_dep = dependency('epoll-shim')
+--- a/src/wayland-os.c	2021-12-10 00:20:36.000000000 +0800
++++ b/src/wayland-os.c	2022-06-12 15:49:09.977917799 +0800
+@@ -36,6 +36,7 @@
+ #include <sys/epoll.h>
+ #include <sys/mman.h>
+ #include <sys/un.h>
++#include <stdbool.h>
+ #ifdef HAVE_SYS_UCRED_H
+ #include <sys/ucred.h>
+ #endif
+@@ -63,13 +64,63 @@
+ 	close(fd);
+ 	return -1;
+ }
++#if __APPLE__
++int internal_socket(int domain,
++                        int type,
++                        int protocol,
++                        bool nonblock)
++{
++  int fd;
++
++  /* So far we do not know about any platform that has SOCK_CLOEXEC and lacks
++   * SOCK_NONBLOCK at the same time.
++   *
++   * The workaround for missing SOCK_CLOEXEC introduces a race which cannot be
++   * fixed until support for SOCK_CLOEXEC is added (or other fix is implemented).
++   */
++#ifndef SOCK_CLOEXEC
++  int flags;
++#else
++  type |= SOCK_CLOEXEC;
++  if (nonblock)
++    type |= SOCK_NONBLOCK;
++#endif
++
++  fd = socket (domain, type, protocol);
++
++#ifndef SOCK_CLOEXEC
++  if (fd == -1)
++    return -1;
++
++  if (fcntl (fd, F_SETFD, FD_CLOEXEC) == -1) {
++    close(fd);
++    return -1;
++  }
++
++  if (nonblock) {
++    flags = fcntl (fd, F_GETFL, 0);
++    if (flags == -1 ||
++        fcntl (fd, F_SETFL, flags|O_NONBLOCK) == -1) {
++      close(fd);
++      return -1;
++    }
++  }
++#endif
++
++  return fd;
++}
++#endif
+ 
+ int
+ wl_os_socket_cloexec(int domain, int type, int protocol)
+ {
+ 	int fd;
+ 
++#if __APPLE__
++	fd = internal_socket(domain, type, protocol, false);
++#else
+ 	fd = socket(domain, type | SOCK_CLOEXEC, protocol);
++#endif
+ 	if (fd >= 0)
+ 		return fd;
+ 	if (errno != EINVAL)
+@@ -79,7 +130,7 @@
+ 	return set_cloexec_or_close(fd);
+ }
+ 
+-#if defined(__FreeBSD__)
++#if defined(__FreeBSD__) || defined(__APPLE__)
+ int
+ wl_os_socket_peercred(int sockfd, uid_t *uid, gid_t *gid, pid_t *pid)
+ {
+--- a/src/wayland-os.h	2021-12-10 00:20:36.000000000 +0800
++++ b/src/wayland-os.h	2022-06-11 16:52:33.311648162 +0800
+@@ -30,6 +30,9 @@
+ #include <sys/socket.h>
+ 
+ int
++internal_socket(int domain, int type, int protocol, bool nonblock);
++
++int
+ wl_os_socket_cloexec(int domain, int type, int protocol);
+ 
+ int
