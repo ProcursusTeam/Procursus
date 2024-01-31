@@ -1,0 +1,9 @@
+Package: modiverse-keyring
+Version: @DEB_IRONSIDE_KEYRING_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Author: Modiverse Administration <admin@modiverse.co.uk>
+Section: Keyrings
+Priority: optional
+Homepage: repo.modiverse.co.uk
+Description: GnuPG keyring for The Modiverse repositories.
