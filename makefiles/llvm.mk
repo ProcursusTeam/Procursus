@@ -2,6 +2,16 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+#Checking if swig and python3 is installed
+HAS_COMMAND = $(shell type $(1) >/dev/null 2>&1 && echo 1)
+ifneq ($(call HAS_COMMAND,swig),1)
+$(error Install swig)
+endif
+ifneq ($(call HAS_COMMAND,python3),1)
+$(error Install python3)
+endif
+PYTHON3_PATH := $(shell which python3)
+
 #### Consider mlir/pstl/flang too
 
 SUBPROJECTS     += llvm
@@ -70,6 +80,8 @@ ifeq ($(wildcard $(BUILD_WORK)/../../native/llvm/.build_complete),)
 	+$(MAKE) -C $(BUILD_WORK)/../../native/llvm swift-components lldb-tblgen
 	touch $(BUILD_WORK)/../../native/llvm/.build_complete
 endif
+
+
 
 ifeq ($(wildcard $(BUILD_WORK)/llvm/build/.build_complete),)
 	case $(MEMO_TARGET) in \
@@ -145,7 +157,8 @@ ifeq ($(wildcard $(BUILD_WORK)/llvm/build/.build_complete),)
 		-DLLDB_TABLEGEN_EXE="$(BUILD_WORK)/../../native/llvm/bin/lldb-tblgen" \
 		-DLLDB_BUILD_FRAMEWORK=OFF \
 		-DLLDB_ENABLE_LUA=OFF \
-		-DLLDB_ENABLE_PYTHON=OFF \
+		-DLLDB_PYTHON_RELATIVE_PATH="$(PYTHON3_PATH)" \
+		-DLLDB_ENABLE_PYTHON=ON \
 		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_IOS="$(IPHONEOS_DEPLOYMENT_TARGET)" \
 		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_OSX="$(MACOSX_DEPLYMENT_TARGET)" \
 		-DSWIFT_DARWIN_DEPLOYMENT_VERSION_WATCHOS="$(WATCHOS_DEPLOYMENT_TARGET)" \
@@ -311,7 +324,7 @@ endif
 	# llvm.mk Prep liblldb-$(LLVM_MAJOR_V)
 	mkdir -p $(BUILD_DIST)/liblldb-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib
 	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/liblldb.$(LLVM_VERSION).dylib $(BUILD_DIST)/liblldb-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib
-
+	
 	# llvm.mk Prep liblldb-$(LLVM_MAJOR_V)-dev
 	mkdir -p $(BUILD_DIST)/liblldb-$(LLVM_MAJOR_V)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/{include,lib}
 	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/include/lldb $(BUILD_DIST)/liblldb-$(LLVM_MAJOR_V)-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/include
@@ -332,10 +345,14 @@ endif
 	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/libLLVM.dylib $(BUILD_DIST)/libllvm$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib
 	$(LN_S) libLLVM.dylib $(BUILD_DIST)/libllvm$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib/libLLVM-$(LLVM_MAJOR_V).dylib
 
+	#llvm.mk Prep python3-lldb-$(LLVM_MAJOR_V)
+	mkdir -p $(BUILD_DIST)/python3-lldb-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/python3.9/dist-packages
+	cp -a $(BUILD_STAGE)/llvm/$(PYTHON3_PATH)/. $(BUILD_DIST)/python3-lldb-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/python3.9/dist-packages
+
 	# llvm.mk Prep lldb-$(LLVM_MAJOR_V)
 	mkdir -p $(BUILD_DIST)/lldb-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
 	cp -a $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/lldb{,-argdumper,-instr,-server,-vscode} $(BUILD_DIST)/lldb-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin
-
+	
 	# llvm.mk Prep lldb
 	mkdir -p $(BUILD_DIST)/lldb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	for bin in lldb{,-argdumper,-instr,-server,-vscode}; do \
@@ -415,8 +432,6 @@ endif
 	# llvm.mk Prep lld
 	mkdir -p $(BUILD_DIST)/lld/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	$(LN_S) ../lib/llvm-$(LLVM_MAJOR_V)/bin/{ld.lld,ld64.lld,lld,lld-link,wasm-ld} $(BUILD_DIST)/lld/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
-
-
 	# llvm.mk Sign
 	$(call SIGN,clang-$(LLVM_MAJOR_V),general.xml)
 	$(call SIGN,clangd-$(LLVM_MAJOR_V),general.xml)
@@ -461,6 +476,7 @@ endif
 	$(call PACK,liblldb-$(LLVM_MAJOR_V),DEB_LLVM_V)
 	$(call PACK,liblldb-$(LLVM_MAJOR_V)-dev,DEB_LLVM_V)
 	$(call PACK,libllvm$(LLVM_MAJOR_V),DEB_LLVM_V)			# Provides libllvm-polly
+	$(call PACK,python3-lldb-$(LLVM_MAJOR_V),DEB_LLVM_V)
 	$(call PACK,lldb-$(LLVM_MAJOR_V),DEB_LLVM_V)
 	$(call PACK,lldb,DEB_LLVM_V)
 	$(call PACK,swift-$(SWIFT_VERSION),DEB_SWIFT_V)
@@ -477,6 +493,6 @@ endif
 	$(call PACK,lld,DEB_LLVM_V)
 
 	# llvm.mk Build cleanup
-	rm -rf $(BUILD_DIST)/{clang*,debugserver*,libc++*,libclang*,liblldb*,liblld*,libllvm*,lldb*,swift*,lld*,llvm*}/
+	rm -rf $(BUILD_DIST)/{clang*,debugserver*,libc++*,libclang*,liblldb*,liblld*,libllvm*,lldb*,swift*,lld*,llvm*,python3*}/
 
 .PHONY: llvm llvm-package

@@ -1,0 +1,11 @@
+--- llvm/lldb/bindings/python/python-typemaps.swig	2022-11-12 00:14:17.000000000 +0100
++++ llvm/lldb/bindings/python/python-typemaps.swig	2023-02-23 17:48:52.000000000 +0100
+@@ -435,7 +435,7 @@
+ 
+ %typemap(out) lldb::FileSP {
+   $result = nullptr;
+-  lldb::FileSP &sp = $1;
++  const lldb::FileSP &sp = $1;
+   if (sp) {
+     PythonFile pyfile = unwrapOrSetPythonException(PythonFile::FromFile(*sp));
+     if (!pyfile.IsValid())
