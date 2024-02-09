@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS       += text-cmds
-TEXT-CMDS_VERSION := 165.0.4
+TEXT-CMDS_VERSION := 165.80.1
 DEB_TEXT-CMDS_V   ?= 1:$(TEXT-CMDS_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
