@@ -1,0 +1,12 @@
+diff -urN mutt-2.0.6/smime_keys.pl mutt/smime_keys.pl
+--- mutt-2.0.6/smime_keys.pl	2020-05-02 21:08:56.000000000 +0000
++++ mutt/smime_keys.pl	2021-09-16 14:40:39.000000000 +0000
+@@ -77,7 +77,7 @@
+ 
+ 
+ my $mutt = $ENV{MUTT_CMDLINE} || 'mutt';
+-my $opensslbin = "/usr/bin/openssl";
++my $opensslbin = "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/openssl";
+ my $tmpdir;
+ 
+ # Get the directories mutt uses for certificate/key storage.

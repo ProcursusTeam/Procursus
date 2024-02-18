@@ -1,0 +1,31 @@
+diff -urN neomutt-20210205/contrib/samples/gpg.rc neomutt/contrib/samples/gpg.rc
+--- neomutt-20210205/contrib/samples/gpg.rc	2021-02-05 12:02:38.000000000 +0000
++++ neomutt/contrib/samples/gpg.rc	2021-09-16 14:38:09.000000000 +0000
+@@ -85,13 +85,13 @@
+ #
+ # set pgp_encrypt_only_command="/usr/libexec/neomutt/pgpewrap gpg-2comp -v --batch --output - --encrypt --textmode --armor --always-trust -- -r %r -- %f"
+ #
+-set pgp_encrypt_only_command="/usr/libexec/neomutt/pgpewrap gpg --batch --quiet --no-verbose --output - --textmode --armor --encrypt -- --recipient %r -- %f"
++set pgp_encrypt_only_command="@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/neomutt/pgpewrap gpg --batch --quiet --no-verbose --output - --textmode --armor --encrypt -- --recipient %r -- %f"
+ 
+ # Create an encrypted and signed attachment (note that some users include the --always-trust option here)
+ #
+ # set pgp_encrypt_sign_command="/usr/libexec/neomutt/pgpewrap gpg-2comp %?p?--passphrase-fd 0? -v --batch --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
+ #
+-set pgp_encrypt_sign_command="/usr/libexec/neomutt/pgpewrap gpg %?p?--pinentry-mode loopback --passphrase-fd 0? --batch --quiet --no-verbose --textmode --output - %?a?--local-user %a? --armor --sign --encrypt -- --recipient %r -- %f"
++set pgp_encrypt_sign_command="@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/neomutt/pgpewrap gpg %?p?--pinentry-mode loopback --passphrase-fd 0? --batch --quiet --no-verbose --textmode --output - %?a?--local-user %a? --armor --sign --encrypt -- --recipient %r -- %f"
+ 
+ # Import a key into the public key ring
+ #
+diff -urN neomutt-20210205/contrib/smime_keys neomutt/contrib/smime_keys
+--- neomutt-20210205/contrib/smime_keys	2021-02-05 12:02:38.000000000 +0000
++++ neomutt/contrib/smime_keys	2021-09-16 14:37:31.000000000 +0000
+@@ -77,7 +77,7 @@
+ 
+ 
+ my $neomutt = $ENV{MUTT_CMDLINE} || 'neomutt';
+-my $opensslbin = "/usr/bin/openssl";
++my $opensslbin = "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/openssl";
+ my $tmpdir;
+ 
+ # Get the directories neomutt uses for certificate/key storage.
