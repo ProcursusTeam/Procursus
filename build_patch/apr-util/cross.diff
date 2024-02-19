@@ -1,0 +1,28 @@
+--- a/build/apu-conf.m4	2016-08-24 04:34:53.000000000 +0800
++++ b/build/apu-conf.m4	2022-03-09 00:19:08.309407277 +0800
+@@ -30,14 +30,21 @@
+     AC_MSG_ERROR(APR could not be located. Please use the --with-apr option.)
+   fi
+ 
+-  APR_BUILD_DIR="`$apr_config --installbuilddir`"
+-
++  if test "x$APR_BUILD_DIR" = x; then
++    APR_BUILD_DIR="`$apr_config --installbuilddir`"
++  fi
+   dnl make APR_BUILD_DIR an absolute directory (we'll need it in the
+   dnl sub-projects in some cases)
+   APR_BUILD_DIR="`cd $APR_BUILD_DIR && pwd`"
+ 
+-  APR_INCLUDES="`$apr_config --includes`"
+-  APR_LIBS="`$apr_config --link-libtool --libs`"
++  if test "x$APR_INCLUDES" = x; then
++    APR_INCLUDES="`$apr_config --includes`"
++  fi
++  if test "x$APR_LIBS" = x; then
++    APR_LIBS="`$apr_config --link-libtool --libs`"
++  else
++    APR_LIBS="$APR_LIBS `$apr_config --libs`"
++  fi
+   APR_SO_EXT="`$apr_config --apr-so-ext`"
+   APR_LIB_TARGET="`$apr_config --apr-lib-target`"
+ 

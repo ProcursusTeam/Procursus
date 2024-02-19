@@ -1,0 +1,168 @@
+.\" Process this file with
+.\" Copyright 2006 by Troy Heber - taken directly from svn-backup-dumps
+.\" Copyright (c) 2006 CollabNet.
+.\" Permission is granted to everyone to use and distribute this work,
+.\" without limitation, modified or unmodified, in any way, for any purpose.
+.\" groff -man -Tascii svn-backup-dumps.1
+.\"
+.TH svn\-backup\-dumps 1  "2006-11-09"
+.SH NAME
+svn\-backup\-dumps \- Create dumpfiles to backup a subversion repository.
+.SH SYNOPSIS
+.B svn\-backup\-dumps 
+.I <repos>
+.I <dumpdir>
+.SH DESCRIPTION
+.B svn\-backup\-dumps
+creates dumpfiles from a subversion repository.  It is intended for
+use in cron jobs and post-commit hooks.
+.PP
+The basic modes of operation are:
+.IP \(bu
+Create a full dump (revisions 0 to HEAD)
+.IP \(bu
+Create incremental dump containing at most N revisions.
+.IP \(bu
+Create incremental single-revision dumps (for use in post-commit).
+.PP
+Dumpfiles are named in the format
+.IR basename . rev .svndmp
+or
+.IR basename . rev . rev .svndmp,
+where
+.I basename
+is the repository directory name, and the
+.I rev
+arguments are the first and last revision numbers represented in the
+dumpfile, zero-padded to 6 digits.
+.PP
+Optionally,
+.B svn\-backup\-dumps
+can compress dumpfiles with
+.BR gzip " or " bzip2 ,
+and can transfer them to another host using FTP or SMB (using
+.BR smbclient ).
+.\"
+.SH OPTIONS
+.TP
+.B \-\-version
+Show program's version number and exit.
+.TP
+.BR \-h ", " \-\-help
+Show this help message and exit.
+.TP
+.B \-b
+Compress the dump using
+.BR bzip2 .
+.TP
+.B \-\-deltas
+This is passed through to
+.BR "svnadmin dump" .
+.TP
+.BI \-c " count"
+Maximum number of revisions per dumpfile.
+.TP
+.B \-o
+Overwrite files.
+.TP
+.B \-O
+Overwrite all files.
+.TP
+.B \-q
+Quiet.
+.TP
+.BI \-r " rev"
+Specify a single-revision dumpfile.
+.PP
+.RI "\fB\-t\fR ftp:" host : user : password : path
+.PD 0
+.TP
+.RI "\fB\-t\fR smb:" share : user : password : path
+.PD
+Transfer dumps to another machine using the FTP or SMB protocols.
+.I path
+is where to store the dumpfiles on the remote server; any occurrence of
+.I %r
+in the path is replaced by the repository name.  Support for "smb:"
+requires the
+.B smbclient
+program.
+.TP
+.B \-z
+Compress the dump using
+.BR gzip .
+.\"
+.SH EXAMPLES
+To create a full dump of all revisions of a repository
+.IR /srv/svn/foo " in the directory " /var/backup/svn :
+.PP
+svn\-backup\-dumps /srv/svn/foo /var/backup/svn
+.PP
+The dumpfile will be named
+.I src.000000-NNNNNN.svndmp.gz
+where
+.I NNNNNN
+is the head revision number.
+.\"
+.PP
+To create incremental dumps containing at most 1000 revisions:
+.PP
+svn\-backup\-dumps \-\-deltas \-z \-c 1000 /srv/svn/foo /var/backup/svn
+.PP
+If the youngest revision is 2923, it creates the following files:
+.IP
+.PD 0
+foo.000000-000999.svndmp.gz
+.IP
+foo.001000-001999.svndmp.gz
+.IP
+foo.002000-002923.svndmp.gz
+.PD
+.PP
+If run again, later, when the youngest revision is 3045, it creates
+these two files:
+.IP
+.PD 0
+foo.002000-002999.svndmp.gz
+.IP
+foo.003000-003045.svndmp.gz
+.PD
+.PP
+Note that it does not remove the redundant file
+foo.002000-002923.svndmp.gz.
+.\"
+.PP
+To create incremental single-revision dumps from a post-commit hook:
+.PP
+svn\-backup\-dumps \-r $rev $repos /var/backups/svn
+.PP
+where
+.IR $rev " and " $repos
+are variables previously set in the post-commit script from its command
+line.  The dumpfile name will be in the form
+.IR foo.000352.svndmp .
+.\"
+.PP
+To send the dumpfiles to the SMB share
+.I \\\\\\\\ERNEST\\\\BACKUPS
+in a directory
+.I \\\\svn\\\\foo
+with user
+.I svnuser
+and password
+.IR w0rth1ng :
+.IP
+svn\-backup\-dumps \-t "smb://ERNEST/BACKUPS:svnuser:w0rth1ng:svn/%r
+/srv/svn/foo /tmp/tmpbackup
+.PP
+Note that the
+.I %r
+in the path is replaced by the repository name
+.BR foo .
+Note also that a local backup directory is required, at present, even
+when using the
+.B \-t
+option.
+.\"
+.SH AUTHOR
+Voluntary contributions made by many individuals.  Copyright \(co 2006 CollabNet.

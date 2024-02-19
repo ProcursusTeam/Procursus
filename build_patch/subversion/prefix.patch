@@ -1,0 +1,11 @@
+--- a/subversion/libsvn_subr/config_impl.h	2017-01-01 18:43:40.000000000 +0800
++++ b/subversion/libsvn_subr/config_impl.h	2022-03-10 18:04:49.849009435 +0800
+@@ -135,7 +135,7 @@
+ #  define SVN_CONFIG__SYS_DIRECTORY   "subversion"
+ #  define SVN_CONFIG__USR_DIRECTORY   "subversion"
+ #else  /* ! WIN32 && ! __HAIKU__ */
+-#  define SVN_CONFIG__SYS_DIRECTORY   "/etc/subversion"
++#  define SVN_CONFIG__SYS_DIRECTORY   "@MEMO_PREFIX@/etc/subversion"
+ #  define SVN_CONFIG__USR_DIRECTORY   ".subversion"
+ #endif /* WIN32 */
+ 

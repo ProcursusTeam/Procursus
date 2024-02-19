@@ -1,0 +1,14 @@
+Package: libodbccr2
+Version: @DEB_UNIXODBC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libodbc2 (= @DEB_UNIXODBC_V@)
+Section: Libraries
+Priority: optional
+Homepage: http://www.unixodbc.org/
+Description: ODBC Cursor library for Unix
+ UnixODBC is an implementation of the Open Database Connectivity standard,
+ a database abstraction layer that allows applications to be used with
+ many different relational databases by way of a single library.
+ .
+ This package provides the unixODBC Cursor library.

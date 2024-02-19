@@ -1,0 +1,15 @@
+Subject: Allow transforming executable names again
+Author: Torsten Landschoff <torsten@debian.org>
+
+--- a/CCache/Makefile.in
++++ b/CCache/Makefile.in
+@@ -18,6 +18,9 @@ SWIG=swig
+ SWIG_LIB=../$(srcdir)/../Lib
+ EXEEXT=@EXEEXT@
+ 
++# Use standard autoconf approach to transform executable name using --program-prefix and --program-suffix
++transform = @program_transform_name@
++
+ LIBS= @LIBS@
+ OBJS= ccache.o mdfour.o hash.o execute.o util.o args.o stats.o \
+ 	cleanup.o snprintf.o unify.o

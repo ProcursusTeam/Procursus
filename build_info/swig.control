@@ -1,0 +1,17 @@
+Package: swig
+Version: @DEB_SWIG_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Depends: swig4.0
+Section: Development
+Priority: optional
+Homepage: http://www.swig.org/
+Description: Generate scripting interfaces to C/C++ code
+ SWIG is a compiler that makes it easy to integrate C and C++ code
+ with other languages including Perl, Tcl, Ruby, Python, Java,
+ Guile, Mzscheme, Chicken, OCaml, Pike, and C#.
+ .
+ Swig takes a set of ANSI C/C++ declarations and generates an
+ interface for them to your favorite scripting language.
+ .
+ This is a dependency package providing the stable version of SWIG.

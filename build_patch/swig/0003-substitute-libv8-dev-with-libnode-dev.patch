@@ -1,0 +1,47 @@
+From fb5be6e3c26c21c576b74f4a68344a382523fb5c Mon Sep 17 00:00:00 2001
+From: Salman Mohammadi <salman@smoha.org>
+Date: Sun, 27 Sep 2020 23:34:18 +0200
+Subject: [PATCH] substitute non-existent libv8-dev with libnode-dev which
+ provides it
+
+---
+ Doc/Manual/Javascript.html        | 2 +-
+ Doc/Manual/SWIGDocumentation.html | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/Doc/Manual/Javascript.html b/Doc/Manual/Javascript.html
+index 0b301377c..cf5212bb2 100644
+--- a/Doc/Manual/Javascript.html
++++ b/Doc/Manual/Javascript.html
+@@ -134,7 +134,7 @@ $ sudo apt-get install libjavascriptcoregtk-1.0-dev</pre>
+ <p>Running with <code>V8</code> requires <code>libv8</code>:</p>
+ <div class="shell">
+ <pre>
+-$ sudo apt-get install libv8-dev</pre>
++$ sudo apt-get install libnode-dev</pre>
+ </div>
+ <p>Examples can be run using</p>
+ <div class="shell">
+diff --git a/Doc/Manual/SWIGDocumentation.html b/Doc/Manual/SWIGDocumentation.html
+index 31f691a1c..00c60e762 100644
+--- a/Doc/Manual/SWIGDocumentation.html
++++ b/Doc/Manual/SWIGDocumentation.html
+@@ -36305,7 +36305,7 @@ $ sudo apt-get install libjavascriptcoregtk-1.0-dev</pre>
+ <p>Running with <code>V8</code> requires <code>libv8</code>:</p>
+ <div class="shell">
+ <pre>
+-$ sudo apt-get install libv8-dev</pre>
++$ sudo apt-get install libnode-dev</pre>
+ </div>
+ <p>Examples can be run using</p>
+ <div class="shell">
+@@ -61681,4 +61681,4 @@ coding style guidelines</a> section.</li>
+  API documentation and debugging information. This is shipped with SWIG
+  in the <tt>Doc/Devel</tt> directory.</p>
+ </BODY>
+-</HTML>
+\ No newline at end of file
++</HTML>
+-- 
+2.27.0
+

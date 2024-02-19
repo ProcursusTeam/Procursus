@@ -1,0 +1,392 @@
+Subject: Drop PCRE support in favor of PCRE2
+Origin: https://github.com/swig/swig/commit/543994c8ee5fc8e68e27d736d6f8a1f336bb4c21
+Forwarded: not-needed
+Applied-Upstream: 4.1
+Bug-Debian: https://bugs.debian.org/999948
+Bug: https://github.com/swig/swig/issues/2120
+
+This patch was created by cherry-picking the merge commit and dropping
+the changes that didn't apply cleanly.
+
+Those were for files no yet existing in 4.0.2, like CMake setup, or
+irrelevant like changes to AppVeyor configuration.
+
+
+diff --git a/Doc/Manual/Preface.html b/Doc/Manual/Preface.html
+index 36a99bd1f..41f21d48d 100644
+--- a/Doc/Manual/Preface.html
++++ b/Doc/Manual/Preface.html
+@@ -281,12 +281,12 @@ You must use <a href="http://www.gnu.org/software/make/">GNU make</a> to build a
+ </p>
+ 
+ <p>
+-<a href="http://www.pcre.org/">PCRE</a>
++<a href="http://www.pcre.org/">PCRE2</a>
+ needs to be installed on your system to build SWIG, in particular
+-pcre-config must be available. If you have PCRE headers and libraries but not
+-pcre-config itself or, alternatively, wish to override the compiler or linker
+-flags returned by pcre-config, you may set PCRE_LIBS and PCRE_CFLAGS variables
+-to be used instead. And if you don't have PCRE at all, the configure script
++pcre2-config must be available. If you have PCRE2 headers and libraries but not
++pcre2-config itself or, alternatively, wish to override the compiler or linker
++flags returned by pcre2-config, you may set PCRE2_LIBS and PCRE2_CFLAGS variables
++to be used instead. And if you don't have PCRE2 at all, the configure script
+ will provide instructions for obtaining it.
+ </p>
+ 
+diff --git a/Doc/Manual/SWIG.html b/Doc/Manual/SWIG.html
+index c54d117e0..f9b5d7ccc 100644
+--- a/Doc/Manual/SWIG.html
++++ b/Doc/Manual/SWIG.html
+@@ -208,7 +208,7 @@ General Options
+      -oh &lt;headfile&gt;  - Set name of C++ output header file for directors to &lt;headfile&gt;
+      -outcurrentdir  - Set default output dir to current dir instead of input file's path
+      -outdir &lt;dir&gt;   - Set language specific files output directory to &lt;dir&gt;
+-     -pcreversion    - Display PCRE version information
++     -pcreversion    - Display PCRE2 version information
+      -small          - Compile in virtual elimination and compact mode
+      -swiglib        - Report location of SWIG library and exit
+      -templatereduce - Reduce all the typedefs in templates
+@@ -2022,8 +2022,8 @@ and a more descriptive one, but the two functions are otherwise equivalent:
+     <td>String after (Perl-like) regex substitution operation. This function
+     allows to apply arbitrary regular expressions to the identifier names. The
+     <i>pattern</i> part is a regular expression in Perl syntax (as supported
+-    by the <a href="http://www.pcre.org/">Perl Compatible Regular Expressions (PCRE)</a>)
+-    library and the <i>subst</i> string
++    by the <a href="http://www.pcre.org/">Perl Compatible Regular Expressions</a>)
++    (PCRE2 library) and the <i>subst</i> string
+     can contain back-references of the form <tt>\N</tt> where <tt>N</tt> is a digit
+     from 0 to 9, or one of the following escape sequences: <tt>\l</tt>, <tt>\L</tt>,
+     <tt>\u</tt>, <tt>\U</tt> or <tt>\E</tt>. The back-references are replaced with the
+diff --git a/Source/Modules/main.cxx b/Source/Modules/main.cxx
+index d8f2ab6b4..1476ddba5 100644
+--- a/Source/Modules/main.cxx
++++ b/Source/Modules/main.cxx
+@@ -137,7 +137,7 @@ static const char *usage4 = (const char *) "\
+      -oh <headfile>  - Set name of C++ output header file for directors to <headfile>\n\
+      -outcurrentdir  - Set default output dir to current dir instead of input file's path\n\
+      -outdir <dir>   - Set language specific files output directory to <dir>\n\
+-     -pcreversion    - Display PCRE version information\n\
++     -pcreversion    - Display PCRE2 version information\n\
+      -small          - Compile in virtual elimination and compact mode\n\
+      -swiglib        - Report location of SWIG library and exit\n\
+      -templatereduce - Reduce all the typedefs in templates\n\
+diff --git a/Source/Swig/misc.c b/Source/Swig/misc.c
+index ef6fcc02f..62a97875e 100644
+--- a/Source/Swig/misc.c
++++ b/Source/Swig/misc.c
+@@ -1312,7 +1312,8 @@ void Swig_offset_string(String *s, int number) {
+ 
+ 
+ #ifdef HAVE_PCRE
+-#include <pcre.h>
++#define PCRE2_CODE_UNIT_WIDTH 8
++#include <pcre2.h>
+ 
+ static int split_regex_pattern_subst(String *s, String **pattern, String **subst, const char **input)
+ {
+@@ -1375,7 +1376,7 @@ static void copy_with_maybe_case_conversion(String *dst, const char *src, int le
+   }
+ }
+ 
+-String *replace_captures(int num_captures, const char *input, String *subst, int captures[], String *pattern, String *s)
++String *replace_captures(int num_captures, const char *input, String *subst, size_t captures[], String *pattern, String *s)
+ {
+   int convertCase = 0, convertNextOnly = 0;
+   String *result = NewStringEmpty();
+@@ -1397,7 +1398,7 @@ String *replace_captures(int num_captures, const char *input, String *subst, int
+     } else if (isdigit((unsigned char)*p)) {
+       int group = *p++ - '0';
+       if (group < num_captures) {
+-	int l = captures[group*2], r = captures[group*2 + 1];
++	int l = (int)captures[group*2], r = (int)captures[group*2 + 1];
+ 	if (l != -1) {
+ 	  copy_with_maybe_case_conversion(result, input + l, r - l, &convertCase, convertNextOnly);
+ 	}
+@@ -1449,26 +1450,31 @@ String *Swig_string_regex(String *s) {
+   const int pcre_options = 0;
+ 
+   String *res = 0;
+-  pcre *compiled_pat = 0;
+-  const char *pcre_error, *input;
+-  int pcre_errorpos;
++  pcre2_code *compiled_pat = 0;
++  const char *input;
++  PCRE2_UCHAR pcre_error[256];
++  int pcre_errornum;
++  size_t pcre_errorpos;
+   String *pattern = 0, *subst = 0;
+-  int captures[30];
+-
++  size_t *captures = 0;
++  pcre2_match_data *match_data = 0;
+   if (split_regex_pattern_subst(s, &pattern, &subst, &input)) {
+     int rc;
+ 
+-    compiled_pat = pcre_compile(
+-          Char(pattern), pcre_options, &pcre_error, &pcre_errorpos, NULL);
++    compiled_pat = pcre2_compile(
++          (PCRE2_SPTR8)Char(pattern), PCRE2_ZERO_TERMINATED, pcre_options, &pcre_errornum, &pcre_errorpos, NULL);
+     if (!compiled_pat) {
++      pcre2_get_error_message (pcre_errornum, pcre_error, sizeof pcre_error);
+       Swig_error("SWIG", Getline(s), "PCRE compilation failed: '%s' in '%s':%i.\n",
+           pcre_error, Char(pattern), pcre_errorpos);
+       SWIG_exit(EXIT_FAILURE);
+     }
+-    rc = pcre_exec(compiled_pat, NULL, input, (int)strlen(input), 0, 0, captures, 30);
++    match_data = pcre2_match_data_create_from_pattern (compiled_pat, NULL);
++    rc = pcre2_match(compiled_pat, (PCRE2_SPTR8)input, PCRE2_ZERO_TERMINATED, 0, 0, match_data, NULL);
++    captures = pcre2_get_ovector_pointer (match_data);
+     if (rc >= 0) {
+       res = replace_captures(rc, input, subst, captures, pattern, s);
+-    } else if (rc != PCRE_ERROR_NOMATCH) {
++    } else if (rc != PCRE2_ERROR_NOMATCH) {
+       Swig_error("SWIG", Getline(s), "PCRE execution failed: error %d while matching \"%s\" using \"%s\".\n",
+ 	rc, Char(pattern), input);
+       SWIG_exit(EXIT_FAILURE);
+@@ -1477,12 +1483,19 @@ String *Swig_string_regex(String *s) {
+ 
+   DohDelete(pattern);
+   DohDelete(subst);
+-  pcre_free(compiled_pat);
++  pcre2_code_free(compiled_pat);
++  pcre2_match_data_free(match_data);
+   return res ? res : NewStringEmpty();
+ }
+ 
+ String *Swig_pcre_version(void) {
+-  return NewStringf("PCRE Version: %s", pcre_version());
++  int len = pcre2_config(PCRE2_CONFIG_VERSION, NULL);
++  char *buf = malloc(len);
++  String *result;
++  pcre2_config(PCRE2_CONFIG_VERSION, buf);
++  result = NewStringf("PCRE2 Version: %s", buf);
++  free(buf);
++  return result;
+ }
+ 
+ #else
+diff --git a/Source/Swig/naming.c b/Source/Swig/naming.c
+index 6689ceb7a..0e021d8ab 100644
+--- a/Source/Swig/naming.c
++++ b/Source/Swig/naming.c
+@@ -1092,26 +1092,32 @@ static DOH *get_lattr(Node *n, List *lattr) {
+ }
+ 
+ #ifdef HAVE_PCRE
+-#include <pcre.h>
++#define PCRE2_CODE_UNIT_WIDTH 8
++#include <pcre2.h>
+ 
+ static int name_regexmatch_value(Node *n, String *pattern, String *s) {
+-  pcre *compiled_pat;
+-  const char *err;
+-  int errpos;
++  pcre2_code *compiled_pat;
++  PCRE2_UCHAR err[256];
++  int errornum;
++  size_t errpos;
+   int rc;
+ 
+-  compiled_pat = pcre_compile(Char(pattern), 0, &err, &errpos, NULL);
++  compiled_pat = pcre2_compile((PCRE2_SPTR8)Char(pattern), PCRE2_ZERO_TERMINATED, 0, &errornum, &errpos, NULL);
+   if (!compiled_pat) {
++    pcre2_get_error_message (errornum, err, sizeof err);
+     Swig_error("SWIG", Getline(n),
+                "Invalid regex \"%s\": compilation failed at %d: %s\n",
+                Char(pattern), errpos, err);
+     SWIG_exit(EXIT_FAILURE);
+   }
+ 
+-  rc = pcre_exec(compiled_pat, NULL, Char(s), Len(s), 0, 0, NULL, 0);
+-  pcre_free(compiled_pat);
++  pcre2_match_data *match_data = 0;
++  match_data = pcre2_match_data_create_from_pattern (compiled_pat, NULL);
++  rc = pcre2_match(compiled_pat, (PCRE2_SPTR8)Char(s), PCRE2_ZERO_TERMINATED, 0, 0, match_data, 0);
++  pcre2_code_free(compiled_pat);
++  pcre2_match_data_free(match_data);
+ 
+-  if (rc == PCRE_ERROR_NOMATCH)
++  if (rc == PCRE2_ERROR_NOMATCH)
+     return 0;
+ 
+   if (rc < 0 ) {
+diff --git a/Tools/mkwindows.sh b/Tools/mkwindows.sh
+index e6ae84350..c30cc58ef 100755
+--- a/Tools/mkwindows.sh
++++ b/Tools/mkwindows.sh
+@@ -84,10 +84,10 @@ export CXXFLAGS="$compileflags"
+ swigbasename=swig-$version
+ swigwinbasename=swigwin-$version
+ tarball=$swigbasename.tar.gz
+-pcre_tarball=`ls pcre-*.tar.*`
++pcre_tarball=`ls pcre2-*.tar.*`
+ 
+ if ! test -f "$pcre_tarball"; then
+-  echo "Could not find PCRE tarball. Please download a PCRE source tarball from http://www.pcre.org"
++  echo "Could not find PCRE2 tarball. Please download a PCRE2 source tarball from http://www.pcre.org"
+   echo "and place in the same directory as the SWIG tarball."
+   exit 1
+ fi
+diff --git a/Tools/nuget-install.cmd b/Tools/nuget-install.cmd
+deleted file mode 100644
+index eec7f8787..000000000
+--- a/Tools/nuget-install.cmd
++++ /dev/null
+@@ -1,28 +0,0 @@
+-rem Workaround 'nuget install' not being reliable by retrying a few times
+-@echo off
+-rem initiate the retry number
+-set errorCode=1
+-set retryNumber=0
+-set maxRetries=5
+-
+-:RESTORE
+-nuget install %*
+-
+-rem problem?
+-IF ERRORLEVEL %errorCode% GOTO :RETRY
+-
+-rem everything is fine!
+-@echo Installed nuget, retries: %reTryNumber%
+-GOTO :EXIT
+-
+-:RETRY
+-@echo Oops, nuget restore exited with code %errorCode% - let us try again!
+-set /a retryNumber=%retryNumber%+1
+-IF %reTryNumber% LSS %maxRetries% (GOTO :RESTORE)
+-IF %retryNumber% EQU %maxRetries% (GOTO :ERR)
+-
+-:ERR
+-@echo Sorry, we tried restoring nuget packages for %maxRetries% times and all attempts were unsuccessful!
+-EXIT /B 1
+-
+-:EXIT
+diff --git a/Tools/pcre-build.sh b/Tools/pcre-build.sh
+index 92f645da2..e986d682f 100755
+--- a/Tools/pcre-build.sh
++++ b/Tools/pcre-build.sh
+@@ -4,17 +4,17 @@ pcre_subdir=pcre/pcre-swig-install
+ pcre_install_dir=`pwd`/$pcre_subdir
+ 
+ usage() {
+-  echo "Helper script to build PCRE as a static library from a tarball just for use during the"
+-  echo "SWIG build. It does not install PCRE for global use on your system."
++  echo "Helper script to build PCRE2 as a static library from a tarball just for use during the"
++  echo "SWIG build. It does not install PCRE2 for global use on your system."
+   echo "Usage: pcre-build.sh [--help] [args]"
+-  echo "  args   - optional additional arguments passed on to the PCRE configure script (leave out"
++  echo "  args   - optional additional arguments passed on to the PCRE2 configure script (leave out"
+   echo "         unless you are an expert at configure)"
+   echo "  --help - Display this help information."
+   echo "Instructions:"
+-  echo "  - Download the latest PCRE source tarball from http://www.pcre.org and place in the"
++  echo "  - Download the latest PCRE2 source tarball from http://www.pcre.org and place in the"
+   echo "    directory that you will configure and build SWIG."
+   echo "  - Run this script in the same directory that you intend to configure and build SWIG in."
+-  echo "    This will configure and build PCRE as a static library."
++  echo "    This will configure and build PCRE2 as a static library."
+   echo "  - Afterwards run the SWIG configure script which will then find and use the PCRE static"
+   echo "    libraries in the $pcre_subdir subdirectory."
+   exit 0
+@@ -35,21 +35,21 @@ if test -f "pcre-build.sh" ; then
+   usage
+ fi
+ 
+-echo "Looking for PCRE tarball..."
++echo "Looking for PCRE2 tarball..."
+ rm -rf pcre
+-pcre_tarball=`ls pcre-*.tar*`
+-test -n "$pcre_tarball" || bail "Could not find tarball matching pattern: pcre-*.tar*"
+-test -f "$pcre_tarball" || bail "Could not find a single PCRE tarball. Found: $pcre_tarball"
++pcre_tarball=`ls pcre2-*.tar*`
++test -n "$pcre_tarball" || bail "Could not find tarball matching pattern: pcre2-*.tar*"
++test -f "$pcre_tarball" || bail "Could not find a single PCRE2 tarball. Found: $pcre_tarball"
+ 
+ echo "Extracting tarball: $pcre_tarball"
+ tar -xf $pcre_tarball || bail "Could not untar $pcre_tarball"
+ pcre_dir=`echo $pcre_tarball | sed -e "s/\.tar.*//"`
+ echo "Configuring PCRE in directory: pcre"
+ mv $pcre_dir pcre || bail "Could not create pcre directory"
+-cd pcre && ./configure --prefix=$pcre_install_dir --disable-shared $* || bail "PCRE configure failed"
+-echo "Building PCRE..."
+-${MAKE:-make} -s || bail "Could not build PCRE"
+-echo "Installing PCRE locally to $pcre_install_dir..."
+-${MAKE:-make} -s install || bail "Could not install PCRE"
++cd pcre && ./configure --prefix=$pcre_install_dir --disable-shared $* || bail "PCRE2 configure failed"
++echo "Building PCRE2..."
++${MAKE:-make} -s || bail "Could not build PCRE2"
++echo "Installing PCRE2 locally to $pcre_install_dir..."
++${MAKE:-make} -s install || bail "Could not install PCRE2"
+ echo ""
+-echo "The SWIG configure script can now be run, whereupon PCRE will automatically be detected and used from $pcre_install_dir/bin/pcre-config."
++echo "The SWIG configure script can now be run, whereupon PCRE2 will automatically be detected and used from $pcre_install_dir/bin/pcre-config."
+diff --git a/configure.ac b/configure.ac
+index 22e3672c3..f5d3ede9c 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -43,46 +43,47 @@ fi
+ dnl PCRE
+ AC_ARG_WITH([pcre],
+   [AS_HELP_STRING([--without-pcre],
+-                  [Disable support for regular expressions using PCRE])],
++                  [Disable support for regular expressions using PCRE2])],
+   [],
+   [with_pcre=yes])
+ 
+-AC_MSG_CHECKING([whether to enable PCRE support])
++AC_MSG_CHECKING([whether to enable PCRE2 support])
+ AC_MSG_RESULT([$with_pcre])
+ 
+ dnl To make configuring easier, check for a locally built PCRE using the Tools/pcre-build.sh script
+ if test x"${with_pcre}" = xyes ; then
+-  AC_MSG_CHECKING([whether to use local PCRE])
++  AC_MSG_CHECKING([whether to use local PCRE2])
+   local_pcre_config=no
+-  if test -z $PCRE_CONFIG; then
+-    if test -f `pwd`/pcre/pcre-swig-install/bin/pcre-config; then
+-      PCRE_CONFIG=`pwd`/pcre/pcre-swig-install/bin/pcre-config
+-      local_pcre_config=$PCRE_CONFIG
++  if test -z $PCRE2_CONFIG; then
++    if test -f `pwd`/pcre/pcre-swig-install/bin/pcre2-config; then
++      PCRE2_CONFIG=`pwd`/pcre/pcre-swig-install/bin/pcre2-config
++      local_pcre_config=$PCRE2_CONFIG
+     fi
+   fi
+   AC_MSG_RESULT([$local_pcre_config])
+ fi
+ AS_IF([test "x$with_pcre" != xno],
+-  [AX_PATH_GENERIC([pcre],
++  [AX_PATH_GENERIC([pcre2],
+     [], dnl Minimal version of PCRE we need -- accept any
+     [], dnl custom sed script for version parsing is not needed
+-    [AC_DEFINE([HAVE_PCRE], [1], [Define if you have PCRE library])
+-     LIBS="$LIBS $PCRE_LIBS"
+-     CPPFLAGS="$CPPFLAGS $PCRE_CFLAGS"
++    [AC_DEFINE([HAVE_PCRE], [1], [Define if you have PCRE2 library])
++     LIBS="$LIBS $PCRE2_LIBS"
++     CPPFLAGS="$CPPFLAGS $PCRE2_CFLAGS"
+     ],
+     [AC_MSG_FAILURE([
+-        Cannot find pcre-config script from PCRE (Perl Compatible Regular Expressions)
++        Cannot find pcre2-config script from PCRE2 (Perl Compatible Regular Expressions)
+         library package. This dependency is needed for configure to complete,
+         Either:
+-        - Install the PCRE developer package on your system (preferred approach).
+-        - Download the PCRE source tarball, build and install on your system
++        - Install the PCRE2 developer package on your system (preferred approach).
++        - Download the PCRE2 source tarball, build and install on your system
+           as you would for any package built from source distribution.
+-        - Use the Tools/pcre-build.sh script to build PCRE just for SWIG to statically
++        - Use the Tools/pcre-build.sh script to build PCRE2 just for SWIG to statically
+           link against. Run 'Tools/pcre-build.sh --help' for instructions.
+-          (quite easy and does not require privileges to install PCRE on your system)
++          (quite easy and does not require privileges to install PCRE2 on your system)
+         - Use configure --without-pcre to disable regular expressions support in SWIG
+           (not recommended).])
+-    ])
++    ],
++    [],[],[--libs8])
+   ])
+ 
+ 

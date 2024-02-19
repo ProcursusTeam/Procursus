@@ -1,0 +1,17 @@
+Package: unixodbc-dev
+Version: @DEB_UNIXODBC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libodbc2 (= @DEB_UNIXODBC_V@), libodbccr2 (= @DEB_UNIXODBC_V@), libodbcinst2 (= @DEB_UNIXODBC_V@)
+Conflicts: libiodbc2-dev
+Section: Development
+Priority: optional
+Homepage: http://www.unixodbc.org/
+Description: ODBC libraries for Unix (development files)
+ UnixODBC is an implementation of the Open Database Connectivity standard,
+ a database abstraction layer that allows applications to be used with
+ many different relational databases by way of a single library.
+ .
+ This package contains the development files (headers and libraries) for
+ unixODBC, which can be used to develop and/or compile C-language applications
+ using ODBC.

@@ -1,0 +1,16 @@
+Package: libodbcinst2
+Version: @DEB_UNIXODBC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libltdl7, unixodbc-common (= @DEB_UNIXODBC_V@)
+Section: Libraries
+Priority: optional
+Homepage: http://www.unixodbc.org/
+Description: Support library for accessing ODBC configuration files
+ UnixODBC is an implementation of the Open Database Connectivity standard,
+ a database abstraction layer that allows applications to be used with
+ many different relational databases by way of a single library.
+ .
+ This package contains the odbcinst library from unixODBC, a library
+ used by ODBC drivers to read their configuration from @MEMO_PREFIX@/etc/odbcinst.ini
+ and the system and user-specific odbc.ini files.

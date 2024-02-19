@@ -1,0 +1,26 @@
+Package: subversion-tools
+Version: @DEB_SUBVERSION_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libapr1, libaprutil1, libintl8, libsvn1 (>= @DEB_SUBVERSION_V@)
+Section: Utilities
+Priority: optional
+Homepage: https://subversion.apache.org/
+Description: Assorted tools related to Apache Subversion
+ This package includes miscellaneous tools for use with Apache Subversion
+ clients and servers:
+  * svn-backup-dumps: Incremental dumpfile-based backup script
+  * svn-bisect: Bisect revisions to find a regression
+  * svn-clean: Remove unversioned files from a working copy
+  * svn-hot-backup: Backup script, primarily for BDB repositories
+  * svn_apply_autoprops: Apply property settings from
+    .subversion/config file to an existing repository
+  * svn_load_dirs: Sophisticated replacement for 'svn import'
+  * svnwrap: Set umask to 002 before calling svn or svnserve
+  * fsfs-access-map: Convert strace output into FSFS access map
+  * several example hook scripts: commit-access-control, commit-email,
+    log-police, mailer, svnperms, verify-po
+ .
+ NOTE that some of these scripts are unsupported by upstream, and may
+ change radically or disappear in future releases.  Some of these
+ scripts require packages on the Recommends list.

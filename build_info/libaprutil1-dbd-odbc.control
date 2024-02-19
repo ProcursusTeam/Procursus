@@ -1,0 +1,17 @@
+Package: libaprutil1-dbd-odbc
+Version: @DEB_APR_UTIL_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libaprutil1 (= @DEB_APR_UTIL_V@), libodbc2
+Section: Libraries
+Priority: optional
+Homepage: http://apr.apache.org/
+Description: Apache Portable Runtime Utility Library - ODBC Driver
+ APR is Apache's Portable Runtime Library, designed to be a support library
+ that provides a predictable and consistent interface to underlying
+ platform-specific implementations.
+ .
+ APR Util is a utilities library implemented on top of apr, providing database
+ access, xml parsing, and other useful functionality.
+ .
+ This package contains the ODBC database driver.

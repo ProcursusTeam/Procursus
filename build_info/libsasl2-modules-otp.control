@@ -1,0 +1,13 @@
+Package: libsasl2-modules-otp
+Version: @DEB_LIBSASL2_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libsasl2-modules (>= @DEB_LIBSASL2_V@), libssl3
+Section: Libraries
+Priority: optional
+Homepage: https://www.cyrusimap.org/sasl/
+Description: Cyrus SASL - pluggable authentication modules (OTP)
+ This is the Cyrus SASL API implementation, version 2.1. See package
+ libsasl2-2 and RFC 2222 for more information.
+ .
+ This package provides the OTP plugin, which supports one time passwords.

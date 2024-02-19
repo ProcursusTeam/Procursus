@@ -1,0 +1,35 @@
+#!/bin/sh
+#
+# svnwrap.sh: wrapper subversion client programs, which sets umask=002.
+#
+# Copyright 2006 by Peter Samuelson
+# Permission is granted to everyone to use and distribute this work,
+# without limitation, modified or unmodified, in any way, for any purpose.
+#
+# This script is not always needed: for somewhat complicated reasons,
+# subversion already Does The Right Thing for FSFS repositories but
+# cannot feasibly do so for BDB.
+#
+# See the manpage for more details.
+
+umask 002
+
+known_progs='svn svnlook svnserve svnadmin svnversion'
+known_progs_path=/usr/bin
+
+usage () {
+    echo >&2 "Usage: svnwrap {program} [args...]"
+    echo >&2 "Valid programs: $known_progs"
+    exit 1
+}
+
+exe=
+arg0=$(basename "$0")
+case " $known_progs " in
+    *" $arg0 "*) exe=$arg0 ;;
+    *" $1 "*) exe=$1; shift ;;
+    *) usage ;;
+esac
+case "$exe" in *" "*) usage ;; esac
+
+exec $known_progs_path/$exe "$@"

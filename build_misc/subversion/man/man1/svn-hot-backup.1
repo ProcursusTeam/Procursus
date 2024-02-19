@@ -1,0 +1,40 @@
+.\" Process this file with
+.\" Copyright 2006 by Troy Heber - taken directly from svn-hot-backup
+.\" Copyright (c) 2006 CollabNet.
+.\" Permission is granted to everyone to use and distribute this work,
+.\" without limitation, modified or unmodified, in any way, for any purpose.
+.\" groff -man -Tascii svn-hot-backup.1
+.\"
+.TH svn\-hot\-backup 1  "2006-11-09"
+.SH NAME
+svn\-hot\-backup \- perform a "hot" backup of a Berkeley DB repository.
+.SH SYNOPSIS
+.B svn\-hot\-backup 
+.RB [ \-\-archive-type=\fItype\fR ]
+.I repos_path
+.I backup_dir
+.PP
+.\"
+.SH DESCRIPTION
+.B svn\-hot\-backup
+performs a "hot" backup of a Subversion BDB repository, and cleans old
+logfiles after the backup completes.
+.\"
+.SH OPTIONS
+.TP
+.PD 0
+.B \-\-archive\-type=gz
+.TP
+.BI \-\-archive\-type=bz2
+.TP
+.BI \-\-archive\-type=zip
+.PD
+Create a compressed archive of the backup, in
+.IR .tar.gz ", " .tar.bz2 ", or " .zip
+format respectively.
+.TP
+.BR \-h ", " \-\-help
+Print this help message and exit.
+.\"
+.SH AUTHOR
+Voluntary contributions made by many individuals.  Copyright \(co 2006 CollabNet.

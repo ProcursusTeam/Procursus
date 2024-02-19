@@ -1,0 +1,15 @@
+Package: odbcinst
+Version: @DEB_UNIXODBC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libodbcinst2 (= @DEB_UNIXODBC_V@), unixodbc-common (= @DEB_UNIXODBC_V@)
+Section: Utilities
+Priority: optional
+Homepage: http://www.unixodbc.org/
+Description: Helper program for accessing ODBC configuration files
+ UnixODBC is an implementation of the Open Database Connectivity standard,
+ a database abstraction layer that allows applications to be used with
+ many different relational databases by way of a single library.
+ .
+ This package contains the odbcinst helper tool, which allows ODBC driver
+ packages to install and manage their driver configuration.

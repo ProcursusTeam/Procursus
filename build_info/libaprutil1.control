@@ -1,0 +1,15 @@
+Package: libaprutil1
+Version: @DEB_APR_UTIL_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libapr1 (= @DEB_APR_V@), libgdbm6, libssl3, libexpat1 || firmware (>= 14.0)
+Section: Libraries
+Priority: optional
+Homepage: http://apr.apache.org/
+Description: Apache Portable Runtime Utility Library
+ APR is Apache's Portable Runtime Library, designed to be a support library
+ that provides a predictable and consistent interface to underlying
+ platform-specific implementations.
+ .
+ APR Util is a utilities library implemented on top of apr, providing database
+ access, xml parsing, and other useful functionality.

@@ -1,0 +1,14 @@
+Package: libodbc2
+Version: @DEB_UNIXODBC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libltdl7
+Section: Libraries
+Priority: optional
+Homepage: http://www.unixodbc.org/
+Description: ODBC Driver Manager library for Unix
+ UnixODBC is an implementation of the Open Database Connectivity standard,
+ a database abstraction layer that allows applications to be used with
+ many different relational databases by way of a single library.
+ .
+ This package provides the unixODBC Driver Manager library.

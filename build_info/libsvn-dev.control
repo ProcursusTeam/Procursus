@@ -1,0 +1,14 @@
+Package: libsvn-dev
+Version: @DEB_SUBVERSION_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Depends: libapr1-dev, libaprutil1-dev, libsvn1
+Suggests: libserf-dev
+Section: Development
+Priority: optional
+Homepage: https://subversion.apache.org/
+Description: Development files for Apache Subversion libraries
+ This package contains the symlinks, headers, and object files needed
+ to compile and link programs which use libsvn1, the Apache Subversion
+ libraries.  This package is needed only in order to compile software
+ that uses libsvn1.

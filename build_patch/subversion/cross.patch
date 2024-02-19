@@ -1,0 +1,13 @@
+--- a/build/ac-macros/macosx.m4	2018-11-04 13:49:40.000000000 +0800
++++ b/build/ac-macros/macosx.m4	2022-03-10 18:20:26.272278037 +0800
+@@ -38,6 +38,10 @@
+     AC_MSG_RESULT([yes])
+   ],[
+     AC_MSG_RESULT([no])
++  ],[
++    AC_DEFINE([SVN_HAVE_MACHO_ITERATE], [1],
++              [Is Mach-O low-level _dyld API available?])
++    AC_MSG_RESULT([guessing yes])
+   ])
+ ])
+ 

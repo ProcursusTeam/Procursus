@@ -1,0 +1,98 @@
+.\" svnwrap.1
+.\" Copyright 2006 by Peter Samuelson
+.\" Permission is granted to everyone to use and distribute this work,
+.\" without limitation, modified or unmodified, in any way, for any purpose.
+.TH SVNWRAP 1 "2006-04-21"
+.\"
+.SH NAME
+svnwrap \- Umask wrapper for subversion client commands
+.\"
+.SH SYNOPSIS
+.B svnwrap
+.RB { program }
+.RI [ args... ]
+.\"
+.SH DESCRIPTION
+.B svnwrap
+is a simple shell script to work around permission problems when
+sharing Subversion repositories between multiple local users.
+.B svnwrap
+can be used either by specifying a particular
+.B subversion
+client command on the command line, or by invoking it by the same name
+as the desired client command, via a symlink.
+.PP
+.B svnwrap
+sets the
+.I umask
+to 002, then launches the appropriate
+.B subversion
+client command.  For complicated reasons, this is needed when using the
+clients with
+.IR BDB -format
+repositories, but not for
+.IR FSFS -format
+ones.
+.\"
+.SH EXAMPLES
+To create a new BDB-format shared repository (note that FSFS-format
+shared repositories should also be created this way):
+.PP
+svnwrap\ svnadmin\ create\ \-\-fs\-type=bdb
+.I /path/to/repo
+.br
+chgrp\ \-R
+.I shared_group\ /path/to/repo
+.PP
+The following line in
+.I /etc/inetd.conf
+can be used to serve
+.I svn://
+URLs:
+.PP
+svn\ stream\ tcp\ nowait
+.I my_svn_user
+/usr/bin/svnwrap\ svnserve\ svnserve\ \-i\ \-r
+.I /srv/svn
+.PP
+The following commands enable use of
+.B svnwrap
+for local
+.I file:///
+and remote
+.I svn+ssh://
+URLs:
+.PP
+ln\ \-s\ /usr/bin/svnwrap\ /usr/local/bin/svn
+.br
+ln\ \-s\ /usr/bin/svnwrap\ /usr/local/bin/svnserve
+.PP
+.B svn
+is used for local
+.I file:///
+URLs, and
+.B svnserve
+is invoked by remote users of
+.I svn+ssh://
+URLs.
+.SH BUGS
+If you symlink the
+.B svn
+binary to
+.BR svnwrap ,
+as shown in one of the examples,
+.I all local users' working copies will also use the new
+.IR umask .
+Be sure to warn your users about this, as security-related surprises
+are rarely pleasant.
+.\"
+.SH "SEE ALSO"
+.BR svnserve (8),
+.BR svn (1),
+.BR svnlook (1).
+.\"
+.SH AUTHOR
+.B svnwrap
+and this manual were written by Peter Samuelson
+.\" <peter@p12n.org>
+for the Debian Project (but may be used by others).

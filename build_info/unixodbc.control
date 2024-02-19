@@ -1,0 +1,15 @@
+Package: unixodbc
+Version: @DEB_UNIXODBC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libodbc2, libreadline8
+Section: Data_Storage
+Priority: optional
+Homepage: http://www.unixodbc.org/
+Description: Basic ODBC tools
+ UnixODBC is an implementation of the Open Database Connectivity standard,
+ a database abstraction layer that allows applications to be used with
+ many different relational databases by way of a single library.
+ .
+ This package contains isql and iusql, command-line tools that allow SQL
+ commands to be entered interactively or in batches.
