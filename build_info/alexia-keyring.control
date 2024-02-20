@@ -1,0 +1,9 @@
+Package: alexia-keyring
+Version: @DEB_ALEXIA_KEYRING_V@
+Author: Alexia <me@alexia.lol>
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Keyrings
+Priority: optional
+Provides: nyuszika7h-keyring (= @DEB_ALEXIA_KEYRING_V@)
+Description: GnuPG keys for Alexia's repositories
