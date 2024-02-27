@@ -10,9 +10,20 @@ endif
 UIKITTOOLS_VERSION := 2.1.6
 DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)-1
 
+ifeq ($(PLATFORM),iphoneos)
+TBD_PLATFORM = ios
+else ifeq ($(PLATFORM),macosx)
+TBD_PLATFORM = macos
+else ifeq ($(PLATFORM),appletvos)
+TBD_PLATFORM = tvos
+else
+TBD_PLATFORM = $(PLATFORM)
+endif
+
 uikittools-setup: setup
 	$(call GITHUB_ARCHIVE,ProcursusTeam,uikittools-ng,$(UIKITTOOLS_VERSION),v$(UIKITTOOLS_VERSION))
 	$(call EXTRACT_TAR,uikittools-ng-$(UIKITTOOLS_VERSION).tar.gz,uikittools-ng-$(UIKITTOOLS_VERSION),uikittools)
+	sed -i 's/(null)/$(TBD_PLATFORM)/g' $(BUILD_WORK)/uikittools/Frameworks/MobileContainerManager.framework/MobileContainerManager.tbd
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 UIKITTOOLS_MAKE_ARGS += NO_COMPAT=1
@@ -65,10 +76,12 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	$(LDID) -S$(BUILD_WORK)/uikittools/sbreload.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sbreload
 	$(LDID) -S$(BUILD_WORK)/uikittools/uialert.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uialert
 	$(LDID) -S$(BUILD_WORK)/uikittools/uicache.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uicache
+ifneq (,$(findstring iphoneos,$(MEMO_TARGET)))
 	$(LDID) -S$(BUILD_WORK)/uikittools/uidisplay.plist $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uidisplay
 	$(LDID) -S$(BUILD_WORK)/uikittools/uinotify.plist $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uinotify
-	$(LDID) -S$(BUILD_WORK)/uikittools/uiopen.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uiopen
 	$(LDID) -S$(BUILD_WORK)/uikittools/uisave.plist $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uisave
+endif
+	$(LDID) -S$(BUILD_WORK)/uikittools/uiopen.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uiopen
 	$(LDID) -S$(BUILD_WORK)/uikittools/uishoot.plist $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uishoot
 
 	find $(BUILD_DIST)/uikittools -name '.ldid*' -type f -delete
