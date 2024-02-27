@@ -4,13 +4,13 @@ Date: Sat, 5 Nov 2022 02:10:27 +0800
 Subject: [PATCH] Add missing int reboot3(int) declaration
 
 ---
- reboot.tproj/reboot.c | 2 ++
+ reboot/reboot.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/reboot.tproj/reboot.c b/reboot.tproj/reboot.c
+diff --git a/reboot/reboot.c b/reboot/reboot.c
 index 909492b..b95861a 100644
---- a/reboot.tproj/reboot.c
-+++ b/reboot.tproj/reboot.c
+--- a/reboot/reboot.c
++++ b/reboot/reboot.c
 @@ -74,6 +74,8 @@ __FBSDID("$FreeBSD$");
  #include <reboot2.h>
  #endif

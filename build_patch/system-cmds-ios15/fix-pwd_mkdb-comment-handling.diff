@@ -1,7 +1,7 @@
-diff --git a/pwd_mkdb.tproj/pwd_mkdb.c b/pwd_mkdb.tproj/pwd_mkdb.c
+diff --git a/pwd_mkdb/pwd_mkdb.c b/pwd_mkdb/pwd_mkdb.c
 index 7d02422..598d67f 100644
---- a/pwd_mkdb.tproj/pwd_mkdb.c
-+++ b/pwd_mkdb.tproj/pwd_mkdb.c
+--- a/pwd_mkdb/pwd_mkdb.c
++++ b/pwd_mkdb/pwd_mkdb.c
 @@ -509,8 +509,10 @@ db_store(FILE *fp, FILE *oldfp, DB *edp, DB *dp, struct passwd *pw,
  	for (cnt = 1; scan(fp, pw, &flags); ++cnt) {
  

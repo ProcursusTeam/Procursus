@@ -5,13 +5,13 @@ Subject: [PATCH 1/4] system_cmds: shutdown may not work
 
 Co-authored-by: Cameron Katri <me@cameronkatri.com>
 ---
- shutdown.tproj/shutdown.c | 14 +++++++++-----
+ shutdown/shutdown.c | 14 +++++++++-----
  1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/shutdown.tproj/shutdown.c b/shutdown.tproj/shutdown.c
+diff --git a/shutdown/shutdown.c b/shutdown/shutdown.c
 index 597f9f2..c7b4808 100644
---- a/shutdown.tproj/shutdown.c
-+++ b/shutdown.tproj/shutdown.c
+--- a/shutdown/shutdown.c
++++ b/shutdown/shutdown.c
 @@ -71,8 +71,10 @@ __FBSDID("$FreeBSD: src/sbin/shutdown/shutdown.c,v 1.28 2005/01/25 08:40:51 delp
  #include <vproc.h>
  #include <vproc_priv.h>

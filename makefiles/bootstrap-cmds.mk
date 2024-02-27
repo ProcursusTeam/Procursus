@@ -5,13 +5,14 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS            += bootstrap-cmds
-BOOTSTRAP-CMDS_VERSION := 129
+BOOTSTRAP-CMDS_VERSION := 133
 DEB_BOOTSTRAP-CMDS_V   ?= $(BOOTSTRAP-CMDS_VERSION)
 
 bootstrap-cmds-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,bootstrap_cmds,$(BOOTSTRAP-CMDS_VERSION),bootstrap_cmds-$(BOOTSTRAP-CMDS_VERSION))
 	$(call EXTRACT_TAR,bootstrap_cmds-$(BOOTSTRAP-CMDS_VERSION).tar.gz,bootstrap_cmds-bootstrap_cmds-$(BOOTSTRAP-CMDS_VERSION),bootstrap-cmds)
 	mkdir -p $(BUILD_STAGE)/bootstrap-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,libexec,share/man/man1/}
+	sed -i -e 's|/bin/rmdir|$(MEMO_PREFIX)/bin/rmdir|g' -e 's|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' $(BUILD_WORK)/bootstrap-cmds/migcom.tproj/mig.sh
 
 ifneq ($(wildcard $(BUILD_WORK)/bootstrap-cmds/.build_complete),)
 bootstrap-cmds:
