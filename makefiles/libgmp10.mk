@@ -10,6 +10,7 @@ libgmp10-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://gmplib.org/download/gmp/gmp-$(GMP_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,gmp-$(GMP_VERSION).tar.xz)
 	$(call EXTRACT_TAR,gmp-$(GMP_VERSION).tar.xz,gmp-$(GMP_VERSION),libgmp10)
+	sed -i 's/-keep_private_externs -nostdlib/-keep_private_externs $(PLATFORM_VERSION_MIN) -nostdlib/g' $(BUILD_WORK)/libgmp10/configure
 
 ifneq ($(wildcard $(BUILD_WORK)/libgmp10/.build_complete),)
 libgmp10:
@@ -24,7 +25,7 @@ libgmp10: libgmp10-setup
 		--disable-assembly \
 		CC_FOR_BUILD='$(shell command -v cc) $(CFLAGS_FOR_BUILD)' \
 		CPP_FOR_BUILD='$(shell command -v cc) -E $(CPPFLAGS_FOR_BUILD)'
-	+$(MAKE) -C $(BUILD_WORK)/libgmp10
+	+$(MAKE) -C $(BUILD_WORK)/libgmp10 V=1
 	+$(MAKE) -C $(BUILD_WORK)/libgmp10 install \
 		DESTDIR=$(BUILD_STAGE)/libgmp10
 	$(call AFTER_BUILD,copy)

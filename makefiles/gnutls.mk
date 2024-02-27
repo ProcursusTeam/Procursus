@@ -9,6 +9,7 @@ DEB_GNUTLS_V   ?= $(GNUTLS_VERSION)
 gnutls-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.gnupg.org/ftp/gcrypt/gnutls/v$(shell echo $(GNUTLS_VERSION) | cut -d. -f-2)/gnutls-$(GNUTLS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,gnutls-$(GNUTLS_VERSION).tar.xz,gnutls-$(GNUTLS_VERSION),gnutls)
+	sed -i 's/-keep_private_externs -nostdlib/-keep_private_externs $(PLATFORM_VERSION_MIN) -nostdlib/g' $(BUILD_WORK)/gnutls/configure
 
 ifneq ($(wildcard $(BUILD_WORK)/gnutls/.build_complete),)
 gnutls:

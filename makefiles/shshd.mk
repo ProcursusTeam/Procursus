@@ -16,10 +16,18 @@ endif
 SHSHD_VERSION := 1.1.1.1
 DEB_SHSHD_V   ?= $(SHSHD_VERSION)
 
+ifneq ($(shell command -v xcrun),)
+SWIFTC != xcrun --find swiftc
+else
+SWIFTC = swiftc
+endif
+
 shshd-setup: setup
 	$(call GITHUB_ARCHIVE,Diatrus,SHSHDaemon,$(SHSHD_VERSION),v$(SHSHD_VERSION))
 	$(call EXTRACT_TAR,SHSHDaemon-$(SHSHD_VERSION).tar.gz,SHSHDaemon-$(SHSHD_VERSION),shshd)
 	mkdir -p $(BUILD_STAGE)/shshd/$(MEMO_PREFIX){/Library/LaunchDaemons,$(MEMO_SUB_PREFIX)/{sbin,libexec}}
+	mkdir -p $(BUILD_WORK)/shshd/include
+	ln -s $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit $(BUILD_WORK)/shshd/include/IOKit
 	sed -i 's|kIOMasterPortDefault|kIOMainPortDefault|' $(BUILD_WORK)/shshd/main.swift
 
 ifneq ($(wildcard $(BUILD_WORK)/shshd/.build_complete),)
@@ -28,10 +36,12 @@ shshd:
 else
 shshd: shshd-setup dimentio
 	cd $(BUILD_WORK)/shshd; \
-		swiftc -Osize \
+		$(SWIFTC) -Osize \
 			--target=$(LLVM_TARGET) \
 			-sdk $(TARGET_SYSROOT) \
 			-I$(BUILD_STAGE)/dimentio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include \
+			-I$(BUILD_WORK)/shshd/include \
+			-F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks \
 			-import-objc-header Bridge.h \
 			-o $(BUILD_STAGE)/shshd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/shshd \
 			main.swift \
