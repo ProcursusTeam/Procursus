@@ -11,11 +11,15 @@ endif # ($(SSH_STRAP),1)
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += openssh
 endif
-OPENSSH_VERSION := 9.2p1
+OPENSSH_VERSION := 9.7p1
 DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
 OPENSSH_CONFIGURE_ARGS += ac_cv_func_strtonum=no
+endif
+
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+OPENSSH_EMBEDDED_SSHD_LIBS = -lcrypt
 endif
 
 openssh-setup: setup
@@ -57,7 +61,7 @@ ifeq (,$(findstring ramdisk,$(MEMO_TARGET)))
 		check_for_libcrypt_before=1 \
 		$(OPENSSH_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/openssh \
-		SSHDLIBS="-lcrypt -lsandbox -lpam -ldl" \
+		SSHDLIBS="$(OPENSSH_EMBEDDED_SSHD_LIBS) -lsandbox -lpam -ldl" \
 		CONFIG_FILE="$(MEMO_PREFIX)/etc/openssh.conf" \
 		piddir="$(MEMO_PREFIX)/var/run" \
 		PRIVSEP_PATH="$(MEMO_PREFIX)/var/empty"
