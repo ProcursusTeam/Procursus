@@ -9,6 +9,7 @@ DEB_FLAC_V   ?= $(FLAC_VERSION)
 flac-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftp.osuosl.org/pub/xiph/releases/flac/flac-$(FLAC_VERSION).tar.xz)
 	$(call EXTRACT_TAR,flac-$(FLAC_VERSION).tar.xz,flac-$(FLAC_VERSION),flac)
+	sed -i 's/-keep_private_externs -nostdlib/-keep_private_externs $(PLATFORM_VERSION_MIN) -nostdlib/g' $(BUILD_WORK)/flac/configure
 
 ifneq ($(wildcard $(BUILD_WORK)/flac/.build_complete),)
 flac:
@@ -24,7 +25,8 @@ flac: flac-setup libogg
 		--disable-xmms-plugin \
 		--disable-rpath \
 		--with-ogg \
-		--with-ogg-includes=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+		--with-ogg-includes=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include \
+		LDFLAGS="$(shell echo '$(LDFLAGS)' | sed 's/-Wl,-not_for_dyld_shared_cache//g')"
 	+$(MAKE) -C $(BUILD_WORK)/flac
 	+$(MAKE) -C $(BUILD_WORK)/flac install \
 		DESTDIR=$(BUILD_STAGE)/flac
