@@ -7,7 +7,7 @@ APR_VERSION := 1.7.0
 DEB_APR_V   ?= $(APR_VERSION)
 
 apr-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://downloads.apache.org/apr/apr-$(APR_VERSION).tar.gz{$(comma).asc})
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://web.archive.org/web/20210908153011id_/https://downloads.apache.org/apr/apr-1.7.0.tar.gz{$(comma).asc})
 	$(call PGP_VERIFY,apr-$(APR_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,apr-$(APR_VERSION).tar.gz,apr-$(APR_VERSION),apr)
 	$(call DO_PATCH,apr,apr,-p1)
