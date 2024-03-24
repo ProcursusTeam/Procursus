@@ -10,6 +10,7 @@ libtiff-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
 		https://download.osgeo.org/libtiff/tiff-$(LIBTIFF_VERSION).tar.gz)
 	$(call EXTRACT_TAR,tiff-$(LIBTIFF_VERSION).tar.gz,tiff-$(LIBTIFF_VERSION),libtiff)
+	sed -i 's/-keep_private_externs -nostdlib/-keep_private_externs $(PLATFORM_VERSION_MIN) -nostdlib/g' $(BUILD_WORK)/libtiff/configure
 
 ifneq ($(wildcard $(BUILD_WORK)/libtiff/.build_complete),)
 libtiff:
