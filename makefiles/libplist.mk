@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += libplist
-LIBPLIST_COMMIT  := 4b50a5acf1e26ff44904d5e533ff0fc06bde3e61
-LIBPLIST_VERSION := 2.2.0+git20230130.$(shell echo $(LIBPLIST_COMMIT) | cut -c -7)
+LIBPLIST_COMMIT   := 4b50a5acf1e26ff44904d5e533ff0fc06bde3e61
+LIBPLIST_VERSION  := 2.2.0+git20230130.$(shell echo $(LIBPLIST_COMMIT) | cut -c -7)
 DEB_LIBPLIST_V    ?= $(LIBPLIST_VERSION)
 
 libplist-setup: setup
@@ -17,11 +17,13 @@ libplist:
 	@echo "Using previously built libplist."
 else
 libplist: libplist-setup
-	cd $(BUILD_WORK)/libplist && ./autogen.sh \
+	cd $(BUILD_WORK)/libplist && NOCONFIGURE=1 ./autogen.sh && \
+		sed -i 's/-keep_private_externs -nostdlib/-keep_private_externs $(PLATFORM_VERSION_MIN) -nostdlib/g' $(BUILD_WORK)/libplist/configure && \
+		./configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		PACKAGE_VERSION="$(LIBPLIST_VERSION)" \
 		--without-cython
-	+$(MAKE) -C $(BUILD_WORK)/libplist
+	+$(MAKE) -C $(BUILD_WORK)/libplist V=1
 	+$(MAKE) -C $(BUILD_WORK)/libplist install \
 		DESTDIR="$(BUILD_STAGE)/libplist"
 	$(call AFTER_BUILD,copy)
