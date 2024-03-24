@@ -12,6 +12,7 @@ libvorbis-setup: setup
 
 	# don't build the html docs
 	sed -ri 's/(SUBDIRS = .*)doc(.*)/\1 \2/' $(BUILD_WORK)/libvorbis/Makefile.in
+	sed -i 's/-force_cpusubtype_ALL//' $(BUILD_WORK)/libvorbis/configure
 
 ifneq ($(wildcard $(BUILD_WORK)/libvorbis/.build_complete),)
 libvorbis:
@@ -22,7 +23,8 @@ libvorbis: libvorbis-setup libogg
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
 		--with-pic \
-		--disable-docs
+		--disable-docs \
+		--disable-oggtest
 	+$(MAKE) -C $(BUILD_WORK)/libvorbis
 	+$(MAKE) -C $(BUILD_WORK)/libvorbis install \
 		DESTDIR=$(BUILD_STAGE)/libvorbis
