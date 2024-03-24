@@ -10,6 +10,7 @@ gpgme-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://gnupg.org/ftp/gcrypt/gpgme/gpgme-$(GPGME_VERSION).tar.bz2{$(comma).sig})
 	$(call PGP_VERIFY,gpgme-$(GPGME_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,gpgme-$(GPGME_VERSION).tar.bz2,gpgme-$(GPGME_VERSION),gpgme)
+	sed -i 's/-keep_private_externs -nostdlib/-keep_private_externs $(PLATFORM_VERSION_MIN) -nostdlib/g' $(BUILD_WORK)/gpgme/configure
 
 ifneq ($(wildcard $(BUILD_WORK)/gpgme/.build_complete),)
 gpgme:
@@ -20,13 +21,17 @@ gpgme: gpgme-setup gnupg libassuan libgpg-error
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-libassuan-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		--with-libgpg-error-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		--disable-glibtest \
 		--disable-gpgconf-test \
 		--disable-gpg-test \
 		--disable-gpgsm-test \
 		--disable-g13-test
-	+$(MAKE) -C $(BUILD_WORK)/gpgme
+	+printf 'all:\nclean:\ninstall:\n.PHONY: all clean install\n' > $(BUILD_WORK)/gpgme/lang/python/tests/Makefile
+	+$(MAKE) -C $(BUILD_WORK)/gpgme \
+		CPATH="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include:$(TARGET_SYSROOT)/usr/include"
 	+$(MAKE) -C $(BUILD_WORK)/gpgme install \
-		DESTDIR=$(BUILD_STAGE)/gpgme
+		DESTDIR=$(BUILD_STAGE)/gpgme \
+		CPATH="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include:$(TARGET_SYSROOT)/usr/include"
 	$(call AFTER_BUILD,copy)
 endif
 
