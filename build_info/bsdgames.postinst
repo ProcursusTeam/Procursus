@@ -1,0 +1,31 @@
+#!/bin/sh
+
+set -eu
+
+CREATEUSER="games"
+
+Setup_file () {
+	FILE="${1}"
+	MODE="${2}"
+	USER="${3}"
+	GROUP="${4}"
+
+	dpkg-statoverride --update --add ${USER} ${GROUP} ${MODE} ${FILE}
+}
+
+if [ "$1" = "configure" ]
+then
+	pw groupadd -n ${CREATEUSER} &>/dev/null || true
+	pw useradd -n ${CREATEUSER} -d /var/empty -g ${CREATEUSER} -s /usr/sbin/nologin &>/dev/null || true
+
+	@GNU_PREFIX@find @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/games -type f -exec Setup_file {} 0444 "root" "root" \;
+	@GNU_PREFIX@find @MEMO_PREFIX@/var/games -type f -exec Setup_file {} 0660 "root" "games" \;
+	@GNU_PREFIX@find @MEMO_PREFIX@/var/games -type d -exec Setup_file {} 0775 "root" "games" \;
+	for bin in @MEMO_PREFIX@@MEMO_SUB_PREFIX@/games/{atc,battlestar,canfield,hack,hunt,huntd,larn,phantasia,robots,rogue,sail,snake,snscore,testpat,tetris,warp,wump}; do
+		Setup_file $bin 2755 "root" "games"
+	done
+fi
+
+#DEBHELPER#
+
+exit 0
