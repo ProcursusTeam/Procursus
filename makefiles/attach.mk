@@ -13,15 +13,13 @@ attach-setup: setup
 	$(call GITHUB_ARCHIVE,NyaMisty,Attach-Detach,$(ATTACH_COMMIT),$(ATTACH_COMMIT),attach)
 	$(call EXTRACT_TAR,attach-$(ATTACH_COMMIT).tar.gz,attach-detach-$(ATTACH_COMMIT),attach)
 	mkdir -p $(BUILD_STAGE)/attach/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	$(call DOWNLOAD_FILES,$(BUILD_WORK)/attach, \
-		https://raw.githubusercontent.com/elihwyma/iOS-SDK-With-Passion/uwu/iPhoneOS14.0.sdk/System/Library/PrivateFrameworks/DiskImages2.framework/DiskImages2.tbd)
 
 ifneq ($(wildcard $(BUILD_WORK)/attach/.build_complete),)
 attach:
 	@echo "Using previously built attach."
 else
 attach: attach-setup
-	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/attach/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/attach2 $(BUILD_WORK)/attach/attach2.m $(LDFLAGS) -framework Foundation -framework IOKit $(BUILD_WORK)/attach/DiskImages2.tbd
+	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/attach/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/attach2 $(BUILD_WORK)/attach/attach2.m $(LDFLAGS) -framework Foundation -framework IOKit -F$(BUILD_MISC)/PrivateFrameworks -framework DiskImages2
 	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/attach/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/attach $(BUILD_WORK)/attach/attach.m $(LDFLAGS) -framework CoreFoundation -framework IOKit
 	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/attach/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/detach $(BUILD_WORK)/attach/detach.c $(LDFLAGS) -framework CoreFoundation -framework IOKit
 	$(call AFTER_BUILD)
