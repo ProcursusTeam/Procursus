@@ -16,13 +16,13 @@ ifneq ($(wildcard $(BUILD_WORK)/xtrans/.build_complete),)
 xtrans:
 	@echo "Using previously built xtrans."
 else
-xtrans: xtrans-setup
+xtrans: xtrans-setup util-macros
 	cd $(BUILD_WORK)/xtrans && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-docs=no
 	+$(MAKE) -C $(BUILD_WORK)/xtrans
 	+$(MAKE) -C $(BUILD_WORK)/xtrans install \
-		DESTDIR="$(BUILD_STAGE)/xtrans-dev"
+		DESTDIR="$(BUILD_STAGE)/xtrans"
 	$(call AFTER_BUILD,copy)
 endif
 
@@ -31,7 +31,7 @@ xtrans-package: xtrans-stage
 	rm -rf $(BUILD_DIST)/xtrans-dev
 
 	# xtrans.mk Prep xtrans-dev
-	cp -a $(BUILD_STAGE)/xtrans-dev $(BUILD_DIST)
+	cp -a $(BUILD_STAGE)/xtrans $(BUILD_DIST)/xtrans-dev
 
 	# xtrans.mk Make .debs
 	$(call PACK,xtrans-dev,DEB_XTRANS_V)
