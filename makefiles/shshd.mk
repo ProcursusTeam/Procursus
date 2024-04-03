@@ -2,8 +2,6 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-### HOLD: No longer compatible with pre-iOS 15. This is acceptable, as shshd pre-iOS 15 is complete.
-
 ### TODO: Update upstream
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
@@ -27,8 +25,9 @@ shshd-setup: setup
 	$(call EXTRACT_TAR,SHSHDaemon-$(SHSHD_VERSION).tar.gz,SHSHDaemon-$(SHSHD_VERSION),shshd)
 	mkdir -p $(BUILD_STAGE)/shshd/$(MEMO_PREFIX){/Library/LaunchDaemons,$(MEMO_SUB_PREFIX)/{sbin,libexec}}
 	mkdir -p $(BUILD_WORK)/shshd/include
-	ln -s $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit $(BUILD_WORK)/shshd/include/IOKit
-	sed -i 's|kIOMasterPortDefault|kIOMainPortDefault|' $(BUILD_WORK)/shshd/main.swift
+	$(LN_S) $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit $(BUILD_WORK)/shshd/include/IOKit
+	sed -i 's|kIOMainPortDefault|gang_kIOMasterPortDefault|' $(BUILD_WORK)/shshd/main.swift
+	if ! [ grep -q "gang_kIOMasterPortDefault" $(BUILD_WORK)/shshd/Bridge.h ]; then printf 'const mach_port_t gang_kIOMasterPortDefault asm ("_kIOMasterPortDefault");\n' >> $(BUILD_WORK)/shshd/Bridge.h; fi
 
 ifneq ($(wildcard $(BUILD_WORK)/shshd/.build_complete),)
 shshd:
