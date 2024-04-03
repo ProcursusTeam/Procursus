@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += libboost
-LIBBOOST_VERSION  := 1.76.0
-DEB_LIBBOOST_V    ?= $(LIBBOOST_VERSION)-1
+LIBBOOST_VERSION  := 1.84.0
+DEB_LIBBOOST_V    ?= $(LIBBOOST_VERSION)
 
 ifneq (,$(findstring amd64,$(MEMO_TARGET)))
 LIBBOOST_CONFIGURE_ARGS := abi=sysv
@@ -13,7 +13,7 @@ LIBBOOST_CONFIGURE_ARGS := abi=aapcs
 endif
 
 libboost-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE) https://boostorg.jfrog.io/artifactory/main/release/$(LIBBOOST_VERSION)/source/boost_$(shell echo $(LIBBOOST_VERSION) | sed,'s/\./_/g').tar.bz2)
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://boostorg.jfrog.io/artifactory/main/release/$(LIBBOOST_VERSION)/source/boost_$(shell echo $(LIBBOOST_VERSION) | sed 's/\./_/g').tar.bz2)
 	$(call EXTRACT_TAR,boost_$(shell echo $(LIBBOOST_VERSION) | sed 's/\./_/g').tar.bz2,boost_$(shell echo $(LIBBOOST_VERSION) | sed 's/\./_/g'),libboost)
 
 ifneq ($(wildcard $(BUILD_WORK)/libboost/.build_complete),)
@@ -22,11 +22,11 @@ libboost:
 else
 libboost: libboost-setup xz zstd icu4c python3
 	rm -rf $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libboost_*
-	$(BUILD_WORK)/libboost/tools/build/src/engine/build.sh --cxx="$(CXX_FOR_BUILD)" --cxxflags="-std=c++11 $(CXXFLAGS_FOR_BUILD)"
+	$(BUILD_WORK)/libboost/tools/build/src/engine/build.sh --cxx="$(CXX_FOR_BUILD)" --cxxflags="-std=c++14 $(CXXFLAGS_FOR_BUILD)"
 ifneq (,$(findstring amd64,$(MEMO_TARGET)))
 	echo "using clang-darwin : x86 : $(CXX) : <compileflags>\"$(CPPFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)\" <cflags>\"$(CFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)\" <cxxflags>\"$(CXXFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)\" <linkflags>\"$(LDFLAGS)\" ;" > $(BUILD_WORK)/libboost/tools/build/src/user-config.jam
 else
-	echo "using clang-darwin : arm : $(CXX) : <compileflags>\"$(CPPFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)\" <cflags>\"$(CFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)\" <cxxflags>\"$(CXXFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)\" <linkflags>\"$(LDFLAGS)\" ;" > $(BUILD_WORK)/libboost/tools/build/src/user-config.jam
+	echo "using clang-darwin : arm : $(CXX) : <compileflags>\"$(CPPFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)\" <cflags>\"$(CFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)\" <cxxflags>\"$(CXXFLAGS) -I$(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/$$(ls $(BUILD_STAGE)/python3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include)\" <linkflags>\"$(LDFLAGS) $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/liblzma.dylib\" ;" > $(BUILD_WORK)/libboost/tools/build/src/user-config.jam
 endif
 	cd $(BUILD_WORK)/libboost && $(BUILD_WORK)/libboost/tools/build/src/engine/b2 \
 		--prefix=$(BUILD_STAGE)/libboost/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
@@ -34,7 +34,7 @@ endif
 		--without-graph_parallel \
 		threading=multi \
 		variant=release \
-		cxxstd="14" \
+		cxxstd="11" \
 		$(LIBBOOST_CONFIGURE_ARGS) \
 		install
 	# F u boost!
