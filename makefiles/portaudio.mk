@@ -23,6 +23,7 @@ else
 portaudio: portaudio-setup
 	cd $(BUILD_WORK)/portaudio && autoreconf -fi
 	cd $(BUILD_WORK)/portaudio/bindings/cpp && autoreconf -fi
+	sed -i 's/-keep_private_externs -nostdlib/-keep_private_externs $(PLATFORM_VERSION_MIN) -nostdlib/g' $(BUILD_WORK)/portaudio/{,bindings/cpp}/configure
 	cd $(BUILD_WORK)/portaudio && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-cxx \
