@@ -1,8 +1,8 @@
-Package: libboost-log1.76.0
+Package: libboost-log1.84.0
 Version: @DEB_LIBBOOST_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libboost-atomic1.76.0 (= @DEB_LIBBOOST_V@), libboost-chrono1.76.0 (= @DEB_LIBBOOST_V@), libboost-thread1.76.0 (= @DEB_LIBBOOST_V@), libboost-regex1.76.0 (= @DEB_LIBBOOST_V@), libicu69
+Depends: libboost-atomic1.84.0 (= @DEB_LIBBOOST_V@), libboost-chrono1.84.0 (= @DEB_LIBBOOST_V@), libboost-thread1.84.0 (= @DEB_LIBBOOST_V@), libboost-regex1.84.0 (= @DEB_LIBBOOST_V@), libicu69
 Section: Libraries
 Priority: optional
 Description: C++ logging library
