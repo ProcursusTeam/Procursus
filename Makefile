@@ -1244,7 +1244,7 @@ env:
 include makefiles/*.mk
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 800 ] && echo 1),1)
-RAMDISK_PROJECTS := bash coreutils diskdev-cmds findutils grep gzip libmd ncurses openssl openssh readline tar
+RAMDISK_PROJECTS := bash coreutils diskdev-cmds findutils grep gzip libmd nano ncurses openssl openssh readline tar
 
 else
 RAMDISK_PROJECTS := bash coreutils openssl openssh readline ncurses libmd
