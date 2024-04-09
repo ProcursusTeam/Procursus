@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += libc-ares
-LIBC-ARES_VERSION := 1.19.0
+LIBC-ARES_VERSION := 1.28.1
 DEB_LIBC-ARES_V   ?= $(LIBC-ARES_VERSION)
 
 libc-ares-setup: setup
