@@ -2,7 +2,7 @@ Package: ngtcp2-client
 Version: @DEB_NGTCP2_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libngtcp2-10 (= @DEB_NGTCP2_V@), libngtcp2-crypto-gnutls4 (= @DEB_NGTCP2_V@), libnghttp3-3, libev4, libgnutls30
+Depends: libngtcp2-16 (= @DEB_NGTCP2_V@), libngtcp2-crypto-gnutls8 (= @DEB_NGTCP2_V@), libnghttp3-9, libev4, libgnutls30
 Section: Networking
 Priority: standard
 Homepage: https://nghttp2.org/ngtcp2/
