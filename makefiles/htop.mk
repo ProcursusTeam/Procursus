@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += htop
-HTOP_VERSION := 3.2.2
+HTOP_VERSION := 3.3.0
 DEB_HTOP_V   ?= $(HTOP_VERSION)
 
 htop-setup: setup
@@ -20,7 +20,8 @@ htop: htop-setup ncurses
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-static \
 		--disable-linux-affinity \
-		ac_cv_lib_ncursesw_addnwstr=yes
+		ac_cv_lib_ncursesw_addnwstr=yes \
+		ac_cv_have_decl_IOMainPort=no
 	+$(MAKE) -C $(BUILD_WORK)/htop install \
 		DESTDIR="$(BUILD_STAGE)/htop"
 	rm -rf $(BUILD_STAGE)/htop/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{applications,pixmaps}
