@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS       += coreutils
-COREUTILS_VERSION   := 9.4
+COREUTILS_VERSION   := 9.5
 GETENTDARWIN_COMMIT := 1ad0e39ee51181ea6c13b3d1d4e9c6005ee35b5e
 DEB_COREUTILS_V     ?= $(COREUTILS_VERSION)
 
