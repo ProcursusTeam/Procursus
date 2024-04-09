@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += fish
-FISH_VERSION  := 3.4.1
+FISH_VERSION  := 3.7.1
 DEB_FISH_V    ?= $(FISH_VERSION)
 
 fish-setup: setup
