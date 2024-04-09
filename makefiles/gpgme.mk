@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += gpgme
-GPGME_VERSION := 1.17.1
+GPGME_VERSION := 1.23.2
 DEB_GPGME_V   ?= $(GPGME_VERSION)
 
 gpgme-setup: setup
