@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += libogg
-LIBOGG_VERSION := 1.3.4
+LIBOGG_VERSION := 1.3.5
 DEB_LIBOGG_V   ?= $(LIBOGG_VERSION)
 
 libogg-setup: setup
@@ -12,9 +12,6 @@ libogg-setup: setup
 
 	# don't build the html docs
 	sed -ri 's/(SUBDIRS = .*)doc(.*)/\1 \2/' $(BUILD_WORK)/libogg/Makefile.in
-
-	# Fix typedefs, remove in next version
-	$(call DO_PATCH,libogg,libogg,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/libogg/.build_complete),)
 libogg:
