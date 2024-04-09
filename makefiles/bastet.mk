@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += bastet
 BASTET_VERSION := 0.43.2
-DEB_BASTET_V   ?= $(BASTET_VERSION)
+DEB_BASTET_V   ?= $(BASTET_VERSION)-1
 
 bastet-setup: setup
 	$(call GITHUB_ARCHIVE,fph,bastet,$(BASTET_VERSION),$(BASTET_VERSION))
