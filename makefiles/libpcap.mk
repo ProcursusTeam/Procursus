@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += libpcap
-LIBPCAP_VERSION := 1.10.1
-DEB_LIBPCAP_V   ?= $(LIBPCAP_VERSION)-1
+LIBPCAP_VERSION := 1.10.4
+DEB_LIBPCAP_V   ?= $(LIBPCAP_VERSION)
 
 libpcap-setup: setup
 	$(call GITHUB_ARCHIVE,the-tcpdump-group,libpcap,$(LIBPCAP_VERSION),libpcap-$(LIBPCAP_VERSION))
