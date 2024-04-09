@@ -1,4 +1,4 @@
-Package: libutf8proc2
+Package: libutf8proc3
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LIBUTF8PROC_V@
