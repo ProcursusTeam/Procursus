@@ -2,7 +2,7 @@ Package: libngtcp2-crypto-gnutls-dev
 Version: @DEB_NGTCP2_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libngtcp2-10 (= @DEB_NGTCP2_V@), libngtcp2-crypto-gnutls4 (= @DEB_NGTCP2_V@), libgnutls30-dev
+Depends: libngtcp2-16 (= @DEB_NGTCP2_V@), libngtcp2-crypto-gnutls8 (= @DEB_NGTCP2_V@), libgnutls30-dev
 Section: Development
 Priority: standard
 Homepage: https://nghttp2.org/ngtcp2/

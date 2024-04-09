@@ -2,7 +2,7 @@ Package: libngtcp2-dev
 Version: @DEB_NGTCP2_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libngtcp2-10 (= @DEB_NGTCP2_V@)
+Depends: libngtcp2-16 (= @DEB_NGTCP2_V@)
 Section: Development
 Priority: standard
 Homepage: https://nghttp2.org/ngtcp2/

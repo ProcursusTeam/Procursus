@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += ngtcp2
-NGTCP2_VERSION := 0.13.1
+NGTCP2_VERSION := 1.4.0
 DEB_NGTCP2_V   ?= $(NGTCP2_VERSION)
 
 ngtcp2-setup: setup
@@ -35,16 +35,16 @@ endif
 
 ngtcp2-package: ngtcp2-stage
 	# ngtcp2.mk Package Structure
-	rm -rf $(BUILD_DIST)/libngtcp2-{crypto-gnutls4,10,{crypto-gnutls-,}dev} $(BUILD_DIST)/ngtcp2-{client,server}
-	mkdir -p $(BUILD_DIST)/libngtcp2-{crypto-gnutls4,10,{crypto-gnutls-,}dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+	rm -rf $(BUILD_DIST)/libngtcp2-{crypto-gnutls8,16,{crypto-gnutls-,}dev} $(BUILD_DIST)/ngtcp2-{client,server}
+	mkdir -p $(BUILD_DIST)/libngtcp2-{crypto-gnutls8,16,{crypto-gnutls-,}dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/libngtcp2-{crypto-gnutls-,}dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include/ngtcp2,lib/pkgconfig} \
 		$(BUILD_DIST)/ngtcp2-{client,server}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
-	# ngtcp2.mk Prep libngtcp2-10
-	cp -a $(BUILD_STAGE)/ngtcp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libngtcp2.10.dylib $(BUILD_DIST)/libngtcp2-10/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	# ngtcp2.mk Prep libngtcp2-16
+	cp -a $(BUILD_STAGE)/ngtcp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libngtcp2.16.dylib $(BUILD_DIST)/libngtcp2-16/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-	# ngtcp2.mk Prep libngtcp2-crypto-gnutls4
-	cp -a $(BUILD_STAGE)/ngtcp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libngtcp2_crypto_gnutls.4.dylib $(BUILD_DIST)/libngtcp2-crypto-gnutls4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	# ngtcp2.mk Prep libngtcp2-crypto-gnutls8
+	cp -a $(BUILD_STAGE)/ngtcp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libngtcp2_crypto_gnutls.8.dylib $(BUILD_DIST)/libngtcp2-crypto-gnutls8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# ngtcp2.mk Prep libngtcp2-dev
 	cp -a $(BUILD_STAGE)/ngtcp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libngtcp2.{dylib,a} $(BUILD_DIST)/libngtcp2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
@@ -63,20 +63,20 @@ ngtcp2-package: ngtcp2-stage
 	cp -a $(BUILD_STAGE)/ngtcp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/ngtcp2-client/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# ngtcp2.mk Sign
-	$(call SIGN,libngtcp2-10,general.xml)
-	$(call SIGN,libngtcp2-crypto-gnutls4,general.xml)
+	$(call SIGN,libngtcp2-16,general.xml)
+	$(call SIGN,libngtcp2-crypto-gnutls8,general.xml)
 	$(call SIGN,ngtcp2-client,general.xml)
 	$(call SIGN,ngtcp2-server,general.xml)
 
 	# ngtcp2.mk Make .debs
-	$(call PACK,libngtcp2-10,DEB_NGTCP2_V)
+	$(call PACK,libngtcp2-16,DEB_NGTCP2_V)
 	$(call PACK,libngtcp2-dev,DEB_NGTCP2_V)
-	$(call PACK,libngtcp2-crypto-gnutls4,DEB_NGTCP2_V)
+	$(call PACK,libngtcp2-crypto-gnutls8,DEB_NGTCP2_V)
 	$(call PACK,libngtcp2-crypto-gnutls-dev,DEB_NGTCP2_V)
 	$(call PACK,ngtcp2-client,DEB_NGTCP2_V)
 	$(call PACK,ngtcp2-server,DEB_NGTCP2_V)
 
 	# ngtcp2.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libngtcp2-{crypto-gnutls4,10,{crypto-gnutls-,}dev} $(BUILD_DIST)/ngtcp2-{client,server}
+	rm -rf $(BUILD_DIST)/libngtcp2-{crypto-gnutls8,16,{crypto-gnutls-,}dev} $(BUILD_DIST)/ngtcp2-{client,server}
 
 .PHONY: ngtcp2 ngtcp2-package
