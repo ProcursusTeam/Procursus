@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += groff
-GROFF_VERSION  := 1.22.4
+GROFF_VERSION  := 1.23.0
 DEB_GROFF_V    ?= $(GROFF_VERSION)
 
 ###
@@ -16,7 +16,7 @@ groff-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/groff/groff-$(GROFF_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,groff-$(GROFF_VERSION).tar.gz)
 	$(call EXTRACT_TAR,groff-$(GROFF_VERSION).tar.gz,groff-$(GROFF_VERSION),groff)
-	$(call DO_PATCH,groff,groff,-p1) # Remove in next release.
+	#$(call DO_PATCH,groff,groff,-p1) # Remove in next release.
 
 ifneq ($(wildcard $(BUILD_WORK)/groff/.build_complete),)
 groff:
