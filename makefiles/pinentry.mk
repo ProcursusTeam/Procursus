@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += pinentry
-PINENTRY_VERSION := 1.2.0
+PINENTRY_VERSION := 1.3.0
 DEB_PINENTRY_V   ?= $(PINENTRY_VERSION)
 
 pinentry-setup: setup
