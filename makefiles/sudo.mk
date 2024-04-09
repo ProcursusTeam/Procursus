@@ -7,7 +7,7 @@ STRAPPROJECTS += sudo
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += sudo
 endif # ($(MEMO_TARGET),darwin-\*)
-SUDO_VERSION  := 1.9.14p3
+SUDO_VERSION  := 1.9.15p5
 DEB_SUDO_V    ?= $(SUDO_VERSION)
 
 sudo-setup: setup
@@ -40,10 +40,13 @@ endif
 		sudo_cv___func__=yes \
 		ac_cv_have_working_snprintf=yes \
 		ac_cv_have_working_vsnprintf=yes
+	$(CC) $(CFLAGS) -c $(BUILD_MISC)/sudo/ie_stubs.c -o $(BUILD_WORK)/sudo/ie_stubs.o
 	sed -i 's/-Wc,-static-libgcc/ /g' $(BUILD_WORK)/sudo/{src,,plugins/*,logsrvd,lib/util}/Makefile
+	sed -i 's|LDFLAGS = -Os|LDFLAGS = $(BUILD_WORK)/sudo/ie_stubs.o -Os|' $(BUILD_WORK)/sudo/plugins/sudoers/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/sudo
 	+$(MAKE) -C $(BUILD_WORK)/sudo install \
 		DESTDIR=$(BUILD_STAGE)/sudo \
+		LIBS="$(BUILD_MISC)/sudo/ie_stubs.c" \
 		INSTALL_OWNER=''
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	mkdir -p $(BUILD_STAGE)/sudo/$(MEMO_PREFIX)/etc/pam.d
