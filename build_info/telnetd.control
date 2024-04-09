@@ -1,0 +1,16 @@
+Package: telnetd
+Version: @DEB_REMOTE-CMDS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libncursesw6
+Section: Networking
+Description: basic telnet server
+ The in.telnetd program is a server which supports the DARPA telnet 
+ interactive communication protocol.
+ .
+ This legacy server should in general be abandoned in favour of a 
+ contemporary ssh-server, as this implementation only is able to 
+ process password and user name in clear text. Other variants, like 
+ telnetd-ssl and a selection of Kerberized TELNET servers, are able to 
+ improve on this by providing secure forms of authentication and 
+ encryption.
