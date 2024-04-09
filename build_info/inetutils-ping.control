@@ -1,0 +1,14 @@
+Package: inetutils-ping
+Conflicts: inetutils
+Version: @DEB_INETUTILS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libidn2-0
+Section: Networking
+Priority: optional
+Homepage: http://www.gnu.org/software/inetutils/
+Description: ICMP echo tool
+ Ping uses ICMP to send out echo requests, and uses the reply packets to calculate latency between the sending and the 
+ destination hosts.
+ .
+ This is the portable GNU implementation of ping.
