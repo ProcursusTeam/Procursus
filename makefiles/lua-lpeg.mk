@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += lua-lpeg
-LUA-LPEG_VERSION := 1.0.2
+LUA-LPEG_VERSION := 1.1.0
 DEB_LUA-LPEG_V   ?= $(LUA-LPEG_VERSION)
 
 lua-lpeg-setup: setup
