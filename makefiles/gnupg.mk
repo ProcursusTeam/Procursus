@@ -3,23 +3,23 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += gnupg
-GNUPG_VERSION := 2.4.3
+GNUPG_VERSION := 2.4.5
 DEB_GNUPG_V   ?= $(GNUPG_VERSION)
 
 gnupg-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://gnupg.org/ftp/gcrypt/gnupg/gnupg-$(GNUPG_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,gnupg-$(GNUPG_VERSION).tar.bz2,gnupg-$(GNUPG_VERSION),gnupg)
-	$(call DO_PATCH,gnupg,gnupg,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/gnupg/.build_complete),)
 gnupg:
 	@echo "Using previously built gnupg."
 else
-gnupg: gnupg-setup readline libgpg-error libgcrypt libassuan libksba npth gettext gnutls libusb
+gnupg: gnupg-setup readline libgpg-error libgcrypt libassuan libksba npth gettext gnutls libusb sqlite3
 	cd $(BUILD_WORK)/gnupg && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		$(foreach x, libgpg-error libgcrypt libassuan ksba npth, --with-$x-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)) \
-		--with-bzip2
+		--with-bzip2 \
+		--enable-sqlite
 	+$(MAKE) -C $(BUILD_WORK)/gnupg
 	+$(MAKE) -C $(BUILD_WORK)/gnupg install \
 		DESTDIR=$(BUILD_STAGE)/gnupg
@@ -28,7 +28,7 @@ endif
 
 gnupg-package: gnupg-stage
 	# gnupg.mk Package Structure
-	rm -rf $(BUILD_DIST)/dirmngr $(BUILD_DIST)/gnupg{,-utils} $(BUILD_DIST)/gpg{,-agent,-wks-{client,server},conf,sm,v} $(BUILD_DIST)/scdaemon
+	rm -rf $(BUILD_DIST)/{dirmngr,keyboxd} $(BUILD_DIST)/gnupg{,-utils} $(BUILD_DIST)/gpg{,-agent,-wks-{client,server},conf,sm,v} $(BUILD_DIST)/scdaemon
 	mkdir -p $(BUILD_DIST)/dirmngr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/{gnupg,man/man{1,8}}} \
 		$(BUILD_DIST)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
 		$(BUILD_DIST)/gnupg-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,libexec,share/man/man{1,8}} \
@@ -40,6 +40,7 @@ gnupg-package: gnupg-stage
 		$(BUILD_DIST)/gpgsm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
 		$(BUILD_DIST)/gpgv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1} \
 		$(BUILD_DIST)/scdaemon/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,libexec,share/man/man1}
+	mkdir -p $(BUILD_DIST)/keyboxd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
 
 	# gnupg.mk Prep dirmngr
 	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dirmngr* $(BUILD_DIST)/dirmngr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
@@ -89,6 +90,9 @@ gnupg-package: gnupg-stage
 	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gpgv $(BUILD_DIST)/gpgv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/gpgv.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/gpgv/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
+	# gnupg.mk Prep keyboxd
+	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/keyboxd $(BUILD_DIST)/keyboxd/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
+
 	# gnupg.mk Prep scdaemon
 	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gpg-card $(BUILD_DIST)/scdaemon/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/gnupg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/scdaemon $(BUILD_DIST)/scdaemon/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec
@@ -105,6 +109,7 @@ gnupg-package: gnupg-stage
 	$(call SIGN,gpgsm,general.xml)
 	$(call SIGN,gpgv,general.xml)
 	$(call SIGN,scdaemon,usb.xml)
+	$(call SIGN,keyboxd,general.xml)
 
 	# gnupg.mk Make .debs
 	$(call PACK,gnupg,DEB_GNUPG_V)
@@ -118,8 +123,9 @@ gnupg-package: gnupg-stage
 	$(call PACK,gpgsm,DEB_GNUPG_V)
 	$(call PACK,gpgv,DEB_GNUPG_V)
 	$(call PACK,scdaemon,DEB_GNUPG_V)
+	$(call PACK,keyboxd,DEB_GNUPG_V)
 
 	# gnupg.mk Build cleanup
-	rm -rf $(BUILD_DIST)/dirmngr $(BUILD_DIST)/gnupg{,-utils} $(BUILD_DIST)/gpg{,-agent,-wks-{client,server},conf,sm,v} $(BUILD_DIST)/scdaemon
+	rm -rf $(BUILD_DIST)/{dirmngr,keyboxd} $(BUILD_DIST)/gnupg{,-utils} $(BUILD_DIST)/gpg{,-agent,-wks-{client,server},conf,sm,v} $(BUILD_DIST)/scdaemon
 
 .PHONY: gnupg gnupg-package
