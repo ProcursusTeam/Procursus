@@ -1,0 +1,16 @@
+Package: inetutils-rlogind
+Conflicts: inetutils
+Version: @DEB_INETUTILS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Networking
+Priority: optional
+Homepage: http://www.gnu.org/software/inetutils/
+Description: server for the rlogin client program
+ The rlogind server provides a remote login facility with authentication based on privileged port numbers from trusted hosts.
+ .
+ Rlogind in daemon mode listens for service requests at the port indicated in the ‘login’ service specification. A common 
+ alternative is to have the super-server inetd listen at the same port, which then invokes rlogind as demand arises.
+ .
+ The standard authentication procedure assumes the integrity of each client machine and of the connecting medium. This is 
+ insecure, since it transmits credentials in clear text, but is useful in an “open” environment.

@@ -1,0 +1,12 @@
+Package: inetutils-talkd
+Conflicts: inetutils
+Version: @DEB_INETUTILS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Provides: talkd
+Section: Networking
+Priority: optional
+Homepage: http://www.gnu.org/software/inetutils/
+Description: remote user communication server
+ The talkd program is a server that notifies a user that someone else wants to initiate a conversation. It acts a repository 
+ of invitations, responding to requests by clients wishing to rendezvous to hold a conversation.

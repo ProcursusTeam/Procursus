@@ -1,0 +1,11 @@
+Package: inetutils-ftp
+Conflicts: inetutils
+Version: @DEB_INETUTILS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libidn2-0, libreadline8 (>= 6.0)
+Section: Networking
+Priority: optional
+Homepage: http://www.gnu.org/software/inetutils/
+Description: File Transfer Protocol client
+ The ftp command is used to transfer files between hosts using the FTP protocol.
