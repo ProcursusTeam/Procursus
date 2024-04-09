@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS  += lsof
-LSOF_VERSION := 62
+LSOF_VERSION := 73
 DEB_LSOF_V   ?= $(LSOF_VERSION)
 
 lsof-setup: setup
@@ -32,12 +32,13 @@ lsof: lsof-setup network-cmds-setup ncurses
 	unlink $(BUILD_WORK)/lsof/lsof/dchannel.c && touch $(BUILD_WORK)/lsof/lsof/dchannel.c
 	echo -e "#include \"lsof.h\"\n \
 	void process_channel(int pid, int32_t fd){}" > $(BUILD_WORK)/lsof/lsof/dchannel.c
+	touch $(BUILD_WORK)/lsof/lsof/dialects/darwin/libproc/dnexus.c
 	cd $(BUILD_WORK)/lsof/lsof; \
-	$(MAKE) \
+	$(MAKE) lsof \
 		CC=$(CC) \
 		AR="$(AR) cr \$${LIB} \$${OBJ}" \
 		RANLIB="$(RANLIB) \$${LIB}" \
-		RC_CFLAGS="$(CFLAGS) -DUSE_LIB_REGEX -DHASUTMPX -liosexec -isystem $(BUILD_WORK)/network-cmds/include -isystem $(BUILD_WORK)/lsof/lsof/include -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib"
+		RC_CFLAGS="$(CFLAGS) -DUSE_LIB_REGEX -DHASUTMPX -liosexec -isystem $(BUILD_WORK)/network-cmds/include -isystem $(BUILD_WORK)/lsof/lsof/include -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -Wno-deprecated-non-prototype"
 	cp -a $(BUILD_WORK)/lsof/lsof/lsof $(BUILD_STAGE)/lsof/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 	cp -a $(BUILD_WORK)/lsof/lsof/lsof.8 $(BUILD_STAGE)/lsof/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
 	$(call AFTER_BUILD)
