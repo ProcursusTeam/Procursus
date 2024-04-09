@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS  += dpkg
-DPKG_VERSION   := 1.22.0
-DEB_DPKG_V     ?= $(DPKG_VERSION)-1
+DPKG_VERSION   := 1.22.6
+DEB_DPKG_V     ?= $(DPKG_VERSION)
 
 dpkg-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://deb.debian.org/debian/pool/main/d/dpkg/dpkg_$(DPKG_VERSION).tar.xz)
@@ -39,6 +39,7 @@ endif
 		PERL="$(shell command -v perl)" \
 		TAR=$(GNU_PREFIX)tar \
 		LZMA_LIBS="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/liblzma.dylib"
+	sed -i 's|dpkg_deb_LDADD) \$$(|dpkg_deb_LDADD) $$(LZMA_LIBS) $$(|' $(BUILD_WORK)/dpkg/src/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/dpkg \
 		PERL="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl"
 	+$(MAKE) -C $(BUILD_WORK)/dpkg install \
