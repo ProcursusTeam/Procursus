@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += libgdbm
-LIBGDBM_VERSION := 1.19
+LIBGDBM_VERSION := 1.23
 DEB_LIBGDBM_V   ?= $(LIBGDBM_VERSION)
 
 libgdbm-setup: setup
