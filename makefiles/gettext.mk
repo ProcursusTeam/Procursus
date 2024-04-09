@@ -10,6 +10,7 @@ gettext-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/gettext/gettext-$(GETTEXT_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,gettext-$(GETTEXT_VERSION).tar.xz)
 	$(call EXTRACT_TAR,gettext-$(GETTEXT_VERSION).tar.xz,gettext-$(GETTEXT_VERSION),gettext)
+	sed -i 's/-keep_private_externs -nostdlib/-keep_private_externs $(PLATFORM_VERSION_MIN) -nostdlib/g' $(BUILD_WORK)/gettext/configure
 
 ifneq ($(wildcard $(BUILD_WORK)/gettext/.build_complete),)
 gettext:
