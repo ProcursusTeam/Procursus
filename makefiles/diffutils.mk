@@ -7,7 +7,7 @@ SUBPROJECTS       += diffutils
 else
 STRAPPROJECTS     += diffutils
 endif
-DIFFUTILS_VERSION := 3.9
+DIFFUTILS_VERSION := 3.10
 DEB_DIFFUTILS_V   ?= $(DIFFUTILS_VERSION)
 
 diffutils-setup: setup
