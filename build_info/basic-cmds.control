@@ -3,6 +3,7 @@ Section: Administration
 Version: @DEB_BASIC-CMDS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
+Conflicts: text-cmds (<< 1:165.100.8)
 Priority: important
 Multi-Arch: foreign
 Description: msg, uudecode, uuencode, write
