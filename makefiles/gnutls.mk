@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS  += gnutls
-GNUTLS_VERSION := 3.8.1
+GNUTLS_VERSION := 3.8.5
 DEB_GNUTLS_V   ?= $(GNUTLS_VERSION)
 
 gnutls-setup: setup
