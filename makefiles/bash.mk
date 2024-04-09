@@ -44,7 +44,7 @@ ifneq ($(wildcard $(BUILD_WORK)/bash/.build_complete),)
 bash:
 	@echo "Using previously built bash."
 else
-bash: bash-setup ncurses readline
+bash: bash-setup ncurses readline gettext
 	cd $(BUILD_WORK)/bash && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-nls \
