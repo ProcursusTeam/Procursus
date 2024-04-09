@@ -1,0 +1,14 @@
+--- a/apt-pkg/contrib/mmap.cc    2024-05-06 12:07:06.000000000 +0800
++++ b/apt-pkg/contrib/mmap.cc    2024-05-06 11:47:57.000000000 +0800
+@@ -306,7 +306,11 @@
+       if (validData() == false)
+      return;
+ #ifdef _POSIX_MAPPED_FILES
++   if ((this->Flags & Fallback) != Fallback) {
+       munmap(Base, WorkSpace);
++   } else {
++      free(Base);
++   }
+ #else
+       free(Base);
+ #endif
