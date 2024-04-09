@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += basic-cmds
-BASIC-CMDS_VERSION := 67
+BASIC-CMDS_VERSION := 67.100.1
 DEB_BASIC-CMDS_V   ?= $(BASIC-CMDS_VERSION)
 
 basic-cmds-setup: setup
@@ -18,7 +18,7 @@ else
 basic-cmds: basic-cmds-setup ncurses
 	mkdir -p $(BUILD_STAGE)/basic-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1/}
 	cd $(BUILD_WORK)/basic-cmds; \
-	for bin in mesg write uudecode uuencode; do \
+	for bin in mesg write; do \
 		$(CC) $(CFLAGS) $(LDFLAGS) -o $(BUILD_STAGE)/basic-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c; \
 		$(INSTALL) -Dm644 $$bin/$$bin.1 $(BUILD_STAGE)/basic-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/; \
 	done
