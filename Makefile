@@ -223,7 +223,7 @@ MEMO_DEPLOYMENT       := APPLETVOS_DEPLOYMENT_TARGET=$(APPLETVOS_DEPLOYMENT_TARG
 
 else ifeq ($(MEMO_TARGET),bridgeos-arm64)
 MEMO_ARCH             := arm64
-PLATFORM              := iphoneos # find me a BridgeOS.sdk and you win.
+PLATFORM              := bridgeos
 DEB_ARCH              := bridgeos-arm64
 GNU_HOST_TRIPLE       := aarch64-apple-darwin
 PLATFORM_VERSION_MIN  := --target=arm64-apple-bridgeos$(BRIDGEOS_DEPLOYMENT_TARGET)
@@ -512,11 +512,6 @@ CPPFLAGS            := -arch $(MEMO_ARCH) $(PLATFORM_VERSION_MIN) -isysroot $(TA
 LDFLAGS             := $(OPTIMIZATION_FLAGS) -arch $(MEMO_ARCH) -isysroot $(TARGET_SYSROOT) $(PLATFORM_VERSION_MIN) -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib -F$(BUILD_BASE)$(MEMO_PREFIX)/System/Library/Frameworks -F$(BUILD_BASE)$(MEMO_PREFIX)/Library/Frameworks -Wl,-not_for_dyld_shared_cache
 PKG_CONFIG_PATH     :=
 ACLOCAL_PATH        := $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/aclocal
-
-ifeq ($(MEMO_TARGET),bridgeos-arm64)
-CFLAGS              += -Wno-incompatible-sysroot
-CXXFLAGS            += -Wno-incompatible-sysroot
-endif
 
 # Link everything to libiosexec, as it's preinstalled on every Procursus system.
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
