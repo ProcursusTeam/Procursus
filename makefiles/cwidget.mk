@@ -17,8 +17,11 @@ cwidget:
 else
 cwidget: cwidget-setup gettext ncurses libsigcplusplus
 	rm -rf $(BUILD_WORK)/cwidget/m4/{libtool,lt*}.m4
-	sed -i 's/libtoolize/$(LIBTOOLIZE)/' $(BUILD_WORK)/cwidget/autogen.sh
-	cd $(BUILD_WORK)/cwidget && ./autogen.sh \
+	sed -i 's/^libtoolize/$(LIBTOOLIZE)/' $(BUILD_WORK)/cwidget/autogen.sh
+	sed -i 's|\./configure|true|' $(BUILD_WORK)/cwidget/autogen.sh
+	cd $(BUILD_WORK)/cwidget && ./autogen.sh
+	sed -i 's/-keep_private_externs -nostdlib/-keep_private_externs $(PLATFORM_VERSION_MIN) -nostdlib/g' $(BUILD_WORK)/cwidget/configure
+	cd $(BUILD_WORK)/cwidget && ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-werror \
 		CXXFLAGS="-std=c++11 $(CXXFLAGS) -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sigc++-2.0 -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/sigc++-2.0/include -DNCURSES_WIDECHAR"
