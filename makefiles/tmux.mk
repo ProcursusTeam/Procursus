@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += tmux
-TMUX_VERSION   := 3.3a
+TMUX_VERSION   := 3.4
 DEB_TMUX_V     ?= $(TMUX_VERSION)
 
 tmux-setup: setup
