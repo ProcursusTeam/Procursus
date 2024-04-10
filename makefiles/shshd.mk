@@ -5,6 +5,7 @@ endif
 ### TODO: Update upstream
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+ifeq (,$(findstring bridgeos,$(MEMO_TARGET)))
 
 ifeq ($(call HAS_COMMAND,swiftc),1)
 STRAPPROJECTS += shshd
@@ -74,4 +75,5 @@ shshd-package: shshd-stage
 
 .PHONY: shshd shshd-package
 
+endif
 endif
