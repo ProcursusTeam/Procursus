@@ -491,6 +491,7 @@ OPTIMIZATION_FLAGS := -Oz
 else
 OPTIMIZATION_FLAGS := -Os
 endif
+ifneq ($(DEBUG),1)
 ifeq ($(UNAME),Darwin)
 OPTIMIZATION_FLAGS += -flto=thin
 else ifeq ($(MEMO_FORCE_LTO),1)
@@ -499,6 +500,7 @@ OPTIMIZATION_FLAGS += -flto=thin
 # I'm not setting this on macOS because I am unsure if it is needed.
 # See: clang(1)
 OPTIMIZATION_FLAGS += -Wl,-object_path_lto,/tmp/lto.o
+endif
 endif
 endif
 ifdef ($(MEMO_ALT_LTO_LIB))
@@ -560,8 +562,14 @@ MEMO_MANPAGE_SUFFIX    :=
 MEMO_MANPAGE_COMPCMD   := true
 endif
 
+ifeq ($(DEBUG),1)
+MEMO_CMAKE_BUILD_TYPE = Debug
+else
+MEMO_CMAKE_BUILD_TYPE = Release
+endif
+
 DEFAULT_CMAKE_FLAGS := \
-	-DCMAKE_BUILD_TYPE=Release \
+	-DCMAKE_BUILD_TYPE=$(MEMO_CMAKE_BUILD_TYPE) \
 	-DCMAKE_CROSSCOMPILING=true \
 	-DCMAKE_SYSTEM_NAME=Darwin \
 	-DCMAKE_SYSTEM_PROCESSOR="$(shell echo $(GNU_HOST_TRIPLE) | cut -f1 -d-)" \
@@ -806,7 +814,7 @@ AFTER_BUILD = \
 					$(I_N_T) -change $$line @rpath/$$(basename $$line) $$file; \
 				done; \
 			fi; \
-			$(STRIP) -x $$file; \
+			if [ "$(DEBUG)" != "1" ]; then $(STRIP) -x $$file; fi \
 		fi; \
 	done; \
 	rm -f $(BUILD_STAGE)/$$pkg/._lib_cache; \
@@ -1010,7 +1018,11 @@ $(error Install GNU findutils)
 endif
 
 ifeq ($(shell PATH="$(PATH)" install --version | grep -q 'GNU coreutils' && echo 1),1)
+ifeq ($(DEBUG),1)
+export INSTALL := $(shell PATH="$(PATH)" which install)
+else
 export INSTALL := $(shell PATH="$(PATH)" which install) --strip-program=$(STRIP)
+endif
 export LN_S    := ln -sf
 export LN_SR   := ln -sfr
 else
