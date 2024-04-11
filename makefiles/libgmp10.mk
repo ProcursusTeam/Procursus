@@ -7,7 +7,7 @@ GMP_VERSION   := 6.3.0
 DEB_GMP_V     ?= $(GMP_VERSION)
 
 libgmp10-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://gmplib.org/download/gmp/gmp-$(GMP_VERSION).tar.xz{$(comma).sig})
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftp.gnu.org/gnu/gmp/gmp-$(GMP_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,gmp-$(GMP_VERSION).tar.xz)
 	$(call EXTRACT_TAR,gmp-$(GMP_VERSION).tar.xz,gmp-$(GMP_VERSION),libgmp10)
 
