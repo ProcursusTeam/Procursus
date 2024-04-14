@@ -4,11 +4,12 @@ endif
 
 STRAPPROJECTS     += launchctl
 LAUNCHCTL_VERSION := 1.1.1
+LAUNCHCTL_COMMIT  := 92c35d57c312c6d566bd7c6ff2dc374c60aaacdc
 DEB_LAUNCHCTL_V   ?= 1:$(LAUNCHCTL_VERSION)
 
 launchctl-setup: setup
-	$(call GITHUB_ARCHIVE,ProcursusTeam,launchctl,$(LAUNCHCTL_VERSION),v$(LAUNCHCTL_VERSION))
-	$(call EXTRACT_TAR,launchctl-$(LAUNCHCTL_VERSION).tar.gz,launchctl-$(LAUNCHCTL_VERSION),launchctl)
+	$(call GITHUB_ARCHIVE,palera1n,launchctl,$(LAUNCHCTL_COMMIT),$(LAUNCHCTL_COMMIT))
+	$(call EXTRACT_TAR,launchctl-$(LAUNCHCTL_COMMIT).tar.gz,launchctl-$(LAUNCHCTL_COMMIT),launchctl)
 
 ifneq ($(wildcard $(BUILD_WORK)/launchctl/.build_complete),)
 launchctl:
