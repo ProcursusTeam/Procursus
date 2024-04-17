@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += libmd
-LIBMD_VERSION := 1.0.4
-DEB_LIBMD_V   ?= $(LIBMD_VERSION)-1
+LIBMD_VERSION := 1.1.0
+DEB_LIBMD_V   ?= $(LIBMD_VERSION)
 
 libmd-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://archive.hadrons.org/software/libmd/libmd-$(LIBMD_VERSION).tar.xz)

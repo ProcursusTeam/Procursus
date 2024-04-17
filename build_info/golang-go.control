@@ -2,7 +2,9 @@ Package: golang-go
 Version: @DEB_GOLANG_V@
 Architecture: all
 Maintainer: @DEB_MAINTAINER@
-Depends: golang-1.20-go (>= @DEB_GOLANG_V@)
+Depends: golang-1.21-go (>= @DEB_GOLANG_V@)
+Replaces: golang-src (<< 1.21)
+Conflicts: golang-src (<< 1.21)
 Section: Development
 Priority: optional
 Homepage: https://golang.org

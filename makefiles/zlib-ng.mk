@@ -3,12 +3,13 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS    += zlib-ng
-ZLIB-NG_VERSION  := 2.0.6
-DEB_ZLIB-NG_V    ?= $(ZLIB-NG_VERSION)
+ZLIB-NG_VERSION  := 2.1.3
+DEB_ZLIB-NG_V    ?= $(ZLIB-NG_VERSION)-1
 
 zlib-ng-setup: setup
 	$(call GITHUB_ARCHIVE,zlib-ng,zlib-ng,$(ZLIB-NG_VERSION),$(ZLIB-NG_VERSION))
 	$(call EXTRACT_TAR,zlib-ng-$(ZLIB-NG_VERSION).tar.gz,zlib-ng-$(ZLIB-NG_VERSION),zlib-ng)
+	$(call DO_PATCH,zlib-ng,zlib-ng,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/zlib-ng/.build_complete),)
 zlib-ng:

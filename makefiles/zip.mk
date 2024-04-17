@@ -21,7 +21,7 @@ zip: zip-setup
 		CC=$(CC) \
 		CPP="$(CXX)" \
 		CFLAGS="$(CFLAGS) -I. -DUNIX -DBZIP2_SUPPORT" \
-		LFLAGS2="-lbz2 $(CFLAGS)" \
+		LFLAGS2="-lbz2 $(CFLAGS) $(LDFLAGS)" \
 		MANDIR="$(BUILD_STAGE)/zip/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1"
 	$(call AFTER_BUILD)
 endif

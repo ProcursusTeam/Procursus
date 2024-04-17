@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += libksba
-KSBA_VERSION  := 1.6.0
+KSBA_VERSION  := 1.6.4
 DEB_KSBA_V    ?= $(KSBA_VERSION)
 
 libksba-setup: setup

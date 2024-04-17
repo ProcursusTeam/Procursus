@@ -7,7 +7,7 @@ STRAPPROJECTS     += libxcrypt
 else
 SUBPROJECTS       += libxcrypt
 endif
-LIBXCRYPT_VERSION := 4.4.33
+LIBXCRYPT_VERSION := 4.4.36
 DEB_LIBXCRYPT_V   ?= $(LIBXCRYPT_VERSION)
 
 libxcrypt-setup: setup

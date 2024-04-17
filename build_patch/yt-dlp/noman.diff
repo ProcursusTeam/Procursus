@@ -1,26 +1,16 @@
-diff -urN yt-dlp/Makefile yt-dlp+procursus/Makefile
---- yt-dlp/Makefile	2022-02-04 13:39:10.000000000 +0700
-+++ yt-dlp+procursus/Makefile	2022-02-23 19:28:12.560493474 +0700
-@@ -42,9 +42,8 @@
+diff -urN yt-dlp-2023.03.04/Makefile yt-dlp/Makefile
+--- yt-dlp-2023.03.04/Makefile	2023-03-04 22:24:51.000000000 +0000
++++ yt-dlp/Makefile	2023-06-20 19:12:33.343555815 +0000
+@@ -44,11 +44,9 @@
  # set markdown input format to "markdown-smart" for pandoc version 2 and to "markdown" for pandoc prior to version 2
  MARKDOWN = $(shell if [ `pandoc -v | head -n1 | cut -d" " -f2 | head -c1` = "2" ]; then echo markdown-smart; else echo markdown; fi)
  
 -install: lazy-extractors yt-dlp yt-dlp.1 completions
 +install: lazy-extractors yt-dlp completions
- 	install -Dm755 yt-dlp $(DESTDIR)$(BINDIR)/yt-dlp
--	install -Dm644 yt-dlp.1 $(DESTDIR)$(MANDIR)/man1/yt-dlp.1
- 	install -Dm644 completions/bash/yt-dlp $(DESTDIR)$(SHAREDIR)/bash-completion/completions/yt-dlp
- 	install -Dm644 completions/zsh/_yt-dlp $(DESTDIR)$(SHAREDIR)/zsh/site-functions/_yt-dlp
- 	install -Dm644 completions/fish/yt-dlp.fish $(DESTDIR)$(SHAREDIR)/fish/vendor_completions.d/yt-dlp.fish
-@@ -94,11 +93,6 @@
- README.txt: README.md
- 	pandoc -f $(MARKDOWN) -t plain README.md -o README.txt
- 
--yt-dlp.1: README.md
--	$(PYTHON) devscripts/prepare_manpage.py yt-dlp.1.temp.md
--	pandoc -s -f $(MARKDOWN) -t man yt-dlp.1.temp.md -o yt-dlp.1
--	rm -f yt-dlp.1.temp.md
--
- completions/bash/yt-dlp: yt_dlp/*.py yt_dlp/*/*.py devscripts/bash-completion.in
- 	mkdir -p completions/bash
- 	$(PYTHON) devscripts/bash-completion.py
+ 	mkdir -p $(DESTDIR)$(BINDIR)
+ 	install -m755 yt-dlp $(DESTDIR)$(BINDIR)/yt-dlp
+-	mkdir -p $(DESTDIR)$(MANDIR)/man1
+-	install -m644 yt-dlp.1 $(DESTDIR)$(MANDIR)/man1/yt-dlp.1
+ 	mkdir -p $(DESTDIR)$(SHAREDIR)/bash-completion/completions
+ 	install -m644 completions/bash/yt-dlp $(DESTDIR)$(SHAREDIR)/bash-completion/completions/yt-dlp
+ 	mkdir -p $(DESTDIR)$(SHAREDIR)/zsh/site-functions

@@ -3,9 +3,9 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS           += golang
-GOLANG_MAJOR_V        := 1.20
-GOLANG_VERSION        := $(GOLANG_MAJOR_V)
-DEBIAN_GOLANG_VERSION := 1.19~1
+GOLANG_MAJOR_V        := 1.21
+GOLANG_VERSION        := $(GOLANG_MAJOR_V).1
+DEBIAN_GOLANG_VERSION := 1.21~2
 DEB_GOLANG_V          ?= $(GOLANG_VERSION)
 
 golang-setup: setup
@@ -44,45 +44,64 @@ golang: golang-setup
 		CGO_FFLAGS="-Os" \
 		CGO_LDFLAGS="-Os -L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
 		./make.bash
-	cp -a $(BUILD_WORK)/golang/* $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)
-	mv $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/debian/man/*.1 $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/
-	mv $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/debian/man/*.7 $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man7/
-	rm -rf $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/libiosexec.diff.done \
-		$(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/debian
-	VAR=$$(ls $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg/tool | grep -v $(shell echo $(RUST_TARGET) | cut -f3 -d-)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)); \
-	if [ ! -z "$$VAR" ]; then \
-		find $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V) -name $$VAR -type d -prune -exec rm -rf {} \; ; \
+	GOTARGET="$(shell echo $(RUST_TARGET) | cut -f3 -d-)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)"; \
+	cd $(BUILD_WORK)/golang/pkg/tool/; \
+	for i in *; do \
+		if [ "$$i" != "$$GOTARGET" ]; then \
+			rm -r "$$i"; \
+		fi; \
+	done; \
+	if [ -d "$(BUILD_WORK)/golang/bin/$${GOTARGET}" ]; then \
+		cp -a $(BUILD_WORK)/golang/bin/$${GOTARGET}/go{,fmt} $(BUILD_WORK)/golang/bin; \
+		rm -r $(BUILD_WORK)/golang/bin/$${GOTARGET}; \
 	fi
-	if [ -d "$(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/bin/$(shell echo $(RUST_TARGET) | cut -f3 -d-)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)" ]; then \
-		cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/bin/$(shell echo $(RUST_TARGET) | cut -f3 -d-)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)/go{,fmt} $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/bin; \
-	fi
+	find $(BUILD_WORK)/golang/pkg -type d -empty -delete
+	# Setup golang-go
+	mkdir -p $(BUILD_STAGE)/golang/go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/ \
+		$(BUILD_STAGE)/golang/go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man{1,7}}
+	cp -a $(BUILD_WORK)/golang/debian/man/*.1 $(BUILD_STAGE)/golang/go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/
+	cp -a $(BUILD_WORK)/golang/debian/man/*.7 $(BUILD_STAGE)/golang/go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man7/
+	$(LN_S) go-$(GOLANG_MAJOR_V) $(BUILD_STAGE)/golang/go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go
+	$(LN_S) ../lib/go-$(GOLANG_MAJOR_V)/bin/go $(BUILD_STAGE)/golang/go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/go
+	$(LN_S) ../lib/go-$(GOLANG_MAJOR_V)/bin/gofmt $(BUILD_STAGE)/golang/go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gofmt
+	# Setup golang-X.Y-go
+	mkdir -p $(BUILD_STAGE)/golang/go-v/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share}/go-$(GOLANG_MAJOR_V)/pkg
+	cp -a $(BUILD_WORK)/golang/{VERSION,bin,go.env} $(BUILD_STAGE)/golang/go-v/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/
+	cp -a $(BUILD_WORK)/golang/pkg/tool $(BUILD_STAGE)/golang/go-v/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg
+	cp -a $(BUILD_WORK)/golang/pkg/include $(BUILD_STAGE)/golang/go-v/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/go-$(GOLANG_MAJOR_V)/pkg
+	$(LN_S) ../../../share/go-$(GOLANG_MAJOR_V)/pkg/include $(BUILD_STAGE)/golang/go-v/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg/include
+	for i in api misc src test; do \
+		$(LN_S) ../../share/go-$(GOLANG_MAJOR_V)/$$i $(BUILD_STAGE)/golang/go-v/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/$$i; \
+	done
+	# Setup golang-X.Y-src
+	mkdir -p $(BUILD_STAGE)/golang/src/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/go-$(GOLANG_MAJOR_V)
+	cp -a $(BUILD_WORK)/golang/{api,misc,src,test} $(BUILD_STAGE)/golang/src/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/go-$(GOLANG_MAJOR_V)/
+	# Generated files
+	GENERATED_FILES="src/cmd/go/internal/cfg/zdefaultcc.go src/go/build/zcgo.go src/runtime/internal/sys/zversion.go src/time/tzdata/zzipdata.go src/cmd/cgo/zdefaultcc.go src/cmd/internal/objabi/zbootstrap.go src/internal/buildcfg/zbootstrap.go"; \
+	cd $(BUILD_WORK)/golang; \
+	cp --parent -v $$GENERATED_FILES $(BUILD_STAGE)/golang/go-v/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/go-$(GOLANG_MAJOR_V); \
+	cd $(BUILD_STAGE)/golang/src/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/go-$(GOLANG_MAJOR_V); \
+	rm -v -f $$GENERATED_FILES
 	$(call AFTER_BUILD)
 endif
 
 golang-package: golang-stage
 	# golang.mk Package Structure
 	rm -rf $(BUILD_DIST)/golang{,-$(GOLANG_MAJOR_V)}-{src,go}
-	mkdir -p $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-src/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V) \
-		$(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/{bin,pkg} \
-		$(BUILD_DIST)/golang{,-$(GOLANG_MAJOR_V)} \
-		$(BUILD_DIST)/golang-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib} \
-		$(BUILD_DIST)/golang-src/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	mkdir -p $(BUILD_DIST)/golang{,-$(GOLANG_MAJOR_V)} \
+		$(BUILD_DIST)/golang-src/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
 	# golang.mk Prep golang-$(GOLANG_MAJOR_V)-src
-	cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/{api,misc,src,test} $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-src/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)
+	cp -a $(BUILD_STAGE)/golang/src $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-src
 
 	# golang.mk Prep golang-$(GOLANG_MAJOR_V)-go
-	cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/VERSION $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)
-	cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/bin/go{,fmt} $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/bin
-	cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg/{include,tool} $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V)/pkg
+	cp -a $(BUILD_STAGE)/golang/go-v $(BUILD_DIST)/golang-$(GOLANG_MAJOR_V)-go
 
 	# golang.mk Prep golang-go
-	$(LN_S) ../lib/go-$(GOLANG_MAJOR_V)/bin/go $(BUILD_DIST)/golang-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/go
-	$(LN_S) ../lib/go-$(GOLANG_MAJOR_V)/bin/gofmt $(BUILD_DIST)/golang-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gofmt
-	cp -a $(BUILD_STAGE)/golang/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/golang-go/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
+	cp -a $(BUILD_STAGE)/golang/go $(BUILD_DIST)/golang-go
 
 	# golang.mk Prep golang-src
-	$(LN_S) ../lib/go-$(GOLANG_MAJOR_V) $(BUILD_DIST)/golang-src/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go
+	$(LN_S) go-$(GOLANG_MAJOR_V) $(BUILD_DIST)/golang-src/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/go
 
 	# golang.mk Sign
 	$(call SIGN,golang-$(GOLANG_MAJOR_V)-go,general.xml)
@@ -97,4 +116,5 @@ golang-package: golang-stage
 
 	# golang.mk Build cleanup
 	rm -rf $(BUILD_DIST)/golang{,-$(GOLANG_MAJOR_V)}{,-src,-go}
+
 .PHONY: golang golang-package

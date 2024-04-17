@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += libgmp10
-GMP_VERSION   := 6.2.1
-DEB_GMP_V     ?= $(GMP_VERSION)-3
+GMP_VERSION   := 6.3.0
+DEB_GMP_V     ?= $(GMP_VERSION)
 
 libgmp10-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://gmplib.org/download/gmp/gmp-$(GMP_VERSION).tar.xz{$(comma).sig})
