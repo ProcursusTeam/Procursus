@@ -1,0 +1,9 @@
+Package: luna-keyring
+Version: @DEB_LUNA_KEYRING_V@
+Author: Luna <luna@alexia.lol>
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Keyrings
+Priority: optional
+Provides: nyuszika7h-keyring (= @DEB_LUNA_KEYRING_V@)
+Description: GnuPG keys for Luna's repositories
