@@ -21,6 +21,12 @@ coreutils-setup: coreutils_CF1400-setup
 coreutils: coreutils_CF1400
 coreutils-package: coreutils_CF1400-package
 
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1000 ] && echo 1),1)
+COREUTILS_VERSION := $(COREUTILS_CF1000_VERSION)
+coreutils-setup: coreutils_CF1000-setup
+coreutils: coreutils_CF1000
+coreutils-package: coreutils_CF1000-package
+
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 800 ] && echo 1),1)
 COREUTILS_VERSION := $(COREUTILS_CF800_VERSION)
 coreutils-setup: coreutils_CF800-setup
