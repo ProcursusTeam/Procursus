@@ -569,7 +569,7 @@ CODESIGN_IDENTITY ?= -
 MEMO_LDID_EXTRA_FLAGS     ?=
 MEMO_CODESIGN_EXTRA_FLAGS ?=
 
-LDID := ldid -Hsha256 -Cadhoc $(MEMO_LDID_EXTRA_FLAGS)
+LDID := ldid -Hsha1 -Hsha256 -Cadhoc $(MEMO_LDID_EXTRA_FLAGS)
 
 REPO_BASE      != dirname $(realpath $(firstword $(MAKEFILE_LIST)))
 # Root
