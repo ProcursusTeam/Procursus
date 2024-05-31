@@ -765,3 +765,23 @@ index bc2fe1de5..43fce52f5 100644
     };
  
     // We will return once we have no more connections, a time out, or
+diff -urN a/cmdline/apt-internal-solver.cc b/cmdline/apt-internal-solver.cc
+--- a/cmdline/apt-internal-solver.cc	2024-05-31 18:37:20.080387725 +0800
++++ b/cmdline/apt-internal-solver.cc	2024-05-31 18:54:53.044986973 +0800
+@@ -36,6 +36,7 @@
+ #include <sstream>
+ #include <string>
+ #include <unistd.h>
++#include <libgen.h>
+
+ #include <apti18n.h>
+ 									/*}}}*/
+@@ -119,7 +120,7 @@
+ 		_config->Set("Debug::EDSP::WriteSolution", true);
+
+ 	_config->Set("APT::System", "Debian APT solver interface");
+-	if (strcmp(basename(argv[0]), "solver3") == 0)
++	if (strcmp(basename((char*)argv[0]), "solver3") == 0)
+ 	   _config->Set("APT::Solver", "3.0");
+ 	else if (_config->Find("APT::Solver") != "3.0")
+ 	   _config->Set("APT::Solver", "internal");
