@@ -8,7 +8,7 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS       += findutils
 endif # ($(MEMO_TARGET),darwin-\*)
 FINDUTILS_VERSION := 4.9.0
-DEB_FINDUTILS_V   ?= $(FINDUTILS_VERSION)
+DEB_FINDUTILS_V   ?= $(FINDUTILS_VERSION)-1
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 FINDUTILS_CONFIGURE_ARGS += --program-prefix=$(GNU_PREFIX)
@@ -18,6 +18,7 @@ findutils-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/findutils/findutils-$(FINDUTILS_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,findutils-$(FINDUTILS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,findutils-$(FINDUTILS_VERSION).tar.xz,findutils-$(FINDUTILS_VERSION),findutils)
+	$(call DO_PATCH,findutils,findutils,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/findutils/.build_complete),)
 findutils:
