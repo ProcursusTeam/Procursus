@@ -9,7 +9,7 @@ DEB_FLAC_V   ?= $(FLAC_VERSION)
 flac-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftp.osuosl.org/pub/xiph/releases/flac/flac-$(FLAC_VERSION).tar.xz)
 	$(call EXTRACT_TAR,flac-$(FLAC_VERSION).tar.xz,flac-$(FLAC_VERSION),flac)
-	sed -i 's/-keep_private_externs -nostdlib/-keep_private_externs $(PLATFORM_VERSION_MIN) -nostdlib/g' $(BUILD_WORK)/flac/configure
+	sed -i 's/-keep_private_externs -nostdlib/-keep_private_externs $(PLATFORM_VERSION_MIN) -arch $(MEMO_ARCH) -nostdlib/g' $(BUILD_WORK)/flac/configure
 
 ifneq ($(wildcard $(BUILD_WORK)/flac/.build_complete),)
 flac:

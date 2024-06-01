@@ -9,7 +9,7 @@ DEB_XAPIAN_V   ?= $(XAPIAN_VERSION)
 xapian-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://oligarchy.co.uk/xapian/$(XAPIAN_VERSION)/xapian-core-$(XAPIAN_VERSION).tar.xz)
 	$(call EXTRACT_TAR,xapian-core-$(XAPIAN_VERSION).tar.xz,xapian-core-$(XAPIAN_VERSION),xapian)
-	sed -i 's/-keep_private_externs -nostdlib/-keep_private_externs $(PLATFORM_VERSION_MIN) -nostdlib/g' $(BUILD_WORK)/xapian/configure
+	sed -i 's/-keep_private_externs -nostdlib/-keep_private_externs $(PLATFORM_VERSION_MIN) -arch $(MEMO_ARCH) -nostdlib/g' $(BUILD_WORK)/xapian/configure
 
 ifneq ($(wildcard $(BUILD_WORK)/xapian/.build_complete),)
 xapian:
