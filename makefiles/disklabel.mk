@@ -26,16 +26,16 @@ endif
 disklabel-package: disklabel-stage
 	# disklabel.mk Package Structure
 	rm -rf $(BUILD_DIST)/disklabel
-	
+
 	# disklabel.mk Prep disklabel
 	cp -a $(BUILD_STAGE)/disklabel $(BUILD_DIST)
-	
+
 	# disklabel.mk Sign
-	$(call SIGN,disklabel,dd.xml)
-	
+	$(call SIGN,disklabel,general.xml)
+
 	# disklabel.mk Make .debs
 	$(call PACK,disklabel,DEB_DISKLABEL_V)
-	
+
 	# disklabel.mk Build cleanup
 	rm -rf $(BUILD_DIST)/disklabel
 
