@@ -10,7 +10,7 @@ libgmp10-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftp.gnu.org/gnu/gmp/gmp-$(GMP_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,gmp-$(GMP_VERSION).tar.xz)
 	$(call EXTRACT_TAR,gmp-$(GMP_VERSION).tar.xz,gmp-$(GMP_VERSION),libgmp10)
-	sed -i 's/-keep_private_externs -nostdlib/-keep_private_externs $(PLATFORM_VERSION_MIN) -nostdlib/g' $(BUILD_WORK)/libgmp10/configure
+	sed -i 's/-keep_private_externs -nostdlib/-keep_private_externs $(PLATFORM_VERSION_MIN) -arch $(MEMO_ARCH) -nostdlib/g' $(BUILD_WORK)/libgmp10/configure
 
 ifneq ($(wildcard $(BUILD_WORK)/libgmp10/.build_complete),)
 libgmp10:

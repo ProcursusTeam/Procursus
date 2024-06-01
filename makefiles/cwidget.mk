@@ -20,7 +20,7 @@ cwidget: cwidget-setup gettext ncurses libsigcplusplus
 	sed -i 's/^libtoolize/$(LIBTOOLIZE)/' $(BUILD_WORK)/cwidget/autogen.sh
 	sed -i 's|\./configure|true|' $(BUILD_WORK)/cwidget/autogen.sh
 	cd $(BUILD_WORK)/cwidget && ./autogen.sh
-	sed -i 's/-keep_private_externs -nostdlib/-keep_private_externs $(PLATFORM_VERSION_MIN) -nostdlib/g' $(BUILD_WORK)/cwidget/configure
+	sed -i 's/-keep_private_externs -nostdlib/-keep_private_externs $(PLATFORM_VERSION_MIN) -arch $(MEMO_ARCH) -nostdlib/g' $(BUILD_WORK)/cwidget/configure
 	cd $(BUILD_WORK)/cwidget && ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-werror \
