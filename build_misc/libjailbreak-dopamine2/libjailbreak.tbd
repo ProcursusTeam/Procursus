@@ -1,0 +1,121 @@
+--- !tapi-tbd
+tbd-version:     4
+targets:         [ arm64-ios, arm64e-ios, arm64-tvos, arm64e-tvos, arm64_32-watchos, arm64-bridgeos ]
+uuids:
+  - target:          arm64-ios
+    value:           7A1C6C19-AE18-3E3E-A149-A9B76BB01511
+  - target:          arm64e-ios
+    value:           951F8D5A-D4B0-11EB-9A25-CF9B44946910
+  - target:          arm64-tvos
+    value:           159623A0-A465-4E2E-A3E7-DF02522C87FD
+  - target:          arm64e-tvos
+    value:           C7E8A870-D4B0-11EB-A42F-D3AE38031A24
+  - target:          arm64_32-watchos
+    value:           C56699DC-54CF-4191-9C7B-9C13927883B3
+  - target:          arm64-bridgeos
+    value:           AC079058-D4B0-11EB-A862-63D08897B634
+
+flags:           [ not_app_extension_safe ]
+install-name:    '@rpath/libjailbreak.dylib'
+current-version: 0
+compatibility-version: 0
+exports:
+  - targets:         [ arm64-ios, arm64e-ios, arm64-tvos, arm64e-tvos, arm64_32-watchos, arm64-bridgeos ]
+    symbols:              [ _IOMemoryDescriptor_get_flags,
+                            _IOMemoryDescriptor_get_ranges,
+                            _IOMemoryDescriptor_set_flags,
+                            _IOMemoryDescriptor_set_memRef,
+                            _IOMemoryDescriptor_set_size,
+                            _IOMemoryDescriptor_set_wired,
+                            _IOMemorydescriptor_get_size,
+                            _IOSurfaceClient_get_surface,
+                            _IOSurfaceRootUserClient_get_surfaceClientById,
+                            _IOSurfaceSendRight_get_surface,
+                            _IOSurface_get_memoryDescriptor,
+                            _IOSurface_get_rangeCount, _IOSurface_get_ranges,
+                            _IOSurface_kalloc, _IOSurface_map,
+                            _IOSurface_set_rangeCount, _IOSurface_set_ranges,
+                            _NSJBRootPath, ___exec_cmd_internal_va,
+                            __is_jb_trustcache, __jb_trustcache_clear,
+                            __jb_trustcache_enumerate, __jb_trustcache_grow,
+                            __kreadbuf_phys, __kwritebuf_phys, __physreadbuf_virt,
+                            __physwritebuf_virt, __trustcache_file_init,
+                            __trustcache_file_sort, __trustcache_list_enumerate,
+                            __trustcache_list_get_start, __trustcache_list_set_start,
+                            _acquire_window, _alloc_page_table_unassigned,
+                            _arm64_kcall, _arm64_kexec, _arm_tt_level,
+                            _boomerang_get_physrw, _boomerang_get_sysinfo,
+                            _boomerang_sign_thread, _can_skip_trusting_file,
+                            _carbonCopy, _cmd_wait_for_exit, _cs_allow_invalid,
+                            _csd_superblob_is_adhoc_signed,
+                            _device_supports_physrw_pte, _enumerate_pages, _exec_cmd,
+                            _fileExistsOrSymlink, _flush_tlb, _fugu14_kcall,
+                            _fugu14_kexec, _gArm64KcallThead, _gBoomerangDomain,
+                            _gBoomerangServer, _gFugu14KcallThread,
+                            _gJBServerCustomPort, _gPool, _gPrimitives, _gSwAsid,
+                            _gSystemInfo, _gUnusedDomain, _gUserReturnDidHappen,
+                            _gUserReturnThreadContext, _getUserReturnThreadContext,
+                            _get_l1_block_count, _get_l1_block_mask,
+                            _get_l1_block_size, _get_l2_block_count,
+                            _get_l2_block_mask, _get_l2_block_size,
+                            _get_vm_real_kernel_page_shift,
+                            _get_vm_real_kernel_page_size, _ipc_entry_lookup,
+                            _is_cdhash_trustcached, _is_kcall_available,
+                            _jb_trustcache_add_cdhashes, _jb_trustcache_add_entries,
+                            _jb_trustcache_add_entry, _jb_trustcache_debug_print,
+                            _jbclient_boomerang_done, _jbclient_cs_revalidate,
+                            _jbclient_fork_fix, _jbclient_get_boot_uuid,
+                            _jbclient_get_fugu14_kcall, _jbclient_get_jbroot,
+                            _jbclient_initialize_primitives,
+                            _jbclient_platform_set_process_debugged,
+                            _jbclient_platform_stage_jailbreak_update,
+                            _jbclient_process_checkin, _jbclient_root_add_cdhash,
+                            _jbclient_root_get_physrw, _jbclient_root_get_sysinfo,
+                            _jbclient_root_set_mac_label, _jbclient_root_sign_thread,
+                            _jbclient_root_steal_ucred, _jbclient_trust_binary,
+                            _jbclient_trust_library,
+                            _jbclient_watchdog_get_last_userspace_panic,
+                            _jbclient_watchdog_intercept_userspace_panic,
+                            _jbclient_xpc_set_custom_port, _jbdInitPPLRW,
+                            _jbinfo_get_serialized, _jbinfo_initialize_boot_constants,
+                            _jbinfo_initialize_dynamic_offsets,
+                            _jbinfo_initialize_hardcoded_offsets,
+                            _jbserver_received_boomerang_xpc_message,
+                            _jbserver_received_xpc_message, _jbserver_xpc_send,
+                            _kalloc, _kcall, _kexec, _kfree, _killall, _kmap, _kpacda,
+                            _kptr_sign, _kread16, _kread32, _kread64, _kread8,
+                            _kread_ptr, _kread_smrptr, _kreadbuf, _kvtophys,
+                            _kwrite16, _kwrite1_bits, _kwrite32, _kwrite64, _kwrite8,
+                            _kwrite_ptr, _kwritebuf, _libarchive_unarchive,
+                            _libjailbreak_IOSurface_primitives_init,
+                            _libjailbreak_kalloc_pt_init, _libjailbreak_physrw_init,
+                            _libjailbreak_physrw_pte_init,
+                            _libjailbreak_translation_init,
+                            _ljb_fat_find_preferred_slice, _mac_label_get,
+                            _mac_label_set, _macho_collect_untrusted_cdhashes,
+                            _mapKernelPage, _pa_index, _pac_loop, _pai_to_pvh,
+                            _physread16, _physread32, _physread64, _physread8,
+                            _physread_ptr, _physreadbuf, _physrw_handoff,
+                            _physrw_kvtouaddr, _physrw_physreadbuf,
+                            _physrw_phystouaddr, _physrw_physwritebuf,
+                            _physrw_pte_handoff, _physrw_pte_physreadbuf,
+                            _physrw_pte_physwritebuf, _phystokv, _physwrite16,
+                            _physwrite32, _physwrite64, _physwrite8, _physwritebuf,
+                            _pmap_alloc_page_table, _pmap_enter_options_addr,
+                            _pmap_expand_range, _pmap_map_in, _pmap_remove,
+                            _pmap_self, _proc_allow_all_syscalls, _proc_csflags_clear,
+                            _proc_csflags_set, _proc_csflags_update, _proc_find,
+                            _proc_getcsflags, _proc_iterate, _proc_rele, _proc_self,
+                            _proc_task, _proc_ucred, _pvh_ptd, _realafpath,
+                            _resolveDependencyPath, _sign_kernel_thread,
+                            _task_get_ipc_port_kobject, _task_get_ipc_port_object,
+                            _task_get_ipc_port_table_entry, _task_self,
+                            _task_set_memory_ownership_transfer,
+                            _thread_caffeinate_start, _thread_caffeinate_stop,
+                            _trustcache_contains_cdhash,
+                            _trustcache_file_build_from_cdhashes,
+                            _trustcache_file_build_from_path, _trustcache_file_upload,
+                            _trustcache_list_insert, _trustcache_list_remove,
+                            _tte_self, _ttep_self, _vm_map_self, _vtophys,
+                            _writableAttributes, _writableFileAttributes ]
+...

@@ -7,7 +7,7 @@ ifeq ($(shell [ "$(MEMO_CFVER)" -ge 1800 ] && echo 1),1)
 
 STRAPPROJECTS  += libkrw
 LIBKRW_VERSION := 1.1.1
-DEB_LIBKRW_V   ?= $(LIBKRW_VERSION)
+DEB_LIBKRW_V   ?= $(LIBKRW_VERSION)-1
 
 LIBKRW_SOVERSION := 0
 
