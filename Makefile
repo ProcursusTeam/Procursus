@@ -1100,7 +1100,7 @@ CORE_COUNT ?= $(shell nproc)
 else
 CORE_COUNT ?= $(shell sysctl -n hw.ncpu)
 endif
-MAKEFLAGS += --jobs=$(CORE_COUNT) --load-average=$(CORE_COUNT)
+MAKEFLAGS += --jobs=$(CORE_COUNT)
 endif
 
 PROCURSUS := 1
