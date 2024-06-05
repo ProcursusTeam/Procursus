@@ -38,7 +38,7 @@ libkrw-dopamine: libkrw-dopamine-setup
 		-o $(BUILD_STAGE)/libkrw-dopamine/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw/libkrw-dopamine.dylib \
 		$(BUILD_WORK)/libkrw-dopamine/src/main.c \
 		$(LDFLAGS) \
-		-L$(BUILD_MISC)/libjailbreak \
+		-L$(BUILD_MISC)/libjailbreak-dopamine2 \
 		$(LIBKRW_DOPAMINE_LIBS)
 	$(call AFTER_BUILD)
 endif
@@ -50,7 +50,6 @@ libkrw-dopamine-package: libkrw-dopamine-stage
 
 	# libkrw-dopamine.mk Prep libkrw-dopamine
 	cp -a $(BUILD_STAGE)/libkrw-dopamine/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw/libkrw-dopamine.dylib $(BUILD_DIST)/libkrw$(LIBKRW_SOVERSION)-dopamine/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw
-
 
 	# libkrw-dopamine.mk Sign
 	$(call SIGN,libkrw$(LIBKRW_SOVERSION)-dopamine,general.xml)
