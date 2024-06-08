@@ -5,6 +5,7 @@ endif
 # Comma var must be here because makefile functions cannot contain commas
 comma := ,
 
+SAVED_LANG = $(LANG)
 export LANG := C
 
 ifeq ($(shell LANG=C /usr/bin/env bash --version | grep -iq 'version 5' && echo 1),1)
@@ -1231,7 +1232,7 @@ endif
 		BOOTSTRAP=bootstrap.tar.zst; \
 	fi; \
 	zstd -qf -c19 --rm $(BUILD_STRAP)/bootstrap.tar > $(BUILD_STRAP)/$${BOOTSTRAP}; \
-	LANG= gpg --armor -u $(MEMO_PGP_SIGN_KEY) --detach-sign $(BUILD_STRAP)/$${BOOTSTRAP}; \
+	LANG="$(SAVED_LANG)" gpg --armor -u $(MEMO_PGP_SIGN_KEY) --detach-sign $(BUILD_STRAP)/$${BOOTSTRAP}; \
 	rm -rf $(BUILD_STRAP)/*/; \
 	echo "********** Successfully built bootstrap with **********"; \
 	echo "$(STRAPPROJECTS)"; \
