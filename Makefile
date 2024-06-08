@@ -537,7 +537,7 @@ MEMO_MANPAGE_COMPRESSION := zstd
 ifeq ($(MEMO_MANPAGE_COMPRESSION),zstd)
 MEMO_MANPAGE_SUFFIX   := .zst
 MEMO_MANPAGE_COMPCMD  := zstd
-MEMO_MANPAGE_COMPFLGS += -19 --rm
+MEMO_MANPAGE_COMPFLGS += -f19 --rm
 
 else ifeq ($(MEMO_MANPAGE_COMPRESSION),xz)
 MEMO_MANPAGE_SUFFIX    := .xz
@@ -847,7 +847,7 @@ PACK = \
 			cp -aL $(BUILD_WORK)/$$(echo $@ | sed 's/-package//')/$$file $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1); \
 			if [ "$(MEMO_NO_DOC_COMPRESS)" != 1 ]; then \
 				if [ ! "$$file" = "AUTHORS" ] && [ ! "$$file" = "COPYING" ] && [ ! "$$file" = "LICENSE" ]; then \
-					zstd -19 --rm $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1)/$$file 2> /dev/null; \
+					zstd -f19 --rm $(BUILD_DIST)/$(1)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/$(1)/$$file 2> /dev/null; \
 				fi; \
 			fi; \
 		fi; \
