@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-ifeq ($(shell [ "$(MEMO_CFVER)" -ge 1800 ] && echo 1),1)
+ifeq ($(shell [ "$(MEMO_CFVER)" -ge 1700 ] && echo 1),1)
 
 STRAPPROJECTS  += libkrw
 LIBKRW_VERSION := 1.1.1
-DEB_LIBKRW_V   ?= $(LIBKRW_VERSION)-1
+DEB_LIBKRW_V   ?= $(LIBKRW_VERSION)-2
 
 LIBKRW_SOVERSION := 0
 
@@ -65,7 +65,7 @@ libkrw-package: libkrw-stage
 		$(BUILD_DIST)/libkrw$(LIBKRW_SOVERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw \
 		$(BUILD_DIST)/libkrw-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include} \
 		$(BUILD_DIST)/libkrw$(LIBKRW_SOVERSION)-tfp0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw
-	
+
 	# libkrw.mk Prep libkrw$(LIBKRW_SOVERSION)
 	cp -a $(BUILD_STAGE)/libkrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw.$(LIBKRW_SOVERSION).dylib $(BUILD_DIST)/libkrw$(LIBKRW_SOVERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 

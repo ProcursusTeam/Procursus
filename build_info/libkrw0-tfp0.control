@@ -8,4 +8,4 @@ Depends: libkrw0
 Section: Libraries
 Priority: standard
 Homepage: https://github.com/Siguza/libkrw
-Description: Plugin for libkrw that interfaces with tfp0 (Shared Library)
+Description: Plugin for libkrw that interfaces with tfp0/hgsp4 (Shared Library)
