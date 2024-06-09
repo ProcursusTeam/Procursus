@@ -4,7 +4,8 @@ Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LIBKRW_DOPAMINE_V@
 Provides: libkrw0-plugin
-Depends: firmware (>= 15.0), firmware (<= 16.6.1), libkrw0
+Depends: firmware (>= 15.0), firmware (<= 16.6.1)
+Enhances: libkrw0
 Section: Libraries
 Priority: standard
 Homepage: https://github.com/opa334/Dopamine

@@ -9,7 +9,7 @@ SUBPROJECTS             += libkrw-dopamine
 DOPAMINE_VERSION        := 2.0.11
 CHOMA_COMMIT            := 54fedaf26175d5db27246d66b55d540ff6bcb83d
 LIBKRW_DOPAMINE_VERSION := 2.0.1
-DEB_LIBKRW_DOPAMINE_V   ?= $(LIBKRW_DOPAMINE_VERSION)
+DEB_LIBKRW_DOPAMINE_V   ?= $(LIBKRW_DOPAMINE_VERSION)-1
 LIBKRW_DOPAMINE_LIBS    := -ljailbreak -framework Foundation
 
 libkrw-dopamine-setup: setup
@@ -22,6 +22,7 @@ libkrw-dopamine-setup: setup
 	cp -a $(BUILD_WORK)/libkrw-dopamine/Dopamine/BaseBin/libjailbreak/src/*.h $(BUILD_WORK)/libkrw-dopamine/include/libjailbreak
 	cp -a $(BUILD_WORK)/libkrw-dopamine/Dopamine/BaseBin/_external/include/libkrw $(BUILD_WORK)/libkrw-dopamine/include/
 	cp -a $(BUILD_WORK)/libkrw-dopamine/ChOma/src/*.h $(BUILD_WORK)/libkrw-dopamine/include/choma
+	sed -i 's/krw_plugin_initializer_t krw_initializer/int krw_initializer/' $(BUILD_WORK)/libkrw-dopamine/src/main.c
 	rm -rf $(BUILD_WORK)/libkrw-dopamine/{Dopamine,ChOma}
 	mkdir -p $(BUILD_STAGE)/libkrw-dopamine/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw
 
