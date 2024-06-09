@@ -87,15 +87,15 @@ qemu-package: qemu-stage
 	cp -a $(BUILD_STAGE)/qemu/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/qemu-{img,io,nbd,edid} $(BUILD_DIST)/qemu-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 	# qemu.mk Sign
-	$(call SIGN,qemu-block-extra,qemu-ios.xml)
-	$(call SIGN,qemu-system-common,qemu-ios.xml)
-	$(call SIGN,qemu-system-arm,qemu-ios.xml)
-	$(call SIGN,qemu-system-mips,qemu-ios.xml)
-	$(call SIGN,qemu-system-misc,qemu-ios.xml)
-	$(call SIGN,qemu-system-ppc,qemu-ios.xml)
-	$(call SIGN,qemu-system-sparc,qemu-ios.xml)
-	$(call SIGN,qemu-system-x86,qemu-ios.xml)
-	$(call SIGN,qemu-utils,qemu-ios.xml)
+	$(call SIGN,qemu-block-extra,qemu-ios.xml,,,nogeneral)
+	$(call SIGN,qemu-system-common,qemu-ios.xml,,,nogeneral)
+	$(call SIGN,qemu-system-arm,qemu-ios.xml,,,nogeneral)
+	$(call SIGN,qemu-system-mips,qemu-ios.xml,,,nogeneral)
+	$(call SIGN,qemu-system-misc,qemu-ios.xml,,,nogeneral)
+	$(call SIGN,qemu-system-ppc,qemu-ios.xml,,,nogeneral)
+	$(call SIGN,qemu-system-sparc,qemu-ios.xml,,,nogeneral)
+	$(call SIGN,qemu-system-x86,qemu-ios.xml,,,nogeneral)
+	$(call SIGN,qemu-utils,qemu-ios.xml,,,nogeneral)
 
 	# qemu.mk Make .debs
 	$(call PACK,qemu-system,DEB_QEMU_V)

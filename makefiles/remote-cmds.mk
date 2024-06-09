@@ -71,7 +71,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 	# remote-cmds.mk Sign
 	$(call SIGN,remote-cmds,general.xml)
-	$(LDID) -S$(BUILD_MISC)/entitlements/network-server.xml $(BUILD_DIST)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/telnetd
+	$(LDID) -M -S$(BUILD_MISC)/entitlements/network-server.xml $(BUILD_DIST)/remote-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/telnetd
 
 	# remote-cmds.mk Make .debs
 	$(call PACK,remote-cmds,DEB_REMOTE-CMDS_V)

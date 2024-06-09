@@ -45,8 +45,8 @@ iokittools-package: iokittools-stage
 	cp -a $(BUILD_STAGE)/iokittools $(BUILD_DIST)
 
 	# iokittools.mk Sign
-	$(LDID) -S$(BUILD_MISC)/entitlements/ioclasscount.plist $(BUILD_DIST)/iokittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ioclasscount
-	$(LDID) -S$(BUILD_MISC)/entitlements/general.xml $(BUILD_DIST)/iokittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ioalloccount
+	$(call SIGN,iokittools,general.xml)
+	$(LDID) -M -S$(BUILD_MISC)/entitlements/ioclasscount.plist $(BUILD_DIST)/iokittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/ioclasscount
 
 	# iokittools.mk Make .debs
 	$(call PACK,iokittools,DEB_IOKITTOOLS_V)

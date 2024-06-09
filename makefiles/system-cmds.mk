@@ -117,15 +117,15 @@ system-cmds-package: system-cmds-stage
 	# system-cmds.mk Sign
 	$(call SIGN,system-cmds,general.xml)
 ifeq ($(shell [ $(CFVER_WHOLE) -lt 1800 ] && echo 1),1)
-	$(LDID) -S$(BUILD_MISC)/entitlements/lsmp-legacy.xml $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsmp
+	$(LDID) -M -S$(BUILD_MISC)/entitlements/lsmp-legacy.xml $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsmp
 else
-	$(LDID) -S$(BUILD_MISC)/entitlements/lsmp.xml $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsmp
+	$(LDID) -M -S$(BUILD_MISC)/entitlements/lsmp.xml $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsmp
 endif
-	$(LDID) -S$(BUILD_MISC)/entitlements/taskpolicy.xml $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/taskpolicy
-	$(LDID) -S$(BUILD_MISC)/entitlements/dynamic_pager.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)/sbin/dynamic_pager
-	$(LDID) -S$(BUILD_MISC)/entitlements/fs_usage.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/fs_usage
-	$(LDID) -S$(BUILD_MISC)/entitlements/login.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/login
-	$(LDID) -S$(BUILD_MISC)/entitlements/passwd.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/passwd
+	$(LDID) -M -S$(BUILD_MISC)/entitlements/taskpolicy.xml $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/taskpolicy
+	$(LDID) -M -S$(BUILD_MISC)/entitlements/dynamic_pager.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)/sbin/dynamic_pager
+	$(LDID) -M -S$(BUILD_MISC)/entitlements/fs_usage.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/fs_usage
+	$(LDID) -M -S$(BUILD_MISC)/entitlements/login.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/login
+	$(LDID) -M -S$(BUILD_MISC)/entitlements/passwd.plist $(BUILD_DIST)/system-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/passwd
 
 	find $(BUILD_DIST)/system-cmds -name '.ldid*' -type f -delete
 

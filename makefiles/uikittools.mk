@@ -71,18 +71,18 @@ uikittools-package: uikittools-stage
 	$(call SIGN,uikittools-extra,general.xml)
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(LDID) -S$(BUILD_WORK)/uikittools/lsrebuild.plist $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsrebuild
-	$(LDID) -S$(BUILD_WORK)/uikittools/mgask.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/mgask
-	$(LDID) -S$(BUILD_MISC)/entitlements/sbreload.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sbreload
-	$(LDID) -S$(BUILD_WORK)/uikittools/uialert.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uialert
-	$(LDID) -S$(BUILD_WORK)/uikittools/uicache.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uicache
+	$(LDID) -M -S$(BUILD_WORK)/uikittools/lsrebuild.plist $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lsrebuild
+	$(LDID) -M -S$(BUILD_WORK)/uikittools/mgask.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/mgask
+	$(LDID) -M -S$(BUILD_MISC)/entitlements/sbreload.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sbreload
+	$(LDID) -M -S$(BUILD_WORK)/uikittools/uialert.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uialert
+	$(LDID) -M -S$(BUILD_WORK)/uikittools/uicache.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uicache
 ifneq (,$(findstring iphoneos,$(MEMO_TARGET)))
-	$(LDID) -S$(BUILD_WORK)/uikittools/uidisplay.plist $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uidisplay
-	$(LDID) -S$(BUILD_WORK)/uikittools/uinotify.plist $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uinotify
-	$(LDID) -S$(BUILD_WORK)/uikittools/uisave.plist $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uisave
+	$(LDID) -M -S$(BUILD_WORK)/uikittools/uidisplay.plist $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uidisplay
+	$(LDID) -M -S$(BUILD_WORK)/uikittools/uinotify.plist $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uinotify
+	$(LDID) -M -S$(BUILD_WORK)/uikittools/uisave.plist $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uisave
 endif
-	$(LDID) -S$(BUILD_WORK)/uikittools/uiopen.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uiopen
-	$(LDID) -S$(BUILD_WORK)/uikittools/uishoot.plist $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uishoot
+	$(LDID) -M -S$(BUILD_WORK)/uikittools/uiopen.plist $(BUILD_DIST)/uikittools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uiopen
+	$(LDID) -M -S$(BUILD_WORK)/uikittools/uishoot.plist $(BUILD_DIST)/uikittools-extra/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uishoot
 
 	find $(BUILD_DIST)/uikittools -name '.ldid*' -type f -delete
 	find $(BUILD_DIST)/uikittools-extra -name '.ldid*' -type f -delete

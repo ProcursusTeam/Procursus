@@ -756,6 +756,9 @@ SIGN = 	for file in $$(find $(BUILD_DIST)/$(1) -type f -exec sh -c "file -ib '{}
 					$(LDID) -S $$file; \
 				else \
 					$(LDID) -S$(BUILD_MISC)/entitlements/$(2) $$file; \
+					if [ "$(2)" != "general.xml" ] && [ "$(5)" != "nogeneral" ]; then \
+						$(LDID) -M -S$(BUILD_MISC)/entitlements/general.xml $$file; \
+					fi; \
 				fi; \
 			fi; \
 		done
