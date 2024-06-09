@@ -388,9 +388,5 @@
     <true/>
     <key>com.apple.rootless.volume.iSCPreboot</key>
     <true/>
-    <key>com.apple.private.vfs.role-account-unmount</key>
-    <true/>
-    <key>com.apple.private.vfs.snapshot</key>
-    <true/>
 </dict>
 </plist>
