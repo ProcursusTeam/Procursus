@@ -7,23 +7,12 @@ SUBPROJECTS        += uikittools
 else
 STRAPPROJECTS      += uikittools
 endif
-UIKITTOOLS_VERSION := 2.1.6
-DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)-1
-
-ifeq ($(PLATFORM),iphoneos)
-TBD_PLATFORM = ios
-else ifeq ($(PLATFORM),macosx)
-TBD_PLATFORM = macos
-else ifeq ($(PLATFORM),appletvos)
-TBD_PLATFORM = tvos
-else
-TBD_PLATFORM = $(PLATFORM)
-endif
+UIKITTOOLS_VERSION := 2.1.7
+DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)
 
 uikittools-setup: setup
 	$(call GITHUB_ARCHIVE,ProcursusTeam,uikittools-ng,$(UIKITTOOLS_VERSION),v$(UIKITTOOLS_VERSION))
 	$(call EXTRACT_TAR,uikittools-ng-$(UIKITTOOLS_VERSION).tar.gz,uikittools-ng-$(UIKITTOOLS_VERSION),uikittools)
-	sed -i 's/(null)/$(TBD_PLATFORM)/g' $(BUILD_WORK)/uikittools/Frameworks/MobileContainerManager.framework/MobileContainerManager.tbd
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 UIKITTOOLS_MAKE_ARGS += NO_COMPAT=1
