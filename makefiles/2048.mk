@@ -3,30 +3,24 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += 2048
-2048_VERSION  := 2019.6.29
-DEB_2048_V    ?= 0.$(2048_VERSION)
-2048_GIT_HASH := 72725bab07d7686e5e5b3f68e398f43ffb6f49ce
+2048_VERSION  := 1.0.1
+DEB_2048_V    ?= $(2048_VERSION)
 
 2048-setup: setup
-	$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/2048-$(2048_GIT_HASH).c, \
-		https://github.com/mevdschee/2048.c/raw/$(2048_GIT_HASH)/2048.c)
-	mkdir -p $(BUILD_WORK)/2048
-	cp $(BUILD_SOURCE)/2048-$(2048_GIT_HASH).c $(BUILD_WORK)/2048/2048.c
+	$(call GITHUB_ARCHIVE,mevdschee,2048.c,$(2048_VERSION),v$(2048_VERSION))
+	$(call EXTRACT_TAR,2048.c-$(2048_VERSION).tar.gz,2048.c-$(2048_VERSION),2048)
 
 ifneq ($(wildcard $(BUILD_WORK)/2048/.build_complete),)
 2048:
 	@echo "Using previously built 2048."
 else
 2048: 2048-setup
-	mkdir -p $(BUILD_STAGE)/2048/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	sed -i '/#define _XOPEN_SOURCE 500/d' $(BUILD_WORK)/2048/2048.c
-	cd $(BUILD_WORK)/2048 && $(CC) -std=c99 \
-		$(CFLAGS) \
-		2048.c \
-		-o $(BUILD_STAGE)/2048/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/2048
-
-	cd $(BUILD_STAGE)/2048 && chmod +x ./$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/2048
-
+	+$(MAKE) -C $(BUILD_WORK)/2048 \
+		CFLAGS="-std=c99 $(CFLAGS)"
+	+$(MAKE) -C $(BUILD_WORK)/2048 install \
+		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+		DESTDIR="$(BUILD_STAGE)/2048"
 	$(call AFTER_BUILD)
 endif
 
