@@ -7,6 +7,8 @@ comma := ,
 
 SAVED_LANG = $(LANG)
 export LANG := C
+export LD_SHARED_CACHE_ELIGIBLE = NO
+
 
 ifeq ($(shell LANG=C /usr/bin/env bash --version | grep -iq 'version 5' && echo 1),1)
 SHELL := /usr/bin/env bash
@@ -32,7 +34,17 @@ MEMO_CFVER           ?= 1800
 # iOS 13.0 == 1665.15.
 CFVER_WHOLE          != echo $(MEMO_CFVER) | cut -d. -f1
 
-ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 2000 ] && [ "$(CFVER_WHOLE)" -lt 2100 ] && echo 1),1)
+ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 3000 ] && [ "$(CFVER_WHOLE)" -lt 4000 ] && echo 1),1)
+IPHONEOS_DEPLOYMENT_TARGET  := 18.0
+APPLETVOS_DEPLOYMENT_TARGET := 18.0
+AUDIOOS_DEPLOYMENT_TARGET   := 18.0
+BRIDGEOS_DEPLOYMENT_TARGET  := 9.0
+WATCHOS_DEPLOYMENT_TARGET   := 11.0
+MACOSX_DEPLOYMENT_TARGET    := 15.0
+DARWIN_DEPLOYMENT_VERSION   := 24
+MACOSX_SUITE_NAME           := sequoia
+override MEMO_CFVER         := 3000
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 2000 ] && [ "$(CFVER_WHOLE)" -lt 3000 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 17.0
 APPLETVOS_DEPLOYMENT_TARGET := 17.0
 AUDIOOS_DEPLOYMENT_TARGET   := 17.0
@@ -1496,6 +1508,8 @@ endif
 	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/mach/message.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/message.h
 	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/ucontext.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ucontext.h
 	@sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/signal.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/signal.h
+	@if [ -f $(TARGET_SYSROOT)/usr/include/_stdlib.h ]; then sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/_stdlib.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/_stdlib.h; fi
+	@if [ -f $(TARGET_SYSROOT)/usr/include/_time.h ]; then sed -E s/'__IOS_PROHIBITED|__TVOS_PROHIBITED|__WATCHOS_PROHIBITED'//g < $(TARGET_SYSROOT)/usr/include/_time.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/_time.h; fi
 	@sed -E /'__API_UNAVAILABLE'/d < $(TARGET_SYSROOT)/usr/include/pthread.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pthread.h
 	@sed -i -E s/'__API_UNAVAILABLE\(.*\)'// $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit/IOKitLib.h
 	@sed -E -e '\|/var/tmp|! s|"/var|"$(MEMO_PREFIX)/var|g' -e '\|/bin:|! s|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' -e '\|/bin:|! s|"/bin|"$(MEMO_PREFIX)/bin|g' -e '\|/bin:|! s|"/sbin|"$(MEMO_PREFIX)/sbin|g' -e 's|/etc|$(MEMO_PREFIX)/etc|g' -e 's|/usr/bin:|$(MEMO_PREFIX)/bin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin:/usr/bin:|g' -e 's|/usr/sbin:|$(MEMO_PREFIX)/sbin:$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin:/usr/sbin:|g' < $(TARGET_SYSROOT)/usr/include/pwd.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pwd.h
