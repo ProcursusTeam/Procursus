@@ -5,7 +5,7 @@ endif
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS     += ipatool
-IPATOOL_VERSION := 2.0.0
+IPATOOL_VERSION := 2.1.4
 DEB_IPATOOL_V   ?= $(IPATOOL_VERSION)
 
 ipatool-setup: setup
@@ -17,10 +17,9 @@ ipatool:
 	@echo "Using previously built ipatool."
 else
 ipatool: ipatool-setup
-	sed -e '3s|.*|VERSION="$(DEB_IPATOOL_V)"|' -i $(BUILD_WORK)/ipatool/tools/version.sh
-	cd $(BUILD_WORK)/ipatool && ./tools/version.sh
 	cd $(BUILD_WORK)/ipatool && $(DEFAULT_GOLANG_FLAGS) go build \
 		-trimpath \
+		-ldflags "-X github.com/majd/ipatool/v2/cmd.version=$(IPATOOL_VERSION)" \
 		-o $(BUILD_WORK)/ipatool/ipatool
 	$(INSTALL) -Dm755 $(BUILD_WORK)/ipatool/ipatool -t $(BUILD_STAGE)/ipatool/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
 	$(call AFTER_BUILD)
