@@ -6,9 +6,9 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 ifeq ($(shell [ "$(MEMO_CFVER)" -ge 1800 ] && echo 1),1)
 
 SUBPROJECTS             += libkrw-dopamine
-DOPAMINE_VERSION        := 2.0.11
-CHOMA_COMMIT            := 54fedaf26175d5db27246d66b55d540ff6bcb83d
-LIBKRW_DOPAMINE_VERSION := 2.0.1
+DOPAMINE_VERSION        := 2.1.7
+CHOMA_COMMIT            := 96000d80c62f407ef7e103dc3bcb29133a3b990d
+LIBKRW_DOPAMINE_VERSION := 2.0.3
 DEB_LIBKRW_DOPAMINE_V   ?= $(LIBKRW_DOPAMINE_VERSION)
 LIBKRW_DOPAMINE_LIBS    := -ljailbreak -framework Foundation
 
@@ -21,6 +21,7 @@ libkrw-dopamine-setup: setup
 	cp -a $(BUILD_WORK)/libkrw-dopamine/Dopamine/Packages/libkrw-provider/src $(BUILD_WORK)/libkrw-dopamine/
 	cp -a $(BUILD_WORK)/libkrw-dopamine/Dopamine/BaseBin/libjailbreak/src/*.h $(BUILD_WORK)/libkrw-dopamine/include/libjailbreak
 	cp -a $(BUILD_WORK)/libkrw-dopamine/Dopamine/BaseBin/_external/include/libkrw $(BUILD_WORK)/libkrw-dopamine/include/
+	cp -a $(BUILD_WORK)/libkrw-dopamine/Dopamine/BaseBin/_external/include/xpc_private.h $(BUILD_WORK)/libkrw-dopamine/include/
 	cp -a $(BUILD_WORK)/libkrw-dopamine/ChOma/src/*.h $(BUILD_WORK)/libkrw-dopamine/include/choma
 	rm -rf $(BUILD_WORK)/libkrw-dopamine/{Dopamine,ChOma}
 	mkdir -p $(BUILD_STAGE)/libkrw-dopamine/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw
