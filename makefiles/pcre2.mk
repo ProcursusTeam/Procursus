@@ -10,6 +10,7 @@ pcre2-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/PCRE2Project/pcre2/releases/download/pcre2-$(PCRE2_VERSION)/pcre2-$(PCRE2_VERSION).tar.bz2{$(comma).sig})
 	$(call PGP_VERIFY,pcre2-$(PCRE2_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,pcre2-$(PCRE2_VERSION).tar.bz2,pcre2-$(PCRE2_VERSION),pcre2)
+	sed -i 's|TARGET_OS_IPHONE|PEAR_TARGET|g' $(BUILD_WORK)/pcre2/src/sljit/allocator_src/sljitExecAllocatorApple.c
 
 ifneq ($(wildcard $(BUILD_WORK)/pcre2/.build_complete),)
 pcre2:
