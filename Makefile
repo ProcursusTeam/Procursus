@@ -676,7 +676,7 @@ DEFAULT_PERL_BUILD_FLAGS := \
 	install_path=html=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/doc/perl5
 
 DEFAULT_GOLANG_FLAGS := \
-	GOOS=$(shell echo $(RUST_TARGET) | cut -f3 -d-) \
+	GOOS=$(GOLANG_OS) \
 	GOARCH=$(shell echo $(MEMO_TARGET) | cut -f2 -d-) \
 	CGO_CFLAGS="$(shell echo $(CFLAGS) | sed 's|$(OPTIMIZATION_FLAGS)||')" \
 	CGO_CXXFLAGS="$(shell echo $(CXXFLAGS) | sed 's|$(OPTIMIZATION_FLAGS)||')" \

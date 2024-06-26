@@ -3,12 +3,16 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += ipsw
-IPSW_VERSION  := 3.1.365
+IPSW_VERSION  := 3.1.506
 DEB_IPSW_V    ?= $(IPSW_VERSION)
 
 ipsw-setup: setup
 	$(call GITHUB_ARCHIVE,blacktop,ipsw,v$(IPSW_VERSION),v$(IPSW_VERSION))
 	$(call EXTRACT_TAR,ipsw-v$(IPSW_VERSION).tar.gz,ipsw-$(IPSW_VERSION),ipsw)
+	sed -i 's/arm64e-ios ]/arm64e-ios, arm64-tvos, arm64e-tvos, armv7k-watchos, arm64-watchos, arm64e-watchos ]/g' $(BUILD_WORK)/ipsw/internal/apsd/ApplePushService.tbd
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+	sed -i 's|/System/Library/PrivateFrameworks/ApplePushService.framework/Versions/A/ApplePushService|/System/Library/PrivateFrameworks/ApplePushService.framework/ApplePushService|g' $(BUILD_WORK)/ipsw/internal/apsd/ApplePushService.tbd
+endif
 
 ifneq ($(wildcard $(BUILD_WORK)/ipsw/.build_complete),)
 ipsw:
