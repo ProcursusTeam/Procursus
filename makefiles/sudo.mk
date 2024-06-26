@@ -15,6 +15,11 @@ sudo-setup: setup
 	$(call PGP_VERIFY,sudo-$(SUDO_VERSION).tar.gz)
 	$(call EXTRACT_TAR,sudo-$(SUDO_VERSION).tar.gz,sudo-$(SUDO_VERSION),sudo)
 	$(call DO_PATCH,sudo,sudo,-p1)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+ifneq (1,$(MEMO_NO_IOSEXEC))
+	sed -i -E 's/(testsudoers|sudo)_((get|set|end)(user|gr|pw)(shell|ent|nam|uid|gid))_?r?\(/\1_ie_\2\(/g' $(BUILD_WORK)/sudo/{plugins/sudoers,lib/util}/*.*
+endif
+endif
 
 ifneq ($(wildcard $(BUILD_WORK)/sudo/.build_complete),)
 sudo:
@@ -39,14 +44,12 @@ endif
 		--with-rundir=$(MEMO_PREFIX)/var/run/sudo \
 		sudo_cv___func__=yes \
 		ac_cv_have_working_snprintf=yes \
-		ac_cv_have_working_vsnprintf=yes
-	$(CC) $(CFLAGS) -c $(BUILD_MISC)/sudo/ie_stubs.c -o $(BUILD_WORK)/sudo/ie_stubs.o
+		ac_cv_have_working_vsnprintf=yes \
+		ac_cv_header_libutil_h=no
 	sed -i 's/-Wc,-static-libgcc/ /g' $(BUILD_WORK)/sudo/{src,,plugins/*,logsrvd,lib/util}/Makefile
-	sed -i 's|LDFLAGS = -Os|LDFLAGS = $(BUILD_WORK)/sudo/ie_stubs.o -Os|' $(BUILD_WORK)/sudo/plugins/sudoers/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/sudo
 	+$(MAKE) -C $(BUILD_WORK)/sudo install \
 		DESTDIR=$(BUILD_STAGE)/sudo \
-		LIBS="$(BUILD_MISC)/sudo/ie_stubs.c" \
 		INSTALL_OWNER=''
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	mkdir -p $(BUILD_STAGE)/sudo/$(MEMO_PREFIX)/etc/pam.d
