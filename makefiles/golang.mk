@@ -3,9 +3,9 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS           += golang
-GOLANG_MAJOR_V        := 1.21
-GOLANG_VERSION        := $(GOLANG_MAJOR_V).1
-DEBIAN_GOLANG_VERSION := 1.21~2
+GOLANG_MAJOR_V        := 1.22
+GOLANG_VERSION        := $(GOLANG_MAJOR_V).4
+DEBIAN_GOLANG_VERSION := 1.22~3
 DEB_GOLANG_V          ?= $(GOLANG_VERSION)
 
 golang-setup: setup
@@ -34,7 +34,7 @@ golang: golang-setup
 	cd $(BUILD_WORK)/golang/src && \
 		CGO_ENABLED=1 \
 		GOROOT_FINAL=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/go-$(GOLANG_MAJOR_V) \
-		GOOS=$(shell echo $(RUST_TARGET) | cut -f3 -d-) \
+		GOOS=$(GOLANG_OS) \
 		GOARCH=$(shell echo $(MEMO_TARGET) | cut -f2 -d-) \
 		CC="clang" \
 		CC_FOR_TARGET="cc" \
@@ -44,7 +44,7 @@ golang: golang-setup
 		CGO_FFLAGS="-Os" \
 		CGO_LDFLAGS="-Os -L$(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
 		./make.bash
-	GOTARGET="$(shell echo $(RUST_TARGET) | cut -f3 -d-)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)"; \
+	GOTARGET="$(GOLANG_OS)_$(shell echo $(MEMO_TARGET) | cut -f2 -d-)"; \
 	cd $(BUILD_WORK)/golang/pkg/tool/; \
 	for i in *; do \
 		if [ "$$i" != "$$GOTARGET" ]; then \
