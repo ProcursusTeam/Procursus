@@ -10,6 +10,7 @@ aria2-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/tatsuhiro-t/aria2/releases/download/release-$(ARIA2_VERSION)/aria2-$(ARIA2_VERSION).tar.xz)
 	$(call EXTRACT_TAR,aria2-$(ARIA2_VERSION).tar.xz,aria2-$(ARIA2_VERSION),aria2)
 	$(call DO_PATCH,aria2,aria2,-p1)
+	sed -i 's/-keep_private_externs -nostdlib/-keep_private_externs $(PLATFORM_VERSION_MIN) -arch $(MEMO_ARCH) -nostdlib/g' $(BUILD_WORK)/aria2/configure
 
 ifneq ($(wildcard $(BUILD_WORK)/aria2/.build_complete),)
 aria2:
