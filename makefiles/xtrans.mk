@@ -5,13 +5,13 @@ endif
 SUBPROJECTS    += xtrans
 XTRANS_VERSION := 1.4.0
 XTRANS_EPOCH   := 1.5.0
-DEB_XTRANS_V   ?= $(XTRANS_EPOCH)+really$(XTRANS_VERSION)
+DEB_XTRANS_V   ?= $(XTRANS_EPOCH)+really$(XTRANS_VERSION)-1
 
 xtrans-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.x.org/archive/individual/lib/xtrans-$(XTRANS_VERSION).tar.bz2{$(comma).sig})
 	$(call PGP_VERIFY,xtrans-$(XTRANS_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,xtrans-$(XTRANS_VERSION).tar.bz2,xtrans-$(XTRANS_VERSION),xtrans)
-	sed -i 's|# include <stropts.h>|# include <sys/ioctl.h>|' $(BUILD_WORK)/xtrans/Xtranslcl.c
+	sed -i 's|# include <.*stropts\.h>|# include <sys/ioctl.h>|' $(BUILD_WORK)/xtrans/Xtranslcl.c
 
 ifneq ($(wildcard $(BUILD_WORK)/xtrans/.build_complete),)
 xtrans:
