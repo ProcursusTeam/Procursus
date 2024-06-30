@@ -3,14 +3,18 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += libuv1
-LIBUV1_VERSION := 1.44.1
+LIBUV1_VERSION := 1.48.0
 DEB_LIBUV1_V   ?= $(LIBUV1_VERSION)
 
 libuv1-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://dist.libuv.org/dist/v$(LIBUV1_VERSION)/libuv-v$(LIBUV1_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libuv-v$(LIBUV1_VERSION).tar.gz,libuv-v$(LIBUV1_VERSION),libuv1)
-#	FUTURE: Remove after next release.
-	$(call DO_PATCH,libuv1,libuv1,-p1)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+	sed -i 's/TARGET_OS_TV || TARGET_OS_WATCH/__PEAR__/g' $(BUILD_WORK)/libuv1/src/unix/process.c
+	sed -i 's/#if TARGET_OS_IPHONE || MAC_OS_X_VERSION_MAX_ALLOWED < 1070/#if 0/g' $(BUILD_WORK)/libuv1/src/unix/fsevents.c
+	sed -i 's| && MAC_OS_X_VERSION_MAX_ALLOWED >= 1070||g' $(BUILD_WORK)/libuv1/src/unix/kqueue.c
+	sed -i -e 's|Versions/A/CoreFoundation|CoreFoundation|g' -e 's|Versions/A/CoreServices|CoreServices|g' $(BUILD_WORK)/libuv1/src/unix/fsevents.c
+endif
 
 ifneq ($(wildcard $(BUILD_WORK)/libuv1/.build_complete),)
 libuv1:
