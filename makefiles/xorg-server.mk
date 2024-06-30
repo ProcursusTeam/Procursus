@@ -57,22 +57,22 @@ xorg-server-package: xorg-server-stage
 
 	# xorg-server.mk Prep xdmx
 	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/Xdmx $(BUILD_DIST)/xdmx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/Xdmx.1 $(BUILD_DIST)/xdmx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/Xdmx.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/xdmx/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# xorg-server.mk Prep xserver-xephyr
 	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/Xephyr $(BUILD_DIST)/xserver-xephyr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/Xephyr.1 $(BUILD_DIST)/xserver-xephyr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/Xephyr.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/xserver-xephyr/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# xorg-server.mk Prep xserver-xorg-core
 	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/X $(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/Xorg $(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/gtf $(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/cvt $(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/Xorg.1 $(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
-	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/cvt.1 $(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
-	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/gtf.1 $(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
-	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5/xorg.conf.5 $(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5
-	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5/xorg.conf.d.5 $(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5
+	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/Xorg.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/cvt.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/gtf.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5/xorg.conf.5$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5
+	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5/xorg.conf.d.5$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man5
 	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg/modules $(BUILD_DIST)/xserver-xorg-core/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg/
 
 	# xorg-server.mk Prep xdmx-tools
@@ -86,13 +86,13 @@ xorg-server-package: xorg-server-stage
 	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dmxinfo $(BUILD_DIST)/xdmx-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dmxaddscreen $(BUILD_DIST)/xdmx-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dmxaddinput $(BUILD_DIST)/xdmx-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/dmxtodmx.1 $(BUILD_DIST)/xdmx-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
-	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/vdltodmx.1 $(BUILD_DIST)/xdmx-tools$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
-	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/xdmxconfig.1 $(BUILD_DIST)/xdmx-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/dmxtodmx.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/xdmx-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/vdltodmx.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/xdmx-tools$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/xdmxconfig.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/xdmx-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# xorg-server.mk Prep xvfb
 	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/Xvfb $(BUILD_DIST)/xvfb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/Xvfb.1 $(BUILD_DIST)/xvfb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/Xvfb.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/xvfb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# xorg-server.mk Prep xserver-common
 	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg/protocol.txt $(BUILD_DIST)/xserver-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/xorg
@@ -100,7 +100,7 @@ xorg-server-package: xorg-server-stage
 
 	# xorg-server.mk Prep xnest
 	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/Xnest $(BUILD_DIST)/xnest/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
-	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/Xnest.1 $(BUILD_DIST)/xnest/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/Xnest.1$(MEMO_MANPAGE_SUFFIX) $(BUILD_DIST)/xnest/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 
 	# xorg-server.mk Prep xserver-xorg-dev
 	cp -a $(BUILD_STAGE)/xorg-server/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/xserver-xorg-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
