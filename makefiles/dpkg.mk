@@ -15,6 +15,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 else
 	$(call DO_PATCH,dpkg-macos,dpkg,-p1)
 endif
+	sed -i 's|along with this program|*/\n#define LIBDPKG_VOLATILE_API 1\n#include "$(TARGET_SYSROOT)/usr/include/string.h"\n/*|g' $(BUILD_WORK)/dpkg/lib/dpkg/*.c
 
 ifneq ($(wildcard $(BUILD_WORK)/dpkg/.build_complete),)
 dpkg:
