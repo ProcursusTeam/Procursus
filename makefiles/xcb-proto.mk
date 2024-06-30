@@ -37,7 +37,7 @@ xcb-proto-package: xcb-proto-stage
 	cp -a $(BUILD_STAGE)/xcb-proto/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/xcb-proto/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	# xcb-proto.mk Prep python3-xcbgen
 	cp -a $(BUILD_STAGE)/xcb-proto/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3 $(BUILD_DIST)/python3-xcbgen/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
-	rm -f $(BUILD_DIST)/python3-xcbgen/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3/dist-packages/xcbgen/!(*.py)
+	rm -rf $(BUILD_DIST)/python3-xcbgen/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/python3/dist-packages/xcbgen/!(*.py) # Delete __pycache__ as well
 
 	# xcb-proto.mk Make .debs
 	$(call PACK,xcb-proto,DEB_XCBPROTO_V)
