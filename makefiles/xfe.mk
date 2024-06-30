@@ -9,6 +9,7 @@ DEB_XFE_V   ?= $(XFE_VERSION)
 xfe-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://pilotfiber.dl.sourceforge.net/project/xfe/xfe/1.44/xfe-1.44.tar.xz)
 	$(call EXTRACT_TAR,xfe-$(XFE_VERSION).tar.xz,xfe-$(XFE_VERSION),xfe)
+	rm -f $(BUILD_WORK)/xfe/intl/VERSION
 
 ifneq ($(wildcard $(BUILD_WORK)/xfe/.build_complete),)
 xfe:
