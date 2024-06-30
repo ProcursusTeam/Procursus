@@ -38,7 +38,7 @@ lsof: lsof-setup network-cmds-setup ncurses
 		CC=$(CC) \
 		AR="$(AR) cr \$${LIB} \$${OBJ}" \
 		RANLIB="$(RANLIB) \$${LIB}" \
-		RC_CFLAGS="$(CFLAGS) -DUSE_LIB_REGEX -DHASUTMPX -liosexec -isystem $(BUILD_WORK)/network-cmds/include -isystem $(BUILD_WORK)/lsof/lsof/include -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -Wno-deprecated-non-prototype"
+		RC_CFLAGS="$(CFLAGS) -DSTDC_HEADERS -DUSE_LIB_REGEX -DHASUTMPX -liosexec -isystem $(BUILD_WORK)/network-cmds/include -isystem $(BUILD_WORK)/lsof/lsof/include -L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -Wno-deprecated-non-prototype"
 	cp -a $(BUILD_WORK)/lsof/lsof/lsof $(BUILD_STAGE)/lsof/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin
 	cp -a $(BUILD_WORK)/lsof/lsof/lsof.8 $(BUILD_STAGE)/lsof/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man8
 	$(call AFTER_BUILD)
