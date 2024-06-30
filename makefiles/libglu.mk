@@ -10,6 +10,9 @@ libglu-setup: setup
 	$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/libglu-$(LIBGLU_VERSION).tar.xz, \
 		ftp://ftp.freedesktop.org/pub/mesa/glu/glu-$(LIBGLU_VERSION).tar.xz)
 	$(call EXTRACT_TAR,libglu-$(LIBGLU_VERSION).tar.xz,glu-$(LIBGLU_VERSION),libglu)
+	sed -i 's/-keep_private_externs -nostdlib/-keep_private_externs $(PLATFORM_VERSION_MIN) -arch $(MEMO_ARCH) -nostdlib/g' $(BUILD_WORK)/libglu/configure
+	sed -i 's|Internal convenience typedefs|*/\nGLAPI void GLAPIENTRY gluDeleteNurbsTessellatorEXT(GLUnurbsObj *r);\nGLAPI void GLAPIENTRY glu_LOD_eval_list(GLUnurbs *nurb, int level);\n/*|g' $(BUILD_WORK)/libglu/include/GL/glu.h
+	sed -i 's|#define gluNurbsCallbackDataEXT mgluNurbsCallbackDataEXT|#define gluNurbsCallbackDataEXT  mgluNurbsCallbackDataEXT\n#define gluDeleteNurbsTessellatorEXT mgluDeleteNurbsTessellatorEXT\n#define glu_LOD_eval_list mglu_LOD_eval_list|g' $(BUILD_WORK)/libglu/include/GL/glu_mangle.h
 
 ifneq ($(wildcard $(BUILD_WORK)/libglu/.build_complete),)
 libglu:
