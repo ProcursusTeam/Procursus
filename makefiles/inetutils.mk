@@ -15,7 +15,6 @@ inetutils-setup: setup
 	$(call EXTRACT_TAR,inetutils_$(DEBIAN_INETUTILS_V).debian.tar.xz,debian,inetutils/debian)
 	$(call DO_PATCH,inetutils,inetutils,-p1)
 	sed -i 's/#include <libinetutils.h>/#include <libinetutils.h>\n#undef true\n#undef false/' $(BUILD_WORK)/inetutils/src/rlogind.c
-	sed -i 's|char \*ttymsg (struct iovec \*\, int, char \*\, int)\;||g' $(BUILD_WORK)/inetutils/src/syslogd.c
 	mkdir -p $(BUILD_STAGE)/inetutils/{{s,}bin/,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man{1,8}}
 
 ifneq ($(wildcard $(BUILD_WORK)/inetutils/.build_complete),)
