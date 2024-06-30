@@ -2,45 +2,34 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS    += libssh
-LIBSSH_VERSION := 0.10.6
-DEB_LIBSSH_V   ?= $(LIBSSH_VERSION)
+SUBPROJECTS             += libssh
+LIBSSH_VERSION          := 0.10.6
+ARGP-STANDALONE_VERSION := 1.0.2
+DEB_LIBSSH_V            ?= $(LIBSSH_VERSION)
 
 libssh-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.libssh.org/files/0.10/libssh-$(LIBSSH_VERSION).tar.xz)
-	$(call GITHUB_ARCHIVE,ericonr,argp-standalone,1.4.1,1.4.1)
+	$(call GITHUB_ARCHIVE,tom42,argp-standalone,$(ARGP-STANDALONE_VERSION),v$(ARGP-STANDALONE_VERSION))
 	$(call EXTRACT_TAR,libssh-$(LIBSSH_VERSION).tar.xz,libssh-$(LIBSSH_VERSION),libssh)
-	$(call EXTRACT_TAR,argp-standalone-1.4.1.tar.gz,argp-standalone-1.4.1,libssh/argp-standalone)
-	mkdir -p $(BUILD_WORK)/libssh/build
+	$(call EXTRACT_TAR,argp-standalone-$(ARGP-STANDALONE_VERSION).tar.gz,argp-standalone-$(ARGP-STANDALONE_VERSION),libssh/argp-standalone)
+	sed -i 's|return "";|return getprogname();|g' $(BUILD_WORK)/libssh/argp-standalone/src/argp-help.c
+	mkdir -p $(BUILD_WORK)/libssh/{,argp-standalone}/build
 
 ifneq ($(wildcard $(BUILD_WORK)/libssh/.build_complete),)
 libssh:
 	@echo "Using previously built libssh."
 else
 libssh: libssh-setup openssl
-	cd $(BUILD_WORK)/libssh/argp-standalone && \
-		$(CC) $(CFLAGS) *.c -I$(BUILD_WORK)/libssh/argp-standalone \
-			-DHAVE_DECL_CLEARERR_UNLOCKED=0 \
-			-DHAVE_DECL_FEOF_UNLOCKED=0 \
-			-DHAVE_DECL_FERROR_UNLOCKED=0 \
-			-DHAVE_DECL_FFLUSH_UNLOCKED=0 \
-			-DHAVE_DECL_FGETS_UNLOCKED=0 \
- 			-DHAVE_DECL_FPUTC_UNLOCKED=0 \
-			-DHAVE_DECL_FPUTS_UNLOCKED=0 \
-			-DHAVE_DECL_FREAD_UNLOCKED=0 \
-			-DHAVE_DECL_FWRITE_UNLOCKED=0 \
-			-DHAVE_DECL_GETC_UNLOCKED=0 \
-			-DHAVE_DECL_GETCHAR_UNLOCKED=0 \
-			-DHAVE_DECL_PUTC_UNLOCKED=0 \
-			-DHAVE_DECL_PUTCHAR_UNLOCKED=0 -c; \
-		$(AR) cru argp.a *.o
+	cd $(BUILD_WORK)/libssh/argp-standalone/build && cmake .. \
+		$(DEFAULT_CMAKE_FLAGS)
+	+$(MAKE) -C $(BUILD_WORK)/libssh/argp-standalone/build
 	cd $(BUILD_WORK)/libssh/build && cmake .. \
-		-DCMAKE_C_FLAGS="$(CFLAGS) -w"
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DBUILD_STATIC_LIB=ON \
 		-DUNIT_TESTING=OFF \
 		-DOPENSSL_ROOT_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
-		-DARGP_LIBRARY="$(BUILD_WORK)/libssh/argp-standalone/argp.a -I$(BUILD_WORK)/libssh/argp-standalone"
+		-DARGP_LIBRARIES="$(BUILD_WORK)/libssh/argp-standalone/build/src/libargp-standalone.a" \
+		-DARGP_INCLUDE_DIR="$(BUILD_WORK)/libssh/argp-standalone/include/argp-standalone"
 	+$(MAKE) -C $(BUILD_WORK)/libssh/build
 	+$(MAKE) -C $(BUILD_WORK)/libssh/build install \
 		DESTDIR="$(BUILD_STAGE)/libssh"
