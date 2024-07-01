@@ -6,4 +6,5 @@
 ### Package Additions/Updates
 
 * [ ] Have you confirmed this builds & works as intended on an iOS device (if applicable)?
+* [ ] Have you confirmed this builds & works as intended on an tvOS device (if applicable)?
 * [ ] Have you confirmed this builds & works as intended on a macOS device (if applicable)?
