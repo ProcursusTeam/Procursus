@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS     += libtiff
 LIBTIFF_VERSION := 4.2.0
-DEB_LIBTIFF_V   ?= $(LIBTIFF_VERSION)
+DEB_LIBTIFF_V   ?= $(LIBTIFF_VERSION)-1
 
 libtiff-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
