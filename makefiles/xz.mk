@@ -7,7 +7,8 @@ XZ_VERSION    := 5.4.7
 DEB_XZ_V      ?= $(XZ_VERSION)
 
 xz-setup: setup
-	$(call GITHUB_ARCHIVE,tukaani-project,xz,$(XZ_VERSION),v$(XZ_VERSION))
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/tukaani-project/xz/releases/download/v$(XZ_VERSION)/xz-$(XZ_VERSION).tar.gz{$(comma).sig})
+	$(call PGP_VERIFY,xz-$(XZ_VERSION).tar.gz)
 	$(call EXTRACT_TAR,xz-$(XZ_VERSION).tar.gz,xz-$(XZ_VERSION),xz)
 
 ifneq ($(wildcard $(BUILD_WORK)/xz/.build_complete),)
