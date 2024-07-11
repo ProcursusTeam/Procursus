@@ -3,13 +3,12 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += xz
-XZ_VERSION    := 5.4.4
+XZ_VERSION    := 5.4.7
 DEB_XZ_V      ?= $(XZ_VERSION)
 
 xz-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://web.archive.org/web/20230930004231id_/https://tukaani.org/xz/xz-5.4.4.tar.xz{.sig$(comma)})
-	$(call PGP_VERIFY,xz-$(XZ_VERSION).tar.xz)
-	$(call EXTRACT_TAR,xz-$(XZ_VERSION).tar.xz,xz-$(XZ_VERSION),xz)
+	$(call GITHUB_ARCHIVE,tukaani-project,xz,$(XZ_VERSION),v$(XZ_VERSION))
+	$(call EXTRACT_TAR,xz-$(XZ_VERSION).tar.gz,xz-$(XZ_VERSION),xz)
 
 ifneq ($(wildcard $(BUILD_WORK)/xz/.build_complete),)
 xz:
