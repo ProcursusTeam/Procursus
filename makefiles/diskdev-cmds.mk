@@ -7,7 +7,7 @@ STRAPPROJECTS        += diskdev-cmds
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS          += diskdev-cmds
 endif # ($(MEMO_TARGET),darwin-\*)
-DISKDEV-CMDS_VERSION := 718
+DISKDEV-CMDS_VERSION := 718.120.3
 DEB_DISKDEV-CMDS_V   ?= $(DISKDEV-CMDS_VERSION)
 
 diskdev-cmds-setup: setup
