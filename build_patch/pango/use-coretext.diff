@@ -1,0 +1,51 @@
+--- a/meson.build	2022-02-10 04:58:03.545640700 +0800
++++ b/meson.build	2022-06-07 16:21:49.091816769 +0800
+@@ -414,12 +414,12 @@
+                                 return 0;
+                               }''',
+                            name: 'CoreText availability',
+-                           dependencies: dependency('appleframeworks', modules: 'ApplicationServices'))
++                           dependencies: dependency('appleframeworks', modules: 'CoreText'))
+   if has_core_text
+     pango_conf.set('HAVE_CORE_TEXT', 1)
+   endif
+ 
+-  pango_deps += dependency('appleframeworks', modules: [ 'CoreFoundation', 'ApplicationServices' ])
++  pango_deps += dependency('appleframeworks', modules: [ 'CoreFoundation', 'CoreText' ])
+ endif
+ 
+ # If option is 'auto' or 'enabled' it is not required to find cairo on the
+--- a/pango/pangocoretext.h	2022-03-19 12:26:34.307346600 +0800
++++ b/pango/pangocoretext.h	2022-06-07 16:30:40.491498343 +0800
+@@ -24,7 +24,7 @@
+ #define __PANGOCORETEXT_H__
+ 
+ #include <pango/pango.h>
+-#include <Carbon/Carbon.h>
++#include <CoreText/CoreText.h>
+ 
+ G_BEGIN_DECLS
+ 
+--- a/pango/pangocairo-coretextfont.c	2022-03-19 12:26:34.306346700 +0800
++++ b/pango/pangocairo-coretextfont.c	2022-06-07 16:35:47.194280275 +0800
+@@ -23,7 +23,7 @@
+ 
+ #include "config.h"
+ 
+-#include <Carbon/Carbon.h>
++#include <CoreText/CoreText.h>
+ 
+ #include "pango-impl-utils.h"
+ #include "pangocoretext-private.h"
+--- a/pango/pangocoretext-fontmap.c	2022-03-19 12:26:34.307346600 +0800
++++ b/pango/pangocoretext-fontmap.c	2022-06-07 16:41:52.601719766 +0800
+@@ -28,7 +28,8 @@
+ #include "pangocoretext-private.h"
+ #include "pango-impl-utils.h"
+ 
+-#include <Carbon/Carbon.h>
++#include <CoreFoundation/CoreFoundation.h>
++#include <strings.h>
+ 
+ typedef struct _FontHashKey      FontHashKey;
+ 
