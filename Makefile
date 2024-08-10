@@ -434,7 +434,7 @@ CXXFLAGS_FOR_BUILD := $(CFLAGS_FOR_BUILD)
 ASFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
 LDFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
 
-else
+else ifeq ($(shell sw_vers -productName),iPhone OS)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building on iOS)
 endif # ($(MEMO_QUIET),1)
@@ -451,7 +451,24 @@ CXXFLAGS_FOR_BUILD := $(CFLAGS_FOR_BUILD)
 ASFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
 LDFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
 
-endif
+else ifeq ($(shell sw_vers -productName),Apple TVOS)
+ifneq ($(MEMO_QUIET),1)
+$(warning Building on tvOS)
+endif # ($(MEMO_QUIET),1)
+TARGET_SYSROOT  ?= /usr/share/SDKs/$(BARE_PLATFORM).sdk
+MACOSX_SYSROOT  ?= /usr/share/SDKs/MacOSX.sdk
+CC              != command -v cc
+CXX             != command -v c++
+CPP             := $(CC) -E
+PATH            := /usr/bin:$(PATH)
+
+CFLAGS_FOR_BUILD   := -arch $(shell arch) -mappletvos-version-min=$(shell sw_vers -productVersion)
+CPPFLAGS_FOR_BUILD := $(CFLAGS_FOR_BUILD)
+CXXFLAGS_FOR_BUILD := $(CFLAGS_FOR_BUILD)
+ASFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
+LDFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
+
+endif # ifeq ($(shell sw_vers -productName),macOS)
 AR              != command -v ar
 LD              != command -v ld
 RANLIB          != command -v ranlib
@@ -464,7 +481,7 @@ I_N_T           != command -v install_name_tool
 LIBTOOL         != command -v libtool
 
 else
-$(error Please use macOS, iOS, Linux, or FreeBSD to build)
+$(error Please use macOS, iOS, tvOS, Linux, or FreeBSD to build)
 endif
 
 CC_FOR_BUILD  := $(shell command -v cc) $(CFLAGS_FOR_BUILD)
