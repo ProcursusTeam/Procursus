@@ -17,7 +17,8 @@ libmodule-build-perl:
 else
 libmodule-build-perl: libmodule-build-perl-setup perl
 	cd $(BUILD_WORK)/libmodule-build-perl && /opt/procursus/bin/perl Build.PL \
-		$(DEFAULT_PERL_BUILD_FLAGS)
+		$(DEFAULT_PERL_BUILD_FLAGS) \
+		destdir="$(BUILD_STAGE)/libmodule-build-perl"
 	$(BUILD_WORK)/libmodule-build-perl/Build install
 	rm -rf $(BUILD_STAGE)/libmodule-build-perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	$(call AFTER_BUILD)

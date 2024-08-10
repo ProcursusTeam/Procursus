@@ -18,6 +18,7 @@ endif
 
 # Unset sysroot, we manage that ourselves.
 SYSROOT :=
+PERL_MM_OPT :=
 
 UNAME           != uname -s
 UNAME_M         != uname -m
@@ -665,7 +666,6 @@ DEFAULT_PERL_MAKE_FLAGS := \
 DEFAULT_PERL_BUILD_FLAGS := \
 	cc=$(CC) \
 	ld=$(CC) \
-	destdir=$(BUILD_STAGE)/libmodule-build-perl \
 	install_base=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 	install_path=lib=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 \
 	install_path=arch=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$${PERL_MAJOR} \
