@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += cmake
-CMAKE_VERSION := 3.26.3
+CMAKE_VERSION := 3.30.2
 DEB_CMAKE_V   ?= $(CMAKE_VERSION)
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
@@ -13,7 +13,9 @@ endif
 cmake-setup: setup
 	$(call GITHUB_ARCHIVE,Kitware,CMake,$(CMAKE_VERSION),v$(CMAKE_VERSION))
 	$(call EXTRACT_TAR,cmake-$(CMAKE_VERSION).tar.gz,cmake-$(CMAKE_VERSION),cmake)
-	sed -i "79d" $(BUILD_WORK)/cmake/Source/cmDocumentation.cxx
+	#sed -i "79d" $(BUILD_WORK)/cmake/Source/cmDocumentation.cxx
+	#sed -i 's/MAC_OS_X_VERSION_MAX_ALLOWED/9999/' $(BUILD_WORK)/cmake/Source/kwsys/DynamicLoader.{cxx,hxx.in}
+	$(call DO_PATCH,cmake,cmake,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/cmake/.build_complete),)
 cmake:
