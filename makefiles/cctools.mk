@@ -7,8 +7,8 @@ CCTOOLS_COMMIT  := 6262802c55660436c49c52f323c2db9900a900ae
 LD64_COMMIT     := eac639ff5e0104c57343a0342650294ad37fa510
 CCTOOLS_VERSION := 1010.6
 LD64_VERSION    := 951.9
-DEB_CCTOOLS_V   ?= $(CCTOOLS_VERSION)
-DEB_LD64_V      ?= $(LD64_VERSION)
+DEB_CCTOOLS_V   ?= $(CCTOOLS_VERSION)-1
+DEB_LD64_V      ?= $(LD64_VERSION)-1
 
 cctools-setup: setup
 	$(call GITHUB_ARCHIVE,ProcursusTeam,cctools,$(CCTOOLS_COMMIT),$(CCTOOLS_COMMIT))
@@ -34,6 +34,8 @@ cctools-setup: setup
 	llvm-config = '$(shell command -v llvm-config)'\n \
 	cmake = '$(shell command -v cmake)'\n \
 	pkgconfig = '$(BUILD_TOOLS)/cross-pkg-config'\n" > $(BUILD_WORK)/cctools/build/cross.txt
+	sed -i 's|\[_trieBytes|[-1+_trieBytes|g' $(BUILD_WORK)/cctools/subprojects/ld64/src/mach_o/ExportsTrie.cpp
+	sed -i 's|0 NULL|0, NULL|g' $(BUILD_WORK)/cctools/EXTERNAL_HEADERS/libcodedirectory.c
 
 ifneq ($(wildcard $(BUILD_WORK)/cctools/.build_complete),)
 cctools:
