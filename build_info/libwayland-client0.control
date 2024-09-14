@@ -1,0 +1,19 @@
+Package: libwayland-client0
+Version: @DEB_WAYLAND_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Homepage: https://wayland.freedesktop.org/
+Conflicts: libwayland0 (<< 1.1.0-1)
+Replaces: libwayland0 (<< 1.1.0-1)
+Description: wayland compositor infrastructure - client library
+ Wayland is a protocol for a compositor to talk to its clients as well
+ as a C library implementation of that protocol. The compositor can be
+ a standalone display server running on Linux kernel modesetting and
+ evdev input devices, an X application, or a wayland client
+ itself. The clients can be traditional applications, X servers
+ (rootless or fullscreen) or other display servers.
+ .
+ This package ships the library that implements the client side of
+ the Wayland protocol.
