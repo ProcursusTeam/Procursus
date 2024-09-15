@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += popt
-POPT_VERSION := 1.18
+POPT_VERSION := 1.19
 DEB_POPT_V   ?= $(POPT_VERSION)
 
 popt-setup: setup
