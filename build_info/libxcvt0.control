@@ -1,0 +1,11 @@
+Package: libxcvt0
+Version: @DEB_LIBXCVT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Description: VESA CVT standard timing modelines generator -- shared library
+ libxcvt is a library providing a standalone version of the X server
+ implementation of the VESA CVT standard timing modelines generator.
+ .
+ This package includes the shared library.
