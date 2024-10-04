@@ -1,0 +1,33 @@
+diff --git a/gpt.cc b/gpt.cc
+index 24d6918..4130352 100644
+--- a/gpt.cc
++++ b/gpt.cc
+@@ -506,24 +506,24 @@ int GPTData::CheckHeaderValidity(void) {
+    // a message is displayed in the ReversePartitionBytes() function
+    if ((mainHeader.signature != GPT_SIGNATURE) || (!CheckHeaderCRC(&mainHeader, 1))) {
+       valid -= 1;
+-   } else if ((mainHeader.revision != 0x00010000) && valid) {
++   } else if ((mainHeader.revision != 0x00000001) && valid) {
+       valid -= 1;
+       cout << "Unsupported GPT version in main header; read 0x";
+       cout.width(8);
+       cout << hex << mainHeader.revision << ", should be\n0x";
+       cout.width(8);
+-      cout << UINT32_C(0x00010000) << dec << "\n";
++      cout << UINT32_C(0x00000001) << dec << "\n";
+    } // if/else/if
+ 
+    if ((secondHeader.signature != GPT_SIGNATURE) || (!CheckHeaderCRC(&secondHeader))) {
+       valid -= 2;
+-   } else if ((secondHeader.revision != 0x00010000) && valid) {
++   } else if ((secondHeader.revision != 0x00000001) && valid) {
+       valid -= 2;
+       cout << "Unsupported GPT version in backup header; read 0x";
+       cout.width(8);
+       cout << hex << secondHeader.revision << ", should be\n0x";
+       cout.width(8);
+-      cout << UINT32_C(0x00010000) << dec << "\n";
++      cout << UINT32_C(0x00000001) << dec << "\n";
+    } // if/else/if
+ 
+    // Check for an Apple disk signature
