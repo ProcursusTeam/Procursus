@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ]; then
+    update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/ld ld @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/ld-classic 20 \
+      --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/ld.1@MEMO_MANPAGE_SUFFIX@ ld.1@MEMO_MANPAGE_SUFFIX@ \
+      @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/ld-classic.1@MEMO_MANPAGE_SUFFIX@
+fi
+
+

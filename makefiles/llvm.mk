@@ -13,7 +13,7 @@ SWIFT_VERSION        := 5.9.2
 SWIFT_SUFFIX         := RELEASE
 SWIFT_SYNTAX_VERSION := 509.0.2
 DEB_SWIFT_V          ?= $(SWIFT_VERSION)~$(SWIFT_SUFFIX)
-DEB_LLVM_V           ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)
+DEB_LLVM_V           ?= $(LLVM_VERSION)~$(DEB_SWIFT_V)-1
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 LLVM_CMAKE_FLAGS :=     -DLLDB_USE_SYSTEM_DEBUGSERVER=ON \
@@ -283,7 +283,9 @@ endif
 	rm -rf $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-16/lib/swift{,_static}/$(PLATFORM)/Cxx{,Stdlib}.swiftmodule
 	$(call AFTER_BUILD,,,$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/lib)
 ifneq ($(MEMO_PREFIX),)
-	-$(I_N_T) -change @rpath/libc++.1.dylib /usr/lib/libc++.1.dylib $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-16/bin/flang-new
+	-for bin in bin/flang-new bin/lldb-server lib/liblldb.16.0.0.dylib; do \
+		$(I_N_T) -change @rpath/libc++.1.dylib /usr/lib/libc++.1.dylib $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/$$bin; \
+	done
 	-$(I_N_T) -add_rpath $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-16/lib/sourcekitd.framework $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-16/bin/sourcekitd-test
 	-$(I_N_T) -add_rpath $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-16/lib/sourcekitd.framework $(BUILD_STAGE)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-16/bin/sourcekitd-repl
 endif
@@ -472,6 +474,7 @@ endif
 	for file in $(BUILD_DIST)/llvm-$(LLVM_MAJOR_V)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/llvm-$(LLVM_MAJOR_V)/bin/{bugpoint,darwin-debug,dsymutil,llvm-*,llc,obj2yaml,opt,sanstats,verify-uselistorder,yaml2obj}; do \
 		$(LN_S) $$(basename "$$file")-$(LLVM_MAJOR_V) $(BUILD_DIST)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(basename "$$file"); \
 	done
+	rm -f $(BUILD_DIST)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/llvm-otool # Provided by odcctools
 ifeq ($(shell grep -E 'iphoneos|darwin' <<< $(MEMO_TARGET) && echo 1),1)
 	$(LN_S) ../lib/llvm-$(LLVM_MAJOR_V)/bin/complete-test $(BUILD_DIST)/llvm/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/
 endif

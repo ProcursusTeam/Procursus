@@ -18,6 +18,7 @@ endif
 
 # Unset sysroot, we manage that ourselves.
 SYSROOT :=
+PERL_MM_OPT :=
 
 UNAME           != uname -s
 UNAME_M         != uname -m
@@ -433,7 +434,7 @@ CXXFLAGS_FOR_BUILD := $(CFLAGS_FOR_BUILD)
 ASFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
 LDFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
 
-else
+else ifeq ($(shell sw_vers -productName),iPhone OS)
 ifneq ($(MEMO_QUIET),1)
 $(warning Building on iOS)
 endif # ($(MEMO_QUIET),1)
@@ -450,7 +451,24 @@ CXXFLAGS_FOR_BUILD := $(CFLAGS_FOR_BUILD)
 ASFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
 LDFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
 
-endif
+else ifeq ($(shell sw_vers -productName),Apple TVOS)
+ifneq ($(MEMO_QUIET),1)
+$(warning Building on tvOS)
+endif # ($(MEMO_QUIET),1)
+TARGET_SYSROOT  ?= /usr/share/SDKs/$(BARE_PLATFORM).sdk
+MACOSX_SYSROOT  ?= /usr/share/SDKs/MacOSX.sdk
+CC              != command -v cc
+CXX             != command -v c++
+CPP             := $(CC) -E
+PATH            := /usr/bin:$(PATH)
+
+CFLAGS_FOR_BUILD   := -arch $(shell arch) -mappletvos-version-min=$(shell sw_vers -productVersion)
+CPPFLAGS_FOR_BUILD := $(CFLAGS_FOR_BUILD)
+CXXFLAGS_FOR_BUILD := $(CFLAGS_FOR_BUILD)
+ASFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
+LDFLAGS_FOR_BUILD  := $(CFLAGS_FOR_BUILD)
+
+endif # ifeq ($(shell sw_vers -productName),macOS)
 AR              != command -v ar
 LD              != command -v ld
 RANLIB          != command -v ranlib
@@ -463,7 +481,7 @@ I_N_T           != command -v install_name_tool
 LIBTOOL         != command -v libtool
 
 else
-$(error Please use macOS, iOS, Linux, or FreeBSD to build)
+$(error Please use macOS, iOS, tvOS, Linux, or FreeBSD to build)
 endif
 
 CC_FOR_BUILD  := $(shell command -v cc) $(CFLAGS_FOR_BUILD)
@@ -665,7 +683,6 @@ DEFAULT_PERL_MAKE_FLAGS := \
 DEFAULT_PERL_BUILD_FLAGS := \
 	cc=$(CC) \
 	ld=$(CC) \
-	destdir=$(BUILD_STAGE)/libmodule-build-perl \
 	install_base=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 	install_path=lib=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 \
 	install_path=arch=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$${PERL_MAJOR} \
@@ -1342,7 +1359,7 @@ rebuild-%:
 
 setup:
 	@mkdir -p \
-		$(BUILD_BASE) $(BUILD_BASE)$(MEMO_PREFIX)/{{,System}/Library/Frameworks,$(MEMO_SUB_PREFIX)/{include/{bsm,objc,os/internal,sys,firehose,CoreFoundation,FSEvents,IOKit/kext,libkern,kern,arm,{mach/,}machine,CommonCrypto,Security,CoreSymbolication,Kernel/{kern,IOKit,libkern},rpc,rpcsvc,xpc/private,ktrace,mach-o,dispatch},lib/pkgconfig,$(MEMO_ALT_PREFIX)/lib}} \
+		$(BUILD_BASE) $(BUILD_BASE)$(MEMO_PREFIX)/{{,System}/Library/Frameworks,$(MEMO_SUB_PREFIX)/{include/{bsm,objc,os/internal,sys,firehose,CoreFoundation,FSEvents,IOKit/kext,libkern,kern,arm,{mach/,}machine,CommonCrypto,corecrypto,Security,CoreSymbolication,Kernel/{kern,IOKit,libkern},rpc,rpcsvc,xpc/private,ktrace,mach-o,dispatch},lib/pkgconfig,$(MEMO_ALT_PREFIX)/lib}} \
 		$(BUILD_SOURCE) $(BUILD_WORK) $(BUILD_STAGE) $(BUILD_STRAP)
 
 	@rm -rf $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/System
@@ -1467,6 +1484,9 @@ setup:
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/dispatch, \
 		https://github.com/apple-oss-distributions/libdispatch/raw/libdispatch-1462.0.4/private/{private$(comma)benchmark$(comma){apply$(comma)channel$(comma)data$(comma)introspection$(comma)io$(comma)layout$(comma)mach$(comma)queue$(comma)source$(comma)time$(comma)workloop}_private}.h)
 
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/corecrypto, \
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-10063.121.3/EXTERNAL_HEADERS/corecrypto/cc{$(comma)digest$(comma)n$(comma)_config$(comma)_impl$(comma)_error$(comma)sha1$(comma)sha2}.h)
+
 	@cp -a $(BUILD_MISC)/{libxml-2.0,zlib}.pc $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1700 ] && echo 1),1)
@@ -1499,6 +1519,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	@cp -af $(MACOSX_SYSROOT)/usr/include/mach/machine/*.defs $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/machine
 	@cp -af $(MACOSX_SYSROOT)/usr/include/rpc/pmap_clnt.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/rpc
 	@cp -af $(MACOSX_SYSROOT)/usr/include/rpcsvc/yp{_prot,clnt}.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/rpcsvc
+	@cp -af $(MACOSX_SYSROOT)/usr/include/mach-o/{i386,x86_64,arm} $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach-o
 	@cp -af $(TARGET_SYSROOT)/usr/include/mach/machine/thread_state.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach/machine
 	@cp -af $(TARGET_SYSROOT)/usr/include/mach/arm $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach
 	@cp -af $(BUILD_INFO)/availability.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os
