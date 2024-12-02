@@ -1,0 +1,17 @@
+#!/bin/sh
+# Unloads pueued LaunchDaemon
+
+set -e
+
+case "$1" in
+    # Unload pueue LaunchDaemon when removed
+    (remove | purge)
+    echo "Removing pueued from launchctl..."
+    @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/launchctl unload @MEMO_PREFIX@/Library/LaunchDaemons/com.nukesor.pueued.plist
+    ;;
+    (*)
+    exit 0
+    ;;
+esac
+
+exit 0
