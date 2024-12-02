@@ -1,0 +1,12 @@
+Package: xmrig
+Version: @DEB_XMRIG_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libssl3, libuv1, libhwloc15
+Section: Utilities
+Priority: optional
+Tag: purpose::console, role::hacker
+Description: high performance CPU/GPU miner
+ XMRig is a high performance, open source, cross platform RandomX,
+ KawPow, CryptoNight and AstroBWT unified CPU/GPU miner and
+ RandomX benchmark.
