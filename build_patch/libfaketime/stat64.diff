@@ -1,0 +1,12 @@
+--- a/src/libfaketime.c	2022-03-05 03:28:35.000000000 +0800
++++ b/src/libfaketime.c	2022-03-13 07:48:20.096376683 +0800
+@@ -159,6 +158,9 @@
+ #include <sys/random.h>
+ #endif
+ 
++#ifdef __DARWIN_ONLY_64_BIT_INO_T
++struct stat64 __DARWIN_STRUCT_STAT64;
++#endif
+ /*
+  * Per thread variable, which we turn on inside real_* calls to avoid modifying
+  * time multiple times of for the whole process to prevent faking time
