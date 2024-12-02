@@ -1,0 +1,27 @@
+From 7e1259f92ff6ff4093c36cd2bb138dc02aaa9e11 Mon Sep 17 00:00:00 2001
+From: Pierre Habouzit <madcoder@debian.org>
+Date: Tue, 20 Nov 2007 11:22:05 +0100
+Subject: [PATCH 1/4] pkg-config.pc.in: move @LIBS@ in the Libs.private section
+
+Also avoid to link binaries against libz, libm and friends.
+
+Signed-off-by: Pierre Habouzit <madcoder@debian.org>
+---
+ tokyocabinet.pc.in |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+diff --git a/tokyocabinet.pc.in b/tokyocabinet.pc.in
+index e12d606..61d3f04 100644
+--- a/tokyocabinet.pc.in
++++ b/tokyocabinet.pc.in
+@@ -10,5 +10,6 @@ datadir=@datadir@
+ Name: Tokyo Cabinet
+ Description: a modern implementation of DBM
+ Version: @PACKAGE_VERSION@
+-Libs: -L${libdir} -ltokyocabinet @LIBS@
++Libs: -L${libdir} -ltokyocabinet
+ Cflags: -I${includedir}
++Libs.private: @LIBS@
+-- 
+1.6.5.2.342.g27b86
+

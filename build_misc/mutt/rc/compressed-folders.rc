@@ -1,0 +1,10 @@
+# Use folders which match on \\.gz$ or \\.bz2$ as [gb]zipped folders:
+open-hook	\\.gz$ "gzip -cd '%f' > '%t'"
+close-hook	\\.gz$ "gzip -c '%t' > '%f'"
+append-hook	\\.gz$ "gzip -c '%t' >> '%f'"
+open-hook	\\.bz2$ "bzip2 -cd '%f' > '%t'"
+close-hook	\\.bz2$ "bzip2 -c '%t' > '%f'"
+append-hook	\\.bz2$ "bzip2 -c '%t' >> '%f'"
+open-hook   \\.xz$ "xz -cd %f > %t"
+close-hook  \\.xz$ "xz -c %t > %f"
+append-hook \\.xz$ "xz -c %t >> %f"

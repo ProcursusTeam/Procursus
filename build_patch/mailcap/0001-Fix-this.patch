@@ -1,0 +1,335 @@
+From dc4fb500e1ecf6653d042a4172a49564776088c8 Mon Sep 17 00:00:00 2001
+From: Cameron Katri <me@cameronkatri.com>
+Date: Thu, 1 Apr 2021 15:32:54 -0400
+Subject: [PATCH] Fix this
+
+---
+ Makefile                                  | 29 +++++++++++++++++++++++
+ mailcap.entries                           |  2 --
+ mailcap.entries.in                        |  2 ++
+ mailcap.man => mailcap.man.in             |  2 +-
+ mailcap.order => mailcap.order.in         |  4 ++--
+ mailcap.order.man => mailcap.order.man.in | 14 +++++------
+ run-mailcap => run-mailcap.in             | 12 +++++-----
+ run-mailcap.man => run-mailcap.man.in     |  2 +-
+ update-mime => update-mime.in             | 18 +++++++-------
+ update-mime.man => update-mime.man.in     | 16 ++++++-------
+ 10 files changed, 65 insertions(+), 36 deletions(-)
+ create mode 100644 Makefile
+ delete mode 100644 mailcap.entries
+ create mode 100644 mailcap.entries.in
+ rename mailcap.man => mailcap.man.in (98%)
+ rename mailcap.order => mailcap.order.in (68%)
+ rename mailcap.order.man => mailcap.order.man.in (91%)
+ rename run-mailcap => run-mailcap.in (98%)
+ rename run-mailcap.man => run-mailcap.man.in (97%)
+ rename update-mime => update-mime.in (94%)
+ rename update-mime.man => update-mime.man.in (96%)
+
+diff --git a/Makefile b/Makefile
+new file mode 100644
+index 0000000..4099831
+--- /dev/null
++++ b/Makefile
+@@ -0,0 +1,29 @@
++PREFIX     ?= /usr
++SYSCONFDIR ?= /etc
++SED        ?= sed
++GINSTALL   ?= install
++LN         ?= ln
++
++MAN   := mailcap.man mailcap.order.man run-mailcap.man update-mime.man
++FILES := mailcap.entries mailcap.order
++
++all: $(MAN) $(FILES) run-mailcap update-mime debian-view
++
++install: $(MAN) $(FILES) run-mailcap update-mime debian-view
++	$(GINSTALL) -Dm755 run-mailcap $(DESTDIR)/$(PREFIX)/bin/run-mailcap
++	$(GINSTALL) -Dm755 update-mime $(DESTDIR)/$(PREFIX)/sbin/update-mime
++	$(GINSTALL) -Dm755 debian-view $(DESTDIR)/$(PREFIX)/lib/mime/debian-view
++	for man in $(MAN); do \
++		$(GINSTALL) -Dm644 $$man $(DESTDIR)/$(PREFIX)/share/man/man$$(grep '^.TH' $$man | cut -d' ' -f3)/$$(basename $$man man)$$(grep '^.TH' $$man | cut -d' ' -f3); \
++	done
++	$(GINSTALL) -Dm644 mailcap.entries $(DESTDIR)/$(PREFIX)/lib/mime/packages/mailcap
++	for i in see edit compose print; do \
++		$(LN) -sf run-mailcap $(DESTDIR)/$(PREFIX)/bin/$$i; \
++		$(LN) -sf run-mailcap.1.zst $(DESTDIR)/$(PREFIX)/share/man/man1/$$i.1.zst; \
++	done
++	$(GINSTALL) -Dm644 mailcap $(DESTDIR)/$(PREFIX)/lib/mime/mailcap
++	$(GINSTALL) -Dm644 mailcap.order $(DESTDIR)/$(SYSCONFDIR)/mailcap.order
++
++%: %.in
++	$(SED) -e 's|@PREFIX@|$(PREFIX)|g' \
++		-e 's|@SYSCONFDIR@|$(SYSCONFDIR)|g' < $^ > $@
+diff --git a/mailcap.entries b/mailcap.entries
+deleted file mode 100644
+index 7d96a8a..0000000
+--- a/mailcap.entries
++++ /dev/null
+@@ -1,2 +0,0 @@
+-application/vnd.debian.binary-package; /usr/lib/mime/debian-view %s; needsterminal; description=Debian GNU/Linux Package; nametemplate=%s.deb; priority=0
+-#audio/basic; /usr/lib/mime/playaudio %s; description=Basic uLaw Audio; nametemplate=%s.au; priority=0
+diff --git a/mailcap.entries.in b/mailcap.entries.in
+new file mode 100644
+index 0000000..ab7fc07
+--- /dev/null
++++ b/mailcap.entries.in
+@@ -0,0 +1,2 @@
++application/vnd.debian.binary-package; @PREFIX@/lib/mime/debian-view %s; needsterminal; description=Debian GNU/Linux Package; nametemplate=%s.deb; priority=0
++#audio/basic; @PREFIX@/lib/mime/playaudio %s; description=Basic uLaw Audio; nametemplate=%s.au; priority=0
+diff --git a/mailcap.man b/mailcap.man.in
+similarity index 98%
+rename from mailcap.man
+rename to mailcap.man.in
+index eec9210..52419ab 100644
+--- a/mailcap.man
++++ b/mailcap.man.in
+@@ -50,7 +50,7 @@ This flag should be given whenever the interpreter is capable of producing more
+ .SH BUILT-IN CONTENT-TYPE SUPPORT
+ The metamail program has built-in support for a few key content-types.  In particular, it supports the text type, the multipart and multipart/alternative type, and the message/rfc822 types.  This support is incomplete for many subtypes -- for example, it only supports US-ASCII text in general.  This kind of built-in support can be OVERRIDDEN by an entry in any mailcap file on the user's search path.  Metamail also has rudimentary built-in support for types that are totally unrecognized -- i.e. for which no mailcap entry or built-in handler exists.  For such unrecognized types, metamail will write a file with a "clean" copy of the data -- i.e. a copy in which all mail headers have been removed, and in which any 7-bit transport encoding has been decoded.
+ .SH FILES
+-$HOME/.mailcap:/etc/mailcap:/usr/share/etc/mailcap:/usr/local/etc/mailcap -- default path for mailcap files.
++$HOME/.mailcap:/etc/mailcap:@PREFIX@/share/etc/mailcap:@PREFIX@/local/etc/mailcap -- default path for mailcap files.
+ .SH SEE ALSO
+ .BR run-mailcap "(1)",
+ .BR mailcap.order "(5)",
+diff --git a/mailcap.order b/mailcap.order.in
+similarity index 68%
+rename from mailcap.order
+rename to mailcap.order.in
+index 7f38c23..2ddf4bc 100644
+--- a/mailcap.order
++++ b/mailcap.order.in
+@@ -3,8 +3,8 @@
+ #  Mailcap.order:  This file allows a system-wide override of MIME program
+ #  preferences.  See the mailcap.order(5) man page for more information.
+ #
+-#  After modifying this file, be sure to run /usr/sbin/update-mime (as root)
+-#  to propagate the changes into the /etc/mailcap file.
++#  After modifying this file, be sure to run @PREFIX@/sbin/update-mime (as root)
++#  to propagate the changes into the @SYSCONFDIR@/mailcap file.
+ #
+ ################################################################################
+ 
+diff --git a/mailcap.order.man b/mailcap.order.man.in
+similarity index 91%
+rename from mailcap.order.man
+rename to mailcap.order.man.in
+index 94286cc..b6a51f9 100644
+--- a/mailcap.order.man
++++ b/mailcap.order.man.in
+@@ -4,12 +4,12 @@
+ .\"
+ .TH MAILCAP.ORDER 5 "16th Aug 1998" "Debian Project" "Order Mailcap Entries"
+ .SH NAME
+-/etc/mailcap.order \- the mailcap ordering specifications
++@SYSCONFDIR@/mailcap.order \- the mailcap ordering specifications
+ .SH DESCRIPTION
+ The order of entries in the
+-.I /etc/mailcap
++.I @SYSCONFDIR@/mailcap
+ file can be altered by editing the
+-.I /etc/mailcap.order
++.I @SYSCONFDIR@/mailcap.order
+ file.  Each line of that file specifies a package and an optional mime
+ type.  Mailcap entries that match will be placed in the order of this
+ file.  Entries that don't match will be placed later.
+@@ -24,7 +24,7 @@ The above would make any entries provided by the
+ .B mime-support
+ package
+ (as found in the 
+-.I /usr/lib/mime/packages
++.I @PREFIX@/lib/mime/packages
+ directory) take priority over everything else.  The
+ .B gv
+ package will be used over anything else when it comes to postscript
+@@ -40,10 +40,10 @@ actions will fall through to the
+ rules.
+ 
+ After modifying this file, be sure to run
+-.I /usr/sbin/update-mime
++.I @PREFIX@/sbin/update-mime
+ (as root)
+ to propagate the changes into the
+-.I /etc/mailcap
++.I @SYSCONFDIR@/mailcap
+ file.
+ 
+ Remember that this files takes
+@@ -54,7 +54,7 @@ names.  If you want to define rules that reference specific programs,
+ the best way is to include them in
+ .I ~/.mailcap
+ or the user section of the
+-.I /etc/mailcap
++.I @SYSCONFDIR@/mailcap
+ file.
+ .SH LIMITATIONS
+ There is currently no way to break out a certain type from a wildcard
+diff --git a/run-mailcap b/run-mailcap.in
+similarity index 98%
+rename from run-mailcap
+rename to run-mailcap.in
+index 016c7f2..0d4ebaf 100755
+--- a/run-mailcap
++++ b/run-mailcap.in
+@@ -1,4 +1,4 @@
+-#! /usr/bin/perl
++#! @PREFIX@/bin/perl
+ ###############################################################################
+ #
+ #  Run-Mailcap:  Run a program specified in the mailcap file based on a mime
+@@ -16,11 +16,11 @@ use File::Spec;
+ $debug=($ENV{RUN_MAILCAP_DEBUG} || 0);
+ $norun=0;
+ $nopager=0;
+-$etcmimetyp="/etc/mime.types";
+-$shrmimetyp="/usr/share/etc/mime.types";
+-$locmimetyp="/usr/local/etc/mime.types";
++$etcmimetyp="@SYSCONFDIR@/mime.types";
++$shrmimetyp="@PREFIX@/share/etc/mime.types";
++$locmimetyp="@PREFIX@/local/etc/mime.types";
+ $usrmimetyp="$ENV{HOME}/.mime.types";
+-$xtermprgrm="/usr/bin/x-terminal-emulator"; # xterm?
++$xtermprgrm="@PREFIX@/bin/x-terminal-emulator"; # xterm?
+ $defmimetyp="application/octet-stream";
+ $quotedsemi=chr(255);
+ $quotedprct=chr(254);
+@@ -368,7 +368,7 @@ unless ($action) {
+ 
+ 
+ $mailcaps = $ENV{MAILCAPS};
+-$mailcaps = "$ENV{HOME}/.mailcap:/etc/mailcap:/usr/local/etc/mailcap:/usr/share/etc/mailcap:/usr/etc/mailcap" unless $mailcaps;
++$mailcaps = "$ENV{HOME}/.mailcap:@SYSCONFDIR@/mailcap:@PREFIX@/local/etc/mailcap:@PREFIX@/share/etc/mailcap:@PREFIX@/etc/mailcap" unless $mailcaps;
+ foreach (split(/:/,$mailcaps)) {
+     ReadMailcap($_);
+ }
+diff --git a/run-mailcap.man b/run-mailcap.man.in
+similarity index 97%
+rename from run-mailcap.man
+rename to run-mailcap.man.in
+index 987982c..a351221 100644
+--- a/run-mailcap.man
++++ b/run-mailcap.man.in
+@@ -49,7 +49,7 @@ then a mime-type
+ be specified.
+ 
+ Both the user's files (~/.mailcap; ~/.mime.types) and the system files
+-(/etc/mailcap; /etc/mime.types) are searched in turn for information.
++(@SYSCONFDIR@/mailcap; @SYSCONFDIR@/mime.types) are searched in turn for information.
+ .SS EXAMPLES
+   see picture.jpg
+   print output.ps.gz
+diff --git a/update-mime b/update-mime.in
+similarity index 94%
+rename from update-mime
+rename to update-mime.in
+index d791c9c..5c64259 100755
+--- a/update-mime
++++ b/update-mime.in
+@@ -1,7 +1,7 @@
+-#! /usr/bin/perl
++#! @PREFIX@/bin/perl
+ ###############################################################################
+ #
+-#  Update-MIME:  Install programs into "/etc/mailcap", resolve conflicts,
++#  Update-MIME:  Install programs into "@SYSCONFDIR@/mailcap", resolve conflicts,
+ #                auto-uninstall, make dinner, and wash dishes.
+ #
+ #  Written by Brian White <bcwhite@pobox.com>.
+@@ -23,12 +23,12 @@ use warnings;
+ # Program Constants
+ #
+ my $debug	= 0;
+-my $conffile	= "/etc/update-mime.conf";
+-my $mailcap	= "/etc/mailcap";
+-my $mailcapdef	= "/usr/lib/mime/mailcap";
+-my $mimedir	= "/usr/lib/mime/packages";
+-my $appsdir	= "/usr/share/applications";
+-my $orderfile	= "/etc/mailcap.order";
++my $conffile	= "@SYSCONFDIR@/update-mime.conf";
++my $mailcap	= "@SYSCONFDIR@/mailcap";
++my $mailcapdef	= "@PREFIX@/lib/mime/mailcap";
++my $mimedir	= "@PREFIX@/lib/mime/packages";
++my $appsdir	= "@PREFIX@/share/applications";
++my $orderfile	= "@SYSCONFDIR@/mailcap.order";
+ my $defpriority	= 5;
+ my $localgen	= 0;
+ 
+@@ -201,7 +201,7 @@ sub ReadOrder
+ 				/(.*):/;
+ 				my $pkg = $1;
+ 				unless( grep {/^$pkg$/} keys(%packages)) {
+-					print STDERR "Warning: package $pkg listed in /etc/mailcap.order does not have mailcap entries.\n";
++					print STDERR "Warning: package $pkg listed in @SYSCONFDIR@/mailcap.order does not have mailcap entries.\n";
+ 				}
+ 			}
+ 			close(FILE);
+diff --git a/update-mime.man b/update-mime.man.in
+similarity index 96%
+rename from update-mime.man
+rename to update-mime.man.in
+index 76eb5bc..2546e6d 100644
+--- a/update-mime.man
++++ b/update-mime.man.in
+@@ -12,14 +12,14 @@ update\-mime \- create or update MIME information
+ .PP
+ .B update-mime
+ updates the
+-.B /etc/mailcap
++.B @SYSCONFDIR@/mailcap
+ file to reflect mime information changed by a Debian package during
+ installation or removal.
+ 
+ .SS OPTIONS
+ .BI \-\-local
+ Generate files in the current user's home directory instead of the
+-.I /etc
++.I @SYSCONFDIR@ 
+ directory.  This allows users to create a custom ordering configuration and get
+ a complete
+ .I ~/.mailcap
+@@ -30,9 +30,9 @@ file.
+ 
+ .SH OVERRIDING ORDER
+ The order of entries in the
+-.I /etc/mailcap
++.I @SYSCONFDIR@/mailcap
+ file can be altered by editing the
+-.I /etc/mailcap.order
++.I @SYSCONFDIR@/mailcap.order
+ file.  Please see the
+ .BR mailcap.order(5)
+ man page for more information.
+@@ -40,7 +40,7 @@ man page for more information.
+ .SH CREATING ENTRIES
+ To create entries in the mailcap file, packages need to create a file
+ in the
+-.I /usr/lib/mime/packages
++.I @PREFIX@/lib/mime/packages
+ directory.  In this file goes the verbatim desired mailcap entries.
+ In addition to the standard mailcap options (described below) is a new
+ .I priority
+@@ -181,7 +181,7 @@ Packages that wish to provide MIME access to themselves should
+ depend on, recommend, or suggest
+ .B mime-support,
+ as the the file they create in
+-.I /usr/lib/mime/packages
++.I @PREFIX@/lib/mime/packages
+ will cause
+ .B update\-mime
+ to be automatically run via a Dpkg trigger.
+@@ -189,9 +189,9 @@ to be automatically run via a Dpkg trigger.
+ .SH DESKTOP ENTRIES
+ In addition to the abovementioned mechanism
+ .B update\-mime
+-also parses desktop entries in /usr/share/applications/ to generate
++also parses desktop entries in @PREFIX@/share/applications/ to generate
+ mailcap entries. These entries are given a lower priority than those
+-in /usr/lib/mime/packages.
++in @PREFIX@/lib/mime/packages.
+ 
+ .SH "SEE ALSO"
+ .BR mailcap.order "(5), "deb-triggers "(1), RFC-2046, RFC-1524
+-- 
+2.31.0
+

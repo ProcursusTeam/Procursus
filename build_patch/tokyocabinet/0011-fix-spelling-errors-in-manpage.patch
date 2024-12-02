@@ -1,0 +1,109 @@
+Description: Fixing spelling error "default" and "specify" in manpages
+Author: Tobias Frost <tobi@coldtobi.de>
+Last-Update: 2018-04-04
+--- a/man/tcbdb.3
++++ b/man/tcbdb.3
+@@ -26,7 +26,7 @@
+ .PP
+ Objects whose type is pointer to `\fBTCBDB\fR' are used to handle B+ tree databases.  A B+ tree database object is created with the function `\fBtcbdbnew\fR' and is deleted with the function `\fBtcbdbdel\fR'.  To avoid memory leak, it is important to delete every object when it is no longer in use.
+ .PP
+-Before operations to store or retrieve records, it is necessary to open a database file and connect the B+ tree database object to it.  The function `\fBtcbdbopen\fR' is used to open a database file and the function `\fBtcbdbclose\fR' is used to close the database file.  To avoid data missing or corruption, it is important to close every database file when it is no longer in use.  It is forbidden for multible database objects in a process to open the same database at the same time.
++Before operations to store or retrieve records, it is necessary to open a database file and connect the B+ tree database object to it.  The function `\fBtcbdbopen\fR' is used to open a database file and the function `\fBtcbdbclose\fR' is used to close the database file.  To avoid data missing or corruption, it is important to close every database file when it is no longer in use.  It is forbidden for multiple database objects in a process to open the same database at the same time.
+ 
+ .SH API
+ .PP
+@@ -116,7 +116,7 @@
+ If successful, the return value is true, else, it is false.
+ .RE
+ .RS
+-The default comparison function compares keys of two records by lexical order.  The functions `tccmplexical' (dafault), `tccmpdecimal', `tccmpint32', and `tccmpint64' are built\-in.  Note that the comparison function should be set before the database is opened.  Moreover, user\-defined comparison functions should be set every time the database is being opened.
++The default comparison function compares keys of two records by lexical order.  The functions `tccmplexical' (default), `tccmpdecimal', `tccmpint32', and `tccmpint64' are built\-in.  Note that the comparison function should be set before the database is opened.  Moreover, user\-defined comparison functions should be set every time the database is being opened.
+ .RE
+ .RE
+ .PP
+--- a/man/tcutil.3
++++ b/man/tcutil.3
+@@ -1367,7 +1367,7 @@
+ The return value is the new tree object.
+ .RE
+ .RS
+-The default comparison function compares keys of two records by lexical order.  The functions `tccmplexical' (dafault), `tccmpdecimal', `tccmpint32', and `tccmpint64' are built\-in.
++The default comparison function compares keys of two records by lexical order.  The functions `tccmplexical' (default), `tccmpdecimal', `tccmpint32', and `tccmpint64' are built\-in.
+ .RE
+ .RE
+ .PP
+@@ -2363,7 +2363,7 @@
+ The return value is the new on\-memory tree database object.
+ .RE
+ .RS
+-The default comparison function compares keys of two records by lexical order.  The functions `tccmplexical' (dafault), `tccmpdecimal', `tccmpint32', and `tccmpint64' are built\-in.  The object can be shared by plural threads because of the internal mutex.
++The default comparison function compares keys of two records by lexical order.  The functions `tccmplexical' (default), `tccmpdecimal', `tccmpint32', and `tccmpint64' are built\-in.  The object can be shared by plural threads because of the internal mutex.
+ .RE
+ .RE
+ .PP
+--- a/man/tcfmttest.1
++++ b/man/tcfmttest.1
+@@ -48,7 +48,7 @@
+ .br
+ \fB\-nc\fR : omit the comparison test.
+ .br
+-\fB\-rr\fR \fInum\fR : specifiy the ratio of reading operation by percentage.
++\fB\-rr\fR \fInum\fR : specify the ratio of reading operation by percentage.
+ .br
+ .RE
+ .PP
+--- a/man/tcumttest.1
++++ b/man/tcumttest.1
+@@ -27,7 +27,7 @@
+ .br
+ \fB\-nc\fR : omit the comparison test.
+ .br
+-\-rr \fInum\fR : specifiy the ratio of reading operation by percentage.
++\-rr \fInum\fR : specify the ratio of reading operation by percentage.
+ .br
+ .RE
+ .PP
+--- a/man/tcadb.3
++++ b/man/tcadb.3
+@@ -24,7 +24,7 @@
+ .PP
+ Objects whose type is pointer to `\fBTCADB\fR' are used to handle abstract databases.  An abstract database object is created with the function `\fBtcadbnew\fR' and is deleted with the function `\fBtcadbdel\fR'.  To avoid memory leak, it is important to delete every object when it is no longer in use.
+ .PP
+-Before operations to store or retrieve records, it is necessary to connect the abstract database object to the concrete one.  The function `\fBtcadbopen\fR' is used to open a concrete database and the function `\fBtcadbclose\fR' is used to close the database.  To avoid data missing or corruption, it is important to close every database instance when it is no longer in use.  It is forbidden for multible database objects in a process to open the same database at the same time.
++Before operations to store or retrieve records, it is necessary to connect the abstract database object to the concrete one.  The function `\fBtcadbopen\fR' is used to open a concrete database and the function `\fBtcadbclose\fR' is used to close the database.  To avoid data missing or corruption, it is important to close every database instance when it is no longer in use.  It is forbidden for multiple database objects in a process to open the same database at the same time.
+ 
+ .SH API
+ .PP
+--- a/man/tcfdb.3
++++ b/man/tcfdb.3
+@@ -24,7 +24,7 @@
+ .PP
+ Objects whose type is pointer to `\fBTCFDB\fR' are used to handle fixed\-length databases.  A fixed\-length database object is created with the function `\fBtcfdbnew\fR' and is deleted with the function `\fBtcfdbdel\fR'.  To avoid memory leak, it is important to delete every object when it is no longer in use.
+ .PP
+-Before operations to store or retrieve records, it is necessary to open a database file and connect the fixed\-length database object to it.  The function `\fBtcfdbopen\fR' is used to open a database file and the function `\fBtcfdbclose\fR' is used to close the database file.  To avoid data missing or corruption, it is important to close every database file when it is no longer in use.  It is forbidden for multible database objects in a process to open the same database at the same time.
++Before operations to store or retrieve records, it is necessary to open a database file and connect the fixed\-length database object to it.  The function `\fBtcfdbopen\fR' is used to open a database file and the function `\fBtcfdbclose\fR' is used to close the database file.  To avoid data missing or corruption, it is important to close every database file when it is no longer in use.  It is forbidden for multiple database objects in a process to open the same database at the same time.
+ 
+ .SH API
+ .PP
+--- a/man/tchdb.3
++++ b/man/tchdb.3
+@@ -26,7 +26,7 @@
+ .PP
+ Objects whose type is pointer to `\fBTCHDB\fR' are used to handle hash databases.  A hash database object is created with the function `\fBtchdbnew\fR' and is deleted with the function `\fBtchdbdel\fR'.  To avoid memory leak, it is important to delete every object when it is no longer in use.
+ .PP
+-Before operations to store or retrieve records, it is necessary to open a database file and connect the hash database object to it.  The function `\fBtchdbopen\fR' is used to open a database file and the function `\fBtchdbclose\fR' is used to close the database file.  To avoid data missing or corruption, it is important to close every database file when it is no longer in use.  It is forbidden for multible database objects in a process to open the same database at the same time.
++Before operations to store or retrieve records, it is necessary to open a database file and connect the hash database object to it.  The function `\fBtchdbopen\fR' is used to open a database file and the function `\fBtchdbclose\fR' is used to close the database file.  To avoid data missing or corruption, it is important to close every database file when it is no longer in use.  It is forbidden for multiple database objects in a process to open the same database at the same time.
+ 
+ .SH API
+ .PP
+--- a/man/tctdb.3
++++ b/man/tctdb.3
+@@ -24,7 +24,7 @@
+ .PP
+ Objects whose type is pointer to `\fBTCTDB\fR' are used to handle table databases.  A table database object is created with the function `\fBtctdbnew\fR' and is deleted with the function `\fBtctdbdel\fR'.  To avoid memory leak, it is important to delete every object when it is no longer in use.
+ .PP
+-Before operations to store or retrieve records, it is necessary to open a database file and connect the table database object to it.  The function `\fBtctdbopen\fR' is used to open a database file and the function `\fBtctdbclose\fR' is used to close the database file.  To avoid data missing or corruption, it is important to close every database file when it is no longer in use.  It is forbidden for multible database objects in a process to open the same database at the same time.
++Before operations to store or retrieve records, it is necessary to open a database file and connect the table database object to it.  The function `\fBtctdbopen\fR' is used to open a database file and the function `\fBtctdbclose\fR' is used to close the database file.  To avoid data missing or corruption, it is important to close every database file when it is no longer in use.  It is forbidden for multiple database objects in a process to open the same database at the same time.
+ 
+ .SH API
+ .PP

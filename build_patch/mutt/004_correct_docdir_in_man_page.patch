@@ -1,0 +1,21 @@
+From: Antonio Radici <antonio@debian.org>
+Date: Thu, 27 Feb 2014 16:08:26 +0100
+Subject: correct_docdir_in_man_page
+
+Fix the link so it points to the correct docdir
+and gzipped manual.
+---
+ doc/mutt.man | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/doc/mutt.man
++++ b/doc/mutt.man
+@@ -278,7 +278,7 @@
+ .I @bindir@/mutt_dotlock
+ The privileged dotlocking program.
+ .TP
+-.I @docdir@/manual.txt
++.I "/usr/share/doc/mutt/manual.txt.gz"
+ The Mutt manual.
+ .SH BUGS
+ .PP
