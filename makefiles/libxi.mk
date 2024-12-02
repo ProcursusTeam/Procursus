@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += libxi
-LIBXI_VERSION := 1.7.10
+LIBXI_VERSION := 1.8
 DEB_LIBXI_V   ?= $(LIBXI_VERSION)
 
 libxi-setup: setup
