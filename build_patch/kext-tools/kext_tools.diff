@@ -1,88 +1,7 @@
-diff -urN a/KernelManagementShims/ShimHelpers.m b/KernelManagementShims/ShimHelpers.m
---- a/KernelManagementShims/ShimHelpers.m	2020-07-31 17:10:54.000000000 +0800
-+++ b/KernelManagementShims/ShimHelpers.m	2021-11-12 14:40:44.431021108 +0800
-@@ -10,8 +10,7 @@
- #import "Shims.h"
- #import "../kext_tools_util.h"
- 
--#if !(TARGET_OS_IPHONE && !TARGET_OS_SIMULATOR) && !TARGET_OS_BRIDGE
--
-+#ifndef TARGET_OS_EMBEDDED
- static NSTask *shimmedTask = nil;
- static NSMutableArray *shimmedTaskArguments = nil;
- 
-diff -urN a/KernelManagementShims/Shims.m b/KernelManagementShims/Shims.m
---- a/KernelManagementShims/Shims.m	2020-07-02 01:56:36.000000000 +0800
-+++ b/KernelManagementShims/Shims.m	2021-11-12 14:40:01.021883828 +0800
-@@ -11,7 +11,7 @@
- #import <pthread/pthread.h>
- #import <Foundation/Foundation.h>
- 
--#if !(TARGET_OS_IPHONE && !TARGET_OS_SIMULATOR)
-+#ifndef TARGET_OS_EMBEDDED
- #import <KernelManagement/KernelManagement.h>
- #import <KernelManagement/KernelManagement_Private.h>
- 
-@@ -20,8 +20,8 @@
- #endif
- 
- bool isKernelManagementLinked() {
--#if TARGET_OS_IPHONE && !TARGET_OS_SIMULATOR
--    /* KM doesn't exist on iPhone */
-+#ifdef TARGET_OS_EMBEDDED
-+    /* KM doesn't exist on non-macOS */
-     return false;
- #else
-     return NSClassFromString(@"KernelManagementClient") ? true : false;
-@@ -30,7 +30,7 @@
- 
- int KernelManagementLoadKextsWithURLs(CFArrayRef urls)
- {
--#if TARGET_OS_IPHONE && !TARGET_OS_SIMULATOR
-+#ifdef TARGET_OS_EMBEDDED
- 	(void)urls;
- 	return EX_OSERR;
- #else
-@@ -62,5 +62,5 @@
- 	result = EX_OK;
- finish:
- 	return result;
--#endif // #if TARGET_OS_IPHONE && !TARGET_OS_SIMULATOR
-+#endif // #ifdef TARGET_OS_EMBEDDED
- }
-diff -urN a/KernelManagementShims/kextutil.m b/KernelManagementShims/kextutil.m
---- a/KernelManagementShims/kextutil.m	2020-07-31 11:06:43.000000000 +0800
-+++ b/KernelManagementShims/kextutil.m	2021-11-12 14:42:59.712198120 +0800
-@@ -7,17 +7,17 @@
- 
- #import <Foundation/Foundation.h>
- #import "ShimHelpers.h"
--
-+#ifndef TARGET_OS_EMBEDDED
- #import <KernelManagement/KernelManagement.h>
- #import <KernelManagement/KernelManagement_Private.h>
--
-+#endif
- #import "kextutil_main.h"
- #import "kext_tools_util.h"
- 
- bool isKernelManagementLinked() {
--    return NSClassFromString(@"KernelManagementClient") ? true : false;
-+    return false
- }
--
-+#ifndef TARGET_OS_EMBEDDED
- /*\
- 
-     Transform a command from kextutil to kmutil. For example,
-@@ -101,3 +101,4 @@
- 
-     runWithShimmedArguments();
- }
-+#endif
-diff -urN a/kext_tools_util.c b/kext_tools_util.c
---- a/kext_tools_util.c	2020-02-13 03:52:44.000000000 +0800
-+++ b/kext_tools_util.c	2021-11-12 16:01:24.688596519 +0800
+diff --git a/kext_tools_util.c b/kext_tools_util.c
+index d2f99ed..65a14d6 100644
+--- a/kext_tools_util.c
++++ b/kext_tools_util.c
 @@ -22,7 +22,7 @@
   */
  
@@ -101,11 +20,11 @@ diff -urN a/kext_tools_util.c b/kext_tools_util.c
  #include <os/log_private.h>
  
  #include <sys/types.h>
-Binary files a/kext_tools_util.o and b/kext_tools_util.o differ
-diff -urN a/kextload_main.c b/kextload_main.c
---- a/kextload_main.c	2020-03-14 17:33:57.000000000 +0800
-+++ b/kextload_main.c	2021-11-12 18:13:03.064622050 +0800
-@@ -40,9 +40,9 @@
+diff --git a/kextload_main.c b/kextload_main.c
+index 5f949b9..73787e2 100644
+--- a/kextload_main.c
++++ b/kextload_main.c
+@@ -40,9 +40,9 @@ static Boolean    sKextdActive = FALSE;
  /*******************************************************************************
  * Global variables.
  *******************************************************************************/
@@ -117,7 +36,7 @@ diff -urN a/kextload_main.c b/kextload_main.c
  ExitStatus
  main(int argc, char * const * argv)
  {
-@@ -125,7 +125,9 @@
+@@ -125,7 +125,9 @@ main(int argc, char * const * argv)
          RANGE_ALL(toolArgs.dependencyURLs));
  
      if (doShimToKernelManagement) {
@@ -127,7 +46,7 @@ diff -urN a/kextload_main.c b/kextload_main.c
          exit(EX_OSERR); // shouldn't get here!
      } else if (sKextdActive) {
          result = loadKextsViaKextd(&toolArgs);
-@@ -388,7 +390,7 @@
+@@ -388,7 +390,7 @@ finish:
  
      return result;
  }
@@ -136,7 +55,7 @@ diff -urN a/kextload_main.c b/kextload_main.c
  /*******************************************************************************
  *******************************************************************************/
  ExitStatus loadKextsViaKernelManagement(KextloadArgs * toolArgs)
-@@ -399,6 +401,7 @@
+@@ -399,6 +401,7 @@ ExitStatus loadKextsViaKernelManagement(KextloadArgs * toolArgs)
  
  /*******************************************************************************
  *******************************************************************************/
@@ -144,7 +63,7 @@ diff -urN a/kextload_main.c b/kextload_main.c
  ExitStatus loadKextsViaKextd(KextloadArgs * toolArgs)
  {
      ExitStatus result     = EX_OK;
-@@ -479,7 +482,7 @@
+@@ -479,7 +482,7 @@ ExitStatus loadKextsViaKextd(KextloadArgs * toolArgs)
  
      return result;
  }
@@ -153,10 +72,11 @@ diff -urN a/kextload_main.c b/kextload_main.c
  /*******************************************************************************
  *******************************************************************************/
  ExitStatus loadKextsIntoKernel(KextloadArgs * toolArgs)
-diff -urN a/kextstat_main.c b/kextstat_main.c
---- a/kextstat_main.c	2020-08-21 14:29:02.000000000 +0800
-+++ b/kextstat_main.c	2021-11-12 14:55:49.494170281 +0800
-@@ -51,7 +51,7 @@
+diff --git a/kextstat_main.c b/kextstat_main.c
+index b524573..877fc2c 100644
+--- a/kextstat_main.c
++++ b/kextstat_main.c
+@@ -47,7 +47,7 @@ void printPList_new(FILE * stream, CFTypeRef aPlist);
  static bool
  shim_kextstat(void)
  {
@@ -165,9 +85,10 @@ diff -urN a/kextstat_main.c b/kextstat_main.c
      return false;
  #else
      char *legacy = getenv("KEXTSTAT_LEGACY_MODE");
-diff -urN a/kextunload_main.c b/kextunload_main.c
---- a/kextunload_main.c	2020-07-02 01:56:36.000000000 +0800
-+++ b/kextunload_main.c	2021-11-12 18:01:32.180590176 +0800
+diff --git a/kextunload_main.c b/kextunload_main.c
+index 8a696f8..fd99ab6 100644
+--- a/kextunload_main.c
++++ b/kextunload_main.c
 @@ -31,9 +31,9 @@
  #include "KernelManagementShims/Shims.h"
  
@@ -180,7 +101,7 @@ diff -urN a/kextunload_main.c b/kextunload_main.c
  /*******************************************************************************
  *******************************************************************************/
  int main(int argc, char * const * argv)
-@@ -67,13 +67,13 @@
+@@ -67,13 +67,13 @@ int main(int argc, char * const * argv)
      if (result != EX_OK) {
          goto finish;
      }
@@ -196,9 +117,10 @@ diff -urN a/kextunload_main.c b/kextunload_main.c
     /* If given URLs, create OSKext objects for them so we can get
      * bundle identifiers (that's what IOCatalogueTerminate() expects).
      * If we failed to open one, keep going on but save the not-found
-diff -urN a/mkext.c b/mkext.c
---- a/mkext.c	2019-03-28 06:30:15.000000000 +0800
-+++ b/mkext.c	2021-11-12 17:03:02.061612744 +0800
+diff --git a/mkext.c b/mkext.c
+index 90301e2..70530b8 100644
+--- a/mkext.c
++++ b/mkext.c
 @@ -25,7 +25,6 @@
  #include <libsa/mkext.h>
  #include <libsa/stdlib.h>
@@ -207,7 +129,7 @@ diff -urN a/mkext.c b/mkext.c
  #include <stdlib.h>
  #endif KERNEL
  
-@@ -56,7 +55,7 @@
+@@ -56,7 +55,7 @@ adler32(u_int8_t *buffer, int32_t length)
  
      return result;
  }
@@ -216,9 +138,10 @@ diff -urN a/mkext.c b/mkext.c
  /**************************************************************
   LZSS.C -- A Data Compression Program
  ***************************************************************
-diff -urN a/mkext1_file.c b/mkext1_file.c
---- a/mkext1_file.c	2019-03-28 06:30:15.000000000 +0800
-+++ b/mkext1_file.c	2021-11-12 18:10:25.363208031 +0800
+diff --git a/mkext1_file.c b/mkext1_file.c
+index 763bbf2..03eda9d 100644
+--- a/mkext1_file.c
++++ b/mkext1_file.c
 @@ -44,8 +44,8 @@
  
  #include "kext_tools_util.h"
@@ -230,9 +153,10 @@ diff -urN a/mkext1_file.c b/mkext1_file.c
  /*******************************************************************************
  *******************************************************************************/
  typedef struct {
-diff -urN a/mkextunpack_main.c b/mkextunpack_main.c
---- a/mkextunpack_main.c	2019-03-28 06:30:15.000000000 +0800
-+++ b/mkextunpack_main.c	2021-11-12 17:05:24.300894646 +0800
+diff --git a/mkextunpack_main.c b/mkextunpack_main.c
+index 59b848b..eaa53cf 100644
+--- a/mkextunpack_main.c
++++ b/mkextunpack_main.c
 @@ -43,8 +43,8 @@
  static const char * progname = "mkextunpack";
  static Boolean gVerbose = false;
@@ -244,9 +168,31 @@ diff -urN a/mkextunpack_main.c b/mkextunpack_main.c
  Boolean getMkextDataForArch(
      u_int8_t         * fileData,
      size_t             fileSize,
-diff -urN a/signposts.h b/signposts.h
---- a/signposts.h	2019-04-13 03:58:31.000000000 +0800
-+++ b/signposts.h	2021-11-12 14:57:14.375767398 +0800
+@@ -789,15 +789,16 @@ CFDictionaryRef extractEntriesFromMkext1(
+             continue;
+         }
+ 
+-        CFErrorRef  error;
++        CFErrorRef  cferror;
++        bool error = false;
+         kextPlist = CFPropertyListCreateWithData(kCFAllocatorDefault,
+                                                  kextPlistDataObject,
+                                                  kCFPropertyListImmutable,
+                                                  NULL,
+-                                                 &error);
++                                                 &cferror);
+         if (!kextPlist) {
+-            errorString = CFErrorCopyDescription(error);
+-            CFRelease(error);
++            errorString = CFErrorCopyDescription(cferror);
++            CFRelease(cferror);
+             if (errorString) {
+                 CFIndex bufsize = CFStringGetMaximumSizeForEncoding(
+                 CFStringGetLength(errorString), kCFStringEncodingUTF8);
+diff --git a/signposts.h b/signposts.h
+index c149db2..0584556 100644
+--- a/signposts.h
++++ b/signposts.h
 @@ -8,7 +8,6 @@
  
  #include <os/log.h>

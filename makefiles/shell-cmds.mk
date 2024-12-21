@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS      += shell-cmds
-SHELL-CMDS_VERSION := 309
+SHELL-CMDS_VERSION := 319.0.1
 DEB_SHELL-CMDS_V   ?= $(SHELL-CMDS_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 2000 ] && echo 1),1)

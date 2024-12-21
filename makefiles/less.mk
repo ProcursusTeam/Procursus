@@ -2,9 +2,13 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-SUBPROJECTS  += less
-LESS_VERSION := 643
-DEB_LESS_V   ?= $(LESS_VERSION)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+STRAPPROJECTS += less
+else
+SUBPROJECTS   += less
+endif
+LESS_VERSION  := 668
+DEB_LESS_V    ?= $(LESS_VERSION)
 
 less-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/gnu/less/less-$(LESS_VERSION).tar.gz{$(comma).sig})

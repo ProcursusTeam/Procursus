@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS     += file-cmds
-FILE-CMDS_VERSION := 430.100.5
+FILE-CMDS_VERSION := 448.0.3
 DEB_FILE-CMDS_V   ?= $(FILE-CMDS_VERSION)
 
 file-cmds-setup: setup

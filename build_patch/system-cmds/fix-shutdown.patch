@@ -9,14 +9,13 @@ Subject: system_cmds: shutdown may not work
 
 (limited to 'system_cmds/shutdown.tproj/shutdown.c')
 
-diff --git a/system_cmds/shutdown.tproj/shutdown.c b/system_cmds/shutdown.tproj/shutdown.c
-index 597f9f2..f5d8dd4 100644
---- system_cmds/shutdown.tproj/shutdown.c
-+++ system_cmds/shutdown.tproj/shutdown.c
-@@ -71,8 +71,10 @@ __FBSDID("$FreeBSD: src/sbin/shutdown/shutdown.c,v 1.28 2005/01/25 08:40:51 delp
+diff -urN a/shutdown.tproj/shutdown.c b/shutdown.tproj/shutdown.c
+--- a/shutdown.tproj/shutdown.c	2024-12-21 15:05:39.474270480 +0800
++++ b/shutdown.tproj/shutdown.c	2024-12-21 15:05:30.574479986 +0800
+@@ -69,8 +69,10 @@
  #include <vproc.h>
  #include <vproc_priv.h>
- 
+
 +#if defined(__APPLE__) && !(TARGET_OS_IPHONE && !TARGET_OS_SIMULATOR)
  #include "kextmanager.h"
  #include <IOKit/kext/kextmanager_types.h>
@@ -24,16 +23,16 @@ index 597f9f2..f5d8dd4 100644
  #include <IOKit/pwr_mgt/IOPMLib.h>
  #include <mach/mach_port.h>		// allocate
  #include <mach/mach.h>			// task_self, etc
-@@ -84,6 +86,8 @@ __FBSDID("$FreeBSD: src/sbin/shutdown/shutdown.c,v 1.28 2005/01/25 08:40:51 delp
+@@ -82,6 +84,8 @@
  #include "pathnames.h"
  #endif /* __APPLE__ */
- 
+
 +int	reboot3(int);
 +
  #ifdef DEBUG
  #undef _PATH_NOLOGIN
  #define	_PATH_NOLOGIN	"./nologin"
-@@ -139,8 +143,8 @@ void nolog(void);
+@@ -137,8 +141,8 @@
  void timeout(int);
  void timewarn(time_t);
  void usage(const char *);
@@ -42,8 +41,8 @@ index 597f9f2..f5d8dd4 100644
 +#if defined(__APPLE__) && !(TARGET_OS_IPHONE && !TARGET_OS_SIMULATOR)
  int reserve_reboot(void);
  #endif
- 
-@@ -419,13 +423,13 @@ log_and_exec_reboot_or_halt()
+
+@@ -417,13 +421,13 @@
  die_you_gravy_sucking_pig_dog()
  #endif
  {
@@ -58,15 +57,22 @@ index 597f9f2..f5d8dd4 100644
 +#else
 +	char *empty_environ[] = { NULL };
  #endif
- 
+
  	syslog(LOG_NOTICE, "%s%s by %s: %s",
-@@ -670,7 +674,6 @@ usage(const char *cp)
+@@ -668,7 +672,6 @@
  	exit(1);
  }
- 
+
 -#ifdef __APPLE__
  /*
   * The following tokens are included in the audit record for shutdown
   * header
-cgit v1.2.3
+@@ -723,6 +726,7 @@
+ /*
+  * contact kextd to lock for reboot
+  */
++#if defined(__APPLE__) && !(TARGET_OS_IPHONE && !TARGET_OS_SIMULATOR)
+ int
+ reserve_reboot(void)
+ {
 

@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS   += gettext
-GETTEXT_VERSION := 0.22
+GETTEXT_VERSION := 0.23
 DEB_GETTEXT_V   ?= $(GETTEXT_VERSION)
 
 gettext-setup: setup
@@ -21,7 +21,8 @@ gettext: gettext-setup ncurses libunistring
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-java \
 		--disable-csharp \
-		--without-libintl-prefix
+		--without-libintl-prefix \
+		--with-libunistring-prefix="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)"
 	+$(MAKE) -C $(BUILD_WORK)/gettext \
 		LIBTERMINFO=-lncursesw \
 		LTLIBTERMINFO=-lncursesw

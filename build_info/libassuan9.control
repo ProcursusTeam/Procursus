@@ -1,4 +1,4 @@
-Package: libassuan0
+Package: libassuan9
 Version: @DEB_LIBASSUAN_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@

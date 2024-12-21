@@ -6,7 +6,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS        += iokittools
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1800 ] && echo 1),1)
-IOKITTOOLS_VERSION := 124
+IOKITTOOLS_VERSION := 125
 else
 IOKITTOOLS_VERSION := 115
 endif

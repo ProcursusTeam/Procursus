@@ -19,8 +19,8 @@ coreutils-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftp.gnu.org/gnu/coreutils/coreutils-$(COREUTILS_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,coreutils-$(COREUTILS_VERSION).tar.xz,coreutils-$(COREUTILS_VERSION),coreutils)
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
-		https://git.cameronkatri.com/getent-darwin/snapshot/getent-darwin-$(GETENTDARWIN_COMMIT).tar.zst)
+	$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/getent-darwin-1ad0e39ee51181ea6c13b3d1d4e9c6005ee35b5e.tar.zst, \
+		'https://web.archive.org/web/20241219084936id_/https://cdn.discordapp.com/attachments/1119612484832215064/1319224940221956106/getent-darwin-1ad0e39ee51181ea6c13b3d1d4e9c6005ee35b5e.tar.zst?ex=67652f77&is=6763ddf7&hm=6481dfb77d081f91c838acf8efa574d4af495f90749f4c35e45bcfd1778bc988')
 	$(call EXTRACT_TAR,getent-darwin-$(GETENTDARWIN_COMMIT).tar.zst,getent-darwin-$(GETENTDARWIN_COMMIT),coreutils/getent-darwin)
 
 ifneq ($(wildcard $(BUILD_WORK)/coreutils/.build_complete),)
@@ -35,10 +35,11 @@ else # (,$(findstring darwin,$(MEMO_TARGET)))
 coreutils: coreutils-setup gettext libgmp10 openssl
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	cd $(BUILD_WORK)/coreutils && autoreconf -fi
-	cd $(BUILD_WORK)/coreutils && ./configure -C \
+	cd $(BUILD_WORK)/coreutils && CFLAGS="$(CFLAGS) -std=gnu17" ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		$(COREUTILS_CONFIGURE_ARGS) \
 		gl_cv_macro_MB_CUR_MAX_good=yes
+	+sed -i 's|\[\[__maybe_unused__\]\]||g' $(BUILD_WORK)/coreutils/lib/config.h
 	+$(MAKE) -C $(BUILD_WORK)/coreutils
 	+$(MAKE) -C $(BUILD_WORK)/coreutils install \
 		DESTDIR=$(BUILD_STAGE)/coreutils

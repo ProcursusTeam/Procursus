@@ -12,7 +12,7 @@ else ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1800 ] && echo 1),1)
 SYSTEM-CMDS_VERSION := 880.60.2
 DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)-1
 else
-SYSTEM-CMDS_VERSION := 979.100.8
+SYSTEM-CMDS_VERSION := 1012
 DEB_SYSTEM-CMDS_V   ?= $(SYSTEM-CMDS_VERSION)
 endif
 PWDARWIN_COMMIT     := 72ae45ce6c025bc2359035cfb941b177149e88ae
@@ -26,6 +26,15 @@ else
 endif
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1800 ] && echo 1),1)
 	$(call DO_PATCH,system-cmds,system-cmds,-p1)
+	sed -i 's|plonk(sc_token);|plonk((int)sc_token);|g' $(BUILD_WORK)/system-cmds/at.tproj/parsetime.c
+	sed -i '1s|^|#include <libproc_private.h>\n|' $(BUILD_WORK)/system-cmds/lskq.tproj/lskq.c
+	sed -i 's|p = (uintptr_t)p + size;|p = (void*)((uintptr_t)p + size);|' $(BUILD_WORK)/system-cmds/sysctl.tproj/sysctl.c
+	sed -i \
+		-e 's|\.task = NULL,|.task = 0,|' \
+		-e 's|\.task_kobject = NULL,|.task_kobject = 0,|' \
+		-e 's|, threadPorts,|, (vm_address_t)threadPorts,|' \
+		$(BUILD_WORK)/system-cmds/lsmp.tproj/task_details.c
+	touch $(BUILD_WORK)/system-cmds/zic.tproj/tzconfig.h
 	for tproj in $(BUILD_WORK)/system-cmds/*.tproj; do \
 		$(LN_S) $$(basename $$tproj) $(BUILD_WORK)/system-cmds/$$(basename $$tproj .tproj); \
 	done
@@ -35,8 +44,8 @@ endif
 	sed -i '/#include <stdio.h>/a #include <crypt.h>' $(BUILD_WORK)/system-cmds/login/login.c
 	sed -i -E -e 's|"/usr|"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' -e 's|"/sbin|"$(MEMO_PREFIX)/sbin|g' -e 's|/etc|$(MEMO_PREFIX)/etc|g' \
 		$(BUILD_WORK)/system-cmds/{{shutdown,getty}/pathnames.h,getty/{ttys,gettytab}.5,sc_usage/sc_usage.{1,c},at/{at.1,pathnames.h},passwd/{{file_,}passwd.c,passwd.1},pwd_mkdb/pwd_mkdb.8,sysctl/sysctl.conf.5,chpass/chpass.1,latency/latency.{1,c},arch/arch.c,atrun/atrun.8,vipw/vipw.8,login/login.1}
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
-		https://git.cameronkatri.com/pw-darwin/snapshot/pw-darwin-$(PWDARWIN_COMMIT).tar.zst)
+	$(call DOWNLOAD_FILE,$(BUILD_SOURCE)/pw-darwin-$(PWDARWIN_COMMIT).tar.zst, \
+		'https://web.archive.org/web/20241219084802id_/https://cdn.discordapp.com/attachments/1119612484832215064/1319224270265778206/pw-darwin-72ae45ce6c025bc2359035cfb941b177149e88ae.tar.zst?ex=67652ed8&is=6763dd58&hm=8d16bdb96b295371ab80c50ea8b7e19255edc8db722f7b2c667fa7ad43112192')
 	$(call EXTRACT_TAR,pw-darwin-$(PWDARWIN_COMMIT).tar.zst,pw-darwin-$(PWDARWIN_COMMIT),system-cmds/pw-darwin)
 	$(call DOWNLOAD_FILES,$(BUILD_WORK)/system-cmds/include, \
 		https://github.com/apple-oss-distributions/launchd/raw/launchd-328/launchd/src/reboot2.h)
@@ -49,7 +58,7 @@ ifneq ($(wildcard $(BUILD_WORK)/system-cmds/.build_complete),)
 system-cmds:
 	@echo "Using previously built system-cmds."
 else
-system-cmds: system-cmds-setup libxcrypt openpam libiosexec ncurses
+system-cmds: system-cmds-setup libxcrypt openpam libiosexec ncurses gettext
 	for gperf in $(BUILD_WORK)/system-cmds/getconf/*.gperf; do \
 		LC_ALL=C awk -f $(BUILD_WORK)/system-cmds/getconf/fake-gperf.awk < $$gperf > $(BUILD_WORK)/system-cmds/getconf/"$$(basename $$gperf .gperf).c" ; \
 	done
@@ -72,7 +81,7 @@ system-cmds: system-cmds-setup libxcrypt openpam libiosexec ncurses
 			latency) LDFLAGS="-lncurses -lutil";; \
 			lskq) LDFLAGS="-Ilskq -DEVFILT_NW_CHANNEL=(-16)";; \
 			zic) CFLAGS='-DUNIDEF_MOVE_LOCALTIME -DTZDIR="/var/db/timezone/zoneinfo" -DTZDEFAULT="/var/db/timezone/localtime"';; \
-			zdump) CFLAGS='-Izic';; \
+			zdump) CFLAGS='-Izic -include tzconfig.h' LDFLAGS='-lintl';; \
 		esac ; \
 		echo "$$bin" ; \
 		$(CC) $(CFLAGS) -D__kernel_ptr_semantics="" -I$(BUILD_WORK)/system-cmds/include -o bin/$$bin $$bin/*.c -D'__FBSDID(x)=' $${CFLAGS} $(LDFLAGS) -framework CoreFoundation -framework IOKit $${LDFLAGS} -DPRIVATE -D__APPLE_PRIVATE ; \

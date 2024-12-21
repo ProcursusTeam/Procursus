@@ -4,6 +4,7 @@ Architecture: @DEB_ARCH@
 Version: @DEB_UUID_V@
 Replaces: uuid (<< @DEB_UUID_V@)
 Conflicts: uuid (<< @DEB_UUID_V@)
+Depends: libmd0 (>= 1.1.0)
 Section: Libraries
 Priority: important
 Description: Universally Unique ID library

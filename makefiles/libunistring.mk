@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS     += libunistring
-UNISTRING_VERSION := 1.2
+UNISTRING_VERSION := 1.3
 DEB_UNISTRING_V   ?= $(UNISTRING_VERSION)
 
 libunistring-setup: setup

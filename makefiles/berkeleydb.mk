@@ -5,7 +5,7 @@ endif
 SUBPROJECTS += berkeleydb
 # Berkeleydb requires registration on Oracle's website, so this is a mirror.
 BDB_VERSION := 18.1.40
-DEB_BDB_V   ?= $(BDB_VERSION)-1
+DEB_BDB_V   ?= $(BDB_VERSION)-2
 
 berkeleydb-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://fossies.org/linux/misc/db-$(BDB_VERSION).tar.gz)
@@ -19,7 +19,7 @@ berkeleydb:
 else
 berkeleydb: berkeleydb-setup gettext openssl
 	cd $(BUILD_WORK)/berkeleydb/dist && ./s_config
-	cd $(BUILD_WORK)/berkeleydb/build_unix && ../dist/configure \
+	cd $(BUILD_WORK)/berkeleydb/build_unix && CXXFLAGS='-include $(TARGET_SYSROOT)/usr/include/stddef.h $(CXXFLAGS)' ../dist/configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--includedir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/db181 \
 		--enable-cxx \

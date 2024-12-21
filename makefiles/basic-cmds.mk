@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += basic-cmds
-BASIC-CMDS_VERSION := 67.100.1
+BASIC-CMDS_VERSION := 70
 DEB_BASIC-CMDS_V   ?= $(BASIC-CMDS_VERSION)
 
 basic-cmds-setup: setup

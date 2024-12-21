@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS            += developer-cmds
-DEVELOPER-CMDS_VERSION := 68
+DEVELOPER-CMDS_VERSION := 79
 DEB_DEVELOPER-CMDS_V   ?= $(DEVELOPER-CMDS_VERSION)
 
 developer-cmds-setup: setup

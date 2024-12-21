@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS       += debianutils
-DEBIANUTILS_VERSION := 5.19
+DEBIANUTILS_VERSION := 5.21
 DEB_DEBIANUTILS_V   ?= $(DEBIANUTILS_VERSION)
 
 debianutils-setup: setup

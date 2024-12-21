@@ -5,7 +5,7 @@ endif
 ifeq (,$(MEMO_PREFIX))
 
 STRAPPROJECTS         += firmware-sbin
-FIRMWARE-SBIN_VERSION := 0-2
+FIRMWARE-SBIN_VERSION := 0-3
 DEB_FIRMWARE-SBIN_V   ?= $(FIRMWARE-SBIN_VERSION)
 
 ifneq ($(wildcard $(BUILD_STAGE)/firmware-sbin/.build_complete),)
@@ -14,9 +14,12 @@ firmware-sbin:
 else
 firmware-sbin: setup
 	mkdir -p $(BUILD_STAGE)/firmware-sbin/{sbin,usr/sbin}
-	touch $(BUILD_STAGE)/firmware-sbin/{sbin/{fsck,fsck_apfs,fsck_exfat,fsck_hfs,fsck_msdos,launchd,mount,mount_apfs,newfs_apfs,newfs_hfs,pfctl},usr/sbin/{BTAvrcp,BTLEServer,BTMap,BTPbap,BlueTool,WirelessRadioManagerd,absd,addNetworkInterface,aslmanager,bluetoothd,cfprefsd,distnoted,filecoordinationd,ioreg,ipconfig,mDNSResponder,mDNSResponderHelper,mediaserverd,notifyd,nvram,pppd,racoon,rtadvd,scutil,spindump,syslogd,wifid}}
+	touch $(BUILD_STAGE)/firmware-sbin/{sbin/{fsck,fsck_apfs,fsck_exfat,fsck_hfs,fsck_msdos,launchd,mount,mount_apfs,newfs_apfs,newfs_hfs,pfctl},usr/sbin/{BTAvrcp,BTLEServer,BTMap,BTPbap,BlueTool,WirelessRadioManagerd,absd,addNetworkInterface,aslmanager,bluetoothd,cfprefsd,distnoted,filecoordinationd,ioreg,ipconfig,mDNSResponder,mDNSResponderHelper,mediaserverd,notifyd,nvram,pppd,racoon,rtadvd,spindump,syslogd,wifid}}
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1)
 	touch $(BUILD_STAGE)/firmware-sbin/sbin/umount
+endif
+ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1900 ] && echo 1),1)
+	touch $(BUILD_STAGE)/firmware-sbin/usr/sbin/scutil
 endif
 	$(call AFTER_BUILD)
 endif

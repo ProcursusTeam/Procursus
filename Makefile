@@ -224,6 +224,24 @@ ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.s
 BARE_PLATFORM         := AppleTVOS
 MEMO_DEPLOYMENT       := APPLETVOS_DEPLOYMENT_TARGET=$(APPLETVOS_DEPLOYMENT_TARGET)
 
+else ifeq ($(MEMO_TARGET),appletvos-arm64-rootless)
+MEMO_ARCH             := arm64
+PLATFORM              := appletvos
+DEB_ARCH              := appletvos-arm64-rootless
+GNU_HOST_TRIPLE       := aarch64-apple-darwin
+PLATFORM_VERSION_MIN  := -mappletvos-version-min=$(APPLETVOS_DEPLOYMENT_TARGET)
+RUST_TARGET           := aarch64-apple-tvos
+GOLANG_OS             := ios
+LLVM_TARGET           := arm64-apple-tvos$(APPLETVOS_DEPLOYMENT_TARGET)
+MEMO_PREFIX           ?= /var/jb
+MEMO_SUB_PREFIX       ?= /usr
+MEMO_ALT_PREFIX       ?=
+MEMO_LAUNCHCTL_PREFIX ?= $(MEMO_PREFIX)
+GNU_PREFIX            :=
+ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/AppleTVOS.sdk
+BARE_PLATFORM         := AppleTVOS
+MEMO_DEPLOYMENT       := APPLETVOS_DEPLOYMENT_TARGET=$(APPLETVOS_DEPLOYMENT_TARGET)
+
 else ifeq ($(MEMO_TARGET),appletvos-arm64e)
 MEMO_ARCH             := arm64e
 PLATFORM              := appletvos
@@ -1207,9 +1225,9 @@ bootstrap:: strapprojects
 	mkdir -p $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/info
 	touch $(BUILD_STRAP)/strap/$(MEMO_PREFIX)/Library/dpkg/{status,available}
 	-if echo $(MEMO_TARGET) | grep "darwin"; then \
-		PKGS="apt/apt_*.deb brotli/libbrotli1_*.deb cacerts/ca-certificates_*.deb coreutils/coreutils_*.deb darwintools/darwintools_*.deb dpkg/dpkg_*.deb gnupg/gpgv_*.deb apt/libapt-pkg6.0_*.deb libassuan/libassuan0_*.deb libffi/libffi8_*.deb libgcrypt/libgcrypt20_*.deb libgmp10/libgmp10_*.deb gnutls/libgnutls30_*.deb libgpg-error/libgpg-error0_*.deb nettle/libhogweed6_*.deb libidn2/libidn2-0_*.deb gettext/libintl8_*.deb lz4/liblz4-1_*.deb xz/liblzma5_*.deb libmd/libmd0_*.deb nettle/libnettle8_*.deb npth/libnpth0_*.deb p11-kit/libp11-kit0_*.deb openssl/libssl3_*.deb libtasn1/libtasn1-6_*.deb libunistring/libunistring5_*.deb xxhash/libxxhash0_*.deb zlib-ng/libz-ng2_*.deb zstd/libzstd1_*.deb keyring/procursus-keyring_*.deb tar/tar_*.deb"; \
+		PKGS="apt/apt_*.deb brotli/libbrotli1_*.deb cacerts/ca-certificates_*.deb coreutils/coreutils_*.deb darwintools/darwintools_*.deb dpkg/dpkg_*.deb gnupg/gpgv_*.deb apt/libapt-pkg6.0_*.deb libassuan/libassuan9_*.deb libffi/libffi8_*.deb libgcrypt/libgcrypt20_*.deb libgmp10/libgmp10_*.deb gnutls/libgnutls30_*.deb libgpg-error/libgpg-error0_*.deb nettle/libhogweed6_*.deb libidn2/libidn2-0_*.deb gettext/libintl8_*.deb lz4/liblz4-1_*.deb xz/liblzma5_*.deb libmd/libmd0_*.deb nettle/libnettle8_*.deb npth/libnpth0_*.deb p11-kit/libp11-kit0_*.deb openssl/libssl3_*.deb libtasn1/libtasn1-6_*.deb libunistring/libunistring5_*.deb xxhash/libxxhash0_*.deb zlib-ng/libz-ng2_*.deb zstd/libzstd1_*.deb keyring/procursus-keyring_*.deb tar/tar_*.deb"; \
 	else \
-		PKGS="apt/apt_*.deb base/base_*.deb bash/bash_*.deb brotli/libbrotli1_*.deb cacerts/ca-certificates_*.deb chariz-keyring/chariz-keyring_*.deb coreutils/coreutils_*.deb darwintools/darwintools_*.deb dash/dash_*.deb debianutils/debianutils_*.deb diffutils/diffutils_*.deb diskdev-cmds/diskdev-cmds_*.deb dpkg/dpkg_*.deb essential/essential_*.deb file-cmds/file-cmds_*.deb findutils/findutils_*.deb firmware-sbin/firmware-sbin_*.deb gnupg/gpgv_*.deb grep/grep_*.deb havoc-keyring/havoc-keyring_*.deb launchctl/launchctl_*.deb apt/libapt-pkg6.0_*.deb libassuan/libassuan0_*.deb libxcrypt/libcrypt2_*.deb dimentio/libdimentio0_*.deb libedit/libedit0_*.deb libffi/libffi8_*.deb libgcrypt/libgcrypt20_*.deb libgmp10/libgmp10_*.deb gnutls/libgnutls30_*.deb libgpg-error/libgpg-error0_*.deb nettle/libhogweed6_*.deb libidn2/libidn2-0_*.deb gettext/libintl8_*.deb libiosexec/libiosexec1_*.deb libkrw/libkrw0_*.deb lz4/liblz4-1_*.deb xz/liblzma5_*.deb libmd/libmd0_*.deb ncurses/libncursesw6_*.deb nettle/libnettle8_*.deb npth/libnpth0_*.deb p11-kit/libp11-kit0_*.deb pam-modules/libpam-modules_*.deb openpam/libpam2_*.deb pcre/libpcre1_*.deb pcre2/libpcre2-8-0_*.deb readline/libreadline8_*.deb libtasn1/libtasn1-6_*.deb libunistring/libunistring5_*.deb xxhash/libxxhash0_*.deb zlib-ng/libz-ng2_*.deb zstd/libzstd1_*.deb ncurses/ncurses-bin_*.deb ncurses/ncurses-term_*.deb openssh/openssh-server_*.deb openssh/openssh-sftp-server_*.deb openssh/openssh-client_*.deb openssl/libssl3_*.deb keyring/procursus-keyring_*.deb profile.d/profile.d_*.deb sed/sed_*.deb shell-cmds/shell-cmds_*.deb shshd/shshd_*.deb snaputil/snaputil_*.deb sudo/sudo_*.deb system-cmds/system-cmds_*.deb tar/tar_*.deb uikittools/uikittools_*.deb vi/vi_*.deb zsh/zsh_*.deb"; \
+		PKGS="apt/apt_*.deb base/base_*.deb bash/bash_*.deb brotli/libbrotli1_*.deb cacerts/ca-certificates_*.deb chariz-keyring/chariz-keyring_*.deb coreutils/coreutils_*.deb darwintools/darwintools_*.deb dash/dash_*.deb debianutils/debianutils_*.deb diffutils/diffutils_*.deb diskdev-cmds/diskdev-cmds_*.deb dpkg/dpkg_*.deb essential/essential_*.deb file-cmds/file-cmds_*.deb findutils/findutils_*.deb firmware-sbin/firmware-sbin_*.deb gnupg/gpgv_*.deb grep/grep_*.deb havoc-keyring/havoc-keyring_*.deb launchctl/launchctl_*.deb less/less_*.deb apt/libapt-pkg6.0_*.deb libassuan/libassuan9_*.deb libxcrypt/libcrypt2_*.deb dimentio/libdimentio0_*.deb libedit/libedit0_*.deb libffi/libffi8_*.deb libgcrypt/libgcrypt20_*.deb libgmp10/libgmp10_*.deb gnutls/libgnutls30_*.deb libgpg-error/libgpg-error0_*.deb nettle/libhogweed6_*.deb libidn2/libidn2-0_*.deb gettext/libintl8_*.deb libiosexec/libiosexec1_*.deb libkrw/libkrw0_*.deb lz4/liblz4-1_*.deb xz/liblzma5_*.deb libmd/libmd0_*.deb ncurses/libncursesw6_*.deb nettle/libnettle8_*.deb npth/libnpth0_*.deb p11-kit/libp11-kit0_*.deb pam-modules/libpam-modules_*.deb openpam/libpam2_*.deb pcre/libpcre1_*.deb pcre2/libpcre2-8-0_*.deb readline/libreadline8_*.deb libtasn1/libtasn1-6_*.deb libunistring/libunistring5_*.deb xxhash/libxxhash0_*.deb zlib-ng/libz-ng2_*.deb zstd/libzstd1_*.deb ncurses/ncurses-bin_*.deb ncurses/ncurses-term_*.deb openssh/openssh-server_*.deb openssh/openssh-sftp-server_*.deb openssh/openssh-client_*.deb openssl/libssl3_*.deb keyring/procursus-keyring_*.deb profile.d/profile.d_*.deb sed/sed_*.deb shell-cmds/shell-cmds_*.deb shshd/shshd_*.deb snaputil/snaputil_*.deb sudo/sudo_*.deb system-cmds/system-cmds_*.deb tar/tar_*.deb uikittools/uikittools_*.deb vi/vi_*.deb zsh/zsh_*.deb"; \
 	fi; \
 	cd $(BUILD_STRAP); for DEB in $$PKGS; do \
 		if [ ! -f $$DEB ]; then \
@@ -1359,50 +1377,53 @@ rebuild-%:
 
 setup:
 	@mkdir -p \
-		$(BUILD_BASE) $(BUILD_BASE)$(MEMO_PREFIX)/{{,System}/Library/Frameworks,$(MEMO_SUB_PREFIX)/{include/{bsm,objc,os/internal,sys,firehose,CoreFoundation,FSEvents,IOKit/kext,libkern,kern,arm,{mach/,}machine,CommonCrypto,corecrypto,Security,CoreSymbolication,Kernel/{kern,IOKit,libkern},rpc,rpcsvc,xpc/private,ktrace,mach-o,dispatch},lib/pkgconfig,$(MEMO_ALT_PREFIX)/lib}} \
+		$(BUILD_BASE) $(BUILD_BASE)$(MEMO_PREFIX)/{{,System}/Library/Frameworks,$(MEMO_SUB_PREFIX)/{include/{bsm,objc,os/internal,sys,firehose,CoreFoundation,FSEvents,IOKit/kext,libkern,kern,arm,{mach/,}machine,CommonCrypto,corecrypto,Security,CoreSymbolication,Kernel/{kern,IOKit,libkern},rpc,rpcsvc,xpc/private,ktrace,mach-o,dispatch,nw},lib/pkgconfig,$(MEMO_ALT_PREFIX)/lib}} \
 		$(BUILD_SOURCE) $(BUILD_WORK) $(BUILD_STAGE) $(BUILD_STRAP)
 
 	@rm -rf $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/System
 	@$(LN_SR) $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include{,/System}
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-10002.41.9/libsyscall/wrappers/{spawn/spawn{$(comma)_private}$(comma)libproc/libproc{$(comma)_internal$(comma)_private}}.h \
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-11215.41.3/libsyscall/wrappers/{spawn/spawn{$(comma)_private}$(comma)libproc/libproc{$(comma)_internal$(comma)_private}}.h \
 		https://github.com/apple-oss-distributions/launchd/raw/launchd-842.92.1/liblaunch/{bootstrap$(comma)vproc}_priv.h \
 		https://github.com/apple-oss-distributions/libplatform/raw/libplatform-306.0.1/private/_simple.h \
 		https://github.com/apple-oss-distributions/libutil/raw/libutil-70.1.1/{mntopts$(comma)libutil}.h \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-10002.41.9/{EXTERNAL_HEADERS/mach-o/nlist$(comma)osfmk/mach/vm_statistics}.h \
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-11215.41.3/{EXTERNAL_HEADERS/mach-o/nlist$(comma)osfmk/mach/vm_statistics}.h \
 		https://github.com/apple-oss-distributions/libmalloc/raw/libmalloc-474.0.13/private/stack_logging.h \
-		https://github.com/apple-oss-distributions/Libc/raw/Libc-1583.0.14/{gen/get_compat$(comma)include/struct}.h)
+		https://github.com/apple-oss-distributions/Libc/raw/Libc-1669.40.2/{gen/get_compat$(comma)include/struct}.h \
+		https://github.com/asdfugil/apple_internal_sdk/raw/4bb44148bbdbb8edffc770fc2e6f19a6ef0fad11/usr/include/{ne_session$(comma)NEHelperClient}.h \
+		https://github.com/apple-oss-distributions/Libinfo/raw/refs/tags/Libinfo-592/lookup.subproj/netdb_async.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach-o, \
 		https://github.com/apple-oss-distributions/dyld/raw/dyld-1122.1/{include/mach-o/dyld_{process_info$(comma)introspection}$(comma)cache-builder/dyld_cache_format}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Kernel/kern, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-10002.41.9/osfmk/kern/ledger.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-11215.41.3/osfmk/kern/ledger.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Kernel/IOKit, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-10002.41.9/iokit/IOKit/IOKitDebug.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-11215.41.3/iokit/IOKit/IOKitDebug.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Kernel/libkern, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-10002.41.9/libkern/libkern/OSKextLibPrivate.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-11215.41.3/libkern/libkern/OSKextLibPrivate.h)
 
-	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/kern,https://github.com/apple-oss-distributions/xnu/raw/xnu-10002.41.9/osfmk/kern/debug.h)
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/kern,https://github.com/apple-oss-distributions/xnu/raw/xnu-11215.41.3/osfmk/kern/debug.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/arm, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-10002.41.9/{bsd/arm/disklabel$(comma)osfmk/arm/cpu_capabilities}.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-11215.41.3/{bsd/arm/disklabel$(comma)osfmk/arm/cpu_capabilities}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-10002.41.9/bsd/machine/disklabel.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-11215.41.3/bsd/machine/disklabel.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os, \
-		https://github.com/apple-oss-distributions/Libc/raw/Libc-1583.0.14/os/assumes.h \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-10002.41.9/libkern/os/{base_private$(comma)log_private$(comma)log}.h)
+		https://github.com/apple-oss-distributions/Libc/raw/Libc-1669.40.2/os/{assumes$(comma)variant_private}.h \
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-11215.41.3/libkern/os/{base_private$(comma)log_private$(comma)log}.h \
+		https://github.com/asdfugil/apple_internal_sdk/raw/62c5e679a0345bcc00412c81a67269f6bcf1acc8/usr/include/os/feature_private.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CommonCrypto, \
 		https://github.com/apple-oss-distributions/CommonCrypto/raw/CommonCrypto-600025/include/Private/CommonDigestSPI.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/bsm, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-10002.41.9/bsd/bsm/audit_kevents.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-11215.41.3/bsd/bsm/audit_kevents.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit/kext, \
 		https://github.com/apple-oss-distributions/IOKitUser/raw/IOKitUser-100065.1.1/kext.subproj/{KextManagerPriv$(comma)OSKext$(comma)OSKextPrivate$(comma)kextmanager_types$(comma){fat$(comma)macho$(comma)misc}_util}.h)
@@ -1413,34 +1434,34 @@ setup:
 		https://github.com/apple-oss-distributions/Security/raw/Security-61040.1.3/base/SecBasePriv.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreFoundation, \
-		https://github.com/apple-oss-distributions/CF/raw/CF-1153.18/CFBundlePriv.h)
+		https://github.com/apple-oss-distributions/CF/raw/CF-1153.18/{CFBundlePriv$(comma)CFRuntime}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-10002.41.9/osfmk/machine/cpu_capabilities.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-11215.41.3/osfmk/machine/cpu_capabilities.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/firehose, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-10002.41.9/libkern/firehose/{tracepoint$(comma)firehose_types}_private.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-11215.41.3/libkern/firehose/{tracepoint$(comma)firehose_types}_private.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-10002.41.9//libkern/libkern/{OSKextLibPrivate$(comma)mkext$(comma)prelink}.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-11215.41.3//libkern/libkern/{OSKextLibPrivate$(comma)mkext$(comma)prelink}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/internal, \
 		https://github.com/apple-oss-distributions/libplatform/raw/libplatform-126.50.8/include/os/internal/{internal_shared$(comma)atomic$(comma)crashlog}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-10002.41.9/bsd/sys/{fcntl$(comma)fsctl$(comma)spawn_internal$(comma)resource$(comma)event$(comma)event_private$(comma)kdebug$(comma)kdebug_private$(comma)proc$(comma)proc_info$(comma)proc_info_private$(comma)pgo$(comma)proc_uuid_policy$(comma)acct$(comma)stackshot$(comma)event$(comma)mbuf$(comma)kern_memorystatus$(comma)reason}.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-11215.41.3/bsd/sys/{fcntl$(comma)fsctl$(comma)spawn_internal$(comma)resource$(comma)resource_private$(comma)event$(comma)event_private$(comma)kdebug$(comma)kdebug_private$(comma)proc$(comma)proc_info$(comma)proc_info_private$(comma)pgo$(comma)proc_uuid_policy$(comma)acct$(comma)stackshot$(comma)event$(comma)mbuf$(comma)kern_memorystatus$(comma)reason}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/uuid, \
 		https://github.com/apple-oss-distributions/Libc/raw/Libc-1583.0.14/uuid/namespace.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-10002.41.9/osfmk/mach/coalition.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-11215.41.3/osfmk/mach/coalition.h)
 
 	@# FSEvents headers won't be found even when building for macOS... Should probably fix this properly eventually
 	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/CoreServices.framework/Frameworks/FSEvents.framework/Headers/* $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/FSEvents/
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-10002.41.9/iokit/IOKit/IOKitDebug.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-11215.41.3/iokit/IOKit/IOKitDebug.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/IOKit/kext, \
 		https://github.com/apple-oss-distributions/IOKitUser/raw/IOKitUser-100065.1.1/kext.subproj/{KextManagerPriv$(comma)OSKext$(comma)OSKextPrivate$(comma)kextmanager_types$(comma){fat$(comma)macho$(comma)misc}_util}.h)
@@ -1454,20 +1475,20 @@ setup:
 		https://github.com/apple-oss-distributions/CF/raw/CF-1153.18/CFBundlePriv.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/machine, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-10002.41.9/osfmk/machine/cpu_capabilities.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-11215.41.3/osfmk/machine/cpu_capabilities.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/firehose, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-10002.41.9/libkern/firehose/tracepoint_private.h \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-10002.41.9/libkern/firehose/firehose_types_private.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-11215.41.3/libkern/firehose/tracepoint_private.h \
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-11215.41.3/libkern/firehose/firehose_types_private.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libkern, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-10002.41.9/libkern/libkern/{OSKextLibPrivate$(comma)mkext$(comma)prelink}.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-11215.41.3/libkern/libkern/{OSKextLibPrivate$(comma)mkext$(comma)prelink}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/internal, \
 		https://github.com/apple-oss-distributions/libplatform/raw/libplatform-126.50.8/include/os/internal/{internal_shared$(comma)atomic$(comma)crashlog}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-10002.41.9/bsd/sys/{fcntl$(comma)fsctl$(comma)spawn_internal$(comma)resource$(comma)event$(comma)kdebug$(comma)proc$(comma)proc_info$(comma)pgo$(comma)proc_uuid_policy$(comma)acct$(comma)stackshot$(comma)event$(comma)mbuf$(comma)kern_memorystatus$(comma)reason}.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-11215.41.3/bsd/sys/{fcntl$(comma)fsctl$(comma)spawn_internal$(comma)resource$(comma)event$(comma)kdebug$(comma)proc$(comma)proc_info$(comma)pgo$(comma)proc_uuid_policy$(comma)acct$(comma)stackshot$(comma)event$(comma)mbuf$(comma)kern_memorystatus$(comma)reason}.h)
 
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/xpc, \
 		https://github.com/Torrekie/apple_internal_sdk/raw/322eb6573bc701e7f35af05650b0cc162d0355c1/usr/include/xpc/private.h)
@@ -1487,6 +1508,9 @@ setup:
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/corecrypto, \
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-10063.121.3/EXTERNAL_HEADERS/corecrypto/cc{$(comma)digest$(comma)n$(comma)_config$(comma)_impl$(comma)_error$(comma)sha1$(comma)sha2}.h)
 
+	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/nw, \
+		https://github.com/Torrekie/apple_internal_sdk/raw/fc8b2c5d6a6d8565f7169b2ae86076813ee26d11/usr/include/nw/private.h)
+
 	@cp -a $(BUILD_MISC)/{libxml-2.0,zlib}.pc $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1700 ] && echo 1),1)
@@ -1501,7 +1525,7 @@ endif
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	@$(call DOWNLOAD_FILES,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-10002.41.9/bsd/sys/resource.h \
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-11215.41.3/bsd/sys/resource.h \
 		https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.140.41/bsd/sys/vnioctl.h)
 	rm -f $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/utmp.h
 
@@ -1554,6 +1578,7 @@ endif
 	@#Patch downloaded headers
 	@sed -i '1s|^|#include <Security/cssmapi.h>\n#include <Security/SecKeychain.h>\n|' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security/SecKeychainPriv.h
 	@sed -i '1s|^|#include <arm/cpu_capabilities.h>\n|' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/firehose/tracepoint_private.h
+	touch $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/AvailabilityInternalPrivate.h
 	@sed -i -e 's/__osloglike([0-9], [0-9])//' -e 's|extern void \*__dso_handle;|#ifndef __OS_TRACE_BASE_H__\nextern struct mach_header __dso_handle;\n#endif|' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/os/log{,_private}.h
 	@sed -i 's/, ios(NA), bridgeos(NA)//' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Security/SecBasePriv.h
 	@sed -i 's/__API_UNAVAILABLE(ios, tvos, watchos) __API_UNAVAILABLE(bridgeos)//' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/mach-o/dyld_process_info.h

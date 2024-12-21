@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS       += text-cmds
-TEXT-CMDS_VERSION := 165.100.8
+TEXT-CMDS_VERSION := 190.0.1
 DEB_TEXT-CMDS_V   ?= 1:$(TEXT-CMDS_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
@@ -15,7 +15,7 @@ endif
 text-cmds-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,text_cmds,$(TEXT-CMDS_VERSION),text_cmds-$(TEXT-CMDS_VERSION))
 	$(call EXTRACT_TAR,text_cmds-$(TEXT-CMDS_VERSION).tar.gz,text_cmds-text_cmds-$(TEXT-CMDS_VERSION),text-cmds)
-	sed -i 's|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|' $(BUILD_WORK)/text-cmds/ee/ee.c
+	$(call DO_PATCH,text-cmds,text-cmds,-p1)
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
 	# backport strtonum to iOS 13.0 and lower
 	$(call DOWNLOAD_FILES,$(BUILD_WORK)/text-cmds/col,https://github.com/apple-oss-distributions/Libc/raw/Libc-1583.40.7/stdlib/FreeBSD/strtonum.c)
@@ -29,14 +29,13 @@ ifneq ($(wildcard $(BUILD_WORK)/text-cmds/.build_complete),)
 text-cmds:
 	@echo "Using previously built text-cmds."
 else
-text-cmds: text-cmds-setup ncurses
+text-cmds: text-cmds-setup ncurses libmd
 	-cd $(BUILD_WORK)/text-cmds; \
-	for bin in banner bintrans col colrm column ee lam look md5 rev rs ul unvis vis; do \
+	for bin in banner bintrans col colrm column lam look md5 rev rs ul unvis vis; do \
 		case $$bin in \
 			col) EXTRAFLAGS="$(COL_EXTRAFLAGS)";; \
-			ee) EXTRAFLAGS="-lncursesw";; \
-			md5) EXTRAFLAGS="$(BUILD_WORK)/text-cmds/md5/commoncrypto.c";; \
 			ul) EXTRAFLAGS="-lncursesw";; \
+			md5) EXTRAFLAGS="-lmd";; \
 			vis) EXTRAFLAGS="$(BUILD_WORK)/text-cmds/vis/foldit.c";; \
 			bintrans) EXTRAFLAGS="$$(echo "$(BUILD_WORK)"/text-cmds/bintrans/{uuencode,uudecode,apple_base64,qp}.c)";; \
 		esac; \
@@ -46,7 +45,7 @@ text-cmds: text-cmds-setup ncurses
 	done
 	$(LN_S) bintrans $(BUILD_STAGE)/text-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uuencode
 	$(LN_S) bintrans $(BUILD_STAGE)/text-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/uudecode
-	cp -af $(BUILD_WORK)/text-cmds/bintrans/{uudecode,uuencode}.1 $(BUILD_STAGE)/text-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
+	cp -af $(BUILD_WORK)/text-cmds/bintrans/{b64encode,b64decode,uudecode,uuencode}.1 $(BUILD_STAGE)/text-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	mv $(BUILD_STAGE)/text-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/md5 $(BUILD_STAGE)/text-cmds/$(MEMO_PREFIX)/sbin/md5
 	for cmd in rmd160 sha1 sha256; do \
 		$(LN_S) md5 $(BUILD_STAGE)/text-cmds/$(MEMO_PREFIX)/sbin/$$cmd; \

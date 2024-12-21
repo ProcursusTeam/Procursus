@@ -3,12 +3,12 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += uuid
-UUID_VERSION  := 1.6.2
-DEB_UUID_V    ?= $(UUID_VERSION)-3
+UUID_VERSION  := 1.6.4
+DEB_UUID_V    ?= $(UUID_VERSION)
 
 uuid-setup: setup file-setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://deb.debian.org/debian/pool/main/o/ossp-uuid/ossp-uuid_$(UUID_VERSION).orig.tar.gz)
-	$(call EXTRACT_TAR,ossp-uuid_$(UUID_VERSION).orig.tar.gz,uuid-$(UUID_VERSION),uuid)
+	$(call EXTRACT_TAR,ossp-uuid_$(UUID_VERSION).orig.tar.gz,ossp-uuid-UUID_$(shell echo $(UUID_VERSION) | cut -d. -f1)_$(shell echo $(UUID_VERSION) | cut -d. -f2)_$(shell echo $(UUID_VERSION) | cut -d. -f3),uuid)
 	cp -a $(BUILD_WORK)/file/config.sub $(BUILD_WORK)/uuid
 	sed -i 's/-c -s -m/-c -m/g' $(BUILD_WORK)/uuid/Makefile.in
 
@@ -16,12 +16,12 @@ ifneq ($(wildcard $(BUILD_WORK)/uuid/.build_complete),)
 uuid:
 	@echo "Using previously built uuid."
 else
-uuid: uuid-setup
-	cd $(BUILD_WORK)/uuid && ./configure -C \
+uuid: uuid-setup libmd
+	cd $(BUILD_WORK)/uuid && autoreconf -fi && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		ac_cv_va_copy=yes \
-		CC="$(CC) $(CFLAGS)" \
-		CXX="$(CXX) $(CXXFLAGS)"
+		ac_cv_func_getentropy=no
+	+sed -i 's|-Wl,--version-script=$$(S)/libuuid\.ver||g' $(BUILD_WORK)/uuid/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/uuid
 	+$(MAKE) -C $(BUILD_WORK)/uuid install \
 		DESTDIR=$(BUILD_STAGE)/uuid

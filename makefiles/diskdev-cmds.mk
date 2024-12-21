@@ -7,8 +7,11 @@ STRAPPROJECTS        += diskdev-cmds
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS          += diskdev-cmds
 endif # ($(MEMO_TARGET),darwin-\*)
-DISKDEV-CMDS_VERSION := 718
+DISKDEV-CMDS_VERSION := 735
 DEB_DISKDEV-CMDS_V   ?= $(DISKDEV-CMDS_VERSION)
+
+# TODO: FSKit? (iOS 17+, visionOS 1+)
+# API seems very unstable at this moment, don't include it for now
 
 diskdev-cmds-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,diskdev_cmds,$(DISKDEV-CMDS_VERSION),diskdev_cmds-$(DISKDEV-CMDS_VERSION))
@@ -65,6 +68,7 @@ diskdev-cmds: diskdev-cmds-setup
 		bin=../$$(basename $$c .c); \
 		$(CC) $(CFLAGS) $(LDFLAGS) -isystem ../include -o $$bin $$c; \
 	done
+
 ifneq ($(shell [ "$(CFVER_WHOLE)" -ge 1800 ] && echo 1),1)
 	$(CC) $(CFLAGS) $(LDFLAGS) $(BUILD_WORK)/diskdev-cmds/dirs_cleaner/dirs_cleaner.c -o $(BUILD_STAGE)/diskdev-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/dirs_cleaner
 else

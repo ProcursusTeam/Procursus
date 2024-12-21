@@ -1,0 +1,8 @@
+Package: scutil
+Section: Networking
+Version: @DEB_CONFIGD_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libedit0
+Priority: important
+Description: scutil, scselect

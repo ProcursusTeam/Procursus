@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += misc-cmds
-MISC-CMDS_VERSION := 39
+MISC-CMDS_VERSION := 44
 DEB_MISC-CMDS_V   ?= $(MISC-CMDS_VERSION)
 
 misc-cmds-setup: setup
@@ -12,17 +12,18 @@ misc-cmds-setup: setup
 	mkdir -p $(BUILD_STAGE)/misc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/{man/man1,misc}}
 	sed -i 's|#include <calendar.h>|#include "calendar.h"|g' $(BUILD_WORK)/misc-cmds/ncal/ncal.c
 	sed -i '1 i\typedef unsigned int u_int;' $(BUILD_WORK)/misc-cmds/leave/leave.c
-	sed -i "s|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g" $(BUILD_WORK)/misc-cmds/{calendar,units}/{pathnames.h,*.1}
+	sed -i "s|/usr|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g" $(BUILD_WORK)/misc-cmds/calendar/{pathnames.h,*.1}
 
 ifneq ($(wildcard $(BUILD_WORK)/misc-cmds/.build_complete),)
 misc-cmds:
 	@echo "Using previously built misc-cmds."
 else
-misc-cmds: misc-cmds-setup ncurses
-	@# tsort conflics with coreutils
+misc-cmds: misc-cmds-setup ncurses libedit
+	# tsort conflics with coreutils
 	cd $(BUILD_WORK)/misc-cmds; \
 	for bin in calendar leave ncal units; do \
-		$(CC) $(LDFLAGS) $(CFLAGS) -o $(BUILD_STAGE)/misc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -lncurses; \
+		if [ "$$bin" = "units" ]; then EXTRA_CFLAGS="-ledit"; else EXTRA_CFLAGS=""; fi; \
+		$(CC) $(LDFLAGS) $(CFLAGS) -o $(BUILD_STAGE)/misc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/*.c -lncurses $$EXTRA_CFLAGS; \
 		cp $(BUILD_WORK)/misc-cmds/$$bin/$$bin.1 $(BUILD_STAGE)/misc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/$$bin.1 ;\
 	done
 	cp -a $(BUILD_WORK)/misc-cmds/calendar/calendars $(BUILD_STAGE)/misc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/calendar

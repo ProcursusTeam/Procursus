@@ -1,0 +1,35 @@
+diff --git a/md5/md5.c b/md5/md5.c
+index 03d1d56..c8dfcfc 100644
+--- a/md5/md5.c
++++ b/md5/md5.c
+@@ -32,10 +32,19 @@
+ #include <ripemd.h>
+ #endif
+ #include <sha.h>
+-#include <sha224.h>
+ #include <sha256.h>
+-#include <sha384.h>
+ #include <sha512.h>
++
++typedef SHA2_CTX SHA224_CTX;
++
++#define SHA224_Init             SHA224Init
++#define SHA224_Update           SHA224Update
++#define SHA224_Final            SHA224Final
++#define SHA224_End              SHA224End
++#define SHA224_File             SHA224File
++#define SHA224_FileChunk        SHA224FileChunk
++#define SHA224_Data             SHA224Data
++
+ #ifndef __APPLE__
+ #include <sha512t.h>
+ #include <skein.h>
+@@ -101,7 +110,7 @@ typedef struct Algorithm_t {
+ 	DIGEST_Init *Init;
+ 	DIGEST_Update *Update;
+ 	DIGEST_End *End;
+-	char *(*Data)(const void *, unsigned int, char *);
++	char *(*Data)(const uint8_t *, size_t, char *);
+ } Algorithm_t;
+ 
+ static void MD5_Update(MD5_CTX *, const unsigned char *, size_t);

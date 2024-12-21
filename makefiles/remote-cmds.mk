@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS         += remote-cmds
-REMOTE-CMDS_VERSION := 302
+REMOTE-CMDS_VERSION := 303.141.1
 LIBTELNET_VERSION   := 13
 DEB_REMOTE-CMDS_V   ?= $(REMOTE-CMDS_VERSION)
 
