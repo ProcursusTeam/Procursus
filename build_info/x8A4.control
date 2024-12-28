@@ -3,7 +3,7 @@ Author: Cryptiiiic
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_X8A4_V@
-Depends: libx8A4 (= @DEB_X8A4_V@)
+Depends: libx8A4-1 (= @DEB_X8A4_V@)
 Enhances: dimentio
 Section: Utilities
 Priority: optional
