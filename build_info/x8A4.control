@@ -7,5 +7,5 @@ Depends: libx8A4 (= @DEB_X8A4_V@)
 Enhances: dimentio
 Section: Utilities
 Priority: optional
-Homepage: https://github.com/Cryptiiiic/libkrw
+Homepage: https://github.com/Cryptiiiic/x8A4
 Description: An all-in-one tool for firmware nonces, seeds, and downgrade support
