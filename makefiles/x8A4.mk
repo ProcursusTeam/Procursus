@@ -89,6 +89,6 @@ x8A4-package: x8A4-stage
 	# libkrw.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libx8A4{,-dev} $(BUILD_DIST)/x8A4
 
-.PHONY: libkrw libkrw-package
+.PHONY: x8A4 x8A4-package
 endif
 endif
