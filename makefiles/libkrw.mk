@@ -33,14 +33,12 @@ libkrw: libkrw-setup
 		$(CC) $(CFLAGS) \
 			-I$(BUILD_WORK)/libkrw/external/libroot/src \
 			-c -o $(BUILD_WORK)/libkrw/src/.lib/libroot.o \
-			-fobjc-arc \
 			-DIPHONEOS_ARM64 \
 			$(BUILD_WORK)/libkrw/external/libroot/src/dyn.c; \
 	else \
 		$(CC) $(CFLAGS) \
 			-I$(BUILD_WORK)/libkrw/external/libroot/src \
 			-c -o $(BUILD_WORK)/libkrw/src/.lib/libroot.o \
-			-fobjc-arc \
 			-DTARGET=libkrw \
 			$(BUILD_WORK)/libkrw/external/libroot/src/dyn.c; \
 	fi

@@ -1,10 +1,10 @@
-Package: libx8A4-1
+Package: libx8a4-1
 Author: Cryptiiiic
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_X8A4_V@
-Provides: libx8A4-1 (= @DEB_X8A4_V@)
-Depends: libkrw
+Provides: libx8a4-1 (= @DEB_X8A4_V@)
+Depends: libkrw0
 Section: Libraries
 Priority: standard
 Homepage: https://github.com/Cryptiiiic/x8A4

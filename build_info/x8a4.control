@@ -1,9 +1,10 @@
-Package: x8A4
+Package: x8a4
+Name: x8A4
 Author: Cryptiiiic
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_X8A4_V@
-Depends: libx8A4-1 (= @DEB_X8A4_V@)
+Depends: libx8a4-1 (= @DEB_X8A4_V@)
 Enhances: dimentio
 Section: Utilities
 Priority: optional

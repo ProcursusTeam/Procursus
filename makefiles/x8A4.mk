@@ -72,23 +72,23 @@ x8A4-package: x8A4-stage
 	# x8A4.mk Prep libx8A4
 	cp -a $(BUILD_STAGE)/x8A4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libx8A4.$(LIBX8A4_SOVERSION).dylib $(BUILD_DIST)/libx8A4-$(LIBX8A4_SOVERSION)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-	# libkrw.mk Prep libkrw-dev
+	# x8A4.mk Prep libkrw-dev
 	cp -a $(BUILD_STAGE)/x8A4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libx8A4.dylib $(BUILD_DIST)/libx8A4-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/x8A4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/x8A4 $(BUILD_DIST)/libx8A4-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 
 	# x8A4.mk Prep x8A4
 	cp -a $(BUILD_STAGE)/x8A4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/x8A4 $(BUILD_DIST)/x8A4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
-	# libkrw.mk Sign
+	# x8A4.mk Sign
 	$(call SIGN,libx8A4-$(LIBX8A4_SOVERSION),general.xml)
 	$(call SIGN,x8A4,x8A4.xml)
 
-	# libkrw.mk Make .debs
-	$(call PACK,libx8A4-$(LIBX8A4_SOVERSION),DEB_X8A4_V)
-	$(call PACK,libx8A4-dev,DEB_X8A4_V)
-	$(call PACK,x8A4,DEB_X8A4_V)
+	# x8A4.mk Make .debs
+	$(call PACK,libx8a4-$(LIBX8A4_SOVERSION),DEB_X8A4_V)
+	$(call PACK,libx8a4-dev,DEB_X8A4_V)
+	$(call PACK,x8a4,DEB_X8A4_V)
 
-	# libkrw.mk Build cleanup
+	# x8A4.mk Build cleanup
 	rm -rf $(BUILD_DIST)/libx8A4{-$(LIBX8A4_SOVERSION),-dev} $(BUILD_DIST)/x8A4
 
 .PHONY: x8A4 x8A4-package
