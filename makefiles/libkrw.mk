@@ -6,17 +6,20 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 ifeq ($(shell [ "$(MEMO_CFVER)" -ge 1700 ] && echo 1),1)
 
 STRAPPROJECTS  += libkrw
-LIBKRW_VERSION := 1.1.1
-DEB_LIBKRW_V   ?= $(LIBKRW_VERSION)-2
+LIBKRW_VERSION := 1.1.2
+LIBROOT_COMMIT := 102348f5e9360ad1f509ae4958bd3ca686347ee8
+DEB_LIBKRW_V   ?= $(LIBKRW_VERSION)
 
 LIBKRW_SOVERSION := 0
 
 libkrw-setup: setup
-	$(call GITHUB_ARCHIVE,Siguza,libkrw,$(LIBKRW_VERSION),$(LIBKRW_VERSION))
+	$(call GITHUB_ARCHIVE,Cryptiiiic,libkrw,$(LIBKRW_VERSION),v$(LIBKRW_VERSION))
 	$(call EXTRACT_TAR,libkrw-$(LIBKRW_VERSION).tar.gz,libkrw-$(LIBKRW_VERSION),libkrw)
-	$(call DO_PATCH,libkrw,libkrw,-p1)
+	$(call GITHUB_ARCHIVE,opa334,libroot,$(LIBROOT_COMMIT),$(LIBROOT_COMMIT),libroot)
+	$(call EXTRACT_TAR,libroot-$(LIBROOT_COMMIT).tar.gz,libroot-$(LIBROOT_COMMIT),libroot)
+	cp -a $(BUILD_WORK)/libroot $(BUILD_WORK)/libkrw/external
+	rm -rf $(BUILD_WORK)/libroot
 	mkdir -p $(BUILD_STAGE)/libkrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,lib/libkrw}
-	sed -i 's|/usr/lib|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib|g' $(BUILD_WORK)/libkrw/src/libkrw.c
 
 ifneq ($(wildcard $(BUILD_WORK)/libkrw/.build_complete),)
 libkrw:
@@ -25,15 +28,35 @@ else
 libkrw: libkrw-setup
 	mkdir -p $(BUILD_WORK)/libkrw/src/.lib/
 
+	# libroot.o
+	if [ ! -z "$(findstring rootless,$(MEMO_TARGET))" ]; then \
+		$(CC) $(CFLAGS) \
+			-I$(BUILD_WORK)/libkrw/external/libroot/src \
+			-c -o $(BUILD_WORK)/libkrw/src/.lib/libroot.o \
+			-fobjc-arc \
+			-DIPHONEOS_ARM64 \
+			$(BUILD_WORK)/libkrw/external/libroot/src/dyn.c; \
+	else \
+		$(CC) $(CFLAGS) \
+			-I$(BUILD_WORK)/libkrw/external/libroot/src \
+			-c -o $(BUILD_WORK)/libkrw/src/.lib/libroot.o \
+			-fobjc-arc \
+			-DTARGET=libkrw \
+			$(BUILD_WORK)/libkrw/external/libroot/src/dyn.c; \
+	fi
 	# libkrw.o
 	$(CC) $(CFLAGS) \
 		-I$(BUILD_WORK)/libkrw/include \
+		-I$(BUILD_WORK)/libkrw/external/libroot/src \
+		-DTARGET="\"libkrw\"" \
 		-c -o $(BUILD_WORK)/libkrw/src/.lib/libkrw.o \
 		$(BUILD_WORK)/libkrw/src/libkrw.c
 
 	# libkrw_tfp0.o
 	$(CC) $(CFLAGS) \
 		-I$(BUILD_WORK)/libkrw/include \
+		-I$(BUILD_WORK)/libkrw/external/libroot/src \
+		-DTARGET="\"libkrw\"" \
 		-c -o $(BUILD_WORK)/libkrw/src/.lib/libkrw_tfp0.o \
 		$(BUILD_WORK)/libkrw/src/libkrw_tfp0.c
 
@@ -42,7 +65,7 @@ libkrw: libkrw-setup
 		-I$(BUILD_WORK)/libkrw/include \
 		-install_name "$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw.$(LIBKRW_SOVERSION).dylib" \
 		-o $(BUILD_STAGE)/libkrw/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libkrw.$(LIBKRW_SOVERSION).dylib \
-		$(BUILD_WORK)/libkrw/src/.lib/libkrw.o \
+		$(BUILD_WORK)/libkrw/src/.lib/{libroot,libkrw}.o \
 		$(LDFLAGS)
 
 	# libkrw-tfp0.dylib
