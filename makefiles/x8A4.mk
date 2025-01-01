@@ -6,7 +6,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 ifeq ($(shell [ "$(MEMO_CFVER)" -ge 1800 ] && echo 1),1)
 
 SUBPROJECTS  += x8A4
-X8A4_VERSION := 1.0.0
+X8A4_VERSION := 1.0.1
 CHOMA_COMMIT := 2fcc1fc51f6eb778756ccdee3c809bf83a767996
 XPF_COMMIT   := 19798b65bd7eb3014261a550e666335aff439156
 DEB_X8A4_V   ?= $(X8A4_VERSION)
