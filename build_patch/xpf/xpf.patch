@@ -1,0 +1,35 @@
+diff --git a/.gitignore b/.gitignore
+index 5793cf9..3e81e77 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -4,3 +4,5 @@ xpf_test_ios
+ libxpf.dylib
+ libxpf_macos.dylib
+ /kernels
++
++.idea
+\ No newline at end of file
+diff --git a/src/xpf.c b/src/xpf.c
+index c072aaf..f5ca33f 100644
+--- a/src/xpf.c
++++ b/src/xpf.c
+@@ -551,6 +551,7 @@ void xpf_stop(void)
+ 	if (gXPF.kernelPrelinkTextSection) pfsec_free(gXPF.kernelPrelinkTextSection);
+ 	if (gXPF.kernelBootdataInit) pfsec_free(gXPF.kernelBootdataInit);
+ 	if (gXPF.kernelPLKTextSection) pfsec_free(gXPF.kernelPLKTextSection);
++	if (gXPF.kernelPLKDataConstSection) pfsec_free(gXPF.kernelPLKDataConstSection);
+ 	if (gXPF.kernelInfoPlistSection) pfsec_free(gXPF.kernelInfoPlistSection);
+ 	if (gXPF.kernelContainer) fat_free(gXPF.kernelContainer);
+ 
+diff --git a/src/xpf.h b/src/xpf.h
+index fddae9c..30130e0 100644
+--- a/src/xpf.h
++++ b/src/xpf.h
+@@ -64,6 +64,7 @@ typedef struct s_XPF {
+ 	PFSection *kernelOSLogSection;
+ 	PFSection *kernelPrelinkTextSection;
+ 	PFSection *kernelPLKTextSection;
++	PFSection *kernelPLKDataConstSection;
+ 	PFSection *kernelBootdataInit;
+ 	PFSection *kernelAMFITextSection;
+ 	PFSection *kernelAMFIStringSection;
