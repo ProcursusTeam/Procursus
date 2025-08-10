@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS          += amy-keyring
-AMY_KEYRING_VERSION  := 2021.07.10
+AMY_KEYRING_VERSION  := 2025.08.10
 DEB_AMY_KEYRING_V    ?= $(AMY_KEYRING_VERSION)
 
 amy-keyring:
