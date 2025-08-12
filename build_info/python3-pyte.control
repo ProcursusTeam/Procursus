@@ -1,0 +1,15 @@
+Package: python3-pyte
+Version: @DEB_PYTHON3-PYTE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Homepage: https://github.com/selectel/pyte
+Section: Utilities
+Depends: python3
+Description: simple VTXXX-compatible terminal emulator (Python 3)
+ pyte is an in-memory VTXXX-compatible terminal emulator, where XXX stands
+ for a series of video terminals, developed by DEC between 1970 and 1995.
+ .
+ pyte is as a fork of vt102, which was an incomplete pure Python
+ implementation of VT100 terminal.
+ .
+ This is the Python 3 version of the package.
