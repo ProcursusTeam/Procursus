@@ -3,14 +3,14 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += tsschecker
-TSSCHECKER_VERSION := 367
-TSSCHECKER_COMMIT  := 9e7762e0edcc4821635b96feddf232b930c34e90
+TSSCHECKER_VERSION := 385
+TSSCHECKER_COMMIT  := a600e296a3f2ba764e7ab1f164d10e4e7b82e127
 DEB_TSSCHECKER_V   ?= $(TSSCHECKER_VERSION)
 
 tsschecker-setup: setup
-	$(call GITHUB_ARCHIVE,1Conan,tsschecker,$(TSSCHECKER_VERSION),$(TSSCHECKER_VERSION))
+	$(call GITHUB_ARCHIVE,1Conan,tsschecker,$(TSSCHECKER_COMMIT),$(TSSCHECKER_COMMIT))
 	$(call GITHUB_ARCHIVE,tihmstar,jssy,master,master)
-	$(call EXTRACT_TAR,tsschecker-$(TSSCHECKER_VERSION).tar.gz,tsschecker-$(TSSCHECKER_VERSION),tsschecker)
+	$(call EXTRACT_TAR,tsschecker-$(TSSCHECKER_COMMIT).tar.gz,tsschecker-$(TSSCHECKER_COMMIT),tsschecker)
 	# so EXTRACT_TAR wont fail
 	-rmdir $(BUILD_WORK)/tsschecker/external/jssy
 	$(call EXTRACT_TAR,jssy-master.tar.gz,jssy-master,tsschecker/external/jssy)

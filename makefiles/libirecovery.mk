@@ -15,10 +15,18 @@ ifneq ($(wildcard $(BUILD_WORK)/libirecovery/.build_complete),)
 libirecovery:
 	@echo "Using previously built libirecovery."
 else
-libirecovery: libirecovery-setup readline libusb libimobiledevice-glue
+
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+USE_LIBUSB=
+USE_IOKIT=yes
+else
+USE_LIBUSB=libusb
+USE_IOKIT=no
+endif
+libirecovery: libirecovery-setup readline libimobiledevice-glue $(USE_LIBUSB)
 	cd $(BUILD_WORK)/libirecovery && ./autogen.sh \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--with-iokit=no
+		--with-iokit=$(USE_IOKIT)
 	+$(MAKE) -C $(BUILD_WORK)/libirecovery \
 		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/libusb-1.0"
 	+$(MAKE) -C $(BUILD_WORK)/libirecovery install \
