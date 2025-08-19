@@ -1,0 +1,12 @@
+diff --git a/cgit.mk b/cgit.mk
+index 3fcc1ca..125207b 100644
+--- a/cgit.mk
++++ b/cgit.mk
+@@ -94,6 +94,7 @@ CGIT_OBJ_NAMES += ui-stats.o
+ CGIT_OBJ_NAMES += ui-summary.o
+ CGIT_OBJ_NAMES += ui-tag.o
+ CGIT_OBJ_NAMES += ui-tree.o
++CGIT_OBJ_NAMES += memrchr.o
+ 
+ CGIT_OBJS := $(addprefix $(CGIT_PREFIX),$(CGIT_OBJ_NAMES))
+ 
