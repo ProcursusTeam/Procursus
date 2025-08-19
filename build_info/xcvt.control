@@ -1,0 +1,14 @@
+Package: xcvt
+Version: @DEB_LIBXCVT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libxcvt0
+Breaks: xserver-xorg-core (<< 2:21.0.99.1~)
+Replaces: xserver-xorg-core (<< 2:21.0.99.1~)
+Section: X11
+Priority: optional
+Description: VESA CVT standard timing modelines generator
+ libxcvt is a library providing a standalone version of the X server
+ implementation of the VESA CVT standard timing modelines generator.
+ .
+ This package includes the commandline tool 'cvt'.
