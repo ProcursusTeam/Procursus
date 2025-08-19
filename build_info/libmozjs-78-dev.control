@@ -1,0 +1,21 @@
+Package: libmozjs-78-dev
+Version: @DEB_MOZJS78_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libmozjs-78-0 (= @DEB_MOZJS78_V@), libicu69, libreadline8 (>= 6.0)
+Section: Development
+Priority: optional
+Homepage: https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey
+Description: SpiderMonkey JavaScript library - development headers
+ SpiderMonkey is the code-name for Mozilla Firefox's C++ implementation of
+ JavaScript. It is intended to be embedded in other applications
+ that provide host environments for JavaScript.
+ .
+ This package contains the header files which are
+ needed for developing SpiderMonkey embedders.
+ .
+ This library is intended for use in contexts where only trusted
+ JavaScript code will be run, such as GNOME's gjs, Cinnamon's cjs, and
+ polkit's rules parsing. It should not be used to run untrusted JavaScript
+ from web pages: use a security-supported implementation such as Firefox,
+ Chrome or WebKitGTK's JavaScriptCore instead.
