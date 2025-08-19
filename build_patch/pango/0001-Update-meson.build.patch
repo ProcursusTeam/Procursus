@@ -1,0 +1,38 @@
+From 807c21cc1c2b8bf7ff1f4a4ab7e023f26bec828b Mon Sep 17 00:00:00 2001
+From: Gymxo <dugarnathan@gmail.com>
+Date: Tue, 6 Apr 2021 18:44:47 +0000
+Subject: [PATCH 1/2] Update meson.build
+
+---
+ meson.build | 15 ---------------
+ 1 file changed, 15 deletions(-)
+
+diff --git a/meson.build b/meson.build
+index b52a55fc..8ab1d6cf 100644
+--- a/meson.build
++++ b/meson.build
+@@ -369,21 +369,6 @@ if xft_dep.found() and fontconfig_dep.found() and freetype_dep.found()
+   pango_deps += xft_dep
+ endif
+ 
+-if host_system == 'darwin'
+-  has_core_text = cc.links('''#include <Carbon/Carbon.h>
+-                              int main (void) {
+-                                CTGetCoreTextVersion ();
+-                                return 0;
+-                              }''',
+-                           name: 'CoreText availability',
+-                           dependencies: dependency('appleframeworks', modules: 'ApplicationServices'))
+-  if has_core_text
+-    pango_conf.set('HAVE_CORE_TEXT', 1)
+-  endif
+-
+-  pango_deps += dependency('appleframeworks', modules: [ 'CoreFoundation', 'ApplicationServices' ])
+-endif
+-
+ # If option is 'auto' or 'enabled' it is not required to find cairo on the
+ # system because a fallback is done at the end.
+ cairo_option = get_option('cairo')
+-- 
+2.24.3 (Apple Git-128)
+
