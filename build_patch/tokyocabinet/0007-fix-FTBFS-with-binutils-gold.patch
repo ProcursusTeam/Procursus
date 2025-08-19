@@ -1,0 +1,49 @@
+From 410bd3316f71bcf776687dd2073185cf791a7715 Mon Sep 17 00:00:00 2001
+From: Antonio Radici <antonio@dyne.org>
+Date: Sat, 23 Apr 2011 14:53:11 +0100
+Subject: [PATCH] fix FTBFS with binutils-gold
+
+---
+ Makefile.in |   33 ++++++++++++++++-----------------
+ 1 files changed, 16 insertions(+), 17 deletions(-)
+
+Index: tokyocabinet-1.4.47/Makefile.in
+===================================================================
+--- tokyocabinet-1.4.47.orig/Makefile.in	2012-03-05 20:45:19.000000000 +0100
++++ tokyocabinet-1.4.47/Makefile.in	2012-03-05 20:52:33.865501252 +0100
+@@ -717,7 +717,7 @@
+ 
+ 
+ tcumttest : tcumttest.o $(LIBRARYFILES)
+-	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet
++	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet -lpthread
+ 
+ 
+ tcucodec : tcucodec.o $(LIBRARYFILES)
+@@ -729,7 +729,7 @@
+ 
+ 
+ tchmttest : tchmttest.o $(LIBRARYFILES)
+-	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet
++	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet -lpthread
+ 
+ 
+ tchmgr : tchmgr.o $(LIBRARYFILES)
+@@ -741,7 +741,7 @@
+ 
+ 
+ tcbmttest : tcbmttest.o $(LIBRARYFILES)
+-	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet
++	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet -lpthread
+ 
+ 
+ tcbmgr : tcbmgr.o $(LIBRARYFILES)
+@@ -753,7 +753,7 @@
+ 
+ 
+ tcfmttest : tcfmttest.o $(LIBRARYFILES)
+-	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet
++	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet -lpthread
+ 
+ 
+ tcfmgr : tcfmgr.o $(LIBRARYFILES)

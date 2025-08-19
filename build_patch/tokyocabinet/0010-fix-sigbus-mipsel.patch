@@ -1,0 +1,47 @@
+# From: Tobias Frost <tobi@coldtobi.de>
+# Subject: Workaround SIGBUS (alignment problem) on mipsel 
+# Bug: 659554
+Index: tokyocabinet-1.4.47/tcbdb.c
+===================================================================
+--- tokyocabinet-1.4.47.orig/tcbdb.c	2011-02-11 16:37:45.000000000 +0100
++++ tokyocabinet-1.4.47/tcbdb.c	2012-03-05 21:00:58.544756159 +0100
+@@ -2245,16 +2245,39 @@
+           *(int *)vbuf = *(int *)(dbuf + rec->ksiz + psiz);
+           break;
+         case BDBPDADDDBL:
++#ifdef __mips__
++	{
++       	  double _vbuf;
++       	  double _tmp;
++
+           if(rec->vsiz != sizeof(double)){
+             tcbdbsetecode(bdb, TCEKEEP, __FILE__, __LINE__, __func__);
+             return false;
+           }
++        memcpy(&_vbuf, vbuf, sizeof(double));
++        if(_vbuf == 0.0){
++          memcpy(vbuf, dbuf + rec->ksiz + psiz, sizeof(double));
++          return true;
++        }
++        memcpy(&_tmp, dbuf + rec->ksiz + psiz, sizeof(double));
++        _tmp += _vbuf;
++        memcpy(dbuf + rec->ksiz + psiz, &_tmp, sizeof(double));
++        memcpy(vbuf, dbuf + rec->ksiz + psiz, sizeof(double));
++       }
++#else
++       if(rec->vsiz != sizeof(double)){
++          tcbdbsetecode(bdb, TCEKEEP, __FILE__, __LINE__, __func__);
++          return false;
++        }
++
++
+           if(*(double *)vbuf == 0.0){
+             *(double *)vbuf = *(double *)(dbuf + rec->ksiz + psiz);
+             return true;
+           }
+           *(double *)(dbuf + rec->ksiz + psiz) += *(double *)vbuf;
+           *(double *)vbuf = *(double *)(dbuf + rec->ksiz + psiz);
++#endif
+           break;
+         case BDBPDPROC:
+           procptr = *(BDBPDPROCOP **)((char *)kbuf - sizeof(procptr));

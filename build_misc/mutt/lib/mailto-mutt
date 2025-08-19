@@ -1,0 +1,8 @@
+#!/bin/sh
+#
+# mailto-mutt -- wrapper to use mutt as mailto handler from Firefox
+#
+# If you want Firefox to use this wrapper for mailto URLs, go to Edit >
+# Preferences > Applications, and set "mailto" to "/usr/lib/mutt/mailto-mutt".
+
+exec x-terminal-emulator -e mutt "$@"

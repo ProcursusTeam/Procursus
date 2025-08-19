@@ -1,0 +1,35 @@
+From: Antonio Radici <antonio@debian.org>
+Date: Thu, 27 Feb 2014 17:07:35 +0100
+Subject: 528233-readonly-open
+
+Open attachments as read-only so the editor won't be able to modify it;
+otherwise the user can believe that he/she can edit it and risk to lose
+his/her work (see upstream bug http://bugs.mutt.org/3261)
+
+Debian bugs: #528233, updated in #572203
+---
+ attach.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+--- a/attach.c
++++ b/attach.c
+@@ -387,6 +387,7 @@
+       }
+       else
+ 	goto return_error;
++      chmod (tempfile, 0400);
+     }
+   }
+ 
+@@ -594,7 +595,11 @@
+ 
+   rfc1524_free_entry (&entry);
+   if (unlink_tempfile)
++  {
++    /* Restore write permission so mutt_unlink can open the file for writing */
++    chmod(tempfile, 0600);
+     mutt_unlink (mutt_b2s (tempfile));
++  }
+   if (unlink_pagerfile)
+     mutt_unlink (mutt_b2s (pagerfile));
+ 

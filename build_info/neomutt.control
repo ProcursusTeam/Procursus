@@ -1,0 +1,22 @@
+Package: neomutt
+Version: @DEB_NEOMUTT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libassuan0, libgnutls30, libgpg-error0, libgpgme11, libintl8, liblz4-1, libncursesw6, libtokyocabinet9, libzstd1, libidn2-0
+Section: Utilities
+Priority: optional
+Recommends: media-types
+Suggests: default-mta | mail-transport-agent, urlview, aspell | ispell, gnupg, mixmaster, openssl, ca-certificates
+Provides: mail-reader, imap-client
+Description: command line mail reader based on Mutt, with added features
+ Neomutt supports all the features that are supported by Mutt, including POP and
+ IMAP support, SSL encryption and SASL authentication, threading and GPG
+ support.
+ On the top of that, neomutt provides:
+  * Notmuch: a mail indexing tools that provides advanced features such as
+    full-text search, thread reconstruction and added features.
+  * Color attachment headers using regex, just like mail bodies.
+  * Custom rules for theming the mail index.
+  * NNTP support.
+  * Visual progress bar for slow operations.
+  * Trash folder.

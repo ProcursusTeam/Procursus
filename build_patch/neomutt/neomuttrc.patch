@@ -1,0 +1,73 @@
+Some changes to the official documentation for neomutt.rc.
+
+Index: neomutt/docs/neomuttrc.head
+===================================================================
+--- neomutt.orig/docs/neomuttrc.head
++++ neomutt/docs/neomuttrc.head
+@@ -12,6 +12,34 @@ unignore from: subject to cc date x-mail
+ # Display the fields in this order
+ hdr_order date from to cc subject
+ 
++# emacs-like bindings
++bind editor    "\e<delete>"    kill-word
++bind editor    "\e<backspace>" kill-word
++
++# map delete-char to a sane value
++bind editor     <delete>  delete-char
++
++# some people actually like these settings
++#set pager_stop
++#bind pager <up> previous-line
++#bind pager <down> next-line
++
++# Specifies how to sort messages in the index menu.
++set sort=threads
++
++# The behavior of this option on the Debian mutt package is
++# not the original one because exim4, the default SMTP on Debian
++# does not strip bcc headers so this can cause privacy problems;
++# see man muttrc for more info
++#unset write_bcc
++# Postfix and qmail use Delivered-To for detecting loops
++unset bounce_delivered
++
++set mixmaster="mixmaster-filter"
++
++# System-wide CA file managed by the ca-certificates package
++set ssl_ca_certificates_file="/etc/ssl/certs/ca-certificates.crt"
++
+ # imitate the old search-body function
+ macro index \eb "<search>~b " "search in message bodies"
+ 
+@@ -23,7 +51,7 @@ macro index,pager,attach,compose \cb "\
+ "call urlview to extract URLs out of a message"
+ 
+ # Show documentation when pressing F1
+-macro generic,pager <F1> "<shell-escape> less @docdir@/manual.txt<Enter>" "show NeoMutt documentation"
++macro generic,pager <F1> "<shell-escape> zcat @docdir@/manual.txt.gz | sensible-pager<enter>" "show NeoMutt documentation"
+ 
+ # show the incoming mailboxes list (just like "neomutt -y") and back when pressing "y"
+ macro index y "<change-folder>?" "show incoming mailboxes list"
+@@ -36,7 +64,7 @@ bind browser y exit
+ # append-hook '\.gz$' "gzip --stdout              '%t' >> '%f'"
+ 
+ # If NeoMutt is unable to determine your site's domain name correctly, you can
+-# set the default here.
++# set the default here. (better: fix /etc/mailname)
+ #
+ # set hostname=cs.hmc.edu
+ 
+@@ -48,6 +76,13 @@ bind browser y exit
+ # be undone with unmime_lookup.
+ mime_lookup application/octet-stream
+ 
++# Upgrade the progress counter every 250ms, good for mutt over SSH
++# see http://bugs.debian.org/537746
++set time_inc=250
++
++# Allow mutt to understand References, Cc and In-Reply-To as headers in mailto:
++mailto_allow = cc in-reply-to references
++
+ ##
+ ## *** DEFAULT SETTINGS FOR THE ATTACHMENTS PATCH ***
+ ##

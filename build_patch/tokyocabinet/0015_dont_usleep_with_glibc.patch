@@ -1,0 +1,19 @@
+Description: Don't usleep(20ms) when glibc is available
+ For systems not having POSIX priority scheduling, but are glibc-based,
+ not defining the sched_yield() function as a 20ms delay should be OK
+Author: Samuel Thibault <sthibault@debian.org>
+Bug-Debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=814500
+Last-Update: 2016-02-14
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+--- a/myconf.h
++++ b/myconf.h
+@@ -429,7 +429,7 @@
+   } while(false)
+ #endif
+ 
+-#if !defined(_POSIX_PRIORITY_SCHEDULING) && TCUSEPTHREAD
++#if !defined(_POSIX_PRIORITY_SCHEDULING) && !defined(__GLIBC__) && TCUSEPTHREAD
+ #define sched_yield()                    usleep(1000 * 20)
+ #endif
+ 

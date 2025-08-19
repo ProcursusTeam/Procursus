@@ -1,0 +1,29 @@
+Package: isync
+Version: @DEB_ISYNC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libssl1.1
+Section: Utilities
+Priority: optional
+Suggests: mutt
+Description: IMAP and MailDir mailbox synchronizer
+ mbsync/isync is a command line application which synchronizes mailboxes;
+ currently Maildir and IMAP4 mailboxes are supported. New messages, message
+ deletions and flag changes can be propagated both ways. isync is suitable
+ for use in IMAP-disconnected mode.
+ .
+ The main application was much improved in version 1.0. Those improvements
+ lead to interface changes and the application being renamed to mbsync. The
+ application isync is now only a wrapper to keep compatibility with earlier
+ versions.
+ .
+ Features:
+  * Fine-grained selection of synchronization operations to perform
+  * Synchronizes single mailboxes or entire mailbox collections
+  * Partial mirrors possible: keep only the latest messages locally
+  * Trash functionality: backup messages before removing them
+ IMAP features:
+  * Security: supports TLS/SSL via imaps: (port 993) and STARTTLS; CRAM-MD5
+    for authentication
+  * Supports NAMESPACE for simplified configuration
+  * Pipelining for maximum speed (currently only partially implemented)

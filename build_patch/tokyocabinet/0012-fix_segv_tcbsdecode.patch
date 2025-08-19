@@ -1,0 +1,18 @@
+Description: segfault in tcbsdecode
+When tcbsdecode gets a bogus serial compressed object, it does not correctly calculate
+its length, leading to an integer underflow (-1) then passed as size to memcpy
+Author: Tobias Frost <tobi@coldtobi.de>
+Forwarded: yes, per e-mail
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+--- a/tcutil.c
++++ b/tcutil.c
+@@ -9902,7 +9902,7 @@
+   ptr = wp;
+   wp = result;
+   const char *end = ptr + nsiz;
+-  while(ptr < end){
++  while(ptr < end - 1 ){
+     uint16_t idx;
+     memcpy(&idx, ptr, sizeof(idx));
+     idx = TCITOHS(idx);
