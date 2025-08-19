@@ -3,22 +3,20 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += bat
-BAT_VERSION := 0.21.0
-DEB_BAT_V   ?= $(BAT_VERSION)-1
+BAT_VERSION := 0.23.0
+DEB_BAT_V   ?= $(BAT_VERSION)
 
 bat-setup: setup
 	$(call GITHUB_ARCHIVE,sharkdp,bat,$(BAT_VERSION),v$(BAT_VERSION))
 	$(call EXTRACT_TAR,bat-$(BAT_VERSION).tar.gz,bat-$(BAT_VERSION),bat)
-#	Remove after https://github.com/rust-lang/git2-rs/pull/859 is merged.
-#	If said pull request is denied, move to maintaining fork from upstream.
 	$(call DO_PATCH,bat,bat,-p1)
+	sed -i "20d;63d" $(BUILD_WORK)/bat/Cargo.toml
 
 ifneq ($(wildcard $(BUILD_WORK)/bat/.build_complete),)
 bat:
 	@echo "Using previously built bat."
 else
 bat: bat-setup libgit2
-	cd $(BUILD_WORK)/bat && cargo update
 	cd $(BUILD_WORK)/bat && $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \
 		--target=$(RUST_TARGET)
