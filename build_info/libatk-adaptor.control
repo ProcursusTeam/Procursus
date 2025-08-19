@@ -1,0 +1,14 @@
+Package: libatk-adaptor
+Version: @DEB_AT-SPI2-ATK_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libatk-bridge2.0-0 (>= @DEB_AT-SPI2-ATK_V@), libglib2.0-0 (>= 2.12.0)
+Conflicts: at-spi
+Replaces: at-spi
+Provides: at-spi
+Section: Miscellaneous
+Priority: optional
+Multi-Arch: same
+Description: AT-SPI 2 toolkit bridge
+ This package includes a gtk-module that bridges ATK to the new
+ D-Bus based AT-SPI.
