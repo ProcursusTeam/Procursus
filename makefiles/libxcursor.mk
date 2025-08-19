@@ -9,7 +9,7 @@ DEB_LIBXCURSOR_V   ?= $(LIBXCURSOR_VERSION)
 libxcursor-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://xorg.freedesktop.org/archive/individual/lib/libXcursor-$(LIBXCURSOR_VERSION).tar.bz2{$(comma).sig})
 	$(call PGP_VERIFY,libXcursor-$(LIBXCURSOR_VERSION).tar.bz2)
-	$(call EXTRACT_TAR,libXcursor-$(LIBXCURSOR_VERSION).tar.bz2,libXcursor-$(LIBXCURSOR_VERSION),libXcursor)
+	$(call EXTRACT_TAR,libXcursor-$(LIBXCURSOR_VERSION).tar.bz2,libXcursor-$(LIBXCURSOR_VERSION),libxcursor)
 
 ifneq ($(wildcard $(BUILD_WORK)/libxcursor/.build_complete),)
 libxcursor:
