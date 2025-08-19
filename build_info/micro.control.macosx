@@ -4,7 +4,6 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Text_Editors
 Priority: optional
-Recommends: pasteboard-utils
 Description: modern and intuitive terminal-based text editor
  micro is a terminal-based text editor that aims to be easy to use
  and intuitive, while also taking advantage of the full capabilities

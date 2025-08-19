@@ -1,0 +1,14 @@
+diff -urN a/cmd/micro/micro.go b/cmd/micro/micro.go
+--- a/cmd/micro/micro.go	2023-10-21 18:35:11.000000000 -0400
++++ b/cmd/micro/micro.go	2024-08-12 14:54:10.000000000 -0400
+@@ -99,9 +99,7 @@
+ 
+ 	if *flagVersion {
+ 		// If -version was passed
+-		fmt.Println("Version:", util.Version)
+-		fmt.Println("Commit hash:", util.CommitHash)
+-		fmt.Println("Compiled on", util.CompileDate)
++		fmt.Printf("micro %s (%s)\n", util.Version, util.CompileDate)
+ 		os.Exit(0)
+ 	}
+ 
