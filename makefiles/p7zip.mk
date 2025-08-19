@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += p7zip
-P7ZIP_VERSION  := 17.04
+P7ZIP_VERSION  := 17.05
 DEB_P7ZIP_V    ?= $(P7ZIP_VERSION)
 
 p7zip-setup: setup

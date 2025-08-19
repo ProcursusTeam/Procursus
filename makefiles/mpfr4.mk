@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += mpfr4
-MPFR4_VERSION := 4.1.0
+MPFR4_VERSION := 4.2.1
 DEB_MPFR4_V   ?= $(MPFR4_VERSION)
 
 mpfr4-setup: setup

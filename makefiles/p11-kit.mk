@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += p11-kit
-P11_VERSION   := 0.25.3
+P11_VERSION   := 0.25.4
 DEB_P11_V     ?= $(P11_VERSION)
 
 p11-kit-setup: setup

@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += libc-ares
-LIBC-ARES_VERSION := 1.31.0
+LIBC-ARES_VERSION := 1.32.1
 DEB_LIBC-ARES_V   ?= $(LIBC-ARES_VERSION)
 
 libc-ares-setup: setup
@@ -35,7 +35,7 @@ libc-ares-package: libc-ares-stage
 		$(BUILD_DIST)/libc-ares2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libc-ares.mk Prep libc-ares-dev
-	cp -a $(BUILD_STAGE)/libc-ares/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ares{,_build,_dns,_rules,_version}.h $(BUILD_DIST)/libc-ares-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/libc-ares/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/ares{,_build,_dns,_version,_dns_record,_nameser}.h $(BUILD_DIST)/libc-ares-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	cp -a $(BUILD_STAGE)/libc-ares/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libcares.{a,dylib} $(BUILD_DIST)/libc-ares-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libc-ares/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig/libcares.pc $(BUILD_DIST)/libc-ares-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/pkgconfig
 	cp -a $(BUILD_STAGE)/libc-ares/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3/ares_*.3* $(BUILD_DIST)/libc-ares-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3

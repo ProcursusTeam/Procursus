@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += unrar
-UNRAR_VERSION := 7.0.7
+UNRAR_VERSION := 7.0.9
 DEB_UNRAR_V   ?= $(UNRAR_VERSION)
 
 unrar-setup: setup
@@ -11,7 +11,7 @@ unrar-setup: setup
 	$(call EXTRACT_TAR,unrarsrc-$(UNRAR_VERSION).tar.gz,n/a,unrar)
 	$(call DO_PATCH,unrar,unrar,-p1)
 	sed -i 's/#define USE_NEON_CRC32//g' $(BUILD_WORK)/unrar/os.hpp
-	sed -i 's/-march=native//g' $(BUILD_WORK)/unrar/Makefile
+	sed -i 's/-march=native//g' $(BUILD_WORK)/unrar/makefile
 
 ifneq ($(wildcard $(BUILD_WORK)/unrar/.build_complete),)
 unrar:
