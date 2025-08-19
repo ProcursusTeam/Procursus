@@ -1,5 +1,5 @@
 Package: libkrw0-tfp0
-Author: Siguza
+Author: Cryptiiiic
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LIBKRW_V@
@@ -7,5 +7,5 @@ Provides: libkrw0-plugin
 Enhances: libkrw0
 Section: Libraries
 Priority: standard
-Homepage: https://github.com/Siguza/libkrw
+Homepage: https://github.com/Cryptiiiic/libkrw
 Description: Plugin for libkrw that interfaces with tfp0/hgsp4 (Shared Library)
