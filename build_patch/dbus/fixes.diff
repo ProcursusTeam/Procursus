@@ -1,0 +1,43 @@
+From 6218d866ab8d92b724b7ce4da82033b45ba4ef51 Mon Sep 17 00:00:00 2001
+From: Nathan
+Date: Wed, 22 Sep 2021 16:10:30 -0400
+Subject: [PATCH] fix plist and conf
+
+---
+ bus/org.freedesktop.dbus-session.plist.in | 9 ---------
+ bus/system.conf.in                        | 3 ---
+ 2 files changed, 12 deletions(-)
+
+diff --git a/bus/org.freedesktop.dbus-session.plist.in b/bus/org.freedesktop.dbus-session.plist.in
+index 40ff370d..3c77fa93 100644
+--- a/bus/org.freedesktop.dbus-session.plist.in
++++ b/bus/org.freedesktop.dbus-session.plist.in
+@@ -5,12 +5,6 @@
+ 	<key>Label</key>
+ 	<string>org.freedesktop.dbus-session</string>
+ 
+-	<!-- Please uncomment on 10.4; OnDemand doesn't work properly there. -->
+-	<!--
+-	<key>OnDemand</key>
+-	<false />
+-	-->
+-
+ 	<key>ProgramArguments</key>
+ 	<array>
+ 		<string>@DBUS_DAEMONDIR@/dbus-daemon</string>
+diff --git a/bus/system.conf.in b/bus/system.conf.in
+index f139b557..c2e506ea 100644
+--- a/bus/system.conf.in
++++ b/bus/system.conf.in
+@@ -26,9 +26,6 @@
+   <!-- This is a setuid helper that is used to launch system services -->
+   <servicehelper>@DBUS_LIBEXECDIR@/dbus-daemon-launch-helper</servicehelper>
+ 
+-  <!-- Write a pid file -->
+-  <pidfile>@DBUS_SYSTEM_PID_FILE@</pidfile>
+-
+   <!-- Enable logging to syslog -->
+   <syslog/>
+ 
+-- 
+2.27.0
