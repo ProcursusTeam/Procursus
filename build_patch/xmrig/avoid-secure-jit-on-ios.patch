@@ -1,0 +1,38 @@
+--- a/src/crypto/common/VirtualMemory_unix.cpp	2021-11-01 20:59:05.000000000 +0800
++++ b/src/crypto/common/VirtralMemory_unix.cpp	2021-12-05 14:35:49.000000000 +0800
+@@ -33,7 +33,7 @@
+ #   include <mach/vm_statistics.h>
+ #   include <pthread.h>
+ #   include <TargetConditionals.h>
+-#   ifdef XMRIG_ARM
++#   if defined(XMRIG_ARM) && defined(__MAC_OS_X_VERSION_MIN_REQUIRED)
+ #       define MEXTRA MAP_JIT
+ #   else
+ #       define MEXTRA 0
+@@ -95,7 +95,7 @@
+ 
+ bool xmrig::VirtualMemory::protectRW(void *p, size_t size)
+ {
+-#   if defined(XMRIG_OS_APPLE) && defined(XMRIG_ARM)
++#   if defined(XMRIG_OS_APPLE) && defined(XMRIG_ARM) && defined(__MAC_OS_X_VERSION_MIN_REQUIRED)
+     pthread_jit_write_protect_np(false);
+     return true;
+ #   else
+@@ -112,7 +112,7 @@
+ 
+ bool xmrig::VirtualMemory::protectRX(void *p, size_t size)
+ {
+-#   if defined(XMRIG_OS_APPLE) && defined(XMRIG_ARM)
++#   if defined(XMRIG_OS_APPLE) && defined(XMRIG_ARM) && defined(__MAC_OS_X_VERSION_MIN_REQUIRED)
+     pthread_jit_write_protect_np(true);
+     flushInstructionCache(p, size);
+     return true;
+@@ -126,7 +126,7 @@
+ {
+ #   if defined(XMRIG_OS_APPLE)
+     void *mem = mmap(0, size, PROT_READ | PROT_WRITE | PROT_EXEC, MAP_PRIVATE | MAP_ANON | MEXTRA, -1, 0);
+-#   ifdef XMRIG_ARM
++#   if defined(XMRIG_ARM) && defined(__MAC_OS_X_VERSION_MIN_REQUIRED)
+     pthread_jit_write_protect_np(false);
+ #   endif
+ #   elif defined(__FreeBSD__)
