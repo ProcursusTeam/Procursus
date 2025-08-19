@@ -1,0 +1,21 @@
+Package: git-filter-repo
+Version: @DEB_GIT_FILTER_REPO_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: python3, git (>= 2.22)
+Section: Development
+Priority: optional
+Homepage: https://github.com/newren/git-filter-repo
+Description: Quickly rewrite git repository history
+ git filter-repo is a versatile tool for rewriting history, which includes
+ capabilities not found anywhere else.  It roughly falls into the
+ same space of tool as git filter-branch but without the capitulation-inducing
+ poor performance, with far more capabilities, and with a design that scales
+ usability-wise beyond trivial rewriting cases.  git filter-repo is now
+ recommended by the git project instead of git filter-branch.
+ .
+ While most users will probably just use filter-repo as a simple command
+ line tool (and likely only use a few of its flags), at its core filter-repo
+ contains a library for creating history rewriting tools.  As such, users
+ with specialized needs can leverage it to quickly create entirely new
+ history rewriting tools.
