@@ -1,0 +1,12 @@
+Package: wayland-protocols
+Version: @DEB_WAYLAND_PROTOCOLS_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Homepage: http://wayland.freedesktop.org/
+Description: wayland compositor protocols
+ Wayland protocols that add functionality not available in the Wayland core
+ protocol. Such protocols either add completely new functionality, or extend
+ the functionality of some other protocol either in Wayland core, or some other
+ protocol in wayland-protocols.
