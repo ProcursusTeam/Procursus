@@ -1,0 +1,14 @@
+Package: shared-mime-info
+Version: @DEB_SHARED_MIME_INFO_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libglib2.0-0 (>= 2.35.9)
+Section: Utilities
+Priority: optional
+Homepage: https://freedesktop.org/wiki/Software/shared-mime-info
+Description: FreeDesktop.org shared MIME database and spec
+ This is the shared MIME-info database from the X Desktop Group. It is required
+ by any program complying to the Shared MIME-Info Database spec, which is also
+ included in this package.
+ .
+ At this time at least ROX, GNOME, KDE and Xfce use this database.
