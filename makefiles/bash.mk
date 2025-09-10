@@ -17,6 +17,7 @@ bash-setup: setup
 	$(call PGP_VERIFY,bash-$(BASH_VERSION).tar.gz)
 	$(call EXTRACT_TAR,bash-$(BASH_VERSION).tar.gz,bash-$(BASH_VERSION),bash)
 	mkdir -p $(BUILD_STAGE)/bash/$(MEMO_PREFIX)/bin
+	$(call DO_PATCH,bash,bash,-p1)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 ifneq (,$(MEMO_PREFIX))
 	sed -i 's|"/etc/profile|"$(MEMO_PREFIX)/etc/profile|' $(BUILD_WORK)/bash/pathnames.h.in

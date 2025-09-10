@@ -1,0 +1,133 @@
+diff --git a/builtins/mkbuiltins.c b/builtins/mkbuiltins.c
+index f505ebd..cda7d13 100644
+--- a/builtins/mkbuiltins.c
++++ b/builtins/mkbuiltins.c
+@@ -59,7 +59,7 @@
+ extern int errno;
+ #endif
+ 
+-static char *xmalloc (), *xrealloc ();
++static char *xmalloc (int), *xrealloc (void *pointer,int);
+ 
+ #if !defined (__STDC__) && !defined (strcpy)
+ extern char *strcpy ();
+@@ -191,36 +191,36 @@ char *arrayvar_builtins[] =
+ };
+ 	
+ /* Forward declarations. */
+-static int is_special_builtin ();
+-static int is_assignment_builtin ();
+-static int is_localvar_builtin ();
+-static int is_posix_builtin ();
+-static int is_arrayvar_builtin ();
++static int is_special_builtin (char *name);
++static int is_assignment_builtin (char *name);
++static int is_localvar_builtin (char *name);
++static int is_posix_builtin (char *name);
++static int is_arrayvar_builtin (char *name);
+ 
+ #if !defined (HAVE_RENAME)
+ static int rename ();
+ #endif
+ 
+-void extract_info ();
++void extract_info (char *filename, FILE *structfile, FILE *externfile);
+ 
+-void file_error ();
+-void line_error ();
++void file_error (char*);
++void line_error (DEF_FILE *defs, char *format, char *arg1, char *arg2);
+ 
+-void write_file_headers ();
+-void write_file_footers ();
+-void write_ifdefs ();
+-void write_endifs ();
+-void write_documentation ();
+-void write_longdocs ();
+-void write_builtins ();
++void write_file_headers (FILE *structfile, FILE *externfile);
++void write_file_footers (FILE *structfile, FILE *externfile);
++void write_ifdefs (FILE *stream, char **defines);
++void write_endifs (FILE *stream, char **defines);
++void write_documentation (FILE *stream, char **documentation, int indentation, int flags);
++void write_longdocs (FILE *stream, ARRAY *builtins);
++void write_builtins (DEF_FILE *defs, FILE *structfile, FILE *externfile);
+ 
+-int write_helpfiles ();
++int write_helpfiles (ARRAY *builtins);
+ 
+-void free_defs ();
+-void add_documentation ();
++void free_defs (DEF_FILE *defs);
++void add_documentation (DEF_FILE *defs, char *line);
+ 
+-void must_be_building ();
+-void remove_trailing_whitespace ();
++void must_be_building (char *directive, DEF_FILE *defs);
++void remove_trailing_whitespace (char *string);
+ 
+ #define document_name(b)	((b)->docname ? (b)->docname : (b)->name)
+ 
+@@ -609,7 +609,7 @@ extract_info (filename, structfile, externfile)
+ 
+ 	  if (!handler)
+ 	    {
+-	      line_error (defs, "Unknown directive `%s'", directive);
++	      line_error (defs, "Unknown directive `%s'", directive, NULL);
+ 	      free (directive);
+ 	      continue;
+ 	    }
+@@ -761,7 +761,7 @@ get_arg (for_whom, defs, string)
+   new = strip_whitespace (string);
+ 
+   if (!*new)
+-    line_error (defs, "%s requires an argument", for_whom);
++    line_error (defs, "%s requires an argument", for_whom, NULL);
+ 
+   return (savestring (new));
+ }
+@@ -773,7 +773,7 @@ must_be_building (directive, defs)
+      DEF_FILE *defs;
+ {
+   if (!building_builtin)
+-    line_error (defs, "%s must be inside of a $BUILTIN block", directive);
++    line_error (defs, "%s must be inside of a $BUILTIN block", directive, NULL);
+ }
+ 
+ /* Return the current builtin. */
+@@ -824,7 +824,7 @@ builtin_handler (self, defs, arg)
+   /* If we are already building a builtin, we cannot start a new one. */
+   if (building_builtin)
+     {
+-      line_error (defs, "%s found before $END", self);
++      line_error (defs, "%s found before $END", self, NULL);
+       return (-1);
+     }
+ 
+@@ -876,7 +876,7 @@ function_handler (self, defs, arg)
+ 
+   if (builtin == 0)
+     {
+-      line_error (defs, "syntax error: no current builtin for $FUNCTION directive");
++      line_error (defs, "syntax error: no current builtin for $FUNCTION directive", NULL, NULL);
+       exit (1);
+     }
+   if (builtin->function)
+@@ -1036,7 +1036,7 @@ file_error (filename)
+ 
+ /* **************************************************************** */
+ /*								    */
+-/*			xmalloc and xrealloc ()		     	    */
++/*			xmalloc and xrealloc (void *pointer,int)		     	    */
+ /*								    */
+ /* **************************************************************** */
+ 
+@@ -1124,7 +1124,7 @@ save_builtin (builtin)
+   array_add ((char *)newbuiltin, saved_builtins);
+ }
+ 
+-/* Flags that mean something to write_documentation (). */
++/* Flags that mean something to write_documentation (FILE *stream, char **documentation, int indentation, int flags). */
+ #define STRING_ARRAY	0x01
+ #define TEXINFO		0x02
+ #define PLAINTEXT	0x04
