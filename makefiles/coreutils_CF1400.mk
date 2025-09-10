@@ -17,9 +17,7 @@ coreutils_CF1400-setup: setup
 	$(call EXTRACT_TAR,coreutils-$(COREUTILS_CF1400_VERSION).tar.xz,coreutils-$(COREUTILS_CF1400_VERSION),coreutils)
 	touch $(BUILD_WORK)/coreutils/revert-2984e47.diff.done
 	$(call DO_PATCH,coreutils,coreutils,-p1)
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
-		https://git.cameronkatri.com/getent-darwin/snapshot/getent-darwin-$(GETENTDARWIN_CF1400_COMMIT).tar.zst)
-	$(call EXTRACT_TAR,getent-darwin-$(GETENTDARWIN_CF1400_COMMIT).tar.zst,getent-darwin-$(GETENTDARWIN_CF1400_COMMIT),coreutils/getent-darwin)
+	$(call GIT_CLONE_COMMIT,https://git.cameronkatri.com/getent-darwin.git,$(GETENTDARWIN_CF1400_COMMIT),coreutils/getent-darwin)
 
 ifneq ($(wildcard $(BUILD_WORK)/coreutils/.build_complete),)
 coreutils_CF1400:

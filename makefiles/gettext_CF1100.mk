@@ -9,6 +9,9 @@ gettext_CF1100-setup: setup
 	$(call PGP_VERIFY,gettext-$(GETTEXT_CF1100_VERSION).tar.xz)
 	$(call EXTRACT_TAR,gettext-$(GETTEXT_CF1100_VERSION).tar.xz,gettext-$(GETTEXT_CF1100_VERSION),gettext)
 	sed -i 's/iconv_ostream__flush (iconv_ostream_t stream)/iconv_ostream__flush (iconv_ostream_t stream, ostream_flush_scope_t scope)/g' $(BUILD_WORK)/gettext/libtextstyle/lib/iconv-ostream.c
+ifneq (,$(findstring appletvos,$(MEMO_TARGET)))
+	sed -i '/iconv_ostream_create/d' $(BUILD_WORK)/gettext/libtextstyle/lib/libtextstyle.sym.in
+endif
 
 ifneq ($(wildcard $(BUILD_WORK)/gettext/.build_complete),)
 gettext_CF1100:

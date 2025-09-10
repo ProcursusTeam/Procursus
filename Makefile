@@ -1049,6 +1049,10 @@ GIT_CLONE = if [ ! -d "$(BUILD_WORK)/$(3)" ]; then \
 				git clone -c advice.detachedHead=false --depth 1 --branch "$(2)" --recursive "$(1)" "$(BUILD_WORK)/$(3)"; \
 			fi
 
+GIT_CLONE_COMMIT = if [ ! -d "$(BUILD_WORK)/$(3)" ]; then \
+				git clone --revision "$(2)" --recursive "$(1)" "$(BUILD_WORK)/$(3)"; \
+			fi
+
 ###
 #
 # Fix this dep checking section dumbass

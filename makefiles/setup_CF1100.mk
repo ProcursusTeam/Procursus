@@ -170,6 +170,9 @@ endif
 	@mkdir -p $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/{CoreAudio,CoreFoundation}
 	@cp -af $(MACOSX_SYSROOT)/System/Library/Frameworks/CoreAudio.framework/Headers/* $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreAudio
 
+	@cp -af $(TARGET_SYSROOT)/usr/include/sys/spawn.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/sys/spawn.h
+	@cp -af $(TARGET_SYSROOT)/usr/include/spawn.h $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/spawn.h
+
 	@# Patch headers from $(BARE_PLATFORM).sdk
 	@if [ -f $(TARGET_SYSROOT)/System/Library/Frameworks/CoreFoundation.framework/Headers/CFUserNotification.h ]; then sed -E 's/API_UNAVAILABLE(ios, watchos, tvos)//g' < $(TARGET_SYSROOT)/System/Library/Frameworks/CoreFoundation.framework/Headers/CFUserNotification.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/CoreFoundation/CFUserNotification.h; fi
 	@if [ -f $(TARGET_SYSROOT)/System/Library/Frameworks/Foundation.framework/Headers/NSObjCRuntime.h ]; then sed 's/__attribute__ ((format_arg(A)))//g' < $(TARGET_SYSROOT)/System/Library/Frameworks/Foundation.framework/Headers/NSObjCRuntime.h > $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/Foundation/NSObjCRuntime.h; fi
