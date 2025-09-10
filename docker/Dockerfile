@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM debian:sid
 
 LABEL maintainer="1Conan <me@1conan.com>"
 

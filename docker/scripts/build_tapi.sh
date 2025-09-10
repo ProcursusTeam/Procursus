@@ -11,6 +11,7 @@ pushd /tmp/tapi/build
 INCLUDE_FIX="-I $PWD/../src/llvm/projects/clang/include "
 INCLUDE_FIX+="-I $PWD/projects/clang/include "
 
+sed -i 's/#include/#include <stdint.h>\n#include/g' ../src/llvm/projects/libtapi/include/tapi/PackedVersion32.h
 cmake ../src/llvm \
   -DCMAKE_CXX_FLAGS="${INCLUDE_FIX}" \
   -DCMAKE_BUILD_TYPE=Release \

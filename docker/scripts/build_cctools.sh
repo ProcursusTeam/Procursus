@@ -21,7 +21,7 @@ make install
 cd ../../
 rm -rf swift-corelibs-libdispatch
 
-git clone --depth=1 https://github.com/apple/llvm-project -b llvm.org/release/16.x /tmp/llvm-project
+git clone --depth=1 https://github.com/apple/llvm-project -b llvm.org/release/20.x /tmp/llvm-project
 pushd /tmp/llvm-project
 cmake -S llvm -B build -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS="clang;lld" -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind;compiler-rt" -DLLVM_TARGETS_TO_BUILD="ARM;X86;AArch64"
 pushd build
