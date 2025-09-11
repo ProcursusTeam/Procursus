@@ -2,37 +2,39 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-COREUTILS_CF1900_VERSION   := 9.3
-GETENTDARWIN_CF1900_COMMIT  := 1ad0e39ee51181ea6c13b3d1d4e9c6005ee35b5e
+COREUTILS_CF3000_VERSION   := 9.5
+GETENTDARWIN_CF3000_COMMIT  := 1ad0e39ee51181ea6c13b3d1d4e9c6005ee35b5e
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
-COREUTILS_CF1900_CONFIGURE_ARGS += --program-prefix=$(GNU_PREFIX)
+COREUTILS_CF3000_CONFIGURE_ARGS += --program-prefix=$(GNU_PREFIX)
 endif
 
-coreutils_CF1900-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftp.gnu.org/gnu/coreutils/coreutils-$(COREUTILS_CF1900_VERSION).tar.xz{$(comma).sig})
-	$(call PGP_VERIFY,coreutils-$(COREUTILS_CF1900_VERSION).tar.xz)
-	$(call EXTRACT_TAR,coreutils-$(COREUTILS_CF1900_VERSION).tar.xz,coreutils-$(COREUTILS_CF1900_VERSION),coreutils)
-	$(call DO_PATCH,coreutils,coreutils,-p1)
-	$(call GIT_CLONE_COMMIT,https://git.cameronkatri.com/getent-darwin.git,$(GETENTDARWIN_CF1900_COMMIT),coreutils/getent-darwin)
+coreutils_CF3000-setup: setup
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftp.gnu.org/gnu/coreutils/coreutils-$(COREUTILS_CF3000_VERSION).tar.xz{$(comma).sig})
+	$(call PGP_VERIFY,coreutils-$(COREUTILS_CF3000_VERSION).tar.xz)
+	$(call EXTRACT_TAR,coreutils-$(COREUTILS_CF3000_VERSION).tar.xz,coreutils-$(COREUTILS_CF3000_VERSION),coreutils)
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
+		https://git.cameronkatri.com/getent-darwin/snapshot/getent-darwin-$(GETENTDARWIN_CF3000_COMMIT).tar.zst)
+	$(call GIT_CLONE_COMMIT,https://git.cameronkatri.com/getent-darwin.git,$(GETENTDARWIN_CF3000_COMMIT),coreutils/getent-darwin)
 
 ifneq ($(wildcard $(BUILD_WORK)/coreutils/.build_complete),)
-coreutils_CF1900:
+coreutils_CF3000:
 	@echo "Using previously built coreutils."
 else
 ifneq (,$(findstring ramdisk,$(MEMO_TARGET)))
-coreutils_CF1900: coreutils-setup
+coreutils_CF3000: coreutils-setup
 else ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-coreutils_CF1900: coreutils-setup gettext libgmp10 libxcrypt openssl
+coreutils_CF3000: coreutils-setup gettext libgmp10 libxcrypt openssl
 else # (,$(findstring darwin,$(MEMO_TARGET)))
-coreutils_CF1900: coreutils-setup gettext libgmp10 openssl
+coreutils_CF3000: coreutils-setup gettext libgmp10 openssl
 endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	cd $(BUILD_WORK)/coreutils && autoreconf -fi
 	cd $(BUILD_WORK)/coreutils && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		$(COREUTILS_CF1900_CONFIGURE_ARGS) \
+		$(COREUTILS_CONFIGURE_ARGS) \
 		gl_cv_macro_MB_CUR_MAX_good=yes
-	+$(MAKE) -C $(BUILD_WORK)/coreutils
+	+$(MAKE) -C $(BUILD_WORK)/coreutils \
+		CFLAGS="$(CFLAGS) -D_GL_ATTRIBUTE_MAYBE_UNUSED= "
 	+$(MAKE) -C $(BUILD_WORK)/coreutils install \
 		DESTDIR=$(BUILD_STAGE)/coreutils
 	+$(MAKE) -C $(BUILD_WORK)/coreutils/getent-darwin install \
@@ -42,8 +44,8 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	$(call AFTER_BUILD)
 endif
 
-coreutils_CF1900-package:: DEB_COREUTILS_V ?= $(COREUTILS_CF1900_VERSION)
-coreutils_CF1900-package: coreutils-stage
+coreutils_CF3000-package:: DEB_COREUTILS_V ?= $(COREUTILS_CF3000_VERSION)
+coreutils_CF3000-package: coreutils-stage
 	# coreutils.mk Package Structure
 	rm -rf $(BUILD_DIST)/coreutils
 	mkdir -p $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)/{bin,$(MEMO_SUB_PREFIX)/sbin}
@@ -67,11 +69,6 @@ endif
 
 	# coreutils.mk Sign
 	$(call SIGN,coreutils,general.xml)
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(LDID) -S$(BUILD_MISC)/entitlements/dd.xml $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/dd # Do a manual sign for dd and cat.
-	$(LDID) -S$(BUILD_MISC)/entitlements/dd.xml $(BUILD_DIST)/coreutils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/cat
-	find $(BUILD_DIST)/coreutils -name '.ldid*' -type f -delete
-endif
 
 	# coreutils.mk Make .debs
 	$(call PACK,coreutils,DEB_COREUTILS_V)
@@ -79,4 +76,4 @@ endif
 	# coreutils.mk Build cleanup
 	rm -rf $(BUILD_DIST)/coreutils
 
-.PHONY: coreutils_CF1900 coreutils_CF1900-package
+.PHONY: coreutils_CF3000 coreutils_CF3000-package

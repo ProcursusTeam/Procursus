@@ -2,7 +2,10 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 2000 ] && echo 1),1)
+ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 3000 ] && echo 1),1)
+setup: setup_CF3000
+
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 2000 ] && echo 1),1)
 setup: setup_CF2000
 
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1900 ] && echo 1),1)

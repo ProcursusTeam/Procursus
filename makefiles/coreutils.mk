@@ -3,7 +3,13 @@ $(error Use the main Makefile)
 endif
 
 
-ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1900 ] && echo 1),1)
+ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 3000 ] && echo 1),1)
+COREUTILS_VERSION := $(COREUTILS_CF3000_VERSION)
+coreutils-setup: coreutils_CF3000-setup
+coreutils: coreutils_CF3000
+coreutils-package: coreutils_CF3000-package
+
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1900 ] && echo 1),1)
 COREUTILS_VERSION := $(COREUTILS_CF1900_VERSION)
 coreutils-setup: coreutils_CF1900-setup
 coreutils: coreutils_CF1900
