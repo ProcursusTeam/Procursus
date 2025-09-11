@@ -17,9 +17,7 @@ coreutils_CF1000-setup: setup
 	$(call EXTRACT_TAR,coreutils-$(COREUTILS_CF1000_VERSION).tar.xz,coreutils-$(COREUTILS_CF1000_VERSION),coreutils)
 	touch $(BUILD_WORK)/coreutils/revert-2984e47.diff.done
 	$(call DO_PATCH,coreutils,coreutils,-p1)
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
-		https://git.cameronkatri.com/getent-darwin/snapshot/getent-darwin-$(GETENTDARWIN_CF1000_COMMIT).tar.zst)
-	$(call EXTRACT_TAR,getent-darwin-$(GETENTDARWIN_CF1000_COMMIT).tar.zst,getent-darwin-$(GETENTDARWIN_CF1000_COMMIT),coreutils/getent-darwin)
+	$(call GIT_CLONE_COMMIT,https://git.cameronkatri.com/getent-darwin.git,$(GETENTDARWIN_CF1000_COMMIT),coreutils/getent-darwin)
 ifneq (,$(findstring arm64,$(MEMO_TARGET)))
 	echo "#define __NO_TLS" >>  $(BUILD_WORK)/coreutils/getent-darwin/include/utmpx-defines.h
 endif 
