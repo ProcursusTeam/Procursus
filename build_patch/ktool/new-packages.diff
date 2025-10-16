@@ -1,0 +1,20 @@
+diff -urN a/.legacy_setup.py b/.legacy_setup.py
+--- a/.legacy_setup.py	2022-07-04 23:54:51.000000000 -0400
++++ b/.legacy_setup.py	2023-04-05 00:17:00.000000000 -0400
+@@ -19,11 +19,13 @@
+         'kimg4',
+         'Pygments'
+     ],
+-    packages = ['kmacho', 'ktool', 'kswift'],
++    packages = ['ktool', 'kmacho', 'kswift', 'katlib', 'kdsc'],
+     package_dir = {
+-        'kmacho': 'src/kmacho',
+         'ktool': 'src/ktool',
+-        'kswift': 'src/kswift'
++        'kmacho': 'src/kmacho',
++        'kswift': 'src/kswift',
++        'katlib': 'src/katlib',
++        'kdsc': 'src/kdsc'
+     },
+     classifiers = [
+         'Programming Language :: Python :: 3',
