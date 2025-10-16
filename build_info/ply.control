@@ -1,0 +1,9 @@
+Package: ply
+Version: @DEB_PLY_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: Dustin Howett <duhowett@microsoft.com>
+Section: Golang
+Priority: optional
+Homepage: https://www.howett.net/projects/plist/
+Description: An Apple Property List transcoder, written in Go.
