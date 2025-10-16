@@ -1,0 +1,10 @@
+Package: libx8a4-dev
+Author: Cryptiiiic
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_X8A4_V@
+Depends: libx8a4-1 (= @DEB_X8A4_V@)
+Section: Development
+Priority: optional
+Homepage: https://github.com/Cryptiiiic/x8A4
+Description: An all-in-one tool for firmware nonces, seeds, and downgrade support (Development Files)
