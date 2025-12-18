@@ -1,0 +1,14 @@
+Package: librsvg2-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBRSVG_V@
+Depends: libcairo2-dev (>= 1.2.0), libgdk-pixbuf-2.0-dev (>= 2.23.5-2), libglib2.0-dev (>= 2.50.0), librsvg2-2 (= @DEB_LIBRSVG_V@), librsvg2-common (= @DEB_LIBRSVG_V@)
+Section: Development
+Priority: optional
+Multi-Arch: same
+Description: SAX-based renderer library for SVG files (development)
+ The rsvg library is an efficient renderer for Scalable Vector Graphics
+ (SVG) pictures.
+ .
+ This package provides the necessary development libraries and include
+ files to allow you to develop with librsvg.

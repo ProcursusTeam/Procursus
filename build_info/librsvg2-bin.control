@@ -1,0 +1,14 @@
+Package: librsvg2-bin
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_LIBRSVG_V@
+Depends: librsvg2-2 (>= 2.50.7), libcairo2 (>= 1.15.10), libglib2.0-0 (>= 2.50.0)
+Section: Multimedia
+Priority: optional
+Multi-Arch: foreign
+Description: command-line utility to convert SVG files
+ The rsvg library is an efficient renderer for Scalable Vector Graphics
+ (SVG) pictures.
+ .
+ This package includes a command-line utility to convert the SVG files
+ to the PNG format.
