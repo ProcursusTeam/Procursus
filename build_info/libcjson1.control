@@ -1,0 +1,13 @@
+Package: libcjson1
+Version: @DEB_LIBCJSON_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Homepage: https://github.com/DaveGamble/cJSON/
+Description: Ultralightweight JSON parser in ANSI C
+ cJSON is a ultralightweight json parser.
+ It aims to be the dumbest possible parser that you can get your job done with.
+ It's a single file of C, and a single header file.
+ .
+ This package contains the shared libraries.
