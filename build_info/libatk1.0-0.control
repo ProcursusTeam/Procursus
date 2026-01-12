@@ -1,0 +1,15 @@
+Package: libatk1.0-0
+Version: @DEB_ATK_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libglib2.0-0 (>= 2.55.2), libatk1.0-data (>= @DEB_ATK_V@)
+Section: Libraries
+Priority: optional
+Multi-Arch: same
+Description: ATK accessibility toolkit
+ ATK is a toolkit providing accessibility interfaces for applications or
+ other toolkits. By implementing these interfaces, those other toolkits or
+ applications can be used with tools such as screen readers, magnifiers, and
+ other alternative input devices.
+ .
+ This is the runtime part of ATK, needed to run applications built with it.
