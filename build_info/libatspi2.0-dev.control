@@ -1,0 +1,11 @@
+Package: libatspi2.0-dev
+Version: @DEB_AT-SPI2-CORE_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libatspi2.0-0 (= @DEB_AT-SPI2-CORE_V@), libglib2.0-dev (>= 2.4.1-2), libdbus-1-dev, libxtst-dev
+Replaces: gir-repository-dev
+Section: Development
+Priority: optional
+Description: Development files for the assistive technology service provider
+ These are the development files for at-spi2, needed for compilation of
+ programs which use it.
