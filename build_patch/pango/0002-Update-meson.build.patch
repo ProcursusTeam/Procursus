@@ -1,0 +1,32 @@
+From 1011aa29fa18401c9cb48e5cb5817f5d2e0f0c85 Mon Sep 17 00:00:00 2001
+From: Gymxo <dugarnathan@gmail.com>
+Date: Tue, 6 Apr 2021 18:45:41 +0000
+Subject: [PATCH 2/2] Update meson.build
+
+---
+ pango/meson.build | 9 ---------
+ 1 file changed, 9 deletions(-)
+
+diff --git a/pango/meson.build b/pango/meson.build
+index e5121bd8..a68ca54f 100644
+--- a/pango/meson.build
++++ b/pango/meson.build
+@@ -517,15 +517,6 @@ if cairo_dep.found()
+     pangocairo_deps += libpangowin32_dep
+   endif
+ 
+-  if host_system == 'darwin' and pango_font_backends.contains('quartz')
+-    pangocairo_sources += [
+-      'pangocoretext.c',
+-      'pangocoretext-fontmap.c',
+-      'pangocairo-coretextfont.c',
+-      'pangocairo-coretextfontmap.c',
+-    ]
+-  endif
+-
+   install_headers(pangocairo_headers, subdir: pango_api_path)
+ 
+   libpangocairo = library(
+-- 
+2.24.3 (Apple Git-128)
+
