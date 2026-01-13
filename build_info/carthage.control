@@ -1,0 +1,8 @@
+Package: carthage
+Version: @DEB_CARTHAGE_V@
+Architecture: @DEB_ARCH@
+Essential: no
+Maintainer: @DEB_MAINTAINER@
+Section: Development
+Priority: optional
+Description: A simple, decentralized, dependency manager for Cocoa
