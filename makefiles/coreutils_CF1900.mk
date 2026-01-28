@@ -2,7 +2,7 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
-COREUTILS_CF1900_VERSION   := 9.3
+COREUTILS_CF1900_VERSION   := 9.5
 GETENTDARWIN_CF1900_COMMIT  := 1ad0e39ee51181ea6c13b3d1d4e9c6005ee35b5e
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
@@ -13,7 +13,6 @@ coreutils_CF1900-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftp.gnu.org/gnu/coreutils/coreutils-$(COREUTILS_CF1900_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_CF1900_VERSION).tar.xz)
 	$(call EXTRACT_TAR,coreutils-$(COREUTILS_CF1900_VERSION).tar.xz,coreutils-$(COREUTILS_CF1900_VERSION),coreutils)
-	$(call DO_PATCH,coreutils,coreutils,-p1)
 	$(call GIT_CLONE_COMMIT,https://git.cameronkatri.com/getent-darwin.git,$(GETENTDARWIN_CF1900_COMMIT),coreutils/getent-darwin)
 
 ifneq ($(wildcard $(BUILD_WORK)/coreutils/.build_complete),)
@@ -31,8 +30,10 @@ endif # (,$(findstring darwin,$(MEMO_TARGET)))
 	cd $(BUILD_WORK)/coreutils && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		$(COREUTILS_CF1900_CONFIGURE_ARGS) \
-		gl_cv_macro_MB_CUR_MAX_good=yes
-	+$(MAKE) -C $(BUILD_WORK)/coreutils
+		gl_cv_macro_MB_CUR_MAX_good=yes \
+		--disable-year2038	#Only needed when compiling for armv7k
+	+$(MAKE) -C $(BUILD_WORK)/coreutils \
+			CFLAGS="$(CFLAGS) -D_GL_ATTRIBUTE_MAYBE_UNUSED= "
 	+$(MAKE) -C $(BUILD_WORK)/coreutils install \
 		DESTDIR=$(BUILD_STAGE)/coreutils
 	+$(MAKE) -C $(BUILD_WORK)/coreutils/getent-darwin install \
