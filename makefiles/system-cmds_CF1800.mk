@@ -18,8 +18,8 @@ system-cmds_CF1800-setup: setup libxcrypt
 	sed -i -E -e 's|"/usr|"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' -e 's|"/sbin|"$(MEMO_PREFIX)/sbin|g' \
 		$(BUILD_WORK)/system-cmds/{shutdown.tproj/pathnames.h,getty.tproj/{ttys,gettytab}.5,sc_usage.tproj/sc_usage.{1,c},at.tproj/{at.1,pathnames.h}}
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
-		https://git.cameronkatri.com/pw-darwin/snapshot/pw-darwin-$(PWDARWIN_CF1800_COMMIT).tar.zst)
-	$(call EXTRACT_TAR,pw-darwin-$(PWDARWIN_CF1800_COMMIT).tar.zst,pw-darwin-$(PWDARWIN_CF1800_COMMIT),system-cmds/pw-darwin)
+		https://git.cameronkatri.com/pw-darwin.git/snapshot/pw-darwin-$(PWDARWIN_CF1800_COMMIT).tar.gz)
+	$(call EXTRACT_TAR,pw-darwin-$(PWDARWIN_CF1800_COMMIT).tar.gz,pw-darwin-$(PWDARWIN_CF1800_COMMIT),system-cmds/pw-darwin)
 	$(call DOWNLOAD_FILES,$(BUILD_WORK)/system-cmds/include, \
 		https://github.com/apple-oss-distributions/launchd/raw/launchd-328/launchd/src/reboot2.h)
 	sed -i 's|"/etc|"$(MEMO_PREFIX)/etc|' $(BUILD_WORK)/system-cmds/passwd.tproj/{file_,}passwd.c
@@ -52,7 +52,7 @@ system-cmds_CF1800: system-cmds-setup libxcrypt openpam libiosexec ncurses
 			pwd_mkdb) CFLAGS="-D_PW_NAME_LEN=MAXLOGNAME -D_PW_YPTOKEN=\"__YP!\"";; \
 			passwd) LDFLAGS="-lcrypt";; \
 			shutdown) LDFLAGS="-lbsm -liosexec";; \
-			sc_usage) LDFLAGS="-lncurses";; \
+			sc_usage) LDFLAGS="-lncurses -lutil";; \
 			at) LDFLAGS="-Iat.tproj -DPERM_PATH=\"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/cron\" -DDAEMON_UID=1 -DDAEMON_GID=1 -D__FreeBSD__ -DDEFAULT_AT_QUEUE='a' -DDEFAULT_BATCH_QUEUE='b'";; \
 			fs_usage) LDFLAGS="-Wno-error-implicit-function-declaration $(BUILD_MISC)/PrivateFrameworks/ktrace.framework/ktrace.tbd";; \
 			latency) LDFLAGS="-lncurses -lutil";; \
