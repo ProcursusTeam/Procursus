@@ -2,7 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq ($(MINIMAL_STRAP),1)
 SUBPROJECTS        += libarchive
+endif
 LIBARCHIVE_VERSION := 3.6.1
 DEB_LIBARCHIVE_V   ?= $(LIBARCHIVE_VERSION)
 

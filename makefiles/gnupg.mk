@@ -2,7 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq ($(MINIMAL_STRAP),1)
 STRAPPROJECTS += gnupg
+endif
 GNUPG_VERSION := 2.3.6
 DEB_GNUPG_V   ?= $(GNUPG_VERSION)
 

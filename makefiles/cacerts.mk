@@ -2,7 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq ($(MINIMAL_STRAP),1)
 STRAPPROJECTS += cacerts
+endif
 
 ifneq ($(wildcard $(BUILD_WORK)/cacerts/.build_complete),)
 cacerts:

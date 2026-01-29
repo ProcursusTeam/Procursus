@@ -2,7 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq ($(MINIMAL_STRAP),1)
 STRAPPROJECTS     += launchctl
+endif
 LAUNCHCTL_VERSION := 1.1.1
 DEB_LAUNCHCTL_V   ?= 1:$(LAUNCHCTL_VERSION)
 

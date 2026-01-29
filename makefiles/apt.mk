@@ -2,7 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq ($(MINIMAL_STRAP),1)
 STRAPPROJECTS += apt
+endif
 APT_VERSION   := 2.6.0
 DEB_APT_V     ?= $(APT_VERSION)-1
 

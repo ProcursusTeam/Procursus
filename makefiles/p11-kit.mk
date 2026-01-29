@@ -2,7 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq ($(MINIMAL_STRAP),1)
 STRAPPROJECTS += p11-kit
+endif
 P11_VERSION   := 0.24.1
 DEB_P11_V     ?= $(P11_VERSION)
 

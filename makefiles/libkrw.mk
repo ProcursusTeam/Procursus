@@ -5,7 +5,9 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 ifeq ($(shell [ "$(MEMO_CFVER)" -ge 1800 ] && echo 1),1)
 
+ifneq ($(MINIMAL_STRAP),1)
 STRAPPROJECTS  += libkrw
+endif
 LIBKRW_VERSION := 1.1.1
 DEB_LIBKRW_V   ?= $(LIBKRW_VERSION)
 

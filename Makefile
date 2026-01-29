@@ -1361,6 +1361,7 @@ endif # $(shell [ "$(CFVER_WHOLE)" -ge 1600 ] && echo 1),1
 	mkdir -p $(BUILD_STRAP)/strap/private/etc/apt/preferences.d
 	cp $(BUILD_INFO)/procursus.preferences $(BUILD_STRAP)/strap/private/etc/apt/preferences.d/procursus
 	touch $(BUILD_STRAP)/strap/.procursus_strapped
+	mkdir -p $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d
 	touch $(BUILD_STRAP)/strap/private/etc/apt/sources.list.d/procursus.sources
 ifeq ($(shell [ "$(MEMO_CFVER)" -ge 1800 ] && echo 1),1)
 	echo -e "Types: deb\n\

@@ -2,7 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq ($(MINIMAL_STRAP),1)
 STRAPPROJECTS  += gnutls
+endif
 GNUTLS_VERSION := 3.8.0
 DEB_GNUTLS_V   ?= $(GNUTLS_VERSION)
 

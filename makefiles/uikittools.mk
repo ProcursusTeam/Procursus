@@ -2,11 +2,14 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+ifneq ($(MINIMAL_STRAP),1)
 ifneq (,$(findstring bridgeos,$(MEMO_TARGET)))
 SUBPROJECTS        += uikittools
 else
 STRAPPROJECTS      += uikittools
 endif
+endif #MINIMAL_STRAP
+
 UIKITTOOLS_VERSION := 2.1.6
 DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)-1
 
