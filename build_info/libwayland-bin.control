@@ -1,0 +1,19 @@
+Package: libwayland-bin
+Version: @DEB_WAYLAND_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libexpat1 | firmware (>= 14.0)
+Section: Development
+Priority: optional
+Conflicts: libwayland-dev (<< 1.11.0-1)
+Replaces: libwayland-dev (<< 1.11.0-1)
+Homepage: https://wayland.freedesktop.org/
+Description: wayland compositor infrastructure - binary utilities
+ Wayland is a protocol for a compositor to talk to its clients as well
+ as a C library implementation of that protocol. The compositor can be
+ a standalone display server running on Linux kernel modesetting and
+ evdev input devices, an X application, or a wayland client
+ itself. The clients can be traditional applications, X servers
+ (rootless or fullscreen) or other display servers.
+ .
+ This package contains the development binary utilities
