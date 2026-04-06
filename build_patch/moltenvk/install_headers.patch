@@ -1,0 +1,14 @@
+diff --git a/MoltenVK/CMakeLists.txt b/MoltenVK/CMakeLists.txt
+index 9509e4ea..4d3c68dd 100644
+--- a/MoltenVK/CMakeLists.txt
++++ b/MoltenVK/CMakeLists.txt
+@@ -68,6 +68,9 @@ target_compile_definitions(MoltenVK_static PUBLIC
+ set_target_properties(MoltenVK PROPERTIES VERSION ${PROJECT_VERSION})
+ set_target_properties(MoltenVK PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
+ 
++file(GLOB PUBLIC_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/MoltenVK/API/*.h")
++set_target_properties(MoltenVK PROPERTIES PUBLIC_HEADER "${PUBLIC_HEADERS}")
++
+ ################################################################################
+ # Dependencies
+ ################################################################################

@@ -1,0 +1,18 @@
+Package: libspirv-tools0
+Version: @DEB_SPIRV_TOOLS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: The Khronos Group Inc.
+Section: Libraries
+Priority: optional
+Homepage: https://github.com/KhronosGroup/SPIRV-Tools
+Description: API and commands for processing SPIR-V modules (tools)
+ The project includes an assembler, binary module parser, disassembler,
+ validator, and optimizer for SPIR-V. Except for the optimizer, all are
+ based on a common static library. The library contains all of the
+ implementation details, and is used in the standalone tools whilst
+ also enabling integration into other code bases directly. The
+ optimizer implementation resides in its own library, which depends on
+ the core library.
+ .
+ This package provides the shared library.
