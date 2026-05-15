@@ -1,0 +1,31 @@
+--- vulkan-loader/CMakeLists.txt.orig	2025-12-04 01:53:42.747694786 +0200
++++ vulkan-loader/CMakeLists.txt	2025-12-04 01:55:49.018211512 +0200
+@@ -102,13 +102,12 @@
+     message(FATAL_ERROR "Android build not supported!")
+ elseif(APPLE)
+     target_compile_definitions(platform_wsi INTERFACE VK_USE_PLATFORM_METAL_EXT)
+-    if (IOS)
++    if (CMAKE_OSX_SYSROOT MATCHES "iPhoneOS|iPhoneSimulator|AppleTVOS|WatchOS|XROS")
+         target_compile_definitions(platform_wsi INTERFACE VK_USE_PLATFORM_IOS_MVK)
+     endif()
+-    if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
++    if (CMAKE_OSX_SYSROOT MATCHES "MacOSX")
+         target_compile_definitions(platform_wsi INTERFACE VK_USE_PLATFORM_MACOS_MVK)
+     endif()
+-elseif(CMAKE_SYSTEM_NAME MATCHES "Linux|BSD|DragonFly|GNU|CYGWIN")
+     option(BUILD_WSI_XCB_SUPPORT "Build XCB WSI support" ON)
+     option(BUILD_WSI_XLIB_SUPPORT "Build Xlib WSI support" ON)
+     option(BUILD_WSI_XLIB_XRANDR_SUPPORT "Build X11 Xrandr WSI support" ON)
+@@ -145,12 +144,6 @@
+         # vulkan_core.h includes <directfb.h> but the header is installed to directfb/directfb.h
+         target_include_directories(platform_wsi INTERFACE ${DIRECTFB_INCLUDE_DIRS} ${DIRECTFB_INCLUDE_DIRS}/directfb)
+     endif()
+-elseif(CMAKE_SYSTEM_NAME MATCHES "QNX")
+-    message(FATAL_ERROR "See BUILD.md for QNX build")
+-elseif(CMAKE_SYSTEM_NAME MATCHES "Fuchsia")
+-    message(FATAL_ERROR "Fuchsia uses Chromium build. See BUILD.gn")
+-else()
+-    message(FATAL_ERROR "Unsupported Platform!")
+ endif()
+ 
+ add_library(loader_common_options INTERFACE)

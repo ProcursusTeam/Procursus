@@ -1,0 +1,21 @@
+Package: libspirv-cross-c-shared0-dev
+Version: @DEB_SPIRV_CROSS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: The Khronos Group Inc.
+Section: Development
+Depends: libspirv-cross-c-shared0 (= @DEB_SPIRV_CROSS_V@)
+Priority: optional
+Homepage: https://github.com/KhronosGroup/SPIRV-Cross
+Description: Convert SPIR-V to other shader languages
+ SPIRV-Cross is a tool designed for parsing and converting SPIR-V to other
+ shader languages:
+  * Convert SPIR-V to readable, usable and efficient GLSL
+  * Convert SPIR-V to readable, usable and efficient MSL
+  * Convert SPIR-V to readable, usable and efficient HLSL
+  * Reflection API to simplify the creation of Vulkan pipeline layouts
+  * Reflection API to modify and tweak OpDecorations
+  * Supports "all" of vertex, fragment, tessellation, geometry and
+      compute shaders
+ .
+ This package provides the development files.
