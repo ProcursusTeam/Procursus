@@ -1,0 +1,20 @@
+Description: Reorder CFLAGS, CPPFLAGS and LDFLAGS to be not overwritten
+Author: Tobias Frost <tobi@debian.org>
+Last-Update: 2016-02-14
+---
+This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+--- a/configure.in
++++ b/configure.in
+@@ -246,9 +246,9 @@
+   AC_MSG_WARN([another compiler except for GCC was detected])
+   MYCFLAGS=""
+ fi
+-test -n "$CFLAGS" && MYCFLAGS="$CFLAGS $MYCFLAGS"
+-test -n "$CPPFLAGS" && MYCPPFLAGS="$CPPFLAGS $MYCPPFLAGS"
+-test -n "$LDFLAGS" && MYLDFLAGS="$LDFLAGS $MYLDFLAGS"
++test -n "$CFLAGS" && MYCFLAGS="$MYCFLAGS $CFLAGS"
++test -n "$CPPFLAGS" && MYCPPFLAGS="$MYCPPFLAGS $CPPFLAGS"
++test -n "$LDFLAGS" && MYLDFLAGS="$MYLDFLAGS $LDFLAGS"
+ 
+ # Byte order
+ AC_C_BIGENDIAN(MYCPPFLAGS="$MYCPPFLAGS -D_MYBIGEND")

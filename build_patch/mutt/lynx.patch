@@ -1,0 +1,11 @@
+--- a/doc/Makefile.am.orig	2021-09-16 12:48:13.000000000 +0000
++++ b/doc/Makefile.am	2021-09-16 12:48:25.000000000 +0000
+@@ -151,7 +151,7 @@
+ 
+ check:
+ manual.txt: manual.html
+-	LC_ALL=C w3m -dump -O UTF-8 manual.html > $@
++	LC_ALL=C lynx -dump manual.html > $@
+ 
+ Muttrc: stamp-doc-rc
+ 
