@@ -7,7 +7,7 @@ UNISTRING_VERSION := 1.2
 DEB_UNISTRING_V   ?= $(UNISTRING_VERSION)
 
 libunistring-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/libunistring/libunistring-$(UNISTRING_VERSION).tar.gz{$(comma).sig})
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftp.gnu.org/gnu/libunistring/libunistring-$(UNISTRING_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libunistring-$(UNISTRING_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libunistring-$(UNISTRING_VERSION).tar.gz,libunistring-$(UNISTRING_VERSION),libunistring)
 
