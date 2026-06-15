@@ -1,3 +1,15 @@
+diff -urN a/Source/cmLocalUnixMakefileGenerator3.cxx b/Source/cmLocalUnixMakefileGenerator3.cxx
+--- a/Source/cmLocalUnixMakefileGenerator3.cxx  2024-08-02 21:57:10.000000000 +0800
++++ b/Source/cmLocalUnixMakefileGenerator3.cxx  2026-04-14 11:29:20.987854067 +0800
+@@ -655,7 +655,7 @@
+     /* clang-format off */
+       makefileStream
+         << "# The shell in which to execute make rules.\n"
+-        << "SHELL = /bin/sh\n"
++        << "SHELL = /var/jb/usr/bin/sh\n"
+         << "\n";
+ /* clang-format on */
+ #endif
 diff -urN a/Source/kwsys/DynamicLoader.cxx b/Source/kwsys/DynamicLoader.cxx
 --- a/Source/kwsys/DynamicLoader.cxx	2024-08-10 15:08:10.616818798 +0800
 +++ b/Source/kwsys/DynamicLoader.cxx	2024-08-10 15:09:41.941766502 +0800
