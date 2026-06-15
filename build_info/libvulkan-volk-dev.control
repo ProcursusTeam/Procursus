@@ -1,0 +1,18 @@
+Package: vulkan-volk
+Version: @DEB_VULKAN_VOLK_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: The Khronos Inc.
+Depends: libvulkan-dev (= @DEB_VULKAN_VOLK_V@)
+Section: Development
+Priority: optional
+Homepage:
+Description: Meta-loader for Vulkan API
+ Volk allows you to dynamically load entrypoints required to use Vulkan
+ without linking to vulkan-1.dll or statically linking Vulkan loader.
+ Additionally, volk simplifies the use of Vulkan extensions by automatically
+ loading all associated entrypoints. Finally, volk enables loading Vulkan
+ entrypoints directly from the driver which can increase performance by
+ skipping loader dispatch overhead.
+  .
+ This package provides the development files.

@@ -1,0 +1,30 @@
+diff --git a/Common/CMakeLists.txt b/Common/CMakeLists.txt
+index 38873d90..23a9c686 100644
+--- a/Common/CMakeLists.txt
++++ b/Common/CMakeLists.txt
+@@ -17,17 +17,23 @@ target_include_directories(MoltenVK_Common PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
+ 
+ find_library(FOUNDATION_LIBRARY Foundation REQUIRED)
+ find_library(METAL_LIBRARY Metal REQUIRED)
+-find_library(APPKIT_LIBRARY AppKit REQUIRED)
++if (CMAKE_OSX_SYSROOT MATCHES "iPhoneOS|iPhoneSimulator|AppleTVOS|WatchOS|XROS")
++	find_library(UI_LIBRARY UIKit REQUIRED)
++else()
++	find_library(UI_LIBRARY AppKit REQUIRED)
++endif()
+ find_library(IOKIT_LIBRARY IOKit REQUIRED)
+ find_library(IOSURFACE_LIBRARY IOSurface REQUIRED)
+ find_library(QUARTZCORE_LIBRARY QuartzCore REQUIRED)
++find_library(COREGRAPHICS_LIBRARY CoreGraphics REQUIRED)
+ target_link_libraries(MoltenVK_Common PUBLIC
+ 	${FOUNDATION_LIBRARY}
+ 	${METAL_LIBRARY}
+-	${APPKIT_LIBRARY}
++	${UI_LIBRARY}
+ 	${IOKIT_LIBRARY}
+ 	${IOSURFACE_LIBRARY}
+ 	${QUARTZCORE_LIBRARY}
++	${COREGRAPHICS_LIBRARY}
+ )
+ 
+ ################################################################################

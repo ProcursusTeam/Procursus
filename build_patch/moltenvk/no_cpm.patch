@@ -1,0 +1,126 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 20b4bc0f..1f95154b 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -71,6 +71,8 @@ option(MVK_USE_METAL_PRIVATE_API "If enabled, MoltenVK will use private interfac
+ 
+ option(MVK_BUILD_SHADER_CONVERTER_TOOL "If enabled, the MoltenVKShaderConverter executable will be built." OFF)
+ 
++option(MVK_USE_SYSTEM_DEPS "Use vendored versions of MoltenVK dependencies instead of downloading and building them from source." ON)
++
+ # Set default minimum C++ standard
+ if(MOLTEN_VK_TOPLEVEL_PROJECT)
+ 	set(CMAKE_CXX_STANDARD 17)
+@@ -80,19 +82,37 @@ endif()
+ 
+ ### Configuration
+ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/MoltenVK/")
+-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/recipes/")
++if(NOT MVK_USE_SYSTEM_DEPS)
++	list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/recipes/")
++endif()
++
++if(MVK_USE_SYSTEM_DEPS)
++	find_package(cereal CONFIG REQUIRED)
++	find_package(volk CONFIG REQUIRED)
++	find_package(VulkanHeaders CONFIG REQUIRED)
++	find_package(SPIRV-Headers CONFIG REQUIRED)
++	find_package(SPIRV-Tools CONFIG REQUIRED)
++	find_package(spirv_cross_core CONFIG REQUIRED)
++	find_package(spirv_cross_reflect CONFIG REQUIRED)
++	find_package(spirv_cross_glsl CONFIG REQUIRED)
++	find_package(spirv_cross_msl CONFIG REQUIRED)
++	add_library(spirv-cross INTERFACE)
++	target_link_libraries(spirv-cross INTERFACE spirv-cross-core spirv-cross-reflect spirv-cross-glsl spirv-cross-msl)
++endif()
+ 
+ # General CMake utils
+-set(CPM_USE_NAMED_CACHE_DIRECTORIES 1)
+-include(MoltenVK_CPM_Cache)
++if(NOT MVK_USE_SYSTEM_DEPS)
++	set(CPM_USE_NAMED_CACHE_DIRECTORIES 1)
++	include(MoltenVK_CPM_Cache)
++endif()
+ 
+ # Generate position-independent code by default
+ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+-
+-if(NOT DEFINED MOLTEN_VK_EXTERNAL_REVISIONS_DIR)
+-	set(MOLTEN_VK_EXTERNAL_REVISIONS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ExternalRevisions")
++if(NOT MVK_USE_SYSTEM_DEPS)
++	if(NOT DEFINED MOLTEN_VK_EXTERNAL_REVISIONS_DIR)
++		set(MOLTEN_VK_EXTERNAL_REVISIONS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ExternalRevisions")
++	endif()
+ endif()
+-
+ ################################################################################
+ # MoltenVK Libraries
+ ################################################################################
+diff --git a/MoltenVK/CMakeLists.txt b/MoltenVK/CMakeLists.txt
+index 1296ce61..97eace4a 100644
+--- a/MoltenVK/CMakeLists.txt
++++ b/MoltenVK/CMakeLists.txt
+@@ -53,12 +53,21 @@ set_target_properties(MoltenVK PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
+ 
+ target_link_libraries(MoltenVK PUBLIC MoltenVK::ShaderConverter)
+ 
+-if (NOT MVK_EXCLUDE_CEREAL)
+-	include(cereal)
+-	target_link_libraries(MoltenVK PRIVATE cereal::cereal)
++if(MVK_USE_SYSTEM_DEPS)
++	if(NOT MVK_EXCLUDE_CEREAL)
++		find_package(cereal CONFIG REQUIRED)
++		target_link_libraries(MoltenVK PRIVATE cereal::cereal)
++	else()
++		target_compile_definitions(MoltenVK PUBLIC MVK_USE_CEREAL=0)
++	endif()
++	target_link_libraries(MoltenVK PUBLIC Vulkan::Headers)
+ else()
+-	target_compile_definitions(MoltenVK PUBLIC MVK_USE_CEREAL=0)
++	if(NOT MVK_EXCLUDE_CEREAL)
++		include(cereal)
++		target_link_libraries(MoltenVK PRIVATE cereal::cereal)
++	else()
++		target_compile_definitions(MoltenVK PUBLIC MVK_USE_CEREAL=0)
++	endif()
++	include(Vulkan-Headers)
++	target_link_libraries(MoltenVK PUBLIC Vulkan::Headers)
+ endif()
+-
+-include(Vulkan-Headers)
+-target_link_libraries(MoltenVK PUBLIC Vulkan::Headers)
+\ No newline at end of file
+diff --git a/MoltenVKShaderConverter/MoltenVKShaderConverter/CMakeLists.txt b/MoltenVKShaderConverter/MoltenVKShaderConverter/CMakeLists.txt
+index 8618ed8a..f1e303d8 100644
+--- a/MoltenVKShaderConverter/MoltenVKShaderConverter/CMakeLists.txt
++++ b/MoltenVKShaderConverter/MoltenVKShaderConverter/CMakeLists.txt
+@@ -17,12 +17,20 @@ target_include_directories(MoltenVK_ShaderConverter PUBLIC "${CMAKE_CURRENT_SOUR
+ 
+ target_link_libraries(MoltenVK_ShaderConverter PUBLIC MoltenVK::Common)
+ 
+-include(SPIRV-Cross)
+-target_link_libraries(MoltenVK_ShaderConverter PUBLIC SPRIV-Cross::SPRIV-Cross)
+-
+-if (NOT MVK_EXCLUDE_SPIRV_TOOLS)
+-	include(SPIRV-Tools)
+-	target_link_libraries(MoltenVK_ShaderConverter PUBLIC SPIRV-Tools::SPIRV-Tools)
++if(MVK_USE_SYSTEM_DEPS)
++	target_link_libraries(MoltenVK_ShaderConverter PUBLIC spirv-cross)
++	if(NOT MVK_EXCLUDE_SPIRV_TOOLS)
++		target_link_libraries(MoltenVK_ShaderConverter PUBLIC SPIRV-Tools)
++	else()
++		target_compile_definitions(MoltenVK_ShaderConverter PUBLIC MVK_EXCLUDE_SPIRV_TOOLS=1)
++	endif()
+ else()
+-	target_compile_definitions(MoltenVK_ShaderConverter PUBLIC MVK_EXCLUDE_SPIRV_TOOLS=1)
+-endif()
+\ No newline at end of file
++	include(SPIRV-Cross)
++	target_link_libraries(MoltenVK_ShaderConverter PUBLIC spirv-cross)
++	if(NOT MVK_EXCLUDE_SPIRV_TOOLS)
++		include(SPIRV-Tools)
++		target_link_libraries(MoltenVK_ShaderConverter PUBLIC SPIRV-Tools::SPIRV-Tools)
++	else()
++		target_compile_definitions(MoltenVK_ShaderConverter PUBLIC MVK_EXCLUDE_SPIRV_TOOLS=1)
++	endif()
++endif()

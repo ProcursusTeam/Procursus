@@ -1,0 +1,92 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 1f95154b..0688c6b7 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -138,8 +138,9 @@ endif()
+ if(MOLTEN_VK_TOPLEVEL_PROJECT)
+ 	include(GNUInstallDirs)
+ 
+-	install(TARGETS MoltenVK
++	install(TARGETS MoltenVK MoltenVK_static
+ 			LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
++			ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+ 			PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/MoltenVK")
+ 
+ 	configure_file("${CMAKE_CURRENT_SOURCE_DIR}/Templates/cmake/MoltenVK.pc.in" MoltenVK.pc @ONLY)
+diff --git a/MoltenVK/CMakeLists.txt b/MoltenVK/CMakeLists.txt
+index 97eace4a..9509e4ea 100644
+--- a/MoltenVK/CMakeLists.txt
++++ b/MoltenVK/CMakeLists.txt
+@@ -9,6 +9,9 @@ file(GLOB_RECURSE SOURCES "MoltenVK/*.c" "MoltenVK/*.cpp" "MoltenVK/*.m" "Molten
+ add_library(MoltenVK SHARED ${SOURCES})
+ add_library(MoltenVK::MoltenVK ALIAS MoltenVK)
+ 
++add_library(MoltenVK_static STATIC ${SOURCES})
++add_library(MoltenVK::MoltenVK_static ALIAS MoltenVK_static)
++
+ target_include_directories(MoltenVK
+ 	PUBLIC
+ 		"${CMAKE_CURRENT_SOURCE_DIR}/include"
+@@ -23,6 +26,20 @@ target_include_directories(MoltenVK
+ 		"${CMAKE_CURRENT_BINARY_DIR}" # for mvkGitRevDerived.h
+ )
+ 
++target_include_directories(MoltenVK_static
++	PUBLIC
++		"${CMAKE_CURRENT_SOURCE_DIR}/include"
++	PRIVATE
++		"${CMAKE_CURRENT_SOURCE_DIR}/MoltenVK/API"
++		"${CMAKE_CURRENT_SOURCE_DIR}/MoltenVK/Commands"
++		"${CMAKE_CURRENT_SOURCE_DIR}/MoltenVK/GPUObjects"
++		"${CMAKE_CURRENT_SOURCE_DIR}/MoltenVK/Layers"
++		"${CMAKE_CURRENT_SOURCE_DIR}/MoltenVK/OS"
++		"${CMAKE_CURRENT_SOURCE_DIR}/MoltenVK/Utility"
++		"${CMAKE_CURRENT_SOURCE_DIR}/MoltenVK/Vulkan"
++		"${CMAKE_CURRENT_BINARY_DIR}" # for mvkGitRevDerived.h
++)
++
+ # Record the MoltenVK GIT revision as a derived header file suitable for including in a build
+ find_package(Git)
+ if(GIT_FOUND)
+@@ -44,6 +61,11 @@ target_compile_definitions(MoltenVK PUBLIC
+ 	"MVK_FRAMEWORK_VERSION=${PROJECT_VERSION}"
+ )
+ 
++target_compile_definitions(MoltenVK_static PUBLIC
++	"MVK_FRAMEWORK_VERSION=${PROJECT_VERSION}"
++)
++
++set_target_properties(MoltenVK_static PROPERTIES OUTPUT_NAME MoltenVK)
+ set_target_properties(MoltenVK PROPERTIES VERSION ${PROJECT_VERSION})
+ set_target_properties(MoltenVK PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
+ 
+@@ -52,22 +73,29 @@ set_target_properties(MoltenVK PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
+ ################################################################################
+ 
+ target_link_libraries(MoltenVK PUBLIC MoltenVK::ShaderConverter)
++target_link_libraries(MoltenVK_static PUBLIC MoltenVK::ShaderConverter)
+ 
+ if(MVK_USE_SYSTEM_DEPS)
+ 	if(NOT MVK_EXCLUDE_CEREAL)
+ 		find_package(cereal CONFIG REQUIRED)
+ 		target_link_libraries(MoltenVK PRIVATE cereal::cereal)
++		target_link_libraries(MoltenVK_static PRIVATE cereal::cereal)
+ 	else()
+ 		target_compile_definitions(MoltenVK PUBLIC MVK_USE_CEREAL=0)
++		target_compile_definitions(MoltenVK_static PUBLIC MVK_USE_CEREAL=0)
+ 	endif()
+ 	target_link_libraries(MoltenVK PUBLIC Vulkan::Headers)
++	target_link_libraries(MoltenVK_static PUBLIC Vulkan::Headers)
+ else()
+ 	if(NOT MVK_EXCLUDE_CEREAL)
+ 		include(cereal)
+ 		target_link_libraries(MoltenVK PRIVATE cereal::cereal)
++		target_link_libraries(MoltenVK_static PRIVATE cereal::cereal)
+ 	else()
+ 		target_compile_definitions(MoltenVK PUBLIC MVK_USE_CEREAL=0)
++		target_compile_definitions(MoltenVK_static PUBLIC MVK_USE_CEREAL=0)
+ 	endif()
+ 	include(Vulkan-Headers)
+ 	target_link_libraries(MoltenVK PUBLIC Vulkan::Headers)
++	target_link_libraries(MoltenVK_static PUBLIC Vulkan::Headers)
+ endif()

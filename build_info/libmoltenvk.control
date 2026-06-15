@@ -1,0 +1,14 @@
+Package: libmoltenvk
+Version: @DEB_MOLTEN_VK_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: The Khronos Group Inc.
+Section: Libraries
+Priority: optional
+Homepage: https://github.com/KhronosGroup/MoltenVK
+Description: MoltenVK is a Vulkan Portability implementation.
+ It layers a subset of the high-performance, industry-standard Vulkan graphics and compute API
+ over Apple's Metal graphics framework, enabling Vulkan applications to run on macOS, iOS and tvOS.
+ .
+ This package provides the shared library.
+ This version of MoltenVK was built with private Metal API enabled.

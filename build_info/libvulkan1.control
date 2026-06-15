@@ -1,0 +1,15 @@
+Package: libvulkan1
+Version: @DEB_VULKAN_LOADER_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: The Khronos Group Inc.
+Section: Libraries
+Priority: optional
+Homepage: https://github.com/KhronosGroup/Vulkan-Loader
+Description: Vulkan loader library
+ The Loader implements the main VK library. It handles layer management and
+ driver management. The loader fully supports multi-gpu operation. As part of
+ this, it dispatches API calls to the correct driver, and to the correct
+ layers, based on the GPU object selected by the application.
+ .
+ This package includes the loader library.

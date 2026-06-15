@@ -1,0 +1,18 @@
+Package: libspirv-headers-dev
+Version: @DEB_SPIRV_HEADERS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: The Khronos Group Inc.
+Section: Development
+Priority: optional
+Homepage: https://github.com/KhronosGroup/SPIRV-Headers
+Description: Machine-readable files for the SPIR-V Registry
+ This package includes:
+  - Header files for various languages
+  - JSON files describing the grammar for the SPIR-V core instruction
+    set and the extended instruction sets.
+  - The XML registry file.
+ .
+ For more info, see https://github.com/KhronosGroup/SPIRV-Headers
+  .
+ This package provides the development files.
