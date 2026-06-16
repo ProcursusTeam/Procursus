@@ -3,9 +3,9 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += libinsn
-LIBINSN_VERSION := 35
-LIBINSN_COMMIT  := 64124fd2b1b57d7b76a0e2b0c06434a7048758d2
-DEB_LIBINSN_V   ?= $(LIBINSN_VERSION)-1
+LIBINSN_VERSION := 37
+LIBINSN_COMMIT  := e795956b0c0e0c2fcbb074ee1f1cfd84e98f0918
+DEB_LIBINSN_V   ?= $(LIBINSN_VERSION)
 
 libinsn-setup: setup
 	$(call GITHUB_ARCHIVE,tihmstar,libinsn,$(LIBINSN_COMMIT),$(LIBINSN_COMMIT))

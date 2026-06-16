@@ -3,33 +3,34 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS                         += futurerestore
-FUTURERESTORE_VERSION               := 195
-FUTURERESTORE_COMMIT                := 55db758b5d4d6c08daa48af9aad1abf2b6466f36
-FUTURERESTORE_IDEVICERESTORE_COMMIT := d7d9996b3910902a56462fa8d9dc5909fcf8f4c9
-DEB_FUTURERESTORE_V                 ?= $(FUTURERESTORE_VERSION)-1
+FUTURERESTORE_VERSION               := 290
+FUTURERESTORE_COMMIT                := 7f732140187bbcecfed3c34ac38185a4096d06d7
+FUTURERESTORE_IDEVICERESTORE_COMMIT := b46637056fce7cb771f53916b1a8c527d256c5f2
+DEB_FUTURERESTORE_V                 ?= $(FUTURERESTORE_VERSION)
 
 futurerestore-setup: setup tsschecker-setup
-	$(call GITHUB_ARCHIVE,m1stadev,futurerestore,$(FUTURERESTORE_COMMIT),$(FUTURERESTORE_COMMIT))
-	$(call GITHUB_ARCHIVE,m1stadev,idevicerestore,$(FUTURERESTORE_IDEVICERESTORE_COMMIT),$(FUTURERESTORE_IDEVICERESTORE_COMMIT))
+	$(call GITHUB_ARCHIVE,futurerestore,futurerestore,$(FUTURERESTORE_COMMIT),$(FUTURERESTORE_COMMIT))
+	$(call GITHUB_ARCHIVE,futurerestore,idevicerestore,$(FUTURERESTORE_IDEVICERESTORE_COMMIT),$(FUTURERESTORE_IDEVICERESTORE_COMMIT))
 	$(call EXTRACT_TAR,futurerestore-$(FUTURERESTORE_COMMIT).tar.gz,futurerestore-$(FUTURERESTORE_COMMIT),futurerestore)
-
 	-rmdir $(BUILD_WORK)/futurerestore/external/{idevicerestore,tsschecker}
 	$(call EXTRACT_TAR,idevicerestore-$(FUTURERESTORE_IDEVICERESTORE_COMMIT).tar.gz,idevicerestore-$(FUTURERESTORE_IDEVICERESTORE_COMMIT),futurerestore/external/idevicerestore)
-	cp -R $(BUILD_WORK)/tsschecker $(BUILD_WORK)/futurerestore/external
+	cp -RpP $(BUILD_WORK)/tsschecker $(BUILD_WORK)/futurerestore/external
 
-	sed -i 's/git rev\-list \-\-count HEAD/printf ${FUTURERESTORE_VERSION}/g' $(BUILD_WORK)/futurerestore/configure.ac
-	sed -i 's/git rev\-parse HEAD/printf ${FUTURERESTORE_COMMIT}/g' $(BUILD_WORK)/futurerestore/configure.ac
 
 ifneq ($(wildcard $(BUILD_WORK)/futurerestore/.build_complete),)
 futurerestore:
 	@echo "Using previously built futurerestore."
 else
 futurerestore: futurerestore-setup libirecovery openssl libusbmuxd libimobiledevice img4tool libgeneral libzip libfragmentzip libipatcher
-	cd $(BUILD_WORK)/futurerestore && ./autogen.sh \
-		$(DEFAULT_CONFIGURE_FLAGS) \
-		--disable-silent-rules \
-		zlib_LIBS="-L$(TARGET_SYSROOT)/usr/lib -lz" \
-		zlib_CFLAGS="-I$(TARGET_SYSROOT)/usr/include"
+	cd $(BUILD_WORK)/futurerestore && cmake \
+		$(DEFAULT_CMAKE_FLAGS) \
+		-DARCH="$(MEMO_ARCH)" \
+		-DVERSION_COMMIT_COUNT="$(FUTURERESTORE_VERSION)" \
+		-DVERSION_COMMIT_SHA="$(FUTURERESTORE_COMMIT)" \
+		-DCMAKE_INSTALL_RPATH="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
+		-DCMAKE_BUILD_WITH_INSTALL_RPATH=TRUE \
+		-DCMAKE_INSTALL_RPATH_USE_LINK_PATH=TRUE \
+		-DNO_XCODE=1
 	+$(MAKE) -C $(BUILD_WORK)/futurerestore
 	+$(MAKE) -C $(BUILD_WORK)/futurerestore install \
 		DESTDIR="$(BUILD_STAGE)/futurerestore"
