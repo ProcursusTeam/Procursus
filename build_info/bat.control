@@ -13,9 +13,6 @@ Description: cat(1) clone with syntax highlighting and git integration
   * automatic paging;
   * a user-friendly command-line interface.
  .
- In this package the executable and its manpage have been renamed from ‘bat’ to
- ‘batcat’ because of a file name clash with another Debian package.
- .
  This package contains the following binaries built from the Rust crate
  "bat":
   - bat
