@@ -1,0 +1,14 @@
+Package: libtokyocabinet9
+Version: @DEB_TOKYOCABINET_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Description: Tokyo Cabinet Database Libraries [runtime]
+ Tokyo Cabinet is an efficient database library like GDBM and NDBM.
+ It features hash database and B+ tree database and is developed as the
+ successor of QDBM, for the purpose of the following three points: higher
+ processing speed, smaller size of a database file, and simpler API.
+ .
+ This is the runtime package for programs that use the Tokyo Cabinet database
+ library.

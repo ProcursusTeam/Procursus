@@ -1,0 +1,181 @@
+From a8e577c80ed4ea3cf28c5c55e2389d0c6b1b42e7 Mon Sep 17 00:00:00 2001
+From: Pierre Habouzit <madcoder@debian.org>
+Date: Mon, 3 Nov 2008 15:32:28 +0100
+Subject: [PATCH 2/4] Avoid LDENV to avoid rpaths.
+
+Signed-off-by: Pierre Habouzit <madcoder@debian.org>
+---
+ Makefile.in  |   33 ++++++++++++++++-----------------
+ configure    |   19 ++++++++++---------
+ configure.in |   19 ++++++++++---------
+ 3 files changed, 36 insertions(+), 35 deletions(-)
+
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -54,8 +54,7 @@
+ LDFLAGS = @MYLDFLAGS@
+ CMDLDFLAGS = @MYCMDLDFLAGS@
+ LIBS = @LIBS@
+-LDENV = LD_RUN_PATH=/lib:/usr/lib:$(LIBDIR):$(HOME)/lib:/usr/local/lib:@MYRUNPATH@:.
+-RUNENV = @MYLDLIBPATHENV@=.:/lib:/usr/lib:$(LIBDIR):$(HOME)/lib:/usr/local/lib:@MYRUNPATH@
++RUNENV = @MYLDLIBPATHENV@=.
+ POSTCMD = @MYPOSTCMD@
+ 
+ 
+@@ -714,51 +713,51 @@
+ 
+ 
+ tcutest : tcutest.o $(LIBRARYFILES)
+-	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet $(LIBS)
++	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet
+ 
+ 
+ tcumttest : tcumttest.o $(LIBRARYFILES)
+-	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet $(LIBS)
++	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet
+ 
+ 
+ tcucodec : tcucodec.o $(LIBRARYFILES)
+-	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet $(LIBS)
++	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet
+ 
+ 
+ tchtest : tchtest.o $(LIBRARYFILES)
+-	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet $(LIBS)
++	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet
+ 
+ 
+ tchmttest : tchmttest.o $(LIBRARYFILES)
+-	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet $(LIBS)
++	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet
+ 
+ 
+ tchmgr : tchmgr.o $(LIBRARYFILES)
+-	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet $(LIBS)
++	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet
+ 
+ 
+ tcbtest : tcbtest.o $(LIBRARYFILES)
+-	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet $(LIBS)
++	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet
+ 
+ 
+ tcbmttest : tcbmttest.o $(LIBRARYFILES)
+-	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet $(LIBS)
++	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet
+ 
+ 
+ tcbmgr : tcbmgr.o $(LIBRARYFILES)
+-	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet $(LIBS)
++	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet
+ 
+ 
+ tcftest : tcftest.o $(LIBRARYFILES)
+-	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet $(LIBS)
++	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet
+ 
+ 
+ tcfmttest : tcfmttest.o $(LIBRARYFILES)
+-	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet $(LIBS)
++	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet
+ 
+ 
+ tcfmgr : tcfmgr.o $(LIBRARYFILES)
+-	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet $(LIBS)
++	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet
+ 
+ 
+ tcttest : tcttest.o $(LIBRARYFILES)
+@@ -774,7 +773,7 @@
+ 
+ 
+ tcatest : tcatest.o $(LIBRARYFILES)
+-	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet $(LIBS)
++	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet
+ 
+ 
+ tcamttest : tcamttest.o $(LIBRARYFILES)
+@@ -782,11 +781,11 @@
+ 
+ 
+ tcamgr : tcamgr.o $(LIBRARYFILES)
+-	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet $(LIBS)
++	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet
+ 
+ 
+ tcawmgr.cgi : tcawmgr.o $(LIBRARYFILES)
+-	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet $(LIBS)
++	$(LDENV) $(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) $(CMDLDFLAGS) -ltokyocabinet
+ 
+ 
+ myconf.o : myconf.h
+--- a/configure
++++ b/configure
+@@ -2076,22 +2076,23 @@
+ 
+ # Building flags
+ MYCFLAGS="-std=c99 -Wall -fPIC -fsigned-char -O2"
+-MYCPPFLAGS="-I. -I\$(INCLUDEDIR) -I$HOME/include -I/usr/local/include"
++MYCPPFLAGS="-I. -I\$(INCLUDEDIR) -I/usr/local/include"
+ MYCPPFLAGS="$MYCPPFLAGS -DNDEBUG -D_GNU_SOURCE=1 -D_REENTRANT -D__EXTENSIONS__"
+-MYLDFLAGS="-L. -L\$(LIBDIR) -L$HOME/lib -L/usr/local/lib"
++MYLDFLAGS="-L. -L\$(LIBDIR) -L/usr/local/lib"
+ MYCMDLDFLAGS=""
+ MYRUNPATH="\$(LIBDIR)"
+ MYLDLIBPATHENV="LD_LIBRARY_PATH"
+ MYPOSTCMD="true"
+ 
+ # Building paths
+-PATH="$PATH:$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
+-PATH="$PATH:/opt/SUNWspro/bin:/usr/ccs/bin:/usr/xpg4/bin:/usr/xpg6/bin:/usr/ucb"
+-CPATH="$HOME/include:/usr/local/include:$CPATH"
+-LIBRARY_PATH="$HOME/lib:/usr/local/lib:$LIBRARY_PATH"
+-LD_LIBRARY_PATH="$HOME/lib:/usr/local/lib:$LD_LIBRARY_PATH"
+-PKG_CONFIG_PATH="$HOME/lib/pkgconfig:/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
+-export PATH CPATH LIBRARY_PATH LD_LIBRARY_PATH PKG_CONFIG_PATH
++pathtmp="$PATH"
++PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
++PATH="$PATH:/usr/ccs/bin:/usr/ucb:/usr/xpg4/bin:/usr/xpg6/bin:$pathtmp"
++LIBRARY_PATH="/usr/local/lib:$LIBRARY_PATH"
++LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
++CPATH="/usr/local/include:$CPATH"
++PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
++export PATH LIBRARY_PATH LD_LIBRARY_PATH CPATH PKG_CONFIG_PATH
+ 
+ 
+ 
+--- a/configure.in
++++ b/configure.in
+@@ -32,22 +32,23 @@
+ 
+ # Building flags
+ MYCFLAGS="-std=c99 -Wall -fPIC -fsigned-char -O2"
+-MYCPPFLAGS="-I. -I\$(INCLUDEDIR) -I$HOME/include -I/usr/local/include"
++MYCPPFLAGS="-I. -I\$(INCLUDEDIR) -I/usr/local/include"
+ MYCPPFLAGS="$MYCPPFLAGS -DNDEBUG -D_GNU_SOURCE=1 -D_REENTRANT -D__EXTENSIONS__"
+-MYLDFLAGS="-L. -L\$(LIBDIR) -L$HOME/lib -L/usr/local/lib"
++MYLDFLAGS="-L. -L\$(LIBDIR) -L/usr/local/lib"
+ MYCMDLDFLAGS=""
+ MYRUNPATH="\$(LIBDIR)"
+ MYLDLIBPATHENV="LD_LIBRARY_PATH"
+ MYPOSTCMD="true"
+ 
+ # Building paths
+-PATH="$PATH:$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
+-PATH="$PATH:/opt/SUNWspro/bin:/usr/ccs/bin:/usr/xpg4/bin:/usr/xpg6/bin:/usr/ucb"
+-CPATH="$HOME/include:/usr/local/include:$CPATH"
+-LIBRARY_PATH="$HOME/lib:/usr/local/lib:$LIBRARY_PATH"
+-LD_LIBRARY_PATH="$HOME/lib:/usr/local/lib:$LD_LIBRARY_PATH"
+-PKG_CONFIG_PATH="$HOME/lib/pkgconfig:/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
+-export PATH CPATH LIBRARY_PATH LD_LIBRARY_PATH PKG_CONFIG_PATH
++pathtmp="$PATH"
++PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
++PATH="$PATH:/usr/ccs/bin:/usr/ucb:/usr/xpg4/bin:/usr/xpg6/bin:$pathtmp"
++LIBRARY_PATH="/usr/local/lib:$LIBRARY_PATH"
++LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
++CPATH="/usr/local/include:$CPATH"
++PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
++export PATH LIBRARY_PATH LD_LIBRARY_PATH CPATH PKG_CONFIG_PATH
+ 
+ 
+ 

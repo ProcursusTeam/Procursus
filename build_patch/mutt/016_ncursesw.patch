@@ -1,0 +1,14 @@
+diff --color -urN mutt-2.0.6/configure.ac mutt/configure.ac
+--- mutt-2.0.6/configure.ac	2021-03-06 14:06:37.000000000 -0500
++++ mutt/configure.ac	2021-04-01 14:32:22.826162698 -0400
+@@ -331,8 +331,8 @@
+                 fi])
+ 
+ 	AC_CHECK_FUNC(initscr,,[
+-	cf_ncurses="ncurses"
+-	for lib in ncurses ncursesw
++	cf_ncurses="ncursesw"
++	for lib in ncursesw
+ 	do
+ 		AC_CHECK_LIB($lib, waddnwstr, [cf_ncurses="$lib"; break])
+ 	done

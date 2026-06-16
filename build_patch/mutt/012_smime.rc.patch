@@ -1,0 +1,61 @@
+From: Antonio Radici <antonio@debian.org>
+Date: Tue, 15 Sep 2015 23:01:15 +0200
+Subject: smime.rc
+
+Add CA's provided by ca-certificates to the ones
+distributed by the default installation of Mutt.
+
+Signed-off-by: Matteo F. Vescovi <mfv@debian.org>
+---
+ contrib/smime.rc | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
+
+--- a/contrib/smime.rc
++++ b/contrib/smime.rc
+@@ -4,20 +4,20 @@
+ 
+ # If you compiled mutt with support for both PGP and S/MIME, PGP
+ # will be the default method unless the following option is set
+-set smime_is_default
++#set smime_is_default
+ 
+ # Uncomment this if you don't want to set labels for certificates you add.
+ # unset smime_ask_cert_label
+ 
+ # Passphrase expiration
+-set smime_timeout=300
++#set smime_timeout=300
+ 
+ # Global crypto options -- these affect PGP operations as well.
+-set crypt_autosign = yes
+-set crypt_replyencrypt = yes
+-set crypt_replysign = yes
+-set crypt_replysignencrypted = yes
+-set crypt_verify_sig = yes
++#set crypt_autosign = yes
++#set crypt_replyencrypt = yes
++#set crypt_replysign = yes
++#set crypt_replysignencrypted = yes
++#set crypt_verify_sig = yes
+ 
+ 
+ # Section A: Key Management
+@@ -47,7 +47,8 @@
+ # unset smime_decrypt_use_default_key
+ 
+ # Path to a file or directory with trusted certificates
+-set smime_ca_location="~/.smime/ca-bundle.crt"
++#set smime_ca_location="~/.smime/ca-bundle.crt"
++set smime_ca_location=`for f in $HOME/.smime/ca-certificates.crt $HOME/.smime/ca-bundle.crt /etc/ssl/certs/ca-certificates.crt ; do if [ -e $f ] ; then echo $f ; exit ; fi ; done`
+ 
+ # Path to where all known certificates go. (must exist!)
+ set smime_certificates="~/.smime/certificates"
+@@ -94,7 +95,7 @@
+ # Section C: Incoming messages
+ 
+ # Decrypt a message.  Output is a MIME entity.
+-set smime_decrypt_command="openssl smime -decrypt -passin stdin -inform DER -in %f -inkey %k -recip %c"
++set smime_decrypt_command="openssl cms -decrypt -passin stdin -inform DER -in %f -inkey %k -recip %c"
+ 
+ # Verify a signature of type multipart/signed
+ set smime_verify_command="openssl smime -verify -inform DER -in %s %C -content %f"

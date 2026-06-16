@@ -1,0 +1,72 @@
+From: Antonio Radici <antonio@debian.org>
+Date: Thu, 27 Feb 2014 16:19:30 +0100
+Subject: document_debian_defaults
+
+Some customization of the option which are straying
+from the default only on Debian systems.
+---
+ mutt_config.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+
+--- a/docs/config.c
++++ b/docs/config.c
+@@ -420,6 +420,9 @@
+ ** .pp
+ ** When this variable is \fIset\fP, NeoMutt will include Delivered-To headers when
+ ** bouncing messages.  Postfix users may wish to \fIunset\fP this variable.
++** .pp
++** \fBNote:\fP On Debian systems, this option is unset by default in
++** /etc/Muttrc.
+ */
+ 
+ { "braille_friendly", DT_BOOL, false },
+@@ -1653,6 +1656,9 @@
+ ** Optionally, NeoMutt can be compiled with a fixed domain name.
+ ** .pp
+ ** Also see $$use_domain and $$hidden_host.
++** .pp
++** \fBNote:\fP On Debian systems, the default for this variable is obtained
++** from /etc/mailname when Mutt starts.
+ */
+ 
+ #ifdef HAVE_LIBIDN
+@@ -2460,6 +2466,9 @@
+ ** system.  It is used with various sets of parameters to gather the
+ ** list of known remailers, and to finally send a message through the
+ ** mixmaster chain.
++** .pp
++** \fBNote:\fP On Debian systems, this option is set by default to
++** ``mixmaster-filter'' in /etc/Muttrc.
+ */
+ #endif
+ 
+@@ -4377,6 +4386,9 @@
+ ** .pp
+ ** Encrypt the message to $$smime_default_key too.
+ ** (S/MIME only)
++** \fBNote:\fP On Debian systems, this defaults to the first existing file in
++** the following list: ~/.smime/ca-certificates.crt ~/.smime/ca-bundle.crt
++** /etc/ssl/certs/ca-certificates.crt.
+ */
+ #endif
+ 
+@@ -4744,6 +4756,9 @@
+ ** .ts
+ ** set ssl_ca_certificates_file=/etc/ssl/certs/ca-certificates.crt
+ ** .te
++** .pp
++** \fBNote:\fP On Debian systems, this option is set by default to
++** ``threads'' in /etc/Muttrc.
+ */
+ #endif
+ 
+@@ -5373,6 +5388,9 @@
+ ** Note this option only affects the sending of messages.  Fcc'ed
+ ** copies of a message will always contain the "Bcc:" header if
+ ** one exists.
++** .pp
++** \fBNote:\fP On Debian systems, exim4 and postfix strip BCC headers by
++** default. The above warning applies to exim3 users, see /etc/Muttrc.
+ */
+ 
+ { "write_inc", DT_NUMBER, 10 },

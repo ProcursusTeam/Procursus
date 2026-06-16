@@ -1,0 +1,163 @@
+From 53ffdb93b8a96efb7456f9430cf46a66ca7b9860 Mon Sep 17 00:00:00 2001
+From: Kevin McCarthy <kevin@8t8.us>
+Date: Wed, 10 Mar 2021 15:09:49 -0800
+Subject: [PATCH] Improve body color matching speed by caching future matches.
+
+On a *very* long body (or header_partial) lines with multiple color
+lines that match, performance can be degraded.  For instance if there
+were moderately expensive regexp matches against "A" "B" and "C".  A
+line with:
+
+  A A A A A B A A C A A A B A A A C
+
+The B and C regexps were scanned again after every "A" match, despite
+that the result would be discarded again for the next A match.
+
+Change the color matching to cache the location of each color line
+match.  Discard the cache once the match offset passes that point.
+---
+ mutt_curses.h |  5 ++++
+ pager.c       | 64 ++++++++++++++++++++++++++++++++++++++++-----------
+ 2 files changed, 55 insertions(+), 14 deletions(-)
+
+--- a/mutt_curses.h
++++ b/mutt_curses.h
+@@ -154,9 +154,14 @@
+   int pair;
+   struct color_line *next;
+ 
++  regoff_t cached_rm_so;
++  regoff_t cached_rm_eo;
++
+   unsigned int stop_matching : 1; /* used by the pager for body patterns,
+                                      to prevent the color from being retried
+                                      once it fails. */
++  unsigned int cached : 1; /* indicates cached_rm_so and cached_rm_eo
++                            * hold the last match location */
+ } COLOR_LINE;
+ 
+ #define MUTT_PROGRESS_SIZE      (1<<0)  /* traffic-based progress */
+--- a/pager.c
++++ b/pager.c
+@@ -773,7 +773,7 @@
+ {
+   COLOR_LINE *color_line, *color_list;
+   regmatch_t pmatch[1];
+-  int found, offset, null_rx, i;
++  int i;
+ 
+   if (n == 0 || ISHEADER (lineInfo[n-1].type) ||
+       (check_protected_header_marker (raw) == 0))
+@@ -879,6 +879,8 @@
+       (lineInfo[n].type == MT_COLOR_HDEFAULT && option (OPTHEADERCOLORPARTIAL)))
+   {
+     size_t nl;
++    int has_nl = 0, found, offset, null_rx, has_reg_match;
++    regoff_t rm_so, rm_eo;
+ 
+     /* don't consider line endings part of the buffer
+      * for regex matching */
+@@ -896,8 +898,10 @@
+     while (color_line)
+     {
+       color_line->stop_matching = 0;
++      color_line->cached = 0;
+       color_line = color_line->next;
+     }
++
+     do
+     {
+       if (!buf[offset])
+@@ -908,11 +912,31 @@
+       color_line = color_list;
+       while (color_line)
+       {
+-	if (!color_line->stop_matching &&
+-            regexec (&color_line->rx, buf + offset, 1, pmatch,
+-		     (offset ? REG_NOTBOL : 0)) == 0)
++        has_reg_match = 0;
++	if (!color_line->stop_matching)
++        {
++          if (color_line->cached)
++          {
++            has_reg_match = 1;
++            rm_so = color_line->cached_rm_so;
++            rm_eo = color_line->cached_rm_eo;
++          }
++          else
++          {
++            if (regexec (&color_line->rx, buf + offset, 1, pmatch,
++                         (offset ? REG_NOTBOL : 0)) == 0)
++            {
++              has_reg_match = 1;
++              color_line->cached = 1;
++              rm_so = color_line->cached_rm_so = (pmatch[0].rm_so + offset);
++              rm_eo = color_line->cached_rm_eo = (pmatch[0].rm_eo + offset);
++            }
++          }
++        }
++
++        if (has_reg_match)
+ 	{
+-	  if (pmatch[0].rm_eo != pmatch[0].rm_so)
++	  if (rm_eo != rm_so)
+ 	  {
+ 	    if (!found)
+ 	    {
+@@ -928,28 +952,29 @@
+ 			      (lineInfo[n].chunks) * sizeof (struct syntax_t));
+ 	    }
+ 	    i = lineInfo[n].chunks - 1;
+-	    pmatch[0].rm_so += offset;
+-	    pmatch[0].rm_eo += offset;
+ 	    if (!found ||
+-		pmatch[0].rm_so < (lineInfo[n].syntax)[i].first ||
+-		(pmatch[0].rm_so == (lineInfo[n].syntax)[i].first &&
+-		 pmatch[0].rm_eo > (lineInfo[n].syntax)[i].last))
++		rm_so < (lineInfo[n].syntax)[i].first ||
++		(rm_so == (lineInfo[n].syntax)[i].first &&
++		 rm_eo > (lineInfo[n].syntax)[i].last))
+ 	    {
+ 	      (lineInfo[n].syntax)[i].color = color_line->pair;
+-	      (lineInfo[n].syntax)[i].first = pmatch[0].rm_so;
+-	      (lineInfo[n].syntax)[i].last = pmatch[0].rm_eo;
++	      (lineInfo[n].syntax)[i].first = rm_so;
++	      (lineInfo[n].syntax)[i].last = rm_eo;
+ 	    }
+ 	    found = 1;
+ 	    null_rx = 0;
+ 	  }
+ 	  else
+-	    null_rx = 1; /* empty regexp; don't add it, but keep looking */
++            null_rx = 1; /* empty regexp; don't add it, but keep looking */
+ 	}
+         /* Once a regexp fails to match, don't try matching it again.
+          * On very long lines this can cause a performance issue if there
+          * are other regexps that have many matches. */
+         else
++        {
+           color_line->stop_matching = 1;
++          color_line->cached = 0;
++        }
+ 	color_line = color_line->next;
+       }
+ 
+@@ -957,6 +982,18 @@
+ 	offset++; /* avoid degenerate cases */
+       else
+ 	offset = (lineInfo[n].syntax)[i].last;
++
++      /* Removed cached matches that aren't later in the buffer */
++      color_line = color_list;
++      while (color_line)
++      {
++        if (color_line->cached &&
++            color_line->cached_rm_so < offset)
++        {
++          color_line->cached = 0;
++        }
++	color_line = color_line->next;
++      }
+     } while (found || null_rx);
+     if (nl > 0)
+       buf[nl] = '\n';

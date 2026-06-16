@@ -1,0 +1,73 @@
+From: Antonio Radici <antonio@debian.org>
+Date: Thu, 27 Feb 2014 16:19:30 +0100
+Subject: document_debian_defaults
+
+Some customization of the option which are straying
+from the default only on Debian systems.
+---
+ init.h | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+
+--- a/init.h
++++ b/init.h
+@@ -453,6 +453,9 @@
+   ** .pp
+   ** When this variable is \fIset\fP, mutt will include Delivered-To headers when
+   ** bouncing messages.  Postfix users may wish to \fIunset\fP this variable.
++  ** .pp
++  ** \fBNote:\fP On Debian systems, this option is unset by default in
++  ** /etc/Muttrc.
+   */
+   { "braille_friendly", DT_BOOL, R_NONE, {.l=OPTBRAILLEFRIENDLY}, {.l=0} },
+   /*
+@@ -1466,6 +1469,9 @@
+   ** your muttrc.
+   ** .pp
+   ** Also see $$use_domain and $$hidden_host.
++  ** .pp
++  ** \fBNote:\fP On Debian systems, the default for this variable is obtained
++  ** from /etc/mailname when Mutt starts.
+   */
+ #if defined(HAVE_LIBIDN) || defined(HAVE_LIBIDN2)
+   { "idn_decode",	DT_BOOL, R_MENU, {.l=OPTIDNDECODE}, {.l=1} },
+@@ -2165,6 +2171,9 @@
+   ** system.  It is used with various sets of parameters to gather the
+   ** list of known remailers, and to finally send a message through the
+   ** mixmaster chain.
++  ** .pp
++  ** \fBNote:\fP On Debian systems, this option is set by default to
++  ** ``mixmaster-filter'' in /etc/Muttrc.
+   */
+ #endif
+   { "move",		DT_QUAD, R_NONE, {.l=OPT_MOVE}, {.l=MUTT_NO} },
+@@ -3843,6 +3852,10 @@
+   ** This is a format string, see the $$smime_decrypt_command command for
+   ** possible \fCprintf(3)\fP-like sequences.
+   ** (S/MIME only)
++  ** .pp
++  ** \fBNote:\fP On Debian systems, this defaults to the first existing file in
++  ** the following list: ~/.smime/ca-certificates.crt ~/.smime/ca-bundle.crt
++  ** /etc/ssl/certs/ca-certificates.crt.
+   */
+ #ifdef USE_SMTP
+   { "smtp_authenticators", DT_STR, R_NONE, {.p=&SmtpAuthenticators}, {.p=0} },
+@@ -4013,6 +4026,9 @@
+   ** .ts
+   ** set ssl_ca_certificates_file=/etc/ssl/certs/ca-certificates.crt
+   ** .te
++  ** .pp
++  ** \fBNote:\fP On Debian systems, this option is set by default to
++  ** ``threads'' in /etc/Muttrc.
+   */
+ #endif /* USE_SSL_GNUTLS */
+   { "ssl_client_cert", DT_PATH, R_NONE, {.p=&SslClientCert}, {.p=0} },
+@@ -4576,6 +4592,9 @@
+   ** Note this option only affects the sending of messages.  Fcc'ed
+   ** copies of a message will always contain the ``Bcc:'' header if
+   ** one exists.
++  ** .pp
++  ** On Debian systems, exim4 and postfix strip BCC headers by
++  ** default. The above warning applies to exim3 users, see /etc/Muttrc.
+   */
+   { "write_inc",	DT_NUM,	 R_NONE, {.p=&WriteInc}, {.l=10} },
+   /*

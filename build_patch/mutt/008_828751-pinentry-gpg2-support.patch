@@ -1,0 +1,54 @@
+This patch enables gpgme by default on the Debian version of mutt starting from
+1.7.0-2. More explanations are in NEWS.Debian.
+
+--- a/contrib/gpg.rc
++++ b/contrib/gpg.rc
+@@ -52,30 +52,40 @@
+ # in some localiaztion environments, generates 8bit data in that header, thereby
+ # breaking PGP/MIME.
+ 
++# Note from the Debian mutt maintainers: starting from 1.7.0-2 GPGME is enabled
++# by default. More info in NEWS.Debian.
++# THe pgp_* commands are left here for people who disable gpgme in their
++# ~/.muttrc
++set crypt_use_gpgme=yes
++
++# Note from the Debian mutt maintainers: the addition of
++# "--pinentry-mode loopback" breaks gpgv1 compatiblity, if you need to use gpgv1
++# remove that statement.
++
+ # decode application/pgp
+-set pgp_decode_command="gpg --status-fd=2 %?p?--passphrase-fd 0? --no-verbose --quiet --batch --output - %f"
++set pgp_decode_command="gpg --status-fd=2 %?p?--passphrase-fd 0 --pinentry-mode=loopback? --no-verbose --quiet --batch --output - %f"
+ 
+ # verify a pgp/mime signature
+ set pgp_verify_command="gpg --status-fd=2 --no-verbose --quiet --batch --output - --verify %s %f"
+ 
+ # decrypt a pgp/mime attachment
+-set pgp_decrypt_command="gpg --status-fd=2 %?p?--passphrase-fd 0? --no-verbose --quiet --batch --output - %f"
++set pgp_decrypt_command="gpg --status-fd=2 %?p?--passphrase-fd 0 --pinentry-mode=loopback? --no-verbose --quiet --batch --output - %f"
+ 
+ # create a pgp/mime signed attachment
+-# set pgp_sign_command="gpg-2comp --comment '' --no-verbose --batch --output - %?p?--passphrase-fd 0? --armor --detach-sign --textmode %?a?-u %a? %f"
+-set pgp_sign_command="gpg --no-verbose --batch --quiet --output - %?p?--passphrase-fd 0? --armor --detach-sign --textmode %?a?-u %a? %f"
++# set pgp_sign_command="gpg-2comp --comment '' --no-verbose --batch --output - %?p?--passphrase-fd 0 --pinentry-mode=loopback? --armor --detach-sign --textmode %?a?-u %a? %f"
++set pgp_sign_command="gpg --no-verbose --batch --quiet --output - %?p?--passphrase-fd 0 --pinentry-mode=loopback? --armor --detach-sign --textmode %?a?-u %a? %f"
+ 
+ # create a application/pgp signed (old-style) message
+-# set pgp_clearsign_command="gpg-2comp --comment '' --no-verbose --batch --output - %?p?--passphrase-fd 0? --armor --textmode --clearsign %?a?-u %a? %f"
+-set pgp_clearsign_command="gpg --no-verbose --batch --quiet --output - %?p?--passphrase-fd 0? --armor --textmode --clearsign %?a?-u %a? %f"
++# set pgp_clearsign_command="gpg-2comp --comment '' --no-verbose --batch --output - %?p?--passphrase-fd 0 --pinentry-mode=loopback? --armor --textmode --clearsign %?a?-u %a? %f"
++set pgp_clearsign_command="gpg --no-verbose --batch --quiet --output - %?p?--passphrase-fd 0 --pinentry-mode=loopback? --armor --textmode --clearsign %?a?-u %a? %f"
+ 
+ # create a pgp/mime encrypted attachment
+ # set pgp_encrypt_only_command="pgpewrap gpg-2comp -v --batch --output - --encrypt --textmode --armor --always-trust -- -r %r -- %f"
+ set pgp_encrypt_only_command="pgpewrap gpg --batch --quiet --no-verbose --output - --encrypt --textmode --armor --always-trust -- -r %r -- %f"
+ 
+ # create a pgp/mime encrypted and signed attachment
+-# set pgp_encrypt_sign_command="pgpewrap gpg-2comp %?p?--passphrase-fd 0? -v --batch --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
+-set pgp_encrypt_sign_command="pgpewrap gpg %?p?--passphrase-fd 0? --batch --quiet --no-verbose --textmode --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
++# set pgp_encrypt_sign_command="pgpewrap gpg-2comp %?p?--passphrase-fd 0 --pinentry-mode=loopback? -v --batch --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
++set pgp_encrypt_sign_command="pgpewrap gpg %?p?--passphrase-fd 0 --pinentry-mode=loopback? --batch --quiet --no-verbose --textmode --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
+ 
+ # import a key into the public key ring
+ set pgp_import_command="gpg --no-verbose --import %f"

@@ -1,0 +1,9 @@
+# Some GB18030 traditional Chinese mails are wrongly labelled GB2312.
+# The first charset is a superset of the second. Let's alias it, so
+# that Mutt displays such mails as if they were correctly labelled.
+charset-hook ^gb2312$ gb18030
+
+# Some mailers send EUC-JP-MS Japanese mails wrongly labelled EUC-JP.
+# The first charset is a superset of the second. Let's also alias it.
+charset-hook ^euc-jp$ euc-jp-ms
+

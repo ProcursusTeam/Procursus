@@ -1,0 +1,34 @@
+From 48421de6dbdac43f873b2fac6580c0a6cb7fd71b Mon Sep 17 00:00:00 2001
+From: Pierre Habouzit <madcoder@debian.org>
+Date: Sun, 8 Nov 2009 15:38:41 +0100
+Subject: [PATCH 3/4] Readd alias symbols for tcmpoolput* APIS.
+
+Changing the return type from void to a pointer isn't an ABI break, so
+it's safe, and avoid a Debian-only ABI bump.
+
+Signed-off-by: Pierre Habouzit <madcoder@debian.org>
+---
+ tcutil.c |    7 +++++++
+ 1 files changed, 7 insertions(+), 0 deletions(-)
+
+diff --git a/tcutil.c b/tcutil.c
+index dd93e7b..4e807f8 100644
+--- a/tcutil.c
++++ b/tcutil.c
+@@ -4589,6 +4589,13 @@ TCTREE *tcmpoolpushtree(TCMPOOL *mpool, TCTREE *tree){
+   return tcmpoolpush(mpool, tree, (void (*)(void *))tctreedel);
+ }
+ 
++#define ALIAS(old, new)  __typeof__(new) old __attribute__((alias(#new)))
++ALIAS(tcmpoolput,     tcmpoolpush);
++ALIAS(tcmpoolputptr,  tcmpoolpushptr);
++ALIAS(tcmpoolputxstr, tcmpoolpushxstr);
++ALIAS(tcmpoolputlist, tcmpoolpushlist);
++ALIAS(tcmpoolputmap,  tcmpoolpushmap);
++ALIAS(tcmpoolputtree, tcmpoolpushtree);
+ 
+ /* Allocate a region relegated to a memory pool object. */
+ void *tcmpoolmalloc(TCMPOOL *mpool, size_t size){
+-- 
+1.6.5.2.342.g27b86
+

@@ -1,0 +1,31 @@
+From: Antonio Radici <antonio@debian.org>
+Date: Thu, 27 Feb 2014 16:25:39 +0100
+Subject: 566076-build_doc_adjustments
+
+Use w3m to build the txt manual.
+---
+ doc/Makefile.am | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+--- a/doc/Makefile.am
++++ b/doc/Makefile.am
+@@ -151,9 +151,7 @@
+ 
+ check:
+ manual.txt: manual.html
+-	-LC_ALL=C lynx -localhost -dump -nolist -with_backspaces -display_charset=us-ascii manual.html > $@ || \
+-	LC_ALL=C w3m -T text/html -I utf-8 -O utf-8 -dump < manual.html > $@ || \
+-	LC_ALL=C elinks -dump -no-numbering -no-references manual.html | sed -e 's,\\001, ,g' > $@
++	LC_ALL=C w3m -dump -O UTF-8 manual.html > $@
+ 
+ Muttrc: stamp-doc-rc
+ 
+@@ -165,7 +163,7 @@
+ 	touch stamp-doc-rc
+ 
+ manual.html: $(srcdir)/html.xsl $(srcdir)/mutt.xsl stamp-doc-xml $(srcdir)/mutt.css
+-	-xsltproc --nonet -o $@ $(srcdir)/html.xsl manual.xml
++	xsltproc --nonet -o $@ $(srcdir)/html.xsl manual.xml
+ 
+ stamp-doc-chunked: $(srcdir)/chunk.xsl $(srcdir)/mutt.xsl stamp-doc-xml $(srcdir)/mutt.css
+ 	-xsltproc --nonet $(srcdir)/chunk.xsl manual.xml
