@@ -1,0 +1,22 @@
+Package: dbus-daemon
+Version: @DEB_DBUS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: dbus-bin (= @DEB_DBUS_V@), dbus-session-bus-common (>= @DEB_DBUS_V@), libdbus-1-3 (= @DEB_DBUS_V@), firmware (>= 14.0) | libexpat1
+Breaks: dbus (<< @DEB_DBUS_V@)
+Replaces: dbus (<< @DEB_DBUS_V@)
+Section: Administration
+Priority: optional
+Description: simple interprocess messaging system (reference message bus)
+ D-Bus is a message bus, used for sending messages between applications.
+ Conceptually, it fits somewhere in between raw sockets and CORBA in
+ terms of complexity.
+ .
+ This package contains dbus-daemon, the reference implementation of a
+ D-Bus message bus, and dbus-run-session, a utility to start a temporary
+ session dbus-daemon in a constrained environment or for automated tests.
+ .
+ To provide a complete D-Bus session bus, install one of the packages
+ that implement the dbus-session-bus virtual package, such as
+ dbus-user-session. The recommended implementation is indicated by
+ the default-dbus-session-bus virtual package.

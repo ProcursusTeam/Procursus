@@ -1,0 +1,13 @@
+Package: libdbus-1-dev
+Version: @DEB_DBUS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libdbus-1-3 (= @DEB_DBUS_V@), pkg-config
+Section: Development
+Priority: optional
+Description: simple interprocess messaging system (development headers)
+ D-Bus is a message bus, used for sending messages between applications.
+ Conceptually, it fits somewhere in between raw sockets and CORBA in
+ terms of complexity.
+ .
+ See the dbus description for more information about D-Bus in general.

@@ -1,0 +1,50 @@
+From c0e3fddcdccfb19af1fee5f9fc8ab52b06139f08 Mon Sep 17 00:00:00 2001
+From: Nathan
+Date: Wed, 22 Sep 2021 16:01:17 -0400
+Subject: [PATCH] patches
+
+---
+ dbus/dbus-server-launchd.c | 2 +-
+ dbus/dbus-server-unix.c    | 7 ++++---
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/dbus/dbus-server-launchd.c b/dbus/dbus-server-launchd.c
+index 818ba8cf..1bcae0c0 100644
+--- a/dbus/dbus-server-launchd.c
++++ b/dbus/dbus-server-launchd.c
+@@ -75,7 +75,7 @@ _dbus_server_new_for_launchd (const char *launchd_env_var, DBusError * error)
+     launch_data_t environment_dict, environment_param;
+     const char *launchd_socket_path, *display;
+ 
+-    launchd_socket_path = _dbus_getenv (launchd_env_var);
++    launchd_socket_path = _dbus_getenv ("DBUS_LAUNCHD_SESSION_BUS_SOCKET");
+     display = _dbus_getenv ("DISPLAY");
+ 
+     _DBUS_ASSERT_ERROR_IS_CLEAR (error);
+diff --git a/dbus/dbus-server-unix.c b/dbus/dbus-server-unix.c
+index c7ace2bc..a1ff03ea 100644
+--- a/dbus/dbus-server-unix.c
++++ b/dbus/dbus-server-unix.c
+@@ -101,16 +101,16 @@ _dbus_server_listen_platform_specific (DBusAddressEntry *entry,
+               return DBUS_SERVER_LISTEN_BAD_ADDRESS;
+             }
+ 
+-          runtimedir = _dbus_getenv ("XDG_RUNTIME_DIR");
++          runtimedir = _dbus_getenv ("DBUS_LAUNCHD_SESSION_BUS_SOCKET");
+ 
+           if (runtimedir == NULL)
+             {
+               dbus_set_error (error,
+-                  DBUS_ERROR_NOT_SUPPORTED, "\"XDG_RUNTIME_DIR\" is not set");
++                  DBUS_ERROR_NOT_SUPPORTED, "\"DBUS_LAUNCHD_SESSION_BUS_SOCKET\" is not set");
+               return DBUS_SERVER_LISTEN_DID_NOT_CONNECT;
+             }
+ 
+-          _dbus_string_init_const (&filename, "bus");
++          _dbus_string_init_const (&filename, "");
+ 
+           if (!_dbus_string_init (&full_path))
+             {
+-- 
+2.27.0
+
