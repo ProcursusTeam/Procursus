@@ -1,0 +1,14 @@
+Package: thefuck
+Version: @DEB_THEFUCK_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Homepage: https://github.com/nvbn/thefuck
+Section: Utilities
+Depends: python3
+Description: spelling corrector of console commands
+ The Fuck attempts to fix user's command line mistakes, by
+ composing new commands applying a series of matching rules.
+ It supports various shells, such as bash, fish, tcsh, and
+ zsh.
+ .
+ The 'sudo' matching rule has been disabled for users' safety.
