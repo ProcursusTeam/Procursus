@@ -1,0 +1,32 @@
+diff -ur lrzip-next/autogen.sh lrzip-next-diff/autogen.sh
+--- lrzip-next/autogen.sh	2022-02-10 14:27:00.000000000 +0000
++++ lrzip-next-diff/autogen.sh	2022-02-24 18:03:28.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!/bin/env bash
++#!/usr/bin/env bash
+ cwd="$PWD"
+ bs_dir="$(dirname $(readlink -f $0))"
+ rm -rf "${bs_dir}"/autom4te.cache
+diff -ur lrzip-next/configure.ac lrzip-next-diff/configure.ac
+--- lrzip-next/configure.ac	2022-02-10 14:27:00.000000000 +0000
++++ lrzip-next-diff/configure.ac	2022-02-24 19:17:28.000000000 +0000
+@@ -3,6 +3,10 @@
+ m4_define([v_maj], [m4_esyscmd_s([./util/gitdesc.sh major])])
+ m4_define([v_min], [m4_esyscmd_s([./util/gitdesc.sh minor])])
+ m4_define([v_mic], [m4_esyscmd_s([./util/gitdesc.sh micro])])
++v_maj = 0
++v_min = 8
++v_mic = 10
++
+ ##--##--##--##--##--##--##--##--##--##--##--##--##--##--##--##--##
+ m4_define([v_ver], [v_maj.v_min.v_mic])
+ ##--##--##--##--##--##--##--##--##--##--##--##--##--##--##--##--##
+diff -ur lrzip-next/util/gitdesc.sh lrzip-next-diff/util/gitdesc.sh
+--- lrzip-next/util/gitdesc.sh	2022-02-10 14:27:00.000000000 +0000
++++ lrzip-next-diff/util/gitdesc.sh	2022-02-24 18:03:57.000000000 +0000
+@@ -1,4 +1,4 @@
+-#!/bin/env bash
++#!/usr/bin/env bash
+ # Peter Hyman, pete@peterhyman.com
+ # Lucas Rademaker for MacOS and small systems compatibility.
+ # December 2020
