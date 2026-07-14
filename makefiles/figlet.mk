@@ -4,12 +4,13 @@ endif
 
 SUBPROJECTS    += figlet
 FIGLET_VERSION := 2.2.5
-DEB_FIGLET_V   ?= $(FIGLET_VERSION)
+DEB_FIGLET_V   ?= $(FIGLET_VERSION)-1
 
 figlet-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),ftp://ftp.figlet.org/pub/figlet/program/unix/figlet-$(FIGLET_VERSION).tar.gz)
 	$(call EXTRACT_TAR,figlet-$(FIGLET_VERSION).tar.gz,figlet-$(FIGLET_VERSION),figlet)
 	sed -i '/#include <stdio.h>/a #include <getopt.h>' $(BUILD_WORK)/figlet/figlet.c
+	sed -e "38s|man|share/man|" -e "s|prefix|PREFIX|g" -i $(BUILD_WORK)/figlet/Makefile
 
 ifneq ($(wildcard $(BUILD_WORK)/figlet/.build_complete),)
 figlet:
@@ -17,13 +18,12 @@ figlet:
 else
 figlet: figlet-setup
 	+$(MAKE) -C $(BUILD_WORK)/figlet \
-		prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		CC="$(CC)" \
 		CFLAGS="$(CFLAGS)" \
 		LD="$(CC)" \
 		LDFLAGS="$(LDFLAGS)"
 	+$(MAKE) -C $(BUILD_WORK)/figlet install \
-		prefix="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
+		PREFIX="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		DESTDIR="$(BUILD_STAGE)/figlet"
 	$(call AFTER_BUILD)
 endif
