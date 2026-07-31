@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += libmd
-LIBMD_VERSION := 1.1.0
+LIBMD_VERSION := 1.2.0
 DEB_LIBMD_V   ?= $(LIBMD_VERSION)
 
 libmd-setup: setup
