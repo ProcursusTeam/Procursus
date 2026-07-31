@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += automake
-AUTOMAKE_VERSION  := 1.16.5
+AUTOMAKE_VERSION  := 1.18.1
 DEB_AUTOMAKE_V    ?= $(AUTOMAKE_VERSION)
 
 automake-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/automake/automake-$(AUTOMAKE_VERSION).tar.gz{$(comma).sig})
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://mirror.techrich.hk/gnu/automake/automake-$(AUTOMAKE_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,automake-$(AUTOMAKE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,automake-$(AUTOMAKE_VERSION).tar.gz,automake-$(AUTOMAKE_VERSION),automake)
 
