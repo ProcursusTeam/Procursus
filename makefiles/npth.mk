@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += npth
-NPTH_VERSION  := 1.7
+NPTH_VERSION  := 1.8
 DEB_NPTH_V    ?= $(NPTH_VERSION)
 
 npth-setup: setup
@@ -18,7 +18,10 @@ else
 npth: npth-setup
 	cd $(BUILD_WORK)/npth && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--enable-install-npth-config
+		--enable-install-npth-config \
+		ac_cv_type_ssize_t=yes \
+		ac_cv_type_pid_t=yes \
+		ac_cv_type_socklen_t=yes
 	+$(MAKE) -C $(BUILD_WORK)/npth
 	+$(MAKE) -C $(BUILD_WORK)/npth install \
 		DESTDIR=$(BUILD_STAGE)/npth
