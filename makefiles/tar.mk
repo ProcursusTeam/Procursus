@@ -15,7 +15,7 @@ TAR_CONFIGURE_ARGS += --program-prefix=$(GNU_PREFIX)
 endif
 
 tar-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/tar/tar-$(TAR_VERSION).tar.xz{$(comma).sig})
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://mirror.techrich.hk/gnu/tar/tar-$(TAR_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,tar-$(TAR_VERSION).tar.xz)
 	$(call EXTRACT_TAR,tar-$(TAR_VERSION).tar.xz,tar-$(TAR_VERSION),tar)
 	$(call DO_PATCH,tar,tar,-p1)
