@@ -3,13 +3,13 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS     += libunistring
-UNISTRING_VERSION := 1.2
+UNISTRING_VERSION := 1.4.2
 DEB_UNISTRING_V   ?= $(UNISTRING_VERSION)
 
 libunistring-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/libunistring/libunistring-$(UNISTRING_VERSION).tar.gz{$(comma).sig})
-	$(call PGP_VERIFY,libunistring-$(UNISTRING_VERSION).tar.gz)
-	$(call EXTRACT_TAR,libunistring-$(UNISTRING_VERSION).tar.gz,libunistring-$(UNISTRING_VERSION),libunistring)
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://mirror.techrich.hk/gnu/libunistring/libunistring-$(UNISTRING_VERSION).tar.xz{$(comma).sig})
+	$(call PGP_VERIFY,libunistring-$(UNISTRING_VERSION).tar.xz)
+	$(call EXTRACT_TAR,libunistring-$(UNISTRING_VERSION).tar.xz,libunistring-$(UNISTRING_VERSION),libunistring)
 
 ifneq ($(wildcard $(BUILD_WORK)/libunistring/.build_complete),)
 libunistring:
