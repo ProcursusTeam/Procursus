@@ -2,7 +2,7 @@ Package: librtmp1
 Version: @DEB_RTMPDUMP_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libgnutls30, libhogweed6, libnettle8, libgmp10
+Depends: libgnutls30, libhogweed7, libnettle9, libgmp10
 Section: Libraries
 Priority: standard
 Description: toolkit for RTMP streams (shared library)

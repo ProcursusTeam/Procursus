@@ -2,7 +2,7 @@ Package: nettle-dev
 Version: @DEB_NETTLE_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libnettle8 (= @DEB_NETTLE_V@), libhogweed6 (= @DEB_NETTLE_V@)
+Depends: libnettle9 (= @DEB_NETTLE_V@), libhogweed7 (= @DEB_NETTLE_V@)
 Section: Development
 Priority: optional
 Homepage: http://www.lysator.liu.se/~nisse/nettle/

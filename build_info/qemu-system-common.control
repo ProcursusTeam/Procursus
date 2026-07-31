@@ -2,7 +2,7 @@ Package: qemu-system-common
 Version: @DEB_QEMU_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libglib2.0-0, libgnutls30, libzstd1, libnettle8, libncursesw6, libpixman-1-0
+Depends: libglib2.0-0, libgnutls30, libzstd1, libnettle9, libncursesw6, libpixman-1-0
 Section: Utilities
 Priority: optional
 Description: QEMU full system emulation binaries (common files)

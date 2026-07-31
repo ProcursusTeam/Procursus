@@ -2,7 +2,7 @@ Package: nettle-bin
 Version: @DEB_NETTLE_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libgmp10, libnettle8, libhogweed6
+Depends: libgmp10, libnettle9, libhogweed7
 Section: Utilities
 Priority: optional
 Homepage: http://www.lysator.liu.se/~nisse/nettle/
