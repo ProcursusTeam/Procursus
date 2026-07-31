@@ -3,10 +3,10 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += perl
-PERL_MAJOR   := 5.32
-PERL_VERSION := $(PERL_MAJOR).1
+PERL_MAJOR   := 5.42
+PERL_VERSION := $(PERL_MAJOR).0
 PERL_API_V   := $(PERL_MAJOR).0
-PERL_CROSS_V := 1.3.5
+PERL_CROSS_V := 1.6.4
 DEB_PERL_V   ?= $(PERL_VERSION)
 
 export PERL_MAJOR
@@ -23,7 +23,7 @@ perl-setup: setup
 	sed -i 's/readelf/nm/g' $(BUILD_WORK)/perl/cnf/configure_tool.sh
 	sed -i 's/bsd/darwin/g' $(BUILD_WORK)/perl/cnf/configure_tool.sh
 	sed -i 's/BSD/Darwin/g' $(BUILD_WORK)/perl/cnf/configure_tool.sh
-	sed -i '/try_link/ s/$$/ -Wno-error=implicit-function-declaration/' $(BUILD_WORK)/perl/cnf/configure_func.sh
+	#sed -i '/try_link/ s/$$/ -Wno-error=implicit-function-declaration/' $(BUILD_WORK)/perl/cnf/configure_func.sh
 	sed -i '/-Wl,-E/ s/^/#/' $(BUILD_WORK)/perl/cnf/configure_tool.sh
 	sed -i '/-Wl,-E/ s/^/#/' $(BUILD_WORK)/perl/Makefile
 	sed -i 's/$$(CC) $$(LDDLFLAGS)/$$(CC) $$(LDDLFLAGS) -compatibility_version $(PERL_API_V) -current_version $(PERL_VERSION) -install_name $$(archlib)\/CORE\/$$@/g' $(BUILD_WORK)/perl/Makefile
@@ -34,6 +34,7 @@ perl-setup: setup
 	sed -i "s/$$^O eq 'linux'/\$$Config{gccversion} ne ''/" $(BUILD_WORK)/perl/ext/Errno/Errno_pm.PL
 	sed -i 's/--sysroot=$$sysroot/-isysroot $$sysroot -arch $(MEMO_ARCH) $(PLATFORM_VERSION_MIN)/' $(BUILD_WORK)/perl/cnf/configure_tool.sh
 	sed -i 's|#include "poll.h"|#include "$(TARGET_SYSROOT)/usr/include/poll.h"|g' $(BUILD_WORK)/perl/dist/IO/IO.xs
+	sed -i 's|All C programs have an underlying locale|*/\n#include <string.h>\n#include <xlocale.h>\n/*|' $(BUILD_WORK)/perl/locale.c
 	touch $(BUILD_WORK)/perl/cnf/hints/darwin
 	echo -e "# Linux syscalls\n\
 	d_voidsig='undef'\n\
@@ -54,7 +55,7 @@ perl: perl-setup
 	CC='$(CC)' AR='$(AR)' NM='$(NM)' OBJDUMP='objdump' \
 	HOSTCFLAGS='-DPERL_CORE -DUSE_CROSS_COMPILE -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 $(CFLAGS_FOR_BUILD)' \
 	HOSTLDFLAGS='$(LDFLAGS_FOR_BUILD)' \
-	CFLAGS='-DPERL_DARWIN -DPERL_USE_SAFE_PUTENV -DTIME_HIRES_CLOCKID_T -DLIBIOSEXEC_INTERNAL=1 $(patsubst -flto=thin,,$(CFLAGS))' \
+	CFLAGS='-DPERL_DARWIN -fno-strict-aliasing -fstack-protector-strong -DTIME_HIRES_CLOCKID_T $(patsubst -flto=thin,,$(CFLAGS))' \
 	LDFLAGS='$(patsubst -flto=thin,,$(LDFLAGS))' ./configure \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--target=$(GNU_HOST_TRIPLE) \
@@ -67,10 +68,10 @@ perl: perl-setup
 		-Dvendorlib=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 \
 		-Dprivlib=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
 		-Darchlib=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
-		-Dvendorarch=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR)
+		-Dvendorarch=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_MAJOR) \
+		-Dccdlflags=' '
 	+$(MAKE) -C $(BUILD_WORK)/perl -j1 \
-		PERL_ARCHIVE=$(BUILD_WORK)/perl/libperl.dylib \
-		LIBS="$(filter -liosexec,$(LDFLAGS))"
+		PERL_ARCHIVE=$(BUILD_WORK)/perl/libperl.dylib
 	+$(MAKE) -C $(BUILD_WORK)/perl install.perl \
 		DESTDIR=$(BUILD_STAGE)/perl
 	$(LN_S) $(PERL_MAJOR) $(BUILD_STAGE)/perl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/perl5/$(PERL_VERSION)
