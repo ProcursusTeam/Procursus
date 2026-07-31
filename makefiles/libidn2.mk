@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += libidn2
-IDN2_VERSION  := 2.3.7
+IDN2_VERSION  := 2.3.8
 DEB_IDN2_V    ?= $(IDN2_VERSION)
 
 libidn2-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/libidn/libidn2-$(IDN2_VERSION).tar.gz{$(comma).sig})
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://mirror.techrich.hk/gnu/libidn/libidn2-$(IDN2_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libidn2-$(IDN2_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libidn2-$(IDN2_VERSION).tar.gz,libidn2-$(IDN2_VERSION),libidn2)
 
@@ -17,7 +17,11 @@ libidn2:
 else
 libidn2: libidn2-setup gettext libunistring
 	cd $(BUILD_WORK)/libidn2 && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		gl_cv_ssize_t=yes \
+		ac_cv_type_pid_t=yes \
+		ac_cv_type_mode_t=yes \
+		ac_cv_type_nlink_t=yes
 	+$(MAKE) -C $(BUILD_WORK)/libidn2
 	+$(MAKE) -C $(BUILD_WORK)/libidn2 install \
 		DESTDIR=$(BUILD_STAGE)/libidn2
