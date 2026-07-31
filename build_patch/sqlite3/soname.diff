@@ -1,0 +1,38 @@
+diff -urN a/autoconf/Makefile.in b/autoconf/Makefile.in
+--- a/autoconf/Makefile.in	2026-06-27 04:21:03
++++ b/autoconf/Makefile.in	2026-08-01 04:33:40
+@@ -200,12 +200,12 @@
+ 	$(INSTALL) $(libsqlite3.DLL) "$(install-dir.lib)"
+ 	@echo "Setting up $(libsqlite3.DLL) version symlinks..."; \
+ 	cd "$(install-dir.lib)" || exit $$?; \
+-	rm -f libsqlite3.0$(T.dll) libsqlite3.$(PACKAGE_VERSION)$(T.dll) || exit $$?; \
++	rm -f libsqlite3.1$(T.dll) libsqlite3.$(PACKAGE_VERSION)$(T.dll) || exit $$?; \
+ 	dllname=libsqlite3.$(PACKAGE_VERSION)$(T.dll); \
+ 	mv $(libsqlite3.DLL) $$dllname || exit $$?; \
+ 	ln -s $$dllname $(libsqlite3.DLL) || exit $$?; \
+-	ln -s $$dllname libsqlite3.0$(T.dll) || exit $$?; \
+-	ls -la $$dllname $(libsqlite3.DLL) libsqlite3.0$(T.dll)
++	ln -s $$dllname libsqlite3.1$(T.dll) || exit $$?; \
++	ls -la $$dllname $(libsqlite3.DLL) libsqlite3.1$(T.dll)
+ 
+ install-dll-1: install-dll-$(libsqlite3.DLL.install-rules)
+ install-dll-0 install-dll-:
+diff -urN a/main.mk b/main.mk
+--- a/main.mk	2026-06-27 04:21:03
++++ b/main.mk	2026-08-01 04:33:57
+@@ -1586,12 +1586,12 @@
+ 	$(INSTALL) $(libsqlite3.DLL) "$(install-dir.lib)"
+ 	@echo "Setting up $(libsqlite3.DLL) version symlinks..."; \
+ 	cd "$(install-dir.lib)" || exit $$?; \
+-	rm -f libsqlite3.0$(T.dll) libsqlite3.$(PACKAGE_VERSION)$(T.dll) || exit $$?; \
++	rm -f libsqlite3.1$(T.dll) libsqlite3.$(PACKAGE_VERSION)$(T.dll) || exit $$?; \
+ 	dllname=libsqlite3.$(PACKAGE_VERSION)$(T.dll); \
+ 	mv $(libsqlite3.DLL) $$dllname || exit $$?; \
+ 	ln -s $$dllname $(libsqlite3.DLL) || exit $$?; \
+-	ln -s $$dllname libsqlite3.0$(T.dll) || exit $$?; \
+-	ls -la $$dllname $(libsqlite3.DLL) libsqlite3.0$(T.dll)
++	ln -s $$dllname libsqlite3.1$(T.dll) || exit $$?; \
++	ls -la $$dllname $(libsqlite3.DLL) libsqlite3.1$(T.dll)
+ 
+ install-dll-1: install-dll-$(libsqlite3.DLL.install-rules)
+ install-dll-0 install-dll-:

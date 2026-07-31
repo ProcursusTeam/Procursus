@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += sqlite3
-SQLITE3_VERSION  := 3.34.1
+SQLITE3_VERSION  := 3.53.4
 DEB_SQLITE3_V    ?= $(SQLITE3_VERSION)
 
 sqlite3-setup: setup
@@ -18,14 +18,11 @@ sqlite3:
 	@echo "Using previously built sqlite3."
 else
 sqlite3: sqlite3-setup ncurses readline
-	cd $(BUILD_WORK)/sqlite3 && ./configure -C \
+	cd $(BUILD_WORK)/sqlite3 && ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-readline \
 		--disable-editline \
-		--enable-session \
-		--enable-json1 \
-		--enable-fts4 \
-		--enable-fts5 \
+		--enable-all \
 		--with-readline-inc="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/readline" \
 		ac_cv_search_tgetent=-lncursesw \
 		CPPFLAGS="$(CPPFLAGS) -DSQLITE_ENABLE_COLUMN_METADATA=1 -DSQLITE_MAX_VARIABLE_NUMBER=250000 -DSQLITE_ENABLE_RTREE=1 -DSQLITE_ENABLE_FTS3=1 -DSQLITE_ENABLE_FTS3_PARENTHESIS=1 -DSQLITE_ENABLE_JSON1=1"
@@ -33,7 +30,7 @@ sqlite3: sqlite3-setup ncurses readline
 	+$(MAKE) -C $(BUILD_WORK)/sqlite3 install \
 		DESTDIR="$(BUILD_STAGE)/sqlite3"
 	$(CC) $(CFLAGS) -o $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/lemon $(BUILD_WORK)/sqlite3/tool/lemon.c $(LDFLAGS)
-	cp -a $(BUILD_WORK)/sqlite3/.libs/sqldiff $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_WORK)/sqlite3/sqldiff $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	mkdir -p $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/lemon
 	cp -a $(BUILD_WORK)/sqlite3/lempar.c $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/lemon
 	$(call AFTER_BUILD,copy)
