@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS     += libassuan
-LIBASSUAN_VERSION := 2.5.7
+LIBASSUAN_VERSION := 3.0.2
 DEB_LIBASSUAN_V   ?= $(LIBASSUAN_VERSION)
 
 libassuan-setup: setup
@@ -18,7 +18,15 @@ else
 libassuan: libassuan-setup libgpg-error
 	cd $(BUILD_WORK)/libassuan && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--with-gpg-error-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+		--with-gpg-error-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		gl_cv_ssize_t=yes \
+		ac_cv_type_size_t=yes \
+		ac_cv_type_pid_t=yes \
+		ac_cv_type_mode_t=yes \
+		ac_cv_type_nlink_t=yes \
+		ac_cv_type_socklen_t=yes \
+		ac_cv_func_stpcpy=yes \
+		ac_cv_func_funopen=yes
 	+$(MAKE) -C $(BUILD_WORK)/libassuan
 	+$(MAKE) -C $(BUILD_WORK)/libassuan install \
 		DESTDIR=$(BUILD_STAGE)/libassuan
@@ -27,26 +35,26 @@ endif
 
 libassuan-package: libassuan-stage
 	# libassuan.mk Package Structure
-	rm -rf $(BUILD_DIST)/libassuan{-dev,0}
-	mkdir -p $(BUILD_DIST)/libassuan{-dev,0}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	rm -rf $(BUILD_DIST)/libassuan{-dev,9}
+	mkdir -p $(BUILD_DIST)/libassuan{-dev,9}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-	# libassuan.mk Prep libassuan0
-	cp -a $(BUILD_STAGE)/libassuan/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libassuan.0.dylib $(BUILD_DIST)/libassuan0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	# libassuan.mk Prep libassuan9
+	cp -a $(BUILD_STAGE)/libassuan/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libassuan.9.dylib $(BUILD_DIST)/libassuan9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libassuan.mk Prep libassuan-dev
 	cp -a $(BUILD_STAGE)/libassuan/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libassuan.dylib} $(BUILD_DIST)/libassuan-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/libassuan/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share,include} $(BUILD_DIST)/libassuan-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libassuan.mk Sign
-	$(call SIGN,libassuan0,general.xml)
+	$(call SIGN,libassuan9,general.xml)
 	$(call SIGN,libassuan-dev,general.xml)
 
 	# libassuan.mk Make .debs
-	$(call PACK,libassuan0,DEB_LIBASSUAN_V)
+	$(call PACK,libassuan9,DEB_LIBASSUAN_V)
 	$(call PACK,libassuan-dev,DEB_LIBASSUAN_V)
 
 	# libassuan.mk Build cleanup
-	rm -rf $(BUILD_DIST)/libassuan{-dev,0}
+	rm -rf $(BUILD_DIST)/libassuan{-dev,9}
 
 .PHONY: libassuan libassuan-package
 

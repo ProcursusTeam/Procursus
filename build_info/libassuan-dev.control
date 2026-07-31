@@ -2,7 +2,7 @@ Package: libassuan-dev
 Version: @DEB_LIBASSUAN_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libassuan0 (= @DEB_LIBASSUAN_V@), libgpg-error-dev
+Depends: libassuan9 (= @DEB_LIBASSUAN_V@), libgpg-error-dev
 Section: Development
 Priority: optional
 Description: IPC library for the GnuPG components -- header files
