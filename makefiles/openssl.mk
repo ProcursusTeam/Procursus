@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS   += openssl
-OPENSSL_VERSION := 3.2.1
+OPENSSL_VERSION := 4.0.1
 DEB_OPENSSL_V   ?= $(OPENSSL_VERSION)
 
 openssl-setup: setup
@@ -70,12 +70,12 @@ endif
 
 openssl-package: openssl-stage
 	# openssl.mk Package Structure
-	rm -rf $(BUILD_DIST)/{openssl,libssl{3,-dev,-doc}}
-	mkdir -p $(BUILD_DIST)/{openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin,libssl{3,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib} \
+	rm -rf $(BUILD_DIST)/{openssl,libssl{4,-dev,-doc}}
+	mkdir -p $(BUILD_DIST)/{openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin,libssl{4,-dev}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib} \
 		$(BUILD_DIST)/libssl-doc/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/
 
-	# openssl.mk Prep libssl3
-	cp -a $(BUILD_STAGE)/openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{*.3.dylib,engines-3,ossl-modules} $(BUILD_DIST)/libssl3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	# openssl.mk Prep libssl4
+	cp -a $(BUILD_STAGE)/openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{*.4.dylib,ossl-modules} $(BUILD_DIST)/libssl4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# openssl.mk Prep libssl-dev
 	cp -a $(BUILD_STAGE)/openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{lib{ssl,crypto}.{a,dylib},pkgconfig} $(BUILD_DIST)/libssl-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
@@ -89,16 +89,16 @@ openssl-package: openssl-stage
 	cp -a $(BUILD_STAGE)/openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/* $(BUILD_DIST)/openssl/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 	# openssl.mk Sign
-	$(call SIGN,libssl3,general.xml)
+	$(call SIGN,libssl4,general.xml)
 	$(call SIGN,openssl,general.xml)
 
 	# openssl.mk Make .debs
-	$(call PACK,libssl3,DEB_OPENSSL_V)
+	$(call PACK,libssl4,DEB_OPENSSL_V)
 	$(call PACK,libssl-dev,DEB_OPENSSL_V)
 	$(call PACK,libssl-doc,DEB_OPENSSL_V)
 	$(call PACK,openssl,DEB_OPENSSL_V)
 
 	# openssl.mk Build cleanup
-	rm -rf $(BUILD_DIST)/{openssl,libssl{3,-dev,-doc}}
+	rm -rf $(BUILD_DIST)/{openssl,libssl{4,-dev,-doc}}
 
 .PHONY: openssl openssl-package

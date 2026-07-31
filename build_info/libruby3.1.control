@@ -2,7 +2,7 @@ Package: libruby3.1
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_RUBY_V@
-Depends: libjemalloc2, libgmp10, libcrypt2, libffi8, libncursesw6, libreadline8, libssl3, libyaml-0-2
+Depends: libjemalloc2, libgmp10, libcrypt2, libffi8, libncursesw6, libreadline8, libssl4, libyaml-0-2
 Section: Libraries
 Priority: optional
 Description: Libraries necessary to run Ruby 3.1

@@ -2,7 +2,7 @@ Package: zsign
 Version: @DEB_ZSIGN_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libssl3, unzip, zip
+Depends: libssl4, unzip, zip
 Recommends: ideviceinstaller
 Section: Utilities
 Homepage: https://github.com/zhlynn/zsign

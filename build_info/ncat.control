@@ -2,7 +2,7 @@ Package: ncat
 Version: @DEB_NMAP_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libpcre1, libssl3, nmap-common (= @DEB_NMAP_V@), liblua5.3-0
+Depends: libpcre1, libssl4, nmap-common (= @DEB_NMAP_V@), liblua5.3-0
 Conflicts: nmap-utils
 Replaces: nmap-utils
 Section: Networking

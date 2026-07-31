@@ -2,7 +2,7 @@ Package: lynx
 Version: @DEB_LYNX_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libncursesw6, libidn2-0, libssl3, libintl8
+Depends: libncursesw6, libidn2-0, libssl4, libintl8
 Section: Networking
 Priority: optional
 Description: classic non-graphical (text-mode) web browser
