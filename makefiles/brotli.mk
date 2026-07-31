@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS    += brotli
-BROTLI_VERSION   := 1.1.0
+BROTLI_VERSION   := 1.2.0
 DEB_BROTLI_V     ?= $(BROTLI_VERSION)
 
 brotli-setup: setup
