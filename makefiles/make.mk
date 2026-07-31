@@ -7,7 +7,7 @@ MAKE_VERSION := 4.4.1
 DEB_MAKE_V   ?= $(MAKE_VERSION)
 
 make-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/make/make-$(MAKE_VERSION).tar.gz{$(comma).sig})
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://mirror.techrich.hk/gnu/make/make-$(MAKE_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,make-$(MAKE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,make-$(MAKE_VERSION).tar.gz,make-$(MAKE_VERSION),make)
 
