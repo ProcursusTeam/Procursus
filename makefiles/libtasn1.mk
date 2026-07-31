@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS    += libtasn1
-LIBTASN1_VERSION := 4.19.0
+LIBTASN1_VERSION := 4.21.0
 DEB_LIBTASN1_V   ?= $(LIBTASN1_VERSION)
 
 libtasn1-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/libtasn1/libtasn1-$(LIBTASN1_VERSION).tar.gz{$(comma).sig})
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://mirror.techrich.hk/gnu/libtasn1/libtasn1-$(LIBTASN1_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libtasn1-$(LIBTASN1_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libtasn1-$(LIBTASN1_VERSION).tar.gz,libtasn1-$(LIBTASN1_VERSION),libtasn1)
 
@@ -17,7 +17,12 @@ libtasn1:
 else
 libtasn1: libtasn1-setup
 	cd $(BUILD_WORK)/libtasn1 && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		gl_cv_ssize_t=yes \
+		ac_cv_type_pid_t=yes \
+		ac_cv_type_mode_t=yes \
+		ac_cv_type_nlink_t=yes \
+		gl_cv_sys_struct_timeval=yes
 	+$(MAKE) -C $(BUILD_WORK)/libtasn1
 	+$(MAKE) -C $(BUILD_WORK)/libtasn1 install \
 		DESTDIR=$(BUILD_STAGE)/libtasn1
