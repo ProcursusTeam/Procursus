@@ -7,12 +7,12 @@ STRAPPROJECTS    += readline
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS      += readline
 endif # ($(MEMO_TARGET),darwin-\*)
-READLINE_VERSION := 8.2
+READLINE_VERSION := 8.3
 READLINE_PATCH   := 0
 DEB_READLINE_V   ?= $(READLINE_VERSION).$(READLINE_PATCH)-1
 
 readline-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftp.gnu.org/gnu/readline/readline-$(READLINE_VERSION).tar.gz{$(comma).sig})
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://mirror.techrich.hk/gnu/readline/readline-$(READLINE_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,readline-$(READLINE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,readline-$(READLINE_VERSION).tar.gz,readline-$(READLINE_VERSION),readline)
 	sed -i 's|"/etc/inputrc|"$(MEMO_PREFIX)/etc/inputrc|' $(BUILD_WORK)/readline/rlconf.h
