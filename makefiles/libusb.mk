@@ -3,14 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += libusb
-LIBUSB_VERSION := 1.0.26
+LIBUSB_VERSION := 1.0.30
 DEB_LIBUSB_V   ?= $(LIBUSB_VERSION)
 
 libusb-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/libusb/libusb/releases/download/v$(LIBUSB_VERSION)/libusb-$(LIBUSB_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,libusb-$(LIBUSB_VERSION).tar.bz2,libusb-$(LIBUSB_VERSION),libusb)
-#	Ensure this patch is up to date on each release.
-	$(call DO_PATCH,libusb,libusb,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/libusb/.build_complete),)
 libusb:
