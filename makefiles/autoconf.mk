@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += autoconf
-AUTOCONF_VERSION  := 2.71
+AUTOCONF_VERSION  := 2.73
 DEB_AUTOCONF_V    ?= $(AUTOCONF_VERSION)
 
 autoconf-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/autoconf/autoconf-$(AUTOCONF_VERSION).tar.gz{$(comma).sig})
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://mirror.techrich.hk/gnu/autoconf/autoconf-$(AUTOCONF_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,autoconf-$(AUTOCONF_VERSION).tar.gz)
 	$(call EXTRACT_TAR,autoconf-$(AUTOCONF_VERSION).tar.gz,autoconf-$(AUTOCONF_VERSION),autoconf)
 	sed -i 's/libtoolize/glibtoolize/g' $(BUILD_WORK)/autoconf/bin/autoreconf.in
