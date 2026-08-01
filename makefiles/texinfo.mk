@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += texinfo
-TEXINFO_VERSION := 6.7
+TEXINFO_VERSION := 7.3
 DEB_TEXINFO_V   ?= $(TEXINFO_VERSION)
 
 ## This is super broken, someone should fix it
