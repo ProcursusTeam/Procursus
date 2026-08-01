@@ -4,11 +4,11 @@ endif
 
 
 STRAPPROJECTS += dash
-DASH_VERSION  := 0.5.12
+DASH_VERSION  := 0.5.13.5
 DEB_DASH_V    ?= $(DASH_VERSION)
 
 dash-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://web.archive.org/web/20230528161056id_/https://git.kernel.org/pub/scm/utils/dash/dash.git/snapshot/dash-0.5.12.tar.gz)
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftp.openbsd.org/pub/OpenBSD/distfiles/dash-$(DASH_VERSION).tar.gz)
 	$(call EXTRACT_TAR,dash-$(DASH_VERSION).tar.gz,dash-$(DASH_VERSION),dash)
 	mkdir -p $(BUILD_STAGE)/dash/$(MEMO_PREFIX)/bin
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
