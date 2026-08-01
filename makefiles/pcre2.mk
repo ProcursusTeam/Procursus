@@ -3,14 +3,14 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += pcre2
-PCRE2_VERSION := 10.43
+PCRE2_VERSION := 10.47
 DEB_PCRE2_V   ?= $(PCRE2_VERSION)
 
 pcre2-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/PCRE2Project/pcre2/releases/download/pcre2-$(PCRE2_VERSION)/pcre2-$(PCRE2_VERSION).tar.bz2{$(comma).sig})
 	$(call PGP_VERIFY,pcre2-$(PCRE2_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,pcre2-$(PCRE2_VERSION).tar.bz2,pcre2-$(PCRE2_VERSION),pcre2)
-	sed -i 's|TARGET_OS_IPHONE|PEAR_TARGET|g' $(BUILD_WORK)/pcre2/src/sljit/allocator_src/sljitExecAllocatorApple.c
+	sed -i 's|TARGET_OS_IPHONE|PEAR_TARGET|g' $(BUILD_WORK)/pcre2/deps/sljit/sljit_src/allocator_src/sljitExecAllocatorApple.c
 
 ifneq ($(wildcard $(BUILD_WORK)/pcre2/.build_complete),)
 pcre2:
