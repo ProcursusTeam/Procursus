@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS           += tale-keyring
 TALE_KEYRING_VERSION  := 2021.10.10
-DEB_TALE_KEYRING_V    ?= $(TALE_KEYRING_VERSION)
+DEB_TALE_KEYRING_V    ?= $(TALE_KEYRING_VERSION)-1
 
 tale-keyring:
 	@echo "tale-keyring does not need to be built."
@@ -12,10 +12,10 @@ tale-keyring:
 tale-keyring-package: tale-keyring-stage
 	# tale-keyring.mk Package Structure
 	rm -rf $(BUILD_DIST)/tale-keyring
-	mkdir -p $(BUILD_DIST)/tale-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
+	mkdir -p $(BUILD_DIST)/tale-keyring/$(MEMO_PREFIX)/usr/share/keyrings
 
 	# tale-keyring.mk Prep tale-keyring
-	cp -a $(BUILD_MISC)/keyrings/tale/{tale,tale-legacy,cherimoya}.gpg $(BUILD_DIST)/tale-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
+	cp -a $(BUILD_MISC)/keyrings/tale/{tale,tale-legacy,cherimoya}.gpg $(BUILD_DIST)/tale-keyring/$(MEMO_PREFIX)/usr/share/keyrings
 
 	# tale-keyring.mk Make .debs
 	$(call PACK,tale-keyring,DEB_TALE_KEYRING_V)

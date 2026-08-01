@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS             += snoolie-keyring
 SNOOLIE_KEYRING_VERSION := 2023.05.02
-DEB_SNOOLIE_KEYRING_V   ?= $(SNOOLIE_KEYRING_VERSION)
+DEB_SNOOLIE_KEYRING_V   ?= $(SNOOLIE_KEYRING_VERSION)-1
 
 snoolie-keyring:
 	@echo "snoolie-keyring does not need to be built."
@@ -12,10 +12,10 @@ snoolie-keyring:
 snoolie-keyring-package: snoolie-keyring-stage
 	# snoolie-keyring.mk Package Structure
 	rm -rf $(BUILD_DIST)/snoolie-keyring
-	mkdir -p $(BUILD_DIST)/snoolie-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
+	mkdir -p $(BUILD_DIST)/snoolie-keyring/$(MEMO_PREFIX)/usr/share/keyrings
 
 	# snoolie-keyring.mk Prep snoolie-keyring
-	cp -a $(BUILD_MISC)/keyrings/snoolie/snoolie.gpg $(BUILD_DIST)/snoolie-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
+	cp -a $(BUILD_MISC)/keyrings/snoolie/snoolie.gpg $(BUILD_DIST)/snoolie-keyring/$(MEMO_PREFIX)/usr/share/keyrings
 
 	# snoolie-keyring.mk Make .debs
 	$(call PACK,snoolie-keyring,DEB_SNOOLIE_KEYRING_V)

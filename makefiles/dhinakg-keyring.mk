@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS             += dhinakg-keyring
 DHINAKG_KEYRING_VERSION := 2023.04.02
-DEB_DHINAKG_KEYRING_V   ?= $(DHINAKG_KEYRING_VERSION)
+DEB_DHINAKG_KEYRING_V   ?= $(DHINAKG_KEYRING_VERSION)-1
 
 dhinakg-keyring:
 	@echo "dhinakg-keyring does not need to be built."
@@ -12,10 +12,10 @@ dhinakg-keyring:
 dhinakg-keyring-package: dhinakg-keyring-stage
 	# dhinakg-keyring.mk Package Structure
 	rm -rf $(BUILD_DIST)/dhinakg-keyring
-	mkdir -p $(BUILD_DIST)/dhinakg-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
+	mkdir -p $(BUILD_DIST)/dhinakg-keyring/$(MEMO_PREFIX)/usr/share/keyrings
 
 	# dhinakg-keyring.mk Prep dhinakg-keyring
-	cp -a $(BUILD_MISC)/keyrings/dhinakg/dhinakg.gpg $(BUILD_DIST)/dhinakg-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
+	cp -a $(BUILD_MISC)/keyrings/dhinakg/dhinakg.gpg $(BUILD_DIST)/dhinakg-keyring/$(MEMO_PREFIX)/usr/share/keyrings
 
 	# dhinakg-keyring.mk Make .debs
 	$(call PACK,dhinakg-keyring,DEB_DHINAKG_KEYRING_V)

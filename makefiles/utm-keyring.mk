@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS         += utm-keyring
 UTM_KEYRING_VERSION := 2022.05.07
-DEB_UTM_KEYRING_V   ?= $(UTM_KEYRING_VERSION)
+DEB_UTM_KEYRING_V   ?= $(UTM_KEYRING_VERSION)-1
 
 utm-keyring:
 	@echo "utm-keyring does not need to be built."
@@ -12,10 +12,10 @@ utm-keyring:
 utm-keyring-package:
 	# utm-keyring.mk Package Structure
 	rm -rf $(BUILD_DIST)/utm-keyring
-	mkdir -p $(BUILD_DIST)/utm-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
+	mkdir -p $(BUILD_DIST)/utm-keyring/$(MEMO_PREFIX)/usr/share/keyrings
 
 	# utm-keyring.mk Prep utm-keyring
-	cp -a $(BUILD_MISC)/keyrings/utm/utm.gpg $(BUILD_DIST)/utm-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
+	cp -a $(BUILD_MISC)/keyrings/utm/utm.gpg $(BUILD_DIST)/utm-keyring/$(MEMO_PREFIX)/usr/share/keyrings
 
 	# utm-keyring.mk Make .debs
 	$(call PACK,utm-keyring,DEB_UTM_KEYRING_V)

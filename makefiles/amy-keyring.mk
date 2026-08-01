@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS          += amy-keyring
 AMY_KEYRING_VERSION  := 2025.08.10
-DEB_AMY_KEYRING_V    ?= $(AMY_KEYRING_VERSION)
+DEB_AMY_KEYRING_V    ?= $(AMY_KEYRING_VERSION)-1
 
 amy-keyring:
 	@echo "amy-keyring does not need to be built."
@@ -12,10 +12,10 @@ amy-keyring:
 amy-keyring-package: amy-keyring-stage
 	# amy-keyring.mk Package Structure
 	rm -rf $(BUILD_DIST)/amy-keyring
-	mkdir -p $(BUILD_DIST)/amy-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
+	mkdir -p $(BUILD_DIST)/amy-keyring/$(MEMO_PREFIX)/usr/share/keyrings
 
 	# amy-keyring.mk Prep amy-keyring
-	cp -a $(BUILD_MISC)/keyrings/anamy/anamy-repo.gpg $(BUILD_DIST)/amy-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
+	cp -a $(BUILD_MISC)/keyrings/anamy/anamy-repo.gpg $(BUILD_DIST)/amy-keyring/$(MEMO_PREFIX)/usr/share/keyrings
 
 	# amy-keyring.mk Make .debs
 	$(call PACK,amy-keyring,DEB_AMY_KEYRING_V)

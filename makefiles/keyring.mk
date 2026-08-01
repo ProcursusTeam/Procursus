@@ -4,15 +4,15 @@ endif
 
 STRAPPROJECTS    += keyring
 KEYRING_VERSION  := 2020.05.09
-DEB_KEYRING_V    ?= $(KEYRING_VERSION)-4
+DEB_KEYRING_V    ?= $(KEYRING_VERSION)-5
 
 ifneq ($(wildcard $(BUILD_STAGE)/keyring/.build_complete),)
 keyring:
 	@echo "Using previously built keyring."
 else
 keyring: setup
-	mkdir -p $(BUILD_STAGE)/keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	cp -a $(BUILD_MISC)/keyrings/procursus/memo.gpg $(BUILD_STAGE)/keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
+	mkdir -p $(BUILD_STAGE)/keyring/$(MEMO_PREFIX)/usr/share/keyrings
+	cp -a $(BUILD_MISC)/keyrings/procursus/memo.gpg $(BUILD_STAGE)/keyring/$(MEMO_PREFIX)/usr/share/keyrings
 	$(call AFTER_BUILD)
 endif
 

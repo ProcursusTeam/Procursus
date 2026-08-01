@@ -4,15 +4,15 @@ endif
 
 SUBPROJECTS                  += sunchipnacho-keyring
 SUNCHIPNACHO_KEYRING_VERSION := 2022.02.24
-DEB_SUNCHIPNACHO_KEYRING_V   ?= $(SUNCHIPNACHO_KEYRING_VERSION)
+DEB_SUNCHIPNACHO_KEYRING_V   ?= $(SUNCHIPNACHO_KEYRING_VERSION)-1
 
 ifneq ($(wildcard $(BUILD_STAGE)/sunchipnacho-keyring/.build_complete),)
 sunchipnacho-keyring:
 	@echo "Using previously built sunchipnacho-keyring."
 else
 sunchipnacho-keyring: setup
-	mkdir -p $(BUILD_STAGE)/sunchipnacho-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	cp -a $(BUILD_MISC)/keyrings/sunchipnacho/sunchipnacho.gpg $(BUILD_STAGE)/sunchipnacho-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
+	mkdir -p $(BUILD_STAGE)/sunchipnacho-keyring/$(MEMO_PREFIX)/usr/share/keyrings
+	cp -a $(BUILD_MISC)/keyrings/sunchipnacho/sunchipnacho.gpg $(BUILD_STAGE)/sunchipnacho-keyring/$(MEMO_PREFIX)/usr/share/keyrings
 	$(call AFTER_BUILD)
 endif
 

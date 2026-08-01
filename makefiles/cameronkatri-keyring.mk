@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS            += cameronkatri-keyring
 CKATRI_KEYRING_VERSION := 2020.11.21
-DEB_CKATRI_KEYRING_V   ?= $(CKATRI_KEYRING_VERSION)
+DEB_CKATRI_KEYRING_V   ?= $(CKATRI_KEYRING_VERSION)-1
 
 cameronkatri-keyring:
 	@echo "cameronkatri-keyring does not need to be built."
@@ -12,10 +12,10 @@ cameronkatri-keyring:
 cameronkatri-keyring-package: cameronkatri-keyring-stage
 	# cameronkatri-keyring.mk Package Structure
 	rm -rf $(BUILD_DIST)/cameronkatri-keyring
-	mkdir -p $(BUILD_DIST)/cameronkatri-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
+	mkdir -p $(BUILD_DIST)/cameronkatri-keyring/$(MEMO_PREFIX)/usr/share/keyrings
 
 	# cameronkatri-keyring.mk Prep cameronkatri-keyring
-	cp -a $(BUILD_MISC)/keyrings/cameronkatri/{cameronkatri,subcursus}.gpg $(BUILD_DIST)/cameronkatri-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
+	cp -a $(BUILD_MISC)/keyrings/cameronkatri/{cameronkatri,subcursus}.gpg $(BUILD_DIST)/cameronkatri-keyring/$(MEMO_PREFIX)/usr/share/keyrings
 
 	# cameronkatri-keyring.mk Make .debs
 	$(call PACK,cameronkatri-keyring,DEB_CKATRI_KEYRING_V)

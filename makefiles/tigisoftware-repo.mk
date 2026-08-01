@@ -11,8 +11,8 @@ tigisoftware-keyring:
 	@echo "Using previously built tigisoftware-keyring."
 else
 tigisoftware-keyring: setup
-	mkdir -p $(BUILD_STAGE)/tigisoftware-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	cp -a $(BUILD_MISC)/keyrings/tigisoftware/tigisoftware-repo.gpg $(BUILD_STAGE)/tigisoftware-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
+	mkdir -p $(BUILD_STAGE)/tigisoftware-keyring/$(MEMO_PREFIX)/usr/share/keyrings
+	cp -a $(BUILD_MISC)/keyrings/tigisoftware/tigisoftware-repo.gpg $(BUILD_STAGE)/tigisoftware-keyring/$(MEMO_PREFIX)/usr/share/keyrings
 	$(call AFTER_BUILD)
 endif
 

@@ -11,8 +11,8 @@ idevicehacked-keyring:
 	@echo "Using previously built idevicehacked-keyring."
 else
 idevicehacked-keyring: setup
-	mkdir -p $(BUILD_STAGE)/idevicehacked-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
-	cp -a $(BUILD_MISC)/keyrings/idevicehacked/idevicehacked-repo.gpg $(BUILD_STAGE)/idevicehacked-keyring/$(MEMO_PREFIX)/etc/apt/trusted.gpg.d
+	mkdir -p $(BUILD_STAGE)/idevicehacked-keyring/$(MEMO_PREFIX)/usr/share/keyrings
+	cp -a $(BUILD_MISC)/keyrings/idevicehacked/idevicehacked-repo.gpg $(BUILD_STAGE)/idevicehacked-keyring/$(MEMO_PREFIX)/usr/share/keyrings
 	$(call AFTER_BUILD)
 endif
 
