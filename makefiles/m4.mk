@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += m4
-M4_VERSION  := 1.4.19
-DEB_M4_V    ?= $(M4_VERSION)-1
+M4_VERSION  := 1.4.21
+DEB_M4_V    ?= $(M4_VERSION)
 
 m4-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/m4/m4-$(M4_VERSION).tar.gz{$(comma).sig})
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://mirror.techrich.hk/gnu/m4/m4-$(M4_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,m4-$(M4_VERSION).tar.gz)
 	$(call EXTRACT_TAR,m4-$(M4_VERSION).tar.gz,m4-$(M4_VERSION),m4)
 
