@@ -3,12 +3,12 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += uuid
-UUID_VERSION  := 1.6.2
-DEB_UUID_V    ?= $(UUID_VERSION)-3
+UUID_VERSION  := 1.6.6
+DEB_UUID_V    ?= $(UUID_VERSION)
 
 uuid-setup: setup file-setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://deb.debian.org/debian/pool/main/o/ossp-uuid/ossp-uuid_$(UUID_VERSION).orig.tar.gz)
-	$(call EXTRACT_TAR,ossp-uuid_$(UUID_VERSION).orig.tar.gz,uuid-$(UUID_VERSION),uuid)
+	$(call EXTRACT_TAR,ossp-uuid_$(UUID_VERSION).orig.tar.gz,ossp-uuid-UUID_$(shell echo $(UUID_VERSION) | sed 's/\./_/g'),uuid)
 	cp -a $(BUILD_WORK)/file/config.sub $(BUILD_WORK)/uuid
 	sed -i 's/-c -s -m/-c -m/g' $(BUILD_WORK)/uuid/Makefile.in
 
@@ -17,7 +17,7 @@ uuid:
 	@echo "Using previously built uuid."
 else
 uuid: uuid-setup
-	cd $(BUILD_WORK)/uuid && ./configure -C \
+	cd $(BUILD_WORK)/uuid && autoreconf -fi && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		ac_cv_va_copy=yes \
 		CC="$(CC) $(CFLAGS)" \
