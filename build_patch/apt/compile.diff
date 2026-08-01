@@ -1,21 +1,7 @@
-diff --git a/CMake/Misc.cmake b/CMake/Misc.cmake
-index 8cb18b6ac..066cf3a14 100644
---- a/CMake/Misc.cmake
-+++ b/CMake/Misc.cmake
-@@ -74,7 +74,7 @@ function(add_version_script target)
-                        COMMAND echo "${name} {global: *; };" > "${script}"
-                        VERBATIM )
-     add_custom_target(${target}-versionscript DEPENDS "${script}")
--    target_link_libraries(${target} PRIVATE -Wl,-version-script="${script}")
-+    #target_link_libraries(${target} PRIVATE -Wl,-version-script="${script}")
-     add_dependencies(${target} ${target}-versionscript)
- endfunction()
- 
-diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 5a1ff93ca..c75172086 100644
---- a/CMakeLists.txt
-+++ b/CMakeLists.txt
-@@ -27,9 +27,9 @@ set(CMAKE_EXE_LINKER_FLAGS_COVERAGE "-lgcov")
+diff -urN a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt	2026-07-31 04:46:13
++++ b/CMakeLists.txt	2026-08-01 16:05:12
+@@ -28,9 +28,9 @@
  set(CMAKE_SHARED_LINKER_FLAGS_COVERAGE "-lgcov")
  
  # Work around bug in GNUInstallDirs
@@ -28,7 +14,7 @@ index 5a1ff93ca..c75172086 100644
  
  # Include stuff
  include(Misc)
-@@ -124,20 +124,20 @@ if (ZSTD_FOUND)
+@@ -124,15 +124,15 @@
  endif()
  
  
@@ -50,18 +36,9 @@ index 5a1ff93ca..c75172086 100644
 +#  set(HAVE_SYSTEMD 1)
 +#endif()
  
--find_package(SECCOMP)
--if (SECCOMP_FOUND)
--  set(HAVE_SECCOMP 1)
--endif()
-+#find_package(SECCOMP)
-+#if (SECCOMP_FOUND)
-+#  set(HAVE_SECCOMP 1)
-+#endif()
- 
- find_package(GCRYPT REQUIRED)
- find_package(XXHASH REQUIRED)
-@@ -250,7 +250,7 @@ add_subdirectory(doc)
+ find_package(SECCOMP)
+ if (SECCOMP_FOUND)
+@@ -255,7 +255,7 @@
  add_subdirectory(dselect)
  add_subdirectory(ftparchive)
  add_subdirectory(methods)
@@ -70,32 +47,36 @@ index 5a1ff93ca..c75172086 100644
  
  if (USE_NLS)
  add_subdirectory(po)
-diff --git a/apt-pkg/CMakeLists.txt b/apt-pkg/CMakeLists.txt
-index d13aed96c..5433f8da6 100644
---- a/apt-pkg/CMakeLists.txt
-+++ b/apt-pkg/CMakeLists.txt
-@@ -36,7 +36,7 @@ configure_file(apt-pkg.pc.in ${CMAKE_CURRENT_BINARY_DIR}/apt-pkg.pc @ONLY)
+diff -urN a/apt-pkg/CMakeLists.txt b/apt-pkg/CMakeLists.txt
+--- a/apt-pkg/CMakeLists.txt	2026-07-31 04:46:13
++++ b/apt-pkg/CMakeLists.txt	2026-08-01 16:16:26
+@@ -41,7 +41,7 @@
  # Definition of the C++ files used to build the library - note that this
  # is expanded at CMake time, so you have to rerun cmake if you add or remove
  # a file (you can just run cmake . in the build directory)
 -file(GLOB_RECURSE library "*.cc"  "${CMAKE_CURRENT_BINARY_DIR}/tagfile-keys.cc")
-+file(GLOB_RECURSE library "*.cc" "*.mm" "${CMAKE_CURRENT_BINARY_DIR}/tagfile-keys.cc")
++file(GLOB_RECURSE library "*.cc" "*.mm"  "${CMAKE_CURRENT_BINARY_DIR}/tagfile-keys.cc")
  file(GLOB_RECURSE headers "*.h")
  
  # Create a library using the C++ files
-@@ -69,6 +69,7 @@ target_link_libraries(apt-pkg
+@@ -73,11 +73,12 @@
                               ${ICONV_LIBRARIES}
-                              $<$<BOOL:${GCRYPT_FOUND}>:${GCRYPT_LIBRARIES}>
+                              OpenSSL::Crypto
                               $<$<BOOL:${XXHASH_FOUND}>:${XXHASH_LIBRARIES}>
 +                             "-framework Foundation"
  )
  set_target_properties(apt-pkg PROPERTIES VERSION ${MAJOR}.${MINOR})
  set_target_properties(apt-pkg PROPERTIES SOVERSION ${MAJOR})
-diff --git a/apt-pkg/contrib/fileutl.cc b/apt-pkg/contrib/fileutl.cc
-index 10c656301..90c9607fd 100644
---- a/apt-pkg/contrib/fileutl.cc
-+++ b/apt-pkg/contrib/fileutl.cc
-@@ -24,6 +24,7 @@
+ set_target_properties(apt-pkg PROPERTIES CXX_VISIBILITY_PRESET hidden)
+-target_link_libraries(apt-pkg PRIVATE -Wl,-version-script="${CMAKE_CURRENT_BINARY_DIR}/versionscript")
++#target_link_libraries(apt-pkg PRIVATE -Wl,-version-script="${CMAKE_CURRENT_BINARY_DIR}/versionscript")
+ 
+ # Install the library and the header files
+ install(TARGETS apt-pkg LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+diff -urN a/apt-pkg/contrib/fileutl.cc b/apt-pkg/contrib/fileutl.cc
+--- a/apt-pkg/contrib/fileutl.cc	2026-07-31 04:46:13
++++ b/apt-pkg/contrib/fileutl.cc	2026-08-01 16:05:12
+@@ -32,6 +32,7 @@
  #include <apt-pkg/error.h>
  #include <apt-pkg/fileutl.h>
  #include <apt-pkg/macros.h>
@@ -103,7 +84,7 @@ index 10c656301..90c9607fd 100644
  #include <apt-pkg/pkgsystem.h>
  #include <apt-pkg/strutl.h>
  
-@@ -1842,12 +1843,12 @@ class APT_HIDDEN ZstdFileFdPrivate : public FileFdPrivate		/*{{{*/
+@@ -1869,12 +1870,12 @@
  	 // Drain compressed buffer as far as possible.
  	 ZSTD_inBuffer in = {
  	    .src = zstd_buffer.get(),
@@ -118,18 +99,9 @@ index 10c656301..90c9607fd 100644
  	    .pos = 0,
  	 };
  
-@@ -1885,7 +1886,7 @@ class APT_HIDDEN ZstdFileFdPrivate : public FileFdPrivate		/*{{{*/
-       };
-       ZSTD_inBuffer in = {
- 	 .src = From,
--	 .size = Size,
-+	 .size = static_cast<size_t>(Size),
- 	 .pos = 0,
-       };
- 
 diff -urN a/apt-pkg/contrib/srvrec.cc b/apt-pkg/contrib/srvrec.cc
---- a/apt-pkg/contrib/srvrec.cc	2024-03-22 18:15:33
-+++ b/apt-pkg/contrib/srvrec.cc	2024-04-08 14:47:06
+--- a/apt-pkg/contrib/srvrec.cc	2026-07-31 04:46:13
++++ b/apt-pkg/contrib/srvrec.cc	2026-08-01 16:05:12
 @@ -13,6 +13,7 @@
  #include <ctime>
  #include <arpa/inet.h>
@@ -137,32 +109,41 @@ diff -urN a/apt-pkg/contrib/srvrec.cc b/apt-pkg/contrib/srvrec.cc
 +#include <apt-pkg/nameser_compat.h>
  #include <netinet/in.h>
  #include <resolv.h>
-
-diff -urN a/apt-pkg/contrib/string_view.h b/apt-pkg/contrib/string_view.h
---- a/apt-pkg/contrib/string_view.h	2024-03-22 18:15:33
-+++ b/apt-pkg/contrib/string_view.h	2024-04-08 14:47:29
+ 
+@@ -26,6 +27,9 @@
+ #include <apt-pkg/strutl.h>
+ 
+ #include "srvrec.h"
++
++extern "C" int getservbyport_r(int port, const char *prots,
++        struct servent *se, char *buf, size_t buflen, struct servent **res);
+ 
+ bool SrvRec::operator==(SrvRec const &other) const
+ {
+diff -urN a/apt-pkg/deb/debversion.cc b/apt-pkg/deb/debversion.cc
+--- a/apt-pkg/deb/debversion.cc	2026-07-31 04:46:13
++++ b/apt-pkg/deb/debversion.cc	2026-08-01 16:05:12
 @@ -12,6 +12,7 @@
- #if !defined(APT_STRINGVIEW_H)
- #define APT_STRINGVIEW_H
- #include <apt-pkg/macros.h>
+ #include <config.h>
+ 
+ #include <apt-pkg/debversion.h>
 +#include <apt-pkg/missing.h>
- #include <cstring>
- #include <string>
-
-diff --git a/apt-pkg/deb/dpkgpm.cc b/apt-pkg/deb/dpkgpm.cc
-index 93effa959..870378b98 100644
---- a/apt-pkg/deb/dpkgpm.cc
-+++ b/apt-pkg/deb/dpkgpm.cc
-@@ -1755,7 +1755,7 @@ bool pkgDPkgPM::Go(APT::Progress::PackageManager *progress)
+ #include <apt-pkg/pkgcache.h>
+ 
+ #include <cctype>
+diff -urN a/apt-pkg/deb/dpkgpm.cc b/apt-pkg/deb/dpkgpm.cc
+--- a/apt-pkg/deb/dpkgpm.cc	2026-07-31 04:46:13
++++ b/apt-pkg/deb/dpkgpm.cc	2026-08-01 16:05:12
+@@ -1773,7 +1773,7 @@
     bool dpkgProtectedField = debSystem::AssertFeature("protected-field");
  
     // start pty magic before the loop
 -   StartPtyMagic();
-+   //StartPtyMagic(); or not...
++   //StartPtyMagic();
  
     // Tell the progress that its starting and fork dpkg
     d->progress->Start(d->master);
-@@ -2149,7 +2149,7 @@ bool pkgDPkgPM::Go(APT::Progress::PackageManager *progress)
+@@ -2166,7 +2166,7 @@
        }
     }
     // dpkg is done at this point
@@ -171,11 +152,9 @@ index 93effa959..870378b98 100644
     CloseLog();
  
     if (d->dpkg_error.empty() == false)
-diff --git a/apt-pkg/endian.h b/apt-pkg/endian.h
-new file mode 100644
-index 000000000..e89694a44
---- /dev/null
-+++ b/apt-pkg/endian.h
+diff -urN a/apt-pkg/endian.h b/apt-pkg/endian.h
+--- a/apt-pkg/endian.h	1970-01-01 08:00:00
++++ b/apt-pkg/endian.h	2026-08-01 16:05:12
 @@ -0,0 +1,118 @@
 +// "License": Public Domain
 +// I, Mathias Panzenböck, place this file hereby into the public domain. Use it at your own risk for whatever you like.
@@ -295,11 +274,9 @@ index 000000000..e89694a44
 +#endif
 +
 +#endif
-diff --git a/apt-pkg/getservbyport_r.cc b/apt-pkg/getservbyport_r.cc
-new file mode 100644
-index 000000000..19cbe96c4
---- /dev/null
-+++ b/apt-pkg/getservbyport_r.cc
+diff -urN a/apt-pkg/getservbyport_r.cc b/apt-pkg/getservbyport_r.cc
+--- a/apt-pkg/getservbyport_r.cc	1970-01-01 08:00:00
++++ b/apt-pkg/getservbyport_r.cc	2026-08-01 16:05:12
 @@ -0,0 +1,64 @@
 +#define _GNU_SOURCE
 +#include <sys/socket.h>
@@ -365,11 +342,9 @@ index 000000000..19cbe96c4
 +	return 0;
 +}
 +#endif // HAVE_GETSERVBYPORT_R
-diff --git a/apt-pkg/memrchr.cc b/apt-pkg/memrchr.cc
-new file mode 100644
-index 000000000..cb5b12e82
---- /dev/null
-+++ b/apt-pkg/memrchr.cc
+diff -urN a/apt-pkg/memrchr.cc b/apt-pkg/memrchr.cc
+--- a/apt-pkg/memrchr.cc	1970-01-01 08:00:00
++++ b/apt-pkg/memrchr.cc	2026-08-01 16:05:12
 @@ -0,0 +1,45 @@
 +/*	$OpenBSD: memrchr.c,v 1.2 2007/11/27 16:22:12 martynas Exp $	*/
 +
@@ -416,11 +391,9 @@ index 000000000..cb5b12e82
 +	return(NULL);
 +}
 +#endif // HAVE_MEMRCHR
-diff --git a/apt-pkg/missing.h b/apt-pkg/missing.h
-new file mode 100644
-index 000000000..0c43bc2b4
---- /dev/null
-+++ b/apt-pkg/missing.h
+diff -urN a/apt-pkg/missing.h b/apt-pkg/missing.h
+--- a/apt-pkg/missing.h	1970-01-01 08:00:00
++++ b/apt-pkg/missing.h	2026-08-01 16:05:12
 @@ -0,0 +1,22 @@
 +#define _GNU_SOURCE
 +#include <sys/socket.h>
@@ -444,11 +417,9 @@ index 000000000..0c43bc2b4
 +#define AI_IDN 0x0040
 +
 +#endif
-diff --git a/apt-pkg/nameser_compat.h b/apt-pkg/nameser_compat.h
-new file mode 100644
-index 000000000..b2cf2ffaa
---- /dev/null
-+++ b/apt-pkg/nameser_compat.h
+diff -urN a/apt-pkg/nameser_compat.h b/apt-pkg/nameser_compat.h
+--- a/apt-pkg/nameser_compat.h	1970-01-01 08:00:00
++++ b/apt-pkg/nameser_compat.h	2026-08-01 16:05:12
 @@ -0,0 +1,187 @@
 +/* Copyright (c) 1983, 1989
 + *    The Regents of the University of California.  All rights reserved.
@@ -637,11 +608,121 @@ index 000000000..b2cf2ffaa
 +
 +#endif /* _ARPA_NAMESER_COMPAT_ */
 +/*! \file */
-diff --git a/apt-pkg/strchrnul.cc b/apt-pkg/strchrnul.cc
-new file mode 100644
-index 000000000..171d42b20
---- /dev/null
-+++ b/apt-pkg/strchrnul.cc
+diff -urN a/apt-pkg/solver3.h b/apt-pkg/solver3.h
+--- a/apt-pkg/solver3.h	2026-07-31 04:46:13
++++ b/apt-pkg/solver3.h	2026-08-01 16:15:27
+@@ -20,6 +20,8 @@
+ #include <apt-pkg/pkgcache.h>
+ #include <apt-pkg/policy.h>
+ 
++typedef unsigned int level_type;
++
+ template <typename T> struct always_false : std::false_type {};
+ 
+ namespace APT::Solver
+@@ -282,7 +284,48 @@
+ class Solver
+ {
+    protected:
+-   struct State;
++/**
++ * \brief The solver state
++ *
++ * For each version, the solver records a assignment at a certain level. It
++ * maintains an array mapping from version ID to state.
++ */
++struct State
++{
++   // \brief The reason for causing this state (invalid for Undefined).
++   //
++   // Rejects may have been caused by a later state. Consider we select
++   // between x1 and x2 in level = N. If we now find dependencies of x1
++   // leading to a conflict with a package in K < N, we will record all
++   // of them as REJECT in level = K.
++   //
++   // You can follow the reason chain upwards as long as the level
++   // doesn't increase to unwind.
++   //
++   // Vars < 0 are package ID, reasons > 0 are version IDs.
++   const Clause *reason{};
++
++   const char *reasonStr{};
++
++   // \brief The level at which the value has been assigned
++   level_type level{0};
++
++   LiftedBool assignment{LiftedBool::Undefined};
++
++   // \brief Flags.
++   struct
++   {
++      bool discovered{};
++      bool manual{};
++   } flags;
++
++   static_assert(sizeof(flags) <= sizeof(int));
++
++   // \brief Clauses owned by this package/version
++   std::vector<std::unique_ptr<Clause>> clauses;
++   // \brief Watches watching a clause by sign
++   std::vector<const Clause *> watches[2];
++};
+    struct Work;
+    struct Trail;
+ 
+@@ -518,49 +561,6 @@
+    constexpr bool operator<(APT::Solver::Solver::Work const &b) const noexcept;
+    std::string toString(pkgCache &cache) const;
+    constexpr Work(const Clause *clause, level_type level) noexcept : clause(clause), level(level) {}
+-};
+-
+-/**
+- * \brief The solver state
+- *
+- * For each version, the solver records a assignment at a certain level. It
+- * maintains an array mapping from version ID to state.
+- */
+-struct APT::Solver::Solver::State
+-{
+-   // \brief The reason for causing this state (invalid for Undefined).
+-   //
+-   // Rejects may have been caused by a later state. Consider we select
+-   // between x1 and x2 in level = N. If we now find dependencies of x1
+-   // leading to a conflict with a package in K < N, we will record all
+-   // of them as REJECT in level = K.
+-   //
+-   // You can follow the reason chain upwards as long as the level
+-   // doesn't increase to unwind.
+-   //
+-   // Vars < 0 are package ID, reasons > 0 are version IDs.
+-   const Clause *reason{};
+-
+-   const char *reasonStr{};
+-
+-   // \brief The level at which the value has been assigned
+-   level_type level{0};
+-
+-   LiftedBool assignment{LiftedBool::Undefined};
+-
+-   // \brief Flags.
+-   struct
+-   {
+-      bool discovered{};
+-      bool manual{};
+-   } flags;
+-
+-   static_assert(sizeof(flags) <= sizeof(int));
+-
+-   // \brief Clauses owned by this package/version
+-   std::vector<std::unique_ptr<Clause>> clauses;
+-   // \brief Watches watching a clause by sign
+-   std::vector<const Clause *> watches[2];
+ };
+ 
+ /**
+diff -urN a/apt-pkg/strchrnul.cc b/apt-pkg/strchrnul.cc
+--- a/apt-pkg/strchrnul.cc	1970-01-01 08:00:00
++++ b/apt-pkg/strchrnul.cc	2026-08-01 16:05:12
 @@ -0,0 +1,63 @@
 +/*-
 + * SPDX-License-Identifier: MIT
@@ -706,11 +787,10 @@ index 000000000..171d42b20
 +	return (char *)s;
 +}
 +#endif // HAVE_STRCHRNUL
-diff --git a/apt-private/CMakeLists.txt b/apt-private/CMakeLists.txt
-index 88a8f97fe..4a6ea51b8 100644
---- a/apt-private/CMakeLists.txt
-+++ b/apt-private/CMakeLists.txt
-@@ -5,14 +5,14 @@ set(MINOR 0)
+diff -urN a/apt-private/CMakeLists.txt b/apt-private/CMakeLists.txt
+--- a/apt-private/CMakeLists.txt	2026-07-31 04:46:13
++++ b/apt-private/CMakeLists.txt	2026-08-01 16:20:18
+@@ -5,14 +5,14 @@
  # Definition of the C++ files used to build the library - note that this
  # is expanded at CMake time, so you have to rerun cmake if you add or remove
  # a file (you can just run cmake . in the build directory)
@@ -727,36 +807,45 @@ index 88a8f97fe..4a6ea51b8 100644
  set_target_properties(apt-private PROPERTIES VERSION ${MAJOR}.${MINOR})
  set_target_properties(apt-private PROPERTIES SOVERSION ${MAJOR})
  set_target_properties(apt-private PROPERTIES CXX_VISIBILITY_PRESET hidden)
-diff --git a/ftparchive/byhash.cc b/ftparchive/byhash.cc
-index b24f6158e..19c8d1b22 100644
---- a/ftparchive/byhash.cc
-+++ b/ftparchive/byhash.cc
-@@ -17,6 +17,8 @@
- #include <sys/stat.h>
- #include <unistd.h>
+diff -urN a/cmdline/apt-internal-solver.cc b/cmdline/apt-internal-solver.cc
+--- a/cmdline/apt-internal-solver.cc	2026-07-31 04:46:13
++++ b/cmdline/apt-internal-solver.cc	2026-08-01 16:05:12
+@@ -121,7 +121,7 @@
+ 
+ 	_config->Set("APT::System", "Debian APT solver interface");
+ 	std::string self = argv[0];
+-	if (strcmp(basename(self.data()), "solver3") == 0)
++	if (strcmp(basename((char*)argv[0]), "solver3") == 0)
+ 	   _config->Set("APT::Solver", "3.0");
+ 	else if (_config->Find("APT::Solver") != "3.0")
+ 	   _config->Set("APT::Solver", "internal");
+diff -urN a/ftparchive/byhash.cc b/ftparchive/byhash.cc
+--- a/ftparchive/byhash.cc	2026-07-31 04:46:13
++++ b/ftparchive/byhash.cc	2026-08-01 16:05:12
+@@ -21,6 +21,8 @@
+ #include <apt-pkg/fileutl.h>
+ #include <apt-pkg/hashes.h>
  
 +#define st_mtim st_mtimespec
 +
- #include "byhash.h"
- #include <apt-pkg/fileutl.h>
- #include <apt-pkg/hashes.h>
-diff --git a/ftparchive/cachedb.cc b/ftparchive/cachedb.cc
-index dedb01eaa..9f7161ab8 100644
---- a/ftparchive/cachedb.cc
-+++ b/ftparchive/cachedb.cc
+ // Delete all files in a directory except the most recent N ones
+ void DeleteAllButMostRecent(std::string dir, int KeepFiles)
+ {
+diff -urN a/ftparchive/cachedb.cc b/ftparchive/cachedb.cc
+--- a/ftparchive/cachedb.cc	2026-07-31 04:46:13
++++ b/ftparchive/cachedb.cc	2026-08-01 16:05:12
 @@ -18,6 +18,7 @@
  #include <apt-pkg/gpgv.h>
  #include <apt-pkg/hashes.h>
  #include <apt-pkg/strutl.h>
 +#include <apt-pkg/missing.h>
  
- #include <ctype.h>
- #include <netinet/in.h> // htonl, etc
-diff --git a/methods/connect.cc b/methods/connect.cc
-index bc2fe1de5..43fce52f5 100644
---- a/methods/connect.cc
-+++ b/methods/connect.cc
-@@ -274,7 +274,7 @@ static ResultState WaitAndCheckErrors(std::list<Connection> &Conns, std::unique_
+ #include <cctype>
+ #include <cstddef>
+diff -urN a/methods/connect.cc b/methods/connect.cc
+--- a/methods/connect.cc	2026-07-31 04:46:13
++++ b/methods/connect.cc	2026-08-01 16:05:12
+@@ -277,7 +277,7 @@
     struct timeval tv = {
        // Split our millisecond timeout into seconds and microseconds
        .tv_sec = TimeoutMsec / 1000,
@@ -765,23 +854,3 @@ index bc2fe1de5..43fce52f5 100644
     };
  
     // We will return once we have no more connections, a time out, or
-diff -urN a/cmdline/apt-internal-solver.cc b/cmdline/apt-internal-solver.cc
---- a/cmdline/apt-internal-solver.cc	2024-05-31 18:37:20.080387725 +0800
-+++ b/cmdline/apt-internal-solver.cc	2024-05-31 18:54:53.044986973 +0800
-@@ -36,6 +36,7 @@
- #include <sstream>
- #include <string>
- #include <unistd.h>
-+#include <libgen.h>
-
- #include <apti18n.h>
- 									/*}}}*/
-@@ -119,7 +120,7 @@
- 		_config->Set("Debug::EDSP::WriteSolution", true);
-
- 	_config->Set("APT::System", "Debian APT solver interface");
--	if (strcmp(basename(argv[0]), "solver3") == 0)
-+	if (strcmp(basename((char*)argv[0]), "solver3") == 0)
- 	   _config->Set("APT::Solver", "3.0");
- 	else if (_config->Find("APT::Solver") != "3.0")
- 	   _config->Set("APT::Solver", "internal");

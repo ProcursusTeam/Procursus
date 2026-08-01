@@ -6,7 +6,7 @@ index 26d8c71c2..740e56c7a 100644
  // Include Files							/*{{{*/
  #include <config.h>
  
-+#define ENABLE_SILEO 1
++#define HAVE_SILEO
 +#include <Foundation/Foundation.h>
 +
  #include <apt-pkg/algorithms.h>
@@ -242,7 +242,7 @@ index 12a77d4b8..84226ed39 100644
  private:
     APT_HIDDEN void ShortBreaks();
     APT_HIDDEN void Describe(PkgIterator iPkg,std::ostream &out,bool Current,bool Candidate);
-+#if ENABLE_SILEO
++#if defined(HAVE_SILEO)
 +   APT_HIDDEN NSMutableDictionary * DescribeSileo(PkgIterator iPkg,bool Current,bool Candidate);
 +#endif
     APT_HIDDEN bool RealInstall(PkgIterator Pkg,std::string File);

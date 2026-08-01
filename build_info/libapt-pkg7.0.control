@@ -1,4 +1,4 @@
-Package: libapt-pkg6.0
+Package: libapt-pkg7.0
 Priority: required
 Section: Libraries
 Maintainer: @DEB_MAINTAINER@

@@ -3,7 +3,7 @@ Version: @DEB_LIBAPT-PKG-PERL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Pre-Depends: perl (>= 5.32.1)
-Depends: libapt-pkg6.0 (>= 2.3.0)
+Depends: libapt-pkg7.0 (>= 2.3.0)
 Section: Perl
 Homepage: https://salsa.debian.org/bod/libapt-pkg-perl
 Description: Perl interface to libapt-pkg
