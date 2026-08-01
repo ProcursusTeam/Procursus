@@ -18,8 +18,12 @@ berkeleydb:
 	@echo "Using previously built berkeleydb."
 else
 berkeleydb: berkeleydb-setup gettext openssl
-	cd $(BUILD_WORK)/berkeleydb/dist && ./s_config
-	cd $(BUILD_WORK)/berkeleydb/build_unix && ../dist/configure \
+	cd $(BUILD_WORK)/berkeleydb/dist && ./s_config && \
+		sed -i 's/NULLCMD/PEARCMD/g' $(BUILD_WORK)/berkeleydb/dist/configure && \
+		sed -i 's/NULL/((void*)0)/g' $(BUILD_WORK)/berkeleydb/dist/configure
+	# LTO off here because enabling it causes ld-prime to crash
+	cd $(BUILD_WORK)/berkeleydb/build_unix && CFLAGS="$(patsubst -flto=thin,,$(CFLAGS) -Wno-int-conversion)" \
+		CXXFLAGS="$(patsubst -flto=thin,,$(CXXFLAGS) -Wno-int-conversion)" ../dist/configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--includedir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/db181 \
 		--enable-cxx \
@@ -31,7 +35,7 @@ berkeleydb: berkeleydb-setup gettext openssl
 		--with-mutex=Darwin/_spin_lock_try
 	+$(MAKE) -C $(BUILD_WORK)/berkeleydb/build_unix
 	+$(MAKE) -C $(BUILD_WORK)/berkeleydb/build_unix install \
-		DESTDIR=$(BUILD_STAGE)/berkeleydb 
+		DESTDIR=$(BUILD_STAGE)/berkeleydb
 	$(call AFTER_BUILD,copy)
 endif
 
