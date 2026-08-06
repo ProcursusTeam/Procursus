@@ -1,0 +1,12 @@
+Package: libhwloc-dev
+Version: @DEB_HWLOC_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libhwloc15 (= @DEB_HWLOC_V@)
+Section: Development
+Priority: optional
+Description: Hierarchical view of the machine - development files
+ libhwloc provides a portable abstraction (across OS, versions,
+ architectures, ...) of the hierarchical topology of modern architectures.
+ .
+ It contains development libraries and header files for libhwloc
