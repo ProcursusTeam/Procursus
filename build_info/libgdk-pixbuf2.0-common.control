@@ -1,0 +1,9 @@
+Package: libgdk-pixbuf2.0-common
+Version: @DEB_GDK-PIXBUF_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: optional
+Description: GDK Pixbuf library - data files
+ This package contains the common files and translations for the GDK
+ Pixbuf library.

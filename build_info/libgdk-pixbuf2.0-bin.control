@@ -1,0 +1,17 @@
+Package: libgdk-pixbuf2.0-bin
+Version: @DEB_GDK-PIXBUF_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libgdk-pixbuf-2.0-0 (>= 2.35.4), libglib2.0-0 (>= 2.56.0)
+Breaks: libgdk-pixbuf2.0-dev (<< 2.36.12-2~)
+Replaces: libgdk-pixbuf2.0-dev (<< 2.36.12-2~)
+Section: Libraries
+Priority: optional
+Description: GDK Pixbuf library (thumbnailer)
+ The GDK Pixbuf library provides:
+  - Image loading and saving facilities.
+  - Fast scaling and compositing of pixbufs.
+  - Simple animation loading (ie. animated GIFs)
+ .
+ This package contains the GDK pixdata compression utility, the thumbnailer
+ and a utility for converting images into C code.
