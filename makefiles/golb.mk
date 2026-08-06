@@ -5,8 +5,9 @@ endif
 ifneq (,$(findstring arm64,$(MEMO_TARGET)))
 
 SUBPROJECTS    += golb
-GOLB_COMMIT    := 7ffffff2f80cbee13709392367a01a37c50fc2cb
-GOLB_VERSION   := 1.0.1+git20210608.$(shell echo $(GOLB_COMMIT) | cut -c -7)
+GOLB_COMMIT    := 7ffffff03afa3bbf7bf6ce2a4bef025d572391ec
+GOLB_CFLAGS    := $(addprefix -framework ,IOKit CoreFoundation) -lcompression
+GOLB_VERSION   := 1.0.1+git20230103.$(shell echo $(GOLB_COMMIT) | cut -c -7)
 DEB_GOLB_V     ?= $(GOLB_VERSION)
 
 golb-setup: setup
@@ -19,17 +20,11 @@ golb:
 	@echo "Using previously built golb."
 else
 golb: golb-setup
-	$(CC) $(CFLAGS) \
-		-framework IOKit \
-		-framework CoreFoundation \
-		-lcompression \
+	$(CC) $(CFLAGS) $(GOLB_CFLAGS) \
 		$(BUILD_WORK)/golb/golb.c \
 		$(BUILD_WORK)/golb/aes_ap.c \
 		-o $(BUILD_STAGE)/golb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/aes_ap
-	$(CC) $(CFLAGS) \
-		-framework IOKit \
-		-framework CoreFoundation \
-		-lcompression \
+	$(CC) $(CFLAGS) $(GOLB_CFLAGS) \
 		$(BUILD_WORK)/golb/golb_ppl.c \
 		$(BUILD_WORK)/golb/aes_ap.c \
 		-o $(BUILD_STAGE)/golb/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/aes_ap_ppl
@@ -39,7 +34,6 @@ endif
 golb-package: golb-stage
 	# golb.mk Package Structure
 	rm -rf $(BUILD_DIST)/golb
-	mkdir -p $(BUILD_DIST)/golb
 
 	# golb.mk Prep golb
 	cp -a $(BUILD_STAGE)/golb $(BUILD_DIST)/
