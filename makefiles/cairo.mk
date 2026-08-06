@@ -9,13 +9,14 @@ DEB_CAIRO_V   ?= $(CAIRO_VERSION)-3
 cairo-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://cairographics.org/releases/cairo-$(CAIRO_VERSION).tar.xz)
 	$(call EXTRACT_TAR,cairo-$(CAIRO_VERSION).tar.xz,cairo-$(CAIRO_VERSION),cairo)
+	$(call DO_PATCH,cairo,cairo,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/cairo/.build_complete),)
 cairo:
 	@echo "Using previously built cairo."
 else
 cairo: cairo-setup freetype gettext fontconfig glib2.0 libpng16 liblzo2 libpixman libxcb libxrender libx11 libxext
-	cd $(BUILD_WORK)/cairo && ./autogen.sh \
+	cd $(BUILD_WORK)/cairo && NOCONFIGURE=1 ./autogen.sh && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-pdf \
 		--enable-ps \
@@ -25,7 +26,36 @@ cairo: cairo-setup freetype gettext fontconfig glib2.0 libpng16 liblzo2 libpixma
 		--enable-svg \
 		--enable-xcb \
 		--enable-xlib \
-		--enable-gobject
+		--enable-gobject \
+		--enable-xlib-xrender \
+		--enable-xlib-xcb \
+		--enable-xml \
+		--enable-quartz \
+		--enable-quartz-text \
+		--enable-quartz-image \
+		ac_cv_func_FT_Done_MM_Var=yes \
+		ac_cv_func_FT_Get_Var_Design_Coordinates=yes \
+		ac_cv_func_FT_Get_X11_Font_Format=yes \
+		ac_cv_func_FT_GlyphSlot_Embolden=yes \
+		ac_cv_func_FT_GlyphSlot_Oblique=yes \
+		ac_cv_func_FT_Library_SetLcdFilter=yes \
+		ac_cv_func_FT_Load_Sfnt_Table=yes \
+		ac_cv_func_FcFini=yes \
+		ac_cv_func_FcInit=yes \
+		ac_cv_func_XRenderCreateConicalGradient=yes \
+		ac_cv_func_XRenderCreateLinearGradient=yes \
+		ac_cv_func_XRenderCreateRadialGradient=yes \
+		ac_cv_func_XRenderCreateSolidFill=yes \
+		ac_cv_header_X11_extensions_XShm_h=yes \
+		ac_cv_header_X11_extensions_shmproto_h=yes \
+		ac_cv_header_X11_extensions_shmstr_h=yes \
+		ac_cv_header_lzo_lzo2a_h=yes \
+		ac_cv_header_memory_h=yes \
+		ac_cv_header_stdc=yes \
+		lt_cv_prog_compiler_c_o_CXX=yes \
+		lt_cv_prog_compiler_pic_CXX='-fno-common -DPIC' \
+		lt_cv_prog_compiler_pic_works_CXX=yes \
+		ac_cv_have_x='have_x=yes       ac_x_includes='\'''\''  ac_x_libraries='\'''\'''
 	+$(MAKE) -C $(BUILD_WORK)/cairo \
 		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/glib-2.0/include"
 	+$(MAKE) -C $(BUILD_WORK)/cairo install \
