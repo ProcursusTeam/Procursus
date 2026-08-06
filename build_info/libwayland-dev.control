@@ -1,0 +1,26 @@
+Package: libwayland-dev
+Version: @DEB_WAYLAND_V@
+Architecture: any
+Maintainer: @DEB_MAINTAINER@
+Depends:
+ libwayland-client0 (= @DEB_WAYLAND_V@),
+ libwayland-server0 (= @DEB_WAYLAND_V@),
+ libwayland-cursor0 (= @DEB_WAYLAND_V@),
+ libwayland-egl1 (= @DEB_WAYLAND_V@),
+ libwayland-bin (= @DEB_WAYLAND_V@),
+ libffi-dev
+Section: Development
+Priority: optional
+Homepage: https://wayland.freedesktop.org/
+Breaks: libegl1-mesa-dev (<< 18.0.5-0)
+Replaces: libegl1-mesa-dev (<< 18.0.5-0)
+Description: wayland compositor infrastructure - development files
+ Wayland is a protocol for a compositor to talk to its clients as well
+ as a C library implementation of that protocol. The compositor can be
+ a standalone display server running on Linux kernel modesetting and
+ evdev input devices, an X application, or a wayland client
+ itself. The clients can be traditional applications, X servers
+ (rootless or fullscreen) or other display servers.
+ .
+ This package contains the development headers for the Wayland libraries.
+ Non-developers likely have little use for this package.
