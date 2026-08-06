@@ -1,0 +1,8 @@
+Package: appdecrypt
+Author: paradiseduo
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_APPDECRYPT_V@
+Section: Utilities
+Priority: optional
+Description: Decrypt application encrypted binaries on macOS.
