@@ -1,0 +1,10 @@
+Package: bettercap
+Version: @DEB_BETTERCAP_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Networking
+Priority: optional
+Depends: libusb-1.0-0, libpcapa
+Description: Complete, modular, portable and easily extensible MITM framework
+  This package contains a Swiss Army knife for 802.11, BLE and Ethernet networks
+  reconnaissance and attacks.
