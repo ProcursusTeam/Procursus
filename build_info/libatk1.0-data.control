@@ -1,0 +1,14 @@
+Package: libatk1.0-data
+Version: @DEB_ATK_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Miscellaneous
+Priority: optional
+Multi-Arch: foreign
+Description: Common files for the ATK accessibility toolkit
+ ATK is a toolkit providing accessibility interfaces for applications or
+ other toolkits. By implementing these interfaces, those other toolkits or
+ applications can be used with tools such as screen readers, magnifiers, and
+ other alternative input devices.
+ .
+ This contains the common files which the runtime libraries need.
