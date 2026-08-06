@@ -1,0 +1,26 @@
+Package: cgit
+Version: @DEB_CGIT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Suggests: python3-docutils, python3-pygments | highlight, python3-markdown
+Section: Data_Storage
+Priority: optional
+Description: hyperfast web frontend for git repositories written in C
+ This is an attempt to create a fast web interface for the Git SCM, using a
+ built-in cache to decrease server I/O pressure.
+ .
+ Features:
+  * basic repository browsing (logs, diffs, trees...)
+  * caching of generated HTML
+  * cloneable URLs (implements dumb HTTP transport)
+  * commit feeds (atom format)
+  * discovery of Git repositories
+  * on-the-fly archives for tags and commits
+  * plugin support for e.g. syntax highlighting
+  * side-by-side diffs
+  * simple time/author statistics
+  * simple virtual hosting support (macro expansion)
+  * understands GitWeb project-lists
+  * understands gitweb.owner in Git config files
+  * has extensive filtering framework using scripts or a built-in Lua
+    interpreter
