@@ -3,7 +3,7 @@ Version: @DEB_PYTHON3_GLANCES_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Author: Nicolas Hennion <nicolas@nicolargo.com>
-Depends: python3, python3-psutil (>= 5.3.0)
+Depends: python3, python3-psutil (>= 5.3.0), python3-defusedxml
 Section: Python
 Priority: optional
 Homepage: https://nicolargo.github.io/glances/
