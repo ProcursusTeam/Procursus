@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -eu
+
+if [ "${1}" = "purge" ]
+then
+	rmuser -y games || true
+fi
+
+#DEBHELPER#
+
+exit 0
