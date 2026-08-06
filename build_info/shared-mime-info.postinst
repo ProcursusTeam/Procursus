@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+
+if which update-mime-database >/dev/null 2>&1; then
+    update-mime-database @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/mime
+fi
+
+
