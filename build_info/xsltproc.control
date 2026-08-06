@@ -1,0 +1,14 @@
+Package: xsltproc
+Version: @DEB_LIBXSLT_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Homepage: http://xmlsoft.org/xslt
+Description: XSLT 1.0 command line processor
+ XSLT is an XML language for defining transformations of XML files from
+ XML to some other arbitrary format, such as XML, HTML, plain text, etc.
+ using standard XSLT version 1.0 stylesheets.
+ .
+ This package contains a command line tool that facilitates XSLT
+ transformations.
