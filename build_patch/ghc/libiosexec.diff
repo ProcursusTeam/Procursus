@@ -1,0 +1,18 @@
+--- a/libraries/unix/System/Posix/Process.hsc	2022-04-08 16:23:48.335475127 +0800
++++ b/libraries/unix/System/Posix/Process.hsc	2022-02-10 12:27:25.720213214 +0800
+@@ -114,12 +114,12 @@
+                    (c_execve s arg_arr env_arr)
+         return undefined -- never reached
+ 
+-foreign import ccall unsafe "execvp"
++foreign import ccall unsafe "ie_execvp"
+   c_execvp :: CString -> Ptr CString -> IO CInt
+ 
+-foreign import ccall unsafe "execv"
++foreign import ccall unsafe "ie_execv"
+   c_execv :: CString -> Ptr CString -> IO CInt
+ 
+-foreign import ccall unsafe "execve"
++foreign import ccall unsafe "ie_execve"
+   c_execve :: CString -> Ptr CString -> Ptr CString -> IO CInt
+ 
