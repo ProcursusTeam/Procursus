@@ -4,6 +4,7 @@ endif
 
 ifneq ($(MINIMAL_STRAP),1)
 STRAPPROJECTS += p11-kit
+endif
 P11_VERSION   := 0.25.3
 DEB_P11_V     ?= $(P11_VERSION)
 

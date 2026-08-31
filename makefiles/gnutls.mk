@@ -4,6 +4,7 @@ endif
 
 ifneq ($(MINIMAL_STRAP),1)
 STRAPPROJECTS  += gnutls
+endif
 GNUTLS_VERSION := 3.8.5
 DEB_GNUTLS_V   ?= $(GNUTLS_VERSION)
 

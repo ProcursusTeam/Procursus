@@ -370,7 +370,7 @@ ON_DEVICE_SDK_PATH    := $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/SDKs/BridgeOS.sd
 BARE_PLATFORM         := BridgeOS
 MEMO_DEPLOYMENT       := BRIDGEOS_DEPLOYMENT_TARGET=$(BRIDGEOS_DEPLOYMENT_TARGET)
 
-else ifeq ($(MEMO_TARGET),watchos-arm64_32)
+else ifeq ($(shell [ "$(MEMO_TARGET)" = "watchos-arm64_32" ] || [ "$(MEMO_TARGET)" = "watchos-arm64_32-ramdisk" ] && echo 1),1)
 MEMO_ARCH             := arm64_32
 PLATFORM              := watchos
 DEB_ARCH              := watchos-arm64-32

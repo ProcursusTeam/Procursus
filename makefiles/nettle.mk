@@ -4,6 +4,7 @@ endif
 
 ifneq ($(MINIMAL_STRAP),1)
 STRAPPROJECTS  += nettle
+endif
 NETTLE_VERSION := 3.9.1
 DEB_NETTLE_V   ?= $(NETTLE_VERSION)
 

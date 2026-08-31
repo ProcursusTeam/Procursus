@@ -4,6 +4,7 @@ endif
 
 ifneq ($(MINIMAL_STRAP),1)
 STRAPPROJECTS += gnupg
+endif
 GNUPG_VERSION := 2.4.5
 DEB_GNUPG_V   ?= $(GNUPG_VERSION)
 

@@ -8,6 +8,7 @@ SUBPROJECTS        += uikittools
 else
 STRAPPROJECTS      += uikittools
 endif
+endif
 UIKITTOOLS_VERSION := 2.1.8
 DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)
 

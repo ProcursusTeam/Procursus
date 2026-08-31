@@ -4,6 +4,7 @@ endif
 
 ifneq ($(MINIMAL_STRAP),1)
 STRAPPROJECTS     += launchctl
+endif
 LAUNCHCTL_VERSION := 1.2.0
 DEB_LAUNCHCTL_V   ?= 1:$(LAUNCHCTL_VERSION)
 
