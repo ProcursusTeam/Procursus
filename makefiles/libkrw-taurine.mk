@@ -7,7 +7,7 @@ ifeq ($(CFVER_WHOLE),1700)
 
 SUBPROJECTS            += libkrw-taurine
 LIBKRW_TAURINE_VERSION := 1.0
-DEB_LIBKRW_TAURINE_V   ?= $(LIBKRW_TAURINE_VERSION)
+DEB_LIBKRW_TAURINE_V   ?= $(LIBKRW_TAURINE_VERSION)-1
 
 libkrw-taurine-setup: setup
 	$(call GITHUB_ARCHIVE,R00tFS,libkrw-taurine,$(LIBKRW_TAURINE_VERSION),$(LIBKRW_TAURINE_VERSION))
@@ -34,7 +34,7 @@ libkrw-taurine-package: libkrw-taurine-stage
 	cp -a $(BUILD_STAGE)/libkrw-taurine $(BUILD_DIST)/libkrw0-taurine
 
 	# libkrw-taurine.mk Sign
-	$(call SIGN,libkrw-taurine,general.xml)
+	$(call SIGN,libkrw0-taurine,general.xml)
 
 	# libkrw-taurine.mk Make .debs
 	$(call PACK,libkrw0-taurine,DEB_LIBKRW_TAURINE_V)
