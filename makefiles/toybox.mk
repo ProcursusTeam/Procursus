@@ -40,19 +40,19 @@ endif
 toybox-package: toybox-stage
 	# toybox.mk Package Structure
 	rm -rf $(BUILD_DIST)/toybox
-	
+
 	# toybox.mk Prep toybox
 	cp -a $(BUILD_STAGE)/toybox $(BUILD_DIST)
-	
+
 	# toybox.mk Sign
-	$(call SIGN,toybox,dd.xml)
-	
+	$(call SIGN,toybox,general.xml)
+
 	# toybox.mk Permissions
 	$(FAKEROOT) chmod u+s $(BUILD_DIST)/toybox/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/toybox
-	
+
 	# toybox.mk Make .debs
 	$(call PACK,toybox,DEB_TOYBOX_V)
-	
+
 	# toybox.mk Build cleanup
 	rm -rf $(BUILD_DIST)/toybox
 

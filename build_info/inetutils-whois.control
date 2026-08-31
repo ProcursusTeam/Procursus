@@ -1,0 +1,13 @@
+Package: inetutils-whois
+Conflicts: inetutils
+Version: @DEB_INETUTILS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Networking
+Priority: optional
+Homepage: http://www.gnu.org/software/inetutils/
+Description: intelligent WHOIS client
+ This package provides a commandline client for the WHOIS (RFC 3912) 
+ protocol, which queries online servers for information such as contact 
+ details for domains and IP address assignments. It can intelligently 
+ select the appropriate WHOIS server for most queries.

@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS         += libpipeline
-LIBPIPELINE_VERSION := 1.5.3
+LIBPIPELINE_VERSION := 1.5.7
 DEB_LIBPIPELINE_V   ?= $(LIBPIPELINE_VERSION)
 
 libpipeline-setup: setup

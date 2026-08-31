@@ -5,7 +5,7 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS        += kext-tools
-KEXT_TOOLS_VERSION := 716
+KEXT_TOOLS_VERSION := 745
 DEB_KEXT_TOOLS_V   ?= $(KEXT_TOOLS_VERSION)
 
 KEXT_TOOLS_CFLAGS := kext_tools_util.o Shims.o -framework IOKit -framework CoreFoundation -DPRIVATE -D__OS_EXPOSE_INTERNALS__ -DEMBEDDED_HOST
@@ -42,9 +42,10 @@ kext-tools-package: kext-tools-stage
 	cp -a $(BUILD_STAGE)/kext-tools $(BUILD_DIST)
 
 	# kext-tools.mk Sign
-	$(LDID) -S$(BUILD_MISC)/entitlements/general.xml $(BUILD_DIST)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/{mkextunpack,kext{libs,find}}
-	$(LDID) -S$(BUILD_MISC)/entitlements/kextstat.plist $(BUILD_DIST)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kextstat
-	$(LDID) -S$(BUILD_MISC)/entitlements/kextload.plist $(BUILD_DIST)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kext{un,}load
+	$(call SIGN,kext-tools,general.xml)
+	$(LDID) -M -S$(BUILD_MISC)/entitlements/general.xml $(BUILD_DIST)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/{mkextunpack,kext{libs,find}}
+	$(LDID) -M -S$(BUILD_MISC)/entitlements/kextstat.plist $(BUILD_DIST)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kextstat
+	$(LDID) -M -S$(BUILD_MISC)/entitlements/kextload.plist $(BUILD_DIST)/kext-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/sbin/kext{un,}load
 	find $(BUILD_DIST)/kext-tools -name '.ldid*' -type f -delete
 
 	# kext-tools.mk Make .debs

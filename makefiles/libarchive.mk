@@ -4,8 +4,7 @@ endif
 
 ifneq ($(MINIMAL_STRAP),1)
 SUBPROJECTS        += libarchive
-endif
-LIBARCHIVE_VERSION := 3.6.1
+LIBARCHIVE_VERSION := 3.7.2
 DEB_LIBARCHIVE_V   ?= $(LIBARCHIVE_VERSION)
 
 libarchive-setup: setup

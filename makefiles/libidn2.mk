@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += libidn2
-IDN2_VERSION  := 2.3.4
+IDN2_VERSION  := 2.3.7
 DEB_IDN2_V    ?= $(IDN2_VERSION)
 
 libidn2-setup: setup

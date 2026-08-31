@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += libssh2
-LIBSSH2_VERSION := 1.10.0
-DEB_LIBSSH2_V   ?= $(LIBSSH2_VERSION)-1
+LIBSSH2_VERSION := 1.11.0
+DEB_LIBSSH2_V   ?= $(LIBSSH2_VERSION)
 
 libssh2-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://libssh2.org/download/libssh2-$(LIBSSH2_VERSION).tar.gz{$(comma).asc})

@@ -1,0 +1,12 @@
+Package: inetutils-ftpd
+Version: @DEB_INETUTILS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libcrypt2
+Provides: ftp-server
+Conflicts: ftp-server, inetutils
+Section: Networking
+Priority: optional
+Homepage: http://www.gnu.org/software/inetutils/
+Description: File Transfer Protocol server
+ Ftpd is the server that allows another host to connect with the ftp command to transfer files using the FTP protocol.

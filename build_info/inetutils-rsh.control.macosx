@@ -1,0 +1,16 @@
+Package: inetutils-rsh
+Conflicts: inetutils
+Version: @DEB_INETUTILS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Networking
+Priority: optional
+Homepage: http://www.gnu.org/software/inetutils/
+Description: executes commands on a remote host
+ Rsh executes commands on a remote host and copies its local standard input to that of the remote command, as well as the 
+ remote standard output to the local standard output, and the remote standard error to the local standard error. Locally 
+ raised interrupt, quit and terminate signals are all propagated to the remote command. Normally rsh terminates when the 
+ remote command does so.
+ .
+ rsh allows access to the remote host without the use of a password. The prerequisite is a suitable specification in 
+ ~/.rhosts.

@@ -11,4 +11,3 @@ Description: Unix process pipeline manipulation library
  error-prone and insecure.
 Replaces: libpipeline
 Provides: libpipeline (= @DEB_LIBPIPELINE_V@)
-Conflicts: libpipeline

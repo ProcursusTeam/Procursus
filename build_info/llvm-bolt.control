@@ -1,0 +1,15 @@
+Package: llvm-bolt
+Version: @DEB_LLVM_V@
+Priority: optional
+Architecture: @DEB_ARCH@
+Section: Development
+Maintainer: @DEB_MAINTAINER@
+Depends: libllvm16, libncursesw6 (>= 6), bolt-16
+Homepage: https://www.llvm.org/
+Description: Post-link optimizer
+ It achieves the improvements by optimizing application's code layout based on
+ execution profile gathered by sampling profiler.
+ .
+ This is a dependency package providing bolt.
+ .
+ This package is not called bolt because it is already used in Debian.

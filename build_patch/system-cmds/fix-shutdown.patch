@@ -68,14 +68,5 @@ index 597f9f2..f5d8dd4 100644
  /*
   * The following tokens are included in the audit record for shutdown
   * header
-@@ -718,6 +721,7 @@ audit_shutdown(int exitstatus)
- 	return 1;
- }
- 
-+#if defined(__APPLE__) && !(TARGET_OS_IPHONE && !TARGET_OS_SIMULATOR)
- 
- static bool
- kextdDisabled(void)
--- 
 cgit v1.2.3
 

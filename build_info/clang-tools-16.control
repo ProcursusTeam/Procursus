@@ -1,0 +1,9 @@
+Package: clang-tools-16
+Version: @DEB_LLVM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: clang-16 (= @DEB_LLVM_V@), python3, libllvm16 (= @DEB_LLVM_V@), libclang-cpp16 (= @DEB_LLVM_V@), libclang-common-16-dev (= @DEB_LLVM_V@)
+Section: Development
+Priority: optional
+Homepage: https://www.llvm.org/
+Description: Extra clang tools

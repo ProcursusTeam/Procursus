@@ -4,8 +4,7 @@ endif
 
 ifneq ($(MINIMAL_STRAP),1)
 STRAPPROJECTS  += libffi
-endif
-LIBFFI_VERSION := 3.4.2
+LIBFFI_VERSION := 3.4.6
 DEB_LIBFFI_V   ?= $(LIBFFI_VERSION)
 
 libffi-setup: setup

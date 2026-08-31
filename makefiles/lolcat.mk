@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += lolcat
-LOLCAT_VERSION := 1.2
+LOLCAT_VERSION := 1.4
 DEB_LOLCAT_V   ?= $(LOLCAT_VERSION)
 
 lolcat-setup: setup

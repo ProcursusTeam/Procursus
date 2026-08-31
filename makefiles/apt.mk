@@ -4,8 +4,7 @@ endif
 
 ifneq ($(MINIMAL_STRAP),1)
 STRAPPROJECTS += apt
-endif
-APT_VERSION   := 2.6.0
+APT_VERSION   := 2.9.4
 DEB_APT_V     ?= $(APT_VERSION)-1
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1500 ] && echo 1),1)

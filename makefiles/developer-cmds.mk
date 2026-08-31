@@ -5,8 +5,8 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 SUBPROJECTS            += developer-cmds
-DEVELOPER-CMDS_VERSION := 66
-DEB_DEVELOPER-CMDS_V   ?= $(DEVELOPER-CMDS_VERSION)-2
+DEVELOPER-CMDS_VERSION := 68
+DEB_DEVELOPER-CMDS_V   ?= $(DEVELOPER-CMDS_VERSION)
 
 developer-cmds-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,developer_cmds,$(DEVELOPER-CMDS_VERSION),developer_cmds-$(DEVELOPER-CMDS_VERSION))

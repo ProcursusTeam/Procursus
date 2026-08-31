@@ -3,26 +3,27 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += xtrans
-XTRANS_VERSION := 1.5.0
-DEB_XTRANS_V   ?= $(XTRANS_VERSION)
+XTRANS_VERSION := 1.4.0
+XTRANS_EPOCH   := 1.5.0
+DEB_XTRANS_V   ?= $(XTRANS_EPOCH)+really$(XTRANS_VERSION)-1
 
 xtrans-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.x.org/archive/individual/lib/xtrans-$(XTRANS_VERSION).tar.xz{$(comma).sig})
-	$(call PGP_VERIFY,xtrans-$(XTRANS_VERSION).tar.xz)
-	$(call EXTRACT_TAR,xtrans-$(XTRANS_VERSION).tar.xz,xtrans-$(XTRANS_VERSION),xtrans)
-	sed -i 's|# include <stropts.h>|# include <sys/ioctl.h>|' $(BUILD_WORK)/xtrans/Xtranslcl.c
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.x.org/archive/individual/lib/xtrans-$(XTRANS_VERSION).tar.bz2{$(comma).sig})
+	$(call PGP_VERIFY,xtrans-$(XTRANS_VERSION).tar.bz2)
+	$(call EXTRACT_TAR,xtrans-$(XTRANS_VERSION).tar.bz2,xtrans-$(XTRANS_VERSION),xtrans)
+	sed -i 's|# include <.*stropts\.h>|# include <sys/ioctl.h>|' $(BUILD_WORK)/xtrans/Xtranslcl.c
 
 ifneq ($(wildcard $(BUILD_WORK)/xtrans/.build_complete),)
 xtrans:
 	@echo "Using previously built xtrans."
 else
-xtrans: xtrans-setup
+xtrans: xtrans-setup util-macros
 	cd $(BUILD_WORK)/xtrans && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-docs=no
 	+$(MAKE) -C $(BUILD_WORK)/xtrans
 	+$(MAKE) -C $(BUILD_WORK)/xtrans install \
-		DESTDIR="$(BUILD_STAGE)/xtrans-dev"
+		DESTDIR="$(BUILD_STAGE)/xtrans"
 	$(call AFTER_BUILD,copy)
 endif
 
@@ -31,7 +32,7 @@ xtrans-package: xtrans-stage
 	rm -rf $(BUILD_DIST)/xtrans-dev
 
 	# xtrans.mk Prep xtrans-dev
-	cp -a $(BUILD_STAGE)/xtrans-dev $(BUILD_DIST)
+	cp -a $(BUILD_STAGE)/xtrans $(BUILD_DIST)/xtrans-dev
 
 	# xtrans.mk Make .debs
 	$(call PACK,xtrans-dev,DEB_XTRANS_V)

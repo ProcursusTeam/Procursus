@@ -7,7 +7,7 @@ STRAPPROJECTS += sudo
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += sudo
 endif # ($(MEMO_TARGET),darwin-\*)
-SUDO_VERSION  := 1.9.12p2
+SUDO_VERSION  := 1.9.15p5
 DEB_SUDO_V    ?= $(SUDO_VERSION)
 
 sudo-setup: setup
@@ -15,6 +15,11 @@ sudo-setup: setup
 	$(call PGP_VERIFY,sudo-$(SUDO_VERSION).tar.gz)
 	$(call EXTRACT_TAR,sudo-$(SUDO_VERSION).tar.gz,sudo-$(SUDO_VERSION),sudo)
 	$(call DO_PATCH,sudo,sudo,-p1)
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+ifneq (1,$(MEMO_NO_IOSEXEC))
+	sed -i -E 's/(testsudoers|sudo)_((get|set|end)(user|gr|pw)(shell|ent|nam|uid|gid))_?r?\(/\1_ie_\2\(/g' $(BUILD_WORK)/sudo/{plugins/sudoers,lib/util}/*.*
+endif
+endif
 
 ifneq ($(wildcard $(BUILD_WORK)/sudo/.build_complete),)
 sudo:
@@ -39,7 +44,8 @@ endif
 		--with-rundir=$(MEMO_PREFIX)/var/run/sudo \
 		sudo_cv___func__=yes \
 		ac_cv_have_working_snprintf=yes \
-		ac_cv_have_working_vsnprintf=yes
+		ac_cv_have_working_vsnprintf=yes \
+		ac_cv_header_libutil_h=no
 	sed -i 's/-Wc,-static-libgcc/ /g' $(BUILD_WORK)/sudo/{src,,plugins/*,logsrvd,lib/util}/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/sudo
 	+$(MAKE) -C $(BUILD_WORK)/sudo install \
@@ -64,7 +70,7 @@ sudo-package: sudo-stage
 	# sudo.mk Sign
 	$(call SIGN,sudo,general.xml)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	$(LDID) -S$(BUILD_MISC)/entitlements/pam.xml $(BUILD_DIST)/sudo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sudo
+	$(LDID) -M -S$(BUILD_MISC)/entitlements/pam.xml $(BUILD_DIST)/sudo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sudo
 	find $(BUILD_DIST)/sudo -name '.ldid*' -type f -delete
 endif
 

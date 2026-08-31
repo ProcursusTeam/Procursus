@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += file
-FILE_VERSION   := 5.43
+FILE_VERSION   := 5.45
 DEB_FILE_V     ?= $(FILE_VERSION)
 
 file-setup: setup

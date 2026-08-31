@@ -15,7 +15,9 @@ DIMENTIO_LIBS      := -framework CoreFoundation -framework IOKit -lcompression
 dimentio-setup: setup
 	$(call GITHUB_ARCHIVE,0x7ff,dimentio,$(DIMENTIO_COMMIT),$(DIMENTIO_COMMIT))
 	$(call EXTRACT_TAR,dimentio-$(DIMENTIO_COMMIT).tar.gz,dimentio-$(DIMENTIO_COMMIT),dimentio)
+ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1700 ] && echo 1),1)
 	$(call DO_PATCH,dimentio,dimentio,-p1)
+endif
 	mkdir -p $(BUILD_STAGE)/dimentio/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,lib,include}
 	sed -i 's|/usr/lib|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib|g' $(BUILD_WORK)/dimentio/libdimentio.c
 

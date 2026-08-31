@@ -7,8 +7,8 @@ STRAPPROJECTS += grep
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += grep
 endif # ($(MEMO_TARGET),darwin-\*)
-GREP_VERSION  := 3.10
-DEB_GREP_V    ?= $(GREP_VERSION)-1
+GREP_VERSION  := 3.11
+DEB_GREP_V    ?= $(GREP_VERSION)
 
 grep-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/grep/grep-$(GREP_VERSION).tar.xz{$(comma).sig})

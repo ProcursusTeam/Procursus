@@ -4,7 +4,7 @@ endif
 
 STRAPPROJECTS += bzip2
 BZIP2_VERSION := 1.0.8
-DEB_BZIP2_V   ?= $(BZIP2_VERSION)
+DEB_BZIP2_V   ?= $(BZIP2_VERSION)-1
 
 bzip2-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://sourceware.org/pub/bzip2/bzip2-$(BZIP2_VERSION).tar.gz{$(comma).sig})
@@ -33,7 +33,7 @@ bzip2: bzip2-setup
 	$(LN_S) bzmore bzless
 ifneq ($(MEMO_SUB_PREFIX),)
 	for bin in $(BUILD_STAGE)/bzip2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/*; do \
-		$(LN_S) ../$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$(basename $$bin) $(BUILD_STAGE)/bzip2/$(MEMO_PREFIX)/bin/$$(basename $$bin); \
+		$(LN_S) ../$(MEMO_SUB_PREFIX)/bin/$$(basename $$bin) $(BUILD_STAGE)/bzip2/$(MEMO_PREFIX)/bin/$$(basename $$bin); \
 	done
 endif
 	$(call AFTER_BUILD)

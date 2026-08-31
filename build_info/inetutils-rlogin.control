@@ -1,0 +1,12 @@
+Package: inetutils-rlogin
+Conflicts: inetutils
+Version: @DEB_INETUTILS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Networking
+Priority: optional
+Homepage: http://www.gnu.org/software/inetutils/
+Description: starts a terminal session on the specified remote host
+ The rlogin command starts a terminal session on the specified remote host, provided the required authentication is 
+ successful. rlogin allows access to the remote host without the use of a password. The prerequisite is a suitable 
+ specification in ~/.rhosts.

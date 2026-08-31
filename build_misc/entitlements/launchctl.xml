@@ -44,6 +44,8 @@
 	<true/>
 	<key>com.apple.private.xpc.service-configure</key>
 	<true/>
+	<key>task_for_pid-allow</key>
+	<true/>
 	<key>platform-application</key>
 	<true/>
 </dict>

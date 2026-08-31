@@ -1,8 +1,8 @@
 Package: siguza-utils
-Version: @DEB_SIGUZA-UTILS_V@
+Version: @DEB_SIGUZA_UTILS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Author: Siguza
+Author: Siguza <siguza@siguza.net>
 Section: Utilities
 Priority: optional
 Homepage: https://www.github.com/Siguza/misc

@@ -1,0 +1,44 @@
+diff --git a/Makefile b/Makefile
+index bab12a1..612dee4 100644
+--- a/Makefile
++++ b/Makefile
+@@ -5,32 +5,21 @@
+ # Darwin can use CommonCrypto instead of OpenSSL
+ #COMMONCRYPTO = 1
+ 
+-CC = gcc
+-CFLAGS = -Wall -W -pedantic
++CC ?= gcc
++CFLAGS ?= -Wall -W -pedantic
+ CFLAGS += -Wno-variadic-macros -Wno-multichar -Wno-four-char-constants -Wno-unused-parameter
+ CFLAGS += -O2 -I. -g -DiOS10
+ CFLAGS += -DDER_MULTIBYTE_TAGS=1 -DDER_TAG_SIZE=8
+ CFLAGS += -D__unused="__attribute__((unused))"
++CFLAGS += -DUSE_LIBCOMPRESSION
++LDLIBS = -lcompression
+ 
+-LD = gcc
+-LDFLAGS = -g
+-LDLIBS = -llzfse
++LD ?= gcc
++LDFLAGS ?= -g
+ 
+-AR = ar
++AR ?= ar
+ ARFLAGS = crus
+ 
+-ifneq (,$(wildcard lzfse/build/bin/liblzfse.a))
+-# liblzfse.a exists in-tree
+-CFLAGS += -Ilzfse/src
+-LDFLAGS += -Llzfse/build/bin
+-else
+-ifneq (,$(wildcard /usr/lib/libcompression.dylib))
+-# Darwin libcompression is available
+-CFLAGS += -DUSE_LIBCOMPRESSION
+-LDLIBS = -lcompression
+-endif
+-endif
+-
+ SOURCES = \
+ 	img4.c
+ 

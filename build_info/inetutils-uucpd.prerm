@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "purge" ]; then
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl disable system/org.gnu.inetutils.uucpd;
+fi
+
+if [ "$1" = "remove" ]; then
+	@MEMO_LAUNCHCTL_PREFIX@/bin/launchctl unload /Library/LaunchDaemons/org.gnu.inetutils.uucpd.plist
+fi
+

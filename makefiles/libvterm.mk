@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += libvterm
-LIBVTERM_VERSION := 0.3.1
+LIBVTERM_VERSION := 0.3.3
 DEB_LIBVTERM_V   ?= $(LIBVTERM_VERSION)
 
 libvterm-setup: setup

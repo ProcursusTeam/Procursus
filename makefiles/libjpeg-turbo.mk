@@ -5,7 +5,7 @@ endif
 
 SUBPROJECTS           += libjpeg-turbo
 LIBJPEG_TURBO_VERSION := 2.0.6
-DEB_LIBJPEG_TURBO_V   ?= $(LIBJPEG_TURBO_VERSION)
+DEB_LIBJPEG_TURBO_V   ?= $(LIBJPEG_TURBO_VERSION)-1
 
 libjpeg-turbo-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
@@ -21,6 +21,7 @@ libjpeg-turbo: libjpeg-turbo-setup
 	cd $(BUILD_WORK)/libjpeg-turbo && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DCOMMON_ARCH=$(DEB_ARCH)
+	sed -i 's|define JPEG_LIB_VERSION  62|define JPEG_LIB_VERSION  80|g' $(BUILD_WORK)/libjpeg-turbo/jconfig.h
 	+$(MAKE) -C $(BUILD_WORK)/libjpeg-turbo
 	+$(MAKE) -C $(BUILD_WORK)/libjpeg-turbo install \
 		DESTDIR="$(BUILD_STAGE)/libjpeg-turbo"

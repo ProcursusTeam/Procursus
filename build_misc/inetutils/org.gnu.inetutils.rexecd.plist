@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+
+<dict>
+    <key>Disabled</key>
+    <true/>
+    <key>Label</key>
+    <string>org.gnu.inetutils.rexecd</string>
+    <key>POSIXSpawnType</key>
+    <string>Interactive</string>
+    <key>ProcessType</key>
+    <string>Interactive</string>
+
+    <key>Program</key>
+    <string>@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/rexecd</string>
+
+    <key>SessionCreate</key>
+    <false/>
+
+    <key>Sockets</key>
+    <dict>
+        <key>rexecListener</key>
+        <dict>
+            <key>SockServiceName</key>
+            <string>512</string>
+        </dict>
+    </dict>
+
+    <key>StandardErrorPath</key>
+    <string>/dev/null</string>
+
+    <key>inetdCompatibility</key>
+    <dict>
+        <key>Wait</key>
+        <false/>
+    </dict>
+    <key>ExecuteAllowed</key>
+    <true/>
+</dict>
+
+</plist>

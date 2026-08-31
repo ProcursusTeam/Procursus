@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += lz4
-LZ4_VERSION   := 1.9.3
+LZ4_VERSION   := 1.9.4
 DEB_LZ4_V     ?= $(LZ4_VERSION)
 
 lz4-setup: setup

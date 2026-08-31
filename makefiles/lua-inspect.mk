@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS         += lua-inspect
-LUA-INSPECT_VERSION := 3.1.1
+LUA-INSPECT_VERSION := 3.1.3
 DEB_LUA-INSPECT_V   ?= $(LUA-INSPECT_VERSION)
 
 lua-inspect-setup: setup

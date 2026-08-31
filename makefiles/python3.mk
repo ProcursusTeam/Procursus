@@ -7,6 +7,11 @@ PYTHON3_MAJOR_V  := 3.9
 PYTHON3_VERSION  := $(PYTHON3_MAJOR_V).9
 DEB_PYTHON3_V    ?= $(PYTHON3_VERSION)-1
 
+ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1900 ] && echo 1),1)
+PYTHON3_CONFIGURE_FLAGS = ac_cv_func_mkfifoat=no \
+	ac_cv_func_mknodat=no
+endif
+
 python3-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.python.org/ftp/python/$(PYTHON3_VERSION)/Python-$(PYTHON3_VERSION).tar.xz{$(comma).asc})
 	$(call PGP_VERIFY,Python-$(PYTHON3_VERSION).tar.xz,asc)
@@ -14,6 +19,7 @@ python3-setup: setup
 	$(call DO_PATCH,python3,python3,-p1)
 	sed -i -e 's/-vxworks/-darwin/g' -e 's/system=VxWorks/system=Darwin/g' -e '/readelf for/d' -e 's|LIBFFI_INCLUDEDIR=.*|LIBFFI_INCLUDEDIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include"|g' $(BUILD_WORK)/python3/configure.ac
 	sed -i -e "s|self.compiler.library_dirs|['$(TARGET_SYSROOT)/usr/lib'] + ['$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib']|g" -e "s|self.compiler.include_dirs|['$(TARGET_SYSROOT)/usr/include'] + ['$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include']|g" -e "s/HOST_PLATFORM == 'darwin'/HOST_PLATFORM.startswith('darwin')/" $(BUILD_WORK)/python3/setup.py
+	sed -i 's|macOS from a certain macOS|*/\n#include <util.h>\n/*|g' $(BUILD_WORK)/python3/Modules/posixmodule.c
 
 ifneq ($(wildcard $(BUILD_WORK)/python3/.build_complete),)
 python3:
@@ -40,7 +46,8 @@ endif
 		ac_cv_file__dev_ptc=no \
 		ac_cv_func_sendfile=no \
 		ax_cv_c_float_words_bigendian=no \
-		ac_cv_working_tzset=yes
+		ac_cv_working_tzset=yes \
+		$(PYTHON3_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/python3
 	+$(MAKE) -C $(BUILD_WORK)/python3 install \
 		DESTDIR=$(BUILD_STAGE)/python3

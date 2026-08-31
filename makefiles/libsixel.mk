@@ -23,7 +23,9 @@ libsixel: libsixel-setup libpng16 libjpeg-turbo curl libgd
 		--with-libcurl \
 		--with-gd \
 		--with-jpeg \
-		--with-png
+		--with-png \
+		ac_cv_func_malloc_0_nonnull=yes \
+		ac_cv_func_realloc_0_nonnull=yes
 	+$(MAKE) -C $(BUILD_WORK)/libsixel
 	+$(MAKE) -C $(BUILD_WORK)/libsixel install \
 		DESTDIR="$(BUILD_STAGE)/libsixel"

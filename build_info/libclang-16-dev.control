@@ -1,0 +1,17 @@
+Package: libclang-16-dev
+Version: @DEB_LLVM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libclang1-16 (= @DEB_LLVM_V@), libllvm16 (= @DEB_LLVM_V@), libclang-common-16-dev (= @DEB_LLVM_V@)
+Section: Development
+Priority: optional
+Description: Clang library - Development package
+ Clang project is a C, C++, Objective C and Objective C++ front-end
+ based on the LLVM compiler. Its goal is to offer a replacement to the
+ GNU Compiler Collection (GCC).
+ .
+ Clang implements all of the ISO C++ 1998, 11, 14 and 17 standards and also
+ provides most of the support of C++20.
+ .
+ This package contains the Clang headers to develop extensions over
+ libclang1-16.

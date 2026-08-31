@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += npth
-NPTH_VERSION  := 1.6
-DEB_NPTH_V    ?= $(NPTH_VERSION)-2
+NPTH_VERSION  := 1.7
+DEB_NPTH_V    ?= $(NPTH_VERSION)
 
 npth-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://gnupg.org/ftp/gcrypt/npth/npth-$(NPTH_VERSION).tar.bz2{$(comma).sig})
@@ -17,7 +17,8 @@ npth:
 else
 npth: npth-setup
 	cd $(BUILD_WORK)/npth && ./configure -C \
-		$(DEFAULT_CONFIGURE_FLAGS)
+		$(DEFAULT_CONFIGURE_FLAGS) \
+		--enable-install-npth-config
 	+$(MAKE) -C $(BUILD_WORK)/npth
 	+$(MAKE) -C $(BUILD_WORK)/npth install \
 		DESTDIR=$(BUILD_STAGE)/npth
@@ -33,7 +34,7 @@ npth-package: npth-stage
 	cp -a $(BUILD_STAGE)/npth/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libnpth.0.dylib $(BUILD_DIST)/libnpth0/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# npth.mk Prep libnpth0-dev
-	cp -a $(BUILD_STAGE)/npth/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libnpth.dylib $(BUILD_DIST)/libnpth0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/npth/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{pkgconfig,libnpth.{a,dylib}} $(BUILD_DIST)/libnpth0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 	cp -a $(BUILD_STAGE)/npth/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include,share} $(BUILD_DIST)/libnpth0-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# npth.mk Sign

@@ -1,0 +1,10 @@
+Package: keyboxd
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_GNUPG_V@
+Depends: libsqlite3-1 (>= 3.14.0), libnpth0 (>= 1.7), libgcrypt20, libassuan0 (>= 2.5.1), libgpg-error0 (>= 1.46)
+Conflicts: gnupg2, gnupg (<< @DEB_GNUPG_V@)
+Replaces: gnupg2
+Section: Security
+Priority: standard
+Description: GNU Privacy Guard -- public key material service

@@ -1,0 +1,39 @@
+diff -urN b/lib/fdleak.c c/lib/fdleak.c
+--- b/lib/fdleak.c	2022-01-03 07:34:22.000000000 +0800
++++ c/lib/fdleak.c	2024-05-31 19:23:22.527541063 +0800
+@@ -31,6 +31,9 @@
+ # include <sys/resource.h>
+ #endif
+ #include <unistd.h>
++#if defined (__APPLE__)
++#include <libproc.h>
++#endif
+
+ /* gnulib headers. */
+ #include "cloexec.h"
+@@ -110,7 +113,19 @@
+ get_max_fd (void)
+ {
+   long open_max;
++#if defined (__APPLE__)
++  int bufsz = 0, count;
++  struct proc_fdinfo *buf;
++
++  bufsz = proc_pidinfo(getpid(), PROC_PIDLISTFDS, 0, NULL, 0); // Gives us a guess of needed size for buffer
++  buf = (struct proc_fdinfo *)calloc(1, bufsz);
++
++  bufsz = proc_pidinfo(getpid(), PROC_PIDLISTFDS, 0, buf, bufsz);
++  open_max = bufsz / PROC_PIDLISTFD_SIZE;
+
++  free(buf);
++  return open_max;
++#else
+   open_max = get_proc_max_fd ();
+   if (open_max >= 0)
+     return open_max;
+@@ -134,6 +149,7 @@
+ #endif
+   /* cannot determine the limit's value */
+   return open_max;
++#endif
+ }

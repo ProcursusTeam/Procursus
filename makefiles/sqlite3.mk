@@ -36,7 +36,7 @@ sqlite3: sqlite3-setup ncurses readline
 	cp -a $(BUILD_WORK)/sqlite3/.libs/sqldiff $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	mkdir -p $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/lemon
 	cp -a $(BUILD_WORK)/sqlite3/lempar.c $(BUILD_STAGE)/sqlite3/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/lemon
-	$(call AFTER_BUILD)
+	$(call AFTER_BUILD,copy)
 endif
 sqlite3-package: sqlite3-stage
 	# sqlite3.mk Package Structure

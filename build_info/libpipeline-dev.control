@@ -12,4 +12,3 @@ Description: Unix process pipeline manipulation library (development files)
  .
  This package contains files needed for developing with libpipeline.
 Replaces: libpipeline
-Conflicts: libpipeline

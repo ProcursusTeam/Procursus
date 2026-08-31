@@ -3,27 +3,21 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += img4lib
-IMG4LIB_COMMIT  := 1d8c1dd96a0e60e2070353771fff9adcfe3f3360
-IMG4LIB_VERSION := 1.0+git20210122.$(shell echo $(IMG4LIB_COMMIT) | cut -c -7)
-DEB_IMG4LIB_V   ?= $(IMG4LIB_VERSION)-1
+IMG4LIB_COMMIT  := 69772c72f3c08f021ec9fa4c386f2b3df60a38b7
+IMG4LIB_VERSION := 1.0+git20211128.$(shell echo $(IMG4LIB_COMMIT) | cut -c -7)
+DEB_IMG4LIB_V   ?= $(IMG4LIB_VERSION)
 
 img4lib-setup: setup
 	$(call GITHUB_ARCHIVE,xerub,img4lib,v$(IMG4LIB_COMMIT),$(IMG4LIB_COMMIT))
 	$(call EXTRACT_TAR,img4lib-v$(IMG4LIB_COMMIT).tar.gz,img4lib-$(IMG4LIB_COMMIT),img4lib)
-	sed -i 's/CFLAGS =/CFLAGS ?=/' $(BUILD_WORK)/img4lib/Makefile
-	sed -i 's/LDFLAGS =/LDFLAGS ?=/' $(BUILD_WORK)/img4lib/Makefile
-	sed -i '/CFLAGS += -DUSE_LIBCOMPRESSION/d' $(BUILD_WORK)/img4lib/Makefile
-	sed -i '/LDLIBS = -lcompression/d' $(BUILD_WORK)/img4lib/Makefile
-	sed -i 's/CC =/CC ?=/' $(BUILD_WORK)/img4lib/Makefile
-	sed -i 's/LD =/LD ?=/' $(BUILD_WORK)/img4lib/Makefile
-	sed -i 's/AR =/AR ?=/' $(BUILD_WORK)/img4lib/Makefile
+	$(call DO_PATCH,img4lib,img4lib,-p1)
 	mkdir -p $(BUILD_STAGE)/img4lib/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,include/{libvfs,libDER},lib}
 
 ifneq ($(wildcard $(BUILD_WORK)/img4lib/.build_complete),)
 img4lib:
 	@echo "Using previously built img4lib."
 else
-img4lib: img4lib-setup openssl lzfse
+img4lib: img4lib-setup openssl
 	+$(MAKE) -C $(BUILD_WORK)/img4lib \
 		LD=$(CC)
 	cp -a $(BUILD_WORK)/img4lib/img4 $(BUILD_STAGE)/img4lib/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin

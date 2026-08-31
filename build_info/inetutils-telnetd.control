@@ -1,0 +1,14 @@
+Package: inetutils-telnetd
+Conflicts: inetutils
+Version: @DEB_INETUTILS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Networking
+Priority: optional
+Homepage: http://www.gnu.org/software/inetutils/
+Description: telnet server
+ The telnetd program is a server which supports the DARPA telnet interactive communication protocol.
+ .
+ This package does NOT support Kerberos for authentication and encryption.
+ .
+ Port 46 is used by default.

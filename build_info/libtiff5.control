@@ -3,7 +3,7 @@ Version: @DEB_LIBTIFF_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Libraries
-Depends: libjpeg62-turbo, liblzma5, libzstd1
+Depends: libjpeg62-turbo, liblzma5, libzstd1, libjbig0
 Description: Tag Image File Format (TIFF) library
  libtiff is a library providing support for the Tag Image File Format
  (TIFF), a widely used format for storing image data.  This package

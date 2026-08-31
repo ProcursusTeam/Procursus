@@ -3,24 +3,21 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += neofetch
-NEOFETCH_COMMIT  := ccd5d9f52609bbdcd5d8fa78c4fdb0f12954125f
-NEOFETCH_VERSION := 7.1.0+20220216.$(shell echo $(NEOFETCH_COMMIT) | cut -c -7)
-#TODO: Switch back to releases once a new version releases
+NEOFETCH_VERSION := 7.3.11
 DEB_NEOFETCH_V   ?= $(NEOFETCH_VERSION)
 
 neofetch-setup: setup
-	$(call GITHUB_ARCHIVE,dylanaraps,neofetch,$(NEOFETCH_COMMIT),$(NEOFETCH_COMMIT))
-	$(call EXTRACT_TAR,neofetch-$(NEOFETCH_COMMIT).tar.gz,neofetch-$(NEOFETCH_COMMIT),neofetch)
-	$(call DO_PATCH,neofetch,neofetch,-p1)
+	$(call DOWNLOAD_FILES,$(BUILD_WORK)/neofetch,https://github.com/hykilpikonna/hyfetch/raw/neofetch-$(NEOFETCH_VERSION)/neofetch{$(comma).1})
+	mkdir -p $(BUILD_STAGE)/neofetch/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1}
+	sed -e '31s|=.*|="$(DEB_NEOFETCH_V)"|' -i $(BUILD_WORK)/neofetch/neofetch
 
 ifneq ($(wildcard $(BUILD_WORK)/neofetch/.build_complete),)
 neofetch:
 	@echo "Using previously built neofetch."
 else
 neofetch: neofetch-setup
-	+$(MAKE) -C $(BUILD_WORK)/neofetch install \
-		PREFIX=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		DESTDIR=$(BUILD_STAGE)/neofetch
+	$(INSTALL) -Dm755 $(BUILD_WORK)/neofetch/neofetch $(BUILD_STAGE)/neofetch/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	$(INSTALL) -Dm644 $(BUILD_WORK)/neofetch/neofetch.1 $(BUILD_STAGE)/neofetch/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1
 	$(call AFTER_BUILD)
 endif
 

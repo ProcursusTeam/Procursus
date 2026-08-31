@@ -1,9 +1,0 @@
-Package: lld-14
-Version: @DEB_LLVM_V@
-Architecture: @DEB_ARCH@
-Maintainer: @DEB_MAINTAINER@
-Depends: libllvm14 (= @DEB_LLVM_V@), libxar1
-Section: Development
-Priority: optional
-Homepage: https://www.llvm.org/
-Description: LLVM linker

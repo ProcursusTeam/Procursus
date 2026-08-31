@@ -34,7 +34,7 @@ libgd: libgd-setup fontconfig freetype libjpeg-turbo libpng16 libtiff libwebp li
 		-DWEBP_INCLUDE_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
 		-DICONV_HAVE_WERROR=OFF \
 		.
-
+	sed -i 's|#define HAVE_ICONV_H$$|#define HAVE_ICONV_H \n#define HAVE_ICONV_T_DEF 1|g' $(BUILD_WORK)/libgd/src/config.h
 	+$(MAKE) -C $(BUILD_WORK)/libgd
 	+$(MAKE) -C $(BUILD_WORK)/libgd install \
 		DESTDIR="$(BUILD_STAGE)/libgd"

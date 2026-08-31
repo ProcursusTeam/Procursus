@@ -1,0 +1,9 @@
+Package: clang-16
+Version: @DEB_LLVM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libllvm16 (= @DEB_LLVM_V@), libclang-cpp16 (= @DEB_LLVM_V@), ld64 (>= 609-3), libclang-common-16-dev (= @DEB_LLVM_V@), libc++-16-dev (= @DEB_LLVM_V@), build-essential
+Section: Development
+Priority: optional
+Homepage: https://www.llvm.org/
+Description: C, C++ and Objective-C compiler

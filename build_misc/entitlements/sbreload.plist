@@ -1,0 +1,17 @@
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+        <key>platform-application</key>
+        <true/>
+        <key>com.apple.private.xpc.service-configure</key>
+        <true/>
+        <key>com.apple.frontboard.launchapplications</key>
+        <true/>
+        <key>com.apple.frontboard.shutdown</key>
+        <true/>
+        <key>com.apple.appletv.pbs.allow-relaunch-backboardd</key>
+        <true/>
+        <key>com.apple.appletv.pbs.allow-relaunch</key>
+        <true/>
+</dict>
+</plist>

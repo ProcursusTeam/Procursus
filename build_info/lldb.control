@@ -3,7 +3,7 @@ Section: Development
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: lldb-14 (= @DEB_LLVM_V@)
+Depends: lldb-16 (= @DEB_LLVM_V@)
 Priority: optional
 Homepage: https://www.llvm.org/
 Description: Next generation, high-performance debugger

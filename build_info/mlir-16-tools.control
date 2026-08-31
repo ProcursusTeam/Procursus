@@ -1,0 +1,15 @@
+Package: mlir-16-tools
+Version: @DEB_LLVM_V@
+Architecture: @DEB_ARCH@
+Priority: optional
+Section: Development
+Maintainer: @DEB_MAINTAINER@
+Depends: libllvm16, libncursesw6 (>= 6)
+Homepage: https://www.llvm.org/
+Description: Multi-Level Intermediate Representation tools
+ Novel approach to building reusable and extensible compiler infrastructure.
+ MLIR aims to address software fragmentation, improve compilation for
+ heterogeneous hardware, significantly reduce the cost of building domain
+ specific compilers, and aid in connecting existing compilers together.
+ .
+ This package provides tools.

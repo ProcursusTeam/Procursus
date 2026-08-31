@@ -1,0 +1,13 @@
+Package: inetutils-inetd
+Conflicts: inetutils
+Version: @DEB_INETUTILS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Networking
+Provides: inet-superserver
+Priority: optional
+Homepage: http://www.gnu.org/software/inetutils/
+Description: internet super server
+ Inetd is the daemon that listens on various TCP and UDP ports and spawns programs that can't or won't do it for themselves.
+ .
+ This is the portable GNU implementation of inetd. The package supports IPv6, tcpmux services and unlimited server arguments.

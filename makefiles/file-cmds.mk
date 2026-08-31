@@ -5,8 +5,8 @@ endif
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 
 STRAPPROJECTS     += file-cmds
-FILE-CMDS_VERSION := 400
-DEB_FILE-CMDS_V   ?= $(FILE-CMDS_VERSION)-1
+FILE-CMDS_VERSION := 430.100.5
+DEB_FILE-CMDS_V   ?= $(FILE-CMDS_VERSION)
 
 file-cmds-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,file_cmds,$(FILE-CMDS_VERSION),file_cmds-$(FILE-CMDS_VERSION))
@@ -14,9 +14,9 @@ file-cmds-setup: setup
 	mkdir -p $(BUILD_STAGE)/file-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man{1,8}}
 	mkdir -p $(BUILD_WORK)/file-cmds/ipcs/sys
 	@$(call DOWNLOAD_FILES,$(BUILD_WORK)/file-cmds/ipcs/sys, \
-		https://github.com/apple-oss-distributions/xnu/raw/xnu-8020.101.4/bsd/sys/{shm_internal$(comma)sem_internal$(comma)ipcs}.h)
+		https://github.com/apple-oss-distributions/xnu/raw/xnu-10002.41.9/bsd/sys/{shm_internal$(comma)sem_internal$(comma)ipcs}.h)
 	@$(call DOWNLOAD_FILES,$(BUILD_WORK)/file-cmds/compress, \
-		https://github.com/apple-oss-distributions/Libc/raw/7861c72/string/FreeBSD/rpmatch.c)
+		https://github.com/apple-oss-distributions/Libc/raw/Libc-1583.40.7/string/FreeBSD/rpmatch.c)
 	sed -i 's/user64_time_t/user_time_t/g' $(BUILD_WORK)/file-cmds/ipcs/sys/sem_internal.h
 	sed -i 's/user32_time_t/user_time_t/g' $(BUILD_WORK)/file-cmds/ipcs/sys/sem_internal.h
 	sed -i 's/user32_addr_t/user_addr_t/g' $(BUILD_WORK)/file-cmds/ipcs/sys/shm_internal.h

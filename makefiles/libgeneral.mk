@@ -13,14 +13,16 @@ libgeneral-setup: setup
 
 	sed -i 's/git rev\-list \-\-count HEAD/printf ${LIBGENERAL_VERSION}/g' $(BUILD_WORK)/libgeneral/configure.ac
 	sed -i 's/git rev\-parse HEAD/printf ${LIBGENERAL_COMMIT}/g' $(BUILD_WORK)/libgeneral/configure.ac
+	sed -i '/configure/d' $(BUILD_WORK)/libgeneral/autogen.sh
 
 ifneq ($(wildcard $(BUILD_WORK)/libgeneral/.build_complete),)
 libgeneral:
 	@echo "Using previously built libgeneral."
 else
 libgeneral: libgeneral-setup
-	cd $(BUILD_WORK)/libgeneral && ./autogen.sh \
-		$(DEFAULT_CONFIGURE_FLAGS)
+	cd $(BUILD_WORK)/libgeneral && ./autogen.sh; \
+	sed -i 's/-keep_private_externs -nostdlib/-keep_private_externs $(PLATFORM_VERSION_MIN) -arch $(MEMO_ARCH) -nostdlib/g' $(BUILD_WORK)/libgeneral/configure; \
+		./configure $(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libgeneral
 	+$(MAKE) -C $(BUILD_WORK)/libgeneral install \
 		DESTDIR="$(BUILD_STAGE)/libgeneral"

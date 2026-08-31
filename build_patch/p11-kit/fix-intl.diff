@@ -1,0 +1,10 @@
+--- a/trust/Makefile.am.orig	2023-09-10 04:14:16.307808733 +0000
++++ b/trust/Makefile.am	2023-09-10 04:14:04.178673420 +0000
+@@ -54,6 +54,7 @@
+ 	libtrust-data.la \
+ 	libp11-library.la \
+ 	libp11-common.la \
++	$(LTLIBINTL) \
+ 	$(LIBTASN1_LIBS) \
+ 	$(HASH_LIBS) \
+ 	$(NULL)

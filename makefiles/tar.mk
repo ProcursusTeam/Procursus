@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += tar
-TAR_VERSION   := 1.34
+TAR_VERSION   := 1.35
 DEB_TAR_V     ?= $(TAR_VERSION)
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1600 ] && echo 1),1)
@@ -18,6 +18,7 @@ tar-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/tar/tar-$(TAR_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,tar-$(TAR_VERSION).tar.xz)
 	$(call EXTRACT_TAR,tar-$(TAR_VERSION).tar.xz,tar-$(TAR_VERSION),tar)
+	$(call DO_PATCH,tar,tar,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/tar/.build_complete),)
 tar:

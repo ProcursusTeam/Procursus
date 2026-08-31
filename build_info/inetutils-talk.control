@@ -1,0 +1,16 @@
+Package: inetutils-talk
+Conflicts: inetutils
+Version: @DEB_INETUTILS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libidn2-0, libncursesw6
+Provides: talk
+Section: Networking
+Priority: optional
+Homepage: http://www.gnu.org/software/inetutils/
+Description: copies lines from your terminal to that of another user
+ Talk is a visual communication program which copies lines from your terminal to that of another user.
+ . 
+ The ability to talk may be enabled or disabled by use of the mesg command. It is system dependent whether this message 
+ passing is enabled at the outset of a terminal session. Certain commands, in particular nroff and pr, disable messages in 
+ order to prevent messy output.

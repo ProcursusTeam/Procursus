@@ -2,7 +2,7 @@ Package: clang-format
 Version: @DEB_LLVM_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: clang-format-14 (= @DEB_LLVM_V@)
+Depends: clang-format-16 (= @DEB_LLVM_V@)
 Section: Development
 Priority: optional
 Homepage: https://www.llvm.org/

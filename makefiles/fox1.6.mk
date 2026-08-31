@@ -10,6 +10,7 @@ fox1.6-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://fox-toolkit.org/ftp/fox-1.6.56.tar.gz)
 	$(call EXTRACT_TAR,fox-$(FOX1.6_VERSION).tar.gz,fox-$(FOX1.6_VERSION),fox1.6)
 	$(call DO_PATCH,fox1.6,fox1.6,-p1)
+	sed -i 's/-keep_private_externs -nostdlib/-keep_private_externs $(PLATFORM_VERSION_MIN) -arch $(MEMO_ARCH) -nostdlib/g' $(BUILD_WORK)/fox1.6/configure
 
 ifneq ($(wildcard $(BUILD_WORK)/fox1.6/.build_complete),)
 fox1.6:

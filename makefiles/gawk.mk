@@ -3,8 +3,8 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += gawk
-GAWK_VERSION := 5.1.0
-DEB_GAWK_V   ?= $(GAWK_VERSION)-2
+GAWK_VERSION := 5.3.0
+DEB_GAWK_V   ?= $(GAWK_VERSION)
 
 gawk-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/gawk/gawk-$(GAWK_VERSION).tar.xz{$(comma).sig})

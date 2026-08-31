@@ -6,7 +6,8 @@ NGINX_VERSION := 1.21.5
 DEB_NGINX_V   ?= $(NGINX_VERSION)-5
 
 ifeq ($(UNAME),Darwin)
-CC := /usr/bin/cc
+# Disabled because this breaks everything non-nginx
+#CC := /usr/bin/cc
 endif
 
 # for ngx_shm_alloc

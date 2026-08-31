@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS    += libtasn1
-LIBTASN1_VERSION := 4.18.0
+LIBTASN1_VERSION := 4.19.0
 DEB_LIBTASN1_V   ?= $(LIBTASN1_VERSION)
 
 libtasn1-setup: setup

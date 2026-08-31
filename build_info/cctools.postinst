@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ]; then
+    update-alternatives --install @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/nm nm @MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/nm-classic 20 \
+      --slave @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/nm.1@MEMO_MANPAGE_SUFFIX@ nm.1@MEMO_MANPAGE_SUFFIX@ \
+      @MEMO_PREFIX@@MEMO_SUB_PREFIX@/share/man/man1/nm-classic.1@MEMO_MANPAGE_SUFFIX@
+fi
+
+

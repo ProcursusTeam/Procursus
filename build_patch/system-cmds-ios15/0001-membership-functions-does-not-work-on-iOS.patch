@@ -1,0 +1,34 @@
+From bc65455b1cb7d0f183555e7f53b0c2a95f40f31a Mon Sep 17 00:00:00 2001
+From: Nick Chan <towinchenmi@gmail.com>
+Date: Thu, 28 Sep 2023 14:45:49 +0800
+Subject: [PATCH] membership functions does not work on iOS
+
+---
+ newgrp/newgrp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/newgrp/newgrp.c b/newgrp/newgrp.c
+index 82bb5b7..2008d90 100644
+--- a/newgrp/newgrp.c
++++ b/newgrp/newgrp.c
+@@ -160,7 +160,7 @@ addgroup(const char *grpname)
+ 	gid_t egid;
+ 	struct group *grp;
+ 	char *ep, *pass, *cryptpw;
+-#ifndef __APPLE__
++#if 1
+ 	char **p;
+ #endif /* __APPLE__ */
+ #ifdef __APPLE__
+@@ -179,7 +179,7 @@ addgroup(const char *grpname)
+ 			return;
+ 		}
+ 
+-#ifdef __APPLE__
++#if 0
+ 	status = mbr_uid_to_uuid(pwd->pw_uid, user_uuid);
+ 	if (status)
+ 		errc(1, status, "mbr_uid_to_uuid");
+-- 
+2.39.1
+

@@ -3,26 +3,20 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += doc-cmds
-DOC-CMDS_VERSION := 61
+DOC-CMDS_VERSION := 66
 DEB_DOC-CMDS_V   ?= $(DOC-CMDS_VERSION)
 
 doc-cmds-setup: setup
 	$(call GITHUB_ARCHIVE,apple-oss-distributions,doc_cmds,$(DOC-CMDS_VERSION),doc_cmds-$(DOC-CMDS_VERSION))
 	$(call EXTRACT_TAR,doc_cmds-$(DOC-CMDS_VERSION).tar.gz,doc_cmds-doc_cmds-$(DOC-CMDS_VERSION),doc-cmds)
-	mkdir -p $(BUILD_STAGE)/doc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
 ifneq ($(wildcard $(BUILD_WORK)/doc-cmds/.build_complete),)
 doc-cmds:
 	@echo "Using previously built doc-cmds."
 else
 doc-cmds: doc-cmds-setup
-	mkdir -p $(BUILD_STAGE)/doc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man/man1/}
-	cd $(BUILD_WORK)/doc-cmds; \
-	for bin in checknr colcrt; do \
-		$(CC) $(CFLAGS) $(LDFLAGS) -o $(BUILD_STAGE)/doc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/$$bin $$bin/$$bin.c; \
-		$(INSTALL) -Dm644 $$bin/$$bin.1 $(BUILD_STAGE)/doc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/; \
-	done; \
-	$(INSTALL) -m644 intro.1 $(BUILD_STAGE)/doc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1;
+	mkdir -p $(BUILD_STAGE)/doc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/
+	$(INSTALL) -m644 $(BUILD_WORK)/doc-cmds/intro.1 $(BUILD_STAGE)/doc-cmds/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1;
 	$(call AFTER_BUILD)
 endif
 

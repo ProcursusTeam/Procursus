@@ -1,0 +1,139 @@
+diff -urN a/Source/kwsys/DynamicLoader.cxx b/Source/kwsys/DynamicLoader.cxx
+--- a/Source/kwsys/DynamicLoader.cxx	2024-08-10 15:08:10.616818798 +0800
++++ b/Source/kwsys/DynamicLoader.cxx	2024-08-10 15:09:41.941766502 +0800
+@@ -151,7 +151,7 @@
+ 
+ } // namespace KWSYS_NAMESPACE
+ 
+-#elif defined(__APPLE__) && (MAC_OS_X_VERSION_MAX_ALLOWED < 1030)
++#elif defined(__APPLE__) && (MAC_OS_X_VERSION_MAX_ALLOWED < 1030) && !TARGET_OS_IPHONE
+ // Implementation for Mac OS X 10.2.x and earlier
+ #  include <mach-o/dyld.h>
+ #  include <string.h> // for strlen
+diff -urN a/Source/kwsys/DynamicLoader.hxx.in b/Source/kwsys/DynamicLoader.hxx.in
+--- a/Source/kwsys/DynamicLoader.hxx.in	2024-08-10 15:08:10.616895757 +0800
++++ b/Source/kwsys/DynamicLoader.hxx.in	2024-08-10 15:18:01.274713170 +0800
+@@ -13,7 +13,8 @@
+ #  include <windows.h>
+ #elif defined(__APPLE__)
+ #  include <AvailabilityMacros.h>
+-#  if MAC_OS_X_VERSION_MAX_ALLOWED < 1030
++#  include <TargetConditionals.h>
++#  if MAC_OS_X_VERSION_MAX_ALLOWED < 1030 || TARGET_OS_IPHONE
+ #    include <mach-o/dyld.h>
+ #  endif
+ #elif defined(__BEOS__)
+@@ -52,7 +53,7 @@
+ #elif defined(_WIN32) && !defined(__CYGWIN__)
+   typedef HMODULE LibraryHandle;
+ #elif defined(__APPLE__)
+-#  if MAC_OS_X_VERSION_MAX_ALLOWED < 1030
++#  if MAC_OS_X_VERSION_MAX_ALLOWED < 1030 && !TARGET_OS_IPHONE
+   typedef NSModule LibraryHandle;
+ #  else
+   typedef void* LibraryHandle;
+diff -urN a/Tests/Plugin/include/DynamicLoader.hxx b/Tests/Plugin/include/DynamicLoader.hxx
+--- a/Tests/Plugin/include/DynamicLoader.hxx	2024-08-10 15:08:10.844749349 +0800
++++ b/Tests/Plugin/include/DynamicLoader.hxx	2024-08-10 15:10:08.178556417 +0800
+@@ -11,7 +11,7 @@
+ #  include <windows.h>
+ #elif defined(__APPLE__)
+ #  include <AvailabilityMacros.h>
+-#  if MAC_OS_X_VERSION_MAX_ALLOWED < 1030
++#  if MAC_OS_X_VERSION_MAX_ALLOWED < 1030 || TARGET_OS_IPHONE
+ #    include <mach-o/dyld.h>
+ #  endif
+ #elif defined(__BEOS__)
+@@ -26,7 +26,7 @@
+ #elif defined(_WIN32) && !defined(__CYGWIN__)
+   typedef HMODULE LibraryHandle;
+ #elif defined(__APPLE__)
+-#  if MAC_OS_X_VERSION_MAX_ALLOWED < 1030
++#  if MAC_OS_X_VERSION_MAX_ALLOWED < 1030 && !TARGET_OS_IPHONE
+   typedef NSModule LibraryHandle;
+ #  else
+   typedef void* LibraryHandle;
+diff -urN a/Tests/Plugin/src/DynamicLoader.cxx b/Tests/Plugin/src/DynamicLoader.cxx
+--- a/Tests/Plugin/src/DynamicLoader.cxx	2024-08-10 15:08:10.844930103 +0800
++++ b/Tests/Plugin/src/DynamicLoader.cxx	2024-08-10 15:10:26.633268905 +0800
+@@ -41,7 +41,7 @@
+   return *reinterpret_cast<DynamicLoader::SymbolPointer*>(&result);
+ }
+ 
+-#elif defined(__APPLE__) && (MAC_OS_X_VERSION_MAX_ALLOWED < 1030)
++#elif defined(__APPLE__) && (MAC_OS_X_VERSION_MAX_ALLOWED < 1030) && !TARGET_OS_IPHONE
+ #  include <mach-o/dyld.h>
+ 
+ DynamicLoader::LibraryHandle DynamicLoader::OpenLibrary(
+diff -urN a/Utilities/cmlibuv/src/unix/fsevents.c b/Utilities/cmlibuv/src/unix/fsevents.c
+--- a/Utilities/cmlibuv/src/unix/fsevents.c	2024-08-10 15:08:12.111734873 +0800
++++ b/Utilities/cmlibuv/src/unix/fsevents.c	2024-08-10 15:12:32.036103208 +0800
+@@ -21,7 +21,7 @@
+ #include "uv.h"
+ #include "internal.h"
+ 
+-#if TARGET_OS_IPHONE || MAC_OS_X_VERSION_MAX_ALLOWED < 1070
++#if MAC_OS_X_VERSION_MAX_ALLOWED < 1070
+ 
+ /* iOS (currently) doesn't provide the FSEvents-API (nor CoreServices) */
+ /* macOS prior to 10.7 doesn't provide the full FSEvents API so use kqueue */
+@@ -39,7 +39,7 @@
+ void uv__fsevents_loop_delete(uv_loop_t* loop) {
+ }
+ 
+-#else /* TARGET_OS_IPHONE */
++#else
+ 
+ #include "darwin-stub.h"
+ 
+@@ -530,6 +530,7 @@
+    * per-event loop properties and have the dynamic linker keep track for us.
+    */
+   err = UV_ENOSYS;
++#if TARGET_OS_OSX
+   core_foundation_handle = dlopen("/System/Library/Frameworks/"
+                                   "CoreFoundation.framework/"
+                                   "Versions/A/CoreFoundation",
+@@ -543,6 +544,21 @@
+                                 RTLD_LAZY | RTLD_LOCAL);
+   if (core_services_handle == NULL)
+     goto out;
++#else
++  core_foundation_handle = dlopen("/System/Library/Frameworks/"
++                                  "CoreFoundation.framework/"
++                                  "CoreFoundation",
++                                  RTLD_LAZY | RTLD_LOCAL);
++  if (core_foundation_handle == NULL)
++    goto out;
++
++  core_services_handle = dlopen("/System/Library/Frameworks/"
++                                "CoreServices.framework/"
++                                "CoreServices",
++                                RTLD_LAZY | RTLD_LOCAL);
++  if (core_services_handle == NULL)
++    goto out;
++#endif
+ 
+   err = UV_ENOENT;
+ #define V(handle, symbol)                                                     \
+diff -urN a/Utilities/cmlibuv/src/unix/kqueue.c b/Utilities/cmlibuv/src/unix/kqueue.c
+--- a/Utilities/cmlibuv/src/unix/kqueue.c	2024-08-10 15:08:12.112641681 +0800
++++ b/Utilities/cmlibuv/src/unix/kqueue.c	2024-08-10 15:13:11.553329961 +0800
+@@ -59,7 +59,7 @@
+ }
+ 
+ 
+-#if defined(__APPLE__) && MAC_OS_X_VERSION_MAX_ALLOWED >= 1070
++#if defined(__APPLE__) && (MAC_OS_X_VERSION_MAX_ALLOWED >= 1070 || TARGET_OS_IPHONE)
+ static int uv__has_forked_with_cfrunloop;
+ #endif
+ 
+@@ -70,7 +70,7 @@
+   if (err)
+     return err;
+ 
+-#if defined(__APPLE__) && MAC_OS_X_VERSION_MAX_ALLOWED >= 1070
++#if defined(__APPLE__) && (MAC_OS_X_VERSION_MAX_ALLOWED >= 1070 || TARGET_OS_IPHONE)
+   if (loop->cf_state != NULL) {
+     /* We cannot start another CFRunloop and/or thread in the child
+        process; CF aborts if you try or if you try to touch the thread

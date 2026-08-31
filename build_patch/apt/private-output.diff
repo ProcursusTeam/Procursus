@@ -1,20 +1,24 @@
-diff -urN apt-2.1.8/apt-private/private-output.cc apt-2.1.8+procursus/apt-private/private-output.cc
---- apt-2.1.8/apt-private/private-output.cc	2020-08-04 06:41:28.000000000 -0400
-+++ apt-2.1.8+procursus/apt-private/private-output.cc	2020-08-11 12:40:10.000000000 -0400
-@@ -1,6 +1,8 @@
- // Include files							/*{{{*/
- #include <config.h>
+diff -urN a/apt-private/private-output.cc b/apt-private/private-output.cc
+--- a/apt-private/private-output.cc	2024-06-04 19:08:40.747091253 +0800
++++ b/apt-private/private-output.cc	2024-06-04 19:15:06.355536467 +0800
+@@ -28,6 +28,11 @@
+ #include <sstream>
  
-+#include <Foundation/Foundation.h>
+ #include <apti18n.h>
 +
- #include <apt-pkg/cachefile.h>
- #include <apt-pkg/configuration.h>
- #include <apt-pkg/depcache.h>
-@@ -443,15 +445,145 @@
++#if defined(__APPLE__)
++#include <Foundation/Foundation.h>
++#endif
++
+ 									/*}}}*/
+ 
+ using namespace std;
+@@ -531,6 +536,120 @@
        }
     }
  }
 +
++#if defined(__APPLE__)
 +static NSMutableDictionary * SileoBrokenPackage(ostream &out, pkgCacheFile * const Cache, pkgCache::PkgIterator const &Pkg, bool const Now)
 +{
 +   if (Now == true)
@@ -125,20 +129,20 @@ diff -urN apt-2.1.8/apt-private/private-output.cc apt-2.1.8+procursus/apt-privat
 +   }
 +   return packages;
 +}
++#endif
 +
  void ShowBroken(ostream &out, CacheFile &Cache, bool const Now)
  {
     if (Cache->BrokenCount() == 0)
-       return;
- 
-    out << _("The following packages have unmet dependencies:") << endl;
-+
-+   bool useJSON = _config->FindB("APT::Format::for-sileo", false);
-+
+@@ -540,8 +659,28 @@
+    else
+       out << _("Unsatisfied dependencies:") << endl;
     SortedPackageUniverse Universe(Cache);
 -   for (auto const &Pkg: Universe)
 -      ShowBrokenPackage(out, &Cache, Pkg, Now);
-+   
++#if defined(__APPLE__)
++   bool useJSON = _config->FindB("APT::Format::for-sileo", false);
++
 +   if (useJSON){
 +      NSMutableDictionary *packages = [NSMutableDictionary dictionary];
 +      for (auto const &Pkg: Universe){
@@ -152,39 +156,12 @@ diff -urN apt-2.1.8/apt-private/private-output.cc apt-2.1.8+procursus/apt-privat
 +      NSFileHandle *stdout = [NSFileHandle fileHandleWithStandardOutput];
 +      [stdout writeData:data];
 +   } else {
++#endif
 +      for (auto const &Pkg: Universe)
 +         ShowBrokenPackage(out, &Cache, Pkg, Now);
++#if defined(__APPLE__)
 +   }
++#endif
  }
  void ShowBroken(ostream &out, pkgCacheFile &Cache, bool const Now)
  {
-@@ -459,9 +591,27 @@
-       return;
- 
-    out << _("The following packages have unmet dependencies:") << endl;
-+
-+   bool useJSON = _config->FindB("APT::Format::for-sileo", false);
-+
-    APT::PackageUniverse Universe(Cache);
--   for (auto const &Pkg: Universe)
--      ShowBrokenPackage(out, &Cache, Pkg, Now);
-+
-+   if (useJSON){
-+      NSMutableDictionary *packages = [NSMutableDictionary dictionary];
-+      for (auto const &Pkg: Universe){
-+         NSMutableDictionary *package = SileoBrokenPackage(out, &Cache, Pkg, Now);
-+         [packages addEntriesFromDictionary:package];
-+      }
-+
-+      cout << flush;
-+
-+      NSData *data = [NSJSONSerialization dataWithJSONObject:packages options:0 error:nil];
-+      NSFileHandle *stdout = [NSFileHandle fileHandleWithStandardOutput];
-+      [stdout writeData:data];
-+   } else {
-+      for (auto const &Pkg: Universe)
-+         ShowBrokenPackage(out, &Cache, Pkg, Now);
-+   }
- }
- 									/*}}}*/
- // ShowNew - Show packages to newly install				/*{{{*/

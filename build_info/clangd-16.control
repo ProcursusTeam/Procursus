@@ -1,0 +1,17 @@
+Package: clangd-16
+Version: @DEB_LLVM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: libllvm16 (= @DEB_LLVM_V@), libclang-cpp16 (= @DEB_LLVM_V@), libclang-common-16-dev (= @DEB_LLVM_V@), build-essential
+Section: Development
+Priority: optional
+Homepage: https://www.llvm.org/
+Description: Language server that provides IDE-like features to editors
+ clangd understands your C++ code and adds smart features to your editor:
+  - code completion
+  - compile errors
+  - go-to-definition
+  - and more.
+ .
+ clangd is a language server that implements the Language Server Protocol;
+ it can work with many editors through a plugin.

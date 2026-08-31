@@ -3,6 +3,8 @@ Version: @DEB_NETWORK-CMDS_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: firmware (>= 9.0) | rtadvd, libpcapa
+Replaces: inetutils (<< 2.5)
+Conflicts: inetutils (<< 2.5)
 Section: Networking
 Priority: important
 Description: arp, ndp, traceroute, mnc, mtest, traceroute6, ifconfig, ip6addrctl, netstat, ping6, route, rtsol

@@ -1,0 +1,48 @@
+diff -urN a/apt-pkg/contrib/fileutl.cc b/apt-pkg/contrib/fileutl.cc
+--- a/apt-pkg/contrib/fileutl.cc	2024-05-31 18:37:20.033779755 +0800
++++ b/apt-pkg/contrib/fileutl.cc	2024-05-31 18:48:37.749949105 +0800
+@@ -87,6 +87,10 @@
+ #include <sys/prctl.h>
+ #endif
+ 
++#if defined(__APPLE__)
++#include <libproc.h>
++#endif
++
+ #include <apti18n.h>
+ 									/*}}}*/
+ 
+@@ -917,6 +921,25 @@
+       signal(SIGCONT,SIG_DFL);
+       signal(SIGTSTP,SIG_DFL);
+ 
++#if defined(__APPLE__)
++        int bufsz = 0, count = 0;
++        struct proc_fdinfo *buf;
++
++        bufsz = proc_pidinfo(getpid(), PROC_PIDLISTFDS, 0, NULL, 0); // Gives us a guess of needed size for buffer
++        buf = (struct proc_fdinfo *)calloc(1, bufsz);
++
++        bufsz = proc_pidinfo(getpid(), PROC_PIDLISTFDS, 0, buf, bufsz);
++        count = bufsz / PROC_PIDLISTFD_SIZE;
++
++        for (int i = 0; i < count; i++) {
++            if (buf[i].proc_fdtype == PROX_FDTYPE_VNODE) {
++                int fd = buf[i].proc_fd;
++                if (fd >= 3 && KeepFDs.find(fd) == KeepFDs.end())
++                    fcntl(fd,F_SETFD,FD_CLOEXEC);
++            }
++        }
++        free(buf);
++#else
+       DIR *dir = opendir("/proc/self/fd");
+       if (dir != NULL)
+       {
+@@ -938,6 +961,7 @@
+ 	       fcntl(K,F_SETFD,FD_CLOEXEC);
+ 	 }
+       }
++#endif
+    }
+    
+    return Process;

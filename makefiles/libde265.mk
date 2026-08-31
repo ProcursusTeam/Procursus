@@ -9,6 +9,7 @@ DEB_LIBDE265_V   ?= $(LIBDE265_VERSION)
 libde265-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/strukturag/libde265/releases/download/v$(LIBDE265_VERSION)/libde265-$(LIBDE265_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libde265-$(LIBDE265_VERSION).tar.gz,libde265-$(LIBDE265_VERSION),libde265)
+	sed -i 's/-keep_private_externs -nostdlib/-keep_private_externs $(PLATFORM_VERSION_MIN) -arch $(MEMO_ARCH) -nostdlib/g' $(BUILD_WORK)/libde265/configure
 
 ifneq ($(wildcard $(BUILD_WORK)/libde265/.build_complete),)
 libde265:
