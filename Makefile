@@ -894,10 +894,10 @@ DOWNLOAD_FILE = if [ ! -f "$(1)" ]; then \
 					echo "Downloading $(1)"; \
 					if [ -z "$$LIST" ]; then \
 						$(CURL) -s -w "%{http_code}" --output \
-							$(1) $(2) | grep -q 404 && echo "FAILED TO DOWNLOAD $(1)"; \
+							$(1) $(2) | grep -q "404\|502" && echo "FAILED TO DOWNLOAD $(1)"; \
 					else \
 						$(CURL) -s -w "%{http_code}" --output \
-							$(1) $(2) | grep -q 404 && echo "FAILED TO DOWNLOAD $(1)" & \
+							$(1) $(2) | grep -q "404\|502" && echo "FAILED TO DOWNLOAD $(1)" & \
 					fi; \
 				else echo "$(1) already downloaded."; fi
 
