@@ -5,7 +5,7 @@ endif
 GETTEXT_CFBASE_VERSION := 0.21.1
 
 gettext_CFbase-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/gettext/gettext-$(GETTEXT_CFBASE_VERSION).tar.xz{$(comma).sig})
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://mirrors.kernel.org/gnu/gettext/gettext-$(GETTEXT_CFBASE_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,gettext-$(GETTEXT_CFBASE_VERSION).tar.xz)
 	$(call EXTRACT_TAR,gettext-$(GETTEXT_CFBASE_VERSION).tar.xz,gettext-$(GETTEXT_CFBASE_VERSION),gettext)
 	sed -i 's/iconv_ostream__flush (iconv_ostream_t stream)/iconv_ostream__flush (iconv_ostream_t stream, ostream_flush_scope_t scope)/g' $(BUILD_WORK)/gettext/libtextstyle/lib/iconv-ostream.c

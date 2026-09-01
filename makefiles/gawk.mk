@@ -7,7 +7,7 @@ GAWK_VERSION := 5.3.0
 DEB_GAWK_V   ?= $(GAWK_VERSION)
 
 gawk-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/gawk/gawk-$(GAWK_VERSION).tar.xz{$(comma).sig})
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://mirrors.kernel.org/gnu/gawk/gawk-$(GAWK_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,gawk-$(GAWK_VERSION).tar.xz)
 	$(call EXTRACT_TAR,gawk-$(GAWK_VERSION).tar.xz,gawk-$(GAWK_VERSION),gawk)
 

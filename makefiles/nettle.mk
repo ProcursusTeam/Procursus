@@ -9,7 +9,7 @@ NETTLE_VERSION := 3.9.1
 DEB_NETTLE_V   ?= $(NETTLE_VERSION)
 
 nettle-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/nettle/nettle-$(NETTLE_VERSION).tar.gz{$(comma).sig})
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://mirrors.kernel.org/gnu/nettle/nettle-$(NETTLE_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,nettle-$(NETTLE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,nettle-$(NETTLE_VERSION).tar.gz,nettle-$(NETTLE_VERSION),nettle)
 

@@ -7,7 +7,7 @@ LESS_VERSION := 643
 DEB_LESS_V   ?= $(LESS_VERSION)
 
 less-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/gnu/less/less-$(LESS_VERSION).tar.gz{$(comma).sig})
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://mirrors.kernel.org/gnu/gnu/less/less-$(LESS_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,less-$(LESS_VERSION).tar.gz)
 	$(call EXTRACT_TAR,less-$(LESS_VERSION).tar.gz,less-$(LESS_VERSION),less)
 

@@ -12,7 +12,7 @@ COREUTILS_CF800_CONFIGURE_ARGS += --program-prefix=$(GNU_PREFIX)
 endif
 
 coreutils_CF800-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/coreutils/coreutils-$(COREUTILS_CF800_VERSION).tar.xz{$(comma).sig})
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://mirrors.kernel.org/gnu/coreutils/coreutils-$(COREUTILS_CF800_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_CF800_VERSION).tar.xz)
 	$(call EXTRACT_TAR,coreutils-$(COREUTILS_CF800_VERSION).tar.xz,coreutils-$(COREUTILS_CF800_VERSION),coreutils)
 	touch $(BUILD_WORK)/coreutils/revert-2984e47.diff.done

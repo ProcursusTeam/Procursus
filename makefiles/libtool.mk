@@ -7,7 +7,7 @@ LIBTOOL_VERSION := 2.4.7
 DEB_LIBTOOL_V   ?= $(LIBTOOL_VERSION)
 
 libtool-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/libtool/libtool-$(LIBTOOL_VERSION).tar.gz{$(comma).sig})
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://mirrors.kernel.org/gnu/libtool/libtool-$(LIBTOOL_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libtool-$(LIBTOOL_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libtool-$(LIBTOOL_VERSION).tar.gz,libtool-$(LIBTOOL_VERSION),libtool)
 

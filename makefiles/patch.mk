@@ -11,7 +11,7 @@ PATCH_CONFIGURE_ARGS := --program-prefix=$(GNU_PREFIX)
 endif
 
 patch-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/patch/patch-$(PATCH_VERSION).tar.xz{$(comma).sig})
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://mirrors.kernel.org/gnu/patch/patch-$(PATCH_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,patch-$(PATCH_VERSION).tar.xz)
 	$(call EXTRACT_TAR,patch-$(PATCH_VERSION).tar.xz,patch-$(PATCH_VERSION),patch)
 
