@@ -5,6 +5,7 @@ TRIPLES=(
   "armv6-apple-darwin"
   "armv7-apple-darwin"
   "armv7k-apple-darwin"
+  "arm64_32-apple-darwin"
   "aarch64-apple-darwin"
   "x86_64-apple-darwin"
 )
