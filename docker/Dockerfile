@@ -39,4 +39,6 @@ RUN apt-get clean
 COPY darwin /usr/lib/llvm-11/lib/clang/11.0.1/lib/darwin
 RUN mv /usr/local/include /usr/local/include.bk
 
+RUN bash -c 'echo "/usr/local/lib/x86_64-unknown-linux-gnu" >> /etc/ld.so.conf && ldconfig'
+
 WORKDIR /workspace/
