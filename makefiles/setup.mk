@@ -27,3 +27,5 @@ else
 setup: setup_CFbase
 
 endif
+	# Clear bad caches
+	for f in build_source/*; do file $$f | grep "HTML document" && rm $$f; done || true
