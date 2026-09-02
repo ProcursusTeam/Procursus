@@ -14,6 +14,9 @@ setup: setup_CF2000
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1900 ] && echo 1),1)
 setup: setup_CF1900
 
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1700 ] && echo 1),1)
+setup: setup_CF1700
+
 else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1100 ] && echo 1),1)
 setup: setup_CF1100
 
