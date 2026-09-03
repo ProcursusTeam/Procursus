@@ -1,25 +1,25 @@
-From e9af69519c27477d5840329c891a9dc20c07685a Mon Sep 17 00:00:00 2001
-From: Nick Chan <towinchenmi@gmail.com>
-Date: Sat, 5 Nov 2022 02:06:00 +0800
+From 4ed71f4e2f8b13761b067c13d0f83835c012e09b Mon Sep 17 00:00:00 2001
+From: tihmstar <tihmstar@gmail.com>
+Date: Thu, 3 Sep 2026 14:59:21 +0900
 Subject: [PATCH] Add missing int reboot3(int) declaration
 
 ---
- reboot.tproj/reboot.c | 2 ++
+ reboot/reboot.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/reboot.tproj/reboot.c b/reboot.tproj/reboot.c
-index 372efc7..d507480 100644
---- a/reboot.tproj/reboot.c
-+++ b/reboot.tproj/reboot.c
-@@ -74,6 +74,8 @@ __unused static const char rcsid[] =
- #include <sys/time.h>
+diff --git a/reboot/reboot.c b/reboot/reboot.c
+index 8c7a918..8cb1944 100644
+--- a/reboot/reboot.c
++++ b/reboot/reboot.c
+@@ -74,6 +74,8 @@ __FBSDID("$FreeBSD$");
+ #include <reboot2.h>
  #endif
  
 +int reboot3(int);
 +
- void usage(void);
- u_int get_pageins(void);
- #if defined(__APPLE__) && !(TARGET_OS_IPHONE && !TARGET_OS_SIMULATOR)
+ static void usage(void);
+ #ifndef __APPLE__
+ static u_int get_pageins(void);
 -- 
-2.37.1
+2.50.1
 

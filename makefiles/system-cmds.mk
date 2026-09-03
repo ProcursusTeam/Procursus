@@ -3,7 +3,13 @@ $(error Use the main Makefile)
 endif
 
 
-ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1800 ] && echo 1),1)
+ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 4000 ] && echo 1),1)
+SYSTEM-CMDS_VERSION := $(SYSTEM-CMDS_CF4000_VERSION)
+system-cmds-setup: system-cmds_CF4000-setup
+system-cmds: system-cmds_CF4000
+system-cmds-package: system-cmds_CF4000-package
+
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1800 ] && echo 1),1)
 SYSTEM-CMDS_VERSION := $(SYSTEM-CMDS_CF1800_VERSION)
 system-cmds-setup: system-cmds_CF1800-setup
 system-cmds: system-cmds_CF1800

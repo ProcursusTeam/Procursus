@@ -1,7 +1,16 @@
-diff --git a/pwd_mkdb.tproj/pwd_mkdb.c b/pwd_mkdb.tproj/pwd_mkdb.c
+From b4bd60652cb3cae0947be30642c29264126ae85a Mon Sep 17 00:00:00 2001
+From: tihmstar <tihmstar@gmail.com>
+Date: Thu, 3 Sep 2026 15:17:28 +0900
+Subject: [PATCH] fix pwd_mkdb-comment-handling
+
+---
+ pwd_mkdb/pwd_mkdb.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/pwd_mkdb/pwd_mkdb.c b/pwd_mkdb/pwd_mkdb.c
 index 7d02422..598d67f 100644
---- a/pwd_mkdb.tproj/pwd_mkdb.c
-+++ b/pwd_mkdb.tproj/pwd_mkdb.c
+--- a/pwd_mkdb/pwd_mkdb.c
++++ b/pwd_mkdb/pwd_mkdb.c
 @@ -509,8 +509,10 @@ db_store(FILE *fp, FILE *oldfp, DB *edp, DB *dp, struct passwd *pw,
  	for (cnt = 1; scan(fp, pw, &flags); ++cnt) {
  
@@ -14,4 +23,6 @@ index 7d02422..598d67f 100644
  #endif
  
  		if (firsttime) {
+-- 
+2.50.1 
 
