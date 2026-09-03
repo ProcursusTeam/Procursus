@@ -11,8 +11,7 @@ ZSH_VERSION   := 5.9
 DEB_ZSH_V     ?= $(ZSH_VERSION)
 
 zsh-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.zsh.org/pub/zsh-$(ZSH_VERSION).tar.xz{$(comma).asc})
-	$(call EXTRACT_TAR,zsh-$(ZSH_VERSION).tar.xz,zsh-$(ZSH_VERSION),zsh)
+	$(call GIT_CLONE_COMMIT,https://github.com/zsh-users/zsh.git,zsh-$(ZSH_VERSION),zsh)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 ZSH_CONFIGURE_ARGS := --enable-etcdir=$(MEMO_PREFIX)/etc \
 		zsh_cv_path_utmpx=/var/run/utmpx \
@@ -28,7 +27,7 @@ zsh:
 else
 zsh: zsh-setup pcre ncurses
 	## So many flags are needed because zsh's configure script sucks! I also suck but it's cool.
-	cd $(BUILD_WORK)/zsh && ./configure -C \
+	cd $(BUILD_WORK)/zsh && autoreconf -fi && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-fndir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/functions \
 		--enable-scriptdir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/zsh/scripts \
