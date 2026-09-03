@@ -1,5 +1,5 @@
 diff --git a/lib/dpkg/dpkg.h b/lib/dpkg/dpkg.h
-index 463f8296d..be778753d 100644
+index 12cffed..b5d0af1 100644
 --- a/lib/dpkg/dpkg.h
 +++ b/lib/dpkg/dpkg.h
 @@ -68,6 +68,7 @@ DPKG_BEGIN_DECLS
@@ -11,22 +11,22 @@ index 463f8296d..be778753d 100644
  #define PRERMFILE          "prerm"
  #define POSTRMFILE         "postrm"
 diff --git a/src/main/unpack.c b/src/main/unpack.c
-index 8fb716ec4..8edb72960 100644
+index d00b07b..0da5726 100644
 --- a/src/main/unpack.c
 +++ b/src/main/unpack.c
-@@ -1580,6 +1580,15 @@ void process_archive(const char *filename) {
-   subproc_reap(pid, BACKEND " --fsys-tarfile", SUBPROC_NOPIPE);
+@@ -1650,6 +1650,15 @@ process_archive(const char *filename)
+        subproc_reap(pid, BACKEND " --fsys-tarfile", SUBPROC_NOPIPE);
  
-   tar_deferred_extract(newfiles_queue.head, pkg);
-+  if (oldversionstatus == PKG_STAT_NOTINSTALLED || oldversionstatus == PKG_STAT_CONFIGFILES) {
-+    maintscript_new(pkg, EXTRAINSTFILE, "extra-installation", cidir, cidirrest,
-+                    "install", NULL);
-+  } else {
-+    maintscript_new(pkg, EXTRAINSTFILE, "extra-installation", cidir, cidirrest,
-+                    "upgrade",
-+                    versiondescribe(&pkg->installed.version, vdew_nonambig),
-+                    NULL);
-+  }
+        tar_deferred_extract(newfiles_queue.head, pkg);
++       if (oldversionstatus == PKG_STAT_NOTINSTALLED || oldversionstatus == PKG_STAT_CONFIGFILES) {
++               maintscript_new(pkg, EXTRAINSTFILE, "extra-installation", cidir, cidirrest,
++                       "install", NULL);
++       } else {
++               maintscript_new(pkg, EXTRAINSTFILE, "extra-installation", cidir, cidirrest,
++                       "upgrade",
++                       versiondescribe(&pkg->installed.version, vdew_nonambig),
++                       NULL);
++       }
  
-   if (oldversionstatus == PKG_STAT_HALFINSTALLED ||
-       oldversionstatus == PKG_STAT_UNPACKED) {
+        if (oldversionstatus == PKG_STAT_HALFINSTALLED ||
+            oldversionstatus == PKG_STAT_UNPACKED) {
