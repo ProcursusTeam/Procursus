@@ -41,6 +41,8 @@ PACKAGES=(
   "xsltproc"
   "python3-setuptools"
   "python3-pip"
+  "man"
+  "yodl"
 )
 
 apt-get update
