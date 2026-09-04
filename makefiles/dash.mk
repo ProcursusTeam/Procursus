@@ -4,12 +4,11 @@ endif
 
 
 STRAPPROJECTS += dash
-DASH_VERSION  := 0.5.12
+DASH_VERSION  := 0.5.13.5
 DEB_DASH_V    ?= $(DASH_VERSION)
 
 dash-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://web.archive.org/web/20230528161056id_/https://git.kernel.org/pub/scm/utils/dash/dash.git/snapshot/dash-0.5.12.tar.gz)
-	$(call EXTRACT_TAR,dash-$(DASH_VERSION).tar.gz,dash-$(DASH_VERSION),dash)
+	$(call GIT_CLONE_COMMIT,git://git.kernel.org/pub/scm/utils/dash/dash.git,v$(DASH_VERSION),dash)
 	mkdir -p $(BUILD_STAGE)/dash/$(MEMO_PREFIX)/bin
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	sed -i 's|"/etc/profile|"$(MEMO_PREFIX)/etc/profile|' $(BUILD_WORK)/dash/src/main.c
