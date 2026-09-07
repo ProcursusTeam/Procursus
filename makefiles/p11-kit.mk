@@ -5,7 +5,7 @@ endif
 ifneq ($(MINIMAL_STRAP),1)
 STRAPPROJECTS += p11-kit
 endif
-P11_VERSION   := 0.25.3
+P11_VERSION   := 0.26.5
 DEB_P11_V     ?= $(P11_VERSION)
 
 p11-kit-setup: setup
