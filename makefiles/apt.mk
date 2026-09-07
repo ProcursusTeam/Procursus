@@ -76,12 +76,12 @@ apt-package: apt-stage
 	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/apt/solvers/dump $(BUILD_DIST)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/apt/solvers
 	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)/{etc,var} $(BUILD_DIST)/apt/$(MEMO_PREFIX)
-	rm -f $(BUILD_DIST)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/*/man1/apt-{extracttemplates,ftparchive,sortpkgs}.1$(MEMO_MANPAGE_SUFFIX)
-	rm -f $(BUILD_DIST)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/apt-{extracttemplates,ftparchive,sortpkgs}.1$(MEMO_MANPAGE_SUFFIX)
+	rm -f $(BUILD_DIST)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/*/man1/apt-{ftparchive,sortpkgs}.1$(MEMO_MANPAGE_SUFFIX)
+	rm -f $(BUILD_DIST)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1/apt-{ftparchive,sortpkgs}.1$(MEMO_MANPAGE_SUFFIX)
 	rm -f $(BUILD_DIST)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale/*/LC_MESSAGES/{apt-utils,libapt-pkg6.0}.mo
 
 	# apt.mk Prep apt-utils
-	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/apt-{extracttemplates,ftparchive,sortpkgs} $(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/apt-{ftparchive,sortpkgs} $(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/apt/planners/apt $(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/apt/planners
 	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/apt/solvers/apt $(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/apt/solvers
 	cp -a $(BUILD_STAGE)/apt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share $(BUILD_DIST)/apt-utils/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
