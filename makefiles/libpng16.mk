@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += libpng16
-LIBPNG16_VERSION := 1.6.37
+LIBPNG16_VERSION := 1.6.42
 DEB_LIBPNG16_V   ?= $(LIBPNG16_VERSION)-2
 
 libpng16-setup: setup
