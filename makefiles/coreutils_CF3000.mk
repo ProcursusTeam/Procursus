@@ -13,9 +13,7 @@ coreutils_CF3000-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftp.gnu.org/gnu/coreutils/coreutils-$(COREUTILS_CF3000_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,coreutils-$(COREUTILS_CF3000_VERSION).tar.xz)
 	$(call EXTRACT_TAR,coreutils-$(COREUTILS_CF3000_VERSION).tar.xz,coreutils-$(COREUTILS_CF3000_VERSION),coreutils)
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), \
-		https://git.cameronkatri.com/getent-darwin/snapshot/getent-darwin-$(GETENTDARWIN_CF3000_COMMIT).tar.zst)
-	$(call GIT_CLONE_COMMIT,https://git.cameronkatri.com/getent-darwin.git,$(GETENTDARWIN_CF3000_COMMIT),coreutils/getent-darwin)
+	$(call GIT_CLONE_COMMIT,https://github.com/tihmstar/getent-darwin,$(GETENTDARWIN_CF3000_COMMIT),coreutils/getent-darwin)
 
 ifneq ($(wildcard $(BUILD_WORK)/coreutils/.build_complete),)
 coreutils_CF3000:
