@@ -6,7 +6,7 @@ STRAPPROJECTS += uuid
 UUID_VERSION  := 1.6.6
 DEB_UUID_V    ?= $(UUID_VERSION)-3
 
-uuid-setup: setup file-setup
+uuid-setup: setup file-setup libmd
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),http://deb.debian.org/debian/pool/main/o/ossp-uuid/ossp-uuid_$(UUID_VERSION).orig.tar.gz)
 	$(call EXTRACT_TAR,ossp-uuid_$(UUID_VERSION).orig.tar.gz,ossp-uuid-UUID_$(shell echo $(UUID_VERSION) | tr '.' '_'),uuid)
 	cp -a $(BUILD_WORK)/file/config.sub $(BUILD_WORK)/uuid
