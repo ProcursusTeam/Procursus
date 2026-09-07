@@ -45,6 +45,7 @@ PACKAGES=(
   "yodl"
   "texinfo"
   "tclsh"
+  "gperf"
 )
 
 apt-get update
