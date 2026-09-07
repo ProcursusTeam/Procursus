@@ -21,6 +21,7 @@ berkeleydb: berkeleydb-setup gettext openssl
 	cd $(BUILD_WORK)/berkeleydb/dist && ./s_config && sed -i 's/tlsvar = NULL/tlsvar = {}/g' configure
 	cd $(BUILD_WORK)/berkeleydb/build_unix && ../dist/configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		CFLAGS="-std=c90" \
 		--includedir=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/db181 \
 		--enable-cxx \
 		--enable-compat185 \
