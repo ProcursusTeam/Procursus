@@ -17,6 +17,7 @@ else
 libpixman: libpixman-setup
 	cd $(BUILD_WORK)/libpixman && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		CFLAGS="-Wno-incompatible-function-pointer-types" \
 		--disable-dependency-tracking \
 		--disable-gtk \
 		--disable-silent-rules

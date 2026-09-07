@@ -46,6 +46,7 @@ PACKAGES=(
   "texinfo"
   "tclsh"
   "gperf"
+  "python3-zombie-imp"
 )
 
 apt-get update
