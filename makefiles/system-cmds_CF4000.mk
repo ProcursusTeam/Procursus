@@ -21,7 +21,7 @@ system-cmds_CF4000-setup: setup libxcrypt
 	sed -i '/#include <stdio.h>/a #include <crypt.h>' $(BUILD_WORK)/system-cmds/login/login.c
 	sed -i -E -e 's|"/usr|"$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)|g' -e 's|"/sbin|"$(MEMO_PREFIX)/sbin|g' -e 's|/etc|$(MEMO_PREFIX)/etc|g' \
 		$(BUILD_WORK)/system-cmds/{{shutdown,getty}/pathnames.h,getty/{ttys,gettytab}.5,sc_usage/sc_usage.{1,c},at/{at.1,pathnames.h},passwd/{{file_,}passwd.c,passwd.1},pwd_mkdb/pwd_mkdb.8,sysctl/sysctl.conf.5,chpass/chpass.1,latency/latency.{1,c},arch/arch.c,atrun/atrun.8,vipw/vipw.8,login/login.1}
-	$(call GIT_CLONE_COMMIT,https://git.cameronkatri.com/pw-darwin.git,$(PWDARWIN_CF4000_COMMIT),system-cmds/pw-darwin)
+	$(call GIT_CLONE_COMMIT,https://github.com/tihmstar/pw-darwin.git,$(PWDARWIN_CF4000_COMMIT),system-cmds/pw-darwin)
 	$(call DOWNLOAD_FILES,$(BUILD_WORK)/system-cmds/include, \
 		https://github.com/apple-oss-distributions/launchd/raw/launchd-328/launchd/src/reboot2.h)
 	sed -i 's|#include <mach/i386/vm_param.h>|#include <mach/vm_param.h>|' $(BUILD_WORK)/system-cmds/memory_pressure/memory_pressure.c
