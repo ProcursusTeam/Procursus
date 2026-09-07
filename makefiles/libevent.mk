@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += libevent
-LIBEVENT_VERSION   := 2.1.12
+LIBEVENT_VERSION   := 2.1.13
 DEB_LIBEVENT_V     ?= $(LIBEVENT_VERSION)-3
 
 libevent-setup: setup
@@ -16,7 +16,7 @@ libevent:
 	@echo "Using previously built libevent."
 else
 libevent: libevent-setup openssl
-	cd $(BUILD_WORK)/libevent && cmake . \
+	cd $(BUILD_WORK)/libevent && cmake -DCMAKE_POLICY_VERSION_MINIMUM=3.5 . \
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DEVENT__LIBRARY_TYPE:STRING=BOTH \
 		.
