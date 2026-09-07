@@ -3,20 +3,18 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += freetype
-FREETYPE_VERSION := 2.12.1
+FREETYPE_VERSION := 2.13.1
 DEB_FREETYPE_V   ?= $(FREETYPE_VERSION)
 
 freetype-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://download.savannah.gnu.org/releases/freetype/freetype-$(FREETYPE_VERSION).tar.xz{$(comma).sig})
-	$(call PGP_VERIFY,freetype-$(FREETYPE_VERSION).tar.xz)
-	$(call EXTRACT_TAR,freetype-$(FREETYPE_VERSION).tar.xz,freetype-$(FREETYPE_VERSION),freetype)
+	$(call GIT_CLONE_COMMIT,https://github.com/freetype/freetype,VER-$(shell echo ${FREETYPE_VERSION} | tr '.' '-' ),freetype)
 
 ifneq ($(wildcard $(BUILD_WORK)/freetype/.build_complete),)
 freetype:
 	@echo "Using previously built freetype."
 else
 freetype: freetype-setup brotli libpng16
-	cd $(BUILD_WORK)/freetype && ./configure -C \
+	cd $(BUILD_WORK)/freetype && ./autogen.sh && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--without-harfbuzz \
 		CC_BUILD="$(CC_FOR_BUILD)"
