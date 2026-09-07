@@ -18,6 +18,7 @@ else
 libsoxr: libsoxr-setup
 	cd $(BUILD_WORK)/libsoxr/build && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
+		-DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
 		-DBUILD_TESTS=0 \
 		-DBUILD_EXAMPLES=0 \
 		-DBUILD_SHARED_LIBS=1 \
