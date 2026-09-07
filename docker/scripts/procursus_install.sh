@@ -44,6 +44,7 @@ PACKAGES=(
   "man"
   "yodl"
   "texinfo"
+  "tclsh"
 )
 
 apt-get update
