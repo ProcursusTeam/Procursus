@@ -43,6 +43,7 @@ PACKAGES=(
   "python3-pip"
   "man"
   "yodl"
+  "texinfo"
 )
 
 apt-get update

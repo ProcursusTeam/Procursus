@@ -5,11 +5,11 @@ endif
 ifneq ($(MINIMAL_STRAP),1)
 STRAPPROJECTS  += libffi
 endif
-LIBFFI_VERSION := 3.4.6
+LIBFFI_VERSION := 3.8.0
 DEB_LIBFFI_V   ?= $(LIBFFI_VERSION)
 
 libffi-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/libffi/libffi/releases/download/v$(LIBFFI_VERSION)/libffi-$(LIBFFI_VERSION).tar.gz)
+	$(call GIT_CLONE_COMMIT,https://github.com/libffi/libffi.git,v$(LIBFFI_VERSION),libffi)
 	$(call EXTRACT_TAR,libffi-$(LIBFFI_VERSION).tar.gz,libffi-$(LIBFFI_VERSION),libffi)
 
 ifneq ($(wildcard $(BUILD_WORK)/libffi/.build_complete),)
@@ -17,7 +17,8 @@ libffi:
 	@echo "Using previously built libffi."
 else
 libffi: libffi-setup
-	cd $(BUILD_WORK)/libffi && ./configure -C \
+	cd $(BUILD_WORK)/libffi && ./autogen.sh && ./configure -C \
+		--disable-multi-os-directory \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/libffi
 	+$(MAKE) -C $(BUILD_WORK)/libffi install \
