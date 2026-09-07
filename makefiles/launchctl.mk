@@ -12,10 +12,11 @@ launchctl-setup: setup
 	$(call GITHUB_ARCHIVE,ProcursusTeam,launchctl,$(LAUNCHCTL_VERSION),v$(LAUNCHCTL_VERSION))
 	$(call EXTRACT_TAR,launchctl-$(LAUNCHCTL_VERSION).tar.gz,launchctl-$(LAUNCHCTL_VERSION),launchctl)
 ifeq (,$(findstring bridge,$(MEMO_TARGET)))
-	grep -or " bridgeOS [0-9]\+\.[0-9]," . | while read m; \
-		do f=$$(echo $m | cut -d ':' -f1); \
-		w=$$(echo $m | cut -d ' ' -f2-); \
-		sed -i "s/${w}//g" $f;\
+	echo $(BUILD_WORK)/launchctl
+	grep -or " bridgeOS [0-9]\+\.[0-9]," $(BUILD_WORK)/launchctl | while read m; \
+		do f=$$(echo $$m | cut -d ':' -f1); \
+		w=$$(echo $$m | cut -d ' ' -f2-); \
+		sed -i "s/$${w}//g" $$f;\
 		done
 endif
 ifneq ($(wildcard $(BUILD_WORK)/launchctl/.build_complete),)
