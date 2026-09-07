@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += curl
-CURL_VERSION := 8.7.1
+CURL_VERSION := 8.22.0
 DEB_CURL_V   ?= $(CURL_VERSION)
 
 curl-setup: setup
@@ -27,6 +27,7 @@ curl: curl-setup gettext openssl libc-ares libssh2 nghttp2 libidn2 brotli zstd r
 		--with-brotli \
 		--with-zstd \
 		--with-librtmp \
+		--without-libpsl \
 		--enable-ares \
 		--without-nghttp3 \
 		--without-ngtcp2 \
