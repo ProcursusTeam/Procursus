@@ -3,13 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += libvidstab
-LIBVIDSTAB_VERSION := 1.1.0
+LIBVIDSTAB_VERSION := 1.1.2
 DEB_LIBVIDSTAB_V   ?= $(LIBVIDSTAB_VERSION)
 
 libvidstab-setup: setup
 	$(call GITHUB_ARCHIVE,georgmartius,vid.stab,$(LIBVIDSTAB_VERSION),v$(LIBVIDSTAB_VERSION))
 	$(call EXTRACT_TAR,vid.stab-$(LIBVIDSTAB_VERSION).tar.gz,vid.stab-$(LIBVIDSTAB_VERSION),libvidstab)
-	$(call DO_PATCH,libvidstab,libvidstab,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/libvidstab/.build_complete),)
 libvidstab:
