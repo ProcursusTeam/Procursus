@@ -3,33 +3,41 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += cairo
-CAIRO_VERSION := 1.16.0
+CAIRO_VERSION := 1.18.4
 DEB_CAIRO_V   ?= $(CAIRO_VERSION)-3
 
 cairo-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://cairographics.org/releases/cairo-$(CAIRO_VERSION).tar.xz)
 	$(call EXTRACT_TAR,cairo-$(CAIRO_VERSION).tar.xz,cairo-$(CAIRO_VERSION),cairo)
+	mkdir -p $(BUILD_WORK)/cairo/build
+	echo -e "[host_machine]\n \
+	cpu_family = '$(shell echo $(GNU_HOST_TRIPLE) | cut -d- -f1)'\n \
+	cpu = '$(MEMO_ARCH)'\n \
+	endian = 'little'\n \
+	system = 'darwin'\n \
+	[properties]\n \
+	root = '$(BUILD_BASE)'\n \
+	[built-in options]\n \
+	prefix ='$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)'\n \
+	[binaries]\n \
+	c = '$(CC)'\n \
+	cpp = '$(CXX)'\n \
+	pkg-config = '$(BUILD_TOOLS)/cross-pkg-config'\n" > $(BUILD_WORK)/cairo/build/cross.txt
 
 ifneq ($(wildcard $(BUILD_WORK)/cairo/.build_complete),)
 cairo:
 	@echo "Using previously built cairo."
 else
 cairo: cairo-setup freetype gettext fontconfig glib2.0 libpng16 liblzo2 libpixman libxcb libxrender libx11 libxext
-	cd $(BUILD_WORK)/cairo && ./autogen.sh \
-		$(DEFAULT_CONFIGURE_FLAGS) \
-		--enable-pdf \
-		--enable-ps \
-		--enable-png \
-		--enable-tee \
-		--enable-pref-utils \
-		--enable-svg \
-		--enable-xcb \
-		--enable-xlib \
-		--enable-gobject
-	+$(MAKE) -C $(BUILD_WORK)/cairo \
-		CFLAGS="$(CFLAGS) -I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/glib-2.0/include"
-	+$(MAKE) -C $(BUILD_WORK)/cairo install \
-		DESTDIR=$(BUILD_STAGE)/cairo
+	cd $(BUILD_WORK)/cairo/build && meson \
+		-Dpng=enabled \
+		-Dtee=enabled \
+		-Dxcb=enabled \
+		-Dxlib=enabled \
+		-Dfontconfig=enabled \
+		--cross-file cross.txt
+	+ninja -C $(BUILD_WORK)/cairo/build
+	+DESTDIR=$(BUILD_STAGE)/cairo ninja -C $(BUILD_WORK)/cairo/build install
 	$(call AFTER_BUILD,copy)
 endif
 
