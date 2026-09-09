@@ -4,7 +4,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS           += libjpeg-turbo
-LIBJPEG_TURBO_VERSION := 2.0.6
+LIBJPEG_TURBO_VERSION := 3.0.1
 DEB_LIBJPEG_TURBO_V   ?= $(LIBJPEG_TURBO_VERSION)-1
 
 libjpeg-turbo-setup: setup
@@ -20,6 +20,7 @@ else
 libjpeg-turbo: libjpeg-turbo-setup
 	cd $(BUILD_WORK)/libjpeg-turbo && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
+		-DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
 		-DCOMMON_ARCH=$(DEB_ARCH)
 	sed -i 's|define JPEG_LIB_VERSION  62|define JPEG_LIB_VERSION  80|g' $(BUILD_WORK)/libjpeg-turbo/jconfig.h
 	+$(MAKE) -C $(BUILD_WORK)/libjpeg-turbo
