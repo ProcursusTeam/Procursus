@@ -8,18 +8,18 @@ DEB_FREI0R_V   ?= $(FREI0R_VERSION)
 
 frei0r-setup: setup
 	$(call GIT_CLONE_COMMIT,https://github.com/dyne/frei0r,v$(FREI0R_VERSION),frei0r)
-
+	mkdir -p $(BUILD_WORK)/frei0r/build
 ifneq ($(wildcard $(BUILD_WORK)/frei0r/.build_complete),)
 frei0r:
 	@echo "Using previously built frei0r."
 else
 frei0r: frei0r-setup cairo
-	cd $(BUILD_WORK)/frei0r && cmake . \
+	cd $(BUILD_WORK)/frei0r/build && cmake .. \
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DWITHOUT_OPENCV=ON \
 		-DWITHOUT_GAVL=ON
-	+$(MAKE) -C $(BUILD_WORK)/frei0r
-	+$(MAKE) -C $(BUILD_WORK)/frei0r install \
+	+$(MAKE) -C $(BUILD_WORK)/frei0r/build
+	+$(MAKE) -C $(BUILD_WORK)/frei0r/build install \
 		DESTDIR=$(BUILD_STAGE)/frei0r
 	for file in $(BUILD_STAGE)/frei0r/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/frei0r-1/*.so ; do mv $$file "$${file%.*}.dylib" ; done
 	$(call AFTER_BUILD,copy)
