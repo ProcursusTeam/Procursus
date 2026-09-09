@@ -47,6 +47,8 @@ PACKAGES=(
   "tclsh"
   "gperf"
   "python3-zombie-imp"
+  "libglib2.0-dev-bin"
+  "ragel"
 )
 
 apt-get update

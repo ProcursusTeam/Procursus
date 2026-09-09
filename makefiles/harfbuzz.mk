@@ -3,32 +3,32 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += harfbuzz
-HARFBUZZ_VERSION := 2.8.1
+HARFBUZZ_VERSION := 14.4.0
 DEB_HARFBUZZ_V   ?= $(HARFBUZZ_VERSION)
 
 harfbuzz-setup: setup
 	$(call GITHUB_ARCHIVE,harfbuzz,harfbuzz,$(HARFBUZZ_VERSION),$(HARFBUZZ_VERSION))
 	$(call EXTRACT_TAR,harfbuzz-$(HARFBUZZ_VERSION).tar.gz,harfbuzz-$(HARFBUZZ_VERSION),harfbuzz)
 	sed -i 's/supp_size;/__unused supp_size;/' $(BUILD_WORK)/harfbuzz/src/hb-subset-cff1.cc
+	mkdir -p $(BUILD_WORK)/harfbuzz/build
 
 ifneq ($(wildcard $(BUILD_WORK)/harfbuzz/.build_complete),)
 harfbuzz:
 	@echo "Using previously built harfbuzz."
 else
 harfbuzz: harfbuzz-setup cairo freetype glib2.0 graphite2 icu4c fontconfig
-	cd $(BUILD_WORK)/harfbuzz && ./autogen.sh \
-		$(DEFAULT_CONFIGURE_FLAGS) \
-		--with-cairo \
-		--with-freetype \
-		--with-fontconfig \
-		--with-glib \
-		--with-gobject \
-		--with-icu \
-		--with-graphite2 \
-		--with-coretext \
-		--enable-introspection=no
-	+$(MAKE) -C $(BUILD_WORK)/harfbuzz
-	+$(MAKE) -C $(BUILD_WORK)/harfbuzz install \
+	cd $(BUILD_WORK)/harfbuzz/build && cmake .. \
+		$(DEFAULT_CMAKE_FLAGS) \
+		-DHB_HAVE_CAIRO=ON \
+		-DHB_HAVE_FREETYPE=ON \
+		-DHB_HAVE_GRAPHITE2=ON \
+		-DHB_HAVE_GLIB=ON \
+		-DHB_HAVE_ICU=ON \
+		-DHB_HAVE_CORETEXT=ON \
+		-DHB_HAVE_GOBJECT=ON \
+		-DHB_HAVE_INTROSPECTION=OFF
+	+$(MAKE) -C $(BUILD_WORK)/harfbuzz/build
+	+$(MAKE) -C $(BUILD_WORK)/harfbuzz/build install \
 		DESTDIR="$(BUILD_STAGE)/harfbuzz"
 	$(call AFTER_BUILD,copy)
 endif
