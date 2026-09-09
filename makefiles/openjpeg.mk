@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS      += openjpeg
-OPENJPEG_VERSION := 2.5.0
+OPENJPEG_VERSION := 2.5.4
 DEB_OPENJPEG_V   ?= $(OPENJPEG_VERSION)
 
 openjpeg-setup: setup
