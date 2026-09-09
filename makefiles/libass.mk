@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += libass
-LIBASS_VERSION := 0.16.0
+LIBASS_VERSION := 0.17.5
 DEB_LIBASS_V   ?= $(LIBASS_VERSION)
 
 libass-setup: setup

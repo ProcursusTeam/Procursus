@@ -26,7 +26,9 @@ harfbuzz: harfbuzz-setup cairo freetype glib2.0 graphite2 icu4c fontconfig
 		-DHB_HAVE_ICU=ON \
 		-DHB_HAVE_CORETEXT=ON \
 		-DHB_HAVE_GOBJECT=ON \
-		-DHB_HAVE_INTROSPECTION=OFF
+		-DHB_HAVE_INTROSPECTION=OFF \
+		-DBUILD_SHARED_LIBS=ON \
+		-DCMAKE_SHARED_LINKER_FLAGS="-framework CoreFoundation -framework CoreGraphics -framework CoreText"
 	+$(MAKE) -C $(BUILD_WORK)/harfbuzz/build
 	+$(MAKE) -C $(BUILD_WORK)/harfbuzz/build install \
 		DESTDIR="$(BUILD_STAGE)/harfbuzz"
