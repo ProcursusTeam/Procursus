@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += graphite2
-GRAPHITE2_VERSION := 1.3.14
+GRAPHITE2_VERSION := 1.3.15
 DEB_GRAPHITE2_V   ?= $(GRAPHITE2_VERSION)
 
 graphite2-setup: setup
