@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += leptonica
-LEPTONICA_VERSION := 1.80.0
+LEPTONICA_VERSION := 1.87.0
 DEB_LEPTONICA_V   ?= $(LEPTONICA_VERSION)
 
 leptonica-setup: setup
