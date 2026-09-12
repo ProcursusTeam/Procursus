@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS           += libsodium
-LIBSODIUM_VERSION     := 1.0.18
+LIBSODIUM_VERSION     := 1.0.22
 DEB_LIBSODIUM_V       ?= $(LIBSODIUM_VERSION)
 
 libsodium-setup: setup
