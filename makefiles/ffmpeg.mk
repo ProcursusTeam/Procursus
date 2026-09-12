@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += ffmpeg
-FFMPEG_VERSION := 5.1.2
+FFMPEG_VERSION := 9.0.1
 DEB_FFMPEG_V   ?= $(FFMPEG_VERSION)
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
@@ -18,7 +18,7 @@ ifneq ($(wildcard $(BUILD_WORK)/ffmpeg/.build_complete),)
 ffmpeg:
 	@echo "Using previously built ffmpeg."
 else
-ffmpeg: ffmpeg-setup aom dav1d fontconfig freetype frei0r gnutls lame libass libsoxr libvidstab libvorbis libvpx libopencore-amr openjpeg libopus rav1e rtmpdump rubberband sdl2 libsnappy libspeex libsrt tesseract libtheora libwebp x264 x265 libxvidcore xz libzmq libxcb
+ffmpeg: ffmpeg-setup aom dav1d fontconfig freetype frei0r gnutls lame libass libsoxr libvidstab libvorbis libopencore-amr openjpeg libopus rtmpdump sdl2 libsnappy libspeex libsrt tesseract libtheora libwebp x264 x265 libxvidcore xz libzmq libxcb
 	cd $(BUILD_WORK)/ffmpeg && ./configure \
 		--cross-prefix="$(GNU_HOST_TRIPLE)-" \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
@@ -44,15 +44,12 @@ ffmpeg: ffmpeg-setup aom dav1d fontconfig freetype frei0r gnutls lame libass lib
 		--enable-libdav1d \
 		--enable-libmp3lame \
 		--enable-libopus \
-		--enable-librav1e \
-		--enable-librubberband \
 		--enable-libsnappy \
 		--enable-libsrt \
 		--enable-libtesseract \
 		--enable-libtheora \
 		--enable-libvidstab \
 		--enable-libvorbis \
-		--enable-libvpx \
 		--enable-libwebp \
 		--enable-libx264 \
 		--enable-libx265 \
