@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += sdl2
-SDL2_VERSION  := 2.0.14
+SDL2_VERSION  := 2.32.10
 DEB_SDL2_V    ?= $(SDL2_VERSION)
 
 ### Do X11 stuff with this later
@@ -14,23 +14,31 @@ else
 SDL2_CONFIGURE_FLAGS := --host=aarch64-ios-darwin \
 						CFLAGS="-DNDEBUG -DIOS_DYLIB -fPIC -fobjc-arc $(CFLAGS)" \
 						CPPFLAGS="-DNDEBUG -DIOS_DYLIB -fPIC -fobjc-arc $(CPPFLAGS)"
+ifneq (,$(findstring appletvos,$(MEMO_TARGET)))
+SDL2_CONFIGURE_FLAGS+= --disable-sensor
+endif
 endif
 
 sdl2-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://libsdl.org/release/SDL2-$(SDL2_VERSION).tar.gz)
 	$(call EXTRACT_TAR,SDL2-$(SDL2_VERSION).tar.gz,SDL2-$(SDL2_VERSION),sdl2)
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-	sed -i -e 's/have_metal=no/have_metal=yes/' -e '/\ CheckMETAL/a CheckHIDAPI' \
-		-e '/framework,UIKit/a EXTRA_LDFLAGS="\$$EXTRA_LDFLAGS -Wl,-framework,IOKit -Wl,-framework,CoreHaptics"' $(BUILD_WORK)/sdl2/configure
-	sed -i 's/#elif __MACOSX__/#elif __APPLE__/' $(BUILD_WORK)/sdl2/src/hidapi/SDL_hidapi.c
+	sed -i 's/have_metal=no/have_metal=yes/g' $(BUILD_WORK)/sdl2/configure.ac
+# 	sed -i 's/__MACOSX__/__APPLE__/g' $(BUILD_WORK)/sdl2/src/hidapi/SDL_hidapi.c
+	sed -i 's/EXTRA_LDFLAGS="$$EXTRA_LDFLAGS -Wl,-framework,UIKit"/EXTRA_LDFLAGS="$$EXTRA_LDFLAGS -Wl,-framework,UIKit -Wl,-framework,IOKit -Wl,-framework,CoreBluetooth"/g' $(BUILD_WORK)/sdl2/configure.ac
+	sed -i 's#SOURCES="$$SOURCES $$srcdir/src/hidapi/#SOURCES="$$SOURCES $$srcdir/src/hidapi/ios/hid.m $$srcdir/src/hidapi/#g' $(BUILD_WORK)/sdl2/configure.ac
 endif
+ifneq (,$(findstring appletvos,$(MEMO_TARGET)))
+	sed -i 's/EXTRA_LDFLAGS="$$EXTRA_LDFLAGS -Wl,-framework,CoreMotion"/EXTRA_LDFLAGS="$$EXTRA_LDFLAGS -Wl,-framework,CoreHaptics"/g' $(BUILD_WORK)/sdl2/configure.ac
+endif
+
 
 ifneq ($(wildcard $(BUILD_WORK)/sdl2/.build_complete),)
 sdl2:
 	@echo "Using previously built sdl2."
 else
 sdl2: sdl2-setup
-	cd $(BUILD_WORK)/sdl2 && ./configure -C \
+	cd $(BUILD_WORK)/sdl2 && ./autogen.sh && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--enable-hidapi \
 		--without-x \
