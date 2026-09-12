@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += tesseract
-TESSERACT_VERSION := 5.1.0
+TESSERACT_VERSION := 5.5.3
 DEB_TESSERACT_V   ?= $(TESSERACT_VERSION)
 
 ###
@@ -55,8 +55,8 @@ tesseract-package: tesseract-stage
 	cp -a $(BUILD_STAGE)/tesseract/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tesseract-ocr/5/tessdata $(BUILD_DIST)/libtesseract5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tesseract-ocr/5/
 	# Just bundle eng and osd with the library.
 	$(call DOWNLOAD_FILES,$(BUILD_DIST)/libtesseract5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/tesseract-ocr/5/tessdata, \
-		https://github.com/tesseract-ocr/tessdata_fast/raw/4.0.0/eng.traineddata \
-		https://github.com/tesseract-ocr/tessdata_fast/raw/4.0.0/osd.traineddata)
+		https://github.com/tesseract-ocr/tessdata_fast/raw/4.1.0/eng.traineddata \
+		https://github.com/tesseract-ocr/tessdata_fast/raw/4.1.0/osd.traineddata)
 
 	# tesseract.mk Sign
 	$(call SIGN,libtesseract5,general.xml)
