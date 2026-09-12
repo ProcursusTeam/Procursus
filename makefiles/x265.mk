@@ -4,7 +4,7 @@ endif
 
 SUBPROJECTS    += x265
 X265_SOVERSION := 199
-X265_VERSION   := 3.5
+X265_VERSION   := 4.2
 DEB_X265_V     ?= $(X265_VERSION)
 
 # aarch64 asm seems broken. try again next version.
