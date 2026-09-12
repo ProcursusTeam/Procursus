@@ -13,4 +13,4 @@ Description: FFmpeg library for post processing - runtime files
  This library provides video post processing.
  .
  This package contains the runtime files.
-Depends: libavutil57 (= @DEB_FFMPEG_V@)
+Depends: libavutil61 (= @DEB_FFMPEG_V@)

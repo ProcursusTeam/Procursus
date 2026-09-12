@@ -2,7 +2,7 @@ Package: libsodium-dev
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_LIBSODIUM_V@
-Depends: libsodium23 (= @DEB_LIBSODIUM_V@)
+Depends: libsodium26 (= @DEB_LIBSODIUM_V@)
 Section: Development
 Description: Network communication, cryptography and signaturing library - headers
  NaCl (pronounced "salt") is a new easy-to-use high-speed software library for

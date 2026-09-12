@@ -24,4 +24,4 @@ Description: FFmpeg library for image scaling and various conversions - developm
     source and destination colorspaces differ.
  .
  This package contains the development files.
-Depends: libswscale6 (= @DEB_FFMPEG_V@), libavutil-dev (= @DEB_FFMPEG_V@)
+Depends: libswscale10 (= @DEB_FFMPEG_V@), libavutil-dev (= @DEB_FFMPEG_V@)

@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS           += rubberband
-RUBBERBAND_VERSION    := 2.0.2
+RUBBERBAND_VERSION    := 4.0.0
 DEB_RUBBERBAND_V      ?= $(RUBBERBAND_VERSION)
 
 rubberband-setup: setup

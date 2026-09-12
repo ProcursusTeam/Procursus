@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS          += tihmstar-keyring
-TIHMSTAR_KEYRING_VERSION  := 2023.10.09
+TIHMSTAR_KEYRING_VERSION  := 2026.09.12
 DEB_TIHMSTAR_KEYRING_V    ?= $(TIHMSTAR_KEYRING_VERSION)
 
 tihmstar-keyring:

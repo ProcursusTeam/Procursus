@@ -1,4 +1,4 @@
-Package: liblept5
+Package: libleptonica6
 Version: @DEB_LEPTONICA_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@

@@ -2,7 +2,7 @@ Package: leptonica-progs
 Version: @DEB_LEPTONICA_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: liblept5 (= @DEB_LEPTONICA_V@), libpng16-16, libjpeg62-turbo, libgif7, libtiff5, libwebpmux3, libwebp7, libopenjp2-7
+Depends: libleptonica6 (= @DEB_LEPTONICA_V@), libpng16-16, libjpeg62-turbo, libgif7, libtiff5, libwebpmux3, libwebp7, libopenjp2-7
 Section: Multimedia
 Priority: optional
 Description: sample programs for Leptonica image processing library

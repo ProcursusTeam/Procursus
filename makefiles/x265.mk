@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += x265
-X265_SOVERSION := 199
+X265_SOVERSION := 216
 X265_VERSION   := 4.2
 DEB_X265_V     ?= $(X265_VERSION)
 

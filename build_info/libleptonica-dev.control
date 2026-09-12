@@ -2,7 +2,7 @@ Package: libleptonica-dev
 Version: @DEB_LEPTONICA_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: liblept5 (= @DEB_LEPTONICA_V@), libpng16-dev, libjpeg62-turbo-dev, libgif-dev, libtiff-dev, libwebp-dev, libopenjp2-7-dev
+Depends: libleptonica6 (= @DEB_LEPTONICA_V@), libpng16-dev, libjpeg62-turbo-dev, libgif-dev, libtiff-dev, libwebp-dev, libopenjp2-7-dev
 Section: Development
 Priority: optional
 Description: image processing library

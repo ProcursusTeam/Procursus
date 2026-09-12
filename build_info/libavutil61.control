@@ -1,4 +1,4 @@
-Package: libavutil57
+Package: libavutil61
 Version: @DEB_FFMPEG_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@

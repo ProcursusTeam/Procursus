@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += x264
-X264_SOVERSION := 164
+X264_SOVERSION := 165
 X264_COMMIT    := baee400fa9ced6f5481a728138fed6e867b0ff7f
 X264_VERSION   := 0.$(X264_SOVERSION).3095+git$(shell echo $(X264_COMMIT) | cut -c -7)
 DEB_X264_V     ?= $(X264_VERSION)

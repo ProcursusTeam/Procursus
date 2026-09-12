@@ -1,0 +1,17 @@
+Package: libavfilter12
+Version: @DEB_FFMPEG_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: standard
+Description: FFmpeg library containing media filters - runtime files
+ FFmpeg is the leading multimedia framework, able to decode, encode, transcode,
+ mux, demux, stream, filter and play pretty much anything that humans and
+ machines have created. It supports the most obscure ancient formats up to the
+ cutting edge.
+ .
+ This library provides a generic audio/video filtering framework containing
+ several filters, sources and sinks.
+ .
+ This package contains the runtime files.
+Depends: libswscale10 (= @DEB_FFMPEG_V@), libavformat63 (= @DEB_FFMPEG_V@), libavcodec63 (= @DEB_FFMPEG_V@), libswresample7 (= @DEB_FFMPEG_V@), libavutil61 (= @DEB_FFMPEG_V@), libtesseract5, libarchive13, libcurl4, libass9, libvidstab1.2, libfontconfig1, libfreetype6, libgnutls30, librtmp1, libgmp10, libhogweed6, libnettle8, libsrt1, libwebpmux3, libwebp7, liblzma5, libdav1d6, libopencore-amrwb0, libsnappy1v5, libaom3, libmp3lame0, libopencore-amrnb0, libopenjp2-7, libopus0, libspeex1, libtheora0, libogg0, libvorbis0a, libvorbisenc2, libx264-165, libx265-216, libsoxr0, libzmq5

@@ -1,4 +1,4 @@
-Package: libvidstab1.1
+Package: libvidstab1.2
 Version: @DEB_LIBVIDSTAB_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@

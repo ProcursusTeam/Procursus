@@ -34,7 +34,7 @@ libsrt-package: libsrt-stage
 		$(BUILD_DIST)/srt-tools/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
 	# libsrt.mk Prep libsrt1
-	cp -a $(BUILD_STAGE)/libsrt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsrt.{$(LIBSRT_VERSION),1.4}.dylib $(BUILD_DIST)/libsrt1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/libsrt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsrt.{$(LIBSRT_VERSION),1.5}.dylib $(BUILD_DIST)/libsrt1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# libsrt.mk Prep libsrt-dev
 	cp -a $(BUILD_STAGE)/libsrt/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libsrt.{dylib,a} $(BUILD_DIST)/libsrt-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib

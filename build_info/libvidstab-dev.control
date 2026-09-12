@@ -2,7 +2,7 @@ Package: libvidstab-dev
 Version: @DEB_LIBVIDSTAB_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libvidstab1.1 (>= @DEB_LIBVIDSTAB_V@)
+Depends: libvidstab1.2 (>= @DEB_LIBVIDSTAB_V@)
 Section: Development
 Priority: optional
 Description: video stabilization library (development files)

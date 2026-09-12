@@ -28,32 +28,32 @@ endif
 
 leptonica-package: leptonica-stage
 	# leptonica.mk Package Structure
-	rm -rf $(BUILD_DIST)/liblept5 $(BUILD_DIST)/libleptonica-dev $(BUILD_DIST)/leptonica-progs
+	rm -rf $(BUILD_DIST)/libleptonica6 $(BUILD_DIST)/libleptonica-dev $(BUILD_DIST)/leptonica-progs
 	mkdir -p \
 		$(BUILD_DIST)/libleptonica-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/leptonica-progs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		$(BUILD_DIST)/liblept5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+		$(BUILD_DIST)/libleptonica6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# leptonica.mk Prep libleptonica-dev
 	cp -a $(BUILD_STAGE)/leptonica/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libleptonica-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/leptonica/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(liblept.5.dylib) $(BUILD_DIST)/libleptonica-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/leptonica/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libleptonica.6.dylib) $(BUILD_DIST)/libleptonica-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# leptonica.mk Prep leptonica-progs
 	cp -a $(BUILD_STAGE)/leptonica/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin $(BUILD_DIST)/leptonica-progs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 
-	# leptonica.mk Prep liblept5
-	cp -a $(BUILD_STAGE)/leptonica/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/liblept.5.dylib $(BUILD_DIST)/liblept5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	# leptonica.mk Prep libleptonica6
+	cp -a $(BUILD_STAGE)/leptonica/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libleptonica.6.dylib $(BUILD_DIST)/libleptonica6/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# leptonica.mk Sign
-	$(call SIGN,liblept5,general.xml)
+	$(call SIGN,libleptonica6,general.xml)
 	$(call SIGN,leptonica-progs,general.xml)
 
 	# leptonica.mk Make .debs
 	$(call PACK,libleptonica-dev,DEB_LEPTONICA_V)
 	$(call PACK,leptonica-progs,DEB_LEPTONICA_V)
-	$(call PACK,liblept5,DEB_LEPTONICA_V)
+	$(call PACK,libleptonica6,DEB_LEPTONICA_V)
 
 	# leptonica.mk Build cleanup
-	rm -rf $(BUILD_DIST)/liblept5 $(BUILD_DIST)/libleptonica-dev $(BUILD_DIST)/leptonica-progs
+	rm -rf $(BUILD_DIST)/libleptonica6 $(BUILD_DIST)/libleptonica-dev $(BUILD_DIST)/leptonica-progs
 
 .PHONY: leptonica leptonica-package
