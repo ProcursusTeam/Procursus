@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS       += libsnappy
-LIBSNAPPY_VERSION := 1.1.9
+LIBSNAPPY_VERSION := 1.2.2
 DEB_LIBSNAPPY_V   ?= $(LIBSNAPPY_VERSION)
 
 libsnappy-setup: setup
