@@ -6,13 +6,15 @@ SUBPROJECTS    += ffmpeg
 FFMPEG_VERSION := 9.0.1
 DEB_FFMPEG_V   ?= $(FFMPEG_VERSION)
 
-ifeq (,$(findstring darwin,$(MEMO_TARGET)))
-FFMPEG_CONFIGURE_FLAGS := --disable-audiotoolbox
-endif
-
 ffmpeg-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ffmpeg.org/releases/ffmpeg-$(FFMPEG_VERSION).tar.xz)
 	$(call EXTRACT_TAR,ffmpeg-$(FFMPEG_VERSION).tar.xz,ffmpeg-$(FFMPEG_VERSION),ffmpeg)
+	sed -i 's/audiotoolbox_outdev_deps="audiotoolbox pthreads AudioObjectPropertyAddress"/audiotoolbox_outdev_deps="audiotoolbox pthreads"/g' $(BUILD_WORK)/ffmpeg/configure
+	sed -ie "s_#import <AudioToolbox/AudioToolbox.h>_#import <AudioToolbox/AudioToolbox.h>\n#import <CoreAudio/CoreAudio.h>_g" $(BUILD_WORK)/ffmpeg/libavdevice/audiotoolbox.m
+	#workaroung for 12 second delay because waiting for iapd timeout
+	sed -ie 's#// get devices#/* // get devices#g' $(BUILD_WORK)/ffmpeg/libavdevice/audiotoolbox.m
+	sed -ie 's#// use default device#*/const char *stream_name = avctx->url;{#g' $(BUILD_WORK)/ffmpeg/libavdevice/audiotoolbox.m
+	sed -ie 's#av_freep(&devices);#//av_freep(\&devices);#g' $(BUILD_WORK)/ffmpeg/libavdevice/audiotoolbox.m
 
 ifneq ($(wildcard $(BUILD_WORK)/ffmpeg/.build_complete),)
 ffmpeg:
@@ -40,6 +42,7 @@ ffmpeg: ffmpeg-setup aom dav1d fontconfig freetype frei0r gnutls lame libass lib
 		--enable-ffplay \
 		--enable-gnutls \
 		--enable-gpl \
+		--enable-audiotoolbox \
 		--enable-libaom \
 		--enable-libdav1d \
 		--enable-libmp3lame \
