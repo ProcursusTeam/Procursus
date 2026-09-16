@@ -11,6 +11,9 @@ DEB_PERL_V   ?= $(PERL_VERSION)
 
 export PERL_MAJOR
 
+# this file makes 64-bit assumptions if 32-bit ABIs like arm64_32 are to be
+# supported the perl flags should be modified
+
 perl-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE), https://www.cpan.org/src/5.0/perl-$(PERL_VERSION).tar.gz \
 		https://github.com/arsv/perl-cross/releases/download/$(PERL_CROSS_V)/perl-cross-$(PERL_CROSS_V).tar.gz)
@@ -23,13 +26,14 @@ perl-setup: setup
 	sed -i 's/readelf/nm/g' $(BUILD_WORK)/perl/cnf/configure_tool.sh
 	sed -i 's/bsd/darwin/g' $(BUILD_WORK)/perl/cnf/configure_tool.sh
 	sed -i 's/BSD/Darwin/g' $(BUILD_WORK)/perl/cnf/configure_tool.sh
+	sed -i 's|/usr/bin/perl|$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl|g' $(BUILD_WORK)/perl/cpan/ExtUtils-MakeMaker/lib/ExtUtils/MM_Unix.pm
 	#sed -i '/try_link/ s/$$/ -Wno-error=implicit-function-declaration/' $(BUILD_WORK)/perl/cnf/configure_func.sh
 	sed -i '/-Wl,-E/ s/^/#/' $(BUILD_WORK)/perl/cnf/configure_tool.sh
 	sed -i '/-Wl,-E/ s/^/#/' $(BUILD_WORK)/perl/Makefile
 	sed -i 's/$$(CC) $$(LDDLFLAGS)/$$(CC) $$(LDDLFLAGS) -compatibility_version $(PERL_API_V) -current_version $(PERL_VERSION) -install_name $$(archlib)\/CORE\/$$@/g' $(BUILD_WORK)/perl/Makefile
-	sed -i 's/| $$Is{Android}/| $$Is{Darwin}/g' $(BUILD_WORK)/perl/cpan/ExtUtils-MakeMaker/lib/ExtUtils/MM_Unix.pm
-	sed -i 's/$$Is{Android} )/$$Is{Darwin} )/g' $(BUILD_WORK)/perl/cpan/ExtUtils-MakeMaker/lib/ExtUtils/MM_Unix.pm
-	sed -i '/$$Is{Solaris} =/a \ \ \ \ $$Is{Darwin}  = $$^O eq '\''darwin'\'';' $(BUILD_WORK)/perl/cpan/ExtUtils-MakeMaker/lib/ExtUtils/MM_Unix.pm
+	#sed -i 's/| $$Is{Android}/| $$Is{Darwin}/g' $(BUILD_WORK)/perl/cpan/ExtUtils-MakeMaker/lib/ExtUtils/MM_Unix.pm
+	#sed -i 's/$$Is{Android} )/$$Is{Darwin} )/g' $(BUILD_WORK)/perl/cpan/ExtUtils-MakeMaker/lib/ExtUtils/MM_Unix.pm
+	#sed -i '/$$Is{Solaris} =/a \ \ \ \ $$Is{Darwin}  = $$^O eq '\''darwin'\'';' $(BUILD_WORK)/perl/cpan/ExtUtils-MakeMaker/lib/ExtUtils/MM_Unix.pm
 	sed -i "s/&& $$^O ne 'darwin' //" $(BUILD_WORK)/perl/ext/Errno/Errno_pm.PL
 	sed -i "s/$$^O eq 'linux'/\$$Config{gccversion} ne ''/" $(BUILD_WORK)/perl/ext/Errno/Errno_pm.PL
 	sed -i 's/--sysroot=$$sysroot/-isysroot $$sysroot -arch $(MEMO_ARCH) $(PLATFORM_VERSION_MIN)/' $(BUILD_WORK)/perl/cnf/configure_tool.sh
@@ -56,13 +60,18 @@ perl: perl-setup
 	HOSTCFLAGS='-DPERL_CORE -DUSE_CROSS_COMPILE -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 $(CFLAGS_FOR_BUILD)' \
 	HOSTLDFLAGS='$(LDFLAGS_FOR_BUILD)' \
 	CFLAGS='-DPERL_DARWIN -fno-strict-aliasing -fstack-protector-strong -DTIME_HIRES_CLOCKID_T $(patsubst -flto=thin,,$(CFLAGS))' \
-	LDFLAGS='$(patsubst -flto=thin,,$(LDFLAGS))' ./configure \
+	LDFLAGS='$(patsubst -flto=thin,,$(LDFLAGS)) -Wl,-headerpad_max_install_names' ./configure \
 		--build=$$($(BUILD_MISC)/config.guess) \
 		--target=$(GNU_HOST_TRIPLE) \
 		--sysroot=$(TARGET_SYSROOT) \
 		--prefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		-Darchname='darwin-thread-multi-2level' \
+		-Dhint=recommended \
+		-Dosvers='$(DARWIN_DEPLOYMENT_VERSION).0' \
 		-Duseshrplib \
 		-Dusevendorprefix \
+		-Duse64bitint \
+		-Duse64bitall \
 		-Dvendorprefix=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
 		-Dusethreads \
 		-Dvendorlib=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/perl5 \
