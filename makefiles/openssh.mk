@@ -12,7 +12,13 @@ else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += openssh
 endif
 
-ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1700 ] && echo 1),1)
+ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 5000 ] && echo 1),1)
+OPENSSH_VERSION := $(OPENSSH_CF1700_VERSION)
+openssh-setup: openssh_CF5000-setup
+openssh: openssh_CF5000
+openssh-package: openssh_CF5000-package
+
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1700 ] && echo 1),1)
 OPENSSH_VERSION := $(OPENSSH_CF1700_VERSION)
 openssh-setup: openssh_CF1700-setup
 openssh: openssh_CF1700

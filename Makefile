@@ -35,7 +35,17 @@ MEMO_CFVER           ?= 1800
 # iOS 13.0 == 1665.15.
 CFVER_WHOLE          != echo $(MEMO_CFVER) | cut -d. -f1
 
-ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 4000 ] && [ "$(CFVER_WHOLE)" -lt 5000 ] && echo 1),1)
+ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 5000 ] && [ "$(CFVER_WHOLE)" -lt 6000 ] && echo 1),1)
+IPHONEOS_DEPLOYMENT_TARGET  := 27.0
+APPLETVOS_DEPLOYMENT_TARGET := 27.0
+AUDIOOS_DEPLOYMENT_TARGET   := 27.0
+BRIDGEOS_DEPLOYMENT_TARGET  := 11.0
+WATCHOS_DEPLOYMENT_TARGET   := 27.0
+MACOSX_DEPLOYMENT_TARGET    := 27.0
+DARWIN_DEPLOYMENT_VERSION   := 27
+MACOSX_SUITE_NAME           := goldengate
+override MEMO_CFVER         := 5000
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 4000 ] && [ "$(CFVER_WHOLE)" -lt 5000 ] && echo 1),1)
 IPHONEOS_DEPLOYMENT_TARGET  := 26.0
 APPLETVOS_DEPLOYMENT_TARGET := 26.0
 AUDIOOS_DEPLOYMENT_TARGET   := 26.0
@@ -967,6 +977,11 @@ AFTER_BUILD = \
 	else \
 		pkg="$@"; \
 		pkg="$$(echo $$pkg | sed 's/_CF/\#/g' | cut -d '\#' -f1)"; \
+	fi; \
+	if [ ! -z "$(5)" ]; then \
+		controlname="$(5)"; \
+	else \
+		controlname="$(1)"; \
 	fi; \
 	if [ ! -z "$(MEMO_PREFIX)" ] && [ -d "$(BUILD_STAGE)/$$pkg/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" ]; then \
 		rm -f $(BUILD_STAGE)/$$pkg/._lib_cache && touch $(BUILD_STAGE)/$$pkg/._lib_cache; \

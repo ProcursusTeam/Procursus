@@ -3,7 +3,13 @@ $(error Use the main Makefile)
 endif
 
 
-ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1400 ] && echo 1),1)
+ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 5000 ] && echo 1),1)
+OPENSSL_VERSION := $(OPENSSL_CF1400_VERSION)
+openssl-setup: openssl_CF5000-setup
+openssl: openssl_CF5000
+openssl-package: openssl_CF5000-package
+
+else ifeq ($(shell [ "$(CFVER_WHOLE)" -ge 1400 ] && echo 1),1)
 OPENSSL_VERSION := $(OPENSSL_CF1400_VERSION)
 openssl-setup: openssl_CF1400-setup
 openssl: openssl_CF1400

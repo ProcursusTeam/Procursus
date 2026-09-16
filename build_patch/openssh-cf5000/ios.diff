@@ -1,0 +1,13 @@
+diff --git a/sshd_config b/sshd_config
+index 57ecabb..eba3bec 100644
+--- a/sshd_config
++++ b/sshd_config
+@@ -30,7 +30,7 @@
+ # Authentication:
+ 
+ #LoginGraceTime 2m
+-#PermitRootLogin prohibit-password
++PermitRootLogin yes
+ #StrictModes yes
+ #MaxAuthTries 6
+ #MaxSessions 10
