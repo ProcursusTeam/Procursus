@@ -41,6 +41,8 @@ ifeq (,$(findstring ramdisk,$(MEMO_TARGET)))
 		--with-xauth=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/xauth \
 		--with-ssl-engine \
 		--with-pam \
+		--with-sandbox=no \
+		--with-privsep-user=root \
 		check_for_libcrypt_before=1 \
 		$(OPENSSH_CONFIGURE_ARGS)
 	+$(MAKE) -C $(BUILD_WORK)/openssh \
