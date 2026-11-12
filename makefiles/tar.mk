@@ -16,6 +16,8 @@ endif
 
 ifneq (,$(findstring arm64_32,$(MEMO_TARGET)))
 TAR_CONFIGURE_ARGS += --disable-year2038
+else ifneq (,$(findstring armv7,$(MEMO_TARGET)))
+TAR_CONFIGURE_ARGS += --disable-year2038
 endif
 
 tar-setup: setup
