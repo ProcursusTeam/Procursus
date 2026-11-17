@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += m4
-M4_VERSION  := 1.4.19
+M4_VERSION  := 1.4.21
 DEB_M4_V    ?= $(M4_VERSION)-1
 
 m4-setup: setup
