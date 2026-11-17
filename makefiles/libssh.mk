@@ -25,6 +25,9 @@ libssh: libssh-setup openssl
 	+$(MAKE) -C $(BUILD_WORK)/libssh/argp-standalone/build
 	cd $(BUILD_WORK)/libssh/build && cmake .. \
 		$(DEFAULT_CMAKE_FLAGS) \
+		-DCMAKE_INSTALL_NAME_DIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
+		-DCMAKE_INSTALL_RPATH="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
+		-DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
 		-DBUILD_STATIC_LIB=ON \
 		-DUNIT_TESTING=OFF \
 		-DWITH_EXAMPLES=OFF \
@@ -44,6 +47,8 @@ libssh-package: libssh-stage
 
 	# libssh.mk Prep libssh-4
 	cp -a $(BUILD_STAGE)/libssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libssh.4*.dylib $(BUILD_DIST)/libssh-4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libssh.4.dylib $(BUILD_DIST)/libssh-4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libssh.4*.dylib
+	$(I_N_T) -add_rpath $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib $(BUILD_DIST)/libssh-4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libssh.4*.dylib || true
 
 	# libssh.mk Prep liblibssh-dev
 	cp -a $(BUILD_STAGE)/libssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libssh.dylib,pkgconfig,cmake} $(BUILD_DIST)/libssh-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
