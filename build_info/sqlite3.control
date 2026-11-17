@@ -2,7 +2,7 @@ Package: sqlite3
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_SQLITE3_V@
-Depends: libsqlite3-1 (= @DEB_SQLITE3_V@), libreadline8, libncursesw6
+Depends: libsqlite3-0 (= @DEB_SQLITE3_V@), libreadline8 (>= 8.3), libncursesw6 (>= 6.5), libz1 (>= 1.3.2)
 Section: Data_Storage
 Priority: standard
 Description: Command line interface for SQLite 3
