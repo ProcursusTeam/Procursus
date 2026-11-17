@@ -1,0 +1,28 @@
+From: badger200 <badger200@users.noreply.github.com>
+Subject: [PATCH] Fix visibility for git_config_backend_from_values
+
+Ensure git_config_backend_from_values has default visibility so git2 CLI
+can link dynamically when -fvisibility=hidden is enabled.
+
+--- a/include/git2/sys/config.h
++++ b/include/git2/sys/config.h
+@@ -194,7 +194,7 @@
+  * @param opts the options to initialize this backend with, or NULL
+  * @return 0 on success or an error code
+  */
+-extern int git_config_backend_from_values(
++GIT_EXTERN(int) git_config_backend_from_values(
+ 	git_config_backend **out,
+ 	const char **values,
+ 	size_t len,
+--- a/src/libgit2/config_mem.c
++++ b/src/libgit2/config_mem.c
+@@ -351,7 +351,7 @@
+ 	return 0;
+ }
+ 
+-int git_config_backend_from_values(
++GIT_EXTERN(int) git_config_backend_from_values(
+ 	git_config_backend **out,
+ 	const char **values,
+ 	size_t len,
