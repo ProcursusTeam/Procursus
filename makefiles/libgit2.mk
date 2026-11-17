@@ -18,6 +18,9 @@ else
 libgit2: libgit2-setup openssl libssh2 pcre2
 	cd $(BUILD_WORK)/libgit2 && cmake . \
 		$(DEFAULT_CMAKE_FLAGS) \
+		-DCMAKE_INSTALL_NAME_DIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
+		-DCMAKE_INSTALL_RPATH="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
+		-DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
 		-DUSE_SSH=ON \
 		-DUSE_HTTPS=OpenSSL \
 		-DUSE_SHA1=HTTPS \
@@ -39,6 +42,8 @@ libgit2-package: libgit2-stage
 
 	# libgit2.mk Prep libgit2-1.9
 	cp -a $(BUILD_STAGE)/libgit2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgit2.1.9*.dylib $(BUILD_DIST)/libgit2-1.9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	$(I_N_T) -change @rpath/libpcre2-8.0.dylib $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpcre2-8.0.dylib $(BUILD_DIST)/libgit2-1.9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgit2.1.9*.dylib
+	$(I_N_T) -add_rpath $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib $(BUILD_DIST)/libgit2-1.9/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgit2.1.9*.dylib || true
 
 	# libgit2.mk Prep libgit2-dev
 	cp -a $(BUILD_STAGE)/libgit2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libgit2.dylib,pkgconfig,cmake} $(BUILD_DIST)/libgit2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
@@ -46,6 +51,8 @@ libgit2-package: libgit2-stage
 
 	# libgit2.mk Prep libgit2-cli
 	cp -a $(BUILD_STAGE)/libgit2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/git2 $(BUILD_DIST)/libgit2-cli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+	$(I_N_T) -change @rpath/libpcre2-8.0.dylib $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libpcre2-8.0.dylib $(BUILD_DIST)/libgit2-cli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/git2
+	$(I_N_T) -add_rpath $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib $(BUILD_DIST)/libgit2-cli/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/git2 || true
 
 	# libgit2.mk Sign
 	$(call SIGN,libgit2-1.9,general.xml)
