@@ -11,7 +11,7 @@ endif # ($(SSH_STRAP),1)
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS     += openssh
 endif
-OPENSSH_VERSION := 9.7p1
+OPENSSH_VERSION := 10.6p1
 DEB_OPENSSH_V   ?= $(OPENSSH_VERSION)-1
 
 ifeq ($(shell [ "$(CFVER_WHOLE)" -lt 1700 ] && echo 1),1)
