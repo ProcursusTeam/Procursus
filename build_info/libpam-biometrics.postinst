@@ -1,0 +1,16 @@
+#!/bin/sh
+set -e
+
+PAM_SUDO="@MEMO_PREFIX@/etc/pam.d/sudo"
+
+if [ -f "$PAM_SUDO" ]; then
+    if ! grep -q "pam_biometrics.so" "$PAM_SUDO"; then
+        cp -a "$PAM_SUDO" "${PAM_SUDO}.orig"
+        # Insert auth sufficient pam_biometrics.so at top of pam.d/sudo
+        sed -i '1i\
+auth       sufficient     pam_biometrics.so
+' "$PAM_SUDO" 2>/dev/null || (echo "auth       sufficient     pam_biometrics.so" | cat - "$PAM_SUDO" > "${PAM_SUDO}.tmp" && mv "${PAM_SUDO}.tmp" "$PAM_SUDO")
+    fi
+fi
+
+exit 0

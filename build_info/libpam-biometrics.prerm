@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+PAM_SUDO="@MEMO_PREFIX@/etc/pam.d/sudo"
+
+if [ -f "$PAM_SUDO" ]; then
+    if [ -f "${PAM_SUDO}.orig" ]; then
+        mv "${PAM_SUDO}.orig" "$PAM_SUDO"
+    else
+        sed -i '/pam_biometrics\.so/d' "$PAM_SUDO" 2>/dev/null || true
+    fi
+fi
+
+exit 0
