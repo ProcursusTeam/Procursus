@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += ngtcp2
-NGTCP2_VERSION := 1.4.0
+NGTCP2_VERSION := 1.25.0
 DEB_NGTCP2_V   ?= $(NGTCP2_VERSION)
 
 ngtcp2-setup: setup
@@ -42,9 +42,12 @@ ngtcp2-package: ngtcp2-stage
 
 	# ngtcp2.mk Prep libngtcp2-16
 	cp -a $(BUILD_STAGE)/ngtcp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libngtcp2.16.dylib $(BUILD_DIST)/libngtcp2-16/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	$(I_N_T) -add_rpath $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib $(BUILD_DIST)/libngtcp2-16/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libngtcp2.16*.dylib || true
 
 	# ngtcp2.mk Prep libngtcp2-crypto-gnutls8
 	cp -a $(BUILD_STAGE)/ngtcp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libngtcp2_crypto_gnutls.8.dylib $(BUILD_DIST)/libngtcp2-crypto-gnutls8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	$(I_N_T) -change @rpath/libgnutls.30.dylib $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgnutls.30.dylib $(BUILD_DIST)/libngtcp2-crypto-gnutls8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libngtcp2_crypto_gnutls.8*.dylib || true
+	$(I_N_T) -add_rpath $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib $(BUILD_DIST)/libngtcp2-crypto-gnutls8/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libngtcp2_crypto_gnutls.8*.dylib || true
 
 	# ngtcp2.mk Prep libngtcp2-dev
 	cp -a $(BUILD_STAGE)/ngtcp2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libngtcp2.{dylib,a} $(BUILD_DIST)/libngtcp2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
