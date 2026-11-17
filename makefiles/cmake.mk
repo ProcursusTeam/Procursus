@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += cmake
-CMAKE_VERSION := 3.30.2
+CMAKE_VERSION := 4.4.4
 DEB_CMAKE_V   ?= $(CMAKE_VERSION)
 
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
