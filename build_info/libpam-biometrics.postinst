@@ -1,4 +1,4 @@
-#!/bin/sh
+#!@MEMO_PREFIX@/bin/sh
 set -e
 
 PAM_SUDO="@MEMO_PREFIX@/etc/pam.d/sudo"
