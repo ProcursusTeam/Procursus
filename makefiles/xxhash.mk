@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS  += xxhash
-XXHASH_VERSION := 0.8.2
+XXHASH_VERSION := 0.8.4
 DEB_XXHASH_V   ?= $(XXHASH_VERSION)
 
 xxhash-setup: setup
