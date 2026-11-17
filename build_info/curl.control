@@ -2,7 +2,7 @@ Package: curl
 Version: @DEB_CURL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libcurl4 (= @DEB_CURL_V@), libc-ares2, libnghttp2-14, libidn2-0, librtmp1, libgmp10, libgnutls30, libhogweed6, libnettle8, libssh2-1, libssl3, libzstd1, libbrotli1
+Depends: libcurl4 (= @DEB_CURL_V@), libcrypto4 (>= 4.0.3), libssl4 (>= 4.0.3), libnghttp2-14 (>= 1.68.0), libnghttp3-9 (>= 1.13.0), libngtcp2-16 (>= 1.17.0), libngtcp2-crypto-ossl0 (>= 1.17.0), libssh2-1 (>= 1.11.1), libz1 (>= 1.3.2), libzstd1 (>= 1.5.7), libbrotli1 (>= 1.2.1), libidn2-0 (>= 2.3.8)
 Section: Networking
 Priority: standard
 Homepage: http://curl.haxx.se/
