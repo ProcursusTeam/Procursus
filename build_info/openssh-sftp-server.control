@@ -2,7 +2,7 @@ Package: openssh-sftp-server
 Version: @DEB_OPENSSH_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libcrypto4 (>= 4.0.3), libssl4 (>= 4.0.3), openssh-client (= @DEB_OPENSSH_V@), libcrypt2 (>= 4.5.2), libmd0 (>= 1.3.0)
+Depends: libssl4 (>= 4.0.3), openssh-client (= @DEB_OPENSSH_V@), libcrypt2 (>= 4.5.2), libmd0 (>= 1.3.0)
 Conflicts: openssh (<< 1:0)
 Replaces: openssh (<< 1:0)
 Section: Networking
