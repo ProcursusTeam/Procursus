@@ -3,12 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS             += libssh
-LIBSSH_VERSION          := 0.10.6
+LIBSSH_VERSION          := 0.12.2
 ARGP-STANDALONE_VERSION := 1.0.2
 DEB_LIBSSH_V            ?= $(LIBSSH_VERSION)
 
 libssh-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.libssh.org/files/0.10/libssh-$(LIBSSH_VERSION).tar.xz)
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.libssh.org/files/0.12/libssh-$(LIBSSH_VERSION).tar.xz)
 	$(call GITHUB_ARCHIVE,tom42,argp-standalone,$(ARGP-STANDALONE_VERSION),v$(ARGP-STANDALONE_VERSION))
 	$(call EXTRACT_TAR,libssh-$(LIBSSH_VERSION).tar.xz,libssh-$(LIBSSH_VERSION),libssh)
 	$(call EXTRACT_TAR,argp-standalone-$(ARGP-STANDALONE_VERSION).tar.gz,argp-standalone-$(ARGP-STANDALONE_VERSION),libssh/argp-standalone)
@@ -27,6 +27,7 @@ libssh: libssh-setup openssl
 		$(DEFAULT_CMAKE_FLAGS) \
 		-DBUILD_STATIC_LIB=ON \
 		-DUNIT_TESTING=OFF \
+		-DWITH_EXAMPLES=OFF \
 		-DOPENSSL_ROOT_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		-DARGP_LIBRARIES="$(BUILD_WORK)/libssh/argp-standalone/build/src/libargp-standalone.a" \
 		-DARGP_INCLUDE_DIR="$(BUILD_WORK)/libssh/argp-standalone/include/argp-standalone"
