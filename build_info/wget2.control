@@ -2,7 +2,7 @@ Package: wget2
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_WGET2_V@
-Depends: libwget1 (= @DEB_WGET2_V@)
+Depends: libwget5 (= @DEB_WGET2_V@)
 Section: Networking
 Priority: important
 Description: file and recursive website downloader
