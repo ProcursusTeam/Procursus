@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += lzip
-LZIP_VERSION  := 1.24
+LZIP_VERSION  := 1.26
 DEB_LZIP_V    ?= $(LZIP_VERSION)
 
 lzip-setup: setup
