@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += gawk
-GAWK_VERSION := 5.3.0
+GAWK_VERSION := 5.4.1
 DEB_GAWK_V   ?= $(GAWK_VERSION)
 
 gawk-setup: setup
