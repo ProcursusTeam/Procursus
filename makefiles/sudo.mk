@@ -7,7 +7,7 @@ STRAPPROJECTS += sudo
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS   += sudo
 endif # ($(MEMO_TARGET),darwin-\*)
-SUDO_VERSION  := 1.9.15p5
+SUDO_VERSION  := 1.9.17p2
 DEB_SUDO_V    ?= $(SUDO_VERSION)
 
 sudo-setup: setup
@@ -56,6 +56,7 @@ ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 	cp -a $(BUILD_MISC)/pam/sudo $(BUILD_STAGE)/sudo/$(MEMO_PREFIX)/etc/pam.d
 endif
 	cp -a $(BUILD_MISC)/procursus.sudoers $(BUILD_STAGE)/sudo/$(MEMO_PREFIX)/etc/sudoers.d/procursus
+	$(LN_S) -f libsudo_util.0.dylib $(BUILD_STAGE)/sudo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/sudo/libsudo_util.dylib
 	$(I_N_T) -add_rpath $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/sudo $(BUILD_STAGE)/sudo/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/sudo
 	$(call AFTER_BUILD)
 endif
