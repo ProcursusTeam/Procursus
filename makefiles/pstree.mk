@@ -3,13 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += pstree
-PSTREE_VERSION := 2.39
+PSTREE_VERSION := 2.40
 DEB_PSTREE_V   ?= $(PSTREE_VERSION)
 
 pstree-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://fossies.org/linux/misc/pstree-$(PSTREE_VERSION).tar.gz)
-	mkdir -p $(BUILD_WORK)/pstree
-	tar xf $(BUILD_SOURCE)/pstree-$(PSTREE_VERSION).tar.gz -C $(BUILD_WORK)/pstree
+	$(call GITHUB_ARCHIVE,FredHucht,pstree,$(PSTREE_VERSION),v$(PSTREE_VERSION))
+	$(call EXTRACT_TAR,pstree-$(PSTREE_VERSION).tar.gz,pstree-$(PSTREE_VERSION),pstree)
 
 ifneq ($(wildcard $(BUILD_WORK)/pstree/.build_complete),)
 pstree:
