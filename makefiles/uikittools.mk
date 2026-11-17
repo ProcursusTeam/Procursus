@@ -13,6 +13,7 @@ DEB_UIKITTOOLS_V   ?= $(UIKITTOOLS_VERSION)
 uikittools-setup: setup
 	$(call GITHUB_ARCHIVE,ProcursusTeam,uikittools-ng,$(UIKITTOOLS_VERSION),v$(UIKITTOOLS_VERSION))
 	$(call EXTRACT_TAR,uikittools-ng-$(UIKITTOOLS_VERSION).tar.gz,uikittools-ng-$(UIKITTOOLS_VERSION),uikittools)
+	$(call DO_PATCH,uikittools,uikittools,-p1)
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 UIKITTOOLS_MAKE_ARGS += NO_COMPAT=1
