@@ -7,7 +7,7 @@ STRAPPROJECTS     += findutils
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS       += findutils
 endif # ($(MEMO_TARGET),darwin-\*)
-FINDUTILS_VERSION := 4.9.0
+FINDUTILS_VERSION := 4.11.0
 DEB_FINDUTILS_V   ?= $(FINDUTILS_VERSION)-1
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
