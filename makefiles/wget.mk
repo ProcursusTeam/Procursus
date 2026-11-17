@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += wget
-WGET_VERSION := 1.24.5
+WGET_VERSION := 1.25.0
 DEB_WGET_V   ?= $(WGET_VERSION)
 
 wget-setup: setup
