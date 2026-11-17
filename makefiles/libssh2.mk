@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += libssh2
-LIBSSH2_VERSION := 1.11.0
+LIBSSH2_VERSION := 1.11.1
 DEB_LIBSSH2_V   ?= $(LIBSSH2_VERSION)
 
 libssh2-setup: setup
