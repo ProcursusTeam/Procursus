@@ -2,7 +2,7 @@ Package: openssh-client
 Version: @DEB_OPENSSH_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libssl3, libcrypt2, libmd0
+Depends: libcrypto4 (>= 4.0.3), libssl4 (>= 4.0.3), libcrypt2 (>= 4.5.2), libmd0 (>= 1.3.0), libz1 (>= 1.3.2)
 Conflicts: openssh (<< 1:0)
 Replaces: openssh (<< 1:0)
 Section: Networking
