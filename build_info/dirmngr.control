@@ -2,7 +2,7 @@ Package: dirmngr
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_GNUPG_V@
-Depends: gpgconf (= @DEB_GNUPG_V@), libassuan0, libgcrypt20, libgnutls30, libgpg-error0, libksba8, libnpth0, libintl8
+Depends: gpgconf (= @DEB_GNUPG_V@), libassuan9 (>= 3.0.2), libgcrypt20 (>= 1.12.2), libgnutls30, libgpg-error0 (>= 1.51), libksba8 (>= 1.6.7), libnpth0 (>= 1.8), libintl8 (>= 1.0)
 Conflicts: gnupg2, gnupg (<< @DEB_GNUPG_V@)
 Replaces: gnupg2
 Section: Security
