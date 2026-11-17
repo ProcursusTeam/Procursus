@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS     += libgcrypt
-LIBGCRYPT_VERSION := 1.10.3
+LIBGCRYPT_VERSION := 1.12.2
 DEB_LIBGCRYPT_V   ?= $(LIBGCRYPT_VERSION)
 
 libgcrypt-setup: setup
@@ -26,6 +26,9 @@ libgcrypt: libgcrypt-setup libgpg-error
 	done
 	cd $(BUILD_WORK)/libgcrypt && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		--enable-neon-support \
+		--enable-arm-crypto-support \
+		--enable-sve-support \
 		--with-gpg-error-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libgcrypt
 	+$(MAKE) -C $(BUILD_WORK)/libgcrypt install \
