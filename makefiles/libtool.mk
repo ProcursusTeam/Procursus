@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += libtool
-LIBTOOL_VERSION := 2.4.7
+LIBTOOL_VERSION := 2.6.2
 DEB_LIBTOOL_V   ?= $(LIBTOOL_VERSION)
 
 libtool-setup: setup
