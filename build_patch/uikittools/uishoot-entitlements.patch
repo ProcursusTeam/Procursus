@@ -1,0 +1,13 @@
+--- a/uishoot.plist
++++ b/uishoot.plist
+@@ -6,6 +6,9 @@
+ 	<true/>
+ 	<key>com.apple.private.security.no-container</key>
+ 	<true/>
++	<key>com.apple.private.security.storage.Photos</key>
++	<true/>
++	<key>com.apple.private.security.storage.PhotosLibraries</key>
++	<true/>
+ 	<key>com.apple.private.skip-library-validation</key>
+ 	<true/>
+ 	<key>com.apple.private.IOSurface.protected-access</key>
