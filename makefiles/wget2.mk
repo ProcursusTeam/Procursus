@@ -3,7 +3,7 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += wget2
-WGET2_VERSION := 2.0.1
+WGET2_VERSION := 2.3.0
 DEB_WGET2_V   ?= $(WGET2_VERSION)
 
 wget2-setup: setup
@@ -33,9 +33,9 @@ endif
 
 wget2-package: wget2-stage
 	# wget2.mk Package Structure
-	rm -rf $(BUILD_DIST)/wget2{,-dev} $(BUILD_DIST)/libwget1
+	rm -rf $(BUILD_DIST)/wget2{,-dev} $(BUILD_DIST)/libwget5
 	mkdir -p $(BUILD_DIST)/wget2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,share/man} \
-		$(BUILD_DIST)libwget1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
+		$(BUILD_DIST)/libwget5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib \
 		$(BUILD_DIST)/wget2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,share/man}
 
 	# wget2.mk Prep wget2
@@ -43,25 +43,25 @@ wget2-package: wget2-stage
 #	cp -a $(BUILD_STAGE)/wget2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man1 $(BUILD_DIST)/wget2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 	cp -a $(BUILD_STAGE)/wget2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/locale $(BUILD_DIST)/wget2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 
-	# wget2.mk Prep libwget1
-	cp -a $(BUILD_STAGE)/wget2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libwget.1.dylib $(BUILD_DIST)/libwget1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	# wget2.mk Prep libwget5
+	cp -a $(BUILD_STAGE)/wget2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libwget.5.dylib $(BUILD_DIST)/libwget5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
 	# wget2.mk Prep wget2-dev
-	cp -a $(BUILD_STAGE)/wget2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libwget1/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
-	cp -a $(BUILD_STAGE)/wget2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libwget.1.dylib) $(BUILD_DIST)/wget2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	cp -a $(BUILD_STAGE)/wget2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/libwget5/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
+	cp -a $(BUILD_STAGE)/wget2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/!(libwget.5.dylib) $(BUILD_DIST)/wget2-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 #	cp -a $(BUILD_STAGE)/wget2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man/man3 $(BUILD_DIST)/wget2/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man
 
 	# wget2.mk Sign
 	$(call SIGN,wget2,general.xml)
-	$(call SIGN,libwget1,general.xml)
+	$(call SIGN,libwget5,general.xml)
 	$(call SIGN,wget2-dev,general.xml)
 
 	# wget2.mk Make .debs
 	$(call PACK,wget2,DEB_WGET2_V)
-	$(call PACK,libwget1,DEB_WGET2_V)
+	$(call PACK,libwget5,DEB_WGET2_V)
 	$(call PACK,wget2-dev,DEB_WGET2_V)
 
 	# wget2.mk Build cleanup
-	rm -rf $(BUILD_DIST)/wget2{,-dev} $(BUILD_DIST)/libwget1
+	rm -rf $(BUILD_DIST)/wget2{,-dev} $(BUILD_DIST)/libwget5
 
 .PHONY: wget2 wget2-package

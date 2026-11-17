@@ -1,4 +1,4 @@
-Package: libwget1
+Package: libwget5
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_WGET2_V@
