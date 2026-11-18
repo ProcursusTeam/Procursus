@@ -1,0 +1,101 @@
+--- a/cipher/asm-common-aarch64.h
++++ b/cipher/asm-common-aarch64.h
+@@ -31,17 +31,19 @@
+ 
+ #ifdef _WIN32
+ # define SECTION_RODATA .section .rdata
++#elif defined(__APPLE__)
++# define SECTION_RODATA .section __TEXT,__const
+ #else
+ # define SECTION_RODATA .section .rodata
+ #endif
+ 
+ #ifdef __APPLE__
+ #define GET_DATA_POINTER(reg, name) \
+-	adrp    reg, name@GOTPAGE ; \
+-	add     reg, reg, name@GOTPAGEOFF ;
++	adrp    reg, name@PAGE %% \
++	add     reg, reg, name@PAGEOFF
+ #else
+ #define GET_DATA_POINTER(reg, name) \
+-	adrp    reg, name ; \
++	adrp    reg, name %% \
+ 	add     reg, reg, #:lo12:name ;
+ #endif
+ 
+@@ -121,38 +123,38 @@
+ 
+ /* 'ret' instruction replacement for straight-line speculation mitigation */
+ #define ret_spec_stop \
+-	ret; dsb sy; isb;
++	ret %% dsb sy %% isb
+ 
+-#define CLEAR_REG(reg) movi reg.16b, #0;
++#define CLEAR_REG(reg) movi reg.16b, #0
+ 
+ #define CLEAR_ALL_REGS() \
+-	CLEAR_REG(v0); CLEAR_REG(v1); CLEAR_REG(v2); CLEAR_REG(v3); \
+-	CLEAR_REG(v4); CLEAR_REG(v5); CLEAR_REG(v6); \
++	CLEAR_REG(v0) %% CLEAR_REG(v1) %% CLEAR_REG(v2) %% CLEAR_REG(v3)%% \
++	CLEAR_REG(v4) %% CLEAR_REG(v5) %% CLEAR_REG(v6)%% \
+ 	/* v8-v15 are ABI callee saved. */ \
+-	CLEAR_REG(v16); CLEAR_REG(v17); CLEAR_REG(v18); CLEAR_REG(v19); \
+-	CLEAR_REG(v20); CLEAR_REG(v21); CLEAR_REG(v22); CLEAR_REG(v23); \
+-	CLEAR_REG(v24); CLEAR_REG(v25); CLEAR_REG(v26); CLEAR_REG(v27); \
+-	CLEAR_REG(v28); CLEAR_REG(v29); CLEAR_REG(v30); CLEAR_REG(v31);
++	CLEAR_REG(v16) %% CLEAR_REG(v17) %% CLEAR_REG(v18) %% CLEAR_REG(v19)%% \
++	CLEAR_REG(v20) %% CLEAR_REG(v21) %% CLEAR_REG(v22) %% CLEAR_REG(v23)%% \
++	CLEAR_REG(v24) %% CLEAR_REG(v25) %% CLEAR_REG(v26) %% CLEAR_REG(v27)%% \
++	CLEAR_REG(v28) %% CLEAR_REG(v29) %% CLEAR_REG(v30) %% CLEAR_REG(v31)
+ 
+ #define VPUSH_ABI \
+-	stp d8, d9, [sp, #-16]!; \
+-	CFI_ADJUST_CFA_OFFSET(16); \
+-	stp d10, d11, [sp, #-16]!; \
+-	CFI_ADJUST_CFA_OFFSET(16); \
+-	stp d12, d13, [sp, #-16]!; \
+-	CFI_ADJUST_CFA_OFFSET(16); \
+-	stp d14, d15, [sp, #-16]!; \
+-	CFI_ADJUST_CFA_OFFSET(16);
++	stp d8, d9, [sp, #-16]!%% \
++	CFI_ADJUST_CFA_OFFSET(16)%% \
++	stp d10, d11, [sp, #-16]!%% \
++	CFI_ADJUST_CFA_OFFSET(16)%% \
++	stp d12, d13, [sp, #-16]!%% \
++	CFI_ADJUST_CFA_OFFSET(16)%% \
++	stp d14, d15, [sp, #-16]!%% \
++	CFI_ADJUST_CFA_OFFSET(16)
+ 
+ #define VPOP_ABI \
+-	ldp d14, d15, [sp], #16; \
+-	CFI_ADJUST_CFA_OFFSET(-16); \
+-	ldp d12, d13, [sp], #16; \
+-	CFI_ADJUST_CFA_OFFSET(-16); \
+-	ldp d10, d11, [sp], #16; \
+-	CFI_ADJUST_CFA_OFFSET(-16); \
+-	ldp d8, d9, [sp], #16; \
+-	CFI_ADJUST_CFA_OFFSET(-16);
++	ldp d14, d15, [sp], #16%% \
++	CFI_ADJUST_CFA_OFFSET(-16)%% \
++	ldp d12, d13, [sp], #16%% \
++	CFI_ADJUST_CFA_OFFSET(-16)%% \
++	ldp d10, d11, [sp], #16%% \
++	CFI_ADJUST_CFA_OFFSET(-16)%% \
++	ldp d8, d9, [sp], #16%% \
++	CFI_ADJUST_CFA_OFFSET(-16)
+ 
+ #if (AARCH64_BTI_PROPERTY_FLAG | AARCH64_PAC_PROPERTY_FLAG)
+ /* Generate PAC/BTI property for all assembly files including this header.
+--- a/tests/testdrv.c
++++ b/tests/testdrv.c
+@@ -35,6 +35,10 @@
+ #include <gpg-error.h> /* For some macros.  */
+ 
+ #include "stopwatch.h"
++
++#if defined(__APPLE__)
++#include <libiosexec.h>
++#endif
+ 
+ #define PGM "testdrv"
+ 
