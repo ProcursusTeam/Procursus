@@ -17,7 +17,7 @@ ifneq ($(wildcard $(BUILD_WORK)/curl/.build_complete),)
 curl:
 	@echo "Using previously built curl."
 else
-curl: curl-setup gettext openssl libc-ares libssh2 nghttp2 libidn2 brotli zstd rtmpdump
+curl: curl-setup gettext openssl libc-ares libssh2 nghttp2 libidn2 brotli zstd rtmpdump ngtcp2 nghttp3
 	cd $(BUILD_WORK)/curl && autoreconf -vi
 	cd $(BUILD_WORK)/curl && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
@@ -29,10 +29,12 @@ curl: curl-setup gettext openssl libc-ares libssh2 nghttp2 libidn2 brotli zstd r
 		--with-zstd \
 		--with-librtmp \
 		--enable-ares \
-		--without-nghttp3 \
-		--without-ngtcp2 \
+		--with-nghttp3 \
+		--with-ngtcp2 \
+		--enable-hsts \
+		--enable-progress-meter \
+		--without-libpsl \
 		--with-ca-bundle=$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem
-	# Enable HTTP/3 when OpenSSL gains QUIC support
 	+$(MAKE) -C $(BUILD_WORK)/curl
 	+$(MAKE) -C $(BUILD_WORK)/curl install \
 		DESTDIR="$(BUILD_STAGE)/curl"
