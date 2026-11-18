@@ -1,0 +1,68 @@
+--- a/configure
++++ b/configure
+@@ -7892,7 +7892,7 @@
+     fi
+   fi
+   case "$host_os" in
+-    darwin*)
++    darwin*|ios*)
+       ASM_RODATA='.section __TEXT,__const'
+       ;;
+     *)
+@@ -8038,7 +8038,7 @@
+     LIBHOGWEED_LINK='$(CC) $(CFLAGS) $(LDFLAGS) -shared -Wl,--out-dsolib=libhogweed.lib.a -Wl,-soname=$(LIBHOGWEED_SONAME)'
+     LIBHOGWEED_LIBS='$(LIBS) .lib/libnettle.so.8'
+     ;;
+-  darwin*)
++  darwin*|ios*)
+     LIBNETTLE_FORLINK=libnettle.dylib
+     LIBNETTLE_SONAME='libnettle.$(LIBNETTLE_MAJOR).dylib'
+     LIBNETTLE_FILE='libnettle.$(LIBNETTLE_MAJOR).$(LIBNETTLE_MINOR).dylib'
+--- a/configure.ac
++++ b/configure.ac
+@@ -699,7 +699,7 @@
+     fi
+   fi
+   case "$host_os" in
+-    darwin*)
++    darwin*|ios*)
+       ASM_RODATA='.section __TEXT,__const'
+       ;;
+     *)
+@@ -847,7 +847,7 @@
+     LIBHOGWEED_LINK='$(CC) $(CFLAGS) $(LDFLAGS) -shared -Wl,--out-dsolib=libhogweed.lib.a -Wl,-soname=$(LIBHOGWEED_SONAME)'
+     LIBHOGWEED_LIBS='$(LIBS) .lib/libnettle.so.8'
+     ;;
+-  darwin*)
++  darwin*|ios*)
+     LIBNETTLE_FORLINK=libnettle.dylib
+     LIBNETTLE_SONAME='libnettle.$(LIBNETTLE_MAJOR).dylib'
+     LIBNETTLE_FILE='libnettle.$(LIBNETTLE_MAJOR).$(LIBNETTLE_MINOR).dylib'
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -1,3 +1,4 @@
++SHELL = @SHELL@
+ # Nettle Makefile
+ 
+ @SET_MAKE@
+--- a/examples/Makefile.in
++++ b/examples/Makefile.in
+@@ -1,3 +1,4 @@
++SHELL = @SHELL@
+ @SET_MAKE@
+ 
+ srcdir = @srcdir@
+--- a/tools/Makefile.in
++++ b/tools/Makefile.in
+@@ -1,3 +1,4 @@
++SHELL = @SHELL@
+ @SET_MAKE@
+ 
+ srcdir = @srcdir@
+--- a/testsuite/Makefile.in
++++ b/testsuite/Makefile.in
+@@ -1,3 +1,4 @@
++SHELL = @SHELL@
+ @SET_MAKE@
+ 
+ srcdir = @srcdir@
