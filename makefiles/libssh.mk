@@ -3,15 +3,16 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS             += libssh
-LIBSSH_VERSION          := 0.10.6
+LIBSSH_VERSION          := 0.12.2
 ARGP-STANDALONE_VERSION := 1.0.2
 DEB_LIBSSH_V            ?= $(LIBSSH_VERSION)
 
 libssh-setup: setup
-	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.libssh.org/files/0.10/libssh-$(LIBSSH_VERSION).tar.xz)
+	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.libssh.org/files/0.12/libssh-$(LIBSSH_VERSION).tar.xz)
 	$(call GITHUB_ARCHIVE,tom42,argp-standalone,$(ARGP-STANDALONE_VERSION),v$(ARGP-STANDALONE_VERSION))
 	$(call EXTRACT_TAR,libssh-$(LIBSSH_VERSION).tar.xz,libssh-$(LIBSSH_VERSION),libssh)
 	$(call EXTRACT_TAR,argp-standalone-$(ARGP-STANDALONE_VERSION).tar.gz,argp-standalone-$(ARGP-STANDALONE_VERSION),libssh/argp-standalone)
+	$(call DO_PATCH,libssh,libssh,-p1)
 	sed -i 's|return "";|return getprogname();|g' $(BUILD_WORK)/libssh/argp-standalone/src/argp-help.c
 	mkdir -p $(BUILD_WORK)/libssh/{,argp-standalone}/build
 
@@ -25,8 +26,12 @@ libssh: libssh-setup openssl
 	+$(MAKE) -C $(BUILD_WORK)/libssh/argp-standalone/build
 	cd $(BUILD_WORK)/libssh/build && cmake .. \
 		$(DEFAULT_CMAKE_FLAGS) \
+		-DCMAKE_INSTALL_NAME_DIR="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
+		-DCMAKE_INSTALL_RPATH="$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
+		-DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
 		-DBUILD_STATIC_LIB=ON \
 		-DUNIT_TESTING=OFF \
+		-DWITH_EXAMPLES=OFF \
 		-DOPENSSL_ROOT_DIR="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)" \
 		-DARGP_LIBRARIES="$(BUILD_WORK)/libssh/argp-standalone/build/src/libargp-standalone.a" \
 		-DARGP_INCLUDE_DIR="$(BUILD_WORK)/libssh/argp-standalone/include/argp-standalone"
@@ -43,6 +48,8 @@ libssh-package: libssh-stage
 
 	# libssh.mk Prep libssh-4
 	cp -a $(BUILD_STAGE)/libssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libssh.4*.dylib $(BUILD_DIST)/libssh-4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
+	$(I_N_T) -id $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libssh.4.dylib $(BUILD_DIST)/libssh-4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libssh.4*.dylib
+	$(I_N_T) -add_rpath $(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib $(BUILD_DIST)/libssh-4/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libssh.4*.dylib || true
 
 	# libssh.mk Prep liblibssh-dev
 	cp -a $(BUILD_STAGE)/libssh/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libssh.dylib,pkgconfig,cmake} $(BUILD_DIST)/libssh-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib

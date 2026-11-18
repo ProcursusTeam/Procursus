@@ -1,0 +1,44 @@
+--- a/src/config.c
++++ b/src/config.c
+@@ -52,6 +52,10 @@
+ #include "libssh/session.h"
+ #include "libssh/misc.h"
+ #include "libssh/options.h"
++
++#if defined(__APPLE__)
++#include <libiosexec.h>
++#endif
+ 
+ #ifndef MAX_LINE_SIZE
+ #define MAX_LINE_SIZE 1024
+@@ -351,7 +355,7 @@
+ 
+     shell = getenv("SHELL");
+     if (shell == NULL || shell[0] == '\0') {
+-        shell = (char *)"/bin/sh";
++        shell = (char *)"@MEMO_PREFIX@/bin/sh";
+     }
+ 
+     rc = access(shell, X_OK);
+--- a/src/socket.c
++++ b/src/socket.c
+@@ -56,6 +56,10 @@
+ #include "libssh/poll.h"
+ #include "libssh/session.h"
+ 
++#if defined(__APPLE__)
++#include <libiosexec.h>
++#endif
++
+ /**
+  * @defgroup libssh_socket The SSH socket functions.
+  * @ingroup libssh
+@@ -1153,7 +1157,7 @@
+         if (rc != 0) {
+             shell = "/bin/sh";
+         } else {
+-            shell = "/bin/bash";
++            shell = "@MEMO_PREFIX@/bin/sh";
+         }
+     }
+     args[0] = shell;
