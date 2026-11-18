@@ -1,0 +1,7 @@
+--- a/less-osc8-open.sh
++++ b/less-osc8-open.sh
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!@MEMO_PREFIX@/bin/sh
+ 
+ # Less OSC 8 handler.
