@@ -1,0 +1,24 @@
+--- a/g10/photoid.c
++++ b/g10/photoid.c
+@@ -401,7 +401,7 @@
+       return "xdg-open %I";
+     }
+   else
+-    return "/bin/true";
++    return "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/true";
+ #endif
+ }
+ #endif
+--- a/common/t-exectool.c
++++ b/common/t-exectool.c
+@@ -39,8 +39,8 @@
+ test_executing_true (void)
+ {
+   gpg_error_t err;
+-  const char *pgmname     = "/bin/true";
+-  const char *alt_pgmname = "/usr/bin/true";
++  const char *pgmname     = "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/true";
++  const char *alt_pgmname = "@MEMO_PREFIX@/bin/true";
+   const char *argv[]     = { NULL, NULL };
+   char *result;
+   size_t len;
