@@ -3,18 +3,20 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS += gnupg
-GNUPG_VERSION := 2.4.5
+GNUPG_VERSION := 2.5.21
 DEB_GNUPG_V   ?= $(GNUPG_VERSION)
 
 gnupg-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://gnupg.org/ftp/gcrypt/gnupg/gnupg-$(GNUPG_VERSION).tar.bz2)
 	$(call EXTRACT_TAR,gnupg-$(GNUPG_VERSION).tar.bz2,gnupg-$(GNUPG_VERSION),gnupg)
+	$(call DO_PATCH,gnupg,gnupg,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/gnupg/.build_complete),)
 gnupg:
 	@echo "Using previously built gnupg."
 else
 gnupg: gnupg-setup readline libgpg-error libgcrypt libassuan libksba npth gettext gnutls libusb sqlite3
+	sed -i 's|"/etc/resolv.conf"|"$(MEMO_PREFIX)/etc/resolv.conf"|g' $(BUILD_WORK)/gnupg/dirmngr/dns.c $(BUILD_WORK)/gnupg/dirmngr/dns-stuff.c
 	cd $(BUILD_WORK)/gnupg && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		$(foreach x, libgpg-error libgcrypt libassuan ksba npth, --with-$x-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)) \
