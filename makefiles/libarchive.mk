@@ -3,19 +3,20 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS        += libarchive
-LIBARCHIVE_VERSION := 3.7.2
+LIBARCHIVE_VERSION := 3.8.9
 DEB_LIBARCHIVE_V   ?= $(LIBARCHIVE_VERSION)
 
 libarchive-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://www.libarchive.org/downloads/libarchive-$(LIBARCHIVE_VERSION).tar.xz)
 	$(call EXTRACT_TAR,libarchive-$(LIBARCHIVE_VERSION).tar.xz,libarchive-$(LIBARCHIVE_VERSION),libarchive)
+	$(call DO_PATCH,libarchive,libarchive,-p1)
 	sed -i 's|LIBS="-llzma|LIBS="-Wl,-needed_library,$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)$(MEMO_ALT_PREFIX)/lib/liblzma.dylib|' $(BUILD_WORK)/libarchive/configure
 
 ifneq ($(wildcard $(BUILD_WORK)/libarchive/.build_complete),)
 libarchive:
 	@echo "Using previously built libarchive."
 else
-libarchive: libarchive-setup lz4 liblzo2 zstd xz nettle
+libarchive: libarchive-setup lz4 liblzo2 zstd xz nettle libiosexec
 	cd $(BUILD_WORK)/libarchive && ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-dependency-tracking \
@@ -24,7 +25,8 @@ libarchive: libarchive-setup lz4 liblzo2 zstd xz nettle
 		--with-lzo2 \
 		--enable-bsdtar=shared \
 		--enable-bsdcpio=shared \
-		--enable-bsdcat=shared
+		--enable-bsdcat=shared \
+		LIBS="-liosexec"
 	+$(MAKE) -C $(BUILD_WORK)/libarchive
 	+$(MAKE) -C $(BUILD_WORK)/libarchive install \
 		DESTDIR="$(BUILD_STAGE)/libarchive"

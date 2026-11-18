@@ -1,0 +1,27 @@
+--- a/libarchive/archive_platform.h
++++ b/libarchive/archive_platform.h
+@@ -36,6 +36,13 @@
+ #ifndef ARCHIVE_PLATFORM_H_INCLUDED
+ #define	ARCHIVE_PLATFORM_H_INCLUDED
+ 
++#if defined(HAVE_LIBIOSEXEC) || defined(__APPLE__)
++# include <TargetConditionals.h>
++# if TARGET_OS_IPHONE
++#  include <libiosexec.h>
++# endif
++#endif
++
+ /* archive.h and archive_entry.h require this. */
+ #define	__LIBARCHIVE_BUILD 1
+ 
+--- a/test_utils/test_main.c
++++ b/test_utils/test_main.c
+@@ -3097,7 +3097,7 @@
+ {
+ 	char buff[8192];
+ #if USE_POSIX_SPAWN
+-	char *argv[] = { "/bin/sh", "-c", buff, NULL };
++	char *argv[] = { "@MEMO_PREFIX@/bin/sh", "-c", buff, NULL };
+ 	pid_t pid;
+ #endif
+ 	va_list ap;
