@@ -1,0 +1,36 @@
+--- a/lib/cloexec.c
++++ b/lib/cloexec.c
+@@ -27,6 +27,10 @@
+ #include <fcntl.h>
+ #include <unistd.h>
+ 
++#if defined(__APPLE__)
++#include <libiosexec.h>
++#endif
++
+ /* Set the 'FD_CLOEXEC' flag of DESC if VALUE is true,
+    or clear the flag if VALUE is false.
+--- a/src/files.c
++++ b/src/files.c
+@@ -33,6 +33,10 @@
+ #include <unistd.h>
+ #include <sys/wait.h>
+ 
++#if defined(__APPLE__)
++#include <libiosexec.h>
++#endif
++
+ #define RW_FOR_ALL  (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH)
+ 
+--- a/src/text.c
++++ b/src/text.c
+@@ -34,6 +34,10 @@
+ #include <unistd.h>
+ #include <sys/wait.h>
+ 
++#if defined(__APPLE__)
++#include <libiosexec.h>
++#endif
++
+ #ifndef NANO_TINY
+ /* Toggle the mark. */
