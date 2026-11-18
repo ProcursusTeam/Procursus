@@ -16,15 +16,17 @@ ifneq ($(wildcard $(BUILD_WORK)/p11-kit/.build_complete),)
 p11-kit:
 	@echo "Using previously built p11-kit."
 else
-p11-kit: p11-kit-setup gettext libtasn1 libffi
+p11-kit: p11-kit-setup gettext libtasn1 libffi libiosexec
 	cd $(BUILD_WORK)/p11-kit && autoreconf -fi
 	cd $(BUILD_WORK)/p11-kit && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
-		--with-trust-paths=$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
+		--with-trust-paths=$(MEMO_PREFIX)/usr/share/p11-kit/modules/p11-kit-trust.module \
 		--disable-static \
 		--without-systemd \
 		--enable-debug=no \
-		--enable-nls
+		--enable-nls \
+		LIBS="-liosexec"
 	+$(MAKE) -C $(BUILD_WORK)/p11-kit
 	+$(MAKE) -C $(BUILD_WORK)/p11-kit install \
 		DESTDIR=$(BUILD_STAGE)/p11-kit
