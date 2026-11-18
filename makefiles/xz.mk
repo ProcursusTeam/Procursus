@@ -10,6 +10,7 @@ xz-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://github.com/tukaani-project/xz/releases/download/v$(XZ_VERSION)/xz-$(XZ_VERSION).tar.xz{.sig$(comma)})
 	$(call PGP_VERIFY,xz-$(XZ_VERSION).tar.xz)
 	$(call EXTRACT_TAR,xz-$(XZ_VERSION).tar.xz,xz-$(XZ_VERSION),xz)
+	$(call DO_PATCH,xz,xz,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/xz/.build_complete),)
 xz:

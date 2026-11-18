@@ -1,0 +1,9 @@
+--- a/configure
++++ b/configure
+@@ -5110,7 +5110,7 @@
+     PREFERABLY_POSIX_SHELL=$POSIX_SHELL
+   else
+     POSIX_SHELL=
+-    PREFERABLY_POSIX_SHELL=/bin/sh
++    PREFERABLY_POSIX_SHELL=@MEMO_PREFIX@/bin/sh
+   fi
