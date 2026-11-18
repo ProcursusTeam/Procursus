@@ -1,0 +1,13 @@
+--- a/src/compress.c
++++ b/src/compress.c
+@@ -67,6 +67,10 @@
+ #if defined(HAVE_SYS_TIME_H)
+ #include <sys/time.h>
+ #endif
++
++#if defined(__APPLE__)
++#include <libiosexec.h>
++#endif
+ 
+ #if defined(HAVE_ZLIB_H) && defined(ZLIBSUPPORT)
+ #define BUILTIN_DECOMPRESS

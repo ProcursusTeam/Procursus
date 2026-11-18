@@ -3,13 +3,14 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS    += file
-FILE_VERSION   := 5.45
+FILE_VERSION   := 5.48
 DEB_FILE_V     ?= $(FILE_VERSION)
 
 file-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://astron.com/pub/file/file-$(FILE_VERSION).tar.gz{$(comma).asc})
 	$(call PGP_VERIFY,file-$(FILE_VERSION).tar.gz,asc)
 	$(call EXTRACT_TAR,file-$(FILE_VERSION).tar.gz,file-$(FILE_VERSION),file)
+	$(call DO_PATCH,file,file,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/file/.build_complete),)
 file:
