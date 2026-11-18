@@ -1,0 +1,34 @@
+--- a/src/browse.cc
++++ b/src/browse.cc
+@@ -11,6 +11,8 @@
+ // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ // See the License for the specific language governing permissions and
+ // limitations under the License.
++
++#include <libiosexec.h>
+ 
+ #include "browse.h"
+ 
+--- a/src/subprocess-posix.cc
++++ b/src/subprocess-posix.cc
+@@ -11,6 +11,9 @@
+ // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ // See the License for the specific language governing permissions and
+ // limitations under the License.
++
++//JNS
++#include <libiosexec.h>
+ 
+ #include "exit_status.h"
+ #include "subprocess.h"
+@@ -129,8 +132,8 @@
+   if (err != 0)
+     Fatal("posix_spawnattr_setflags: %s", strerror(err));
+ 
+-  const char* spawned_args[] = { "/bin/sh", "-c", command.c_str(), NULL };
+-  err = posix_spawn(&pid_, "/bin/sh", &action, &attr,
++  const char* spawned_args[] = { "@MEMO_PREFIX@/bin/sh", "-c", command.c_str(), NULL };
++  err = posix_spawn(&pid_, "@MEMO_PREFIX@/bin/sh", &action, &attr,
+         const_cast<char**>(spawned_args), environ);
+   if (err != 0)
+     Fatal("posix_spawn: %s", strerror(err));

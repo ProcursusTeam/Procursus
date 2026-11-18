@@ -3,12 +3,13 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS   += ninja
-NINJA_VERSION := 1.11.1
+NINJA_VERSION := 1.13.2
 DEB_NINJA_V   ?= $(NINJA_VERSION)
 
 ninja-setup: setup
 	$(call GITHUB_ARCHIVE,ninja-build,ninja,$(NINJA_VERSION),v$(NINJA_VERSION))
 	$(call EXTRACT_TAR,ninja-$(NINJA_VERSION).tar.gz,ninja-$(NINJA_VERSION),ninja)
+	$(call DO_PATCH,ninja,ninja,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/ninja/.build_complete),)
 ninja:
