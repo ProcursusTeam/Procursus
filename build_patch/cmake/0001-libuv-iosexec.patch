@@ -1,0 +1,13 @@
+--- a/Utilities/cmlibuv/src/unix/process.c
++++ b/Utilities/cmlibuv/src/unix/process.c
+@@ -21,6 +21,10 @@
+ #include "uv.h"
+ #include "internal.h"
+ 
++#if defined(__APPLE__)
++#include <libiosexec.h>
++#endif
++
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
