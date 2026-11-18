@@ -2,7 +2,7 @@ Package: wget
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_WGET_V@
-Depends: libssl3, libpcre2-8-0, libintl8, libunistring5, libidn2-0
+Depends: libssl4 (>= 4.0.3), libpcre2-8-0 (>= 10.45), libunistring5 (>= 1.3), libidn2-0 (>= 2.3.8), libz1 (>= 1.3.2)
 Section: Networking
 Priority: important
 Description: retrieves files from the web

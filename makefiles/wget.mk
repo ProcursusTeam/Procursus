@@ -3,13 +3,14 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += wget
-WGET_VERSION := 1.24.5
+WGET_VERSION := 1.25.0
 DEB_WGET_V   ?= $(WGET_VERSION)
 
 wget-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/wget/wget-$(WGET_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,wget-$(WGET_VERSION).tar.gz)
 	$(call EXTRACT_TAR,wget-$(WGET_VERSION).tar.gz,wget-$(WGET_VERSION),wget)
+	$(call DO_PATCH,wget,wget,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/wget/.build_complete),)
 wget:
@@ -18,6 +19,7 @@ else
 wget: wget-setup openssl pcre2 gettext libunistring libidn2
 	cd $(BUILD_WORK)/wget && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--with-ssl=openssl \
 		--with-openssl \
 		--without-libpsl
