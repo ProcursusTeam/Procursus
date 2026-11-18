@@ -5,7 +5,7 @@
  		set_sigpipe_to_default();
  
 -		execl("/bin/sh", "sh", "-c", command, NULL);
-+		execl("@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/bash", "sh", "-c", command, NULL);
++		execl("@MEMO_PREFIX@/bin/sh", "sh", "-c", command, NULL);
  		_exit(errno == ENOENT ? 127 : 126);
  
  	case -1:
@@ -14,7 +14,7 @@
  		signal(SIGPIPE, SIG_DFL);
  
 -		execl("/bin/sh", "sh", "-c", command, NULL);
-+		execl("@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/bash", "sh", "-c", command, NULL);
++		execl("@MEMO_PREFIX@/bin/sh", "sh", "-c", command, NULL);
  		_exit(errno == ENOENT ? 127 : 126);
  
  	case -1:
@@ -25,7 +25,7 @@
  		qstat = signal(SIGQUIT, qstat);
  #endif
 -		execl("/bin/sh", "sh", "-c", command, NULL);
-+		execl("@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/bash", "sh", "-c", command, NULL);
++		execl("@MEMO_PREFIX@/bin/sh", "sh", "-c", command, NULL);
  		_exit(errno == ENOENT ? 127 : 126);
  
  		return 0;	// silence compiler warnings
