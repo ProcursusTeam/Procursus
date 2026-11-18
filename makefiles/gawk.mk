@@ -10,6 +10,7 @@ gawk-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/gawk/gawk-$(GAWK_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,gawk-$(GAWK_VERSION).tar.xz)
 	$(call EXTRACT_TAR,gawk-$(GAWK_VERSION).tar.xz,gawk-$(GAWK_VERSION),gawk)
+	$(call DO_PATCH,gawk,gawk,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/gawk/.build_complete),)
 gawk:
