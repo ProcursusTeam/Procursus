@@ -1,0 +1,11 @@
+--- a/find/exec.c
++++ b/find/exec.c
+@@ -20,6 +20,10 @@
+ #include <config.h>
+ 
++#if defined(__APPLE__)
++#include <libiosexec.h>
++#endif
++
+ /* system headers. */
+ #include <assert.h>

@@ -7,7 +7,7 @@ STRAPPROJECTS     += findutils
 else # ($(MEMO_TARGET),darwin-\*)
 SUBPROJECTS       += findutils
 endif # ($(MEMO_TARGET),darwin-\*)
-FINDUTILS_VERSION := 4.9.0
+FINDUTILS_VERSION := 4.11.0
 DEB_FINDUTILS_V   ?= $(FINDUTILS_VERSION)-1
 
 ifneq (,$(findstring darwin,$(MEMO_TARGET)))
@@ -31,7 +31,10 @@ findutils: findutils-setup gettext
 endif
 	cd $(BUILD_WORK)/findutils && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--localstatedir=$(MEMO_PREFIX)/var/cache/locate \
+		--enable-leaf-optimisation \
+		--enable-d_type-optimization \
 		--disable-dependency-tracking \
 		--disable-debug \
 		--without-selinux \
