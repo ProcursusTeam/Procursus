@@ -1,0 +1,109 @@
+--- a/defines.h
++++ b/defines.h
+@@ -436,7 +436,7 @@
+ /* Paths */
+ 
+ #ifndef _PATH_BSHELL
+-# define _PATH_BSHELL "/bin/sh"
++# define _PATH_BSHELL "@MEMO_PREFIX@/bin/sh"
+ #endif
+ 
+ #ifdef USER_PATH
+@@ -447,7 +447,7 @@
+ #endif
+ 
+ #ifndef _PATH_STDPATH
+-# define _PATH_STDPATH "/usr/bin:/bin:/usr/sbin:/sbin"
++# define _PATH_STDPATH "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin:@MEMO_PREFIX@/bin:@MEMO_PREFIX@@MEMO_SUB_PREFIX@/sbin:@MEMO_PREFIX@/sbin:/usr/bin:/bin:/usr/sbin:/sbin"
+ #endif
+ 
+ #ifndef SUPERUSER_PATH
+--- a/pathnames.h
++++ b/pathnames.h
+@@ -12,7 +12,7 @@
+  * called by a name other than "ssh" or "Secure Shell".
+  */
+ 
+-#define ETCDIR				"/etc"
++#define ETCDIR				"@MEMO_PREFIX@/etc"
+ 
+ #ifndef SSHDIR
+ #define SSHDIR				ETCDIR "/ssh"
+@@ -43,15 +43,15 @@
+ #define _PATH_DH_MODULI			SSHDIR "/moduli"
+ 
+ #ifndef _PATH_SSH_PROGRAM
+-#define _PATH_SSH_PROGRAM		"/usr/bin/ssh"
++#define _PATH_SSH_PROGRAM		"@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/ssh"
+ #endif
+ 
+ /* Binary paths for the sshd components */
+ #ifndef _PATH_SSHD_SESSION
+-#define _PATH_SSHD_SESSION		"/usr/libexec/sshd-session"
++#define _PATH_SSHD_SESSION		"@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/sshd-session"
+ #endif
+ #ifndef _PATH_SSHD_AUTH
+-#define _PATH_SSHD_AUTH			"/usr/libexec/sshd-auth"
++#define _PATH_SSHD_AUTH			"@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/sshd-auth"
+ #endif
+ 
+ /*
+@@ -142,17 +142,17 @@
+ 
+ /* Location of ssh-keysign for hostbased authentication */
+ #ifndef _PATH_SSH_KEY_SIGN
+-#define _PATH_SSH_KEY_SIGN		"/usr/libexec/ssh-keysign"
++#define _PATH_SSH_KEY_SIGN		"@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/ssh-keysign"
+ #endif
+ 
+ /* Location of ssh-pkcs11-helper to support keys in tokens */
+ #ifndef _PATH_SSH_PKCS11_HELPER
+-#define _PATH_SSH_PKCS11_HELPER		"/usr/libexec/ssh-pkcs11-helper"
++#define _PATH_SSH_PKCS11_HELPER		"@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/ssh-pkcs11-helper"
+ #endif
+ 
+ /* Location of ssh-sk-helper to support keys in security keys */
+ #ifndef _PATH_SSH_SK_HELPER
+-#define _PATH_SSH_SK_HELPER		"/usr/libexec/ssh-sk-helper"
++#define _PATH_SSH_SK_HELPER		"@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/ssh-sk-helper"
+ #endif
+ 
+ /* xauth for X11 forwarding */
+@@ -172,7 +172,7 @@
+ 
+ /* for sftp */
+ #ifndef _PATH_SFTP_SERVER
+-#define _PATH_SFTP_SERVER		"/usr/libexec/sftp-server"
++#define _PATH_SFTP_SERVER		"@MEMO_PREFIX@@MEMO_SUB_PREFIX@/libexec/sftp-server"
+ #endif
+ #ifndef _PATH_LS
+ #define _PATH_LS			"ls"
+@@ -185,10 +185,10 @@
+ 
+ /* for passwd change */
+ #ifndef _PATH_PASSWD_PROG
+-#define _PATH_PASSWD_PROG		"/usr/bin/passwd"
++#define _PATH_PASSWD_PROG		"@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/passwd"
+ #endif
+ 
+ /* Askpass program define */
+ #ifndef ASKPASS_PROGRAM
+-#define ASKPASS_PROGRAM         "/usr/lib/ssh/ssh-askpass"
++#define ASKPASS_PROGRAM         "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/ssh/ssh-askpass"
+ #endif /* ASKPASS_PROGRAM */
+--- a/session.c
++++ b/session.c
+@@ -751,10 +751,10 @@
+ 
+ 	if (options.print_motd) {
+ #ifdef HAVE_LOGIN_CAP
+-		f = fopen(login_getcapstr(lc, "welcome", "/etc/motd",
+-		    "/etc/motd"), "r");
++		f = fopen(login_getcapstr(lc, "welcome", "@MEMO_PREFIX@/etc/motd",
++		    "@MEMO_PREFIX@/etc/motd"), "r");
+ #else
+-		f = fopen("/etc/motd", "r");
++		f = fopen("@MEMO_PREFIX@/etc/motd", "r");
+ #endif
+ 		if (f) {
+ 			while (fgets(buf, sizeof(buf), f))
