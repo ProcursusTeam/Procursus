@@ -12,6 +12,7 @@ libssh-setup: setup
 	$(call GITHUB_ARCHIVE,tom42,argp-standalone,$(ARGP-STANDALONE_VERSION),v$(ARGP-STANDALONE_VERSION))
 	$(call EXTRACT_TAR,libssh-$(LIBSSH_VERSION).tar.xz,libssh-$(LIBSSH_VERSION),libssh)
 	$(call EXTRACT_TAR,argp-standalone-$(ARGP-STANDALONE_VERSION).tar.gz,argp-standalone-$(ARGP-STANDALONE_VERSION),libssh/argp-standalone)
+	$(call DO_PATCH,libssh,libssh,-p1)
 	sed -i 's|return "";|return getprogname();|g' $(BUILD_WORK)/libssh/argp-standalone/src/argp-help.c
 	mkdir -p $(BUILD_WORK)/libssh/{,argp-standalone}/build
 
