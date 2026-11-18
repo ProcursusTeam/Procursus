@@ -10,6 +10,7 @@ wget-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/wget/wget-$(WGET_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,wget-$(WGET_VERSION).tar.gz)
 	$(call EXTRACT_TAR,wget-$(WGET_VERSION).tar.gz,wget-$(WGET_VERSION),wget)
+	$(call DO_PATCH,wget,wget,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/wget/.build_complete),)
 wget:
