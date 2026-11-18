@@ -30,6 +30,7 @@ libgcrypt: libgcrypt-setup libgpg-error
 		--enable-neon-support \
 		--enable-arm-crypto-support \
 		--enable-sve-support \
+		gcry_cv_gcc_asm_cfi_directives=no \
 		--with-gpg-error-prefix=$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)
 	+$(MAKE) -C $(BUILD_WORK)/libgcrypt
 	+$(MAKE) -C $(BUILD_WORK)/libgcrypt install \
