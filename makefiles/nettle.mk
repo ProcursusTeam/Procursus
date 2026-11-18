@@ -3,13 +3,14 @@ $(error Use the main Makefile)
 endif
 
 STRAPPROJECTS  += nettle
-NETTLE_VERSION := 3.9.1
+NETTLE_VERSION := 3.10.2
 DEB_NETTLE_V   ?= $(NETTLE_VERSION)
 
 nettle-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/nettle/nettle-$(NETTLE_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,nettle-$(NETTLE_VERSION).tar.gz)
 	$(call EXTRACT_TAR,nettle-$(NETTLE_VERSION).tar.gz,nettle-$(NETTLE_VERSION),nettle)
+	$(call DO_PATCH,nettle,nettle,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/nettle/.build_complete),)
 nettle:
