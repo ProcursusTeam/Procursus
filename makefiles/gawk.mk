@@ -3,21 +3,23 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += gawk
-GAWK_VERSION := 5.3.0
+GAWK_VERSION := 5.4.1
 DEB_GAWK_V   ?= $(GAWK_VERSION)
 
 gawk-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/gawk/gawk-$(GAWK_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,gawk-$(GAWK_VERSION).tar.xz)
 	$(call EXTRACT_TAR,gawk-$(GAWK_VERSION).tar.xz,gawk-$(GAWK_VERSION),gawk)
+	$(call DO_PATCH,gawk,gawk,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/gawk/.build_complete),)
 gawk:
 	@echo "Using previously built gawk."
 else
-gawk: gawk-setup gettext mpfr4 libgmp10
+gawk: gawk-setup gettext mpfr4 libgmp10 readline libiosexec
 	cd $(BUILD_WORK)/gawk && ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		--with-readline \
 		--without-libsigsegv-prefix
 	+$(MAKE) -C $(BUILD_WORK)/gawk install \
 		DESTDIR=$(BUILD_STAGE)/gawk
