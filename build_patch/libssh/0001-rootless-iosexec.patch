@@ -38,7 +38,7 @@
              shell = "/bin/sh";
          } else {
 -            shell = "/bin/bash";
-+            shell = "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/bash";
++            shell = "@MEMO_PREFIX@/bin/sh";
          }
      }
      args[0] = shell;
