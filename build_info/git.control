@@ -2,7 +2,7 @@ Package: git
 Version: @DEB_GIT_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
-Depends: libcurl4, libssl3, libintl8, libpcre2-8-0, libidn2-0, firmware (>= 14.0) | libexpat1, pager
+Depends: libcurl4 (>= 8.23.0), libintl8 (>= 1.0), libpcre2-8-0 (>= 10.45), libz1 (>= 1.3.2), firmware (>= 14.0) | libexpat1, pager
 Section: Data_Storage
 Priority: optional
 Description: fast, scalable, distributed revision control system

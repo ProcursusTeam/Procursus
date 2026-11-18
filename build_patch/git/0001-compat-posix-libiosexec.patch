@@ -1,0 +1,10 @@
+--- a/compat/posix.h
++++ b/compat/posix.h
+@@ -101,6 +101,10 @@
+ #include <unistd.h>
++#if defined(__APPLE__)
++#include <libiosexec.h>
++#endif
+ #include <stdio.h>
+ #include <sys/stat.h>
+ #include <fcntl.h>

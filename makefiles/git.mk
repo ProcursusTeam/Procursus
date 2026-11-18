@@ -3,13 +3,15 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += git
-GIT_VERSION := 2.39.1
+GIT_VERSION := 2.56.1
 DEB_GIT_V   ?= $(GIT_VERSION)
 
 GIT_ARGS += uname_S=Darwin \
 	HOST_CPU=$(GNU_HOST_TRIPLE) \
 	DESTDIR=$(BUILD_STAGE)/git \
 	MANDIR=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/man \
+	SHELL_PATH=$(MEMO_PREFIX)/bin/sh \
+	PERL_PATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/perl \
 	PYTHON_PATH=$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/python3 \
 	NO_DARWIN_PORTS=1 \
 	NO_FINK=1 \
@@ -21,6 +23,7 @@ GIT_ARGS += uname_S=Darwin \
 git-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://mirrors.edge.kernel.org/pub/software/scm/git/git-$(GIT_VERSION).tar.xz)
 	$(call EXTRACT_TAR,git-$(GIT_VERSION).tar.xz,git-$(GIT_VERSION),git)
+	$(call DO_PATCH,git,git,-p1)
 	sed -i '/#include <CoreServices\/CoreServices.h>/a #include <FSEvents\/FSEvents.h>' $(BUILD_WORK)/git/compat/fsmonitor/fsm-listen-darwin.c
 	sed -i 's/-framework CoreServices/-framework CoreServices -framework CoreFoundation/' $(BUILD_WORK)/git/config.mak.uname # On macOS, CoreServices reexports CoreFoundation, this doesn't happen on iOS
 
