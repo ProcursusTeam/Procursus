@@ -3,13 +3,14 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS     += libtool
-LIBTOOL_VERSION := 2.4.7
+LIBTOOL_VERSION := 2.6.2
 DEB_LIBTOOL_V   ?= $(LIBTOOL_VERSION)
 
 libtool-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/libtool/libtool-$(LIBTOOL_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,libtool-$(LIBTOOL_VERSION).tar.gz)
 	$(call EXTRACT_TAR,libtool-$(LIBTOOL_VERSION).tar.gz,libtool-$(LIBTOOL_VERSION),libtool)
+	$(call DO_PATCH,libtool,libtool,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/libtool/.build_complete),)
 libtool:

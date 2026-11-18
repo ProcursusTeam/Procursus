@@ -1,0 +1,22 @@
+--- a/build-aux/ltmain.in
++++ b/build-aux/ltmain.in
+@@ -2403,7 +2403,7 @@
+ 
+     # There may be an optional sh(1) argument at the beginning of
+     # install_prog (especially on Windows NT).
+-    if test "$SHELL" = "$nonopt" || test /bin/sh = "$nonopt" ||
++    if test "$SHELL" = "$nonopt" || test /bin/sh = "$nonopt" || test @MEMO_PREFIX@/bin/sh = "$nonopt" ||
+        # Allow the use of GNU shtool's install command.
+        case $nonopt in *shtool*) :;; *) false;; esac
+     then
+--- a/build-aux/ltmain.sh
++++ b/build-aux/ltmain.sh
+@@ -2403,7 +2403,7 @@
+ 
+     # There may be an optional sh(1) argument at the beginning of
+     # install_prog (especially on Windows NT).
+-    if test "$SHELL" = "$nonopt" || test /bin/sh = "$nonopt" ||
++    if test "$SHELL" = "$nonopt" || test /bin/sh = "$nonopt" || test @MEMO_PREFIX@/bin/sh = "$nonopt" ||
+        # Allow the use of GNU shtool's install command.
+        case $nonopt in *shtool*) :;; *) false;; esac
+     then
