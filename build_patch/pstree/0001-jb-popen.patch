@@ -1,0 +1,48 @@
+--- a/pstree.c
++++ b/pstree.c
+@@ -449,6 +449,45 @@
+ }
+ #endif /* __linux */
+ 
++#if defined(__APPLE__)
++#include <spawn.h>
++#include <unistd.h>
++#include <sys/wait.h>
++
++static pid_t jb_child_pid = -1;
++
++static FILE *jb_popen(const char *cmd, const char *type) {
++  int pfd[2];
++  if (pipe(pfd) < 0) return NULL;
++  char *argv[] = {"@MEMO_PREFIX@/bin/sh", "-c", (char *)cmd, NULL};
++  posix_spawn_file_actions_t actions;
++  posix_spawn_file_actions_init(&actions);
++  posix_spawn_file_actions_adddup2(&actions, pfd[1], STDOUT_FILENO);
++  posix_spawn_file_actions_addclose(&actions, pfd[0]);
++  posix_spawn_file_actions_addclose(&actions, pfd[1]);
++  int ret = posix_spawnp(&jb_child_pid, argv[0], &actions, NULL, argv, NULL);
++  posix_spawn_file_actions_destroy(&actions);
++  close(pfd[1]);
++  if (ret != 0) { close(pfd[0]); jb_child_pid = -1; return NULL; }
++  return fdopen(pfd[0], "r");
++}
++
++static int jb_pclose(FILE *fp) {
++  if (!fp) return -1;
++  fclose(fp);
++  if (jb_child_pid != -1) {
++    int status = 0;
++    waitpid(jb_child_pid, &status, 0);
++    jb_child_pid = -1;
++    return status;
++  }
++  return 0;
++}
++
++#define popen jb_popen
++#define pclose jb_pclose
++#endif
++
+ static int GetProcesses(void) {
+   FILE *tn;
+   int i = 0;

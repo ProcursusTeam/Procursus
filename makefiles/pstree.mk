@@ -9,6 +9,7 @@ DEB_PSTREE_V   ?= $(PSTREE_VERSION)
 pstree-setup: setup
 	$(call GITHUB_ARCHIVE,FredHucht,pstree,$(PSTREE_VERSION),v$(PSTREE_VERSION))
 	$(call EXTRACT_TAR,pstree-$(PSTREE_VERSION).tar.gz,pstree-$(PSTREE_VERSION),pstree)
+	$(call DO_PATCH,pstree,pstree,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/pstree/.build_complete),)
 pstree:
