@@ -10,6 +10,7 @@ less-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/gnu/less/less-$(LESS_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,less-$(LESS_VERSION).tar.gz)
 	$(call EXTRACT_TAR,less-$(LESS_VERSION).tar.gz,less-$(LESS_VERSION),less)
+	$(call DO_PATCH,less,less,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/less/.build_complete),)
 less:
