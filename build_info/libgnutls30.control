@@ -5,7 +5,7 @@ Version: @DEB_GNUTLS_V@
 Provides: gnutls (= 1:0)
 Conflicts: gnutls (<< 1:0)
 Replaces: gnutls (<< 1:0)
-Depends: libintl8 (>= 0.20.0), libgmp10, libidn2-0, libunistring5, libnettle8, libhogweed6, libp11-kit0, libtasn1-6, libzstd1, libbrotli1
+Depends: libintl8 (>= 1.0), libgmp10 (>= 6.3.0), libidn2-0 (>= 2.3.8), libunistring5 (>= 1.3), nettle9 (>= 3.10.2), libp11-kit0 (>= 0.26.6), libtasn1-6 (>= 4.19.0), libzstd1 (>= 1.5.7), libbrotli1 (>= 1.2.1)
 Section: Libraries
 Priority: optional
 Homepage: http://www.gnu.org/software/gnutls/
