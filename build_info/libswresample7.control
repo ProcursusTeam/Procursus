@@ -1,0 +1,17 @@
+Package: libswresample7
+Version: @DEB_FFMPEG_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Libraries
+Priority: standard
+Description: FFmpeg library for audio resampling, rematrixing etc. - runtime files
+ FFmpeg is the leading multimedia framework, able to decode, encode, transcode,
+ mux, demux, stream, filter and play pretty much anything that humans and
+ machines have created. It supports the most obscure ancient formats up to the
+ cutting edge.
+ .
+ This library provides performs highly optimized audio resampling, rematrixing
+ and sample format conversion operations.
+ .
+ This package contains the runtime files.
+Depends: libavutil61 (= @DEB_FFMPEG_V@), libsoxr0

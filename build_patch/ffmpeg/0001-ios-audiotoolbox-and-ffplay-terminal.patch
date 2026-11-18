@@ -1,0 +1,241 @@
+--- a/configure
++++ b/configure
+@@ -4024,8 +4024,8 @@
+ avfoundation_indev_deps="avfoundation corevideo coremedia pthreads AVCaptureSession"
+ avfoundation_indev_suggest="coregraphics applicationservices"
+ avfoundation_indev_extralibs="-framework Foundation"
+-audiotoolbox_outdev_deps="audiotoolbox pthreads AudioObjectPropertyAddress"
+-audiotoolbox_outdev_extralibs="-framework AudioToolbox -framework CoreAudio"
++audiotoolbox_outdev_deps="audiotoolbox pthreads"
++audiotoolbox_outdev_extralibs="-framework AudioToolbox -framework CoreFoundation"
+ caca_outdev_deps="libcaca"
+ decklink_deps_any="libdl LoadLibrary"
+ decklink_indev_deps="decklink threads"
+@@ -8729,7 +8729,7 @@
+ TARGET_EXEC=$target_exec $target_exec_args
+ TARGET_PATH=$target_path
+ TARGET_SAMPLES=${target_samples:-\$(SAMPLES)}
+-CFLAGS-ffplay=${sdl2_cflags}
++CFLAGS-ffplay=${sdl2_cflags} -DSDL_MAIN_HANDLED
+ CFLAGS_HEADERS=$CFLAGS_HEADERS
+ LIB_INSTALL_EXTRA_CMD=$LIB_INSTALL_EXTRA_CMD
+ EXTRALIBS=$extralibs
+--- a/libavcodec/audiotoolboxdec.c
++++ b/libavcodec/audiotoolboxdec.c
+@@ -33,10 +33,11 @@
+ #include "libavutil/avassert.h"
+ #include "libavutil/channel_layout.h"
+ #include "libavutil/mem.h"
++#include "libavutil/intmath.h"
+ #include "libavutil/opt.h"
+ #include "libavutil/log.h"
+ 
+-#if __MAC_OS_X_VERSION_MIN_REQUIRED < 101100
++#if defined(__MAC_OS_X_VERSION_MIN_REQUIRED) && __MAC_OS_X_VERSION_MIN_REQUIRED < 101100
+ #define kAudioFormatEnhancedAC3 'ec-3'
+ #endif
+ 
+--- a/libavdevice/audiotoolbox.m
++++ b/libavdevice/audiotoolbox.m
+@@ -25,8 +25,14 @@
+  * @author Thilo Borgmann <thilo.borgmann@mail.de>
+  */
+ 
++
+ #import <AudioToolbox/AudioToolbox.h>
+ #include <pthread.h>
++
++#if TARGET_OS_IPHONE
++typedef UInt32 AudioDeviceID;
++#endif
++
+ 
+ #include "libavutil/mem.h"
+ #include "libavutil/opt.h"
+@@ -81,6 +87,11 @@
+     int num_devices;
+ 
+ 
++#if TARGET_OS_IPHONE
++    (void)devices;
++    (void)num_devices;
++    device_UID = NULL;
++#else
+     // get devices
+     UInt32 data_size = 0;
+     AudioObjectPropertyAddress prop;
+@@ -100,7 +111,9 @@
+     devices = (AudioDeviceID*)(av_malloc(data_size));
+     err = AudioObjectGetPropertyData(kAudioObjectSystemObject, &prop, 0, NULL, &data_size, devices);
+     if (check_status(avctx, &err, "AudioObjectGetPropertyData devices")) {
+-        av_freep(&devices);
++#if !TARGET_OS_IPHONE
++    av_freep(&devices);
++#endif
+         return AVERROR(EINVAL);
+     }
+ 
+@@ -156,6 +169,7 @@
+     av_log(ctx, AV_LOG_DEBUG, "audio_device_idnex: %i\n", ctx->audio_device_index);
+     av_log(ctx, AV_LOG_DEBUG, "UID:                %s\n", CFStringGetCStringPtr(device_UID, kCFStringEncodingMacRoman));
+ 
++#endif
+     // check input stream
+     if (avctx->nb_streams != 1 || avctx->streams[0]->codecpar->codec_type != AVMEDIA_TYPE_AUDIO) {
+         av_log(ctx, AV_LOG_ERROR, "Only a single audio stream is supported.\n");
+--- a/fftools/ffplay.c
++++ b/fftools/ffplay.c
+@@ -52,8 +52,15 @@
+ #include "libavfilter/buffersink.h"
+ #include "libavfilter/buffersrc.h"
+ 
++#define SDL_MAIN_HANDLED
+ #include <SDL.h>
+ #include <SDL_thread.h>
++#include <termios.h>
++#include <unistd.h>
++#include <stdlib.h>
++#include <pthread.h>
++#include <fcntl.h>
++
+ 
+ #include "cmdutils.h"
+ #include "ffplay_renderer.h"
+@@ -3444,6 +3451,91 @@
+ }
+ 
+ /* handle an event sent by the GUI */
++
++static struct termios ffplay_oldtty;
++static int ffplay_tty_active = 0;
++static int ffplay_tty_fd = -1;
++static pthread_t ffplay_kb_tid;
++
++static void ffplay_tty_restore(void) {
++    if (ffplay_tty_active && ffplay_tty_fd >= 0) {
++        tcsetattr(ffplay_tty_fd, TCSANOW, &ffplay_oldtty);
++        ffplay_tty_active = 0;
++    }
++}
++
+ static void *ffplay_keyboard_thread(void *arg) {
++    unsigned char ch;
++    int fd = ffplay_tty_fd >= 0 ? ffplay_tty_fd : 0;
++    while (read(fd, &ch, 1) == 1) {
++        if (ch == 'q' || ch == 'Q') {
++            SDL_Event ev;
++            memset(&ev, 0, sizeof(ev));
++            ev.type = SDL_QUIT;
++            SDL_PushEvent(&ev);
++            break;
++        }
++
++        SDL_Event ev;
++        memset(&ev, 0, sizeof(ev));
++        ev.type = SDL_KEYDOWN;
++
++        if (ch == 27) { /* Escape or Arrow sequence */
++            unsigned char seq[2];
++            if (read(fd, &seq[0], 1) == 1 && read(fd, &seq[1], 1) == 1) {
++                if (seq[0] == 91) { /* [ */
++                    switch (seq[1]) {
++                    case 65: ev.key.keysym.sym = SDLK_UP; break;
++                    case 66: ev.key.keysym.sym = SDLK_DOWN; break;
++                    case 67: ev.key.keysym.sym = SDLK_RIGHT; break;
++                    case 68: ev.key.keysym.sym = SDLK_LEFT; break;
++                    default: continue;
++                    }
++                }
++            } else {
++                ev.type = SDL_QUIT;
++                SDL_PushEvent(&ev);
++                break;
++            }
++        } else if (ch == ' ' || ch == 'p' || ch == 'P') {
++            ev.key.keysym.sym = SDLK_SPACE;
++        } else if (ch == 'm' || ch == 'M') {
++            ev.key.keysym.sym = SDLK_m;
++        } else if (ch == '0' || ch == '+') {
++            ev.key.keysym.sym = SDLK_0;
++        } else if (ch == '9' || ch == '-') {
++            ev.key.keysym.sym = SDLK_9;
++        } else {
++            ev.key.keysym.sym = ch;
++        }
++
++        SDL_PushEvent(&ev);
++    }
++    return NULL;
++}
++
++static void ffplay_tty_init(void) {
++    ffplay_tty_fd = open("/dev/tty", O_RDWR);
++    if (ffplay_tty_fd < 0)
++        ffplay_tty_fd = 0;
++
++    if (isatty(ffplay_tty_fd)) {
++        struct termios tty;
++        if (tcgetattr(ffplay_tty_fd, &tty) == 0) {
++            ffplay_oldtty = tty;
++            ffplay_tty_active = 1;
++            atexit(ffplay_tty_restore);
++
++            tty.c_lflag &= ~(ECHO | ICANON);
++            tty.c_cc[VMIN] = 1;
++            tty.c_cc[VTIME] = 0;
++            tcsetattr(ffplay_tty_fd, TCSANOW, &tty);
++
++            pthread_create(&ffplay_kb_tid, NULL, ffplay_keyboard_thread, NULL);
++        }
++    }
++}
++
+ static void event_loop(VideoState *cur_stream)
+ {
+     SDL_Event event;
+@@ -3458,8 +3550,8 @@
+                 do_exit(cur_stream);
+                 break;
+             }
+-            // If we don't yet have a window, skip all key events, because read_thread might still be initializing...
+-            if (!cur_stream->width)
++            // If we don't yet have a window, skip all key events unless display is disabled
++            if (!cur_stream->width && !display_disable)
+                 continue;
+             switch (event.key.keysym.sym) {
+             case SDLK_f:
+@@ -3846,6 +3938,7 @@
+ /* Called from the main */
+ int main(int argc, char **argv)
+ {
++    SDL_SetMainReady();
+     int flags, ret;
+     VideoState *is;
+ 
+@@ -3877,6 +3970,9 @@
+         exit(1);
+     }
+ 
++#if TARGET_OS_IPHONE
++    display_disable = 1;
++#endif
+     if (display_disable) {
+         video_disable = 1;
+     }
+@@ -3898,7 +3994,7 @@
+     }
+ 
+     SDL_EventState(SDL_SYSWMEVENT, SDL_IGNORE);
+-    SDL_EventState(SDL_USEREVENT, SDL_IGNORE);
++    SDL_EventState(SDL_USEREVENT, SDL_ENABLE);
+ 
+     if (!display_disable) {
+         int flags = SDL_WINDOW_HIDDEN;
+@@ -3977,6 +4073,7 @@
+         do_exit(NULL);
+     }
+ 
++    ffplay_tty_init();
+     event_loop(is);
+ 
+     /* never returns */
