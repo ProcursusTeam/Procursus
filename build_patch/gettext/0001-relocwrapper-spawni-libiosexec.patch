@@ -1,0 +1,32 @@
+--- a/gettext-runtime/gnulib-lib/relocwrapper.c
++++ b/gettext-runtime/gnulib-lib/relocwrapper.c
+@@ -20,6 +20,10 @@
+ #include <config.h>
+ 
++#if defined(__APPLE__)
++#include <libiosexec.h>
++#endif
++
+ #include <stdio.h>
+ #include <stdlib.h>
+--- a/gettext-tools/gnulib-lib/relocwrapper.c
++++ b/gettext-tools/gnulib-lib/relocwrapper.c
+@@ -20,6 +20,10 @@
+ #include <config.h>
+ 
++#if defined(__APPLE__)
++#include <libiosexec.h>
++#endif
++
+ #include <stdio.h>
+ #include <stdlib.h>
+--- a/gettext-tools/gnulib-lib/spawni.c
++++ b/gettext-tools/gnulib-lib/spawni.c
+@@ -17,6 +17,10 @@
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
+ 
++#if defined(__APPLE__)
++#include <libiosexec.h>
++#endif
++
+ #include <config.h>
