@@ -1,0 +1,27 @@
+--- a/plugins/sudoers/tsgetgrpw.h
++++ b/plugins/sudoers/tsgetgrpw.h
+@@ -26,6 +26,24 @@
+ 
+ #include <pwd.h>
+ #include <grp.h>
++#undef getpwent
++#undef getpwuid
++#undef getpwuid_r
++#undef getpwnam
++#undef getpwnam_r
++#undef setpassent
++#undef setpwent
++#undef endpwent
++#undef getgrent
++#undef getgrgid
++#undef getgrgid_r
++#undef getgrnam
++#undef getgrnam_r
++#undef setgrent
++#undef endgrent
++#undef getusershell
++#undef setusershell
++#undef endusershell
+ 
+ void testsudoers_setgrfile(const char *);
+ void testsudoers_setgrent(void);
