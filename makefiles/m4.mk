@@ -10,6 +10,7 @@ m4-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/m4/m4-$(M4_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,m4-$(M4_VERSION).tar.gz)
 	$(call EXTRACT_TAR,m4-$(M4_VERSION).tar.gz,m4-$(M4_VERSION),m4)
+	$(call DO_PATCH,m4,m4,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/m4/.build_complete),)
 m4:

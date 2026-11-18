@@ -1,0 +1,10 @@
+--- a/lib/spawni.c
++++ b/lib/spawni.c
+@@ -17,6 +17,10 @@
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
+ 
++#if defined(__APPLE__)
++#include <libiosexec.h>
++#endif
++
+ #include <config.h>
