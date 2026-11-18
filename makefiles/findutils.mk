@@ -31,7 +31,10 @@ findutils: findutils-setup gettext
 endif
 	cd $(BUILD_WORK)/findutils && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--localstatedir=$(MEMO_PREFIX)/var/cache/locate \
+		--enable-leaf-optimisation \
+		--enable-d_type-optimization \
 		--disable-dependency-tracking \
 		--disable-debug \
 		--without-selinux \
