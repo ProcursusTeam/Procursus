@@ -54,6 +54,18 @@ endif
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-nls \
 		--with-installed-readline=yes \
+		--with-curses \
+		--without-bash-malloc \
+		--enable-readline \
+		--enable-select \
+		--enable-prompt-string-decoding \
+		--enable-progcomp \
+		--enable-multibyte \
+		--enable-job-control \
+		--enable-history \
+		--enable-help-builtin \
+		--enable-directory-stack \
+		--enable-command-timing \
 		CFLAGS="$(CFLAGS) -DSSH_SOURCE_BASHRC" \
 		$(BASH_CONFIGURE_ARGS) \
 		bash_cv_getcwd_malloc=yes \
