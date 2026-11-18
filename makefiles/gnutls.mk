@@ -19,7 +19,11 @@ gnutls: gnutls-setup readline gettext libgcrypt libgmp10 libidn2 libunistring ne
 	find $(BUILD_BASE) -name "*.la" -type f -delete
 	cd $(BUILD_WORK)/gnutls && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--disable-guile \
+		--disable-libdane \
+		--disable-doc \
+		--disable-manpages \
 		--enable-local-libopts \
 		--with-default-trust-store-file=$(MEMO_PREFIX)/etc/ssl/certs/cacert.pem \
 		ac_cv_func_malloc_0_nonnull=yes \
