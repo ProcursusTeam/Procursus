@@ -15,6 +15,7 @@ bash-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/bash/bash-$(BASH_VERSION).tar.gz{$(comma).sig})
 	$(call PGP_VERIFY,bash-$(BASH_VERSION).tar.gz)
 	$(call EXTRACT_TAR,bash-$(BASH_VERSION).tar.gz,bash-$(BASH_VERSION),bash)
+	$(call DO_PATCH,bash,bash,-p1)
 	mkdir -p $(BUILD_STAGE)/bash/$(MEMO_PREFIX)/bin
 ifeq (,$(findstring darwin,$(MEMO_TARGET)))
 ifneq (,$(MEMO_PREFIX))
@@ -44,7 +45,11 @@ ifneq ($(wildcard $(BUILD_WORK)/bash/.build_complete),)
 bash:
 	@echo "Using previously built bash."
 else
+ifeq (,$(findstring darwin,$(MEMO_TARGET)))
+bash: bash-setup ncurses readline gettext libiosexec
+else
 bash: bash-setup ncurses readline gettext
+endif
 	cd $(BUILD_WORK)/bash && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--disable-nls \

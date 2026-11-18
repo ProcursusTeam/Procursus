@@ -1,0 +1,75 @@
+--- a/general.h
++++ b/general.h
+@@ -20,6 +20,10 @@
+ #if !defined (_GENERAL_H_)
+ #define _GENERAL_H_
+ 
++#if defined(__APPLE__)
++#include <libiosexec.h>
++#endif
++
+ #include "stdc.h"
+ 
+ #include "bashtypes.h"
+--- a/execute_cmd.c
++++ b/execute_cmd.c
+@@ -82,6 +82,10 @@
+ #include "pathexp.h"
+ #include "hashcmd.h"
+ 
++#if defined(__APPLE__)
++#include <libiosexec.h>
++#endif
++
+ #if defined (COND_COMMAND)
+ #  include "test.h"
+ #endif
+--- a/config-top.h
++++ b/config-top.h
+@@ -58,7 +58,7 @@
+ /* The default value of the PATH variable. */
+ #ifndef DEFAULT_PATH_VALUE
+ #define DEFAULT_PATH_VALUE \
+-  "/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:."
++  "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/local/bin:@MEMO_PREFIX@@MEMO_SUB_PREFIX@/local/sbin:@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin:@MEMO_PREFIX@@MEMO_SUB_PREFIX@/sbin:@MEMO_PREFIX@/bin:@MEMO_PREFIX@/sbin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:."
+ #endif
+ 
+ /* If you want to unconditionally set a value for PATH in every restricted
+@@ -69,13 +69,13 @@
+    the Posix.2 confstr () function, or CS_PATH define are not present. */
+ #ifndef STANDARD_UTILS_PATH
+ #define STANDARD_UTILS_PATH \
+-  "/bin:/usr/bin:/sbin:/usr/sbin"
++  "@MEMO_PREFIX@/bin:@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin:@MEMO_PREFIX@/sbin:@MEMO_PREFIX@@MEMO_SUB_PREFIX@/sbin:/bin:/usr/bin:/sbin:/usr/sbin"
+ #endif
+ 
+ /* The default path for enable -f */
+ #ifndef DEFAULT_LOADABLE_BUILTINS_PATH
+ #define DEFAULT_LOADABLE_BUILTINS_PATH \
+-  "/usr/local/lib/bash:/usr/lib/bash:/opt/local/lib/bash:/usr/pkg/lib/bash:/opt/pkg/lib/bash:."
++  "/usr/local/lib/bash:/usr/lib/bash:@MEMO_PREFIX@@MEMO_SUB_PREFIX@/lib/bash:/usr/pkg/lib/bash:/opt/pkg/lib/bash:."
+ #endif
+ 
+ /* Default primary and secondary prompt strings. */
+@@ -184,7 +184,7 @@
+ 
+ /* Define to set the initial size of the history list ($HISTSIZE). This must
+    be a string. */
+-/*#define HISTSIZE_DEFAULT "500"*/
++#define HISTSIZE_DEFAULT "30000"
+ 
+ /* Define to 0 if you want history expansion to be disabled by default in
+    interactive shells; define to 1 for the historical behavior of enabling
+--- a/lib/readline/complete.c
++++ b/lib/readline/complete.c
+@@ -21,6 +21,10 @@
+ 
+ #define READLINE_LIBRARY
+ 
++#if defined(__APPLE__)
++#include <libiosexec.h>
++#endif
++
+ #if defined (HAVE_CONFIG_H)
+ #  include <config.h>
+ #endif
