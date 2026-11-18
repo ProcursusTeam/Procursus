@@ -1,0 +1,24 @@
+--- a/pathnames.h.in
++++ b/pathnames.h.in
+@@ -193,10 +193,19 @@
+ 
+ #ifndef _PATH_VI
+ # undef _PATH_VI
++# ifndef _PATH_VI
++#  define _PATH_VI "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/vi"
++# endif
+ #endif /* _PATH_VI */
+ 
+ #ifndef _PATH_MV
+ # undef _PATH_MV
++# ifndef _PATH_MV
++#  define _PATH_MV "@MEMO_PREFIX@@MEMO_SUB_PREFIX@/bin/mv"
++# endif
+ #endif /* _PATH_MV */
+ 
+ #ifndef _PATH_BSHELL
+ # undef _PATH_BSHELL
++# ifndef _PATH_BSHELL
++#  define _PATH_BSHELL "@MEMO_PREFIX@/bin/sh"
++# endif
+ #endif /* _PATH_BSHELL */
