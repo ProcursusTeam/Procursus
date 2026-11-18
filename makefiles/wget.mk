@@ -19,6 +19,7 @@ else
 wget: wget-setup openssl pcre2 gettext libunistring libidn2
 	cd $(BUILD_WORK)/wget && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		--sysconfdir=$(MEMO_PREFIX)/etc \
 		--with-ssl=openssl \
 		--with-openssl \
 		--without-libpsl
