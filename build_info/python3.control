@@ -2,9 +2,12 @@ Package: python3
 Maintainer: @DEB_MAINTAINER@
 Architecture: @DEB_ARCH@
 Version: @DEB_PYTHON3_V@
-Depends: python3.9
+Depends: python3.14 (= @DEB_PYTHON3_V@)
+Conflicts: python3.9 (<< 3.14.0), libpython3.9 (<< 3.14.0)
+Replaces: python3.9 (<< 3.14.0), libpython3.9 (<< 3.14.0)
+Provides: python
 Section: Scripting
 Priority: optional
-Description: Interpreted, interactive, object-oriented programming language.
+Description: Interactive high-level object-oriented language (Python 3 metapackage pointing to 3.14)
  Installing pip from the command line can be done with the `sudo python -m ensurepip` command.
  After installing pip, place an SDK for your platform in /usr/share/SDKs. (e.g. /usr/share/SDKs/iPhoneOS.sdk)
