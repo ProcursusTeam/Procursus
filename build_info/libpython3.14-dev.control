@@ -1,0 +1,10 @@
+Package: libpython3.14-dev
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_PYTHON3_V@
+Depends: libpython3.14 (= @DEB_PYTHON3_V@), python3.14 (= @DEB_PYTHON3_V@)
+Conflicts: libpython3.9-dev (<< 3.14.0)
+Replaces: libpython3.9-dev (<< 3.14.0)
+Section: Development
+Priority: optional
+Description: Header files and static library for Python 3.14

@@ -1,0 +1,11 @@
+Package: libpython3.14
+Maintainer: @DEB_MAINTAINER@
+Architecture: @DEB_ARCH@
+Version: @DEB_PYTHON3_V@
+Depends: libiosexec1, libintl8, libncursesw6 (>= 6.0), libreadline8 (>= 8.0), libssl3, libffi8, liblzma5, libgdbm6, firmware (>= 14.0) | libexpat1
+Conflicts: python3.9 (<< 3.14.0), libpython3.9 (<< 3.14.0)
+Replaces: python3.9 (<< 3.14.0), libpython3.9 (<< 3.14.0)
+Provides: libpython3 (= @DEB_PYTHON3_V@)
+Section: Libraries
+Priority: optional
+Description: Shared Python runtime library and standard library (version 3.14)
