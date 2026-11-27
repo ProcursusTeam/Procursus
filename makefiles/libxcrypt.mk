@@ -23,6 +23,7 @@ libxcrypt:
 else
 libxcrypt: libxcrypt-setup
 	cd $(BUILD_WORK)/libxcrypt && ./configure -C \
+		--disable-werror \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		CFLAGS="$(patsubst -flto=thin,,$(CFLAGS))" \
 		LDFLAGS="$(patsubst -flto=thin,,$(LDFLAGS))"

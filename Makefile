@@ -701,7 +701,7 @@ ifeq ($(MEMO_ARCH),armv6)
 # iOS 2 needs this.
 CFLAGS              += -ffixed-r9
 CXXFLAGS            += -ffixed-r9
-LDFLAGS             += -lgcc
+LDFLAGS             += -lgcc_s.1
 endif
 
 # Link everything to libiosexec, as it's preinstalled on every Procursus system.

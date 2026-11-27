@@ -183,6 +183,9 @@ endif
 ifneq ($(MEMO_NO_IOSEXEC),1)
 	@sed -i '1s/^/#include <libiosexec.h>\n/' $(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/{unistd,pwd,grp}.h
 endif
+
+	@# Fixup libgcc
+	@cp -af $(TARGET_SYSROOT)/usr/lib/gcc/arm-apple-darwin9/4.0.1/libgcc.a $(BUILD_BASE)/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgcc.a
 endif
 
 ifneq ($(MEMO_QUIET),1)
